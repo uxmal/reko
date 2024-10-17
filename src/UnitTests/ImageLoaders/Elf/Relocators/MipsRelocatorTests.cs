@@ -19,6 +19,7 @@
 #endregion
 
 using NUnit.Framework;
+using NUnit.Framework.Constraints;
 using Reko.Core;
 using Reko.Core.Loading;
 using Reko.Core.Machine;
@@ -57,14 +58,11 @@ namespace Reko.UnitTests.ImageLoaders.Elf.Relocators
 
         protected override ElfLoader CreateLoader()
         {
+            var hdr = new ElfHeader();
+            var bin = new ElfBinaryImage(hdr, EndianServices.Big);
             return new ElfLoader32(
                 new ServiceContainer(),
-                new Elf32_EHdr
-                {
-                    e_type = (ushort) ElfLoader.ET_EXEC
-                },
-                0,
-                EndianServices.Big,
+                bin,
                 Array.Empty<byte>());
         }
 

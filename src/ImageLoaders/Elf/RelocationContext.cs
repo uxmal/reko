@@ -62,10 +62,10 @@ namespace Reko.ImageLoaders.Elf
         {
             if (this.isRelocatableFile)
             {
-                if (sym.SectionIndex >= loader.Sections.Count)
+                if (sym.SectionIndex >= loader.BinaryImage.Sections.Count)
                     return false;
-                this.P = reloc.Offset + (ReferringSection?.Address.ToLinear() ?? 0);
-                this.S = loader.Sections[(int) sym.SectionIndex].Address.Offset + sym.Value;
+                this.P = reloc.Offset + (ReferringSection?.VirtualAddress.ToLinear() ?? 0);
+                this.S = loader.BinaryImage.Sections[(int) sym.SectionIndex].VirtualAddress.Offset + sym.Value;
                 this.L = pltLocations.TryGetValue(sym, out var pltAddr)
                     ? pltAddr.Offset
                     : 0;

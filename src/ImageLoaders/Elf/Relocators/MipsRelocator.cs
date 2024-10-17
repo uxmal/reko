@@ -90,7 +90,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             {
                 DumpDynamicSegment(dynSeg);
 
-                var dynent = Loader.DynamicEntries;
+                var dynent = Loader.BinaryImage.DynamicEntries;
                 if (!dynent.TryGetValue(ElfDynamicEntry.Mips.DT_MIPS_BASE_ADDRESS, out var baseAddr) ||
                     !dynent.TryGetValue(ElfDynamicEntry.DT_SYMTAB, out var dynsymtab) ||
                     !dynent.TryGetValue(ElfDynamicEntry.DT_STRTAB, out var strtab) ||
@@ -229,7 +229,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
         /// </remarks>
         private void LocateLocalGotEntries(Program program, SortedList<Address, ImageSymbol> symbols)
         {
-            var dynamic = loader.DynamicEntries;
+            var dynamic = loader.BinaryImage.DynamicEntries;
             if (!dynamic.TryGetValue(ElfDynamicEntry.Mips.DT_MIPS_LOCAL_GOTNO, out var dynEntry))
                 return;
             var numberoflocalPointers = (int) dynEntry.SValue;
@@ -250,11 +250,11 @@ namespace Reko.ImageLoaders.Elf.Relocators
         /// </remarks>
         private void LocateGlobalGotEntries(Program program, SortedList<Address, ImageSymbol> symbols)
         {
-            var dynamic = loader.DynamicEntries;
+            var dynamic = loader.BinaryImage.DynamicEntries;
             if (!dynamic.TryGetValue(ElfDynamicEntry.DT_SYMTAB, out var dynEntry))
                 return;
             var uAddrSymtab = (uint) dynEntry.UValue;
-            var allSymbols = loader.DynamicSymbols;
+            var allSymbols = loader.BinaryImage.DynamicSymbols;
 
             var cLocalSymbols = (int)dynamic[ElfDynamicEntry.Mips.DT_MIPS_GOTSYM].SValue;
             var cTotalSymbols = (int)dynamic[ElfDynamicEntry.Mips.DT_MIPS_SYMTABNO].SValue;
@@ -268,7 +268,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
             {
                 var addrGot = Address.Ptr32(uAddrBeginningOfGlobalPointers + PointerByteSize * (uint)i);
                 var iSymbol = cLocalSymbols + i;
-                if (allSymbols.TryGetValue(iSymbol, out var symbol) &&
+                if (allSymbols.TryGetValue(iSymbol, out var isymbol) &&
+                    isymbol is ElfSymbol symbol &&
                     symbol.Type == ElfSymbolType.STT_FUNC)
                 {
                     // This GOT entry is a known symbol!

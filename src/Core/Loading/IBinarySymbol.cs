@@ -18,37 +18,10 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Reko.Core.Loading;
 
-/// <summary>
-/// Represents a segment of the executable file.
-/// </summary>
-/// <remarks>
-/// Some file formats distinguish between segments and sections
-/// (e.g. ELF and MachO) while others conflate the two
-/// concepts (e.g. PE). In general, sections are smaller, or
-/// contained within segments.
-/// </remarks>
-
-public interface IBinarySection
+public interface IBinarySymbol
 {
-    int Index { get; }
     string Name { get; }
-    ulong Size { get; }
-
-    Address VirtualAddress { get; }
-
-    ulong FileOffset { get; }
-
-    ulong Alignment { get; }
-
-    ulong Flags { get; }
-
-    AccessMode AccessMode { get; }
+    ulong Value { get; }
 }

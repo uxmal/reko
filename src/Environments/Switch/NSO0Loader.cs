@@ -105,8 +105,12 @@ namespace Reko.Environments.Switch
             var offset = mod0.DynamicOffset - dynseg.MemoryArea.BaseAddress.ToLinear();
             offset += mod0.MagicOffset;
             var rdr = dynseg.MemoryArea.CreateLeReader((int) offset);
-            var elfHdr = new Elf32_EHdr { e_machine = (ushort) ElfMachine.EM_ARM };
-            var elfLoader = new ElfLoader32(Services, elfHdr, 0, EndianServices.Little, RawImage);
+            var elfHdr = new ElfHeader
+            {
+                Machine = ElfMachine.EM_ARM,
+            };
+            var bin = new ElfBinaryImage(elfHdr, EndianServices.Little);
+            var elfLoader = new ElfLoader32(Services, bin, RawImage);
             var (deps, entries) = elfLoader.LoadDynamicSegment(rdr);
 
             var dynEntries = entries.ToDictionary(e => e.Tag, e => e.UValue);

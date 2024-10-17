@@ -53,7 +53,7 @@ namespace Reko.ImageLoaders.Elf
             this.rekoExtfn = new ElfSection
             {
                 Name = ".reko.externs",
-                Number = (uint) loader.Sections.Count,
+                Index = loader.BinaryImage.Sections.Count,
                 Type = SectionHeaderType.SHT_NOBITS,
                 Flags = ElfLoader.SHF_ALLOC | ElfLoader.SHF_EXECINSTR,
                 FileOffset = 0,
@@ -70,9 +70,9 @@ namespace Reko.ImageLoaders.Elf
 
         protected Address? ComputeBaseAddressFromSections(IEnumerable<ElfSection> sections)
         {
-            var address = sections.Where(s => s.Address != null && (s.Flags & ElfLoader.SHF_ALLOC) != 0)
-                .OrderBy(s => s.Address)
-                .Select(s => s.Address)
+            var address = sections.Where(s => s.VirtualAddress != null && (s.Flags & ElfLoader.SHF_ALLOC) != 0)
+                .OrderBy(s => s.VirtualAddress)
+                .Select(s => s.VirtualAddress)
                 .FirstOrDefault();
             if (address is null)
                 return loader.CreateAddress(0x1000);
@@ -92,7 +92,7 @@ namespace Reko.ImageLoaders.Elf
             foreach (var sym in unresolvedSymbols)
             {
                 var addr =
-                    loader.Sections[(int) sym.SectionIndex].Address! +
+                    loader.BinaryImage.Sections[(int) sym.SectionIndex].VirtualAddress +
                     sym.Value;
                 ElfImageLoader.trace.Verbose("  {0}", sym.Value);
 
@@ -119,7 +119,7 @@ namespace Reko.ImageLoaders.Elf
         {
             var addrBase = addrLoad is not null && addrLoad.Offset != 0
                 ? addrLoad
-                : ComputeBaseAddressFromSections(loader.Sections)!;
+                : ComputeBaseAddressFromSections(loader.BinaryImage.Sections)!;
             CollectCommonSymbolsIntoSection();
             CollectUndefinedSymbolsIntoSection();
             var segments = ComputeSegmentSizes();
@@ -141,7 +141,7 @@ namespace Reko.ImageLoaders.Elf
             var rekoCommon = new ElfSection
             {
                 Name = ".reko.common",
-                Number = (uint) loader.Sections.Count,
+                Index = loader.BinaryImage.Sections.Count,
                 Type = SectionHeaderType.SHT_NOBITS,
                 Flags = ElfLoader.SHF_WRITE | ElfLoader.SHF_ALLOC | ElfLoader.SHF_REKOCOMMON,
                 FileOffset = 0,
@@ -151,12 +151,12 @@ namespace Reko.ImageLoaders.Elf
             {
                 rekoCommon.Size = Align(rekoCommon.Size, sym.Value);
                 sym.Value = (uint) rekoCommon.Size;
-                sym.SectionIndex = (uint) loader.Sections.Count;
+                sym.SectionIndex = (uint) loader.BinaryImage.Sections.Count;
                 rekoCommon.Size += sym.Size;
             }
             if (rekoCommon.Size > 0)
             {
-                loader.Sections.Add(rekoCommon);
+                loader.BinaryImage.AddSection(rekoCommon);
             }
         }
 
@@ -177,13 +177,13 @@ namespace Reko.ImageLoaders.Elf
             {
                 rekoExtfn.Size = Align(rekoExtfn.Size, 0x10);
                 sym.Value = rekoExtfn.Size;
-                sym.SectionIndex = (uint) loader.Sections.Count;
+                sym.SectionIndex = (uint) loader.BinaryImage.Sections.Count;
                 base.unresolvedSymbols.Add(sym);
                 rekoExtfn.Size += 0x10;
             }
             if (rekoExtfn.Size > 0)
             {
-                loader.Sections.Add(rekoExtfn);
+                loader.BinaryImage.AddSection(rekoExtfn);
             }
         }
 
@@ -232,7 +232,7 @@ namespace Reko.ImageLoaders.Elf
         {
             var mpToSegment = new Dictionary<ulong, Elf64_PHdr>();
             var mpSectionToSegment = new Dictionary<ElfSection, Elf64_PHdr>();
-            foreach (var section in loader.Sections
+            foreach (var section in loader.BinaryImage.Sections
                 .Where(s => (s.Flags & ElfLoader.SHF_ALLOC) != 0))
             {
                 if (!mpToSegment.TryGetValue(section.Flags, out Elf64_PHdr? segment))
@@ -272,11 +272,11 @@ namespace Reko.ImageLoaders.Elf
 
             var psegAlloc = Segments.ToDictionary(k => k, v => v.p_paddr);
             var psegMem = Segments.ToDictionary(k => k, v => arch.CreateImageWriter());
-            foreach (var section in loader.Sections)
+            foreach (var section in loader.BinaryImage.Sections)
             {
                 if (!mpSections.TryGetValue(section, out Elf64_PHdr? segment))
                     continue;
-                section.Address = Address.Ptr64(psegAlloc[segment]);
+                section.VirtualAddress = Address.Ptr64(psegAlloc[segment]);
                 if (section.Type != SectionHeaderType.SHT_NOBITS)
                 {
                     psegMem[segment].WriteBytes(rawImage, (uint) section.FileOffset, (uint) section.Size);
@@ -324,7 +324,7 @@ namespace Reko.ImageLoaders.Elf
         {
             var mpToSegment = new Dictionary<ulong, Elf32_PHdr>();
             var mpSectionToSegment = new Dictionary<ElfSection, Elf32_PHdr>();
-            foreach (var section in loader.Sections)
+            foreach (var section in loader.BinaryImage.Sections)
             {
                 if (!mpToSegment.TryGetValue(section.Flags, out Elf32_PHdr? segment))
                 {
@@ -363,11 +363,11 @@ namespace Reko.ImageLoaders.Elf
 
             var psegAlloc = Segments.ToDictionary(k => k, v => v.p_paddr);
             var psegMem = Segments.ToDictionary(k => k, v => arch.CreateImageWriter());
-            foreach (var section in loader.Sections)
+            foreach (var section in loader.BinaryImage.Sections)
             {
                 if (!mpSections.TryGetValue(section, out Elf32_PHdr? segment))
                     continue;
-                section.Address = Address.Ptr32(psegAlloc[segment]);
+                section.VirtualAddress = Address.Ptr32(psegAlloc[segment]);
                 if (section.Type != SectionHeaderType.SHT_NOBITS)
                 {
                     psegMem[segment].WriteBytes(rawImage, (uint) section.FileOffset, (uint) section.Size);

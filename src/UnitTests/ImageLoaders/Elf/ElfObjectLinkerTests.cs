@@ -50,13 +50,16 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         {
             BuildObjectFile32(big_endian);
             var eil = new ElfImageLoader(sc, ImageLocation.FromUri("file:foo.o"), rawBytes);
-            eil.LoadElfIdentification();
+            var ehdr = eil.LoadElfIdentification();
+            var bin = new ElfBinaryImage(ehdr, big_endian
+                ? EndianServices.Big
+                : EndianServices.Little);
             var rdr = big_endian
                 ? new BeImageReader(rawBytes, ElfImageLoader.HEADER_OFFSET)
                 : (EndianImageReader) new LeImageReader(rawBytes, ElfImageLoader.HEADER_OFFSET);
             var eh = Elf32_EHdr.Load(rdr);
-            var el = new ElfLoader32(sc, eh, 0, big_endian ? EndianServices.Big: EndianServices.Little, rawBytes);
-            el.Sections.AddRange(el.LoadSectionHeaders());
+            var el = (ElfLoader32) eil.CreateLoader(bin);
+            el.BinaryImage.AddSections(el.LoadSectionHeaders());
             el.LoadSymbolsFromSections();
             this.linker = new ElfObjectLinker32(el, arch.Object, rawBytes);
         }

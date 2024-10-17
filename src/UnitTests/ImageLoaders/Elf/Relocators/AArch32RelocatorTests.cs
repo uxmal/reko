@@ -36,14 +36,15 @@ namespace Reko.UnitTests.ImageLoaders.Elf.Relocators
     {
         protected override ElfLoader CreateLoader()
         {
+            var hdr = new ElfHeader()
+            {
+                BinaryFileType = BinaryFileType.Executable
+            };
+                
+            var bin = new ElfBinaryImage(hdr, EndianServices.Little);
             return new ElfLoader32(
                 new ServiceContainer(),
-                new Elf32_EHdr
-                {
-                    e_type = (ushort)ElfLoader.ET_EXEC,
-                },
-                0,
-                EndianServices.Little,
+                bin,
                 Array.Empty<byte>());
         }
 

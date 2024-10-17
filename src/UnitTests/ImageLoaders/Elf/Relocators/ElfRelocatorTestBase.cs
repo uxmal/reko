@@ -61,7 +61,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf.Relocators
             var services = new ServiceContainer();
             var elfImgLoader = new ElfImageLoader(services, ImageLocation.FromUri("file:foo.elf"), Array.Empty<byte>());
             this.loader = CreateLoader();
-            loader.Sections.Add(new ElfSection { Name = "" });   // section 0
+            loader.BinaryImage.AddSection(new ElfSection { Name = "", VirtualAddress = Address.Ptr32(0) });   // section 0
         }
 
         protected void Given_Context()
@@ -99,9 +99,9 @@ namespace Reko.UnitTests.ImageLoaders.Elf.Relocators
             var section = new ElfSection
             {
                 Name = name,
-                Address = Address.Ptr32(uAddress)
+                VirtualAddress = Address.Ptr32(uAddress)
             };
-            loader.Sections.Add(section);
+            loader.BinaryImage.AddSection(section);
             var seg = new ImageSegment(section.Name, mem, AccessMode.ReadWriteExecute);
             program.SegmentMap.AddSegment(seg);
             return writer;

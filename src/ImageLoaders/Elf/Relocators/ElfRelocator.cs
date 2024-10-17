@@ -46,7 +46,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
         public IEnumerable<ElfSegment> EnumerateDynamicSegments()
         {
-            return Loader.Segments
+            return Loader.BinaryImage.Segments
                 .Where(p => p.p_type == ProgramHeaderType.PT_DYNAMIC);
         }
 
@@ -80,14 +80,14 @@ namespace Reko.ImageLoaders.Elf.Relocators
             if (symbols.Count > 0)
                 return;
 
-            foreach (var relSection in this.Loader.Sections)
+            foreach (var relSection in this.Loader.BinaryImage.Sections)
             {
-                if (relSection.RelocatedSection?.Address is null)
+                if (relSection.RelocatedSection?.VirtualAddress is null)
                     continue;
 
                 if (relSection.Type == SectionHeaderType.SHT_REL)
                 {
-                    Loader.Symbols.TryGetValue(relSection.LinkedSection!.FileOffset, out var sectionSymbols);
+                    Loader.BinaryImage.SymbolsByFileOffset.TryGetValue(relSection.LinkedSection!.FileOffset, out var sectionSymbols);
                     var referringSection = relSection.RelocatedSection;
                     var ctx = new RelocationContext(
                         Loader,
@@ -106,7 +106,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 }
                 else if (relSection.Type == SectionHeaderType.SHT_RELA)
                 {
-                    Loader.Symbols.TryGetValue(relSection.LinkedSection!.FileOffset, out var sectionSymbols);
+                    Loader.BinaryImage.SymbolsByFileOffset.TryGetValue(relSection.LinkedSection!.FileOffset, out var sectionSymbols);
                     var referringSection = relSection.RelocatedSection;
                     var rdr = Loader.CreateReader(relSection.FileOffset);
                     var ctx = new RelocationContext(
@@ -212,18 +212,18 @@ namespace Reko.ImageLoaders.Elf.Relocators
             {
                 DumpDynamicSegment(dynSeg);
 
-                Loader.DynamicEntries.TryGetValue(ElfDynamicEntry.DT_STRTAB, out var strtab);
-                Loader.DynamicEntries.TryGetValue(ElfDynamicEntry.DT_SYMTAB, out var symtab);
+                Loader.BinaryImage.DynamicEntries.TryGetValue(ElfDynamicEntry.DT_STRTAB, out var strtab);
+                Loader.BinaryImage.DynamicEntries.TryGetValue(ElfDynamicEntry.DT_SYMTAB, out var symtab);
 
-                Loader.DynamicEntries.TryGetValue(ElfDynamicEntry.DT_RELA, out var rela);
-                Loader.DynamicEntries.TryGetValue(ElfDynamicEntry.DT_RELASZ, out var relasz);
-                Loader.DynamicEntries.TryGetValue(ElfDynamicEntry.DT_RELAENT, out var relaent);
+                Loader.BinaryImage.DynamicEntries.TryGetValue(ElfDynamicEntry.DT_RELA, out var rela);
+                Loader.BinaryImage.DynamicEntries.TryGetValue(ElfDynamicEntry.DT_RELASZ, out var relasz);
+                Loader.BinaryImage.DynamicEntries.TryGetValue(ElfDynamicEntry.DT_RELAENT, out var relaent);
 
-                Loader.DynamicEntries.TryGetValue(ElfDynamicEntry.DT_REL, out var rel);
-                Loader.DynamicEntries.TryGetValue(ElfDynamicEntry.DT_RELSZ, out var relsz);
-                Loader.DynamicEntries.TryGetValue(ElfDynamicEntry.DT_RELENT, out var relent);
+                Loader.BinaryImage.DynamicEntries.TryGetValue(ElfDynamicEntry.DT_REL, out var rel);
+                Loader.BinaryImage.DynamicEntries.TryGetValue(ElfDynamicEntry.DT_RELSZ, out var relsz);
+                Loader.BinaryImage.DynamicEntries.TryGetValue(ElfDynamicEntry.DT_RELENT, out var relent);
 
-                Loader.DynamicEntries.TryGetValue(ElfDynamicEntry.DT_SYMENT, out var syment);
+                Loader.BinaryImage.DynamicEntries.TryGetValue(ElfDynamicEntry.DT_SYMENT, out var syment);
                 if (symtab is null)
                     continue;
                 if (strtab is null)
@@ -271,9 +271,9 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 }
 
                 // Relocate the DT_JMPREL table.
-                Loader.DynamicEntries.TryGetValue(ElfDynamicEntry.DT_JMPREL, out var jmprel);
-                Loader.DynamicEntries.TryGetValue(ElfDynamicEntry.DT_PLTRELSZ, out var pltrelsz);
-                Loader.DynamicEntries.TryGetValue(ElfDynamicEntry.DT_PLTREL, out var pltrel);
+                Loader.BinaryImage.DynamicEntries.TryGetValue(ElfDynamicEntry.DT_JMPREL, out var jmprel);
+                Loader.BinaryImage.DynamicEntries.TryGetValue(ElfDynamicEntry.DT_PLTRELSZ, out var pltrelsz);
+                Loader.BinaryImage.DynamicEntries.TryGetValue(ElfDynamicEntry.DT_PLTREL, out var pltrel);
                 if (jmprel is { } && pltrelsz is { } && pltrel is { })
                 {
                     if (pltrel.SValue == ElfDynamicEntry.DT_RELA) // entries are in RELA format.
@@ -512,7 +512,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
             var renderer = new DynamicSectionRenderer32(Loader, null!, loader.Machine);
             var sw = new StringWriter();
-            renderer.Render(dynSeg.p_offset, new TextFormatter(sw));
+            renderer.Render(dynSeg.FileOffset, new TextFormatter(sw));
             Debug.WriteLine(sw.ToString());
         }
 
@@ -520,13 +520,13 @@ namespace Reko.ImageLoaders.Elf.Relocators
         [Conditional("DEBUG")]
         protected void DumpRel32(ElfLoader32 loader)
         {
-            foreach (var section in loader.Sections.Where(s => s.Type == SectionHeaderType.SHT_REL))
+            foreach (var section in loader.BinaryImage.Sections.Where(s => s.Type == SectionHeaderType.SHT_REL))
             {
                 ElfImageLoader.trace.Inform("REL: Offset {0:X} symbol section {1}, relocating in section {2}",
                     section.FileOffset,
                     section.LinkedSection?.Name ?? "?",
                     section.RelocatedSection?.Name ?? "?");
-                loader.Symbols.TryGetValue(section.LinkedSection!.FileOffset, out var symbols);
+                loader.BinaryImage.SymbolsByFileOffset.TryGetValue(section.LinkedSection!.FileOffset, out var symbols);
                 var rdr = loader.CreateReader(section.FileOffset);
                 for (uint i = 0; i < section.EntryCount(); ++i)
                 {
@@ -544,7 +544,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
         [Conditional("DEBUG")]
         protected void DumpRela32(ElfLoader32 loader)
         {
-            foreach (var section in loader.Sections.Where(s => s.Type == SectionHeaderType.SHT_RELA))
+            foreach (var section in loader.BinaryImage.Sections.Where(s => s.Type == SectionHeaderType.SHT_RELA))
             {
                 ElfImageLoader.trace.Inform(
                     "RELA: Offset {0:X} symbol section {1}, relocating in section {2}",
@@ -552,7 +552,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     section.LinkedSection!.Name,
                     section.RelocatedSection!.Name);
 
-                var symbols = loader.Symbols[section.LinkedSection.FileOffset];
+                var symbols = loader.BinaryImage.SymbolsByFileOffset[section.LinkedSection.FileOffset];
                 var rdr = loader.CreateReader(section.FileOffset);
                 for (uint i = 0; i < section.EntryCount(); ++i)
                 {
@@ -585,7 +585,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
             var renderer = new DynamicSectionRenderer64(Loader, null, ElfMachine.EM_NONE);
             var sw = new StringWriter();
-            renderer.Render(dynSeg.p_offset, new TextFormatter(sw));
+            renderer.Render(dynSeg.FileOffset, new TextFormatter(sw));
             Debug.WriteLine(sw.ToString());
         }
 
@@ -594,13 +594,13 @@ namespace Reko.ImageLoaders.Elf.Relocators
         [Conditional("DEBUG")]
         protected void DumpRel64(ElfLoader64 loader)
         {
-            foreach (var section in loader.Sections.Where(s => s.Type == SectionHeaderType.SHT_REL))
+            foreach (var section in loader.BinaryImage.Sections.Where(s => s.Type == SectionHeaderType.SHT_REL))
             {
                 ElfImageLoader.trace.Inform("REL: Offset {0:X} symbol section {1}, relocating in section {2}",
                     section.FileOffset,
                     section.LinkedSection?.Name ?? "?",
                     section.RelocatedSection?.Name ?? "?");
-                loader.Symbols.TryGetValue(section.LinkedSection!.FileOffset, out var symbols);
+                loader.BinaryImage.SymbolsByFileOffset.TryGetValue(section.LinkedSection!.FileOffset, out var symbols);
                 var rdr = loader.CreateReader(section.FileOffset);
                 for (uint i = 0; i < section.EntryCount(); ++i)
                 {
@@ -618,7 +618,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
         [Conditional("DEBUG")]
         protected void DumpRela64(ElfLoader64 loader)
         {
-            foreach (var section in loader.Sections.Where(s => 
+            foreach (var section in loader.BinaryImage.Sections.Where(s => 
                 s.Type == SectionHeaderType.SHT_RELA &&
                 s.LinkedSection != null && 
                 s.LinkedSection.FileOffset != 0))
@@ -628,7 +628,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     section.LinkedSection?.Name ?? "?",
                     section.RelocatedSection?.Name ?? "?");
 
-                var symbols = loader.Symbols[section.LinkedSection!.FileOffset];
+                var symbols = loader.BinaryImage.SymbolsByFileOffset[section.LinkedSection!.FileOffset];
                 var rdr = loader.CreateReader(section.FileOffset);
                 for (uint i = 0; i < section.EntryCount(); ++i)
                 {

@@ -31,6 +31,11 @@ namespace Reko.ImageLoaders.Elf
         internal byte fileVersion;
         internal byte osAbi;
         internal byte abiVersion;
+        internal ulong e_phoff;
+        internal int e_phnum;
+        internal ulong e_shoff;
+        internal uint e_shnum;
+        internal int e_shstrndx;
 
         public ElfHeader()
         {
@@ -41,6 +46,8 @@ namespace Reko.ImageLoaders.Elf
         }
 
         public string Architecture { get; set; }
+
+        public ElfMachine Machine { get; set; }
 
         public BinaryFileType BinaryFileType { get; set; }
 

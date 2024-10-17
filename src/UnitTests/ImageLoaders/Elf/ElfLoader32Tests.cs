@@ -86,10 +86,10 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             programHeaders.Add(new ElfSegment
             {
                 p_type = type,
-                p_offset = imageOffset,
-                p_vaddr = virtualAddress,
-                p_filesz = fileSize,
-                p_pmemsz = loadedSize,
+                FileOffset = imageOffset,
+                VirtualAddress = Address.Ptr32(virtualAddress),
+                FileSize = fileSize,
+                MemorySize = loadedSize,
             });
         }
 
@@ -98,7 +98,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             sections.Add(new ElfSection
             {
                 Name = name,
-                Address = Address.Ptr32(addr),
+                VirtualAddress = Address.Ptr32(addr),
                 Flags = AccessFlags(mode)
             });
         }
@@ -147,10 +147,12 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         private void When_CreateLoader32(bool big_endian)
         {
             this.eil = new ElfImageLoader(sc, ImageLocation.FromUri("file:foo"), this.bytes);
-            this.el32 = new ElfLoader32(sc, eih, 0, big_endian ? EndianServices.Big: EndianServices.Little, this.bytes);
+            var eh = new ElfHeader();
+            var bin = new ElfBinaryImage(eh, big_endian ? EndianServices.Big : EndianServices.Little);
+            this.el32 = new ElfLoader32(sc, bin, this.bytes);
             //this.archQ = el32.CreateArchitecture(el32.Machine, el32.Endianness);
-            el32.Segments.AddRange(programHeaders);
-            el32.Sections.AddRange(sections);
+            el32.BinaryImage.AddSegments(programHeaders);
+            el32.BinaryImage.AddSections(sections);
         }
 
         [Test]

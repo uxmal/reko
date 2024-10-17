@@ -173,7 +173,5 @@ namespace Reko.Arch.MicrochipPIC.Common
         {
             PICProgramPostprocessor.Validate(program, arch);
         }
-
     }
-
 }

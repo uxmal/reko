@@ -18,34 +18,54 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Loading;
+using System.Collections.Generic;
 
 namespace Reko.ImageLoaders.Elf
 {
-    public class ElfSegment
+    public class ElfSegment : IBinarySegment
     {
         public ProgramHeaderType p_type;
-        public uint p_flags;
-        public ulong p_offset;
-        public ulong p_vaddr;
-        public ulong p_paddr;
-        public ulong p_filesz;
-        public ulong p_pmemsz;
-        public ulong p_align;
 
-        public AccessMode GetAccessMode()
+        public ElfSegment()
         {
-            return (AccessMode) (p_flags & 7);
+            this.VirtualAddress = default!;
+            this.PhysicalAddress = default!;
+            this.Sections = new();
         }
+
+        uint IBinarySegment.Type => (uint) p_type;
+
+        public AccessMode AccessMode =>
+            (AccessMode) (Flags & 7);
+
+        public ulong FileOffset { get; set; }
+
+        public Address VirtualAddress { get; set; }
+
+        public Address PhysicalAddress { get; set; }
+
+        public ulong FileSize { get; set; }
+
+        public ulong MemorySize { get; set; }
+
+        public ulong Flags { get; set; }
+
+        public ulong Alignment { get; set; }
 
         public bool IsValidAddress(ulong uAddr)
         {
-            return p_vaddr <= uAddr && uAddr < p_vaddr + p_pmemsz;
+            return VirtualAddress.Offset <= uAddr && uAddr < VirtualAddress.Offset + MemorySize;
         }
+
+        IReadOnlyList<IBinarySection> IBinarySegment.Sections => this.Sections;
+
+        public List<IBinarySection> Sections { get; }
 
         public override string ToString()
         {
-            return $"[{p_vaddr:X} - 0x{p_pmemsz:X}] - {p_type}";
+            return $"[{VirtualAddress:X} - 0x{MemorySize:X}] - {p_type}";
         }
 
 

@@ -18,15 +18,14 @@
  */
 #endregion
 
+using Reko.Core.Loading;
 using System.Text;
 
 namespace Reko.ImageLoaders.Elf
 {
-    public class ElfSymbol
+    public class ElfSymbol : IBinarySymbol
     {
-        public string Name { get; }
         public ElfSymbolType Type;
-        public ulong Value;
         public ElfSymbolBinding Bind;
         public uint SectionIndex;
         /// <summary>
@@ -37,7 +36,13 @@ namespace Reko.ImageLoaders.Elf
         public ElfSymbol(string name)
         {
             this.Name = name;
+            if (name == "_mm_free")
+                _ = this; //$DEBUG
+
         }
+
+        public string Name { get; }
+        public ulong Value { get; set; }
 
         public override string ToString()
         {

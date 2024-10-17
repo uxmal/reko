@@ -70,9 +70,9 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 var fileOff = rela_plt.LinkedSection!.FileOffset;
                 if (fileOff == 0)
                     continue;
-                var symStr = loader.Symbols[fileOff][(int)sym];
+                var symStr = loader.BinaryImage.SymbolsByFileOffset[fileOff][(int)sym];
 
-                var addr = plt.Address! + (uint)(i + 1) * plt.EntrySize;
+                var addr = plt.VirtualAddress! + (uint)(i + 1) * plt.EntrySize;
                 var st = ElfLoader.GetSymbolType(symStr);
                 if (st.HasValue)
                 {

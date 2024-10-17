@@ -40,39 +40,31 @@ namespace Reko.ImageLoaders.Elf
 
         public ElfLoader64(
             IServiceProvider services,
-            Elf64_EHdr elfHeader,
-            byte osAbi,
-            EndianServices endianness,
+            ElfBinaryImage elfImage,
             byte[] rawImage)
-            : base(services, (ElfMachine) elfHeader.e_machine, elfHeader.e_flags, endianness, rawImage)
+            : base(services, elfImage, rawImage)
         {
-            this.Header64 = elfHeader;
-            this.osAbi = osAbi;
+            this.osAbi = elfImage.Header.osAbi;
             base.rawImage = rawImage;
         }
 
-        public Elf64_EHdr Header64 { get; }
-
         public override Address DefaultAddress => Address.Ptr64(0x8048000);
-
-        public override bool IsExecutableFile => Header64.e_type != ElfImageLoader.ET_REL;
-        public override bool IsRelocatableFile => Header64.e_type == ElfImageLoader.ET_REL;
 
         public override ulong AddressToFileOffset(ulong addr)
         {
-            foreach (var ph in Segments)
+            foreach (ElfSegment ph in BinaryImage.Segments)
             {
-                if (ph.p_vaddr <= addr && addr < ph.p_vaddr + ph.p_filesz)
-                    return (addr - ph.p_vaddr) + ph.p_offset;
+                if (ph.VirtualAddress.Offset <= addr && addr < ph.VirtualAddress.Offset + ph.FileSize)
+                    return (addr - ph.VirtualAddress.Offset) + ph.FileOffset;
             }
             return ~0ul;
         }
 
         public override Address ComputeBaseAddress(IPlatform platform)
         {
-            ulong uBaseAddr = Segments
-                .Where(ph => ph.p_vaddr > 0 && ph.p_filesz > 0)
-                .Min(ph => ph.p_vaddr);
+            ulong uBaseAddr = BinaryImage.Segments
+                .Where(ph => ph.VirtualAddress.Offset > 0 && ph.FileSize > 0)
+                .Min(ph => ph.VirtualAddress.Offset);
             return platform.MakeAddressFromLinear(uBaseAddr, true);
         }
 
@@ -104,7 +96,7 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_RISCV: 
                 archName = "risc-v";
                 options[ProcessorOption.WordSize] = 64;
-                var flags = (RiscVFlags) Header64.e_flags;
+                var flags = (RiscVFlags) BinaryImage.Header.Flags;
                 // According to the Risc-V ELF spec, a RV64G implementation is strongly
                 // encouraged to support the LP64D ABI
                 if ((flags & RiscVFlags.EF_RISCV_FLOAT_ABI_MASK) == 0)
@@ -171,15 +163,15 @@ namespace Reko.ImageLoaders.Elf
 
         public override void Dump(Address addrLoad, TextWriter writer)
         {
-            writer.WriteLine("Entry: {0:X}", Header64.e_entry);
+            writer.WriteLine("Entry: {0:X}", BinaryImage.Header.StartAddress);
             writer.WriteLine("Sections:");
-            foreach (var sh in Sections)
+            foreach (var sh in BinaryImage.Sections)
             {
                 writer.WriteLine("{0,-18} sh_type: {1,-12} sh_flags: {2,-4} sh_addr: {3:X8} sh_offset: {4:X8} sh_size: {5:X8} sh_link: {6,-18} sh_info: {7,-18} sh_addralign: {8:X8} sh_entsize: {9:X8}",
                     sh.Name,
                     sh.Type,
                     DumpShFlags(sh.Flags),
-                    sh.Address,
+                    sh.VirtualAddress,
                     sh.FileOffset,
                     sh.Size,
                     sh.LinkedSection != null ? sh.LinkedSection.Name : "",
@@ -189,34 +181,34 @@ namespace Reko.ImageLoaders.Elf
             }
             writer.WriteLine();
             writer.WriteLine("Program headers:");
-            foreach (var ph in Segments)
+            foreach (var ph in BinaryImage.Segments)
             {
                 writer.WriteLine("p_type:{0,-12} p_offset: {1:X8} p_vaddr:{2:X8} p_paddr:{3:X8} p_filesz:{4:X8} p_pmemsz:{5:X8} p_flags:{6} {7:X8} p_align:{8:X8}",
                     ph.p_type,
-                    ph.p_offset,
-                    ph.p_vaddr,
-                    ph.p_paddr,
-                    ph.p_filesz,
-                    ph.p_pmemsz,
-                    rwx(ph.p_flags & 7),
-                    ph.p_flags,
-                    ph.p_align);
+                    ph.FileOffset,
+                    ph.VirtualAddress,
+                    ph.PhysicalAddress,
+                    ph.FileSize,
+                    ph.MemorySize,
+                    rwx(ph.Flags & 7),
+                    ph.Flags,
+                    ph.Alignment);
             }
             writer.WriteLine("Base address: {0:X8}", addrLoad);
             writer.WriteLine();
             writer.WriteLine("Dependencies");
-            foreach (var dep in GetDependencyList(rawImage))
+            foreach (var dep in BinaryImage.Dependencies)
             {
                 writer.WriteLine("  {0}", dep);
             }
 
             writer.WriteLine();
             writer.WriteLine("Relocations");
-            foreach (var sh in Sections.Where(sh => sh.Type == SectionHeaderType.SHT_REL))
+            foreach (var sh in BinaryImage.Sections.Where(sh => sh.Type == SectionHeaderType.SHT_REL))
             {
                 DumpRel(sh);
             }
-            foreach (var sh in Sections.Where(sh => sh.Type == SectionHeaderType.SHT_RELA))
+            foreach (var sh in BinaryImage.Sections.Where(sh => sh.Type == SectionHeaderType.SHT_RELA))
             {
                 DumpRela(sh);
             }
@@ -260,11 +252,6 @@ namespace Reko.ImageLoaders.Elf
             }
         }
 
-        public override List<string> GetDependencyList(byte[] rawImage)
-        {
-            return Dependencies;
-        }
-
         public override IEnumerable<ElfDynamicEntry> GetDynamicEntries(EndianImageReader rdr)
         {
             for (; ; )
@@ -288,16 +275,16 @@ namespace Reko.ImageLoaders.Elf
             //$REVIEW: should really have a subclassed "Ps3ElfLoader"
             if (osAbi == ElfLoader.ELFOSABI_CELL_LV2)
             {
-                // The Header64.e_entry field actually points to a 
+                // The BinaryImage.Header.e_entry field actually points to a 
                 // "function descriptor" consisiting of two 32-bit 
                 // pointers.
-                var rdr = CreateReader(Header64.e_entry - addrBase.ToLinear());
+                var rdr = CreateReader((ulong) (BinaryImage.Header.StartAddress - addrBase));
                 if (rdr.TryReadUInt32(out uint uAddr))
                     addr = Address.Ptr32(uAddr);
             }
             else if (this.IsExecutableFile)
             {
-                addr = Address.Ptr64(Header64.e_entry);
+                addr = BinaryImage.Header.StartAddress;
             }
             return addr;
         }
@@ -305,8 +292,8 @@ namespace Reko.ImageLoaders.Elf
         internal ElfSection? GetSectionInfoByAddr64(ulong r_offset)
         {
             return
-                (from sh in this.Sections
-                 let addr = sh.Address != null ? sh.Address.ToLinear() : 0
+                (from sh in this.BinaryImage.Sections
+                 let addr = sh.VirtualAddress != null ? sh.VirtualAddress.ToLinear() : 0
                  where
                     r_offset != 0 &&
                     addr <= r_offset && r_offset < addr + sh.Size
@@ -316,7 +303,7 @@ namespace Reko.ImageLoaders.Elf
 
         protected override int GetSectionNameOffset(List<ElfSection> sections, uint idxString)
         {
-            return (int) (sections[Header64.e_shstrndx].FileOffset + idxString);
+            return (int) (sections[BinaryImage.Header.e_shstrndx].FileOffset + idxString);
         }
 
         public string GetSymbol64(ElfSection symSection, ulong symbolNo)
@@ -330,39 +317,39 @@ namespace Reko.ImageLoaders.Elf
         public override SegmentMap LoadImageBytes(IPlatform platform, byte[] rawImage, Address addrPreferred)
         {
             var segMap = AllocateMemoryAreas(
-                Segments
-                    .Where(p => IsLoadable(p.p_pmemsz, p.p_type))
-                    .OrderBy(p => p.p_vaddr)
+                BinaryImage.Segments
+                    .Where(p => IsLoadable(p.MemorySize, p.p_type))
+                    .OrderBy(p => p.VirtualAddress)
                     .Select(p => (
-                        platform.MakeAddressFromLinear(p.p_vaddr, false),
-                        (uint) p.p_pmemsz)));
-            foreach (var ph in Segments)
+                        p.VirtualAddress,
+                        (uint) p.MemorySize)));
+            foreach (var ph in BinaryImage.Segments)
             {
-                ElfImageLoader.trace.Inform("ph: addr {0:X8} filesize {0:X8} memsize {0:X8}", ph.p_vaddr, ph.p_filesz, ph.p_pmemsz);
-                if (!IsLoadable(ph.p_pmemsz, ph.p_type))
+                ElfImageLoader.trace.Inform("ph: addr {0:X8} filesize {0:X8} memsize {0:X8}", ph.VirtualAddress, ph.FileSize, ph.MemorySize);
+                if (!IsLoadable(ph.MemorySize, ph.p_type))
                     continue;
-                var vaddr = platform.MakeAddressFromLinear(ph.p_vaddr, false);
+                var vaddr = ph.VirtualAddress;
                 segMap.TryGetLowerBound(vaddr, out var mem);
-                if (ph.p_filesz > 0)
+                if (ph.FileSize > 0)
                     Array.Copy(
                         rawImage,
-                        (long) ph.p_offset, mem.Bytes,
-                        vaddr - mem.BaseAddress, (long) ph.p_filesz);
+                        (long) ph.FileOffset, mem.Bytes,
+                        vaddr - mem.BaseAddress, (long) ph.FileSize);
             }
             var segmentMap = new SegmentMap(addrPreferred);
-            if (Sections.Count > 0)
+            if (BinaryImage.Sections.Count > 0)
             {
-                foreach (var section in Sections)
+                foreach (var section in BinaryImage.Sections)
                 {
-                    if (section.Name == null || section.Address == null)
+                    if (section.Name == null || section.VirtualAddress == null)
                         continue;
-                    if (segMap.TryGetLowerBound(section.Address, out var mem) &&
-                        mem.IsValidAddress(section.Address))
+                    if (segMap.TryGetLowerBound(section.VirtualAddress, out var mem) &&
+                        mem.IsValidAddress(section.VirtualAddress))
                     {
                         AccessMode mode = AccessModeOf(section.Flags);
                         var seg = segmentMap.AddSegment(new ImageSegment(
                             section.Name,
-                            section.Address,
+                            section.VirtualAddress,
                             mem, mode)
                         {
                             Size = (uint) section.Size,
@@ -396,25 +383,25 @@ namespace Reko.ImageLoaders.Elf
             return segmentMap;
         }
 
-        public override int LoadSegments()
+        public override IReadOnlyList<ElfSegment> LoadSegments()
         {
-            var rdr = CreateReader(Header64.e_phoff);
-            for (int i = 0; i < Header64.e_phnum; ++i)
+            var rdr = CreateReader(BinaryImage.Header.e_phoff);
+            for (int i = 0; i < BinaryImage.Header.e_phnum; ++i)
             {
                 var sSeg = Elf64_PHdr.Load(rdr);
-                Segments.Add(new ElfSegment
+                BinaryImage.AddSegment(new ElfSegment
                 {
                     p_type = sSeg.p_type,
-                    p_offset = sSeg.p_offset,
-                    p_vaddr = sSeg.p_vaddr,
-                    p_paddr = sSeg.p_paddr,
-                    p_filesz = sSeg.p_filesz,
-                    p_pmemsz = sSeg.p_pmemsz,
-                    p_flags = sSeg.p_flags,
-                    p_align = sSeg.p_align,
+                    FileOffset = sSeg.p_offset,
+                    VirtualAddress = platform!.MakeAddressFromLinear(sSeg.p_vaddr, false),
+                    PhysicalAddress = platform!.MakeAddressFromLinear(sSeg.p_paddr, false),
+                    FileSize = sSeg.p_filesz,
+                    MemorySize = sSeg.p_pmemsz,
+                    Flags = sSeg.p_flags,
+                    Alignment = sSeg.p_align,
                 });
             }
-            return Segments.Count;
+            return BinaryImage.Segments;
         }
 
         public override ElfRelocation LoadRelEntry(EndianImageReader rdr)
@@ -447,16 +434,16 @@ namespace Reko.ImageLoaders.Elf
             var links = new List<uint>();
             var infos = new List<uint>();
             var sections = new List<ElfSection>();
-            var rdr = CreateReader(Header64.e_shoff);
-            for (uint i = 0; i < Header64.e_shnum; ++i)
+            var rdr = CreateReader(BinaryImage.Header.e_shoff);
+            for (int i = 0; i < BinaryImage.Header.e_shnum; ++i)
             {
                 var shdr = Elf64_SHdr.Load(rdr);
                 var section = new ElfSection
                 {
-                    Number = i,
+                    Index = i,
                     Type = shdr.sh_type,
                     Flags = shdr.sh_flags,
-                    Address = shdr.sh_addr != 0
+                    VirtualAddress = shdr.sh_addr != 0
                         ? platform!.MakeAddressFromLinear(shdr.sh_addr, false)
                         : null!,
                     FileOffset = shdr.sh_offset,

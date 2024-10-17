@@ -34,8 +34,8 @@ public interface IBinaryImage
     IReadOnlyList<IBinarySegment> Segments { get; }
     IBinaryDebugInfo? DebugInfo { get; }
 
-    IReadOnlyList<ImageSymbol> Symbols { get; }
-    IReadOnlyList<ImageSymbol> DynamicSymbols { get; }
+    IReadOnlyList<IBinarySymbol> Symbols { get; }
+    IReadOnlyDictionary<int, IBinarySymbol> DynamicSymbols { get; }
 
     IReadOnlyList<IRelocation> Relocations { get; }
     IReadOnlyList<IRelocation> DynamicRelocations { get; }

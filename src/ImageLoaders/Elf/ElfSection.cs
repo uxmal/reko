@@ -19,11 +19,13 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Loading;
 using Reko.Core.Memory;
+using System;
 
 namespace Reko.ImageLoaders.Elf
 {
-    public class ElfSection
+    public class ElfSection : IBinarySection
     {
         public const ushort SHN_UNDEF     = 0x0000;
         public const ushort SHN_LORESERVE = 0xFF00;
@@ -33,23 +35,32 @@ namespace Reko.ImageLoaders.Elf
         public const ushort SHN_COMMON    = 0xFFF2;
         public const ushort SHN_HIRESERVE = 0xFFFF;
 
-        public string Name;
-        public uint Number;
         public SectionHeaderType Type;
-        public ulong Flags;
-        public Address Address;
-        public ulong FileOffset;
-        public ulong Size;
         public ElfSection? LinkedSection;
         public ElfSection? RelocatedSection;
-        public ulong Alignment;
         public ulong EntrySize;
 
         public ElfSection()
         {
             this.Name = null!;
-            this.Address = null!;
+            this.VirtualAddress = null!;
         }
+
+        public int Index { get; set; }
+
+        public string Name { get; set; }
+
+        public ulong Size { get; set; }
+
+        public Address VirtualAddress { get; set; }
+
+        public ulong FileOffset { get; set; }
+
+        public ulong Alignment { get; set; }
+
+        public ulong Flags { get; set; }
+
+        public AccessMode AccessMode => throw new NotImplementedException();
 
         public uint EntryCount()
         {
@@ -61,7 +72,7 @@ namespace Reko.ImageLoaders.Elf
 
         public override string ToString()
         {
-            return $"[{Address} - 0x{Size:X}] - {Name ?? "(no name)"}";
+            return $"[{VirtualAddress} - 0x{Size:X}] - {Name ?? "(no name)"}";
         }
     }
 

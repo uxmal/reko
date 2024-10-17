@@ -24,6 +24,7 @@ using Reko.Core;
 using Reko.Core.Diagnostics;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -43,17 +44,16 @@ namespace Reko.ImageLoaders.Elf
         private const byte ELFCLASS64 = 2;              // 64-bit object file
         public const int HEADER_OFFSET = 0x0010;
 
+        public const int ET_NONE = 0x01;
         public const int ET_REL = 0x01;
+        public const int ET_EXEC = 0x02;
+        public const int ET_DYN = 0x03;
+        public const int ET_CORE = 0x04;
 
         #endregion
 
         internal static readonly TraceSwitch trace = new TraceSwitch(nameof(ElfImageLoader), "Traces the progress of the ELF image loader") { Level = TraceLevel.Warning };
 
-        private byte fileClass;
-        private byte endianness;
-        private byte fileVersion;
-        private byte osAbi;
-        private byte abiVersion;
         private Address addrPreferred;
 
         public ElfImageLoader(IServiceProvider services, ImageLocation imageLocation, byte[] rawBytes)
@@ -71,18 +71,23 @@ namespace Reko.ImageLoaders.Elf
         public override Program LoadProgram(Address? addrLoad)
         {
             var rdr = new BeImageReader(this.RawImage, 0);
-            LoadElfIdentification(rdr);
-            var innerLoader = CreateLoader();
+            var elfHeader = LoadElfIdentification(rdr);
+            var binaryImage = new ElfBinaryImage(
+                elfHeader,
+                elfHeader.endianness == ELFDATA2MSB
+                    ? EndianServices.Big
+                    : EndianServices.Little);
+            var innerLoader = CreateLoader(binaryImage);
             var arch = innerLoader.CreateArchitecture(innerLoader.Machine, innerLoader.Endianness);
-            var platform = innerLoader.LoadPlatform(osAbi, arch);
+            var platform = innerLoader.LoadPlatform(elfHeader.osAbi, arch);
             
-            int cHeaders = innerLoader.LoadSegments();
-            innerLoader.Sections.AddRange(innerLoader.LoadSectionHeaders());
+            var headers = innerLoader.LoadSegments();
+            binaryImage.AddSections(innerLoader.LoadSectionHeaders());
             innerLoader.LoadSymbolsFromSections();
             //innerLoader.Dump();           // This spews a lot into the unit test output.
             Program program;
             Dictionary<ElfSymbol, Address> plt;
-            if (cHeaders > 0)
+            if (headers.Count > 0)
             {
                 program = innerLoader.LoadImage(platform, RawImage);
                 plt = new Dictionary<ElfSymbol, Address>();
@@ -105,25 +110,27 @@ namespace Reko.ImageLoaders.Elf
             return program;
         }
 
-        public void LoadElfIdentification()
+        public ElfHeader LoadElfIdentification()
         {
             var rdr = new BeImageReader(base.RawImage, 0);
-            LoadElfIdentification(rdr);
+            return LoadElfIdentification(rdr);
         }
 
-        public void LoadElfIdentification(EndianImageReader rdr)
+        public ElfHeader LoadElfIdentification(EndianImageReader rdr)
         {
             var elfMagic = rdr.ReadBeInt32();
             if (elfMagic != ELF_MAGIC)
                 throw new BadImageFormatException("File is not in ELF format.");
-            this.fileClass = rdr.ReadByte();
-            this.endianness = rdr.ReadByte();
-            this.fileVersion = rdr.ReadByte();
-            this.osAbi = rdr.ReadByte();
-            this.abiVersion = rdr.ReadByte();
+            var elfHeader = new ElfHeader();
+            elfHeader.fileClass = rdr.ReadByte();
+            elfHeader.endianness = rdr.ReadByte();
+            elfHeader.fileVersion = rdr.ReadByte();
+            elfHeader.osAbi = rdr.ReadByte();
+            elfHeader.abiVersion = rdr.ReadByte();
+            return elfHeader;
         }
 
-        public EndianImageReader CreateReader(ulong fileOffset)
+        public EndianImageReader CreateReader(uint endianness, ulong fileOffset)
         {
             switch (endianness)
             {
@@ -133,7 +140,7 @@ namespace Reko.ImageLoaders.Elf
             }
         }
 
-        public EndianImageReader CreateReader(uint fileOffset)
+        public EndianImageReader CreateReader(uint endianness, uint fileOffset)
         {
             switch (endianness)
             {
@@ -143,7 +150,7 @@ namespace Reko.ImageLoaders.Elf
             }
         }
 
-        public ImageWriter CreateWriter(uint fileOffset)
+        public ImageWriter CreateWriter(uint endianness, uint fileOffset)
         {
             switch (endianness)
             {
@@ -153,13 +160,13 @@ namespace Reko.ImageLoaders.Elf
             }
         }
 
-        public ElfLoader CreateLoader()
+        public ElfLoader CreateLoader(ElfBinaryImage elf)
         {
-            var rdr = CreateReader(HEADER_OFFSET);
-            var endianness = this.endianness == ElfLoader.ELFDATA2LSB
+            var rdr = CreateReader(elf.Header.endianness, HEADER_OFFSET);
+            var endianness = elf.Header.endianness == ElfLoader.ELFDATA2LSB
                 ? EndianServices.Little
                 : EndianServices.Big;
-            if (fileClass == ELFCLASS64)
+            if (elf.Header.fileClass == ELFCLASS64)
             {
                 var header64 = Elf64_EHdr.Load(rdr);
                 trace.Verbose("== ELF header =================");
@@ -173,7 +180,17 @@ namespace Reko.ImageLoaders.Elf
                 trace.Verbose("  e_shentsize: {0}", header64.e_shentsize);
                 trace.Verbose("  e_shnum: {0}", header64.e_shnum);
                 trace.Verbose("  e_shstrndx: {0}", header64.e_shstrndx);
-                return new ElfLoader64(this.Services, header64, osAbi, endianness, RawImage);
+                elf.Header.BinaryFileType = FileTypeOf(header64.e_type);
+                elf.Header.StartAddress = Address.Ptr64(header64.e_entry);
+                elf.Header.Machine = (ElfMachine) header64.e_machine;
+                elf.Header.e_phoff = header64.e_phoff;
+                elf.Header.e_shoff = header64.e_shoff;
+                elf.Header.Flags = header64.e_flags;
+                elf.Header.e_phnum = header64.e_phnum;
+                elf.Header.e_shnum = header64.e_shnum;
+                elf.Header.e_shstrndx = header64.e_shstrndx;
+                elf.Header.PointerType = PrimitiveType.Ptr64;
+                return new ElfLoader64(this.Services, elf, RawImage);
             }
             else
             {
@@ -189,8 +206,29 @@ namespace Reko.ImageLoaders.Elf
                 trace.Verbose("  e_shentsize: {0}", header32.e_shentsize);
                 trace.Verbose("  e_shnum: {0}", header32.e_shnum);
                 trace.Verbose("  e_shstrndx: {0}", header32.e_shstrndx);
-                return new ElfLoader32(this.Services, header32, osAbi, endianness, RawImage);
+                elf.Header.BinaryFileType = FileTypeOf(header32.e_type);
+                elf.Header.StartAddress = Address.Ptr32(header32.e_entry);
+                elf.Header.Machine = (ElfMachine) header32.e_machine;
+                elf.Header.e_phoff = header32.e_phoff;
+                elf.Header.e_shoff = header32.e_shoff;
+                elf.Header.Flags = header32.e_flags;
+                elf.Header.e_phnum = header32.e_phnum;
+                elf.Header.e_shnum = header32.e_shnum;
+                elf.Header.e_shstrndx = header32.e_shstrndx;
+                elf.Header.PointerType = PrimitiveType.Ptr32;
+                return new ElfLoader32(this.Services, elf, RawImage);
             }
+        }
+
+        private BinaryFileType FileTypeOf(ushort e_type)
+        {
+            return e_type switch
+            {
+                ET_REL => BinaryFileType.ObjectFile,
+                ET_EXEC => BinaryFileType.Executable,
+                ET_DYN => BinaryFileType.SharedLibrary,
+                _ => BinaryFileType.Unknown,
+            };
         }
     }
 }

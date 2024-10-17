@@ -21,6 +21,7 @@
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
+using System.Xml.Linq;
 
 namespace Reko.Core.Loading
 {
@@ -162,8 +163,14 @@ namespace Reko.Core.Loading
         /// <summary>
         /// The name of the symbol if known, null or blank if unknown.
         /// </summary>
-        public string? Name { get; set; }
-
+        public string? Name { get => n; set
+            {
+                n = value;
+                if (n == "_mm_free")
+                    _ = this; //$DEBUG
+            }
+        }
+        private string? n;
         /// <summary>
         /// If set, Reko should just make note of the symbol and not 
         /// attempt to decompile it.

@@ -392,57 +392,61 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         public void EIL_LoadStringTable()
         {
             var eil = new ElfImageLoader(sc, ImageLocation.FromUri("file:foo"), rawImg);
-            eil.LoadElfIdentification();
-            var el = (ElfLoader32)eil.CreateLoader();
-            el.Sections.AddRange(el.LoadSectionHeaders());
+            var eh = eil.LoadElfIdentification();
+            var binaryImage = new ElfBinaryImage(eh, EndianServices.Little);
+            var el = (ElfLoader32)eil.CreateLoader(binaryImage);
+            el.BinaryImage.AddSections(el.LoadSectionHeaders());
         }
 
         [Test]
         public void EIL_LoadSections()
         {
             var eil = new ElfImageLoader(sc, ImageLocation.FromUri("file:foo"), rawImg);
-            eil.LoadElfIdentification();
-            var el = (ElfLoader32)eil.CreateLoader();
-            el.Sections.AddRange(el.LoadSectionHeaders());
+            var eh = eil.LoadElfIdentification();
+            var binaryImage = new ElfBinaryImage(eh, EndianServices.Little);
+            var el = (ElfLoader32) eil.CreateLoader(binaryImage);
+            var bin = el.BinaryImage;
+            bin.AddSections(el.LoadSectionHeaders());
 
-            Assert.AreEqual("", el.Sections[0].Name);
-            Assert.AreEqual(".interp", el.Sections[1].Name);
-            Assert.AreEqual(".note.ABI-tag", el.Sections[2].Name);
-            Assert.AreEqual(".hash", el.Sections[3].Name);
-            Assert.AreEqual(".dynsym", el.Sections[4].Name);
-            Assert.AreEqual(".dynstr", el.Sections[5].Name);
-            Assert.AreEqual(".gnu.version", el.Sections[6].Name);
-            Assert.AreEqual(".gnu.version_r", el.Sections[7].Name);
-            Assert.AreEqual(".rel.dyn", el.Sections[8].Name);
-            Assert.AreEqual(".rel.plt", el.Sections[9].Name);
-            Assert.AreEqual(".init", el.Sections[10].Name);
-            Assert.AreEqual(".plt", el.Sections[11].Name);
-            Assert.AreEqual(".text", el.Sections[12].Name);
-            Assert.AreEqual(".fini", el.Sections[13].Name);
-            Assert.AreEqual(".rodata", el.Sections[14].Name);
-            Assert.AreEqual(".eh_frame", el.Sections[15].Name);
-            Assert.AreEqual(".ctors", el.Sections[16].Name);
-            Assert.AreEqual(".dtors", el.Sections[17].Name);
-            Assert.AreEqual(".jcr", el.Sections[18].Name);
-            Assert.AreEqual(".dynamic", el.Sections[19].Name);
-            Assert.AreEqual(".got", el.Sections[20].Name);
-            Assert.AreEqual(".got.plt", el.Sections[21].Name);
-            Assert.AreEqual(".data", el.Sections[22].Name);
-            Assert.AreEqual(".bss", el.Sections[23].Name);
-            Assert.AreEqual(".comment", el.Sections[24].Name);
-            Assert.AreEqual(".shstrtab", el.Sections[25].Name);
-            Assert.AreEqual(".symtab", el.Sections[26].Name);
-            Assert.AreEqual(".strtab", el.Sections[27].Name);
+            Assert.AreEqual("", bin.Sections[0].Name);
+            Assert.AreEqual(".interp", bin.Sections[1].Name);
+            Assert.AreEqual(".note.ABI-tag", bin.Sections[2].Name);
+            Assert.AreEqual(".hash", bin.Sections[3].Name);
+            Assert.AreEqual(".dynsym", bin.Sections[4].Name);
+            Assert.AreEqual(".dynstr", bin.Sections[5].Name);
+            Assert.AreEqual(".gnu.version", bin.Sections[6].Name);
+            Assert.AreEqual(".gnu.version_r", bin.Sections[7].Name);
+            Assert.AreEqual(".rel.dyn", bin.Sections[8].Name);
+            Assert.AreEqual(".rel.plt", bin.Sections[9].Name);
+            Assert.AreEqual(".init", bin.Sections[10].Name);
+            Assert.AreEqual(".plt", bin.Sections[11].Name);
+            Assert.AreEqual(".text", bin.Sections[12].Name);
+            Assert.AreEqual(".fini", bin.Sections[13].Name);
+            Assert.AreEqual(".rodata", bin.Sections[14].Name);
+            Assert.AreEqual(".eh_frame", bin.Sections[15].Name);
+            Assert.AreEqual(".ctors", bin.Sections[16].Name);
+            Assert.AreEqual(".dtors", bin.Sections[17].Name);
+            Assert.AreEqual(".jcr", bin.Sections[18].Name);
+            Assert.AreEqual(".dynamic", bin.Sections[19].Name);
+            Assert.AreEqual(".got", bin.Sections[20].Name);
+            Assert.AreEqual(".got.plt", bin.Sections[21].Name);
+            Assert.AreEqual(".data", bin.Sections[22].Name);
+            Assert.AreEqual(".bss", bin.Sections[23].Name);
+            Assert.AreEqual(".comment", bin.Sections[24].Name);
+            Assert.AreEqual(".shstrtab", bin.Sections[25].Name);
+            Assert.AreEqual(".symtab", bin.Sections[26].Name);
+            Assert.AreEqual(".strtab", bin.Sections[27].Name);
         }
 
         [Test]
         public void EIL_LoadProgramHeaders()
         {
             var eil = new ElfImageLoader(sc, ImageLocation.FromUri("file:foo"), rawImg);
-            eil.LoadElfIdentification();
-            var el = (ElfLoader32)eil.CreateLoader();
+            var eh = eil.LoadElfIdentification();
+            var binaryImage = new ElfBinaryImage(eh, EndianServices.Little);
+            var el = (ElfLoader32)eil.CreateLoader(binaryImage);
             el.LoadSegments();
-            el.Sections.AddRange(el.LoadSectionHeaders());
+            el.BinaryImage.AddSections(el.LoadSectionHeaders());
             //el.Dump(Console.Out);
         }
 
@@ -459,8 +463,9 @@ namespace Reko.UnitTests.ImageLoaders.Elf
                 .Verifiable();
             
             var eil = new ElfImageLoader(sc, ImageLocation.FromUri("file:foo"), rawImg);
-            eil.LoadElfIdentification();
-            var el = eil.CreateLoader();
+            var eh = eil.LoadElfIdentification();
+            var binaryImage = new ElfBinaryImage(eh, EndianServices.Little);
+            var el = eil.CreateLoader(binaryImage);
             el.LoadPlatform(0x66, arch.Object);        // ELFOSABI_CELL_LV2;
 
             opEl.VerifyAll();
