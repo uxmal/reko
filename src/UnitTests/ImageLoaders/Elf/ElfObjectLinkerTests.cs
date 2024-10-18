@@ -54,11 +54,8 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             var bin = new ElfBinaryImage(ehdr, big_endian
                 ? EndianServices.Big
                 : EndianServices.Little);
-            var rdr = big_endian
-                ? new BeImageReader(rawBytes, ElfImageLoader.HEADER_OFFSET)
-                : (EndianImageReader) new LeImageReader(rawBytes, ElfImageLoader.HEADER_OFFSET);
-            var eh = Elf32_EHdr.Load(rdr);
             var el = (ElfLoader32) eil.CreateLoader(bin);
+            el.LoadFileHeader();
             el.BinaryImage.AddSections(el.LoadSectionHeaders());
             el.LoadSymbolsFromSections();
             this.linker = new ElfObjectLinker32(el, arch.Object, rawBytes);

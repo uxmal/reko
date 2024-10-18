@@ -383,7 +383,6 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         public void EIL_Load()
         {
             var el = new ElfImageLoader(sc, ImageLocation.FromUri("file:foo"), rawImg);
-            el.LoadElfIdentification();
             var lr = el.LoadProgram(Address.Ptr32(0));
             Assert.AreSame(arch.Object, lr.Architecture);
         }
@@ -395,6 +394,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             var eh = eil.LoadElfIdentification();
             var binaryImage = new ElfBinaryImage(eh, EndianServices.Little);
             var el = (ElfLoader32)eil.CreateLoader(binaryImage);
+            el.LoadFileHeader();
             el.BinaryImage.AddSections(el.LoadSectionHeaders());
         }
 
@@ -405,6 +405,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             var eh = eil.LoadElfIdentification();
             var binaryImage = new ElfBinaryImage(eh, EndianServices.Little);
             var el = (ElfLoader32) eil.CreateLoader(binaryImage);
+            el.LoadFileHeader();
             var bin = el.BinaryImage;
             bin.AddSections(el.LoadSectionHeaders());
 
@@ -445,6 +446,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             var eh = eil.LoadElfIdentification();
             var binaryImage = new ElfBinaryImage(eh, EndianServices.Little);
             var el = (ElfLoader32)eil.CreateLoader(binaryImage);
+            el.LoadFileHeader();
             el.LoadSegments();
             el.BinaryImage.AddSections(el.LoadSectionHeaders());
             //el.Dump(Console.Out);
@@ -466,6 +468,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             var eh = eil.LoadElfIdentification();
             var binaryImage = new ElfBinaryImage(eh, EndianServices.Little);
             var el = eil.CreateLoader(binaryImage);
+            el.LoadFileHeader();
             el.LoadPlatform(0x66, arch.Object);        // ELFOSABI_CELL_LV2;
 
             opEl.VerifyAll();

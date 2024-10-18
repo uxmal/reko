@@ -58,6 +58,14 @@ namespace Reko.ImageLoaders.Elf
             this.B = addrBase.ToLinear();
         }
 
+        /// <summary>
+        /// Update the properties of the relocation context with values
+        /// from the <paramref name="reloc"/>, the <paramref name="sym"/> or 
+        /// other architecture-dependent values.
+        /// </summary>
+        /// <param name="reloc">The current relocation.</param>
+        /// <param name="sym">The symbol associated with the relocation.</param>
+        /// <returns></returns>
         public bool Update(ElfRelocation reloc, ElfSymbol sym)
         {
             if (this.isRelocatableFile)

@@ -15,22 +15,27 @@ public interface IRelocation
     /// Offset at which the relocation is to take place.
     /// </summary>
     /// <remarks>
-    /// If the <see cref="Section"/> property is not null, 
-    /// the offset is relative to the start of that section.
-    /// Otherwise, the offset is relative to the base of the executable.
+    /// In relocatable files, this offset may be relative
+    /// to a section start. Otherwise, the offset is
+    /// relative to the base of the executable.
     /// </remarks>
     ulong Offset { get; }
 
     /// <summary>
     /// Optional added to apply when relocating.
     /// </summary>
-    long Addend { get; }
+    long? Addend { get; }
 
     /// <summary>
-    /// Optional section. If specified, the <see cref="Offset"/> is
-    /// relative to the base address of the section.
+    /// Optional symbol whose value may or may not
+    /// be used when computing the relocation.
     /// </summary>
-    IBinarySection? Section { get; }
-    uint Type { get; }
+    IBinarySymbol? Symbol { get; }
+
+    /// <summary>
+    /// File format-specific information about this
+    /// relocation.
+    /// </summary>
+    ulong Info { get; }
 }
 

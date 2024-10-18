@@ -55,12 +55,6 @@ namespace Reko.Core.Loading
         public ImageLocation ImageLocation { get; }
 
         /// <summary>
-        /// Loads the header of the executable, so that its contents can be summarized. 
-        /// </summary>
-        /// <returns></returns>
-        public ImageHeader LoadHeader(string argument) { throw new NotImplementedException();  }
-
-        /// <summary>
 		/// Loads the image into memory.
 		/// </summary>
 		/// <param name="addrLoad">Optional base address of the  image. If not specified,
@@ -68,5 +62,11 @@ namespace Reko.Core.Loading
         /// archives -- the parameter is ignored.</param>
 		/// <returns>An object implementing the <see cref="ILoadedImage>" /> interface.</returns>
         public abstract ILoadedImage Load(Address? addrLoad);
+
+
+        public virtual IBinaryFormatter CreateBinaryFormatter(IBinaryImage image)
+        {
+            return new NullBinaryFormatter();
+        }
     }
 }

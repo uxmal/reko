@@ -37,10 +37,8 @@ public interface IBinaryImage
     IReadOnlyList<IBinarySymbol> Symbols { get; }
     IReadOnlyDictionary<int, IBinarySymbol> DynamicSymbols { get; }
 
-    IReadOnlyList<IRelocation> Relocations { get; }
+    IReadOnlyDictionary<int, IReadOnlyList<IRelocation>> Relocations { get; }
     IReadOnlyList<IRelocation> DynamicRelocations { get; }
-
-    IBinaryFormatter CreateFormatter(string? outputFormat = null);
 
     Program Load();
 }

@@ -26,6 +26,7 @@ using Reko.Core.Loading;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Services;
+using Reko.Core.Types;
 using Reko.ImageLoaders.Elf.Relocators;
 using System;
 using System.Collections.Generic;
@@ -382,7 +383,7 @@ namespace Reko.ImageLoaders.Elf
                             Size = (uint) section.Size,
                             IsBss = section.Type == SectionHeaderType.SHT_NOBITS,
                         });
-                        seg.Designer = CreateRenderer(section, Machine);
+                        seg.Designer = CreateRenderer(section, BinaryImage.Header.Machine);
                     }
                     else
                     {
@@ -435,27 +436,92 @@ namespace Reko.ImageLoaders.Elf
         }
 
 
-        public override ElfRelocation LoadRelEntry(EndianImageReader rdr)
+        public override ElfRelocation LoadRelEntry(EndianImageReader rdr, IDictionary<int, ElfSymbol> symbols)
         {
             var rela = Elf32_Rel.Read(rdr);
+            int symbolIndex = (int) (rela.r_info >> 8);
             return new ElfRelocation
             {
                 Offset = rela.r_offset,
                 Info = rela.r_info,
-                SymbolIndex = (int) (rela.r_info >> 8)
+                Type = (byte) rela.r_info,
+                SymbolIndex = symbolIndex,
+                Symbol = symbols[symbolIndex]
             };
         }
 
-        public override ElfRelocation LoadRelaEntry(EndianImageReader rdr)
+        [Obsolete]
+        public override ElfRelocation LoadRelEntry(EndianImageReader rdr)
         {
-            var rela = Elf32_Rela.Read(rdr);
+            var rela = Elf32_Rel.Read(rdr);
+            int symbolIndex = (int) (rela.r_info >> 8);
             return new ElfRelocation
             {
                 Offset = rela.r_offset,
                 Info = rela.r_info,
-                Addend = rela.r_addend,
-                SymbolIndex = (int) (rela.r_info >> 8)
+                Type = (byte) rela.r_info,
+                SymbolIndex = symbolIndex,
             };
+        }
+
+        public override ElfRelocation LoadRelaEntry(EndianImageReader rdr, IDictionary<int, ElfSymbol> symbols)
+        {
+            var rela = Elf32_Rela.Read(rdr);
+            int symbolIndex = (int) (rela.r_info >> 8);
+            return new ElfRelocation
+            {
+                Offset = rela.r_offset,
+                Info = rela.r_info,
+                Type = (byte) rela.r_info,
+                Addend = rela.r_addend,
+                SymbolIndex = symbolIndex,
+                Symbol = symbols[symbolIndex]
+            };
+        }
+
+        [Obsolete]
+        public override ElfRelocation LoadRelaEntry(EndianImageReader rdr)
+        {
+            var rela = Elf32_Rela.Read(rdr);
+            int symbolIndex = (int) (rela.r_info >> 8);
+            return new ElfRelocation
+            {
+                Offset = rela.r_offset,
+                Info = rela.r_info,
+                Type = (byte) rela.r_info,
+                Addend = rela.r_addend,
+                SymbolIndex = symbolIndex,
+            };
+        }
+
+        public override void LoadFileHeader()
+        {
+            var elf = BinaryImage;
+            var rdr = CreateReader(HEADER_OFFSET);
+
+            var header32 = Elf32_EHdr.Load(rdr);
+            var trace = ElfImageLoader.trace;
+            trace.Verbose("== ELF header =================");
+            trace.Verbose("  e_entry: {0:X8}", header32.e_entry);
+            trace.Verbose("  e_phoff: {0:X8}", header32.e_phoff);
+            trace.Verbose("  e_shoff: {0:X8}", header32.e_shoff);
+            trace.Verbose("  e_flags: {0:X8}", header32.e_flags);
+            trace.Verbose("  e_ehsize: {0}", header32.e_ehsize);
+            trace.Verbose("  e_phentsize: {0}", header32.e_phentsize);
+            trace.Verbose("  e_phnum: {0}", header32.e_phnum);
+            trace.Verbose("  e_shentsize: {0}", header32.e_shentsize);
+            trace.Verbose("  e_shnum: {0}", header32.e_shnum);
+            trace.Verbose("  e_shstrndx: {0}", header32.e_shstrndx);
+            elf.Header.BinaryFileType = FileTypeOf(header32.e_type);
+            elf.Header.StartAddress = Address.Ptr32(header32.e_entry);
+            elf.Header.Machine = (ElfMachine) header32.e_machine;
+            elf.Header.e_phoff = header32.e_phoff;
+            elf.Header.e_shoff = header32.e_shoff;
+            elf.Header.Flags = header32.e_flags;
+            elf.Header.e_phnum = header32.e_phnum;
+            elf.Header.e_shnum = header32.e_shnum;
+            elf.Header.e_shstrndx = header32.e_shstrndx;
+            elf.Header.PointerType = PrimitiveType.Ptr32;
         }
 
         public override List<ElfSection> LoadSectionHeaders()
@@ -545,7 +611,7 @@ namespace Reko.ImageLoaders.Elf
             var rdr = CreateReader(offsetSymtab + entrySize * symbolIndex);
             if (Elf32_Sym.TryLoad(rdr, out var sym))
             {
-                var name = RemoveModuleSuffix(ReadAsciiString(offsetStringTable + sym.st_name));
+                var name = ReadAsciiString(offsetStringTable + sym.st_name);
                 return new ElfSymbol(name)
                 {
                     Type = (ElfSymbolType) (sym.st_info & 0xF),
@@ -572,7 +638,7 @@ namespace Reko.ImageLoaders.Elf
                     ElfImageLoader.trace.Warn("Unable to load symbol entry {0} from {1}", i, symSection.Name);
                     continue;
                 }
-                var symName = RemoveModuleSuffix(ReadAsciiString(stringtableSection.FileOffset + sym.st_name));
+                var symName = ReadAsciiString(stringtableSection.FileOffset + sym.st_name);
                 ElfImageLoader.trace.Verbose("  {0,3} {1,-25} {2,-12} {3,6} {4} {5,-15} {6:X8} {7,9}",
                     i,
                     string.IsNullOrWhiteSpace(symName) ? "<empty>" : symName,
@@ -582,7 +648,7 @@ namespace Reko.ImageLoaders.Elf
                     GetSectionName(sym.st_shndx),
                     sym.st_value,
                     sym.st_size);
-                var name = RemoveModuleSuffix(ReadAsciiString(stringtableSection.FileOffset + sym.st_name));
+                var name = ReadAsciiString(stringtableSection.FileOffset + sym.st_name);
                 symbols.Add((int) i, new ElfSymbol(name)
                 {
                     Type = (ElfSymbolType) (sym.st_info & 0xF),

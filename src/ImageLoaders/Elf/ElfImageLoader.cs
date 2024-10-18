@@ -21,13 +21,12 @@
 // http://hitmen.c02.at/files/yapspd/psp_doc/chap26.html - PSP ELF
 
 using Reko.Core;
-using Reko.Core.Diagnostics;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
-using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 
 namespace Reko.ImageLoaders.Elf
 {
@@ -42,14 +41,6 @@ namespace Reko.ImageLoaders.Elf
         private const byte ELFDATA2MSB = 2;
         private const byte ELFCLASS32 = 1;              // 32-bit object file
         private const byte ELFCLASS64 = 2;              // 64-bit object file
-        public const int HEADER_OFFSET = 0x0010;
-
-        public const int ET_NONE = 0x01;
-        public const int ET_REL = 0x01;
-        public const int ET_EXEC = 0x02;
-        public const int ET_DYN = 0x03;
-        public const int ET_CORE = 0x04;
-
         #endregion
 
         internal static readonly TraceSwitch trace = new TraceSwitch(nameof(ElfImageLoader), "Traces the progress of the ELF image loader") { Level = TraceLevel.Warning };
@@ -78,12 +69,27 @@ namespace Reko.ImageLoaders.Elf
                     ? EndianServices.Big
                     : EndianServices.Little);
             var innerLoader = CreateLoader(binaryImage);
-            var arch = innerLoader.CreateArchitecture(innerLoader.Machine, innerLoader.Endianness);
+            innerLoader.LoadFileHeader();
+
+            var arch = innerLoader.CreateArchitecture(binaryImage.Header.Machine, innerLoader.Endianness);
             var platform = innerLoader.LoadPlatform(elfHeader.osAbi, arch);
-            
             var headers = innerLoader.LoadSegments();
             binaryImage.AddSections(innerLoader.LoadSectionHeaders());
             innerLoader.LoadSymbolsFromSections();
+            innerLoader.LoadRelocations();
+            var dynRelocs = innerLoader.LoadDynamicRelocations();
+            binaryImage.AddDynamicRelocations(dynRelocs);
+
+            // At this point the image metadata has been loaded from disk.
+            // The .text, .data and .bss - like segments are not yet 
+            // loaded. That is what LoadProgram should do.
+
+            var fmt = this.CreateBinaryFormatter(binaryImage);
+            var sw = new StringWriter();
+            fmt.FormatDynamicRelocations(sw);
+            Debug.WriteLine(sw.ToString());
+
+
             //innerLoader.Dump();           // This spews a lot into the unit test output.
             Program program;
             Dictionary<ElfSymbol, Address> plt;
@@ -106,8 +112,13 @@ namespace Reko.ImageLoaders.Elf
                 program = linker.LinkObject(platform, addrLoad, RawImage);
                 plt = linker.PltEntries;
             }
-            innerLoader.Relocate(innerLoader.Machine, program, addrLoad!, plt);
+            innerLoader.Relocate(binaryImage.Header.Machine, program, addrLoad!, plt);
             return program;
+        }
+
+        public override IBinaryFormatter CreateBinaryFormatter(IBinaryImage image)
+        {
+            return base.CreateBinaryFormatter(image);
         }
 
         public ElfHeader LoadElfIdentification()
@@ -162,73 +173,15 @@ namespace Reko.ImageLoaders.Elf
 
         public ElfLoader CreateLoader(ElfBinaryImage elf)
         {
-            var rdr = CreateReader(elf.Header.endianness, HEADER_OFFSET);
-            var endianness = elf.Header.endianness == ElfLoader.ELFDATA2LSB
-                ? EndianServices.Little
-                : EndianServices.Big;
             if (elf.Header.fileClass == ELFCLASS64)
             {
-                var header64 = Elf64_EHdr.Load(rdr);
-                trace.Verbose("== ELF header =================");
-                trace.Verbose("  e_entry: {0:X16}", header64.e_entry);
-                trace.Verbose("  e_phoff: {0:X16}", header64.e_phoff);
-                trace.Verbose("  e_shoff: {0:X16}", header64.e_shoff);
-                trace.Verbose("  e_flags: {0:X8}", header64.e_flags);
-                trace.Verbose("  e_ehsize: {0}", header64.e_ehsize);
-                trace.Verbose("  e_phentsize: {0}", header64.e_phentsize);
-                trace.Verbose("  e_phnum: {0}", header64.e_phnum);
-                trace.Verbose("  e_shentsize: {0}", header64.e_shentsize);
-                trace.Verbose("  e_shnum: {0}", header64.e_shnum);
-                trace.Verbose("  e_shstrndx: {0}", header64.e_shstrndx);
-                elf.Header.BinaryFileType = FileTypeOf(header64.e_type);
-                elf.Header.StartAddress = Address.Ptr64(header64.e_entry);
-                elf.Header.Machine = (ElfMachine) header64.e_machine;
-                elf.Header.e_phoff = header64.e_phoff;
-                elf.Header.e_shoff = header64.e_shoff;
-                elf.Header.Flags = header64.e_flags;
-                elf.Header.e_phnum = header64.e_phnum;
-                elf.Header.e_shnum = header64.e_shnum;
-                elf.Header.e_shstrndx = header64.e_shstrndx;
-                elf.Header.PointerType = PrimitiveType.Ptr64;
                 return new ElfLoader64(this.Services, elf, RawImage);
             }
             else
             {
-                var header32 = Elf32_EHdr.Load(rdr);
-                trace.Verbose("== ELF header =================");
-                trace.Verbose("  e_entry: {0:X8}", header32.e_entry);
-                trace.Verbose("  e_phoff: {0:X8}", header32.e_phoff);
-                trace.Verbose("  e_shoff: {0:X8}", header32.e_shoff);
-                trace.Verbose("  e_flags: {0:X8}", header32.e_flags);
-                trace.Verbose("  e_ehsize: {0}", header32.e_ehsize);
-                trace.Verbose("  e_phentsize: {0}", header32.e_phentsize);
-                trace.Verbose("  e_phnum: {0}", header32.e_phnum);
-                trace.Verbose("  e_shentsize: {0}", header32.e_shentsize);
-                trace.Verbose("  e_shnum: {0}", header32.e_shnum);
-                trace.Verbose("  e_shstrndx: {0}", header32.e_shstrndx);
-                elf.Header.BinaryFileType = FileTypeOf(header32.e_type);
-                elf.Header.StartAddress = Address.Ptr32(header32.e_entry);
-                elf.Header.Machine = (ElfMachine) header32.e_machine;
-                elf.Header.e_phoff = header32.e_phoff;
-                elf.Header.e_shoff = header32.e_shoff;
-                elf.Header.Flags = header32.e_flags;
-                elf.Header.e_phnum = header32.e_phnum;
-                elf.Header.e_shnum = header32.e_shnum;
-                elf.Header.e_shstrndx = header32.e_shstrndx;
-                elf.Header.PointerType = PrimitiveType.Ptr32;
                 return new ElfLoader32(this.Services, elf, RawImage);
             }
         }
 
-        private BinaryFileType FileTypeOf(ushort e_type)
-        {
-            return e_type switch
-            {
-                ET_REL => BinaryFileType.ObjectFile,
-                ET_EXEC => BinaryFileType.Executable,
-                ET_DYN => BinaryFileType.SharedLibrary,
-                _ => BinaryFileType.Unknown,
-            };
-        }
     }
 }

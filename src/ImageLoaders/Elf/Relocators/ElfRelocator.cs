@@ -510,7 +510,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
         protected override void DumpDynamicSegment(ElfSegment dynSeg)
         {
-            var renderer = new DynamicSectionRenderer32(Loader, null!, loader.Machine);
+            var renderer = new DynamicSectionRenderer32(Loader, null!, loader.BinaryImage.Header.Machine);
             var sw = new StringWriter();
             renderer.Render(dynSeg.FileOffset, new TextFormatter(sw));
             Debug.WriteLine(sw.ToString());

@@ -17,8 +17,10 @@ namespace Reko.ImageLoaders.Elf
             iSegments = new List<IBinarySegment>();
             Symbols = new List<IBinarySymbol>();
             dynsyms = new Dictionary<int, IBinarySymbol>();
-            Relocations = new List<IRelocation>();
-            DynamicRelocations = new List<IRelocation>();
+            relocations = new Dictionary<int, List<ElfRelocation>>();
+            irelocations = new Dictionary<int, IReadOnlyList<IRelocation>>();
+            dynamicRelocations = new List<ElfRelocation>();
+            idynamicRelocations = new List<IRelocation>();
 
             DynamicEntries = new Dictionary<long, ElfDynamicEntry>();
             SymbolsByFileOffset = new Dictionary<ulong, Dictionary<int, ElfSymbol>>();
@@ -50,10 +52,18 @@ namespace Reko.ImageLoaders.Elf
 
 
 
-        public IReadOnlyList<IRelocation> Relocations { get; }
+        public IReadOnlyDictionary<int, List<ElfRelocation>> Relocations => relocations;
+        private readonly Dictionary<int, List<ElfRelocation>> relocations;
+        IReadOnlyDictionary<int, IReadOnlyList<IRelocation>> IBinaryImage.Relocations => irelocations;
 
-        public IReadOnlyList<IRelocation> DynamicRelocations { get; }
+        public Dictionary<int, IReadOnlyList<IRelocation>> irelocations;
 
+        public List<ElfRelocation> DynamicRelocations => dynamicRelocations;
+        private readonly List<ElfRelocation> dynamicRelocations;
+
+        IReadOnlyList<IRelocation> IBinaryImage.DynamicRelocations => idynamicRelocations;
+        private readonly List<IRelocation> idynamicRelocations;
+        
         public Dictionary<long, ElfDynamicEntry> DynamicEntries { get; }
 
 
@@ -64,11 +74,6 @@ namespace Reko.ImageLoaders.Elf
         {
             this.sections.Add(section);
             this.iSections.Add(section);
-        }
-
-        public IBinaryFormatter CreateFormatter(string? outputFormat = null)
-        {
-            return new ElfFormatter();
         }
 
         public Program Load()
@@ -100,6 +105,28 @@ namespace Reko.ImageLoaders.Elf
             {
                 dynsyms.Add(i, s);
             }
+        }
+
+        internal void AddRelocations(int isection, IReadOnlyList<ElfRelocation> relocList)
+        {
+            if (!this.relocations.TryGetValue(isection, out var elfRels))
+            {
+                elfRels = new List<ElfRelocation>();
+                this.relocations.Add(isection, elfRels);
+            }
+            elfRels.AddRange(relocList);
+            if (!this.irelocations.TryGetValue(isection, out var irels))
+            {
+                irels = new List<IRelocation>();
+                irelocations.Add(isection, irels);
+            }
+                ((List<IRelocation>) irels).AddRange(relocList);
+        }
+
+        internal void AddDynamicRelocations(IReadOnlyCollection<ElfRelocation> relocs)
+        {
+            DynamicRelocations.AddRange(relocs);
+            idynamicRelocations.AddRange(relocs);
         }
     }
 }

@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Loading;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,12 +27,19 @@ using System.Threading.Tasks;
 
 namespace Reko.ImageLoaders.Elf
 {
-    public class ElfRelocation
+    public class ElfRelocation : IRelocation
     {
-        public ulong Offset;
-        public ulong Info;
-        public long? Addend;    // Will have value for a SHT_RELA relocation, and not for SHT_REL
         public int SymbolIndex;
+
+
+        public ulong Info { get; set; }
+        public ulong Offset { get; set; }
+        public long? Addend { get; set; }    // Will have value for a SHT_RELA relocation, and not for SHT_REL
+
+        public ElfSymbol? Symbol { get; set; }
+        public uint Type { get; set; }
+
+        IBinarySymbol? IRelocation.Symbol => Symbol;
 
         public override string ToString()
         {

@@ -1,10 +1,22 @@
 using Reko.Core.Loading;
+using Reko.ImageLoaders.Elf.Relocators;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 
 namespace Reko.ImageLoaders.Elf
 {
     public class ElfFormatter : IBinaryFormatter
     {
+        private readonly ElfBinaryImage binary;
+        private readonly ElfRelocator relocator;
+
+        public ElfFormatter(ElfBinaryImage binary, ElfRelocator relocator)
+        {
+            this.binary = binary;
+            this.relocator = relocator;
+        }
+
         public void DisassembleAllSections(TextWriter writer)
         {
             throw new System.NotImplementedException();
@@ -37,7 +49,26 @@ namespace Reko.ImageLoaders.Elf
 
         public void FormatDynamicRelocations(TextWriter writer)
         {
-            throw new System.NotImplementedException();
+            Debug.Print("{0,-16} {1,-16} {2}", "OFFSET", "TYPE", "VALUE");
+            foreach (var relocation in binary.DynamicRelocations)
+            {
+                string value = relocation.Symbol?.Name ?? "?";
+                var addend = relocation.Addend ?? 0;
+                var type = relocator.RelocationTypeToString(relocation.Type);
+                if (addend > 0)
+                {
+                    value = $"{value}+0x{addend:X8}";
+                }
+                else if (addend < 0)
+                {
+                    value = $"{value}-0x{addend:X8}";
+                }
+
+                writer.WriteLine("{0:X16} {1,-18} {2}",
+                    relocation.Offset,
+                    type,
+                    value);
+            }
         }
 
         public void FormatDynamicSymbols(TextWriter writer)

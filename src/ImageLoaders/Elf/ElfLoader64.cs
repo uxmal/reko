@@ -26,9 +26,11 @@ using Reko.Core.Loading;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Services;
+using Reko.Core.Types;
 using Reko.ImageLoaders.Elf.Relocators;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -129,7 +131,7 @@ namespace Reko.ImageLoaders.Elf
             switch (shdr.Type)
             {
             case SectionHeaderType.SHT_DYNAMIC:
-                return new DynamicSectionRenderer64(this, shdr, Machine);
+                return new DynamicSectionRenderer64(this, shdr, BinaryImage.Header.Machine);
             case SectionHeaderType.SHT_RELA:
                 return new RelaSegmentRenderer64(this, shdr);
             case SectionHeaderType.SHT_SYMTAB:
@@ -404,6 +406,21 @@ namespace Reko.ImageLoaders.Elf
             return BinaryImage.Segments;
         }
 
+        public override ElfRelocation LoadRelEntry(EndianImageReader rdr, IDictionary<int, ElfSymbol> symbols)
+        {
+            var rel = Elf64_Rel.Read(rdr);
+            var symbolIndex = rel.SymbolIndex;
+            return new ElfRelocation
+            {
+                Offset = rel.r_offset,
+                Info = rel.r_info,
+                Type = (uint) rel.r_info,
+                SymbolIndex = symbolIndex,
+                Symbol = symbols[symbolIndex],
+            };
+        }
+
+        [Obsolete]
         public override ElfRelocation LoadRelEntry(EndianImageReader rdr)
         {
             var rel = Elf64_Rel.Read(rdr);
@@ -411,10 +428,28 @@ namespace Reko.ImageLoaders.Elf
             {
                 Offset = rel.r_offset,
                 Info = rel.r_info,
+                Type = (uint) rel.r_info,
                 SymbolIndex = rel.SymbolIndex
             };
         }
 
+        public override ElfRelocation LoadRelaEntry(EndianImageReader rdr, IDictionary<int, ElfSymbol> symbols)
+        {
+            var rela = Elf64_Rela.Read(rdr);
+            int symbolIndex = (int) (rela.r_info >> 32);
+            return new ElfRelocation
+            {
+                Offset = rela.r_offset,
+                Info = rela.r_info,
+                Type = (uint) rela.r_info,
+                Addend = rela.r_addend,
+                SymbolIndex = symbolIndex,
+                Symbol = symbols[symbolIndex]
+            };
+        }
+
+
+        [Obsolete]
         public override ElfRelocation LoadRelaEntry(EndianImageReader rdr)
         {
             var rela = Elf64_Rela.Read(rdr);
@@ -422,9 +457,40 @@ namespace Reko.ImageLoaders.Elf
             {
                 Offset = rela.r_offset,
                 Info = rela.r_info,
+                Type = (uint) rela.r_info,
                 Addend = rela.r_addend,
                 SymbolIndex = (int) (rela.r_info >> 32),
             };
+        }
+
+        public override void LoadFileHeader()
+        {
+            var elf = BinaryImage;
+            var rdr = CreateReader(HEADER_OFFSET);
+
+            var header64 = Elf64_EHdr.Load(rdr);
+            var trace = ElfImageLoader.trace;
+            trace.Verbose("== ELF header =================");
+            trace.Verbose("  e_entry: {0:X16}", header64.e_entry);
+            trace.Verbose("  e_phoff: {0:X16}", header64.e_phoff);
+            trace.Verbose("  e_shoff: {0:X16}", header64.e_shoff);
+            trace.Verbose("  e_flags: {0:X8}", header64.e_flags);
+            trace.Verbose("  e_ehsize: {0}", header64.e_ehsize);
+            trace.Verbose("  e_phentsize: {0}", header64.e_phentsize);
+            trace.Verbose("  e_phnum: {0}", header64.e_phnum);
+            trace.Verbose("  e_shentsize: {0}", header64.e_shentsize);
+            trace.Verbose("  e_shnum: {0}", header64.e_shnum);
+            trace.Verbose("  e_shstrndx: {0}", header64.e_shstrndx);
+            elf.Header.BinaryFileType = FileTypeOf(header64.e_type);
+            elf.Header.StartAddress = Address.Ptr64(header64.e_entry);
+            elf.Header.Machine = (ElfMachine) header64.e_machine;
+            elf.Header.e_phoff = header64.e_phoff;
+            elf.Header.e_shoff = header64.e_shoff;
+            elf.Header.Flags = header64.e_flags;
+            elf.Header.e_phnum = header64.e_phnum;
+            elf.Header.e_shnum = header64.e_shnum;
+            elf.Header.e_shstrndx = header64.e_shstrndx;
+            elf.Header.PointerType = PrimitiveType.Ptr64;
         }
 
         public override List<ElfSection> LoadSectionHeaders()
@@ -491,7 +557,7 @@ namespace Reko.ImageLoaders.Elf
             var rdr = CreateReader(offsetSymtab + entrySize * symbolIndex);
             if (!Elf64_Sym.TryLoad(rdr, out var sym))
                 return null;
-            var name = RemoveModuleSuffix(ReadAsciiString(offsetStringTable + sym.st_name));
+            var name = ReadAsciiString(offsetStringTable + sym.st_name);
             return new ElfSymbol(name)
             {
                 Type = (ElfSymbolType) (sym.st_info & 0xF),
@@ -515,7 +581,7 @@ namespace Reko.ImageLoaders.Elf
                     ElfImageLoader.trace.Warn("Unable to load symbol entry {0} from {1}", i, symSection.Name);
                     continue;
                 }
-                var name = RemoveModuleSuffix(ReadAsciiString(stringtableSection.FileOffset + sym.st_name));
+                var name = ReadAsciiString(stringtableSection.FileOffset + sym.st_name);
                 ElfImageLoader.trace.Verbose("  {0,3} {1,-25} {2,-12} {3,6} {4} {5,-15} {6:X16} {7,9}",
                     i,
                     string.IsNullOrWhiteSpace(name) ? "<empty>" : name,

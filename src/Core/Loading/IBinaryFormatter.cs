@@ -42,3 +42,59 @@ public interface IBinaryFormatter
     void FormatRelocations(TextWriter writer);
     void FormatDynamicRelocations(TextWriter writer);
 }
+
+
+public class NullBinaryFormatter : IBinaryFormatter
+{
+    public void DisassembleAllSections(TextWriter writer)
+    {
+    }
+
+    public void DisassembleExecutableSections(TextWriter writer)
+    {
+    }
+
+    public void FormatAllHeaders(TextWriter writer)
+    {
+    }
+
+    public void FormatAllSectionContents(TextWriter writer)
+    {
+    }
+
+    public void FormatArchiveHeaders(TextWriter writer)
+    {
+    }
+
+    public void FormatDebugInformation(TextWriter writer)
+    {
+    }
+
+    public void FormatDynamicRelocations(TextWriter writer)
+    {
+    }
+
+    public void FormatDynamicSymbols(TextWriter writer)
+    {
+    }
+
+    public void FormatPrivateHeaders(TextWriter writer)
+    {
+    }
+
+    public void FormatRelocations(TextWriter writer)
+    {
+    }
+
+    public void FormatSectionHeaders(TextWriter writer)
+    {
+    }
+
+    public void FormatSymbols(TextWriter writer)
+    {
+    }
+
+    public void FormatWithSource(string prefix, TextWriter writer)
+    {
+    }
+}
