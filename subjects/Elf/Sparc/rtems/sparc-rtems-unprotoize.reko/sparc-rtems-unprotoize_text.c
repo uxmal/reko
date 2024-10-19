@@ -3833,9 +3833,9 @@ Eq_n pexecute(Eq_n o1, Eq_n o2, word32 o3, word32 * o4, word32 * o5, Eq_n l1, ui
 {
 	<anonymous> * o0_n;
 	if ((dwArg5C & 0x04) != 0x00)
-		o0_n = (<anonymous> *) ((char *) &g_t27C00 + 572);
+		o0_n = (<anonymous> *) &execvp_GOT;
 	else
-		o0_n = (<anonymous> *) ((char *) &g_t27C00 + 584);
+		o0_n = (<anonymous> *) &execv_GOT;
 	if ((dwArg5C & 0x01) != 0x00)
 		g_dw2B310 = 0x00;
 	int32 o0_n = g_dw2B310;

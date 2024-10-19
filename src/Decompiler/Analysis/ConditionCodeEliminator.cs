@@ -128,8 +128,6 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
                 {
                     try
                     {
-                        if (u.Block.Address.Offset == 0x0A68)
-                            _ = this; //$DEBUG
                         useStm = u;
                         trace.Inform("CCE:   used {0}", useStm.Instruction);
                         useStm.Instruction.Accept(this);

@@ -5,11 +5,443 @@
 /*
 // Equivalence classes ////////////
 Eq_1: (struct "Globals"
+		(3128 (ptr64 code) set_login_shell_GOT)
+		(3830 (ptr64 code) sv_xtracefd_GOT)
+		(3840 (ptr64 code) sv_comp_wordbreaks_GOT)
+		(3850 (ptr64 code) sv_funcnest_GOT)
+		(3860 (ptr64 code) sv_globignore_GOT)
+		(3870 (ptr64 code) sv_history_control_GOT)
+		(3880 (ptr64 code) sv_histsize_GOT)
+		(3890 (ptr64 code) sv_histignore_GOT)
+		(38A0 (ptr64 code) sv_histsize_GOT)
+		(38B0 (ptr64 code) sv_histtimefmt_GOT)
+		(38C0 (ptr64 code) sv_hostfile_GOT)
+		(38D0 (ptr64 code) sv_ifs_GOT)
+		(38E0 (ptr64 code) sv_ignoreeof_GOT)
+		(38F0 (ptr64 code) sv_locale_GOT)
+		(3900 (ptr64 code) sv_locale_GOT)
+		(3910 (ptr64 code) sv_locale_GOT)
+		(3920 (ptr64 code) sv_locale_GOT)
+		(3930 (ptr64 code) sv_locale_GOT)
+		(3940 (ptr64 code) sv_locale_GOT)
+		(3950 (ptr64 code) sv_locale_GOT)
+		(3960 (ptr64 code) sv_mail_GOT)
+		(3970 (ptr64 code) sv_mail_GOT)
+		(3980 (ptr64 code) sv_mail_GOT)
+		(3990 (ptr64 code) sv_opterr_GOT)
+		(39A0 (ptr64 code) sv_optind_GOT)
+		(39B0 (ptr64 code) sv_path_GOT)
+		(39C0 (ptr64 code) sv_strict_posix_GOT)
+		(39D0 (ptr64 code) sv_terminal_GOT)
+		(39E0 (ptr64 code) sv_terminal_GOT)
+		(39F0 (ptr64 code) sv_terminal_GOT)
+		(3A00 (ptr64 code) sv_locale_GOT)
+		(3A10 (ptr64 code) sv_locale_GOT)
+		(3A20 (ptr64 code) sv_tz_GOT)
+		(3A30 (ptr64 code) sv_histchars_GOT)
+		(3A40 (ptr64 code) sv_ignoreeof_GOT)
+		(4708 (ptr64 code) alias_builtin_GOT)
+		(4738 (ptr64 code) unalias_builtin_GOT)
+		(4768 (ptr64 code) bind_builtin_GOT)
+		(4798 (ptr64 code) break_builtin_GOT)
+		(47C8 (ptr64 code) continue_builtin_GOT)
+		(47F8 (ptr64 code) builtin_builtin_GOT)
+		(4828 (ptr64 code) caller_builtin_GOT)
+		(4858 (ptr64 code) cd_builtin_GOT)
+		(4888 (ptr64 code) pwd_builtin_GOT)
+		(48B8 (ptr64 code) colon_builtin_GOT)
+		(48E8 (ptr64 code) colon_builtin_GOT)
+		(4918 (ptr64 code) false_builtin_GOT)
+		(4948 (ptr64 code) command_builtin_GOT)
+		(4978 (ptr64 code) declare_builtin_GOT)
+		(49A8 (ptr64 code) declare_builtin_GOT)
+		(49D8 (ptr64 code) local_builtin_GOT)
+		(4A08 (ptr64 code) echo_builtin_GOT)
+		(4A38 (ptr64 code) enable_builtin_GOT)
+		(4A68 (ptr64 code) eval_builtin_GOT)
+		(4A98 (ptr64 code) getopts_builtin_GOT)
+		(4AC8 (ptr64 code) exec_builtin_GOT)
+		(4AF8 (ptr64 code) exit_builtin_GOT)
+		(4B28 (ptr64 code) logout_builtin_GOT)
+		(4B58 (ptr64 code) fc_builtin_GOT)
+		(4B88 (ptr64 code) fg_builtin_GOT)
+		(4BB8 (ptr64 code) bg_builtin_GOT)
+		(4BE8 (ptr64 code) hash_builtin_GOT)
+		(4C18 (ptr64 code) help_builtin_GOT)
+		(4C48 (ptr64 code) history_builtin_GOT)
+		(4C78 (ptr64 code) jobs_builtin_GOT)
+		(4CA8 (ptr64 code) disown_builtin_GOT)
+		(4CD8 (ptr64 code) kill_builtin_GOT)
+		(4D08 (ptr64 code) let_builtin_GOT)
+		(4D38 (ptr64 code) read_builtin_GOT)
+		(4D68 (ptr64 code) return_builtin_GOT)
+		(4D98 (ptr64 code) set_builtin_GOT)
+		(4DC8 (ptr64 code) unset_builtin_GOT)
+		(4DF8 (ptr64 code) export_builtin_GOT)
+		(4E28 (ptr64 code) readonly_builtin_GOT)
+		(4E58 (ptr64 code) shift_builtin_GOT)
+		(4E88 (ptr64 code) source_builtin_GOT)
+		(4EB8 (ptr64 code) source_builtin_GOT)
+		(4EE8 (ptr64 code) suspend_builtin_GOT)
+		(4F18 (ptr64 code) test_builtin_GOT)
+		(4F48 (ptr64 code) test_builtin_GOT)
+		(4F78 (ptr64 code) times_builtin_GOT)
+		(4FA8 (ptr64 code) trap_builtin_GOT)
+		(4FD8 (ptr64 code) type_builtin_GOT)
+		(5008 (ptr64 code) ulimit_builtin_GOT)
+		(5038 (ptr64 code) umask_builtin_GOT)
+		(5068 (ptr64 code) wait_builtin_GOT)
+		(5368 (ptr64 code) pushd_builtin_GOT)
+		(5398 (ptr64 code) popd_builtin_GOT)
+		(53C8 (ptr64 code) dirs_builtin_GOT)
+		(53F8 (ptr64 code) shopt_builtin_GOT)
+		(5428 (ptr64 code) printf_builtin_GOT)
+		(5458 (ptr64 code) complete_builtin_GOT)
+		(5488 (ptr64 code) compgen_builtin_GOT)
+		(54B8 (ptr64 code) compopt_builtin_GOT)
+		(54E8 (ptr64 code) mapfile_builtin_GOT)
+		(5518 (ptr64 code) mapfile_builtin_GOT)
+		(61C0 (ptr64 code) rl_tilde_expand_GOT)
+		(6210 (ptr64 code) rl_complete_GOT)
+		(6218 (ptr64 code) rl_yank_last_arg_GOT)
+		(6238 (ptr64 code) rl_filename_completion_function_GOT)
+		(6258 (ptr64 code) rl_newline_GOT)
+		(6260 (ptr64 code) rl_insert_GOT)
+		(6278 (ptr64 code) unlink_GOT)
+		(62B0 (ptr64 code) rl_tab_insert_GOT)
+		(62C0 (ptr64 code) rl_menu_complete_GOT)
+		(6310 (ptr64 code) rl_vi_editing_mode_GOT)
+		(6338 (ptr64 code) rl_username_completion_function_GOT)
+		(6418 (ptr64 code) close_GOT)
+		(6438 (ptr64 code) sigwinch_sighandler_GOT)
+		(6440 (ptr64 code) __libc_csu_fini_GOT)
+		(6448 (ptr64 code) command_word_completion_function_GOT)
+		(6450 (ptr64 code) buffered_ungetchar_GOT)
+		(6458 (ptr64 code) close_fd_bitmap_GOT)
+		(6460 (ptr64 code) builtin_error_GOT)
+		(6468 (ptr64 code) sigint_sighandler_GOT)
+		(6478 (ptr64 code) buffered_getchar_GOT)
+		(6480 (ptr64 code) return_EOF_GOT)
+		(6488 (ptr64 code) exit_builtin_GOT)
+		(6490 (ptr64 code) termsig_sighandler_GOT)
+		(6498 (ptr64 code) do_word_assignment_GOT)
+		(64A0 (ptr64 code) all_visible_functions_GOT)
+		(64A8 (ptr64 code) wait_for_background_pids_GOT)
+		(64B0 (ptr64 code) maybe_set_sigchld_trap_GOT)
+		(64B8 (ptr64 code) readonly_builtin_GOT)
+		(64C0 (ptr64 code) source_builtin_GOT)
+		(64C8 (ptr64 code) pop_context_GOT)
+		(64D0 (ptr64 code) expand_string_GOT)
+		(64D8 (ptr64 code) unset_builtin_GOT)
+		(64E0 (ptr64 code) xfree_GOT)
+		(64E8 (ptr64 code) logout_builtin_GOT)
+		(64F0 (ptr64 code) export_builtin_GOT)
+		(64F8 (ptr64 code) eval_builtin_GOT)
+		(6500 (ptr64 code) strvec_strcmp_GOT)
+		(6508 (ptr64 code) set_builtin_GOT)
+		(6510 (ptr64 code) set_current_prompt_level_GOT)
+		(6518 (ptr64 code) set_return_trap_GOT)
+		(6520 (ptr64 code) all_array_variables_GOT)
+		(6528 (ptr64 code) return_builtin_GOT)
+		(6530 (ptr64 code) wait_builtin_GOT)
+		(6538 (ptr64 code) dispose_command_GOT)
+		(6540 (ptr64 code) expand_string_assignment_GOT)
+		(6548 (ptr64 code) set_error_trap_GOT)
+		(6558 (ptr64 code) dispose_fd_bitmap_GOT)
+		(6560 (ptr64 code) exec_builtin_GOT)
+		(6568 (ptr64 code) dispose_redirects_GOT)
+		(6570 (ptr64 code) dispose_words_GOT)
+		(6578 (ptr64 code) __libc_csu_init_GOT)
+		(6580 (ptr64 code) internal_error_GOT)
+		(6588 (ptr64 code) jobs_builtin_GOT)
+		(6590 (ptr64 code) pop_scope_GOT)
+		(6598 (ptr64 code) all_exported_variables_GOT)
+		(65A0 (ptr64 code) set_debug_trap_GOT)
+		(65A8 (ptr64 code) pop_stream_GOT)
+		(65B0 (ptr64 code) main_GOT)
+		(65B8 (ptr64 code) initialize_traps_GOT)
+		(65C0 (ptr64 code) restore_parser_state_GOT)
+		(65C8 (ptr64 code) char_is_quoted_GOT)
+		(65D0 (ptr64 code) expand_string_unsplit_GOT)
+		(65D8 (ptr64 code) bash_brace_completion_GOT)
+		(65E0 (ptr64 code) trap_handler_GOT)
+		(65E8 (ptr64 code) command_builtin_GOT)
+		(65F0 (ptr64 code) bash_servicename_completion_function_GOT)
+		(65F8 (ptr64 code) all_visible_variables_GOT)
+		(6600 (ptr64 code) bash_groupname_completion_function_GOT)
+		(6608 (ptr64 code) assign_in_env_GOT)
+		(6610 (ptr64 code) merge_temporary_env_GOT)
+		(6618 (ptr64 code) kill_builtin_GOT)
+		(90D0 (ptr64 code) __ctype_toupper_loc_GOT)
+		(90E0 (ptr64 code) wctype_GOT)
+		(90F0 (ptr64 code) endgrent_GOT)
+		(9100 (ptr64 code) wcrtomb_GOT)
+		(9110 (ptr64 code) strstr_GOT)
+		(9120 (ptr64 code) __snprintf_chk_GOT)
+		(9130 (ptr64 code) fdopen_GOT)
+		(9140 (ptr64 code) setitimer_GOT)
+		(9150 (ptr64 code) pathconf_GOT)
+		(9160 (ptr64 code) rl_insert_text_GOT)
+		(9170 (ptr64 code) stifle_history_GOT)
+		(9180 (ptr64 code) dup_GOT)
+		(9190 (ptr64 code) mbsrtowcs_GOT)
+		(91A0 (ptr64 code) iswlower_GOT)
+		(91B0 (ptr64 code) rl_vi_end_word_GOT)
+		(91C0 (ptr64 code) __strtol_internal_GOT)
+		(91D0 (ptr64 code) strcmp_GOT)
+		(91E0 (ptr64 code) __vfprintf_chk_GOT)
+		(91F0 (ptr64 code) iswctype_GOT)
+		(9200 (ptr64 code) wctomb_GOT)
+		(9210 (ptr64 code) rl_get_termcap_GOT)
+		(9220 (ptr64 code) rl_forced_update_display_GOT)
+		(9230 (ptr64 code) read_GOT)
+		(9240 (ptr64 code) wcscoll_GOT)
+		(9250 (ptr64 code) getpwuid_GOT)
+		(9260 (ptr64 code) fopen_GOT)
+		(9270 (ptr64 code) fflush_GOT)
+		(9280 (ptr64 code) rl_bind_keyseq_GOT)
+		(9290 (ptr64 code) sigprocmask_GOT)
+		(92A0 (ptr64 code) tputs_GOT)
+		(92B0 (ptr64 code) where_history_GOT)
+		(92C0 (ptr64 code) rl_forward_word_GOT)
+		(92D0 (ptr64 code) gai_strerror_GOT)
+		(92E0 (ptr64 code) towlower_GOT)
+		(92F0 (ptr64 code) history_truncate_file_GOT)
+		(9300 (ptr64 code) wcsrtombs_GOT)
+		(9310 (ptr64 code) memmove_GOT)
+		(9320 (ptr64 code) free_GOT)
+		(9330 (ptr64 code) rl_complete_internal_GOT)
+		(9340 (ptr64 code) rl_variable_bind_GOT)
+		(9350 (ptr64 code) strchrnul_GOT)
+		(9360 (ptr64 code) rl_completion_matches_GOT)
+		(9370 (ptr64 code) mbsinit_GOT)
+		(9380 (ptr64 code) memcpy_GOT)
+		(9390 (ptr64 code) confstr_GOT)
+		(93A0 (ptr64 code) add_history_GOT)
+		(93B0 (ptr64 code) rl_read_init_file_GOT)
+		(93C0 (ptr64 code) faccessat_GOT)
+		(93D0 (ptr64 code) rl_funmap_names_GOT)
+		(93E0 (ptr64 code) ferror_GOT)
+		(93F0 (ptr64 code) rl_parse_and_bind_GOT)
+		(9400 (ptr64 code) fgets_GOT)
+		(9410 (ptr64 code) time_GOT)
+		(9420 (ptr64 code) history_is_stifled_GOT)
+		(9430 (ptr64 code) rl_set_keymap_GOT)
+		(9440 (ptr64 code) lseek_GOT)
+		(9450 (ptr64 code) rl_complete_GOT)
+		(9460 (ptr64 code) clear_history_GOT)
+		(9470 (ptr64 code) strtold_GOT)
+		(9480 (ptr64 code) write_history_GOT)
+		(9490 (ptr64 code) tcsetpgrp_GOT)
+		(94A0 (ptr64 code) stpcpy_GOT)
+		(94B0 (ptr64 code) select_GOT)
+		(94C0 (ptr64 code) sleep_GOT)
+		(94D0 (ptr64 code) wcsncmp_GOT)
+		(94E0 (ptr64 code) dcgettext_GOT)
+		(94F0 (ptr64 code) eaccess_GOT)
+		(9500 (ptr64 code) rl_generic_bind_GOT)
+		(9510 (ptr64 code) rl_unbind_key_in_map_GOT)
+		(9520 (ptr64 code) rl_add_undo_GOT)
+		(9530 (ptr64 code) read_history_GOT)
+		(9540 (ptr64 code) rl_vi_start_inserting_GOT)
+		(9550 (ptr64 code) rl_function_of_keyseq_GOT)
+		(9560 (ptr64 code) dlclose_GOT)
+		(9570 (ptr64 code) rl_filename_completion_function_GOT)
+		(9580 (ptr64 code) alarm_GOT)
+		(9590 (ptr64 code) getuid_GOT)
+		(95A0 (ptr64 code) killpg_GOT)
+		(95B0 (ptr64 code) sysconf_GOT)
+		(95C0 (ptr64 code) __strtoul_internal_GOT)
+		(95D0 (ptr64 code) getrlimit_GOT)
+		(95E0 (ptr64 code) realloc_GOT)
+		(95F0 (ptr64 code) geteuid_GOT)
+		(9600 (ptr64 code) getservent_GOT)
+		(9610 (ptr64 code) read_history_range_GOT)
+		(9620 (ptr64 code) __fdelt_chk_GOT)
+		(9630 (ptr64 code) dlerror_GOT)
+		(9640 (ptr64 code) rl_reset_terminal_GOT)
+		(9650 (ptr64 code) rl_variable_dumper_GOT)
+		(9660 (ptr64 code) dup2_GOT)
+		(9670 (ptr64 code) textdomain_GOT)
+		(9680 (ptr64 code) strcasestr_GOT)
+		(9690 (ptr64 code) _IO_putc_GOT)
+		(96A0 (ptr64 code) chdir_GOT)
+		(96B0 (ptr64 code) strsignal_GOT)
+		(96C0 (ptr64 code) rl_newline_GOT)
+		(96D0 (ptr64 code) tzset_GOT)
+		(96E0 (ptr64 code) getegid_GOT)
+		(96F0 (ptr64 code) mblen_GOT)
+		(9700 (ptr64 code) free_history_entry_GOT)
+		(9710 (ptr64 code) rl_insert_GOT)
+		(9720 (ptr64 code) __xstat_GOT)
+		(9730 (ptr64 code) fwrite_GOT)
+		(9740 (ptr64 code) ioctl_GOT)
+		(9750 (ptr64 code) readline_GOT)
+		(9760 (ptr64 code) getpgrp_GOT)
+		(9770 (ptr64 code) regfree_GOT)
+		(9780 (ptr64 code) mbrtowc_GOT)
+		(9790 (ptr64 code) __ctype_get_mb_cur_max_GOT)
+		(97A0 (ptr64 code) strcat_GOT)
+		(97B0 (ptr64 code) readlink_GOT)
+		(97C0 (ptr64 code) rl_kill_text_GOT)
+		(97D0 (ptr64 code) history_get_GOT)
+		(97E0 (ptr64 code) rl_macro_dumper_GOT)
+		(97F0 (ptr64 code) strcpy_GOT)
+		(9800 (ptr64 code) getpid_GOT)
+		(9810 (ptr64 code) previous_history_GOT)
+		(9820 (ptr64 code) tcsetattr_GOT)
+		(9830 (ptr64 code) unlink_GOT)
+		(9840 (ptr64 code) waitpid_GOT)
+		(9850 (ptr64 code) wcscmp_GOT)
+		(9860 (ptr64 code) rl_list_funmap_names_GOT)
+		(9870 (ptr64 code) rl_completion_mode_GOT)
+		(9880 (ptr64 code) gethostname_GOT)
+		(9890 (ptr64 code) mbsnrtowcs_GOT)
+		(98A0 (ptr64 code) gettimeofday_GOT)
+		(98B0 (ptr64 code) setrlimit_GOT)
+		(98C0 (ptr64 code) __asprintf_chk_GOT)
+		(98D0 (ptr64 code) malloc_GOT)
+		(98E0 (ptr64 code) rl_add_defun_GOT)
+		(98F0 (ptr64 code) puts_GOT)
+		(9900 (ptr64 code) setgid_GOT)
+		(9910 (ptr64 code) __fxstat_GOT)
+		(9920 (ptr64 code) rl_read_key_GOT)
+		(9930 (ptr64 code) sigaddset_GOT)
+		(9940 (ptr64 code) getdtablesize_GOT)
+		(9950 (ptr64 code) strcoll_GOT)
+		(9960 (ptr64 code) __memmove_chk_GOT)
+		(9970 (ptr64 code) __memcpy_chk_GOT)
+		(9980 (ptr64 code) strerror_GOT)
+		(99A0 (ptr64 code) open_GOT)
+		(99B0 (ptr64 code) rl_menu_complete_GOT)
+		(99C0 (ptr64 code) kill_GOT)
+		(99D0 (ptr64 code) getcwd_GOT)
+		(99E0 (ptr64 code) rl_named_function_GOT)
+		(99F0 (ptr64 code) exit_GOT)
+		(9A00 (ptr64 code) strftime_GOT)
+		(9A10 (ptr64 code) history_list_GOT)
+		(9A20 (ptr64 code) wctob_GOT)
+		(9A30 (ptr64 code) ttyname_GOT)
+		(9A40 (ptr64 code) localtime_GOT)
+		(9A50 (ptr64 code) tcgetpgrp_GOT)
+		(9A60 (ptr64 code) strtoul_GOT)
+		(9A70 (ptr64 code) strchr_GOT)
+		(9A80 (ptr64 code) rl_get_previous_history_GOT)
+		(9A90 (ptr64 code) strlen_GOT)
+		(9AA0 (ptr64 code) __libc_start_main_GOT)
+		(9AB0 (ptr64 code) sigdelset_GOT)
+		(9AC0 (ptr64 code) setvbuf_GOT)
+		(9AD0 (ptr64 code) write_GOT)
+		(9AE0 (ptr64 code) execve_GOT)
+		(9AF0 (ptr64 code) iswupper_GOT)
+		(9B00 (ptr64 code) using_history_GOT)
+		(9B10 (ptr64 code) strcasecmp_GOT)
+		(9B20 (ptr64 code) fcntl_GOT)
+		(9B30 (ptr64 code) rl_bind_key_in_map_GOT)
+		(9B40 (ptr64 code) dlsym_GOT)
+		(9B50 (ptr64 code) __errno_location_GOT)
+		(9B60 (ptr64 code) iswalnum_GOT)
+		(9B70 (ptr64 code) setservent_GOT)
+		(9B80 (ptr64 code) strncasecmp_GOT)
+		(9B90 (ptr64 code) memset_GOT)
+		(9BA0 (ptr64 code) getgid_GOT)
+		(9BB0 (ptr64 code) putchar_GOT)
+		(9BC0 (ptr64 code) strncpy_GOT)
+		(9BD0 (ptr64 code) rl_vi_bWord_GOT)
+		(9BE0 (ptr64 code) setgrent_GOT)
+		(9BF0 (ptr64 code) rl_delete_text_GOT)
+		(9C00 (ptr64 code) regexec_GOT)
+		(9C10 (ptr64 code) rl_crlf_GOT)
+		(9C20 (ptr64 code) getgrent_GOT)
+		(9C30 (ptr64 code) rl_redisplay_GOT)
+		(9C40 (ptr64 code) rl_on_new_line_GOT)
+		(9C50 (ptr64 code) __vsnprintf_chk_GOT)
+		(9C60 (ptr64 code) rl_unbind_function_in_map_GOT)
+		(9C70 (ptr64 code) __strncpy_chk_GOT)
+		(9C80 (ptr64 code) rl_function_dumper_GOT)
+		(9C90 (ptr64 code) rl_set_screen_size_GOT)
+		(9CA0 (ptr64 code) __strcpy_chk_GOT)
+		(9CB0 (ptr64 code) rl_initialize_GOT)
+		(9CC0 (ptr64 code) strnlen_GOT)
+		(9CD0 (ptr64 code) pipe_GOT)
+		(9CE0 (ptr64 code) rl_ding_GOT)
+		(9CF0 (ptr64 code) __printf_chk_GOT)
+		(9D00 (ptr64 code) history_set_pos_GOT)
+		(9D10 (ptr64 code) fileno_GOT)
+		(9D20 (ptr64 code) __longjmp_chk_GOT)
+		(9D30 (ptr64 code) wcswidth_GOT)
+		(9D40 (ptr64 code) sigemptyset_GOT)
+		(9D50 (ptr64 code) rl_make_bare_keymap_GOT)
+		(9D60 (ptr64 code) readdir_GOT)
+		(9D70 (ptr64 code) setlocale_GOT)
+		(9D80 (ptr64 code) rl_variable_value_GOT)
+		(9D90 (ptr64 code) wcschr_GOT)
+		(9DA0 (ptr64 code) fork_GOT)
+		(9DB0 (ptr64 code) rl_invoking_keyseqs_GOT)
+		(9DC0 (ptr64 code) endpwent_GOT)
+		(9DD0 (ptr64 code) wcslen_GOT)
+		(9DE0 (ptr64 code) __sigsetjmp_GOT)
+		(9DF0 (ptr64 code) fputc_GOT)
+		(9E00 (ptr64 code) rl_get_keymap_by_name_GOT)
+		(9E10 (ptr64 code) setuid_GOT)
+		(9E20 (ptr64 code) setpgid_GOT)
+		(9E30 (ptr64 code) clearerr_GOT)
+		(9E40 (ptr64 code) getppid_GOT)
+		(9E50 (ptr64 code) fclose_GOT)
+		(9E60 (ptr64 code) getgroups_GOT)
+		(9E70 (ptr64 code) regcomp_GOT)
+		(9E80 (ptr64 code) strrchr_GOT)
+		(9E90 (ptr64 code) history_get_time_GOT)
+		(9EA0 (ptr64 code) mbstowcs_GOT)
+		(9EB0 (ptr64 code) getpeername_GOT)
+		(9EC0 (ptr64 code) sbrk_GOT)
+		(9ED0 (ptr64 code) getrusage_GOT)
+		(9EE0 (ptr64 code) getaddrinfo_GOT)
+		(9EF0 (ptr64 code) freeaddrinfo_GOT)
+		(9F00 (ptr64 code) tilde_expand_GOT)
+		(9F10 (ptr64 code) dlopen_GOT)
+		(9F20 (ptr64 code) socket_GOT)
+		(9F30 (ptr64 code) qsort_GOT)
+		(9F40 (ptr64 code) strncmp_GOT)
+		(9F50 (ptr64 code) __fprintf_chk_GOT)
+		(9F60 (ptr64 code) remove_history_GOT)
+		(9F70 (ptr64 code) bindtextdomain_GOT)
+		(9F80 (ptr64 code) __lxstat_GOT)
+		(9F90 (ptr64 code) history_tokenize_GOT)
+		(9FA0 (ptr64 code) history_expand_GOT)
+		(9FB0 (ptr64 code) rl_get_keymap_GOT)
+		(9FC0 (ptr64 code) rl_bind_key_if_unbound_in_map_GOT)
+		(9FD0 (ptr64 code) unstifle_history_GOT)
+		(9FE0 (ptr64 code) rl_push_macro_input_GOT)
+		(9FF0 (ptr64 code) rl_bind_keyseq_in_map_GOT)
+		(A000 (ptr64 code) abort_GOT)
+		(A010 (ptr64 code) isatty_GOT)
+		(A020 (ptr64 code) umask_GOT)
+		(A030 (ptr64 code) __fpurge_GOT)
+		(A040 (ptr64 code) towupper_GOT)
+		(A050 (ptr64 code) wcsdup_GOT)
+		(A060 (ptr64 code) fputs_GOT)
+		(A070 (ptr64 code) connect_GOT)
+		(A080 (ptr64 code) strtol_GOT)
+		(A090 (ptr64 code) dcngettext_GOT)
+		(A0A0 (ptr64 code) sigaction_GOT)
+		(A0B0 (ptr64 code) closedir_GOT)
+		(A0C0 (ptr64 code) replace_history_entry_GOT)
+		(A0D0 (ptr64 code) close_GOT)
+		(A0E0 (ptr64 code) endservent_GOT)
+		(A0F0 (ptr64 code) append_history_GOT)
+		(A100 (ptr64 code) __ctype_tolower_loc_GOT)
+		(A110 (ptr64 code) __ctype_b_loc_GOT)
+		(A120 (ptr64 code) opendir_GOT)
+		(A130 (ptr64 code) tcgetattr_GOT)
+		(A140 (ptr64 code) mbtowc_GOT)
+		(A150 (ptr64 code) __sprintf_chk_GOT)
 		(A1C0 word64 secondary_prompt)
 		(A1C8 word64 primary_prompt)
 		(A1E0 word64 bash_getcwd_errstr)
 		(A228 word64 the_current_maintainer)
 		(A274 word64 pgrp_pipe)
+		(A298 (ptr64 code) wait_for_background_pids_GOT)
 		(A320 word64 bash_license)
 		(A328 word64 bash_copyright)
 		(A330 word64 sccs_version)
@@ -348,11 +780,443 @@ T_68:
   OrigDataType: word64
 */
 typedef struct Globals {
+	<anonymous> * set_login_shell_GOT;	// 3128
+	<anonymous> * sv_xtracefd_GOT;	// 3830
+	<anonymous> * sv_comp_wordbreaks_GOT;	// 3840
+	<anonymous> * sv_funcnest_GOT;	// 3850
+	<anonymous> * sv_globignore_GOT;	// 3860
+	<anonymous> * sv_history_control_GOT;	// 3870
+	<anonymous> * sv_histsize_GOT;	// 3880
+	<anonymous> * sv_histignore_GOT;	// 3890
+	<anonymous> * sv_histsize_GOT;	// 38A0
+	<anonymous> * sv_histtimefmt_GOT;	// 38B0
+	<anonymous> * sv_hostfile_GOT;	// 38C0
+	<anonymous> * sv_ifs_GOT;	// 38D0
+	<anonymous> * sv_ignoreeof_GOT;	// 38E0
+	<anonymous> * sv_locale_GOT;	// 38F0
+	<anonymous> * sv_locale_GOT;	// 3900
+	<anonymous> * sv_locale_GOT;	// 3910
+	<anonymous> * sv_locale_GOT;	// 3920
+	<anonymous> * sv_locale_GOT;	// 3930
+	<anonymous> * sv_locale_GOT;	// 3940
+	<anonymous> * sv_locale_GOT;	// 3950
+	<anonymous> * sv_mail_GOT;	// 3960
+	<anonymous> * sv_mail_GOT;	// 3970
+	<anonymous> * sv_mail_GOT;	// 3980
+	<anonymous> * sv_opterr_GOT;	// 3990
+	<anonymous> * sv_optind_GOT;	// 39A0
+	<anonymous> * sv_path_GOT;	// 39B0
+	<anonymous> * sv_strict_posix_GOT;	// 39C0
+	<anonymous> * sv_terminal_GOT;	// 39D0
+	<anonymous> * sv_terminal_GOT;	// 39E0
+	<anonymous> * sv_terminal_GOT;	// 39F0
+	<anonymous> * sv_locale_GOT;	// 3A00
+	<anonymous> * sv_locale_GOT;	// 3A10
+	<anonymous> * sv_tz_GOT;	// 3A20
+	<anonymous> * sv_histchars_GOT;	// 3A30
+	<anonymous> * sv_ignoreeof_GOT;	// 3A40
+	<anonymous> * alias_builtin_GOT;	// 4708
+	<anonymous> * unalias_builtin_GOT;	// 4738
+	<anonymous> * bind_builtin_GOT;	// 4768
+	<anonymous> * break_builtin_GOT;	// 4798
+	<anonymous> * continue_builtin_GOT;	// 47C8
+	<anonymous> * builtin_builtin_GOT;	// 47F8
+	<anonymous> * caller_builtin_GOT;	// 4828
+	<anonymous> * cd_builtin_GOT;	// 4858
+	<anonymous> * pwd_builtin_GOT;	// 4888
+	<anonymous> * colon_builtin_GOT;	// 48B8
+	<anonymous> * colon_builtin_GOT;	// 48E8
+	<anonymous> * false_builtin_GOT;	// 4918
+	<anonymous> * command_builtin_GOT;	// 4948
+	<anonymous> * declare_builtin_GOT;	// 4978
+	<anonymous> * declare_builtin_GOT;	// 49A8
+	<anonymous> * local_builtin_GOT;	// 49D8
+	<anonymous> * echo_builtin_GOT;	// 4A08
+	<anonymous> * enable_builtin_GOT;	// 4A38
+	<anonymous> * eval_builtin_GOT;	// 4A68
+	<anonymous> * getopts_builtin_GOT;	// 4A98
+	<anonymous> * exec_builtin_GOT;	// 4AC8
+	<anonymous> * exit_builtin_GOT;	// 4AF8
+	<anonymous> * logout_builtin_GOT;	// 4B28
+	<anonymous> * fc_builtin_GOT;	// 4B58
+	<anonymous> * fg_builtin_GOT;	// 4B88
+	<anonymous> * bg_builtin_GOT;	// 4BB8
+	<anonymous> * hash_builtin_GOT;	// 4BE8
+	<anonymous> * help_builtin_GOT;	// 4C18
+	<anonymous> * history_builtin_GOT;	// 4C48
+	<anonymous> * jobs_builtin_GOT;	// 4C78
+	<anonymous> * disown_builtin_GOT;	// 4CA8
+	<anonymous> * kill_builtin_GOT;	// 4CD8
+	<anonymous> * let_builtin_GOT;	// 4D08
+	<anonymous> * read_builtin_GOT;	// 4D38
+	<anonymous> * return_builtin_GOT;	// 4D68
+	<anonymous> * set_builtin_GOT;	// 4D98
+	<anonymous> * unset_builtin_GOT;	// 4DC8
+	<anonymous> * export_builtin_GOT;	// 4DF8
+	<anonymous> * readonly_builtin_GOT;	// 4E28
+	<anonymous> * shift_builtin_GOT;	// 4E58
+	<anonymous> * source_builtin_GOT;	// 4E88
+	<anonymous> * source_builtin_GOT;	// 4EB8
+	<anonymous> * suspend_builtin_GOT;	// 4EE8
+	<anonymous> * test_builtin_GOT;	// 4F18
+	<anonymous> * test_builtin_GOT;	// 4F48
+	<anonymous> * times_builtin_GOT;	// 4F78
+	<anonymous> * trap_builtin_GOT;	// 4FA8
+	<anonymous> * type_builtin_GOT;	// 4FD8
+	<anonymous> * ulimit_builtin_GOT;	// 5008
+	<anonymous> * umask_builtin_GOT;	// 5038
+	<anonymous> * wait_builtin_GOT;	// 5068
+	<anonymous> * pushd_builtin_GOT;	// 5368
+	<anonymous> * popd_builtin_GOT;	// 5398
+	<anonymous> * dirs_builtin_GOT;	// 53C8
+	<anonymous> * shopt_builtin_GOT;	// 53F8
+	<anonymous> * printf_builtin_GOT;	// 5428
+	<anonymous> * complete_builtin_GOT;	// 5458
+	<anonymous> * compgen_builtin_GOT;	// 5488
+	<anonymous> * compopt_builtin_GOT;	// 54B8
+	<anonymous> * mapfile_builtin_GOT;	// 54E8
+	<anonymous> * mapfile_builtin_GOT;	// 5518
+	<anonymous> * rl_tilde_expand_GOT;	// 61C0
+	<anonymous> * rl_complete_GOT;	// 6210
+	<anonymous> * rl_yank_last_arg_GOT;	// 6218
+	<anonymous> * rl_filename_completion_function_GOT;	// 6238
+	<anonymous> * rl_newline_GOT;	// 6258
+	<anonymous> * rl_insert_GOT;	// 6260
+	<anonymous> * unlink_GOT;	// 6278
+	<anonymous> * rl_tab_insert_GOT;	// 62B0
+	<anonymous> * rl_menu_complete_GOT;	// 62C0
+	<anonymous> * rl_vi_editing_mode_GOT;	// 6310
+	<anonymous> * rl_username_completion_function_GOT;	// 6338
+	<anonymous> * close_GOT;	// 6418
+	<anonymous> * sigwinch_sighandler_GOT;	// 6438
+	<anonymous> * __libc_csu_fini_GOT;	// 6440
+	<anonymous> * command_word_completion_function_GOT;	// 6448
+	<anonymous> * buffered_ungetchar_GOT;	// 6450
+	<anonymous> * close_fd_bitmap_GOT;	// 6458
+	<anonymous> * builtin_error_GOT;	// 6460
+	<anonymous> * sigint_sighandler_GOT;	// 6468
+	<anonymous> * buffered_getchar_GOT;	// 6478
+	<anonymous> * return_EOF_GOT;	// 6480
+	<anonymous> * exit_builtin_GOT;	// 6488
+	<anonymous> * termsig_sighandler_GOT;	// 6490
+	<anonymous> * do_word_assignment_GOT;	// 6498
+	<anonymous> * all_visible_functions_GOT;	// 64A0
+	<anonymous> * wait_for_background_pids_GOT;	// 64A8
+	<anonymous> * maybe_set_sigchld_trap_GOT;	// 64B0
+	<anonymous> * readonly_builtin_GOT;	// 64B8
+	<anonymous> * source_builtin_GOT;	// 64C0
+	<anonymous> * pop_context_GOT;	// 64C8
+	<anonymous> * expand_string_GOT;	// 64D0
+	<anonymous> * unset_builtin_GOT;	// 64D8
+	<anonymous> * xfree_GOT;	// 64E0
+	<anonymous> * logout_builtin_GOT;	// 64E8
+	<anonymous> * export_builtin_GOT;	// 64F0
+	<anonymous> * eval_builtin_GOT;	// 64F8
+	<anonymous> * strvec_strcmp_GOT;	// 6500
+	<anonymous> * set_builtin_GOT;	// 6508
+	<anonymous> * set_current_prompt_level_GOT;	// 6510
+	<anonymous> * set_return_trap_GOT;	// 6518
+	<anonymous> * all_array_variables_GOT;	// 6520
+	<anonymous> * return_builtin_GOT;	// 6528
+	<anonymous> * wait_builtin_GOT;	// 6530
+	<anonymous> * dispose_command_GOT;	// 6538
+	<anonymous> * expand_string_assignment_GOT;	// 6540
+	<anonymous> * set_error_trap_GOT;	// 6548
+	<anonymous> * dispose_fd_bitmap_GOT;	// 6558
+	<anonymous> * exec_builtin_GOT;	// 6560
+	<anonymous> * dispose_redirects_GOT;	// 6568
+	<anonymous> * dispose_words_GOT;	// 6570
+	<anonymous> * __libc_csu_init_GOT;	// 6578
+	<anonymous> * internal_error_GOT;	// 6580
+	<anonymous> * jobs_builtin_GOT;	// 6588
+	<anonymous> * pop_scope_GOT;	// 6590
+	<anonymous> * all_exported_variables_GOT;	// 6598
+	<anonymous> * set_debug_trap_GOT;	// 65A0
+	<anonymous> * pop_stream_GOT;	// 65A8
+	<anonymous> * main_GOT;	// 65B0
+	<anonymous> * initialize_traps_GOT;	// 65B8
+	<anonymous> * restore_parser_state_GOT;	// 65C0
+	<anonymous> * char_is_quoted_GOT;	// 65C8
+	<anonymous> * expand_string_unsplit_GOT;	// 65D0
+	<anonymous> * bash_brace_completion_GOT;	// 65D8
+	<anonymous> * trap_handler_GOT;	// 65E0
+	<anonymous> * command_builtin_GOT;	// 65E8
+	<anonymous> * bash_servicename_completion_function_GOT;	// 65F0
+	<anonymous> * all_visible_variables_GOT;	// 65F8
+	<anonymous> * bash_groupname_completion_function_GOT;	// 6600
+	<anonymous> * assign_in_env_GOT;	// 6608
+	<anonymous> * merge_temporary_env_GOT;	// 6610
+	<anonymous> * kill_builtin_GOT;	// 6618
+	<anonymous> * __ctype_toupper_loc_GOT;	// 90D0
+	<anonymous> * wctype_GOT;	// 90E0
+	<anonymous> * endgrent_GOT;	// 90F0
+	<anonymous> * wcrtomb_GOT;	// 9100
+	<anonymous> * strstr_GOT;	// 9110
+	<anonymous> * __snprintf_chk_GOT;	// 9120
+	<anonymous> * fdopen_GOT;	// 9130
+	<anonymous> * setitimer_GOT;	// 9140
+	<anonymous> * pathconf_GOT;	// 9150
+	<anonymous> * rl_insert_text_GOT;	// 9160
+	<anonymous> * stifle_history_GOT;	// 9170
+	<anonymous> * dup_GOT;	// 9180
+	<anonymous> * mbsrtowcs_GOT;	// 9190
+	<anonymous> * iswlower_GOT;	// 91A0
+	<anonymous> * rl_vi_end_word_GOT;	// 91B0
+	<anonymous> * __strtol_internal_GOT;	// 91C0
+	<anonymous> * strcmp_GOT;	// 91D0
+	<anonymous> * __vfprintf_chk_GOT;	// 91E0
+	<anonymous> * iswctype_GOT;	// 91F0
+	<anonymous> * wctomb_GOT;	// 9200
+	<anonymous> * rl_get_termcap_GOT;	// 9210
+	<anonymous> * rl_forced_update_display_GOT;	// 9220
+	<anonymous> * read_GOT;	// 9230
+	<anonymous> * wcscoll_GOT;	// 9240
+	<anonymous> * getpwuid_GOT;	// 9250
+	<anonymous> * fopen_GOT;	// 9260
+	<anonymous> * fflush_GOT;	// 9270
+	<anonymous> * rl_bind_keyseq_GOT;	// 9280
+	<anonymous> * sigprocmask_GOT;	// 9290
+	<anonymous> * tputs_GOT;	// 92A0
+	<anonymous> * where_history_GOT;	// 92B0
+	<anonymous> * rl_forward_word_GOT;	// 92C0
+	<anonymous> * gai_strerror_GOT;	// 92D0
+	<anonymous> * towlower_GOT;	// 92E0
+	<anonymous> * history_truncate_file_GOT;	// 92F0
+	<anonymous> * wcsrtombs_GOT;	// 9300
+	<anonymous> * memmove_GOT;	// 9310
+	<anonymous> * free_GOT;	// 9320
+	<anonymous> * rl_complete_internal_GOT;	// 9330
+	<anonymous> * rl_variable_bind_GOT;	// 9340
+	<anonymous> * strchrnul_GOT;	// 9350
+	<anonymous> * rl_completion_matches_GOT;	// 9360
+	<anonymous> * mbsinit_GOT;	// 9370
+	<anonymous> * memcpy_GOT;	// 9380
+	<anonymous> * confstr_GOT;	// 9390
+	<anonymous> * add_history_GOT;	// 93A0
+	<anonymous> * rl_read_init_file_GOT;	// 93B0
+	<anonymous> * faccessat_GOT;	// 93C0
+	<anonymous> * rl_funmap_names_GOT;	// 93D0
+	<anonymous> * ferror_GOT;	// 93E0
+	<anonymous> * rl_parse_and_bind_GOT;	// 93F0
+	<anonymous> * fgets_GOT;	// 9400
+	<anonymous> * time_GOT;	// 9410
+	<anonymous> * history_is_stifled_GOT;	// 9420
+	<anonymous> * rl_set_keymap_GOT;	// 9430
+	<anonymous> * lseek_GOT;	// 9440
+	<anonymous> * rl_complete_GOT;	// 9450
+	<anonymous> * clear_history_GOT;	// 9460
+	<anonymous> * strtold_GOT;	// 9470
+	<anonymous> * write_history_GOT;	// 9480
+	<anonymous> * tcsetpgrp_GOT;	// 9490
+	<anonymous> * stpcpy_GOT;	// 94A0
+	<anonymous> * select_GOT;	// 94B0
+	<anonymous> * sleep_GOT;	// 94C0
+	<anonymous> * wcsncmp_GOT;	// 94D0
+	<anonymous> * dcgettext_GOT;	// 94E0
+	<anonymous> * eaccess_GOT;	// 94F0
+	<anonymous> * rl_generic_bind_GOT;	// 9500
+	<anonymous> * rl_unbind_key_in_map_GOT;	// 9510
+	<anonymous> * rl_add_undo_GOT;	// 9520
+	<anonymous> * read_history_GOT;	// 9530
+	<anonymous> * rl_vi_start_inserting_GOT;	// 9540
+	<anonymous> * rl_function_of_keyseq_GOT;	// 9550
+	<anonymous> * dlclose_GOT;	// 9560
+	<anonymous> * rl_filename_completion_function_GOT;	// 9570
+	<anonymous> * alarm_GOT;	// 9580
+	<anonymous> * getuid_GOT;	// 9590
+	<anonymous> * killpg_GOT;	// 95A0
+	<anonymous> * sysconf_GOT;	// 95B0
+	<anonymous> * __strtoul_internal_GOT;	// 95C0
+	<anonymous> * getrlimit_GOT;	// 95D0
+	<anonymous> * realloc_GOT;	// 95E0
+	<anonymous> * geteuid_GOT;	// 95F0
+	<anonymous> * getservent_GOT;	// 9600
+	<anonymous> * read_history_range_GOT;	// 9610
+	<anonymous> * __fdelt_chk_GOT;	// 9620
+	<anonymous> * dlerror_GOT;	// 9630
+	<anonymous> * rl_reset_terminal_GOT;	// 9640
+	<anonymous> * rl_variable_dumper_GOT;	// 9650
+	<anonymous> * dup2_GOT;	// 9660
+	<anonymous> * textdomain_GOT;	// 9670
+	<anonymous> * strcasestr_GOT;	// 9680
+	<anonymous> * _IO_putc_GOT;	// 9690
+	<anonymous> * chdir_GOT;	// 96A0
+	<anonymous> * strsignal_GOT;	// 96B0
+	<anonymous> * rl_newline_GOT;	// 96C0
+	<anonymous> * tzset_GOT;	// 96D0
+	<anonymous> * getegid_GOT;	// 96E0
+	<anonymous> * mblen_GOT;	// 96F0
+	<anonymous> * free_history_entry_GOT;	// 9700
+	<anonymous> * rl_insert_GOT;	// 9710
+	<anonymous> * __xstat_GOT;	// 9720
+	<anonymous> * fwrite_GOT;	// 9730
+	<anonymous> * ioctl_GOT;	// 9740
+	<anonymous> * readline_GOT;	// 9750
+	<anonymous> * getpgrp_GOT;	// 9760
+	<anonymous> * regfree_GOT;	// 9770
+	<anonymous> * mbrtowc_GOT;	// 9780
+	<anonymous> * __ctype_get_mb_cur_max_GOT;	// 9790
+	<anonymous> * strcat_GOT;	// 97A0
+	<anonymous> * readlink_GOT;	// 97B0
+	<anonymous> * rl_kill_text_GOT;	// 97C0
+	<anonymous> * history_get_GOT;	// 97D0
+	<anonymous> * rl_macro_dumper_GOT;	// 97E0
+	<anonymous> * strcpy_GOT;	// 97F0
+	<anonymous> * getpid_GOT;	// 9800
+	<anonymous> * previous_history_GOT;	// 9810
+	<anonymous> * tcsetattr_GOT;	// 9820
+	<anonymous> * unlink_GOT;	// 9830
+	<anonymous> * waitpid_GOT;	// 9840
+	<anonymous> * wcscmp_GOT;	// 9850
+	<anonymous> * rl_list_funmap_names_GOT;	// 9860
+	<anonymous> * rl_completion_mode_GOT;	// 9870
+	<anonymous> * gethostname_GOT;	// 9880
+	<anonymous> * mbsnrtowcs_GOT;	// 9890
+	<anonymous> * gettimeofday_GOT;	// 98A0
+	<anonymous> * setrlimit_GOT;	// 98B0
+	<anonymous> * __asprintf_chk_GOT;	// 98C0
+	<anonymous> * malloc_GOT;	// 98D0
+	<anonymous> * rl_add_defun_GOT;	// 98E0
+	<anonymous> * puts_GOT;	// 98F0
+	<anonymous> * setgid_GOT;	// 9900
+	<anonymous> * __fxstat_GOT;	// 9910
+	<anonymous> * rl_read_key_GOT;	// 9920
+	<anonymous> * sigaddset_GOT;	// 9930
+	<anonymous> * getdtablesize_GOT;	// 9940
+	<anonymous> * strcoll_GOT;	// 9950
+	<anonymous> * __memmove_chk_GOT;	// 9960
+	<anonymous> * __memcpy_chk_GOT;	// 9970
+	<anonymous> * strerror_GOT;	// 9980
+	<anonymous> * open_GOT;	// 99A0
+	<anonymous> * rl_menu_complete_GOT;	// 99B0
+	<anonymous> * kill_GOT;	// 99C0
+	<anonymous> * getcwd_GOT;	// 99D0
+	<anonymous> * rl_named_function_GOT;	// 99E0
+	<anonymous> * exit_GOT;	// 99F0
+	<anonymous> * strftime_GOT;	// 9A00
+	<anonymous> * history_list_GOT;	// 9A10
+	<anonymous> * wctob_GOT;	// 9A20
+	<anonymous> * ttyname_GOT;	// 9A30
+	<anonymous> * localtime_GOT;	// 9A40
+	<anonymous> * tcgetpgrp_GOT;	// 9A50
+	<anonymous> * strtoul_GOT;	// 9A60
+	<anonymous> * strchr_GOT;	// 9A70
+	<anonymous> * rl_get_previous_history_GOT;	// 9A80
+	<anonymous> * strlen_GOT;	// 9A90
+	<anonymous> * __libc_start_main_GOT;	// 9AA0
+	<anonymous> * sigdelset_GOT;	// 9AB0
+	<anonymous> * setvbuf_GOT;	// 9AC0
+	<anonymous> * write_GOT;	// 9AD0
+	<anonymous> * execve_GOT;	// 9AE0
+	<anonymous> * iswupper_GOT;	// 9AF0
+	<anonymous> * using_history_GOT;	// 9B00
+	<anonymous> * strcasecmp_GOT;	// 9B10
+	<anonymous> * fcntl_GOT;	// 9B20
+	<anonymous> * rl_bind_key_in_map_GOT;	// 9B30
+	<anonymous> * dlsym_GOT;	// 9B40
+	<anonymous> * __errno_location_GOT;	// 9B50
+	<anonymous> * iswalnum_GOT;	// 9B60
+	<anonymous> * setservent_GOT;	// 9B70
+	<anonymous> * strncasecmp_GOT;	// 9B80
+	<anonymous> * memset_GOT;	// 9B90
+	<anonymous> * getgid_GOT;	// 9BA0
+	<anonymous> * putchar_GOT;	// 9BB0
+	<anonymous> * strncpy_GOT;	// 9BC0
+	<anonymous> * rl_vi_bWord_GOT;	// 9BD0
+	<anonymous> * setgrent_GOT;	// 9BE0
+	<anonymous> * rl_delete_text_GOT;	// 9BF0
+	<anonymous> * regexec_GOT;	// 9C00
+	<anonymous> * rl_crlf_GOT;	// 9C10
+	<anonymous> * getgrent_GOT;	// 9C20
+	<anonymous> * rl_redisplay_GOT;	// 9C30
+	<anonymous> * rl_on_new_line_GOT;	// 9C40
+	<anonymous> * __vsnprintf_chk_GOT;	// 9C50
+	<anonymous> * rl_unbind_function_in_map_GOT;	// 9C60
+	<anonymous> * __strncpy_chk_GOT;	// 9C70
+	<anonymous> * rl_function_dumper_GOT;	// 9C80
+	<anonymous> * rl_set_screen_size_GOT;	// 9C90
+	<anonymous> * __strcpy_chk_GOT;	// 9CA0
+	<anonymous> * rl_initialize_GOT;	// 9CB0
+	<anonymous> * strnlen_GOT;	// 9CC0
+	<anonymous> * pipe_GOT;	// 9CD0
+	<anonymous> * rl_ding_GOT;	// 9CE0
+	<anonymous> * __printf_chk_GOT;	// 9CF0
+	<anonymous> * history_set_pos_GOT;	// 9D00
+	<anonymous> * fileno_GOT;	// 9D10
+	<anonymous> * __longjmp_chk_GOT;	// 9D20
+	<anonymous> * wcswidth_GOT;	// 9D30
+	<anonymous> * sigemptyset_GOT;	// 9D40
+	<anonymous> * rl_make_bare_keymap_GOT;	// 9D50
+	<anonymous> * readdir_GOT;	// 9D60
+	<anonymous> * setlocale_GOT;	// 9D70
+	<anonymous> * rl_variable_value_GOT;	// 9D80
+	<anonymous> * wcschr_GOT;	// 9D90
+	<anonymous> * fork_GOT;	// 9DA0
+	<anonymous> * rl_invoking_keyseqs_GOT;	// 9DB0
+	<anonymous> * endpwent_GOT;	// 9DC0
+	<anonymous> * wcslen_GOT;	// 9DD0
+	<anonymous> * __sigsetjmp_GOT;	// 9DE0
+	<anonymous> * fputc_GOT;	// 9DF0
+	<anonymous> * rl_get_keymap_by_name_GOT;	// 9E00
+	<anonymous> * setuid_GOT;	// 9E10
+	<anonymous> * setpgid_GOT;	// 9E20
+	<anonymous> * clearerr_GOT;	// 9E30
+	<anonymous> * getppid_GOT;	// 9E40
+	<anonymous> * fclose_GOT;	// 9E50
+	<anonymous> * getgroups_GOT;	// 9E60
+	<anonymous> * regcomp_GOT;	// 9E70
+	<anonymous> * strrchr_GOT;	// 9E80
+	<anonymous> * history_get_time_GOT;	// 9E90
+	<anonymous> * mbstowcs_GOT;	// 9EA0
+	<anonymous> * getpeername_GOT;	// 9EB0
+	<anonymous> * sbrk_GOT;	// 9EC0
+	<anonymous> * getrusage_GOT;	// 9ED0
+	<anonymous> * getaddrinfo_GOT;	// 9EE0
+	<anonymous> * freeaddrinfo_GOT;	// 9EF0
+	<anonymous> * tilde_expand_GOT;	// 9F00
+	<anonymous> * dlopen_GOT;	// 9F10
+	<anonymous> * socket_GOT;	// 9F20
+	<anonymous> * qsort_GOT;	// 9F30
+	<anonymous> * strncmp_GOT;	// 9F40
+	<anonymous> * __fprintf_chk_GOT;	// 9F50
+	<anonymous> * remove_history_GOT;	// 9F60
+	<anonymous> * bindtextdomain_GOT;	// 9F70
+	<anonymous> * __lxstat_GOT;	// 9F80
+	<anonymous> * history_tokenize_GOT;	// 9F90
+	<anonymous> * history_expand_GOT;	// 9FA0
+	<anonymous> * rl_get_keymap_GOT;	// 9FB0
+	<anonymous> * rl_bind_key_if_unbound_in_map_GOT;	// 9FC0
+	<anonymous> * unstifle_history_GOT;	// 9FD0
+	<anonymous> * rl_push_macro_input_GOT;	// 9FE0
+	<anonymous> * rl_bind_keyseq_in_map_GOT;	// 9FF0
+	<anonymous> * abort_GOT;	// A000
+	<anonymous> * isatty_GOT;	// A010
+	<anonymous> * umask_GOT;	// A020
+	<anonymous> * __fpurge_GOT;	// A030
+	<anonymous> * towupper_GOT;	// A040
+	<anonymous> * wcsdup_GOT;	// A050
+	<anonymous> * fputs_GOT;	// A060
+	<anonymous> * connect_GOT;	// A070
+	<anonymous> * strtol_GOT;	// A080
+	<anonymous> * dcngettext_GOT;	// A090
+	<anonymous> * sigaction_GOT;	// A0A0
+	<anonymous> * closedir_GOT;	// A0B0
+	<anonymous> * replace_history_entry_GOT;	// A0C0
+	<anonymous> * close_GOT;	// A0D0
+	<anonymous> * endservent_GOT;	// A0E0
+	<anonymous> * append_history_GOT;	// A0F0
+	<anonymous> * __ctype_tolower_loc_GOT;	// A100
+	<anonymous> * __ctype_b_loc_GOT;	// A110
+	<anonymous> * opendir_GOT;	// A120
+	<anonymous> * tcgetattr_GOT;	// A130
+	<anonymous> * mbtowc_GOT;	// A140
+	<anonymous> * __sprintf_chk_GOT;	// A150
 	word64 secondary_prompt;	// A1C0
 	word64 primary_prompt;	// A1C8
 	word64 bash_getcwd_errstr;	// A1E0
 	word64 the_current_maintainer;	// A228
 	word64 pgrp_pipe;	// A274
+	<anonymous> * wait_for_background_pids_GOT;	// A298
 	word64 bash_license;	// A320
 	word64 bash_copyright;	// A328
 	word64 sccs_version;	// A330

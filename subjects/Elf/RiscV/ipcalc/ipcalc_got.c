@@ -4,4 +4,41 @@
 
 #include "ipcalc.h"
 
-<anonymous> * g_ptr1A100 = &g_t14F00; // 000000000001A100
+<anonymous> * herror_GOT = &g_t14F00; // 000000000001A010
+<anonymous> * __strdup_GOT = &g_t14F00; // 000000000001A018
+<anonymous> * clock_gettime_GOT = &g_t14F00; // 000000000001A020
+<anonymous> * close_GOT = &g_t14F00; // 000000000001A028
+<anonymous> * read_GOT = &g_t14F00; // 000000000001A030
+<anonymous> * inet_ntop_GOT = &g_t14F00; // 000000000001A038
+<anonymous> * snprintf_GOT = &g_t14F00; // 000000000001A040
+<anonymous> * getaddrinfo_GOT = &g_t14F00; // 000000000001A048
+<anonymous> * dlopen_GOT = &g_t14F00; // 000000000001A050
+<anonymous> * open_GOT = &g_t14F00; // 000000000001A058
+<anonymous> * __snprintf_chk_GOT = &g_t14F00; // 000000000001A060
+<anonymous> * dlsym_GOT = &g_t14F00; // 000000000001A068
+<anonymous> * exit_GOT = &g_t14F00; // 000000000001A070
+<anonymous> * getopt_long_GOT = &g_t14F00; // 000000000001A078
+<anonymous> * __vasprintf_chk_GOT = &g_t14F00; // 000000000001A080
+<anonymous> * __asprintf_chk_GOT = &g_t14F00; // 000000000001A088
+<anonymous> * getnameinfo_GOT = &g_t14F00; // 000000000001A090
+<anonymous> * memset_GOT = &g_t14F00; // 000000000001A098
+<anonymous> * inet_pton_GOT = &g_t14F00; // 000000000001A0A0
+<anonymous> * strcmp_GOT = &g_t14F00; // 000000000001A0A8
+<anonymous> * free_GOT = &g_t14F00; // 000000000001A0B0
+<anonymous> * __printf_chk_GOT = &g_t14F00; // 000000000001A0B8
+<anonymous> * __sprintf_chk_GOT = &g_t14F00; // 000000000001A0C0
+<anonymous> * fwrite_GOT = &g_t14F00; // 000000000001A0C8
+<anonymous> * memcmp_GOT = &g_t14F00; // 000000000001A0D0
+<anonymous> * fputs_GOT = &g_t14F00; // 000000000001A0D8
+<anonymous> * isatty_GOT = &g_t14F00; // 000000000001A0E0
+<anonymous> * __fprintf_chk_GOT = &g_t14F00; // 000000000001A0E8
+<anonymous> * __libc_start_main_GOT = &g_t14F00; // 000000000001A0F0
+<anonymous> * putchar_GOT = &g_t14F00; // 000000000001A0F8
+<anonymous> * fputc_GOT = &g_t14F00; // 000000000001A100
+<anonymous> * __stack_chk_fail_GOT = &g_t14F00; // 000000000001A108
+<anonymous> * __errno_location_GOT = &g_t14F00; // 000000000001A110
+<anonymous> * strtol_GOT = &g_t14F00; // 000000000001A118
+<anonymous> * strchr_GOT = &g_t14F00; // 000000000001A120
+<anonymous> * memcpy_GOT = &g_t14F00; // 000000000001A128
+<anonymous> * abort_GOT = &g_t14F00; // 000000000001A130
+<anonymous> * freeaddrinfo_GOT = &g_t14F00; // 000000000001A138

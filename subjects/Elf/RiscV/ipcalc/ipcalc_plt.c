@@ -160,7 +160,7 @@ void putchar()
 //      fn0000000000015FCC
 void fputc()
 {
-	<anonymous> * t3_n = g_ptr1A100;
+	<anonymous> * t3_n = fputc_GOT;
 	t3_n();
 }
 

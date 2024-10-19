@@ -460,7 +460,6 @@ namespace Reko.ImageLoaders.Elf
             var addrPreferred = ComputeBaseAddress(platform);
             Dump(addrPreferred);
             this.segmentMap = LoadImageBytes(platform, rawImage, addrPreferred);
-            LoadDynamicSegment();
             var program = new Program(new ByteProgramMemory(segmentMap), platform.Architecture, platform);
             return program;
         }
@@ -566,12 +565,55 @@ namespace Reko.ImageLoaders.Elf
             // Locate the GOT. It's fully possible that the binary doesn't have a 
             // .got section.
             var got = program.SegmentMap.Segments.Values.FirstOrDefault(s => s.Name == ".got");
-            if (got is null)
-                return;
+            if (got is not null)
+            {
+                var gotStart = got.Address;
+                var gotEnd = got.EndAddress;
+                int cEntries = ConstructGotEntries(program, symbols, gotStart, gotEnd, false);
+                if (cEntries > 0)
+                    return;
+            }
+            // Ain't got no GOT!
+            // Reconstruct GOT pointers from the dynamic relocations
+            ReconstructGotPointersFromDynamicRelocations(program, symbols);
+        }
 
-            var gotStart = got.Address;
-            var gotEnd = got.EndAddress;
-            ConstructGotEntries(program, symbols, gotStart, gotEnd, false);
+        int ReconstructGotPointersFromDynamicRelocations(
+            Program program,
+            SortedList<Address, ImageSymbol> symbols)
+        {
+            int cSymbols = 0;
+            foreach (var reloc in BinaryImage.DynamicRelocations)
+            {
+                var symbol = reloc.Symbol;
+                var addrGot = CreateAddress(reloc.Offset);
+                if (symbol is not null && 
+                    (symbol.Type == ElfSymbolType.STT_FUNC))
+                    // || symbol.Type == ElfSymbolType.STT_OBJECT))
+                {
+                    var name = symbol.Name;
+                    ImageSymbol gotSym = CreateGotSymbol(program.Architecture, addrGot, name);
+                    symbols[addrGot] = gotSym;
+                    var symType = symbol.Type == ElfSymbolType.STT_FUNC
+                        ? SymbolType.ExternalProcedure
+                        : SymbolType.Data;
+                    if (symbol.SectionIndex == 0) // An external thing
+                    {
+                        ++cSymbols;
+                        if (!program.ImportReferences.TryGetValue(addrGot, out var oldImpRef))
+                        {
+                            program.ImportReferences.Add(
+                                addrGot,
+                                new NamedImportReference(
+                                    addrGot,
+                                    null,
+                                    name,
+                                    symType));
+                        }
+                    }
+                }
+            }
+            return cSymbols;
         }
 
         /// <summary>
@@ -583,11 +625,12 @@ namespace Reko.ImageLoaders.Elf
         /// <param name="symbols"></param>
         /// <param name="gotStart"></param>
         /// <param name="gotEnd"></param>
-        public void ConstructGotEntries(Program program, SortedList<Address, ImageSymbol> symbols, Address gotStart, Address gotEnd, bool makeGlobals)
+        public int ConstructGotEntries(Program program, SortedList<Address, ImageSymbol> symbols, Address gotStart, Address gotEnd, bool makeGlobals)
         {
-            ElfImageLoader.trace.Verbose("== Constructing GOT entries ==");
+            ElfImageLoader.trace.Verbose("== Constructing GOT from .got section entries ==");
             if (!program.TryCreateImageReader(program.Architecture, gotStart, out var rdr))
-                return;
+                return 0;
+            int cEntries = 0;
             var arch = program.Architecture;
             while (rdr.Address < gotEnd)
             {
@@ -600,6 +643,7 @@ namespace Reko.ImageLoaders.Elf
                     // This GOT entry is a known symbol!
                     if (symbol.Type == SymbolType.Procedure || symbol.Type == SymbolType.ExternalProcedure)
                     {
+                        ++cEntries;
                         var name = symbol.Name!;
                         ImageSymbol gotSym = CreateGotSymbol(arch, addrGot, name);
                         symbols[addrGot] = gotSym;
@@ -626,6 +670,7 @@ namespace Reko.ImageLoaders.Elf
                     ImageSymbol gotDataSym = ImageSymbol.Create(SymbolType.Data, program.Architecture, addrGot);
                     ElfImageLoader.trace.Verbose("{0}+{1:X4}: GOT entry with no symbol, assuming local data {2}",
                         gotStart, addrGot - gotStart, addrGot);
+                    ++cEntries;
                     program.ImportReferences.Add(
                         addrGot,
                         new NamedImportReference(
@@ -635,6 +680,7 @@ namespace Reko.ImageLoaders.Elf
                             gotDataSym.Type));
                 }
             }
+            return cEntries;
         }
 
         public ImageSymbol CreateGotSymbol(IProcessorArchitecture arch, Address addrGot, string name)
@@ -810,10 +856,6 @@ namespace Reko.ImageLoaders.Elf
                 ElfImageLoader.trace.Inform("== Loading ELF symbols from section {0} (at offset {1:X})", section.Name!, section.FileOffset);
                 var symtab = LoadSymbolsSection(section);
                 BinaryImage.SymbolsByFileOffset[section.FileOffset] = symtab;
-                if (section.Type == SectionHeaderType.SHT_DYNSYM)
-                {
-                    BinaryImage.AddDynamicSymbols(symtab);
-                }
             }
         }
 
@@ -915,7 +957,8 @@ namespace Reko.ImageLoaders.Elf
                     var cEntries = relSection.EntryCount();
 
                     var relocations = LoadRelEntries(sectionSymbols, fileOffset, cEntries);
-                    if (referringSection?.VirtualAddress is not null)
+                    var vaddr = referringSection?.VirtualAddress;
+                    if (vaddr is not null && vaddr.Offset != 0 && this.IsRelocatableFile)
                     {
                         BinaryImage.AddRelocations(referringSection?.Index ?? 0, relocations);
                     }
@@ -979,15 +1022,17 @@ namespace Reko.ImageLoaders.Elf
         {
             var symbols = new List<ElfSymbol>();
             var result = new List<ElfRelocation>();
-            bool alreadSeen = false;
+            bool alreadySeen = false;
             foreach (var dynSeg in EnumerateDynamicSegments())
             {
-                if (alreadSeen)
+                if (alreadySeen)
                 {
                     var eventListener = Services.GetService<IEventListener>();
                     eventListener?.Warn("Multiple dynamic ELF sections detected. Results may be unpredictable.");
                     return result;
                 }
+                alreadySeen = true;
+
                 var dynEntries = this.BinaryImage.DynamicEntries;
                 dynEntries.TryGetValue(ElfDynamicEntry.DT_STRTAB, out var strtab);
                 dynEntries.TryGetValue(ElfDynamicEntry.DT_SYMTAB, out var symtab);
@@ -1015,6 +1060,7 @@ namespace Reko.ImageLoaders.Elf
                 var syms = LoadSymbolsFromDynamicSegment(dynSeg, symtab, syment, offStrtab, offSymtab)
                         .Select((s, i) => (s, i))
                         .ToDictionary(x => x.i, x => x.s);
+                BinaryImage.AddDynamicSymbols(syms);
 
                 if (rela is { })
                 {
@@ -1022,7 +1068,8 @@ namespace Reko.ImageLoaders.Elf
                         throw new BadImageFormatException("ELF dynamic segment lacks the size of the relocation table.");
                     if (relaent is null)
                         throw new BadImageFormatException("ELF dynamic segment lacks the size of relocation table entries.");
-                    var relocations = LoadRelaEntries(syms, rela.UValue, (uint)(relaent.UValue / relasz.UValue));
+                    var fileOffset = this.AddressToFileOffset(rela.UValue);
+                    var relocations = LoadRelaEntries(syms, fileOffset, (uint)(relaent.UValue / relasz.UValue));
                     result.AddRange(relocations);
                 }
                 else if (rel is { })
@@ -1031,7 +1078,8 @@ namespace Reko.ImageLoaders.Elf
                         throw new BadImageFormatException("ELF dynamic segment lacks the size of the relocation table.");
                     if (relent is null)
                         throw new BadImageFormatException("ELF dynamic segment lacks the size of relocation table entries.");
-                    var relocations = LoadRelEntries(syms, rel.UValue, (uint) (relsz.UValue / relent.UValue));
+                    var fileOffset = this.AddressToFileOffset(rel.UValue);
+                    var relocations = LoadRelEntries(syms, fileOffset, (uint) (relsz.UValue / relent.UValue));
                     result.AddRange(relocations);
                 }
 
@@ -1135,7 +1183,6 @@ namespace Reko.ImageLoaders.Elf
             }
             return result;
         }
-
 
         public IEnumerable<ElfSegment> EnumerateDynamicSegments()
         {

@@ -166,8 +166,6 @@ namespace Reko.Core.Loading
         public string? Name { get => n; set
             {
                 n = value;
-                if (n == "_mm_free")
-                    _ = this; //$DEBUG
             }
         }
         private string? n;

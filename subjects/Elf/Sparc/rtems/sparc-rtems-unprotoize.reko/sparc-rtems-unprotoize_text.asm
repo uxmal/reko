@@ -11,13 +11,13 @@ _start proc
 	or	%g0,%g1,%o0
 
 l000114B4:
-	call	atexit
+	call	atexit_GOT
 	sethi	00000000,%g0
 
 l000114BC:
 	sethi	0000005B,%o0
 	or	%o0,000002E4,%o0
-	call	atexit
+	call	atexit_GOT
 	sethi	00000000,%g0
 	call	_init
 	sethi	00000000,%g0
@@ -31,7 +31,7 @@ l000114BC:
 	st	%o2,[%o3+%g0]
 	call	main
 	sethi	00000000,%g0
-	call	exit
+	call	exit_GOT
 00011500 01 00 00 00 40 00 59 DF 01 00 00 00             ....@.Y.....    
 
 ;; fn0001150C: 0001150C
@@ -185,7 +185,7 @@ notice proc
 	st	%i5,[%i6+88]
 	or	%o0,00000240,%o0
 	or	%g0,%i0,%o1
-	call	vfprintf
+	call	vfprintf_GOT
 	add	%i6,00000048,%o2
 	jmpl	%i7,+00000008,%g0
 	restore	%g0,%g0,%g0
@@ -203,7 +203,7 @@ notice proc
 ;;     00016BD8 (in pexecute)
 xstrerror proc
 	save	%sp,FFFFFF90,%sp
-	call	strerror
+	call	strerror_GOT
 	or	%g0,%i0,%o0
 	jmpl	%i7,+00000008,%g0
 	restore	%g0,%o0,%o0
@@ -227,7 +227,7 @@ xstrerror proc
 ;;     00015B40 (in make_temp_file)
 xmalloc proc
 	save	%sp,FFFFFF90,%sp
-	call	malloc
+	call	malloc_GOT
 	or	%g0,%i0,%o0
 	subcc	%o0,00000000,%g0
 	bne	000116A8
@@ -239,7 +239,7 @@ l0001168C:
 	sethi	0000005C,%o0
 	call	notice
 	or	%o0,000000A8,%o0
-	call	exit
+	call	exit_GOT
 000116A4             90 10 20 21                             .. !        
 
 l000116A8:
@@ -259,13 +259,13 @@ xrealloc proc
 	or	%g0,%i1,%o1
 
 l000116C0:
-	call	realloc
+	call	realloc_GOT
 	sethi	00000000,%g0
 	ba	000116DC
 	subcc	%o0,00000000,%g0
 
 l000116D0:
-	call	malloc
+	call	malloc_GOT
 	or	%g0,%o1,%o0
 	subcc	%o0,00000000,%g0
 
@@ -279,7 +279,7 @@ l000116E4:
 	sethi	0000005C,%o0
 	call	notice
 	or	%o0,000000A8,%o0
-	call	exit
+	call	exit_GOT
 000116FC                                     90 10 20 21             .. !
 
 l00011700:
@@ -297,7 +297,7 @@ xfree proc
 	sethi	00000000,%g0
 
 l00011718:
-	call	free
+	call	free_GOT
 	sethi	00000000,%g0
 
 l00011720:
@@ -315,7 +315,7 @@ savestring proc
 	call	xmalloc
 	add	%i1,00000001,%o0
 	or	%g0,%o0,%i0
-	call	strcpy
+	call	strcpy_GOT
 	or	%g0,%l0,%o1
 	jmpl	%i7,+00000008,%g0
 	restore	%g0,%g0,%g0
@@ -330,10 +330,10 @@ savestring2 proc
 	call	xmalloc
 	add	%o0,00000001,%o0
 	or	%g0,%o0,%i0
-	call	strcpy
+	call	strcpy_GOT
 	or	%g0,%l0,%o1
 	add	%i0,%i1,%o0
-	call	strcpy
+	call	strcpy_GOT
 	or	%g0,%i2,%o1
 	jmpl	%i7,+00000008,%g0
 	restore	%g0,%g0,%g0
@@ -346,7 +346,7 @@ fancy_abort proc
 	sethi	0000005C,%o0
 	call	notice
 	or	%o0,000000C8,%o0
-	call	exit
+	call	exit_GOT
 0001179C                                     90 10 20 21             .. !
 
 ;; dupnstr: 000117A0
@@ -363,7 +363,7 @@ dupnstr proc
 	add	%i1,00000001,%o0
 	or	%g0,%o0,%i0
 	or	%g0,%l0,%o1
-	call	strncpy
+	call	strncpy_GOT
 	or	%g0,%i1,%o2
 	stb	%g0,[%i0+%i1]
 	jmpl	%i7,+00000008,%g0
@@ -435,7 +435,7 @@ l00011844:
 
 l0001184C:
 	or	%g0,%i1,%o1
-	call	read
+	call	read_GOT
 	or	%g0,%l0,%o2
 	orcc	%o0,00000000,%i0
 	bge	00011874
@@ -474,7 +474,7 @@ l00011898:
 
 l000118A4:
 	or	%g0,%i1,%o1
-	call	write
+	call	write_GOT
 	or	%g0,%i2,%o2
 	subcc	%o0,00000000,%g0
 	bge,a	000118FC
@@ -586,7 +586,7 @@ usage proc
 	or	%o0,00000108,%o0
 	call	notice
 	or	%g0,%o1,%o2
-	call	exit
+	call	exit_GOT
 000119B8                         90 10 20 21                     .. !    
 
 ;; in_system_include_dir: 000119BC
@@ -600,7 +600,7 @@ in_system_include_dir proc
 	sethi	0000009F,%o0
 
 l000119D0:
-	call	abort
+	call	abort_GOT
 000119D4             01 00 00 00                             ....        
 
 l000119D8:
@@ -617,18 +617,18 @@ l000119F0:
 	ld	[%l1+%g0],%l0
 
 l000119F4:
-	call	strlen
+	call	strlen_GOT
 	or	%g0,%l0,%o0
 	or	%g0,%o0,%o2
 	or	%g0,%l0,%o1
-	call	strncmp
+	call	strncmp_GOT
 	or	%g0,%i0,%o0
 	subcc	%o0,00000000,%g0
 	bne,a	00011A30
 	add	%l1,00000010,%l1
 
 l00011A18:
-	call	strlen
+	call	strlen_GOT
 	ld	[%l1+%g0],%o0
 	ldsb	[%i0+%o0],%o1
 	subcc	%o1,0000002F,%g0
@@ -693,18 +693,18 @@ l00011AA0:
 	ld	[%l1+%g0],%l0
 
 l00011AA4:
-	call	strlen
+	call	strlen_GOT
 	or	%g0,%l0,%o0
 	or	%g0,%o0,%o2
 	or	%g0,%l0,%o1
-	call	strncmp
+	call	strncmp_GOT
 	or	%g0,%i0,%o0
 	subcc	%o0,00000000,%g0
 	bne,a	00011B28
 	ld	[%l1+4],%l1
 
 l00011AC8:
-	call	strlen
+	call	strlen_GOT
 	ld	[%l1+%g0],%o0
 	ldsb	[%i0+%o0],%o1
 	subcc	%o1,0000002F,%g0
@@ -712,7 +712,7 @@ l00011AC8:
 	ld	[%l1+4],%l1
 
 l00011AE0:
-	call	strlen
+	call	strlen_GOT
 	ld	[%l1+%g0],%o0
 	add	%i0,%o0,%o0
 	ldsb	[%o0+1],%o1
@@ -758,7 +758,7 @@ l00011B38:
 ;;     000148B8 (in edit_file)
 file_excluded_p proc
 	save	%sp,FFFFFF90,%sp
-	call	strlen
+	call	strlen_GOT
 	or	%g0,%i0,%o0
 	or	%g0,%o0,%l1
 	sethi	000000AD,%o0
@@ -771,17 +771,17 @@ l00011B64:
 	add	%i0,%l1,%l2
 
 l00011B68:
-	call	strlen
+	call	strlen_GOT
 	ld	[%l0+%g0],%o0
 	ld	[%l0+%g0],%o1
-	call	strcmp
+	call	strcmp_GOT
 	sub	%l2,%o0,%o0
 	subcc	%o0,00000000,%g0
 	bne,a	00011BB0
 	ld	[%l0+4],%l0
 
 l00011B88:
-	call	strlen
+	call	strlen_GOT
 	ld	[%l0+%g0],%o0
 	sub	%l1,%o0,%o0
 	add	%o0,%i0,%o0
@@ -863,7 +863,7 @@ add_symbol proc
 	save	%sp,FFFFFF90,%sp
 	or	%g0,%i0,%l0
 	st	%g0,[%l0+%g0]
-	call	strlen
+	call	strlen_GOT
 	or	%g0,%i1,%o0
 	or	%g0,%o0,%o1
 	call	savestring
@@ -910,7 +910,7 @@ l00011CC4:
 	or	%g0,%i0,%o0
 
 l00011CCC:
-	call	strcmp
+	call	strcmp_GOT
 	or	%g0,%i1,%o1
 	subcc	%o0,00000000,%g0
 	be	00011D34
@@ -927,7 +927,7 @@ l00011CF0:
 
 l00011CF4:
 	or	%g0,%i1,%o1
-	call	strcmp
+	call	strcmp_GOT
 	ld	[%i0+4],%o0
 	subcc	%o0,00000000,%g0
 	be	00011D34
@@ -1001,7 +1001,7 @@ l00011DAC:
 	ld	[%l4+%g0],%l0
 
 l00011DB0:
-	call	strlen
+	call	strlen_GOT
 	or	%g0,%l0,%o0
 	or	%g0,%o0,%l3
 	ldsb	[%i0+%g0],%o1
@@ -1013,7 +1013,7 @@ l00011DB0:
 l00011DD0:
 	or	%g0,%l0,%o1
 	or	%g0,%i0,%o0
-	call	strncmp
+	call	strncmp_GOT
 	or	%g0,%l3,%o2
 	subcc	%o0,00000000,%g0
 	bne,a	00011E64
@@ -1028,7 +1028,7 @@ l00011DEC:
 
 l00011E00:
 	ld	[%l4+4],%o0
-	call	strlen
+	call	strlen_GOT
 	or	%g0,00000001,%i1
 	or	%g0,%o0,%l2
 	ld	[%l5+848],%o1
@@ -1051,7 +1051,7 @@ l00011E2C:
 
 l00011E4C:
 	ld	[%l4+4],%o1
-	call	strcpy
+	call	strcpy_GOT
 	or	%g0,%l1,%o0
 	add	%l1,%l2,%l1
 	ba	00011EB8
@@ -1148,10 +1148,10 @@ l00011F44:
 	ld	[%o0+624],%i0
 
 l00011F4C:
-	call	strlen
+	call	strlen_GOT
 	or	%g0,%i0,%o0
 	or	%g0,%o0,%l0
-	call	strlen
+	call	strlen_GOT
 	or	%g0,%i1,%o0
 	add	%l0,%o0,%l0
 	add	%l0,00000009,%l0
@@ -1308,7 +1308,7 @@ l000120E0:
 	or	%g0,%i1,%o2
 	call	notice
 	or	%o5,00000148,%o0
-	call	exit
+	call	exit_GOT
 000120F8                         90 10 20 21                     .. !    
 
 l000120FC:
@@ -1364,7 +1364,7 @@ shortpath proc
 	sethi	000000AC,%o0
 	ld	[%o0+624],%l0
 	or	%g0,00000000,%l2
-	call	strlen
+	call	strlen_GOT
 	or	%g0,%i1,%o0
 	or	%g0,%o0,%l3
 	or	%g0,%i1,%o1
@@ -1461,7 +1461,7 @@ l0001223C:
 l00012248:
 	sll	%l2,00000001,%l0
 	add	%l0,%l2,%l0
-	call	strlen
+	call	strlen_GOT
 	or	%g0,%i0,%o0
 	add	%l0,%o0,%l0
 	subcc	%l0,%l3,%g0
@@ -1559,7 +1559,7 @@ l00012344:
 
 l0001234C:
 	or	%g0,%l1,%o0
-	call	stat
+	call	stat_GOT
 	add	%i6,FFFFFF68,%o1
 	or	%g0,%o0,%i0
 	subcc	%i0,FFFFFFFF,%g0
@@ -1612,7 +1612,7 @@ aux_info_corrupted proc
 	sethi	0000005C,%o0
 	call	notice
 	or	%o0,00000190,%o0
-	call	exit
+	call	exit_GOT
 000123F4             90 10 20 21                             .. !        
 
 ;; check_aux_info: 000123F8
@@ -1730,7 +1730,7 @@ l000124C4:
 	sub	%sp,%o0,%sp
 	add	%sp,00000060,%l0
 	or	%g0,%l1,%o2
-	call	strncpy
+	call	strncpy_GOT
 	or	%g0,%l0,%o0
 	sethi	000000A0,%o1
 	ld	[%o1+400],%o0
@@ -1795,7 +1795,7 @@ l00012594:
 	sub	%sp,%o0,%sp
 	add	%sp,00000060,%l0
 	or	%g0,%l1,%o2
-	call	strncpy
+	call	strncpy_GOT
 	or	%g0,%l0,%o0
 	sethi	000000A0,%o1
 	ld	[%o1+400],%o0
@@ -1823,10 +1823,10 @@ l000125EC:
 l000125FC:
 	sub	%i0,%o1,%l0
 	or	%g0,%l0,%o2
-	call	strncpy
+	call	strncpy_GOT
 	or	%g0,%l3,%o0
 	stb	%g0,[%l3+%l0]
-	call	atoi
+	call	atoi_GOT
 	or	%g0,%l3,%o0
 	st	%o0,[%l2+8]
 	add	%i0,00000001,%i0
@@ -1922,7 +1922,7 @@ l000126B8:
 	sethi	0000005C,%o1
 	or	%o1,000001C8,%o1
 	or	%g0,%i0,%o0
-	call	strncmp
+	call	strncmp_GOT
 	or	%g0,00000006,%o2
 	subcc	%o0,00000000,%g0
 	be	00012778
@@ -1931,7 +1931,7 @@ l000126B8:
 l0001275C:
 	or	%o1,000001D0,%o1
 	or	%g0,%i0,%o0
-	call	strncmp
+	call	strncmp_GOT
 	or	%g0,00000006,%o2
 	subcc	%o0,00000000,%g0
 	bne	00012780
@@ -2033,7 +2033,7 @@ l00012864:
 	add	%sp,00000060,%l0
 	or	%g0,%l1,%o2
 	or	%g0,%i0,%o1
-	call	strncpy
+	call	strncpy_GOT
 	or	%g0,%l0,%o0
 	stb	%g0,[%l0+%l1]
 	or	%l3,00000240,%o0
@@ -2064,7 +2064,7 @@ l000128C8:
 
 l000128DC:
 	ld	[%o2+12],%o1
-	call	strcmp
+	call	strcmp_GOT
 	ld	[%l2+12],%o0
 	subcc	%o0,00000000,%g0
 	be	00012AC0
@@ -2078,7 +2078,7 @@ l000128F4:
 	ld	[%o4+4],%o1
 	call	notice
 	ld	[%l2+8],%o2
-	call	exit
+	call	exit_GOT
 00012914             90 10 20 21                             .. !        
 
 l00012918:
@@ -2246,7 +2246,7 @@ l00012B5C:
 ;;     0001509C (in main)
 munge_compile_params proc
 	save	%sp,FFFFFF90,%sp
-	call	strlen
+	call	strlen_GOT
 	or	%g0,%i0,%o0
 	sll	%o0,00000002,%o0
 	add	%o0,00000027,%o0
@@ -2391,7 +2391,7 @@ l00012D00:
 	sethi	0000009F,%o1
 	st	%o0,[%o1+828]
 	or	%g0,%l1,%o1
-	call	memcpy
+	call	memcpy_GOT
 	sll	%l0,00000002,%o2
 	jmpl	%i7,+00000008,%g0
 	restore	%g0,%g0,%g0
@@ -2430,7 +2430,7 @@ l00012E54:
 	ld	[%l1+828],%o2
 	or	%g0,%o0,%l0
 	sll	%o1,00000002,%o1
-	call	strlen
+	call	strlen_GOT
 	st	%l0,[%o2+%o1]
 	or	%g0,%o0,%o1
 	sethi	0000005B,%o2
@@ -2483,12 +2483,12 @@ l00012F10:
 	ld	[%l0+336],%o2
 	sethi	0000005C,%o1
 	or	%o1,00000268,%o1
-	call	fprintf
+	call	fprintf_GOT
 	or	%g0,%l1,%o0
 	ld	[%i6-20],%o1
 	or	%g0,%l1,%o0
 	ld	[%i6-24],%o2
-	call	fprintf
+	call	fprintf_GOT
 	or	%g0,00000000,%i0
 	sethi	0000005C,%l0
 	or	%l0,00000270,%l0
@@ -2496,7 +2496,7 @@ l00012F10:
 	or	%g0,%l2,%o0
 	or	%g0,%o0,%o2
 	or	%g0,%l1,%o0
-	call	fprintf
+	call	fprintf_GOT
 	or	%g0,%l0,%o1
 	ba,a	0001302C
 
@@ -2525,7 +2525,7 @@ l0001302C:
 ;;     00014E60 (in do_processing)
 process_aux_info_file proc
 	save	%sp,FFFFFF08,%sp
-	call	strlen
+	call	strlen_GOT
 	or	%g0,%i0,%o0
 	or	%g0,%o0,%i3
 	add	%i3,0000000A,%o0
@@ -2533,17 +2533,17 @@ process_aux_info_file proc
 	sub	%sp,%o0,%sp
 	add	%sp,00000060,%l4
 	or	%g0,%i0,%o1
-	call	strcpy
+	call	strcpy_GOT
 	or	%g0,%l4,%o0
 	sethi	0000005B,%o1
 	or	%o1,00000300,%o1
-	call	strcat
+	call	strcat_GOT
 	or	%g0,%l4,%o0
 	or	%g0,00000000,%l2
 
 l00013074:
 	or	%g0,%l4,%o0
-	call	access
+	call	access_GOT
 	or	%g0,00000004,%o1
 	subcc	%o0,FFFFFFFF,%g0
 	bne	00013100
@@ -2602,7 +2602,7 @@ l00013108:
 	or	%g0,%l4,%o0
 
 l0001311C:
-	call	access
+	call	access_GOT
 	or	%g0,00000004,%o1
 	subcc	%o0,FFFFFFFF,%g0
 	bne	00013150
@@ -2620,7 +2620,7 @@ l00013130:
 
 l00013150:
 	or	%g0,%l4,%o0
-	call	stat
+	call	stat_GOT
 	or	%g0,%l1,%o1
 	subcc	%o0,FFFFFFFF,%g0
 	bne	00013188
@@ -2647,7 +2647,7 @@ l00013194:
 
 l0001319C:
 	or	%g0,%l1,%o1
-	call	stat
+	call	stat_GOT
 	or	%g0,%i0,%o0
 	subcc	%o0,FFFFFFFF,%g0
 	bne	0001320C
@@ -2691,7 +2691,7 @@ l0001320C:
 l00013218:
 	or	%g0,%l4,%o0
 	or	%g0,00000000,%o1
-	call	open
+	call	open_GOT
 	or	%g0,00000124,%o2
 	or	%g0,%o0,%l5
 	subcc	%l5,FFFFFFFF,%g0
@@ -2728,7 +2728,7 @@ l0001327C:
 	or	%l0,00000390,%l0
 
 l00013294:
-	call	close
+	call	close_GOT
 	or	%g0,%l5,%o0
 	subcc	%o0,00000000,%g0
 	be	00013344
@@ -2753,9 +2753,9 @@ l000132BC:
 	or	%g0,%l3,%o1
 	call	notice
 	or	%g0,%l1,%o2
-	call	free
+	call	free_GOT
 	or	%g0,%l6,%o0
-	call	close
+	call	close_GOT
 	or	%g0,%l5,%o0
 	ba,a	000135B8
 	sethi	000000AD,%o0
@@ -2937,7 +2937,7 @@ l000136A0:
 
 l000136D4:
 	or	%o0,00000240,%o0
-	call	longjmp
+	call	longjmp_GOT
 	or	%g0,00000001,%o1
 
 ;; check_source: 000136E0
@@ -2984,7 +2984,7 @@ seek_to_line proc
 	sethi	00000000,%g0
 
 l00013718:
-	call	abort
+	call	abort_GOT
 0001371C                                     01 00 00 00             ....
 
 l00013720:
@@ -3107,7 +3107,7 @@ l00013864:
 	ld	[%l2+528],%o0
 	or	%g0,%i0,%o1
 	add	%o0,00000001,%o0
-	call	memcpy
+	call	memcpy_GOT
 	or	%g0,%i1,%o2
 	ld	[%l2+528],%o1
 	add	%o1,%i1,%o1
@@ -3120,7 +3120,7 @@ l00013864:
 ;;     00013DE8 (in edit_formals_lists)
 output_string proc
 	save	%sp,FFFFFF90,%sp
-	call	strlen
+	call	strlen_GOT
 	or	%g0,%i0,%o0
 	or	%g0,%o0,%o1
 	call	output_bytes
@@ -3177,12 +3177,12 @@ edit_fn_declaration proc
 	ld	[%i0+16],%o0
 	ld	[%o0+4],%o0
 	st	%i1,[%i6+72]
-	call	strlen
+	call	strlen_GOT
 	st	%o0,[%i6-20]
 	call	save_pointers
 	st	%o0,[%i6-24]
 	sethi	000000AC,%o0
-	call	setjmp
+	call	setjmp_GOT
 	or	%o0,00000240,%o0
 	subcc	%o0,00000000,%g0
 	be	00013974
@@ -3412,7 +3412,7 @@ l00013D44:
 	or	%g0,%l3,%o1
 
 l00013D4C:
-	call	strlen
+	call	strlen_GOT
 	or	%g0,%l5,%o0
 	subcc	%l4,%o0,%g0
 	bne,a	00013D80
@@ -3421,7 +3421,7 @@ l00013D4C:
 l00013D60:
 	or	%g0,%l3,%o0
 	or	%g0,%l5,%o1
-	call	strncmp
+	call	strncmp_GOT
 	or	%g0,%l4,%o2
 	subcc	%o0,00000000,%g0
 	be	00013DD4
@@ -3564,7 +3564,7 @@ edit_fn_definition proc
 	call	save_pointers
 	st	%o0,[%i6-20]
 	sethi	000000AC,%o0
-	call	setjmp
+	call	setjmp_GOT
 	or	%o0,00000240,%o0
 	subcc	%o0,00000000,%g0
 	bne	00013FB0
@@ -3866,7 +3866,7 @@ l0001464C:
 	or	%g0,%l0,%o0
 	st	%o0,[%i6-24]
 	sethi	000000AC,%o0
-	call	setjmp
+	call	setjmp_GOT
 	or	%o0,00000240,%o0
 	subcc	%o0,00000000,%g0
 	bne	00014854
@@ -3960,7 +3960,7 @@ l0001475C:
 	add	%sp,00000060,%l2
 	or	%g0,%i0,%o1
 	or	%g0,%l0,%o2
-	call	strncpy
+	call	strncpy_GOT
 	or	%g0,%l2,%o0
 	sethi	0000005D,%o1
 	ld	[%o1+316],%o0
@@ -3973,7 +3973,7 @@ l00014794:
 	ld	[%l0+%g0],%o1
 
 l00014798:
-	call	strcmp
+	call	strcmp_GOT
 	or	%g0,%l2,%o0
 	subcc	%o0,00000000,%g0
 	be	00014850
@@ -4249,7 +4249,7 @@ main proc
 	or	%o1,00000218,%o1
 	st	%o1,[%i6-24]
 	or	%g0,0000002F,%o1
-	call	strrchr
+	call	strrchr_GOT
 	st	%i0,[%i6+68]
 	sethi	000000A0,%o1
 	add	%o0,00000001,%o2
@@ -4265,7 +4265,7 @@ l00014EDC:
 l00014EE8:
 	st	%o2,[%o1+336]
 	ld	[%i6-24],%o1
-	call	setlocale
+	call	setlocale_GOT
 	or	%g0,00000005,%o0
 	call	getpwd
 	sethi	00000000,%g0
@@ -4287,7 +4287,7 @@ l00014F14:
 	or	%g0,%l0,%o0
 	call	notice
 	or	%g0,%l1,%o1
-	call	exit
+	call	exit_GOT
 00014F44             90 10 20 21                             .. !        
 
 l00014F48:
@@ -4391,7 +4391,7 @@ l000150EC:
 	sll	%o2,00000002,%o2
 	call	abspath
 	ld	[%o3+%o2],%o1
-	call	strlen
+	call	strlen_GOT
 	or	%g0,%o0,%l1
 	add	%o0,%l1,%o1
 	ldsb	[%o1-1],%o0
@@ -4463,7 +4463,7 @@ l000151C4:
 	or	%o4,00000240,%o0
 	ld	[%o1+40],%o3
 	sethi	0000005E,%o4
-	call	fprintf
+	call	fprintf_GOT
 	or	%o4,00000080,%o1
 
 l000151E4:
@@ -4479,7 +4479,7 @@ l00015200:
 	or	%g0,00000021,%o1
 
 l00015204:
-	call	exit
+	call	exit_GOT
 00015208                         90 10 00 09 00 01 50 3C         ......P<
 00015210 00 01 50 6C 00 01 50 6C 00 01 50 6C 00 01 50 6C ..Pl..Pl..Pl..Pl
 00015220 00 01 50 6C 00 01 50 6C 00 01 50 6C 00 01 50 10 ..Pl..Pl..Pl..P.
@@ -4516,7 +4516,7 @@ l000152D0:
 
 l000152F0:
 	sethi	0000005E,%o0
-	call	getenv
+	call	getenv_GOT
 	or	%o0,00000088,%o0
 	orcc	%o0,00000000,%i0
 	be	0001537C
@@ -4529,7 +4529,7 @@ l00015308:
 	or	%g0,%i0,%o0
 
 l00015318:
-	call	stat
+	call	stat_GOT
 	add	%i6,FFFFFEE0,%o1
 	subcc	%o0,00000000,%g0
 	bne,a	0001537C
@@ -4538,7 +4538,7 @@ l00015318:
 l0001532C:
 	sethi	0000005E,%o0
 	or	%o0,00000090,%o0
-	call	stat
+	call	stat_GOT
 	add	%i6,FFFFFF68,%o1
 	subcc	%o0,00000000,%g0
 	bne,a	0001537C
@@ -4569,14 +4569,14 @@ l0001537C:
 	call	xmalloc
 	or	%g0,%l1,%o0
 	or	%g0,%o0,%i0
-	call	getcwd
+	call	getcwd_GOT
 	or	%g0,%l1,%o1
 	subcc	%o0,00000000,%g0
 	bne	000153B8
 	ld	[%l2+864],%l0
 
 l0001539C:
-	call	free
+	call	free_GOT
 	or	%g0,%i0,%o0
 	subcc	%l0,00000022,%g0
 	be	00015378
@@ -4963,7 +4963,7 @@ l000157BC:
 	sethi	00000000,%g0
 
 l000157C4:
-	call	abort
+	call	abort_GOT
 000157C8                         01 00 00 00                     ....    
 
 l000157CC:
@@ -5034,7 +5034,7 @@ l0001586C:
 	sethi	00000000,%g0
 
 l00015874:
-	call	abort
+	call	abort_GOT
 00015878                         01 00 00 00                     ....    
 
 l0001587C:
@@ -5066,10 +5066,10 @@ print_and_abort proc
 	sethi	0000005E,%o0
 	sethi	000000AD,%o1
 	or	%o1,00000240,%o1
-	call	fputs
+	call	fputs_GOT
 	or	%o0,000000D0,%o0
 	sethi	000000A0,%o1
-	call	exit
+	call	exit_GOT
 000158D4             D0 02 60 30                             ..`0        
 
 ;; try: 000158D8
@@ -5101,7 +5101,7 @@ l000158F0:
 	or	%g0,%i0,%o0
 
 l000158F8:
-	call	access
+	call	access_GOT
 	or	%g0,00000007,%o1
 	subcc	%o0,00000000,%g0
 	be	00015910
@@ -5120,19 +5120,19 @@ l00015910:
 choose_temp_base proc
 	save	%sp,FFFFFF90,%sp
 	sethi	0000005E,%o0
-	call	getenv
+	call	getenv_GOT
 	or	%o0,000000E8,%o0
 	call	try
 	or	%g0,00000000,%o1
 	or	%g0,%o0,%l0
 	sethi	0000005E,%o0
-	call	getenv
+	call	getenv_GOT
 	or	%o0,000000F0,%o0
 	call	try
 	or	%g0,%l0,%o1
 	or	%g0,%o0,%l0
 	sethi	0000005E,%o0
-	call	getenv
+	call	getenv_GOT
 	or	%o0,000000F8,%o0
 	call	try
 	or	%g0,%l0,%o1
@@ -5160,13 +5160,13 @@ l000159A8:
 	or	%o0,00000110,%l0
 
 l000159B0:
-	call	strlen
+	call	strlen_GOT
 	or	%g0,%l0,%o0
 	or	%g0,%o0,%l1
 	call	xmalloc
 	add	%l1,0000000A,%o0
 	or	%g0,%o0,%i0
-	call	strcpy
+	call	strcpy_GOT
 	or	%g0,%l0,%o1
 	subcc	%l1,00000000,%g0
 	be	00015A00
@@ -5208,16 +5208,16 @@ l00015A04:
 	ldub	[%o3+7],%o1
 	stb	%o1,[%o4+7]
 	ldub	[%o3+8],%o2
-	call	mktemp
+	call	mktemp_GOT
 	stb	%o2,[%o4+8]
-	call	strlen
+	call	strlen_GOT
 	or	%g0,%i0,%o0
 	subcc	%o0,00000000,%g0
 	bne	00015A74
 	sethi	00000000,%g0
 
 l00015A6C:
-	call	abort
+	call	abort_GOT
 00015A70 01 00 00 00                                     ....            
 
 l00015A74:
@@ -5229,19 +5229,19 @@ make_temp_file proc
 	save	%sp,FFFFFF90,%sp
 	sethi	0000005E,%o0
 	or	%g0,%i0,%l3
-	call	getenv
+	call	getenv_GOT
 	or	%o0,000000E8,%o0
 	call	try
 	or	%g0,00000000,%o1
 	or	%g0,%o0,%l0
 	sethi	0000005E,%o0
-	call	getenv
+	call	getenv_GOT
 	or	%o0,000000F0,%o0
 	call	try
 	or	%g0,%l0,%o1
 	or	%g0,%o0,%l0
 	sethi	0000005E,%o0
-	call	getenv
+	call	getenv_GOT
 	or	%o0,000000F8,%o0
 	call	try
 	or	%g0,%l0,%o1
@@ -5268,14 +5268,14 @@ l00015B10:
 	or	%o0,00000110,%l0
 
 l00015B14:
-	call	strlen
+	call	strlen_GOT
 	or	%g0,%l0,%o0
 	subcc	%l3,00000000,%g0
 	be	00015B38
 	or	%g0,%o0,%l1
 
 l00015B28:
-	call	strlen
+	call	strlen_GOT
 	or	%g0,%l3,%o0
 	ba	00015B3C
 	or	%g0,%o0,%l2
@@ -5288,7 +5288,7 @@ l00015B3C:
 	call	xmalloc
 	add	%o0,0000000A,%o0
 	or	%g0,%o0,%i0
-	call	strcpy
+	call	strcpy_GOT
 	or	%g0,%l0,%o1
 	subcc	%l1,00000000,%g0
 	be	00015B78
@@ -5331,7 +5331,7 @@ l00015B78:
 
 l00015BD4:
 	or	%g0,%l3,%o1
-	call	strcat
+	call	strcat_GOT
 	or	%g0,%i0,%o0
 
 l00015BE0:
@@ -5343,18 +5343,18 @@ l00015BE0:
 	sethi	00000000,%g0
 
 l00015BF8:
-	call	abort
+	call	abort_GOT
 00015BFC                                     01 00 00 00             ....
 
 l00015C00:
-	call	close
+	call	close_GOT
 	sethi	00000000,%g0
 	subcc	%o0,00000000,%g0
 	be	00015C1C
 	sethi	00000000,%g0
 
 l00015C14:
-	call	abort
+	call	abort_GOT
 00015C18                         01 00 00 00                     ....    
 
 l00015C1C:
@@ -5511,7 +5511,7 @@ _getopt_initialize proc
 	or	%g0,%i2,%i0
 	st	%o2,[%o3+768]
 	st	%g0,[%o4+704]
-	call	getenv
+	call	getenv_GOT
 	or	%o0,00000128,%o0
 	or	%g0,%o0,%o1
 	sethi	000000AC,%o0
@@ -5715,7 +5715,7 @@ l00015F78:
 l00015F8C:
 	ld	[%i1+%o1],%o0
 	sethi	0000005E,%o1
-	call	strcmp
+	call	strcmp_GOT
 	or	%o1,00000138,%o1
 	subcc	%o0,00000000,%g0
 	bne	0001600C
@@ -5897,7 +5897,7 @@ l0001614C:
 l0001615C:
 	ld	[%l6+704],%o1
 	ld	[%l1+%g0],%o0
-	call	strncmp
+	call	strncmp_GOT
 	sub	%l2,%o1,%o2
 	subcc	%o0,00000000,%g0
 	bne,a	000161A8
@@ -5906,7 +5906,7 @@ l0001615C:
 l00016178:
 	ld	[%l6+704],%l0
 	ld	[%l1+%g0],%o0
-	call	strlen
+	call	strlen_GOT
 	sub	%l2,%l0,%l0
 	subcc	%l0,%o0,%g0
 	be	00016088
@@ -5952,12 +5952,12 @@ l000161E0:
 	or	%o0,00000240,%o0
 	sethi	0000005E,%o1
 	ld	[%i1+%g0],%o2
-	call	fprintf
+	call	fprintf_GOT
 	or	%o1,00000140,%o1
 
 l00016200:
 	ld	[%l6+704],%o0
-	call	strlen
+	call	strlen_GOT
 	or	%g0,0000003F,%i0
 	ld	[%l6+704],%o1
 	sethi	000000A0,%o3
@@ -6014,7 +6014,7 @@ l00016298:
 	ld	[%i1+%g0],%o2
 	or	%o0,00000240,%o0
 	ld	[%l3+%g0],%o3
-	call	fprintf
+	call	fprintf_GOT
 	or	%o1,00000160,%o1
 	ba	000162D8
 	ld	[%l6+704],%o0
@@ -6025,12 +6025,12 @@ l000162B8:
 	or	%o0,00000240,%o0
 	ldsb	[%o3+%g0],%o3
 	or	%o1,00000190,%o1
-	call	fprintf
+	call	fprintf_GOT
 	ld	[%l3+%g0],%o4
 	ld	[%l6+704],%o0
 
 l000162D8:
-	call	strlen
+	call	strlen_GOT
 	or	%g0,0000003F,%i0
 	ld	[%l6+704],%o1
 	sethi	000000A0,%o3
@@ -6072,11 +6072,11 @@ l00016340:
 	sethi	0000005E,%o1
 	ld	[%i1+%g0],%o2
 	or	%o0,00000240,%o0
-	call	fprintf
+	call	fprintf_GOT
 	or	%o1,000001C0,%o1
 
 l00016360:
-	call	strlen
+	call	strlen_GOT
 	ld	[%l6+704],%o0
 	ld	[%l6+704],%o1
 	sethi	000000A0,%o3
@@ -6096,7 +6096,7 @@ l00016394:
 	ba,a	00016978
 
 l00016398:
-	call	strlen
+	call	strlen_GOT
 	ld	[%l6+704],%o0
 000163A0 D2 05 A2 C0 80 A7 20 00 92 02 40 08 02 80 00 03 ...... ...@.....
 000163B0 D2 25 A2 C0                                     .%..            
@@ -6155,7 +6155,7 @@ l00016438:
 	ld	[%i1+%g0],%o2
 	or	%o0,00000240,%o0
 	ld	[%l6+704],%o3
-	call	fprintf
+	call	fprintf_GOT
 	or	%o1,000001E8,%o1
 	ba	00016478
 	ld	[%l5+104],%o0
@@ -6166,7 +6166,7 @@ l00016458:
 	or	%o0,00000240,%o0
 	ldsb	[%o3+%g0],%o3
 	or	%o1,00000208,%o1
-	call	fprintf
+	call	fprintf_GOT
 	ld	[%l6+704],%o4
 
 l00016474:
@@ -6233,7 +6233,7 @@ l00016518:
 	ld	[%i1+%g0],%o2
 	or	%o0,00000240,%o0
 	or	%o1,00000230,%o1
-	call	fprintf
+	call	fprintf_GOT
 	or	%g0,%l0,%o3
 	ba	00016554
 	sll	%i0,00000018,%o0
@@ -6243,7 +6243,7 @@ l00016538:
 	ld	[%i1+%g0],%o2
 	or	%o0,00000240,%o0
 	or	%o1,00000250,%o1
-	call	fprintf
+	call	fprintf_GOT
 	or	%g0,%l0,%o3
 
 l00016550:
@@ -6302,7 +6302,7 @@ l000165DC:
 	ld	[%i1+%g0],%o2
 	or	%o0,00000240,%o0
 	or	%o1,00000270,%o1
-	call	fprintf
+	call	fprintf_GOT
 	or	%g0,%l0,%o3
 
 l000165F4:
@@ -6355,7 +6355,7 @@ l0001665C:
 l00016670:
 	ld	[%l6+704],%o1
 	ld	[%i3+%g0],%o0
-	call	strncmp
+	call	strncmp_GOT
 	sub	%l1,%o1,%o2
 	subcc	%o0,00000000,%g0
 	bne,a	000166BC
@@ -6364,7 +6364,7 @@ l00016670:
 l0001668C:
 	ld	[%l6+704],%l0
 	ld	[%i3+%g0],%o0
-	call	strlen
+	call	strlen_GOT
 	sub	%l1,%l0,%l0
 	subcc	%l0,%o0,%g0
 	be	00016614
@@ -6410,12 +6410,12 @@ l000166F4:
 	or	%o0,00000240,%o0
 	sethi	0000005E,%o1
 	ld	[%i1+%g0],%o2
-	call	fprintf
+	call	fprintf_GOT
 	or	%o1,00000298,%o1
 
 l00016714:
 	ld	[%l6+704],%o0
-	call	strlen
+	call	strlen_GOT
 	or	%g0,0000003F,%i0
 	ld	[%l6+704],%o1
 	ld	[%l5+104],%o2
@@ -6460,12 +6460,12 @@ l00016784:
 	ld	[%i1+%g0],%o2
 	or	%o0,00000240,%o0
 	ld	[%l3+%g0],%o3
-	call	fprintf
+	call	fprintf_GOT
 	or	%o1,000002C0,%o1
 
 l0001679C:
 	ld	[%l6+704],%o0
-	call	strlen
+	call	strlen_GOT
 	or	%g0,0000003F,%i0
 	ld	[%l6+704],%o1
 	add	%o1,%o0,%o1
@@ -6505,11 +6505,11 @@ l00016800:
 	sethi	0000005E,%o1
 	ld	[%i1+%g0],%o2
 	or	%o0,00000240,%o0
-	call	fprintf
+	call	fprintf_GOT
 	or	%o1,000001C0,%o1
 
 l00016820:
-	call	strlen
+	call	strlen_GOT
 	ld	[%l6+704],%o0
 	ld	[%l6+704],%o1
 	or	%g0,0000003F,%i0
@@ -6519,7 +6519,7 @@ l00016820:
 	ldsb	[%i2+%g0],%o0
 
 l00016840:
-	call	strlen
+	call	strlen_GOT
 	ld	[%l6+704],%o0
 	ld	[%l6+704],%o1
 	subcc	%i4,00000000,%g0
@@ -6607,7 +6607,7 @@ l00016914:
 	ld	[%i1+%g0],%o2
 	or	%o0,00000240,%o0
 	or	%o1,00000270,%o1
-	call	fprintf
+	call	fprintf_GOT
 	sra	%o3,00000018,%o3
 
 l00016930:
@@ -6725,7 +6725,7 @@ l00016A44:
 	st	%o0,[%i6-32]
 
 l00016A58:
-	call	pipe
+	call	pipe_GOT
 	add	%i6,FFFFFFE8,%o0
 	subcc	%o0,00000000,%g0
 	bge,a	00016A7C
@@ -6755,7 +6755,7 @@ l00016A98:
 	st	%g0,[%i6-40]
 
 l00016AA8:
-	call	sleep
+	call	sleep_GOT
 	ld	[%i6-44],%o0
 	ld	[%i6-44],%o1
 	ld	[%i6-40],%o2
@@ -6771,7 +6771,7 @@ l00016AC8:
 	subcc	%l1,FFFFFFFF,%g0
 
 l00016AD8:
-	call	vfork
+	call	vfork_GOT
 	sethi	00000000,%g0
 	orcc	%o0,00000000,%l1
 	bl	00016AA8
@@ -6807,11 +6807,11 @@ l00016B24:
 	ld	[%i6-36],%o1
 
 l00016B30:
-	call	close
+	call	close_GOT
 	or	%g0,00000000,%o0
-	call	dup
+	call	dup_GOT
 	ld	[%i6-32],%o0
-	call	close
+	call	close_GOT
 	ld	[%i6-32],%o0
 	ld	[%i6-36],%o1
 
@@ -6821,11 +6821,11 @@ l00016B4C:
 	sethi	000000AC,%o0
 
 l00016B58:
-	call	close
+	call	close_GOT
 	or	%g0,00000001,%o0
-	call	dup
+	call	dup_GOT
 	ld	[%i6-36],%o0
-	call	close
+	call	close_GOT
 	ld	[%i6-36],%o0
 	sethi	000000AC,%o0
 
@@ -6836,7 +6836,7 @@ l00016B74:
 	ld	[%i6+72],%o1
 
 l00016B84:
-	call	close
+	call	close_GOT
 	sethi	00000000,%g0
 	ld	[%i6+72],%o1
 
@@ -6849,12 +6849,12 @@ l00016B90:
 	or	%l1,00000240,%l1
 	sethi	0000005E,%o1
 	or	%o1,00000328,%o1
-	call	fprintf
+	call	fprintf_GOT
 	or	%g0,%l1,%o0
 	sethi	000000A0,%o2
 	ld	[%o2+120],%o1
 	or	%g0,%l1,%o0
-	call	fprintf
+	call	fprintf_GOT
 	ld	[%i6+68],%o2
 	sethi	000000AD,%o1
 	ld	[%o1+864],%o0
@@ -6863,9 +6863,9 @@ l00016B90:
 	or	%l0,00000330,%l0
 	or	%g0,%o0,%o2
 	or	%g0,%l1,%o0
-	call	fprintf
+	call	fprintf_GOT
 	or	%g0,%l0,%o1
-	call	exit
+	call	exit_GOT
 00016BF4             90 10 3F FF                             ..?.        
 
 l00016BF8:
@@ -6873,7 +6873,7 @@ l00016BF8:
 	ld	[%i6-36],%o1
 
 l00016C00:
-	call	close
+	call	close_GOT
 	sethi	00000000,%g0
 	ld	[%i6-36],%o1
 
@@ -6883,7 +6883,7 @@ l00016C0C:
 	or	%g0,%l1,%i0
 
 l00016C18:
-	call	close
+	call	close_GOT
 	or	%g0,%o1,%o0
 	or	%g0,%l1,%i0
 
@@ -6897,7 +6897,7 @@ l00016C24:
 ;;     00012F6C (in gen_aux_info_file)
 pwait proc
 	save	%sp,FFFFFF90,%sp
-	call	wait
+	call	wait_GOT
 	or	%g0,%i1,%o0
 	jmpl	%i7,+00000008,%g0
 	restore	%g0,%o0,%o0
@@ -6907,7 +6907,7 @@ pwait proc
 ;;     00015BE4 (in make_temp_file)
 mkstemps proc
 	save	%sp,FFFFFF88,%sp
-	call	strlen
+	call	strlen_GOT
 	or	%g0,%i0,%o0
 	or	%g0,%o0,%o1
 	add	%i1,00000006,%o0
@@ -6920,7 +6920,7 @@ l00016C60:
 	sethi	0000005E,%o1
 	or	%o1,00000378,%o1
 	or	%g0,%i1,%o0
-	call	strncmp
+	call	strncmp_GOT
 	or	%g0,00000006,%o2
 	subcc	%o0,00000000,%g0
 	be	00016C94
@@ -6935,9 +6935,9 @@ l00016C8C:
 	or	%g0,%o0,%i0
 
 l00016C94:
-	call	gettimeofday
+	call	gettimeofday_GOT
 	add	%i6,FFFFFFE8,%o0
-	call	getpid
+	call	getpid_GOT
 	or	%g0,00000000,%l3
 	ld	[%i6-20],%o1
 	or	%g0,%o0,%g3
@@ -6971,71 +6971,71 @@ l00016D0C:
 	or	%g0,00000000,%o2
 	or	%g0,0000003E,%o3
 	or	%g0,%l0,%o0
-	call	__urem64
+	call	__urem64_GOT
 	or	%g0,%l1,%o1
 	ldub	[%l2+%o1],%o2
 	stb	%o2,[%i1+%g0]
 	or	%g0,%l0,%o0
 	or	%g0,%l1,%o1
 	or	%g0,00000000,%o2
-	call	__udiv64
+	call	__udiv64_GOT
 	or	%g0,0000003E,%o3
 	or	%g0,%o0,%l0
 	or	%g0,%o1,%l1
 	or	%g0,00000000,%o2
-	call	__urem64
+	call	__urem64_GOT
 	or	%g0,0000003E,%o3
 	ldub	[%l2+%o1],%o2
 	stb	%o2,[%i1+1]
 	or	%g0,%l0,%o0
 	or	%g0,%l1,%o1
 	or	%g0,00000000,%o2
-	call	__udiv64
+	call	__udiv64_GOT
 	or	%g0,0000003E,%o3
 	or	%g0,%o0,%l0
 	or	%g0,%o1,%l1
 	or	%g0,00000000,%o2
-	call	__urem64
+	call	__urem64_GOT
 	or	%g0,0000003E,%o3
 	ldub	[%l2+%o1],%o2
 	stb	%o2,[%i1+2]
 	or	%g0,%l0,%o0
 	or	%g0,%l1,%o1
 	or	%g0,00000000,%o2
-	call	__udiv64
+	call	__udiv64_GOT
 	or	%g0,0000003E,%o3
 	or	%g0,%o0,%l0
 	or	%g0,%o1,%l1
 	or	%g0,00000000,%o2
-	call	__urem64
+	call	__urem64_GOT
 	or	%g0,0000003E,%o3
 	ldub	[%l2+%o1],%o2
 	stb	%o2,[%i1+3]
 	or	%g0,%l0,%o0
 	or	%g0,%l1,%o1
 	or	%g0,00000000,%o2
-	call	__udiv64
+	call	__udiv64_GOT
 	or	%g0,0000003E,%o3
 	or	%g0,%o0,%l0
 	or	%g0,%o1,%l1
 	or	%g0,00000000,%o2
-	call	__urem64
+	call	__urem64_GOT
 	or	%g0,0000003E,%o3
 	ldub	[%l2+%o1],%o2
 	stb	%o2,[%i1+4]
 	or	%g0,00000000,%o2
 	or	%g0,0000003E,%o3
 	or	%g0,%l0,%o0
-	call	__udiv64
+	call	__udiv64_GOT
 	or	%g0,%l1,%o1
 	or	%g0,00000000,%o2
-	call	__urem64
+	call	__urem64_GOT
 	or	%g0,0000003E,%o3
 	ldub	[%l2+%o1],%o2
 	stb	%o2,[%i1+5]
 	or	%g0,%i0,%o0
 	or	%g0,00000502,%o1
-	call	open
+	call	open_GOT
 	or	%g0,00000180,%o2
 	subcc	%o0,00000000,%g0
 	bge	00016C8C

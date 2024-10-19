@@ -153,7 +153,44 @@ Eq_1: (struct "Globals"
 		(18378 (fn void ()) t18378)
 		(19E18 (ptr64 code) ptr19E18)
 		(19E28 word64 qw19E28)
-		(1A100 (ptr64 code) ptr1A100))
+		(1A010 (ptr64 code) herror_GOT)
+		(1A018 (ptr64 code) __strdup_GOT)
+		(1A020 (ptr64 code) clock_gettime_GOT)
+		(1A028 (ptr64 code) close_GOT)
+		(1A030 (ptr64 code) read_GOT)
+		(1A038 (ptr64 code) inet_ntop_GOT)
+		(1A040 (ptr64 code) snprintf_GOT)
+		(1A048 (ptr64 code) getaddrinfo_GOT)
+		(1A050 (ptr64 code) dlopen_GOT)
+		(1A058 (ptr64 code) open_GOT)
+		(1A060 (ptr64 code) __snprintf_chk_GOT)
+		(1A068 (ptr64 code) dlsym_GOT)
+		(1A070 (ptr64 code) exit_GOT)
+		(1A078 (ptr64 code) getopt_long_GOT)
+		(1A080 (ptr64 code) __vasprintf_chk_GOT)
+		(1A088 (ptr64 code) __asprintf_chk_GOT)
+		(1A090 (ptr64 code) getnameinfo_GOT)
+		(1A098 (ptr64 code) memset_GOT)
+		(1A0A0 (ptr64 code) inet_pton_GOT)
+		(1A0A8 (ptr64 code) strcmp_GOT)
+		(1A0B0 (ptr64 code) free_GOT)
+		(1A0B8 (ptr64 code) __printf_chk_GOT)
+		(1A0C0 (ptr64 code) __sprintf_chk_GOT)
+		(1A0C8 (ptr64 code) fwrite_GOT)
+		(1A0D0 (ptr64 code) memcmp_GOT)
+		(1A0D8 (ptr64 code) fputs_GOT)
+		(1A0E0 (ptr64 code) isatty_GOT)
+		(1A0E8 (ptr64 code) __fprintf_chk_GOT)
+		(1A0F0 (ptr64 code) __libc_start_main_GOT)
+		(1A0F8 (ptr64 code) putchar_GOT)
+		(1A100 (ptr64 code) fputc_GOT)
+		(1A108 (ptr64 code) __stack_chk_fail_GOT)
+		(1A110 (ptr64 code) __errno_location_GOT)
+		(1A118 (ptr64 code) strtol_GOT)
+		(1A120 (ptr64 code) strchr_GOT)
+		(1A128 (ptr64 code) memcpy_GOT)
+		(1A130 (ptr64 code) abort_GOT)
+		(1A138 (ptr64 code) freeaddrinfo_GOT))
 	globals_t (in globals : (ptr64 (struct "Globals")))
 Eq_6: (struct "Eq_6"
 		(FFFFF810 int32 dwFFFFF810)
@@ -26026,7 +26063,44 @@ typedef struct Globals {
 	void t18378();	// 18378
 	<anonymous> * ptr19E18;	// 19E18
 	word64 qw19E28;	// 19E28
-	<anonymous> * ptr1A100;	// 1A100
+	<anonymous> * herror_GOT;	// 1A010
+	<anonymous> * __strdup_GOT;	// 1A018
+	<anonymous> * clock_gettime_GOT;	// 1A020
+	<anonymous> * close_GOT;	// 1A028
+	<anonymous> * read_GOT;	// 1A030
+	<anonymous> * inet_ntop_GOT;	// 1A038
+	<anonymous> * snprintf_GOT;	// 1A040
+	<anonymous> * getaddrinfo_GOT;	// 1A048
+	<anonymous> * dlopen_GOT;	// 1A050
+	<anonymous> * open_GOT;	// 1A058
+	<anonymous> * __snprintf_chk_GOT;	// 1A060
+	<anonymous> * dlsym_GOT;	// 1A068
+	<anonymous> * exit_GOT;	// 1A070
+	<anonymous> * getopt_long_GOT;	// 1A078
+	<anonymous> * __vasprintf_chk_GOT;	// 1A080
+	<anonymous> * __asprintf_chk_GOT;	// 1A088
+	<anonymous> * getnameinfo_GOT;	// 1A090
+	<anonymous> * memset_GOT;	// 1A098
+	<anonymous> * inet_pton_GOT;	// 1A0A0
+	<anonymous> * strcmp_GOT;	// 1A0A8
+	<anonymous> * free_GOT;	// 1A0B0
+	<anonymous> * __printf_chk_GOT;	// 1A0B8
+	<anonymous> * __sprintf_chk_GOT;	// 1A0C0
+	<anonymous> * fwrite_GOT;	// 1A0C8
+	<anonymous> * memcmp_GOT;	// 1A0D0
+	<anonymous> * fputs_GOT;	// 1A0D8
+	<anonymous> * isatty_GOT;	// 1A0E0
+	<anonymous> * __fprintf_chk_GOT;	// 1A0E8
+	<anonymous> * __libc_start_main_GOT;	// 1A0F0
+	<anonymous> * putchar_GOT;	// 1A0F8
+	<anonymous> * fputc_GOT;	// 1A100
+	<anonymous> * __stack_chk_fail_GOT;	// 1A108
+	<anonymous> * __errno_location_GOT;	// 1A110
+	<anonymous> * strtol_GOT;	// 1A118
+	<anonymous> * strchr_GOT;	// 1A120
+	<anonymous> * memcpy_GOT;	// 1A128
+	<anonymous> * abort_GOT;	// 1A130
+	<anonymous> * freeaddrinfo_GOT;	// 1A138
 } Eq_1;
 
 typedef struct Eq_6 {

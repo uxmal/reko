@@ -870,7 +870,6 @@ public class LongAddRewriter : IAnalysis<SsaState>
                 return default;
             if (shConst1 is not null)
             {
-                _ = this;//$DEBUG
                 if (exp1 is not Identifier idRight)
                     return default;
                 var (sidOtherDst, otherSrc) = FindOtherShiftUse(op1.Type == OperatorType.Shl, idRight);

@@ -36,9 +36,6 @@ namespace Reko.ImageLoaders.Elf
         public ElfSymbol(string name)
         {
             this.Name = name;
-            if (name == "_mm_free")
-                _ = this; //$DEBUG
-
         }
 
         public string Name { get; }

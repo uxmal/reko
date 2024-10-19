@@ -76,6 +76,54 @@ Eq_1: (struct "Globals"
 		(17AF0 (str char) str17AF0)
 		(17B78 (str char) str17B78)
 		(27C00 Eq_2789 t27C00)
+		(27C68 (ptr32 code) atexit_GOT)
+		(27C74 (ptr32 code) exit_GOT)
+		(27C80 (ptr32 code) _exit_GOT)
+		(27CA4 (ptr32 code) vfprintf_GOT)
+		(27CB0 (ptr32 code) strerror_GOT)
+		(27CBC (ptr32 code) malloc_GOT)
+		(27CC8 (ptr32 code) realloc_GOT)
+		(27CD4 (ptr32 code) free_GOT)
+		(27CE0 (ptr32 code) strcpy_GOT)
+		(27CEC (ptr32 code) strncpy_GOT)
+		(27CF8 (ptr32 code) read_GOT)
+		(27D04 (ptr32 code) write_GOT)
+		(27D10 (ptr32 code) abort_GOT)
+		(27D1C (ptr32 code) strlen_GOT)
+		(27D28 (ptr32 code) strncmp_GOT)
+		(27D34 (ptr32 code) strcmp_GOT)
+		(27D40 (ptr32 code) stat_GOT)
+		(27D4C (ptr32 code) atoi_GOT)
+		(27D58 (ptr32 code) memcpy_GOT)
+		(27D64 (ptr32 code) fprintf_GOT)
+		(27D70 (ptr32 code) strcat_GOT)
+		(27D7C (ptr32 code) access_GOT)
+		(27D88 (ptr32 code) open_GOT)
+		(27D94 (ptr32 code) close_GOT)
+		(27DA0 (ptr32 code) unlink_GOT)
+		(27DAC (ptr32 code) strrchr_GOT)
+		(27DB8 (ptr32 code) longjmp_GOT)
+		(27DC4 (ptr32 code) setjmp_GOT)
+		(27DD0 (ptr32 code) fflush_GOT)
+		(27DDC (ptr32 code) link_GOT)
+		(27DE8 (ptr32 code) creat_GOT)
+		(27DF4 (ptr32 code) chmod_GOT)
+		(27E00 (ptr32 code) setlocale_GOT)
+		(27E0C (ptr32 code) getenv_GOT)
+		(27E18 (ptr32 code) getcwd_GOT)
+		(27E24 (ptr32 code) fputs_GOT)
+		(27E30 (ptr32 code) mktemp_GOT)
+		(27E3C (ptr32 code) execvp_GOT)
+		(27E48 (ptr32 code) execv_GOT)
+		(27E54 (ptr32 code) pipe_GOT)
+		(27E60 (ptr32 code) sleep_GOT)
+		(27E6C (ptr32 code) vfork_GOT)
+		(27E78 (ptr32 code) dup_GOT)
+		(27E84 (ptr32 code) wait_GOT)
+		(27E90 (ptr32 code) gettimeofday_GOT)
+		(27E9C (ptr32 code) getpid_GOT)
+		(27EA8 (ptr32 code) __urem64_GOT)
+		(27EB4 (ptr32 code) __udiv64_GOT)
 		(27ED0 (ptr32 char) ptr27ED0)
 		(27F20 word32 errors)
 		(27F24 word32 compiler_file_name)
@@ -34202,6 +34250,54 @@ struct Globals {
 	char str17AF0[];	// 17AF0
 	char str17B78[];	// 17B78
 	Eq_2789 t27C00;	// 27C00
+	<anonymous> * atexit_GOT;	// 27C68
+	<anonymous> * exit_GOT;	// 27C74
+	<anonymous> * _exit_GOT;	// 27C80
+	<anonymous> * vfprintf_GOT;	// 27CA4
+	<anonymous> * strerror_GOT;	// 27CB0
+	<anonymous> * malloc_GOT;	// 27CBC
+	<anonymous> * realloc_GOT;	// 27CC8
+	<anonymous> * free_GOT;	// 27CD4
+	<anonymous> * strcpy_GOT;	// 27CE0
+	<anonymous> * strncpy_GOT;	// 27CEC
+	<anonymous> * read_GOT;	// 27CF8
+	<anonymous> * write_GOT;	// 27D04
+	<anonymous> * abort_GOT;	// 27D10
+	<anonymous> * strlen_GOT;	// 27D1C
+	<anonymous> * strncmp_GOT;	// 27D28
+	<anonymous> * strcmp_GOT;	// 27D34
+	<anonymous> * stat_GOT;	// 27D40
+	<anonymous> * atoi_GOT;	// 27D4C
+	<anonymous> * memcpy_GOT;	// 27D58
+	<anonymous> * fprintf_GOT;	// 27D64
+	<anonymous> * strcat_GOT;	// 27D70
+	<anonymous> * access_GOT;	// 27D7C
+	<anonymous> * open_GOT;	// 27D88
+	<anonymous> * close_GOT;	// 27D94
+	<anonymous> * unlink_GOT;	// 27DA0
+	<anonymous> * strrchr_GOT;	// 27DAC
+	<anonymous> * longjmp_GOT;	// 27DB8
+	<anonymous> * setjmp_GOT;	// 27DC4
+	<anonymous> * fflush_GOT;	// 27DD0
+	<anonymous> * link_GOT;	// 27DDC
+	<anonymous> * creat_GOT;	// 27DE8
+	<anonymous> * chmod_GOT;	// 27DF4
+	<anonymous> * setlocale_GOT;	// 27E00
+	<anonymous> * getenv_GOT;	// 27E0C
+	<anonymous> * getcwd_GOT;	// 27E18
+	<anonymous> * fputs_GOT;	// 27E24
+	<anonymous> * mktemp_GOT;	// 27E30
+	<anonymous> * execvp_GOT;	// 27E3C
+	<anonymous> * execv_GOT;	// 27E48
+	<anonymous> * pipe_GOT;	// 27E54
+	<anonymous> * sleep_GOT;	// 27E60
+	<anonymous> * vfork_GOT;	// 27E6C
+	<anonymous> * dup_GOT;	// 27E78
+	<anonymous> * wait_GOT;	// 27E84
+	<anonymous> * gettimeofday_GOT;	// 27E90
+	<anonymous> * getpid_GOT;	// 27E9C
+	<anonymous> * __urem64_GOT;	// 27EA8
+	<anonymous> * __udiv64_GOT;	// 27EB4
 	char * ptr27ED0;	// 27ED0
 	word32 errors;	// 27F20
 	word32 compiler_file_name;	// 27F24

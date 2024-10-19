@@ -4,7 +4,17 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (10CB8 Eq_56 t10CB8) (10CF4 word32 _lib_version) (20E3C ptr32 environ) (20E58 ui32 dw20E58) (20E5C word32 __fnonstd_used) (20E60 ptr32 ___Argv))
+Eq_1: (struct "Globals"
+		(10CB8 Eq_56 t10CB8)
+		(10CF4 word32 _lib_version)
+		(20D40 (ptr32 code) atexit_GOT)
+		(20D4C (ptr32 code) exit_GOT)
+		(20D58 (ptr32 code) _exit_GOT)
+		(20D64 (ptr32 code) printf_GOT)
+		(20E3C ptr32 environ)
+		(20E58 ui32 dw20E58)
+		(20E5C word32 __fnonstd_used)
+		(20E60 ptr32 ___Argv))
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_2: (fn void ())
 	T_2 (in g1 : (ptr32 Eq_2))
@@ -972,6 +982,10 @@ T_230:
 typedef struct Globals {
 	Eq_56 t10CB8;	// 10CB8
 	word32 _lib_version;	// 10CF4
+	<anonymous> * atexit_GOT;	// 20D40
+	<anonymous> * exit_GOT;	// 20D4C
+	<anonymous> * _exit_GOT;	// 20D58
+	<anonymous> * printf_GOT;	// 20D64
 	ptr32 environ;	// 20E3C
 	ui32 dw20E58;	// 20E58
 	word32 __fnonstd_used;	// 20E5C

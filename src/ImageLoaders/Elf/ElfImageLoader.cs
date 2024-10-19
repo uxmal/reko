@@ -77,6 +77,7 @@ namespace Reko.ImageLoaders.Elf
             binaryImage.AddSections(innerLoader.LoadSectionHeaders());
             innerLoader.LoadSymbolsFromSections();
             innerLoader.LoadRelocations();
+            innerLoader.LoadDynamicSegment();
             var dynRelocs = innerLoader.LoadDynamicRelocations();
             binaryImage.AddDynamicRelocations(dynRelocs);
 

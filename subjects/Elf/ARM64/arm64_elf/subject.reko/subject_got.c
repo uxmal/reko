@@ -4,8 +4,41 @@
 
 #include "subject.h"
 
+<anonymous> * _exit_GOT = null; // 000000000001FE90
+<anonymous> * fputs_GOT = null; // 000000000001FE98
+<anonymous> * exit_GOT = null; // 000000000001FEA0
+<anonymous> * __cxa_finalize_GOT = null; // 000000000001FEA8
+<anonymous> * __cxa_atexit_GOT = null; // 000000000001FEB0
+<anonymous> * fputc_GOT = null; // 000000000001FEB8
+<anonymous> * __fpending_GOT = null; // 000000000001FEC0
+<anonymous> * signal_GOT = null; // 000000000001FEC8
+<anonymous> * fclose_GOT = null; // 000000000001FED0
+<anonymous> * malloc_GOT = null; // 000000000001FED8
+<anonymous> * bindtextdomain_GOT = null; // 000000000001FEE0
+<anonymous> * __libc_start_main_GOT = null; // 000000000001FEE8
+<anonymous> * __printf_chk_GOT = null; // 000000000001FEF0
+<anonymous> * wcslen_GOT = null; // 000000000001FEF8
+<anonymous> * realloc_GOT = null; // 000000000001FF00
+<anonymous> * g_ptr1FF08 = null; // 000000000001FF08
+<anonymous> * abort_GOT = null; // 000000000001FF10
+<anonymous> * feof_GOT = null; // 000000000001FF18
+<anonymous> * textdomain_GOT = null; // 000000000001FF20
+<anonymous> * getopt_long_GOT = null; // 000000000001FF28
+<anonymous> * __fprintf_chk_GOT = null; // 000000000001FF30
+<anonymous> * warn_GOT = null; // 000000000001FF38
+<anonymous> * free_GOT = null; // 000000000001FF40
+<anonymous> * fopen64_GOT = null; // 000000000001FF48
+<anonymous> * warnx_GOT = null; // 000000000001FF50
+<anonymous> * fputws_GOT = null; // 000000000001FF58
+<anonymous> * dcgettext_GOT = null; // 000000000001FF60
+<anonymous> * __errno_location_GOT = null; // 000000000001FF68
+<anonymous> * err_GOT = null; // 000000000001FF70
+<anonymous> * setlocale_GOT = null; // 000000000001FF78
+<anonymous> * ferror_GOT = null; // 000000000001FF80
+<anonymous> * fgetws_GOT = null; // 000000000001FF88
 void (* g_ptr1FF98)() = &g_t1778; // 000000000001FF98
 <anonymous> * g_ptr1FFA0 = null; // 000000000001FFA0
+<anonymous> * __cxa_finalize_GOT = null; // 000000000001FFA8
 word64 g_qw1FFD0 = 0x00; // 000000000001FFD0
 void ** g_ptr1FFD8 = &g_ptr1FC60; // 000000000001FFD8
 void (* g_ptr1FFE0)() = &g_t16F8; // 000000000001FFE0

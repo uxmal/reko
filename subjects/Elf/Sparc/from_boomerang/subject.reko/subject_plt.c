@@ -4,23 +4,7 @@
 
 #include "subject.h"
 
-// 00020D40: void atexit()
-void atexit()
-{
-}
-
-// 00020D4C: void exit()
-void exit()
-{
-}
-
-// 00020D58: void _exit()
-void _exit()
-{
-}
-
-// 00020D64: void printf()
-void printf()
-{
-}
-
+<anonymous> * atexit_GOT = &g_t3000030; // 00020D40
+<anonymous> * exit_GOT = &g_t300003C; // 00020D4C
+<anonymous> * _exit_GOT = &g_t3000048; // 00020D58
+<anonymous> * printf_GOT = &g_t3000054; // 00020D64
