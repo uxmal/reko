@@ -21,7 +21,6 @@
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
@@ -57,6 +56,11 @@ namespace Reko.Core.Memory
         public EndianImageReader CreateNew(MemoryArea image, Address addr)
         {
             return new Word16LeImageReader((Word16MemoryArea) image, addr);
+        }
+
+        public string ReadNulTerminatedString(DataType charType, Encoding enc)
+        {
+            throw new NotImplementedException();
         }
 
         public StringConstant ReadCString(DataType charType, Encoding encoding)

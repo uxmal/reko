@@ -20,7 +20,6 @@
 
 using Reko.Core;
 using Reko.Core.Collections;
-using Reko.Core.Configuration;
 using Reko.Core.Diagnostics;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
@@ -68,12 +67,7 @@ namespace Reko.ImageLoaders.MzExe
 
         private uint rvaSectionTable;
 		private ByteMemoryArea imgLoaded;
-		private Address preferredBaseOfImage;
-        private List<Section> sectionList;
-        private Dictionary<uint, IntrinsicProcedure> importThunks;
-		private uint rvaStartAddress;		// unrelocated start address of the image.
-		private uint rvaExportTable;
-		private uint sizeExportTable;
+        private PeBinaryImage binaryImage;
 		private uint rvaImportTable;
         private uint rvaDelayImportDescriptor;
         private uint rvaExceptionTable;
@@ -99,44 +93,78 @@ namespace Reko.ImageLoaders.MzExe
 			{
 				throw new BadImageFormatException("Not a valid PE header.");
 			}
-            importThunks = new Dictionary<uint, IntrinsicProcedure>();
             ImageSymbols = new SortedList<Address, ImageSymbol>();
-			short expectedMagic = ReadCoffHeader(rdr);
-			ReadOptionalHeader(rdr, expectedMagic);
+            var hdr = new PeHeader();
+            this.binaryImage = new PeBinaryImage(hdr);
+            short expectedMagic = ReadCoffHeader(rdr, hdr);
+            binaryImage.AddSections(LoadSections(rvaSectionTable, sections));
+            ReadOptionalHeader(rdr, expectedMagic, hdr);
         }
 #nullable enable
 
         public SortedList<Address, ImageSymbol> ImageSymbols { get; private set; }
         public SegmentMap SegmentMap { get; private set; }
+        public uint RvaStartAddress { get; private set; }		// unrelocated start address of the image.
 
         protected override SizeSpecificLoader Create32BitLoader(AbstractPeLoader outer) => new Pe32Loader(this);
         protected override SizeSpecificLoader Create64BitLoader(AbstractPeLoader outer) => new Pe64Loader(this);
 
-        private void AddExportedEntryPoints(Address addrLoad, SegmentMap imageMap, IDictionary<Address, ImageSymbol> entryPoints)
-		{
-			EndianImageReader rdr = imgLoaded.CreateLeReader(rvaExportTable);
-			uint characteristics = rdr.ReadLeUInt32();
-			uint timestamp = rdr.ReadLeUInt32();
-			uint version = rdr.ReadLeUInt32();
-			uint binaryNameAddr = rdr.ReadLeUInt32();
-			int baseOrdinal = rdr.ReadLeInt32();
+        private void LoadExports(uint rvaExportTable, uint sizeExportTable)
+        {
+            var offsetExports = this.RvaToFileOffset(rvaExportTable);
+            if (offsetExports is null)
+                return;
+            EndianImageReader rdr = new LeImageReader(
+                this.RawImage,
+                offsetExports.Value);
+            uint characteristics = rdr.ReadLeUInt32();
+            uint timestamp = rdr.ReadLeUInt32();
+            uint version = rdr.ReadLeUInt32();
+            uint binaryNameAddr = rdr.ReadLeUInt32();
+            int baseOrdinal = rdr.ReadLeInt32();
 
-			int nExports = rdr.ReadLeInt32();
-			int nNames = rdr.ReadLeInt32();
-			uint rvaApfn = rdr.ReadLeUInt32();
-			uint rvaNames = rdr.ReadLeUInt32();
+            int nExports = rdr.ReadLeInt32();
+            int nNames = rdr.ReadLeInt32();
+            uint rvaApfn = rdr.ReadLeUInt32();
+            uint rvaNames = rdr.ReadLeUInt32();
 
-			EndianImageReader rdrAddrs = imgLoaded.CreateLeReader(rvaApfn);
+            var rdrAddrs = CreateLeReaderFromRva(rvaApfn);
+            if (rdrAddrs is null)
+                return;
+
             EndianImageReader? rdrNames = nNames != 0
-                ? imgLoaded.CreateLeReader(rvaNames)
+                ? CreateLeReaderFromRva(rvaNames)
                 : null;
             trace.Verbose("== Exports");
-			for (int i = 0; i < nExports; ++i)
+            for (int i = 0; i < nExports; ++i)
+            {
+                binaryImage.Exports.Add(LoadExport(rdrAddrs, i < nNames ? rdrNames : null));
+            }
+        }
+
+        private EndianImageReader? CreateLeReaderFromRva(uint rva)
+        {
+            if (rva == 0)
+                return null;
+            var offset = this.RvaToFileOffset(rva);
+            if (offset is null)
+                return null;
+            EndianImageReader rdr = new LeImageReader(
+                RawImage,
+                offset.Value);
+            return rdr;
+        }
+
+        private void AddExportedEntryPoints(Address addrLoad, SegmentMap imageMap, IDictionary<Address, ImageSymbol> entryPoints)
+		{
+            trace.Verbose("== Exports");
+            for (int i = 0; i < binaryImage.Exports.Count; ++i)
 			{
-                ImageSymbol ep = LoadEntryPoint(addrLoad, rdrAddrs, i < nNames ? rdrNames : null);
+                var exp = binaryImage.Exports[i];
+                ImageSymbol ep = LoadEntryPoint(addrLoad, exp);
 				if (imageMap.IsExecutableAddress(ep.Address))
 				{
-                    ep.Ordinal = baseOrdinal + i;
+                    ep.Ordinal = binaryImage.ExportBaseOrdinal + i;
                     ImageSymbols[ep.Address] = ep;
                     trace.Verbose("  {0,-8} {1} {2}", ep.Ordinal, ep.Address, ep.Name!);
 					entryPoints[ep.Address] = ep;
@@ -190,11 +218,11 @@ namespace Reko.ImageLoaders.MzExe
                 rdr.Offset += cAuxSymbols * CoffSymbolSize;
 
             string sectionName;
-            Section? section;
+            PeSection? section;
             switch (sectionNumber)
             {
             default:
-                section = sectionList[sectionNumber];
+                section = binaryImage.Sections[sectionNumber];
                 sectionName = section.Name ?? "(null)";
                 break;
             case 0:
@@ -232,18 +260,24 @@ namespace Reko.ImageLoaders.MzExe
             return true;
         }
 
-        private ImageSymbol LoadEntryPoint(Address addrLoad, EndianImageReader rdrAddrs, EndianImageReader? rdrNames)
+        private PeExport LoadExport(EndianImageReader rdrAddrs, EndianImageReader? rdrNames)
         {
             uint rvaAddr = rdrAddrs.ReadLeUInt32();
             string? name = null;
-            if (rdrNames != null)
+            if (rdrNames is not null)
             {
-                int iNameMin = rdrNames.ReadLeInt32();
-                int j;
-                for (j = iNameMin; imgLoaded.Bytes[j] != 0; ++j)
-                    ;
-                name = Encoding.ASCII.GetString(imgLoaded.Bytes, iNameMin, j - iNameMin);
+                uint rvaName = rdrNames.ReadLeUInt32();
+                var rdrName = CreateLeReaderFromRva(rvaName);
+                if (rdrName is not null)
+                    name = rdrName.ReadNulTerminatedString(PrimitiveType.Byte, Encoding.ASCII);
             }
+            return new PeExport(rvaAddr, name);
+        }
+
+        private ImageSymbol LoadEntryPoint(Address addrLoad, PeExport exp)
+        {
+            uint rvaAddr = exp.RvaAddress;
+            string? name = exp.Name;
             return ImageSymbol.Procedure(
                 arch,
                 addrLoad + rvaAddr,
@@ -279,8 +313,7 @@ namespace Reko.ImageLoaders.MzExe
             SegmentMap = new SegmentMap(addrLoad);
             if (sections > 0)
             {
-                sectionList = LoadSections(addrLoad, rvaSectionTable, sections);
-                imgLoaded = LoadSectionBytes(addrLoad, sectionList);
+                imgLoaded = LoadSectionBytes(addrLoad, binaryImage.Sections);
                 AddSectionsToSegmentMap(addrLoad, SegmentMap);
             }
             if (offsetCoffSymbols > 0 && cCoffSymbols > 0)
@@ -368,30 +401,21 @@ namespace Reko.ImageLoaders.MzExe
             }
         }
 
- 
-        public IEnumerable<Section> ReadSections(LeImageReader rdr, int sections)
-        {
-            for (int i = 0; i < sections; ++i)
-            {
-                yield return ReadSection(rdr);
-            }
-        }
-
 		/// <summary>
 		/// Loads the sections
 		/// </summary>
 		/// <param name="rvaSectionTable"></param>
 		/// <returns></returns>
-		private List<Section> LoadSections(Address addrLoad, uint rvaSectionTable, int sections)
+		private List<PeSection> LoadSections(uint rvaSectionTable, int sections)
         {
-            var sectionMap = new List<Section>();
+            var sectionMap = new List<PeSection>();
 			EndianImageReader rdr = new LeImageReader(RawImage, rvaSectionTable);
 
-            Section? minSection = null;
+            PeSection? minSection = null;
             trace.Inform("          Name        Raw data Raw size VAddress Ld size  Flags");
 			for (int i = 0; i != sections; ++i)
 			{
-				Section section = ReadSection(rdr);
+				PeSection section = ReadSection(i, rdr);
 				sectionMap.Add(section);
 				if (minSection == null || section.VirtualAddress < minSection.VirtualAddress)
 					minSection = section;
@@ -399,9 +423,9 @@ namespace Reko.ImageLoaders.MzExe
 			}
 
             // Map the area between addrLoad and the lowest section.
-            if (minSection != null && 0 < minSection.VirtualAddress)
+            if (minSection is not null && 0 < minSection.VirtualAddress)
             {
-                sectionMap.Insert(0, new Section
+                sectionMap.Insert(0, new PeSection(-1)
                 {
                     Name = "(PE header)",
                     OffsetRawData= 0,
@@ -414,12 +438,12 @@ namespace Reko.ImageLoaders.MzExe
             return sectionMap;
 		}
 
-        public ByteMemoryArea LoadSectionBytes(Address addrLoad, List<Section> sections)
+        public ByteMemoryArea LoadSectionBytes(Address addrLoad, IReadOnlyList<PeSection> sections)
         {
             var vaMax = sections.Max(s => s.VirtualAddress);
             var sectionMax = sections.Where(s => s.VirtualAddress == vaMax).First();
             var imgLoaded = new ByteMemoryArea(addrLoad, new byte[sectionMax.VirtualAddress + Math.Max(sectionMax.VirtualSize, sectionMax.SizeRawData)]);
-            foreach (Section s in sectionList)
+            foreach (PeSection s in binaryImage.Sections)
             {
                 Array.Copy(RawImage, s.OffsetRawData, imgLoaded.Bytes, s.VirtualAddress, s.SizeRawData);
             }
@@ -428,11 +452,11 @@ namespace Reko.ImageLoaders.MzExe
 
 		public override Address PreferredBaseAddress
 		{
-			get { return this.preferredBaseOfImage; }
+			get { return this.binaryImage.Header.preferredBaseOfImage; }
             set { throw new NotImplementedException(); }
         }
 
-		public short ReadCoffHeader(EndianImageReader rdr)
+		public short ReadCoffHeader(EndianImageReader rdr, PeHeader hdr)
 		{
 			this.machine = rdr.ReadLeUInt16();
             short expectedMagic = GetExpectedMagic(machine);
@@ -451,7 +475,7 @@ namespace Reko.ImageLoaders.MzExe
             return expectedMagic;
 		}
 
-		public void ReadOptionalHeader(EndianImageReader rdr, short expectedMagic)
+		public void ReadOptionalHeader(EndianImageReader rdr, short expectedMagic, PeHeader hdr)
 		{
 			if (optionalHeaderSize <= 0)
 				throw new BadImageFormatException("Optional header size should be larger than 0 in a PE executable image file.");
@@ -459,14 +483,15 @@ namespace Reko.ImageLoaders.MzExe
 			short magic = rdr.ReadLeInt16();
 			if (magic != expectedMagic) 
 				throw new BadImageFormatException("Not a valid PE Header.");
+
 			rdr.ReadByte();		// Linker major version
 			rdr.ReadByte();		// Linker minor version
 			rdr.ReadLeUInt32();		// code size (== .text section size)
 			rdr.ReadLeUInt32();		// size of initialized data
 			rdr.ReadLeUInt32();		// size of uninitialized data
-			rvaStartAddress = rdr.ReadLeUInt32();
+			RvaStartAddress = rdr.ReadLeUInt32();
 			uint rvaBaseOfCode = rdr.ReadLeUInt32();
-            preferredBaseOfImage = innerLoader.ReadPreferredImageBase(rdr);
+            hdr.preferredBaseOfImage = innerLoader.ReadPreferredImageBase(rdr);
 			rdr.ReadLeUInt32();		// section alignment
 			rdr.ReadLeUInt32();		// file alignment
 			rdr.ReadLeUInt16();		// OS major version
@@ -486,68 +511,69 @@ namespace Reko.ImageLoaders.MzExe
             var heapReserve = innerLoader.ReadWord(rdr);
             var heapCommit = innerLoader.ReadWord(rdr);
 			rdr.ReadLeUInt32();			// loader flags
-			uint dictionaryCount = rdr.ReadLeUInt32();
+			uint directoryCount = rdr.ReadLeUInt32();
 
             // Export directory
-            if (dictionaryCount == 0) return;
-            this.rvaExportTable = rdr.ReadLeUInt32();
-            this.sizeExportTable = rdr.ReadLeUInt32();
+            if (directoryCount == 0) return;
+            var rvaExportTable = rdr.ReadLeUInt32();
+            var sizeExportTable = rdr.ReadLeUInt32();
+            LoadExports(rvaExportTable, sizeExportTable);
 
             // Import directory
-            if (--dictionaryCount == 0) return;
+            if (--directoryCount == 0) return;
             this.rvaImportTable = rdr.ReadLeUInt32();
 			uint importTableSize = rdr.ReadLeUInt32();
 
             // Resource directory
-            if (--dictionaryCount == 0) return;
+            if (--directoryCount == 0) return;
             this.rvaResources = rdr.ReadLeUInt32();			// resource address
 			rdr.ReadLeUInt32();			// resource size
 
             // Exception table
-            if (--dictionaryCount == 0) return;
+            if (--directoryCount == 0) return;
 			this.rvaExceptionTable = rdr.ReadLeUInt32();            // exception address
             this.sizeExceptionTable = rdr.ReadLeUInt32();			// exception size
 
             // Certificate table
-            if (--dictionaryCount == 0) return;
+            if (--directoryCount == 0) return;
 			rdr.ReadLeUInt32();			// certificate address
 			rdr.ReadLeUInt32();			// certificate size
 
             // Base relocation table (.reloc)
-            if (--dictionaryCount == 0) return;
+            if (--directoryCount == 0) return;
             this.rvaBaseRelocationTable = rdr.ReadLeUInt32();
             this.sizeBaseRelocationTable = rdr.ReadLeUInt32();
 
             // Debug data dictionary
-            if (--dictionaryCount == 0) return;
+            if (--directoryCount == 0) return;
             this.rvaDebug = rdr.ReadLeUInt32();
             this.cbDebug = rdr.ReadLeUInt32();
 
-            if (--dictionaryCount == 0) return;
+            if (--directoryCount == 0) return;
             uint rvaArchitecture = rdr.ReadLeUInt32();
             uint cbArchitecture = rdr.ReadLeUInt32();
 
-            if (--dictionaryCount == 0) return;
+            if (--directoryCount == 0) return;
             uint rvaGlobalPointer = rdr.ReadLeUInt32();
             uint cbGlobalPointer = rdr.ReadLeUInt32();
 
-            if (--dictionaryCount == 0) return;
+            if (--directoryCount == 0) return;
             uint rvaTls = rdr.ReadLeUInt32();
             uint cbTls = rdr.ReadLeUInt32();
 
-            if (--dictionaryCount == 0) return;
+            if (--directoryCount == 0) return;
             uint rvaLoadConfig = rdr.ReadLeUInt32();
             uint cbLoadConfig = rdr.ReadLeUInt32();
 
-            if (--dictionaryCount == 0) return;
+            if (--directoryCount == 0) return;
             uint rvaBoundImport = rdr.ReadLeUInt32();
             uint cbBoundImport = rdr.ReadLeUInt32();
 
-            if (--dictionaryCount == 0) return;
+            if (--directoryCount == 0) return;
             uint rvaIat = rdr.ReadLeUInt32();
             uint cbIat = rdr.ReadLeUInt32();
 
-            if (--dictionaryCount == 0) return;
+            if (--directoryCount == 0) return;
             this.rvaDelayImportDescriptor = rdr.ReadLeUInt32();
             uint cbDelayImportDescriptor = rdr.ReadLeUInt32();
 		}
@@ -591,15 +617,15 @@ namespace Reko.ImageLoaders.MzExe
 		{
             relocator = CreateRelocator(machine, program);
             var relocations = imgLoaded.Relocations;
-			Section? relocSection;
+			PeSection? relocSection;
             if (rvaBaseRelocationTable != 0 &&
-                (relocSection = sectionList.Find(section => 
+                (relocSection = binaryImage.FindSection(section => 
                     this.rvaBaseRelocationTable >= section.VirtualAddress &&
                     this.rvaBaseRelocationTable < section.VirtualAddress + section.VirtualSize)) != null)
 			{
                 ApplyRelocations(relocSection.OffsetRawData, relocSection.SizeRawData, addrLoad, relocations);
 			} 
-            var addrEp = platform.AdjustProcedureAddress(addrLoad + rvaStartAddress);
+            var addrEp = platform.AdjustProcedureAddress(addrLoad + RvaStartAddress);
             var entrySym = CreateMainEntryPoint(
                     (this.fileFlags & ImageFileDll) != 0,
                     addrEp,
@@ -607,10 +633,7 @@ namespace Reko.ImageLoaders.MzExe
             ImageSymbols[entrySym.Address] = entrySym;
             program.EntryPoints[entrySym.Address] = entrySym;
             ReadExceptionRecords(addrLoad, rvaExceptionTable, sizeExceptionTable, ImageSymbols);
-            if (rvaExportTable != 0)
-            {
-                AddExportedEntryPoints(addrLoad, SegmentMap, program.EntryPoints);
-            }
+            AddExportedEntryPoints(addrLoad, SegmentMap, program.EntryPoints);
             ReadImportDescriptors(addrLoad);
             ReadDeferredLoadDescriptors(addrLoad);
 		}
@@ -671,9 +694,9 @@ namespace Reko.ImageLoaders.MzExe
 
         public void AddSectionsToSegmentMap(Address addrLoad, SegmentMap segmentMap)
         {
-            foreach (Section s in sectionList)
+            foreach (PeSection s in binaryImage.Sections)
             {
-                AccessMode acc = AccessFromCharacteristics(s.Flags);
+                var acc = s.AccessMode;
                 bool isBss = 
                     (s.Flags & IMAGE_SCN_CNT_UNINITIALIZED_DATA) != 0 &&
                     s.Name == ".bss";
@@ -937,18 +960,20 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
             }
         }
 
-		private Section ReadSection(EndianImageReader rdr)
+		private PeSection ReadSection(int index, EndianImageReader rdr)
 		{
-			var sec = new Section();
-			sec.Name = ReadSectionName(rdr, offsetCoffSymbols + cCoffSymbols * 18u);
-			sec.VirtualSize = rdr.ReadLeUInt32();
-			sec.VirtualAddress = rdr.ReadLeUInt32();
+			var name = ReadSectionName(rdr, offsetCoffSymbols + cCoffSymbols * 18u)!;
+			var virtualSize = rdr.ReadLeUInt32();
+			var virtualAddress = rdr.ReadLeUInt32();
 
-			if (sec.Name is null) {
-				sec.Name = ".reko_" + sec.VirtualAddress.ToString("x16");
+			if (name is null) {
+				name = ".reko_" + virtualAddress.ToString("x16");
 			}
-
-			sec.SizeRawData = rdr.ReadLeUInt32();
+            var sec = new PeSection(index);
+            sec.Name = name;
+            sec.VirtualSize = virtualSize;
+            sec.VirtualAddress = virtualAddress;
+            sec.SizeRawData = rdr.ReadLeUInt32();
 			sec.OffsetRawData = rdr.ReadLeUInt32();
 			rdr.ReadLeUInt32();			// pointer to relocations
 			rdr.ReadLeUInt32();			// pointer to line numbers.
@@ -958,35 +983,54 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
 			return sec;
 		}
 
-        public class Section
+        public class PeSection : IBinarySection
 		{
-			public string? Name;
-			public uint VirtualSize;
-			public uint VirtualAddress;
-			public uint SizeRawData;
-			public uint Flags;
-			public uint OffsetRawData;
-            public bool IsHidden;
+            public PeSection(int index)
+            {
+                this.Name = "";
+                this.VirtualAddress = default!;
+                this.Index = index;
+            }
+
+            public int Index { get; set; }
+
+            public string Name { get; set; }
+
+			public uint VirtualSize { get; set; }
+
+            ulong IBinarySection.Size => VirtualSize;
+
+			public uint VirtualAddress { get; set; }
+            Address IBinarySection.VirtualAddress => Address.Ptr32(this.VirtualAddress);
+
+            public uint SizeRawData { get; set; }
+
+			public ulong Flags { get; set; }
+
+			public uint OffsetRawData { get; set; }
+            ulong IBinarySection.FileOffset => OffsetRawData;
+
+            public ulong Alignment { get; set; }
+
+            public bool IsHidden { get; set; }
 
 			public bool IsDiscardable
 			{
 				get { return (Flags & SectionFlagsDiscardable) != 0; }
 			}
 
-		}
+            public AccessMode AccessMode => AccessFromCharacteristics(this.Flags);
 
-        public uint ReadEntryPointRva()
+        }
+
+        public uint? RvaToFileOffset(ulong rva)
         {
-            EndianImageReader rdr = new LeImageReader(RawImage, rvaSectionTable);
-            for (int i = 0; i < sections; ++i)
+            foreach (var section in binaryImage.Sections)
             {
-                var s = ReadSection(rdr);
-                if (s.VirtualAddress <= rvaStartAddress && rvaStartAddress < s.VirtualAddress + s.VirtualSize)
-                {
-                    return (rvaStartAddress - s.VirtualAddress) + s.OffsetRawData;
-                }
+                if (section.VirtualAddress <= rva && rva < section.VirtualAddress + section.VirtualSize)
+                    return (uint) (rva - section.VirtualAddress) + section.OffsetRawData;
             }
-            return 0;
+            return null;
         }
 
         public void ReadExceptionRecords(

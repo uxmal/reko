@@ -54,6 +54,11 @@ namespace Reko.Core.Memory
             throw new System.NotImplementedException();
         }
 
+        public string ReadNulTerminatedString(DataType charType, Encoding enc)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public StringConstant ReadCString(DataType charType, Encoding encoding)
         {
             throw new System.NotImplementedException();

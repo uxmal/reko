@@ -196,7 +196,7 @@ namespace Reko.Loading
             }
             finally
             {
-                if (stm != null) stm.Dispose();
+                stm?.Dispose();
             }
         }
     }

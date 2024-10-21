@@ -58,6 +58,11 @@ namespace Reko.Core.Memory
             return new Word16BeImageReader((Word16MemoryArea) image, addr);
         }
 
+        public string ReadNulTerminatedString(DataType charType, Encoding enc)
+        {
+            throw new NotImplementedException();
+        }
+
         public StringConstant ReadCString(DataType charType, Encoding encoding)
         {
             throw new NotImplementedException();

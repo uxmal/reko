@@ -140,7 +140,7 @@ namespace Reko.ImageLoaders.MzExe
         protected abstract SizeSpecificLoader Create32BitLoader(AbstractPeLoader outer);
         protected abstract SizeSpecificLoader Create64BitLoader(AbstractPeLoader outer);
 
-        protected static AccessMode AccessFromCharacteristics(uint characteristics)
+        protected static AccessMode AccessFromCharacteristics(ulong characteristics)
         {
             AccessMode acc = AccessMode.Read;
             if ((characteristics & SectionFlagsWriteable) != 0)

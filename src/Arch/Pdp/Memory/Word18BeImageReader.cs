@@ -59,6 +59,11 @@ namespace Reko.Arch.Pdp.Memory
             return new Word18BeImageReader((Word18MemoryArea) image, addr);
         }
 
+        public string ReadNulTerminatedString(DataType charType, Encoding encoding)
+        {
+            throw new NotImplementedException();
+        }
+
         public StringConstant ReadCString(DataType charType, Encoding encoding)
         {
             throw new NotImplementedException();

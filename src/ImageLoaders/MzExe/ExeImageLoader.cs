@@ -88,14 +88,13 @@ namespace Reko.ImageLoaders.MzExe
 
         private ProgramImageLoader GetDeferredLoader()
         {
-            if (ldrDeferred == null)
-                ldrDeferred = CreateDeferredLoader();
+            ldrDeferred ??= CreateDeferredLoader();
             return ldrDeferred;
         }
 
         public bool IsNewExecutable(uint e_lfanew)
         {
-            return (uint) RawImage.Length > (uint) (e_lfanew + 1) && RawImage[e_lfanew] == 'N' && RawImage[e_lfanew + 1] == 'E';
+            return (uint) RawImage.Length > (e_lfanew + 1) && RawImage[e_lfanew] == 'N' && RawImage[e_lfanew + 1] == 'E';
         }
 
 		public bool IsPortableExecutable(uint e_lfanew)
@@ -134,13 +133,15 @@ namespace Reko.ImageLoaders.MzExe
 
             uint? e_lfanew = LoadLfaToNewHeader();
             if (e_lfanew.HasValue)
-            { 
+            {
                 // It seems this file could have a new header.
                 if (IsPortableExecutable(e_lfanew.Value))
                 {
                     var peLdr = new PeImageLoader(services, ImageLocation, base.RawImage, e_lfanew.Value);
-                    uint peEntryPointOffset = peLdr.ReadEntryPointRva();
-                    return loaderSvc.FindUnpackerBySignature(peLdr, peEntryPointOffset);
+                    uint? peEntryPointOffset = peLdr.RvaToFileOffset(peLdr.RvaStartAddress);
+                    if (peEntryPointOffset is null)
+                        return peLdr;
+                    return loaderSvc.FindUnpackerBySignature(peLdr, peEntryPointOffset.Value);
                 }
                 else if (IsNewExecutable(e_lfanew.Value))
                 {

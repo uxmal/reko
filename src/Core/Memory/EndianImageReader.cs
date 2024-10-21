@@ -21,6 +21,7 @@
 #pragma warning disable IDE1006
 
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Types;
 using System;
 using System.Diagnostics.CodeAnalysis;
@@ -35,6 +36,8 @@ namespace Reko.Core.Memory
         EndianImageReader CreateNew(MemoryArea image, Address addr);
 
         bool ReadNullCharTerminator(DataType dtChar);
+
+        string ReadNulTerminatedString(DataType charType, Encoding encoding);
 
         StringConstant ReadCString(DataType charType, Encoding encoding);
 
@@ -62,13 +65,13 @@ namespace Reko.Core.Memory
     /// values that change bitpatterns depending on endianness.
     /// </summary>
 	public abstract class EndianByteImageReader : ByteImageReader, EndianImageReader
-	{
-		protected EndianByteImageReader(ByteMemoryArea img, Address addr) : base(img, addr) { }
-		protected EndianByteImageReader(ByteMemoryArea img, Address addr, long cUnits) : base(img, addr, cUnits) { }
-		protected EndianByteImageReader(ByteMemoryArea img, long offsetBegin, long offsetEnd) : base(img, offsetBegin, offsetEnd) { }
-		protected EndianByteImageReader(ByteMemoryArea img, Address addrBegin, Address addrEnd) : base(img, addrBegin, addrEnd) { }
-		protected EndianByteImageReader(ByteMemoryArea img, long off) : base(img, off) { }
-		protected EndianByteImageReader(byte[] img, long off, long offEnd) : base(img, off, offEnd) { }
+    {
+        protected EndianByteImageReader(ByteMemoryArea img, Address addr) : base(img, addr) { }
+        protected EndianByteImageReader(ByteMemoryArea img, Address addr, long cUnits) : base(img, addr, cUnits) { }
+        protected EndianByteImageReader(ByteMemoryArea img, long offsetBegin, long offsetEnd) : base(img, offsetBegin, offsetEnd) { }
+        protected EndianByteImageReader(ByteMemoryArea img, Address addrBegin, Address addrEnd) : base(img, addrBegin, addrEnd) { }
+        protected EndianByteImageReader(ByteMemoryArea img, long off) : base(img, off) { }
+        protected EndianByteImageReader(byte[] img, long off, long offEnd) : base(img, off, offEnd) { }
         protected EndianByteImageReader(byte[] img, long off) : base(img, off, img.Length) { }
         protected EndianByteImageReader(byte[] img) : base(img, 0, img.Length) { }
 
@@ -79,27 +82,27 @@ namespace Reko.Core.Memory
         /// <param name="offset"></param>
         /// <returns></returns>
 		public abstract EndianImageReader CreateNew(byte[] bytes, long offset);
-		public abstract EndianImageReader CreateNew(MemoryArea image, Address addr);
+        public abstract EndianImageReader CreateNew(MemoryArea image, Address addr);
 
-		public new virtual EndianImageReader Clone()
-		{
-			EndianImageReader rdr;
-			if (mem != null)
-			{
-				rdr = CreateNew(mem, addrStart!);
-				rdr.Offset = off;
-			}
-			else
-			{
-				rdr = CreateNew(bytes, off);
-			}
-			return rdr;
-		}
+        public new virtual EndianImageReader Clone()
+        {
+            EndianImageReader rdr;
+            if (mem != null)
+            {
+                rdr = CreateNew(mem, addrStart!);
+                rdr.Offset = off;
+            }
+            else
+            {
+                rdr = CreateNew(bytes, off);
+            }
+            return rdr;
+        }
 
 
         public T ReadAt<T>(long offset, Func<EndianImageReader, T> action)
         {
-            return base.ReadAt(offset, rdr => action.Invoke((EndianImageReader)rdr));
+            return base.ReadAt(offset, rdr => action.Invoke((EndianImageReader) rdr));
         }
 
         /// <summary>
@@ -107,7 +110,7 @@ namespace Reko.Core.Memory
         /// <param name="charType"></param>
         /// <returns></returns>
         public bool ReadNullCharTerminator(DataType charType)
-		{
+        {
             return charType.BitSize switch
             {
                 8 => (char) ReadByte() == 0,
@@ -116,22 +119,29 @@ namespace Reko.Core.Memory
             };
         }
 
-		/// <summary>
-		/// Reads a NUL-terminated string starting at the current position.
-		/// </summary>
-		/// <param name="charType"></param>
-		/// <returns></returns>
-		public StringConstant ReadCString(DataType charType, Encoding encoding)
+        public string ReadNulTerminatedString(DataType charType, Encoding encoding)
+        {
+            int iStart = (int) Offset;
+            while (IsValid && !ReadNullCharTerminator(charType))
+                ;
+            return encoding.GetString(
+                    bytes,
+                    iStart,
+                    (int) Offset - iStart - 1);
+        }
+
+    /// <summary>
+    /// Reads a NUL-terminated string starting at the current position
+    /// and returns it as a <see cref="StringConstant"/>.
+    /// </summary>
+    /// <param name="charType"></param>
+    /// <returns>A <see cref="StringConstant"/>.</returns>
+    public StringConstant ReadCString(DataType charType, Encoding encoding)
 		{
-			int iStart = (int)Offset;
-			while (IsValid && !ReadNullCharTerminator(charType))
-				;
-			return new StringConstant(
-				StringType.NullTerminated(charType),
-				encoding.GetString(
-					bytes,
-					iStart,
-					(int)Offset - iStart - 1));
+            var str = ReadNulTerminatedString(charType, encoding);
+            return new StringConstant(
+                StringType.NullTerminated(charType),
+                str);
 		}
 
 		/// <summary>
