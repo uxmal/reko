@@ -63,6 +63,14 @@ namespace Reko.Environments.Msdos
             return implicitRegs.Contains(reg);
         }
 
+        public override CParser CreateCParser(TextReader rdr, ParserState? state)
+        {
+            state ??= new ParserState();
+            var lexer = new CLexer(rdr, CLexer.MsvcKeywords);
+            var parser = new CParser(state, lexer);
+            return parser;
+        }
+
         private HashSet<RegisterStorage> CreateTrashedRegisters()
         {
             //$REVIEW: is ebx preserved?
