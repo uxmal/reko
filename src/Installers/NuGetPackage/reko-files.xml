@@ -32,6 +32,7 @@
         <var id="var.Infineon.TargetPath">$SolutionDir$/Arch/Infineon/$TargetDir$/Reko.Arch.Infineon.dll</var>
         <var id="var.LatticeMico.TargetPath">$SolutionDir$/Arch/LatticeMico/$TargetDir$/Reko.Arch.LatticeMico.dll</var>
         <var id="var.Loongson.TargetPath">$SolutionDir$/Arch/Loongson/$TargetDir$/Reko.Arch.Loongson.dll</var>
+        <var id="var.M16C.TargetPath">$SolutionDir$/Arch/M16C/$TargetDir$/Reko.Arch.M16C.dll</var>
         <var id="var.M6800.TargetPath">$SolutionDir$/Arch/M6800/$TargetDir$/Reko.Arch.M6800.dll</var>
         <var id="var.M68k.Design.TargetPath">$SolutionDir$/Arch/M68k.Design/$TargetFwkWindowsDir$/Reko.Arch.M68k.Design.dll</var>
         <var id="var.M68k.TargetPath">$SolutionDir$/Arch/M68k/$TargetDir$/Reko.Arch.M68k.dll</var>
@@ -306,6 +307,7 @@
         <File Source="$(var.Infineon.TargetPath)" nuget_target="f:" />
         <File Source="$(var.LatticeMico.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Loongson.TargetPath)" nuget_target="f:" />
+        <File Source="$(var.M16C.TargetPath)" nuget_target="f:" />
         <File Source="$(var.M6800.TargetPath)" nuget_target="f:" />
         <File Source="$(var.M68k.TargetPath)" nuget_target="f:" />
         <File Source="$(var.M68k.Design.TargetPath)" />

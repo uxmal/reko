@@ -621,6 +621,8 @@ namespace Reko.Core
         /// architectures.
         /// </remarks>
         public virtual int ReturnAddressOnStack => PointerType.Size; //$TODO: deal with near/far calls in x86-realmode
+        
+        /// <inheritdoc />
         public int InstructionBitSize { get; protected set; }
 
         /// <summary>

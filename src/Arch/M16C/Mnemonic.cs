@@ -1,0 +1,141 @@
+#region License
+/* 
+ * Copyright (C) 1999-2024 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Reko.Arch.M16C;
+
+public enum Mnemonic
+{
+    Invalid,
+    nyi,
+
+    abs,
+    adc,
+    adcf,
+    add,
+    adjnz,
+    and,
+    band,
+    bclr,
+    bmeq,
+    bmge,
+    bmgeu,
+    bmgt,
+    bmgtu,
+    bmle,
+    bmleu,
+    bmlt,
+    bmltu,
+    bmn,
+    bmne,
+    bmno,
+    bmo,
+    bmpz,
+    bnand,
+    bnor,
+    bnot,
+    bntst,
+    bnxor,
+    bor,
+    brk,
+    bset,
+    btst,
+    btsts,
+    bxor,
+    cmp,
+    dadc,
+    dadd,
+    dec,
+    div,
+    divu,
+    divx,
+    dsbb,
+    dsub,
+    enter,
+    exitd,
+    fclr,
+    fset,
+    inc,
+    @int,
+    into,
+    jeq,
+    jge,
+    jgeu,
+    jgt,
+    jgtu,
+    jle,
+    jleu,
+    jlt,
+    jltu,
+    jmp,
+    jmpi,
+    jmps,
+    jn,
+    jne,
+    jno,
+    jo,
+    jpz,
+    jsr,
+    jsri,
+    jsrs,
+    ldctx,
+    lde,
+    mov,
+    mul,
+    mulu,
+    neg,
+    nop,
+    not,
+    or,
+    pop,
+    popm,
+    push,
+    pushm,
+    reit,
+    rmpa,
+    rolc,
+    rorc,
+    rot,
+    rts,
+    sbb,
+    sha,
+    shl,
+    smovb,
+    smovf,
+    sstr,
+    stctx,
+    ste,
+    stnz,
+    stz,
+    stzx,
+    sub,
+    test,
+    tst,
+    und,
+    wait,
+    xor,
+    mova,
+    ldc,
+}

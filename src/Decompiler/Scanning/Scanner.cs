@@ -1117,6 +1117,8 @@ namespace Reko.Scanning
         {
             foreach (var sym in imageSymbols)
             {
+                if (!Program.SegmentMap.IsExecutableAddress(sym.Address))
+                    continue;
                 if (sym.NoDecompile || noDecompiles.Contains(sym.Address!))
                 {
                     Program.EnsureUserProcedure(sym.Address!, sym.Name, false);

@@ -75,6 +75,8 @@ namespace Reko.ImageLoaders.Srec
                 addr = ReadAddress(bytes, 4, Address.Ptr32);
                 dataOffset = 1 + 4;
                 break;
+            case '8':
+                return ParseStartAddress(bytes, 3, Addr32);
             case '9':
                 return ParseStartAddress(bytes, 2, Addr16);
             }
@@ -113,6 +115,11 @@ namespace Reko.ImageLoaders.Srec
         private static Address Addr16(uint uAddr)
         {
             return Address.Ptr16((ushort) uAddr);
+        }
+
+        private static Address Addr32(uint uAddr)
+        {
+            return Address.Ptr32((ushort) uAddr);
         }
     }
 }

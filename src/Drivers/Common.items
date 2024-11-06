@@ -37,6 +37,7 @@ by the PreBuild.targets file.
     <ProjectReference Include="$(SolutionDir)Arch\Infineon\Infineon.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\LatticeMico\LatticeMico.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\Loongson\Loongson.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\M16C\M16C.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\M6800\M6800.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\M68k\M68k.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\MCore\MCore.csproj" />
@@ -152,6 +153,7 @@ by the PreBuild.targets file.
     <Architectures Include="$(SolutionDir)Arch\Infineon\bin\$(StandardOutputDir)\Reko.Arch.Infineon.*" />
     <Architectures Include="$(SolutionDir)Arch\LatticeMico\bin\$(StandardOutputDir)\Reko.Arch.LatticeMico.*" />
     <Architectures Include="$(SolutionDir)Arch\Loongson\bin\$(StandardOutputDir)\Reko.Arch.Loongson.*" />
+    <Architectures Include="$(SolutionDir)Arch\M16C\bin\$(StandardOutputDir)\Reko.Arch.M16C.*" />
     <Architectures Include="$(SolutionDir)Arch\M6800\bin\$(StandardOutputDir)\Reko.Arch.M6800.*" />
     <Architectures Include="$(SolutionDir)Arch\M68k\bin\$(StandardOutputDir)\Reko.Arch.M68k.*" />
     <Architectures Include="$(SolutionDir)Arch\MCore\bin\$(StandardOutputDir)\Reko.Arch.MCore.*" />
