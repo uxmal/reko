@@ -360,7 +360,29 @@ namespace Reko.UnitTests.Decompiler.Typing
 			Assert.AreEqual("(arr word32 10)", dt.ToString());
 		}
 
-		[Test]
+        [Test]
+        public void UnifyPrimitiveTypeSegPointerWithPointer()
+        {
+            var ptr = PrimitiveType.Ptr32;
+            var segptr = PrimitiveType.SegPtr32;
+            DataType dt = un.Unify(ptr, segptr);
+            Assert.AreEqual("segptr32", dt.ToString());
+            dt = un.Unify(segptr, ptr);
+            Assert.AreEqual("segptr32", dt.ToString());
+        }
+
+        [Test]
+        public void UnifySegptrWithPointer()
+        {
+            var ptr = new Pointer(PrimitiveType.Int16, 32);
+            var segptr = PrimitiveType.SegPtr32;
+            DataType dt = un.Unify(ptr, segptr);
+            Assert.AreEqual("(ptr32 int16)", dt.ToString());
+            dt = un.Unify(segptr, ptr);
+            Assert.AreEqual("(ptr32 int16)", dt.ToString());
+        }
+
+        [Test]
 		public void UnifyStructInt()
 		{
 			StructureType s1 = new StructureType(null, 30);

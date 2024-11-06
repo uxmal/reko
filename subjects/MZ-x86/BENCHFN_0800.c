@@ -2372,14 +2372,14 @@ Eq_n fn0800-1708(struct Eq_n * ss_bp, Eq_n ds)
 	if ((ss_bp->bFFFFFFD7 & 0x20) == 0x00)
 	{
 		Eq_n di_n;
-		di_n.u2 = (ds->*di_n).u2;
+		di_n.u1 = (ds->*di_n).u1;
 		ss_bp->ptr000C = (union Eq_n Eq_n::*) ((char *) ss_bp->ptr000C + 2);
 		return SEQ(ds, di_n);
 	}
 	else
 	{
 		Eq_n es_di_n;
-		es_di_n.u1 = (ds->*di_n).u1;
+		es_di_n.u0 = (ds->*di_n).u0;
 		ss_bp->ptr000C = (union Eq_n Eq_n::*) ((char *) ss_bp->ptr000C + 4);
 		return es_di_n;
 	}

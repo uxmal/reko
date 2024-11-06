@@ -92,12 +92,23 @@ namespace Reko.Core.Types
 			
 			PrimitiveType? pa = a as PrimitiveType;
 			PrimitiveType? pb = b as PrimitiveType;
+
 			if (pa != null && pb != null)
 			{
+                //$REVIEW: shouldn't this be .BitSize?
+                // making the change gives massive regressions.
 				if (pa.Size != pb.Size)
 					return false;
-				return (pa.Domain &  pb.Domain) != 0;
-			}
+                if ((pa.Domain & pb.Domain) != 0)
+                    return true;
+                if (pa.Domain.HasFlag(Domain.Pointer) &&
+                    pb.Domain.HasFlag(Domain.SegPointer))
+                    return true;
+                if (pb.Domain.HasFlag(Domain.Pointer) &&
+                    pa.Domain.HasFlag(Domain.SegPointer))
+                    return true;
+                return false;
+            }
 
             TypeReference? tra = a as TypeReference;
             TypeReference? trb = b as TypeReference;
@@ -508,9 +519,22 @@ namespace Reko.Core.Types
         private DataType UnifyPrimitives(PrimitiveType pa, PrimitiveType pb)
         {
             Domain d = pa.Domain & pb.Domain;
-            if (d != 0 && pa.BitSize == pb.BitSize)
+            if (pa.BitSize == pb.BitSize)
             {
-                return PrimitiveType.Create(d, pa.BitSize);
+                if (d != 0)
+                {
+                    return PrimitiveType.Create(d, pa.BitSize);
+                }
+                if (pa.Domain.HasFlag(Domain.SegPointer) &&
+                    pb.Domain.HasFlag(Domain.Pointer))
+                {
+                    return PrimitiveType.Create(Domain.SegPointer, pa.BitSize);
+                }
+                if (pb.Domain.HasFlag(Domain.SegPointer) &&
+                    pa.Domain.HasFlag(Domain.Pointer))
+                {
+                    return PrimitiveType.Create(Domain.SegPointer, pb.BitSize);
+                }
             }
             if (pa.Domain == Domain.SegPointer && pb.BitSize == 16)
                 return pa;
