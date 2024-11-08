@@ -1,0 +1,140 @@
+word16 fn000C1D6C(word16 wArg03, word16 wArg05, word16 wArg07, word16 wArg09, word16 wArg0B)
+// stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn000C18E6
+// MayUse:  Stack +0003:[0..15] Stack +0005:[0..15] Stack +0007:[0..15] Stack +0009:[0..15] Stack +000B:[0..15]
+// LiveOut: r0:[0..15]-fn000C18E6
+// Trashed: OSZC r0 r1 r2
+// Preserved: a0 a1 fb usp
+fn000C1D6C_entry:
+l000C1D6C:
+	r0_18 = wArg0B
+	dwLoc0A_93 = SEQ(wArg09, wArg07) (alias)
+	dwLoc06_96 = SEQ(wArg05, wArg03) (alias)
+l000C1D82:
+	wLoc04_73 = SLICE(dwLoc06_96, word16, 16) (alias)
+	wLoc06_72 = SLICE(dwLoc06_96, word16, 0) (alias)
+	wLoc08_68 = SLICE(dwLoc0A_93, word16, 16) (alias)
+	wLoc0A_67 = SLICE(dwLoc0A_93, word16, 0) (alias)
+	r0_18 = r0_18 + 0xFFFF<16>
+	branch r0_18 == 0<16> l000C1DA8
+l000C1DA8:
+	return wArg03
+fn000C1D6C_exit:
+l000C1D8A:
+	Mem44[SEQ(wLoc04_73, r0_18):byte] = Mem38[SEQ(wLoc08_68, r0_18):byte]
+	dwLoc0A_93 = SEQ(SLICE(dwLoc0A_93 + 1<32>, word16, 16), wLoc0A_67 + 1<16>) (alias)
+	dwLoc06_96 = SEQ(SLICE(dwLoc06_96 + 1<32>, word16, 16), wLoc06_72 + 1<16>) (alias)
+
+
+void fn000C1DB0(word16 r2, word16 wArg03, word16 wArg05, word16 wArg07)
+// stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn000C181E
+// MayUse:  r2:[0..15] Stack +0003:[0..15] Stack +0005:[0..15] Stack +0007:[0..15]
+// LiveOut:
+// Trashed: OSZC r0 r1 r2
+// Preserved: a0 a1 fb usp
+fn000C1DB0_entry:
+l000C1DB0:
+	r0_14 = wArg07
+	dwLoc06_70 = SEQ(wArg05, wArg03) (alias)
+l000C1DBE:
+	wLoc04_54 = SLICE(dwLoc06_70, word16, 16) (alias)
+	wLoc06_53 = SLICE(dwLoc06_70, word16, 0) (alias)
+	r0_14 = r0_14 + 0xFFFF<16>
+	branch r0_14 == 0<16> l000C1DDC
+l000C1DDC:
+	return
+fn000C1DB0_exit:
+l000C1DC6:
+	Mem34[SEQ(wLoc04_54, r0_14):byte] = r2
+	dwLoc06_70 = SEQ(SLICE(dwLoc06_70 + 1<32>, word16, 16), wLoc06_53 + 1<16>) (alias)
+
+
+word32 fn000C1DE4(word32 r2r0, word16 sb)
+// stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn000C1ACC
+// MayUse:  sb:[0..15] Sequence r2r0:[0..31]
+// LiveOut: Sequence r2r0:[0..31]-fn000C1ACC
+// Trashed: OSZC a0 a1 r0 r1 r2 r3
+// Preserved: usp
+fn000C1DE4_entry:
+	r2 = SLICE(r2r0, word16, 16)
+l000C1DE4:
+	r1_16 = Mem14[sb + 11<i16>:word16]
+	r3_17 = Mem14[sb + 13<i16>:word16]
+	branch r2 <u 0x8000<16> l000C1E00
+l000C1DF4:
+	r2r0_179 = ~r2r0
+	r2r0 = SEQ(SLICE(r2r0_179 + 1<32>, word16, 16), SLICE(r2r0_179, word16, 0) + 1<16>) (alias)
+l000C1E00:
+	r0_111 = SLICE(r2r0, word16, 0) (alias)
+	r2_107 = SLICE(r2r0, word16, 16) (alias)
+	r3_r1_252 = SEQ(r3_17, r1_16) (alias)
+	branch r3_17 <u 0x8000<16> l000C1E12
+l000C1E06:
+	r3_r1_181 = ~SEQ(r3_17, r1_16)
+	r3_r1_252 = SEQ(SLICE(r3_r1_181 + 1<32>, word16, 16), SLICE(r3_r1_181, word16, 0) + 1<16>) (alias)
+l000C1E12:
+	r1_117 = SLICE(r3_r1_252, word16, 0) (alias)
+	r3_121 = SLICE(r3_r1_252, word16, 16) (alias)
+	branch r3_121 != 0<16> l000C1E2D
+l000C1E2D:
+	a0_52 = 0<16>
+	a1_100 = 0<16>
+	r3_r1_249 = r3_r1_252 (alias)
+l000C1E31:
+	r1_61 = SLICE(r3_r1_249, word16, 0) (alias)
+	r3_56 = SLICE(r3_r1_249, word16, 16) (alias)
+	r2r0_236 = r2r0 (alias)
+	r3_r1_240 = r3_r1_249 (alias)
+	branch r2_107 <=u r3_56 l000C1E3C
+l000C1E35:
+	r3_67 = __rcl<word16,int16>(r3_56, 1<i16>, cond(r1_61 << 0<i16>) & 1<16>)
+	a1_100 = a1_100 + 1<i16>
+	r2r0_236 = r2r0 (alias)
+	r3_r1_240 = SEQ(r3_67, r1_61 << 0<i16>) (alias)
+	r3_r1_249 = SEQ(r3_67, r1_61 << 0<i16>) (alias)
+	branch r1_61 << 0<i16> >= 0<16> l000C1E31
+l000C1E3C:
+	r2r0_185 = r2r0_236 - r3_r1_240
+	r2_76 = SLICE(r2r0_185, word16, 16) (alias)
+	C_78 = cond(r2_76) & 1<16> (alias)
+	branch r2_76 >=u 0<16> l000C1E48
+l000C1E42:
+	r2r0_185 = r2r0_185 + r3_r1_240
+	C_78 = 0<16>
+l000C1E48:
+	a0_52 = __rcl<word16,int16>(a0_52, 1<i16>, C_78)
+	r3_r1_240 = r3_r1_240 >>u 8<8>
+	a1_100 = a1_100 - 1<i16>
+	r2r0_236 = r2r0_185 (alias)
+	branch a1_100 >= 0<16> l000C1E3C
+l000C1E51:
+	r2r0_243 = CONVERT(a0_52, uint16, uint32) (alias)
+l000C1E17:
+	branch r2_107 == 0<16> l000C1E27
+l000C1E1B:
+	r2r0_115 = CONVERT(r2_107, uint16, uint32) (alias)
+	r2_107 = r2r0_115 %u r1_117
+	r3_121 = r2r0_115 /u r1_117
+l000C1E27:
+	r2r0_243 = SEQ(r3_121, SEQ(r2_107, r0_111) /u r1_117) (alias)
+l000C1E55:
+	r2_151 = SLICE(r2r0_243, word16, 16) (alias)
+	r0_149 = SLICE(r2r0_243, word16, 0) (alias)
+	branch Mem48[sb:word16] == 0<16> l000C1E62
+l000C1E5A:
+	r2r0_189 = ~r2r0_243
+	r0_149 = SLICE(r2r0_189, word16, 0) + 1<16> (alias)
+	r2_151 = SLICE(r2r0_189 + 1<32>, word16, 16) (alias)
+l000C1E62:
+	return SEQ(r2_151, r0_149)
+fn000C1DE4_exit:
+
+

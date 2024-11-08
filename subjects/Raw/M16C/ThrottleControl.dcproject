@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemata.jklnet.org/Reko/v5">
+  <arch>m16c</arch>
+  <input>
+    <location>ThrottleControl.mot</location>
+    <asmDir>ThrottleControl.reko</asmDir>
+    <srcDir>ThrottleControl.reko</srcDir>
+    <includeDir>ThrottleControl.reko</includeDir>
+    <resources>ThrottleControl.reko\resources</resources>
+    <user>
+      <loader>Srec</loader>
+      <processor name="m16c" />
+      <platform name="default" />
+      <procedure name="fn000C0154">
+        <address>000C0154</address>
+      </procedure>
+      <procedure name="fn000C0C5E">
+        <address>000C0C5E</address>
+      </procedure>
+      <procedure name="fn000C0C66">
+        <address>000C0C66</address>
+      </procedure>
+      <procedure name="fn000C0C6E">
+        <address>000C0C6E</address>
+      </procedure>
+      <procedure name="fn000C0CB4">
+        <address>000C0CB4</address>
+      </procedure>
+      <procedure name="fn000C0CFA">
+        <address>000C0CFA</address>
+      </procedure>
+      <procedure name="fn000C0D13">
+        <address>000C0D13</address>
+      </procedure>
+      <procedure name="fn000C0D2A">
+        <address>000C0D2A</address>
+      </procedure>
+      <procedure name="fn000C0D42">
+        <address>000C0D42</address>
+      </procedure>
+      <procedure name="fn000C0DB4">
+        <address>000C0DB4</address>
+      </procedure>
+      <procedure name="fn000C0DCC">
+        <address>000C0DCC</address>
+      </procedure>
+      <procedure name="fn000C0DD4">
+        <address>000C0DD4</address>
+      </procedure>
+      <procedure name="fn000C0DDC">
+        <address>000C0DDC</address>
+      </procedure>
+      <procedure name="fn000C0DF4">
+        <address>000C0DF4</address>
+      </procedure>
+      <procedure name="fn000C0DFC">
+        <address>000C0DFC</address>
+      </procedure>
+      <procedure name="fn000C0E04">
+        <address>000C0E04</address>
+      </procedure>
+      <procedure name="fn000C0E0C">
+        <address>000C0E0C</address>
+      </procedure>
+      <procedure name="fn000C0E14">
+        <address>000C0E14</address>
+      </procedure>
+      <procedure name="fn000C0EB0">
+        <address>000C0EB0</address>
+      </procedure>
+      <procedure name="fn000C0F06">
+        <address>000C0F06</address>
+      </procedure>
+      <procedure name="fn000C0F9E">
+        <address>000C0F9E</address>
+      </procedure>
+      <procedure name="UART1_putc">
+        <address>000C1372</address>
+      </procedure>
+      <procedure name="fn000C1392">
+        <address>000C1392</address>
+      </procedure>
+      <procedure name="fn000C13CC">
+        <address>000C13CC</address>
+      </procedure>
+      <procedure name="fn000C1432">
+        <address>000C1432</address>
+      </procedure>
+      <procedure name="fn000C14A0">
+        <address>000C14A0</address>
+      </procedure>
+      <procedure name="fn000C14C4">
+        <address>000C14C4</address>
+      </procedure>
+      <procedure name="fn000C14F0">
+        <address>000C14F0</address>
+      </procedure>
+      <procedure name="fn000C155E">
+        <address>000C155E</address>
+      </procedure>
+      <procedure name="fn000C158A">
+        <address>000C158A</address>
+      </procedure>
+      <procedure name="fn000C15B6">
+        <address>000C15B6</address>
+      </procedure>
+      <procedure name="fn000C1616">
+        <address>000C1616</address>
+      </procedure>
+      <procedure name="fn000C1634">
+        <address>000C1634</address>
+      </procedure>
+      <procedure name="fn000C166E">
+        <address>000C166E</address>
+      </procedure>
+      <procedure name="fn000C1684">
+        <address>000C1684</address>
+      </procedure>
+      <procedure name="fn000C16B0">
+        <address>000C16B0</address>
+      </procedure>
+      <procedure name="fn000C1730">
+        <address>000C1730</address>
+      </procedure>
+      <procedure name="fn000C175C">
+        <address>000C175C</address>
+      </procedure>
+      <procedure name="fn000C177A">
+        <address>000C177A</address>
+      </procedure>
+      <procedure name="fn000C1790">
+        <address>000C1790</address>
+      </procedure>
+      <procedure name="fn000C17B4">
+        <address>000C17B4</address>
+      </procedure>
+      <procedure name="fn000C1802">
+        <address>000C1802</address>
+      </procedure>
+      <procedure name="fn000C181E">
+        <address>000C181E</address>
+      </procedure>
+      <procedure name="fn000C185C">
+        <address>000C185C</address>
+      </procedure>
+      <procedure name="fn000C18E6">
+        <address>000C18E6</address>
+      </procedure>
+      <procedure name="fn000C1D6C">
+        <address>000C1D6C</address>
+      </procedure>
+      <procedure name="fn000C1DB0">
+        <address>000C1DB0</address>
+      </procedure>
+      <procedure name="fn000C1DE4">
+        <address>000C1DE4</address>
+      </procedure>
+      <heuristic name="shingle" />
+      <onLoad enabled="false" />
+      <registerValues />
+      <extractResources>false</extractResources>
+      <outputFilePolicy>Segment</outputFilePolicy>
+    </user>
+  </input>
+</project>
