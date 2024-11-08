@@ -381,6 +381,7 @@
       <File Source="$(var.WindowsDecompiler.TargetDir)Microsoft.Dynamic.dll" />
       <File Source="$(var.WindowsDecompiler.TargetDir)Microsoft.Scripting.dll" />
       <File Source="$(var.WindowsDecompiler.TargetDir)Microsoft.Scripting.Metadata.dll" />
+      <File Source="$(var.WindowsDecompiler.TargetDir)Splat.dll" />
       <File Source="$(var.CmdLine.TargetDir)IronPython.dll" />
       <File Source="$(var.CmdLine.TargetDir)IronPython.Modules.dll" />
       <File Source="$(var.CmdLine.TargetDir)IronPython.SQLite.dll" />
