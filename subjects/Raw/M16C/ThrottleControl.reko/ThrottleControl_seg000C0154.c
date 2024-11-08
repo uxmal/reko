@@ -4,15 +4,15 @@
 
 #include "ThrottleControl.h"
 
-// 000C0154: void fn000C0154(Register byte r0h, Register (ptr16 Eq_3) sb)
-void fn000C0154(byte r0h, struct Eq_3 * sb)
+// 000C0154: void fn000C0154(Register byte r0h, Register (ptr16 Eq_n) sb)
+void fn000C0154(byte r0h, struct Eq_n * sb)
 {
-	word16 r1_2022;
-	*(union Eq_6 *) 1020 = __set_bit<byte,byte>(*(union Eq_6 *) 1020, 0x05);
-	((union Eq_38 *) 0x043C)->u0 = (uint16) (byte) __write_bit<word16,byte>(SEQ(r0h, 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_6 *) 996, 0x04)) == 0x01 ? 0x41 : 66;
+	word16 r1_n;
+	*(union Eq_n *) 1020 = __set_bit<byte,byte>(*(union Eq_n *) 1020, 0x05);
+	((union Eq_n *) 0x043C)->u0 = (uint16) (byte) __write_bit<word16,byte>(SEQ(r0h, 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 996, 0x04)) == 0x01 ? 0x41 : 66;
 	*(byte *) 0x043D = 0x00;
 	word16 wLoc04;
-	if (*(union Eq_38 *) 0x043C != 0x41)
+	if (*(union Eq_n *) 0x043C != 0x41)
 	{
 		fn000C0BBA();
 		fn000C0B0A();
@@ -29,128 +29,128 @@ void fn000C0154(byte r0h, struct Eq_3 * sb)
 		UART1_putc(0x55);
 		UART1_putc(0x55);
 		fn000C0E46();
-		word16 r0_951 = fn000C1186(0x01, 0x05, out r1_2022);
-		*(union Eq_76 *) 0x03D8 = *(union Eq_76 *) 0x03CA;
-		*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x00, !!__bit<byte,byte>(*(union Eq_6 *) 1016, 0x00));
-		*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x01, !!__bit<byte,byte>(*(union Eq_6 *) 1016, 0x01));
-		*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x02, !!__bit<byte,byte>(*(union Eq_6 *) 1016, 0x02));
-		*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x03, !!__bit<byte,byte>(*(union Eq_6 *) 1016, 0x03));
-		*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x04, !!__bit<byte,byte>(*(union Eq_6 *) 1016, 0x04));
-		*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x05, !!__bit<byte,byte>(*(union Eq_6 *) 1016, 0x05));
-		*(byte *) 997 = __write_bit<byte,byte>(*(byte *) 997, 0x00, !!__bit<byte,byte>(*(union Eq_6 *) 993, 0x05));
-		*(byte *) 997 = __write_bit<byte,byte>(*(byte *) 997, 0x01, !!__bit<byte,byte>(*(union Eq_6 *) 993, 0x06));
-		*(byte *) 997 = __write_bit<byte,byte>(*(byte *) 997, 0x02, !!__bit<byte,byte>(*(union Eq_6 *) 993, 0x07));
-		*(byte *) 997 = __write_bit<byte,byte>(*(byte *) 997, 0x03, !!__bit<byte,byte>(*(union Eq_6 *) 1017, 0x05));
-		*(byte *) 997 = __write_bit<byte,byte>(*(byte *) 997, 0x04, !!__bit<byte,byte>(*(union Eq_6 *) 1017, 0x06));
-		*(byte *) 997 = __write_bit<byte,byte>(*(byte *) 997, 0x05, !!__bit<byte,byte>(*(union Eq_6 *) 1017, 0x07));
-		fn000C1222(fn000C1222(fn000C1222(r0_951, 0x000C0073), 0x000C002D), 0x000C0000);
-		word16 r1_2023;
-		fn000C1222(fn000C1186(0x01, 44, out r1_2023), 0x000C008A);
-		word16 r1_2024;
-		fn000C1186(0x05, 0x01, out r1_2024);
+		word16 r0_n = fn000C1186(0x01, 0x05, out r1_n);
+		*(union Eq_n *) 0x03D8 = *(union Eq_n *) 0x03CA;
+		*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x00, !!__bit<byte,byte>(*(union Eq_n *) 1016, 0x00));
+		*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x01, !!__bit<byte,byte>(*(union Eq_n *) 1016, 0x01));
+		*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x02, !!__bit<byte,byte>(*(union Eq_n *) 1016, 0x02));
+		*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x03, !!__bit<byte,byte>(*(union Eq_n *) 1016, 0x03));
+		*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x04, !!__bit<byte,byte>(*(union Eq_n *) 1016, 0x04));
+		*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x05, !!__bit<byte,byte>(*(union Eq_n *) 1016, 0x05));
+		*(byte *) 997 = __write_bit<byte,byte>(*(byte *) 997, 0x00, !!__bit<byte,byte>(*(union Eq_n *) 993, 0x05));
+		*(byte *) 997 = __write_bit<byte,byte>(*(byte *) 997, 0x01, !!__bit<byte,byte>(*(union Eq_n *) 993, 0x06));
+		*(byte *) 997 = __write_bit<byte,byte>(*(byte *) 997, 0x02, !!__bit<byte,byte>(*(union Eq_n *) 993, 0x07));
+		*(byte *) 997 = __write_bit<byte,byte>(*(byte *) 997, 0x03, !!__bit<byte,byte>(*(union Eq_n *) 1017, 0x05));
+		*(byte *) 997 = __write_bit<byte,byte>(*(byte *) 997, 0x04, !!__bit<byte,byte>(*(union Eq_n *) 1017, 0x06));
+		*(byte *) 997 = __write_bit<byte,byte>(*(byte *) 997, 0x05, !!__bit<byte,byte>(*(union Eq_n *) 1017, 0x07));
+		fn000C1222(fn000C1222(fn000C1222(r0_n, 0x000C0073), 0x000C002D), 0x000C0000);
+		word16 r1_n;
+		fn000C1222(fn000C1186(0x01, 44, out r1_n), 0x000C008A);
+		word16 r1_n;
+		fn000C1186(0x05, 0x01, out r1_n);
 		while (true)
 		{
-			*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x00, !!__bit<byte,byte>(*(union Eq_6 *) 1016, 0x00));
-			*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x01, !!__bit<byte,byte>(*(union Eq_6 *) 1016, 0x01));
-			*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x02, !!__bit<byte,byte>(*(union Eq_6 *) 1016, 0x02));
-			*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x03, !!__bit<byte,byte>(*(union Eq_6 *) 1016, 0x03));
-			*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x04, !!__bit<byte,byte>(*(union Eq_6 *) 1016, 0x04));
-			*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x05, !!__bit<byte,byte>(*(union Eq_6 *) 1016, 0x05));
-			*(byte *) 997 = __write_bit<byte,byte>(*(byte *) 997, 0x00, !!__bit<byte,byte>(*(union Eq_6 *) 993, 0x05));
-			*(byte *) 997 = __write_bit<byte,byte>(*(byte *) 997, 0x01, !!__bit<byte,byte>(*(union Eq_6 *) 993, 0x06));
-			*(byte *) 997 = __write_bit<byte,byte>(*(byte *) 997, 0x02, !!__bit<byte,byte>(*(union Eq_6 *) 993, 0x07));
-			*(byte *) 997 = __write_bit<byte,byte>(*(byte *) 997, 0x03, !!__bit<byte,byte>(*(union Eq_6 *) 1017, 0x05));
-			*(byte *) 997 = __write_bit<byte,byte>(*(byte *) 997, 0x04, !!__bit<byte,byte>(*(union Eq_6 *) 1017, 0x06));
-			*(byte *) 997 = __write_bit<byte,byte>(*(byte *) 997, 0x05, !!__bit<byte,byte>(*(union Eq_6 *) 1017, 0x07));
+			*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x00, !!__bit<byte,byte>(*(union Eq_n *) 1016, 0x00));
+			*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x01, !!__bit<byte,byte>(*(union Eq_n *) 1016, 0x01));
+			*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x02, !!__bit<byte,byte>(*(union Eq_n *) 1016, 0x02));
+			*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x03, !!__bit<byte,byte>(*(union Eq_n *) 1016, 0x03));
+			*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x04, !!__bit<byte,byte>(*(union Eq_n *) 1016, 0x04));
+			*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x05, !!__bit<byte,byte>(*(union Eq_n *) 1016, 0x05));
+			*(byte *) 997 = __write_bit<byte,byte>(*(byte *) 997, 0x00, !!__bit<byte,byte>(*(union Eq_n *) 993, 0x05));
+			*(byte *) 997 = __write_bit<byte,byte>(*(byte *) 997, 0x01, !!__bit<byte,byte>(*(union Eq_n *) 993, 0x06));
+			*(byte *) 997 = __write_bit<byte,byte>(*(byte *) 997, 0x02, !!__bit<byte,byte>(*(union Eq_n *) 993, 0x07));
+			*(byte *) 997 = __write_bit<byte,byte>(*(byte *) 997, 0x03, !!__bit<byte,byte>(*(union Eq_n *) 1017, 0x05));
+			*(byte *) 997 = __write_bit<byte,byte>(*(byte *) 997, 0x04, !!__bit<byte,byte>(*(union Eq_n *) 1017, 0x06));
+			*(byte *) 997 = __write_bit<byte,byte>(*(byte *) 997, 0x05, !!__bit<byte,byte>(*(union Eq_n *) 1017, 0x07));
 			if (wLoc04 == 0x01)
 			{
-				*(union Eq_6 *) 1001 = __set_bit<byte,byte>(*(union Eq_6 *) 1001, 0x01);
-				*(union Eq_6 *) 1001 = __set_bit<byte,byte>(*(union Eq_6 *) 1001, 0x02);
-				*(union Eq_6 *) 1001 = __set_bit<byte,byte>(*(union Eq_6 *) 1001, 0x07);
-				*(union Eq_6 *) 1001 = __set_bit<byte,byte>(*(union Eq_6 *) 1001, 0x04);
-				*(union Eq_6 *) 1001 = __set_bit<byte,byte>(*(union Eq_6 *) 1001, 0x03);
+				*(union Eq_n *) 1001 = __set_bit<byte,byte>(*(union Eq_n *) 1001, 0x01);
+				*(union Eq_n *) 1001 = __set_bit<byte,byte>(*(union Eq_n *) 1001, 0x02);
+				*(union Eq_n *) 1001 = __set_bit<byte,byte>(*(union Eq_n *) 1001, 0x07);
+				*(union Eq_n *) 1001 = __set_bit<byte,byte>(*(union Eq_n *) 1001, 0x04);
+				*(union Eq_n *) 1001 = __set_bit<byte,byte>(*(union Eq_n *) 1001, 0x03);
 				wLoc04 = 0x00;
 			}
 			else
 			{
-				*(union Eq_6 *) 1001 = __set_bit<byte,byte>(*(union Eq_6 *) 1001, 0x01);
-				*(union Eq_6 *) 1001 = __set_bit<byte,byte>(*(union Eq_6 *) 1001, 0x02);
-				*(union Eq_6 *) 1001 = __set_bit<byte,byte>(*(union Eq_6 *) 1001, 0x07);
-				*(union Eq_6 *) 1001 = __set_bit<byte,byte>(*(union Eq_6 *) 1001, 0x04);
-				*(union Eq_6 *) 1001 = __set_bit<byte,byte>(*(union Eq_6 *) 1001, 0x03);
+				*(union Eq_n *) 1001 = __set_bit<byte,byte>(*(union Eq_n *) 1001, 0x01);
+				*(union Eq_n *) 1001 = __set_bit<byte,byte>(*(union Eq_n *) 1001, 0x02);
+				*(union Eq_n *) 1001 = __set_bit<byte,byte>(*(union Eq_n *) 1001, 0x07);
+				*(union Eq_n *) 1001 = __set_bit<byte,byte>(*(union Eq_n *) 1001, 0x04);
+				*(union Eq_n *) 1001 = __set_bit<byte,byte>(*(union Eq_n *) 1001, 0x03);
 				wLoc04 = 0x01;
 			}
-			word16 r1_2025;
-			fn000C1186(0x05, 0x00, out r1_2025);
-			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_6 *) 1016, 0x00)) == 0x01 ? 0x31 : 0x30));
-			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_6 *) 1016, 0x01)) == 0x01 ? 0x31 : 0x30));
-			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_6 *) 1016, 0x02)) == 0x01 ? 0x31 : 0x30));
-			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_6 *) 1016, 0x03)) == 0x01 ? 0x31 : 0x30));
-			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_6 *) 1016, 0x04)) == 0x01 ? 0x31 : 0x30));
-			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_6 *) 1016, 0x05)) == 0x01 ? 0x31 : 0x30));
+			word16 r1_n;
+			fn000C1186(0x05, 0x00, out r1_n);
+			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 1016, 0x00)) == 0x01 ? 0x31 : 0x30));
+			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 1016, 0x01)) == 0x01 ? 0x31 : 0x30));
+			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 1016, 0x02)) == 0x01 ? 0x31 : 0x30));
+			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 1016, 0x03)) == 0x01 ? 0x31 : 0x30));
+			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 1016, 0x04)) == 0x01 ? 0x31 : 0x30));
+			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 1016, 0x05)) == 0x01 ? 0x31 : 0x30));
 			UART1_putc(0x20);
-			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_6 *) 993, 0x05)) == 0x01 ? 0x31 : 0x30));
-			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_6 *) 993, 0x06)) == 0x01 ? 0x31 : 0x30));
-			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_6 *) 993, 0x07)) == 0x01 ? 0x31 : 0x30));
-			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_6 *) 1017, 0x05)) == 0x01 ? 0x31 : 0x30));
-			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_6 *) 1017, 0x06)) == 0x01 ? 0x31 : 0x30));
-			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_6 *) 1017, 0x07)) == 0x01 ? 0x31 : 0x30));
+			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 993, 0x05)) == 0x01 ? 0x31 : 0x30));
+			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 993, 0x06)) == 0x01 ? 0x31 : 0x30));
+			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 993, 0x07)) == 0x01 ? 0x31 : 0x30));
+			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 1017, 0x05)) == 0x01 ? 0x31 : 0x30));
+			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 1017, 0x06)) == 0x01 ? 0x31 : 0x30));
+			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 1017, 0x07)) == 0x01 ? 0x31 : 0x30));
 			UART1_putc(0x20);
 			UART1_putc(0x20);
-			fn000C0F06(*(union Eq_76 *) 0x03C0);
+			fn000C0F06(*(union Eq_n *) 0x03C0);
 			fn000C1616();
 			UART1_putc(0x20);
-			fn000C0F06(*(union Eq_76 *) 0x03C2);
+			fn000C0F06(*(union Eq_n *) 0x03C2);
 			fn000C1616();
 			UART1_putc(0x20);
-			fn000C0F06(*(union Eq_76 *) 0x03C4);
+			fn000C0F06(*(union Eq_n *) 0x03C4);
 			fn000C1616();
 			UART1_putc(0x20);
-			fn000C0F06(*(union Eq_76 *) 966);
+			fn000C0F06(*(union Eq_n *) 966);
 			fn000C1616();
 			UART1_putc(0x20);
-			fn000C0F06(*(union Eq_76 *) 0x03C8);
+			fn000C0F06(*(union Eq_n *) 0x03C8);
 			fn000C1616();
 			UART1_putc(0x20);
-			fn000C0F06(*(union Eq_76 *) 0x03CA);
+			fn000C0F06(*(union Eq_n *) 0x03CA);
 			fn000C1616();
 			UART1_putc(0x20);
-			fn000C0F06(*(union Eq_76 *) 0x03CC);
+			fn000C0F06(*(union Eq_n *) 0x03CC);
 			fn000C1616();
 			UART1_putc(0x20);
-			fn000C0F06(*(union Eq_76 *) 0x03CE);
+			fn000C0F06(*(union Eq_n *) 0x03CE);
 			fn000C1616();
 			UART1_putc(0x20);
-			word16 r1_2026;
-			fn000C1186(0x09, 0x00, out r1_2026);
-			Eq_6 r0l_1681 = *(union Eq_6 *) 996;
+			word16 r1_n;
+			fn000C1186(0x09, 0x00, out r1_n);
+			Eq_n r0l_n = *(union Eq_n *) 996;
 			114 = 141;
-			*(union Eq_6 *) 0x2177 = r0l_1681;
+			*(union Eq_n *) 0x2177 = r0l_n;
 			fn000C13CC();
 			UART1_putc(0x20);
-			Eq_6 r0l_1703 = *(union Eq_6 *) 996;
+			Eq_n r0l_n = *(union Eq_n *) 996;
 			114 = 141;
-			*(union Eq_6 *) 0x2177 = r0l_1703;
+			*(union Eq_n *) 0x2177 = r0l_n;
 			fn000C0F06(0x20);
 			fn000C13CC();
 			UART1_putc(0x20);
 			UART1_putc(0x20);
-			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_6 *) 0x03F0, 0x02)) == 0x01 ? 0x31 : 0x30));
+			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 0x03F0, 0x02)) == 0x01 ? 0x31 : 0x30));
 			UART1_putc(0x20);
 			UART1_putc(0x20);
 			UART1_putc(0x20);
 			UART1_putc(0x20);
-			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_6 *) 1005, 0x05)) == 0x01 ? 0x31 : 0x30));
+			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 1005, 0x05)) == 0x01 ? 0x31 : 0x30));
 			UART1_putc(0x20);
 			UART1_putc(0x20);
 			UART1_putc(0x20);
 			UART1_putc(0x20);
-			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_6 *) 0x03F0, 0x03)) == 0x01 ? 0x31 : 0x30));
+			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 0x03F0, 0x03)) == 0x01 ? 0x31 : 0x30));
 			UART1_putc(0x20);
 			UART1_putc(0x20);
 			UART1_putc(0x20);
 			UART1_putc(0x20);
-			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_6 *) 0x03F0, 0x04)) == 0x01 ? 0x31 : 0x30));
+			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 0x03F0, 0x04)) == 0x01 ? 0x31 : 0x30));
 			UART1_putc(0x20);
 		}
 	}
@@ -171,112 +171,112 @@ void fn000C0154(byte r0h, struct Eq_3 * sb)
 		UART1_putc(0x55);
 		UART1_putc(0x55);
 		fn000C0E46();
-		word16 r1_2019;
-		fn000C1222(fn000C1222(fn000C1222(fn000C1186(0x01, 0x05, out r1_2019), 0x000C012F), 0x000C00E3), 0x000C00C0);
-		word16 r1_2020;
-		fn000C1222(fn000C1186(0x01, 0x20, out r1_2020), 0x000C008A);
-		word16 r1_2021;
-		fn000C1186(0x05, 0x01, out r1_2021);
+		word16 r1_n;
+		fn000C1222(fn000C1222(fn000C1222(fn000C1186(0x01, 0x05, out r1_n), 0x000C012F), 0x000C00E3), 0x000C00C0);
+		word16 r1_n;
+		fn000C1222(fn000C1186(0x01, 0x20, out r1_n), 0x000C008A);
+		word16 r1_n;
+		fn000C1186(0x05, 0x01, out r1_n);
 		while (true)
 		{
-			*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x06, !!__bit<byte,byte>(*(union Eq_6 *) 1001, 0x06));
+			*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x06, !!__bit<byte,byte>(*(union Eq_n *) 1001, 0x06));
 			if (wLoc04 == 0x01)
 			{
-				*(union Eq_6 *) 1001 = __set_bit<byte,byte>(*(union Eq_6 *) 1001, 0x01);
-				*(union Eq_6 *) 1001 = __set_bit<byte,byte>(*(union Eq_6 *) 1001, 0x02);
-				*(union Eq_6 *) 1005 = __set_bit<byte,byte>(*(union Eq_6 *) 1005, 0x04);
-				*(union Eq_6 *) 1005 = __set_bit<byte,byte>(*(union Eq_6 *) 1005, 0x06);
+				*(union Eq_n *) 1001 = __set_bit<byte,byte>(*(union Eq_n *) 1001, 0x01);
+				*(union Eq_n *) 1001 = __set_bit<byte,byte>(*(union Eq_n *) 1001, 0x02);
+				*(union Eq_n *) 1005 = __set_bit<byte,byte>(*(union Eq_n *) 1005, 0x04);
+				*(union Eq_n *) 1005 = __set_bit<byte,byte>(*(union Eq_n *) 1005, 0x06);
 				wLoc04 = 0x00;
 			}
 			else
 			{
-				*(union Eq_6 *) 1001 = __set_bit<byte,byte>(*(union Eq_6 *) 1001, 0x01);
-				*(union Eq_6 *) 1001 = __set_bit<byte,byte>(*(union Eq_6 *) 1001, 0x02);
-				*(union Eq_6 *) 1005 = __set_bit<byte,byte>(*(union Eq_6 *) 1005, 0x04);
-				*(union Eq_6 *) 1005 = __set_bit<byte,byte>(*(union Eq_6 *) 1005, 0x06);
+				*(union Eq_n *) 1001 = __set_bit<byte,byte>(*(union Eq_n *) 1001, 0x01);
+				*(union Eq_n *) 1001 = __set_bit<byte,byte>(*(union Eq_n *) 1001, 0x02);
+				*(union Eq_n *) 1005 = __set_bit<byte,byte>(*(union Eq_n *) 1005, 0x04);
+				*(union Eq_n *) 1005 = __set_bit<byte,byte>(*(union Eq_n *) 1005, 0x06);
 				wLoc04 = 0x01;
 			}
-			word16 r1_2027;
-			fn000C1186(0x05, 0x00, out r1_2027);
+			word16 r1_n;
+			fn000C1186(0x05, 0x00, out r1_n);
 			UART1_putc(0x20);
-			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_6 *) 993, 0x05)) == 0x01 ? 0x31 : 0x30));
-			UART1_putc(0x20);
-			UART1_putc(0x20);
-			UART1_putc(0x20);
-			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_6 *) 993, 0x06)) == 0x01 ? 0x31 : 0x30));
+			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 993, 0x05)) == 0x01 ? 0x31 : 0x30));
 			UART1_putc(0x20);
 			UART1_putc(0x20);
 			UART1_putc(0x20);
-			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_6 *) 993, 0x07)) == 0x01 ? 0x31 : 0x30));
+			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 993, 0x06)) == 0x01 ? 0x31 : 0x30));
+			UART1_putc(0x20);
+			UART1_putc(0x20);
+			UART1_putc(0x20);
+			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 993, 0x07)) == 0x01 ? 0x31 : 0x30));
 			UART1_putc(0x20);
 			UART1_putc(0x20);
 			UART1_putc(0x20);
 			UART1_putc(0x20);
 			UART1_putc(0x20);
-			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_6 *) 0x03F0, 0x03)) == 0x01 ? 0x31 : 0x30));
-			UART1_putc(0x20);
-			UART1_putc(0x20);
+			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 0x03F0, 0x03)) == 0x01 ? 0x31 : 0x30));
 			UART1_putc(0x20);
 			UART1_putc(0x20);
 			UART1_putc(0x20);
 			UART1_putc(0x20);
 			UART1_putc(0x20);
 			UART1_putc(0x20);
-			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_6 *) 0x03F0, 0x04)) == 0x01 ? 0x31 : 0x30));
+			UART1_putc(0x20);
+			UART1_putc(0x20);
+			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 0x03F0, 0x04)) == 0x01 ? 0x31 : 0x30));
 			UART1_putc(0x20);
 			UART1_putc(0x20);
 			UART1_putc(0x20);
 			UART1_putc(0x20);
 			UART1_putc(0x20);
 			UART1_putc(0x20);
-			fn000C0F06(*(union Eq_76 *) 0x03C0);
+			fn000C0F06(*(union Eq_n *) 0x03C0);
 			fn000C1616();
 			UART1_putc(0x20);
 			UART1_putc(0x20);
 			UART1_putc(0x20);
-			fn000C0F06(*(union Eq_76 *) 0x03C2);
+			fn000C0F06(*(union Eq_n *) 0x03C2);
 			fn000C1616();
 			UART1_putc(0x20);
 			UART1_putc(0x20);
-			fn000C0F06(*(union Eq_76 *) 0x03C4);
+			fn000C0F06(*(union Eq_n *) 0x03C4);
 			fn000C1616();
 			UART1_putc(0x20);
 			UART1_putc(0x20);
-			fn000C0F06(*(union Eq_76 *) 966);
+			fn000C0F06(*(union Eq_n *) 966);
 			fn000C1616();
 			UART1_putc(0x20);
 			UART1_putc(0x20);
-			fn000C0F06(*(union Eq_76 *) 0x03C8);
+			fn000C0F06(*(union Eq_n *) 0x03C8);
 			fn000C1616();
 			UART1_putc(0x20);
 			UART1_putc(0x20);
-			fn000C0F06(*(union Eq_76 *) 0x03CA);
+			fn000C0F06(*(union Eq_n *) 0x03CA);
 			fn000C1616();
 			UART1_putc(0x20);
 			UART1_putc(0x20);
-			Eq_76 r1_722;
-			fn000C1186(0x09, 0x00, out r1_722);
-			Eq_6 r0l_728 = *(union Eq_6 *) 996;
+			Eq_n r1_n;
+			fn000C1186(0x09, 0x00, out r1_n);
+			Eq_n r0l_n = *(union Eq_n *) 996;
 			114 = 141;
-			*(union Eq_6 *) 0x2177 = r0l_728;
+			*(union Eq_n *) 0x2177 = r0l_n;
 			if (*(byte *) 0xF500 == 0x00)
 				sb->b00F5 = 0x0A;
-			*(byte *) 49525 &= r0l_728;
+			*(byte *) 49525 &= r0l_n;
 			__break();
-			UART1_putc(r1_722);
-			Eq_6 r0l_752 = *(union Eq_6 *) 996;
+			UART1_putc(r1_n);
+			Eq_n r0l_n = *(union Eq_n *) 996;
 			114 = 141;
-			*(union Eq_6 *) 0x2177 = r0l_752;
-			fn000C0F06(r1_722);
+			*(union Eq_n *) 0x2177 = r0l_n;
+			fn000C0F06(r1_n);
 			fn000C13CC();
 			UART1_putc(0x20);
 			UART1_putc(0x20);
-			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_6 *) 0x03F0, 0x02)) == 0x01 ? 0x31 : 0x30));
+			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 0x03F0, 0x02)) == 0x01 ? 0x31 : 0x30));
 			UART1_putc(0x20);
 			UART1_putc(0x20);
 			UART1_putc(0x20);
 			UART1_putc(0x20);
-			if ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_6 *) 1001, 0x06)) == 0x01)
+			if ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 1001, 0x06)) == 0x01)
 				UART1_putc(0x31);
 			else
 				UART1_putc(0x30);
@@ -289,8 +289,8 @@ void fn000C0154(byte r0h, struct Eq_3 * sb)
 //      fn000C0154
 void fn000C0978()
 {
-	*(union Eq_1536 *) 0x03D4 |= 0x01;
-	((union Eq_1541 *) 0x03D6)->u1 = 88;
+	*(union Eq_n *) 0x03D4 |= 0x01;
+	((union Eq_n *) 0x03D6)->u1 = 88;
 	*(byte *) 0x03D7 = 0x23;
 }
 
@@ -321,18 +321,18 @@ void fn000C098C()
 	*(byte *) 0x47 = 0x00;
 	*(byte *) 0x46 = 0x00;
 	*(byte *) 0x45 = 0x00;
-	*(union Eq_6 *) 0x01DF |= 0xC0;
-	*(union Eq_6 *) 0x01DF = __set_bit<byte,byte>(*(union Eq_6 *) 0x01DF, 0x01);
-	*(union Eq_6 *) 0x01DF = __set_bit<byte,byte>(*(union Eq_6 *) 0x01DF, 0x02);
-	*(union Eq_6 *) 0x01DF = __set_bit<byte,byte>(*(union Eq_6 *) 0x01DF, 0x03);
-	*(union Eq_6 *) 0x01DF = __set_bit<byte,byte>(*(union Eq_6 *) 0x01DF, 0x04);
-	*(union Eq_6 *) 0x01DF = __set_bit<byte,byte>(*(union Eq_6 *) 0x01DF, 0x05);
-	*(union Eq_6 *) 0x01CF = __set_bit<byte,byte>(*(union Eq_6 *) 0x01CF, 0x03);
-	*(union Eq_6 *) 0x01CF = __set_bit<byte,byte>(*(union Eq_6 *) 0x01CF, 0x04);
-	*(union Eq_6 *) 0x01CF = __set_bit<byte,byte>(*(union Eq_6 *) 0x01CF, 0x05);
-	*(union Eq_6 *) 0x01CF = __set_bit<byte,byte>(*(union Eq_6 *) 0x01CF, 0x01);
-	*(union Eq_6 *) 0x01CF = __set_bit<byte,byte>(*(union Eq_6 *) 0x01CF, 0x00);
-	*(union Eq_6 *) 0x01CF = __set_bit<byte,byte>(*(union Eq_6 *) 0x01CF, 0x02);
+	*(union Eq_n *) 0x01DF |= 0xC0;
+	*(union Eq_n *) 0x01DF = __set_bit<byte,byte>(*(union Eq_n *) 0x01DF, 0x01);
+	*(union Eq_n *) 0x01DF = __set_bit<byte,byte>(*(union Eq_n *) 0x01DF, 0x02);
+	*(union Eq_n *) 0x01DF = __set_bit<byte,byte>(*(union Eq_n *) 0x01DF, 0x03);
+	*(union Eq_n *) 0x01DF = __set_bit<byte,byte>(*(union Eq_n *) 0x01DF, 0x04);
+	*(union Eq_n *) 0x01DF = __set_bit<byte,byte>(*(union Eq_n *) 0x01DF, 0x05);
+	*(union Eq_n *) 0x01CF = __set_bit<byte,byte>(*(union Eq_n *) 0x01CF, 0x03);
+	*(union Eq_n *) 0x01CF = __set_bit<byte,byte>(*(union Eq_n *) 0x01CF, 0x04);
+	*(union Eq_n *) 0x01CF = __set_bit<byte,byte>(*(union Eq_n *) 0x01CF, 0x05);
+	*(union Eq_n *) 0x01CF = __set_bit<byte,byte>(*(union Eq_n *) 0x01CF, 0x01);
+	*(union Eq_n *) 0x01CF = __set_bit<byte,byte>(*(union Eq_n *) 0x01CF, 0x00);
+	*(union Eq_n *) 0x01CF = __set_bit<byte,byte>(*(union Eq_n *) 0x01CF, 0x02);
 }
 
 // 000C0A08: void fn000C0A08()
@@ -348,30 +348,30 @@ void fn000C0A08()
 	*(byte *) 1003 = 0x00;
 	*(byte *) 0x03EE = 0x88;
 	*(byte *) 1007 = 0x00;
-	*(union Eq_6 *) 0x0A = __set_bit<byte,byte>(*(union Eq_6 *) 0x0A, 0x02);
+	*(union Eq_n *) 0x0A = __set_bit<byte,byte>(*(union Eq_n *) 0x0A, 0x02);
 	*(byte *) 1011 = 0x00;
-	*(union Eq_6 *) 0x0A = __set_bit<byte,byte>(*(union Eq_6 *) 0x0A, 0x02);
+	*(union Eq_n *) 0x0A = __set_bit<byte,byte>(*(union Eq_n *) 0x0A, 0x02);
 	*(byte *) 1014 = 0x00;
-	*(union Eq_6 *) 991 = __set_bit<byte,byte>(*(union Eq_6 *) 991, 0x07);
+	*(union Eq_n *) 991 = __set_bit<byte,byte>(*(union Eq_n *) 991, 0x07);
 	*(byte *) 1015 = 0x00;
 	*(byte *) 1018 = 0x00;
 	*(byte *) 1019 = 0x00;
-	*(union Eq_6 *) 1020 = __set_bit<byte,byte>(*(union Eq_6 *) 1020, 0x00);
-	*(union Eq_6 *) 1020 = __set_bit<byte,byte>(*(union Eq_6 *) 1020, 0x01);
-	*(union Eq_6 *) 1020 = __set_bit<byte,byte>(*(union Eq_6 *) 1020, 0x02);
-	*(union Eq_6 *) 1020 = __set_bit<byte,byte>(*(union Eq_6 *) 1020, 0x03);
-	*(union Eq_6 *) 1020 = __set_bit<byte,byte>(*(union Eq_6 *) 1020, 0x04);
-	*(union Eq_6 *) 1020 = __set_bit<byte,byte>(*(union Eq_6 *) 1020, 0x05);
-	*(union Eq_6 *) 1020 = __set_bit<byte,byte>(*(union Eq_6 *) 1020, 0x06);
-	*(union Eq_6 *) 1020 = __set_bit<byte,byte>(*(union Eq_6 *) 1020, 0x07);
-	*(union Eq_6 *) 1021 = __set_bit<byte,byte>(*(union Eq_6 *) 1021, 0x00);
-	*(union Eq_6 *) 1021 = __set_bit<byte,byte>(*(union Eq_6 *) 1021, 0x01);
-	*(union Eq_6 *) 1021 = __set_bit<byte,byte>(*(union Eq_6 *) 1021, 0x02);
-	*(union Eq_6 *) 1021 = __set_bit<byte,byte>(*(union Eq_6 *) 1021, 0x03);
-	*(union Eq_6 *) 1021 = __set_bit<byte,byte>(*(union Eq_6 *) 1021, 0x04);
-	*(union Eq_6 *) 1021 = __set_bit<byte,byte>(*(union Eq_6 *) 1021, 0x05);
-	*(union Eq_6 *) 1021 = __set_bit<byte,byte>(*(union Eq_6 *) 1021, 0x06);
-	*(union Eq_6 *) 1021 = __set_bit<byte,byte>(*(union Eq_6 *) 1021, 0x07);
+	*(union Eq_n *) 1020 = __set_bit<byte,byte>(*(union Eq_n *) 1020, 0x00);
+	*(union Eq_n *) 1020 = __set_bit<byte,byte>(*(union Eq_n *) 1020, 0x01);
+	*(union Eq_n *) 1020 = __set_bit<byte,byte>(*(union Eq_n *) 1020, 0x02);
+	*(union Eq_n *) 1020 = __set_bit<byte,byte>(*(union Eq_n *) 1020, 0x03);
+	*(union Eq_n *) 1020 = __set_bit<byte,byte>(*(union Eq_n *) 1020, 0x04);
+	*(union Eq_n *) 1020 = __set_bit<byte,byte>(*(union Eq_n *) 1020, 0x05);
+	*(union Eq_n *) 1020 = __set_bit<byte,byte>(*(union Eq_n *) 1020, 0x06);
+	*(union Eq_n *) 1020 = __set_bit<byte,byte>(*(union Eq_n *) 1020, 0x07);
+	*(union Eq_n *) 1021 = __set_bit<byte,byte>(*(union Eq_n *) 1021, 0x00);
+	*(union Eq_n *) 1021 = __set_bit<byte,byte>(*(union Eq_n *) 1021, 0x01);
+	*(union Eq_n *) 1021 = __set_bit<byte,byte>(*(union Eq_n *) 1021, 0x02);
+	*(union Eq_n *) 1021 = __set_bit<byte,byte>(*(union Eq_n *) 1021, 0x03);
+	*(union Eq_n *) 1021 = __set_bit<byte,byte>(*(union Eq_n *) 1021, 0x04);
+	*(union Eq_n *) 1021 = __set_bit<byte,byte>(*(union Eq_n *) 1021, 0x05);
+	*(union Eq_n *) 1021 = __set_bit<byte,byte>(*(union Eq_n *) 1021, 0x06);
+	*(union Eq_n *) 1021 = __set_bit<byte,byte>(*(union Eq_n *) 1021, 0x07);
 }
 
 // 000C0A7E: void fn000C0A7E()
@@ -401,18 +401,18 @@ void fn000C0A7E()
 	*(byte *) 0x47 = 0x01;
 	*(byte *) 0x46 = 0x01;
 	*(byte *) 0x45 = 0x01;
-	*(union Eq_6 *) 0x01DF |= 0xC0;
-	*(union Eq_6 *) 0x01DF = __set_bit<byte,byte>(*(union Eq_6 *) 0x01DF, 0x01);
-	*(union Eq_6 *) 0x01DF = __set_bit<byte,byte>(*(union Eq_6 *) 0x01DF, 0x02);
-	*(union Eq_6 *) 0x01DF = __set_bit<byte,byte>(*(union Eq_6 *) 0x01DF, 0x03);
-	*(union Eq_6 *) 0x01DF = __set_bit<byte,byte>(*(union Eq_6 *) 0x01DF, 0x04);
-	*(union Eq_6 *) 0x01DF = __set_bit<byte,byte>(*(union Eq_6 *) 0x01DF, 0x05);
-	*(union Eq_6 *) 0x01CF = __set_bit<byte,byte>(*(union Eq_6 *) 0x01CF, 0x03);
-	*(union Eq_6 *) 0x01CF = __set_bit<byte,byte>(*(union Eq_6 *) 0x01CF, 0x04);
-	*(union Eq_6 *) 0x01CF = __set_bit<byte,byte>(*(union Eq_6 *) 0x01CF, 0x05);
-	*(union Eq_6 *) 0x01CF = __set_bit<byte,byte>(*(union Eq_6 *) 0x01CF, 0x01);
-	*(union Eq_6 *) 0x01CF = __set_bit<byte,byte>(*(union Eq_6 *) 0x01CF, 0x00);
-	*(union Eq_6 *) 0x01CF = __set_bit<byte,byte>(*(union Eq_6 *) 0x01CF, 0x02);
+	*(union Eq_n *) 0x01DF |= 0xC0;
+	*(union Eq_n *) 0x01DF = __set_bit<byte,byte>(*(union Eq_n *) 0x01DF, 0x01);
+	*(union Eq_n *) 0x01DF = __set_bit<byte,byte>(*(union Eq_n *) 0x01DF, 0x02);
+	*(union Eq_n *) 0x01DF = __set_bit<byte,byte>(*(union Eq_n *) 0x01DF, 0x03);
+	*(union Eq_n *) 0x01DF = __set_bit<byte,byte>(*(union Eq_n *) 0x01DF, 0x04);
+	*(union Eq_n *) 0x01DF = __set_bit<byte,byte>(*(union Eq_n *) 0x01DF, 0x05);
+	*(union Eq_n *) 0x01CF = __set_bit<byte,byte>(*(union Eq_n *) 0x01CF, 0x03);
+	*(union Eq_n *) 0x01CF = __set_bit<byte,byte>(*(union Eq_n *) 0x01CF, 0x04);
+	*(union Eq_n *) 0x01CF = __set_bit<byte,byte>(*(union Eq_n *) 0x01CF, 0x05);
+	*(union Eq_n *) 0x01CF = __set_bit<byte,byte>(*(union Eq_n *) 0x01CF, 0x01);
+	*(union Eq_n *) 0x01CF = __set_bit<byte,byte>(*(union Eq_n *) 0x01CF, 0x00);
+	*(union Eq_n *) 0x01CF = __set_bit<byte,byte>(*(union Eq_n *) 0x01CF, 0x02);
 }
 
 // 000C0B0A: void fn000C0B0A()
@@ -430,32 +430,32 @@ void fn000C0B0A()
 	*(byte *) 1003 = ~0x00;
 	*(byte *) 0x03EE = 0x88;
 	*(byte *) 1007 = 0x00;
-	*(union Eq_6 *) 0x0A = __set_bit<byte,byte>(*(union Eq_6 *) 0x0A, 0x02);
+	*(union Eq_n *) 0x0A = __set_bit<byte,byte>(*(union Eq_n *) 0x0A, 0x02);
 	*(byte *) 1011 = 0x00;
-	*(union Eq_6 *) 0x0A = __set_bit<byte,byte>(*(union Eq_6 *) 0x0A, 0x02);
+	*(union Eq_n *) 0x0A = __set_bit<byte,byte>(*(union Eq_n *) 0x0A, 0x02);
 	*(byte *) 1014 = 0x00;
-	*(union Eq_6 *) 991 = __set_bit<byte,byte>(*(union Eq_6 *) 991, 0x07);
+	*(union Eq_n *) 991 = __set_bit<byte,byte>(*(union Eq_n *) 991, 0x07);
 	*(byte *) 1015 = 0x00;
 	*(byte *) 1018 = 0x00;
 	*(byte *) 1019 = 0x00;
 	*(byte *) 997 = ~0x00;
 	*(byte *) 1000 = ~0x00;
-	*(union Eq_6 *) 1020 = __set_bit<byte,byte>(*(union Eq_6 *) 1020, 0x00);
-	*(union Eq_6 *) 1020 = __set_bit<byte,byte>(*(union Eq_6 *) 1020, 0x01);
-	*(union Eq_6 *) 1020 = __set_bit<byte,byte>(*(union Eq_6 *) 1020, 0x02);
-	*(union Eq_6 *) 1020 = __set_bit<byte,byte>(*(union Eq_6 *) 1020, 0x03);
-	*(union Eq_6 *) 1020 = __set_bit<byte,byte>(*(union Eq_6 *) 1020, 0x04);
-	*(union Eq_6 *) 1020 = __set_bit<byte,byte>(*(union Eq_6 *) 1020, 0x05);
-	*(union Eq_6 *) 1020 = __set_bit<byte,byte>(*(union Eq_6 *) 1020, 0x06);
-	*(union Eq_6 *) 1020 = __set_bit<byte,byte>(*(union Eq_6 *) 1020, 0x07);
-	*(union Eq_6 *) 1021 = __set_bit<byte,byte>(*(union Eq_6 *) 1021, 0x00);
-	*(union Eq_6 *) 1021 = __set_bit<byte,byte>(*(union Eq_6 *) 1021, 0x01);
-	*(union Eq_6 *) 1021 = __set_bit<byte,byte>(*(union Eq_6 *) 1021, 0x02);
-	*(union Eq_6 *) 1021 = __set_bit<byte,byte>(*(union Eq_6 *) 1021, 0x03);
-	*(union Eq_6 *) 1021 = __set_bit<byte,byte>(*(union Eq_6 *) 1021, 0x04);
-	*(union Eq_6 *) 1021 = __set_bit<byte,byte>(*(union Eq_6 *) 1021, 0x05);
-	*(union Eq_6 *) 1021 = __set_bit<byte,byte>(*(union Eq_6 *) 1021, 0x06);
-	*(union Eq_6 *) 1021 = __set_bit<byte,byte>(*(union Eq_6 *) 1021, 0x07);
+	*(union Eq_n *) 1020 = __set_bit<byte,byte>(*(union Eq_n *) 1020, 0x00);
+	*(union Eq_n *) 1020 = __set_bit<byte,byte>(*(union Eq_n *) 1020, 0x01);
+	*(union Eq_n *) 1020 = __set_bit<byte,byte>(*(union Eq_n *) 1020, 0x02);
+	*(union Eq_n *) 1020 = __set_bit<byte,byte>(*(union Eq_n *) 1020, 0x03);
+	*(union Eq_n *) 1020 = __set_bit<byte,byte>(*(union Eq_n *) 1020, 0x04);
+	*(union Eq_n *) 1020 = __set_bit<byte,byte>(*(union Eq_n *) 1020, 0x05);
+	*(union Eq_n *) 1020 = __set_bit<byte,byte>(*(union Eq_n *) 1020, 0x06);
+	*(union Eq_n *) 1020 = __set_bit<byte,byte>(*(union Eq_n *) 1020, 0x07);
+	*(union Eq_n *) 1021 = __set_bit<byte,byte>(*(union Eq_n *) 1021, 0x00);
+	*(union Eq_n *) 1021 = __set_bit<byte,byte>(*(union Eq_n *) 1021, 0x01);
+	*(union Eq_n *) 1021 = __set_bit<byte,byte>(*(union Eq_n *) 1021, 0x02);
+	*(union Eq_n *) 1021 = __set_bit<byte,byte>(*(union Eq_n *) 1021, 0x03);
+	*(union Eq_n *) 1021 = __set_bit<byte,byte>(*(union Eq_n *) 1021, 0x04);
+	*(union Eq_n *) 1021 = __set_bit<byte,byte>(*(union Eq_n *) 1021, 0x05);
+	*(union Eq_n *) 1021 = __set_bit<byte,byte>(*(union Eq_n *) 1021, 0x06);
+	*(union Eq_n *) 1021 = __set_bit<byte,byte>(*(union Eq_n *) 1021, 0x07);
 }
 
 // 000C0B92: void fn000C0B92()
@@ -463,9 +463,9 @@ void fn000C0B0A()
 //      fn000C0154
 void fn000C0B92()
 {
-	*(union Eq_6 *) 988 = __set_bit<byte,byte>(*(union Eq_6 *) 988, 0x00);
-	((union Eq_76 *) 0x03D8)->u2 = 0x00;
-	*(union Eq_6 *) 988 = __set_bit<byte,byte>(*(union Eq_6 *) 988, 0x01);
+	*(union Eq_n *) 988 = __set_bit<byte,byte>(*(union Eq_n *) 988, 0x00);
+	((union Eq_n *) 0x03D8)->u2 = 0x00;
+	*(union Eq_n *) 988 = __set_bit<byte,byte>(*(union Eq_n *) 988, 0x01);
 	*(byte *) 0x03DA = 0x00;
 }
 
@@ -476,7 +476,7 @@ void fn000C0BA2()
 {
 	*(byte *) 0x03A8 = 0x05;
 	*(byte *) 0x03AC = 0x18;
-	*(union Eq_2070 *) 0x03AD |= 0x04;
+	*(union Eq_n *) 0x03AD |= 0x04;
 	*(byte *) 0x03A9 = 0x19;
 }
 
@@ -485,16 +485,16 @@ void fn000C0BA2()
 //      fn000C0154
 void fn000C0BBA()
 {
-	*(union Eq_6 *) 0x0A = __set_bit<byte,byte>(*(union Eq_6 *) 0x0A, 0x00);
-	*(union Eq_6 *) 0x06 = __set_bit<byte,byte>(*(union Eq_6 *) 0x06, 0x07);
-	*(union Eq_6 *) 0x07 = __set_bit<byte,byte>(*(union Eq_6 *) 0x07, 0x06);
-	*(union Eq_6 *) 0x07 = __set_bit<byte,byte>(*(union Eq_6 *) 0x07, 0x07);
-	*(union Eq_6 *) 0x06 = __set_bit<byte,byte>(*(union Eq_6 *) 0x06, 0x06);
-	*(union Eq_6 *) 0x1C = __set_bit<byte,byte>(*(union Eq_6 *) 0x1C, 0x02);
-	*(union Eq_6 *) 0x1C = __set_bit<byte,byte>(*(union Eq_6 *) 0x1C, 0x01);
-	*(union Eq_6 *) 0x1C = __set_bit<byte,byte>(*(union Eq_6 *) 0x1C, 0x00);
-	*(union Eq_6 *) 0x1C = __set_bit<byte,byte>(*(union Eq_6 *) 0x1C, 0x07);
-	*(union Eq_6 *) 0x0A = __set_bit<byte,byte>(*(union Eq_6 *) 0x0A, 0x00);
+	*(union Eq_n *) 0x0A = __set_bit<byte,byte>(*(union Eq_n *) 0x0A, 0x00);
+	*(union Eq_n *) 0x06 = __set_bit<byte,byte>(*(union Eq_n *) 0x06, 0x07);
+	*(union Eq_n *) 0x07 = __set_bit<byte,byte>(*(union Eq_n *) 0x07, 0x06);
+	*(union Eq_n *) 0x07 = __set_bit<byte,byte>(*(union Eq_n *) 0x07, 0x07);
+	*(union Eq_n *) 0x06 = __set_bit<byte,byte>(*(union Eq_n *) 0x06, 0x06);
+	*(union Eq_n *) 0x1C = __set_bit<byte,byte>(*(union Eq_n *) 0x1C, 0x02);
+	*(union Eq_n *) 0x1C = __set_bit<byte,byte>(*(union Eq_n *) 0x1C, 0x01);
+	*(union Eq_n *) 0x1C = __set_bit<byte,byte>(*(union Eq_n *) 0x1C, 0x00);
+	*(union Eq_n *) 0x1C = __set_bit<byte,byte>(*(union Eq_n *) 0x1C, 0x07);
+	*(union Eq_n *) 0x0A = __set_bit<byte,byte>(*(union Eq_n *) 0x0A, 0x00);
 	*(word16 *) 0x043A = 0x00;
 }
 
@@ -525,7 +525,7 @@ void fn000C0BE8()
 	*(word16 *) 464 = ~0x00;
 	*(word16 *) 466 = ~0x00;
 	*(word16 *) 0x01D4 = ~0x00;
-	*(union Eq_2201 *) 900 |= 0x04;
+	*(union Eq_n *) 900 |= 0x04;
 }
 
 // 000C0C46: void fn000C0C46()
@@ -533,7 +533,7 @@ void fn000C0BE8()
 //      fn000C0154
 void fn000C0C46()
 {
-	*(union Eq_2207 *) 0x0380 |= 0x01;
+	*(union Eq_n *) 0x0380 |= 0x01;
 }
 
 // 000C0C52: void fn000C0C52()
@@ -541,7 +541,7 @@ void fn000C0C46()
 //      fn000C0154
 void fn000C0C52()
 {
-	*(union Eq_1541 *) 0x03D6 |= 0x40;
+	*(union Eq_n *) 0x03D6 |= 0x40;
 }
 
 // 000C0C5E: void fn000C0C5E()
@@ -559,14 +559,14 @@ void fn000C0C66()
 // 000C0C6E: void fn000C0C6E()
 void fn000C0C6E()
 {
-	if (*(union Eq_38 *) 0x043C != 0x41)
+	if (*(union Eq_n *) 0x043C != 0x41)
 	{
-		*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x00, !!__bit<byte,byte>(*(union Eq_6 *) 1016, 0x00));
-		*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x02, !!__bit<byte,byte>(*(union Eq_6 *) 1016, 0x02));
-		*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x04, !!__bit<byte,byte>(*(union Eq_6 *) 1016, 0x04));
-		*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x01, !!__bit<byte,byte>(*(union Eq_6 *) 1016, 0x01));
-		*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x03, !!__bit<byte,byte>(*(union Eq_6 *) 1016, 0x03));
-		*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x05, !!__bit<byte,byte>(*(union Eq_6 *) 1016, 0x05));
+		*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x00, !!__bit<byte,byte>(*(union Eq_n *) 1016, 0x00));
+		*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x02, !!__bit<byte,byte>(*(union Eq_n *) 1016, 0x02));
+		*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x04, !!__bit<byte,byte>(*(union Eq_n *) 1016, 0x04));
+		*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x01, !!__bit<byte,byte>(*(union Eq_n *) 1016, 0x01));
+		*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x03, !!__bit<byte,byte>(*(union Eq_n *) 1016, 0x03));
+		*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x05, !!__bit<byte,byte>(*(union Eq_n *) 1016, 0x05));
 	}
 	__return_from_interrupt();
 }
@@ -574,14 +574,14 @@ void fn000C0C6E()
 // 000C0CB4: void fn000C0CB4()
 void fn000C0CB4()
 {
-	if (*(union Eq_38 *) 0x043C != 0x41)
+	if (*(union Eq_n *) 0x043C != 0x41)
 	{
-		*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x00, !!__bit<byte,byte>(*(union Eq_6 *) 1016, 0x00));
-		*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x02, !!__bit<byte,byte>(*(union Eq_6 *) 1016, 0x02));
-		*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x04, !!__bit<byte,byte>(*(union Eq_6 *) 1016, 0x04));
-		*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x01, !!__bit<byte,byte>(*(union Eq_6 *) 1016, 0x01));
-		*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x03, !!__bit<byte,byte>(*(union Eq_6 *) 1016, 0x03));
-		*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x05, !!__bit<byte,byte>(*(union Eq_6 *) 1016, 0x05));
+		*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x00, !!__bit<byte,byte>(*(union Eq_n *) 1016, 0x00));
+		*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x02, !!__bit<byte,byte>(*(union Eq_n *) 1016, 0x02));
+		*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x04, !!__bit<byte,byte>(*(union Eq_n *) 1016, 0x04));
+		*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x01, !!__bit<byte,byte>(*(union Eq_n *) 1016, 0x01));
+		*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x03, !!__bit<byte,byte>(*(union Eq_n *) 1016, 0x03));
+		*(byte *) 1000 = __write_bit<byte,byte>(*(byte *) 1000, 0x05, !!__bit<byte,byte>(*(union Eq_n *) 1016, 0x05));
 	}
 	__return_from_interrupt();
 }
@@ -589,8 +589,8 @@ void fn000C0CB4()
 // 000C0CFA: void fn000C0CFA()
 void fn000C0CFA()
 {
-	if (*(union Eq_38 *) 0x043C != 0x41)
-		*(byte *) 997 = __write_bit<byte,byte>(*(byte *) 997, 0x00, !!__bit<byte,byte>(*(union Eq_6 *) 993, 0x05));
+	if (*(union Eq_n *) 0x043C != 0x41)
+		*(byte *) 997 = __write_bit<byte,byte>(*(byte *) 997, 0x00, !!__bit<byte,byte>(*(union Eq_n *) 993, 0x05));
 	__return_from_interrupt();
 }
 
@@ -598,19 +598,19 @@ void fn000C0CFA()
 void fn000C0D13()
 {
 	fn000764EB();
-	byte v4_13 = *(byte *) 0x4104 - 0x3C;
-	*(byte *) 0x4104 = v4_13;
+	byte v4_n = *(byte *) 0x4104 - 0x3C;
+	*(byte *) 0x4104 = v4_n;
 	__break();
-	if (v4_13 != 0x00)
-		*(byte *) 997 = __write_bit<byte,byte>(*(byte *) 997, 0x01, !!__bit<byte,byte>(*(union Eq_6 *) 993, 0x06));
+	if (v4_n != 0x00)
+		*(byte *) 997 = __write_bit<byte,byte>(*(byte *) 997, 0x01, !!__bit<byte,byte>(*(union Eq_n *) 993, 0x06));
 	__return_from_interrupt();
 }
 
 // 000C0D2A: void fn000C0D2A()
 void fn000C0D2A()
 {
-	if (*(union Eq_38 *) 0x043C != 0x41)
-		*(byte *) 997 = __write_bit<byte,byte>(*(byte *) 997, 0x02, !!__bit<byte,byte>(*(union Eq_6 *) 993, 0x07));
+	if (*(union Eq_n *) 0x043C != 0x41)
+		*(byte *) 997 = __write_bit<byte,byte>(*(byte *) 997, 0x02, !!__bit<byte,byte>(*(union Eq_n *) 993, 0x07));
 	__return_from_interrupt();
 }
 
@@ -623,8 +623,8 @@ void fn000C0D42()
 // 000C0DB4: void fn000C0DB4()
 void fn000C0DB4()
 {
-	if (*(union Eq_38 *) 0x043C != 0x41)
-		*(byte *) 997 = __write_bit<byte,byte>(*(byte *) 997, 0x03, !!__bit<byte,byte>(*(union Eq_6 *) 1017, 0x05));
+	if (*(union Eq_n *) 0x043C != 0x41)
+		*(byte *) 997 = __write_bit<byte,byte>(*(byte *) 997, 0x03, !!__bit<byte,byte>(*(union Eq_n *) 1017, 0x05));
 	__return_from_interrupt();
 }
 
@@ -643,8 +643,8 @@ void fn000C0DD4()
 // 000C0DDC: void fn000C0DDC()
 void fn000C0DDC()
 {
-	if (*(union Eq_38 *) 0x043C != 0x41)
-		*(byte *) 997 = __write_bit<byte,byte>(*(byte *) 997, 0x05, !!__bit<byte,byte>(*(union Eq_6 *) 1017, 0x07));
+	if (*(union Eq_n *) 0x043C != 0x41)
+		*(byte *) 997 = __write_bit<byte,byte>(*(byte *) 997, 0x05, !!__bit<byte,byte>(*(union Eq_n *) 1017, 0x07));
 	__return_from_interrupt();
 }
 
@@ -675,14 +675,14 @@ void fn000C0E0C()
 // 000C0E14: void fn000C0E14()
 void fn000C0E14()
 {
-	*(union Eq_76 *) 0x0412 = *(union Eq_76 *) 0x03C0;
-	*(union Eq_76 *) 0x0414 = *(union Eq_76 *) 0x03C2;
-	*(union Eq_76 *) 0x0416 = *(union Eq_76 *) 0x03C4;
-	*(union Eq_76 *) 0x0418 = *(union Eq_76 *) 966;
-	*(union Eq_76 *) 1050 = *(union Eq_76 *) 0x03C8;
-	*(union Eq_76 *) 0x041C = *(union Eq_76 *) 0x03CA;
-	*(union Eq_76 *) 0x041E = *(union Eq_76 *) 0x03CC;
-	*(union Eq_76 *) 0x0420 = *(union Eq_76 *) 0x03CE;
+	*(union Eq_n *) 0x0412 = *(union Eq_n *) 0x03C0;
+	*(union Eq_n *) 0x0414 = *(union Eq_n *) 0x03C2;
+	*(union Eq_n *) 0x0416 = *(union Eq_n *) 0x03C4;
+	*(union Eq_n *) 0x0418 = *(union Eq_n *) 966;
+	*(union Eq_n *) 1050 = *(union Eq_n *) 0x03C8;
+	*(union Eq_n *) 0x041C = *(union Eq_n *) 0x03CA;
+	*(union Eq_n *) 0x041E = *(union Eq_n *) 0x03CC;
+	*(union Eq_n *) 0x0420 = *(union Eq_n *) 0x03CE;
 }
 
 // 000C0E46: void fn000C0E46()
@@ -710,57 +710,57 @@ void fn000C0E46()
 // 000C0EB0: void fn000C0EB0(Register uint16 r1)
 void fn000C0EB0(uint16 r1)
 {
-	uint32 r2r0_11 = (uint32) r1;
-	uint16 v12_17 = r1 - (r2r0_11 /u 100) *s32 100;
-	uint32 r2r0_21 = (uint32) v12_17;
-	*(union Eq_76 *) 0x0424 = v12_17 - (r2r0_21 /u 0x0A) *s32 0x0A + 0x30;
-	*(union Eq_76 *) 0x0426 = r2r0_21 /u 0x0A + 0x30;
-	*(union Eq_76 *) 0x0428 = r2r0_11 /u 100 + 0x30;
+	uint32 r2r0_n = (uint32) r1;
+	uint16 v12_n = r1 - (r2r0_n /u 100) *s32 100;
+	uint32 r2r0_n = (uint32) v12_n;
+	*(union Eq_n *) 0x0424 = v12_n - (r2r0_n /u 0x0A) *s32 0x0A + 0x30;
+	*(union Eq_n *) 0x0426 = r2r0_n /u 0x0A + 0x30;
+	*(union Eq_n *) 0x0428 = r2r0_n /u 100 + 0x30;
 }
 
-// 000C0F06: void fn000C0F06(Register Eq_76 r1)
+// 000C0F06: void fn000C0F06(Register Eq_n r1)
 // Called from:
 //      fn000C0154
-void fn000C0F06(Eq_76 r1)
+void fn000C0F06(Eq_n r1)
 {
-	uint32 r2r0_11 = (uint32) r1;
-	uint16 v12_17 = r1 - (r2r0_11 /u 10000) *s32 10000;
-	uint32 r2r0_21 = (uint32) v12_17;
-	uint16 v15_27 = v12_17 - (r2r0_21 /u 1000) *s32 1000;
-	uint32 r2r0_31 = (uint32) v15_27;
-	uint16 v17_37 = v15_27 - (r2r0_31 /u 100) *s32 100;
-	uint32 r2r0_41 = (uint32) v17_37;
-	*(union Eq_76 *) 0x0424 = v17_37 - (r2r0_41 /u 0x0A) *s32 0x0A + 0x30;
-	*(union Eq_76 *) 0x0426 = r2r0_41 /u 0x0A + 0x30;
-	*(union Eq_76 *) 0x0428 = r2r0_31 /u 100 + 0x30;
-	*(union Eq_76 *) 1066 = r2r0_21 /u 1000 + 0x30;
-	*(union Eq_76 *) 0x042C = r2r0_11 /u 10000 + 0x30;
+	uint32 r2r0_n = (uint32) r1;
+	uint16 v12_n = r1 - (r2r0_n /u 10000) *s32 10000;
+	uint32 r2r0_n = (uint32) v12_n;
+	uint16 v15_n = v12_n - (r2r0_n /u 1000) *s32 1000;
+	uint32 r2r0_n = (uint32) v15_n;
+	uint16 v17_n = v15_n - (r2r0_n /u 100) *s32 100;
+	uint32 r2r0_n = (uint32) v17_n;
+	*(union Eq_n *) 0x0424 = v17_n - (r2r0_n /u 0x0A) *s32 0x0A + 0x30;
+	*(union Eq_n *) 0x0426 = r2r0_n /u 0x0A + 0x30;
+	*(union Eq_n *) 0x0428 = r2r0_n /u 100 + 0x30;
+	*(union Eq_n *) 1066 = r2r0_n /u 1000 + 0x30;
+	*(union Eq_n *) 0x042C = r2r0_n /u 10000 + 0x30;
 }
 
-// 000C0F9E: void fn000C0F9E(Register (ptr16 Eq_2620) sb, Stack int32 dwArg03)
-void fn000C0F9E(struct Eq_2620 * sb, int32 dwArg03)
+// 000C0F9E: void fn000C0F9E(Register (ptr16 Eq_n) sb, Stack int32 dwArg03)
+void fn000C0F9E(struct Eq_n * sb, int32 dwArg03)
 {
-	word16 r0_19 = (word16) fn000C17B4(dwArg03, sb);
-	int32 v13_v11_399 = dwArg03 - fn000C1802(0x9680, 0x98, sb);
-	word16 r0_66 = (word16) fn000C17B4(v13_v11_399, sb);
-	int32 v17_v16_401 = v13_v11_399 - fn000C1802(0x4240, 0x0F, sb);
-	word16 r0_113 = (word16) fn000C17B4(v17_v16_401, sb);
-	int32 v21_v20_403 = v17_v16_401 - fn000C1802(34464, 0x01, sb);
-	word16 r0_160 = (word16) fn000C17B4(v21_v20_403, sb);
-	int32 v25_v24_405 = v21_v20_403 - fn000C1802(10000, 0x00, sb);
-	word16 r0_207 = (word16) fn000C17B4(v25_v24_405, sb);
-	int32 v29_v28_407 = v25_v24_405 - fn000C1802(1000, 0x00, sb);
-	word16 r0_254 = (word16) fn000C17B4(v29_v28_407, sb);
-	int32 v33_v32_409 = v29_v28_407 - fn000C1802(100, 0x00, sb);
-	word16 r0_301 = (word16) fn000C17B4(v33_v32_409, sb);
-	*(union Eq_76 *) 0x0424 = (word16) (v33_v32_409 - fn000C1802(0x0A, 0x00, sb)) + 0x30;
-	*(union Eq_76 *) 0x0426 = r0_301 + 0x30;
-	*(union Eq_76 *) 0x0428 = r0_254 + 0x30;
-	*(union Eq_76 *) 1066 = r0_207 + 0x30;
-	*(union Eq_76 *) 0x042C = r0_160 + 0x30;
-	*(union Eq_76 *) 1070 = r0_113 + 0x30;
-	*(union Eq_76 *) 0x0430 = r0_66 + 0x30;
-	*(union Eq_76 *) 0x0432 = r0_19 + 0x30;
+	word16 r0_n = (word16) fn000C17B4(dwArg03, sb);
+	int32 v13_v11_n = dwArg03 - fn000C1802(0x9680, 0x98, sb);
+	word16 r0_n = (word16) fn000C17B4(v13_v11_n, sb);
+	int32 v17_v16_n = v13_v11_n - fn000C1802(0x4240, 0x0F, sb);
+	word16 r0_n = (word16) fn000C17B4(v17_v16_n, sb);
+	int32 v21_v20_n = v17_v16_n - fn000C1802(34464, 0x01, sb);
+	word16 r0_n = (word16) fn000C17B4(v21_v20_n, sb);
+	int32 v25_v24_n = v21_v20_n - fn000C1802(10000, 0x00, sb);
+	word16 r0_n = (word16) fn000C17B4(v25_v24_n, sb);
+	int32 v29_v28_n = v25_v24_n - fn000C1802(1000, 0x00, sb);
+	word16 r0_n = (word16) fn000C17B4(v29_v28_n, sb);
+	int32 v33_v32_n = v29_v28_n - fn000C1802(100, 0x00, sb);
+	word16 r0_n = (word16) fn000C17B4(v33_v32_n, sb);
+	*(union Eq_n *) 0x0424 = (word16) (v33_v32_n - fn000C1802(0x0A, 0x00, sb)) + 0x30;
+	*(union Eq_n *) 0x0426 = r0_n + 0x30;
+	*(union Eq_n *) 0x0428 = r0_n + 0x30;
+	*(union Eq_n *) 1066 = r0_n + 0x30;
+	*(union Eq_n *) 0x042C = r0_n + 0x30;
+	*(union Eq_n *) 1070 = r0_n + 0x30;
+	*(union Eq_n *) 0x0430 = r0_n + 0x30;
+	*(union Eq_n *) 0x0432 = r0_n + 0x30;
 }
 
 // 000C1186: Register word16 fn000C1186(Register uint16 r1, Register uint16 r2, Register out word16 r1Out)
@@ -768,25 +768,25 @@ void fn000C0F9E(struct Eq_2620 * sb, int32 dwArg03)
 //      fn000C0154
 word16 fn000C1186(uint16 r1, uint16 r2, word16 & r1Out)
 {
-	uint16 wLoc0A_115 = r1;
-	uint16 wLoc04_116 = r2;
+	uint16 wLoc0A_n = r1;
+	uint16 wLoc04_n = r2;
 	if (r1 > 0x18)
-		wLoc0A_115 = 0x18;
-	uint32 r2r0_20 = (uint32) wLoc0A_115;
-	uint16 v15_29 = wLoc0A_115 - (r2r0_20 /u 0x0A) *s32 0x0A;
+		wLoc0A_n = 0x18;
+	uint32 r2r0_n = (uint32) wLoc0A_n;
+	uint16 v15_n = wLoc0A_n - (r2r0_n /u 0x0A) *s32 0x0A;
 	if (r2 > 0x4F)
-		wLoc04_116 = 0x4F;
+		wLoc04_n = 0x4F;
 	UART1_putc(0x1B);
 	UART1_putc(0x5B);
-	UART1_putc(r2r0_20 /u 0x0A + 0x30);
-	UART1_putc(v15_29 + 0x30);
+	UART1_putc(r2r0_n /u 0x0A + 0x30);
+	UART1_putc(v15_n + 0x30);
 	UART1_putc(0x3B);
-	uint32 r2r0_39 = (uint32) wLoc04_116;
-	UART1_putc(r2r0_39 /u 0x0A + 0x30);
-	UART1_putc(wLoc04_116 - (r2r0_39 /u 0x0A) *s32 0x0A + 0x30);
-	word16 r0_107 = UART1_putc(0x48);
+	uint32 r2r0_n = (uint32) wLoc04_n;
+	UART1_putc(r2r0_n /u 0x0A + 0x30);
+	UART1_putc(wLoc04_n - (r2r0_n /u 0x0A) *s32 0x0A + 0x30);
+	word16 r0_n = UART1_putc(0x48);
 	r1Out = 0x48;
-	return r0_107;
+	return r0_n;
 }
 
 // 000C1222: Register word16 fn000C1222(Register word16 r0, Stack ui32 dwArg03)
@@ -794,96 +794,96 @@ word16 fn000C1186(uint16 r1, uint16 r2, word16 & r1Out)
 //      fn000C0154
 word16 fn000C1222(word16 r0, ui32 dwArg03)
 {
-	cup16 wLoc04_316 = 0x01;
-	ui32 dwArg03_446 = dwArg03;
+	cup16 wLoc04_n = 0x01;
+	ui32 dwArg03_n = dwArg03;
 	while (true)
 	{
-		word16 wArg05_319 = SLICE(dwArg03_446, word16, 16);
-		word16 wArg03_318 = (word16) dwArg03_446;
-		byte r0h_29 = SLICE(r0, byte, 8);
-		if (wLoc04_316 > 100)
+		word16 wArg05_n = SLICE(dwArg03_n, word16, 16);
+		word16 wArg03_n = (word16) dwArg03_n;
+		byte r0h_n = SLICE(r0, byte, 8);
+		if (wLoc04_n > 100)
 			break;
-		byte r0l_18 = *SEQ(wArg05_319, r0);
-		word16 r0_30 = SEQ(r0h_29, r0l_18);
-		if (r0l_18 != 0x7E)
+		byte r0l_n = *SEQ(wArg05_n, r0);
+		word16 r0_n = SEQ(r0h_n, r0l_n);
+		if (r0l_n != 0x7E)
 		{
-			byte r0l_273 = *SEQ(wArg05_319, r0_30);
-			r0 = SEQ(r0h_29, r0l_273);
-			if (r0l_273 == 0x00)
-				wLoc04_316 = 100;
+			byte r0l_n = *SEQ(wArg05_n, r0_n);
+			r0 = SEQ(r0h_n, r0l_n);
+			if (r0l_n == 0x00)
+				wLoc04_n = 100;
 			else
 			{
-				r0 = UART1_putc((uint16) *SEQ(wArg05_319, r0));
-				dwArg03_446 = SEQ(SLICE(dwArg03_446 + 0x01, word16, 16), wArg03_318 + 0x01);
+				r0 = UART1_putc((uint16) *SEQ(wArg05_n, r0));
+				dwArg03_n = SEQ(SLICE(dwArg03_n + 0x01, word16, 16), wArg03_n + 0x01);
 			}
 		}
 		else
 		{
-			word16 v15_25 = SLICE(dwArg03_446 + 0x01, word16, 16);
-			byte r0l_32 = *SEQ(v15_25, r0_30);
-			word16 r0_45 = SEQ(r0h_29, r0l_32);
-			if (r0l_32 == 0x4E)
+			word16 v15_n = SLICE(dwArg03_n + 0x01, word16, 16);
+			byte r0l_n = *SEQ(v15_n, r0_n);
+			word16 r0_n = SEQ(r0h_n, r0l_n);
+			if (r0l_n == 0x4E)
 			{
 				UART1_putc(0x0A);
-				r0_45 = UART1_putc(0x0D);
+				r0_n = UART1_putc(0x0D);
 			}
-			byte r0l_56 = *SEQ(v15_25, r0_45);
-			word16 r0_62 = SEQ(SLICE(r0_45, byte, 8), r0l_56);
-			if (r0l_56 == 0x7E)
-				r0_62 = UART1_putc(0x7E);
-			byte r0l_74 = *SEQ(v15_25, r0_62);
-			word16 r0_101 = SEQ(SLICE(r0_62, byte, 8), r0l_74);
-			if (r0l_74 == 66)
+			byte r0l_n = *SEQ(v15_n, r0_n);
+			word16 r0_n = SEQ(SLICE(r0_n, byte, 8), r0l_n);
+			if (r0l_n == 0x7E)
+				r0_n = UART1_putc(0x7E);
+			byte r0l_n = *SEQ(v15_n, r0_n);
+			word16 r0_n = SEQ(SLICE(r0_n, byte, 8), r0l_n);
+			if (r0l_n == 66)
 			{
 				UART1_putc(0x1B);
 				UART1_putc(0x5B);
 				UART1_putc(0x31);
-				r0_101 = UART1_putc(0x6D);
+				r0_n = UART1_putc(0x6D);
 			}
-			byte r0l_113 = *SEQ(v15_25, r0_101);
-			word16 r0_140 = SEQ(SLICE(r0_101, byte, 8), r0l_113);
-			if (r0l_113 == 0x55)
+			byte r0l_n = *SEQ(v15_n, r0_n);
+			word16 r0_n = SEQ(SLICE(r0_n, byte, 8), r0l_n);
+			if (r0l_n == 0x55)
 			{
 				UART1_putc(0x1B);
 				UART1_putc(0x5B);
 				UART1_putc(0x34);
-				r0_140 = UART1_putc(0x6D);
+				r0_n = UART1_putc(0x6D);
 			}
-			byte r0l_152 = *SEQ(v15_25, r0_140);
-			word16 r0_179 = SEQ(SLICE(r0_140, byte, 8), r0l_152);
-			if (r0l_152 == 0x52)
+			byte r0l_n = *SEQ(v15_n, r0_n);
+			word16 r0_n = SEQ(SLICE(r0_n, byte, 8), r0l_n);
+			if (r0l_n == 0x52)
 			{
 				UART1_putc(0x1B);
 				UART1_putc(0x5B);
 				UART1_putc(55);
-				r0_179 = UART1_putc(0x6D);
+				r0_n = UART1_putc(0x6D);
 			}
-			byte r0l_191 = *SEQ(v15_25, r0_179);
-			word16 r0_218 = SEQ(SLICE(r0_179, byte, 8), r0l_191);
-			if (r0l_191 == 0x4F)
+			byte r0l_n = *SEQ(v15_n, r0_n);
+			word16 r0_n = SEQ(SLICE(r0_n, byte, 8), r0l_n);
+			if (r0l_n == 0x4F)
 			{
 				UART1_putc(0x1B);
 				UART1_putc(0x5B);
 				UART1_putc(0x30);
-				r0_218 = UART1_putc(0x6D);
+				r0_n = UART1_putc(0x6D);
 			}
-			byte r0l_230 = *SEQ(v15_25, r0_218);
-			r0 = SEQ(SLICE(r0_218, byte, 8), r0l_230);
-			if (r0l_230 == 0x53)
+			byte r0l_n = *SEQ(v15_n, r0_n);
+			r0 = SEQ(SLICE(r0_n, byte, 8), r0l_n);
+			if (r0l_n == 0x53)
 			{
 				UART1_putc(0x1B);
 				UART1_putc(0x5B);
 				UART1_putc(0x35);
 				r0 = UART1_putc(0x6D);
 			}
-			dwArg03_446 = SEQ(SLICE(dwArg03_446 + 0x02, word16, 16), wArg03_318 + 0x02);
+			dwArg03_n = SEQ(SLICE(dwArg03_n + 0x02, word16, 16), wArg03_n + 0x02);
 		}
-		++wLoc04_316;
+		++wLoc04_n;
 	}
 	return r0;
 }
 
-// 000C1372: Register uint16 UART1_putc(Register Eq_76 r1)
+// 000C1372: Register uint16 UART1_putc(Register Eq_n r1)
 // Called from:
 //      fn000C0154
 //      fn000C0E46
@@ -907,28 +907,28 @@ word16 fn000C1222(word16 r0, ui32 dwArg03)
 //      fn000C175C
 //      fn000C177A
 //      fn000C1790
-uint16 UART1_putc(Eq_76 r1)
+uint16 UART1_putc(Eq_n r1)
 {
-	uint16 r0_15;
+	uint16 r0_n;
 	do
-		r0_15 = (uint16) *(union Eq_2070 *) 0x03AD;
-	while (!!__bit<word16,byte>(r0_15, 0x01));
-	*(union Eq_2070 *) 0x03AD |= 0x01;
-	*(union Eq_76 *) 0x03AA = r1;
-	return r0_15;
+		r0_n = (uint16) *(union Eq_n *) 0x03AD;
+	while (!!__bit<word16,byte>(r0_n, 0x01));
+	*(union Eq_n *) 0x03AD |= 0x01;
+	*(union Eq_n *) 0x03AA = r1;
+	return r0_n;
 }
 
 // 000C1392: void fn000C1392()
 void fn000C1392()
 {
-	UART1_putc(*(union Eq_76 *) 0x0432);
-	UART1_putc(*(union Eq_76 *) 0x0430);
-	UART1_putc(*(union Eq_76 *) 1070);
-	UART1_putc(*(union Eq_76 *) 0x042C);
-	UART1_putc(*(union Eq_76 *) 1066);
-	UART1_putc(*(union Eq_76 *) 0x0428);
-	UART1_putc(*(union Eq_76 *) 0x0426);
-	UART1_putc(*(union Eq_76 *) 0x0424);
+	UART1_putc(*(union Eq_n *) 0x0432);
+	UART1_putc(*(union Eq_n *) 0x0430);
+	UART1_putc(*(union Eq_n *) 1070);
+	UART1_putc(*(union Eq_n *) 0x042C);
+	UART1_putc(*(union Eq_n *) 1066);
+	UART1_putc(*(union Eq_n *) 0x0428);
+	UART1_putc(*(union Eq_n *) 0x0426);
+	UART1_putc(*(union Eq_n *) 0x0424);
 }
 
 // 000C13CC: void fn000C13CC()
@@ -936,109 +936,109 @@ void fn000C1392()
 //      fn000C0154
 void fn000C13CC()
 {
-	if (*(union Eq_76 *) 0x042C == 0x30)
-		((union Eq_76 *) 0x042C)->u0 = 0x20;
-	if (*(union Eq_76 *) 0x042C == 0x20 && *((union Eq_76 *) 1066) == 0x30)
-		((union Eq_76 *) 1066)->u0 = 0x20;
-	if (*(union Eq_76 *) 0x042C == 0x20 && (*((union Eq_76 *) 1066) == 0x20 && *((union Eq_76 *) 0x0428) == 0x30))
-		((union Eq_76 *) 0x0428)->u0 = 0x20;
-	UART1_putc(*(union Eq_76 *) 0x042C);
-	UART1_putc(*(union Eq_76 *) 1066);
-	UART1_putc(*(union Eq_76 *) 0x0428);
-	UART1_putc(*(union Eq_76 *) 0x0426);
-	UART1_putc(*(union Eq_76 *) 0x0424);
+	if (*(union Eq_n *) 0x042C == 0x30)
+		((union Eq_n *) 0x042C)->u0 = 0x20;
+	if (*(union Eq_n *) 0x042C == 0x20 && *((union Eq_n *) 1066) == 0x30)
+		((union Eq_n *) 1066)->u0 = 0x20;
+	if (*(union Eq_n *) 0x042C == 0x20 && (*((union Eq_n *) 1066) == 0x20 && *((union Eq_n *) 0x0428) == 0x30))
+		((union Eq_n *) 0x0428)->u0 = 0x20;
+	UART1_putc(*(union Eq_n *) 0x042C);
+	UART1_putc(*(union Eq_n *) 1066);
+	UART1_putc(*(union Eq_n *) 0x0428);
+	UART1_putc(*(union Eq_n *) 0x0426);
+	UART1_putc(*(union Eq_n *) 0x0424);
 }
 
 // 000C1432: void fn000C1432()
 void fn000C1432()
 {
-	if (*(union Eq_76 *) 0x042C == 0x30)
-		((union Eq_76 *) 0x042C)->u0 = 0x20;
-	if (*(union Eq_76 *) 0x042C == 0x20 && *((union Eq_76 *) 1066) == 0x30)
-		((union Eq_76 *) 1066)->u0 = 0x20;
-	if (*(union Eq_76 *) 0x042C == 0x20 && (*((union Eq_76 *) 1066) == 0x20 && *((union Eq_76 *) 0x0428) == 0x30))
-		((union Eq_76 *) 0x0428)->u0 = 0x20;
-	UART1_putc(*(union Eq_76 *) 0x042C);
-	UART1_putc(*(union Eq_76 *) 1066);
-	UART1_putc(*(union Eq_76 *) 0x0428);
-	UART1_putc(*(union Eq_76 *) 0x0426);
+	if (*(union Eq_n *) 0x042C == 0x30)
+		((union Eq_n *) 0x042C)->u0 = 0x20;
+	if (*(union Eq_n *) 0x042C == 0x20 && *((union Eq_n *) 1066) == 0x30)
+		((union Eq_n *) 1066)->u0 = 0x20;
+	if (*(union Eq_n *) 0x042C == 0x20 && (*((union Eq_n *) 1066) == 0x20 && *((union Eq_n *) 0x0428) == 0x30))
+		((union Eq_n *) 0x0428)->u0 = 0x20;
+	UART1_putc(*(union Eq_n *) 0x042C);
+	UART1_putc(*(union Eq_n *) 1066);
+	UART1_putc(*(union Eq_n *) 0x0428);
+	UART1_putc(*(union Eq_n *) 0x0426);
 	UART1_putc(0x2E);
-	UART1_putc(*(union Eq_76 *) 0x0424);
+	UART1_putc(*(union Eq_n *) 0x0424);
 }
 
 // 000C14A0: void fn000C14A0()
 void fn000C14A0()
 {
-	UART1_putc(*(union Eq_76 *) 0x042C);
-	UART1_putc(*(union Eq_76 *) 1066);
-	UART1_putc(*(union Eq_76 *) 0x0428);
-	UART1_putc(*(union Eq_76 *) 0x0426);
-	UART1_putc(*(union Eq_76 *) 0x0424);
+	UART1_putc(*(union Eq_n *) 0x042C);
+	UART1_putc(*(union Eq_n *) 1066);
+	UART1_putc(*(union Eq_n *) 0x0428);
+	UART1_putc(*(union Eq_n *) 0x0426);
+	UART1_putc(*(union Eq_n *) 0x0424);
 }
 
 // 000C14C4: void fn000C14C4()
 void fn000C14C4()
 {
-	UART1_putc(*(union Eq_76 *) 0x042C);
-	UART1_putc(*(union Eq_76 *) 1066);
-	UART1_putc(*(union Eq_76 *) 0x0428);
-	UART1_putc(*(union Eq_76 *) 0x0426);
+	UART1_putc(*(union Eq_n *) 0x042C);
+	UART1_putc(*(union Eq_n *) 1066);
+	UART1_putc(*(union Eq_n *) 0x0428);
+	UART1_putc(*(union Eq_n *) 0x0426);
 	UART1_putc(0x2E);
-	UART1_putc(*(union Eq_76 *) 0x0424);
+	UART1_putc(*(union Eq_n *) 0x0424);
 }
 
 // 000C14F0: void fn000C14F0()
 void fn000C14F0()
 {
-	if (*(union Eq_76 *) 0x042C == 0x30)
-		((union Eq_76 *) 0x042C)->u0 = 0x20;
-	if (*(union Eq_76 *) 0x042C == 0x20 && *((union Eq_76 *) 1066) == 0x30)
-		((union Eq_76 *) 1066)->u0 = 0x20;
-	if (*(union Eq_76 *) 0x042C == 0x20 && (*((union Eq_76 *) 1066) == 0x20 && *((union Eq_76 *) 0x0428) == 0x30))
-		((union Eq_76 *) 0x0428)->u0 = 0x20;
-	UART1_putc(*(union Eq_76 *) 0x042C);
-	UART1_putc(*(union Eq_76 *) 1066);
-	UART1_putc(*(union Eq_76 *) 0x0428);
+	if (*(union Eq_n *) 0x042C == 0x30)
+		((union Eq_n *) 0x042C)->u0 = 0x20;
+	if (*(union Eq_n *) 0x042C == 0x20 && *((union Eq_n *) 1066) == 0x30)
+		((union Eq_n *) 1066)->u0 = 0x20;
+	if (*(union Eq_n *) 0x042C == 0x20 && (*((union Eq_n *) 1066) == 0x20 && *((union Eq_n *) 0x0428) == 0x30))
+		((union Eq_n *) 0x0428)->u0 = 0x20;
+	UART1_putc(*(union Eq_n *) 0x042C);
+	UART1_putc(*(union Eq_n *) 1066);
+	UART1_putc(*(union Eq_n *) 0x0428);
 	UART1_putc(0x2E);
-	UART1_putc(*(union Eq_76 *) 0x0426);
-	UART1_putc(*(union Eq_76 *) 0x0424);
+	UART1_putc(*(union Eq_n *) 0x0426);
+	UART1_putc(*(union Eq_n *) 0x0424);
 }
 
 // 000C155E: void fn000C155E()
 void fn000C155E()
 {
-	UART1_putc(*(union Eq_76 *) 0x042C);
-	UART1_putc(*(union Eq_76 *) 1066);
-	UART1_putc(*(union Eq_76 *) 0x0428);
+	UART1_putc(*(union Eq_n *) 0x042C);
+	UART1_putc(*(union Eq_n *) 1066);
+	UART1_putc(*(union Eq_n *) 0x0428);
 	UART1_putc(0x2E);
-	UART1_putc(*(union Eq_76 *) 0x0426);
-	UART1_putc(*(union Eq_76 *) 0x0424);
+	UART1_putc(*(union Eq_n *) 0x0426);
+	UART1_putc(*(union Eq_n *) 0x0424);
 }
 
 // 000C158A: void fn000C158A()
 void fn000C158A()
 {
-	UART1_putc(*(union Eq_76 *) 0x042C);
-	UART1_putc(*(union Eq_76 *) 1066);
+	UART1_putc(*(union Eq_n *) 0x042C);
+	UART1_putc(*(union Eq_n *) 1066);
 	UART1_putc(0x2E);
-	UART1_putc(*(union Eq_76 *) 0x0428);
-	UART1_putc(*(union Eq_76 *) 0x0426);
-	UART1_putc(*(union Eq_76 *) 0x0424);
+	UART1_putc(*(union Eq_n *) 0x0428);
+	UART1_putc(*(union Eq_n *) 0x0426);
+	UART1_putc(*(union Eq_n *) 0x0424);
 }
 
 // 000C15B6: void fn000C15B6()
 void fn000C15B6()
 {
-	if (*(union Eq_76 *) 1066 == 0x30)
-		((union Eq_76 *) 1066)->u0 = 0x20;
-	if (*(union Eq_76 *) 1066 == 0x20 && *((union Eq_76 *) 0x0428) == 0x30)
-		((union Eq_76 *) 0x0428)->u0 = 0x20;
-	if (*(union Eq_76 *) 1066 == 0x20 && (*((union Eq_76 *) 0x0428) == 0x20 && *((union Eq_76 *) 0x0426) == 0x30))
-		((union Eq_76 *) 0x0426)->u0 = 0x20;
-	UART1_putc(*(union Eq_76 *) 1066);
-	UART1_putc(*(union Eq_76 *) 0x0428);
-	UART1_putc(*(union Eq_76 *) 0x0426);
-	UART1_putc(*(union Eq_76 *) 0x0424);
+	if (*(union Eq_n *) 1066 == 0x30)
+		((union Eq_n *) 1066)->u0 = 0x20;
+	if (*(union Eq_n *) 1066 == 0x20 && *((union Eq_n *) 0x0428) == 0x30)
+		((union Eq_n *) 0x0428)->u0 = 0x20;
+	if (*(union Eq_n *) 1066 == 0x20 && (*((union Eq_n *) 0x0428) == 0x20 && *((union Eq_n *) 0x0426) == 0x30))
+		((union Eq_n *) 0x0426)->u0 = 0x20;
+	UART1_putc(*(union Eq_n *) 1066);
+	UART1_putc(*(union Eq_n *) 0x0428);
+	UART1_putc(*(union Eq_n *) 0x0426);
+	UART1_putc(*(union Eq_n *) 0x0424);
 }
 
 // 000C1616: void fn000C1616()
@@ -1046,172 +1046,172 @@ void fn000C15B6()
 //      fn000C0154
 void fn000C1616()
 {
-	UART1_putc(*(union Eq_76 *) 1066);
-	UART1_putc(*(union Eq_76 *) 0x0428);
-	UART1_putc(*(union Eq_76 *) 0x0426);
-	UART1_putc(*(union Eq_76 *) 0x0424);
+	UART1_putc(*(union Eq_n *) 1066);
+	UART1_putc(*(union Eq_n *) 0x0428);
+	UART1_putc(*(union Eq_n *) 0x0426);
+	UART1_putc(*(union Eq_n *) 0x0424);
 }
 
 // 000C1634: void fn000C1634()
 void fn000C1634()
 {
-	if (*(union Eq_76 *) 0x0428 == 0x30)
-		((union Eq_76 *) 0x0428)->u0 = 0x20;
-	if (*(union Eq_76 *) 0x0428 == 0x20 && *((union Eq_76 *) 0x0426) == 0x30)
-		((union Eq_76 *) 0x0426)->u0 = 0x20;
-	UART1_putc(*(union Eq_76 *) 0x0428);
-	UART1_putc(*(union Eq_76 *) 0x0426);
-	UART1_putc(*(union Eq_76 *) 0x0424);
+	if (*(union Eq_n *) 0x0428 == 0x30)
+		((union Eq_n *) 0x0428)->u0 = 0x20;
+	if (*(union Eq_n *) 0x0428 == 0x20 && *((union Eq_n *) 0x0426) == 0x30)
+		((union Eq_n *) 0x0426)->u0 = 0x20;
+	UART1_putc(*(union Eq_n *) 0x0428);
+	UART1_putc(*(union Eq_n *) 0x0426);
+	UART1_putc(*(union Eq_n *) 0x0424);
 }
 
 // 000C166E: void fn000C166E()
 void fn000C166E()
 {
-	UART1_putc(*(union Eq_76 *) 0x0428);
-	UART1_putc(*(union Eq_76 *) 0x0426);
-	UART1_putc(*(union Eq_76 *) 0x0424);
+	UART1_putc(*(union Eq_n *) 0x0428);
+	UART1_putc(*(union Eq_n *) 0x0426);
+	UART1_putc(*(union Eq_n *) 0x0424);
 }
 
 // 000C1684: void fn000C1684()
 void fn000C1684()
 {
-	if (*(union Eq_76 *) 0x0428 == 0x30)
-		((union Eq_76 *) 0x0428)->u0 = 0x20;
-	UART1_putc(*(union Eq_76 *) 0x0428);
-	UART1_putc(*(union Eq_76 *) 0x0426);
+	if (*(union Eq_n *) 0x0428 == 0x30)
+		((union Eq_n *) 0x0428)->u0 = 0x20;
+	UART1_putc(*(union Eq_n *) 0x0428);
+	UART1_putc(*(union Eq_n *) 0x0426);
 	UART1_putc(0x2E);
-	UART1_putc(*(union Eq_76 *) 0x0424);
+	UART1_putc(*(union Eq_n *) 0x0424);
 }
 
 // 000C16B0: void fn000C16B0()
 void fn000C16B0()
 {
-	if (*(union Eq_76 *) 1066 == 0x30)
-		((union Eq_76 *) 1066)->u0 = 0x20;
-	if (*(union Eq_76 *) 1066 == 0x20 && *((union Eq_76 *) 0x0428) == 0x30)
-		((union Eq_76 *) 0x0428)->u0 = 0x20;
-	if (*(union Eq_76 *) 1066 == 0x2D && *((union Eq_76 *) 0x0428) == 0x30)
+	if (*(union Eq_n *) 1066 == 0x30)
+		((union Eq_n *) 1066)->u0 = 0x20;
+	if (*(union Eq_n *) 1066 == 0x20 && *((union Eq_n *) 0x0428) == 0x30)
+		((union Eq_n *) 0x0428)->u0 = 0x20;
+	if (*(union Eq_n *) 1066 == 0x2D && *((union Eq_n *) 0x0428) == 0x30)
 	{
-		((union Eq_76 *) 1066)->u0 = 0x20;
-		((union Eq_76 *) 0x0428)->u0 = 0x2D;
+		((union Eq_n *) 1066)->u0 = 0x20;
+		((union Eq_n *) 0x0428)->u0 = 0x2D;
 	}
-	if (*(union Eq_76 *) 1066 == 0x2B && *((union Eq_76 *) 0x0428) == 0x30)
+	if (*(union Eq_n *) 1066 == 0x2B && *((union Eq_n *) 0x0428) == 0x30)
 	{
-		((union Eq_76 *) 1066)->u0 = 0x20;
-		((union Eq_76 *) 0x0428)->u0 = 0x2B;
+		((union Eq_n *) 1066)->u0 = 0x20;
+		((union Eq_n *) 0x0428)->u0 = 0x2B;
 	}
-	UART1_putc(*(union Eq_76 *) 1066);
-	UART1_putc(*(union Eq_76 *) 0x0428);
-	UART1_putc(*(union Eq_76 *) 0x0426);
+	UART1_putc(*(union Eq_n *) 1066);
+	UART1_putc(*(union Eq_n *) 0x0428);
+	UART1_putc(*(union Eq_n *) 0x0426);
 	UART1_putc(0x2E);
-	UART1_putc(*(union Eq_76 *) 0x0424);
+	UART1_putc(*(union Eq_n *) 0x0424);
 }
 
 // 000C1730: void fn000C1730()
 void fn000C1730()
 {
-	if (*(union Eq_76 *) 0x0428 == 0x30)
-		((union Eq_76 *) 0x0428)->u0 = 0x20;
-	UART1_putc(*(union Eq_76 *) 0x0428);
+	if (*(union Eq_n *) 0x0428 == 0x30)
+		((union Eq_n *) 0x0428)->u0 = 0x20;
+	UART1_putc(*(union Eq_n *) 0x0428);
 	UART1_putc(0x2E);
-	UART1_putc(*(union Eq_76 *) 0x0426);
-	UART1_putc(*(union Eq_76 *) 0x0424);
+	UART1_putc(*(union Eq_n *) 0x0426);
+	UART1_putc(*(union Eq_n *) 0x0424);
 }
 
 // 000C175C: void fn000C175C()
 void fn000C175C()
 {
-	if (*(union Eq_76 *) 0x0426 == 0x30)
-		((union Eq_76 *) 0x0426)->u0 = 0x20;
-	UART1_putc(*(union Eq_76 *) 0x0426);
-	UART1_putc(*(union Eq_76 *) 0x0424);
+	if (*(union Eq_n *) 0x0426 == 0x30)
+		((union Eq_n *) 0x0426)->u0 = 0x20;
+	UART1_putc(*(union Eq_n *) 0x0426);
+	UART1_putc(*(union Eq_n *) 0x0424);
 }
 
 // 000C177A: void fn000C177A()
 void fn000C177A()
 {
-	UART1_putc(*(union Eq_76 *) 0x0426);
+	UART1_putc(*(union Eq_n *) 0x0426);
 	UART1_putc(0x2E);
-	UART1_putc(*(union Eq_76 *) 0x0424);
+	UART1_putc(*(union Eq_n *) 0x0424);
 }
 
 // 000C1790: void fn000C1790()
 void fn000C1790()
 {
-	UART1_putc(*(union Eq_76 *) 1066);
-	UART1_putc(*(union Eq_76 *) 0x0428);
-	UART1_putc(*(union Eq_76 *) 0x0426);
+	UART1_putc(*(union Eq_n *) 1066);
+	UART1_putc(*(union Eq_n *) 0x0428);
+	UART1_putc(*(union Eq_n *) 0x0426);
 	UART1_putc(0x2E);
-	UART1_putc(*(union Eq_76 *) 0x0424);
+	UART1_putc(*(union Eq_n *) 0x0424);
 }
 
-// 000C17B4: Sequence int32 fn000C17B4(Sequence int32 r2r0, Register (ptr16 Eq_2620) sb)
+// 000C17B4: Sequence int32 fn000C17B4(Sequence int32 r2r0, Register (ptr16 Eq_n) sb)
 // Called from:
 //      fn000C0F9E
-int32 fn000C17B4(int32 r2r0, struct Eq_2620 * sb)
+int32 fn000C17B4(int32 r2r0, struct Eq_n * sb)
 {
-	Eq_3404 r2 = SLICE(r2r0, word16, 16);
+	Eq_n r2 = SLICE(r2r0, word16, 16);
 	uint16 r0 = (word16) r2r0;
-	Eq_3404 a0_15;
-	a0_15.u0 = 0x00;
-	ci16 a1_16 = 0x00;
-	uint16 r1_18 = sb->w000B;
-	Eq_3418 r3_19;
-	r3_19.u0 = sb->t000D.u0;
-	Eq_3404 r0_159;
-	Eq_3418 r2_160;
-	if (r3_19 == 0x00)
+	Eq_n a0_n;
+	a0_n.u0 = 0x00;
+	ci16 a1_n = 0x00;
+	uint16 r1_n = sb->w000B;
+	Eq_n r3_n;
+	r3_n.u0 = sb->t000D.u0;
+	Eq_n r0_n;
+	Eq_n r2_n;
+	if (r3_n == 0x00)
 	{
 		if (r2 != 0x00)
 		{
-			uint32 r2r0_81 = (uint32) r2;
-			r2 = r2r0_81 % r1_18;
-			r3_19 = r2r0_81 /u r1_18;
+			uint32 r2r0_n = (uint32) r2;
+			r2 = r2r0_n % r1_n;
+			r3_n = r2r0_n /u r1_n;
 		}
-		r0_159 = SEQ(r2, r0) /u r1_18;
-		r2_160 = r3_19;
+		r0_n = SEQ(r2, r0) /u r1_n;
+		r2_n = r3_n;
 	}
 	else
 	{
-		int32 r2r0_167 = r2r0;
-		uint32 r3_r1_172 = SEQ(r3_19, r1_18);
-		uint32 r3_r1_178 = SEQ(r3_19, r1_18);
-		if (r3_19 >= 0x00)
+		int32 r2r0_n = r2r0;
+		uint32 r3_r1_n = SEQ(r3_n, r1_n);
+		uint32 r3_r1_n = SEQ(r3_n, r1_n);
+		if (r3_n >= 0x00)
 		{
-			cui16 r1_29;
+			cui16 r1_n;
 			do
 			{
-				r1_29 = (word16) r3_r1_178;
-				Eq_3404 r3_24 = SLICE(r3_r1_178, word16, 16);
-				r2r0_167 = r2r0;
-				r3_r1_172 = r3_r1_178;
-				if (r2 <= r3_24)
+				r1_n = (word16) r3_r1_n;
+				Eq_n r3_n = SLICE(r3_r1_n, word16, 16);
+				r2r0_n = r2r0;
+				r3_r1_n = r3_r1_n;
+				if (r2 <= r3_n)
 					break;
-				Eq_3404 r3_35 = __rcl<word16,int16>(r3_24, 1, cond(r1_29 << 0) & 0x01);
-				++a1_16;
-				r2r0_167 = r2r0;
-				r3_r1_172 = SEQ(r3_35, r1_29 << 0);
-				r3_r1_178 = SEQ(r3_35, r1_29 << 0);
-			} while (r1_29 << 0 >= 0x00);
+				Eq_n r3_n = __rcl<word16,int16>(r3_n, 1, cond(r1_n << 0) & 0x01);
+				++a1_n;
+				r2r0_n = r2r0;
+				r3_r1_n = SEQ(r3_n, r1_n << 0);
+				r3_r1_n = SEQ(r3_n, r1_n << 0);
+			} while (r1_n << 0 >= 0x00);
 		}
 		do
 		{
-			int32 r2r0_123 = r2r0_167 - r3_r1_172;
-			cup16 r2_44 = SLICE(r2r0_123, word16, 16);
-			Eq_3445 C_46 = cond(r2_44) & 0x01;
-			if (r2_44 < 0x00)
+			int32 r2r0_n = r2r0_n - r3_r1_n;
+			cup16 r2_n = SLICE(r2r0_n, word16, 16);
+			Eq_n C_n = cond(r2_n) & 0x01;
+			if (r2_n < 0x00)
 			{
-				r2r0_123 += r3_r1_172;
-				C_46.u0 = 0x00;
+				r2r0_n += r3_r1_n;
+				C_n.u0 = 0x00;
 			}
-			a0_15 = __rcl<word16,int16>(a0_15, 1, C_46);
-			r3_r1_172 >>= 0x08;
-			--a1_16;
-			r2r0_167 = r2r0_123;
-		} while (a1_16 >= 0x00);
-		r0_159 = a0_15;
-		r2_160.u0 = 0x00;
+			a0_n = __rcl<word16,int16>(a0_n, 1, C_n);
+			r3_r1_n >>= 0x08;
+			--a1_n;
+			r2r0_n = r2r0_n;
+		} while (a1_n >= 0x00);
+		r0_n = a0_n;
+		r2_n.u0 = 0x00;
 	}
-	return SEQ(r2_160, r0_159);
+	return SEQ(r2_n, r0_n);
 }
 

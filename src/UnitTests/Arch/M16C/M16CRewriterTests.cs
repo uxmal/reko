@@ -317,8 +317,9 @@ public class M16CRewriterTests : RewriterTestBase
     {
         Given_HexString("EB400045");
         AssertCode(     // ldc	#4500h,isp
-            "0|L--|000F820F(4): 1 instructions",
-            "1|L--|isp = 0x4500<16>");
+            "0|L--|00000100(4): 2 instructions",
+            "1|L--|isp = 0x4500<16>",
+            "2|L--|SZ = cond(0x4500<16>)");
     }
 
     [Test]

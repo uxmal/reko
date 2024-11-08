@@ -4,132 +4,132 @@
 
 #include "ThrottleControl.h"
 
-// 000C1D6C: Register uint16 fn000C1D6C(Stack uint16 wArg03, Stack ui16 wArg05, Stack uint16 wArg07, Stack ui16 wArg09, Stack Eq_3510 wArg0B)
+// 000C1D6C: Register uint16 fn000C1D6C(Stack uint16 wArg03, Stack ui16 wArg05, Stack uint16 wArg07, Stack ui16 wArg09, Stack Eq_n wArg0B)
 // Called from:
 //      fn000C18E6
-uint16 fn000C1D6C(uint16 wArg03, ui16 wArg05, uint16 wArg07, ui16 wArg09, Eq_3510 wArg0B)
+uint16 fn000C1D6C(uint16 wArg03, ui16 wArg05, uint16 wArg07, ui16 wArg09, Eq_n wArg0B)
 {
-	Eq_3510 r0_18 = wArg0B;
-	ui32 dwLoc0A_93 = SEQ(wArg09, wArg07);
-	ui32 dwLoc06_96 = SEQ(wArg05, wArg03);
+	Eq_n r0_n = wArg0B;
+	ui32 dwLoc0A_n = SEQ(wArg09, wArg07);
+	ui32 dwLoc06_n = SEQ(wArg05, wArg03);
 	while (true)
 	{
-		word16 wLoc04_73 = SLICE(dwLoc06_96, word16, 16);
-		word16 wLoc06_72 = (word16) dwLoc06_96;
-		word16 wLoc08_68 = SLICE(dwLoc0A_93, word16, 16);
-		word16 wLoc0A_67 = (word16) dwLoc0A_93;
-		r0_18 = (word32) r0_18 + 0x0000FFFF;
-		if (r0_18 == 0x00)
+		word16 wLoc04_n = SLICE(dwLoc06_n, word16, 16);
+		word16 wLoc06_n = (word16) dwLoc06_n;
+		word16 wLoc08_n = SLICE(dwLoc0A_n, word16, 16);
+		word16 wLoc0A_n = (word16) dwLoc0A_n;
+		r0_n = (word32) r0_n + 0x0000FFFF;
+		if (r0_n == 0x00)
 			break;
-		*SEQ(wLoc04_73, r0_18) = *SEQ(wLoc08_68, r0_18);
-		dwLoc0A_93 = SEQ(SLICE(dwLoc0A_93 + 0x01, word16, 16), wLoc0A_67 + 0x01);
-		dwLoc06_96 = SEQ(SLICE(dwLoc06_96 + 0x01, word16, 16), wLoc06_72 + 0x01);
+		*SEQ(wLoc04_n, r0_n) = *SEQ(wLoc08_n, r0_n);
+		dwLoc0A_n = SEQ(SLICE(dwLoc0A_n + 0x01, word16, 16), wLoc0A_n + 0x01);
+		dwLoc06_n = SEQ(SLICE(dwLoc06_n + 0x01, word16, 16), wLoc06_n + 0x01);
 	}
 	return wArg03;
 }
 
-// 000C1DB0: void fn000C1DB0(Register Eq_3521 r2, Stack uint16 wArg03, Stack ui16 wArg05, Stack Eq_3524 wArg07)
+// 000C1DB0: void fn000C1DB0(Register Eq_n r2, Stack uint16 wArg03, Stack ui16 wArg05, Stack Eq_n wArg07)
 // Called from:
 //      fn000C181E
-void fn000C1DB0(Eq_3521 r2, uint16 wArg03, ui16 wArg05, Eq_3524 wArg07)
+void fn000C1DB0(Eq_n r2, uint16 wArg03, ui16 wArg05, Eq_n wArg07)
 {
-	Eq_3524 r0_14 = wArg07;
-	ui32 dwLoc06_70 = SEQ(wArg05, wArg03);
+	Eq_n r0_n = wArg07;
+	ui32 dwLoc06_n = SEQ(wArg05, wArg03);
 	while (true)
 	{
-		word16 wLoc04_54 = SLICE(dwLoc06_70, word16, 16);
-		word16 wLoc06_53 = (word16) dwLoc06_70;
-		r0_14.u1 = (word16) r0_14.u1 + 0x0000FFFF;
-		if (r0_14 == 0x00)
+		word16 wLoc04_n = SLICE(dwLoc06_n, word16, 16);
+		word16 wLoc06_n = (word16) dwLoc06_n;
+		r0_n.u1 = (word16) r0_n.u1 + 0x0000FFFF;
+		if (r0_n == 0x00)
 			break;
-		SEQ(wLoc04_54, r0_14)->u0 = (byte) r2;
-		dwLoc06_70 = SEQ(SLICE(dwLoc06_70 + 0x01, word16, 16), wLoc06_53 + 0x01);
+		SEQ(wLoc04_n, r0_n)->u0 = (byte) r2;
+		dwLoc06_n = SEQ(SLICE(dwLoc06_n + 0x01, word16, 16), wLoc06_n + 0x01);
 	}
 }
 
-// 000C1DE4: Sequence uint32 fn000C1DE4(Sequence uint32 r2r0, Register (ptr16 Eq_3531) sb)
+// 000C1DE4: Sequence uint32 fn000C1DE4(Sequence uint32 r2r0, Register (ptr16 Eq_n) sb)
 // Called from:
 //      fn000C1ACC
-uint32 fn000C1DE4(uint32 r2r0, struct Eq_3531 * sb)
+uint32 fn000C1DE4(uint32 r2r0, struct Eq_n * sb)
 {
 	cup16 r2 = SLICE(r2r0, word16, 16);
-	uint16 r1_16 = sb->w000B;
-	uint16 r3_17 = sb->w000D;
+	uint16 r1_n = sb->w000B;
+	uint16 r3_n = sb->w000D;
 	if (r2 >= 0x8000)
 	{
-		word32 r2r0_179 = ~r2r0;
-		r2r0 = SEQ(SLICE(r2r0_179 + 0x01, word16, 16), (word16) r2r0_179 + 0x01);
+		word32 r2r0_n = ~r2r0;
+		r2r0 = SEQ(SLICE(r2r0_n + 0x01, word16, 16), (word16) r2r0_n + 0x01);
 	}
-	uint16 r0_111 = (word16) r2r0;
-	Eq_3404 r2_107 = SLICE(r2r0, word16, 16);
-	uint32 r3_r1_252 = SEQ(r3_17, r1_16);
-	if (r3_17 >= 0x8000)
+	uint16 r0_n = (word16) r2r0;
+	Eq_n r2_n = SLICE(r2r0, word16, 16);
+	uint32 r3_r1_n = SEQ(r3_n, r1_n);
+	if (r3_n >= 0x8000)
 	{
-		uint32 r3_r1_181 = ~SEQ(r3_17, r1_16);
-		r3_r1_252 = SEQ(SLICE(r3_r1_181 + 0x01, word16, 16), (word16) r3_r1_181 + 0x01);
+		uint32 r3_r1_n = ~SEQ(r3_n, r1_n);
+		r3_r1_n = SEQ(SLICE(r3_r1_n + 0x01, word16, 16), (word16) r3_r1_n + 0x01);
 	}
-	uint16 r1_117 = (word16) r3_r1_252;
-	Eq_4414 r3_121;
-	r3_121.u1 = SLICE(r3_r1_252, word16, 16);
-	uint32 r2r0_243;
-	if (r3_121 == 0x00)
+	uint16 r1_n = (word16) r3_r1_n;
+	Eq_n r3_n;
+	r3_n.u1 = SLICE(r3_r1_n, word16, 16);
+	uint32 r2r0_n;
+	if (r3_n == 0x00)
 	{
-		if (r2_107 != 0x00)
+		if (r2_n != 0x00)
 		{
-			uint32 r2r0_115 = (uint32) r2_107;
-			r2_107 = r2r0_115 % r1_117;
-			r3_121 = r2r0_115 /u r1_117;
+			uint32 r2r0_n = (uint32) r2_n;
+			r2_n = r2r0_n % r1_n;
+			r3_n = r2r0_n /u r1_n;
 		}
-		r2r0_243 = SEQ(r3_121, SEQ(r2_107, r0_111) /u r1_117);
+		r2r0_n = SEQ(r3_n, SEQ(r2_n, r0_n) /u r1_n);
 	}
 	else
 	{
-		Eq_3404 a0_52;
-		a0_52.u0 = 0x00;
-		ci16 a1_100 = 0x00;
-		uint32 r3_r1_249 = r3_r1_252;
-		cui16 r1_61;
-		uint32 r2r0_236;
-		uint32 r3_r1_240;
+		Eq_n a0_n;
+		a0_n.u0 = 0x00;
+		ci16 a1_n = 0x00;
+		uint32 r3_r1_n = r3_r1_n;
+		cui16 r1_n;
+		uint32 r2r0_n;
+		uint32 r3_r1_n;
 		do
 		{
-			r1_61 = (word16) r3_r1_249;
-			Eq_3404 r3_56 = SLICE(r3_r1_249, word16, 16);
-			r2r0_236 = r2r0;
-			r3_r1_240 = r3_r1_249;
-			if (r2_107 <= r3_56)
+			r1_n = (word16) r3_r1_n;
+			Eq_n r3_n = SLICE(r3_r1_n, word16, 16);
+			r2r0_n = r2r0;
+			r3_r1_n = r3_r1_n;
+			if (r2_n <= r3_n)
 				break;
-			Eq_3404 r3_67 = __rcl<word16,int16>(r3_56, 1, cond(r1_61 << 0) & 0x01);
-			++a1_100;
-			r2r0_236 = r2r0;
-			r3_r1_240 = SEQ(r3_67, r1_61 << 0);
-			r3_r1_249 = SEQ(r3_67, r1_61 << 0);
-		} while (r1_61 << 0 >= 0x00);
+			Eq_n r3_n = __rcl<word16,int16>(r3_n, 1, cond(r1_n << 0) & 0x01);
+			++a1_n;
+			r2r0_n = r2r0;
+			r3_r1_n = SEQ(r3_n, r1_n << 0);
+			r3_r1_n = SEQ(r3_n, r1_n << 0);
+		} while (r1_n << 0 >= 0x00);
 		do
 		{
-			uint32 r2r0_185 = r2r0_236 - r3_r1_240;
-			cup16 r2_76 = SLICE(r2r0_185, word16, 16);
-			Eq_3445 C_78 = cond(r2_76) & 0x01;
-			if (r2_76 < 0x00)
+			uint32 r2r0_n = r2r0_n - r3_r1_n;
+			cup16 r2_n = SLICE(r2r0_n, word16, 16);
+			Eq_n C_n = cond(r2_n) & 0x01;
+			if (r2_n < 0x00)
 			{
-				r2r0_185 += r3_r1_240;
-				C_78.u0 = 0x00;
+				r2r0_n += r3_r1_n;
+				C_n.u0 = 0x00;
 			}
-			a0_52 = __rcl<word16,int16>(a0_52, 1, C_78);
-			r3_r1_240 >>= 0x08;
-			--a1_100;
-			r2r0_236 = r2r0_185;
-		} while (a1_100 >= 0x00);
-		r2r0_243 = (uint32) a0_52;
+			a0_n = __rcl<word16,int16>(a0_n, 1, C_n);
+			r3_r1_n >>= 0x08;
+			--a1_n;
+			r2r0_n = r2r0_n;
+		} while (a1_n >= 0x00);
+		r2r0_n = (uint32) a0_n;
 	}
-	word16 r2_151 = SLICE(r2r0_243, word16, 16);
-	word16 r0_149 = (word16) r2r0_243;
+	word16 r2_n = SLICE(r2r0_n, word16, 16);
+	word16 r0_n = (word16) r2r0_n;
 	if (sb->w0000 != 0x00)
 	{
-		word32 r2r0_189 = ~r2r0_243;
-		r0_149 = (word16) r2r0_189 + 0x01;
-		r2_151 = SLICE(r2r0_189 + 0x01, word16, 16);
+		word32 r2r0_n = ~r2r0_n;
+		r0_n = (word16) r2r0_n + 0x01;
+		r2_n = SLICE(r2r0_n + 0x01, word16, 16);
 	}
-	return SEQ(r2_151, r0_149);
+	return SEQ(r2_n, r0_n);
 }
 

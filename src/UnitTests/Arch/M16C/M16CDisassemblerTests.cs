@@ -39,7 +39,6 @@ public class M16CDisassemblerTests : DisassemblerTestBase<M16CInstruction>
     {
         this.arch = new M16CArchitecture(CreateServiceContainer(), "m16c", new());
         this.addr = Address.Ptr16(0x100);
-        Reko.Core.Machine.Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
     }
 
     public override IProcessorArchitecture Architecture => arch;
@@ -105,16 +104,16 @@ public class M16CDisassemblerTests : DisassemblerTestBase<M16CInstruction>
     }
 
     [Test]
-    public void M16dasm_add_b_g()
+    public void M16cDasm_add_b_g()
     {
-        AssertCode("add.b\t1234[a0],5678[a1]", "A0CD34127856");
+        AssertCode("add.b\t1234h[a0],5678h[a1]", "A0CD34127856");
     }
 
     [Test]
-    public void M16dasm_add_b_s_reg()
+    public void M16cDasm_add_b_s_reg()
     {
-        AssertCode("add.b:s\t", "20");
-        AssertCode("add.b:s\t", "24");
+        AssertCode("add.b:s\tr0h,r0l", "20");
+        AssertCode("add.b:s\tr0l,r0h", "24");
     }
 
     [Test]
@@ -210,28 +209,27 @@ public class M16CDisassemblerTests : DisassemblerTestBase<M16CInstruction>
     }
 
     [Test]
-    public void M16Dasm_cmp()
+    public void M16cDasm_cmp()
     {
-        AssertCode("cmp.w\t#1h,r0", "C042");
-
+        AssertCode("cmp.b\ta0,r1l", "C042");
     }
 
     [Test]
-    public void M16Dasm_cmp_q_imm()
+    public void M16cDasm_cmp_q_imm()
     {
         AssertCode("cmp.w:q\t#1h,r0", "D110");
     }
 
     [Test]
-    public void M16Dasm_cmp_imm()
+    public void M16cDasm_cmp_imm()
     {
-        AssertCode("cmp.w:q\t#41h,[043Ch]", "778F3C0441");
+        AssertCode("cmp.w\t#41h,[43Ch]", "778F3C044100");
     }
 
     [Test]
-    public void M16Dasm_cmp_b_s_imm()
+    public void M16cDasm_cmp_b_s_imm()
     {
-        AssertCode("cmp.b:s\t#41h,[043Ch]", "E380");
+        AssertCode("cmp.b:s\t#80h,r0h", "E380");
     }
 
     [Test]

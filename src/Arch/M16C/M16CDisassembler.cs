@@ -668,6 +668,12 @@ public class M16CDisassembler : DisassemblerBase<M16CInstruction, Mnemonic>
                 return dsp8_sb(u, d);
             case 11: // signed dsp8[fb]
                 return dsp8_fb(u, d);
+            case 12:
+                return dsp16_a0(u, d);
+            case 13:
+                return dsp16_a1(u, d);
+            case 14:
+                return dsp16_sb(u, d);
             default:
                 return abs16(u, d);
             }
