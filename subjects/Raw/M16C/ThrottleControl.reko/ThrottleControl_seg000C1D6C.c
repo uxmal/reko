@@ -88,23 +88,16 @@ uint32 fn000C1DE4(uint32 r2r0, struct Eq_n * sb)
 		a0_n.u0 = 0x00;
 		ci16 a1_n = 0x00;
 		uint32 r3_r1_n = r3_r1_n;
-		cui16 r1_n;
 		uint32 r2r0_n;
-		uint32 r3_r1_n;
 		do
 		{
-			r1_n = (word16) r3_r1_n;
-			Eq_n r3_n = SLICE(r3_r1_n, word16, 16);
 			r2r0_n = r2r0;
-			r3_r1_n = r3_r1_n;
-			if (r2_n <= r3_n)
+			if (r2_n <= SLICE(r3_r1_n, word16, 16))
 				break;
-			Eq_n r3_n = __rcl<word16,int16>(r3_n, 1, cond(r1_n << 0) & 0x01);
+			r3_r1_n <<= 0x01;
 			++a1_n;
 			r2r0_n = r2r0;
-			r3_r1_n = SEQ(r3_n, r1_n << 0);
-			r3_r1_n = SEQ(r3_n, r1_n << 0);
-		} while (r1_n << 0 >= 0x00);
+		} while ((word16) r3_r1_n >= 0x00);
 		do
 		{
 			uint32 r2r0_n = r2r0_n - r3_r1_n;

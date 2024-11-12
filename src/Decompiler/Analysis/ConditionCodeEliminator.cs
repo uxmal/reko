@@ -548,8 +548,6 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
             if (defStatements.Count != 1)
                 return assRolc;
             var sidCarry = defStatements.First();
-            if (sidCarry.Uses.Count != 1)
-                return assRolc;
             if (sidCarry.GetDefiningExpression() is not ConditionOf cond)
                 return assRolc;
             if (cond.Expression is not Identifier condId)

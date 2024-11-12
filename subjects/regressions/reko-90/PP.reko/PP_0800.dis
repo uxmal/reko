@@ -10793,13 +10793,11 @@ word16 fn0800_8BD8(word16 cx, word32 dwArg04, word32 dwArg08, word16 & cxOut, wo
 // Trashed: SCZOP ax bx cx dx Top
 // Preserved: bp di si sp
 fn0800_8BD8_entry:
-	wArg04 = SLICE(dwArg04, word16, 0)
 	wArg06 = SLICE(dwArg04, word16, 16)
 	wArg08 = SLICE(dwArg08, word16, 0)
 	wArg0A = SLICE(dwArg08, word16, 16)
 l0800_8BD8:
 	di_100 = cx
-	ax_110 = wArg04
 	cx_145 = wArg0A
 	branch wArg0A != 0<16> l0800_8BF7
 l0800_8BEF:
@@ -10816,33 +10814,35 @@ l0800_8C64:
 l0800_8C65:
 	dx_174 = 0<16>
 l0800_8BF7:
-	dx_115 = wArg06
 	cx_bx_212 = dwArg08 (alias)
+	dx_ax_307 = dwArg04 (alias)
 	branch (cx & 1<16>) != 0<16> l0800_8C19
 l0800_8BFD:
-	dx_115 = wArg06
+	dx_ax_210 = dwArg04 (alias)
 	branch wArg06 >= 0<16> l0800_8C0B
 l0800_8C01:
 	dx_ax_210 = -dwArg04
-	ax_110 = SLICE(dx_ax_210, word16, 0)
-	dx_115 = SLICE(dx_ax_210, word16, 16)
 	di_100 = cx | 0xC<16>
 l0800_8C0B:
 	cx_bx_212 = dwArg08 (alias)
+	dx_ax_307 = dx_ax_210 (alias)
 	branch wArg0A >= 0<16> l0800_8C19
 l0800_8C0F:
 	cx_bx_212 = -dwArg08
 	di_100 = di_100 ^ 4<16>
+	dx_ax_307 = dx_ax_210 (alias)
 l0800_8C19:
 	bx_207 = SLICE(cx_bx_212, word16, 0) (alias)
 	cx_93 = SLICE(cx_bx_212, word16, 16) (alias)
 	cx_145 = 0x20<16>
 	di_105 = 0<16>
 	si_106 = 0<16>
+	dx_ax_298 = dx_ax_307 (alias)
 l0800_8C23:
-	ax_110 = ax_110 << 1<16>
-	dx_115 = __rcl<word16,byte>(dx_115, 1<8>, cond(ax_110) & 2<32>)
-	si_106 = __rcl<word16,byte>(si_106, 1<8>, (dx_115 & 0x8000<16>) != 0<16>)
+	v33_220 = dx_ax_298 << 1<8>
+	si_106 = __rcl<word16,byte>(si_106, 1<8>, (SLICE(dx_ax_298, word16, 16) & 0x8000<16>) != 0<16>)
+	ax_111 = SLICE(v33_220, word16, 0)
+	dx_117 = SLICE(v33_220, word16, 16)
 	di_105 = __rcl<word16,byte>(di_105, 1<8>, (si_106 & 0x8000<16>) != 0<16>)
 	branch di_105 <u cx_93 l0800_8C3A
 l0800_8C2F:
@@ -10853,23 +10853,24 @@ l0800_8C35:
 	di_si_215 = SEQ(di_105, si_106) - cx_bx_212
 	si_106 = SLICE(di_si_215, word16, 0) (alias)
 	di_105 = SLICE(di_si_215, word16, 16) (alias)
-	ax_110 = ax_110 + 1<16>
+	ax_111 = ax_111 + 1<16>
 l0800_8C3A:
 	cx_145 = cx_145 - 1<16>
+	dx_ax_298 = SEQ(dx_117, ax_111) (alias)
 	branch cx_145 != 0<16> l0800_8C23
 l0800_8C3C:
 	bx_157 = di_100
-	dx_ax_298 = SEQ(dx_115, ax_110) (alias)
+	dx_ax_304 = SEQ(dx_117, ax_111) (alias)
 	branch (di_100 & 2<16>) == 0<16> l0800_8C49
 l0800_8C43:
 	bx_157 = di_100 >>u 1<16>
-	dx_ax_298 = SEQ(di_105, si_106) (alias)
+	dx_ax_304 = SEQ(di_105, si_106) (alias)
 l0800_8C49:
-	ax_178 = SLICE(dx_ax_298, word16, 0) (alias)
-	dx_174 = SLICE(dx_ax_298, word16, 16) (alias)
+	ax_178 = SLICE(dx_ax_304, word16, 0) (alias)
+	dx_174 = SLICE(dx_ax_304, word16, 16) (alias)
 	branch (bx_157 & 4<16>) == 0<16> l0800_8C56
 l0800_8C4F:
-	dx_ax_217 = -dx_ax_298
+	dx_ax_217 = -dx_ax_304
 	ax_178 = SLICE(dx_ax_217, word16, 0)
 	dx_174 = SLICE(dx_ax_217, word16, 16)
 l0800_8C56:

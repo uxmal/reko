@@ -1175,24 +1175,18 @@ int32 fn000C17B4(int32 r2r0, struct Eq_n * sb)
 	{
 		int32 r2r0_n = r2r0;
 		uint32 r3_r1_n = SEQ(r3_n, r1_n);
-		uint32 r3_r1_n = SEQ(r3_n, r1_n);
+		r3_r1_n = SEQ(r3_n, r1_n);
 		if (r3_n >= 0x00)
 		{
-			cui16 r1_n;
 			do
 			{
-				r1_n = (word16) r3_r1_n;
-				Eq_n r3_n = SLICE(r3_r1_n, word16, 16);
 				r2r0_n = r2r0;
-				r3_r1_n = r3_r1_n;
-				if (r2 <= r3_n)
+				if (r2 <= SLICE(r3_r1_n, word16, 16))
 					break;
-				Eq_n r3_n = __rcl<word16,int16>(r3_n, 1, cond(r1_n << 0) & 0x01);
+				r3_r1_n <<= 0x01;
 				++a1_n;
 				r2r0_n = r2r0;
-				r3_r1_n = SEQ(r3_n, r1_n << 0);
-				r3_r1_n = SEQ(r3_n, r1_n << 0);
-			} while (r1_n << 0 >= 0x00);
+			} while ((word16) r3_r1_n >= 0x00);
 		}
 		do
 		{

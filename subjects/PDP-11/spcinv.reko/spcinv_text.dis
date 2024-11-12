@@ -576,7 +576,7 @@ l07D4:
 	sp_119 = sp_119 - 1<16>
 	Mem42[sp_119:byte] = Mem32[r1_27:byte]
 	Mem45[sp_119 + 1<16>:byte] = SLICE(r0, byte, 0)
-	r0 = fn0A74(fn0AB6(r0, r4, out r4_50, out r5_547), r4_50, out r4, out r5_10)
+	r0 = fn0A74(fn0AB6(r0, r4, out r4_50, out r5_550), r4_50, out r4, out r5_10)
 	branch Mem45[r1_27:word16] > 0<16> l07E8
 l07E6:
 	Mem67[r1_27:word16] = 0<16>
@@ -600,7 +600,7 @@ l084A:
 	sp_119 = sp_119 - 1<16>
 	Mem121[sp_119:byte] = Mem98[r1_148:byte]
 	Mem124[sp_119 + 1<16>:byte] = SLICE(r0, byte, 0)
-	r0 = fn0A74(fn0AB6(r0, r4, out r4_129, out r5_548), r4_129, out r4, out r5_10)
+	r0 = fn0A74(fn0AB6(r0, r4, out r4_129, out r5_551), r4_129, out r4, out r5_10)
 	Mem140[r1_148:word16] = 0<16>
 l085A:
 	r1_148 = r1_148 + 2<16>
@@ -658,7 +658,7 @@ l0828:
 	fn096A(r3_153)
 	Mem299[sp_275 - 2<i16>:word16] = r5_288
 l0838_thunk_fn0AE8:
-	fn0AE8(r0_286, r4_287, 0x083C<p16>, out r0_301, out r4_302, out r5_549)
+	fn0AE8(r0_286, r4_287, 0x083C<p16>, out r0_301, out r4_302, out r5_552)
 	r4Out = r4_302
 	return r0_301
 l07AC:
@@ -685,8 +685,9 @@ l08EA:
 	r0_341 = r0_341 << 1<i16>
 	branch r0_341 << 1<i16> <u 0<16> l0904
 l08EE:
-	r0_361 = r0_341 << 1<i16>
-	r1_375 = __rcl<word16,byte>(__rcl<word16,byte>(__rcl<word16,byte>(0<16>, 1<8>, cond(r0_361) & 1<16>), 1<8>, cond(r0_361 << 1<i16>) & 1<16>), 1<8>, cond(r0_361 << 2<i16>) & 1<16>)
+	v118_447 = CONVERT(r0_341, uint16, uint32) << 1<8>
+	r0_361 = SLICE(v118_447, word16, 0)
+	r1_375 = __rcl<word16,byte>(__rcl<word16,byte>(SLICE(v118_447, word16, 16), 1<8>, cond(r0_361 << 1<i16>) & 1<16>), 1<8>, cond(r0_361 << 2<i16>) & 1<16>)
 	r1_346 = r1_375 << 1<i16>
 	branch Mem316[(r1_375 << 1<i16>) + 0xDC4<16>:word16] <= 0<16> l08D0
 l0904:

@@ -130,7 +130,7 @@ fn00000000: error: An error occurred while rewriting procedure to high-level lan
        at Reko.Core.Memory.ByteMemoryArea.TryReadByte(Byte[] img, Int64 off, Byte& b) in c:\dev\uxmal\reko\master\src\Core\Memory\ByteMemoryArea.cs:line 673
    at Reko.Core.Memory.ByteMemoryArea.TryReadLe(Byte[] abImage, Int64 imageOffset, DataType type, Constant& c) in c:\dev\uxmal\reko\master\src\Core\Memory\ByteMemoryArea.cs:line 255
    at Reko.Core.Memory.ByteMemoryArea.TryReadLe(Int64 imageOffset, DataType type, Constant& c) in c:\dev\uxmal\reko\master\src\Core\Memory\ByteMemoryArea.cs:line 207
-   at Reko.Core.Memory.ByteImageReader.TryReadLe(DataType dataType, Constant& c) in c:\dev\uxmal\reko\master\src\Core\Memory\ByteImageReader.cs:line 222
+   at Reko.Core.Memory.ByteImageReader.TryReadLe(DataType dataType, Constant& c) in c:\dev\uxmal\reko\master\src\Core\Memory\ByteImageReader.cs:line 220
    at Reko.Core.Memory.LeImageReader.TryRead(PrimitiveType dataType, Constant& c) in c:\dev\uxmal\reko\master\src\Core\Memory\EndianImageReader.cs:line 251
    at Reko.Core.ProcessorArchitecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in c:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 667
    at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 282
@@ -146,7 +146,7 @@ fn00000000: error: An error occurred while rewriting procedure to high-level lan
        at Reko.Core.Memory.ByteMemoryArea.TryReadByte(Byte[] img, Int64 off, Byte& b) in c:\dev\uxmal\reko\master\src\Core\Memory\ByteMemoryArea.cs:line 673
    at Reko.Core.Memory.ByteMemoryArea.TryReadLe(Byte[] abImage, Int64 imageOffset, DataType type, Constant& c) in c:\dev\uxmal\reko\master\src\Core\Memory\ByteMemoryArea.cs:line 255
    at Reko.Core.Memory.ByteMemoryArea.TryReadLe(Int64 imageOffset, DataType type, Constant& c) in c:\dev\uxmal\reko\master\src\Core\Memory\ByteMemoryArea.cs:line 207
-   at Reko.Core.Memory.ByteImageReader.TryReadLe(DataType dataType, Constant& c) in c:\dev\uxmal\reko\master\src\Core\Memory\ByteImageReader.cs:line 222
+   at Reko.Core.Memory.ByteImageReader.TryReadLe(DataType dataType, Constant& c) in c:\dev\uxmal\reko\master\src\Core\Memory\ByteImageReader.cs:line 220
    at Reko.Core.Memory.LeImageReader.TryRead(PrimitiveType dataType, Constant& c) in c:\dev\uxmal\reko\master\src\Core\Memory\EndianImageReader.cs:line 251
    at Reko.Core.ProcessorArchitecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in c:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 667
    at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 282
@@ -191,9 +191,9 @@ c:\dev\uxmal\reko\master\subjects\Elf\IA64\bash\elf-Linux-ia64-bash: error: An i
    at Reko.Scanning.ShingledScanner.ScanRange(IProcessorArchitecture arch, MemoryArea mem, Address addrStart, UInt32 cbAlloc, UInt64 workToDo) in c:\dev\uxmal\reko\master\src\Decompiler\Scanning\ShingledScanner.cs:line 202
    at Reko.Scanning.ScannerInLinq.ScanInstructions(ScanResults sr) in c:\dev\uxmal\reko\master\src\Decompiler\Scanning\ScannerInLinq.cs:line 158
    at Reko.Scanning.ScannerInLinq.ScanImage(ScanResults sr) in c:\dev\uxmal\reko\master\src\Decompiler\Scanning\ScannerInLinq.cs:line 65
-   at Reko.Scanning.Scanner.ShingleScanProcedures() in c:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 1145
-   at Reko.Scanning.Scanner.Time(Action fn) in c:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 875
-   at Reko.Scanning.Scanner.ScanImage() in c:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 862
+   at Reko.Scanning.Scanner.ShingleScanProcedures() in c:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 1144
+   at Reko.Scanning.Scanner.Time(Action fn) in c:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 874
+   at Reko.Scanning.Scanner.ScanImage() in c:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 861
    at Reko.Decompiler.ScanProgram(Program program) in c:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 516
    at Reko.Decompiler.ScanPrograms() in c:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 494
 
@@ -374,7 +374,7 @@ Error: Unable to load metadata file windows32.xml.
    at Reko.Core.TypeLibraryDeserializer.Load(SerializedLibrary sLib) in c:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 63
    at Reko.Core.Loading.TypeLibraryLoader.Load(IPlatform platform, TypeLibrary dstLib) in c:\dev\uxmal\reko\master\src\Core\Loading\TypeLibraryLoader.cs:line 42
    at Reko.Core.Loading.MetadataLoader.Load(IPlatform platform, String moduleName, TypeLibrary dstLib) in c:\dev\uxmal\reko\master\src\Core\Loading\MetadataLoader.cs:line 51
-   at Reko.Core.Services.TypeLibraryLoaderServiceImpl.LoadMetadataIntoLibrary(IPlatform platform, TypeLibraryDefinition tlElement, TypeLibrary libDst) in c:\dev\uxmal\reko\master\src\Core\Services\ITypeLibraryLoaderService.cs:line 73
+   at Reko.Core.Services.TypeLibraryLoaderServiceImpl.LoadMetadataIntoLibrary(IPlatform platform, TypeLibraryDefinition tlElement, TypeLibrary libDst) in c:\dev\uxmal\reko\master\src\Core\Services\ITypeLibraryLoaderService.cs:line 70
 Error: Unable to load metadata file wsock32.xml.
     An error occurred when loading the signature of procedure __WSAFDIsSet.
        at Reko.Core.TypeLibraryDeserializer.LoadProcedure(Procedure_v1 sp) in c:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 201
@@ -382,7 +382,7 @@ Error: Unable to load metadata file wsock32.xml.
    at Reko.Core.TypeLibraryDeserializer.Load(SerializedLibrary sLib) in c:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 64
    at Reko.Core.Loading.TypeLibraryLoader.Load(IPlatform platform, TypeLibrary dstLib) in c:\dev\uxmal\reko\master\src\Core\Loading\TypeLibraryLoader.cs:line 42
    at Reko.Core.Loading.MetadataLoader.Load(IPlatform platform, String moduleName, TypeLibrary dstLib) in c:\dev\uxmal\reko\master\src\Core\Loading\MetadataLoader.cs:line 51
-   at Reko.Core.Services.TypeLibraryLoaderServiceImpl.LoadMetadataIntoLibrary(IPlatform platform, TypeLibraryDefinition tlElement, TypeLibrary libDst) in c:\dev\uxmal\reko\master\src\Core\Services\ITypeLibraryLoaderService.cs:line 73
+   at Reko.Core.Services.TypeLibraryLoaderServiceImpl.LoadMetadataIntoLibrary(IPlatform platform, TypeLibraryDefinition tlElement, TypeLibrary libDst) in c:\dev\uxmal\reko\master\src\Core\Services\ITypeLibraryLoaderService.cs:line 70
        at Reko.Core.Serialization.ProcedureSerializer.Deserialize(SerializedSignature ss, Frame frame) in c:\dev\uxmal\reko\master\src\Core\Serialization\ProcedureSerializer.cs:line 91
    at Reko.Core.TypeLibraryDeserializer.LoadProcedure(Procedure_v1 sp) in c:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 173
 hello_m68k.exe: warning: Win32 M68k main procedure finder not supported.
@@ -1103,7 +1103,7 @@ fn0000ACB0: warning: Structure analysis stopped making progress, quitting. Pleas
 *** regressions\reko-121\m68k_jump
 Error: An error occurred while writing assembly language output.
     Address 0000C3F4 is outside of image. (Parameter 'addr')
-       at Reko.Core.Memory.ByteImageReader..ctor(ByteMemoryArea mem, Address addr, Int64 cUnits) in c:\dev\uxmal\reko\master\src\Core\Memory\ByteImageReader.cs:line 65
+       at Reko.Core.Memory.ByteImageReader..ctor(ByteMemoryArea mem, Address addr, Int64 cUnits) in c:\dev\uxmal\reko\master\src\Core\Memory\ByteImageReader.cs:line 63
    at Reko.Core.Memory.EndianByteImageReader..ctor(ByteMemoryArea img, Address addr, Int64 cUnits) in c:\dev\uxmal\reko\master\src\Core\Memory\EndianImageReader.cs:line 70
    at Reko.Core.Memory.BeImageReader..ctor(ByteMemoryArea image, Address addr, Int64 cUnits) in c:\dev\uxmal\reko\master\src\Core\Memory\EndianImageReader.cs:line 262
    at Reko.Core.Memory.ByteMemoryArea.CreateBeReader(Address addr, Int64 cUnits) in c:\dev\uxmal\reko\master\src\Core\Memory\ByteMemoryArea.cs:line 78
@@ -1330,11 +1330,9 @@ fn0001B1D0: warning: Structure analysis stopped making progress, quitting. Pleas
 fn0001B1F8: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 fn0001B2AC: error: An error occurred while rewriting procedure to high-level language.
     Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
-       at System.Collections.Generic.List`1.get_Item(Int32 index)
-   at Reko.Core.Block.get_ThenBlock() in c:\dev\uxmal\reko\master\src\Core\Block.cs:line 91
-   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in c:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
+       at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in c:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 95
    at Reko.Structure.CompoundConditionCoalescer.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
-   at Reko.Structure.StructureAnalysis.Structure() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 78
+   at Reko.Structure.StructureAnalysis.Structure() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
    at Reko.Decompiler.StructureProgram() in c:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 593
 fn0001B2CC: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 00000083: warning: Expected sizes of arrays to have been determined by now
@@ -1837,7 +1835,7 @@ Error: Unable to load metadata file windows32.xml.
    at Reko.Core.TypeLibraryDeserializer.Load(SerializedLibrary sLib) in c:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 64
    at Reko.Core.Loading.TypeLibraryLoader.Load(IPlatform platform, TypeLibrary dstLib) in c:\dev\uxmal\reko\master\src\Core\Loading\TypeLibraryLoader.cs:line 42
    at Reko.Core.Loading.MetadataLoader.Load(IPlatform platform, String moduleName, TypeLibrary dstLib) in c:\dev\uxmal\reko\master\src\Core\Loading\MetadataLoader.cs:line 51
-   at Reko.Core.Services.TypeLibraryLoaderServiceImpl.LoadMetadataIntoLibrary(IPlatform platform, TypeLibraryDefinition tlElement, TypeLibrary libDst) in c:\dev\uxmal\reko\master\src\Core\Services\ITypeLibraryLoaderService.cs:line 73
+   at Reko.Core.Services.TypeLibraryLoaderServiceImpl.LoadMetadataIntoLibrary(IPlatform platform, TypeLibraryDefinition tlElement, TypeLibrary libDst) in c:\dev\uxmal\reko\master\src\Core\Services\ITypeLibraryLoaderService.cs:line 70
        at Reko.Environments.Windows.MipsCallingConvention.SetReturnRegister(ICallingConventionEmitter ccr, DataType dtArg) in c:\dev\uxmal\reko\master\src\Environments\Windows\Arch\MipsCallingConvention.cs:line 166
    at Reko.Environments.Windows.MipsCallingConvention.Generate(ICallingConventionEmitter ccr, Int32 retAddressOnStack, DataType dtRet, DataType dtThis, List`1 dtParams) in c:\dev\uxmal\reko\master\src\Environments\Windows\Arch\MipsCallingConvention.cs:line 92
    at Reko.Core.Serialization.ProcedureSerializer.Deserialize(SerializedSignature ss, Frame frame) in c:\dev\uxmal\reko\master\src\Core\Serialization\ProcedureSerializer.cs:line 175
@@ -2567,4 +2565,4 @@ PE Debug type 14 not supported yet.
 === PE\x86\VCExeSample\VCExeSample
 Signature of 'Microsoft Visual C++ 8' detected.
 
-Decompiled 94 binaries in 43.49 seconds.
+Decompiled 94 binaries in 73.79 seconds.

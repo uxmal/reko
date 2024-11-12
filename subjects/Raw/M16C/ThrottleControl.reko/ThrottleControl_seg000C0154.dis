@@ -1661,40 +1661,35 @@ l000C17B4:
 	r3_19 = Mem14[sb + 13<i16>:word16]
 	branch r3_19 != 0<16> l000C17D8
 l000C17D8:
-	r2r0_167 = r2r0 (alias)
-	r3_r1_172 = SEQ(r3_19, r1_18) (alias)
-	r3_r1_178 = SEQ(r3_19, r1_18) (alias)
+	r2r0_170 = r2r0 (alias)
+	r3_r1_175 = SEQ(r3_19, r1_18) (alias)
+	r3_r1_175 = SEQ(r3_19, r1_18) (alias)
 	branch r3_19 < 0<16> l000C17E5
 l000C17DA:
-	r1_29 = SLICE(r3_r1_178, word16, 0) (alias)
-	r3_24 = SLICE(r3_r1_178, word16, 16) (alias)
-	r2r0_167 = r2r0 (alias)
-	r3_r1_172 = r3_r1_178 (alias)
-	branch r2 <=u r3_24 l000C17E5
+	r2r0_170 = r2r0 (alias)
+	branch r2 <=u SLICE(r3_r1_175, word16, 16) l000C17E5
 l000C17DE:
-	r3_35 = __rcl<word16,int16>(r3_24, 1<i16>, cond(r1_29 << 0<i16>) & 1<16>)
+	r3_r1_175 = r3_r1_175 << 1<8>
 	a1_16 = a1_16 + 1<i16>
-	r2r0_167 = r2r0 (alias)
-	r3_r1_172 = SEQ(r3_35, r1_29 << 0<i16>) (alias)
-	r3_r1_178 = SEQ(r3_35, r1_29 << 0<i16>) (alias)
-	branch r1_29 << 0<i16> >= 0<16> l000C17DA
+	r2r0_170 = r2r0 (alias)
+	branch SLICE(r3_r1_175, word16, 0) >= 0<16> l000C17DA
 l000C17E5:
-	r2r0_123 = r2r0_167 - r3_r1_172
+	r2r0_123 = r2r0_170 - r3_r1_175
 	r2_44 = SLICE(r2r0_123, word16, 16) (alias)
 	C_46 = cond(r2_44) & 1<16> (alias)
 	branch r2_44 >=u 0<16> l000C17F1
 l000C17EB:
-	r2r0_123 = r2r0_123 + r3_r1_172
+	r2r0_123 = r2r0_123 + r3_r1_175
 	C_46 = 0<16>
 l000C17F1:
 	a0_15 = __rcl<word16,int16>(a0_15, 1<i16>, C_46)
-	r3_r1_172 = r3_r1_172 >>u 8<8>
+	r3_r1_175 = r3_r1_175 >>u 8<8>
 	a1_16 = a1_16 - 1<i16>
-	r2r0_167 = r2r0_123 (alias)
+	r2r0_170 = r2r0_123 (alias)
 	branch a1_16 >= 0<16> l000C17E5
 l000C17FA:
-	r0_159 = a0_15
-	r2_160 = 0<16>
+	r0_162 = a0_15
+	r2_163 = 0<16>
 l000C17C2:
 	branch r2 == 0<16> l000C17D2
 l000C17C6:
@@ -1702,10 +1697,10 @@ l000C17C6:
 	r2 = r2r0_81 %u r1_18
 	r3_19 = r2r0_81 /u r1_18
 l000C17D2:
-	r0_159 = SEQ(r2, r0) /u r1_18
-	r2_160 = r3_19
+	r0_162 = SEQ(r2, r0) /u r1_18
+	r2_163 = r3_19
 l000C17FE:
-	return SEQ(r2_160, r0_159)
+	return SEQ(r2_163, r0_162)
 fn000C17B4_exit:
 
 
