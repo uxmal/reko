@@ -276,7 +276,7 @@ l00000430:
 	__store_upper_context()
 	fn00000AC0(a4, 0xF0000000<32>)
 l00000458:
-	d15_49 = CONVERT(Mem31[0xF00041C5<32>:bool], bool, int32)
+	d15_49 = CONVERT(SLICE(Mem31[0xF00041C4<32>:word32], bool, 8), bool, int32)
 	branch d15_49 != 0<32> l00000458
 l00000462:
 	Mem53[0xF0004200<32>:word32] = 0x41<32>
@@ -296,7 +296,7 @@ l000004D8:
 l000004DE:
 	Mem89[0xF00041C4<32>:word32] = 0x1010002<32>
 l000004E6:
-	d15_94 = CONVERT(Mem89[0xF00041C5<32>:bool], bool, int32)
+	d15_94 = CONVERT(SLICE(Mem89[0xF00041C4<32>:word32], bool, 8), bool, int32)
 	branch d15_94 != 0<32> l000004E6
 l000004EE:
 	Mem98[0xF000501C<32>:word32] = 0xA00000<32>
@@ -345,7 +345,7 @@ fn000005CE_exit:
 fn000005CE_entry:
 l000005CE:
 	a15_8 = (d4 << 5<i32>) + 20480<i32>
-	v10_12 = Mem0[a15_8 + 0xF0000003<32>:word4]
+	v10_12 = SLICE(Mem0[a15_8 + 0xF0000000<32>:word32], word4, 24)
 	Mem16[a4:word16] = CONVERT(v10_12, word4, word16)
 	d15_17 = 0<32>
 	d2_13 = CONVERT(v10_12, word4, int32)
@@ -400,7 +400,7 @@ word32 fn00000664(word32 d4, word32 & d15Out)
 // Preserved: a10
 fn00000664_entry:
 l00000664:
-	d2_12 = CONVERT(Mem0[(d4 << 5<i32>) + 0xF000501C<32>:bool], bool, int32)
+	d2_12 = CONVERT(SLICE(Mem0[(d4 << 5<i32>) + 0xF000501C<32>:word32], bool, 3), bool, int32)
 	__load_upper_context()
 	d15Out = d4 << 5<i32>
 	return d2_12
@@ -474,7 +474,7 @@ l0000074E:
 	a2_12 = a4
 l00000764:
 	a3_15 = a2_12 - a4
-	branch (a3_15 & 0xFF<32>) >=u CONVERT(Mem19[a15_8 + 0xF0000003<32>:word4], word4, int32) l00000786
+	branch (a3_15 & 0xFF<32>) >=u CONVERT(SLICE(Mem19[a15_8 + 0xF0000000<32>:word32], word4, 24), word4, int32) l00000786
 l00000786:
 	Mem26[a15_8 + 0xF000001C<32>:word32] = 0x200040<32>
 	__load_upper_context()
@@ -617,7 +617,7 @@ l00000914:
 	Mem37[d4 + 0xD0000018<32>:byte] = SLICE(d15_31, byte, 0)
 	branch !__bit<word32,byte>(Mem37[a15_22 + 0xF000001C<32>:word32], 4<8>) l00000922
 l00000922:
-	v16_42 = Mem37[a15_22 + 0xF0000003<32>:word4]
+	v16_42 = SLICE(Mem37[a15_22 + 0xF0000000<32>:word32], word4, 24)
 	Mem47[a4:word16] = CONVERT(v16_42, word4, word16)
 	d15_41 = 0<32>
 	d2_43 = CONVERT(v16_42, word4, int32)
@@ -730,8 +730,8 @@ word32 fn00000AC0(word32 a4, word32 a15)
 fn00000AC0_entry:
 l00000AC0:
 	d2_4 = Mem0[0x0003C5F0<p32>:word32]
-	d15_11 = CONVERT(Mem0[0x0003C5F4<p32>:bool], bool, int32) != 0<32> ? d2_4 | 0xF8<32> : d2_4 & 0xFFFFFFF7<32> | 0xFFFFFFF0<32>
-	d15_17 = CONVERT(Mem0[0x0003C5F4<p32>:bool], bool, int32) != 0<32> ? d15_11 | 4<32> : d15_11 & 0xFFFFFFFB<32>
+	d15_11 = CONVERT(SLICE(Mem0[0x0003C5F4<p32>:word32], bool, 3), bool, int32) != 0<32> ? d2_4 | 0xF8<32> : d2_4 & 0xFFFFFFF7<32> | 0xFFFFFFF0<32>
+	d15_17 = CONVERT(SLICE(Mem0[0x0003C5F4<p32>:word32], bool, 2), bool, int32) != 0<32> ? d15_11 | 4<32> : d15_11 & 0xFFFFFFFB<32>
 	Mem23[0x0003C5F0<p32>:word32] = a15
 	Mem25[0x0003C5F0<p32>:word32] = a4
 	__load_upper_context()

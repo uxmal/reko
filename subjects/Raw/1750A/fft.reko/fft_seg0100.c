@@ -7,9 +7,9 @@
 // 0100: void fn0100()
 void fn0100()
 {
-	__mov(&g_tFFFF8000, &g_t050B);
-	__mov(&g_tFFFF800C, &g_t0517);
-	__mov(&g_tFFFF801B, &g_t0526);
+	__mov(&g_uFFFF8000, &g_t050B);
+	__mov(&g_uFFFF800C, &g_t0517);
+	__mov(&g_uFFFF801B, &g_t0526);
 	word16 gp14_n;
 	reverse(0x801B, out gp14_n);
 }

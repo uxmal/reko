@@ -38,6 +38,8 @@ namespace Reko.Evaluation
             if (slice.Expression is not MemoryAccess acc)
                 return null;
 
+            if (slice.DataType.BitSize < ctx.MemoryGranularity)
+                return null;
             var ea = acc.EffectiveAddress;
             var segptr = ea as SegmentedPointer;
             if (segptr is not null)

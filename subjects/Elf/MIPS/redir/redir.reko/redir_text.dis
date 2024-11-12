@@ -1754,7 +1754,7 @@ void client_copy_request(word32 r4)
 // Preserved: r30 ra sp
 client_copy_request_entry:
 l004021A0:
-	memcpy(r4 + 2012<i32>, r4 + 8<i32>, Mem15[r4 + 2008<i32>:size_t])
+	memcpy(r4 + 2012<i32>, r4 + 8<i32>, SLICE(Mem15[r4 + 2008<i32>:word32], size_t, 0))
 	Mem34[r4 + 4016<i32>:word32] = r4 + 2012<i32>
 	Mem38[r4 + 4012<i32>:word32] = Mem34[r4 + 2008<i32>:word32]
 	return

@@ -1316,7 +1316,7 @@ word32 fn00009C8A(struct Eq_n * fp, ptr32 & r3Out, word32 & fpOut)
 	word32 r3;
 	word24 v12_n = SLICE(r3, word24, 8);
 	uip32 r3_n = SEQ(v12_n, 0x01);
-	if (((*(struct Eq_n **) ~0x4648)->t0014.u1 & 0x08) == 0x00 && *((int32 *) ~0x4C23) == 0x00)
+	if (((*(struct Eq_n **) ~0x4648)->dw0014 & 0x08) == 0x00 && *((int32 *) ~0x4C23) == 0x00)
 		r3_n = SEQ(v12_n, 0x00);
 	int32 v18_n = (int32) (int8) r3_n;
 	*(int32 *) ~0x000186C7 = v18_n;
@@ -1329,7 +1329,7 @@ word32 fn00009C8A(struct Eq_n * fp, ptr32 & r3Out, word32 & fpOut)
 		else
 		{
 			word32 r3_n = 0x00;
-			if ((uint32) (*(struct Eq_n **) ~0x4648)->t0014.u0 == 0x00)
+			if ((uint32) SLICE((*(struct Eq_n **) ~0x4648)->dw0014, ui1, 2) == 0x00)
 				r3_n = 0x01;
 			r4_n = r3_n;
 		}

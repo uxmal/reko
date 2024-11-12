@@ -11,8 +11,8 @@ struct Eq_n g_t0007 = // 0007
 // 0100: void fn0100()
 void fn0100()
 {
-	__mov(&g_tFFFF8000, &g_t04C2);
-	__mov(&g_tFFFF80E9, (char *) &g_r05B4 + 3);
+	__mov(&g_uFFFF8000, &g_t04C2);
+	__mov(&g_uFFFF80E9, (char *) &g_r05B4 + 3);
 	fn0111();
 	while (true)
 		;
@@ -23,7 +23,7 @@ void fn0100()
 //      fn0100
 void fn0111()
 {
-	fn04B9(&g_tFFFF8000);
+	fn04B9(&g_uFFFF8000);
 	real48 gp0_gp1_gp2_n = g_rFFFF80CE;
 	word16 gp2_n;
 	fn04AE(fn01E6((word32) gp0_gp1_gp2_n, (word16) gp0_gp1_gp2_n, out gp2_n), gp2_n);
@@ -246,10 +246,10 @@ int32 fn034E(int32 gp0_gp1, word16 gp2, word16 & gp2Out)
 // 03E0: Register (ptr16 Eq_n) fn03E0(Sequence word32 gp1_gp2, Register (ptr16 Eq_n) gp0, Register word16 gp3, Register out word16 gp14Out)
 // Called from:
 //      fn04AE
-struct Eq_n * fn03E0(word32 gp1_gp2, struct Eq_n * gp0, word16 gp3, word16 & gp14Out)
+union Eq_n * fn03E0(word32 gp1_gp2, union Eq_n * gp0, word16 gp3, word16 & gp14Out)
 {
-	struct Eq_n * gp1 = SLICE(gp1_gp2, word16, 16);
-	gp0[0x0A] = (struct Eq_n) 0x00;
+	union Eq_n * gp1 = SLICE(gp1_gp2, word16, 16);
+	(&gp0->u1)[0x0A] = (struct Eq_n) 0x00;
 	gp14Out = fn03EC(SEQ(gp1_gp2, gp3), 0x00, 11, gp0);
 	return gp1;
 }
@@ -257,7 +257,7 @@ struct Eq_n * fn03E0(word32 gp1_gp2, struct Eq_n * gp0, word16 gp3, word16 & gp1
 // 03EC: Register cui16 fn03EC(Sequence Eq_n gp12_gp13_gp14, Register cui16 gp0, Register word16 gp1, Register (ptr16 Eq_n) gp11)
 // Called from:
 //      fn03E0
-cui16 fn03EC(Eq_n gp12_gp13_gp14, cui16 gp0, word16 gp1, struct Eq_n * gp11)
+cui16 fn03EC(Eq_n gp12_gp13_gp14, cui16 gp0, word16 gp1, union Eq_n * gp11)
 {
 	cui16 gp12 = SLICE(gp12_gp13_gp14, word16, 32);
 	cui16 gp13 = SLICE(gp12_gp13_gp14, word16, 16);
@@ -276,7 +276,7 @@ cui16 fn03EC(Eq_n gp12_gp13_gp14, cui16 gp0, word16 gp1, struct Eq_n * gp11)
 	{
 		gp0_n = 0x2B20;
 l00000406:
-		gp11->t0000.u1 = gp0_n;
+		gp11->u0 = gp0_n;
 		int16 gp2_n = 0x00;
 		Eq_n gp12_gp13_n = gp12_gp13_gp14;
 		gp12_gp13_n = gp12_gp13_gp14;
@@ -307,17 +307,17 @@ l00000406:
 			gp0_n = 17709;
 		}
 		if (gp1 != 0x06)
-			gp11[8] = (struct Eq_n) gp0_n;
+			(&gp11->u1)[8] = (struct Eq_n) gp0_n;
 		else
-			gp11[5] = (struct Eq_n) gp0_n;
+			(&gp11->u1)[5] = (struct Eq_n) gp0_n;
 		int16 gp2_n = gp2_n / 0x0A;
 		cui16 gp2_n = __xbr(gp2_n) | gp2_n % 0x0A;
 		if (gp1 != 0x06)
-			gp11[9] = (struct Eq_n) (gp2_n | 0x3030);
+			(&gp11->u1)[9] = (struct Eq_n) (gp2_n | 0x3030);
 		else
-			gp11[6] = (struct Eq_n) (gp2_n | 0x3030);
-		gp11->t0000.u1 = SEQ(gp11->t0000.u0, (byte) gp14_n + 0x30);
-		gp11[1] = (struct Eq_n) SEQ(0x2E, gp11[1]);
+			(&gp11->u1)[6] = (struct Eq_n) (gp2_n | 0x3030);
+		gp11->u0 = SEQ(SLICE(gp11->u0, byte, 8), (byte) gp14_n + 0x30);
+		(&gp11->u1)[1] = (struct Eq_n) SEQ(0x2E, (byte) (&gp11->u1)[1]);
 		cui16 gp7_n = 0x00;
 		real48 gp12_gp13_gp14_n = SEQ(gp12_gp13_n, gp14_n) - (real48) ((int32) SEQ(gp12_gp13_n, gp14_n));
 		do
@@ -328,15 +328,15 @@ l00000406:
 			gp14 = (word16) gp12_gp13_gp14_n;
 			++gp7_n;
 			if ((gp7_n & 0x8000) != 0x00)
-				gp11[1] = (struct Eq_n) SEQ((byte) gp14_n + 0x30, gp11[1]);
+				(&gp11->u1)[1] = (struct Eq_n) SEQ((byte) gp14_n + 0x30, (byte) (&gp11->u1)[1]);
 			else
 			{
-				gp11[1] = (struct Eq_n) SEQ(gp11[1], (byte) gp14_n + 0x30);
-				++gp11;
+				(&gp11->u1)[1] = (struct Eq_n) SEQ(SLICE((&gp11->u1)[1], byte, 8), (byte) gp14_n + 0x30);
+				gp11 = &gp11->u1 + 1;
 			}
 			--gp1;
 		} while (gp1 != 0x00);
-		gp11[1] = (struct Eq_n) 0x2020;
+		(&gp11->u1)[1] = (struct Eq_n) 0x2020;
 		return gp14;
 	}
 	__mov(gp11, (char *) &g_r0610 + 3);
@@ -353,20 +353,20 @@ void fn045A(word16 gp0)
 	__console_output(gp0);
 }
 
-// 045D: void fn045D(Register (ptr16 byte) gp0)
+// 045D: void fn045D(Register (ptr16 Eq_n) gp0)
 // Called from:
 //      fn04AE
-void fn045D(byte * gp0)
+void fn045D(struct Eq_n * gp0)
 {
-	byte * gp11_n = gp0;
+	struct Eq_n * gp11_n = gp0;
 	word16 gp0_n = 0x00;
 	while (true)
 	{
-		word16 gp0_n = SEQ(*gp11_n, (byte) gp0_n);
+		word16 gp0_n = SEQ((byte) gp11_n->w0000, (byte) gp0_n);
 		if (gp0_n == 0x00)
 			break;
 		fn045A(gp0_n);
-		gp0_n = SEQ(*gp11_n, *gp11_n);
+		gp0_n = SEQ((byte) gp11_n->w0000, (byte) gp11_n->w0000);
 		if (gp0_n == 0x00)
 			return;
 		fn045A(gp0_n);
@@ -380,7 +380,7 @@ void fn045D(byte * gp0)
 word16 fn04AE(word32 gp0_gp1, word16 gp2)
 {
 	word16 gp14_n;
-	fn045D(fn03E0(gp0_gp1, &g_tFFFF813C, gp2, out gp14_n));
+	fn045D(fn03E0(gp0_gp1, &g_uFFFF813C, gp2, out gp14_n));
 	return gp14_n;
 }
 

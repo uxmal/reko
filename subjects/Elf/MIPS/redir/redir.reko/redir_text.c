@@ -975,9 +975,9 @@ word32 client_prepare_connect(struct Eq_n * r4, word32 ra, word32 & r6Out, word3
 // 004021A0: void client_copy_request(Register (ptr32 Eq_n) r4)
 void client_copy_request(struct Eq_n * r4)
 {
-	memcpy((char *) &r4->t07D8 + 4, (char *) r4 + 8, r4->t07D8);
-	r4->ptr0FB0 = (char *) &r4->t07D8 + 4;
-	r4->t0FAC = r4->t07D8;
+	memcpy(&r4->dw07D8 + 1, (char *) r4 + 8, (size_t) r4->dw07D8);
+	r4->ptr0FB0 = &r4->dw07D8 + 1;
+	r4->dw0FAC = r4->dw07D8;
 }
 
 // 00402244: void client_parse_request(Register (ptr32 Eq_n) r4, Register word32 ra)

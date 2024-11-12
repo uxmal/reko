@@ -224,7 +224,7 @@ Eq_n fn00000400(Eq_n a4, Eq_n a15)
 		fn00000AC0(a4, 0xF0000000);
 		int32 d15_n;
 		do
-			d15_n = (int32) *(bool *) 0xF00041C5;
+			d15_n = (int32) SLICE(*(union Eq_n *) 0xF00041C4, bool, 8);
 		while (d15_n != 0x00);
 		*(ui32 *) 0xF0004200 = 0x41;
 		*(int32 *) 0xF0004208 = d15_n;
@@ -243,7 +243,7 @@ Eq_n fn00000400(Eq_n a4, Eq_n a15)
 		((union Eq_n *) 0xF00041C4)->u0 = 0x01010002;
 		int32 d15_n;
 		do
-			d15_n = (int32) *(bool *) 0xF00041C5;
+			d15_n = (int32) SLICE(*(union Eq_n *) 0xF00041C4, bool, 8);
 		while (d15_n != 0x00);
 		*(word32 *) 0xF000501C = 0x00A00000;
 		*(word32 *) 0xF0005000 = 0x08000000;
@@ -283,7 +283,7 @@ Eq_n fn00000400(Eq_n a4, Eq_n a15)
 void fn000005CE(ui32 d4, ui16 * a4)
 {
 		struct Eq_n * a15_n = (d4 << 5) + 0x00005000;
-		word4 v10_n = a15_n->nF0000003;
+		word4 v10_n = SLICE(a15_n->dwF0000000, word4, 24);
 		*a4 = (word16) v10_n;
 		int32 d15_n = 0x00;
 		Eq_n d2_n;
@@ -293,11 +293,11 @@ void fn000005CE(ui32 d4, ui16 * a4)
 			int32 d4_n = d15_n + 0x01;
 			if ((d15_n & 0xFF) >= d2_n)
 				break;
-			((char *) a4 + d15_n)[0x0C] = ((char *) a15_n - 0x10000000 + d15_n)[16];
+			((char *) a4 + d15_n)[0x0C] = ((char *) &a15_n->dwF0000000 + d15_n)[16];
 			d15_n = d4_n;
 		}
 		Eq_n d15_n;
-		d15_n.u1 = a15_n->tF000001C.u1;
+		d15_n.u0 = a15_n->tF000001C.u0;
 		*a4 = (word16) v10_n << 0x04;
 		if (__bit<word32,byte>(d15_n, 11))
 			*a4 = (word16) v10_n << 0x04 | 0x08;
@@ -310,9 +310,9 @@ word32 fn00000648(ui32 d4, ptr32 & a15Out)
 {
 		struct Eq_n * a15_n = (d4 << 5) + 0x00005000;
 		word32 d2_n = 0x00;
-		if (!__bit<word32,byte>(a15_n->tF000001C.u1, 0x08))
+		if (!__bit<word32,byte>(a15_n->tF000001C.u0, 0x08))
 		{
-			a15_n->tF000001C.u1 = (uint32) 0x20;
+			a15_n->tF000001C.u0 = 0x20;
 			d2_n = 0x01;
 		}
 		__load_upper_context();
@@ -326,7 +326,7 @@ word32 fn00000648(ui32 d4, ptr32 & a15Out)
 //      fn000012F6
 int32 fn00000664(ui32 d4, uint32 & d15Out)
 {
-		int32 d2_n = (int32) ((Eq_n[]) 0xF000501C)[d4].f0000;
+		int32 d2_n = (int32) SLICE(((Eq_n[]) 0xF000501C)[d4].dw0000, bool, 3);
 		__load_upper_context();
 		d15Out = d4 << 5;
 		return d2_n;
@@ -336,9 +336,9 @@ int32 fn00000664(ui32 d4, uint32 & d15Out)
 void fn00000690(ui32 d4, struct Eq_n * a4)
 {
 		struct Eq_n * a15_n = (d4 << 5) + 0x00005000;
-		a15_n->tF000001C.u1 = (uint32) 0x20;
+		a15_n->tF000001C.u0 = 0x20;
 		Eq_n d2_n;
-		d2_n.u1 = (uint32) a4->w0000;
+		d2_n.u0 = (uint32) a4->w0000;
 		ui32 d15_n = __insert(a15_n->dwF0000018, 0x00, 0x00, 0x1E);
 		ui32 d4_n = a4->dw0004;
 		ui32 d3_n = a4->dw0008;
@@ -363,7 +363,7 @@ void fn00000690(ui32 d4, struct Eq_n * a4)
 		a15_n->dwF0000008 = (uint32) a4->w0014 << 16 | a15_n->dwF0000008;
 		a15_n->dwF0000000 = __insert(a15_n->dwF0000000, 0x00, 0x18, 0x04) | (d2_n & 0xF0) << 20;
 		word32 d15_n;
-		if (__bit<word32,word16>(a15_n->tF000001C.u1, 11))
+		if (__bit<word32,word16>(a15_n->tF000001C.u0, 11))
 		{
 			int32 d4_n = 0x00;
 			while (true)
@@ -377,7 +377,7 @@ void fn00000690(ui32 d4, struct Eq_n * a4)
 		}
 		else
 			d15_n = 0x00200000;
-		a15_n->tF000001C.u1 = (uint32) (d15_n + 0x40);
+		a15_n->tF000001C.u0 = (uint32) (d15_n + 0x40);
 		__load_upper_context();
 }
 
@@ -392,9 +392,9 @@ void fn0000074E(ui32 d4, byte * a4)
 		while (true)
 		{
 			Eq_n a3_n = a2_n - a4;
-			if ((a3_n & 0xFF) >= (int32) a15_n->nF0000003)
+			if ((a3_n & 0xFF) >= (int32) SLICE(a15_n->dwF0000000, word4, 24))
 				break;
-			((char *) a15_n - 0x10000000 + (a3_n & 0xFF))[16] = *a2_n;
+			((char *) &a15_n->dwF0000000 + (a3_n & 0xFF))[16] = *a2_n;
 			++a2_n;
 		}
 		a15_n->dwF000001C = 0x00200040;
@@ -405,8 +405,8 @@ void fn0000074E(ui32 d4, byte * a4)
 void fn00000792(ui32 d4)
 {
 		struct Eq_n * a15_n = (d4 << 5) + 0x00005000;
-		if (__bit<word32,byte>(a15_n->tF000001C.u1, 0x04))
-			a15_n->tF000001C.u1 = (uint32) 0x10;
+		if (__bit<word32,byte>(a15_n->tF000001C.u0, 0x04))
+			a15_n->tF000001C.u0 = 0x10;
 		__load_upper_context();
 }
 
@@ -443,19 +443,19 @@ void fn000007F8(struct Eq_n * d4)
 		if ((a2_n->dwF0000000 & 0x0F) == 0x02)
 		{
 			Eq_n d15_n;
-			d15_n.u1 = (uint32) d4->bD0000098;
+			d15_n.u0 = (uint32) d4->bD0000098;
 			struct Eq_n * a15_n = (d15_n << 5) + 0x00005000;
 			Eq_n d3_n;
-			d3_n.u1 = a15_n->tF000001C.u1;
+			d3_n.u0 = a15_n->tF000001C.u0;
 			if (!__bit<word32,word16>(d3_n, 0x08))
 			{
 				ui32 d15_n;
 				if (d15_n == d3_n)
 					d15_n = a2_n->dwF0000004;
 				else
-					d15_n = a15_n->tF000001C.u1 << 40;
+					d15_n = a15_n->tF000001C.u0 << 40;
 				d4->bD0000098 = (byte) d15_n;
-				a15_n->tF000001C.u1 = (uint32) 0x08;
+				a15_n->tF000001C.u0 = 0x08;
 			}
 		}
 		__load_upper_context();
@@ -468,22 +468,22 @@ void fn000008BE(struct Eq_n * d4, ui16 * a4)
 		if ((a2_n->dwF0000000 & 0x0F) == 0x01)
 		{
 			Eq_n d15_n;
-			d15_n.u1 = (uint32) d4->bD0000018;
+			d15_n.u0 = (uint32) d4->bD0000018;
 			struct Eq_n * a15_n = (d15_n << 5) + 0x00005000;
 			Eq_n d3_n;
-			d3_n.u1 = a15_n->tF000001C.u1;
+			d3_n.u0 = a15_n->tF000001C.u0;
 			if (__bit<word32,word16>(d3_n, 0x03))
 			{
-				a15_n->tF000001C.u1 = (uint32) 0x08;
+				a15_n->tF000001C.u0 = 0x08;
 				ui32 d15_n;
 				if (d15_n == d3_n)
 					d15_n = a2_n->dwF0000004;
 				else
-					d15_n = a15_n->tF000001C.u1 << 40;
+					d15_n = a15_n->tF000001C.u0 << 40;
 				d4->bD0000018 = (byte) d15_n;
-				if (!__bit<word32,byte>(a15_n->tF000001C.u1, 0x04))
+				if (!__bit<word32,byte>(a15_n->tF000001C.u0, 0x04))
 				{
-					word4 v16_n = a15_n->nF0000003;
+					word4 v16_n = SLICE(a15_n->dwF0000000, word4, 24);
 					*a4 = (word16) v16_n;
 					int32 d15_n = 0x00;
 					Eq_n d2_n;
@@ -493,18 +493,18 @@ void fn000008BE(struct Eq_n * d4, ui16 * a4)
 						int32 d4_n = d15_n + 0x01;
 						if ((d15_n & 0xFF) >= d2_n)
 							break;
-						((char *) a4 + d15_n)[0x0C] = ((char *) a15_n - 0x10000000 + d15_n)[16];
+						((char *) a4 + d15_n)[0x0C] = ((char *) &a15_n->dwF0000000 + d15_n)[16];
 						d15_n = d4_n;
 					}
 					Eq_n d15_n;
-					d15_n.u1 = a15_n->tF000001C.u1;
+					d15_n.u0 = a15_n->tF000001C.u0;
 					*a4 = (word16) v16_n << 0x04;
 					if (__bit<word32,byte>(d15_n, 11))
 						*a4 = (word16) v16_n << 0x04 | 0x08;
 				}
 				else
 				{
-					a15_n->tF000001C.u1 = (uint32) 0x10;
+					a15_n->tF000001C.u0 = 0x10;
 					__load_upper_context();
 					return;
 				}
@@ -541,9 +541,9 @@ void fn000009BA(struct Eq_n * d4, word32 * d5, union Eq_n * a4)
 		d4->dw5554 = 0xAA;
 		d4->dwAAA8 = 0x55;
 		*d5 = 0x30;
-		while (!__bit<word32,byte>(a4->u1, 0x00) && (!__bit<word32,byte>(a4->u1, 0x02) && !__bit<word32,word16>(a4->u1, 0x03)))
+		while (!__bit<word32,byte>(a4->u0, 0x00) && (!__bit<word32,byte>(a4->u0, 0x02) && !__bit<word32,word16>(a4->u0, 0x03)))
 			;
-		while (__bit<word32,word16>(a4->u1, 0x00) || (__bit<word32,word16>(a4->u1, 0x02) || __bit<word32,word16>(a4->u1, 0x03)))
+		while (__bit<word32,word16>(a4->u0, 0x00) || (__bit<word32,word16>(a4->u0, 0x02) || __bit<word32,word16>(a4->u0, 0x03)))
 			;
 		__load_upper_context();
 }
@@ -564,8 +564,8 @@ void fn00000A0C(struct Eq_n * d4)
 ui32 fn00000AC0(Eq_n a4, Eq_n a15)
 {
 		Eq_n d2_n = *(union Eq_n *) 0x0003C5F0;
-		ui32 d15_n = (int32) *(union Eq_n *) 247284 != 0x00 ? d2_n | 0xF8 : d2_n & ~0x08 | ~0x0F;
-		ui32 d15_n = (int32) *(union Eq_n *) 247284 != 0x00 ? d15_n | 0x04 : d15_n & ~0x04;
+		ui32 d15_n = (int32) SLICE(*(union Eq_n *) 247284, bool, 3) != 0x00 ? d2_n | 0xF8 : d2_n & ~0x08 | ~0x0F;
+		ui32 d15_n = (int32) SLICE(*(union Eq_n *) 247284, bool, 2) != 0x00 ? d15_n | 0x04 : d15_n & ~0x04;
 		*(union Eq_n *) 0x0003C5F0 = a15;
 		*(union Eq_n *) 0x0003C5F0 = a4;
 		__load_upper_context();
