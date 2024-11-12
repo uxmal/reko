@@ -21,12 +21,9 @@
 #pragma warning disable IDE1006
 
 using Reko.Core.Expressions;
-using Reko.Core.Memory;
 using Reko.Core.Types;
-using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Text;
 
 namespace Reko.Core.Memory
 {
@@ -36,6 +33,9 @@ namespace Reko.Core.Memory
     /// </summary>
     public interface ImageReader
     {
+        /// <summary>
+        /// The next address to be read.
+        /// </summary>
         Address Address { get; }
 
         /// <summary>

@@ -204,7 +204,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
 
         public override void InitLayout(IDockable layout)
         {
-            ContextLocator = new Dictionary<string, Func<object>>
+            ContextLocator = new Dictionary<string, Func<object?>>
             {
                 //["Document1"] = () => new DemoDocument(),
                 //["Document2"] = () => new DemoDocument(),
@@ -226,7 +226,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
                 ["Documents"] = () => _documentDock
             };
 
-            HostWindowLocator = new Dictionary<string, Func<IHostWindow>>
+            HostWindowLocator = new Dictionary<string, Func<IHostWindow?>>
             {
                 [nameof(IDockWindow)] = () => new HostWindow()
             };

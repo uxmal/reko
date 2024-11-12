@@ -22,8 +22,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DynamicData;
 using ReactiveUI;
 using Reko.Core;
@@ -31,7 +29,6 @@ using Reko.Core.Configuration;
 using Reko.Core.Loading;
 using Reko.Core.Services;
 using Reko.Gui;
-using Reko.UserInterfaces.AvaloniaUI.ViewModels.Documents;
 
 namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
 {
@@ -162,7 +159,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
                 SetEnableProperties();
             }
         }
-        private ListOption selectedProcessorModel;
+        private ListOption? selectedProcessorModel;
 
 
         public string Address
@@ -260,9 +257,9 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
             }
             var archOption = (ArchitectureDefinition?) SelectedArchitecture.Value;
             var envOption = (PlatformDefinition?) SelectedEnvironment.Value;
-            archName = archName ?? archOption?.Name!;
-            envName = envName ?? envOption?.Name;
-            sAddr = sAddr ?? this.Address.Trim();
+            archName ??= archOption?.Name!;
+            envName ??= envOption?.Name;
+            sAddr ??= this.Address.Trim();
 
             var arch = configSvc.GetArchitecture(archName);
             if (arch is null)

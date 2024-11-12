@@ -21,10 +21,8 @@
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Text;
 
 namespace Reko.Core.Memory
 {

@@ -23,9 +23,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Output;
 using Reko.Core.Types;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
 
 namespace Reko.Core.Memory
 {

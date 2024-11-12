@@ -40,6 +40,14 @@ namespace Reko.Core.Rtl
         /// </remarks>
         public int ReturnAddressBytes { get; }
 
+        /// <summary>
+        /// Number of bytes (or allocation unites) removed from the
+        /// return stack in addition to the <see cref="ReturnAddressBytes"/>.
+        /// </summary>
+        /// <remarks>
+        /// Most architectures will set this to 0. The x86 `ret NNNN` instruction.
+        /// however, requires the extra recovered space to be modeled.
+        /// </remarks>
         public int ExtraBytesPopped { get; }
 
         public override T Accept<T>(RtlInstructionVisitor<T> visitor)
@@ -58,4 +66,3 @@ namespace Reko.Core.Rtl
         }
     }
 }
-

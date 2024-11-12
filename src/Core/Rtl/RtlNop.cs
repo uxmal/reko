@@ -26,6 +26,9 @@ using System.Text;
 
 namespace Reko.Core.Rtl
 {
+    /// <summary>
+    /// Models instruction with no effect on the architectural state.
+    /// </summary>
     public sealed class RtlNop : RtlInstruction
     {
         public RtlNop(InstrClass iclass = 0)

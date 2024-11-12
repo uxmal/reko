@@ -212,7 +212,7 @@ namespace Reko.Gui
         {
             ++idx;
             string? w2 = GetNextWord();
-            if (w2 == null)
+            if (w2 is null)
                 return null;
             if (!arch.TryGetRegister(w2, out RegisterStorage? reg2))
                 return null;

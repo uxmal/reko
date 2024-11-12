@@ -21,7 +21,6 @@
 using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Types;
-using System;
 
 namespace Reko.Arch.M16C;
 

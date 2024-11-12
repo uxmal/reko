@@ -20,7 +20,6 @@
 
 using Reko.Core.Diagnostics;
 using Reko.Gui;
-using Reko.UserInterfaces.AvaloniaUI.ViewModels;
 using System;
 using System.Collections;
 using System.Collections.Generic;

@@ -629,7 +629,7 @@ namespace Reko
 
         private void WriteEntryPoints(Program program)
         {
-            if (program.Platform == null)
+            if (program.Platform is null)
                 return;
             var irPath = Path.Combine(program.SourceDirectory, Path.GetFileNameWithoutExtension(program.Location.FilesystemPath));
             program.Platform.WriteMetadata(program, irPath);

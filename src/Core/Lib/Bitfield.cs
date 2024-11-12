@@ -18,11 +18,6 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace Reko.Core.Lib
 {
     /// <summary>
@@ -178,13 +173,13 @@ namespace Reko.Core.Lib
         }
 
         /// <summary>
-        /// Reads a sequence of bit field values and returns the sign extension of
-        /// the concatenation of /// those values.
+        /// Reads a sequence of bit field values and returns the sign
+        /// extension of the concatenation of those values.
         /// </summary>
         /// <param name="bitfields">Sequence of bit fields to read.</param>
         /// <param name="u">Unsigned long integer to read the fields from.</param>
-        /// <returns>An signed long value consisting of the sign extension of the
-        /// bitwise concatenation of the bitfield values.
+        /// <returns>An signed long value consisting of the sign extension of
+        /// the bitwise concatenation of the bitfield values.
         /// </returns>
         public static long ReadSignedFields(Bitfield[] fields, ulong ul)
         {

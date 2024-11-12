@@ -35,7 +35,6 @@ using System.Linq;
 using System.Threading;
 using Reko.Core.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.ConstrainedExecution;
 using Reko.Services;
 using System.IO;
 using Reko.Core.Loading;
@@ -960,9 +959,9 @@ namespace Reko.Scanning
                         string.Format(
                             "Procedure {1} previously had a return address of {2} bytes on the stack, " +
                             "but now seems to have a return address of {0} bytes on the stack.",
-                        returnAddressBytes,
-                        proc.Name,
-(object)proc.Frame.ReturnAddressSize));
+                            returnAddressBytes,
+                            proc.Name,
+                            proc.Frame.ReturnAddressSize));
                 }
             }
             else

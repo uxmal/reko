@@ -18,14 +18,10 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Core.Machine;
 using Reko.Core.Output;
 using Reko.Core.Scripts;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Reko.Core.Services

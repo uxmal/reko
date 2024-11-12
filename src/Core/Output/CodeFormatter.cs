@@ -26,6 +26,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http;
@@ -109,7 +110,6 @@ namespace Reko.Core.Output
                 [OperatorType.Fle] = 7,
                 [OperatorType.Fgt] = 7,
                 [OperatorType.Fge] = 7,
-                [OperatorType.Fne] = 7,
                 [OperatorType.Ult] = 7,
                 [OperatorType.Ule] = 7,
                 [OperatorType.Ugt] = 7,
@@ -804,7 +804,7 @@ namespace Reko.Core.Output
 			InnerFormatter.Indent();
 			if (decl.Identifier.DataType != null)
 			{
-                TypeReferenceFormatter tf = new TypeReferenceFormatter(InnerFormatter);
+                var tf = new TypeReferenceFormatter(InnerFormatter);
                 tf.WriteDeclaration(decl.Identifier.DataType, decl.Identifier.Name);
 			}
 			else
@@ -895,7 +895,7 @@ namespace Reko.Core.Output
 			{
 				InnerFormatter.Indent();
 				InnerFormatter.WriteKeyword("else");
-                if (IsSingleIfStatement(ifs.Else, out AbsynIf elseIf))
+                if (IsSingleIfStatement(ifs.Else, out AbsynIf? elseIf))
                 {
                     InnerFormatter.Write(" ");
                     WriteIf(elseIf);
@@ -989,7 +989,7 @@ namespace Reko.Core.Output
                 }
                 else
                 {
-                    if (!(value is ulong w))
+                    if (value is not ulong w)
                     {
                         w = (ulong) Convert.ToInt64(value);
                     }
@@ -1006,14 +1006,13 @@ namespace Reko.Core.Output
             }
         }
 
-        //$TODO: .NET 5 output parameter is non-null if the method returns true.
-        private bool IsSingleIfStatement(List<AbsynStatement> stms, out AbsynIf elseIf)
+        private static bool IsSingleIfStatement(List<AbsynStatement> stms, [MaybeNullWhen(false)] out AbsynIf elseIf)
         {
             elseIf = default!;
             if (stms.Count != 1)
                 return false;
-            elseIf = (stms[0] as AbsynIf)!;
-            return elseIf != null;
+            elseIf = stms[0] as AbsynIf;
+            return elseIf is not null;
         }
 
 		public void VisitLabel(AbsynLabel lbl)

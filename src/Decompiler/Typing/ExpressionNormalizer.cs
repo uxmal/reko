@@ -24,6 +24,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
+using System.Text.RegularExpressions;
 
 namespace Reko.Typing
 {

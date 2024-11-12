@@ -25,7 +25,7 @@ using System.IO;
 namespace Reko.Core.Rtl
 {
     /// <summary>
-    /// Models the `call`, `jsr` or similar machine code instructions.
+    /// Models `call`, `jsr` or similar machine code instructions.
     /// </summary>
     public sealed class RtlCall : RtlTransfer
     {

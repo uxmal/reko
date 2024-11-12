@@ -149,7 +149,7 @@ public class M16CArchitecture : ProcessorArchitecture
 
     public override string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)
     {
-        StringBuilder sb = new StringBuilder();
+        var sb = new StringBuilder();
         if ((grf & (uint) FlagM.UF) != 0) sb.Append('U');
         if ((grf & (uint) FlagM.IF) != 0) sb.Append('I');
         if ((grf & (uint) FlagM.OF) != 0) sb.Append('O');
