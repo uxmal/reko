@@ -21,8 +21,6 @@
 using NUnit.Framework;
 using Reko.Arch.Zilog;
 using Reko.Core;
-using Reko.Core.Memory;
-using Reko.Core.Rtl;
 using System.Collections.Generic;
 
 namespace Reko.UnitTests.Arch.Zilog.Z80
@@ -288,6 +286,34 @@ namespace Reko.UnitTests.Arch.Zilog.Z80
                 "0|L--|0100(1): 2 instructions",
                 "1|L--|a = __rcl<byte,byte>(a, 1<8>, C)",
                 "2|L--|C = cond(a)");
+        }
+
+        [Test]
+        public void Z80rw_rld()
+        {
+            Given_Bytes(0xED, 0x6F);
+            AssertCode(
+                "0|L--|0100(2): 6 instructions",
+                "1|L--|v3 = SLICE(a, word4, 0)",
+                "2|L--|v6 = Mem0[hl:byte]",
+                "3|L--|a = SEQ(SLICE(a, word4, 4), SLICE(v6, word4, 4))",
+                "4|L--|v6 = SEQ(SLICE(v6, word4, 0), v3)",
+                "5|L--|Mem0[hl:byte] = v6",
+                "6|L--|SZ = cond(a)");
+        }
+
+        [Test]
+        public void Z80rw_rrd()
+        {
+            Given_Bytes(0xED, 0x67);
+            AssertCode(
+                "0|L--|0100(2): 6 instructions",
+                "1|L--|v3 = SLICE(a, word4, 0)",
+                "2|L--|v6 = Mem0[hl:byte]",
+                "3|L--|a = SEQ(SLICE(a, word4, 4), SLICE(v6, word4, 0))",
+                "4|L--|v6 = SEQ(v3, SLICE(v6, word4, 4))",
+                "5|L--|Mem0[hl:byte] = v6",
+                "6|L--|SZ = cond(a)");
         }
 
         [Test]

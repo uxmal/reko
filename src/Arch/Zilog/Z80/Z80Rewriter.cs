@@ -23,15 +23,11 @@ using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
-using Reko.Core.Operators;
 using Reko.Core.Rtl;
-using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Arch.Zilog.Z80
 {
@@ -56,6 +52,8 @@ namespace Reko.Arch.Zilog.Z80
             this.m = new RtlEmitter(rtlInstructions);
             this.instr = default!;
         }
+
+        public static PrimitiveType Nybble = PrimitiveType.CreateWord(4);
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
@@ -111,6 +109,8 @@ namespace Reko.Arch.Zilog.Z80
                 case Mnemonic.rla: RewriteRotation(CommonOps.RolC, true); break;
                 case Mnemonic.rlc: RewriteRotation(CommonOps.Rol, false); break;
                 case Mnemonic.rlca: RewriteRotation(CommonOps.Rol, false); break;
+                case Mnemonic.rld: RewriteRld(); break;
+                case Mnemonic.rrd: RewriteRrd(); break;
                 case Mnemonic.rr: RewriteRotation(CommonOps.RorC, true); break;
                 case Mnemonic.rra: RewriteRotation(CommonOps.RorC, true); break;
                 case Mnemonic.rrc: RewriteRotation(CommonOps.Ror, false); break;
@@ -145,8 +145,6 @@ namespace Reko.Arch.Zilog.Z80
                 //$TODO: Not implemented yet; feel free to implement these!
                 case Mnemonic.reti: goto default;
                 case Mnemonic.retn: goto default;
-                case Mnemonic.rld: goto default;
-                case Mnemonic.rrd: goto default;
                 }
                 if (len < 0)
                     throw new Exception($"addr: {instr.Address} len < 0");
@@ -213,12 +211,19 @@ namespace Reko.Arch.Zilog.Z80
             m.Assign(FlagGroup(Registers.C), Constant.False());
         }
 
-        private void RewriteSbc()
+        private void RewriteRld()
         {
-            var dst = RewriteOp(dasm.Current.Operands[0]);
-            var src = RewriteOp(dasm.Current.Operands[1]);
-            m.Assign(dst, m.ISub(m.ISub(dst, src), FlagGroup(Registers.C)));
-            AssignCond(Registers.SZPC, dst);
+            var lowA = binder.CreateTemporary(Nybble);
+            var a = binder.EnsureRegister(Registers.a);
+            var hl = binder.EnsureRegister(Registers.hl);
+            var hlm = binder.CreateTemporary(PrimitiveType.Byte);
+            m.Assign(lowA, m.Slice(a, Nybble));
+            m.Assign(hlm, m.Mem8(hl));
+            m.Assign(a, m.Dpb(a, m.Slice(hlm, Nybble, 4), 0));
+            m.Assign(hlm, m.Seq(m.Slice(hlm, Nybble, 0), lowA));
+            m.Assign(m.Mem8(hl), hlm);
+            AssignCond(Registers.SZ, a);
+            //m.Assign(FlagGroup(Registers.H), 0);
         }
 
         private void RewriteRotation(IntrinsicProcedure intrinsic, bool useCarry)
@@ -246,6 +251,30 @@ namespace Reko.Arch.Zilog.Z80
             }
             m.Assign(reg, src);
             m.Assign(C, m.Cond(reg));
+        }
+
+        private void RewriteRrd()
+        {
+            var lowA = binder.CreateTemporary(Nybble);
+            var a = binder.EnsureRegister(Registers.a);
+            var hl = binder.EnsureRegister(Registers.hl);
+            var hlm = binder.CreateTemporary(PrimitiveType.Byte);
+            m.Assign(lowA, m.Slice(a, Nybble));
+            m.Assign(hlm, m.Mem8(hl));
+            m.Assign(a, m.Dpb(a, m.Slice(hlm, Nybble, 0), 0));
+            m.Assign(hlm, m.Seq(lowA, m.Slice(hlm, Nybble, 4)));
+            m.Assign(m.Mem8(hl), hlm);
+            AssignCond(Registers.SZ, a);
+            //m.Assign(FlagGroup(Registers.H), 0);
+        }
+
+
+        private void RewriteSbc()
+        {
+            var dst = RewriteOp(dasm.Current.Operands[0]);
+            var src = RewriteOp(dasm.Current.Operands[1]);
+            m.Assign(dst, m.ISub(m.ISub(dst, src), FlagGroup(Registers.C)));
+            AssignCond(Registers.SZPC, dst);
         }
 
         private void RewriteScf()
