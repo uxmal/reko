@@ -458,7 +458,7 @@ namespace Reko.Scanning
                     return false;
                 }
                 var platformProc = program.Platform.LookupProcedureByAddress(addrTarget);
-                if (platformProc != null)
+                if (platformProc is not null)
                 {
                     site = state.OnBeforeCall(stackReg!, 0);
                     EmitCall(CreateProcedureConstant(platformProc), platformProc.Signature, platformProc.Characteristics, site);
@@ -481,10 +481,7 @@ namespace Reko.Scanning
                     if (trampoline != null)
                     {
                         var jmpSite = state.OnBeforeCall(stackReg!, 0);
-                        if (trampoline is DispatchProcedure disp)
-                        {
-                            trampoline = ResolveDispatchProcedureCall(disp, state);
-                        }
+                        trampoline = ResolveDispatchProcedureCall(trampoline, state);
                         var sig = trampoline.Signature;
                         var chr = trampoline.Characteristics;
                         EmitCall(CreateProcedureConstant(trampoline), sig, chr, jmpSite);
@@ -575,8 +572,9 @@ namespace Reko.Scanning
                 }
 
                 var platformProc = program.Platform.LookupProcedureByAddress(addr);
-                if (platformProc != null)
+                if (platformProc is not null)
                 {
+                    platformProc = ResolveDispatchProcedureCall(platformProc, state);
                     EmitCall(CreateProcedureConstant(platformProc), platformProc.Signature, platformProc.Characteristics, site);
                     return OnAfterCall(platformProc.Signature, chr);
                 }
@@ -598,10 +596,7 @@ namespace Reko.Scanning
 
                 var arch = call.Architecture ?? blockCur!.Procedure.Architecture;
                 var callee = scanner.ScanProcedure(arch, addr, null, state);
-                if (callee is DispatchProcedure disp)
-                {
-                    callee = ResolveDispatchProcedureCall(disp, state);
-                }
+                callee = ResolveDispatchProcedureCall(callee, state);
                 var pcCallee = CreateProcedureConstant(callee);
                 sig = callee.Signature;
                 chr = callee.Characteristics;
@@ -1322,8 +1317,10 @@ namespace Reko.Scanning
         /// resolve it, fall back on the dispatch procedure 
         /// directly.
         /// </summary>
-        private static ProcedureBase ResolveDispatchProcedureCall(DispatchProcedure disp, ProcessorState state)
+        private static ProcedureBase ResolveDispatchProcedureCall(ProcedureBase proc, ProcessorState state)
         {
+            if (proc is not DispatchProcedure disp)
+                return proc;
             var callable = disp.FindService(state);
             if (callable is null)
                 return disp;

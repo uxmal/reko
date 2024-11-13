@@ -202,7 +202,7 @@ namespace Reko.ImageLoaders.LLVM
             throw new NotImplementedException();
         }
 
-        public ExternalProcedure? LookupProcedureByAddress(Address addr)
+        public ProcedureBase? LookupProcedureByAddress(Address addr)
         {
             return null;
         }

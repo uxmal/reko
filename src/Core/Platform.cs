@@ -290,12 +290,12 @@ namespace Reko.Core
         /// </summary>
         /// <param name="address"></param>
         /// <returns>If a procedure exists for this platform at the specified address, an instance of
-        /// <see cref="ExternalProcedure"/>. Otherwise, returns null.
+        /// <see cref="ProcedureBase"/>. Otherwise, returns null.
         /// </returns>
         /// <remarks>
         /// This is useful for platforms that have ROMs with system procedures at well-defined addresses.
         /// </remarks>
-        ExternalProcedure? LookupProcedureByAddress(Address address);
+        ProcedureBase? LookupProcedureByAddress(Address address);
 
         ExternalProcedure? LookupProcedureByName(string? moduleName, string procName);
         ExternalProcedure? LookupProcedureByOrdinal(string moduleName, int ordinal);
@@ -746,7 +746,7 @@ namespace Reko.Core
             return null;
         }
 
-        public virtual ExternalProcedure? LookupProcedureByAddress(Address addr)
+        public virtual ProcedureBase? LookupProcedureByAddress(Address addr)
         {
             return this.PlatformProcedures.TryGetValue(addr, out var extProc)
                 ? extProc

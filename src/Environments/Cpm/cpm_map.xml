@@ -1,4 +1,4 @@
-﻿<memory xmlns="http://schemata.jklnet.org/Reko/v4">
+<memory xmlns="http://schemata.jklnet.org/Reko/v4">
   <Types>
     <typedef name="Fcb">
       <!-- https://www.seasip.info/Cpm/fcb.html -->
@@ -90,8 +90,12 @@ FCB+0Ch EX - Set this to 0 when opening a file and then leave it to
   </Types>
   <segment name="lma" addr="0" size="0100" attr="rwx">
     <description>Low memory area</description>
-    <procedure address="0000" name="cpm_warm_boot" />
-    
+
+      <procedure name="cpm_warm_boot">
+          <address>0000</address>
+          <signature></signature>
+      </procedure>
+
     <!-- https://www.seasip.info/Cpm/bdos.html -->
     <dispatch-procedure address="0005" name="BDOS">
       <service name="P_TERMCPM">
@@ -101,7 +105,19 @@ FCB+0Ch EX - Set this to 0 when opening a file and then leave it to
         <signature></signature>
       </service>
 
-      <service name="C_WRITE">
+        <service name="C_READ">
+            <syscallinfo>
+                <regvalue reg="c">01</regvalue>
+            </syscallinfo>
+            <signature>
+                <return>
+                    <prim domain="Character" size="1" />
+                    <reg>a</reg>
+                </return>
+            </signature>
+        </service>
+
+        <service name="C_WRITE">
         <syscallinfo>
           <regvalue reg="c">2</regvalue>
         </syscallinfo>
@@ -124,7 +140,19 @@ FCB+0Ch EX - Set this to 0 when opening a file and then leave it to
         </signature>
       </service>
 
-      <service name="S_BDOSVER">
+        <service name="C_STAT">
+            <syscallinfo>
+                <regvalue reg="c">0B</regvalue>
+            </syscallinfo>
+            <signature>
+                <return>
+                    <prim domain="UnsignedInt" size="1" />
+                    <reg>a</reg>
+                </return>
+            </signature>
+        </service>
+
+        <service name="S_BDOSVER">
         <syscallinfo>
           <regvalue reg="c">C</regvalue>
         </syscallinfo>
@@ -148,6 +176,22 @@ FCB+0Ch EX - Set this to 0 when opening a file and then leave it to
         </signature>
       </service>
 
+        <service name="DRV_SET">
+            <syscallinfo>
+                <regvalue reg="c">0E</regvalue>
+            </syscallinfo>
+            <signature>
+                <return>
+                    <reg>a</reg>
+                    <prim domain="UnsignedInt" size="1" />
+                </return>
+                <arg name="drive_number">
+                    <reg>a</reg>
+                    <prim domain="UnsignedInt" size="1" />
+                </arg>
+            </signature>
+        </service>
+
       <service name="F_OPEN">
         <syscallinfo>
           <regvalue reg="c">0F</regvalue>
@@ -165,6 +209,22 @@ FCB+0Ch EX - Set this to 0 when opening a file and then leave it to
           </arg>
         </signature>
       </service>
+
+        <service name="F_CLOSE">
+            <syscallinfo>
+                <regvalue reg="c">10</regvalue>
+            </syscallinfo>
+            <signature>
+                <return>
+                    <reg>a</reg>
+                    <prim domain="UnsignedInt" size="1" />
+                </return>
+                <arg name="pFcb">
+                    <reg>de</reg>
+                    <ptr><type>Fcb</type></ptr>
+                </arg>
+            </signature>
+        </service>
 
       <service name="F_DELETE">
         <syscallinfo>
@@ -257,14 +317,54 @@ FCB+0Ch EX - Set this to 0 when opening a file and then leave it to
         <signature>
           <arg name="pDma">
             <reg>de</reg>
-            <arg name="ptr">
-              <ptr size="2">
-                <void />
-              </ptr>
-            </arg>
+            <ptr size="2"><void /></ptr>
           </arg>
         </signature>
       </service>
+
+        <service name="DRV_DPB">
+            <syscallinfo>
+                <regvalue reg="c">1F</regvalue>
+            </syscallinfo>
+            <signature>
+                <return>
+                    <reg>hl</reg>
+                    <ptr size="2"><void /></ptr>
+                </return>
+            </signature>
+        </service>
+
+        <service name="F_USERNUM">
+            <syscallinfo>
+                <regvalue reg="c">20</regvalue>
+            </syscallinfo>
+            <signature>
+                <return>
+                    <reg>a</reg>
+                    <prim domain="UnsignedInt" size="1" />
+                </return>
+                <arg name="user_number">
+                    <reg>e</reg>
+                    <prim domain="UnsignedInt" size="1" />
+                </arg>
+            </signature>
+        </service>
+
+        <service name="DRV_FLUSH">
+            <syscallinfo>
+                <regvalue reg="c">30</regvalue>
+            </syscallinfo>
+            <signature>
+                <return>
+                    <reg>a</reg>
+                    <prim domain="UnsignedInt" size="1" />
+                </return>
+                <arg name="flag">
+                    <reg>e</reg>
+                    <prim domain="UnsignedInt" size="1" />
+                </arg>
+            </signature>
+        </service>
       
     </dispatch-procedure>
   </segment>

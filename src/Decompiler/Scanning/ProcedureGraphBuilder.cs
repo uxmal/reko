@@ -161,7 +161,8 @@ namespace Reko.Scanning
             }
             else
             {
-                var proc = Procedure.Create(arch, addr, arch.CreateFrame());
+                var name = program.NamingPolicy.ProcedureName(addr);
+                var proc = Procedure.Create(arch, name, addr, arch.CreateFrame());
                 return proc;
             }
         }

@@ -645,7 +645,9 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
             var sidOrigHi = ssaIds[condId];
             if (sidOrigHi.GetDefiningExpression() is Slice slice2)
             {
-                sidOrigHi = ssaIds[(Identifier) slice2.Expression];
+                if (slice2.Expression is not Identifier id)
+                    return a;
+                sidOrigHi = ssaIds[id];
             }
             if (sidOrigHi.GetDefiningExpression() is not BinaryExpression shift)
                 return a;

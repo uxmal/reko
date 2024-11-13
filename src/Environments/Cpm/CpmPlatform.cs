@@ -105,6 +105,15 @@ namespace Reko.Environments.Cpm
             return null;
         }
 
+        public override ProcedureBase? LookupProcedureByAddress(Address addr)
+        {
+            if (this.dispatchProcedures.TryGetValue(addr, out var disp))
+            {
+                return disp;
+            }
+            return base.LookupProcedureByAddress(addr);
+        }
+
         private void OnMemoryMapChanged()
         {
             //var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
@@ -113,6 +122,19 @@ namespace Reko.Environments.Cpm
             var disps = new Dictionary<Address, DispatchProcedure>();
             foreach (var callable in this.MemoryMap!.Segments!.SelectMany(s => s.Procedures!))
             {
+                if (callable is Procedure_v1 sProc)
+                {
+                    if (Architecture.TryParseAddress(sProc.Address, out var addr))
+                    {
+                        var proc = new ExternalProcedure(
+                            sProc.Name!,
+                            sser.Deserialize(
+                                sProc.Signature!,
+                                Architecture.CreateFrame())!,
+                            sProc.Characteristics);
+                        PlatformProcedures.TryAdd(addr, proc);
+                    }
+                }
                 if (callable is DispatchProcedure_v1 sDisp)
                 {
                     if (sDisp.Services == null)

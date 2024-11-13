@@ -384,7 +384,7 @@ namespace Reko.Analysis
                 return true;
             }
             if (pc.Procedure is not Procedure callee)
-                throw new NotImplementedException();
+                return true;
 
             if (sccGroup.Any(s => s.SsaState.Procedure == callee))
             {
