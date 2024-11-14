@@ -161,6 +161,8 @@ l0002514C:
 	{  }
 	{  }
 	{ r5 = add(r29,#0x9C); memw(r7) = r4 }
+
+l00025170:
 	{  }
 	{  }
 	{ immext(#0x64A57C0); p1 = cmp.gt(r16,#0x64A57F3); pmuevtcfg = r0 }
@@ -206,6 +208,8 @@ l00025264:
 	{  }
 	{ p0 = cmp.gt(r8,#0xFFFFFF19); immext(#0x79ADB80) }
 	{ r3 = #0x17; memuh(r6+8) = r7 }
+
+l00025284:
 	{ r3 = #0x17 }
 	{ r5 = add(r5,r2); memuh(r7+8) = r3 }
 	{ if (p3) r0 = add(r1,#0xFFFFFFB8); if (!r13>=#0x0) jump:t 00023758; r19:r18 = combine(#0x5B,r0); r1 = memuh(r23+r25<<#2) }
@@ -244,53 +248,143 @@ l00025328:
 0002532C                                     74 65 72 6D             term
 00025330 61 72 6B 20 6E 6F 77 20 30 78 25 78 00 70 72 65 ark now 0x%x.pre
 00025340 66 72 65 65 20 6D 61 6C 6C 6F 63 20 66 61 69 6C free malloc fail
-00025350 00 63 61 6E 27 74 20 61 70 70 65 6E 64 00 66 72 .can't append.fr
-00025360 65 65 6E 6F 64 65 20 63 74 6F 72 20 66 61 69 6C eenode ctor fail
-00025370 00 69 64 20 6E 6F 74 20 66 6F 75 6E 64 0A 00 68 .id not found..h
-00025380 65 78 61 67 6F 6E 2F 73 72 63 2F 69 6E 74 65 72 exagon/src/inter
-00025390 66 61 63 65 2E 63 00 6E 6E 20 69 64 20 25 78 20 face.c.nn id %x 
-000253A0 6E 6F 74 20 66 6F 75 6E 64 00 61 70 70 65 6E 64 not found.append
-000253B0 3A 20 67 72 61 70 68 20 6E 6F 74 20 75 6E 64 65 : graph not unde
-000253C0 72 20 63 6F 6E 73 74 72 75 63 74 69 6F 6E 00 67 r construction.g
-000253D0 72 61 70 68 20 6E 6F 74 20 70 72 65 70 61 72 65 raph not prepare
-000253E0 64 00 69 6E 20 68 65 78 61 67 6F 6E 5F 6E 6E 5F d.in hexagon_nn_
-000253F0 65 78 65 63 75 74 65 5F 6E 65 77 2C 20 25 64 20 execute_new, %d 
-00025400 69 6E 20 25 64 20 6F 75 74 00 25 73 3A 25 64 3A in %d out.%s:%d:
-00025410 00 0A 00 68 65 78 61 67 6F 6E 2F 73 72 63 2F 6E ...hexagon/src/n
-00025420 65 77 6E 6F 64 65 2E 63 00 63 6F 6D 6D 6F 6E 20 ewnode.c.common 
-00025430 61 6C 6C 6F 63 20 69 64 20 25 78 20 6D 61 6C 6C alloc id %x mall
-00025440 6F 63 20 66 61 69 6C 00 69 6E 70 75 74 20 61 6C oc fail.input al
-00025450 6C 6F 63 20 66 61 69 6C 65 64 00 6F 75 74 70 75 loc failed.outpu
-00025460 74 20 61 6C 6C 6F 63 20 66 61 69 6C 65 64 00 66 t alloc failed.f
-00025470 72 65 65 69 6E 67 20 6E 6F 64 65 20 25 70 00 6E reeing node %p.n
-00025480 6F 64 65 20 69 64 3D 30 78 25 78 20 63 74 6F 72 ode id=0x%x ctor
-00025490 20 66 61 69 6C 00 64 74 6F 72 20 66 61 69 6C 65  fail.dtor faile
-000254A0 64 20 69 6E 20 74 65 61 72 64 6F 77 6E 00 6F 75 d in teardown.ou
-000254B0 74 70 75 74 20 70 74 72 20 73 74 6F 72 61 67 65 tput ptr storage
-000254C0 20 61 6C 6C 6F 63 20 66 61 69 6C 65 64 00 6F 75  alloc failed.ou
-000254D0 74 70 75 74 20 74 65 6E 73 6F 72 20 6D 61 6C 6C tput tensor mall
-000254E0 6F 63 20 66 61 69 6C 65 64 00 69 6E 70 75 74 20 oc failed.input 
-000254F0 72 65 66 73 20 61 6C 6C 6F 63 20 66 61 69 6C 65 refs alloc faile
-00025500 64 00 69 6E 70 75 74 20 70 74 72 20 73 74 6F 72 d.input ptr stor
-00025510 61 67 65 20 61 6C 6C 6F 63 20 66 61 69 6C 65 64 age alloc failed
-00025520 00 66 61 74 61 6C 3A 20 63 6F 6E 73 74 20 74 65 .fatal: const te
-00025530 6E 73 6F 72 20 69 6E 20 67 65 6E 65 72 69 63 20 nsor in generic 
-00025540 69 6E 70 75 74 00 6E 6E 20 40 20 25 70 3A 20 69 input.nn @ %p: i
-00025550 64 3D 30 78 25 6C 78 20 64 65 62 75 67 5F 6C 65 d=0x%lx debug_le
-00025560 76 65 6C 3D 25 64 0A 00 6E 6F 64 65 20 40 20 25 vel=%d..node @ %
-00025570 70 3A 20 69 64 3D 30 78 25 78 20 74 79 70 65 3D p: id=0x%x type=
-00025580 30 78 25 78 28 25 73 29 20 6E 5F 69 6E 70 75 74 0x%x(%s) n_input
-00025590 73 3D 25 64 20 6E 5F 6F 75 74 70 75 74 73 3D 25 s=%d n_outputs=%
-000255A0 64 20 70 61 64 64 69 6E 67 3D 25 78 28 25 73 29 d padding=%x(%s)
-000255B0 0A 00 2E 2E 2E 20 69 6E 70 75 74 20 25 64 20 40 ..... input %d @
-000255C0 20 25 70 20 3C 73 72 63 5F 69 64 20 25 78 20 6F  %p <src_id %x o
-000255D0 75 74 5F 69 64 78 20 25 64 3E 0A 00 2E 2E 2E 20 ut_idx %d>..... 
-000255E0 6F 75 74 70 75 74 20 25 64 20 40 20 25 70 0A 00 output %d @ %p..
-000255F0 25 64 20 6E 6F 64 65 73 20 74 6F 74 61 6C 2E 0A %d nodes total..
-00025600 00 57 48 41 54 45 56 45 52 00 53 41 4D 45 00 56 .WHATEVER.SAME.V
-00025610 41 4C 49 44 00 4D 49 52 52 4F 52 5F 52 45 46 4C ALID.MIRROR_REFL
-00025620 45 43 54 00 4D 49 52 52 4F 52 5F 53 59 4D 4D 45 ECT.MIRROR_SYMME
-00025630 54 52 49 43 00 68 65 78 61 67 6F 6E 2F 73 72 63 TRIC.hexagon/src
+00025350 00 63 61 6E 27 74 20 61 70 70 65 6E             .can't appen    
+
+l0002535C:
+	{ r6 = r6; memw(r6) = r4 }
+	{  }
+	{ reserved8197:P3:0 = r1:r0 }
+	{  }
+	{ loop1(000253C0,#0xFE); r5.h = #0xD1B9 }
+	{  }
+	{ r17 = add(r17,#0xFFFFFFC6); memuh(r6+8) = r22 }
+	{ r16 = add(r16,#0x7); r0 = add(r0,#0xFFFFFFD2) }
+	{ r17 = add(r17,#0xFFFFFFC6) }
+	{ r1 = r6; memw(r6) = r4 }
+	{  }
+	{ r7 = r6; memuh(r3+8) = r18 }
+	{  }
+	{ r7 = r6 }
+	{ r3 = add(r29,#0xD8); memuh(r7+8) = r2 }
+	{ r20.h = #0xCDB9 }
+	{  }
+	{  }
+	{ if (p3.new) r0 = add(r15,#0x71) }
+	{  }
+
+l000253E0:
+	{ r17 = add(r29,#0x98); memw(r6) = r4 }
+	{ r0 = #0x4B41 }
+	{  }
+	{  }
+	{  }
+	{  }
+	{ r4 = add(r4,#0x6); r0 = add(r0,#0xFFFFFFD2) }
+	{  }
+	{ r23 = sxtb(r6); memuh(r6+8) = r4 }
+	{ r5 = r2; memw(r7) = r4 }
+	{ r4 = #-0x1; r18 = add(r18,#0xFFFFFFD3) }
+	{ r0 = #0x0; memw(r0+40) = r0 }
+	{  }
+	{  }
+	{  }
+	{  }
+	{ reserved8197:P3:0 = r15:r14 }
+	{  }
+	{ r17 = add(r17,#0xFFFFFFC6); memuh(r6+8) = r3 }
+	{ r16 = add(r16,#0x7); r0 = add(r0,#0xFFFFFFD2) }
+	{  }
+	{  }
+	{ immext(#0x6CA5840); p1 = cmp.gt(r16,#0x6CA5873); r1 = add(r29,#0x18); memuh(r7+8) = r4 }
+	{  }
+	{ r7:r6 = tlbr(r9) }
+	{ p1 = !cmp.gt(r16,FFFFFFA3); r1 = add(r29,#0x18); memuh(r7+8) = r4 }
+	{  }
+	{ r7:r6 = tlbr(r9); r5 = getimask(r0) }
+	{  }
+	{  }
+	{  }
+	{  }
+	{  }
+	{ r16 = add(r16,#0x7); r16 = add(r16,#0xFFFFFFD7) }
+	{ r15.h = #0xD18D }
+	{ r4 = sxth(r6); memw(r6) = r20 }
+
+l00025498:
+	{  }
+	{  }
+	{ r17 = add(r29,#0x98); memuh(r6+8) = r4 }
+	{ if (!r5>=#0x0) jump:t 00023CE4 }
+
+l000254AC:
+	{ r23 = sxtb(r6); memw(r6) = r22 }
+	{ if (p3.new) r20 = add(r21,#0xFFFFFF83); r20.h = #0xC081; r1:r0 = vid:ipend }
+	{ r1:r0 = tlbr(r12) }
+	{  }
+	{ r23 = sxtb(r6); memw(r6) = r4 }
+	{ if (p3.new) r20 = add(r21,#0xFFFFFF83) }
+	{  }
+	{  }
+	{  }
+	{ r17 = add(r29,#0x98); memw(r6) = r4 }
+	{  }
+	{ r1:r0 = tlbr(r12) }
+	{  }
+	{ r17 = add(r29,#0x98); memw(r6) = r4 }
+	{  }
+	{ r15.h = #0xD1CD }
+	{  }
+	{ r6 = add(r6,#0x16); memuh(r6+8) = r3 }
+	{  }
+	{ if (p3.new) r0 = add(r1,#0x30); if (cmp.eq(r0.new,r12).new) jump:t 000253E0; r4 = add(r4,#0xFFFFFFD7); memuh(r7+8) = r4 }
+
+l00025530:
+	{ r15.h = #0xCDB9; if (!cmp.eq(r3.new,r9)) jump:t 00025170 }
+
+l00025540:
+	{ p1 = cmp.gt(r16,#0xFFFFFF73); r22 = add(r29,#0x98); memw(r7) = r4 }
+	{  }
+	{ r0 = #0x12; allocframe(#0x38) }
+	{ r0 = add(r0,r3); allocframe(#0xB0) }
+	{  }
+	{ p0 = cmp.gt(r2,#0xFFFFFF2B) }
+	{  }
+	{ immext(#0xA90940) }
+	{  }
+	{ r0 = #0x12; allocframe(#0x38) }
+	{ r0 = add(r0,r3); allocframe(#0xB0) }
+	{ if (p1.new) r5 = add(r0,#0xFFFFFFC1) }
+	{ r16 = #0xBC1; r3 = #0x17; r16 = add(r16,#0xFFFFFFD2) }
+	{  }
+	{ if (p3.new) r14 = add(r21,#0xFFFFFF83); r5 = add(r5,#0xFFFFFFC2); allocframe(#0xB8) }
+	{  }
+	{ p1 = !cmp.gt(r16,FFFFFFA3) }
+	{ r0 = add(r0,#0x17); memuh(r6+8) = r4 }
+	{  }
+	{ r5 = add(r5,r2); allocframe(#0xB0) }
+	{ r3 = #0x17; r16 = add(r16,#0xFFFFFFD2) }
+	{ r22 = memuh(r2+12); r18 = memh(r0) }
+	{ r17 = add(r29,#0x98); memuh(r2+8) = r22 }
+	{ r22 = memuh(r2+12); if (!cmp.eq(r18.new,r21)) jump:t 00025498; r0 = add(r0,#0x7); r0 = add(r0,#0xFFFFFFD2) }
+
+l000255C4:
+	{  }
+	{ r0 = add(r0,#0x7); if (!cmp.eq(r0.new,r9)) jump:t 00025284 }
+
+l000255D4:
+	{  }
+	{ r18 = memw(r0); r17:r16 = memd(r29+96) }
+	{ r22 = add(r22,#0x2); r22 = add(r29,#0x88) }
+	{ r15 = r20 }
+	{ r0 = add(r0,#0x4); r4 = add(r4,#0x6) }
+	{ immext(#0xAC0940) }
+	{ r15 = !cmp.eq(r5,00000023); if (p3.new) r0 = add(r15,#0xFFFFFFA1); immext(#0xA2EB1840); if (p2) r0 = memh(r8-1561651088); if (!p0) r20 = memh(r22-44); r3 = add(r3,#0x15); r2 = memw(r5) }
+	{  }
+	{ if (!p1) memuh(r9+16) = r12.h }
+	{  }
+	{ memuh(gp+143528) = r5; immext(#0x540D140) }
+	{ if (p2) jumpr:t r31; if (!p1) r25 = memh(r13-44); if (p2.new) r20 = memh(r9+36); r0 = #0x4B40 }
+0002563C                                     2F 73 72 63             /src
 00025640 2F 70 72 65 70 61 72 65 2E 63 00 66 6F 75 6E 64 /prepare.c.found
 00025650 20 62 61 64 20 64 65 70 74 68 20 25 64 20 40 20  bad depth %d @ 
 00025660 6E 6F 64 65 69 64 20 25 78 20 70 61 64 64 69 6E nodeid %x paddin

@@ -1240,7 +1240,9 @@ fn0001B1D0: warning: Structure analysis stopped making progress, quitting. Pleas
 fn0001B1F8: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 fn0001B2AC: error: An error occurred while rewriting procedure to high-level language.
     Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
-       at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in c:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 95
+       at System.Collections.Generic.List`1.get_Item(Int32 index)
+   at Reko.Core.Block.get_ThenBlock() in c:\dev\uxmal\reko\master\src\Core\Block.cs:line 91
+   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in c:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
    at Reko.Structure.CompoundConditionCoalescer.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
    at Reko.Structure.StructureAnalysis.Structure() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 78
    at Reko.Decompiler.StructureProgram() in c:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 593
@@ -1762,6 +1764,14 @@ Error: Unable to load metadata file windows32.xml.
 
 === Raw\1750A\trigtst
 
+=== CPM-80\unarcz13
+0A33: warning: Expected sizes of arrays to have been determined by now
+1300: warning: Expected sizes of arrays to have been determined by now
+1608: warning: Expected sizes of arrays to have been determined by now
+0A33: warning: Expected sizes of arrays to have been determined by now
+1300: warning: Expected sizes of arrays to have been determined by now
+1608: warning: Expected sizes of arrays to have been determined by now
+
 *** VMS-vax\unzip
 000012B8: error: Instruction acbd	#8.0,r5,(sp),00007C18 too complex to rewrite.
 00001457: error: Instruction acbf	r6,r2[r5],r7,00005DB0 too complex to rewrite.
@@ -2271,7 +2281,7 @@ fn00008EC2: error: An error occurred while rewriting procedure to high-level lan
     The given key 'l00009735' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 193
-   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 46
+   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 47
    at Reko.Structure.StructureAnalysis.Execute() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 147
    at Reko.Structure.StructureAnalysis.Structure() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 80
    at Reko.Decompiler.StructureProgram() in c:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 593
@@ -2279,7 +2289,7 @@ fn00009746: error: An error occurred while rewriting procedure to high-level lan
     The given key 'l0000985B' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 193
-   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 46
+   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 47
    at Reko.Structure.StructureAnalysis.Execute() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 147
    at Reko.Structure.StructureAnalysis.Structure() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 80
    at Reko.Decompiler.StructureProgram() in c:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 593
@@ -2381,4 +2391,4 @@ PE Debug type 14 not supported yet.
 === PE\x86\VCExeSample\VCExeSample
 Signature of 'Microsoft Visual C++ 8' detected.
 
-Decompiled 94 binaries in 69.91 seconds.
+Decompiled 95 binaries in 81.42 seconds.

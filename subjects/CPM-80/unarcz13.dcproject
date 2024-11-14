@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemata.jklnet.org/Reko/v5">
+  <arch>z80</arch>
+  <platform>cpm</platform>
+  <input>
+    <location>unarcz13.com</location>
+    <asmDir>unarcz13.reko</asmDir>
+    <srcDir>unarcz13.reko</srcDir>
+    <includeDir>unarcz13.reko</includeDir>
+    <resources>unarcz13.reko\resources</resources>
+    <user>
+      <address>0100</address>
+      <loader>raw</loader>
+      <processor name="z80" />
+      <platform name="cpm" />
+      <procedure name="CpmCom_Start">
+        <address>0100</address>
+      </procedure>
+      <registerValues />
+      <outputFilePolicy>Segment</outputFilePolicy>
+    </user>
+  </input>
+</project>

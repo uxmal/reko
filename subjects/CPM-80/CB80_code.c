@@ -166,7 +166,7 @@ word16 fn0483(byte b, Eq_n c, byte d, Eq_n e, word16 wArg02)
 		if (F_WRITE(g_t1660.u1) == 0x00)
 		{
 			--g_b1667;
-			g_t1662.u1 += 0x0080;
+			g_t1662.u1 = (void *) ((char *) g_t1662.u1 + 0x0080);
 		}
 		else
 		{
@@ -654,7 +654,7 @@ void fn08FD()
 //      fn082F
 void fn0920()
 {
-	F_DMAOFF(0x80);
+	F_DMAOFF(&g_b0080);
 	if (g_b168D == 0x00)
 	{
 		byte b_n;

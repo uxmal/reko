@@ -7614,6 +7614,9 @@ l000224CC:
 
 ;; fn000224D8: 000224D8
 ;;   Called from:
+;;     000227CC (in fn00022610)
+;;     000227CC (in fn000227BC)
+;;     000227D8 (in fn00022610)
 ;;     00022888 (in fn00022888)
 ;;     00022888 (in fn00022878)
 fn000224D8 proc
@@ -7643,7 +7646,7 @@ l0002252C:
 ;; fn00022530: 00022530
 ;;   Called from:
 ;;     00022370 (in gemmpybbw_asm)
-;;     0002252C (in fn00022750)
+;;     0002252C (in fn00022610)
 fn00022530 proc
 	{ r23:r22 = memd(r0++m0) }
 	{ p0 = cmp.gtu(r2,#0xA); if (p0.new) jump:t 0002283C; p0 = cmp.gtu(r0,#0xA); if (p0.new) jump:t 0002283C; r21:r20 = memd(r0+8); r27:r26 = memd(r0) }
@@ -7671,7 +7674,7 @@ l00022554:
 ;; fn00022564: 00022564
 ;;   Called from:
 ;;     00022554 (in fn00022548)
-;;     00022554 (in fn00022750)
+;;     00022554 (in fn00022610)
 fn00022564 proc
 	{ p0 = cmp.gtu(r7,#0x9); if (p0.new) jump:t 00022870; p0 = cmp.gtu(r11,#0x9); if (p0.new) jump:t 00022870; p0 = cmp.eq(r1,r1); if (!p0.new) jump:nt 00022724; r2 = #0x32; r0 = add(r0,r0) }
 	{ p0 = cmp.gtu(r8,#0xA); if (p0.new) jump:t 00022880; p0 = cmp.gtu(r4,#0xA); if (p0.new) jump:t 00022880; p0 = cmp.eq(r2,r2); if (!p0.new) jump:nt 00022738; r2 = #0x32; r0 = add(r0,r0) }
@@ -7685,7 +7688,7 @@ l00022584:
 ;; fn0002258C: 0002258C
 ;;   Called from:
 ;;     000227C4 (in fn000227BC)
-;;     000227C4 (in fn00022ED8)
+;;     00022938 (in fn00022C88)
 fn0002258C proc
 	{ p0 = cmp.eq(r3,r3); if (!p0.new) jump:nt fn00022750; r2 = #0x32; r0 = add(r0,r0) }
 
@@ -7703,11 +7706,15 @@ l0002259C:
 
 l000225B8:
 	{ nop; nop }
+
+l000225C0:
 	{ r7 = add(r7,r14); dcfetch(r7,#0x0) }
 	{ r10 = add(r10,r14); dcfetch(r10,#0x0) }
 
 l000225CC:
 	{ dcfetch(r10,#0x0) }
+
+l000225D0:
 	{ r11 = add(r11,r14); dcfetch(r11,#0x0) }
 
 l000225D8:
@@ -7716,14 +7723,13 @@ l000225D8:
 
 ;; fn000225E8: 000225E8
 ;;   Called from:
-;;     00022424 (in fn000227BC)
+;;     00022424 (in fn00022898)
 ;;     00022610 (in fn00022610)
-;;     000227C4 (in fn00022ED8)
 ;;     000227C8 (in fn000227C8)
-;;     000227FC (in fn000227BC)
-;;     00022810 (in fn000227BC)
+;;     000227FC (in fn00022898)
+;;     00022810 (in fn00022898)
 ;;     00022960 (in vmemcpy_asm)
-;;     000229C8 (in fn000227BC)
+;;     000229C8 (in fn00022898)
 fn000225E8 proc
 	{ r10 = add(r10,r15); dcfetch(r10,#0x0) }
 
@@ -7840,12 +7846,14 @@ l0002273C:
 ;; gemsumb_asm: 00022740
 ;;   Called from:
 ;;     0000D558 (in gemm_asm)
-;;     0002273C (in fn000227BC)
+;;     0002273C (in fn00022750)
 gemsumb_asm proc
 	{ r2 = lsr(r2,#0x2); p0 = cmp.eq(r3,#-0x1); if (p0.new) jump:nt 00022380; immext(#0x1010100); r4 = #0x1010101; p0 = cmp.eq(r3,#0x0) }
 
 ;; fn00022750: 00022750
 ;;   Called from:
+;;     0002258C (in fn0002258C)
+;;     00022594 (in fn0002258C)
 ;;     00022740 (in gemsumb_asm)
 fn00022750 proc
 	{ loop0(00022760,r2); if (p0) jump:nt 00022768; r5 = #0x10; p0 = cmp.eq(r0,r0); if (!p0.new) jump:nt 00022910 }
@@ -7953,7 +7961,7 @@ l00022850:
 ;; fn00022860: 00022860
 ;;   Called from:
 ;;     00022554 (in fn00022548)
-;;     00022554 (in fn00022750)
+;;     00022554 (in fn00022610)
 fn00022860 proc
 	{ r0 = memw(r0); r0 = memw(r0) }
 	{ r0 = memw(r0); r0 = memw(r0) }
@@ -7966,7 +7974,7 @@ l00022868:
 
 ;; fn00022878: 00022878
 ;;   Called from:
-;;     00022874 (in fn00022E10)
+;;     00022874 (in fn00022860)
 ;;     00022BF4 (in memconvert_hvx)
 fn00022878 proc
 	{ r0 = memw(r0); r0 = memw(r0) }
@@ -7985,6 +7993,8 @@ fn00022888 proc
 
 ;; fn00022898: 00022898
 ;;   Called from:
+;;     000224DC (in fn000224D8)
+;;     00022500 (in fn00022ED8)
 ;;     00022888 (in fn00022888)
 ;;     00022888 (in fn00022878)
 fn00022898 proc
@@ -8170,7 +8180,7 @@ l00022B7C:
 ;; avgpool_aligned_hvx: 00022B80
 ;;   Called from:
 ;;     00012004 (in avgpool_execute_slice_asm)
-;;     00022B7C (in fn00022F2C)
+;;     00022B7C (in fn00022610)
 avgpool_aligned_hvx proc
 	{ M0 = r2; r7 = sub(r5,r3); r6 = memw(r29) }
 	{ r7 = mpyi(r7,r2); immext(#0x1010100); r9 = #0x1010101; r6 = combine(r6.l,r6.l) }
@@ -8185,7 +8195,7 @@ l00022BA4:
 ;; fn00022BAC: 00022BAC
 ;;   Called from:
 ;;     00022B9C (in avgpool_aligned_hvx)
-;;     00022BA4 (in fn00022750)
+;;     00022BA4 (in fn00022610)
 fn00022BAC proc
 	{ loop0(00022BC0,r3); r6 = r6; jump fn00022D6C }
 00022BB4             00 40 00 7F 00 40 00 7F 00 C0 00 7F     .@...@......
@@ -8353,7 +8363,7 @@ fn00022D68 proc
 
 ;; fn00022D6C: 00022D6C
 ;;   Called from:
-;;     00022BA4 (in fn00022750)
+;;     00022BA4 (in fn00022610)
 ;;     00022BAC (in fn00022BAC)
 ;;     00022D60 (in fn00022D68)
 ;;     00022D68 (in fn00022D68)
@@ -8430,7 +8440,6 @@ l00022E08:
 
 ;; fn00022E0C: 00022E0C
 ;;   Called from:
-;;     00022C4C (in fn00022C3C)
 ;;     0002317C (in fn00023178)
 ;;     00023180 (in fn00023180)
 ;;     000231CC (in fn000231CC)
@@ -8439,17 +8448,20 @@ fn00022E0C proc
 
 ;; fn00022E10: 00022E10
 ;;   Called from:
-;;     000227CC (in fn00022750)
-;;     000227CC (in fn000227BC)
-;;     000227D8 (in fn00022750)
-;;     00022864 (in fn00022860)
+;;     00022578 (in fn00022750)
+;;     00022578 (in fn00022750)
+;;     0002259C (in fn00022750)
+;;     000227B0 (in fn00022750)
+;;     00022AB0 (in fn00022C88)
+;;     00022C4C (in fn00022C3C)
+;;     00022D18 (in fn00022D18)
 ;;     00022D20 (in fn00022D20)
-;;     00022E04 (in gemvmpybbw_asm)
+;;     00022DE8 (in fn00022FAC)
 ;;     00022E08 (in fn00022C3C)
 ;;     00022E0C (in fn00022E0C)
 ;;     00022E38 (in fn00022E38)
-;;     00022F4C (in fn00022F2C)
 ;;     00022FF8 (in fn00022FF8)
+;;     00023180 (in fn00023180)
 ;;     00023180 (in fn00023180)
 fn00022E10 proc
 	{ p0 = bitsclr(r5,r17); if (!p0.new) jump:nt 00022E20; p0 = cmp.eq(r5,#-0x1); if (p0.new) jump:nt 00022A9C }
@@ -8476,6 +8488,7 @@ l00022E40:
 ;; fn00022E50: 00022E50
 ;;   Called from:
 ;;     00022E40 (in fn00022E10)
+;;     00022F4C (in fn00022610)
 ;;     000231C0 (in fn000231AC)
 fn00022E50 proc
 	{ p0 = cmp.gtu(r11,#0x1); if (p0.new) jump:t 00022F58; p0 = cmp.gtu(r0,#0x1); if (p0.new) jump:t 00023158; r8 = memuh(r0); r2 = memb(r4+2); r13:r12 = memd(r0++#8) }
@@ -8541,11 +8554,9 @@ l00022ECC:
 
 ;; fn00022ED8: 00022ED8
 ;;   Called from:
-;;     00022938 (in fn00022C88)
-;;     00022AB0 (in fn00022C88)
+;;     00022A9C (in fn00022E10)
 ;;     00022D18 (in fn00022D18)
-;;     00022D18 (in fn00022D18)
-;;     00022ED4 (in fn00022750)
+;;     00022ED4 (in fn00022610)
 fn00022ED8 proc
 	{ r15 = mpyi(r1,r3) }
 	{ r14 += mpyi(r15,r6); r1 = combine(r1.l,r1.l) }
@@ -8588,7 +8599,7 @@ fn00022F1C proc
 
 ;; im2col33322_hvx: 00022F20
 ;;   Called from:
-;;     00022F1C (in fn00022750)
+;;     00022F1C (in fn00022F1C)
 ;;     00022F1C (in fn00022F1C)
 im2col33322_hvx proc
 	{ allocframe(#0x40) }
@@ -8596,9 +8607,8 @@ im2col33322_hvx proc
 
 ;; fn00022F2C: 00022F2C
 ;;   Called from:
-;;     00022D70 (in fn00022750)
+;;     00022D70 (in fn00022610)
 ;;     00022F24 (in im2col33322_hvx)
-;;     00022F30 (in fn00022750)
 fn00022F2C proc
 	{ p0 = cmp.eq(r2,#-0x1); if (p0.new) jump:nt 00022B7C; r7 = #0x20; memd(r29) = r17:r16; memd(r29+8) = r19:r18 }
 
@@ -8631,15 +8641,13 @@ l00022F94:
 
 ;; fn00022F98: 00022F98
 ;;   Called from:
-;;     00022578 (in fn00022A30)
-;;     00022578 (in fn00022A30)
 ;;     000226F8 (in fn000226E8)
 ;;     000227B4 (in fn00022A30)
 ;;     00022A70 (in fn00022A30)
-;;     00022DD4 (in gvconv2dbbb_asm)
 ;;     00022DD8 (in fn00022FA0)
 ;;     00022F90 (in fn00022F80)
-;;     00022F94 (in gvconv2dbbb_asm)
+;;     00022F90 (in fn00022F80)
+;;     00022F94 (in fn00022FA0)
 ;;     0002314C (in gvconv2dbbb_asm)
 ;;     000231C4 (in gvconv2dbbb_asm)
 ;;     000231C4 (in gvconv2dbbb_asm)
@@ -8713,12 +8721,9 @@ fn00022FEC proc
 
 ;; fn00022FF8: 00022FF8
 ;;   Called from:
-;;     000224DC (in fn000224D8)
-;;     00022DE0 (in fn00022DE0)
 ;;     00022FDC (in fn00022FBC)
 ;;     00022FF0 (in fn00022FEC)
 ;;     00022FF0 (in fn00022FEC)
-;;     00023180 (in fn00023180)
 fn00022FF8 proc
 	{ p0 = cmp.gt(r10,#-0x1); if (p0.new) jump:nt fn00022C88; p0 = cmp.gtu(r5,#0x5); if (!p0.new) jump:nt 00022E40 }
 
@@ -8867,7 +8872,7 @@ l000231C4:
 
 ;; fn000231CC: 000231CC
 ;;   Called from:
-;;     00022EC4 (in fn00022750)
+;;     00022EC4 (in fn00022610)
 ;;     000231C0 (in fn000231AC)
 fn000231CC proc
 	{ p3 = cmp.eq(r21,#0x5); r15 = #0x2F; jump fn00022E0C; r0 = #0x1; r0 = r0 }
@@ -9270,7 +9275,7 @@ fn00023A70 proc
 	{ p0 = cmp.gtu(r3,#0xB); if (p0.new) jump:t fn00023D74; p0 = cmp.gtu(r1,#0xB); if (p0.new) jump:t fn00023D74; r17:r16 = memd(r20+8); r19:r18 = memd(r20++#16) }
 
 l00023A80:
-	{ p0 = cmp.gtu(r12,#0x8); if (p0.new) jump:t 00023B80; p0 = cmp.gtu(r2,#0x8); if (p0.new) jump:t 00023D80; r10 = memuh(r0); r2 = memb(r0+2); dcfetch(r22,#0x40) }
+	{ p0 = cmp.gtu(r12,#0x8); if (p0.new) jump:t fn00023B80; p0 = cmp.gtu(r2,#0x8); if (p0.new) jump:t 00023D80; r10 = memuh(r0); r2 = memb(r0+2); dcfetch(r22,#0x40) }
 	{ p0 = cmp.gtu(r13,#0x9); if (p0.new) jump:t 00023B90; p0 = cmp.gtu(r3,#0x9); if (p0.new) jump:t fn00023D90; r10 = memuh(r0); deallocframe); dcfetch(r11,#0x40) }
 	{ p0 = cmp.gtu(r14,#0xA); if (p0.new) jump:t 00023BA0; p0 = cmp.gtu(r0,#0xA); if (p0.new) jump:t 00023DA0; r19:r18 = memd(r22+8); r13:r12 = memd(r22++#16) }
 	{ p0 = cmp.gtu(r15,#0xB); if (p0.new) jump:t 00023BB0; p0 = cmp.gtu(r1,#0xB); if (p0.new) jump:t 00023DB0; r17:r16 = memd(r11+8); r15:r14 = memd(r11++#16) }
@@ -9307,9 +9312,18 @@ l00023B54:
 	{ r9 = lsr(r7,#0x4); r24 = add(r3,#0x3); memd(r29+16) = r21:r20; memd(r29+24) = r23:r22 }
 	{ r24 = lsr(r24,#0x2); r9 = add(r9,#0xFFFFFFFF); memd(r29+8) = r19:r18; memd(r29+40) = r27:r26 }
 	{ nop }
+
+;; fn00023B80: 00023B80
+;;   Called from:
+;;     00023B7C (in gvmmpybbw_asm)
+;;     00023CE4 (in gvconv2dbbb_asm)
+;;     00025354 (in gvconv2dbbb_asm)
+fn00023B80 proc
 	{ loop1(00023BA0,r24); r23 = r3; r8 = add(r8,#0xFFFFFFFF); r10 = r1 }
 	{ nop; nop; nop; nop }
-	{ r21 = r0; r12 = r12; jump fn00023D60; r10 = memuh(r0); r2 = memb(r0+2); dcfetch(r0,#0x40) }
+
+l00023BA0:
+	{ r21 = r0; r12 = r12; jump 00023D60; r10 = memuh(r0); r2 = memb(r0+2); dcfetch(r0,#0x40) }
 00023BB0 14 46 00 F3 E2 4C 4C 1F 09 67 0A 28 08 C0 14 94 .F...LL..g.(....
 00023BC0 2B 54 06 C4 16 46 14 F3 2E 40 D5 91 4C C0 D5 9B +T...F...@..L...
 00023BD0 00 41 09 60 40 40 06 C4 30 40 D4 91 52 C0 D4 9B .A.`@@..0@..R...
@@ -9331,14 +9345,18 @@ l00023B54:
 
 ;; fn00023CC8: 00023CC8
 ;;   Called from:
-;;     00023E6C (in fn00023E4C)
+;;     00023E68 (in fn00023E4C)
 ;;     00023E6C (in fn00023E4C)
 fn00023CC8 proc
 	{ p0 = cmp.gtu(r3,#0xB); if (p0.new) jump:t fn00023FCC; p0 = cmp.gtu(r1,#0xB); if (p0.new) jump:t fn00023FCC; p0 = cmp.gt(r23,#0x3); r2 = #0x3A; r0 = r0 }
 
 l00023CD8:
 	{ r23 = add(r23,#0xFFFFFFFC); r10 = r1; r2 = #0x3A; r0 = r0 }
-	{ if (!p1.new) jump:t 00023B80; r0 = add(r0,r4); p1 = cmp.eq(r8,#0x0) }
+
+l00023CE4:
+	{ if (!p1.new) jump:t fn00023B80; r0 = add(r0,r4); p1 = cmp.eq(r8,#0x0) }
+
+l00023CF0:
 	{ r17:r16 = memd(r29); r19:r18 = memd(r29+8) }
 	{ r21:r20 = memd(r29+16); r23:r22 = memd(r29+24) }
 	{ r25:r24 = memd(r29+32); r27:r26 = memd(r29+40) }
@@ -9366,31 +9384,27 @@ gvmsumimw_asm proc
 ;;   Called from:
 ;;     00023D38 (in gvmsumimw_asm)
 ;;     00023DA8 (in fn00023D90)
-;;     00024178 (in fn00024178)
+;;     00024178 (in fn000241C4)
+;;     00024180 (in fn000241C4)
 fn00023D40 proc
-	{ loop1(fn00023D60,r2); r6 = add(r6,#0xFFFFFFFF) }
+	{ loop1(00023D60,r2); r6 = add(r6,#0xFFFFFFFF) }
 	{ nop; nop }
 	{ nop; nop; nop; nop }
 
-;; fn00023D60: 00023D60
-;;   Called from:
-;;     00023BA0 (in gvmmpybbw_asm)
-;;     00023D40 (in fn00023D40)
-fn00023D60 proc
+l00023D60:
 	{ loop0(00023D80,r9); r10 = r0; r0 = add(r0,r4) }
 
-;; fn00023D6C: 00023D6C
-;;   Called from:
-;;     00023D60 (in fn00023D60)
-;;     00023D60 (in fn00023D60)
-fn00023D6C proc
+l00023D6C:
 	{ r17:r16 = combine(#0x0,#0x0); r15:r14 = memd(r10+8); r13:r12 = memd(r10++#16) }
+
+l00023D70:
+	{ r15:r14 = memd(r10+8); r13:r12 = memd(r10++#16) }
 
 ;; fn00023D74: 00023D74
 ;;   Called from:
 ;;     00023A70 (in fn00023A70)
 ;;     00023A70 (in fn00023A70)
-;;     00023D6C (in fn00023D6C)
+;;     00023D70 (in fn00023D40)
 fn00023D74 proc
 	{ r13:r12 = memd(r10++#16) }
 	{ nop; nop }
@@ -9488,14 +9502,7 @@ fn00023E98 proc
 ;;   Called from:
 ;;     00023ED4 (in fn00023E98)
 ;;     00023ED4 (in fn00023E98)
-;;     00023FA8 (in fn00023FCC)
-;;     0002409C (in gvconv2dbbb_asm)
-;;     000240A4 (in fn000241C4)
 ;;     00024178 (in fn00024178)
-;;     00024178 (in fn00024178)
-;;     00024468 (in gvconv2dbbb_asm)
-;;     00024478 (in gvconv2dbbb_asm)
-;;     000244AC (in fn000241C4)
 fn00023EE0 proc
 	{ r7 = #0x0; r9 = memw(r29+52); r6 = memw(r29+88) }
 	{ r15 = r15; jump 000240AC; r9 = memuh(r0); r2 = memb(r0+2); dcfetch(r28,#0x0) }
@@ -9526,6 +9533,7 @@ l00023FA8:
 ;;   Called from:
 ;;     00023CC8 (in fn00023CC8)
 ;;     00023CC8 (in fn00023CC8)
+;;     00023CF8 (in gvconv2dbbb_asm)
 ;;     00023FD0 (in fn00023FD0)
 fn00023FCC proc
 	{ dcfetch(r28,#0x0) }
@@ -9551,6 +9559,8 @@ l0002403C:
 
 l00024050:
 	{ r25:r24 += vraddub(r19:r18,r21:r20); p0 = cmp.gtu(r4,#0x8); if (p0.new) jump:t 00024354; if (p3) r7 = #0x0; if (p3) r28 = add(r28,r12) }
+
+l00024060:
 	{ r27:r26 += vraddub(r17:r16,r15:r14); p0 = cmp.gtu(r14,#0x8); if (p0.new) jump:t 00024164; r11 = sub(r11,r13); r9 = #0x10; r2 = and(r2,#0x1) }
 
 l00024070:
@@ -9609,7 +9619,7 @@ l00024140:
 
 l00024150:
 	{ r26 += mpyi(r14,r27) }
-	{ p0 = cmp.eq(r10,#-0x1); if (p0.new) jump:nt 00023FA0; r12 = r2; jump fn00023D6C; if (p0) memuh(r10++#4) = r26 }
+	{ p0 = cmp.eq(r10,#-0x1); if (p0.new) jump:nt 00023FA0; r12 = r2; jump 00023D6C; if (p0) memuh(r10++#4) = r26 }
 
 ;; fn00024160: 00024160
 ;;   Called from:
@@ -9617,6 +9627,14 @@ l00024150:
 ;;     00024500 (in gvconvsum2dbbb_asm)
 fn00024160 proc
 	{ if (p0) r2 = add(r2,r15); p0 = cmp.eq(r7,r3); if (!p0.new) jump:nt 00024164; r2 = #0xE; r0 = r0 }
+
+l00024164:
+	{ p0 = cmp.eq(r7,r3); if (!p0.new) jump:nt 00024168; r2 = #0xE; r0 = r0 }
+
+l00024168:
+	{ r2 = #0xE; r0 = r0 }
+
+l0002416C:
 	{ r22 = add(r22,#0xFFFFFFFC); p1 = cmp.eq(r0,#0xE); if (p1.new) jump:nt 00023D70; memw(r29+96) = r10 }
 
 l00024174:
@@ -9624,10 +9642,15 @@ l00024174:
 
 ;; fn00024178: 00024178
 ;;   Called from:
-;;     00024144 (in gvconv2dbbb_asm)
-;;     00024154 (in gvconv2dbbb_asm)
-;;     00024174 (in fn000241C4)
-;;     00024180 (in fn000241C4)
+;;     00023FA8 (in fn00023FCC)
+;;     0002409C (in gvconv2dbbb_asm)
+;;     000240A4 (in fn000241C4)
+;;     0002416C (in gvconv2dbbb_asm)
+;;     00024178 (in fn000241C4)
+;;     00024178 (in fn000241C4)
+;;     00024468 (in gvconv2dbbb_asm)
+;;     00024478 (in gvconv2dbbb_asm)
+;;     000244AC (in fn000241C4)
 ;;     000244F0 (in gvconvsum2dbbb_asm)
 fn00024178 proc
 	{ if (p2.new) jump:t fn00023EE0; p2 = cmp.gt(r22,#0x0); r12 = r3; jump fn00023D90 }
@@ -9635,11 +9658,7 @@ fn00024178 proc
 l00024180:
 	{ r12 = r3; jump 00023D98 }
 
-;; fn00024184: 00024184
-;;   Called from:
-;;     00024178 (in fn00024178)
-;;     00024178 (in fn00024178)
-fn00024184 proc
+l00024184:
 	{ r9 = memw(r29+92) }
 	{ if (!p1.new) jump:t 00023EC0; p1 = cmp.eq(r9,#0x0) }
 	{ loop0(00024198,#0x5); r6 = #0x4; r16 = memd(r29+104) }
@@ -9657,15 +9676,20 @@ gvconv2dbbw_asm proc
 
 ;; fn000241C4: 000241C4
 ;;   Called from:
+;;     00023BA0 (in fn00023B80)
+;;     00024060 (in gvconv2dbbb_asm)
 ;;     00024088 (in gvconv2dbbb_asm)
 ;;     00024090 (in gvconv2dbbb_asm)
 ;;     0002409C (in gvconv2dbbb_asm)
+;;     00024144 (in gvconv2dbbb_asm)
+;;     00024154 (in gvconv2dbbb_asm)
+;;     0002416C (in gvconv2dbbb_asm)
 ;;     000241C0 (in gvconv2dbbw_asm)
 ;;     000242D4 (in fn00023FD0)
 ;;     000242E0 (in fn00023FD0)
-;;     00024340 (in gvconv2dbbb_asm)
 ;;     00024564 (in gvconv2dbbb_asm)
 ;;     000245C0 (in gvconv2dbbb_asm)
+;;     00024658 (in gvconv2dbbb_asm)
 ;;     00024824 (in gvconv2dbbb_asm)
 ;;     000249F0 (in gvconv2dbbb_asm)
 ;;     00024A00 (in gvconv2dbbb_asm)
@@ -9726,13 +9750,16 @@ l000242F0:
 	{ nop; nop; nop; nop }
 	{ p0 = cmp.gtu(r4,#0x8); if (p0.new) jump:t 00024624; p0 = cmp.gtu(r14,#0x8); if (p0.new) jump:t 00024424; r8 = memuh(r1+2); r2 = memb(r0+2); dcfetch(r26,#0x0) }
 	{ p0 = cmp.gtu(r5,#0x9); if (p0.new) jump:t 00024634; p0 = cmp.gtu(r15,#0x9); if (p0.new) jump:t 00024434; r26 = add(r26,r6); r8 = #0x1; r3:r2 = combine(r7,#0x0) }
-
-l00024340:
 	{ p0 = cmp.gtu(r2,#0xA); if (p0.new) jump:t 00024644; p0 = cmp.gtu(r0,#0xA); if (p0.new) jump:t 00024644; r15:r14 = memd(r11+8); r21:r20 = memd(r11++m0) }
-
-l00024350:
 	{ p0 = cmp.gtu(r3,#0xB); if (p0.new) jump:t 00024654; p0 = cmp.gtu(r1,#0xB); if (p0.new) jump:t 00024654; r17:r16 = memd(r11+8); r19:r18 = memd(r11++m0) }
+
+l00024354:
+	{ p0 = cmp.gtu(r1,#0xB); if (p0.new) jump:t 00024658; r17:r16 = memd(r11+8); r19:r18 = memd(r11++m0) }
+
+l00024360:
 	{ p0 = cmp.gtu(r4,#0x8); if (p0.new) jump:t 00024660; p0 = cmp.gtu(r2,#0x8); if (p0.new) jump:t 00024660; r8 = memuh(r1+2); r2 = memb(r0+2); dcfetch(r26,#0x0) }
+
+l00024370:
 	{ p0 = cmp.gtu(r5,#0x9); if (p0.new) jump:t 00024670; p0 = cmp.gtu(r3,#0x9); if (p0.new) jump:t 00024670; r26 = add(r26,r6); r8 = #0x1; r7:r6 = combine(r7,#0x0) }
 
 l00024374:
@@ -9875,11 +9902,10 @@ l000245E0:
 	{ r28 = add(r11,r21); r22 = memw(r29+56); memw(r29+48) += r3 }
 	{ nop; nop; nop }
 	{ r7 = #0x0; r9 = memw(r29+52); r6 = memw(r29+88) }
-
-l00024644:
-	{ r9 = memw(r29+52); r6 = memw(r29+88) }
 	{ r15 = r15; jump 0002480C; r9 = memuh(r0); r2 = memb(r0+2); dcfetch(r28,#0x0) }
-00024658                         10 44 26 60 1C 48 1C F3         .D&`.H..
+
+l00024658:
+	{ loop1(000246A0,r6); r28 = add(r28,r8); r15 = r15; jump 0002481C; r9 = #0x0; r3:r2 = combine(r7,#0x0) }
 
 l00024660:
 	{ r15 = r15; jump 00024824; r9 = #0x0; r3:r2 = combine(r7,#0x0) }
@@ -9961,6 +9987,9 @@ l0002480C:
 
 l00024810:
 	{ r11 = sub(r11,r23); p0 = cmp.gt(r22,#0x1); r14 = memw(r29+108); r6 = memw(r29+112) }
+
+l0002481C:
+	{ r6 = memw(r29+112) }
 	{ r0 = r6; r1 = add(r0,r1); r20 = #0x1; r10 = memw(r29+96) }
 
 l00024824:
