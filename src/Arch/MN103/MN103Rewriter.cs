@@ -125,8 +125,8 @@ namespace Reko.Arch.MN103
                 case Mnemonic.lra: RewriteLra(); break;
                 case Mnemonic.lsr: RewriteShift(Operator.Shr); break;
                 case Mnemonic.mov: RewriteMov(); break;
-                case Mnemonic.movbu: RewriteMovUnequal(PrimitiveType.Byte, PrimitiveType.UInt32); break; break;
-                case Mnemonic.movhu: RewriteMovUnequal(PrimitiveType.Word16, PrimitiveType.UInt32); break; break;
+                case Mnemonic.movbu: RewriteMovUnequal(PrimitiveType.Byte, PrimitiveType.UInt32); break;
+                case Mnemonic.movhu: RewriteMovUnequal(PrimitiveType.Word16, PrimitiveType.UInt32); break;
                 case Mnemonic.movm: RewriteMovm(); break;
                 case Mnemonic.mul: RewriteMul(PrimitiveType.Int64); break;
                 case Mnemonic.mulu: RewriteMul(PrimitiveType.UInt64); break;

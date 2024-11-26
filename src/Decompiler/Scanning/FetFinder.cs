@@ -49,8 +49,6 @@ namespace Reko.Scanning
         private readonly BigInteger wordMask;
 
         private uint word_size;
-        private uint uAddrMax;
-        private uint uAddrMin;
 
         public FetFinder(
             IProcessorArchitecture arch, 

@@ -19,7 +19,6 @@
 #endregion
 
 using Reko.Core.Machine;
-using System;
 
 namespace Reko.Arch.MilStd1750
 {

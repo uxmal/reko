@@ -76,7 +76,6 @@ public class M16CDisassembler : DisassemblerBase<M16CInstruction, Mnemonic>
     private readonly EndianImageReader rdr;
     private readonly List<MachineOperand> ops;
     private Address addr;
-    private bool IsWord;
     private SizeSuffix sizeSuffix;
     private InstrSuffix instrSuffix;
     private Mnemonic overriddenMnemonic;

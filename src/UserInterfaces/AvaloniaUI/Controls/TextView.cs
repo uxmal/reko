@@ -370,6 +370,8 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
 
         public TextPointer GetStartSelection()
         {
+            if (layout is null)
+                return anchorPos;
             if (layout.ComparePositions(cursorPos, anchorPos) <= 0)
                 return cursorPos;
             else
@@ -378,6 +380,8 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
 
         public TextPointer GetEndSelection()
         {
+            if (layout is null)
+                return anchorPos;
             if (layout.ComparePositions(cursorPos, anchorPos) > 0)
                 return cursorPos;
             else

@@ -24,9 +24,9 @@ using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Types;
-using Reko.Core.Expressions;
-using System.Diagnostics;
 using Reko.Core.Services;
+
+#pragma warning disable IDE1006
 
 namespace Reko.Arch.Avr.Avr8
 {
@@ -116,9 +116,9 @@ namespace Reko.Arch.Avr.Avr8
             };
         }
 
-        private static Mutator<Avr8Disassembler> DecX = Dec(Registers.x);
-        private static Mutator<Avr8Disassembler> DecY = Dec(Registers.y);
-        private static Mutator<Avr8Disassembler> DecZ = Dec(Registers.z);
+        private static readonly Mutator<Avr8Disassembler> DecX = Dec(Registers.x);
+        private static readonly Mutator<Avr8Disassembler> DecY = Dec(Registers.y);
+        private static readonly Mutator<Avr8Disassembler> DecZ = Dec(Registers.z);
 
         // I/O location
         private static bool A(uint wInstr, Avr8Disassembler dasm)
@@ -141,28 +141,34 @@ namespace Reko.Arch.Avr.Avr8
             return true;
         }
 
-        // 3-bit field in sgis, indicating bit nr.
+        // 3-bit field in sgis, indicating bit number.
         private static bool h(uint wInstr, Avr8Disassembler dasm)
         {
             dasm.ops.Add(ImmediateOperand.Byte((byte) (wInstr & 7)));
             return true;
         }
 
-        // 4-bit immediate at bit 0
+        /// <summary>
+        /// 4-bit immediate at bit 0
+        /// </summary>
         private static bool I(uint wInstr, Avr8Disassembler dasm)
         {
             dasm.ops.Add(ImmediateOperand.Byte((byte) (wInstr & 0x0F)));
             return true;
         }
 
-        // 4-bit immediate at bit 4
+        /// <summary>
+        /// 4-bit immediate at bit 4
+        /// </summary>
         private static bool i(uint wInstr, Avr8Disassembler dasm)
         {
             dasm.ops.Add(ImmediateOperand.Byte((byte) ((wInstr >> 4) & 0x0F)));
             return true;
         }
 
-        // Relative jump
+        /// <summary>
+        /// Relative jump
+        /// </summary>
         private static bool J(uint wInstr, Avr8Disassembler dasm)
         {
             int offset = (short) ((wInstr & 0xFFF) << 4);
@@ -171,21 +177,27 @@ namespace Reko.Arch.Avr.Avr8
             return true;
         }
 
-        // Destination register
+        /// <summary>
+        /// Destination register
+        /// </summary>
         private static bool D(uint wInstr, Avr8Disassembler dasm)
         {
             dasm.ops.Add(dasm.Register(((int) wInstr >> 4) & 0x1F));
             return true;
         }
 
-        // Destination register (r16-r31)
+        /// <summary>
+        /// Destination register (r16-r31)
+        /// </summary>
         private static bool d(uint wInstr, Avr8Disassembler dasm)
         {
             dasm.ops.Add(dasm.Register(0x10 | ((int) wInstr >> 4) & 0x0F));
             return true;
         }
 
-        // source register (5 bits)
+        /// <summary>
+        /// Source register (5 bits)
+        /// </summary>
         private static bool R(uint wInstr, Avr8Disassembler dasm)
         {
             int iReg = (int) ((wInstr >> 5) & 0x10 | (wInstr) & 0x0F);
@@ -193,14 +205,18 @@ namespace Reko.Arch.Avr.Avr8
             return true;
         }
 
-        // source register (r16-r31)
+        /// <summary>
+        /// Source register (r16-r31)
+        /// </summary>
         private static bool r4(uint wInstr, Avr8Disassembler dasm)
         {
             dasm.ops.Add(dasm.Register(0x10 | (int) wInstr & 0x0F));
             return true;
         }
 
-        // source register (5 bits)
+        /// <summary>
+        /// Source register (5 bits)
+        /// </summary>
         private static bool r(uint wInstr, Avr8Disassembler dasm)
         {
             var iReg = (int) ((wInstr >> 4) & 0x10 | (wInstr >> 4) & 0x0F);
@@ -214,21 +230,27 @@ namespace Reko.Arch.Avr.Avr8
             return true;
         }
 
-        // register pair source
+        /// <summary>
+        /// Register pair source
+        /// </summary>
         private static bool P(uint wInstr, Avr8Disassembler dasm)
         {
             dasm.ops.Add(dasm.Register(((int) wInstr << 1) & ~1));
             return true;
         }
 
-        // register pair destination
+        /// <summary>
+        /// Register pair destination
+        /// </summary>
         private static bool p(uint wInstr, Avr8Disassembler dasm)
         {
             dasm.ops.Add(dasm.Register((int) (wInstr >> 3) & ~1));
             return true;
         }
 
-        // absolute address used by jump and call.
+        /// <summary>
+        /// Absolute address used by jump and call.
+        /// </summary>
         private static bool Q(uint wInstr, Avr8Disassembler dasm)
         {
             if (!dasm.rdr.TryReadLeUInt16(out ushort w2))
