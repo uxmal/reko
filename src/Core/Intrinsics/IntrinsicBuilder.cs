@@ -298,6 +298,16 @@ namespace Reko.Core.Intrinsics
                 .Returns("T");
         }
 
+        public static IntrinsicProcedure SimdTernary(string name, IntrinsicProcedure intrinsic)
+        {
+            return new IntrinsicBuilder(name, intrinsic)
+                .GenericTypes("T")
+                .Param("T")
+                .Param("T")
+                .Param("T")
+                .Returns("T");
+        }
+
         public static IntrinsicProcedure SimdUnary(string name, IFunctionalUnit fn)
         {
             return new IntrinsicBuilder(name, fn)
@@ -314,6 +324,7 @@ namespace Reko.Core.Intrinsics
                 .Param("T")
                 .Returns("T");
         }
+
 
         public static IntrinsicProcedure GenericUnary(string name)
         {
@@ -360,5 +371,6 @@ namespace Reko.Core.Intrinsics
             }
             return b.Returns(PrimitiveType.Bool);
         }
+
     }
 }

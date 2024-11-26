@@ -31,6 +31,7 @@ namespace Reko.UnitTests.Arch.CSky
 
         public CSkyDisassemblerTests()
         {
+            Reko.Core.Machine.Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
             this.arch = new CSkyArchitecture(CreateServiceContainer(), "csky", new());
             this.addr = Address.Ptr32(0x10_0000);
         }
@@ -1462,6 +1463,245 @@ namespace Reko.UnitTests.Arch.CSky
         public void CSkyDis_zexth()
         {
             AssertCode("zexth\tr12,r4", "1177");
+        }
+
+        [Test]
+        public void CSkyDis_fabsd()
+        {
+            AssertCode("fabsd\tvr9,vr10", "0AF4 C908");
+        }
+
+        [Test]
+        public void CSkyDis_fabsm()
+        {
+            AssertCode("fabsm\tvr9,vr10", "0AF4 C910");
+        }
+
+        [Test]
+        public void CSkyDis_fabss()
+        {
+            AssertCode("fabss\tvr9,vr10", "0AF4 C900");
+        }
+
+        [Test]
+        public void CSkyDis_faddd()
+        {
+            AssertCode("faddd\tvr9,vr10,vr2", "4AF4 0908");
+        }
+
+        [Test]
+        public void CSkyDis_fcmpltd()
+        {
+            AssertCode("fcmpltd\tvr10,vr2", "4AF4 A009");
+        }
+
+        [Test]
+        public void CSkyDis_fdivd()
+        {
+            AssertCode("fdivd\tvr9,vr10,vr2", "4AF4 090B");
+        }
+
+        [Test]
+        public void CSkyDis_fdtos()
+        {
+            AssertCode("fdtos\tvr9,vr10", "0AF4 C91A");
+        }
+
+        [Test]
+        public void CSkyDis_fdtosi()
+        {
+            AssertCode("fdtosi.rn\tvr9,vr10", "0AF4 0919");
+            AssertCode("fdtosi.rz\tvr9,vr10", "0AF4 2919");
+            AssertCode("fdtosi.rpi\tvr9,vr10", "0AF4 4919");
+            AssertCode("fdtosi.rni\tvr9,vr10", "0AF4 6919");
+        }
+
+        [Test]
+        public void CSkyDis_fdtoui()
+        {
+            AssertCode("fdtoui.rn\tvr9,vr10", "0AF4 8919");
+            AssertCode("fdtoui.rz\tvr9,vr10", "0AF4 A919");
+            AssertCode("fdtoui.rpi\tvr9,vr10", "0AF4 C919");
+            AssertCode("fdtoui.rni\tvr9,vr10", "0AF4 E919");
+        }
+
+        [Test]
+        public void CSkyDis_fldd()
+        {
+            AssertCode("fldd\tvr9,(r21,1020)", "F5F5 F921");
+        }
+
+        [Test]
+        public void CSkyDis_fldm()
+        {
+            AssertCode("fldm\tvr9,(r21,2040)", "F5F5 F922");
+        }
+
+        [Test]
+        [Ignore("Manual is unclear")]
+        public void CSkyDis_fldmd()
+        {
+            AssertCode("fldmd\tvr9,(r15,1020)", "15F5 0931");
+            AssertCode("fldmd\tvr9,(r15,1020)", "35F5 0931");
+            AssertCode("fldmd\tvr9,(r15,1020)", "F5F5 0931");
+        }
+
+        [Test]
+        [Ignore("Manual is unclear")]
+        public void CSkyDis_fldmm()
+        {
+            AssertCode("fldmm\tvr9,(r15,1020)", "15F5 0932");
+            AssertCode("fldmm\tvr9,(r15,1020)", "35F5 0932");
+            AssertCode("fldmm\tvr9,(r15,1020)", "F5F5 0932");
+        }
+
+        [Test]
+        public void CSkyDis_fldrd()
+        {
+            AssertCode("fldrd\tvr9,(r21,r8)", "15F5 0929");
+            AssertCode("fldrd\tvr9,(r21,r8<<1)", "15F5 2929");
+            AssertCode("fldrd\tvr9,(r21,r8<<3)", "15F5 6929");
+        }
+
+        [Test]
+        public void CSkyDis_fmacd()
+        {
+            AssertCode("fmacd\tvr9,vr10,vr2", "4AF4 890A");
+        }
+
+        [Test]
+        public void CSkyDis_fmacm()
+        {
+            AssertCode("fmacm\tvr9,vr10,vr2", "4AF4 8912");
+        }
+
+        [Test]
+        public void CSkyDis_fmfvrh()
+        {
+            AssertCode("fmfvrh\tr9,vr10", "4AF4 091B");
+        }
+
+        [Test]
+        public void CSkyDis_fmfvrl()
+        {
+            AssertCode("fmfvrl\tr9,vr10", "4AF4 291B");
+        }
+
+        [Test]
+        public void CSkyDis_fmovd()
+        {
+            AssertCode("fmovd\tvr9,vr10", "4AF4 8908");
+        }
+
+        [Test]
+        public void CSkyDis_fmtvrh()
+        {
+            AssertCode("fmtvrh\tvr9,r10", "4AF4 491B");
+        }
+
+        [Test]
+        public void CSkyDis_fmuld()
+        {
+            AssertCode("fmuld\tvr9,vr10,vr2", "4AF4 090A");
+        }
+
+        [Test]
+        public void CSkyDis_fnegs()
+        {
+            AssertCode("fnegs\tvr9,vr10", "4AF4 E900");
+        }
+
+        [Test]
+        public void CSkyDis_fnmuld()
+        {
+            AssertCode("fnmuld\tvr9,vr10,vr2", "4AF4 290A");
+        }
+
+        [Test]
+        public void CSkyDis_frecipd()
+        {
+            AssertCode("frecipd\tvr9,vr10", "4AF4 290B");
+        }
+
+        [Test]
+        public void CSkyDis_fsitod()
+        {
+            AssertCode("fsitod\tvr9,vr10", "4AF4 891A");
+        }
+
+        [Test]
+        public void CSkyDis_fsqrtd()
+        {
+            AssertCode("fsqrtd\tvr9,vr10", "4AF4 490B");
+        }
+
+        [Test]
+        public void CSkyDis_fstd()
+        {
+            AssertCode("fstd\tvr9,(r21,1020)", "F5F5 F925");
+        }
+
+        [Test]
+        [Ignore("Manual is unclear")]
+        public void CSkyDis_fstmd()
+        {
+            AssertCode("fstmd\tvr9,(r15,1020)", "15F5 0935");
+            AssertCode("fstmd\tvr9,(r15,1020)", "35F5 0935");
+            AssertCode("fstmd\tvr9,(r15,1020)", "F5F5 0935");
+        }
+
+        [Test]
+        [Ignore("Manual is unclear")]
+        public void CSkyDis_fstmm()
+        {
+            AssertCode("fstmm\tvr9,(r15,1020)", "15F5 0936");
+            AssertCode("fstmm\tvr9,(r15,1020)", "35F5 0936");
+            AssertCode("fstmm\tvr9,(r15,1020)", "F5F5 0936");
+        }
+
+        [Test]
+        [Ignore("Manual is unclear")]
+        public void CSkyDis_fstms()
+        {
+            AssertCode("fstmm\tvr9,(r15,1020)", "15F5 0934");
+            AssertCode("fstmm\tvr9,(r15,1020)", "35F5 0934");
+            AssertCode("fstmm\tvr9,(r15,1020)", "F5F5 0934");
+        }
+
+        [Test]
+        public void CSkyDis_fstod()
+        {
+            // Manual is unclear
+            AssertCode("fstod\tvr9,vr5", "15F4 E91A");
+        }
+
+        [Test]
+        public void CSkyDis_fstosi()
+        {
+            AssertCode("fstosi.rn\tvr9,vr10", "0AF4 0918");
+            AssertCode("fstosi.rz\tvr9,vr10", "0AF4 2918");
+            AssertCode("fstosi.rpi\tvr9,vr10", "0AF4 4918");
+            AssertCode("fstosi.rni\tvr9,vr10", "0AF4 6918");
+        }
+
+        [Test]
+        public void CSkyDis_fstrs()
+        {
+            AssertCode("fstrs\tvr9,(r21,r8)", "15F5 092C");
+            AssertCode("fstrs\tvr9,(r21,r8<<1)", "15F5 292C");
+            AssertCode("fstrs\tvr9,(r21,r8<<3)", "15F5 692C");
+        }
+
+        [Test]
+        public void CSkyDis_fsubd()
+        {
+            AssertCode("fsubd\tvr9,vr10,vr2", "4AF4 2908");
+        }
+
+        [Test]
+        public void CSkyDis_fuitod()
+        {
+            AssertCode("fuitod\tvr9,vr10", "4AF4 A91A");
         }
     }
 }

@@ -28,6 +28,7 @@ namespace Reko.Arch.CSky
     public static class Registers
     {
         public static RegisterStorage[] GpRegs { get; }
+        public static RegisterStorage[] VrRegs { get; }
         public static RegisterStorage Macc { get; }
         public static RegisterStorage Lo { get; }
         public static RegisterStorage Hi { get; }
@@ -53,6 +54,7 @@ namespace Reko.Arch.CSky
             Lo = RegisterStorage.Reg32("lo", Macc.Number, 0);
             Hi = RegisterStorage.Reg32("hi", Macc.Number, 32);
             Pc = factory.Reg32("pc");
+            VrRegs = factory.RangeOfReg64(16, "vr{0}");
 
             ByName = factory.NamesToRegisters;
             ByDomain = factory.DomainsToRegisters;

@@ -30,12 +30,15 @@ namespace Reko.Arch.CSky
     public class RegisterListOperand : AbstractMachineOperand
     {
         private readonly uint registerList;
+        private readonly RegisterStorage[] regs;
 
-        public RegisterListOperand(uint registerList) 
+        public RegisterListOperand(uint registerList, RegisterStorage[] regs)
             : base(PrimitiveType.Byte)
         {
             this.registerList = registerList;
+            this.regs = regs;
         }
+
 
         public IEnumerable<RegisterStorage> RegisterList
         {
@@ -43,10 +46,10 @@ namespace Reko.Arch.CSky
             {
                 int i = 0;
                 uint m = 1u << i;
-                for (; i < Registers.GpRegs.Length; ++i, m <<= 1)
+                for (; i < regs.Length; ++i, m <<= 1)
                 {
                     if ((registerList & m) != 0)
-                        yield return Registers.GpRegs[i];
+                        yield return regs[i];
                 }
             }
         }
@@ -66,7 +69,7 @@ namespace Reko.Arch.CSky
                         iRunStart = i;
                         renderer.WriteString(sep);
                         sep = ",";
-                        renderer.WriteString(Registers.GpRegs[i].Name);
+                        renderer.WriteString(regs[i].Name);
                     }
                 }
                 else
@@ -74,7 +77,7 @@ namespace Reko.Arch.CSky
                     if (iRunStart >= 0 && iRunStart < i-1)
                     {
                         renderer.WriteChar('-');
-                        renderer.WriteString(Registers.GpRegs[i-1].Name);
+                        renderer.WriteString(regs[i-1].Name);
                     }
                     iRunStart = -1;
                 }
@@ -82,7 +85,7 @@ namespace Reko.Arch.CSky
             if (iRunStart >= 0 && iRunStart < i - 1)
             {
                 renderer.WriteChar('-');
-                renderer.WriteString(Registers.GpRegs[i-1].Name);
+                renderer.WriteString(regs[i-1].Name);
             }
         }
     }

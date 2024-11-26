@@ -43,32 +43,32 @@ namespace Reko.UnitTests.Arch.CSky
         [Test]
         public void CSkyRl_Single()
         {
-            RunTest("r2", new RegisterListOperand(4));
+            RunTest("r2", new RegisterListOperand(4, Registers.GpRegs));
         }
 
         [Test]
         public void CSkyRl_Pair()
         {
-            RunTest("r2-r3", new RegisterListOperand(0xC));
+            RunTest("r2-r3", new RegisterListOperand(0xC, Registers.GpRegs));
         }
 
 
         [Test]
         public void CSkyRl_r15()
         {
-            RunTest("r15", new RegisterListOperand(0x8000));
+            RunTest("r15", new RegisterListOperand(0x8000, Registers.GpRegs));
         }
 
         [Test]
         public void CSkyRl_r14_r15()
         {
-            RunTest("r14-r15", new RegisterListOperand(0xC000));
+            RunTest("r14-r15", new RegisterListOperand(0xC000, Registers.GpRegs));
         }
 
         [Test]
         public void CSkyRl_r31()
         {
-            RunTest("r31", new RegisterListOperand(0x8000_0000));
+            RunTest("r31", new RegisterListOperand(0x8000_0000, Registers.GpRegs));
         }
     }
 }

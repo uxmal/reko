@@ -99,12 +99,15 @@ namespace Reko.Arch.CSky
         private static readonly Bitfield bf0_16 = new Bitfield(0, 16);
         private static readonly Bitfield bf2_3 = new Bitfield(2, 3);
         private static readonly Bitfield bf2_4 = new Bitfield(2, 4);
+        private static readonly Bitfield bf4_4 = new Bitfield(4, 4);
+        private static readonly Bitfield bf5_2 = new Bitfield(5, 2);
         private static readonly Bitfield bf5_3 = new Bitfield(5, 3);
         private static readonly Bitfield bf6_4 = new Bitfield(6, 4);
         private static readonly Bitfield bf8_2 = new Bitfield(8, 2);
         private static readonly Bitfield bf8_3 = new Bitfield(8, 3);
         private static readonly Bitfield bf16_5 = new Bitfield(16, 5);
         private static readonly Bitfield bf16_10 = new Bitfield(16, 10);
+        private static readonly Bitfield bf21_4 = new Bitfield(21, 4);
         private static readonly Bitfield bf21_5 = new Bitfield(21, 5);
         private static readonly Bitfield[] bf8_0 = Bf((8, 2), (0, 5));
 
@@ -117,6 +120,7 @@ namespace Reko.Arch.CSky
                 return true;
             };
         }
+
         // Conventions: 3-bit fields are indicated by lower-case 'r' and a '_3' suffix
         // 4-bit fields are indicated by lower-case 'r', 5-bit fields by 
         // upper-case 'R'.
@@ -140,6 +144,36 @@ namespace Reko.Arch.CSky
             };
         }
         private static readonly Mutator<CSkyDisassembler> CR16 = ControlRegister(bf16_10);
+
+        private static Mutator<CSkyDisassembler> VR(int bitpos)
+        {
+            var bf = new Bitfield(bitpos, 4);
+            return (u, d) =>
+            {
+                var ireg = bf.Read(u);
+                d.ops.Add(Registers.VrRegs[ireg]);
+                return true;
+            };
+        }
+        private static readonly Mutator<CSkyDisassembler> VR0 = VR(0);
+        private static readonly Mutator<CSkyDisassembler> VR16 = VR(16);
+        private static readonly Mutator<CSkyDisassembler> VR21 = VR(21);
+
+
+        /// <summary>
+        /// A range of VR registers, encoded as a start register and a count.
+        /// </summary>
+        private static bool vrRange(uint uInstr, CSkyDisassembler dasm)
+        {
+            var ireg = (int)bf0_4.Read(uInstr);
+            var imm4 = (int)bf21_4.Read(uInstr);
+            if (ireg + imm4 >= 0x10)
+                return false;
+            var regs = new RegisterListOperand((uint)Bits.Mask(ireg, imm4 + 1), Registers.VrRegs);
+            dasm.ops.Add(regs);
+            return true;
+        }
+
         private static Mutator<CSkyDisassembler> Register(RegisterStorage reg)
         {
             return (_, d) =>
@@ -313,6 +347,20 @@ namespace Reko.Arch.CSky
         }
 
         /// <summary>
+        /// Indirect memory access 
+        /// </summary>
+        private static Mutator<CSkyDisassembler> Mind(PrimitiveType dt, Bitfield bfBase)
+        {
+            return (u, d) =>
+            {
+                var ireg = bfBase.Read(u);
+                var mem = MemoryOperand.Displacement(dt, Registers.GpRegs[ireg], 0);
+                d.ops.Add(mem);
+                return true;
+            };
+        }
+
+        /// <summary>
         /// Memory access using stack pointer as base register.
         /// </summary>
         private static Mutator<CSkyDisassembler> Msp(PrimitiveType dt, Bitfield[] bfsOffset)
@@ -346,6 +394,41 @@ namespace Reko.Arch.CSky
         private static readonly Mutator<CSkyDisassembler> Mpc_offs16 = Mpc(PrimitiveType.Word32, bf0_16);
 
 
+        /// <summary>
+        /// Memory access used for floating point loads and stores.
+        /// </summary>
+        private static Mutator<CSkyDisassembler> Mfp(PrimitiveType dt, int shift)
+        {
+            return (u, d) =>
+            {
+                var imm4h = bf21_4.Read(u) << 4;
+                var imm4l = bf4_4.Read(u);
+                var offset = (imm4h | imm4l) << shift;
+                var ibase = bf16_5.Read(u);
+                var rbase = Registers.GpRegs[ibase];
+                var mem = MemoryOperand.Displacement(dt, rbase, (int)offset);
+                d.ops.Add(mem);
+                return true;
+            };
+        }
+
+        private static Mutator<CSkyDisassembler> Midx(PrimitiveType dt, Bitfield bfShift)
+        {
+            return (u, d) =>
+            {
+                var ix = (int) bf16_5.Read(u);
+                var iy = (int) bf21_5.Read(u);
+                var shift = (int) bfShift.Read(u);
+                var mem = MemoryOperand.Indexed(
+                    dt,
+                    Registers.GpRegs[ix],
+                    Registers.GpRegs[iy],
+                    shift);
+                d.ops.Add(mem);
+                return true;
+            };
+        }
+
         private static readonly uint[] decodePushPopArgs = new uint[]
         {
             0x0000,
@@ -376,7 +459,7 @@ namespace Reko.Arch.CSky
             if (list == ~0u)
                 return false;
             list |= (uInstr & 0x10) << 11;
-            dasm.ops.Add(new RegisterListOperand(list));
+            dasm.ops.Add(new RegisterListOperand(list, Registers.GpRegs));
             return true; 
         }
 
@@ -574,6 +657,112 @@ namespace Reko.Arch.CSky
                 (0x2, Instr(Mnemonic.andi, R21, R16, uimm12)),
                 (0x3, Instr(Mnemonic.andni, R21, R16, uimm12)),
                 (0x4, Instr(Mnemonic.xori, R21, R16, uimm12)));
+
+            var decoder11_1101 = Sparse(12, 4, "  1101", nyi,
+                (0x0, Sparse(4, 8, "  0000", nyi,
+                    (0x00, Instr(Mnemonic.fadds, VR0, VR16, VR21)),
+                    (0x02, Instr(Mnemonic.fsubs, VR0, VR16, VR21)),
+                    (0x08, Instr(Mnemonic.fmovs, VR0, VR16)),
+                    (0x0C, Instr(Mnemonic.fabss, VR0, VR16)),
+                    (0x0E, Instr(Mnemonic.fnegs, VR0, VR16)),
+                    (0x10, Instr(Mnemonic.fcmpzhss, VR16, VR21)),
+                    (0x12, Instr(Mnemonic.fcmpzlss, VR16, VR21)),
+                    (0x14, Instr(Mnemonic.fcmpznes, VR16, VR21)),
+                    (0x16, Instr(Mnemonic.fcmpzuos, VR16)),
+                    (0x18, Instr(Mnemonic.fcmphss, VR16, VR21)),
+                    (0x1A, Instr(Mnemonic.fcmplts, VR16, VR21)),
+                    (0x1C, Instr(Mnemonic.fcmpnes, VR16, VR21)),
+                    (0x1E, Instr(Mnemonic.fcmpuos, VR16, VR21)),
+                    (0x20, Instr(Mnemonic.fmuls, VR0, VR16, VR21)),
+                    (0x22, Instr(Mnemonic.fnmuls, VR0, VR16, VR21)),
+                    (0x28, Instr(Mnemonic.fmacs, VR0, VR16, VR21)),
+                    (0x2A, Instr(Mnemonic.fmscs, VR0, VR16, VR21)),
+                    (0x2C, Instr(Mnemonic.fnmacs, VR0, VR16, VR21)),
+                    (0x2E, Instr(Mnemonic.fnmscs, VR0, VR16, VR21)),
+                    (0x30, Instr(Mnemonic.fdivs, VR0, VR16, VR21)),
+                    (0x32, Instr(Mnemonic.frecips, VR0, VR16)),
+                    (0x34, Instr(Mnemonic.fsqrts, VR0, VR16)),
+
+                    (0x80, Instr(Mnemonic.faddd, VR0, VR16, VR21)),
+                    (0x82, Instr(Mnemonic.fsubd, VR0, VR16, VR21)),
+                    (0x88, Instr(Mnemonic.fmovd, VR0, VR16)),
+                    (0x8C, Instr(Mnemonic.fabsd, VR0, VR16)),
+                    (0x8E, Instr(Mnemonic.fnegd, VR0, VR16)),
+                    (0x90, Instr(Mnemonic.fcmpzhsd, VR16, VR21)),
+                    (0x92, Instr(Mnemonic.fcmpzlsd, VR16, VR21)),
+                    (0x94, Instr(Mnemonic.fcmpzned, VR16, VR21)),
+                    (0x96, Instr(Mnemonic.fcmpzuod, VR16)),
+                    (0x98, Instr(Mnemonic.fcmphsd, VR16, VR21)),
+                    (0x9A, Instr(Mnemonic.fcmpltd, VR16, VR21)),
+                    (0x9C, Instr(Mnemonic.fcmpned, VR16, VR21)),
+                    (0x9E, Instr(Mnemonic.fcmpuod, VR16, VR21)),
+                    (0xA0, Instr(Mnemonic.fmuld, VR0, VR16, VR21)),
+                    (0xA2, Instr(Mnemonic.fnmuld, VR0, VR16, VR21)),
+                    (0xA8, Instr(Mnemonic.fmacd, VR0, VR16, VR21)),
+                    (0xAA, Instr(Mnemonic.fmscd, VR0, VR16, VR21)),
+                    (0xAC, Instr(Mnemonic.fnmacd, VR0, VR16, VR21)),
+                    (0xAE, Instr(Mnemonic.fnmscd, VR0, VR16, VR21)),
+                    (0xB0, Instr(Mnemonic.fdivd, VR0, VR16, VR21)),
+                    (0xB2, Instr(Mnemonic.frecipd, VR0, VR16)),
+                    (0xB4, Instr(Mnemonic.fsqrtd, VR0, VR16)))),
+                (0x1, Sparse(4, 8, "  0001", nyi,
+                    (0x00, Instr(Mnemonic.faddm, VR0, VR16, VR21)),
+                    (0x02, Instr(Mnemonic.fsubm, VR0, VR16, VR21)),
+                    (0x08, Instr(Mnemonic.fmovm, VR0, VR16)),
+                    (0x0C, Instr(Mnemonic.fabsm, VR0, VR16)),
+                    (0x0E, Instr(Mnemonic.fnegm, VR0, VR16)),
+                    (0x20, Instr(Mnemonic.fmulm, VR0, VR16, VR21)),
+                    (0x22, Instr(Mnemonic.fnmulm, VR0, VR16, VR21)),
+                    (0x28, Instr(Mnemonic.fmacm, VR0, VR16, VR21)),
+                    (0x2A, Instr(Mnemonic.fmscm, VR0, VR16, VR21)),
+                    (0x2C, Instr(Mnemonic.fnmacm, VR0, VR16, VR21)),
+                    (0x2E, Instr(Mnemonic.fnmscs, VR0, VR16, VR21)),
+
+
+                    (0x80, Instr(Mnemonic.fstosi_rn, VR0, VR16)),
+                    (0x82, Instr(Mnemonic.fstosi_rz, VR0, VR16)),
+                    (0x84, Instr(Mnemonic.fstosi_rpi, VR0, VR16)),
+                    (0x86, Instr(Mnemonic.fstosi_rni, VR0, VR16)),
+                    (0x88, Instr(Mnemonic.fstoui_rn, VR0, VR16)),
+                    (0x8A, Instr(Mnemonic.fstoui_rz, VR0, VR16)),
+                    (0x8C, Instr(Mnemonic.fstoui_rpi, VR0, VR16)),
+                    (0x8E, Instr(Mnemonic.fstoui_rni, VR0, VR16)),
+                    (0x90, Instr(Mnemonic.fdtosi_rn, VR0, VR16)),
+                    (0x92, Instr(Mnemonic.fdtosi_rz, VR0, VR16)),
+                    (0x94, Instr(Mnemonic.fdtosi_rpi, VR0, VR16)),
+                    (0x96, Instr(Mnemonic.fdtosi_rni, VR0, VR16)),
+                    (0x98, Instr(Mnemonic.fdtoui_rn, VR0, VR16)),
+                    (0x9A, Instr(Mnemonic.fdtoui_rz, VR0, VR16)),
+                    (0x9C, Instr(Mnemonic.fdtoui_rpi, VR0, VR16)),
+                    (0x9E, Instr(Mnemonic.fdtoui_rni, VR0, VR16)),
+                    (0xA0, Instr(Mnemonic.fsitos, VR0, VR16)),
+                    (0xA2, Instr(Mnemonic.fuitos, VR0, VR16)),
+                    (0xA8, Instr(Mnemonic.fsitod, VR0, VR16)),
+                    (0xAA, Instr(Mnemonic.fuitod, VR0, VR16)),
+                    (0xAC, Instr(Mnemonic.fdtos, VR0, VR16)),
+                    (0xAE, Instr(Mnemonic.fstod, VR0, VR16)),
+                    (0xB0, Instr(Mnemonic.fmfvrh, R0, VR16)),
+                    (0xB2, Instr(Mnemonic.fmfvrl, R0, VR16)),
+                    (0xB4, Instr(Mnemonic.fmtvrh, VR0, R16)),
+                    (0xB6, Instr(Mnemonic.fmtvrl, VR0, R16)))),
+                (0x2, Sparse(8, 4, "  0010", nyi,
+                    (0x0, Instr(Mnemonic.flds, VR0, Mfp(PrimitiveType.Real32, 2))),
+                    (0x1, Instr(Mnemonic.fldd, VR0, Mfp(PrimitiveType.Real64, 2))),
+                    (0x2, Instr(Mnemonic.fldm, VR0, Mfp(PrimitiveType.Real64, 3))),
+                    (0x4, Instr(Mnemonic.fsts, VR0, Mfp(PrimitiveType.Real64, 2))),
+                    (0x5, Instr(Mnemonic.fstd, VR0, Mfp(PrimitiveType.Real64, 2))),
+                    (0x6, Instr(Mnemonic.fstm, VR0, Mfp(PrimitiveType.Real64, 3))),
+                    (0x8, Instr(Mnemonic.fldrs, VR0, Midx(PrimitiveType.Real32, bf5_2))),
+                    (0x9, Instr(Mnemonic.fldrd, VR0, Midx(PrimitiveType.Real64, bf5_2))),
+                    (0xA, Instr(Mnemonic.fldrm, VR0, Midx(PrimitiveType.Real64, bf5_2))),
+                    (0xC, Instr(Mnemonic.fstrs, VR0, Midx(PrimitiveType.Real64, bf5_2))),
+                    (0xD, Instr(Mnemonic.fstrd, VR0, Midx(PrimitiveType.Real64, bf5_2))),
+                    (0xE, Instr(Mnemonic.fstrm, VR0, Midx(PrimitiveType.Real64, bf5_2)))
+                    )),
+                (0x3, Sparse(8, 4, "  0011", nyi,
+                    (0x0, Instr(Mnemonic.fldms, vrRange, Mind(PrimitiveType.Real64, bf16_5))),
+                    (0x1, Instr(Mnemonic.fldmd, vrRange, Mind(PrimitiveType.Real64, bf16_5))),
+                    (0x2, Instr(Mnemonic.fldmd, VR0, Mfp(PrimitiveType.Real64, 3))))));
 
             var decoder11 = Mask(26, 4, "  11",
                 Sparse(10, 6, "  0000", nyi,
@@ -856,7 +1045,7 @@ namespace Reko.Arch.CSky
                 Instr(Mnemonic.ori, R21, R16, uimm16),
 
                 nyi,
-                nyi,
+                decoder11_1101,
                 nyi,
                 nyi);
 

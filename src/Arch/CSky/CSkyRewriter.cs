@@ -31,6 +31,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 
 namespace Reko.Arch.CSky
 {
@@ -123,6 +124,81 @@ namespace Reko.Arch.CSky
                 case Mnemonic.divs: RewriteBinary(Operator.SDiv); break;
                 case Mnemonic.divu: RewriteBinary(Operator.UDiv); break;
                 case Mnemonic.doze: RewriteDoze(); break;
+                case Mnemonic.fabsd: RewriteFUnary(FpOps.fabs, PrimitiveType.Real64); break;
+                case Mnemonic.fabsm: RewriteSimdUnary(Simd.FAbs); break;
+                case Mnemonic.fabss: RewriteFUnary(FpOps.fabsf, PrimitiveType.Real32); break;
+                case Mnemonic.faddd: RewriteFAdd(PrimitiveType.Real64); break;
+                case Mnemonic.faddm: RewriteSimdBinary(Simd.FAdd); break;
+                case Mnemonic.fadds: RewriteFAdd(PrimitiveType.Real32); break;
+                case Mnemonic.fcmphsd: RewriteFcmp(Operator.Fge, PrimitiveType.Real64); break;
+                case Mnemonic.fcmphss: RewriteFcmp(Operator.Fge, PrimitiveType.Real32); break;
+                case Mnemonic.fcmpltd: RewriteFcmp(Operator.Flt, PrimitiveType.Real64); break;
+                case Mnemonic.fcmplts: RewriteFcmp(Operator.Flt, PrimitiveType.Real32); break;
+                case Mnemonic.fcmpned: RewriteFcmp(Operator.Fne, PrimitiveType.Real64); break;
+                case Mnemonic.fcmpnes: RewriteFcmp(Operator.Fne, PrimitiveType.Real32); break;
+                case Mnemonic.fcmpuod: RewriteFcmpuo(PrimitiveType.Real64); break;
+                case Mnemonic.fcmpuos: RewriteFcmpuo(PrimitiveType.Real32); break;
+                case Mnemonic.fcmpzhsd: RewriteFcmpzhs(PrimitiveType.Real64); break;
+                case Mnemonic.fcmpzhss: RewriteFcmpzhs(PrimitiveType.Real32); break;
+                case Mnemonic.fcmpzlsd: RewriteFcmpzls(PrimitiveType.Real64); break;
+                case Mnemonic.fcmpzlss: RewriteFcmpzls(PrimitiveType.Real32); break;
+                case Mnemonic.fcmpzned: RewriteFcmpzne(PrimitiveType.Real64); break;
+                case Mnemonic.fcmpznes: RewriteFcmpzne(PrimitiveType.Real32); break;
+                case Mnemonic.fcmpzuod: RewriteFcmpzuo(PrimitiveType.Real64); break;
+                case Mnemonic.fcmpzuos: RewriteFcmpzuo(PrimitiveType.Real32); break;
+                case Mnemonic.fdivd: RewriteFBinary(Operator.FDiv, PrimitiveType.Real64); break;
+                case Mnemonic.fdivs: RewriteFBinary(Operator.FDiv, PrimitiveType.Real32); break;
+                case Mnemonic.fdtos: RewriteFdtos(); break;
+                case Mnemonic.fdtosi_rn: RewriteFtoi(FpOps.round, PrimitiveType.Real64, PrimitiveType.Int32); break;
+                case Mnemonic.fdtosi_rz: RewriteFtoi(FpOps.trunc, PrimitiveType.Real64, PrimitiveType.Int32); break;
+                case Mnemonic.fdtosi_rpi: RewriteFtoi(FpOps.ceil, PrimitiveType.Real64, PrimitiveType.Int32); break;
+                case Mnemonic.fdtosi_rni: RewriteFtoi(FpOps.floor, PrimitiveType.Real64, PrimitiveType.Int32); break;
+                case Mnemonic.fdtoui_rn: RewriteFtoi(FpOps.round, PrimitiveType.Real64, PrimitiveType.UInt32); break;
+                case Mnemonic.fdtoui_rz: RewriteFtoi(FpOps.trunc, PrimitiveType.Real64, PrimitiveType.UInt32); break;
+                case Mnemonic.fdtoui_rpi: RewriteFtoi(FpOps.ceil, PrimitiveType.Real64, PrimitiveType.UInt32); break;
+                case Mnemonic.fdtoui_rni: RewriteFtoi(FpOps.floor, PrimitiveType.Real64, PrimitiveType.UInt32); break;
+                case Mnemonic.fldd: RewriteLoad(PrimitiveType.Real64); break;
+                case Mnemonic.fldm: RewriteLoad(PrimitiveType.Real64); break;
+                case Mnemonic.fldrd: RewriteLoad(PrimitiveType.Real64); break;
+                case Mnemonic.fldrm: RewriteLoad(PrimitiveType.Real64); break;
+                case Mnemonic.fldrs: RewriteLoad(PrimitiveType.Real32); break;
+                case Mnemonic.flds: RewriteLoad(PrimitiveType.Real32); break;
+                case Mnemonic.fmacd: RewriteFmac(PrimitiveType.Real64, Operator.FAdd, Operator.FAdd); break;
+                case Mnemonic.fmacm: RewriteFmacm(); break;
+                case Mnemonic.fmacs: RewriteFmac(PrimitiveType.Real32, Operator.FAdd, Operator.FAdd); break;
+                case Mnemonic.fmfvrh: RewriteFmfvr(32); break;
+                case Mnemonic.fmfvrl: RewriteFmfvr(0); break;
+                case Mnemonic.fmovd: RewriteFmov(); break;
+                case Mnemonic.fmtvrh: RewriteFmtvr(32); break;
+                case Mnemonic.fmtvrl: RewriteFmtvr(0); break;
+                case Mnemonic.fmuld: RewriteFBinary(Operator.FMul, PrimitiveType.Real64); break;
+                case Mnemonic.fmulm: RewriteSimdBinary(Simd.FMul); break;
+                case Mnemonic.fmuls: RewriteFBinary(Operator.FMul, PrimitiveType.Real64); break;
+                case Mnemonic.fnegd: RewriteFUnary(Operator.FNeg, PrimitiveType.Real64); break;
+                case Mnemonic.fnegm: RewriteSimdUnary(Simd.FNeg); break;
+                case Mnemonic.fnegs: RewriteFUnary(Operator.FNeg, PrimitiveType.Real32); break;
+                case Mnemonic.fnmuld: RewriteFnmul(PrimitiveType.Real64); break;
+                case Mnemonic.fnmuls: RewriteFnmul(PrimitiveType.Real32); break;
+                case Mnemonic.frecipd: RewriteFrecip(PrimitiveType.Real64); break;
+                case Mnemonic.frecips: RewriteFrecip(PrimitiveType.Real32); break;
+                case Mnemonic.fsitod: RewriteItof(PrimitiveType.Int32, PrimitiveType.Real64); break;
+                case Mnemonic.fsqrtd: RewriteFUnary(FpOps.sqrt, PrimitiveType.Real64); break;
+                case Mnemonic.fsqrts: RewriteFUnary(FpOps.sqrtf, PrimitiveType.Real32); break;
+                case Mnemonic.fstd: RewriteStore(); break;
+                case Mnemonic.fstrd: RewriteStore(); break;
+                case Mnemonic.fstrs: RewriteStore(); break;
+                case Mnemonic.fstod: RewriteFstod(); break;
+                case Mnemonic.fstosi_rn: RewriteFtoi(FpOps.roundf, PrimitiveType.Real32, PrimitiveType.Int32); break;
+                case Mnemonic.fstosi_rz: RewriteFtoi(FpOps.truncf, PrimitiveType.Real32, PrimitiveType.Int32); break;
+                case Mnemonic.fstosi_rpi: RewriteFtoi(FpOps.ceilf, PrimitiveType.Real32, PrimitiveType.Int32); break;
+                case Mnemonic.fstosi_rni: RewriteFtoi(FpOps.floorf, PrimitiveType.Real32, PrimitiveType.Int32); break;
+                case Mnemonic.fstoui_rn: RewriteFtoi(FpOps.roundf, PrimitiveType.Real32, PrimitiveType.UInt32); break;
+                case Mnemonic.fstoui_rz: RewriteFtoi(FpOps.truncf, PrimitiveType.Real32, PrimitiveType.UInt32); break;
+                case Mnemonic.fstoui_rpi: RewriteFtoi(FpOps.ceilf, PrimitiveType.Real32, PrimitiveType.UInt32); break;
+                case Mnemonic.fstoui_rni: RewriteFtoi(FpOps.floorf, PrimitiveType.Real32, PrimitiveType.UInt32); break;
+                case Mnemonic.fsubd: RewriteFBinary(Operator.FSub, PrimitiveType.Real64); break;
+                case Mnemonic.fsubs: RewriteFBinary(Operator.FSub, PrimitiveType.Real32); break;
+                case Mnemonic.fuitod: RewriteItof(PrimitiveType.UInt32, PrimitiveType.Real64); break;
                 case Mnemonic.ff0: RewriteFastFind(ff0_intrinsic); break;
                 case Mnemonic.ff1: RewriteFastFind(ff1_intrinsic); break;
                 case Mnemonic.grs: RewriteMov(); break;
@@ -329,6 +405,18 @@ namespace Reko.Arch.CSky
             }
             return m.AddSubSignedInt(ea, mem.Offset);
         }
+
+        private void MaybeDpb(Expression dst, Expression src)
+        {
+            if (dst.DataType.BitSize > src.DataType.BitSize)
+            {
+                var tmp = binder.CreateTemporary(src.DataType);
+                m.Assign(tmp, src);
+                src = m.Dpb(dst, tmp, 0);
+            }
+            m.Assign(dst, src);
+        }
+
 
         private void MaybeZeroExtend(Expression dst, Expression src)
         {
@@ -576,6 +664,163 @@ namespace Reko.Arch.CSky
             m.Assign(dst, m.Fn(proc, src));
         }
 
+        private void RewriteFAdd(PrimitiveType dt)
+        {
+            var src1 = MaybeSlice(Operand(1), dt);
+            var src2 = MaybeSlice(Operand(2), dt);
+            var dst = Operand(0);
+            MaybeDpb(dst, m.FAdd(src1, src2));
+        }
+
+        private void RewriteFcmp(BinaryOperator op, PrimitiveType dt)
+        {
+            var src1 = MaybeSlice(Operand(0), dt);
+            var src2 = MaybeSlice(Operand(1), dt);
+            var C = binder.EnsureFlagGroup(Registers.C);
+            m.Assign(C, m.Bin(op, PrimitiveType.Bool, src1, src2));
+        }
+
+        private void RewriteFcmpuo(PrimitiveType dt)
+        {
+            //$TODO
+            m.Invalid();
+        }
+
+        private void RewriteFcmpzhs(PrimitiveType dt)
+        {
+            //$TODO:
+            m.Invalid();
+        }
+
+        private void RewriteFcmpzls(PrimitiveType dt)
+        {
+            //$TODO:
+            m.Invalid();
+        }
+
+
+        private void RewriteFcmpzne(PrimitiveType dt)
+        {
+            //$TODO:
+            m.Invalid();
+        }
+
+        private void RewriteFcmpzuo(PrimitiveType dt)
+        {
+            //$TODO:
+        }
+
+        private void RewriteFdtos()
+        {
+            var src = Operand(1);
+            var dst = Operand(0);
+            MaybeDpb(dst, m.Convert(src, PrimitiveType.Real64, PrimitiveType.Real32));
+        }
+
+        private void RewriteFtoi(IntrinsicProcedure op, PrimitiveType dtReal, PrimitiveType dtResult)
+        {
+            var src = MaybeSlice(Operand(1), dtReal);
+            var dst = Operand(0);
+            MaybeDpb(dst, m.Convert(
+                m.Fn(op, src), 
+                dtReal,
+                dtResult));
+        }
+
+        private void RewriteFdtoui(IntrinsicProcedure op)
+        {
+            var src = Operand(1);
+            var dst = Operand(0);
+            MaybeDpb(dst, m.Convert(
+                m.Fn(op, src),
+                PrimitiveType.Real64,
+                PrimitiveType.UInt32));
+        }
+
+        private void RewriteFmac(PrimitiveType dt, BinaryOperator acc, BinaryOperator _)
+        {
+            var src1 = MaybeSlice(Operand(1), dt);
+            var src2 = MaybeSlice(Operand(2), dt);
+            var dst = Operand(0);
+            MaybeDpb(dst, m.Bin(acc, dst, m.FMul(src1, src2)));
+        }
+
+
+        private void RewriteFmacm()
+        {
+            var src1 = Operand(1);
+            var src2 = Operand(2);
+            var dst = Operand(0);
+            var fmacm = FMacM.MakeInstance(aReal32_2);
+            m.Assign(dst, m.Fn(fmacm, dst, src1, src2));
+
+        }
+
+        private void RewriteFmfvr(int bitoffset)
+        {
+            var src = Operand(1);
+            var dst = Operand(0);
+            m.Assign(dst, m.Slice(src, PrimitiveType.Word32, bitoffset));
+        }
+
+        private void RewriteFmov()
+        {
+            var src = Operand(1);
+            var dst = Operand(0);
+            m.Assign(dst, src);
+        }
+
+        private void RewriteFmtvr(int bitoffset)
+        {
+            var src = Operand(1);
+            var dst = Operand(0);
+            m.Assign(dst, m.Dpb(dst, src, bitoffset));
+        }
+
+        private void RewriteFnmul(PrimitiveType dt)
+        {
+            var src1 = MaybeSlice(Operand(1), dt);
+            var src2 = MaybeSlice(Operand(2), dt);
+            var dst = Operand(0);
+            MaybeDpb(dst, m.FNeg(m.FMul(src1, src2)));
+        }
+
+        private void RewriteFrecip(PrimitiveType dt)
+        {
+            var src = MaybeSlice(Operand(1), dt);
+            var dst = Operand(0);
+            MaybeDpb(dst, m.FDiv(ConstantReal.Create(dt, 1.0), src));
+        }
+
+        private void RewriteFstod()
+        {
+            var src = MaybeSlice(Operand(1), PrimitiveType.Real32);
+            var dst = Operand(0);
+            m.Assign(dst, m.Convert(src, src.DataType, PrimitiveType.Real64));
+        }
+
+        private void RewriteFBinary(BinaryOperator op, PrimitiveType dt)
+        {
+            var src1 = MaybeSlice(Operand(1), dt);
+            var src2 = MaybeSlice(Operand(2), dt);
+            var dst = Operand(0);
+            MaybeDpb(dst, m.Bin(op, src1, src2));
+        }
+
+        private void RewriteFUnary(UnaryOperator op, PrimitiveType dt)
+        {
+            var src = MaybeSlice(Operand(1), dt);
+            var dst = Operand(0);
+            MaybeDpb(dst, m.Unary(op, src));
+        }
+
+        private void RewriteFUnary(IntrinsicProcedure op, PrimitiveType dt)
+        {
+            var src = MaybeSlice(Operand(1), dt);
+            var dst = Operand(0);
+            MaybeDpb(dst, m.Fn(op, src));
+        }
+
         private void RewriteIdly()
         {
             m.SideEffect(m.Fn(idly_intrinsic, Operand(0)));
@@ -607,6 +852,13 @@ namespace Reko.Arch.CSky
             var idx = Operand(2);
             var dst = Operand(0);
             m.Assign(dst, m.IAdd(src, m.Shl(idx, shift)));
+        }
+
+        private void RewriteItof(PrimitiveType dtInteger, PrimitiveType dtResult)
+        {
+            var src = MaybeSlice(Operand(1), dtInteger);
+            var dst = Operand(0);
+            m.Assign(dst, m.Convert(src, dtInteger, dtResult));
         }
 
         private void RewriteJmp()
@@ -938,6 +1190,21 @@ namespace Reko.Arch.CSky
             m.Assign(dst, m.ExtendS(tmp, dst.DataType));
         }
 
+        private void RewriteSimdBinary(IntrinsicProcedure simd)
+        {
+            var src1 = Operand(1);
+            var src2 = Operand(2);
+            var dst = Operand(0);
+            m.Assign(dst, m.Fn(simd.MakeInstance(aReal32_2), src1, src2));
+        }
+
+        private void RewriteSimdUnary(IntrinsicProcedure simd)
+        {
+            var src = Operand(1);
+            var dst = Operand(0);
+            m.Assign(dst, m.Fn(simd.MakeInstance(aReal32_2), src));
+        }
+
         private void RewriteSrs(PrimitiveType dt)
         {
             MaybeConditionalExecution();
@@ -1144,6 +1411,9 @@ namespace Reko.Arch.CSky
         private static readonly IntrinsicProcedure ff1_intrinsic = new IntrinsicBuilder("__ff1", true)
             .Param(PrimitiveType.Word32)
             .Returns(PrimitiveType.Int32);
+        private static readonly IntrinsicProcedure FMacM = IntrinsicBuilder.SimdTernary("__simd_fmac",
+            IntrinsicBuilder.GenericTernary("__fmac"));
+
         private static readonly IntrinsicProcedure idly_intrinsic = new IntrinsicBuilder("__interrupt_delay", true)
             .Param(PrimitiveType.Word32)
             .Void();
@@ -1194,6 +1464,7 @@ namespace Reko.Arch.CSky
             .Returns(PrimitiveType.Word32);
         private static readonly PrimitiveType word48 = PrimitiveType.CreateWord(48);
 
+        private static readonly ArrayType aReal32_2 = new ArrayType(PrimitiveType.Real32, 2);
 
     }
 }

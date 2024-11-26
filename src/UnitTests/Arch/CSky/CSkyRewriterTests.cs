@@ -2308,5 +2308,493 @@ namespace Reko.UnitTests.Arch.CSky
                 "1|L--|v5 = SLICE(r4, word16, 0)",
                 "2|L--|r12 = CONVERT(v5, word16, word32)");
         }
+
+        [Test]
+        public void CSkyRw_fabsd()
+        {
+            Given_HexString("0AF4 C908"); // fabsd\tvr9,vr10
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|vr9 = fabs(vr10)");
+        }
+
+        [Test]
+        public void CSkyRw_fabsm()
+        {
+            Given_HexString("0AF4 C910"); // fabsm\tvr9,vr10
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|vr9 = __simd_fabs<real32[2]>(vr10)");
+        }
+
+        [Test]
+        public void CSkyRw_fabss()
+        {
+            Given_HexString("0AF4 C900"); // fabss\tvr9,vr10
+            AssertCode(
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v4 = SLICE(vr10, real32, 0)",
+                "2|L--|v6 = fabsf(v4)",
+                "3|L--|vr9 = SEQ(SLICE(vr9, word32, 32), v6)");
+        }
+
+        [Test]
+        public void CSkyRw_faddd()
+        {
+            Given_HexString("4AF4 0908"); // faddd\tvr9,vr10,vr2
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|vr9 = vr10 + vr2");
+        }
+
+        [Test]
+        public void CSkyRw_fcmpltd()
+        {
+            Given_HexString("4AF4 A009"); // fcmpltd\tvr10,vr2
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|C = vr10 < vr2");
+        }
+
+        [Test]
+        public void CSkyRw_fdivd()
+        {
+            Given_HexString("4AF4 090B"); // fdivd\tvr9,vr10,vr2
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|vr9 = vr10 / vr2");
+        }
+
+        [Test]
+        public void CSkyRw_fdtos()
+        {
+            Given_HexString("0AF4 C91A"); // fdtos\tvr9,vr10
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v5 = CONVERT(vr10, real64, real32)",
+                "2|L--|vr9 = SEQ(SLICE(vr9, word32, 32), v5)");
+        }
+
+        [Test]
+        public void CSkyRw_fdtosi()
+        {
+            Given_HexString("0AF4 0919"); // fdtosi.rn\tvr9,vr10
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v5 = CONVERT(round(vr10), real64, int32)",
+                "2|L--|vr9 = SEQ(SLICE(vr9, word32, 32), v5)");
+        }
+
+        [Test]
+        public void CSkyRw_fdtosi_rz()
+        {
+            Given_HexString("0AF4 2919");   // fdtosi.rz\tvr9,vr10
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v5 = CONVERT(trunc(vr10), real64, int32)",
+                "2|L--|vr9 = SEQ(SLICE(vr9, word32, 32), v5)");
+        }
+
+        [Test]
+        public void CSkyRw_fdtosi_rpi()
+        {
+            Given_HexString("0AF4 4919"); // fdtosi.rpi\tvr9,vr10
+            AssertCode(
+                 "0|L--|00100000(4): 2 instructions",
+                "1|L--|v5 = CONVERT(ceil(vr10), real64, int32)",
+                "2|L--|vr9 = SEQ(SLICE(vr9, word32, 32), v5)");
+        }
+
+        [Test]
+        public void CSkyRw_fdtosi_rni()
+        {
+            Given_HexString("0AF4 6919"); // fdtosi.rni\tvr9,vr10
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v5 = CONVERT(floor(vr10), real64, int32)",
+                "2|L--|vr9 = SEQ(SLICE(vr9, word32, 32), v5)");
+        }
+
+        [Test]
+        public void CSkyRw_fdtoui_rn()
+        {
+            Given_HexString("0AF4 8919"); // fdtoui.rn\tvr9,vr10
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v5 = CONVERT(round(vr10), real64, uint32)",
+                "2|L--|vr9 = SEQ(SLICE(vr9, word32, 32), v5)");
+        }
+
+        [Test]
+        public void CSkyRw_fdtoui_rz()
+        {
+            Given_HexString("0AF4 A919");
+            AssertCode(     // fdtoui.rz vr9,vr10
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v5 = CONVERT(trunc(vr10), real64, uint32)",
+                "2|L--|vr9 = SEQ(SLICE(vr9, word32, 32), v5)");
+        }
+
+        [Test]
+        public void CSkyRw_fdtoui_rpi()
+        {
+            Given_HexString("0AF4 C919");
+            AssertCode(     // fdtoui.rpi\tvr9,vr10
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v5 = CONVERT(ceil(vr10), real64, uint32)",
+                "2|L--|vr9 = SEQ(SLICE(vr9, word32, 32), v5)");
+        }
+
+        [Test]
+        public void CSkyRw_fdtoui_rni()
+        {
+            Given_HexString("0AF4 E919");
+            AssertCode(     // fdtoui.rni\tvr9,vr10
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v5 = CONVERT(floor(vr10), real64, uint32)",
+                "2|L--|vr9 = SEQ(SLICE(vr9, word32, 32), v5)");
+        }
+
+        [Test]
+        public void CSkyRw_fldd()
+        {
+            Given_HexString("F5F5 F921"); // fldd\tvr9,(r21,1020)
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|vr9 = Mem0[r21 + 1020<i32>:real64]");
+        }
+
+        [Test]
+        public void CSkyRw_fldm()
+        {
+            Given_HexString("F5F5 F922"); // fldm\tvr9,(r21,2040)
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|vr9 = Mem0[r21 + 2040<i32>:real64]");
+        }
+
+        [Test]
+        [Ignore("Manual is unclear")]
+        public void CSkyRw_fldmd()
+        {
+            Given_HexString("15F5 0931"); // fldmd\tvr9,(r15,1020)
+            AssertCode("@@@");
+
+            AssertCode("fldmd\tvr9,(r15,1020)", "35F5 0931");
+            AssertCode("fldmd\tvr9,(r15,1020)", "F5F5 0931");
+        }
+
+        [Test]
+        [Ignore("Manual is unclear")]
+        public void CSkyRw_fldmm()
+        {
+            Given_HexString("15F5 0932"); // fldmm\tvr9,(r15,1020)
+AssertCode("@@@");
+
+            AssertCode("fldmm\tvr9,(r15,1020)", "35F5 0932");
+            AssertCode("fldmm\tvr9,(r15,1020)", "F5F5 0932");
+        }
+
+        [Test]
+        public void CSkyRw_fldrd_0()
+        {
+            Given_HexString("15F5 0929"); // fldrd\tvr9,(r21,r8)
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|vr9 = Mem0[r21 + r8:real64]");
+        }
+
+        [Test]
+        public void CSkyRw_fldrd_1()
+        {
+            Given_HexString("15F5 2929");   // fldrd\tvr9,(r21,r8<<1)
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|vr9 = Mem0[r21 + r8 * 2<32>:real64]");
+        }
+
+        [Test]
+        public void CSkyRw_fldrd_3()
+        {
+            Given_HexString("15F5 6929");       // fldrd\tvr9,(r21,r8<<3)
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|vr9 = Mem0[r21 + r8 * 8<32>:real64]");
+        }
+
+        [Test]
+        public void CSkyRw_fmacd()
+        {
+            Given_HexString("4AF4 890A"); // fmacd\tvr9,vr10,vr2
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|vr9 = vr9 + vr10 * vr2");
+        }
+
+        [Test]
+        public void CSkyRw_fmacm()
+        {
+            Given_HexString("4AF4 8912"); // fmacm\tvr9,vr10,vr2
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|vr9 = __simd_fmac<real32[2]>(vr9, vr10, vr2)");
+        }
+
+        [Test]
+        public void CSkyRw_fmfvrh()
+        {
+            Given_HexString("4AF4 091B"); // fmfvrh\tvr9,vr10
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r9 = SLICE(vr10, word32, 32)");
+        }
+
+        [Test]
+        public void CSkyRw_fmtvrl()
+        {
+            Given_HexString("4AF4 291B"); // fmtvrl\tvr9,vr10
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r9 = SLICE(vr10, word32, 0)");
+        }
+
+        [Test]
+        public void CSkyRw_fmovd()
+        {
+            Given_HexString("4AF4 8908"); // fmovd\tvr9,vr10
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|vr9 = vr10");
+        }
+
+        [Test]
+        public void CSkyRw_fmtvrh()
+        {
+            Given_HexString("4AF4 491B"); // fmtvrh\tvr9,vr10
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|vr9 = SEQ(r10, SLICE(vr9, word32, 0))");
+        }
+
+        [Test]
+        public void CSkyRw_fmuld()
+        {
+            Given_HexString("4AF4 090A"); // fmuld\tvr9,vr10,vr2
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|vr9 = vr10 * vr2");
+        }
+
+        [Test]
+        public void CSkyRw_fnegs()
+        {
+            Given_HexString("4AF4 E900"); // fnegs\tvr9,vr10
+            AssertCode(
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v4 = SLICE(vr10, real32, 0)",
+                "2|L--|v6 = -v4",
+                "3|L--|vr9 = SEQ(SLICE(vr9, word32, 32), v6)");
+        }
+
+        [Test]
+        public void CSkyRw_fnmuld()
+        {
+            Given_HexString("4AF4 290A"); // fnmuld\tvr9,vr10,vr2
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|vr9 = -(vr10 * vr2)");
+        }
+
+        [Test]
+        public void CSkyRw_frecipd()
+        {
+            Given_HexString("4AF4 290B"); // frecipd\tvr9,vr10
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|vr9 = 1.0 / vr10");
+        }
+
+        [Test]
+        public void CSkyRw_frecips()
+        {
+            Given_HexString("4AF4 2903"); // frecipd\tvr9,vr10
+            AssertCode(
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v4 = SLICE(vr10, real32, 0)",
+                "2|L--|v6 = 1.0F / v4",
+                "3|L--|vr9 = SEQ(SLICE(vr9, word32, 32), v6)");
+        }
+
+        [Test]
+        public void CSkyRw_fsitod()
+        {
+            Given_HexString("4AF4 891A"); // fsitod\tvr9,vr10
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v4 = SLICE(vr10, int32, 0)",
+                "2|L--|vr9 = CONVERT(v4, int32, real64)");
+        }
+
+        [Test]
+        public void CSkyRw_fsqrtd()
+        {
+            Given_HexString("4AF4 490B"); // fsqrtd\tvr9,vr10
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|vr9 = sqrt(vr10)");
+        }
+
+        [Test]
+        public void CSkyRw_fsqrts()
+        {
+            Given_HexString("4AF4 4903"); // fsqrtd\tvr9,vr10
+            AssertCode(
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v4 = SLICE(vr10, real32, 0)",
+                "2|L--|v6 = sqrtf(v4)",
+                "3|L--|vr9 = SEQ(SLICE(vr9, word32, 32), v6)");
+        }
+
+        [Test]
+        public void CSkyRw_fstd()
+        {
+            Given_HexString("F5F5 F925"); // fstd\tvr9,(r21,1020)
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|Mem0[r21 + 1020<i32>:real64] = vr9");
+        }
+
+        [Test]
+        [Ignore("Manual is unclear")]
+        public void CSkyRw_fstmd()
+        {
+            Given_HexString("15F5 0935"); // fstmd\tvr9,(r15,1020)
+            AssertCode("@@@");
+
+            AssertCode("fstmd\tvr9,(r15,1020)", "35F5 0935");
+            AssertCode("fstmd\tvr9,(r15,1020)", "F5F5 0935");
+        }
+
+        [Test]
+        [Ignore("Manual is unclear")]
+        public void CSkyRw_fstmm()
+        {
+            Given_HexString("15F5 0936"); // fstmm\tvr9,(r15,1020)
+AssertCode("@@@");
+
+            AssertCode("fstmm\tvr9,(r15,1020)", "35F5 0936");
+            AssertCode("fstmm\tvr9,(r15,1020)", "F5F5 0936");
+        }
+
+        [Test]
+        [Ignore("Manual is unclear")]
+        public void CSkyRw_fstms()
+        {
+            Given_HexString("15F5 0934"); // fstmm\tvr9,(r15,1020)
+AssertCode("@@@");
+
+            AssertCode("fstmm\tvr9,(r15,1020)", "35F5 0934");
+            AssertCode("fstmm\tvr9,(r15,1020)", "F5F5 0934");
+        }
+
+        [Test]
+        public void CSkyRw_fstod()
+        {
+            Given_HexString("15F4 E91A");
+            AssertCode(     // fstod\tvr9,vr5
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v4 = SLICE(vr5, real32, 0)",
+                "2|L--|vr9 = CONVERT(v4, real32, real64)");
+        }
+
+        [Test]
+        public void CSkyRw_fstosi_rn()
+        {
+            Given_HexString("0AF4 0918"); // fstosi.rn\tvr9,vr10
+            AssertCode(
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v4 = SLICE(vr10, real32, 0)",
+                "2|L--|v6 = CONVERT(roundf(v4), real32, int32)",
+                "3|L--|vr9 = SEQ(SLICE(vr9, word32, 32), v6)");
+        }
+
+        [Test]
+        public void CSkyRw_fstosi_rz()
+        {
+            Given_HexString("0AF4 2918");   // fstosi.rz\tvr9,vr10
+            AssertCode(
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v4 = SLICE(vr10, real32, 0)",
+                "2|L--|v6 = CONVERT(truncf(v4), real32, int32)",
+                "3|L--|vr9 = SEQ(SLICE(vr9, word32, 32), v6)");
+        }
+
+        [Test]
+        public void CSkyRw_fstosi_rpi()
+        {
+            Given_HexString("0AF4 4918");   // fstosi.rpi\tvr9,vr10
+            AssertCode(
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v4 = SLICE(vr10, real32, 0)",
+                "2|L--|v6 = CONVERT(ceilf(v4), real32, int32)",
+                "3|L--|vr9 = SEQ(SLICE(vr9, word32, 32), v6)");
+        }
+
+        [Test]
+        public void CSkyRw_fstosi_rni()
+        {
+            Given_HexString("0AF4 6918");   // fstosi.rni\tvr9,vr10
+            AssertCode(
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v4 = SLICE(vr10, real32, 0)",
+                "2|L--|v6 = CONVERT(floorf(v4), real32, int32)",
+                "3|L--|vr9 = SEQ(SLICE(vr9, word32, 32), v6)");
+        }
+
+        [Test]
+        public void CSkyRw_fstrs_0()
+        {
+            Given_HexString("15F5 092C");
+            AssertCode(      // fstrs\tvr9,(r21,r8)
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|Mem0[r21 + r8:real64] = vr9");
+        }
+
+        [Test]
+        public void CSkyRw_fstrs_1()
+        {
+            Given_HexString("15F5 292C");
+            AssertCode(     // fstrs\tvr9,(r21,r8<<1)
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|Mem0[r21 + r8 * 2<32>:real64] = vr9");
+        }
+
+        [Test]
+        public void CSkyRw_fstrs_3()
+        {
+            Given_HexString("15F5 692C");
+            AssertCode(     // fstrs\tvr9,(r21,r8<<3)
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|Mem0[r21 + r8 * 8<32>:real64] = vr9");
+        }
+
+        [Test]
+        public void CSkyRw_fsubd()
+        {
+            Given_HexString("4AF4 2908"); // fsubd\tvr9,vr10,vr2
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|vr9 = vr10 - vr2");
+        }
+
+        [Test]
+        public void CSkyRw_fuitod()
+        {
+            Given_HexString("4AF4 A91A"); // fuitod\tvr9,vr10
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v4 = SLICE(vr10, uint32, 0)",
+                "2|L--|vr9 = CONVERT(v4, uint32, real64)");
+        }
     }
 }
