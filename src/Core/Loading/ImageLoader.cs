@@ -18,9 +18,7 @@
  */
 #endregion
 
-using Reko.Core;
 using System;
-using System.Collections.Generic;
 
 namespace Reko.Core.Loading
 {
@@ -62,6 +60,11 @@ namespace Reko.Core.Loading
         /// archives -- the parameter is ignored.</param>
 		/// <returns>An object implementing the <see cref="ILoadedImage>" /> interface.</returns>
         public abstract ILoadedImage Load(Address? addrLoad);
+
+        public virtual ILoadedImage Load(Address? addrLoad, IProcessorArchitecture? arch)
+        {
+            return Load(addrLoad);
+        }
 
 
         public virtual IBinaryFormatter CreateBinaryFormatter(IBinaryImage image)

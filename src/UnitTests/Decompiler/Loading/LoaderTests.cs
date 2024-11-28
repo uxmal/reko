@@ -71,7 +71,7 @@ namespace Reko.UnitTests.Decompiler.Loading
             var testImage = new byte[] { 42, 42, 42, 42, };
             var ldr = new Mock<Loader>(sc);
 
-            Blob blob = (Blob) ldr.Object.LoadBinaryImage(ImageLocation.FromUri(""), testImage, null, null);
+            Blob blob = (Blob) ldr.Object.ParseBinaryImage(ImageLocation.FromUri(""), testImage, null, null, null);
 
             Assert.IsNotNull(blob);
         }
@@ -86,7 +86,7 @@ namespace Reko.UnitTests.Decompiler.Loading
             var ldr = new Mock<Loader>(sc);
 
             ldr.Object.DefaultToFormat = "ms-dos-com";
-            Program program = (Program) ldr.Object.LoadBinaryImage(ImageLocation.FromUri(""), testImage, null, null);
+            Program program = (Program) ldr.Object.ParseBinaryImage(ImageLocation.FromUri(""), testImage, null, null, null);
 
             Assert.IsNull(eventListener.LastDiagnostic);
             Assert.AreEqual("0C00:0100", program.ImageMap.BaseAddress.ToString());
@@ -107,6 +107,7 @@ namespace Reko.UnitTests.Decompiler.Loading
                 BaseAddress = "0C00:0100",
                 Environment = "ms-dos",
                 Architecture = "x86-real-16",
+                Name = "Fake MS-DOS COM"
             };
             rawFile.EntryPoint.Address = null;
             rawFile.EntryPoint.Name = "Start_Here";
@@ -230,7 +231,7 @@ namespace Reko.UnitTests.Decompiler.Loading
                 .Returns(true);
 
             var ldr = new Loader(sc);
-            var program = ldr.LoadRawImage(Array.Empty<byte>(), Address.Ptr32(0x00123400), new LoadDetails
+            var program = ldr.ParseRawImage(Array.Empty<byte>(), Address.Ptr32(0x00123400), new LoadDetails
             {
                 Location = ImageLocation.FromUri("file:foo.bin"),
                 ArchitectureName = "mmix",

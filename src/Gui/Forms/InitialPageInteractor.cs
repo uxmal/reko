@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Assemblers;
+using Reko.Core.Configuration;
 using Reko.Core.Loading;
 using Reko.Core.Services;
 using Reko.Gui.Services;
@@ -144,7 +145,7 @@ namespace Reko.Gui.Forms
                 if (details is null)
                     return false;
                 details.Location = blob.Location;
-                var rawProgram = ldr.LoadRawImage(blob.Image, null, details);
+                var rawProgram = ldr.ParseRawImage(blob.Image, null, details);
                 loadedImage = Project.FromSingleProgram(rawProgram);
                 break;
             }
@@ -233,7 +234,7 @@ namespace Reko.Gui.Forms
                 {
                     // The archive itself doesn't know the format of the blob,
                     // perhaps Reko does.
-                    image = loader.LoadBinaryImage(blob.Location, blob.Image, null, null);
+                    image = loader.ParseBinaryImage(blob.Location, blob.Image, null, null, null);
                 }
                 switch (image)
                 {
@@ -246,7 +247,7 @@ namespace Reko.Gui.Forms
                     if (loadDetails is null)
                         return null;
                     loadDetails.Location = blob2.Location;
-                    var rawProgram = loader.LoadRawImage(blob2.Image, null, loadDetails);
+                    var rawProgram = loader.ParseRawImage(blob2.Image, null, loadDetails);
                     return Project.FromSingleProgram(rawProgram);
                 case IArchive nestedArchive:
                     archive = nestedArchive;

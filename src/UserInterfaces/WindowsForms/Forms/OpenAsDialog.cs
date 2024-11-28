@@ -162,7 +162,10 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                 throw new InvalidOperationException($"Unable to load {archName} architecture.");
             arch.LoadUserOptions(this.ArchitectureOptions);
             if (rdbGuessAddress.Checked || !arch.TryParseAddress(sAddr, out var addrBase))
+            {
                 sAddr = "";
+                addrBase = null;
+            }
             return new LoadDetails
             {
                 Location = ImageLocation.FromUri(this.FileName.Text),

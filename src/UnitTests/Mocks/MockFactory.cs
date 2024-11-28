@@ -119,7 +119,12 @@ namespace Reko.UnitTests.Mocks
             //$REVIEW: the below is redundant; the method is never called outside of 
             // the Loader class.
             mockLoader.Setup(
-                l => l.LoadBinaryImage(It.IsAny<ImageLocation>(), It.IsAny<byte[]>(), It.IsAny<string>(), It.IsAny<Address>())
+                l => l.ParseBinaryImage(
+                    It.IsAny<ImageLocation>(),
+                    It.IsAny<byte[]>(),
+                    It.IsAny<string>(),
+                    It.IsAny<IProcessorArchitecture>(),
+                    It.IsAny<Address>())
             ).Returns(program);
 
             mockLoader.Setup(

@@ -8,6 +8,7 @@
 		<Nullable>enable</Nullable>
 		</PropertyGroup>
 	<ItemGroup>
+		<ProjectReference Include="..\Arch\X86\X86.csproj" />
 		<ProjectReference Include="..\Core\Core.csproj" />
 		
 		<PackageReference Include="BenchmarkDotNet" Version="0.13.10" />

@@ -274,8 +274,8 @@ namespace Reko.Core.Serialization
                 // use the LoadRawImage path.
                 var archName = sUser.Processor?.Name;
                 var platform = sUser.PlatformOptions?.Name;
-                var bytes = loader.LoadFileBytes(binLocation.FilesystemPath);
-                program = loader.LoadRawImage(bytes, address, new LoadDetails
+                var image = loader.LoadImageBytes(binLocation);
+                program = loader.ParseRawImage(image, address, new LoadDetails
                 {
                     Location = binLocation,
                     LoaderName = sUser.Loader,

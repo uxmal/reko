@@ -21,7 +21,6 @@
 using Reko.Core.Assemblers;
 using Reko.Core.Configuration;
 using Reko.Core.Scripts;
-using Reko.Core.Serialization;
 using System.Collections.Generic;
 
 namespace Reko.Core.Loading
@@ -42,20 +41,22 @@ namespace Reko.Core.Loading
         /// file, loads that. If not, tries to match the file contents to one of the known
         /// file formats, or uses an explicity provided <paramref name="loader"/>.
         /// </summary>
-        /// <param name="imageLocation"></param>
-        /// <param name="loader"></param>
-        /// <param name="addrLoad"></param>
+        /// <param name="imageLocation">The <see cref="ImageLocation"/> from which</param>
+        /// <param name="loader">Optional name of a specific image loader to use.</param>
+        /// <param name="addrLoad">Optional address at which to load the image.</param>
         /// <returns>
         /// An <see cref="ILoadedImage"/> instance. In particular, if the
         /// file format wasn't recognized an instance of <see cref="Blob"/> is
         /// returned.
         /// </returns>
-        ILoadedImage Load(ImageLocation imageLocation, string? loader = null, Address? addrLoad = null);
+        ILoadedImage Load(
+            ImageLocation imageLocation,
+            string? loader = null,
+            Address? addrLoad = null);
 
         /// <summary>
-        /// Opens the specified file and reads the contents of the file,
-        /// starting at file offset <paramref name="offset"/>. No interpretation
-        /// of the file data is done.
+        /// Opens the specified file and reads the contents of the file.
+        /// No interpretation of the file data is done.
         /// </summary>
         /// <param name="filename">The file system path of the file from which 
         /// to read the image data.</param>
@@ -65,8 +66,19 @@ namespace Reko.Core.Loading
         byte[] LoadFileBytes(string filename);
 
         /// <summary>
-        /// Given a executable file image in <param name="bytes">, determines which file 
-        /// format the file has and delegates loading to a specific image loader.
+        /// Opens an image from the specified location. The image may be located
+        /// in arbitraritly deeply nested <see cref="IArchive"/>s.
+        /// </summary>
+        /// <param name="binLocation"><see cref="ImageLocation"/> describing 
+        /// the location of the requested image.</param>
+        /// <returns>
+        /// The loaded image.
+        /// </returns>
+        byte[] LoadImageBytes(ImageLocation binLocation);
+
+        /// <summary>
+        /// Given a file image in <param name="bytes">, determines which file 
+        /// format the file has and delegates parsing to a specific image loader.
         /// </summary>
         /// <param name="imageLocation">The <see cref="ImageLocation"/> from where the 
         /// image was loaded.</param>
@@ -79,28 +91,46 @@ namespace Reko.Core.Loading
         /// Either a successfully loaded <see cref="ILoadedImage"/>, or a <see cref="Blob"/>
         /// if an appropriate image loader could not be determined or loaded.
         /// </returns>
-        //$REVIEW: this method may no longer need to be exposed on this interface.
-        ILoadedImage LoadBinaryImage(ImageLocation imageLocation, byte[] bytes, string? loader, Address? loadAddress);
+        ILoadedImage ParseBinaryImage(
+            ImageLocation imageLocation,
+            byte[] bytes,
+            string? loader,
+            IProcessorArchitecture? arch,
+            Address? loadAddress);
+
+        ILoadedImage ParseBinaryImage(
+            ImageLocation imageLocation,
+            byte[] bytes,
+            LoadDetails loadDetails);
 
         /// <summary>
-        /// Given a sequence of raw bytes, loads it into memory and applies the 
-        /// <paramref name="details"/> to it. Use this method if the binary has no known file
-        /// format.
+        /// Given a sequence of raw bytes, uses the provided <paramref name="details"/> to
+        /// make sense of it. Use this method if the binary has no known file format.
         /// </summary>
         /// <param name="image">The raw contents of the file.</param>
         /// <param name="loadAddress">The address at which the raw contents are to be loaded.</param>
         /// <param name="details">Details about the contents of the file.</param>
         /// <returns>A <see cref="Reko.Core.Program"/>.
         /// </returns>
-        Program LoadRawImage(byte[] image, Address? loadAddress, LoadDetails details);
+        Program ParseRawImage(byte[] image, Address? loadAddress, LoadDetails details);
 
         Program LoadRawImage(LoadDetails raw);
 
         //$TODO: deprecate this method.
         Program LoadRawImage(byte[] bytes, LoadDetails raw);
 
-        Program AssembleExecutable(ImageLocation asmfileLocation, IAssembler asm, IPlatform platform, Address loadAddress);
-        Program AssembleExecutable(ImageLocation asmfileLocation, byte[] bytes, IAssembler asm, IPlatform platform, Address loadAddress);
+        Program AssembleExecutable(
+            ImageLocation asmfileLocation,
+            IAssembler asm,
+            IPlatform platform,
+            Address loadAddress);
+
+        Program AssembleExecutable(
+            ImageLocation asmfileLocation,
+            byte[] bytes,
+            IAssembler asm,
+            IPlatform platform,
+            Address loadAddress);
 
         /// <summary>
         /// Loads a file containing symbolic, type, or other metadata into a <see cref="Reko.Core.TypeLibrary>"/>.
@@ -160,6 +190,7 @@ namespace Reko.Core.Loading
         public Dictionary<string,object>? ArchitectureOptions;
         
         /// <summary>
+        /// Name of the platform to use. Platform names are found in the 
         /// Name of the platform to use. Platform names are found in the 
         /// reko.config file.
         /// </summary>
