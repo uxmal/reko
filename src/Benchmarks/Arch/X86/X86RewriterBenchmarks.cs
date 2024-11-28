@@ -1,0 +1,51 @@
+using BenchmarkDotNet.Attributes;
+using Reko.Arch.X86;
+using Reko.Core.Memory;
+using Reko.Core;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using BenchmarkDotNet.Configs;
+using BenchmarkDotNet.Diagnosers;
+using System.Reflection;
+
+namespace Reko.Benchmarks.Arch.X86
+{
+    [Config(typeof(Config))]
+    public class X86RewriterBenchmarks
+    {
+        private readonly ByteMemoryArea machineCode;
+        private readonly X86ArchitectureFlat32 arch;
+
+        public X86RewriterBenchmarks()
+        {
+            var mem = new byte[4096];
+            var rnd = new Random(0x142621A2);
+            rnd.NextBytes(mem);
+            this.machineCode = new ByteMemoryArea(Address.Ptr32(0x10000), mem);
+            this.arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32", new());
+        }
+
+        [Benchmark]
+        public void LiftMachineCode()
+        {
+            var rdr = arch.CreateImageReader(machineCode, 0);
+            var rw = arch.CreateRewriter(rdr, arch.CreateProcessorState(), new StorageBinder(), new NullRewriterHost());
+            foreach (var rtlc in rw)
+                ;
+        }
+
+        public class Config : ManualConfig
+        {
+            public Config()
+            {
+                AddDiagnoser(MemoryDiagnoser.Default);
+            }
+        }
+
+
+    }
+}
