@@ -408,7 +408,7 @@ namespace Reko.ImageLoaders.WebAssembly
             for (int i = 0; i < count; ++i)
             {
                 var fd = LoadFunctionDefinition(rdr);
-                if (fd == null)
+                if (fd is null)
                     return null;
                 funcBodies.Add(fd);
             }

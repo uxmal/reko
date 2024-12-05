@@ -350,7 +350,6 @@ namespace Reko.ImageLoaders.WebAssembly.Output
                     formatter.Indentation += formatter.TabSize;
                 }
             }
-            formatter.Indentation -= formatter.TabSize;
             formatter.WriteLine(")");
         }
 
