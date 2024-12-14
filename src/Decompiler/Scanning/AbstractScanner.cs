@@ -84,15 +84,32 @@ namespace Reko.Scanning
 
         protected ProvenanceType Provenance { get; }
 
+
+        /// <summary>
+        /// If true, allow speculative transfers to nonexisting addresses.
+        /// </summary>
+        public abstract bool AllowSpeculativeTransfers { get; }
+
         /// <summary>
         /// Returns true if the given address is inside an executable
+        /// area of the loaded program.
         /// <see cref="ImageSegment"/>.
         /// </summary>
-        /// <param name="addr"></param>
+        /// <param name="addr">Address to test.</param>
         /// <returns>Whether or not the address is executable.</returns>
         public bool IsExecutableAddress(Address addr) =>
             program.Memory.IsExecutableAddress(addr);
 
+        /// <summary>
+        /// Returns true if the given address is inside any part
+        /// of the loaded program.
+        /// <see cref="ImageSegment"/>.
+        /// </summary>
+        /// <param name="addr">Address to test.</param>
+        /// <returns>Whether or not the address is executable.</returns>
+        /// <remarks>
+        public bool IsValidAddress(Address addr) =>
+            program.Memory.IsValidAddress(addr);
 
         public IBackWalkHost<RtlBlock, RtlInstruction> MakeBackwardSlicerHost(
             IProcessorArchitecture arch,

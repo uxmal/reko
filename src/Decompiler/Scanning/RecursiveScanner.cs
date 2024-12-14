@@ -67,6 +67,8 @@ namespace Reko.Scanning
             this.suspendedWorkers = new();
         }
 
+        public override bool AllowSpeculativeTransfers => true;
+
         public ScanResultsV2 ScanProgram()
         {
             var seeds = CollectSeeds();

@@ -184,10 +184,12 @@ namespace Reko.UnitTests.Decompiler.Scanning
 
         private void Given_Program(Address address, byte[] bytes)
         {
-            var mem = new ByteMemoryArea(address, bytes);
+            var memText = new ByteMemoryArea(address, bytes);
+            var memData = new ByteMemoryArea(Address.Ptr32(0x6000), new byte[1024]);
             var segmentMap = new SegmentMap(
-                mem.BaseAddress,
-                new ImageSegment("proggie", mem, AccessMode.ReadExecute));
+                memText.BaseAddress,
+                new ImageSegment("proggie", memText, AccessMode.ReadExecute),
+                new ImageSegment("data", memData, AccessMode.ReadWrite));
             var arch = new X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>());
             var platform = new FakePlatform(sc, arch);
             platform.Test_DefaultCallingConvention = "__cdecl";

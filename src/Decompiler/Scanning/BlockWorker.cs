@@ -19,9 +19,12 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Code;
 using Reko.Core.Diagnostics;
 using Reko.Core.Expressions;
 using Reko.Core.Rtl;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
 using Reko.Evaluation;
 using System;
 using System.Collections.Generic;
@@ -385,13 +388,36 @@ namespace Reko.Scanning
 
             var size = cluster.Address - this.Address + cluster.Length;
 
-            // Make sure we're not heading to hyperspace.
+            bool needsExtraReturn = false;
+
+            // Handle transfers to outside known executable areas.
             if (rtlLast is RtlTransfer xfer &&
                 xfer.Target is Address addrTarget &&
                 !scanner.IsExecutableAddress(addrTarget))
             {
-                instrs.Add(new RtlInstructionCluster(cluster.Address, cluster.Length, new RtlInvalid()));
-                return MakeInvalidBlock(instrs, size);
+                if (scanner.AllowSpeculativeTransfers &&
+                    !scanner.IsValidAddress(addrTarget))
+                {
+                    // This could be the case in programs with overlays,
+                    // where the overlay code has not yet been loaded.
+                    var name = NamingPolicy.Instance.ProcedureName(addrTarget);
+                    var ext = new ExternalProcedure(name, new FunctionType());
+                    var call = new RtlCall(
+                        new ProcedureConstant(state.Architecture.PointerType, ext),
+                        0,
+                        InstrClass.Transfer | InstrClass.Call);
+                    cluster.Instructions[^1] = call;
+                    if (rtlLast is RtlGoto)
+                    {
+                        needsExtraReturn = true; ;
+                    }
+                }
+                else
+                {
+                    // Jump to data.
+                    instrs.Add(new RtlInstructionCluster(cluster.Address, cluster.Length, new RtlInvalid()));
+                    return MakeInvalidBlock(instrs, size);
+                }
             }
 
             if (rtlLast.Class.HasFlag(InstrClass.Delay))
@@ -404,6 +430,11 @@ namespace Reko.Scanning
                 instrs.Add(cluster);
             }
 
+            if (needsExtraReturn)
+            {
+                ExtendLastClusterWith(instrs, new RtlReturn(0, 0, InstrClass.Return | InstrClass.Transfer));
+            }
+
             // The trace may have moved if a delay slot was consumed.
             cluster = this.Trace.Current;
             var addrFallthrough = cluster.Address + cluster.Length;
@@ -414,6 +445,21 @@ namespace Reko.Scanning
                 addrFallthrough,
                 instrs);
             return block;
+        }
+
+        private void ExtendLastClusterWith(List<RtlInstructionCluster> instrs, RtlInstruction instr)
+        {
+            var lastCluster = instrs[^1];
+            var cInstrsToCopy = lastCluster.Instructions.Length;
+            var newInstrs = new RtlInstruction[cInstrsToCopy + 1];
+            Array.Copy(lastCluster.Instructions, newInstrs, cInstrsToCopy);
+            newInstrs[^1] = instr;
+
+            var newCluster = new RtlInstructionCluster(lastCluster.Address, lastCluster.Length, newInstrs)
+            {
+                Class = lastCluster.Class,
+            };
+            instrs[^1] = newCluster;
         }
 
         /// <summary>

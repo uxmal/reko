@@ -497,12 +497,12 @@ l00001044: // l:4; ft:00001048
         }
 
         [Test]
-        public void RecScan_Jump_to_invalid_address()
+        public void RecScan_Jump_to_non_executable_address()
         {
             Given_EntryPoint(0x1000);
             Given_Trace(new RtlTrace(0x1000)
             {
-                m=> m.Goto(Address.Ptr32(0x6000))
+                m=> m.Goto(Address.Ptr32(0x3000))
             });
             var sExpected =
             #region Expected
@@ -515,6 +515,31 @@ l00001000: // l:4; ft:00001004 (INVALID)
     // succ:
 ";
             #endregion
+
+            RunTest(sExpected);
+        }
+
+        [Test(Description = "Jumps to invalid addresses generate stub calls.")]
+        public void RecScan_JumpToExternalAddress()
+        {
+            Given_EntryPoint(0x1000);
+            Given_Trace(new RtlTrace(0x1000)
+            {
+                m => m.Goto(Address.Ptr32(0x4711_4711))
+            });
+
+            var sExpected =
+            #region Expected
+                @"
+define fn00001000
+    provenance: ImageEntrypoint
+l00001000: // l:4; ft:00001004
+    // pred:
+    call fn47114711 (0)
+    return (0,0)
+    // succ:
+";
+            #endregion 
 
             RunTest(sExpected);
         }

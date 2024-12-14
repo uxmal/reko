@@ -53,6 +53,12 @@ namespace Reko.Scanning
         {
         }
 
+        /// <summary>
+        /// During shingle scanning we could potentially be disassembling the 
+        /// middles of instructions, so we are at risk of generating invalid addresses.
+        /// </summary>
+        public override bool AllowSpeculativeTransfers => false;
+
         public ScanResultsV2 ScanProgram()
         {
             var gaps = FindUnscannedExecutableGaps();
