@@ -27,7 +27,7 @@ namespace Reko.Core.Expressions
 	/// <summary>
 	/// Represents a C-style dereferenced pointer: *foo
 	/// </summary>
-	public class Dereference : Expression
+	public class Dereference : AbstractExpression
 	{
 		public Dereference(DataType ptrType, Expression exp) : base(ptrType)
 		{

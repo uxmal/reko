@@ -31,7 +31,7 @@ namespace Reko.Core.Expressions
     /// The back end should convert these to the appropriate syntax for the
     /// output language.
     /// </summary>
-    public class OutArgument : Expression
+    public class OutArgument : AbstractExpression
     {
         /// <summary>
         /// Builds an outparameter.

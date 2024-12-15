@@ -423,33 +423,38 @@ namespace Reko.Core.Expressions
         private class WildExpression : Expression, IWildExpression
         {
             public WildExpression(string? label)
-                : base(VoidType.Instance)
             {
                 this.Label = label;
+                this.DataType = VoidType.Instance;
             }
 
+            public DataType DataType { get; set; }
+
+            public bool IsZero => false;
             public string? Label { get; }
 
-            public override IEnumerable<Expression> Children
-            {
-                get { yield break; }
-            }
+            public IEnumerable<Expression> Children => Array.Empty<Expression>();
 
-            public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
+            public T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
             {
                 throw new NotImplementedException();
             }
 
-            public override T Accept<T>(ExpressionVisitor<T> visitor)
+            public T Accept<T>(ExpressionVisitor<T> visitor)
             {
                 throw new NotImplementedException();
             }
 
-            public override void Accept(IExpressionVisitor visit)
+            public void Accept(IExpressionVisitor visit)
             {
             }
 
-            public override Expression CloneExpression()
+            public Expression CloneExpression()
+            {
+                throw new NotImplementedException();
+            }
+
+            public Expression Invert()
             {
                 throw new NotImplementedException();
             }

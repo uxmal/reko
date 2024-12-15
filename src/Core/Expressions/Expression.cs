@@ -19,61 +19,48 @@
 #endregion
 
 using Reko.Core.Types;
-using Reko.Core.Output;
-using System;
-using System.IO;
 using System.Collections.Generic;
 
 namespace Reko.Core.Expressions
 {
     /// <summary>
-    /// Base class for all decompiled expressions.
+    /// The common interface for all expression types.
     /// </summary>
-    public abstract class Expression
+    public interface Expression
     {
-        public Expression(DataType dataType)
-        {
-            this.DataType = dataType;
-        }
-
         /// <summary>
         /// Returns the direct children of this expression, in left-to-right
         /// order.
         /// </summary>
-        public abstract IEnumerable<Expression> Children { get; }
+        IEnumerable<Expression> Children { get; }
 
         /// <summary>
         /// Data type of this expression.
         /// </summary>
-        public DataType DataType { get; set; }
+        DataType DataType { get; set; }
 
         /// <summary>
         /// Returns true if the expression evaluates to a constant zero.
         /// </summary>
-        public virtual bool IsZero => false;
+        bool IsZero { get; }
 
-        // Visitor methods that must be implemented by concrete derived classes.
-        public abstract void Accept(IExpressionVisitor visitor);
-        public abstract T Accept<T>(ExpressionVisitor<T> visitor);
-        public abstract T Accept<T, C>(ExpressionVisitor<T, C> visitor, C context);
-
-        public abstract Expression CloneExpression();
+        void Accept(IExpressionVisitor visitor);
+        T Accept<T>(ExpressionVisitor<T> visitor);
+        T Accept<T, C>(ExpressionVisitor<T, C> visitor, C context);
+        
+        /// <summary>
+        /// Create a deep copy of this expression.
+        /// </summary>
+        /// <returns>A deep copy of this expression.</returns>
+        Expression CloneExpression();
 
         /// <summary>
         /// Applies logical (not-bitwise) negation to the expression.
         /// </summary>
-        /// <returns></returns>
-        public virtual Expression Invert()
-        {
-            throw new NotSupportedException(string.Format("Expression of type {0} doesn't support Invert.", GetType().Name));
-        }
-
-        public override string ToString()
-        {
-            var sw = new StringWriter();
-            var fmt = new CodeFormatter(new TextFormatter(sw));
-            fmt.WriteExpression(this);
-            return sw.ToString();
-        }
+        /// <returns>
+        /// A new expression that is the logical negation of the
+        /// expression.
+        /// </returns>
+        Expression Invert();
     }
 }

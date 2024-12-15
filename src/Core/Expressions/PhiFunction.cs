@@ -28,7 +28,7 @@ namespace Reko.Core.Expressions
 	/// <summary>
 	/// Representation of an SSA phi-function.
 	/// </summary>
-	public class PhiFunction : Expression
+	public class PhiFunction : AbstractExpression
 	{
 		public PhiFunction(DataType joinType, params PhiArgument[] arguments) : base(joinType)
 		{

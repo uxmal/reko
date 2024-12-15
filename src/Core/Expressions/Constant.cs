@@ -30,7 +30,7 @@ namespace Reko.Core.Expressions
     /// <summary>
     /// Models a constant value.
     /// </summary>
-	public abstract class Constant : Expression // , IFormattable
+	public abstract class Constant : AbstractExpression // , IFormattable
     {
         protected Constant(DataType t)
             : base(t)

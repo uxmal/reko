@@ -27,7 +27,7 @@ namespace Reko.Core.Expressions
     /// <summary>
     /// Models a unary expression like logical negation or bit complement.
     /// </summary>
-	public class UnaryExpression : Expression
+	public class UnaryExpression : AbstractExpression
 	{
 		public UnaryExpression(UnaryOperator op, DataType type, Expression expr) : base(type)
 		{

@@ -29,7 +29,7 @@ namespace Reko.Core.Expressions
 	/// A slice is an improper subsequence of bits. Commonly used to isolate
 	/// a byte register from a wider word- or dword-width register.
 	/// </summary>
-	public class Slice : Expression
+	public class Slice : AbstractExpression
 	{
         public Slice(DataType dt, Expression expression, int bitOffset) : base(dt)
         {

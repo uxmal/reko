@@ -46,7 +46,7 @@ namespace Reko.Core.Expressions
     /// building expressions. Any surviving ConditionOf instances at the end
     /// of the decompilation are considered bugs.</para>
     /// </remarks>
-	public class ConditionOf : Expression
+	public class ConditionOf : AbstractExpression
 	{
 		public ConditionOf(Expression exp) : base(PrimitiveType.Byte)
 		{

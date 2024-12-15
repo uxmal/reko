@@ -101,7 +101,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         public static PICProgAddress Ptr(Address aaddr)
             => new PICProgAddress(aaddr.ToUInt32());
 
-        public override string ToString()
+        protected override string ConvertToString()
             => $"{ToLinear():X6}";
 
     }
@@ -165,7 +165,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         public static PICDataAddress Ptr(Address aaddr)
             => new PICDataAddress(aaddr.ToUInt32());
 
-        public override string ToString()
+        protected override string ConvertToString()
             => $"{ToLinear():X4}";
 
 

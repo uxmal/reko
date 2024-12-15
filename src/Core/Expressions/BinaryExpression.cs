@@ -27,7 +27,7 @@ namespace Reko.Core.Expressions
     /// <summary>
     /// Models binary expressions like integer add, floating point divide etc.
     /// </summary>
-	public class BinaryExpression : Expression
+	public class BinaryExpression : AbstractExpression
 	{
         /// <summary>
         /// Create an instance of the <see cref="BinaryExpression"/> class.

@@ -28,7 +28,7 @@ namespace Reko.Core.Expressions
     /// <summary>
     /// Models a C-style cast. The specified expression is cast to the data type <paramref name="dt" />.
     /// </summary>
-	public class Cast : Expression
+	public class Cast : AbstractExpression
 	{
 		public Cast(DataType dt, Expression expr) : base(dt)
 		{

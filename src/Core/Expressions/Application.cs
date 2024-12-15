@@ -29,7 +29,7 @@ namespace Reko.Core.Expressions
 	/// <summary>
 	/// Represents an application of a procedure to a list of arguments.
 	/// </summary>
-	public class Application : Expression
+	public class Application : AbstractExpression
 	{
 		public Application(Expression proc, DataType retVal, params Expression [] arguments) : base(retVal)
 		{

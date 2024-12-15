@@ -29,7 +29,7 @@ namespace Reko.Core.Expressions
     /// <remarks>This construct is used to model 8086 real mode code, where "far pointers"
     /// consist of a segment and an offset. The offset corresponds to a member pointer selector.
     /// </remarks>
-	public class MemberPointerSelector : Expression
+	public class MemberPointerSelector : AbstractExpression
 	{
 		public MemberPointerSelector(DataType dt, Expression basePtr, Expression memberPtr) : base(dt)
 		{

@@ -28,7 +28,7 @@ namespace Reko.Core.Expressions
     /// Wraps a reference to a <see cref="ProcedureBase"/> inside of an
     /// <see cref="Expression" />.
     /// </summary>
-	public class ProcedureConstant : Expression
+	public class ProcedureConstant : AbstractExpression
 	{
         private readonly FunctionType? sig;
 

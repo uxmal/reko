@@ -27,7 +27,7 @@ namespace Reko.Core.Expressions
     /// <summary>
     /// Models x86-style segmented pointers.
     /// </summary>
-    public class SegmentedPointer : Expression
+    public class SegmentedPointer : AbstractExpression
     {
         public SegmentedPointer(DataType dt, Expression basePointer, Expression offset)
             : base(dt)

@@ -27,7 +27,7 @@ namespace Reko.Core.Expressions
     /// <summary>
     /// Models an array access.
     /// </summary>
-	public class ArrayAccess : Expression
+	public class ArrayAccess : AbstractExpression
 	{
 		public ArrayAccess(DataType elementType, Expression array, Expression index) : base(elementType)
 		{

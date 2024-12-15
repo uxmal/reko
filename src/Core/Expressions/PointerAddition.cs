@@ -24,7 +24,7 @@ using System.Collections.Generic;
 
 namespace Reko.Core.Expressions
 {
-	public class PointerAddition : Expression
+	public class PointerAddition : AbstractExpression
 	{
 		public PointerAddition(DataType addType, Expression expr, int offset) : base(addType)
 		{

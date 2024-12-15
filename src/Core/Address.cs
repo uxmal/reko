@@ -37,8 +37,8 @@ namespace Reko.Core
         MachineOperand
     {
         protected Address(DataType size)
-            : base(size)
         {
+            this.DataType = size;
         }
 
         /// <summary>
@@ -119,6 +119,9 @@ namespace Reko.Core
             return new ProtectedSegmentedAddress(seg, (ushort)off);
         }
 
+        /// <inheritdoc />
+        public DataType DataType { get; set; }
+
         /// <summary>
         /// Returns the larger of two <see cref="Address">Addresses</see>.
         /// </summary>
@@ -159,7 +162,7 @@ namespace Reko.Core
             {
             case 16: return Ptr16(value.ToUInt16());
             case 20: 
-                addr = Ptr32(value.ToUInt32());
+                addr = new Address32(value.ToUInt32());
                 addr.DataType = PrimitiveType.Create(Domain.Pointer, bitSize);
                 return addr;
             case 32: return Ptr32(value.ToUInt32());
@@ -168,8 +171,9 @@ namespace Reko.Core
             }
         }
 
-        public override IEnumerable<Expression> Children => Array.Empty<Expression>();
+        public IEnumerable<Expression> Children => Array.Empty<Expression>();
         public abstract bool IsNull { get; }
+        public bool IsZero => IsNull;
         public abstract ulong Offset { get; }
 
         DataType MachineOperand.Width
@@ -193,20 +197,22 @@ namespace Reko.Core
         /// </returns>
         public abstract Address NewOffset(ulong offset);
 
-        public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
+        public T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
         {
             return v.VisitAddress(this, context);
         }
 
-        public override T Accept<T>(ExpressionVisitor<T> v)
+        public T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitAddress(this);
         }
 
-        public override void Accept(IExpressionVisitor visit)
+        public void Accept(IExpressionVisitor visit)
         {
             visit.VisitAddress(this);
         }
+
+        public abstract Expression CloneExpression();
 
         public override bool Equals(object? obj)
         {
@@ -219,6 +225,11 @@ namespace Reko.Core
         }
 
         public abstract string GenerateName(string prefix, string suffix);
+
+        public Expression Invert()
+        {
+            throw new NotSupportedException($"Expression of type {GetType().Name} doesn't support Invert.");
+        }
 
         public static bool operator ==(Address? a, Address? b)
         {
@@ -309,13 +320,17 @@ namespace Reko.Core
         void MachineOperand.Render(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             renderer.BeginOperand();
-            renderer.WriteAddress(this.ToString(), this);
+            renderer.WriteAddress(this.ToString()!, this);
             renderer.EndOperand();
         }
 
+        public sealed override string ToString() => ConvertToString();
+
+        protected abstract string ConvertToString();
+
         string MachineOperand.ToString(MachineInstructionRendererOptions options)
         {
-            return ToString();
+            return ConvertToString()!;
         }
 
         public abstract Constant ToConstant();
@@ -448,9 +463,9 @@ namespace Reko.Core
             return uValue;
         }
 
-        public override string ToString()
+        protected override string ConvertToString()
         {
-            return string.Format("{0:X4}", uValue);
+            return $"{uValue:X4}";
         }
     }
 
@@ -460,7 +475,12 @@ namespace Reko.Core
 		public static readonly Address NULL = Address32.Ptr32(0);
 
         public Address32(uint addr)
-            : base(PrimitiveType.Ptr32)
+            : this(addr, PrimitiveType.Ptr32)
+        {
+        }
+
+        public Address32(uint addr, DataType ptrType)
+            : base(ptrType)
         {
             this.uValue = addr;
         }
@@ -482,7 +502,7 @@ namespace Reko.Core
 
         public override Expression CloneExpression()
         {
-            return new Address32(uValue);
+            return new Address32(uValue, this.DataType);
         }
 
         public override string GenerateName(string prefix, string suffix)
@@ -515,9 +535,9 @@ namespace Reko.Core
             return uValue;
         }
 
-        public override string ToString()
+        protected override string ConvertToString()
         {
-            return string.Format("{0:X8}", uValue);
+            return $"{uValue:X8}";
         }
     }
 
@@ -589,9 +609,9 @@ namespace Reko.Core
             return (((ulong)uSegment) << 4) + uOffset;
         }
 
-        public override string ToString()
+        protected override string ConvertToString()
         {
-            return string.Format("{0:X4}:{1:X4}", uSegment, uOffset);
+            return $"{uSegment:X4}:{uOffset:X4}";
         }
     }
 
@@ -668,9 +688,9 @@ namespace Reko.Core
             return (((ulong)(uSelector & ~7)) << 9) + uOffset;
         }
 
-        public override string ToString()
+        protected override string ConvertToString()
         {
-            return string.Format("{0:X4}:{1:X4}", uSelector, uOffset);
+            return $"{uSelector:X4}:{uOffset:X4}";
         }
     }
 
@@ -737,9 +757,9 @@ namespace Reko.Core
             return uValue;
         }
 
-        public override string ToString()
+        protected override string ConvertToString()
         {
-            return string.Format("{0:X16}", uValue);
+            return $"{uValue:X16}";
         }
     }
 }

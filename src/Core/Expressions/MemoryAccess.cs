@@ -29,7 +29,7 @@ namespace Reko.Core.Expressions
     /// Models an access to memory, using the effective address <paramref name="ea"/> and the datatype
     /// of the accessed memory.
     /// </summary>
-    public class MemoryAccess : Expression
+    public class MemoryAccess : AbstractExpression
     {
         /// <summary>
         /// Creates an access to the memory whose effective address is <paramref name="ea"/>.

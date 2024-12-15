@@ -31,7 +31,7 @@ namespace Reko.Core.Expressions
     /// a^.field (as expressed in Pascal), remember to first "wrap" it in
     /// a <see cref="Dereference" /> instance.
     /// </summary>
-	public class FieldAccess : Expression
+	public class FieldAccess : AbstractExpression
 	{
 		public FieldAccess(DataType fieldType, Expression expr, Field field) : base(fieldType)
 		{

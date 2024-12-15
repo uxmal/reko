@@ -34,7 +34,7 @@ namespace Reko.Core.Expressions
     /// of certain processor architectures, and should be rewritten by the
     /// later decompiler stages to a boolean expression.
     /// </remarks>
-    public class TestCondition : Expression
+    public class TestCondition : AbstractExpression
     {
         public TestCondition(ConditionCode cc, Expression expr)
             : base(PrimitiveType.Bool)

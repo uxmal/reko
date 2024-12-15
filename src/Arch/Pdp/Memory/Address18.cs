@@ -35,8 +35,6 @@ namespace Reko.Arch.Pdp.Memory
 
         public override bool IsNull => Offset == 0;
 
-        public override bool IsZero => Offset == 0;
-
         public override sealed ulong Offset { get; }
 
         public override ushort? Selector => null;
@@ -87,7 +85,7 @@ namespace Reko.Arch.Pdp.Memory
             return (uint)Offset;
         }
 
-        public override string ToString()
+        protected override string ConvertToString()
         {
             return Convert.ToString((uint) Offset, 8).PadLeft(6, '0');
         }

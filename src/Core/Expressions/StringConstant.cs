@@ -28,7 +28,7 @@ using System.Threading.Tasks;
 
 namespace Reko.Core.Expressions
 {
-    public class StringConstant : Expression
+    public class StringConstant : AbstractExpression
     {
         private readonly string str;
 

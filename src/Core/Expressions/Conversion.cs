@@ -36,7 +36,7 @@ namespace Reko.Core.Expressions
     /// <see cref="Cast"/> expressions.
     /// </para>
     /// </remarks>
-    public class Conversion : Expression
+    public class Conversion : AbstractExpression
     {
         /// <summary>
         /// Makes an instance of the <see cref="Conversion"/> class.

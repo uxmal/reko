@@ -30,7 +30,7 @@ namespace Reko.Core.Expressions
     /// <summary>
     /// Models the C ternary ?: operator.
     /// </summary>
-    public class ConditionalExpression : Expression
+    public class ConditionalExpression : AbstractExpression
     {
         public ConditionalExpression(
             DataType dataType,

@@ -33,7 +33,7 @@ namespace Reko.Core.Expressions
     /// class. They also have a <see cref="Storage"/> property, which identifies
     /// which "memory space" the identifier lives in.
     /// </remarks>
-	public class Identifier : Expression
+	public class Identifier : AbstractExpression
 	{
 		public Identifier(string name, DataType type, Storage stg) : base(type)
 		{

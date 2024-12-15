@@ -27,7 +27,7 @@ namespace Reko.Core.Expressions
 	/// <summary>
 	/// Corresponds to the :: operator of C++; 
 	/// </summary>
-	public class ScopeResolution : Expression
+	public class ScopeResolution : AbstractExpression
 	{
         public ScopeResolution(DataType dt)
             : base(dt)
