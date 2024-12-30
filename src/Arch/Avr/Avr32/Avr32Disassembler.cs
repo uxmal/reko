@@ -50,7 +50,6 @@ namespace Reko.Arch.Avr.Avr32
             this.arch = arch;
             this.rdr = rdr;
             this.ops = new List<MachineOperand>();
-            this.addr = null!;
         }
 
         public override Avr32Instruction? DisassembleInstruction()

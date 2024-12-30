@@ -40,7 +40,6 @@ namespace Reko.Arch.Alpha
         {
             this.arch = arch;
             this.rdr = rdr;
-            this.addr = null!;
         }
 
         public override AlphaInstruction? DisassembleInstruction()

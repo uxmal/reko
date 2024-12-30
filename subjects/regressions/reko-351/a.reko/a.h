@@ -77,7 +77,7 @@ T_4: (in 0<32> @ 8000009E : word32)
   Class: Eq_3
   DataType: ptr32
   OrigDataType: word32
-T_5: (in null == null @ 8000009E : bool)
+T_5: (in 0x00000000<p32> == 0x00000000<p32> @ 8000009E : bool)
   Class: Eq_5
   DataType: bool
   OrigDataType: bool
@@ -137,7 +137,7 @@ T_19: (in 0<32> @ 800000D2 : word32)
   Class: Eq_3
   DataType: ptr32
   OrigDataType: word32
-T_20: (in null == null @ 800000D2 : bool)
+T_20: (in 0x00000000<p32> == 0x00000000<p32> @ 800000D2 : bool)
   Class: Eq_20
   DataType: bool
   OrigDataType: bool
@@ -233,7 +233,7 @@ T_43: (in 0<32> @ 80000138 : word32)
   Class: Eq_3
   DataType: ptr32
   OrigDataType: word32
-T_44: (in null == null @ 80000138 : bool)
+T_44: (in 0x00000000<p32> == 0x00000000<p32> @ 80000138 : bool)
   Class: Eq_44
   DataType: bool
   OrigDataType: bool
@@ -301,7 +301,7 @@ T_60: (in 0<32> @ 8000016C : word32)
   Class: Eq_3
   DataType: ptr32
   OrigDataType: word32
-T_61: (in null == null @ 8000016C : bool)
+T_61: (in 0x00000000<p32> == 0x00000000<p32> @ 8000016C : bool)
   Class: Eq_61
   DataType: bool
   OrigDataType: bool
@@ -341,7 +341,7 @@ T_70: (in 0<32> @ 80000196 : word32)
   Class: Eq_3
   DataType: ptr32
   OrigDataType: word32
-T_71: (in null == null @ 80000196 : bool)
+T_71: (in 0x00000000<p32> == 0x00000000<p32> @ 80000196 : bool)
   Class: Eq_71
   DataType: bool
   OrigDataType: bool

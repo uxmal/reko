@@ -367,7 +367,7 @@ namespace Reko.Arch.Xtensa
         {
             if (lend == null)
                 return;
-            if (instr.Address.ToLinear() + (uint)instr.Length == lend.ToLinear())
+            if (instr.Address.ToLinear() + (uint)instr.Length == lend.Value.ToLinear())
             {
                 var addrNext = instr.Address + instr.Length;
                 var lcount = binder.EnsureRegister(Registers.LCOUNT);

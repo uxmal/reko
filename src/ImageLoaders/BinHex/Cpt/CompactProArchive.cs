@@ -536,9 +536,9 @@ namespace Reko.ImageLoaders.BinHex.Cpt
                     return Archive.CreateUncompactor().Uncompact(offsetCompressed, lengthCompressed, lengthUncompressed, type);
                 }
 
-                public ILoadedImage LoadImage(IServiceProvider? services, Address? addrLoad)
+                public ILoadedImage LoadImage(IServiceProvider? services, Address? loadingAddress)
                 {
-                    addrLoad ??= Address.Ptr32(0x00100000);
+                    var addrLoad = loadingAddress ?? Address.Ptr32(0x00100000);
                     var image = this.GetBytes();
                     var rsrcFork = new ResourceFork(Archive.Platform, image);
                     var bmem = new ByteMemoryArea(addrLoad, image);

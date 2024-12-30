@@ -301,7 +301,7 @@ T_40: (in 0<64> @ 0000000000000671 : word64)
   Class: Eq_38
   DataType: (ptr64 Eq_38)
   OrigDataType: word64
-T_41: (in _ITM_deregisterTMCloneTable == null @ 0000000000000671 : bool)
+T_41: (in _ITM_deregisterTMCloneTable == 0x0000000000000000<p64> @ 0000000000000671 : bool)
   Class: Eq_41
   DataType: bool
   OrigDataType: bool
@@ -369,7 +369,7 @@ T_57: (in 0<64> @ 00000000000006C2 : word64)
   Class: Eq_55
   DataType: (ptr64 Eq_55)
   OrigDataType: word64
-T_58: (in _ITM_registerTMCloneTable == null @ 00000000000006C2 : bool)
+T_58: (in _ITM_registerTMCloneTable == 0x0000000000000000<p64> @ 00000000000006C2 : bool)
   Class: Eq_58
   DataType: bool
   OrigDataType: bool
@@ -1238,7 +1238,7 @@ T_274: (in 0000000000200DE8 @ 0000000000000A91 : ptr64)
   Class: Eq_274
   DataType: (ptr64 (arr (ptr64 code)))
   OrigDataType: (union ((ptr64 (arr Eq_301)) u1) ((ptr64 (arr Eq_301)) u0))
-T_275: (in 0x200DF0<u64> - g_a200DE8 @ 0000000000000A91 : word64)
+T_275: (in 0x0000000000200DF0<p64> - g_a200DE8 @ 0000000000000A91 : word64)
   Class: Eq_275
   DataType: int64
   OrigDataType: int64

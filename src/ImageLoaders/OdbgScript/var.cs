@@ -273,7 +273,7 @@ namespace Reko.ImageLoaders.OdbgScript
             if (etype.DW == this.type)
                 return dw;
             else if (etype.ADR == this.type)
-                return Address!.ToLinear();
+                return Address!.Value.ToLinear();
             throw new NotSupportedException();
         }
     }

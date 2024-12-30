@@ -305,7 +305,7 @@ namespace Reko.CmdLine
             return sExtractResources != "no" && sExtractResources != "false";
         }
 
-        private static Address ParseAddress(Dictionary<string, object> pArgs, string key)
+        private static Address? ParseAddress(Dictionary<string, object> pArgs, string key)
         {
             if (pArgs.TryGetValue(key, out var osAddr) &&
                 osAddr is string sAddr && 

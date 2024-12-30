@@ -267,8 +267,6 @@ namespace Reko.Arch.MicrochipPIC.Common
             /// </returns>
             public bool Contains(Address aFragAddr, uint Len = 0)
             {
-                if (aFragAddr is null)
-                    return false;
                 return ((aFragAddr >= LogicalByteAddrRange.Begin) && ((aFragAddr + Len) < LogicalByteAddrRange.End));
             }
 
@@ -595,7 +593,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         protected sealed class DataMemoryMap : MemoryMapBase<DataMemRegion>
         {
 
-            public Address[] remapTable;
+            public Address?[] remapTable;
 
 
             /// <summary>
@@ -616,7 +614,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
                 if (pic.DataSpaceSize < MinDataMemorySize)
                     throw new ArgumentOutOfRangeException("Too low data memory size. Check PIC definition.");
-                remapTable = new Address[pic.DataSpaceSize];
+                remapTable = new Address?[pic.DataSpaceSize];
                 for (int i = 0; i < remapTable.Length; i++)
                     remapTable[i] = null!;
 

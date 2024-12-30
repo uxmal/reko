@@ -1318,11 +1318,11 @@ l0800_0D82:
 	branch (dl_21 & 0x80<8>) != 0<8> l0800_0DBF
 l0800_0D87:
 	ax_17 = SLICE(dx_ax_33, word16, 0) (alias)
-	branch msdos_set_file_position(wArg02, null, 1<8>, out dx_ax_33) l0800_0DC3
+	branch msdos_set_file_position(wArg02, 0x00000000<p32>, 1<8>, out dx_ax_33) l0800_0DC3
 l0800_0D92:
 	ax_17 = SLICE(dx_ax_48, word16, 0) (alias)
 	dx_52 = SLICE(dx_ax_48, word16, 16) (alias)
-	branch msdos_set_file_position(wArg02, null, 2<8>, out dx_ax_48) l0800_0DC3
+	branch msdos_set_file_position(wArg02, 0x00000000<p32>, 2<8>, out dx_ax_48) l0800_0DC3
 l0800_0DA7:
 	ax_17 = SLICE(dx_ax_61, word16, 0) (alias)
 	dx_76 = SLICE(dx_ax_61, word16, 16) (alias)

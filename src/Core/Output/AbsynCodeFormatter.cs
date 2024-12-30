@@ -39,6 +39,18 @@ namespace Reko.Core.Output
 
         }
 
+        public override void VisitAddress(Address addr)
+        {
+            if (addr.IsNull)
+            {
+                WriteNull();
+            }
+            else
+            {
+                base.VisitAddress(addr);
+            }
+        }
+
         public override void VisitConstant(Constant c)
         {
             if (c.IsValid)

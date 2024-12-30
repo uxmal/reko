@@ -133,8 +133,6 @@ namespace Reko.ImageLoaders.MzExe
             this.lfaNew = e_lfanew;
             this.importStubs = new Dictionary<uint, (Address, ImportReference)>();
             this.imageSymbols = new SortedList<Address, ImageSymbol>();
-            this.addrEntry = null!;
-            this.addrImportStubs = null!;
             this.arch = null!;
             this.entryPoints = null!;
             this.mem = null!;
@@ -433,7 +431,7 @@ namespace Reko.ImageLoaders.MzExe
             public ushort Alloc;
 
             public uint LinearAddress;
-            public Address? Address;        //$TODO: C#9.0 init
+            public Address Address;
 
             public bool IsData => (Flags & NE_STFLAGS_DATA) != 0;
         }
@@ -633,7 +631,7 @@ namespace Reko.ImageLoaders.MzExe
         /// </summary>
         private bool ApplyRelocations(EndianImageReader rdr, int cRelocations, NeSegment seg)
         {
-            Address? address = null;
+            Address address = default;
             NeRelocationEntry rep;
             trace.Verbose("== Relocating segment {0}", seg.Address!);
             for (int i = 0; i < cRelocations; i++)

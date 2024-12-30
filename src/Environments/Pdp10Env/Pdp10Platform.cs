@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Arch.Pdp;
 using Reko.Arch.Pdp.Memory;
 using Reko.Arch.Pdp.Pdp10;
 using Reko.Core;
@@ -55,7 +56,7 @@ namespace Reko.Environments.Pdp10Env
 
         public override Address MakeAddressFromLinear(ulong uAddr, bool codeAlign)
         {
-            return new Address18((uint) uAddr);
+            return Pdp10Architecture.Ptr18((uint) uAddr);
         }
     }
 }

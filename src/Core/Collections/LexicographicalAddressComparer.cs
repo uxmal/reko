@@ -27,12 +27,8 @@ namespace Reko.Core.Collections
 {
     public class LexicographicalAddressComparer : IComparer<Address>, IEqualityComparer<Address>
     {
-        public int Compare(Address? x, Address? y)
+        public int Compare(Address x, Address y)
         {
-            if (x is null)
-                return (y is null) ? 0 : -1;
-            else if (y is null)
-                return 1;
             int d;
             if (x.Selector.HasValue)
             {
@@ -47,12 +43,8 @@ namespace Reko.Core.Collections
             return x.Offset.CompareTo(y.Offset);
         }
 
-        public bool Equals(Address? x, Address? y)
+        public bool Equals(Address x, Address y)
         {
-            if (x is null)
-                return y is null;
-            else if (y is null)
-                return false;
             if (x.Selector.HasValue != y.Selector.HasValue)
                 return false;
             if (x.Selector.HasValue)

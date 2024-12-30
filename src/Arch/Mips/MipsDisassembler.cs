@@ -53,7 +53,6 @@ namespace Reko.Arch.Mips
             this.rdr = imageReader;
             this.signedWord = PrimitiveType.Create(Domain.SignedInt, arch.WordWidth.BitSize);
             this.ops = new List<MachineOperand>();
-            this.addr = null!;
             this.instrCur = null!;
         }
 

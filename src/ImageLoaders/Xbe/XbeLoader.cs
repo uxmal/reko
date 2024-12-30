@@ -167,7 +167,7 @@ namespace Reko.ImageLoaders.Xbe
         {
             get
             {
-                return null!; //the format is self describing
+                return default; //the format is self describing
             }
 
             set
@@ -243,9 +243,9 @@ namespace Reko.ImageLoaders.Xbe
             return null;
         }
 
-        private Dictionary<Address32, ImportReference> LoadImports(EndianImageReader importsReader)
+        private Dictionary<Address, ImportReference> LoadImports(EndianImageReader importsReader)
         {
-            Dictionary<Address32, ImportReference> imports = new Dictionary<Address32, ImportReference>();
+            Dictionary<Address, ImportReference> imports = new Dictionary<Address, ImportReference>();
 
             XbeLibrary kernelLibrary = new XbeLibrary(rdr.ReadAt(FileOffset(ctx.KernelLibraryAddress), (rdr) =>
             {
@@ -254,7 +254,7 @@ namespace Reko.ImageLoaders.Xbe
 
             for (uint i = 0; i<XBE_MAX_THUNK; i++)
             {
-                Address32 ordinalAddress = (Address32) ctx.KernelThunkAddress.Add(i * 4);
+                Address ordinalAddress = (Address) ctx.KernelThunkAddress.Add(i * 4);
                 if(!importsReader.TryReadUInt32(out uint dword))
                 {
                     throw new BadImageFormatException("Unexpected EOF while reading import table.");

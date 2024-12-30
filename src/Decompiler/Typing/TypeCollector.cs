@@ -122,7 +122,7 @@ namespace Reko.Typing
         {
             foreach (var sym in program.ImageSymbols.Values)
             {
-                if (sym != null && sym.DataType != null && sym.Address != null &&
+                if (sym is not null && sym.DataType is not null &&
                     sym.Type == SymbolType.Data && sym.DataType is not UnknownType)
                 {
                     DataType dtField;

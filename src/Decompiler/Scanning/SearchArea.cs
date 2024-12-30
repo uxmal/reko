@@ -124,8 +124,9 @@ namespace Reko.Scanning
                     switch (c)
                     {
                     case '-':
-                        if (!TryParseAddress(arch, freeFormAreas, iBegin, i - 1, out addrBegin))
+                        if (!TryParseAddress(arch, freeFormAreas, iBegin, i - 1, out var a))
                             return false;
+                        addrBegin = a;
                         state = State.InEndRange;
                         iBegin = i;
                         break;
@@ -144,7 +145,7 @@ namespace Reko.Scanning
                         if (addrBegin >= addrEnd)
                             return false;
                         areas.Add(new SearchArea(program, null, new AddressRange(
-                            addrBegin!,
+                            addrBegin.Value,
                             (addrEnd + adjustment))));
                         state = State.Start;
                         break;
@@ -154,7 +155,7 @@ namespace Reko.Scanning
                         if (addrBegin! >= addrEnd)
                             return false;
                         areas.Add(new SearchArea(program, null, new AddressRange(
-                            addrBegin!,
+                            addrBegin.Value,
                             addrEnd)));
                         break;
                     default:

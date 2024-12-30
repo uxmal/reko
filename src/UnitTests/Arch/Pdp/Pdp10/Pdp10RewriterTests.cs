@@ -32,12 +32,12 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
     public class Pdp10RewriterTests : RewriterTestBase
     {
         private readonly Pdp10Architecture arch;
-        private readonly Address18 addr;
+        private readonly Address addr;
 
         public Pdp10RewriterTests()
         {
             this.arch = new Pdp10Architecture(CreateServiceContainer(), "pdp10", new Dictionary<string, object>());
-            this.addr = new Address18(0x0010_000);
+            this.addr = Pdp10Architecture.Ptr18(0x0010_000);
         }
 
         public override IProcessorArchitecture Architecture => arch;

@@ -245,7 +245,10 @@ namespace Reko.Arch.RiscV
             }
             else if (pt.Domain == Domain.Real)
             {
-                var str = c.ToReal64().ToString("G", CultureInfo.InvariantCulture);
+                var value = c.ToReal64();
+                if (value == Double.PositiveInfinity)
+                    return "inf";
+                var str = value.ToString("G", CultureInfo.InvariantCulture);
                 if (str.IndexOfAny(floatSpecials) < 0)
                 {
                     return str + ".0";

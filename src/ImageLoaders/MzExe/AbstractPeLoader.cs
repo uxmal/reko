@@ -374,7 +374,7 @@ namespace Reko.ImageLoaders.MzExe
 
             public override Address ReadPreferredImageBase(EndianImageReader rdr)
             {
-                return Address64.Ptr64(rdr.ReadLeUInt64());
+                return Address.Ptr64(rdr.ReadLeUInt64());
             }
 
             public override long ReadWord(EndianImageReader rdr)

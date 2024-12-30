@@ -461,8 +461,8 @@ namespace Reko.UnitTests.Decompiler.Evaluation
 
             var (result, _) = exp.Accept(simplifier);
 
-            var addr = ((MemoryAccess) result).EffectiveAddress as Address;
-            Assert.IsNotNull(addr);
+            var addr = ((MemoryAccess) result).EffectiveAddress as Address?;
+            Assert.IsNotNull(addr.Value);
             Assert.AreEqual("1234:5678", addr.ToString());
         }
 

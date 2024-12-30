@@ -63,11 +63,11 @@ namespace Reko.UserInterfaces.WindowsForms
 
         void TextView_Navigate(object sender, EditorNavigationArgs e)
         {
-            var addr = e.Destination as Address;
-            if (addr !=null)
+            var addr = e.Destination as Address?;
+            if (addr is not null)
             {
                 var svc = services.RequireService<ILowLevelViewService>();
-                svc.ShowMemoryAtAddress(program, addr);
+                svc.ShowMemoryAtAddress(program, addr.Value);
             }
         }
 

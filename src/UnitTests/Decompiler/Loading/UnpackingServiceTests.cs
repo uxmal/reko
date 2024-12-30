@@ -49,7 +49,7 @@ namespace Reko.UnitTests.Decompiler.Loading
                 set { throw new NotImplementedException(); }
             }
 
-            public override Program LoadProgram(Address addrLoad)
+            public override Program LoadProgram(Address? addrLoad)
             {
                 throw new NotImplementedException();
             }

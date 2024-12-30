@@ -53,7 +53,6 @@ namespace Reko.Arch.Arm.AArch32
         {
             this.arch = arch;
             this.rdr = rdr;
-            this.addr = null!;
             this.state = null!;
         }
 

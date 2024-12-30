@@ -68,7 +68,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         /// </returns>
         /// <exception cref="AddressCorrelatedException">Thrown when the Address Correlated error
         ///                                              condition occurs.</exception>
-        protected override PICInstruction DecodePICInstruction(ushort uInstr, PICProgAddress addr)
+        protected override PICInstruction DecodePICInstruction(ushort uInstr, Address addr)
         {
             var offset = rdr.Offset;
             try

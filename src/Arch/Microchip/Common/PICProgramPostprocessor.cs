@@ -45,7 +45,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         {
             program = prog;
             architecture = arch;
-            newMap = new SegmentMap(PICProgAddress.Ptr(0));
+            newMap = new SegmentMap(Address.Ptr32(0));
             renamingCounter = null!;
         }
 

@@ -279,7 +279,7 @@ namespace Reko.Scanning
                 scanner.MarkDataInImageMap(addr, dt);
             }
             imgVector = new ImageMapVectorTable(
-                null!, // bw.VectorAddress,
+                default, // bw.VectorAddress,
                 te.Targets!.ToArray(),
                 4); // builder.TableByteSize);
             vector = te.Targets;

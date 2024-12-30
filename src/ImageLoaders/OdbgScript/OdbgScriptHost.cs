@@ -76,7 +76,7 @@ namespace Reko.ImageLoaders.OdbgScript
             }
             var newHeapAlloc = heapAlloc + size;
             if ((uint) heap.MemoryArea.Length <= newHeapAlloc)
-                return null!;
+                return default;
             var addrChunk = (heap.MemoryArea.BaseAddress + heapAlloc).Align(0x10);
             this.heapAlloc = newHeapAlloc;
             return addrChunk;

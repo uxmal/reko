@@ -92,7 +92,7 @@ public class FpuStackReturnGuesser : IAnalysis<SsaState>
         {
             var fpuStackIds = ssa.Identifiers
                 .Where(
-                    sid => sid.DefStatement != null &&
+                    sid => sid.DefStatement is not null &&
                     sid.Identifier.Storage == fpuStack)
                 .ToList();
             foreach (var sid in fpuStackIds)
@@ -111,6 +111,7 @@ public class FpuStackReturnGuesser : IAnalysis<SsaState>
                 changed |= fpuDefs.Count > 0;
                 AddFpuToCallDefs(fpuDefs, callStm, ci);
                 InsertFpuStackAccessAssignments(fpuDefs, callStm, ci);
+                changed = true;
             }
             return changed;
         }

@@ -217,7 +217,7 @@ namespace Reko.ImageLoaders.LLVM
             throw new NotImplementedException();
         }
 
-        public Address MakeAddressFromConstant(Core.Expressions.Constant c, bool codeAlign)
+        public Address? MakeAddressFromConstant(Core.Expressions.Constant c, bool codeAlign)
         {
             throw new NotImplementedException();
         }

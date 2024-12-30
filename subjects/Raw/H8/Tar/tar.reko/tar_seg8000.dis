@@ -1520,7 +1520,7 @@ l00009B0E:
 	er0_16_16_115 = SLICE(fn00009B90(SEQ(SLICE(fn00009478(SLICE(fn00009DDC(SLICE(fn00009B90(SEQ(SLICE(fn00009B90(SEQ(SLICE(fn00009B90(SEQ(SLICE(fn00009BA6(SEQ(er0_16_16, 0x3B9A<16>), 0x9F10<16>, 0x9F00<16>, r6), word16, 16), 0x2964<16>), r6), word16, 16), 0x1498<16>), r6), word16, 16), 0x1ABA<16>), r6), word16, 16), r6), word16, 16), er1_16_16, er2_16_16, er3_16_16, r4, er4_16_16, er5_16_16, r6, out er1_88, out er2_89, out er3_90, out er4_91, out er5_92, out r6_138), word16, 16), 0x3ED4<16>), r6_101), word16, 16) (alias)
 	Mem109[0xFFCC<p16>:byte] = 1<8>
 	er2_16_16_113 = SLICE(er2_89, word16, 16) (alias)
-	r2_110 = Mem109[null:word16]
+	r2_110 = Mem109[0x0000<p16>:word16]
 	call SEQ(er2_16_16_113, r2_110) (retsize: 2;)
 		uses: er0_16_16:er0_16_16_115,er1_16_16:SLICE(er1_88, word16, 16),er2_16_16:er2_16_16_113,er3_16_16:SLICE(er3_90, word16, 16),er4_16_16:SLICE(er4_91, word16, 16),er5_16_16:SLICE(er5_92, word16, 16),Mem:Mem109,r2:r2_110,r4:SLICE(er4_91, word16, 0),r6:r6_101
 	return

@@ -63,7 +63,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         /// <summary>
         /// Gets the opcodes table corresponding to this PIC family.
         /// </summary>
-        protected override PICInstruction DecodePICInstruction(ushort uInstr, PICProgAddress addr)
+        protected override PICInstruction DecodePICInstruction(ushort uInstr, Address addr)
         {
             var offset = rdr.Offset;
             try

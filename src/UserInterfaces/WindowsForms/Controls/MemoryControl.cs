@@ -56,7 +56,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         private static readonly TraceSwitch tracePaint = new TraceSwitch(nameof(MemoryControlPainter), "Memory control painting operations");
 
         private readonly MemoryControlPainter mcp;
-        private Address addrTopVisible;     // address of topmost visible row.
+        private Address? addrTopVisible;     // address of topmost visible row.
         private uint wordSize;
         private uint cbRow;
         private IProcessorArchitecture arch;
@@ -66,8 +66,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         private IDictionary<Address, Procedure> procedureMap;
         private Encoding encoding;
         private IServiceProvider services;
-        private Address addrSelected;
-        private Address addrAnchor;
+        private Address? addrSelected;
+        private Address? addrAnchor;
         private Address addrMin;
         private ulong memSize;
 
@@ -117,16 +117,13 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             {
                 return AddressRange.Empty;
             }
+            if (SelectedAddress <= addrAnchor)
+            {
+                return new AddressRange(SelectedAddress.Value, addrAnchor.Value);
+            }
             else
             {
-                if (SelectedAddress <= addrAnchor)
-                {
-                    return new AddressRange(SelectedAddress, addrAnchor);
-                }
-                else
-                {
-                    return new AddressRange(addrAnchor, SelectedAddress);
-                }
+                return new AddressRange(addrAnchor.Value, SelectedAddress.Value);
             }
         }
 
@@ -172,7 +169,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         public Point AddressToPoint(Address addr)
         {
-            if (addr == null || TopAddress == null)
+            if (TopAddress == null)
                 return Point.Empty;
             int cbOffset = (int)(addr - TopAddress);
             int yRow = cbOffset / (int)cbRow;
@@ -186,7 +183,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         private bool IsVisible(Address addr)
         {
-            if (addr == null || TopAddress == null)
+            if (TopAddress is null)
                 return false;
             int cbOffset = (int)(addr - TopAddress);
             int yRow = cbOffset / (int)cbRow;
@@ -195,15 +192,16 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         private void MoveSelection(int offset, Keys modifiers)
         {
-            if (SelectedAddress == null)
+            if (SelectedAddress is null)
                 return;
-            ulong linAddr = (ulong)((long)SelectedAddress.ToLinear() + offset);
+            var addrSel = SelectedAddress.Value;
+            ulong linAddr = (ulong)((long)addrSel.ToLinear() + offset);
             if (!mem.IsValidLinearAddress(linAddr))
                 return;
             Address addr = segmentMap.MapLinearAddressToAddress(linAddr);
-            if (!IsVisible(SelectedAddress))
+            if (!IsVisible(addrSel))
             {
-                Address newTopAddress = TopAddress + offset;
+                Address newTopAddress = TopAddress.Value + offset;
                 if (mem.IsValidAddress(newTopAddress))
                 {
                     TopAddress = newTopAddress;
@@ -263,7 +261,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         protected override void OnMouseDown(MouseEventArgs e)
         {
-            if (mem == null)
+            if (mem is null)
                 return;
             this.isMouseClicked = true;
             ptDown = new Point(e.X, e.Y);
@@ -303,7 +301,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         protected override void OnMouseWheel(MouseEventArgs e)
         {
-            var newTopAddress = TopAddress + (int)(e.Delta > 0 ? -cbRow : cbRow);
+            var newTopAddress = TopAddress.Value + (int)(e.Delta > 0 ? -cbRow : cbRow);
             if (mem.IsValidAddress(newTopAddress))
             {
                 TopAddress = newTopAddress;
@@ -333,7 +331,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             }
         }
 
-        private bool ShouldChangeSelection(MouseEventArgs e, Address addrClicked, bool textSide)
+        private bool ShouldChangeSelection(MouseEventArgs e, Address? addrClicked, bool textSide)
         {
             if (e.Button == MouseButtons.Left)
                 return true;
@@ -342,16 +340,16 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             if (IsTextSideSelected != textSide)
                 return true;
 
-            return !IsAddressInSelection(addrClicked);
+            return !IsAddressInSelection(addrClicked.Value);
         }
 
         private bool IsAddressInSelection(Address addr)
         {
-            if (addr is null || addrAnchor is null || SelectedAddress is null)
+            if (addrAnchor is null || SelectedAddress is null)
                 return false;
             var linAddr = addr.ToLinear();
-            var linAnch = addrAnchor.ToLinear();
-            var linSel = SelectedAddress.ToLinear();
+            var linAnch = addrAnchor.Value.ToLinear();
+            var linSel = SelectedAddress.Value.ToLinear();
             if (linAnch <= linSel)
             {
                 return linAnch <= linAddr && linAddr <= linSel;
@@ -388,7 +386,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         protected virtual void OnSelectionChanged()
         {
             var ar = GetAddressRange();
-            SelectionChanged?.Invoke(this, new SelectionChangedEventArgs(addrAnchor, SelectedAddress));
+            SelectionChanged?.Invoke(this, new SelectionChangedEventArgs(addrAnchor.Value, SelectedAddress.Value));
         }
 
         protected override void OnSizeChanged(EventArgs e)
@@ -478,7 +476,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         }
 
         [Browsable(false)]
-        public Address SelectedAddress
+        public Address? SelectedAddress
         {
             get { return this.addrSelected; }
             set
@@ -488,19 +486,19 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 trace.Verbose($"Setting SelectedAddress to {value}");
                 this.addrSelected = value;
                 addrAnchor = value;
-                var seg = GetSegmentFromAddress(value);
+                var seg = GetSegmentFromAddress(value.Value);
                 if (seg is not null)
                 {
                     ChangeMemoryArea(seg);
                 }
-                if (IsVisible(value) || IsVisible(this.addrSelected))
+                if (IsVisible(value.Value) || IsVisible(this.addrSelected.Value))
                     Invalidate();
                 OnSelectionChanged();
             }
         }
 
         [Browsable(false)]
-        public Address TopAddress
+        public Address? TopAddress
         {
             get { return addrTopVisible; }
             set
@@ -510,7 +508,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 trace.Inform($"TopAddress: new value {TopAddress}");
                 addrTopVisible = value;
                 if (value is not null)
-                    addrTopVisible -= (int)(value.ToLinear() % cbRow);
+                    addrTopVisible -= (int)(value.Value.ToLinear() % cbRow);
                 UpdateScroll();
                 Invalidate();
             }
@@ -557,7 +555,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             cyPage = Math.Max((Height / CellSize.Height) - 1, 1);
             vscroller.LargeChange = cyPage;
             vscroller.Maximum = cRows;
-            int newValue = (int)((TopAddress.ToLinear() - this.addrMin.ToLinear()) / cbRow);
+            int newValue = (int)((TopAddress.Value.ToLinear() - this.addrMin.ToLinear()) / cbRow);
             vscroller.Value = Math.Max(Math.Min(newValue, vscroller.Maximum), vscroller.Minimum);
         }
 
@@ -615,19 +613,20 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             /// the whole segment, and paint them one at a time.
             /// </summary>
             /// <param name="g"></param>
-            public (Address, bool) PaintWindow(Graphics g, Size cellSize, Point ptAddr, bool render)
+            public (Address?, bool) PaintWindow(Graphics g, Size cellSize, Point ptAddr, bool render)
             {
                 this.cellSize = cellSize;
                 GetColorPreferences();
 
-                if (ctrl.arch == null || ctrl.imageMap == null)
+                if (ctrl.arch is null || ctrl.imageMap == null)
                     return (null, ctrl.IsTextSideSelected);
                 // Enumerate all segments visible on screen.
 
-                ulong laEnd = ctrl.addrMin.ToLinear() + ctrl.memSize;
-                if (ctrl.TopAddress.ToLinear() >= laEnd)
+                var addrMin = ctrl.addrMin;
+                ulong laEnd = addrMin.ToLinear() + ctrl.memSize;
+                if (ctrl.TopAddress.Value.ToLinear() >= laEnd)
                     return (null, ctrl.IsTextSideSelected);
-                var addrStart = Address.Max(ctrl.TopAddress, ctrl.mem.BaseAddress);
+                var addrStart = Address.Max(ctrl.TopAddress.Value, ctrl.mem.BaseAddress);
                 EndianImageReader rdr = ctrl.arch.CreateImageReader(ctrl.mem, addrStart);
                 Rectangle rcClient = ctrl.ClientRectangle;
                 Rectangle rc = rcClient;
@@ -637,7 +636,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 ulong laSegEnd = 0;
                 while (rc.Top < ctrl.Height && (laEnd == 0 || rdr.Address.ToLinear() < laEnd))
                 {
-                    if (ctrl.SegmentMap.TryFindSegment(ctrl.TopAddress, out ImageSegment seg))
+                    if (ctrl.SegmentMap.TryFindSegment(ctrl.TopAddress.Value, out ImageSegment seg))
                     {
                         if (rdr.Address.ToLinear() >= laSegEnd)
                         {
@@ -691,7 +690,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 private readonly ulong linearBeginSelection;
                 private readonly ulong linearEndSelection;
                 private Rectangle rc;
-                private Address addrHit;
+                private Address? addrHit;
                 private bool textSide;
                 private int prepadding;
 
@@ -702,15 +701,16 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                     this.rc = rc;
                     this.ptAddr = ptAddr;
                     this.render = render;
-                    this.linearSelected = mcp.ctrl.SelectedAddress is not null ? mcp.ctrl.SelectedAddress.ToLinear() : ~0UL;
-                    this.linearAnchor = mcp.ctrl.addrAnchor is not null ? mcp.ctrl.addrAnchor.ToLinear() : ~0UL;
+                    this.linearSelected = mcp.ctrl.SelectedAddress is not null ? mcp.ctrl.SelectedAddress.Value.ToLinear() : ~0UL;
+                    var addr = mcp.ctrl.addrAnchor;
+                    this.linearAnchor = addr is not null ? addr.Value.ToLinear() : ~0UL;
                     this.linearBeginSelection = Math.Min(linearSelected, linearAnchor);
                     this.linearEndSelection = Math.Max(linearSelected, linearAnchor);
 
                     tracePaint.Verbose($"MemoryControl..ctor: {rc}");
                 }
 
-                public (Address, bool) Paint(MemoryFormatter fmt, EndianImageReader rdr, Encoding enc)
+                public (Address?, bool) Paint(MemoryFormatter fmt, EndianImageReader rdr, Encoding enc)
                 {
                     fmt.RenderLine(rdr, enc, this);
                     return (addrHit, textSide);

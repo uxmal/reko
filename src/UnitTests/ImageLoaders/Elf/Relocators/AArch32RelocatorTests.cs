@@ -79,7 +79,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf.Relocators
             context.Update(rel, sym);
             var (addrRelocation, symNew) = relocator.RelocateEntry(context, rel, sym);
 
-            Assert.AreEqual(0x4008, addrRelocation.ToUInt32());
+            Assert.AreEqual(0x4008, addrRelocation.Value.ToUInt32());
         }
     }
 }

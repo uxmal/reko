@@ -103,7 +103,7 @@ namespace Reko.ImageLoaders.Elf
             {
                 if (addrLoad is not null)
                 {
-                    addrLoad = innerLoader.CreateAddress(addrLoad.ToLinear());
+                    addrLoad = innerLoader.CreateAddress(addrLoad.Value.ToLinear());
                 }
                 innerLoader.Dump(addrLoad ?? innerLoader.CreateAddress(0), Console.Out);
 
@@ -113,7 +113,7 @@ namespace Reko.ImageLoaders.Elf
                 program = linker.LinkObject(platform, addrLoad, RawImage);
                 plt = linker.PltEntries;
             }
-            innerLoader.Relocate(binaryImage.Header.Machine, program, addrLoad!, plt);
+            innerLoader.Relocate(binaryImage.Header.Machine, program, addrLoad!.Value, plt);
             return program;
         }
 

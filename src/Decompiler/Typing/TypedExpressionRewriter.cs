@@ -367,12 +367,12 @@ namespace Reko.Typing
             }
             var addrString = program.Platform.MakeAddressFromConstant(pch, false);
             if (addrString is null ||
-                program.Memory.IsWriteable(addrString))
+                program.Memory.IsWriteable(addrString.Value))
             {
                 return false;
             }
             tcr.PromoteToCString(pch, charType);
-            if (!arch.TryCreateImageReader(program.Memory, addrString, out var rdr))
+            if (!arch.TryCreateImageReader(program.Memory, addrString.Value, out var rdr))
                 return false;
             value = rdr.ReadCString(charType, program.TextEncoding);
             return true;

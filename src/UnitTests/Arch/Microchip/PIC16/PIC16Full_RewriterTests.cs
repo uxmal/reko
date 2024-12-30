@@ -132,7 +132,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Rewriter
         {
             ExecTest(Words(0x000B),
                 "0|T--|000200(2): 1 instructions",
-                "1|T--|goto 0x000202<p32> + WREG"
+                "1|T--|goto 0x000202<p21> + WREG"
             );
         }
 

@@ -159,9 +159,10 @@ namespace Reko.Environments.Windows
             var hi = (Constant)matches[0].CapturedExpression("hi")!;
             var lo = (Constant)matches[1].CapturedExpression("lo")!;
             var c = Operator.IAdd.ApplyConstants(hi.DataType, hi, lo);
-            var addrTarget = MakeAddressFromConstant(c, false);
-            if (addrTarget is null)
+            var a = MakeAddressFromConstant(c, false);
+            if (a is null)
                 return null;
+            var addrTarget = a.Value;
             ProcedureBase? proc = host.GetImportedProcedure(this.Architecture, addrTarget, addrInstr);
             if (proc is null)
                 proc = host.GetInterceptedCall(this.Architecture, addrTarget);
@@ -194,9 +195,10 @@ namespace Reko.Environments.Windows
             var hi = (Constant)matches[0].CapturedExpression("hi")!;
             var lo = (Constant)matches[1].CapturedExpression("lo")!;
             var c = Operator.IAdd.ApplyConstants(hi.DataType, hi, lo);
-            var addrTarget = MakeAddressFromConstant(c, false);
-            if (addrTarget is null)
+            var a = MakeAddressFromConstant(c, false);
+            if (a is null)
                 return null;
+            var addrTarget = a.Value;
             ProcedureBase? proc = host.GetImportedProcedure(this.Architecture, addrTarget, addrFrom);
             if (proc is not null)
                 return proc;

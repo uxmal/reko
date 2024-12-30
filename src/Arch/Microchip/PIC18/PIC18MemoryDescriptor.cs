@@ -180,11 +180,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
                 IMemoryRegion? regn = null;
                 if (bAddr.IsAccessRAMAddr)
                 {
-                    if (AccessRAM?.Contains(bAddr.ToDataAddress(AccessRAM)) ?? false)
+                    if (AccessRAM?.Contains(bAddr.ToDataAddress(AccessRAM).ToAddress()) ?? false)
                     {
                         regn = AccessRAM;
                     }
-                    else if (AccessSFR?.Contains(bAddr.ToDataAddress(AccessSFR)) ?? false)
+                    else if (AccessSFR?.Contains(bAddr.ToDataAddress(AccessSFR).ToAddress()) ?? false)
                     {
                         regn = AccessSFR;
                     }

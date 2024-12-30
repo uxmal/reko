@@ -48,7 +48,6 @@ namespace Reko.Arch.C166
             this.arch = arch;
             this.rdr = rdr;
             this.ops = new List<MachineOperand>();
-            this.addr = null!;
         }
 
         public override C166Instruction? DisassembleInstruction()

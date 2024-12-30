@@ -487,11 +487,12 @@ namespace Reko.ImageLoaders.MachO
                 var syms = rdr.CreateNew(this.ldr.RawImage, symoff);
                 for (uint i = 0; i < nsyms; ++i)
                 {
-                    var (msym, addr) = ReadSymbol(strBytes, syms, i);
+                    var (msym, a) = ReadSymbol(strBytes, syms, i);
                     if (msym != null)
                     {
+                        var addr = a!.Value;
                         ldr.machoSymbols.Add(msym);
-                        if (addr!.ToLinear() != 0 &&
+                        if (addr.ToLinear() != 0 &&
                             msym.Name != "radr://5614542")      // Ignore Apple's hack for radar bug 5614542
                         {
                             ldr.imageSymbols[addr] = ImageSymbol.Procedure(arch, addr, msym.Name);

@@ -2828,7 +2828,7 @@ T_601: (in 0<16> @ 0317 : word16)
   Class: Eq_593
   DataType: (ptr16 Eq_593)
   OrigDataType: ci16
-T_602: (in gp1 >= null @ 0317 : bool)
+T_602: (in gp1 >= 0x0000<p16> @ 0317 : bool)
   Class: Eq_602
   DataType: bool
   OrigDataType: bool
@@ -3528,7 +3528,7 @@ T_776: (in 0<16> @ 03CF : word16)
   Class: Eq_752
   DataType: (ptr16 Eq_752)
   OrigDataType: ci16
-T_777: (in gp1 >= null @ 03CF : bool)
+T_777: (in gp1 >= 0x0000<p16> @ 03CF : bool)
   Class: Eq_777
   DataType: bool
   OrigDataType: bool
@@ -3636,7 +3636,7 @@ T_803: (in 0<16> @ 03E2 : word16)
   Class: Eq_752
   DataType: (ptr16 Eq_752)
   OrigDataType: word16
-T_804: (in gp1_64 != null @ 03E2 : bool)
+T_804: (in gp1_64 != 0x0000<p16> @ 03E2 : bool)
   Class: Eq_804
   DataType: bool
   OrigDataType: bool
@@ -3900,7 +3900,7 @@ T_869: (in 0<16> @ 03FD : word16)
   Class: Eq_837
   DataType: (ptr16 Eq_837)
   OrigDataType: ci16
-T_870: (in gp1 >= null @ 03FD : bool)
+T_870: (in gp1 >= 0x0000<p16> @ 03FD : bool)
   Class: Eq_870
   DataType: bool
   OrigDataType: bool

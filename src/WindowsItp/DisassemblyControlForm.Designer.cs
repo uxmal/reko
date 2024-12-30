@@ -1,4 +1,4 @@
-﻿namespace Reko.WindowsItp
+namespace Reko.WindowsItp
 {
     partial class DisassemblyControlForm
     {
@@ -40,7 +40,6 @@
             this.disassemblyControl1.Location = new System.Drawing.Point(12, 12);
             this.disassemblyControl1.Name = "disassemblyControl1";
             this.disassemblyControl1.Size = new System.Drawing.Size(248, 286);
-            this.disassemblyControl1.StartAddress = null;
             this.disassemblyControl1.TabIndex = 0;
             this.disassemblyControl1.Text = "disassemblyControl1";
             // 

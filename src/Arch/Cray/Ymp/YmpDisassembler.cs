@@ -52,7 +52,6 @@ namespace Reko.Arch.Cray.Ymp
             this.rdr = (Word16BeImageReader) rdr;
             this.ops = new List<MachineOperand>();
             this.rootDecoder = decoder;
-            this.addr = null!;
         }
 
         public override CrayInstruction? DisassembleInstruction()

@@ -194,13 +194,13 @@ namespace Reko.Arch.X86
 
         public override Address MakeSegmentedAddress(Constant seg, Constant offset)
         {
-            return mode.CreateSegmentedAddress(seg.ToUInt16(), offset.ToUInt32())!;
+            return mode.CreateSegmentedAddress(seg.ToUInt16(), offset.ToUInt32())!.Value;
         }
 
         public override Address? ReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState? state)
         {
             if (!mode.TryReadCodeAddress(byteSize, rdr, state, out var addr))
-                addr = null;
+                return null;
             return addr;
         }
 

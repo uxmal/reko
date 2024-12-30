@@ -36,7 +36,6 @@ namespace Reko.Environments.NeoGeo
             : base(services, imageUri, imgRaw)
         {
             PreferredBaseAddress = Address.Ptr32(0x00000000);
-            entryPoint = null!;
         }
 
         public override Address PreferredBaseAddress

@@ -148,14 +148,14 @@ namespace Reko.Core.Machine
     public class StringRenderer : MachineInstructionRenderer
     {
         private readonly StringBuilder sb;
-        private Address? addrInstr;
+        private Address addrInstr;
 
         public StringRenderer() 
         {
             sb = new StringBuilder();
         }
 
-        public Address Address => addrInstr!;
+        public Address Address => addrInstr;
 
         /// <summary>
         /// This renderer ignores annotations

@@ -25,7 +25,7 @@ using System.Windows.Forms;
 
 namespace Reko.UserInterfaces.WindowsForms.Controls
 {
-    public partial class CombinedCodeView : UserControl, INavigableControl<Address>
+    public partial class CombinedCodeView : UserControl, INavigableControl
     {
         public CombinedCodeView()
         {
@@ -43,14 +43,14 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         public IButton Back { get; private set; }
         public IButton Forward { get; private set; }
 
-        IButton INavigableControl<Address>.BackButton { get { return Back; } }
-        IButton INavigableControl<Address>.ForwardButton { get { return Forward; } }
+        IButton INavigableControl.BackButton { get { return Back; } }
+        IButton INavigableControl.ForwardButton { get { return Forward; } }
 
         public MixedCodeDataControl MixedCodeDataView { get { return this.mixedCodeDataControl; } }
         public TextView CodeView { get { return this.codeTextView; } }
         public Timer PreviewTimer { get { return this.previewTimer; } }
 
-        public Address CurrentAddress
+        public Address? CurrentAddress
         {
             get { return MixedCodeDataView.TopAddress; }
             set { MixedCodeDataView.TopAddress = value; CurrentAddressChanged?.Invoke(this, EventArgs.Empty); }

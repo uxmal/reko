@@ -61,7 +61,6 @@ namespace Reko.Core
         /// <returns>The name as a string.</returns>
         public virtual string BlockName(Address addr)
         {
-            if (addr is null) throw new ArgumentNullException(nameof(addr));
             return addr.GenerateName("l", "");
         }
 
@@ -73,7 +72,6 @@ namespace Reko.Core
         /// 
         public virtual string BlockName(Address addr, int suffix)
         {
-            if (addr is null) throw new ArgumentNullException(nameof(addr));
             return addr.GenerateName("l", suffix.ToString());
         }
 

@@ -137,7 +137,7 @@ namespace Reko.Environments.Xbox
             throw new NotImplementedException();
         }
 
-        public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
+        public override Address? MakeAddressFromConstant(Constant c, bool codeAlign)
         {
             // pointers are 32-bit on this 64-bit platform.
             var uAddr = c.ToUInt32();

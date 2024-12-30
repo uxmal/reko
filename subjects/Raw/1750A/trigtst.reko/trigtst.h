@@ -1910,7 +1910,7 @@ T_403: (in 0<16> @ 000002C5 : word16)
   Class: Eq_397
   DataType: (ptr16 Eq_397)
   OrigDataType: ci16
-T_404: (in gp1 >= null @ 000002C5 : bool)
+T_404: (in gp1 >= 0x0000<p16> @ 000002C5 : bool)
   Class: Eq_404
   DataType: bool
   OrigDataType: bool

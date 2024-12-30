@@ -124,7 +124,7 @@ namespace Reko.ImageLoaders.LLVM
             }
             if (!labelMap.TryGetValue(label, out b))
             {
-                b = proc.AddBlock(null!, "l" + label);
+                b = proc.AddBlock(default, "l" + label);
                 if (defer)
                     deferredBlocks.Add(label, b);
                 else

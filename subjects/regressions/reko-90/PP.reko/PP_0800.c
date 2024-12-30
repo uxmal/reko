@@ -13301,6 +13301,24 @@ word32 fn0800-9CE6(Eq_n dwArg02, Eq_n dwArg06)
 	return SEQ(wArg04, (word32) ax_n + wArg02);
 }
 
+Eq_n g_tFFFF9D35 = // 0800:9D35
+	{
+		0
+	};
+Eq_n g_tFFFF9D37 = // 0800:9D37
+	{
+		0
+	};
+Eq_n g_tFFFF9D39 = // 0800:9D39
+	{
+		0
+	};
+Eq_n g_tFFFF9D3B = // 0800:9D3B
+	{
+		0
+	};
+word16 g_wFFFF9D3D = 0x00; // 0800:9D3D
+word16 g_wFFFF9D3F = 0x00; // 0800:9D3F
 // 0800:9D41: Register byte fn0800-9D41(Register Eq_n dx, Register out word16 cxOut, Register out word16 dxOut, Register out word16 bxOut)
 // Called from:
 //      fn0800-9E75
@@ -14153,12 +14171,12 @@ l0800_A608:
 		}
 		int32 * dx_ax_n;
 		ax_n = (word16) dx_ax_n;
-		if (!msdos_set_file_position(wArg02, 0x00, 0x01, out dx_ax_n))
+		if (!msdos_set_file_position(wArg02, 0x00000000<p32>, 0x01, out dx_ax_n))
 		{
 			int32 * dx_ax_n;
 			ax_n = (word16) dx_ax_n;
 			cup16 dx_n = SLICE(dx_ax_n, word16, 16);
-			if (!msdos_set_file_position(wArg02, 0x00, 0x02, out dx_ax_n))
+			if (!msdos_set_file_position(wArg02, 0x00000000<p32>, 0x02, out dx_ax_n))
 			{
 				int32 * dx_ax_n;
 				ax_n = (word16) dx_ax_n;
@@ -16224,13 +16242,11 @@ void fn0800_BBE9(struct Eq_n * ptrArg02)
 	}
 }
 
-Eq_n g_tBC39 = // 0800:BC39
+int16 g_aFFFFBC39[] = // 0800:BC39
 	{
-		0x00,
-		
-		{
-			0xBC2C
-		},
+	};
+Eq_n g_aFFFFBC41[] = // 0800:BC41
+	{
 	};
 // 0800:BC49: Register word16 fn0800_BC49(Stack Eq_n ptrArg02, Stack Eq_n ptrArg06, Stack Eq_n ptrArg0A, Stack Eq_n ptrArg0E, Stack Eq_n ptrArg12)
 // Called from:
@@ -16295,13 +16311,11 @@ word16 fn0800_BC49(Eq_n ptrArg02, Eq_n ptrArg06, Eq_n ptrArg0A, Eq_n ptrArg0E, E
 	}
 }
 
-Eq_n g_tBE1F = // 0800:BE1F
+int16 g_aFFFFBE1F[] = // 0800:BE1F
 	{
-		0x00,
-		
-		{
-			48471
-		},
+	};
+Eq_n g_aFFFFBE2D[] = // 0800:BE2D
+	{
 	};
 // 0800:BE3B: Register word16 fn0800_BE3B(Stack Eq_n dwArg02, Stack Eq_n dwArg06, Stack Eq_n dwArg0A, Stack Eq_n dwArg0E, Stack Eq_n dwArg12)
 // Called from:

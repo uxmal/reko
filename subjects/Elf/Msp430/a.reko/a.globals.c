@@ -28,3 +28,4 @@ word16 g_w0162; // 0162
 word16 g_w0172; // 0172
 byte g_b09B4; // 09B4
 byte g_a5B78[];
+struct Eq_n g_tFFFFFFFF;

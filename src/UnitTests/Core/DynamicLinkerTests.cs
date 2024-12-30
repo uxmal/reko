@@ -257,7 +257,7 @@ VarargsParserClass: FakeParser";
                         "bar",
                         ImageSymbol.DataObject(
                             program.Architecture,
-                            null,
+                            default,
                             "bar",
                             new StructureType
                             {

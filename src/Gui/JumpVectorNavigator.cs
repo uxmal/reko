@@ -31,7 +31,7 @@ namespace Reko.Gui
     {
         private readonly IServiceProvider services;
 
-        public JumpVectorNavigator(IReadOnlyProgram program, IProcessorArchitecture arch, Address addrInstr, Address addrVector, int stride, IServiceProvider services)
+        public JumpVectorNavigator(IReadOnlyProgram program, IProcessorArchitecture arch, Address addrInstr, Address? addrVector, int stride, IServiceProvider services)
         {
             this.Program = (Program)program;
             this.Architecture = arch;
@@ -43,7 +43,7 @@ namespace Reko.Gui
 
         public IProcessorArchitecture Architecture { get; }
         public Address IndirectJumpAddress { get; private set; }
-        public Address VectorAddress { get; private set; }
+        public Address? VectorAddress { get; private set; }
         public Program Program { get; }
         public int Stride { get; private set; }
 
@@ -62,7 +62,7 @@ namespace Reko.Gui
                 if (DialogResult.OK == await uiSvc.ShowModalDialog(dlg))
                 {
                     var ujmp = dlg.GetResults();
-                    this.Program.User.JumpTables[ujmp.Address!] = ujmp.Table!;
+                    this.Program.User.JumpTables[ujmp.Address] = ujmp.Table!;
                     
                     ///$TODO: register
                     //$TODO: prevent user from proceeding, in effect forcing 

@@ -144,7 +144,7 @@ namespace Reko.Arch.Avr
             return Address.Ptr16((ushort)uAddr);
         }
 
-        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
+        public override Address? ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
         {
             throw new NotImplementedException();
         }

@@ -76,7 +76,7 @@ namespace Reko.Gui.Forms
         {
             get
             {
-                return new KeyValuePair<Address, Procedure>(null!, null!);
+                return new KeyValuePair<Address, Procedure>(default, null!);
             }
         }
 

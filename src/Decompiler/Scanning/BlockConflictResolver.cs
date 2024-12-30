@@ -234,12 +234,12 @@ namespace Reko.Scanning
             var addrDest = DestinationAddress(i);
             if (addrDest is null)
                 return;
-            if (!this.sr.SpeculativeProcedures.ContainsKey(addrDest))
+            if (!this.sr.SpeculativeProcedures.ContainsKey(addrDest.Value))
                 return;
-            this.sr.SpeculativeProcedures[addrDest]--;
-            if (this.sr.SpeculativeProcedures[addrDest] == 0)
+            this.sr.SpeculativeProcedures[addrDest.Value]--;
+            if (this.sr.SpeculativeProcedures[addrDest.Value] == 0)
             {
-                this.sr.SpeculativeProcedures.TryRemove(addrDest, out _);
+                this.sr.SpeculativeProcedures.TryRemove(addrDest.Value, out _);
             }
         }
 
@@ -259,7 +259,7 @@ namespace Reko.Scanning
             }
             if (rtl is RtlTransfer xfer)
             {
-                return xfer.Target as Address;
+                return xfer.Target as Address?;
             }
             return null;
         }

@@ -19,6 +19,7 @@
 #endregion
 
 using NUnit.Framework;
+using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Output;
 using System;
@@ -32,6 +33,16 @@ namespace Reko.UnitTests.Core.Output
     [TestFixture]
     public class AbsynCodeFormatterTests
     {
+        [Test]
+        public void Acf_Address_null()
+        {
+            var a = Address.Ptr32(0);
+            var sw = new StringWriter();
+            var acf = new AbsynCodeFormatter(new TextFormatter(sw));
+            a.Accept(acf);
+            Assert.AreEqual("null", sw.ToString());
+        }
+
         [Test]
         public void Acf_HexEntropy()
         {

@@ -130,7 +130,7 @@ namespace Reko.Arch.X86
             {
                 if (state != null && rdr.TryReadLeUInt16(out ushort uOffset))
                 {
-                    addr = CreateSegmentedAddress(state.GetRegister(Registers.cs).ToUInt16(), uOffset)!;
+                    addr = CreateSegmentedAddress(state.GetRegister(Registers.cs).ToUInt16(), uOffset)!.Value;
                     return true;
                 }
             }
@@ -138,7 +138,7 @@ namespace Reko.Arch.X86
             {
                 if (rdr.TryReadLeUInt16(out var off) && rdr.TryReadLeUInt16(out var seg))
                 {
-                    addr = CreateSegmentedAddress(seg, off)!;
+                    addr = CreateSegmentedAddress(seg, off)!.Value;
                     return true;
                 }
             }
@@ -159,7 +159,7 @@ namespace Reko.Arch.X86
                     {
                         addr = CreateSegmentedAddress(
                             Convert.ToUInt16(txtAddress[0..c], 16),
-                            Convert.ToUInt32(txtAddress[(c + 1)..], 16))!;
+                            Convert.ToUInt32(txtAddress[(c + 1)..], 16))!.Value;
                         return true;
                     }
                     catch { }
@@ -173,7 +173,7 @@ namespace Reko.Arch.X86
                     }
                     if (isAllZeros)
                     {
-                        addr = CreateSegmentedAddress(0, 0)!;
+                        addr = CreateSegmentedAddress(0, 0)!.Value;
                         return true;
                     }
                 }
@@ -222,7 +222,7 @@ namespace Reko.Arch.X86
             return new OperandRewriter16(arch, m, binder, host);
         }
 
-        public override Address CreateSegmentedAddress(ushort seg, uint offset)
+        public override Address? CreateSegmentedAddress(ushort seg, uint offset)
         {
             return Address.SegPtr(seg, offset);
         }
@@ -280,7 +280,7 @@ namespace Reko.Arch.X86
             return isa.CreateRootDecoders();
         }
 
-        public override Address CreateSegmentedAddress(ushort seg, uint offset)
+        public override Address? CreateSegmentedAddress(ushort seg, uint offset)
         {
             return Address.ProtectedSegPtr(seg, offset);
         }
@@ -357,7 +357,7 @@ namespace Reko.Arch.X86
             return Address.Ptr32((uint)c.ToUInt64());
         }
 
-        public override Address MakeAddressFromSegOffset(X86State state, RegisterStorage seg, uint offset)
+        public override Address? MakeAddressFromSegOffset(X86State state, RegisterStorage seg, uint offset)
         {
             return Address.Ptr32(offset);
         }
@@ -447,7 +447,7 @@ namespace Reko.Arch.X86
             return Address.Ptr64(c.ToUInt64());
         }
 
-        public override Address MakeAddressFromSegOffset(X86State state, RegisterStorage seg, uint offset)
+        public override Address? MakeAddressFromSegOffset(X86State state, RegisterStorage seg, uint offset)
         {
             return Address.Ptr64(offset);
         }
@@ -499,7 +499,7 @@ namespace Reko.Arch.X86
             }
             else
             {
-                addr = null!;
+                addr = default;
                 return false;
             }
         }

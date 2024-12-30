@@ -80,7 +80,7 @@ namespace Reko.Scanning
                     bool newBlockCreated = recScanner.TryRegisterBlockStart(work.Address, proc.Address);
                     if (work.CallerBlockAddress is not null)
                     {
-                        ProcessFallthroughAfterCall(work, work.CallerBlockAddress, newBlockCreated);
+                        ProcessFallthroughAfterCall(work, work.CallerBlockAddress.Value, newBlockCreated);
                     }
 
                     // Nothing to do if the block aready existed.
@@ -160,7 +160,7 @@ namespace Reko.Scanning
             log.Verbose("    {0}: Removing suspended call at {1} to {2} {3}",
                 this.Address,
                 addrCall,
-                addrDest?.ToString() ?? "<null>",
+                addrDest.ToString() ?? "<null>",
                 removed ? "succeeded" : "failed");
         }
 

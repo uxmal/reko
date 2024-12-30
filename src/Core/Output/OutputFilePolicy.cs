@@ -97,9 +97,11 @@ namespace Reko.Core.Output
                 var strGlobals = pt.Pointee.ResolveAs<StructureType>();
                 if (strGlobals != null)
                 {
+                    //$TODO: the cast to (uint) below needs to be changed to (ulong)
+                    // once the StructureField.Offset property is widened to 64 bits.
                     return strGlobals.Fields.Select(field =>
                         (field,
-                         program.Platform.MakeAddressFromLinear((ulong) field.Offset, false)));
+                         program.Platform.MakeAddressFromLinear((uint) field.Offset, false)));
                 }
             }
             return new (StructureField, Address)[0];

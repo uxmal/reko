@@ -7,7 +7,7 @@
 // 00000000: void fn00000000(Register cu8 TABLAT)
 void fn00000000(cu8 TABLAT)
 {
-	Stack[1].ptr0000 = &g_t0148;
+	Stack[1].t0000.u1 = (ptr32) 0x0148;
 	fn00000E(TABLAT, 0x00, 0x00);
 }
 
@@ -122,4 +122,3 @@ void fn000128(cu8 WREG, cu8 FSR0L, cu8 FSR0H, cu8 PRODL, Eq_n FSR0)
 	}
 }
 
-<unknown> g_t0148 = // 00000148;

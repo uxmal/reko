@@ -314,7 +314,7 @@ T_51: (in 0<32> @ 00000690 : word32)
   Class: Eq_50
   DataType: (ptr32 code)
   OrigDataType: word32
-T_52: (in r25_12 == null @ 00000690 : bool)
+T_52: (in r25_12 == 0x00000000<p32> @ 00000690 : bool)
   Class: Eq_52
   DataType: bool
   OrigDataType: bool
@@ -398,7 +398,7 @@ T_72: (in 0<32> @ 000006DC : word32)
   Class: Eq_70
   DataType: (ptr32 code)
   OrigDataType: word32
-T_73: (in r25_17 == null @ 000006DC : bool)
+T_73: (in r25_17 == 0x00000000<p32> @ 000006DC : bool)
   Class: Eq_73
   DataType: bool
   OrigDataType: bool

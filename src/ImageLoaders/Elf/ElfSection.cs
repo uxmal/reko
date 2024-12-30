@@ -43,7 +43,6 @@ namespace Reko.ImageLoaders.Elf
         public ElfSection()
         {
             this.Name = null!;
-            this.VirtualAddress = null!;
         }
 
         public int Index { get; set; }

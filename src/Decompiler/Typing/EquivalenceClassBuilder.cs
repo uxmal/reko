@@ -350,7 +350,7 @@ namespace Reko.Typing
 		{
             if (sig.TypeVariable == null)
 			{
-                var addr = (proc is Procedure userProc)
+                Address? addr = (proc is Procedure userProc)
                     ? userProc.EntryAddress
                     : null;
 

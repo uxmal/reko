@@ -267,8 +267,8 @@ namespace Reko.Environments.Windows
                 return new Trampoline(instrs[^1].Address, pc.Procedure);
             if (jump.Target is not MemoryAccess access)
                 return null;
-            var addrTarget = access.EffectiveAddress as Address;
-            if (addrTarget is null)
+            Address? addrTarget;
+            if (access.EffectiveAddress is not Address a)
             {
                 if (access.EffectiveAddress is not Constant wAddr)
                 {
@@ -278,9 +278,13 @@ namespace Reko.Environments.Windows
                 if (addrTarget is null)
                     return null;
             }
-            ProcedureBase? proc = host.GetImportedProcedure(this.Architecture, addrTarget,  addrInstr);
+            else
+            {
+                addrTarget = a;
+            }
+            ProcedureBase? proc = host.GetImportedProcedure(this.Architecture, addrTarget.Value,  addrInstr);
             if (proc is null)
-                proc = host.GetInterceptedCall(this.Architecture, addrTarget);
+                proc = host.GetInterceptedCall(this.Architecture, addrTarget.Value);
             if (proc is null)
                 return null;
             return new Trampoline(instrs[^1].Address, proc);
@@ -297,8 +301,8 @@ namespace Reko.Environments.Windows
                 return pc.Procedure;
             if (jump.Target is not MemoryAccess access)
                 return null;
-            var addrTarget = access.EffectiveAddress as Address;
-            if (addrTarget is null)
+            Address? addrTarget;
+            if (access.EffectiveAddress is not Address a)
             {
                 if (access.EffectiveAddress is not Constant wAddr)
                 {
@@ -308,10 +312,14 @@ namespace Reko.Environments.Windows
                 if (addrTarget is null)
                     return null;
             }
-            ProcedureBase? proc = host.GetImportedProcedure(this.Architecture, addrTarget,  addrInstr);
+            else
+            {
+                addrTarget = a;
+            }
+            ProcedureBase? proc = host.GetImportedProcedure(this.Architecture, addrTarget.Value, addrInstr);
             if (proc is not null)
                 return proc;
-            return host.GetInterceptedCall(this.Architecture, addrTarget);
+            return host.GetInterceptedCall(this.Architecture, addrTarget.Value);
         }
 
         public override void InjectProcedureEntryStatements(

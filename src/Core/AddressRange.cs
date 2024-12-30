@@ -29,8 +29,8 @@ namespace Reko.Core
 	{
 		public AddressRange(Address addrBegin, Address addrEnd)
 		{
-            this.Begin = addrBegin ?? throw new ArgumentNullException(nameof(addrBegin));
-            this.End = addrEnd ?? throw new ArgumentNullException(nameof(addrEnd));
+            this.Begin = addrBegin;
+            this.End = addrEnd;
         }
 
         /// <summary>

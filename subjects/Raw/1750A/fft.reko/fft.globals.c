@@ -7,3 +7,24 @@
 Eq_n g_a0001[15];
 Eq_n g_a0002[15];
 Eq_n g_a8090[];
+union Eq_n g_uFFFF8000;
+real48 g_rFFFF8003; // 8003
+real48 g_rFFFF8009; // 8009
+union Eq_n g_uFFFF800C;
+real48 g_rFFFF800F; // 800F
+real48 g_rFFFF8012; // 8012
+real48 g_rFFFF8018; // 8018
+union Eq_n g_uFFFF801B;
+real48 g_rFFFF801E; // 801E
+real48 g_rFFFF8024; // 8024
+real48 g_rFFFF802A; // 802A
+Eq_n g_aFFFF8030[];
+real48 g_rFFFF8051; // 8051
+real48 g_rFFFF8057; // 8057
+word32 g_dwFFFF805D; // 805D
+Eq_n g_aFFFF8060[];
+real48 g_rFFFF8061; // 8061
+real48 g_rFFFF8064; // 8064
+word32 g_dwFFFF806A; // 806A
+word16 g_wFFFF806C; // 806C
+struct Eq_n g_tFFFF806E;

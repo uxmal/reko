@@ -168,7 +168,7 @@ namespace Reko.Scanning
                 if (!segmentMap.TryFindSegment(addr, out var segment))
                     throw new InvalidOperationException($"No segment for address {addr}.");
                 var mem = segment.MemoryArea;
-                blocks.Add(addr, new BlockRange(b, addr, mem.BaseAddress + mem.Length));
+                blocks.Add(addr, new BlockRange(b, addr, segment.Address + segment.Size));
             }
             else
             {
@@ -507,7 +507,7 @@ namespace Reko.Scanning
                 // Attempt to perform varargs substitution. If it fails,
                 // let the Analysis stage handle it.
                 var vaScanner = new VarargsFormatScanner(Program, procCaller.Architecture, state, Services, eventListener);
-                if (vaScanner!.TryScan(addrCall, callee, sig, chr, ab, out var varargs))
+                if (vaScanner.TryScan(addrCall, callee, sig, chr, ab, out var varargs))
                 {
                     return vaScanner.BuildInstruction(callee, sig, varargs.Signature, chr, ab);
                 }
@@ -1085,9 +1085,9 @@ namespace Reko.Scanning
                 else
                 {
                     var addr = EnqueueUserProcedure(Program.Architecture, de.Value);
-                    if (addr != null)
+                    if (addr is not null)
                     {
-                        sr.KnownProcedures.Add(addr);
+                        sr.KnownProcedures.Add(addr.Value);
                     }
                 }
             }
@@ -1216,7 +1216,7 @@ namespace Reko.Scanning
             foreach (var proc in program.Procedures.Values)
             {
                 var callers = string.Join(",", program.CallGraph.FindCallerStatements(proc)
-                    .Select(s => s.Block?.Address?.ToString() ?? "<null>"));
+                    .Select(s => s.Block?.Address.ToString() ?? "<null>"));
                 output.WriteLine("{0}:{1}", proc.EntryAddress, proc.Characteristics.Terminates ? " <Terminates>" : "");
                 output.WriteLine("    {0}", callers);
             }

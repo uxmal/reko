@@ -55,7 +55,7 @@ namespace Reko.UnitTests.Environments.MacOS.Classic
             var instr = new RtlCall(m.IAdd(a5, jumpTableOffset), 4, InstrClass.Call);
             var addr =  macOS.ResolveIndirectCall(instr);
 
-            Assert.AreEqual(uAddrDirect, addr.ToUInt32());
+            Assert.AreEqual(uAddrDirect, addr.Value.ToUInt32());
         }
     }
 }

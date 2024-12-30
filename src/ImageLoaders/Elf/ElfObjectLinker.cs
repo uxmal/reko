@@ -70,12 +70,12 @@ namespace Reko.ImageLoaders.Elf
 
         protected Address? ComputeBaseAddressFromSections(IEnumerable<ElfSection> sections)
         {
-            var address = sections.Where(s => s.VirtualAddress != null && (s.Flags & ElfLoader.SHF_ALLOC) != 0)
+            var baseSection = sections.Where(s => !s.VirtualAddress.IsNull && (s.Flags & ElfLoader.SHF_ALLOC) != 0)
                 .OrderBy(s => s.VirtualAddress)
-                .Select(s => s.VirtualAddress)
                 .FirstOrDefault();
-            if (address is null)
+            if (baseSection is null)
                 return loader.CreateAddress(0x1000);
+            var address = baseSection.VirtualAddress;
             if (address.Offset == 0)
                 address += 0x1000;
             return address;
@@ -117,13 +117,13 @@ namespace Reko.ImageLoaders.Elf
 
         public override Program LinkObject(IPlatform platform, Address? addrLoad, byte[] rawImage)
         {
-            var addrBase = addrLoad is not null && addrLoad.Offset != 0
+            var addrBase = addrLoad is not null && addrLoad.Value.Offset != 0
                 ? addrLoad
                 : ComputeBaseAddressFromSections(loader.BinaryImage.Sections)!;
             CollectCommonSymbolsIntoSection();
             CollectUndefinedSymbolsIntoSection();
             var segments = ComputeSegmentSizes();
-            var segmentMap = CreateSegments(addrBase, segments);
+            var segmentMap = CreateSegments(addrBase.Value, segments);
             var program = new Program(new ByteProgramMemory(segmentMap), platform.Architecture, platform);
             LoadExternalProcedures(program.InterceptedCalls);
             return program;
@@ -261,7 +261,6 @@ namespace Reko.ImageLoaders.Elf
 
         public override SegmentMap CreateSegments(Address addrBase, Dictionary<ElfSection, Elf64_PHdr> mpSections)
         {
-            if (addrBase == null) throw new ArgumentNullException(nameof(addrBase));
             var addr = addrBase;
             foreach (var segment in Segments)
             {
@@ -352,7 +351,6 @@ namespace Reko.ImageLoaders.Elf
 
         public override SegmentMap CreateSegments(Address addrBase, Dictionary<ElfSection, Elf32_PHdr> mpSections)
         {
-            if (addrBase == null) throw new ArgumentNullException(nameof(addrBase));
             var addr = addrBase;
             foreach (var segment in Segments)
             {

@@ -35,7 +35,7 @@ namespace Reko.Core.Collections
     {
         public ImageMap(Address addrBase)
         {
-            BaseAddress = addrBase ?? throw new ArgumentNullException(nameof(addrBase));
+            BaseAddress = addrBase;
             Items = new ConcurrentBTreeDictionary<Address, ImageMapItem>(new ItemComparer());
         }
 
@@ -273,9 +273,9 @@ namespace Reko.Core.Collections
 
         private class ItemComparer : IComparer<Address>
         {
-            public virtual int Compare(Address? a, Address? b)
+            public virtual int Compare(Address a, Address b)
             {
-                return a!.ToLinear().CompareTo(b!.ToLinear());
+                return a.ToLinear().CompareTo(b.ToLinear());
             }
         }
 

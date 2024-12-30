@@ -63,7 +63,6 @@ namespace Reko.Arch.Arm.AArch32
             this.rdr = rdr;
             this.itState = 0;
             this.itCondition = ArmCondition.AL;
-            this.addr = null!;
             this.state = null!;
         }
 

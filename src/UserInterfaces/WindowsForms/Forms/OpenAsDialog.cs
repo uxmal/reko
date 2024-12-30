@@ -164,7 +164,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             if (rdbGuessAddress.Checked || !arch.TryParseAddress(sAddr, out var addrBase))
             {
                 sAddr = "";
-                addrBase = null;
+                addrBase = default;
             }
             return new LoadDetails
             {

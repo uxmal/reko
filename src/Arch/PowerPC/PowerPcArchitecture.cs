@@ -383,7 +383,7 @@ namespace Reko.Arch.PowerPC
 
         public override abstract Address MakeAddressFromConstant(Constant c, bool codeAlign);
 
-        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
+        public override Address? ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
         {
             throw new NotImplementedException();
         }

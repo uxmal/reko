@@ -105,19 +105,19 @@ namespace Reko.ImageLoaders.IntelHex
                 if (currAddr is null)
                 {
                     currAddr = address;
-                    currMemChunk = new MemoryChunk(currAddr);
-                    memChunks.Add(currAddr, currMemChunk);
+                    currMemChunk = new MemoryChunk(currAddr.Value);
+                    memChunks.Add(currAddr.Value, currMemChunk);
                 }
                 else
                 {
                     currAddr = address;
-                    if (nextAddr != currAddr)
+                    if (nextAddr != currAddr.Value)
                     {
-                        currMemChunk = GetPredChunk(currAddr);
+                        currMemChunk = GetPredChunk(currAddr.Value);
                         if (currMemChunk is null)
                         {
-                            currMemChunk = new MemoryChunk(currAddr);
-                            memChunks.Add(currAddr, currMemChunk);
+                            currMemChunk = new MemoryChunk(currAddr.Value);
+                            memChunks.Add(currAddr.Value, currMemChunk);
                         }
                     }
                 }
@@ -157,7 +157,7 @@ namespace Reko.ImageLoaders.IntelHex
         /// <value>
         /// The preferred base address.
         /// </value>
-        public override Address PreferredBaseAddress { get; set; } = Address32.NULL;
+        public override Address PreferredBaseAddress { get; set; } = Address.Ptr32(0);
 
         /// <summary>
         /// Loads the image into memory starting at the specified address.
@@ -233,7 +233,7 @@ namespace Reko.ImageLoaders.IntelHex
             var program = new Program(new ByteProgramMemory(segs), arch, platform);
             if (addrEp != null)
             {
-                program.EntryPoints.Add(addrEp, ImageSymbol.Procedure(arch, addrEp));
+                program.EntryPoints.Add(addrEp.Value, ImageSymbol.Procedure(arch, addrEp.Value));
             }
             return program;
 
@@ -247,7 +247,7 @@ namespace Reko.ImageLoaders.IntelHex
         /// </returns>
         private Address MakeZeroAddress(IProcessorArchitecture arch)
         {
-            if (!arch.TryParseAddress("0", out Address? addr) &&
+            if (!arch.TryParseAddress("0", out Address addr) &&
                 !arch.TryParseAddress("0:0", out addr))
             {
                 // Something's wrong with your architecture's TryParseAddress

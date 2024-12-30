@@ -10,7 +10,7 @@ void fn0000(byte a)
 fn0000_entry:
 l0000:
 l0100:
-	Mem4[null:byte] = a
+	Mem4[0x0000<p16>:byte] = a
 	return
 fn0000_exit:
 

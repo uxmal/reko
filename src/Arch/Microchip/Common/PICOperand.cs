@@ -158,7 +158,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <summary>
         /// Gets the absolute code target byte address. This should be a word-aligned address.
         /// </summary>
-        public PICProgAddress CodeTarget { get; }
+        public Address CodeTarget { get; }
 
         /// <summary>
         /// Gets the relative offset. This a word offset.
@@ -710,15 +710,15 @@ namespace Reko.Arch.MicrochipPIC.Common
     {
 
         private readonly PICArchitecture arch;
-        private readonly PICProgAddress addr;
+        private readonly Address addr;
 
-        public PICOperandConfigBits(PICArchitecture arch, PICProgAddress addr, byte config) : base(config)
+        public PICOperandConfigBits(PICArchitecture arch, Address addr, byte config) : base(config)
         {
             this.arch = arch;
             this.addr = addr;
         }
 
-        public PICOperandConfigBits(PICArchitecture arch, PICProgAddress addr, ushort config) : base(config)
+        public PICOperandConfigBits(PICArchitecture arch, Address addr, ushort config) : base(config)
         {
             this.arch = arch;
             this.addr = addr;

@@ -11,7 +11,7 @@ deregister_tm_clones_entry:
 l80000080:
 	branch true l800000AA
 l80000096:
-	branch null == 0<32> l800000AA
+	branch 0x00000000<p32> == 0<32> l800000AA
 l800000A0:
 	fn00000000(0x80002724<p32>)
 l800000AA:
@@ -38,7 +38,7 @@ l800000C6:
 	d0_20 = d0_12 >> 1<32>
 	branch d0_20 == 0<32> l800000E0
 l800000CA:
-	branch null == 0<32> l800000E0
+	branch 0x00000000<p32> == 0<32> l800000E0
 l800000D4:
 	fn00000000(0x80002724<p32>, d0_20)
 l800000E0:
@@ -72,7 +72,7 @@ l80000114:
 	branch d2_23 >u d0_19 l80000114
 l8000012C:
 	deregister_tm_clones()
-	branch null == 0<32> l80000144
+	branch 0x00000000<p32> == 0<32> l80000144
 l8000013A:
 	fn00000000(0x8000065C<p32>)
 l80000144:
@@ -104,13 +104,13 @@ void frame_dummy()
 // Preserved:
 frame_dummy_entry:
 l80000160:
-	branch null == 0<32> l8000017E
+	branch 0x00000000<p32> == 0<32> l8000017E
 l8000016E:
 	fn00000000(0x8000065C<p32>, 0x8000272A<p32>)
 l8000017E:
 	branch Mem25[0x8000271C<p32>:word32] != 0<32> l8000018E
 l8000018E:
-	branch null == 0<32> l80000188
+	branch 0x00000000<p32> == 0<32> l80000188
 l80000198:
 	fn00000000(0x8000271C<p32>)
 l800001A0_thunk_register_tm_clones:

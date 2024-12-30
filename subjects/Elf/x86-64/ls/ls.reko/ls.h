@@ -896,13 +896,13 @@ Eq_14: (union "Eq_14" (byte u0) (word16 u1) ((arr Eq_14) u2) (size_t u3) (ssize_
 	T_2809 (in Mem831[0x000000000061A3D8<p64>:word64] @ 00000000004045FE : word64)
 	T_2820 (in rsi @ 000000000040461C : (ptr64 char))
 	T_2823 (in Mem711[0x000000000061A3D0<p64>:word64] @ 000000000040461C : word64)
-	T_2825 (in dcgettext(null, g_t61A3D0.u3, 2<i32>) @ 000000000040461C : (ptr64 char))
+	T_2825 (in dcgettext(0x0000000000000000<p64>, g_t61A3D0.u3, 2<i32>) @ 000000000040461C : (ptr64 char))
 	T_2826 (in rax_855 @ 000000000040461C : Eq_14)
 	T_2827 (in Mem711[0x000000000061A3D8<p64>:word64] @ 0000000000404621 : word64)
 	T_2828 (in rsi_856 @ 0000000000404621 : Eq_14)
 	T_2829 (in Mem865[0x000000000061A3D0<p64>:word64] @ 000000000040462F : word64)
 	T_2833 (in rsi @ 000000000040463B : (ptr64 char))
-	T_2837 (in dcgettext(null, rsi_856, 2<i32>) @ 000000000040463B : (ptr64 char))
+	T_2837 (in dcgettext(0x0000000000000000<p64>, rsi_856, 2<i32>) @ 000000000040463B : (ptr64 char))
 	T_2838 (in Mem867[0x000000000061A3D8<p64>:word64] @ 000000000040463B : word64)
 	T_2839 (in 0x413827<u64> @ 00000000004045DB : uint64)
 	T_2840 (in 0x41394E<64> @ 000000000040446E : word64)
@@ -1033,7 +1033,7 @@ Eq_14: (union "Eq_14" (byte u0) (word16 u1) ((arr Eq_14) u2) (size_t u3) (ssize_
 	T_3590 (in Mem98[0x000000000061B1B0<p64>:word64] @ 00000000004051E1 : word64)
 	T_3593 (in rdi @ 0000000000405168 : Eq_14)
 	T_3594 (in rsi @ 0000000000405168 : Eq_14)
-	T_3597 (in fn000000000040A610(rdi, r15_132, null) @ 0000000000405168 : word64)
+	T_3597 (in fn000000000040A610(rdi, r15_132, 0x0000000000000000<p64>) @ 0000000000405168 : word64)
 	T_3598 (in rax_175 @ 0000000000405168 : Eq_14)
 	T_3602 (in Mem26[rbp_117 + 8<i64>:word64] @ 000000000040517A : word64)
 	T_3606 (in p @ 0000000000405182 : (ptr64 void))
@@ -1751,7 +1751,7 @@ Eq_14: (union "Eq_14" (byte u0) (word16 u1) ((arr Eq_14) u2) (size_t u3) (ssize_
 	T_11972 (in rax_131 @ 000000000040CF2D : Eq_14)
 	T_11998 (in n @ 000000000040CF78 : size_t)
 	T_12000 (in 0<u64> @ 000000000040CF78 : uint64)
-	T_12001 (in mbstowcs(null, rdi, 0<u64>) @ 000000000040CF78 : size_t)
+	T_12001 (in mbstowcs(0x0000000000000000<p64>, rdi, 0<u64>) @ 000000000040CF78 : size_t)
 	T_12002 (in rax_52 @ 000000000040CF78 : Eq_14)
 	T_12003 (in 0xFFFFFFFFFFFFFFFF<64> @ 000000000040CF81 : word64)
 	T_12008 (in (rax_52.u4 + 1<i32>) * 4<64> @ 000000000040CFAC : word64)
@@ -1771,8 +1771,8 @@ Eq_14: (union "Eq_14" (byte u0) (word16 u1) ((arr Eq_14) u2) (size_t u3) (ssize_
 	T_12117 (in Mem130[rcx + 0<64>:word64] @ 000000000040D118 : word64)
 	T_12123 (in n @ 000000000040D05F : size_t)
 	T_12125 (in 0<u64> @ 000000000040D05F : uint64)
-	T_12126 (in wcstombs(null, rax_59, 0<u64>) @ 000000000040D05F : size_t)
-	T_12128 (in wcstombs(null, rax_59, 0<u64>) + 1<64> @ 000000000040D05F : word64)
+	T_12126 (in wcstombs(0x0000000000000000<p64>, rax_59, 0<u64>) @ 000000000040D05F : size_t)
+	T_12128 (in wcstombs(0x0000000000000000<p64>, rax_59, 0<u64>) + 1<64> @ 000000000040D05F : word64)
 	T_12129 (in qwLoc48_602 @ 000000000040D05F : Eq_14)
 	T_12140 (in Mem157[rcx + 0<64>:word64] @ 000000000040D07A : word64)
 	T_12141 (in rax_175 @ 000000000040D07A : Eq_14)
@@ -2659,7 +2659,7 @@ Eq_903: (struct "Eq_903" 0050
 		(38 (ptr64 code) ptr0038)
 		(40 (ptr64 code) ptr0040)
 		(48 (ptr64 Eq_9432) ptr0048))
-	T_903 (in fn000000000040B400(0x1E<u64>, null, 0x404980<u64>, 0x404990<u64>, 0x4049D0<u64>) @ 0000000000403A06 : word64)
+	T_903 (in fn000000000040B400(0x1E<u64>, 0x0000000000000000<p64>, 0x404980<u64>, 0x404990<u64>, 0x4049D0<u64>) @ 0000000000403A06 : word64)
 	T_904 (in rax_1839 @ 0000000000403A06 : (ptr64 Eq_903))
 	T_906 (in Mem1858[0x000000000061B1C8<p64>:word64] @ 0000000000403A0E : word64)
 	T_907 (in 0<64> @ 0000000000403A15 : word64)
@@ -3257,7 +3257,7 @@ Eq_1831: (union "Eq_1831" (int64 u0) (uint64 u1))
 	T_1848 (in g_t61B018.u0 + 2<64> @ 0000000000403F49 : word64)
 	T_1849 (in Mem2855[0x000000000061B018<p64>:word64] @ 0000000000403F49 : word64)
 	T_1860 (in Mem2885[0x000000000061B018<p64>:word64] @ 0000000000403679 : word64)
-	T_1874 (in g_t61B018.u0 + fn00000000004052D0(null, rdx_2886, rbx_2605, rdi_2887, rax_2608, fs, out rcx_4159) @ 0000000000403679 : word64)
+	T_1874 (in g_t61B018.u0 + fn00000000004052D0(0x0000000000000000<p64>, rdx_2886, rbx_2605, rdi_2887, rax_2608, fs, out rcx_4159) @ 0000000000403679 : word64)
 	T_1875 (in Mem2940[0x000000000061B018<p64>:word64] @ 0000000000403679 : word64)
 	T_1965 (in Mem2959[0x000000000061B018<p64>:word64] @ 00000000004036CE : word64)
 	T_1967 (in g_t61B018.u0 + 2<64> @ 00000000004036CE : word64)
@@ -3682,10 +3682,10 @@ Eq_2414: (fn Eq_2417 (int32, Eq_2417))
 Eq_2417: sighandler_t
 	T_2417 (in handler @ 0000000000404123 : sighandler_t)
 	T_2418 (in 0<u64> @ 0000000000404123 : uint64)
-	T_2419 (in signal(ebp_2385, null) @ 0000000000404123 : sighandler_t)
+	T_2419 (in signal(ebp_2385, 0x0000000000000000<p64>) @ 0000000000404123 : sighandler_t)
 	T_4927 (in handler @ 000000000040652C : sighandler_t)
 	T_4928 (in 0<u64> @ 000000000040652C : uint64)
-	T_4929 (in signal(ebx_65, null) @ 000000000040652C : sighandler_t)
+	T_4929 (in signal(ebx_65, 0x0000000000000000<p64>) @ 000000000040652C : sighandler_t)
 Eq_2449: (fn int32 ((ptr64 Eq_1754), int32))
 	T_2449 (in __overflow @ 00000000004044A8 : ptr64)
 	T_2450 (in signature of __overflow : void)
@@ -5242,7 +5242,7 @@ Eq_9320: (fn (ptr64 Eq_9327) (int32, (ptr64 char)))
 	T_9320 (in setlocale @ 000000000040AB76 : ptr64)
 	T_9321 (in signature of setlocale : void)
 Eq_9327: (struct "Eq_9327" (0 char b0000) (1 byte b0001))
-	T_9327 (in setlocale((int32) rdi, null) @ 000000000040AB76 : (ptr64 char))
+	T_9327 (in setlocale((int32) rdi, 0x0000000000000000<p64>) @ 000000000040AB76 : (ptr64 char))
 	T_9328 (in rax_8 @ 000000000040AB76 : (ptr64 Eq_9327))
 	T_9329 (in 0<64> @ 000000000040AB7E : word64)
 	T_9339 (in p1 @ 000000000040ABAE : (ptr64 <unknown>))
@@ -7478,7 +7478,7 @@ T_77: (in 5<32> @ 0000000000403214 : word32)
   Class: Eq_75
   DataType: word32
   OrigDataType: word32
-T_78: (in fn000000000040E640(null, 5<32>) @ 0000000000403214 : void)
+T_78: (in fn000000000040E640(0x0000000000000000<p64>, 5<32>) @ 0000000000403214 : void)
   Class: Eq_78
   DataType: void
   OrigDataType: void
@@ -7510,7 +7510,7 @@ T_85: (in 5<32> @ 00000000004029C0 : word32)
   Class: Eq_75
   DataType: word32
   OrigDataType: word32
-T_86: (in fn000000000040E640(null, 5<32>) @ 00000000004029C0 : void)
+T_86: (in fn000000000040E640(0x0000000000000000<p64>, 5<32>) @ 00000000004029C0 : void)
   Class: Eq_78
   DataType: void
   OrigDataType: void
@@ -7954,7 +7954,7 @@ T_196: (in 5<i32> @ 00000000004037AE : int32)
   Class: Eq_193
   DataType: int32
   OrigDataType: int32
-T_197: (in dcgettext(null, "ignoring invalid value of environment variable QUOTING_STYLE: %s", 5<i32>) @ 00000000004037AE : (ptr64 char))
+T_197: (in dcgettext(0x0000000000000000<p64>, "ignoring invalid value of environment variable QUOTING_STYLE: %s", 5<i32>) @ 00000000004037AE : (ptr64 char))
   Class: Eq_186
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -7962,7 +7962,7 @@ T_198: (in 0<32> @ 00000000004037AE : word32)
   Class: Eq_198
   DataType: word32
   OrigDataType: word32
-T_199: (in error(0<i32>, 0<i32>, dcgettext(null, "ignoring invalid value of environment variable QUOTING_STYLE: %s", 5<i32>), 0<32>) @ 00000000004037AE : void)
+T_199: (in error(0<i32>, 0<i32>, dcgettext(0x0000000000000000<p64>, "ignoring invalid value of environment variable QUOTING_STYLE: %s", 5<i32>), 0<32>) @ 00000000004037AE : void)
   Class: Eq_199
   DataType: void
   OrigDataType: void
@@ -7994,7 +7994,7 @@ T_206: (in 4285536<i64>[CONVERT(eax_156, int32, int64) * 4<64>] @ 0000000000402A
   Class: Eq_75
   DataType: word32
   OrigDataType: word32
-T_207: (in fn000000000040E640(null, *((char *) &g_v416460 + (int64) eax_156 * 4<64>)) @ 0000000000402A7A : void)
+T_207: (in fn000000000040E640(0x0000000000000000<p64>, *((char *) &g_v416460 + (int64) eax_156 * 4<64>)) @ 0000000000402A7A : void)
   Class: Eq_78
   DataType: void
   OrigDataType: void
@@ -8126,7 +8126,7 @@ T_239: (in 0<u64> @ 00000000004037CC : uint64)
   Class: Eq_235
   DataType: (ptr64 char)
   OrigDataType: uint64
-T_240: (in fn0000000000410E90(rax_216, null, 0<32>, &tLoc0378, null) @ 00000000004037CC : word32)
+T_240: (in fn0000000000410E90(rax_216, 0x0000000000000000<p64>, 0<32>, &tLoc0378, 0x0000000000000000<p64>) @ 00000000004037CC : word32)
   Class: Eq_240
   DataType: word32
   OrigDataType: word32
@@ -8134,7 +8134,7 @@ T_241: (in 0<32> @ 00000000004037CC : word32)
   Class: Eq_240
   DataType: word32
   OrigDataType: word32
-T_242: (in fn0000000000410E90(rax_216, null, 0<32>, &tLoc0378, null) != 0<32> @ 00000000004037CC : bool)
+T_242: (in fn0000000000410E90(rax_216, 0x0000000000000000<p64>, 0<32>, &tLoc0378, 0x0000000000000000<p64>) != 0<32> @ 00000000004037CC : bool)
   Class: Eq_242
   DataType: bool
   OrigDataType: bool
@@ -8270,7 +8270,7 @@ T_275: (in 0<u64> @ 0000000000402B10 : uint64)
   Class: Eq_235
   DataType: (ptr64 char)
   OrigDataType: uint64
-T_276: (in fn0000000000410E90(rax_326, null, 0<32>, qwLoc0398_3975, null) @ 0000000000402B10 : word32)
+T_276: (in fn0000000000410E90(rax_326, 0x0000000000000000<p64>, 0<32>, qwLoc0398_3975, 0x0000000000000000<p64>) @ 0000000000402B10 : word32)
   Class: Eq_240
   DataType: word32
   OrigDataType: word32
@@ -8278,7 +8278,7 @@ T_277: (in 0<32> @ 0000000000402B10 : word32)
   Class: Eq_240
   DataType: word32
   OrigDataType: word32
-T_278: (in fn0000000000410E90(rax_326, null, 0<32>, qwLoc0398_3975, null) != 0<32> @ 0000000000402B10 : bool)
+T_278: (in fn0000000000410E90(rax_326, 0x0000000000000000<p64>, 0<32>, qwLoc0398_3975, 0x0000000000000000<p64>) != 0<32> @ 0000000000402B10 : bool)
   Class: Eq_278
   DataType: bool
   OrigDataType: bool
@@ -8350,7 +8350,7 @@ T_295: (in 5<i32> @ 00000000004041E3 : int32)
   Class: Eq_292
   DataType: int32
   OrigDataType: int32
-T_296: (in dcgettext(null, "ignoring invalid tab size in environment variable TABSIZE: %s", 5<i32>) @ 00000000004041E3 : (ptr64 char))
+T_296: (in dcgettext(0x0000000000000000<p64>, "ignoring invalid tab size in environment variable TABSIZE: %s", 5<i32>) @ 00000000004041E3 : (ptr64 char))
   Class: Eq_285
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -8358,7 +8358,7 @@ T_297: (in 0<32> @ 00000000004041E3 : word32)
   Class: Eq_297
   DataType: word32
   OrigDataType: word32
-T_298: (in error(0<i32>, 0<i32>, dcgettext(null, "ignoring invalid tab size in environment variable TABSIZE: %s", 5<i32>), 0<32>) @ 00000000004041E3 : void)
+T_298: (in error(0<i32>, 0<i32>, dcgettext(0x0000000000000000<p64>, "ignoring invalid tab size in environment variable TABSIZE: %s", 5<i32>), 0<32>) @ 00000000004041E3 : void)
   Class: Eq_298
   DataType: void
   OrigDataType: void
@@ -8754,7 +8754,7 @@ T_396: (in 0<32> @ 0000000000402CEC : word32)
   Class: Eq_75
   DataType: word32
   OrigDataType: word32
-T_397: (in fn000000000040E640(null, 0<32>) @ 0000000000402CEC : void)
+T_397: (in fn000000000040E640(0x0000000000000000<p64>, 0<32>) @ 0000000000402CEC : void)
   Class: Eq_78
   DataType: void
   OrigDataType: void
@@ -8770,7 +8770,7 @@ T_400: (in 3<32> @ 0000000000402CDE : word32)
   Class: Eq_75
   DataType: word32
   OrigDataType: word32
-T_401: (in fn000000000040E640(null, 3<32>) @ 0000000000402CDE : void)
+T_401: (in fn000000000040E640(0x0000000000000000<p64>, 3<32>) @ 0000000000402CDE : void)
   Class: Eq_78
   DataType: void
   OrigDataType: void
@@ -8814,7 +8814,7 @@ T_411: (in 0<u64> @ 0000000000402C9F : uint64)
   Class: Eq_235
   DataType: (ptr64 char)
   OrigDataType: uint64
-T_412: (in fn0000000000410E90(optarg.u3, null, 0<32>, qwLoc0398_3975, null) @ 0000000000402C9F : word32)
+T_412: (in fn0000000000410E90(optarg.u3, 0x0000000000000000<p64>, 0<32>, qwLoc0398_3975, 0x0000000000000000<p64>) @ 0000000000402C9F : word32)
   Class: Eq_240
   DataType: word32
   OrigDataType: word32
@@ -8822,7 +8822,7 @@ T_413: (in 0<32> @ 0000000000402C9F : word32)
   Class: Eq_240
   DataType: word32
   OrigDataType: word32
-T_414: (in fn0000000000410E90(optarg.u3, null, 0<32>, qwLoc0398_3975, null) != 0<32> @ 0000000000402C9F : bool)
+T_414: (in fn0000000000410E90(optarg.u3, 0x0000000000000000<p64>, 0<32>, qwLoc0398_3975, 0x0000000000000000<p64>) != 0<32> @ 0000000000402C9F : bool)
   Class: Eq_414
   DataType: bool
   OrigDataType: bool
@@ -8878,7 +8878,7 @@ T_427: (in 5<32> @ 0000000000402C36 : word32)
   Class: Eq_75
   DataType: word32
   OrigDataType: word32
-T_428: (in fn000000000040E640(null, 5<32>) @ 0000000000402C36 : void)
+T_428: (in fn000000000040E640(0x0000000000000000<p64>, 5<32>) @ 0000000000402C36 : void)
   Class: Eq_78
   DataType: void
   OrigDataType: void
@@ -9126,7 +9126,7 @@ T_489: (in 0<u64> @ 00000000004030F6 : uint64)
   Class: Eq_235
   DataType: (ptr64 char)
   OrigDataType: uint64
-T_490: (in fn0000000000410E90(optarg.u3, null, 0<32>, qwLoc0398_3975, null) @ 00000000004030F6 : word32)
+T_490: (in fn0000000000410E90(optarg.u3, 0x0000000000000000<p64>, 0<32>, qwLoc0398_3975, 0x0000000000000000<p64>) @ 00000000004030F6 : word32)
   Class: Eq_240
   DataType: word32
   OrigDataType: word32
@@ -9134,7 +9134,7 @@ T_491: (in 0<32> @ 00000000004030F6 : word32)
   Class: Eq_240
   DataType: word32
   OrigDataType: word32
-T_492: (in fn0000000000410E90(optarg.u3, null, 0<32>, qwLoc0398_3975, null) != 0<32> @ 00000000004030F6 : bool)
+T_492: (in fn0000000000410E90(optarg.u3, 0x0000000000000000<p64>, 0<32>, qwLoc0398_3975, 0x0000000000000000<p64>) != 0<32> @ 00000000004030F6 : bool)
   Class: Eq_492
   DataType: bool
   OrigDataType: bool
@@ -9514,7 +9514,7 @@ T_586: (in 4285536<i64>[fn000000000040A120(&g_v416460, g_a416480, optarg.u3, 0x4
   Class: Eq_75
   DataType: word32
   OrigDataType: word32
-T_587: (in fn000000000040E640(null, *((char *) &g_v416460 + fn000000000040A120(&g_v416460, g_a416480, optarg.u3, 0x4138AD<u64>, 4<u64>, g_ptr61A578, fs) * 4<64>)) @ 0000000000402F46 : void)
+T_587: (in fn000000000040E640(0x0000000000000000<p64>, *((char *) &g_v416460 + fn000000000040A120(&g_v416460, g_a416480, optarg.u3, 0x4138AD<u64>, 4<u64>, g_ptr61A578, fs) * 4<64>)) @ 0000000000402F46 : void)
   Class: Eq_78
   DataType: void
   OrigDataType: void
@@ -9990,7 +9990,7 @@ T_705: (in 5<i32> @ 000000000040312F : int32)
   Class: Eq_702
   DataType: int32
   OrigDataType: int32
-T_706: (in dcgettext(null, "invalid line width: %s", 5<i32>) @ 000000000040312F : (ptr64 char))
+T_706: (in dcgettext(0x0000000000000000<p64>, "invalid line width: %s", 5<i32>) @ 000000000040312F : (ptr64 char))
   Class: Eq_695
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -9998,7 +9998,7 @@ T_707: (in 0<32> @ 000000000040312F : word32)
   Class: Eq_707
   DataType: word32
   OrigDataType: word32
-T_708: (in error(2<i32>, 0<i32>, dcgettext(null, "invalid line width: %s", 5<i32>), 0<32>) @ 000000000040312F : void)
+T_708: (in error(2<i32>, 0<i32>, dcgettext(0x0000000000000000<p64>, "invalid line width: %s", 5<i32>), 0<32>) @ 000000000040312F : void)
   Class: Eq_708
   DataType: void
   OrigDataType: void
@@ -10098,7 +10098,7 @@ T_732: (in 0<64> @ 0000000000404406 : word64)
   Class: Eq_731
   DataType: (ptr64 char)
   OrigDataType: word64
-T_733: (in strchr(rax_1141 + 1<i32>, '\n') == null @ 0000000000404406 : bool)
+T_733: (in strchr(rax_1141 + 1<i32>, '\n') == 0x0000000000000000<p64> @ 0000000000404406 : bool)
   Class: Eq_733
   DataType: bool
   OrigDataType: bool
@@ -10222,7 +10222,7 @@ T_763: (in 5<i32> @ 0000000000404433 : int32)
   Class: Eq_760
   DataType: int32
   OrigDataType: int32
-T_764: (in dcgettext(null, "invalid time style format %s", 5<i32>) @ 0000000000404433 : (ptr64 char))
+T_764: (in dcgettext(0x0000000000000000<p64>, "invalid time style format %s", 5<i32>) @ 0000000000404433 : (ptr64 char))
   Class: Eq_753
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -10230,7 +10230,7 @@ T_765: (in 0<32> @ 0000000000404433 : word32)
   Class: Eq_765
   DataType: word32
   OrigDataType: word32
-T_766: (in error(2<i32>, 0<i32>, dcgettext(null, "invalid time style format %s", 5<i32>), 0<32>) @ 0000000000404433 : void)
+T_766: (in error(2<i32>, 0<i32>, dcgettext(0x0000000000000000<p64>, "invalid time style format %s", 5<i32>), 0<32>) @ 0000000000404433 : void)
   Class: Eq_766
   DataType: void
   OrigDataType: void
@@ -10270,7 +10270,7 @@ T_775: (in 0<64> @ 00000000004038BC : word64)
   Class: Eq_774
   DataType: (ptr64 char)
   OrigDataType: word64
-T_776: (in strstr(g_t61A3D0.u3, "%b") == null @ 00000000004038BC : bool)
+T_776: (in strstr(g_t61A3D0.u3, "%b") == 0x0000000000000000<p64> @ 00000000004038BC : bool)
   Class: Eq_776
   DataType: bool
   OrigDataType: bool
@@ -10318,7 +10318,7 @@ T_787: (in 0<64> @ 0000000000404498 : word64)
   Class: Eq_786
   DataType: (ptr64 char)
   OrigDataType: word64
-T_788: (in strstr(g_t61A3D8.u3, "%b") != null @ 0000000000404498 : bool)
+T_788: (in strstr(g_t61A3D8.u3, "%b") != 0x0000000000000000<p64> @ 0000000000404498 : bool)
   Class: Eq_788
   DataType: bool
   OrigDataType: bool
@@ -10626,7 +10626,7 @@ T_864: (in 5<i32> @ 000000000040437B : int32)
   Class: Eq_861
   DataType: int32
   OrigDataType: int32
-T_865: (in dcgettext(null, "error initializing month strings", 5<i32>) @ 000000000040437B : (ptr64 char))
+T_865: (in dcgettext(0x0000000000000000<p64>, "error initializing month strings", 5<i32>) @ 000000000040437B : (ptr64 char))
   Class: Eq_854
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -10634,7 +10634,7 @@ T_866: (in 0<32> @ 000000000040437B : word32)
   Class: Eq_866
   DataType: word32
   OrigDataType: word32
-T_867: (in error(0<i32>, 0<i32>, dcgettext(null, "error initializing month strings", 5<i32>), 0<32>) @ 000000000040437B : void)
+T_867: (in error(0<i32>, 0<i32>, dcgettext(0x0000000000000000<p64>, "error initializing month strings", 5<i32>), 0<32>) @ 000000000040437B : void)
   Class: Eq_867
   DataType: void
   OrigDataType: void
@@ -10778,7 +10778,7 @@ T_902: (in 0x4049D0<u64> @ 0000000000403A06 : uint64)
   Class: Eq_897
   DataType: uint64
   OrigDataType: uint64
-T_903: (in fn000000000040B400(0x1E<u64>, null, 0x404980<u64>, 0x404990<u64>, 0x4049D0<u64>) @ 0000000000403A06 : word64)
+T_903: (in fn000000000040B400(0x1E<u64>, 0x0000000000000000<p64>, 0x404980<u64>, 0x404990<u64>, 0x4049D0<u64>) @ 0000000000403A06 : word64)
   Class: Eq_903
   DataType: (ptr64 Eq_903)
   OrigDataType: word64
@@ -10798,7 +10798,7 @@ T_907: (in 0<64> @ 0000000000403A15 : word64)
   Class: Eq_903
   DataType: (ptr64 Eq_903)
   OrigDataType: word64
-T_908: (in rax_1839 == null @ 0000000000403A15 : bool)
+T_908: (in rax_1839 == 0x0000000000000000<p64> @ 0000000000403A15 : bool)
   Class: Eq_908
   DataType: bool
   OrigDataType: bool
@@ -12126,7 +12126,7 @@ T_1239: (in 5<i32> @ 0000000000404661 : int32)
   Class: Eq_1236
   DataType: int32
   OrigDataType: int32
-T_1240: (in dcgettext(null, "unparsable value for LS_COLORS environment variable", 5<i32>) @ 0000000000404661 : (ptr64 char))
+T_1240: (in dcgettext(0x0000000000000000<p64>, "unparsable value for LS_COLORS environment variable", 5<i32>) @ 0000000000404661 : (ptr64 char))
   Class: Eq_1229
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -12134,7 +12134,7 @@ T_1241: (in 0<32> @ 0000000000404661 : word32)
   Class: Eq_1241
   DataType: word32
   OrigDataType: word32
-T_1242: (in error(0<i32>, 0<i32>, dcgettext(null, "unparsable value for LS_COLORS environment variable", 5<i32>), 0<32>) @ 0000000000404661 : void)
+T_1242: (in error(0<i32>, 0<i32>, dcgettext(0x0000000000000000<p64>, "unparsable value for LS_COLORS environment variable", 5<i32>), 0<32>) @ 0000000000404661 : void)
   Class: Eq_1242
   DataType: void
   OrigDataType: void
@@ -12206,7 +12206,7 @@ T_1259: (in 0<u64> @ 0000000000403B62 : uint64)
   Class: Eq_1257
   DataType: (ptr64 Eq_1257)
   OrigDataType: (ptr64 (struct "sigaction"))
-T_1260: (in sigaction(r14d_1717, null, qwLoc0398_3975) @ 0000000000403B62 : int32)
+T_1260: (in sigaction(r14d_1717, 0x0000000000000000<p64>, qwLoc0398_3975) @ 0000000000403B62 : int32)
   Class: Eq_1260
   DataType: int32
   OrigDataType: int32
@@ -12370,7 +12370,7 @@ T_1300: (in 0<u64> @ 0000000000403BDF : uint64)
   Class: Eq_1299
   DataType: (ptr64 Eq_1299)
   OrigDataType: (ptr64 (struct "sigaction"))
-T_1301: (in sigaction(r15d_1757, qwLoc0398_3975, null) @ 0000000000403BDF : int32)
+T_1301: (in sigaction(r15d_1757, qwLoc0398_3975, 0x0000000000000000<p64>) @ 0000000000403BDF : int32)
   Class: Eq_1301
   DataType: int32
   OrigDataType: int32
@@ -12670,7 +12670,7 @@ T_1375: (in 0<64> @ 0000000000404780 : word64)
   Class: Eq_1370
   DataType: (ptr64 char)
   OrigDataType: word64
-T_1376: (in rsi_1452 != null @ 0000000000404780 : bool)
+T_1376: (in rsi_1452 != 0x0000000000000000<p64> @ 0000000000404780 : bool)
   Class: Eq_1376
   DataType: bool
   OrigDataType: bool
@@ -13010,7 +13010,7 @@ T_1460: (in 0<64> @ 00000000004034F6 : word64)
   Class: Eq_903
   DataType: (ptr64 Eq_903)
   OrigDataType: word64
-T_1461: (in g_ptr61B1C8 == null @ 00000000004034F6 : bool)
+T_1461: (in g_ptr61B1C8 == 0x0000000000000000<p64> @ 00000000004034F6 : bool)
   Class: Eq_1461
   DataType: bool
   OrigDataType: bool
@@ -13174,7 +13174,7 @@ T_1501: (in 0<64> @ 0000000000403535 : word64)
   Class: Eq_1499
   DataType: (ptr64 Eq_1499)
   OrigDataType: word64
-T_1502: (in rax_2613 == null @ 0000000000403535 : bool)
+T_1502: (in rax_2613 == 0x0000000000000000<p64> @ 0000000000403535 : bool)
   Class: Eq_1502
   DataType: bool
   OrigDataType: bool
@@ -13234,11 +13234,11 @@ T_1516: (in 5<i32> @ 00000000004041B1 : int32)
   Class: Eq_1513
   DataType: int32
   OrigDataType: int32
-T_1517: (in dcgettext(null, "cannot open directory %s", 5<i32>) @ 00000000004041B1 : (ptr64 char))
+T_1517: (in dcgettext(0x0000000000000000<p64>, "cannot open directory %s", 5<i32>) @ 00000000004041B1 : (ptr64 char))
   Class: Eq_1506
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
-T_1518: (in fn0000000000405810(r14_2526, dcgettext(null, "cannot open directory %s", 5<i32>), cl_2606, fs) @ 00000000004041B1 : void)
+T_1518: (in fn0000000000405810(r14_2526, dcgettext(0x0000000000000000<p64>, "cannot open directory %s", 5<i32>), cl_2606, fs) @ 00000000004041B1 : void)
   Class: Eq_1518
   DataType: void
   OrigDataType: void
@@ -13250,7 +13250,7 @@ T_1520: (in 0<64> @ 0000000000403543 : word64)
   Class: Eq_903
   DataType: (ptr64 Eq_903)
   OrigDataType: word64
-T_1521: (in g_ptr61B1C8 == null @ 0000000000403543 : bool)
+T_1521: (in g_ptr61B1C8 == 0x0000000000000000<p64> @ 0000000000403543 : bool)
   Class: Eq_1521
   DataType: bool
   OrigDataType: bool
@@ -13414,11 +13414,11 @@ T_1561: (in 5<i32> @ 0000000000403494 : int32)
   Class: Eq_1558
   DataType: int32
   OrigDataType: int32
-T_1562: (in dcgettext(null, "cannot determine device and inode of %s", 5<i32>) @ 0000000000403494 : (ptr64 char))
+T_1562: (in dcgettext(0x0000000000000000<p64>, "cannot determine device and inode of %s", 5<i32>) @ 0000000000403494 : (ptr64 char))
   Class: Eq_1506
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
-T_1563: (in fn0000000000405810(r14_2526, dcgettext(null, "cannot determine device and inode of %s", 5<i32>), cl_2606, fs) @ 0000000000403494 : void)
+T_1563: (in fn0000000000405810(r14_2526, dcgettext(0x0000000000000000<p64>, "cannot determine device and inode of %s", 5<i32>), cl_2606, fs) @ 0000000000403494 : void)
   Class: Eq_1518
   DataType: void
   OrigDataType: void
@@ -13658,7 +13658,7 @@ T_1622: (in 5<i32> @ 0000000000403F12 : int32)
   Class: Eq_1619
   DataType: int32
   OrigDataType: int32
-T_1623: (in dcgettext(null, "%s: not listing already-listed directory", 5<i32>) @ 0000000000403F12 : (ptr64 char))
+T_1623: (in dcgettext(0x0000000000000000<p64>, "%s: not listing already-listed directory", 5<i32>) @ 0000000000403F12 : (ptr64 char))
   Class: Eq_1612
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -13666,7 +13666,7 @@ T_1624: (in 0<32> @ 0000000000403F12 : word32)
   Class: Eq_1624
   DataType: word32
   OrigDataType: word32
-T_1625: (in error(0<i32>, 0<i32>, dcgettext(null, "%s: not listing already-listed directory", 5<i32>), 0<32>) @ 0000000000403F12 : void)
+T_1625: (in error(0<i32>, 0<i32>, dcgettext(0x0000000000000000<p64>, "%s: not listing already-listed directory", 5<i32>), 0<32>) @ 0000000000403F12 : void)
   Class: Eq_1625
   DataType: void
   OrigDataType: void
@@ -13934,7 +13934,7 @@ T_1691: (in 5<i32> @ 0000000000404881 : int32)
   Class: Eq_1688
   DataType: int32
   OrigDataType: int32
-T_1692: (in dcgettext(null, "unrecognized prefix: %s", 5<i32>) @ 0000000000404881 : (ptr64 char))
+T_1692: (in dcgettext(0x0000000000000000<p64>, "unrecognized prefix: %s", 5<i32>) @ 0000000000404881 : (ptr64 char))
   Class: Eq_1681
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -13942,7 +13942,7 @@ T_1693: (in 0<32> @ 0000000000404881 : word32)
   Class: Eq_1693
   DataType: word32
   OrigDataType: word32
-T_1694: (in error(0<i32>, 0<i32>, dcgettext(null, "unrecognized prefix: %s", 5<i32>), 0<32>) @ 0000000000404881 : void)
+T_1694: (in error(0<i32>, 0<i32>, dcgettext(0x0000000000000000<p64>, "unrecognized prefix: %s", 5<i32>), 0<32>) @ 0000000000404881 : void)
   Class: Eq_1694
   DataType: void
   OrigDataType: void
@@ -14450,7 +14450,7 @@ T_1820: (in 0<64> @ 0000000000404033 : word64)
   Class: Eq_1818
   DataType: (ptr64 void)
   OrigDataType: word64
-T_1821: (in rax_2568 == null @ 0000000000404033 : bool)
+T_1821: (in rax_2568 == 0x0000000000000000<p64> @ 0000000000404033 : bool)
   Class: Eq_1821
   DataType: bool
   OrigDataType: bool
@@ -14658,11 +14658,11 @@ T_1872: (in out rcx_4159 @ 0000000000403679 : word64)
   Class: Eq_1754
   DataType: (ptr64 Eq_1754)
   OrigDataType: word64
-T_1873: (in fn00000000004052D0(null, rdx_2886, rbx_2605, rdi_2887, rax_2608, fs, out rcx_4159) @ 0000000000403679 : word64)
+T_1873: (in fn00000000004052D0(0x0000000000000000<p64>, rdx_2886, rbx_2605, rdi_2887, rax_2608, fs, out rcx_4159) @ 0000000000403679 : word64)
   Class: Eq_1873
   DataType: word64
   OrigDataType: word64
-T_1874: (in g_t61B018.u0 + fn00000000004052D0(null, rdx_2886, rbx_2605, rdi_2887, rax_2608, fs, out rcx_4159) @ 0000000000403679 : word64)
+T_1874: (in g_t61B018.u0 + fn00000000004052D0(0x0000000000000000<p64>, rdx_2886, rbx_2605, rdi_2887, rax_2608, fs, out rcx_4159) @ 0000000000403679 : word64)
   Class: Eq_1831
   DataType: Eq_1831
   OrigDataType: word64
@@ -15194,7 +15194,7 @@ T_2006: (in 0<64> @ 0000000000403706 : word64)
   Class: Eq_1892
   DataType: (ptr64 Eq_1892)
   OrigDataType: word64
-T_2007: (in rax_2997 == null @ 0000000000403706 : bool)
+T_2007: (in rax_2997 == 0x0000000000000000<p64> @ 0000000000403706 : bool)
   Class: Eq_2007
   DataType: bool
   OrigDataType: bool
@@ -15410,11 +15410,11 @@ T_2060: (in 5<i32> @ 0000000000403CE3 : int32)
   Class: Eq_2057
   DataType: int32
   OrigDataType: int32
-T_2061: (in dcgettext(null, "reading directory %s", 5<i32>) @ 0000000000403CE3 : (ptr64 char))
+T_2061: (in dcgettext(0x0000000000000000<p64>, "reading directory %s", 5<i32>) @ 0000000000403CE3 : (ptr64 char))
   Class: Eq_1506
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
-T_2062: (in fn0000000000405810(r14_2526, dcgettext(null, "reading directory %s", 5<i32>), cl_2606, fs) @ 0000000000403CE3 : void)
+T_2062: (in fn0000000000405810(r14_2526, dcgettext(0x0000000000000000<p64>, "reading directory %s", 5<i32>), cl_2606, fs) @ 0000000000403CE3 : void)
   Class: Eq_1518
   DataType: void
   OrigDataType: void
@@ -15474,11 +15474,11 @@ T_2076: (in 5<i32> @ 0000000000403ED8 : int32)
   Class: Eq_2073
   DataType: int32
   OrigDataType: int32
-T_2077: (in dcgettext(null, "closing directory %s", 5<i32>) @ 0000000000403ED8 : (ptr64 char))
+T_2077: (in dcgettext(0x0000000000000000<p64>, "closing directory %s", 5<i32>) @ 0000000000403ED8 : (ptr64 char))
   Class: Eq_1506
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
-T_2078: (in fn0000000000405810(r14_2526, dcgettext(null, "closing directory %s", 5<i32>), cl_2606, fs) @ 0000000000403ED8 : void)
+T_2078: (in fn0000000000405810(r14_2526, dcgettext(0x0000000000000000<p64>, "closing directory %s", 5<i32>), cl_2606, fs) @ 0000000000403ED8 : void)
   Class: Eq_1518
   DataType: void
   OrigDataType: void
@@ -15662,7 +15662,7 @@ T_2123: (in 5<i32> @ 0000000000403D45 : int32)
   Class: Eq_2120
   DataType: int32
   OrigDataType: int32
-T_2124: (in dcgettext(null, "total", 5<i32>) @ 0000000000403D45 : (ptr64 char))
+T_2124: (in dcgettext(0x0000000000000000<p64>, "total", 5<i32>) @ 0000000000403D45 : (ptr64 char))
   Class: Eq_2124
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -16699,7 +16699,7 @@ T_2382: (in 0<64> @ 0000000000404169 : word64)
   Class: Eq_903
   DataType: (ptr64 Eq_903)
   OrigDataType: word64
-T_2383: (in rbx_2491 == null @ 0000000000404169 : bool)
+T_2383: (in rbx_2491 == 0x0000000000000000<p64> @ 0000000000404169 : bool)
   Class: Eq_2383
   DataType: bool
   OrigDataType: bool
@@ -16843,7 +16843,7 @@ T_2418: (in 0<u64> @ 0000000000404123 : uint64)
   Class: Eq_2417
   DataType: Eq_2417
   OrigDataType: sighandler_t
-T_2419: (in signal(ebp_2385, null) @ 0000000000404123 : sighandler_t)
+T_2419: (in signal(ebp_2385, 0x0000000000000000<p64>) @ 0000000000404123 : sighandler_t)
   Class: Eq_2417
   DataType: Eq_2417
   OrigDataType: sighandler_t
@@ -17327,7 +17327,7 @@ T_2539: (in 5<i32> @ 0000000000403C2C : int32)
   Class: Eq_2536
   DataType: int32
   OrigDataType: int32
-T_2540: (in dcgettext(null, "invalid tab size: %s", 5<i32>) @ 0000000000403C2C : (ptr64 char))
+T_2540: (in dcgettext(0x0000000000000000<p64>, "invalid tab size: %s", 5<i32>) @ 0000000000403C2C : (ptr64 char))
   Class: Eq_2529
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -17335,7 +17335,7 @@ T_2541: (in 0<32> @ 0000000000403C2C : word32)
   Class: Eq_2541
   DataType: word32
   OrigDataType: word32
-T_2542: (in error(2<i32>, 0<i32>, dcgettext(null, "invalid tab size: %s", 5<i32>), 0<32>) @ 0000000000403C2C : void)
+T_2542: (in error(2<i32>, 0<i32>, dcgettext(0x0000000000000000<p64>, "invalid tab size: %s", 5<i32>), 0<32>) @ 0000000000403C2C : void)
   Class: Eq_2542
   DataType: void
   OrigDataType: void
@@ -17891,7 +17891,7 @@ T_2680: (in 5<i32> @ 0000000000403ABB : int32)
   Class: Eq_2677
   DataType: int32
   OrigDataType: int32
-T_2681: (in dcgettext(null, "ignoring invalid width in environment variable COLUMNS: %s", 5<i32>) @ 0000000000403ABB : (ptr64 char))
+T_2681: (in dcgettext(0x0000000000000000<p64>, "ignoring invalid width in environment variable COLUMNS: %s", 5<i32>) @ 0000000000403ABB : (ptr64 char))
   Class: Eq_2670
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -17899,7 +17899,7 @@ T_2682: (in 0<32> @ 0000000000403ABB : word32)
   Class: Eq_2682
   DataType: word32
   OrigDataType: word32
-T_2683: (in error(0<i32>, 0<i32>, dcgettext(null, "ignoring invalid width in environment variable COLUMNS: %s", 5<i32>), 0<32>) @ 0000000000403ABB : void)
+T_2683: (in error(0<i32>, 0<i32>, dcgettext(0x0000000000000000<p64>, "ignoring invalid width in environment variable COLUMNS: %s", 5<i32>), 0<32>) @ 0000000000403ABB : void)
   Class: Eq_2683
   DataType: void
   OrigDataType: void
@@ -17959,7 +17959,7 @@ T_2697: (in 0<64> @ 000000000040453E : word64)
   Class: Eq_2696
   DataType: (ptr64 char)
   OrigDataType: word64
-T_2698: (in getenv("BLOCK_SIZE") != null @ 000000000040453E : bool)
+T_2698: (in getenv("BLOCK_SIZE") != 0x0000000000000000<p64> @ 000000000040453E : bool)
   Class: Eq_2698
   DataType: bool
   OrigDataType: bool
@@ -18207,7 +18207,7 @@ T_2759: (in 0<64> @ 00000000004043F0 : word64)
   Class: Eq_722
   DataType: (ptr64 char)
   OrigDataType: word64
-T_2760: (in rax_1141 == null @ 00000000004043F0 : bool)
+T_2760: (in rax_1141 == 0x0000000000000000<p64> @ 00000000004043F0 : bool)
   Class: Eq_2760
   DataType: bool
   OrigDataType: bool
@@ -18323,7 +18323,7 @@ T_2788: (in 5<i32> @ 0000000000404597 : int32)
   Class: Eq_2785
   DataType: int32
   OrigDataType: int32
-T_2789: (in dcgettext(null, "Valid arguments are:\n", 5<i32>) @ 0000000000404597 : (ptr64 char))
+T_2789: (in dcgettext(0x0000000000000000<p64>, "Valid arguments are:\n", 5<i32>) @ 0000000000404597 : (ptr64 char))
   Class: Eq_2779
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -18335,7 +18335,7 @@ T_2791: (in Mem711[0x000000000061A650<p64>:word64] @ 0000000000404597 : word64)
   Class: Eq_1754
   DataType: (ptr64 Eq_1754)
   OrigDataType: (ptr64 FILE)
-T_2792: (in fputs_unlocked(dcgettext(null, "Valid arguments are:\n", 5<i32>), stderr) @ 0000000000404597 : int32)
+T_2792: (in fputs_unlocked(dcgettext(0x0000000000000000<p64>, "Valid arguments are:\n", 5<i32>), stderr) @ 0000000000404597 : int32)
   Class: Eq_2792
   DataType: int32
   OrigDataType: int32
@@ -18467,7 +18467,7 @@ T_2824: (in 2<i32> @ 000000000040461C : int32)
   Class: Eq_2821
   DataType: int32
   OrigDataType: int32
-T_2825: (in dcgettext(null, g_t61A3D0.u3, 2<i32>) @ 000000000040461C : (ptr64 char))
+T_2825: (in dcgettext(0x0000000000000000<p64>, g_t61A3D0.u3, 2<i32>) @ 000000000040461C : (ptr64 char))
   Class: Eq_14
   DataType: Eq_14
   OrigDataType: (ptr64 char)
@@ -18515,7 +18515,7 @@ T_2836: (in 2<i32> @ 000000000040463B : int32)
   Class: Eq_2834
   DataType: int32
   OrigDataType: int32
-T_2837: (in dcgettext(null, rsi_856, 2<i32>) @ 000000000040463B : (ptr64 char))
+T_2837: (in dcgettext(0x0000000000000000<p64>, rsi_856, 2<i32>) @ 000000000040463B : (ptr64 char))
   Class: Eq_14
   DataType: Eq_14
   OrigDataType: (ptr64 char)
@@ -18591,7 +18591,7 @@ T_2855: (in 5<i32> @ 00000000004031F4 : int32)
   Class: Eq_2852
   DataType: int32
   OrigDataType: int32
-T_2856: (in dcgettext(null, "  - +FORMAT (e.g., +%H:%M) for a 'date'-style format\n", 5<i32>) @ 00000000004031F4 : (ptr64 char))
+T_2856: (in dcgettext(0x0000000000000000<p64>, "  - +FORMAT (e.g., +%H:%M) for a 'date'-style format\n", 5<i32>) @ 00000000004031F4 : (ptr64 char))
   Class: Eq_2846
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -18599,7 +18599,7 @@ T_2857: (in Mem711[0x000000000061A650<p64>:word64] @ 00000000004031F4 : word64)
   Class: Eq_1754
   DataType: (ptr64 Eq_1754)
   OrigDataType: (ptr64 FILE)
-T_2858: (in fputs_unlocked(dcgettext(null, "  - +FORMAT (e.g., +%H:%M) for a 'date'-style format\n", 5<i32>), stderr) @ 00000000004031F4 : int32)
+T_2858: (in fputs_unlocked(dcgettext(0x0000000000000000<p64>, "  - +FORMAT (e.g., +%H:%M) for a 'date'-style format\n", 5<i32>), stderr) @ 00000000004031F4 : int32)
   Class: Eq_2858
   DataType: int32
   OrigDataType: int32
@@ -18672,7 +18672,7 @@ T_2875: (in 0<64> @ 00000000004045A2 : word64)
   Class: Eq_2864
   DataType: (ptr64 char)
   OrigDataType: word64
-T_2876: (in rcx_787 == null @ 00000000004045A2 : bool)
+T_2876: (in rcx_787 == 0x0000000000000000<p64> @ 00000000004045A2 : bool)
   Class: Eq_2876
   DataType: bool
   OrigDataType: bool
@@ -21144,7 +21144,7 @@ T_3493: (in 0<64> @ 00000000004050B2 : word64)
   Class: Eq_903
   DataType: (ptr64 Eq_903)
   OrigDataType: word64
-T_3494: (in g_ptr61B1C8 == null @ 00000000004050B2 : bool)
+T_3494: (in g_ptr61B1C8 == 0x0000000000000000<p64> @ 00000000004050B2 : bool)
   Class: Eq_3494
   DataType: bool
   OrigDataType: bool
@@ -21556,7 +21556,7 @@ T_3596: (in 0<u64> @ 0000000000405168 : uint64)
   Class: Eq_3595
   DataType: (ptr64 ptr64)
   OrigDataType: uint64
-T_3597: (in fn000000000040A610(rdi, r15_132, null) @ 0000000000405168 : word64)
+T_3597: (in fn000000000040A610(rdi, r15_132, 0x0000000000000000<p64>) @ 0000000000405168 : word64)
   Class: Eq_14
   DataType: Eq_14
   OrigDataType: word64
@@ -22136,7 +22136,7 @@ T_3741: (in 0<64> @ 0000000000405358 : word64)
   Class: Eq_1863
   DataType: (ptr64 Eq_1863)
   OrigDataType: word64
-T_3742: (in rcx == null @ 0000000000405358 : bool)
+T_3742: (in rcx == 0x0000000000000000<p64> @ 0000000000405358 : bool)
   Class: Eq_3742
   DataType: bool
   OrigDataType: bool
@@ -22144,7 +22144,7 @@ T_3743: (in 0<64> @ 0000000000405383 : word64)
   Class: Eq_1754
   DataType: (ptr64 Eq_1754)
   OrigDataType: word64
-T_3744: (in rdi == null @ 0000000000405383 : bool)
+T_3744: (in rdi == 0x0000000000000000<p64> @ 0000000000405383 : bool)
   Class: Eq_3744
   DataType: bool
   OrigDataType: bool
@@ -22332,7 +22332,7 @@ T_3790: (in 0<64> @ 00000000004053A3 : word64)
   Class: Eq_1863
   DataType: (ptr64 Eq_1863)
   OrigDataType: word64
-T_3791: (in rcx == null @ 00000000004053A3 : bool)
+T_3791: (in rcx == 0x0000000000000000<p64> @ 00000000004053A3 : bool)
   Class: Eq_3791
   DataType: bool
   OrigDataType: bool
@@ -24859,7 +24859,7 @@ T_4420: (in out rcx_139 @ 0000000000405DE8 : word64)
   Class: Eq_1754
   DataType: (ptr64 Eq_1754)
   OrigDataType: word64
-T_4421: (in fn00000000004052D0(&tLoc02C0, g_ptr61B0E8, rdi.u4->t0000.u1, null, r12, fs, out rcx_139) @ 0000000000405DE8 : word64)
+T_4421: (in fn00000000004052D0(&tLoc02C0, g_ptr61B0E8, rdi.u4->t0000.u1, 0x0000000000000000<p64>, r12, fs, out rcx_139) @ 0000000000405DE8 : word64)
   Class: Eq_1873
   DataType: word64
   OrigDataType: word64
@@ -26891,7 +26891,7 @@ T_4928: (in 0<u64> @ 000000000040652C : uint64)
   Class: Eq_2417
   DataType: Eq_2417
   OrigDataType: sighandler_t
-T_4929: (in signal(ebx_65, null) @ 000000000040652C : sighandler_t)
+T_4929: (in signal(ebx_65, 0x0000000000000000<p64>) @ 000000000040652C : sighandler_t)
   Class: Eq_2417
   DataType: Eq_2417
   OrigDataType: sighandler_t
@@ -26959,7 +26959,7 @@ T_4945: (in 0<u64> @ 00000000004064EA : uint64)
   Class: Eq_4942
   DataType: (ptr64 Eq_4942)
   OrigDataType: (ptr64 sigset_t)
-T_4946: (in sigprocmask(2<i32>, &qwLoc88, null) @ 00000000004064EA : int32)
+T_4946: (in sigprocmask(2<i32>, &qwLoc88, 0x0000000000000000<p64>) @ 00000000004064EA : int32)
   Class: Eq_4946
   DataType: int32
   OrigDataType: int32
@@ -27128,7 +27128,7 @@ T_4985: (in 0<64> @ 0000000000406702 : word64)
   Class: Eq_4949
   DataType: (ptr64 Eq_4949)
   OrigDataType: word64
-T_4986: (in rdx == null @ 0000000000406702 : bool)
+T_4986: (in rdx == 0x0000000000000000<p64> @ 0000000000406702 : bool)
   Class: Eq_4986
   DataType: bool
   OrigDataType: bool
@@ -27172,7 +27172,7 @@ T_4996: (in out rcx_1038 @ 00000000004067EB : word64)
   Class: Eq_1754
   DataType: (ptr64 Eq_1754)
   OrigDataType: word64
-T_4997: (in fn00000000004052D0(null, g_ptr61B0E8, r12_34, stdout, r12_34, fs, out rcx_1038) @ 00000000004067EB : word64)
+T_4997: (in fn00000000004052D0(0x0000000000000000<p64>, g_ptr61B0E8, r12_34, stdout, r12_34, fs, out rcx_1038) @ 00000000004067EB : word64)
   Class: Eq_1873
   DataType: word64
   OrigDataType: word64
@@ -27228,7 +27228,7 @@ T_5010: (in out rcx_1038 @ 0000000000406745 : word64)
   Class: Eq_1754
   DataType: (ptr64 Eq_1754)
   OrigDataType: word64
-T_5011: (in fn00000000004052D0(null, g_ptr61B0E8, r12_34, stdout, r12_34, fs, out rcx_1038) @ 0000000000406745 : word64)
+T_5011: (in fn00000000004052D0(0x0000000000000000<p64>, g_ptr61B0E8, r12_34, stdout, r12_34, fs, out rcx_1038) @ 0000000000406745 : word64)
   Class: Eq_1873
   DataType: word64
   OrigDataType: word64
@@ -27956,7 +27956,7 @@ T_5192: (in 0<64> @ 00000000004066CA : word64)
   Class: Eq_4875
   DataType: (ptr64 void)
   OrigDataType: word64
-T_5193: (in rbp_469->ptr0008 == null @ 00000000004066CA : bool)
+T_5193: (in rbp_469->ptr0008 == 0x0000000000000000<p64> @ 00000000004066CA : bool)
   Class: Eq_5193
   DataType: bool
   OrigDataType: bool
@@ -28864,7 +28864,7 @@ T_5419: (in 0<64> @ 0000000000406ACB : word64)
   Class: Eq_5417
   DataType: (ptr64 char)
   OrigDataType: word64
-T_5420: (in rax_39 == null @ 0000000000406ACB : bool)
+T_5420: (in rax_39 == 0x0000000000000000<p64> @ 0000000000406ACB : bool)
   Class: Eq_5420
   DataType: bool
   OrigDataType: bool
@@ -31756,7 +31756,7 @@ T_6134: (in out rcx_1177 @ 000000000040719D : word64)
   Class: Eq_14
   DataType: Eq_14
   OrigDataType: word64
-T_6135: (in fn0000000000406540((word32) r13_1106 + 4<i32> + rax_1136, null, 1<8>, rdi, fs, out rcx_1177) @ 000000000040719D : word64)
+T_6135: (in fn0000000000406540((word32) r13_1106 + 4<i32> + rax_1136, 0x0000000000000000<p64>, 1<8>, rdi, fs, out rcx_1177) @ 000000000040719D : word64)
   Class: Eq_6068
   DataType: word64
   OrigDataType: word64
@@ -32544,7 +32544,7 @@ T_6331: (in out rcx_199 @ 000000000040791B : word64)
   Class: Eq_14
   DataType: Eq_14
   OrigDataType: word64
-T_6332: (in fn0000000000406540(rsi, null, 0<8>, rdi, fs, out rcx_199) @ 000000000040791B : word64)
+T_6332: (in fn0000000000406540(rsi, 0x0000000000000000<p64>, 0<8>, rdi, fs, out rcx_199) @ 000000000040791B : word64)
   Class: Eq_6068
   DataType: word64
   OrigDataType: word64
@@ -35258,11 +35258,11 @@ T_7005: (in 5<i32> @ 0000000000407FD6 : int32)
   Class: Eq_7002
   DataType: int32
   OrigDataType: int32
-T_7006: (in dcgettext(null, "cannot access %s", 5<i32>) @ 0000000000407FD6 : (ptr64 char))
+T_7006: (in dcgettext(0x0000000000000000<p64>, "cannot access %s", 5<i32>) @ 0000000000407FD6 : (ptr64 char))
   Class: Eq_1506
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
-T_7007: (in fn0000000000405810(r12_494, dcgettext(null, "cannot access %s", 5<i32>), r15b_2023, fs) @ 0000000000407FD6 : void)
+T_7007: (in fn0000000000405810(r12_494, dcgettext(0x0000000000000000<p64>, "cannot access %s", 5<i32>), r15b_2023, fs) @ 0000000000407FD6 : void)
   Class: Eq_1518
   DataType: void
   OrigDataType: void
@@ -38102,11 +38102,11 @@ T_7716: (in 5<i32> @ 0000000000408BF8 : int32)
   Class: Eq_7713
   DataType: int32
   OrigDataType: int32
-T_7717: (in dcgettext(null, "cannot read symbolic link %s", 5<i32>) @ 0000000000408BF8 : (ptr64 char))
+T_7717: (in dcgettext(0x0000000000000000<p64>, "cannot read symbolic link %s", 5<i32>) @ 0000000000408BF8 : (ptr64 char))
   Class: Eq_1506
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
-T_7718: (in fn0000000000405810(r12_494, dcgettext(null, "cannot read symbolic link %s", 5<i32>), bLoc038C_2883, fs) @ 0000000000408BF8 : void)
+T_7718: (in fn0000000000405810(r12_494, dcgettext(0x0000000000000000<p64>, "cannot read symbolic link %s", 5<i32>), bLoc038C_2883, fs) @ 0000000000408BF8 : void)
   Class: Eq_1518
   DataType: void
   OrigDataType: void
@@ -38914,7 +38914,7 @@ T_7919: (in 5<i32> @ 00000000004097AD : int32)
   Class: Eq_7916
   DataType: int32
   OrigDataType: int32
-T_7920: (in dcgettext(null, "Usage: %s [OPTION]... [FILE]...\n", 5<i32>) @ 00000000004097AD : (ptr64 char))
+T_7920: (in dcgettext(0x0000000000000000<p64>, "Usage: %s [OPTION]... [FILE]...\n", 5<i32>) @ 00000000004097AD : (ptr64 char))
   Class: Eq_7910
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -38922,7 +38922,7 @@ T_7921: (in 0<32> @ 00000000004097AD : word32)
   Class: Eq_7921
   DataType: word32
   OrigDataType: word32
-T_7922: (in __printf_chk(1<i32>, dcgettext(null, "Usage: %s [OPTION]... [FILE]...\n", 5<i32>), 0<32>) @ 00000000004097AD : int32)
+T_7922: (in __printf_chk(1<i32>, dcgettext(0x0000000000000000<p64>, "Usage: %s [OPTION]... [FILE]...\n", 5<i32>), 0<32>) @ 00000000004097AD : int32)
   Class: Eq_7922
   DataType: int32
   OrigDataType: int32
@@ -38974,7 +38974,7 @@ T_7934: (in 5<i32> @ 00000000004097D0 : int32)
   Class: Eq_7931
   DataType: int32
   OrigDataType: int32
-T_7935: (in dcgettext(null, "List information about the FILEs (the current directory by default).\nSort entries alphabetically if none of -cftuvSUX nor --sort is specified.\n", 5<i32>) @ 00000000004097D0 : (ptr64 char))
+T_7935: (in dcgettext(0x0000000000000000<p64>, "List information about the FILEs (the current directory by default).\nSort entries alphabetically if none of -cftuvSUX nor --sort is specified.\n", 5<i32>) @ 00000000004097D0 : (ptr64 char))
   Class: Eq_7925
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -38982,7 +38982,7 @@ T_7936: (in Mem11[0x000000000061A610<p64>:word64] @ 00000000004097D0 : word64)
   Class: Eq_1754
   DataType: (ptr64 Eq_1754)
   OrigDataType: (ptr64 FILE)
-T_7937: (in fputs_unlocked(dcgettext(null, "List information about the FILEs (the current directory by default).\nSort entries alphabetically if none of -cftuvSUX nor --sort is specified.\n", 5<i32>), stdout) @ 00000000004097D0 : int32)
+T_7937: (in fputs_unlocked(dcgettext(0x0000000000000000<p64>, "List information about the FILEs (the current directory by default).\nSort entries alphabetically if none of -cftuvSUX nor --sort is specified.\n", 5<i32>), stdout) @ 00000000004097D0 : int32)
   Class: Eq_7937
   DataType: int32
   OrigDataType: int32
@@ -39034,7 +39034,7 @@ T_7949: (in 5<i32> @ 00000000004097F3 : int32)
   Class: Eq_7946
   DataType: int32
   OrigDataType: int32
-T_7950: (in dcgettext(null, "\nMandatory arguments to long options are mandatory for short options too.\n", 5<i32>) @ 00000000004097F3 : (ptr64 char))
+T_7950: (in dcgettext(0x0000000000000000<p64>, "\nMandatory arguments to long options are mandatory for short options too.\n", 5<i32>) @ 00000000004097F3 : (ptr64 char))
   Class: Eq_7940
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -39042,7 +39042,7 @@ T_7951: (in Mem11[0x000000000061A610<p64>:word64] @ 00000000004097F3 : word64)
   Class: Eq_1754
   DataType: (ptr64 Eq_1754)
   OrigDataType: (ptr64 FILE)
-T_7952: (in fputs_unlocked(dcgettext(null, "\nMandatory arguments to long options are mandatory for short options too.\n", 5<i32>), stdout) @ 00000000004097F3 : int32)
+T_7952: (in fputs_unlocked(dcgettext(0x0000000000000000<p64>, "\nMandatory arguments to long options are mandatory for short options too.\n", 5<i32>), stdout) @ 00000000004097F3 : int32)
   Class: Eq_7952
   DataType: int32
   OrigDataType: int32
@@ -39094,7 +39094,7 @@ T_7964: (in 5<i32> @ 0000000000409816 : int32)
   Class: Eq_7961
   DataType: int32
   OrigDataType: int32
-T_7965: (in dcgettext(null, "  -a, --all                  do not ignore entries starting with .\n  -A, --almost-all           do not list implied . and ..\n      --author               with -l, print the author of each file\n  -b, --escape               print C-style escapes for nongraphic characters\n", 5<i32>) @ 0000000000409816 : (ptr64 char))
+T_7965: (in dcgettext(0x0000000000000000<p64>, "  -a, --all                  do not ignore entries starting with .\n  -A, --almost-all           do not list implied . and ..\n      --author               with -l, print the author of each file\n  -b, --escape               print C-style escapes for nongraphic characters\n", 5<i32>) @ 0000000000409816 : (ptr64 char))
   Class: Eq_7955
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -39102,7 +39102,7 @@ T_7966: (in Mem11[0x000000000061A610<p64>:word64] @ 0000000000409816 : word64)
   Class: Eq_1754
   DataType: (ptr64 Eq_1754)
   OrigDataType: (ptr64 FILE)
-T_7967: (in fputs_unlocked(dcgettext(null, "  -a, --all                  do not ignore entries starting with .\n  -A, --almost-all           do not list implied . and ..\n      --author               with -l, print the author of each file\n  -b, --escape               print C-style escapes for nongraphic characters\n", 5<i32>), stdout) @ 0000000000409816 : int32)
+T_7967: (in fputs_unlocked(dcgettext(0x0000000000000000<p64>, "  -a, --all                  do not ignore entries starting with .\n  -A, --almost-all           do not list implied . and ..\n      --author               with -l, print the author of each file\n  -b, --escape               print C-style escapes for nongraphic characters\n", 5<i32>), stdout) @ 0000000000409816 : int32)
   Class: Eq_7967
   DataType: int32
   OrigDataType: int32
@@ -39154,7 +39154,7 @@ T_7979: (in 5<i32> @ 0000000000409839 : int32)
   Class: Eq_7976
   DataType: int32
   OrigDataType: int32
-T_7980: (in dcgettext(null, "      --block-size=SIZE      scale sizes by SIZE before printing them.  E.g.,\n                               '--block-size=M' prints sizes in units of\n                               1,048,576 bytes.  See SIZE format below.\n  -B, --ignore-backups       do not list implied entries ending with ~\n  -c                         with -lt: sort by, and show, ctime (time of last\n                               modification of file status information)\n                               with -l: show ctime and sort by name\n                               otherwise: sort by ctime, newest first\n", 5<i32>) @ 0000000000409839 : (ptr64 char))
+T_7980: (in dcgettext(0x0000000000000000<p64>, "      --block-size=SIZE      scale sizes by SIZE before printing them.  E.g.,\n                               '--block-size=M' prints sizes in units of\n                               1,048,576 bytes.  See SIZE format below.\n  -B, --ignore-backups       do not list implied entries ending with ~\n  -c                         with -lt: sort by, and show, ctime (time of last\n                               modification of file status information)\n                               with -l: show ctime and sort by name\n                               otherwise: sort by ctime, newest first\n", 5<i32>) @ 0000000000409839 : (ptr64 char))
   Class: Eq_7970
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -39162,7 +39162,7 @@ T_7981: (in Mem11[0x000000000061A610<p64>:word64] @ 0000000000409839 : word64)
   Class: Eq_1754
   DataType: (ptr64 Eq_1754)
   OrigDataType: (ptr64 FILE)
-T_7982: (in fputs_unlocked(dcgettext(null, "      --block-size=SIZE      scale sizes by SIZE before printing them.  E.g.,\n                               '--block-size=M' prints sizes in units of\n                               1,048,576 bytes.  See SIZE format below.\n  -B, --ignore-backups       do not list implied entries ending with ~\n  -c                         with -lt: sort by, and show, ctime (time of last\n                               modification of file status information)\n                               with -l: show ctime and sort by name\n                               otherwise: sort by ctime, newest first\n", 5<i32>), stdout) @ 0000000000409839 : int32)
+T_7982: (in fputs_unlocked(dcgettext(0x0000000000000000<p64>, "      --block-size=SIZE      scale sizes by SIZE before printing them.  E.g.,\n                               '--block-size=M' prints sizes in units of\n                               1,048,576 bytes.  See SIZE format below.\n  -B, --ignore-backups       do not list implied entries ending with ~\n  -c                         with -lt: sort by, and show, ctime (time of last\n                               modification of file status information)\n                               with -l: show ctime and sort by name\n                               otherwise: sort by ctime, newest first\n", 5<i32>), stdout) @ 0000000000409839 : int32)
   Class: Eq_7982
   DataType: int32
   OrigDataType: int32
@@ -39214,7 +39214,7 @@ T_7994: (in 5<i32> @ 000000000040985C : int32)
   Class: Eq_7991
   DataType: int32
   OrigDataType: int32
-T_7995: (in dcgettext(null, "  -C                         list entries by columns\n      --color[=WHEN]         colorize the output.  WHEN defaults to 'always'\n                               or can be 'never' or 'auto'.  More info below\n  -d, --directory            list directory entries instead of contents,\n                               and do not dereference symbolic links\n  -D, --dired                generate output designed for Emacs' dired mode\n", 5<i32>) @ 000000000040985C : (ptr64 char))
+T_7995: (in dcgettext(0x0000000000000000<p64>, "  -C                         list entries by columns\n      --color[=WHEN]         colorize the output.  WHEN defaults to 'always'\n                               or can be 'never' or 'auto'.  More info below\n  -d, --directory            list directory entries instead of contents,\n                               and do not dereference symbolic links\n  -D, --dired                generate output designed for Emacs' dired mode\n", 5<i32>) @ 000000000040985C : (ptr64 char))
   Class: Eq_7985
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -39222,7 +39222,7 @@ T_7996: (in Mem11[0x000000000061A610<p64>:word64] @ 000000000040985C : word64)
   Class: Eq_1754
   DataType: (ptr64 Eq_1754)
   OrigDataType: (ptr64 FILE)
-T_7997: (in fputs_unlocked(dcgettext(null, "  -C                         list entries by columns\n      --color[=WHEN]         colorize the output.  WHEN defaults to 'always'\n                               or can be 'never' or 'auto'.  More info below\n  -d, --directory            list directory entries instead of contents,\n                               and do not dereference symbolic links\n  -D, --dired                generate output designed for Emacs' dired mode\n", 5<i32>), stdout) @ 000000000040985C : int32)
+T_7997: (in fputs_unlocked(dcgettext(0x0000000000000000<p64>, "  -C                         list entries by columns\n      --color[=WHEN]         colorize the output.  WHEN defaults to 'always'\n                               or can be 'never' or 'auto'.  More info below\n  -d, --directory            list directory entries instead of contents,\n                               and do not dereference symbolic links\n  -D, --dired                generate output designed for Emacs' dired mode\n", 5<i32>), stdout) @ 000000000040985C : int32)
   Class: Eq_7997
   DataType: int32
   OrigDataType: int32
@@ -39274,7 +39274,7 @@ T_8009: (in 5<i32> @ 000000000040987F : int32)
   Class: Eq_8006
   DataType: int32
   OrigDataType: int32
-T_8010: (in dcgettext(null, "  -f                         do not sort, enable -aU, disable -ls --color\n  -F, --classify             append indicator (one of */=>@|) to entries\n      --file-type            likewise, except do not append '*'\n      --format=WORD          across -x, commas -m, horizontal -x, long -l,\n                               single-column -1, verbose -l, vertical -C\n      --full-time            like -l --time-style=full-iso\n", 5<i32>) @ 000000000040987F : (ptr64 char))
+T_8010: (in dcgettext(0x0000000000000000<p64>, "  -f                         do not sort, enable -aU, disable -ls --color\n  -F, --classify             append indicator (one of */=>@|) to entries\n      --file-type            likewise, except do not append '*'\n      --format=WORD          across -x, commas -m, horizontal -x, long -l,\n                               single-column -1, verbose -l, vertical -C\n      --full-time            like -l --time-style=full-iso\n", 5<i32>) @ 000000000040987F : (ptr64 char))
   Class: Eq_8000
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -39282,7 +39282,7 @@ T_8011: (in Mem11[0x000000000061A610<p64>:word64] @ 000000000040987F : word64)
   Class: Eq_1754
   DataType: (ptr64 Eq_1754)
   OrigDataType: (ptr64 FILE)
-T_8012: (in fputs_unlocked(dcgettext(null, "  -f                         do not sort, enable -aU, disable -ls --color\n  -F, --classify             append indicator (one of */=>@|) to entries\n      --file-type            likewise, except do not append '*'\n      --format=WORD          across -x, commas -m, horizontal -x, long -l,\n                               single-column -1, verbose -l, vertical -C\n      --full-time            like -l --time-style=full-iso\n", 5<i32>), stdout) @ 000000000040987F : int32)
+T_8012: (in fputs_unlocked(dcgettext(0x0000000000000000<p64>, "  -f                         do not sort, enable -aU, disable -ls --color\n  -F, --classify             append indicator (one of */=>@|) to entries\n      --file-type            likewise, except do not append '*'\n      --format=WORD          across -x, commas -m, horizontal -x, long -l,\n                               single-column -1, verbose -l, vertical -C\n      --full-time            like -l --time-style=full-iso\n", 5<i32>), stdout) @ 000000000040987F : int32)
   Class: Eq_8012
   DataType: int32
   OrigDataType: int32
@@ -39334,7 +39334,7 @@ T_8024: (in 5<i32> @ 00000000004098A2 : int32)
   Class: Eq_8021
   DataType: int32
   OrigDataType: int32
-T_8025: (in dcgettext(null, "  -g                         like -l, but do not list owner\n", 5<i32>) @ 00000000004098A2 : (ptr64 char))
+T_8025: (in dcgettext(0x0000000000000000<p64>, "  -g                         like -l, but do not list owner\n", 5<i32>) @ 00000000004098A2 : (ptr64 char))
   Class: Eq_8015
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -39342,7 +39342,7 @@ T_8026: (in Mem11[0x000000000061A610<p64>:word64] @ 00000000004098A2 : word64)
   Class: Eq_1754
   DataType: (ptr64 Eq_1754)
   OrigDataType: (ptr64 FILE)
-T_8027: (in fputs_unlocked(dcgettext(null, "  -g                         like -l, but do not list owner\n", 5<i32>), stdout) @ 00000000004098A2 : int32)
+T_8027: (in fputs_unlocked(dcgettext(0x0000000000000000<p64>, "  -g                         like -l, but do not list owner\n", 5<i32>), stdout) @ 00000000004098A2 : int32)
   Class: Eq_8027
   DataType: int32
   OrigDataType: int32
@@ -39394,7 +39394,7 @@ T_8039: (in 5<i32> @ 00000000004098C5 : int32)
   Class: Eq_8036
   DataType: int32
   OrigDataType: int32
-T_8040: (in dcgettext(null, "      --group-directories-first\n                             group directories before files.\n                               augment with a --sort option, but any\n                               use of --sort=none (-U) disables grouping\n", 5<i32>) @ 00000000004098C5 : (ptr64 char))
+T_8040: (in dcgettext(0x0000000000000000<p64>, "      --group-directories-first\n                             group directories before files.\n                               augment with a --sort option, but any\n                               use of --sort=none (-U) disables grouping\n", 5<i32>) @ 00000000004098C5 : (ptr64 char))
   Class: Eq_8030
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -39402,7 +39402,7 @@ T_8041: (in Mem11[0x000000000061A610<p64>:word64] @ 00000000004098C5 : word64)
   Class: Eq_1754
   DataType: (ptr64 Eq_1754)
   OrigDataType: (ptr64 FILE)
-T_8042: (in fputs_unlocked(dcgettext(null, "      --group-directories-first\n                             group directories before files.\n                               augment with a --sort option, but any\n                               use of --sort=none (-U) disables grouping\n", 5<i32>), stdout) @ 00000000004098C5 : int32)
+T_8042: (in fputs_unlocked(dcgettext(0x0000000000000000<p64>, "      --group-directories-first\n                             group directories before files.\n                               augment with a --sort option, but any\n                               use of --sort=none (-U) disables grouping\n", 5<i32>), stdout) @ 00000000004098C5 : int32)
   Class: Eq_8042
   DataType: int32
   OrigDataType: int32
@@ -39454,7 +39454,7 @@ T_8054: (in 5<i32> @ 00000000004098E8 : int32)
   Class: Eq_8051
   DataType: int32
   OrigDataType: int32
-T_8055: (in dcgettext(null, "  -G, --no-group             in a long listing, don't print group names\n  -h, --human-readable       with -l, print sizes in human readable format\n                               (e.g., 1K 234M 2G)\n      --si                   likewise, but use powers of 1000 not 1024\n", 5<i32>) @ 00000000004098E8 : (ptr64 char))
+T_8055: (in dcgettext(0x0000000000000000<p64>, "  -G, --no-group             in a long listing, don't print group names\n  -h, --human-readable       with -l, print sizes in human readable format\n                               (e.g., 1K 234M 2G)\n      --si                   likewise, but use powers of 1000 not 1024\n", 5<i32>) @ 00000000004098E8 : (ptr64 char))
   Class: Eq_8045
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -39462,7 +39462,7 @@ T_8056: (in Mem11[0x000000000061A610<p64>:word64] @ 00000000004098E8 : word64)
   Class: Eq_1754
   DataType: (ptr64 Eq_1754)
   OrigDataType: (ptr64 FILE)
-T_8057: (in fputs_unlocked(dcgettext(null, "  -G, --no-group             in a long listing, don't print group names\n  -h, --human-readable       with -l, print sizes in human readable format\n                               (e.g., 1K 234M 2G)\n      --si                   likewise, but use powers of 1000 not 1024\n", 5<i32>), stdout) @ 00000000004098E8 : int32)
+T_8057: (in fputs_unlocked(dcgettext(0x0000000000000000<p64>, "  -G, --no-group             in a long listing, don't print group names\n  -h, --human-readable       with -l, print sizes in human readable format\n                               (e.g., 1K 234M 2G)\n      --si                   likewise, but use powers of 1000 not 1024\n", 5<i32>), stdout) @ 00000000004098E8 : int32)
   Class: Eq_8057
   DataType: int32
   OrigDataType: int32
@@ -39514,7 +39514,7 @@ T_8069: (in 5<i32> @ 000000000040990B : int32)
   Class: Eq_8066
   DataType: int32
   OrigDataType: int32
-T_8070: (in dcgettext(null, "  -H, --dereference-command-line\n                             follow symbolic links listed on the command line\n      --dereference-command-line-symlink-to-dir\n                             follow each command line symbolic link\n                             that points to a directory\n      --hide=PATTERN         do not list implied entries matching shell PATTERN\n                               (overridden by -a or -A)\n", 5<i32>) @ 000000000040990B : (ptr64 char))
+T_8070: (in dcgettext(0x0000000000000000<p64>, "  -H, --dereference-command-line\n                             follow symbolic links listed on the command line\n      --dereference-command-line-symlink-to-dir\n                             follow each command line symbolic link\n                             that points to a directory\n      --hide=PATTERN         do not list implied entries matching shell PATTERN\n                               (overridden by -a or -A)\n", 5<i32>) @ 000000000040990B : (ptr64 char))
   Class: Eq_8060
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -39522,7 +39522,7 @@ T_8071: (in Mem11[0x000000000061A610<p64>:word64] @ 000000000040990B : word64)
   Class: Eq_1754
   DataType: (ptr64 Eq_1754)
   OrigDataType: (ptr64 FILE)
-T_8072: (in fputs_unlocked(dcgettext(null, "  -H, --dereference-command-line\n                             follow symbolic links listed on the command line\n      --dereference-command-line-symlink-to-dir\n                             follow each command line symbolic link\n                             that points to a directory\n      --hide=PATTERN         do not list implied entries matching shell PATTERN\n                               (overridden by -a or -A)\n", 5<i32>), stdout) @ 000000000040990B : int32)
+T_8072: (in fputs_unlocked(dcgettext(0x0000000000000000<p64>, "  -H, --dereference-command-line\n                             follow symbolic links listed on the command line\n      --dereference-command-line-symlink-to-dir\n                             follow each command line symbolic link\n                             that points to a directory\n      --hide=PATTERN         do not list implied entries matching shell PATTERN\n                               (overridden by -a or -A)\n", 5<i32>), stdout) @ 000000000040990B : int32)
   Class: Eq_8072
   DataType: int32
   OrigDataType: int32
@@ -39574,7 +39574,7 @@ T_8084: (in 5<i32> @ 000000000040992E : int32)
   Class: Eq_8081
   DataType: int32
   OrigDataType: int32
-T_8085: (in dcgettext(null, "      --indicator-style=WORD  append indicator with style WORD to entry names:\n                               none (default), slash (-p),\n                               file-type (--file-type), classify (-F)\n  -i, --inode                print the index number of each file\n  -I, --ignore=PATTERN       do not list implied entries matching shell PATTERN\n  -k, --kibibytes            use 1024-byte blocks\n", 5<i32>) @ 000000000040992E : (ptr64 char))
+T_8085: (in dcgettext(0x0000000000000000<p64>, "      --indicator-style=WORD  append indicator with style WORD to entry names:\n                               none (default), slash (-p),\n                               file-type (--file-type), classify (-F)\n  -i, --inode                print the index number of each file\n  -I, --ignore=PATTERN       do not list implied entries matching shell PATTERN\n  -k, --kibibytes            use 1024-byte blocks\n", 5<i32>) @ 000000000040992E : (ptr64 char))
   Class: Eq_8075
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -39582,7 +39582,7 @@ T_8086: (in Mem11[0x000000000061A610<p64>:word64] @ 000000000040992E : word64)
   Class: Eq_1754
   DataType: (ptr64 Eq_1754)
   OrigDataType: (ptr64 FILE)
-T_8087: (in fputs_unlocked(dcgettext(null, "      --indicator-style=WORD  append indicator with style WORD to entry names:\n                               none (default), slash (-p),\n                               file-type (--file-type), classify (-F)\n  -i, --inode                print the index number of each file\n  -I, --ignore=PATTERN       do not list implied entries matching shell PATTERN\n  -k, --kibibytes            use 1024-byte blocks\n", 5<i32>), stdout) @ 000000000040992E : int32)
+T_8087: (in fputs_unlocked(dcgettext(0x0000000000000000<p64>, "      --indicator-style=WORD  append indicator with style WORD to entry names:\n                               none (default), slash (-p),\n                               file-type (--file-type), classify (-F)\n  -i, --inode                print the index number of each file\n  -I, --ignore=PATTERN       do not list implied entries matching shell PATTERN\n  -k, --kibibytes            use 1024-byte blocks\n", 5<i32>), stdout) @ 000000000040992E : int32)
   Class: Eq_8087
   DataType: int32
   OrigDataType: int32
@@ -39634,7 +39634,7 @@ T_8099: (in 5<i32> @ 0000000000409951 : int32)
   Class: Eq_8096
   DataType: int32
   OrigDataType: int32
-T_8100: (in dcgettext(null, "  -l                         use a long listing format\n  -L, --dereference          when showing file information for a symbolic\n                               link, show information for the file the link\n                               references rather than for the link itself\n  -m                         fill width with a comma separated list of entries\n", 5<i32>) @ 0000000000409951 : (ptr64 char))
+T_8100: (in dcgettext(0x0000000000000000<p64>, "  -l                         use a long listing format\n  -L, --dereference          when showing file information for a symbolic\n                               link, show information for the file the link\n                               references rather than for the link itself\n  -m                         fill width with a comma separated list of entries\n", 5<i32>) @ 0000000000409951 : (ptr64 char))
   Class: Eq_8090
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -39642,7 +39642,7 @@ T_8101: (in Mem11[0x000000000061A610<p64>:word64] @ 0000000000409951 : word64)
   Class: Eq_1754
   DataType: (ptr64 Eq_1754)
   OrigDataType: (ptr64 FILE)
-T_8102: (in fputs_unlocked(dcgettext(null, "  -l                         use a long listing format\n  -L, --dereference          when showing file information for a symbolic\n                               link, show information for the file the link\n                               references rather than for the link itself\n  -m                         fill width with a comma separated list of entries\n", 5<i32>), stdout) @ 0000000000409951 : int32)
+T_8102: (in fputs_unlocked(dcgettext(0x0000000000000000<p64>, "  -l                         use a long listing format\n  -L, --dereference          when showing file information for a symbolic\n                               link, show information for the file the link\n                               references rather than for the link itself\n  -m                         fill width with a comma separated list of entries\n", 5<i32>), stdout) @ 0000000000409951 : int32)
   Class: Eq_8102
   DataType: int32
   OrigDataType: int32
@@ -39694,7 +39694,7 @@ T_8114: (in 5<i32> @ 0000000000409974 : int32)
   Class: Eq_8111
   DataType: int32
   OrigDataType: int32
-T_8115: (in dcgettext(null, "  -n, --numeric-uid-gid      like -l, but list numeric user and group IDs\n  -N, --literal              print raw entry names (don't treat e.g. control\n                               characters specially)\n  -o                         like -l, but do not list group information\n  -p, --indicator-style=slash\n                             append / indicator to directories\n", 5<i32>) @ 0000000000409974 : (ptr64 char))
+T_8115: (in dcgettext(0x0000000000000000<p64>, "  -n, --numeric-uid-gid      like -l, but list numeric user and group IDs\n  -N, --literal              print raw entry names (don't treat e.g. control\n                               characters specially)\n  -o                         like -l, but do not list group information\n  -p, --indicator-style=slash\n                             append / indicator to directories\n", 5<i32>) @ 0000000000409974 : (ptr64 char))
   Class: Eq_8105
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -39702,7 +39702,7 @@ T_8116: (in Mem11[0x000000000061A610<p64>:word64] @ 0000000000409974 : word64)
   Class: Eq_1754
   DataType: (ptr64 Eq_1754)
   OrigDataType: (ptr64 FILE)
-T_8117: (in fputs_unlocked(dcgettext(null, "  -n, --numeric-uid-gid      like -l, but list numeric user and group IDs\n  -N, --literal              print raw entry names (don't treat e.g. control\n                               characters specially)\n  -o                         like -l, but do not list group information\n  -p, --indicator-style=slash\n                             append / indicator to directories\n", 5<i32>), stdout) @ 0000000000409974 : int32)
+T_8117: (in fputs_unlocked(dcgettext(0x0000000000000000<p64>, "  -n, --numeric-uid-gid      like -l, but list numeric user and group IDs\n  -N, --literal              print raw entry names (don't treat e.g. control\n                               characters specially)\n  -o                         like -l, but do not list group information\n  -p, --indicator-style=slash\n                             append / indicator to directories\n", 5<i32>), stdout) @ 0000000000409974 : int32)
   Class: Eq_8117
   DataType: int32
   OrigDataType: int32
@@ -39754,7 +39754,7 @@ T_8129: (in 5<i32> @ 0000000000409997 : int32)
   Class: Eq_8126
   DataType: int32
   OrigDataType: int32
-T_8130: (in dcgettext(null, "  -q, --hide-control-chars   print ? instead of non graphic characters\n      --show-control-chars   show non graphic characters as-is (default\n                             unless program is 'ls' and output is a terminal)\n  -Q, --quote-name           enclose entry names in double quotes\n      --quoting-style=WORD   use quoting style WORD for entry names:\n                               literal, locale, shell, shell-always, c, escape\n", 5<i32>) @ 0000000000409997 : (ptr64 char))
+T_8130: (in dcgettext(0x0000000000000000<p64>, "  -q, --hide-control-chars   print ? instead of non graphic characters\n      --show-control-chars   show non graphic characters as-is (default\n                             unless program is 'ls' and output is a terminal)\n  -Q, --quote-name           enclose entry names in double quotes\n      --quoting-style=WORD   use quoting style WORD for entry names:\n                               literal, locale, shell, shell-always, c, escape\n", 5<i32>) @ 0000000000409997 : (ptr64 char))
   Class: Eq_8120
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -39762,7 +39762,7 @@ T_8131: (in Mem11[0x000000000061A610<p64>:word64] @ 0000000000409997 : word64)
   Class: Eq_1754
   DataType: (ptr64 Eq_1754)
   OrigDataType: (ptr64 FILE)
-T_8132: (in fputs_unlocked(dcgettext(null, "  -q, --hide-control-chars   print ? instead of non graphic characters\n      --show-control-chars   show non graphic characters as-is (default\n                             unless program is 'ls' and output is a terminal)\n  -Q, --quote-name           enclose entry names in double quotes\n      --quoting-style=WORD   use quoting style WORD for entry names:\n                               literal, locale, shell, shell-always, c, escape\n", 5<i32>), stdout) @ 0000000000409997 : int32)
+T_8132: (in fputs_unlocked(dcgettext(0x0000000000000000<p64>, "  -q, --hide-control-chars   print ? instead of non graphic characters\n      --show-control-chars   show non graphic characters as-is (default\n                             unless program is 'ls' and output is a terminal)\n  -Q, --quote-name           enclose entry names in double quotes\n      --quoting-style=WORD   use quoting style WORD for entry names:\n                               literal, locale, shell, shell-always, c, escape\n", 5<i32>), stdout) @ 0000000000409997 : int32)
   Class: Eq_8132
   DataType: int32
   OrigDataType: int32
@@ -39814,7 +39814,7 @@ T_8144: (in 5<i32> @ 00000000004099BA : int32)
   Class: Eq_8141
   DataType: int32
   OrigDataType: int32
-T_8145: (in dcgettext(null, "  -r, --reverse              reverse order while sorting\n  -R, --recursive            list subdirectories recursively\n  -s, --size                 print the allocated size of each file, in blocks\n", 5<i32>) @ 00000000004099BA : (ptr64 char))
+T_8145: (in dcgettext(0x0000000000000000<p64>, "  -r, --reverse              reverse order while sorting\n  -R, --recursive            list subdirectories recursively\n  -s, --size                 print the allocated size of each file, in blocks\n", 5<i32>) @ 00000000004099BA : (ptr64 char))
   Class: Eq_8135
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -39822,7 +39822,7 @@ T_8146: (in Mem11[0x000000000061A610<p64>:word64] @ 00000000004099BA : word64)
   Class: Eq_1754
   DataType: (ptr64 Eq_1754)
   OrigDataType: (ptr64 FILE)
-T_8147: (in fputs_unlocked(dcgettext(null, "  -r, --reverse              reverse order while sorting\n  -R, --recursive            list subdirectories recursively\n  -s, --size                 print the allocated size of each file, in blocks\n", 5<i32>), stdout) @ 00000000004099BA : int32)
+T_8147: (in fputs_unlocked(dcgettext(0x0000000000000000<p64>, "  -r, --reverse              reverse order while sorting\n  -R, --recursive            list subdirectories recursively\n  -s, --size                 print the allocated size of each file, in blocks\n", 5<i32>), stdout) @ 00000000004099BA : int32)
   Class: Eq_8147
   DataType: int32
   OrigDataType: int32
@@ -39874,7 +39874,7 @@ T_8159: (in 5<i32> @ 00000000004099DD : int32)
   Class: Eq_8156
   DataType: int32
   OrigDataType: int32
-T_8160: (in dcgettext(null, "  -S                         sort by file size\n      --sort=WORD            sort by WORD instead of name: none -U,\n                             extension -X, size -S, time -t, version -v\n      --time=WORD            with -l, show time as WORD instead of modification\n                             time: atime -u, access -u, use -u, ctime -c,\n                             or status -c; use specified time as sort key\n                             if --sort=time\n", 5<i32>) @ 00000000004099DD : (ptr64 char))
+T_8160: (in dcgettext(0x0000000000000000<p64>, "  -S                         sort by file size\n      --sort=WORD            sort by WORD instead of name: none -U,\n                             extension -X, size -S, time -t, version -v\n      --time=WORD            with -l, show time as WORD instead of modification\n                             time: atime -u, access -u, use -u, ctime -c,\n                             or status -c; use specified time as sort key\n                             if --sort=time\n", 5<i32>) @ 00000000004099DD : (ptr64 char))
   Class: Eq_8150
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -39882,7 +39882,7 @@ T_8161: (in Mem11[0x000000000061A610<p64>:word64] @ 00000000004099DD : word64)
   Class: Eq_1754
   DataType: (ptr64 Eq_1754)
   OrigDataType: (ptr64 FILE)
-T_8162: (in fputs_unlocked(dcgettext(null, "  -S                         sort by file size\n      --sort=WORD            sort by WORD instead of name: none -U,\n                             extension -X, size -S, time -t, version -v\n      --time=WORD            with -l, show time as WORD instead of modification\n                             time: atime -u, access -u, use -u, ctime -c,\n                             or status -c; use specified time as sort key\n                             if --sort=time\n", 5<i32>), stdout) @ 00000000004099DD : int32)
+T_8162: (in fputs_unlocked(dcgettext(0x0000000000000000<p64>, "  -S                         sort by file size\n      --sort=WORD            sort by WORD instead of name: none -U,\n                             extension -X, size -S, time -t, version -v\n      --time=WORD            with -l, show time as WORD instead of modification\n                             time: atime -u, access -u, use -u, ctime -c,\n                             or status -c; use specified time as sort key\n                             if --sort=time\n", 5<i32>), stdout) @ 00000000004099DD : int32)
   Class: Eq_8162
   DataType: int32
   OrigDataType: int32
@@ -39934,7 +39934,7 @@ T_8174: (in 5<i32> @ 0000000000409A00 : int32)
   Class: Eq_8171
   DataType: int32
   OrigDataType: int32
-T_8175: (in dcgettext(null, "      --time-style=STYLE     with -l, show times using style STYLE:\n                             full-iso, long-iso, iso, locale, +FORMAT.\n                             FORMAT is interpreted like 'date'; if FORMAT is\n                             FORMAT1<newline>FORMAT2, FORMAT1 applies to\n                             non-recent files and FORMAT2 to recent files;\n                             if STYLE is prefixed with 'posix-', STYLE\n                             takes effect only outside the POSIX locale\n", 5<i32>) @ 0000000000409A00 : (ptr64 char))
+T_8175: (in dcgettext(0x0000000000000000<p64>, "      --time-style=STYLE     with -l, show times using style STYLE:\n                             full-iso, long-iso, iso, locale, +FORMAT.\n                             FORMAT is interpreted like 'date'; if FORMAT is\n                             FORMAT1<newline>FORMAT2, FORMAT1 applies to\n                             non-recent files and FORMAT2 to recent files;\n                             if STYLE is prefixed with 'posix-', STYLE\n                             takes effect only outside the POSIX locale\n", 5<i32>) @ 0000000000409A00 : (ptr64 char))
   Class: Eq_8165
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -39942,7 +39942,7 @@ T_8176: (in Mem11[0x000000000061A610<p64>:word64] @ 0000000000409A00 : word64)
   Class: Eq_1754
   DataType: (ptr64 Eq_1754)
   OrigDataType: (ptr64 FILE)
-T_8177: (in fputs_unlocked(dcgettext(null, "      --time-style=STYLE     with -l, show times using style STYLE:\n                             full-iso, long-iso, iso, locale, +FORMAT.\n                             FORMAT is interpreted like 'date'; if FORMAT is\n                             FORMAT1<newline>FORMAT2, FORMAT1 applies to\n                             non-recent files and FORMAT2 to recent files;\n                             if STYLE is prefixed with 'posix-', STYLE\n                             takes effect only outside the POSIX locale\n", 5<i32>), stdout) @ 0000000000409A00 : int32)
+T_8177: (in fputs_unlocked(dcgettext(0x0000000000000000<p64>, "      --time-style=STYLE     with -l, show times using style STYLE:\n                             full-iso, long-iso, iso, locale, +FORMAT.\n                             FORMAT is interpreted like 'date'; if FORMAT is\n                             FORMAT1<newline>FORMAT2, FORMAT1 applies to\n                             non-recent files and FORMAT2 to recent files;\n                             if STYLE is prefixed with 'posix-', STYLE\n                             takes effect only outside the POSIX locale\n", 5<i32>), stdout) @ 0000000000409A00 : int32)
   Class: Eq_8177
   DataType: int32
   OrigDataType: int32
@@ -39994,7 +39994,7 @@ T_8189: (in 5<i32> @ 0000000000409A23 : int32)
   Class: Eq_8186
   DataType: int32
   OrigDataType: int32
-T_8190: (in dcgettext(null, "  -t                         sort by modification time, newest first\n  -T, --tabsize=COLS         assume tab stops at each COLS instead of 8\n", 5<i32>) @ 0000000000409A23 : (ptr64 char))
+T_8190: (in dcgettext(0x0000000000000000<p64>, "  -t                         sort by modification time, newest first\n  -T, --tabsize=COLS         assume tab stops at each COLS instead of 8\n", 5<i32>) @ 0000000000409A23 : (ptr64 char))
   Class: Eq_8180
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -40002,7 +40002,7 @@ T_8191: (in Mem11[0x000000000061A610<p64>:word64] @ 0000000000409A23 : word64)
   Class: Eq_1754
   DataType: (ptr64 Eq_1754)
   OrigDataType: (ptr64 FILE)
-T_8192: (in fputs_unlocked(dcgettext(null, "  -t                         sort by modification time, newest first\n  -T, --tabsize=COLS         assume tab stops at each COLS instead of 8\n", 5<i32>), stdout) @ 0000000000409A23 : int32)
+T_8192: (in fputs_unlocked(dcgettext(0x0000000000000000<p64>, "  -t                         sort by modification time, newest first\n  -T, --tabsize=COLS         assume tab stops at each COLS instead of 8\n", 5<i32>), stdout) @ 0000000000409A23 : int32)
   Class: Eq_8192
   DataType: int32
   OrigDataType: int32
@@ -40054,7 +40054,7 @@ T_8204: (in 5<i32> @ 0000000000409A46 : int32)
   Class: Eq_8201
   DataType: int32
   OrigDataType: int32
-T_8205: (in dcgettext(null, "  -u                         with -lt: sort by, and show, access time\n                               with -l: show access time and sort by name\n                               otherwise: sort by access time\n  -U                         do not sort; list entries in directory order\n  -v                         natural sort of (version) numbers within text\n", 5<i32>) @ 0000000000409A46 : (ptr64 char))
+T_8205: (in dcgettext(0x0000000000000000<p64>, "  -u                         with -lt: sort by, and show, access time\n                               with -l: show access time and sort by name\n                               otherwise: sort by access time\n  -U                         do not sort; list entries in directory order\n  -v                         natural sort of (version) numbers within text\n", 5<i32>) @ 0000000000409A46 : (ptr64 char))
   Class: Eq_8195
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -40062,7 +40062,7 @@ T_8206: (in Mem11[0x000000000061A610<p64>:word64] @ 0000000000409A46 : word64)
   Class: Eq_1754
   DataType: (ptr64 Eq_1754)
   OrigDataType: (ptr64 FILE)
-T_8207: (in fputs_unlocked(dcgettext(null, "  -u                         with -lt: sort by, and show, access time\n                               with -l: show access time and sort by name\n                               otherwise: sort by access time\n  -U                         do not sort; list entries in directory order\n  -v                         natural sort of (version) numbers within text\n", 5<i32>), stdout) @ 0000000000409A46 : int32)
+T_8207: (in fputs_unlocked(dcgettext(0x0000000000000000<p64>, "  -u                         with -lt: sort by, and show, access time\n                               with -l: show access time and sort by name\n                               otherwise: sort by access time\n  -U                         do not sort; list entries in directory order\n  -v                         natural sort of (version) numbers within text\n", 5<i32>), stdout) @ 0000000000409A46 : int32)
   Class: Eq_8207
   DataType: int32
   OrigDataType: int32
@@ -40114,7 +40114,7 @@ T_8219: (in 5<i32> @ 0000000000409A69 : int32)
   Class: Eq_8216
   DataType: int32
   OrigDataType: int32
-T_8220: (in dcgettext(null, "  -w, --width=COLS           assume screen width instead of current value\n  -x                         list entries by lines instead of by columns\n  -X                         sort alphabetically by entry extension\n  -Z, --context              print any SELinux security context of each file\n  -1                         list one file per line\n", 5<i32>) @ 0000000000409A69 : (ptr64 char))
+T_8220: (in dcgettext(0x0000000000000000<p64>, "  -w, --width=COLS           assume screen width instead of current value\n  -x                         list entries by lines instead of by columns\n  -X                         sort alphabetically by entry extension\n  -Z, --context              print any SELinux security context of each file\n  -1                         list one file per line\n", 5<i32>) @ 0000000000409A69 : (ptr64 char))
   Class: Eq_8210
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -40122,7 +40122,7 @@ T_8221: (in Mem11[0x000000000061A610<p64>:word64] @ 0000000000409A69 : word64)
   Class: Eq_1754
   DataType: (ptr64 Eq_1754)
   OrigDataType: (ptr64 FILE)
-T_8222: (in fputs_unlocked(dcgettext(null, "  -w, --width=COLS           assume screen width instead of current value\n  -x                         list entries by lines instead of by columns\n  -X                         sort alphabetically by entry extension\n  -Z, --context              print any SELinux security context of each file\n  -1                         list one file per line\n", 5<i32>), stdout) @ 0000000000409A69 : int32)
+T_8222: (in fputs_unlocked(dcgettext(0x0000000000000000<p64>, "  -w, --width=COLS           assume screen width instead of current value\n  -x                         list entries by lines instead of by columns\n  -X                         sort alphabetically by entry extension\n  -Z, --context              print any SELinux security context of each file\n  -1                         list one file per line\n", 5<i32>), stdout) @ 0000000000409A69 : int32)
   Class: Eq_8222
   DataType: int32
   OrigDataType: int32
@@ -40174,7 +40174,7 @@ T_8234: (in 5<i32> @ 0000000000409A8C : int32)
   Class: Eq_8231
   DataType: int32
   OrigDataType: int32
-T_8235: (in dcgettext(null, "      --help     display this help and exit\n", 5<i32>) @ 0000000000409A8C : (ptr64 char))
+T_8235: (in dcgettext(0x0000000000000000<p64>, "      --help     display this help and exit\n", 5<i32>) @ 0000000000409A8C : (ptr64 char))
   Class: Eq_8225
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -40182,7 +40182,7 @@ T_8236: (in Mem11[0x000000000061A610<p64>:word64] @ 0000000000409A8C : word64)
   Class: Eq_1754
   DataType: (ptr64 Eq_1754)
   OrigDataType: (ptr64 FILE)
-T_8237: (in fputs_unlocked(dcgettext(null, "      --help     display this help and exit\n", 5<i32>), stdout) @ 0000000000409A8C : int32)
+T_8237: (in fputs_unlocked(dcgettext(0x0000000000000000<p64>, "      --help     display this help and exit\n", 5<i32>), stdout) @ 0000000000409A8C : int32)
   Class: Eq_8237
   DataType: int32
   OrigDataType: int32
@@ -40234,7 +40234,7 @@ T_8249: (in 5<i32> @ 0000000000409AAF : int32)
   Class: Eq_8246
   DataType: int32
   OrigDataType: int32
-T_8250: (in dcgettext(null, "      --version  output version information and exit\n", 5<i32>) @ 0000000000409AAF : (ptr64 char))
+T_8250: (in dcgettext(0x0000000000000000<p64>, "      --version  output version information and exit\n", 5<i32>) @ 0000000000409AAF : (ptr64 char))
   Class: Eq_8240
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -40242,7 +40242,7 @@ T_8251: (in Mem11[0x000000000061A610<p64>:word64] @ 0000000000409AAF : word64)
   Class: Eq_1754
   DataType: (ptr64 Eq_1754)
   OrigDataType: (ptr64 FILE)
-T_8252: (in fputs_unlocked(dcgettext(null, "      --version  output version information and exit\n", 5<i32>), stdout) @ 0000000000409AAF : int32)
+T_8252: (in fputs_unlocked(dcgettext(0x0000000000000000<p64>, "      --version  output version information and exit\n", 5<i32>), stdout) @ 0000000000409AAF : int32)
   Class: Eq_8252
   DataType: int32
   OrigDataType: int32
@@ -40294,7 +40294,7 @@ T_8264: (in 5<i32> @ 0000000000409AD2 : int32)
   Class: Eq_8261
   DataType: int32
   OrigDataType: int32
-T_8265: (in dcgettext(null, "\nSIZE is an integer and optional unit (example: 10M is 10*1024*1024).  Units\nare K, M, G, T, P, E, Z, Y (powers of 1024) or KB, MB, ... (powers of 1000).\n", 5<i32>) @ 0000000000409AD2 : (ptr64 char))
+T_8265: (in dcgettext(0x0000000000000000<p64>, "\nSIZE is an integer and optional unit (example: 10M is 10*1024*1024).  Units\nare K, M, G, T, P, E, Z, Y (powers of 1024) or KB, MB, ... (powers of 1000).\n", 5<i32>) @ 0000000000409AD2 : (ptr64 char))
   Class: Eq_8255
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -40302,7 +40302,7 @@ T_8266: (in Mem11[0x000000000061A610<p64>:word64] @ 0000000000409AD2 : word64)
   Class: Eq_1754
   DataType: (ptr64 Eq_1754)
   OrigDataType: (ptr64 FILE)
-T_8267: (in fputs_unlocked(dcgettext(null, "\nSIZE is an integer and optional unit (example: 10M is 10*1024*1024).  Units\nare K, M, G, T, P, E, Z, Y (powers of 1024) or KB, MB, ... (powers of 1000).\n", 5<i32>), stdout) @ 0000000000409AD2 : int32)
+T_8267: (in fputs_unlocked(dcgettext(0x0000000000000000<p64>, "\nSIZE is an integer and optional unit (example: 10M is 10*1024*1024).  Units\nare K, M, G, T, P, E, Z, Y (powers of 1024) or KB, MB, ... (powers of 1000).\n", 5<i32>), stdout) @ 0000000000409AD2 : int32)
   Class: Eq_8267
   DataType: int32
   OrigDataType: int32
@@ -40354,7 +40354,7 @@ T_8279: (in 5<i32> @ 0000000000409AF5 : int32)
   Class: Eq_8276
   DataType: int32
   OrigDataType: int32
-T_8280: (in dcgettext(null, "\nUsing color to distinguish file types is disabled both by default and\nwith --color=never.  With --color=auto, ls emits color codes only when\nstandard output is connected to a terminal.  The LS_COLORS environment\nvariable can change the settings.  Use the dircolors command to set it.\n", 5<i32>) @ 0000000000409AF5 : (ptr64 char))
+T_8280: (in dcgettext(0x0000000000000000<p64>, "\nUsing color to distinguish file types is disabled both by default and\nwith --color=never.  With --color=auto, ls emits color codes only when\nstandard output is connected to a terminal.  The LS_COLORS environment\nvariable can change the settings.  Use the dircolors command to set it.\n", 5<i32>) @ 0000000000409AF5 : (ptr64 char))
   Class: Eq_8270
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -40362,7 +40362,7 @@ T_8281: (in Mem11[0x000000000061A610<p64>:word64] @ 0000000000409AF5 : word64)
   Class: Eq_1754
   DataType: (ptr64 Eq_1754)
   OrigDataType: (ptr64 FILE)
-T_8282: (in fputs_unlocked(dcgettext(null, "\nUsing color to distinguish file types is disabled both by default and\nwith --color=never.  With --color=auto, ls emits color codes only when\nstandard output is connected to a terminal.  The LS_COLORS environment\nvariable can change the settings.  Use the dircolors command to set it.\n", 5<i32>), stdout) @ 0000000000409AF5 : int32)
+T_8282: (in fputs_unlocked(dcgettext(0x0000000000000000<p64>, "\nUsing color to distinguish file types is disabled both by default and\nwith --color=never.  With --color=auto, ls emits color codes only when\nstandard output is connected to a terminal.  The LS_COLORS environment\nvariable can change the settings.  Use the dircolors command to set it.\n", 5<i32>), stdout) @ 0000000000409AF5 : int32)
   Class: Eq_8282
   DataType: int32
   OrigDataType: int32
@@ -40414,7 +40414,7 @@ T_8294: (in 5<i32> @ 0000000000409B18 : int32)
   Class: Eq_8291
   DataType: int32
   OrigDataType: int32
-T_8295: (in dcgettext(null, "\nExit status:\n 0  if OK,\n 1  if minor problems (e.g., cannot access subdirectory),\n 2  if serious trouble (e.g., cannot access command-line argument).\n", 5<i32>) @ 0000000000409B18 : (ptr64 char))
+T_8295: (in dcgettext(0x0000000000000000<p64>, "\nExit status:\n 0  if OK,\n 1  if minor problems (e.g., cannot access subdirectory),\n 2  if serious trouble (e.g., cannot access command-line argument).\n", 5<i32>) @ 0000000000409B18 : (ptr64 char))
   Class: Eq_8285
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -40422,7 +40422,7 @@ T_8296: (in Mem11[0x000000000061A610<p64>:word64] @ 0000000000409B18 : word64)
   Class: Eq_1754
   DataType: (ptr64 Eq_1754)
   OrigDataType: (ptr64 FILE)
-T_8297: (in fputs_unlocked(dcgettext(null, "\nExit status:\n 0  if OK,\n 1  if minor problems (e.g., cannot access subdirectory),\n 2  if serious trouble (e.g., cannot access command-line argument).\n", 5<i32>), stdout) @ 0000000000409B18 : int32)
+T_8297: (in fputs_unlocked(dcgettext(0x0000000000000000<p64>, "\nExit status:\n 0  if OK,\n 1  if minor problems (e.g., cannot access subdirectory),\n 2  if serious trouble (e.g., cannot access command-line argument).\n", 5<i32>), stdout) @ 0000000000409B18 : int32)
   Class: Eq_8297
   DataType: int32
   OrigDataType: int32
@@ -40494,7 +40494,7 @@ T_8314: (in 5<i32> @ 0000000000409B4F : int32)
   Class: Eq_8311
   DataType: int32
   OrigDataType: int32
-T_8315: (in dcgettext(null, "\nReport %s bugs to %s\n", 5<i32>) @ 0000000000409B4F : (ptr64 char))
+T_8315: (in dcgettext(0x0000000000000000<p64>, "\nReport %s bugs to %s\n", 5<i32>) @ 0000000000409B4F : (ptr64 char))
   Class: Eq_8305
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -40502,7 +40502,7 @@ T_8316: (in 0<32> @ 0000000000409B4F : word32)
   Class: Eq_8316
   DataType: word32
   OrigDataType: word32
-T_8317: (in __printf_chk(1<i32>, dcgettext(null, "\nReport %s bugs to %s\n", 5<i32>), 0<32>) @ 0000000000409B4F : int32)
+T_8317: (in __printf_chk(1<i32>, dcgettext(0x0000000000000000<p64>, "\nReport %s bugs to %s\n", 5<i32>), 0<32>) @ 0000000000409B4F : int32)
   Class: Eq_8317
   DataType: int32
   OrigDataType: int32
@@ -40558,7 +40558,7 @@ T_8330: (in 5<i32> @ 0000000000409B79 : int32)
   Class: Eq_8327
   DataType: int32
   OrigDataType: int32
-T_8331: (in dcgettext(null, "%s home page: <%s>\n", 5<i32>) @ 0000000000409B79 : (ptr64 char))
+T_8331: (in dcgettext(0x0000000000000000<p64>, "%s home page: <%s>\n", 5<i32>) @ 0000000000409B79 : (ptr64 char))
   Class: Eq_8321
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -40566,7 +40566,7 @@ T_8332: (in 0<32> @ 0000000000409B79 : word32)
   Class: Eq_8332
   DataType: word32
   OrigDataType: word32
-T_8333: (in __printf_chk(1<i32>, dcgettext(null, "%s home page: <%s>\n", 5<i32>), 0<32>) @ 0000000000409B79 : int32)
+T_8333: (in __printf_chk(1<i32>, dcgettext(0x0000000000000000<p64>, "%s home page: <%s>\n", 5<i32>), 0<32>) @ 0000000000409B79 : int32)
   Class: Eq_8333
   DataType: int32
   OrigDataType: int32
@@ -40618,7 +40618,7 @@ T_8345: (in 5<i32> @ 0000000000409B9C : int32)
   Class: Eq_8342
   DataType: int32
   OrigDataType: int32
-T_8346: (in dcgettext(null, "General help using GNU software: <http://www.gnu.org/gethelp/>\n", 5<i32>) @ 0000000000409B9C : (ptr64 char))
+T_8346: (in dcgettext(0x0000000000000000<p64>, "General help using GNU software: <http://www.gnu.org/gethelp/>\n", 5<i32>) @ 0000000000409B9C : (ptr64 char))
   Class: Eq_8336
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -40626,7 +40626,7 @@ T_8347: (in Mem11[0x000000000061A610<p64>:word64] @ 0000000000409B9C : word64)
   Class: Eq_1754
   DataType: (ptr64 Eq_1754)
   OrigDataType: (ptr64 FILE)
-T_8348: (in fputs_unlocked(dcgettext(null, "General help using GNU software: <http://www.gnu.org/gethelp/>\n", 5<i32>), stdout) @ 0000000000409B9C : int32)
+T_8348: (in fputs_unlocked(dcgettext(0x0000000000000000<p64>, "General help using GNU software: <http://www.gnu.org/gethelp/>\n", 5<i32>), stdout) @ 0000000000409B9C : int32)
   Class: Eq_8348
   DataType: int32
   OrigDataType: int32
@@ -40654,7 +40654,7 @@ T_8354: (in 0<u64> @ 0000000000409BA8 : uint64)
   Class: Eq_8352
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
-T_8355: (in setlocale(5<i32>, null) @ 0000000000409BA8 : (ptr64 char))
+T_8355: (in setlocale(5<i32>, 0x0000000000000000<p64>) @ 0000000000409BA8 : (ptr64 char))
   Class: Eq_8355
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -40666,7 +40666,7 @@ T_8357: (in 0<64> @ 0000000000409BB0 : word64)
   Class: Eq_8355
   DataType: (ptr64 char)
   OrigDataType: word64
-T_8358: (in rax_383 == null @ 0000000000409BB0 : bool)
+T_8358: (in rax_383 == 0x0000000000000000<p64> @ 0000000000409BB0 : bool)
   Class: Eq_8358
   DataType: bool
   OrigDataType: bool
@@ -40730,7 +40730,7 @@ T_8373: (in 5<i32> @ 0000000000409788 : int32)
   Class: Eq_8370
   DataType: int32
   OrigDataType: int32
-T_8374: (in dcgettext(null, "Try '%s --help' for more information.\n", 5<i32>) @ 0000000000409788 : (ptr64 char))
+T_8374: (in dcgettext(0x0000000000000000<p64>, "Try '%s --help' for more information.\n", 5<i32>) @ 0000000000409788 : (ptr64 char))
   Class: Eq_8363
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -40738,7 +40738,7 @@ T_8375: (in 0<32> @ 0000000000409788 : word32)
   Class: Eq_8375
   DataType: word32
   OrigDataType: word32
-T_8376: (in __fprintf_chk(stderr, 1<i32>, dcgettext(null, "Try '%s --help' for more information.\n", 5<i32>), 0<32>) @ 0000000000409788 : int32)
+T_8376: (in __fprintf_chk(stderr, 1<i32>, dcgettext(0x0000000000000000<p64>, "Try '%s --help' for more information.\n", 5<i32>), 0<32>) @ 0000000000409788 : int32)
   Class: Eq_8376
   DataType: int32
   OrigDataType: int32
@@ -40806,7 +40806,7 @@ T_8392: (in 5<i32> @ 0000000000409BF5 : int32)
   Class: Eq_8389
   DataType: int32
   OrigDataType: int32
-T_8393: (in dcgettext(null, "For complete documentation, run: info coreutils '%s invocation'\n", 5<i32>) @ 0000000000409BF5 : (ptr64 char))
+T_8393: (in dcgettext(0x0000000000000000<p64>, "For complete documentation, run: info coreutils '%s invocation'\n", 5<i32>) @ 0000000000409BF5 : (ptr64 char))
   Class: Eq_8383
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -40814,7 +40814,7 @@ T_8394: (in 0<32> @ 0000000000409BF5 : word32)
   Class: Eq_8394
   DataType: word32
   OrigDataType: word32
-T_8395: (in __printf_chk(1<i32>, dcgettext(null, "For complete documentation, run: info coreutils '%s invocation'\n", 5<i32>), 0<32>) @ 0000000000409BF5 : int32)
+T_8395: (in __printf_chk(1<i32>, dcgettext(0x0000000000000000<p64>, "For complete documentation, run: info coreutils '%s invocation'\n", 5<i32>), 0<32>) @ 0000000000409BF5 : int32)
   Class: Eq_8395
   DataType: int32
   OrigDataType: int32
@@ -40922,7 +40922,7 @@ T_8421: (in 5<i32> @ 0000000000409C2C : int32)
   Class: Eq_8418
   DataType: int32
   OrigDataType: int32
-T_8422: (in dcgettext(null, "Report %s translation bugs to <http://translationproject.org/team/>\n", 5<i32>) @ 0000000000409C2C : (ptr64 char))
+T_8422: (in dcgettext(0x0000000000000000<p64>, "Report %s translation bugs to <http://translationproject.org/team/>\n", 5<i32>) @ 0000000000409C2C : (ptr64 char))
   Class: Eq_8412
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -40930,7 +40930,7 @@ T_8423: (in 0<32> @ 0000000000409C2C : word32)
   Class: Eq_8423
   DataType: word32
   OrigDataType: word32
-T_8424: (in __printf_chk(1<i32>, dcgettext(null, "Report %s translation bugs to <http://translationproject.org/team/>\n", 5<i32>), 0<32>) @ 0000000000409C2C : int32)
+T_8424: (in __printf_chk(1<i32>, dcgettext(0x0000000000000000<p64>, "Report %s translation bugs to <http://translationproject.org/team/>\n", 5<i32>), 0<32>) @ 0000000000409C2C : int32)
   Class: Eq_8424
   DataType: int32
   OrigDataType: int32
@@ -41294,7 +41294,7 @@ T_8514: (in 0<64> @ 0000000000409DA9 : word64)
   Class: Eq_8467
   DataType: (ptr64 char)
   OrigDataType: word64
-T_8515: (in rax_132 != null @ 0000000000409DA9 : bool)
+T_8515: (in rax_132 != 0x0000000000000000<p64> @ 0000000000409DA9 : bool)
   Class: Eq_8515
   DataType: bool
   OrigDataType: bool
@@ -41354,7 +41354,7 @@ T_8529: (in 0<64> @ 0000000000409D6E : word64)
   Class: Eq_8467
   DataType: (ptr64 char)
   OrigDataType: word64
-T_8530: (in rax_132 == null @ 0000000000409D6E : bool)
+T_8530: (in rax_132 == 0x0000000000000000<p64> @ 0000000000409D6E : bool)
   Class: Eq_8530
   DataType: bool
   OrigDataType: bool
@@ -41438,7 +41438,7 @@ T_8550: (in 0<64> @ 0000000000409E7B : word64)
   Class: Eq_8548
   DataType: (ptr64 char)
   OrigDataType: word64
-T_8551: (in r14_123 == null @ 0000000000409E7B : bool)
+T_8551: (in r14_123 == 0x0000000000000000<p64> @ 0000000000409E7B : bool)
   Class: Eq_8551
   DataType: bool
   OrigDataType: bool
@@ -41538,7 +41538,7 @@ T_8575: (in 0<64> @ 0000000000409EE6 : word64)
   Class: Eq_8548
   DataType: (ptr64 char)
   OrigDataType: word64
-T_8576: (in r14_123 == null @ 0000000000409EE6 : bool)
+T_8576: (in r14_123 == 0x0000000000000000<p64> @ 0000000000409EE6 : bool)
   Class: Eq_8576
   DataType: bool
   OrigDataType: bool
@@ -41574,7 +41574,7 @@ T_8584: (in 0<64> @ 0000000000409EA8 : word64)
   Class: Eq_167
   DataType: (ptr64 void)
   OrigDataType: word64
-T_8585: (in rdx == null @ 0000000000409EA8 : bool)
+T_8585: (in rdx == 0x0000000000000000<p64> @ 0000000000409EA8 : bool)
   Class: Eq_8585
   DataType: bool
   OrigDataType: bool
@@ -41606,7 +41606,7 @@ T_8592: (in 0<64> @ 0000000000409F23 : word64)
   Class: Eq_8548
   DataType: (ptr64 char)
   OrigDataType: word64
-T_8593: (in r14_123 != null @ 0000000000409F23 : bool)
+T_8593: (in r14_123 != 0x0000000000000000<p64> @ 0000000000409F23 : bool)
   Class: Eq_8593
   DataType: bool
   OrigDataType: bool
@@ -41730,7 +41730,7 @@ T_8623: (in 5<i32> @ 0000000000409FEC : int32)
   Class: Eq_8620
   DataType: int32
   OrigDataType: int32
-T_8624: (in dcgettext(null, "invalid argument %s for %s", 5<i32>) @ 0000000000409FEC : (ptr64 char))
+T_8624: (in dcgettext(0x0000000000000000<p64>, "invalid argument %s for %s", 5<i32>) @ 0000000000409FEC : (ptr64 char))
   Class: Eq_8624
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -41770,7 +41770,7 @@ T_8633: (in 5<i32> @ 0000000000409FA1 : int32)
   Class: Eq_8630
   DataType: int32
   OrigDataType: int32
-T_8634: (in dcgettext(null, "ambiguous argument %s for %s", 5<i32>) @ 0000000000409FA1 : (ptr64 char))
+T_8634: (in dcgettext(0x0000000000000000<p64>, "ambiguous argument %s for %s", 5<i32>) @ 0000000000409FA1 : (ptr64 char))
   Class: Eq_8624
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -41970,11 +41970,11 @@ T_8683: (in 5<i32> @ 000000000040A03A : int32)
   Class: Eq_8680
   DataType: int32
   OrigDataType: int32
-T_8684: (in dcgettext(null, "Valid arguments are:", 5<i32>) @ 000000000040A03A : (ptr64 char))
+T_8684: (in dcgettext(0x0000000000000000<p64>, "Valid arguments are:", 5<i32>) @ 000000000040A03A : (ptr64 char))
   Class: Eq_8674
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
-T_8685: (in fputs_unlocked(dcgettext(null, "Valid arguments are:", 5<i32>), rbx_37) @ 000000000040A03A : int32)
+T_8685: (in fputs_unlocked(dcgettext(0x0000000000000000<p64>, "Valid arguments are:", 5<i32>), rbx_37) @ 000000000040A03A : int32)
   Class: Eq_8685
   DataType: int32
   OrigDataType: int32
@@ -43959,7 +43959,7 @@ T_9180: (in 0<64> @ 000000000040A6A6 : word64)
   Class: Eq_9131
   DataType: (ptr64 void)
   OrigDataType: word64
-T_9181: (in rax_91 == null @ 000000000040A6A6 : bool)
+T_9181: (in rax_91 == 0x0000000000000000<p64> @ 000000000040A6A6 : bool)
   Class: Eq_9181
   DataType: bool
   OrigDataType: bool
@@ -44027,7 +44027,7 @@ T_9197: (in 0<64> @ 000000000040A6C1 : word64)
   Class: Eq_3595
   DataType: (ptr64 ptr64)
   OrigDataType: word64
-T_9198: (in rdx == null @ 000000000040A6C1 : bool)
+T_9198: (in rdx == 0x0000000000000000<p64> @ 000000000040A6C1 : bool)
   Class: Eq_9198
   DataType: bool
   OrigDataType: bool
@@ -44247,7 +44247,7 @@ T_9252: (in 0<64> @ 000000000040A7BB : word64)
   Class: Eq_9228
   DataType: (ptr64 byte)
   OrigDataType: word64
-T_9253: (in rax_110 == null @ 000000000040A7BB : bool)
+T_9253: (in rax_110 == 0x0000000000000000<p64> @ 000000000040A7BB : bool)
   Class: Eq_9253
   DataType: bool
   OrigDataType: bool
@@ -44455,7 +44455,7 @@ T_9304: (in 0<u64> @ 000000000040AB4B : uint64)
   Class: Eq_9301
   DataType: (ptr64 Eq_9301)
   OrigDataType: (ptr64 (struct "timezone"))
-T_9305: (in gettimeofday(&qwLoc18, null) @ 000000000040AB4B : int32)
+T_9305: (in gettimeofday(&qwLoc18, 0x0000000000000000<p64>) @ 000000000040AB4B : int32)
   Class: Eq_9305
   DataType: int32
   OrigDataType: int32
@@ -44543,7 +44543,7 @@ T_9326: (in 0<u64> @ 000000000040AB76 : uint64)
   Class: Eq_9323
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
-T_9327: (in setlocale((int32) rdi, null) @ 000000000040AB76 : (ptr64 char))
+T_9327: (in setlocale((int32) rdi, 0x0000000000000000<p64>) @ 000000000040AB76 : (ptr64 char))
   Class: Eq_9327
   DataType: (ptr64 Eq_9327)
   OrigDataType: (ptr64 char)
@@ -44555,7 +44555,7 @@ T_9329: (in 0<64> @ 000000000040AB7E : word64)
   Class: Eq_9327
   DataType: (ptr64 Eq_9327)
   OrigDataType: word64
-T_9330: (in rax_8 == null @ 000000000040AB7E : bool)
+T_9330: (in rax_8 == 0x0000000000000000<p64> @ 000000000040AB7E : bool)
   Class: Eq_9330
   DataType: bool
   OrigDataType: bool
@@ -45111,7 +45111,7 @@ T_9468: (in 0<64> @ 000000000040AD4D : word64)
   Class: Eq_9432
   DataType: (ptr64 Eq_9432)
   OrigDataType: word64
-T_9469: (in rax_60 != null @ 000000000040AD4D : bool)
+T_9469: (in rax_60 != 0x0000000000000000<p64> @ 000000000040AD4D : bool)
   Class: Eq_9469
   DataType: bool
   OrigDataType: bool
@@ -45163,7 +45163,7 @@ T_9481: (in 0<64> @ 000000000040ACF5 : word64)
   Class: Eq_9432
   DataType: (ptr64 Eq_9432)
   OrigDataType: word64
-T_9482: (in rax_150 == null @ 000000000040ACF5 : bool)
+T_9482: (in rax_150 == 0x0000000000000000<p64> @ 000000000040ACF5 : bool)
   Class: Eq_9482
   DataType: bool
   OrigDataType: bool
@@ -45779,7 +45779,7 @@ T_9635: (in 0<64> @ 000000000040AE78 : word64)
   Class: Eq_9432
   DataType: (ptr64 Eq_9432)
   OrigDataType: word64
-T_9636: (in rbx_40 != null @ 000000000040AE78 : bool)
+T_9636: (in rbx_40 != 0x0000000000000000<p64> @ 000000000040AE78 : bool)
   Class: Eq_9636
   DataType: bool
   OrigDataType: bool
@@ -45967,7 +45967,7 @@ T_9682: (in 0<64> @ 000000000040AE8F : word64)
   Class: Eq_9432
   DataType: (ptr64 Eq_9432)
   OrigDataType: word64
-T_9683: (in rdx_59 == null @ 000000000040AE8F : bool)
+T_9683: (in rdx_59 == 0x0000000000000000<p64> @ 000000000040AE8F : bool)
   Class: Eq_9683
   DataType: bool
   OrigDataType: bool
@@ -46071,7 +46071,7 @@ T_9708: (in 0<64> @ 000000000040AECD : word64)
   Class: Eq_9432
   DataType: (ptr64 Eq_9432)
   OrigDataType: word64
-T_9709: (in rdx_59 != null @ 000000000040AECD : bool)
+T_9709: (in rdx_59 != 0x0000000000000000<p64> @ 000000000040AECD : bool)
   Class: Eq_9709
   DataType: bool
   OrigDataType: bool
@@ -46139,7 +46139,7 @@ T_9725: (in 0<64> @ 000000000040AF24 : word64)
   Class: Eq_9432
   DataType: (ptr64 Eq_9432)
   OrigDataType: word64
-T_9726: (in rax_117 == null @ 000000000040AF24 : bool)
+T_9726: (in rax_117 == 0x0000000000000000<p64> @ 000000000040AF24 : bool)
   Class: Eq_9726
   DataType: bool
   OrigDataType: bool
@@ -46167,7 +46167,7 @@ T_9732: (in 0<64> @ 000000000040AF73 : word64)
   Class: Eq_9432
   DataType: (ptr64 Eq_9432)
   OrigDataType: word64
-T_9733: (in rax_117 != null @ 000000000040AF73 : bool)
+T_9733: (in rax_117 != 0x0000000000000000<p64> @ 000000000040AF73 : bool)
   Class: Eq_9733
   DataType: bool
   OrigDataType: bool
@@ -46437,7 +46437,7 @@ T_9797: (in 0<64> @ 000000000040B445 : word64)
   Class: Eq_9779
   DataType: (ptr64 Eq_9779)
   OrigDataType: word64
-T_9798: (in rax_52 == null @ 000000000040B445 : bool)
+T_9798: (in rax_52 == 0x0000000000000000<p64> @ 000000000040B445 : bool)
   Class: Eq_9798
   DataType: bool
   OrigDataType: bool
@@ -46467,7 +46467,7 @@ T_9802: (in 0<64> @ 000000000040B457 : word64)
   Class: Eq_894
   DataType: (ptr64 Eq_894)
   OrigDataType: word64
-T_9803: (in rsi != null @ 000000000040B457 : bool)
+T_9803: (in rsi != 0x0000000000000000<p64> @ 000000000040B457 : bool)
   Class: Eq_9803
   DataType: bool
   OrigDataType: bool
@@ -46771,7 +46771,7 @@ T_9878: (in 0<64> @ 000000000040B4F6 : word64)
   Class: Eq_9873
   DataType: (ptr64 void)
   OrigDataType: word64
-T_9879: (in rax_173 == null @ 000000000040B4F6 : bool)
+T_9879: (in rax_173 == 0x0000000000000000<p64> @ 000000000040B4F6 : bool)
   Class: Eq_9879
   DataType: bool
   OrigDataType: bool
@@ -46931,7 +46931,7 @@ T_9918: (in 0<64> @ 000000000040B64C : word64)
   Class: Eq_9917
   DataType: (ptr64 code)
   OrigDataType: word64
-T_9919: (in rdi->ptr0040 == null @ 000000000040B64C : bool)
+T_9919: (in rdi->ptr0040 == 0x0000000000000000<p64> @ 000000000040B64C : bool)
   Class: Eq_9919
   DataType: bool
   OrigDataType: bool
@@ -47023,7 +47023,7 @@ T_9941: (in 0<64> @ 000000000040B69A : word64)
   Class: Eq_9432
   DataType: (ptr64 Eq_9432)
   OrigDataType: word64
-T_9942: (in rdi_101 != null @ 000000000040B69A : bool)
+T_9942: (in rdi_101 != 0x0000000000000000<p64> @ 000000000040B69A : bool)
   Class: Eq_9942
   DataType: bool
   OrigDataType: bool
@@ -47067,7 +47067,7 @@ T_9952: (in 0<64> @ 000000000040B687 : word64)
   Class: Eq_9943
   DataType: (ptr64 Eq_9943)
   OrigDataType: word64
-T_9953: (in rbx_72 != null @ 000000000040B687 : bool)
+T_9953: (in rbx_72 != 0x0000000000000000<p64> @ 000000000040B687 : bool)
   Class: Eq_9953
   DataType: bool
   OrigDataType: bool
@@ -47135,7 +47135,7 @@ T_9969: (in 0<64> @ 000000000040B6AF : word64)
   Class: Eq_9432
   DataType: (ptr64 Eq_9432)
   OrigDataType: word64
-T_9970: (in rbx_96 != null @ 000000000040B6AF : bool)
+T_9970: (in rbx_96 != 0x0000000000000000<p64> @ 000000000040B6AF : bool)
   Class: Eq_9970
   DataType: bool
   OrigDataType: bool
@@ -47199,7 +47199,7 @@ T_9985: (in 0<64> @ 000000000040B670 : word64)
   Class: Eq_9943
   DataType: (ptr64 Eq_9943)
   OrigDataType: word64
-T_9986: (in rdi_65 != null @ 000000000040B670 : bool)
+T_9986: (in rdi_65 != 0x0000000000000000<p64> @ 000000000040B670 : bool)
   Class: Eq_9986
   DataType: bool
   OrigDataType: bool
@@ -47235,7 +47235,7 @@ T_9994: (in 0<64> @ 000000000040B6ED : word64)
   Class: Eq_9421
   DataType: (ptr64 Eq_9421)
   OrigDataType: word64
-T_9995: (in rbx_25 != null @ 000000000040B6ED : bool)
+T_9995: (in rbx_25 != 0x0000000000000000<p64> @ 000000000040B6ED : bool)
   Class: Eq_9995
   DataType: bool
   OrigDataType: bool
@@ -47604,7 +47604,7 @@ T_10084: (in 0<64> @ 000000000040B7B0 : word64)
   Class: Eq_10077
   DataType: (ptr64 void)
   OrigDataType: word64
-T_10085: (in rax_108 == null @ 000000000040B7B0 : bool)
+T_10085: (in rax_108 == 0x0000000000000000<p64> @ 000000000040B7B0 : bool)
   Class: Eq_10085
   DataType: bool
   OrigDataType: bool
@@ -48312,7 +48312,7 @@ T_10261: (in 0<64> @ 000000000040B91E : word64)
   Class: Eq_10238
   DataType: (ptr64 uint64)
   OrigDataType: word64
-T_10262: (in rdx == null @ 000000000040B91E : bool)
+T_10262: (in rdx == 0x0000000000000000<p64> @ 000000000040B91E : bool)
   Class: Eq_10262
   DataType: bool
   OrigDataType: bool
@@ -48680,7 +48680,7 @@ T_10353: (in 0<64> @ 000000000040B981 : word64)
   Class: Eq_9432
   DataType: (ptr64 Eq_9432)
   OrigDataType: word64
-T_10354: (in rax_287 == null @ 000000000040B981 : bool)
+T_10354: (in rax_287 == 0x0000000000000000<p64> @ 000000000040B981 : bool)
   Class: Eq_10354
   DataType: bool
   OrigDataType: bool
@@ -48708,7 +48708,7 @@ T_10360: (in 0<64> @ 000000000040BB28 : word64)
   Class: Eq_9432
   DataType: (ptr64 Eq_9432)
   OrigDataType: word64
-T_10361: (in rax_287 != null @ 000000000040BB28 : bool)
+T_10361: (in rax_287 != 0x0000000000000000<p64> @ 000000000040BB28 : bool)
   Class: Eq_10361
   DataType: bool
   OrigDataType: bool
@@ -50116,7 +50116,7 @@ T_10712: (in 0<64> @ 000000000040BC94 : word64)
   Class: Eq_9432
   DataType: (ptr64 Eq_9432)
   OrigDataType: word64
-T_10713: (in rdi_242 != null @ 000000000040BC94 : bool)
+T_10713: (in rdi_242 != 0x0000000000000000<p64> @ 000000000040BC94 : bool)
   Class: Eq_10713
   DataType: bool
   OrigDataType: bool
@@ -50156,7 +50156,7 @@ T_10722: (in 0<64> @ 000000000040BCAF : word64)
   Class: Eq_9432
   DataType: (ptr64 Eq_9432)
   OrigDataType: word64
-T_10723: (in r12_249 != null @ 000000000040BCAF : bool)
+T_10723: (in r12_249 != 0x0000000000000000<p64> @ 000000000040BCAF : bool)
   Class: Eq_10723
   DataType: bool
   OrigDataType: bool
@@ -54220,7 +54220,7 @@ T_11738: (in 0<64> @ 000000000040CA05 : word64)
   Class: Eq_11734
   DataType: (ptr64 Eq_11734)
   OrigDataType: word64
-T_11739: (in rax_37 == null @ 000000000040CA05 : bool)
+T_11739: (in rax_37 == 0x0000000000000000<p64> @ 000000000040CA05 : bool)
   Class: Eq_11739
   DataType: bool
   OrigDataType: bool
@@ -54484,7 +54484,7 @@ T_11804: (in 0<64> @ 000000000040CB95 : word64)
   Class: Eq_11800
   DataType: (ptr64 (ptr64 char))
   OrigDataType: word64
-T_11805: (in rax_37 == null @ 000000000040CB95 : bool)
+T_11805: (in rax_37 == 0x0000000000000000<p64> @ 000000000040CB95 : bool)
   Class: Eq_11805
   DataType: bool
   OrigDataType: bool
@@ -55268,7 +55268,7 @@ T_12000: (in 0<u64> @ 000000000040CF78 : uint64)
   Class: Eq_14
   DataType: byte
   OrigDataType: size_t
-T_12001: (in mbstowcs(null, rdi, 0<u64>) @ 000000000040CF78 : size_t)
+T_12001: (in mbstowcs(0x0000000000000000<p64>, rdi, 0<u64>) @ 000000000040CF78 : size_t)
   Class: Eq_14
   DataType: Eq_14
   OrigDataType: size_t
@@ -55328,7 +55328,7 @@ T_12015: (in 0<64> @ 000000000040CFC9 : word64)
   Class: Eq_11969
   DataType: (ptr64 Eq_11969)
   OrigDataType: word64
-T_12016: (in rax_59 == null @ 000000000040CFC9 : bool)
+T_12016: (in rax_59 == 0x0000000000000000<p64> @ 000000000040CFC9 : bool)
   Class: Eq_12016
   DataType: bool
   OrigDataType: bool
@@ -55768,7 +55768,7 @@ T_12125: (in 0<u64> @ 000000000040D05F : uint64)
   Class: Eq_14
   DataType: byte
   OrigDataType: size_t
-T_12126: (in wcstombs(null, rax_59, 0<u64>) @ 000000000040D05F : size_t)
+T_12126: (in wcstombs(0x0000000000000000<p64>, rax_59, 0<u64>) @ 000000000040D05F : size_t)
   Class: Eq_14
   DataType: Eq_14
   OrigDataType: size_t
@@ -55776,7 +55776,7 @@ T_12127: (in 1<64> @ 000000000040D05F : word64)
   Class: Eq_12127
   DataType: word64
   OrigDataType: word64
-T_12128: (in wcstombs(null, rax_59, 0<u64>) + 1<64> @ 000000000040D05F : word64)
+T_12128: (in wcstombs(0x0000000000000000<p64>, rax_59, 0<u64>) + 1<64> @ 000000000040D05F : word64)
   Class: Eq_14
   DataType: Eq_14
   OrigDataType: size_t
@@ -56296,7 +56296,7 @@ T_12257: (in 0<64> @ 000000000040D074 : word64)
   Class: Eq_819
   DataType: (ptr64 char)
   OrigDataType: word64
-T_12258: (in rax_159 == null @ 000000000040D074 : bool)
+T_12258: (in rax_159 == 0x0000000000000000<p64> @ 000000000040D074 : bool)
   Class: Eq_12258
   DataType: bool
   OrigDataType: bool
@@ -58008,7 +58008,7 @@ T_12685: (in 0<64> @ 000000000040D6B6 : word64)
   Class: Eq_12683
   DataType: (ptr64 char)
   OrigDataType: word64
-T_12686: (in rax_23 == null @ 000000000040D6B6 : bool)
+T_12686: (in rax_23 == 0x0000000000000000<p64> @ 000000000040D6B6 : bool)
   Class: Eq_12686
   DataType: bool
   OrigDataType: bool
@@ -58447,7 +58447,7 @@ T_12793: (in 5<i32> @ 000000000040D7CA : int32)
   Class: Eq_12791
   DataType: int32
   OrigDataType: int32
-T_12794: (in dcgettext(null, rdi, 5<i32>) @ 000000000040D7CA : (ptr64 char))
+T_12794: (in dcgettext(0x0000000000000000<p64>, rdi, 5<i32>) @ 000000000040D7CA : (ptr64 char))
   Class: Eq_12782
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -59291,7 +59291,7 @@ T_13002: (in 0<64> @ 000000000040DB8F : word64)
   Class: Eq_3699
   DataType: (ptr64 uint8)
   OrigDataType: word64
-T_13003: (in rbx_1001 != null @ 000000000040DB8F : bool)
+T_13003: (in rbx_1001 != 0x0000000000000000<p64> @ 000000000040DB8F : bool)
   Class: Eq_13003
   DataType: bool
   OrigDataType: bool
@@ -59579,7 +59579,7 @@ T_13074: (in 0<64> @ 000000000040DF5E : word64)
   Class: Eq_3699
   DataType: (ptr64 uint8)
   OrigDataType: word64
-T_13075: (in rsi == null @ 000000000040DF5E : bool)
+T_13075: (in rsi == 0x0000000000000000<p64> @ 000000000040DF5E : bool)
   Class: Eq_13075
   DataType: bool
   OrigDataType: bool
@@ -59751,7 +59751,7 @@ T_13117: (in 0<64> @ 000000000040DC81 : word64)
   Class: Eq_12909
   DataType: (ptr64 (arr ui32))
   OrigDataType: word64
-T_13118: (in fn000000000040D8A0(r15_1321, r13_1243, r11_1216, rdi, dwLocC4_1875, dwLoc68_1876 & 0xFFFFFFFD<32>, fs, null, qwLoc88_1879, qwLoc90_1881) @ 000000000040DC81 : word64)
+T_13118: (in fn000000000040D8A0(r15_1321, r13_1243, r11_1216, rdi, dwLocC4_1875, dwLoc68_1876 & 0xFFFFFFFD<32>, fs, 0x0000000000000000<p64>, qwLoc88_1879, qwLoc90_1881) @ 000000000040DC81 : word64)
   Class: Eq_3699
   DataType: (ptr64 uint8)
   OrigDataType: word64
@@ -59767,7 +59767,7 @@ T_13121: (in 0<64> @ 000000000040DBB0 : word64)
   Class: Eq_12910
   DataType: (ptr64 (arr char))
   OrigDataType: word64
-T_13122: (in qwLoc98_1901 == null @ 000000000040DBB0 : bool)
+T_13122: (in qwLoc98_1901 == 0x0000000000000000<p64> @ 000000000040DBB0 : bool)
   Class: Eq_13122
   DataType: bool
   OrigDataType: bool
@@ -60303,7 +60303,7 @@ T_13255: (in 0<64> @ 000000000040DB11 : word64)
   Class: Eq_12909
   DataType: (ptr64 (arr ui32))
   OrigDataType: word64
-T_13256: (in qwArg08 == null @ 000000000040DB11 : bool)
+T_13256: (in qwArg08 == 0x0000000000000000<p64> @ 000000000040DB11 : bool)
   Class: Eq_13256
   DataType: bool
   OrigDataType: bool
@@ -61775,7 +61775,7 @@ T_13623: (in 0<64> @ 000000000040DF1E : word64)
   Class: Eq_3699
   DataType: (ptr64 uint8)
   OrigDataType: word64
-T_13624: (in rsi == null @ 000000000040DF1E : bool)
+T_13624: (in rsi == 0x0000000000000000<p64> @ 000000000040DF1E : bool)
   Class: Eq_13624
   DataType: bool
   OrigDataType: bool
@@ -62519,7 +62519,7 @@ T_13809: (in 0<64> @ 000000000040E638 : word64)
   Class: Eq_1854
   DataType: (ptr64 Eq_1854)
   OrigDataType: word64
-T_13810: (in rdi == null @ 000000000040E638 : bool)
+T_13810: (in rdi == 0x0000000000000000<p64> @ 000000000040E638 : bool)
   Class: Eq_13810
   DataType: bool
   OrigDataType: bool
@@ -62547,7 +62547,7 @@ T_13816: (in 0<64> @ 000000000040E648 : word64)
   Class: Eq_74
   DataType: (ptr64 word32)
   OrigDataType: word64
-T_13817: (in rdi == null @ 000000000040E648 : bool)
+T_13817: (in rdi == 0x0000000000000000<p64> @ 000000000040E648 : bool)
   Class: Eq_13817
   DataType: bool
   OrigDataType: bool
@@ -62583,7 +62583,7 @@ T_13825: (in 0<64> @ 000000000040E65A : word64)
   Class: Eq_1854
   DataType: (ptr64 Eq_1854)
   OrigDataType: word64
-T_13826: (in rdi == null @ 000000000040E65A : bool)
+T_13826: (in rdi == 0x0000000000000000<p64> @ 000000000040E65A : bool)
   Class: Eq_13826
   DataType: bool
   OrigDataType: bool
@@ -62699,7 +62699,7 @@ T_13854: (in 0<64> @ 000000000040E6BC : word64)
   Class: Eq_13851
   DataType: (ptr64 Eq_13851)
   OrigDataType: word64
-T_13855: (in rdi != null @ 000000000040E6BC : bool)
+T_13855: (in rdi != 0x0000000000000000<p64> @ 000000000040E6BC : bool)
   Class: Eq_13855
   DataType: bool
   OrigDataType: bool
@@ -62787,7 +62787,7 @@ T_13876: (in 0<64> @ 000000000040E712 : word64)
   Class: Eq_1854
   DataType: (ptr64 Eq_1854)
   OrigDataType: word64
-T_13877: (in r8 != null @ 000000000040E712 : bool)
+T_13877: (in r8 != 0x0000000000000000<p64> @ 000000000040E712 : bool)
   Class: Eq_13877
   DataType: bool
   OrigDataType: bool
@@ -71387,7 +71387,7 @@ T_16026: (in 0<64> @ 000000000041064A : word64)
   Class: Eq_2552
   DataType: (ptr64 char)
   OrigDataType: word64
-T_16027: (in rsi == null @ 000000000041064A : bool)
+T_16027: (in rsi == 0x0000000000000000<p64> @ 000000000041064A : bool)
   Class: Eq_16027
   DataType: bool
   OrigDataType: bool
@@ -71497,7 +71497,7 @@ T_16053: (in 5<i32> @ 0000000000410676 : int32)
   Class: Eq_16050
   DataType: int32
   OrigDataType: int32
-T_16054: (in dcgettext(null, "(C)", 5<i32>) @ 0000000000410676 : (ptr64 char))
+T_16054: (in dcgettext(0x0000000000000000<p64>, "(C)", 5<i32>) @ 0000000000410676 : (ptr64 char))
   Class: Eq_16054
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -71569,7 +71569,7 @@ T_16071: (in 5<i32> @ 00000000004106A4 : int32)
   Class: Eq_16068
   DataType: int32
   OrigDataType: int32
-T_16072: (in dcgettext(null, "\nLicense GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.\nThis is free software: you are free to change and redistribute it.\nThere is NO WARRANTY, to the extent permitted by law.\n\n", 5<i32>) @ 00000000004106A4 : (ptr64 char))
+T_16072: (in dcgettext(0x0000000000000000<p64>, "\nLicense GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.\nThis is free software: you are free to change and redistribute it.\nThere is NO WARRANTY, to the extent permitted by law.\n\n", 5<i32>) @ 00000000004106A4 : (ptr64 char))
   Class: Eq_16072
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -71661,7 +71661,7 @@ T_16094: (in 5<i32> @ 00000000004107E9 : int32)
   Class: Eq_16091
   DataType: int32
   OrigDataType: int32
-T_16095: (in dcgettext(null, "Written by %s, %s, %s,\n%s, %s, %s, %s,\n%s, %s, and others.\n", 5<i32>) @ 00000000004107E9 : (ptr64 char))
+T_16095: (in dcgettext(0x0000000000000000<p64>, "Written by %s, %s, %s,\n%s, %s, %s, %s,\n%s, %s, and others.\n", 5<i32>) @ 00000000004107E9 : (ptr64 char))
   Class: Eq_16085
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -71669,7 +71669,7 @@ T_16096: (in 0<32> @ 00000000004107E9 : word32)
   Class: Eq_16096
   DataType: word32
   OrigDataType: word32
-T_16097: (in __fprintf_chk(rdi, 1<i32>, dcgettext(null, "Written by %s, %s, %s,\n%s, %s, %s, %s,\n%s, %s, and others.\n", 5<i32>), 0<32>) @ 00000000004107E9 : int32)
+T_16097: (in __fprintf_chk(rdi, 1<i32>, dcgettext(0x0000000000000000<p64>, "Written by %s, %s, %s,\n%s, %s, %s, %s,\n%s, %s, and others.\n", 5<i32>), 0<32>) @ 00000000004107E9 : int32)
   Class: Eq_16097
   DataType: int32
   OrigDataType: int32
@@ -72065,7 +72065,7 @@ T_16195: (in 0<64> @ 0000000000410C4C : word64)
   Class: Eq_16189
   DataType: (ptr64 void)
   OrigDataType: word64
-T_16196: (in rax_10 == null @ 0000000000410C4C : bool)
+T_16196: (in rax_10 == 0x0000000000000000<p64> @ 0000000000410C4C : bool)
   Class: Eq_16196
   DataType: bool
   OrigDataType: bool
@@ -72133,7 +72133,7 @@ T_16212: (in 0<64> @ 0000000000410CA4 : word64)
   Class: Eq_16201
   DataType: (ptr64 void)
   OrigDataType: word64
-T_16213: (in rax_30 == null @ 0000000000410CA4 : bool)
+T_16213: (in rax_30 == 0x0000000000000000<p64> @ 0000000000410CA4 : bool)
   Class: Eq_16213
   DataType: bool
   OrigDataType: bool
@@ -72281,7 +72281,7 @@ T_16249: (in 5<i32> @ 0000000000410E60 : int32)
   Class: Eq_16246
   DataType: int32
   OrigDataType: int32
-T_16250: (in dcgettext(null, "memory exhausted", 5<i32>) @ 0000000000410E60 : (ptr64 char))
+T_16250: (in dcgettext(0x0000000000000000<p64>, "memory exhausted", 5<i32>) @ 0000000000410E60 : (ptr64 char))
   Class: Eq_16250
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -72401,7 +72401,7 @@ T_16279: (in 0<64> @ 0000000000410EBE : word64)
   Class: Eq_232
   DataType: (ptr64 (ptr64 char))
   OrigDataType: word64
-T_16280: (in rsi != null @ 0000000000410EBE : bool)
+T_16280: (in rsi != 0x0000000000000000<p64> @ 0000000000410EBE : bool)
   Class: Eq_16280
   DataType: bool
   OrigDataType: bool
@@ -72637,7 +72637,7 @@ T_16338: (in 0<64> @ 0000000000410FEA : word64)
   Class: Eq_235
   DataType: (ptr64 char)
   OrigDataType: word64
-T_16339: (in r8 == null @ 0000000000410FEA : bool)
+T_16339: (in r8 == 0x0000000000000000<p64> @ 0000000000410FEA : bool)
   Class: Eq_16339
   DataType: bool
   OrigDataType: bool
@@ -72761,7 +72761,7 @@ T_16369: (in 0<64> @ 0000000000410F8E : word64)
   Class: Eq_16368
   DataType: (ptr64 char)
   OrigDataType: word64
-T_16370: (in strchr(r8, dl_153) == null @ 0000000000410F8E : bool)
+T_16370: (in strchr(r8, dl_153) == 0x0000000000000000<p64> @ 0000000000410F8E : bool)
   Class: Eq_16370
   DataType: bool
   OrigDataType: bool
@@ -72833,7 +72833,7 @@ T_16387: (in 0<64> @ 0000000000411019 : word64)
   Class: Eq_16386
   DataType: (ptr64 char)
   OrigDataType: word64
-T_16388: (in strchr(r8, dl_105) != null @ 0000000000411019 : bool)
+T_16388: (in strchr(r8, dl_105) != 0x0000000000000000<p64> @ 0000000000411019 : bool)
   Class: Eq_16388
   DataType: bool
   OrigDataType: bool
@@ -72865,7 +72865,7 @@ T_16395: (in 0<64> @ 0000000000410FAC : word64)
   Class: Eq_16394
   DataType: (ptr64 char)
   OrigDataType: word64
-T_16396: (in strchr(r8, '0') == null @ 0000000000410FAC : bool)
+T_16396: (in strchr(r8, '0') == 0x0000000000000000<p64> @ 0000000000410FAC : bool)
   Class: Eq_16396
   DataType: bool
   OrigDataType: bool
@@ -73729,7 +73729,7 @@ T_16611: (in 0<64> @ 0000000000410F45 : word64)
   Class: Eq_235
   DataType: (ptr64 char)
   OrigDataType: word64
-T_16612: (in r8 == null @ 0000000000410F45 : bool)
+T_16612: (in r8 == 0x0000000000000000<p64> @ 0000000000410F45 : bool)
   Class: Eq_16612
   DataType: bool
   OrigDataType: bool
@@ -73861,7 +73861,7 @@ T_16644: (in 5<i32> @ 000000000041132A : int32)
   Class: Eq_16642
   DataType: int32
   OrigDataType: int32
-T_16645: (in dcgettext(null, rsi_28, 5<i32>) @ 000000000041132A : (ptr64 char))
+T_16645: (in dcgettext(0x0000000000000000<p64>, rsi_28, 5<i32>) @ 000000000041132A : (ptr64 char))
   Class: Eq_16636
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -73869,7 +73869,7 @@ T_16646: (in 0<32> @ 000000000041132A : word32)
   Class: Eq_16646
   DataType: word32
   OrigDataType: word32
-T_16647: (in error(ebp_23, 0<i32>, dcgettext(null, rsi_28, 5<i32>), 0<32>) @ 000000000041132A : void)
+T_16647: (in error(ebp_23, 0<i32>, dcgettext(0x0000000000000000<p64>, rsi_28, 5<i32>), 0<32>) @ 000000000041132A : void)
   Class: Eq_16647
   DataType: void
   OrigDataType: void
@@ -73937,7 +73937,7 @@ T_16663: (in 0<64> @ 000000000041138E : word64)
   Class: Eq_11587
   DataType: (ptr64 (ptr64 char))
   OrigDataType: word64
-T_16664: (in rsi != null @ 000000000041138E : bool)
+T_16664: (in rsi != 0x0000000000000000<p64> @ 000000000041138E : bool)
   Class: Eq_16664
   DataType: bool
   OrigDataType: bool
@@ -74181,7 +74181,7 @@ T_16724: (in 0<64> @ 00000000004114C2 : word64)
   Class: Eq_11590
   DataType: (ptr64 char)
   OrigDataType: word64
-T_16725: (in r8 == null @ 00000000004114C2 : bool)
+T_16725: (in r8 == 0x0000000000000000<p64> @ 00000000004114C2 : bool)
   Class: Eq_16725
   DataType: bool
   OrigDataType: bool
@@ -74305,7 +74305,7 @@ T_16755: (in 0<64> @ 0000000000411466 : word64)
   Class: Eq_16754
   DataType: (ptr64 char)
   OrigDataType: word64
-T_16756: (in strchr(r8, dl_155) == null @ 0000000000411466 : bool)
+T_16756: (in strchr(r8, dl_155) == 0x0000000000000000<p64> @ 0000000000411466 : bool)
   Class: Eq_16756
   DataType: bool
   OrigDataType: bool
@@ -74377,7 +74377,7 @@ T_16773: (in 0<64> @ 00000000004114F1 : word64)
   Class: Eq_16772
   DataType: (ptr64 char)
   OrigDataType: word64
-T_16774: (in strchr(r8, dl_107) != null @ 00000000004114F1 : bool)
+T_16774: (in strchr(r8, dl_107) != 0x0000000000000000<p64> @ 00000000004114F1 : bool)
   Class: Eq_16774
   DataType: bool
   OrigDataType: bool
@@ -74409,7 +74409,7 @@ T_16781: (in 0<64> @ 0000000000411484 : word64)
   Class: Eq_16780
   DataType: (ptr64 char)
   OrigDataType: word64
-T_16782: (in strchr(r8, '0') == null @ 0000000000411484 : bool)
+T_16782: (in strchr(r8, '0') == 0x0000000000000000<p64> @ 0000000000411484 : bool)
   Class: Eq_16782
   DataType: bool
   OrigDataType: bool
@@ -75273,7 +75273,7 @@ T_16997: (in 0<64> @ 0000000000411418 : word64)
   Class: Eq_11590
   DataType: (ptr64 char)
   OrigDataType: word64
-T_16998: (in r8 == null @ 0000000000411418 : bool)
+T_16998: (in r8 == 0x0000000000000000<p64> @ 0000000000411418 : bool)
   Class: Eq_16998
   DataType: bool
   OrigDataType: bool
@@ -75753,7 +75753,7 @@ T_17117: (in 0<64> @ 0000000000411940 : word64)
   Class: Eq_17102
   DataType: (ptr64 char)
   OrigDataType: word64
-T_17118: (in rax_30 != null @ 0000000000411940 : bool)
+T_17118: (in rax_30 != 0x0000000000000000<p64> @ 0000000000411940 : bool)
   Class: Eq_17118
   DataType: bool
   OrigDataType: bool
@@ -75761,7 +75761,7 @@ T_17119: (in 0<64> @ 0000000000411947 : word64)
   Class: Eq_17114
   DataType: (ptr64 Eq_17114)
   OrigDataType: word64
-T_17120: (in r14_103 != null @ 0000000000411947 : bool)
+T_17120: (in r14_103 != 0x0000000000000000<p64> @ 0000000000411947 : bool)
   Class: Eq_17120
   DataType: bool
   OrigDataType: bool
@@ -75829,7 +75829,7 @@ T_17136: (in 0<64> @ 00000000004119E4 : word64)
   Class: Eq_17133
   DataType: (ptr64 Eq_17133)
   OrigDataType: word64
-T_17137: (in rax_47 == null @ 00000000004119E4 : bool)
+T_17137: (in rax_47 == 0x0000000000000000<p64> @ 00000000004119E4 : bool)
   Class: Eq_17137
   DataType: bool
   OrigDataType: bool
@@ -76121,7 +76121,7 @@ T_17209: (in 0<64> @ 0000000000411A2B : word64)
   Class: Eq_17207
   DataType: (ptr64 char)
   OrigDataType: word64
-T_17210: (in rax_96 == null @ 0000000000411A2B : bool)
+T_17210: (in rax_96 == 0x0000000000000000<p64> @ 0000000000411A2B : bool)
   Class: Eq_17210
   DataType: bool
   OrigDataType: bool
@@ -76305,7 +76305,7 @@ T_17255: (in 0<64> @ 0000000000411A9C : word64)
   Class: Eq_17064
   DataType: (ptr64 Eq_17064)
   OrigDataType: word64
-T_17256: (in rax_146 == null @ 0000000000411A9C : bool)
+T_17256: (in rax_146 == 0x0000000000000000<p64> @ 0000000000411A9C : bool)
   Class: Eq_17256
   DataType: bool
   OrigDataType: bool
@@ -77293,7 +77293,7 @@ T_17502: (in 0<64> @ 0000000000411BBB : word64)
   Class: Eq_17114
   DataType: (ptr64 Eq_17114)
   OrigDataType: word64
-T_17503: (in r13_350 == null @ 0000000000411BBB : bool)
+T_17503: (in r13_350 == 0x0000000000000000<p64> @ 0000000000411BBB : bool)
   Class: Eq_17503
   DataType: bool
   OrigDataType: bool
@@ -77613,7 +77613,7 @@ T_17582: (in 0<64> @ 0000000000411DB7 : word64)
   Class: Eq_17064
   DataType: (ptr64 Eq_17064)
   OrigDataType: word64
-T_17583: (in rdi == null @ 0000000000411DB7 : bool)
+T_17583: (in rdi == 0x0000000000000000<p64> @ 0000000000411DB7 : bool)
   Class: Eq_17583
   DataType: bool
   OrigDataType: bool
@@ -77949,7 +77949,7 @@ T_17666: (in 0<64> @ 0000000000411EEA : word64)
   Class: Eq_17665
   DataType: (ptr64 (ptr64 void))
   OrigDataType: word64
-T_17667: (in &g_ptr61A3A8 == null @ 0000000000411EEA : bool)
+T_17667: (in &g_ptr61A3A8 == 0x0000000000000000<p64> @ 0000000000411EEA : bool)
   Class: Eq_17667
   DataType: bool
   OrigDataType: bool
@@ -77989,7 +77989,7 @@ T_17676: (in 0<u64> @ 0000000000411EF1 : uint64)
   Class: Eq_17674
   DataType: (ptr64 void)
   OrigDataType: (ptr64 void)
-T_17677: (in __cxa_atexit(rdi, null, rdx_10) @ 0000000000411EF1 : int32)
+T_17677: (in __cxa_atexit(rdi, 0x0000000000000000<p64>, rdx_10) @ 0000000000411EF1 : int32)
   Class: Eq_17677
   DataType: int32
   OrigDataType: int32

@@ -103,7 +103,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
                 if (uAddr >= dataMap.remapTable.Length)
                     return lAddr;
                 var mAddr = dataMap.remapTable[uAddr];
-                return (mAddr == null ? lAddr : PICDataAddress.Ptr(mAddr));
+                return (mAddr == null ? lAddr : PICDataAddress.Ptr(mAddr.Value));
             }
 
             /// <summary>
@@ -132,7 +132,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
                 IMemoryRegion? regn = null;
                 if (PICRegisters.TryGetAlwaysAccessibleRegister(bAddr, out var reg))
                 {
-                    regn = PICMemoryDescriptor.GetDataRegionByAddress(reg!.Traits.RegAddress.Addr!);
+                    regn = PICMemoryDescriptor.GetDataRegionByAddress(reg!.Traits.RegAddress.Addr!.ToAddress());
                 }
                 else if (bAddr.BankSelect.IsValid)
                 {

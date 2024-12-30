@@ -88,7 +88,7 @@ namespace Reko.UnitTests.Core.Code
         private class CodeEmitterImpl : CodeEmitter
         {
             private Frame frame = new Frame(new Mocks.FakeArchitecture(), PrimitiveType.Word32);
-            private Block block = new Block(null, null, "test");
+            private Block block = new Block(null, default, "test");
 
             public override Statement Emit(Instruction instr)
             {

@@ -50,7 +50,6 @@ namespace Reko.Arch.OpenRISC.Or
             this.arch = arch;
             this.rdr = rdr;
             ops = new List<MachineOperand>();
-            addr = null!;
         }
 
         public override OpenRISCInstruction? DisassembleInstruction()

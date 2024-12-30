@@ -63,8 +63,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         private Program program;
         public event EventHandler ProgramChanged;
 
-        public Address TopAddress { get { return addrTop; } set { addrTop = value; OnTopAddressChanged(); } }
-        private Address addrTop;
+        public Address? TopAddress { get { return addrTop; } set { addrTop = value; OnTopAddressChanged(); } }
+        private Address? addrTop;
 
  
         private void OnPropertyChanged()
@@ -102,7 +102,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         {
             if (program != null)
             {
-                var addrTopPos = MixedCodeDataModel.Position(addrTop, 0);
+                var addrTopPos = MixedCodeDataModel.Position(addrTop.Value, 0);
                 Model.MoveToLine(addrTopPos, 0);
                 RecomputeLayout();
                 UpdateScrollbar();
@@ -151,7 +151,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         {
             var pt = GetAnchorMiddlePoint();
             var memoryTextSpan = GetTagFromPoint(pt) as WindowsFormsTextSpanFactory.MemoryTextSpan;
-            if (memoryTextSpan is null || memoryTextSpan.Address is null)
+            if (memoryTextSpan is null)
                 return MixedCodeDataModel.PositionAddress(anchorPos.Line);
             return memoryTextSpan.Address;
         }

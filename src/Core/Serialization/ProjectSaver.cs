@@ -166,7 +166,7 @@ namespace Reko.Core.Serialization
 
         private SerializedCall_v1? SerializeUserCall(Program program, UserCallData? uc)
         {
-            if (uc == null || uc.Address is null)
+            if (uc is null)
                 return null;
             var procser = program.CreateProcedureSerializer();
             SerializedSignature? ssig = null;
@@ -188,7 +188,7 @@ namespace Reko.Core.Serialization
             return new IndirectJump_v4
             {
                 InstructionAddress = de.Key.ToString(),
-                TableAddress = de.Value.Address?.ToString(),
+                TableAddress = de.Value.Address.ToString(),
                 IndexRegister = de.Value.IndexRegister?.Name,
             };
         }
@@ -220,7 +220,7 @@ namespace Reko.Core.Serialization
                             ((segment.AccessMode & AccessMode.Execute) != 0 ? "x" : "");
             return new Segment_v4
             {
-                Address = segment.Address?.ToString(),
+                Address = segment.Address.ToString(),
                 Offset = segment.Offset.ToString("X"),
                 Length = segment.Length.ToString("X"),
                 Name = segment.Name,

@@ -137,8 +137,9 @@ namespace Reko.Core.Configuration
                     .SelectMany(s => s.Procedures!)
                     .OfType<Procedure_v1>()
                     .Where(p => p.Name != null)
+                    //$REVIEW: handle when addresses are not parseable.
                     .Select(p =>
-                        (addr: platform.Architecture.TryParseAddress(p.Address, out var addr) ? addr : null,
+                        (addr: platform.Architecture.TryParseAddress(p.Address, out var addr) ? addr : default,
                          ext:  new ExternalProcedure(
                              p.Name!,
                              sser.Deserialize(p.Signature, platform.Architecture.CreateFrame())

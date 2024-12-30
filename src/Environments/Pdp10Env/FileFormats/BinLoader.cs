@@ -49,7 +49,7 @@ namespace Reko.Environments.Pdp10Env.FileFormats
         {
             var arch = new Pdp10Architecture(Services, "pdp10", new Dictionary<string, object>());
             var platform = new Pdp10Platform(Services, arch);
-            return LoadProgram(address!, arch, platform, new());
+            return LoadProgram(address ?? Pdp10Architecture.Ptr18(0), arch, platform, new());
         }
 
         public override Program LoadProgram(

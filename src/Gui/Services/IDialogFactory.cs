@@ -53,7 +53,7 @@ namespace Reko.Gui.Services
         ITextEncodingDialog CreateTextEncodingDialog();
         IDeclarationForm CreateDeclarationForm();
         IDeclarationForm CreateCommentForm();
-        IJumpTableDialog CreateJumpTableDialog(Program program, IProcessorArchitecture arch, MachineInstruction instrIndirectJmp, Address addrVector, int stride);
+        IJumpTableDialog CreateJumpTableDialog(Program program, IProcessorArchitecture arch, MachineInstruction instrIndirectJmp, Address? addrVector, int stride);
         ISymbolSourceDialog CreateSymbolSourceDialog();
         ISelectItemDialog CreateSelectItemDialog(string caption, object[] items, bool multiSelect);
         ISegmentEditorDialog CreateSegmentEditorDialog();

@@ -400,7 +400,7 @@ namespace Reko.Arch.Pdp.Pdp10.Rewriter
                     {
                         return binder.EnsureRegister(Registers.Accumulators[ea.Offset]);
                     }
-                    return m.Mem(word36, new Address18(ea.Offset));
+                    return m.Mem(word36, Pdp10Architecture.Ptr18(ea.Offset));
                 }
                 addr = binder.EnsureRegister(ea.Index);
                 if (ea.Offset != 0)

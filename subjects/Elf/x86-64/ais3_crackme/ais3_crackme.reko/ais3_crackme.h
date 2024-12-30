@@ -689,7 +689,7 @@ T_152: (in 0000000000600DF8 @ 0000000000400650 : ptr64)
   Class: Eq_152
   DataType: (ptr64 (arr (ptr64 code)))
   OrigDataType: (union ((ptr64 (arr Eq_174)) u1) ((ptr64 (arr Eq_174)) u0))
-T_153: (in 0x600E00<u64> - g_a600DF8 @ 0000000000400650 : word64)
+T_153: (in 0x0000000000600E00<p64> - g_a600DF8 @ 0000000000400650 : word64)
   Class: Eq_153
   DataType: int64
   OrigDataType: int64

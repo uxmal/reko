@@ -4,7 +4,7 @@
 
 #include "a.h"
 
-struct Eq_n g_tFFFFFFFF = // FFFF
+Eq_n g_tFFFF = // FFFF
 	{
 		0x40,
 		,

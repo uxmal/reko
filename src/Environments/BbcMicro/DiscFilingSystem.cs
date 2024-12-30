@@ -149,8 +149,6 @@ namespace Reko.Environments.BbcMicro
         public DFSEntry(string name)
         {
             this.Name = name;
-            this.LoadAddress = null!;
-            this.ExecAddress = null!;
         }
 
         public Address LoadAddress { get; set; }

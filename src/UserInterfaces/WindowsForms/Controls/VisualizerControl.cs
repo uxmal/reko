@@ -128,11 +128,11 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         protected override void OnMouseUp(MouseEventArgs e)
         {
             var addr = AddressFromPosition(e.Location);
-            if (addr != null)
+            if (addr is not null)
             {
                 if (selSvc != null)
                 {
-                    var ar = new AddressRange(addr, addr);
+                    var ar = new AddressRange(addr.Value, addr.Value);
                     selSvc.SetSelectedComponents(new[] { ar });
                 }
             }
@@ -355,7 +355,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         /// </summary>
         /// <param name="pt"></param>
         /// <returns></returns>
-        private Address AddressFromPosition(Point pt)
+        private Address? AddressFromPosition(Point pt)
         {
             int x = pt.X / pixelSize;
             int y = pt.Y / pixelSize;

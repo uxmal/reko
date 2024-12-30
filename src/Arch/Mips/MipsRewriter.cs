@@ -170,7 +170,7 @@ namespace Reko.Arch.Mips
                 case Mnemonic.dsrlv: RewriteSrl(instr); break;
                 case Mnemonic.dsub:
                 case Mnemonic.dsubu:
-                    RewriteSub(instr, PrimitiveType.Word64); break;
+                    RewriteSub(instr); break;
                 case Mnemonic.eret: RewriteEret(instr); break;
                 case Mnemonic.j: RewriteJump(instr); break;
                 case Mnemonic.jal: RewriteJal(instr); break;
@@ -268,7 +268,7 @@ namespace Reko.Arch.Mips
                     RewriteSrl(instr); break;
                 case Mnemonic.sub:
                 case Mnemonic.subu:
-                    RewriteSub(instr, PrimitiveType.Word32); break;
+                    RewriteSub(instr); break;
                 case Mnemonic.sub_s: RewriteFpuBinopS(instr, Operator.FSub); break;
                 case Mnemonic.sub_d: RewriteFpuBinopD(instr, Operator.FSub); break;
                 case Mnemonic.sw:

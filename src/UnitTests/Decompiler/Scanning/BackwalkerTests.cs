@@ -125,7 +125,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 return true;
             }
 
-            public Address MakeAddressFromConstant(Constant c)
+            public Address? MakeAddressFromConstant(Constant c)
             {
                 return Address.Ptr32(c.ToUInt32());
             }
@@ -135,7 +135,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 throw new NotImplementedException();
             }
 
-            public IEnumerable<(Address?, Instruction?)> GetBlockInstructions(Block block)
+            public IEnumerable<(Address, Instruction?)> GetBlockInstructions(Block block)
             {
                 return block.Statements.Select(s => (s.Address, s.Instruction))!;
             }

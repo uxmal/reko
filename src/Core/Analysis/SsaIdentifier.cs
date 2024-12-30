@@ -45,7 +45,11 @@ namespace Reko.Core.Analysis
         /// <summary>
         /// Statement that defines the identifier.
         /// </summary>
-        public Statement DefStatement { get; set; }
+        public Statement DefStatement {
+            get => d;
+            set => d = value;
+        }
+        private Statement d = default!;
 
         /// <summary>
         /// An <see cref="Identifier"/> that represents this SSA node.

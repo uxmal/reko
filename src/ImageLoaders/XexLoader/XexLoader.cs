@@ -94,7 +94,7 @@ namespace Reko.ImageLoaders.Xex
         {
             get
             {
-                return null!; //the format is self describing
+                return default; //the format is self describing
             }
 
             set

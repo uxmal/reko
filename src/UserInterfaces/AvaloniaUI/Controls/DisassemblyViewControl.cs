@@ -261,13 +261,13 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
 
         void DisassemblyControl_StateChange(object sender, EventArgs e)
         {
-            if (program == null || topAddress == null)
+            if (program is null || topAddress is null)
             {
                 Model = new EmptyEditorModel();
             }
             else
             {
-                if (!program.SegmentMap.TryFindSegment(topAddress, out ImageSegment? segment))
+                if (!program.SegmentMap.TryFindSegment(topAddress.Value, out ImageSegment? segment))
                 {
                     Model = new EmptyEditorModel();
                 }
@@ -296,7 +296,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
         protected override void OnScroll()
         {
             base.OnScroll();
-            topAddress = Model.CurrentPosition as Address;
+            topAddress = Model.CurrentPosition as Address?;
         }
 
         /*

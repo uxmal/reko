@@ -24,6 +24,9 @@ using System;
 
 namespace Reko.Arch.Pdp.Memory
 {
+    [Obsolete("", true)]
+    public class OBsoleteAddress18 { }
+    /*
     public class Address18 : Address
     {
         private const uint Mask = (1 << 18) - 1;
@@ -90,4 +93,5 @@ namespace Reko.Arch.Pdp.Memory
             return Convert.ToString((uint) Offset, 8).PadLeft(6, '0');
         }
     }
+    */
 }

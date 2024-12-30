@@ -68,10 +68,12 @@ namespace Reko.ImageLoaders.Elf
             if (BinaryImage.Segments.Count == 0)
                 return Address.Ptr32(0);
 
-            return
-                BinaryImage.Segments
+            var nonEmptySegments = BinaryImage.Segments
                 .Where(ph => ph.FileSize > 0)
-                .Min(ph => ph.VirtualAddress) ?? Address.Ptr32(0);
+                .ToArray();
+            if (nonEmptySegments.Length == 0)
+                return Address.Ptr32(0);
+            return nonEmptySegments.Min(ph => ph.VirtualAddress);
         }
 
         public override Address CreateAddress(ulong uAddr)
@@ -308,7 +310,7 @@ namespace Reko.ImageLoaders.Elf
         {
             return
                 (from sh in this.BinaryImage.Sections
-                 let addr = sh.VirtualAddress is not null ? sh.VirtualAddress.ToLinear() : 0
+                 let addr = sh.VirtualAddress.ToLinear()
                  where
                     r_offset != 0 &&
                     addr <= r_offset && r_offset < addr + sh.Size
@@ -368,7 +370,7 @@ namespace Reko.ImageLoaders.Elf
             {
                 foreach (var section in BinaryImage.Sections)
                 {
-                    if (string.IsNullOrEmpty(section.Name) || section.VirtualAddress == null)
+                    if (string.IsNullOrEmpty(section.Name))
                         continue;
 
                     if (segMap.TryGetLowerBound(section.VirtualAddress, out var mem) &&

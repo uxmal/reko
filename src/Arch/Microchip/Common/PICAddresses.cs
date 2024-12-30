@@ -31,54 +31,57 @@ namespace Reko.Arch.MicrochipPIC.Common
     /// <summary>
     /// A PIC 21-bit program address (word-aligned).
     /// </summary>
-    public class PICProgAddress : Address
+    public class PICProgAddress // : Address
     {
 
         public const uint MAXPROGBYTADDR = 0x3FFFFFu;
         public readonly Constant Value;
         public static readonly PICProgAddress Invalid = new PICProgAddress(InvalidConstant.Create(PrimitiveType.Ptr32));
+        public static readonly PrimitiveType PointerType = PrimitiveType.Create(Domain.Pointer, 21);
 
-        public PICProgAddress(uint addr) : base(PrimitiveType.Ptr32)
+        public PICProgAddress(uint addr)
         {
+            DataType = PrimitiveType.Ptr32;
             Value = Constant.Create(DataType, addr & MAXPROGBYTADDR);
         }
 
-        public PICProgAddress(Constant addr) : base(addr.DataType)
+        public PICProgAddress(Constant addr)
         {
+            DataType = addr.DataType;
             Value = addr;
         }
 
-
+        public DataType DataType { get; }
         public bool IsValid => Value.IsValid;
-        public override bool IsNull => false;
-        public override ulong Offset => Value.ToUInt32();
-        public override ushort? Selector => null;
+        public bool IsNull => false;
+        public ulong Offset => Value.ToUInt32();
+        public ushort? Selector => null;
 
-        public override Constant ToConstant()
+        public Constant ToConstant()
             => Value;
 
-        public override ushort ToUInt16()
+        public ushort ToUInt16()
             => throw new InvalidOperationException("Returning UInt16 would lose precision.");
 
-        public override uint ToUInt32()
+        public uint ToUInt32()
             => Value.ToUInt32();
 
-        public override ulong ToLinear()
+        public ulong ToLinear()
             => Value.ToUInt32();
 
-        public override Address Add(long offset)
+        public PICProgAddress Add(long offset)
             => new PICProgAddress((uint)(Value.ToUInt32() + offset));
 
-        public override Address Align(int alignment)
+        public PICProgAddress Align(int alignment)
             => new PICProgAddress((uint)(alignment * ((Value.ToUInt32() + alignment - 1) / alignment)));
 
-        public override Expression CloneExpression()
+        public PICProgAddress CloneExpression()
             => new PICProgAddress(Value);
 
-        public override string GenerateName(string prefix, string suffix)
+        public string GenerateName(string prefix, string suffix)
             => $"{prefix}{Value.ToUInt32():X6}{suffix}";
 
-        public override Address NewOffset(ulong offset)
+        public  PICProgAddress NewOffset(ulong offset)
             => new PICProgAddress((uint)offset);
 
         /// <summary>
@@ -88,8 +91,8 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// The <see cref="PICProgAddress"/>.
         /// </returns>
-        public static PICProgAddress Ptr(uint addr)
-            => new PICProgAddress(addr);
+        public static Address Ptr(uint addr)
+            => Address.Create(PointerType, addr);
 
         /// <summary>
         /// Create a <see cref="PICProgAddress"/> instance with specified address.
@@ -101,62 +104,78 @@ namespace Reko.Arch.MicrochipPIC.Common
         public static PICProgAddress Ptr(Address aaddr)
             => new PICProgAddress(aaddr.ToUInt32());
 
-        protected override string ConvertToString()
+        protected string ConvertToString()
             => $"{ToLinear():X6}";
 
+        public Address ToAddress()
+        {
+            return Address.Create(this.DataType, this.ToUInt32());
+        }
     }
 
     /// <summary>
     /// A PIC 12/14-bit data address.
     /// </summary>
-    public class PICDataAddress : Address
+    public class PICDataAddress : IComparable<PICDataAddress>
     {
 
         public const uint MAXDATABYTADDR = 0x3FFFu;
         public readonly Constant Value;
         public static readonly PICDataAddress Invalid = new PICDataAddress(InvalidConstant.Create(PrimitiveType.Ptr16));
 
-
-        public PICDataAddress(uint addr) : base(PrimitiveType.Ptr16)
+        public PICDataAddress(uint addr)
         {
+            DataType = PrimitiveType.Ptr16;
             Value = Constant.Create(DataType, addr & MAXDATABYTADDR);
         }
 
-        public PICDataAddress(Constant addr) : base(addr.DataType)
+        public PICDataAddress(Constant addr)
         {
+            DataType = addr.DataType;
             Value = addr;
         }
 
-        public bool IsValid => Value.IsValid;
-        public override bool IsNull => false;
-        public override ulong Offset => Value.ToUInt16();
-        public override ushort? Selector => null;
+        public DataType DataType { get; }
 
-        public override Constant ToConstant()
+        public bool IsValid => Value.IsValid;
+        public bool IsNull => false;
+        public ulong Offset => Value.ToUInt16();
+        public ushort? Selector => null;
+
+        public Address ToAddress()
+            => Address.Create(this.DataType, ToUInt16());
+        public Constant ToConstant()
             => Value;
 
-        public override ushort ToUInt16()
+        public ushort ToUInt16()
             => Value.ToUInt16();
 
-        public override uint ToUInt32()
+        public uint ToUInt32()
             => Value.ToUInt16();
 
-        public override ulong ToLinear()
+        public ulong ToLinear()
             => Value.ToUInt16();
 
-        public override Address Add(long offset)
+        public PICDataAddress Add(long offset)
             => new PICDataAddress((uint)(Value.ToUInt16() + offset));
 
-        public override Address Align(int alignment)
+        public PICDataAddress Align(int alignment)
             => new PICDataAddress((uint)(alignment * ((Value.ToUInt16() + alignment - 1) / alignment)));
 
-        public override Expression CloneExpression()
-            => new PICDataAddress(Value);
+        //public override Expression CloneExpression()
+        //    => new PICDataAddress(Value);
 
-        public override string GenerateName(string prefix, string suffix)
+        public int CompareTo(PICDataAddress? that)
+        {
+            if (that is null)
+                return 1;
+            return this.Offset.CompareTo(that.Offset);
+        }
+
+        public string GenerateName(string prefix, string suffix)
             => $"{prefix}{Value.ToUInt16():X4}{suffix}";
 
-        public override Address NewOffset(ulong offset)
+        public PICDataAddress NewOffset(ulong offset)
             => new PICDataAddress((uint)offset);
 
         public static PICDataAddress Ptr(uint addr)
@@ -165,7 +184,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         public static PICDataAddress Ptr(Address aaddr)
             => new PICDataAddress(aaddr.ToUInt32());
 
-        protected override string ConvertToString()
+        protected string ConvertToString()
             => $"{ToLinear():X4}";
 
 

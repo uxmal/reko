@@ -189,7 +189,7 @@ T_7: (in 64<i8> @ 0020008C : int8)
   Class: Eq_7
   DataType: int8
   OrigDataType: int8
-T_8: (in *(byte *) 0x6F86<u32> | 64<i8> @ 0020008C : byte)
+T_8: (in *(byte *) 0x00006F86<p32> | 64<i8> @ 0020008C : byte)
   Class: Eq_6
   DataType: byte
   OrigDataType: byte
@@ -1453,7 +1453,7 @@ T_323: (in Mem7[0x00004004<p32>:byte] @ 00200506 : byte)
   Class: Eq_318
   DataType: Eq_318
   OrigDataType: byte
-T_324: (in *(union Eq_318 *) 0x4004<u32> != w_20 @ 00200506 : bool)
+T_324: (in *(union Eq_318 *) 0x00004004<p32> != w_20 @ 00200506 : bool)
   Class: Eq_324
   DataType: bool
   OrigDataType: bool
@@ -2025,7 +2025,7 @@ T_466: (in 0<8> @ 00200611 : byte)
   Class: Eq_465
   DataType: byte
   OrigDataType: byte
-T_467: (in *(byte *) 0x6F91<u32> != 0<8> @ 00200611 : bool)
+T_467: (in *(byte *) 0x00006F91<p32> != 0<8> @ 00200611 : bool)
   Class: Eq_467
   DataType: bool
   OrigDataType: bool
@@ -2041,7 +2041,7 @@ T_470: (in 0xF7<8> @ 00200613 : byte)
   Class: Eq_470
   DataType: byte
   OrigDataType: byte
-T_471: (in *(byte *) 0x6F83<u32> & 0xF7<8> @ 00200613 : byte)
+T_471: (in *(byte *) 0x00006F83<p32> & 0xF7<8> @ 00200613 : byte)
   Class: Eq_469
   DataType: byte
   OrigDataType: byte

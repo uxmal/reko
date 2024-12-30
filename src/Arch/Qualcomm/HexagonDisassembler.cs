@@ -57,7 +57,6 @@ namespace Reko.Arch.Qualcomm
             this.rdr = rdr;
             this.instrs = new List<HexagonInstruction>();
             this.ops = new List<MachineOperand>();
-            this.addrPacket = null!;
         }
 
         public override HexagonPacket? DisassembleInstruction()

@@ -91,7 +91,7 @@ namespace Reko.ImageLoaders.MzExe.Msvc
                 trace.Inform("MSVC RTTI: Scanning segment {0} ({1} {2}) for vtables.", seg.Name, seg.Address, seg.ContentSize);
                 if (!program.TryCreateImageReader(seg.Address, seg.ContentSize, out var rdr))
                     continue;
-                while (rttiHelper.TryReadPointer(rdr, out Address? addr))
+                while (rttiHelper.TryReadPointer(rdr, out Address addr))
                 {
                     if (!results.CompleteObjectLocators.TryGetValue(addr, out var col))
                         continue;
@@ -223,7 +223,7 @@ namespace Reko.ImageLoaders.MzExe.Msvc
         {
             if (ptr is null)
                 return false;
-            return program.Memory.IsValidAddress(ptr);
+            return program.Memory.IsValidAddress(ptr.Value);
         }
 
         private bool SniffForCompleteObjectLocator(EndianImageReader rdr)
@@ -244,7 +244,7 @@ namespace Reko.ImageLoaders.MzExe.Msvc
             // Sniff the type descriptor looking for the class name, which
             // always is prefixed with ".?A"
 
-            if (!program.TryCreateImageReader(ptrTypeDescriptor, out var rdrTd))
+            if (!program.TryCreateImageReader(ptrTypeDescriptor.Value, out var rdrTd))
                 return false;
             if (!rttiHelper.TryReadPointer(rdrTd, out var ptrVftable))
                 return false;

@@ -134,7 +134,7 @@ namespace Reko.Arch.Pdp
 
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
-            return new Address18((uint)c.ToUInt64());
+            return Pdp10Architecture.Ptr18((uint)c.ToUInt64());
         }
 
         public override Address? ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
@@ -183,7 +183,7 @@ namespace Reko.Arch.Pdp
                 }
                 uAddr = (uAddr << 3) | u;
             }
-            addr = new Address18(uAddr);
+            addr = Pdp10Architecture.Ptr18(uAddr);
             return true;
         } 
 
@@ -215,6 +215,11 @@ namespace Reko.Arch.Pdp
                 shift -= 7;
             }
             return value;
+        }
+
+        public static Address Ptr18(uint uAddr)
+        {
+            return Address.OctalPtr(PdpTypes.Ptr18, uAddr);
         }
     }
 }

@@ -6544,7 +6544,7 @@ T_1358: (in 0<16> @ 05B9 : word16)
   Class: Eq_1340
   DataType: (ptr16 byte)
   OrigDataType: word16
-T_1359: (in de_16 == null @ 05B9 : bool)
+T_1359: (in de_16 == 0x0000<p16> @ 05B9 : bool)
   Class: Eq_1359
   DataType: bool
   OrigDataType: bool
@@ -7484,7 +7484,7 @@ T_1593: (in 0<16> @ 0696 : word16)
   Class: Eq_1559
   DataType: (ptr16 byte)
   OrigDataType: word16
-T_1594: (in de_113 == null @ 0696 : bool)
+T_1594: (in de_113 == 0x0000<p16> @ 0696 : bool)
   Class: Eq_1594
   DataType: bool
   OrigDataType: bool

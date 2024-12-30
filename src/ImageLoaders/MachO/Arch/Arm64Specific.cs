@@ -20,9 +20,6 @@
 
 using Reko.Core;
 using Reko.Core.Memory;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Reko.ImageLoaders.MachO.Arch
 {
@@ -32,7 +29,7 @@ namespace Reko.ImageLoaders.MachO.Arch
         {
         }
 
-        public override Address ReadStub(Address addrStub, ByteMemoryArea mem)
+        public override Address? ReadStub(Address addrStub, ByteMemoryArea mem)
         {
             //$BUG: clearly bogus!
             return addrStub - 0x1000;

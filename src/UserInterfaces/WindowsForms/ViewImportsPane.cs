@@ -162,9 +162,9 @@ namespace Reko.UserInterfaces.WindowsForms
             var row = info.Item.Index;
             if (info.SubItem != null)
             {
-                var addr = info.SubItem.Tag as Address;
+                var addr = info.SubItem.Tag as Address?;
                 services.RequireService<ILowLevelViewService>()
-                    .ShowMemoryAtAddress(program, addr);
+                    .ShowMemoryAtAddress(program, addr.Value);
             }
         }
 

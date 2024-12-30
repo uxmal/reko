@@ -161,7 +161,7 @@ namespace Reko.UnitTests.Decompiler.Loading
 
             public override Address PreferredBaseAddress {get; set; }
 
-            public override Program LoadProgram(Address addrLoad)
+            public override Program LoadProgram(Address? addrLoad)
             {
                 return new Program();
             }
@@ -201,7 +201,7 @@ namespace Reko.UnitTests.Decompiler.Loading
                 set { throw new NotImplementedException(); }
             }
 
-            public override Program LoadProgram(Address addrLoad)
+            public override Program LoadProgram(Address? addrLoad)
             {
                 throw new NotImplementedException();
             }
@@ -250,7 +250,7 @@ namespace Reko.UnitTests.Decompiler.Loading
             {
             }
 
-            public override ILoadedImage Load(Address addrLoad)
+            public override ILoadedImage Load(Address? addrLoad)
             {
                 var blob = new Blob(base.ImageLocation, new byte[234]);
                 var archiveFile = new Mock<ArchivedFile>();

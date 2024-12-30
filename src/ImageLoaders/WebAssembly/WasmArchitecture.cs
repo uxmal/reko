@@ -131,7 +131,7 @@ namespace Reko.ImageLoaders.WebAssembly
 
         public override bool TryParseAddress(string? txtAddr, [MaybeNullWhen(false)] out Address addr)
         {
-            return Address32.TryParse32(txtAddr, out addr); 
+            return Address.TryParse32(txtAddr, out addr); 
         }
     }
 }

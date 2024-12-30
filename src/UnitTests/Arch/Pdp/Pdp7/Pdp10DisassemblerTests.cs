@@ -34,7 +34,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp7
         {
             var options = new Dictionary<string, object>();
             Architecture = new Pdp7Architecture(CreateServiceContainer(), "pdp7", options);
-            LoadAddress = new Address18(0x001000);
+            LoadAddress = Pdp10Architecture.Ptr18(0x001000);
         }
 
         public override IProcessorArchitecture Architecture { get; }

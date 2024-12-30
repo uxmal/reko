@@ -149,7 +149,7 @@ namespace Reko.Environments.Ps3
             throw new NotImplementedException();
         }
 
-        public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
+        public override Address? MakeAddressFromConstant(Constant c, bool codeAlign)
         {
             // Bizarrely, pointers are 32-bit on this 64-bit platform.
             var uAddr = c.ToUInt32();

@@ -279,7 +279,7 @@ namespace Reko.Gui.Forms
                 var eventListener = Services.RequireService<IEventListener>();
                 eventListener.Progress.ShowStatus("Assembling program.");
                 var asmFileLocation = ImageLocation.FromUri(file);
-                var program = ldr.AssembleExecutable(asmFileLocation, asm, platform, null!);
+                var program = ldr.AssembleExecutable(asmFileLocation, asm, platform, default);
                 var project = Project.FromSingleProgram(program);
                 this.Decompiler = CreateDecompiler(project);
                 this.Decompiler.ExtractResources();

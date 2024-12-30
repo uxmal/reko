@@ -261,7 +261,7 @@ T_45: (in 0<64> @ 00000000000014D0 : word64)
   Class: Eq_43
   DataType: (ptr64 code)
   OrigDataType: word64
-T_46: (in x1_12 == null @ 00000000000014D0 : bool)
+T_46: (in x1_12 == 0x0000000000000000<p64> @ 00000000000014D0 : bool)
   Class: Eq_46
   DataType: bool
   OrigDataType: bool
@@ -293,7 +293,7 @@ T_53: (in 0<64> @ 000000000000174C : word64)
   Class: Eq_51
   DataType: (ptr64 (ptr64 void))
   OrigDataType: word64
-T_54: (in x1_6 == null @ 000000000000174C : bool)
+T_54: (in x1_6 == 0x0000000000000000<p64> @ 000000000000174C : bool)
   Class: Eq_54
   DataType: bool
   OrigDataType: bool
@@ -321,7 +321,7 @@ T_60: (in 0<64> @ 0000000000001758 : word64)
   Class: Eq_58
   DataType: (ptr64 void)
   OrigDataType: (ptr64 void)
-T_61: (in __cxa_atexit(x0, null, x2_11) @ 0000000000001758 : int32)
+T_61: (in __cxa_atexit(x0, 0x0000000000000000<p64>, x2_11) @ 0000000000001758 : int32)
   Class: Eq_61
   DataType: int32
   OrigDataType: int32

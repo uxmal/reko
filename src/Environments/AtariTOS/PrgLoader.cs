@@ -45,13 +45,13 @@ namespace Reko.Environments.AtariTOS
             set { throw new NotImplementedException(); }
         }
 
-        public override Program LoadProgram(Address? addrLoad)
+        public override Program LoadProgram(Address? loadingAddr)
         {
             var rdr = new BeImageReader(RawImage);
             if (!TryLoadHeader(rdr, out var hdr))
                 throw new BadImageFormatException();
 
-            addrLoad ??= PreferredBaseAddress;
+            var addrLoad = loadingAddr ?? PreferredBaseAddress;
             var cfgSvc = Services.RequireService<IConfigurationService>();
             var arch = cfgSvc.GetArchitecture("m68k")!;
             var env = cfgSvc.GetEnvironment("atariTOS");

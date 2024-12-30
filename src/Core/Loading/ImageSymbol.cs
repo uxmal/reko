@@ -40,7 +40,6 @@ namespace Reko.Core.Loading
         private ImageSymbol(IProcessorArchitecture arch)
         {
             Architecture = arch ?? throw new ArgumentNullException(nameof(arch));
-            Address = null!; //$TODO: C# 9.0 init
         }
 
         /// <summary>

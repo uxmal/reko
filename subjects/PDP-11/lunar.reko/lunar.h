@@ -172,7 +172,7 @@ Eq_6: (struct "Eq_6" (FFFFFFFE (ptr16 word16) ptrFFFFFFFE))
 	T_206 (in Mem85[0x0068<p16>:word16] @ 0358 : word16)
 	T_208 (in 0xA<16> @ 0362 : word16)
 	T_209 (in 0<16> @ 0362 : word16)
-	T_212 (in fn126C(&g_t000A, null, r3_63, out r3_92) @ 0362 : word16)
+	T_212 (in fn126C(&g_t000A, 0x0000<p16>, r3_63, out r3_92) @ 0362 : word16)
 	T_217 (in Mem99[0x0066<p16>:word16] @ 0376 : word16)
 	T_218 (in 0x3ED7<16> @ 0376 : word16)
 	T_222 (in r3_105 @ 0376 : (ptr16 Eq_6))
@@ -305,11 +305,11 @@ Eq_6: (struct "Eq_6" (FFFFFFFE (ptr16 word16) ptrFFFFFFFE))
 	T_1449 (in 0xC<16> @ 0F66 : word16)
 	T_1450 (in 0<16> @ 0F66 : word16)
 	T_1453 (in r1_74 + 6<16> @ 0F66 : word16)
-	T_1456 (in fn126C(&g_t000C, null, r1_74 + 6<16>, out r3_100) @ 0F66 : word16)
+	T_1456 (in fn126C(&g_t000C, 0x0000<p16>, r1_74 + 6<16>, out r3_100) @ 0F66 : word16)
 	T_1458 (in 0xC<16> @ 0F58 : word16)
 	T_1459 (in 0<16> @ 0F58 : word16)
 	T_1461 (in 6<16> - r1_74 @ 0F58 : word16)
-	T_1464 (in fn126C(&g_t000C, null, 6<16> - r1_74, out r3_95) @ 0F58 : word16)
+	T_1464 (in fn126C(&g_t000C, 0x0000<p16>, 6<16> - r1_74, out r3_95) @ 0F58 : word16)
 	T_1608 (in r2_13 @ 115A : (ptr16 Eq_6))
 	T_1609 (in 0<16> @ 115C : word16)
 	T_1611 (in 0<16> @ 1152 : word16)
@@ -471,7 +471,7 @@ Eq_6: (struct "Eq_6" (FFFFFFFE (ptr16 word16) ptrFFFFFFFE))
 	T_2597 (in r0 @ 15C4 : (ptr16 Eq_6))
 	T_2607 (in 0<16> @ 15A6 : word16)
 	T_2610 (in 0<16> @ 15AC : word16)
-	T_2612 (in fn126C(r0_77, null, r3_110, out r3_110) @ 15AC : word16)
+	T_2612 (in fn126C(r0_77, 0x0000<p16>, r3_110, out r3_110) @ 15AC : word16)
 	T_2618 (in Mem75[Mem75[r5_28 + 0xFFFC<16>:ptr16] + 0<16>:word16] @ 15B4 : word16)
 	T_2619 (in 0<16> @ 15B4 : word16)
 	T_2621 (in -r3_110 @ 15A8 : word16)
@@ -484,7 +484,7 @@ Eq_6: (struct "Eq_6" (FFFFFFFE (ptr16 word16) ptrFFFFFFFE))
 	T_2652 (in r2_38 @ 1650 : (ptr16 Eq_6))
 	T_2656 (in 0x64<16> @ 1610 : word16)
 	T_2657 (in 0<16> @ 1610 : word16)
-	T_2660 (in fn126C(&g_ptr0064, null, r0, out r3_49) @ 1610 : word16)
+	T_2660 (in fn126C(&g_ptr0064, 0x0000<p16>, r0, out r3_49) @ 1610 : word16)
 	T_2665 (in 0x64<16> @ 1606 : word16)
 	T_2676 (in r0 - 0x2710<16> @ 164A : word16)
 	T_2677 (in 0x2710<16> @ 1644 : word16)
@@ -964,7 +964,7 @@ T_8: (in 0<16> @ 012E : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: word16
-T_9: (in r0_4 == null @ 012E : bool)
+T_9: (in r0_4 == 0x0000<p16> @ 012E : bool)
   Class: Eq_9
   DataType: bool
   OrigDataType: bool
@@ -1460,7 +1460,7 @@ T_132: (in 0<16> @ 0304 : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: word16
-T_133: (in g_ptr0068 == null @ 0304 : bool)
+T_133: (in g_ptr0068 == 0x0000<p16> @ 0304 : bool)
   Class: Eq_133
   DataType: bool
   OrigDataType: bool
@@ -1776,7 +1776,7 @@ T_211: (in out r3_92 @ 0362 : word16)
   Class: Eq_175
   DataType: int16
   OrigDataType: word16
-T_212: (in fn126C(&g_t000A, null, r3_63, out r3_92) @ 0362 : word16)
+T_212: (in fn126C(&g_t000A, 0x0000<p16>, r3_63, out r3_92) @ 0362 : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: word16
@@ -2460,7 +2460,7 @@ T_382: (in 0<16> @ 048C : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_383: (in r1_14 > null @ 048C : bool)
+T_383: (in r1_14 > 0x0000<p16> @ 048C : bool)
   Class: Eq_383
   DataType: bool
   OrigDataType: bool
@@ -2520,7 +2520,7 @@ T_397: (in 0<16> @ 04A4 : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_398: (in g_ptr0050 > null @ 04A4 : bool)
+T_398: (in g_ptr0050 > 0x0000<p16> @ 04A4 : bool)
   Class: Eq_398
   DataType: bool
   OrigDataType: bool
@@ -2572,7 +2572,7 @@ T_410: (in 0<16> @ 04B8 : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_411: (in r3_42 > null @ 04B8 : bool)
+T_411: (in r3_42 > 0x0000<p16> @ 04B8 : bool)
   Class: Eq_411
   DataType: bool
   OrigDataType: bool
@@ -2656,7 +2656,7 @@ T_431: (in 0<16> @ 04D4 : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_432: (in r3_42 > null @ 04D4 : bool)
+T_432: (in r3_42 > 0x0000<p16> @ 04D4 : bool)
   Class: Eq_432
   DataType: bool
   OrigDataType: bool
@@ -2696,7 +2696,7 @@ T_441: (in 0<16> @ 04E4 : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_442: (in r1_101 > null @ 04E4 : bool)
+T_442: (in r1_101 > 0x0000<p16> @ 04E4 : bool)
   Class: Eq_442
   DataType: bool
   OrigDataType: bool
@@ -2760,7 +2760,7 @@ T_457: (in 0<16> @ 04FC : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_458: (in g_ptr0052 > null @ 04FC : bool)
+T_458: (in g_ptr0052 > 0x0000<p16> @ 04FC : bool)
   Class: Eq_458
   DataType: bool
   OrigDataType: bool
@@ -2812,7 +2812,7 @@ T_470: (in 0<16> @ 0510 : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_471: (in r3_135 > null @ 0510 : bool)
+T_471: (in r3_135 > 0x0000<p16> @ 0510 : bool)
   Class: Eq_471
   DataType: bool
   OrigDataType: bool
@@ -2896,7 +2896,7 @@ T_491: (in 0<16> @ 052C : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_492: (in r3_135 > null @ 052C : bool)
+T_492: (in r3_135 > 0x0000<p16> @ 052C : bool)
   Class: Eq_492
   DataType: bool
   OrigDataType: bool
@@ -2976,7 +2976,7 @@ T_511: (in 0<16> @ 054E : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_512: (in r5_4 > null @ 054E : bool)
+T_512: (in r5_4 > 0x0000<p16> @ 054E : bool)
   Class: Eq_512
   DataType: bool
   OrigDataType: bool
@@ -3052,7 +3052,7 @@ T_530: (in 0<16> @ 0566 : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_531: (in r5_4 > null @ 0566 : bool)
+T_531: (in r5_4 > 0x0000<p16> @ 0566 : bool)
   Class: Eq_531
   DataType: bool
   OrigDataType: bool
@@ -4304,7 +4304,7 @@ T_843: (in 0<16> @ 0A4A : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_844: (in r1_40 > null @ 0A4A : bool)
+T_844: (in r1_40 > 0x0000<p16> @ 0A4A : bool)
   Class: Eq_844
   DataType: bool
   OrigDataType: bool
@@ -4388,7 +4388,7 @@ T_864: (in 0<16> @ 0A6A : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_865: (in g_ptr004A < null @ 0A6A : bool)
+T_865: (in g_ptr004A < 0x0000<p16> @ 0A6A : bool)
   Class: Eq_865
   DataType: bool
   OrigDataType: bool
@@ -5288,7 +5288,7 @@ T_1089: (in 0<16> @ 0D8E : word16)
   Class: Eq_18
   DataType: (ptr16 word16)
   OrigDataType: ci16
-T_1090: (in r4 > null @ 0D8E : bool)
+T_1090: (in r4 > 0x0000<p16> @ 0D8E : bool)
   Class: Eq_1090
   DataType: bool
   OrigDataType: bool
@@ -5356,7 +5356,7 @@ T_1106: (in 0<16> @ 0D96 : word16)
   Class: Eq_18
   DataType: (ptr16 word16)
   OrigDataType: word16
-T_1107: (in g_ptr0082 == null @ 0D96 : bool)
+T_1107: (in g_ptr0082 == 0x0000<p16> @ 0D96 : bool)
   Class: Eq_1107
   DataType: bool
   OrigDataType: bool
@@ -6512,7 +6512,7 @@ T_1395: (in 0<16> @ 0EC6 : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_1396: (in r4_23 < null @ 0EC6 : bool)
+T_1396: (in r4_23 < 0x0000<p16> @ 0EC6 : bool)
   Class: Eq_1396
   DataType: bool
   OrigDataType: bool
@@ -6656,7 +6656,7 @@ T_1431: (in 0<16> @ 0F1E : word16)
   Class: Eq_18
   DataType: (ptr16 word16)
   OrigDataType: ci16
-T_1432: (in r4_129 > null @ 0F1E : bool)
+T_1432: (in r4_129 > 0x0000<p16> @ 0F1E : bool)
   Class: Eq_1432
   DataType: bool
   OrigDataType: bool
@@ -6752,7 +6752,7 @@ T_1455: (in out r3_100 @ 0F66 : word16)
   Class: Eq_175
   DataType: int16
   OrigDataType: word16
-T_1456: (in fn126C(&g_t000C, null, r1_74 + 6<16>, out r3_100) @ 0F66 : word16)
+T_1456: (in fn126C(&g_t000C, 0x0000<p16>, r1_74 + 6<16>, out r3_100) @ 0F66 : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: word16
@@ -6784,7 +6784,7 @@ T_1463: (in out r3_95 @ 0F58 : word16)
   Class: Eq_175
   DataType: int16
   OrigDataType: word16
-T_1464: (in fn126C(&g_t000C, null, 6<16> - r1_74, out r3_95) @ 0F58 : word16)
+T_1464: (in fn126C(&g_t000C, 0x0000<p16>, 6<16> - r1_74, out r3_95) @ 0F58 : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: word16
@@ -7368,7 +7368,7 @@ T_1609: (in 0<16> @ 115C : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: word16
-T_1610: (in r0 == null @ 115C : bool)
+T_1610: (in r0 == 0x0000<p16> @ 115C : bool)
   Class: Eq_1610
   DataType: bool
   OrigDataType: bool
@@ -7376,7 +7376,7 @@ T_1611: (in 0<16> @ 1152 : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: word16
-T_1612: (in r1 == null @ 1152 : bool)
+T_1612: (in r1 == 0x0000<p16> @ 1152 : bool)
   Class: Eq_1612
   DataType: bool
   OrigDataType: bool
@@ -8816,7 +8816,7 @@ T_1971: (in 0<16> @ 123C : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_1972: (in r0 > null @ 123C : bool)
+T_1972: (in r0 > 0x0000<p16> @ 123C : bool)
   Class: Eq_1972
   DataType: bool
   OrigDataType: bool
@@ -8824,7 +8824,7 @@ T_1973: (in 0<16> @ 124E : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_1974: (in r1 > null @ 124E : bool)
+T_1974: (in r1 > 0x0000<p16> @ 124E : bool)
   Class: Eq_1974
   DataType: bool
   OrigDataType: bool
@@ -8836,7 +8836,7 @@ T_1976: (in 0<16> @ 1242 : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_1977: (in r1 > null @ 1242 : bool)
+T_1977: (in r1 > 0x0000<p16> @ 1242 : bool)
   Class: Eq_1977
   DataType: bool
   OrigDataType: bool
@@ -9048,7 +9048,7 @@ T_2029: (in 0<16> @ 1272 : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_2030: (in r2_11 > null @ 1272 : bool)
+T_2030: (in r2_11 > 0x0000<p16> @ 1272 : bool)
   Class: Eq_2030
   DataType: bool
   OrigDataType: bool
@@ -9132,7 +9132,7 @@ T_2050: (in 0<16> @ 12F8 : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_2051: (in r2_20 < null @ 12F8 : bool)
+T_2051: (in r2_20 < 0x0000<p16> @ 12F8 : bool)
   Class: Eq_2051
   DataType: bool
   OrigDataType: bool
@@ -9188,7 +9188,7 @@ T_2064: (in 0<16> @ 127A : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_2065: (in r2_20 > null @ 127A : bool)
+T_2065: (in r2_20 > 0x0000<p16> @ 127A : bool)
   Class: Eq_2065
   DataType: bool
   OrigDataType: bool
@@ -9268,7 +9268,7 @@ T_2084: (in 0<16> @ 1302 : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_2085: (in r2_40 < null @ 1302 : bool)
+T_2085: (in r2_40 < 0x0000<p16> @ 1302 : bool)
   Class: Eq_2085
   DataType: bool
   OrigDataType: bool
@@ -9304,7 +9304,7 @@ T_2093: (in 0<16> @ 1282 : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_2094: (in r2_40 > null @ 1282 : bool)
+T_2094: (in r2_40 > 0x0000<p16> @ 1282 : bool)
   Class: Eq_2094
   DataType: bool
   OrigDataType: bool
@@ -9384,7 +9384,7 @@ T_2113: (in 0<16> @ 130C : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_2114: (in r2_63 < null @ 130C : bool)
+T_2114: (in r2_63 < 0x0000<p16> @ 130C : bool)
   Class: Eq_2114
   DataType: bool
   OrigDataType: bool
@@ -9420,7 +9420,7 @@ T_2122: (in 0<16> @ 128A : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_2123: (in r2_63 > null @ 128A : bool)
+T_2123: (in r2_63 > 0x0000<p16> @ 128A : bool)
   Class: Eq_2123
   DataType: bool
   OrigDataType: bool
@@ -9500,7 +9500,7 @@ T_2142: (in 0<16> @ 1316 : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_2143: (in r2_104 < null @ 1316 : bool)
+T_2143: (in r2_104 < 0x0000<p16> @ 1316 : bool)
   Class: Eq_2143
   DataType: bool
   OrigDataType: bool
@@ -9536,7 +9536,7 @@ T_2151: (in 0<16> @ 1292 : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_2152: (in r2_104 > null @ 1292 : bool)
+T_2152: (in r2_104 > 0x0000<p16> @ 1292 : bool)
   Class: Eq_2152
   DataType: bool
   OrigDataType: bool
@@ -9616,7 +9616,7 @@ T_2171: (in 0<16> @ 1320 : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_2172: (in r2_109 < null @ 1320 : bool)
+T_2172: (in r2_109 < 0x0000<p16> @ 1320 : bool)
   Class: Eq_2172
   DataType: bool
   OrigDataType: bool
@@ -9652,7 +9652,7 @@ T_2180: (in 0<16> @ 129A : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_2181: (in r2_109 > null @ 129A : bool)
+T_2181: (in r2_109 > 0x0000<p16> @ 129A : bool)
   Class: Eq_2181
   DataType: bool
   OrigDataType: bool
@@ -9732,7 +9732,7 @@ T_2200: (in 0<16> @ 132A : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_2201: (in r2_132 < null @ 132A : bool)
+T_2201: (in r2_132 < 0x0000<p16> @ 132A : bool)
   Class: Eq_2201
   DataType: bool
   OrigDataType: bool
@@ -9768,7 +9768,7 @@ T_2209: (in 0<16> @ 12A2 : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_2210: (in r2_132 > null @ 12A2 : bool)
+T_2210: (in r2_132 > 0x0000<p16> @ 12A2 : bool)
   Class: Eq_2210
   DataType: bool
   OrigDataType: bool
@@ -9848,7 +9848,7 @@ T_2229: (in 0<16> @ 1334 : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_2230: (in r2_155 < null @ 1334 : bool)
+T_2230: (in r2_155 < 0x0000<p16> @ 1334 : bool)
   Class: Eq_2230
   DataType: bool
   OrigDataType: bool
@@ -9884,7 +9884,7 @@ T_2238: (in 0<16> @ 12AA : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_2239: (in r2_155 > null @ 12AA : bool)
+T_2239: (in r2_155 > 0x0000<p16> @ 12AA : bool)
   Class: Eq_2239
   DataType: bool
   OrigDataType: bool
@@ -9964,7 +9964,7 @@ T_2258: (in 0<16> @ 133E : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_2259: (in r2_178 < null @ 133E : bool)
+T_2259: (in r2_178 < 0x0000<p16> @ 133E : bool)
   Class: Eq_2259
   DataType: bool
   OrigDataType: bool
@@ -10000,7 +10000,7 @@ T_2267: (in 0<16> @ 12B2 : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_2268: (in r2_178 > null @ 12B2 : bool)
+T_2268: (in r2_178 > 0x0000<p16> @ 12B2 : bool)
   Class: Eq_2268
   DataType: bool
   OrigDataType: bool
@@ -10080,7 +10080,7 @@ T_2287: (in 0<16> @ 1348 : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_2288: (in r2_201 < null @ 1348 : bool)
+T_2288: (in r2_201 < 0x0000<p16> @ 1348 : bool)
   Class: Eq_2288
   DataType: bool
   OrigDataType: bool
@@ -10116,7 +10116,7 @@ T_2296: (in 0<16> @ 12BA : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_2297: (in r2_201 > null @ 12BA : bool)
+T_2297: (in r2_201 > 0x0000<p16> @ 12BA : bool)
   Class: Eq_2297
   DataType: bool
   OrigDataType: bool
@@ -10196,7 +10196,7 @@ T_2316: (in 0<16> @ 1352 : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_2317: (in r2_224 < null @ 1352 : bool)
+T_2317: (in r2_224 < 0x0000<p16> @ 1352 : bool)
   Class: Eq_2317
   DataType: bool
   OrigDataType: bool
@@ -10232,7 +10232,7 @@ T_2325: (in 0<16> @ 12C2 : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_2326: (in r2_224 > null @ 12C2 : bool)
+T_2326: (in r2_224 > 0x0000<p16> @ 12C2 : bool)
   Class: Eq_2326
   DataType: bool
   OrigDataType: bool
@@ -10312,7 +10312,7 @@ T_2345: (in 0<16> @ 135C : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_2346: (in r2_247 < null @ 135C : bool)
+T_2346: (in r2_247 < 0x0000<p16> @ 135C : bool)
   Class: Eq_2346
   DataType: bool
   OrigDataType: bool
@@ -10348,7 +10348,7 @@ T_2354: (in 0<16> @ 12CA : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_2355: (in r2_247 > null @ 12CA : bool)
+T_2355: (in r2_247 > 0x0000<p16> @ 12CA : bool)
   Class: Eq_2355
   DataType: bool
   OrigDataType: bool
@@ -10428,7 +10428,7 @@ T_2374: (in 0<16> @ 1366 : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_2375: (in r2_270 < null @ 1366 : bool)
+T_2375: (in r2_270 < 0x0000<p16> @ 1366 : bool)
   Class: Eq_2375
   DataType: bool
   OrigDataType: bool
@@ -10464,7 +10464,7 @@ T_2383: (in 0<16> @ 12D2 : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_2384: (in r2_270 > null @ 12D2 : bool)
+T_2384: (in r2_270 > 0x0000<p16> @ 12D2 : bool)
   Class: Eq_2384
   DataType: bool
   OrigDataType: bool
@@ -10544,7 +10544,7 @@ T_2403: (in 0<16> @ 1370 : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_2404: (in r2_293 < null @ 1370 : bool)
+T_2404: (in r2_293 < 0x0000<p16> @ 1370 : bool)
   Class: Eq_2404
   DataType: bool
   OrigDataType: bool
@@ -10580,7 +10580,7 @@ T_2412: (in 0<16> @ 12DA : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_2413: (in r2_293 > null @ 12DA : bool)
+T_2413: (in r2_293 > 0x0000<p16> @ 12DA : bool)
   Class: Eq_2413
   DataType: bool
   OrigDataType: bool
@@ -10660,7 +10660,7 @@ T_2432: (in 0<16> @ 137A : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_2433: (in r2_316 < null @ 137A : bool)
+T_2433: (in r2_316 < 0x0000<p16> @ 137A : bool)
   Class: Eq_2433
   DataType: bool
   OrigDataType: bool
@@ -10696,7 +10696,7 @@ T_2441: (in 0<16> @ 12E2 : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_2442: (in r2_316 > null @ 12E2 : bool)
+T_2442: (in r2_316 > 0x0000<p16> @ 12E2 : bool)
   Class: Eq_2442
   DataType: bool
   OrigDataType: bool
@@ -10764,7 +10764,7 @@ T_2458: (in 0<16> @ 1384 : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_2459: (in r2_339 < null @ 1384 : bool)
+T_2459: (in r2_339 < 0x0000<p16> @ 1384 : bool)
   Class: Eq_2459
   DataType: bool
   OrigDataType: bool
@@ -10796,7 +10796,7 @@ T_2466: (in 0<16> @ 12EA : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_2467: (in r2_339 > null @ 12EA : bool)
+T_2467: (in r2_339 > 0x0000<p16> @ 12EA : bool)
   Class: Eq_2467
   DataType: bool
   OrigDataType: bool
@@ -11192,7 +11192,7 @@ T_2565: (in 0<16> @ 011C : word16)
   Class: Eq_2554
   DataType: (ptr16 word16)
   OrigDataType: word16
-T_2566: (in v24_78 == null @ 011C : bool)
+T_2566: (in v24_78 == 0x0000<p16> @ 011C : bool)
   Class: Eq_2566
   DataType: bool
   OrigDataType: bool
@@ -11304,7 +11304,7 @@ T_2593: (in 0<16> @ 15A2 : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: word16
-T_2594: (in r0_77 == null @ 15A2 : bool)
+T_2594: (in r0_77 == 0x0000<p16> @ 15A2 : bool)
   Class: Eq_2594
   DataType: bool
   OrigDataType: bool
@@ -11360,7 +11360,7 @@ T_2607: (in 0<16> @ 15A6 : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_2608: (in r3_110 > null @ 15A6 : bool)
+T_2608: (in r3_110 > 0x0000<p16> @ 15A6 : bool)
   Class: Eq_2608
   DataType: bool
   OrigDataType: bool
@@ -11376,7 +11376,7 @@ T_2611: (in out r3_110 @ 15AC : word16)
   Class: Eq_175
   DataType: int16
   OrigDataType: ci16
-T_2612: (in fn126C(r0_77, null, r3_110, out r3_110) @ 15AC : word16)
+T_2612: (in fn126C(r0_77, 0x0000<p16>, r3_110, out r3_110) @ 15AC : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: word16
@@ -11408,7 +11408,7 @@ T_2619: (in 0<16> @ 15B4 : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_2620: (in *r5_28->ptrFFFC > null @ 15B4 : bool)
+T_2620: (in *r5_28->ptrFFFC > 0x0000<p16> @ 15B4 : bool)
   Class: Eq_2620
   DataType: bool
   OrigDataType: bool
@@ -11460,7 +11460,7 @@ T_2632: (in 0<16> @ 158A : word16)
   Class: Eq_2573
   DataType: (ptr16 Eq_2573)
   OrigDataType: word16
-T_2633: (in r5_28 == null @ 158A : bool)
+T_2633: (in r5_28 == 0x0000<p16> @ 158A : bool)
   Class: Eq_2633
   DataType: bool
   OrigDataType: bool
@@ -11568,7 +11568,7 @@ T_2659: (in out r3_49 @ 1610 : word16)
   Class: Eq_175
   DataType: int16
   OrigDataType: word16
-T_2660: (in fn126C(&g_ptr0064, null, r0, out r3_49) @ 1610 : word16)
+T_2660: (in fn126C(&g_ptr0064, 0x0000<p16>, r0, out r3_49) @ 1610 : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: word16
@@ -11760,7 +11760,7 @@ T_2707: (in 0<16> @ 165C : word16)
   Class: Eq_2646
   DataType: ptr16
   OrigDataType: word16
-T_2708: (in wArg02 != null @ 165C : bool)
+T_2708: (in wArg02 != 0x0000<p16> @ 165C : bool)
   Class: Eq_2708
   DataType: bool
   OrigDataType: bool
@@ -11828,7 +11828,7 @@ T_2724: (in 0<16> @ 1676 : word16)
   Class: Eq_6
   DataType: (ptr16 Eq_6)
   OrigDataType: ci16
-T_2725: (in r0 > null @ 1676 : bool)
+T_2725: (in r0 > 0x0000<p16> @ 1676 : bool)
   Class: Eq_2725
   DataType: bool
   OrigDataType: bool
@@ -12148,7 +12148,7 @@ T_2804: (in 0<8> @ 355E : byte)
   Class: Eq_2803
   DataType: ci8
   OrigDataType: ci8
-T_2805: (in *(ci8 *) 0xFB8C<u16> > 0<8> @ 355E : bool)
+T_2805: (in *(ci8 *) 0xFB8C<p16> > 0<8> @ 355E : bool)
   Class: Eq_2805
   DataType: bool
   OrigDataType: bool

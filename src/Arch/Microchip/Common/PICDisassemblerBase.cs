@@ -38,7 +38,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         public readonly EndianImageReader rdr;
 
         protected PICInstruction instrCur;
-        public PICProgAddress addrCur;
+        public Address addrCur;
 
         protected static IMemoryRegion? lastusedregion = null;
 
@@ -52,7 +52,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             this.arch = arch;
             this.rdr = rdr;
             this.instrCur = null!;
-            this.addrCur = null!;
+            this.addrCur = default;
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
             if (!rdr.IsValid)
                 return null;
-            addrCur = PICProgAddress.Ptr(rdr.Address);
+            addrCur = rdr.Address;
             var regn = GetProgRegion();
             if (regn is null)
                 throw new InvalidOperationException($"Unable to retrieve program memory region for address {addrCur.ToString()}.");
@@ -101,7 +101,7 @@ namespace Reko.Arch.MicrochipPIC.Common
                 case PICMemorySubDomain.Debugger:
                     if (!rdr.TryReadUInt16(out ushort uInstr))
                         return null;
-                    return DecodePICInstruction(uInstr, PICProgAddress.Ptr(rdr.Address));
+                    return DecodePICInstruction(uInstr, rdr.Address);
 
                 case PICMemorySubDomain.EEData:
                     return DecodeEEPROMInstruction();
@@ -190,7 +190,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             }
         }
 
-        protected abstract PICInstruction DecodePICInstruction(ushort uInstr, PICProgAddress addr);
+        protected abstract PICInstruction DecodePICInstruction(ushort uInstr, Address addr);
 
         protected abstract PICInstruction DecodeEEPROMInstruction();
 

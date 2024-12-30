@@ -316,7 +316,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 if (addrHi is { })
                 {
                     // This LO16 relocation had a HI16 just before.
-                    if (!ctx.TryReadUInt32(addrHi, out uint valueHi) ||
+                    if (!ctx.TryReadUInt32(addrHi.Value, out uint valueHi) ||
                         !ctx.TryReadUInt32(addr, out uint valueLo))
                         return default;
 
@@ -325,7 +325,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
                     valueHi = (valueHi & 0xFFFF0000u) | (ahl >> 16);
                     valueLo = (valueLo & 0xFFFF0000u) | (ahl & 0xFFFF);
-                    ctx.WriteUInt32(addrHi, valueHi);
+                    ctx.WriteUInt32(addrHi.Value, valueHi);
                     ctx.WriteUInt32(addr, valueLo);
 
                     // If there is another LO16 without a HI16 in-between use stash

@@ -260,7 +260,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// A human-readable string.
         /// </returns>
-        public static string RenderDeviceConfigRegister(PICProgAddress addr, uint value)
+        public static string RenderDeviceConfigRegister(Address addr, uint value)
             => deviceConfigDefinitions.Render(addr, value);
 
 

@@ -295,7 +295,7 @@ namespace Reko.UnitTests.Mocks
         {
         }
 
-        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
+        public override Address? ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
         {
             if (size == 4)
             {
@@ -451,7 +451,7 @@ namespace Reko.UnitTests.Mocks
             return Address.Ptr64(c.ToUInt64());
         }
 
-        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
+        public override Address? ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
         {
             throw new NotImplementedException();
         }

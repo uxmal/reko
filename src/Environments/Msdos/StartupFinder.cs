@@ -264,7 +264,7 @@ namespace Reko.Environments.Msdos
                    chVersion, /* Add version */
                    chModel); /* Add model */
             Debug.Print("Signature file: {0}", sSigName);
-            return ImageSymbol.Procedure(arch, addrEntry, "main", state: this.state);
+            return ImageSymbol.Procedure(arch, addrEntry.Value, "main", state: this.state);
         }
 
         private Address ReadSegPtr(ByteMemoryArea bmem, uint offset)

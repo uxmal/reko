@@ -555,10 +555,14 @@ namespace Reko.Core
             }
             if (e is Constant c)
             {
-                addr = Platform.MakeAddressFromConstant(c, codeAlign);
-                return addr is not null;
+                var aa = Platform.MakeAddressFromConstant(c, codeAlign);
+                if (aa is not null)
+                {
+                    addr = aa.Value;
+                    return true;
+                }
             }
-            addr = null;
+            addr = default;
             return false;
         }
 

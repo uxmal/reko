@@ -157,7 +157,7 @@ namespace Reko.Environments.C64
             return new Identifier("sp" + cbOffset, dataType, stg);
         }
 
-        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
+        public override Address? ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
         {
             throw new NotImplementedException();
         }

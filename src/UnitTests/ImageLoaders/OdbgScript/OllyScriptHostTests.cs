@@ -68,7 +68,7 @@ namespace Reko.UnitTests.ImageLoaders.OdbgScript
             Given_Host();
 
             var addr = host.AllocateMemory(4);
-            Assert.AreEqual(0x00100100, addr.ToUInt32()); 
+            Assert.AreEqual(0x00100100, addr.ToUInt32());
         }
 
         [Test]

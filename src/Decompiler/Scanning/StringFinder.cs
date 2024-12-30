@@ -55,7 +55,7 @@ namespace Reko.Scanning
                     {
                         if (ch == 0 && cValid >= criteria.MinimumLength)
                         {
-                            yield return new AddressSearchHit(program, addrStartRun!, cValid * charType.Size);
+                            yield return new AddressSearchHit(program, addrStartRun!.Value, cValid * charType.Size);
                         }
                         addrStartRun = null;
                         cValid = 0;

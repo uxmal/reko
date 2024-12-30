@@ -309,7 +309,7 @@ namespace Reko.Loading
         /// <param name="addrLoad"></param>
         /// <param name="details"></param>
         /// <returns></returns>
-        public Program ParseRawImage(byte[] image, Address? addrLoad, LoadDetails details)
+        public Program ParseRawImage(byte[] image, Address? loadingAddress, LoadDetails details)
         {
             if (details.Location is null)
                 throw new ApplicationException($"No image location was specified.");
@@ -324,20 +324,25 @@ namespace Reko.Loading
                 platform = new DefaultPlatform(Services, arch);
             else 
                 platform = cfgSvc.GetEnvironment(details.PlatformName).Load(Services, arch);
-            if (addrLoad is null)
+            Address addrLoad;
+            if (loadingAddress is null)
             {
                 if (string.IsNullOrEmpty(details.LoadAddress))
                 {
                     // Fall back to address 0. Caller should be offered the option of
                     // guessing the base address.
                     arch.TryParseAddress("0", out var addr);
-                    addrLoad = addr!;
+                    addrLoad = addr;
                 }
                 else if (!arch.TryParseAddress(details.LoadAddress, out addrLoad))
                 {
                     throw new ApplicationException(
                         "Unable to determine base address for executable. A default address should have been present in the reko.config file.");
                 }
+            }
+            else
+            {
+                addrLoad = loadingAddress.Value;
             }
 
 
@@ -354,7 +359,7 @@ namespace Reko.Loading
             var imgLoader = CreateCustomImageLoader(Services, details.LoaderName, details.Location, image);
             var userSegs = details.Segments ?? new();
             var program = imgLoader.LoadProgram(addrLoad!, arch, platform, userSegs);
-            if (details.EntryPoint is not null && arch.TryParseAddress(details.EntryPoint.Address, out Address? addrEp))
+            if (details.EntryPoint is not null && arch.TryParseAddress(details.EntryPoint.Address, out Address addrEp))
             {
                 program.EntryPoints.Add(addrEp, ImageSymbol.Procedure(arch, addrEp));
             }
@@ -432,7 +437,7 @@ namespace Reko.Loading
             }
 
             Address? entryAddr = null;
-            if (arch.TryParseAddress(rawFile.BaseAddress, out Address? baseAddr))
+            if (arch.TryParseAddress(rawFile.BaseAddress, out Address baseAddr))
             {
                 entryAddr = GetRawBinaryEntryAddress(rawFile, image, arch, baseAddr);
             }
@@ -440,11 +445,11 @@ namespace Reko.Loading
             {
                 Architecture = arch,
                 Platform = platform,
-                PreferredBaseAddress = entryAddr!,
+                PreferredBaseAddress = entryAddr!.Value,
             };
-            Address? addrEp;
             if (rawFile.EntryPoint != null)
             {
+                Address addrEp;
                 if (!string.IsNullOrEmpty(rawFile.EntryPoint.Address))
                 {
                     arch.TryParseAddress(rawFile.EntryPoint.Address, out addrEp);
@@ -453,7 +458,7 @@ namespace Reko.Loading
                 {
                     addrEp = baseAddr;
                 }
-                imgLoader.EntryPoints.Add(ImageSymbol.Procedure(arch, addrEp!));
+                imgLoader.EntryPoints.Add(ImageSymbol.Procedure(arch, addrEp));
             }
             return imgLoader;
         }
@@ -466,7 +471,7 @@ namespace Reko.Loading
         {
             if (!string.IsNullOrEmpty(rawFile.EntryPoint.Address))
             {
-                if (arch.TryParseAddress(rawFile.EntryPoint.Address, out Address? entryAddr))
+                if (arch.TryParseAddress(rawFile.EntryPoint.Address, out Address entryAddr))
                 {
                     if (rawFile.EntryPoint.Follow)
                     {

@@ -48,7 +48,6 @@ namespace Reko.Arch.SuperH
             this.rootDecoder = rootDecoder;
             this.rdr = rdr;
             this.state = new DasmState();
-            this.addr = null!;
         }
 
         public override SuperHInstruction? DisassembleInstruction()

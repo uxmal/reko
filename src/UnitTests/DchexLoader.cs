@@ -33,7 +33,7 @@ namespace Reko.UnitTests
 {
     class DchexLoader : ProgramImageLoader
     {
-        private Address addrStart;
+        private Address? addrStart;
         private MemoryStream memStm;
         private Program results;
 
@@ -53,7 +53,7 @@ namespace Reko.UnitTests
             set { throw new NotImplementedException(); }
         }
 
-        public override Program LoadProgram(Address addrLoad)
+        public override Program LoadProgram(Address? addrLoad)
         {
             return results;
         }
@@ -68,7 +68,9 @@ namespace Reko.UnitTests
                     break;
                 ProcessLine(line);
             }
-            var mem = new ByteMemoryArea(addrStart, memStm.ToArray());
+            if (addrStart is null)
+                throw new BadImageFormatException("Address has not been set.");
+            var mem = new ByteMemoryArea(addrStart.Value, memStm.ToArray());
             var segmentMap = new SegmentMap(
                 mem.BaseAddress,
                 new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
@@ -99,14 +101,14 @@ namespace Reko.UnitTests
             if (tokens.Length > 1 && line[0] != ' ')
             {
                 Address.TryParse32(tokens[0], out var address);
-                if (this.addrStart == null)
+                if (this.addrStart is null)
                 {
                     addrStart = address;
                     memStm = new MemoryStream();
                 }
                 else
                 {
-                    memStm.Position = address - addrStart;
+                    memStm.Position = address - addrStart.Value;
                 }
                 i = 1;
             }

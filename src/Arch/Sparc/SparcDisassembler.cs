@@ -52,7 +52,6 @@ namespace Reko.Arch.Sparc
             this.rootDecoder = rootDecoder;
             this.imageReader = imageReader;
             this.ops = new List<MachineOperand>();
-            this.addr = null!;
             this.instrCur = null!;
         }
 

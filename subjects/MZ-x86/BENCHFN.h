@@ -1280,12 +1280,12 @@ Eq_2008: (fn Eq_2017 (int16, (ptr32 int32), byte, (ptr32 int32)))
 	T_2008 (in msdos_set_file_position @ 0800:0D90 : segptr32)
 	T_2009 (in signature of msdos_set_file_position : void)
 Eq_2017: (union "Eq_2017" (bool u0) (word32 u1))
-	T_2017 (in msdos_set_file_position(wArg02, 0<u32>, 1<8>, out dx_ax_33) @ 0800:0D90 : word32)
+	T_2017 (in msdos_set_file_position(wArg02, 0x00000000<p32>, 1<8>, out dx_ax_33) @ 0800:0D90 : word32)
 Eq_2022: (fn Eq_2030 (int16, (ptr32 int32), byte, (ptr32 int32)))
 	T_2022 (in msdos_set_file_position @ 0800:0DA5 : segptr32)
 	T_2023 (in signature of msdos_set_file_position : void)
 Eq_2030: (union "Eq_2030" (bool u0) (word32 u1))
-	T_2030 (in msdos_set_file_position(wArg02, 0<u32>, 2<8>, out dx_ax_48) @ 0800:0DA5 : word32)
+	T_2030 (in msdos_set_file_position(wArg02, 0x00000000<p32>, 2<8>, out dx_ax_48) @ 0800:0DA5 : word32)
 Eq_2035: (fn Eq_2043 (int16, (ptr32 int32), byte, (ptr32 int32)))
 	T_2035 (in msdos_set_file_position @ 0800:0DAC : segptr32)
 	T_2036 (in signature of msdos_set_file_position : void)
@@ -10304,7 +10304,7 @@ T_2016: (in out dx_ax_33 @ 0800:0D90 : (ptr32 int32))
   Class: Eq_2013
   DataType: (ptr32 int32)
   OrigDataType: (ptr32 int32)
-T_2017: (in msdos_set_file_position(wArg02, 0<u32>, 1<8>, out dx_ax_33) @ 0800:0D90 : word32)
+T_2017: (in msdos_set_file_position(wArg02, 0x00000000<p32>, 1<8>, out dx_ax_33) @ 0800:0D90 : word32)
   Class: Eq_2017
   DataType: Eq_2017
   OrigDataType: (union (bool u0) (word32 u1))
@@ -10356,7 +10356,7 @@ T_2029: (in out dx_ax_48 @ 0800:0DA5 : (ptr32 int32))
   Class: Eq_2027
   DataType: (ptr32 int32)
   OrigDataType: (ptr32 int32)
-T_2030: (in msdos_set_file_position(wArg02, 0<u32>, 2<8>, out dx_ax_48) @ 0800:0DA5 : word32)
+T_2030: (in msdos_set_file_position(wArg02, 0x00000000<p32>, 2<8>, out dx_ax_48) @ 0800:0DA5 : word32)
   Class: Eq_2030
   DataType: Eq_2030
   OrigDataType: (union (bool u0) (word32 u1))

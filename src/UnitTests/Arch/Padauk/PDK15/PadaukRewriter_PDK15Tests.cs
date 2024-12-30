@@ -103,7 +103,7 @@ namespace Reko.UnitTests.Arch.Padauk.PDK15
             Given_HexString("002E");
             AssertCode(     // ceqsn	a,[0x0]
                 "0|T--|0100(1): 1 instructions",
-                "1|T--|if (a == Mem0[null:byte]) branch 0102");
+                "1|T--|if (a == Mem0[0x0000<p16>:byte]) branch 0102");
         }
 
         [Test]
@@ -149,7 +149,7 @@ namespace Reko.UnitTests.Arch.Padauk.PDK15
             Given_HexString("0007");
             AssertCode(     // idxm	[[0x0]],a
                 "0|L--|0100(1): 2 instructions",
-                "1|L--|v4 = Mem0[null:word16]",
+                "1|L--|v4 = Mem0[0x0000<p16>:word16]",
                 "2|L--|Mem0[v4:byte] = a");
         }
 
@@ -159,8 +159,8 @@ namespace Reko.UnitTests.Arch.Padauk.PDK15
             Given_HexString("0024");
             AssertCode(     // inc	[0x0]
                 "0|L--|0100(1): 3 instructions",
-                "1|L--|v3 = Mem0[null:byte] + 1<8>",
-                "2|L--|Mem0[null:byte] = v3",
+                "1|L--|v3 = Mem0[0x0000<p16>:byte] + 1<8>",
+                "2|L--|Mem0[0x0000<p16>:byte] = v3",
                 "3|L--|ZCAV = cond(v3)");
         }
 
@@ -341,8 +341,8 @@ namespace Reko.UnitTests.Arch.Padauk.PDK15
             Given_HexString("0027");
             AssertCode(     // xch	[0x0]
                 "0|L--|0100(1): 3 instructions",
-                "1|L--|v3 = Mem0[null:byte]",
-                "2|L--|Mem0[null:byte] = a",
+                "1|L--|v3 = Mem0[0x0000<p16>:byte]",
+                "2|L--|Mem0[0x0000<p16>:byte] = a",
                 "3|L--|a = v3");
         }
 

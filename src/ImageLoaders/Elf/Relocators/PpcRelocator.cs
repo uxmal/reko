@@ -119,7 +119,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 if (prevPpcHi16 is null || prevRelR is null)
                     return (null, null);
 
-                if (!ctx.TryReadUInt16(prevRelR, out ushort valueHi))
+                if (!ctx.TryReadUInt16(prevRelR.Value, out ushort valueHi))
                     return default;
                 if (!ctx.TryReadUInt16(addr, out ushort valueLo))
                     return default;
@@ -134,7 +134,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
                 valueHi = (ushort)(value >> 16);
                 valueLo = (ushort) value;
-                ctx.WriteUInt16(prevRelR, valueHi);
+                ctx.WriteUInt16(prevRelR.Value, valueHi);
                 ctx.WriteUInt16(addr, valueLo);
                 break;
             default:

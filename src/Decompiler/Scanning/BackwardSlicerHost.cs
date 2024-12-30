@@ -75,7 +75,7 @@ namespace Reko.Scanning
             return block.Statements.Count;
         }
 
-        public IEnumerable<(Address?, RtlInstruction?)> GetBlockInstructions(RtlBlock rtlBlock)
+        public IEnumerable<(Address, RtlInstruction?)> GetBlockInstructions(RtlBlock rtlBlock)
         {
             var block = invCache[rtlBlock];
             if (block.Statements.Count < 1)
@@ -86,7 +86,7 @@ namespace Reko.Scanning
                 //$TODO: this a workaround; when we run this class on 
                 // "raw" RTL, we won't need to special case the SwitchInstruction
                 // as it won't exist.
-                yield return (null, null);
+                yield return (default, null);
                 yield break;
             }
             foreach (var stm in block.Statements)
@@ -104,7 +104,7 @@ namespace Reko.Scanning
                     //$TODO: this is also a workaround; some blocks have
                     // no addresses because they are synthesized from thin air
                     // after conversion from "raw" RTL.
-                    if (branch.Target.Address is null)
+                    if (branch.Target.Address.Offset == 0)  //$REVIEW: unit test this.
                         yield break;
                     rtl = new RtlBranch(branch.Condition, branch.Target.Address, InstrClass.ConditionalTransfer);
                     break;
@@ -153,7 +153,7 @@ namespace Reko.Scanning
             throw new NotImplementedException();
         }
 
-        public Address MakeAddressFromConstant(Constant c)
+        public Address? MakeAddressFromConstant(Constant c)
         {
             throw new NotImplementedException();
         }

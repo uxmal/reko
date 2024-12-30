@@ -45,7 +45,6 @@ namespace Reko.Arch.Pdp.Pdp11.Assembler
             this.ImageSymbols = new List<ImageSymbol>();
             this.arch = new Pdp11Architecture(new ServiceContainer(), "pdp11", new Dictionary<string, object>());
             this.lexer = null!;
-            this.StartAddress = null!;
             this.Assembler = null!;
         }
 

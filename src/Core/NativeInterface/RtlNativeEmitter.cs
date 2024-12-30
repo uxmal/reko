@@ -51,7 +51,7 @@ namespace Reko.Core.NativeInterface
         private readonly IRewriterHost host;
         private readonly List<Expression> handles;
         private readonly List<Expression> args;
-        private Address? address;
+        private Address address;
         private InstrClass rtlClass;
         private int instrLength;
 
@@ -62,7 +62,7 @@ namespace Reko.Core.NativeInterface
             this.host = host;
             this.handles = new List<Expression>();
             this.args = new List<Expression>();
-            this.address = null;
+            this.address = default;
             this.rtlClass = InstrClass.Invalid;
             this.instrLength = 0;
         }
@@ -97,12 +97,12 @@ namespace Reko.Core.NativeInterface
 
         public RtlInstructionCluster ExtractCluster()
         {
-            if (this.address is null || this.instrLength == 0)
+            if (this.instrLength == 0)
                 throw new InvalidOperationException();
 
             var cluster = m.MakeCluster(address, instrLength, this.rtlClass);
 
-            address = null;
+            address = default;
             instrLength = 0;
             return cluster;
         }

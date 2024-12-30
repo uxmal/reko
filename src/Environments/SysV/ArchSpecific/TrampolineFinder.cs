@@ -25,6 +25,7 @@ using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
@@ -35,7 +36,7 @@ namespace Reko.Environments.SysV.ArchSpecific
         /// <summary>
         /// Find the destination of a ARM PLT stub.
         /// </summary>
-        public static (Expression?, Address?) Arm32(IProcessorArchitecture arch, Address addrInstr, List<RtlInstructionCluster> instrs, IRewriterHost host)
+        public static (Expression?, Address) Arm32(IProcessorArchitecture arch, Address addrInstr, List<RtlInstructionCluster> instrs, IRewriterHost host)
         {
             var dst = Arm32_variant1(arch, host, instrs);
             if (dst.Item1 is not null)
@@ -67,10 +68,10 @@ namespace Reko.Environments.SysV.ArchSpecific
         /// <param name="host"></param>
         /// <param name="stubInstrs"></param>
         /// <returns></returns>
-        private static (Expression?, Address?) Arm32_variant1(IProcessorArchitecture arch, IRewriterHost host, List<RtlInstructionCluster> stubInstrs)
+        private static (Expression?, Address) Arm32_variant1(IProcessorArchitecture arch, IRewriterHost host, List<RtlInstructionCluster> stubInstrs)
         {
             if (stubInstrs.Count < 3)
-                return (null, null);
+                return (null, default);
             Constant? offset;
             if (stubInstrs[^3].Instructions[0] is RtlAssignment ass &&
                 ass.Src is MemoryAccess mem &&
@@ -79,9 +80,9 @@ namespace Reko.Environments.SysV.ArchSpecific
                 dt.BitSize == 32)
             {
                 if (!host.TryRead(arch, addrOffset, dt, out offset))
-                    return (null, null);
+                    return (null, default);
             }
-            else return (null, null);
+            else return (null, default);
 
             if (stubInstrs[^2].Instructions[0] is RtlAssignment ass2 &&
                 ass2.Src is BinaryExpression bin &&
@@ -91,7 +92,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             {
                 addr = addr + offset.ToInt32();
             }
-            else return (null, null);
+            else return (null, default);
 
             if (stubInstrs[^1].Instructions[0] is RtlGoto g &&
                 g.Target is MemoryAccess mem2 &&
@@ -99,7 +100,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             {
                 return (addr, stubInstrs[^3].Address);
             }
-            else return (null, null);
+            else return (null, default);
         }
 
         private static Expression? Arm32_variant1_Old(IProcessorArchitecture arch, IRewriterHost host, RtlInstruction[] stubInstrs)
@@ -147,10 +148,10 @@ namespace Reko.Environments.SysV.ArchSpecific
         /// <param name="host"></param>
         /// <param name="stubInstrs"></param>
 
-        private static (Expression?, Address?) Arm32_variant2(IProcessorArchitecture arch, IRewriterHost host, List<RtlInstructionCluster> stubInstrs)
+        private static (Expression?, Address) Arm32_variant2(IProcessorArchitecture arch, IRewriterHost host, List<RtlInstructionCluster> stubInstrs)
         {
             if (stubInstrs.Count < 4)
-                return (null, null);
+                return (null, default);
             Address addr;
             // ip = 0x00010A9C<p32> + 0<32>
             if (stubInstrs[^4].Instructions[0] is RtlAssignment ass &&
@@ -163,7 +164,7 @@ namespace Reko.Environments.SysV.ArchSpecific
                 addr = addrPc + pcOffset.ToInt32();
             }
             else
-                return (null, null);
+                return (null, default);
 
             // ip = ip + 0x64000<32>
             if (stubInstrs[^3].Instructions[0] is RtlAssignment ass1 &&
@@ -176,7 +177,7 @@ namespace Reko.Environments.SysV.ArchSpecific
                 addr = addr + offset1.ToInt32();
             }
             else
-                return (null, null);
+                return (null, default);
 
             // ip = ip + 1864<i32>
             if (stubInstrs[^2].Instructions[0] is RtlAssignment ass2 &&
@@ -189,7 +190,7 @@ namespace Reko.Environments.SysV.ArchSpecific
                 addr = addr + offset2.ToInt32();
             }
             else
-                return (null, null);
+                return (null, default);
 
             // goto Mem0[ip: word32]
             if (stubInstrs[^1].Instructions[0] is RtlGoto g &&
@@ -199,7 +200,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             {
                 return (addr, stubInstrs[^4].Address);
             }
-            return (null, null);
+            return (null, default);
         }
 
         private static Expression? Arm32_variant2_Old(IProcessorArchitecture arch, IRewriterHost host, RtlInstruction[] stubInstrs)
@@ -257,7 +258,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             return null;
         }
 
-        public static (Expression?, Address?) AArch64(IProcessorArchitecture arch, Address addrInstr, List<RtlInstructionCluster> instrs, IRewriterHost host)
+        public static (Expression?, Address) AArch64(IProcessorArchitecture arch, Address addrInstr, List<RtlInstructionCluster> instrs, IRewriterHost host)
         {
             // adrp x16,#&13000
             //ldr x17,[x16]
@@ -265,7 +266,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             //br x17
 
             if (instrs.Count < 4)
-                return (null, null);
+                return (null, default);
 
             if (instrs[^4].Instructions[0] is RtlAssignment ass &&
                 ass.Dst is Identifier idPage &&
@@ -273,7 +274,7 @@ namespace Reko.Environments.SysV.ArchSpecific
                 idPage.Name == "x16")
             {
             }
-            else return (null, null);
+            else return (null, default);
             Address addr;
             if (instrs[^3].Instructions[0] is RtlAssignment load &&
                 load.Dst is Identifier ptrGotSlot &&
@@ -292,22 +293,22 @@ namespace Reko.Environments.SysV.ArchSpecific
                     addr = addrPage;
                 }
                 else
-                    return (null, null);
+                    return (null, default);
             }
-            else return (null, null);
+            else return (null, default);
 
             if (instrs[^2].Instructions[0] is RtlAssignment addrOf &&
                 addrOf.Dst != ptrGotSlot)
             {
             }
-            else return (null, null);
+            else return (null, default);
 
             if (instrs[^1].Instructions[0] is RtlGoto g && 
                 g.Target == ptrGotSlot)
             {
                 return (addr, instrs[^4].Address);
             }
-            return (null, null);
+            return (null, default);
         }
 
         public static Expression? AArch64_Old(IProcessorArchitecture arch, Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
@@ -384,10 +385,10 @@ namespace Reko.Environments.SysV.ArchSpecific
         /// jalr ra,r25
         /// addiu r24,r0,+00000010
         /// </code>
-        public static (Expression?, Address?) Mips32(IProcessorArchitecture arch, Address addrInstr, List<RtlInstructionCluster> stubInstrs, IRewriterHost host)
+        public static (Expression?, Address) Mips32(IProcessorArchitecture arch, Address addrInstr, List<RtlInstructionCluster> stubInstrs, IRewriterHost host)
         {
             if (stubInstrs.Count != 4)
-                return (null, null);
+                return (null, default);
 
             if (stubInstrs[^4].Instructions[0] is RtlAssignment load &&
                 load.Dst is Identifier idDst &&
@@ -398,21 +399,21 @@ namespace Reko.Environments.SysV.ArchSpecific
                 gp.Name == "r28")
             {
             }
-            else return (null, null);
+            else return (null, default);
 
             if (stubInstrs[^3].Instructions[0] is RtlAssignment copy &&
                 copy.Src is Identifier idSrc &&
                 idSrc.Name == "ra")
             {
             }
-            else return (null, null);
+            else return (null, default);
 
             if (stubInstrs[^2].Instructions[0] is RtlCall call &&
                 call.Class.HasFlag(InstrClass.Delay) &&
                 call.Target is Identifier idTarget &&
                 idTarget == idDst)
             { }
-            else return (null, null);
+            else return (null, default);
 
             if (stubInstrs[^1].Instructions[0] is RtlAssignment init &&
                 init.Dst is Identifier &&
@@ -422,7 +423,7 @@ namespace Reko.Environments.SysV.ArchSpecific
                 var sAddrGotSlot = host.GlobalRegisterValue.ToInt32() + ((Constant) bin.Right).ToInt32();
                 return (Address.Ptr32((uint)sAddrGotSlot), stubInstrs[^4].Address);
             }
-            return (null, null);
+            return (null, default);
         }
 
         public static Expression? Mips32_Variant1(IProcessorArchitecture arch, IRewriterHost host, RtlInstruction[] instrs)
@@ -517,16 +518,16 @@ namespace Reko.Environments.SysV.ArchSpecific
         /// jalr    t1,t3,+00000000
         /// </code>
         /// <param name="addrInstr">Address of the beginning of the stub.</param>
-        public static (Expression?, Address?) RiscV(IProcessorArchitecture arch, Address addrInstr, List<RtlInstructionCluster> instrs, IRewriterHost host)
+        public static (Expression?, Address) RiscV(IProcessorArchitecture arch, Address addrInstr, List<RtlInstructionCluster> instrs, IRewriterHost host)
         {
             if (instrs.Count < 4)
-                return (null, null);
+                return (null, default);
             if (instrs[^4].Instructions[0] is RtlAssignment ass &&
                 ass.Src is Address addr)
             {
 
             }
-            else return (null, null);
+            else return (null, default);
 
             if (instrs[^3].Instructions[0] is RtlAssignment ld &&
                 ld.Src is MemoryAccess mem &&
@@ -537,7 +538,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             {
                 addr = addr + offset.ToInt64();
             }
-            else return (null, null);
+            else return (null, default);
 
             if (instrs[^2].Instructions[0] is RtlAssignment &&
                 instrs[^1].Instructions[0] is RtlGoto g &&
@@ -546,7 +547,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             {
                 return (addr, instrs[^4].Address);
             }
-            else return (null, null);
+            else return (null, default);
         }
 
         public static Expression? RiscV_Old(IProcessorArchitecture arch, Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
@@ -582,10 +583,10 @@ namespace Reko.Environments.SysV.ArchSpecific
             else return null;
         }
 
-        public static (Expression?, Address?) X86(IProcessorArchitecture arch, Address addrInstr, List<RtlInstructionCluster> instrs, IRewriterHost host)
+        public static (Expression?, Address) X86(IProcessorArchitecture arch, Address addrInstr, List<RtlInstructionCluster> instrs, IRewriterHost host)
         {
             if (instrs.Count < 1)
-                return (null, null);
+                return (null, default);
             var instr = instrs[^1].Instructions[^1];
             // Match x86 pattern.
             // jmp [destination]
@@ -595,15 +596,18 @@ namespace Reko.Environments.SysV.ArchSpecific
                 if (jump.Target is ProcedureConstant pc)
                     return (pc, instrs[^1].Address);
                 if (jump.Target is not MemoryAccess access)
-                    return (null, null);
-                addrTarget = access.EffectiveAddress as Address;
-                if (addrTarget == null)
+                    return (null, default);
+                if (access.EffectiveAddress is not Address a)
                 {
                     if (access.EffectiveAddress is not Constant wAddr)
                     {
-                        return (null, null);
+                        return (null, default);
                     }
                     addrTarget = arch.MakeAddressFromConstant(wAddr, true);
+                }
+                else
+                {
+                    addrTarget = a;
                 }
             }
             return (addrTarget, instrs[^1].Address);
@@ -623,8 +627,7 @@ namespace Reko.Environments.SysV.ArchSpecific
                     return pc;
                 if (!(jump.Target is MemoryAccess access))
                     return null;
-                addrTarget = access.EffectiveAddress as Address;
-                if (addrTarget == null)
+                if (access.EffectiveAddress is not Address a)
                 {
                     if (!(access.EffectiveAddress is Constant wAddr))
                     {
@@ -632,14 +635,18 @@ namespace Reko.Environments.SysV.ArchSpecific
                     }
                     addrTarget = arch.MakeAddressFromConstant(wAddr, true);
                 }
+                else
+                {
+                    addrTarget = a;
+                }
             }
             return addrTarget;
         }
 
-        public static (Expression?, Address?) X86_64(IProcessorArchitecture arch, Address addrInstr, List<RtlInstructionCluster> instrs, IRewriterHost host)
+        public static (Expression?, Address) X86_64(IProcessorArchitecture arch, Address addrInstr, List<RtlInstructionCluster> instrs, IRewriterHost host)
         {
             if (instrs.Count < 1)
-                return (null, null);
+                return (null, default);
             var instr = instrs[^1].Instructions[^1];
             // Match x86-64 pattern.
             // jmp [destination]
@@ -649,15 +656,18 @@ namespace Reko.Environments.SysV.ArchSpecific
                 if (jump.Target is ProcedureConstant pc)
                     return (pc, instrs[^1].Address);
                 if (jump.Target is not MemoryAccess access)
-                    return (null, null);
-                addrTarget = access.EffectiveAddress as Address;
-                if (addrTarget is null)
+                    return (null, default);
+                if (access.EffectiveAddress is not Address a)
                 {
                     if (access.EffectiveAddress is not Constant wAddr)
                     {
-                        return (null, null);
+                        return (null, default);
                     }
                     addrTarget = arch.MakeAddressFromConstant(wAddr, true);
+                }
+                else 
+                {
+                    addrTarget = a;
                 }
             }
             return (addrTarget, instrs[^1].Address);
@@ -685,14 +695,17 @@ namespace Reko.Environments.SysV.ArchSpecific
                     return pc;
                 if (jump.Target is not MemoryAccess access)
                     return null;
-                addrTarget = access.EffectiveAddress as Address;
-                if (addrTarget == null)
+                if (access.EffectiveAddress is not Address a)
                 {
                     if (access.EffectiveAddress is not Constant wAddr)
                     {
                         return null;
                     }
                     addrTarget = arch.MakeAddressFromConstant(wAddr, true);
+                }
+                else
+                {
+                    addrTarget = a;
                 }
             }
             return addrTarget;

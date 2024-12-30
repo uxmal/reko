@@ -850,7 +850,7 @@ namespace Reko.ImageLoaders.OdbgScript
             {
                 if (tMemBlocks[i].free_at_ip == ip)
                 {
-                    Host.FreeMemory(tMemBlocks[i].address!, tMemBlocks[i].size);
+                    Host.FreeMemory(tMemBlocks[i].address!.Value, tMemBlocks[i].size);
                     if (tMemBlocks[i].result_register)
                         variables["$RESULT"] = Var.Create((rulong) Debugger.GetContextData(tMemBlocks[i].reg_to_return));
                     if (tMemBlocks[i].restore_registers)
@@ -1201,7 +1201,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         public bool GetAddress(Expression op, out Address value)
         {
-            value = null!;
+            value = default;
             if (op is MkSequence seq && seq.Expressions.Length == 2)
             {
                 // Possible segmented address. Evaluate part before
@@ -1217,7 +1217,7 @@ namespace Reko.ImageLoaders.OdbgScript
             }
             if (op is Identifier id && IsVariable(id.Name) && variables[id.Name].Address != null)
             {
-                value = variables[id.Name].Address!;
+                value = variables[id.Name].Address.Value;
                 return true;
             }
             if (!GetRulong(op, out rulong uAddr))
@@ -1671,7 +1671,7 @@ namespace Reko.ImageLoaders.OdbgScript
             for (int i = 0; i < tMemBlocks.Count; i++)
             {
                 if (tMemBlocks[i].autoclean)
-                    Host.FreeMemory(tMemBlocks[i].address!, tMemBlocks[i].size);
+                    Host.FreeMemory(tMemBlocks[i].address!.Value, tMemBlocks[i].size);
             }
             tMemBlocks.Clear();
             return true;

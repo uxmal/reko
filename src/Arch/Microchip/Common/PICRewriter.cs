@@ -222,8 +222,8 @@ namespace Reko.Arch.MicrochipPIC.Common
             }
         }
 
-        protected PICProgAddress SkipToAddr()
-            => PICProgAddress.Ptr(instrCurr.Address + instrCurr.Length + 2);
+        protected Address SkipToAddr()
+            => instrCurr.Address + instrCurr.Length + 2;
 
         protected void CondBranch(TestCondition test)
         {
@@ -309,7 +309,7 @@ namespace Reko.Arch.MicrochipPIC.Common
                             return (imode, binder.EnsureRegister(sfrReg));
                         }
                     }
-                    return (FSRIndexedMode.None, DataMem8(PICDataAddress.Ptr(absmem.DataTarget)));
+                    return (FSRIndexedMode.None, DataMem8(absmem.DataTarget.ToAddress()));
 
                 default:
                     throw new InvalidOperationException($"Invalid data absolute address operand.");

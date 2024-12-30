@@ -86,7 +86,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public IWindowFrame Frame { get; set; }
 
-        public virtual Address SelectedAddress
+        public virtual Address? SelectedAddress
         {
             get { return combinedCodeView.CurrentAddress; }
             set { combinedCodeView.CurrentAddress = value; }
@@ -113,17 +113,9 @@ namespace Reko.UserInterfaces.WindowsForms
             if (program != null)
             {
                 var addr = proc.EntryAddress;
-                if (addr == null)
-                {
-                    addr = program.SegmentMap.Segments.Values
-                        .Where(s => s.MemoryArea != null)
-                        .Select(s => Address.Max(s.Address, s.MemoryArea.BaseAddress))
-                        .FirstOrDefault();
-                    if (addr == null)
-                    {
-                        addr = program.ImageMap.BaseAddress;
-                    }
-                }
+                addr = program.SegmentMap.Segments.Values
+                    .Select(s => Address.Max(s.Address, s.MemoryArea.BaseAddress))
+                    .First();
                 SelectedAddress = addr;
             }
         }
@@ -182,9 +174,9 @@ namespace Reko.UserInterfaces.WindowsForms
                         nestedTextModel.Nodes.Add(model);
                         nodeCreated = true;
                     }
-                    else if (program.ImageMap.TryFindItem(curAddr, out ImageMapItem item) &&
+                    else if (program.ImageMap.TryFindItem(curAddr.Value, out ImageMapItem item) &&
                               item.DataType != null &&
-                            !(item.DataType is UnknownType))
+                            item.DataType is not UnknownType)
                     {
                         var dt = item.DataType;
                         var name = item.Name ?? "<unnamed>";
@@ -193,7 +185,7 @@ namespace Reko.UserInterfaces.WindowsForms
                         var fmt = new AbsynCodeFormatter(tsf);
                         fmt.InnerFormatter.UseTabs = false;
                         var gdw = new GlobalDataWriter(program, tsf, false, false, services);
-                        gdw.WriteGlobalVariable(curAddr, dt, name);
+                        gdw.WriteGlobalVariable(curAddr.Value, dt, name);
                         //$TODO: make spacing between globals / procedures user adjustable
                         tsf.WriteLine("");
                         nestedTextModel.Nodes.Add(tsf.GetModel());
@@ -204,7 +196,7 @@ namespace Reko.UserInterfaces.WindowsForms
                 if (nodeCreated)
                 {
                     dataItemNode.ModelNode = nestedTextModel.Nodes.Last();
-                    this.nodeByAddress[curAddr] = dataItemNode;
+                    this.nodeByAddress[curAddr.Value] = dataItemNode;
                 }
             }
             combinedCodeView.CodeView.Model = nestedTextModel;
@@ -212,10 +204,10 @@ namespace Reko.UserInterfaces.WindowsForms
 
         private bool ShowItem(MixedCodeDataModel.DataItemNode item)
         {
-            if (!showProcedures && item.Proc != null)
+            if (!showProcedures && item.Proc is not null)
                 return false;
 
-            if (segment != null && !segment.IsInRange(item.StartAddress))
+            if (segment is not null && !segment.IsInRange(item.StartAddress.Value))
                 return false;
 
             return true;
@@ -459,10 +451,10 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             var pt = combinedCodeView.CodeView.GetAnchorMiddlePoint();
             var tag = combinedCodeView.CodeView.GetTagFromPoint(pt);
-            var addr = tag as Address;
+            var addr = tag as Address?;
             if (tag is Procedure proc)
                 addr = proc.EntryAddress;
-            return addr;
+            return addr.Value;
         }
 
         private Address MixedCodeDataView_GetAnchorAddress()
@@ -482,7 +474,7 @@ namespace Reko.UserInterfaces.WindowsForms
             return addr;
         }
 
-        private Address GetAnchorAddress()
+        private Address? GetAnchorAddress()
         {
             if (combinedCodeView.CodeView.Focused)
                 return CodeView_GetAnchorAddress();
@@ -494,14 +486,14 @@ namespace Reko.UserInterfaces.WindowsForms
         private void EditDeclaration()
         {
             var addr = GetAnchorAddress();
-            if (addr == null)
+            if (addr is null)
                 return;
             var anchorPt = FocusedTextView.GetAnchorTopPoint();
             var screenPoint = FocusedTextView.PointToScreen(anchorPt);
-            declarationFormInteractor.Show(screenPoint, program, addr);
+            declarationFormInteractor.Show(screenPoint, program, addr.Value);
         }
 
-        private Address GetCommentAnchorAddress()
+        private Address? GetCommentAnchorAddress()
         {
             if (combinedCodeView.MixedCodeDataView.Focused)
                 return combinedCodeView.MixedCodeDataView.GetAnchorAddress();
@@ -515,16 +507,16 @@ namespace Reko.UserInterfaces.WindowsForms
                 return;
             var anchorPt = FocusedTextView.GetAnchorTopPoint();
             var screenPoint = FocusedTextView.PointToScreen(anchorPt);
-            commentFormInteractor.Show(screenPoint, program, addr);
+            commentFormInteractor.Show(screenPoint, program, addr.Value);
         }
 
         private void OpenInNewTab()
         {
             var addr = GetAnchorAddress();
-            if (addr == null)
+            if (addr is null)
                 return;
 
-            if (program.Procedures.TryGetValue(addr, out var proc))
+            if (program.Procedures.TryGetValue(addr.Value, out var proc))
                 services.RequireService<ICodeViewerService>().DisplayProcedure(program, proc, program.NeedsScanning);
         }
 
@@ -612,8 +604,9 @@ namespace Reko.UserInterfaces.WindowsForms
                 return;
 
             var topAddress = combinedCodeView.MixedCodeDataView.TopAddress;
-            if (nodeByAddress == null ||
-                !nodeByAddress.TryGetLowerBound(topAddress, out MixedCodeDataModel.DataItemNode dataItemNode))
+            if (topAddress is null ||
+                nodeByAddress is null ||
+                !nodeByAddress.TryGetLowerBound(topAddress.Value, out MixedCodeDataModel.DataItemNode dataItemNode))
                 return;
 
             int numer;
@@ -622,8 +615,8 @@ namespace Reko.UserInterfaces.WindowsForms
             {
                 var startAddr = dataItemNode.StartAddress;
                 var endAddr = topAddress;
-                var startPos = MixedCodeDataModel.Position(startAddr, 0);
-                var endPos = MixedCodeDataModel.Position(endAddr, 0);
+                var startPos = MixedCodeDataModel.Position(startAddr.Value, 0);
+                var endPos = MixedCodeDataModel.Position(endAddr.Value, 0);
                 numer = mixedCodeDataModel.CountLines(startPos, endPos);
                 denom = dataItemNode.NumLines;
                 if (denom == 0)
@@ -653,7 +646,7 @@ namespace Reko.UserInterfaces.WindowsForms
             long numLines = dataItemNode.NumLines;
             var offset = (int)((numLines * numer) / denom);
             var startAddr = dataItemNode.StartAddress;
-            var startPos = MixedCodeDataModel.Position(startAddr, 0);
+            var startPos = MixedCodeDataModel.Position(startAddr.Value, 0);
             combinedCodeView.MixedCodeDataView.Model.MoveToLine(startPos, offset);
             combinedCodeView.MixedCodeDataView.InvalidateModel();
         }
@@ -675,7 +668,7 @@ namespace Reko.UserInterfaces.WindowsForms
                 txtAddr = txtAddr.Substring(2);
             if (!program.Architecture.TryParseAddress(txtAddr, out Address addr))
                 return;
-            UserNavigateToAddress(combinedCodeView.MixedCodeDataView.TopAddress, addr);
+            UserNavigateToAddress(combinedCodeView.MixedCodeDataView.TopAddress.Value, addr);
         }
 
         private void UserNavigateToAddress(Address addrFrom, Address addrTo)
@@ -705,15 +698,15 @@ namespace Reko.UserInterfaces.WindowsForms
 
         void TextView_Navigate(object sender, EditorNavigationArgs e)
         {
-            var addr = e.Destination as Address;
+            var addr = e.Destination as Address?;
 
             if (e.Destination is Procedure proc)
                 addr = proc.EntryAddress;
 
-            if (addr == null)
+            if (addr is null)
                 return;
 
-            UserNavigateToAddress(combinedCodeView.MixedCodeDataView.TopAddress, addr);
+            UserNavigateToAddress(combinedCodeView.MixedCodeDataView.TopAddress.Value, addr.Value);
         }
 
         private void GViewer_KeyDown(object sender, KeyEventArgs e)

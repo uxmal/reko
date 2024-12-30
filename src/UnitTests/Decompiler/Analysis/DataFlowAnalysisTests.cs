@@ -164,7 +164,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             Given_FakeWin32Platform();
             this.platformMock.Setup(p => p.ResolveImportByName(It.IsAny<string>(), It.IsAny<string>())).Returns((Expression)null);
             this.platformMock.Setup(p => p.DataTypeFromImportName(It.IsAny<string>())).Returns((ValueTuple<string,SerializedType,SerializedType>?)null);
-            this.platformMock.Setup(p => p.ResolveIndirectCall(It.IsAny<RtlCall>())).Returns((Address)null);
+            this.platformMock.Setup(p => p.ResolveIndirectCall(It.IsAny<RtlCall>())).Returns((Address?)null);
             RunFileTest_x86_32("Fragments/import32/GlobalHandle.asm", "Analysis/DfaGlobalHandle.txt");
 		}
 

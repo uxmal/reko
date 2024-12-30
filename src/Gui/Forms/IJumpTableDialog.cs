@@ -32,7 +32,7 @@ namespace Reko.Gui.Forms
     {
         IServiceProvider Services { get; set; }
         MachineInstruction Instruction { get; set; }
-        Address VectorAddress { get; set; }
+        Address? VectorAddress { get; set; }
         Program Program { get; set; }
         int Stride { get; set; }
 

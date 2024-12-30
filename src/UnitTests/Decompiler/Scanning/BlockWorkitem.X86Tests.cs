@@ -419,7 +419,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var addr = Address.SegPtr(selector, offset);
             var block = new Block(proc, Address.SegPtr(selector, offset), blockLabel);
             scanner.Setup(s => s.EnqueueJumpTarget(
-                It.IsNotNull<Address>(),
+                It.IsAny<Address>(),
                 addr,
                 It.IsAny<Procedure>(),
                 It.IsAny<ProcessorState>()))

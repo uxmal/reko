@@ -45,7 +45,6 @@ namespace Reko.Arch.Vax
             this.arch = arch;
             this.rdr = imageReader;
             this.ops = new List<MachineOperand>();
-            this.addr = null!;
         }
 
         public override VaxInstruction? DisassembleInstruction()

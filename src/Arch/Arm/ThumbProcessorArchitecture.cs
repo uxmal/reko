@@ -200,7 +200,7 @@ namespace Reko.Arch.Arm
             if ((grf & (uint) FlagM.VF) != 0) yield return GetFlagGroup(flags.FlagRegister, (uint) FlagM.VF);
         }
 
-        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
+        public override Address? ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
         {
             throw new NotImplementedException();
         }

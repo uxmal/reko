@@ -1073,7 +1073,7 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x01F0, 0x01C0);
             AssertCode(
                 "0|L--|00010000(4): 1 instructions",
-                "1|L--|Z = __bset<word32>(Mem0[null:byte], d0, out Mem0[null:byte])");
+                "1|L--|Z = __bset<word32>(Mem0[0x00000000<p32>:byte], d0, out Mem0[0x00000000<p32>:byte])");
         }
 
         [Test]
@@ -1082,7 +1082,7 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x08F1, 0x9708, 0xF1CC);
             AssertCode(
                 "0|L--|00010000(6): 1 instructions",
-                "1|L--|Z = __bset<word16>(Mem0[null:byte], 0x9708<16>, out Mem0[null:byte])");
+                "1|L--|Z = __bset<word16>(Mem0[0x00000000<p32>:byte], 0x9708<16>, out Mem0[0x00000000<p32>:byte])");
         }
 
         [Test]
@@ -1885,7 +1885,7 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x4736, 0x05C0);    // chk
             AssertCode(
                 "0|L--|00010000(4): 2 instructions",
-                "1|T--|if (null >= 0x00000000<p32> && null <= d3) branch 00010004",
+                "1|T--|if (0x00000000<p32> >= 0x00000000<p32> && 0x00000000<p32> <= d3) branch 00010004",
                 "2|L--|__syscall<byte>(6<8>)");
         }
 

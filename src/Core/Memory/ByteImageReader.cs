@@ -44,7 +44,7 @@ namespace Reko.Core.Memory
         protected ByteImageReader(ByteMemoryArea mem, Address addr)
         {
             this.mem = mem ?? throw new ArgumentNullException(nameof(mem));
-            this.addrStart = addr ?? throw new ArgumentNullException(nameof(addr));
+            this.addrStart = addr;
             long o = addr - mem.BaseAddress;
             if (o >= mem.Length)
                 throw new ArgumentOutOfRangeException(nameof(addr), $"Address {addr} is outside of image.");
@@ -57,7 +57,7 @@ namespace Reko.Core.Memory
         protected ByteImageReader(ByteMemoryArea mem, Address addr, long cUnits)
         {
             this.mem = mem ?? throw new ArgumentNullException(nameof(mem));
-            this.addrStart = addr ?? throw new ArgumentNullException(nameof(addr));
+            this.addrStart = addr;
             long o = addr - mem.BaseAddress;
             if (o >= mem.Length)
                 throw new ArgumentOutOfRangeException(nameof(addr), $"Address {addr} is outside of image.");
@@ -70,9 +70,7 @@ namespace Reko.Core.Memory
         protected ByteImageReader(ByteMemoryArea mem, Address addrBegin, Address addrEnd)
         {
             this.mem = mem ?? throw new ArgumentNullException(nameof(mem));
-            this.addrStart = addrBegin ?? throw new ArgumentNullException(nameof(addrBegin));
-            if (addrEnd is null)
-                throw new ArgumentNullException(nameof(addrEnd));
+            this.addrStart = addrBegin;
             this.offStart = addrBegin - mem.BaseAddress;
             // Prevent walking off the end of the bytes.
             this.offEnd = Math.Min(addrEnd - mem.BaseAddress, mem.Bytes.Length);
@@ -113,7 +111,7 @@ namespace Reko.Core.Memory
         public ByteImageReader(byte[] img) : this(img, 0, img.Length) { }
         public ByteImageReader(byte[] img, long off) : this(img, off, img.Length) { }
 
-        public Address Address { get { return addrStart! + (off - offStart); } }
+        public Address Address { get { return addrStart!.Value + (off - offStart); } }
         public byte[] Bytes => bytes;
         public int CellBitSize => 8;
         public long Offset { get { return off; } set { off = value; } }

@@ -28,7 +28,7 @@ namespace Reko.ImageLoaders.Srec
     public class SrecRecord
     {
         public SrecType Type;
-        public Address? Address;
+        public Address Address;
         public byte[]? Data;
     }
 }

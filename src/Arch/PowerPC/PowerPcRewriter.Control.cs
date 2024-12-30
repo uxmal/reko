@@ -53,8 +53,8 @@ namespace Reko.Arch.PowerPC
         private void RewriteBl()
         {
             var dst = RewriteOperand(instr.Operands[0]);
-            var addrDst = dst as Address;
-            if (addrDst != null && instr.Address.ToLinear() + 4 == addrDst.ToLinear())
+            var addrDst = dst as Address?;
+            if (addrDst is not null && instr.Address.ToLinear() + 4 == addrDst.Value.ToLinear())
             {
                 // PowerPC idiom to get the current instruction pointer in the lr register
                 iclass = InstrClass.Linear;

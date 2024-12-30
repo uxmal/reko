@@ -84,7 +84,7 @@ namespace Reko.ImageLoaders.MzExe.Msvc
             }
             else
             {
-                addr = null;
+                addr = default;
                 return false;
             }
         }
@@ -117,7 +117,7 @@ namespace Reko.ImageLoaders.MzExe.Msvc
             }
             else
             {
-                addr = null;
+                addr = default;
                 return false;
             }
         }

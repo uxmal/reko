@@ -23,20 +23,17 @@ using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Types;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Reko.Arch.Mips
 {
-    using Decoder = Reko.Core.Machine.Decoder<MipsDisassembler, Mnemonic, MipsInstruction>;
+    using Decoder = Decoder<MipsDisassembler, Mnemonic, MipsInstruction>;
 
     public partial class MipsDisassembler
     {
 
         public class DecoderFactory
         {
-            private bool isv6;
+            private readonly bool isv6;
 
             public DecoderFactory(string? instrFormat)
             {

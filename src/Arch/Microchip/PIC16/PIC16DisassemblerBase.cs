@@ -69,7 +69,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         /// <returns>
         /// A <see cref="PICInstruction"/> instance or null.
         /// </returns>
-        protected override PICInstruction DecodePICInstruction(ushort uInstr, PICProgAddress addr)
+        protected override PICInstruction DecodePICInstruction(ushort uInstr, Address addr)
         {
             try
             {

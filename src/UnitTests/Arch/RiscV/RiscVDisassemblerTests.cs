@@ -422,7 +422,6 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
-        [Ignore("Wait until new rendering code comes in.")]
         public void RiscV_dasm_fli_s_inf()
         {
             Given_ZfaExtension(64);

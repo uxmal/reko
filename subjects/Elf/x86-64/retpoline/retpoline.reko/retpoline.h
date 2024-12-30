@@ -558,7 +558,7 @@ T_121: (in 0000000000600E10 @ 0000000000400731 : ptr64)
   Class: Eq_121
   DataType: (ptr64 (arr (ptr64 code)))
   OrigDataType: (union ((ptr64 (arr Eq_137)) u1) ((ptr64 (arr Eq_137)) u0))
-T_122: (in 0x600E18<u64> - g_a600E10 @ 0000000000400731 : word64)
+T_122: (in 0x0000000000600E18<p64> - g_a600E10 @ 0000000000400731 : word64)
   Class: Eq_122
   DataType: int64
   OrigDataType: int64

@@ -282,7 +282,7 @@ T_40: (in 0<64> @ 00000000000010CD : word64)
   Class: Eq_38
   DataType: (ptr64 Eq_38)
   OrigDataType: word64
-T_41: (in _ITM_deregisterTMCloneTable == null @ 00000000000010CD : bool)
+T_41: (in _ITM_deregisterTMCloneTable == 0x0000000000000000<p64> @ 00000000000010CD : bool)
   Class: Eq_41
   DataType: bool
   OrigDataType: bool
@@ -346,7 +346,7 @@ T_56: (in 0<64> @ 000000000000110E : word64)
   Class: Eq_54
   DataType: (ptr64 Eq_54)
   OrigDataType: word64
-T_57: (in _ITM_registerTMCloneTable == null @ 000000000000110E : bool)
+T_57: (in _ITM_registerTMCloneTable == 0x0000000000000000<p64> @ 000000000000110E : bool)
   Class: Eq_57
   DataType: bool
   OrigDataType: bool
@@ -739,11 +739,11 @@ T_154: (in 0<u64> @ 0000000000001212 : uint64)
   Class: Eq_153
   DataType: (ptr64 (ptr64 char))
   OrigDataType: (ptr64 (ptr64 char))
-T_155: (in strtof(rdi_17, null) @ 0000000000001212 : real32)
+T_155: (in strtof(rdi_17, 0x0000000000000000<p64>) @ 0000000000001212 : real32)
   Class: Eq_155
   DataType: real32
   OrigDataType: real32
-T_156: (in SEQ(0<96>, strtof(rdi_17, null)) @ 0000000000001212 : word128)
+T_156: (in SEQ(0<96>, strtof(rdi_17, 0x0000000000000000<p64>)) @ 0000000000001212 : word128)
   Class: Eq_79
   DataType: word128
   OrigDataType: word128
@@ -751,7 +751,7 @@ T_157: (in xmm0_20 @ 0000000000001212 : word128)
   Class: Eq_79
   DataType: word128
   OrigDataType: word128
-T_158: (in strtof(rdi_17, null) @ 0000000000001217 : real32)
+T_158: (in strtof(rdi_17, 0x0000000000000000<p64>) @ 0000000000001217 : real32)
   Class: Eq_155
   DataType: real32
   OrigDataType: real32
@@ -901,7 +901,7 @@ T_194: (in 0000000000003DD8 @ 00000000000012A1 : ptr64)
   Class: Eq_194
   DataType: (ptr64 (arr (ptr64 code)))
   OrigDataType: (union ((ptr64 (arr Eq_210)) u1) ((ptr64 (arr Eq_210)) u0))
-T_195: (in 0x3DE0<u64> - g_a3DD8 @ 00000000000012A1 : word64)
+T_195: (in 0x0000000000003DE0<p64> - g_a3DD8 @ 00000000000012A1 : word64)
   Class: Eq_195
   DataType: int64
   OrigDataType: int64

@@ -96,7 +96,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             return program.Memory.IsValidAddress(addr);
         }
 
-        public Address MakeAddressFromConstant(Constant c)
+        public Address? MakeAddressFromConstant(Constant c)
         {
             return program.Architecture.MakeAddressFromConstant(c, true);
         }

@@ -191,7 +191,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
                     return;
                 updatingScroll = true;
                 scrollOffset = ClampOffset(value);
-                addrTopVisible = bmem?.BaseAddress + (ulong)LineLength * (ulong) scrollOffset.Y;
+                addrTopVisible = bmem.BaseAddress + (ulong)LineLength * (ulong) scrollOffset.Y;
                 UpdateScrollbar();
                 updatingScroll = false;
 
@@ -206,11 +206,11 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
                 return;
             var pos = e.GetCurrentPoint(this).Position;
             var addr = AddressFromPosition(pos);
-            if (addr != null)
+            if (addr is not null)
             {
-                if (selSvc != null)
+                if (selSvc is not null)
                 {
-                    var ar = new AddressRange(addr, addr);
+                    var ar = new AddressRange(addr.Value, addr.Value);
                     //$BUG: should be done by the interactor/viewmodel
                     selSvc.SetSelectedComponents(new[] { ar });
                 }

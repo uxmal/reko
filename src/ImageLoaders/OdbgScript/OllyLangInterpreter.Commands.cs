@@ -94,7 +94,7 @@ namespace Reko.ImageLoaders.OdbgScript
             {
                 Address addr = Host.AllocateMemory(size);
                 variables["$RESULT"] = Var.Create(addr);
-                if (addr != null)
+                if (!addr.IsNull)
                     regBlockToFree(addr, size, false);
                 return true;
             }
@@ -500,7 +500,7 @@ namespace Reko.ImageLoaders.OdbgScript
             {
                 if (membpaddr is not null && membpsize != 0)
                 {
-                    Debugger.RemoveMemoryBPX(membpaddr, membpsize);
+                    Debugger.RemoveMemoryBPX(membpaddr.Value, membpsize);
                     membpaddr = null;
                     membpsize = 0;
                 }
@@ -1098,10 +1098,10 @@ rulong hwnd;
                     for (int i = first; i < ende; i++)
                     {
                         string line = InterpolateVariables(Script.Lines[(int)i].RawLine!, true);
-                        len = Host.Assemble(line, pmemforexec + totallen);
+                        len = Host.Assemble(line, pmemforexec.Value + totallen);
                         if (len == 0)
                         {
-                            Host.FreeMemory(pmemforexec);
+                            Host.FreeMemory(pmemforexec.Value);
                             errorstr = "Invalid command: " + line;
                             return false;
                         }
@@ -1115,13 +1115,13 @@ rulong hwnd;
 
                     // Add jump to original EIP
                     string jmpstr = "jmp " + eip.ToString();
-                    Address jmpaddr = pmemforexec + (uint)totallen;
+                    Address jmpaddr = pmemforexec.Value + (uint)totallen;
 
-                    len = Host.Assemble(jmpstr, pmemforexec + totallen);
+                    len = Host.Assemble(jmpstr, pmemforexec.Value + totallen);
                     totallen += len;
 
                     // Set new eip and run to the original one
-                    Debugger.SetContextData(eContextData.UE_CIP, pmemforexec.ToLinear());
+                    Debugger.SetContextData(eContextData.UE_CIP, pmemforexec.Value.ToLinear());
 
                     // ignore next breakpoint
                     bInternalBP = true;
@@ -1648,7 +1648,7 @@ rulong hwnd;
         {
             if (args.Length >= 1 && args.Length <= 2)
             {
-                Address addr = null!;
+                Address addr = default;
                 if (args.Length == 2 && !GetAddress(args[1], out addr))
                     return false;
 
@@ -1657,7 +1657,7 @@ rulong hwnd;
                 {
                     if (!DoFIND(addr, args[0]))
                         return false;
-                    addr = MemInfo.BaseAddress! + MemInfo.RegionSize;
+                    addr = MemInfo.BaseAddress!.Value + MemInfo.RegionSize;
                 }
                 return true;
             }
@@ -1898,7 +1898,7 @@ rulong addr;
                 {
                     var val = cmd.Name.ToUpperInvariant();
 
-                    if (val == "MEMORYBASE") variables["$RESULT"] = Var.Create(MemInfo.BaseAddress!);
+                    if (val == "MEMORYBASE") variables["$RESULT"] = Var.Create(MemInfo.BaseAddress!.Value);
                     else if (val == "MEMORYSIZE") variables["$RESULT"] = Var.Create(MemInfo.RegionSize);
                     else if (val == "MEMORYOWNER") variables["$RESULT"] = Var.Create((rulong) MemInfo.AllocationBase);
                     else
@@ -3433,7 +3433,7 @@ string param;
         {
             if (args.Length >= 0 && args.Length <= 1)
             {
-                Address? addr = null;
+                Address addr = default;
                 if (args.Length == 1 && !GetAddress(args[0], out addr))
                     return false;
                 else if (args.Length == 0)
@@ -3441,7 +3441,7 @@ string param;
 
                 variables["$RESULT"] = Var.Create(0);
 
-                int prevsize = Host.LengthDisassembleBackEx(addr!);
+                int prevsize = Host.LengthDisassembleBackEx(addr);
                 if (prevsize != 0)
                 {
                     variables["$RESULT"] = Var.Create(addr! - prevsize);

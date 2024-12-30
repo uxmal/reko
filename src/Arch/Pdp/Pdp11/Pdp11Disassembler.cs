@@ -47,7 +47,6 @@ namespace Reko.Arch.Pdp.Pdp11
             this.rdr = rdr;
             this.arch = arch;
             this.ops = new List<MachineOperand>(2);
-            this.addr = null!;
             this.instrCur = null!;
             this.dataWidth = null!;
         }

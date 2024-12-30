@@ -52,7 +52,6 @@ namespace Reko.Arch.Mips
             this.rdr = rdr;
             this.ops = new List<MachineOperand>();
             this.gp = arch.GetRegister(28)!;
-            this.addr = null!;
         }
 
         public override MipsInstruction? DisassembleInstruction()

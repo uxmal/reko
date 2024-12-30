@@ -53,7 +53,6 @@ namespace Reko.Arch.Arc
             this.arch = arch;
             this.rdr = rdr;
             this.ops = new List<MachineOperand>();
-            this.addr = null!;
             this.instr = null!;
         }
 

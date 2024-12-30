@@ -113,7 +113,7 @@ namespace Reko.Gui.ViewModels.Tools
         private IEnumerable<CallGraphViewModelItem> MakeViewModelItems(IEnumerable<ProcedureBase> procs)
         {
             return procs
-                .Select(p => (p, p.Name, p is Procedure proc ? proc.EntryAddress : null))
+                .Select(p => (p, p.Name, p is Procedure proc ? proc.EntryAddress : (Address?)null))
                 .DistinctBy(p => p.Name)
                 .OrderBy(p => p.Name)
                 .Select(p => MakeViewModelItem(p.p));

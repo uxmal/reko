@@ -52,7 +52,7 @@ namespace Reko.ImageLoaders.Pef
             switch (sectionIndex)
             {
             // offset is the absolute address value
-            case -2: return new Address32(sectionOffset);
+            case -2: return Address.Ptr32(sectionOffset);
             // offset is the imported symbol index
             case -3: throw new NotImplementedException();
             }

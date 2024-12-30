@@ -65,7 +65,6 @@ namespace Reko.Arch.IA64
             this.rdr = rdr;
             this.ops = new List<MachineOperand>();
             this.qpReg = Registers.PredicateRegisters[0];
-            this.addr = null!;
         }
 
         public new IEnumerator<IA64Instruction> GetEnumerator()

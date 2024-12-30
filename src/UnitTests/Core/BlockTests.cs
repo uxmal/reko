@@ -35,7 +35,7 @@ namespace Reko.UnitTests.Core
 		{
 			using (FileUnitTester fut = new FileUnitTester("Core/BlockCreateStatements.txt"))
 			{
-				Block bl = new Block(null, null, "block0");
+				Block bl = new Block(null, default, "block0");
 				bl.Statements.Add(
                     Address.Ptr32(0),
 					new Assignment(

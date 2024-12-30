@@ -57,7 +57,7 @@ Eq_104: (fn void ())
 Eq_116: (union "Eq_116" (byte u0) (Eq_257 u1))
 	T_116 (in g_b08D8 > g_b1E18 @ 0000000000000736 : bool)
 	T_117 (in v12_45 @ 0000000000000736 : Eq_116)
-	T_125 (in r1_32 > null @ 0000000000000758 : bool)
+	T_125 (in r1_32 > 0x00000000<p64> @ 0000000000000758 : bool)
 	T_138 (in CC_44 @ 0000000000000760 : Eq_116)
 Eq_127: <unknown>
 	T_127 (in Mem11 @ 0000000000000740 : Eq_127)
@@ -184,7 +184,7 @@ T_21: (in 0<64> @ 000000000000058A : word64)
   Class: Eq_19
   DataType: (ptr64 code)
   OrigDataType: word64
-T_22: (in r1_38 == null @ 000000000000058A : bool)
+T_22: (in r1_38 == 0x00000000<p64> @ 000000000000058A : bool)
   Class: Eq_22
   DataType: bool
   OrigDataType: bool
@@ -356,7 +356,7 @@ T_64: (in 0000000000002068 @ 0000000000000668 : ptr64)
   Class: Eq_64
   DataType: (ptr64 byte)
   OrigDataType: (union ((ptr64 byte) u1) (ptr64 u0))
-T_65: (in 0x206F<u64> - &g_b2068 @ 0000000000000668 : word64)
+T_65: (in 0x000000000000206F<p64> - &g_b2068 @ 0000000000000668 : word64)
   Class: Eq_65
   DataType: int64
   OrigDataType: int64
@@ -368,7 +368,7 @@ T_67: (in Mem0[0x00000000000008C8<p64>:word64] @ 0000000000000668 : word64)
   Class: Eq_65
   DataType: int64
   OrigDataType: int64
-T_68: (in 0x206F<u64> - &g_b2068 > g_qw08C8 @ 0000000000000668 : bool)
+T_68: (in 0x000000000000206F<p64> - &g_b2068 > g_qw08C8 @ 0000000000000668 : bool)
   Class: Eq_68
   DataType: bool
   OrigDataType: bool
@@ -388,7 +388,7 @@ T_72: (in 0<64> @ 000000000000067A : word64)
   Class: Eq_70
   DataType: (ptr64 code)
   OrigDataType: word64
-T_73: (in r1_13 != null @ 000000000000067A : bool)
+T_73: (in r1_13 != 0x00000000<p64> @ 000000000000067A : bool)
   Class: Eq_73
   DataType: bool
   OrigDataType: bool
@@ -456,7 +456,7 @@ T_89: (in 0<64> @ 00000000000006B8 : word64)
   Class: Eq_87
   DataType: (ptr64 code)
   OrigDataType: word64
-T_90: (in r1_15 != null @ 00000000000006B8 : bool)
+T_90: (in r1_15 != 0x00000000<p64> @ 00000000000006B8 : bool)
   Class: Eq_90
   DataType: bool
   OrigDataType: bool
@@ -596,11 +596,11 @@ T_124: (in 0<64> @ 0000000000000758 : word64)
   Class: Eq_122
   DataType: (ptr64 code)
   OrigDataType: int64
-T_125: (in r1_32 > null @ 0000000000000758 : bool)
+T_125: (in r1_32 > 0x00000000<p64> @ 0000000000000758 : bool)
   Class: Eq_116
   DataType: Eq_116
   OrigDataType: bool
-T_126: (in r1_32 == null @ 000000000000075C : bool)
+T_126: (in r1_32 == 0x00000000<p64> @ 000000000000075C : bool)
   Class: Eq_126
   DataType: bool
   OrigDataType: bool
@@ -956,7 +956,7 @@ T_214: (in 0000000000001E08 @ 0000000000000848 : ptr64)
   Class: Eq_214
   DataType: (ptr64 (ptr64 code))
   OrigDataType: (union ((ptr64 (ptr64 code)) u1) (ptr64 u0))
-T_215: (in 0x1E10<u64> - &g_ptr1E08 @ 0000000000000848 : word64)
+T_215: (in 0x0000000000001E10<p64> - &g_ptr1E08 @ 0000000000000848 : word64)
   Class: Eq_215
   DataType: int64
   OrigDataType: int64

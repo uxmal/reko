@@ -4,49 +4,41 @@
 
 #include "fft.h"
 
-union Eq_n g_uFFFF8000 = // 8000
-	{
-		0x00
-	};
-real48 g_rFFFF8003 = 0.0; // 8003
+real48 g_r8000 = 0.0; // 8000
+real48 g_r8003 = 0.0; // 8003
 real48 g_r8006 = 0.0; // 8006
-real48 g_rFFFF8009 = 0.0; // 8009
-union Eq_n g_uFFFF800C = // 800C
-	{
-		0x00
-	};
-real48 g_rFFFF800F = 0.0; // 800F
-real48 g_rFFFF8012 = 0.0; // 8012
+real48 g_r8009 = 0.0; // 8009
+real48 g_r800C = 0.0; // 800C
+real48 g_r800F = 0.0; // 800F
+real48 g_r8012 = 0.0; // 8012
 real48 g_r8015 = 0.0; // 8015
-real48 g_rFFFF8018 = 0.0; // 8018
-union Eq_n g_uFFFF801B = // 801B
-	{
-		0x00
-	};
-real48 g_rFFFF801E = 0.0; // 801E
+real48 g_r8018 = 0.0; // 8018
+real48 g_r801B = 0.0; // 801B
+real48 g_r801E = 0.0; // 801E
 real48 g_r8021 = 0.0; // 8021
-real48 g_rFFFF8024 = 0.0; // 8024
+real48 g_r8024 = 0.0; // 8024
 real48 g_r8027 = 0.0; // 8027
-real48 g_rFFFF802A = 0.0; // 802A
+real48 g_r802A = 0.0; // 802A
 real48 g_r802D = 0.0; // 802D
-Eq_n g_aFFFF8030[] = // 8030
+Eq_n g_t8030 = // 8030
 	{
+		0
 	};
-real48 g_rFFFF8051 = 0.0; // 8051
+real48 g_r8051 = 0.0; // 8051
 real48 g_r8054 = 0.0; // 8054
-real48 g_rFFFF8057 = 0.0; // 8057
+real48 g_r8057 = 0.0; // 8057
 real48 g_r805A = 0.0; // 805A
-word32 g_dwFFFF805D = 0x00; // 805D
+word32 g_dw805D = 0x00; // 805D
 word16 g_w805F = 0x00; // 805F
-Eq_n g_aFFFF8060[] = // 8060
+Eq_n g_a8060[] = // 8060
 	{
 	};
-real48 g_rFFFF8061 = 0.0; // 8061
-real48 g_rFFFF8064 = 0.0; // 8064
+real48 g_r8061 = 0.0; // 8061
+real48 g_r8064 = 0.0; // 8064
 real48 g_r8067 = 0.0; // 8067
-word32 g_dwFFFF806A = 0x00; // 806A
-word16 g_wFFFF806C = 0x00; // 806C
-struct Eq_n g_tFFFF806E = // 806E
+word32 g_dw806A = 0x00; // 806A
+word16 g_w806C = 0x00; // 806C
+Eq_n g_t806E = // 806E
 	{
 		0x00,
 		0x00,

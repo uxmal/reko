@@ -277,15 +277,16 @@ namespace Reko.Typing
                     var np = program.Platform.MakeAddressFromConstant(c, false)!;
                     if (np is null)
                         return c;
+                    var addrG = np.Value;
                     store.SetTypeVariable(np, store.GetTypeVariable(c));
-                    np.DataType = c.DataType;
-                    return np;
+                    addrG.DataType = c.DataType;
+                    return addrG;
                 }
 
                 var addr = program.Platform.MakeAddressFromConstant(c, false);
                 
                 // An invalid pointer -- often used as sentinels in code.
-                if (addr is null || !program.Memory.IsValidAddress(addr))
+                if (addr is null || !program.Memory.IsValidAddress(addr.Value))
                 {
                     //$TODO: probably should emit a reinterpret_cast here.
                     e = new Cast(ptr, c);
@@ -300,16 +301,16 @@ namespace Reko.Typing
 
                 var dt = ptr.Pointee.ResolveAs<DataType>()!;
                 var charType = MaybeCharType(dt);
-                if (charType != null && program.IsPtrToReadonlySection(addr))
+                if (charType != null && program.IsPtrToReadonlySection(addr.Value))
                 {
                     PromoteToCString(c, charType);
-                    if (!program.TryCreateImageReader(program.Architecture, addr, out var rdr))
+                    if (!program.TryCreateImageReader(program.Architecture, addr.Value, out var rdr))
                         return e;
                     return rdr.ReadCString(charType, program.TextEncoding);
                 }
                 if (Dereferenced &&
-                    TryReadReal(addr, dt, out var cReal) &&
-                    program.IsPtrToReadonlySection(addr))
+                    TryReadReal(addr.Value, dt, out var cReal) &&
+                    program.IsPtrToReadonlySection(addr.Value))
                 {
                     return cReal;
                 }

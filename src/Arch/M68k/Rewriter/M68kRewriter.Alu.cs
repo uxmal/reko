@@ -604,7 +604,7 @@ namespace Reko.Arch.M68k.Rewriter
             var sp = binder.EnsureRegister(arch.StackRegister);
             // Recognize the idiom that pushes a pc-relative address, modifies
             // it on the stack, and transfers control with a `rts` instruction.
-            if (IsPeaAddiRtsSequence(out Address? addrTarget))
+            if (IsPeaAddiRtsSequence(out Address addrTarget))
             {
                 this.iclass = InstrClass.Transfer;
                 dasm.MoveNext();

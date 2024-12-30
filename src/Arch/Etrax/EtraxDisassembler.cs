@@ -51,7 +51,6 @@ namespace Reko.Arch.Etrax
             this.arch = arch;
             this.rdr = rdr;
             this.ops = new List<MachineOperand>();
-            this.addr = null!;
         }
 
         public override EtraxInstruction? DisassembleInstruction()

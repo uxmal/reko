@@ -254,7 +254,7 @@ namespace Reko.Arch.X86.Rewriter
 
         public override Address ImmediateAsAddress(Address address, ImmediateOperand imm)
         {
-            return this.arch.ProcessorMode.CreateSegmentedAddress(address.Selector!.Value, imm.Value.ToUInt32())!;
+            return this.arch.ProcessorMode.CreateSegmentedAddress(address.Selector!.Value, imm.Value.ToUInt32())!.Value;
         }
 
         public override MemoryAccess StackAccess(Expression expr, DataType dt)

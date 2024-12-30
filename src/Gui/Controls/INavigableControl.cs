@@ -30,12 +30,11 @@ namespace Reko.Gui.Controls
     /// Implementing this interface on a control makes it possible to be 
     /// manipulated by the [Back][Forward] navigation buttons.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    public interface INavigableControl<T>
+    public interface INavigableControl
     {
         IButton BackButton { get; }
         IButton ForwardButton { get; }
-        T CurrentAddress { get; set; }
+        Address? CurrentAddress { get; set; }
 
         event EventHandler CurrentAddressChanged;   // This event is fired when Back/Forward is pressed.
     }

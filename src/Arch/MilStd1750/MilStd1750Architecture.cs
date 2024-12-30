@@ -217,6 +217,21 @@ namespace Reko.Arch.MilStd1750
                     }
                 }
             }
+            else if ((dt.Domain & Domain.Integer) != 0)
+            {
+                if (dt.BitSize == 48)
+                {
+                    if (rdr.TryReadBeUInt32(out uint uHiwords) &&
+                        rdr.TryReadBeUInt16(out ushort uLoword))
+                    {
+                        ulong uValue = ((ulong) uHiwords << 16) | uLoword;
+                        value = Constant.Create(dt, uValue);
+                        return true;
+                    }
+                    value = default!;
+                    return false;
+                }
+            }
             return base.TryRead(rdr, dt, out value);
         }
 

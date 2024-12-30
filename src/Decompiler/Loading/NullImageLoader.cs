@@ -67,7 +67,7 @@ namespace Reko.Loading
             if (addrLoad is null)
                 addrLoad = PreferredBaseAddress;
             var platform = Platform ?? new DefaultPlatform(Services, arch);
-            return LoadProgram(addrLoad, arch, platform, new());
+            return LoadProgram(addrLoad.Value, arch, platform, new());
         }
 
         public override Program LoadProgram(
@@ -96,13 +96,11 @@ namespace Reko.Loading
         {
             var segmentMap = platform.CreateAbsoluteMemoryMap() ?? new SegmentMap(loadAddr);
             var mem = new ByteMemoryArea(loadAddr, rawBytes);
-            if (userSegments.Any(us => us.Address is not null))
+            if (userSegments.Any())
             {
                 foreach (var useg in userSegments)
                 {
                     //$TODO: warning?
-                    if (useg.Address is null)
-                        continue;
                     var name = useg.Name ?? useg.Address.GenerateName("seg", "");
                     var seg = new ImageSegment(name, useg.Address, mem, useg.AccessMode);
                     seg.Size = useg.Length;

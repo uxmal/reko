@@ -46,7 +46,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             this.cci386KernelAbi = default!;
         }
 
-        public Func<IProcessorArchitecture, Address, List<RtlInstructionCluster>, IRewriterHost, (Expression?, Address?)> CreateTrampolineDestinationFinder(IProcessorArchitecture arch)
+        public Func<IProcessorArchitecture, Address, List<RtlInstructionCluster>, IRewriterHost, (Expression?, Address)> CreateTrampolineDestinationFinder(IProcessorArchitecture arch)
         {
             switch (arch.Name)
             {
@@ -63,7 +63,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             case "x86-protected-64":
                 return TrampolineFinder.X86_64;
             default:
-                return delegate { return (null,null); };
+                return delegate { return (null,default); };
             }
         } 
 

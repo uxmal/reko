@@ -53,13 +53,13 @@ namespace Reko.ImageLoaders.Dol
 	public class DolHeader {
 		public UInt32[] offsetText = new UInt32[7];
 		public UInt32[] offsetData = new UInt32[11];
-		public Address32[] addressText = new Address32[7];
-		public Address32[] addressData = new Address32[11];
+		public Address[] addressText = new Address[7];
+		public Address[] addressData = new Address[11];
 		public UInt32[] sizeText = new UInt32[7];
 		public UInt32[] sizeData = new UInt32[11];
-		public Address32 addressBSS;
+		public Address addressBSS;
 		public UInt32 sizeBSS;
-		public Address32 entrypoint;
+		public Address entrypoint;
 
 		public DolHeader(DolStructure hdr) {
 			this.offsetText = hdr.offsetText;
@@ -68,13 +68,13 @@ namespace Reko.ImageLoaders.Dol
 			this.sizeBSS = hdr.sizeBSS;
 
 			for (int i = 0; i < 7; i++) {
-				this.addressText[i] = new Address32(hdr.addressText[i]);
+				this.addressText[i] = Address.Ptr32(hdr.addressText[i]);
 			}
 			for (int i = 0; i < 11; i++) {
-				this.addressData[i] = new Address32(hdr.addressData[i]);
+				this.addressData[i] = Address.Ptr32(hdr.addressData[i]);
 			}
-			this.addressBSS = new Address32(hdr.addressBSS);
-			this.entrypoint = new Address32(hdr.entrypoint);
+			this.addressBSS = Address.Ptr32(hdr.addressBSS);
+			this.entrypoint = Address.Ptr32(hdr.entrypoint);
 		}
 	}
 
@@ -125,7 +125,7 @@ namespace Reko.ImageLoaders.Dol
             // Create code segments
             for (uint i = 0, snum = 1; i < 7; i++, snum++)
             {
-                if (hdr.addressText[i] == Address32.NULL)
+                if (hdr.addressText[i].IsNull)
                     continue;
                 var bytes = new byte[hdr.sizeText[i]];
                 Array.Copy(RawImage, hdr.offsetText[i], bytes, 0, bytes.Length);
@@ -139,7 +139,7 @@ namespace Reko.ImageLoaders.Dol
             // Create all data segments
             for (uint i = 0, snum = 1; i < 11; i++, snum++)
             {
-                if (hdr.addressData[i] == Address32.NULL ||
+                if (hdr.addressData[i].IsNull ||
                     hdr.sizeData[i] == 0)
                     continue;
                 var bytes = new byte[hdr.sizeData[i]];
@@ -152,7 +152,7 @@ namespace Reko.ImageLoaders.Dol
                     AccessMode.ReadWrite));
             }
 
-            if (hdr.addressBSS != Address32.NULL)
+            if (!hdr.addressBSS.IsNull)
             {
                 segments.Add(new ImageSegment(
                     ".bss",

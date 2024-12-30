@@ -305,8 +305,8 @@ namespace Reko.Arch.MicrochipPIC.Common
         public override Expression CreateStackAccess(IStorageBinder frame, int offset, DataType dataType)
             => throw new NotSupportedException("Microchip PIC has no explicit argument stack.");
 
-        public override Address ReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState? state)
-            => PICProgAddress.Ptr(rdr.ReadLeUInt32());
+        public override Address? ReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState? state)
+            => Address.Ptr32(rdr.ReadLeUInt32());
 
         public override bool TryParseAddress(string? txtAddress, [MaybeNullWhen(false)] out Address addr)
             => Address.TryParse32(txtAddress, out addr);

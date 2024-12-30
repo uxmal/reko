@@ -86,8 +86,8 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         {
             var vb = new VectorBuilder(dlg.Services, dlg.Program, new DirectedGraphImpl<object>());
             var stride = 4; //$TODO: get from dialog
-            var entries = vb.BuildTable(dlg.VectorAddress, stride * (int)dlg.EntryCount.Value, null, stride, null);
-            var table = new ImageMapVectorTable(dlg.VectorAddress, entries.ToArray(), 0);
+            var entries = vb.BuildTable(dlg.VectorAddress.Value, stride * (int)dlg.EntryCount.Value, null, stride, null);
+            var table = new ImageMapVectorTable(dlg.VectorAddress.Value, entries.ToArray(), 0);
             return new UserIndirectJump
             {
                 Address = dlg.Instruction.Address,

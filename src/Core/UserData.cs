@@ -153,7 +153,7 @@ namespace Reko.Core
     /// </summary>
     public class UserCallData
     {
-        public Address? Address { get; set; } // The address of the call.
+        public Address Address { get; set; } // The address of the call.
 
         public string? Comment { get; set; }
 
@@ -164,7 +164,7 @@ namespace Reko.Core
 
     public class UserIndirectJump
     {
-        public Address? Address { get; set; } // the address of the jump
+        public Address Address { get; set; } // the address of the jump
 
         public RegisterStorage? IndexRegister { get; set; }  // Index register used in jump
 
@@ -179,7 +179,7 @@ namespace Reko.Core
         /// <summary>
         /// The start address of the segment.
         /// </summary>
-        public Address? Address { get; set; } 
+        public Address Address { get; set; } 
 
         /// <summary>
         /// The file offset from which this segment was loaded.

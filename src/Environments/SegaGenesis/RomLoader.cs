@@ -38,11 +38,12 @@ namespace Reko.Environments.SegaGenesis
 
         public override Address PreferredBaseAddress { get; set; }
 
-        public override Program LoadProgram(Address? addrLoad)
+        public override Program LoadProgram(Address? a)
         {
+            var addrLoad = a ?? PreferredBaseAddress;
             if (RawImage.Length <= 0x200)
                 throw new BadImageFormatException("The file is too small for a Sega Genesis ROM image.");
-            var mem = new ByteMemoryArea(addrLoad ?? PreferredBaseAddress, RawImage);
+            var mem = new ByteMemoryArea(addrLoad, RawImage);
             var cfgService = Services.RequireService<IConfigurationService>();
             var arch = cfgService.GetArchitecture("m68k")!;
             var env = cfgService.GetEnvironment("sega-genesis");
@@ -51,7 +52,7 @@ namespace Reko.Environments.SegaGenesis
             var segmentMap = CreateSegmentMap(mem, platform);
 
             var program = new Program(new ByteProgramMemory(segmentMap), arch, platform);
-            Relocate(program, addrLoad!);
+            Relocate(program, addrLoad);
             return program;
         }
 

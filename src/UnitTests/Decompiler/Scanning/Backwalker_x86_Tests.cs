@@ -113,7 +113,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 return true;
             }
 
-            public Address MakeAddressFromConstant(Constant c)
+            public Address? MakeAddressFromConstant(Constant c)
             {
                 return Address.Ptr32(c.ToUInt32());
             }
@@ -123,7 +123,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 throw new NotImplementedException();
             }
 
-            public IEnumerable<(Address?, Instruction?)> GetBlockInstructions(Block block)
+            public IEnumerable<(Address, Instruction?)> GetBlockInstructions(Block block)
             {
                 return block.Statements.Select(s => (s.Address, s.Instruction))!;
             }
@@ -221,7 +221,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var bw = new Backwalker<Block,Instruction>(host, new RtlGoto(m.Mem32(m.IAdd(eax, 0x10000)), InstrClass.Transfer), expSimp);
             Assert.IsFalse(bw.BackwalkInstruction(m.Assign(eax, m.And(eax, 0x7))));
             Assert.AreSame(Registers.eax, bw.Index);
-            Assert.AreEqual(0x10000ul, bw.VectorAddress!.ToLinear());
+            Assert.AreEqual(0x10000ul, bw.VectorAddress!.Value.ToLinear());
             Assert.AreEqual("cmp 8", bw.Operations[0].ToString());
         }
 
@@ -396,7 +396,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var di = new Identifier("di", Registers.di.DataType, Registers.di);
             var bw = new Backwalker<Block, Instruction>(host, new RtlGoto(new MemoryAccess(di, di.DataType), InstrClass.Transfer),
                 new ExpressionSimplifier(new ByteProgramMemory(map), state, new FakeDecompilerEventListener()));
-            var instrs = new StatementList(new Block(null!, null!, "foo"));
+            var instrs = new StatementList(new Block(null!, default, "foo"));
             bw.BackwalkInstructions(new Instruction[] {
                 new Assignment(di, new BinaryExpression(Operator.IAdd, di.DataType, di, Constant.Word16(1)))
                 });

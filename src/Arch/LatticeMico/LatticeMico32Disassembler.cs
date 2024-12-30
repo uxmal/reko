@@ -47,7 +47,6 @@ namespace Reko.Arch.LatticeMico
             this.arch = arch;
             this.rdr = rdr;
             this.ops = new List<MachineOperand>();
-            this.addr = null!;
         }
 
         public override LatticeMico32Instruction? DisassembleInstruction()

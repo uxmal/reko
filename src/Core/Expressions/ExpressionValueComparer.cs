@@ -113,21 +113,21 @@ namespace Reko.Core.Expressions
             Add(typeof(Address),
                 addrComp,
                 addrHash);
-            Add(typeof(Address16),
-                addrComp,
-                addrHash);
-            Add(typeof(Address32),
-                addrComp,
-                addrHash);
-            Add(typeof(Address64),
-                addrComp,
-                addrHash);
-            Add(typeof(ProtectedSegmentedAddress),
-                addrComp,
-                addrHash);
-            Add(typeof(RealSegmentedAddress),
-                addrComp,
-                addrHash);
+            //Add(typeof(Address16),
+            //    addrComp,
+            //    addrHash);
+            //Add(typeof(Address32),
+            //    addrComp,
+            //    addrHash);
+            //Add(typeof(Address64),
+            //    addrComp,
+            //    addrHash);
+            //Add(typeof(ProtectedSegmentedAddress),
+            //    addrComp,
+            //    addrHash);
+            //Add(typeof(RealSegmentedAddress),
+            //    addrComp,
+            //    addrHash);
 
             Add(typeof(ConditionalExpression),
                 (ca, cb) =>

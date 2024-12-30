@@ -41,7 +41,7 @@ namespace Reko.Arch.Pdp.Pdp11.Assembler
         public Pdp11Assembler(Pdp11Architecture arch, Address addrBase, IEmitter emitter)
         {
             this.arch = arch;
-            this.BaseAddress = addrBase ?? Address.Ptr16(0x100);
+            this.BaseAddress = addrBase;
             this.emitter = emitter;
             this.Equates = new Dictionary<string, object>();
             this.symtab = new SymbolTable();

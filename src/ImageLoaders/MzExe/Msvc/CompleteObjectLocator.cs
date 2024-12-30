@@ -58,8 +58,8 @@ namespace Reko.ImageLoaders.MzExe.Msvc
                 addr,
                 offset,
                 cdOffset,
-                pTypeDescriptor,
-                pClassDescriptor);
+                pTypeDescriptor.Value,
+                pClassDescriptor.Value);
         }
     }
 }

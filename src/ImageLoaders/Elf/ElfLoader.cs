@@ -196,27 +196,27 @@ namespace Reko.ImageLoaders.Elf
             Address? addrEnd = null;
             foreach (var pair in segments)
             {
-                if (addr == null)
+                if (addr is null)
                 {
                     addr = pair.Item1;
                     addrEnd = pair.Item1 + pair.Item2;
                 }
-                else if (addrEnd! < pair.Item1)
+                else if (addrEnd!.Value < pair.Item1)
                 {
                     var size = (uint) (addrEnd! - addr);
-                    mems.Add(addr, new ByteMemoryArea(addr, new byte[size]));
+                    mems.Add(addr.Value, new ByteMemoryArea(addr.Value, new byte[size]));
                     addr = pair.Item1;
                     addrEnd = pair.Item1 + pair.Item2;
                 }
                 else
                 {
-                    addrEnd = Address.Max(addrEnd!, pair.Item1 + pair.Item2);
+                    addrEnd = Address.Max(addrEnd!.Value, pair.Item1 + pair.Item2);
                 }
             }
-            if (addr != null)
+            if (addr is not null)
             {
                 var size = (uint) (addrEnd! - addr);
-                mems.Add(addr, new ByteMemoryArea(addr, new byte[size]));
+                mems.Add(addr.Value, new ByteMemoryArea(addr.Value, new byte[size]));
             }
             return mems;
         }
@@ -638,7 +638,7 @@ namespace Reko.ImageLoaders.Elf
                 var addrSym = ReadAddress(rdr);
                 if (addrSym is null)
                     break;
-                if (symbols.TryGetValue(addrSym, out ImageSymbol? symbol))
+                if (symbols.TryGetValue(addrSym.Value, out ImageSymbol? symbol))
                 {
                     // This GOT entry is a known symbol!
                     if (symbol.Type == SymbolType.Procedure || symbol.Type == SymbolType.ExternalProcedure)
@@ -881,15 +881,15 @@ namespace Reko.ImageLoaders.Elf
             relocator.LocateGotPointers(program, symbols);
             symbols = symbols.Values.Select(relocator.AdjustImageSymbol).ToSortedList(s => s.Address!);
             var entryPoints = new List<ImageSymbol>();
-            var addrEntry = GetEntryPointAddress(addrLoad);
-            if (addrEntry != null)
+            var ae = GetEntryPointAddress(addrLoad);
+            if (ae is not null)
             {
-                addrEntry = relocator.AdjustAddress(addrEntry);
+                var addrEntry = relocator.AdjustAddress(ae.Value);
                 var symEntry = EnsureEntryPoint(arch, entryPoints, symbols, addrEntry);
                 var addrMain = relocator.FindMainFunction(program, addrEntry);
-                if (addrMain != null)
+                if (addrMain is not null)
                 {
-                    EnsureEntryPoint(arch, entryPoints, symbols, addrMain);
+                    EnsureEntryPoint(arch, entryPoints, symbols, addrMain.Value);
                 }
                 var addrGlobalPtr = program.Platform.FindGlobalPointerValue(program, addrEntry);
                 if (addrGlobalPtr is not null)
@@ -958,7 +958,7 @@ namespace Reko.ImageLoaders.Elf
 
                     var relocations = LoadRelEntries(sectionSymbols, fileOffset, cEntries);
                     var vaddr = referringSection?.VirtualAddress;
-                    if (vaddr is not null && vaddr.Offset != 0 && this.IsRelocatableFile)
+                    if (vaddr is not null && vaddr.Value.Offset != 0 && this.IsRelocatableFile)
                     {
                         BinaryImage.AddRelocations(referringSection?.Index ?? 0, relocations);
                     }

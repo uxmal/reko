@@ -44,7 +44,6 @@ namespace Reko.Arch.Tms7000
             this.arch = arch;
             this.rdr = rdr;
             this.ops = new List<MachineOperand>();
-            this.addr = null!;
         }
 
         public override Tms7000Instruction? DisassembleInstruction()

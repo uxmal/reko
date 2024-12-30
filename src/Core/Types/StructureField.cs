@@ -46,6 +46,8 @@ namespace Reko.Core.Types
 
         private string? name;
 
+        //$TODO: make offsets long, to handle the situation where the Program
+        // globals struct is maintaining 64-bit addresses.
         public int Offset { get; set; }
 
         public StructureField Clone(IDictionary<DataType, DataType>? clonedTypes = null)
@@ -60,7 +62,7 @@ namespace Reko.Core.Types
 
         public static int? ToOffset(Constant? offset)
         {
-            if (offset == null)
+            if (offset is null)
                 return 0;
             PrimitiveType? pt = offset.DataType.ResolveAs<PrimitiveType>();
             if (pt is null)

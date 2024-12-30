@@ -542,9 +542,7 @@ namespace Reko.Scanning
             var tree = new SortedList<Address, SortedSet<Address>>();
             foreach (var de in idoms)
             {
-                if (de.Key.Address == null)
-                    continue;
-                if (de.Value == null || de.Value.Address == null)
+                if (de.Value == null)
                     roots.Add(de.Key.Address);
                 else
                 {

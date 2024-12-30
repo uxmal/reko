@@ -55,7 +55,7 @@ namespace Reko.Core
 
         public SegmentMap(Address addrBase, params ImageSegment[] segments)
         {
-            this.BaseAddress = addrBase ?? throw new ArgumentNullException(nameof(addrBase));
+            this.BaseAddress = addrBase;
             this.Segments = new SortedList<Address, ImageSegment>();
             this.SegmentByLinAddress = new SortedList<ulong, ImageSegment>();
             this.Selectors = new Dictionary<ushort, ImageSegment>();

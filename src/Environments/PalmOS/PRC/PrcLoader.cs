@@ -50,9 +50,9 @@ namespace Reko.Environments.PalmOS.PRC
         }
 
 
-        public override Program LoadProgram(Address? addrLoad)
+        public override Program LoadProgram(Address? loadAddress)
         {
-            addrLoad ??= PreferredBaseAddress;
+            var addrLoad = loadAddress ?? PreferredBaseAddress;
             var rdr = new BeImageReader(base.RawImage);
             var cfgSvc = Services.RequireService<IConfigurationService>();
             var arch = cfgSvc.GetArchitecture("m68k")!;
@@ -71,7 +71,7 @@ namespace Reko.Environments.PalmOS.PRC
             var program = new Program(new ByteProgramMemory(segments), arch, platform);
             if (ep is not null)
             {
-                program.EntryPoints.Add(ep, ImageSymbol.Procedure(arch, ep));
+                program.EntryPoints.Add(ep.Value, ImageSymbol.Procedure(arch, ep.Value));
             }
             foreach (var sym in symbols)
             {

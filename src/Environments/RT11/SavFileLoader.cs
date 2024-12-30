@@ -37,9 +37,9 @@ namespace Reko.Environments.RT11
 
         public override Address PreferredBaseAddress { get; set; }
 
-        public override Program LoadProgram(Address? addrLoad)
+        public override Program LoadProgram(Address? a)
         {
-            addrLoad ??= PreferredBaseAddress;
+            var addrLoad = a ?? PreferredBaseAddress;
             var arch = new Pdp11Architecture(Services, "pdp11", new Dictionary<string, object>());
             var segmentMap = new SegmentMap(addrLoad,
                 new ImageSegment(".text",

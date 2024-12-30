@@ -119,7 +119,7 @@ namespace Reko.ImageLoaders.IntelHex
         public bool TryReadRecord(out Address address, out byte[] data)
         {
             data = null!;
-            address = null!;
+            address = default;
             string? hexLine = null;
             while (!streamReader.EndOfStream && string.IsNullOrWhiteSpace(hexLine))
             {

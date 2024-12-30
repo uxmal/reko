@@ -42,9 +42,9 @@ namespace Reko.ImageLoaders.MzExe
             set => throw new NotImplementedException();
         }
 
-        public override Program LoadProgram(Address? addrLoad)
+        public override Program LoadProgram(Address? a)
         {
-            addrLoad ??= PreferredBaseAddress;
+            var addrLoad = a ?? PreferredBaseAddress;
             var cfgSvc = Services.RequireService<IConfigurationService>();
             var arch = cfgSvc.GetArchitecture("x86-protected-32")!;
             var platform = cfgSvc.GetEnvironment("ms-dos-386")

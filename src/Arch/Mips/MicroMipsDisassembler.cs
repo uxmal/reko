@@ -51,7 +51,6 @@ namespace Reko.Arch.Mips
             this.arch = arch;
             this.rdr = rdr;
             this.ops = new List<MachineOperand>();
-            this.addr = null!;
         }
 
         public override MipsInstruction? DisassembleInstruction()

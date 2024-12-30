@@ -18,18 +18,12 @@
  */
 #endregion
 
-using Reko.Gui.Forms;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Gui.Controls;
+using Reko.Gui.Forms;
+using System;
+using System.Windows.Forms;
 
 namespace Reko.UserInterfaces.WindowsForms.Forms
 {
@@ -66,7 +60,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
         public IServiceProvider Services { get; set; }
         public MachineInstruction Instruction { get; set; }
-        public Address VectorAddress { get; set; }
+        public Address? VectorAddress { get; set; }
         public Program Program { get; set; }
         public IProcessorArchitecture Architecture { get; set; }
         public int Stride { get; set; }

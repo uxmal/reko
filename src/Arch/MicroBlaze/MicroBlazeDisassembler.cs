@@ -46,7 +46,6 @@ namespace Reko.Arch.MicroBlaze
             this.arch = arch;
             this.rdr = rdr;
             this.ops = new List<MachineOperand>();
-            this.addr = null!;
             immHi = null;
         }
 

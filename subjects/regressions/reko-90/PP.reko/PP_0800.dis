@@ -14130,11 +14130,11 @@ l0800_A5CE:
 	branch (dl_24 & 0x80<8>) != 0<8> l0800_A608
 l0800_A5D3:
 	ax_20 = SLICE(dx_ax_36, word16, 0) (alias)
-	branch msdos_set_file_position(wArg02, null, 1<8>, out dx_ax_36) l0800_A60C
+	branch msdos_set_file_position(wArg02, 0x00000000<p32>, 1<8>, out dx_ax_36) l0800_A60C
 l0800_A5DE:
 	ax_20 = SLICE(dx_ax_51, word16, 0) (alias)
 	dx_55 = SLICE(dx_ax_51, word16, 16) (alias)
-	branch msdos_set_file_position(wArg02, null, 2<8>, out dx_ax_51) l0800_A60C
+	branch msdos_set_file_position(wArg02, 0x00000000<p32>, 2<8>, out dx_ax_51) l0800_A60C
 l0800_A5F3:
 	ax_20 = SLICE(dx_ax_64, word16, 0) (alias)
 	dx_72 = SLICE(dx_ax_64, word16, 16) (alias)

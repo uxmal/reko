@@ -37,7 +37,7 @@ namespace Reko.UserInterfaces.WindowsForms
         private MixedCodeDataControl mixedCodeDataControl;
         private Control previewWindow;
         private bool insidePreview;
-        private Address addressPreview;
+        private Address? addressPreview;
         private LayoutSpan previewSpan;
         private Timer previewTimer;
         private Program program;
@@ -85,8 +85,8 @@ namespace Reko.UserInterfaces.WindowsForms
 
             if (e.Span.Style == null || !e.Span.Style.Contains("dasm-addrText"))
                 return;
-            this.addressPreview = e.Span.Tag as Address;
-            if (this.addressPreview == null)
+            this.addressPreview = e.Span.Tag as Address?;
+            if (this.addressPreview is null)
                 return;
 
             // Start the timer; when it ticks, it will pop up the window.

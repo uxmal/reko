@@ -58,7 +58,6 @@ namespace Reko.ImageLoaders.MzExe
                 .Load(Services, arch);
             this.imgLoaded = null!;
             this.segmentMap = null!;
-            this.addrStackTop = null!;
 		}
 
         public ExeImageLoader ExeLoader { get; }
@@ -69,9 +68,9 @@ namespace Reko.ImageLoaders.MzExe
             set { throw new NotImplementedException(); }
         }
 
-        public override Program LoadProgram(Address? addrLoad)
+        public override Program LoadProgram(Address? a)
         {
-            addrLoad ??= PreferredBaseAddress;
+            var addrLoad = a ?? PreferredBaseAddress;
             this.segPsp = (ushort) (addrLoad.Selector!.Value - 0x10);
             var ss = (ushort) (ExeLoader.e_ss + addrLoad.Selector.Value);
             this.addrStackTop = Address.SegPtr(ss, ExeLoader.e_sp);

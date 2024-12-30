@@ -105,7 +105,7 @@ namespace Reko.Environments.C64
             throw new NotImplementedException();
         }
 
-        public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
+        public override Address? MakeAddressFromConstant(Constant c, bool codeAlign)
         {
             return Address.Ptr16(c.ToUInt16());
         }

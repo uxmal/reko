@@ -231,49 +231,4 @@ namespace Reko.Core.Machine
             return new ImmediateOperand(Constant.Word16(value));
         }
     }
-
-    /// <summary>
-    /// Represents a machine address.
-    /// </summary>
-    [Obsolete("Use the Reko.Core.Address class instead.", true)]
-    public class AddressOperand : AbstractMachineOperand
-    {
-        public Address Address;
-
-        protected AddressOperand(Address addr, PrimitiveType type)
-            : base(type)
-        {
-            Address = addr ?? throw new ArgumentNullException(nameof(addr));
-        }
-
-        public static AddressOperand Create(Address addr)
-        {
-            return new AddressOperand(
-                addr,
-                PrimitiveType.Create(Domain.Pointer, addr.DataType.BitSize));
-        }
-
-        public static AddressOperand Ptr16(ushort a)
-        {
-            return new AddressOperand(Address.Ptr16(a), PrimitiveType.Ptr16);
-        }
-
-        public static AddressOperand Ptr32(uint a)
-        {
-            return new AddressOperand(Address.Ptr32(a), PrimitiveType.Ptr32);
-        }
-
-        public static AddressOperand Ptr64(ulong a)
-        {
-            return new AddressOperand(Address.Ptr64(a), PrimitiveType.Ptr64);
-        }
-
-        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
-        {
-            renderer.WriteAddress(Address.ToString(), Address);
-        }
-    }
-
 }
-
-

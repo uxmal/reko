@@ -8,3 +8,12 @@ word16 g_w0000; // 0000
 ui16 g_w9E90; // 9E90
 Eq_n g_t9E92;
 byte g_bFFCC; // FFCC
+int16 g_wFFFF9E34; // 9E34
+int16 g_wFFFF9E36; // 9E36
+int16 g_wFFFF9E38; // 9E38
+int16 g_wFFFF9E3A; // 9E3A
+ci16 g_wFFFF9E3C; // 9E3C
+ci16 g_wFFFF9E3E; // 9E3E
+uint16 g_wFFFF9E40; // 9E40
+word16 g_wFFFF9E7E; // 9E7E
+ci16 g_wFFFF9E80; // 9E80

@@ -312,7 +312,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
                             return (iop, binder.EnsureRegister(fsrreg));
                         return (iop, binder.EnsureRegister(sfr));
                     }
-                    return (FSRIndexedMode.None, DataMem8(absAddr));
+                    return (FSRIndexedMode.None, DataMem8(absAddr.ToAddress()));
 
                 }
             }

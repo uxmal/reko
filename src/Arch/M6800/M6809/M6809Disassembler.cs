@@ -46,7 +46,6 @@ namespace Reko.Arch.M6800.M6809
             this.arch = arch;
             this.rdr = rdr;
             this.ops = new List<MachineOperand>();
-            this.addr = null!;
         }
 
         public override M6809Instruction? DisassembleInstruction()

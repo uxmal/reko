@@ -40,9 +40,9 @@ namespace Reko.ImageLoaders.BinHex
         {
         }
 
-        public override ILoadedImage Load(Address? addrLoad)
+        public override ILoadedImage Load(Address? loadingAddress)
         {
-            addrLoad ??= PreferredBaseAddress;
+            var addrLoad = loadingAddress ?? PreferredBaseAddress;
             BinHexDecoder dec = new BinHexDecoder(new StringReader(Encoding.ASCII.GetString(RawImage)));
             IEnumerator<byte> stm = dec.GetBytes().GetEnumerator();
             BinHexHeader hdr = LoadBinHexHeader(stm);

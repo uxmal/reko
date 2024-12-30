@@ -48,7 +48,6 @@ namespace Reko.Arch.Tlcs.Tlcs90
             this.arch = arch;
             this.rdr = rdr;
             this.ops = new List<MachineOperand>();
-            this.addr = null!;
         }
 
         public override Tlcs90Instruction? DisassembleInstruction()

@@ -131,9 +131,9 @@ namespace Reko.UnitTests.Arch.Mips
 
         private void VerifyAddressOperand(MachineOperand op, Address addr, PrimitiveType type)
         {
-            Assert.IsAssignableFrom(typeof(Address32), op);
-            var opReg = op as Address;
-            Assert.AreEqual(type, opReg.DataType);
+            Assert.IsAssignableFrom(typeof(Address), op);
+            var opReg = op as Address?;
+            Assert.AreEqual(type, opReg.Value.DataType);
             Assert.AreEqual(addr, opReg);
         }
 

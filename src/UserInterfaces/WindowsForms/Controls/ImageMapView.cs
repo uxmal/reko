@@ -103,20 +103,20 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
 
         [Browsable(false)]
-        public Address SelectedAddress
+        public Address ?SelectedAddress
         {
             get { return selectedAddress; } 
             set {
                 selectedAddress = value;
                 if (value is { })
                 {
-                    SelectedRange = new AddressRange(value, value + 1);
+                    SelectedRange = new AddressRange(value.Value, value.Value + 1);
                 }
                 SelectedAddressChanged?.Invoke(this, EventArgs.Empty);
             }
         }
         public event EventHandler SelectedAddressChanged;
-        private Address selectedAddress;
+        private Address? selectedAddress;
 
         [Browsable(false)]
         public AddressRange SelectedRange
@@ -202,11 +202,11 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
             // We want addr to appear in the same position as it did last time, if possible.
             this.painter = CalculateLayout();
-            var iSeg = painter.GetSegment(addr);
+            var iSeg = painter.GetSegment(addr.Value);
             if (iSeg == null)
                 return;
 
-            long cxInsideSeg = (addr - iSeg.Segment.Address) / granularity;
+            long cxInsideSeg = (addr.Value - iSeg.Segment.Address) / granularity;
             cxOffset = iSeg.X + cxInsideSeg - (xLastMouseUp - CxScroll);
             BoundOffset(cxOffset);
             Invalidate();
@@ -268,14 +268,14 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 Capture = false;
             xLastMouseUp = e.X;
             var addr = MapClientPositionToAddress(e.X);
-            if (addr != null)
+            if (addr is not null)
             {
                 SelectedAddress = addr;
             }
             base.OnMouseUp(e);
         }
 
-        private Address MapClientPositionToAddress(int x)
+        private Address? MapClientPositionToAddress(int x)
         {
             if (imageMap == null || painter == null)
                 return null;

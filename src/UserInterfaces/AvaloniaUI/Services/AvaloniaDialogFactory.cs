@@ -112,7 +112,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             };
         }
 
-        public IJumpTableDialog CreateJumpTableDialog(Program program, IProcessorArchitecture arch, MachineInstruction instrIndirectJmp, Address addrVector, int stride)
+        public IJumpTableDialog CreateJumpTableDialog(Program program, IProcessorArchitecture arch, MachineInstruction instrIndirectJmp, Address? addrVector, int stride)
         {
             throw new NotImplementedException();
         }

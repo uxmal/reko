@@ -408,7 +408,7 @@ T_85: (in 0000000000600E10 @ 0000000000400571 : ptr64)
   Class: Eq_85
   DataType: (ptr64 (arr (ptr64 code)))
   OrigDataType: (union ((ptr64 (arr Eq_101)) u1) ((ptr64 (arr Eq_101)) u0))
-T_86: (in 0x600E18<u64> - g_a600E10 @ 0000000000400571 : word64)
+T_86: (in 0x0000000000600E18<p64> - g_a600E10 @ 0000000000400571 : word64)
   Class: Eq_86
   DataType: int64
   OrigDataType: int64

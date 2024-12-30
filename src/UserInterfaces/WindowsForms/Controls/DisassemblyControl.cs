@@ -55,17 +55,17 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         private Program program;
 
         [Browsable(false)]
-        public Address StartAddress { 
+        public Address? StartAddress { 
             get { return startAddress; }
             set { 
                 startAddress = value; StartAddressChanged?.Invoke(this, EventArgs.Empty);
             }
         }
         public event EventHandler StartAddressChanged;
-        private Address startAddress;
+        private Address? startAddress;
 
         [Browsable(false)]
-        public Address TopAddress
+        public Address? TopAddress
         {
             get { return topAddress; } 
             set { 
@@ -73,7 +73,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             }
         }
         public event EventHandler TopAddressChanged;
-        private Address topAddress;
+        private Address? topAddress;
 
         [Browsable(false)]
         public object SelectedObject
@@ -136,13 +136,13 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         void DisassemblyControl_StateChange(object sender, EventArgs e)
         {
-            if (program == null || topAddress == null)
+            if (program is null || topAddress is null)
             {
                 Model = new EmptyEditorModel();
             }
             else
             {
-                if (!program.SegmentMap.TryFindSegment(topAddress, out ImageSegment segment))
+                if (!program.SegmentMap.TryFindSegment(topAddress.Value, out ImageSegment segment))
                 {
                     Model = new EmptyEditorModel();
                 }
@@ -151,7 +151,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                     var addr = topAddress;
                     this.dasmModel = new DisassemblyTextModel(factory, program, this.Architecture, segment);
                     Model = dasmModel;
-                    dasmModel.MoveToAddress(addr);
+                    dasmModel.MoveToAddress(addr.Value);
                 }
             }
             RecomputeLayout();
@@ -171,7 +171,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         protected override void OnScroll()
         {
             base.OnScroll();
-            topAddress = Model.CurrentPosition as Address;
+            topAddress = Model.CurrentPosition as Address?;
         }
 
         protected override bool IsInputKey(Keys keyData)

@@ -137,7 +137,7 @@ namespace Reko.Scanning
                 result = null;
                 return false;
             }
-            this.formatString = ReadCString(PrimitiveType.Char, addrFormatString);
+            this.formatString = ReadCString(PrimitiveType.Char, addrFormatString.Value);
             if (formatString is null)
             {
                 result = null;
@@ -147,7 +147,7 @@ namespace Reko.Scanning
             Debug.Assert(chr.VarargsParserClass != null);
             var argTypes = ParseVarargsFormat(chr.VarargsParserClass, addrInstr, chr);
             var extendedSig = ReplaceVarargs(program.Platform, sig, argTypes);
-            result = new VarargsResult(extendedSig, addrFormatString, formatString);
+            result = new VarargsResult(extendedSig, addrFormatString.Value, formatString);
             return true;
         }
 
@@ -174,7 +174,7 @@ namespace Reko.Scanning
             else
             {
                 var reg = ab.BindInArg(formatParam.Storage)!;
-                if (program.TryInterpretAsAddress(GetValue(reg), false, out Address? addrFormat))
+                if (program.TryInterpretAsAddress(GetValue(reg), false, out Address addrFormat))
                     return addrFormat;
             }
             WarnUnableToDetermineFormatString(addrInstr, callee);

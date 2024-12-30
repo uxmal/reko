@@ -226,9 +226,10 @@ namespace Reko.Scanning
                     }
                     if ((i.Class & InstrClass.Transfer) != 0)
                     {
-                        var addrDest = DestinationAddress(i);
-                        if (addrDest != null)
+                        var aa = DestinationAddress(i);
+                        if (aa is not null)
                         {
+                            var addrDest = aa.Value;
                             if (IsExecutable(addrDest))
                             {
                                 // call / jump destination is executable
@@ -443,9 +444,9 @@ namespace Reko.Scanning
                             addFallthroughEdgeDeferred = (instr.Class & DT) == DT;
                         }
                         var addrDst = DestinationAddress(instr);
-                        if (addrDst != null && (instr.Class & InstrClass.Call) == 0)
+                        if (addrDst is not null && (instr.Class & InstrClass.Call) == 0)
                         {
-                            edges.Add((block, addrDst));
+                            edges.Add((block, addrDst.Value));
                         }
 
                         if ((instr.Class & DT) == DT)
@@ -631,7 +632,7 @@ namespace Reko.Scanning
             }
             if (rtl is RtlTransfer xfer)
             {
-                return xfer.Target as Address;
+                return xfer.Target as Address?;
             }
             return null;
         }

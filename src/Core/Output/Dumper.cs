@@ -105,9 +105,9 @@ namespace Reko.Core.Output
             {
                 formatter.WriteLine(";; Code vector at {0} ({1} bytes)",
                     table.Address, table.Size);
-                foreach (Address? addr in table.Addresses)
+                foreach (Address addr in table.Addresses)
                 {
-                    formatter.WriteLine("\t{0}", addr is null ? "-- null --" : addr.ToString());
+                    formatter.WriteLine("\t{0}", addr.ToString());
                 }
                 DumpData(program.SegmentMap, program.Architecture, i.Address, i.Size, formatter);
             }

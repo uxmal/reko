@@ -345,10 +345,10 @@ Eq_394: (fn Eq_396 (Eq_396))
 Eq_396: LPTOP_LEVEL_EXCEPTION_FILTER
 	T_396 (in lpTopLevelExceptionFilter @ 004012DD : LPTOP_LEVEL_EXCEPTION_FILTER)
 	T_397 (in 0<32> @ 004012DD : word32)
-	T_398 (in SetUnhandledExceptionFilter(null) @ 004012DD : LPTOP_LEVEL_EXCEPTION_FILTER)
+	T_398 (in SetUnhandledExceptionFilter(0x00000000<p32>) @ 004012DD : LPTOP_LEVEL_EXCEPTION_FILTER)
 	T_904 (in lpTopLevelExceptionFilter @ 00401868 : LPTOP_LEVEL_EXCEPTION_FILTER)
 	T_905 (in 0<32> @ 00401868 : word32)
-	T_906 (in SetUnhandledExceptionFilter(null) @ 00401868 : LPTOP_LEVEL_EXCEPTION_FILTER)
+	T_906 (in SetUnhandledExceptionFilter(0x00000000<p32>) @ 00401868 : LPTOP_LEVEL_EXCEPTION_FILTER)
 	T_976 (in lpTopLevelExceptionFilter @ 004018D8 : LPTOP_LEVEL_EXCEPTION_FILTER)
 	T_977 (in 0x4018DF<32> @ 004018D8 : word32)
 	T_978 (in SetUnhandledExceptionFilter(&g_t4018DF) @ 004018D8 : LPTOP_LEVEL_EXCEPTION_FILTER)
@@ -598,7 +598,7 @@ Eq_936: LPCWSTR
 	T_936 (in lpModuleName @ 00401891 : LPCWSTR)
 	T_937 (in 0<32> @ 00401891 : word32)
 Eq_938: HMODULE
-	T_938 (in GetModuleHandleW(null) @ 00401891 : HMODULE)
+	T_938 (in GetModuleHandleW(0x00000000<p32>) @ 00401891 : HMODULE)
 	T_939 (in eax_6 @ 00401891 : Eq_938)
 	T_940 (in 0<32> @ 0040189B : word32)
 Eq_944: (union "Eq_944" (int32 u0) (word16 u1))
@@ -2226,7 +2226,7 @@ T_397: (in 0<32> @ 004012DD : word32)
   Class: Eq_396
   DataType: Eq_396
   OrigDataType: LPTOP_LEVEL_EXCEPTION_FILTER
-T_398: (in SetUnhandledExceptionFilter(null) @ 004012DD : LPTOP_LEVEL_EXCEPTION_FILTER)
+T_398: (in SetUnhandledExceptionFilter(0x00000000<p32>) @ 004012DD : LPTOP_LEVEL_EXCEPTION_FILTER)
   Class: Eq_396
   DataType: Eq_396
   OrigDataType: LPTOP_LEVEL_EXCEPTION_FILTER
@@ -3170,7 +3170,7 @@ T_633: (in 0<32> @ 00401596 : word32)
   Class: Eq_629
   DataType: (ptr32 Eq_629)
   OrigDataType: word32
-T_634: (in eax_40 == null @ 00401596 : bool)
+T_634: (in eax_40 == 0x00000000<p32> @ 00401596 : bool)
   Class: Eq_634
   DataType: bool
   OrigDataType: bool
@@ -4258,7 +4258,7 @@ T_905: (in 0<32> @ 00401868 : word32)
   Class: Eq_396
   DataType: Eq_396
   OrigDataType: LPTOP_LEVEL_EXCEPTION_FILTER
-T_906: (in SetUnhandledExceptionFilter(null) @ 00401868 : LPTOP_LEVEL_EXCEPTION_FILTER)
+T_906: (in SetUnhandledExceptionFilter(0x00000000<p32>) @ 00401868 : LPTOP_LEVEL_EXCEPTION_FILTER)
   Class: Eq_396
   DataType: Eq_396
   OrigDataType: LPTOP_LEVEL_EXCEPTION_FILTER
@@ -4386,7 +4386,7 @@ T_937: (in 0<32> @ 00401891 : word32)
   Class: Eq_936
   DataType: Eq_936
   OrigDataType: LPCWSTR
-T_938: (in GetModuleHandleW(null) @ 00401891 : HMODULE)
+T_938: (in GetModuleHandleW(0x00000000<p32>) @ 00401891 : HMODULE)
   Class: Eq_938
   DataType: Eq_938
   OrigDataType: HMODULE
@@ -4398,7 +4398,7 @@ T_940: (in 0<32> @ 0040189B : word32)
   Class: Eq_938
   DataType: Eq_938
   OrigDataType: word32
-T_941: (in eax_6 != null @ 0040189B : bool)
+T_941: (in eax_6 != 0x00000000<p32> @ 0040189B : bool)
   Class: Eq_941
   DataType: bool
   OrigDataType: bool

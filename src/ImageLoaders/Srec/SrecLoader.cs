@@ -73,7 +73,7 @@ namespace Reko.ImageLoaders.Srec
                 case SrecType.Data16:
                 case SrecType.Data24:
                 case SrecType.Data32:
-                    fragments[record.Address!] = record.Data!;
+                    fragments[record.Address] = record.Data!;
                     break;
                 case SrecType.StartAddress:
                     start = ImageSymbol.Procedure(arch, record.Address!);
@@ -105,7 +105,7 @@ namespace Reko.ImageLoaders.Srec
                 else
                 {
                     var data = dataCur!;
-                    if (IsFragmentAdjacent(addrSegmentCur, data, de.Key))
+                    if (IsFragmentAdjacent(addrSegmentCur.Value, data, de.Key))
                     {
                         data.Write(de.Value, 0, de.Value.Length);
                     }
@@ -113,7 +113,7 @@ namespace Reko.ImageLoaders.Srec
                     {
                         var segment = new ImageSegment(
                             $"seg{addrSegmentCur}",
-                            new ByteMemoryArea(addrSegmentCur, dataCur!.ToArray()),
+                            new ByteMemoryArea(addrSegmentCur.Value, dataCur!.ToArray()),
                             AccessMode.ReadWriteExecute);
                         segments.Add(segment);
 
@@ -128,7 +128,7 @@ namespace Reko.ImageLoaders.Srec
 
             var lastSegment = new ImageSegment(
                 $"seg{addrSegmentCur}",
-                new ByteMemoryArea(addrSegmentCur, dataCur!.ToArray()),
+                new ByteMemoryArea(addrSegmentCur.Value, dataCur!.ToArray()),
                 AccessMode.ReadWriteExecute);
             segments.Add(lastSegment);
             var map = new SegmentMap(

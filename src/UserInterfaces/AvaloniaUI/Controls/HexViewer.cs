@@ -347,7 +347,7 @@ public class HexViewControl : Control, ILogicalScrollable
                 return;
             trace.Inform($"TopAddress: new value {TopAddress}");
             if (value is not null)
-                value -= (int) (value.ToLinear() % cbRow);
+                value -= (int) (value.Value.ToLinear() % cbRow);
             addrTopVisible = value;
             InvalidateScrollable();
             InvalidateVisual();
@@ -369,11 +369,11 @@ public class HexViewControl : Control, ILogicalScrollable
         {
             if (SelectedAddress <= addrAnchor)
             {
-                return new AddressRange(SelectedAddress, addrAnchor);
+                return new AddressRange(SelectedAddress.Value, addrAnchor.Value);
             }
             else
             {
-                return new AddressRange(addrAnchor, SelectedAddress);
+                return new AddressRange(addrAnchor.Value, SelectedAddress.Value);
             }
         }
     }
@@ -576,7 +576,7 @@ public class HexViewControl : Control, ILogicalScrollable
 
     public Point AddressToPoint(Address addr)
     {
-        if (addr == null || TopAddress == null)
+        if (TopAddress is null)
             return new Point();
         int cbOffset = (int) (addr - TopAddress);
         int yRow = cbOffset / (int) cbRow;
@@ -590,7 +590,7 @@ public class HexViewControl : Control, ILogicalScrollable
 
     private bool IsVisibleAddress(Address addr)
     {
-        if (addr is null || TopAddress is null)
+        if (TopAddress is null)
             return false;
         int cbOffset = (int) (addr - TopAddress);
         int yRow = cbOffset / (int) cbRow;
@@ -600,15 +600,15 @@ public class HexViewControl : Control, ILogicalScrollable
     private void MoveSelection(int offset, KeyModifiers modifiers)
     {
         var addrTop = TopAddress;
-        if (SelectedAddress == null || segmentMap is null || mem is null || addrTop is null)
+        if (SelectedAddress is null || segmentMap is null || mem is null || addrTop is null)
             return;
-        ulong linAddr = (ulong) ((long) SelectedAddress.ToLinear() + offset);
+        ulong linAddr = (ulong) ((long) SelectedAddress.Value.ToLinear() + offset);
         if (!mem.IsValidLinearAddress(linAddr))
             return;
         Address addr = segmentMap.MapLinearAddressToAddress(linAddr);
-        if (!IsVisibleAddress(SelectedAddress))
+        if (!IsVisibleAddress(SelectedAddress.Value))
         {
-            Address newTopAddress = addrTop + offset;
+            Address newTopAddress = addrTop.Value + offset;
             if (mem.IsValidAddress(newTopAddress))
             {
                 TopAddress = newTopAddress;
@@ -720,7 +720,7 @@ public class HexViewControl : Control, ILogicalScrollable
         if (mem is null)
             return;
         Debug.Assert(TopAddress is not null);
-        var newTopAddress = TopAddress + (int) (e.Delta.Y > 0 ? -cbRow : cbRow);
+        var newTopAddress = TopAddress.Value + (int) (e.Delta.Y > 0 ? -cbRow : cbRow);
         if (mem.IsValidAddress(newTopAddress))
         {
             TopAddress = newTopAddress;
@@ -755,16 +755,16 @@ public class HexViewControl : Control, ILogicalScrollable
         if (IsTextSideSelected != textSide)
             return true;
 
-        return !IsAddressInSelection(addrClicked);
+        return !IsAddressInSelection(addrClicked.Value);
     }
 
     private bool IsAddressInSelection(Address addr)
     {
-        if (addr is null || addrAnchor is null || SelectedAddress is null)
+        if (addrAnchor is null || SelectedAddress is null)
             return false;
         var linAddr = addr.ToLinear();
-        var linAnch = addrAnchor.ToLinear();
-        var linSel = SelectedAddress.ToLinear();
+        var linAnch = addrAnchor.Value.ToLinear();
+        var linSel = SelectedAddress.Value.ToLinear();
         if (linAnch <= linSel)
         {
             return linAnch <= linAddr && linAddr <= linSel;
@@ -821,7 +821,7 @@ public class HexViewControl : Control, ILogicalScrollable
     {
         if (ImageMap is null || addr is null || SegmentMap is null)
             return null;
-        if (!SegmentMap.TryFindSegment(addr, out ImageSegment? seg))
+        if (!SegmentMap.TryFindSegment(addr.Value, out ImageSegment? seg))
             return null;
         return seg;
     }
@@ -880,10 +880,11 @@ public class HexViewControl : Control, ILogicalScrollable
                 return (null, ctrl.IsTextSideSelected);
             // Enumerate all segments visible on screen.
 
-            ulong laEnd = ctrl.addrMin.ToLinear() + ctrl.memSize;
-            if (ctrl.TopAddress.ToLinear() >= laEnd)
+            var addrMin = ctrl.addrMin.Value;
+            ulong laEnd = addrMin.ToLinear() + ctrl.memSize;
+            if (ctrl.TopAddress!.Value.ToLinear() >= laEnd)
                 return (null, ctrl.IsTextSideSelected);
-            var addrStart = Address.Max(ctrl.TopAddress, ctrl.mem.BaseAddress);
+            var addrStart = Address.Max(ctrl.TopAddress.Value, ctrl.mem!.BaseAddress);
             EndianImageReader rdr = ctrl.arch.CreateImageReader(ctrl.mem, addrStart);
             Rect rcClient = ctrl.Bounds;
             Rect rc = rcClient.WithHeight(cellSize.Height);
@@ -892,7 +893,7 @@ public class HexViewControl : Control, ILogicalScrollable
             ulong laSegEnd = 0;
             while (rc.Top < rcClient.Height && (laEnd == 0 || rdr.Address.ToLinear() < laEnd))
             {
-                if (ctrl.SegmentMap.TryFindSegment(ctrl.TopAddress, out ImageSegment? seg))
+                if (ctrl.SegmentMap.TryFindSegment(ctrl.TopAddress.Value, out ImageSegment? seg))
                 {
                     if (rdr.Address.ToLinear() >= laSegEnd)
                     {
@@ -972,8 +973,8 @@ public class HexViewControl : Control, ILogicalScrollable
                 this.rc = rc;
                 this.ptAddr = ptAddr;
                 this.render = render;
-                this.linearSelected = mcp.ctrl.SelectedAddress is not null ? mcp.ctrl.SelectedAddress.ToLinear() : ~0UL;
-                this.linearAnchor = mcp.ctrl.addrAnchor is not null ? mcp.ctrl.addrAnchor.ToLinear() : ~0UL;
+                this.linearSelected = mcp.ctrl.SelectedAddress is not null ? mcp.ctrl.SelectedAddress.Value.ToLinear() : ~0UL;
+                this.linearAnchor = mcp.ctrl.addrAnchor is not null ? mcp.ctrl.addrAnchor.Value.ToLinear() : ~0UL;
                 this.linearBeginSelection = Math.Min(linearSelected, linearAnchor);
                 this.linearEndSelection = Math.Max(linearSelected, linearAnchor);
 

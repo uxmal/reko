@@ -89,7 +89,7 @@ namespace Reko.Core.Memory
             EndianImageReader rdr;
             if (mem != null)
             {
-                rdr = CreateNew(mem, addrStart!);
+                rdr = CreateNew(mem, addrStart!.Value);
                 rdr.Offset = off;
             }
             else

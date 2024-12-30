@@ -86,9 +86,10 @@ namespace Reko.Arch.X86.Rewriter
 
         private void RewriteCall(MachineOperand callTarget, DataType opsize)
         {
-            Address? addr = OperandAsCodeAddress(callTarget);
-            if (addr is not null)
+            Address? a = OperandAsCodeAddress(callTarget);
+            if (a is not null)
             {
+                var addr = a.Value;
                 if (addr.ToLinear() == (dasm.Current.Address + dasm.Current.Length).ToLinear())
                 {
                     // Calling the following address. Is the call followed by a 

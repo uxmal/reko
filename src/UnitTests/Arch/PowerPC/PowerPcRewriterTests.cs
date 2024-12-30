@@ -1588,7 +1588,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
         [Test]
-        [Ignore("These PPC masks are horrible")]
+        //[Ignore("These PPC masks are horrible")]
         public void PPCRw_rldimi_General()
         {
             Given_PowerPcBe64();
@@ -1596,7 +1596,7 @@ namespace Reko.UnitTests.Arch.PowerPC
                 "0|L--|00100000(4): 3 instructions",
                 "1|L--|v5 = SLICE(r3, word52, 0)",
                 "2|L--|v6 = SLICE(r3, bool, 63)",
-                "3|L--|r3 = DPB(r3, SLICE(r5, word11, 0), 52)");
+                "3|L--|r3 = SEQ(v6, SLICE(r5, word11, 0), v5)");
         }
 
         [Test]

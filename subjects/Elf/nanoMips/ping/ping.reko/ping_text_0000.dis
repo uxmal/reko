@@ -274,11 +274,11 @@ deregister_tm_clones_entry:
 l00400880:
 	branch 0x004303B3<p32> - 0x004303B0<p32> <u 7<32> l0040089A
 l00400890:
-	branch null == 0<32> l0040089A
+	branch 0x00000000<p32> == 0<32> l0040089A
 l0040089A:
 	return
 l00400898:
-	call null (retsize: 0;)
+	call 0x00000000<p32> (retsize: 0;)
 		uses: Mem:Mem0
 	return
 deregister_tm_clones_exit:
@@ -297,11 +297,11 @@ register_tm_clones_entry:
 l0040089C:
 	branch r5 == 0<32> l004008BC
 l004008B2:
-	branch null == 0<32> l004008BC
+	branch 0x00000000<p32> == 0<32> l004008BC
 l004008BC:
 	return
 l004008BA:
-	call null (retsize: 0;)
+	call 0x00000000<p32> (retsize: 0;)
 		uses: Mem:Mem0,r5:r5
 	return
 register_tm_clones_exit:
@@ -319,7 +319,7 @@ l004008BE:
 	branch CONVERT(Mem7[0x004303C0<p32>:byte], byte, word32) != 0<32> l004008E4
 l004008CC:
 	deregister_tm_clones()
-	branch null == 0<32> l004008DE
+	branch 0x00000000<p32> == 0<32> l004008DE
 l004008D8:
 	fn00000000(0x00413590<p32>)
 l004008DE:
@@ -338,13 +338,13 @@ void frame_dummy(word32 r5)
 // Preserved: ra sp
 frame_dummy_entry:
 l004008E6:
-	branch null == 0<32> l004008FA
+	branch 0x00000000<p32> == 0<32> l004008FA
 l004008F0:
 	fn00000000(0x00413590<p32>, 0x004303C4<p32>)
 l004008FA:
 	branch Mem5[0x0042FFFC<p32>:word32] != 0<32> l0040090A
 l0040090A:
-	branch null == 0<32> l00400902
+	branch 0x00000000<p32> == 0<32> l00400902
 l00400912:
 	fn00000000()
 l00400902:
@@ -17357,7 +17357,7 @@ l0040B192_1:
 	r6_10 = r7_110
 l0040B196:
 l0040B164:
-	branch null == 0<32> l0040B174
+	branch 0x00000000<p32> == 0<32> l0040B174
 l0040B16E:
 l0040B186:
 l0040B174:

@@ -69,7 +69,6 @@ namespace Reko.Arch.PaRisc
             is64bit = arch.Is64Bit();
             this.dtSignedWord = is64bit ? PrimitiveType.Int64 : PrimitiveType.Int32;
             this.regs = arch.Registers;
-            this.addr = null!;
         }
 
         public override PaRiscInstruction? DisassembleInstruction()

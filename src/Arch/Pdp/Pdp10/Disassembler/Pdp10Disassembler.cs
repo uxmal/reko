@@ -179,7 +179,7 @@ namespace Reko.Arch.Pdp.Pdp10.Disassembler
                 }
                 else
                 {
-                    var addr = new Address18(dasm.imm);
+                    var addr = Pdp10Architecture.Ptr18(dasm.imm);
                     op = addr;
                 }
             }

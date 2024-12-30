@@ -33,7 +33,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
 
         protected IPICProcessorModel picMode;
         protected PICArchitecture arch;
-        protected Address baseAddr = PICProgAddress.Ptr(0x200);
+        protected Address baseAddr = Address.Ptr32(0x200);
 
         protected void SetPICModel(string picName, PICExecMode mode)
         {

@@ -66,9 +66,9 @@ namespace Reko.ImageLoaders.MachO
             set { throw new NotImplementedException(); }
         }
 
-        public override Program LoadProgram(Address? addrLoad)
+        public override Program LoadProgram(Address? a)
         {
-            addrLoad ??= PreferredBaseAddress;
+            var addrLoad = a ?? PreferredBaseAddress;
             this.program = new Program();
             parser = CreateParser();
             var (hdr, specific) = parser.ParseHeader(addrLoad);

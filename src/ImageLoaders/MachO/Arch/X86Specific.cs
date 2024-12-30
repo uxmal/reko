@@ -33,7 +33,7 @@ namespace Reko.ImageLoaders.MachO.Arch
     {
         public X86Specific(IProcessorArchitecture arch) : base(arch) { }
 
-        public override Address ReadStub(Address addrStub, ByteMemoryArea bmem)
+        public override Address? ReadStub(Address addrStub, ByteMemoryArea bmem)
         {
             throw new NotImplementedException();
         }

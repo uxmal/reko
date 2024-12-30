@@ -29,7 +29,6 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
-using System.Net.Http;
 using System.Numerics;
 
 namespace Reko.Core.Output
@@ -161,23 +160,16 @@ namespace Reko.Core.Output
 			return precedenceOld;
 		}
 
-		#region IExpressionVisitor members ///////////////////////
+        #region IExpressionVisitor members ///////////////////////
 
-        public void VisitAddress(Address addr)
+        public virtual void VisitAddress(Address addr)
         {
-            if (addr.IsNull)
+            var s = addr.ToString();
+            if (!s.Contains(':'))
             {
-                WriteNull();
+                s = string.Format("0x{0}<p{1}>", s, addr.DataType.BitSize);
             }
-            else
-            {
-                var s = addr.ToString();
-                if (!s.Contains(':'))
-                {
-                    s = string.Format("0x{0}<p{1}>", s, addr.DataType.BitSize);
-            }
-                InnerFormatter.Write(s);
-            }
+            InnerFormatter.Write(s);
         }
 
 		public void VisitApplication(Application appl)

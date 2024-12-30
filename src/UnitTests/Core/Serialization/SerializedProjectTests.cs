@@ -548,7 +548,7 @@ namespace Reko.UnitTests.Core.Serialization
             loader.Setup(l => l.Load(
                 It.IsAny<ImageLocation>(),
                 It.IsAny<string>(),
-                It.IsAny<Address>()))
+                It.IsAny<Address?>()))
                 .Returns(new Program
                 {
                     Platform = this.platform.Object

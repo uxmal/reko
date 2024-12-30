@@ -66,8 +66,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 iclass = InstrClass.ConditionalTransfer;
                 var test = GenerateTestExpression(co, false);
                 var dst = RewriteSrc(instr.Operands[1]);
-                var addr = dst as Address;
-                if (addr != null)
+                if (dst is Address addr)
                 {
                     m.Branch(test, addr, InstrClass.ConditionalTransfer);
                 }

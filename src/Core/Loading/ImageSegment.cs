@@ -49,7 +49,7 @@ namespace Reko.Core.Loading
 		public ImageSegment(string name, Address addr, MemoryArea mem, AccessMode access)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name), "Segments must have names.");
-            Address = addr ?? throw new ArgumentNullException(nameof(addr));
+            Address = addr;
             MemoryArea = mem ?? throw new ArgumentNullException(nameof(mem));
             Access = access;
             Fields = CreateFields(0);

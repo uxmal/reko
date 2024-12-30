@@ -53,7 +53,6 @@ namespace Reko.Arch.Msp430
             this.registers = arch.Registers;
             this.rdr = rdr;
             this.ops = new List<MachineOperand>();
-            this.addr = null!;
         }
 
         public override Msp430Instruction? DisassembleInstruction()

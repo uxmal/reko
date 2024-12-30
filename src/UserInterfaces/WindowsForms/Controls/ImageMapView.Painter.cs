@@ -239,8 +239,6 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             /// <returns></returns>
             public SegmentLayout GetSegment(Address addr)
             {
-                if (addr is null)
-                    return null;
                 return segLayouts.FirstOrDefault(s => s.Segment.IsInRange(addr));
             }
 

@@ -471,7 +471,7 @@ namespace Reko.Scanning
                 if (host.IsStackRegister(idLeft.Storage))
                     return null;
                 DetermineVector(mem, bin.Right);
-                if (VectorAddress is not null && host.IsValidAddress(VectorAddress))
+                if (VectorAddress is not null && host.IsValidAddress(VectorAddress.Value))
                     return RegisterOf(idLeft);
                 else
                     return null;

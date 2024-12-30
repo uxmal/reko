@@ -108,7 +108,7 @@ namespace Reko.UnitTests.Core.Output
             formatter.UseTabs = true;
             formatter.TabSize = 4;
             formatter.Indentation = 6;
-            var b = new Branch(Constant.Word32(0), new Block(null, null, "target"));
+            var b = new Branch(Constant.Word32(0), new Block(null, default, "target"));
             b.Accept(cf);
             Assert.AreEqual("\t  branch 0<32> target" + nl, sw.ToString());
         }
@@ -119,7 +119,7 @@ namespace Reko.UnitTests.Core.Output
             formatter.UseTabs = false;
             formatter.TabSize = 4;
             formatter.Indentation = 6;
-            Instruction b = new Branch(Constant.Word32(0), new Block(null, null, "Test"));
+            Instruction b = new Branch(Constant.Word32(0), new Block(null, default, "Test"));
             b.Accept(cf);
             Assert.AreEqual("      branch 0<32> Test" + nl, sw.ToString());
         }
@@ -149,7 +149,7 @@ namespace Reko.UnitTests.Core.Output
         {
             var e = Address.Ptr32(0);
             e.Accept(cf);
-            Assert.AreEqual("null", sw.ToString());
+            Assert.AreEqual("0x00000000<p32>", sw.ToString());
         }
 
         private Identifier Id(string id)

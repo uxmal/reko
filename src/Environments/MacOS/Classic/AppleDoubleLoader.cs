@@ -51,9 +51,9 @@ namespace Reko.Environments.MacOS.Classic
             set { throw new NotImplementedException(); }
         }
 
-        public override Program LoadProgram(Address? addrLoad)
+        public override Program LoadProgram(Address? loadAddress)
         {
-            addrLoad ??= PreferredBaseAddress;
+            var addrLoad = loadAddress ?? PreferredBaseAddress;
             var cfgSvc = Services.RequireService<IConfigurationService>();
             var rdr = new BeImageReader(RawImage);
             var hdr = rdr.ReadStruct<Header>();

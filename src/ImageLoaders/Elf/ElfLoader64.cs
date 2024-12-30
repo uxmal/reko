@@ -343,7 +343,7 @@ namespace Reko.ImageLoaders.Elf
             {
                 foreach (var section in BinaryImage.Sections)
                 {
-                    if (section.Name == null || section.VirtualAddress == null)
+                    if (section.Name == null || section.VirtualAddress.IsNull)
                         continue;
                     if (segMap.TryGetLowerBound(section.VirtualAddress, out var mem) &&
                         mem.IsValidAddress(section.VirtualAddress))
@@ -511,7 +511,7 @@ namespace Reko.ImageLoaders.Elf
                     Flags = shdr.sh_flags,
                     VirtualAddress = shdr.sh_addr != 0
                         ? platform!.MakeAddressFromLinear(shdr.sh_addr, false)
-                        : null!,
+                        : default,
                     FileOffset = shdr.sh_offset,
                     Size = shdr.sh_size,
                     Alignment = shdr.sh_addralign,

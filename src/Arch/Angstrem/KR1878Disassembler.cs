@@ -37,7 +37,7 @@ namespace Reko.Arch.Angstrem
         private readonly KR1878Architecture arch;
         private readonly EndianImageReader rdr;
         private readonly List<MachineOperand> ops;
-        private Address addr = null!;
+        private Address addr;
 
         public KR1878Disassembler(KR1878Architecture arch, EndianImageReader rdr)
         {

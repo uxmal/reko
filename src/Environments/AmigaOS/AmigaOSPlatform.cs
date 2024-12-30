@@ -234,7 +234,7 @@ namespace Reko.Environments.AmigaOS
             throw new NotImplementedException();
         }
 
-        public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
+        public override Address? MakeAddressFromConstant(Constant c, bool codeAlign)
         {
             var uAddr = c.ToUInt32();
             if (codeAlign)

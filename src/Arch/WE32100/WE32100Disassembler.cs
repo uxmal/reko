@@ -47,7 +47,6 @@ namespace Reko.Arch.WE32100
             this.arch = arch;
             this.rdr = rdr;
             this.ops = new List<MachineOperand>();
-            this.addr = null!;
         }
 
         public override WE32100Instruction? DisassembleInstruction()

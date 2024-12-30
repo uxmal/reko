@@ -15,7 +15,7 @@ namespace Reko.ImageLoaders.MachO.Arch
         {
         }
 
-        public override Address ReadStub(Address addrStub, ByteMemoryArea mem)
+        public override Address? ReadStub(Address addrStub, ByteMemoryArea mem)
         {
             throw new NotImplementedException();
         }

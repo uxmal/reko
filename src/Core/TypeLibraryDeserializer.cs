@@ -100,7 +100,8 @@ namespace Reko.Core
                     else
                     {
                         var dt = this.LoadType(globalType);
-                        var sym = ImageSymbol.Create(SymbolType.Data, platform.Architecture, null!, globalName);
+                        //$REVIEW: why is a null address being passed to ImageSymbol.Create?
+                        var sym = ImageSymbol.Create(SymbolType.Data, platform.Architecture, default, globalName);
                         mod.GlobalsByName[globalName] = sym;
                         if (g.Ordinal != GlobalVariable_v1.NoOrdinal)
                         {

@@ -130,11 +130,11 @@ namespace Reko.Scanning
                         addrOp = DestinationAddress(instr);
                         if (addrOp != null)
                         {
-                            if (program.Memory.IsValidAddress(addrOp))
+                            if (program.Memory.IsValidAddress(addrOp.Value))
                             {
-                                if (!sr.DirectlyCalledAddresses.TryGetValue(addrOp, out int c))
+                                if (!sr.DirectlyCalledAddresses.TryGetValue(addrOp.Value, out int c))
                                     c = 0;
-                                sr.DirectlyCalledAddresses[addrOp] = c + 1;
+                                sr.DirectlyCalledAddresses[addrOp.Value] = c + 1;
                             }
                             else
                             {
@@ -158,9 +158,9 @@ namespace Reko.Scanning
                         addrOp = DestinationAddress(instr);
                         if (addrOp != null)
                         {
-                            if (isAddrValid(addrOp))
+                            if (isAddrValid(addrOp.Value))
                             {
-                                block = Disassemble(addrOp);
+                                block = Disassemble(addrOp.Value);
                                 AddEdge(current, block);
                                 return current;
                             }
@@ -178,9 +178,9 @@ namespace Reko.Scanning
                     case InstrClass.Transfer | InstrClass.Conditional:
                         FallthroughToInvalid(instr);
                         addrOp = DestinationAddress(instr);
-                        if (addrOp != null && program.Memory.IsValidAddress(addrOp))
+                        if (addrOp != null && program.Memory.IsValidAddress(addrOp.Value))
                         {
-                            block = Disassemble(addrOp);
+                            block = Disassemble(addrOp.Value);
                             Debug.Assert(sr.ICFG.Nodes.Contains(block));
                             AddEdge(current, block);
                         }
@@ -227,7 +227,7 @@ namespace Reko.Scanning
                     return null;
             }
 
-            var addr = xfer.Target as Address;
+            var addr = xfer.Target as Address?;
             return addr;
         }
 

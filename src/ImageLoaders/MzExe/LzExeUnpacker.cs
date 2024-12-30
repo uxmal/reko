@@ -190,9 +190,10 @@ namespace Reko.ImageLoaders.MzExe
 			return segmentMap;
 		}
 
-        public override Program LoadProgram(Address? addrLoad)
+        public override Program LoadProgram(Address? a)
 		{
-			Unpack(RawImage, addrLoad ?? PreferredBaseAddress );
+            var addrLoad = a!.Value;
+			Unpack(RawImage, a ?? PreferredBaseAddress );
             var program = new Program(new ByteProgramMemory(segmentMap), arch, platform);
             var sym = ImageSymbol.Procedure(
                 program.Architecture,

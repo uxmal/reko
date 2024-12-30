@@ -321,7 +321,7 @@ namespace Reko.Core
             var addrImportThunk = program.Platform.MakeAddressFromConstant(c, true);
             if (addrImportThunk is null)
                 return null;
-            if (!program.ImportReferences.TryGetValue(addrImportThunk, out var impref))
+            if (!program.ImportReferences.TryGetValue(addrImportThunk.Value, out var impref))
                 return null;
 
             if (impref.SymbolType == SymbolType.Procedure)

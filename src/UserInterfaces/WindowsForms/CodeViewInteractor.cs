@@ -295,11 +295,12 @@ namespace Reko.UserInterfaces.WindowsForms
             return true;
         }
 
-        private Address CodeView_GetAnchorAddress()
+        [Obsolete("", true)]
+        private Address? CodeView_GetAnchorAddress()
         {
             var pt = codeView.GetAnchorMiddlePoint();
             var tag = codeView.GetTagFromPoint(pt);
-            var addr = tag as Address;
+            var addr = tag as Address?;
             var proc = tag as Procedure;
 
             if (proc != null)
@@ -371,13 +372,13 @@ namespace Reko.UserInterfaces.WindowsForms
 
         void TextView_Navigate(object sender, EditorNavigationArgs e)
         {
-            var addr = e.Destination as Address;
+            var addr = e.Destination as Address?;
             var proc = e.Destination as Procedure;
 
             if (proc != null)
                 addr = proc.EntryAddress;
 
-            if (addr == null)
+            if (addr is null)
                 return;
 
             //UserNavigateToAddress(combinedCodeView.MixedCodeDataView.TopAddress, addr);

@@ -466,7 +466,7 @@ Eq_752: (fn Eq_754 (Eq_754))
 Eq_754: LPTOP_LEVEL_EXCEPTION_FILTER
 	T_754 (in lpTopLevelExceptionFilter @ 00401861 : LPTOP_LEVEL_EXCEPTION_FILTER)
 	T_755 (in 0<32> @ 00401861 : word32)
-	T_756 (in SetUnhandledExceptionFilter(null) @ 00401861 : LPTOP_LEVEL_EXCEPTION_FILTER)
+	T_756 (in SetUnhandledExceptionFilter(0x00000000<p32>) @ 00401861 : LPTOP_LEVEL_EXCEPTION_FILTER)
 Eq_759: (union "Eq_759" (bool u0) (byte u1))
 	T_759 (in eax_85 != 1<32> @ 0040185A : bool)
 Eq_762: (fn Eq_766 ((ptr32 Eq_764)))
@@ -490,7 +490,7 @@ Eq_786: LPCWSTR
 	T_786 (in lpModuleName @ 0040188D : LPCWSTR)
 	T_787 (in 0<32> @ 0040188D : word32)
 Eq_788: HMODULE
-	T_788 (in GetModuleHandleW(null) @ 0040188D : HMODULE)
+	T_788 (in GetModuleHandleW(0x00000000<p32>) @ 0040188D : HMODULE)
 	T_789 (in eax_6 @ 0040188D : Eq_788)
 	T_790 (in 0<32> @ 00401897 : word32)
 Eq_794: (union "Eq_794" (int32 u0) (word16 u1))
@@ -2814,7 +2814,7 @@ T_573: (in 0<32> @ 00401591 : word32)
   Class: Eq_569
   DataType: (ptr32 Eq_569)
   OrigDataType: word32
-T_574: (in eax_40 == null @ 00401591 : bool)
+T_574: (in eax_40 == 0x00000000<p32> @ 00401591 : bool)
   Class: Eq_574
   DataType: bool
   OrigDataType: bool
@@ -3542,7 +3542,7 @@ T_755: (in 0<32> @ 00401861 : word32)
   Class: Eq_754
   DataType: Eq_754
   OrigDataType: LPTOP_LEVEL_EXCEPTION_FILTER
-T_756: (in SetUnhandledExceptionFilter(null) @ 00401861 : LPTOP_LEVEL_EXCEPTION_FILTER)
+T_756: (in SetUnhandledExceptionFilter(0x00000000<p32>) @ 00401861 : LPTOP_LEVEL_EXCEPTION_FILTER)
   Class: Eq_754
   DataType: Eq_754
   OrigDataType: LPTOP_LEVEL_EXCEPTION_FILTER
@@ -3670,7 +3670,7 @@ T_787: (in 0<32> @ 0040188D : word32)
   Class: Eq_786
   DataType: Eq_786
   OrigDataType: LPCWSTR
-T_788: (in GetModuleHandleW(null) @ 0040188D : HMODULE)
+T_788: (in GetModuleHandleW(0x00000000<p32>) @ 0040188D : HMODULE)
   Class: Eq_788
   DataType: Eq_788
   OrigDataType: HMODULE
@@ -3682,7 +3682,7 @@ T_790: (in 0<32> @ 00401897 : word32)
   Class: Eq_788
   DataType: Eq_788
   OrigDataType: word32
-T_791: (in eax_6 != null @ 00401897 : bool)
+T_791: (in eax_6 != 0x00000000<p32> @ 00401897 : bool)
   Class: Eq_791
   DataType: bool
   OrigDataType: bool

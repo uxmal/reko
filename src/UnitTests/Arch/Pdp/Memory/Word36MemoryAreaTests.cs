@@ -85,7 +85,7 @@ namespace Reko.UnitTests.Arch.Pdp.Memory
         [Test]
         public void W36Mem_Dump()
         {
-            var mem = new Word36MemoryArea(new Address18(0x1234), new ulong[]
+            var mem = new Word36MemoryArea(Pdp10Architecture.Ptr18(0x1234), new ulong[]
             {
                 Pdp10Architecture.Ascii7("Hello"),
                 Pdp10Architecture.Ascii7(" worl"),
@@ -115,7 +115,7 @@ namespace Reko.UnitTests.Arch.Pdp.Memory
         [Test]
         public void W36Mem_Dump_offset_by_word()
         {
-            var mem = new Word36MemoryArea(new Address18(0x1234), new ulong[]
+            var mem = new Word36MemoryArea(Pdp10Architecture.Ptr18(0x1234), new ulong[]
             {
                 Pdp10Architecture.Ascii7("Hello"),
                 Pdp10Architecture.Ascii7(" worl"),

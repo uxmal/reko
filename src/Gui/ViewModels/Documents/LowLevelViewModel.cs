@@ -170,7 +170,7 @@ namespace Reko.Gui.ViewModels.Documents
             if (raisingSelectionChanged || this.Program is null || this.AnchorAddress is null || this.SelectedAddress is null)
                 return;
             this.raisingSelectionChanged = true;
-            var par = ProgramAddressRange.HalfOpenRange(this.Program, AnchorAddress, SelectedAddress);
+            var par = ProgramAddressRange.HalfOpenRange(this.Program, AnchorAddress.Value, SelectedAddress.Value);
             this.selAddrSvc.SelectedAddressRange = par;
             this.raisingSelectionChanged = false;
         }

@@ -16,9 +16,11 @@ Eq_1: (struct "Globals"
 		(C7 byte b00C7)
 		(C8 byte b00C8)
 		(C9 byte b00C9)
-		(CA byte b00CA)
-		(148 <unknown> t0148))
+		(CA byte b00CA))
 	globals_t (in globals : (ptr32 (struct "Globals")))
+Eq_3: (union "Eq_3" (ptr21 u0) (ptr32 u1))
+	T_3 (in 000148 @ 000144 : ptr21)
+	T_6 (in Stack[1<8>] @ 000144 : ptr32)
 Eq_7: (fn void (cu8, Eq_10, Eq_11))
 	T_7 (in fn00000E @ 000144 : ptr32)
 	T_8 (in signature of fn00000E @ 00000E : void)
@@ -59,7 +61,7 @@ Eq_187: (union "Eq_187" (word16 u0) ((ptr32 byte) u1))
 	T_187 (in FSR0 + 0<16> @ 000136 : word16)
 Eq_189: (union "Eq_189" (word16 u0) ((ptr32 byte) u1))
 	T_189 (in 1<16> @ 000136 : word16)
-Eq_192: (struct "Eq_192" 0001 (0 ptr32 ptr0000))
+Eq_192: (struct "Eq_192" 0001 (0 Eq_3 t0000))
 	T_192
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
@@ -70,10 +72,10 @@ T_2: (in TABLAT : cu8)
   Class: Eq_2
   DataType: cu8
   OrigDataType: byte
-T_3: (in 000148 @ 000144 : ptr32)
+T_3: (in 000148 @ 000144 : ptr21)
   Class: Eq_3
-  DataType: ptr32
-  OrigDataType: ptr32
+  DataType: ptr21
+  OrigDataType: ptr21
 T_4: (in Stack @ 000144 : (arr Eq_192))
   Class: Eq_4
   DataType: (ptr32 (arr Eq_192))
@@ -84,7 +86,7 @@ T_5: (in 1<8> @ 000144 : byte)
   OrigDataType: byte
 T_6: (in Stack[1<8>] @ 000144 : ptr32)
   Class: Eq_3
-  DataType: ptr32
+  DataType: Eq_3
   OrigDataType: ptr32
 T_7: (in fn00000E @ 000144 : ptr32)
   Class: Eq_7
@@ -848,8 +850,12 @@ typedef struct Globals {
 	byte b00C8;	// C8
 	byte b00C9;	// C9
 	byte b00CA;	// CA
-	<unknown> t0148;	// 148
 } Eq_1;
+
+typedef union Eq_3 {
+	ptr21 u0;
+	ptr32 u1;
+} Eq_3;
 
 typedef void (Eq_7)(cu8, Eq_10, Eq_11);
 
@@ -890,6 +896,6 @@ typedef union Eq_189 {
 } Eq_189;
 
 typedef struct Eq_192 {	// size: 1 1
-	ptr32 ptr0000;	// 0
+	Eq_3 t0000;	// 0
 } Eq_192;
 

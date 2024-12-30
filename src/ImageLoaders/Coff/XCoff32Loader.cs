@@ -131,7 +131,7 @@ namespace Reko.ImageLoaders.Coff
                 ptrToc = Constant.Word32(uEntryTocPtr);
                 return true;
             }
-            addrEntry = null!;
+            addrEntry = default;
             ptrToc = null!;
             return false;
         }

@@ -54,7 +54,7 @@ namespace Reko.Environments.Pdp10Env.FileFormats
         {
             var arch = new Pdp10Architecture(Services, "pdp10", new Dictionary<string, object>());
             var platform = new Pdp10Platform(Services, arch);
-            return LoadProgram(address!, arch, platform, new());
+            return LoadProgram(address ?? Pdp10Architecture.Ptr18(0), arch, platform, new());
         }
 
         public override Program LoadProgram(
@@ -77,7 +77,7 @@ namespace Reko.Environments.Pdp10Env.FileFormats
             {
                 var listener = Services.RequireService<IEventListener>();
                 listener.Info("Treating .dmp as a PDP-10 dump file");
-                addrLoad = new Address18((uint)Pdp10Architecture.OctalStringToWord("74"));
+                addrLoad = Pdp10Architecture.Ptr18((uint)Pdp10Architecture.OctalStringToWord("74"));
             }
             var mem = new Word36MemoryArea(addrLoad, words.ToArray());
             var seg = new ImageSegment("core", mem, AccessMode.ReadWriteExecute);
@@ -86,10 +86,10 @@ namespace Reko.Environments.Pdp10Env.FileFormats
             var program = new Program(memory, arch, platform);
 
             /// Start address is at address 0o120 (0x50)
-            if (arch.TryRead(mem, new Address18(0x50), PdpTypes.Word36, out var start))
+            if (arch.TryRead(mem, Pdp10Architecture.Ptr18(0x50), PdpTypes.Word36, out var start))
             {
                 var uStart = (uint) (start.ToUInt64() & ((1ul << 18) - 1));
-                var addrStart = new Address18(uStart);
+                var addrStart = Pdp10Architecture.Ptr18(uStart);
                 program.EntryPoints.Add(addrStart, ImageSymbol.Procedure(arch, addrStart, "_start"));
             }
             return program;

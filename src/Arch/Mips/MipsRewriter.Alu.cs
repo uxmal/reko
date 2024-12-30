@@ -198,6 +198,7 @@ namespace Reko.Arch.Mips
                     binder.EnsureRegister(opSrc.Base),
                     m.Int32(opSrc.IntOffset())));
         }
+
         private void RewriteLoad(MipsInstruction instr, PrimitiveType dtSmall, PrimitiveType? dtSmall64 = null)
         {
             var opSrc = RewriteOperand(instr.Operands[1]);
@@ -475,16 +476,6 @@ namespace Reko.Arch.Mips
             }
         }
 
-        private void RewriteMsub(MipsInstruction instr)
-        {
-            var op1 = RewriteOperand0(instr.Operands[0]);
-            var op2 = RewriteOperand0(instr.Operands[1]);
-            var dtProduct = PrimitiveType.Word64;
-            var hi_lo = binder.EnsureSequence(dtProduct, arch.hi, arch.lo);
-            m.Assign(hi_lo, m.ISub(hi_lo, m.IMul(dtProduct, op1, op2)));
-        }
-
-
         private void RewriteNor(MipsInstruction instr)
         {
             var opLeft = RewriteOperand0(instr.Operands[1]);
@@ -702,7 +693,7 @@ namespace Reko.Arch.Mips
         }
 
 
-        private void RewriteSub(MipsInstruction instr, PrimitiveType size)
+        private void RewriteSub(MipsInstruction instr)
         {
             var opLeft = RewriteOperand0(instr.Operands[1]);
             var opRight = RewriteOperand0(instr.Operands[2]);

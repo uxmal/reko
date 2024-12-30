@@ -2013,12 +2013,12 @@ word16 fn00009E18(word16 & r1Out, byte & r2lOut)
 	return r5_n;
 }
 
-int16 g_wFFFF9E34 = -1; // 9E34
-int16 g_wFFFF9E36 = -1; // 9E36
-int16 g_wFFFF9E38 = 787; // 9E38
-int16 g_wFFFF9E3A = 780; // 9E3A
-ci16 g_wFFFF9E3C = 0x02D0; // 9E3C
-ci16 g_wFFFF9E3E = 0x033B; // 9E3E
-uint16 g_wFFFF9E40 = 0x04; // 9E40
-word16 g_wFFFF9E7E = 100; // 9E7E
-ci16 g_wFFFF9E80 = 0x00; // 9E80
+int16 g_w9E34 = -1; // 9E34
+int16 g_w9E36 = -1; // 9E36
+int16 g_w9E38 = 787; // 9E38
+int16 g_w9E3A = 780; // 9E3A
+ci16 g_w9E3C = 0x02D0; // 9E3C
+ci16 g_w9E3E = 0x033B; // 9E3E
+uint16 g_w9E40 = 0x04; // 9E40
+word16 g_w9E7E = 100; // 9E7E
+ci16 g_w9E80 = 0x00; // 9E80

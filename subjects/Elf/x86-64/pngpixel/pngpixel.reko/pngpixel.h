@@ -1660,7 +1660,7 @@ T_341: (in CONVERT(2<i64>[CONVERT(eax_276, word32, uint64) * 3<64>], byte, word3
   Class: Eq_322
   DataType: word32
   OrigDataType: word32
-T_342: (in printf("INDEXED %u = %d %d %d\n", eax_276, (word32) null[(uint64) eax_276].b0000, (word32) ((Eq_730[]) 1<i64>)[(uint64) eax_276].b0000, (word32) ((Eq_732[]) 2<i64>)[(uint64) eax_276]) @ 0000000000401130 : int32)
+T_342: (in printf("INDEXED %u = %d %d %d\n", eax_276, (word32) 0x0000000000000000<p0>[(uint64) eax_276].b0000, (word32) ((Eq_730[]) 1<i64>)[(uint64) eax_276].b0000, (word32) ((Eq_732[]) 2<i64>)[(uint64) eax_276]) @ 0000000000401130 : int32)
   Class: Eq_342
   DataType: int32
   OrigDataType: int32
@@ -1813,7 +1813,7 @@ T_379: (in CONVERT(2<i64>[CONVERT(eax_276, word32, uint64) * 3<64>], byte, word3
   Class: Eq_359
   DataType: word32
   OrigDataType: word32
-T_380: (in printf("INDEXED %u = %d %d %d %d\n", eax_276, (word32) null[(uint64) eax_276].b0000, (word32) ((Eq_738[]) 1<i64>)[(uint64) eax_276].b0000, (word32) ((Eq_740[]) 2<i64>)[(uint64) eax_276].b0000, esi_474) @ 00000000004010CA : int32)
+T_380: (in printf("INDEXED %u = %d %d %d %d\n", eax_276, (word32) 0x0000000000000000<p0>[(uint64) eax_276].b0000, (word32) ((Eq_738[]) 1<i64>)[(uint64) eax_276].b0000, (word32) ((Eq_740[]) 2<i64>)[(uint64) eax_276].b0000, esi_474) @ 00000000004010CA : int32)
   Class: Eq_380
   DataType: int32
   OrigDataType: int32
@@ -2029,7 +2029,7 @@ T_433: (in 0<64> @ 0000000000401397 : word64)
   Class: Eq_431
   DataType: (ptr64 Eq_431)
   OrigDataType: word64
-T_434: (in rax_52 == null @ 0000000000401397 : bool)
+T_434: (in rax_52 == 0x0000000000000000<p64> @ 0000000000401397 : bool)
   Class: Eq_434
   DataType: bool
   OrigDataType: bool
@@ -3142,7 +3142,7 @@ T_711: (in 0000000000601E00 @ 00000000004017A1 : ptr64)
   Class: Eq_711
   DataType: (ptr64 (arr (ptr64 code)))
   OrigDataType: (union ((ptr64 (arr Eq_742)) u1) ((ptr64 (arr Eq_742)) u0))
-T_712: (in 0x601E08<u64> - g_a601E00 @ 00000000004017A1 : word64)
+T_712: (in 0x0000000000601E08<p64> - g_a601E00 @ 00000000004017A1 : word64)
   Class: Eq_712
   DataType: int64
   OrigDataType: int64

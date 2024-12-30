@@ -51,7 +51,7 @@ namespace Reko.ImageLoaders.Nro
         {
             get
             {
-                return new Address64(0x80000000);
+                return Address.Ptr64(0x80000000);
             }
 
             set

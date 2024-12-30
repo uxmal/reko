@@ -87,7 +87,7 @@ namespace Reko.Scanning
             {
                 if (op is BackwalkError err)
                 {
-                    return PostError(err.ErrorMessage, addrFrom, bw.VectorAddress!);
+                    return PostError(err.ErrorMessage, addrFrom, bw.VectorAddress ?? default);
                 }
                 if (op is BackwalkDereference deref)
                 {
@@ -96,10 +96,10 @@ namespace Reko.Scanning
                 limit = op.Apply(limit);
             }
             if (limit == 0)
-                return PostError("Unable to determine limit", addrFrom, bw.VectorAddress!);
+                return PostError("Unable to determine limit", addrFrom, bw.VectorAddress ?? default);
 
             return BuildTable(
-                bw.VectorAddress!, 
+                bw.VectorAddress!.Value, 
                 limit, 
                 permutation!,
                 (bw.Stride == 1 || bw.Stride == 0) && bw.JumpSize > 1 
@@ -154,7 +154,7 @@ namespace Reko.Scanning
                         var addr = arch.ReadCodeAddress(0, rdr, state);
                         if (addr is not null)
                         {
-                            vector.Add(addr);
+                            vector.Add(addr.Value);
                         }
                     }
                 }
@@ -168,7 +168,7 @@ namespace Reko.Scanning
                 for (int i = 0; i < cItems; ++i)
                 {
                     var entryAddr = program.Architecture.ReadCodeAddress(stride, rdr, state);
-                    if (entryAddr is null || !memory.IsValidAddress(entryAddr))
+                    if (entryAddr is null || !memory.IsValidAddress(entryAddr.Value))
                     {
                         if (services != null)
                         {
@@ -179,7 +179,7 @@ namespace Reko.Scanning
                         }
                         break;
                     }
-                    vector.Add(entryAddr);
+                    vector.Add(entryAddr.Value);
                 }
                 TableByteSize = limit;
             }
@@ -239,7 +239,7 @@ namespace Reko.Scanning
             return program.Memory.IsValidAddress(addr);
         }
 
-        public IEnumerable<(Address?, Instruction?)> GetBlockInstructions(Block block)
+        public IEnumerable<(Address, Instruction?)> GetBlockInstructions(Block block)
         {
             return block.Statements.Select(s => (s.Address, s.Instruction))!;
         }

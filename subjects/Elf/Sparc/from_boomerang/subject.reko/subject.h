@@ -188,7 +188,7 @@ T_33: (in 0<32> @ 00010A00 : word32)
   Class: Eq_2
   DataType: (ptr32 Eq_2)
   OrigDataType: word32
-T_34: (in g1 == null @ 00010A00 : bool)
+T_34: (in g1 == 0x00000000<p32> @ 00010A00 : bool)
   Class: Eq_34
   DataType: bool
   OrigDataType: bool
@@ -770,7 +770,7 @@ T_178: (in 0<32> @ 00010CA0 : word32)
   Class: Eq_176
   DataType: (ptr32 code)
   OrigDataType: word32
-T_179: (in l0_7 == null @ 00010CA0 : bool)
+T_179: (in l0_7 == 0x00000000<p32> @ 00010CA0 : bool)
   Class: Eq_179
   DataType: bool
   OrigDataType: bool
@@ -958,7 +958,7 @@ T_225: (in 0<32> @ 00010CD8 : word32)
   Class: Eq_223
   DataType: (ptr32 code)
   OrigDataType: word32
-T_226: (in l0_7 == null @ 00010CD8 : bool)
+T_226: (in l0_7 == 0x00000000<p32> @ 00010CD8 : bool)
   Class: Eq_226
   DataType: bool
   OrigDataType: bool

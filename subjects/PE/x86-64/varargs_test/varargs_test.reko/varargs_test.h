@@ -387,10 +387,10 @@ Eq_398: (fn Eq_400 (Eq_400))
 Eq_400: LPTOP_LEVEL_EXCEPTION_FILTER
 	T_400 (in lpTopLevelExceptionFilter @ 0000000140001453 : LPTOP_LEVEL_EXCEPTION_FILTER)
 	T_401 (in 0<u64> @ 0000000140001453 : uint64)
-	T_402 (in SetUnhandledExceptionFilter(null) @ 0000000140001453 : LPTOP_LEVEL_EXCEPTION_FILTER)
+	T_402 (in SetUnhandledExceptionFilter(0x0000000000000000<p64>) @ 0000000140001453 : LPTOP_LEVEL_EXCEPTION_FILTER)
 	T_967 (in lpTopLevelExceptionFilter @ 0000000140001A89 : LPTOP_LEVEL_EXCEPTION_FILTER)
 	T_968 (in 0<u64> @ 0000000140001A89 : uint64)
-	T_969 (in SetUnhandledExceptionFilter(null) @ 0000000140001A89 : LPTOP_LEVEL_EXCEPTION_FILTER)
+	T_969 (in SetUnhandledExceptionFilter(0x0000000000000000<p64>) @ 0000000140001A89 : LPTOP_LEVEL_EXCEPTION_FILTER)
 	T_1054 (in lpTopLevelExceptionFilter @ 0000000140001B1B : LPTOP_LEVEL_EXCEPTION_FILTER)
 	T_1055 (in 0000000140001B24 @ 0000000140001B1B : ptr64)
 	T_1056 (in SetUnhandledExceptionFilter(&g_t40001B24) @ 0000000140001B1B : LPTOP_LEVEL_EXCEPTION_FILTER)
@@ -453,9 +453,9 @@ Eq_479: (fn word64 (word32, word32, Eq_100, Eq_483, ptr64, ptr64, uint64, word64
 	T_479 (in KERNEL32.dll!RtlVirtualUnwind @ 00000001400015AC : ptr64)
 Eq_483: PVOID
 	T_483 (in rax_28 @ 00000001400015AC : Eq_483)
-	T_513 (in RtlLookupFunctionEntry(rsi_15, &tArg08, null) @ 0000000140001575 : PVOID)
+	T_513 (in RtlLookupFunctionEntry(rsi_15, &tArg08, 0x0000000000000000<p64>) @ 0000000140001575 : PVOID)
 	T_514 (in 0<64> @ 000000014000157E : word64)
-	T_913 (in RtlLookupFunctionEntry(rbx_30, &tArg10, null) @ 00000001400019D3 : PVOID)
+	T_913 (in RtlLookupFunctionEntry(rbx_30, &tArg10, 0x0000000000000000<p64>) @ 00000001400019D3 : PVOID)
 	T_914 (in rax_35 @ 00000001400019D3 : Eq_483)
 	T_915 (in 0<64> @ 00000001400019DC : word64)
 Eq_490: ULONGLONG
@@ -650,7 +650,7 @@ Eq_1020: LPCWSTR
 	T_1020 (in lpModuleName @ 0000000140001AC6 : LPCWSTR)
 	T_1021 (in 0<u64> @ 0000000140001AC6 : uint64)
 Eq_1022: HMODULE
-	T_1022 (in GetModuleHandleW(null) @ 0000000140001AC6 : HMODULE)
+	T_1022 (in GetModuleHandleW(0x0000000000000000<p64>) @ 0000000140001AC6 : HMODULE)
 	T_1023 (in rax_6 @ 0000000140001AC6 : Eq_1022)
 	T_1024 (in 0<64> @ 0000000140001AD2 : word64)
 Eq_1028: (union "Eq_1028" (int32 u0) (word16 u1))
@@ -1335,7 +1335,7 @@ T_148: (in 0000000140001BA8 @ 0000000140001219 : ptr64)
   Class: Eq_147
   DataType: ptr64
   OrigDataType: ptr64
-T_149: (in fn0000000140001854(0x140001BA8<u64>) @ 0000000140001219 : void)
+T_149: (in fn0000000140001854(0x0000000140001BA8<p64>) @ 0000000140001219 : void)
   Class: Eq_149
   DataType: void
   OrigDataType: void
@@ -1983,7 +1983,7 @@ T_310: (in 0<64> @ 0000000140001371 : word64)
   Class: Eq_309
   DataType: (ptr64 code)
   OrigDataType: word64
-T_311: (in *rax_133 == null @ 0000000140001371 : bool)
+T_311: (in *rax_133 == 0x0000000000000000<p64> @ 0000000140001371 : bool)
   Class: Eq_311
   DataType: bool
   OrigDataType: bool
@@ -2083,7 +2083,7 @@ T_335: (in 0<64> @ 00000001400013A1 : word64)
   Class: Eq_309
   DataType: (ptr64 code)
   OrigDataType: word64
-T_336: (in *rax_133 == null @ 00000001400013A1 : bool)
+T_336: (in *rax_133 == 0x0000000000000000<p64> @ 00000001400013A1 : bool)
   Class: Eq_336
   DataType: bool
   OrigDataType: bool
@@ -2347,11 +2347,11 @@ T_401: (in 0<u64> @ 0000000140001453 : uint64)
   Class: Eq_400
   DataType: Eq_400
   OrigDataType: LPTOP_LEVEL_EXCEPTION_FILTER
-T_402: (in SetUnhandledExceptionFilter(null) @ 0000000140001453 : LPTOP_LEVEL_EXCEPTION_FILTER)
+T_402: (in SetUnhandledExceptionFilter(0x0000000000000000<p64>) @ 0000000140001453 : LPTOP_LEVEL_EXCEPTION_FILTER)
   Class: Eq_400
   DataType: Eq_400
   OrigDataType: LPTOP_LEVEL_EXCEPTION_FILTER
-T_403: (in SLICE(SetUnhandledExceptionFilter(null), word32, 32) @ 0000000140001453 : word32)
+T_403: (in SLICE(SetUnhandledExceptionFilter(0x0000000000000000<p64>), word32, 32) @ 0000000140001453 : word32)
   Class: Eq_403
   DataType: word32
   OrigDataType: word32
@@ -2791,7 +2791,7 @@ T_512: (in 0<u64> @ 0000000140001575 : uint64)
   Class: Eq_509
   DataType: Eq_509
   OrigDataType: PULONGLONG
-T_513: (in RtlLookupFunctionEntry(rsi_15, &tArg08, null) @ 0000000140001575 : PVOID)
+T_513: (in RtlLookupFunctionEntry(rsi_15, &tArg08, 0x0000000000000000<p64>) @ 0000000140001575 : PVOID)
   Class: Eq_483
   DataType: Eq_483
   OrigDataType: PVOID
@@ -2799,7 +2799,7 @@ T_514: (in 0<64> @ 000000014000157E : word64)
   Class: Eq_483
   DataType: Eq_483
   OrigDataType: word64
-T_515: (in rax_28 == null @ 000000014000157E : bool)
+T_515: (in rax_28 == 0x0000000000000000<p64> @ 000000014000157E : bool)
   Class: Eq_515
   DataType: bool
   OrigDataType: bool
@@ -3587,7 +3587,7 @@ T_711: (in 0<64> @ 0000000140001792 : word64)
   Class: Eq_684
   DataType: (ptr64 Eq_684)
   OrigDataType: word64
-T_712: (in rdx_30 != null @ 0000000140001792 : bool)
+T_712: (in rdx_30 != 0x0000000000000000<p64> @ 0000000140001792 : bool)
   Class: Eq_712
   DataType: bool
   OrigDataType: bool
@@ -4391,7 +4391,7 @@ T_912: (in 0<u64> @ 00000001400019D3 : uint64)
   Class: Eq_509
   DataType: Eq_509
   OrigDataType: PULONGLONG
-T_913: (in RtlLookupFunctionEntry(rbx_30, &tArg10, null) @ 00000001400019D3 : PVOID)
+T_913: (in RtlLookupFunctionEntry(rbx_30, &tArg10, 0x0000000000000000<p64>) @ 00000001400019D3 : PVOID)
   Class: Eq_483
   DataType: Eq_483
   OrigDataType: PVOID
@@ -4403,7 +4403,7 @@ T_915: (in 0<64> @ 00000001400019DC : word64)
   Class: Eq_483
   DataType: Eq_483
   OrigDataType: word64
-T_916: (in rax_35 == null @ 00000001400019DC : bool)
+T_916: (in rax_35 == 0x0000000000000000<p64> @ 00000001400019DC : bool)
   Class: Eq_916
   DataType: bool
   OrigDataType: bool
@@ -4615,11 +4615,11 @@ T_968: (in 0<u64> @ 0000000140001A89 : uint64)
   Class: Eq_400
   DataType: Eq_400
   OrigDataType: LPTOP_LEVEL_EXCEPTION_FILTER
-T_969: (in SetUnhandledExceptionFilter(null) @ 0000000140001A89 : LPTOP_LEVEL_EXCEPTION_FILTER)
+T_969: (in SetUnhandledExceptionFilter(0x0000000000000000<p64>) @ 0000000140001A89 : LPTOP_LEVEL_EXCEPTION_FILTER)
   Class: Eq_400
   DataType: Eq_400
   OrigDataType: LPTOP_LEVEL_EXCEPTION_FILTER
-T_970: (in SLICE(SetUnhandledExceptionFilter(null), word32, 32) @ 0000000140001A89 : word32)
+T_970: (in SLICE(SetUnhandledExceptionFilter(0x0000000000000000<p64>), word32, 32) @ 0000000140001A89 : word32)
   Class: Eq_970
   DataType: word32
   OrigDataType: word32
@@ -4827,7 +4827,7 @@ T_1021: (in 0<u64> @ 0000000140001AC6 : uint64)
   Class: Eq_1020
   DataType: Eq_1020
   OrigDataType: LPCWSTR
-T_1022: (in GetModuleHandleW(null) @ 0000000140001AC6 : HMODULE)
+T_1022: (in GetModuleHandleW(0x0000000000000000<p64>) @ 0000000140001AC6 : HMODULE)
   Class: Eq_1022
   DataType: Eq_1022
   OrigDataType: HMODULE
@@ -4839,7 +4839,7 @@ T_1024: (in 0<64> @ 0000000140001AD2 : word64)
   Class: Eq_1022
   DataType: Eq_1022
   OrigDataType: word64
-T_1025: (in rax_6 != null @ 0000000140001AD2 : bool)
+T_1025: (in rax_6 != 0x0000000000000000<p64> @ 0000000140001AD2 : bool)
   Class: Eq_1025
   DataType: bool
   OrigDataType: bool

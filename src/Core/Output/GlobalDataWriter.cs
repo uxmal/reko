@@ -329,7 +329,7 @@ namespace Reko.Core.Output
                 return false;
             var addr = program.Platform.MakeAddressFromConstant(c, false);
             // Check if it is pointer to function
-            if (addr is not null && program.Procedures.TryGetValue(addr, out Procedure proc))
+            if (addr is not null && program.Procedures.TryGetValue(addr.Value, out Procedure proc))
             {
                 codeFormatter.InnerFormatter.WriteHyperlink(proc.Name, proc);
                 return true;

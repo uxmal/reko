@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
             PICProcessorModel.GetModel(PIC16BasicName).CreateMemoryDescriptor();
             var dcr = PICMemoryDescriptor.GetDCR("CONFIG");
             Assert.IsNotNull(dcr);
-            Assert.AreEqual(Address.Ptr32(0x2007), dcr.Address);
+            Assert.AreEqual(0x2007, dcr.Address.ToLinear());
 
             var s = PICMemoryDescriptor.RenderDeviceConfigRegister(dcr, 0xFFFF);
             Assert.AreEqual("FOSC=EXTRC, WDTE=ON, PWRTE=OFF, CP=OFF", s);
@@ -47,7 +47,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
             var dcf = PICMemoryDescriptor.GetDCRField("WDTE");
             Assert.AreEqual("WDTE", dcf.Name);
             Assert.IsNotNull(dcf);
-            Assert.AreSame(dcr.Address, dcf.RegAddress);
+            Assert.AreEqual(dcr.Address.ToLinear(), dcf.RegAddress.ToLinear());
         }
 
         [Test]
@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
             PICProcessorModel.GetModel(PIC16EnhancedName).CreateMemoryDescriptor();
             var dcr = PICMemoryDescriptor.GetDCR("CONFIG1");
             Assert.IsNotNull(dcr);
-            Assert.AreEqual(Address.Ptr32(0x8007), dcr.Address);
+            Assert.AreEqual(0x8007, dcr.Address.ToLinear());
 
             var s = PICMemoryDescriptor.RenderDeviceConfigRegister(dcr, 0xFFFF);
             Assert.AreEqual("FOSC=ECH, WDTE=ON, PWRTE=OFF, MCLRE=ON, CP=OFF, BOREN=ON, CLKOUTEN=OFF, IESO=ON, FCMEN=ON", s);
@@ -64,7 +64,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
             var dcf = PICMemoryDescriptor.GetDCRField("WDTE");
             Assert.AreEqual("WDTE", dcf.Name);
             Assert.IsNotNull(dcf);
-            Assert.AreSame(dcr.Address, dcf.RegAddress);
+            Assert.AreEqual(dcr.Address.ToLinear(), dcf.RegAddress.ToLinear());
         }
 
         [Test]

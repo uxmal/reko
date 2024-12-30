@@ -1,4 +1,4 @@
-﻿namespace Reko.WindowsItp
+namespace Reko.WindowsItp
 {
     partial class MemoryControlDialog
     {
@@ -55,12 +55,10 @@
             this.memoryControl1.ImageMap = null;
             this.memoryControl1.Location = new System.Drawing.Point(0, 71);
             this.memoryControl1.Name = "memoryControl1";
-            this.memoryControl1.SelectedAddress = null;
             this.memoryControl1.Services = null;
             this.memoryControl1.Size = new System.Drawing.Size(404, 124);
             this.memoryControl1.TabIndex = 0;
             this.memoryControl1.Text = "memoryControl1";
-            this.memoryControl1.TopAddress = null;
             this.memoryControl1.WordSize = ((uint)(1u));
             // 
             // imageMapView1

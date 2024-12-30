@@ -127,11 +127,15 @@ Options:
                 var sc = new ServiceContainer();
                 sc.AddService<IConfigurationService>(new StubConfigurationService());
                 var loader = new HunkLoader(sc, ImageLocation.FromUri(scan_file), hunkBytes);
-                Address addr = null;
+                Address? addr = null;
                 if (args["--base-address"] == null ||
-                    !Address.TryParse32((string)args["--base-address"].Value, out addr))
+                    !Address.TryParse32((string)args["--base-address"].Value, out var a))
                 {
                     addr = Address.Ptr32(0);
+                }
+                else
+                {
+                    addr = a;
                 }
                 var result = loader.Load(addr);
                 // ignore non hunk files

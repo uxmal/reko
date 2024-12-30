@@ -541,14 +541,14 @@ namespace Reko
                     var sser = program.CreateProcedureSerializer();
                     if (program.Architecture.TryParseAddress(sc.InstructionAddress, out var addr))
                     {
-                        return new KeyValuePair<Address?, FunctionType?>(
+                        return new KeyValuePair<Address, FunctionType?>(
                             addr,
                             sser.Deserialize(sc.Signature, program.Architecture.CreateFrame()));
                     }
                     else
-                        return new KeyValuePair<Address?, FunctionType?>(null, null);
+                        return new KeyValuePair<Address, FunctionType?>(default, null);
                 })
-                .Where(item => item.Key is not null)
+                .Where(item => item.Value is not null)
                 .ToDictionary(item => item.Key!, item => item.Value!);
         }
 

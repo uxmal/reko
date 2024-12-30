@@ -157,7 +157,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             };
         }
 
-        protected override Address GetMainFunctionAddress(IProcessorArchitecture arch, ByteMemoryArea mem, int offset, StartPattern sPattern)
+        protected override Address? GetMainFunctionAddress(IProcessorArchitecture arch, ByteMemoryArea mem, int offset, StartPattern sPattern)
         {
             if (sPattern.MainAddressOffset > 0)
             {

@@ -555,9 +555,10 @@ namespace Reko.Scanning
             var site = OnBeforeCall(stackReg!, call.ReturnAddressSize);
             FunctionType? sig;
             ProcedureCharacteristics? chr = null;
-            Address? addr = CallTargetAsAddress(call);
-            if (addr is not null)
+            Address? a = CallTargetAsAddress(call);
+            if (a is not null)
             {
+                Address addr = a.Value;
                 // Some image loaders generate import symbols at addresses
                 // outside of the program image. 
                 var impProc = scanner.GetImportedProcedure(this.arch, addr, this.ric!.Address);
@@ -996,7 +997,7 @@ namespace Reko.Scanning
         public bool ProcessIndirectControlTransfer(Address addrSwitch, RtlTransfer xfer)
         {
             List<Address> vector;
-            ImageMapVectorTable imgVector;
+            ImageMapVectorTable? imgVector;
             Expression switchExp;
             var eventListener = this.scanner.Services.RequireService<IDecompilerEventListener>();
             if (program.User.IndirectJumps.TryGetValue(addrSwitch, out var indJump))
@@ -1027,11 +1028,8 @@ namespace Reko.Scanning
                 var idIndex = this.frame!.CreateTemporary(te.Index!.DataType);
                 InsertSwitchIndexPreservingStatement(te, idIndex);
 
-                imgVector = new ImageMapVectorTable(
-                    null!, // bw.VectorAddress,
-                    te.Targets!.ToArray(),
-                    4); // builder.TableByteSize);
-                vector = te.Targets;
+                imgVector = null;
+                vector = te.Targets!;
                 switchExp = idIndex;
             }
 
@@ -1059,7 +1057,7 @@ namespace Reko.Scanning
                 var sw = new SwitchInstruction(switchExp, jumpDests.ToArray());
                 Emit(sw);
             }
-            if (imgVector.Address != null)
+            if (imgVector is not null)
             {
                 if (imgVector.Size > 0)
                 {
@@ -1079,9 +1077,10 @@ namespace Reko.Scanning
         /// </summary>
         public void InsertSwitchIndexPreservingStatement(TableExtent te, Identifier idIndex)
         {
-            var addr = te.GuardInstrAddress!;
-            if (addr is null)
+            var a = te.GuardInstrAddress!;
+            if (a is null)
                 return;
+            var addr = a.Value;
             var block = scanner.FindContainingBlock(addr);
             if (block is null)
             {
@@ -1268,7 +1267,7 @@ namespace Reko.Scanning
                 return null;
             if (mem.EffectiveAddress.DataType.Size != this.program.Platform.PointerType.Size)
                 return null;
-            if (!program.TryInterpretAsAddress(mem.EffectiveAddress, true, out Address? addrTarget))
+            if (!program.TryInterpretAsAddress(mem.EffectiveAddress, true, out Address addrTarget))
                 return null;
             var impEp = scanner.GetImportedProcedure(this.arch, addrTarget, ric!.Address);
             //if (impEp != null)

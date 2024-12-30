@@ -171,13 +171,14 @@ namespace Reko.Scanning
             var vector = values.Values
                 .Select(ForceToAddress)
                 .TakeWhile(IsValidJumpTarget)
+                .Select(a => a!.Value)
                 .Take(2000)             // Arbitrary limit
                 .ToList()!;
             if (vector.Count == 0)
                 return null;
             return new TableExtent
             {
-                Targets = vector!,
+                Targets = vector,
                 Accesses = accesses,
                 Index = index,
                 GuardInstrAddress = this.GuardInstrAddress,
@@ -188,7 +189,7 @@ namespace Reko.Scanning
         {
             if (addr is null)
                 return false;
-            return host.Program.Memory.IsExecutableAddress(addr);
+            return host.Program.Memory.IsExecutableAddress(addr.Value);
         }
 
         private Address? ForceToAddress(Expression arg)

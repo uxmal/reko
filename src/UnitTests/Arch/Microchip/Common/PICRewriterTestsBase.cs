@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ComponentModel.Design;
 using Reko.Core.Memory;
+using Reko.Core.Types;
 
 namespace Reko.UnitTests.Arch.Microchip.Common
 {
@@ -36,7 +37,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
     {
         protected IPICProcessorModel picModel;
         protected PICArchitecture arch;
-        protected Address baseAddr = PICProgAddress.Ptr(0x200);
+        protected Address baseAddr = Address.Create(PICProgAddress.PointerType, 0x200);
         protected ByteMemoryArea bmem;
 
         public override IProcessorArchitecture Architecture => arch;

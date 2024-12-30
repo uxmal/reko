@@ -21,12 +21,6 @@
 using Reko.Core;
 using Reko.Gui.Controls;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Reko.UserInterfaces.WindowsForms.Controls
@@ -34,7 +28,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
     /// <summary>
     /// Provides a unified view of Memory and Disassembly.
     /// </summary>
-    public partial class LowLevelView : UserControl, INavigableControl<Address>
+    public partial class LowLevelView : UserControl, INavigableControl
     {
         ITextBox txtAddressWrapped;
         IButton btnGoWrapped;
@@ -43,7 +37,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         IComboBox ddlVisualizerWrapped;
         IComboBox ddlArchitectureWrapped;
         IComboBox ddlModelWrapped;
-        Address addrCurrent;
+        Address? addrCurrent;
 
         public LowLevelView()
         {
@@ -89,17 +83,17 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         public VisualizerControl VisualizerControl { get { return this.visualizerControl; } }
 
         public IComboBox VisualizerList { get { return ddlVisualizerWrapped; } }
-        IButton INavigableControl<Address>.BackButton { get { return btnBackWrapped; } }
-        IButton INavigableControl<Address>.ForwardButton { get { return btnFwdWrapped; } }
+        IButton INavigableControl.BackButton { get { return btnBackWrapped; } }
+        IButton INavigableControl.ForwardButton { get { return btnFwdWrapped; } }
 
         public IComboBox ToolbarArchitecture => ddlArchitectureWrapped;
 
-        public Address CurrentAddress
+        public Address? CurrentAddress
         {
             get { return addrCurrent; }
             set
             {
-                if (Address.Compare(addrCurrent, value) == 0)
+                if (addrCurrent is not null && addrCurrent.Value == value)
                     return;
                 addrCurrent = value;
                 CurrentAddressChanged?.Invoke(this, EventArgs.Empty);

@@ -191,7 +191,7 @@ Eq_159: PyObject
 	T_159 (in ptrArg10 @ 10001183 : (ptr32 PyObject))
 	T_164 (in 0<32> @ 10001183 : word32)
 Eq_166: PyObject
-	T_166 (in Py_InitModule4("pySample", methods, null, null, 0x3EF<32>) @ 10001183 : (ptr32 PyObject))
+	T_166 (in Py_InitModule4("pySample", methods, 0x00000000<p32>, 0x00000000<p32>, 0x3EF<32>) @ 10001183 : (ptr32 PyObject))
 Eq_168: HMODULE
 	T_168 (in dwArg04 @ 1000118C : Eq_168)
 	T_437 (in Mem7[ebp_13 + 8<i32>:word32] @ 10001398 : word32)
@@ -637,7 +637,7 @@ T_18: (in 0<32> @ 10001021 : word32)
   Class: Eq_2
   DataType: (ptr32 Eq_2)
   OrigDataType: word32
-T_19: (in eax_17 != null @ 10001021 : bool)
+T_19: (in eax_17 != 0x00000000<p32> @ 10001021 : bool)
   Class: Eq_19
   DataType: bool
   OrigDataType: bool
@@ -757,7 +757,7 @@ T_48: (in 0<32> @ 10001072 : word32)
   Class: Eq_2
   DataType: (ptr32 Eq_2)
   OrigDataType: word32
-T_49: (in eax_17 != null @ 10001072 : bool)
+T_49: (in eax_17 != 0x00000000<p32> @ 10001072 : bool)
   Class: Eq_49
   DataType: bool
   OrigDataType: bool
@@ -877,7 +877,7 @@ T_78: (in 0<32> @ 100010C2 : word32)
   Class: Eq_2
   DataType: (ptr32 Eq_2)
   OrigDataType: word32
-T_79: (in eax_17 != null @ 100010C2 : bool)
+T_79: (in eax_17 != 0x00000000<p32> @ 100010C2 : bool)
   Class: Eq_79
   DataType: bool
   OrigDataType: bool
@@ -1001,7 +1001,7 @@ T_109: (in 0<32> @ 10001112 : word32)
   Class: Eq_2
   DataType: (ptr32 Eq_2)
   OrigDataType: word32
-T_110: (in eax_17 != null @ 10001112 : bool)
+T_110: (in eax_17 != 0x00000000<p32> @ 10001112 : bool)
   Class: Eq_110
   DataType: bool
   OrigDataType: bool
@@ -1121,7 +1121,7 @@ T_139: (in 0<32> @ 10001155 : word32)
   Class: Eq_128
   DataType: (ptr32 Eq_128)
   OrigDataType: word32
-T_140: (in eax_10 != null @ 10001155 : bool)
+T_140: (in eax_10 != 0x00000000<p32> @ 10001155 : bool)
   Class: Eq_140
   DataType: bool
   OrigDataType: bool
@@ -1225,7 +1225,7 @@ T_165: (in 0x3EF<32> @ 10001183 : word32)
   Class: Eq_160
   DataType: int32
   OrigDataType: int32
-T_166: (in Py_InitModule4("pySample", methods, null, null, 0x3EF<32>) @ 10001183 : (ptr32 PyObject))
+T_166: (in Py_InitModule4("pySample", methods, 0x00000000<p32>, 0x00000000<p32>, 0x3EF<32>) @ 10001183 : (ptr32 PyObject))
   Class: Eq_166
   DataType: (ptr32 Eq_166)
   OrigDataType: (ptr32 PyObject)
@@ -1593,7 +1593,7 @@ T_257: (in 0<32> @ 10001339 : word32)
   Class: Eq_252
   DataType: (ptr32 word32)
   OrigDataType: word32
-T_258: (in eax_71 == null @ 10001339 : bool)
+T_258: (in eax_71 == 0x00000000<p32> @ 10001339 : bool)
   Class: Eq_258
   DataType: bool
   OrigDataType: bool
@@ -1997,7 +1997,7 @@ T_358: (in 0<32> @ 1000134C : word32)
   Class: Eq_356
   DataType: (ptr32 code)
   OrigDataType: word32
-T_359: (in eax_92 == null @ 1000134C : bool)
+T_359: (in eax_92 == 0x00000000<p32> @ 1000134C : bool)
   Class: Eq_359
   DataType: bool
   OrigDataType: bool
@@ -2105,7 +2105,7 @@ T_385: (in 0<32> @ 100012BD : word32)
   Class: Eq_384
   DataType: (ptr32 code)
   OrigDataType: word32
-T_386: (in g_ptr100033B8 == null @ 100012BD : bool)
+T_386: (in g_ptr100033B8 == 0x00000000<p32> @ 100012BD : bool)
   Class: Eq_386
   DataType: bool
   OrigDataType: bool
@@ -3785,7 +3785,7 @@ T_805: (in 0<32> @ 10001772 : word32)
   Class: Eq_803
   DataType: (ptr32 Eq_803)
   OrigDataType: word32
-T_806: (in eax_45 == null @ 10001772 : bool)
+T_806: (in eax_45 == 0x00000000<p32> @ 10001772 : bool)
   Class: Eq_806
   DataType: bool
   OrigDataType: bool

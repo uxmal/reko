@@ -630,9 +630,10 @@ namespace Reko.Arch.X86
             //$BUG: what about 32-bit code?
             if (!dasm.TryReadLeUInt16(out ushort seg))
                 return false;
-            var addr = dasm.mode.CreateSegmentedAddress(seg, off);
-            if (addr is null)
+            var a = dasm.mode.CreateSegmentedAddress(seg, off);
+            if (a is null)
                 return false;
+            var addr = a.Value;
             addr.DataType = PrimitiveType.SegPtr32; //$BUG: in 32-bit code this is SegPtr48
             dasm.decodingContext.ops.Add(addr);
             return true;

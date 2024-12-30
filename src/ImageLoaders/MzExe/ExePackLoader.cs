@@ -98,12 +98,13 @@ namespace Reko.ImageLoaders.MzExe
             return (exe.e_cparHeader + exe.e_cs) * 0x10 + exe.e_ip;
         }
 
-        public override Program LoadProgram(Address? addr)
+        public override Program LoadProgram(Address? a)
         {
+            var addr = a!.Value;
             byte[] abC = RawImage;
             byte[] abU = new byte[cpUncompressed * 0x10U + ExeImageLoader.CbPsp];
             Array.Copy(abC, exeHdrSize, abU, ExeImageLoader.CbPsp, abC.Length - exeHdrSize);
-            imgU = new ByteMemoryArea(addr!, abU);
+            imgU = new ByteMemoryArea(addr, abU);
 
             uint SI = hdrOffset - 1;
             while (abC[SI] == 0xFF)

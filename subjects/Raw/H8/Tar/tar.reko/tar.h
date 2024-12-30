@@ -20353,7 +20353,7 @@ T_4932: (in 0000 @ 00009B4C : ptr16)
   Class: Eq_4932
   DataType: (ptr16 word16)
   OrigDataType: (ptr16 (struct (0 T_4933 t0000)))
-T_4933: (in Mem109[null:word16] @ 00009B4C : word16)
+T_4933: (in Mem109[0x0000<p16>:word16] @ 00009B4C : word16)
   Class: Eq_4933
   DataType: word16
   OrigDataType: word16

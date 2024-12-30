@@ -73,10 +73,10 @@ namespace Reko.UnitTests.Core.Collections
             }
         }
 
-        private Address CreateImageMapItem(ImageMap map, DataType dt, Address addr = null)
+        private Address CreateImageMapItem(ImageMap map, DataType dt, Address? a = null)
         {
-            addr = addr != null ? addr : map.Items.Keys.LastOrDefault();
-            var curAddr = addr != null ? addr : map.BaseAddress;
+            var lastAddr = map.Items.Count != 0 ? map.Items.Keys.Last() : map.BaseAddress;
+            var curAddr = a ?? lastAddr;
 
             var size = (uint) dt.Size;
 

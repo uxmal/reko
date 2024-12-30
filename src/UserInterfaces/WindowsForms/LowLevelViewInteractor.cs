@@ -103,7 +103,7 @@ namespace Reko.UserInterfaces.WindowsForms
             return;
         }
 
-        public virtual Address SelectedAddress
+        public virtual Address? SelectedAddress
         {
             get { return control.MemoryView.SelectedAddress; }
             set
@@ -239,14 +239,16 @@ namespace Reko.UserInterfaces.WindowsForms
             ddl.SelectedIndex = 0;
         }
 
-        private void UserNavigateToAddress(Address addrFrom, Address addrTo)
+        private void UserNavigateToAddress(Address? addrFrom, Address addrTo)
         {
             if (!program.Memory.IsValidAddress(addrTo))
                 return;
-            if (control.CurrentAddress != addrTo)
+            if (control.CurrentAddress == addrTo)
+                return;
+            control.CurrentAddress = addrTo;        // move to the new position.
+            if (addrFrom is not null)
             {
-                control.CurrentAddress = addrTo;        // move to the new position.
-                navInteractor.RememberLocation(addrFrom);
+                navInteractor.RememberLocation(addrFrom.Value);
             }
         }
 
@@ -273,7 +275,7 @@ namespace Reko.UserInterfaces.WindowsForms
                             : MenuStatus.Visible;
                         return true;
                     case CmdIds.ActionEditSignature:
-                        status.Status = IsProcedureStart(addrSelStart)
+                        status.Status = addrSelStart is not null && IsProcedureStart(addrSelStart.Value)
                             ? MenuStatus.Visible | MenuStatus.Enabled
                             : MenuStatus.Visible;
                         return true;
@@ -282,7 +284,7 @@ namespace Reko.UserInterfaces.WindowsForms
             }
             else if (Control.DisassemblyView.Focused)
             {
-                var selAddress = Control.DisassemblyView.SelectedObject as Address;
+                var selAddress = Control.DisassemblyView.SelectedObject as Address?;
                 var instr = Control.DisassemblyView.SelectedObject as MachineInstruction;
                 
                 if (cmdId.Guid == CmdSets.GuidReko)
@@ -414,7 +416,7 @@ namespace Reko.UserInterfaces.WindowsForms
             var addr = this.Control.MemoryView.SelectedAddress;
             if (addr is null || program is null)
                 return;
-            if (!program.Procedures.TryGetValue(addr, out var proc))
+            if (!program.Procedures.TryGetValue(addr.Value, out var proc))
                 return;
             await services.RequireService<ICommandFactory>().EditSignature(
                 program, proc , proc.EntryAddress).DoAsync();
@@ -698,14 +700,14 @@ namespace Reko.UserInterfaces.WindowsForms
             this.Control.MemoryView.SelectedAddress = addr;
             this.Control.MemoryView.TopAddress = addr;
 
-            if (program.SegmentMap.TryFindSegment(addr, out ImageSegment seg))
+            if (program.SegmentMap.TryFindSegment(addr.Value, out ImageSegment seg))
             {
                 this.Control.DisassemblyView.Model = new DisassemblyTextModel(factory, program, viewModel.SelectedArchitecture, seg);
                 this.Control.DisassemblyView.SelectedObject = addr;
                 this.control.DisassemblyView.TopAddress = addr;
             }
-            this.SelectionChanged?.Invoke(this, new SelectionChangedEventArgs(addr, addr));
-            UserNavigateToAddress(Control.MemoryView.TopAddress, addr);
+            this.SelectionChanged?.Invoke(this, new SelectionChangedEventArgs(addr.Value, addr.Value));
+            UserNavigateToAddress(Control.MemoryView.TopAddress, addr.Value);
             this.ignoreAddressChange = false;
         }
 
@@ -731,8 +733,8 @@ namespace Reko.UserInterfaces.WindowsForms
 
         void DisassemblyView_SelectedObjectChanged(object sender, EventArgs e)
         {
-            var selectedAddr = Control.DisassemblyView.SelectedObject as Address;
-            if (ignoreAddressChange || selectedAddr == null)
+            if (ignoreAddressChange ||
+                Control.DisassemblyView.SelectedObject is not Address selectedAddr)
                 return;
             this.ignoreAddressChange = true;
             this.Control.MemoryView.SelectedAddress = selectedAddr;
@@ -744,12 +746,13 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             ignoreAddressChange = true;
             var value = Control.CurrentAddress;
-            if (value != null)
+            if (value is not null)
             {
-                var addrTop = value - ((int)value.ToLinear() & 0x0F);
-                control.MemoryView.SelectedAddress = value;
+                var addr = value.Value;
+                var addrTop = addr - ((int)addr.ToLinear() & 0x0F);
+                control.MemoryView.SelectedAddress = addr;
                 control.MemoryView.TopAddress = addrTop;
-                control.DisassemblyView.TopAddress = value;
+                control.DisassemblyView.TopAddress = addr;
             }
             ignoreAddressChange = false;
         }
@@ -779,8 +782,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         private void DisassemblyControl_Navigate(object sender, EditorNavigationArgs e)
         {
-            var addr = e.Destination as Address;
-            if (addr == null)
+            if (e.Destination is not Address addr)
                 return;
             UserNavigateToAddress(Control.DisassemblyView.TopAddress, addr);
         }
