@@ -225,6 +225,24 @@ namespace Reko.Arch.Mips
             }
         }
 
+        private void RewriteJalx(MipsInstruction instr)
+        {
+            var dst = RewriteOperand(instr.Operands[0]);
+            if (arch.PointerType.BitSize == 16)
+            {
+                m.CallXD(dst, 0, new MipsLe32Architecture(arch.Services, "mips-le-32", new(){
+                    { ProcessorOption.InstructionSet, "mips16e" } }));
+            }
+            else
+            {
+                //$REVIEW: how to handle mode switches in MIPS.
+                // We'd like a Clone method to clone the current state
+                // so we can mutate the current state.
+                m.CallXD(dst, 0, new MipsLe32Architecture(arch.Services, "mips-le-32", new(){
+                    { ProcessorOption.InstructionSet, "mips16e" } }));
+            }
+        }
+
         private void RewriteJalr_hb(MipsInstruction instr)
         {
             m.SideEffect(m.Fn(intrinsics.clear_hazard_barrier));

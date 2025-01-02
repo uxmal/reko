@@ -25,12 +25,9 @@ using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Diagnostics.Metrics;
 using System.Linq;
-using static Reko.ImageLoaders.OdbgScript.OllyScript;
 
 namespace Reko.UnitTests.Arch.Mips
 {
@@ -222,6 +219,15 @@ namespace Reko.UnitTests.Arch.Mips
             AssertCode(0x0C009B2C,
                 "0|TD-|00100000(4): 1 instructions",
                 "1|TD-|call 00026CB0 (0)");
+        }
+
+        [Test]
+        public void MipsRw_jalx()
+        {
+            AssertCode(     // jalx	0C04040C
+                0x0C04040C,
+                "0|TD-|00100000(4): 1 instructions",
+                "1|TD-|call 00101030 (0)");
         }
 
         [Test]
@@ -619,6 +625,15 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
+        public void MipsRw_sub_s()
+        {
+            AssertCode(     // sub.s	f0,f0,f3
+                0x46030001,
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f0 = f0 - f3");
+        }
+
+        [Test]
         public void MipsRw_trunc_l_d()
         {
             AssertCode(0x46200049, // trunc.l.d $f1,$f0
@@ -651,6 +666,16 @@ namespace Reko.UnitTests.Arch.Mips
             "0|L--|00100000(4): 1 instructions",
             "1|L--|f0_f1 = f0_f1 / f2_f3");
         }
+
+        [Test]
+        public void MipsRw_div_s()
+        {
+            AssertCode(     // div.s	f2,f2,f7
+                0x83100746,
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r16 = CONVERT(Mem0[r24 + 1862<i32>:int8], int8, word32)");
+        }
+
 
         [Test]
         public void MipsRw_dsrlv()
@@ -1305,6 +1330,15 @@ namespace Reko.UnitTests.Arch.Mips
             AssertCode(0x71670004,   // msub	r11,r7
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|hi_lo = hi_lo - r11 *s64 r7");
+        }
+
+        [Test]
+        public void MipsRw_msub_d()
+        {
+            AssertCode(     // msub.d	f8,f16,f10,f26
+                0x4E1A5229,
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f8 = f16 - f10 *64 f26");
         }
 
         [Test]

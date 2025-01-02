@@ -152,6 +152,7 @@ namespace Reko.Arch.Mips
                 case Mnemonic.div: RewriteDiv(instr, Operator.SDiv, Operator.SMod); break;
                 case Mnemonic.divu: RewriteDiv(instr, Operator.UDiv, Operator.UMod); break;
                 case Mnemonic.div_d: RewriteFpuBinopD(instr, Operator.FDiv); break;
+                case Mnemonic.div_s: RewriteFpuBinopS(instr, Operator.FDiv); break;
                 case Mnemonic.dmfc0: RewriteMfc0(instr); break;
                 case Mnemonic.dmfc1: RewriteMfc1(instr); break;
                 case Mnemonic.dmtc0: RewriteMtc0(instr); break;
@@ -174,6 +175,7 @@ namespace Reko.Arch.Mips
                 case Mnemonic.j: RewriteJump(instr); break;
                 case Mnemonic.jal: RewriteJal(instr); break;
                 case Mnemonic.jalr: RewriteJalr(instr); break;
+                case Mnemonic.jalx: RewriteJalx(instr); break;
                 case Mnemonic.jr: RewriteJr(instr); break;
                 case Mnemonic.lb: RewriteLoad(instr, PrimitiveType.SByte); break;
                 case Mnemonic.lbu: RewriteLoad(instr, PrimitiveType.Byte); break;
@@ -219,6 +221,7 @@ namespace Reko.Arch.Mips
                 case Mnemonic.msub: RewriteMac_int(instr, PrimitiveType.Int64, Operator.SMul, Operator.ISub); break;
                 case Mnemonic.msubu: RewriteMac_int(instr, PrimitiveType.UInt64, Operator.UMul, Operator.ISub); break;
                 case Mnemonic.msub_s: RewriteMac_real(instr, PrimitiveType.Real32, Operator.FSub); break;
+                case Mnemonic.msub_d: RewriteMac_real(instr, PrimitiveType.Real64, Operator.FSub); break;
                 case Mnemonic.mtc1: RewriteMtc1(instr); break;
                 case Mnemonic.mul: RewriteMul(instr, Operator.SMul, PrimitiveType.Int32); break;
                 case Mnemonic.mult: RewriteMul(instr, Operator.SMul, PrimitiveType.Int64); break;
@@ -266,6 +269,7 @@ namespace Reko.Arch.Mips
                 case Mnemonic.sub:
                 case Mnemonic.subu:
                     RewriteSub(instr, PrimitiveType.Word32); break;
+                case Mnemonic.sub_s: RewriteFpuBinopS(instr, Operator.FSub); break;
                 case Mnemonic.sub_d: RewriteFpuBinopD(instr, Operator.FSub); break;
                 case Mnemonic.sw:
                 case Mnemonic.swc1: RewriteStore(instr); break;

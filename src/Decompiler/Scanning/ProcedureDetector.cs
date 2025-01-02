@@ -62,11 +62,14 @@ namespace Reko.Scanning
         [Conditional("DEBUG")]
         public static void DumpDuplicates(IEnumerable<RtlBlock> blocks)
         {
+            if (trace.Level != TraceLevel.Verbose)
+                return;
             var q = from b in blocks
                     orderby b.Address
                     group b by b.Address into g
                     where g.Count() > 1
                     select new { g.Key, Count = g.Count() };
+            Debug.WriteLine("ProcedureDetector.DumpDuplicates");
             foreach (var item in q)
             {
                 Debug.Print("{0}: {1}", item.Key, item.Count);
