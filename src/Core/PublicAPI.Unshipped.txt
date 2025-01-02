@@ -238,7 +238,7 @@ abstract Reko.Core.Types.Field.Name.set -> void
 const Reko.AssemblyMetadata.AssemblyFileVersion = "0.11.4.0" -> string!
 const Reko.AssemblyMetadata.AssemblyVersion = "0.11.4.0" -> string!
 const Reko.AssemblyMetadata.Company = "John Källén Konsult AB" -> string!
-const Reko.AssemblyMetadata.Copyright = "Copyright © 1999-2024 John Källén" -> string!
+const Reko.AssemblyMetadata.Copyright = "Copyright © 1999-2025 John Källén" -> string!
 const Reko.AssemblyMetadata.Product = "Reko decompiler" -> string!
 const Reko.Core.IntrinsicProcedure.Align = "__align" -> string!
 const Reko.Core.IntrinsicProcedure.LwL = "__lwl" -> string!
