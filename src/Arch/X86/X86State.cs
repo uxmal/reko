@@ -1,7 +1,7 @@
 
 #region License
 /* 
- * Copyright (C) 1999-2024 John Källén.
+ * Copyright (C) 1999-2025 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
