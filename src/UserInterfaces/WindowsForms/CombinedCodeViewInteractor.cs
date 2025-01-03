@@ -110,12 +110,9 @@ namespace Reko.UserInterfaces.WindowsForms
             this.proc = proc;
             this.showProcedures = true;
             ProgramChanged();
-            if (program != null)
+            if (program is not null)
             {
                 var addr = proc.EntryAddress;
-                addr = program.SegmentMap.Segments.Values
-                    .Select(s => Address.Max(s.Address, s.MemoryArea.BaseAddress))
-                    .First();
                 SelectedAddress = addr;
             }
         }
@@ -174,7 +171,7 @@ namespace Reko.UserInterfaces.WindowsForms
                         nestedTextModel.Nodes.Add(model);
                         nodeCreated = true;
                     }
-                    else if (program.ImageMap.TryFindItem(curAddr.Value, out ImageMapItem item) &&
+                    else if (program.ImageMap.TryFindItem(curAddr, out ImageMapItem item) &&
                               item.DataType != null &&
                             item.DataType is not UnknownType)
                     {
@@ -185,7 +182,7 @@ namespace Reko.UserInterfaces.WindowsForms
                         var fmt = new AbsynCodeFormatter(tsf);
                         fmt.InnerFormatter.UseTabs = false;
                         var gdw = new GlobalDataWriter(program, tsf, false, false, services);
-                        gdw.WriteGlobalVariable(curAddr.Value, dt, name);
+                        gdw.WriteGlobalVariable(curAddr, dt, name);
                         //$TODO: make spacing between globals / procedures user adjustable
                         tsf.WriteLine("");
                         nestedTextModel.Nodes.Add(tsf.GetModel());
@@ -196,7 +193,7 @@ namespace Reko.UserInterfaces.WindowsForms
                 if (nodeCreated)
                 {
                     dataItemNode.ModelNode = nestedTextModel.Nodes.Last();
-                    this.nodeByAddress[curAddr.Value] = dataItemNode;
+                    this.nodeByAddress[curAddr] = dataItemNode;
                 }
             }
             combinedCodeView.CodeView.Model = nestedTextModel;
@@ -207,7 +204,7 @@ namespace Reko.UserInterfaces.WindowsForms
             if (!showProcedures && item.Proc is not null)
                 return false;
 
-            if (segment is not null && !segment.IsInRange(item.StartAddress.Value))
+            if (segment is not null && !segment.IsInRange(item.StartAddress))
                 return false;
 
             return true;
@@ -615,7 +612,7 @@ namespace Reko.UserInterfaces.WindowsForms
             {
                 var startAddr = dataItemNode.StartAddress;
                 var endAddr = topAddress;
-                var startPos = MixedCodeDataModel.Position(startAddr.Value, 0);
+                var startPos = MixedCodeDataModel.Position(startAddr, 0);
                 var endPos = MixedCodeDataModel.Position(endAddr.Value, 0);
                 numer = mixedCodeDataModel.CountLines(startPos, endPos);
                 denom = dataItemNode.NumLines;
@@ -646,7 +643,7 @@ namespace Reko.UserInterfaces.WindowsForms
             long numLines = dataItemNode.NumLines;
             var offset = (int)((numLines * numer) / denom);
             var startAddr = dataItemNode.StartAddress;
-            var startPos = MixedCodeDataModel.Position(startAddr.Value, 0);
+            var startPos = MixedCodeDataModel.Position(startAddr, 0);
             combinedCodeView.MixedCodeDataView.Model.MoveToLine(startPos, offset);
             combinedCodeView.MixedCodeDataView.InvalidateModel();
         }

@@ -129,8 +129,7 @@ namespace Reko.UserInterfaces.WindowsForms
             return
                 program != null &&
                 program.Architecture != null &&
-                program.ImageMap != null &&
-                StartAddress != null;
+                program.ImageMap != null;
         }
 
         private async ValueTask GotoAddress()

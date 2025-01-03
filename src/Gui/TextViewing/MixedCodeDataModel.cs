@@ -525,15 +525,17 @@ namespace Reko.Gui.TextViewing
 
         public class DataItemNode
         {
-            public Address? StartAddress { get; set; }
-            public Address? EndAddress { get; set; }
+            public Address StartAddress { get; set; }
+            public Address EndAddress { get; set; }
             public Procedure? Proc { get; private set; }
             public int NumLines { get; set; }
             public TextModelNode? ModelNode { get; set; }
-            public DataItemNode(Procedure? proc, int numLines)
+            public DataItemNode(Procedure? proc, int numLines, Address addrStart, Address addrEnd)
             {
                 this.Proc = proc;
                 this.NumLines = numLines;
+                this.StartAddress = addrStart;
+                this.EndAddress = addrEnd;
             }
         }
 
@@ -561,11 +563,7 @@ namespace Reko.Gui.TextViewing
 
                 if (curNode == null || curNode.Proc != curProc || curProc == null)
                 {
-                    curNode = new DataItemNode(curProc, numLines)
-                    {
-                        StartAddress = startAddr,
-                        EndAddress = endAddr
-                    };
+                    curNode = new DataItemNode(curProc, numLines, startAddr, endAddr);
                     nodes.Add(curNode);
                 }
                 else
