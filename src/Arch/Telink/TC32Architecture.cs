@@ -35,7 +35,7 @@ namespace Reko.Arch.Telink
         public TC32Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
             : base(services, archId, options, Registers.ByName, Registers.ByDomain)
         {
-            this.CarryFlag = null!; //$TODO
+            this.CarryFlag = null; //$TODO
             this.CodeMemoryGranularity = 8;
             this.DefaultBase = 16;
             this.Endianness = EndianServices.Little;
@@ -43,7 +43,7 @@ namespace Reko.Arch.Telink
             this.InstructionBitSize = 16;
             this.MemoryGranularity = 8;
             this.PointerType = PrimitiveType.Ptr32;
-            this.StackRegister = null!; //$TODO
+            this.StackRegister = Registers.sp;
             this.WordWidth = PrimitiveType.Word32;
         }
 
@@ -119,7 +119,7 @@ namespace Reko.Arch.Telink
 
         public override bool TryParseAddress(string? txtAddr, [MaybeNullWhen(false)] out Address addr)
         {
-            throw new NotImplementedException();
+            return Address.TryParse32(txtAddr, out addr);
         }
     }
 }

@@ -186,10 +186,20 @@ namespace Reko.Arch.Sparc
 
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
-            var uAddr = c.ToUInt32();
-            if (codeAlign)
-                uAddr &= ~3u;
-            return Address.Ptr32(uAddr);
+            if (this.PointerType.BitSize == 32)
+            {
+                var uAddr = c.ToUInt32();
+                if (codeAlign)
+                    uAddr &= ~3u;
+                return Address.Ptr32(uAddr);
+            }
+            else
+            {
+                var uAddr = c.ToUInt64();
+                if (codeAlign)
+                    uAddr &= ~3u;
+                return Address.Ptr64(uAddr);
+            }
         }
 
         public override Address? ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
@@ -216,7 +226,14 @@ namespace Reko.Arch.Sparc
 
         public override bool TryParseAddress(string? txtAddress, [MaybeNullWhen(false)] out Address addr)
         {
-            return Address.TryParse32(txtAddress, out addr);
+            if (this.PointerType.BitSize == 32)
+            {
+                return Address.TryParse32(txtAddress, out addr);
+            }
+            else
+            {
+                return Address.TryParse64(txtAddress, out addr);
+            }
         }
 
         #endregion
