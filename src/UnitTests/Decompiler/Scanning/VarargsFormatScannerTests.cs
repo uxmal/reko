@@ -320,19 +320,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             Assert.AreEqual(
                 "void test(Stack +0004 (ptr32 char), Stack +0008 int16, Stack +000C (ptr32 char))",
                 DumpSignature("test", newSig));
-    }
-
-        [Test(Description = "If it is impossible to obtain a constant string for the format string " +
-            "warn the user")]
-        public void Vafs_X86Printf_NoConstantFormatString()
-        {
-            Given_VaScanner(win32);
-            var ab = CreateApplicationBuilder(new CallSite(4, 0));
-            Assert.IsFalse(vafs.TryScan(addrInstr, dummyPc, x86PrintfSig, printfChr, ab, out _),
-                "Should fail because there is no constant-valued format string");
-            Assert.AreEqual(
-                "WarningDiagnostic - 00123400 - Unable to determine format string for call to 'dummy'.", listener.LastDiagnostic);
-    }
+        }
     }
 }
 

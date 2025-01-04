@@ -177,17 +177,9 @@ namespace Reko.Scanning
                 if (program.TryInterpretAsAddress(GetValue(reg), false, out Address addrFormat))
                     return addrFormat;
             }
-            WarnUnableToDetermineFormatString(addrInstr, callee);
+            // We may need to wait until the analysis stage provides the capability
+            // to discover arguments passed on stack.
             return null;
-        }
-
-        private void WarnUnableToDetermineFormatString(Address addrInstr, Expression callee)
-        {
-            listener.Warn(
-                //$TODO: get address of call instruction
-                listener.CreateAddressNavigator(this.program, addrInstr),
-                "Unable to determine format string for call to '{0}'.",
-                callee);
         }
 
         private StringConstant? ReadCString(PrimitiveType charType, Address addr)
