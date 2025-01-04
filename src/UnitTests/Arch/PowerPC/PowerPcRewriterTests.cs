@@ -1956,11 +1956,12 @@ namespace Reko.UnitTests.Arch.PowerPC
         public void PPCRw_stmw()
         {
             AssertCode(0xBFC10008, // stmw r30,8(r1)
-                "0|L--|00100000(4): 4 instructions",
-                "1|L--|Mem0[v4:word32] = r30",
-                "2|L--|v4 = v4 + 4<i32>",
-                "3|L--|Mem0[v4:word32] = r31",
-                "4|L--|v4 = v4 + 4<i32>");
+                "0|L--|00100000(4): 5 instructions",
+                "1|L--|v4 = r1 + 8<i32>",
+                "2|L--|Mem0[v4:word32] = r30",
+                "3|L--|v4 = v4 + 4<i32>",
+                "4|L--|Mem0[v4:word32] = r31",
+                "5|L--|v4 = v4 + 4<i32>");
         }
 
         [Test]

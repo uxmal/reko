@@ -1,62 +1,49 @@
-word32 fn00400220(word32 r2, word32 r13, word32 r14, word32 r15, word32 r16, word32 r17, word32 r18, word32 r19, word32 r20, word32 r21, word32 r22, word32 r23, word32 r24, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, word32 & r3Out, word32 & r29Out, word32 & r30Out, word32 & r31Out)
+word32 fn00400220(word32 r2, word32 lr, word32 & r3Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00403CA0
-// MayUse:  lr:[0..31] r13:[0..31] r14:[0..31] r15:[0..31] r16:[0..31] r17:[0..31] r18:[0..31] r19:[0..31] r2:[0..31] r20:[0..31] r21:[0..31] r22:[0..31] r23:[0..31] r24:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r30:[0..31] r31:[0..31]
-// LiveOut: r2:[0..31]-fn00403CA0 r29:[0..31]-fn00403CA0 r3:[0..31]-fn00403CA0 r30:[0..31]-fn00403CA0 r31:[0..31]-fn00403CA0
-// Trashed: cr0 ctr r0 r10 r11 r12 r13 r14 r15 r16 r17 r18 r19 r2 r20 r21 r22 r23 r24 r25 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
+// MayUse:  lr:[0..31] r2:[0..31]
+// LiveOut: r2:[0..31]-fn00403CA0 r3:[0..31]-fn00403CA0
+// Trashed: cr0 ctr r0 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
 // Preserved: lr r1
 fn00400220_entry:
 l00400220:
-	r2_47 = fn00400268(r2, Mem11[r2 + 68<i32>:word32], r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r27, r28, r29, r30, r31, lr, out r29_57, out r30_59, out r31_60)
+	r2_21 = fn00400268(r2, Mem11[r2 + 68<i32>:word32], lr)
 l00400254:
 	r3Out = 0<32>
-	r29Out = r29_57
-	r30Out = r30_59
-	r31Out = r31_60
-	return r2_47
+	return r2_21
 fn00400220_exit:
 
 
-word32 fn00400268(word32 r2, word32 r3, word32 r13, word32 r14, word32 r15, word32 r16, word32 r17, word32 r18, word32 r19, word32 r20, word32 r21, word32 r22, word32 r23, word32 r24, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, word32 & r29Out, word32 & r30Out, word32 & r31Out)
+word32 fn00400268(word32 r2, word32 r3, word32 lr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00400220
-// MayUse:  lr:[0..31] r13:[0..31] r14:[0..31] r15:[0..31] r16:[0..31] r17:[0..31] r18:[0..31] r19:[0..31] r2:[0..31] r20:[0..31] r21:[0..31] r22:[0..31] r23:[0..31] r24:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31]
-// LiveOut: r2:[0..31]-fn00400220 r29:[0..31]-fn00400220 r30:[0..31]-fn00400220 r31:[0..31]-fn00400220
-// Trashed: cr0 ctr r0 r10 r11 r12 r13 r14 r15 r16 r17 r18 r19 r2 r20 r21 r22 r23 r24 r25 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
-// Preserved: lr r1
+// MayUse:  lr:[0..31] r2:[0..31] r3:[0..31]
+// LiveOut: r2:[0..31]-fn00400220
+// Trashed: cr0 ctr r0 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
+// Preserved: lr r1 r29 r30 r31
 fn00400268_entry:
 l00400268:
-	Mem23[v12:word32] = r29
-	Mem26[v12 + 4<i32>:word32] = r30
-	Mem29[v12 + 8<i32>:word32] = r31
 	r31_34 = Mem29[r2 + 72<i32>:word32]
-	r2_123 = fn00400430(fn004004B4(fn004002F8(r2, r31_34 + 0x20<32>, r25, r26, r27, r28, r29, r30, r31_34 + 0x20<32>, out r3_45, out r25_55, out r26_56, out r27_57, out r28_58, out r29_59, out r31_46), r31_46, r3, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25_55, r26_56, r27_57, r28_58, r29_59, r3_45, r31_46, lr, out r3_99, out r25_161, out r26_162, out r27_163, out r28_164, out r29_165, out r30_100, out r31_101), r30_100, r31_101, r3_99, r30_100)
-	r29Out = dwLoc10
-	r30Out = dwLoc0C
-	r31Out = dwLoc08
-	return r2_123
+	return fn00400430(fn004004B4(fn004002F8(r2, r31_34 + 0x20<32>, out r3_41), r31_34 + 0x20<32>, r3, lr, out r3_114), r3_41, r31_34 + 0x20<32>)
 fn00400268_exit:
 
 
-word32 fn004002F8(word32 r2, word32 r3, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 & r3Out, word32 & r25Out, word32 & r26Out, word32 & r27Out, word32 & r28Out, word32 & r29Out, word32 & r31Out)
+word32 fn004002F8(word32 r2, word32 r3, word32 & r3Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00400268
 //      fn004033C4
-// MayUse:  r2:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31]
-// LiveOut: r2:[0..31]-fn00400268 r25:[0..31]-fn00400268 r26:[0..31]-fn00400268 r27:[0..31]-fn00400268 r28:[0..31]-fn00400268 r29:[0..31]-fn00400268 r3:[0..31]-fn00400268 r31:[0..31]-fn00400268
-// Trashed: cr0 ctr r0 r10 r11 r12 r2 r25 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
-// Preserved: lr r1
+// MayUse:  r2:[0..31] r3:[0..31]
+// LiveOut: r2:[0..31]-fn00400268 r3:[0..31]-fn00400268
+// Trashed: cr0 ctr r0 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
+// Preserved: lr r1 r30 r31
 fn004002F8_entry:
 l004002F8:
-	Mem7[v4:word32] = r30
-	Mem10[v4 + 4<i32>:word32] = r31
-	r31_13 = r3
 	branch fn00401474(r2, Mem10[r3 + 16<i32>:word32]) != 0<32> l00400338
 l00400338:
 	r11_24 = Mem17[r2 + 72<i32>:word32]
@@ -65,12 +52,6 @@ l00400350:
 	branch r3 != r11_24 + 0x40<32> l00400418
 l00400418:
 	r3Out = 0<32>
-	r25Out = r25
-	r26Out = r26
-	r27Out = r27
-	r28Out = r28
-	r29Out = r29
-	r31Out = <invalid>
 	return r2
 l0040035C:
 	r10_34 = 1<32>
@@ -86,63 +67,39 @@ l00400394:
 	r30_50 = (r10_34 << 2<8>) + r30_46
 	branch r11_49 != 0<32> l004003E0
 l004003AC:
-	r2 = fn00400F9C(r2, 0x1000<32>, r25, r26, r27, r28, r29, r30_50, r3, out r3_75, out r25, out r26, out r27, out r28, out r29, out r30_76, out r31_13)
-	Mem87[r30_76:word32] = r3_75
-	r11_49 = r3_75
-	branch r3_75 != 0<32> l004003E0
+	r2 = fn00400F9C(r2, 0x1000<32>, out r3_60)
+	Mem70[r30_50:word32] = r3_60
+	r11_49 = r3_60
+	branch r3_60 != 0<32> l004003E0
 l004003E0:
-	Mem96[r31_13 + 12<i32>:word32] = Mem90[r31_13 + 12<i32>:word32] | 0x1102<32>
-	Mem98[r31_13 + 8<i32>:word32] = r11_49
-	Mem100[r31_13 + 24<i32>:word32] = 0x1000<32>
-	Mem101[r31_13 + 4<i32>:word32] = 0x1000<32>
-	Mem102[r31_13:word32] = r11_49
+	Mem79[r3 + 12<i32>:word32] = Mem73[r3 + 12<i32>:word32] | 0x1102<32>
+	Mem81[r3 + 8<i32>:word32] = r11_49
+	Mem83[r3 + 24<i32>:word32] = 0x1000<32>
+	Mem84[r3 + 4<i32>:word32] = 0x1000<32>
+	Mem85[r3:word32] = r11_49
 	r3Out = 1<32>
-	r25Out = r25
-	r26Out = r26
-	r27Out = r27
-	r28Out = r28
-	r29Out = r29
-	r31Out = <invalid>
 	return r2
 l004003C8:
 	r3Out = 0<32>
-	r25Out = r25
-	r26Out = r26
-	r27Out = r27
-	r28Out = r28
-	r29Out = r29
-	r31Out = <invalid>
 	return r2
 l0040037C:
 	r3Out = 0<32>
-	r25Out = r25
-	r26Out = r26
-	r27Out = r27
-	r28Out = r28
-	r29Out = r29
-	r31Out = <invalid>
 	return r2
 l00400320:
 	r3Out = 0<32>
-	r25Out = r25
-	r26Out = r26
-	r27Out = r27
-	r28Out = r28
-	r29Out = r29
-	r31Out = <invalid>
 	return r2
 fn004002F8_exit:
 
 
-word32 fn00400430(word32 r2, word32 r3, word32 r4, word32 r29, word32 r30)
+word32 fn00400430(word32 r2, word32 r3, word32 r4)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00400268
 //      fn004033C4
-// MayUse:  r2:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r4:[0..31]
+// MayUse:  r2:[0..31] r3:[0..31] r4:[0..31]
 // LiveOut: r2:[0..31]-fn00400268
-// Trashed: cr0 ctr r0 r10 r11 r12 r2 r29 r3 r30 r4 r5 r6 r7 r8 r9
+// Trashed: cr0 ctr r0 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
 // Preserved: lr r1 r31
 fn00400430_entry:
 l00400430:
@@ -150,98 +107,71 @@ l00400430:
 l00400488:
 	branch (Mem11[r4 + 12<i32>:word32] & 0x1000<32>) == 0<32> l004004A0
 l00400494:
-	r2 = fn004012B0(r2, r4, r29, r30, r4, out r3_106, out r29_107, out r30_108, out r31_109)
+	r2 = fn004012B0(r2, r4, out r3_94)
 l0040044C:
 	branch (Mem11[r4 + 12<i32>:word32] & 0x1000<32>) == 0<32> l004004A0
 l00400458:
-	r2 = fn004012B0(r2, r4, r29, r30, r4, out r3_103, out r29_104, out r30_105, out r31_47)
-	r4_59 = Mem11[r31_47 + 12<i32>:word32]
-	Mem61[r31_47 + 24<i32>:word32] = 0<32>
-	Mem62[r31_47:word32] = 0<32>
-	Mem63[r31_47 + 8<i32>:word32] = 0<32>
-	Mem66[r31_47 + 12<i32>:word32] = r4_59 & 0xFFFFEEFF<32>
+	r2 = fn004012B0(r2, r4, out r3_93)
+	r4_51 = Mem11[r4 + 12<i32>:word32]
+	Mem53[r4 + 24<i32>:word32] = 0<32>
+	Mem54[r4:word32] = 0<32>
+	Mem55[r4 + 8<i32>:word32] = 0<32>
+	Mem58[r4 + 12<i32>:word32] = r4_51 & 0xFFFFEEFF<32>
 l004004A0:
 	return r2
 fn00400430_exit:
 
 
-word32 fn004004B4(word32 r2, word32 r3, word32 r4, word32 r13, word32 r14, word32 r15, word32 r16, word32 r17, word32 r18, word32 r19, word32 r20, word32 r21, word32 r22, word32 r23, word32 r24, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, word32 & r3Out, word32 & r25Out, word32 & r26Out, word32 & r27Out, word32 & r28Out, word32 & r29Out, word32 & r30Out, word32 & r31Out)
+word32 fn004004B4(word32 r2, word32 r3, word32 r4, word32 lr, word32 & r3Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00400268
 //      fn004032FC
 //      fn004033C4
-// MayUse:  lr:[0..31] r13:[0..31] r14:[0..31] r15:[0..31] r16:[0..31] r17:[0..31] r18:[0..31] r19:[0..31] r2:[0..31] r20:[0..31] r21:[0..31] r22:[0..31] r23:[0..31] r24:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31]
-// LiveOut: r2:[0..31]-fn00400268 r25:[0..31]-fn004032FC r26:[0..31]-fn004032FC r27:[0..31]-fn004032FC r28:[0..31]-fn004032FC r29:[0..31]-fn004032FC r3:[0..31]-fn00400268 r30:[0..31]-fn00400268 r31:[0..31]-fn00400268
-// Trashed: cr0 ctr r0 r10 r11 r12 r13 r14 r15 r16 r17 r18 r19 r2 r20 r21 r22 r23 r24 r25 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
-// Preserved: lr r1
+// MayUse:  lr:[0..31] r2:[0..31] r3:[0..31] r4:[0..31]
+// LiveOut: r2:[0..31]-fn00400268 r3:[0..31]-fn004032FC
+// Trashed: cr0 ctr r0 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
+// Preserved: lr r1 r13 r14 r15 r16 r17 r18 r19 r20 r21 r22 r23 r24 r25 r26 r27 r28 r29 r30 r31
 fn004004B4_entry:
 l004004B4:
-	Mem7[v4:word32] = r13
-	Mem10[v4 + 4<i32>:word32] = r14
-	Mem13[v4 + 8<i32>:word32] = r15
-	Mem16[v4 + 12<i32>:word32] = r16
-	Mem19[v4 + 16<i32>:word32] = r17
-	Mem22[v4 + 20<i32>:word32] = r18
-	Mem25[v4 + 24<i32>:word32] = r19
-	Mem28[v4 + 28<i32>:word32] = r20
-	Mem31[v4 + 32<i32>:word32] = r21
-	Mem34[v4 + 36<i32>:word32] = r22
-	Mem37[v4 + 40<i32>:word32] = r23
-	Mem40[v4 + 44<i32>:word32] = r24
-	Mem43[v4 + 48<i32>:word32] = r25
-	Mem46[v4 + 52<i32>:word32] = r26
-	Mem49[v4 + 56<i32>:word32] = r27
-	Mem52[v4 + 60<i32>:word32] = r28
-	Mem55[v4 + 64<i32>:word32] = r29
-	Mem58[v4 + 68<i32>:word32] = r30
-	Mem61[v4 + 72<i32>:word32] = r31
-	r31_193 = CONVERT(Mem68[r4:byte], int8, int32)
-	r23_189 = r4 + 1<32>
-	dwLoc0284_300 = 0<32>
-	branch r31_193 == 0<32> l00400DEC
+	r31_169 = CONVERT(Mem68[r4:byte], int8, int32)
+	r23_165 = r4 + 1<32>
+	dwLoc0284_277 = 0<32>
+	branch r31_169 == 0<32> l00400DEC
 l004004F0:
-	r26_166 = fp + 0xFFFFFD80<32>
 	r14_83 = Mem79[r2 + 84<i32>:word32]
 	r16_84 = Mem79[r2 + 88<i32>:word32]
 l00400508:
 	branch false l00400DEC
 l00400514:
-	branch r31_193 <= 0x1F<32> l00400544
+	branch r31_169 <= 0x1F<32> l00400544
 l0040051C:
-	branch r31_193 >= 0x79<32> l00400544
+	branch r31_169 >= 0x79<32> l00400544
 l00400544:
 	r10_103 = 0<32>
 l00400524:
-	r10_103 = CONVERT(Mem88[r14_83 + 0xFFFFFFE4<32> + r31_193:byte], int8, int32) & 0xF<32>
+	r10_103 = CONVERT(Mem88[r14_83 + 0xFFFFFFE4<32> + r31_169:byte], int8, int32) & 0xF<32>
 l00400548:
-	r4_118 = CONVERT(SLICE(CONVERT(Mem88[r14_83 + 4<32> + ((r10_103 << 3<8>) + dwLoc0284_300):byte], int8, int32) >> 4<32>, int8, 0), int8, int32)
-	dwLoc0284_300 = r4_118
+	r4_118 = CONVERT(SLICE(CONVERT(Mem88[r14_83 + 4<32> + ((r10_103 << 3<8>) + dwLoc0284_277):byte], int8, int32) >> 4<32>, int8, 0), int8, int32)
+	dwLoc0284_277 = r4_118
 	branch r4_118 >= 8<32> l00400DDC
 l00400578:
 	lr = fn004005A0(r4_118 << 2<8>, lr)
 l004005B0:
-	branch (CONVERT(Mem121[Mem121[r16_84:word32] + ((r31_193 & 0xFF<32>) << 1<8>):word16], word16, word32) & 0x8000<32>) == 0<32> l004005EC
+	branch (CONVERT(Mem121[Mem121[r16_84:word32] + ((r31_169 & 0xFF<32>) << 1<8>):word16], word16, word32) & 0x8000<32>) == 0<32> l004005EC
 l004005C8:
-	r2 = fn00400E04(r2, r31_193, r3, fp + 0xFFFFFD78<32>, r25, r26_166, r27, r28, r29, r30, out r25, out r26_166, out r27, out r28, out r29, out r30)
-	r23_189 = r23_189 + 1<32>
-	r31_193 = CONVERT(Mem140[r23_189:byte], int8, int32)
+	r2 = fn00400E04(r2, r31_169, r3, fp + 0xFFFFFD78<32>)
+	r23_165 = r23_165 + 1<32>
+	r31_169 = CONVERT(Mem140[r23_165:byte], int8, int32)
 l004005EC:
-	r2 = fn00400E04(r2, r31_193, r3, fp + 0xFFFFFD78<32>, r25, r26_166, r27, r28, r29, r30, out r25, out r26_166, out r27, out r28, out r29, out r30)
+	r2 = fn00400E04(r2, r31_169, r3, fp + 0xFFFFFD78<32>)
 l00400DDC:
-	r23_189 = r23_189 + 1<32>
-	r31_193 = CONVERT(Mem232[r23_189:byte], int8, int32)
-	branch r31_193 != 0<32> l00400508
+	r23_165 = r23_165 + 1<32>
+	r31_169 = CONVERT(Mem196[r23_165:byte], int8, int32)
+	branch r31_169 != 0<32> l00400508
 l00400DEC:
 	r3Out = 0<32>
-	r25Out = dwLoc20
-	r26Out = dwLoc1C
-	r27Out = dwLoc18
-	r28Out = dwLoc14
-	r29Out = dwLoc10
-	r30Out = dwLoc0C
-	r31Out = dwLoc08
 	return r2
 fn004004B4_exit:
 
@@ -287,100 +217,81 @@ l00400838:
 fn00400838_exit:
 
 
-word32 fn00400E04(word32 r2, word32 r3, word32 r4, word32 r5, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 & r25Out, word32 & r26Out, word32 & r27Out, word32 & r28Out, word32 & r29Out, word32 & r30Out)
+word32 fn00400E04(word32 r2, word32 r3, word32 r4, word32 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn004004B4
 //      fn00400E9C
 //      fn00400F00
-// MayUse:  r2:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r4:[0..31] r5:[0..31]
-// LiveOut: r2:[0..31]-fn004004B4 r25:[0..31]-fn004004B4 r26:[0..31]-fn004004B4 r27:[0..31]-fn004004B4 r28:[0..31]-fn004004B4 r29:[0..31]-fn004004B4 r30:[0..31]-fn004004B4
-// Trashed: cr0 ctr r0 r10 r11 r12 r2 r25 r26 r27 r28 r29 r3 r30 r4 r5 r6 r7 r8 r9
+// MayUse:  r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..31]
+// LiveOut: r2:[0..31]-fn004004B4
+// Trashed: cr0 ctr r0 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
 // Preserved: lr r1 r31
 fn00400E04_entry:
 l00400E04:
 	r5_10 = Mem6[r4 + 4<i32>:word32]
 	Mem16[r4 + 4<i32>:word32] = r5_10 + 0xFFFFFFFF<32>
-	r31_33 = r5
 	branch r5_10 <= 0<32> l00400E5C
 l00400E5C:
-	r2 = fn00401598(r2, r3, r4, r25, r26, r27, r28, r29, r30, r5, out r3_31, out r25, out r26, out r27, out r28, out r29, out r30, out r31_33)
-	r11_46 = r3_31
+	r2 = fn00401598(r2, r3, r4, out r3_22)
+	r11_33 = r3_22
 l00400E2C:
-	Mem49[Mem16[r4:word32]:byte] = SLICE(r3, int8, 0)
-	r6_50 = Mem49[r4:word32]
-	r7_51 = CONVERT(Mem49[r6_50:byte], byte, word32)
-	Mem53[r4:word32] = r6_50 + 1<32>
-	r11_46 = CONVERT(CONVERT(SLICE(r7_51, int8, 0), int8, int16) & 255<i16>, int16, int32)
+	Mem36[Mem16[r4:word32]:byte] = SLICE(r3, int8, 0)
+	r6_37 = Mem36[r4:word32]
+	r7_38 = CONVERT(Mem36[r6_37:byte], byte, word32)
+	Mem40[r4:word32] = r6_37 + 1<32>
+	r11_33 = CONVERT(CONVERT(SLICE(r7_38, int8, 0), int8, int16) & 255<i16>, int16, int32)
 l00400E68:
-	branch r11_46 != 0xFFFFFFFF<32> l00400E7C
+	branch r11_33 != 0xFFFFFFFF<32> l00400E7C
 l00400E7C:
-	Mem65[r31_33:word32] = Mem62[r31_33:word32] + 1<32>
+	Mem52[r5:word32] = Mem49[r5:word32] + 1<32>
 l00400E70:
-	Mem67[r31_33:word32] = 0xFFFFFFFF<32>
+	Mem54[r5:word32] = 0xFFFFFFFF<32>
 l00400E88:
-	r25Out = r25
-	r26Out = r26
-	r27Out = r27
-	r28Out = r28
-	r29Out = r29
-	r30Out = r30
 	return r2
 fn00400E04_exit:
 
 
-void fn00400E9C(word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31)
+void fn00400E9C(word32 r2, word32 r3, word32 r4, word32 r5, word32 r6)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r2:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31] r5:[0..31] r6:[0..31]
+// MayUse:  r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..31] r6:[0..31]
 // LiveOut:
-// Trashed: cr1 ctr r0 r10 r11 r12 r2 r25 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
-// Preserved: cr0 lr r1
+// Trashed: cr1 ctr r0 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
+// Preserved: cr0 lr r1 r28 r29 r30 r31
 fn00400E9C_entry:
 l00400E9C:
-	Mem7[v4:word32] = r28
-	Mem10[v4 + 4<i32>:word32] = r29
-	Mem13[v4 + 8<i32>:word32] = r30
-	Mem16[v4 + 12<i32>:word32] = r31
-	r28_25 = r3
-	r29_27 = r5
-	r30_29 = r6
 	r31_31 = r4 + 0xFFFFFFFF<32>
 	branch r4 <= 0<32> l00400EEC
 l00400ECC:
-	r2 = fn00400E04(r2, r28_25, r29_27, r30_29, r25, r26, r27, r28_25, r29_27, r30_29, out r25, out r26, out r27, out r28_25, out r29_27, out r30_29)
-	r31_31 = r31_128 + 0xFFFFFFFF<32>
-	r31_128 = r31_31
-	branch r31_128 > 0<32> l00400ECC
+	r2 = fn00400E04(r2, r3, r5, r6)
+	r31_31 = r31_113 + 0xFFFFFFFF<32>
+	r31_113 = r31_31
+	branch r31_113 > 0<32> l00400ECC
 l00400EEC:
 	return
 fn00400E9C_exit:
 
 
-void fn00400F00(word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31)
+void fn00400F00(word32 r2, word32 r3, word32 r4, word32 r5, word32 r6)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r2:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31] r5:[0..31] r6:[0..31]
+// MayUse:  r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..31] r6:[0..31]
 // LiveOut:
-// Trashed: cr1 ctr r0 r10 r11 r12 r2 r25 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
-// Preserved: cr0 lr r1
+// Trashed: cr1 ctr r0 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
+// Preserved: cr0 lr r1 r28 r29 r30 r31
 fn00400F00_entry:
 l00400F00:
-	Mem7[v4:word32] = r28
-	Mem10[v4 + 4<i32>:word32] = r29
-	Mem13[v4 + 8<i32>:word32] = r30
-	Mem16[v4 + 12<i32>:word32] = r31
 	r30_25 = r3
-	r28_27 = r5
-	r29_29 = r6
 	r31_31 = r4 + 0xFFFFFFFF<32>
 	branch r4 <= 0<32> l00400F60
 l00400F30:
-	r2 = fn00400E04(r2, CONVERT(Mem30[r30_25:byte], int8, int32), r28_27, r29_29, r25, r26, r27, r28_27, r29_29, r30_25 + 1<32>, out r25, out r26, out r27, out r28_27, out r29_29, out r30_25)
-	r31_31 = r31_132 + 0xFFFFFFFF<32>
-	r31_132 = r31_31
-	branch r31_132 > 0<32> l00400F30
+	r30_25 = r30_25 + 1<32>
+	r2 = fn00400E04(r2, CONVERT(Mem30[r30_25:byte], int8, int32), r5, r6)
+	r31_31 = r31_117 + 0xFFFFFFFF<32>
+	r31_117 = r31_31
+	branch r31_117 > 0<32> l00400F30
 l00400F60:
 	return
 fn00400F00_exit:
@@ -414,175 +325,120 @@ l00400F88:
 fn00400F88_exit:
 
 
-word32 fn00400F9C(word32 r2, word32 r3, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 & r3Out, word32 & r25Out, word32 & r26Out, word32 & r27Out, word32 & r28Out, word32 & r29Out, word32 & r30Out, word32 & r31Out)
+word32 fn00400F9C(word32 r2, word32 r3, word32 & r3Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn004002F8
 //      fn0040298C
 //      fn00403450
-// MayUse:  r2:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31]
-// LiveOut: r2:[0..31]-fn004002F8 r25:[0..31]-fn004002F8 r26:[0..31]-fn004002F8 r27:[0..31]-fn004002F8 r28:[0..31]-fn004002F8 r29:[0..31]-fn004002F8 r3:[0..31]-fn004002F8 r30:[0..31]-fn004002F8 r31:[0..31]-fn004002F8
-// Trashed: cr1 ctr r0 r10 r11 r12 r2 r25 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
+// MayUse:  r2:[0..31] r3:[0..31]
+// LiveOut: r2:[0..31]-fn004002F8 r3:[0..31]-fn004002F8
+// Trashed: cr1 ctr r0 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
 // Preserved: lr r1
 fn00400F9C_entry:
 l00400F9C:
-	r2_25 = fn00400FC4(r2, r3, Mem0[Mem0[r2 + 100<i32>:word32]:word32], r25, r26, r27, r28, r29, r30, r31, out r3_31, out r25_26, out r26_27, out r27_28, out r28_29, out r29_30, out r30_32, out r31_33)
-	r3Out = r3_31
-	r25Out = r25_26
-	r26Out = r26_27
-	r27Out = r27_28
-	r28Out = r28_29
-	r29Out = r29_30
-	r30Out = r30_32
-	r31Out = r31_33
-	return r2_25
+	r2_18 = fn00400FC4(r2, r3, Mem0[Mem0[r2 + 100<i32>:word32]:word32], out r3_19)
+	r3Out = r3_19
+	return r2_18
 fn00400F9C_exit:
 
 
-word32 fn00400FC4(word32 r2, word32 r3, word32 r4, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 & r3Out, word32 & r25Out, word32 & r26Out, word32 & r27Out, word32 & r28Out, word32 & r29Out, word32 & r30Out, word32 & r31Out)
+word32 fn00400FC4(word32 r2, word32 r3, word32 r4, word32 & r3Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00400F9C
-// MayUse:  r2:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31]
-// LiveOut: r2:[0..31]-fn00400F9C r25:[0..31]-fn00400F9C r26:[0..31]-fn00400F9C r27:[0..31]-fn00400F9C r28:[0..31]-fn00400F9C r29:[0..31]-fn00400F9C r3:[0..31]-fn00400F9C r30:[0..31]-fn00400F9C r31:[0..31]-fn00400F9C
-// Trashed: cr1 ctr r0 r10 r11 r12 r2 r25 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
-// Preserved: cr0 lr r1
+// MayUse:  r2:[0..31] r3:[0..31] r4:[0..31]
+// LiveOut: r2:[0..31]-fn00400F9C r3:[0..31]-fn00400F9C
+// Trashed: cr1 ctr r0 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
+// Preserved: cr0 lr r1 r30 r31
 fn00400FC4_entry:
 l00400FC4:
-	Mem7[v4:word32] = r30
-	Mem10[v4 + 4<i32>:word32] = r31
-	r30_15 = r4
 	branch r3 <= 0xFFFFFFE0<32> l00400FF8
 l00400FF8:
 	r31_23 = r3 + 7<32> & 0xFFFFFFF8<32>
 l00401004:
-	r2_49 = fn0040105C(r2, r31_23, r25, r26, r27, r28, r29, r30_15, r31_23, out r3_38, out r25, out r26, out r27, out r28, out r29, out r30_15, out r31_23)
-	branch r3_38 != 0<32> l00401048
+	r2_40 = fn0040105C(r2, r31_23, out r3_31)
+	branch r3_31 != 0<32> l00401048
 l00401014:
-	branch r30_15 == 0<32> l00401048
+	branch r4 == 0<32> l00401048
 l00401048:
-	r3Out = r3_38
-	r25Out = r25
-	r26Out = r26
-	r27Out = r27
-	r28Out = r28
-	r29Out = r29
-	r30Out = <invalid>
-	r31Out = <invalid>
-	return r2_49
+	r3Out = r3_31
+	return r2_40
 l0040101C:
-	r2 = fn004017F0(r2_49, r31_23, out r3_71)
-	branch r3_71 != 0<32> l00401004
+	r2 = fn004017F0(r2_40, r31_23, out r3_59)
+	branch r3_59 != 0<32> l00401004
 l00401030:
 	r3Out = 0<32>
-	r25Out = r25
-	r26Out = r26
-	r27Out = r27
-	r28Out = r28
-	r29Out = r29
-	r30Out = <invalid>
-	r31Out = <invalid>
 	return r2
 l00400FE8:
 	r3Out = 0<32>
-	r25Out = r25
-	r26Out = r26
-	r27Out = r27
-	r28Out = r28
-	r29Out = r29
-	r30Out = <invalid>
-	r31Out = <invalid>
 	return r2
 fn00400FC4_exit:
 
 
-word32 fn0040105C(word32 r2, word32 r3, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 & r3Out, word32 & r25Out, word32 & r26Out, word32 & r27Out, word32 & r28Out, word32 & r29Out, word32 & r30Out, word32 & r31Out)
+word32 fn0040105C(word32 r2, word32 r3, word32 & r3Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00400FC4
-// MayUse:  r2:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31]
-// LiveOut: r2:[0..31]-fn00400FC4 r25:[0..31]-fn00400FC4 r26:[0..31]-fn00400FC4 r27:[0..31]-fn00400FC4 r28:[0..31]-fn00400FC4 r29:[0..31]-fn00400FC4 r3:[0..31]-fn00400FC4 r30:[0..31]-fn00400FC4 r31:[0..31]-fn00400FC4
-// Trashed: cr0 ctr r0 r10 r11 r12 r2 r25 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
-// Preserved: lr r1
+// MayUse:  r2:[0..31] r3:[0..31]
+// LiveOut: r2:[0..31]-fn00400FC4 r3:[0..31]-fn00400FC4
+// Trashed: cr0 ctr r0 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
+// Preserved: lr r1 r29 r30 r31
 fn0040105C_entry:
 l0040105C:
-	Mem10[v6:word32] = r29
-	Mem13[v6 + 4<i32>:word32] = r30
-	Mem16[v6 + 8<i32>:word32] = r31
 	r3_23 = fn00401F40(r2, r3)
-	r30_110 = r3
-	r31_101 = r3_23
+	r31_33 = r3_23
 	branch r3_23 != 0<32> l004010D8
 l00401088:
-	r2 = fn00401ADC(r2, r3, r25, r26, r27, r28, r29, r3, r3_23, out r3_51, out r25, out r26, out r27, out r28, out r29_50, out r30_110)
-	branch r3_51 == 0xFFFFFFFF<32> l004010C0
+	r2 = fn00401ADC(r2, r3, out r3_42)
+	branch r3_42 == 0xFFFFFFFF<32> l004010C0
 l004010C0:
 	r3Out = 0<32>
-	r25Out = r25
-	r26Out = r26
-	r27Out = r27
-	r28Out = r28
-	r29Out = r29_50
-	r30Out = <invalid>
-	r31Out = <invalid>
 	return r2
 l0040109C:
-	r3_73 = fn00401F40(r2, r30_110)
-	r31_101 = r3_73
-	branch r3_73 != 0<32> l004010D8
+	r3_62 = fn00401F40(r2, r3)
+	r31_33 = r3_62
+	branch r3_62 != 0<32> l004010D8
 l004010B4:
-	r2 = fn00401AB4(r2, r29_50, r30_110, out r29_232, out r30_110)
+	r2 = fn00401AB4(r2)
 l004010D8:
-	r29_106 = 0xFFFFFFFC<32>
-	branch (Mem16[Mem16[r31_101:word32] + 4<i32>:word32] & 0xFFFFFFFC<32>) - (Mem16[r31_101 + 4<i32>:word32] & 0xFFFFFFFC<32>) - r30_110 == 8<32> l00401128
+	branch (Mem16[Mem16[r31_33:word32] + 4<i32>:word32] & 0xFFFFFFFC<32>) - (Mem16[r31_33 + 4<i32>:word32] & 0xFFFFFFFC<32>) - r3 == 8<32> l00401128
 l00401100:
-	r2 = fn0040115C(r2, r31_101, r30_110, 0xFFFFFFFC<32>, r30_110, r31_101, out r3_118, out r29_106, out r31_101)
-	branch r3_118 == 0<32> l00401128
+	r2 = fn0040115C(r2, r31_33, r3, out r3_104)
+	branch r3_104 == 0<32> l00401128
 l00401114:
-	Mem135[r3_118 + 4<i32>:word32] = Mem16[r3_118 + 4<i32>:word32] & 0xFFFFFFFD<32> | 1<32>
+	Mem119[r3_104 + 4<i32>:word32] = Mem16[r3_104 + 4<i32>:word32] & 0xFFFFFFFD<32> | 1<32>
 l00401128:
-	r5_143 = Mem138[r31_101:word32]
-	r6_145 = Mem138[r2 + 104<i32>:word32]
-	r4_147 = Mem138[r31_101 + 4<i32>:word32] & r29_106
-	Mem148[r31_101 + 4<i32>:word32] = r4_147
-	Mem149[r6_145 + 4<i32>:word32] = r5_143
-	r3Out = (r4_147 & r29_106) + 8<32>
-	r25Out = r25
-	r26Out = r26
-	r27Out = r27
-	r28Out = r28
-	r29Out = dwLoc10
-	r30Out = <invalid>
-	r31Out = <invalid>
+	r4_125 = Mem122[r31_33 + 4<i32>:word32]
+	r5_127 = Mem122[r31_33:word32]
+	r6_129 = Mem122[r2 + 104<i32>:word32]
+	Mem132[r31_33 + 4<i32>:word32] = r4_125 & 0xFFFFFFFC<32>
+	Mem133[r6_129 + 4<i32>:word32] = r5_127
+	r3Out = (r4_125 & 0xFFFFFFFC<32>) + 8<32>
 	return r2
 fn0040105C_exit:
 
 
-word32 fn0040115C(word32 r2, word32 r3, word32 r4, word32 r29, word32 r30, word32 r31, word32 & r3Out, word32 & r29Out, word32 & r31Out)
+word32 fn0040115C(word32 r2, word32 r3, word32 r4, word32 & r3Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn0040105C
-// MayUse:  r2:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31]
-// LiveOut: r2:[0..31]-fn0040105C r29:[0..31]-fn0040105C r3:[0..31]-fn0040105C r31:[0..31]-fn0040105C
-// Trashed: cr1 ctr r0 r10 r11 r12 r2 r29 r3 r30 r31 r4 r5 r6
-// Preserved: lr r1
+// MayUse:  r2:[0..31] r3:[0..31] r4:[0..31]
+// LiveOut: r2:[0..31]-fn0040105C r3:[0..31]-fn0040105C
+// Trashed: cr1 ctr r0 r10 r11 r12 r2 r3 r4 r5 r6
+// Preserved: lr r1 r29 r30 r31
 fn0040115C_entry:
 l0040115C:
-	Mem7[v4:word32] = r29
-	Mem10[v4 + 4<i32>:word32] = r30
-	Mem13[v4 + 8<i32>:word32] = r31
 	branch (Mem13[Mem13[r3:word32] + 4<i32>:word32] & 0xFFFFFFFC<32>) - (Mem13[r3 + 4<i32>:word32] & 0xFFFFFFFC<32>) + 0xFFFFFFF8<32> <= r4 l004011E4
 l0040119C:
 	r2 = fn004019CC(r2, out r3_33)
 	branch r3_33 == 0<32> l004011E4
 l004011E4:
 	r3Out = 0<32>
-	r29Out = <invalid>
-	r31Out = <invalid>
 	return r2
 l004011AC:
 	r29_59 = (Mem30[r3 + 4<i32>:word32] & 0xFFFFFFFC<32>) + r4
@@ -591,73 +447,71 @@ l004011AC:
 	Mem65[r3_33:word32] = Mem62[r3:word32]
 	Mem66[r3:word32] = r3_33
 	r3Out = r3_33
-	r29Out = <invalid>
-	r31Out = <invalid>
 	return r2
 fn0040115C_exit:
 
 
-word32 fn004011FC(word32 r2, word32 r3, word32 r29, word32 r30, word32 & r3Out, word32 & r27Out, word32 & r28Out, word32 & r29Out, word32 & r30Out, word32 & r31Out)
+word32 fn004011FC(word32 r2, word32 r3, word32 & r3Out, word32 & r27Out, word32 & r28Out, word32 & r29Out, word32 & r30Out, word32 & r31Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00401380
 //      fn00402A24
-// MayUse:  r2:[0..31] r29:[0..31] r3:[0..31] r30:[0..31]
+// MayUse:  r2:[0..31] r3:[0..31]
 // LiveOut: r2:[0..31]-fn00401380 r27:[0..31]-fn00401380 r28:[0..31]-fn00401380 r29:[0..31]-fn00401380 r3:[0..31]-fn00401380 r30:[0..31]-fn00401380 r31:[0..31]-fn00401380
-// Trashed: cr0 ctr r0 r10 r11 r12 r2 r29 r3 r30 r4 r5 r6 r7 r8 r9
+// Trashed: cr0 ctr r0 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
 // Preserved: lr r1 r31
 fn004011FC_entry:
 l004011FC:
 	branch r3 != 0<32> l00401234
 l00401234:
-	r2_28 = fn004012B0(r2, r3, r29, r30, r3, out r3_20, out r29_19, out r30_21, out r31_22)
-	branch r3_20 == 0<32> l0040125C
+	r2_23 = fn004012B0(r2, r3, out r3_17)
+	branch r3_17 == 0<32> l0040125C
 l0040125C:
-	branch (Mem12[r31_22 + 12<i32>:word32] & 0x4000<32>) == 0<32> l00401298
+	branch (Mem12[r3 + 12<i32>:word32] & 0x4000<32>) == 0<32> l00401298
 l00401298:
 	r3Out = 0<32>
 	r27Out = <invalid>
 	r28Out = <invalid>
-	r29Out = r29_19
-	r30Out = r30_21
+	r29Out = <invalid>
+	r30Out = <invalid>
 	r31Out = <invalid>
-	return r2_28
+	return r2_23
 l00401268:
-	r2_56 = fn004020BC(r2_28, Mem12[r31_22 + 16<i32>:word32], r29_19, r30_21, r31_22, out r3_46, out r29_45, out r30_47)
-	r3_124 = 0xFFFFFFFF<32>
-	branch r3_46 != 0<32> l00401284
+	r2_48 = fn004020BC(r2_23, Mem12[r3 + 16<i32>:word32], out r3_40)
+	r3_112 = 0xFFFFFFFF<32>
+	branch r3_40 != 0<32> l00401284
 l00401280:
-	r3_124 = 0<32>
+	r3_112 = 0<32>
 l00401284:
-	r3Out = r3_124
+	r3Out = r3_112
 	r27Out = <invalid>
 	r28Out = <invalid>
-	r29Out = r29_45
-	r30Out = r30_47
+	r29Out = <invalid>
+	r30Out = <invalid>
 	r31Out = <invalid>
-	return r2_56
+	return r2_48
 l00401244:
 	r3Out = 0xFFFFFFFF<32>
 	r27Out = <invalid>
 	r28Out = <invalid>
-	r29Out = r29_19
-	r30Out = r30_21
+	r29Out = <invalid>
+	r30Out = <invalid>
 	r31Out = <invalid>
-	return r2_28
+	return r2_23
 l00401218:
-	r2_84 = fn00401380(r2, 0<32>, r27, r28, r29, r30, r3, out r3_78, out r29_82, out r30_83)
-	r3Out = r3_78
+	r2_74 = fn00401380(r2, 0<32>, out r3_70)
+	r3Out = r3_70
 	r27Out = <invalid>
 	r28Out = <invalid>
-	r29Out = r29_82
-	r30Out = r30_83
+	r29Out = <invalid>
+	r30Out = <invalid>
 	r31Out = <invalid>
-	return r2_84
+	return r2_74
 fn004011FC_exit:
 
 
-word32 fn004012B0(word32 r2, word32 r3, word32 r29, word32 r30, word32 r31, word32 & r3Out, word32 & r29Out, word32 & r30Out, word32 & r31Out)
+word32 fn004012B0(word32 r2, word32 r3, word32 & r3Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -665,16 +519,12 @@ word32 fn004012B0(word32 r2, word32 r3, word32 r29, word32 r30, word32 r31, word
 //      fn004011FC
 //      fn00403170
 //      fn00403450
-// MayUse:  r2:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31]
-// LiveOut: r2:[0..31]-fn00400430 r29:[0..31]-fn004011FC r3:[0..31]-fn004011FC r30:[0..31]-fn004011FC r31:[0..31]-fn00400430
-// Trashed: cr0 ctr r0 r10 r11 r12 r2 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
-// Preserved: lr r1
+// MayUse:  r2:[0..31] r3:[0..31]
+// LiveOut: r2:[0..31]-fn00400430 r3:[0..31]-fn004011FC
+// Trashed: cr0 ctr r0 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
+// Preserved: lr r1 r29 r30 r31
 fn004012B0_entry:
 l004012B0:
-	Mem7[v4:word32] = r29
-	Mem10[v4 + 4<i32>:word32] = r30
-	Mem13[v4 + 8<i32>:word32] = r31
-	r31_16 = r3
 	r11_17 = Mem13[r3 + 12<i32>:word32]
 	r29_24 = 0<32>
 	branch (r11_17 & 3<32>) != 2<32> l00401334
@@ -685,59 +535,51 @@ l004012E0:
 	r30_29 = Mem23[r3:word32] - r4_27
 	branch r30_29 <= 0<32> l00401334
 l004012F0:
-	r2 = fn00402248(r2, Mem23[r3 + 16<i32>:word32], r4_27, r30_29, 0<32>, r30_29, r3, out r3_36, out r29_24, out r30_46, out r31_16)
-	branch r3_36 != r30_46 l00401324
+	r2 = fn00402248(r2, Mem23[r3 + 16<i32>:word32], r4_27, r30_29, out r3_36)
+	branch r3_36 != r30_29 l00401324
 l00401324:
-	Mem55[r31_16 + 12<i32>:word32] = Mem23[r31_16 + 12<i32>:word32] | 0x20<32>
+	Mem52[r3 + 12<i32>:word32] = Mem23[r3 + 12<i32>:word32] | 0x20<32>
 	r29_24 = 0xFFFFFFFF<32>
 l00401308:
-	r11_56 = Mem23[r31_16 + 12<i32>:word32]
-	branch (r11_56 & 0x80<32>) == 0<32> l00401334
+	r11_53 = Mem23[r3 + 12<i32>:word32]
+	branch (r11_53 & 0x80<32>) == 0<32> l00401334
 l00401314:
-	Mem61[r31_16 + 12<i32>:word32] = r11_56 & 0xFFFFFFFD<32>
+	Mem58[r3 + 12<i32>:word32] = r11_53 & 0xFFFFFFFD<32>
 l00401334:
-	r4_66 = Mem63[r31_16 + 8<i32>:word32]
-	Mem71[r31_16 + 4<i32>:word32] = 0<32>
-	Mem72[r31_16:word32] = r4_66
+	r4_63 = Mem60[r3 + 8<i32>:word32]
+	Mem68[r3 + 4<i32>:word32] = 0<32>
+	Mem69[r3:word32] = r4_63
 	r3Out = r29_24
-	r29Out = dwLoc10
-	r30Out = dwLoc0C
-	r31Out = dwLoc08
 	return r2
 fn004012B0_exit:
 
 
-void fn0040135C(word32 r2, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31)
+void fn0040135C(word32 r2)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r2:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r30:[0..31] r31:[0..31]
+// MayUse:  r2:[0..31]
 // LiveOut:
 // Trashed: cr0 r12 r2 r27 r28 r29 r3 r30 r31 r4 r5
 // Preserved: lr r1
 fn0040135C_entry:
 l0040135C:
-	fn00401380(r2, 1<32>, r27, r28, r29, r30, r31, out r3_32, out r29_33, out r30_34)
+	fn00401380(r2, 1<32>, out r3_27)
 	return
 fn0040135C_exit:
 
 
-word32 fn00401380(word32 r2, word32 r3, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 & r3Out, word32 & r29Out, word32 & r30Out)
+word32 fn00401380(word32 r2, word32 r3, word32 & r3Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn004011FC
 //      fn0040135C
-// MayUse:  r2:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31]
-// LiveOut: r2:[0..31]-fn004011FC r29:[0..31]-fn004011FC r3:[0..31]-fn004011FC r30:[0..31]-fn004011FC
+// MayUse:  r2:[0..31] r3:[0..31]
+// LiveOut: r2:[0..31]-fn004011FC r3:[0..31]-fn004011FC
 // Trashed: cr0 lr r12 r2 r27 r28 r29 r3 r30 r31 r4 r5
 // Preserved: r1
 fn00401380_entry:
 l00401380:
-	Mem7[v4:word32] = r27
-	Mem10[v4 + 4<i32>:word32] = r28
-	Mem13[v4 + 8<i32>:word32] = r29
-	Mem16[v4 + 12<i32>:word32] = r30
-	Mem19[v4 + 16<i32>:word32] = r31
 	r4_23 = Mem19[r2 + 72<i32>:word32]
 	r27_22 = Mem19[r2 + 108<i32>:word32]
 	r31_25 = r4_23
@@ -754,12 +596,12 @@ l004013E0:
 l004013E8:
 	branch (Mem31[r31_25 + 12<i32>:word32] & 2<32>) == 0<32> l00401408
 l004013F4:
-	r2 = fn004011FC(r2, r31_25, r29_101, r30_30, out r3_72, out r27_22, out r28_104, out r29_101, out r30_30, out r31_25)
+	r2 = fn004011FC(r2, r31_25, out r3_72, out r27_22, out r28_104, out r29_101, out r30_30, out r31_25)
 	branch r3_72 != 0xFFFFFFFF<32> l00401408
 l00401404:
 	r28_104 = 0xFFFFFFFF<32>
 l004013C8:
-	r2 = fn004011FC(r2, r31_25, r29_101, r30_30, out r3_88, out r27_22, out r28_104, out r29_101, out r30_30, out r31_25)
+	r2 = fn004011FC(r2, r31_25, out r3_88, out r27_22, out r28_104, out r29_101, out r30_30, out r31_25)
 	branch r3_88 == 0xFFFFFFFF<32> l00401408
 l004013D8:
 	r29_101 = r29_101 + 1<32>
@@ -773,8 +615,6 @@ l00401424:
 	r3_103 = r28_104
 l00401428:
 	r3Out = r3_103
-	r29Out = dwLoc10
-	r30Out = dwLoc0C
 	return r2
 fn00401380_exit:
 
@@ -873,40 +713,26 @@ l00401560:
 fn00401554_exit:
 
 
-word32 fn00401598(word32 r2, word32 r3, word32 r4, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 & r3Out, word32 & r25Out, word32 & r26Out, word32 & r27Out, word32 & r28Out, word32 & r29Out, word32 & r30Out, word32 & r31Out)
+word32 fn00401598(word32 r2, word32 r3, word32 r4, word32 & r3Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00400E04
 //      fn004032FC
-// MayUse:  r2:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31]
-// LiveOut: r2:[0..31]-fn00400E04 r25:[0..31]-fn00400E04 r26:[0..31]-fn00400E04 r27:[0..31]-fn00400E04 r28:[0..31]-fn00400E04 r29:[0..31]-fn00400E04 r3:[0..31]-fn00400E04 r30:[0..31]-fn00400E04 r31:[0..31]-fn00400E04
-// Trashed: cr0 ctr r0 r10 r11 r12 r2 r25 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
-// Preserved: lr r1
+// MayUse:  r2:[0..31] r3:[0..31] r4:[0..31]
+// LiveOut: r2:[0..31]-fn00400E04 r3:[0..31]-fn00400E04
+// Trashed: cr0 ctr r0 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
+// Preserved: lr r1 r27 r28 r29 r30 r31
 fn00401598_entry:
 l00401598:
-	Mem7[v4:word32] = r27
-	Mem10[v4 + 4<i32>:word32] = r28
-	Mem13[v4 + 8<i32>:word32] = r29
-	Mem16[v4 + 12<i32>:word32] = r30
-	Mem19[v4 + 16<i32>:word32] = r31
-	r31_189 = r4
 	r10_23 = Mem19[r4 + 12<i32>:word32]
-	r27_144 = r3
-	r30_148 = Mem31[r4 + 16<i32>:word32]
+	r30_32 = Mem31[r4 + 16<i32>:word32]
 	branch (r10_23 & 0x82<32>) == 0<32> l00401774
 l004015C4:
 	branch (r10_23 & 0x40<32>) != 0<32> l00401774
 l00401774:
 	Mem38[r4 + 12<i32>:word32] = r10_23 | 0x20<32>
 	r3Out = 0xFFFFFFFF<32>
-	r25Out = r25
-	r26Out = r26
-	r27Out = <invalid>
-	r28Out = <invalid>
-	r29Out = <invalid>
-	r30Out = <invalid>
-	r31Out = <invalid>
 	return r2
 l004015CC:
 	branch (r10_23 & 1<32>) == 0<32> l00401620
@@ -918,13 +744,6 @@ l004015D4:
 l00401608:
 	Mem63[r4 + 12<i32>:word32] = r4_56 | 0x20<32>
 	r3Out = 0xFFFFFFFF<32>
-	r25Out = r25
-	r26Out = r26
-	r27Out = <invalid>
-	r28Out = <invalid>
-	r29Out = <invalid>
-	r30Out = <invalid>
-	r31Out = <invalid>
 	return r2
 l004015EC:
 	r10_77 = Mem61[r4 + 12<i32>:word32]
@@ -937,7 +756,7 @@ l00401624:
 	Mem89[r4 + 12<i32>:word32] = r10_84 & 0xFFFFFFEF<32>
 	r10_90 = Mem89[r4 + 12<i32>:word32]
 	Mem92[r4 + 4<i32>:word32] = 0<32>
-	r28_145 = 0<32>
+	r28_171 = 0<32>
 	branch (r10_90 & 0x10C<32>) != 0<32> l00401688
 l0040164C:
 	r11_98 = Mem92[r2 + 72<i32>:word32]
@@ -945,52 +764,39 @@ l0040164C:
 l0040165C:
 	branch r4 != r11_98 + 0x40<32> l0040167C
 l00401668:
-	branch fn00401474(r2, r30_148) != 0<32> l00401688
+	branch fn00401474(r2, r30_32) != 0<32> l00401688
 l0040167C:
-	r2 = fn0040298C(r2, r4, r25, r26, r3, 0<32>, r29, r30_148, out r25, out r26, out r27_144, out r28_145, out r30_148)
+	r2 = fn0040298C(r2, r4)
 l00401688:
 	branch (Mem92[r4 + 12<i32>:word32] & 0x108<32>) == 0<32> l0040170C
 l0040170C:
-	r2 = fn00402248(r2, r30_148, fp + 0xFFFFFFE8<32>, 1<32>, 1<32>, r30_148, r4, out r3_178, out r29_187, out r30_458, out r31_189)
-	r28_145 = r3_178
+	r29_153 = 1<32>
+	r2 = fn00402248(r2, r30_32, fp + 0xFFFFFFE8<32>, 1<32>, out r3_159)
+	r28_171 = r3_159
 l00401694:
-	r4_195 = Mem92[r4 + 8<i32>:word32]
-	r5_196 = Mem92[r4 + 24<i32>:word32]
-	r29_187 = Mem92[r4:word32] - r4_195
-	Mem200[r4:word32] = r4_195 + 1<32>
-	Mem202[r4 + 4<i32>:word32] = r5_196 + 0xFFFFFFFF<32>
-	branch r29_187 <= 0<32> l004016D4
+	r4_173 = Mem92[r4 + 8<i32>:word32]
+	r5_174 = Mem92[r4 + 24<i32>:word32]
+	r29_153 = Mem92[r4:word32] - r4_173
+	Mem178[r4:word32] = r4_173 + 1<32>
+	Mem180[r4 + 4<i32>:word32] = r5_174 + 0xFFFFFFFF<32>
+	branch r29_153 <= 0<32> l004016D4
 l004016D4:
-	branch (CONVERT(Mem202[Mem202[r2 + 120<i32>:word32] + r30_148:byte], int8, int32) & 0x20<32>) == 0<32> l004016FC
+	branch (CONVERT(Mem180[Mem180[r2 + 120<i32>:word32] + r30_32:byte], int8, int32) & 0x20<32>) == 0<32> l004016FC
 l004016E8:
-	r2 = fn004026B8(r2, r30_148, 2<32>, r26, r27_144, r28_145, r29_187, r30_148, r31, out r26, out r27_144, out r28_145, out r29_187, out r31_189)
+	r2 = fn004026B8(r2, r30_32, 2<32>)
 l004016B8:
-	r2 = fn00402248(r2, r30_148, Mem202[r4 + 8<i32>:word32], r29_187, r29_187, r30_148, r4, out r3_238, out r29_187, out r30_459, out r31_189)
-	r28_145 = r3_238
+	r2 = fn00402248(r2, r30_32, Mem180[r4 + 8<i32>:word32], r29_153, out r3_208)
+	r28_171 = r3_208
 l004016FC:
-	Mem259[Mem202[r31_189 + 8<i32>:word32]:byte] = SLICE(r27_144, int8, 0)
+	Mem226[Mem180[r4 + 8<i32>:word32]:byte] = SLICE(r3, int8, 0)
 l00401730:
-	branch r28_145 == r29_187 l0040175C
+	branch r28_171 == r29_153 l0040175C
 l0040175C:
-	r3Out = r27_144 & 0xFF<32>
-	r25Out = r25
-	r26Out = r26
-	r27Out = <invalid>
-	r28Out = <invalid>
-	r29Out = <invalid>
-	r30Out = <invalid>
-	r31Out = <invalid>
+	r3Out = r3 & 0xFF<32>
 	return r2
 l00401738:
-	Mem290[r31_189 + 12<i32>:word32] = Mem267[r31_189 + 12<i32>:word32] | 0x20<32>
+	Mem260[r4 + 12<i32>:word32] = Mem237[r4 + 12<i32>:word32] | 0x20<32>
 	r3Out = 0xFFFFFFFF<32>
-	r25Out = r25
-	r26Out = r26
-	r27Out = <invalid>
-	r28Out = <invalid>
-	r29Out = <invalid>
-	r30Out = <invalid>
-	r31Out = <invalid>
 	return r2
 fn00401598_exit:
 
@@ -1096,161 +902,129 @@ l00401A54:
 fn00401A34_exit:
 
 
-word32 fn00401AB4(word32 r2, word32 r29, word32 r30, word32 & r29Out, word32 & r30Out)
+word32 fn00401AB4(word32 r2)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn0040105C
 //      fn00401DD8
 //      fn00402BA0
-// MayUse:  r2:[0..31] r29:[0..31] r30:[0..31]
-// LiveOut: r2:[0..31]-fn00401DD8 r29:[0..31]-fn00402BA0 r30:[0..31]-fn0040105C
-// Trashed: cr1 ctr r0 r10 r11 r12 r2 r29 r3 r30 r4 r5 r6 r7 r8 r9
+// MayUse:  r2:[0..31]
+// LiveOut: r2:[0..31]-fn00401DD8
+// Trashed: cr1 ctr r0 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
 // Preserved: lr r1
 fn00401AB4_entry:
 l00401AB4:
-	r2_17 = fn00402C4C(r2, 0x12<32>, r29, r30, out r29_18, out r30_20)
-	r29Out = r29_18
-	r30Out = r30_20
-	return r2_17
+	return fn00402C4C(r2, 0x12<32>)
 fn00401AB4_exit:
 
 
-word32 fn00401ADC(word32 r2, word32 r3, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 & r3Out, word32 & r25Out, word32 & r26Out, word32 & r27Out, word32 & r28Out, word32 & r29Out, word32 & r30Out)
+word32 fn00401ADC(word32 r2, word32 r3, word32 & r3Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn0040105C
-// MayUse:  r2:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31]
-// LiveOut: r2:[0..31]-fn0040105C r25:[0..31]-fn0040105C r26:[0..31]-fn0040105C r27:[0..31]-fn0040105C r28:[0..31]-fn0040105C r29:[0..31]-fn0040105C r3:[0..31]-fn0040105C r30:[0..31]-fn0040105C
-// Trashed: cr1 ctr r0 r10 r11 r12 r2 r25 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
-// Preserved: cr0 lr r1
+// MayUse:  r2:[0..31] r3:[0..31]
+// LiveOut: r2:[0..31]-fn0040105C r3:[0..31]-fn0040105C
+// Trashed: cr1 ctr r0 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
+// Preserved: cr0 lr r1 r25 r26 r27 r28 r29 r30 r31
 fn00401ADC_entry:
 l00401ADC:
-	Mem7[v4:word32] = r25
-	Mem10[v4 + 4<i32>:word32] = r26
-	Mem13[v4 + 8<i32>:word32] = r27
-	Mem16[v4 + 12<i32>:word32] = r28
-	Mem19[v4 + 16<i32>:word32] = r29
-	Mem22[v4 + 20<i32>:word32] = r30
-	Mem25[v4 + 24<i32>:word32] = r31
 	r25_28 = Mem25[r2 + 152<i32>:word32]
-	r28_114 = Mem25[r2 + 148<i32>:word32]
-	r30_112 = Mem25[r25_28 + 4<i32>:word32]
+	r28_29 = Mem25[r2 + 148<i32>:word32]
+	r30_109 = Mem25[r25_28 + 4<i32>:word32]
 	r11_33 = Mem25[r25_28 + 4<i32>:word32]
-	r27_113 = 0xFFFFFFFF<32>
-	r26_231 = r3 + 0xF<32> & 0xFFFFFFF8<32>
-	branch r11_33 >= Mem25[r28_114:word32] l00401BA0
+	r27_105 = 0xFFFFFFFF<32>
+	r26_44 = r3 + 0xF<32> & 0xFFFFFFF8<32>
+	branch r11_33 >= Mem25[r28_29:word32] l00401BA0
 l00401B24:
-	r31 = r11_33 << 4<8>
-	r29_105 = Mem39[r2 + 140<i32>:word32]
+	r31_111 = r11_33 << 4<8>
+	r29_46 = Mem39[r2 + 140<i32>:word32]
 l00401B2C:
-	branch Mem39[Mem39[Mem39[r29_105:word32]:word32] + r31:word32] == 0<32> l00401B54
+	branch Mem39[Mem39[Mem39[r29_46:word32]:word32] + r31_111:word32] == 0<32> l00401B54
 l00401B40:
-	r2 = fn00401DD8(r2, r30_112, r26_231, r26_231, r27_113, r28_114, r29_105, r30_112, r31, out r3_72, out r26_231, out r27_113, out r28_114, out r29_105, out r30_112, out r31)
-	branch r3_72 != 0xFFFFFFFF<32> l00401B80
+	r2 = fn00401DD8(r2, r30_109, r26_44, out r3_66)
+	branch r3_66 != 0xFFFFFFFF<32> l00401B80
 l00401B80:
-	Mem86[r25_28 + 4<i32>:word32] = r30_112
+	Mem78[r25_28 + 4<i32>:word32] = r30_109
 	r3Out = 0<32>
-	r25Out = <invalid>
-	r26Out = <invalid>
-	r27Out = <invalid>
-	r28Out = <invalid>
-	r29Out = <invalid>
-	r30Out = <invalid>
 	return r2
 l00401B54:
-	branch Mem39[Mem39[Mem39[r29_105:word32]:word32] + r31:word32] == 0<32> l00401B9C
+	branch Mem39[Mem39[Mem39[r29_46:word32]:word32] + r31_111:word32] == 0<32> l00401B9C
 l00401B9C:
-	r27_113 = r30_112
+	r27_105 = r30_109
 l00401B68:
-	r30_112 = r30_112 + 1<32>
-	r31 = r31 + 0x10<32>
-	branch r30_112 < Mem39[r28_114:word32] l00401B2C
+	r30_109 = r30_109 + 1<32>
+	r31_111 = r31_111 + 0x10<32>
+	branch r30_109 < Mem39[r28_29:word32] l00401B2C
 l00401B7C:
 l00401BA0:
-	r29_125 = Mem39[r2 + 140<i32>:word32]
-	r11_127 = Mem39[r28_114:word32]
-	r9_128 = Mem39[r29_125:word32]
-	branch r27_113 != 0xFFFFFFFF<32> l00401CC8
+	r29_119 = Mem39[r2 + 140<i32>:word32]
+	r11_121 = Mem39[r28_29:word32]
+	r9_122 = Mem39[r29_119:word32]
+	branch r27_105 != 0xFFFFFFFF<32> l00401CC8
 l00401BB4:
-	r31_131 = r11_127 + 0x20<32> << 4<8>
-	branch r9_128 == 0<32> l00401BD8
+	r31_125 = r11_121 + 0x20<32> << 4<8>
+	branch r9_122 == 0<32> l00401BD8
 l00401BC4:
 	fn0040408C(r2)
 	r2 = dwLoc44
-	r9_128 = Mem39[r29_125:word32]
+	r9_122 = Mem39[r29_119:word32]
 l00401BD8:
-	branch r9_128 == 0<32> l00401BF4
+	branch r9_122 == 0<32> l00401BF4
 l00401BE0:
 	branch CONVERT(Mem39[Mem39[Mem39[r2 + 152<i32>:word32]:word32]:word16], word16, word32) == 0<32> l00401C74
 l00401BF4:
 	fn004040A4(r2)
-	branch r31_131 != 0<32> l00401C24
+	branch r31_125 != 0<32> l00401C24
 l00401C24:
 	fn004040BC(dwLoc44)
-	branch Mem39[r29_125:word32] == 0<32> l00401C6C
+	branch Mem39[r29_119:word32] == 0<32> l00401C6C
 l00401C3C:
 	fn004040D4(dwLoc44)
 	fn004040EC(dwLoc44)
 l00401C6C:
-	Mem196[r29_125:word32] = r31_131
+	Mem190[r29_119:word32] = r31_125
 	r2 = dwLoc44
-	r9_128 = Mem196[r29_125:word32]
+	r9_122 = Mem190[r29_119:word32]
 l00401C74:
-	r31 = r31_131
-	r11_204 = 0<32>
-	r10_206 = (Mem199[r28_114:word32] << 4<8>) + Mem199[r9_128:word32]
-	ctr_208 = 0x20<32>
+	r11_198 = 0<32>
+	r10_200 = (Mem193[r28_29:word32] << 4<8>) + Mem193[r9_122:word32]
+	ctr_202 = 0x20<32>
 l00401C94:
-	Mem213[r10_206 + r11_204:word32] = 0<32>
-	r11_214 = r11_204 + 4<32>
-	Mem215[r10_206 + r11_214:word32] = 0<32>
-	Mem217[r10_206 + (r11_214 + 4<32>):word32] = 0<32>
-	Mem219[r10_206 + (r11_214 + 8<32>):word32] = 0<32>
-	r11_204 = r11_214 + 0xC<32>
-	ctr_208 = ctr_208 - 1<32>
-	branch ctr_208 != 0<32> l00401C94
+	Mem207[r10_200 + r11_198:word32] = 0<32>
+	r11_208 = r11_198 + 4<32>
+	Mem209[r10_200 + r11_208:word32] = 0<32>
+	Mem211[r10_200 + (r11_208 + 4<32>):word32] = 0<32>
+	Mem213[r10_200 + (r11_208 + 8<32>):word32] = 0<32>
+	r11_198 = r11_208 + 0xC<32>
+	ctr_202 = ctr_202 - 1<32>
+	branch ctr_202 != 0<32> l00401C94
 l00401CB8:
-	r4_224 = Mem219[r28_114:word32]
-	Mem227[r28_114:word32] = r4_224 + 0x20<32>
-	r27_113 = r4_224
+	r4_218 = Mem213[r28_29:word32]
+	Mem221[r28_29:word32] = r4_218 + 0x20<32>
+	r27_105 = r4_218
 l00401CC8:
-	r2_270 = fn00401CE8(r2, r27_113, r26_231, r26_231, r27_113, r28_114, r29_125, r30_112, r31, out r3_272)
-	r3Out = r3_272
-	r25Out = <invalid>
-	r26Out = <invalid>
-	r27Out = <invalid>
-	r28Out = <invalid>
-	r29Out = <invalid>
-	r30Out = <invalid>
-	return r2_270
+	r2_249 = fn00401CE8(r2, r27_105, r26_44, out r3_250)
+	r3Out = r3_250
+	return r2_249
 l00401C0C:
 	r3Out = 0xFFFFFFFF<32>
-	r25Out = <invalid>
-	r26Out = <invalid>
-	r27Out = <invalid>
-	r28Out = <invalid>
-	r29Out = <invalid>
-	r30Out = <invalid>
 	return dwLoc44
 fn00401ADC_exit:
 
 
-word32 fn00401CE8(word32 r2, word32 r3, word32 r4, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 & r3Out)
+word32 fn00401CE8(word32 r2, word32 r3, word32 r4, word32 & r3Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00401ADC
-// MayUse:  r2:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31]
+// MayUse:  r2:[0..31] r3:[0..31] r4:[0..31]
 // LiveOut: r2:[0..31]-fn00401ADC r3:[0..31]-fn00401ADC
-// Trashed: cr0 ctr r0 r10 r11 r12 r2 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
-// Preserved: lr r1
+// Trashed: cr0 ctr r0 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
+// Preserved: lr r1 r29 r30 r31
 fn00401CE8_entry:
 l00401CE8:
-	Mem7[v4:word32] = r29
-	Mem10[v4 + 4<i32>:word32] = r30
-	Mem13[v4 + 8<i32>:word32] = r31
 	r31_24 = Mem13[Mem13[r2 + 144<i32>:word32]:word32] + 0xFFF<32> & 0xFFFFF000<32>
 	branch r4 <= r31_24 l00401D20
 l00401D1C:
@@ -1258,7 +1032,7 @@ l00401D1C:
 l00401D20:
 	fn00404104(r2)
 	r3_31 = r31_24 + 8<32>
-	r2_124 = dwLoc34
+	r2_107 = dwLoc34
 	branch r3_31 == 0<32> l00401DC0
 l00401D38:
 	r11_47 = Mem28[Mem28[Mem28[dwLoc34 + 140<i32>:word32]:word32]:word32]
@@ -1273,35 +1047,31 @@ l00401D78:
 	Mem65[r8_51 + 12<i32>:word32] = r3_31
 	Mem67[r8_51 + 8<i32>:word32] = r31_24
 	Mem69[r8_51 + 4<i32>:word32] = 0<32>
-	r2_87 = fn00401DD8(dwLoc34, r3, r4, r26, r27, r28, r4, r3, r31_24, out r3_92, out r26_214, out r27_215, out r28_216, out r29_217, out r30_93, out r31_94)
-	branch r3_92 == 0<32> l00401DA8
+	r2_78 = fn00401DD8(dwLoc34, r3, r4, out r3_79)
+	branch r3_79 == 0<32> l00401DA8
 l00401DA8:
 	r3Out = 0<32>
-	return r2_87
+	return r2_78
 l00401D9C:
-	r2_124 = fn00401ED4(r2_87, r30_93, r30_93, r31_94)
+	r2_107 = fn00401ED4(r2_78, r3)
 l00401DC0:
 	r3Out = 0xFFFFFFFF<32>
-	return r2_124
+	return r2_107
 fn00401CE8_exit:
 
 
-word32 fn00401DD8(word32 r2, word32 r3, word32 r4, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 & r3Out, word32 & r26Out, word32 & r27Out, word32 & r28Out, word32 & r29Out, word32 & r30Out, word32 & r31Out)
+word32 fn00401DD8(word32 r2, word32 r3, word32 r4, word32 & r3Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00401ADC
 //      fn00401CE8
-// MayUse:  r2:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31]
-// LiveOut: r2:[0..31]-fn00401ADC r26:[0..31]-fn00401ADC r27:[0..31]-fn00401ADC r28:[0..31]-fn00401ADC r29:[0..31]-fn00401ADC r3:[0..31]-fn00401ADC r30:[0..31]-fn00401ADC r31:[0..31]-fn00401ADC
-// Trashed: cr1 ctr r0 r10 r11 r12 r2 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
-// Preserved: cr0 lr r1
+// MayUse:  r2:[0..31] r3:[0..31] r4:[0..31]
+// LiveOut: r2:[0..31]-fn00401ADC r3:[0..31]-fn00401ADC
+// Trashed: cr1 ctr r0 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
+// Preserved: cr0 lr r1 r28 r29 r30 r31
 fn00401DD8_entry:
 l00401DD8:
-	Mem7[v4:word32] = r28
-	Mem10[v4 + 4<i32>:word32] = r29
-	Mem13[v4 + 8<i32>:word32] = r30
-	Mem16[v4 + 12<i32>:word32] = r31
 	r29_19 = Mem16[r2 + 140<i32>:word32]
 	r5_25 = Mem16[Mem16[r29_19:word32]:word32]
 	r11_27 = r5_25 + (r3 << 4<8>)
@@ -1314,53 +1084,39 @@ l00401DD8:
 l00401E24:
 	fn0040411C(r2)
 	r10_51 = Mem36[Mem36[r29_19:word32]:word32]
-	r28 = r30_30 - r10_31 + r9_29 + 8<32> & 0xFFFFFFF8<32>
+	r28_41 = r30_30 - r10_31 + r9_29 + 8<32> & 0xFFFFFFF8<32>
 	r2 = dwLoc3C
 	r11_27 = r10_51 + (r3 << 4<8>)
 	branch CONVERT(Mem36[Mem36[Mem36[dwLoc3C + 152<i32>:word32]:word32]:word16], word16, word32) == 0<32> l00401E78
 l00401E78:
-	Mem55[r11_27 + 8<i32>:word32] = r28
+	Mem55[r11_27 + 8<i32>:word32] = r28_41
 	r8_37 = Mem55[r11_27 + 4<i32>:word32] + Mem55[r10_51 + (r3 << 4<8>):word32]
 l00401E88:
 	Mem70[r11_27 + 4<i32>:word32] = Mem60[r11_27 + 4<i32>:word32] + r30_30
-	r2_106 = fn00402CE0(r2, r8_37, r30_30, r26, r27, r28, r29_19, r30_30, r3 << 4<8>, out r3_90, out r26_86, out r27_87, out r29_89, out r30_91)
-	branch r3_90 == 0<32> l00401EBC
+	r2_165 = fn00402CE0(r2, r8_37, r30_30, out r3_79)
+	branch r3_79 == 0<32> l00401EBC
 l00401EB4:
-	r2_106 = fn00401AB4(r2_106, r29_89, r30_91, out r29_210, out r30_211)
+	r2_165 = fn00401AB4(r2_165)
 l00401EBC:
 	r3Out = 0<32>
-	r26Out = r26_86
-	r27Out = r27_87
-	r28Out = <invalid>
-	r29Out = <invalid>
-	r30Out = <invalid>
-	r31Out = <invalid>
-	return r2_106
+	return r2_165
 l00401E60:
 	r3Out = 0xFFFFFFFF<32>
-	r26Out = r26
-	r27Out = r27
-	r28Out = <invalid>
-	r29Out = <invalid>
-	r30Out = <invalid>
-	r31Out = <invalid>
 	return dwLoc3C
 fn00401DD8_exit:
 
 
-word32 fn00401ED4(word32 r2, word32 r3, word32 r30, word32 r31)
+word32 fn00401ED4(word32 r2, word32 r3)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00401CE8
-// MayUse:  r2:[0..31] r3:[0..31] r30:[0..31] r31:[0..31]
+// MayUse:  r2:[0..31] r3:[0..31]
 // LiveOut: r2:[0..31]-fn00401CE8
-// Trashed: cr1 ctr r0 r10 r11 r12 r2 r3 r30 r31 r4
-// Preserved: lr r1
+// Trashed: cr1 ctr r0 r10 r11 r12 r2 r3 r4
+// Preserved: lr r1 r30 r31
 fn00401ED4_entry:
 l00401ED4:
-	Mem7[v4:word32] = r30
-	Mem10[v4 + 4<i32>:word32] = r31
 	r30_13 = Mem10[r2 + 140<i32>:word32]
 	r11_16 = Mem10[r30_13:word32]
 	branch Mem20[Mem10[r11_16:word32] + (r3 << 4<8>):word32] == 0<32> l00401F14
@@ -1446,22 +1202,18 @@ l00401FA8:
 	Mem128[r7_5 + 8<i32>:word32] = r10_25
 
 
-word32 fn004020BC(word32 r2, word32 r3, word32 r29, word32 r30, word32 r31, word32 & r3Out, word32 & r29Out, word32 & r30Out)
+word32 fn004020BC(word32 r2, word32 r3, word32 & r3Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn004011FC
-// MayUse:  r2:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31]
-// LiveOut: r2:[0..31]-fn004011FC r29:[0..31]-fn004011FC r3:[0..31]-fn004011FC r30:[0..31]-fn004011FC
-// Trashed: cr0 ctr r0 r10 r11 r12 r2 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
-// Preserved: lr r1
+// MayUse:  r2:[0..31] r3:[0..31]
+// LiveOut: r2:[0..31]-fn004011FC r3:[0..31]-fn004011FC
+// Trashed: cr0 ctr r0 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
+// Preserved: lr r1 r29 r30 r31
 fn004020BC_entry:
 l004020BC:
-	r4_8 = Mem6[Mem0[r2 + 116<i32>:word32]:word32]
-	Mem11[v6:word32] = r29
-	Mem14[v6 + 4<i32>:word32] = r30
-	Mem17[v6 + 8<i32>:word32] = r31
-	branch r3 >= r4_8 l00402220
+	branch r3 >= Mem6[Mem0[r2 + 116<i32>:word32]:word32] l00402220
 l004020E4:
 	r11_28 = CONVERT(Mem25[Mem25[r2 + 120<i32>:word32] + r3:byte], int8, int32)
 	branch (r11_28 & 1<32>) == 0<32> l00402220
@@ -1470,15 +1222,11 @@ l00402220:
 	Mem45[Mem25[r2 + 124<i32>:word32]:word32] = 9<32>
 	Mem47[r5_34:word32] = 0<32>
 	r3Out = 0xFFFFFFFF<32>
-	r29Out = <invalid>
-	r30Out = <invalid>
 	return r2
 l004020F8:
 	branch (r11_28 & 0x40<32>) != 0<32> l00402210
 l00402210:
 	r3Out = 0<32>
-	r29Out = <invalid>
-	r30Out = <invalid>
 	return r2
 l00402100:
 	r11_61 = 0<32>
@@ -1512,25 +1260,19 @@ l004021B4:
 	branch fp == 0x60<32> l004021F8
 l004021F8:
 	r3Out = 0<32>
-	r29Out = <invalid>
-	r30Out = <invalid>
 	return dwLoc84
 l004021D8:
 	fn00403104(dwLoc84, fp + 0xFFFFFFA0<32>)
 	r3Out = 0xFFFFFFFF<32>
-	r29Out = <invalid>
-	r30Out = <invalid>
 	return dwLoc84
 l00402160:
 	Mem165[Mem85[dwLoc84 + 124<i32>:word32]:word32] = 5<32>
 	r3Out = 0xFFFFFFFF<32>
-	r29Out = <invalid>
-	r30Out = <invalid>
 	return dwLoc84
 fn004020BC_exit:
 
 
-word32 fn00402248(word32 r2, word32 r3, word32 r4, word32 r5, word32 r29, word32 r30, word32 r31, word32 & r3Out, word32 & r29Out, word32 & r30Out, word32 & r31Out)
+word32 fn00402248(word32 r2, word32 r3, word32 r4, word32 r5, word32 & r3Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1538,17 +1280,13 @@ word32 fn00402248(word32 r2, word32 r3, word32 r4, word32 r5, word32 r29, word32
 //      fn00401598
 //      fn00402A24
 //      fn00403618
-// MayUse:  r2:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31] r5:[0..31]
-// LiveOut: r2:[0..31]-fn00403618 r29:[0..31]-fn00403618 r3:[0..31]-fn00401598 r30:[0..31]-fn00403618 r31:[0..31]-fn00403618
-// Trashed: cr0 ctr r0 r10 r11 r12 r2 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
-// Preserved: lr r1
+// MayUse:  r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..31]
+// LiveOut: r2:[0..31]-fn00403618 r3:[0..31]-fn00401598
+// Trashed: cr0 ctr r0 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
+// Preserved: lr r1 r29 r30 r31
 fn00402248_entry:
 l00402248:
-	r6_8 = Mem0[Mem0[r2 + 116<i32>:word32]:word32]
-	Mem18[v12:word32] = r29
-	Mem21[v12 + 4<i32>:word32] = r30
-	Mem24[v12 + 8<i32>:word32] = r31
-	branch r3 >= r6_8 l00402374
+	branch r3 >= Mem0[Mem0[r2 + 116<i32>:word32]:word32] l00402374
 l00402270:
 	r11_120 = CONVERT(Mem24[Mem24[r2 + 120<i32>:word32] + r3:byte], int8, int32)
 	branch (r11_120 & 1<32>) == 0<32> l00402374
@@ -1559,9 +1297,6 @@ l00402374:
 	Mem40[Mem24[r2 + 124<i32>:word32]:word32] = 9<32>
 	Mem42[r5_36:word32] = 0<32>
 	r3Out = 0xFFFFFFFF<32>
-	r29Out = r29
-	r30Out = r30
-	r31Out = r31
 	return r2
 l0040228C:
 	branch (r11_120 & 0x40<32>) == 0<32> l004022E4
@@ -1590,134 +1325,111 @@ l00402334:
 l00402354:
 	fn00403104(dwLoc8C, r3_64)
 	r3Out = 0xFFFFFFFF<32>
-	r29Out = dwLoc10
-	r30Out = dwLoc0C
-	r31Out = dwLoc08
 	return dwLoc8C
 l0040233C:
 	r3Out = r11_120
-	r29Out = dwLoc10
-	r30Out = dwLoc0C
-	r31Out = dwLoc08
 	return dwLoc8C
 fn00402248_exit:
 
 
-void fn00402398(word32 r2, word32 r28, word32 r29, word32 r30, word32 r31)
+void fn00402398(word32 r2)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r2:[0..31] r28:[0..31] r29:[0..31] r30:[0..31] r31:[0..31]
+// MayUse:  r2:[0..31]
 // LiveOut:
-// Trashed: cr1 ctr r0 r10 r11 r12 r2 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
-// Preserved: cr0 lr r1
+// Trashed: cr1 ctr r0 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
+// Preserved: cr0 lr r1 r29 r30 r31
 fn00402398_entry:
 l00402398:
-	Mem7[v4:word32] = r29
-	Mem10[v4 + 4<i32>:word32] = r30
-	Mem13[v4 + 8<i32>:word32] = r31
 	r4_17 = Mem13[r2 + 72<i32>:word32]
 	r29_16 = Mem13[r2 + 108<i32>:word32]
 	r31_19 = r4_17 + 0x60<32>
-	r30_23 = 0<32>
 	branch Mem13[r29_16:word32] < r4_17 + 0x60<32> l004023EC
 l004023C4:
-	r2 = fn00403170(r2, r31_19, r28, r29_16, r30_23, r31_19, out r3_33, out r28, out r29_16, out r30_23, out r31_35)
-	branch r3_33 == 0xFFFFFFFF<32> l004023DC
+	r2 = fn00403170(r2, r31_19, out r3_30)
+	branch r3_30 == 0xFFFFFFFF<32> l004023DC
 l004023D8:
-	r30_23 = r30_23 + 1<32>
 l004023DC:
-	r31_19 = r31_35 + 0x20<32>
-	branch Mem24[r29_16:word32] >= r31_35 + 0x20<32> l004023C4
+	r31_19 = r31_19 + 0x20<32>
+	branch Mem24[r29_16:word32] >= r31_19 l004023C4
 l004023EC:
 	return
 fn00402398_exit:
 
 
-word32 fn00402404(word32 r2, word32 r29, word32 r30, word32 r31, word32 & r29Out, word32 & r30Out)
+word32 fn00402404(word32 r2)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00403CA0
-// MayUse:  r2:[0..31] r29:[0..31] r30:[0..31] r31:[0..31]
-// LiveOut: r2:[0..31]-fn00403CA0 r29:[0..31]-fn00403CA0 r30:[0..31]-fn00403CA0
-// Trashed: cr1 ctr r0 r12 r2 r29 r3 r30 r4 r5
+// MayUse:  r2:[0..31]
+// LiveOut: r2:[0..31]-fn00403CA0
+// Trashed: cr1 ctr r0 r12 r2 r3 r4 r5
 // Preserved: lr r1 r31
 fn00402404_entry:
 l00402404:
-	r2_23 = fn0040262C(r2, Mem0[r2 + 168<i32>:word32], Mem0[r2 + 172<i32>:word32], r29, r30, r31, out r29_17, out r30_18, out r31_19)
-	fn00404044(fn0040262C(r2_23, Mem13[r2_23 + 176<i32>:word32], Mem13[r2_23 + 180<i32>:word32], r29_17, r30_18, r31_19, out r29_28, out r30_29, out r31_89))
+	r2_18 = fn0040262C(r2, Mem0[r2 + 168<i32>:word32], Mem0[r2 + 172<i32>:word32])
+	fn00404044(fn0040262C(r2_18, Mem13[r2_18 + 176<i32>:word32], Mem13[r2_18 + 180<i32>:word32]))
 	fn00404044(dwLoc2C)
 	branch false l00402480
 l00402458:
 	fn00403F9C(dwLoc2C)
 	branch true l00402480
 l00402474:
-	Mem63[Mem13[dwLoc2C + 184<i32>:word32]:word32] = dwLoc08
+	Mem55[Mem13[dwLoc2C + 184<i32>:word32]:word32] = dwLoc08
 l00402480:
-	r29Out = r29_28
-	r30Out = r30_29
 	return dwLoc2C
 fn00402404_exit:
 
 
-word32 fn004024F0(word32 r2, word32 r3, word32 r4, word32 r5, word32 r29, word32 r30, word32 r31, word32 & r29Out, word32 & r31Out)
+word32 fn004024F0(word32 r2, word32 r3, word32 r4, word32 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00403574
 //      fn004035A0
-// MayUse:  r2:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31] r5:[0..31]
-// LiveOut: r2:[0..31]-fn004035A0 r29:[0..31]-fn004035A0 r31:[0..31]-fn004035A0
-// Trashed: cr1 ctr r0 r11 r12 r2 r29 r3 r30 r31 r4 r5
-// Preserved: lr r1
+// MayUse:  r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..31]
+// LiveOut: r2:[0..31]-fn004035A0
+// Trashed: cr1 ctr r0 r11 r12 r2 r3 r4 r5
+// Preserved: lr r1 r30 r31
 fn004024F0_entry:
 l004024F0:
-	r4_9 = Mem0[r2 + 112<i32>:word32]
-	Mem14[v9:word32] = r30
-	Mem17[v9 + 4<i32>:word32] = r31
-	Mem25[r4_9:byte] = SLICE(r5, int8, 0)
-	r30_20 = r3
-	r31_22 = r5
+	Mem25[Mem0[r2 + 112<i32>:word32]:byte] = SLICE(r5, int8, 0)
 	branch r4 != 0<32> l00402544
 l0040251C:
 	r3_27 = Mem25[Mem25[r2 + 188<i32>:word32]:word32]
 	branch r3_27 == 0<32> l00402538
 l0040252C:
-	r2 = fn0040262C(r2, r3_27, Mem25[Mem25[r2 + 192<i32>:word32]:word32], r29, r3, r5, out r29, out r30_20, out r31_22)
+	r2 = fn0040262C(r2, r3_27, Mem25[Mem25[r2 + 192<i32>:word32]:word32])
 l00402538:
-	r2 = fn0040262C(r2, Mem25[r2 + 196<i32>:word32], Mem25[r2 + 200<i32>:word32], r29, r30_20, r31_22, out r29, out r30_20, out r31_22)
+	r2 = fn0040262C(r2, Mem25[r2 + 196<i32>:word32], Mem25[r2 + 200<i32>:word32])
 l00402544:
-	r2_122 = fn0040262C(r2, Mem25[r2 + 204<i32>:word32], Mem25[r2 + 208<i32>:word32], r29, r30_20, r31_22, out r29_65, out r30_66, out r31_67)
-	branch r31_67 != 0<32> l00402574
+	r2_110 = fn0040262C(r2, Mem25[r2 + 204<i32>:word32], Mem25[r2 + 208<i32>:word32])
+	branch r5 != 0<32> l00402574
 l00402558:
-	r11_75 = Mem25[Mem25[r2_122 + 212<i32>:word32]:word32]
-	branch r11_75 == 0<32> l0040256C
+	r11_61 = Mem25[Mem25[r2_110 + 212<i32>:word32]:word32]
+	branch r11_61 == 0<32> l0040256C
 l00402568:
-	Mem77[r11_75 + 14<i32>:word32] = r30_66
+	Mem65[r11_61 + 14<i32>:word32] = r3
 l0040256C:
-	r2_122 = fn00403248(r2_122)
+	r2_110 = fn00403248(r2_110)
 l00402574:
-	r29Out = r29_65
-	r31Out = dwLoc04
-	return r2_122
+	return r2_110
 fn004024F0_exit:
 
 
-word32 fn0040262C(word32 r2, word32 r3, word32 r4, word32 r29, word32 r30, word32 r31, word32 & r29Out, word32 & r30Out, word32 & r31Out)
+word32 fn0040262C(word32 r2, word32 r3, word32 r4)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00402404
 //      fn004024F0
-// MayUse:  r2:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31]
-// LiveOut: r2:[0..31]-fn00402404 r29:[0..31]-fn00402404 r30:[0..31]-fn00402404 r31:[0..31]-fn00402404
-// Trashed: cr1 ctr r0 r12 r2 r29 r30 r31 r4
-// Preserved: lr r1
+// MayUse:  r2:[0..31] r3:[0..31] r4:[0..31]
+// LiveOut: r2:[0..31]-fn00402404
+// Trashed: cr1 ctr r0 r12 r2 r4
+// Preserved: lr r1 r29 r30 r31
 fn0040262C_entry:
 l0040262C:
-	Mem7[v4:word32] = r29
-	Mem10[v4 + 4<i32>:word32] = r30
-	Mem13[v4 + 8<i32>:word32] = r31
 	r30_16 = r3
 	branch r4 <= r3 l0040267C
 l0040264C:
@@ -1732,30 +1444,21 @@ l00402670:
 	r30_16 = r30_16 + 4<32>
 	branch r4 > r30_16 l0040264C
 l0040267C:
-	r29Out = dwLoc10
-	r30Out = dwLoc0C
-	r31Out = dwLoc08
 	return r2
 fn0040262C_exit:
 
 
-word32 fn004026B8(word32 r2, word32 r3, word32 r5, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 & r26Out, word32 & r27Out, word32 & r28Out, word32 & r29Out, word32 & r31Out)
+word32 fn004026B8(word32 r2, word32 r3, word32 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00401598
-// MayUse:  r2:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r5:[0..31]
-// LiveOut: r2:[0..31]-fn00401598 r26:[0..31]-fn00401598 r27:[0..31]-fn00401598 r28:[0..31]-fn00401598 r29:[0..31]-fn00401598 r31:[0..31]-fn00401598
-// Trashed: cr0 ctr r0 r10 r11 r12 r2 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
-// Preserved: lr r1
+// MayUse:  r2:[0..31] r3:[0..31] r5:[0..31]
+// LiveOut: r2:[0..31]-fn00401598
+// Trashed: cr0 ctr r0 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
+// Preserved: lr r1 r26 r27 r28 r29 r30 r31
 fn004026B8_entry:
 l004026B8:
-	Mem7[v4:word32] = r26
-	Mem10[v4 + 4<i32>:word32] = r27
-	Mem13[v4 + 8<i32>:word32] = r28
-	Mem16[v4 + 12<i32>:word32] = r29
-	Mem19[v4 + 16<i32>:word32] = r30
-	Mem22[v4 + 20<i32>:word32] = r31
 	branch Mem22[Mem22[r2 + 116<i32>:word32]:word32] <= r3 l00402964
 l004026E4:
 	r11_38 = CONVERT(Mem35[Mem35[r2 + 120<i32>:word32] + r3:byte], int8, int32)
@@ -1766,11 +1469,6 @@ l00402964:
 	r5_46 = Mem35[r2 + 164<i32>:word32]
 	Mem59[Mem35[r2 + 124<i32>:word32]:word32] = 9<32>
 	Mem61[r5_46:word32] = 0<32>
-	r26Out = r26
-	r27Out = r27
-	r28Out = <invalid>
-	r29Out = <invalid>
-	r31Out = <invalid>
 	return r2
 l00402700:
 	branch r5 == 0<32> l00402738
@@ -1867,86 +1565,58 @@ l00402900:
 l00402920:
 	branch r3_128 == 0<32> l00402948
 l00402948:
-	r26Out = dwLoc18
-	r27Out = dwLoc14
-	r28Out = <invalid>
-	r29Out = <invalid>
-	r31Out = <invalid>
 	return r2
 l00402928:
 	fn00403104(r2, r3_128)
-	r26Out = dwLoc18
-	r27Out = dwLoc14
-	r28Out = <invalid>
-	r29Out = <invalid>
-	r31Out = <invalid>
 	return r2
 l0040271C:
 	Mem308[Mem35[r2 + 124<i32>:word32]:word32] = 0x16<32>
-	r26Out = r26
-	r27Out = r27
-	r28Out = <invalid>
-	r29Out = <invalid>
-	r31Out = <invalid>
 	return r2
 fn004026B8_exit:
 
 
-word32 fn0040298C(word32 r2, word32 r3, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 & r25Out, word32 & r26Out, word32 & r27Out, word32 & r28Out, word32 & r30Out)
+word32 fn0040298C(word32 r2, word32 r3)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00401598
-// MayUse:  r2:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31]
-// LiveOut: r2:[0..31]-fn00401598 r25:[0..31]-fn00401598 r26:[0..31]-fn00401598 r27:[0..31]-fn00401598 r28:[0..31]-fn00401598 r30:[0..31]-fn00401598
-// Trashed: cr1 ctr r0 r10 r11 r12 r2 r25 r26 r27 r28 r29 r3 r30 r4 r5 r6 r7 r8 r9
+// MayUse:  r2:[0..31] r3:[0..31]
+// LiveOut: r2:[0..31]-fn00401598
+// Trashed: cr1 ctr r0 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
 // Preserved: lr r1 r31
 fn0040298C_entry:
 l0040298C:
 	r4_5 = Mem0[r2 + 76<i32>:word32]
 	Mem17[r4_5:word32] = Mem0[r4_5:word32] + 1<32>
-	r2_30 = fn00400F9C(r2, 0x1000<32>, r25, r26, r27, r28, r29, r30, r3, out r3_36, out r25_31, out r26_32, out r27_33, out r28_34, out r29_99, out r30_37, out r31_38)
-	Mem48[r31_38 + 8<i32>:word32] = r3_36
-	branch r3_36 == 0<32> l004029E4
+	r2_24 = fn00400F9C(r2, 0x1000<32>, out r3_25)
+	Mem35[r3 + 8<i32>:word32] = r3_25
+	branch r3_25 == 0<32> l004029E4
 l004029E4:
-	r4_49 = Mem48[r31_38 + 12<i32>:word32]
-	Mem51[r31_38 + 8<i32>:word32] = r31_38 + 0x14<32>
-	Mem53[r31_38 + 12<i32>:word32] = r4_49 | 4<32>
-	Mem55[r31_38 + 24<i32>:word32] = 1<32>
+	r4_36 = Mem35[r3 + 12<i32>:word32]
+	Mem38[r3 + 8<i32>:word32] = r3 + 0x14<32>
+	Mem40[r3 + 12<i32>:word32] = r4_36 | 4<32>
+	Mem42[r3 + 24<i32>:word32] = 1<32>
 l004029CC:
-	r4_56 = Mem48[r31_38 + 12<i32>:word32]
-	Mem58[r31_38 + 24<i32>:word32] = 0x1000<32>
-	Mem60[r31_38 + 12<i32>:word32] = r4_56 | 8<32>
+	r4_43 = Mem35[r3 + 12<i32>:word32]
+	Mem45[r3 + 24<i32>:word32] = 0x1000<32>
+	Mem47[r3 + 12<i32>:word32] = r4_43 | 8<32>
 l00402A00:
-	r4_65 = Mem62[r31_38 + 8<i32>:word32]
-	Mem68[r31_38 + 4<i32>:word32] = 0<32>
-	Mem69[r31_38:word32] = r4_65
-	r25Out = r25_31
-	r26Out = r26_32
-	r27Out = r27_33
-	r28Out = r28_34
-	r30Out = r30_37
-	return r2_30
+	r4_52 = Mem49[r3 + 8<i32>:word32]
+	Mem55[r3 + 4<i32>:word32] = 0<32>
+	Mem56[r3:word32] = r4_52
+	return r2_24
 fn0040298C_exit:
 
 
-void fn00402A24(word32 r2, word32 r3, word32 r4, word32 r5, word32 r11, word32 r13, word32 r14, word32 r15, word32 r16, word32 r17, word32 r18, word32 r19, word32 r20, word32 r21, word32 r22, word32 r23, word32 r24, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr)
+void fn00402A24(word32 r2, word32 r11, word32 lr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  lr:[0..31] r11:[0..31] r13:[0..31] r14:[0..31] r15:[0..31] r16:[0..31] r17:[0..31] r18:[0..31] r19:[0..31] r2:[0..31] r20:[0..31] r21:[0..31] r22:[0..31] r23:[0..31] r24:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31] r5:[0..31]
+// MayUse:  lr:[0..31] r11:[0..31] r2:[0..31]
 // LiveOut:
-// Trashed: cr0 ctr r0 r10 r11 r12 r13 r14 r15 r16 r17 r18 r19 r2 r20 r21 r22 r23 r24 r25 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
-// Preserved: lr r1
+// Trashed: cr0 ctr r0 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
+// Preserved: lr r1 r27 r28 r29 r30 r31
 fn00402A24_entry:
 l00402A24:
-	Mem7[v4:word32] = r27
-	Mem10[v4 + 4<i32>:word32] = r28
-	Mem13[v4 + 8<i32>:word32] = r29
-	Mem16[v4 + 12<i32>:word32] = r30
-	Mem19[v4 + 16<i32>:word32] = r31
-	r28_22 = r4
-	r27_226 = r3
-	r29_228 = r5
 	branch Mem19[Mem19[r2 + 212<i32>:word32]:word32] == 0<32> l00402AB0
 l00402AB0:
 	fn00403F9C(r2)
@@ -1961,104 +1631,89 @@ l00402AE8:
 l00402B04:
 	branch (r11 & 0x20<32>) == 0<32> l00402B4C
 l00402B4C:
-	r2_152 = fn00402248(fn004032FC(dwLoc0244, Mem33[dwLoc0244 + 216<i32>:word32], r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r3, r4, r5, r30, fp + 0xFFFFFDE8<32>, lr, out r3_129, out r29_128, out r30_130, out r31_131), 2<32>, r31_131, r3_129, r29_128, r30_130, r31_131, out r3_404, out r29_153, out r30_154, out r31_155)
+	r2_104 = fn00402248(fn004032FC(dwLoc0244, &tLoc0218, Mem33[dwLoc0244 + 216<i32>:word32], lr, out r3_83), 2<32>, &tLoc0218, r3_83, out r3_275)
 l00402B0C:
-	r2_178 = fn004032FC(dwLoc0244, Mem33[dwLoc0244 + 216<i32>:word32], r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r3, r4, r5, r30, fp + 0xFFFFFDE8<32>, lr, out r3_405, out r29_153, out r30_154, out r31_155)
-	fn004032AC(r31_155)
-	fn00403FCC(r2_178)
-	r2_152 = dwLoc0244
+	r2_120 = fn004032FC(dwLoc0244, &tLoc0218, Mem33[dwLoc0244 + 216<i32>:word32], lr, out r3_276)
+	fn004032AC(&tLoc0218)
+	fn00403FCC(r2_120)
+	r2_104 = dwLoc0244
 l00402A50:
-	r31_211 = Mem33[r2 + 72<i32>:word32]
-	branch (Mem33[r31_211 + 76<i32>:word32] & 0x10C<32>) != 0<32> l00402A7C
+	r31_141 = Mem33[r2 + 72<i32>:word32]
+	branch (Mem33[r31_141 + 76<i32>:word32] & 0x10C<32>) != 0<32> l00402A7C
 l00402A60:
-	r2 = fn00403450(r2, r31_211 + 0x40<32>, 0<32>, 4<32>, 0<32>, r25, r26, r3, r4, r5, r30, r31_211, out r25, out r26, out r27_226, out r28_22, out r29_228, out r31_211)
+	r2 = fn00403450(r2, r31_141 + 0x40<32>, 0<32>, 4<32>, 0<32>)
 l00402A7C:
-	r30_251 = r31_211 + 0x40<32>
-	r2_152 = fn004011FC(fn004033C4(r2, r30_251, Mem33[r2 + 216<i32>:word32], r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r27_226, r28_22, r29_228, r30_251, r31_211, lr, out r29_291, out r30_293, out r31_155), r30_293, r29_291, r30_293, out r3_400, out r27_401, out r28_402, out r29_153, out r30_154, out r31_403)
+	r2_104 = fn004011FC(fn004033C4(r2, r31_141 + 0x40<32>, Mem33[r2 + 216<i32>:word32], lr), r31_141 + 0x40<32>, out r3_269, out r27_270, out r28_271, out r29_272, out r30_273, out r31_274)
 l00402B84:
-	fn0040326C(r2_152, r29_153, r30_154, r31_155)
+	fn0040326C(r2_104)
 	return
 fn00402A24_exit:
 
 
-word32 fn00402BA0(word32 r2, word32 r3, word32 r29, word32 r30, word32 r31, word32 & r29Out, word32 & r30Out, word32 & r31Out)
+word32 fn00402BA0(word32 r2, word32 r3)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00403170
 //      fn00403A0C
-// MayUse:  r2:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31]
-// LiveOut: r2:[0..31]-fn00403A0C r29:[0..31]-fn00403A0C r30:[0..31]-fn00403A0C r31:[0..31]-fn00403A0C
-// Trashed: cr1 ctr r0 r10 r11 r12 r2 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
-// Preserved: lr r1
+// MayUse:  r2:[0..31] r3:[0..31]
+// LiveOut: r2:[0..31]-fn00403A0C
+// Trashed: cr1 ctr r0 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
+// Preserved: lr r1 r30 r31
 fn00402BA0_entry:
 l00402BA0:
-	Mem12[v8:word32] = r30
-	Mem15[v8 + 4<i32>:word32] = r31
 	branch r3 == 0<32> l00402C38
 l00402BB8:
 	r31_17 = Mem15[r3 + -8<i32>:word32]
-	r30_19 = 0xFFFFFFFC<32>
 	branch (Mem15[r31_17 + 4<i32>:word32] & 0xFFFFFFFC<32>) == r3 + -8<i32> l00402BD8
 l00402BD0:
-	r2 = fn00401AB4(r2, r29, 0xFFFFFFFC<32>, out r29, out r30_19)
+	r2 = fn00401AB4(r2)
 l00402BD8:
-	r10_45 = Mem15[r2 + 220<i32>:word32]
-	r11_48 = Mem15[r31_17 + 4<i32>:word32] & 0xFFFFFFFD<32> | 1<32>
-	Mem49[r31_17 + 4<i32>:word32] = r11_48
-	r10_50 = Mem49[r10_45:word32]
-	branch r10_50 == 0xFFFFFFFF<32> l00402C38
+	r10_42 = Mem15[r2 + 220<i32>:word32]
+	r11_45 = Mem15[r31_17 + 4<i32>:word32] & 0xFFFFFFFD<32> | 1<32>
+	Mem46[r31_17 + 4<i32>:word32] = r11_45
+	r10_47 = Mem46[r10_42:word32]
+	branch r10_47 == 0xFFFFFFFF<32> l00402C38
 l00402C00:
-	r9_53 = Mem49[r2 + 104<i32>:word32]
-	branch Mem49[Mem49[r9_53 + 4<i32>:word32] + 4<i32>:word32] <= r11_48 l00402C38
+	r9_50 = Mem46[r2 + 104<i32>:word32]
+	branch Mem46[Mem46[r9_50 + 4<i32>:word32] + 4<i32>:word32] <= r11_45 l00402C38
 l00402C14:
-	branch (Mem49[Mem49[r31_17:word32] + 4<i32>:word32] & r30_19) - (r11_48 & r30_19) + 0xFFFFFFF8<32> < r10_50 l00402C38
+	branch (Mem46[Mem46[r31_17:word32] + 4<i32>:word32] & 0xFFFFFFFC<32>) - (r11_45 & 0xFFFFFFFC<32>) + 0xFFFFFFF8<32> < r10_47 l00402C38
 l00402C34:
-	Mem65[r9_53 + 4<i32>:word32] = r31_17
+	Mem62[r9_50 + 4<i32>:word32] = r31_17
 l00402C38:
-	r29Out = r29
-	r30Out = dwLoc08
-	r31Out = dwLoc04
 	return r2
 fn00402BA0_exit:
 
 
-word32 fn00402C4C(word32 r2, word32 r3, word32 r29, word32 r30, word32 & r29Out, word32 & r30Out)
+word32 fn00402C4C(word32 r2, word32 r3)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00401AB4
-// MayUse:  r2:[0..31] r29:[0..31] r3:[0..31] r30:[0..31]
-// LiveOut: r2:[0..31]-fn00401AB4 r29:[0..31]-fn00401AB4 r30:[0..31]-fn00401AB4
-// Trashed: cr1 ctr r0 r10 r11 r12 r2 r29 r3 r30 r4 r5 r6 r7 r8 r9
+// MayUse:  r2:[0..31] r3:[0..31]
+// LiveOut: r2:[0..31]-fn00401AB4
+// Trashed: cr1 ctr r0 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
 // Preserved: lr r1 r31
 fn00402C4C_entry:
 l00402C4C:
-	r2_41 = fn00403618(fn004035CC(r2, r29, r30, r3, out r29_21, out r30_23, out r31_24), r31_24, r29_21, r30_23, r31_24, out r29_42, out r30_44, out r31_68)
-	fn00403F10(r2_41, Mem9[Mem9[r2_41 + 224<i32>:word32]:word32])
-	r29Out = r29_42
-	r30Out = r30_44
+	r2_36 = fn00403618(fn004035CC(r2), r3)
+	fn00403F10(r2_36, Mem9[Mem9[r2_36 + 224<i32>:word32]:word32])
 	return dwLoc2C
 fn00402C4C_exit:
 
 
-word32 fn00402CE0(word32 r2, word32 r3, word32 r4, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 & r3Out, word32 & r26Out, word32 & r27Out, word32 & r29Out, word32 & r30Out)
+word32 fn00402CE0(word32 r2, word32 r3, word32 r4, word32 & r3Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00401DD8
-// MayUse:  r2:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31]
-// LiveOut: r2:[0..31]-fn00401DD8 r26:[0..31]-fn00401DD8 r27:[0..31]-fn00401DD8 r29:[0..31]-fn00401DD8 r3:[0..31]-fn00401DD8 r30:[0..31]-fn00401DD8
-// Trashed: cr0 ctr r0 r10 r11 r12 r2 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
-// Preserved: lr r1
+// MayUse:  r2:[0..31] r3:[0..31] r4:[0..31]
+// LiveOut: r2:[0..31]-fn00401DD8 r3:[0..31]-fn00401DD8
+// Trashed: cr0 ctr r0 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
+// Preserved: lr r1 r26 r27 r28 r29 r30 r31
 fn00402CE0_entry:
 l00402CE0:
-	Mem9[v6:word32] = r26
-	Mem12[v6 + 4<i32>:word32] = r27
-	Mem15[v6 + 8<i32>:word32] = r28
-	Mem18[v6 + 12<i32>:word32] = r29
-	Mem21[v6 + 16<i32>:word32] = r30
-	Mem24[v6 + 20<i32>:word32] = r31
 	Mem33[&tLoc28:word32] = fp + 0xFFFFFFC8<32>
 	r2_123 = fn004019CC(r2, out r3_41)
 	branch r3_41 == 0<32> l00403014
@@ -2103,10 +1758,6 @@ l0040302C:
 	branch r11_121 != 0<32> l0040302C
 l00403058:
 	r3Out = 0xFFFFFFFF<32>
-	r26Out = <invalid>
-	r27Out = <invalid>
-	r29Out = <invalid>
-	r30Out = <invalid>
 	return r2_123
 l00402E10:
 	r31_161 = Mem111[r2_123 + 104<i32>:word32]
@@ -2138,10 +1789,6 @@ l00402FF8:
 	Mem260[r31_161 + 4<i32>:word32] = r30_100
 l00402FFC:
 	r3Out = 0<32>
-	r26Out = <invalid>
-	r27Out = <invalid>
-	r29Out = <invalid>
-	r30Out = <invalid>
 	return r2_123
 fn00402CE0_exit:
 
@@ -2234,57 +1881,47 @@ l0040316C:
 fn00403104_exit:
 
 
-word32 fn00403170(word32 r2, word32 r3, word32 r28, word32 r29, word32 r30, word32 r31, word32 & r3Out, word32 & r28Out, word32 & r29Out, word32 & r30Out, word32 & r31Out)
+word32 fn00403170(word32 r2, word32 r3, word32 & r3Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00402398
-// MayUse:  r2:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31]
-// LiveOut: r2:[0..31]-fn00402398 r28:[0..31]-fn00402398 r29:[0..31]-fn00402398 r3:[0..31]-fn00402398 r30:[0..31]-fn00402398 r31:[0..31]-fn00402398
-// Trashed: cr0 ctr r0 r10 r11 r12 r2 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
-// Preserved: lr r1
+// MayUse:  r2:[0..31] r3:[0..31]
+// LiveOut: r2:[0..31]-fn00402398 r3:[0..31]-fn00402398
+// Trashed: cr0 ctr r0 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
+// Preserved: lr r1 r30 r31
 fn00403170_entry:
 l00403170:
-	Mem7[v4:word32] = r30
-	Mem10[v4 + 4<i32>:word32] = r31
-	r31_110 = r3
 	r11_14 = Mem10[r3 + 12<i32>:word32]
-	r30_109 = 0xFFFFFFFF<32>
+	r30_108 = 0xFFFFFFFF<32>
 	branch (r11_14 & 0x40<32>) == 0<32> l004031AC
 l004031AC:
 	branch (r11_14 & 0x83<32>) == 0<32> l00403228
 l004031B4:
-	r2 = fn00403898(fn00403A0C(fn004012B0(r2, r3, r29, 0xFFFFFFFF<32>, r3, out r3_29, out r29_28, out r30_236, out r31_31), r31_31, r29_28, r3_29, out r29_52, out r30_54), Mem19[r31_31 + 16<i32>:word32], r28, r29_52, r30_54, r31_31, out r3_66, out r28, out r29, out r30_109, out r31_110)
-	branch r3_66 >= 0<32> l004031F0
+	r30_108 = r3_27
+	r2 = fn00403898(fn00403A0C(fn004012B0(r2, r3, out r3_27), r3), Mem19[r3 + 16<i32>:word32], out r3_57)
+	branch r3_57 >= 0<32> l004031F0
 l004031F0:
-	r3_82 = Mem19[r31_110 + 28<i32>:word32]
-	branch r3_82 == 0<32> l00403228
+	r3_71 = Mem19[r3 + 28<i32>:word32]
+	branch r3_71 == 0<32> l00403228
 l00403228:
 l004031FC:
-	r2_93 = fn00403744(r2, r3_82, r29, r30_109, r31_110, out r3_86, out r29_94, out r30_101, out r31_96)
-	branch r3_86 == 0<32> l00403210
+	r2_82 = fn00403744(r2, r3_71, out r3_75)
+	branch r3_75 == 0<32> l00403210
 l0040320C:
-	r30_101 = 0xFFFFFFFF<32>
+	r30_108 = 0xFFFFFFFF<32>
 l00403210:
-	r2 = fn00402BA0(r2_93, Mem19[r31_96 + 28<i32>:word32], r29_94, r30_101, r31_96, out r29, out r30_109, out r31_110)
-	Mem126[r31_110 + 28<i32>:word32] = 0<32>
+	r2 = fn00402BA0(r2_82, Mem19[r3 + 28<i32>:word32])
+	Mem107[r3 + 28<i32>:word32] = 0<32>
 l004031E4:
-	r30_109 = 0xFFFFFFFF<32>
+	r30_108 = 0xFFFFFFFF<32>
 l0040322C:
-	Mem142[r31_110 + 12<i32>:word32] = 0<32>
-	r3Out = r30_109
-	r28Out = r28
-	r29Out = r29
-	r30Out = <invalid>
-	r31Out = <invalid>
+	Mem124[r3 + 12<i32>:word32] = 0<32>
+	r3Out = r30_108
 	return r2
 l00403194:
-	Mem150[r3 + 12<i32>:word32] = 0<32>
+	Mem132[r3 + 12<i32>:word32] = 0<32>
 	r3Out = 0xFFFFFFFF<32>
-	r28Out = r28
-	r29Out = r29
-	r30Out = <invalid>
-	r31Out = <invalid>
 	return r2
 fn00403170_exit:
 
@@ -2305,18 +1942,18 @@ l00403248:
 fn00403248_exit:
 
 
-void fn0040326C(word32 r2, word32 r29, word32 r30, word32 r31)
+void fn0040326C(word32 r2)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00402A24
-// MayUse:  r2:[0..31] r29:[0..31] r30:[0..31] r31:[0..31]
+// MayUse:  r2:[0..31]
 // LiveOut:
-// Trashed: cr1 ctr r0 r10 r11 r12 r2 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
+// Trashed: cr1 ctr r0 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
 // Preserved: lr r1
 fn0040326C_entry:
 l0040326C:
-	fn004035A0(fn00403B08(fn00403618(r2, 0xA<32>, r29, r30, r31, out r29_22, out r30_24, out r31_25), 0x16<32>, r29_22, r30_24, r31_25, out r29_40, out r30_34, out r31_35), 3<32>, r29_40, r30_34, r31_35, out r29_62, out r31_63)
+	fn004035A0(fn00403B08(fn00403618(r2, 0xA<32>), 0x16<32>), 3<32>)
 	return
 fn0040326C_exit:
 
@@ -2358,77 +1995,64 @@ l004032F8:
 fn004032AC_exit:
 
 
-word32 fn004032FC(word32 r2, word32 r4, word32 r13, word32 r14, word32 r15, word32 r16, word32 r17, word32 r18, word32 r19, word32 r20, word32 r21, word32 r22, word32 r23, word32 r24, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, word32 & r3Out, word32 & r29Out, word32 & r30Out, word32 & r31Out)
+word32 fn004032FC(word32 r2, word32 r3, word32 r4, word32 lr, word32 & r3Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00402A24
-// MayUse:  lr:[0..31] r13:[0..31] r14:[0..31] r15:[0..31] r16:[0..31] r17:[0..31] r18:[0..31] r19:[0..31] r2:[0..31] r20:[0..31] r21:[0..31] r22:[0..31] r23:[0..31] r24:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r30:[0..31] r31:[0..31] r4:[0..31]
-// LiveOut: r2:[0..31]-fn00402A24 r29:[0..31]-fn00402A24 r3:[0..31]-fn00402A24 r30:[0..31]-fn00402A24 r31:[0..31]-fn00402A24
-// Trashed: cr0 ctr r0 r10 r11 r12 r13 r14 r15 r16 r17 r18 r19 r2 r20 r21 r22 r23 r24 r25 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
-// Preserved: lr r1
+// MayUse:  lr:[0..31] r2:[0..31] r3:[0..31] r4:[0..31]
+// LiveOut: r2:[0..31]-fn00402A24 r3:[0..31]-fn00402A24
+// Trashed: cr0 ctr r0 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
+// Preserved: lr r1 r30 r31
 fn004032FC_entry:
 l004032FC:
-	Mem26[v14:word32] = r30
-	Mem29[v14 + 4<i32>:word32] = r31
-	r2_114 = fn004004B4(r2, fp + 0xFFFFFFD8<32>, r4, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r27, r28, r29, r30, fp + 0xFFFFFFD8<32>, lr, out r3_79, out r25_74, out r26_75, out r27_76, out r28_77, out r29_107, out r30_195, out r31_81)
-	r4_94 = Mem42[r31_81 + 4<i32>:word32]
-	Mem99[r31_81 + 4<i32>:word32] = r4_94 + 0xFFFFFFFF<32>
-	r30_109 = r3_79
-	branch r4_94 <= 0<32> l0040339C
+	Mem33[&tLoc28 + 8<i32>:word32] = r3
+	Mem34[&tLoc28:word32] = r3
+	Mem39[&tLoc28 + 12<i32>:word32] = 0x42<32>
+	Mem42[&tLoc28 + 4<i32>:word32] = 0x7FFFFFFF<32>
+	r2_121 = fn004004B4(r2, &tLoc28, r4, lr, out r3_45)
+	r4_58 = Mem42[&tLoc28 + 4<i32>:word32]
+	Mem63[&tLoc28 + 4<i32>:word32] = r4_58 + 0xFFFFFFFF<32>
+	branch r4_58 <= 0<32> l0040339C
 l0040339C:
-	r2_114 = fn00401598(r2_114, 0<32>, r31_81, r25_74, r26_75, r27_76, r28_77, r29_107, r3_79, r31_81, out r3_196, out r25_197, out r26_198, out r27_199, out r28_200, out r29_107, out r30_109, out r31_201)
+	r2_121 = fn00401598(r2_121, 0<32>, &tLoc28, out r3_129)
 l00403380:
-	Mem125[Mem99[r31_81:word32]:byte] = 0<8>
-	Mem128[r31_81:word32] = Mem125[r31_81:word32] + 1<32>
+	Mem82[Mem63[&tLoc28:word32]:byte] = 0<8>
+	Mem85[&tLoc28:word32] = Mem82[&tLoc28:word32] + 1<32>
 l004033AC:
-	r3Out = r30_109
-	r29Out = r29_107
-	r30Out = dwLoc08
-	r31Out = dwLoc04
-	return r2_114
+	r3Out = r3_45
+	return r2_121
 fn004032FC_exit:
 
 
-word32 fn004033C4(word32 r2, word32 r3, word32 r4, word32 r13, word32 r14, word32 r15, word32 r16, word32 r17, word32 r18, word32 r19, word32 r20, word32 r21, word32 r22, word32 r23, word32 r24, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, word32 & r29Out, word32 & r30Out, word32 & r31Out)
+word32 fn004033C4(word32 r2, word32 r3, word32 r4, word32 lr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00402A24
-// MayUse:  lr:[0..31] r13:[0..31] r14:[0..31] r15:[0..31] r16:[0..31] r17:[0..31] r18:[0..31] r19:[0..31] r2:[0..31] r20:[0..31] r21:[0..31] r22:[0..31] r23:[0..31] r24:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31]
-// LiveOut: r2:[0..31]-fn00402A24 r29:[0..31]-fn00402A24 r30:[0..31]-fn00402A24 r31:[0..31]-fn00402A24
-// Trashed: cr0 ctr r0 r10 r11 r12 r13 r14 r15 r16 r17 r18 r19 r2 r20 r21 r22 r23 r24 r25 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
-// Preserved: lr r1
+// MayUse:  lr:[0..31] r2:[0..31] r3:[0..31] r4:[0..31]
+// LiveOut: r2:[0..31]-fn00402A24
+// Trashed: cr0 ctr r0 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
+// Preserved: lr r1 r29 r30 r31
 fn004033C4_entry:
 l004033C4:
-	Mem26[v14:word32] = r29
-	Mem29[v14 + 4<i32>:word32] = r30
-	Mem32[v14 + 8<i32>:word32] = r31
-	r2_122 = fn00400430(fn004004B4(fn004002F8(r2, r3, r25, r26, r27, r28, r29, r30, r3, out r3_44, out r25_54, out r26_55, out r27_56, out r28_57, out r29_58, out r31_45), r31_45, r4, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25_54, r26_55, r27_56, r28_57, r29_58, r3_44, r31_45, lr, out r3_98, out r25_160, out r26_161, out r27_162, out r28_163, out r29_164, out r30_99, out r31_100), r30_99, r31_100, r3_98, r30_99)
-	r29Out = dwLoc10
-	r30Out = dwLoc0C
-	r31Out = dwLoc08
-	return r2_122
+	return fn00400430(fn004004B4(fn004002F8(r2, r3, out r3_40), r3, r4, lr, out r3_113), r3_40, r3)
 fn004033C4_exit:
 
 
-word32 fn00403450(word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 & r25Out, word32 & r26Out, word32 & r27Out, word32 & r28Out, word32 & r29Out, word32 & r31Out)
+word32 fn00403450(word32 r2, word32 r3, word32 r4, word32 r5, word32 r6)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00402A24
-// MayUse:  r2:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31] r5:[0..31] r6:[0..31]
-// LiveOut: r2:[0..31]-fn00402A24 r25:[0..31]-fn00402A24 r26:[0..31]-fn00402A24 r27:[0..31]-fn00402A24 r28:[0..31]-fn00402A24 r29:[0..31]-fn00402A24 r31:[0..31]-fn00402A24
-// Trashed: cr0 ctr r0 r10 r11 r12 r2 r25 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
-// Preserved: lr r1
+// MayUse:  r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..31] r6:[0..31]
+// LiveOut: r2:[0..31]-fn00402A24
+// Trashed: cr0 ctr r0 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
+// Preserved: lr r1 r27 r28 r29 r30 r31
 fn00403450_entry:
 l00403450:
-	Mem7[v4:word32] = r27
-	Mem10[v4 + 4<i32>:word32] = r28
-	Mem13[v4 + 8<i32>:word32] = r29
-	Mem16[v4 + 12<i32>:word32] = r30
-	Mem19[v4 + 16<i32>:word32] = r31
-	r28_107 = r6
+	r29_102 = r4
+	r28_115 = r6
 	branch r5 == 4<32> l004034B4
 l0040347C:
 	branch r6 == 0<32> l004034A4
@@ -2439,121 +2063,102 @@ l00403494:
 l0040349C:
 	branch r5 == 0x40<32> l004034B4
 l004034B4:
-	r2_103 = fn00403A0C(fn004012B0(r2, r3, r4, r5, r3, out r3_292, out r29_48, out r30_50, out r31_111), r31_111, r29_48, r30_50, out r29_119, out r30_73)
-	r11_83 = Mem32[r31_111 + 12<i32>:word32]
-	Mem86[r31_111 + 12<i32>:word32] = r11_83 & 0xFFFFC6F3<32>
-	branch (r30_73 & 4<32>) == 0<32> l004034F8
+	r2_228 = fn00403A0C(fn004012B0(r2, r3, out r3_262), r3)
+	r11_77 = Mem32[r3 + 12<i32>:word32]
+	Mem80[r3 + 12<i32>:word32] = r11_77 & 0xFFFFC6F3<32>
+	branch (r5 & 4<32>) == 0<32> l004034F8
 l004034F8:
-	branch r29_119 != 0<32> l00403540
+	branch r4 != 0<32> l00403540
 l00403540:
-	Mem89[r31_111 + 12<i32>:word32] = r11_83 & 0xFFFFC6F3<32> | 0x100<32>
+	Mem84[r3 + 12<i32>:word32] = r11_77 & 0xFFFFC6F3<32> | 0x100<32>
 l00403500:
-	r2_103 = fn00400F9C(r2_103, r6, r25, r26, 0<32>, r6, r29_119, r30_73 & 4<32>, r31_111, out r3_109, out r25, out r26, out r27_293, out r28_107, out r29_294, out r30_295, out r31_111)
-	r29_119 = r3_109
-	branch r3_109 != 0<32> l00403530
+	r2_228 = fn00400F9C(r2_228, r6, out r3_94)
+	r29_102 = r3_94
+	branch r3_94 != 0<32> l00403530
 l00403530:
-	Mem123[r31_111 + 12<i32>:word32] = Mem86[r31_111 + 12<i32>:word32] | 8<32>
+	Mem106[r3 + 12<i32>:word32] = Mem80[r3 + 12<i32>:word32] | 8<32>
 l00403518:
-	r4_124 = Mem86[r2_103 + 76<i32>:word32]
-	Mem128[r4_124:word32] = Mem86[r4_124:word32] + 1<32>
+	r4_107 = Mem80[r2_228 + 76<i32>:word32]
+	Mem111[r4_107:word32] = Mem80[r4_107:word32] + 1<32>
 l004034E4:
-	Mem130[r31_111 + 12<i32>:word32] = r11_83 & 0xFFFFC6F3<32> | 4<32>
-	r29_119 = r31_111 + 0x14<32>
-	r28_107 = 1<32>
+	Mem113[r3 + 12<i32>:word32] = r11_77 & 0xFFFFC6F3<32> | 4<32>
+	r29_102 = r3 + 0x14<32>
+	r28_115 = 1<32>
 l00403548:
-	Mem135[r31_111 + 8<i32>:word32] = r29_119
-	Mem137[r31_111 + 24<i32>:word32] = r28_107
-	Mem138[r31_111:word32] = r29_119
-	Mem140[r31_111 + 4<i32>:word32] = 0<32>
+	Mem118[r3 + 8<i32>:word32] = r29_102
+	Mem120[r3 + 24<i32>:word32] = r28_115
+	Mem121[r3:word32] = r29_102
+	Mem123[r3 + 4<i32>:word32] = 0<32>
 l0040355C:
-	r25Out = r25
-	r26Out = r26
-	r27Out = <invalid>
-	r28Out = <invalid>
-	r29Out = <invalid>
-	r31Out = <invalid>
-	return r2_103
+	return r2_228
 l004034A4:
-	r25Out = r25
-	r26Out = r26
-	r27Out = <invalid>
-	r28Out = <invalid>
-	r29Out = <invalid>
-	r31Out = <invalid>
 	return r2
 fn00403450_exit:
 
 
-void fn00403574(word32 r2, word32 r3, word32 r29, word32 r30, word32 r31)
+void fn00403574(word32 r2, word32 r3)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00403CA0
-// MayUse:  r2:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31]
+// MayUse:  r2:[0..31] r3:[0..31]
 // LiveOut:
-// Trashed: cr1 ctr r0 r11 r12 r2 r29 r3 r30 r31 r4 r5
+// Trashed: cr1 ctr r0 r11 r12 r2 r3 r4 r5
 // Preserved: lr r1
 fn00403574_entry:
 l00403574:
-	fn004024F0(r2, r3, 0<32>, 0<32>, r29, r30, r31, out r29_32, out r31_33)
+	fn004024F0(r2, r3, 0<32>, 0<32>)
 	return
 fn00403574_exit:
 
 
-word32 fn004035A0(word32 r2, word32 r3, word32 r29, word32 r30, word32 r31, word32 & r29Out, word32 & r31Out)
+word32 fn004035A0(word32 r2, word32 r3)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn0040326C
 //      fn00403B08
-// MayUse:  r2:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31]
-// LiveOut: r2:[0..31]-fn00403B08 r29:[0..31]-fn00403B08 r31:[0..31]-fn00403B08
-// Trashed: cr1 ctr r0 r11 r12 r2 r29 r3 r30 r31 r4 r5
+// MayUse:  r2:[0..31] r3:[0..31]
+// LiveOut: r2:[0..31]-fn00403B08
+// Trashed: cr1 ctr r0 r11 r12 r2 r3 r4 r5
 // Preserved: lr r1
 fn004035A0_entry:
 l004035A0:
-	r2_18 = fn004024F0(r2, r3, 1<32>, 0<32>, r29, r30, r31, out r29_19, out r31_22)
-	r29Out = r29_19
-	r31Out = r31_22
-	return r2_18
+	return fn004024F0(r2, r3, 1<32>, 0<32>)
 fn004035A0_exit:
 
 
-word32 fn004035CC(word32 r2, word32 r29, word32 r30, word32 r31, word32 & r29Out, word32 & r30Out, word32 & r31Out)
+word32 fn004035CC(word32 r2)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00402C4C
-// MayUse:  r2:[0..31] r29:[0..31] r30:[0..31] r31:[0..31]
-// LiveOut: r2:[0..31]-fn00402C4C r29:[0..31]-fn00402C4C r30:[0..31]-fn00402C4C r31:[0..31]-fn00402C4C
-// Trashed: cr1 ctr r0 r10 r11 r12 r2 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
+// MayUse:  r2:[0..31]
+// LiveOut: r2:[0..31]-fn00402C4C
+// Trashed: cr1 ctr r0 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
 // Preserved: lr r1
 fn004035CC_entry:
 l004035CC:
-	r2_21 = fn00403618(r2, 0xFC<32>, r29, r30, r31, out r29_22, out r30_24, out r31_25)
-	branch Mem7[Mem7[r2_21 + 232<i32>:word32]:word32] == 0<32> l00403600
+	r2_18 = fn00403618(r2, 0xFC<32>)
+	branch Mem7[Mem7[r2_18 + 232<i32>:word32]:word32] == 0<32> l00403600
 l004035F0:
-	fn00403F10(r2_21, Mem7[Mem7[r2_21 + 232<i32>:word32]:word32])
-	r2_21 = dwLoc24
+	fn00403F10(r2_18, Mem7[Mem7[r2_18 + 232<i32>:word32]:word32])
+	r2_18 = dwLoc24
 l00403600:
-	r2_53 = fn00403618(r2_21, 0xFF<32>, r29_22, r30_24, r31_25, out r29_54, out r30_56, out r31_57)
-	r29Out = r29_54
-	r30Out = r30_56
-	r31Out = r31_57
-	return r2_53
+	return fn00403618(r2_18, 0xFF<32>)
 fn004035CC_exit:
 
 
-word32 fn00403618(word32 r2, word32 r3, word32 r29, word32 r30, word32 r31, word32 & r29Out, word32 & r30Out, word32 & r31Out)
+word32 fn00403618(word32 r2, word32 r3)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00402C4C
 //      fn0040326C
 //      fn004035CC
-// MayUse:  r2:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31]
-// LiveOut: r2:[0..31]-fn004035CC r29:[0..31]-fn004035CC r30:[0..31]-fn004035CC r31:[0..31]-fn004035CC
-// Trashed: cr1 ctr r0 r10 r11 r12 r2 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
+// MayUse:  r2:[0..31] r3:[0..31]
+// LiveOut: r2:[0..31]-fn004035CC
+// Trashed: cr1 ctr r0 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
 // Preserved: cr0 lr r1
 fn00403618_entry:
 l00403618:
@@ -2576,11 +2181,8 @@ l00403684:
 	r5_40 = r5_40 + 1<32>
 	branch CONVERT(Mem38[r4_34 + r5_40:byte], byte, word32) != 0<32> l00403684
 l00403694:
-	r2 = fn00402248(r2, 2<32>, r4_34, r5_40, r29, r30, r31, out r3_144, out r29, out r30, out r31)
+	r2 = fn00402248(r2, 2<32>, r4_34, r5_40, out r3_120)
 l004036A0:
-	r29Out = r29
-	r30Out = r30
-	r31Out = r31
 	return r2
 fn00403618_exit:
 
@@ -2627,22 +2229,18 @@ l004036C4:
 fn004036B0_exit:
 
 
-word32 fn00403744(word32 r2, word32 r3, word32 r29, word32 r30, word32 r31, word32 & r3Out, word32 & r29Out, word32 & r30Out, word32 & r31Out)
+word32 fn00403744(word32 r2, word32 r3, word32 & r3Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00403170
-// MayUse:  r2:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31]
-// LiveOut: r2:[0..31]-fn00403170 r29:[0..31]-fn00403170 r3:[0..31]-fn00403170 r30:[0..31]-fn00403170 r31:[0..31]-fn00403170
-// Trashed: cr0 ctr r0 r10 r11 r12 r2 r29 r3 r30 r31 r4 r5 r8 r9
-// Preserved: lr r1
+// MayUse:  r2:[0..31] r3:[0..31]
+// LiveOut: r2:[0..31]-fn00403170 r3:[0..31]-fn00403170
+// Trashed: cr0 ctr r0 r10 r11 r12 r2 r3 r4 r5 r8 r9
+// Preserved: lr r1 r29 r30 r31
 fn00403744_entry:
 l00403744:
-	r4_8 = CONVERT(Mem0[r3:byte], int8, int32)
-	Mem15[v9:word32] = r29
-	Mem18[v9 + 4<i32>:word32] = r30
-	Mem21[v9 + 8<i32>:word32] = r31
-	branch r4_8 == 0<32> l00403880
+	branch CONVERT(Mem0[r3:byte], int8, int32) == 0<32> l00403880
 l00403760:
 	r11_24 = 0<32>
 	branch CONVERT(Mem21[r3:byte], byte, word32) == 0<32> l00403780
@@ -2654,9 +2252,6 @@ l00403780:
 l00403880:
 	Mem46[Mem21[r2 + 124<i32>:word32]:word32] = 2<32>
 	r3Out = 0xFFFFFFFF<32>
-	r29Out = r29
-	r30Out = r30
-	r31Out = r31
 	return r2
 l00403788:
 	r11_49 = 0<32>
@@ -2699,38 +2294,27 @@ l00403840:
 	branch fp == 0x60<32> l00403868
 l00403868:
 	r3Out = 0<32>
-	r29Out = dwLoc10
-	r30Out = dwLoc0C
-	r31Out = dwLoc08
 	return dwLoc0184
 l00403848:
 	fn00403104(dwLoc0184, fp + 0xFFFFFFA0<32>)
 	r3Out = 0xFFFFFFFF<32>
-	r29Out = dwLoc10
-	r30Out = dwLoc0C
-	r31Out = dwLoc08
 	return dwLoc0184
 fn00403744_exit:
 
 
-word32 fn00403898(word32 r2, word32 r3, word32 r28, word32 r29, word32 r30, word32 r31, word32 & r3Out, word32 & r28Out, word32 & r29Out, word32 & r30Out, word32 & r31Out)
+word32 fn00403898(word32 r2, word32 r3, word32 & r3Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00403170
-// MayUse:  r2:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31]
-// LiveOut: r2:[0..31]-fn00403170 r28:[0..31]-fn00403170 r29:[0..31]-fn00403170 r3:[0..31]-fn00403170 r30:[0..31]-fn00403170 r31:[0..31]-fn00403170
-// Trashed: cr0 ctr r0 r10 r11 r12 r2 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
-// Preserved: lr r1
+// MayUse:  r2:[0..31] r3:[0..31]
+// LiveOut: r2:[0..31]-fn00403170 r3:[0..31]-fn00403170
+// Trashed: cr0 ctr r0 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
+// Preserved: lr r1 r28 r29 r30 r31
 fn00403898_entry:
 l00403898:
-	r4_8 = Mem6[Mem0[r2 + 116<i32>:word32]:word32]
-	Mem11[v6:word32] = r28
-	Mem14[v6 + 4<i32>:word32] = r29
-	Mem17[v6 + 8<i32>:word32] = r30
-	Mem20[v6 + 12<i32>:word32] = r31
 	r3_127 = 0<32>
-	branch r4_8 <= r3 l004039E4
+	branch Mem6[Mem0[r2 + 116<i32>:word32]:word32] <= r3 l004039E4
 l004038C4:
 	r28_30 = Mem29[r2 + 120<i32>:word32]
 	r28_32 = r3 + r28_30
@@ -2741,10 +2325,6 @@ l004039E4:
 	Mem52[Mem29[r2 + 124<i32>:word32]:word32] = 9<32>
 	Mem54[r5_39:word32] = 0<32>
 	r3Out = 0xFFFFFFFF<32>
-	r28Out = <invalid>
-	r29Out = <invalid>
-	r30Out = <invalid>
-	r31Out = <invalid>
 	return r2
 l004038DC:
 	branch (r11_33 & 0x40<32>) != 0<32> l0040399C
@@ -2774,10 +2354,6 @@ l0040397C:
 l0040392C:
 	fn00403104(dwLoc84, fp + 0xFFFFFFA0<32>)
 	r3Out = 0xFFFFFFFF<32>
-	r28Out = <invalid>
-	r29Out = <invalid>
-	r30Out = <invalid>
-	r31Out = <invalid>
 	return dwLoc84
 l004038F8:
 	Mem126[r10_59 + (r3 << 2<8>):word32] = 0<32>
@@ -2786,31 +2362,23 @@ l004039A0:
 	branch r3_127 == 0<32> l004039CC
 l004039CC:
 	r3Out = 0<32>
-	r28Out = <invalid>
-	r29Out = <invalid>
-	r30Out = <invalid>
-	r31Out = <invalid>
 	return r2
 l004039AC:
 	fn00403104(r2, r3_127)
 	r3Out = 0xFFFFFFFF<32>
-	r28Out = <invalid>
-	r29Out = <invalid>
-	r30Out = <invalid>
-	r31Out = <invalid>
 	return r2
 fn00403898_exit:
 
 
-word32 fn00403A0C(word32 r2, word32 r3, word32 r29, word32 r30, word32 & r29Out, word32 & r30Out)
+word32 fn00403A0C(word32 r2, word32 r3)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00403170
 //      fn00403450
-// MayUse:  r2:[0..31] r29:[0..31] r3:[0..31] r30:[0..31]
-// LiveOut: r2:[0..31]-fn00403450 r29:[0..31]-fn00403450 r30:[0..31]-fn00403450
-// Trashed: cr0 ctr r0 r10 r11 r12 r2 r29 r3 r30 r4 r5 r6 r7 r8 r9
+// MayUse:  r2:[0..31] r3:[0..31]
+// LiveOut: r2:[0..31]-fn00403450
+// Trashed: cr0 ctr r0 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
 // Preserved: cr1 lr r1 r31
 fn00403A0C_entry:
 l00403A0C:
@@ -2819,61 +2387,46 @@ l00403A0C:
 l00403A2C:
 	branch (r11_9 & 8<32>) == 0<32> l00403A60
 l00403A34:
-	r2 = fn00402BA0(r2, Mem14[r3 + 8<i32>:word32], r29, r30, r3, out r29, out r30, out r31_23)
-	r4_38 = Mem14[r31_23 + 12<i32>:word32]
-	Mem40[r31_23:word32] = 0<32>
-	Mem41[r31_23 + 8<i32>:word32] = 0<32>
-	Mem42[r31_23 + 4<i32>:word32] = 0<32>
-	Mem45[r31_23 + 12<i32>:word32] = r4_38 & 0xFFFFFFF7<32>
+	r2 = fn00402BA0(r2, Mem14[r3 + 8<i32>:word32])
+	r4_33 = Mem14[r3 + 12<i32>:word32]
+	Mem35[r3:word32] = 0<32>
+	Mem36[r3 + 8<i32>:word32] = 0<32>
+	Mem37[r3 + 4<i32>:word32] = 0<32>
+	Mem40[r3 + 12<i32>:word32] = r4_33 & 0xFFFFFFF7<32>
 l00403A60:
-	r29Out = r29
-	r30Out = r30
 	return r2
 fn00403A0C_exit:
 
 
-word32 fn00403B08(word32 r2, word32 r3, word32 r29, word32 r30, word32 r31, word32 & r29Out, word32 & r30Out, word32 & r31Out)
+word32 fn00403B08(word32 r2, word32 r3)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn0040326C
-// MayUse:  r2:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31]
-// LiveOut: r2:[0..31]-fn0040326C r29:[0..31]-fn0040326C r30:[0..31]-fn0040326C r31:[0..31]-fn0040326C
-// Trashed: cr1 ctr r0 r10 r11 r12 r2 r29 r3 r30 r31 r4 r5
-// Preserved: lr r1
+// MayUse:  r2:[0..31] r3:[0..31]
+// LiveOut: r2:[0..31]-fn0040326C
+// Trashed: cr1 ctr r0 r10 r11 r12 r2 r3 r4 r5
+// Preserved: lr r1 r29 r30 r31
 fn00403B08_entry:
 l00403B08:
-	Mem7[v4:word32] = r29
-	Mem10[v4 + 4<i32>:word32] = r30
-	Mem13[v4 + 8<i32>:word32] = r31
 	branch r3 >= 0x17<32> l00403B94
 l00403B94:
-	r29Out = r29
-	r30Out = <invalid>
-	r31Out = <invalid>
 	return r2
 l00403B28:
 	fn00403B84()
 l00403BAC:
 	r3_38 = fn00403C20(r2, r3)
-	r29_41 = r3_38
 	r31_42 = Mem21[r3_38 + 8<i32>:word32]
 	branch r31_42 != 1<32> l00403BDC
 l00403BDC:
 	branch r31_42 != 0<32> l00403BF0
 l00403BE4:
-	r2 = fn004035A0(r2, 3<32>, r3_38, r3, r31_42, out r29_41, out r31_42)
+	r2 = fn004035A0(r2, 3<32>)
 l00403BF0:
-	Mem64[r29_41 + 8<i32>:word32] = 0<32>
+	Mem61[r3_38 + 8<i32>:word32] = 0<32>
 	fn00403F10(r2, r31_42)
-	r29Out = dwLoc10
-	r30Out = <invalid>
-	r31Out = <invalid>
 	return dwLoc34
 l00403BC4:
-	r29Out = dwLoc10
-	r30Out = <invalid>
-	r31Out = <invalid>
 	return r2
 fn00403B08_exit:
 
@@ -2925,45 +2478,39 @@ fn00403C20_exit:
 void Win32CrtStartup()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  lr:[0..31] r13:[0..31] r14:[0..31] r15:[0..31] r16:[0..31] r17:[0..31] r18:[0..31] r19:[0..31] r2:[0..31] r20:[0..31] r21:[0..31] r22:[0..31] r23:[0..31] r24:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r30:[0..31] r31:[0..31]
+// MayUse:  lr:[0..31] r2:[0..31]
 // LiveOut:
 // Trashed:
 // Preserved:
 Win32CrtStartup_entry:
 l00403C6C:
 	Mem11[Mem7[r2 + 340<i32>:word32]:word32] = fn00403DD8()
-	fn00403CA0(r2, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r27, r28, r29, r30, r31, lr)
+	fn00403CA0(r2, lr)
 	return
 Win32CrtStartup_exit:
 
 
-void fn00403CA0(word32 r2, word32 r13, word32 r14, word32 r15, word32 r16, word32 r17, word32 r18, word32 r19, word32 r20, word32 r21, word32 r22, word32 r23, word32 r24, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr)
+void fn00403CA0(word32 r2, word32 lr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      Win32CrtStartup
-// MayUse:  lr:[0..31] r13:[0..31] r14:[0..31] r15:[0..31] r16:[0..31] r17:[0..31] r18:[0..31] r19:[0..31] r2:[0..31] r20:[0..31] r21:[0..31] r22:[0..31] r23:[0..31] r24:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r30:[0..31] r31:[0..31]
+// MayUse:  lr:[0..31] r2:[0..31]
 // LiveOut:
-// Trashed: cr0 ctr r0 r10 r11 r12 r14 r15 r16 r17 r18 r19 r2 r20 r21 r22 r23 r24 r25 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
-// Preserved: lr r1 r13
+// Trashed: cr0 ctr r0 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
+// Preserved: lr r1 r13 r29 r30 r31
 fn00403CA0_entry:
 l00403CA0:
 	r4_8 = Mem6[Mem0[r2 + 212<i32>:word32]:word32]
-	Mem11[v6:word32] = r29
-	Mem14[v6 + 4<i32>:word32] = r30
-	Mem17[v6 + 8<i32>:word32] = r31
-	r29_22 = Mem17[r2 + 344<i32>:word32]
-	Mem27[r29_22:word32] = 0<32>
+	Mem27[Mem17[r2 + 344<i32>:word32]:word32] = 0<32>
 	branch r4_8 != 0<32> l00403D38
 l00403CD0:
 	Mem30[Mem27[r2 + 348<i32>:word32]:word32] = 1<32>
 	Mem33[&tLoc38:word32] = Mem30[0x910<32>:word32]
-	r13 = Mem45[0x92C<32>:word32]
 	fn00403D7C(&tLoc38)
 	Mem58[Mem47[r2 + 352<i32>:word32]:word32] = fp + 0xFFFFFFE8<32>
 l00403D38:
-	r31_62 = Mem60[r2 + 352<i32>:word32]
-	fn00403574(fn00400220(fn00402404(r2, r29_22, Mem60[r2 + 348<i32>:word32], r31_62, out r29_68, out r30_70), r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r27, r28, r29_68, r30_70, r31_62, lr, out r3_132, out r29_131, out r30_133, out r31_134), r3_132, r29_131, r30_133, r31_134)
+	fn00403574(fn00400220(fn00402404(r2), lr, out r3_82), r3_82)
 	return
 fn00403CA0_exit:
 

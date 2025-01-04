@@ -4,17 +4,15 @@
 
 #include "hello_ppc.h"
 
-Eq_n g_t0001;
 Eq_n g_t0016;
 Eq_n g_t0041;
 Eq_n g_t0060;
 Eq_n g_t0068;
 ui32 g_dw0120; // 00000120
 word32 g_dw0910; // 00000910
-word32 g_dw092C; // 0000092C
 int8 g_b0BFF; // 00000BFF
 Eq_n g_t1000;
 Eq_n g_t1008;
 word32 g_dw1FF8; // 00001FF8
-Eq_n g_tFFFFFFFC;
-Eq_n g_tFFFFFFFF;
+Eq_n g_tFFFFFFFD;
+<anonymous> * g_ptrFFFFFFFF; // FFFFFFFF

@@ -429,6 +429,7 @@ namespace Reko.Arch.PowerPC
             var r = ((RegisterStorage)instr.Operands[0]).Number;
             var ea = EffectiveAddress_r0(1);
             var tmp = binder.CreateTemporary(ea.DataType);
+            m.Assign(tmp, ea);
             while (r <= 31)
             {
                 var reg = arch.GetRegister(r)!;
