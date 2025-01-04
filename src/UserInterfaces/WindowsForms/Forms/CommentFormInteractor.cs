@@ -36,7 +36,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         private bool closing;
 
         private Program program;
-        private Address address;
+        private Address? address;
 
         public CommentFormInteractor(IServiceProvider services)
         {
@@ -92,9 +92,9 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
         private string GetCommentText()
         {
-            if (address == null)
+            if (address is null)
                 return null;
-            return program.User.Annotations[address];
+            return program.User.Annotations[address.Value];
         }
 
         public void HideControls()
@@ -125,11 +125,11 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             var comment = commentForm.TextBox.Text.Trim();
             if (!string.IsNullOrEmpty(comment))
             {
-                program.User.Annotations[address] = comment;
+                program.User.Annotations[address.Value] = comment;
             }
             else
             {
-                program.User.Annotations.Remove(address);
+                program.User.Annotations.Remove(address.Value);
             }
         }
     }

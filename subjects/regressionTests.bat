@@ -4,4 +4,4 @@ set Cfg=%1
 if "%1"=="" (
     set Cfg=Release
 )
-..\src\tools\regressionTests\bin\%Cfg%\net8.0\regressionTests.exe ..\src -c %Cfg%
+..\src\tools\regressionTests\bin\%Cfg%\net6.0\regressionTests.exe ..\src -c %Cfg%

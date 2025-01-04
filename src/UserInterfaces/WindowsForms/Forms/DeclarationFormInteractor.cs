@@ -44,7 +44,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         private bool closing;
 
         private Program program;
-        private Address address;
+        private Address? address;
 
         private bool editProcedure;
 
@@ -98,21 +98,22 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
         private string GetDeclarationText()
         {
-            if (address == null)
+            if (address is null)
                 return null;
-            if (program.User.Procedures.TryGetValue(address, out var uProc))
+            Address addr = address.Value;
+            if (program.User.Procedures.TryGetValue(addr, out var uProc))
             {
                 if (!string.IsNullOrEmpty(uProc.CSignature))
                     return uProc.CSignature;
             }
             Procedure proc;
-            if (program.Procedures.TryGetValue(address, out proc))
+            if (program.Procedures.TryGetValue(addr, out proc))
             {
                 return proc.Name;
             }
             ImageMapItem item;
-            if (program.ImageMap.TryFindItemExact(address, out item) &&
-                !(item.DataType is UnknownType))
+            if (program.ImageMap.TryFindItemExact(addr, out item) &&
+                item.DataType is not UnknownType)
             {
                 return RenderGlobalDeclaration(item.DataType, item.Name ?? "<unnamed>");
             }
@@ -216,8 +217,11 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
         private async ValueTask ModifyDeclaration()
         {
+            if (address is null)
+                return;
+            Address addr = address.Value;
             var declText = declarationForm.TextBox.Text.Trim();
-            if (!program.Procedures.TryGetValue(address, out Procedure proc))
+            if (!program.Procedures.TryGetValue(addr, out Procedure proc))
                 proc = null;
             string procName = null;
             string CSignature = null;
@@ -233,26 +237,26 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             }
             else if (!editProcedure && TryParseGlobal(declText, out var parsedGlobal))
             {
-                program.User.Procedures.Remove(address);
+                program.User.Procedures.Remove(addr);
                 program.ModifyUserGlobal(
                     program.Architecture,
-                    address,
+                    addr,
                     parsedGlobal.DataType, 
                     parsedGlobal.Name
                 );
             }
 
-            if (procName != null)
+            if (procName is not null)
             {
-                program.RemoveUserGlobal(address);
-                var up = program.EnsureUserProcedure(address, procName);
-                if (CSignature != null)
+                program.RemoveUserGlobal(addr);
+                var up = program.EnsureUserProcedure(addr, procName);
+                if (CSignature is not null)
                     up.CSignature = CSignature;
-                if (proc != null)
+                if (proc is not null)
                     proc.Name = procName;
                 else
                 {
-                    var pAddr = new ProgramAddress(program, address);
+                    var pAddr = new ProgramAddress(program, addr);
                     await services.RequireService<ICommandFactory>().MarkProcedure(pAddr).DoAsync();
                 }
             }

@@ -146,7 +146,7 @@ namespace Reko.Gui.Forms
 
         private void ShowMemoryControlRange(IStatusBarService sbSvc, AddressRange range)
         {
-            if (range.Begin == null || range.End == null)
+            if (!range.IsValid)
                 return;
             if (range.Begin.ToLinear() == range.End.ToLinear())       //$REFACTOR: make bytespan a method of addressrange.
             {

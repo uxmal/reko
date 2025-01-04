@@ -461,9 +461,9 @@ namespace Reko.UnitTests.Mocks
             throw new NotImplementedException();
         }
 
-        public override bool TryParseAddress(string txtAddr, out Address addr)
+        public override bool TryParseAddress(string txtAddress, out Address addr)
         {
-            throw new NotImplementedException();
+            return Address.TryParse32(txtAddress, out addr);
         }
     }
 

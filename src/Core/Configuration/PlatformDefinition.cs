@@ -127,7 +127,7 @@ namespace Reko.Core.Configuration
 
         private Dictionary<Address, ExternalProcedure> LoadPlatformProcedures(Platform platform)
         {
-            if (platform.MemoryMap != null && platform.MemoryMap.Segments != null)
+            if (platform.MemoryMap is not null && platform.MemoryMap.Segments is not null)
             {
                 var metadata = platform.EnsureTypeLibraries(platform.Name);
                 var tser = new TypeLibraryDeserializer(platform, true, metadata);
@@ -139,13 +139,13 @@ namespace Reko.Core.Configuration
                     .Where(p => p.Name != null)
                     //$REVIEW: handle when addresses are not parseable.
                     .Select(p =>
-                        (addr: platform.Architecture.TryParseAddress(p.Address, out var addr) ? addr : default,
+                        (addr: platform.Architecture.TryParseAddress(p.Address, out var addr) ? (Address?)addr : null,
                          ext:  new ExternalProcedure(
                              p.Name!,
                              sser.Deserialize(p.Signature, platform.Architecture.CreateFrame())
                                 ?? new Types.FunctionType())))
-                    .Where(p => p.addr != null)
-                    .ToDictionary(p => p.addr!, p => p.ext);
+                    .Where(p => p.addr is not null)
+                    .ToDictionary(p => p.addr!.Value, p => p.ext);
             }
             else
             {

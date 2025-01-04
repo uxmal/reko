@@ -885,68 +885,9 @@ Warning: Type transformer has looped 51 times, quitting prematurely.
 Signature of 'Microsoft Visual C++ 8' detected.
 
 === Elf\x86-64\ls\ls
-0000000000409788: warning: Unable to determine format string for call to '__fprintf_chk'.
-00000000004097AD: warning: Unable to determine format string for call to '__printf_chk'.
-0000000000409B4F: warning: Unable to determine format string for call to '__printf_chk'.
-0000000000409B79: warning: Unable to determine format string for call to '__printf_chk'.
-0000000000409BF5: warning: Unable to determine format string for call to '__printf_chk'.
-0000000000409C2C: warning: Unable to determine format string for call to '__printf_chk'.
-00000000004107E9: warning: Unable to determine format string for call to '__fprintf_chk'.
 000000000040216C: warning: Unable to resolve imported reference __gmon_start__.
 0000000000402178: warning: Unable to resolve imported reference __gmon_start__.
 00000000004025B0: warning: Unable to resolve imported reference __gmon_start__.
-00000000004097AD: warning: Unable to determine format string for call to '__printf_chk'.
-0000000000409B4F: warning: Unable to determine format string for call to '__printf_chk'.
-0000000000409B79: warning: Unable to determine format string for call to '__printf_chk'.
-0000000000409788: warning: Unable to determine format string for call to '__fprintf_chk'.
-0000000000409BF5: warning: Unable to determine format string for call to '__printf_chk'.
-0000000000409C2C: warning: Unable to determine format string for call to '__printf_chk'.
-00000000004097AD: warning: Unable to determine format string for call to '__printf_chk'.
-0000000000409B4F: warning: Unable to determine format string for call to '__printf_chk'.
-0000000000409B79: warning: Unable to determine format string for call to '__printf_chk'.
-0000000000409788: warning: Unable to determine format string for call to '__fprintf_chk'.
-0000000000409BF5: warning: Unable to determine format string for call to '__printf_chk'.
-0000000000409C2C: warning: Unable to determine format string for call to '__printf_chk'.
-00000000004097AD: warning: Unable to determine format string for call to '__printf_chk'.
-0000000000409B4F: warning: Unable to determine format string for call to '__printf_chk'.
-0000000000409B79: warning: Unable to determine format string for call to '__printf_chk'.
-0000000000409788: warning: Unable to determine format string for call to '__fprintf_chk'.
-0000000000409BF5: warning: Unable to determine format string for call to '__printf_chk'.
-0000000000409C2C: warning: Unable to determine format string for call to '__printf_chk'.
-00000000004097AD: warning: Unable to determine format string for call to '__printf_chk'.
-0000000000409B4F: warning: Unable to determine format string for call to '__printf_chk'.
-0000000000409B79: warning: Unable to determine format string for call to '__printf_chk'.
-0000000000409788: warning: Unable to determine format string for call to '__fprintf_chk'.
-0000000000409BF5: warning: Unable to determine format string for call to '__printf_chk'.
-0000000000409C2C: warning: Unable to determine format string for call to '__printf_chk'.
-00000000004097AD: warning: Unable to determine format string for call to '__printf_chk'.
-0000000000409B4F: warning: Unable to determine format string for call to '__printf_chk'.
-0000000000409B79: warning: Unable to determine format string for call to '__printf_chk'.
-0000000000409788: warning: Unable to determine format string for call to '__fprintf_chk'.
-0000000000409BF5: warning: Unable to determine format string for call to '__printf_chk'.
-0000000000409C2C: warning: Unable to determine format string for call to '__printf_chk'.
-00000000004107E9: warning: Unable to determine format string for call to '__fprintf_chk'.
-00000000004107E9: warning: Unable to determine format string for call to '__fprintf_chk'.
-00000000004107E9: warning: Unable to determine format string for call to '__fprintf_chk'.
-00000000004107E9: warning: Unable to determine format string for call to '__fprintf_chk'.
-00000000004107E9: warning: Unable to determine format string for call to '__fprintf_chk'.
-00000000004107E9: warning: Unable to determine format string for call to '__fprintf_chk'.
-00000000004107E9: warning: Unable to determine format string for call to '__fprintf_chk'.
-00000000004107E9: warning: Unable to determine format string for call to '__fprintf_chk'.
-00000000004097AD: warning: Unable to determine format string for call to '__printf_chk'.
-0000000000409B4F: warning: Unable to determine format string for call to '__printf_chk'.
-0000000000409B79: warning: Unable to determine format string for call to '__printf_chk'.
-0000000000409788: warning: Unable to determine format string for call to '__fprintf_chk'.
-0000000000409BF5: warning: Unable to determine format string for call to '__printf_chk'.
-0000000000409C2C: warning: Unable to determine format string for call to '__printf_chk'.
-00000000004107E9: warning: Unable to determine format string for call to '__fprintf_chk'.
-00000000004097AD: warning: Unable to determine format string for call to '__printf_chk'.
-0000000000409B4F: warning: Unable to determine format string for call to '__printf_chk'.
-0000000000409B79: warning: Unable to determine format string for call to '__printf_chk'.
-0000000000409788: warning: Unable to determine format string for call to '__fprintf_chk'.
-0000000000409BF5: warning: Unable to determine format string for call to '__printf_chk'.
-0000000000409C2C: warning: Unable to determine format string for call to '__printf_chk'.
-00000000004107E9: warning: Unable to determine format string for call to '__fprintf_chk'.
 0000000000412C00: warning: Expected sizes of arrays to have been determined by now
 0000000000412C60: warning: Expected sizes of arrays to have been determined by now
 0000000000412D00: warning: Expected sizes of arrays to have been determined by now
@@ -1192,27 +1133,6 @@ Error: An error occurred while writing assembly language output.
 0000000100004EB6: warning: Unable to resolve imported reference mbr_uuid_to_string.
 0000000100004505: warning: Unable to resolve imported reference __stderrp.
 0000000100004DD8: warning: Unable to resolve imported reference acl_get_flag_np.
-0000000100004E20: warning: Unable to determine format string for call to 'fprintf'.
-0000000100004E20: warning: Unable to determine format string for call to 'fprintf'.
-0000000100004E20: warning: Unable to determine format string for call to 'fprintf'.
-0000000100004E20: warning: Unable to determine format string for call to 'fprintf'.
-0000000100004E20: warning: Unable to determine format string for call to 'fprintf'.
-0000000100004ECE: warning: Unable to determine format string for call to 'printf'.
-0000000100004ECE: warning: Unable to determine format string for call to 'printf'.
-0000000100004ECE: warning: Unable to determine format string for call to 'printf'.
-0000000100004ECE: warning: Unable to determine format string for call to 'printf'.
-0000000100004ECE: warning: Unable to determine format string for call to 'printf'.
-0000000100004DBA: warning: Unable to determine format string for call to '__snprintf_chk'.
-0000000100004DBA: warning: Unable to determine format string for call to '__snprintf_chk'.
-0000000100004DBA: warning: Unable to determine format string for call to '__snprintf_chk'.
-0000000100004DBA: warning: Unable to determine format string for call to '__snprintf_chk'.
-0000000100004DBA: warning: Unable to determine format string for call to '__snprintf_chk'.
-0000000100004E20: warning: Unable to determine format string for call to 'fprintf'.
-0000000100004ECE: warning: Unable to determine format string for call to 'printf'.
-0000000100004DBA: warning: Unable to determine format string for call to '__snprintf_chk'.
-0000000100004E20: warning: Unable to determine format string for call to 'fprintf'.
-0000000100004ECE: warning: Unable to determine format string for call to 'printf'.
-0000000100004DBA: warning: Unable to determine format string for call to '__snprintf_chk'.
 fn0000000100003AA8: error: An internal error occurred while building the expressions of fn0000000100003AA8
     The given key 'l0000000100004703' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
@@ -1324,7 +1244,8 @@ finish: error: An error occurred while renaming variables.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.SsaLivenessAnalysis.LiveOutAtBlock(Block b, SsaIdentifier v) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 170
    at Reko.Analysis.SsaLivenessAnalysis.BuildInterferenceGraph(SsaIdentifierCollection ssaIds) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 100
-   at Reko.Analysis.LiveCopyInserter..ctor(SsaState ssa) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 43
+   at Reko.Analysis.SsaLivenessAnalysis..ctor(SsaState ssa) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 62
+   at Reko.Analysis.LiveCopyInserter..ctor(SsaState ssa) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 41
    at Reko.Analysis.WebBuilder.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 136
 l00401628: warning: Non-integral switch expression
 l00401614: warning: Non-integral switch expression
@@ -1622,25 +1543,7 @@ Evaluating c:\dev\uxmal\reko\master\subjects\scripting\segmented.py
 
 *** Elf\Sparc\rtems\sparc-rtems-unprotoize
 00011610: warning: Unable to resolve imported reference __register_frame_info.
-00016BC4: warning: Unable to determine format string for call to 'fprintf'.
-00012F40: warning: Unable to determine format string for call to 'fprintf'.
 000115A8: warning: Unable to resolve imported reference __deregister_frame_info.
-00016BC4: warning: Unable to determine format string for call to 'fprintf'.
-00016BC4: warning: Unable to determine format string for call to 'fprintf'.
-00016BC4: warning: Unable to determine format string for call to 'fprintf'.
-00016BC4: warning: Unable to determine format string for call to 'fprintf'.
-00016BC4: warning: Unable to determine format string for call to 'fprintf'.
-00016BC4: warning: Unable to determine format string for call to 'fprintf'.
-00016BC4: warning: Unable to determine format string for call to 'fprintf'.
-00012F40: warning: Unable to determine format string for call to 'fprintf'.
-00012F40: warning: Unable to determine format string for call to 'fprintf'.
-00012F40: warning: Unable to determine format string for call to 'fprintf'.
-00012F40: warning: Unable to determine format string for call to 'fprintf'.
-00012F40: warning: Unable to determine format string for call to 'fprintf'.
-00016BC4: warning: Unable to determine format string for call to 'fprintf'.
-00012F40: warning: Unable to determine format string for call to 'fprintf'.
-00016BC4: warning: Unable to determine format string for call to 'fprintf'.
-00012F40: warning: Unable to determine format string for call to 'fprintf'.
 safe_read: error: An error occurred while rewriting procedure to high-level language.
     Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
        at System.Collections.Generic.List`1.get_Item(Int32 index)
@@ -2400,4 +2303,4 @@ PE Debug type 14 not supported yet.
 === PE\x86\VCExeSample\VCExeSample
 Signature of 'Microsoft Visual C++ 8' detected.
 
-Decompiled 96 binaries in 50.52 seconds.
+Decompiled 96 binaries in 52.87 seconds.
