@@ -752,12 +752,21 @@ namespace Reko.Arch.M68k.Rewriter
                     }
                     return;
                 case PostIncrementMemoryOperand postDec:
-                    var srcReg = binder.CreateTemporary(dataWidth);
-                    m.Assign(srcReg, binder.EnsureRegister(postDec.Register));
+                    dstReg = binder.CreateTemporary(dataWidth);
+                    m.Assign(dstReg, binder.EnsureRegister(postDec.Register));
                     foreach (var reg in RegisterMaskIncreasing(dstRegs2.Width.IsReal, dstRegs2.BitSet, regGenerator))
                     {
-                        m.Assign(reg, m.Mem(dataWidth, srcReg));
-                        m.Assign(srcReg, m.IAddS(srcReg, dataWidth.Size));
+                        m.Assign(reg, m.Mem(dataWidth, dstReg));
+                        m.Assign(dstReg, m.IAddS(dstReg, dataWidth.Size));
+                    }
+                    return;
+                default:
+                    dstReg = binder.CreateTemporary(dataWidth);
+                    m.Assign(dstReg, orw.RewriteSrc(instr.Operands[1], instr.Address));
+                    foreach (var reg in RegisterMaskIncreasing(dstRegs2.Width.IsReal, dstRegs2.BitSet, regGenerator))
+                    {
+                        m.Assign(m.Mem(dataWidth, dstReg), reg);
+                        m.Assign(dstReg, m.IAddS(dstReg, dataWidth.Size));
                     }
                     return;
                 }

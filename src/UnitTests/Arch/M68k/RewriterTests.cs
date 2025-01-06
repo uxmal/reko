@@ -25,6 +25,7 @@ using Reko.Core;
 using Reko.Core.Loading;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Reko.UnitTests.Arch.M68k
@@ -741,6 +742,39 @@ namespace Reko.UnitTests.Arch.M68k
                 "2|L--|Mem0[a7:word32] = a3",
                 "3|L--|a3 = a7",
                 "4|L--|a7 = a7 - 0x1FEFC<32>");
+        }
+
+        [Test]
+        public void M68krw_movem_push()
+        {
+            Given_UInt16s(0x48D0, 0xDEFC);
+            AssertCode(
+                "0|L--|00010000(4): 25 instructions",
+                "1|L--|v3 = Mem0[a0:word32]",
+                "2|L--|Mem0[v3:word32] = d2",
+                "3|L--|v3 = v3 + 4<i32>",
+                "4|L--|Mem0[v3:word32] = d3",
+                "5|L--|v3 = v3 + 4<i32>",
+                "6|L--|Mem0[v3:word32] = d4",
+                "7|L--|v3 = v3 + 4<i32>",
+                "8|L--|Mem0[v3:word32] = d5",
+                "9|L--|v3 = v3 + 4<i32>",
+                "10|L--|Mem0[v3:word32] = d6",
+                "11|L--|v3 = v3 + 4<i32>",
+                "12|L--|Mem0[v3:word32] = d7",
+                "13|L--|v3 = v3 + 4<i32>",
+                "14|L--|Mem0[v3:word32] = a1",
+                "15|L--|v3 = v3 + 4<i32>",
+                "16|L--|Mem0[v3:word32] = a2",
+                "17|L--|v3 = v3 + 4<i32>",
+                "18|L--|Mem0[v3:word32] = a3",
+                "19|L--|v3 = v3 + 4<i32>",
+                "20|L--|Mem0[v3:word32] = a4",
+                "21|L--|v3 = v3 + 4<i32>",
+                "22|L--|Mem0[v3:word32] = a6",
+                "23|L--|v3 = v3 + 4<i32>",
+                "24|L--|Mem0[v3:word32] = a7",
+                "25|L--|v3 = v3 + 4<i32>");
         }
 
         [Test]

@@ -186,6 +186,7 @@ namespace Reko.Arch.M68k.Disassembler
 
         private const uint M68040_PLUS = TYPE_68040;
 
+        private static readonly Bitfield bf3L3 = new Bitfield(3, 3);
 
         /* Extension word formats */
         private static sbyte EXT_8BIT_DISPLACEMENT(uint A) { return (sbyte) (A & 0xff); }
@@ -232,7 +233,6 @@ namespace Reko.Arch.M68k.Disassembler
         /// Decoders follow the flyweight pattern; they must never have modifiable state. Therefore,
         /// all the fields are readonly.
         /// </remarks>
-
         private abstract class BaseDecoder : Decoder
         {
             public readonly uint mask;                  // opcode mask
@@ -286,22 +286,6 @@ namespace Reko.Arch.M68k.Disassembler
                         return dasm.CreateInvalidInstruction();
                 }
                 return dasm.MakeInstruction(iclass, mnemonic);
-            }
-        }
-
-        private class DeferredDecoder : BaseDecoder
-        {
-            private readonly Decoder decoder;
-
-            public DeferredDecoder(Decoder decoder, uint mask, uint match, uint ea_mask)
-                : base(mask, match, ea_mask)
-            {
-                this.decoder = decoder;
-            }
-
-            public override M68kInstruction Decode(uint wInstr, M68kDisassembler dasm)
-            {
-                return decoder.Decode(wInstr, dasm);
             }
         }
 
@@ -2606,17 +2590,18 @@ namespace Reko.Arch.M68k.Disassembler
             return true;
         }
 
-        // Register bitset
+        /// <summary>
+        /// Register bitset.
+        /// </summary>
         private static Mutator M(PrimitiveType size)
         {
             return (u, d) =>
             {
-                //var size = GetSizeType(0, args[i++], dataWidth);
-                if (!d.rdr.TryReadBeUInt16(out ushort memSet))
-                {
-                    return false;
-                }
-                d.ops.Add(new RegisterSetOperand(memSet, size));
+                // Predecrement addressing mode reverses bits.
+                if (bf3L3.Read(u) != 0b100) 
+                    d.ops.Add(RegisterSetOperand.CreateReversed(d.bitSet, size));
+                else
+                    d.ops.Add(new RegisterSetOperand(d.bitSet, size));
                 return true;
             };
         }
@@ -2630,20 +2615,8 @@ namespace Reko.Arch.M68k.Disassembler
             return true;
         }
 
-        // Register bitset reversed
-        private static Mutator m(PrimitiveType size)
-        {
-            return (u, d) =>
-            {
-                d.ops.Add(RegisterSetOperand.CreateReversed(d.bitSet, size));
-                return true;
-            };
-        }
-
         private static readonly Mutator Mw = M(PrimitiveType.Word16);
         private static readonly Mutator Ml = M(PrimitiveType.Word32);
-        private static readonly Mutator mw = m(PrimitiveType.Word16);
-        private static readonly Mutator ml = m(PrimitiveType.Word32);
 
 
         /// <summary>
@@ -2865,12 +2838,12 @@ namespace Reko.Arch.M68k.Disassembler
     Instr(A0,USP,   0xfff8, 0x4e60, 0x000, Mnemonic.move),          // d68000_move_to_usp
     Instr(USP,A0,   0xfff8, 0x4e68, 0x000, Mnemonic.move),          // d68000_move_fr_usp
     Instr(d68010_movec        , 0xfffe, 0x4e7a, 0x000),
-    Instr(sw,Mw,E0, 0xfff8, 0x48a0, 0x000, Mnemonic.movem),         // d68000_movem_pd_16
-	Instr(sl,Ml,E0, 0xfff8, 0x48e0, 0x000, Mnemonic.movem),         // d68000_movem_pd_32
-	Instr(sw,Mw,E0, 0xffc0, 0x4880, 0x2f8, Mnemonic.movem),         // d68000_movem_re_16
-	Instr(sl,Ml,E0, 0xffc0, 0x48c0, 0x2f8, Mnemonic.movem),         // d68000_movem_re_32
-	Instr(sw,n,E0,mw, 0xffc0, 0x4c80, 0x37b, Mnemonic.movem),       // d68000_movem_er_16
-	Instr(sl,n,E0,ml, 0xffc0, 0x4cc0, 0x37b, Mnemonic.movem),       // d68000_movem_er_32
+    Instr(sw,n,Mw,E0, 0xfff8, 0x48a0, 0x000, Mnemonic.movem),         // d68000_movem_pd_16
+	Instr(sl,n,Ml,E0, 0xfff8, 0x48e0, 0x000, Mnemonic.movem),         // d68000_movem_pd_32
+	Instr(sw,n,Mw,E0, 0xffc0, 0x4880, 0x2f8, Mnemonic.movem),         // d68000_movem_re_16
+	Instr(sl,n,Ml,E0, 0xffc0, 0x48c0, 0x2f8, Mnemonic.movem),         // d68000_movem_re_32
+	Instr(sw,n,E0,Mw, 0xffc0, 0x4c80, 0x37b, Mnemonic.movem),       // d68000_movem_er_16
+	Instr(sl,n,E0,Ml, 0xffc0, 0x4cc0, 0x37b, Mnemonic.movem),       // d68000_movem_er_32
 	Instr(sw,Ad0,D9, 0xf1f8, 0x0108, 0x000, Mnemonic.movep),        // d68000_movep_er_16
     Instr(sl,Ad0,D9, 0xf1f8, 0x0148, 0x000, Mnemonic.movep),        // 68000_movep_er_32
     Instr(sw,D9,Ad0, 0xf1f8, 0x0188, 0x000, Mnemonic.movep),        // d68000_movep_re_16),

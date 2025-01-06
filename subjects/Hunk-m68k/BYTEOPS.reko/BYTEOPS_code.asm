@@ -998,7 +998,7 @@ l000017DE:
 	movem.l	$0030(a7),d0-d1
 	neg.l	d1
 	negx.l	d0
-	movem.l	a6-a7,$0038(a7)
+	movem.l	d0-d1,$0038(a7)
 	bra	$00001974
 
 l000017FE:

@@ -1050,7 +1050,7 @@ l00001816:
 	movem.l	$0030(a7),d0-d1
 	neg.l	d1
 	negx.l	d0
-	movem.l	a6-a7,$0038(a7)
+	movem.l	d0-d1,$0038(a7)
 	bra	$000019AC
 
 l00001836:
@@ -5085,12 +5085,14 @@ l00003A2E:
 	movem.l	$002C(a7),d0-d1
 	neg.l	d1
 	negx.l	d0
-	movem.l	a6-a7,$0034(a7)
+	movem.l	d0-d1,$0034(a7)
 	bra	$00003A4C
 
 l00003A40:
 	move.l	$0030(a7),$0038(a7)
 	move.l	$002C(a7),$0034(a7)
+
+l00003A4C:
 	move.l	d0,-(a7)
 	move.b	$004C(a7),d0
 	subq.b	#$01,d0

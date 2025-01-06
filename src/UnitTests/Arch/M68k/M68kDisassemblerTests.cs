@@ -144,12 +144,6 @@ namespace Reko.UnitTests.Arch.M68k
         }
 
         [Test]
-        public void M68kdis_MoveM()
-        {
-            RunTest("movem.l\ta5,-(a7)", 0x48E7, 0x0004);
-        }
-
-        [Test]
         public void M68kdis_BraB()
         {
             RunTest("bra\t$1000001C", 0x601A);
@@ -552,15 +546,33 @@ namespace Reko.UnitTests.Arch.M68k
         }
 
         [Test]
-        public void M68kdis_movem_2()
+        public void M68kdis_movem_to_regs()
+        {
+            RunTest("movem.w\t$0004000A,d0-d1", 0x4CB9, 0x0003, 0x0004, 0x000A);    // move.l\t(-04,a2,d0*2),d2",
+        }
+
+        [Test]
+        public void M68kdis_movem_to_regs2()
         {
             RunTest("movem.l\t(a7)+,d2/a2-a3", 0x4CDF, 0x0C04);
         }
 
         [Test]
-        public void M68kdis_movem_3()
+        public void M68kdis_movem_to_regs3()
         {
             RunTest("movem.l\t$0030(a7),d0-d1", 0x4cef, 0x0003, 0x0030);
+        }
+
+        [Test]
+        public void M68kdis_movem_from_regs2()
+        {
+            RunTest("movem.l\ta5,-(a7)", 0x48E7, 0x0004);
+        }
+
+        [Test]
+        public void M68ldis_movem_from_regs()
+        {
+            RunTest("movem.l\td7/a5-a6,-(a7)", 0x48E7, 0x0106);
         }
 
         [Test]
@@ -678,12 +690,6 @@ namespace Reko.UnitTests.Arch.M68k
         public void M68kdis_address_mode()
         {
             RunTest("move.l\t(-$04,a2,d0.w*4),d2", 0x2432, 0x04fc);
-        }
-
-        [Test]
-        public void M68kdis_movem()
-        {
-            RunTest("movem.w\t$0004000A,d0-d1", 0x4CB9, 0x0003, 0x0004, 0x000A);    // move.l\t(-04,a2,d0*2),d2",
         }
 
         [Test]
