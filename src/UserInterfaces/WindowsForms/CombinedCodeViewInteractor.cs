@@ -444,14 +444,14 @@ namespace Reko.UserInterfaces.WindowsForms
             return true;
         }
 
-        private Address CodeView_GetAnchorAddress()
+        private Address? CodeView_GetAnchorAddress()
         {
             var pt = combinedCodeView.CodeView.GetAnchorMiddlePoint();
             var tag = combinedCodeView.CodeView.GetTagFromPoint(pt);
             var addr = tag as Address?;
             if (tag is Procedure proc)
                 addr = proc.EntryAddress;
-            return addr.Value;
+            return addr;
         }
 
         private Address MixedCodeDataView_GetAnchorAddress()
