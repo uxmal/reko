@@ -14862,25 +14862,18 @@ uint64 fn0000F792(struct Eq_n * r11, Eq_n r10)
 	if (r9_n < 0x03FF)
 		return 0x00;
 	uint32 r11_n = r11 << 11 | 0x80000000 | r10 << 0x15;
-	uint32 r10_n = r10 << 11;
 	up32 r9_n = 0x3F - (r9_n - 0x03FF);
+	uint64 r11_r10_n = SEQ(r11_n, r10 << 11);
 	if (r9_n != 0x00)
 	{
 		if (r9_n < 0x20)
-		{
-			r11_n >>= r9_n;
-			r10_n = r10 << 11 >> r9_n | r11_n << 0x20 - r9_n;
-		}
+			r11_r10_n = SEQ(r11_n >> r9_n, r10 << 11 >> r9_n | r11_n << 0x20 - r9_n);
 		else
-		{
-			r10_n = r11_n >> r9_n;
-			r11_n = 0x00;
-		}
+			r11_r10_n = (uint64) (r11_n >> r9_n);
 	}
-	if (r11 << 1 >= 0x00)
-		return SEQ(r11_n, r10_n);
-	uint32 r10_n = -r10_n;
-	return SEQ(-r11_n - (word32) (r10_n < 0x00), r10_n);
+	if (r11 << 1 < 0x00)
+		return -r11_r10_n;
+	return r11_r10_n;
 }
 
 // 0000F7FA: Register word32 __avr32_u32_to_f64(Register (ptr32 code) r12, Register out word32 r11Out)

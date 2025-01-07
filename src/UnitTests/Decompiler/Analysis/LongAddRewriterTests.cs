@@ -849,5 +849,36 @@ namespace Reko.UnitTests.Decompiler.Analysis
             });
         }
 
+        [Test]
+        public void LarwM68xNegate()
+        {
+            var sExpected =
+            #region Expected
+@"l1:
+	d1_d0_8 = SEQ(d1, d0)
+	d1_d0_9 = -d1_d0_8
+	d0_2 = SLICE(d1_d0_9, word32, 0)
+	SCZ_3 = cond(d0_2)
+	C_4 = SCZ_3 & 4<32>
+	d1_6 = SLICE(d1_d0_9, word32, 32)
+	SCZ_7 = cond(d1_6)
+";
+            #endregion
+
+            RunTest(sExpected, m =>
+            {
+                var d0 = m.Reg32("d0", 0);
+                var d1 = m.Reg32("d1", 1);
+
+                m.Assign(d0, m.Neg(d0));
+                m.Assign(SCZ, m.Cond(d0));
+                m.Assign(CF, m.And(SCZ, 4));
+                m.Assign(d1, m.ISub(m.Neg(d1), CF));
+                m.Assign(SCZ, m.Cond(d1));
+
+                this.block = m.Block;
+            });
+        }
+
     }
 }

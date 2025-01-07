@@ -186,7 +186,7 @@ namespace Reko.Arch.M68k
             }
         }
 
-        private static FlagGroupStorage[] flagRegisters = {
+        private static readonly FlagGroupStorage[] flagRegisters = {
             Registers.C,
             Registers.V,
             Registers.Z,

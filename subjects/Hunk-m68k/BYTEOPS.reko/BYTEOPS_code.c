@@ -596,7 +596,7 @@ l000016D6:
 					}
 					Eq_n d3_n;
 					struct Eq_n * dwLoc38;
-					word32 dwLoc34;
+					uint32 dwLoc34;
 					byte bLoc44_n;
 					if ((byte) d1_n != 100 && (byte) d1_n != 0x69)
 					{
@@ -713,13 +713,13 @@ l00001932:
 						}
 						byte v127_n = (byte) d1_n;
 						struct Eq_n * dwLoc40_n = (word32) qwLoc40_n;
-						word32 dwLoc3C_n = SLICE(qwLoc40_n, word32, 32);
+						uint32 dwLoc3C_n = SLICE(qwLoc40_n, word32, 32);
 						bLoc44_n = v127_n;
 						if (dwLoc40_n < null)
 						{
-							up32 d1_n = -dwLoc3C_n;
-							dwLoc38->dw0000 = -dwLoc40_n - (word32) (d1_n < 0x00);
-							dwLoc38->dw0004 = d1_n;
+							int64 d0_d1_n = -dwLoc3C_n;
+							dwLoc38->dw0000 = SLICE(d0_d1_n, word32, 32);
+							dwLoc38->dw0004 = (word32) d0_d1_n;
 							d7_n = (word32 *) 0x01;
 						}
 						else

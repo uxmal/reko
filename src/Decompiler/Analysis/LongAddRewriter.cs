@@ -347,6 +347,8 @@ public class LongAddRewriter : IAnalysis<SsaState>
                 loInstr = MatchNegation(block.Statements[i]);
                 if (loInstr is not null)
                 {
+                    if (loInstr.Statement is not null && loInstr.Statement.Address.Offset == 0x3A34)
+                        _ = this; //$DEBUG;
                     var hiInstr = FindNegationHighPart(block, stmtsOrig, i, loInstr);
                     if (hiInstr is null)
                         continue;
@@ -375,6 +377,8 @@ public class LongAddRewriter : IAnalysis<SsaState>
         {
             var cond = FindConditionOf(stmtsOrig, i, loInstr.Dst!) ??
                        FindConditionOfNeg(loInstr.Left);
+            if (block.Address.Offset == 0x3A2E)
+                _ = this; //$DEBUG
             if (cond is not null)
             {
                 var hiInstr = FindUsingNegation(block, cond.FlagGroup, loInstr);
@@ -499,6 +503,28 @@ public class LongAddRewriter : IAnalysis<SsaState>
             var queue = new Queue<Statement>(ssa.Identifiers[cy].Uses);
             while (queue.TryDequeue(out var use))
             {
+                if (use.Instruction is not Assignment ass)
+                    continue;
+
+                if (ConditionCodeEliminator.FindSlicedFlagRegister(ass.Src) is not null)
+                {
+                    // This is a "slice" of a flag group, continue.
+                    queue.EnqueueRange(ssa.Identifiers[ass.Dst].Uses);
+                    continue;
+                }
+
+                if (ass.Src is BinaryExpression bin && 
+                    bin.Operator == Operator.ISub &&
+                    bin.Left is UnaryExpression subu &&
+                    subu.Operator == Operator.Neg && 
+                    subu.Expression is Identifier idSubu &&
+                    IsCarryFlag(bin.Right))
+                {
+                    return new Candidate(bin.Operator, subu.Expression, idSubu)
+                    {
+                        Dst = ass.Dst
+                    };
+                }
                 var asc = MatchAdcSbc(use);
                 if (asc is null)
                     continue;
