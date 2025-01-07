@@ -467,11 +467,7 @@ l0800_04AC:
 	mov	di,4348h
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_04E4:
 	repne scasb
-
-l0800_04E6:
 	not	cx
 	mov	ax,2Eh
 	dec	di
@@ -498,11 +494,7 @@ l0800_04F8:
 	mov	di,4348h
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_0507:
 	repne scasb
-
-l0800_0509:
 	not	cx
 	mov	ax,5Ch
 	sub	di,cx
@@ -532,11 +524,7 @@ l0800_0523:
 	mov	si,833h
 	mov	cx,0FFFFh
 	xor	ax,ax
-
-l0800_0530:
 	repne scasb
-
-l0800_0532:
 	dec	di
 	mov	cx,5h
 	rep movsb
@@ -741,11 +729,7 @@ l0800_06A7:
 	les	di,[bp-4h]
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_06AF:
 	repne scasb
-
-l0800_06B1:
 	not	cx
 	dec	cx
 	cmp	cx,1h
@@ -882,11 +866,7 @@ l0800_07A9:
 	mov	di,[bp-4h]
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_07BB:
 	repne scasb
-
-l0800_07BD:
 	not	cx
 	sub	di,cx
 	shr	cx,1h
@@ -910,11 +890,7 @@ l0800_07BD:
 	mov	di,42E3h
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_07E8:
 	repne scasb
-
-l0800_07EA:
 	not	cx
 	dec	cx
 	dec	cx
@@ -926,11 +902,7 @@ l0800_07F7:
 	mov	di,42E3h
 	mov	si,859h
 	mov	cx,0FFFFh
-
-l0800_0800:
 	repne scasb
-
-l0800_0802:
 	dec	di
 	mov	cx,2h
 	rep movsb
@@ -946,11 +918,7 @@ l0800_080A:
 	mov	di,[bp-4h]
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_081C:
 	repne scasb
-
-l0800_081E:
 	not	cx
 	sub	di,cx
 	shr	cx,1h
@@ -974,11 +942,7 @@ l0800_081E:
 	mov	di,427Eh
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_0849:
 	repne scasb
-
-l0800_084B:
 	not	cx
 	dec	cx
 	dec	cx
@@ -990,11 +954,7 @@ l0800_0858:
 	mov	di,427Eh
 	mov	si,859h
 	mov	cx,0FFFFh
-
-l0800_0861:
 	repne scasb
-
-l0800_0863:
 	dec	di
 	mov	cx,2h
 	rep movsb
@@ -1047,11 +1007,7 @@ l0800_08AE:
 	mov	si,85Bh
 	mov	cx,0FFFFh
 	xor	ax,ax
-
-l0800_08BB:
 	repne scasb
-
-l0800_08BD:
 	dec	di
 	mov	cx,2h
 	rep movsb
@@ -1072,11 +1028,7 @@ l0800_08D9:
 	mov	si,85Dh
 	mov	cx,0FFFFh
 	xor	ax,ax
-
-l0800_08E6:
 	repne scasb
-
-l0800_08E8:
 	dec	di
 	mov	cx,2h
 	rep movsb
@@ -1109,11 +1061,7 @@ l0800_0918:
 	mov	si,653h
 	mov	cx,0FFFFh
 	xor	ax,ax
-
-l0800_0925:
 	repne scasb
-
-l0800_0927:
 	dec	di
 	mov	cx,2h
 	rep movsb
@@ -1129,11 +1077,7 @@ l0800_0934:
 	mov	si,85Fh
 	mov	cx,0FFFFh
 	xor	ax,ax
-
-l0800_0941:
 	repne scasb
-
-l0800_0943:
 	dec	di
 	mov	cx,2h
 	rep movsb
@@ -1145,11 +1089,7 @@ l0800_0949:
 	mov	si,861h
 	mov	cx,0FFFFh
 	xor	ax,ax
-
-l0800_0956:
 	repne scasb
-
-l0800_0958:
 	dec	di
 	mov	cx,5h
 	rep movsb
@@ -1246,11 +1186,7 @@ l0800_09FF:
 	les	di,[bp-8h]
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_0A07:
 	repne scasb
-
-l0800_0A09:
 	not	cx
 	dec	cx
 	mov	ax,[bp-8h]
@@ -1264,11 +1200,7 @@ l0800_0A09:
 	push	ax
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_0A25:
 	repne scasb
-
-l0800_0A27:
 	not	cx
 	dec	cx
 	mov	ax,[bp-8h]
@@ -1281,11 +1213,7 @@ l0800_0A27:
 	mov	di,[bp-8h]
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_0A42:
 	repne scasb
-
-l0800_0A44:
 	not	cx
 	dec	cx
 	add	dx,cx
@@ -1299,11 +1227,7 @@ l0800_0A4F:
 	les	di,[bp-8h]
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_0A5E:
 	repne scasb
-
-l0800_0A60:
 	not	cx
 	sub	di,cx
 	rep cmpsb
@@ -1322,11 +1246,7 @@ l0800_0A72:
 	les	di,[bp-8h]
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_0A7A:
 	repne scasb
-
-l0800_0A7C:
 	not	cx
 	dec	cx
 	inc	cx
@@ -1663,11 +1583,7 @@ fn0800_0C93 proc
 	lea	di,[bp-66h]
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_0CB9:
 	repne scasb
-
-l0800_0CBB:
 	not	cx
 	sub	di,cx
 	rep cmpsb
@@ -1706,11 +1622,7 @@ l0800_0CCC:
 	push	ax
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_0CF5:
 	repne scasb
-
-l0800_0CF7:
 	not	cx
 	sub	di,cx
 	shr	cx,1h
@@ -2911,11 +2823,7 @@ l0800_15A3:
 	push	ax
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_1632:
 	repne scasb
-
-l0800_1634:
 	not	cx
 	xor	ax,ax
 	sub	di,cx
@@ -2943,11 +2851,7 @@ l0800_1645:
 	push	ax
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_165C:
 	repne scasb
-
-l0800_165E:
 	not	cx
 	xor	ax,ax
 	sub	di,cx
@@ -2977,11 +2881,7 @@ l0800_166F:
 	push	ax
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_168E:
 	repne scasb
-
-l0800_1690:
 	not	cx
 	xor	ax,ax
 	sub	di,cx
@@ -3006,11 +2906,7 @@ l0800_16A1:
 	les	di,[bp-8h]
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_16B3:
 	repne scasb
-
-l0800_16B5:
 	not	cx
 	xor	ax,ax
 	sub	di,cx
@@ -3337,11 +3233,7 @@ l0800_1940:
 	add	di,2h
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_196E:
 	repne scasb
-
-l0800_1970:
 	not	cx
 	xor	ax,ax
 	sub	di,cx
@@ -3525,11 +3417,7 @@ l0800_1AB1:
 	push	ax
 	les	di,[bp-8h]
 	mov	cx,0FFFFh
-
-l0800_1AD1:
 	repne scasb
-
-l0800_1AD3:
 	not	cx
 	xor	ax,ax
 	sub	di,cx
@@ -3557,11 +3445,7 @@ l0800_1AE4:
 	push	ax
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_1AFB:
 	repne scasb
-
-l0800_1AFD:
 	not	cx
 	xor	ax,ax
 	sub	di,cx
@@ -3590,11 +3474,7 @@ l0800_1B0E:
 	push	dx
 	push	ax
 	mov	cx,0FFFFh
-
-l0800_1B26:
 	repne scasb
-
-l0800_1B28:
 	not	cx
 	xor	ax,ax
 	sub	di,cx
@@ -3622,11 +3502,7 @@ l0800_1B39:
 	push	ax
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_1B50:
 	repne scasb
-
-l0800_1B52:
 	not	cx
 	xor	ax,ax
 	sub	di,cx
@@ -3675,11 +3551,7 @@ l0800_1B92:
 	mov	di,427Eh
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_1BA1:
 	repne scasb
-
-l0800_1BA3:
 	not	cx
 	sub	di,cx
 	shr	cx,1h
@@ -3713,11 +3585,7 @@ l0800_1BCD:
 	mov	di,44DCh
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_1BDC:
 	repne scasb
-
-l0800_1BDE:
 	not	cx
 	xor	ax,ax
 	sub	di,cx
@@ -3751,11 +3619,7 @@ l0800_1BFC:
 	mov	di,44DCh
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_1C0B:
 	repne scasb
-
-l0800_1C0D:
 	not	cx
 	xor	ax,ax
 	sub	di,cx
@@ -3793,11 +3657,7 @@ l0800_1C29:
 	mov	di,44DCh
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_1C43:
 	repne scasb
-
-l0800_1C45:
 	not	cx
 	xor	ax,ax
 	sub	di,cx
@@ -4187,11 +4047,7 @@ fn0800_1F5C proc
 	les	di,[bp+4h]
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_1F6C:
 	repne scasb
-
-l0800_1F6E:
 	not	cx
 	mov	ax,3Ah
 	sub	di,cx
@@ -4217,11 +4073,7 @@ l0800_1F87:
 	les	di,[bp+4h]
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_1F8F:
 	repne scasb
-
-l0800_1F91:
 	not	cx
 	mov	ax,3Ah
 	sub	di,cx
@@ -4262,11 +4114,7 @@ l0800_1FAD:
 	les	di,[bp+4h]
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_1FDE:
 	repne scasb
-
-l0800_1FE0:
 	not	cx
 	dec	cx
 	add	cx,4h
@@ -4295,11 +4143,7 @@ l0800_1FE0:
 	mov	di,[bp+4h]
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_202C:
 	repne scasb
-
-l0800_202E:
 	not	cx
 	sub	di,cx
 	shr	cx,1h
@@ -4366,11 +4210,7 @@ fn0800_2085 proc
 	les	di,[bp+4h]
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_20BE:
 	repne scasb
-
-l0800_20C0:
 	not	cx
 	dec	cx
 	add	cx,5h
@@ -4409,11 +4249,7 @@ l0800_20C0:
 	mov	di,[bp+4h]
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_211F:
 	repne scasb
-
-l0800_2121:
 	not	cx
 	sub	di,cx
 	shr	cx,1h
@@ -4430,11 +4266,7 @@ l0800_2121:
 	les	di,[bp-4h]
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_213F:
 	repne scasb
-
-l0800_2141:
 	not	cx
 	xor	ax,ax
 	sub	di,cx
@@ -4458,11 +4290,7 @@ l0800_2152:
 	les	di,[bp-4h]
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_2164:
 	repne scasb
-
-l0800_2166:
 	not	cx
 	xor	ax,ax
 	sub	di,cx
@@ -4486,11 +4314,7 @@ l0800_2177:
 	les	di,[bp-4h]
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_2189:
 	repne scasb
-
-l0800_218B:
 	not	cx
 	xor	ax,ax
 	sub	di,cx
@@ -4514,11 +4338,7 @@ l0800_219C:
 	les	di,[bp-4h]
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_21AE:
 	repne scasb
-
-l0800_21B0:
 	not	cx
 	xor	ax,ax
 	sub	di,cx
@@ -4647,11 +4467,7 @@ l0800_22BC:
 	add	di,2h
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_22C7:
 	repne scasb
-
-l0800_22C9:
 	not	cx
 	xor	ax,ax
 	sub	di,cx
@@ -4718,11 +4534,7 @@ fn0800_22FE proc
 	les	di,[bp+4h]
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_2336:
 	repne scasb
-
-l0800_2338:
 	not	cx
 	xor	ax,ax
 	sub	di,cx
@@ -4832,11 +4644,7 @@ fn0800_23EC proc
 	les	di,[bp+4h]
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_240D:
 	repne scasb
-
-l0800_240F:
 	not	cx
 	xor	ax,ax
 	sub	di,cx
@@ -4864,11 +4672,7 @@ l0800_2420:
 	push	ax
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_2437:
 	repne scasb
-
-l0800_2439:
 	not	cx
 	xor	ax,ax
 	sub	di,cx
@@ -4897,11 +4701,7 @@ l0800_244A:
 	push	dx
 	push	ax
 	mov	cx,0FFFFh
-
-l0800_2462:
 	repne scasb
-
-l0800_2464:
 	not	cx
 	xor	ax,ax
 	sub	di,cx
@@ -4929,11 +4729,7 @@ l0800_2475:
 	push	ax
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_248C:
 	repne scasb
-
-l0800_248E:
 	not	cx
 	xor	ax,ax
 	sub	di,cx
@@ -5003,11 +4799,7 @@ fn0800_24FE proc
 	les	di,[bp+4h]
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_250D:
 	repne scasb
-
-l0800_250F:
 	not	cx
 	xor	ax,ax
 	sub	di,cx
@@ -5035,11 +4827,7 @@ l0800_2520:
 	push	ax
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_2537:
 	repne scasb
-
-l0800_2539:
 	not	cx
 	xor	ax,ax
 	sub	di,cx
@@ -5068,11 +4856,7 @@ l0800_254A:
 	push	dx
 	push	ax
 	mov	cx,0FFFFh
-
-l0800_2562:
 	repne scasb
-
-l0800_2564:
 	not	cx
 	xor	ax,ax
 	sub	di,cx
@@ -5100,11 +4884,7 @@ l0800_2575:
 	push	ax
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_258C:
 	repne scasb
-
-l0800_258E:
 	not	cx
 	xor	ax,ax
 	sub	di,cx
@@ -5408,11 +5188,7 @@ fn0800_283D proc
 	les	di,[bp+4h]
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_284D:
 	repne scasb
-
-l0800_284F:
 	not	cx
 	mov	ax,3Ah
 	sub	di,cx
@@ -5438,11 +5214,7 @@ l0800_2868:
 	les	di,[bp+4h]
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_2870:
 	repne scasb
-
-l0800_2872:
 	not	cx
 	mov	ax,3Ah
 	sub	di,cx
@@ -5493,11 +5265,7 @@ l0800_28C2:
 	les	di,[bp+4h]
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_28D4:
 	repne scasb
-
-l0800_28D6:
 	not	cx
 	sub	di,cx
 	rep cmpsb
@@ -5568,11 +5336,7 @@ fn0800_2931 proc
 	add	di,2h
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_2941:
 	repne scasb
-
-l0800_2943:
 	not	cx
 	xor	ax,ax
 	sub	di,cx
@@ -5603,11 +5367,7 @@ l0800_2960:
 	les	di,[bp+4h]
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_296F:
 	repne scasb
-
-l0800_2971:
 	not	cx
 	sub	di,cx
 	rep cmpsb
@@ -5634,11 +5394,7 @@ l0800_298D:
 	les	di,[bp+8h]
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_2995:
 	repne scasb
-
-l0800_2997:
 	not	cx
 	xor	ax,ax
 	sub	di,cx
@@ -5799,11 +5555,7 @@ l0800_2A75:
 	push	ax
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_2AB3:
 	repne scasb
-
-l0800_2AB5:
 	not	cx
 	sub	di,cx
 	shr	cx,1h
@@ -5824,11 +5576,7 @@ l0800_2AB5:
 	mov	di,[45AAh]
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_2ADD:
 	repne scasb
-
-l0800_2ADF:
 	not	cx
 	sub	di,cx
 	mov	si,di
@@ -5840,22 +5588,14 @@ l0800_2ADF:
 	push	cx
 	mov	cx,0FFFFh
 	xor	ax,ax
-
-l0800_2AF3:
 	repne scasb
-
-l0800_2AF5:
 	dec	di
 	pop	cx
 	rep movsb
 	mov	ds,dx
 	les	di,[45AAh]
 	mov	cx,0FFFFh
-
-l0800_2B02:
 	repne scasb
-
-l0800_2B04:
 	not	cx
 	xor	ax,ax
 	sub	di,cx
@@ -5888,11 +5628,7 @@ l0800_2B2B:
 	les	di,[45AAh]
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_2B34:
 	repne scasb
-
-l0800_2B36:
 	not	cx
 	xor	ax,ax
 	sub	di,cx
@@ -5949,11 +5685,7 @@ l0800_2B91:
 	lea	di,[bp-6Ah]
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_2B9B:
 	repne scasb
-
-l0800_2B9D:
 	not	cx
 	dec	cx
 	push	cx
@@ -5983,11 +5715,7 @@ l0800_2BC2:
 	lea	di,[bp-6Ah]
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_2BD8:
 	repne scasb
-
-l0800_2BDA:
 	not	cx
 	sub	di,cx
 	rep cmpsb
@@ -6038,11 +5766,7 @@ l0800_2C29:
 	add	di,2h
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_2C35:
 	repne scasb
-
-l0800_2C37:
 	not	cx
 	xor	ax,ax
 	sub	di,cx
@@ -6372,11 +6096,7 @@ l0800_2E3F:
 	mov	di,45B2h
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_2E49:
 	repne scasb
-
-l0800_2E4B:
 	not	cx
 	mov	ax,0Dh
 	sub	di,cx
@@ -6404,11 +6124,7 @@ l0800_2E64:
 	mov	di,45B2h
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_2E6E:
 	repne scasb
-
-l0800_2E70:
 	not	cx
 	mov	ax,0Dh
 	sub	di,cx
@@ -6453,11 +6169,7 @@ l0800_2EA5:
 	mov	di,45B2h
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_2EAF:
 	repne scasb
-
-l0800_2EB1:
 	not	cx
 	dec	cx
 	mov	[4619h],cx
@@ -6478,11 +6190,7 @@ l0800_2ECA:
 	mov	di,45B2h
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_2ED9:
 	repne scasb
-
-l0800_2EDB:
 	not	cx
 	sub	di,cx
 	shr	cx,1h
@@ -6576,11 +6284,7 @@ l0800_2F6B:
 	mov	di,45B2h
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_2F94:
 	repne scasb
-
-l0800_2F96:
 	not	cx
 	dec	cx
 	mov	[4619h],cx
@@ -6646,11 +6350,7 @@ l0800_3019:
 	mov	di,45B2h
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_3028:
 	repne scasb
-
-l0800_302A:
 	not	cx
 	sub	di,cx
 	shr	cx,1h
@@ -6796,11 +6496,7 @@ l0800_30F0:
 	push	ax
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_311B:
 	repne scasb
-
-l0800_311D:
 	not	cx
 	sub	di,cx
 	mov	si,di
@@ -6812,11 +6508,7 @@ l0800_311D:
 	push	cx
 	mov	cx,0FFFFh
 	xor	ax,ax
-
-l0800_3132:
 	repne scasb
-
-l0800_3134:
 	dec	di
 	pop	cx
 	rep movsb
@@ -6834,11 +6526,7 @@ l0800_3134:
 	mov	ds,cx
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_315A:
 	repne scasb
-
-l0800_315C:
 	not	cx
 	sub	di,cx
 	rep cmpsb
@@ -6863,11 +6551,7 @@ l0800_316E:
 	mov	ds,cx
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_3181:
 	repne scasb
-
-l0800_3183:
 	not	cx
 	sub	di,cx
 	rep cmpsb
@@ -6991,11 +6675,7 @@ l0800_3253:
 	lea	di,[bp+0FF7Eh]
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_325E:
 	repne scasb
-
-l0800_3260:
 	not	cx
 	dec	cx
 	dec	cx
@@ -7024,11 +6704,7 @@ l0800_3260:
 	push	ax
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_3298:
 	repne scasb
-
-l0800_329A:
 	not	cx
 	sub	di,cx
 	mov	si,di
@@ -7040,11 +6716,7 @@ l0800_329A:
 	push	cx
 	mov	cx,0FFFFh
 	xor	ax,ax
-
-l0800_32AE:
 	repne scasb
-
-l0800_32B0:
 	dec	di
 	pop	cx
 	rep movsb
@@ -7074,11 +6746,7 @@ fn0800_32CD proc
 	mov	di,[bp+8h]
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_32E7:
 	repne scasb
-
-l0800_32E9:
 	not	cx
 	sub	di,cx
 	shr	cx,1h
@@ -7098,11 +6766,7 @@ l0800_32E9:
 	mov	si,0A32h
 	mov	cx,0FFFFh
 	xor	ax,ax
-
-l0800_330C:
 	repne scasb
-
-l0800_330E:
 	dec	di
 	mov	cx,4h
 	rep movsb
@@ -7189,11 +6853,7 @@ l0800_337D:
 	lea	di,[bp-1Ch]
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_33A0:
 	repne scasb
-
-l0800_33A2:
 	not	cx
 	sub	di,cx
 	rep cmpsb
@@ -7213,11 +6873,7 @@ l0800_33B4:
 	mov	si,0A36h
 	mov	cx,0FFFFh
 	xor	ax,ax
-
-l0800_33BF:
 	repne scasb
-
-l0800_33C1:
 	dec	di
 	mov	cx,5h
 	rep movsb
@@ -7328,11 +6984,7 @@ l0800_344C:
 	mov	di,4641h
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_345B:
 	repne scasb
-
-l0800_345D:
 	not	cx
 	sub	di,cx
 	shr	cx,1h
@@ -7438,11 +7090,7 @@ l0800_34DC:
 	mov	di,4641h
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_34EB:
 	repne scasb
-
-l0800_34ED:
 	not	cx
 	sub	di,cx
 	shr	cx,1h
@@ -7516,11 +7164,7 @@ fn0800_3509 proc
 	push	ax
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_354B:
 	repne scasb
-
-l0800_354D:
 	not	cx
 	sub	di,cx
 	shr	cx,1h
@@ -7549,11 +7193,7 @@ l0800_354D:
 	push	ax
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_357D:
 	repne scasb
-
-l0800_357F:
 	not	cx
 	sub	di,cx
 	mov	si,di
@@ -7565,11 +7205,7 @@ l0800_357F:
 	push	cx
 	mov	cx,0FFFFh
 	xor	ax,ax
-
-l0800_3594:
 	repne scasb
-
-l0800_3596:
 	dec	di
 	pop	cx
 	rep movsb
@@ -7628,11 +7264,7 @@ fn0800_35A3 proc
 	push	ax
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_35E5:
 	repne scasb
-
-l0800_35E7:
 	not	cx
 	sub	di,cx
 	shr	cx,1h
@@ -7661,11 +7293,7 @@ l0800_35E7:
 	push	ax
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_3617:
 	repne scasb
-
-l0800_3619:
 	not	cx
 	sub	di,cx
 	mov	si,di
@@ -7677,11 +7305,7 @@ l0800_3619:
 	push	cx
 	mov	cx,0FFFFh
 	xor	ax,ax
-
-l0800_362E:
 	repne scasb
-
-l0800_3630:
 	dec	di
 	pop	cx
 	rep movsb
@@ -7748,11 +7372,7 @@ fn0800_3678 proc
 	les	di,[bp+4h]
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_3693:
 	repne scasb
-
-l0800_3695:
 	not	cx
 	mov	ax,5Ch
 	sub	di,cx
@@ -7844,11 +7464,7 @@ l0800_3732:
 	les	di,[bp-4h]
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_373A:
 	repne scasb
-
-l0800_373C:
 	not	cx
 	mov	ax,5Ch
 	sub	di,cx
@@ -7899,11 +7515,7 @@ l0800_376D:
 	mov	di,427Eh
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_377C:
 	repne scasb
-
-l0800_377E:
 	not	cx
 	sub	di,cx
 	shr	cx,1h
@@ -7936,11 +7548,7 @@ l0800_37A6:
 	mov	si,0A40h
 	mov	cx,0FFFFh
 	xor	ax,ax
-
-l0800_37B3:
 	repne scasb
-
-l0800_37B5:
 	dec	di
 	mov	cx,0Dh
 	rep movsb
@@ -7997,11 +7605,7 @@ fn0800_37DF proc
 	lea	di,[bp-6Ah]
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_3805:
 	repne scasb
-
-l0800_3807:
 	not	cx
 	xor	ax,ax
 	sub	di,cx
@@ -8265,11 +7869,7 @@ l0800_39B5:
 	lea	di,[bp-72h]
 	xor	ax,ax
 	mov	cx,0FFFFh
-
-l0800_39D4:
 	repne scasb
-
-l0800_39D6:
 	not	cx
 	xor	ax,ax
 	sub	di,cx
@@ -8678,11 +8278,7 @@ fn0800_3C99 proc
 	mov	si,0A54h
 	mov	cx,0FFFFh
 	xor	ax,ax
-
-l0800_3CBE:
 	repne scasb
-
-l0800_3CC0:
 	dec	di
 	mov	cx,0Dh
 	rep movsb
@@ -20829,11 +20425,7 @@ fn0800_9842 proc
 	push	di
 	mov	cx,0FFFFh
 	xor	al,al
-
-l0800_9848:
 	repne scasb
-
-l0800_984A:
 	not	cx
 	dec	cx
 	pop	di
@@ -24583,11 +24175,7 @@ l0800_AFDC:
 	mov	ah,es:[di]
 	mov	cx,0FFFFh
 	cld
-
-l0800_AFE5:
 	repne scasb
-
-l0800_AFE7:
 	not	cx
 	dec	cx
 	jz	0AFFCh
@@ -26761,20 +26349,12 @@ fn0800_BF5F proc
 	mov	dx,di
 	xor	al,al
 	mov	cx,0FFFFh
-
-l0800_BF70:
 	repne scasb
-
-l0800_BF72:
 	push	es
 	lea	si,[di-1h]
 	les	di,[bp+8h]
 	mov	cx,0FFFFh
-
-l0800_BF7C:
 	repne scasb
-
-l0800_BF7E:
 	not	cx
 	sub	di,cx
 	push	es
@@ -26822,11 +26402,7 @@ fn0800_BF9E proc
 	mov	si,di
 	xor	al,al
 	mov	cx,0FFFFh
-
-l0800_BFAE:
 	repne scasb
-
-l0800_BFB0:
 	not	cx
 	push	ds
 	mov	ax,es
@@ -26866,11 +26442,7 @@ l0800_BFD5:
 l0800_BFD9:
 	cld
 	mov	cx,0FFFFh
-
-l0800_BFDD:
 	repne scasb
-
-l0800_BFDF:
 	xchg	cx,ax
 	not	ax
 	dec	ax

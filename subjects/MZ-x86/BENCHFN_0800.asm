@@ -580,11 +580,7 @@ l0800_0457:
 l0800_045C:
 	mov	[bx],di
 	add	bx,2h
-
-l0800_0461:
 	repne scasb
-
-l0800_0463:
 	cmp	es:[di],al
 	jnz	045Ch
 
@@ -2384,11 +2380,7 @@ fn0800_108C proc
 	push	di
 	mov	cx,0FFFFh
 	xor	al,al
-
-l0800_1092:
 	repne scasb
-
-l0800_1094:
 	not	cx
 	dec	cx
 	pop	di

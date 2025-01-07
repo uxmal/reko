@@ -64,15 +64,15 @@ namespace Reko.Arch.X86.Rewriter
 
         private bool RewriteScasbToStrlen()
         {
-            var cEax = state.GetRegister(Registers.eax);
-            if (!cEax.IsZero)
+            var cAl = state.GetRegister(Registers.al);
+            if (!cAl.IsZero)
                 return false;
-            var cEcx = state.GetRegister(Registers.ecx);
+            var cEcx = state.GetRegister((RegisterStorage)RegCx.Storage);
             if (!cEcx.IsMaxUnsigned)
                 return false;
-            var size = binder.CreateTemporary("size", instrCur.addrWidth);
+            var size = binder.CreateTemporary("size", PrimitiveType.Create(Domain.UnsignedInt, RegCx.DataType.BitSize));
             var di = RegDi;
-            m.Assign(size, m.IAddS(m.Fn(Strlen(), MemIndexPtr(0, Registers.es, di)), 1));
+            m.Assign(size, m.IAddS(m.Fn(Strlen(), MemIndexPtr(1, Registers.es, di)), 1));
             var cx = RegCx;
             m.Assign(cx, m.ISub(cx, MaybeSlice(cx.DataType, size)));
             m.Assign(di, m.IAdd(di, MaybeSlice(cx.DataType, size)));

@@ -347,8 +347,6 @@ public class LongAddRewriter : IAnalysis<SsaState>
                 loInstr = MatchNegation(block.Statements[i]);
                 if (loInstr is not null)
                 {
-                    if (loInstr.Statement is not null && loInstr.Statement.Address.Offset == 0x3A34)
-                        _ = this; //$DEBUG;
                     var hiInstr = FindNegationHighPart(block, stmtsOrig, i, loInstr);
                     if (hiInstr is null)
                         continue;
@@ -377,8 +375,6 @@ public class LongAddRewriter : IAnalysis<SsaState>
         {
             var cond = FindConditionOf(stmtsOrig, i, loInstr.Dst!) ??
                        FindConditionOfNeg(loInstr.Left);
-            if (block.Address.Offset == 0x3A2E)
-                _ = this; //$DEBUG
             if (cond is not null)
             {
                 var hiInstr = FindUsingNegation(block, cond.FlagGroup, loInstr);

@@ -396,22 +396,15 @@ void __setenvp(struct Eq_n * ds)
 		memcpy(ax_n, *ds->ptr008C, (uint32) cx_n);
 		Eq_n ax_n = _malloc(ds, ds->w008E);
 		ds->t0088 = ax_n;
-		Eq_n di_n = ax_n;
+		char * di_n = ax_n;
 		Eq_n bx_n = ax_n;
 		if (ax_n != 0x00)
 		{
-			word16 cx_n = ~0x00;
 			do
 			{
 				ds->*bx_n = di_n;
 				bx_n = (word16) bx_n + 2;
-				while (cx_n != 0x00)
-				{
-					di_n = (word16) di_n + 1;
-					--cx_n;
-					if (ds->*di_n != 0x00)
-						break;
-				}
+				di_n += (word32) strlen(di_n) + 1;
 			} while (ds->*di_n != 0x00);
 			ds->*bx_n = 0x00;
 			return;
@@ -1438,8 +1431,8 @@ l0800_nF1:
 						es_n.u2 = (ss->*sp_n).t0000.u2;
 						sp_n = (struct Eq_n Eq_n::*) ((char *) &sp_n->t0000 + 2);
 						dx = wLoc92_n;
-						byte * es_di_n;
-						byte * es_di_n;
+						Eq_n es_di_n;
+						Eq_n es_di_n;
 						if (wLoc92_n > 0x00)
 						{
 							es_di_n = SEQ(es_n, fp - 0x89);
@@ -1511,10 +1504,10 @@ l0800_nF1:
 						(ss->*sp_n).tFFFFFFF4.u2 = (struct Eq_n *) ss;
 						wArg02.u1 = (word32) wArg02 + wLoc06_n;
 						sp_n = sp_n - 0x0A;
-						es_di_n = (byte *) (fp - 0x89);
+						es_di_n.u1 = fp - 0x89;
 l0800_n:
-						Eq_n es_n = SLICE(es_di_n, selector, 16);
 						byte Eq_n::* di_n = (word16) es_di_n;
+						Eq_n es_n = SLICE(es_di_n, selector, 16);
 						if ((wLoc9A_n & 0x08) != 0x00)
 						{
 							dx = wLoc94_n;
@@ -1522,10 +1515,10 @@ l0800_n:
 							if (wLoc94_n > 0x00)
 							{
 l0800_n:
-								es_n = SLICE(es_di_n, selector, 16);
 								di_n = (word16) es_di_n;
-								Eq_n cx_n = fn0800-108C(di_n, es_n);
-								if (*es_di_n == 0x2D)
+								es_n = SLICE(es_di_n, selector, 16);
+								Eq_n cx_n = fn0800-108C(es_di_n);
+								if (*es_di_n.u1 == 0x2D)
 									--cx_n;
 								dx -= cx_n;
 								if (dx > 0x00)
@@ -1539,7 +1532,7 @@ l0800_n:
 							Eq_n v45_n = wLoc8E_n - 0x01;
 							wLoc8E_n = (word16) v45_n + (word16) (v45_n < 0x00);
 						}
-						Eq_n cx_n = fn0800-108C(di_n, es_n);
+						Eq_n cx_n = fn0800-108C(SEQ(es_n, di_n));
 						goto l0800_n;
 					case 0x10:
 						union Eq_n Eq_n::* sp_n = sp_n - 2;
@@ -1552,32 +1545,32 @@ l0800_n:
 						goto l0800_n;
 					case 0x11:
 						bool v74_n;
+						Eq_n es_di_n;
 						if ((wLoc9A_n & 0x20) == 0x00)
 						{
-							byte Eq_n::* di_n = (byte Eq_n::*) (ds->*wArg02);
+							<unknown> Eq_n::* di_n = (<unknown> Eq_n::*) (ds->*wArg02);
 							union Eq_n Eq_n::* sp_n = sp_n - 2;
 							(ss->*sp_n).u2 = (struct Eq_n *) ds;
 							wArg02.u1 = (word32) wArg02 + 2;
-							es_n.u2 = (ss->*sp_n).u2;
-							di_n = di_n;
 							v74_n = di_n != 0x00;
+							es_di_n.u1 = di_n;
 						}
 						else
 						{
-							Eq_n es_di_n = ds->*wArg02;
-							es_n = SLICE(es_di_n, selector, 16);
-							di_n = (word16) es_di_n;
+							es_di_n.u1 = ds->*wArg02;
 							wArg02.u1 = (word32) wArg02 + 4;
 							v74_n = es_di_n != 0x00;
 						}
+						Eq_n es_di_n = es_di_n;
 						if (!v74_n)
 						{
 							union Eq_n Eq_n::* sp_n = sp_n - 2;
 							(ss->*sp_n).u2 = (struct Eq_n *) ds;
-							es_n.u2 = (ss->*sp_n).u2;
-							di_n = 0x04E2;
+							es_di_n = SEQ(Mem172[ss:sp_n + 0x00:selector], 0x04E2);
 						}
-						cx_n = fn0800-108C(di_n, es_n);
+						di_n = (word16) es_di_n;
+						es_n = SLICE(es_di_n, selector, 16);
+						cx_n = fn0800-108C(es_di_n);
 						if (cx_n > wLoc92_n)
 							cx_n = wLoc92_n;
 l0800_n:
@@ -1733,22 +1726,12 @@ l0800_n:
 	return ss->*sp_n;
 }
 
-// 0800:108C: Register word16 fn0800-108C(Register (memptr Eq_n byte) di, Register Eq_n es)
+// 0800:108C: Register Eq_n fn0800-108C(Sequence Eq_n es_di)
 // Called from:
 //      __VPRINTER
-word16 fn0800-108C(byte Eq_n::* di, Eq_n es)
+Eq_n fn0800-108C(Eq_n es_di)
 {
-	word16 cx_n = ~0x00;
-	while (cx_n != 0x00)
-	{
-		byte Eq_n::* di_n;
-		di = di_n + 1;
-		--cx_n;
-		di_n = di;
-		if (es->*di_n != 0x00)
-			return -cx_n;
-	}
-	return -cx_n;
+	return strlen(es_di);
 }
 
 // 0800:1099: Register byte fn0800-1099(Sequence (ptr32 Eq_n) ds_di, Sequence (ptr32 Eq_n) ss_bp, Register Eq_n al, Register Eq_n cx, Register Eq_n dx, Register Eq_n bx, Register out (memptr Eq_n byte) diOut)
