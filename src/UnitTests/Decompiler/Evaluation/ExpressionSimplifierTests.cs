@@ -785,6 +785,31 @@ namespace Reko.UnitTests.Decompiler.Evaluation
         }
 
         [Test]
+        public void Exs_Slice_Sequence_in_identifier()
+        {
+            Given_ExpressionSimplifier();
+            var t1 = Given_Tmp("t1", m.Mem32(m.Word32(0x00123400)));
+            var t2 = Given_Tmp("t2", m.Mem32(m.Word32(0x00123404)));
+            var t3 = Given_Tmp("t3", m.Seq(t1, t2));
+            var expr = m.Slice(t3, PrimitiveType.Word16, 0);
+            var (result, _) = expr.Accept(simplifier);
+            Assert.AreEqual("SLICE(t2_5, word16, 0)", result.ToString());
+        }
+
+        [Test]
+        public void Exs_Slice_Conversion()
+        {
+            Given_ExpressionSimplifier();
+            var t1 = Given_Tmp("t1", m.Mem32(m.Word32(0x00123400)));
+            var t2 = Given_Tmp("t2", m.Convert(t1, PrimitiveType.UInt32, PrimitiveType.UInt128));
+            var expr = m.Slice(t2, PrimitiveType.Real32, 0);
+            var (result, _) = expr.Accept(simplifier);
+            Assert.AreEqual("t1_4", result.ToString());
+        }
+
+
+
+        [Test]
         public void Exs_Slice_1072()
         {
             var int16 = PrimitiveType.Int16;

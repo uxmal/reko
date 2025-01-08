@@ -34,7 +34,6 @@ namespace Reko.Evaluation
 
         public Expression? Match(Slice slice, EvaluationContext ctx)
         {
-
             if (slice.Offset != 0)
             {
                 var slicedExp = slice.Expression;
@@ -72,7 +71,8 @@ namespace Reko.Evaluation
         }
 
         /// <summary>
-        /// A conversion is applicable if 
+        /// Check if the sliced expression is a conversion,
+        /// or an identifier that is the result of a conversion.
         /// </summary>
         /// <param name="conv"></param>
         /// <returns></returns>
@@ -113,7 +113,7 @@ namespace Reko.Evaluation
 
         private static bool IsUselessIntegralExtension(Slice slice, Conversion conv)
         {
-            if (IsSliceable(slice.DataType) &&
+            if (
                 IsSliceable(conv.DataType) &&
                 IsSliceable(conv.SourceDataType))
             {

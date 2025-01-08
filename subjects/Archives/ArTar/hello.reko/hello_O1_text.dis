@@ -110,8 +110,8 @@ word128 Q_rsqrt(word128 xmm0, word32 dwArg00)
 // Preserved: rsp
 Q_rsqrt_entry:
 l0000000000001169:
-	xmm2_16 = CONVERT(0x5F3759DF<32> - SLICE(SEQ(dwArg00, SLICE(xmm0, real32, 0)) >> 1<64>, word32, 0), word32, word128)
-	return SEQ(0<96>, (Mem5[0x0000000000002078<p64>:real32] - ((SLICE(xmm0, real32, 0) * Mem5[0x0000000000002074<p64>:real32]) * SLICE(xmm2_16, real32, 0)) * SLICE(xmm2_16, real32, 0)) * SLICE(xmm2_16, real32, 0))
+	eax_12 = 0x5F3759DF<32> - SLICE(SEQ(dwArg00, SLICE(xmm0, real32, 0)) >> 1<64>, word32, 0)
+	return SEQ(0<96>, (Mem5[0x0000000000002078<p64>:real32] - ((SLICE(xmm0, real32, 0) * Mem5[0x0000000000002074<p64>:real32]) * eax_12) * eax_12) * eax_12)
 Q_rsqrt_exit:
 
 

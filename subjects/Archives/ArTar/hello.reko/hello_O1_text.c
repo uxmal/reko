@@ -59,8 +59,8 @@ void frame_dummy()
 //      main
 word128 Q_rsqrt(word128 xmm0, int32 dwArg00)
 {
-	word128 xmm2_n = (word128) (0x5F3759DF - (word32) (SEQ(dwArg00, (real32) xmm0) >> 0x01));
-	return SEQ(0, (1.5F - (((real32) xmm0 * 0.5F) * (real32) xmm2_n) * (real32) xmm2_n) * (real32) xmm2_n);
+	real32 eax_n = 0x5F3759DF - (word32) (SEQ(dwArg00, (real32) xmm0) >> 0x01);
+	return SEQ(0, (1.5F - (((real32) xmm0 * 0.5F) * eax_n) * eax_n) * eax_n);
 }
 
 // 00000000000011A6: Register word128 lib_rsqrt(Register word128 xmm0)
