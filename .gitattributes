@@ -3,3 +3,5 @@
 *.cs     text diff=csharp
 
 subjects/**/* linguist-generated
+src/Environments/MacOS/Classic/*.pas linguist-vendored
+src/Environments/MacOS/Classic/*.p linguist-vendored
