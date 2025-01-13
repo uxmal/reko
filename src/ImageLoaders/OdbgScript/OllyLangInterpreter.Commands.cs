@@ -3069,7 +3069,6 @@ string filename;
                         Expression tmp = mem.EffectiveAddress;
                         if (GetAddress(tmp, out Address src))
                         {
-                            Debug.Assert(src != null);
                             byte[] bytes = new byte[maxsize];
                             if (!Host.TryReadBytes(src, (int) maxsize, bytes))
                                 return false;
@@ -3171,8 +3170,6 @@ string filename;
                         {
                             if (GetAddress(memSrc.EffectiveAddress, out Address src))
                             {
-                                Debug.Assert(src != null);
-
                                 byte[] copybuffer;
 
                                 copybuffer = new byte[maxsize];

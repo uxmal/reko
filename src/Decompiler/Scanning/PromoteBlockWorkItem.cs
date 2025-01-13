@@ -150,9 +150,7 @@ namespace Reko.Scanning
             if (inboundBlock.Statements.Count == 0)
                 return Program.Platform.MakeAddressFromLinear(0, true);
             var stmLast = inboundBlock.Statements[^1];
-            return inboundBlock.Address != null
-                ? inboundBlock.Address + (stmLast.Address - inboundBlock.Statements[0].Address)
-                : stmLast.Address;
+            return inboundBlock.Address + (stmLast.Address - inboundBlock.Statements[0].Address);
         }
 
         public void FixOutboundEdges(Block block)

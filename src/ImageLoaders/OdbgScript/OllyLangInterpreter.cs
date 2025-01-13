@@ -1147,8 +1147,6 @@ namespace Reko.ImageLoaders.OdbgScript
             {
                 if (GetAddress(mem.EffectiveAddress, out Address src))
                 {
-                    Debug.Assert(src != null);
-
                     value = "";
                     if (size != 0)
                     {
@@ -1215,9 +1213,9 @@ namespace Reko.ImageLoaders.OdbgScript
                     return true;
                 }
             }
-            if (op is Identifier id && IsVariable(id.Name) && variables[id.Name].Address != null)
+            if (op is Identifier id && IsVariable(id.Name) && variables[id.Name].Address is not null)
             {
-                value = variables[id.Name].Address.Value;
+                value = variables[id.Name].Address!.Value;
                 return true;
             }
             if (!GetRulong(op, out rulong uAddr))
@@ -1502,7 +1500,6 @@ namespace Reko.ImageLoaders.OdbgScript
             {
                 if (GetAddress(mem, out Address target))
                 {
-                    Debug.Assert(target != null);
                     var bytes = Encoding.ASCII.GetBytes(value);
                     return Host.WriteMemory(target, Math.Min(size, bytes.Length), bytes);
                 }

@@ -1412,16 +1412,10 @@ namespace Reko.Environments.PalmOS
 
         private static DataType CreateParameterType(string arg)
         {
-            bool output;
             int a = 0;
             if (arg[0] == 'o')
             {
-                output = true;
                 a++;
-            }
-            else
-            {
-                output = false;
             }
 
             DataType dt;
