@@ -161,7 +161,7 @@ namespace Reko.ImageLoaders.Elf
 
         public abstract void Dump(Address addrLoad, TextWriter writer);
 
-        public abstract Address? GetEntryPointAddress(Address addrBase);
+        public abstract (Address?, ProcessorState?) GetEntryPointAddress(Address addrBase, Program prgram);
 
         public IEnumerable<ElfDynamicEntry> GetDynamicEntries(ulong offsetDynamic)
         {
@@ -789,12 +789,16 @@ namespace Reko.ImageLoaders.Elf
         }
 
 
-        protected ImageSymbol EnsureEntryPoint(IProcessorArchitecture arch, List<ImageSymbol> entryPoints, SortedList<Address, ImageSymbol> symbols, Address addr)
+        protected ImageSymbol EnsureEntryPoint(
+            IProcessorArchitecture arch,
+            List<ImageSymbol> entryPoints,
+            SortedList<Address, ImageSymbol> symbols,
+            Address addr,
+            ProcessorState? estate)
         {
             if (!symbols.TryGetValue(addr, out ImageSymbol? ep))
             {
-                ep = ImageSymbol.Procedure(arch, addr);
-                ep.ProcessorState = arch.CreateProcessorState();
+                ep = ImageSymbol.Procedure(arch, addr, state: estate ?? arch.CreateProcessorState());
                 symbols.Add(addr, ep);
             }
             entryPoints.Add(ep);
@@ -881,15 +885,15 @@ namespace Reko.ImageLoaders.Elf
             relocator.LocateGotPointers(program, symbols);
             symbols = symbols.Values.Select(relocator.AdjustImageSymbol).ToSortedList(s => s.Address!);
             var entryPoints = new List<ImageSymbol>();
-            var ae = GetEntryPointAddress(addrLoad);
+            var (ae, estate) = GetEntryPointAddress(addrLoad, program);
             if (ae is not null)
             {
                 var addrEntry = relocator.AdjustAddress(ae.Value);
-                var symEntry = EnsureEntryPoint(arch, entryPoints, symbols, addrEntry);
+                var symEntry = EnsureEntryPoint(arch, entryPoints, symbols, addrEntry, estate);
                 var addrMain = relocator.FindMainFunction(program, addrEntry);
                 if (addrMain is not null)
                 {
-                    EnsureEntryPoint(arch, entryPoints, symbols, addrMain.Value);
+                    EnsureEntryPoint(arch, entryPoints, symbols, addrMain.Value, estate);
                 }
                 var addrGlobalPtr = program.Platform.FindGlobalPointerValue(program, addrEntry);
                 if (addrGlobalPtr is not null)

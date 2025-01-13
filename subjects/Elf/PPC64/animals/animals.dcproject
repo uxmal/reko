@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemata.jklnet.org/Reko/v5">
+  <arch>ppc-be-64</arch>
+  <platform>elf-neutral</platform>
+  <input>
+    <location>animals</location>
+    <asmDir>animals.reko</asmDir>
+    <srcDir>animals.reko</srcDir>
+    <includeDir>animals.reko</includeDir>
+    <resources>animals.reko\resources</resources>
+    <user>
+      <processor>
+        <item key="Endianness">be</item>
+      </processor>
+      <heuristic name="shingle" />
+      <onLoad enabled="false" />
+      <registerValues />
+      <outputFilePolicy>Segment</outputFilePolicy>
+    </user>
+  </input>
+</project>

@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Collections;
 using Reko.Core.Configuration;
 using Reko.Core.Diagnostics;
+using Reko.Core.Expressions;
 using Reko.Core.Loading;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
@@ -271,31 +272,50 @@ namespace Reko.ImageLoaders.Elf
         }
 
 
-        public override Address? GetEntryPointAddress(Address addrBase)
+        public override (Address?, ProcessorState?) GetEntryPointAddress(Address addrBase, Program program)
         {
             Address? addr = null;
+            ProcessorState? estate = null;
             //$REVIEW: should really have a subclassed "Ps3ElfLoader"
             if (osAbi == ElfLoader.ELFOSABI_CELL_LV2)
             {
                 // The BinaryImage.Header.e_entry field actually points to a 
                 // "function descriptor" consisiting of two 32-bit 
                 // pointers.
-                var rdr = CreateReader((ulong) (BinaryImage.Header.StartAddress - addrBase));
-                if (rdr.TryReadUInt32(out uint uAddr))
+                if (program.TryCreateImageReader(BinaryImage.Header.StartAddress, out var rdr) &&
+                    rdr.TryReadUInt32(out uint uAddr))
+                {
                     addr = Address.Ptr32(uAddr);
+                }
+            }
+            else if (this.BinaryImage.Header.Machine == ElfMachine.EM_PPC64)
+            {
+                // The entrypoint address actually points to a function descriptor.
+                // The first piece is a 64-bit pointer to the _actual_ executable
+                // code, the other is the initial value of r2.
+                if (program.TryCreateImageReader(BinaryImage.Header.StartAddress, out var rdr) &&
+                    rdr.TryReadUInt64(out ulong uAddrCode) &&
+                    rdr.TryReadUInt64(out ulong uAddrR2))
+                {
+                    addr = Address.Ptr64(uAddrCode);
+                    estate = program.Architecture.CreateProcessorState();
+                    estate.SetRegister(
+                        program.Architecture.GetRegister("r2")!,
+                        Constant.Create(PrimitiveType.Ptr64, uAddrR2));
+                }
             }
             else if (this.IsExecutableFile)
             {
                 addr = BinaryImage.Header.StartAddress;
             }
-            return addr;
+            return (addr, estate);
         }
 
         internal ElfSection? GetSectionInfoByAddr64(ulong r_offset)
         {
             return
                 (from sh in this.BinaryImage.Sections
-                 let addr = sh.VirtualAddress != null ? sh.VirtualAddress.ToLinear() : 0
+                 let addr = sh.VirtualAddress.ToLinear()
                  where
                     r_offset != 0 &&
                     addr <= r_offset && r_offset < addr + sh.Size

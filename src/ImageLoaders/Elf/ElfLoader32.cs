@@ -298,12 +298,12 @@ namespace Reko.ImageLoaders.Elf
         }
 
 
-        public override Address? GetEntryPointAddress(Address addrBase)
+        public override (Address?, ProcessorState?) GetEntryPointAddress(Address addrBase, Program program)
         {
             if (BinaryImage.Header.StartAddress.Offset == 0)
-                return null;
+                return (null, null);
             else
-                return BinaryImage.Header.StartAddress;
+                return (BinaryImage.Header.StartAddress, null);
         }
 
         internal ElfSection? GetSectionInfoByAddr(uint r_offset)

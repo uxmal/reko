@@ -1,0 +1,38 @@
+void fn0000000000002760(word64 r2)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn0000000000002780
+// MayUse:  r2:[0..63]
+// LiveOut:
+// Trashed: ctr r12 r2
+// Preserved: r1
+fn0000000000002760_entry:
+l0000000000002760:
+	r12_5 = Mem4[r2 + -32128<i64>:word64]
+	call r12_5 (retsize: 0;)
+		uses: Mem:Mem4,r12:r12_5
+	return
+fn0000000000002760_exit:
+
+
+void fn0000000000002780(word64 r2, word64 lr, word64 xer)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  lr:[0..63] r2:[0..63] xer:[0..63]
+// LiveOut:
+// Trashed: cr0 ctr r0 r10 r11 r12 r2 r3 r4 r9 xer
+// Preserved: lr r1
+fn0000000000002780_entry:
+l0000000000002780:
+	branch Mem6[r2 + -32760<i64>:word64] == 0<64> l00000000000027A4
+l000000000000279C:
+	fn0000000000002760(r2)
+	r2 = qwLoc48
+l00000000000027A4:
+	fn0000000000002BD0(r2, lr, xer)
+	fn0000000000005820(r2)
+	return
+fn0000000000002780_exit:
+
+
