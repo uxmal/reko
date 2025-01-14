@@ -425,7 +425,7 @@ l00000001000025F2:
 l00000001000025FE_1:
 	rdi_166 = 2<64> (alias)
 l0000000100002601:
-	rax_179 = strerror(SLICE(rdi_166, word32, 0))
+	rax_179 = CONVERT(strerror(SLICE(rdi_166, word32, 0)), uint56, uint64)
 l000000010000245B:
 	rax_126 = CONVERT(eax_144 - 1<32>, word32, uint64)
 	eax_187 = SLICE(rax_126, word32, 0) (alias)
@@ -436,7 +436,7 @@ l0000000100002462:
 	rax_56_8_357 = SLICE(rax_126, word56, 8) (alias)
 	switch (eax_187) { l00000001000024EB l000000010000248D l000000010000247B l00000001000024C4 l000000010000247B l000000010000247B l00000001000024C4 }
 l00000001000024C4:
-	rax_179 = strerror(Mem143[rax_126 + 56<i64>:word32])
+	rax_179 = CONVERT(strerror(Mem143[rax_126 + 56<i64>:word32]), uint56, uint64)
 l00000001000024DF:
 	warnx()
 	rax_126 = SEQ(SLICE(rax_179, word56, 8), 0<8>) (alias)

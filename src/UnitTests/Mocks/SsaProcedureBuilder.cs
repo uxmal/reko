@@ -53,11 +53,19 @@ namespace Reko.UnitTests.Mocks
         {
         }
 
+        /// <summary>
+        /// Allocates a new register storage of the name <see cref="name"/> and the 
+        /// type <paramref name="pt"/>
+        /// </summary>
         public RegisterStorage RegisterStorage(string name, PrimitiveType pt)
         {
             return new RegisterStorage(name, Ssa.Identifiers.Count, 0, pt);
         }
 
+        /// <summary>
+        /// Creates a new identifier with the SSA name <see cref="name"/>,
+        /// located in the register storage <paramref name="r"/>.
+        /// </summary>
         public Identifier Reg(string name, RegisterStorage r)
         {
             var id = new Identifier(r.Name, r.DataType, r);
@@ -152,6 +160,11 @@ namespace Reko.UnitTests.Mocks
             return Reg(name, PrimitiveType.Word64);
         }
 
+        /// <summary>
+        /// Creates a 32-bit identifier based on the 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public override Identifier Reg32(string name)
         {
             return Reg(name, PrimitiveType.Word32);

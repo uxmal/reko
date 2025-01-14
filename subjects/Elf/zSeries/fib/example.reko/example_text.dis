@@ -125,7 +125,7 @@ l0000000000000760:
 	v12_45 = CC_44
 
 
-word64 fib(word64 r2, word64 & r10Out, word64 & r11Out)
+uipr32 fib(uipr32 r2, uipr32 & r10Out, word64 & r11Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -138,12 +138,10 @@ word64 fib(word64 r2, word64 & r10Out, word64 & r11Out)
 fib_entry:
 l0000000000000768:
 	r11_22 = fp - 328<i64>
-	dwLocA4_115 = SLICE(r2, word32, 0)
 	branch r2 >u 1<64> l0000000000000792
 l0000000000000792:
-	fib(CONVERT(dwLocA4_115 - 1<i32>, word32, int64), out r10_121, out r11_41)
-	r2_68 = fib(CONVERT(Mem25[r11_41 + 164<i64>:word32] - 2<i32>, word32, int64), out r10_63, out r11_22)
-	r1_76 = SEQ(SLICE(r2_68, word32, 32), SLICE(r2_68 + r10_63, int32, 0))
+	fib(r2 - 1<i32>, out r10_121, out r11_41)
+	r1_76 = CONVERT(fib(Mem25[r11_41 + 164<i64>:word32] - 2<i32>, out r10_63, out r11_22) + SLICE(r10_63, int32, 0), uint32, uint64)
 l000000000000078A:
 	r1_76 = r2
 l00000000000007CA:
@@ -154,7 +152,7 @@ l00000000000007CA:
 		defs: r10:r10_100,r11:r11_101,r2:r2_105
 	r10Out = r10_100
 	r11Out = r11_101
-	return r2_105
+	return SLICE(r2_105, uipr32, 0)
 fib_exit:
 
 
@@ -167,7 +165,7 @@ void main(word64 r3)
 // Preserved: r15
 main_entry:
 l00000000000007E0:
-	r1_39 = CONVERT(SLICE(fib(0xA<64>, out r10_71, out r11_30), word32, 0), word32, int64)
+	r1_39 = CONVERT(fib(0xA<32>, out r10_71, out r11_30), word32, int64)
 	call Mem25[r11_30 + 288<i64>:word64] (retsize: 0;)
 		uses: Mem:Mem25,r1:r1_39,r11:Mem25[r11_30 + 264<i64>:word64],r12:Mem25[r11_30 + 272<i64>:word64],r13:Mem25[r11_30 + 280<i64>:word64],r14:Mem25[r11_30 + 288<i64>:word64],r2:r1_39,r3:r3
 	return

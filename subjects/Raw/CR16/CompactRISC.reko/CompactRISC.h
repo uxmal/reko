@@ -54129,8 +54129,8 @@ T_12338: (in SLICE(fn0000D4EC(dwLoc12_1640, 0xFFF1<32>), word16, 0) @ 0000BDFE :
   OrigDataType: ui16
 T_12339: (in 0<16> @ 0000BDFE : word16)
   Class: Eq_12339
-  DataType: uint16
-  OrigDataType: uint16
+  DataType: word16
+  OrigDataType: word16
 T_12340: (in SEQ(SLICE(fn0000D4EC(dwLoc12_1640, 0xFFF1<32>), word16, 0), 0<16>) @ 0000BDFE : word32)
   Class: Eq_12340
   DataType: ui32

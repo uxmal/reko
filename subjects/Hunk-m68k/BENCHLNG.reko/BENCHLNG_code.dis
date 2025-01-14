@@ -1116,7 +1116,7 @@ l00001F08:
 fn000015C0_exit:
 
 
-word32 fn00001F40(word32 dwArg04, word32 dwArg08, word32 & a0Out, word32 & a5Out)
+word32 fn00001F40(word32 dwArg04, word32 dwArg08, uipr16 & a0Out, word32 & a5Out)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1149,7 +1149,7 @@ l00001F92:
 fn00001F40_exit:
 
 
-word32 fn00001F9C(word32 dwArg04, word32 dwArg08, word32 & a0Out, word32 & a5Out)
+word32 fn00001F9C(word32 dwArg04, word32 dwArg08, uipr16 & a0Out, word32 & a5Out)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1224,7 +1224,7 @@ l000020AA:
 fn00001F9C_exit:
 
 
-word32 fn000020B0(word32 dwArg04, word32 & a0Out, word32 & a5Out)
+word32 fn000020B0(word32 dwArg04, uipr16 & a0Out, word32 & a5Out)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1279,7 +1279,7 @@ l0000213E:
 fn000020B0_exit:
 
 
-word32 fn0000215C(word32 dwArg04, word32 & a0Out)
+word32 fn0000215C(word32 dwArg04, uipr16 & a0Out)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1384,7 +1384,7 @@ l00002324:
 fn00002290_exit:
 
 
-word32 fn0000232C(word32 dwArg04, word32 dwArg08, word32 & a0Out)
+word32 fn0000232C(word32 dwArg04, word32 dwArg08, uipr16 & a0Out)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1469,7 +1469,7 @@ l0000244A:
 fn0000232C_exit:
 
 
-word32 fn00002450(word32 dwArg04, word32 dwArg08, word32 dwArg0C, word32 & a0Out)
+word32 fn00002450(word32 dwArg04, word32 dwArg08, word32 dwArg0C, uipr16 & a0Out)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1559,7 +1559,7 @@ l0000255A:
 fn00002530_exit:
 
 
-ui64 fn00002560(word64 qwArg04, word64 qwArg0C, word32 & a0Out)
+ui64 fn00002560(word64 qwArg04, word64 qwArg0C, uipr16 & a0Out)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1898,7 +1898,7 @@ l00002BF0:
 fn00002BF0_exit:
 
 
-word32 fn00002C0C(byte bArg07, word32 dwArg08)
+uispr24 fn00002C0C(byte bArg07, word32 dwArg08)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1920,7 +1920,7 @@ l00002C2A:
 	Mem26[dwArg08 + 20<i32>:word32] = Mem24[dwArg08 + 20<i32>:word32] + 1<32>
 	Mem29[dwArg08 + 4<i32>:word32] = Mem26[dwArg08 + 4<i32>:word32] - 1<32>
 l00002C36:
-	return d0_12
+	return SLICE(d0_12, uispr24, 0)
 fn00002C0C_exit:
 
 
@@ -1969,7 +1969,7 @@ l00003C08:
 l00003C1C:
 	branch dwLoc4C_4064 == 0xFFFFFFFF<32> l00003C2E
 l00003C24:
-	d0 = fn00002C0C(SLICE(dwLoc4C_4064, byte, 0), dwArg04)
+	d0 = CONVERT(fn00002C0C(SLICE(dwLoc4C_4064, byte, 0), dwArg04), uint24, uint32)
 l00003C2E:
 	d3_130 = 0<32>
 	d4_132 = d4_132 - 1<32>
@@ -1996,7 +1996,7 @@ l00003B8E:
 l00003BB0:
 	branch d1 == 0xFFFFFFFF<32> l00003BC2
 l00003BB8:
-	d0 = fn00002C0C(SLICE(d1, byte, 0), dwArg04)
+	d0 = CONVERT(fn00002C0C(SLICE(d1, byte, 0), dwArg04), uint24, uint32)
 l00003BC2:
 	d4_132 = d4_132 - 1<32>
 	d3_130 = 1<32>
@@ -2154,7 +2154,7 @@ l000032AA:
 l000032BE:
 	branch dwLoc4C_4097 == 0xFFFFFFFF<32> l000032D0
 l000032C6:
-	d0 = fn00002C0C(SLICE(dwLoc4C_4097, byte, 0), dwArg04)
+	d0 = CONVERT(fn00002C0C(SLICE(dwLoc4C_4097, byte, 0), dwArg04), uint24, uint32)
 l000032D0:
 	d3_130 = d3_130 - 1<32>
 	d4_132 = d4_132 - 1<32>
@@ -2285,7 +2285,7 @@ l00003152:
 l00003156:
 	branch d5_1086 == 0xFFFFFFFF<32> l00003168
 l0000315E:
-	d0 = fn00002C0C(SLICE(d5_1086, byte, 0), dwArg04)
+	d0 = CONVERT(fn00002C0C(SLICE(d5_1086, byte, 0), dwArg04), uint24, uint32)
 l00003168:
 	d3_130 = d3_1099 - 1<32>
 	d4_132 = d4_1112 - 1<32>
@@ -2365,7 +2365,7 @@ l00002F36:
 l00002F3A:
 	branch d5_1086 == 0xFFFFFFFF<32> l00002F4C
 l00002F42:
-	d0 = fn00002C0C(SLICE(d5_1086, byte, 0), dwArg04)
+	d0 = CONVERT(fn00002C0C(SLICE(d5_1086, byte, 0), dwArg04), uint24, uint32)
 l00002F4C:
 	d3_130 = d3_1510 - 1<32>
 	d4_132 = d4_1514 - 1<32>
@@ -2467,7 +2467,7 @@ l00003238:
 l0000323C:
 	branch d5_1086 == 0xFFFFFFFF<32> l0000324E
 l00003244:
-	d0 = fn00002C0C(SLICE(d5_1086, byte, 0), dwArg04)
+	d0 = CONVERT(fn00002C0C(SLICE(d5_1086, byte, 0), dwArg04), uint24, uint32)
 l0000324E:
 	d3_130 = d3_1918 - 1<32>
 	d4_132 = d4_132 - 1<32>
@@ -2588,12 +2588,12 @@ l000034F8:
 l000034FA:
 	branch dwLoc44_4268 == 0xFFFFFFFF<32> l00003510
 l00003504:
-	d0 = fn00002C0C(SLICE(dwLoc44_4268, byte, 0), dwArg04)
+	d0 = CONVERT(fn00002C0C(SLICE(dwLoc44_4268, byte, 0), dwArg04), uint24, uint32)
 l00003510:
 l00003518:
 	branch dwLoc44_4260 == 0xFFFFFFFF<32> l0000352E
 l00003522:
-	d0 = fn00002C0C(SLICE(dwLoc44_4260, byte, 0), dwArg04)
+	d0 = CONVERT(fn00002C0C(SLICE(dwLoc44_4260, byte, 0), dwArg04), uint24, uint32)
 l0000352E:
 l00003572:
 	d4_2586 = d4_132
@@ -2655,12 +2655,12 @@ l00003668:
 l00003672:
 	branch dwLoc44_4296 == 0xFFFFFFFF<32> l00003688
 l0000367C:
-	d0 = fn00002C0C(SLICE(dwLoc44_4296, byte, 0), dwArg04)
+	d0 = CONVERT(fn00002C0C(SLICE(dwLoc44_4296, byte, 0), dwArg04), uint24, uint32)
 l00003688:
 l0000368C:
 	branch dwLoc44_4288 == 0xFFFFFFFF<32> l000036A2
 l00003696:
-	d0 = fn00002C0C(SLICE(dwLoc44_4288, byte, 0), dwArg04)
+	d0 = CONVERT(fn00002C0C(SLICE(dwLoc44_4288, byte, 0), dwArg04), uint24, uint32)
 l000036A2:
 	d3_2499 = d3_2584 - 1<32>
 	d4_2586 = d4_2588 - 1<32>
@@ -2789,7 +2789,7 @@ l00003954:
 l0000395C:
 	branch d5_1086 == 0xFFFFFFFF<32> l0000396E
 l00003964:
-	d0 = fn00002C0C(SLICE(d5_1086, byte, 0), dwArg04)
+	d0 = CONVERT(fn00002C0C(SLICE(d5_1086, byte, 0), dwArg04), uint24, uint32)
 l0000396E:
 	d3_2499 = d3_2499 - 1<32>
 	d4_3307 = dwLoc44_4323 - 1<32>
@@ -2797,7 +2797,7 @@ l0000396E:
 l00003976:
 	branch d5_1086 == 0xFFFFFFFF<32> l00003988
 l0000397E:
-	d0 = fn00002C0C(SLICE(d5_1086, byte, 0), dwArg04)
+	d0 = CONVERT(fn00002C0C(SLICE(d5_1086, byte, 0), dwArg04), uint24, uint32)
 l00003988:
 	d3_130 = d3_2499 - 1<32>
 	d4_132 = d4_3307 - 1<32>

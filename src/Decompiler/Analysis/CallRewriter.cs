@@ -235,7 +235,22 @@ namespace Reko.Analysis
             {
                 if (!IsSubRegisterOfRegisters(reg.Key, regsLiveOut))
                 {
-                    var regOut = sb.AddOutParam(frame.EnsureRegister(reg.Key));
+#if YE
+ 					var regOut = sb.AddOutParam(frame.EnsureRegister(reg.Key));
+#else
+                    var idReg = frame.EnsureRegister(reg.Key);
+                    int bitsize = reg.Value.Extent;
+                    if (idReg.DataType.BitSize > bitsize)
+                    {
+                        PrimitiveType pt;
+                        if (idReg.DataType.IsWord)
+                            pt = PrimitiveType.CreateWord(bitsize);
+                        else 
+                            pt = PrimitiveType.Create(idReg.DataType.Domain, reg.Value.Extent);
+                        idReg.DataType = pt;
+                    }
+                    var regOut = sb.AddOutParam(idReg);
+#endif
                     if (regOut.Storage is OutArgumentStorage &&
                         !ssa.Identifiers.TryGetValue(regOut, out var sidOut))
                     {

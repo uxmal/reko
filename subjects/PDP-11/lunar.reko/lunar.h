@@ -7510,8 +7510,8 @@ T_1644: (in C_38 @ 1162 : Eq_800)
   OrigDataType: (union (bool u0) (word16 u1))
 T_1645: (in 0<16> @ 11A8 : word16)
   Class: Eq_1645
-  DataType: uint16
-  OrigDataType: uint16
+  DataType: word16
+  OrigDataType: word16
 T_1646: (in SEQ(r2_37, 0<16>) @ 11A8 : ui32)
   Class: Eq_1630
   DataType: uint32
@@ -7570,8 +7570,8 @@ T_1659: (in C_60 @ 1166 : Eq_800)
   OrigDataType: (union (bool u0) (word16 u1))
 T_1660: (in 0<16> @ 11B2 : word16)
   Class: Eq_1660
-  DataType: uint16
-  OrigDataType: uint16
+  DataType: word16
+  OrigDataType: word16
 T_1661: (in SEQ(r2_59, 0<16>) @ 11B2 : ui32)
   Class: Eq_1661
   DataType: uint32
@@ -7634,8 +7634,8 @@ T_1675: (in C_82 @ 116A : Eq_800)
   OrigDataType: (union (bool u0) (word16 u1))
 T_1676: (in 0<16> @ 11BC : word16)
   Class: Eq_1676
-  DataType: uint16
-  OrigDataType: uint16
+  DataType: word16
+  OrigDataType: word16
 T_1677: (in SEQ(r2_81, 0<16>) @ 11BC : ui32)
   Class: Eq_1677
   DataType: uint32
@@ -7698,8 +7698,8 @@ T_1691: (in C_104 @ 116E : Eq_800)
   OrigDataType: (union (bool u0) (word16 u1))
 T_1692: (in 0<16> @ 11C6 : word16)
   Class: Eq_1692
-  DataType: uint16
-  OrigDataType: uint16
+  DataType: word16
+  OrigDataType: word16
 T_1693: (in SEQ(r2_103, 0<16>) @ 11C6 : ui32)
   Class: Eq_1693
   DataType: uint32
@@ -7762,8 +7762,8 @@ T_1707: (in C_126 @ 1172 : Eq_800)
   OrigDataType: (union (bool u0) (word16 u1))
 T_1708: (in 0<16> @ 11D0 : word16)
   Class: Eq_1708
-  DataType: uint16
-  OrigDataType: uint16
+  DataType: word16
+  OrigDataType: word16
 T_1709: (in SEQ(r2_125, 0<16>) @ 11D0 : ui32)
   Class: Eq_1709
   DataType: uint32
@@ -7826,8 +7826,8 @@ T_1723: (in C_148 @ 1176 : Eq_800)
   OrigDataType: (union (bool u0) (word16 u1))
 T_1724: (in 0<16> @ 11DA : word16)
   Class: Eq_1724
-  DataType: uint16
-  OrigDataType: uint16
+  DataType: word16
+  OrigDataType: word16
 T_1725: (in SEQ(r2_147, 0<16>) @ 11DA : ui32)
   Class: Eq_1725
   DataType: uint32
@@ -7890,8 +7890,8 @@ T_1739: (in C_170 @ 117A : Eq_800)
   OrigDataType: (union (bool u0) (word16 u1))
 T_1740: (in 0<16> @ 11E4 : word16)
   Class: Eq_1740
-  DataType: uint16
-  OrigDataType: uint16
+  DataType: word16
+  OrigDataType: word16
 T_1741: (in SEQ(r2_169, 0<16>) @ 11E4 : ui32)
   Class: Eq_1741
   DataType: uint32
@@ -7954,8 +7954,8 @@ T_1755: (in C_192 @ 117E : Eq_800)
   OrigDataType: (union (bool u0) (word16 u1))
 T_1756: (in 0<16> @ 11EE : word16)
   Class: Eq_1756
-  DataType: uint16
-  OrigDataType: uint16
+  DataType: word16
+  OrigDataType: word16
 T_1757: (in SEQ(r2_191, 0<16>) @ 11EE : ui32)
   Class: Eq_1757
   DataType: uint32
@@ -8018,8 +8018,8 @@ T_1771: (in C_214 @ 1182 : Eq_800)
   OrigDataType: (union (bool u0) (word16 u1))
 T_1772: (in 0<16> @ 11F8 : word16)
   Class: Eq_1772
-  DataType: uint16
-  OrigDataType: uint16
+  DataType: word16
+  OrigDataType: word16
 T_1773: (in SEQ(r2_213, 0<16>) @ 11F8 : ui32)
   Class: Eq_1773
   DataType: uint32
@@ -8082,8 +8082,8 @@ T_1787: (in C_236 @ 1186 : Eq_800)
   OrigDataType: (union (bool u0) (word16 u1))
 T_1788: (in 0<16> @ 1202 : word16)
   Class: Eq_1788
-  DataType: uint16
-  OrigDataType: uint16
+  DataType: word16
+  OrigDataType: word16
 T_1789: (in SEQ(r2_235, 0<16>) @ 1202 : ui32)
   Class: Eq_1789
   DataType: uint32
@@ -8146,8 +8146,8 @@ T_1803: (in C_258 @ 118A : Eq_800)
   OrigDataType: (union (bool u0) (word16 u1))
 T_1804: (in 0<16> @ 120C : word16)
   Class: Eq_1804
-  DataType: uint16
-  OrigDataType: uint16
+  DataType: word16
+  OrigDataType: word16
 T_1805: (in SEQ(r2_257, 0<16>) @ 120C : ui32)
   Class: Eq_1805
   DataType: uint32
@@ -8210,8 +8210,8 @@ T_1819: (in C_280 @ 118E : Eq_800)
   OrigDataType: (union (bool u0) (word16 u1))
 T_1820: (in 0<16> @ 1216 : word16)
   Class: Eq_1820
-  DataType: uint16
-  OrigDataType: uint16
+  DataType: word16
+  OrigDataType: word16
 T_1821: (in SEQ(r2_279, 0<16>) @ 1216 : ui32)
   Class: Eq_1821
   DataType: uint32
@@ -8274,8 +8274,8 @@ T_1835: (in C_302 @ 1192 : Eq_800)
   OrigDataType: (union (bool u0) (word16 u1))
 T_1836: (in 0<16> @ 1220 : word16)
   Class: Eq_1836
-  DataType: uint16
-  OrigDataType: uint16
+  DataType: word16
+  OrigDataType: word16
 T_1837: (in SEQ(r2_301, 0<16>) @ 1220 : ui32)
   Class: Eq_1837
   DataType: uint32
@@ -8314,8 +8314,8 @@ T_1845: (in __rcl<word16,byte>(r2_301, 1<8>, C_302) @ 122A : word16)
   OrigDataType: ui16
 T_1846: (in 0<16> @ 122A : word16)
   Class: Eq_1846
-  DataType: uint16
-  OrigDataType: uint16
+  DataType: word16
+  OrigDataType: word16
 T_1847: (in SEQ(__rcl<word16,byte>(r2_301, 1<8>, C_302), 0<16>) @ 122A : ui32)
   Class: Eq_1847
   DataType: uint32

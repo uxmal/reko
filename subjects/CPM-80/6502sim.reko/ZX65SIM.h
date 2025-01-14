@@ -1125,7 +1125,7 @@ T_118: (in __rcr<byte,byte>((byte) de_89, 1<8>, cond(b_101 >> 1<8>) & 1<8>) @ 08
 T_119: (in c_106 @ 0890 : uint8)
   Class: Eq_36
   DataType: uint8
-  OrigDataType: uint8
+  OrigDataType: cu8
 T_120: (in SLICE(af_80, byte, 0) @ 0883 : byte)
   Class: Eq_120
   DataType: byte

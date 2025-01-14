@@ -132,7 +132,7 @@ l414C:
 l5AD8:
 
 
-word16 msp430_compute_modulator_bits(ui32 r13_r12, ui32 r15_r14, word16 wArg02)
+cui8 msp430_compute_modulator_bits(ui32 r13_r12, ui32 r15_r14, word16 wArg02)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -174,7 +174,7 @@ l000042AE:
 	r11_r10_300 = r11_r10_215 (alias)
 	branch r6_127 >=u 8<8> l0000427C
 l000042B4:
-	return r7_138
+	return SLICE(r7_138, cui8, 0)
 msp430_compute_modulator_bits_exit:
 
 
@@ -199,7 +199,7 @@ l000042CC:
 	Mem78[0x0078<p16>:byte] = 1<8>
 	Mem81[0x0078<p16>:byte] = Mem78[0x0078<p16>:byte] | 0x10<16>
 	Mem86[0x0079<p16>:byte] = SLICE(r6_71, byte, 0) & 0x30<8>
-	r15_98 = msp430_compute_modulator_bits(dwArg02, SEQ(r14, r7_72), r4_69)
+	r15_98 = CONVERT(msp430_compute_modulator_bits(dwArg02, SEQ(r14, r7_72), r4_69), uint8, uint16)
 	Mem105[0x007C<p16>:byte] = Mem88[r4_69:byte]
 	Mem113[0x007D<p16>:byte] = SLICE(__swpb(Mem105[r4_69:word16]), byte, 0)
 	Mem115[0x007B<p16>:byte] = SLICE(r15_98, byte, 0)
@@ -1257,7 +1257,7 @@ l00004CBA:
 vListRemove_exit:
 
 
-word16 xQueueCreate(word16 r15, word16 & r6Out, word16 & r7Out, word16 & r15Out)
+word16 xQueueCreate(word16 r15, cui8 & r6Out, word16 & r7Out, word16 & r15Out)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:

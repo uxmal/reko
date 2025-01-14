@@ -6729,12 +6729,12 @@ void fn000000000040D740(struct Eq_n * rdi, word32 esi)
 	}
 }
 
-// 000000000040D7B0: Register (ptr64 char) fn000000000040D7B0(Register up32 esi, Register (ptr64 char) rdi, Register (ptr32 Eq_n) fs, Register out word32 ecxOut)
+// 000000000040D7B0: Register (ptr64 char) fn000000000040D7B0(Register up32 esi, Register (ptr64 char) rdi, Register (ptr32 Eq_n) fs, Register out uispr24 ecxOut)
 // Called from:
 //      fn000000000040D8A0
-char * fn000000000040D7B0(up32 esi, char * rdi, struct Eq_n * fs, word32 & ecxOut)
+char * fn000000000040D7B0(up32 esi, char * rdi, struct Eq_n * fs, uispr24 & ecxOut)
 {
-	word32 ecx_n;
+	uispr24 ecx_n;
 	char * rax_n = dcgettext(null, rdi, 5);
 	char * rbx_n = rax_n;
 	if (rax_n == rdi)
@@ -6885,9 +6885,9 @@ uint8 * fn000000000040D8A0(Eq_n rcx, Eq_n rdx, uint8 * rsi, Eq_n rdi, up32 r8d, 
 	case 0x08:
 		if (r8d != 0x08)
 		{
-			word32 ecx_n;
+			uispr24 ecx_n;
 			qwLoc88_n = fn000000000040D7B0(r8d, "`", fs, out ecx_n);
-			word32 ecx_n;
+			uispr24 ecx_n;
 			qwLoc90_n = fn000000000040D7B0(r8d, "'", fs, out ecx_n);
 		}
 		rbx_n = null;
@@ -7012,7 +7012,7 @@ l000000000040D9A8:
 					r12d_n = 0x30;
 l000000000040DB09:
 					uint24 r12d_24_8_n = SLICE(r12d_n, word24, 8);
-					uint8 r12b_n = (byte) r12d_n;
+					byte r12b_n = (byte) r12d_n;
 					r12_n = SEQ((uint56) r12d_24_8_n, r12b_n);
 					if (qwArg08 == null)
 						goto l000000000040DB2E;
@@ -7270,7 +7270,7 @@ l000000000040DC30:
 			break;
 		}
 l000000000040DAF8:
-		uint8 r12b_n = (byte) r12d_n;
+		byte r12b_n = (byte) r12d_n;
 		uint24 r12d_24_8_n = SLICE(r12d_n, word24, 8);
 		if (al_n != 0x00)
 		{
@@ -7379,7 +7379,7 @@ l000000000040DE6B:
 			rax_n.u4 = rax_n + rbp_n;
 			while (true)
 			{
-				uint8 r12b_n = (byte) r12d_n;
+				byte r12b_n = (byte) r12d_n;
 				uint56 r12_56_8_n = (uint56) SLICE(r12d_n, word24, 8);
 				uint64 r12_n;
 				if (dl_n == 0x00)
@@ -7846,7 +7846,7 @@ l000000000040F0B8:
 									rcx_n.u4 = (int64) ecx_n;
 									r8_n = rbx_n;
 								}
-								uint8 r9b_n = (byte) r9d_n;
+								byte r9b_n = (byte) r9d_n;
 								uint24 r9d_24_8_n = SLICE(r9d_n, word24, 8);
 								int32 eax_n = 0x00;
 								if (ebp_n >= 0x00)
@@ -8368,9 +8368,9 @@ l000000000040F50A:
 										r15_n.u0 = 0x00;
 										qwLoc04C0_n.u0 = 0x00416919;
 									}
-									uint8 r9b_n = (byte) r9d_n;
+									byte r9b_n = (byte) r9d_n;
 									uint24 r9d_24_8_n = SLICE(r9d_n, word24, 8);
-									uint8 cl_n = (byte) ecx_n;
+									byte cl_n = (byte) ecx_n;
 									uint24 ecx_24_8_n = SLICE(ecx_n, word24, 8);
 									int32 eax_n = 0x00;
 									if (ebp_n >= 0x00)
@@ -8759,7 +8759,7 @@ l000000000040EF37:
 											rcx = r8;
 											Eq_n rax_n = strftime(&bLoc0448, 0x0400, &bLoc0458, r8);
 											r8_n = r8_n;
-											uint8 r9b_n = (byte) r9d_n;
+											byte r9b_n = (byte) r9d_n;
 											uint24 r9d_24_8_n = SLICE(r9d_n, word24, 8);
 											if (rax_n == 0x00)
 												goto l000000000040ED74;
@@ -9052,7 +9052,7 @@ l000000000040FF92:
 											r11d_n = 0x2D;
 											r8_n = rbx_n;
 										}
-										uint8 r9b_n = (byte) r9d_n;
+										byte r9b_n = (byte) r9d_n;
 										uint24 r9d_24_8_n = SLICE(r9d_n, word24, 8);
 										Eq_n r10_n = rcx;
 										Eq_n rbx_n = fp - 0x0431 - r15_n;
@@ -10153,10 +10153,10 @@ void fn0000000000411880(FILE * rdi)
 	}
 }
 
-// 0000000000411900: Register (ptr64 char) fn0000000000411900(Register (ptr32 Eq_n) fs, Register out word32 ecxOut)
+// 0000000000411900: Register (ptr64 char) fn0000000000411900(Register (ptr32 Eq_n) fs, Register out uispr24 ecxOut)
 // Called from:
 //      fn000000000040D7B0
-char * fn0000000000411900(struct Eq_n * fs, word32 & ecxOut)
+char * fn0000000000411900(struct Eq_n * fs, uispr24 & ecxOut)
 {
 	word64 rax_n = fs->qw0028;
 	char * rax_n = nl_langinfo(0x0E);

@@ -87,44 +87,42 @@ l0000000000000740:
 }
 
 <anonymous> g_t0760 = <code>; // 0000000000000760
-// 0000000000000768: Register Eq_n fib(Register Eq_n r2, Register out word64 r10Out, Register out ptr64 r11Out)
+// 0000000000000768: Register Eq_n fib(Register Eq_n r2, Register out Eq_n r10Out, Register out ptr64 r11Out)
 // Called from:
 //      fib
 //      main
-Eq_n fib(Eq_n r2, word64 & r10Out, ptr64 & r11Out)
+Eq_n fib(Eq_n r2, union Eq_n & r10Out, ptr64 & r11Out)
 {
-	word64 r10_n;
 	ptr64 fp;
 	struct Eq_n * r11_n = fp - 328;
-	word32 dwLocA4_n = (word32) r2;
 	Eq_n r1_n;
 	if (r2 <= 0x01)
 		r1_n = r2;
 	else
 	{
-		word64 r10_n;
+		uipr32 r10_n;
 		struct Eq_n * r11_n;
-		fib((int64) (dwLocA4_n - 1), out r10_n, out r11_n);
-		word64 r2_n = fib((int64) (r11_n->dw00A4 - 2), out r10_n, out r11_n);
-		r1_n = SEQ(SLICE(r2_n, word32, 32), (int32) (r2_n + r10_n));
+		fib(r2 - 1, out r10_n, out r11_n);
+		word64 r10_n;
+		r1_n.u1 = (uint64) (fib(r11_n->dw00A4 - 2, out r10_n, out r11_n) + (int32) r10_n);
 	}
 	ptr64 v29_n = (char *) r11_n + 0x00F8;
 	int64 r1_n = (int64) (word32) r1_n;
 	r11_n->ptr0118();
-	word64 r10_n;
+	Eq_n r10_n;
 	r10Out = r10_n;
 	ptr64 r11_n;
 	r11Out = r11_n;
-	Eq_n r2_n;
-	return r2_n;
+	word64 r2_n;
+	return (uipr32) r2_n;
 }
 
 // 00000000000007E0: void main(Register word64 r3)
 void main(word64 r3)
 {
 	struct Eq_n * r11_n;
-	word64 r10_n;
-	int64 r1_n = (int64) (word32) fib(0x0A, out r10_n, out r11_n);
+	uipr32 r10_n;
+	int64 r1_n = (int64) fib(0x0A, out r10_n, out r11_n);
 	r11_n->ptr0120();
 }
 

@@ -1287,8 +1287,8 @@ T_258: (in (word32) ((r10_160 | r6 << 3<32>) > 0<32>) | r4_159 @ 0804D3AE : word
   OrigDataType: ui32
 T_259: (in r6 << 3<32> @ 0804D3A2 : word32)
   Class: Eq_259
-  DataType: uint32
-  OrigDataType: uint32
+  DataType: ui32
+  OrigDataType: ui32
 T_260: (in SEQ(r9_150, r6 << 3<32>) @ 0804D3A2 : ui64)
   Class: Eq_260
   DataType: uint64
@@ -1907,8 +1907,8 @@ T_413: (in r5_90 | (word32) ((r7_91 | r4 << 3<32>) > 0<32>) @ 0804D45C : word32)
   OrigDataType: ui32
 T_414: (in r4 << 3<32> @ 0804D450 : word32)
   Class: Eq_414
-  DataType: uint32
-  OrigDataType: uint32
+  DataType: ui32
+  OrigDataType: ui32
 T_415: (in SEQ(r8_12, r4 << 3<32>) @ 0804D450 : ui64)
   Class: Eq_415
   DataType: uint64
@@ -2583,8 +2583,8 @@ T_582: (in (word32) ((r10_387 | r6 << 3<32>) > 0<32>) | r4_386 @ 0804D182 : word
   OrigDataType: ui32
 T_583: (in r6 << 3<32> @ 0804D176 : word32)
   Class: Eq_583
-  DataType: uint32
-  OrigDataType: uint32
+  DataType: ui32
+  OrigDataType: ui32
 T_584: (in SEQ(r9_150, r6 << 3<32>) @ 0804D176 : ui64)
   Class: Eq_584
   DataType: uint64
@@ -3123,8 +3123,8 @@ T_717: (in r4_321 | (word32) ((r7_322 | r4 << 3<32>) > 0<32>) @ 0804D22E : word3
   OrigDataType: ui32
 T_718: (in r4 << 3<32> @ 0804D222 : word32)
   Class: Eq_718
-  DataType: uint32
-  OrigDataType: uint32
+  DataType: ui32
+  OrigDataType: ui32
 T_719: (in SEQ(r8_12, r4 << 3<32>) @ 0804D222 : ui64)
   Class: Eq_719
   DataType: uint64

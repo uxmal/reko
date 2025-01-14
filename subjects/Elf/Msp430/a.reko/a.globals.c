@@ -20,9 +20,9 @@ byte g_b007F; // 007F
 word16 g_w0120; // 0120
 Eq_n g_t0130;
 Eq_n g_t0134;
-cui16 g_w0138; // 0138
-uint16 g_w013A; // 013A
-uint16 g_w013C; // 013C
+Eq_n g_t0138;
+ui16 g_w013A; // 013A
+ui16 g_w013C; // 013C
 cui16 g_w0160; // 0160
 word16 g_w0162; // 0162
 word16 g_w0172; // 0172

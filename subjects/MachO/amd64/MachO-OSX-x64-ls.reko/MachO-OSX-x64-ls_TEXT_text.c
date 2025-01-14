@@ -409,7 +409,7 @@ void fn00000001000023B0(ui32 edx, int32 edi)
 			{
 				int32 eax_n = (word32) rax_n->w0058;
 				rax_n = (uint64) eax_n;
-				word64 rax_n;
+				uint64 rax_n;
 				if (eax_n <= 0x0C)
 				{
 					rax_n = (uint64) (eax_n - 0x01);
@@ -478,7 +478,7 @@ l000000010000250A:
 							break;
 						case 0x03:
 						case 0x06:
-							rax_n = strerror(rax_n->dw0038);
+							rax_n = (uint64) strerror(rax_n->dw0038);
 							goto l00000001000024DF;
 						}
 					}
@@ -493,7 +493,7 @@ l000000010000250A:
 						uint64 rdi_n = (uint64) edi_n;
 						if (edi_n == 0x00)
 							rdi_n = 0x02;
-						rax_n = strerror((word32) rdi_n);
+						rax_n = (uint64) strerror((word32) rdi_n);
 l00000001000024DF:
 						warnx();
 						rax_n = SEQ(SLICE(rax_n, word56, 8), 0x00);

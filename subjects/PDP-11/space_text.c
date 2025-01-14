@@ -384,8 +384,8 @@ l0738:
 	goto l06B0;
 }
 
-// 0754: void fn0754(Stack (ptr16 code) wArg00, Stack cui16 wArg02, Stack uint16 wArg04, Stack cui16 wArg06, Stack uint16 wArg08)
-void fn0754(<anonymous> * wArg00, cui16 wArg02, uint16 wArg04, cui16 wArg06, uint16 wArg08)
+// 0754: void fn0754(Stack (ptr16 code) wArg00, Stack cui16 wArg02, Stack word16 wArg04, Stack cui16 wArg06, Stack word16 wArg08)
+void fn0754(<anonymous> * wArg00, cui16 wArg02, word16 wArg04, cui16 wArg06, word16 wArg08)
 {
 	Eq_n r4_n;
 	r4_n.u0 = g_t5424.u0;
@@ -428,7 +428,7 @@ l07AC:
 				r4_r3_n = SEQ(r4_n, wArg08);
 				if (v34_n >= 0x00)
 				{
-					uint16 v36_n = wArg08 - wArg04;
+					cup16 v36_n = wArg08 - wArg04;
 					r4_r3_n = SEQ(r4_n, wArg08);
 					if (v36_n >= 0x00)
 					{
@@ -568,7 +568,7 @@ word16 fn0AAE(struct Eq_n * r5, ptr16 & r4Out)
 		{
 			do
 			{
-				uint16 r1_n;
+				word16 r1_n;
 				ci16 v32_n;
 				while (true)
 				{
@@ -964,16 +964,16 @@ uint16 fn0F48(struct Eq_n * r5, union Eq_n & r1Out, struct Eq_n & r5Out)
 	if (r5->b0000 == 0x02)
 	{
 		union Eq_n * v14_n = r5->ptr0002;
-		uint16 * v16_n = r5->ptr0004;
+		ui16 * v16_n = r5->ptr0004;
 		r5 = (struct Eq_n *) ((char *) &r5->ptr0004 + 2);
 		Eq_n r0_n;
 		r0_n.u0 = v14_n->u0;
-		uint16 r1_n = *v16_n;
+		ui16 r1_n = *v16_n;
 		ui32 r0_r1_n;
 		if (r1_n != 0x00)
 		{
 			r0_r1_n = SEQ(__rcl<word16,byte>(r0_n, 0x01, cond(r1_n << 1) & 0x01) + v14_n->u0, r1_n << 1) + SEQ(*v16_n, *v16_n);
-			uint16 r1_n = (word16) r0_r1_n;
+			word16 r1_n = (word16) r0_r1_n;
 			ci16 r0_n = SLICE(r0_r1_n, word16, 16);
 			if (r0_n <= 0x00)
 				r0_r1_n = SEQ(r0_n + 0x8000, r1_n);
@@ -2872,7 +2872,7 @@ Eq_n g_t58B6 = // 58B6
 	{
 		null
 	};
-uint16 g_w58B8 = 0x00; // 58B8
+ui16 g_w58B8 = 0x00; // 58B8
 ci16 g_w58BC = 0x00; // 58BC
 word16 g_w58BE = 0x00; // 58BE
 word16 g_w58C0 = 0x00; // 58C0

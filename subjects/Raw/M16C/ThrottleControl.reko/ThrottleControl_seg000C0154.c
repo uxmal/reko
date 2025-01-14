@@ -1151,7 +1151,7 @@ void fn000C1790()
 int32 fn000C17B4(int32 r2r0, struct Eq_n * sb)
 {
 	Eq_n r2 = SLICE(r2r0, word16, 16);
-	uint16 r0 = (word16) r2r0;
+	word16 r0 = (word16) r2r0;
 	Eq_n a0_n;
 	a0_n.u0 = 0x00;
 	ci16 a1_n = 0x00;

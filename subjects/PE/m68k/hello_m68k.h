@@ -41,7 +41,7 @@ Eq_42: (union "Eq_42" (byte u0) ((ptr16 Eq_4100) u1))
 Eq_63: (struct "Eq_63" (0 uint32 dw0000) (4 int32 dw0004) (8 uint32 dw0008) (C word32 dw000C))
 	T_63 (in Mem13[dwLoc12_200 + 0<32>:word32] @ 00001500 : word32)
 	T_64 (in a3_23 @ 00001500 : (ptr32 Eq_63))
-Eq_123: (struct "Eq_123" 0001 (0 byte b0000) (1 byte b0001) (2 byte b0002) (3 uint8 b0003))
+Eq_123: (struct "Eq_123" 0001 (0 byte b0000) (1 byte b0001) (2 byte b0002) (3 byte b0003))
 	T_123 (in Mem62[a3_23 + 12<i32>:word32] + ((a3_23 + 16<i32>) + Mem62[a3_23 + 4<i32>:word32]) @ 0000154A : word32)
 	T_124 (in a3_100 @ 0000154A : (ptr32 Eq_123))
 	T_149 (in a3_100 + 1<i32> @ 00001574 : word32)
@@ -1681,7 +1681,7 @@ T_123: (in Mem62[a3_23 + 12<i32>:word32] + ((a3_23 + 16<i32>) + Mem62[a3_23 + 4<
 T_124: (in a3_100 @ 0000154A : (ptr32 Eq_123))
   Class: Eq_123
   DataType: (ptr32 Eq_123)
-  OrigDataType: (ptr32 (struct 0001 (0 byte b0000) (1 byte b0001) (2 byte b0002) (3 uint8 b0003)))
+  OrigDataType: (ptr32 (struct 0001 (0 byte b0000) (1 byte b0001) (2 byte b0002) (3 byte b0003)))
 T_125: (in __syscall<word16> @ 0000154C : ptr32)
   Class: Eq_2
   DataType: (ptr32 Eq_2)
@@ -1972,8 +1972,8 @@ T_196: (in a3_100 + 3<i32> @ 0000156E : word32)
   OrigDataType: ptr32
 T_197: (in Mem84[a3_100 + 3<i32>:byte] @ 0000156E : byte)
   Class: Eq_197
-  DataType: uint8
-  OrigDataType: uint8
+  DataType: byte
+  OrigDataType: byte
 T_198: (in SEQ(SLICE(SEQ(SLICE(v29_136, word16, 8), SLICE(SEQ(v29_136, Mem84[a3_100 + 2<i32>:byte]), word16, 0) << 8<16>), word24, 8), Mem84[a3_100 + 3<i32>:byte]) @ 0000156E : uip32)
   Class: Eq_198
   DataType: ui32
@@ -17659,7 +17659,7 @@ typedef struct Eq_123 {	// size: 1 1
 	byte b0000;	// 0
 	byte b0001;	// 1
 	byte b0002;	// 2
-	uint8 b0003;	// 3
+	byte b0003;	// 3
 } Eq_123;
 
 typedef union Eq_145 {

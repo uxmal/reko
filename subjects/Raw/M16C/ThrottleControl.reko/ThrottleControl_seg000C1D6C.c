@@ -4,10 +4,10 @@
 
 #include "ThrottleControl.h"
 
-// 000C1D6C: Register uint16 fn000C1D6C(Stack uint16 wArg03, Stack ui16 wArg05, Stack uint16 wArg07, Stack ui16 wArg09, Stack Eq_n wArg0B)
+// 000C1D6C: Register word16 fn000C1D6C(Stack word16 wArg03, Stack ui16 wArg05, Stack cup16 wArg07, Stack ui16 wArg09, Stack Eq_n wArg0B)
 // Called from:
 //      fn000C18E6
-uint16 fn000C1D6C(uint16 wArg03, ui16 wArg05, uint16 wArg07, ui16 wArg09, Eq_n wArg0B)
+word16 fn000C1D6C(word16 wArg03, ui16 wArg05, cup16 wArg07, ui16 wArg09, Eq_n wArg0B)
 {
 	Eq_n r0_n = wArg0B;
 	ui32 dwLoc0A_n = SEQ(wArg09, wArg07);
@@ -28,10 +28,10 @@ uint16 fn000C1D6C(uint16 wArg03, ui16 wArg05, uint16 wArg07, ui16 wArg09, Eq_n w
 	return wArg03;
 }
 
-// 000C1DB0: void fn000C1DB0(Register Eq_n r2, Stack uint16 wArg03, Stack ui16 wArg05, Stack Eq_n wArg07)
+// 000C1DB0: void fn000C1DB0(Register Eq_n r2, Stack word16 wArg03, Stack ui16 wArg05, Stack Eq_n wArg07)
 // Called from:
 //      fn000C181E
-void fn000C1DB0(Eq_n r2, uint16 wArg03, ui16 wArg05, Eq_n wArg07)
+void fn000C1DB0(Eq_n r2, word16 wArg03, ui16 wArg05, Eq_n wArg07)
 {
 	Eq_n r0_n = wArg07;
 	ui32 dwLoc06_n = SEQ(wArg05, wArg03);
@@ -53,14 +53,14 @@ void fn000C1DB0(Eq_n r2, uint16 wArg03, ui16 wArg05, Eq_n wArg07)
 uint32 fn000C1DE4(uint32 r2r0, struct Eq_n * sb)
 {
 	cup16 r2 = SLICE(r2r0, word16, 16);
-	uint16 r1_n = sb->w000B;
+	word16 r1_n = sb->w000B;
 	uint16 r3_n = sb->w000D;
 	if (r2 >= 0x8000)
 	{
 		word32 r2r0_n = ~r2r0;
 		r2r0 = SEQ(SLICE(r2r0_n + 0x01, word16, 16), (word16) r2r0_n + 0x01);
 	}
-	uint16 r0_n = (word16) r2r0;
+	word16 r0_n = (word16) r2r0;
 	Eq_n r2_n = SLICE(r2r0, word16, 16);
 	uint32 r3_r1_n = SEQ(r3_n, r1_n);
 	if (r3_n >= 0x8000)

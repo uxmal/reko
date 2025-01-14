@@ -54,24 +54,24 @@ void frame_dummy()
 	register_tm_clones();
 }
 
-// 0000000000001169: Register word128 Q_rsqrt(Register word128 xmm0, Stack int32 dwArg00)
+// 0000000000001169: Register Eq_n Q_rsqrt(Register Eq_n xmm0, Stack int32 dwArg00)
 // Called from:
 //      main
-word128 Q_rsqrt(word128 xmm0, int32 dwArg00)
+Eq_n Q_rsqrt(Eq_n xmm0, int32 dwArg00)
 {
-	real32 eax_n = 0x5F3759DF - (word32) (SEQ(dwArg00, (real32) xmm0) >> 0x01);
-	return SEQ(0, (1.5F - (((real32) xmm0 * 0.5F) * eax_n) * eax_n) * eax_n);
+	real32 eax_n = 0x5F3759DF - (word32) (SEQ(dwArg00, xmm0) >> 0x01);
+	return (1.5F - ((xmm0 *32 0.5F) * eax_n) * eax_n) * eax_n;
 }
 
-// 00000000000011A6: Register word128 lib_rsqrt(Register word128 xmm0)
+// 00000000000011A6: Register Eq_n lib_rsqrt(Register Eq_n xmm0)
 // Called from:
 //      main
-word128 lib_rsqrt(word128 xmm0)
+Eq_n lib_rsqrt(Eq_n xmm0)
 {
-	if ((real32) xmm0 >= 0.0F)
-		return SEQ(0, 1.0F /32 fsqrt((real32) xmm0));
-	sqrtf((real32) xmm0);
-	return SEQ(0, 1.0F / sqrtf((real32) xmm0));
+	if (xmm0 >= 0.0F)
+		return 1.0F /32 fsqrt(xmm0);
+	sqrtf(xmm0);
+	return 1.0F / sqrtf(xmm0);
 }
 
 // 00000000000011E0: void main(Register (ptr64 Eq_n) rsi)
@@ -81,10 +81,10 @@ void main(struct Eq_n * rsi)
 	printf("Hello %s, I'm inside an archive.\n", rsi->ptr0008);
 	puts("Inverse square root computation.");
 	char * rdi_n = rsi->ptr0010;
-	word128 xmm0_n = SEQ(0, strtof(rdi_n, null));
-	real32 rLoc10_n = strtof(rdi_n, null);
-	real32 rLoc0C_n = (real32) Q_rsqrt(xmm0_n, dwLoc20);
-	real32 rLoc10_n = (real32) lib_rsqrt(SEQ(0, rLoc10_n));
+	strtof(rdi_n, null);
+	Eq_n rLoc10_n = strtof(rdi_n, null);
+	real32 rLoc0C_n = Q_rsqrt(strtof(rdi_n, null), dwLoc20);
+	real32 rLoc10_n = lib_rsqrt(rLoc10_n);
 	printf("    Quick:   %g\n", (real64) rLoc0C_n);
 	printf("    Library: %g\n", (real64) rLoc10_n);
 }

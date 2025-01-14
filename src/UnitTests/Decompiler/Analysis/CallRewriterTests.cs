@@ -379,8 +379,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
         {
             Given_ExitBlockStatement(new Identifier("eax", PrimitiveType.Word32, Registers.eax));
             Given_ExitBlockStatement(new Identifier("ebx", PrimitiveType.Word32, Registers.ebx));
-            flow.BitsLiveOut.Add(Registers.eax, new(BitRange.Empty, proc));        // becomes the return value.
-            flow.BitsLiveOut.Add(Registers.ebx, new(BitRange.Empty, proc));
+            flow.BitsLiveOut.Add(Registers.eax, new(new BitRange(0, 32), proc));        // becomes the return value.
+            flow.BitsLiveOut.Add(Registers.ebx, new(new BitRange(0, 32), proc));
             crw.EnsureSignature(ssa, flow);
             Assert.AreEqual("Register word32 foo(Register out word32 ebxOut)", proc.Signature.ToString(proc.Name));
         }
@@ -399,9 +399,9 @@ namespace Reko.UnitTests.Decompiler.Analysis
         public void CrwFpuOutArgument()
         {
             flow.BitsUsed.Add(new FpuStackStorage(0, PrimitiveType.Real80), new BitRange(0, 80));
-            flow.BitsLiveOut.Add(Registers.eax, new(BitRange.Empty, proc));
-            flow.BitsLiveOut.Add(new FpuStackStorage(0, PrimitiveType.Real80), new(BitRange.Empty,proc));
-            flow.BitsLiveOut.Add(new FpuStackStorage(1, PrimitiveType.Real80), new(BitRange.Empty,proc));
+            flow.BitsLiveOut.Add(Registers.eax, new(new BitRange(0, 32), proc));
+            flow.BitsLiveOut.Add(new FpuStackStorage(0, PrimitiveType.Real80), new(new BitRange(0, 80),proc));
+            flow.BitsLiveOut.Add(new FpuStackStorage(1, PrimitiveType.Real80), new(new BitRange(0, 80),proc));
 
             crw.EnsureSignature(ssa, flow);
             Assert.AreEqual("Register word32 foo(FpuStack real80 rArg0, FpuStack out real80 rArg0Out, FpuStack out real80 rArg1Out)", proc.Signature.ToString(proc.Name));
@@ -1130,6 +1130,27 @@ main_exit:
 ";
             #endregion
             AssertProcedureCode(sExp, ssa);
+        }
+
+        [Test]
+        public void CrwSliceOfOutregister()
+        {
+            platform = new DefaultPlatform(sc, new FakeArchitecture());
+            var crw = new CallRewriter(platform, new(), new FakeDecompilerEventListener());
+            var _r1 = RegisterStorage.Reg32("r1", 1);
+            var ssa = Given_Procedure("return_int16", m =>
+            {
+                var r1 = m.Reg("r1", _r1);
+                var r1_2 = m.Reg("r1_2", _r1);
+                m.Assign(r1_2, m.IAdd(r1, 2));
+            });
+            var flow = new ProcedureFlow(ssa.Procedure);
+            flow.BitsUsed.Add(_r1, new BitRange(0, 32));
+            flow.BitsLiveOut.Add(_r1, new DataFlow.LiveOutUse(new BitRange(0, 16), ssa.Procedure));
+
+            var sig = crw.MakeSignature(ssa, flow);
+
+            Assert.AreEqual("(fn word16 (word32))", sig.ToString());
         }
 
     }

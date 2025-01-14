@@ -3511,17 +3511,17 @@ Eq_n g_aDCA7[] = // 0000DCA7
 	{
 	};
 <unknown> g_tE258 = // 0000E258;
-// 0000E25A: Register uint32 fn0000E25A(Register (ptr32 Eq_n) ap, Register (ptr32 Eq_n) fp, Register out (ptr32 Eq_n) apOut, Register out word32 fpOut)
+// 0000E25A: Register ui16 fn0000E25A(Register (ptr32 Eq_n) ap, Register (ptr32 Eq_n) fp, Register out (ptr32 Eq_n) apOut, Register out word32 fpOut)
 // Called from:
 //      fn00010676
-uint32 fn0000E25A(struct Eq_n * ap, struct Eq_n * fp, struct Eq_n & apOut, word32 & fpOut)
+ui16 fn0000E25A(struct Eq_n * ap, struct Eq_n * fp, struct Eq_n & apOut, word32 & fpOut)
 {
 	struct Eq_n * r2_n = ap->ptr0004;
-	uint32 r0_n = (uint32) ((word16) r2_n->b0001 << 0x08 | (word16) r2_n->b0000);
+	ui16 v13_n = (word16) r2_n->b0001 << 0x08 | (word16) r2_n->b0000;
 	word32 fp_n = fp->dw000C;
 	apOut = fp->ptr0008;
 	fpOut = fp_n;
-	return r0_n;
+	return v13_n;
 }
 
 <unknown> g_tE274 = // 0000E274;
@@ -4721,7 +4721,7 @@ word32 fn00010676(real32 ** r4, ptr32 r7, struct Eq_n * ap, struct Eq_n * fp, wo
 	struct Eq_n * fp_n;
 	struct Eq_n * ap_n;
 	word32 r3_n = ap->dw000C;
-	word16 v19_n = (word16) fn0000E25A(ap, fp, out ap_n, out fp_n);
+	uipr16 v19_n = fn0000E25A(ap, fp, out ap_n, out fp_n);
 	struct Eq_n * sp_n = (struct Eq_n *) <invalid>;
 	sp_n->dwFFFFFFFC = r3_n + 0x02;
 	struct Eq_n * r2_n;
@@ -4739,7 +4739,7 @@ word32 fn00010676(real32 ** r4, ptr32 r7, struct Eq_n * ap, struct Eq_n * fp, wo
 	r0_n.u1 = (uint32) v19_n;
 	if (r0_n > 0x08)
 	{
-		**r4 = 36.0F + 0.5F;
+		**r4 = 0.5F + 36.0F;
 		__halt();
 	}
 	else

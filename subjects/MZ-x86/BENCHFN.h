@@ -21528,7 +21528,7 @@ T_4782: (in sp_333 + 2<i16> @ 0800:1CF8 : word16)
 T_4783: (in ax_335 @ 0800:1D00 : Eq_224)
   Class: Eq_224
   DataType: Eq_224
-  OrigDataType: uint16
+  OrigDataType: word16
 T_4784: (in fn0800_1B9E @ 0800:1D01 : segptr32)
   Class: Eq_4641
   DataType: (ptr32 Eq_4641)

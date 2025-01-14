@@ -37,7 +37,7 @@ byte g_a17A7[];
 Eq_n g_t17AB;
 ui16 g_w17AD; // 17AD
 uint16 g_w17AF; // 17AF
-uint16 g_w17B1; // 17B1
+cup16 g_w17B1; // 17B1
 Eq_n g_t17B3;
 cu8 g_b17B5; // 17B5
 cu8 g_b17B6; // 17B6

@@ -5,7 +5,7 @@
 #include "BYTEOPS.h"
 
 struct Eq_n * g_ptr0000; // 00000000
-struct Eq_n * g_ptr0004; // 00000004
+Eq_n g_t0004;
 word32 g_a0008[];
 ui32 g_a0010[];
 word32 g_dw2CC8; // 00002CC8

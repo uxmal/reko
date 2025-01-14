@@ -882,7 +882,7 @@ namespace Reko.Typing
                 MeetDataType(seq.Expressions[0], PrimitiveType.Create(tv.DataType.Domain, seq.Expressions[0].DataType.BitSize));
                 foreach (var e in seq.Expressions.Skip(1))
                 {
-                    MeetDataType(e, PrimitiveType.Create(Domain.UnsignedInt, e.DataType.BitSize));
+                    MeetDataType(e, PrimitiveType.CreateWord(e.DataType.BitSize));
                 }
             }
             foreach (var e in seq.Expressions)

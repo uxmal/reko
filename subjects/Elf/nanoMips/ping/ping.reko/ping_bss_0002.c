@@ -152,10 +152,7 @@ Eq_n rtt_addend = // 004544F8
 	{
 		0
 	};
-Eq_n sndbuf = // 004544FC
-	{
-		0
-	};
+int32 sndbuf = 0; // 004544FC
 Eq_n status_snapshot = // 00454500
 	{
 		0

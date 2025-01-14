@@ -4,7 +4,26 @@
 
 #include "tar.h"
 
-word16 g_w0000; // 0000
+uint16 g_w0000; // 0000
+<anonymous> g_t1498; // 1498
+<anonymous> g_t14C0; // 14C0
+<anonymous> g_t1946; // 1946
+<anonymous> g_t19C4; // 19C4
+<anonymous> g_t1A4E; // 1A4E
+<anonymous> g_t1ABA; // 1ABA
+<anonymous> g_t1B62; // 1B62
+<anonymous> g_t1FB6; // 1FB6
+<anonymous> g_t1FF2; // 1FF2
+<anonymous> g_t27AC; // 27AC
+<anonymous> g_t27C8; // 27C8
+<anonymous> g_t2964; // 2964
+<anonymous> g_t299A; // 299A
+<anonymous> g_t29F2; // 29F2
+<anonymous> g_t2A62; // 2A62
+<anonymous> g_t327C; // 327C
+<anonymous> g_t3B9A; // 3B9A
+<anonymous> g_t3CCC; // 3CCC
+<anonymous> g_t3ED4; // 3ED4
 ui16 g_w9E90; // 9E90
 Eq_n g_t9E92;
 byte g_bFFCC; // FFCC
@@ -17,3 +36,4 @@ ci16 g_wFFFF9E3E; // 9E3E
 uint16 g_wFFFF9E40; // 9E40
 word16 g_wFFFF9E7E; // 9E7E
 ci16 g_wFFFF9E80; // 9E80
+uint16 g_aFFFF9EF0[];

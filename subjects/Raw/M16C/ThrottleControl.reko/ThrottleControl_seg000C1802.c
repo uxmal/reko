@@ -16,15 +16,15 @@ ui32 fn000C1802(uint16 r0, uint16 r2, struct Eq_n * sb)
 void fn000C181E(int16 r1, int16 r2)
 {
 	ui16 r2_n;
-	uint16 r0_n = fn000C1894(r1 *s32 r2, out r2_n);
+	word16 r0_n = fn000C1894(r1 *s32 r2, out r2_n);
 	if (r0_n != 0x00 || r2_n != 0x00)
 		fn000C1DB0(0x00, r0_n, r2_n, r1 *s32 r2);
 }
 
-// 000C185C: void fn000C185C(Register word16 r0, Register (ptr16 Eq_n) sb, Stack uint16 wArg03, Stack ui16 wArg05)
+// 000C185C: void fn000C185C(Register word16 r0, Register (ptr16 Eq_n) sb, Stack cup16 wArg03, Stack ui16 wArg05)
 // Called from:
 //      fn000C18E6
-void fn000C185C(word16 r0, struct Eq_n * sb, uint16 wArg03, ui16 wArg05)
+void fn000C185C(word16 r0, struct Eq_n * sb, cup16 wArg03, ui16 wArg05)
 {
 	if (wArg03 == 0x00 && wArg05 == 0x00)
 		return;
@@ -68,11 +68,11 @@ word16 fn000C1894(Eq_n r1, word16 & r2Out)
 	}
 }
 
-// 000C18E6: void fn000C18E6(Register Eq_n r2, Register (ptr16 Eq_n) sb, Stack uint16 wArg03, Stack ui16 wArg05)
-void fn000C18E6(Eq_n r2, struct Eq_n * sb, uint16 wArg03, ui16 wArg05)
+// 000C18E6: void fn000C18E6(Register Eq_n r2, Register (ptr16 Eq_n) sb, Stack cup16 wArg03, Stack ui16 wArg05)
+void fn000C18E6(Eq_n r2, struct Eq_n * sb, cup16 wArg03, ui16 wArg05)
 {
 	ui16 r2_n;
-	uint16 r0_n = fn000C1894(r2, out r2_n);
+	word16 r0_n = fn000C1894(r2, out r2_n);
 	if ((r0_n != 0x00 || r2_n != 0x00) && (wArg03 != 0x00 || wArg05 != 0x00))
 	{
 		Eq_n r0_n = (*SEQ(SLICE(SEQ(wArg05 - (word16) (wArg03 < 0x08), wArg03 + ~0x07) + 0x04, word16, 16), r0_n) << 2) + ~0x07;
@@ -106,7 +106,7 @@ uipr32 fn000C195A(uint16 r1)
 			break;
 		ui32 a1_a0_n = dwLoc12_n + SEQ(OSZC_n & 0x01, 0x04);
 		uint16 a0_n = (word16) a1_a0_n;
-		uint16 a1_n = wLoc10_n + (word16) (a0_n < 0x00);
+		word16 a1_n = wLoc10_n + (word16) (a0_n < 0x00);
 		r0_n = *SEQ(a1_n, r0_n);
 		OSZC_n.u1 = cond(a0_n + 0x02);
 		cup16 r2_n = *SEQ(SLICE(a1_a0_n, word16, 16), r0_n);
@@ -193,7 +193,7 @@ void fn000C1ACC(uint16 r2, struct Eq_n * sb, uint32 dwArg03)
 			break;
 		ui32 a1_a0_n = dwLoc16_n + SEQ(OSZC_n & 0x01, 0x04);
 		cup16 a0_n = (word16) a1_a0_n;
-		uint16 r0_n = *SEQ(wLoc14_n + (word16) (a0_n < 0x00), r0_n);
+		cui16 r0_n = *SEQ(wLoc14_n + (word16) (a0_n < 0x00), r0_n);
 		uint32 v32_v31_n = dwLoc16_n + (SEQ(*SEQ(SLICE(a1_a0_n, word16, 16), r0_n), r0_n) << 0x02);
 		OSZC_n.u1 = cond(a0_n + 0x02);
 		r0_n = r0_n << 0x02;
@@ -251,7 +251,7 @@ void fn000C1ACC(uint16 r2, struct Eq_n * sb, uint32 dwArg03)
 			{
 				uint32 a1_a0_n = dwLoc16_n + SEQ(OSZC_n & 0x01, 0x04);
 				uint16 a0_n = (word16) a1_a0_n;
-				uint16 a1_n = wLoc14_n + (word16) (a0_n < 0x00);
+				word16 a1_n = wLoc14_n + (word16) (a0_n < 0x00);
 				word16 r0_n = *SEQ(a1_n, r0_n);
 				word32 r2r0_n = SEQ(*SEQ(SLICE(a1_a0_n, word16, 16), r0_n), r0_n) + r2r0_n;
 				word16 r0_n = (word16) r2r0_n;
@@ -264,7 +264,7 @@ void fn000C1ACC(uint16 r2, struct Eq_n * sb, uint32 dwArg03)
 				{
 					uint32 a1_a0_n = v20_v19_n + SEQ(OSZC_n & 0x01, 0x04);
 					cup16 a0_n = (word16) a1_a0_n;
-					uint16 r0_n = *SEQ(v20_n + (word16) (a0_n < 0x00), r0_n);
+					word16 r0_n = *SEQ(v20_n + (word16) (a0_n < 0x00), r0_n);
 					word32 r2r0_n = r2r0_n + SEQ(*SEQ(SLICE(a1_a0_n, word16, 16), r0_n), r0_n);
 					word16 r0_n = (word16) r2r0_n;
 					*SEQ(a0_n, r0_n) = r0_n;

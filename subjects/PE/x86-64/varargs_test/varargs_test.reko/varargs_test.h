@@ -125,7 +125,7 @@ Eq_1: (struct "Globals"
 		(400035B8 uint64 qw400035B8)
 		(400035C0 ui128 ow400035C0)
 		(400035D0 Eq_602 t400035D0)
-		(400035D8 uint128 ow400035D8)
+		(400035D8 ui128 ow400035D8)
 		(400035E8 Eq_602 t400035E8)
 		(400035F0 byte b400035F0)
 		(40003600 (union "_SLIST_HEADER" ((struct "struct_59" (0 SINGLE_LIST_ENTRY Next) (4 WORD Depth) (6 WORD Sequence)) u1) (ULONGLONG Alignment)) u40003600)
@@ -488,14 +488,14 @@ Eq_531: (fn bool (uint64, word64, uint64, word64))
 Eq_550: (fn void (word32, word32))
 	T_550 (in fn0000000140001BFC @ 000000014000161D : ptr64)
 	T_551 (in signature of fn0000000140001BFC @ 0000000140001BFC : void)
-Eq_602: (union "Eq_602" (uint64 u0) (real64 u1))
+Eq_602: (union "Eq_602" (ui64 u0) (real64 u1))
 	T_602 (in __ror<word64,byte>(0xFFFFFFFFFFFFFFFF<64>, 0x40<8> - (byte) rax_64) ^ rdx_53 @ 00000001400016B4 : word64)
 	T_603 (in r8_72 @ 00000001400016B4 : Eq_602)
 	T_608 (in Mem87[0x00000001400035D0<p64>:real64] @ 00000001400016E3 : real64)
 	T_613 (in Mem90[0x00000001400035E8<p64>:real64] @ 00000001400016F7 : real64)
 Eq_620: (fn word64 ((ptr64 ui128)))
 	T_620 (in initialize_onexit_table @ 0000000140001678 : ptr64)
-Eq_629: (fn word64 ((ptr64 uint128)))
+Eq_629: (fn word64 ((ptr64 ui128)))
 	T_629 (in initialize_onexit_table @ 000000014000168C : ptr64)
 Eq_660: (struct "Eq_660" (0 word32 dw0000) (6 word16 w0006) (14 word16 w0014) (18 word16 w0018))
 	T_660 (in rax_12 + 0x0000000140000000<p64> @ 000000014000173B : word64)
@@ -3154,7 +3154,7 @@ T_602: (in __ror<word64,byte>(0xFFFFFFFFFFFFFFFF<64>, 0x40<8> - (byte) rax_64) ^
 T_603: (in r8_72 @ 00000001400016B4 : Eq_602)
   Class: Eq_602
   DataType: Eq_602
-  OrigDataType: uint64
+  OrigDataType: ui64
 T_604: (in SEQ(r8_72, r8_72) @ 00000001400016CC : word128)
   Class: Eq_604
   DataType: ui128
@@ -3177,15 +3177,15 @@ T_608: (in Mem87[0x00000001400035D0<p64>:real64] @ 00000001400016E3 : real64)
   OrigDataType: real64
 T_609: (in SEQ(r8_72, r8_72) @ 00000001400016F0 : word128)
   Class: Eq_609
-  DataType: uint128
-  OrigDataType: uint128
+  DataType: ui128
+  OrigDataType: ui128
 T_610: (in 00000001400035D8 @ 00000001400016F0 : ptr64)
   Class: Eq_610
-  DataType: (ptr64 uint128)
+  DataType: (ptr64 ui128)
   OrigDataType: (ptr64 (struct (0 T_611 t0000)))
 T_611: (in Mem89[0x00000001400035D8<p64>:word128] @ 00000001400016F0 : word128)
   Class: Eq_609
-  DataType: uint128
+  DataType: ui128
   OrigDataType: word128
 T_612: (in 00000001400035E8 @ 00000001400016F7 : ptr64)
   Class: Eq_612
@@ -6523,7 +6523,7 @@ union _SLIST_HEADER {
 	uint64 qw400035B8;	// 400035B8
 	ui128 ow400035C0;	// 400035C0
 	Eq_602 t400035D0;	// 400035D0
-	uint128 ow400035D8;	// 400035D8
+	ui128 ow400035D8;	// 400035D8
 	Eq_602 t400035E8;	// 400035E8
 	byte b400035F0;	// 400035F0
 	union _SLIST_HEADER u40003600;	// 40003600
@@ -6738,13 +6738,13 @@ typedef bool (Eq_531)(uint64, word64, uint64, word64);
 typedef void (Eq_550)(word32, word32);
 
 typedef union Eq_602 {
-	uint64 u0;
+	ui64 u0;
 	real64 u1;
 } Eq_602;
 
 typedef word64 (Eq_620)(ui128 *);
 
-typedef word64 (Eq_629)(uint128 *);
+typedef word64 (Eq_629)(ui128 *);
 
 typedef struct Eq_660 {
 	word32 dw0000;	// 0

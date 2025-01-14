@@ -1728,7 +1728,7 @@ Eq_n fn05C0(Eq_n a)
 //      fn05C0
 Eq_n fn05CF()
 {
-	uint8 a_n = __in(0x02);
+	byte a_n = __in(0x02);
 	Eq_n v7_n;
 	v7_n.u1 = null;
 	null = (union Eq_n *) (a_n + ~0x04);

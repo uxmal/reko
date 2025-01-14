@@ -116,13 +116,14 @@ void main(cui16 sr, uint16 r8)
 		;
 }
 
-// 420E: Register cui16 msp430_compute_modulator_bits(Sequence ui32 r13_r12, Sequence uint32 r15_r14, Stack (ptr16 Eq_n) wArg02)
+// 420E: Register Eq_n msp430_compute_modulator_bits(Sequence ui32 r13_r12, Sequence uint32 r15_r14, Stack (ptr16 Eq_n) wArg02)
 // Called from:
 //      init_uart_isr
-cui16 msp430_compute_modulator_bits(ui32 r13_r12, uint32 r15_r14, union Eq_n * wArg02)
+Eq_n msp430_compute_modulator_bits(ui32 r13_r12, uint32 r15_r14, union Eq_n * wArg02)
 {
-	cui16 r14 = (word16) r15_r14;
-	cui16 r15 = SLICE(r15_r14, word16, 16);
+	Eq_n r14 = (word16) r15_r14;
+	Eq_n r15;
+	r15.u1 = SLICE(r15_r14, word16, 16);
 	Eq_n r12_n = fn00005B04(r15_r14, r13_r12);
 	__disable_interrupts();
 	ui32 r9_r8_n = fn00005ADC(r14, r15, r12_n, 0x00) - r13_r12;
@@ -153,7 +154,7 @@ cui16 msp430_compute_modulator_bits(ui32 r13_r12, uint32 r15_r14, union Eq_n * w
 		r6_n.u1 = (word16) ((byte) r6_n + 0x01);
 		r11_r10_n = r11_r10_n;
 	} while (r6_n >= 0x08);
-	return r7_n;
+	return (cui8) r7_n;
 }
 
 // 42CC: void init_uart_isr(Register ui16 r14, Stack ui32 dwArg02, Stack byte bArg06)
@@ -162,12 +163,12 @@ cui16 msp430_compute_modulator_bits(ui32 r13_r12, uint32 r15_r14, union Eq_n * w
 void init_uart_isr(ui16 r14, ui32 dwArg02, byte bArg06)
 {
 	Eq_n r15_n;
-	uint16 r7_n;
+	word16 r7_n;
 	word16 r6_n;
 	__disable_interrupts();
 	++usCriticalNesting;
 	word16 v19_n = (word16) bArg06;
-	word16 r6_n;
+	cui8 r6_n;
 	word16 r7_n;
 	Eq_n r15_n;
 	xQueueCreate(v19_n, out r6_n, out r7_n, out r15_n);
@@ -177,7 +178,7 @@ void init_uart_isr(ui16 r14, ui32 dwArg02, byte bArg06)
 	*(byte *) 0x78 = 0x01;
 	*(byte *) 0x78 |= 0x10;
 	*(byte *) 121 = (byte) r6_n & 0x30;
-	word16 r15_n = msp430_compute_modulator_bits(dwArg02, SEQ(r14, r7_n), r4_n);
+	uint16 r15_n = (uint16) msp430_compute_modulator_bits(dwArg02, SEQ(r14, r7_n), r4_n);
 	((union Eq_n *) 0x7C)->u1 = r4_n->u1;
 	*(byte *) 0x7D = (byte) __swpb(r4_n->u0);
 	*(byte *) 0x7B = (byte) r15_n;
@@ -1045,13 +1046,13 @@ void vListRemove(struct Eq_n * r15)
 	v10_n->w0000 += ~0x00;
 }
 
-// 4CC4: Register word16 xQueueCreate(Register word16 r15, Register out word16 r6Out, Register out word16 r7Out, Register out word16 r15Out)
+// 4CC4: Register word16 xQueueCreate(Register word16 r15, Register out Eq_n r6Out, Register out word16 r7Out, Register out word16 r15Out)
 // Called from:
 //      init_uart_isr
-word16 xQueueCreate(word16 r15, word16 & r6Out, word16 & r7Out, word16 & r15Out)
+word16 xQueueCreate(word16 r15, union Eq_n & r6Out, word16 & r7Out, word16 & r15Out)
 {
 	word16 r4;
-	word16 r6;
+	Eq_n r6;
 	word16 r7;
 	if (r15 != 0x00)
 	{
@@ -1457,15 +1458,15 @@ Eq_n prvIsQueueFull(Eq_n r15)
 	return r14_n;
 }
 
-// 5156: Register word16 pvPortMalloc(Register ui16 r15, Register out word16 r5Out, Register out word16 r6Out, Register out word16 r7Out, Register out cup16 r15Out)
+// 5156: Register word16 pvPortMalloc(Register ui16 r15, Register out word16 r5Out, Register out Eq_n r6Out, Register out word16 r7Out, Register out cup16 r15Out)
 // Called from:
 //      prvAllocateTCBAndStack
 //      xQueueCreate
-word16 pvPortMalloc(ui16 r15, word16 & r5Out, word16 & r6Out, word16 & r7Out, cup16 & r15Out)
+word16 pvPortMalloc(ui16 r15, word16 & r5Out, union Eq_n & r6Out, word16 & r7Out, cup16 & r15Out)
 {
 	word16 r15_n;
 	word16 r7_n;
-	word16 r6_n;
+	Eq_n r6_n;
 	word16 r5_n;
 	ui16 r11_n = r15;
 	cup16 r10_n = 0x00;
@@ -2299,20 +2300,20 @@ cui16 memset(cui16 sr, uint16 r13, Eq_n r14, byte * r15)
 	return sr;
 }
 
-// 00005ADC: Sequence ui32 fn00005ADC(Register cui16 r10, Register cui16 r11, Register Eq_n r12, Register Eq_n r13)
+// 00005ADC: Sequence ui32 fn00005ADC(Register Eq_n r10, Register Eq_n r11, Register Eq_n r12, Register Eq_n r13)
 // Called from:
 //      msp430_compute_modulator_bits
-ui32 fn00005ADC(cui16 r10, cui16 r11, Eq_n r12, Eq_n r13)
+ui32 fn00005ADC(Eq_n r10, Eq_n r11, Eq_n r12, Eq_n r13)
 {
 	*(union Eq_n *) 0x0130 = r12;
-	*(cui16 *) 0x0138 = r10;
+	*(union Eq_n *) 0x0138 = r10;
 	*(union Eq_n *) 0x0134 = r12;
-	uint16 v6_n = *(uint16 *) 0x013A;
-	*(uint16 *) 0x013A = *(uint16 *) 0x013C;
-	*(cui16 *) 0x0138 = r11;
+	ui16 v6_n = *(ui16 *) 0x013A;
+	*(ui16 *) 0x013A = *(ui16 *) 0x013C;
+	*(union Eq_n *) 0x0138 = r11;
 	*(union Eq_n *) 0x0134 = r13;
-	*(cui16 *) 0x0138 = r10;
-	return SEQ(*(uint16 *) 0x013A, v6_n);
+	*(union Eq_n *) 0x0138 = r10;
+	return SEQ(*(ui16 *) 0x013A, v6_n);
 }
 
 // 00005B04: Register uint16 fn00005B04(Sequence uint32 r11_r10, Sequence ui32 r13_r12)

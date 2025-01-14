@@ -386,7 +386,7 @@ l00001390:
 	d4_37 = __swap(d0_28) *u32 CONVERT(v14_19, uint8, word16)
 	v32_48 = v17_22 *u v14_19
 	d2_50 = SEQ(SLICE(v9_15, word24, 7), v32_48)
-	fn00002A88(d2_50, CONVERT(SLICE(fn00002AC8(d2_50, CONVERT(v14_19, uint8, uint32), CONVERT(v32_48, uint8, uint32)), byte, 0), uint8, uint32), CONVERT(v32_48, uint8, uint32))
+	fn00002A88(d2_50, CONVERT(fn00002AC8(d2_50, CONVERT(v14_19, uint8, uint32), CONVERT(v32_48, uint8, uint32)), uint8, uint32), CONVERT(v32_48, uint8, uint32))
 	return fn0000143C(CONVERT(v32_48 << 5<8>, uint8, uint32), 0x0000142C<p32>)
 fn00001390_exit:
 
@@ -953,7 +953,7 @@ l00001DA0:
 fn00001458_exit:
 
 
-word32 fn00001DD8(word32 dwArg04, word32 dwArg08, word32 & a0Out, word32 & a5Out)
+word32 fn00001DD8(word32 dwArg04, word32 dwArg08, uipr16 & a0Out, word32 & a5Out)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -986,7 +986,7 @@ l00001E2A:
 fn00001DD8_exit:
 
 
-word32 fn00001E34(word32 dwArg04, word32 dwArg08, word32 & a0Out, word32 & a5Out)
+word32 fn00001E34(word32 dwArg04, word32 dwArg08, uipr16 & a0Out, word32 & a5Out)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1061,7 +1061,7 @@ l00001F42:
 fn00001E34_exit:
 
 
-word32 fn00001F48(word32 dwArg04, word32 & a0Out, word32 & a5Out)
+word32 fn00001F48(word32 dwArg04, uipr16 & a0Out, word32 & a5Out)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1115,7 +1115,7 @@ l00001FD6:
 fn00001F48_exit:
 
 
-word32 fn00001FF4(word32 dwArg04, word32 & a0Out)
+word32 fn00001FF4(word32 dwArg04, uipr16 & a0Out)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1219,7 +1219,7 @@ l000021BC:
 fn00002128_exit:
 
 
-word32 fn000021C4(word32 dwArg04, word32 dwArg08, word32 & a0Out)
+word32 fn000021C4(word32 dwArg04, word32 dwArg08, uipr16 & a0Out)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1304,7 +1304,7 @@ l000022E2:
 fn000021C4_exit:
 
 
-word32 fn000022E8(word32 dwArg04, word32 dwArg08, word32 dwArg0C, word32 & a0Out)
+word32 fn000022E8(word32 dwArg04, word32 dwArg08, word32 dwArg0C, uipr16 & a0Out)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1393,7 +1393,7 @@ l000023F2:
 fn000023C8_exit:
 
 
-ui64 fn000023F8(word64 qwArg04, word64 qwArg0C, word32 & a0Out)
+ui64 fn000023F8(word64 qwArg04, word64 qwArg0C, uipr16 & a0Out)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1749,7 +1749,7 @@ l00002A96:
 fn00002A88_exit:
 
 
-word32 fn00002AC8(word32 d2, word32 dwArg04, word32 dwArg08)
+ui8 fn00002AC8(word32 d2, word32 dwArg04, word32 dwArg08)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1764,16 +1764,16 @@ l00002AC8:
 l00002AE8:
 	branch dwArg08 > 0<32> l00002AEA_thunk_fn00002AFA
 l00002AEA_thunk_fn00002AFA:
-	return fn00002AFA(dwArg04, dwArg08, d2, out d1_90)
+	return SLICE(fn00002AFA(dwArg04, dwArg08, d2, out d1_90), ui8, 0)
 l00002AEC:
-	return -fn00002AFA(dwArg04, -dwArg08, d2, out d1_91)
+	return SLICE(-fn00002AFA(dwArg04, -dwArg08, d2, out d1_91), ui8, 0)
 l00002AD2:
 	d0_36 = -dwArg04
 	branch dwArg08 > 0<32> l00002AE0
 l00002AE0:
-	return -fn00002AFA(d0_36, dwArg08, d2, out d1_88)
+	return SLICE(-fn00002AFA(d0_36, dwArg08, d2, out d1_88), ui8, 0)
 l00002AD8:
-	return fn00002AFA(d0_36, -dwArg08, d2, out d1_89)
+	return SLICE(fn00002AFA(d0_36, -dwArg08, d2, out d1_89), ui8, 0)
 fn00002AC8_exit:
 
 

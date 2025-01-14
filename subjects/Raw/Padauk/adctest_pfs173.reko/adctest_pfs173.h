@@ -1694,7 +1694,7 @@ Eq_2454: (fn bool (byte, byte))
 Eq_2476: (fn Eq_20 ())
 	T_2476 (in fn05CF @ 05CC : ptr16)
 	T_2477 (in signature of fn05CF @ 05CF : void)
-Eq_2482: (fn uint8 (byte))
+Eq_2482: (fn byte (byte))
 	T_2482 (in __in @ 05D1 : ptr32)
 	T_2483 (in signature of __in : void)
 Eq_2516: (struct "Eq_2516" (0 Eq_20 t0000))
@@ -5615,7 +5615,7 @@ T_978: (in Mem31[0x003C<p16>:byte] @ 01DA : byte)
 T_979: (in a_33 @ 01DA : Eq_20)
   Class: Eq_20
   DataType: Eq_20
-  OrigDataType: uint8
+  OrigDataType: byte
 T_980: (in 1<8> @ 01DC : byte)
   Class: Eq_980
   DataType: byte
@@ -6131,7 +6131,7 @@ T_1107: (in Mem203[0x0034<p16>:byte] @ 02A7 : byte)
 T_1108: (in a_512 @ 02A7 : Eq_20)
   Class: Eq_20
   DataType: Eq_20
-  OrigDataType: uint8
+  OrigDataType: byte
 T_1109: (in 1<8> @ 02A9 : byte)
   Class: Eq_1109
   DataType: byte
@@ -6219,7 +6219,7 @@ T_1129: (in Mem203[0x0034<p16>:byte] @ 02B2 : byte)
 T_1130: (in a_534 @ 02B2 : Eq_20)
   Class: Eq_20
   DataType: Eq_20
-  OrigDataType: uint8
+  OrigDataType: byte
 T_1131: (in 2<8> @ 02B4 : byte)
   Class: Eq_1131
   DataType: byte
@@ -6335,7 +6335,7 @@ T_1158: (in Mem564[0x0034<p16>:byte] @ 0374 : byte)
 T_1159: (in a_566 @ 0374 : Eq_20)
   Class: Eq_20
   DataType: Eq_20
-  OrigDataType: uint8
+  OrigDataType: byte
 T_1160: (in 4<8> @ 0376 : byte)
   Class: Eq_1160
   DataType: byte
@@ -6703,7 +6703,7 @@ T_1250: (in Mem564[0x0034<p16>:byte] @ 03BA : byte)
 T_1251: (in a_665 @ 03BA : Eq_20)
   Class: Eq_20
   DataType: Eq_20
-  OrigDataType: uint8
+  OrigDataType: byte
 T_1252: (in 1<8> @ 03BC : byte)
   Class: Eq_1252
   DataType: byte
@@ -6899,7 +6899,7 @@ T_1299: (in Mem564[0x0034<p16>:byte] @ 03EC : byte)
 T_1300: (in a_722 @ 03EC : Eq_20)
   Class: Eq_20
   DataType: Eq_20
-  OrigDataType: uint8
+  OrigDataType: byte
 T_1301: (in 4<8> @ 03EE : byte)
   Class: Eq_1301
   DataType: byte
@@ -7183,7 +7183,7 @@ T_1370: (in Mem564[0x0034<p16>:byte] @ 0412 : byte)
 T_1371: (in a_781 @ 0412 : Eq_20)
   Class: Eq_20
   DataType: Eq_20
-  OrigDataType: uint8
+  OrigDataType: byte
 T_1372: (in 2<8> @ 0414 : byte)
   Class: Eq_1372
   DataType: byte
@@ -8567,7 +8567,7 @@ T_1716: (in Mem633[0x005E<p16>:byte] @ 03A1 : byte)
 T_1717: (in a_634 @ 03A1 : Eq_20)
   Class: Eq_20
   DataType: Eq_20
-  OrigDataType: uint8
+  OrigDataType: byte
 T_1718: (in 1<8> @ 03A3 : byte)
   Class: Eq_1718
   DataType: byte
@@ -9523,7 +9523,7 @@ T_1955: (in Mem203[0x0034<p16>:byte] @ 033E : byte)
 T_1956: (in a_447 @ 033E : Eq_20)
   Class: Eq_20
   DataType: Eq_20
-  OrigDataType: uint8
+  OrigDataType: byte
 T_1957: (in 2<8> @ 0340 : byte)
   Class: Eq_1957
   DataType: byte
@@ -9699,7 +9699,7 @@ T_1999: (in Mem203[0x0034<p16>:byte] @ 02BF : byte)
 T_2000: (in a_234 @ 02BF : Eq_20)
   Class: Eq_20
   DataType: Eq_20
-  OrigDataType: uint8
+  OrigDataType: byte
 T_2001: (in 2<8> @ 02C1 : byte)
   Class: Eq_2001
   DataType: byte
@@ -10459,7 +10459,7 @@ T_2189: (in Mem387[sp_374 + 0<16>:byte] @ 031B : byte)
 T_2190: (in a_391 @ 031B : Eq_20)
   Class: Eq_20
   DataType: Eq_20
-  OrigDataType: uint8
+  OrigDataType: byte
 T_2191: (in 1<i16> @ 031B : int16)
   Class: Eq_2191
   DataType: int16
@@ -10667,7 +10667,7 @@ T_2241: (in Mem169[sp_72 + 0<16>:byte] @ 023D : byte)
 T_2242: (in a_173 @ 023D : Eq_20)
   Class: Eq_20
   DataType: Eq_20
-  OrigDataType: uint8
+  OrigDataType: byte
 T_2243: (in 1<i16> @ 023D : int16)
   Class: Eq_2243
   DataType: int16
@@ -10867,7 +10867,7 @@ T_2291: (in Mem129[sp_72 + 0<16>:byte] @ 0225 : byte)
 T_2292: (in a_133 @ 0225 : Eq_20)
   Class: Eq_20
   DataType: Eq_20
-  OrigDataType: uint8
+  OrigDataType: byte
 T_2293: (in 1<i16> @ 0225 : int16)
   Class: Eq_2293
   DataType: int16
@@ -11638,12 +11638,12 @@ T_2484: (in 2<8> @ 05D1 : byte)
   OrigDataType: byte
 T_2485: (in __in(2<8>) @ 05D1 : byte)
   Class: Eq_2485
-  DataType: uint8
+  DataType: byte
   OrigDataType: byte
-T_2486: (in a_10 @ 05D1 : uint8)
+T_2486: (in a_10 @ 05D1 : byte)
   Class: Eq_2485
-  DataType: uint8
-  OrigDataType: uint8
+  DataType: byte
+  OrigDataType: byte
 T_2487: (in Mem8[0x0000<p16>:byte] @ 05D3 : byte)
   Class: Eq_20
   DataType: Eq_20
@@ -12103,7 +12103,7 @@ typedef bool (Eq_2454)(byte, byte);
 
 typedef Eq_20 (Eq_2476)();
 
-typedef uint8 (Eq_2482)(byte);
+typedef byte (Eq_2482)(byte);
 
 typedef struct Eq_2516 {
 	Eq_20 t0000;	// 0
