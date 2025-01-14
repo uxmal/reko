@@ -75,18 +75,18 @@ Eq_142: (union "Eq_142" (int32 u0) (uint64 u1))
 	T_165 (in r11_41->dw00A4 - 2<i32> @ 00000000000007C8 : word32)
 	T_172 (in CONVERT(fib(r11_41->dw00A4 - 2<i32>, out r10_63, out r11_22) + SLICE(r10_63, int32, 0), uint32, uint64) @ 00000000000007C8 : uint64)
 	T_173 (in r1_76 @ 00000000000007C8 : Eq_142)
-	T_186 (in SLICE(r2_105, uipr32, 0) @ 00000000000007DE : uipr32)
-	T_189 (in 0xA<32> @ 000000000000080A : uipr32)
-Eq_143: (union "Eq_143" (uipr32 u0) (word64 u1))
+	T_186 (in SLICE(r2_105, word32, 0) @ 00000000000007DE : word32)
+	T_189 (in 0xA<32> @ 000000000000080A : word32)
+Eq_143: (union "Eq_143" (word64 u0) (word32 u1))
 	T_143 (in r10Out @ 0000000000000746 : Eq_143)
-	T_156 (in out r10_121 @ 00000000000007A2 : uipr32)
-	T_167 (in out r10_63 @ 00000000000007C8 : uipr32)
+	T_156 (in out r10_121 @ 00000000000007A2 : word32)
+	T_167 (in out r10_63 @ 00000000000007C8 : word32)
 	T_183 (in r10_100 @ 00000000000007DE : Eq_143)
-	T_191 (in out r10_71 @ 000000000000080A : uipr32)
+	T_191 (in out r10_71 @ 000000000000080A : word32)
 Eq_147: (struct "Eq_147" (118 (ptr64 code) ptr0118))
 	T_147 (in fp - 328<i64> @ 0000000000000772 : word64)
 	T_148 (in r11_22 @ 0000000000000772 : (ptr64 Eq_147))
-Eq_151: (fn uipr32 (Eq_142, Eq_143, ptr64))
+Eq_151: (fn word32 (Eq_142, Eq_143, ptr64))
 	T_151 (in fib @ 00000000000007A2 : ptr64)
 	T_152 (in signature of fib @ 0000000000000768 : void)
 	T_160 (in fib @ 00000000000007C8 : ptr64)
@@ -679,7 +679,7 @@ T_142: (in r2 @ 0000000000000746 : Eq_142)
 T_143: (in r10Out @ 0000000000000746 : Eq_143)
   Class: Eq_143
   DataType: Eq_143
-  OrigDataType: uipr32
+  OrigDataType: word32
 T_144: (in r11Out @ 0000000000000746 : ptr64)
   Class: Eq_144
   DataType: ptr64
@@ -724,14 +724,14 @@ T_154: (in r2 - 1<i32> @ 00000000000007A2 : word32)
   Class: Eq_142
   DataType: Eq_142
   OrigDataType: (union (uint64 u1) (int32 u0))
-T_155: (in r10_121 @ 00000000000007A2 : uipr32)
+T_155: (in r10_121 @ 00000000000007A2 : word32)
   Class: Eq_155
-  DataType: uipr32
-  OrigDataType: uipr32
-T_156: (in out r10_121 @ 00000000000007A2 : uipr32)
+  DataType: word32
+  OrigDataType: word32
+T_156: (in out r10_121 @ 00000000000007A2 : word32)
   Class: Eq_143
   DataType: Eq_143
-  OrigDataType: uipr32
+  OrigDataType: word32
 T_157: (in r11_41 @ 00000000000007A2 : (ptr64 Eq_157))
   Class: Eq_157
   DataType: (ptr64 Eq_157)
@@ -740,10 +740,10 @@ T_158: (in out r11_41 @ 00000000000007A2 : word64)
   Class: Eq_144
   DataType: ptr64
   OrigDataType: word64
-T_159: (in fib(r2 - 1<i32>, out r10_121, out r11_41) @ 00000000000007A2 : uipr32)
+T_159: (in fib(r2 - 1<i32>, out r10_121, out r11_41) @ 00000000000007A2 : word32)
   Class: Eq_159
-  DataType: uipr32
-  OrigDataType: uipr32
+  DataType: word32
+  OrigDataType: word32
 T_160: (in fib @ 00000000000007C8 : ptr64)
   Class: Eq_151
   DataType: (ptr64 Eq_151)
@@ -767,23 +767,23 @@ T_164: (in 2<i32> @ 00000000000007C8 : int32)
 T_165: (in r11_41->dw00A4 - 2<i32> @ 00000000000007C8 : word32)
   Class: Eq_142
   DataType: Eq_142
-  OrigDataType: uipr32
+  OrigDataType: word32
 T_166: (in r10_63 @ 00000000000007C8 : word64)
   Class: Eq_166
   DataType: word64
   OrigDataType: word64
-T_167: (in out r10_63 @ 00000000000007C8 : uipr32)
+T_167: (in out r10_63 @ 00000000000007C8 : word32)
   Class: Eq_143
   DataType: Eq_143
-  OrigDataType: (union (uipr32 u1) (word64 u0))
+  OrigDataType: (union (word64 u0) (word32 u1))
 T_168: (in out r11_22 @ 00000000000007C8 : word64)
   Class: Eq_144
   DataType: ptr64
   OrigDataType: ptr64
-T_169: (in fib(r11_41->dw00A4 - 2<i32>, out r10_63, out r11_22) @ 00000000000007C8 : uipr32)
+T_169: (in fib(r11_41->dw00A4 - 2<i32>, out r10_63, out r11_22) @ 00000000000007C8 : word32)
   Class: Eq_159
-  DataType: uipr32
-  OrigDataType: uipr32
+  DataType: word32
+  OrigDataType: word32
 T_170: (in SLICE(r10_63, int32, 0) @ 00000000000007C8 : int32)
   Class: Eq_170
   DataType: int32
@@ -848,10 +848,10 @@ T_185: (in r2_105 @ 00000000000007DE : word64)
   Class: Eq_185
   DataType: word64
   OrigDataType: word64
-T_186: (in SLICE(r2_105, uipr32, 0) @ 00000000000007DE : uipr32)
+T_186: (in SLICE(r2_105, word32, 0) @ 00000000000007DE : word32)
   Class: Eq_142
   DataType: Eq_142
-  OrigDataType: uipr32
+  OrigDataType: word32
 T_187: (in r3 @ 00000000000007DE : word64)
   Class: Eq_187
   DataType: word64
@@ -860,18 +860,18 @@ T_188: (in fib @ 000000000000080A : ptr64)
   Class: Eq_151
   DataType: (ptr64 Eq_151)
   OrigDataType: (ptr64 (fn T_194 (T_189, T_191, T_193)))
-T_189: (in 0xA<32> @ 000000000000080A : uipr32)
+T_189: (in 0xA<32> @ 000000000000080A : word32)
   Class: Eq_142
   DataType: int32
-  OrigDataType: uipr32
-T_190: (in r10_71 @ 000000000000080A : uipr32)
+  OrigDataType: word32
+T_190: (in r10_71 @ 000000000000080A : word32)
   Class: Eq_190
-  DataType: uipr32
-  OrigDataType: uipr32
-T_191: (in out r10_71 @ 000000000000080A : uipr32)
+  DataType: word32
+  OrigDataType: word32
+T_191: (in out r10_71 @ 000000000000080A : word32)
   Class: Eq_143
   DataType: Eq_143
-  OrigDataType: uipr32
+  OrigDataType: word32
 T_192: (in r11_30 @ 000000000000080A : (ptr64 Eq_192))
   Class: Eq_192
   DataType: (ptr64 Eq_192)
@@ -880,10 +880,10 @@ T_193: (in out r11_30 @ 000000000000080A : word64)
   Class: Eq_144
   DataType: ptr64
   OrigDataType: word64
-T_194: (in fib(0xA<32>, out r10_71, out r11_30) @ 000000000000080A : uipr32)
+T_194: (in fib(0xA<32>, out r10_71, out r11_30) @ 000000000000080A : word32)
   Class: Eq_159
-  DataType: uipr32
-  OrigDataType: uipr32
+  DataType: word32
+  OrigDataType: word32
 T_195: (in CONVERT(fib(0xA<32>, out r10_71, out r11_30), word32, int64) @ 000000000000080A : int64)
   Class: Eq_195
   DataType: int64
@@ -1209,15 +1209,15 @@ typedef union Eq_142 {
 } Eq_142;
 
 typedef union Eq_143 {
-	uipr32 u0;
-	word64 u1;
+	word64 u0;
+	word32 u1;
 } Eq_143;
 
 typedef struct Eq_147 {
 	<anonymous> * ptr0118;	// 118
 } Eq_147;
 
-typedef uipr32 (Eq_151)(Eq_142, Eq_143, ptr64);
+typedef word32 (Eq_151)(Eq_142, Eq_143, ptr64);
 
 typedef union Eq_153 {
 	int32 u0;

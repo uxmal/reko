@@ -2993,10 +2993,10 @@ T_384: (in Mem320[rbx_313 + 56<i64>:word32] @ 0000000100001EB4 : word32)
   Class: Eq_381
   DataType: word32
   OrigDataType: word32
-T_385: (in strerror(rbx_313->dw0038) @ 0000000100001EB4 : uipr56)
+T_385: (in strerror(rbx_313->dw0038) @ 0000000100001EB4 : word56)
   Class: Eq_385
   DataType: uint56
-  OrigDataType: uipr56
+  OrigDataType: word56
 T_386: (in warnx @ 0000000100001ECC : ptr64)
   Class: Eq_386
   DataType: (ptr64 Eq_386)
@@ -4313,7 +4313,7 @@ T_714: (in Mem143[rax_126 + 56<i64>:word32] @ 00000001000024C9 : word32)
   Class: Eq_381
   DataType: word32
   OrigDataType: word32
-T_715: (in strerror(rax_126->dw0038) @ 00000001000024C9 : uipr56)
+T_715: (in strerror(rax_126->dw0038) @ 00000001000024C9 : word56)
   Class: Eq_385
   DataType: uint56
   OrigDataType: uint56
@@ -4761,7 +4761,7 @@ T_826: (in SLICE(rdi_166, word32, 0) @ 0000000100002601 : word32)
   Class: Eq_381
   DataType: word32
   OrigDataType: word32
-T_827: (in strerror((word32) rdi_166) @ 0000000100002601 : uipr56)
+T_827: (in strerror((word32) rdi_166) @ 0000000100002601 : word56)
   Class: Eq_385
   DataType: uint56
   OrigDataType: uint56
@@ -11759,10 +11759,10 @@ T_2571: (in Mem611[rax_708 + 0<64>:word32] @ 00000001000041F8 : word32)
   Class: Eq_381
   DataType: word32
   OrigDataType: word32
-T_2572: (in strerror(*rax_708) @ 00000001000041F8 : uipr56)
+T_2572: (in strerror(*rax_708) @ 00000001000041F8 : word56)
   Class: Eq_385
   DataType: uint56
-  OrigDataType: uipr56
+  OrigDataType: word56
 T_2573: (in fprintf @ 0000000100004220 : ptr64)
   Class: Eq_1494
   DataType: (ptr64 Eq_1494)
@@ -16058,10 +16058,10 @@ T_3643: (in strdup(rdi) @ 0000000100004F10 : (ptr64 char))
   Class: Eq_3639
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
-T_3644: (in rax @ 0000000100004F10 : uipr56)
+T_3644: (in rax @ 0000000100004F10 : word56)
   Class: Eq_3644
-  DataType: uipr56
-  OrigDataType: uipr56
+  DataType: word56
+  OrigDataType: word56
 T_3645: (in strerror @ 0000000100004F16 : ptr64)
   Class: Eq_3645
   DataType: (ptr64 Eq_3645)
@@ -16086,10 +16086,10 @@ T_3650: (in strerror((int32) rdi) @ 0000000100004F16 : (ptr64 char))
   Class: Eq_3650
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
-T_3651: (in SLICE(strerror((int32) rdi), uipr56, 0) @ 0000000100004F16 : uipr56)
+T_3651: (in SLICE(strerror((int32) rdi), word56, 0) @ 0000000100004F16 : word56)
   Class: Eq_3644
-  DataType: uipr56
-  OrigDataType: uipr56
+  DataType: word56
+  OrigDataType: word56
 T_3652: (in strftime @ 0000000100004F1C : ptr64)
   Class: Eq_3652
   DataType: (ptr64 Eq_3652)

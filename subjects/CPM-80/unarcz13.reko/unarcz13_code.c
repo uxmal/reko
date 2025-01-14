@@ -204,16 +204,16 @@ void fn021B()
 {
 	byte * de;
 	fn0D12(de);
-	cui8 af_n;
+	byte af_n;
 	fn021E(out af_n);
 }
 
-// 021E: FlagGroup byte fn021E(Register out cui8 afOut)
+// 021E: FlagGroup byte fn021E(Register out byte afOut)
 // Called from:
 //      fn01FB
 //      fn0226
 //      fn04F3
-byte fn021E(cui8 & afOut)
+byte fn021E(byte & afOut)
 {
 	byte * de;
 	fn0221(de);
@@ -674,7 +674,7 @@ byte fn04EE(byte * de, byte & bOut, struct Eq_n & hlOut, struct Eq_n & hl'Out)
 //      fn0CE1
 byte fn04F3(struct Eq_n & afOut)
 {
-	cui8 af_n;
+	byte af_n;
 	uint8 a_n = C_STAT();
 	byte SZ_n = cond(a_n);
 	if (a_n != 0x00)
@@ -793,11 +793,11 @@ struct Eq_n * fn052E(byte & bOut, byte & deOut, word16 & hlOut)
 	return (struct Eq_n *) <invalid>;
 }
 
-// 0531: Register cui8 fn0531(Register out word16 bcOut, Register out word16 deOut, Register out word16 hlOut)
+// 0531: Register byte fn0531(Register out word16 bcOut, Register out word16 deOut, Register out word16 hlOut)
 // Called from:
 //      fn0515
 //      fn052E
-cui8 fn0531(word16 & bcOut, word16 & deOut, word16 & hlOut)
+byte fn0531(word16 & bcOut, word16 & deOut, word16 & hlOut)
 {
 	Eq_n hl_n = *(union Eq_n *) 0x1767;
 	byte l_n = (byte) hl_n;
@@ -827,11 +827,11 @@ cui8 fn0531(word16 & bcOut, word16 & deOut, word16 & hlOut)
 	}
 }
 
-// 0538: Register cui8 fn0538(Register Eq_n hl, Register out word16 bcOut, Register out word16 deOut, Register out word16 hlOut)
+// 0538: Register byte fn0538(Register Eq_n hl, Register out word16 bcOut, Register out word16 deOut, Register out word16 hlOut)
 // Called from:
 //      fn052E
 //      fn0531
-cui8 fn0538(Eq_n hl, word16 & bcOut, word16 & deOut, word16 & hlOut)
+byte fn0538(Eq_n hl, word16 & bcOut, word16 & deOut, word16 & hlOut)
 {
 	*(union Eq_n *) 0x1767 = hl;
 	word16 wArg04;

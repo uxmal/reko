@@ -204,7 +204,7 @@ l021B_thunk_fn021E:
 fn021B_exit:
 
 
-byte fn021E(cui8 & afOut)
+byte fn021E(byte & afOut)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -897,7 +897,7 @@ l0530_thunk_fn0531:
 fn052E_exit:
 
 
-cui8 fn0531(word16 & bcOut, word16 & deOut, word16 & hlOut)
+byte fn0531(word16 & bcOut, word16 & deOut, word16 & hlOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -930,7 +930,7 @@ l0535_thunk_fn0538:
 fn0531_exit:
 
 
-cui8 fn0538(word16 hl, word16 & bcOut, word16 & deOut, word16 & hlOut)
+byte fn0538(word16 hl, word16 & bcOut, word16 & deOut, word16 & hlOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:

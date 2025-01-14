@@ -74,7 +74,7 @@ Eq_71: (fn word64 (word64))
 Eq_76: (fn void ())
 	T_76 (in register_tm_clones @ 0000000000001160 : ptr64)
 	T_77 (in signature of register_tm_clones @ 00000000000010E0 : void)
-Eq_79: (union "Eq_79" (uint32 u0) (real32 u1) (real64 u2))
+Eq_79: (union "Eq_79" (real32 u0) (real64 u1) (up32 u2))
 	T_79 (in xmm0 @ 0000000000001160 : Eq_79)
 	T_96 (in (1.5F - ((xmm0 *32 0.5F) * eax_12) * eax_12) * eax_12 @ 00000000000011A5 : real32)
 	T_97 (in xmm0 @ 00000000000011A5 : Eq_79)
@@ -513,10 +513,10 @@ T_96: (in (1.5F - ((xmm0 *32 0.5F) * eax_12) * eax_12) * eax_12 @ 00000000000011
 T_97: (in xmm0 @ 00000000000011A5 : Eq_79)
   Class: Eq_79
   DataType: Eq_79
-  OrigDataType: (union (uint32 u0) (real32 u1) (real64 u2))
+  OrigDataType: (union (real32 u0) (real64 u2) (up32 u1))
 T_98: (in 0.0F @ 00000000000011AD : real32)
   Class: Eq_79
-  DataType: uint32
+  DataType: real32
   OrigDataType: (union (real32 u0) (up32 u1))
 T_99: (in xmm0 < 0.0F @ 00000000000011AD : bool)
   Class: Eq_99
@@ -699,10 +699,10 @@ T_143: (in dwLoc20 @ 0000000000001222 : int32)
   Class: Eq_80
   DataType: int32
   OrigDataType: word32
-T_144: (in Q_rsqrt(strtof(rdi_17, 0x0000000000000000<p64>), dwLoc20) @ 0000000000001222 : uir32)
+T_144: (in Q_rsqrt(strtof(rdi_17, 0x0000000000000000<p64>), dwLoc20) @ 0000000000001222 : word32)
   Class: Eq_144
   DataType: real32
-  OrigDataType: uir32
+  OrigDataType: word32
 T_145: (in rLoc0C_61 @ 0000000000001222 : real32)
   Class: Eq_144
   DataType: real32
@@ -715,10 +715,10 @@ T_147: (in signature of lib_rsqrt @ 00000000000011A6 : void)
   Class: Eq_146
   DataType: (ptr64 Eq_146)
   OrigDataType: 
-T_148: (in lib_rsqrt(rLoc10_59) @ 0000000000001233 : uir32)
+T_148: (in lib_rsqrt(rLoc10_59) @ 0000000000001233 : word32)
   Class: Eq_148
   DataType: real32
-  OrigDataType: uir32
+  OrigDataType: word32
 T_149: (in rLoc10_62 @ 0000000000001233 : real32)
   Class: Eq_148
   DataType: real32
@@ -954,9 +954,9 @@ typedef word64 (Eq_71)(word64);
 typedef void (Eq_76)();
 
 typedef union Eq_79 {
-	uint32 u0;
-	real32 u1;
-	real64 u2;
+	real32 u0;
+	real64 u1;
+	up32 u2;
 } Eq_79;
 
 typedef real32 (Eq_100)(Eq_79);

@@ -3159,7 +3159,7 @@ Eq_10444: (struct "Eq_10444" (4 word32 dw0004) (8 word32 dw0008) (10 ptr32 ptr00
 	T_10444 (in ap_113 @ 0001064C : (ptr32 Eq_10444))
 Eq_10471: (struct "Eq_10471" (8 (ptr32 Eq_7706) ptr0008) (C word32 dw000C))
 	T_10471 (in fp_145 @ 00010670 : (ptr32 Eq_10471))
-Eq_10516: (fn uipr16 ((ptr32 Eq_7704), (ptr32 Eq_7705), (ptr32 Eq_7706), word32))
+Eq_10516: (fn word16 ((ptr32 Eq_7704), (ptr32 Eq_7705), (ptr32 Eq_7706), word32))
 	T_10516 (in fn0000E25A @ 000106A4 : ptr32)
 	T_10517 (in signature of fn0000E25A @ 0000E25A : void)
 Eq_10531: (struct "Eq_10531" (84 word32 dw0084) (C5F7 word32 dwC5F7) (C5FB word32 dwC5FB) (C6C5 word32 dwC6C5) (C6C9 word32 dwC6C9) (C6CD word32 dwC6CD))
@@ -36738,10 +36738,10 @@ T_7702: (in 0<32> @ 0000E257 : word32)
   Class: Eq_7658
   DataType: word32
   OrigDataType: word32
-T_7703: (in r0 @ 0000E257 : ui16)
+T_7703: (in r0 @ 0000E257 : cui16)
   Class: Eq_7703
-  DataType: ui16
-  OrigDataType: uipr16
+  DataType: cui16
+  OrigDataType: word16
 T_7704: (in ap @ 0000E257 : (ptr32 Eq_7704))
   Class: Eq_7704
   DataType: (ptr32 Eq_7704)
@@ -36816,11 +36816,11 @@ T_7721: (in CONVERT(Mem0[r2_6 + 0<32>:byte], byte, word16) @ 0000E26D : word16)
   OrigDataType: word16
 T_7722: (in (word16) r2_6->b0001 << 8<16> | (word16) r2_6->b0000 @ 0000E26D : word16)
   Class: Eq_7703
-  DataType: ui16
+  DataType: cui16
   OrigDataType: cui16
-T_7723: (in v13_10 @ 0000E26D : ui16)
+T_7723: (in v13_10 @ 0000E26D : cui16)
   Class: Eq_7703
-  DataType: ui16
+  DataType: cui16
   OrigDataType: cui16
 T_7724: (in 0xC<32> @ 0000E273 : word32)
   Class: Eq_7724
@@ -48077,14 +48077,14 @@ T_10521: (in out fp_19 @ 000106A4 : word32)
   Class: Eq_7707
   DataType: word32
   OrigDataType: word32
-T_10522: (in fn0000E25A(ap, fp, out ap_18, out fp_19) @ 000106A4 : uipr16)
+T_10522: (in fn0000E25A(ap, fp, out ap_18, out fp_19) @ 000106A4 : word16)
   Class: Eq_10522
-  DataType: uipr16
-  OrigDataType: uipr16
-T_10523: (in v19_28 @ 000106A4 : uipr16)
+  DataType: word16
+  OrigDataType: word16
+T_10523: (in v19_28 @ 000106A4 : word16)
   Class: Eq_10522
-  DataType: uipr16
-  OrigDataType: uipr16
+  DataType: word16
+  OrigDataType: word16
 T_10524: (in sp_23 @ 0001069D : (ptr32 Eq_119))
   Class: Eq_119
   DataType: (ptr32 Eq_119)
@@ -97038,7 +97038,7 @@ typedef struct Eq_10471 {
 	word32 dw000C;	// C
 } Eq_10471;
 
-typedef uipr16 (Eq_10516)(Eq_7704 *, Eq_7705 *, Eq_7706 *, word32);
+typedef word16 (Eq_10516)(Eq_7704 *, Eq_7705 *, Eq_7706 *, word32);
 
 typedef struct Eq_10531 {
 	word32 dw0084;	// 84

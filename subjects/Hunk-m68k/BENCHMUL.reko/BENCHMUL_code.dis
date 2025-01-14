@@ -1006,7 +1006,7 @@ l00002060:
 fn00001718_exit:
 
 
-word32 fn00002098(word32 dwArg04, word32 dwArg08, uipr16 & a0Out, word32 & a5Out)
+word32 fn00002098(word32 dwArg04, word32 dwArg08, word16 & a0Out, word32 & a5Out)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1039,7 +1039,7 @@ l000020EA:
 fn00002098_exit:
 
 
-word32 fn000020F4(word32 dwArg04, word32 dwArg08, uipr16 & a0Out, word32 & a5Out)
+word32 fn000020F4(word32 dwArg04, word32 dwArg08, word16 & a0Out, word32 & a5Out)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1115,7 +1115,7 @@ l00002202:
 fn000020F4_exit:
 
 
-word32 fn00002208(word32 dwArg04, uipr16 & a0Out, word32 & a5Out)
+word32 fn00002208(word32 dwArg04, word16 & a0Out, word32 & a5Out)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1170,7 +1170,7 @@ l00002296:
 fn00002208_exit:
 
 
-word32 fn000022B4(word32 dwArg04, uipr16 & a0Out)
+word32 fn000022B4(word32 dwArg04, word16 & a0Out)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1275,7 +1275,7 @@ l0000247C:
 fn000023E8_exit:
 
 
-word32 fn00002484(word32 dwArg04, word32 dwArg08, uipr16 & a0Out)
+word32 fn00002484(word32 dwArg04, word32 dwArg08, word16 & a0Out)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1360,7 +1360,7 @@ l000025A2:
 fn00002484_exit:
 
 
-word32 fn000025A8(word32 dwArg04, word32 dwArg08, word32 dwArg0C, uipr16 & a0Out)
+word32 fn000025A8(word32 dwArg04, word32 dwArg08, word32 dwArg0C, word16 & a0Out)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1450,7 +1450,7 @@ l000026B2:
 fn00002688_exit:
 
 
-ui64 fn000026B8(word64 qwArg04, word64 qwArg0C, uipr16 & a0Out)
+ui64 fn000026B8(word64 qwArg04, word64 qwArg0C, word16 & a0Out)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1891,7 +1891,7 @@ l00002E40:
 fn00002E40_exit:
 
 
-uispr24 fn00002E5C(byte bArg07, word32 dwArg08)
+word24 fn00002E5C(byte bArg07, word32 dwArg08)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1913,7 +1913,7 @@ l00002E7A:
 	Mem26[dwArg08 + 20<i32>:word32] = Mem24[dwArg08 + 20<i32>:word32] + 1<32>
 	Mem29[dwArg08 + 4<i32>:word32] = Mem26[dwArg08 + 4<i32>:word32] - 1<32>
 l00002E86:
-	return SLICE(d0_12, uispr24, 0)
+	return SLICE(d0_12, word24, 0)
 fn00002E5C_exit:
 
 

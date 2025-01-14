@@ -959,7 +959,7 @@ l0000000100004F10:
 strdup_exit:
 
 
-uipr56 strerror(word32 edi)
+word56 strerror(word32 edi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -972,7 +972,7 @@ uipr56 strerror(word32 edi)
 // Preserved: rsp
 strerror_entry:
 l0000000100004F16:
-	return SLICE(strerror(SLICE(rdi, int32, 0)), uipr56, 0)
+	return SLICE(strerror(SLICE(rdi, int32, 0)), word56, 0)
 strerror_exit:
 
 

@@ -99,7 +99,7 @@ l0000000000001160_thunk_register_tm_clones:
 frame_dummy_exit:
 
 
-uir32 Q_rsqrt(uir32 xmm0, word32 dwArg00)
+word32 Q_rsqrt(word32 xmm0, word32 dwArg00)
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -115,7 +115,7 @@ l0000000000001169:
 Q_rsqrt_exit:
 
 
-uir32 lib_rsqrt(uir32 xmm0)
+word32 lib_rsqrt(word32 xmm0)
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:

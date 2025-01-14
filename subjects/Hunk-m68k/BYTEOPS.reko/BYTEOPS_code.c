@@ -839,7 +839,7 @@ l00001BC4:
 					{
 						do
 						{
-							uipr16 a0_n;
+							word16 a0_n;
 							if (fn00001DD8((int32) *(fp + -6 + d2_n), a5_n, out a0_n, out a5_n) == ~0x00)
 							{
 								d0_n = d6_n;
@@ -855,7 +855,7 @@ l00001BC4:
 				{
 					do
 					{
-						uipr16 a0_n;
+						word16 a0_n;
 						if (fn00001DD8(0x30, a5_n, out a0_n, out a5_n) == ~0x00)
 						{
 							d0_n = d6_n;
@@ -869,7 +869,7 @@ l00001BC4:
 				d2_n.u0 = 0x00;
 				while (d2_n < dwLoc0A_n)
 				{
-					uipr16 a0_n;
+					word16 a0_n;
 					if (fn00001DD8((int32) *(a3_n + d2_n), a5_n, out a0_n, out a5_n) == ~0x00)
 					{
 						d0_n = d6_n;
@@ -884,7 +884,7 @@ l00001BC4:
 					up32 d2_n;
 					for (d2_n = 0x00; d2_n < dwLoc44_n; ++d2_n)
 					{
-						uipr16 a0_n;
+						word16 a0_n;
 						d0 = fn00001DD8(0x20, a5_n, out a0_n, out a5_n);
 						if (d0 == ~0x00)
 						{
@@ -899,7 +899,7 @@ l00001BC4:
 			else
 			{
 				++a4_n;
-				uipr16 a0_n;
+				word16 a0_n;
 				d0 = fn00001DD8((int32) *a4_n, a5_n, out a0_n, out a5_n);
 				if (d0 == ~0x00)
 				{
@@ -1633,7 +1633,7 @@ void fn00002A44(struct Eq_n * dwArg04)
 {
 	if (dwArg04 != null)
 	{
-		uipr16 a0_n;
+		word16 a0_n;
 		word32 a5_n;
 		fn00001F48(dwArg04, out a0_n, out a5_n);
 	}
@@ -1644,7 +1644,7 @@ void fn00002A44(struct Eq_n * dwArg04)
 		{
 			if ((a2_n->dw0018 & 0x02) != 0x00)
 			{
-				uipr16 a0_n;
+				word16 a0_n;
 				word32 a5_n;
 				fn00001F48(a2_n, out a0_n, out a5_n);
 			}
@@ -1683,20 +1683,20 @@ void fn00002A88(Eq_n d2, Eq_n dwArg04, Eq_n dwArg08)
 	}
 }
 
-// 00002AC8: Register ui8 fn00002AC8(Register Eq_n d2, Stack Eq_n dwArg04, Stack Eq_n dwArg08)
+// 00002AC8: Register byte fn00002AC8(Register Eq_n d2, Stack Eq_n dwArg04, Stack Eq_n dwArg08)
 // Called from:
 //      fn00001390
-ui8 fn00002AC8(Eq_n d2, Eq_n dwArg04, Eq_n dwArg08)
+byte fn00002AC8(Eq_n d2, Eq_n dwArg04, Eq_n dwArg08)
 {
 	if (dwArg04 > 0x00)
 	{
 		if (dwArg08 > 0x00)
 		{
 			word32 d1_n;
-			return (ui8) fn00002AFA(dwArg04, dwArg08, d2, out d1_n);
+			return (byte) fn00002AFA(dwArg04, dwArg08, d2, out d1_n);
 		}
 		word32 d1_n;
-		return (ui8) -fn00002AFA(dwArg04, -dwArg08, d2, out d1_n);
+		return (byte) -fn00002AFA(dwArg04, -dwArg08, d2, out d1_n);
 	}
 	else
 	{
@@ -1704,10 +1704,10 @@ ui8 fn00002AC8(Eq_n d2, Eq_n dwArg04, Eq_n dwArg08)
 		if (dwArg08 > 0x00)
 		{
 			word32 d1_n;
-			return (ui8) -fn00002AFA(d0_n, dwArg08, d2, out d1_n);
+			return (byte) -fn00002AFA(d0_n, dwArg08, d2, out d1_n);
 		}
 		word32 d1_n;
-		return (ui8) fn00002AFA(d0_n, -dwArg08, d2, out d1_n);
+		return (byte) fn00002AFA(d0_n, -dwArg08, d2, out d1_n);
 	}
 }
 

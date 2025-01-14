@@ -154,7 +154,7 @@ Eq_n msp430_compute_modulator_bits(ui32 r13_r12, uint32 r15_r14, union Eq_n * wA
 		r6_n.u1 = (word16) ((byte) r6_n + 0x01);
 		r11_r10_n = r11_r10_n;
 	} while (r6_n >= 0x08);
-	return (cui8) r7_n;
+	return (byte) r7_n;
 }
 
 // 42CC: void init_uart_isr(Register ui16 r14, Stack ui32 dwArg02, Stack byte bArg06)
@@ -168,7 +168,7 @@ void init_uart_isr(ui16 r14, ui32 dwArg02, byte bArg06)
 	__disable_interrupts();
 	++usCriticalNesting;
 	word16 v19_n = (word16) bArg06;
-	cui8 r6_n;
+	byte r6_n;
 	word16 r7_n;
 	Eq_n r15_n;
 	xQueueCreate(v19_n, out r6_n, out r7_n, out r15_n);

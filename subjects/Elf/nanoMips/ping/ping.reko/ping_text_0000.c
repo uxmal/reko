@@ -512,7 +512,7 @@ void ping4_send_probe(struct Eq_n * r5)
 	Eq_n r4_n;
 	r4_n.u3 = ntransmitted.u3;
 	r5[1] = (struct Eq_n) 0x00;
-	uint32 r4_n = (uint32) fn00400B62((uipr16) r4_n + 0x01);
+	uint32 r4_n = (uint32) fn00400B62((word16) r4_n + 0x01);
 	r5[2] = (struct Eq_n) ident.u1;
 	r5[3] = (struct Eq_n) (word16) r4_n;
 	ptr32 fp;
@@ -686,7 +686,7 @@ word32 fn00400B5E(word32 & r7Out)
 //      ping4_run
 Eq_n fn00400B62(Eq_n r4)
 {
-	return (uipr16) htons(r4);
+	return (word16) htons(r4);
 }
 
 // 00400B66: Register int32 fn00400B66()

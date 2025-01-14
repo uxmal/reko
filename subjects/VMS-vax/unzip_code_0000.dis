@@ -3561,7 +3561,7 @@ l0000DC9C:
 fn0000DC76_exit:
 
 
-uipr16 fn0000E25A(word32 ap, word32 fp, word32 & apOut, word32 & fpOut)
+word16 fn0000E25A(word32 ap, word32 fp, word32 & apOut, word32 & fpOut)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:

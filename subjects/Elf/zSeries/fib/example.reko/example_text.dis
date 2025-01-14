@@ -125,7 +125,7 @@ l0000000000000760:
 	v12_45 = CC_44
 
 
-uipr32 fib(uipr32 r2, uipr32 & r10Out, word64 & r11Out)
+word32 fib(word32 r2, word32 & r10Out, word64 & r11Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -152,7 +152,7 @@ l00000000000007CA:
 		defs: r10:r10_100,r11:r11_101,r2:r2_105
 	r10Out = r10_100
 	r11Out = r11_101
-	return SLICE(r2_105, uipr32, 0)
+	return SLICE(r2_105, word32, 0)
 fib_exit:
 
 

@@ -526,7 +526,7 @@ l00400A20:
 	Mem19[r5 + 1<i32>:byte] = 0<8>
 	r4_20 = Mem19[0x004544E4<p32>:word32]
 	Mem21[r5 + 2<i32>:word16] = 0<16>
-	r4_25 = CONVERT(fn00400B62(SLICE(r4_20, uipr16, 0) + 1<16>), uint16, uint32)
+	r4_25 = CONVERT(fn00400B62(SLICE(r4_20, word16, 0) + 1<16>), uint16, uint32)
 	Mem27[r5 + 4<i32>:word16] = Mem21[0x004544C4<p32>:word16]
 	Mem30[r5 + 6<i32>:word16] = SLICE(r4_25, word16, 0)
 	branch Mem40[0x00454508<p32>:word32] == 0<32> l00400A8C
@@ -700,7 +700,7 @@ l00400B5E_thunk_fprintf:
 fn00400B5E_exit:
 
 
-uipr16 fn00400B62(uipr16 r4)
+word16 fn00400B62(word16 r4)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -714,7 +714,7 @@ uipr16 fn00400B62(uipr16 r4)
 fn00400B62_entry:
 l00400B62:
 l00400B62_thunk_htons:
-	return SLICE(htons(r4), uipr16, 0)
+	return SLICE(htons(r4), word16, 0)
 fn00400B62_exit:
 
 

@@ -520,15 +520,15 @@ char * strdup(char * rdi)
 	return strdup(rdi);
 }
 
-// 0000000100004F16: Register uipr56 strerror(Register word32 edi)
+// 0000000100004F16: Register word56 strerror(Register word32 edi)
 // Called from:
 //      fn0000000100001B4A
 //      fn00000001000023B0
 //      fn0000000100003AA8
-uipr56 strerror(word32 edi)
+word56 strerror(word32 edi)
 {
 	word64 rdi;
-	return (uipr56) strerror((int32) rdi);
+	return (word56) strerror((int32) rdi);
 }
 
 // 0000000100004F1C: void strftime(Register (ptr64 Eq_n) rcx, Register (ptr64 char) rdx, Register Eq_n rsi, Register (ptr64 char) rdi)

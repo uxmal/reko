@@ -6230,7 +6230,7 @@ Eq_12750: (fn void ())
 Eq_12787: (fn (ptr64 char) ((ptr64 char), (ptr64 char), int32))
 	T_12787 (in dcgettext @ 000000000040D7CA : ptr64)
 	T_12788 (in signature of dcgettext : void)
-Eq_12798: (fn (ptr64 Eq_12804) ((ptr32 Eq_11), uispr24))
+Eq_12798: (fn (ptr64 Eq_12804) ((ptr32 Eq_11), word24))
 	T_12798 (in fn0000000000411900 @ 000000000040D7E8 : ptr64)
 	T_12799 (in signature of fn0000000000411900 @ 0000000000411900 : void)
 Eq_12804: (struct "Eq_12804"
@@ -6250,7 +6250,7 @@ Eq_12927: (fn Eq_14 ())
 Eq_12934: (fn void ())
 	T_12934 (in abort @ 000000000040E280 : ptr64)
 	T_12935 (in signature of abort : void)
-Eq_12982: (fn (ptr64 (arr char)) (up32, (ptr64 char), (ptr32 Eq_11), uispr24))
+Eq_12982: (fn (ptr64 (arr char)) (up32, (ptr64 char), (ptr32 Eq_11), word24))
 	T_12982 (in fn000000000040D7B0 @ 000000000040DFFE : ptr64)
 	T_12983 (in signature of fn000000000040D7B0 @ 000000000040D7B0 : void)
 	T_12988 (in fn000000000040D7B0 @ 000000000040E00D : ptr64)
@@ -58415,10 +58415,10 @@ T_12785: (in fs @ 000000000040D7A0 : (ptr32 Eq_11))
   Class: Eq_11
   DataType: (ptr32 Eq_11)
   OrigDataType: (ptr16 (segment))
-T_12786: (in ecxOut @ 000000000040D7A0 : uispr24)
+T_12786: (in ecxOut @ 000000000040D7A0 : word24)
   Class: Eq_12786
-  DataType: uispr24
-  OrigDataType: uispr24
+  DataType: word24
+  OrigDataType: word24
 T_12787: (in dcgettext @ 000000000040D7CA : ptr64)
   Class: Eq_12787
   DataType: (ptr64 Eq_12787)
@@ -58475,18 +58475,18 @@ T_12800: (in fs @ 000000000040D7E8 : (ptr32 Eq_11))
   Class: Eq_11
   DataType: (ptr32 Eq_11)
   OrigDataType: (ptr32 (segment (28 T_17105 t0028)))
-T_12801: (in ecxOut @ 000000000040D7E8 : uispr24)
+T_12801: (in ecxOut @ 000000000040D7E8 : word24)
   Class: Eq_12786
-  DataType: uispr24
-  OrigDataType: uispr24
-T_12802: (in ecx_202 @ 000000000040D7E8 : uispr24)
+  DataType: word24
+  OrigDataType: word24
+T_12802: (in ecx_202 @ 000000000040D7E8 : word24)
   Class: Eq_12802
-  DataType: uispr24
-  OrigDataType: uispr24
-T_12803: (in out ecx_202 @ 000000000040D7E8 : uispr24)
+  DataType: word24
+  OrigDataType: word24
+T_12803: (in out ecx_202 @ 000000000040D7E8 : word24)
   Class: Eq_12786
-  DataType: uispr24
-  OrigDataType: uispr24
+  DataType: word24
+  OrigDataType: word24
 T_12804: (in fn0000000000411900(fs, out ecx_202) @ 000000000040D7E8 : word64)
   Class: Eq_12804
   DataType: (ptr64 Eq_12804)
@@ -58535,10 +58535,10 @@ T_12813: (in dl_45 != 0x55<8> @ 000000000040D7F6 : bool)
   Class: Eq_12813
   DataType: bool
   OrigDataType: bool
-T_12814: (in <invalid> @ 000000000040D7E4 : uispr24)
+T_12814: (in <invalid> @ 000000000040D7E4 : word24)
   Class: Eq_12786
-  DataType: uispr24
-  OrigDataType: uispr24
+  DataType: word24
+  OrigDataType: word24
 T_12815: (in 0x47<8> @ 000000000040D853 : byte)
   Class: Eq_12810
   DataType: byte
@@ -59219,14 +59219,14 @@ T_12984: (in 0x415FF5<u64> @ 000000000040DFFE : uint64)
   Class: Eq_12782
   DataType: (ptr64 char)
   OrigDataType: uint64
-T_12985: (in ecx_3956 @ 000000000040DFFE : uispr24)
+T_12985: (in ecx_3956 @ 000000000040DFFE : word24)
   Class: Eq_12985
-  DataType: uispr24
-  OrigDataType: uispr24
-T_12986: (in out ecx_3956 @ 000000000040DFFE : uispr24)
+  DataType: word24
+  OrigDataType: word24
+T_12986: (in out ecx_3956 @ 000000000040DFFE : word24)
   Class: Eq_12786
-  DataType: uispr24
-  OrigDataType: uispr24
+  DataType: word24
+  OrigDataType: word24
 T_12987: (in fn000000000040D7B0(r8d, "`", fs, out ecx_3956) @ 000000000040DFFE : word64)
   Class: Eq_12910
   DataType: (ptr64 (arr char))
@@ -59239,14 +59239,14 @@ T_12989: (in 0x416DEA<u64> @ 000000000040E00D : uint64)
   Class: Eq_12782
   DataType: (ptr64 char)
   OrigDataType: uint64
-T_12990: (in ecx_3957 @ 000000000040E00D : uispr24)
+T_12990: (in ecx_3957 @ 000000000040E00D : word24)
   Class: Eq_12990
-  DataType: uispr24
-  OrigDataType: uispr24
-T_12991: (in out ecx_3957 @ 000000000040E00D : uispr24)
+  DataType: word24
+  OrigDataType: word24
+T_12991: (in out ecx_3957 @ 000000000040E00D : word24)
   Class: Eq_12786
-  DataType: uispr24
-  OrigDataType: uispr24
+  DataType: word24
+  OrigDataType: word24
 T_12992: (in fn000000000040D7B0(r8d, "'", fs, out ecx_3957) @ 000000000040E00D : word64)
   Class: Eq_12910
   DataType: (ptr64 (arr char))
@@ -81729,7 +81729,7 @@ typedef void (Eq_12750)();
 
 typedef char * (Eq_12787)(char *, char *, int32);
 
-typedef Eq_12804 * (Eq_12798)(Eq_11 *, uispr24);
+typedef Eq_12804 * (Eq_12798)(Eq_11 *, word24);
 
 typedef struct Eq_12804 {
 	byte b0000;	// 0
@@ -81746,7 +81746,7 @@ typedef Eq_14 (Eq_12927)();
 
 typedef void (Eq_12934)();
 
-typedef char *[] (Eq_12982)(up32, char *, Eq_11 *, uispr24);
+typedef char *[] (Eq_12982)(up32, char *, Eq_11 *, word24);
 
 typedef int32 (Eq_13021)(byte *, char *[], Eq_14);
 

@@ -157,14 +157,14 @@ Eq_166: (fn cui16 (cui16, ui16, (ptr16 byte), uint16, word16))
 	T_174 (in xTaskCreate @ 4200 : ptr16)
 	T_175 (in xTaskCreate @ 4200 : ptr16)
 	T_908 (in xTaskCreate @ 0000471C : ptr16)
-Eq_201: (union "Eq_201" (cui8 u0) (word16 u1))
+Eq_201: (union "Eq_201" (byte u0) (word16 u1))
 	T_201 (in r15 @ 4200 : Eq_201)
 	T_205 (in SLICE(r15_r14, word16, 0) @ 420E : word16)
 	T_206 (in r14 @ 420E : Eq_201)
 	T_207 (in SLICE(r15_r14, word16, 16) @ 420E : word16)
 	T_219 (in r10 @ 00004264 : Eq_201)
 	T_220 (in r11 @ 00004264 : Eq_201)
-	T_266 (in SLICE(r7_138, cui8, 0) @ 000042CA : cui8)
+	T_266 (in SLICE(r7_138, byte, 0) @ 000042CA : byte)
 	T_3759 (in Mem6[0x0138<p16>:word16] @ 00005AE0 : word16)
 	T_3768 (in Mem13[0x0138<p16>:word16] @ 00005AF2 : word16)
 	T_3770 (in Mem16[0x0138<p16>:word16] @ 00005AFA : word16)
@@ -238,10 +238,10 @@ Eq_276: (fn (ptr16 Eq_212) (word16, Eq_279, word16, word16))
 	T_276 (in xQueueCreate @ 000042FE : ptr16)
 	T_277 (in signature of xQueueCreate @ 4CC4 : void)
 	T_291 (in xQueueCreate @ 0000430A : ptr16)
-Eq_279: (union "Eq_279" (cui8 u0) (word16 u1))
+Eq_279: (union "Eq_279" (byte u0) (word16 u1))
 	T_279 (in r6Out @ 000042FE : Eq_279)
-	T_283 (in out r6_189 @ 000042FE : cui8)
-	T_293 (in out r6_71 @ 0000430A : cui8)
+	T_283 (in out r6_189 @ 000042FE : byte)
+	T_293 (in out r6_71 @ 0000430A : byte)
 	T_1771 (in r6 @ 00004CDA : Eq_279)
 Eq_286: (union "Eq_286" (byte u0) ((ptr16 Eq_3949) u1))
 	T_286 (in r15_53 @ 000042FE : Eq_286)
@@ -747,7 +747,7 @@ Eq_1450: (fn word16 (ui16, word16, Eq_1454, word16, cup16))
 	T_1451 (in signature of pvPortMalloc @ 5156 : void)
 	T_1470 (in pvPortMalloc @ 00004ADA : ptr16)
 	T_1767 (in pvPortMalloc @ 00004CDA : ptr16)
-Eq_1454: (union "Eq_1454" (cui8 u0) (word16 u1))
+Eq_1454: (union "Eq_1454" (byte u0) (word16 u1))
 	T_1454 (in r6Out @ 00004ACC : Eq_1454)
 	T_1461 (in out r6_18 @ 00004ACC : word16)
 	T_1474 (in out r6_18 @ 00004ADA : word16)
@@ -1863,7 +1863,7 @@ T_200: (in vTaskStartScheduler(xTaskCreate(xTaskCreate(xTaskCreate(xTaskCreate(s
 T_201: (in r15 @ 4200 : Eq_201)
   Class: Eq_201
   DataType: Eq_201
-  OrigDataType: (union (cui8 u0) (word16 u1))
+  OrigDataType: (union (byte u0) (word16 u1))
 T_202: (in r13_r12 @ 4200 : ui32)
   Class: Eq_146
   DataType: ui32
@@ -2120,10 +2120,10 @@ T_265: (in SLICE(r11_r10_215 * 2<32> - -r15_r14, word16, 16) >= 0<16> @ 00004298
   Class: Eq_265
   DataType: bool
   OrigDataType: bool
-T_266: (in SLICE(r7_138, cui8, 0) @ 000042CA : cui8)
+T_266: (in SLICE(r7_138, byte, 0) @ 000042CA : byte)
   Class: Eq_201
   DataType: Eq_201
-  OrigDataType: cui8
+  OrigDataType: byte
 T_267: (in __disable_interrupts @ 000042F4 : ptr32)
   Class: Eq_214
   DataType: (ptr32 Eq_214)
@@ -2175,7 +2175,7 @@ T_278: (in r15 @ 000042FE : word16)
 T_279: (in r6Out @ 000042FE : Eq_279)
   Class: Eq_279
   DataType: Eq_279
-  OrigDataType: cui8
+  OrigDataType: byte
 T_280: (in r7Out @ 000042FE : word16)
   Class: Eq_280
   DataType: word16
@@ -2184,14 +2184,14 @@ T_281: (in r15Out @ 000042FE : word16)
   Class: Eq_281
   DataType: word16
   OrigDataType: word16
-T_282: (in r6_189 @ 000042FE : cui8)
+T_282: (in r6_189 @ 000042FE : byte)
   Class: Eq_282
-  DataType: cui8
-  OrigDataType: cui8
-T_283: (in out r6_189 @ 000042FE : cui8)
+  DataType: byte
+  OrigDataType: byte
+T_283: (in out r6_189 @ 000042FE : byte)
   Class: Eq_279
   DataType: Eq_279
-  OrigDataType: cui8
+  OrigDataType: byte
 T_284: (in r7_190 @ 000042FE : word16)
   Class: Eq_284
   DataType: word16
@@ -2228,10 +2228,10 @@ T_292: (in r6_71 @ 0000430A : word16)
   Class: Eq_292
   DataType: word16
   OrigDataType: word16
-T_293: (in out r6_71 @ 0000430A : cui8)
+T_293: (in out r6_71 @ 0000430A : byte)
   Class: Eq_279
   DataType: Eq_279
-  OrigDataType: (union (cui8 u1) (word16 u0))
+  OrigDataType: (union (byte u1) (word16 u0))
 T_294: (in r7_72 @ 0000430A : word16)
   Class: Eq_294
   DataType: word16
@@ -2324,7 +2324,7 @@ T_316: (in SEQ(r14, r7_72) @ 0000432E : ui32)
   Class: Eq_203
   DataType: uint32
   OrigDataType: ui32
-T_317: (in msp430_compute_modulator_bits(dwArg02, SEQ(r14, r7_72), r4_69) @ 0000432E : cui8)
+T_317: (in msp430_compute_modulator_bits(dwArg02, SEQ(r14, r7_72), r4_69) @ 0000432E : byte)
   Class: Eq_317
   DataType: uint8
   OrigDataType: uint8
@@ -8187,11 +8187,11 @@ T_1770: (in out r5_82 @ 00004CDA : word16)
 T_1771: (in r6 @ 00004CDA : Eq_279)
   Class: Eq_279
   DataType: Eq_279
-  OrigDataType: cui8
+  OrigDataType: byte
 T_1772: (in out r6 @ 00004CDA : word16)
   Class: Eq_1454
   DataType: Eq_1454
-  OrigDataType: (union (cui8 u0) (word16 u1))
+  OrigDataType: (union (byte u0) (word16 u1))
 T_1773: (in r7 @ 00004CDA : word16)
   Class: Eq_280
   DataType: word16
@@ -16222,7 +16222,7 @@ T_3769: (in Mem15[0x0134<p16>:word16] @ 00005AF6 : word16)
 T_3770: (in Mem16[0x0138<p16>:word16] @ 00005AFA : word16)
   Class: Eq_201
   DataType: Eq_201
-  OrigDataType: (union (cui8 u0) (word16 u1))
+  OrigDataType: (union (byte u0) (word16 u1))
 T_3771: (in Mem16[0x013A<p16>:word16] @ 00005B02 : word16)
   Class: Eq_3763
   DataType: ui16
@@ -17039,7 +17039,7 @@ typedef void (Eq_163)(cui16);
 typedef cui16 (Eq_166)(cui16, ui16, byte *, uint16, word16);
 
 typedef union Eq_201 {
-	cui8 u0;
+	byte u0;
 	word16 u1;
 } Eq_201;
 
@@ -17067,7 +17067,7 @@ typedef union Eq_254 {
 typedef Eq_212 * (Eq_276)(word16, Eq_279, word16, word16);
 
 typedef union Eq_279 {
-	cui8 u0;
+	byte u0;
 	word16 u1;
 } Eq_279;
 
@@ -17301,7 +17301,7 @@ typedef void (Eq_1423)();
 typedef word16 (Eq_1450)(ui16, word16, Eq_1454, word16, cup16);
 
 typedef union Eq_1454 {
-	cui8 u0;
+	byte u0;
 	word16 u1;
 } Eq_1454;
 

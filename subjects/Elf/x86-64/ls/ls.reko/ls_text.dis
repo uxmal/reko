@@ -6513,7 +6513,7 @@ l000000000040D754_1:
 	rcx_10 = rcx_10 - 1<64>
 
 
-word64 fn000000000040D7B0(word32 esi, word64 rdi, selector fs, uispr24 & ecxOut)
+word64 fn000000000040D7B0(word32 esi, word64 rdi, selector fs, word24 & ecxOut)
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -9535,7 +9535,7 @@ l00000000004118B4:
 fn0000000000411880_exit:
 
 
-word64 fn0000000000411900(selector fs, uispr24 & ecxOut)
+word64 fn0000000000411900(selector fs, word24 & ecxOut)
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
