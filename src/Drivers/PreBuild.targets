@@ -29,6 +29,8 @@ loaded dynamically (using the services provided by IConfigurationService).
     <Copy SourceFiles="@(OdbgScripts)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Message Importance="high" Text="Copying external binaries to $(TargetDir)" />
     <Copy SourceFiles="@(ExternalComponents)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+    <Message Importance="high" Text="Copying plugins files to $(TargetDir)plugins" />
+    <Copy SourceFiles="@(PluginFiles)" DestinationFolder="$(TargetDir)plugins" SkipUnchangedFiles="true" />
   </Target>
 
 </Project>

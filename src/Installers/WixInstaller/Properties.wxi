@@ -10,12 +10,12 @@
     <?define IsWin64="yes"?>
     <?define PlatformProgramFilesFolder = "ProgramFiles64Folder" ?>
     <?define UpgradeCode="11756789-4124-498B-8866-7F29B60F3389"?>
-    <?define RekoProductCode="2770EC92-873D-4DC6-B858-B1C1677311E2"?>
+    <?define RekoProductCode="B68210A3-B0D7-42D4-B0E0-4E8A653BADBD"?>
   <?else ?>
     <?define ProductName="Reko decompiler for x86" ?>
     <?define IsWin64="no"?>
     <?define PlatformProgramFilesFolder = "ProgramFilesFolder" ?>
     <?define UpgradeCode="267A75B3-F33E-4987-9BF6-114D1A6CE44E"?>
-    <?define RekoProductCode="39032614-C8B9-4881-957E-9E1D3E9FEC09"?>
+    <?define RekoProductCode="4501A8F6-1EE1-4075-B74D-054ECD6BB20D"?>
   <?endif ?>
 </Include>

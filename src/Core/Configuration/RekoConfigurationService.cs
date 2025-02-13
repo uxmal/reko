@@ -19,14 +19,15 @@
 #endregion
 
 using Reko.Core.Machine;
+using Reko.Core.Plugins;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.Loader;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -45,8 +46,50 @@ namespace Reko.Core.Configuration
         ICollection<RawFileDefinition> GetRawFiles();
 
         PlatformDefinition GetEnvironment(string envName);
+
+        /// <summary>
+        /// Given the name of an architecture, creates an instance of that architecture.
+        /// </summary>
+        /// <param name="archLabel">The name of the architecture to load (e.g. "z80").
+        /// The list of supported architectures can be found in the reko.config file.
+        /// Architectures may also be available as plugins (see <see cref="IPlugin"/> 
+        /// for the extension mechanism).</param>
+        /// <returns>An instance of the requested architecture, or null if it couldn't 
+        /// be created.
+        /// </returns>
         IProcessorArchitecture? GetArchitecture(string archLabel);
+
+        /// <summary>
+        /// Given the name of an architecture, and an architecture-specific
+        /// model name, creates an instance of that architecture.
+        /// </summary>
+        /// <param name="archLabel">The name of the architecture to load (e.g. "z80").
+        /// The list of supported architectures can be found in the reko.config file.
+        /// Architectures may also be available as plugins (see <see cref="IPlugin"/> 
+        /// for the extension mechanism).</param>
+        /// <param name="modelName">A CPU model name. This is used when an architecture
+        /// exists in multiple versions (e.g. 8086, 80186, 80286, Pentium) and you 
+        /// wish a specific version. 
+        /// </param>
+        /// <returns>An instance of the requested architecture, or null if it couldn't 
+        /// be created.
+        /// </returns>
         IProcessorArchitecture? GetArchitecture(string archLabel, string? modelName);
+
+        /// <summary>
+        /// Given the name of an architecture, and a dictionary of architecture-specific
+        /// options, creates an instance of that architecture.
+        /// </summary>
+        /// <param name="archLabel">The name of the architecture to load (e.g. "z80").
+        /// The list of supported architectures can be found in the reko.config file.
+        /// Architectures may also be available as plugins (see <see cref="IPlugin"/> 
+        /// for the extension mechanism).</param>
+        /// <param name="options">A dictionary of architecture-specific options, or 
+        /// null if there are none.
+        /// </param>
+        /// <returns>An instance of the requested architecture, or null if it couldn't 
+        /// be created.
+        /// </returns>
         IProcessorArchitecture? GetArchitecture(string archLabel, Dictionary<string, object>? options);
 
         ICollection<SymbolSourceDefinition> GetSymbolSources();
@@ -76,6 +119,7 @@ namespace Reko.Core.Configuration
         private readonly List<SymbolSourceDefinition> symSources;
         private readonly List<RawFileDefinition> rawFiles;
         private readonly UiPreferencesConfiguration uiPreferences;
+        private bool pluginsLoaded;
 
         public RekoConfigurationService(IServiceProvider services, string rekoConfigPath, RekoConfiguration_v1 config)
         {
@@ -314,8 +358,8 @@ namespace Reko.Core.Configuration
         }
 
         private static Dictionary<string, TValue> LoadDictionary<TSrc, TValue>(
-            TSrc[]? sItems, 
-            Func<TSrc, string> fnKey, 
+            TSrc[]? sItems,
+            Func<TSrc, string> fnKey,
             Func<TSrc, TValue> fnValue)
         {
             if (sItems == null)
@@ -355,7 +399,7 @@ namespace Reko.Core.Configuration
             }
 
             using var stm = File.Open(configFileName, FileMode.Open, FileAccess.Read, FileShare.Read);
-             var ser = new XmlSerializer(typeof(RekoConfiguration_v1));
+            var ser = new XmlSerializer(typeof(RekoConfiguration_v1));
             var sConfig = (RekoConfiguration_v1) ser.Deserialize(stm)!;
             var cfg = new RekoConfigurationService(services, configFileName, sConfig);
             return cfg;
@@ -397,6 +441,7 @@ namespace Reko.Core.Configuration
 
         public virtual ICollection<LoaderDefinition> GetImageLoaders()
         {
+            EnsurePlugins();
             return loaders;
         }
 
@@ -407,6 +452,7 @@ namespace Reko.Core.Configuration
 
         public virtual ICollection<ArchitectureDefinition> GetArchitectures()
         {
+            EnsurePlugins();
             return architectures;
         }
 
@@ -470,16 +516,23 @@ namespace Reko.Core.Configuration
         public IProcessorArchitecture? GetArchitecture(string archLabel, Dictionary<string, object>? options)
         {
             var elem = FindArchitectureByLabel(archLabel);
-            if (elem is null || elem.TypeName is null)
+            if (elem is null)
                 return null;
-            options ??= new Dictionary<string, object>();
-            var t = pluginSvc.GetType(elem.TypeName);
+            var t = elem.Type;
             if (t is null)
-                return null;
-            var arch = (IProcessorArchitecture)Activator.CreateInstance(
-                t, 
-                this.services, 
-                elem.Name, 
+            {
+                if (elem.TypeName is null)
+                    return null;
+                t = pluginSvc.GetType(elem.TypeName);
+                if (t is null)
+                    return null;
+                elem.Type = t;
+            }
+            options ??= new Dictionary<string, object>();
+            var arch = (IProcessorArchitecture) Activator.CreateInstance(
+                t,
+                this.services,
+                elem.Name,
                 options)!;
             arch.Description = elem.Description;
             if (arch is ProcessorArchitecture a)
@@ -511,7 +564,7 @@ namespace Reko.Core.Configuration
 
         public virtual LoaderDefinition? GetImageLoader(string loaderName)
         {
-            return loaders.FirstOrDefault(ldr => ldr.Label == loaderName);
+            return GetImageLoaders().FirstOrDefault(ldr => ldr.Label == loaderName);
         }
 
         public virtual RawFileDefinition? GetRawFile(string rawFileFormat)
@@ -526,7 +579,7 @@ namespace Reko.Core.Configuration
             return uiPreferences.Styles;
         }
 
-        public string GetInstallationRelativePath(string[] pathComponents)
+        public string GetInstallationRelativePath(params string[] pathComponents)
         {
             var installationRelvativePath = new List<string> { configFileRoot };
             installationRelvativePath.AddRange(pathComponents);
@@ -544,6 +597,45 @@ namespace Reko.Core.Configuration
                     filename);
             }
             return filename;
+        }
+
+        private void EnsurePlugins()
+        {
+            if (pluginsLoaded)
+                return;
+            pluginsLoaded = true;
+            var plugins = LoadPluginsFromDirectory(GetInstallationRelativePath("plugins"));
+            foreach (var plugin in plugins)
+            {
+                this.architectures.AddRange(plugin.Architectures);
+                this.loaders.AddRange(plugin.Loaders);
+            }
+        }
+
+        private List<IPlugin> LoadPluginsFromDirectory(string directoryName)
+        {
+            var result = new List<IPlugin>();
+            if (!Directory.Exists(directoryName))
+                return result;
+            foreach (var file in Directory.GetFiles(directoryName))
+            {
+                try
+                {
+                    var asmName = Path.Combine(directoryName, file);
+                    var asm = AssemblyLoadContext.Default.LoadFromAssemblyPath(asmName);
+                    foreach (var pluginType in asm.GetTypes()
+                        .Where(t => typeof(IPlugin).IsAssignableFrom(t) &&
+                                    t.IsClass && !t.IsAbstract))
+                    {
+                        if (Activator.CreateInstance(pluginType) is IPlugin plugin)
+                            result.Add(plugin);
+                    }
+                }
+                catch
+                {
+                }
+            }
+            return result;
         }
     }
 }

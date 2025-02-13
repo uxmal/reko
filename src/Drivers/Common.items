@@ -384,6 +384,8 @@ by the PreBuild.targets file.
     <Libraries Include="$(SolutionDir)Libraries\Python\bin\$(StandardOutputDir)\Reko.Libraries.Python.*" />
     <Libraries Include="$(SolutionDir)Libraries\Microchip\Utils\bin\$(Configuration)\Reko.Libraries.Microchip.Utils.*" />
 
+    <PluginFiles Include="$(SolutionDir)Core\Plugins\README.md" />
+
     <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.dll" />
   </ItemGroup>
 

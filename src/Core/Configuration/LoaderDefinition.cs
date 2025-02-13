@@ -44,6 +44,18 @@ namespace Reko.Core.Configuration
         public long Offset { get; set; }
 
         /// <summary>
+        /// The <see cref="System.Type"/> that is responsible for handling this
+        /// format.
+        /// </summary>
+        /// <remarks>
+        /// When locating and creating architecture instances, Reko
+        /// will prefer this property over the <see cref="TypeName"/> property.
+        /// <see cref="Reko.Core.Plugins.IPlugin"/> implementations will typically
+        /// provide this property in preference to <see cref="TypeName"/>.
+        /// </remarks>
+        public Type? Type { get; set; }
+
+        /// <summary>
         /// The assembly-qualified name for the .NET type that is responsible for handling this
         /// format.
         /// </summary>

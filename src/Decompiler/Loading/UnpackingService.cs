@@ -113,12 +113,12 @@ namespace Reko.Loading
                 return loader;
             listener.Info("Signature of '{0}' detected.", signature.Name);
             var le = Services.RequireService<IConfigurationService>().GetImageLoader(signature.Name);  //$REVIEW: all of themn?
-            if (le == null || le.TypeName == null)
+            if (le is null || (le.Type is null && le.TypeName is null))
             {
                 Debug.Print("Signature of '{0}' recognized, but no loader is available for it.", signature.Name);
                 return loader;
             }
-            var unpacker = Loader.CreateOuterImageLoader<ProgramImageLoader>(Services, le.TypeName, loader);
+            var unpacker = Loader.CreateOuterImageLoader<ProgramImageLoader>(Services, le.Type, le.TypeName, loader);
             if (unpacker == null)
             {
                 listener.Warn("Unable to create loader for '{0}'.", signature.Name);

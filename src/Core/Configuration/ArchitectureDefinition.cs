@@ -20,11 +20,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Text;
 
 namespace Reko.Core.Configuration
 {
+    /// <summary>
+    /// Describes an <see cref="IProcessorArchitecture"/>.
+    /// </summary>
     public class ArchitectureDefinition
     {
         /// <summary>
@@ -41,6 +42,17 @@ namespace Reko.Core.Configuration
         /// .NET type name for the architecture.
         /// </summary>
         public string? TypeName { get; set; }
+
+        /// <summary>
+        /// The <see cref="System.Type"/> that implements this architecture.
+        /// </summary>
+        /// <remarks>
+        /// When locating and creating architecture instances, Reko
+        /// will prefer this property over the <see cref="TypeName"/> property.
+        /// <see cref="Reko.Core.Plugins.IPlugin"/> implementations will typically
+        /// provide this property in preference to <see cref="TypeName"/>.
+        /// </remarks>
+        public Type? Type { get; set; }
 
         /// <summary>
         /// Available property options.

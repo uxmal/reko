@@ -50,6 +50,7 @@
             <Directory Id="os2_16Folder" Name="os2-16" /> <!-- Folder for OS/2 16-bit specific files-->
             <Directory Id="os2_32Folder" Name="os2-32" /> <!-- Folder for OS/2 32-bit specific files-->
             <Directory Id="PythonFolder" Name="Python" /> <!-- Folder for Python scripting files-->
+            <Directory Id="pluginsFolder" Name="plugins" /> <!-- Folder for plugins -->
           </Directory>
         </Directory>
       </Directory>
@@ -79,7 +80,12 @@
       <ComponentRef Id="Comp_Os2_16" />
       <ComponentRef Id="Comp_Os2_32" />
       <ComponentRef Id="Comp_Python" />
+      <ComponentRef Id="Comp_Plugins" />
     </Feature>
+
+    <Component Id="Comp_Plugins" Directory="pluginsFolder">
+      <File Source="$(var.SolutionDir)Core\Plugins\README.md" Id="plugin_readme"/>
+    </Component>
 
     <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
 

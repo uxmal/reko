@@ -541,7 +541,7 @@ namespace Reko.Loading
         {
             foreach (LoaderDefinition e in cfgSvc.GetImageLoaders())
             {
-                if (e.TypeName is null)
+                if (e.TypeName is null && e.Type is null)
                     continue;
                 if (!string.IsNullOrEmpty(e.MagicNumber) &&
                     ImageHasMagicNumber(rawBytes, e.MagicNumber!, e.Offset)
@@ -549,7 +549,7 @@ namespace Reko.Loading
                     (!string.IsNullOrEmpty(e.Extension) &&
                         imageLocation.EndsWith(e.Extension, StringComparison.InvariantCultureIgnoreCase)))
                 {
-                    return CreateImageLoader<T>(Services, e.TypeName, imageLocation, rawBytes);
+                    return CreateImageLoader<T>(Services, e.Type, e.TypeName, imageLocation, rawBytes);
                 }
             }
             return default;
@@ -575,26 +575,35 @@ namespace Reko.Loading
         /// </summary>
         public static T CreateImageLoader<T>(
             IServiceProvider services,
-            string typeName,
+            Type? type,
+            string? typeName,
             ImageLocation imageLocation,
             byte[] bytes)
         {
             var svc = services.RequireService<IPluginLoaderService>();
-            var t = svc.GetType(typeName);
-            if (t is null)
+            if (type is null)
+            {
+                if (typeName is null)
+                    throw new ApplicationException("Unable to find loader.");
+                type = svc.GetType(typeName);
+            }
+            if (type is null)
                 throw new ApplicationException(string.Format("Unable to find loader {0}.", typeName));
-            return (T) Activator.CreateInstance(t, services, imageLocation, bytes)!;
+            return (T) Activator.CreateInstance(type, services, imageLocation, bytes)!;
         }
 
         /// <summary>
         /// Creates an <see cref="ImageLoader"/> that wraps an existing ImageLoader.
         /// </summary>
-        public static T CreateOuterImageLoader<T>(IServiceProvider services, string typeName, ImageLoader innerLoader)
+        public static T CreateOuterImageLoader<T>(IServiceProvider services, Type? type, string? typeName, ImageLoader innerLoader)
         {
             var svc = services.RequireService<IPluginLoaderService>();
-            var type = svc.GetType(typeName);
-            if (type == null)
-                throw new ApplicationException(string.Format("Unable to find loader {0}.", typeName));
+            if (type is null && typeName is not null)
+            {
+                type = svc.GetType(typeName);
+            }
+            if (type is null)
+                throw new ApplicationException(string.Format("Unable to find loader {0}.", typeName ?? "(null)"));
             return (T) Activator.CreateInstance(type, innerLoader)!;
         }
 
@@ -616,9 +625,9 @@ namespace Reko.Loading
 
             var cfgSvc = services.RequireService<IConfigurationService>();
             var ldrCfg = cfgSvc.GetImageLoader(loader!);
-            if (ldrCfg != null && ldrCfg.TypeName != null)
+            if (ldrCfg != null && (ldrCfg.TypeName is not null || ldrCfg.Type is not null))
             {
-                return CreateImageLoader<ProgramImageLoader>(services, ldrCfg.TypeName, imageLocation, bytes);
+                return CreateImageLoader<ProgramImageLoader>(services, ldrCfg.Type, ldrCfg.TypeName, imageLocation, bytes);
             }
 
             //$TODO: detect file extensions and load appropriate interpreter.

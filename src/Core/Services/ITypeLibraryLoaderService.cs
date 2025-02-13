@@ -90,10 +90,15 @@ namespace Reko.Core.Services
                 var cfgSvc = services.RequireService<IConfigurationService>();
                 var listener = services.RequireService<IEventListener>();
                 var ldrElement = cfgSvc.GetImageLoader(tlElement.Loader!);
-                if (ldrElement != null && !string.IsNullOrEmpty(ldrElement.TypeName)) 
+                if (ldrElement is not null)
                 {
-                    var svc = services.RequireService<IPluginLoaderService>();
-                    loaderType = svc.GetType(ldrElement.TypeName);
+                    loaderType = ldrElement.Type;
+                    if (loaderType is null && !string.IsNullOrEmpty(ldrElement.TypeName)) 
+                    {
+                        var svc = services.RequireService<IPluginLoaderService>();
+                        loaderType = svc.GetType(ldrElement.TypeName);
+                        ldrElement.Type = loaderType;
+                    }
                 }
                 if (loaderType is null)
                 {
