@@ -48,7 +48,7 @@ namespace Reko.Typing
         private readonly IDecompilerEventListener eventListener;
         private DataType? dereferencedType;
         private Expression? basePtr;
-        private Statement? stmCur;
+        private Statement stmCur;
 
         public TypedExpressionRewriter(Program program, TypeStore store, IDecompilerEventListener eventListener)
         {
@@ -58,6 +58,7 @@ namespace Reko.Typing
             this.compTypes = new DataTypeComparer();
             this.tcr = new TypedConstantRewriter(program, store, eventListener);
             this.unifier = new Unifier();
+            this.stmCur = default!;
         }
 
         public void RewriteProgram(Program program)
@@ -238,7 +239,8 @@ namespace Reko.Typing
                         // when all type variables have been placed into one
                         // massive union. We now give up instead and return 
                         // an un-rewritten expression.
-                        this.eventListener.Error(
+                        this.eventListener.Warn(
+                            eventListener.CreateStatementNavigator(program, stmCur),
                             "Both left and right sides of a binary expression can't be complex types.{0}{1}: {2} vs {3}.",
                             Environment.NewLine, binExp,
                             DataTypeOf(left),

@@ -131,13 +131,12 @@ namespace Reko.Scanning
                 result = null;
                 return false;
             }
-            var addrFormatString = TryReadFormatStringAddress(addrInstr, callee, sig, ab);
-            if (addrFormatString is null)
+            if (!TryReadFormatStringAddress(addrInstr, callee, sig, ab, out var addrFormatString, out var addrPtrFormatString))
             {
                 result = null;
                 return false;
             }
-            this.formatString = ReadCString(PrimitiveType.Char, addrFormatString.Value);
+            this.formatString = ReadCString(PrimitiveType.Char, addrFormatString);
             if (formatString is null)
             {
                 result = null;
@@ -147,7 +146,7 @@ namespace Reko.Scanning
             Debug.Assert(chr.VarargsParserClass != null);
             var argTypes = ParseVarargsFormat(chr.VarargsParserClass, addrInstr, chr);
             var extendedSig = ReplaceVarargs(program.Platform, sig, argTypes);
-            result = new VarargsResult(extendedSig, addrFormatString.Value, formatString);
+            result = new VarargsResult(extendedSig, addrFormatString, formatString);
             return true;
         }
 
@@ -157,8 +156,16 @@ namespace Reko.Scanning
             return e;
         }
 
-        private Address? TryReadFormatStringAddress(Address addrInstr, Expression callee, FunctionType sig, ApplicationBuilder ab)
+        private bool TryReadFormatStringAddress(
+            Address addrInstr,
+            Expression callee,
+            FunctionType sig,
+            ApplicationBuilder ab,
+            out Address addrFormatString,
+            out Address addrPtrToFormatString)
         {
+            addrFormatString = default;
+            addrPtrToFormatString = default;
             var formatIndex = sig.Parameters!.Length - 1;
             if (formatIndex < 0)
                 throw new ApplicationException("Expected variadic function to take at least one parameter.");
@@ -166,20 +173,41 @@ namespace Reko.Scanning
             if (formatParam.Storage is StackStorage stackStorage)
             {
                 var stackAccess = ab.BindInStackArg(stackStorage, 0);
-                if (stackAccess is { } && GetValue(stackAccess) is Constant c && c.IsValid)
+                if (stackAccess is null)
+                    return false;
+                
+                switch (GetValue(stackAccess))
                 {
-                    return program.Platform.MakeAddressFromConstant(c, false)!;
+                case Address addr:
+                    addrFormatString = addr;
+                    return true;
+                case Constant c when c.IsValid:
+                    addrFormatString = program.Platform.MakeAddressFromConstant(c, false)!.Value;
+                    return true;
+                case Identifier id:
+                    var w = ctx.GetValue(id);
+                    if (w is MemoryAccess mem && mem.DataType is PrimitiveType pt)
+                    {
+                        if (mem.EffectiveAddress is not Constant cea)
+                            return false;
+                        var ea = program.Platform.MakeAddressFromConstant(cea, false)!;
+                        if (!arch.Endianness.TryRead(program.Memory, ea.Value, pt, out var dc))
+                            return false;
+                        addrFormatString = program.Platform.MakeAddressFromConstant(dc, false)!.Value;
+                    }
+                    w?.ToString();
+                    return false;
                 }
             }
             else
             {
                 var reg = ab.BindInArg(formatParam.Storage)!;
-                if (program.TryInterpretAsAddress(GetValue(reg), false, out Address addrFormat))
-                    return addrFormat;
+                if (program.TryInterpretAsAddress(GetValue(reg), false, out addrFormatString))
+                    return true;
             }
             // We may need to wait until the analysis stage provides the capability
             // to discover arguments passed on stack.
-            return null;
+            return false;
         }
 
         private StringConstant? ReadCString(PrimitiveType charType, Address addr)

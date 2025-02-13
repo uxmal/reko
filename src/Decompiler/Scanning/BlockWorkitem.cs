@@ -100,7 +100,7 @@ namespace Reko.Scanning
         {
             state.ErrorListener = (message) => { scanner.Warn(ric!.Address, message); };
             blockCur = scanner.FindContainingBlock(addrStart);
-            if (blockCur == null || BlockHasBeenScanned(blockCur))
+            if (blockCur is null || BlockHasBeenScanned(blockCur))
                 return;
 
             frame = blockCur.Procedure.Frame;

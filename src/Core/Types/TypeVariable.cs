@@ -20,7 +20,6 @@
 
 using Reko.Core.Code;
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -72,9 +71,11 @@ namespace Reko.Core.Types
 		/// Inferred DataType corresponding to type variable when equivalence class 
 		/// is taken into consideration.
 		/// </summary>
-		public DataType DataType { get { return dt!; } set {
-                MonitorChange(dt, value);
-                dt = value; } }
+		public DataType DataType
+        {
+            get { return dt!; }
+            set { MonitorChange(dt, value); dt = value; }
+        }
 
 
         private DataType? dt;
@@ -88,7 +89,7 @@ namespace Reko.Core.Types
 		public DataType OriginalDataType
 		{
 			get { return dtOriginal!; }
-			set { dtOriginal = value; }
+			set { MonitorChange(dtOriginal, value); dtOriginal = value; }
 		}
 
 		public override int Size
