@@ -44,13 +44,10 @@ namespace Reko.Gui.Services
             Debug.Assert(program != null);
             var llvi = ShowWindowImpl(program);
             var addr = program.SegmentMap.Segments.Values
-                .Where(s => s.MemoryArea != null)
+                .Where(s => s.MemoryArea is not null)
                 .Select(s => Address.Max(s.Address, s.MemoryArea.BaseAddress))
                 .FirstOrDefault();
-            if (addr != null)
-            {
-                llvi.SelectedAddress = addr;
-            }
+            llvi.SelectedAddress = addr;
         }
 
         public void ShowWindow(Program program)

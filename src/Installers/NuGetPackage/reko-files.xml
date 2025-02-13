@@ -174,11 +174,6 @@
       <File Source="$(var.CmdLine.TargetDir)reko.dll" />
       <File Source="$(var.CmdLine.TargetDir)reko.runtimeconfig.json" />
       
-      <!-- //$TODO: deprecate these -->
-      <File Source="$(var.CmdLine.TargetDir)decompile.exe" />
-      <File Source="$(var.CmdLine.TargetDir)decompile.dll" />
-      <File Source="$(var.CmdLine.TargetDir)decompile.runtimeconfig.json" />
-        
       <!-- Image loaders -->
       <File Source="$(var.AOut.TargetPath)" nuget_target="f:" />
       <File Source="$(var.AOut.ProjectDir)VaxUnix.inc" nuget_target="c:" />

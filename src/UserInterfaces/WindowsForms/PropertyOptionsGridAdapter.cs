@@ -149,9 +149,9 @@ namespace Reko.UserInterfaces.WindowsForms
                 get { return typeof(string); }
             }
 
-            public static DictionaryPropertyDescriptor GetFromContext(ITypeDescriptorContext context)
+            public static DictionaryPropertyDescriptor? GetFromContext(ITypeDescriptorContext context)
             {
-                return (DictionaryPropertyDescriptor)context.PropertyDescriptor;
+                return (DictionaryPropertyDescriptor?)context.PropertyDescriptor;
             }
 
             public override void SetValue(object? component, object? value)
@@ -203,14 +203,16 @@ namespace Reko.UserInterfaces.WindowsForms
             public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext? context)
             {
                 var pd = GetPd(context);
+                if (pd is null)
+                    return new StandardValuesCollection(Array.Empty<object>());
                 return new StandardValuesCollection(
                     pd.Option.Choices
                         .Select(c => c.Value).ToList());
             }
 
-            private static DictionaryPropertyDescriptor GetPd(ITypeDescriptorContext? context)
+            private static DictionaryPropertyDescriptor? GetPd(ITypeDescriptorContext? context)
             {
-                return (DictionaryPropertyDescriptor)context!.PropertyDescriptor;
+                return (DictionaryPropertyDescriptor?)context?.PropertyDescriptor;
             }
         }
 
@@ -223,12 +225,12 @@ namespace Reko.UserInterfaces.WindowsForms
         /// </remarks>
         class PropertyOptionEditor : UITypeEditor
         {
-            public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
+            public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext? context)
             {
                 return UITypeEditorEditStyle.Modal;
             }
 
-            public override object? EditValue(ITypeDescriptorContext context, System.IServiceProvider provider, object value)
+            public override object? EditValue(ITypeDescriptorContext? context, System.IServiceProvider provider, object? value)
             {
                 var svc = provider.RequireService<IWindowsFormsEditorService>();
                 var pd = DictionaryPropertyDescriptor.GetFromContext(context);

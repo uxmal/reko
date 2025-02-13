@@ -42,7 +42,6 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
         private Typeface? font;
         private double fontSize;
         private IBrush ctrlForeColor;
-        private IBrush ctrlBackColor;
 
         public StyleStack(IUiPreferencesService uiPrefSvc, Dictionary<string, AvaloniaProperty> brushes)
         {
@@ -86,8 +85,8 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
             for (int i = stack.Count - 1; i >= 0; --i)
             {
                 var styles = GetStyles(stack[i]);
-                var ff = (IBrush) styles.Select(s => s.Foreground).LastOrDefault(f => f != null);
-                if (ff != null)
+                var ff = (IBrush?) styles.Select(s => s.Foreground).LastOrDefault(f => f != null);
+                if (ff is not null)
                     return ff;
             }
             return CacheBrush(ref fg, this.ctrlForeColor);

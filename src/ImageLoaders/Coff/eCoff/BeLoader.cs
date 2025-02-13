@@ -33,7 +33,7 @@ namespace Reko.ImageLoaders.Coff.eCoff
 {
     public class BeLoader : ProgramImageLoader
     {
-        private aouthdr? opthdr;
+        private AOutHhdr? opthdr;
 
         public BeLoader(IServiceProvider services, ImageLocation imageLocation, byte[] rawImage)
             : base(services, imageLocation, rawImage)
@@ -46,17 +46,17 @@ namespace Reko.ImageLoaders.Coff.eCoff
         public override Program LoadProgram(Address? addrLoad)
         {
             var rdr = new BeImageReader(RawImage);
-            var header = rdr.ReadStruct<filehdr>();
+            var header = rdr.ReadStruct<Filehdr>();
             if (header.f_opthdr != 0)
             {
                 var sectionOffset = rdr.Offset + header.f_opthdr;
-                opthdr = rdr.ReadStruct<aouthdr>();
+                opthdr = rdr.ReadStruct<AOutHhdr>();
                 rdr.Offset = sectionOffset;
             }
-            var sections = new scnhdr[header.f_nscns];
+            var sections = new ScHdr[header.f_nscns];
             for (int i = 0; i < sections.Length; ++i)
             {
-                sections[i] = rdr.ReadStruct<scnhdr>();
+                sections[i] = rdr.ReadStruct<ScHdr>();
             }
             var imgSegments = new ImageSegment[header.f_nscns];
             for (int i = 0; i < sections.Length; ++i)
@@ -77,7 +77,7 @@ namespace Reko.ImageLoaders.Coff.eCoff
             return program;
         }
 
-        private ImageSegment LoadImageSegment(in scnhdr scnhdr)
+        private ImageSegment LoadImageSegment(in ScHdr scnhdr)
         {
             var bytes = new byte[scnhdr.s_size];
             var availableBytes = RawImage.Length - scnhdr.s_scnptr;

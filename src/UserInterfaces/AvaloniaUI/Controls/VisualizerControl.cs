@@ -101,7 +101,6 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
         private ByteMemoryArea? bmem;
         //private VScrollBar vscroll;
         private int pixelSize;
-        private IServiceProvider services;
         private ISelectionService? selSvc;
         private Address addrTopVisible;
 

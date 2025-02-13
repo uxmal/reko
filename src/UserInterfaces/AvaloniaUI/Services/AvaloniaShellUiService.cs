@@ -19,6 +19,7 @@
 #endregion
 
 using Avalonia.Controls;
+using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using Dock.Model.Core;
 using MsBox.Avalonia.Enums;
@@ -196,15 +197,17 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public async ValueTask<string?> ShowOpenFileDialog(string? fileName)
         {
-            var ofd = new OpenFileDialog();
-            ofd.Filters.Add(new FileDialogFilter { Name = "All files", Extensions = new List<string> { "*.*" } });
-            ofd.InitialFileName = fileName;
-            ofd.AllowMultiple = false;
-            var files = await ofd.ShowAsync(mainWindow);
-            if (files is null || files.Length == 0)
+            var options = new FilePickerOpenOptions
+            {
+                FileTypeFilter = [new("All files") { Patterns = ["*.*"] }],
+                SuggestedFileName = fileName,
+                AllowMultiple = false,
+            };
+            var files = await this.mainWindow.StorageProvider.OpenFilePickerAsync(options);
+            if (files is null || files.Count == 0)
                 return null;
             else
-                return files[0];
+                return files[0].Path.AbsolutePath;
         }
 
         public ValueTask<string?> ShowSaveFileDialog(string? fileName)

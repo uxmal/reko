@@ -78,7 +78,6 @@ public class FpuStackReturnGuesser : IAnalysis<SsaState>
         private readonly SsaMutator ssam;
         private readonly SsaIdentifierTransformer ssaIdTransformer;
         private readonly IEventListener listener;
-        private bool changed;
 
         public Worker(SsaState ssa, IEventListener listener)
         {
@@ -95,10 +94,11 @@ public class FpuStackReturnGuesser : IAnalysis<SsaState>
                     sid => sid.DefStatement is not null &&
                     sid.Identifier.Storage == fpuStack)
                 .ToList();
+            bool changed = false;
             foreach (var sid in fpuStackIds)
             {
                 if (listener.IsCanceled())
-                    return this.changed;
+                    return false;
                 if (sid.DefStatement.Instruction is not CallInstruction ci)
                     continue;
                 var callStm = sid.DefStatement;
@@ -106,7 +106,7 @@ public class FpuStackReturnGuesser : IAnalysis<SsaState>
                 // that FPU stack was preserved. Assume that offset is -1
                 // otherwise.
                 int delta = WasUsed(sid) ? -1 : 0;
-                bool changed = ssam.AdjustRegisterAfterCall(callStm, ci, fpuStack, delta);
+                changed |= ssam.AdjustRegisterAfterCall(callStm, ci, fpuStack, delta);
                 var fpuDefs = CreateFpuStackTemporaryBindings(delta);
                 changed |= fpuDefs.Count > 0;
                 AddFpuToCallDefs(fpuDefs, callStm, ci);

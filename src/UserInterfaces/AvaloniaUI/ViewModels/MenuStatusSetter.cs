@@ -69,7 +69,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
                     {
                         if (menu.IsDynamic(i))
                         {
-                            menu.SetText(i, cmdText.Text);
+                            menu.SetText(i, cmdText.Text ?? "");
                             menu.SetStatus(i, cmdStatus.Status);
                             if ((cmdStatus.Status & MenuStatus.Visible) != 0)
                             {

@@ -152,6 +152,7 @@ namespace Reko.Scanning
                     case ')':
                         if (!TryParseAddress(arch, freeFormAreas, iBegin, i - 1, out addrEnd))
                             return false;
+                        Debug.Assert(addrBegin.HasValue);
                         if (addrBegin! >= addrEnd)
                             return false;
                         areas.Add(new SearchArea(program, null, new AddressRange(

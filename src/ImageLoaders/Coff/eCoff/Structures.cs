@@ -42,7 +42,7 @@ namespace Reko.ImageLoaders.Coff.eCoff
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     [Endian(Endianness.BigEndian)]
-    public struct filehdr
+    public struct Filehdr
     {
         public coff_ushort f_magic;
         public coff_ushort f_nscns;
@@ -55,7 +55,7 @@ namespace Reko.ImageLoaders.Coff.eCoff
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     [Endian(Endianness.BigEndian)]
-    public struct aouthdr
+    public struct AOutHhdr
     {
         public coff_ushort magic;
         public coff_ushort vstamp;
@@ -76,7 +76,7 @@ namespace Reko.ImageLoaders.Coff.eCoff
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     [Endian(Endianness.BigEndian)]
-    public struct scnhdr
+    public struct ScHdr
     {
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
         public byte[] s_name;

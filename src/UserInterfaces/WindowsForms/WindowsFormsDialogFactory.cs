@@ -92,7 +92,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public ICallSiteDialog CreateCallSiteDialog(Program program, UserCallData ucd)
         {
-            Debug.Assert(ucd != null);
+            Debug.Assert(ucd is not null);
             var dlg = new CallSiteDialog();
             dlg.Address = ucd.Address;
             dlg.NoReturn.Checked = ucd.NoReturn;

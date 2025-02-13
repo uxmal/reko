@@ -847,11 +847,11 @@ public class HexViewControl : Control, ILogicalScrollable
     {
         private readonly HexViewControl ctrl;
         private Size cellSize;
-        private BrushTheme codeTheme;
-        private BrushTheme dataTheme;
-        private BrushTheme defaultTheme;
-        private BrushTheme selectTheme;
-        private BrushTheme secondarySelectTheme;
+        private BrushTheme? codeTheme;
+        private BrushTheme? dataTheme;
+        private BrushTheme? defaultTheme;
+        private BrushTheme? selectTheme;
+        private BrushTheme? secondarySelectTheme;
         private Brush secondarySelBrush;
         private Geometry arrowUl;
         private Geometry arrowLl;
