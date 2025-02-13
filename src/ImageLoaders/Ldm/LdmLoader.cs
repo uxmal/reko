@@ -615,7 +615,7 @@ namespace Reko.ImageLoaders.Ldm
            By default, the MMU behaves just as though it were not there at all.
          */
 
-        public struct mmureg
+        public struct Mmureg
         {
             public ushort ppa     ;/* : 8;*/
             public ushort reserved;/* : 3;*/
@@ -624,7 +624,7 @@ namespace Reko.ImageLoaders.Ldm
 
             public ushort Value { get; set; }
         }
-        readonly mmureg [,,] pagereg = new mmureg[2,16,16];
+        readonly Mmureg [,,] pagereg = new Mmureg[2,16,16];
 
     }
 }

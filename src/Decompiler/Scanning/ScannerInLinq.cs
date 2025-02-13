@@ -33,9 +33,9 @@ using System.Linq;
 
 namespace Reko.Scanning
 {
-    using block = ScanResults.block;
-    using instr = ScanResults.instr;
-    using link = ScanResults.link;
+    using Block = ScanResults.Block;
+    using Instr = ScanResults.Instr;
+    using Link = ScanResults.Link;
 
     public class ScannerInLinq
     {
@@ -307,7 +307,7 @@ namespace Reko.Scanning
         /// 1 predecessor or successors. These instructions delimit the start and 
         /// end of the basic blocks.
         /// </summary>
-        public static Dictionary<Address, block> BuildBasicBlocks(ScanResults sr)
+        public static Dictionary<Address, Block> BuildBasicBlocks(ScanResults sr)
         {
             // Count and save the # of successors for each instruction.
             foreach (var cSucc in
@@ -328,14 +328,14 @@ namespace Reko.Scanning
                     instr.pred = cPred.Count;
             }
 
-            var the_excluded_edges = new HashSet<link>();
+            var the_excluded_edges = new HashSet<Link>();
             foreach (var instr in sr.FlatInstructions.Values)
             {
                 // All blocks must start with a linear instruction.
                 if ((instr.type & (ushort)InstrClass.Linear) == 0)
                     continue;
                 // Find the instruction that is located directly after instr.
-                if (!sr.FlatInstructions.TryGetValue(instr.addr.ToLinear() + (uint) instr.size, out instr? succ))
+                if (!sr.FlatInstructions.TryGetValue(instr.addr.ToLinear() + (uint) instr.size, out Instr? succ))
                     continue;
                 // If the first instruction was padding the next one must also be padding, 
                 // otherwise we start a new block.
@@ -357,7 +357,7 @@ namespace Reko.Scanning
                     !sr.DirectlyCalledAddresses.ContainsKey(succ.addr))
                 {
                     succ.block_id = instr.block_id;
-                    the_excluded_edges.Add(new link { first = instr.addr, second = succ.addr });
+                    the_excluded_edges.Add(new Link { first = instr.addr, second = succ.addr });
                 }
             }
 
@@ -365,7 +365,7 @@ namespace Reko.Scanning
             var the_blocks =
                 (from i in sr.FlatInstructions.Values
                  group i by i.block_id into g
-                 select new block
+                 select new Block
                  {
                      id = g.Key,
                      instrs = g.OrderBy(ii => ii.addr).ToArray()
@@ -376,7 +376,7 @@ namespace Reko.Scanning
                 (from link in sr.FlatEdges
                 join f in sr.FlatInstructions.Values on link.first equals f.addr
                 where !the_excluded_edges.Contains(link)
-                select new link { first = f.block_id, second = link.second })
+                select new Link { first = f.block_id, second = link.second })
                 .Distinct()
                 .ToList();
             return the_blocks;
@@ -387,7 +387,7 @@ namespace Reko.Scanning
         /// are invalid.
         /// </summary>
         /// <returns>A (hopefully smaller) set of blocks.</returns>
-        public static Dictionary<Address, block> RemoveInvalidBlocks(ScanResults sr, Dictionary<Address, block> blocks)
+        public static Dictionary<Address, Block> RemoveInvalidBlocks(ScanResults sr, Dictionary<Address, Block> blocks)
         {
             // Find transitive closure of bad instructions 
 
@@ -444,7 +444,7 @@ namespace Reko.Scanning
             return blocks;
         }
 
-        private static bool BlockEndsWithCall(block block)
+        private static bool BlockEndsWithCall(Block block)
         {
             int len = block.instrs.Length;
             if (len < 1)
@@ -457,7 +457,7 @@ namespace Reko.Scanning
         public static DiGraph<RtlBlock> BuildIcfg(
             ScanResults sr,
             NamingPolicy namingPolicy,
-            Dictionary<Address, block> blocks)
+            Dictionary<Address, Block> blocks)
         {
             var icfg = new DiGraph<RtlBlock>();
             var map = new Dictionary<Address, RtlBlock>();
@@ -499,13 +499,13 @@ namespace Reko.Scanning
                             e)));
         }
 
-        private void DumpBlocks(ScanResults sr, Dictionary<Address, block> blocks)
+        private void DumpBlocks(ScanResults sr, Dictionary<Address, Block> blocks)
         {
             DumpBlocks(sr, blocks, s => Debug.WriteLine(s));
         }
 
         // Writes the start and end addresses, size, and successor edges of each block, 
-        public void DumpBlocks(ScanResults sr, Dictionary<Address, block> blocks, Action<string> writeLine)
+        public void DumpBlocks(ScanResults sr, Dictionary<Address, Block> blocks, Action<string> writeLine)
         {
             writeLine(
                string.Join(Environment.NewLine,
@@ -544,7 +544,7 @@ namespace Reko.Scanning
             }
         }
 
-        private static void DumpBadBlocks(ScanResults sr, Dictionary<long, block> blocks, IEnumerable<link> edges, HashSet<Address> bad_blocks)
+        private static void DumpBadBlocks(ScanResults sr, Dictionary<long, Block> blocks, IEnumerable<Link> edges, HashSet<Address> bad_blocks)
         {
             Debug.Print(
                 "{0}",
@@ -568,7 +568,7 @@ namespace Reko.Scanning
         }
 
         [Conditional("DEBUG")]
-        private static void Dump(Dictionary<long, block> the_blocks)
+        private static void Dump(Dictionary<long, Block> the_blocks)
         {
             foreach (var block in the_blocks.Values)
             {
@@ -577,7 +577,7 @@ namespace Reko.Scanning
         }
 
         [Conditional("DEBUG")]
-        private static void Dump(IEnumerable<link> edges)
+        private static void Dump(IEnumerable<Link> edges)
         {
             foreach (var link in edges)
             {
@@ -586,7 +586,7 @@ namespace Reko.Scanning
         }
 
         [Conditional("DEBUG")]
-        private static void Dump(IEnumerable<instr> blocks)
+        private static void Dump(IEnumerable<Instr> blocks)
         {
             foreach (var i in blocks)
             {

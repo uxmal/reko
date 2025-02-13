@@ -45,8 +45,8 @@ namespace Reko.Scanning
             this.TransferTargets = new HashSet<Address>();
             this.DirectlyCalledAddresses = new Dictionary<Address, int>();
             this.Instructions = new Dictionary<Address, RtlInstructionCluster>();
-            this.FlatInstructions = new Dictionary<ulong, ScanResults.instr>();
-            this.FlatEdges = new List<link>();
+            this.FlatInstructions = new Dictionary<ulong, ScanResults.Instr>();
+            this.FlatEdges = new List<Link>();
             this.IndirectCalls = new HashSet<Address>();
             this.IndirectJumps = new HashSet<Address>();
             this.Procedures = new List<RtlProcedure>();
@@ -98,8 +98,8 @@ namespace Reko.Scanning
         /// This is a key end result of the scanning stage.
         /// </summary>
         public List<RtlProcedure> Procedures { get; set; }
-        public Dictionary<ulong, instr> FlatInstructions { get;  set; }
-        public List<link> FlatEdges { get; set; }
+        public Dictionary<ulong, Instr> FlatInstructions { get;  set; }
+        public List<Link> FlatEdges { get; set; }
 
         /// <summary>
         /// All the places that were identified as padding.
@@ -180,7 +180,7 @@ namespace Reko.Scanning
 #endif
         }
 
-        public class instr
+        public class Instr
         {
             public Address addr;
             public int size;
@@ -191,14 +191,14 @@ namespace Reko.Scanning
             public RtlInstructionCluster rtl;
         }
 
-        public class link
+        public class Link
         {
             public Address first;
             public Address second;
 
             public override bool Equals(object obj)
             {
-                if (!(obj is link that))
+                if (!(obj is Link that))
                     return false;
                 return that.first == this.first && that.second == this.second;
             }
@@ -214,11 +214,11 @@ namespace Reko.Scanning
             }
         }
 
-        public class block
+        public class Block
         {
             public Address id;                  // Address of block
             public Address component_id;        // Component we're part of.
-            public instr[] instrs;              // The instructions of the block.
+            public Instr[] instrs;              // The instructions of the block.
         }
 
         [Conditional("DEBUG")]

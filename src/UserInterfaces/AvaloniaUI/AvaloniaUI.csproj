@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
 	  <RootNamespace>Reko.UserInterfaces.AvaloniaUI</RootNamespace>
 	  <AssemblyName>Reko.UserInterfaces.AvaloniaUI</AssemblyName>
 	  <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -9,25 +9,25 @@
   </PropertyGroup>
 
   <ItemGroup>
-	<PackageReference Include="Avalonia" Version="11.0.9" />
-	<PackageReference Include="Avalonia.Controls.DataGrid" Version="11.0.9" />
-	<PackageReference Include="Avalonia.Desktop" Version="11.0.9" />
+	<PackageReference Include="Avalonia" Version="11.2.3" />
+	<PackageReference Include="Avalonia.Controls.DataGrid" Version="11.2.3" />
+	<PackageReference Include="Avalonia.Desktop" Version="11.2.3" />
 	<!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-	<PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.9" />
-    <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.9" />
-    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.9" />
-    <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.9" />
+	<PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.2.3" />
+    <PackageReference Include="Avalonia.ReactiveUI" Version="11.2.3" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.3" />
+    <PackageReference Include="Avalonia.Themes.Simple" Version="11.2.3" />
 	  
-    <PackageReference Include="Dock.Avalonia" Version="11.0.0.1" />
+    <PackageReference Include="Dock.Avalonia" Version="11.2.0" />
 	  
-    <PackageReference Include="Dock.Serializer" Version="11.0.0.1" />
-	  <PackageReference Include="Dock.Settings" Version="11.0.0.1" />
-	  <PackageReference Include="Dock.Model" Version="11.0.0.1" />
-    <PackageReference Include="Dock.Model.Avalonia" Version="11.0.0.1" />
-    <PackageReference Include="Dock.Model.ReactiveUI" Version="11.0.0-preview6" />
+    <PackageReference Include="Dock.Serializer" Version="11.2.0" />
+	  <PackageReference Include="Dock.Settings" Version="11.2.0" />
+	  <PackageReference Include="Dock.Model" Version="11.2.0" />
+    <PackageReference Include="Dock.Model.Avalonia" Version="11.2.0" />
+    <PackageReference Include="Dock.Model.ReactiveUI" Version="11.2.0" />
 
     <PackageReference Include="Markdown.Avalonia" Version="11.0.2" />
-    <PackageReference Include="MessageBox.Avalonia" Version="3.1.4" />
+    <PackageReference Include="MessageBox.Avalonia" Version="3.2.0" />
     <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
 
   </ItemGroup>

@@ -4,7 +4,7 @@
   <PropertyGroup>
     <RootNamespace>Reko.ImageLoaders.MzExe</RootNamespace>
     <AssemblyName>Reko.ImageLoaders.MzExe</AssemblyName>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>

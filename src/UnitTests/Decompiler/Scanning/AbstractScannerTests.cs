@@ -106,7 +106,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
             w.WriteLine("{0}: // l:{1}; ft:{2}{3}",
                 block.Name, block.Length, block.FallThrough, block.IsValid ? "" : " (INVALID)");
             w.Write("    // pred:");
-            foreach (var s in g.Predecessors(block))
+            // Sort blocks for stability in unit tests.
+            foreach (var s in g.Predecessors(block).OrderBy(b => b.Address))
             {
                 w.Write(" {0}", s.Name);
             }

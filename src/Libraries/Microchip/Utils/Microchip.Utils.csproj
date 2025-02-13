@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <ProjectGuid>{45E095E9-D7C2-40AA-913B-AB77582AFBB4}</ProjectGuid>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <RootNamespace>Reko.Libraries.Microchip</RootNamespace>
     <AssemblyName>Reko.Libraries.Microchip.Utils</AssemblyName>

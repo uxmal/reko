@@ -2,7 +2,7 @@
 
 	<Import Project="$(ProjectDir)../../Drivers/CommonBuildProperties.items" />
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFramework>net8.0</TargetFramework>
 		<AssemblyName>Reko.Arch.Infineon</AssemblyName>
 		<RootNamespace>Reko.Arch.Infineon</RootNamespace>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>

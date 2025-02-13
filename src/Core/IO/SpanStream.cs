@@ -271,7 +271,7 @@ namespace Reko.Core.IO
 
 		public unsafe void Write<T>(T value) where T : unmanaged {
 			var start = Memory.Span.Slice(pos, sizeof(T));
-            MemoryMarshal.Write(start, ref value);
+            MemoryMarshal.Write(start, in value);
 			pos += sizeof(T);
 		}
 

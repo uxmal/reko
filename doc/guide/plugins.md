@@ -14,7 +14,7 @@ the executable file is located. If you built Reko from source, it will be under 
 * `front-end` is the front end you're extending (e.g. `CmdLine`)
 * `platform` is the host CPU architecture (e.g. `x64`)
 * `configuration` is the configuration you built (e.g. `Debug` or `Release`)
-* `net-version` is the version of the .NET SDK you built Reko with (e.g. `net6.0`)
+* `net-version` is the version of the .NET SDK you built Reko with (e.g. `net8.0`)
 
 If you installed Reko using the MSI installer on Windows, the default location of the installation directory is `C:\Program Files\jklSoft\Reko`.
 

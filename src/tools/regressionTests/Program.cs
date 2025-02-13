@@ -24,7 +24,7 @@ namespace Reko.Tools.regressionTests
 
         private string configuration = "Debug";
         private bool checkOutput = false;
-        private string framework = "net6.0";
+        private string framework = "net8.0";
         private bool stripSuffixes = true;
         private string platform = "x64";
 
@@ -583,7 +583,7 @@ Options:
   -p PLATFORM, --platform=PLATFORM
                         define platform (x86, x64)
   -f FRAMEWORK, --framework=FRAMEWORK
-                        define .NET framework (net6.0)
+                        define .NET framework (net8.0)
   --strip-suffixes=STRIP_SUFFIXES
                         strip number suffixes from SSA identifiers (yes, no)
   -v, --verbose         produce verbose output

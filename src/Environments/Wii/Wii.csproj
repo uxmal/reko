@@ -7,7 +7,7 @@
     <RootNamespace>Reko.Environments.Wii</RootNamespace>
     <AssemblyName>Reko.Environments.Wii</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>

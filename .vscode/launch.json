@@ -10,7 +10,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/src/Drivers/WindowsDecompiler/bin/x64/Debug/net6.0-windows/WindowsDecompiler.exe",
+            "program": "${workspaceFolder}/src/Drivers/WindowsDecompiler/bin/x64/Debug/net8.0-windows/WindowsDecompiler.exe",
             "args": [],
             "cwd": "${workspaceFolder}/src/Drivers/WindowsDecompiler",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console

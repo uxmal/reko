@@ -10,7 +10,7 @@ by the PreBuild.targets file.
     <UnixDllExt Condition="$(IsMac)">dylib</UnixDllExt>
     <UnixDllExt Condition="!$(IsMac)">so</UnixDllExt>
     <!-- Use this for assemblies that are targetting the  .NET Standard profile -->
-    <StandardOutputDir>$(Configuration)\net6.0</StandardOutputDir>
+    <StandardOutputDir>$(Configuration)\net8.0</StandardOutputDir>
   </PropertyGroup>
   
   <ItemGroup>

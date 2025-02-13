@@ -19,7 +19,7 @@ namespace Reko.Tools.specGen
 
     public class ScriptGenerator
     {
-        private const string netVersion = "net6.0";
+        private const string netVersion = "net8.0";
         
         public static List<string> LoadComponentItems(TextReader f)
         {

@@ -11,7 +11,7 @@ namespace Reko.Core.Lib
     {
 
         // Structure to store information of a suffix 
-        struct suffix
+        struct Suffix
         {
             public int index;  // Original index 
             public short rank0;     // Rank
@@ -20,7 +20,7 @@ namespace Reko.Core.Lib
 
         // A comparison function used by sort() to compare two suffixes 
         // Compares two pairs, returns 1 if first pair is smaller 
-        static int cmp(suffix a, suffix b)
+        static int cmp(Suffix a, Suffix b)
         {
             return (a.rank0 == b.rank0)
                         ? (a.rank1 - b.rank1)
@@ -33,7 +33,7 @@ namespace Reko.Core.Lib
         {
             int n = txt.Length;
             // A structure to store suffixes and their indexes 
-            suffix[] suffixes = new suffix[n];
+            Suffix[] suffixes = new Suffix[n];
             var sw = new Stopwatch();
             sw.Start();
             // Store suffixes and their indexes in an array of structures. 

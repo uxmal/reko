@@ -42,8 +42,8 @@ namespace Reko
 {
     public static class AssemblyMetadata
     {
-        public const string AssemblyVersion = "0.11.7.0";
-        public const string AssemblyFileVersion = "0.11.7.0";
+        public const string AssemblyVersion = "0.12.0.0";
+        public const string AssemblyFileVersion = "0.12.0.0";
         public const string Product = "Reko decompiler";
         public const string Copyright = "Copyright © 1999-2025 John Källén";
         public const string Company = "John Källén Konsult AB";

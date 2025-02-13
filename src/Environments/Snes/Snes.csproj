@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <Import Project="$(ProjectDir)../../Drivers/CommonBuildProperties.items" />
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ProjectGuid>{B4704089-C5BD-42ED-B509-8F2C0A528BA1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>Reko.Environments.Snes</RootNamespace>

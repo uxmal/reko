@@ -60,8 +60,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
             this.host = new Mock<IRewriterHost>();
             this.sr = new ScanResults
             {
-                FlatInstructions = new Dictionary<ulong, ScanResults.instr>(),
-                FlatEdges = new List<ScanResults.link>(),
+                FlatInstructions = new Dictionary<ulong, ScanResults.Instr>(),
+                FlatEdges = new List<ScanResults.Link>(),
                 KnownProcedures = new HashSet<Address>(),
                 DirectlyCalledAddresses = new Dictionary<Address, int>()
             };
@@ -146,7 +146,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             program.ImageMap.AddItem(addr, item);
         }
 
-        private void AssertBlocks(string sExp, Dictionary<Address, ScanResults.block> blocks)
+        private void AssertBlocks(string sExp, Dictionary<Address, ScanResults.Block> blocks)
         {
             var sw = new StringWriter();
             this.siq.DumpBlocks(sr, blocks, sw.WriteLine);
@@ -162,7 +162,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
         private void Inst(int uAddr, int len, InstrClass rtlc)
         {
             var addr = Address.Ptr32((uint)uAddr);
-            sr.FlatInstructions.Add(addr.ToLinear(), new ScanResults.instr
+            sr.FlatInstructions.Add(addr.ToLinear(), new ScanResults.Instr
             {
                 addr = addr,
                 size = len,
@@ -174,7 +174,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
         private void Lin(int uAddr, int len, int next)
         {
             var addr = Address.Ptr32((uint)uAddr);
-            sr.FlatInstructions.Add(addr.ToLinear(), new ScanResults.instr
+            sr.FlatInstructions.Add(addr.ToLinear(), new ScanResults.Instr
             {
                 addr = addr,
                 size = len,
@@ -187,7 +187,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
         private void Call(int uAddr, int len, int next, int uAddrDst)
         {
             var addr = Address.Ptr32((uint)uAddr);
-            sr.FlatInstructions.Add(addr.ToLinear(), new ScanResults.instr
+            sr.FlatInstructions.Add(addr.ToLinear(), new ScanResults.Instr
             {
                 addr = addr,
                 size = len,
@@ -200,7 +200,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
         private void Bra(int uAddr, int len, int a, int b)
         {
             var addr = Address.Ptr32((uint)uAddr);
-            sr.FlatInstructions.Add(addr.ToLinear(), new ScanResults.instr
+            sr.FlatInstructions.Add(addr.ToLinear(), new ScanResults.Instr
             {
                 addr = addr,
                 size = len,
@@ -214,7 +214,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
         private void Bad(int uAddr, int len)
         {
             var addr = Address.Ptr32((uint)uAddr);
-            sr.FlatInstructions.Add(addr.ToLinear(), new ScanResults.instr
+            sr.FlatInstructions.Add(addr.ToLinear(), new ScanResults.Instr
             {
                 addr = addr,
                 size = len,
@@ -226,7 +226,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
         private void End(int uAddr, int len)
         {
             var addr = Address.Ptr32((uint)uAddr);
-            sr.FlatInstructions.Add(addr.ToLinear(), new ScanResults.instr
+            sr.FlatInstructions.Add(addr.ToLinear(), new ScanResults.Instr
             {
                 addr = addr,
                 size = len,
@@ -238,7 +238,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
         private void Pad(uint uAddr, int len, int next)
         {
             var addr = Address.Ptr32((uint)uAddr);
-            sr.FlatInstructions.Add(addr.ToLinear(), new ScanResults.instr
+            sr.FlatInstructions.Add(addr.ToLinear(), new ScanResults.Instr
             {
                 addr = addr,
                 size = len,
@@ -251,7 +251,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
         private void Link(Address addrFrom ,int uAddrTo)
         {
             var addrTo = Address.Ptr32((uint)uAddrTo);
-            sr.FlatEdges.Add(new ScanResults.link { first = addrFrom, second = addrTo });
+            sr.FlatEdges.Add(new ScanResults.Link { first = addrFrom, second = addrTo });
         }
 
         private void Given_OverlappingLinearTraces()

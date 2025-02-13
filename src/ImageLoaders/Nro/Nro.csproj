@@ -4,7 +4,7 @@
   <PropertyGroup>
     <AssemblyName>Reko.ImageLoaders.Nro</AssemblyName>
     <RootNamespace>Reko.ImageLoaders.Nro</RootNamespace>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>

@@ -37,9 +37,5 @@ namespace Reko.Core.IRFormat
         public ParserException(string? message, Exception? innerException) : base(message, innerException)
         {
         }
-
-        protected ParserException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
     }
 }
