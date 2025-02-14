@@ -196,6 +196,7 @@ namespace Reko.Environments.BbcMicro
                 arch,
                 new BbcMicroComputer(services, arch));
             program.Location = imageLocation;
+            program.EntryPoints.Add(this.ExecAddress, ImageSymbol.Procedure(arch, this.ExecAddress));
             return program;
         }
 
