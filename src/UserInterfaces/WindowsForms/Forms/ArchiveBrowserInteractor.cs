@@ -74,7 +74,14 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             foreach (ArchiveDirectoryEntry entry in archiveEntries)
             {
                 TreeNode node = new TreeNode();
-                node.Text = entry.Name;
+                if (entry is ArchivedFile file)
+                {
+                    node.Text = $"{file.Name} - {file.Length}";
+                }
+                else
+                {
+                    node.Text = entry.Name;
+                }
                 node.Tag = entry;
                 if (entry is ArchivedFolder folder)
                 {

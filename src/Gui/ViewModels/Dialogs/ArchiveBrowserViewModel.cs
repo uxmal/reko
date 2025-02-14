@@ -18,9 +18,13 @@
  */
 #endregion
 
+using DynamicData;
 using Reko.Core.Loading;
 using Reko.Gui.Reactive;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Reko.Gui.ViewModels.Dialogs
 {
@@ -28,10 +32,12 @@ namespace Reko.Gui.ViewModels.Dialogs
     {
         public ArchiveBrowserViewModel(ICollection<ArchiveDirectoryEntry> archiveEntries)
         {
-            ArchiveEntries = archiveEntries;
+            ArchiveEntries = archiveEntries
+                .Select(e => Create(e))
+                .ToList();
         }
 
-        public ICollection<ArchiveDirectoryEntry> ArchiveEntries { get; }
+        public ICollection<DirectoryEntry> ArchiveEntries { get; }
 
         public bool OkEnabled
         {
@@ -40,7 +46,8 @@ namespace Reko.Gui.ViewModels.Dialogs
         }
         private bool okEnabled;
 
-        public ArchiveDirectoryEntry? SelectedArchiveEntry {
+        public DirectoryEntry? SelectedArchiveEntry
+        {
             get => selectedArchiveEntry;
             set
             {
@@ -48,11 +55,65 @@ namespace Reko.Gui.ViewModels.Dialogs
                 EnableControls();
             }
         }
-        private ArchiveDirectoryEntry? selectedArchiveEntry;
+        private DirectoryEntry? selectedArchiveEntry;
 
         private void EnableControls()
         {
-            OkEnabled = SelectedArchiveEntry is ArchivedFile;
+            OkEnabled = SelectedArchiveEntry is ArchiveFile;
+        }
+
+
+        public static DirectoryEntry Create(ArchiveDirectoryEntry entry)
+        {
+            if (entry is Core.Loading.ArchivedFile file)
+                return new ArchiveFile($"{file.Name} - {file.Length}", file);
+            else if (entry is Core.Loading.ArchivedFolder folder)
+                return new ArchiveFolder(folder.Name, folder);
+            else
+                throw new NotSupportedException();
+        }
+    }
+
+    public abstract class DirectoryEntry : ChangeNotifyingObject
+    {
+        public DirectoryEntry(string name, ArchiveDirectoryEntry e)
+        {
+            this.Name = name;
+            this.Entry = e;
+        }
+
+        public string Name { get; set; }
+        public ArchiveDirectoryEntry Entry { get; }
+    }
+
+    public class ArchiveFile : DirectoryEntry
+    {
+        public ArchiveFile(string name, ArchiveDirectoryEntry e) : base(name, e)
+        {
+        }
+    }
+
+    public class ArchiveFolder : DirectoryEntry
+    {
+        private Core.Loading.ArchivedFolder folder;
+        private ObservableCollection<DirectoryEntry>? entries;
+
+        public ArchiveFolder(string name, Core.Loading.ArchivedFolder f) : base(name, f)
+        {
+            this.folder = f;
+        }
+
+        public ObservableCollection<DirectoryEntry> Entries
+        {
+            get
+            {
+                if (this.entries is null)
+                {
+                    this.entries = new ObservableCollection<DirectoryEntry>(
+                        folder.Entries.Select(e => ArchiveBrowserViewModel.Create(e)));
+                }
+                return this.entries;
+            }
         }
     }
 }

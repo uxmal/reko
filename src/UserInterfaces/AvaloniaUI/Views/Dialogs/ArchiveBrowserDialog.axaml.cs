@@ -42,7 +42,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views.Dialogs
 
         public ICollection<ArchiveDirectoryEntry> ArchiveEntries { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
-        public ArchivedFile? Value { get; private set; }
+        public Core.Loading.ArchivedFile? Value { get; private set; }
 
         public string? Text { get => this.Text; set => this.Text = value; }
 
@@ -52,7 +52,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views.Dialogs
 
         protected void btnOK_Click(object sender, RoutedEventArgs e)
         {
-            this.Value = ((ArchiveBrowserViewModel?) DataContext)?.SelectedArchiveEntry as ArchivedFile;
+            this.Value = ((ArchiveBrowserViewModel?) DataContext)?.SelectedArchiveEntry.Entry as Core.Loading.ArchivedFile;
             this.Close();
         }
 

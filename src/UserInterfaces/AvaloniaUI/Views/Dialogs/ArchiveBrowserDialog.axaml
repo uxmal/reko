@@ -16,11 +16,12 @@
 					  ItemsSource="{Binding ArchiveEntries}"
 					  SelectedItem="{Binding SelectedArchiveEntry}">
 				<TreeView.DataTemplates>
-					<TreeDataTemplate DataType="loading:ArchivedFolder"
-									ItemsSource="{Binding Entries}">
+					<TreeDataTemplate
+						DataType="vm:ViewModels.Dialogs.ArchiveFolder"
+						ItemsSource="{Binding Entries}">
 						<TextBlock Text="{Binding Name}"/>
 					</TreeDataTemplate>
-					<TreeDataTemplate DataType="loading:ArchivedFile">
+					<TreeDataTemplate DataType="vm:ViewModels.Dialogs.ArchiveFile">
 						<TextBlock Text="{Binding Name}"/>
 					</TreeDataTemplate>
 				</TreeView.DataTemplates>
