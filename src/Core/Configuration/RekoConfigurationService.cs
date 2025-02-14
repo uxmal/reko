@@ -622,6 +622,11 @@ namespace Reko.Core.Configuration
                 try
                 {
                     var asmName = Path.Combine(directoryName, file);
+                    using (var fs = File.OpenRead(asmName))
+                    {
+                        if (fs.ReadByte() != 'M' && fs.ReadByte() != 'Z')
+                            continue;
+                    }
                     var asm = AssemblyLoadContext.Default.LoadFromAssemblyPath(asmName);
                     foreach (var pluginType in asm.GetTypes()
                         .Where(t => typeof(IPlugin).IsAssignableFrom(t) &&
