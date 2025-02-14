@@ -18,14 +18,13 @@
  */
 #endregion
 
+using Reko.Arch.Mos6502;
 using Reko.Core;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
 /*
 
@@ -86,20 +85,23 @@ otherwise be unused.
 
 Standard DFS will not recognize the second catalogue, and will allow it
 to be overwritten.
+
+https://area51.dev/bbc/bbcmos/filesystems/dfs/
 */
 namespace Reko.Environments.BbcMicro
 {
     public class DiscFilingSystem : ImageLoader
     {
-        public DiscFilingSystem(IServiceProvider services, ImageLocation imageUri, byte[] rawBytes) : base(services, imageUri, rawBytes)
+        public DiscFilingSystem(IServiceProvider services, ImageLocation imageUri, byte[] rawBytes)
+            : base(services, imageUri, rawBytes)
         {
 
         }
 
         public override ILoadedImage Load(Address? addrLoad)
         {
-            LoadDirectory();
-            throw new NotImplementedException();
+            var dir = LoadDirectory();
+            return new DFSArchive(dir, this.ImageLocation);
         }
 
         public ArchiveDirectoryEntry[] LoadDirectory()
@@ -114,7 +116,7 @@ namespace Reko.Environments.BbcMicro
                 var bDir = rdr.ReadByte();
                 var dir = (char) bDir & 0x7F;
                 var locked = (bDir & 0x80) != 0;
-                var de = new DFSEntry(fname)
+                var de = new DFSEntry(this, fname.TrimEnd())
                 {
                 };
                 entries[i] = de;
@@ -125,37 +127,81 @@ namespace Reko.Environments.BbcMicro
             rdr.Offset += 4; // Skip last 4 bytes of title
             rdr.ReadByte(); // # of writes
             int cEntries = rdr.ReadByte() / 8;
-            byte cSectHi = rdr.ReadByte();
+            byte cSectHi = (byte) (rdr.ReadByte() & 3);
             byte cSectLo = rdr.ReadByte();
 
             for (int i = 0; i < 31; ++i)
             {
-                var uAddrLoad = rdr.ReadUInt16();
-                var uAddrExec = rdr.ReadUInt16();
-                var cbLength = rdr.ReadUInt16();
-                var sectHi = rdr.ReadByte();
+                var uAddrLoad = rdr.ReadLeUInt16();
+                var uAddrExec = rdr.ReadLeUInt16();
+                var cbLength = rdr.ReadLeUInt16();
+                var sectHi = (rdr.ReadByte() & 0b110) >> 1;
                 var sectLo = rdr.ReadByte();
                 var de = entries[i];
                 de.LoadAddress = Address.Ptr16(uAddrLoad);
                 de.ExecAddress = Address.Ptr16(uAddrLoad);
                 de.Length = cbLength;
+                de.FirstSector = (sectHi << 8) | sectLo;
             }
             return entries.Take(cEntries).ToArray();
         }
     }
 
-    public class DFSEntry : ArchiveDirectoryEntry
+    [DebuggerDisplay("{Name}; length: {Length}; load: {LoadAddress}; exec: {ExecAddress}")]
+    public class DFSEntry : ArchivedFile
     {
-        public DFSEntry(string name)
+        private readonly DiscFilingSystem dfs;
+
+        public DFSEntry(DiscFilingSystem dfs, string name)
         {
+            this.dfs = dfs;
             this.Name = name;
         }
 
         public Address LoadAddress { get; set; }
         public Address ExecAddress { get; set; }
-        public uint Length { get; set; }
+
+        public long Length { get; set; }
         public string Name { get; set; }
 
         public ArchiveDirectoryEntry? Parent => null;
+
+        /// <summary>
+        /// The number of the first sector of this file.
+        /// </summary>
+        /// <remarks>
+        /// Sectors are always allocated consecutively after the first sector of the file.
+        /// </remarks>
+        public int FirstSector { get; set; }
+
+        public byte[] GetBytes()
+        {
+            var image = new byte[this.Length];
+            Array.Copy(dfs.RawImage, this.FirstSector * 256, image, 0, image.Length);
+            return image;
+        }
+
+        public ILoadedImage LoadImage(IServiceProvider services, Address? addrPreferred)
+        {
+            var image = GetBytes();
+            var segment = new ImageSegment(
+                "CODE",
+                new ByteMemoryArea(LoadAddress, image),
+                AccessMode.ReadWriteExecute);
+            var imageLocation = dfs.ImageLocation.AppendFragment(Name);
+            var mem = new ProgramMemory(new SegmentMap(segment));
+            var arch = new Mos6502Architecture(services, "m6502", new());
+            var program = new Program(
+                mem,
+                arch,
+                new BbcMicroComputer(services, arch));
+            program.Location = imageLocation;
+            return program;
+        }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }
