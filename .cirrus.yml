@@ -44,7 +44,7 @@ linux_x64_task:
 
 darwin_arm64_task:
   macos_instance:
-    image: ghcr.io/cirruslabs/macos-ventura-base:latest
+    image: ghcr.io/cirruslabs/macos-runner:sonoma
     #image: big-sur-xcode-12.4
 
   env:

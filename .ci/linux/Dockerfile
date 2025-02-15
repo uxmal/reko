@@ -18,6 +18,6 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && dotnet nuget locals all --clear
-    # reserved for cache eviction: 1
+    # reserved for cache eviction: 2
 
 ENV LANG en_US.utf8
