@@ -52,7 +52,7 @@ darwin_arm64_task:
 
   install_script:
     - brew install pkg-config cmake capstone p7zip
-    - curl -O https://dotnet.microsoft.com/download/dotnet/scripts/v1/dotnet-install.sh
+    - curl -LO https://dotnet.microsoft.com/download/dotnet/scripts/v1/dotnet-install.sh
     - bash dotnet-install.sh --channel 6.0
     - bash dotnet-install.sh --channel 8.0
 
