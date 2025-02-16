@@ -112,7 +112,7 @@
 # 
 # Require 3.5 for batch copy multiple files
 
-cmake_minimum_required(VERSION 3.5.0)
+cmake_minimum_required(VERSION 3.18 FATAL_ERROR)
 
 IF(DOTNET_FOUND)
     RETURN()

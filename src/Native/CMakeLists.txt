@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.18 FATAL_ERROR)
 
 project(reko-native)
 
@@ -30,14 +30,6 @@ include_directories(
 
 set(REKO_BUNDLED_LIBDIRS "")
 
-if(MSVC)
-	if(REKO_PLATFORM_X64)
-		list(APPEND REKO_BUNDLED_LIBDIRS "${REKO_ROOT}/external/Capstone/X64")
-	else()
-		list(APPEND REKO_BUNDLED_LIBDIRS "${REKO_ROOT}/external/Capstone/X86")
-	endif()
-endif()
-
 if((UNIX OR MINGW) AND NOT MSVC)
 	find_package(PkgConfig REQUIRED)
 	pkg_check_modules(CAPSTONE REQUIRED capstone)
@@ -50,7 +42,15 @@ if((UNIX OR MINGW) AND NOT MSVC)
 		${CAPSTONE_INCLUDE_DIRS}
 	)
 else()
-	find_library(CAPSTONE_LIBRARIES capstone PATHS ${REKO_BUNDLED_LIBDIRS} REQUIRED)
+	if(REKO_PLATFORM_X64)
+		list(APPEND REKO_BUNDLED_LIBDIRS "${REKO_ROOT}/external/Capstone/X64")
+	else()
+		list(APPEND REKO_BUNDLED_LIBDIRS "${REKO_ROOT}/external/Capstone/X86")
+	endif()
+
+	find_library(CAPSTONE_LIBRARIES capstone REQUIRED
+		PATHS ${REKO_BUNDLED_LIBDIRS}
+		NO_DEFAULT_PATH)
 endif()
 
 if(MSVC)

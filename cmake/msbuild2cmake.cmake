@@ -18,7 +18,7 @@
 # `TARGET`, which is the name of the target (defined in CMakeLists.txt) to build
 #
 
-cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.18 FATAL_ERROR)
 
 function(check_msys output)
 	execute_process(
