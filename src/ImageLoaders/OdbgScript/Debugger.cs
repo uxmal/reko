@@ -5,8 +5,6 @@ using System;
 
 namespace Reko.ImageLoaders.OdbgScript
 {
-    using rulong = System.UInt64;
-
     public class Debugger
     {
         private IProcessorArchitecture arch;
@@ -34,12 +32,12 @@ namespace Reko.ImageLoaders.OdbgScript
             this.emu.SetBreakpoint(addr.ToLinear(), callback);
         }
 
-        public rulong GetContextData(RegisterStorage register)
+        public ulong GetContextData(RegisterStorage register)
         {
             return emu.ReadRegister(register);
         }
 
-        public rulong GetContextData(eContextData eContextData)
+        public ulong GetContextData(eContextData eContextData)
         {
             switch (eContextData)
             {
@@ -53,7 +51,7 @@ namespace Reko.ImageLoaders.OdbgScript
             throw new NotImplementedException();
         }
 
-        public void RemoveMemoryBPX(Address membpaddr, rulong membpsize)
+        public void RemoveMemoryBPX(Address membpaddr, ulong membpsize)
         {
             throw new NotImplementedException();
         }
@@ -83,13 +81,13 @@ namespace Reko.ImageLoaders.OdbgScript
             emu.DeleteBreakpoint(addr.ToLinear());
         }
 
-        public bool SetContextData(RegisterStorage reg, rulong value)
+        public bool SetContextData(RegisterStorage reg, ulong value)
         {
             emu.WriteRegister(reg, value);
             return true;
         }
 
-        public bool SetContextData(eContextData reg, rulong value)
+        public bool SetContextData(eContextData reg, ulong value)
         {
             switch (reg)
             {
@@ -101,7 +99,7 @@ namespace Reko.ImageLoaders.OdbgScript
             throw new NotImplementedException();
         }
 
-        public bool SetMemoryBPXEx(Address addr, rulong size, byte p1, bool p2, Action MemoryCallback)
+        public bool SetMemoryBPXEx(Address addr, ulong size, byte p1, bool p2, Action MemoryCallback)
         {
             throw new NotImplementedException();
         }

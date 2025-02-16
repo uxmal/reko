@@ -157,10 +157,10 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
         private void Entries_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var addr = (Address)dlg.Entries.SelectedItem;
             string text;
-            if (addr != null)
+            if (dlg.Entries.SelectedItem is not null)
             {
+                var addr = (Address) dlg.Entries.SelectedItem;
                 var dasm = dlg.Program.CreateDisassembler(dlg.Program.Architecture, addr);
                 text = string.Join(
                     Environment.NewLine,

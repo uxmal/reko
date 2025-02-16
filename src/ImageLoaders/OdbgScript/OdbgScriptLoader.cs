@@ -26,7 +26,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using rulong = System.UInt64;
 
 #pragma warning disable IDE1006 // Naming Styles
 
@@ -43,7 +42,7 @@ namespace Reko.ImageLoaders.OdbgScript
         private readonly ProgramImageLoader originalImageLoader;
         private Debugger debugger;
         private OllyLangInterpreter scriptInterpreter;
-        private rulong OldIP;
+        private ulong OldIP;
 
         public OdbgScriptLoader(ProgramImageLoader imageLoader) 
             : base(imageLoader.Services, imageLoader.ImageLocation, imageLoader.RawImage)
@@ -188,7 +187,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 case DEBUG_EVENT.EXCEPTION_DEBUG_EVENT:
                     if (scriptInterpreter.script_running)
                     {
-                        rulong NewIP = debugger.GetContextData(eContextData.UE_CIP);
+                        ulong NewIP = debugger.GetContextData(eContextData.UE_CIP);
                         //if(debugEvent.u.Exception.ExceptionRecord.ExceptionCode == 1) // EXCEPTION_BREAKPOINT)
                         NewIP--;
 

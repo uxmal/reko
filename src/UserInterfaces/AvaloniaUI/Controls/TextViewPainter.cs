@@ -35,14 +35,14 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
     {
         private TextViewLayout outer;
         private DrawingContext graphics;
-        private TextPointer selStart;
-        private TextPointer selEnd;
+        private TextPointer? selStart;
+        private TextPointer? selEnd;
         private Rect rcContent;
         private Rect rcTotal;
-        private LayoutSpan span;
+        private LayoutSpan? span = default!;
         private StyleStack styleStack;
-        private IBrush fg;
-        private IBrush bg;
+        private IBrush? fg;
+        private IBrush? bg;
         private IBrush bgSelected;
         private IBrush fgSelected;
         private Typeface font;
@@ -51,7 +51,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
         private IBrush defaultFgColor;
         private IBrush defaultBgColor;
         private Typeface defaultFont;
-        private LayoutLine line;
+        private LayoutLine? line = default!;
 
         public TextViewPainter(
             TextViewLayout outer, 

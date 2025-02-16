@@ -6,7 +6,6 @@ using System.Reflection;
 
 namespace Reko.ImageLoaders.OdbgScript
 {
-    using rulong = System.UInt64;
     using System.Text;
     using System.Linq;
     using Reko.Core.Lib;
@@ -20,7 +19,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         const string digits = "0123456789ABCDEFGHIJKLMNOPQRSTUV";
 
-        public static rulong char2rul(char c)
+        public static ulong char2rul(char c)
         {
             c = Char.ToUpper(c);
             for (int i = 0; i < digits.Length; i++)
@@ -28,13 +27,13 @@ namespace Reko.ImageLoaders.OdbgScript
                 if (c == digits[i])
                     return (uint)i;
             }
-            return ~(rulong)0;
+            return ~(ulong)0;
         }
 
-        public static rulong str2rul(string str, uint @base)
+        public static ulong str2rul(string str, uint @base)
         {
-            rulong num = 0;
-            rulong charnum;
+            ulong num = 0;
+            ulong charnum;
 
             if (@base < 2 || @base > 32)
                 return 0;
@@ -59,12 +58,12 @@ namespace Reko.ImageLoaders.OdbgScript
             */
         }
 
-        public static rulong hexstr2rul(string s)
+        public static ulong hexstr2rul(string s)
         {
             return str2rul(s, 16);
         }
 
-        public static rulong decstr2rul(string s)
+        public static ulong decstr2rul(string s)
         {
             return str2rul(s, 10);
         }
@@ -74,7 +73,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return Convert.ToDouble(s);
         }
 
-        public static string rul2str(rulong x, uint @base, uint fill = 0)
+        public static string rul2str(ulong x, uint @base, uint fill = 0)
         {
             StringBuilder @out = new StringBuilder();
             uint i = 0;
@@ -104,12 +103,12 @@ namespace Reko.ImageLoaders.OdbgScript
             */
         }
 
-        public static string rul2hexstr(rulong x, uint fill = 0)
+        public static string rul2hexstr(ulong x, uint fill = 0)
         {
             return rul2str(x, 16, fill);
         }
 
-        public static string rul2decstr(rulong x, uint fill = 0)
+        public static string rul2decstr(ulong x, uint fill = 0)
         {
             return rul2str(x, 10, fill);
         }
@@ -121,7 +120,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         // Number manipulation
 
-        public static rulong ToHostEndianness(rulong dw, EndianServices endianness)
+        public static ulong ToHostEndianness(ulong dw, EndianServices endianness)
         {
             if (endianness == EndianServices.Big)
             {
@@ -139,7 +138,7 @@ namespace Reko.ImageLoaders.OdbgScript
         /// <summary>
         /// Masks off the high part of the given value.
         /// </summary>
-        public static rulong resize(rulong dw, int byteSize)
+        public static ulong resize(ulong dw, int byteSize)
         {
             if (0 <= byteSize && byteSize < sizeof(ulong))
             {
@@ -148,15 +147,15 @@ namespace Reko.ImageLoaders.OdbgScript
             return dw;
         }
 
-        public static rulong round_up(rulong dw, rulong val)
+        public static ulong round_up(ulong dw, ulong val)
         {
-            rulong mod = dw % val;
+            ulong mod = dw % val;
             if (mod != 0)
                 dw += (val - mod);
             return dw;
         }
 
-        public static rulong round_down(rulong dw, rulong val)
+        public static ulong round_down(ulong dw, ulong val)
         {
             return (dw - (dw % val));
         }

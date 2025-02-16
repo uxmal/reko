@@ -47,7 +47,7 @@ namespace Reko.UserInterfaces.WindowsForms
             set { ddl.SelectedIndex = value; }
         }
 
-        public object SelectedItem
+        public object? SelectedItem
         {
             get { return ddl.SelectedItem; }
             set { ddl.SelectedItem= value; }

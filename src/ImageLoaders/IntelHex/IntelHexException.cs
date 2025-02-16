@@ -72,6 +72,7 @@ namespace Reko.ImageLoaders.IntelHex
         ///                    holds the serialized object data about the exception being thrown.</param>
         /// <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext" /> that
         ///                       contains contextual information about the source or destination.</param>
+        [Obsolete("This constructor is for serialization only.", true)]
         public IntelHexException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
@@ -87,6 +88,7 @@ namespace Reko.ImageLoaders.IntelHex
         ///                    holds the serialized object data about the exception being thrown.</param>
         /// <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext" /> that
         ///                       contains contextual information about the source or destination.</param>
+        [Obsolete("This method is for serialization only.", true)]
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);

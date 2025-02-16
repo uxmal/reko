@@ -27,6 +27,7 @@ using Reko.UserInterfaces.WindowsForms.Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
@@ -164,6 +165,7 @@ namespace Reko.UserInterfaces.WindowsForms
             }
             else
             {
+                Debug.Assert(listView.FocusedItem.Tag is not null);
                 i = ((int) listView.FocusedItem.Tag + itemCount + distance) % itemCount;
             }
             listView.SelectedIndices.Clear();
@@ -177,6 +179,7 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             if (listView.FocusedItem == null)
                 return;
+            Debug.Assert(listView.FocusedItem.Tag is not null);
             DoubleClickItem((int)listView.FocusedItem.Tag);
         }
 
@@ -220,7 +223,12 @@ namespace Reko.UserInterfaces.WindowsForms
             public Task<string> ShowTypeMarker(Program program, Address addr)
             {
                 var i = listView.TopItem;
-                return typeMarker.ShowAsync(program, addr, i.Position);
+                if (i is not null)
+                {
+                    return typeMarker.ShowAsync(program, addr, i.Position);
+                }
+                else
+                    return Task.FromResult("");
             }
         }
 

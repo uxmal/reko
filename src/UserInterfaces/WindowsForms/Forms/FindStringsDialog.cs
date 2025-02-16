@@ -35,7 +35,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             InitializeComponent();
         }
 
-        public FindStringsDialogInteractor DataContext
+        public new FindStringsDialogInteractor DataContext
         {
             get => interactor;
             set

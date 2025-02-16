@@ -35,7 +35,7 @@ namespace Reko.Gui.Controls
         IList Items { get; }
         int SelectedIndex { get; set; }
         object SelectedItem { get; set; }
-        object SelectedValue { get; set; }
+        object? SelectedValue { get; set; }
         string Text { get; set; }
     }
 }

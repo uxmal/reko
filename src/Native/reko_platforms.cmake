@@ -1,3 +1,5 @@
+# Platform-specific CMake settings go here.
+
 function(set_output_dir target outdir)
 	foreach( OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES} )
 		string( TOUPPER ${OUTPUTCONFIG} OUTPUTCONFIG )
@@ -38,9 +40,14 @@ elseif(NOT DEFINED REKO_PLATFORM OR REKO_PLATFORM STREQUAL "AnyCPU")
 	endif()
 endif()
 
-if(REKO_PLATFORM_X86 AND NOT MSVC)
-	set(CMAKE_C_FLAGS -m32)
-	set(CMAKE_CXX_FLAGS -m32)
+if(REKO_PLATFORM_X86)
+	if (MSVC)
+		set(CMAKE_C_FLAGS /Zi)
+		set(CMAKE_CXX_FLAGS /Zi)
+	else()
+		set(CMAKE_C_FLAGS -m32)
+		set(CMAKE_CXX_FLAGS -m32)
+	endif()
 endif()
 
 # this is a temp variable
