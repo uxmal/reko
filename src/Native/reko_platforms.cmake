@@ -40,14 +40,14 @@ elseif(NOT DEFINED REKO_PLATFORM OR REKO_PLATFORM STREQUAL "AnyCPU")
 	endif()
 endif()
 
+if (MSVC)
+	set(CMAKE_C_FLAGS /Zi)
+	set(CMAKE_CXX_FLAGS /Zi)
+endif()
+
 if(REKO_PLATFORM_X86)
-	if (MSVC)
-		set(CMAKE_C_FLAGS /Zi)
-		set(CMAKE_CXX_FLAGS /Zi)
-	else()
-		set(CMAKE_C_FLAGS -m32)
-		set(CMAKE_CXX_FLAGS -m32)
-	endif()
+	set(CMAKE_C_FLAGS -m32)
+	set(CMAKE_CXX_FLAGS -m32)
 endif()
 
 # this is a temp variable

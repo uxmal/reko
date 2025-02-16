@@ -27,7 +27,7 @@ void Dump(const char * fmt, ...)
 {
 	va_list args;
 	va_start(args, fmt);
-#if _WINDOWS
+#if _WIN32||_WIN64
 	char buf[512];
 	vsnprintf(buf, countof(buf), fmt, args);
 	::strcat_s(buf, "\r\n");
