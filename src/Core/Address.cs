@@ -156,6 +156,14 @@ namespace Reko.Core
 
         public Address NewOffset(ulong newOffset) => GetInfo().NewOffset(this, newOffset);
 
+        public int PreferredBase
+        {
+            get
+            {
+                return this.type == LinearOctal ? 8 : 0;
+            }
+        }
+
         void MachineOperand.Render(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             renderer.BeginOperand();

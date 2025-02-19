@@ -167,7 +167,8 @@ namespace Reko.Core.Output
             var s = addr.ToString();
             if (!s.Contains(':'))
             {
-                s = string.Format("0x{0}<p{1}>", s, addr.DataType.BitSize);
+                var prefix = addr.PreferredBase == 8 ? "0o" : "0x";
+                s = $"{prefix}{s}<p{addr.DataType.BitSize}>";
             }
             InnerFormatter.Write(s);
         }

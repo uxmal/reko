@@ -56,8 +56,8 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
             Given_OctalWord("273140012045");
             AssertCode(     // addb	3,12045
                 "0|L--|200000(1): 3 instructions",
-                "1|L--|r3 = r3 + Mem0[0x012045<p18>:word36]",
-                "2|L--|Mem0[0x012045<p18>:word36] = r3",
+                "1|L--|r3 = r3 + Mem0[0o012045<p18>:word36]",
+                "2|L--|Mem0[0o012045<p18>:word36] = r3",
                 "3|L--|C0C1VT = cond(r3)");
         }
 
@@ -77,8 +77,8 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
             Given_OctalWord("272100023406");
             AssertCode(     // addm	2,23406
                 "0|L--|200000(1): 3 instructions",
-                "1|L--|v4 = r2 + Mem0[0x023406<p18>:word36]",
-                "2|L--|Mem0[0x023406<p18>:word36] = v4",
+                "1|L--|v4 = r2 + Mem0[0o023406<p18>:word36]",
+                "2|L--|Mem0[0o023406<p18>:word36] = v4",
                 "3|L--|C0C1VT = cond(v4)");
         }
 
@@ -88,7 +88,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
             Given_OctalWord("404040023426");
             AssertCode(     // and	1,23426
                 "0|L--|200000(1): 1 instructions",
-                "1|L--|r1 = r1 & Mem0[0x023426<p18>:word36]");
+                "1|L--|r1 = r1 & Mem0[0o023426<p18>:word36]");
         }
 
         [Test]
@@ -134,7 +134,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
             Given_OctalWord("420400001510");
             AssertCode(     // andcm	10,1510
                 "0|L--|200000(1): 1 instructions",
-                "1|L--|r8 = r8 & ~Mem0[0x001510<p18>:word36]");
+                "1|L--|r8 = r8 & ~Mem0[0o001510<p18>:word36]");
         }
 
         [Test]
@@ -171,8 +171,8 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
             Given_OctalWord("406640005413");
             AssertCode(     // andm	15,5413
                 "0|L--|200000(1): 2 instructions",
-                "1|L--|v4 = r13 & Mem0[0x005413<p18>:word36]",
-                "2|L--|Mem0[0x005413<p18>:word36] = v4");
+                "1|L--|v4 = r13 & Mem0[0o005413<p18>:word36]",
+                "2|L--|Mem0[0o005413<p18>:word36] = v4");
         }
 
         [Test]
@@ -225,10 +225,10 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
             Given_OctalWord("350040012502");
             AssertCode(     // aos	1,12502
                 "0|L--|200000(1): 4 instructions",
-                "1|L--|v3 = Mem0[0x012502<p18>:word36] + 1<36>",
+                "1|L--|v3 = Mem0[0o012502<p18>:word36] + 1<36>",
                 "2|L--|C0C1VT = cond(v3)",
                 "3|L--|r1 = v3",
-                "4|L--|Mem0[0x012502<p18>:word36] = v3");
+                "4|L--|Mem0[0o012502<p18>:word36] = v3");
         }
 
         [Test]
@@ -277,7 +277,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
             Given_OctalWord("251040023405");
             AssertCode(     // blt	1,23405
                 "0|L--|200000(1): 1 instructions",
-                "1|L--|pdp10_blt(r1, Mem0[0x023405<p18>:word36])");
+                "1|L--|pdp10_blt(r1, Mem0[0o023405<p18>:word36])");
         }
 
         [Test]
@@ -331,7 +331,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
             Given_OctalWord("047040400071");
             AssertCode(     // calli	1,400071
                 "0|L--|200000(1): 1 instructions",
-                "1|L--|pdp10_calli(r1, Mem0[0x400071<p18>:word36])");
+                "1|L--|pdp10_calli(r1, Mem0[0o400071<p18>:word36])");
         }
 
         [Test]
@@ -394,7 +394,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
             Given_OctalWord("711640042563");
             AssertCode(     // coni	23,42563
                 "0|L--|200000(1): 1 instructions",
-                "1|L--|pdp10_coni(0x13<36>, Mem0[0x042563<p18>:word36])");
+                "1|L--|pdp10_coni(0x13<36>, Mem0[0o042563<p18>:word36])");
         }
 
         // cono
@@ -422,7 +422,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
             Given_OctalWord("777700037600");
             AssertCode(     // consz	177,37600
                 "0|L--|200000(1): 1 instructions",
-                "1|L--|pdp10_consz(0x7F<36>, Mem0[0x037600<p18>:word36])");
+                "1|L--|pdp10_consz(0x7F<36>, Mem0[0o037600<p18>:word36])");
         }
 
         [Test]
@@ -431,7 +431,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
             Given_OctalWord("114000001224");
             AssertCode(     // dadd	0,1224
                 "0|L--|200000(1): 1 instructions",
-                "1|L--|r0_r1 = r0_r1 + Mem0[0x001224<p18>:word72]");
+                "1|L--|r0_r1 = r0_r1 + Mem0[0o001224<p18>:word72]");
         }
 
         [Test]
@@ -449,7 +449,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
             Given_OctalWord("715140043112");
             AssertCode(     // datao	32,43112
                 "0|L--|200000(1): 1 instructions",
-                "1|L--|pdp10_datao(0x1A<36>, Mem0[0x043112<p18>:word36])");
+                "1|L--|pdp10_datao(0x1A<36>, Mem0[0o043112<p18>:word36])");
         }
 
         [Test]
@@ -504,7 +504,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
             Given_OctalWord("254200036322");
             AssertCode(     // halt
                 "0|H--|200000(1): 1 instructions",
-                "1|L--|pdp10_halt(Mem0[0x036322<p18>:word36])");
+                "1|L--|pdp10_halt(Mem0[0o036322<p18>:word36])");
         }
 
         [Test]
@@ -524,8 +524,8 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
             AssertCode(     // hllm	1,23437
                 "0|L--|200000(1): 3 instructions",
                 "1|L--|v4 = SLICE(r1, word18, 0)",
-                "2|L--|v5 = Mem0[0x023437<p18>:word36]",
-                "3|L--|Mem0[0x023437<p18>:word36] = SEQ(SLICE(v5, word18, 18), v4)");
+                "2|L--|v5 = Mem0[0o023437<p18>:word36]",
+                "3|L--|Mem0[0o023437<p18>:word36] = SEQ(SLICE(v5, word18, 18), v4)");
         }
 
         [Test]
@@ -566,7 +566,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
                 "0|L--|200000(1): 3 instructions",
                 "1|L--|v4 = SLICE(r1, word18, 18)",
                 "2|L--|v5 = CONVERT(v4, word18, word36) << 0x12<8>",
-                "3|L--|Mem0[0x023435<p18>:word36] = v5");
+                "3|L--|Mem0[0o023435<p18>:word36] = v5");
         }
 
         [Test]
@@ -595,7 +595,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
             Given_OctalWord("574500000116");
             AssertCode(     // hlre	12,116
                 "0|L--|200000(1): 2 instructions",
-                "1|L--|v4 = SLICE(Mem0[0x000116<p18>:word36], word18, 18)",
+                "1|L--|v4 = SLICE(Mem0[0o000116<p18>:word36], word18, 18)",
                 "2|L--|r10 = CONVERT(v4, word18, int36)");
         }
 
@@ -647,7 +647,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
             AssertCode(     // hrli	1,777743
                 "0|L--|200000(1): 2 instructions",
                 "1|L--|v4 = SLICE(0x3FFE3<36>, word18, 0)",
-                "2|L--|Mem0[0x777743<p18>:word36] = SEQ(v4, SLICE(r1, word18, 0))");
+                "2|L--|Mem0[0o777743<p18>:word36] = SEQ(v4, SLICE(r1, word18, 0))");
         }
 
         [Test]
@@ -687,10 +687,9 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
             AssertCode(     // hrrm	1,35733
                 "0|L--|200000(1): 3 instructions",
                 "1|L--|v4 = SLICE(r1, word18, 0)",
-                "2|L--|v5 = Mem0[0x035733<p18>:word36]",
-                "3|L--|Mem0[0x035733<p18>:word36] = SEQ(SLICE(v5, word18, 18), v4)");
+                "2|L--|v5 = Mem0[0o035733<p18>:word36]",
+                "3|L--|Mem0[0o035733<p18>:word36] = SEQ(SLICE(v5, word18, 18), v4)");
         }
-
 
         [Test]
         public void Pdp10Rw_hrrz()
@@ -698,7 +697,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
             Given_OctalWord("550000023443");
             AssertCode(     // hrrz	0,23443
                 "0|L--|200000(1): 2 instructions",
-                "1|L--|v4 = SLICE(Mem0[0x023443<p18>:word36], word18, 0)",
+                "1|L--|v4 = SLICE(Mem0[0o023443<p18>:word36], word18, 0)",
                 "2|L--|r0 = CONVERT(v4, word18, word36)");
         }
 
@@ -709,7 +708,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
             AssertCode(     // hrrzm	1,23413
                 "0|L--|200000(1): 2 instructions",
                 "1|L--|v4 = SLICE(r1, word18, 0)",
-                "2|L--|Mem0[0x023413<p18>:word36] = CONVERT(v4, word18, word36)");
+                "2|L--|Mem0[0o023413<p18>:word36] = CONVERT(v4, word18, word36)");
         }
 
         [Test]
@@ -718,8 +717,8 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
             Given_OctalWord("133000012502");
             AssertCode(     // ibp	0,12502
                 "0|L--|200000(1): 2 instructions",
-                "1|L--|v3 = pdp10_inc_byte_ptr(Mem0[0x012502<p18>:word36])",
-                "2|L--|Mem0[0x012502<p18>:word36] = v3");
+                "1|L--|v3 = pdp10_inc_byte_ptr(Mem0[0o012502<p18>:word36])",
+                "2|L--|Mem0[0o012502<p18>:word36] = v3");
         }
 
         [Test]
@@ -771,7 +770,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
             Given_OctalWord("220040042201");
             AssertCode(     // imul	1,42201
                 "0|L--|200000(1): 2 instructions",
-                "1|L--|r1 = r1 *s Mem0[0x042201<p18>:word36]",
+                "1|L--|r1 = r1 *s Mem0[0o042201<p18>:word36]",
                 "2|L--|VT = cond(r1)");
         }
 
@@ -846,8 +845,8 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
             Given_OctalWord("264000002061");
             AssertCode(     // jsr	002061
                 "0|T--|200000(1): 2 instructions",
-                "1|L--|Mem0[0x002061<p18>:word36] = 200001",
-                "2|T--|goto 0x002061<p18> + 1<18>");
+                "1|L--|Mem0[0o002061<p18>:word36] = 200001",
+                "2|T--|goto 0o002061<p18> + 1<18>");
         }
 
         [Test]
@@ -884,7 +883,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
             Given_OctalWord("076140023421");
             AssertCode(     // lookup	3,23421
                 "0|L--|200000(1): 1 instructions",
-                "1|L--|pdp10_lookup(r3, Mem0[0x023421<p18>:word36])");
+                "1|L--|pdp10_lookup(r3, Mem0[0o023421<p18>:word36])");
         }
 
         [Test]
@@ -902,7 +901,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
             Given_OctalWord("002000043017");
             AssertCode(     // luuo02	0,43017
                 "0|L--|200000(1): 1 instructions",
-                "1|L--|pdp10_luuo(2<36>, r0, Mem0[0x043017<p18>:word36])");
+                "1|L--|pdp10_luuo(2<36>, r0, Mem0[0o043017<p18>:word36])");
         }
 
         [Test]
@@ -911,7 +910,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
             Given_OctalWord("200300042175");
             AssertCode(     // move	6,42175
                 "0|L--|200000(1): 1 instructions",
-                "1|L--|r6 = Mem0[0x042175<p18>:word36]");
+                "1|L--|r6 = Mem0[0o042175<p18>:word36]");
         }
 
         [Test]
@@ -929,7 +928,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
             Given_OctalWord("202040023433");
             AssertCode(     // movem	1,23433
                 "0|L--|200000(1): 1 instructions",
-                "1|L--|Mem0[0x023433<p18>:word36] = r1");
+                "1|L--|Mem0[0o023433<p18>:word36] = r1");
         }
 
         [Test]
@@ -938,7 +937,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
             Given_OctalWord("214240007134");
             AssertCode(     // movm	5,7134
                 "0|L--|200000(1): 1 instructions",
-                "1|L--|r5 = abs(Mem0[0x007134<p18>:word36])");
+                "1|L--|r5 = abs(Mem0[0o007134<p18>:word36])");
         }
 
         [Test]
@@ -986,7 +985,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
             Given_OctalWord("204140023424");
             AssertCode(     // movs	3,23424
                 "0|L--|200000(1): 4 instructions",
-                "1|L--|v4 = Mem0[0x023424<p18>:word36]",
+                "1|L--|v4 = Mem0[0o023424<p18>:word36]",
                 "2|L--|v5 = SLICE(v4, word18, 18)",
                 "3|L--|v6 = SLICE(v4, word18, 0)",
                 "4|L--|r3 = SEQ(v6, v5)");
@@ -1016,7 +1015,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
             Given_OctalWord("042160210421");
             AssertCode(     // muuo42	3,@210421
                 "0|L--|200000(1): 1 instructions",
-                "1|L--|pdp10_muuo(0x22<36>, r3, Mem0[0x210421<p18>:word36])");
+                "1|L--|pdp10_muuo(0x22<36>, r3, Mem0[0o210421<p18>:word36])");
         }
 
         [Test]
@@ -1072,8 +1071,8 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
             Given_OctalWord("436700001514");
             AssertCode(     // orm	16,1514
                 "0|L--|200000(1): 2 instructions",
-                "1|L--|v4 = r14 | Mem0[0x001514<p18>:word36]",
-                "2|L--|Mem0[0x001514<p18>:word36] = v4");
+                "1|L--|v4 = r14 | Mem0[0o001514<p18>:word36]",
+                "2|L--|Mem0[0o001514<p18>:word36] = v4");
         }
 
         [Test]
@@ -1100,8 +1099,8 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
             Given_OctalWord("466100753052");
             AssertCode(     // orcmm	2,753052
                 "0|L--|200000(1): 2 instructions",
-                "1|L--|v4 = r2 | ~Mem0[0x753052<p18>:word36]",
-                "2|L--|Mem0[0x753052<p18>:word36] = v4");
+                "1|L--|v4 = r2 | ~Mem0[0o753052<p18>:word36]",
+                "2|L--|Mem0[0o753052<p18>:word36] = v4");
         }
 
         [Test]
@@ -1148,7 +1147,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
             Given_OctalWord("055040023434");
             AssertCode(     // rename	1,23434
                 "0|L--|200000(1): 1 instructions",
-                "1|L--|pdp10_rename(r1, Mem0[0x023434<p18>:word36])");
+                "1|L--|pdp10_rename(r1, Mem0[0o023434<p18>:word36])");
         }
 
         [Test]
@@ -1196,7 +1195,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
             AssertCode(     // setob	16,220
                 "0|L--|200000(1): 2 instructions",
                 "1|L--|r14 = 0xFFFFFFFFF<36>",
-                "2|L--|Mem0[0x000220<p18>:word36] = r14");
+                "2|L--|Mem0[0o000220<p18>:word36] = r14");
         }
 
         [Test]
@@ -1206,7 +1205,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
             AssertCode(     // setom	0,23375
                 "0|L--|200000(1): 2 instructions",
                 "1|L--|v4 = 0xFFFFFFFFF<36>",
-                "2|L--|Mem0[0x023375<p18>:word36] = v4");
+                "2|L--|Mem0[0o023375<p18>:word36] = v4");
         }
 
         [Test]
@@ -1226,7 +1225,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
                 "0|L--|200000(1): 3 instructions",
                 "1|L--|v3 = 0<36>",
                 "2|L--|v4 = v3",
-                "3|L--|Mem0[0x023407<p18>:word36] = v4");
+                "3|L--|Mem0[0o023407<p18>:word36] = v4");
         }
 
         [Test]
@@ -1235,7 +1234,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
             Given_OctalWord("334340014361");
             AssertCode(     // skipa	7,14361
                 "0|T--|200000(1): 2 instructions",
-                "1|L--|r7 = Mem0[0x014361<p18>:word36]",
+                "1|L--|r7 = Mem0[0o014361<p18>:word36]",
                 "2|T--|goto 200002");
         }
 
@@ -1254,7 +1253,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
             Given_OctalWord("332000042131");
             AssertCode(     // skipe	42131
                 "0|T--|200000(1): 1 instructions",
-                "1|T--|if (Mem0[0x042131<p18>:word36] == 0<36>) branch 200002");
+                "1|T--|if (Mem0[0o042131<p18>:word36] == 0<36>) branch 200002");
         }
 
         [Test]
@@ -1263,9 +1262,9 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
             Given_OctalWord("332400042131");
             AssertCode(     // skipe	1,42131
                 "0|T--|200000(1): 3 instructions",
-                "1|L--|v3 = Mem0[0x042131<p18>:word36]",
+                "1|L--|v3 = Mem0[0o042131<p18>:word36]",
                 "2|L--|r8 = v3",
-                "3|T--|if (Mem0[0x042131<p18>:word36] == 0<36>) branch 200002");
+                "3|T--|if (Mem0[0o042131<p18>:word36] == 0<36>) branch 200002");
         }
 
         [Test]
@@ -1274,7 +1273,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
             Given_OctalWord("336000042126");
             AssertCode(     // skipn	42126
                 "0|T--|200000(1): 1 instructions",
-                "1|T--|if (Mem0[0x042126<p18>:word36] != 0<36>) branch 200002");
+                "1|T--|if (Mem0[0o042126<p18>:word36] != 0<36>) branch 200002");
         }
 
         [Test]
@@ -1305,8 +1304,8 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
             Given_OctalWord("370000023413");
             AssertCode(     // sos	23413
                 "0|L--|200000(1): 3 instructions",
-                "1|L--|v3 = Mem0[0x023413<p18>:word36] - 1<36>",
-                "2|L--|Mem0[0x023413<p18>:word36] = v3",
+                "1|L--|v3 = Mem0[0o023413<p18>:word36] - 1<36>",
+                "2|L--|Mem0[0o023413<p18>:word36] = v3",
                 "3|L--|C0C1VT = cond(v3)");
         }
 
@@ -1316,8 +1315,8 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
             Given_OctalWord("373000006531");
             AssertCode(     // sosle	6531
                 "0|T--|200000(1): 4 instructions",
-                "1|L--|v3 = Mem0[0x006531<p18>:word36] - 1<36>",
-                "2|L--|Mem0[0x006531<p18>:word36] = v3",
+                "1|L--|v3 = Mem0[0o006531<p18>:word36] - 1<36>",
+                "2|L--|Mem0[0o006531<p18>:word36] = v3",
                 "3|L--|C0C1VT = cond(v3)",
                 "4|T--|if (v3 <= 0<36>) branch 200002");
         }
@@ -1328,8 +1327,8 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
             Given_OctalWord("373040024022");
             AssertCode(     // sosle	1,6531
                 "0|T--|200000(1): 5 instructions",
-                "1|L--|v3 = Mem0[0x024022<p18>:word36] - 1<36>",
-                "2|L--|Mem0[0x024022<p18>:word36] = v3",
+                "1|L--|v3 = Mem0[0o024022<p18>:word36] - 1<36>",
+                "2|L--|Mem0[0o024022<p18>:word36] = v3",
                 "3|L--|r1 = v3",
                 "4|L--|C0C1VT = cond(v3)",
                 "5|T--|if (v3 <= 0<36>) branch 200002");
@@ -1521,7 +1520,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
             Given_OctalWord("430000000711");
             AssertCode(     // xor	0,711
                 "0|L--|200000(1): 1 instructions",
-                "1|L--|r0 = r0 ^ Mem0[0x000711<p18>:word36]");
+                "1|L--|r0 = r0 ^ Mem0[0o000711<p18>:word36]");
         }
 
         [Test]
@@ -2136,7 +2135,7 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
             Given_OctalWord("460640005417");
             AssertCode(     // setcm	15,5417
                 "0|L--|200000(1): 1 instructions",
-                "1|L--|r13 = ~Mem0[0x005417<p18>:word36]");
+                "1|L--|r13 = ~Mem0[0o005417<p18>:word36]");
         }
 
         // trca

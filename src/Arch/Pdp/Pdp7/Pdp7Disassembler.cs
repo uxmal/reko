@@ -94,7 +94,7 @@ namespace Reko.Arch.Pdp.Pdp7
 
         private static bool Y(uint uInstr, Pdp7Disassembler dasm)
         {
-            var mem = new MemoryOperand(PdpTypes.Word18, uInstr & 0x1FFF);
+            var mem = new MemoryOperand(PdpTypes.Word18, uInstr & 0x1FFF, Bits.IsBitSet(uInstr, 13));
             dasm.ops.Add(mem);
             return true;
         }
@@ -111,7 +111,70 @@ namespace Reko.Arch.Pdp.Pdp7
 
         static Pdp7Disassembler()
         {
-            var operateDecoder = Nyi("  Operate decoder");
+            var invalid = Instr(Mnemonic.Invalid, InstrClass.Invalid);
+
+            var operateDecoder = Mask([BeField(4, 5)], "  Operate decoder",
+                Sparse(0, 9, "  0o740...", invalid,
+                    (0, Instr(Mnemonic.opr, InstrClass.Linear | InstrClass.Padding)),
+                    (0x01, Instr(Mnemonic.cma)),
+                    (0x02, Instr(Mnemonic.cml)),
+                    (0x04, Instr(Mnemonic.oas)),
+                    (0x08, Instr(Mnemonic.ral)),
+                    (0x10, Instr(Mnemonic.rar)),
+                    (0x20, Instr(Mnemonic.hlt, InstrClass.Terminates)),
+                    (0x40, Instr(Mnemonic.sma)),
+                    (0x80, Instr(Mnemonic.sza)),
+                    (0x100, Instr(Mnemonic.snl))),
+                Sparse(0, 9, "  0o741...", invalid,
+                    (0x40, Instr(Mnemonic.spa)),
+                    (0x80, Instr(Mnemonic.sna)),
+                    (0x100, Instr(Mnemonic.szl))),
+                Sparse(0, 9, "  0o742...", invalid,
+                    (0x08, Instr(Mnemonic.rtl)),
+                    (0x10, Instr(Mnemonic.rtr)),
+                    (0x100, Instr(Mnemonic.szl))),
+                invalid,
+
+                Sparse(0, 9, "  0o744...", invalid,
+                    (0x00, Instr(Mnemonic.cll))),
+                invalid,
+                invalid,
+                invalid,
+
+                // 750
+                Sparse(0, 9, "  0o750...", invalid,
+                    (0x00, Instr(Mnemonic.cla))),
+                invalid,
+                invalid,
+                invalid,
+
+                invalid,
+                invalid,
+                invalid,
+                invalid,
+
+                // 760
+                invalid,
+                invalid,
+                invalid,
+                invalid,
+
+                invalid,
+                invalid,
+                invalid,
+                invalid,
+
+                // 770
+                invalid,
+                invalid,
+                invalid,
+                invalid,
+
+                invalid,
+                invalid,
+                invalid,
+                invalid);
+
             rootDecoder = Mask(new[] { BeField(0, 4) }, "PDP-7",
                 Instr(Mnemonic.cal, InstrClass.Transfer | InstrClass.Call),
                 Instr(Mnemonic.dac, Y),

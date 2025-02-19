@@ -59,12 +59,12 @@ namespace Reko.Arch.Pdp
 
         public override ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new DefaultProcessorState(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            return new Pdp7Rewriter(this, (Word18BeImageReader) rdr, state, binder, host);
         }
 
         public override FlagGroupStorage? GetFlagGroup(RegisterStorage flagRegister, uint grf)
@@ -124,6 +124,11 @@ namespace Reko.Arch.Pdp
         public override bool TryParseAddress(string? txtAddr, [MaybeNullWhen(false)] out Address addr)
         {
             throw new NotImplementedException();
+        }
+
+        public static Address Ptr18(uint uAddr)
+        {
+            return Address.OctalPtr(PdpTypes.Ptr18, uAddr);
         }
     }
 }

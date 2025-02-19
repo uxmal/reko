@@ -26,7 +26,10 @@ namespace Reko.Arch.Pdp.Pdp7
 {
     public static class Registers
     {
-        public static RegisterStorage ac;
+        public static RegisterStorage ac { get; }
+        public static FlagGroupStorage link { get; }
+
+        private static RegisterStorage status;
 
         public static Dictionary<string, RegisterStorage> RegistersByName { get; }
         public static Dictionary<StorageDomain, RegisterStorage> RegistersByDomain { get; }
@@ -34,10 +37,13 @@ namespace Reko.Arch.Pdp.Pdp7
         static Registers()
         {
             ac = new RegisterStorage("ac", 0, 0, PdpTypes.Word18);
+            status = new RegisterStorage("status", 1, 0, PdpTypes.Word18);
+
+            link = new FlagGroupStorage(status, 1, "l");
 
             RegistersByName = new Dictionary<string, RegisterStorage>()
             {
-                { "ac", ac }
+                { "ac", ac },
             };
             RegistersByDomain = new Dictionary<StorageDomain, RegisterStorage>
             {

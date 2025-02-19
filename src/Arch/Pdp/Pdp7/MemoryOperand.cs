@@ -29,18 +29,19 @@ namespace Reko.Arch.Pdp.Pdp7
         public uint Address { get; set; }
         public bool Deferred { get; set; }
 
-        public MemoryOperand(PrimitiveType dt, uint v) : base(dt)
+        public MemoryOperand(PrimitiveType dt, uint v, bool isDeferred) : base(dt)
         {
             this.Address = v;
+            this.Deferred = isDeferred;
         }
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             if (Deferred)
             {
-                renderer.WriteChar('@');
+                renderer.WriteString("i ");
             }
-            renderer.WriteString(Convert.ToString(Address, 8));
+            renderer.WriteAddress(Convert.ToString(Address, 8), Address);
         }
     }
 }

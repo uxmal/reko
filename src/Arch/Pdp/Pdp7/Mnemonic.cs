@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,18 +31,35 @@ namespace Reko.Arch.Pdp.Pdp7
     {
         Invalid,
 
-        dac,
-        lac,
-        dzm,
         add,
-        tad,
-        xor,
         and,
+        cal,
+        cla,
+        cll,
+        cma,
+        cml,
+        dac,
+        dzm,
+        hlt,
+        isz,
         jmp,
         jms,
-        cal,
-        xct,
+        lac,
+        oas,
+        opr,
+        ral,
+        rar,
+        rtl,
+        rtr,
         sad,
-        isz,
+        sma,
+        sna,
+        snl,
+        spa,
+        sza,
+        szl,
+        tad,
+        xct,
+        xor,
     }
 }
