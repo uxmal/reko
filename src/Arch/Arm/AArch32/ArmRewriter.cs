@@ -1158,16 +1158,24 @@ namespace Reko.Arch.Arm.AArch32
              .GenericTypes("T").PtrParam("T").Returns("T");
         private static readonly IntrinsicProcedure ldc_intrinsic = new IntrinsicBuilder("__ldc", true)
             .Param(PrimitiveType.Word32)
-            .Returns(PrimitiveType.Word32);
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Void();
         private static readonly IntrinsicProcedure ldc2_intrinsic = new IntrinsicBuilder("__ldc2", true)
             .Param(PrimitiveType.Word32)
-            .Returns(PrimitiveType.Word32);
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Void();
         private static readonly IntrinsicProcedure ldc2l_intrinsic = new IntrinsicBuilder("__ldc2l", true)
             .Param(PrimitiveType.Word32)
-            .Returns(PrimitiveType.Word32);
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Void();
         private static readonly IntrinsicProcedure ldcl_intrinsic = new IntrinsicBuilder("__ldcl", true)
             .Param(PrimitiveType.Word32)
-            .Returns(PrimitiveType.Word32);
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Void();
         private static readonly IntrinsicProcedure ldrex_intrinsic = new IntrinsicBuilder("__ldrex", true)
             .GenericTypes("T")
             .PtrParam("T")

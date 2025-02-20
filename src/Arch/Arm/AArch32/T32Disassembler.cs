@@ -2670,7 +2670,9 @@ namespace Reko.Arch.Arm.AArch32
                     LoadSignedLiteral));
 
             var ldc_literal = Nyi("LDC (literal)");
-
+            var ldc_preindexed = Instr(Mnemonic.ldc, CPn14, CR12, MemOff(PrimitiveType.Word32, 16, offsetFields: (0, 8), indexSpec: idx24));
+            var stc_preindexed = Instr(Mnemonic.stc, CPn14, CR12, MemOff(PrimitiveType.Word32, 16, offsetFields: (0, 8), indexSpec: idx24));
+            
             var SystemRegisterLdSt = Select((8,1), n => n != 0, "SystemRegisterLdSt",
                 invalid,
                 Select((12,4), n => n != 5,
@@ -2696,18 +2698,18 @@ namespace Reko.Arch.Arm.AArch32
                             Select((16,4), n => n != 15,
                                 Instr(Mnemonic.ldc, nyi("*Offset variant")),
                                 ldc_literal),
-                            Instr(Mnemonic.stc, nyi("*preindexed variant")),
+                            stc_preindexed,
                             Select((16,4), n => n != 15,
-                                Instr(Mnemonic.ldc, nyi("*preindexed variant")),
+                                ldc_preindexed,
                                 ldc_literal),
 
                             Instr(Mnemonic.stc, CPn14,CR12,MemOff(PrimitiveType.Word32, 16, offsetShift:2, offsetFields:(0,8))),
                             Select((16,4), n => n != 15,
                                 Instr(Mnemonic.ldc, nyi("*Offset variant")),
                                 ldc_literal),
-                            Instr(Mnemonic.stc, nyi("*preindexed variant")),
+                            stc_preindexed,
                             Select((16,4), n => n != 15,
-                                Instr(Mnemonic.ldc, nyi("*preindexed variant")),
+                                ldc_preindexed,
                                 ldc_literal)))));
 
 

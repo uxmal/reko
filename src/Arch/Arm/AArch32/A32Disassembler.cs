@@ -2875,6 +2875,8 @@ namespace Reko.Arch.Arm.AArch32
                         Instr(Mnemonic.mrrc2, CP(8), i(4, 4), r(3), r(4), CR(0)))));
 
 
+            //$REWVIEW: ArmV8 manual specified 0x05 for the CR register, but previous
+            // versions do not.
             var SystemRegister_LdSt = Select("SystemRegister_LdSt", 12, 0xF, n => n != 5, 
                 invalid,
                 Mask(20, 1, "  Load",        // L (load)
@@ -2894,7 +2896,7 @@ namespace Reko.Arch.Arm.AArch32
                         invalid,
                         Instr(Mnemonic.ldc, CP(8),CR(12),Mi8(2,w4)),
                         Instr(Mnemonic.ldc, CP(8),CR(12),Mi8(2,w4)),
-                        nyi("SystemRegister_LdSt puw=011"),
+                        Instr(Mnemonic.ldc, CP(8),CR(12),Mi8(2,w4)),
 
                         Instr(Mnemonic.ldc, CP(8),CR(12),Mi8(2,w4)),
                         Instr(Mnemonic.ldc, CP(8),CR(12),Mi8(2,w4)),

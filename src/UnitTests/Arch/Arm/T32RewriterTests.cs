@@ -6433,23 +6433,22 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_ldc2l()
         {
-            Given_HexString("F4FD04F0");	// ldc2l p0, c15, [r4, #0x10]!
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+            Given_HexString("79Fd1998");
+            AssertCode(     // ldc2l\tp8,cr9,[r9,-#&64]!
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|r9 = r9 - 100<i32>",
+                "2|L--|__ldc2l(p8, cr9, &Mem0[r9:word32])");
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_stc2()
         {
-            Given_HexString("AFFD1199");	// stc2 p9, c9, [pc, #0x44]!
+            Given_HexString("AFFD115E");	// stc2 p9, c9, [pc, #0x44]!
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|__stc(p14, cr5, &Mem0[0x00100014<p32>:word32])");
         }
 
         [Test]
@@ -6721,7 +6720,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("88ED3D5E");	// stc p14, c5, [r8, #0xf4]
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|__stc(p14, cr5, Mem0[r8 + 244<i32>:word32])");
+                "1|L--|__stc(p14, cr5, &Mem0[r8 + 244<i32>:word32])");
         }
 
         [Test]

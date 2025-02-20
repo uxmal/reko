@@ -101,14 +101,11 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteLdc(IntrinsicProcedure intrinsic)
         {
-            var src2 = Operand(2);
-            var tmp = binder.CreateTemporary(PrimitiveType.Word32);
-            m.Assign(tmp, src2);
-            var src= m.Fn(intrinsic, 
+            m.SideEffect(m.Fn(
+                intrinsic,
+                Operand(0),
                 Operand(1),
-                tmp);
-            var dst = Operand(0, PrimitiveType.Word32, true);
-            m.Assign(dst, src);
+                m.AddrOf(PrimitiveType.Ptr32, Operand(2))));
         }
 
         private void RewriteMcr(IntrinsicProcedure intrinsic)
@@ -204,7 +201,7 @@ namespace Reko.Arch.Arm.AArch32
                 intrinsic,
                 Operand(0),
                 Operand(1),
-                Operand(2)));
+                m.AddrOf(PrimitiveType.Ptr32, Operand(2))));
         }
 
         private void RewriteSvc()

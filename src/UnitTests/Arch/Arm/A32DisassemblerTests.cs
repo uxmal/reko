@@ -1472,20 +1472,20 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("hvc\t#&C742");
         }
 
-        // Only present in old ARM models
+        [Test]
         public void ArmDasm_stc()
         {
-            Disassemble32(0x2C645520);
-            Expect_Code("stchs\tp5,cr5,[r4],-#&80");
+            Disassemble32(0x2C645F20);
+            Expect_Code("stchs\tp15,cr5,[r4],-#&80");
         }
 
         [Test]
-        [Ignore("Discovered by RekoSifter tool")]
         public void ArmDasm_stc_addrMode()
         {
             ///*R:stchi p1,cr3,[r2,-#&184]!                61 31 22 8D
-            Disassemble32(0x8D223161);
-            Expect_Code("stfhis\tf3,[r2, #fffffe7c]");
+            Reko.Core.Machine.Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
+            Disassemble32(0x8D225F61);
+            Expect_Code("stchi\tp15,cr5,[r2,-#&184]!");
         }
 
         [Test]
@@ -1541,11 +1541,13 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("shsub8\tr0,sp,r8");
         }
 
-        // Only present in old ARM models
+        [Test]
         public void ArmDasm_ldc_postic()
         {
-            Disassemble32(0x0CBF140F);
-            Expect_Code("ldceq\tp4,cr1,[pc],#&3C");
+            // Note: the ARMv8 manual appears to dictate the use of
+            // CR5 in the encoding.
+            Disassemble32(0x0CBF5E0F);
+            Expect_Code("ldceq\tp14,cr5,[pc],#&3C");
         }
 
         [Test]

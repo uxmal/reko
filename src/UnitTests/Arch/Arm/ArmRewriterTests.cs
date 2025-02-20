@@ -1603,23 +1603,35 @@ means
                 "2|L--|NZC = cond(r0)");
         }
 
-        // Only present in old ARM models
+        [Test]
         public void ArmRw_stc()
         {
-            Given_UInt32s(0xECCC5CED);  // stc p12, c12, [ip], {0xcd}
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|__stc(p12, cr5, Mem0[ip:word32])");
+            Given_UInt32s(0x8D225F61);
+            AssertCode(                 // stchi\tp15,cr5,[r2,-#&184]!
+                "0|L--|00100000(4): 3 instructions",
+                "1|T--|if (Test(ULE,ZC)) branch 00100004",
+                "2|L--|r2 = r2 - 388<i32>",
+                "3|L--|__stc(p15, cr5, &Mem0[r2:word32])");
         }
 
-        // Only present in old ARM models
+        [Test]
         public void ArmRw_ldc()
         {
-            Given_UInt32s(0xECDC5CED);
+            Given_HexString("075F917D");
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v4 = Mem0[ip:word32]",
-                "2|L--|p12 = __ldc(cr5, v4)");
+                "1|T--|if (Test(OV,V)) branch 00100004",
+                "2|L--|__ldc(p15, cr5, &Mem0[r1 + 28<i32>:word32])");
+        }
+
+        [Test]
+        public void ArmDasm_ldc2l()
+        {
+            Given_UInt32s(0xFDF001A9);
+            AssertCode(     // ldc2l\tp1,cr0,[r0,#&2A4]!
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|r0 = r0 + 676<i32>",
+                "2|L--|__ldc2l(p1, cr0, &Mem0[r0:word32])");
         }
 
         [Test]
