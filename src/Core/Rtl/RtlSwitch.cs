@@ -26,7 +26,7 @@ namespace Reko.Core.Rtl
     /// <summary>
     /// Models a multi-way branch.
     /// </summary>
-    public class RtlSwitch : RtlInstruction
+    public sealed class RtlSwitch : RtlInstruction
     {
         public RtlSwitch(Expression expr, Address [] targets)
         {

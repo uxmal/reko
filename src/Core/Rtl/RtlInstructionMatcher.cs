@@ -19,11 +19,9 @@
 #endregion
 
 using Reko.Core.Expressions;
-using Reko.Core.Operators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Reko.Core.Rtl
 {

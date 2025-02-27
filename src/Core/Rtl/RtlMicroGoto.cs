@@ -32,7 +32,7 @@ namespace Reko.Core.Rtl
     /// If you want to jump outside of the cluster, you may only jump to the start of a rewritten
     /// instruction using the <see cref="RtlGoto"/> instruction.
     /// </remarks>
-    public class RtlMicroGoto : RtlInstruction
+    public sealed class RtlMicroGoto : RtlInstruction
     {
         public RtlMicroGoto(int indexTarget)
         {
