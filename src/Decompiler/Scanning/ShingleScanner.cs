@@ -21,8 +21,6 @@
 using Reko.Core;
 using Reko.Core.Collections;
 using Reko.Core.Diagnostics;
-using Reko.Core.Loading;
-using Reko.Core.Memory;
 using Reko.Services;
 using System;
 using System.Collections.Generic;
@@ -65,7 +63,7 @@ namespace Reko.Scanning
             return ScanProgram(gaps);
         }
 
-        public ScanResultsV2 ScanProgram(IEnumerable<(Address, long)> gaps)
+        public ScanResultsV2 ScanProgram(IEnumerable<Chunk> gaps)
         {
             var chunks = MakeScanChunks();
             var sr = ProcessChunks(chunks);
@@ -78,23 +76,25 @@ namespace Reko.Scanning
         public List<ChunkWorker> MakeScanChunks()
         {
             var gaps = FindUnscannedExecutableGaps();
-            return gaps.Select(g => this.MakeChunkWorker(g.Item1, g.Item2)).ToList();
+            return gaps.Select(g =>
+            {
+                Debug.Assert(g.Architecture is not null);
+                return this.MakeChunkWorker(g.Architecture, g.Address, g.Length);
+            }).ToList();
         }
 
-        public List<(Address, long)> FindUnscannedExecutableGaps()
+        public List<Chunk> FindUnscannedExecutableGaps()
         {
-            var sortedBlocks = new BTreeDictionary<Address, RtlBlock>();
-            foreach (var block in sr.Blocks.Values)
-            {
-                sortedBlocks.Add(block.Address, block);
-            }
-            return program.SegmentMap.Segments.Values
-                .Where(s => s.IsExecutable)
-                .SelectMany(s => PartitionSegment(s, sortedBlocks))
+            var sortedBlocks = sr.Blocks.Values.OrderBy(b => b.Address);
+            var chunkEnumerator = new ChunkEnumerator();
+            var execSegments = program.SegmentMap.Segments.Values
+                .Where(seg => seg.IsExecutable);
+            var fragments = chunkEnumerator.EnumerateFragments(execSegments, sortedBlocks);
+            return MakeTriples(fragments).Select(CreateUnscannedArea)
+                .Where(f => f is not null)
+                .Select(f => f!.Value)
                 .ToList();
         }
-
-        private record MemoryGap(Address Address, long Length, IProcessorArchitecture? Architecture);
 
         /// <summary>
         /// From an <see cref="IEnumerable{T}"/> of items, generate an <see cref="IEnumerable{T}"/> of 
@@ -136,17 +136,17 @@ namespace Reko.Scanning
         /// </summary>
         /// <param name="triple"></param>
         /// <returns></returns>
-        private (IProcessorArchitecture, MemoryArea, Address, long)? CreateUnscannedArea((MemoryGap, MemoryGap, MemoryGap) triple)
+        private Chunk? CreateUnscannedArea((Chunk, Chunk, Chunk) triple)
         {
             var (prev, item, next) = triple;
-            if (!this.program.SegmentMap.TryFindSegment(item.Address, out ImageSegment? seg))
-                return null;
-            if (!seg.IsExecutable)
-                return null;
+            if (item.Architecture is not null)
+            {
+                return default;
+            }
 
-            // Determine an architecture for the item
-            var prevArch = prev?.Architecture;
-            var nextArch = next?.Architecture;
+            // Determine an architecture for the item.
+            var prevArch = prev.Architecture;
+            var nextArch = next.Architecture;
             IProcessorArchitecture arch;
             if (prevArch is null)
             {
@@ -169,66 +169,24 @@ namespace Reko.Scanning
                     // Arbitrarily pick the architecture of the largest 
                     // adjacent block. If they're the same size, default 
                     // to the predecessor.
-                    arch = (prev!.Length < next!.Length)
+                    arch = (prev.Length < next.Length)
                         ? nextArch
                         : prevArch;
                 }
             }
 
-            return (
+            return new Chunk(
                 arch,
-                seg.MemoryArea,
                 item.Address,
                 item.Length);
         }
 
-        /// <summary>
-        /// Break up an <see cref="ImageSegment"/> into blocks that
-        /// aren't present in the <see cref="ScanResultsV2"/>.
-        /// </summary>
-        /// <param name="segment"></param>
-        /// <param name="sortedBlocks"></param>
-        /// <returns></returns>
-        private IEnumerable<(Address, long)> PartitionSegment(
-            ImageSegment segment, 
-            BTreeDictionary<Address, RtlBlock> sortedBlocks)
-        {
-            static long Align(long value, int alignment)
-            {
-                return alignment * ((value + (alignment - 1)) / alignment);
-            }
 
-            long iGapOffset = 0;
-            long length;
-            int unitAlignment = program.Architecture.InstructionBitSize / program.Architecture.MemoryGranularity;
-            while (iGapOffset < segment.Size)
-            {
-                var spaceLeft = segment.Size - iGapOffset;
-                var addrGapStart = segment.Address + iGapOffset;
-                if (!sortedBlocks.TryGetUpperBound(addrGapStart, out var nextBlock))
-                    break;
-                var gapSize = nextBlock.Address - addrGapStart;
-                gapSize = Math.Min(gapSize, spaceLeft);
-                if (gapSize >= 1)
-                {
-                    yield return (addrGapStart, gapSize);
-                }
-                iGapOffset = Align(iGapOffset + gapSize + nextBlock.Length, unitAlignment);
-            }
-
-            // Consume the remainder of the segment.
-            length = segment.Size - iGapOffset;
-            if (length >= 1)
-            {
-                yield return (segment.Address + iGapOffset, length);
-            }
-        }
-
-        public ChunkWorker MakeChunkWorker(Address addr, long length)
+        public ChunkWorker MakeChunkWorker(IProcessorArchitecture arch, Address addr, long length)
         {
             return new ChunkWorker(
                 this,
-                program.Architecture,
+                arch,
                 addr,
                 (int) length,
                 base.rejectMask,

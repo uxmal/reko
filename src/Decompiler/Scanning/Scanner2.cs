@@ -32,7 +32,7 @@ namespace Reko.Scanning
 {
     public class Scanner2 : IScanner
     {
-        private static readonly TraceSwitch trace = new(nameof(Scanner2), "");
+        private static readonly TraceSwitch trace = new(nameof(Scanner2), "") { Level = TraceLevel.Info };
 
         private readonly IServiceProvider services;
         private readonly IDecompilerEventListener listener;

@@ -1483,7 +1483,6 @@ namespace Reko.UnitTests.Arch.Arm
         public void ArmDasm_stc_addrMode()
         {
             ///*R:stchi p1,cr3,[r2,-#&184]!                61 31 22 8D
-            Reko.Core.Machine.Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
             Disassemble32(0x8D225F61);
             Expect_Code("stchi\tp15,cr5,[r2,-#&184]!");
         }

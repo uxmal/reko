@@ -101,7 +101,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var listener = new Mock<IDecompilerEventListener>();
             var scanner = new ShingleScanner(program, cfg, dynLinker.Object, listener.Object, new ServiceContainer());
             var gaps = scanner.FindUnscannedExecutableGaps();
-            var chunks = gaps.Select(g => scanner.MakeChunkWorker(g.Item1, g.Item2));
+            var chunks = gaps.Select(g => scanner.MakeChunkWorker(g.Architecture, g.Address, g.Length));
             return chunks.ToList();
         }
 
@@ -139,7 +139,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 Address.Ptr32(0x10000),
                 bytes);
             this.rd = image.Relocations;
-            var arch = new X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>());
+            var arch = new X86ArchitectureFlat32(sc, "x86-protected-32", []);
             CreateProgram(image, arch);
         }
 
@@ -421,7 +421,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
         {
             Given_Block(0x1000, 0x7);
             var chunks = When_MakeScanChunks();
-            Assert.AreEqual(chunks.Count, 1);
+            Assert.AreEqual(1, chunks.Count);
             Assert.AreEqual(0x1008ul, chunks[0].Address.ToLinear());
             Assert.AreEqual(8, chunks[0].Length);
         }
@@ -431,7 +431,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
         {
             Given_Block(0x1007, 0x10);
             var chunks = When_MakeScanChunks();
-            Assert.AreEqual(chunks.Count, 1);
+            Assert.AreEqual(1, chunks.Count);
             Assert.AreEqual(0x1000ul, chunks[0].Address.ToLinear());
             Assert.AreEqual(7, chunks[0].Length);
         }
@@ -786,6 +786,8 @@ l00001008: // l:8; ft:00001010
         {
             var A = new Mock<IProcessorArchitecture>();
             A.Setup(a => a.Name).Returns("A");
+            A.Setup(a => a.InstructionBitSize).Returns(32);
+            A.Setup(a => a.CodeMemoryGranularity).Returns(8);
             Given_Image(A.Object, new byte[0x100]);
             Given_CodeBlock(A.Object, 0x1000, 20);
             Given_UnknownBlock(0x1020, 20);
@@ -803,6 +805,8 @@ l00001008: // l:8; ft:00001010
         {
             var A = new Mock<IProcessorArchitecture>();
             A.Setup(a => a.Name).Returns("A");
+            A.Setup(a => a.InstructionBitSize).Returns(32);
+            A.Setup(a => a.CodeMemoryGranularity).Returns(8);
             Given_Image(A.Object, new byte[100]);
             Given_UnknownBlock(0x1020, 20);
             Given_CodeBlock(A.Object, 0x1040, 0xC0);

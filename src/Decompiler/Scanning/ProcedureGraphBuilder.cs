@@ -25,10 +25,8 @@ using Reko.Core.Expressions;
 using Reko.Core.Graphs;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
-using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace Reko.Scanning
@@ -222,8 +220,8 @@ namespace Reko.Scanning
         public Instruction VisitBranch(RtlBranch branch, Context ctx)
         {
             var condition = branch.Condition.Accept(this, ctx.Procedure);
-            var succ = sr.Successors[ctx.Block.Address];
-            var thenBlock = this.blocksByAddress[succ[1]];
+            var target = (Address) branch.Target;
+            var thenBlock = this.blocksByAddress[target];
             return new Branch(condition, thenBlock);
         }
 
