@@ -20,7 +20,6 @@
 
 using Reko.Core.Expressions;
 using Reko.Core.Types;
-using System;
 using System.Globalization;
 
 namespace Reko.Core.Machine

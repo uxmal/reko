@@ -50,7 +50,7 @@ namespace Reko.Arch.Arm.AArch32
             this.pc = that.pc;
         }
 
-        public override IProcessorArchitecture Architecture { get { return arch; } }
+        public override IProcessorArchitecture Architecture => arch;
 
         public override Address InstructionPointer
         {
@@ -62,6 +62,13 @@ namespace Reko.Arch.Arm.AArch32
         {
             var state = new AArch32ProcessorState(this);
             return state;
+        }
+
+        public override ProcessorState WithArchitecture(IProcessorArchitecture arch)
+        {
+            var clone = new AArch32ProcessorState(this);
+            clone.arch = arch;
+            return clone;
         }
 
         public override Constant GetRegister(RegisterStorage r)

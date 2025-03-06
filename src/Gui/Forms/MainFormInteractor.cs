@@ -52,7 +52,7 @@ namespace Reko.Gui.Forms
     {
         private static readonly TraceSwitch trace = new(nameof(MainFormInteractor), "MainFormInteractor events")
         {
-            Level = TraceLevel.Verbose
+            Level = TraceLevel.Warning
         };
 
         private IDecompilerShellUiService uiSvc;

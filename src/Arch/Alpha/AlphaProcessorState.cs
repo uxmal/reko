@@ -40,10 +40,7 @@ namespace Reko.Arch.Alpha
             this.arch = that.arch;
         }
 
-        public override IProcessorArchitecture Architecture
-        {
-            get { return arch; }
-        }
+        public override IProcessorArchitecture Architecture => arch;
 
         public override ProcessorState Clone()
         {

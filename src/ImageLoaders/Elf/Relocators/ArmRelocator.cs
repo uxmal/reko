@@ -53,7 +53,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 return sym;
             if ((sym.Address!.ToLinear() & 1) == 0)
                 return sym;
-            if (archThumb == null)
+            if (archThumb is null)
             {
                 var cfgSvc = loader.Services.RequireService<IConfigurationService>();
                 this.archThumb = cfgSvc.GetArchitecture("arm-thumb")!;
@@ -66,7 +66,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 sym.Name,
                 sym.DataType,
                 !sym.NoDecompile);
-            symNew.ProcessorState = sym.ProcessorState;
+            symNew.ProcessorState = sym.ProcessorState?.WithArchitecture(archThumb);
             return symNew;
         }
 

@@ -70,6 +70,11 @@ namespace Reko.Core
 
         public abstract ProcessorState Clone();
 
+        public virtual ProcessorState WithArchitecture(IProcessorArchitecture arch)
+        {
+            throw new NotSupportedException();
+        }
+
         public abstract Constant GetRegister(RegisterStorage r);
         public abstract void SetRegister(RegisterStorage r, Constant v);
 

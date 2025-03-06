@@ -133,6 +133,7 @@ namespace Reko.Scanning
             return e switch
             {
                 Constant c => c,
+                StringConstant sc => sc,
                 Identifier id => VisitIdentifier(id),
                 BinaryExpression bin => VisitBinaryExpression(bin),
                 ConditionalExpression cond => m.Conditional(
