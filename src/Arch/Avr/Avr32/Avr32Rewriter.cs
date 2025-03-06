@@ -261,16 +261,16 @@ namespace Reko.Arch.Avr.Avr32
             var baseReg = binder.EnsureRegister(mem.Base!);
             if (mem.PostIncrement)
             {
-                var tmp = binder.CreateTemporary(mem.Width);
-                m.Assign(tmp, m.Mem(mem.Width, baseReg));
-                m.Assign(baseReg, m.IAddS(baseReg, mem.Width.Size));
+                var tmp = binder.CreateTemporary(mem.DataType);
+                m.Assign(tmp, m.Mem(mem.DataType, baseReg));
+                m.Assign(baseReg, m.IAddS(baseReg, mem.DataType.Size));
                 return tmp;
             }
             if (mem.PreDecrement)
             {
-                m.Assign(baseReg, m.ISubS(baseReg, mem.Width.Size));
-                var tmp = binder.CreateTemporary(mem.Width);
-                m.Assign(tmp, m.Mem(mem.Width, baseReg));
+                m.Assign(baseReg, m.ISubS(baseReg, mem.DataType.Size));
+                var tmp = binder.CreateTemporary(mem.DataType);
+                m.Assign(tmp, m.Mem(mem.DataType, baseReg));
                 return tmp;
             }
             Expression ea = baseReg;
@@ -287,7 +287,7 @@ namespace Reko.Arch.Avr.Avr32
             {
                 ea = m.IAddS(ea, mem.Offset);
             }
-            return m.Mem(mem.Width, ea);
+            return m.Mem(mem.DataType, ea);
         }
 
         private Expression RewriteOp(int iOp)
@@ -322,7 +322,7 @@ namespace Reko.Arch.Avr.Avr32
                     }
                 }
             case RegisterPairOperand pair:
-                var idPair = binder.EnsureSequence(pair.Width, pair.HiRegister, pair.LoRegister);
+                var idPair = binder.EnsureSequence(pair.DataType, pair.HiRegister, pair.LoRegister);
                 return idPair;
             }
             throw new NotImplementedException($"AVR32 operand type {instr.Operands[iOp].GetType()} not implemented yet.");
@@ -350,8 +350,8 @@ namespace Reko.Arch.Avr.Avr32
                 Expression ea = binder.EnsureRegister(mem.Base!);
                 if (mem.PreDecrement)
                 {
-                    m.Assign(ea, m.ISubS(ea, mem.Width.Size));
-                    m.Assign(m.Mem(mem.Width, ea), src);
+                    m.Assign(ea, m.ISubS(ea, mem.DataType.Size));
+                    m.Assign(m.Mem(mem.DataType, ea), src);
                     return src;
                 }
                 if (mem.Index != null)
@@ -366,14 +366,14 @@ namespace Reko.Arch.Avr.Avr32
                 {
                     ea = m.IAddS(ea, mem.Offset);
                 }
-                m.Assign(m.Mem(mem.Width, ea), src);
+                m.Assign(m.Mem(mem.DataType, ea), src);
                 if (mem.PostIncrement)
                 {
-                    m.Assign(ea, m.IAddS(ea, mem.Width.Size));
+                    m.Assign(ea, m.IAddS(ea, mem.DataType.Size));
                 }
                 return src;
             case RegisterPairOperand pair:
-                var idPair = binder.EnsureSequence(pair.Width, pair.HiRegister, pair.LoRegister);
+                var idPair = binder.EnsureSequence(pair.DataType, pair.HiRegister, pair.LoRegister);
                 m.Assign(idPair, src);
                 return idPair;
             }
@@ -673,7 +673,7 @@ namespace Reko.Arch.Avr.Avr32
         {
             MaybeSkip();
             var src = RewriteOp(1);
-            if (src.DataType.BitSize < instr.Operands[0].Width.BitSize)
+            if (src.DataType.BitSize < instr.Operands[0].DataType.BitSize)
             {
                 src = m.Convert(src, dtCast, dtDst);
             }

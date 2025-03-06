@@ -59,7 +59,7 @@ namespace Reko.UnitTests.Arch.X86.Assembler
 			OperandParser opp = Create16BitParser("[bx]");
 			ParsedOperand po = opp.ParseOperand();
 			MemoryOperand mop = (MemoryOperand) po.Operand;
-			Assert.IsNull(po.Operand.Width, "Operand width should have been null, was " + po.Operand.Width);
+			Assert.IsNull(po.Operand.DataType, "Operand width should have been null, was " + po.Operand.DataType);
 			Assert.AreSame(Registers.bx, mop.Base);
 		}
 
@@ -69,7 +69,7 @@ namespace Reko.UnitTests.Arch.X86.Assembler
 			OperandParser opp = Create16BitParser("byte ptr [bx]");
 			ParsedOperand po = opp.ParseOperand();
 			MemoryOperand mop = (MemoryOperand) po.Operand;
-			Assert.AreSame(PrimitiveType.Byte, mop.Width);
+			Assert.AreSame(PrimitiveType.Byte, mop.DataType);
 			Assert.AreSame(Registers.bx, mop.Base);
 		}
 
@@ -79,7 +79,7 @@ namespace Reko.UnitTests.Arch.X86.Assembler
 			OperandParser opp = Create16BitParser("[0x21E]");
 			ParsedOperand po = opp.ParseOperand();
 			MemoryOperand mop = (MemoryOperand) po.Operand;
-			Assert.IsNull(mop.Width, "Width should be undefined, but is " + mop.Width);
+			Assert.IsNull(mop.DataType, "DataType should be undefined, but is " + mop.DataType);
 			Assert.AreSame(PrimitiveType.Word16, mop.Offset.DataType);
 			Assert.AreEqual("[021E]", mop.ToString(MachineInstructionRendererOptions.Default));
 		}
@@ -90,7 +90,7 @@ namespace Reko.UnitTests.Arch.X86.Assembler
 			OperandParser opp = Create16BitParser("[eax+eax*4]");
 			ParsedOperand po = opp.ParseOperand();
 			MemoryOperand mop = (MemoryOperand) po.Operand;
-			Assert.IsNull(mop.Width, "Width should be undefined, but is " + mop.Width);
+			Assert.IsNull(mop.DataType, "DataType should be undefined, but is " + mop.DataType);
 			Assert.IsNull(mop.Offset, "Offset should be null, but is " + mop.Offset);
 			Assert.AreEqual("[eax+eax*4]", mop.ToString(MachineInstructionRendererOptions.Default));
 		}
@@ -101,7 +101,7 @@ namespace Reko.UnitTests.Arch.X86.Assembler
 			OperandParser opp = Create16BitParser("[foo]");
 			ParsedOperand po = opp.ParseOperand();
 			MemoryOperand mop = (MemoryOperand) po.Operand;
-			Assert.IsNull(mop.Width, "Width should be undefined, but is " + mop.Width);
+			Assert.IsNull(mop.DataType, "DataType should be undefined, but is " + mop.DataType);
 			Assert.IsNotNull(po.Symbol, "Should have defined symbol foo");
 			Assert.AreEqual("[0000]", mop.ToString(MachineInstructionRendererOptions.Default));
 		}

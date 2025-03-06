@@ -1707,7 +1707,7 @@ namespace Reko.Arch.Arm.AArch64
         {
             var immr = ((Constant)dasm.state.ops[2]).ToUInt32();
             var imms = ((Constant)dasm.state.ops[3]).ToUInt32();
-            int width = dasm.state.ops[0].Width.BitSize;
+            int width = dasm.state.ops[0].DataType.BitSize;
             if ((width == 32 && imms == 0x1F) ||
                 (width == 64 && imms == 0x3F))
             {
@@ -1751,7 +1751,7 @@ namespace Reko.Arch.Arm.AArch64
         {
             var immr = ((Constant) dasm.state.ops[2]).ToUInt32();
             var imms = ((Constant) dasm.state.ops[3]).ToUInt32();
-            int width = dasm.state.ops[0].Width.BitSize;
+            int width = dasm.state.ops[0].DataType.BitSize;
             if (width == 32)
             {
                 if (imms == 0x1F)

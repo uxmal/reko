@@ -359,13 +359,13 @@ namespace Reko.Arch.M6800.M6809
             {
                 ea = m.Mem(PrimitiveType.Ptr16, ea);
             }
-            m.Assign(d, f(d, m.Mem(mem.Width, ea)));
+            m.Assign(d, f(d, m.Mem(mem.DataType, ea)));
             return d;
         }
 
         Expression UnaryMemKernel(Func<Expression, Expression, Expression> f, Expression d, Expression ea, MemoryOperand mem)
         {
-            var t = binder.CreateTemporary(mem.Width);
+            var t = binder.CreateTemporary(mem.DataType);
             if (mem.Indirect)
             {
                 ea = m.Mem(PrimitiveType.Ptr16, ea);
@@ -377,12 +377,12 @@ namespace Reko.Arch.M6800.M6809
 
         Expression TestMemKernel(Func<Expression, Expression, Expression> f, Expression d, Expression ea, MemoryOperand mem)
         {
-            var t = binder.CreateTemporary(mem.Width);
+            var t = binder.CreateTemporary(mem.DataType);
             if (mem.Indirect)
             {
                 ea = m.Mem(PrimitiveType.Ptr16, ea);
             }
-            m.Assign(t, m.Mem(mem.Width, ea));
+            m.Assign(t, m.Mem(mem.DataType, ea));
             m.Assign(t, f(d, t));
             return t;
         }

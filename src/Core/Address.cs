@@ -77,13 +77,6 @@ namespace Reko.Core
 
         public ushort? Selector => GetInfo().SelectorShift != 0 ? this.selector : null;
 
-
-        DataType MachineOperand.Width
-        {
-            get { return dt; }
-            set { dt = value; }
-        }
-
         public Address Add(long offset) => GetInfo().Add(this, offset);
 
         public void Accept(IExpressionVisitor visitor)
@@ -147,7 +140,7 @@ namespace Reko.Core
 
         public string GenerateName(string prefix, string suffix) => GetInfo().GenerateName(prefix, suffix, this);
 
-        private Info GetInfo() => infos[this.type];
+        private readonly Info GetInfo() => infos[this.type];
 
         public Expression Invert()
         {
@@ -156,13 +149,7 @@ namespace Reko.Core
 
         public Address NewOffset(ulong newOffset) => GetInfo().NewOffset(this, newOffset);
 
-        public int PreferredBase
-        {
-            get
-            {
-                return this.type == LinearOctal ? 8 : 0;
-            }
-        }
+        public int PreferredBase => this.type == LinearOctal ? 8 : 0;
 
         void MachineOperand.Render(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
@@ -797,11 +784,6 @@ namespace Reko.Core
         public bool IsZero => GetInfo().IsZero(uValue);
         public ulong Offset => GetInfo().Offset(uValue);
 
-        DataType MachineOperand.Width
-        {
-            get => DataType;
-            set => DataType = value;
-        }
 
         /// <summary>
         /// If this is a segmented address, returns the segment selector. If this is a 

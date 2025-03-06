@@ -492,7 +492,7 @@ namespace Reko.Arch.RiscV
                 {
                     ea = m.AddSubSignedInt(ea, offset);
                 }
-                return m.Mem(mem.Width, ea);
+                return m.Mem(mem.DataType, ea);
             }
             throw new NotImplementedException($"Rewriting RiscV addressing mode {op.GetType().Name} is not implemented yet.");
         }

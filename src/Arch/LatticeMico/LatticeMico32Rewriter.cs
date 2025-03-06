@@ -183,7 +183,7 @@ namespace Reko.Arch.LatticeMico
                     ea = binder.EnsureRegister(mem.Base);
                     ea = m.AddSubSignedInt(ea, mem.Offset);
                 }
-                return m.Mem(mem.Width, ea);
+                return m.Mem(mem.DataType, ea);
             case Address aop:
                 return aop;
             }

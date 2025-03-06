@@ -305,8 +305,8 @@ movzx	ax,byte ptr [bp+4h]
         {
             var instr = Disassemble16(0x83, 0xC6, 0x1);  // add si,+01
             Assert.AreEqual("add\tsi,1h", instr.ToString());
-            Assert.AreEqual(PrimitiveType.Word16, instr.Operands[0].Width);
-            Assert.AreEqual(PrimitiveType.Byte, instr.Operands[1].Width);
+            Assert.AreEqual(PrimitiveType.Word16, instr.Operands[0].DataType);
+            Assert.AreEqual(PrimitiveType.Byte, instr.Operands[1].DataType);
             Assert.AreEqual(PrimitiveType.Word16, instr.dataWidth);
         }
 
@@ -322,7 +322,7 @@ movzx	ax,byte ptr [bp+4h]
         {
             var instr = Disassemble16(0xC4, 0x5E, 0x6);		// les bx,[bp+06]
             Assert.AreEqual("les\tbx,[bp+6h]", instr.ToString());
-            Assert.AreSame(PrimitiveType.SegPtr32, instr.Operands[1].Width);
+            Assert.AreSame(PrimitiveType.SegPtr32, instr.Operands[1].DataType);
         }
 
         [Test]
@@ -366,7 +366,7 @@ movzx	ax,byte ptr [bp+4h]
                 false);
             X86Instruction instr = dasm.First();
             Assert.AreEqual("mov\teax,12345678h", instr.ToString());
-            Assert.AreEqual("ptr32", instr.Operands[1].Width.ToString());
+            Assert.AreEqual("ptr32", instr.Operands[1].DataType.ToString());
         }
 
         [Test]
@@ -380,7 +380,7 @@ movzx	ax,byte ptr [bp+4h]
             CreateDisassembler16(rdr);
             X86Instruction instr = dasm.First();
             Assert.AreEqual("mov\tword ptr cs:[0001h],800h", instr.ToString());
-            Assert.AreEqual("selector", instr.Operands[1].Width.ToString());
+            Assert.AreEqual("selector", instr.Operands[1].DataType.ToString());
         }
 
         [Test]
@@ -388,8 +388,8 @@ movzx	ax,byte ptr [bp+4h]
         {
             var instr = Disassemble16(0xF6, 0x06, 0x26, 0x54, 0x01);     // test byte ptr [5426],01
             Assert.AreEqual("test\tbyte ptr [5426h],1h", instr.ToString());
-            Assert.AreSame(PrimitiveType.Byte, instr.Operands[0].Width);
-            Assert.AreSame(PrimitiveType.Byte, instr.Operands[1].Width);
+            Assert.AreSame(PrimitiveType.Byte, instr.Operands[0].DataType);
+            Assert.AreSame(PrimitiveType.Byte, instr.Operands[1].DataType);
             Assert.AreSame(PrimitiveType.Byte, instr.dataWidth, "Instruction data width should be byte");
         }
 
@@ -398,7 +398,7 @@ movzx	ax,byte ptr [bp+4h]
         {
             var instr = Disassemble16(0xE8, 0x00, 0xF0);
             Assert.AreEqual("call\t0F003h", instr.ToString());
-            Assert.AreSame(PrimitiveType.Offset16, instr.Operands[0].Width);
+            Assert.AreSame(PrimitiveType.Offset16, instr.Operands[0].DataType);
         }
 
         [Test]

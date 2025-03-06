@@ -37,7 +37,7 @@ namespace Reko.Arch.X86.Assembler
 		public event ErrorEventHandler? Error;
 
 		private readonly Lexer lexer;
-		private PrimitiveType? addrWidth;
+		private DataType? addrWidth;
 		private Symbol? sym;
 		private SymbolTable symtab; 
 		private readonly Address addrBase;
@@ -56,7 +56,7 @@ namespace Reko.Arch.X86.Assembler
             this.segOverride = RegisterStorage.None;
 		}
 
-		public PrimitiveType? AddressWidth
+		public DataType? AddressWidth
 		{
 			get { return addrWidth; }
 		}
@@ -116,7 +116,7 @@ namespace Reko.Arch.X86.Assembler
 			case Token.REGISTER:
 			{
 				reg = lexer.Register!;
- 				PrimitiveType width = reg.DataType;
+ 				DataType width = reg.DataType;
  				if (addrWidth == null)
  					addrWidth = width;
  				else if (addrWidth != width)
@@ -312,7 +312,7 @@ namespace Reko.Arch.X86.Assembler
 			ParsedOperand? op = ParseOperand();
             if (op is null)
                 return null;
-			op.Operand.Width = width;
+			op.Operand.DataType = width;
 			return op;
 		}
 

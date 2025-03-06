@@ -185,7 +185,7 @@ namespace Reko.Arch.Tms7000
                 {
                     ea = RegisterPair(mem.Register!);
                 }
-                return m.Mem(mem.Width, ea);
+                return m.Mem(mem.DataType, ea);
             case Address addr:
                 return addr;
             default:

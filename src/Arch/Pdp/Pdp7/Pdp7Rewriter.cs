@@ -104,7 +104,7 @@ namespace Reko.Arch.Pdp.Pdp7
             if (op is MemoryOperand mem)
             {
                 Expression ea = Pdp7Architecture.Ptr18(mem.Address);
-                var dt = mem.Width;
+                var dt = mem.DataType;
                 if (mem.Deferred)
                 {
                     ea = m.Mem(PdpTypes.Ptr18, ea);

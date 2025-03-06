@@ -36,7 +36,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             {
                 var cc = RewriteCondition((ConditionOperand)instr.Operands[0]).Invert();
                 m.Branch(cc, instr.Address + instr.Length, InstrClass.ConditionalTransfer);
-                instr.Operands[1].Width = PrimitiveType.Ptr16;
+                instr.Operands[1].DataType = PrimitiveType.Ptr16;
                 m.Call(RewriteSrc(instr.Operands[1]), 2);
             }
             else
@@ -99,7 +99,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             {
                 op = instr.Operands[0];
             }
-            op.Width = PrimitiveType.Ptr16;
+            op.DataType = PrimitiveType.Ptr16;
             var dst = RewriteSrc(op);
             m.Goto(dst);
         }

@@ -172,12 +172,12 @@ namespace Reko.Arch.X86.Assembler
 				if (opp.SegmentOverride != RegisterStorage.None)
 					asm.SegmentOverride = opp.SegmentOverride;
 				if (opp.AddressWidth != null)
-					asm.AddressWidth = opp.AddressWidth;
+					asm.AddressWidth = (PrimitiveType)opp.AddressWidth;
 
 				while (lexer.PeekToken() == Token.COMMA)
 				{
 					lexer.DiscardToken();
-					opp.DataWidth = ops[0].Operand.Width;
+					opp.DataWidth = ops[0].Operand.DataType;
                     op = opp.ParseOperand();
                     if (op != null)
                         ops.Add(op);
@@ -188,7 +188,7 @@ namespace Reko.Arch.X86.Assembler
 						asm.SegmentOverride = opp.SegmentOverride;
 					}
 					if (opp.AddressWidth != null)
-						asm.AddressWidth = opp.AddressWidth;
+						asm.AddressWidth = (PrimitiveType)opp.AddressWidth;
 				}
 			}
 

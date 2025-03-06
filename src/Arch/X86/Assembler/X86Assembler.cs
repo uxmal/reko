@@ -185,7 +185,7 @@ namespace Reko.Arch.X86.Assembler
         {
             ProcessMov(
                 op,
-                Imm(op.Operand.Width, constant));
+                Imm(op.Operand.DataType, constant));
         }
 
 
@@ -261,7 +261,7 @@ namespace Reko.Arch.X86.Assembler
 
         public void Sub(ParsedOperand op, int constant)
         {
-            Sub(op, Imm(op.Operand.Width, constant));
+            Sub(op, Imm(op.Operand.DataType, constant));
         }
 
         public void Sub(ParsedOperand minuend, ParsedOperand subtrahend)
@@ -288,9 +288,9 @@ namespace Reko.Arch.X86.Assembler
 
         internal DataType? EnsureValidOperandSize(ParsedOperand op)
         {
-            DataType w = op.Operand.Width;
+            DataType w = op.Operand.DataType;
             if (w is null)
-                Error("Width of the operand is unknown");
+                Error("DataType of the operand is unknown");
             return w;
         }
 
@@ -318,7 +318,7 @@ namespace Reko.Arch.X86.Assembler
                 mop = ops[1].Operand as MemoryOperand;
             if (mop != null)
             {
-                EmitOpcode(opcodeMem | (mop.Width == PrimitiveType.Word64 ? 4 : 0), null);
+                EmitOpcode(opcodeMem | (mop.DataType == PrimitiveType.Word64 ? 4 : 0), null);
                 EmitModRM(fpuOperation, mop, null);
                 return;
             }
@@ -361,7 +361,7 @@ namespace Reko.Arch.X86.Assembler
             int regBits = pop ? 3 : 2;
             if (operand.Operand is MemoryOperand mop)
             {
-                switch (mop.Width.Size)
+                switch (mop.DataType.Size)
                 {
                 case 4: EmitOpcode(0xD9, null); break;
                 case 8: EmitOpcode(0xDD, null); break;
@@ -558,7 +558,7 @@ namespace Reko.Arch.X86.Assembler
                     {
                         if (IsSegmentRegister(regOpSrc))
                             Error("Cannot assign between two segment registers");
-                        if (ops[1].Operand.Width != PrimitiveType.Word16)
+                        if (ops[1].Operand.DataType != PrimitiveType.Word16)
                             Error(string.Format("Values assigned to/from segment registers must be 16 bits wide"));
                         EmitOpcode(0x8E, PrimitiveType.Word16);
                         EmitModRM(reg, ops[1]);
@@ -576,7 +576,7 @@ namespace Reko.Arch.X86.Assembler
                 {
                     if (IsSegmentRegister(regOpDst))
                         Error("Cannot assign between two segment registers");
-                    if (ops[0].Operand.Width.BitSize != 16)
+                    if (ops[0].Operand.DataType.BitSize != 16)
                         Error(string.Format("Values assigned to/from segment registers must be 16 bits wide"));
                     EmitOpcode(0x8C, PrimitiveType.Word16);
                     EmitModRM(RegisterEncoding(regOpSrc), ops[0]);
@@ -1015,8 +1015,8 @@ namespace Reko.Arch.X86.Assembler
 
         private DataType? EnsureValidOperandSizes(ParsedOperand[] ops, int count)
         {
-            DataType? w = ops[0].Operand.Width;
-            if (count == 1 && ops[0].Operand.Width == null)
+            DataType? w = ops[0].Operand.DataType;
+            if (count == 1 && ops[0].Operand.DataType is null)
             {
                 Error("The width of the first operand is unknown.");
                 return null;
@@ -1025,17 +1025,17 @@ namespace Reko.Arch.X86.Assembler
             {
                 if (w is null)
                 {
-                    w = ops[1].Operand.Width;
+                    w = ops[1].Operand.DataType;
                     if (w is null)
                         Error("The width of the first operand is unknown");
                     else
-                        ops[0].Operand.Width = w;
+                        ops[0].Operand.DataType = w;
                 }
                 else
                 {
-                    if (ops[1].Operand.Width is null)
-                        ops[1].Operand.Width = w;
-                    else if (ops[0].Operand.Width.BitSize < ops[1].Operand.Width.BitSize)
+                    if (ops[1].Operand.DataType is null)
+                        ops[1].Operand.DataType = w;
+                    else if (ops[0].Operand.DataType.BitSize < ops[1].Operand.DataType.BitSize)
                         Error("Operand widths don't match");
                 }
             }
@@ -1055,7 +1055,7 @@ namespace Reko.Arch.X86.Assembler
 
         private int IsWordWidth(MachineOperand op)
         {
-            return IsWordWidth(op.Width);
+            return IsWordWidth(op.DataType);
         }
 
         internal void SetDefaultWordWidth(PrimitiveType width)
@@ -1207,7 +1207,7 @@ namespace Reko.Arch.X86.Assembler
 
         public void Call(ParsedOperand parsedOperand)
         {
-            var far = (parsedOperand.Operand is MemoryOperand && parsedOperand.Operand.Width.BitSize == 32 && SegmentDataWidth.BitSize == 16);
+            var far = (parsedOperand.Operand is MemoryOperand && parsedOperand.Operand.DataType.BitSize == 32 && SegmentDataWidth.BitSize == 16);
             ProcessCallJmp(far, 0x02, parsedOperand);
         }
 
@@ -1242,7 +1242,7 @@ namespace Reko.Arch.X86.Assembler
         {
             if (op.Operand is MemoryOperand mem)
             {
-                EmitOpcode(0xD8, mem.Width);
+                EmitOpcode(0xD8, mem.DataType);
                 EmitModRM(3, op);
             }
             else
@@ -1515,7 +1515,7 @@ namespace Reko.Arch.X86.Assembler
         public void Bswap(ParsedOperand op)
         {
             var reg = (RegisterStorage)op.Operand;
-            EmitOpcode(0x0F, op.Operand.Width);
+            EmitOpcode(0x0F, op.Operand.DataType);
             emitter.EmitByte(0xC8 | RegisterEncoding(reg));
         }
 
@@ -2044,7 +2044,7 @@ namespace Reko.Arch.X86.Assembler
                 return;
             }
             EmitOpcode(0x0F, null);
-            emitter.EmitByte(0xB6 | IsWordWidth(src.Operand.Width));
+            emitter.EmitByte(0xB6 | IsWordWidth(src.Operand.DataType));
             EmitModRM(RegisterEncoding(regOpDst), src);
         }
 

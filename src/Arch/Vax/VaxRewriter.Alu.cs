@@ -331,7 +331,7 @@ namespace Reko.Arch.Vax
                 var nSize = cSize.ToInt32();
                 var nPos = cPos.ToInt32();
                 var nEnd = nSize + nPos;
-                var dstWidth = instr.Operands[3].Width.BitSize;
+                var dstWidth = instr.Operands[3].DataType.BitSize;
                 if (0 <= nPos && nPos < dstWidth && 
                     nPos < nEnd && nEnd < dstWidth)
                 {

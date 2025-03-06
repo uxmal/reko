@@ -126,7 +126,7 @@ namespace Reko.Arch.X86.Rewriter
 
         public Expression CreateMemoryAccess(X86Instruction instr, MemoryOperand memoryOperand)
         {
-            return CreateMemoryAccess(instr, memoryOperand, memoryOperand.Width);
+            return CreateMemoryAccess(instr, memoryOperand, memoryOperand.DataType);
         }
 
         public virtual MemoryAccess StackAccess(Expression expr, DataType dt)

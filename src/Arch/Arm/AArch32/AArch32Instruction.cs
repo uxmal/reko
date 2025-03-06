@@ -161,7 +161,7 @@ namespace Reko.Arch.Arm.AArch32
                 !mem.PreIndex &&
                 mem.Offset != null &&
                 mem.Add &&
-                mem.Offset.ToInt32() == Operands[0].Width.Size;
+                mem.Offset.ToInt32() == Operands[0].DataType.Size;
         }
 
         public bool IsSinglePush()
@@ -172,7 +172,7 @@ namespace Reko.Arch.Arm.AArch32
                 mem.PreIndex &&
                 mem.Offset != null &&
                 !mem.Add &&
-                mem.Offset.ToInt32() == Operands[0].Width.Size;
+                mem.Offset.ToInt32() == Operands[0].DataType.Size;
         }
 
         private (MachineOperand[], bool writeback) RenderMnemonic(MachineInstructionRenderer renderer)

@@ -60,7 +60,7 @@ namespace Reko.Arch.MCore
         private static void Replace(RegisterStorage[] regs, int iReg, string newName)
         {
             var reg = regs[iReg];
-            var regNew = new RegisterStorage(newName, reg.Number, (uint)reg.BitAddress, reg.DataType);
+            var regNew = new RegisterStorage(newName, reg.Number, (uint)reg.BitAddress, (PrimitiveType) reg.DataType);
             regs[iReg] = regNew;
         }
     }

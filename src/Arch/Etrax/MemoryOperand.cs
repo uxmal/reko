@@ -23,14 +23,12 @@ using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Reko.Arch.Etrax
 {
     public class MemoryOperand : AbstractMachineOperand
     {
-        public MemoryOperand(PrimitiveType width)
+        public MemoryOperand(DataType width)
             : base(width)
         {
         }

@@ -732,7 +732,7 @@ namespace Reko.Arch.M68k.Rewriter
                     srcReg = binder.CreateTemporary(src.EffectiveAddress.DataType);
                     m.Assign(srcReg, src.EffectiveAddress);
                 }
-                foreach (var reg in RegisterMaskIncreasing(dstRegs.Width.IsReal, dstRegs.BitSet, regGenerator))
+                foreach (var reg in RegisterMaskIncreasing(dstRegs.DataType.IsReal, dstRegs.BitSet, regGenerator))
                 {
                     m.Assign(reg, m.Mem(dataWidth, srcReg));
                     m.Assign(srcReg, m.IAddS(srcReg, dataWidth.Size));
@@ -745,7 +745,7 @@ namespace Reko.Arch.M68k.Rewriter
                 {
                 case PredecrementMemoryOperand preDec:
                     var dstReg = binder.EnsureRegister(preDec.Register);
-                    foreach (var reg in RegisterMaskDecreasing(dstRegs2.Width.IsReal, dstRegs2.BitSet, regGenerator))
+                    foreach (var reg in RegisterMaskDecreasing(dstRegs2.DataType.IsReal, dstRegs2.BitSet, regGenerator))
                     {
                         m.Assign(dstReg, m.ISubS(dstReg, dataWidth.Size));
                         m.Assign(m.Mem(dataWidth, dstReg), reg);
@@ -754,7 +754,7 @@ namespace Reko.Arch.M68k.Rewriter
                 case PostIncrementMemoryOperand postDec:
                     dstReg = binder.CreateTemporary(dataWidth);
                     m.Assign(dstReg, binder.EnsureRegister(postDec.Register));
-                    foreach (var reg in RegisterMaskIncreasing(dstRegs2.Width.IsReal, dstRegs2.BitSet, regGenerator))
+                    foreach (var reg in RegisterMaskIncreasing(dstRegs2.DataType.IsReal, dstRegs2.BitSet, regGenerator))
                     {
                         m.Assign(reg, m.Mem(dataWidth, dstReg));
                         m.Assign(dstReg, m.IAddS(dstReg, dataWidth.Size));
@@ -763,7 +763,7 @@ namespace Reko.Arch.M68k.Rewriter
                 default:
                     dstReg = binder.CreateTemporary(dataWidth);
                     m.Assign(dstReg, orw.RewriteSrc(instr.Operands[1], instr.Address));
-                    foreach (var reg in RegisterMaskIncreasing(dstRegs2.Width.IsReal, dstRegs2.BitSet, regGenerator))
+                    foreach (var reg in RegisterMaskIncreasing(dstRegs2.DataType.IsReal, dstRegs2.BitSet, regGenerator))
                     {
                         m.Assign(m.Mem(dataWidth, dstReg), reg);
                         m.Assign(dstReg, m.IAddS(dstReg, dataWidth.Size));

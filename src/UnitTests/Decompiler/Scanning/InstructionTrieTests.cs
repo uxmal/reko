@@ -119,7 +119,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 Mnemonic.push,
                 InstrClass.Linear,
                 reg.DataType,
-                reg.DataType,
+                (PrimitiveType) reg.DataType,
                 reg);
 			return inst;
 		}

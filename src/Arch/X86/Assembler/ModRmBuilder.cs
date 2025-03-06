@@ -89,8 +89,8 @@ namespace Reko.Arch.X86.Assembler
 			reg <<= 3;
 			if (memOp.Base != RegisterStorage.None || memOp.Index != RegisterStorage.None)
 			{
-				PrimitiveType baseWidth = memOp.Base.DataType;
-				PrimitiveType indexWidth = memOp.Index.DataType;
+				var baseWidth = memOp.Base.DataType;
+				var indexWidth = memOp.Index.DataType;
 				if (memOp.Base != RegisterStorage.None && memOp.Index != RegisterStorage.None)
 				{
 					if (baseWidth != indexWidth)

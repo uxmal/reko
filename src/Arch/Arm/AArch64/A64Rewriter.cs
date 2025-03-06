@@ -191,7 +191,7 @@ namespace Reko.Arch.Arm.AArch64
                     case Mnemonic.ldrsb: RewriteLdr(PrimitiveType.SByte); break;
                     case Mnemonic.ldrsh: RewriteLdr(PrimitiveType.Int16); break;
                     case Mnemonic.ldrsw: RewriteLdr(PrimitiveType.Int32, PrimitiveType.Int64); break;
-                    case Mnemonic.ldxr: RewriteLdx(instr.Operands[0].Width); break;
+                    case Mnemonic.ldxr: RewriteLdx(instr.Operands[0].DataType); break;
                     case Mnemonic.lslv: RewriteBinary(m.Shl); break;
                     case Mnemonic.lsrv: RewriteBinary(m.Shr); break;
                     case Mnemonic.ldur: RewriteLdr(null); break;
@@ -329,7 +329,7 @@ namespace Reko.Arch.Arm.AArch64
                     case Mnemonic.st2: RewriteStN(intrinsic.st2); break;
                     case Mnemonic.st3: RewriteStN(intrinsic.st3); break;
                     case Mnemonic.st4: RewriteStN(intrinsic.st4); break;
-                    case Mnemonic.stlr: RewriteStlr(instr.Operands[0].Width); break;
+                    case Mnemonic.stlr: RewriteStlr(instr.Operands[0].DataType); break;
                     case Mnemonic.stlrh: RewriteStlr(PrimitiveType.Word16); break;
                     case Mnemonic.stnp: RewriteLoadStorePair(false); break; //$REVIEW: does the non-temporality matter?
                     case Mnemonic.stp: RewriteLoadStorePair(false); break;
@@ -339,7 +339,7 @@ namespace Reko.Arch.Arm.AArch64
                     case Mnemonic.stur: RewriteStr(null); break;
                     case Mnemonic.sturb: RewriteStr(PrimitiveType.Byte); break;
                     case Mnemonic.sturh: RewriteStr(PrimitiveType.Word16); break;
-                    case Mnemonic.stxr: RewriteStx(instr.Operands[1].Width); break;
+                    case Mnemonic.stxr: RewriteStx(instr.Operands[1].DataType); break;
                     case Mnemonic.stxrb: RewriteStx(PrimitiveType.Byte); break;
                     case Mnemonic.sub: RewriteBinary(m.ISub); break;
                     case Mnemonic.subhn: RewriteSimdBinaryNarrow(intrinsic.subhn, Domain.SignedInt); break;
@@ -489,14 +489,14 @@ namespace Reko.Arch.Arm.AArch64
                     throw new NotImplementedException($"ExtendSimdConstant {instr.ShiftCode}.");
                 }
             }
-            int nElements = v.Width.BitSize / cbitsElement;
+            int nElements = v.DataType.BitSize / cbitsElement;
             var n = new BigInteger(imm);
             var result = BigInteger.Zero;
             for (int i = 0; i < nElements; ++i)
             {
                 result = (result << cbitsElement) | n;
             }
-            return BigConstant.Create(v.Width, result); 
+            return BigConstant.Create(v.DataType, result); 
         }
 
         //$TODO: prefer this RewriteOp
@@ -518,7 +518,7 @@ namespace Reko.Arch.Arm.AArch64
                 return RewriteVectorRegisterOperand(vectorOp);
             case MemoryOperand mem:
                 var ea = binder.EnsureRegister(mem.Base!);
-                return m.Mem(mem.Width, ea);
+                return m.Mem(mem.DataType, ea);
             }
             throw new NotImplementedException($"Rewriting {op.GetType().Name} not implemented yet.");
         }
@@ -526,7 +526,7 @@ namespace Reko.Arch.Arm.AArch64
         private Expression RewriteVectorRegisterOperand(VectorRegisterOperand vectorOp)
         {
             Identifier vreg;
-            if (vectorOp.Width.BitSize == 64)
+            if (vectorOp.DataType.BitSize == 64)
             {
                 vreg = binder.EnsureRegister(Registers.SimdRegs64[vectorOp.VectorRegister.Number - 32]);
             }

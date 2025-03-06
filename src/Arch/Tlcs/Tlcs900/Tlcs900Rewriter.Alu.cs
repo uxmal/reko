@@ -178,9 +178,9 @@ namespace Reko.Arch.Tlcs.Tlcs900
         private void RewritePop()
         {
             var xsp = binder.EnsureRegister(Tlcs900Registers.xsp);
-            var op = m.Mem(instr.Operands[0].Width, xsp);
+            var op = m.Mem(instr.Operands[0].DataType, xsp);
             RewriteDst(instr.Operands[0], op, (a, b) => b);
-            m.Assign(xsp, m.IAddS(xsp, instr.Operands[0].Width.Size));
+            m.Assign(xsp, m.IAddS(xsp, instr.Operands[0].DataType.Size));
         }
 
         private void RewritePush()

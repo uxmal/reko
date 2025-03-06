@@ -35,7 +35,7 @@ namespace Reko.Arch.Arm.AArch32
         private readonly uint bitmask;
         private readonly int index;
 
-        public MultiRegisterOperand(RegisterStorage[] registers, PrimitiveType width, uint bitmask, int index = -1) : base(width)
+        public MultiRegisterOperand(RegisterStorage[] registers, DataType width, uint bitmask, int index = -1) : base(width)
         {
             this.registers = registers;
             this.bitmask = bitmask;

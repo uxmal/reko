@@ -107,7 +107,7 @@ namespace Reko.Arch.X86
             }
         }
 
-        private char MnemonicSuffix(MachineOperand op) => MnemonicSuffix(op.Width);
+        private char MnemonicSuffix(MachineOperand op) => MnemonicSuffix(op.DataType);
 
         private char MnemonicSuffix(DataType dt)
         {
@@ -124,7 +124,7 @@ namespace Reko.Arch.X86
 
         private static bool IsFar(MachineOperand op)
         {
-            return op.Width.Domain == Domain.SegPointer;
+            return op.DataType.Domain == Domain.SegPointer;
         }
 
         protected override string ExplicitOperandPrefix(DataType width)
@@ -173,7 +173,7 @@ namespace Reko.Arch.X86
                 RenderImmediate(imm, renderer);
                 break;
             case MemoryOperand mem:
-                if (mem.Width.Domain == Domain.SegPointer)
+                if (mem.DataType.Domain == Domain.SegPointer)
                 {
                     renderer.WriteChar('*');
                 }

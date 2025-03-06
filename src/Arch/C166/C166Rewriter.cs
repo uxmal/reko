@@ -145,7 +145,7 @@ namespace Reko.Arch.C166
                 ea = baseReg;
                 if (mem.Predecrement)
                 {
-                    m.Assign(baseReg, m.ISubS(baseReg, mem.Width.Size));
+                    m.Assign(baseReg, m.ISubS(baseReg, mem.DataType.Size));
                 }
                 if (mem.Offset != 0)
                 {
@@ -153,14 +153,14 @@ namespace Reko.Arch.C166
                 }
                 if (mem.Postincrement)
                 {
-                    m.Assign(baseReg, m.IAddS(baseReg, mem.Width.Size));
+                    m.Assign(baseReg, m.IAddS(baseReg, mem.DataType.Size));
                 }
             }
             else
             {
                 ea = Address.Ptr16((ushort) mem.Offset);
             }
-            return m.Mem(mem.Width, ea);
+            return m.Mem(mem.DataType, ea);
         }
 
         private Expression Dst(int iop, Expression src)
@@ -443,7 +443,7 @@ namespace Reko.Arch.C166
 
         private void RewritePop()
         {
-            var tmp = binder.CreateTemporary(instr.Operands[0].Width);
+            var tmp = binder.CreateTemporary(instr.Operands[0].DataType);
             var sp = binder.EnsureRegister(Registers.SP);
             m.Assign(tmp, m.Mem16(sp));
             m.Assign(sp, m.IAddS(sp, 2));

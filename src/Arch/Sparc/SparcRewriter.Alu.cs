@@ -340,7 +340,7 @@ namespace Reko.Arch.Sparc
 
         private void RewriteSwap(IntrinsicProcedure intrinsic)
         {
-            var src = RewriteMemOp(instrCur.Operands[0], instrCur.Operands[0].Width);
+            var src = RewriteMemOp(instrCur.Operands[0], instrCur.Operands[0].DataType);
             var dst = RewriteOp(instrCur.Operands[1]);
             m.Assign(dst, m.Fn(
                 intrinsic.MakeInstance(arch.PointerType.BitSize, dst.DataType),

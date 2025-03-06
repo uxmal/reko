@@ -246,7 +246,7 @@ namespace Reko.Core
             var idSeq = FindSequence(sequence.Elements);
             if (idSeq is null)
             {
-                idSeq = new Identifier(sequence.Name, sequence.Width, sequence);
+                idSeq = new Identifier(sequence.Name, sequence.DataType, sequence);
                 identifiers.Add(idSeq);
             }
             return idSeq;

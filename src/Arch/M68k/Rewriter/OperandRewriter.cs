@@ -314,7 +314,7 @@ namespace Reko.Arch.M68k.Rewriter
                     ea = m.IAddS(bReg, mem.Offset.ToInt32());
                 }
             }
-            return m.Mem(dataWidth ?? mem.Width, ea);
+            return m.Mem(dataWidth ?? mem.DataType, ea);
         }
 
         public Expression RewriteUnary(

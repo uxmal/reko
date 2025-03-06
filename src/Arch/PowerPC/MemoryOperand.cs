@@ -27,7 +27,7 @@ namespace Reko.Arch.PowerPC
 {
     public class MemoryOperand : AbstractMachineOperand
     {
-        public MemoryOperand(PrimitiveType size, RegisterStorage reg, MachineOperand offset) : base(size)
+        public MemoryOperand(DataType size, RegisterStorage reg, MachineOperand offset) : base(size)
         {
             this.BaseRegister = reg;
             this.Offset = offset;

@@ -30,7 +30,7 @@ namespace Reko.ImageLoaders.WebAssembly
             this.TypeID = typeID;
         }
 
-        public DataType Width { 
+        public DataType DataType { 
             get => VoidType.Instance;
             set => throw new NotSupportedException();
         }

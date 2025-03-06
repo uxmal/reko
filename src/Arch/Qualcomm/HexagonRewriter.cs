@@ -293,9 +293,9 @@ namespace Reko.Arch.Qualcomm
                 exp = m.Fn(trunc, exp);
                 return exp;
             }
-            if (dec.Width.BitSize < (int) dec.Operand.Width.BitSize)
+            if (dec.DataType.BitSize < (int) dec.Operand.DataType.BitSize)
             {
-                exp = m.Slice(exp!, dec.Width, dec.BitOffset);
+                exp = m.Slice(exp!, dec.DataType, dec.BitOffset);
                 return exp;
             }
             EmitUnitTest(packet, dec.ToString());
@@ -317,13 +317,13 @@ namespace Reko.Arch.Qualcomm
                 write(binder.EnsureSequence(PrimitiveType.Word64, pair.HighRegister, pair.LowRegister), src);
                 return;
             case DecoratorOperand dec:
-                if (dec.Width.BitSize < dec.Operand.Width.BitSize)
+                if (dec.DataType.BitSize < dec.Operand.DataType.BitSize)
                 {
                     var dst = binder.EnsureRegister((RegisterStorage) dec.Operand);
-                    var dt = PrimitiveType.CreateWord(32 - dec.Width.BitSize);
+                    var dt = PrimitiveType.CreateWord(32 - dec.DataType.BitSize);
                     if (dec.BitOffset == 0)
                     {
-                        var hi = m.Slice(dst, dt, dec.Width.BitSize);
+                        var hi = m.Slice(dst, dt, dec.DataType.BitSize);
                         write(dst, m.Seq(hi, src));
                     }
                     else
@@ -351,7 +351,7 @@ namespace Reko.Arch.Qualcomm
         private Expression? RewriteApplication(ApplicationOperand app)
         {
             var ops = app.Operands.Select(o => OperandSrc(o)!).ToArray();
-            var dt = app.Width;
+            var dt = app.DataType;
             switch (app.Mnemonic)
             {
             case Mnemonic.abs: return m.Fn(CommonOps.Abs.MakeInstance(PrimitiveType.Create(Domain.SignedInt, dt.BitSize)), ops);
@@ -419,7 +419,7 @@ namespace Reko.Arch.Qualcomm
             case Mnemonic.minu: return m.Fn(CommonOps.Min.MakeInstance(PrimitiveType.UInt32), ops);
             case Mnemonic.mpy: return RewriteMpy(ops[0], ops[1]);
             case Mnemonic.mpyi: return RewriteMpyi(ops[0], ops[1]);
-            case Mnemonic.mpyu: return RewriteMpyu(app.Width, ops[0], ops[1]);
+            case Mnemonic.mpyu: return RewriteMpyu(app.DataType, ops[0], ops[1]);
             case Mnemonic.mux: return m.Conditional(ops[1].DataType, ops[0], ops[1], ops[2]);
             case Mnemonic.NE: return m.Ne(ops[0], ops[1]);
             case Mnemonic.neg: return m.Neg(ops[0]);
@@ -510,7 +510,7 @@ namespace Reko.Arch.Qualcomm
                     ea = m.IAdd(ea, idx);
                 }
             }
-            return m.Mem(mem.Width, ea);
+            return m.Mem(mem.DataType, ea);
         }
 
 
@@ -658,7 +658,7 @@ namespace Reko.Arch.Qualcomm
 
         private Expression RewriteExtract(Domain domain, Expression expression, MachineOperand[] operands)
         {
-            var dt = PrimitiveType.Create(domain, operands[0].Width.BitSize);
+            var dt = PrimitiveType.Create(domain, operands[0].DataType.BitSize);
             if (operands[1] is RegisterPairOperand pair)
             {
                 var offset = binder.EnsureRegister(pair.LowRegister);

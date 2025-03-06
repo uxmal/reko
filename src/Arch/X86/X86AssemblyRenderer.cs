@@ -223,8 +223,8 @@ namespace Reko.Arch.X86
                 if (instr.Broadcast)
                 {
                     renderer.WriteString("{1to");
-                    var xmmSize = instr.Operands[iop-1].Width.BitSize;
-                    renderer.WriteUInt32((uint) (xmmSize / memOp.Width.BitSize));
+                    var xmmSize = instr.Operands[iop-1].DataType.BitSize;
+                    renderer.WriteUInt32((uint) (xmmSize / memOp.DataType.BitSize));
                     renderer.WriteChar('}');
                 }
                 break;
@@ -286,7 +286,7 @@ namespace Reko.Arch.X86
         {
             if ((flags & MachineInstructionRendererFlags.ExplicitOperandSize) != 0)
             {
-                var s = ExplicitOperandPrefix(mem.Width);
+                var s = ExplicitOperandPrefix(mem.DataType);
                 renderer.WriteString(s);
             }
 
@@ -386,9 +386,9 @@ namespace Reko.Arch.X86
                 var ops = instr.Operands;
                 if (ops.Length == 0)
                     return false;
-                if (ops.Length >= 2 && ops[0].Width.Size != ops[1].Width.Size)
+                if (ops.Length >= 2 && ops[0].DataType.Size != ops[1].DataType.Size)
                     return true;
-                if (ops.Length >= 3 && ops[2] is MemoryOperand mop && ops[0].Width.Size != mop.Width.Size)
+                if (ops.Length >= 3 && ops[2] is MemoryOperand mop && ops[0].DataType.Size != mop.DataType.Size)
                     return true;
                 return
                          (ops.Length < 1 || !HasImplicitWidth(ops[0])) &&

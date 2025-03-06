@@ -182,7 +182,7 @@ namespace Reko.Arch.OpenRISC.Or
             var mop = (MemoryOperand) op;
             Expression ea = binder.EnsureRegister(mop.Base);
             ea = m.AddSubSignedInt(ea, mop.Offset);
-            return m.Mem(op.Width, ea);
+            return m.Mem(op.DataType, ea);
         }
 
         private Identifier Reg(MachineOperand op)

@@ -389,7 +389,7 @@ namespace Reko.Arch.Mips
                 Identifier baseReg = binder.EnsureRegister(indOp.Base);
                 int offset = indOp.IntOffset();
                 ea = m.AddSubSignedInt(baseReg, offset);
-                return m.Mem(indOp.Width, ea);
+                return m.Mem(indOp.DataType, ea);
             case Address addrOp:
                 return addrOp;
             case IndexedOperand idxOp:
@@ -431,7 +431,7 @@ namespace Reko.Arch.Mips
                     ea = m.IAdd(ea, idx);
                 }
             }
-            return m.Mem(idxOp.Width, ea);
+            return m.Mem(idxOp.DataType, ea);
         }
 
         private Expression RewriteOperand0(MachineOperand op)
@@ -450,7 +450,7 @@ namespace Reko.Arch.Mips
                 Expression ea;
                 Identifier baseReg = binder.EnsureRegister(indOp.Base);
                 ea = m.AddSubSignedInt(baseReg, indOp.IntOffset());
-                return m.Mem(indOp.Width, ea);
+                return m.Mem(indOp.DataType, ea);
             case IndexedOperand idxOp:
                 if (idxOp.Base.Number == 0)
                 {
@@ -473,7 +473,7 @@ namespace Reko.Arch.Mips
                         ea = m.IAdd(ea, binder.EnsureRegister(idxOp.Index));
                     }
                 }
-                return m.Mem(idxOp.Width, ea);
+                return m.Mem(idxOp.DataType, ea);
             }
             throw new NotImplementedException(string.Format("Rewriting of operand type {0} not implemented yet.", op.GetType().Name));
         }

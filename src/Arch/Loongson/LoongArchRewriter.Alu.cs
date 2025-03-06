@@ -274,7 +274,7 @@ namespace Reko.Arch.Loongson
                 }
             }
             var rDst = instr.Operands[0];
-            var c = Constant.Create(rDst.Width, imm.ToUInt64());
+            var c = Constant.Create(rDst.DataType, imm.ToUInt64());
             var src1 = Op(1, false);
             if (src1.IsZero)
             {
@@ -299,10 +299,10 @@ namespace Reko.Arch.Loongson
             var src2 = Op(2, false);
             var oDst = instr.Operands[0];
             Assign(oDst, m.Conditional(
-                oDst.Width,
+                oDst.DataType,
                 fn(src1, src2),
-                Constant.Create(oDst.Width, 1),
-                Constant.Create(oDst.Width, 0)));
+                Constant.Create(oDst.DataType, 1),
+                Constant.Create(oDst.DataType, 0)));
         }
 
         private void RewriteShift(Func<Expression, Expression, Expression> fn, bool slice32bits)
@@ -372,7 +372,7 @@ namespace Reko.Arch.Loongson
             }
             else if (src1 == src2)
             {
-                Assign(oDst, Constant.Zero(oDst.Width));
+                Assign(oDst, Constant.Zero(oDst.DataType));
             }
             else
             {

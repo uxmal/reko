@@ -143,7 +143,7 @@ namespace Reko.Arch.Msp430
 
         private Expression RewriteOp(MachineOperand op, DataType? dt = null)
         {
-            dt ??= op.Width ?? instr.dataWidth!;
+            dt ??= op.DataType ?? instr.dataWidth!;
             switch (op)
             {
             case RegisterStorage rop:
@@ -163,7 +163,7 @@ namespace Reko.Arch.Msp430
                     if (mop.PostIncrement)
                     {
                         var tmp = binder.CreateTemporary(dt);
-                        m.Assign(tmp, m.Mem(op.Width!, ea));
+                        m.Assign(tmp, m.Mem(op.DataType!, ea));
                         m.Assign(ea, m.IAddS(ea, dt.Size));
                         return tmp;
                     }
@@ -259,13 +259,13 @@ namespace Reko.Arch.Msp430
                 {
                     ea = Address.Ptr16((ushort) mop.Offset);
                 }
-                var tmp = binder.CreateTemporary(mop.Width);
+                var tmp = binder.CreateTemporary(mop.DataType);
                 m.Assign(tmp, m.Mem(tmp.DataType, ea));
                 m.Assign(tmp, fn(tmp, src));
                 m.Assign(m.Mem(tmp.DataType, ea.CloneExpression()), tmp);
                 return tmp;
             case Address aop:
-                var mem = m.Mem(op.Width, aop);
+                var mem = m.Mem(op.DataType, aop);
                 m.Assign(mem, fn(mem, src));
                 return mem;
             }
@@ -311,10 +311,10 @@ namespace Reko.Arch.Msp430
                 {
                     ea = Address.Ptr16((ushort) mop.Offset);
                 }
-                m.Assign(m.Mem(mop.Width, ea), MaybeSlice(src, mop.Width));
+                m.Assign(m.Mem(mop.DataType, ea), MaybeSlice(src, mop.DataType));
                 return src;
             case Address aop:
-                var mem = m.Mem(op.Width, aop);
+                var mem = m.Mem(op.DataType, aop);
                 m.Assign(mem, src);
                 return src;
             }
@@ -389,7 +389,7 @@ namespace Reko.Arch.Msp430
         {
             var op0 = instr.Operands[0];
             var op1 = instr.Operands[1];
-            var dtResult = (op0.Width.BitSize < op1.Width.BitSize ? op1 : op0).Width;
+            var dtResult = (op0.DataType.BitSize < op1.DataType.BitSize ? op1 : op0).DataType;
             var left = MaybeExtend(RewriteOp(op1), dtResult);
             var right = MaybeExtend(RewriteOp(op0), dtResult);
             var tmp = binder.CreateTemporary(dtResult);
@@ -495,7 +495,7 @@ namespace Reko.Arch.Msp430
             {
                 var reg = arch.Registers.GpRegisters[iReg];
                 m.Assign(binder.EnsureRegister(reg), MaybeExtend(m.Mem16(sp), reg.DataType));
-                m.Assign(sp, m.IAdd(sp, WordAligned(reg.Width)));
+                m.Assign(sp, m.IAdd(sp, WordAligned(reg.DataType)));
                 ++iReg;
                 --c;
             }
@@ -522,7 +522,7 @@ namespace Reko.Arch.Msp430
             while (c > 0)
             {
                 var reg = arch.Registers.GpRegisters[iReg];
-                m.Assign(sp, m.ISub(sp, WordAligned(reg.Width)));
+                m.Assign(sp, m.ISub(sp, WordAligned(reg.DataType)));
                 m.Assign(m.Mem(reg.DataType, sp), binder.EnsureRegister(reg));
                 --iReg;
                 --c;
@@ -605,7 +605,7 @@ namespace Reko.Arch.Msp430
             m.Assign(tmp, m.Slice(src, PrimitiveType.Byte));
             var dst = RewriteMovDst(
                 instr.Operands[0],
-                m.Convert(tmp, tmp.DataType, instr.Operands[0].Width));
+                m.Convert(tmp, tmp.DataType, instr.Operands[0].DataType));
             EmitCc(dst, arch.Registers.NZC);
             Assign(arch.Registers.V, Constant.False());
         }

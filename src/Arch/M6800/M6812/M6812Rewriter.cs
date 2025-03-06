@@ -329,12 +329,12 @@ namespace Reko.Arch.M6800.M6812
                 {
                     ea = m.Mem(PrimitiveType.Ptr16, ea);
                 }
-                return m.Mem(memop.Width, ea);
+                return m.Mem(memop.DataType, ea);
             }
             else
             {
                 Debug.Assert(memop.Offset != null);
-                return m.Mem(memop.Width, Address.Ptr16((ushort)memop.Offset!.Value));
+                return m.Mem(memop.DataType, Address.Ptr16((ushort)memop.Offset!.Value));
             }
         }
 

@@ -542,11 +542,11 @@ namespace Reko.Arch.Arc
             if (scaleOffset)
             {
                 // Byte size is undefined.
-                if (mem.Width.Size == 1)
+                if (mem.DataType.Size == 1)
                 {
                     return (null, null);
                 }
-                offset = offset * mem.Width.Size;
+                offset = offset * mem.DataType.Size;
             }
             if (mem.Base != null)
             {

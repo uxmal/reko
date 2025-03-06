@@ -62,7 +62,7 @@ namespace Reko.Arch.Sparc
                             immLo = (Constant) instrLo.Operands[1];
                             var longConst =
                                 Constant.Create(
-                                    instrHi.Operands[0].Width,
+                                    instrHi.Operands[0].DataType,
                                     (uint) ((immHi.ToInt32() << 16) |
                                         immLo.ToInt32()));
                             var hiOp = new SliceOperand(SliceType.Hi, immHi, longConst);
@@ -82,7 +82,7 @@ namespace Reko.Arch.Sparc
                             // Mutate the addis/oris and the memory operand
                             var longConst =
                                 Constant.Create(
-                                    instrHi.Operands[0].Width,
+                                    instrHi.Operands[0].DataType,
                                     (immHi.ToInt32() << 16) +
                                         immLo.ToInt32());
                             var hiOp = new SliceOperand(SliceType.Hi, immHi, longConst);
@@ -102,7 +102,7 @@ namespace Reko.Arch.Sparc
                             // Mutate the addis/oris and the memory operand
                             var longConst =
                                 Constant.Create(
-                                    instrHi.Operands[0].Width,
+                                    instrHi.Operands[0].DataType,
                                     (immHi.ToInt32() << 16) +
                                         immLo.ToInt32());
                             var hiOp = new SliceOperand(SliceType.Hi, immHi, longConst);

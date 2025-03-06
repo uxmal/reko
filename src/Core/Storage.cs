@@ -183,7 +183,7 @@ namespace Reko.Core
 
         public override string Kind => "FlagGroup";
 
-        public DataType Width
+        DataType MachineOperand.DataType
         {
             get => this.DataType;
             set => throw new NotSupportedException();
@@ -599,12 +599,11 @@ namespace Reko.Core
         /// </summary>
         public ulong BitMask { get; }
 
-        /// <summary>
-        /// The size and domain of the register.
-        /// </summary>
-        /// <remarks>
-        /// General-purpose registers can use the Domain.Word </remarks>
-        public new PrimitiveType DataType => (PrimitiveType) base.DataType;
+        DataType MachineOperand.DataType
+        {
+            get => base.DataType;
+            set => throw new NotSupportedException();
+        }
 
         public int Number { get; }
 
@@ -793,7 +792,7 @@ namespace Reko.Core
 
         public override string Kind => "Sequence";
 
-        public DataType Width
+        DataType MachineOperand.DataType
         {
             get => this.DataType;
             set => throw new NotSupportedException();

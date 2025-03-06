@@ -226,8 +226,8 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 {
                     ea = arch.MakeAddressFromConstant(mem.Offset!, false);
                 }
-                var tmp = binder.CreateTemporary(mem.Width);
-                m.Assign(tmp, m.Mem(mem.Width, ea));
+                var tmp = binder.CreateTemporary(mem.DataType);
+                m.Assign(tmp, m.Mem(mem.DataType, ea));
                 return tmp;
             }
             throw new NotImplementedException(op.GetType().Name);
@@ -266,18 +266,18 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 {
                     ea = arch.MakeAddressFromConstant(mem.Offset!, false);
                 }
-                var load = m.Mem(mem.Width, ea);
+                var load = m.Mem(mem.DataType, ea);
                 src = fn(load, src);
                 if (src is Identifier || src is Constant)
                 {
-                    m.Assign(m.Mem(mem.Width, ea), src);
+                    m.Assign(m.Mem(mem.DataType, ea), src);
                     return src;
                 }
                 else
                 {
                     var tmp = binder.CreateTemporary(ea.DataType);
                     m.Assign(tmp, src);
-                    m.Assign(m.Mem(mem.Width, ea), tmp);
+                    m.Assign(m.Mem(mem.DataType, ea), tmp);
                     return tmp;
                 }
             }

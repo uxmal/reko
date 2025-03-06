@@ -840,7 +840,7 @@ namespace Reko.Arch.Arm.AArch32
             case IndexedOperand ixop:
                 // Extract a single item from the vector register
                 var ixreg = Reg(ixop.Register);
-                return m.ARef(ixop.Width, ixreg, Constant.Int32(ixop.Index));
+                return m.ARef(ixop.DataType, ixreg, Constant.Int32(ixop.Index));
             }
             throw new NotImplementedException(op.GetType().Name);
         }
@@ -887,8 +887,8 @@ namespace Reko.Arch.Arm.AArch32
             case Mnemonic.strht: return PrimitiveType.Word16;
             case Mnemonic.swp: return PrimitiveType.Word32;
             case Mnemonic.swpb: return PrimitiveType.Byte;
-            case Mnemonic.vldr: return instr.Operands[0].Width;
-            case Mnemonic.vstr: return instr.Operands[0].Width;
+            case Mnemonic.vldr: return instr.Operands[0].DataType;
+            case Mnemonic.vstr: return instr.Operands[0].DataType;
             }
             return VoidType.Instance;
         }

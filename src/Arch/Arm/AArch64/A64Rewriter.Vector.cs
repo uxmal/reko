@@ -247,7 +247,7 @@ namespace Reko.Arch.Arm.AArch64
             var arraySrc = MakeArrayType(instr.Operands[1], domain);
             var tmpSrc = binder.CreateTemporary(arraySrc);
             Identifier vreg;
-            if (vop.Width.BitSize == 64)
+            if (vop.DataType.BitSize == 64)
             {
                 vreg = binder.EnsureRegister(Registers.SimdRegs64[vop.VectorRegister.Number - 32]);
             }
@@ -321,7 +321,7 @@ namespace Reko.Arch.Arm.AArch64
                 // Compare with implicit zero.
                 var arrayLeft = MakeArrayType(instr.Operands[1], domain);
                 var left = RewriteOp(instr.Operands[1], false);
-                var right = Constant.Zero(instr.Operands[1].Width);
+                var right = Constant.Zero(instr.Operands[1].DataType);
                 AssignSimd(0, m.Fn(intrinsic.MakeInstance(arrayLeft), left, right));
             }
             else if (instr.Operands[2] is VectorRegisterOperand)

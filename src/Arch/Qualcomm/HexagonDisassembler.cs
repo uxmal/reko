@@ -933,7 +933,7 @@ namespace Reko.Arch.Qualcomm
                 var dtReturn = dt is not null
                     ? dt
                     : d.ops.Count > 0
-                        ? d.ops[0].Width
+                        ? d.ops[0].DataType
                         : VoidType.Instance;
                 var op = new ApplicationOperand(dtReturn, mnemonic, d.ops.ToArray());
                 opsOld.Add(op);
@@ -952,7 +952,7 @@ namespace Reko.Arch.Qualcomm
                 {
                     int i = d.ops.Count - 1;
                     var op = d.ops[i];
-                    op = new DecoratorOperand(op.Width, op)
+                    op = new DecoratorOperand(op.DataType, op)
                     {
                         Inverted = true,
                     };
@@ -1067,7 +1067,7 @@ namespace Reko.Arch.Qualcomm
                     return false;
                 int i = d.ops.Count - 1;
                 var op = d.ops[i];
-                op = new DecoratorOperand(op.Width, op)
+                op = new DecoratorOperand(op.DataType, op)
                 {
                     Complement = true,
                 };
@@ -1084,7 +1084,7 @@ namespace Reko.Arch.Qualcomm
                     return false;
                 int i = d.ops.Count - 1;
                 var op = d.ops[i];
-                op = new DecoratorOperand(op.Width, op)
+                op = new DecoratorOperand(op.DataType, op)
                 {
                     Chop = true,
                 };
@@ -1101,7 +1101,7 @@ namespace Reko.Arch.Qualcomm
                     return false;
                 int i = d.ops.Count - 1;
                 var op = d.ops[i];
-                op = new DecoratorOperand(op.Width, op)
+                op = new DecoratorOperand(op.DataType, op)
                 {
                     Carry = true,
                 };
@@ -1118,7 +1118,7 @@ namespace Reko.Arch.Qualcomm
                     return false;
                 int i = d.ops.Count - 1;
                 var op = d.ops[i];
-                op = new DecoratorOperand(op.Width, op)
+                op = new DecoratorOperand(op.DataType, op)
                 {
                     Sat = true,
                 };
@@ -1135,7 +1135,7 @@ namespace Reko.Arch.Qualcomm
                     return false;
                 int i = d.ops.Count - 1;
                 var op = d.ops[i];
-                op = new DecoratorOperand(op.Width, op)
+                op = new DecoratorOperand(op.DataType, op)
                 {
                     Rnd = true,
                 };
@@ -1153,7 +1153,7 @@ namespace Reko.Arch.Qualcomm
                     return false;
                 int i = d.ops.Count - 1;
                 var op = d.ops[i];
-                op = new DecoratorOperand(op.Width, op)
+                op = new DecoratorOperand(op.DataType, op)
                 {
                     Lsl16 = true,
                 };

@@ -246,7 +246,7 @@ namespace Reko.Arch.X86.Emulator
             case Mnemonic.nop: return;
             case Mnemonic.not: Not(instr.Operands[0]); return;
             case Mnemonic.or: Or(instr.Operands[0], instr.Operands[1]); return;
-            case Mnemonic.pop: Write(instr.Operands[0], Pop(instr.Operands[0].Width)); return;
+            case Mnemonic.pop: Write(instr.Operands[0], Pop(instr.Operands[0].DataType)); return;
             case Mnemonic.popa: Popa(); return;
             case Mnemonic.push: Push(instr.Operands[0]); return;
             case Mnemonic.pusha: Pusha(); return;
@@ -297,7 +297,7 @@ namespace Reko.Arch.X86.Emulator
             if (op is MemoryOperand m)
             {
                 ulong ea = GetEffectiveAddress(m);
-                return ReadMemory(ea, m.Width);
+                return ReadMemory(ea, m.DataType);
             }
             throw new NotImplementedException();
         }
@@ -329,7 +329,7 @@ namespace Reko.Arch.X86.Emulator
             if (op is MemoryOperand m)
             {
                 var ea = GetEffectiveAddress(m);
-                WriteMemory(w, ea, op.Width);
+                WriteMemory(w, ea, op.DataType);
                 return;
             }
             throw new NotImplementedException();
@@ -375,7 +375,7 @@ namespace Reko.Arch.X86.Emulator
         {
             TWord l = Read(dst);
             TWord r = Read(src);
-            var mask = masks[dst.Width.Size];
+            var mask = masks[dst.DataType.Size];
             TWord sum = l + r + ((uint) Flags & 1) & mask.value;
             Write(dst, sum);
             var newCy =
@@ -395,9 +395,9 @@ namespace Reko.Arch.X86.Emulator
         {
             TWord l = Read(dst);
             TWord r = Read(src);
-            if (src.Width.Size < dst.Width.Size)
+            if (src.DataType.Size < dst.DataType.Size)
                 r = (TWord) (sbyte) r;
-            var mask = masks[dst.Width.Size];
+            var mask = masks[dst.DataType.Size];
             TWord sum = l + r & mask.value;
             Write(dst, sum);
             uint ov = (~(l ^ r) & (l ^ sum) & mask.hibit) >> 20;
@@ -472,8 +472,8 @@ namespace Reko.Arch.X86.Emulator
             if ((Flags & Cmask) != 0)
                 l |= 1;
             byte sh = (byte) Read(src);
-            TWord r = l << sh | l >> dst.Width.BitSize + 1 - sh;
-            var mask = masks[dst.Width.Size];
+            TWord r = l << sh | l >> dst.DataType.BitSize + 1 - sh;
+            var mask = masks[dst.DataType.Size];
             Write(dst, r >> 1 & mask.value);
             Flags &= ~(Cmask | Zmask);
             Flags |=
@@ -501,9 +501,9 @@ namespace Reko.Arch.X86.Emulator
         private void Sar(MachineOperand dst, MachineOperand src)
         {
             ulong n = Read(dst);
-            long l = (long) Bits.SignExtend(n, dst.Width.BitSize);
+            long l = (long) Bits.SignExtend(n, dst.DataType.BitSize);
             byte sh = (byte) Read(src);
-            var mask = masks[dst.Width.Size];
+            var mask = masks[dst.DataType.Size];
             TWord r = (TWord) (l >> sh & mask.value);
             Write(dst, r);
             Flags &= ~(Cmask | Zmask | Smask | Omask);
@@ -516,7 +516,7 @@ namespace Reko.Arch.X86.Emulator
         {
             TWord l = Read(dst);
             byte sh = (byte) Read(src);
-            var (value, hibit) = masks[dst.Width.Size];
+            var (value, hibit) = masks[dst.DataType.Size];
             TWord r = l << sh & value;
             Write(dst, r);
             Flags &= ~(Cmask | Zmask | Smask | Omask);
@@ -529,7 +529,7 @@ namespace Reko.Arch.X86.Emulator
         {
             TWord l = Read(dst);
             byte sh = (byte) Read(src);
-            var mask = masks[dst.Width.Size];
+            var mask = masks[dst.DataType.Size];
             TWord r = l >> sh & mask.value;
             Write(dst, r);
             Flags &= ~(Cmask | Zmask | Smask | Omask);
@@ -569,10 +569,10 @@ namespace Reko.Arch.X86.Emulator
         {
             TWord l = Read(dst);
             TWord r = Read(src);
-            if (src.Width.Size < dst.Width.Size)
+            if (src.DataType.Size < dst.DataType.Size)
                 r = (TWord) (sbyte) r;
             r = ~r + 1u;
-            var mask = masks[dst.Width.Size];
+            var mask = masks[dst.DataType.Size];
             TWord diff = l + r & mask.value;
             uint ov = (~(l ^ r) & (l ^ diff) & mask.hibit) >> 20;
             Flags &= ~(Cmask | Zmask | Smask | Omask);
@@ -588,10 +588,10 @@ namespace Reko.Arch.X86.Emulator
         {
             TWord l = Read(dst);
             TWord r = Read(src);
-            if (src.Width.Size < dst.Width.Size)
+            if (src.DataType.Size < dst.DataType.Size)
                 r = (TWord) (sbyte) r;
             r = ~r + 1u;        // Two's complement subtraction.
-            var mask = masks[dst.Width.Size];
+            var mask = masks[dst.DataType.Size];
             TWord diff = l + r & mask.value;
             Write(dst, diff);
             uint ov = (~(l ^ r) & (l ^ diff) & mask.hibit) >> 20;
@@ -608,9 +608,9 @@ namespace Reko.Arch.X86.Emulator
         {
             TWord l = Read(dst);
             TWord r = Read(src);
-            if (src.Width.Size < dst.Width.Size)
+            if (src.DataType.Size < dst.DataType.Size)
                 r = (TWord) (sbyte) r;
-            var mask = masks[dst.Width.Size];
+            var mask = masks[dst.DataType.Size];
             var and = l & r & mask.value;
             Write(dst, and);
             Flags &= ~(Cmask | Zmask | Smask | Omask);
@@ -624,7 +624,7 @@ namespace Reko.Arch.X86.Emulator
         private void Not(MachineOperand op)
         {
             TWord v = Read(op);
-            var mask = masks[op.Width.Size];
+            var mask = masks[op.DataType.Size];
             var not = ~v & mask.value;
             Write(op, not);
             // Flags are not affected according to Intel docs.
@@ -634,9 +634,9 @@ namespace Reko.Arch.X86.Emulator
         {
             TWord l = Read(dst);
             TWord r = Read(src);
-            if (src.Width.Size < dst.Width.Size)
+            if (src.DataType.Size < dst.DataType.Size)
                 r = (TWord) (sbyte) r;
-            var mask = masks[dst.Width.Size];
+            var mask = masks[dst.DataType.Size];
             var or = (l | r) & mask.value;
             Write(dst, or);
             Flags &= ~(Cmask | Zmask | Smask | Omask);
@@ -650,7 +650,7 @@ namespace Reko.Arch.X86.Emulator
         private void Dec(MachineOperand op)
         {
             TWord old = Read(op);
-            var mask = masks[op.Width.Size];
+            var mask = masks[op.DataType.Size];
             TWord gnu = old - 1 & mask.value;
             Write(op, gnu);
             uint ov = ((old ^ gnu) & ~gnu & mask.hibit) >> 20;
@@ -664,7 +664,7 @@ namespace Reko.Arch.X86.Emulator
         private void Inc(MachineOperand op)
         {
             TWord old = Read(op);
-            var mask = masks[op.Width.Size];
+            var mask = masks[op.DataType.Size];
             TWord gnu = old + 1 & mask.value;
             Write(op, gnu);
             uint ov = ((old ^ gnu) & gnu & mask.hibit) >> 20;
@@ -717,7 +717,7 @@ namespace Reko.Arch.X86.Emulator
         public void Push(MachineOperand op)
         {
             var value = Read(op);
-            Push(value, op.Width);
+            Push(value, op.DataType);
         }
 
         protected abstract void Push(ulong dw, DataType dt);
@@ -736,9 +736,9 @@ namespace Reko.Arch.X86.Emulator
         {
             TWord l = Read(op1);
             TWord r = Read(op2);
-            if (op2.Width.Size < op1.Width.Size)
+            if (op2.DataType.Size < op1.DataType.Size)
                 r = (TWord) (sbyte) r;
-            var mask = masks[op1.Width.Size];
+            var mask = masks[op1.DataType.Size];
             var test = l & r & mask.value;
             Flags &= ~(Cmask | Zmask | Smask | Omask);      //$TODO: parity.
             Flags |=
@@ -759,9 +759,9 @@ namespace Reko.Arch.X86.Emulator
         {
             TWord l = Read(dst);
             TWord r = Read(src);
-            if (src.Width.Size < dst.Width.Size)
+            if (src.DataType.Size < dst.DataType.Size)
                 r = (TWord) (sbyte) r;
-            var mask = masks[dst.Width.Size];
+            var mask = masks[dst.DataType.Size];
             var xor = (l ^ r) & mask.value;
             Write(dst, xor);
             Flags &= ~(Cmask | Zmask | Smask | Omask);

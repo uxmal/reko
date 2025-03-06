@@ -212,7 +212,7 @@ namespace Reko.Arch.Pdp.Pdp11
             var r = memOp.Register != null
                 ? binder.EnsureRegister(memOp.Register)
                 : null;
-            var tmp = binder.CreateTemporary(op.Width);
+            var tmp = binder.CreateTemporary(op.DataType);
             switch (memOp.Mode)
             {
             default:
@@ -226,18 +226,18 @@ namespace Reko.Arch.Pdp.Pdp11
                 return Address.Ptr16(memOp.EffectiveAddress);
             case AddressMode.AutoIncr:
                 m.Assign(tmp, m.Mem(PrimitiveType.Ptr16, r!));
-                m.Assign(r!, m.IAdd(r!, memOp.Width.Size));
+                m.Assign(r!, m.IAdd(r!, memOp.DataType.Size));
                 break;
             case AddressMode.AutoIncrDef:
-                m.Assign(tmp, m.Mem(op.Width, r!));
-                m.Assign(r!, m.IAdd(r!, memOp.Width.Size));
+                m.Assign(tmp, m.Mem(op.DataType, r!));
+                m.Assign(r!, m.IAdd(r!, memOp.DataType.Size));
                 break;
             case AddressMode.AutoDecr:
-                m.Assign(r!, m.ISub(r!, memOp.Width.Size));
-                return m.Mem(op.Width, r!);
+                m.Assign(r!, m.ISub(r!, memOp.DataType.Size));
+                return m.Mem(op.DataType, r!);
             case AddressMode.AutoDecrDef:
-                m.Assign(r!, m.ISub(r!, memOp.Width.Size));
-                m.Assign(tmp, m.Mem(op.Width, m.Mem(PrimitiveType.Ptr16, r!)));
+                m.Assign(r!, m.ISub(r!, memOp.DataType.Size));
+                m.Assign(tmp, m.Mem(op.DataType, m.Mem(PrimitiveType.Ptr16, r!)));
                 return tmp;
             case AddressMode.Indexed:
                 if (memOp.Register == Registers.pc)
@@ -314,7 +314,7 @@ namespace Reko.Arch.Pdp.Pdp11
                 var r = memOp.Register != null
                     ? binder.EnsureRegister(memOp.Register)
                     : null;
-                var tmp = binder.CreateTemporary(op.Width);
+                var tmp = binder.CreateTemporary(op.DataType);
                 switch (memOp.Mode)
                 {
                 default:
@@ -329,19 +329,19 @@ namespace Reko.Arch.Pdp.Pdp11
                            dasm.Current.DataWidth!,
                            Address.Ptr16(memOp.EffectiveAddress));
                 case AddressMode.AutoIncr:
-                    m.Assign(tmp, m.Mem(op.Width, r!));
-                    m.Assign(r!, m.IAdd(r!, memOp.Width.Size));
+                    m.Assign(tmp, m.Mem(op.DataType, r!));
+                    m.Assign(r!, m.IAdd(r!, memOp.DataType.Size));
                     break;
                 case AddressMode.AutoIncrDef:
-                    m.Assign(tmp, m.Mem(op.Width, m.Mem(PrimitiveType.Ptr16, r!)));
-                    m.Assign(r!, m.IAdd(r!, memOp.Width.Size));
+                    m.Assign(tmp, m.Mem(op.DataType, m.Mem(PrimitiveType.Ptr16, r!)));
+                    m.Assign(r!, m.IAdd(r!, memOp.DataType.Size));
                     break;
                 case AddressMode.AutoDecr:
-                    m.Assign(r!, m.ISub(r!, memOp.Width.Size));
-                    return m.Mem(op.Width, r!);
+                    m.Assign(r!, m.ISub(r!, memOp.DataType.Size));
+                    return m.Mem(op.DataType, r!);
                 case AddressMode.AutoDecrDef:
-                    m.Assign(r!, m.ISub(r!, memOp.Width.Size));
-                    m.Assign(tmp, m.Mem(op.Width, m.Mem(PrimitiveType.Ptr16, r!)));
+                    m.Assign(r!, m.ISub(r!, memOp.DataType.Size));
+                    m.Assign(tmp, m.Mem(op.DataType, m.Mem(PrimitiveType.Ptr16, r!)));
                     return tmp;
                 case AddressMode.Indexed:
                     if (memOp.Register == Registers.pc)
@@ -349,7 +349,7 @@ namespace Reko.Arch.Pdp.Pdp11
                         var offset = (short)memOp.EffectiveAddress;
                         var addrBase = (long) instr.Address.ToLinear();
                         var addr = Address.Ptr16((ushort)(2 + addrBase + offset));
-                        return m.Mem(memOp.Width, addr);
+                        return m.Mem(memOp.DataType, addr);
                     }
                     else
                     {
@@ -362,7 +362,7 @@ namespace Reko.Arch.Pdp.Pdp11
                     {
                         var addr = this.dasm.Current.Address + this.dasm.Current.Length + memOp.EffectiveAddress;
                         m.Assign(tmp, m.Mem(PrimitiveType.Ptr16, addr));
-                        m.Assign(tmp, m.Mem(memOp.Width, tmp));
+                        m.Assign(tmp, m.Mem(memOp.DataType, tmp));
                         return tmp;
                     }
                     else

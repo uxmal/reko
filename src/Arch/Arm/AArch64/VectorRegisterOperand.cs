@@ -63,7 +63,7 @@ namespace Reko.Arch.Arm.AArch64
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            WriteName(Width.BitSize, VectorRegister, ElementType, Index, renderer);
+            WriteName(DataType.BitSize, VectorRegister, ElementType, Index, renderer);
             if (Index >= 0)
             {
                 renderer.WriteFormat("[{0}]", Index);

@@ -274,7 +274,7 @@ namespace Reko.Arch.Blackfin
 
         private static void Rename(ref RegisterStorage reg, string name)
         {
-            var regNew = new RegisterStorage(name, reg.Number, (uint)reg.BitAddress, reg.DataType);
+            var regNew = new RegisterStorage(name, reg.Number, (uint)reg.BitAddress, (PrimitiveType) reg.DataType);
             reg = regNew;
         }
     }

@@ -500,7 +500,7 @@ namespace Reko.Arch.Arm.AArch32
                 return MaybeSlice(reg, dt);
             }
             var dt = VectorElementType(instr.vector_data);
-            if (dt.BitSize > instr.Operands[1].Width.BitSize)
+            if (dt.BitSize > instr.Operands[1].DataType.BitSize)
             {
                 EmitUnitTest(instr);
                 m.Invalid();

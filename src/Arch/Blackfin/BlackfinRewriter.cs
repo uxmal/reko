@@ -157,7 +157,7 @@ namespace Reko.Arch.Blackfin
                 return addr;
             case MemoryOperand mem:
                 var ea = EffectiveAddress(mem);
-                return m.Mem(mem.Width, ea);
+                return m.Mem(mem.DataType, ea);
             case RegisterRange range:
                 return ExtendedRegister(range);
             default:
@@ -177,7 +177,7 @@ namespace Reko.Arch.Blackfin
                 return imm;
             case MemoryOperand mem:
                 var ea = EffectiveAddress(mem);
-                m.Assign(m.Mem(mem.Width, ea), src);
+                m.Assign(m.Mem(mem.DataType, ea), src);
                 return src;
             case RegisterRange range:
                 var extReg = ExtendedRegister(range);
@@ -204,7 +204,7 @@ namespace Reko.Arch.Blackfin
                 {
                     var tmp = binder.CreateTemporary(ea.DataType);
                     m.Assign(tmp, ea);
-                    var size = mem.Width.Size;
+                    var size = mem.DataType.Size;
                     m.Assign(ea, m.AddSubSignedInt(ea, mem.PostIncrement
                         ? size
                         : -size));

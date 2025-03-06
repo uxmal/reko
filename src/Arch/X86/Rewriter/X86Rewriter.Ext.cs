@@ -79,7 +79,7 @@ namespace Reko.Arch.X86.Rewriter
             m.Assign(
                 SrcOp(0),
                 m.Fn(
-                    lar_intrinsic.MakeInstance(arch.PointerType.BitSize, instrCur.Operands[0].Width),
+                    lar_intrinsic.MakeInstance(arch.PointerType.BitSize, instrCur.Operands[0].DataType),
                     m.AddrOf(arch.PointerType, SrcOp(1))));
             m.Assign(
                 binder.EnsureFlagGroup(Registers.Z),
@@ -96,7 +96,7 @@ namespace Reko.Arch.X86.Rewriter
             m.Assign(
                 SrcOp(0),
                 m.Fn(
-                    lsl_intrinsic.MakeInstance(instrCur.Operands[0].Width),
+                    lsl_intrinsic.MakeInstance(instrCur.Operands[0].DataType),
                     SrcOp(1)));
         }
 
@@ -125,15 +125,15 @@ namespace Reko.Arch.X86.Rewriter
         {
             var src = SrcOp(1);
             var opDst = instrCur.Operands[0];
-            int dbitSize = opDst.Width.BitSize - src.DataType.BitSize;
+            int dbitSize = opDst.DataType.BitSize - src.DataType.BitSize;
             if (dbitSize > 0)
             {
                 // Zero-extend.
-                src = m.Convert(src, src.DataType, opDst.Width);
+                src = m.Convert(src, src.DataType, opDst.DataType);
             }
             else if (dbitSize < 0)
             {
-                src = m.Slice(src, opDst.Width, 0);
+                src = m.Slice(src, opDst.DataType, 0);
             }
             EmitCopy(0, src);
         }

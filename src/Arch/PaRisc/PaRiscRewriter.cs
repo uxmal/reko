@@ -243,7 +243,7 @@ namespace Reko.Arch.PaRisc
                     m.Assign(rb, tmp);
                     ea = tmp;
                 }
-                return m.Mem(mem.Width, ea);
+                return m.Mem(mem.DataType, ea);
             }
             throw new NotImplementedException($"Unimplemented PA-RISC operand type {instr.Operands[iOp].GetType()}.");
         }

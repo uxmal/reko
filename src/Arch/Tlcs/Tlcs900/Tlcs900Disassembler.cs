@@ -406,7 +406,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
         {
             return (b, dasm) =>
             {
-                dasm.ops[0].Width = size;
+                dasm.ops[0].DataType = size;
                 return true;
             };
         }
@@ -601,12 +601,12 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 var instr = dstDecoders[b].Decode(b, dasm);
                 if (instr.Operands.Length >= 2 && !(instr.Operands[0] is RegisterStorage))
                 {
-                    instr.Operands[0].Width = instr.Operands[1].Width;
+                    instr.Operands[0].DataType = instr.Operands[1].DataType;
                 }
-                if (instr.Operands.Length >= 2 && instr.Operands[1].Width == null)
+                if (instr.Operands.Length >= 2 && instr.Operands[1].DataType is null)
                 {
                     //$HACK to get conditional calls/jumps to work
-                    instr.Operands[1].Width = PrimitiveType.Word32;
+                    instr.Operands[1].DataType = PrimitiveType.Word32;
                 }
                 return instr;
             }

@@ -379,7 +379,7 @@ namespace Reko.Arch.CSky
             case Address addr:
                 return addr;
             case MemoryOperand mem:
-                return m.Mem(mem.Width, EffectiveAddress(mem));
+                return m.Mem(mem.DataType, EffectiveAddress(mem));
             default:
                 throw new NotImplementedException($"CSky operand type {op.GetType().Name}");
             }
@@ -1108,7 +1108,7 @@ namespace Reko.Arch.CSky
             foreach (var reg in regs.RegisterList)
             {
                 var id = binder.EnsureRegister(reg);
-                m.Assign(id, m.Mem(reg.Width, sp));
+                m.Assign(id, m.Mem(reg.DataType, sp));
                 m.Assign(sp, m.IAddS(sp, id.DataType.Size));
                 r15popped |= reg.Number == 15;
             }
@@ -1124,7 +1124,7 @@ namespace Reko.Arch.CSky
             {
                 var id = binder.EnsureRegister(reg);
                 m.Assign(sp, m.ISubS(sp, id.DataType.Size));
-                m.Assign(m.Mem(reg.Width, sp), id);
+                m.Assign(m.Mem(reg.DataType, sp), id);
             }
         }
 

@@ -29,9 +29,9 @@ namespace Reko.Arch.zSeries
         private void RewriteVectorInstruction(IntrinsicProcedure intrinsic)
         {
             var args = Enumerable.Range(1, instr.Operands.Length - 1)
-                .Select(i => Op(i, instr.Operands[i].Width))
+                .Select(i => Op(i, instr.Operands[i].DataType))
                 .ToArray();
-            var dst = Op(0, instr.Operands[0].Width);
+            var dst = Op(0, instr.Operands[0].DataType);
             if (intrinsic.IsGeneric)
             {
                 m.Assign(dst, m.Fn(intrinsic.MakeInstance(dst.DataType), args));
@@ -56,9 +56,9 @@ namespace Reko.Arch.zSeries
                 m.Invalid();
                 return;
             }
-            var src1 = Op(1, instr.Operands[1].Width);
-            var src2 = Op(2, instr.Operands[2].Width);
-            var dst = Op(0, instr.Operands[0].Width);
+            var src1 = Op(1, instr.Operands[1].DataType);
+            var src2 = Op(2, instr.Operands[2].DataType);
+            var dst = Op(0, instr.Operands[0].DataType);
             var arraySrc = new ArrayType(dtElem, src1.DataType.BitSize / dtElem.BitSize);
             var arg1 = binder.CreateTemporary(arraySrc);
             var arg2 = binder.CreateTemporary(arraySrc);
@@ -81,10 +81,10 @@ namespace Reko.Arch.zSeries
                 return;
             }
 
-            var src1 = Op(1, instr.Operands[1].Width);
-            var src2 = Op(2, instr.Operands[2].Width);
-            var src3 = Op(3, instr.Operands[3].Width);
-            var dst = Op(0, instr.Operands[0].Width);
+            var src1 = Op(1, instr.Operands[1].DataType);
+            var src2 = Op(2, instr.Operands[2].DataType);
+            var src3 = Op(3, instr.Operands[3].DataType);
+            var dst = Op(0, instr.Operands[0].DataType);
             var arraySrc = new ArrayType(dtElem, src1.DataType.BitSize / dtElem.BitSize);
             var arrayDst = arraySrc;
             var intrinsic = genericIntrinsic.GetGenericArguments().Length == 2

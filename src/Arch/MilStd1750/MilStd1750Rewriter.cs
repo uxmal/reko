@@ -295,7 +295,7 @@ namespace Reko.Arch.MilStd1750
                 {
                     ea = Address.Ptr16(mem.Displacement);
                 }
-                return m.Mem(mem.Width, ea);
+                return m.Mem(mem.DataType, ea);
             default:
                 throw new NotImplementedException($"Rewriting {instr.Operands[iOp].GetType().Name} is not supported.");
             }
@@ -378,7 +378,7 @@ namespace Reko.Arch.MilStd1750
             var ra0 = (RegisterStorage) instr.Operands[0];
             var ra1 = Registers.GpRegs[(ra0.Number + 1) & 0xF];
             var dividend = binder.EnsureSequence(PrimitiveType.Int32, ra0, ra1);
-            var divisor = binder.CreateTemporary(instr.Operands[1].Width);
+            var divisor = binder.CreateTemporary(instr.Operands[1].DataType);
             var quo = binder.EnsureRegister(ra0);
             var rem = binder.EnsureRegister(ra1);
             m.Assign(divisor, Op(1));
@@ -408,7 +408,7 @@ namespace Reko.Arch.MilStd1750
             var ra0 = (RegisterStorage) instr.Operands[0];
             var ra1 = Registers.GpRegs[(ra0.Number + 1) & 0xF];
             var dividend = binder.EnsureSequence(PrimitiveType.Int32, Registers.GpRegs[0], Registers.GpRegs[1]);
-            var divisor = binder.CreateTemporary(instr.Operands[1].Width);
+            var divisor = binder.CreateTemporary(instr.Operands[1].DataType);
             var quo = binder.EnsureRegister(ra0);
             var rem = binder.EnsureRegister(ra1);
             m.Assign(divisor, Op(1));
@@ -422,7 +422,7 @@ namespace Reko.Arch.MilStd1750
             var ra0 = (RegisterStorage) instr.Operands[0];
             var ra1 = Registers.GpRegs[(ra0.Number + 1) & 0xF];
             var dividend = binder.EnsureRegister(ra0);
-            var divisor = binder.CreateTemporary(instr.Operands[1].Width);
+            var divisor = binder.CreateTemporary(instr.Operands[1].DataType);
             m.Assign(divisor, Op(1));
             var quo = binder.EnsureRegister(ra0);
             var rem = binder.EnsureRegister(ra1);

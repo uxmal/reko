@@ -49,18 +49,18 @@ namespace Reko.Arch.Qualcomm
         protected override void DoRender(MachineInstructionRenderer writer, MachineInstructionRendererOptions options)
         {
             writer.WriteString("mem");
-            if (Width.Size == 1)
+            if (DataType.Size == 1)
                 writer.WriteString("b");
-            else if (Width == PrimitiveType.Int16)
+            else if (DataType == PrimitiveType.Int16)
                 writer.WriteString("h");
-            else if (Width.Size == 2)
+            else if (DataType.Size == 2)
                 writer.WriteString("uh");
-            else if (Width.Size == 4)
+            else if (DataType.Size == 4)
                 writer.WriteString("w");
-            else if (Width.Size == 8)
+            else if (DataType.Size == 8)
                 writer.WriteString("d");
             else
-                throw new System.NotImplementedException($"Unimplemented size {Width.Size}");
+                throw new System.NotImplementedException($"Unimplemented size {DataType.Size}");
             writer.WriteChar('(');
             if (Base != null)
             {

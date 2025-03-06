@@ -237,7 +237,7 @@ namespace Reko.Arch.CompactRisc
                 return addr;
             case MemoryOperand mem:
                 var ea = EffectiveAddress(mem);
-                return m.Mem(mem.Width, ea);
+                return m.Mem(mem.DataType, ea);
             default:
                 throw new AddressCorrelatedException(instr.Address, $"Unimplemented address mode {op.GetType().Name}.");
             }
@@ -268,7 +268,7 @@ namespace Reko.Arch.CompactRisc
             if (stg is RegisterStorage reg)
                 return binder.EnsureRegister(reg);
             else if (stg is SequenceStorage seq)
-                return binder.EnsureSequence(seq.Width, seq.Elements);
+                return binder.EnsureSequence(seq.DataType, seq.Elements);
             else
                 throw new NotImplementedException();
         }
@@ -534,7 +534,7 @@ namespace Reko.Arch.CompactRisc
 
         private void RewriteMovsx(PrimitiveType dtSrc)
         {
-            var dtDst = PrimitiveType.Create(Domain.SignedInt, instr.Operands[1].Width.BitSize);
+            var dtDst = PrimitiveType.Create(Domain.SignedInt, instr.Operands[1].DataType.BitSize);
             var src = MaybeSlice(0, dtSrc);
             var dst = Operand(1);
             m.Assign(dst, m.Convert(src, dtSrc, dtDst));
@@ -542,7 +542,7 @@ namespace Reko.Arch.CompactRisc
 
         private void RewriteMovzx(PrimitiveType dtSrc)
         {
-            var dtDst = instr.Operands[1].Width;
+            var dtDst = instr.Operands[1].DataType;
             var src = MaybeSlice(0, dtSrc);
             var dst = Operand(1);
             m.Assign(dst, m.Convert(src, dtSrc, dtDst));

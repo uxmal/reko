@@ -33,7 +33,7 @@ namespace Reko.Core.Machine
         /// <summary>
         /// The data type of this MachineOperand.
         /// </summary>
-        DataType Width { get; set; }
+        DataType DataType { get; set; }
 
         /// <summary>
         /// Renders the operand as a string, according to the specified
@@ -48,11 +48,11 @@ namespace Reko.Core.Machine
 
     public abstract class AbstractMachineOperand : MachineOperand
 	{
-        public DataType Width { get; set; }
+        public virtual DataType DataType { get; set; }
 
 		protected AbstractMachineOperand(DataType width)
 		{
-			this.Width = width;
+			this.DataType = width;
 		}
 
         public sealed override string ToString()

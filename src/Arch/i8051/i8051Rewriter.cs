@@ -466,11 +466,11 @@ namespace Reko.Arch.i8051
                 Debug.Assert(ea is not null);
                 if (dataMemory != null)
                 {
-                    return m.SegMem(mem.Width, binder.EnsureRegister(dataMemory), ea);
+                    return m.SegMem(mem.DataType, binder.EnsureRegister(dataMemory), ea);
                 }
                 else
                 {
-                    return m.Mem(mem.Width, ea);
+                    return m.Mem(mem.DataType, ea);
                 }
             case BitOperand bit:
                 Expression e = binder.EnsureRegister(bit.Register);
@@ -608,7 +608,7 @@ namespace Reko.Arch.i8051
                 {
                     throw new NotImplementedException();
                 }
-                m.Assign(m.Mem(mem.Width, ea), src);
+                m.Assign(m.Mem(mem.DataType, ea), src);
                 break;
             case BitOperand bit:
                 if (bit.Bit > 0)

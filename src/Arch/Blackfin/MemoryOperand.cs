@@ -39,11 +39,11 @@ namespace Reko.Arch.Blackfin
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            if (base.Width.BitSize == 8)
+            if (base.DataType.BitSize == 8)
             {
                 renderer.WriteChar('B');
             } 
-            else if (base.Width.BitSize == 16)
+            else if (base.DataType.BitSize == 16)
             {
                 renderer.WriteChar('W');
             }

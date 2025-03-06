@@ -905,15 +905,7 @@ namespace Reko.Arch.X86
             {
                 PrimitiveType width;
                 var ops = d.decodingContext.ops;
-                if (opType == OperandType.x)
-                {
-                    width = (PrimitiveType) ops[^1].Width;
-                    d.decodingContext.iWidth = width;
-                }
-                else
-                { 
-                    width = d.OperandWidth(opType); //  Don't use the width of the previous operand.
-                }
+                width = d.OperandWidth(opType); 
                 var op = d.CreateImmediateOperand(width);
                 if (op == null)
                     return false;
@@ -925,8 +917,25 @@ namespace Reko.Arch.X86
         private static readonly Mutator<X86Disassembler> Ib = I(OperandType.b);
         private static readonly Mutator<X86Disassembler> Iv = I(OperandType.v);
         private static readonly Mutator<X86Disassembler> Iw = I(OperandType.w);
-        private static readonly Mutator<X86Disassembler> Ix = I(OperandType.x);
         private static readonly Mutator<X86Disassembler> Iz = I(OperandType.z);
+
+        /// <summary>
+        /// Immediate operand that takes its width from the previous operand.
+        /// </summary>
+        /// <param name="opType"></param>
+        /// <returns></returns>
+        private static bool Ix(uint u, X86Disassembler d)
+        {
+            PrimitiveType width;
+            var ops = d.decodingContext.ops;
+            width = (PrimitiveType) ops[^1].DataType;
+            d.decodingContext.iWidth = width;
+            var op = d.CreateImmediateOperand(width);
+            if (op == null)
+                return false;
+            d.decodingContext.ops.Add(op);
+            return true;
+        }
 
         /// <summary>
         /// Relative ("near") jump.
@@ -965,7 +974,7 @@ namespace Reko.Arch.X86
             if (!d.TryReadByte(out var lReg))
                 return false;
             var ops = d.decodingContext.ops;
-            var width =  ops[^1].Width; // Use width of the previous operand.
+            var width =  ops[^1].DataType; // Use width of the previous operand.
             d.decodingContext.iWidth = width;
             //width = OperandWidth(strFormat, ref i); //  Don't use the width of the previous operand.
             var operand = d.XmmRegFromBits(lReg >> 4 & 0xF, width);

@@ -33,10 +33,10 @@ namespace Reko.Arch.X86
         public SaeOperand(EvexRoundMode roundmode)
         {
             this.RoundMode = roundmode;
-            this.Width = VoidType.Instance;
+            this.DataType = VoidType.Instance;
         }
 
-        public DataType Width { get; set; }
+        public DataType DataType { get; set; }
         public EvexRoundMode RoundMode { get; }
 
         public void Render(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)

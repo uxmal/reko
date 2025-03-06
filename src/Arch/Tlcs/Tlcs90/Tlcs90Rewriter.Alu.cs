@@ -122,7 +122,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             }
             if (this.instr.Operands[0] is MemoryOperand)
             {
-                this.instr.Operands[0].Width = PrimitiveType.Byte;
+                this.instr.Operands[0].DataType = PrimitiveType.Byte;
             }
             var src = RewriteSrc(this.instr.Operands[0]);
             Expression one;
@@ -143,7 +143,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
 
         private void RewriteIncwDecw(Func<Expression, Expression, Expression> fn)
         {
-            instr.Operands[0].Width = PrimitiveType.Word16;
+            instr.Operands[0].DataType = PrimitiveType.Word16;
             var src = RewriteSrc(this.instr.Operands[0]);
             src.DataType = PrimitiveType.Word16;
             var one = Constant.SByte(1);
@@ -277,7 +277,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             EmitCc(src, flags);
             RewriteDst(
                 instr.Operands[1],
-                Constant.Create(instr.Operands[1].Width, 1 << bit),
+                Constant.Create(instr.Operands[1].DataType, 1 << bit),
                 m.Or);
         }
 
@@ -288,14 +288,14 @@ namespace Reko.Arch.Tlcs.Tlcs90
             {
                 RewriteDst(
                     instr.Operands[1],
-                    Constant.Create(instr.Operands[1].Width, 1 << bit),
+                    Constant.Create(instr.Operands[1].DataType, 1 << bit),
                     m.Or);
             } 
             else
             {
                 RewriteDst(
                     instr.Operands[1],
-                    Constant.Create(instr.Operands[1].Width, ~(1 << bit)),
+                    Constant.Create(instr.Operands[1].DataType, ~(1 << bit)),
                     m.And);
             }
         }

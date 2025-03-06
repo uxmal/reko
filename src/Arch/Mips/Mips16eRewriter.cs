@@ -158,7 +158,7 @@ Architecture */
                     ea = binder.EnsureRegister(mem.Base);
                     ea = m.AddSubSignedInt(ea, mem.IntOffset());
                 }
-                return m.Mem(op.Width, ea);
+                return m.Mem(op.DataType, ea);
             }
             throw new NotImplementedException($"Mips16e operand {op.GetType()} not implemented yet.");
         }

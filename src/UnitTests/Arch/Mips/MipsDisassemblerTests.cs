@@ -117,7 +117,7 @@ namespace Reko.UnitTests.Arch.Mips
             var opReg = op as IndirectOperand;
             Assert.AreEqual(reg, opReg.Base);
             Assert.AreEqual(offset, opReg.IntOffset());
-            Assert.AreEqual(type, opReg.Width);
+            Assert.AreEqual(type, opReg.DataType);
         }
 
         private void VerifyImmediateOperand(MachineOperand op, Constant val, PrimitiveType type)

@@ -38,7 +38,7 @@ namespace Reko.Arch.Arm.AArch32
         public bool PreIndex;
         public int Alignment;
 
-        public MemoryOperand(PrimitiveType dataType) : base(dataType)
+        public MemoryOperand(DataType dataType) : base(dataType)
         {
         }
 

@@ -101,7 +101,7 @@ namespace Reko.Arch.Arc
         private static RegisterStorage RenameRegister(int iGpReg, string regName)
         {
             var oldReg = CoreRegisters[iGpReg];
-            var newReg = new RegisterStorage(regName, oldReg.Number, 0, oldReg.DataType);
+            var newReg = new RegisterStorage(regName, oldReg.Number, 0, (PrimitiveType) oldReg.DataType);
             CoreRegisters[iGpReg] = newReg;
             return newReg;
         }

@@ -97,7 +97,7 @@ namespace Reko.Arch.SuperH
                 if (memOp.mode == AddressingMode.PcRelativeDisplacement)
                 {
                     uint uAddr = this.Address.ToUInt32();
-                    if (memOp.Width.Size == 4)
+                    if (memOp.DataType.Size == 4)
                     {
                         uAddr &= ~3u;
                     }

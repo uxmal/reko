@@ -432,7 +432,7 @@ namespace Reko.Arch.Zilog.Z80
 
         private void RewriteEx()
         {
-            var t = binder.CreateTemporary(dasm.Current.Operands[0].Width);
+            var t = binder.CreateTemporary(dasm.Current.Operands[0].DataType);
             m.Assign(t, RewriteOp(dasm.Current.Operands[0]));
             m.Assign(RewriteOp(dasm.Current.Operands[0]), RewriteOp(dasm.Current.Operands[1]));
             m.Assign(RewriteOp(dasm.Current.Operands[1]), t);
@@ -546,16 +546,16 @@ namespace Reko.Arch.Zilog.Z80
                         bReg = binder.EnsureRegister(memOp.Base);
                     if (memOp.Offset is null)
                     {
-                        return m.Mem(memOp.Width, bReg!);
+                        return m.Mem(memOp.DataType, bReg!);
                     }
                     else if (bReg == null)
                     {
-                        return m.Mem(memOp.Width, memOp.Offset);
+                        return m.Mem(memOp.DataType, memOp.Offset);
                     }
                     else
                     {
                         int s = memOp.Offset.ToInt32();
-                        return m.Mem(memOp.Width, m.AddSubSignedInt(bReg, s));
+                        return m.Mem(memOp.DataType, m.AddSubSignedInt(bReg, s));
                         }
                         }
             default:

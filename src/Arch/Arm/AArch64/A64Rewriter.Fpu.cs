@@ -48,7 +48,7 @@ namespace Reko.Arch.Arm.AArch64
         {
             if (mop is VectorRegisterOperand vrop)
                 return MakeArrayType(vrop, domain);
-            var bitsize = mop.Width.BitSize;
+            var bitsize = mop.DataType.BitSize;
             if (domain == 0)
                 return PrimitiveType.CreateWord(bitsize);
             else
@@ -57,7 +57,7 @@ namespace Reko.Arch.Arm.AArch64
 
         private ArrayType MakeArrayType(MachineOperand mop, Domain domain = 0)
         {
-            var arrayBitsize = mop.Width.BitSize;
+            var arrayBitsize = mop.DataType.BitSize;
             var elemBitsize = Bitsize((mop is VectorRegisterOperand vector)
                 ? vector.ElementType
                 : instr.VectorData);
@@ -145,7 +145,7 @@ namespace Reko.Arch.Arm.AArch64
         {
             //$TODO: #include <math.h>
             var dtSrc = MakeReal(src.DataType);
-            var dtDst = MakeInteger(domain, instr.Operands[0].Width);
+            var dtDst = MakeInteger(domain, instr.Operands[0].DataType);
             var fn = dtSrc.BitSize == 32 ? fnSingle : fnDouble;
             src = m.Fn(fn, src);
             return m.Convert(src, dtSrc, dtDst);
@@ -210,7 +210,7 @@ namespace Reko.Arch.Arm.AArch64
                 {
                     DataType dt;
                     IntrinsicProcedure intrinsic;
-                    if (instr.Operands[0].Width.BitSize == 64)
+                    if (instr.Operands[0].DataType.BitSize == 64)
                     {
                         dt = PrimitiveType.Real64;
                         intrinsic = fn64;
@@ -233,7 +233,7 @@ namespace Reko.Arch.Arm.AArch64
             var src3 = RewriteOp(3);
             var dst = RewriteOp(0);
             IntrinsicProcedure fname;
-            if (instr.Operands[0].Width.BitSize == 64)
+            if (instr.Operands[0].DataType.BitSize == 64)
             {
                 fname = intrinsic.MakeInstance(PrimitiveType.Real64);
             }
@@ -276,7 +276,7 @@ namespace Reko.Arch.Arm.AArch64
         private void RewriteFsqrt()
         {
             //$TODO: require "<math.h>"
-            var src = binder.CreateTemporary(MakeReal(instr.Operands[1].Width));
+            var src = binder.CreateTemporary(MakeReal(instr.Operands[1].DataType));
             var dst = RewriteOp(instr.Operands[0]);
             m.Assign(src, RewriteOp(instr.Operands[1]));
             var fn = src.DataType.BitSize == 32 ? FpOps.sqrtf : FpOps.sqrt;

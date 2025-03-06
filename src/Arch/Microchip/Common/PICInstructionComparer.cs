@@ -64,7 +64,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
                 case PICOperandPseudo pseudoA:
                     var pseudoB = (PICOperandPseudo)opB;
-                    if (pseudoA.Width != pseudoB.Width)
+                    if (pseudoA.DataType != pseudoB.DataType)
                         return false;
                     if (pseudoA.Values.Length != pseudoB.Values.Length)
                         return false;

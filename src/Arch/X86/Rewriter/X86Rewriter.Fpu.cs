@@ -115,9 +115,9 @@ namespace Reko.Arch.X86.Rewriter
 
         private void RewriteFbstp()
         {
-            instrCur.Operands[0].Width = PrimitiveType.Bcd80;
+            instrCur.Operands[0].DataType = PrimitiveType.Bcd80;
             var src = orw.FpuRegister(0);
-            m.Assign(SrcOp(0), m.Convert(src, src.DataType, instrCur.Operands[0].Width));
+            m.Assign(SrcOp(0), m.Convert(src, src.DataType, instrCur.Operands[0].DataType));
             ShrinkFpuStack(1);
         }
 
@@ -200,7 +200,7 @@ namespace Reko.Arch.X86.Rewriter
         private void RewriteFild()
         {
             GrowFpuStack(1);
-            var iType = PrimitiveType.Create(Domain.SignedInt, instrCur.Operands[0].Width.BitSize);
+            var iType = PrimitiveType.Create(Domain.SignedInt, instrCur.Operands[0].DataType.BitSize);
             m.Assign(
                 orw.FpuRegister(0),
                 m.Convert(SrcOp(0, iType), iType, PrimitiveType.Real64));
@@ -224,8 +224,8 @@ namespace Reko.Arch.X86.Rewriter
 
         private void RewriteFistt(bool pop)
         {
-            var dtSrc = PrimitiveType.Create(Domain.SignedInt, instrCur.Operands[0].Width.BitSize);
-            instrCur.Operands[0].Width = dtSrc;
+            var dtSrc = PrimitiveType.Create(Domain.SignedInt, instrCur.Operands[0].DataType.BitSize);
+            instrCur.Operands[0].DataType = dtSrc;
             var fpuReg = orw.FpuRegister(0);
             var trunc = m.Fn(trunc_intrinsic, fpuReg);
             m.Assign(SrcOp(0), m.Convert(trunc, trunc.DataType, dtSrc));
@@ -388,7 +388,7 @@ namespace Reko.Arch.X86.Rewriter
         private void RewriteFstsw()
         {
             var opSrc = instrCur.Operands[0];
-            var op = orw.Transform(instrCur, opSrc, opSrc.Width);
+            var op = orw.Transform(instrCur, opSrc, opSrc.DataType);
             m.Assign(op, m.Fn(fstsw_intrinsic, binder.EnsureRegister(Registers.FPUF)));
             return;
         }

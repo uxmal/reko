@@ -288,7 +288,7 @@ namespace Reko.Environments.Gameboy
                         ea = tmp;
                     }
                 }
-                return m.Mem(mem.Width, ea);
+                return m.Mem(mem.DataType, ea);
             case ConditionOperand cond:
                 switch (cond.ConditionCode)
                 {

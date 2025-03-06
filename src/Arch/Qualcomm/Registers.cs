@@ -201,7 +201,7 @@ namespace Reko.Arch.Qualcomm
         private static RegisterStorage Rename(RegisterStorage[] regs, int index, string newName)
         {
             var regOld = regs[index];
-            var regNew = new RegisterStorage(newName, regOld.Number, (uint)regOld.BitAddress, regOld.DataType);
+            var regNew = new RegisterStorage(newName, regOld.Number, (uint)regOld.BitAddress, (PrimitiveType) regOld.DataType);
             regs[index] = regNew;
             return regNew;
         }

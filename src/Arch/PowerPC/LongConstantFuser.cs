@@ -63,7 +63,7 @@ namespace Reko.Arch.PowerPC
                             immLo = (Constant) instrLo.Operands[2];
                             var longConst =
                                 Constant.Create(
-                                    instrHi.Operands[0].Width,
+                                    instrHi.Operands[0].DataType,
                                     (immHi.ToInt32() << 16) |
                                         immLo.ToInt32());
                             var hiOp = new SliceOperand(SliceType.Hi, immHi, longConst);
@@ -82,7 +82,7 @@ namespace Reko.Arch.PowerPC
                             immLo = (Constant) instrLo.Operands[2];
                             var longConst =
                                 Constant.Create(
-                                    instrHi.Operands[0].Width,
+                                    instrHi.Operands[0].DataType,
                                     (immHi.ToInt32() << 16) +
                                         immLo.ToInt32());
                             var hiOp = new SliceOperand(SliceType.Hi, immHi, longConst);
@@ -102,7 +102,7 @@ namespace Reko.Arch.PowerPC
                             // Mutate the addis/oris and the memory operand
                             var longConst =
                                 Constant.Create(
-                                    instrHi.Operands[0].Width,
+                                    instrHi.Operands[0].DataType,
                                     (immHi.ToInt32() << 16) +
                                         immLo.ToInt32());
                             var hiOp = new SliceOperand(SliceType.Hi, immHi, longConst);

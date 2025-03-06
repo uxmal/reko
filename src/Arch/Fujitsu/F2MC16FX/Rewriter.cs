@@ -99,14 +99,14 @@ namespace Reko.Arch.Fujitsu.F2MC16FX
                 }
                 if (mem.PostIncrement)
                 {
-                    var tmp = binder.CreateTemporary(dt ?? mem.Width);
+                    var tmp = binder.CreateTemporary(dt ?? mem.DataType);
                     m.Assign(tmp, m.Mem(tmp.DataType, e));
                     m.Assign(e, m.IAdd(e, tmp.DataType.Size));
                     return tmp;
                 }
                 else
                 {
-                    return m.Mem(dt ?? mem.Width, e);
+                    return m.Mem(dt ?? mem.DataType, e);
                 }
             default:
                 throw new NotImplementedException($"Rewrite of {op.GetType().Name}.");

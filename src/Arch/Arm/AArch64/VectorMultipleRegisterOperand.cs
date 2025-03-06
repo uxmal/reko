@@ -62,15 +62,15 @@ namespace Reko.Arch.Arm.AArch64
             var sep = "";
             if (Repeat >= 3 && iRegStart + Repeat <= 0x20)
             {
-                VectorRegisterOperand.WriteName(Width.BitSize, registers[iRegStart], ElementType, Index, renderer);
+                VectorRegisterOperand.WriteName(DataType.BitSize, registers[iRegStart], ElementType, Index, renderer);
                 renderer.WriteChar('-');
-                VectorRegisterOperand.WriteName(Width.BitSize, registers[iRegStart + Repeat - 1 ], ElementType, Index, renderer);
+                VectorRegisterOperand.WriteName(DataType.BitSize, registers[iRegStart + Repeat - 1 ], ElementType, Index, renderer);
             } 
             else foreach (var reg in GetRegisters())
             {
                 renderer.WriteString(sep);
                 sep = ",";
-                VectorRegisterOperand.WriteName(Width.BitSize, reg, ElementType, Index, renderer);
+                VectorRegisterOperand.WriteName(DataType.BitSize, reg, ElementType, Index, renderer);
             }
             renderer.WriteChar('}');
             if (Index >= 0)

@@ -55,7 +55,7 @@ namespace Reko.Arch.Qualcomm
             else if (Inverted)
                 renderer.WriteChar('!');
             this.Operand.Render(renderer, options);
-            if (this.Width.BitSize < (int) Operand.Width.BitSize)
+            if (this.DataType.BitSize < (int) Operand.DataType.BitSize)
             {
                 renderer.WriteChar('.');
                 if (BitOffset == 0)

@@ -291,7 +291,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 return addr;
             case MemoryOperand mem:
                 var ea = EffectiveAddress(mem);
-                return m.Mem(mem.Width, ea);
+                return m.Mem(mem.DataType, ea);
             default:
                 throw new NotImplementedException($"Not impemented: {op.GetType().Name}.");
             }
@@ -312,7 +312,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 return addr;
             case MemoryOperand mem:
                 var ea = EffectiveAddress(mem);
-                return m.Mem(mem.Width, ea);
+                return m.Mem(mem.DataType, ea);
             default:
                 throw new NotImplementedException($"Not impemented: {op.GetType().Name}.");
             }
@@ -520,7 +520,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                     this.instr = dasm.Current;
                     uint uFullWord = MovhiSequenceFuser.AddFullWord(movhi.Operands[1], memLd.Offset);
                     var ea = Address.Ptr32(uFullWord);
-                    MaybeExtend(memLd.Width, Op(0), m.Mem(memLd.Width, ea));
+                    MaybeExtend(memLd.DataType, Op(0), m.Mem(memLd.DataType, ea));
                     break;
                 case Mnemonic.bn_sb__:
                 case Mnemonic.bg_sb__:
@@ -536,7 +536,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                     this.instr = dasm.Current;
                     uFullWord = MovhiSequenceFuser.AddFullWord(movhi.Operands[1], memSt.Offset);
                     ea = Address.Ptr32(uFullWord);
-                    MaybeSlice(memSt.Width, m.Mem(memSt.Width, ea), Op(1));
+                    MaybeSlice(memSt.DataType, m.Mem(memSt.DataType, ea), Op(1));
                     break;
                 case Mnemonic.bt_addi__:
                 case Mnemonic.bn_addi:

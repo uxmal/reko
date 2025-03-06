@@ -211,7 +211,7 @@ namespace Reko.Arch.Rl78
                     var idx = binder.EnsureRegister(mop.Index);
                     ea = m.IAdd(ea, idx);
                 }
-                return m.Mem(op.Width, ea);
+                return m.Mem(op.DataType, ea);
             case BitOperand bit:
                 var bitSrc = RewriteSrc(bit.Operand);
                 return m.Fn(
@@ -256,9 +256,9 @@ namespace Reko.Arch.Rl78
                     var idx = binder.EnsureRegister(mop.Index);
                     ea = m.IAdd(ea, idx);
                 }
-                Expression tmp = binder.CreateTemporary(op.Width);
-                m.Assign(tmp, fn(m.Mem(op.Width, ea), src));
-                m.Assign(m.Mem(op.Width, ea), tmp);
+                Expression tmp = binder.CreateTemporary(op.DataType);
+                m.Assign(tmp, fn(m.Mem(op.DataType, ea), src));
+                m.Assign(m.Mem(op.DataType, ea), tmp);
                 return tmp;
             case BitOperand bit:
                 var left = RewriteSrc(bit.Operand);
@@ -296,7 +296,7 @@ namespace Reko.Arch.Rl78
         {
             var src = RewriteSrc(instr.Operands[1]);
             Func<Expression,Expression,Expression> fn;
-            if (src.DataType.Size < instr.Operands[0].Width.Size)
+            if (src.DataType.Size < instr.Operands[0].DataType.Size)
             {
                 if (src is Constant c)
                 {
@@ -489,7 +489,7 @@ namespace Reko.Arch.Rl78
             var src = RewriteSrc(instr.Operands[0]);
             var dst = RewriteDst(instr.Operands[0], src, (a, b) =>
                 m.Fn(
-                    intrinsic.MakeInstance(b.DataType, instr.Operands[1].Width),
+                    intrinsic.MakeInstance(b.DataType, instr.Operands[1].DataType),
                     b,
                     RewriteSrc(instr.Operands[1])));
             EmitCond(dst, C());
@@ -500,7 +500,7 @@ namespace Reko.Arch.Rl78
             var src = RewriteSrc(instr.Operands[0]);
             var dst = RewriteDst(instr.Operands[0], src, (a, b) =>
                 m.Fn(
-                    intrinsic.MakeInstance(b.DataType, instr.Operands[1].Width),
+                    intrinsic.MakeInstance(b.DataType, instr.Operands[1].DataType),
                     b,
                     RewriteSrc(instr.Operands[1]),
                     C()));
@@ -555,7 +555,7 @@ namespace Reko.Arch.Rl78
         {
             var src = RewriteSrc(instr.Operands[1]);
             Func<Expression, Expression, Expression> fn;
-            if (src.DataType.Size < instr.Operands[0].Width.Size)
+            if (src.DataType.Size < instr.Operands[0].DataType.Size)
             {
                 if (src is Constant c)
                 {

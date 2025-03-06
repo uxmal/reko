@@ -136,7 +136,7 @@ namespace Reko.Arch.X86.Rewriter
                 case Mnemonic.btr: RewriteBtr(); break;
                 case Mnemonic.bts: RewriteBts(); break;
                 case Mnemonic.bzhi: RewriteBzhi(); break;
-                case Mnemonic.call: RewriteCall(instrCur.Operands[0], instrCur.Operands[0].Width); break;
+                case Mnemonic.call: RewriteCall(instrCur.Operands[0], instrCur.Operands[0].DataType); break;
                 case Mnemonic.cbw: RewriteCbw(); break;
                 case Mnemonic.cdq: RewriteCdq(); break;
                 case Mnemonic.cdqe: RewriteCdqe(); break;
@@ -778,7 +778,7 @@ namespace Reko.Arch.X86.Rewriter
             }
             else
             {
-                var tmp = binder.CreateTemporary(opDst.Width);
+                var tmp = binder.CreateTemporary(opDst.DataType);
                 m.Assign(tmp, src);
                 var ea = orw.CreateMemoryAccess(instrCur, (MemoryOperand)opDst);
                 m.Assign(ea, tmp);
@@ -849,13 +849,13 @@ namespace Reko.Arch.X86.Rewriter
 
         private Expression SrcOp(MachineOperand opSrc)
         {
-            return orw.Transform(instrCur, opSrc, opSrc.Width);
+            return orw.Transform(instrCur, opSrc, opSrc.DataType);
         }
 
         private Expression SrcOp(int iOp)
         {
             var op = instrCur.Operands[iOp];
-            return orw.Transform(instrCur, op, op.Width);
+            return orw.Transform(instrCur, op, op.DataType);
         }
 
         private Expression SrcOp(int iOp, DataType dstWidth)

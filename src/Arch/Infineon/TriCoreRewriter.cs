@@ -674,7 +674,7 @@ namespace Reko.Arch.Infineon
             }
             else
             {
-                if (instr.Operands[0].Width != instr.Operands[1].Width)
+                if (instr.Operands[0].DataType != instr.Operands[1].DataType)
                     EmitUnitTest();
                 src = Operand(1);
             }

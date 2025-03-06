@@ -465,7 +465,7 @@ namespace Reko.Arch.Altera.Nios2
             else
             {
                 src = binder.EnsureRegister(reg);
-                if (dt.BitSize < instr.Operands[0].Width.BitSize)
+                if (dt.BitSize < instr.Operands[0].DataType.BitSize)
                 {
                     var tmp = binder.CreateTemporary(dt);
                     m.Assign(tmp, m.Slice(src, dt, 0));

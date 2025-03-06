@@ -303,12 +303,6 @@ namespace Reko.Core.Expressions
 
         public override bool IsZero => IsIntegerZero;
 
-        DataType MachineOperand.Width
-        {
-            get => base.DataType;
-            set => base.DataType = value;
-        }
-
         public virtual bool IsIntegerZero
         {
             get

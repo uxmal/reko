@@ -100,23 +100,23 @@ namespace Reko.Arch.X86
 			if ((options.Flags & MachineInstructionRendererFlags.ExplicitOperandSize) != 0)
 			{
 				string s;
-                if (Width == PrimitiveType.Byte)
+                if (DataType == PrimitiveType.Byte)
                     s = "byte ptr ";
-                else if (Width == PrimitiveType.Word16)
+                else if (DataType == PrimitiveType.Word16)
                     s = "word ptr ";
-                else if (Width.Size == 4)
+                else if (DataType.Size == 4)
                     s = "dword ptr ";
-                else if (Width == PrimitiveType.Word64)
+                else if (DataType == PrimitiveType.Word64)
                     s = "qword ptr ";
-                else if (Width == PrimitiveType.Real32)
+                else if (DataType == PrimitiveType.Real32)
                     s = "float ptr ";
-                else if (Width == PrimitiveType.Real64)
+                else if (DataType == PrimitiveType.Real64)
                     s = "double ptr ";
-                else if (Width == PrimitiveType.Real80 || Width == PrimitiveType.Bcd80)
+                else if (DataType == PrimitiveType.Real80 || DataType == PrimitiveType.Bcd80)
                     s = "tword ptr ";
-                else if (Width == PrimitiveType.Word128)
+                else if (DataType == PrimitiveType.Word128)
                     s = "xmmword ptr ";
-                else if (Width == PrimitiveType.Word256)
+                else if (DataType == PrimitiveType.Word256)
                     s = "ymmword ptr ";
                 else
                     s = "";

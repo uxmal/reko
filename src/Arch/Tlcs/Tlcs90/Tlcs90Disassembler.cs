@@ -449,7 +449,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                     }
                     if (instr.Operands.Length == 2)
                     {
-                        instr.Operands[0].Width = instr.Operands[1].Width;
+                        instr.Operands[0].DataType = instr.Operands[1].DataType;
                     }
                 }
                 else if (dasm.backPatchOp == 1)
@@ -470,7 +470,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                             instr.Operands[0],
                             operand
                         };
-                        instr.Operands[1].Width = instr.Operands[0].Width;
+                        instr.Operands[1].DataType = instr.Operands[0].DataType;
                     }
                 }
                 else
@@ -559,7 +559,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                     }
                     if (instr.Operands.Length >= 2)
                     {
-                        operand.Width = instr.Operands[1].Width;
+                        operand.DataType = instr.Operands[1].DataType;
                     }
                 }
                 else if (dasm.backPatchOp == 1)
@@ -567,7 +567,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                     if (operand != null)
                     {
                         instr.Operands = new MachineOperand[] { instr.Operands[0], operand };
-                        operand.Width = instr.Operands[0].Width;
+                        operand.DataType = instr.Operands[0].DataType;
                     }
                 }
                 else

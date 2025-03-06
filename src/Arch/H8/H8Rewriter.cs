@@ -201,11 +201,11 @@ namespace Reko.Arch.H8
                     {
                         ea = binder.CreateTemporary(regBase.DataType);
                         m.Assign(ea, regBase);
-                        m.Assign(regBase, m.IAddS(regBase, mem.Width.Size));
+                        m.Assign(regBase, m.IAddS(regBase, mem.DataType.Size));
                     }
                     else if (mem.PreDecrement)
                     {
-                        m.Assign(regBase, m.ISubS(regBase, mem.Width.Size));
+                        m.Assign(regBase, m.ISubS(regBase, mem.DataType.Size));
                         ea = regBase;
                     }
                     else
@@ -221,7 +221,7 @@ namespace Reko.Arch.H8
                 {
                     ea = Address.Ptr32((uint) mem.Offset);
                 }
-                return m.Mem(mem.Width ?? (DataType) VoidType.Instance, ea);
+                return m.Mem(mem.DataType ?? (DataType) VoidType.Instance, ea);
             }
             throw new NotImplementedException();
         }
@@ -243,7 +243,7 @@ namespace Reko.Arch.H8
                     if (mem.PreDecrement)
                     {
                         ea = binder.EnsureRegister(mem.Base!);
-                        m.Assign(ea, m.ISubS(ea, mem.Width.Size));
+                        m.Assign(ea, m.ISubS(ea, mem.DataType.Size));
                     }
                     else if (mem.PostIncrement)
                     {
@@ -258,20 +258,20 @@ namespace Reko.Arch.H8
                 {
                     ea = Address.Ptr16((ushort) mem.Offset);
                 }
-                dst = fn(m.Mem(mem.Width, ea), src);
+                dst = fn(m.Mem(mem.DataType, ea), src);
                 if (dst is Identifier || dst is Constant)
                 {
-                    m.Assign(m.Mem(mem.Width, ea), dst);
+                    m.Assign(m.Mem(mem.DataType, ea), dst);
                 }
                 else
                 {
-                    var tmp = binder.CreateTemporary(mem.Width);
+                    var tmp = binder.CreateTemporary(mem.DataType);
                     m.Assign(tmp, dst);
                     dst = tmp;
                 }
                 if (mem.PostIncrement)
                 {
-                    m.Assign(ea, m.IAddS(ea, mem.Width.Size));
+                    m.Assign(ea, m.IAddS(ea, mem.DataType.Size));
                 }
                 return dst;
             }

@@ -46,7 +46,7 @@ namespace Reko.Arch.X86.Emulator
 
         protected override void Call(MachineOperand op)
         {
-            if (op.Width.Size == 4)
+            if (op.DataType.Size == 4)
             {
                 Push(InstructionPointer.Selector!.Value, PrimitiveType.Word16);
             }
@@ -236,7 +236,7 @@ namespace Reko.Arch.X86.Emulator
                     try
                     {
                         var value = Read(mem);
-                        if (mem.Width.Size == 1)
+                        if (mem.DataType.Size == 1)
                             sValue = ((byte) value).ToString("X2");
                         else
                             sValue = ((ushort) value).ToString("X4");

@@ -159,8 +159,8 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 return imm;
             case MemoryOperand mem:
                 Expression ea = RewriteSrcEa(mem);
-                var tmp = binder.CreateTemporary(mem.Width);
-                m.Assign(tmp, m.Mem(mem.Width, ea));
+                var tmp = binder.CreateTemporary(mem.DataType);
+                m.Assign(tmp, m.Mem(mem.DataType, ea));
                 return tmp;
             }
             throw new NotImplementedException(op.GetType().Name);
@@ -222,15 +222,15 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 }
                 if (mem.Increment < 0)
                 {
-                    m.Assign(ea, m.ISub(ea, mem.Width.Size));
+                    m.Assign(ea, m.ISub(ea, mem.DataType.Size));
                 }
-                var load = m.Mem(mem.Width, ea);
+                var load = m.Mem(mem.DataType, ea);
                 var tmp = binder.CreateTemporary(ea.DataType);
                 m.Assign(tmp, fn(load, src));
-                m.Assign(m.Mem(mem.Width, ea), tmp);
+                m.Assign(m.Mem(mem.DataType, ea), tmp);
                 if (mem.Increment > 0)
                 {
-                    m.Assign(ea, m.IAdd(ea, mem.Width.Size));
+                    m.Assign(ea, m.IAdd(ea, mem.DataType.Size));
                 }
                 return tmp;
             }

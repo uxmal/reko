@@ -291,13 +291,13 @@ namespace Reko.Arch.Avr.Avr8
                 ea = m.IAddS(ea, mop.Displacement);
             }
             Expression val;
-            if (seg != null)
+            if (seg is not null)
             {
-                val = m.SegMem(mop.Width, seg, ea);
+                val = m.SegMem(mop.DataType, seg, ea);
             }
             else
             {
-                val = m.Mem(mop.Width, ea);
+                val = m.Mem(mop.DataType, ea);
             }
             write(val, src);
             if (mop.PostIncrement)

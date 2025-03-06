@@ -34,7 +34,7 @@ namespace Reko.Arch.Tms7000
             this.GpRegs[0] = a;
             this.GpRegs[1] = b;
             this.StackRegister = sp;
-            this.FramePointerType = sp.DataType;
+            this.FramePointerType = (PrimitiveType) sp.DataType;
             this.PointerType = PrimitiveType.Ptr16;
         }
 

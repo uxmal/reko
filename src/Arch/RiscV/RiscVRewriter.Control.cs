@@ -69,7 +69,7 @@ namespace Reko.Arch.RiscV
         {
             var slice = binder.CreateTemporary(PrimitiveType.Word32);
             m.Assign(slice, m.Slice(RewriteOp(1), slice.DataType));
-            var ext = binder.CreateTemporary(instr.Operands[0].Width);
+            var ext = binder.CreateTemporary(instr.Operands[0].DataType);
             m.Assign(ext, m.Fn(CommonOps.CountLeadingZeros, slice));
             var dst = RewriteOp(0);
             m.Assign(dst, m.ExtendZ(ext, dst.DataType));

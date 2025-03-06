@@ -513,7 +513,7 @@ namespace Reko.Arch.Mos6502
 
         private ushort ReadMemory(Operand op, ushort ea)
         {
-            if (op.Width.Size == 2)
+            if (op.DataType.Size == 2)
             {
                 return ReadLeUInt16(ea);
             }
@@ -527,7 +527,7 @@ namespace Reko.Arch.Mos6502
 
         private void WriteMemory(Operand op, ushort ea, ushort value)
         {
-            if (op.Width.Size == 2)
+            if (op.DataType.Size == 2)
             {
                 WriteLeUInt16(ea, value);
             }
