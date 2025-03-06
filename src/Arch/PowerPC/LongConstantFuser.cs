@@ -39,7 +39,7 @@ namespace Reko.Arch.PowerPC
 
         public IEnumerator<MachineInstruction> GetEnumerator()
         {
-            ImmediateOperand immLo;
+            Constant immLo;
             var e = new LookaheadEnumerator<PowerPcInstruction>(dasm);
             while (e.MoveNext())
             {
@@ -59,13 +59,13 @@ namespace Reko.Arch.PowerPC
                             instrLo.Operands[0] == instrLo.Operands[1])
                         {
                             // Mutate the addis/oris and ori
-                            var immHi = (ImmediateOperand) instrHi.Operands[2];
-                            immLo = (ImmediateOperand) instrLo.Operands[2];
-                            var longConst = new ImmediateOperand(
+                            var immHi = (Constant) instrHi.Operands[2];
+                            immLo = (Constant) instrLo.Operands[2];
+                            var longConst =
                                 Constant.Create(
                                     instrHi.Operands[0].Width,
-                                    (immHi.Value.ToInt32() << 16) |
-                                        immLo.Value.ToInt32()));
+                                    (immHi.ToInt32() << 16) |
+                                        immLo.ToInt32());
                             var hiOp = new SliceOperand(SliceType.Hi, immHi, longConst);
                             var loOp = new SliceOperand(SliceType.Lo, immLo, longConst);
                             instrHi.Operands[1] = hiOp;
@@ -78,13 +78,13 @@ namespace Reko.Arch.PowerPC
                             instrLo.Operands[0] == instrLo.Operands[1])
                         {
                             // Mutate the addis/oris and addi
-                            var immHi = (ImmediateOperand) instrHi.Operands[2];
-                            immLo = (ImmediateOperand) instrLo.Operands[2];
-                            var longConst = new ImmediateOperand(
+                            var immHi = (Constant) instrHi.Operands[2];
+                            immLo = (Constant) instrLo.Operands[2];
+                            var longConst =
                                 Constant.Create(
                                     instrHi.Operands[0].Width,
-                                    (immHi.Value.ToInt32() << 16) +
-                                        immLo.Value.ToInt32()));
+                                    (immHi.ToInt32() << 16) +
+                                        immLo.ToInt32());
                             var hiOp = new SliceOperand(SliceType.Hi, immHi, longConst);
                             var loOp = new SliceOperand(SliceType.Lo, immLo, longConst);
                             instrHi.Operands[1] = hiOp;
@@ -95,16 +95,16 @@ namespace Reko.Arch.PowerPC
                         instrLo.Operands[1] is MemoryOperand memOp)
                     {
                         if (instrHi.Operands[0] == memOp.BaseRegister &&
-                            memOp.Offset is ImmediateOperand imm)
+                            memOp.Offset is Constant imm)
                         {
-                            var immHi = (ImmediateOperand) instrHi.Operands[2];
+                            var immHi = (Constant) instrHi.Operands[2];
                             immLo = imm;
                             // Mutate the addis/oris and the memory operand
-                            var longConst = new ImmediateOperand(
+                            var longConst =
                                 Constant.Create(
                                     instrHi.Operands[0].Width,
-                                    (immHi.Value.ToInt32() << 16) +
-                                        immLo.Value.ToInt32()));
+                                    (immHi.ToInt32() << 16) +
+                                        immLo.ToInt32());
                             var hiOp = new SliceOperand(SliceType.Hi, immHi, longConst);
                             var loOp = new SliceOperand(SliceType.Lo, immLo, longConst);
                             instrHi.Operands[2] = hiOp;

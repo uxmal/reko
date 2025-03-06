@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 
@@ -43,23 +44,23 @@ namespace Reko.Arch.PowerPC
             }
             else
             {
-                var offset = (ImmediateOperand) this.Offset;
-                renderer.WriteString($"{offset.Value.ToInt32()}({BaseRegister.Name})");
+                var offset = (Constant) this.Offset;
+                renderer.WriteString($"{offset.ToInt32()}({BaseRegister.Name})");
             }
         }
 
         public int IntOffset()
         {
-            ImmediateOperand offset;
+            Constant offset;
             if (this.Offset is SliceOperand slice)
             {
                 offset = slice.Value;
             }
             else
             {
-                offset = (ImmediateOperand) this.Offset;
+                offset = (Constant) this.Offset;
             }
-            return offset.Value.ToInt32();
+            return offset.ToInt32();
         }
     }
 }

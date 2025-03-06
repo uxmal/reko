@@ -521,8 +521,8 @@ namespace Reko.Arch.Vax
                     return m.Slice(reg, width);
                 }
 
-            case ImmediateOperand immOp:
-                return immOp.Value;
+            case Constant immOp:
+                return immOp;
 
             case MemoryOperand memOp:
                 Expression ea;
@@ -566,9 +566,9 @@ namespace Reko.Arch.Vax
                 }
                 else
                 {
-                    if (memOp.Base is ImmediateOperand imm)
+                    if (memOp.Base is Constant imm)
                     {
-                        ea = imm.Value;
+                        ea = imm;
                     }
                     else
                     {
@@ -703,7 +703,7 @@ namespace Reko.Arch.Vax
                 if (width.Size != 1)
                     idx = m.IMul(idx, Constant.Int32(width.Size));
                 return RewriteDstOp(indexOperand.Base, PrimitiveType.Word32, fn, idx);
-            case ImmediateOperand _:
+            case Constant _:
             case Address _:
                 return null!;
             }

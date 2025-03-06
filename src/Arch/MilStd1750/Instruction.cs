@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 
 namespace Reko.Arch.MilStd1750
@@ -44,10 +45,10 @@ namespace Reko.Arch.MilStd1750
 
         protected override void RenderOperand(MachineOperand operand, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            if (operand is ImmediateOperand imm)
+            if (operand is Constant imm)
             {
                 renderer.WriteChar('#');
-                WriteHex(imm.Value.ToUInt16(), renderer);
+                WriteHex(imm.ToUInt16(), renderer);
                 return;
             }
             base.RenderOperand(operand, renderer, options);

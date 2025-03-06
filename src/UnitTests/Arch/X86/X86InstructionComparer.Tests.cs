@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Core.Machine
                 return mop;
             if (o is int i)
             {
-                return ImmediateOperand.Word32(i);
+                return Constant.Word32(i);
             }
             else if (o is string s)
             {

@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Services;
@@ -249,7 +250,7 @@ namespace Reko.Environments.Gameboy
 
         private static Mutator<GameboyDisassembler> Implicit(int n)
         {
-            var imm = ImmediateOperand.Byte((byte) n);
+            var imm = Constant.Byte((byte) n);
             return (u, d) =>
             {
                 d.operands.Add(imm);
@@ -264,7 +265,7 @@ namespace Reko.Environments.Gameboy
         {
             if (!dasm.rdr.TryReadByte(out byte b))
                 return false;
-            var imm = ImmediateOperand.Byte((byte) b);
+            var imm = Constant.Byte((byte) b);
             dasm.operands.Add(imm);
             return true;
         }
@@ -276,7 +277,7 @@ namespace Reko.Environments.Gameboy
         {
             if (!dasm.rdr.TryReadByte(out byte b))
                 return false;
-            var imm = ImmediateOperand.SByte((sbyte) b);
+            var imm = Constant.SByte((sbyte) b);
             dasm.operands.Add(imm);
             return true;
         }
@@ -285,7 +286,7 @@ namespace Reko.Environments.Gameboy
         {
             if (!dasm.rdr.TryReadUInt16(out ushort w))
                 return false;
-            var imm = ImmediateOperand.Word16(w);
+            var imm = Constant.Word16(w);
             dasm.operands.Add(imm);
             return true;
         }

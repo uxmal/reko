@@ -130,8 +130,8 @@ namespace Reko.Arch.M68k.Assembler
             case Address addrOp:
                 Imm(addrOp.DataType.Size, addrOp.ToUInt32());
                 return 0x39;
-            case ImmediateOperand immOp:
-                Imm(immOp.Width.Size, immOp.Value.ToUInt32());
+            case Constant immOp:
+                Imm(immOp.DataType.Size, immOp.ToUInt32());
                 return 0x3C;
             }
             throw new NotImplementedException(op.ToString());

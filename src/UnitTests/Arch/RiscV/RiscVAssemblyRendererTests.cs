@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.RiscV;
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 
 
@@ -56,7 +57,7 @@ namespace Reko.UnitTests.Arch.RiscV
             var instr = new RiscVInstruction
             {
                 Mnemonic = Mnemonic.addi,
-                Operands = new MachineOperand[] { x1, zero, ImmediateOperand.Int32(-1)},
+                Operands = [x1, zero, Constant.Int32(-1)],
             };
             AssertCode("li\tx1,-0x1", instr);
         }
@@ -67,7 +68,7 @@ namespace Reko.UnitTests.Arch.RiscV
             var instr = new RiscVInstruction
             {
                 Mnemonic = Mnemonic.addi,
-                Operands = new MachineOperand[] { x1, zero, ImmediateOperand.Int32(-1)},
+                Operands = new MachineOperand[] { x1, zero, Constant.Int32(-1)},
             };
             flags |= MachineInstructionRendererFlags.RenderInstructionsCanonically;
             AssertCode("addi\tx1,zero,-0x1", instr);

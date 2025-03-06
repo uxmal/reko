@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
@@ -167,7 +168,7 @@ namespace Reko.Arch.X86
                 }
                 this.RenderRegister(reg.Name, renderer);
                 break;
-            case ImmediateOperand imm:
+            case Constant imm:
                 renderer.WriteChar('$');
                 RenderImmediate(imm, renderer);
                 break;

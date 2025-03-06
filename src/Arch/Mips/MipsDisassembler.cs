@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Services;
@@ -156,7 +157,7 @@ namespace Reko.Arch.Mips
             var baseReg = arch.GetRegister((int) (wInstr >> shift) & 0x1F)!;
             return new IndirectOperand(
                 dataWidth, 
-                ImmediateOperand.Int32(offset),
+                Constant.Int32(offset),
                 baseReg);
         }
     }

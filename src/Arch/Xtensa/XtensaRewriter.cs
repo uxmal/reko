@@ -394,8 +394,8 @@ namespace Reko.Arch.Xtensa
                 return binder.EnsureRegister(rOp);
             case Address addr:
                 return addr;
-            case ImmediateOperand iOp:
-                return iOp.Value;
+            case Constant iOp:
+                return iOp;
             }
             throw new NotImplementedException(op.GetType().FullName);
         }
@@ -403,15 +403,15 @@ namespace Reko.Arch.Xtensa
         // Sign-extend an operand known to be signed immediate.
         private Constant RewriteSimm(MachineOperand op)
         {
-            var iOp = (ImmediateOperand)op;
-            return Constant.Int32(iOp.Value.ToInt32());
+            var iOp = (Constant)op;
+            return Constant.Int32(iOp.ToInt32());
         }
 
         // Zero-extend an operand known to be unsigned immediate.
         private Constant RewriteUimm(MachineOperand op)
         {
-            var iOp = (ImmediateOperand)op;
-            return Constant.UInt32(iOp.Value.ToUInt32());
+            var iOp = (Constant)op;
+            return Constant.UInt32(iOp.ToUInt32());
         }
 
         private static readonly IntrinsicProcedure break_intrinsic = new IntrinsicBuilder("__break", true)

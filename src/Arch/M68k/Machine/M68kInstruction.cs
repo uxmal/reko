@@ -20,6 +20,7 @@
 
 using Reko.Arch.M68k.Disassembler;
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
@@ -43,12 +44,12 @@ namespace Reko.Arch.M68k.Machine
         {
             if (Mnemonic == Mnemonic.illegal && Operands.Length > 0 && options.Platform != null)
             {
-                var imm = (ImmediateOperand) Operands[0];
+                var imm = (Constant) Operands[0];
                 // MacOS uses invalid opcodes to invoke Macintosh Toolbox services. 
                 // We may have to generalize the Platform API to allow specifying 
                 // the opcode of the invoking instruction, to disambiguate from 
                 // "legitimate" TRAP calls.
-                var svc = options.Platform.FindService((int) imm.Value.ToUInt32(), null, null);
+                var svc = options.Platform.FindService((int) imm.ToUInt32(), null, null);
                 if (svc != null)
                 {
                     renderer.WriteString(svc.Name!);
@@ -68,12 +69,12 @@ namespace Reko.Arch.M68k.Machine
 
         protected override void RenderOperand(MachineOperand op, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            if (op is ImmediateOperand immOp)
+            if (op is Constant immOp)
             {
                 renderer.WriteString("#");
                 renderer.WriteString(
                     AbstractMachineOperand.FormatValue(
-                        immOp.Value,
+                        immOp,
                         false,
                         M68kDisassembler.HexStringFormat));
                 return;

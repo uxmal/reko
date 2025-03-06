@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
@@ -56,8 +57,8 @@ namespace Reko.Arch.Etrax
                 }
                 switch (Offset)
                 {
-                case ImmediateOperand imm:
-                    var offset = imm.Value.ToInt32();
+                case Constant imm:
+                    var offset = imm.ToInt32();
                     if (offset < 0)
                     {
                         renderer.WriteChar('-');

@@ -122,11 +122,10 @@ namespace Reko.UnitTests.Arch.Mips
 
         private void VerifyImmediateOperand(MachineOperand op, Constant val, PrimitiveType type)
         {
-            Assert.IsAssignableFrom(typeof(ImmediateOperand), op);
-            var opReg = op as ImmediateOperand;
-            Assert.AreEqual(type, opReg.Width);
-            Assert.AreEqual(type, opReg.Value.DataType);
-            Assert.AreEqual(val.GetValue(), opReg.Value.GetValue());
+            Assert.IsTrue(op is Constant);
+            var opReg = op as Constant;
+            Assert.AreEqual(type, opReg.DataType);
+            Assert.AreEqual(val.GetValue(), opReg.GetValue());
         }
 
         private void VerifyAddressOperand(MachineOperand op, Address addr, PrimitiveType type)

@@ -37,7 +37,7 @@ namespace Reko.Arch.Sparc
 
         public static MemoryOperand Indirect(RegisterStorage baseRg, Constant offset, PrimitiveType dt)
         {
-            return new MemoryOperand(baseRg, new ImmediateOperand(offset), null, dt);
+            return new MemoryOperand(baseRg, offset, null, dt);
         }
 
         public static MemoryOperand Indexed(RegisterStorage baseReg, RegisterStorage index, PrimitiveType dt)
@@ -74,16 +74,16 @@ namespace Reko.Arch.Sparc
         {
             if (Offset is null)
                 return 0;
-            ImmediateOperand offset;
+            Constant offset;
             if (Offset is SliceOperand slice)
             {
                 offset = slice.Value;
             }
             else
             {
-                offset = (ImmediateOperand) Offset;
+                offset = (Constant) Offset;
             }
-            return offset.Value.ToInt32();
+            return offset.ToInt32();
         }
     }
 }

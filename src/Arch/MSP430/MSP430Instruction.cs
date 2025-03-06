@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
@@ -78,7 +79,7 @@ namespace Reko.Arch.Msp430
             {
                 renderer.WriteString("#");
             }
-            if (op is ImmediateOperand && Mnemonic != Mnemonics.call)
+            if (op is Constant && Mnemonic != Mnemonics.call)
             {
                 renderer.WriteString("#");
             }

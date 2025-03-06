@@ -560,9 +560,9 @@ namespace Reko.ImageLoaders.WebAssembly
 
         private void RewriteConst()
         {
-            var imm = (ImmediateOperand) instr.Operands[0];
-            var id = PushValue(imm.Width);
-            Assign(id, imm.Value);
+            var imm = (Constant) instr.Operands[0];
+            var id = PushValue(imm.DataType);
+            Assign(id, imm);
         }
 
         private void RewriteCmp(Func<Expression, Expression, Expression> fn)
@@ -718,7 +718,7 @@ namespace Reko.ImageLoaders.WebAssembly
         /// </returns>
         private int OpAsInt(int iOp)
         {
-            return ((ImmediateOperand) instr.Operands[iOp]).Value.ToInt32();
+            return ((Constant) instr.Operands[iOp]).ToInt32();
         }
 
         private void Assign(Identifier id, Expression value)
@@ -746,7 +746,7 @@ namespace Reko.ImageLoaders.WebAssembly
         {
             if (instr.Operands.Length == 0)
                 return null;
-            var v = ((ImmediateOperand) instr.Operands[0]).Value;
+            var v = (Constant)instr.Operands[0];
             if (v.DataType.Size == 1)
             {
                 switch (v.ToInt32())

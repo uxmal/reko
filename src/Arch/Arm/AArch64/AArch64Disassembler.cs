@@ -130,21 +130,21 @@ namespace Reko.Arch.Arm.AArch64
             };
         }
 
-        private static ImmediateOperand DecodeSignedImmediateOperand(uint wInstr, Bitfield[] fields, DataType dt, int sh = 0)
+        private static Constant DecodeSignedImmediateOperand(uint wInstr, Bitfield[] fields, DataType dt, int sh = 0)
         {
             int n = Bitfield.ReadSignedFields(fields, wInstr);
             n <<= sh;
-            return new ImmediateOperand(Constant.Create(dt, n));
+            return Constant.Create(dt, n);
         }
 
-        private static ImmediateOperand DecodeUnsignedImmediateOperand(uint wInstr, Bitfield[] fields, DataType dt, int sh = 0)
+        private static Constant DecodeUnsignedImmediateOperand(uint wInstr, Bitfield[] fields, DataType dt, int sh = 0)
         {
             uint n = Bitfield.ReadFields(fields, wInstr);
             if (sh > 0)
             {
                 n <<= sh;
             }
-            return new ImmediateOperand(Constant.Create(dt, n));
+            return Constant.Create(dt, n);
         }
 
 
@@ -410,7 +410,7 @@ namespace Reko.Arch.Arm.AArch64
                 MachineOperand op;
                 if (iReg == 0)
                 {
-                    op = new ImmediateOperand(new ConstantReal16(PrimitiveType.Real16, 0.0));
+                    op = new ConstantReal16(PrimitiveType.Real16, 0.0);
                 }
                 else
                 {
@@ -447,7 +447,7 @@ namespace Reko.Arch.Arm.AArch64
                 MachineOperand op;
                 if (iReg == 0)
                 {
-                    op = new ImmediateOperand(Constant.Real32(0.0F));
+                    op = Constant.Real32(0.0F);
                 }
                 else
                 {
@@ -488,7 +488,7 @@ namespace Reko.Arch.Arm.AArch64
                 MachineOperand op;
                 if (iReg == 0)
                 {
-                    op = new ImmediateOperand(Constant.Real64(0.0));
+                    op = Constant.Real64(0.0);
                 }
                 else
                 {
@@ -963,7 +963,7 @@ namespace Reko.Arch.Arm.AArch64
                 case 7: if (sh != 0) ext = Mnemonic.sxtx; break;
                 }
                 d.state.shiftCode = ext;
-                d.state.shiftAmount = ImmediateOperand.Int32((int)sh);
+                d.state.shiftAmount = Constant.Int32((int)sh);
                 return true;
             };
         }
@@ -995,7 +995,7 @@ namespace Reko.Arch.Arm.AArch64
                 var imm = DecodeLogicalImmediate(u >> offset, dt.BitSize);
                 if (imm is null)
                     return false;
-                var op = new ImmediateOperand(Constant.Create(dt, imm.Value));
+                var op = Constant.Create(dt, imm.Value);
                 d.state.ops.Add(op);
                 return true;
             };
@@ -1047,8 +1047,7 @@ namespace Reko.Arch.Arm.AArch64
             {
                 var encodedFpNumber = bitfield.Read(u);
                 var decodedFpNumber = DecodeReal16FpConstant(encodedFpNumber);
-                var imm = new ImmediateOperand(decodedFpNumber);
-                d.state.ops.Add(imm);
+                d.state.ops.Add(decodedFpNumber);
                 return true;
             };
         }
@@ -1063,8 +1062,7 @@ namespace Reko.Arch.Arm.AArch64
             {
                 var encodedFpNumber = bitfield.Read(u);
                 var decodedFpNumber = DecodeReal32FpConstant(encodedFpNumber);
-                var imm = new ImmediateOperand(decodedFpNumber);
-                d.state.ops.Add(imm);
+                d.state.ops.Add(decodedFpNumber);
                 return true;
             };
         }
@@ -1084,8 +1082,7 @@ namespace Reko.Arch.Arm.AArch64
             {
                 var encodedFpNumber = Bitfield.ReadFields(bitfields, u);
                 var decodedFpNumber = DecodeReal32FpConstant(encodedFpNumber);
-                var imm = new ImmediateOperand(decodedFpNumber);
-                d.state.ops.Add(imm);
+                d.state.ops.Add(decodedFpNumber);
                 return true;
             };
         }
@@ -1107,7 +1104,7 @@ namespace Reko.Arch.Arm.AArch64
                 var number = (byte)Bitfield.ReadFields(bitfields, u);
                 var op = opField.Read(u);
                 var cmode = cmodeField.Read(u);
-                var imm = ImmediateOperand.Byte(number);
+                var imm = Constant.Byte(number);
                 d.state.ops.Add(imm);
                 return true;
             };
@@ -1123,8 +1120,7 @@ namespace Reko.Arch.Arm.AArch64
             {
                 var encodedFpNumber = bitfield.Read(u);
                 var decodedFpNumber = DecodeReal64FpConstant(encodedFpNumber);
-                var imm = new ImmediateOperand(decodedFpNumber);
-                d.state.ops.Add(imm);
+                d.state.ops.Add(decodedFpNumber);
                 return true;
             };
         }
@@ -1187,7 +1183,7 @@ namespace Reko.Arch.Arm.AArch64
             {
                 var scale = field.Read(u);
                 var fbits = 64 - (int)scale;
-                d.state.ops.Add(ImmediateOperand.Int32(fbits));
+                d.state.ops.Add(Constant.Int32(fbits));
                 return true;
             };
         }
@@ -1199,7 +1195,7 @@ namespace Reko.Arch.Arm.AArch64
         {
             return (u, d) =>
             {
-                d.state.ops.Add(ImmediateOperand.Word32(imm));
+                d.state.ops.Add(Constant.Word32(imm));
                 return true;
             };
         }
@@ -1211,7 +1207,7 @@ namespace Reko.Arch.Arm.AArch64
         {
             return (u, d) =>
             {
-                d.state.ops.Add(ImmediateOperand.Int32(imm));
+                d.state.ops.Add(Constant.Int32(imm));
                 return true;
             };
         }
@@ -1554,7 +1550,7 @@ namespace Reko.Arch.Arm.AArch64
                 {
                 case 1:
                     d.state.shiftCode = Mnemonic.lsl;
-                    d.state.shiftAmount = ImmediateOperand.Int32(12);
+                    d.state.shiftAmount = Constant.Int32(12);
                     break;
                 }
                 return true;
@@ -1569,7 +1565,7 @@ namespace Reko.Arch.Arm.AArch64
             {
                 int i = (int)field.Read(u);
                 d.state.shiftCode = Mnemonic.lsl;
-                d.state.shiftAmount = ImmediateOperand.Int32(16 * i);
+                d.state.shiftAmount = Constant.Int32(16 * i);
                 return true;
             };
         }
@@ -1593,7 +1589,7 @@ namespace Reko.Arch.Arm.AArch64
                 case 3: d.state.shiftCode = Mnemonic.ror; break;
                 }
                 n = bfShamt.Read(u);
-                d.state.shiftAmount = ImmediateOperand.Int32((int)n);
+                d.state.shiftAmount = Constant.Int32((int)n);
                 return true;
             };
         }
@@ -1610,7 +1606,7 @@ namespace Reko.Arch.Arm.AArch64
         //            }
         //            Expect(',', format, ref i);
         //            n = ReadUnsignedBitField(wInstr, format, ref i);
-        //            state.shiftAmount = ImmediateOperand.Int32(n);
+        //            state.shiftAmount = Constant.Int32(n);
         //            break;
         //        default:
         //            NotYetImplemented($"Unknown format character '{format[i - 1]}' in '{format}' decoding {opcode} shift", wInstr);
@@ -1633,8 +1629,8 @@ namespace Reko.Arch.Arm.AArch64
                 {
                     return false;
                 }
-                d.state.ops.Add(ImmediateOperand.Int32(immr));
-                d.state.ops.Add(ImmediateOperand.Int32(imms));
+                d.state.ops.Add(Constant.Int32(immr));
+                d.state.ops.Add(Constant.Int32(imms));
                 return true;
             };
         }
@@ -1709,8 +1705,8 @@ namespace Reko.Arch.Arm.AArch64
 
         private static bool SbfmAliases(uint wInstr, AArch64Disassembler dasm)
         {
-            var immr = ((ImmediateOperand)dasm.state.ops[2]).Value.ToUInt32();
-            var imms = ((ImmediateOperand)dasm.state.ops[3]).Value.ToUInt32();
+            var immr = ((Constant)dasm.state.ops[2]).ToUInt32();
+            var imms = ((Constant)dasm.state.ops[3]).ToUInt32();
             int width = dasm.state.ops[0].Width.BitSize;
             if ((width == 32 && imms == 0x1F) ||
                 (width == 64 && imms == 0x3F))
@@ -1722,8 +1718,8 @@ namespace Reko.Arch.Arm.AArch64
             if (imms < immr)
             {
                 dasm.state.mnemonic = Mnemonic.sbfiz;
-                dasm.state.ops[2] = ImmediateOperand.Int32(width - (int)immr);
-                dasm.state.ops[3] = ImmediateOperand.Int32((int)imms + 1);
+                dasm.state.ops[2] = Constant.Int32(width - (int)immr);
+                dasm.state.ops[3] = Constant.Int32((int)imms + 1);
                 return true;
             }
             if (immr == 0)
@@ -1753,8 +1749,8 @@ namespace Reko.Arch.Arm.AArch64
 
         private static bool UbfmAliases(uint wInstr, AArch64Disassembler dasm)
         {
-            var immr = ((ImmediateOperand)dasm.state.ops[2]).Value.ToUInt32();
-            var imms = ((ImmediateOperand)dasm.state.ops[3]).Value.ToUInt32();
+            var immr = ((Constant) dasm.state.ops[2]).ToUInt32();
+            var imms = ((Constant) dasm.state.ops[3]).ToUInt32();
             int width = dasm.state.ops[0].Width.BitSize;
             if (width == 32)
             {
@@ -1766,7 +1762,7 @@ namespace Reko.Arch.Arm.AArch64
                 } else if (imms + 1 == immr)
                 {
                     dasm.state.mnemonic = Mnemonic.lsl;
-                    dasm.state.ops.RemoveAt(3); dasm.state.ops[2] = ImmediateOperand.Int32(31 - (int)imms);
+                    dasm.state.ops.RemoveAt(3); dasm.state.ops[2] = Constant.Int32(31 - (int)imms);
 
                     return true;
                 }
@@ -1782,7 +1778,7 @@ namespace Reko.Arch.Arm.AArch64
                 else if (imms + 1 == immr)
                 {
                     dasm.state.mnemonic = Mnemonic.lsl;
-                    dasm.state.ops[2] = ImmediateOperand.Int32(63 - (int)imms);
+                    dasm.state.ops[2] = Constant.Int32(63 - (int)imms);
                     dasm.state.ops.RemoveAt(3);
                     return true;
                 }
@@ -1816,7 +1812,7 @@ namespace Reko.Arch.Arm.AArch64
             if (bitSize == 0)
                 return false;
             shift = 2 * bitSize - shift;
-            dasm.state.ops.Add(ImmediateOperand.Int32(shift));
+            dasm.state.ops.Add(Constant.Int32(shift));
             return true;
         }
 
@@ -1836,7 +1832,7 @@ namespace Reko.Arch.Arm.AArch64
             default:
                 immh_immb -= 64; break;
             }
-            dasm.state.ops.Add(ImmediateOperand.Int32(immh_immb));
+            dasm.state.ops.Add(Constant.Int32(immh_immb));
             return true;
         }
 
@@ -1859,7 +1855,7 @@ namespace Reko.Arch.Arm.AArch64
                 f = 128 - immh_immb;
                 break;
             }
-            dasm.state.ops.Add(ImmediateOperand.Int32(f));
+            dasm.state.ops.Add(Constant.Int32(f));
             return true;
         }
 
@@ -1876,7 +1872,7 @@ namespace Reko.Arch.Arm.AArch64
                 var amt = sizes[shIndex];
                 if (amt != 0)
                 {
-                    d.state.shiftAmount = ImmediateOperand.Int32(amt);
+                    d.state.shiftAmount = Constant.Int32(amt);
                     d.state.shiftCode = shiftCode;
                 }
                 return true;
@@ -1890,7 +1886,7 @@ namespace Reko.Arch.Arm.AArch64
             {
                 var shIndex = sizeField.Read(u);
                 var amt = sizes[shIndex];
-                d.state.ops.Add(ImmediateOperand.Int32(amt));
+                d.state.ops.Add(Constant.Int32(amt));
                 return true;
             };
         }

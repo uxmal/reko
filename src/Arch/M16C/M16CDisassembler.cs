@@ -203,7 +203,7 @@ public class M16CDisassembler : DisassemblerBase<M16CInstruction, Mnemonic>
         {
             if (!dasm.rdr.TryReadByte(out var b))
                 return false;
-            var imm = ImmediateOperand.Byte(b);
+            var imm = Constant.Byte(b);
             dasm.ops.Insert(0, imm);
             return true;
         }
@@ -211,7 +211,7 @@ public class M16CDisassembler : DisassemblerBase<M16CInstruction, Mnemonic>
         {
             if (!dasm.rdr.TryReadLeUInt16(out var w))
                 return false;
-            var imm = ImmediateOperand.Word16(w);
+            var imm = Constant.Word16(w);
             dasm.ops.Insert(0, imm);
             return true;
         }
@@ -228,7 +228,7 @@ public class M16CDisassembler : DisassemblerBase<M16CInstruction, Mnemonic>
         {
             if (!d.rdr.TryReadByte(out var b))
                 return false;
-            var imm = ImmediateOperand.Byte(b);
+            var imm = Constant.Byte(b);
             d.ops.Insert(iop, imm);
             return true;
         };
@@ -244,7 +244,7 @@ public class M16CDisassembler : DisassemblerBase<M16CInstruction, Mnemonic>
         {
             if (!d.rdr.TryReadLeUInt16(out var w))
                 return false;
-            var imm = ImmediateOperand.Word16(w);
+            var imm = Constant.Word16(w);
             d.ops.Insert(iop, imm);
             return true;
         };
@@ -260,7 +260,7 @@ public class M16CDisassembler : DisassemblerBase<M16CInstruction, Mnemonic>
         {
             if (!dasm.rdr.TryReadByte(out var b))
                 return false;
-            var imm = ImmediateOperand.SByte((sbyte) b);
+            var imm = Constant.SByte((sbyte) b);
             dasm.ops.Insert(0, imm);
             return true;
         }
@@ -268,7 +268,7 @@ public class M16CDisassembler : DisassemblerBase<M16CInstruction, Mnemonic>
         {
             if (!dasm.rdr.TryReadLeInt16(out var w))
                 return false;
-            var imm = ImmediateOperand.Int16(w);
+            var imm = Constant.Int16(w);
             dasm.ops.Insert(0, imm);
             return true;
         }
@@ -284,13 +284,13 @@ public class M16CDisassembler : DisassemblerBase<M16CInstruction, Mnemonic>
         dasm.instrSuffix = InstrSuffix.Z;
         if (dasm.sizeSuffix == SizeSuffix.B)
         {
-            var imm = ImmediateOperand.Byte(0);
+            var imm = Constant.Byte(0);
             dasm.ops.Insert(0, imm);
             return true;
         }
         if (dasm.sizeSuffix == SizeSuffix.W)
         {
-            var imm = ImmediateOperand.Word16(0);
+            var imm = Constant.Word16(0);
             dasm.ops.Insert(0, imm);
             return true;
         }
@@ -309,7 +309,7 @@ public class M16CDisassembler : DisassemblerBase<M16CInstruction, Mnemonic>
             var dt = dasm.sizeSuffix == SizeSuffix.B
                 ? PrimitiveType.Byte
                 : PrimitiveType.Word16;
-            var op = ImmediateOperand.Create(Constant.Create(dt, imm));
+            var op = Constant.Create(dt, imm);
             dasm.ops.Add(op);
             return true;
         };
@@ -324,7 +324,7 @@ public class M16CDisassembler : DisassemblerBase<M16CInstruction, Mnemonic>
     private static bool immq3(uint uInstr, M16CDisassembler dasm)
     {
         var imm = bf0L3.Read(uInstr);
-        var op = ImmediateOperand.Byte((byte) imm);
+        var op = Constant.Byte((byte) imm);
         dasm.ops.Add(op);
         return true;
     }
@@ -336,7 +336,7 @@ public class M16CDisassembler : DisassemblerBase<M16CInstruction, Mnemonic>
     private static bool immq6(uint uInstr, M16CDisassembler dasm)
     {
         var imm = bf0L6.Read(uInstr);
-        var op = ImmediateOperand.Byte((byte) imm);
+        var op = Constant.Byte((byte) imm);
         dasm.ops.Add(op);
         return true;
     }
@@ -353,7 +353,7 @@ public class M16CDisassembler : DisassemblerBase<M16CInstruction, Mnemonic>
             var imm = bf.ReadSigned(uInstr);
             dasm.instrSuffix = InstrSuffix.Q;
             var dt = dasm.SDataSize();
-            var op = ImmediateOperand.Create(Constant.Create(dt, imm));
+            var op = Constant.Create(dt, imm);
             dasm.ops.Add(op);
             return true;
         };
@@ -760,7 +760,7 @@ public class M16CDisassembler : DisassemblerBase<M16CInstruction, Mnemonic>
             // the bit number is in a byte following the instruction.
             if (!dasm.rdr.TryReadByte(out var b))
                 return false;
-            dasm.ops.Add(ImmediateOperand.Byte(b));
+            dasm.ops.Add(Constant.Byte(b));
             dasm.ops.Add(w16registers[code]);
             return true;
         case 0x6:

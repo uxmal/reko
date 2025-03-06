@@ -110,7 +110,7 @@ namespace Reko.Arch.MilStd1750
         private static bool N(uint uInstr, MilStd1750Disassembler dasm)
         {
             var n = (ushort)bf4_4.Read(uInstr);
-            dasm.ops.Add(ImmediateOperand.Word16(n));
+            dasm.ops.Add(Constant.Word16(n));
             return true;
         }
 
@@ -167,7 +167,7 @@ namespace Reko.Arch.MilStd1750
             {
                 if (!d.rdr.TryReadBeUInt16(out ushort imm))
                     return false;
-                var op = new ImmediateOperand(Constant.Create(dt, imm));
+                var op = Constant.Create(dt, imm);
                 d.ops.Add(op);
                 var ixReg = bf0_4.Read(u);
                 if (ixReg != 0)
@@ -189,7 +189,7 @@ namespace Reko.Arch.MilStd1750
             {
                 var disp = bf0_8.Read(u);
                 d.ops.Add(reg);
-                d.ops.Add(ImmediateOperand.Word16((ushort) disp));
+                d.ops.Add(Constant.Word16((ushort) disp));
                 return true;
             };
         }
@@ -227,7 +227,7 @@ namespace Reko.Arch.MilStd1750
             var ixReg = bf0_4.Read(uInstr);
             if (ixReg != 0)
             {
-                var op = new ImmediateOperand(Constant.Create(PrimitiveType.Word16, imm));
+                var op = Constant.Create(PrimitiveType.Word16, imm);
                 dasm.ops.Add(op);
                 var xReg = Registers.GpRegs[ixReg];
                 dasm.ops.Add(xReg);
@@ -246,25 +246,25 @@ namespace Reko.Arch.MilStd1750
         private static bool ISP_0(uint uInstr, MilStd1750Disassembler dasm)
         {
             var imm = bf0_4.Read(uInstr) + 1u;
-            dasm.ops.Add(ImmediateOperand.Word16((ushort)imm));
+            dasm.ops.Add(Constant.Word16((ushort)imm));
             return true;
         }
         private static bool ISP_4(uint uInstr, MilStd1750Disassembler dasm)
         {
             var imm = bf4_4.Read(uInstr) + 1u;
-            dasm.ops.Add(ImmediateOperand.Word16((ushort) imm));
+            dasm.ops.Add(Constant.Word16((ushort) imm));
             return true;
         }
 
         private static bool Imm4(uint uInstr, MilStd1750Disassembler dasm)
         {
-            dasm.ops.Add(ImmediateOperand.Word16((ushort) bf0_4.Read(uInstr)));
+            dasm.ops.Add(Constant.Word16((ushort) bf0_4.Read(uInstr)));
             return true;
         }
 
         private static bool Imm8(uint uInstr, MilStd1750Disassembler dasm)
         {
-            dasm.ops.Add(ImmediateOperand.Word16((ushort)bf0_8.Read(uInstr)));
+            dasm.ops.Add(Constant.Word16((ushort)bf0_8.Read(uInstr)));
             return true;
         }
 
@@ -275,7 +275,7 @@ namespace Reko.Arch.MilStd1750
         {
             if (!dasm.rdr.TryReadUInt16(out ushort imm))
                 return false;
-            dasm.ops.Add(ImmediateOperand.Word16(imm));
+            dasm.ops.Add(Constant.Word16(imm));
             return true;
         }
 
@@ -303,7 +303,7 @@ namespace Reko.Arch.MilStd1750
             case 0:
                 dasm.mnemonic = Mnemonic.xio_po;
                 dasm.ops.Add(ra);
-                dasm.ops.Add(ImmediateOperand.Word16((ushort) (cmd & 0x03FF)));
+                dasm.ops.Add(Constant.Word16((ushort) (cmd & 0x03FF)));
                 return true;
             case 0x2:
                 switch (cmd)
@@ -353,7 +353,7 @@ namespace Reko.Arch.MilStd1750
                 case 0xAD51:
                     // 'MQ': Seems to be legit, but can't find documentation for it.
                     dasm.mnemonic = Mnemonic.xio_unknown;
-                    dasm.ops.Add(ImmediateOperand.UInt16(cmd));
+                    dasm.ops.Add(Constant.UInt16(cmd));
                     return true;
                 }
                 break;

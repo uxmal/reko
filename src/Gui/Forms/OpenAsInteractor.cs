@@ -67,7 +67,7 @@ namespace Reko.Gui.Forms
         private void EnableControls()
         {
             var rawfile = dlg.GetSelectedRawFile();
-            var arch = ((ListOption) dlg.Architectures.SelectedValue)?.Value as string;
+            var arch = ((ListOption?) dlg.Architectures.SelectedValue)?.Value as string;
             var unknownRawFileFormat = rawfile is null;
             bool platformRequired = unknownRawFileFormat;
             bool archRequired = unknownRawFileFormat;

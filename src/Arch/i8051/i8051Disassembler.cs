@@ -187,7 +187,7 @@ namespace Reko.Arch.i8051
         {
             if (!dasm.rdr.TryReadByte(out byte b))
                 return false;
-            dasm.ops.Add(ImmediateOperand.Byte(b));
+            dasm.ops.Add(Constant.Byte(b));
             return true;
         }
 
@@ -197,7 +197,7 @@ namespace Reko.Arch.i8051
             if (!dasm.rdr.TryReadUInt16(out var w))
                 return false;
 
-            dasm.ops.Add(ImmediateOperand.Word16(w));
+            dasm.ops.Add(Constant.Word16(w));
             return true;
         }
 

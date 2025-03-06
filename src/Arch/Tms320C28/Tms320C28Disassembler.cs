@@ -98,7 +98,7 @@ namespace Reko.Arch.Tms320C28
             return (u, d) =>
             {
                 var imm = field.Read(u);
-                d.ops.Add(new ImmediateOperand(Constant.Create(dt, imm)));
+                d.ops.Add(Constant.Create(dt, imm));
                 return true;
             };
         }

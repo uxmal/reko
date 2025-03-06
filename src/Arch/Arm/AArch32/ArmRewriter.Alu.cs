@@ -89,8 +89,8 @@ namespace Reko.Arch.Arm.AArch32
         private void RewriteBfc()
         {
             var opDst = this.Operand(0, PrimitiveType.Word32, true);
-            var lsb = ((ImmediateOperand)instr.Operands[1]).Value.ToInt32();
-            var bitsize = ((ImmediateOperand)instr.Operands[2]).Value.ToInt32();
+            var lsb = ((Constant)instr.Operands[1]).ToInt32();
+            var bitsize = ((Constant)instr.Operands[2]).ToInt32();
             m.Assign(opDst, m.And(opDst, Constant.UInt32(~Bits.Mask32(lsb, bitsize))));
         }
 
@@ -98,8 +98,8 @@ namespace Reko.Arch.Arm.AArch32
         {
             var opSrc = this.Operand(1);
             var opDst = (Identifier) this.Operand(0, PrimitiveType.Word32, true);
-            var lsb = ((ImmediateOperand)instr.Operands[2]).Value.ToInt32();
-            var bitsize = ((ImmediateOperand)instr.Operands[3]).Value.ToInt32();
+            var lsb = ((Constant)instr.Operands[2]).ToInt32();
+            var bitsize = ((Constant)instr.Operands[3]).ToInt32();
             var tmp = binder.CreateTemporary(PrimitiveType.CreateWord(bitsize));
             m.Assign(tmp, m.Slice(opSrc, 0, bitsize));
             m.Assign(opDst, m.Dpb(opDst, tmp, lsb));
@@ -600,9 +600,9 @@ namespace Reko.Arch.Arm.AArch32
                 {
                     m.Return(0, 0);
                 }
-                else if (instr.Operands[1] is ImmediateOperand imm)
+                else if (instr.Operands[1] is Constant imm)
                 {
-                    m.Goto(arch.MakeAddressFromConstant(imm.Value, true));
+                    m.Goto(arch.MakeAddressFromConstant(imm, true));
                 }
                 else
                 {
@@ -621,7 +621,7 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteMovt()
         {
-            var iSrc = ((ImmediateOperand)instr.Operands[1]).Value;
+            var iSrc = (Constant) instr.Operands[1];
             var opDst = (Identifier) Operand(0, PrimitiveType.Word32, true);
             Debug.Assert(iSrc.DataType.BitSize == 16);
             var opSrc = m.Dpb(opDst, iSrc, 16);
@@ -630,7 +630,7 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteMovw()
         {
-            var src = m.Word32(((ImmediateOperand)instr.Operands[1]).Value.ToUInt32());
+            var src = m.Word32(((Constant)instr.Operands[1]).ToUInt32());
             var dst = Operand(0, PrimitiveType.Word32, true);
             m.Assign(dst, src);
         }
@@ -734,8 +734,8 @@ namespace Reko.Arch.Arm.AArch32
             var dst = this.Operand(0, PrimitiveType.Word32, true);
             var src = m.Slice(
                     this.Operand(1),
-                    ((ImmediateOperand) instr.Operands[2]).Value.ToInt32(),
-                    ((ImmediateOperand) instr.Operands[3]).Value.ToInt32());
+                    ((Constant)instr.Operands[2]).ToInt32(),
+                    ((Constant)instr.Operands[3]).ToInt32());
             m.Assign(dst, m.Convert(src, src.DataType, PrimitiveType.Int32));
         }
 
@@ -1001,8 +1001,8 @@ namespace Reko.Arch.Arm.AArch32
             var dst = this.Operand(0, PrimitiveType.Word32, true);
             var src = m.Slice(
                     this.Operand(1),
-                    ((ImmediateOperand) instr.Operands[2]).Value.ToInt32(),
-                    ((ImmediateOperand) instr.Operands[3]).Value.ToInt32());
+                    ((Constant)instr.Operands[2]).ToInt32(),
+                    ((Constant)instr.Operands[3]).ToInt32());
             m.Assign(dst, m.Convert(src, src.DataType, PrimitiveType.UInt32));
         }
 
@@ -1120,12 +1120,12 @@ namespace Reko.Arch.Arm.AArch32
             var src2 = this.Reg((RegisterStorage) instr.Operands[2]);
             var dst = Operand(0);
             if (instr.ShiftType == Mnemonic.ror &&
-                instr.ShiftValue is ImmediateOperand imm)
+                instr.ShiftValue is Constant imm)
             {
-                var rotation = imm.Value.ToInt32();
+                var rotation = imm.ToInt32();
                 if (rotation != 0)
                 {
-                    m.Assign(dst, m.Fn(intrinsicRotate, src1, src2, imm.Value));
+                    m.Assign(dst, m.Fn(intrinsicRotate, src1, src2, imm));
                     return;
                 }
             }
@@ -1148,12 +1148,12 @@ namespace Reko.Arch.Arm.AArch32
             var src = this.Reg((RegisterStorage) instr.Operands[1]);
             var dst = Operand(0);
             if (instr.ShiftType == Mnemonic.ror && 
-                instr.ShiftValue is ImmediateOperand imm)
+                instr.ShiftValue is Constant imm)
             {
-                var rotation = imm.Value.ToInt32();
+                var rotation = imm.ToInt32();
                 if (rotation != 0)
                 {
-                    m.Assign(dst, m.Fn(intrinsicRotate, src, imm.Value));
+                    m.Assign(dst, m.Fn(intrinsicRotate, src, imm));
                     return;
                 }
             }

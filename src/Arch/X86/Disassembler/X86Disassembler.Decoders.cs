@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Types;
@@ -803,8 +804,8 @@ namespace Reko.Arch.X86
                     return instr;
                 if (disasm.Emulate8087)
                 {
-                    var imm = (ImmediateOperand) disasm.decodingContext.ops[0];
-                    var vector = imm.Value.ToByte();
+                    var imm = (Constant) disasm.decodingContext.ops[0];
+                    var vector = imm.ToByte();
                     if (disasm.IsEmulated8087Vector(vector))
                     {
                         instr = disasm.RewriteEmulated8087Instruction(vector);
@@ -877,7 +878,7 @@ namespace Reko.Arch.X86
                         return dasm.CreateInvalidInstruction();
                 }
                 var ops = dasm.decodingContext.ops;
-                var predicateOpcode = ((ImmediateOperand) ops[^1]).Value.ToByte();
+                var predicateOpcode = ((Constant) ops[^1]).ToByte();
                 if (predicateMnemonics.TryGetValue(predicateOpcode, out var mnemonic))
                 {
                     ops.RemoveAt(ops.Count - 1);

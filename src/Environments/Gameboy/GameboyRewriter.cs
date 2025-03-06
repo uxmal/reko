@@ -257,8 +257,8 @@ namespace Reko.Environments.Gameboy
             {
             case RegisterStorage reg:
                 return binder.EnsureRegister(reg);
-            case ImmediateOperand imm:
-                return imm.Value;
+            case Constant imm:
+                return imm;
             case Address addr:
                 return addr;
             case MemoryOperand mem:
@@ -618,7 +618,7 @@ namespace Reko.Environments.Gameboy
 
         private void Rewrite_rst()
         {
-            var uAddr = ((ImmediateOperand) instr.Operands[0]).Value.ToUInt32();
+            var uAddr = ((Constant)instr.Operands[0]).ToUInt32();
             m.Call(Address.Ptr16((ushort) uAddr), 2);
         }
 

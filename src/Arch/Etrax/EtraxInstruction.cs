@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
@@ -88,7 +89,7 @@ namespace Reko.Arch.Etrax
 
         protected override void RenderOperand(MachineOperand operand, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            if (operand is ImmediateOperand imm)
+            if (operand is Constant imm)
             {
                 renderer.WriteString("0x");
             }

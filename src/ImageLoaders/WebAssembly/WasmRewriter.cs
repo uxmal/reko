@@ -79,7 +79,7 @@ namespace Reko.ImageLoaders.WebAssembly
         private void Const(DataType dt)
         {
             var tmp = binder.CreateTemporary(dt);
-            m.Assign(tmp, ((ImmediateOperand)instr.Operands[0]).Value);
+            m.Assign(tmp, (Constant)instr.Operands[0]);
             Push(tmp);
         }
 

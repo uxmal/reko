@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
@@ -110,7 +111,7 @@ namespace Reko.Arch.V850
             return (u, d) =>
             {
                 var imm = field.ReadSigned(u);
-                d.ops.Add(ImmediateOperand.Word32(imm));
+                d.ops.Add(Constant.Word32(imm));
                 return true;
             };
         }
@@ -122,7 +123,7 @@ namespace Reko.Arch.V850
             return (u, d) =>
             {
                 var imm = field.Read(u);
-                d.ops.Add(ImmediateOperand.Word32(imm));
+                d.ops.Add(Constant.Word32(imm));
                 return true;
             };
         }
@@ -135,7 +136,7 @@ namespace Reko.Arch.V850
         {
             if (!dasm.rdr.TryReadLeUInt32(out uint imm))
                 return false;
-            dasm.ops.Add(ImmediateOperand.Word32(imm));
+            dasm.ops.Add(Constant.Word32(imm));
             return true;
         }
 
@@ -146,7 +147,7 @@ namespace Reko.Arch.V850
         {
             if (!dasm.rdr.TryReadLeInt16(out short simm))
                 return false;
-            dasm.ops.Add(ImmediateOperand.Int32(simm));
+            dasm.ops.Add(Constant.Int32(simm));
             return true;
         }
 
@@ -157,7 +158,7 @@ namespace Reko.Arch.V850
         {
             if (!dasm.rdr.TryReadLeInt16(out short simm))
                 return false;
-            dasm.ops.Add(ImmediateOperand.Word32(simm));
+            dasm.ops.Add(Constant.Word32(simm));
             return true;
         }
 

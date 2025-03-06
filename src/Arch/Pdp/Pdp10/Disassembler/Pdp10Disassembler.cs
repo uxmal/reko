@@ -212,8 +212,7 @@ namespace Reko.Arch.Pdp.Pdp10.Disassembler
             }
             else
             {
-                var imm = Constant.Create(PdpTypes.Word36, uInstr & LowWordMask);
-                op = new ImmediateOperand(imm);
+                op = Constant.Create(PdpTypes.Word36, uInstr & LowWordMask);
             }
             dasm.ops.Add(op);
             return true;
@@ -224,8 +223,7 @@ namespace Reko.Arch.Pdp.Pdp10.Disassembler
         /// </summary>
         private static bool D(ulong uInstr, Pdp10Disassembler dasm)
         {
-            var imm = Constant.Create(PdpTypes.Word36, deviceField.Read(uInstr)); ;
-            var op = new ImmediateOperand(imm);
+            var op = Constant.Create(PdpTypes.Word36, deviceField.Read(uInstr)); ;
             dasm.ops.Add(op);
             return true;
         }
@@ -236,7 +234,7 @@ namespace Reko.Arch.Pdp.Pdp10.Disassembler
         private static bool ImmAc(ulong uInstr, Pdp10Disassembler dasm)
         {
             var imm = acField.Read(uInstr);
-            dasm.ops.Add(ImmediateOperand.Byte((byte)imm));
+            dasm.ops.Add(Constant.Byte((byte)imm));
             return true;
         }
 

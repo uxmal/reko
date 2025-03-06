@@ -70,7 +70,7 @@ namespace Reko.Arch.Loongson
                     return;
                 }
             }
-            m.Goto(m.IAdd(src, ((ImmediateOperand) instr.Operands[2]).Value.ToInt32()));
+            m.Goto(m.IAdd(src, ((Constant) instr.Operands[2]).ToInt32()));
         }
     }
 }

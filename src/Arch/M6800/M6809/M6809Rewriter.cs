@@ -423,8 +423,8 @@ namespace Reko.Arch.M6800.M6809
                 m.Assign(tmp, bin(dst, tmp));
                 break;
 
-            case ImmediateOperand imm:
-                m.Assign(dst, bin(dst, imm.Value));
+            case Constant imm:
+                m.Assign(dst, bin(dst, imm));
                 tmp = dst;
                 break;
             case MemoryOperand mem:
@@ -501,7 +501,7 @@ namespace Reko.Arch.M6800.M6809
 
         private void RewriteModifyCc(Func<Expression, Expression, Expression> fn)
         {
-            var imm = ((ImmediateOperand) instr.Operands[0]).Value;
+            var imm = (Constant)instr.Operands[0];
             var cc = binder.EnsureRegister(Registers.CC);
             m.Assign(cc, fn(cc, imm));
         }
@@ -525,7 +525,7 @@ namespace Reko.Arch.M6800.M6809
         private void RewriteCwai()
         {
             var cc = binder.EnsureRegister(Registers.CC);
-            m.Assign(cc, m.And(cc, ((ImmediateOperand) instr.Operands[0]).Value));
+            m.Assign(cc, m.And(cc, (Constant)instr.Operands[0]));
             Push(Registers.S, Registers.PCR);
             Push(Registers.S, Registers.U);
             Push(Registers.S, Registers.Y);

@@ -85,15 +85,15 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
         [Test]
         public void X86Orw32_Immediate()
         {
-            var imm = ImmediateOperand.Word16(0x0003);
-            var c = (Constant) orw.Transform(null, imm, imm.Width);
+            var imm = Constant.Word16(0x0003);
+            var c = (Constant) orw.Transform(null, imm, imm.DataType);
             Assert.AreEqual("3<16>", c.ToString());
         }
 
         [Test]
         public void X86Orw32_ImmediateExtend()
         {
-            var imm = ImmediateOperand.SByte(-1);
+            var imm = Constant.SByte(-1);
             var c = (Constant) orw.Transform(null, imm, PrimitiveType.Word16);
             Assert.AreEqual("0xFFFF<16>", c.ToString());
         }

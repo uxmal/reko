@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Loading;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
@@ -148,7 +149,7 @@ namespace Reko.ImageLoaders.WebAssembly.Output
                 case Mnemonic.call:
                     if (typeSection is null)
                         throw new BadImageFormatException("Missing type section.");
-                    var ifuncCall = ((ImmediateOperand) instr.Operands[0]).Value.ToInt32();
+                    var ifuncCall = ((Constant) instr.Operands[0]).ToInt32();
                     if (ifuncCall >= file.FunctionIndex.Count || this.funcSection == null)
                     {
                         Debug.Print("*** Unknown function {0:X}", ifuncCall);
@@ -160,7 +161,7 @@ namespace Reko.ImageLoaders.WebAssembly.Output
                 case Mnemonic.call_indirect:
                     if (typeSection is null)
                         throw new BadImageFormatException("Missing type section.");
-                    var itypeCall = ((ImmediateOperand) instr.Operands[1]).Value.ToInt32();
+                    var itypeCall = ((Constant)instr.Operands[1]).ToInt32();
                     HandleCall(typeSection.Types[itypeCall], dataStack);
                     break;
                 case Mnemonic.i32_const:

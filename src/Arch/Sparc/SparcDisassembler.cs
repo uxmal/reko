@@ -405,7 +405,7 @@ namespace Reko.Arch.Sparc
                 int imm = (int) Bits.SignExtend(wInstr, bits);
                 var dt = signed ? arch.SignedWord : arch.WordWidth;
                 Constant c = Constant.Create(dt, (long) imm);
-                return new ImmediateOperand(c);
+                return c;
             }
             else
             {
@@ -418,7 +418,7 @@ namespace Reko.Arch.Sparc
             if ((wInstr & (1 << 13)) != 0)
             {
                 ulong imm = Bits.ZeroExtend(wInstr, bits);
-                return new ImmediateOperand(Constant.Create(this.arch.WordWidth, imm));
+                return Constant.Create(this.arch.WordWidth, imm);
             }
             else
             {
@@ -426,10 +426,10 @@ namespace Reko.Arch.Sparc
             }
         }
 
-        private static ImmediateOperand GetImmOperand(uint wInstr, int bits)
+        private static Constant GetImmOperand(uint wInstr, int bits)
         {
             uint imm = wInstr & ((1u << bits) - 1);
-            return ImmediateOperand.Word32(imm);
+            return Constant.Word32(imm);
         }
 
         internal static bool Pred(uint wInstr, SparcDisassembler dasm)

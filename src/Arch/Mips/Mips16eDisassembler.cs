@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
@@ -247,7 +248,7 @@ namespace Reko.Arch.Mips
             return (u, d) =>
             {
                 var uImm = field.Read(u) << shift;
-                d.ops.Add(ImmediateOperand.Word32(uImm));
+                d.ops.Add(Constant.Word32(uImm));
                 return true;
             };
         }
@@ -268,7 +269,7 @@ namespace Reko.Arch.Mips
                 var uImm =
                     (Bitfield.ReadFields(extFields, d.extend.Value) << fieldLsb.Length) |
                     fieldLsb.Read(u);
-                d.ops.Add(ImmediateOperand.Word32(uImm));
+                d.ops.Add(Constant.Word32(uImm));
                 return true;
             };
         }
@@ -284,7 +285,7 @@ namespace Reko.Arch.Mips
             return (u, d) =>
             {
                 var uImm = field.ReadSigned(u) << shift;
-                d.ops.Add(ImmediateOperand.Int32(uImm));
+                d.ops.Add(Constant.Int32(uImm));
                 return true;
             };
         }
@@ -304,7 +305,7 @@ namespace Reko.Arch.Mips
                     (Bitfield.ReadFields(extFields, d.extend.Value) << fieldLsb.Length) |
                     fieldLsb.Read(u);
                 var sImm = Bits.SignExtend(uImm, significantDigits);
-                d.ops.Add(ImmediateOperand.Word32(sImm));
+                d.ops.Add(Constant.Word32(sImm));
                 return true;
             };
         }
@@ -340,15 +341,15 @@ namespace Reko.Arch.Mips
             dasm.ops.Add(shAmt);
             return true;
         }
-        private static readonly ImmediateOperand []shortShiftAmts = new int[8] { 8, 1, 2, 3, 4, 5, 6, 7 }
-            .Select(n => ImmediateOperand.Int32(n))
+        private static readonly Constant[] shortShiftAmts = new int[8] { 8, 1, 2, 3, 4, 5, 6, 7 }
+            .Select(n => Constant.Int32(n))
             .ToArray();
         
         private static bool ShAmtEx(uint uInstr, Mips16eDisassembler dasm)
         {
             Debug.Assert(dasm.extend.HasValue);
             var shAmt = (int) bf6_5.Read(dasm.extend.Value);
-            dasm.ops.Add(ImmediateOperand.Int32(shAmt));
+            dasm.ops.Add(Constant.Int32(shAmt));
             return true;
         }
 
@@ -367,11 +368,11 @@ namespace Reko.Arch.Mips
         }
         private static readonly Mutator<Mips16eDisassembler> SaveFramesize = Framesize(Bf((0, 4)));
 
-        private static readonly ImmediateOperand[] frameSizeEncoding = new int[16]
+        private static readonly Constant[] frameSizeEncoding = new int[16]
         {
             16, 1, 2, 3,  4, 5, 6, 7,  8, 9, 10, 11,  12, 13, 14, 15
         }
-            .Select(n => ImmediateOperand.Int32(n * 8))
+            .Select(n => Constant.Int32(n * 8))
             .ToArray();
 
         private static bool SaveFramesizeEx(uint uInstr, Mips16eDisassembler dasm)
@@ -379,7 +380,7 @@ namespace Reko.Arch.Mips
             Debug.Assert(dasm.extend.HasValue);
             var hi = (int) bf4_4.Read(dasm.extend.Value);
             var lo = (int) bf0_4.Read(uInstr);
-            var imm = ImmediateOperand.Int32(((hi << 4) | lo) << 3);
+            var imm = Constant.Int32(((hi << 4) | lo) << 3);
             dasm.ops.Add(imm);
             return true;
         }
@@ -432,7 +433,7 @@ namespace Reko.Arch.Mips
                 var offset = (int) (fieldOffset.Read(u) * dt.Size);
                 var mem = new IndirectOperand(
                     dt,
-                    ImmediateOperand.Int32(offset),
+                    Constant.Int32(offset),
                     d.arch.StackRegister);
                 d.ops.Add(mem);
                 return true;
@@ -456,7 +457,7 @@ namespace Reko.Arch.Mips
                 var offset = (int) (fieldOffset.Read(u) * dt.Size);
                 var mem = new IndirectOperand(
                     dt,
-                    ImmediateOperand.Int32(offset),
+                    Constant.Int32(offset),
                     d.arch.pc);
                 d.ops.Add(mem);
                 return true;
@@ -486,7 +487,7 @@ namespace Reko.Arch.Mips
             int offset = (int) bf0_8.Read(uInstr) << 2;
             var mem = new IndirectOperand(
                 dasm.arch.PointerType,
-                ImmediateOperand.Int32(offset),
+                Constant.Int32(offset),
                 dasm.arch.StackRegister);
             dasm.ops.Add(mem);
             return true;
@@ -498,7 +499,7 @@ namespace Reko.Arch.Mips
             var offset = (int) Bits.SignExtend(uExtend | bf0_5.Read(uInstr), bf0_5.Length + 11);
             var mem = new IndirectOperand(
                 dasm.arch.PointerType,
-                ImmediateOperand.Int32(offset),
+                Constant.Int32(offset),
                 dasm.arch.StackRegister);
             dasm.ops.Add(mem);
             return true;
@@ -523,7 +524,7 @@ namespace Reko.Arch.Mips
                 var reg = registerEncoding[encReg];
                 var mem = new IndirectOperand(
                     dt,
-                    ImmediateOperand.Int32(offset),
+                    Constant.Int32(offset),
                     reg);
                 d.ops.Add(mem);
                 return true;

@@ -261,7 +261,7 @@ namespace Reko.Arch.Xtensa
         private static bool e(uint wInstr, XtensaDisassembler dasm)
         {
             var off = ~0x3F | (dasm.state.r << 2);
-            dasm.ops.Add(ImmediateOperand.Int32(off));
+            dasm.ops.Add(Constant.Int32(off));
             return true;
         }
 
@@ -304,14 +304,14 @@ namespace Reko.Arch.Xtensa
         // Immediate
         private static bool Is(uint wInstr, XtensaDisassembler dasm)
         {
-            var op = ImmediateOperand.Byte(dasm.state.s);
+            var op = Constant.Byte(dasm.state.s);
             dasm.ops.Add(op);
             return true;
         }
 
         private static bool It(uint wInstr, XtensaDisassembler dasm)
         {
-            var op = ImmediateOperand.Byte(dasm.state.t);
+            var op = Constant.Byte(dasm.state.t);
             dasm.ops.Add(op);
             return true;
         }
@@ -320,7 +320,7 @@ namespace Reko.Arch.Xtensa
         private static bool It_7(uint wInstr, XtensaDisassembler dasm)
         {
             var n = (byte) (dasm.state.t + 7);
-            var op = ImmediateOperand.Byte(n);
+            var op = Constant.Byte(n);
             dasm.ops.Add(op);
             return true;
         }
@@ -329,7 +329,7 @@ namespace Reko.Arch.Xtensa
         private static bool It_m8(uint wInstr, XtensaDisassembler dasm)
         {
             var n = (sbyte) (dasm.state.t - 8);
-            var op = ImmediateOperand.SByte(n);
+            var op = Constant.SByte(n);
             dasm.ops.Add(op);
             return true;
         }
@@ -337,7 +337,7 @@ namespace Reko.Arch.Xtensa
         private static bool Iop2(uint wInstr, XtensaDisassembler dasm)
         {
             var n = dasm.state.op2;
-            var op = ImmediateOperand.Byte(n);
+            var op = Constant.Byte(n);
             dasm.ops.Add(op);
             return true;
         }
@@ -345,7 +345,7 @@ namespace Reko.Arch.Xtensa
         private static bool Iop2_4(uint wInstr, XtensaDisassembler dasm)
         {
             var n = dasm.state.op2 << 4;
-            var op = ImmediateOperand.Byte((byte)n);
+            var op = Constant.Byte((byte)n);
             dasm.ops.Add(op);
             return true;
         }
@@ -378,7 +378,7 @@ namespace Reko.Arch.Xtensa
 
         private static bool Ift(uint wInstr, XtensaDisassembler dasm)
         {
-            var op = new ImmediateOperand(Constant.Real32(floatImms[dasm.state.t]));
+            var op = Constant.Real32(floatImms[dasm.state.t]);
             dasm.ops.Add(op);
             return true;
         }
@@ -386,7 +386,7 @@ namespace Reko.Arch.Xtensa
         // Immediate shift amount used by slli
         private static bool IS(uint wInstr, XtensaDisassembler dasm)
         {
-            var op = ImmediateOperand.Byte((byte) (dasm.state.t | ((dasm.state.op2 & 1) << 4)));
+            var op = Constant.Byte((byte) (dasm.state.t | ((dasm.state.op2 & 1) << 4)));
             dasm.ops.Add(op);
             return true;
         }
@@ -394,7 +394,7 @@ namespace Reko.Arch.Xtensa
         // Immediate shift amount used by srai
         private static bool IR(uint wInstr, XtensaDisassembler dasm)
         {
-            var op = ImmediateOperand.Byte((byte) (dasm.state.s | ((dasm.state.op2 & 1) << 4)));
+            var op = Constant.Byte((byte) (dasm.state.s | ((dasm.state.op2 & 1) << 4)));
             dasm.ops.Add(op);
             return true;
         }
@@ -403,7 +403,7 @@ namespace Reko.Arch.Xtensa
         // Immediate shift amount used by ssai
         private static bool II(uint wInstr, XtensaDisassembler dasm)
         { 
-            var op = ImmediateOperand.Byte((byte) (dasm.state.s | ((dasm.state.r & 1) << 4)));
+            var op = Constant.Byte((byte) (dasm.state.s | ((dasm.state.r & 1) << 4)));
             dasm.ops.Add(op);
             return true;
         }
@@ -411,49 +411,49 @@ namespace Reko.Arch.Xtensa
 
         private static bool I4_2(uint wInstr, XtensaDisassembler dasm)
         {
-            var op = ImmediateOperand.Byte((byte)(dasm.state.r << 2)); 
+            var op = Constant.Byte((byte)(dasm.state.r << 2)); 
             dasm.ops.Add(op);
             return true;
         }
 
         private static bool I8_0(uint wInstr, XtensaDisassembler dasm)
         {
-            var op = ImmediateOperand.UInt16((ushort)dasm.state.imm8);
+            var op = Constant.UInt16((ushort)dasm.state.imm8);
             dasm.ops.Add(op);
             return true;
         }
 
         private static bool I8_1(uint wInstr, XtensaDisassembler dasm)
         {
-            var op = ImmediateOperand.UInt16((ushort) (dasm.state.imm8 << 1));
+            var op = Constant.UInt16((ushort) (dasm.state.imm8 << 1));
             dasm.ops.Add(op);
             return true;
         }
 
         private static bool I8_2(uint wInstr, XtensaDisassembler dasm)
         {
-            var op = ImmediateOperand.UInt16((ushort) (dasm.state.imm8 << 2));
+            var op = Constant.UInt16((ushort) (dasm.state.imm8 << 2));
             dasm.ops.Add(op);
             return true;
         }
 
         private static bool I12_3(uint wInstr, XtensaDisassembler dasm)
         {
-            var op = ImmediateOperand.UInt16((ushort) (dasm.state.imm12 << 3));
+            var op = Constant.UInt16((ushort) (dasm.state.imm12 << 3));
             dasm.ops.Add(op);
             return true;
         }
 
         private static bool Irt(uint wInstr, XtensaDisassembler dasm)
         {
-            var op = ImmediateOperand.Byte((byte) (((dasm.state.r & 1) << 4) | dasm.state.t));
+            var op = Constant.Byte((byte) (((dasm.state.r & 1) << 4) | dasm.state.t));
             dasm.ops.Add(op);
             return true;
         }
 
         private static bool a(uint wInstr, XtensaDisassembler dasm)
         {
-            var op = ImmediateOperand.SByte(dasm.state.t == 0 ? (sbyte) -1 : (sbyte) dasm.state.t);
+            var op = Constant.SByte(dasm.state.t == 0 ? (sbyte) -1 : (sbyte) dasm.state.t);
             dasm.ops.Add(op);
             return true;
         }
@@ -462,7 +462,7 @@ namespace Reko.Arch.Xtensa
         private static bool m0(uint wInstr, XtensaDisassembler dasm)
         {
             int n = (sbyte) dasm.state.imm8;
-            var op = ImmediateOperand.Word32(n);
+            var op = Constant.Word32(n);
             dasm.ops.Add(op);
             return true;
         }
@@ -471,7 +471,7 @@ namespace Reko.Arch.Xtensa
         {
             int n = (sbyte) dasm.state.imm8;
             n <<= 8;
-            var op = ImmediateOperand.Word32(n);
+            var op = Constant.Word32(n);
             dasm.ops.Add(op);
             return true;
         }
@@ -480,21 +480,21 @@ namespace Reko.Arch.Xtensa
         private static bool i(uint wInstr, XtensaDisassembler dasm)
         {
             int n = ((dasm.state.imm8 | (dasm.state.s << 8)) << 20) >> 20;
-            dasm.ops.Add(ImmediateOperand.Word32(n));
+            dasm.ops.Add(Constant.Word32(n));
             return true;
         }
 
         // 'bs'
         private static bool bs(uint wInstr, XtensaDisassembler dasm)
         {
-            var op = ImmediateOperand.Int32(b4const[dasm.state.r]);
+            var op = Constant.Int32(b4const[dasm.state.r]);
             dasm.ops.Add(op);
             return true;
         }
 
         private static bool bu(uint wInstr, XtensaDisassembler dasm)
         {
-            var op = ImmediateOperand.Word32(b4constu[dasm.state.r]);
+            var op = Constant.Word32(b4constu[dasm.state.r]);
             dasm.ops.Add(op);
             return true;
         }
@@ -712,7 +712,7 @@ namespace Reko.Arch.Xtensa
                     (((dasm.state.t & 0x6) == 0x6)
                         ? ~0x1F
                         : 0);
-                var imm = ImmediateOperand.SByte((sbyte)n);
+                var imm = Constant.SByte((sbyte)n);
                 dasm.ops.Add(imm);
 
                 // this is a 2-byte instruction, so back up one byte.
@@ -763,8 +763,8 @@ namespace Reko.Arch.Xtensa
                     {
                         dasm.GetAluRegister(dasm.state.r),
                         dasm.GetAluRegister(dasm.state.t),
-                        ImmediateOperand.Byte((byte)((dasm.state.s | ((dasm.state.op1 & 1) << 4)))),
-                        ImmediateOperand.Byte((byte)(dasm.state.op2 + 1))
+                        Constant.Byte((byte)((dasm.state.s | ((dasm.state.op1 & 1) << 4)))),
+                        Constant.Byte((byte)(dasm.state.op2 + 1))
                     }
                 };
             }

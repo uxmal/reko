@@ -194,8 +194,8 @@ namespace Reko.Arch.Msp430
                     m.Assign(tmp, m.Mem(dt, ea));
                     return tmp;
                 }
-            case ImmediateOperand iop:
-                return iop.Value;
+            case Constant iop:
+                return iop;
             case Address aop:
                 return aop;
             }
@@ -236,8 +236,8 @@ namespace Reko.Arch.Msp430
                         return dst;
                     }
                 }
-            case ImmediateOperand imm:
-                return imm.Value;
+            case Constant imm:
+                return imm;
             case MemoryOperand mop:
                 Expression ea;
                 if (mop.Base != null)
@@ -288,8 +288,8 @@ namespace Reko.Arch.Msp430
                     m.Assign(dst, src);
                 }
                 return dst;
-            case ImmediateOperand imm:
-                return imm.Value;
+            case Constant imm:
+                return imm;
             case MemoryOperand mop:
                 Expression ea;
                 if (mop.Base != null)
@@ -483,7 +483,7 @@ namespace Reko.Arch.Msp430
 
         private void RewritePopm()
         {
-            int c = ((ImmediateOperand)instr.Operands[0]).Value.ToInt32();
+            int c = ((Constant)instr.Operands[0]).ToInt32();
             int iReg = ((RegisterStorage)instr.Operands[1]).Number - c + 1;
             if (iReg < 0)
             {
@@ -511,7 +511,7 @@ namespace Reko.Arch.Msp430
 
         private void RewritePushm()
         {
-            int c = ((ImmediateOperand)instr.Operands[0]).Value.ToInt32();
+            int c = ((Constant)instr.Operands[0]).ToInt32();
             var sp = binder.EnsureRegister(arch.Registers.sp);
             int iReg = ((RegisterStorage)instr.Operands[1]).Number;
             if (iReg < c)

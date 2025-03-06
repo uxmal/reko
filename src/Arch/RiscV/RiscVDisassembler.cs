@@ -298,7 +298,7 @@ namespace Reko.Arch.RiscV
             }
             else
             {
-                dasm.state.ops.Add(ImmediateOperand.UInt32(iCsr));
+                dasm.state.ops.Add(Constant.UInt32(iCsr));
             }
             return true;
         }
@@ -320,7 +320,7 @@ namespace Reko.Arch.RiscV
         private static bool Iu(uint wInstr, RiscVDisassembler dasm)
         {
             uint u = wInstr >> 12;
-            var op = ImmediateOperand.Word32(u);
+            var op = Constant.Word32(u);
             dasm.state.ops.Add(op);
             return true;
         }
@@ -329,7 +329,7 @@ namespace Reko.Arch.RiscV
         {
             var code = bf_r1.Read(wInstr);
             var fp = encodedFpImms_s[code];
-            var imm = ImmediateOperand.Create(Constant.Real32(fp));
+            var imm = Constant.Real32(fp);
             dasm.state.ops.Add(imm);
             return true;
         }
@@ -338,7 +338,7 @@ namespace Reko.Arch.RiscV
         {
             var code = bf_r1.Read(wInstr);
             var fp = encodedFpImms_s[code];
-            var imm = ImmediateOperand.Create(Constant.Real32(fp));
+            var imm = Constant.Real32(fp);
             dasm.state.ops.Add(imm);
             return true;
         }
@@ -397,17 +397,17 @@ namespace Reko.Arch.RiscV
             return reg;
         }
 
-        private ImmediateOperand GetSignedImmediate(uint wInstr, int bitPos)
+        private Constant GetSignedImmediate(uint wInstr, int bitPos)
         {
             Constant c;
             int s = ((int) wInstr) >> bitPos;
             c = Constant.Create(arch.NaturalSignedInteger, s);
-            return new ImmediateOperand(c);
+            return c;
         }
 
-        private ImmediateOperand GetShiftAmount(uint wInstr, int length)
+        private Constant GetShiftAmount(uint wInstr, int length)
         {
-            return ImmediateOperand.UInt32(extract32(wInstr, 20, length));
+            return Constant.UInt32(extract32(wInstr, 20, length));
         }
 
         private static bool bit(uint wInstr, int bitNo)
@@ -665,7 +665,7 @@ namespace Reko.Arch.RiscV
             return (u, d) =>
             {
                 var imm = Constant.Create(d.arch.NaturalSignedInteger, field.ReadSigned(u));
-                d.state.ops.Add(new ImmediateOperand(imm));
+                d.state.ops.Add(imm);
                 return true;
             };
         }
@@ -676,7 +676,7 @@ namespace Reko.Arch.RiscV
             {
                 var n = Bitfield.ReadSignedFields(fields, u);
                 var imm = Constant.Create(d.arch.NaturalSignedInteger, n);
-                d.state.ops.Add(new ImmediateOperand(imm));
+                d.state.ops.Add(imm);
                 return true;
             };
         }
@@ -688,7 +688,7 @@ namespace Reko.Arch.RiscV
             return (u, d) =>
             {
                 var imm = Constant.Create(d.arch.WordWidth, mask.Read(u));
-                d.state.ops.Add(new ImmediateOperand(imm));
+                d.state.ops.Add(imm);
                 return true;
             };
         }
@@ -707,8 +707,8 @@ namespace Reko.Arch.RiscV
             return (u, d) =>
             {
                 var uImm = Bitfield.ReadFields(masks, u);
-                d.state.ops.Add(new ImmediateOperand(
-                    Constant.Create(d.arch.WordWidth, uImm)));
+                d.state.ops.Add(
+                    Constant.Create(d.arch.WordWidth, uImm));
                 return true;
             };
         }
@@ -728,8 +728,7 @@ namespace Reko.Arch.RiscV
             return (u, d) =>
             {
                 var uImm = Bitfield.ReadFields(masks, u) << sh;
-                d.state.ops.Add(new ImmediateOperand(
-                    Constant.Create(d.arch.WordWidth, uImm)));
+                d.state.ops.Add(Constant.Create(d.arch.WordWidth, uImm));
                 return true;
             };
         }
@@ -748,8 +747,7 @@ namespace Reko.Arch.RiscV
             return (u, d) =>
             {
                 var uImm = Bitfield.ReadFields(masks, u);
-                d.state.ops.Add(new ImmediateOperand(
-                    Constant.Create(PrimitiveType.Byte, uImm)));
+                d.state.ops.Add(Constant.Create(PrimitiveType.Byte, uImm));
                 return true;
             };
         }
@@ -768,8 +766,7 @@ namespace Reko.Arch.RiscV
             return (u, d) =>
             {
                 var sImm = Bitfield.ReadSignedFields(masks, u);
-                d.state.ops.Add(new ImmediateOperand(
-                    Constant.Create(d.arch.NaturalSignedInteger, sImm)));
+                d.state.ops.Add(Constant.Create(d.arch.NaturalSignedInteger, sImm));
                 return true;
             };
         }
@@ -789,8 +786,7 @@ namespace Reko.Arch.RiscV
             return (u, d) =>
             {
                 var uImm = Bitfield.ReadSignedFields(masks, u) << sh;
-                d.state.ops.Add(new ImmediateOperand(
-                    Constant.Create(d.arch.NaturalSignedInteger, uImm)));
+                d.state.ops.Add(Constant.Create(d.arch.NaturalSignedInteger, uImm));
                 return true;
             };
         }
@@ -842,7 +838,7 @@ namespace Reko.Arch.RiscV
                 d.state.ops.Add(new MemoryOperand(
                     dt,
                     d.arch.GetRegister(iBase)!,
-                    ImmediateOperand.Int32(uOffset)));
+                    Constant.Int32(uOffset)));
                 return true;
             };
         }
@@ -870,7 +866,7 @@ namespace Reko.Arch.RiscV
                 d.state.ops.Add(new MemoryOperand(
                     dt,
                     d.arch.GetRegister(iBase)!,
-                    ImmediateOperand.Int32(uOffset)));
+                    Constant.Int32(uOffset)));
                 return true;
             };
         }
@@ -896,7 +892,7 @@ namespace Reko.Arch.RiscV
                 d.state.ops.Add(new MemoryOperand(
                     dt,
                     d.arch.GetRegister(iBase)!,
-                    ImmediateOperand.Int32(uOffset)));
+                    Constant.Int32(uOffset)));
                 return true;
             };
         }
@@ -922,7 +918,7 @@ namespace Reko.Arch.RiscV
                 d.state.ops.Add(new MemoryOperand(
                     dt,
                     d.arch.GetRegister(iBase)!,
-                    ImmediateOperand.Int32(uOffset)));
+                    Constant.Int32(uOffset)));
                 return true;
             };
         }
@@ -945,7 +941,7 @@ namespace Reko.Arch.RiscV
                 d.state.ops.Add(new MemoryOperand(
                     dt,
                     d.arch.StackRegister,
-                    ImmediateOperand.Int32(uOffset)));
+                    Constant.Int32(uOffset)));
                 return true;
             };
         }

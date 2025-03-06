@@ -252,7 +252,7 @@ namespace Reko.Arch.Arm.AArch32
                 var celemSrc = dstType.BitSize / srcElemSize.BitSize;
                 var arrDst = new ArrayType(dstType, celemSrc);
 
-                if (instr.Operands[1] is ImmediateOperand imm)
+                if (instr.Operands[1] is Constant imm)
                 {
                     if (dst.DataType.BitSize == 128)
                     {
@@ -286,7 +286,7 @@ namespace Reko.Arch.Arm.AArch32
             }
             else
             {
-                var nsysreg = ((ImmediateOperand) expSysreg).Value.ToInt32();
+                var nsysreg = ((Constant) expSysreg).ToInt32();
                 switch (nsysreg)
                 {
                 case 0: sysreg = Registers.fpsid; break;
@@ -345,7 +345,7 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteVmvn()
         {
-            if (instr.Operands[1] is ImmediateOperand)
+            if (instr.Operands[1] is Constant)
             {
                 RewriteVectorUnaryOp(vmvn_imm_intrinsic);
             }

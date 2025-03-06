@@ -23,6 +23,7 @@ using Reko.Arch.X86;
 using Reko.Arch.X86.Assembler;
 using Reko.Core;
 using Reko.Core.Assemblers;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Services;
@@ -518,8 +519,8 @@ movzx	ax,byte ptr [bp+4h]
         public void X86Dis_Call16()
         {
             var instr = Disassemble16(0xE9, 0x78, 0x56);
-            var addrOp = (ImmediateOperand) instr.Operands[0];
-            Assert.AreEqual("567B", addrOp.ToString());
+            var addrOp = instr.Operands[0];
+            Assert.AreEqual("567B", addrOp.ToString(new()));
         }
 
         [Test]

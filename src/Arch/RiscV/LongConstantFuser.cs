@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Collections;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using System;
 using System.Collections;
@@ -37,7 +38,7 @@ namespace Reko.Arch.RiscV
 
         public IEnumerator<MachineInstruction> GetEnumerator()
         {
-            ImmediateOperand immLo;
+            Constant immLo;
             var e = new LookaheadEnumerator<RiscVInstruction>(dasm);
             while (e.MoveNext())
             {
@@ -56,11 +57,11 @@ namespace Reko.Arch.RiscV
                             instrLo.Operands[0] == instrLo.Operands[1])
                         {
                             // Mutate the auipc
-                            var immHi = (ImmediateOperand) instrHi.Operands[1];
-                            immLo = (ImmediateOperand) instrLo.Operands[2];
+                            var immHi = (Constant) instrHi.Operands[1];
+                            immLo = (Constant) instrLo.Operands[2];
                             var fullAddr = instrHi.Address +
-                                ((immHi.Value.ToInt32() << 12) +
-                                immLo.Value.ToInt32());
+                                ((immHi.ToInt32() << 12) +
+                                immLo.ToInt32());
                             var hiOp = new SliceOperand(SliceType.PcRelHi, immHi, fullAddr);
                             var loOp = new SliceOperand(SliceType.PcRelLo, immLo, fullAddr);
                             instrHi.Operands[1] = hiOp;
@@ -71,14 +72,14 @@ namespace Reko.Arch.RiscV
                     {
                         var memOp = (MemoryOperand) instrLo.Operands[1];
                         if (instrHi.Operands[0] == memOp.Base &&
-                            memOp.Offset is ImmediateOperand imm)
+                            memOp.Offset is Constant imm)
                         {
-                            var immHi = (ImmediateOperand) instrHi.Operands[1];
+                            var immHi = (Constant) instrHi.Operands[1];
                             immLo = imm;
                             // Mutate the auipc and the memory operand
                             var fullAddr = instrHi.Address +
-                                ((immHi.Value.ToInt32() << 12) +
-                                immLo.Value.ToInt32());
+                                ((immHi.ToInt32() << 12) +
+                                immLo.ToInt32());
                             var hiOp = new SliceOperand(SliceType.PcRelHi, immHi, fullAddr);
                             var loOp = new SliceOperand(SliceType.PcRelLo, immLo, fullAddr);
                             instrHi.Operands[1] = hiOp;
@@ -99,11 +100,11 @@ namespace Reko.Arch.RiscV
                             instrLo.Operands[0] == instrLo.Operands[1])
                         {
                             // Mutate the auipc and the addi
-                            var immHi = (ImmediateOperand) instrHi.Operands[1];
-                            immLo = (ImmediateOperand) instrLo.Operands[2];
-                            var fullAddr = ImmediateOperand.Word32(
-                                (immHi.Value.ToInt32() << 12) +
-                                immLo.Value.ToInt32());
+                            var immHi = (Constant) instrHi.Operands[1];
+                            immLo = (Constant) instrLo.Operands[2];
+                            var fullAddr = Constant.Word32(
+                                (immHi.ToInt32() << 12) +
+                                immLo.ToInt32());
                             var hiOp = new SliceOperand(SliceType.PcRelHi, immHi, fullAddr);
                             var loOp = new SliceOperand(SliceType.PcRelLo, immLo, fullAddr);
                             instrHi.Operands[1] = hiOp;
@@ -114,14 +115,14 @@ namespace Reko.Arch.RiscV
                     {
                         var memOp = (MemoryOperand) instrLo.Operands[1];
                         if (instrHi.Operands[0] == memOp.Base &&
-                            memOp.Offset is ImmediateOperand imm)
+                            memOp.Offset is Constant imm)
                         {
                             immLo = imm;
                             // Mutate the auipc and the memory operand
-                            var immHi = (ImmediateOperand) instrHi.Operands[1];
-                            var fullAddr = ImmediateOperand.Word32(
-                                (immHi.Value.ToInt32() << 12) +
-                                immLo.Value.ToInt32());
+                            var immHi = (Constant) instrHi.Operands[1];
+                            var fullAddr = Constant.Word32(
+                                (immHi.ToInt32() << 12) +
+                                immLo.ToInt32());
                             var hiOp = new SliceOperand(SliceType.PcRelHi, immHi, fullAddr);
                             var loOp = new SliceOperand(SliceType.PcRelLo, immLo, fullAddr);
                             instrHi.Operands[1] = hiOp;

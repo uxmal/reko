@@ -170,7 +170,7 @@ namespace Reko.Arch.Etrax
             switch (op)
             {
             case RegisterStorage r: return binder.EnsureRegister(r);
-            case ImmediateOperand imm: return imm.Value;
+            case Constant imm: return imm;
             case Address addr: return addr;
             case MemoryOperand mem:
                 var ea = EffectiveAddress(mem);

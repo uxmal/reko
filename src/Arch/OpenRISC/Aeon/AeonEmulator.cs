@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Diagnostics;
 using Reko.Core.Emulation;
+using Reko.Core.Expressions;
 using Reko.Core.Loading;
 using Reko.Core.Machine;
 using System;
@@ -143,8 +144,8 @@ namespace Reko.Arch.OpenRISC.Aeon
 
         private uint ReadImm(AeonInstruction instr, int iop)
         {
-            var imm = (ImmediateOperand) instr.Operands[iop];
-            return imm.Value.ToUInt32();
+            var imm = (Constant) instr.Operands[iop];
+            return imm.ToUInt32();
         }
 
         private uint ReadReg(AeonInstruction instr, int iop)

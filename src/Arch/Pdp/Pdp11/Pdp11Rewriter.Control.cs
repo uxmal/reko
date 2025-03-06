@@ -59,7 +59,7 @@ namespace Reko.Arch.Pdp.Pdp11
         private void RewriteEmt()
         {
             this.iclass = InstrClass.Transfer;
-            var imm = ((ImmediateOperand)instr.Operands[0]).Value.ToByte();
+            var imm = ((Constant)instr.Operands[0]).ToByte();
             var svc = m.Word16((ushort)(0x8800 | imm));
             m.SideEffect(m.Fn(CommonOps.Syscall_1, svc));
         }
@@ -129,7 +129,7 @@ namespace Reko.Arch.Pdp.Pdp11
             var r5 = binder.EnsureRegister(Registers.r5);
             m.Assign(sp, m.IAdd(pc,
                 Constant.Int16((short)(2 *
-                ((ImmediateOperand)instr.Operands[0]).Value.ToInt16()))));
+                ((Constant)instr.Operands[0]).ToInt16()))));
             m.Assign(tmp, r5);
             m.Assign(r5, m.Mem16(sp));
             m.Assign(sp, m.IAdd(sp, 2));
@@ -194,7 +194,7 @@ namespace Reko.Arch.Pdp.Pdp11
         private void RewriteTrap()
         {
             this.iclass = InstrClass.Transfer;
-            var imm = ((ImmediateOperand)instr.Operands[0]).Value.ToByte();
+            var imm = ((Constant)instr.Operands[0]).ToByte();
             var svc = m.Word16((ushort)(0x8900 | imm));
             m.SideEffect(m.Fn(CommonOps.Syscall_1, svc));
         }

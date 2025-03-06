@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Diagnostics;
 using Reko.Core.Emulation;
+using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Loading;
 using Reko.Core.Machine;
@@ -121,8 +122,8 @@ namespace Reko.Arch.PowerPC
             {
             case RegisterStorage r:
                 return ReadRegister(r);
-            case ImmediateOperand i:
-                return i.Value.ToUInt64();
+            case Constant i:
+                return i.ToUInt64();
             default:
                throw new NotImplementedException();
             }

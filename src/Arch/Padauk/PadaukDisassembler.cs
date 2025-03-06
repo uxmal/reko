@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
@@ -194,21 +195,21 @@ namespace Reko.Arch.Padauk
         private static bool i0_5(uint uInstr, PadaukDisassembler dasm)
         {
             var i = bf0_5.Read(uInstr);
-            dasm.ops.Add(ImmediateOperand.Int16((short) i));
+            dasm.ops.Add(Constant.Int16((short) i));
             return true;
         }
 
         private static bool i0_8(uint uInstr, PadaukDisassembler dasm)
         {
             var i = bf0_8.Read(uInstr);
-            dasm.ops.Add(ImmediateOperand.Byte((byte) i));
+            dasm.ops.Add(Constant.Byte((byte) i));
             return true;
         }
 
         private static bool i5_3(uint uInstr, PadaukDisassembler dasm)
         {
             var i = bf5_3.Read(uInstr);
-            dasm.ops.Add(ImmediateOperand.Int16((short)i));
+            dasm.ops.Add(Constant.Int16((short)i));
             return true;
         }
 
@@ -258,7 +259,7 @@ namespace Reko.Arch.Padauk
             return (u, d) =>
             {
                 var i = bf.Read(u);
-                d.ops.Add(ImmediateOperand.Word16((ushort) i));
+                d.ops.Add(Constant.Word16((ushort) i));
                 return true;
             };
         }

@@ -231,8 +231,8 @@ namespace Reko.Arch.SuperH
             case RegisterStorage regOp:
                 var id = binder.EnsureRegister(regOp);
                 return id;
-            case ImmediateOperand immOp:
-                return Constant.Word32(immediateFn!(immOp.Value.ToInt32()));
+            case Constant immOp:
+                return Constant.Word32(immediateFn!(immOp.ToInt32()));
 
             case Address addrOp:
                 return addrOp;

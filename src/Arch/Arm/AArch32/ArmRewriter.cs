@@ -756,8 +756,8 @@ namespace Reko.Arch.Arm.AArch32
                     var reg = Reg(rOp);
                     return MaybeShiftOperand(reg, iop);
                 }
-            case ImmediateOperand iOp:
-                return iOp.Value;
+            case Constant iOp:
+                return iOp;
             //case ARM_OP_CIMM:
             //    return m.Byte((uint8_t)op.imm);
             //case ARM_OP_PIMM:
@@ -906,7 +906,7 @@ namespace Reko.Arch.Arm.AArch32
             if (instr.ShiftValue is RegisterStorage reg)
                 sh = binder.EnsureRegister(reg);
             else
-                sh = ((ImmediateOperand) instr.ShiftValue!).Value;
+                sh = (Constant)instr.ShiftValue!;
 
             return MaybeShiftExpression(exp, sh, instr.ShiftType);
         }

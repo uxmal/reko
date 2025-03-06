@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
@@ -49,11 +50,11 @@ namespace Reko.Arch.CompactRisc
         {
             switch (operand)
             {
-            case ImmediateOperand imm:
-                if (imm.Width.Domain == Domain.SignedInt)
-                    renderer.WriteFormat("${0}", imm.Value.ToInt32());
+            case Constant imm:
+                if (imm.DataType.Domain == Domain.SignedInt)
+                    renderer.WriteFormat("${0}", imm.ToInt32());
                 else 
-                    renderer.WriteFormat("${0:X}", imm.Value.ToUInt32());
+                    renderer.WriteFormat("${0:X}", imm.ToUInt32());
                 return;
             case SequenceStorage seq:
                 renderer.WriteChar('(');

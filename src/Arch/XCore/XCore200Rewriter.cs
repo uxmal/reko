@@ -122,8 +122,8 @@ namespace Reko.Arch.XCore
             {
             case RegisterStorage rop:
                 return binder.EnsureRegister(rop);
-            case ImmediateOperand imm:
-                return imm.Value;
+            case Constant imm:
+                return imm;
             default:
                 throw new NotImplementedException($"'{op.GetType().Name} not implemented.");
             }

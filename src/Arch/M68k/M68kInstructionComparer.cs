@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using Reko.Arch.M68k.Machine;
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 
 namespace Reko.Arch.M68k
@@ -56,9 +57,9 @@ namespace Reko.Arch.M68k
             case RegisterStorage regA:
                 var regB = (RegisterStorage) opB;
                 return NormalizeRegisters || regA == regB;
-            case ImmediateOperand immA:
-                var immB = (ImmediateOperand) opB;
-                return CompareValues(immA.Value, immB.Value);
+            case Constant immA:
+                var immB = (Constant) opB;
+                return CompareValues(immA, immB);
             case PredecrementMemoryOperand preA:
                 var preB = (PredecrementMemoryOperand) opB;
                 return CompareRegisters(preA.Register, preB.Register);
@@ -117,11 +118,11 @@ namespace Reko.Arch.M68k
                     return 0;
                 else
                     return rop.GetHashCode();
-            case ImmediateOperand immop:
+            case Constant immop:
                 if (NormalizeConstants)
                     return 0;
                 else
-                    return immop.Value.GetHashCode();
+                    return immop.GetHashCode();
             case Address addrOp:
                 if (NormalizeConstants)
                     return 0;

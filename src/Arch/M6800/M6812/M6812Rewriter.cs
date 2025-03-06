@@ -283,8 +283,8 @@ namespace Reko.Arch.M6800.M6812
             {
             case RegisterStorage rop:
                 return binder.EnsureRegister(rop);
-            case ImmediateOperand immop:
-                return immop.Value;
+            case Constant immop:
+                return immop;
             case MemoryOperand memop:
                 return RewriteMemoryOperand(memop);
             }
@@ -519,12 +519,12 @@ namespace Reko.Arch.M6800.M6812
             Expression dst = RewriteOp(instr.Operands[0]);
             if (instr.Operands.Length == 2)
             {
-                var page = (ImmediateOperand) instr.Operands[1];
+                var page = (Constant) instr.Operands[1];
                 if (dst is MemoryAccess mem)
                 {
                     dst = mem.EffectiveAddress;
                 }
-                dst = m.Seq(page.Value, dst);
+                dst = m.Seq(page, dst);
             }
             m.Call(dst, 3);
         }

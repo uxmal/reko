@@ -472,10 +472,10 @@ namespace Reko.Arch.Arm.AArch64
 
         private Constant ReplicateSimdConstant(VectorRegisterOperand v, int cbitsElement, int iConstOp)
         {
-            var imm = ((ImmediateOperand) instr.Operands[iConstOp]).Value.ToUInt64();
+            var imm = ((Constant)instr.Operands[iConstOp]).ToUInt64();
             if (instr.ShiftAmount is not null)
             {
-                var amount = ((ImmediateOperand) instr.ShiftAmount).Value.ToInt32();
+                var amount = ((Constant)instr.ShiftAmount).ToInt32();
                 switch (instr.ShiftCode)
                 {
                 case Mnemonic.lsl:
@@ -510,8 +510,8 @@ namespace Reko.Arch.Arm.AArch64
                 if (maybe0 && regOp.Number == 31)
                     return Constant.Zero(regOp.DataType);
                 return binder.EnsureRegister(regOp);
-            case ImmediateOperand immOp:
-                return immOp.Value;
+            case Constant immOp:
+                return immOp;
             case Address addrOp:
                 return addrOp;
             case VectorRegisterOperand vectorOp:

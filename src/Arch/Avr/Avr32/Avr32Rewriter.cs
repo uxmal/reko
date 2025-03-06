@@ -299,8 +299,8 @@ namespace Reko.Arch.Avr.Avr32
                     return instr.Address;
                 else
                     return binder.EnsureRegister(reg);
-            case ImmediateOperand imm:
-                return imm.Value;
+            case Constant imm:
+                return imm;
             case Address addr:
                 return addr;
             case MemoryOperand mem:
@@ -436,7 +436,7 @@ namespace Reko.Arch.Avr.Avr32
 
         private void RewriteAndh()
         {
-            var mask = ((ImmediateOperand) instr.Operands[1]).Value.ToUInt32() << 16;
+            var mask = ((Constant)instr.Operands[1]).ToUInt32() << 16;
             if (instr.Operands.Length != 3)
             {
                 mask |= 0x0000FFFFu;
@@ -448,7 +448,7 @@ namespace Reko.Arch.Avr.Avr32
 
         private void RewriteAndl()
         {
-            var mask = ((ImmediateOperand) instr.Operands[1]).Value.ToUInt32();
+            var mask = ((Constant)instr.Operands[1]).ToUInt32();
             if (instr.Operands.Length != 3)
             {
                 mask |= 0xFFFF0000u;
@@ -460,8 +460,8 @@ namespace Reko.Arch.Avr.Avr32
 
         private void RewriteBfexts()
         {
-            var b = ((ImmediateOperand) instr.Operands[2]).Value.ToInt32();
-            var w = ((ImmediateOperand) instr.Operands[3]).Value.ToInt32();
+            var b = ((Constant) instr.Operands[2]).ToInt32();
+            var w = ((Constant) instr.Operands[3]).ToInt32();
             if (w == 0 || b + w > 32)
             {
                 iclass = InstrClass.Invalid;
@@ -478,8 +478,8 @@ namespace Reko.Arch.Avr.Avr32
 
         private void RewriteBfextu()
         {
-            var b = ((ImmediateOperand) instr.Operands[2]).Value.ToInt32();
-            var w = ((ImmediateOperand) instr.Operands[3]).Value.ToInt32();
+            var b = ((Constant)instr.Operands[2]).ToInt32();
+            var w = ((Constant)instr.Operands[3]).ToInt32();
             if (w == 0 || b + w > 32)
             {
                 iclass = InstrClass.Invalid;
@@ -496,8 +496,8 @@ namespace Reko.Arch.Avr.Avr32
 
         private void RewriteBfins()
         {
-            var b = ((ImmediateOperand) instr.Operands[2]).Value.ToInt32();
-            var w = ((ImmediateOperand) instr.Operands[3]).Value.ToInt32();
+            var b = ((Constant)instr.Operands[2]).ToInt32();
+            var w = ((Constant)instr.Operands[3]).ToInt32();
             if (w == 0 || b + w > 32)
             {
                 iclass = InstrClass.Invalid;
@@ -516,7 +516,7 @@ namespace Reko.Arch.Avr.Avr32
         private void RewriteBld()
         {
             var src = RewriteOp(0);
-            var bit = ((ImmediateOperand) instr.Operands[1]).Value.ToInt32();
+            var bit = ((Constant)instr.Operands[1]).ToInt32();
             src = m.Slice(src, PrimitiveType.Bool, bit);
             var tmp = binder.CreateTemporary(src.DataType);
             m.Assign(tmp, src);
@@ -570,7 +570,7 @@ namespace Reko.Arch.Avr.Avr32
         private void RewriteBst()
         {
             var reg = RewriteOp(0);
-            var bit = ((ImmediateOperand) instr.Operands[1]).Value;
+            var bit = (Constant) instr.Operands[1];
             var c = binder.EnsureFlagGroup(C);
             var src = m.Fn(setbit_intrinsic, reg, bit, c);
             RewriteOpDst(0, src);
@@ -594,7 +594,7 @@ namespace Reko.Arch.Avr.Avr32
 
         private void RewriteCbr()
         {
-            var bit = ((ImmediateOperand) instr.Operands[1]).Value;
+            var bit = (Constant) instr.Operands[1];
             var mask = Constant.UInt32(~(1U << bit.ToInt32()));
             RewriteOpDst(0, m.And(RewriteOp(0), mask));
             m.Assign(binder.EnsureFlagGroup(Z), Constant.False());
@@ -901,7 +901,7 @@ namespace Reko.Arch.Avr.Avr32
 
         private void RewriteMovh()
         {
-            var n = ((ImmediateOperand) instr.Operands[1]).Value.ToUInt32() << 16;
+            var n = ((Constant)instr.Operands[1]).ToUInt32() << 16;
             RewriteOpDst(0, m.Word32(n));
         }
 
@@ -974,7 +974,7 @@ namespace Reko.Arch.Avr.Avr32
 
         private void RewriteOrh(Func<Expression, Expression, Expression> fn)
         {
-            var mask = ((ImmediateOperand) instr.Operands[1]).Value.ToUInt32() << 16;
+            var mask = ((Constant)instr.Operands[1]).ToUInt32() << 16;
             var src = fn(RewriteOp(0), m.Word32(mask));
             var dst = RewriteOpDst(0, src);
             EmitCc(NZ, dst);
@@ -982,7 +982,7 @@ namespace Reko.Arch.Avr.Avr32
 
         private void RewriteOrl(Func<Expression, Expression, Expression> fn)
         {
-            var mask = ((ImmediateOperand) instr.Operands[1]).Value.ToUInt32();
+            var mask = ((Constant)instr.Operands[1]).ToUInt32();
             var src = fn(RewriteOp(0), m.Word32(mask));
             var dst = RewriteOpDst(0, src);
             EmitCc(NZ, dst);
@@ -1175,7 +1175,7 @@ namespace Reko.Arch.Avr.Avr32
 
         private void RewriteSbr()
         {
-            var bit = ((ImmediateOperand) instr.Operands[1]).Value;
+            var bit = (Constant)instr.Operands[1];
             var mask = Constant.UInt32(1U << bit.ToInt32());
             RewriteOpDst(0, m.Or(RewriteOp(0), mask));
             m.Assign(binder.EnsureFlagGroup(Z), Constant.False());

@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
@@ -116,7 +117,7 @@ namespace Reko.Arch.MCore
             return (u, d) =>
             {
                 var imm = immField.Read(u);
-                d.ops.Add(ImmediateOperand.Word32(imm));
+                d.ops.Add(Constant.Word32(imm));
                 return true;
             };
         }

@@ -105,10 +105,10 @@ namespace Reko.Arch.Msp430
                     {
                         instr.Mnemonic = Mnemonics.br;
                         instr.Operands[1] = null!;
-                        if (instr.Operands[0] is ImmediateOperand imm)
+                        if (instr.Operands[0] is Constant imm)
                         {
-                            var uAddr = imm.Value.ToUInt16();
-                            instr.Operands = new MachineOperand[] { Address.Ptr16(uAddr) };
+                            var uAddr = imm.ToUInt16();
+                            instr.Operands = [ Address.Ptr16(uAddr) ];
                         }
                     }
                     return instr;
@@ -254,7 +254,7 @@ namespace Reko.Arch.Msp430
             var aS = (uInstr >> 4) & 0x03;
             var iReg = uInstr & 0x0F;
             var op1 = dasm.SourceOperand(aS, iReg, true, dasm.dataWidth!);
-            if (op1 == null || op1 is ImmediateOperand || op1 is Address)
+            if (op1 == null || op1 is Constant || op1 is Address)
                 return false;
             dasm.ops.Add(op1);
             return true;
@@ -263,7 +263,7 @@ namespace Reko.Arch.Msp430
         private static bool n(uint uInstr, Msp430Disassembler dasm)
         {
             uint n = 1 + ((uInstr >> 4) & 0x0F);
-            var op1 = ImmediateOperand.Byte((byte) n);
+            var op1 = Constant.Byte((byte) n);
             dasm.ops.Add(op1);
             return true;
         }
@@ -271,7 +271,7 @@ namespace Reko.Arch.Msp430
         private static bool N(uint uInstr, Msp430Disassembler dasm)
         {
             var n = 1 + ((uInstr >> 10) & 3);
-            var op1 = ImmediateOperand.Byte((byte) n);
+            var op1 = Constant.Byte((byte) n);
             dasm.ops.Add(op1);
             return true;
         }
@@ -374,17 +374,17 @@ namespace Reko.Arch.Msp430
             case 0:
                 if (iReg == 3)
                 {
-                    return isDestination || dataWidth == null
+                    return isDestination || dataWidth is null
                         ? null
-                        : new ImmediateOperand(Constant.Create(dataWidth, 0));
+                        : Constant.Create(dataWidth, 0);
                 }
                 return reg;
             case 1:
                 if (iReg == 3)
                 {
-                    return isDestination || dataWidth == null
+                    return isDestination || dataWidth is null
                         ? null
-                        : new ImmediateOperand(Constant.Create(dataWidth, 1));
+                        : Constant.Create(dataWidth, 1);
                 }
                 return Indexed(reg, dataWidth);
             case 2:
@@ -392,13 +392,13 @@ namespace Reko.Arch.Msp430
                 {
                     return isDestination || dataWidth == null
                         ? null
-                        : new ImmediateOperand(Constant.Create(dataWidth, 4));
+                        : Constant.Create(dataWidth, 4);
                 }
                 if (iReg == 3)
                 {
                     return isDestination || dataWidth == null
                         ? null
-                        : new ImmediateOperand(Constant.Create(dataWidth, 2));
+                        : Constant.Create(dataWidth, 2);
                 }
                 return new MemoryOperand(dataWidth) { Base = reg };
             case 3:
@@ -406,13 +406,13 @@ namespace Reko.Arch.Msp430
                 {
                     return isDestination || dataWidth == null
                         ? null
-                        : new ImmediateOperand(Constant.Create(dataWidth, 8));
+                        : Constant.Create(dataWidth, 8);
                 }
                 else if (iReg == 3)
                 {
                     return isDestination || dataWidth == null
                         ? null
-                        : new ImmediateOperand(Constant.Create(dataWidth, -1));
+                        : Constant.Create(dataWidth, -1);
                 }
                 return PostInc(reg, dataWidth);
             default:
@@ -428,7 +428,7 @@ namespace Reko.Arch.Msp430
                     return null;
                 if (dataWidth is not null && dataWidth.IsPointer)
                     return Address.Ptr16((ushort)offset);
-                return ImmediateOperand.Word16((ushort) offset);
+                return Constant.Word16((ushort) offset);
             }
             else
             {

@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using System;
 
@@ -53,8 +54,8 @@ namespace Reko.Arch.Pdp.Pdp10
                     renderer.WriteString(reg.Name);
                 }
                 return;
-            case ImmediateOperand imm:
-                var value = (long) imm.Value.ToUInt64();
+            case Constant imm:
+                var value = (long) imm.ToUInt64();
                 var sImm = Convert.ToString(value, 8);
                 renderer.WriteString(sImm);
                 return;

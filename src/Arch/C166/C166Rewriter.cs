@@ -242,8 +242,8 @@ namespace Reko.Arch.C166
             {
             case RegisterStorage reg:
                 return binder.EnsureRegister(reg);
-            case ImmediateOperand imm:
-                return imm.Value;
+            case Constant imm:
+                return imm;
             case Address addr:
                 return addr;
             case MemoryOperand mem:
@@ -412,7 +412,7 @@ namespace Reko.Arch.C166
 
         private void RewriteJmps()
         {
-            var seg = ((ImmediateOperand) instr.Operands[0]).Value.ToUInt16();
+            var seg = ((Constant) instr.Operands[0]).ToUInt16();
             var off = ((Address) instr.Operands[1]).Offset;
             var addr = Address.SegPtr(seg, (uint) off);
             m.Goto(addr);

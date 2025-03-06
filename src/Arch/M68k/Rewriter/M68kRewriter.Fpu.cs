@@ -170,8 +170,8 @@ namespace Reko.Arch.M68k.Rewriter
 
         private void RewriteFmovecr()
         {
-            var opSrc = (ImmediateOperand)instr.Operands[0];
-            int n = opSrc.Value.ToInt32();
+            var opSrc = (Constant)instr.Operands[0];
+            int n = opSrc.ToInt32();
             Expression src;
             if (fpuRomConstants.TryGetValue(n, out double d))
             {
@@ -180,7 +180,7 @@ namespace Reko.Arch.M68k.Rewriter
             }
             else
             {
-                src = m.Fn(fmovecr_intrinic, opSrc.Value);
+                src = m.Fn(fmovecr_intrinic, opSrc);
             }
             var dst = orw.RewriteSrc(instr.Operands[1], instr.Address);
             m.Assign(dst, src);

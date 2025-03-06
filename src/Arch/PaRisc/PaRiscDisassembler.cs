@@ -161,7 +161,7 @@ namespace Reko.Arch.PaRisc
             {
                 var v = field.Read(u);
                 Decoder.DumpMaskedInstruction(32, u, field.Mask << field.Position, "Unsigned immediate");
-                d.ops.Add(new ImmediateOperand(Constant.Create(dt, v)));
+                d.ops.Add(Constant.Create(dt, v));
                 return true;
             };
         }
@@ -174,7 +174,7 @@ namespace Reko.Arch.PaRisc
             return (u, d) =>
             {
                 var n = mutator(u, fields);
-                d.ops.Add(new ImmediateOperand(Constant.Create(PrimitiveType.Word32, n)));
+                d.ops.Add(Constant.Create(PrimitiveType.Word32, n));
                 return true;
             };
         }
@@ -187,7 +187,7 @@ namespace Reko.Arch.PaRisc
             return (u, d) =>
             {
                 var v = 31 - field.Read(u);
-                d.ops.Add(new ImmediateOperand(Constant.Create(PrimitiveType.Byte, v)));
+                d.ops.Add(Constant.Create(PrimitiveType.Byte, v));
                 return true;
             };
         }
@@ -198,7 +198,7 @@ namespace Reko.Arch.PaRisc
             return (u, d) =>
             {
                 var v = 32 - field.Read(u);
-                d.ops.Add(new ImmediateOperand(Constant.Create(PrimitiveType.Byte, v)));
+                d.ops.Add(Constant.Create(PrimitiveType.Byte, v));
                 return true;
             };
         }
@@ -222,7 +222,7 @@ namespace Reko.Arch.PaRisc
             return (u, d) =>
             {
                 var v = field.ReadSigned(u);
-                d.ops.Add(new ImmediateOperand(Constant.Create(dt, v)));
+                d.ops.Add(Constant.Create(dt, v));
                 return true;
             };
         }
@@ -242,7 +242,7 @@ namespace Reko.Arch.PaRisc
             return (u, d) =>
             {
                 var v = Bitfield.ReadSignedFields(fields, u);
-                d.ops.Add(new ImmediateOperand(Constant.Create(d.dtSignedWord, v)));
+                d.ops.Add(Constant.Create(d.dtSignedWord, v));
                 return true;
             };
         }
@@ -255,7 +255,7 @@ namespace Reko.Arch.PaRisc
             return (u, d) =>
             {
                 var v = mutator(d.is64bit, u, fields);
-                d.ops.Add(new ImmediateOperand(Constant.Create(dt, v)));
+                d.ops.Add(Constant.Create(dt, v));
                 return true;
             };
         }
@@ -270,7 +270,7 @@ namespace Reko.Arch.PaRisc
             return (u, dasm) =>
             {
                 var pos = pField.Read(u);
-                var imm = ImmediateOperand.UInt32(pos);
+                var imm = Constant.UInt32(pos);
                 dasm.ops.Add(imm);
                 return true;
             };
@@ -286,7 +286,7 @@ namespace Reko.Arch.PaRisc
             {
                 var sh = Bitfield.ReadFields(fields, u);
                 sh = nBitsm1 - sh;
-                var imm = ImmediateOperand.UInt32(sh);
+                var imm = Constant.UInt32(sh);
                 d.ops.Add(imm);
                 return true;
             };

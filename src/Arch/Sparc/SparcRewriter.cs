@@ -344,8 +344,8 @@ namespace Reko.Arch.Sparc
                 else
                     return binder.EnsureRegister(reg);
             }
-            if (op is ImmediateOperand imm)
-                return imm.Value;
+            if (op is Constant imm)
+                return imm;
             throw new NotImplementedException(string.Format("Unsupported operand {0} ({1})", op, op.GetType().Name));
         }
 

@@ -20,6 +20,7 @@
 
 using Reko.Core.Expressions;
 using Reko.Core.Types;
+using System;
 using System.Globalization;
 
 namespace Reko.Core.Machine
@@ -149,85 +150,4 @@ namespace Reko.Core.Machine
 			return string.Format(format, "", c.ToUInt64().ToString(FormatString(c.DataType)));
 		}
 	}
-
-    /// <summary>
-    /// Represents an immediate constant value used by a MachineInstruction.
-    /// </summary>
-	public class ImmediateOperand : AbstractMachineOperand
-    {
-        public ImmediateOperand(Constant c) : base((PrimitiveType) c.DataType)
-        {
-            Value = c;
-        }
-
-        public Constant Value { get; }
-
-        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
-        {
-            var s = FormatValue(Value);
-            if (Value.DataType.Domain == Domain.Pointer)
-                renderer.WriteAddress(s, Address.FromConstant(Value));
-            else
-                renderer.WriteString(s);
-        }
-
-        public static ImmediateOperand Create(Constant value)
-        {
-            return new ImmediateOperand(value);
-        }
-
-        public static ImmediateOperand Byte(byte value)
-        {
-            return new ImmediateOperand(Constant.Byte(value));
-        }
-
-        public static ImmediateOperand SByte(sbyte value)
-        {
-            return new ImmediateOperand(Constant.SByte(value));
-        }
-
-        public static ImmediateOperand UInt16(ushort value)
-        {
-            return new ImmediateOperand(Constant.UInt16(value));
-        }
-
-        public static ImmediateOperand UInt32(uint value)
-        {
-            return new ImmediateOperand(Constant.UInt32(value));
-        }
-
-        public static ImmediateOperand Word32(int value)
-        {
-            return new ImmediateOperand(Constant.Word32(value));
-        }
-
-        public static ImmediateOperand Word32(uint value) { return Word32((int)value); }
-
-        public static ImmediateOperand Word64(ulong value) { return Word64((long) value); }
-
-        public static ImmediateOperand Word64(long value)
-        {
-            return new ImmediateOperand(Constant.Word64(value));
-        }
-
-        public static ImmediateOperand Word128(ulong value)
-        {
-            return new ImmediateOperand(new BigConstant(PrimitiveType.Word128, value));
-        }
-
-        public static ImmediateOperand Int32(int value)
-        {
-            return new ImmediateOperand(Constant.Int32(value));
-        }
-
-        public static ImmediateOperand Int16(short value)
-        {
-            return new ImmediateOperand(Constant.Int16(value));
-        }
-
-        public static AbstractMachineOperand Word16(ushort value)
-        {
-            return new ImmediateOperand(Constant.Word16(value));
-        }
-    }
 }

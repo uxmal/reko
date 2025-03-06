@@ -197,8 +197,7 @@ namespace Reko.Arch.MicroBlaze
         private Constant Imm(int iOp)
         {
             var op = instrCur.Operands[iOp];
-            var imm = ((ImmediateOperand) op).Value;
-            return imm;
+            return (Constant)op;
         }
 
         private Identifier Reg(int iOp)
@@ -313,7 +312,7 @@ namespace Reko.Arch.MicroBlaze
         {
             var dst = Reg(0);
             var reg = (RegisterStorage) instrCur.Operands[1];
-            var imm = ((ImmediateOperand) instrCur.Operands[2]).Value;
+            var imm = (Constant)instrCur.Operands[2];
             Expression src;
             if (reg == Registers.GpRegs[0])
             {
@@ -569,7 +568,7 @@ namespace Reko.Arch.MicroBlaze
         private void RewriteRsubi(bool setCy)
         {
             var dst = Reg(0);
-            var imm = ((ImmediateOperand) instrCur.Operands[2]).Value;
+            var imm = (Constant)instrCur.Operands[2];
             var reg = (RegisterStorage) instrCur.Operands[1];
             Expression src;
             if (reg == Registers.GpRegs[0])

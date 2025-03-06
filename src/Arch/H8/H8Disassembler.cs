@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
@@ -288,7 +289,7 @@ namespace Reko.Arch.H8
         private static bool I8(uint uInstr, H8Disassembler dasm)
         {
             var imm = (byte) uInstr;
-            dasm.ops.Add(ImmediateOperand.Byte(imm));
+            dasm.ops.Add(Constant.Byte(imm));
             return true;
         }
 
@@ -299,7 +300,7 @@ namespace Reko.Arch.H8
         {
             if (!dasm.rdr.TryReadBeUInt16(out var imm))
                 return false;
-            dasm.ops.Add(ImmediateOperand.Word16(imm));
+            dasm.ops.Add(Constant.Word16(imm));
             return true;
         }
 
@@ -307,7 +308,7 @@ namespace Reko.Arch.H8
         {
             return (u, d) =>
             {
-                d.ops.Add(ImmediateOperand.Word16((ushort)n));
+                d.ops.Add(Constant.Word16((ushort)n));
                 return true;
             };
         }
@@ -319,7 +320,7 @@ namespace Reko.Arch.H8
         {
             if (!dasm.rdr.TryReadBeUInt32(out var imm))
                 return false;
-            dasm.ops.Add(ImmediateOperand.Word32(imm));
+            dasm.ops.Add(Constant.Word32(imm));
             return true;
         }
 
@@ -327,7 +328,7 @@ namespace Reko.Arch.H8
         {
             return (u, d) =>
             {
-                d.ops.Add(ImmediateOperand.Word32(n));
+                d.ops.Add(Constant.Word32(n));
                 return true;
             };
         }
@@ -338,7 +339,7 @@ namespace Reko.Arch.H8
         private static bool Bit(uint uInstr, H8Disassembler dasm)
         {
             var imm = bfImm.Read(uInstr);
-            dasm.ops.Add(ImmediateOperand.Byte((byte)imm));
+            dasm.ops.Add(Constant.Byte((byte)imm));
             return true;
         }
         private static readonly Bitfield bfImm = new Bitfield(4, 3);
@@ -347,7 +348,7 @@ namespace Reko.Arch.H8
         private static bool TrapNo(uint uInstr, H8Disassembler dasm)
         {
             var imm = (byte)r4_2.Read(uInstr);
-            dasm.ops.Add(ImmediateOperand.Byte(imm));
+            dasm.ops.Add(Constant.Byte(imm));
             return true;
         }
 

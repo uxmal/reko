@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using System;
@@ -92,8 +93,8 @@ namespace Reko.Arch.Cray
                     .PadLeft(12, '0');
                 renderer.WriteAddress(sAddr, addr);
                 break;
-            case ImmediateOperand imm:
-                var sValue = Convert.ToString((int) imm.Value.ToUInt64(), 8)
+            case Constant imm:
+                var sValue = Convert.ToString((int) imm.ToUInt64(), 8)
                     .PadLeft(6, '0');
                 renderer.WriteString(sValue);
                 break;

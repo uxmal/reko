@@ -105,7 +105,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
         private void RewriteRetd()
         {
             iclass = InstrClass.Transfer;
-            m.Return(4, ((ImmediateOperand) instr.Operands[0]).Value.ToInt32());
+            m.Return(4, ((Constant) instr.Operands[0]).ToInt32());
         }
 
         private void RewriteReti()

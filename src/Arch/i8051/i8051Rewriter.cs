@@ -455,8 +455,8 @@ namespace Reko.Arch.i8051
                 return binder.EnsureRegister(reg);
             case FlagGroupStorage flg:
                 return binder.EnsureFlagGroup(flg);
-            case ImmediateOperand imm:
-                return imm.Value;
+            case Constant imm:
+                return imm;
             case Address addr:
                 return addr;
             case MemoryOperand mem:

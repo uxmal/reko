@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 
 namespace Reko.Arch.Sparc
@@ -52,8 +53,8 @@ namespace Reko.Arch.Sparc
             {
             case RegisterStorage rA:
                 return CompareRegisters(rA, (RegisterStorage) b);
-            case ImmediateOperand immA:
-                return CompareValues(immA.Value, ((ImmediateOperand) b).Value);
+            case Constant immA:
+                return CompareValues(immA, (Constant) b);
             case Address addrA:
                 return NormalizeConstants ||
                     addrA.ToLinear() == ((Address) b).ToLinear();
@@ -90,8 +91,8 @@ namespace Reko.Arch.Sparc
             {
             case RegisterStorage r:
                 return GetRegisterHash(r);
-            case ImmediateOperand i:
-                return GetConstantHash(i.Value);
+            case Constant i:
+                return GetConstantHash(i);
             case Address a:
                 return a.GetHashCode();
             case MemoryOperand m:

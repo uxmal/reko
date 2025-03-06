@@ -25,6 +25,7 @@ using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Types;
 using Reko.Core.Services;
+using Reko.Core.Expressions;
 
 #pragma warning disable IDE1006
 
@@ -122,28 +123,28 @@ namespace Reko.Arch.Avr.Avr8
         // I/O location
         private static bool A(uint wInstr, Avr8Disassembler dasm)
         {
-            dasm.ops.Add(ImmediateOperand.Byte((byte) (((wInstr >> 5) & 0x30) | (wInstr & 0xF))));
+            dasm.ops.Add(Constant.Byte((byte) (((wInstr >> 5) & 0x30) | (wInstr & 0xF))));
             return true;
         }
 
         // 8-bit immediate at bits 8..11 and 0..3
         private static bool B(uint wInstr, Avr8Disassembler dasm)
         {
-            dasm.ops.Add(ImmediateOperand.Byte((byte) (((wInstr >> 4) & 0xF0) | (wInstr & 0x0F))));
+            dasm.ops.Add(Constant.Byte((byte) (((wInstr >> 4) & 0xF0) | (wInstr & 0x0F))));
             return true;
         }
 
         // 4-bit field in sgis
         private static bool g(uint wInstr, Avr8Disassembler dasm)
         {
-            dasm.ops.Add(ImmediateOperand.Byte((byte) ((wInstr >> 3) & 0x0F)));
+            dasm.ops.Add(Constant.Byte((byte) ((wInstr >> 3) & 0x0F)));
             return true;
         }
 
         // 3-bit field in sgis, indicating bit number.
         private static bool h(uint wInstr, Avr8Disassembler dasm)
         {
-            dasm.ops.Add(ImmediateOperand.Byte((byte) (wInstr & 7)));
+            dasm.ops.Add(Constant.Byte((byte) (wInstr & 7)));
             return true;
         }
 
@@ -152,7 +153,7 @@ namespace Reko.Arch.Avr.Avr8
         /// </summary>
         private static bool I(uint wInstr, Avr8Disassembler dasm)
         {
-            dasm.ops.Add(ImmediateOperand.Byte((byte) (wInstr & 0x0F)));
+            dasm.ops.Add(Constant.Byte((byte) (wInstr & 0x0F)));
             return true;
         }
 
@@ -161,7 +162,7 @@ namespace Reko.Arch.Avr.Avr8
         /// </summary>
         private static bool i(uint wInstr, Avr8Disassembler dasm)
         {
-            dasm.ops.Add(ImmediateOperand.Byte((byte) ((wInstr >> 4) & 0x0F)));
+            dasm.ops.Add(Constant.Byte((byte) ((wInstr >> 4) & 0x0F)));
             return true;
         }
 
@@ -225,7 +226,7 @@ namespace Reko.Arch.Avr.Avr8
 
         private static bool K(uint wInstr, Avr8Disassembler dasm)
         {
-            dasm.ops.Add(ImmediateOperand.Byte((byte) (((wInstr >> 4) & 0xF0) | (wInstr & 0xF))));
+            dasm.ops.Add(Constant.Byte((byte) (((wInstr >> 4) & 0xF0) | (wInstr & 0xF))));
             return true;
         }
 
@@ -271,7 +272,7 @@ namespace Reko.Arch.Avr.Avr8
         // immediate used by adiw/sbiw
         private static bool s(uint wInstr, Avr8Disassembler dasm)
         {
-            dasm.ops.Add(ImmediateOperand.Byte((byte) (((wInstr >> 2) & 0x30) | (wInstr & 0xF))));
+            dasm.ops.Add(Constant.Byte((byte) (((wInstr >> 2) & 0x30) | (wInstr & 0xF))));
             return true;
         }
 

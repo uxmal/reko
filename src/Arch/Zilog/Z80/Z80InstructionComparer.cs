@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 
 namespace Reko.Arch.Zilog.Z80
@@ -54,11 +55,11 @@ namespace Reko.Arch.Zilog.Z80
                     return true;
                 var regOpB = (RegisterStorage) opB;
                 return regOpA == regOpB;
-            case ImmediateOperand immOpA:
+            case Constant immOpA:
                 if (NormalizeConstants)
                     return true;
-                var immOpB = (ImmediateOperand) opB;
-                return CompareValues(immOpA.Value, immOpB.Value);
+                var immOpB = (Constant) opB;
+                return CompareValues(immOpA, immOpB);
             case Address addrOpA:
                 if (NormalizeConstants)
                     return true;
@@ -98,12 +99,12 @@ namespace Reko.Arch.Zilog.Z80
                 else
                     return h * 29 ^ regOp.GetHashCode();
             }
-            if (op is ImmediateOperand immOp)
+            if (op is Constant immOp)
             {
                 if (NormalizeConstants)
                     return h;
                 else
-                    return h * 13 ^ GetConstantHash(immOp.Value);
+                    return h * 13 ^ GetConstantHash(immOp);
             }
             if (op is Address addrOp)
             {

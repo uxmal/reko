@@ -619,8 +619,8 @@ namespace Reko.Arch.PowerPC
 
         private Expression Shift16(MachineOperand machineOperand)
         {
-            var imm = (ImmediateOperand)machineOperand;
-            return Constant.Create(arch.WordWidth, imm.Value.ToInt32() << 16);
+            var imm = (Constant)machineOperand;
+            return Constant.Create(arch.WordWidth, imm.ToInt32() << 16);
         }
 
 
@@ -628,7 +628,7 @@ namespace Reko.Arch.PowerPC
 
         private Expression ImmOperand(MachineOperand op)
         {
-            return ((ImmediateOperand) op).Value;
+            return (Constant) op;
         }
 
         private void RewriteBinOp(IntrinsicProcedure intrinsic)
@@ -679,10 +679,10 @@ namespace Reko.Arch.PowerPC
                 {
                     return binder.EnsureRegister(rOp);
                 }
-            case ImmediateOperand iOp:
+            case Constant iOp:
                 // Extend the immediate value to word size. If this is not wanted,
                 // convert the operand manually or use RewriteSignedOperand
-                return Constant.Create(arch.WordWidth, iOp.Value.ToUInt64());
+                return Constant.Create(arch.WordWidth, iOp.ToUInt64());
             case AddressOperand aOp:
                 return aOp.Address;
             default:
@@ -705,10 +705,10 @@ namespace Reko.Arch.PowerPC
                 {
                     return binder.EnsureRegister(rOp);
                 }
-            case ImmediateOperand iOp:
+            case Constant iOp:
                 // Extend the immediate value to word size. If this is not wanted,
                 // convert the operand manually or use RewriteSignedOperand
-                return Constant.Word(arch.WordWidth.BitSize, iOp.Value.ToInt64());
+                return Constant.Word(arch.WordWidth.BitSize, iOp.ToInt64());
             case AddressOperand aOp:
                 return aOp.Address;
             default:

@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 
 namespace Reko.Arch.Mips
@@ -55,11 +56,11 @@ namespace Reko.Arch.Mips
                     return true;
                 var rB = (RegisterStorage)b;
                 return rA == rB;
-            case ImmediateOperand iA:
+            case Constant iA:
                 if (NormalizeConstants)
                     return true;
-                var iB = (ImmediateOperand)b;
-                return CompareValues(iA.Value, iB.Value);
+                var iB = (Constant)b;
+                return CompareValues(iA, iB);
             case Address aA:
                 if (NormalizeConstants)
                     return true;
@@ -98,11 +99,11 @@ namespace Reko.Arch.Mips
                     return 0;
                 else
                     return GetRegisterHash(r);
-            case ImmediateOperand i:
+            case Constant i:
                 if (NormalizeConstants)
                     return 0;
                 else
-                    return GetConstantHash(i.Value);
+                    return GetConstantHash(i);
             case Address a:
                 if (NormalizeConstants)
                     return 0;

@@ -29,6 +29,7 @@ using System;
 using System.IO;
 using System.Text;
 using NUnit.Framework;
+using Reko.Core.Expressions;
 
 namespace Reko.UnitTests.Arch.X86.Assembler
 {
@@ -120,8 +121,8 @@ namespace Reko.UnitTests.Arch.X86.Assembler
         {
             OperandParser opp = Create16BitParser("21Eh");
             ParsedOperand po = opp.ParseOperand();
-            ImmediateOperand mop = (ImmediateOperand) po.Operand;
-            Assert.AreEqual("021E", mop.ToString(MachineInstructionRendererOptions.Default));
+            Constant mop = (Constant) po.Operand;
+            Assert.AreEqual("021E", po.Operand.ToString(MachineInstructionRendererOptions.Default));
         }
 
         [Test]

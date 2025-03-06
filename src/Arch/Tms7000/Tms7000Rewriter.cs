@@ -164,8 +164,8 @@ namespace Reko.Arch.Tms7000
             {
             case RegisterStorage rop:
                 return binder.EnsureRegister(rop);
-            case ImmediateOperand imm:
-                return imm.Value;
+            case Constant imm:
+                return imm;
             case MemoryOperand mem:
                 Expression ea;
                 if (mem.Address != null)

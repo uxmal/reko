@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
@@ -140,7 +141,7 @@ namespace Reko.Arch.XCore
                 return false;
             dasm.ops.Add(Registers.GpRegs[iReg1]);
             dasm.ops.Add(Registers.GpRegs[iReg2]);
-            dasm.ops.Add(ImmediateOperand.Word32(imm3));
+            dasm.ops.Add(Constant.Word32(imm3));
             return true;
         }
 
@@ -172,7 +173,7 @@ namespace Reko.Arch.XCore
             imm3 = bitpos32[imm3];
             dasm.ops.Add(Registers.GpRegs[iReg1]);
             dasm.ops.Add(Registers.GpRegs[iReg2]);
-            dasm.ops.Add(ImmediateOperand.Word32(imm3));
+            dasm.ops.Add(Constant.Word32(imm3));
             return true;
         }
 
@@ -188,7 +189,7 @@ namespace Reko.Arch.XCore
             var iReg = (uInstr >> 6) & 0xF;
             var imm = (uInstr & 0x3F);
             dasm.ops.Add(Registers.GpRegs[iReg]);
-            dasm.ops.Add(ImmediateOperand.Word32(imm));
+            dasm.ops.Add(Constant.Word32(imm));
             return true;
         }
 
@@ -226,7 +227,7 @@ namespace Reko.Arch.XCore
         private static bool u6(uint uInstr, XCore200Disassembler dasm)
         {
             var u = uInstr & 0x3F;
-            dasm.ops.Add(ImmediateOperand.Word32(u));
+            dasm.ops.Add(Constant.Word32(u));
             return false;
         }
 
@@ -405,7 +406,7 @@ namespace Reko.Arch.XCore
                 return false;
             imm = bitpos32[imm];
             dasm.ops.Add(Registers.GpRegs[iReg]);
-            dasm.ops.Add(ImmediateOperand.Word32(imm));
+            dasm.ops.Add(Constant.Word32(imm));
             return true;
         }
 

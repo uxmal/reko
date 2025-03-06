@@ -128,7 +128,7 @@ namespace Reko.UnitTests.Arch.Vax
         [Test]
         public void VaxDis_literalOperand_f32()
         {
-            Assert.AreEqual("5.0", VaxDisassembler.LiteralOperand(PrimitiveType.Real32, 0x1A).ToString());
+            Assert.AreEqual("5.0", VaxDisassembler.LiteralOperand(PrimitiveType.Real32, 0x1A).ToString(new()));
         }
 
         [Test]

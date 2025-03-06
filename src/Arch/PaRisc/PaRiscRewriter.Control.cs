@@ -35,9 +35,9 @@ namespace Reko.Arch.PaRisc
         private void RewriteAddb()
         {
             var reg = RewriteOp(1);
-            if (instr.Operands[0] is ImmediateOperand imm)
+            if (instr.Operands[0] is Constant imm)
             {
-                m.Assign(reg, m.IAddS(reg, imm.Value.ToInt32()));
+                m.Assign(reg, m.IAddS(reg, imm.ToInt32()));
             }
             else
             {
@@ -51,9 +51,9 @@ namespace Reko.Arch.PaRisc
         {
             var reg = RewriteOp(0);
             Expression bitNumber;
-            if (instr.Operands[1] is ImmediateOperand imm)
+            if (instr.Operands[1] is Constant imm)
             {
-                bitNumber = Constant.Int32(imm.Value.ToInt32());
+                bitNumber = Constant.Int32(imm.ToInt32());
             }
             else
             {

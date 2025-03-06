@@ -452,8 +452,8 @@ namespace Reko.Arch.Pdp.Pdp10.Rewriter
 
         private Constant Imm(int i)
         {
-            var imm = (ImmediateOperand) instr.Operands[i];
-            return imm.Value;
+            var imm = (Constant) instr.Operands[i];
+            return imm;
         }
 
         private void Nop()

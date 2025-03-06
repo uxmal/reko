@@ -168,7 +168,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 dasm.dataWidth = size;
                 if (!dasm.rdr.TryReadLe(dasm.dataWidth, out var c))
                     return false;
-                dasm.ops.Add(new ImmediateOperand(c));
+                dasm.ops.Add(c);
                 return true;
             };
         }
@@ -181,7 +181,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
         /// <returns></returns>
         private static bool i(uint b, Tlcs90Disassembler dasm)
         {
-            dasm.ops.Add(ImmediateOperand.Byte((byte)(b & 0x7)));
+            dasm.ops.Add(Constant.Byte((byte)(b & 0x7)));
             return true;
         }
 

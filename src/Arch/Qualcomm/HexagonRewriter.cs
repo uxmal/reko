@@ -150,7 +150,7 @@ namespace Reko.Arch.Qualcomm
             switch (op)
             {
             case RegisterStorage reg: return UseReg(reg);
-            case ImmediateOperand imm: return imm.Value;
+            case Constant imm: return imm;
             case Address addr: return addr;
             case ApplicationOperand app: return RewriteApplication(app);
             case MemoryOperand mem: var src = RewriteMemoryOperand(mem); MaybeEmitIncrement(mem); return src;
@@ -560,7 +560,7 @@ namespace Reko.Arch.Qualcomm
             Assign(m.Mem32(ea), UseReg(Registers.fp));
             Assign(m.Mem32(m.IAddS(ea, 4)), UseReg(Registers.lr));
             AssignReg(Registers.fp, ea);
-            AssignReg(Registers.sp, m.ISubS(ea, ((ImmediateOperand) opImm).Value.ToInt32()));
+            AssignReg(Registers.sp, m.ISubS(ea, ((Constant) opImm).ToInt32()));
         }
 
         private void RewriteAssign(HexagonInstruction instr)
@@ -669,8 +669,8 @@ namespace Reko.Arch.Qualcomm
             }
             else
             {
-                var width = ((ImmediateOperand) operands[2]).Value.ToInt32();
-                var offset = ((ImmediateOperand) operands[1]).Value.ToInt32();
+                var width = ((Constant)operands[2]).ToInt32();
+                var offset = ((Constant)operands[1]).ToInt32();
                 var dtSlice = PrimitiveType.CreateBitSlice(width);
                 var slice = m.Slice(expression, dtSlice, offset);
                 return m.Convert(slice, dtSlice, dt);

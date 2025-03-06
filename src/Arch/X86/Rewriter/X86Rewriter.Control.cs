@@ -261,7 +261,7 @@ namespace Reko.Arch.X86.Rewriter
         public void RewriteRet()
         {
             int extraBytesPopped = instrCur.Operands.Length == 1 
-                ? ((ImmediateOperand)instrCur.Operands[0]).Value.ToInt32() 
+                ? ((Constant)instrCur.Operands[0]).ToInt32() 
                 : 0;
             if ((extraBytesPopped & 1) == 1)
             {
@@ -351,7 +351,7 @@ namespace Reko.Arch.X86.Rewriter
             return op switch
             {
                 Address addr => addr,
-                ImmediateOperand imm => orw.ImmediateAsAddress(instrCur.Address, imm),
+                Constant imm => orw.ImmediateAsAddress(instrCur.Address, imm),
                 _ => null
             };
         }

@@ -24,6 +24,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 
 namespace Reko.Arch.PowerPC
@@ -63,9 +64,9 @@ namespace Reko.Arch.PowerPC
             case RegisterStorage regA:
                 var regB = (RegisterStorage) opB;
                 return CompareRegisters(regA, regB);
-            case ImmediateOperand immA:
-                var immB = (ImmediateOperand) opB;
-                return CompareValues(immA.Value, immB.Value);
+            case Constant immA:
+                var immB = (Constant) opB;
+                return CompareValues(immA, immB);
             case AddressOperand addrA:
                 var addrB = (AddressOperand) opB;
                 return NormalizeConstants || addrA.Address == addrB.Address;
@@ -102,9 +103,9 @@ namespace Reko.Arch.PowerPC
                 if (!NormalizeRegisters)
                     h ^= GetRegisterHash(reg);
                 return h;
-            case ImmediateOperand imm:
+            case Constant imm:
                 if (!NormalizeConstants)
-                    h ^= base.GetConstantHash(imm.Value);
+                    h ^= base.GetConstantHash(imm);
                 return h;
             case AddressOperand addr:
                 if (!NormalizeConstants)

@@ -210,8 +210,8 @@ namespace Reko.Arch.PaRisc
                     return Constant.Zero(r.DataType);
                 else
                     return binder.EnsureRegister(r);
-            case ImmediateOperand i:
-                return i.Value;
+            case Constant i:
+                return i;
             case LeftImmediateOperand l:
                 return l.Value;
             case Address a:

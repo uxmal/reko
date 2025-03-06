@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
@@ -45,7 +46,7 @@ namespace Reko.Arch.Vax
         {
             switch (op)
             {
-            case ImmediateOperand _:
+            case Constant:
                 renderer.WriteChar('#');
                 op.Render(renderer, options);
                 return;

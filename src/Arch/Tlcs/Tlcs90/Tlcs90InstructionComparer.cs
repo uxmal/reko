@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 
 namespace Reko.Arch.Tlcs.Tlcs90
@@ -57,11 +58,11 @@ namespace Reko.Arch.Tlcs.Tlcs90
                     return true;
                 var regOpB = (RegisterStorage)opB;
                 return regOpA == regOpB;
-            case ImmediateOperand immOpA:
+            case Constant immOpA:
                 if (NormalizeConstants)
                     return true;
-                var immOpB = (ImmediateOperand)opB;
-                return CompareValues(immOpA.Value, immOpB.Value);
+                var immOpB = (Constant)opB;
+                return CompareValues(immOpA, immOpB);
             case Address addrOpA:
                 if (NormalizeConstants)
                     return true;
@@ -100,11 +101,11 @@ namespace Reko.Arch.Tlcs.Tlcs90
                     return h;
                 else
                     return h * 29 ^ regOp.GetHashCode();
-            case ImmediateOperand immOp:
+            case Constant immOp:
                 if (NormalizeConstants)
                     return h;
                 else
-                    return h * 13 ^ GetConstantHash(immOp.Value);
+                    return h * 13 ^ GetConstantHash(immOp);
             case Address addrOp:
                 if (NormalizeConstants)
                     return h;

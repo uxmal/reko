@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 
 namespace Reko.Arch.Tms7000
@@ -41,8 +42,8 @@ namespace Reko.Arch.Tms7000
         {
             switch (op)
             {
-            case ImmediateOperand imm:
-                renderer.WriteString(ImmediateOperand.FormatUnsignedValue(imm.Value, ">{1}"));
+            case Constant imm:
+                renderer.WriteString(AbstractMachineOperand.FormatUnsignedValue(imm, ">{1}"));
                 break;
             case Address addr:
                 renderer.WriteAddress("@" + addr, addr);

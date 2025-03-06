@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Serialization;
@@ -67,7 +68,7 @@ namespace Reko.Arch.Xtensa
         private void RewriteL32e()
         {
             var dst = RewriteOp(this.instr.Operands[0]);
-            var offset = ((ImmediateOperand)dasm.Current.Operands[2]).Value;
+            var offset = (Constant) dasm.Current.Operands[2];
             m.Assign(
                 dst,
                 m.Fn(
@@ -112,7 +113,7 @@ namespace Reko.Arch.Xtensa
         private void RewriteS32e()
         {
             var src = RewriteOp(this.instr.Operands[0]);
-            var offset = ((ImmediateOperand)dasm.Current.Operands[2]).Value;
+            var offset = (Constant)dasm.Current.Operands[2];
             m.SideEffect(
                 m.Fn(
                     s32e_intrinsic,

@@ -196,22 +196,22 @@ namespace Reko.Arch.X86.Assembler
 
         public void Rcl(ParsedOperand dst, byte c)
         {
-            ProcessShiftRotation(0x02, dst, new ParsedOperand(ImmediateOperand.Byte(c)));
+            ProcessShiftRotation(0x02, dst, new ParsedOperand(Constant.Byte(c)));
         }
 
         public void Rcr(ParsedOperand dst, byte c)
         {
-            ProcessShiftRotation(0x03, dst, new ParsedOperand(ImmediateOperand.Byte(c)));
+            ProcessShiftRotation(0x03, dst, new ParsedOperand(Constant.Byte(c)));
         }
 
         public void Rol(ParsedOperand dst, byte c)
         {
-            ProcessShiftRotation(0x00, dst, new ParsedOperand(ImmediateOperand.Byte(c)));
+            ProcessShiftRotation(0x00, dst, new ParsedOperand(Constant.Byte(c)));
         }
 
         public void Ror(ParsedOperand dst, byte c)
         {
-            ProcessShiftRotation(0x01, dst, new ParsedOperand(ImmediateOperand.Byte(c)));
+            ProcessShiftRotation(0x01, dst, new ParsedOperand(Constant.Byte(c)));
         }
 
         public void Sahf()
@@ -226,7 +226,7 @@ namespace Reko.Arch.X86.Assembler
 
         public void Sar(ParsedOperand dst, byte c)
         {
-            ProcessShiftRotation(0x07, dst, new ParsedOperand(ImmediateOperand.Byte(c)));
+            ProcessShiftRotation(0x07, dst, new ParsedOperand(Constant.Byte(c)));
         }
 
         public void Sar(ParsedOperand op1, ParsedOperand op2)
@@ -236,12 +236,12 @@ namespace Reko.Arch.X86.Assembler
 
         public void Shl(ParsedOperand dst, byte c)
         {
-            ProcessShiftRotation(0x04, dst, new ParsedOperand(ImmediateOperand.Byte(c)));
+            ProcessShiftRotation(0x04, dst, new ParsedOperand(Constant.Byte(c)));
         }
 
         public void Shr(ParsedOperand dst, byte c)
         {
-            ProcessShiftRotation(0x05, dst, new ParsedOperand(ImmediateOperand.Byte(c)));
+            ProcessShiftRotation(0x05, dst, new ParsedOperand(Constant.Byte(c)));
         }
 
         public void Shr(ParsedOperand dst, ParsedOperand sh)
@@ -256,7 +256,7 @@ namespace Reko.Arch.X86.Assembler
 
         public void Shrd(ParsedOperand op1, ParsedOperand op2, byte count)
         {
-            ProcessDoubleShift(8, op1, op2, new ParsedOperand(ImmediateOperand.Byte(count)));
+            ProcessDoubleShift(8, op1, op2, new ParsedOperand(Constant.Byte(count)));
         }
 
         public void Sub(ParsedOperand op, int constant)
@@ -406,19 +406,19 @@ namespace Reko.Arch.X86.Assembler
                 }
                 else
                 {
-                    if (ops[2].Operand is not ImmediateOperand op3)
+                    if (ops[2].Operand is not Constant op3)
                         throw new ApplicationException("Third operand must be an immediate value");
-                    if (IsSignedByte(op3.Value.ToInt32()))
+                    if (IsSignedByte(op3.ToInt32()))
                     {
                         EmitOpcode(0x6B, dataWidth);
                         EmitModRM(RegisterEncoding(regOp), ops[1]);
-                        emitter.EmitByte(op3.Value.ToInt32());
+                        emitter.EmitByte(op3.ToInt32());
                     }
                     else
                     {
                         EmitOpcode(0x69, dataWidth);
                         EmitModRM(RegisterEncoding(regOp), ops[1]);
-                        emitter.EmitLeImmediate(op3.Value, dataWidth);
+                        emitter.EmitLeImmediate(op3, dataWidth);
                     }
                 }
             }
@@ -486,16 +486,16 @@ namespace Reko.Arch.X86.Assembler
                 return;
             }
 
-            if (opPort.Operand is ImmediateOperand immOp)
+            if (opPort.Operand is Constant immOp)
             {
-                if (immOp.Value.ToUInt32() > 0xFF)
+                if (immOp.ToUInt32() > 0xFF)
                 {
                     throw new ApplicationException("port number must be between 0 and 255");
                 }
                 else
                 {
                     emitter.EmitByte(opcode);
-                    emitter.EmitByte(immOp.Value.ToInt32());
+                    emitter.EmitByte(immOp.ToInt32());
                 }
             }
             else
@@ -506,9 +506,9 @@ namespace Reko.Arch.X86.Assembler
 
         internal void ProcessInt(ParsedOperand vector)
         {
-            ImmediateOperand op = (ImmediateOperand) vector.Operand;
+            Constant op = (Constant) vector.Operand;
             EmitOpcode(0xCD, null);
-            emitter.EmitByte(op.Value.ToInt32());
+            emitter.EmitByte(op.ToInt32());
         }
 
 
@@ -600,17 +600,17 @@ namespace Reko.Arch.X86.Assembler
                     return;
                 }
 
-                if (ops[1].Operand is ImmediateOperand immOpSrc)
+                if (ops[1].Operand is Constant immOpSrc)
                 {
                     EmitOpcode(0xB0 | (isWord << 3) | reg, dataWidth);
                     if (isWord != 0)
-                        emitter.EmitLe(dataWidth, immOpSrc.Value.ToInt32());
+                        emitter.EmitLe(dataWidth, immOpSrc.ToInt32());
                     else
-                        emitter.EmitByte(immOpSrc.Value.ToInt32());
+                        emitter.EmitByte(immOpSrc.ToInt32());
 
                     if (ops[1].Symbol != null && isWord != 0)
                     {
-                        ReferToSymbol(ops[1].Symbol!, emitter.Position - (int) immOpSrc.Width.Size, immOpSrc.Width);
+                        ReferToSymbol(ops[1].Symbol!, emitter.Position - (int) immOpSrc.DataType.Size, immOpSrc.DataType);
                     }
                     return;
                 }
@@ -633,11 +633,11 @@ namespace Reko.Arch.X86.Assembler
             }
             else
             {
-                ImmediateOperand immOpSrc = (ImmediateOperand) ops[1].Operand;
+                var immOpSrc = (Constant) ops[1].Operand;
                 int isWord = (dataWidth != PrimitiveType.Byte) ? 1 : 0;
                 EmitOpcode(0xC6 | IsWordWidth(dataWidth), dataWidth);
                 EmitModRM(0, memOpDst, ops[0].Symbol);
-                emitter.EmitLeImmediate(immOpSrc.Value, dataWidth);
+                emitter.EmitLeImmediate(immOpSrc, dataWidth);
             }
         }
 
@@ -674,7 +674,7 @@ namespace Reko.Arch.X86.Assembler
                 return;
 
             // Single operand doesn't accept immediate values.
-            if (op.Operand is ImmediateOperand)
+            if (op.Operand is Constant)
                 Error("Immediate operand not allowed for single-argument multiplication");
 
             EmitOpcode(0xF6 | IsWordWidth(dataWidth), dataWidth);
@@ -684,11 +684,11 @@ namespace Reko.Arch.X86.Assembler
         internal void ProcessPushPop(bool fPop, ParsedOperand op)
         {
             int imm;
-            if (op.Operand is ImmediateOperand immOp)
+            if (op.Operand is Constant immOp)
             {
                 if (fPop)
                     throw new ApplicationException("Can't pop an immediate value");
-                imm = immOp.Value.ToInt32();
+                imm = immOp.ToInt32();
                 if (IsSignedByte(imm))
                 {
                     EmitOpcode(0x6A, PrimitiveType.Byte);
@@ -754,9 +754,9 @@ namespace Reko.Arch.X86.Assembler
             DataType? dataWidth = EnsureValidOperandSize(dst);
             if (dataWidth is null)
                 return;
-            if (count.Operand is ImmediateOperand immOp)
+            if (count.Operand is Constant immOp)
             {
-                int imm = immOp.Value.ToInt32();
+                int imm = immOp.ToInt32();
                 if (imm == 1)
                 {
                     EmitOpcode(0xD0 | IsWordWidth(dataWidth), dataWidth);
@@ -765,7 +765,7 @@ namespace Reko.Arch.X86.Assembler
                 else
                 {
                     EmitOpcode(0xC0 | IsWordWidth(dataWidth), dataWidth);
-                    EmitModRM(subOpcode, dst, (byte) immOp.Value.ToInt32());
+                    EmitModRM(subOpcode, dst, (byte) immOp.ToInt32());
                 }
                 return;
             }
@@ -818,19 +818,19 @@ namespace Reko.Arch.X86.Assembler
                     EmitModRM(reg, ops[1]);
                     return;
                 }
-                else if (ops[1].Operand is ImmediateOperand immOpSrc)
+                else if (ops[1].Operand is Constant immOpSrc)
                 {
                     EmitOpcode(0xF6 | (isWord & 1), dataWidth);
                     EmitModRM(0, ops[0]);
                     if (isWord != 0)
-                        emitter.EmitLe(dataWidth, immOpSrc.Value.ToInt32());
+                        emitter.EmitLe(dataWidth, immOpSrc.ToInt32());
                     else
-                        emitter.EmitByte(immOpSrc.Value.ToInt32());
+                        emitter.EmitByte(immOpSrc.ToInt32());
 
                     var sym = ops[1].Symbol;
                     if (sym != null && isWord != 0)
                     {
-                        Debug.Assert(immOpSrc.Value.ToUInt32() == 0);
+                        Debug.Assert(immOpSrc.ToUInt32() == 0);
                         ReferToSymbol(sym, emitter.Position - 2, PrimitiveType.Word16);
                     }
                     return;
@@ -838,13 +838,13 @@ namespace Reko.Arch.X86.Assembler
                 throw new ApplicationException("unexpected");
             }
 
-            ImmediateOperand immOp = (ImmediateOperand) ops[1].Operand;
+            var immOp = (Constant) ops[1].Operand;
             EmitOpcode(0xF6 | (isWord & 1), dataWidth);
             EmitModRM(0, ops[0]);
             if (isWord != 0)
-                emitter.EmitLeImmediate(immOp.Value, dataWidth);
+                emitter.EmitLeImmediate(immOp, dataWidth);
             else
-                emitter.EmitByte(immOp.Value.ToInt32());
+                emitter.EmitByte(immOp.ToInt32());
 
             if (ops[1].Symbol != null && isWord != 0)
             {
@@ -1422,7 +1422,7 @@ namespace Reko.Arch.X86.Assembler
 
         public void Adc(ParsedOperand op, int constant)
         {
-            Adc(op, new ParsedOperand(new ImmediateOperand(X86Assembler.IntegralConstant(constant))));
+            Adc(op, new ParsedOperand(X86Assembler.IntegralConstant(constant)));
         }
 
         public void Adc(ParsedOperand op1, ParsedOperand op2)
@@ -1435,7 +1435,7 @@ namespace Reko.Arch.X86.Assembler
             ProcessBinop(
                 0x00,
                 new ParsedOperand(reg),
-                new ParsedOperand(new ImmediateOperand(X86Assembler.IntegralConstant(constant))));
+                new ParsedOperand(X86Assembler.IntegralConstant(constant)));
         }
 
         public void Add(ParsedOperand op, int constant)
@@ -1443,7 +1443,7 @@ namespace Reko.Arch.X86.Assembler
             ProcessBinop(
                 0x00,
                 op,
-                new ParsedOperand(new ImmediateOperand(X86Assembler.IntegralConstant(constant))));
+                new ParsedOperand(X86Assembler.IntegralConstant(constant)));
         }
 
 
@@ -1464,12 +1464,12 @@ namespace Reko.Arch.X86.Assembler
 
         public ParsedOperand Imm(DataType width, int constant)
         {
-            return new ParsedOperand(new ImmediateOperand(X86Assembler.IntegralConstant(constant, width)));
+            return new ParsedOperand(X86Assembler.IntegralConstant(constant, width));
         }
 
         public ParsedOperand Imm(int constant)
         {
-            return new ParsedOperand(new ImmediateOperand(X86Assembler.IntegralConstant(constant)));
+            return new ParsedOperand(X86Assembler.IntegralConstant(constant));
         }
 
         public ParsedOperand WordPtr(int directOffset)
@@ -1687,13 +1687,13 @@ namespace Reko.Arch.X86.Assembler
             DataType? dataWidth = EnsureValidOperandSizes(ops, 2);
             if (dataWidth is null)
                 return;
-            if (ops[1].Operand is ImmediateOperand immOp)
+            if (ops[1].Operand is Constant immOp)
             {
-                int imm = immOp.Value.ToInt32();
+                int imm = immOp.ToInt32();
                 if (ops[0].Operand is RegisterStorage regOpDst && IsAccumulator(regOpDst) != 0)
                 {
                     EmitOpcode((binop << 3) | 0x04 | IsWordWidth(ops[0].Operand), dataWidth);
-                    emitter.EmitLeImmediate(immOp.Value, dataWidth);
+                    emitter.EmitLeImmediate(immOp, dataWidth);
                     return;
                 }
 
@@ -1719,7 +1719,7 @@ namespace Reko.Arch.X86.Assembler
                     {
                         EmitOpcode(0x81, dataWidth);
                         EmitModRM(binop, ops[0]);
-                        emitter.EmitLeImmediate(immOp.Value, dataWidth);
+                        emitter.EmitLeImmediate(immOp, dataWidth);
                     }
                     break;
                 }
@@ -1746,12 +1746,12 @@ namespace Reko.Arch.X86.Assembler
             if (dataWidth is null)
                 return;
 
-            if (ops[1].Operand is ImmediateOperand imm2)
+            if (ops[1].Operand is Constant imm2)
             {
                 EmitOpcode(0x0F, dataWidth);
                 emitter.EmitByte(0xBA);
                 EmitModRM(0x04, ops[0]);
-                emitter.EmitByte(imm2.Value.ToInt32());
+                emitter.EmitByte(imm2.ToInt32());
             }
             else
             {
@@ -1824,7 +1824,7 @@ namespace Reko.Arch.X86.Assembler
                 return;
             }
 
-            ImmediateOperand? immShift = count.Operand as ImmediateOperand;
+            Constant? immShift = count.Operand as Constant;
             if (count.Operand is RegisterStorage regShift && regShift == Registers.cl)
             {
                 bits |= 0x01;
@@ -1838,7 +1838,7 @@ namespace Reko.Arch.X86.Assembler
             emitter.EmitByte(0xA4 | bits);
             EmitModRM(RegisterEncoding(regSrc), op0);
             if (immShift != null)
-                emitter.EmitByte((byte) immShift.Value.ToUInt32());
+                emitter.EmitByte((byte) immShift.ToUInt32());
         }
 
         public void AddImport(string? moduleName, string fnName,  PrimitiveType size)
@@ -2254,7 +2254,7 @@ namespace Reko.Arch.X86.Assembler
 
         public ParsedOperand Const(int n)
         {
-            return new ParsedOperand(new ImmediateOperand(IntegralConstant(n, this.defaultWordSize)));
+            return new ParsedOperand(IntegralConstant(n, this.defaultWordSize));
         }
 
         public ParsedOperand MemW(RegisterStorage seg, RegisterStorage @base, int offset)

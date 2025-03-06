@@ -529,7 +529,7 @@ namespace Reko.Arch.Qualcomm
             {
                 var uValue = Bitfield.ReadFields(fields, u);
                 uValue = d.ExtendConstant(uValue);
-                var op = new ImmediateOperand(Constant.Create(width, uValue));
+                var op = Constant.Create(width, uValue);
                 d.ops.Add(op);
                 return true;
             };
@@ -571,7 +571,7 @@ namespace Reko.Arch.Qualcomm
             {
                 var uValue = Bitfield.ReadFields(fields, u) << shift;
                 uValue = d.ExtendConstant(uValue);
-                var op = new ImmediateOperand(Constant.Create(width, uValue));
+                var op = Constant.Create(width, uValue);
                 d.ops.Add(op);
                 return true;
             };
@@ -589,7 +589,7 @@ namespace Reko.Arch.Qualcomm
             {
                 var uValue = (uint) Bitfield.ReadSignedFields(fields, u);
                 uValue = d.ExtendConstant(uValue);
-                var op = new ImmediateOperand(Constant.Create(width, uValue));
+                var op = Constant.Create(width, uValue);
                 d.ops.Add(op);
                 return true;
             };
@@ -619,7 +619,7 @@ namespace Reko.Arch.Qualcomm
         {
             return (u, d) =>
             {
-                d.ops.Add(new ImmediateOperand(c));
+                d.ops.Add(c);
                 return true;
             };
         }
@@ -1361,7 +1361,7 @@ namespace Reko.Arch.Qualcomm
                     new ApplicationOperand(
                         PrimitiveType.Word32,
                         Mnemonic.immext,
-                        ImmediateOperand.Word32(dasm.extendedConstant.Value)))
+                        Constant.Word32(dasm.extendedConstant.Value)))
                 {
                     InstructionClass = InstrClass.Linear
                 });

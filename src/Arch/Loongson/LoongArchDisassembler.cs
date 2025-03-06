@@ -140,7 +140,7 @@ namespace Reko.Arch.Loongson
             var field = new Bitfield(bitpos, bitLength);
             return (u, d) =>
             {
-                var imm = ImmediateOperand.Int32(field.ReadSigned(u));
+                var imm = Constant.Int32(field.ReadSigned(u));
                 d.ops.Add(imm);
                 return true;
             };
@@ -154,7 +154,7 @@ namespace Reko.Arch.Loongson
             var field = new Bitfield(bitpos, bitLength);
             return (u, d) =>
             {
-                var imm = ImmediateOperand.UInt32(field.Read(u));
+                var imm = Constant.UInt32(field.Read(u));
                 d.ops.Add(imm);
                 return true;
             };
@@ -174,14 +174,14 @@ namespace Reko.Arch.Loongson
 
         private static bool sa2(uint uInstr, LoongArchDisassembler dasm)
         {
-            var imm = ImmediateOperand.Int32((int) ((uInstr >> 15) & 3));
+            var imm = Constant.Int32((int) ((uInstr >> 15) & 3));
             dasm.ops.Add(imm);
             return true;
         }
 
         private static bool sa3(uint uInstr, LoongArchDisassembler dasm)
         {
-            var imm = ImmediateOperand.Int32((int) ((uInstr >> 15) & 7));
+            var imm = Constant.Int32((int) ((uInstr >> 15) & 7));
             dasm.ops.Add(imm);
             return true;
         }
@@ -206,7 +206,7 @@ namespace Reko.Arch.Loongson
             return (u, d) =>
             {
                 long displacement = bitfield.ReadSigned(u) * 4;
-                d.ops.Add(new ImmediateOperand(Constant.Create(d.arch.SignedWord, displacement)));
+                d.ops.Add(Constant.Create(d.arch.SignedWord, displacement));
                 return true;
             };
         }

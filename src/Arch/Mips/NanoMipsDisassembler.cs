@@ -204,7 +204,7 @@ namespace Reko.Arch.Mips
             return (u, d) =>
             {
                 var uVal = field.ReadSigned(u);
-                d.ops.Add(new ImmediateOperand(Constant.Create(d.arch.WordWidth, uVal)));
+                d.ops.Add(Constant.Create(d.arch.WordWidth, uVal));
                 return true;
             };
         }
@@ -216,7 +216,7 @@ namespace Reko.Arch.Mips
             return (u, d) =>
             {
                 var uVal = field.Read(u);
-                d.ops.Add(new ImmediateOperand(Constant.Create(d.arch.WordWidth, uVal)));
+                d.ops.Add(Constant.Create(d.arch.WordWidth, uVal));
                 return true;
             };
         }
@@ -226,7 +226,7 @@ namespace Reko.Arch.Mips
             return (u, d) =>
             {
                 var uVal = Bitfield.ReadFields(fields, u);
-                d.ops.Add(new ImmediateOperand(Constant.Create(d.arch.WordWidth, uVal)));
+                d.ops.Add(Constant.Create(d.arch.WordWidth, uVal));
                 return true;
             };
         }
@@ -237,7 +237,7 @@ namespace Reko.Arch.Mips
             return (u, d) =>
             {
                 var uVal = Bitfield.ReadFields(fields, (uint)u);
-                d.ops.Add(new ImmediateOperand(Constant.Create(d.arch.WordWidth, uVal)));
+                d.ops.Add(Constant.Create(d.arch.WordWidth, uVal));
                 return true;
             };
         }
@@ -249,7 +249,7 @@ namespace Reko.Arch.Mips
             return (u, d) =>
             {
                 var uVal = 0u - field.Read(u);
-                d.ops.Add(new ImmediateOperand(Constant.Create(d.arch.WordWidth, uVal)));
+                d.ops.Add(Constant.Create(d.arch.WordWidth, uVal));
                 return true;
             };
         }
@@ -261,7 +261,7 @@ namespace Reko.Arch.Mips
             return (u, d) =>
             {
                 var uVal = field.Read(u) + 1;
-                d.ops.Add(new ImmediateOperand(Constant.Create(d.arch.WordWidth, uVal)));
+                d.ops.Add(Constant.Create(d.arch.WordWidth, uVal));
                 return true;
             };
         }
@@ -274,7 +274,7 @@ namespace Reko.Arch.Mips
                 var lsb = lsbField.Read(u);
                 var msbd = lsbField.Read(u);
                 var size = 1 + msbd - lsb;
-                d.ops.Add(new ImmediateOperand(Constant.Create(d.arch.WordWidth, size)));
+                d.ops.Add(Constant.Create(d.arch.WordWidth, size));
                 return true;
             };
         }
@@ -287,7 +287,7 @@ namespace Reko.Arch.Mips
             {
                 var uVal = field.Read(u);
                 uVal <<= shift;
-                d.ops.Add(new ImmediateOperand(Constant.Create(d.arch.WordWidth, uVal)));
+                d.ops.Add(Constant.Create(d.arch.WordWidth, uVal));
                 return true;
             };
         }
@@ -301,7 +301,7 @@ namespace Reko.Arch.Mips
                 var uVal = encField.Read(u);
                 if (uVal == 0x7F)
                     uVal = ~0u;
-                d.ops.Add(new ImmediateOperand(Constant.Create(d.arch.WordWidth, uVal)));
+                d.ops.Add(Constant.Create(d.arch.WordWidth, uVal));
                 return true;
             };
         }
@@ -317,7 +317,7 @@ namespace Reko.Arch.Mips
                     uVal = 0x00FF;
                 else if (uVal == 13)
                     uVal = 0xFFFF;
-                d.ops.Add(new ImmediateOperand(Constant.Create(d.arch.WordWidth, uVal)));
+                d.ops.Add(Constant.Create(d.arch.WordWidth, uVal));
                 return true;
             };
         }
@@ -328,7 +328,7 @@ namespace Reko.Arch.Mips
             return (u, d) =>
             {
                 var sVal = Bitfield.ReadSignedFields(fields, u) << lshift;
-                d.ops.Add(new ImmediateOperand(Constant.Create(d.arch.WordWidth, sVal)));
+                d.ops.Add(Constant.Create(d.arch.WordWidth, sVal));
                 return true;
             };
         }
@@ -338,7 +338,7 @@ namespace Reko.Arch.Mips
             return (u, d) =>
             {
                 var uVal = Bitfield.ReadSignedFields(fields, (uint) u);
-                d.ops.Add(new ImmediateOperand(Constant.Create(d.arch.WordWidth, uVal)));
+                d.ops.Add(Constant.Create(d.arch.WordWidth, uVal));
                 return true;
             };
         }
@@ -352,7 +352,7 @@ namespace Reko.Arch.Mips
             {
                 var encodedVal = field.Read(u);
                 var val = encoding[encodedVal]; 
-                d.ops.Add(new ImmediateOperand(Constant.Create(d.arch.WordWidth, val)));
+                d.ops.Add(Constant.Create(d.arch.WordWidth, val));
                 return true;
             };
         }
@@ -373,7 +373,7 @@ namespace Reko.Arch.Mips
                 var nOffset = offsetField.Read(u) * dt.Size;
                 d.ops.Add(new IndirectOperand(
                     dt,
-                    ImmediateOperand.Int32((int) nOffset),
+                    Constant.Int32((int) nOffset),
                     baseReg));
                 return true;
             };
@@ -394,7 +394,7 @@ namespace Reko.Arch.Mips
                 offset *= dt.Size;
                 d.ops.Add(new IndirectOperand(
                     dt,
-                    ImmediateOperand.Int32(offset),
+                    Constant.Int32(offset),
                     d.arch.StackRegister));
                 return true;
             };
@@ -411,7 +411,7 @@ namespace Reko.Arch.Mips
                 offset *= dt.Size;
                 d.ops.Add(new IndirectOperand(
                     dt,
-                    ImmediateOperand.Int32(offset),
+                    Constant.Int32(offset),
                     d.gp));
                 return true;
             };
@@ -433,7 +433,7 @@ namespace Reko.Arch.Mips
                 offset *= dt.Size;
                 d.ops.Add(new IndirectOperand(
                     dt,
-                    ImmediateOperand.Int32(offset),
+                    Constant.Int32(offset),
                     d.gp));
                 return true;
             };
@@ -452,7 +452,7 @@ namespace Reko.Arch.Mips
                 var rBase = d.arch.GetRegister(iBase)!;
                 d.ops.Add(new IndirectOperand(
                     dt,
-                    ImmediateOperand.Int32(off),
+                    Constant.Int32(off),
                     rBase));
                 return true;
             };
@@ -469,7 +469,7 @@ namespace Reko.Arch.Mips
                 var rBase = d.arch.GetRegister(iBase)!;
                 d.ops.Add(new IndirectOperand(
                     dt,
-                    ImmediateOperand.Int32(off),
+                    Constant.Int32(off),
                     rBase));
                 return true;
             };
@@ -570,7 +570,7 @@ namespace Reko.Arch.Mips
                 var s = (uint) Bitfield.ReadSignedFields(aluipcFields, u) << 12;
                 var uAddr = d.rdr.Address.ToUInt32() + (ulong)s;
                 uAddr >>= 12;
-                d.ops.Add(new ImmediateOperand(Constant.Create(d.arch.WordWidth, uAddr)));
+                d.ops.Add(Constant.Create(d.arch.WordWidth, uAddr));
                 return true;
             };
         }
@@ -594,7 +594,7 @@ namespace Reko.Arch.Mips
                 d.ops.Add(rt);
                 d.ops.Add(new IndirectOperand(
                     PrimitiveType.Word32,
-                    ImmediateOperand.Int32(offset),
+                    Constant.Int32(offset),
                     rs));
                 return true;
             };

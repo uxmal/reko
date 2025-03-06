@@ -61,7 +61,7 @@ namespace Reko.Arch.X86.Rewriter
         private void RewriteCmpsd(bool isVex, PrimitiveType size)
         {
             var fourOps = instrCur.Operands.Length == 4;
-            var opc = ((ImmediateOperand) instrCur.Operands[fourOps ? 3 : 2]).Value.ToUInt32();
+            var opc = ((Constant)instrCur.Operands[fourOps ? 3 : 2]).ToUInt32();
             Func<Expression,Expression,Expression> cmp;
             switch (opc)
             {
@@ -339,7 +339,7 @@ namespace Reko.Arch.X86.Rewriter
         private void RewritePextr(PrimitiveType dt)
         {
             var src1 = SrcOp(1);
-            var byteno = ((ImmediateOperand) instrCur.Operands[2]).Value.ToInt32() % src1.DataType.Size;
+            var byteno = ((Constant) instrCur.Operands[2]).ToInt32() % src1.DataType.Size;
             EmitCopy(0, m.Slice(src1, dt, byteno * 8));
         }
 
@@ -662,7 +662,7 @@ namespace Reko.Arch.X86.Rewriter
         {
             bool has3Ops = instrCur.Operands.Length == 3;
             var src = SrcOp(has3Ops ? 1 : 0);
-            var shift =(int) ((ImmediateOperand) instrCur.Operands[has3Ops ? 2 : 1]).Value.ToUInt32();
+            var shift =(int) ((Constant)instrCur.Operands[has3Ops ? 2 : 1]).ToUInt32();
             var dtArray = this.CreatePackedArrayType(src.DataType, PrimitiveType.Word128);
             var tmp = m.Fn(psrldq_intrinsic.MakeInstance(dtArray), src, Constant.Int32(shift * 8));
             var dst = SrcOp(0);

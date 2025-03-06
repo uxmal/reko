@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System.Text;
@@ -68,11 +69,11 @@ public class M16CInstruction : MachineInstruction
     {
         switch (operand)
         {
-        case ImmediateOperand imm:
+        case Constant imm:
             renderer.WriteChar('#');
-            var s = imm.Value.DataType.Domain == Domain.SignedInt
-                ? FormatSignedValue(imm.Value.ToInt64(), null)
-                : FormatUnsignedValue(imm.Value.ToUInt64(), null);
+            var s = imm.DataType.Domain == Domain.SignedInt
+                ? FormatSignedValue(imm.ToInt64(), null)
+                : FormatUnsignedValue(imm.ToUInt64(), null);
             renderer.WriteString(s);
             return;
         }

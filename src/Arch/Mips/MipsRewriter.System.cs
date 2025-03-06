@@ -147,7 +147,7 @@ namespace Reko.Arch.Mips
 
         private void RewriteReadHardwareRegister(MipsInstruction instr)
         {
-            var hs = ((ImmediateOperand) instr.Operands[1]).Value;
+            var hs = ((Constant)instr.Operands[1]);
             Expression value;
             switch (hs.ToInt32())
             {

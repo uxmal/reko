@@ -182,11 +182,11 @@ namespace Reko.Arch.Vax
             return true;
         }
 
-        private MachineOperand? ImmediateOperand(PrimitiveType width)
+        private Constant? ImmediateOperand(PrimitiveType width)
         {
             if (!rdr.TryRead(width, out Constant? imm))
                 return null;
-            return new ImmediateOperand(imm);
+            return imm;
         }
 
         private MachineOperand? IndexOperand(PrimitiveType width, RegisterStorage reg)
@@ -238,7 +238,7 @@ namespace Reko.Arch.Vax
             {
                 c = Constant.Create(width, b & 0x3F);
             }
-            return new ImmediateOperand(c);
+            return c;
         }
 
 
@@ -320,7 +320,7 @@ namespace Reko.Arch.Vax
             {
                 if (!d.TryDecodeOperand(dt, maxReg, out var op))
                     return false;
-                if (op is ImmediateOperand)
+                if (op is Constant)
                     return false;    // Can't modify a constant! 
                 d.ops.Add(op);
                 return true;

@@ -194,7 +194,7 @@ namespace Reko.Arch.Mips
             return (u, d) =>
             {
                 var i = field.ReadSigned(u);
-                var imm = new ImmediateOperand(Constant.Create(d.arch.WordWidth, i));
+                var imm = Constant.Create(d.arch.WordWidth, i);
                 d.ops.Add(imm);
                 return true;
             };
@@ -208,7 +208,7 @@ namespace Reko.Arch.Mips
             return (u, d) =>
             {
                 var i = field.Read(u);
-                var imm = new ImmediateOperand(Constant.Create(d.arch.WordWidth, i));
+                var imm = Constant.Create(d.arch.WordWidth, i);
                 d.ops.Add(imm);
                 return true;
             };
@@ -222,7 +222,7 @@ namespace Reko.Arch.Mips
             return (u, d) =>
             {
                 var i = field.Read(u) << shift;
-                var imm = new ImmediateOperand(Constant.Create(d.arch.WordWidth, i));
+                var imm = Constant.Create(d.arch.WordWidth, i);
                 d.ops.Add(imm);
                 return true;
             };
@@ -260,7 +260,7 @@ namespace Reko.Arch.Mips
                 var offset = offsetField.ReadSigned(u) * dt.Size;
                 var mop = new IndirectOperand(
                     dt,
-                    ImmediateOperand.Int32(offset),
+                    Constant.Int32(offset),
                     baseReg);
                 d.ops.Add(mop);
                 return true;
@@ -280,7 +280,7 @@ namespace Reko.Arch.Mips
                 var offset = offsetField.ReadSigned(u);
                 var mop = new IndirectOperand(
                     dt,
-                    ImmediateOperand.Int32(offset),
+                    Constant.Int32(offset),
                     baseReg);
                 d.ops.Add(mop);
                 return true;
@@ -303,7 +303,7 @@ namespace Reko.Arch.Mips
             var offset = encodedByteOffsets[encOffset];
             var mop = new IndirectOperand(
                 PrimitiveType.Byte, 
-                ImmediateOperand.Int32(offset),
+                Constant.Int32(offset),
                 baseReg);
             dasm.ops.Add(mop);
             return true;
@@ -321,7 +321,7 @@ namespace Reko.Arch.Mips
                 var offset = offsetField.ReadSigned(u) * dt.Size;
                 var mop = new IndirectOperand(
                     dt,
-                    ImmediateOperand.Int32(offset),
+                    Constant.Int32(offset),
                     baseReg);
                 d.ops.Add(mop);
                 return true;

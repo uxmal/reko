@@ -135,7 +135,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 var s = dasm.Size(size);
                 var c = Constant.Create(s, imm3Const[b & 7]);
                 dasm.opSize = s;
-                dasm.ops.Add(new ImmediateOperand(c));
+                dasm.ops.Add(c);
                 return true;
             };
         }
@@ -146,7 +146,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
         private static bool Ib(uint u, Tlcs900Disassembler dasm) {
             if (!dasm.rdr.TryReadByte(out byte b))
                 return false;
-            dasm.ops.Add(ImmediateOperand.Byte(b));
+            dasm.ops.Add(Constant.Byte(b));
             return true;
         }
 
@@ -154,7 +154,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
         {
             if (!dasm.rdr.TryReadLeUInt16(out ushort w))
                 return false;
-            dasm.ops.Add(ImmediateOperand.Word16(w));
+            dasm.ops.Add(Constant.Word16(w));
             return true;
         }
 
@@ -162,7 +162,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
         {
             if (!dasm.rdr.TryReadLeUInt32(out u))
                 return false;
-            dasm.ops.Add(ImmediateOperand.Word32(u));
+            dasm.ops.Add(Constant.Word32(u));
             return true;
         }
 
@@ -282,7 +282,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             return (b, dasm) => {
                 var c = Constant.Create(dasm.Size(size), imm3Const8[b & 7]);
                 dasm.SetSize(size);
-                dasm.ops.Add(new ImmediateOperand(c));
+                dasm.ops.Add(c);
                 return true;
             };
         }

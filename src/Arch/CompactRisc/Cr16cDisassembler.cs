@@ -107,7 +107,7 @@ namespace Reko.Arch.CompactRisc
             {
                 var imm = (ushort) immField.Read(u);
                 Constant c = Constant.Create(dt, sign * (short) imm);
-                d.ops.Add(ImmediateOperand.Create(c));
+                d.ops.Add(c);
                 return true;
             };
         }
@@ -121,7 +121,7 @@ namespace Reko.Arch.CompactRisc
             return (u, d) =>
             {
                 var n = (int) field.Read(u) + offset;
-                d.ops.Add(ImmediateOperand.Int32(n));
+                d.ops.Add(Constant.Int32(n));
                 return true;
             };
         }
@@ -139,7 +139,7 @@ namespace Reko.Arch.CompactRisc
                 return false;
             if (!dasm.rdr.TryReadLeUInt16(out var lo))
                 return false;
-            dasm.ops.Add(ImmediateOperand.Word32((hi << 16) | lo));
+            dasm.ops.Add(Constant.Word32((hi << 16) | lo));
             return true;
         }
 
@@ -164,7 +164,7 @@ namespace Reko.Arch.CompactRisc
                 {
                     c = Constant.Create(dt, immCode);
                 }
-                d.ops.Add(ImmediateOperand.Create(c));
+                d.ops.Add(c);
                 return true;
             };
         }
@@ -192,7 +192,7 @@ namespace Reko.Arch.CompactRisc
                 {
                     c = Constant.Create(dt, immCode);
                 }
-                d.ops.Add(ImmediateOperand.Create(c));
+                d.ops.Add(c);
                 return true;
             };
         }
@@ -201,7 +201,7 @@ namespace Reko.Arch.CompactRisc
         private static bool Imm3_pushpop(uint uInstr, Cr16cDisassembler dasm)
         {
             var imm = (int)bf4_3.Read(uInstr);
-            dasm.ops.Add(ImmediateOperand.Int32(imm+1));
+            dasm.ops.Add(Constant.Int32(imm+1));
             return true;
         }
 
@@ -214,7 +214,7 @@ namespace Reko.Arch.CompactRisc
                 if (!d.rdr.TryReadLeUInt16(out var low))
                     return false;
                 var imm = (high << 16) | low;
-                d.ops.Add(new ImmediateOperand(Constant.Create(dt, imm)));
+                d.ops.Add(Constant.Create(dt, imm));
                 return true;
             };
         }
@@ -225,14 +225,14 @@ namespace Reko.Arch.CompactRisc
         private static bool bitpos_b(uint uInstr, Cr16cDisassembler dasm)
         {
             var bitpos = (byte)(uInstr & 0x7);
-            dasm.ops.Add(ImmediateOperand.Byte(bitpos));
+            dasm.ops.Add(Constant.Byte(bitpos));
             return true;
         }
 
         private static bool bitpos_w(uint uInstr, Cr16cDisassembler dasm)
         {
             var bitpos = (byte) (uInstr & 0xF);
-            dasm.ops.Add(ImmediateOperand.Byte(bitpos));
+            dasm.ops.Add(Constant.Byte(bitpos));
             return true;
         }
 

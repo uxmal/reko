@@ -947,7 +947,7 @@ namespace Reko.Arch.X86
                     op = Address.Ptr32((uint) uAddr);
                 else
                 {
-                    op = new ImmediateOperand(Constant.Create(PrimitiveType.Offset16, uAddr));
+                    op = Constant.Create(PrimitiveType.Offset16, uAddr);
                 }
                 d.decodingContext.ops.Add(op);
                 return true;
@@ -1436,7 +1436,7 @@ namespace Reko.Arch.X86
         /// </summary>
         private static bool n1(uint u, X86Disassembler d)
         {
-            var op = ImmediateOperand.Byte(1);
+            var op = Constant.Byte(1);
             d.decodingContext.ops.Add(op);
             return true;
         }
@@ -1446,7 +1446,7 @@ namespace Reko.Arch.X86
         /// </summary>
         private static bool n3(uint u, X86Disassembler d)
         {
-            var op = ImmediateOperand.Byte(3);
+            var op = Constant.Byte(3);
             d.decodingContext.ops.Add(op);
             return true;
         }
@@ -1711,11 +1711,11 @@ public static NyiDecoder<X86Disassembler, Mnemonic, X86Instruction> nyi(string m
 			RegisterStorage.None,
 		};
 
-		public ImmediateOperand? CreateImmediateOperand(DataType immWidth)
+		public Constant? CreateImmediateOperand(DataType immWidth)
 		{
             if (!TryReadLe(immWidth, out Constant? c))
                 return null;
-			return new ImmediateOperand(c!);
+			return c;
 		}
 
 		private MachineOperand? DecodeModRM(OperandType opType, PrimitiveType dataWidth, Func<int, PrimitiveType, RegisterStorage> regFn)

@@ -272,8 +272,8 @@ namespace Reko.Arch.RiscV
                         RenderSyntheticInstruction("li", instr, renderer, options, ops_0_2);
                         return;
                     }
-                    if (instr.Operands[2] is ImmediateOperand imm &&
-                        imm.Value.IsZero)
+                    if (instr.Operands[2] is Constant imm &&
+                        imm.IsZero)
                     {
                         RenderSyntheticInstruction("mv", instr, renderer, options, ops_0_1);
                         return;
@@ -407,7 +407,7 @@ namespace Reko.Arch.RiscV
             case RegisterStorage rop:
                 RenderRegister(rop.Name, renderer);
                 return;
-            case ImmediateOperand immop:
+            case Constant immop:
                 RenderImmediate(immop, renderer);
                 return;
             case Address addr:
@@ -442,7 +442,7 @@ namespace Reko.Arch.RiscV
             }
             else
             {
-                int offset = ((ImmediateOperand) memop.Offset).Value.ToInt32();
+                int offset = ((Constant)memop.Offset).ToInt32();
                 if (offset != 0)
                 {
                     var sOffset = FormatSignedValue(offset);
@@ -467,24 +467,24 @@ namespace Reko.Arch.RiscV
         }
 
         protected virtual void RenderImmediate(
-            ImmediateOperand imm,
+            Constant imm,
             MachineInstructionRenderer renderer)
         {
             RenderImmediateOperand(imm, renderer);
         }
 
         public static void RenderImmediateOperand(
-            ImmediateOperand imm, 
+            Constant imm, 
             MachineInstructionRenderer renderer)
         { 
-            var pt = imm.Value.DataType;
+            var pt = imm.DataType;
             if (pt.Domain == Domain.Offset)
-                renderer.WriteString(FormatUnsignedValue(imm.Value.ToUInt64(), "0x{0:X}"));
+                renderer.WriteString(FormatUnsignedValue(imm.ToUInt64(), "0x{0:X}"));
             else
             {
-                var s = FormatValue(imm.Value);
+                var s = FormatValue(imm);
                 if (pt.Domain == Domain.Pointer)
-                    renderer.WriteAddress(s, Address.FromConstant(imm.Value));
+                    renderer.WriteAddress(s, Address.FromConstant(imm));
                 else
                     renderer.WriteString(s);
             }

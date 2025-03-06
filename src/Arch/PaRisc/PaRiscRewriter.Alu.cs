@@ -104,7 +104,7 @@ namespace Reko.Arch.PaRisc
         {
             var src = RewriteOp(0);
             var pos = RewriteOp(1);
-            var len = ((ImmediateOperand) instr.Operands[2]).Value.ToInt32();
+            var len = ((Constant) instr.Operands[2]).ToInt32();
             var dt = PrimitiveType.CreateWord(len);
             var ins = binder.CreateTemporary(dt);
             m.Assign(ins, m.Slice(src, dt, 0));
@@ -130,9 +130,9 @@ namespace Reko.Arch.PaRisc
 
         private void RewriteDepwi()
         {
-            var imm = ((ImmediateOperand) instr.Operands[0]).Value.ToInt32();
+            var imm = ((Constant)instr.Operands[0]).ToInt32();
             var pos = RewriteOp(1);
-            var len = ((ImmediateOperand) instr.Operands[2]).Value.ToInt32();
+            var len = ((Constant)instr.Operands[2]).ToInt32();
             var dst = RewriteOp(3);
                  
             if (pos is Constant cpos)
@@ -164,8 +164,8 @@ namespace Reko.Arch.PaRisc
         private void RewriteExtrw()
         {
             var src = RewriteOp(0);
-            var bePos = ((ImmediateOperand) instr.Operands[1]).Value.ToInt32();
-            var len = ((ImmediateOperand) instr.Operands[2]).Value.ToInt32();
+            var bePos = ((Constant)instr.Operands[1]).ToInt32();
+            var len = ((Constant)instr.Operands[2]).ToInt32();
             var dtSlice = PrimitiveType.CreateWord(len);
             var lePos = 32 - bePos;
             if (lePos < 0)
@@ -234,7 +234,7 @@ namespace Reko.Arch.PaRisc
         private void RewriteShladd()
         {
             var addend= RewriteOp(0);
-            var sh = Constant.Int32(((ImmediateOperand) instr.Operands[1]).Value.ToInt32());
+            var sh = Constant.Int32(((Constant)instr.Operands[1]).ToInt32());
             Expression e = m.Shl(addend, sh);
             var src = RewriteOp(2);
             e = m.IAdd(src, e);

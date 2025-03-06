@@ -73,13 +73,13 @@ namespace Reko.Arch.M68k.Rewriter
                         r = m.Slice(r, DataWidth);
                 }
                 return r;
-            case ImmediateOperand imm:
-                if (imm.Width.IsReal)
-                    return imm.Value.CloneExpression();
-                if (DataWidth != null && DataWidth.BitSize > imm.Width.BitSize)
-                    return Constant.Create(DataWidth, imm.Value.ToInt64());
+            case Constant imm:
+                if (imm.DataType.IsReal)
+                    return imm.CloneExpression();
+                if (DataWidth != null && DataWidth.BitSize > imm.DataType.BitSize)
+                    return Constant.Create(DataWidth, imm.ToInt64());
                 else
-                    return Constant.Create(imm.Width, imm.Value.ToUInt32());
+                    return Constant.Create(imm.DataType, imm.ToUInt32());
             case MemoryOperand mem:
                 return RewriteMemoryAccess(mem, DataWidth, addrInstr);
             case Address addr:

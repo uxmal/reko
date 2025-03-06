@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
@@ -190,7 +191,7 @@ namespace Reko.Arch.CSky
             var bf = new Bitfield(bitpos, length);
             return (u, d) =>
             {
-                var imm = ImmediateOperand.Word32(bf.Read(u));
+                var imm = Constant.Word32(bf.Read(u));
                 d.ops.Add(imm);
                 return true;
             };
@@ -211,7 +212,7 @@ namespace Reko.Arch.CSky
             return (u, d) =>
             {
                 var value = bf.Read(u);
-                var imm = ImmediateOperand.Word32(value + 1);
+                var imm = Constant.Word32(value + 1);
                 d.ops.Add(imm);
                 return true;
             };
@@ -230,7 +231,7 @@ namespace Reko.Arch.CSky
             return (u, d) =>
             {
                 var value = bf.Read(u);
-                var imm = ImmediateOperand.Word32(value << shift);
+                var imm = Constant.Word32(value << shift);
                 d.ops.Add(imm);
                 return true;
             };
@@ -242,7 +243,7 @@ namespace Reko.Arch.CSky
             return (u, d) =>
             {
                 var value = Bitfield.ReadFields(fields, u);
-                var imm = ImmediateOperand.Word32(value << shift);
+                var imm = Constant.Word32(value << shift);
                 d.ops.Add(imm);
                 return true;
             };
@@ -255,7 +256,7 @@ namespace Reko.Arch.CSky
             return (u, d) =>
             {
                 var value = (int) bf.Read(u);
-                d.ops.Add(ImmediateOperand.Int32(value));
+                d.ops.Add(Constant.Int32(value));
                 return true;
             };
         }
@@ -269,7 +270,7 @@ namespace Reko.Arch.CSky
             return (u, d) =>
             {
                 var value = (int) bf.Read(u) + 1;
-                d.ops.Add(ImmediateOperand.Int32(value));
+                d.ops.Add(Constant.Int32(value));
                 return true;
             };
         }
@@ -280,7 +281,7 @@ namespace Reko.Arch.CSky
         private static bool bitpos(uint uInstr, CSkyDisassembler dasm)
         {
             var bitPos = (int)(uInstr & 0x1F);
-            dasm.ops.Add(ImmediateOperand.Int32(bitPos));
+            dasm.ops.Add(Constant.Int32(bitPos));
             return true;
         }
 
@@ -313,7 +314,7 @@ namespace Reko.Arch.CSky
         private static bool jmpix2(uint uInstr, CSkyDisassembler dasm)
         {
             var i = bf0_2.Read(uInstr);
-            var imm = ImmediateOperand.UInt32(jmpix_scales[i]);
+            var imm = Constant.UInt32(jmpix_scales[i]);
             dasm.ops.Add(imm);
             return true;
         }

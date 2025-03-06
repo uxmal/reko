@@ -268,7 +268,7 @@ namespace Reko.Arch.MilStd1750
             return binder.EnsureSequence(MilStd1750Architecture.Real48, regHi, regMi, regLo);
         }
 
-        private Constant Imm(int iOp) => ((ImmediateOperand) instr.Operands[iOp]).Value;
+        private Constant Imm(int iOp) => (Constant)instr.Operands[iOp];
         private Identifier Reg(int iOp) => binder.EnsureRegister((RegisterStorage) instr.Operands[iOp]);
 
         private Expression Op(int iOp)
@@ -277,8 +277,8 @@ namespace Reko.Arch.MilStd1750
             {
             case RegisterStorage reg:
                 return binder.EnsureRegister(reg);
-            case ImmediateOperand imm:
-                return imm.Value;
+            case Constant imm:
+                return imm;
             case Address addr:
                 return addr;
             case MemoryOperand mem:

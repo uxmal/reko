@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 
 namespace Reko.Arch.Pdp.Pdp11
@@ -63,9 +64,9 @@ namespace Reko.Arch.Pdp.Pdp11
                     return true;
                 var addrB = opB as Address?;
                 return addrB != null && addrA.ToLinear() == addrB.Value.ToLinear();
-            case ImmediateOperand immA:
-                var immB = (ImmediateOperand) opB;
-                return CompareValues(immA.Value, immB.Value);
+            case Constant immA:
+                var immB = (Constant) opB;
+                return CompareValues(immA, immB);
             case MemoryOperand memA:
                 var memB = (MemoryOperand) opB;
                 if (memA.PreDec != memB.PreDec)
@@ -101,9 +102,9 @@ namespace Reko.Arch.Pdp.Pdp11
                 else
                     return rop.GetHashCode();
             }
-            if (op is ImmediateOperand immop)
+            if (op is Constant immop)
             {
-                return base.GetConstantHash(immop.Value);
+                return base.GetConstantHash(immop);
             }
             if (op is Address addrop)
             {

@@ -212,13 +212,13 @@ namespace Reko.Arch.Fujitsu.F2MC16FX
         {
             if (!dasm.rdr.TryReadByte(out var imm8))
                 return false;
-            dasm.ops.Add(ImmediateOperand.Byte(imm8));
+            dasm.ops.Add(Constant.Byte(imm8));
             return true;
         }
 
         private static bool imm4(uint uInstr, Disassembler dasm)
         {
-            dasm.ops.Add(new ImmediateOperand(Constant.Create(nybble, uInstr & 0xF)));
+            dasm.ops.Add(Constant.Create(nybble, uInstr & 0xF));
             return true;
         }
 
@@ -226,7 +226,7 @@ namespace Reko.Arch.Fujitsu.F2MC16FX
         {
             if (!dasm.rdr.TryReadLeUInt16(out var imm16))
                 return false;
-            dasm.ops.Add(ImmediateOperand.Word16(imm16));
+            dasm.ops.Add(Constant.Word16(imm16));
             return true;
         }
 
@@ -234,19 +234,19 @@ namespace Reko.Arch.Fujitsu.F2MC16FX
         {
             if (!dasm.rdr.TryReadLeUInt32(out var imm32))
                 return false;
-            dasm.ops.Add(ImmediateOperand.UInt32(imm32));
+            dasm.ops.Add(Constant.UInt32(imm32));
             return true;
         }
 
         private static bool br0(uint uInstr, Disassembler dasm)
         {
-            dasm.ops.Add(ImmediateOperand.Byte((byte)(uInstr & 0x3)));
+            dasm.ops.Add(Constant.Byte((byte)(uInstr & 0x3)));
             return true;
         }
 
         private static bool br2(uint uInstr, Disassembler dasm)
         {
-            dasm.ops.Add(ImmediateOperand.Byte((byte) ((uInstr & 0xC) >> 2)));
+            dasm.ops.Add(Constant.Byte((byte) ((uInstr & 0xC) >> 2)));
             return true;
         }
 

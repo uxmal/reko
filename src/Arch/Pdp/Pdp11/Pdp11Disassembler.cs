@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Services;
@@ -149,7 +150,7 @@ namespace Reko.Arch.Pdp.Pdp11
 
         private static bool Ib(uint wOpcode, Pdp11Disassembler dasm)
         {
-            var op = ImmediateOperand.Byte((byte)wOpcode);
+            var op = Constant.Byte((byte)wOpcode);
             dasm.ops.Add(op);
             return true;
         }
@@ -159,14 +160,14 @@ namespace Reko.Arch.Pdp.Pdp11
         /// </summary>
         private static bool I3(uint wOpcode, Pdp11Disassembler dasm)
         {
-            var op = ImmediateOperand.Byte((byte) (wOpcode & 0x07));
+            var op = Constant.Byte((byte) (wOpcode & 0x07));
             dasm.ops.Add(op);
             return true;
         }
         // I4 - low order 4 bits.
         private static bool I4(uint wOpcode, Pdp11Disassembler dasm)
         {
-            var op = ImmediateOperand.Byte((byte)(wOpcode & 0x0F));
+            var op = Constant.Byte((byte)(wOpcode & 0x0F));
             dasm.ops.Add(op);
             return true;
         }
@@ -424,7 +425,7 @@ namespace Reko.Arch.Pdp.Pdp11
                 case 2:
                     if (!this.rdr.TryReadLeUInt16(out u))
                         return null;
-                    return ImmediateOperand.Word16(u);
+                    return Constant.Word16(u);
                 case 3:
                     if (!this.rdr.TryReadLeUInt16(out u))
                         return null;

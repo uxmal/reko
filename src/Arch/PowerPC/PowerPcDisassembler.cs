@@ -132,14 +132,14 @@ namespace Reko.Arch.PowerPC
         // Signed integer in bottom 16 bits of instruction.
         internal static bool S(uint wInstr, PowerPcDisassembler dasm)
         {
-            dasm.ops.Add(ImmediateOperand.Int16((short) wInstr));
+            dasm.ops.Add(Constant.Int16((short) wInstr));
             return true;
         }
 
         // Unsigned integer in bottom 16 bits of instruction.
         internal static bool U(uint wInstr, PowerPcDisassembler dasm)
         {
-            dasm.ops.Add(ImmediateOperand.Word16((ushort) wInstr));
+            dasm.ops.Add(Constant.Word16((ushort) wInstr));
             return true;
         }
 
@@ -358,7 +358,7 @@ namespace Reko.Arch.PowerPC
         {
             return (u, d) =>
             {
-                var op = ImmediateOperand.Byte((byte) ((u >> offset) & 0x1F));
+                var op = Constant.Byte((byte) ((u >> offset) & 0x1F));
                 d.ops.Add(op);
                 return true;
             };
@@ -374,7 +374,7 @@ namespace Reko.Arch.PowerPC
             return (u, d) =>
             {
                 var i = (int) Bitfield.ReadFields(bitfields, u);
-                var op = ImmediateOperand.Int32(i);
+                var op = Constant.Int32(i);
                 d.ops.Add(op);
                 return true;
             };
@@ -383,7 +383,7 @@ namespace Reko.Arch.PowerPC
         // Condition register fields.
         internal static bool M(uint wInstr, PowerPcDisassembler dasm)
         {
-            var op = ImmediateOperand.Byte((byte) ((wInstr >> 12) & 0xFF));
+            var op = Constant.Byte((byte) ((wInstr >> 12) & 0xFF));
             dasm.ops.Add(op);
             return true;
         }
@@ -393,7 +393,7 @@ namespace Reko.Arch.PowerPC
             var field = new Bitfield(pos, len);
             return (u, d) =>
             {
-                var op = ImmediateOperand.Byte((byte) field.Read(u));
+                var op = Constant.Byte((byte) field.Read(u));
                 d.ops.Add(op);
                 return true;
             };
@@ -404,7 +404,7 @@ namespace Reko.Arch.PowerPC
             return (u, d) =>
             {
                 var n = Bitfield.ReadSignedFields(fields, u);
-                var op = ImmediateOperand.Int32(n);
+                var op = Constant.Int32(n);
                 d.ops.Add(op);
                 return true;
             };
@@ -446,7 +446,7 @@ namespace Reko.Arch.PowerPC
             var field = new Bitfield(bitOffset, len);
             return (u, d) =>
             {
-                var op = ImmediateOperand.Int32(field.ReadSigned(u));
+                var op = Constant.Int32(field.ReadSigned(u));
                 d.ops.Add(op);
                 return true;
             };
@@ -460,7 +460,7 @@ namespace Reko.Arch.PowerPC
             return (u, d) =>
             {
                 var n = Bitfield.ReadSignedFields(fields, u);
-                var op = ImmediateOperand.Int32(n);
+                var op = Constant.Int32(n);
                 d.ops.Add(op);
                 return true;
             };
@@ -512,7 +512,7 @@ namespace Reko.Arch.PowerPC
             }
             else
             {
-                dasm.ops.Add(ImmediateOperand.UInt32(nSpr));
+                dasm.ops.Add(Constant.UInt32(nSpr));
             }
             return true;
         }
@@ -656,7 +656,7 @@ namespace Reko.Arch.PowerPC
         private MachineOperand MemOff(uint reg, uint wInstr)
         {
             return new MemoryOperand(PrimitiveType.Word32, arch.Registers[(int)reg & 0x1F],
-                ImmediateOperand.Int32((short) wInstr));
+                Constant.Int32((short) wInstr));
         }
 
         private RegisterStorage CRegFromBits(uint r)

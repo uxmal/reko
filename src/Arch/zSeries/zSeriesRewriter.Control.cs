@@ -254,7 +254,7 @@ namespace Reko.Arch.zSeries
 
         private void RewriteSvc()
         {
-            var svcNo = ((ImmediateOperand) instr.Operands[0]).Value;
+            var svcNo = (Constant)instr.Operands[0];
             m.SideEffect(m.Fn(CommonOps.Syscall_1, svcNo));
         }
 

@@ -210,7 +210,7 @@ namespace Reko.Arch.X86.Assembler
 			}
 			else
 			{
-				return new ParsedOperand(new ImmediateOperand(X86Assembler.IntegralConstant(totalInt, defaultWordWidth)));
+				return new ParsedOperand(X86Assembler.IntegralConstant(totalInt, defaultWordWidth));
 			}
 		}
 
@@ -252,7 +252,7 @@ namespace Reko.Arch.X86.Assembler
 			case Token.OFFSET:
 				Expect(Token.ID);
 				return new ParsedOperand(
-					new ImmediateOperand(Constant.Create(defaultWordWidth, addrBase.Offset)),
+					Constant.Create(defaultWordWidth, addrBase.Offset),
 					symtab.CreateSymbol(lexer.StringLiteral));
 				
 			case Token.ID:

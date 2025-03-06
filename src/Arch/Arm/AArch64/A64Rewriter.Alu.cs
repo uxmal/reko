@@ -161,8 +161,8 @@ namespace Reko.Arch.Arm.AArch64
         {
             if (instr.ShiftCode != Mnemonic.Invalid &&
                 (instr.ShiftCode != Mnemonic.lsl ||
-                !(instr.ShiftAmount is ImmediateOperand imm) ||
-                !imm.Value.IsIntegerZero))
+                !(instr.ShiftAmount is Constant imm) ||
+                !imm.IsIntegerZero))
             {
                 Expression MaybeShift(Expression e, Expression amt)
                 {
@@ -210,7 +210,7 @@ namespace Reko.Arch.Arm.AArch64
             var tmp = binder.CreateTemporary(PrimitiveType.Bool);
             var cond = Invert(((ConditionOperand) instr.Operands[3]).Condition);
             m.Assign(tmp, this.TestCond(cond));
-            var c = ((ImmediateOperand) instr.Operands[2]).Value.ToUInt32();
+            var c = ((Constant)instr.Operands[2]).ToUInt32();
             m.Assign(nzcv, Constant.Word32(c << 28));
             m.BranchInMiddleOfInstruction(tmp, instr.Address + instr.Length, InstrClass.ConditionalTransfer);
             var left = RewriteOp(instr.Operands[0]);
@@ -224,7 +224,7 @@ namespace Reko.Arch.Arm.AArch64
             var tmp = binder.CreateTemporary(PrimitiveType.Bool);
             var cond = Invert(((ConditionOperand)instr.Operands[3]).Condition);
             m.Assign(tmp, this.TestCond(cond));
-            var c = ((ImmediateOperand) instr.Operands[2]).Value.ToUInt32();
+            var c = ((Constant)instr.Operands[2]).ToUInt32();
             m.Assign(nzcv, Constant.Word32(c << 28));
             m.BranchInMiddleOfInstruction(tmp, instr.Address + instr.Length, InstrClass.ConditionalTransfer);
             var left = RewriteOp(instr.Operands[0]);
@@ -421,7 +421,7 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteLogical(Func<Expression, Expression, Expression> fn)
         {
-            if (instr.Operands.Length == 2 && instr.Operands[1] is ImmediateOperand immOp)
+            if (instr.Operands.Length == 2 && instr.Operands[1] is Constant immOp)
             {
                 // fn Vector,immediate
                 var v = (VectorRegisterOperand) instr.Operands[0];
@@ -485,25 +485,25 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteMovk()
         {
-            var dst = (Identifier) RewriteOp(0);
-            var imm = ((ImmediateOperand)instr.Operands[1]).Value;
-            var shift = ((ImmediateOperand)instr.ShiftAmount!).Value;
+            var dst = (Identifier)RewriteOp(0);
+            var imm = (Constant)instr.Operands[1];
+            var shift = (Constant)instr.ShiftAmount!;
             m.Assign(dst, m.Dpb(dst, imm, shift.ToInt32()));
         }
 
         private void RewriteMovn()
         {
-            var src = ((ImmediateOperand) instr.Operands[1]).Value.ToUInt64();
+            var src = ((Constant)instr.Operands[1]).ToUInt64();
             var dst = (Identifier) RewriteOp(instr.Operands[0]);
-            var shift = ((ImmediateOperand) instr.ShiftAmount!).Value.ToInt32();
+            var shift = ((Constant)instr.ShiftAmount!).ToInt32();
             m.Assign(dst, Constant.Create(dst.DataType, ~(src << shift)));
         }
 
         private void RewriteMovz()
         {
             var dst = RewriteOp(instr.Operands[0]);
-            var imm = ((ImmediateOperand)instr.Operands[1]).Value;
-            var shift = ((ImmediateOperand)instr.ShiftAmount!).Value;
+            var imm = (Constant)instr.Operands[1];
+            var shift = (Constant)instr.ShiftAmount!;
             m.Assign(dst, Constant.Word(dst.DataType.BitSize, imm.ToUInt64() << shift.ToInt32()));
         }
 
@@ -619,7 +619,7 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewritePrfm()
         {
-            var imm = ((ImmediateOperand)instr.Operands[0]).Value;
+            var imm = (Constant)instr.Operands[0];
             Expression ea;
             if (instr.Operands[1] is Address addr)
             {

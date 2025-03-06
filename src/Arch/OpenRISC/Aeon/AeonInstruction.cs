@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 
@@ -52,15 +53,15 @@ namespace Reko.Arch.OpenRISC.Aeon
         {
             switch (operand)
             {
-            case ImmediateOperand imm:
+            case Constant imm:
                 if (this.Mnemonic == Mnemonic.Nyi && operand == Operands[0])
                 {
-                    RenderOpcodeToBinary(imm.Value.ToUInt32(), renderer);
+                    RenderOpcodeToBinary(imm.ToUInt32(), renderer);
                     return;
                 }
-                if (imm.Value.DataType.Domain == Domain.SignedInt)
+                if (imm.DataType.Domain == Domain.SignedInt)
                 {
-                    var value = imm.Value.ToInt32();
+                    var value = imm.ToInt32();
                     if (value < 0)
                     {
                         renderer.WriteChar('-');
@@ -70,14 +71,14 @@ namespace Reko.Arch.OpenRISC.Aeon
                 }
                 else
                 {
-                    renderer.WriteFormat("0x{0:X}", imm.Value.ToUInt32());
+                    renderer.WriteFormat("0x{0:X}", imm.ToUInt32());
                 }
                 if ((this.Mnemonic == Mnemonic.bn_ori ||
                     this.Mnemonic == Mnemonic.bg_ori ||
                     this.Mnemonic == Mnemonic.bt_addi__ ||
                     this.Mnemonic == Mnemonic.bn_addi ||
                     this.Mnemonic == Mnemonic.bg_addi) && 
-                    imm.Width.BitSize == 32)
+                    imm.DataType.BitSize == 32)
                 {
                     renderer.WriteString("@lo");
                 }

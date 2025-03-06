@@ -20,11 +20,11 @@
 
 using Reko.Core;
 using Reko.Core.Assemblers;
+using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Loading;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
-using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -72,7 +72,7 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
 
         public Emitter Emitter { get; }
 
-        public Dictionary<string, ImmediateOperand> Equates { get; }
+        public Dictionary<string, Constant> Equates { get; }
 
         public void bg_andi(RegisterStorage rdst, RegisterStorage rsrc1, ParsedOperand immop)
         {
@@ -390,7 +390,7 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
                 Diagnostics.Error($"Unknown symbol {op.Identifier}.");
                 return 0;
             }
-            return imm!.Value.ToUInt32();
+            return imm!.ToUInt32();
         }
 
         private int GetIntValue(ParsedOperand op)
@@ -402,7 +402,7 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
                 Diagnostics.Error($"Unknown symbol {op.Identifier}.");
                 return 0;
             }
-            return imm!.Value.ToInt32();
+            return imm!.ToInt32();
         }
 
         public void Align(ParsedOperand op)
@@ -423,7 +423,7 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
                 this.Diagnostics.Error("Must have a label before .equ directive.");
                 return;
             }
-            ImmediateOperand? imm;
+            Constant? imm;
             if (op.Identifier is not null)
             {
                 if (!Equates.TryGetValue(op.Identifier, out imm))

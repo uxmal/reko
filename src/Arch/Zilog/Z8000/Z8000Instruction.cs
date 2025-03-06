@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 
 namespace Reko.Arch.Zilog.Z8000
@@ -39,7 +40,7 @@ namespace Reko.Arch.Zilog.Z8000
         {
             switch (operand)
             {
-            case ImmediateOperand imm:
+            case Constant imm:
                 renderer.WriteString("#%");
                 base.RenderOperand(imm, renderer, options);
                 return;

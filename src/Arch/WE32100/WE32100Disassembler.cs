@@ -134,14 +134,14 @@ namespace Reko.Arch.WE32100
 
         private static bool PositiveLiteral(int opDescriptor, PrimitiveType dt, WE32100Disassembler dasm)
         {
-            var c = new ImmediateOperand(Constant.Create(dt, opDescriptor & 0x3F));
+            var c = Constant.Create(dt, opDescriptor & 0x3F);
             dasm.ops.Add(c);
             return true;
         }
 
         private static bool NegativeLiteral(int opDescriptor, PrimitiveType dt, WE32100Disassembler dasm)
         {
-            var c = new ImmediateOperand(Constant.Create(dt, (sbyte) opDescriptor));
+            var c = Constant.Create(dt, (sbyte)opDescriptor);
             dasm.ops.Add(c);
             return true;
         }
@@ -158,7 +158,7 @@ namespace Reko.Arch.WE32100
             {
                 if (!dasm.rdr.TryReadUInt32(out uint imm))
                     return false;
-                op = ImmediateOperand.Word32(imm);
+                op = Constant.Word32(imm);
             }
             dasm.ops.Add(op);
             return true;
@@ -179,7 +179,7 @@ namespace Reko.Arch.WE32100
             {
                 if (!dasm.rdr.TryReadUInt16(out ushort imm))
                     return false;
-                op = ImmediateOperand.Word16(imm);
+                op = Constant.Word16(imm);
             }
             dasm.ops.Add(op);
             return true;
@@ -363,7 +363,7 @@ namespace Reko.Arch.WE32100
             {
                 if (!dasm.rdr.TryReadByte(out byte imm))
                     return false;
-                op = ImmediateOperand.Byte(imm);
+                op = Constant.Byte(imm);
             }
             dasm.ops.Add(op);
             return true;

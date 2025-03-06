@@ -417,7 +417,7 @@ namespace Reko.Arch.M68k.Assembler
                 return ParseAddressExpression(0);
             case TokenType.HASH:
                 int n = ExpectInteger();
-                return new ImmediateOperand(Constant.Create(this.dataWidth, n));
+                return Constant.Create(this.dataWidth, n);
             }
             Error("Unexpected token '{0}' ('{1}').", tok.Text, tok.Type);
             return null;

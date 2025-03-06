@@ -51,7 +51,7 @@ namespace Reko.Arch.Mips
                 return;
             }
             string fmt;
-            int offset = ((ImmediateOperand) Offset).Value.ToInt32();
+            int offset = ((Constant) Offset).ToInt32();
             if (offset >= 0)
             {
                 fmt = "{0:X4}({1})";
@@ -66,12 +66,12 @@ namespace Reko.Arch.Mips
 
         public int IntOffset()
         {
-            ImmediateOperand offset;
+            Constant offset;
             if (Offset is SliceOperand slice)
                 offset = slice.Value;
             else
-                offset = (ImmediateOperand) Offset;
-            return offset.Value.ToInt32();
+                offset = (Constant) Offset;
+            return offset.ToInt32();
         }
     }
 }

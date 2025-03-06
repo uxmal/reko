@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Services;
@@ -240,14 +241,14 @@ namespace Reko.Arch.Alpha
             {
                 var op1 = dasm.AluRegister(uInstr >> 21);
                 var op2 = (uInstr & (1 << 12)) != 0
-                    ? ImmediateOperand.Byte((byte)(uInstr >> 13))
+                    ? Constant.Byte((byte)(uInstr >> 13))
                     : (MachineOperand) dasm.AluRegister(uInstr >> 13);
                 var op3 = dasm.AluRegister(uInstr);
                 return new AlphaInstruction
                 {
                     Mnemonic = this.mnemonic,
                     InstructionClass = InstrClass.Linear,
-                    Operands = new MachineOperand[] { op1, op2, op3 }
+                    Operands = [op1, op2, op3]
                 };
             }
         }

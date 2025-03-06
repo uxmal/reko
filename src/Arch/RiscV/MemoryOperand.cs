@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 
@@ -44,7 +45,7 @@ namespace Reko.Arch.RiscV
             }
             else
             {
-                int offset = ((ImmediateOperand) Offset).Value.ToInt32();
+                int offset = ((Constant) Offset).ToInt32();
                 if (offset != 0)
                 {
                     renderer.WriteFormat("{0}", offset);

@@ -225,7 +225,7 @@ namespace Reko.Arch.Xtensa
         {
             var dst = RewriteOp(this.instr.Operands[0]);
             var offset = Constant.UInt32(
-                        ((ImmediateOperand)instr.Operands[2]).Value.ToUInt32());
+                        ((Constant)instr.Operands[2]).ToUInt32());
             m.Assign(
                 dst,
                 m.Mem32(
@@ -253,7 +253,7 @@ namespace Reko.Arch.Xtensa
                     m.IAdd(
                         RewriteOp(instr.Operands[1]),
                         Constant.UInt32(
-                        ((ImmediateOperand)instr.Operands[2]).Value.ToUInt32()))));
+                        ((Constant)instr.Operands[2]).ToUInt32()))));
             m.Assign(dst, m.Convert(tmp, tmp.DataType, PrimitiveType.Int32));
         }
 
@@ -261,7 +261,7 @@ namespace Reko.Arch.Xtensa
         {
             var a = RewriteOp(this.instr.Operands[1]);
             var off = Constant.UInt32(
-                        ((ImmediateOperand)instr.Operands[2]).Value.ToUInt32());
+                        ((Constant)instr.Operands[2]).ToUInt32());
             Expression? ea = null;
             var dst = RewriteOp(this.instr.Operands[0]);
             if (off.IsZero)
@@ -291,7 +291,7 @@ namespace Reko.Arch.Xtensa
                     m.IAdd(
                         RewriteOp(instr.Operands[1]),
                         Constant.UInt32(
-                        ((ImmediateOperand)instr.Operands[2]).Value.ToUInt32()))));
+                        ((Constant)instr.Operands[2]).ToUInt32()))));
             m.Assign(dst, m.Convert(tmp, tmp.DataType, PrimitiveType.UInt32));
         }
 
@@ -319,7 +319,7 @@ namespace Reko.Arch.Xtensa
         {
             var dst = RewriteOp(this.instr.Operands[0]);
             var src = Constant.Int32(
-                ((ImmediateOperand)this.instr.Operands[1]).Value.ToInt32());
+                ((Constant)this.instr.Operands[1]).ToInt32());
             m.Assign(dst, src);
         }
 
@@ -394,7 +394,7 @@ namespace Reko.Arch.Xtensa
             var src = RewriteOp(instr.Operands[0]);
             var ea = RewriteOp(instr.Operands[1]);
             var off = Constant.UInt32(
-                        ((ImmediateOperand)instr.Operands[2]).Value.ToUInt32());
+                        ((Constant)instr.Operands[2]).ToUInt32());
             if (!off.IsZero)
             {
                 ea = m.IAdd(ea, off);

@@ -537,8 +537,8 @@ namespace Reko.Arch.Zilog.Z80
             {
             case RegisterStorage rOp:
                 return binder.EnsureRegister(rOp);
-            case ImmediateOperand immOp:
-                return immOp.Value;
+            case Constant immOp:
+                return immOp;
             case MemoryOperand memOp:
                 {
                     Identifier? bReg = null;
@@ -667,7 +667,7 @@ namespace Reko.Arch.Zilog.Z80
         {
             m.Call(
                 Address.Ptr16(
-                    ((ImmediateOperand)dasm.Current.Operands[0]).Value.ToUInt16()),
+                    ((Constant)dasm.Current.Operands[0]).ToUInt16()),
                 2);
         }
 

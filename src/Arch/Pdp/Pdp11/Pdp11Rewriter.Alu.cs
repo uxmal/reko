@@ -142,7 +142,7 @@ namespace Reko.Arch.Pdp.Pdp11
 
         private void RewriteClrSetFlags(bool setFlag)
         {
-            var grf = ((ImmediateOperand)instr.Operands[0]).Value.ToByte();
+            var grf = ((Constant)instr.Operands[0]).ToByte();
             AddFlagAssignment(grf, Registers.N, setFlag);
             AddFlagAssignment(grf, Registers.Z, setFlag);
             AddFlagAssignment(grf, Registers.V, setFlag);

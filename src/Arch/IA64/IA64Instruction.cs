@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System.Text;
@@ -67,14 +68,14 @@ namespace Reko.Arch.IA64
         {
             switch (operand)
             {
-            case ImmediateOperand imm:
-                if (imm.Width.Domain == Domain.SignedInt)
+            case Constant imm:
+                if (imm.DataType.Domain == Domain.SignedInt)
                 {
-                    renderer.WriteFormat("{0}", imm.Value.ToInt64());
+                    renderer.WriteFormat("{0}", imm.ToInt64());
                 }
                 else
                 {
-                    renderer.WriteFormat("0x{0:X}", imm.Value.ToUInt64());
+                    renderer.WriteFormat("0x{0:X}", imm.ToUInt64());
                 }
                 return;
             }

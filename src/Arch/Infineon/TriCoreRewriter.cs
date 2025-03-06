@@ -239,10 +239,10 @@ namespace Reko.Arch.Infineon
             {
             case RegisterStorage reg:
                 return binder.EnsureRegister(reg);
-            case ImmediateOperand imm:
+            case Constant imm:
                 if (extendConstant)
-                    return m.Word32(imm.Value.ToInt32());
-                return imm.Value;
+                    return m.Word32(imm.ToInt32());
+                return imm;
             case Address addr:
                 return addr;
             case SequenceStorage seq:
@@ -265,7 +265,7 @@ namespace Reko.Arch.Infineon
         private void RewriteAddi()
         {
             var op = Operand(1);
-            int imm = ((ImmediateOperand) instr.Operands[2]).Value.ToInt16();
+            int imm = ((Constant) instr.Operands[2]).ToInt16();
             var dst = Operand(0);
             m.Assign(dst, m.IAdd(op, m.Word32(imm)));
             m.Assign(binder.EnsureFlagGroup(Registers.V_SV_AV_SAV), m.Cond(dst));
@@ -274,7 +274,7 @@ namespace Reko.Arch.Infineon
         private void RewriteAddih()
         {
             var op = Operand(1);
-            uint imm = ((ImmediateOperand) instr.Operands[2]).Value.ToUInt16();
+            uint imm = ((Constant)instr.Operands[2]).ToUInt16();
             var dst = Operand(0);
             m.Assign(dst, m.IAdd(op, m.Word32(imm << 16)));
             m.Assign(binder.EnsureFlagGroup(Registers.V_SV_AV_SAV), m.Cond(dst));
@@ -283,7 +283,7 @@ namespace Reko.Arch.Infineon
         private void RewriteAddih_a()
         {
             var op = Operand(1);
-            uint imm = ((ImmediateOperand) instr.Operands[2]).Value.ToUInt16();
+            uint imm = ((Constant)instr.Operands[2]).ToUInt16();
             var dst = Operand(0);
             m.Assign(dst, m.IAdd(op, m.Word32(imm << 16)));
         }
@@ -301,7 +301,7 @@ namespace Reko.Arch.Infineon
         {
             var op1 = Operand(1);
             var op2 = Operand(2);
-            var sh = ((ImmediateOperand) instr.Operands[3]).Value.ToInt32();
+            var sh = ((Constant)instr.Operands[3]).ToInt32();
             var dst = Operand(0);
             if (sh == 0)
             {
@@ -421,13 +421,13 @@ namespace Reko.Arch.Infineon
 
         private void RewriteExtr(PrimitiveType dtResult)
         {
-            if (instr.Operands[2] is ImmediateOperand immPos &&
-                instr.Operands[3] is ImmediateOperand immLen)
+            if (instr.Operands[2] is Constant immPos &&
+                instr.Operands[3] is Constant immLen)
             {
                 var src = Operand(1);
-                var dtSlice = PrimitiveType.CreateWord(immLen.Value.ToInt32());
+                var dtSlice = PrimitiveType.CreateWord(immLen.ToInt32());
                 var tmp = binder.CreateTemporary(dtSlice);
-                m.Assign(tmp, m.Slice(src, dtSlice, immPos.Value.ToInt32()));
+                m.Assign(tmp, m.Slice(src, dtSlice, immPos.ToInt32()));
                 m.Assign(Operand(0), m.Convert(tmp, tmp.DataType, dtResult));
                 return;
             }
@@ -456,10 +456,10 @@ namespace Reko.Arch.Infineon
         private void RewriteLogicalBit(Func<Expression, Expression, Expression> fn)
         {
             var left = Operand(1);
-            var leftBit = ((ImmediateOperand) instr.Operands[2]).Value.ToInt32();
+            var leftBit = ((Constant)instr.Operands[2]).ToInt32();
             left = m.Fn(CommonOps.Bit,left, m.Int32(leftBit));
             var right = Operand(3);
-            var rightBit = ((ImmediateOperand) instr.Operands[4]).Value.ToInt32();
+            var rightBit = ((Constant)instr.Operands[4]).ToInt32();
             right = m.Fn(CommonOps.Bit, right, m.Int32(rightBit));
             var bitResult = binder.CreateTemporary(PrimitiveType.Bool);
             m.Assign(bitResult, fn(left, right));
@@ -668,9 +668,9 @@ namespace Reko.Arch.Infineon
                     Operand(1),
                     Operand(2));
             }
-            else if (instr.Operands[1] is ImmediateOperand imm)
+            else if (instr.Operands[1] is Constant imm)
             {
-                src = Constant.Create(dst.DataType, imm.Value.ToInt32());
+                src = Constant.Create(dst.DataType, imm.ToInt32());
             }
             else
             {
@@ -686,14 +686,14 @@ namespace Reko.Arch.Infineon
             Debug.Assert(instr.Operands.Length == 2);
             var dst = Operand(0);
             Expression src;
-            var imm = (ImmediateOperand) instr.Operands[1];
-            src = Constant.Create(dst.DataType, imm.Value.ToUInt32());
+            var imm = (Constant) instr.Operands[1];
+            src = Constant.Create(dst.DataType, imm.ToUInt32());
             m.Assign(dst, src);
         }
 
         private void RewriteMovh()
         {
-            var src = ((ImmediateOperand) instr.Operands[1]).Value.ToUInt32() << 16;
+            var src = ((Constant)instr.Operands[1]).ToUInt32() << 16;
             var dst = Operand(0);
             m.Assign(dst, m.Word32(src));
         }
@@ -774,9 +774,9 @@ namespace Reko.Arch.Infineon
                 src = Operand(1);
             }
             var dst = Operand(0);
-            if (instr.Operands[^1] is ImmediateOperand imm)
+            if (instr.Operands[^1] is Constant imm)
             {
-                var amt = imm.Value.ToInt32();
+                var amt = imm.ToInt32();
                 if (amt > 0)
                 {
                     m.Assign(dst, m.Shl(src, m.Int32(amt)));

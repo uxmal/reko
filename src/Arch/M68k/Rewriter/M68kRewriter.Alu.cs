@@ -639,7 +639,7 @@ namespace Reko.Arch.M68k.Rewriter
 
             addrTarget = instr.Address + (
                 (mem.Offset?.ToInt32() ?? 0) +    // From the PEA
-                ((ImmediateOperand) addi.Operands[0]).Value.ToInt32());
+                ((Constant) addi.Operands[0]).ToInt32());
             return true;
         }
 
@@ -682,7 +682,7 @@ namespace Reko.Arch.M68k.Rewriter
 
         public void RewriteMoveq()
         {
-            var opSrc = ((ImmediateOperand) instr.Operands[0]).Value.ToInt32();
+            var opSrc = ((Constant)instr.Operands[0]).ToInt32();
             var opDst = binder.EnsureRegister((RegisterStorage)instr.Operands[1]);
             m.Assign(opDst, Constant.Word32(opSrc));
             LogicalConditions(opDst);
@@ -795,7 +795,7 @@ namespace Reko.Arch.M68k.Rewriter
         {
             var aReg = orw.RewriteSrc(instr.Operands[0], instr.Address);
             var aSp = binder.EnsureRegister(arch.StackRegister);
-            var imm = ((ImmediateOperand) instr.Operands[1]).Value.ToInt32();
+            var imm = ((Constant)instr.Operands[1]).ToInt32();
             m.Assign(aSp, m.ISub(aSp, 4));
             m.Assign(m.Mem32(aSp), aReg);
             m.Assign(aReg, aSp);

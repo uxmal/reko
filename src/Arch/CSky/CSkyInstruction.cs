@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
@@ -48,9 +49,9 @@ namespace Reko.Arch.CSky
 
         protected override void RenderOperand(MachineOperand operand, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            if (operand is ImmediateOperand imm)
+            if (operand is Constant imm)
             {
-                renderer.WriteFormat("0x{0:X}", imm.Value.ToUInt32());
+                renderer.WriteFormat("0x{0:X}", imm.ToUInt32());
                 return;
             }
             base.RenderOperand(operand, renderer, options);

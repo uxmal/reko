@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using System.Collections.Generic;
 using System.Globalization;
@@ -528,11 +529,11 @@ namespace Reko.ImageLoaders.WebAssembly
         {
             switch (operand)
             {
-            case ImmediateOperand imm:
-                if (imm.Width.IsIntegral || imm.Width.IsWord)
-                    renderer.WriteFormat("0x{0:X}", imm.Value.ToUInt64());
-                else if (imm.Width.IsReal)
-                    renderer.WriteString(imm.Value.ToReal64().ToString(CultureInfo.InvariantCulture));
+            case Constant imm:
+                if (imm.DataType.IsIntegral || imm.DataType.IsWord)
+                    renderer.WriteFormat("0x{0:X}", imm.ToUInt64());
+                else if (imm.DataType.IsReal)
+                    renderer.WriteString(imm.ToReal64().ToString(CultureInfo.InvariantCulture));
                 return;
             }
             base.RenderOperand(operand, renderer, options);

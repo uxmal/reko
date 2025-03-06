@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using System;
 using System.Collections;
@@ -49,10 +50,10 @@ namespace Reko.Arch.X86
                 RegisterStorage regOpB = (RegisterStorage) opB;
                 return NormalizeRegisters || regOpA == regOpB;
             }
-            if (opA is ImmediateOperand immOpA)
+            if (opA is Constant immOpA)
             {
-                var immOpB = (ImmediateOperand) opB;
-                return NormalizeConstants || immOpA.Value.Equals(immOpB.Value);         // disregard immediate values.
+                var immOpB = (Constant) opB;
+                return NormalizeConstants || immOpA.Equals(immOpB);         // disregard immediate values.
             }
             if (opA is Address addrOpA)
             {
@@ -135,7 +136,7 @@ namespace Reko.Arch.X86
             return op switch
             {
                 RegisterStorage regOp => base.GetRegisterHash(regOp),
-                ImmediateOperand immOp => base.GetConstantHash(immOp.Value),
+                Constant immOp => base.GetConstantHash(immOp),
                 Address addr => base.NormalizeConstants
                         ? 1
                         : addr.GetHashCode(),

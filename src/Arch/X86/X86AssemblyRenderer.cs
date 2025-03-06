@@ -190,7 +190,7 @@ namespace Reko.Arch.X86
             case RegisterStorage reg:
                 RenderRegister(reg.Name, renderer);
                 break;
-            case ImmediateOperand imm:
+            case Constant imm:
                 RenderImmediate(imm, renderer);
                 break;
             case MemoryOperand memOp:
@@ -263,17 +263,17 @@ namespace Reko.Arch.X86
         }
 
         protected void RenderImmediate(
-            ImmediateOperand imm,
+            Constant imm,
             MachineInstructionRenderer renderer)
         {
-            var pt = imm.Value.DataType;
+            var pt = imm.DataType;
             if (pt.Domain == Domain.Offset)
-                renderer.WriteString(FormatUnsignedValue(imm.Value.ToUInt64(), "{0:X4}"));
+                renderer.WriteString(FormatUnsignedValue(imm.ToUInt64(), "{0:X4}"));
             else
             {
-                var s = FormatValue(imm.Value);
+                var s = FormatValue(imm);
                 if (pt.Domain == Domain.Pointer)
-                    renderer.WriteAddress(s, Address.FromConstant(imm.Value));
+                    renderer.WriteAddress(s, Address.FromConstant(imm));
                 else
                     renderer.WriteString(s);
             }

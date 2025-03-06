@@ -177,7 +177,7 @@ namespace Reko.Arch.M68k.Rewriter
 
         private void RewriteRtd()
         {
-            int extraBytesPopped = ((ImmediateOperand) this.instr.Operands[0]).Value.ToInt32();
+            int extraBytesPopped = ((Constant)this.instr.Operands[0]).ToInt32();
             m.Return(4, extraBytesPopped);
         }
 

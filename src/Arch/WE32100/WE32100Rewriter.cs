@@ -112,8 +112,8 @@ namespace Reko.Arch.WE32100
             {
             case RegisterStorage rop:
                 return binder.EnsureRegister(rop);
-            case ImmediateOperand imm:
-                return imm.Value;
+            case Constant imm:
+                return imm;
             case MemoryOperand mem:
                 var ea = EffectiveAddress(mem);
                 if (mem.Deferred)
@@ -149,7 +149,7 @@ namespace Reko.Arch.WE32100
                 }
                 m.Assign(m.Mem(dt, ea), src);
                 return src;
-            case ImmediateOperand _:
+            case Constant _:
             case Address _:
                 iclass = InstrClass.Invalid;
                 m.Invalid();
@@ -178,7 +178,7 @@ namespace Reko.Arch.WE32100
                 m.Assign(tmp, binary(m.Mem(dt, ea), src));
                 m.Assign(m.Mem(dt, ea), tmp);
                 return tmp;
-            case ImmediateOperand _:
+            case Constant _:
             case Address _:
                 iclass = InstrClass.Invalid;
                 m.Invalid();
@@ -207,7 +207,7 @@ namespace Reko.Arch.WE32100
                 m.Assign(tmp, unary(src));
                 m.Assign(m.Mem(dt, ea), tmp);
                 return tmp;
-            case ImmediateOperand _:
+            case Constant _:
             case Address _:
                 iclass = InstrClass.Invalid;
                 m.Invalid();

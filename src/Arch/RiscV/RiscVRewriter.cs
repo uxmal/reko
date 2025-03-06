@@ -481,8 +481,8 @@ namespace Reko.Arch.RiscV
                 }
                 var reg = binder.EnsureRegister(rop);
                 return reg;
-            case ImmediateOperand immop:
-                return immop.Value;
+            case Constant immop:
+                return immop;
             case Address addr:
                 return addr;
             case MemoryOperand mem:

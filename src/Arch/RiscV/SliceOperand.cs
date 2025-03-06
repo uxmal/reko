@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
@@ -36,9 +37,9 @@ public class SliceOperand : AbstractMachineOperand
 {
     public SliceOperand(
         SliceType slice,
-        ImmediateOperand value,
+        Constant value,
         MachineOperand inferredValue)
-        : base(value.Width)
+        : base(value.DataType)
     {
         this.Slice = slice;
         this.Value = value;
@@ -46,7 +47,7 @@ public class SliceOperand : AbstractMachineOperand
     }
 
     public SliceType Slice { get; }
-    public ImmediateOperand Value { get; }
+    public Constant Value { get; }
     public MachineOperand InferredValue { get; }
 
     protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)

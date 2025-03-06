@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
@@ -128,7 +129,7 @@ namespace Reko.Arch.MN103
         {
             if (!dasm.rdr.TryReadByte(out byte b))
                 return false;
-            var imm = ImmediateOperand.SByte((sbyte)b);
+            var imm = Constant.SByte((sbyte)b);
             dasm.ops.Add(imm);
             return true;
         }
@@ -137,7 +138,7 @@ namespace Reko.Arch.MN103
         {
             if (!dasm.rdr.TryReadLeInt16(out short u))
                 return false;
-            var imm = ImmediateOperand.Int16(u);
+            var imm = Constant.Int16(u);
             dasm.ops.Add(imm);
             return true;
         }
@@ -146,7 +147,7 @@ namespace Reko.Arch.MN103
         {
             if (!dasm.rdr.TryReadLeUInt32(out uint u))
                 return false;
-            var imm = ImmediateOperand.Int32((int)u);
+            var imm = Constant.Int32((int)u);
             dasm.ops.Add(imm);
             return true;
         }

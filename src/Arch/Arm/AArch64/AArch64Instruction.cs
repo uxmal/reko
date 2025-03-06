@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 
@@ -51,7 +52,7 @@ namespace Reko.Arch.Arm.AArch64
             }
             if (this.ShiftCode == Mnemonic.Invalid)
                 return;
-            if (ShiftCode == Mnemonic.lsl && (ShiftAmount is ImmediateOperand imm && imm.Value.IsIntegerZero))
+            if (ShiftCode == Mnemonic.lsl && (ShiftAmount is Constant imm && imm.IsIntegerZero))
                 return;
             renderer.WriteChar(',');
             renderer.WriteMnemonic(ShiftCode.ToString());
@@ -79,19 +80,19 @@ namespace Reko.Arch.Arm.AArch64
                 WriteRegister(reg, renderer);
                 renderer.EndOperand();
                 break;
-            case ImmediateOperand imm:
+            case Constant imm:
                 renderer.BeginOperand();
-                if (imm.Width.Domain == Domain.Real)
+                if (imm.DataType.Domain == Domain.Real)
                 {
-                    renderer.WriteFormat($"#{imm.Value}");
+                    renderer.WriteFormat($"#{imm}");
                 }
                 else
                 {
-                    long v = imm.Value.ToInt64();
+                    long v = imm.ToInt64();
                     if (0 <= v && v <= 9)
                         renderer.WriteFormat($"#{v}");
                     else
-                        renderer.WriteFormat($"#&{imm.Value.ToUInt64():X}");
+                        renderer.WriteFormat($"#&{imm.ToUInt64():X}");
                 }
                 renderer.EndOperand();
                 break;

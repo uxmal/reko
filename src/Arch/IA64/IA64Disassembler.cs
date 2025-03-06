@@ -152,7 +152,7 @@ namespace Reko.Arch.IA64
             return (u, d) =>
             {
                 var imm = Bitfield.ReadFields(fields, u);
-                var op = new ImmediateOperand(Constant.Create(dt, imm));
+                var op = Constant.Create(dt, imm);
                 d.ops.Add(op);
                 return true;
             };
@@ -164,7 +164,7 @@ namespace Reko.Arch.IA64
             return (u, d) =>
             {
                 var imm = Bitfield.ReadSignedFields(fields, u);
-                var op = new ImmediateOperand(Constant.Create(dt, imm));
+                var op = Constant.Create(dt, imm);
                 d.ops.Add(op);
                 return true;
             };

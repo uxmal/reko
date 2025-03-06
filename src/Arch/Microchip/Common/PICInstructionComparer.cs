@@ -27,6 +27,7 @@ using System;
 namespace Reko.Arch.MicrochipPIC.Common
 {
     using Common;
+    using Reko.Core.Expressions;
 
     /// <summary>
     /// Compares pairs of PIC instructions -- for equality only.
@@ -53,9 +54,9 @@ namespace Reko.Arch.MicrochipPIC.Common
                     var regOpB = (RegisterStorage)opB;
                     return NormalizeRegisters || regOpA == regOpB;
 
-                case ImmediateOperand immOpA:
-                    var immOpB = (ImmediateOperand)opB;
-                    return NormalizeConstants || immOpA.Value.Equals(immOpB.Value);         // disregard immediate values.
+                case Constant immOpA:
+                    var immOpB = (Constant)opB;
+                    return NormalizeConstants || immOpA.Equals(immOpB);         // disregard immediate values.
 
                 case Address addrOpA:
                     var addrOpB = (Address)opB;
@@ -176,8 +177,8 @@ namespace Reko.Arch.MicrochipPIC.Common
                 case RegisterStorage regOp:
                     return GetRegisterHash(regOp);
 
-                case ImmediateOperand immOp:
-                    return GetConstantHash(immOp.Value);
+                case Constant immOp:
+                    return GetConstantHash(immOp);
 
                 case Address addrOp:
                     return NormalizeConstants ? 1 : addrOp.GetHashCode();

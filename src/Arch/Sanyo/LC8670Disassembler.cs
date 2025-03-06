@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Services;
@@ -178,7 +179,7 @@ namespace Reko.Arch.Sanyo
         {
             if (!dasm.rdr.TryReadByte(out byte b))
                 return false;
-            var imm = ImmediateOperand.Byte(b);
+            var imm = Constant.Byte(b);
             dasm.ops.Add(imm);
             return true;
         }
@@ -201,7 +202,7 @@ namespace Reko.Arch.Sanyo
             // %=#i8,@Ri
             if (!dasm.rdr.TryReadByte(out var b))
                 return false;
-            dasm.ops.Add(ImmediateOperand.Byte(b));
+            dasm.ops.Add(Constant.Byte(b));
             return reg(uInstr, dasm);
         }
 
@@ -220,7 +221,7 @@ namespace Reko.Arch.Sanyo
             if (!d9bit(uInstr, dasm))
                 return false;
             var bit = (sbyte) (uInstr & 7);
-            dasm.ops.Add(ImmediateOperand.SByte(bit));
+            dasm.ops.Add(Constant.SByte(bit));
             return true;
         }
 
@@ -228,7 +229,7 @@ namespace Reko.Arch.Sanyo
         {
             if (!d9(uInstr, dasm))
                 return false;
-            dasm.ops.Add(ImmediateOperand.Int32((int) uInstr & 7));
+            dasm.ops.Add(Constant.Int32((int) uInstr & 7));
             return r8(uInstr, dasm);
         }
 

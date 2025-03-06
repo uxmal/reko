@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
@@ -99,7 +100,7 @@ namespace Reko.Arch.Altera.Nios2
             var imm = i_imm.Read(uInstr);
             dasm.ops.Add(regB);
             dasm.ops.Add(regA);
-            dasm.ops.Add(ImmediateOperand.UInt32(imm));
+            dasm.ops.Add(Constant.UInt32(imm));
             return true;
         }
 
@@ -110,7 +111,7 @@ namespace Reko.Arch.Altera.Nios2
             var imm = i_imm.ReadSigned(uInstr);
             dasm.ops.Add(regB);
             dasm.ops.Add(regA);
-            dasm.ops.Add(ImmediateOperand.Int32(imm));
+            dasm.ops.Add(Constant.Int32(imm));
             return true;
         }
 
@@ -222,7 +223,7 @@ namespace Reko.Arch.Altera.Nios2
             var regC = Registers.GpRegisters[i_regC.Read(uInstr)];
             dasm.ops.Add(regC);
             dasm.ops.Add(regA);
-            dasm.ops.Add(ImmediateOperand.Int32(immSh));
+            dasm.ops.Add(Constant.Int32(immSh));
             return true;
         }
 
@@ -240,7 +241,7 @@ namespace Reko.Arch.Altera.Nios2
         {
             var regA = Registers.GpRegisters[i_regA.Read(uInstr)];
             var immN = (int) sh_amt.Read(uInstr);
-            dasm.ops.Add(ImmediateOperand.Int32(immN));
+            dasm.ops.Add(Constant.Int32(immN));
             dasm.ops.Add(regA);
             return true;
         }

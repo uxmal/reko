@@ -344,7 +344,7 @@ namespace Reko.Arch.Blackfin
             {
                 var imm = bitfield.Read(u);
                 var c = Constant.Create(dt, imm);
-                d.ops.Add(new ImmediateOperand(c));
+                d.ops.Add(c);
                 return true;
             };
         }
@@ -357,7 +357,7 @@ namespace Reko.Arch.Blackfin
             {
                 var imm = bitfield.Read(u);
                 var c = Constant.Create(dt, imm << sh);
-                d.ops.Add(new ImmediateOperand(c));
+                d.ops.Add(c);
                 return true;
             };
         }
@@ -367,7 +367,7 @@ namespace Reko.Arch.Blackfin
             return (u, d) =>
             {
                 var c = Constant.Create(dt, n);
-                d.ops.Add(new ImmediateOperand(c));
+                d.ops.Add(c);
                 return true;
             };
         }
@@ -380,7 +380,7 @@ namespace Reko.Arch.Blackfin
             {
                 var imm = bitfield.ReadSigned(u);
                 var c = Constant.Create(dt, imm);
-                d.ops.Add(new ImmediateOperand(c));
+                d.ops.Add(c);
                 return true;
             };
         }
@@ -393,7 +393,7 @@ namespace Reko.Arch.Blackfin
             {
                 var imm = bitfield.ReadSigned(u);
                 var c = Constant.Create(dt, -imm);
-                d.ops.Add(new ImmediateOperand(c));
+                d.ops.Add(c);
                 return true;
             };
         }

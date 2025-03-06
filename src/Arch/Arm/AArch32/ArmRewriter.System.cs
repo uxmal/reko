@@ -223,7 +223,7 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteUdf()
         {
-            var trapNo = ((ImmediateOperand)instr.Operands[0]).Value;
+            var trapNo = (Constant)instr.Operands[0];
             var intrinsic = m.Fn(CommonOps.Syscall_1, trapNo);
             m.SideEffect(intrinsic);
         }

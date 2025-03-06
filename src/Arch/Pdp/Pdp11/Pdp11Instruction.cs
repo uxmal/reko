@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
@@ -45,9 +46,10 @@ namespace Reko.Arch.Pdp.Pdp11
             MachineInstructionRenderer renderer,
             MachineInstructionRendererOptions options)
         {
-            if (op is ImmediateOperand)
+            if (op is Constant)
             {
-                renderer.WriteString("#" + op.ToString());
+                renderer.WriteChar('#');
+                op.Render(renderer, options);
             }
             else
             {

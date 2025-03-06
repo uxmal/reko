@@ -168,7 +168,7 @@ namespace Reko.Arch.Cray.Ymp
             return (u, d) =>
             {
                 var imm = bitfield.Read(u);
-                d.ops.Add(new ImmediateOperand(Constant.Create(dt, imm)));
+                d.ops.Add(Constant.Create(dt, imm));
                 return true;
             };
         }
@@ -182,7 +182,7 @@ namespace Reko.Arch.Cray.Ymp
             return (u, d) =>
             {
                 var imm = from - bitfield.Read(u);
-                d.ops.Add(new ImmediateOperand(Constant.Create(dt, imm)));
+                d.ops.Add(Constant.Create(dt, imm));
                 return true;
             };
         }
@@ -195,7 +195,7 @@ namespace Reko.Arch.Cray.Ymp
             return (u, d) =>
             {
                 var imm = bitfield.Read(u);
-                d.ops.Add(new ImmediateOperand(Constant.Create(dt, nFrom - imm)));
+                d.ops.Add(Constant.Create(dt, nFrom - imm));
                 return true;
             };
         }
@@ -209,7 +209,7 @@ namespace Reko.Arch.Cray.Ymp
                 return false;
             uint nm = n;
             nm = nm << 16 | m;
-            dasm.ops.Add(ImmediateOperand.Word32(nm));
+            dasm.ops.Add(Constant.Word32(nm));
             return true;
         }
 
@@ -217,7 +217,7 @@ namespace Reko.Arch.Cray.Ymp
         {
             if (!dasm.rdr.TryReadBeUInt32(out uint nm))
                 return false;
-            dasm.ops.Add(ImmediateOperand.Word64(nm));
+            dasm.ops.Add(Constant.Word64(nm));
             return true;
         }
 
@@ -244,25 +244,25 @@ namespace Reko.Arch.Cray.Ymp
 
         internal static bool Imm0(uint word, YmpDisassembler dasm)
         {
-            dasm.ops.Add(ImmediateOperand.Word64(0));
+            dasm.ops.Add(Constant.Word64(0));
             return true;
         }
 
         internal static bool Imm1(uint word, YmpDisassembler dasm)
         {
-            dasm.ops.Add(ImmediateOperand.Word64(1));
+            dasm.ops.Add(Constant.Word64(1));
             return true;
         }
 
         internal static bool Imm_1(uint word, YmpDisassembler dasm)
         {
-            dasm.ops.Add(ImmediateOperand.Word64(-1L));
+            dasm.ops.Add(Constant.Word64(-1L));
             return true;
         }
 
         internal static Mutator<YmpDisassembler> Imm32(uint n)
         {
-            var imm = ImmediateOperand.Word32(n);
+            var imm = Constant.Word32(n);
             return (u, d) =>
             {
                 d.ops.Add(imm);
@@ -271,7 +271,7 @@ namespace Reko.Arch.Cray.Ymp
         }
         internal static Mutator<YmpDisassembler> Imm64(ulong n)
         {
-            var imm = ImmediateOperand.Word64(n);
+            var imm = Constant.Word64(n);
             return (u, d) =>
             {
                 d.ops.Add(imm);

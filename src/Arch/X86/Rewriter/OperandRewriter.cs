@@ -54,7 +54,7 @@ namespace Reko.Arch.X86.Rewriter
             {
             case RegisterStorage reg: return AluRegister(reg);
             case MemoryOperand mem: return CreateMemoryAccess(instr, mem, opWidth);
-            case ImmediateOperand imm: return CreateConstant(imm, (PrimitiveType) opWidth);
+            case Constant imm: return CreateConstant(imm, (PrimitiveType) opWidth);
             case FpuOperand fpu: return FpuRegister(fpu.StNumber);
             case Address addr: return addr;
             default: throw new NotImplementedException($"Operand {op}");
@@ -71,12 +71,12 @@ namespace Reko.Arch.X86.Rewriter
             return binder.EnsureRegister(arch.GetRegister(reg.Domain, new BitRange(0, vt.BitSize))!);
         }
 
-        public Constant CreateConstant(ImmediateOperand imm, PrimitiveType dataWidth)
+        public Constant CreateConstant(Constant imm, PrimitiveType dataWidth)
         {
-            if (dataWidth.BitSize > imm.Width.BitSize)
-                return Constant.Create(dataWidth, imm.Value.ToInt64());
+            if (dataWidth.BitSize > imm.DataType.BitSize)
+                return Constant.Create(dataWidth, imm.ToInt64());
             else
-                return Constant.Create(imm.Width, imm.Value.ToUInt64());
+                return Constant.Create(imm.DataType, imm.ToUInt64());
         }
 
         public Expression CreateMemoryAccess(X86Instruction instr, MemoryOperand mem, DataType dt)
@@ -243,7 +243,7 @@ namespace Reko.Arch.X86.Rewriter
                 PrimitiveType.Create(Domain.Pointer, arch.WordWidth.BitSize), expr);
         }
 
-        public abstract Address ImmediateAsAddress(Address address, ImmediateOperand imm);
+        public abstract Address ImmediateAsAddress(Address address, Constant imm);
     }
 
     public class OperandRewriter16 : OperandRewriter
@@ -252,9 +252,9 @@ namespace Reko.Arch.X86.Rewriter
 
         public override bool IsSegmentedAccessRequired { get { return true; } }
 
-        public override Address ImmediateAsAddress(Address address, ImmediateOperand imm)
+        public override Address ImmediateAsAddress(Address address, Constant imm)
         {
-            return this.arch.ProcessorMode.CreateSegmentedAddress(address.Selector!.Value, imm.Value.ToUInt32())!.Value;
+            return this.arch.ProcessorMode.CreateSegmentedAddress(address.Selector!.Value, imm.ToUInt32())!.Value;
         }
 
         public override MemoryAccess StackAccess(Expression expr, DataType dt)
@@ -271,9 +271,9 @@ namespace Reko.Arch.X86.Rewriter
     {
         public OperandRewriter32(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder binder, IRewriterHost host) : base(arch,m, binder, host) { }
 
-        public override Address ImmediateAsAddress(Address address, ImmediateOperand imm)
+        public override Address ImmediateAsAddress(Address address, Constant imm)
         {
-            return Address.Ptr32(imm.Value.ToUInt32());
+            return Address.Ptr32(imm.ToUInt32());
         }
     }
 
@@ -281,9 +281,9 @@ namespace Reko.Arch.X86.Rewriter
     {
         public OperandRewriter64(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder binder, IRewriterHost host) : base(arch, m, binder, host) { }
 
-        public override Address ImmediateAsAddress(Address address, ImmediateOperand imm)
+        public override Address ImmediateAsAddress(Address address, Constant imm)
         {
-            return Address.Ptr64(imm.Value.ToUInt64());
+            return Address.Ptr64(imm.ToUInt64());
         }
     }
 }

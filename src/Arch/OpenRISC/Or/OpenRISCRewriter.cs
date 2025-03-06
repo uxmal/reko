@@ -174,7 +174,7 @@ namespace Reko.Arch.OpenRISC.Or
 
         private Constant Imm(MachineOperand op)
         {
-            return ((ImmediateOperand) op).Value;
+            return (Constant) op;
         }
 
         private MemoryAccess Mem(MachineOperand op)
@@ -209,7 +209,7 @@ namespace Reko.Arch.OpenRISC.Or
             {
                 return binder.EnsureRegister(reg);
             }
-            return ((ImmediateOperand) op).Value;
+            return (Constant)op;
         }
 
         private void RewriteIntrinsicRegs(IntrinsicProcedure intrinsic)

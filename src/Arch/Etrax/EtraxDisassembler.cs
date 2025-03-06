@@ -21,6 +21,7 @@
 #pragma warning disable IDE1006
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
@@ -181,7 +182,7 @@ namespace Reko.Arch.Etrax
         private static bool j(uint uInstr, EtraxDisassembler dasm)
         {
             var n = low6.Read(uInstr);
-            var imm = ImmediateOperand.Word32(n);
+            var imm = Constant.Word32(n);
             dasm.ops.Add(imm);
             return true;
         }
@@ -192,7 +193,7 @@ namespace Reko.Arch.Etrax
         private static bool i(uint uInstr, EtraxDisassembler dasm)
         {
             var n = low6.ReadSigned(uInstr);
-            var imm = ImmediateOperand.Word32(n);
+            var imm = Constant.Word32(n);
             dasm.ops.Add(imm);
             return true;
         }
@@ -203,7 +204,7 @@ namespace Reko.Arch.Etrax
         private static bool c(uint uInstr, EtraxDisassembler dasm)
         {
             var n = (int)low5.Read(uInstr);
-            var imm = ImmediateOperand.Int32(n);
+            var imm = Constant.Int32(n);
             dasm.ops.Add(imm);
             return true;
         }
@@ -279,7 +280,7 @@ namespace Reko.Arch.Etrax
             }
             else
             {
-                return new ImmediateOperand(imm);
+                return imm;
             }
         }
 
@@ -529,7 +530,7 @@ namespace Reko.Arch.Etrax
                 d.prefix = new MemoryOperand(PrimitiveType.Byte)
                 {
                     Base = baseReg,
-                    Offset = ImmediateOperand.Int32((int)Bits.SignExtend(u, 8)),
+                    Offset = Constant.Int32((int)Bits.SignExtend(u, 8)),
                 };
                 return true;
             });

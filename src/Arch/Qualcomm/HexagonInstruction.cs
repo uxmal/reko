@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
@@ -138,13 +139,13 @@ namespace Reko.Arch.Qualcomm
         {
             switch (operand)
             {
-            case ImmediateOperand imm:
+            case Constant imm:
                 var sb = new StringBuilder();
                 uint u;
                 sb.Append('#');
-                if (imm.Width.Domain == Domain.SignedInt)
+                if (imm.DataType.Domain == Domain.SignedInt)
                 {
-                    var s = imm.Value.ToInt32();
+                    var s = imm.ToInt32();
                     if (s < 0)
                     {
                         sb.Append('-');
@@ -154,7 +155,7 @@ namespace Reko.Arch.Qualcomm
                 }
                 else
                 {
-                    u = imm.Value.ToUInt32();
+                    u = imm.ToUInt32();
                 }
                 sb.AppendFormat("0x{0:X}", u);
                 renderer.WriteString(sb.ToString());

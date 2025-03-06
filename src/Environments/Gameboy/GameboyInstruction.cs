@@ -18,11 +18,9 @@
  */
 #endregion
 
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Reko.Environments.Gameboy
 {
@@ -41,10 +39,10 @@ namespace Reko.Environments.Gameboy
 
         protected override void RenderOperand(MachineOperand operand, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            if (operand is ImmediateOperand imm)
+            if (operand is Constant imm)
             {
-                var number = imm.Value.ToUInt32();
-                if (imm.Width.Domain == Domain.SignedInt)
+                var number = imm.ToUInt32();
+                if (imm.DataType.Domain == Domain.SignedInt)
                 {
                     int sNumber = (short) number;
                     if (sNumber < 0)

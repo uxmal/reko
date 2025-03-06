@@ -105,21 +105,21 @@ namespace Reko.Arch.Mips
 
             internal static bool I(uint wInstr, MipsDisassembler dasm)
             {
-                var op = new ImmediateOperand(Constant.Create(dasm.signedWord, (short) wInstr));
+                var op = Constant.Create(dasm.signedWord, (short) wInstr);
                 dasm.ops.Add(op);
                 return true;
             }
 
             internal static bool U(uint wInstr, MipsDisassembler dasm)
             {
-                var op = new ImmediateOperand(Constant.Create(dasm.arch.WordWidth, (ushort) wInstr));
+                var op = Constant.Create(dasm.arch.WordWidth, (ushort)wInstr);
                 dasm.ops.Add(op);
                 return true;
             }
 
             internal static bool i(uint wInstr, MipsDisassembler dasm)
             {
-                var op = ImmediateOperand.Int16((short) wInstr);
+                var op = Constant.Int16((short) wInstr);
                 dasm.ops.Add(op);
                 return true;
             }
@@ -130,7 +130,7 @@ namespace Reko.Arch.Mips
                 return (u, d) =>
                 {
                     var n = field.Read(u);
-                    d.ops.Add(new ImmediateOperand(Constant.Create(dt, n)));
+                    d.ops.Add(Constant.Create(dt, n));
                     return true;
                 };
             }
@@ -151,7 +151,7 @@ namespace Reko.Arch.Mips
 
             internal static bool B(uint wInstr, MipsDisassembler dasm)
             {
-                var op = ImmediateOperand.Word32((wInstr >> 6) & 0xFFFFF);
+                var op = Constant.Word32((wInstr >> 6) & 0xFFFFF);
                 dasm.ops.Add(op);
                 return true;
             }
@@ -159,7 +159,7 @@ namespace Reko.Arch.Mips
             // Shift amount or sync type
             internal static bool s(uint wInstr, MipsDisassembler dasm)
             {
-                var op = ImmediateOperand.Byte((byte) ((wInstr >> 6) & 0x1F));
+                var op = Constant.Byte((byte) ((wInstr >> 6) & 0x1F));
                 dasm.ops.Add(op);
                 return true;
             }
@@ -234,7 +234,7 @@ namespace Reko.Arch.Mips
             // trap code
             internal static bool T(uint wInstr, MipsDisassembler dasm)
             {
-                var op = ImmediateOperand.Word16((ushort) ((wInstr >> 6) & 0x03FF));
+                var op = Constant.Word16((ushort) ((wInstr >> 6) & 0x03FF));
                 dasm.ops.Add(op);
                 return true;
             }
@@ -267,7 +267,7 @@ namespace Reko.Arch.Mips
             // hardware register, see instruction rdhwr
             internal static bool H(uint wInstr, MipsDisassembler dasm)
             {
-                var op = ImmediateOperand.Byte((byte) ((wInstr >> 11) & 0x1f));
+                var op = Constant.Byte((byte) ((wInstr >> 11) & 0x1f));
                 dasm.ops.Add(op);
                 return true;
             }

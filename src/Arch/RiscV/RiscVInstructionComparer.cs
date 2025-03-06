@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 
 namespace Reko.Arch.RiscV
@@ -55,9 +56,9 @@ namespace Reko.Arch.RiscV
             case RegisterStorage ropA:
                 var ropB = (RegisterStorage) opB;
                 return NormalizeRegisters || ropA == ropB;
-            case ImmediateOperand immA:
-                var immB = (ImmediateOperand) opB;
-                return NormalizeConstants || base.CompareValues(immA.Value, immB.Value);
+            case Constant immA:
+                var immB = (Constant) opB;
+                return NormalizeConstants || base.CompareValues(immA, immB);
             case Address addrA:
                 var addrB = (Address) opB;
                 return NormalizeConstants || addrA == addrB;
@@ -85,10 +86,10 @@ namespace Reko.Arch.RiscV
                         ? 0
                         : rop.Number.GetHashCode(),
 
-                ImmediateOperand immop =>
+                Constant immop =>
                     (NormalizeConstants)
                         ? 0
-                        : base.GetConstantHash(immop.Value),
+                        : base.GetConstantHash(immop),
 
                 Address aop =>
                     (NormalizeConstants)

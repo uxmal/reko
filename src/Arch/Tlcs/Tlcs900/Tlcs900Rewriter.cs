@@ -155,8 +155,8 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 return binder.EnsureRegister(reg);
             case Address addr:
                 return addr;
-            case ImmediateOperand imm:
-                return imm.Value;
+            case Constant imm:
+                return imm;
             case MemoryOperand mem:
                 Expression ea = RewriteSrcEa(mem);
                 var tmp = binder.CreateTemporary(mem.Width);

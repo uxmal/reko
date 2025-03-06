@@ -188,8 +188,8 @@ namespace Reko.Arch.H8
             {
             case RegisterStorage reg:
                 return binder.EnsureRegister(reg);
-            case ImmediateOperand imm:
-                return imm.Value;
+            case Constant imm:
+                return imm;
             case Address addr:
                 return addr;
             case MemoryOperand mem:
@@ -629,7 +629,7 @@ namespace Reko.Arch.H8
             Expression src;
             if (instr.Operands.Length == 2)
             {
-                shift = ((ImmediateOperand) instr.Operands[0]).Value.ToInt32();
+                shift = ((Constant)instr.Operands[0]).ToInt32();
                 src = OpSrc(instr.Operands[1]);
             }
             else

@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 
 namespace Reko.Arch.Altera.Nios2
@@ -38,10 +39,10 @@ namespace Reko.Arch.Altera.Nios2
 
         protected override void RenderOperand(MachineOperand operand, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            if (operand is ImmediateOperand imm)
+            if (operand is Constant imm)
             {
                 renderer.WriteString("0x");
-                renderer.WriteFormat("{0:X}", imm.Value.ToUInt32());
+                renderer.WriteFormat("{0:X}", imm.ToUInt32());
                 return;
             }
             base.RenderOperand(operand, renderer, options);

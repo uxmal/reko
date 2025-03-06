@@ -252,8 +252,8 @@ namespace Reko.Arch.Alpha
                 else
                     return this.binder.EnsureRegister(rop);
             }
-            case ImmediateOperand imm:
-                return imm.Value;
+            case Constant imm:
+                return imm;
             case Address addr:
                 return addr;
             case MemoryOperand mop:

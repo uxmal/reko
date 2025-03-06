@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 
 namespace Reko.Arch.Sanyo
@@ -38,9 +39,9 @@ namespace Reko.Arch.Sanyo
 
         protected override void RenderOperand(MachineOperand operand, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            if (operand is ImmediateOperand imm)
+            if (operand is Constant imm)
             {
-                renderer.WriteFormat("#${0:X2}", imm.Value.ToUInt32());
+                renderer.WriteFormat("#${0:X2}", imm.ToUInt32());
             }
             else
             {

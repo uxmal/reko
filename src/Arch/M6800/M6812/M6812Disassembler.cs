@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
@@ -162,7 +163,7 @@ namespace Reko.Arch.M6800.M6812
         {
             if (!dasm.rdr.TryReadByte(out var imm))
                 return false;
-            dasm.operands.Add(ImmediateOperand.Byte(imm));
+            dasm.operands.Add(Constant.Byte(imm));
             return true;
         }
 
@@ -170,7 +171,7 @@ namespace Reko.Arch.M6800.M6812
         {
             if (!dasm.rdr.TryReadBeUInt16(out var imm))
                 return false;
-            dasm.operands.Add(ImmediateOperand.Word16(imm));
+            dasm.operands.Add(Constant.Word16(imm));
             return true;
         }
 
@@ -178,7 +179,7 @@ namespace Reko.Arch.M6800.M6812
         {
             if (!dasm.rdr.TryReadByte(out var imm))
                 return false;
-            dasm.operands.Add(ImmediateOperand.Byte(imm));
+            dasm.operands.Add(Constant.Byte(imm));
             return true;
         }
 
@@ -302,7 +303,7 @@ namespace Reko.Arch.M6800.M6812
                 {
                     if (!d.rdr.TryReadByte(out var imm))
                         return false;
-                    d.operands.Add(ImmediateOperand.Byte(imm));
+                    d.operands.Add(Constant.Byte(imm));
                 }
                 return true;
             };

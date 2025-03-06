@@ -306,8 +306,8 @@ namespace Reko.Arch.Sparc
             {
                 //$TODO: check relocations for a symbol at instrCur.Address.
                 var dst = binder.EnsureRegister(rDst);
-                var src = (ImmediateOperand)instrCur.Operands[0];
-                m.Assign(dst, Constant.Word32(src.Value.ToUInt32() << 10));
+                var src = (Constant)instrCur.Operands[0];
+                m.Assign(dst, Constant.Word32(src.ToUInt32() << 10));
             }
         }
 

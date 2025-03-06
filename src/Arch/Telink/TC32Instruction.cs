@@ -1,3 +1,4 @@
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using System;
 
@@ -23,9 +24,9 @@ namespace Reko.Arch.Telink
 
         protected override void RenderOperand(MachineOperand operand, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            if (operand is ImmediateOperand imm)
+            if (operand is Constant imm)
             {
-                renderer.WriteFormat("#{0}", imm.Value.ToUInt64());
+                renderer.WriteFormat("#{0}", imm.ToUInt64());
                 return;
             }
             base.RenderOperand(operand, renderer, options);

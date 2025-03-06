@@ -198,8 +198,8 @@ namespace Reko.Arch.MN103
                 return binder.EnsureRegister(reg);
             case Address addr:
                 return addr;
-            case ImmediateOperand imm:
-                var n = imm.Value.ToInt32();    // sign extend.
+            case Constant imm:
+                var n = imm.ToInt32();    // sign extend.
                 return Constant.Word32(n);
             case MemoryOperand mem:
                 var ea = EffectiveAddress(mem);
@@ -313,9 +313,9 @@ namespace Reko.Arch.MN103
         private void RewriteCall()
         {
             var target = (Address) instr.Operands[0];
-            var disp8 = (ImmediateOperand) instr.Operands[2];
+            var disp8 = (Constant) instr.Operands[2];
 
-            SaveRegisters((MultipleRegistersOperand) instr.Operands[1], disp8.Value.ToInt32());
+            SaveRegisters((MultipleRegistersOperand) instr.Operands[1], disp8.ToInt32());
         }
 
         private void RewriteCalls()
@@ -505,7 +505,7 @@ namespace Reko.Arch.MN103
         {
             RestoreRegisters(
                 (MultipleRegistersOperand) instr.Operands[0],
-                ((ImmediateOperand) instr.Operands[1]).Value.ToInt32());
+                ((Constant) instr.Operands[1]).ToInt32());
             m.Return(4, 0);
         }
 
@@ -515,7 +515,7 @@ namespace Reko.Arch.MN103
             m.Assign(tmp, binder.EnsureRegister(Registers.mdr));
             RestoreRegisters(
                 (MultipleRegistersOperand) instr.Operands[0],
-                ((ImmediateOperand) instr.Operands[1]).Value.ToInt32());
+                ((Constant) instr.Operands[1]).ToInt32());
             m.Goto(tmp);
         }
 

@@ -98,7 +98,7 @@ namespace Reko.Environments.Ps3
             instr = dasm.DisassembleInstruction();
             if (instr.Mnemonic != Mnemonic.oris)
                 return null;
-            immOp = (ImmediateOperand) instr.op3;
+            immOp = (Constant) instr.op3;
             uint aFuncDesc = immOp.Value.ToUInt32() << 16;
 
             //lwz r12,nnnn(r12)

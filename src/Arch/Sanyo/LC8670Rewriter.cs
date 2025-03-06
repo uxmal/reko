@@ -146,8 +146,8 @@ namespace Reko.Arch.Sanyo
             {
             case RegisterStorage reg:
                 return binder.EnsureRegister(reg);
-            case ImmediateOperand imm:
-                return imm.Value;
+            case Constant imm:
+                return imm;
             case MemoryOperand mem:
                 if (mem.Base is not null)
                 {

@@ -126,7 +126,7 @@ namespace Reko.Arch.X86.Rewriter
         {
             if (instrCur.Operands[0] is RegisterStorage r &&
                 r == arch.StackRegister &&
-                instrCur.Operands[1] is ImmediateOperand)
+                instrCur.Operands[1] is Constant)
             {
                 m.SideEffect(m.Fn(alignStack_intrinsic.MakeInstance(r.Width), SrcOp(0)));
                 return;
@@ -550,8 +550,8 @@ namespace Reko.Arch.X86.Rewriter
             var sp = StackPointer();
             m.Assign(bp, MaybeSlice(bp.DataType, sp));
             var cbExtraSavedBytes = 
-                instrCur.dataWidth.Size * ((ImmediateOperand)instrCur.Operands[1]).Value.ToInt32() +
-                ((ImmediateOperand)instrCur.Operands[0]).Value.ToInt32();
+                instrCur.dataWidth.Size * ((Constant)instrCur.Operands[1]).ToInt32() +
+                ((Constant)instrCur.Operands[0]).ToInt32();
             if (cbExtraSavedBytes != 0)
             {
                 m.Assign(sp, m.ISubS(sp, cbExtraSavedBytes));
@@ -877,7 +877,7 @@ namespace Reko.Arch.X86.Rewriter
                     dasm.MoveNext();
                     MachineOperand targetOperand = dasm.Current.Operands[0];
 
-                    if (targetOperand is ImmediateOperand immOperand)
+                    if (targetOperand is Constant immOperand)
                     {
                         targetOperand = orw.ImmediateAsAddress(instrCur.Address, immOperand);
                     }
@@ -894,8 +894,8 @@ namespace Reko.Arch.X86.Rewriter
                 if (p1 is not null &&
                     dasm.TryPeek(2, out var p2) &&
                     dasm.TryPeek(3, out var p3) &&
-                    (p1.Mnemonic == Mnemonic.push && (p1.Operands[0] is ImmediateOperand)) &&
-                    (p2!.Mnemonic == Mnemonic.push && (p2.Operands[0] is ImmediateOperand)) &&
+                    (p1.Mnemonic == Mnemonic.push && (p1.Operands[0] is Constant)) &&
+                    (p2!.Mnemonic == Mnemonic.push && (p2.Operands[0] is Constant)) &&
                     (p3!.Mnemonic == Mnemonic.jmp && (p3.Operands[0] is Address)))
                 {
                     // That's actually a far call, but the callee thinks its a near call.

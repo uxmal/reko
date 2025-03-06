@@ -113,7 +113,7 @@ namespace Reko.Arch.PowerPC
         {
             var addr =
                 instr.Address +
-                (4 + (((ImmediateOperand) instr.Operands[1]).Value.ToInt32() << 4));
+                (4 + (((Constant)instr.Operands[1]).ToInt32() << 4));
             var opD = RewriteOperand(0);
             m.Assign(opD, addr);
         }

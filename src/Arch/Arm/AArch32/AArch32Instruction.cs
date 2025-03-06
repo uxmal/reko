@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
@@ -129,8 +130,8 @@ namespace Reko.Arch.Arm.AArch32
             if (ShiftType != Mnemonic.Invalid)
             {
                 if (ShiftType != Mnemonic.lsl ||
-                    ShiftValue is not ImmediateOperand imm ||
-                    !imm.Value.IsZero)
+                    ShiftValue is not Constant imm ||
+                    !imm.IsZero)
                 {
                     renderer.WriteChar(',');
                     renderer.WriteMnemonic(ShiftType.ToString());
@@ -233,18 +234,18 @@ namespace Reko.Arch.Arm.AArch32
         {
             switch (op)
             {
-            case ImmediateOperand imm:
-                if (imm.Value.IsReal)
+            case Constant imm:
+                if (imm.IsReal)
                 {
-                    renderer.WriteFormat("#{0}", imm.Value.ToString());
+                    renderer.WriteFormat("#{0}", imm.ToString());
                 }
                 else
                 {
-                    int v = imm.Value.ToInt32();
+                    int v = imm.ToInt32();
                     if (0 <= v && v <= 9)
-                        renderer.WriteFormat($"#{imm.Value.ToInt32()}");
+                        renderer.WriteFormat($"#{imm.ToInt32()}");
                     else
-                        renderer.WriteFormat($"#&{imm.Value.ToUInt64():X}");
+                        renderer.WriteFormat($"#&{imm.ToUInt64():X}");
                 }
                 break;
             case Address aop:

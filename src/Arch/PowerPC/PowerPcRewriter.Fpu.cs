@@ -261,7 +261,7 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteMtfsf()
         {
-            var op1 = ((ImmediateOperand)instr.Operands[0]).Value;
+            var op1 = (Constant)instr.Operands[0];
             var op2 = RewriteOperand(1);
             m.SideEffect(
                 m.Fn(mtfsf.MakeInstance(op2.DataType),

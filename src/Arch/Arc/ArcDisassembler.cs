@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
@@ -150,7 +151,7 @@ namespace Reko.Arch.Arc
                 {
                     if (!d.TryReadLongImmediate(out uint limm))
                         return false;
-                    d.ops.Add(ImmediateOperand.Word32(limm));
+                    d.ops.Add(Constant.Word32(limm));
                 }
                 else
                 {
@@ -213,7 +214,7 @@ namespace Reko.Arch.Arc
             return (u, d) =>
             {
                 var imm = Bitfield.ReadSignedFields(fields, u);
-                d.ops.Add(ImmediateOperand.Int32(imm));
+                d.ops.Add(Constant.Int32(imm));
                 return true;
             };
         }
@@ -225,7 +226,7 @@ namespace Reko.Arch.Arc
             return (u, d) =>
             {
                 var imm = field.ReadSigned(u) << shift;
-                d.ops.Add(ImmediateOperand.Int32(imm));
+                d.ops.Add(Constant.Int32(imm));
                 return true;
             };
         }
@@ -238,7 +239,7 @@ namespace Reko.Arch.Arc
             return (u, d) =>
             {
                 var imm = field.Read(u);
-                d.ops.Add(ImmediateOperand.Word32((int) imm));
+                d.ops.Add(Constant.Word32((int) imm));
                 return true;
             };
         }
@@ -251,7 +252,7 @@ namespace Reko.Arch.Arc
             {
                 //$REVIEW: could be made more efficient by avoiding the extra shift.
                 var imm = field.Read(u) << shift;
-                d.ops.Add(ImmediateOperand.Word32((int) imm));
+                d.ops.Add(Constant.Word32((int) imm));
                 return true;
             };
         }
@@ -261,7 +262,7 @@ namespace Reko.Arch.Arc
         {
             return (u, d) =>
             {
-                var imm = ImmediateOperand.Int32(n);
+                var imm = Constant.Int32(n);
                 d.ops.Add(imm);
                 return true;
             };
@@ -605,7 +606,7 @@ namespace Reko.Arch.Arc
                     if (!B(uInstr, dasm))
                         return false;
                     var uimm6 = genopUimm6.Read(uInstr);
-                    dasm.ops.Add(ImmediateOperand.Word32(uimm6));
+                    dasm.ops.Add(Constant.Word32(uimm6));
                     return true;
                 case 2: // REG_S12IMM
                     if (use3ops && !B(uInstr, dasm))
@@ -613,7 +614,7 @@ namespace Reko.Arch.Arc
                     if (!B(uInstr, dasm))
                         return false;
                     var simm12 = Bitfield.ReadSignedFields(genopSimm12, uInstr);
-                    dasm.ops.Add(ImmediateOperand.Int32(simm12));
+                    dasm.ops.Add(Constant.Int32(simm12));
                     return true;
                 default: // COND_REG
                     if (use3ops && !B(uInstr, dasm))
@@ -627,7 +628,7 @@ namespace Reko.Arch.Arc
                     if (Bits.IsBitSet(uInstr, 5))
                     {
                         uimm6 = genopUimm6.Read(uInstr);
-                        dasm.ops.Add(ImmediateOperand.Word32(uimm6));
+                        dasm.ops.Add(Constant.Word32(uimm6));
                     }
                     else
                     {

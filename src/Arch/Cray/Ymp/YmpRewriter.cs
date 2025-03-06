@@ -135,8 +135,8 @@ namespace Reko.Arch.Cray.Ymp
             case RegisterStorage rop:
                 var reg = this.binder.EnsureRegister(rop);
                 return reg;
-            case ImmediateOperand imm:
-                return imm.Value;
+            case Constant imm:
+                return imm;
             case Address addr:
                 return addr;
             default:
@@ -165,7 +165,7 @@ namespace Reko.Arch.Cray.Ymp
 
         private void RewriteLmask()
         {
-            var bits = ((ImmediateOperand) instrCur.Operands[1]).Value;
+            var bits = (Constant) instrCur.Operands[1];
             var mask = Bits.Mask(0, bits.ToInt32());
             var dst = Op(0);
             m.Assign(dst, Constant.Create(dst.DataType, mask));

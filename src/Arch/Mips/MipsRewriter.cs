@@ -382,8 +382,8 @@ namespace Reko.Arch.Mips
             {
             case RegisterStorage regOp:
                 return binder.EnsureRegister(regOp);
-            case ImmediateOperand immOp:
-                return immOp.Value;
+            case Constant immOp:
+                return immOp;
             case IndirectOperand indOp:
                 Expression ea;
                 Identifier baseReg = binder.EnsureRegister(indOp.Base);
@@ -442,8 +442,8 @@ namespace Reko.Arch.Mips
                 if (regOp.Number == 0)
                     return Constant.Zero(regOp.DataType);
                 return binder.EnsureRegister(regOp);
-            case ImmediateOperand immOp:
-                return immOp.Value;
+            case Constant immOp:
+                return immOp;
             case Address addrOp:
                 return addrOp;
             case IndirectOperand indOp:

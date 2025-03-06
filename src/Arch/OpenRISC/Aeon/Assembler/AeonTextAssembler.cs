@@ -450,7 +450,7 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
             var symbol = (string) tSymbol.Value!;
             if (asm.Equates.TryGetValue(symbol, out var imm))
             {
-                return imm.Value.ToUInt32() >> 16;
+                return imm.ToUInt32() >> 16;
             }
             var reloc = new Relocation(asm.CurrentAddress, symbol, relocationType);
             asm.AddRelocation(reloc);
@@ -469,7 +469,7 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
             var symbol = (string) tSymbol.Value!;
             if (asm.Equates.TryGetValue(symbol, out var imm))
             {
-                return imm.Value.ToUInt32();
+                return imm.ToUInt32();
             }
             var reloc = new Relocation(asm.CurrentAddress, symbol, relocationType);
             asm.AddRelocation(reloc);

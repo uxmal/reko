@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
@@ -53,9 +54,9 @@ namespace Reko.Arch.Rl78
             case RegisterStorage reg:
                 renderer.WriteString(reg.Name);
                 return;
-            case ImmediateOperand imm:
+            case Constant imm:
                 renderer.WriteChar('#');
-                var sImm = imm.Value.ToUInt32().ToString("X");
+                var sImm = imm.ToUInt32().ToString("X");
                 renderer.WriteString(sImm);
                 return;
             case MemoryOperand mem:

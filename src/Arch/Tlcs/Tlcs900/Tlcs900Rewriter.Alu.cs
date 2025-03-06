@@ -73,7 +73,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
 
         private void RewriteChg()
         {
-            var bit = ((ImmediateOperand)instr.Operands[0]).Value.ToInt32();
+            var bit = ((Constant)instr.Operands[0]).ToInt32();
             var src = RewriteSrc(instr.Operands[1]);
             var dst = RewriteDst(instr.Operands[1], src, (a, b) => m.Xor(b, 1u << bit));
         }

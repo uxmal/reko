@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
@@ -53,9 +54,9 @@ namespace Reko.Arch.Infineon
         {
             switch (operand)
             {
-            case ImmediateOperand imm:
+            case Constant imm:
                 renderer.WriteString("#0x");
-                renderer.WriteString(imm.Value.ToUInt32().ToString("X"));
+                renderer.WriteString(imm.ToUInt32().ToString("X"));
                 return;
             }
             base.RenderOperand(operand, renderer, options);

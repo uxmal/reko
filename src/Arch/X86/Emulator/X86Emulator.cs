@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Diagnostics;
 using Reko.Core.Emulation;
+using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Loading;
 using Reko.Core.Machine;
@@ -289,8 +290,8 @@ namespace Reko.Arch.X86.Emulator
             {
                 return (TWord) ReadRegister(r);
             }
-            if (op is ImmediateOperand i)
-                return i.Value.ToUInt32();
+            if (op is Constant i)
+                return i.ToUInt32();
             if (op is Address a)
                 return a.ToUInt32();
             if (op is MemoryOperand m)
@@ -358,9 +359,9 @@ namespace Reko.Arch.X86.Emulator
             {
                 return addr;
             }
-            else if (op is ImmediateOperand immediate)
+            else if (op is Constant immediate)
             {
-                var addrNew = InstructionPointer.NewOffset(immediate.Value.ToUInt64());
+                var addrNew = InstructionPointer.NewOffset(immediate.ToUInt64());
                 return addrNew;
             }
             else

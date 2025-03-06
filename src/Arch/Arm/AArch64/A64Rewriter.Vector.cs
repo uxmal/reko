@@ -41,7 +41,7 @@ namespace Reko.Arch.Arm.AArch64
                     var arrayLeft = MakeArrayType(instr.Operands[1], domain);
                     var tmpLeft = binder.CreateTemporary(arrayLeft);
                     Expression? tmpRight = null;
-                    if (instr.Operands[2] is not ImmediateOperand imm)
+                    if (instr.Operands[2] is not Constant imm)
                     {
                         var arrayRight = MakeArrayType(instr.Operands[2], domain);
                         tmpRight = binder.CreateTemporary(arrayRight);
@@ -339,7 +339,7 @@ namespace Reko.Arch.Arm.AArch64
         {
             var rHi = (RegisterStorage) instr.Operands[1];
             var rLo = (RegisterStorage) instr.Operands[1];
-            var lsb = ((ImmediateOperand) instr.Operands[3]).Value;
+            var lsb = (Constant)instr.Operands[3];
             if (rHi == rLo) // ROR
             {
                 var op = binder.EnsureRegister(rHi);

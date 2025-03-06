@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Types;
@@ -200,7 +201,7 @@ namespace Reko.Arch.Arm.AArch32
             public override AArch32Instruction Decode(uint wInstr, T32Disassembler dasm)
             {
                 var instr = base.Decode(wInstr, dasm);
-                if (instr.Operands[2] is ImmediateOperand imm && imm.Value.IsIntegerZero)
+                if (instr.Operands[2] is Constant imm && imm.IsIntegerZero)
                 {
                     instr.Mnemonic = Mnemonic.mov;
                 }
@@ -240,22 +241,22 @@ namespace Reko.Arch.Arm.AArch32
             {
                 // A hack -- we patch up the output of the regular decoder.
                 var instr = base.Decode(wInstr, dasm);
-                ImmediateOperand opLsb;
-                ImmediateOperand opMsb;
+                Constant opLsb;
+                Constant opMsb;
                 if (instr.Operands.Length > 3)
                 {
-                    opMsb = (ImmediateOperand)instr.Operands[3];
-                    opLsb = (ImmediateOperand)instr.Operands[2];
+                    opMsb = (Constant)instr.Operands[3];
+                    opLsb = (Constant)instr.Operands[2];
                 }
                 else
                 {
-                    opMsb = (ImmediateOperand)instr.Operands[2];
-                    opLsb = (ImmediateOperand)instr.Operands[1];
+                    opMsb = (Constant)instr.Operands[2];
+                    opLsb = (Constant)instr.Operands[1];
                 }
-                int width = opMsb.Value.ToInt32() - opLsb.Value.ToInt32() + 1;
+                int width = opMsb.ToInt32() - opLsb.ToInt32() + 1;
                 if (width <= 0)
                     return dasm.CreateInvalidInstruction();
-                var opWidth = ImmediateOperand.Word32(width);
+                var opWidth = Constant.Word32(width);
                 if (instr.Operands.Length > 3)
                     instr.Operands[3] = opWidth;
                 else

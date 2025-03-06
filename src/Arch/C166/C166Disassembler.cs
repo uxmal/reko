@@ -387,8 +387,8 @@ namespace Reko.Arch.C166
                 var aa = (byte) aaField.Read(u);
                 var dd = (byte) ddField.Read(u);
                 d.ops.Add(qq);
-                d.ops.Add(ImmediateOperand.Byte(aa));
-                d.ops.Add(ImmediateOperand.Byte(dd));
+                d.ops.Add(Constant.Byte(aa));
+                d.ops.Add(Constant.Byte(dd));
                 return true;
             };
         }
@@ -421,7 +421,7 @@ namespace Reko.Arch.C166
             return (uint uInstr, C166Disassembler dasm) =>
             {
                 var u = (uInstr >> bitPos) & 0xF;
-                dasm.ops.Add(new ImmediateOperand(Constant.Create(dt, u)));
+                dasm.ops.Add(Constant.Create(dt, u));
                 return true;
             };
         }
@@ -431,13 +431,13 @@ namespace Reko.Arch.C166
 
         private static bool data3(uint uInstr, C166Disassembler dasm)
         {
-            dasm.ops.Add(ImmediateOperand.Byte((byte) ((uInstr >> 8) & 0b111)));
+            dasm.ops.Add(Constant.Byte((byte) ((uInstr >> 8) & 0b111)));
             return true;
         }
 
         private static bool data2_12(uint uInstr, C166Disassembler dasm)
         {
-            dasm.ops.Add(ImmediateOperand.Byte((byte) ((uInstr >> 12) & 0b11)));
+            dasm.ops.Add(Constant.Byte((byte) ((uInstr >> 12) & 0b11)));
             return true;
         }
 
@@ -445,7 +445,7 @@ namespace Reko.Arch.C166
         {
             if (!dasm.rdr.TryReadLeUInt16(out ushort data))
                 return false;
-            dasm.ops.Add(ImmediateOperand.Byte((byte)data));
+            dasm.ops.Add(Constant.Byte((byte)data));
             return true;
         }
 
@@ -453,7 +453,7 @@ namespace Reko.Arch.C166
         {
             if (!dasm.rdr.TryReadLeUInt16(out ushort data))
                 return false;
-            dasm.ops.Add(ImmediateOperand.Word16(data));
+            dasm.ops.Add(Constant.Word16(data));
             return true;
         }
 
@@ -462,7 +462,7 @@ namespace Reko.Arch.C166
         /// </summary>
         private static bool seg(uint uInstr, C166Disassembler dasm)
         {
-            dasm.ops.Add(ImmediateOperand.Byte((byte) (uInstr >> 8)));
+            dasm.ops.Add(Constant.Byte((byte) (uInstr >> 8)));
             return true;
         }
 
@@ -481,7 +481,7 @@ namespace Reko.Arch.C166
         {
             if ((uInstr & 0x100) != 0)
                 return false;
-            dasm.ops.Add(ImmediateOperand.Byte((byte) (uInstr >> 9)));
+            dasm.ops.Add(Constant.Byte((byte) (uInstr >> 9)));
             return true;
         }
 
@@ -489,7 +489,7 @@ namespace Reko.Arch.C166
         {
             if ((uInstr & 0x100) != 0)
                 return false;
-            var page = ImmediateOperand.Word16((ushort)Bits.ZeroExtend(uInstr >> 16, 10));
+            var page = Constant.Word16((ushort)Bits.ZeroExtend(uInstr >> 16, 10));
             dasm.ops.Add(page);
             return true;
         }

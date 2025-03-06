@@ -125,7 +125,7 @@ namespace Reko.Arch.OpenRISC.Or
                 }
                 else
                 {
-                    d.ops.Add(ImmediateOperand.UInt32((uint) iSpr));
+                    d.ops.Add(Constant.UInt32((uint) iSpr));
                 }
                 return true;
             };
@@ -137,7 +137,7 @@ namespace Reko.Arch.OpenRISC.Or
             return (u, d) =>
             {
                 var n = field.ReadSigned(u);
-                d.ops.Add(new ImmediateOperand(Constant.Create(d.arch.SignedWordWidth, n)));
+                d.ops.Add(Constant.Create(d.arch.SignedWordWidth, n));
                 return true;
             };
         }
@@ -150,7 +150,7 @@ namespace Reko.Arch.OpenRISC.Or
             return (u, d) =>
             {
                 var n = field.ReadSigned(u);
-                d.ops.Add(new ImmediateOperand(Constant.Create(d.arch.WordWidth, n)));
+                d.ops.Add(Constant.Create(d.arch.WordWidth, n));
                 return true;
             };
         }
@@ -164,7 +164,7 @@ namespace Reko.Arch.OpenRISC.Or
             return (u, d) =>
             {
                 var n = field.Read(u);
-                d.ops.Add(new ImmediateOperand(Constant.Create(d.arch.WordWidth, n)));
+                d.ops.Add(Constant.Create(d.arch.WordWidth, n));
                 return true;
             };
         }
@@ -177,7 +177,7 @@ namespace Reko.Arch.OpenRISC.Or
             return (u, d) =>
             {
                 var n = Bitfield.ReadFields(bitfields, u);
-                d.ops.Add(new ImmediateOperand(Constant.Create(d.arch.WordWidth, n)));
+                d.ops.Add(Constant.Create(d.arch.WordWidth, n));
                 return true;
             };
         }

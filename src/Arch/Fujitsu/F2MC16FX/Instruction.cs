@@ -45,9 +45,9 @@ namespace Reko.Arch.Fujitsu.F2MC16FX
         {
             switch (operand)
             {
-            case ImmediateOperand imm:
+            case Constant imm:
                 renderer.WriteChar('#');
-                RenderUnsignedConstant(imm.Value, renderer);
+                RenderUnsignedConstant(imm, renderer);
                 return;
             }
             base.RenderOperand(operand, renderer, options);

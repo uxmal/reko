@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
@@ -88,9 +89,9 @@ namespace Reko.Arch.SuperH
         {
             switch (op)
             {
-            case ImmediateOperand immOp:
+            case Constant:
                 renderer.WriteChar('#');
-                immOp.Render(renderer, options);
+                op.Render(renderer, options);
                 return;
             case MemoryOperand memOp:
                 if (memOp.mode == AddressingMode.PcRelativeDisplacement)

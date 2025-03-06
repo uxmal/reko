@@ -207,7 +207,7 @@ namespace Reko.Arch.Infineon
             if (Registers.CoreRegisters.TryGetValue(cr, out var reg))
                 dasm.ops.Add(reg);
             else
-                dasm.ops.Add(ImmediateOperand.UInt16((ushort) cr));
+                dasm.ops.Add(Constant.UInt16((ushort) cr));
             return true;
         }
 
@@ -345,7 +345,7 @@ namespace Reko.Arch.Infineon
             return (u, d) =>
             {
                 var value = bitfield.Read(u);
-                var op = new ImmediateOperand(Constant.Create(dt, value));
+                var op = Constant.Create(dt, value);
                 d.ops.Add(op);
                 return true;
             };
@@ -366,7 +366,7 @@ namespace Reko.Arch.Infineon
             return (u, d) =>
             {
                 var value = bitfield.ReadSigned(u);
-                var op = new ImmediateOperand(Constant.Create(dt, value));
+                var op = Constant.Create(dt, value);
                 d.ops.Add(op);
                 return true;
             };
@@ -380,7 +380,7 @@ namespace Reko.Arch.Infineon
             return (u, d) =>
             {
                 var value = Bitfield.ReadFields(fields, u);
-                var op = new ImmediateOperand(Constant.Create(dt, value));
+                var op = Constant.Create(dt, value);
                 d.ops.Add(op);
                 return true;
             };
@@ -393,7 +393,7 @@ namespace Reko.Arch.Infineon
             return (u, d) =>
             {
                 var value = bitfield.Read(u) << shift;
-                var op = new ImmediateOperand(Constant.Create(dt, value));
+                var op = Constant.Create(dt, value);
                 d.ops.Add(op);
                 return true;
             };

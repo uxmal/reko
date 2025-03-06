@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System.Text;
@@ -59,10 +60,10 @@ namespace Reko.Arch.H8
 
         protected override void RenderOperand(MachineOperand operand, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            if (operand is ImmediateOperand imm)
+            if (operand is Constant imm)
             {
                 renderer.WriteString("#0x");
-                imm.Render(renderer, options);
+                operand.Render(renderer, options);
             }
             else
             {

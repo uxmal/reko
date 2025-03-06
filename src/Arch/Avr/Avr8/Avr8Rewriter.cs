@@ -205,7 +205,7 @@ namespace Reko.Arch.Avr.Avr8
         private void RewriteIO(int iRegOp, int iPortOp, bool read)
         {
             var reg = RewriteOp(iRegOp);
-            var port = ((ImmediateOperand)instr.Operands[iPortOp]).Value.ToByte();
+            var port = ((Constant)instr.Operands[iPortOp]).ToByte();
             if (port == 0x3F)
             {
                 var psreg = binder.EnsureRegister(Registers.sreg);
@@ -269,8 +269,8 @@ namespace Reko.Arch.Avr.Avr8
             {
             case RegisterStorage rop:
                 return binder.EnsureRegister(rop);
-            case ImmediateOperand iop:
-                return iop.Value;
+            case Constant iop:
+                return iop;
             case Address aop:
                 return aop;
             }
@@ -325,7 +325,7 @@ namespace Reko.Arch.Avr.Avr8
         {
             var operand = instr.Operands[0];
             var regPair = RegisterPair(operand);
-            var imm = ((ImmediateOperand)instr.Operands[1]).Value;
+            var imm = (Constant)instr.Operands[1];
             m.Assign(regPair, fn(regPair, Constant.Word16(imm.ToUInt16())));
             EmitFlags(regPair, ArithFlags);
         }

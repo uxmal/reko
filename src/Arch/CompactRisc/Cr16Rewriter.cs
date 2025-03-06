@@ -231,8 +231,8 @@ namespace Reko.Arch.CompactRisc
                 return binder.EnsureRegister(reg);
             case SequenceStorage seq:
                 return binder.EnsureSequence(seq.DataType, seq.Elements);
-            case ImmediateOperand imm:
-                return imm.Value;
+            case Constant imm:
+                return imm;
             case Address addr:
                 return addr;
             case MemoryOperand mem:
@@ -321,9 +321,9 @@ namespace Reko.Arch.CompactRisc
         private void RewriteAshu(PrimitiveType dt)
         {
             var left = MaybeSlice(1, dt);
-            if (instr.Operands[0] is ImmediateOperand cnt)
+            if (instr.Operands[0] is Constant cnt)
             {
-                var value = cnt.Value.ToInt32();
+                var value = cnt.ToInt32();
                 Expression src;
                 if (value >= 0)
                 {
@@ -498,9 +498,9 @@ namespace Reko.Arch.CompactRisc
         private void RewriteLsh(PrimitiveType dt)
         {
             var left = MaybeSlice(1, dt);
-            if (instr.Operands[0] is ImmediateOperand cnt)
+            if (instr.Operands[0] is Constant cnt)
             {
-                var value = cnt.Value.ToInt32();
+                var value = cnt.ToInt32();
                 if (value >= 0)
                 {
                     Assign(Operand(1), m.Shl(left, value));
@@ -521,9 +521,9 @@ namespace Reko.Arch.CompactRisc
         private void RewriteMov(PrimitiveType dt)
         {
             Expression src;
-            if (instr.Operands[0] is ImmediateOperand imm)
+            if (instr.Operands[0] is Constant imm)
             {
-                src = Constant.Create(dt, imm.Value.ToUInt32());
+                src = Constant.Create(dt, imm.ToUInt32());
             }
             else
             {
@@ -612,7 +612,7 @@ namespace Reko.Arch.CompactRisc
         {
             var sp = binder.EnsureRegister(arch.StackRegister);
             var ireg = (int) ((RegisterStorage) instr.Operands[1]).Domain;
-            var count = ((ImmediateOperand) instr.Operands[0]).Value.ToInt32();
+            var count = ((Constant) instr.Operands[0]).ToInt32();
             for (int i = count-1; i >= 0; --i)
             {
                 var reg = arch.GetRegister((StorageDomain) ((ireg + i) & 0xF), default)!;
@@ -632,7 +632,7 @@ namespace Reko.Arch.CompactRisc
         {
             var sp = binder.EnsureRegister(arch.StackRegister);
             var ireg = (int)((RegisterStorage)instr.Operands[1]).Domain;
-            var count = ((ImmediateOperand) instr.Operands[0]).Value.ToInt32();
+            var count = ((Constant) instr.Operands[0]).ToInt32();
             for (int i = 0; i < count; ++i)
             {
                 var reg = arch.GetRegister((StorageDomain) ((ireg + i) & 0xF), default)!;

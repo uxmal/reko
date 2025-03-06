@@ -61,11 +61,10 @@ namespace Reko.Arch.Xtensa
         {
             iclass = InstrClass.ConditionalTransfer;
             var src = RewriteOp(instr.Operands[0]);
-            var immOp = instr.Operands[1] as ImmediateOperand;
             Expression mask;
-            if (immOp != null)
+            if (instr.Operands[1] is Constant immOp)
             {
-                mask = Constant.Word32(1 << immOp.Value.ToInt32());
+                mask = Constant.Word32(1 << immOp.ToInt32());
             }
             else
             {

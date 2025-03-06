@@ -170,8 +170,8 @@ namespace Reko.Arch.LatticeMico
                     return Constant.Create(rop.DataType, 0);
                 else
                     return binder.EnsureRegister(rop);
-            case ImmediateOperand imm:
-                return imm.Value;
+            case Constant imm:
+                return imm;
             case MemoryOperand mem:
                 Expression ea;
                 if (mem.Base.Number == 0)
@@ -252,7 +252,7 @@ namespace Reko.Arch.LatticeMico
         private void RewriteHiImm(Func<Expression, Expression, Expression> fn)
         {
             var src1 = Rewrite(instr.Operands[1]);
-            var imm = ((ImmediateOperand)instr.Operands[2]).Value;
+            var imm = (Constant)instr.Operands[2];
             var dst = Rewrite(instr.Operands[0]);
             m.Assign(dst, fn(src1, Constant.Word32(imm.ToInt32() << 16)));
         }

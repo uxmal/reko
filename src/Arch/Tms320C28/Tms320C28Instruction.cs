@@ -48,9 +48,9 @@ namespace Reko.Arch.Tms320C28
         {
             switch (operand)
             {
-            case ImmediateOperand imm:
+            case Constant imm:
                 renderer.WriteChar('#');
-                WriteNumber(imm.Value, renderer);
+                WriteNumber(imm, renderer);
                 return;
             }
             base.RenderOperand(operand, renderer, options);

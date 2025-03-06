@@ -100,7 +100,7 @@ namespace Reko.Arch.Arm.AArch64
         private void RewriteTb(Func<Expression,Expression> fn)
         {
             var reg = RewriteOp(instr.Operands[0]);
-            int sh = ((ImmediateOperand)instr.Operands[1]).Value.ToInt32();
+            int sh = ((Constant)instr.Operands[1]).ToInt32();
             var mask = Constant.Create(reg.DataType, 1ul << sh);
             var dst = (Address)instr.Operands[2];
             m.Branch(fn(m.And(reg, mask)), dst, instr.InstructionClass);

@@ -151,8 +151,8 @@ namespace Reko.Arch.Blackfin
             {
             case RegisterStorage rop:
                 return binder.EnsureRegister(rop);
-            case ImmediateOperand imm:
-                return imm.Value;
+            case Constant imm:
+                return imm;
             case Address addr:
                 return addr;
             case MemoryOperand mem:
@@ -173,8 +173,8 @@ namespace Reko.Arch.Blackfin
                 var dst = binder.EnsureRegister(rop);
                 m.Assign(dst, src);
                 return dst;
-            case ImmediateOperand imm:
-                return imm.Value;
+            case Constant imm:
+                return imm;
             case MemoryOperand mem:
                 var ea = EffectiveAddress(mem);
                 m.Assign(m.Mem(mem.Width, ea), src);
@@ -304,7 +304,7 @@ namespace Reko.Arch.Blackfin
 
         private void RewriteLink()
         {
-            var localVars = ((ImmediateOperand) instr.Operands[0]).Value.ToInt32();
+            var localVars = ((Constant) instr.Operands[0]).ToInt32();
             var sp = binder.EnsureRegister(Registers.SP);
             var fp = binder.EnsureRegister(Registers.FP);
             // Allocate slots for RETS and old FP.

@@ -394,7 +394,7 @@ namespace Reko.Arch.Avr.Avr32
             return (u, d) =>
             {
                 var imm = bitfield.ReadSigned(u);
-                d.ops.Add(ImmediateOperand.Word32(imm));
+                d.ops.Add(Constant.Word32(imm));
                 return true;
             };
         }
@@ -408,7 +408,7 @@ namespace Reko.Arch.Avr.Avr32
             return (u, d) =>
             {
                 var imm = Bitfield.ReadSignedFields(fields, u);
-                d.ops.Add(ImmediateOperand.Word32(imm));
+                d.ops.Add(Constant.Word32(imm));
                 return true;
             };
         }
@@ -419,7 +419,7 @@ namespace Reko.Arch.Avr.Avr32
             return (u, d) =>
             {
                 var imm = bitfield.ReadSigned(u) << shift;
-                d.ops.Add(ImmediateOperand.Word32(imm));
+                d.ops.Add(Constant.Word32(imm));
                 return true;
             };
         }
@@ -431,7 +431,7 @@ namespace Reko.Arch.Avr.Avr32
             return (u, d) =>
             {
                 var imm = bitfield.Read(u);
-                d.ops.Add(new ImmediateOperand(Constant.Create(dt, imm)));
+                d.ops.Add(Constant.Create(dt, imm));
                 return true;
             };
         }
@@ -448,7 +448,7 @@ namespace Reko.Arch.Avr.Avr32
             return (u, d) =>
             {
                 var imm = bitfield.Read(u) << shift;
-                d.ops.Add(new ImmediateOperand(Constant.Create(dt, imm)));
+                d.ops.Add(Constant.Create(dt, imm));
                 return true;
             };
         }
@@ -458,7 +458,7 @@ namespace Reko.Arch.Avr.Avr32
             return (u, d) =>
             {
                 var imm = Bitfield.ReadFields(fields, u);
-                d.ops.Add(new ImmediateOperand(Constant.Create(dt, imm)));
+                d.ops.Add(Constant.Create(dt, imm));
                 return true;
             };
         }
@@ -469,7 +469,7 @@ namespace Reko.Arch.Avr.Avr32
         private static Mutator<Avr32Disassembler> Imm_unsigned_mapped(
             int bitpos,
             int bitlength,
-            ImmediateOperand[] mapping)
+            Constant[] mapping)
         {
             var bitfield = new Bitfield(bitpos, bitlength);
             return (u, d) =>
@@ -622,11 +622,11 @@ namespace Reko.Arch.Avr.Avr32
         private static bool bitfieldCheck(uint uInstr, Avr32Disassembler dasm)
         {
             if (dasm.ops.Count >= 2 &&
-                dasm.ops[^2] is ImmediateOperand pos &&
-                dasm.ops[^1] is ImmediateOperand width)
+                dasm.ops[^2] is Constant pos &&
+                dasm.ops[^1] is Constant width)
             {
-                var p = pos.Value.ToInt32();
-                var w = width.Value.ToUInt32();
+                var p = pos.ToInt32();
+                var w = width.ToUInt32();
                 return w != 0 && p + w <= 32;
             }
             return false;
@@ -1261,14 +1261,14 @@ namespace Reko.Arch.Avr.Avr32
 
             var incjosp = Instr(Mnemonic.incjosp, Imm_unsigned_mapped(4, 3, new[]
             {
-                ImmediateOperand.Int32(1),
-                ImmediateOperand.Int32(2),
-                ImmediateOperand.Int32(3),
-                ImmediateOperand.Int32(4),
-                ImmediateOperand.Int32(-4),
-                ImmediateOperand.Int32(-3),
-                ImmediateOperand.Int32(-2),
-                ImmediateOperand.Int32(-1),
+                Constant.Int32(1),
+                Constant.Int32(2),
+                Constant.Int32(3),
+                Constant.Int32(4),
+                Constant.Int32(-4),
+                Constant.Int32(-3),
+                Constant.Int32(-2),
+                Constant.Int32(-1),
             }));
             
             rootDecoder = Mask(13, 3, "AVR32",

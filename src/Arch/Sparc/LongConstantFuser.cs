@@ -40,7 +40,7 @@ namespace Reko.Arch.Sparc
 
         public IEnumerator<MachineInstruction> GetEnumerator()
         {
-            ImmediateOperand immLo;
+            Constant immLo;
             var e = new LookaheadEnumerator<SparcInstruction>(dasm);
             while (e.MoveNext())
             {
@@ -58,13 +58,13 @@ namespace Reko.Arch.Sparc
                         if (instrHi.Operands[1] == instrLo.Operands[0])
                         {
                             // Mutate the sethi and add
-                            var immHi = (ImmediateOperand) instrHi.Operands[0];
-                            immLo = (ImmediateOperand) instrLo.Operands[1];
-                            var longConst = new ImmediateOperand(
+                            var immHi = (Constant) instrHi.Operands[0];
+                            immLo = (Constant) instrLo.Operands[1];
+                            var longConst =
                                 Constant.Create(
                                     instrHi.Operands[0].Width,
-                                    (uint) ((immHi.Value.ToInt32() << 16) |
-                                        immLo.Value.ToInt32())));
+                                    (uint) ((immHi.ToInt32() << 16) |
+                                        immLo.ToInt32()));
                             var hiOp = new SliceOperand(SliceType.Hi, immHi, longConst);
                             var loOp = new SliceOperand(SliceType.Lo, immLo, longConst);
                             instrHi.Operands[0] = hiOp;
@@ -75,16 +75,16 @@ namespace Reko.Arch.Sparc
                     {
                         if (instrLo.Operands[0] is MemoryOperand memOp &&
                             instrHi.Operands[1] == memOp.Base &&
-                            memOp.Offset is ImmediateOperand imm)
+                            memOp.Offset is Constant imm)
                         {
-                            var immHi = (ImmediateOperand) instrHi.Operands[1];
+                            var immHi = (Constant) instrHi.Operands[1];
                             immLo = imm;
                             // Mutate the addis/oris and the memory operand
-                            var longConst = new ImmediateOperand(
+                            var longConst =
                                 Constant.Create(
                                     instrHi.Operands[0].Width,
-                                    (immHi.Value.ToInt32() << 16) +
-                                        immLo.Value.ToInt32()));
+                                    (immHi.ToInt32() << 16) +
+                                        immLo.ToInt32());
                             var hiOp = new SliceOperand(SliceType.Hi, immHi, longConst);
                             var loOp = new SliceOperand(SliceType.Lo, immLo, longConst);
                             instrHi.Operands[0] = hiOp;
@@ -95,16 +95,16 @@ namespace Reko.Arch.Sparc
                         instrLo.Operands[1] is MemoryOperand memOp)
                     {
                         if (instrHi.Operands[1] == memOp.Base &&
-                            memOp.Offset is ImmediateOperand imm)
+                            memOp.Offset is Constant imm)
                         {
-                            var immHi = (ImmediateOperand) instrHi.Operands[1];
+                            var immHi = (Constant) instrHi.Operands[1];
                             immLo = imm;
                             // Mutate the addis/oris and the memory operand
-                            var longConst = new ImmediateOperand(
+                            var longConst =
                                 Constant.Create(
                                     instrHi.Operands[0].Width,
-                                    (immHi.Value.ToInt32() << 16) +
-                                        immLo.Value.ToInt32()));
+                                    (immHi.ToInt32() << 16) +
+                                        immLo.ToInt32());
                             var hiOp = new SliceOperand(SliceType.Hi, immHi, longConst);
                             var loOp = new SliceOperand(SliceType.Lo, immLo, longConst);
                             instrHi.Operands[1] = hiOp;

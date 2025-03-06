@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
@@ -110,7 +111,7 @@ namespace Reko.Arch.Zilog.Z8000
         {
             if (!dasm.rdr.TryReadBeUInt16(out var uImm))
                 return false;
-            dasm.ops.Add(ImmediateOperand.Byte((byte)uImm));
+            dasm.ops.Add(Constant.Byte((byte)uImm));
             return true;
         }
 
@@ -118,7 +119,7 @@ namespace Reko.Arch.Zilog.Z8000
         {
             if (!dasm.rdr.TryReadBeUInt16(out var uImm))
                 return false;
-            dasm.ops.Add(ImmediateOperand.Word16(uImm));
+            dasm.ops.Add(Constant.Word16(uImm));
             return true;
         }
 
@@ -126,7 +127,7 @@ namespace Reko.Arch.Zilog.Z8000
         {
             if (!dasm.rdr.TryReadBeUInt32(out var uImm))
                 return false;
-            dasm.ops.Add(ImmediateOperand.Word32(uImm));
+            dasm.ops.Add(Constant.Word32(uImm));
             return true;
         }
 

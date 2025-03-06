@@ -95,7 +95,7 @@ namespace Reko.ImageLoaders.WebAssembly
         {
             if (!dasm.rdr.TryReadVarInt64(out var i32))
                 return false;
-            dasm.ops.Add(ImmediateOperand.Word32((uint) i32));
+            dasm.ops.Add(Constant.Word32((uint) i32));
             return true;
         }
         
@@ -109,7 +109,7 @@ namespace Reko.ImageLoaders.WebAssembly
                 return false;
             if (uint.MinValue <= u32 && u32 <= uint.MaxValue)
             {
-                dasm.ops.Add(ImmediateOperand.Word32((uint) u32));
+                dasm.ops.Add(Constant.Word32((uint) u32));
                 return true;
             }
             return false;
@@ -122,7 +122,7 @@ namespace Reko.ImageLoaders.WebAssembly
         {
             if (!dasm.rdr.TryReadVarInt64(out var i64))
                 return false;
-            dasm.ops.Add(ImmediateOperand.Word64(i64));
+            dasm.ops.Add(Constant.Word64(i64));
             return true;
         }
 
@@ -133,7 +133,7 @@ namespace Reko.ImageLoaders.WebAssembly
         {
             if (!dasm.rdr.TryReadVarUInt64(out var u64))
                 return false;
-            dasm.ops.Add(ImmediateOperand.Word64(u64));
+            dasm.ops.Add(Constant.Word64(u64));
             return true;
         }
 
@@ -146,7 +146,7 @@ namespace Reko.ImageLoaders.WebAssembly
             if (data.Length != 16)
                 return false;
             var number = new BigInteger(data);
-            var imm = new ImmediateOperand(new BigConstant(PrimitiveType.Word128, number));
+            var imm = new BigConstant(PrimitiveType.Word128, number);
             dasm.ops.Add(imm);
             return true;
         }
@@ -173,13 +173,13 @@ namespace Reko.ImageLoaders.WebAssembly
                 {
                     // byte: signals a valtype
                     //$TODO: add TypeOperand
-                    dasm.ops.Add(ImmediateOperand.Byte((byte) (blockType & 0x7F)));
+                    dasm.ops.Add(Constant.Byte((byte) (blockType & 0x7F)));
                 }
             }
             else
             {
                 // uint32: signals type index.
-                dasm.ops.Add(ImmediateOperand.UInt32((uint) blockType));
+                dasm.ops.Add(Constant.UInt32((uint) blockType));
             }
             return true;
         }
@@ -190,7 +190,7 @@ namespace Reko.ImageLoaders.WebAssembly
             {
                 return false;
             }
-            dasm.ops.Add(new ImmediateOperand(Constant.FloatFromBitpattern(u)));
+            dasm.ops.Add(Constant.FloatFromBitpattern(u));
             return true;
         }
 
@@ -200,7 +200,7 @@ namespace Reko.ImageLoaders.WebAssembly
             {
                 return false;
             }
-            dasm.ops.Add(new ImmediateOperand(Constant.DoubleFromBitpattern((long) u)));
+            dasm.ops.Add(Constant.DoubleFromBitpattern((long)u));
             return true;
         }
 

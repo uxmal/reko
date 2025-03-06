@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Services;
@@ -92,14 +93,14 @@ namespace Reko.Arch.Tms7000
         private static bool i(uint u, Tms7000Disassembler dasm) {
             if (!dasm.rdr.TryReadByte(out byte b))
                 return false;
-            dasm.ops.Add(ImmediateOperand.Byte(b));
+            dasm.ops.Add(Constant.Byte(b));
             return true;
         }
 
         private static bool I(uint b, Tms7000Disassembler dasm) {
             if (!dasm.rdr.TryReadBeUInt16(out ushort w))
                 return false;
-            dasm.ops.Add(ImmediateOperand.Word16(w));
+            dasm.ops.Add(Constant.Word16(w));
             return true;
         }
 

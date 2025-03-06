@@ -233,8 +233,8 @@ internal class M16CRewriter : IEnumerable<RtlInstructionCluster>
         {
         case RegisterStorage reg:
             return binder.EnsureRegister(reg);
-        case ImmediateOperand imm:
-            return imm.Value;
+        case Constant imm:
+            return imm;
         case Address addr:
             return addr;
         case MemoryOperand mem:
@@ -254,9 +254,9 @@ internal class M16CRewriter : IEnumerable<RtlInstructionCluster>
         var op = instr.Operands[iop];
         switch (op)
         {
-        case ImmediateOperand cbit:
+        case Constant cbit:
             var exp = Operand(iop+1, PrimitiveType.Byte);
-            return (exp, cbit.Value.ToInt32());
+            return (exp, cbit.ToInt32());
         case MemoryOperand mem:
             var ea = EffectiveAddress(mem);
             if (ea is Address addr)
@@ -412,7 +412,7 @@ internal class M16CRewriter : IEnumerable<RtlInstructionCluster>
         m.Assign(sp, m.ISub(sp, 2));
         m.Assign(m.Mem16(sp), fb);
         m.Assign(fb, sp);
-        var imm = ((ImmediateOperand) instr.Operands[0]).Value;
+        var imm = (Constant) instr.Operands[0];
         m.Assign(sp, m.ISubS(sp, imm.ToUInt32()));
     }
 

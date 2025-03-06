@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Lib;
+using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -30,7 +31,7 @@ namespace Reko.Core.Expressions
     /// <summary>
     /// Models a constant value.
     /// </summary>
-	public abstract class Constant : AbstractExpression // , IFormattable
+	public abstract class Constant : AbstractExpression, MachineOperand
     {
         protected Constant(DataType t)
             : base(t)
@@ -302,6 +303,12 @@ namespace Reko.Core.Expressions
 
         public override bool IsZero => IsIntegerZero;
 
+        DataType MachineOperand.Width
+        {
+            get => base.DataType;
+            set => base.DataType = value;
+        }
+
         public virtual bool IsIntegerZero
         {
             get
@@ -431,6 +438,29 @@ namespace Reko.Core.Expressions
             if (offset < 0 || offset + dt.BitSize > this.DataType.BitSize)
                 throw new ArgumentException("Invalid bit size.", nameof(dt));
             return DoSlice(dt, offset);
+        }
+
+        string MachineOperand.ToString(MachineInstructionRendererOptions options)
+        {
+            var sr = new StringRenderer();
+            RenderMachineOperand(sr, options);
+            return sr.ToString();
+        }
+
+        void MachineOperand.Render(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
+        {
+            RenderMachineOperand(renderer, options);
+        }
+
+        private void RenderMachineOperand(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
+        {
+            renderer.BeginOperand();
+            var s = AbstractMachineOperand.FormatValue(this);
+            if (this.DataType.Domain == Domain.Pointer)
+                renderer.WriteAddress(s, Address.FromConstant(this));
+            else
+                renderer.WriteString(s);
+            renderer.EndOperand();
         }
 
         public virtual bool ToBoolean()
@@ -1157,7 +1187,6 @@ namespace Reko.Core.Expressions
         public override BigInteger ToBigInteger() => value;
 
     }
-
 
     internal class ConstantInt64 : Constant
     {

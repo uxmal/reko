@@ -177,15 +177,15 @@ namespace Reko.Arch.Zilog.Z80
                         //$TODO: some kind volunteer could implement the unofficial opcodes.
                         return dasm.CreateInvalidInstruction();
                     case 1:
-                        dasm.ops.Add(ImmediateOperand.Byte((byte)((op >> 3) & 0x07)));
+                        dasm.ops.Add(Constant.Byte((byte)((op >> 3) & 0x07)));
                         dasm.ops.Add(new MemoryOperand(IndexRegister, offset, PrimitiveType.Byte));
                         return dasm.MakeInstruction(InstrClass.Linear, Mnemonic.bit);
                     case 2:
-                        dasm.ops.Add(ImmediateOperand.Byte((byte)((op >> 3) & 0x07)));
+                        dasm.ops.Add(Constant.Byte((byte)((op >> 3) & 0x07)));
                         dasm.ops.Add(new MemoryOperand(IndexRegister, offset, PrimitiveType.Byte));
                         return dasm.MakeInstruction(InstrClass.Linear, Mnemonic.res);
                     case 3:
-                        dasm.ops.Add(ImmediateOperand.Byte((byte)((op >> 3) & 0x07)));
+                        dasm.ops.Add(Constant.Byte((byte)((op >> 3) & 0x07)));
                         dasm.ops.Add(new MemoryOperand(IndexRegister, offset, PrimitiveType.Byte));
                         return dasm.MakeInstruction(InstrClass.Linear, Mnemonic.set);
                     }
@@ -228,15 +228,15 @@ namespace Reko.Arch.Zilog.Z80
                     break;
                 case 1:
                     mnemonic = Mnemonic.bit;
-                    dasm.ops.Add(ImmediateOperand.Byte(y));
+                    dasm.ops.Add(Constant.Byte(y));
                     break;
                 case 2:
                     mnemonic = Mnemonic.res;
-                    dasm.ops.Add(ImmediateOperand.Byte(y));
+                    dasm.ops.Add(Constant.Byte(y));
                     break;
                 case 3:
                     mnemonic = Mnemonic.set;
-                    dasm.ops.Add(ImmediateOperand.Byte(y));
+                    dasm.ops.Add(Constant.Byte(y));
                     break;
                 }
                 if (!cbFormats[op & 0x07](op, dasm))
@@ -362,7 +362,7 @@ namespace Reko.Arch.Zilog.Z80
         private static Mutator x(uint imm) {
             return (u, d) =>
             {
-                d.ops.Add(ImmediateOperand.Byte((byte)imm));
+                d.ops.Add(Constant.Byte((byte)imm));
                 return true;
             };
         }
@@ -419,7 +419,7 @@ namespace Reko.Arch.Zilog.Z80
         {
             if (!dasm.rdr.TryReadByte(out byte imm))
                 return false;
-            dasm.ops.Add(ImmediateOperand.Byte(imm));
+            dasm.ops.Add(Constant.Byte(imm));
             return true;
         }
 
@@ -427,7 +427,7 @@ namespace Reko.Arch.Zilog.Z80
         {
             if (!dasm.rdr.TryReadLeUInt16(out ushort imm))
                 return false;
-            dasm.ops.Add(ImmediateOperand.Word16(imm));
+            dasm.ops.Add(Constant.Word16(imm));
             return true;
         }
 

@@ -168,8 +168,8 @@ namespace Reko.Arch.PowerPC
                         {
                             dasm.RegFromBits(wInstr >> 16),
                             dasm.RegFromBits(wInstr >> 21),
-                            ImmediateOperand.Byte((byte)((wInstr >> 11) & 0x1F | (wInstr << 4) & 0x20)),
-                            ImmediateOperand.Byte((byte)((wInstr >> 6) & 0x1F | (wInstr & 0x20))),
+                            Constant.Byte((byte)((wInstr >> 11) & 0x1F | (wInstr << 4) & 0x20)),
+                            Constant.Byte((byte)((wInstr >> 6) & 0x1F | (wInstr & 0x20))),
                         }
                     };
                 }
@@ -449,8 +449,8 @@ namespace Reko.Arch.PowerPC
                         InstructionClass = iclass,
                         Operands = new MachineOperand[]
                         {
-                            ImmediateOperand.Byte((byte)((wInstr >> 21) & 0x1F)),
-                            ImmediateOperand.Byte((byte)((wInstr >> 16) & 0x1F)),
+                            Constant.Byte((byte)((wInstr >> 21) & 0x1F)),
+                            Constant.Byte((byte)((wInstr >> 16) & 0x1F)),
                         }
                     };
                 case 0: mnemonic = link ? Mnemonic.bgelrl : Mnemonic.bgelr; break;
@@ -485,7 +485,7 @@ namespace Reko.Arch.PowerPC
                     InstructionClass = base.iclass,
                     Operands = new MachineOperand[] {
                         reg,
-                        ImmediateOperand.Word16((ushort) spr)
+                        Constant.Word16((ushort) spr)
                     }
                 };
             }

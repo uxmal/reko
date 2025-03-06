@@ -328,9 +328,9 @@ namespace Reko.Arch.Loongson
         private Expression EffectiveAddress()
         {
             var baseReg = Op(1, false);
-            if (instr.Operands[2] is ImmediateOperand imm)
+            if (instr.Operands[2] is Constant imm)
             {
-                var offset = imm.Value.ToInt32();
+                var offset = imm.ToInt32();
                 return m.AddSubSignedInt(baseReg, offset);
             }
             else
@@ -377,8 +377,7 @@ namespace Reko.Arch.Loongson
                 var tmp = binder.CreateTemporary(PrimitiveType.Word32);
                 m.Assign(tmp, m.Slice(id, tmp.DataType, 0));
                 return tmp;
-            case ImmediateOperand imm:
-                var c = imm.Value;
+            case Constant c:
                 if (sliceTo32bits)
                     return c;
                 c = Constant.Create(PrimitiveType.Word64, (long) c.ToInt32());

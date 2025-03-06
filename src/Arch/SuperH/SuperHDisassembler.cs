@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
@@ -408,7 +409,7 @@ namespace Reko.Arch.SuperH
         /// </summary>
         private static bool I(uint uInstr, SuperHDisassembler dasm)
         {
-            dasm.state.ops.Add(ImmediateOperand.Byte((byte)uInstr));
+            dasm.state.ops.Add(Constant.Byte((byte)uInstr));
             return true;
         }
 
@@ -417,7 +418,7 @@ namespace Reko.Arch.SuperH
         /// </summary>
         private static bool i3(uint uInstr, SuperHDisassembler dasm)
         {
-            dasm.state.ops.Add(ImmediateOperand.Byte((byte) (uInstr & 7)));
+            dasm.state.ops.Add(Constant.Byte((byte) (uInstr & 7)));
             return true;
         }
 
@@ -426,7 +427,7 @@ namespace Reko.Arch.SuperH
         /// </summary>
         private static bool i7(uint uInstr, SuperHDisassembler dasm)
         {
-            dasm.state.ops.Add(ImmediateOperand.Int32(bf4L7.ReadSigned(uInstr)));
+            dasm.state.ops.Add(Constant.Int32(bf4L7.ReadSigned(uInstr)));
             return true;
         }
         private static readonly Bitfield bf4L7 = new(4, 7);
@@ -437,7 +438,7 @@ namespace Reko.Arch.SuperH
         private static bool i20(uint uInstr, SuperHDisassembler dasm)
         {
             var imm = Bitfield.ReadSignedFields(i20_fields, uInstr);
-            dasm.state.ops.Add(ImmediateOperand.Int32(imm));
+            dasm.state.ops.Add(Constant.Int32(imm));
             return true;
         }
         private static readonly Bitfield[] i20_fields = Bf((20, 4), (0, 16));

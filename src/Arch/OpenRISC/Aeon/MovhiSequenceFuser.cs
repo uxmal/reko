@@ -1,4 +1,5 @@
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
@@ -100,33 +101,33 @@ namespace Reko.Arch.OpenRISC.Aeon
                 var addReg = (RegisterStorage) instr.Operands[addRegIndex];
                 if (addReg != regHi)
                     return;
-                var addImm = (ImmediateOperand) instr.Operands[addImmIndex];
-                uFullWord = AddFullWord(movhi.Operands[1], addImm.Value.ToInt32());
+                var addImm = (Constant) instr.Operands[addImmIndex];
+                uFullWord = AddFullWord(movhi.Operands[1], addImm.ToInt32());
                 movhi.Operands[1] = Address.Ptr32(uFullWord);
-                instr.Operands[addImmIndex] = ImmediateOperand.Word32(uFullWord);
+                instr.Operands[addImmIndex] = Constant.Word32(uFullWord);
                 break;
             case Mnemonic.bn_ori:
             case Mnemonic.bg_ori:
                 var orReg = (RegisterStorage) instr.Operands[1];
                 if (orReg != regHi)
                     return;
-                var orImm = (ImmediateOperand) instr.Operands[2];
-                uFullWord = OrFullWord(movhi.Operands[1], orImm.Value.ToUInt32());
+                var orImm = (Constant) instr.Operands[2];
+                uFullWord = OrFullWord(movhi.Operands[1], orImm.ToUInt32());
                 movhi.Operands[1] = Address.Ptr32(uFullWord);
-                instr.Operands[2] = ImmediateOperand.Word32(uFullWord);
+                instr.Operands[2] = Constant.Word32(uFullWord);
                 break;
             }
         }
 
         public static uint AddFullWord(MachineOperand movhiImm, int offset)
         {
-            var hiImm = (int)((ImmediateOperand) movhiImm).Value.ToUInt16();
+            var hiImm = (int)((Constant)movhiImm).ToUInt16();
             return (uint) ((hiImm << ShiftAmount) + offset);
         }
 
         public static uint OrFullWord(MachineOperand movhiImm, uint offset)
         {
-            var hiImm = (int) ((ImmediateOperand) movhiImm).Value.ToUInt16();
+            var hiImm = (int) ((Constant)movhiImm).ToUInt16();
             return (uint) ((hiImm << ShiftAmount) + offset);
         }
     }

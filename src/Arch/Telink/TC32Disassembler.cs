@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
@@ -142,7 +143,7 @@ namespace Reko.Arch.Telink
             return (u, d) =>
             {
                 var value = field.Read(u);
-                var imm = ImmediateOperand.Word32(value);
+                var imm = Constant.Word32(value);
                 d.ops.Add(imm);
                 return true;
             };

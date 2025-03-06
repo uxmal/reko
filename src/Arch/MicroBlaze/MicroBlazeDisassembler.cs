@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
@@ -132,17 +133,17 @@ namespace Reko.Arch.MicroBlaze
             var field = BeField(bePos, len);
             return (u, d) =>
             {
-                ImmediateOperand op;
+                Constant op;
                 if (d.immHi.HasValue)
                 {
                     var n = field.Read(u);
                     n |= d.immHi.Value;
-                    op = ImmediateOperand.Word32(n);
+                    op = Constant.Word32(n);
                 }
                 else
                 {
                     var n = field.ReadSigned(u);
-                    op = ImmediateOperand.Word32(n);
+                    op = Constant.Word32(n);
                 }
                 d.ops.Add(op);
                 return true;
@@ -159,7 +160,7 @@ namespace Reko.Arch.MicroBlaze
                 var n = field.Read(u);
                 if (d.immHi.HasValue)
                     n |= d.immHi.Value;
-                d.ops.Add(ImmediateOperand.Word32(n));
+                d.ops.Add(Constant.Word32(n));
                 return true;
             };
         }
@@ -170,7 +171,7 @@ namespace Reko.Arch.MicroBlaze
         private static bool SetImm16(uint uInstr, MicroBlazeDisassembler dasm)
         {
             var n = uInstr & 0xFFFF;
-            dasm.ops.Add(ImmediateOperand.Word32(n));
+            dasm.ops.Add(Constant.Word32(n));
             dasm.immHi = n << 16;
             return true;
         }

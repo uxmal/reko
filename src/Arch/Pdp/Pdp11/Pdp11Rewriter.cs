@@ -299,14 +299,14 @@ namespace Reko.Arch.Pdp.Pdp11
                 var tmpb = binder.CreateTemporary(PrimitiveType.Byte);
                 m.Assign(tmpb, m.Slice(reg, tmpb.DataType));
                 return tmpb;
-            case ImmediateOperand immOp:
+            case Constant immOp:
                 if (dasm.Current.DataWidth!.Size == 1)
                 {
-                    return Constant.Byte((byte) immOp.Value.ToInt32());
+                    return Constant.Byte((byte) immOp.ToInt32());
                 }
                 else
                 {
-                    return immOp.Value;
+                    return immOp;
                 }
             case Address addrOp:
                 return addrOp;

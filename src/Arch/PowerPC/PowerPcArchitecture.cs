@@ -223,7 +223,7 @@ namespace Reko.Arch.PowerPC
                 return null;
             var addrInstr = e.Current.Address;
             var reg = (RegisterStorage)e.Current.Operands[0];
-            var uAddr = ((ImmediateOperand)e.Current.Operands[2]).Value.ToUInt32() << 16;
+            var uAddr = ((Constant)e.Current.Operands[2]).ToUInt32() << 16;
              
             if (!e.MoveNext() || e.Current.Mnemonic != Mnemonic.lwz)
                 return null;

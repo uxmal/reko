@@ -423,7 +423,7 @@ namespace Reko.Arch.zSeries
 
         private Constant Const(int iop)
         {
-            return ((ImmediateOperand)instr.Operands[iop]).Value;
+            return (Constant)instr.Operands[iop];
         }
 
         private Expression EffectiveAddress(int iop)
@@ -476,8 +476,8 @@ namespace Reko.Arch.zSeries
                 {
                     return r;
                 }
-            case ImmediateOperand imm:
-                return imm.Value;
+            case Constant imm:
+                return imm;
             case MemoryOperand mem:
                 return new MemoryAccess(EffectiveAddress(mem), dt);
             case Address addr:
@@ -495,7 +495,7 @@ namespace Reko.Arch.zSeries
 
         private Constant Imm(int iop, DataType dt)
         {
-            var c = ((ImmediateOperand) instr.Operands[iop]).Value;
+            var c = (Constant)instr.Operands[iop];
             return Constant.Create(dt, c.ToUInt64());
         }
 
@@ -583,7 +583,7 @@ namespace Reko.Arch.zSeries
 
         private Expression SignedCondition(int iop, Expression left, Expression right)
         {
-            var mm = ((ImmediateOperand) instr.Operands[iop]).Value.ToInt32();
+            var mm = ((Constant) instr.Operands[iop]).ToInt32();
             return mm switch
             {
                 2 => m.Gt(left, right),
@@ -598,7 +598,7 @@ namespace Reko.Arch.zSeries
 
         private Expression UnsignedCondition(int iop, Expression left, Expression right)
         {
-            var mm = ((ImmediateOperand) instr.Operands[iop]).Value.ToInt32();
+            var mm = ((Constant) instr.Operands[iop]).ToInt32();
             return mm switch
             {
                 2 => m.Ugt(left, right),

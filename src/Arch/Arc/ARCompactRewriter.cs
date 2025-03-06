@@ -451,8 +451,8 @@ namespace Reko.Arch.Arc
             {
             case RegisterStorage rop:
                 return binder.EnsureRegister(rop);
-            case ImmediateOperand iop:
-                return iop.Value;
+            case Constant iop:
+                return iop;
             case Address aop:
                 return aop;
             default:

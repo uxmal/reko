@@ -31,7 +31,7 @@ namespace Reko.Arch.RiscV
     {
         private void RewriteAuipc()
         {
-            var offset = ((ImmediateOperand)instr.Operands[1]).Value.ToInt32() << 12;
+            var offset = ((Constant)instr.Operands[1]).ToInt32() << 12;
             var addr = instr.Address + offset;
             var dst = RewriteOp(0);
             m.Assign(dst, addr);

@@ -37,7 +37,7 @@ namespace Reko.Arch.Loongson
         {
             var src1 = Op(1, slice32bit);
             var src2 = Op(2, slice32bit);
-            var sa = ((ImmediateOperand) instr.Operands[3]).Value.ToInt32() + 1;
+            var sa = ((Constant)instr.Operands[3]).ToInt32() + 1;
             var src = m.IAdd(m.Shl(src1, sa), src2);
             Assign(instr.Operands[0], src);
         }
@@ -46,7 +46,7 @@ namespace Reko.Arch.Loongson
         {
             var src1 = Op(1, slice32bit);
             var src2 = Op(2, slice32bit);
-            var sa = ((ImmediateOperand) instr.Operands[3]).Value.ToInt32() + 1;
+            var sa = ((Constant)instr.Operands[3]).ToInt32() + 1;
             var src = m.IAdd(m.Shl(src1, sa), src2);
             AssignU(instr.Operands[0], src);
         }
@@ -127,24 +127,24 @@ namespace Reko.Arch.Loongson
 
         private void RewriteLu12i()
         {
-            var imm = (ImmediateOperand) instr.Operands[1];
-            var value = imm.Value.ToInt32() << 12;
+            var imm = (Constant) instr.Operands[1];
+            var value = imm.ToInt32() << 12;
             Assign(instr.Operands[0], value);
         }
 
         private void RewriteLu32i()
         {
-            var imm = (ImmediateOperand) instr.Operands[1];
-            var prefix = m.Word32(imm.Value.ToUInt32());
+            var imm = (Constant) instr.Operands[1];
+            var prefix = m.Word32(imm.ToUInt32());
             var reg = Op(0, false);
             m.Assign(reg, m.Seq(prefix, m.Slice(reg, PrimitiveType.Word32, 0)));
         }
 
         private void RewriteLu52i()
         {
-            var imm = (ImmediateOperand) instr.Operands[2];
+            var imm = (Constant) instr.Operands[2];
             var dtPrefix = PrimitiveType.CreateWord(12);
-            var prefix = Constant.Create(dtPrefix, imm.Value.ToUInt32());
+            var prefix = Constant.Create(dtPrefix, imm.ToUInt32());
             var reg = Op(1, false);
             m.Assign(Op(0, false), m.Seq(prefix, m.Slice(reg, 0, 52)));
         }
@@ -263,8 +263,8 @@ namespace Reko.Arch.Loongson
 
         private void RewriteOri()
         {
-            var imm = (ImmediateOperand) instr.Operands[2];
-            if (imm.Value.IsZero)
+            var imm = (Constant) instr.Operands[2];
+            if (imm.IsZero)
             {
                 if (instr.Operands[0] == instr.Operands[1])
                 {
@@ -274,7 +274,7 @@ namespace Reko.Arch.Loongson
                 }
             }
             var rDst = instr.Operands[0];
-            var c = Constant.Create(rDst.Width, imm.Value.ToUInt64());
+            var c = Constant.Create(rDst.Width, imm.ToUInt64());
             var src1 = Op(1, false);
             if (src1.IsZero)
             {

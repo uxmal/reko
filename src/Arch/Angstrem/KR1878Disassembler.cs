@@ -120,7 +120,7 @@ namespace Reko.Arch.Angstrem
             return (u, d) =>
             {
                 var value = field.Read(u);
-                var imm = ImmediateOperand.Create(Constant.Create(dt, value));
+                var imm = Constant.Create(dt, value);
                 d.ops.Add(imm);
                 return true;
             };
@@ -144,7 +144,7 @@ namespace Reko.Arch.Angstrem
             return (u, d) =>
             {
                 var value = field.ReadSigned(u);
-                var imm = ImmediateOperand.Create(Constant.Create(dt, value));
+                var imm = Constant.Create(dt, value);
                 d.ops.Add(imm);
                 return true;
             };

@@ -285,8 +285,8 @@ namespace Reko.Arch.OpenRISC.Aeon
             {
             case RegisterStorage reg:
                 return binder.EnsureRegister(reg);
-            case ImmediateOperand imm:
-                return imm.Value;
+            case Constant imm:
+                return imm;
             case Address addr:
                 return addr;
             case MemoryOperand mem:
@@ -306,8 +306,8 @@ namespace Reko.Arch.OpenRISC.Aeon
                 if (reg.Number == 0)
                     return m.Word32(0);
                 return binder.EnsureRegister(reg);
-            case ImmediateOperand imm:
-                return imm.Value;
+            case Constant imm:
+                return imm;
             case Address addr:
                 return addr;
             case MemoryOperand mem:
@@ -325,12 +325,12 @@ namespace Reko.Arch.OpenRISC.Aeon
             if (instr.Operands.Length == 2)
             {
                 left = Op(0);
-                right = ((ImmediateOperand) instr.Operands[1]).Value.ToInt32();
+                right = ((Constant)instr.Operands[1]).ToInt32();
             }
             else
             {
                 left = OpOrZero(1);
-                right = ((ImmediateOperand) instr.Operands[2]).Value.ToInt32();
+                right = ((Constant)instr.Operands[2]).ToInt32();
             }
             Expression src;
             if (left.IsZero)
@@ -439,10 +439,10 @@ namespace Reko.Arch.OpenRISC.Aeon
             var dst = OpOrZero(0);
             Expression spr;
             if (twoOperands) {
-                spr = ((ImmediateOperand) instr.Operands[1]).Value;
+                spr = ((Constant)instr.Operands[1]);
             } else {
                 var sprReg = (RegisterStorage) instr.Operands[1];
-                var sprImm = ((ImmediateOperand) instr.Operands[2]).Value;
+                var sprImm = (Constant)instr.Operands[2];
 
                 if (sprReg.Number == 0) {
                     spr = sprImm;
@@ -462,11 +462,11 @@ namespace Reko.Arch.OpenRISC.Aeon
             Expression value;
             if (twoOperands) {
                 value = OpOrZero(0);
-                spr = ((ImmediateOperand) instr.Operands[1]).Value;
+                spr = ((Constant)instr.Operands[1]);
             } else {
                 var sprReg = (RegisterStorage) instr.Operands[0];
                 value = OpOrZero(1);
-                var sprImm = ((ImmediateOperand) instr.Operands[2]).Value;
+                var sprImm = (Constant)instr.Operands[2];
     
                 if (sprReg.Number == 0) {
                     spr = sprImm;
@@ -489,7 +489,7 @@ namespace Reko.Arch.OpenRISC.Aeon
 
         private void RewriteMovi()
         {
-            var imm = ((ImmediateOperand) instr.Operands[1]).Value.ToUInt32();
+            var imm = ((Constant)instr.Operands[1]).ToUInt32();
             var dst = Op(0);
             m.Assign(dst, m.Word32(imm));
         }
@@ -497,7 +497,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         private void RewriteMovhi()
         {
             var movhi = this.instr;
-            var immHi = ((ImmediateOperand) instr.Operands[1]).Value.ToUInt32();
+            var immHi = ((Constant)instr.Operands[1]).ToUInt32();
             var regHi = (RegisterStorage) instr.Operands[0];
             var dst = binder.EnsureRegister(regHi);
             m.Assign(dst, m.Word32(immHi << 16));
@@ -548,8 +548,8 @@ namespace Reko.Arch.OpenRISC.Aeon
                     dasm.MoveNext();
                     this.instr = dasm.Current;
                     var iop = lowInstr.Operands.Length == 2 ? 1 : 2;
-                    var addImm = (ImmediateOperand) lowInstr.Operands[iop];
-                    uFullWord = MovhiSequenceFuser.AddFullWord(movhi.Operands[1], addImm.Value.ToInt32());
+                    var addImm = (Constant) lowInstr.Operands[iop];
+                    uFullWord = MovhiSequenceFuser.AddFullWord(movhi.Operands[1], addImm.ToInt32());
                     m.Assign(Op(0), m.Word32(uFullWord));
                     break;
                 case Mnemonic.bn_ori:
@@ -560,8 +560,8 @@ namespace Reko.Arch.OpenRISC.Aeon
                     dasm.MoveNext();
                     this.instr = dasm.Current;
                     iop = lowInstr.Operands.Length == 2 ? 1 : 2;
-                    var orImm = (ImmediateOperand) lowInstr.Operands[iop];
-                    uFullWord = MovhiSequenceFuser.OrFullWord(movhi.Operands[1], orImm.Value.ToUInt32());
+                    var orImm = (Constant) lowInstr.Operands[iop];
+                    uFullWord = MovhiSequenceFuser.OrFullWord(movhi.Operands[1], orImm.ToUInt32());
                     m.Assign(Op(0), m.Word32(uFullWord));
                     break;
                 }
@@ -611,12 +611,12 @@ namespace Reko.Arch.OpenRISC.Aeon
             if (instr.Operands.Length == 2)
             {
                 left = Op(0);
-                right = m.Word32(((ImmediateOperand) instr.Operands[1]).Value.ToUInt32());
+                right = m.Word32(((Constant)instr.Operands[1]).ToUInt32());
             }
             else
             {
                 left = OpOrZero(1);
-                right = m.Word32(((ImmediateOperand) instr.Operands[2]).Value.ToUInt32());
+                right = m.Word32(((Constant)instr.Operands[2]).ToUInt32());
             }
             Expression src;
             if (left.IsZero)
@@ -633,7 +633,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         private void RewriteLogicalImm(Func<Expression, Expression, Expression> fn)
         {
             var left = OpOrZero(1);
-            var right = ((ImmediateOperand) instr.Operands[2]).Value.ToUInt32();
+            var right = ((Constant)instr.Operands[2]).ToUInt32();
             var dst = Op(0);
             m.Assign(dst, fn(left, m.Word32(right)));
         }
@@ -708,7 +708,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         private void RewriteShifti(Func<Expression, Expression, Expression> fn)
         {
             var left = OpOrZero(1);
-            var right = ((ImmediateOperand) instr.Operands[2]).Value.ToInt32();
+            var right = ((Constant)instr.Operands[2]).ToInt32();
             var dst = Op(0);
             m.Assign(dst, fn(left, m.Int32(right)));
         }
@@ -716,9 +716,9 @@ namespace Reko.Arch.OpenRISC.Aeon
         private void RewriteEntri()
         {
             // F/I in docs
-            var pushRegs = ((ImmediateOperand) instr.Operands[0]).Value.ToUInt32();
+            var pushRegs = ((Constant)instr.Operands[0]).ToUInt32();
             // N/J in docs
-            var stackSlots = ((ImmediateOperand) instr.Operands[1]).Value.ToUInt32();
+            var stackSlots = ((Constant)instr.Operands[1]).ToUInt32();
 
             // r1 is stack pointer
             var stackPtr = binder.EnsureRegister(Registers.GpRegisters[1]);
@@ -736,9 +736,9 @@ namespace Reko.Arch.OpenRISC.Aeon
         private void RewriteRtnei()
         {
             // F/I in docs
-            var popRegs = ((ImmediateOperand) instr.Operands[0]).Value.ToUInt32();
+            var popRegs = ((Constant)instr.Operands[0]).ToUInt32();
             // N/J in docs
-            var stackSlots = ((ImmediateOperand) instr.Operands[1]).Value.ToUInt32();
+            var stackSlots = ((Constant)instr.Operands[1]).ToUInt32();
 
             // r1 is stack pointer
             var stackPtr = binder.EnsureRegister(Registers.GpRegisters[1]);

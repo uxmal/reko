@@ -374,8 +374,8 @@ namespace Reko.Arch.CSky
             {
             case RegisterStorage reg:
                 return binder.EnsureRegister(reg);
-            case ImmediateOperand imm:
-                return imm.Value;
+            case Constant imm:
+                return imm;
             case Address addr:
                 return addr;
             case MemoryOperand mem:
@@ -536,7 +536,7 @@ namespace Reko.Arch.CSky
         private void RewriteBmaski()
         {
             MaybeConditionalExecution();
-            var src = ((ImmediateOperand) instr.Operands[1]).Value.ToInt32();
+            var src = ((Constant)instr.Operands[1]).ToInt32();
             var dst = binder.EnsureRegister((RegisterStorage) instr.Operands[0]);
             var value = (1u << src) - 1;
             m.Assign(dst, (int)value);
@@ -830,8 +830,8 @@ namespace Reko.Arch.CSky
         {
             MaybeConditionalExecution();
             var src = Operand(1);
-            var msb = ((ImmediateOperand) instr.Operands[2]).Value.ToInt32();
-            var lsb = ((ImmediateOperand) instr.Operands[3]).Value.ToInt32();
+            var msb = ((Constant)instr.Operands[2]).ToInt32();
+            var lsb = ((Constant)instr.Operands[3]).ToInt32();
             var dst = Operand(0);
             int bits = (msb - lsb + 1);
             if (bits <= 0)
@@ -1042,7 +1042,7 @@ namespace Reko.Arch.CSky
         private void RewriteMovih()
         {
             MaybeConditionalExecution();
-            var src = ((ImmediateOperand) instr.Operands[1]).Value.ToUInt32();
+            var src = ((Constant)instr.Operands[1]).ToUInt32();
             m.Assign(Operand(0), m.Word32(src << 16));
         }
 
@@ -1151,7 +1151,7 @@ namespace Reko.Arch.CSky
         private void RewriteSce()
         {
             this.conditionalLeft = 4 + 1;
-            this.conditionalExecutionMask = ((ImmediateOperand) instr.Operands[0]).Value.ToUInt32();
+            this.conditionalExecutionMask = ((Constant)instr.Operands[0]).ToUInt32();
             m.Nop();
         }
 
@@ -1163,8 +1163,8 @@ namespace Reko.Arch.CSky
         private void RewriteSext()
         {
             MaybeConditionalExecution();
-            var lsb = ((ImmediateOperand) instr.Operands[2]).Value.ToInt32();
-            var msb = ((ImmediateOperand) instr.Operands[3]).Value.ToInt32();
+            var lsb = ((Constant) instr.Operands[2]).ToInt32();
+            var msb = ((Constant) instr.Operands[3]).ToInt32();
             var bits = 1 + msb - lsb;
             if (bits <= 0)
             {
@@ -1370,8 +1370,8 @@ namespace Reko.Arch.CSky
         private void RewriteZext()
         {
             MaybeConditionalExecution();
-            var lsb = ((ImmediateOperand) instr.Operands[2]).Value.ToInt32();
-            var msb = ((ImmediateOperand) instr.Operands[3]).Value.ToInt32();
+            var lsb = ((Constant)instr.Operands[2]).ToInt32();
+            var msb = ((Constant)instr.Operands[3]).ToInt32();
             var bits = 1 + msb - lsb;
             if (bits <= 0)
             {

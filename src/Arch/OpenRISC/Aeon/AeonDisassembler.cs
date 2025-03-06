@@ -23,9 +23,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
-using Reko.Core.Services;
 using Reko.Core.Types;
-using System;
 using System.Collections.Generic;
 
 namespace Reko.Arch.OpenRISC.Aeon
@@ -109,7 +107,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 Mnemonic = Mnemonic.Nyi,
                 Operands = new MachineOperand[]
                 {
-                    ImmediateOperand.UInt32((uint)bytes[0] >> 2)
+                    Constant.UInt32((uint)bytes[0] >> 2)
                 }
             };
         }
@@ -176,7 +174,7 @@ namespace Reko.Arch.OpenRISC.Aeon
             return (u, d) =>
             {
                 var uImm = field.Read(u);
-                d.ops.Add(ImmediateOperand.Create(Constant.Create(dt, uImm)));
+                d.ops.Add(Constant.Create(dt, uImm));
                 return true;
             };
         }
@@ -212,7 +210,7 @@ namespace Reko.Arch.OpenRISC.Aeon
             return (u, d) =>
             {
                 var sImm = field.ReadSigned(u);
-                d.ops.Add(ImmediateOperand.Create(Constant.Create(dt, sImm)));
+                d.ops.Add(Constant.Create(dt, sImm));
                 return true;
             };
         }

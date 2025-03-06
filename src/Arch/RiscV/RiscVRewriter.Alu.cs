@@ -58,14 +58,14 @@ namespace Reko.Arch.RiscV
         private void RewriteAddi16sp()
         {
             var dst = binder.EnsureRegister(arch.StackRegister);
-            var imm = ((ImmediateOperand) instr.Operands[1]).Value.ToInt32();
+            var imm = ((Constant) instr.Operands[1]).ToInt32();
             m.Assign(dst, m.IAddS(dst, imm));
         }
 
         private void RewriteAddi4spn()
         {
             var src = binder.EnsureRegister(arch.StackRegister);
-            var imm = ((ImmediateOperand) instr.Operands[2]).Value.ToInt32();
+            var imm = ((Constant) instr.Operands[2]).ToInt32();
             var dst = RewriteOp(0);
             m.Assign(dst, m.IAddS(src, imm));
         }
@@ -103,9 +103,9 @@ namespace Reko.Arch.RiscV
             src1 = tmp1;
 
             Expression src2;
-            if (instr.Operands[iopRight] is ImmediateOperand imm2)
+            if (instr.Operands[iopRight] is Constant imm2)
             {
-                var c = imm2.Value.ToInt32();
+                var c = imm2.ToInt32();
                 if (c < 0)
                 {
                     op = Operator.ISub;
@@ -228,7 +228,7 @@ namespace Reko.Arch.RiscV
             else
             {
                 var baseReg = RewriteOp(1);
-                var offset = ((ImmediateOperand) instr.Operands[2]).Value;
+                var offset = (Constant)instr.Operands[2];
                 ea = baseReg;
                 if (!offset.IsZero)
                 {
@@ -246,16 +246,16 @@ namespace Reko.Arch.RiscV
 
         private int OffsetOf(MemoryOperand mem)
         {
-            ImmediateOperand offset;
+            Constant offset;
             if (mem.Offset is SliceOperand slice)
             {
                 offset = slice.Value;
             }
             else
             {
-                offset = (ImmediateOperand) mem.Offset;
+                offset = (Constant) mem.Offset;
             }
-            return offset.Value.ToInt32();
+            return offset.ToInt32();
         }
 
         private void RewriteLoadReserved(DataType dt)
@@ -273,7 +273,7 @@ namespace Reko.Arch.RiscV
         private void RewriteLui()
         {
             var dst = RewriteOp(0);
-            var ui = ((ImmediateOperand)instr.Operands[1]).Value;
+            var ui = (Constant)instr.Operands[1];
             m.Assign(dst, Constant.Word(dst.DataType.BitSize, ui.ToUInt32() << 12));
         }
 
@@ -449,7 +449,7 @@ namespace Reko.Arch.RiscV
             else
             {
                 var baseReg = RewriteOp(1);
-                var offset = ((ImmediateOperand) instr.Operands[2]).Value.ToInt32();
+                var offset = ((Constant)instr.Operands[2]).ToInt32();
                 RewriteStore(dt, baseReg, offset, src);
             }
         }

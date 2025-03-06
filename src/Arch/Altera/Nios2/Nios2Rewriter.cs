@@ -139,7 +139,7 @@ namespace Reko.Arch.Altera.Nios2
 
         private Address Addr(int iop) => (Address) instr.Operands[iop];
 
-        private Constant Imm(int iop) => ((ImmediateOperand)instr.Operands[iop]).Value;
+        private Constant Imm(int iop) => (Constant)instr.Operands[iop];
 
         private MemoryAccess Mem(int iop, DataType dt)
         {

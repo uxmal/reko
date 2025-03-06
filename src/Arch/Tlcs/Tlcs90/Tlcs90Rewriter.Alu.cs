@@ -261,7 +261,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
 
         private void RewriteBit(string flags)
         {
-            var bit = ((ImmediateOperand)instr.Operands[0]).Value.ToInt32();
+            var bit = ((Constant)instr.Operands[0]).ToInt32();
             var z = binder.EnsureFlagGroup(Registers.Z);
             var src = RewriteSrc(instr.Operands[1]);
             m.Assign(z, m.Eq0(m.And(src, 1u << bit)));
@@ -270,7 +270,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
 
         private void RewriteTset(string flags)
         {
-            var bit = ((ImmediateOperand)instr.Operands[0]).Value.ToInt32();
+            var bit = ((Constant)instr.Operands[0]).ToInt32();
             var z = binder.EnsureFlagGroup(Registers.Z);
             var src = RewriteSrc(instr.Operands[1]);
             m.Assign(z, m.Eq0(m.And(src, 1u << bit)));
@@ -283,7 +283,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
 
         private void RewriteSetRes(bool set)
         {
-            var bit = ((ImmediateOperand)instr.Operands[0]).Value.ToInt32();
+            var bit = ((Constant)instr.Operands[0]).ToInt32();
             if (set)
             {
                 RewriteDst(

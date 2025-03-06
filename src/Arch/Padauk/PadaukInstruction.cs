@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using System;
 
@@ -46,8 +47,8 @@ namespace Reko.Arch.Padauk
         {
             switch (operand)
             {
-            case ImmediateOperand imm:
-                renderer.WriteFormat("0x{0:X}", imm.Value.ToUInt64());
+            case Constant imm:
+                renderer.WriteFormat("0x{0:X}", imm.ToUInt64());
                 return;
             }
             base.RenderOperand(operand, renderer, options);

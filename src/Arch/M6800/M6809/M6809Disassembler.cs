@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
@@ -252,7 +253,7 @@ namespace Reko.Arch.M6800.M6809
         {
             if (!dasm.rdr.TryReadByte(out byte b))
                 return false;
-            dasm.ops.Add(ImmediateOperand.Byte(b));
+            dasm.ops.Add(Constant.Byte(b));
             return true;
         }
 
@@ -260,7 +261,7 @@ namespace Reko.Arch.M6800.M6809
         {
             if (!dasm.rdr.TryReadBeUInt16(out ushort u))
                 return false;
-            dasm.ops.Add(ImmediateOperand.Word16(u));
+            dasm.ops.Add(Constant.Word16(u));
             return true;
         }
 

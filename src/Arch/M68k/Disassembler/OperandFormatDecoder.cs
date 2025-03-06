@@ -133,7 +133,7 @@ namespace Reko.Arch.M68k.Disassembler
                     {
                         if (EXT_EFFECTIVE_ZERO(extension))
                         {
-                            op = ImmediateOperand.Word32(0);
+                            op = Constant.Word32(0);
                             return true;
                         }
                         Constant? @base = null;
@@ -203,7 +203,7 @@ namespace Reko.Arch.M68k.Disassembler
                     {
                         op = default!; return false;
                     }
-                    op = new ImmediateOperand(coff);
+                    op = coff;
                     return true;
                 default:
                     op = default!;

@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using System;
 
@@ -42,8 +43,8 @@ namespace Reko.Arch.M6800.M6812
         {
             switch (op)
             {
-            case ImmediateOperand immOp:
-                renderer.WriteString(AbstractMachineOperand.FormatUnsignedValue(immOp.Value, "#${1}"));
+            case Constant immOp:
+                renderer.WriteString(AbstractMachineOperand.FormatUnsignedValue(immOp, "#${1}"));
                 return;
             }
             op.Render(renderer, options);
