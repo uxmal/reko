@@ -23,23 +23,12 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Reko.Arch.M68k.Machine
 {
 #pragma warning disable IDE1006
 
-    public abstract class M68kOperandImpl : AbstractMachineOperand
-    {
-        public M68kOperandImpl(PrimitiveType dataWidth)
-            : base(dataWidth)
-        {
-        }
-    }
-
-    public class DoubleRegisterOperand : M68kOperandImpl
+    public class DoubleRegisterOperand : AbstractMachineOperand
     {
         public DoubleRegisterOperand(RegisterStorage reg1, RegisterStorage reg2) : base(PrimitiveType.Word64)
         {
@@ -56,7 +45,7 @@ namespace Reko.Arch.M68k.Machine
         }
     }
 
-    public class MemoryOperand : M68kOperandImpl
+    public class MemoryOperand : AbstractMachineOperand
     {
         public const string HexStringFormat = "{0}${1}";
 
@@ -108,7 +97,7 @@ namespace Reko.Arch.M68k.Machine
         }
     }
 
-    public class PredecrementMemoryOperand : M68kOperandImpl
+    public class PredecrementMemoryOperand : AbstractMachineOperand
     {
         public readonly RegisterStorage Register;
 
@@ -126,7 +115,7 @@ namespace Reko.Arch.M68k.Machine
         }
     }
 
-    public class PostIncrementMemoryOperand : M68kOperandImpl
+    public class PostIncrementMemoryOperand : AbstractMachineOperand
     {
         public readonly RegisterStorage Register;
 
@@ -144,7 +133,7 @@ namespace Reko.Arch.M68k.Machine
         }
     }
 
-    public class IndirectIndexedOperand : M68kOperandImpl
+    public class IndirectIndexedOperand : AbstractMachineOperand
     {
         public readonly sbyte Imm8;
         public readonly RegisterStorage ARegister;

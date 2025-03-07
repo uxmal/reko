@@ -253,7 +253,7 @@ namespace Reko.Arch.PowerPC
                 return new PowerPcInstruction(mnemonic)
                 {
                     InstructionClass = iclass,
-                    Operands = new MachineOperand[] { new AddressOperand(baseAddr + sOffset) },
+                    Operands = [baseAddr + sOffset],
                 };
             }
         }
@@ -323,7 +323,7 @@ namespace Reko.Arch.PowerPC
                 InstrClass iclass = link == 1 ? InstrClass.Transfer | InstrClass.Call : InstrClass.Transfer;
                 var ops = new List<MachineOperand>();
                 var baseAddr = (wInstr & 2) != 0 ? Address.Create(dasm.defaultWordWidth, 0) : dasm.rdr.Address - 4;
-                var dst = new AddressOperand(baseAddr + sOffset);
+                var dst = baseAddr + sOffset;
                 switch (grfBo)
                 {
                 case 0:

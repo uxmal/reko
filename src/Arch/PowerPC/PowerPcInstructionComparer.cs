@@ -67,9 +67,9 @@ namespace Reko.Arch.PowerPC
             case Constant immA:
                 var immB = (Constant) opB;
                 return CompareValues(immA, immB);
-            case AddressOperand addrA:
-                var addrB = (AddressOperand) opB;
-                return NormalizeConstants || addrA.Address == addrB.Address;
+            case Address addrA:
+                var addrB = (Address) opB;
+                return NormalizeConstants || addrA == addrB;
             case MemoryOperand memA:
                 var memB = (MemoryOperand) opB;
                 return CompareRegisters(memA.BaseRegister, memB.BaseRegister) &&
@@ -107,9 +107,9 @@ namespace Reko.Arch.PowerPC
                 if (!NormalizeConstants)
                     h ^= base.GetConstantHash(imm);
                 return h;
-            case AddressOperand addr:
+            case Address addr:
                 if (!NormalizeConstants)
-                    h ^= addr.Address.GetHashCode();
+                    h ^= addr.GetHashCode();
                 return h;
             case MemoryOperand mem:
                 if (!NormalizeRegisters)

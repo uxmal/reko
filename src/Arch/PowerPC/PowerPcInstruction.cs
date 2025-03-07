@@ -58,21 +58,17 @@ namespace Reko.Arch.PowerPC
             renderer.WriteMnemonic(op);
             RenderOperands(renderer, options);
         }
-    }
 
-    public class AddressOperand : AbstractMachineOperand
-    {
-        public Address Address;
-
-        public AddressOperand(Address a)
-            : base(PrimitiveType.Ptr32)	//$BUGBUG: 64-bit pointers?
+        protected override void RenderOperand(MachineOperand operand, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            Address = a;
-        }
-
-        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
-        {
-            renderer.WriteAddress("$" + Address.ToString(), Address);
+            if (operand is Address addr)
+            {
+                renderer.BeginOperand();
+                renderer.WriteAddress("$" + addr.ToString(), addr);
+                renderer.EndOperand();
+                return;
+            }
+            base.RenderOperand(operand, renderer, options);
         }
     }
 

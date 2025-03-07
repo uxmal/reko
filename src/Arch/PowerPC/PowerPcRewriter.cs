@@ -683,8 +683,8 @@ namespace Reko.Arch.PowerPC
                 // Extend the immediate value to word size. If this is not wanted,
                 // convert the operand manually or use RewriteSignedOperand
                 return Constant.Create(arch.WordWidth, iOp.ToUInt64());
-            case AddressOperand aOp:
-                return aOp.Address;
+            case Address addr:
+                return addr;
             default:
                 throw new NotImplementedException($"RewriteOperand:{op} ({op.GetType()}");
             }
@@ -709,8 +709,8 @@ namespace Reko.Arch.PowerPC
                 // Extend the immediate value to word size. If this is not wanted,
                 // convert the operand manually or use RewriteSignedOperand
                 return Constant.Word(arch.WordWidth.BitSize, iOp.ToInt64());
-            case AddressOperand aOp:
-                return aOp.Address;
+            case Address addr:
+                return addr;
             default:
                 throw new NotImplementedException($"RewriteOperand:{op} ({op.GetType()}");
             }

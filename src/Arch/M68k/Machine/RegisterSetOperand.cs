@@ -21,13 +21,10 @@
 using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Types;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Reko.Arch.M68k.Machine
 {
-    public class RegisterSetOperand : M68kOperandImpl
+    public class RegisterSetOperand : AbstractMachineOperand
     {
         public RegisterSetOperand(uint bitset, PrimitiveType dt)
             : base(dt)
