@@ -152,10 +152,10 @@ namespace Reko.Arch.Mips
             return Address.Create(arch.PointerType, linAddr);
         }
 
-        private IndirectOperand Ea(uint wInstr, PrimitiveType dataWidth, int shift, short offset)
+        private MemoryOperand Ea(uint wInstr, PrimitiveType dataWidth, int shift, short offset)
         {
             var baseReg = arch.GetRegister((int) (wInstr >> shift) & 0x1F)!;
-            return new IndirectOperand(
+            return MemoryOperand.Indirect(
                 dataWidth, 
                 Constant.Int32(offset),
                 baseReg);

@@ -113,8 +113,8 @@ namespace Reko.UnitTests.Arch.Mips
 
         private void VerifyIndirectOperand(MachineOperand op, RegisterStorage reg, int offset, PrimitiveType type)
         {
-            Assert.IsAssignableFrom(typeof(IndirectOperand), op);
-            var opReg = op as IndirectOperand;
+            Assert.IsAssignableFrom(typeof(MemoryOperand), op);
+            var opReg = op as MemoryOperand;
             Assert.AreEqual(reg, opReg.Base);
             Assert.AreEqual(offset, opReg.IntOffset());
             Assert.AreEqual(type, opReg.DataType);

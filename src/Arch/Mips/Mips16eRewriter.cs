@@ -147,7 +147,7 @@ Architecture */
                 return imm;
             case Address addr:
                 return addr;
-            case IndirectOperand mem:
+            case MemoryOperand mem:
                 Expression ea;
                 if (mem.Base == arch.pc)
                 {
@@ -156,7 +156,15 @@ Architecture */
                 else
                 {
                     ea = binder.EnsureRegister(mem.Base);
-                    ea = m.AddSubSignedInt(ea, mem.IntOffset());
+                    if (mem.Offset is not null)
+                    {
+                        ea = m.AddSubSignedInt(ea, mem.IntOffset());
+                    }
+                    else
+                    {
+                        Debug.Assert(mem.Index is not null);
+                        ea = m.IAdd(ea, binder.EnsureRegister(mem.Index));
+                    }
                 }
                 return m.Mem(op.DataType, ea);
             }

@@ -431,7 +431,7 @@ namespace Reko.Arch.Mips
             return (u, d) =>
             {
                 var offset = (int) (fieldOffset.Read(u) * dt.Size);
-                var mem = new IndirectOperand(
+                var mem = MemoryOperand.Indirect(
                     dt,
                     Constant.Int32(offset),
                     d.arch.StackRegister);
@@ -455,7 +455,7 @@ namespace Reko.Arch.Mips
             return (u, d) =>
             {
                 var offset = (int) (fieldOffset.Read(u) * dt.Size);
-                var mem = new IndirectOperand(
+                var mem = MemoryOperand.Indirect(
                     dt,
                     Constant.Int32(offset),
                     d.arch.pc);
@@ -485,7 +485,7 @@ namespace Reko.Arch.Mips
             //    var uExtend = Bitfield.ReadFields(bf_extend, dasm.extend.Value) << bf0_5.Length;
             //    offset = (int) Bits.SignExtend(uExtend | bf0_5.Read(uInstr), bf0_5.Length + 11);
             int offset = (int) bf0_8.Read(uInstr) << 2;
-            var mem = new IndirectOperand(
+            var mem = MemoryOperand.Indirect(
                 dasm.arch.PointerType,
                 Constant.Int32(offset),
                 dasm.arch.StackRegister);
@@ -497,7 +497,7 @@ namespace Reko.Arch.Mips
         {
             var uExtend = Bitfield.ReadFields(bf_extend5, dasm.extend!.Value) << bf0_5.Length;
             var offset = (int) Bits.SignExtend(uExtend | bf0_5.Read(uInstr), bf0_5.Length + 11);
-            var mem = new IndirectOperand(
+            var mem = MemoryOperand.Indirect(
                 dasm.arch.PointerType,
                 Constant.Int32(offset),
                 dasm.arch.StackRegister);
@@ -522,7 +522,7 @@ namespace Reko.Arch.Mips
                 }
                 var encReg = fieldreg.Read(u);
                 var reg = registerEncoding[encReg];
-                var mem = new IndirectOperand(
+                var mem = MemoryOperand.Indirect(
                     dt,
                     Constant.Int32(offset),
                     reg);

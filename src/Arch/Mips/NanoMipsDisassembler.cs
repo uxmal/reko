@@ -371,7 +371,7 @@ namespace Reko.Arch.Mips
                 var iReg = gpr3_encoding[iEncodedReg];
                 var baseReg = d.arch.GetRegister(iReg)!;
                 var nOffset = offsetField.Read(u) * dt.Size;
-                d.ops.Add(new IndirectOperand(
+                d.ops.Add(MemoryOperand.Indirect(
                     dt,
                     Constant.Int32((int) nOffset),
                     baseReg));
@@ -392,7 +392,7 @@ namespace Reko.Arch.Mips
             {
                 var offset = (int) offsetField.Read(u);
                 offset *= dt.Size;
-                d.ops.Add(new IndirectOperand(
+                d.ops.Add(MemoryOperand.Indirect(
                     dt,
                     Constant.Int32(offset),
                     d.arch.StackRegister));
@@ -409,7 +409,7 @@ namespace Reko.Arch.Mips
             {
                 var offset = (int) offsetField.Read(u);
                 offset *= dt.Size;
-                d.ops.Add(new IndirectOperand(
+                d.ops.Add(MemoryOperand.Indirect(
                     dt,
                     Constant.Int32(offset),
                     d.gp));
@@ -431,7 +431,7 @@ namespace Reko.Arch.Mips
             {
                 var offset = (int) offsetField.Read(u);
                 offset *= dt.Size;
-                d.ops.Add(new IndirectOperand(
+                d.ops.Add(MemoryOperand.Indirect(
                     dt,
                     Constant.Int32(offset),
                     d.gp));
@@ -450,7 +450,7 @@ namespace Reko.Arch.Mips
                 var iBase = (int) baseField.Read(u);
                 var off = (int)offsetField.Read(u);
                 var rBase = d.arch.GetRegister(iBase)!;
-                d.ops.Add(new IndirectOperand(
+                d.ops.Add(MemoryOperand.Indirect(
                     dt,
                     Constant.Int32(off),
                     rBase));
@@ -467,7 +467,7 @@ namespace Reko.Arch.Mips
                 var iBase = (int) baseField.Read(u);
                 var off = Bitfield.ReadSignedFields(offsetFields, u);
                 var rBase = d.arch.GetRegister(iBase)!;
-                d.ops.Add(new IndirectOperand(
+                d.ops.Add(MemoryOperand.Indirect(
                     dt,
                     Constant.Int32(off),
                     rBase));
@@ -491,7 +491,7 @@ namespace Reko.Arch.Mips
                 var iIndex = (int) idxField.Read(u);
                 var rBase = d.arch.GetRegister(iBase)!;
                 var rIndex = d.arch.GetRegister(iIndex)!;
-                d.ops.Add(new IndexedOperand(dt, rBase, rIndex));
+                d.ops.Add(MemoryOperand.Indexed(dt, rBase, rIndex));
                 return true;
             };
         }
@@ -513,7 +513,7 @@ namespace Reko.Arch.Mips
                 var encIndex = (int) ixField.Read(u);
                 var regBase = d.arch.GetRegister(gpr3_encoding[encBase])!;
                 var regIndex = d.arch.GetRegister(gpr3_encoding[encIndex])!;
-                d.ops.Add(new IndexedOperand(dt, regBase, regIndex));
+                d.ops.Add(MemoryOperand.Indexed(dt, regBase, regIndex));
                 return true;
             };
         }
@@ -592,7 +592,7 @@ namespace Reko.Arch.Mips
                 var rt = d.arch.GetRegister(gpr4_encoding[iRtCode])!;
                 var rs = d.arch.GetRegister(gpr4_encoding[iRsCode])!;
                 d.ops.Add(rt);
-                d.ops.Add(new IndirectOperand(
+                d.ops.Add(MemoryOperand.Indirect(
                     PrimitiveType.Word32,
                     Constant.Int32(offset),
                     rs));

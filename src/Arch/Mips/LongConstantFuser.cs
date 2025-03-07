@@ -71,7 +71,8 @@ namespace Reko.Arch.Mips
                         }
                     }
                     else if (IsMemoryInstruction(instrLo.Mnemonic) &&
-                        instrLo.Operands[1] is IndirectOperand memOp)
+                        instrLo.Operands[1] is MemoryOperand memOp && 
+                        memOp.Offset is not null)
                     {
                         if (instrHi.Operands[0] == memOp.Base &&
                             memOp.Offset is Constant imm)

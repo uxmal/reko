@@ -66,12 +66,22 @@ namespace Reko.Arch.Mips
                     return true;
                 var aB = (Address)b;
                 return aA.ToLinear() == aB.ToLinear();
-            case IndirectOperand mA:
-                var mB = (IndirectOperand)b;
+            case MemoryOperand mA:
+                var mB = (MemoryOperand)b;
                 if (!NormalizeRegisters && mA.Base != mB.Base)
                     return false;
-                if (!NormalizeConstants && mA.Offset != mB.Offset)
-                    return false;
+                if (mA.Offset is not null)
+                {
+                    if (mB.Offset is null)
+                        return false;   
+                    if (!NormalizeConstants && mA.Offset != mB.Offset)
+                        return false;
+                }
+                else
+                {
+                    if (mA.Index is null || mA.Index != mB.Index)
+                        return false;
+                }
                 return true;
             }
             throw new NotImplementedException();
@@ -109,12 +119,14 @@ namespace Reko.Arch.Mips
                     return 0;
                 else
                     return a.GetHashCode();
-            case IndirectOperand m:
+            case MemoryOperand m:
                 int h = 0;
                 if (!NormalizeRegisters)
                     h = GetRegisterHash(m.Base);
-                if (!NormalizeConstants)
+                if (!NormalizeConstants && m.Offset is not null)
                     h ^= m.Offset.GetHashCode();
+                if (m.Index is not null)
+                    h ^= GetRegisterHash(m.Index);
                 return h;
             }
             return 42;

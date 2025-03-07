@@ -222,7 +222,7 @@ namespace Reko.Arch.Mips
                     var iIndex = (int) idxField.Read(u);
                     var rBase = d.arch.GetRegister(iBase)!;
                     var rIndex = d.arch.GetRegister(iIndex)!;
-                    d.ops.Add(new IndexedOperand(dt, rBase, rIndex));
+                    d.ops.Add(MemoryOperand.Indexed(dt, rBase, rIndex));
                     return true;
                 };
             }

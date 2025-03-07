@@ -25,6 +25,7 @@ using Reko.Core.Machine;
 using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
+using System.Diagnostics;
 
 namespace Reko.Arch.Mips
 {
@@ -179,7 +180,7 @@ namespace Reko.Arch.Mips
 
         private void RewriteLdl(MipsInstruction instr)
         {
-            var opSrc = (IndirectOperand) instr.Operands[1];
+            var opSrc = (MemoryOperand) instr.Operands[1];
             var opDst = RewriteOperand0(instr.Operands[0]);
             m.Assign(
                 opDst,
@@ -190,7 +191,7 @@ namespace Reko.Arch.Mips
 
         private void RewriteLdr(MipsInstruction instr)
         {
-            var opSrc = (IndirectOperand) instr.Operands[1];
+            var opSrc = (MemoryOperand) instr.Operands[1];
             var opDst = RewriteOperand0(instr.Operands[0]);
             m.Assign(
                 opDst,
@@ -233,7 +234,7 @@ namespace Reko.Arch.Mips
 
         private void RewriteLoadIndexed(MipsInstruction instr, PrimitiveType dt, PrimitiveType dtDst, int scale)
         {
-            var opSrc = RewriteIndexOperand((IndexedOperand)instr.Operands[1], scale);
+            var opSrc = RewriteMemoryOperand((MemoryOperand)instr.Operands[1], scale);
             var opDst = RewriteOperand(instr.Operands[0]);
             if (opDst.DataType.Size != dt.Size)
             {
@@ -343,7 +344,7 @@ namespace Reko.Arch.Mips
         {
             int i = 0;
             int rt = ((RegisterStorage) instr.Operands[0]).Number;
-            var mem = ((IndirectOperand) instr.Operands[1]);
+            var mem = ((MemoryOperand) instr.Operands[1]);
             var rs = binder.EnsureRegister(mem.Base);
             int offset = mem.IntOffset();
             int count = ((Constant)instr.Operands[2]).ToInt32();
@@ -370,7 +371,8 @@ namespace Reko.Arch.Mips
         private void RewriteLwxs(MipsInstruction instr)
         {
             var opDst = RewriteOperand0(instr.Operands[0]);
-            var idx = (IndexedOperand) instr.Operands[1];
+            var idx = (MemoryOperand) instr.Operands[1];
+            Debug.Assert(idx.Index is not null);
             var idBase = binder.EnsureRegister(idx.Base);
             var idIndex = binder.EnsureRegister(idx.Index);
             m.Assign(opDst, m.Mem32(m.IAdd(idBase, m.IMul(idIndex, 4))));
@@ -379,7 +381,8 @@ namespace Reko.Arch.Mips
         private void RewriteLx(MipsInstruction instr, PrimitiveType dt, int scale)
         {
             var dst = RewriteOperand(instr.Operands[0]);
-            var idx = (IndexedOperand) instr.Operands[1];
+            var idx = (MemoryOperand) instr.Operands[1];
+            Debug.Assert(idx.Index is not null);
             var idBase = binder.EnsureRegister(idx.Base);
             Expression index = binder.EnsureRegister(idx.Index);
             if (scale != 1)
@@ -607,7 +610,7 @@ namespace Reko.Arch.Mips
 
         private void RewriteSdl(MipsInstruction instr)
         {
-            var opDst = (IndirectOperand)instr.Operands[1];
+            var opDst = (MemoryOperand)instr.Operands[1];
             var opSrc = RewriteOperand0(instr.Operands[0]);
             m.SideEffect(m.Fn(
                 intrinsics.sdl,
@@ -618,7 +621,7 @@ namespace Reko.Arch.Mips
 
         private void RewriteSdr(MipsInstruction instr)
         {
-            var opDst = (IndirectOperand)instr.Operands[1];
+            var opDst = (MemoryOperand)instr.Operands[1];
             var opSrc = RewriteOperand0(instr.Operands[0]);
             m.SideEffect(m.Fn(
               intrinsics.sdr,
@@ -733,7 +736,7 @@ namespace Reko.Arch.Mips
         {
             var rt = ((RegisterStorage) instr.Operands[0]).Number;
             var count = ((Constant)instr.Operands[2]).ToInt32();
-            var ind = (IndirectOperand) instr.Operands[1];
+            var ind = (MemoryOperand) instr.Operands[1];
             var offset = ind.IntOffset();
             var rs = binder.EnsureRegister(ind.Base);
             for (int i = 0; i < count; ++i) {
@@ -757,7 +760,8 @@ namespace Reko.Arch.Mips
             {
                 src = m.Slice(src, dt, 0);
             }
-            var idx = (IndexedOperand) instr.Operands[1];
+            var idx = (MemoryOperand) instr.Operands[1];
+            Debug.Assert(idx.Index is not null);
             var idBase = binder.EnsureRegister(idx.Base);
             Expression idIndex = binder.EnsureRegister(idx.Index);
             if (scale != 1)

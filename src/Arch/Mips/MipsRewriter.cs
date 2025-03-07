@@ -29,6 +29,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Reko.Arch.Mips
 {
@@ -384,34 +385,36 @@ namespace Reko.Arch.Mips
                 return binder.EnsureRegister(regOp);
             case Constant immOp:
                 return immOp;
-            case IndirectOperand indOp:
-                Expression ea;
-                Identifier baseReg = binder.EnsureRegister(indOp.Base);
-                int offset = indOp.IntOffset();
-                ea = m.AddSubSignedInt(baseReg, offset);
-                return m.Mem(indOp.DataType, ea);
+            case MemoryOperand indOp:
+                return RewriteMemoryOperand(indOp, 1);
             case Address addrOp:
                 return addrOp;
-            case IndexedOperand idxOp:
-                return RewriteIndexOperand(idxOp, 1);
             }
             throw new NotImplementedException(string.Format("Rewriting of operand type {0} not implemented yet.", op.GetType().Name));
         }
 
-        private Expression RewriteIndexOperand(IndexedOperand idxOp, int scale)
+        private Expression RewriteMemoryOperand(MemoryOperand memOp, int scale)
         {
             Expression ea;
-            if (idxOp.Base.Number == 0)
+            if (memOp.Offset is not null)
             {
-                if (idxOp.Index.Number == 0)
+                Identifier baseReg = binder.EnsureRegister(memOp.Base);
+                int offset = memOp.IntOffset();
+                ea = m.AddSubSignedInt(baseReg, offset);
+                return m.Mem(memOp.DataType, ea);
+            }
+            Debug.Assert(memOp.Index is not null);
+            if (memOp.Base.Number == 0)
+            {
+                if (memOp.Index.Number == 0)
                 {
                     //$REVIEW: is this even valid?
                     ea = Constant.Zero(
-                        PrimitiveType.CreateWord(idxOp.Base.DataType.BitSize));
+                        PrimitiveType.CreateWord(memOp.Base.DataType.BitSize));
                 }
                 else
                 {
-                    ea = binder.EnsureRegister(idxOp.Index);
+                    ea = binder.EnsureRegister(memOp.Index);
                     if (scale != 1)
                     {
                         ea = m.IMul(ea, scale);
@@ -420,10 +423,10 @@ namespace Reko.Arch.Mips
             }
             else
             {
-                ea = binder.EnsureRegister(idxOp.Base);
-                if (idxOp.Index.Number != 0)
+                ea = binder.EnsureRegister(memOp.Base);
+                if (memOp.Index.Number != 0)
                 {
-                    Expression idx = binder.EnsureRegister(idxOp.Index);
+                    Expression idx = binder.EnsureRegister(memOp.Index);
                     if (scale != 1)
                     {
                         idx = m.IMul(idx, scale);
@@ -431,7 +434,7 @@ namespace Reko.Arch.Mips
                     ea = m.IAdd(ea, idx);
                 }
             }
-            return m.Mem(idxOp.DataType, ea);
+            return m.Mem(memOp.DataType, ea);
         }
 
         private Expression RewriteOperand0(MachineOperand op)
@@ -446,34 +449,39 @@ namespace Reko.Arch.Mips
                 return immOp;
             case Address addrOp:
                 return addrOp;
-            case IndirectOperand indOp:
+            case MemoryOperand memOp:
                 Expression ea;
-                Identifier baseReg = binder.EnsureRegister(indOp.Base);
-                ea = m.AddSubSignedInt(baseReg, indOp.IntOffset());
-                return m.Mem(indOp.DataType, ea);
-            case IndexedOperand idxOp:
-                if (idxOp.Base.Number == 0)
+                if (memOp.Index is null)
                 {
-                    if (idxOp.Index.Number == 0)
-                    {
-                        //$REVIEW: is this even valid?
-                        ea = Constant.Zero(
-                            PrimitiveType.CreateWord(idxOp.Base.DataType.BitSize));
-                    }
-                    else
-                    {
-                        ea = binder.EnsureRegister(idxOp.Index);
-                    }
+                    Identifier baseReg = binder.EnsureRegister(memOp.Base);
+                    ea = m.AddSubSignedInt(baseReg, memOp.IntOffset());
+                    return m.Mem(memOp.DataType, ea);
                 }
                 else
                 {
-                    ea = binder.EnsureRegister(idxOp.Base);
-                    if (idxOp.Index.Number != 0)
+                    if (memOp.Base.Number == 0)
                     {
-                        ea = m.IAdd(ea, binder.EnsureRegister(idxOp.Index));
+                        if (memOp.Index.Number == 0)
+                        {
+                            //$REVIEW: is this even valid?
+                            ea = Constant.Zero(
+                                PrimitiveType.CreateWord(memOp.Base.DataType.BitSize));
+                        }
+                        else
+                        {
+                            ea = binder.EnsureRegister(memOp.Index);
+                        }
+                    }
+                    else
+                    {
+                        ea = binder.EnsureRegister(memOp.Base);
+                        if (memOp.Index.Number != 0)
+                        {
+                            ea = m.IAdd(ea, binder.EnsureRegister(memOp.Index));
+                        }
                     }
                 }
-                return m.Mem(idxOp.DataType, ea);
+                return m.Mem(memOp.DataType, ea);
             }
             throw new NotImplementedException(string.Format("Rewriting of operand type {0} not implemented yet.", op.GetType().Name));
         }
