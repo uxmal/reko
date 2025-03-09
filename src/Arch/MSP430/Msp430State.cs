@@ -70,7 +70,7 @@ namespace Reko.Arch.Msp430
             return new CallSite(2, 0);
         }
 
-        public override void OnProcedureEntered()
+        public override void OnProcedureEntered(Address addr)
         {
         }
 

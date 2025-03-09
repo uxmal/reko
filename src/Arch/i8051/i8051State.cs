@@ -71,7 +71,7 @@ namespace Reko.Arch.i8051
             return new CallSite(returnAddressSize, 0);
         }
 
-        public override void OnProcedureEntered()
+        public override void OnProcedureEntered(Address addr)
         {
         }
 

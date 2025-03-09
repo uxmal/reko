@@ -80,7 +80,7 @@ namespace Reko.Arch.Zilog.Z80
             }
         }
 
-        public override void OnProcedureEntered()
+        public override void OnProcedureEntered(Address addr)
         {
         }
 

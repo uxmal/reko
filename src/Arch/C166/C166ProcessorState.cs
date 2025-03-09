@@ -63,7 +63,7 @@ namespace Reko.Arch.C166
             return new CallSite(2, 0);
         }
 
-        public override void OnProcedureEntered()
+        public override void OnProcedureEntered(Address addr)
         {
         }
 

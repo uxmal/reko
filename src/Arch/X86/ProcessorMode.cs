@@ -84,7 +84,7 @@ namespace Reko.Arch.X86
 
         public abstract IEnumerable<Address> CreateInstructionScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);
 
-        public abstract OperandRewriter CreateOperandRewriter(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder binder, IRewriterHost host);
+        public abstract OperandRewriter CreateOperandRewriter(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder binder, IRewriterHost host, X86State state);
 
         public abstract Decoder[] CreateRootDecoders(Dictionary<string, object> options);
 
@@ -217,9 +217,9 @@ namespace Reko.Arch.X86
             return new X86RealModeEmulator(arch, segmentMap, envEmulator);
         }
 
-        public override OperandRewriter CreateOperandRewriter(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder binder, IRewriterHost host)
+        public override OperandRewriter CreateOperandRewriter(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder binder, IRewriterHost host, X86State state)
         {
-            return new OperandRewriter16(arch, m, binder, host);
+            return new OperandRewriter16(arch, m, binder, host, state);
         }
 
         public override Address? CreateSegmentedAddress(ushort seg, uint offset)
@@ -269,9 +269,9 @@ namespace Reko.Arch.X86
             return new X86RealModePointerScanner(rdr, knownLinAddresses, flags).Select(li => map.MapLinearAddressToAddress(li));
         }
 
-        public override OperandRewriter CreateOperandRewriter(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder binder, IRewriterHost host)
+        public override OperandRewriter CreateOperandRewriter(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder binder, IRewriterHost host, X86State state)
         {
-            return new OperandRewriter16(arch, m, binder, host);
+            return new OperandRewriter16(arch, m, binder, host, state);
         }
 
         public override Decoder[] CreateRootDecoders(Dictionary<string, object> options)
@@ -382,9 +382,9 @@ namespace Reko.Arch.X86
             return new X86Protected32Emulator(arch, segmentMap, envEmulator);
         }
 
-        public override OperandRewriter CreateOperandRewriter(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder binder, IRewriterHost host)
+        public override OperandRewriter CreateOperandRewriter(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder binder, IRewriterHost host, X86State state)
         {
-            return new OperandRewriter32(arch, m, binder, host);
+            return new OperandRewriter32(arch, m, binder, host, state);
         }
 
         public override Decoder[] CreateRootDecoders(Dictionary<string, object> options)
@@ -468,9 +468,9 @@ namespace Reko.Arch.X86
             return new X86PointerScanner64(rdr, knownLinAddresses, flags).Select(li => map.MapLinearAddressToAddress(li));
         }
 
-        public override OperandRewriter CreateOperandRewriter(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder binder, IRewriterHost host)
+        public override OperandRewriter CreateOperandRewriter(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder binder, IRewriterHost host, X86State state)
         {
-            return new OperandRewriter64(arch, m, binder, host);
+            return new OperandRewriter64(arch, m, binder, host, state);
         }
 
         public override Decoder[] CreateRootDecoders(Dictionary<string, object> options)

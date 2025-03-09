@@ -88,7 +88,7 @@ namespace Reko.Arch.Mips
             }
         }
 
-        public override void OnProcedureEntered()
+        public override void OnProcedureEntered(Address addr)
         {
             // The ELF abi states that r25 must contain the address
             // of the called function when calling PIC functions. Otherwise

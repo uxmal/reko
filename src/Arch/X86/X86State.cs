@@ -151,7 +151,7 @@ namespace Reko.Arch.X86
             }
         }
 
-        public override void OnProcedureEntered()
+        public override void OnProcedureEntered(Address addr)
         {
             // We're making an assumption that the direction flag is always clear
             // when a procedure is entered. This is true of the vast majority of
@@ -160,6 +160,11 @@ namespace Reko.Arch.X86
             // procedure entry, you can manually set that flag using a user-
             // defined register value.
             SetFlagGroup(arch.GetFlagGroup(Registers.eflags, (uint) FlagM.DF), Constant.False());
+            if (addr.Selector.HasValue)
+            {
+                var cs = Constant.Create(PrimitiveType.SegmentSelector, addr.Selector.Value);
+                SetRegister(Registers.cs, cs);
+            }
         }
 
         public override void OnProcedureLeft(FunctionType sig)

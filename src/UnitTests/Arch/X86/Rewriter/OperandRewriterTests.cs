@@ -70,7 +70,8 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
                 Address = procAddress,
             };
             proc = Procedure.Create(arch, procAddress, arch.CreateFrame());
-            orw = new OperandRewriter32(arch, new ExpressionEmitter(), proc.Frame, new FakeRewriterHost(program));
+            var state = new X86State(arch);
+            orw = new OperandRewriter32(arch, new ExpressionEmitter(), proc.Frame, new FakeRewriterHost(program), state);
         }
 
         [Test]

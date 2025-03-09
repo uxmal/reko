@@ -95,7 +95,7 @@ namespace Reko.Arch.Pdp.Pdp11
             }
         }
 
-        public override void OnProcedureEntered()
+        public override void OnProcedureEntered(Address addr)
         {
         }
 

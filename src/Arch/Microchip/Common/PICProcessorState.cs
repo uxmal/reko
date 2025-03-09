@@ -149,7 +149,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// Executes the procedure entered action.
         /// Some registers need to be updated when a procedure is entered.
         /// </summary>
-        public override void OnProcedureEntered()
+        public override void OnProcedureEntered(Address addr)
         {
         }
 

@@ -64,7 +64,7 @@ namespace Reko.Arch.M6800.M6812
             throw new NotImplementedException();
         }
 
-        public override void OnProcedureEntered()
+        public override void OnProcedureEntered(Address addr)
         {
             throw new NotImplementedException();
         }

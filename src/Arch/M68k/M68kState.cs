@@ -85,7 +85,7 @@ namespace Reko.Arch.M68k
             }
         }
 
-        public override void OnProcedureEntered()
+        public override void OnProcedureEntered(Address addr)
         {
         }
 

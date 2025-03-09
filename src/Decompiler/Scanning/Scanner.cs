@@ -655,8 +655,8 @@ namespace Reko.Scanning
         /// <returns></returns>
         private void EstablishInitialState(Address addr, ProcessorState st, Procedure proc)
         {
-            st.InstructionPointer = addr;;
-            st.OnProcedureEntered();
+            st.InstructionPointer = addr;
+            st.OnProcedureEntered(addr);
             var sp = proc.Frame.EnsureRegister(Program.Architecture.StackRegister);
             st.SetValue(sp, proc.Frame.FramePointer);
             SetAssumedRegisterValues(addr, st);

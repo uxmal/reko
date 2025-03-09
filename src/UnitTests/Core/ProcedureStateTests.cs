@@ -267,7 +267,7 @@ namespace Reko.UnitTests.Core
                 regs[r] = v;
             }
 
-            public override void OnProcedureEntered()
+            public override void OnProcedureEntered(Address addr)
             {
             }
 

@@ -78,7 +78,11 @@ namespace Reko.Core
         public abstract Constant GetRegister(RegisterStorage r);
         public abstract void SetRegister(RegisterStorage r, Constant v);
 
-        public abstract void OnProcedureEntered();                 // Some registers need to be updated when a procedure is entered.
+        /// <summary>
+        /// Some registers need to be updated when a procedure is entered.
+        /// </summary>
+        /// <param name="addr"></param>
+        public abstract void OnProcedureEntered(Address addr);
         public abstract void OnProcedureLeft(FunctionType procedureSignature);
 
         /// <summary>
@@ -328,7 +332,7 @@ namespace Reko.Core
             return new CallSite(returnAddressSize, 0);
         }
 
-        public override void OnProcedureEntered()
+        public override void OnProcedureEntered(Address _)
         {
         }
 

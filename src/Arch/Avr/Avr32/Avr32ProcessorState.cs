@@ -60,7 +60,7 @@ namespace Reko.Arch.Avr.Avr32
             return new CallSite(0, 0);
         }
 
-        public override void OnProcedureEntered()
+        public override void OnProcedureEntered(Address addr)
         {
         }
 

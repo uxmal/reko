@@ -56,7 +56,7 @@ namespace Reko.Arch.XCore
             throw new System.NotImplementedException();
         }
 
-        public override void OnProcedureEntered()
+        public override void OnProcedureEntered(Address addr)
         {
             throw new System.NotImplementedException();
         }

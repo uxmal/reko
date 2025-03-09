@@ -55,7 +55,7 @@ namespace Reko.Arch.V850
             return new CallSite(4, 0);
         }
 
-        public override void OnProcedureEntered()
+        public override void OnProcedureEntered(Address addr)
         {
         }
 

@@ -74,7 +74,7 @@ namespace Reko.Arch.PowerPC
             regs[reg] = c;
         }
 
-        public override void OnProcedureEntered()
+        public override void OnProcedureEntered(Address addr)
         {
         }
 

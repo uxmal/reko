@@ -207,7 +207,7 @@ namespace Reko.Environments.C64
             {
             }
 
-            public override void OnProcedureEntered()
+            public override void OnProcedureEntered(Address addr)
             {
             }
 

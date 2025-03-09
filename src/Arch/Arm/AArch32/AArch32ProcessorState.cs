@@ -91,7 +91,7 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
-        public override void OnProcedureEntered()
+        public override void OnProcedureEntered(Address addr)
         {
         }
 

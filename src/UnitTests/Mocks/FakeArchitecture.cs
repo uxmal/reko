@@ -505,7 +505,7 @@ namespace Reko.UnitTests.Mocks
             return c;
 		}
 
-        public override void OnProcedureEntered()
+        public override void OnProcedureEntered(Address addr)
         {
         }
 

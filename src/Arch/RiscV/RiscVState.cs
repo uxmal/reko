@@ -67,7 +67,7 @@ namespace Reko.Arch.RiscV
             return new CallSite(0, 0);
         }
 
-        public override void OnProcedureEntered()
+        public override void OnProcedureEntered(Address addr)
         {
         }
 

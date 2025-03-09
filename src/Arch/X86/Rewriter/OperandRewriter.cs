@@ -24,7 +24,6 @@ using Reko.Core.Operators;
 using Reko.Core.Types;
 using Reko.Core;
 using System;
-using System.Diagnostics;
 using Reko.Core.Lib;
 
 namespace Reko.Arch.X86.Rewriter
@@ -39,13 +38,20 @@ namespace Reko.Arch.X86.Rewriter
         private readonly ExpressionEmitter m;
         private readonly IStorageBinder binder;
         private readonly IRewriterHost host;
+        private readonly X86State state;
 
-        public OperandRewriter(IntelArchitecture arch, ExpressionEmitter emitter, IStorageBinder binder, IRewriterHost host)
+        public OperandRewriter(
+            IntelArchitecture arch,
+            ExpressionEmitter emitter,
+            IStorageBinder binder,
+            IRewriterHost host,
+            X86State state)
         {
             this.arch = arch;
             this.m = emitter;
             this.binder = binder;
             this.host = host;
+            this.state = state;
         }
 
         public Expression Transform(X86Instruction instr, MachineOperand op, DataType opWidth)
@@ -108,7 +114,15 @@ namespace Reko.Arch.X86.Rewriter
                 Expression seg;
                 if (mem.DefaultSegment == Registers.cs)
                 {
-                    seg = Constant.Create(PrimitiveType.SegmentSelector, instr.Address.Selector!.Value);
+                    var cs = state.GetRegister(Registers.cs);
+                    if (cs is not InvalidConstant)
+                    {
+                        seg = cs;
+                    }
+                    else
+                    {
+                        seg = Constant.Create(PrimitiveType.SegmentSelector, instr.Address.Selector!.Value);
+                    }
                 }
                 else
                 {
@@ -248,7 +262,7 @@ namespace Reko.Arch.X86.Rewriter
 
     public class OperandRewriter16 : OperandRewriter
     {
-        public OperandRewriter16(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder binder, IRewriterHost host) : base(arch, m, binder, host) { }
+        public OperandRewriter16(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder binder, IRewriterHost host, X86State state) : base(arch, m, binder, host, state) { }
 
         public override bool IsSegmentedAccessRequired { get { return true; } }
 
@@ -269,7 +283,7 @@ namespace Reko.Arch.X86.Rewriter
 
     public class OperandRewriter32 : OperandRewriter
     {
-        public OperandRewriter32(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder binder, IRewriterHost host) : base(arch,m, binder, host) { }
+        public OperandRewriter32(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder binder, IRewriterHost host, X86State state) : base(arch,m, binder, host, state) { }
 
         public override Address ImmediateAsAddress(Address address, Constant imm)
         {
@@ -279,7 +293,7 @@ namespace Reko.Arch.X86.Rewriter
 
     public class OperandRewriter64 : OperandRewriter
     {
-        public OperandRewriter64(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder binder, IRewriterHost host) : base(arch, m, binder, host) { }
+        public OperandRewriter64(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder binder, IRewriterHost host, X86State state) : base(arch, m, binder, host, state) { }
 
         public override Address ImmediateAsAddress(Address address, Constant imm)
         {

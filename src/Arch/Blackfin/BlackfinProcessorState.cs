@@ -55,7 +55,7 @@ namespace Reko.Arch.Blackfin
             throw new System.NotImplementedException();
         }
 
-        public override void OnProcedureEntered()
+        public override void OnProcedureEntered(Address addr)
         {
         }
 

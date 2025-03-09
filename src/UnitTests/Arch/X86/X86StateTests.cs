@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Arch.X86
             var state = new X86State(arch);
             var esp = CreateId(Registers.esp);
             state.SetRegister(Registers.esp, Constant.Word32(-4));
-            state.OnProcedureEntered();
+            state.OnProcedureEntered(Address.Ptr32(0x00123400));
             var site = state.OnBeforeCall(esp, 4);
             Assert.AreEqual(4, site.SizeOfReturnAddressOnStack);
             Assert.AreEqual("0xFFFFFFFC<32>", state.GetValue(esp).ToString());

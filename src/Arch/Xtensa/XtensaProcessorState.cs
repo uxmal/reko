@@ -62,7 +62,7 @@ namespace Reko.Arch.Xtensa
             return new CallSite(returnAddressSize, 0);
         }
 
-        public override void OnProcedureEntered()
+        public override void OnProcedureEntered(Address addr)
         {
         }
 

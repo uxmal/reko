@@ -66,8 +66,8 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
             };
 
             proc = Procedure.Create(arch, procAddress, arch.CreateFrame());
-            orw = new OperandRewriter16(arch, new ExpressionEmitter(), proc.Frame, new FakeRewriterHost(program));
             state = (X86State) arch.CreateProcessorState();
+            orw = new OperandRewriter16(arch, new ExpressionEmitter(), proc.Frame, new FakeRewriterHost(program), state);
         }
 
         [Test]

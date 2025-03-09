@@ -69,7 +69,7 @@ namespace Reko.Arch.X86.Rewriter
             this.dasm = new LookaheadEnumerator<X86Instruction>(arch.CreateDisassemblerImpl(rdr));
             this.rtlInstructions = new List<RtlInstruction>();
             this.m = new RtlEmitter(rtlInstructions);
-            this.orw = arch.ProcessorMode.CreateOperandRewriter(arch, m, binder, host);
+            this.orw = arch.ProcessorMode.CreateOperandRewriter(arch, m, binder, host, state);
             this.instrCur = default!;
         }
 

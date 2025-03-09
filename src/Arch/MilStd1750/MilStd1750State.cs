@@ -67,7 +67,7 @@ namespace Reko.Arch.MilStd1750
             return new CallSite(2, 0);
         }
 
-        public override void OnProcedureEntered()
+        public override void OnProcedureEntered(Address addr)
         {
         }
 

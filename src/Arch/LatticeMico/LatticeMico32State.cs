@@ -56,7 +56,7 @@ namespace Reko.Arch.LatticeMico
             throw new System.NotImplementedException();
         }
 
-        public override void OnProcedureEntered()
+        public override void OnProcedureEntered(Address addr)
         {
         }
 

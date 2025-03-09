@@ -70,7 +70,7 @@ namespace Reko.Arch.Tms7000
             return new CallSite(returnAddressSize, 0);
         }
 
-        public override void OnProcedureEntered()
+        public override void OnProcedureEntered(Address addr)
         {
         }
 

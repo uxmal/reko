@@ -81,7 +81,7 @@ namespace Reko.Arch.Mos6502
             }
         }
 
-        public override void OnProcedureEntered()
+        public override void OnProcedureEntered(Address addr)
         {
         }
 
