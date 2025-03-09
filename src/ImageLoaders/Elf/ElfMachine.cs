@@ -271,6 +271,8 @@ namespace Reko.ImageLoaders.Elf
         EM_CYGNUS_D10V = 0x7650,    // D10V backend magic number.  Written in the absence of an ABI.  
         EM_CYGNUS_D30V = 0x7676,    // D30V backend magic number.  Written in the absence of an ABI.  
         EM_IP2K_OLD = 0x8217,       // Ubicom IP2xxx;   Written in the absense of an ABI.  
+        EM_BA = 0x8472,             // Beyond BA 32-bit architecture.
+        EM_BA64 = 0x8473,           // Beyond BA 64-bit architecture.
         EM_CYGNUS_POWERPC = 0x9025, // Cygnus PowerPC ELF backend.  Written in the absence of an ABI.  
         EM_CYGNUS_M32R = 0x9041,    // Cygnus M32R ELF backend.  Written in the absence of an ABI.  
         EM_CYGNUS_V850 = 0x9080,    // V850 backend magic number.  Written in the absense of an ABI.  

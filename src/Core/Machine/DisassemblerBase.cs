@@ -198,6 +198,27 @@ namespace Reko.Core.Machine
             return new MaskDecoder<TDasm, TMnemonic, TInstr>(new Bitfield(bitPos, bitLength), tag, decoders);
         }
 
+        /// <summary>
+        /// Creates a wide <see cref="Decoder"/> which, when executed, extracts the
+        /// bitfield defined by <paramref name="bitPos"/> and <paramref name="bitLength"/>
+        /// and uses the value of the bitfield to select from one of the given
+        /// <paramref name="decoders"/>.
+        /// </summary>
+        /// <param name="bitPos">Starting position of the bitfield, counted in 
+        /// little-endian bit order.</param>
+        /// <param name="bitLength">The size of the bitfield in bits.</param>
+        /// <param name="tag">A tag for use when debugging. See
+        /// <see cref="Decoder.DumpMaskedInstruction(int, ulong, ulong, string)"/>.
+        /// </param>
+        /// <param name="decoders">The sub-decoders to which to dispatch.</param>
+        /// <returns>An instance of <see cref="MaskDecoder{TDasm, TMnemonic, TInstr}"/>.</returns>
+        public static WideMaskDecoder<TDasm, TMnemonic, TInstr> WideMask<TDasm>(int bitPos, int bitLength, string tag, params WideDecoder<TDasm, TMnemonic, TInstr>[] decoders)
+            where TDasm : DisassemblerBase<TInstr, TMnemonic>
+        {
+            return new WideMaskDecoder<TDasm, TMnemonic, TInstr>(new Bitfield(bitPos, bitLength), tag, decoders);
+        }
+
+
         public static BitfieldDecoder<TDasm, TMnemonic, TInstr> Mask<TDasm>(
             int p1, int l1, int p2, int l2,
             string tag,
@@ -280,6 +301,21 @@ namespace Reko.Core.Machine
             };
             return new ConditionalDecoder<TDasm, TMnemonic, TInstr>(fields, predicate, tag, decoderTrue, decoderFalse);
         }
+
+        public static WideConditionalDecoder<TDasm, TMnemonic, TInstr> WideSelect<TDasm>(
+            (int, int) fieldSpecifier,
+            Predicate<ulong> predicate,
+            string tag,
+            WideDecoder<TDasm, TMnemonic, TInstr> decoderTrue,
+            WideDecoder<TDasm, TMnemonic, TInstr> decoderFalse)
+        {
+            var fields = new[]
+            {
+                new Bitfield(fieldSpecifier.Item1, fieldSpecifier.Item2)
+            };
+            return new WideConditionalDecoder<TDasm, TMnemonic, TInstr>(fields, predicate, tag, decoderTrue, decoderFalse);
+        }
+
 
         public static ConditionalDecoder<TDasm, TMnemonic, TInstr> Select<TDasm>(
             (int, int) fieldSpecifier,

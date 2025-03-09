@@ -112,6 +112,11 @@ namespace Reko.ImageLoaders.Elf
                 archName = "zSeries";
                 options[ProcessorOption.WordSize] = 64;
                 break;
+            case ElfMachine.EM_BA64:
+                archName = "beyond";
+                options[ProcessorOption.WordSize] = 64;
+                break;
+
             default:
                 return base.CreateArchitecture(elfMachine, endianness);
             }

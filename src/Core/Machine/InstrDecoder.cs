@@ -18,6 +18,8 @@
  */
 #endregion
 
+using System.Diagnostics;
+
 namespace Reko.Core.Machine
 {
     /// <summary>
@@ -85,5 +87,11 @@ namespace Reko.Core.Machine
             }
             return dasm.MakeInstruction(this.iclass, this.mnemonic);
         }
+
+        public override string ToString()
+        {
+            return $"{iclass}:{mnemonic}";
+        }
+
     }
 }

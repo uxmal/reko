@@ -49,7 +49,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 ctx.WriteUInt64(addr, ctx.S + ctx.A);
                 return (addr, null);
             default:
-                ctx.Warn(addr, $"Unimplemented PowerPC64 relocation type {rt}.");
+                ctx.Warn(addr, $"Unimplemented Arm64 relocation type {rt}.");
                 return (addr, null);
             }
         }

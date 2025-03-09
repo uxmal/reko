@@ -64,4 +64,43 @@ namespace Reko.Core.Machine
             return decoder.Decode(wInstr, dasm);
         }
     }
+
+    /// <summary>
+    /// This decoder extracts a value from one or more bitfields and selects one
+    /// of two sub-decoders depending on the result of evaluating a provided
+    /// predicate with the bitfield value.
+    /// </summary>
+    public class WideConditionalDecoder<TDasm, TMnemonic, TInstr> : WideDecoder<TDasm, TMnemonic, TInstr>
+        where TInstr : MachineInstruction
+        where TMnemonic : struct
+    {
+        private readonly Bitfield[] bitfields;
+        private readonly Predicate<ulong> predicate;
+        private readonly WideDecoder<TDasm, TMnemonic, TInstr> trueDecoder;
+        private readonly WideDecoder<TDasm, TMnemonic, TInstr> falseDecoder;
+        private readonly string tag;
+
+        public WideConditionalDecoder(
+            Bitfield[] bitfields,
+            Predicate<ulong> predicate,
+            string tag,
+            WideDecoder<TDasm, TMnemonic, TInstr> trueDecoder,
+            WideDecoder<TDasm, TMnemonic, TInstr> falseDecoder)
+        {
+            this.bitfields = bitfields;
+            this.predicate = predicate;
+            this.trueDecoder = trueDecoder;
+            this.falseDecoder = falseDecoder;
+            this.tag = tag;
+        }
+
+        public override TInstr Decode(ulong wInstr, TDasm dasm)
+        {
+            DumpMaskedInstruction(64, wInstr, this.bitfields, tag);
+            ulong n = Bitfield.ReadFields(bitfields, wInstr);
+            var decoder = predicate(n) ? trueDecoder : falseDecoder;
+            return decoder.Decode(wInstr, dasm);
+        }
+    }
+
 }

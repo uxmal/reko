@@ -172,6 +172,8 @@ namespace Reko.Environments.SysV.ArchSpecific
                 return new AeonCallingConvention(arch);
             case "csky":
                 return new CSkyCallingConvention(arch);
+            case "beyond":
+                return new BeyondCallingConvention(arch);
             default:
                 return null;
             }

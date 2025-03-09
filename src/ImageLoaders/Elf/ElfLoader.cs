@@ -298,6 +298,9 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_TC32:
                 arch = "tc32";
                 break;
+            case ElfMachine.EM_BA:
+                arch = "beyond";
+                break;
             default:
                 throw new NotImplementedException($"ELF machine type {elfMachine} is not implemented yet.");
             }
@@ -949,7 +952,6 @@ namespace Reko.ImageLoaders.Elf
 
         public void LoadRelocations()
         {
-            var result = new Dictionary<int, IReadOnlyList<ElfRelocation>>();
             foreach (var relSection in this.BinaryImage.Sections)
             {
                 var referringSection = relSection.RelocatedSection;

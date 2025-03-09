@@ -191,6 +191,7 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_X86_64: return new x86Relocator(this, imageSymbols);
             case ElfMachine.EM_ALTERA_NIOS2: return new Nios2Relocator(this, imageSymbols);
             case ElfMachine.EM_TC32: return new TC32Relocator(this, imageSymbols);
+            case ElfMachine.EM_BA: return new BeyondRelocator(this, imageSymbols);
             }
             return base.CreateRelocator(machine, arch, imageSymbols, plt);
         }

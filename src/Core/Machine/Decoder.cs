@@ -49,6 +49,12 @@ namespace Reko.Core.Machine
             DumpMaskedInstruction(64, wInstr, shMask, mnemonic.ToString()!);
         }
 
+        [Conditional("DEBUG")]
+        public static void DumpMaskedInstruction64(uint wInstr, uint shMask, string tag)
+        {
+            DumpMaskedInstruction(64, wInstr, shMask, tag);
+        }
+
         public static Decoder<TDasm, TMnemonic, TInstr>[] BuildSparseDecoderArray(int bits, Decoder<TDasm, TMnemonic, TInstr> defaultDecoder, (uint, Decoder<TDasm, TMnemonic, TInstr>)[] sparseDecoders)
         {
             var decoders = new Decoder<TDasm, TMnemonic, TInstr>[1 << bits];
@@ -90,7 +96,7 @@ namespace Reko.Core.Machine
         };
 
         [Conditional("DEBUG")]
-        public static void DumpMaskedInstruction(int instrBitSize, uint wInstr, Bitfield[] bitfields, string tag)
+        public static void DumpMaskedInstruction(int instrBitSize, ulong wInstr, Bitfield[] bitfields, string tag)
         {
             var shMask = bitfields.Aggregate(0u, (mask, bf) => mask | bf.Mask << bf.Position);
             DumpMaskedInstruction(instrBitSize, wInstr, shMask, tag);
