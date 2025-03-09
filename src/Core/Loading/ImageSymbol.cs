@@ -21,7 +21,6 @@
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
-using System.Xml.Linq;
 
 namespace Reko.Core.Loading
 {

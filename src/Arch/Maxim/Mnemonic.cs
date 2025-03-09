@@ -18,20 +18,24 @@
  */
 #endregion
 
-namespace Reko.Core.Loading;
-
-/// <summary>
-/// Represents a symbol in a binary file.
-/// </summary>
-public interface IBinarySymbol
+namespace Reko.Arch.Maxim
 {
-    /// <summary>
-    /// The name of the symbol.
-    /// </summary>
-    string Name { get; }
-
-    /// <summary>
-    /// The value of the symbol.
-    /// </summary>
-    ulong Value { get; }
+    public enum Mnemonic
+    {
+        Invalid,
+        Nyi,
+        move,
+        and,
+        or,
+        xor,
+        cmp,
+        nop,
+        add,
+        addc,
+        sub,
+        subb,
+        cpl,
+        neg,
+        sla
+    }
 }

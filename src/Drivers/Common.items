@@ -40,6 +40,7 @@ by the PreBuild.targets file.
     <ProjectReference Include="$(SolutionDir)Arch\M16C\M16C.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\M6800\M6800.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\M68k\M68k.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\Maxim\Maxim.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\MCore\MCore.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\MicroBlaze\MicroBlaze.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\Microchip\MicrochipPIC.csproj" />
@@ -48,6 +49,7 @@ by the PreBuild.targets file.
     <ProjectReference Include="$(SolutionDir)Arch\MN103\MN103.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\Mos6502\Mos6502.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\MSP430\MSP430.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\Nec\Nec.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\OpenRISC\OpenRISC.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\Padauk\Padauk.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\PaRisc\PaRisc.csproj" />
@@ -156,6 +158,7 @@ by the PreBuild.targets file.
     <Architectures Include="$(SolutionDir)Arch\M16C\bin\$(StandardOutputDir)\Reko.Arch.M16C.*" />
     <Architectures Include="$(SolutionDir)Arch\M6800\bin\$(StandardOutputDir)\Reko.Arch.M6800.*" />
     <Architectures Include="$(SolutionDir)Arch\M68k\bin\$(StandardOutputDir)\Reko.Arch.M68k.*" />
+    <Architectures Include="$(SolutionDir)Arch\Maxim\bin\$(StandardOutputDir)\Reko.Arch.Maxim.*" />
     <Architectures Include="$(SolutionDir)Arch\MCore\bin\$(StandardOutputDir)\Reko.Arch.MCore.*" />
     <Architectures Include="$(SolutionDir)Arch\MicroBlaze\bin\$(StandardOutputDir)\Reko.Arch.MicroBlaze.*" />
     <Architectures Include="$(SolutionDir)Arch\Microchip\bin\$(Configuration)\Reko.Arch.MicrochipPIC.*" />
@@ -164,6 +167,7 @@ by the PreBuild.targets file.
     <Architectures Include="$(SolutionDir)Arch\MN103\bin\$(StandardOutputDir)\Reko.Arch.MN103.*" />
     <Architectures Include="$(SolutionDir)Arch\Mos6502\bin\$(StandardOutputDir)\Reko.Arch.Mos6502.*" />
     <Architectures Include="$(SolutionDir)Arch\MSP430\bin\$(StandardOutputDir)\Reko.Arch.Msp430.*" />
+    <Architectures Include="$(SolutionDir)Arch\Nec\bin\$(StandardOutputDir)\Reko.Arch.Nec.*" />
     <Architectures Include="$(SolutionDir)Arch\OpenRISC\bin\$(StandardOutputDir)\Reko.Arch.OpenRISC.*" />
     <Architectures Include="$(SolutionDir)Arch\Padauk\bin\$(StandardOutputDir)\\Reko.Arch.Padauk.*" />
     <Architectures Include="$(SolutionDir)Arch\PaRisc\bin\$(StandardOutputDir)\\Reko.Arch.PaRisc.*" />

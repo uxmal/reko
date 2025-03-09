@@ -18,20 +18,26 @@
  */
 #endregion
 
-namespace Reko.Core.Loading;
+using Reko.Core.Machine;
+using System;
 
-/// <summary>
-/// Represents a symbol in a binary file.
-/// </summary>
-public interface IBinarySymbol
+namespace Reko.Arch.Maxim;
+
+public class MaxqInstruction : MachineInstruction
 {
-    /// <summary>
-    /// The name of the symbol.
-    /// </summary>
-    string Name { get; }
+    public Mnemonic Mnemonic { get; set; }
+    public override int MnemonicAsInteger => (int) Mnemonic;
 
-    /// <summary>
-    /// The value of the symbol.
-    /// </summary>
-    ulong Value { get; }
+    public override string MnemonicAsString => Mnemonic.ToString();
+
+    protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
+    {
+        RenderMnemonic(renderer);
+        RenderOperands(renderer, options);
+    }
+
+    private void RenderMnemonic(MachineInstructionRenderer renderer)
+    {
+        renderer.WriteMnemonic(MnemonicAsString);
+    }
 }

@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<Import Project="$(ProjectDir)../../Drivers/CommonBuildProperties.items" />
+	<PropertyGroup>
+		<ProjectGuid>{FF9E9894-F7E2-464D-B288-4157B864D053}</ProjectGuid>
+		<OutputType>Library</OutputType>
+		<RootNamespace>Reko.Arch.Nec</RootNamespace>
+		<AssemblyName>Reko.Arch.Nec</AssemblyName>
+		<TargetFramework>net8.0</TargetFramework>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<Configurations>Debug;Release</Configurations>
+	</PropertyGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\Core\Core.csproj" />
+	</ItemGroup>
+
+</Project>

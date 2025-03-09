@@ -20,7 +20,6 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
-using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Operators;
 using Reko.Core.Rtl;
@@ -157,7 +156,7 @@ namespace Reko.Arch.MN103
             testGenSvc?.ReportMissingRewriter("Mn103Rw", instr, instr.Mnemonic.ToString(), rdr, "");
         }
 
-        private void Emit_0001(Expression exp)
+        private void Emit_0001()
         {
             m.Assign(binder.EnsureFlagGroup(Registers.VCN), 0);
             m.Assign(binder.EnsureFlagGroup(Registers.Z), (int) FlagM.ZF);
@@ -362,7 +361,7 @@ namespace Reko.Arch.MN103
         {
             var reg = Op(0, PrimitiveType.Word32);
             m.Assign(reg, 0);
-            Emit_0001(reg);
+            Emit_0001();
         }
 
         private void RewriteCmp()

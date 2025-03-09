@@ -18,20 +18,13 @@
  */
 #endregion
 
-namespace Reko.Core.Loading;
+namespace Reko.Arch.Maxim;
 
-/// <summary>
-/// Represents a symbol in a binary file.
-/// </summary>
-public interface IBinarySymbol
+public enum IncrementMode
 {
-    /// <summary>
-    /// The name of the symbol.
-    /// </summary>
-    string Name { get; }
-
-    /// <summary>
-    /// The value of the symbol.
-    /// </summary>
-    ulong Value { get; }
+    None,
+    PreIncrement,
+    PreDecrement,
+    PostIncrement,
+    PostDecrement,
 }

@@ -1561,19 +1561,4 @@ public class M16CDisassembler : DisassemblerBase<M16CInstruction, Mnemonic>
                 Instr(Mnemonic.und, InstrClass.Terminates|InstrClass.Padding))
         });
     }
-
-    private class LiteralOperand : AbstractMachineOperand
-    {
-        private string literal;
-
-        public LiteralOperand(string value) : base(PrimitiveType.Byte)
-        {
-            this.literal = value;
-        }
-
-        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
-        {
-            renderer.WriteString(literal);
-        }
-    }
 }

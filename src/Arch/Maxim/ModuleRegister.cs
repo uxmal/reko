@@ -18,20 +18,20 @@
  */
 #endregion
 
-namespace Reko.Core.Loading;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 
-/// <summary>
-/// Represents a symbol in a binary file.
-/// </summary>
-public interface IBinarySymbol
+namespace Reko.Arch.Maxim
 {
-    /// <summary>
-    /// The name of the symbol.
-    /// </summary>
-    string Name { get; }
+    internal class ModuleRegister : AbstractMachineOperand
+    {
+        public ModuleRegister(uint n) : base(PrimitiveType.Word16)
+        {
+        }
 
-    /// <summary>
-    /// The value of the symbol.
-    /// </summary>
-    ulong Value { get; }
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
+        {
+            throw new System.NotImplementedException();
+        }
+    }
 }
