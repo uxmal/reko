@@ -143,7 +143,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
         /// </summary>
         private static bool c(uint b, Tlcs90Disassembler dasm)
         {
-            dasm.ops.Add(new ConditionOperand((CondCode) (b & 0xF)));
+            dasm.ops.Add(ConditionOperand.Create((CondCode) (b & 0xF)));
             return true;
         }
 

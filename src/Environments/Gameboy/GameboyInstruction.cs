@@ -39,7 +39,9 @@ namespace Reko.Environments.Gameboy
 
         protected override void RenderOperand(MachineOperand operand, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            if (operand is Constant imm)
+            switch (operand)
+            {
+            case Constant imm:
             {
                 var number = imm.ToUInt32();
                 if (imm.DataType.Domain == Domain.SignedInt)
@@ -54,8 +56,14 @@ namespace Reko.Environments.Gameboy
                 }
                 else
                 {
-                    RenderIntelHexNumber((int)number, renderer);
+                    RenderIntelHexNumber((int) number, renderer);
                 }
+                return;
+            }
+            case ConditionOperand<Gameboy.CCode> cond:
+                renderer.BeginOperand();
+                renderer.WriteString(cond.Condition.ToString().ToLower());
+                renderer.EndOperand();
                 return;
             }
             base.RenderOperand(operand, renderer, options);

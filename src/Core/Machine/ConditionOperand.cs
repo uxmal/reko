@@ -18,48 +18,33 @@
  */
 #endregion
 
-using Reko.Core.Machine;
 using Reko.Core.Types;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace Reko.Arch.Tlcs.Tlcs900
+namespace Reko.Core.Machine;
+
+public static class ConditionOperand
 {
-    public class ConditionOperand : AbstractMachineOperand
+    public static ConditionOperand<TCondCode> Create<TCondCode>(TCondCode code)
+        where TCondCode : System.Enum
     {
-        public CondCode Code;
+        return new ConditionOperand<TCondCode>(code);
+    }
+}
 
-        public ConditionOperand(CondCode cc) : base(PrimitiveType.Byte)
-        {
-            this.Code = cc;
-        }
+public class ConditionOperand<TCondCode> : AbstractMachineOperand
+    where TCondCode : System.Enum
+{
 
-        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
-        {
-            renderer.WriteString(Code.ToString());
-        }
+    public ConditionOperand(TCondCode code)
+        : base(PrimitiveType.Byte)
+    {
+        this.Condition = code;
     }
 
-    public enum CondCode
-    {
-        F,
-        LT,
-        LE,
-        ULE,
-        OV,
-        MI,
-        Z,
-        C,
+    public TCondCode Condition { get; }
 
-        T,
-        GE,
-        GT,
-        UGT,
-        NV,
-        PL,
-        NZ,
-        NC
+    protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
+    {
+        renderer.WriteString(Condition.ToString());
     }
 }

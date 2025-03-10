@@ -18,31 +18,12 @@
  */
 #endregion
 
-using Reko.Core.Machine;
-using Reko.Core.Types;
+namespace Reko.Environments.Gameboy;
 
-namespace Reko.Environments.Gameboy
+public enum CCode
 {
-    public class ConditionOperand : AbstractMachineOperand
-    {
-        public ConditionOperand(CCode cc) : base(PrimitiveType.Byte)
-        {
-            this.ConditionCode = cc;
-        }
-
-        public CCode ConditionCode { get; }
-
-        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
-        {
-            renderer.WriteString(ConditionCode.ToString().ToLower());
-        }
-    }
-
-    public enum CCode
-    {
-        C,
-        NC,
-        NZ,
-        Z,
-    }
+    C,
+    NC,
+    NZ,
+    Z,
 }

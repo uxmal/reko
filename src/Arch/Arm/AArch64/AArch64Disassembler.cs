@@ -1533,7 +1533,7 @@ namespace Reko.Arch.Arm.AArch64
             return (u, d) =>
             {
                 var cond = (ArmCondition)field.Read(u);
-                d.state.ops.Add(new ConditionOperand(cond));
+                d.state.ops.Add(ConditionOperand.Create(cond));
                 return true;
             };
         }

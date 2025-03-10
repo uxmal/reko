@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using Reko.Core;
+using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 
@@ -68,8 +69,8 @@ namespace Reko.Arch.Tlcs.Tlcs90
                     return true;
                 var addrOpB = (Address) opB;
                 return addrOpA.ToLinear() == addrOpB.ToLinear();
-            case ConditionOperand condOpA:
-                return condOpA.Code == ((ConditionOperand)opB).Code;
+            case ConditionOperand<CondCode> condOpA:
+                return condOpA.Condition == ((ConditionOperand<CondCode>)opB).Condition;
             case MemoryOperand memOpA:
                 var memOpB = (MemoryOperand) opB;
                 if (NormalizeRegisters && !CompareRegisters(memOpA.Base, memOpB.Base))
@@ -111,8 +112,8 @@ namespace Reko.Arch.Tlcs.Tlcs90
                     return h;
                 else
                     return h * 29 ^ addrOp.GetHashCode();
-            case ConditionOperand condOp:
-                return h * 19 ^ condOp.Code.GetHashCode();
+            case ConditionOperand<CondCode> condOp:
+                return h * 19 ^ condOp.Condition.GetHashCode();
             case MemoryOperand memOp:
                 if (!NormalizeRegisters && memOp.Base != null)
                     h = h * 23 ^ memOp.Base.GetHashCode();

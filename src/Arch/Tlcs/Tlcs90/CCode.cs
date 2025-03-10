@@ -18,24 +18,25 @@
  */
 #endregion
 
-using Reko.Core.Machine;
-using Reko.Core.Types;
+namespace Reko.Arch.Tlcs.Tlcs90;
 
-namespace Reko.Arch.Zilog.Z80
+public enum CondCode
 {
-    public class ConditionOperand : AbstractMachineOperand
-    {
-        public CondCode Code;
+    F,
+    LT,
+    LE,
+    ULE,
+    OV,
+    M,
+    Z,
+    C,
 
-        public ConditionOperand(CondCode code)
-            : base(PrimitiveType.Byte)
-        {
-            this.Code = code;
-        }
-
-        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
-        {
-            renderer.WriteString(Code.ToString());
-        }
-    }
+    T,
+    GE,
+    GT,
+    UGT,
+    NV,
+    P,
+    NZ,
+    NC
 }

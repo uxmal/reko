@@ -289,8 +289,8 @@ namespace Reko.Environments.Gameboy
                     }
                 }
                 return m.Mem(mem.DataType, ea);
-            case ConditionOperand cond:
-                switch (cond.ConditionCode)
+            case ConditionOperand<CCode> cond:
+                switch (cond.Condition)
                 {
                 case CCode.C: return m.Test(ConditionCode.ULT, binder.EnsureFlagGroup(Registers.C));
                 case CCode.NC: return m.Test(ConditionCode.UGE, binder.EnsureFlagGroup(Registers.C));

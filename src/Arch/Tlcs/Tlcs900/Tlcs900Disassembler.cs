@@ -116,7 +116,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             // condition code
             var cc = (CondCode) (b & 0xF);
             if (cc != CondCode.T)
-                dasm.ops.Add(new ConditionOperand(cc));
+                dasm.ops.Add(ConditionOperand.Create(cc));
             return true;
         }
 

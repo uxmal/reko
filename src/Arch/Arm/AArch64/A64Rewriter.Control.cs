@@ -31,7 +31,7 @@ namespace Reko.Arch.Arm.AArch64
     {
         private void RewriteB()
         {
-            if (instr.Operands[0] is ConditionOperand cop)
+            if (instr.Operands[0] is ConditionOperand<ArmCondition> cop)
             {
                 var cc = cop.Condition;
                 m.Branch(TestCond(cc)!, (Address)instr.Operands[1], iclass);

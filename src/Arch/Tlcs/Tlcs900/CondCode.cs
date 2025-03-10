@@ -18,28 +18,25 @@
  */
 #endregion
 
-using Reko.Core.Machine;
-using Reko.Core.Types;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+namespace Reko.Arch.Tlcs.Tlcs900;
 
-namespace Reko.Arch.Arm.AArch64
+public enum CondCode
 {
-    public class ConditionOperand : AbstractMachineOperand
-    {
-        public ConditionOperand(ArmCondition cond) : base(PrimitiveType.Byte)
-        {
-            this.Condition = cond;
-        }
+    F,
+    LT,
+    LE,
+    ULE,
+    OV,
+    MI,
+    Z,
+    C,
 
-        public ArmCondition Condition { get; }
-
-        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
-        {
-            renderer.WriteMnemonic(Condition.ToString());
-        }
-    }
+    T,
+    GE,
+    GT,
+    UGT,
+    NV,
+    PL,
+    NZ,
+    NC
 }

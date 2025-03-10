@@ -208,7 +208,7 @@ namespace Reko.Arch.Arm.AArch64
         {
             var nzcv = NZCV();
             var tmp = binder.CreateTemporary(PrimitiveType.Bool);
-            var cond = Invert(((ConditionOperand) instr.Operands[3]).Condition);
+            var cond = Invert(((ConditionOperand<ArmCondition>) instr.Operands[3]).Condition);
             m.Assign(tmp, this.TestCond(cond));
             var c = ((Constant)instr.Operands[2]).ToUInt32();
             m.Assign(nzcv, Constant.Word32(c << 28));
@@ -222,7 +222,7 @@ namespace Reko.Arch.Arm.AArch64
         {
             var nzcv = NZCV();
             var tmp = binder.CreateTemporary(PrimitiveType.Bool);
-            var cond = Invert(((ConditionOperand)instr.Operands[3]).Condition);
+            var cond = Invert(((ConditionOperand<ArmCondition>)instr.Operands[3]).Condition);
             m.Assign(tmp, this.TestCond(cond));
             var c = ((Constant)instr.Operands[2]).ToUInt32();
             m.Assign(nzcv, Constant.Word32(c << 28));
@@ -253,7 +253,7 @@ namespace Reko.Arch.Arm.AArch64
             var srcTrue = RewriteOp(instr.Operands[1], true);
             var srcFalse = RewriteOp(instr.Operands[2], true);
             var dst = RewriteOp(instr.Operands[0]);
-            var cond = ((ConditionOperand)instr.Operands[3]).Condition;
+            var cond = ((ConditionOperand<ArmCondition>)instr.Operands[3]).Condition;
             m.Assign(dst, m.Conditional(dst.DataType, TestCond(cond), srcTrue, srcFalse));
         }
 
@@ -262,7 +262,7 @@ namespace Reko.Arch.Arm.AArch64
             var dst = RewriteOp(instr.Operands[0]);
             var rTrue = (RegisterStorage)instr.Operands[1];
             var rFalse = (RegisterStorage)instr.Operands[2];
-            var cond = ((ConditionOperand)instr.Operands[3]).Condition;
+            var cond = ((ConditionOperand<ArmCondition>)instr.Operands[3]).Condition;
             Expression src;
             if (rTrue.Number == 31 && rFalse.Number == 31)
             {
@@ -287,7 +287,7 @@ namespace Reko.Arch.Arm.AArch64
             var srcTrue = RewriteOp(instr.Operands[1], true);
             var srcFalse = RewriteOp(instr.Operands[2], true);
             var dst = RewriteOp(instr.Operands[0]);
-            var cond = ((ConditionOperand)instr.Operands[3]).Condition;
+            var cond = ((ConditionOperand<ArmCondition>)instr.Operands[3]).Condition;
             m.Assign(dst, m.Conditional(dst.DataType, TestCond(cond), srcTrue, m.Comp(srcFalse)));
         }
 
@@ -296,7 +296,7 @@ namespace Reko.Arch.Arm.AArch64
             var srcTrue = RewriteOp(1, true);
             var srcFalse = RewriteOp(2, true);
             var dst = RewriteOp(instr.Operands[0]);
-            var cond = ((ConditionOperand)instr.Operands[3]).Condition;
+            var cond = ((ConditionOperand<ArmCondition>)instr.Operands[3]).Condition;
             m.Assign(dst, m.Conditional(dst.DataType, TestCond(cond), srcTrue, m.Neg(srcFalse)));
         }
 

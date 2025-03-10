@@ -312,7 +312,7 @@ namespace Reko.Environments.Gameboy
 
         private static Mutator<GameboyDisassembler> CCode(CCode cc)
         {
-            var op = new ConditionOperand(cc);
+            var op = ConditionOperand.Create(cc);
             return (u, d) =>
             {
                 d.operands.Add(op);

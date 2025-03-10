@@ -284,9 +284,9 @@ namespace Reko.Arch.Tlcs.Tlcs90
             throw new NotImplementedException(op.GetType().Name);
         }
 
-        private Expression RewriteCondition(ConditionOperand c)
+        private Expression RewriteCondition(ConditionOperand<CondCode> c)
         {
-            switch (c.Code)
+            switch (c.Condition)
             {
             case CondCode.F: return Constant.False();
             case CondCode.LT: return m.Test(ConditionCode.LT, binder.EnsureFlagGroup(arch.GetFlagGroup("SV")));

@@ -34,7 +34,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
     {
         private void RewriteCall()
         {
-            if (instr.Operands[0] is ConditionOperand co)
+            if (instr.Operands[0] is ConditionOperand<CondCode> co)
             {
                 iclass = InstrClass.ConditionalTransfer | InstrClass.Call;
                 m.BranchInMiddleOfInstruction(
@@ -61,7 +61,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
 
         private void RewriteJp()
         {
-            if (instr.Operands[0] is ConditionOperand co)
+            if (instr.Operands[0] is ConditionOperand<CondCode> co)
             {
                 iclass = InstrClass.ConditionalTransfer;
                 var test = GenerateTestExpression(co, false);
@@ -87,7 +87,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
 
         private void RewriteRet()
         {
-            if (instr.Operands.Length == 1 && instr.Operands[0] is ConditionOperand co)
+            if (instr.Operands.Length == 1 && instr.Operands[0] is ConditionOperand<CondCode> co)
             {
                 iclass = InstrClass.ConditionalTransfer;
 

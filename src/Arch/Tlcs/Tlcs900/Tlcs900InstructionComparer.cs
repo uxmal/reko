@@ -68,8 +68,8 @@ namespace Reko.Arch.Tlcs.Tlcs900
                     return true;
                 var addrOpB = (Address)opB;
                 return addrOpA.ToLinear() == addrOpB.ToLinear();
-            case ConditionOperand condOpA:
-                return condOpA.Code == ((ConditionOperand)opB).Code;
+            case ConditionOperand<CondCode> condOpA:
+                return condOpA.Condition == ((ConditionOperand<CondCode>)opB).Condition;
             case MemoryOperand memOpA:
                 var memOpB = (MemoryOperand) opB;
                 if (NormalizeRegisters && !CompareRegisters(memOpA.Base, memOpB.Base))
@@ -91,7 +91,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
 
         private int HashOp(MachineOperand op)
         {
-            if (op == null)
+            if (op is null)
                 return 0;
             int h = op.GetType().GetHashCode();
             if (op is RegisterStorage regOp)
@@ -115,13 +115,11 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 else
                     return h * 29 ^ addrOp.GetHashCode();
             }
-            var condOp = op as ConditionOperand;
-            if (condOp != null)
+            if (op is ConditionOperand<CondCode> condOp)
             {
-                return h * 19 ^ condOp.Code.GetHashCode();
+                return h * 19 ^ condOp.Condition.GetHashCode();
             }
-            var memOp = op as MemoryOperand;
-            if (memOp != null)
+            if (op is MemoryOperand memOp)
             {
                 if (!NormalizeRegisters && memOp.Base != null)
                     h = h * 23 ^ memOp.Base.GetHashCode();

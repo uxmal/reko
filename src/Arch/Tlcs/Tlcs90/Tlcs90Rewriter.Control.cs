@@ -34,7 +34,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
         {
             if (instr.Operands.Length >= 2)
             {
-                var cc = RewriteCondition((ConditionOperand)instr.Operands[0]).Invert();
+                var cc = RewriteCondition((ConditionOperand<CondCode>)instr.Operands[0]).Invert();
                 m.Branch(cc, instr.Address + instr.Length, InstrClass.ConditionalTransfer);
                 instr.Operands[1].DataType = PrimitiveType.Ptr16;
                 m.Call(RewriteSrc(instr.Operands[1]), 2);
@@ -86,7 +86,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             MachineOperand op;
             if (instr.Operands.Length >= 2)
             {
-                var cc = RewriteCondition((ConditionOperand)instr.Operands[0]);
+                var cc = RewriteCondition((ConditionOperand<CondCode>)instr.Operands[0]);
                 if (instr.Operands[1] is Address addr)
                 {
                     m.Branch(cc, addr, InstrClass.ConditionalTransfer);

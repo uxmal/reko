@@ -276,11 +276,11 @@ namespace Reko.Arch.Tlcs.Tlcs900
             }
         }
 
-        private Expression GenerateTestExpression(ConditionOperand cOp, bool invert)
+        private Expression GenerateTestExpression(ConditionOperand<CondCode> cOp, bool invert)
         {
             ConditionCode cc = ConditionCode.ALWAYS;
             string flags = "";
-            switch (cOp.Code)
+            switch (cOp.Condition)
             {
             case CondCode.F: return invert ? Constant.True() : Constant.False();
             case CondCode.LT: cc = invert ? ConditionCode.GE : ConditionCode.LT; flags = "SV"; break;

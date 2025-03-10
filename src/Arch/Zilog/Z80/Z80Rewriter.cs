@@ -314,7 +314,7 @@ namespace Reko.Arch.Zilog.Z80
             return GetEnumerator();
         }
 
-        private void EmitBranch(ConditionOperand cOp, Address dst)
+        private void EmitBranch(ConditionOperand<CondCode> cOp, Address dst)
         {
             m.Branch(
                 GenerateTestExpression(cOp, false),
@@ -322,11 +322,11 @@ namespace Reko.Arch.Zilog.Z80
                 InstrClass.ConditionalTransfer);
         }
 
-        private TestCondition GenerateTestExpression(ConditionOperand cOp, bool invert)
+        private TestCondition GenerateTestExpression(ConditionOperand<CondCode> cOp, bool invert)
         {
             ConditionCode cc = ConditionCode.ALWAYS;
             FlagGroupStorage? flags = null;
-            switch (cOp.Code)
+            switch (cOp.Condition)
             {
             case CondCode.nz:  cc = invert ? ConditionCode.EQ : ConditionCode.NE; flags = Registers.Z;  break;
             case CondCode.z: cc = invert ? ConditionCode.NE : ConditionCode.EQ; flags = Registers.Z;    break;
@@ -344,7 +344,7 @@ namespace Reko.Arch.Zilog.Z80
 
         private void RewriteCall()
         {
-            if (instr.Operands[0] is ConditionOperand cOp)
+            if (instr.Operands[0] is ConditionOperand<CondCode> cOp)
             {
                 m.BranchInMiddleOfInstruction(
                     GenerateTestExpression(cOp, true),
@@ -478,7 +478,7 @@ namespace Reko.Arch.Zilog.Z80
         {
             switch (instr.Operands[0])
             {
-            case ConditionOperand cOp:
+            case ConditionOperand<CondCode> cOp:
                 EmitBranch(cOp, (Address)instr.Operands[1]);
                 break;
             case Address target:
@@ -493,17 +493,17 @@ namespace Reko.Arch.Zilog.Z80
         private void RewriteJr()
         {
             var op = dasm.Current.Operands[0];
-            var cop = op as ConditionOperand;
-            if (cop != null)
+            var cop = op as ConditionOperand<CondCode>;
+            if (cop is not null)
             {
                 op = dasm.Current.Operands[1];
             }
             var target = (Address)op;
-            if (cop != null)
+            if (cop is not null)
             {
                 ConditionCode cc;
                 FlagGroupStorage cr;
-                switch (cop.Code)
+                switch (cop.Condition)
                 {
                 case CondCode.c: cc = ConditionCode.ULT; cr = Registers.C; break;
                 case CondCode.nz: cc = ConditionCode.NE; cr = Registers.Z; break;
@@ -654,7 +654,7 @@ namespace Reko.Arch.Zilog.Z80
         {
             if (this.instr.Operands.Length != 0)
             {
-                var cOp = (ConditionOperand) this.instr.Operands[0];
+                var cOp = (ConditionOperand<CondCode>) this.instr.Operands[0];
                 m.BranchInMiddleOfInstruction(
                     GenerateTestExpression(cOp, true),
                     instr.Address + instr.Length,

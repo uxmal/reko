@@ -62,7 +62,7 @@ namespace Reko.Arch.Arm.AArch64
 
         private int WriteMnemonic(MachineInstructionRenderer renderer)
         {
-            if (Mnemonic == Mnemonic.b && Operands[0] is ConditionOperand cop)
+            if (Mnemonic == Mnemonic.b && Operands[0] is ConditionOperand<ArmCondition> cop)
             {
                 renderer.WriteMnemonic($"b.{cop.Condition.ToString().ToLower()}");
                 return 1;

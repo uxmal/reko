@@ -322,13 +322,13 @@ namespace Reko.Arch.Zilog.Z80
 
         private static bool C(uint op, Z80Disassembler dasm)
         {
-            dasm.ops.Add(new ConditionOperand(ConditionCode[(op >> 3) & 7]));
+            dasm.ops.Add(ConditionOperand.Create(ConditionCode[(op >> 3) & 7]));
             return true;
         }
 
         private static bool Q(uint op, Z80Disassembler dasm)
         {
-            dasm.ops.Add(new ConditionOperand(ConditionCode[(op >> 3) & 3]));
+            dasm.ops.Add(ConditionOperand.Create(ConditionCode[(op >> 3) & 3]));
             return true;
         }
 

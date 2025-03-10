@@ -213,7 +213,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             Expression dst;
             if (instr.Operands.Length > 1)
             {
-                src = GenerateTestExpression((ConditionOperand) instr.Operands[0], false);
+                src = GenerateTestExpression((ConditionOperand<CondCode>) instr.Operands[0], false);
                 dst = RewriteSrc(instr.Operands[1]);
             }
             else

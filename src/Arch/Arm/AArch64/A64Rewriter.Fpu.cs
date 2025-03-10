@@ -120,7 +120,7 @@ namespace Reko.Arch.Arm.AArch64
             var eTrue = RewriteOp(instr.Operands[1]);
             var eFalse = RewriteOp(instr.Operands[2]);
             var dst = RewriteOp(instr.Operands[0]);
-            var cond = ((ConditionOperand)instr.Operands[3]).Condition;
+            var cond = ((ConditionOperand<ArmCondition>)instr.Operands[3]).Condition;
             m.Assign(dst, m.Conditional(dst.DataType, TestCond(cond), eTrue, eFalse));
         }
 
