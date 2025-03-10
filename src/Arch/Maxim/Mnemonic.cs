@@ -1,10 +1,10 @@
 #region License
 /* 
- * Copyright (C) 1999-2025 John Källén.
+ * Copyright (C 1999-2025 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2, or (at your option)
+ * the Free Software Foundation; either version 2, or (at your option
  * any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -36,6 +36,21 @@ namespace Reko.Arch.Maxim
         subb,
         cpl,
         neg,
-        sla
+        sla,
+        lcall,
+        scall,
+        ret,
+
+        sla2,
+        sla4,
+        rl,
+        rlc,
+        sra,
+        sra2,
+        sra4,
+        sr,
+        rr,
+        rrc,
+        ldjnz,
     }
 }

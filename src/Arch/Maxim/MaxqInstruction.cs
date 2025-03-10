@@ -18,6 +18,8 @@
  */
 #endregion
 
+using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using System;
 
@@ -39,5 +41,29 @@ public class MaxqInstruction : MachineInstruction
     private void RenderMnemonic(MachineInstructionRenderer renderer)
     {
         renderer.WriteMnemonic(MnemonicAsString);
+    }
+
+    protected override void RenderOperand(MachineOperand operand, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
+    {
+        if (operand is RegisterStorage reg)
+        {
+            if (Registers.IndexedNames.TryGetValue(reg, out string? indexedName))
+            {
+                renderer.BeginOperand();
+                renderer.WriteString(indexedName);
+                renderer.EndOperand();
+                return;
+            }
+            base.RenderOperand(operand, renderer, options);
+            return;
+        }
+        if (operand is Constant c)
+        {
+            renderer.BeginOperand();
+            renderer.WriteFormat("#{0:X2}", c.GetValue());
+            renderer.EndOperand();
+            return;
+        }
+        base.RenderOperand(operand, renderer, options);
     }
 }

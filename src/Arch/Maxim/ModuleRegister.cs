@@ -21,17 +21,23 @@
 using Reko.Core.Machine;
 using Reko.Core.Types;
 
-namespace Reko.Arch.Maxim
-{
-    internal class ModuleRegister : AbstractMachineOperand
-    {
-        public ModuleRegister(uint n) : base(PrimitiveType.Word16)
-        {
-        }
+namespace Reko.Arch.Maxim;
 
-        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
-        {
-            throw new System.NotImplementedException();
-        }
+public class ModuleRegister : AbstractMachineOperand
+{
+    public ModuleRegister(uint module, uint Index) : base(PrimitiveType.Word16)
+    {
+        this.Module = module;
+        this.Index = Index;
+    }
+
+    public uint Module { get; }
+    public uint Index { get; }
+
+    protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
+    {
+        renderer.BeginOperand();
+        renderer.WriteString($"m{Module}[{Index}]");
+        renderer.EndOperand();
     }
 }

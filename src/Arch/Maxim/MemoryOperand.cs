@@ -19,21 +19,17 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Code;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Arch.Maxim;
 
 public class MemoryOperand : AbstractMachineOperand
 {
 
-    private MemoryOperand(PrimitiveType dt, RegisterStorage? baseRegister, int offset, IncrementMode mode)
+    private MemoryOperand(PrimitiveType dt, RegisterStorage? baseRegister, MachineOperand offset, IncrementMode mode)
         : base(dt)
     {
         this.Base = baseRegister;
@@ -43,12 +39,18 @@ public class MemoryOperand : AbstractMachineOperand
 
     public static MemoryOperand Create(PrimitiveType dt, RegisterStorage? baseRegister, int offset, IncrementMode mode)
     {
-        var op = new MemoryOperand(dt, baseRegister, offset, mode);
+        var op = new MemoryOperand(dt, baseRegister, Constant.Word16((ushort)offset), mode);
+        return op;
+    }
+
+    public static MemoryOperand Create(PrimitiveType dt, RegisterStorage? baseRegister, MachineOperand index, IncrementMode mode)
+    {
+        var op = new MemoryOperand(dt, baseRegister, index, mode);
         return op;
     }
 
     public RegisterStorage? Base { get; }
-    public int Offset { get; }
+    public MachineOperand? Offset { get; }
 
     public IncrementMode Increment { get; }
 

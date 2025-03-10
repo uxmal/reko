@@ -83,7 +83,7 @@ public class MaxqDisassemblerTests : DisassemblerTestBase<MaxqInstruction>
     [Test]
     public void MaxqDis_addc_a()
     {
-        AssertCode("ADDC\tACC,A[6]", "EA69");
+        AssertCode("addc\tacc,a[6]", "EA69");
     }
 
     [Test]
@@ -142,7 +142,6 @@ public class MaxqDisassemblerTests : DisassemblerTestBase<MaxqInstruction>
     {
         AssertCode("ldjnz	lc[1],#3b", "5d3b");
     }
-
 
 
     [Test]
@@ -468,7 +467,6 @@ public class MaxqDisassemblerTests : DisassemblerTestBase<MaxqInstruction>
         AssertCode("push	#00", "0d00");
     }
 
-
     [Test]
     public void MaxqDis_ret()
     {
@@ -668,15 +666,15 @@ public class MaxqDisassemblerTests : DisassemblerTestBase<MaxqInstruction>
     }
 
     [Test]
-    public void MaxqDis_subc_a()
+    public void MaxqDis_subb_a()
     {
-        AssertCode("subc	acc,a[0]", "fa09");
+        AssertCode("subb	acc,a[0]", "fa09");
     }
 
     [Test]
-    public void MaxqDis_subc_imm()
+    public void MaxqDis_subb_imm()
     {
-        AssertCode("subc	acc,#00", "7a00");
+        AssertCode("subb	acc,#00", "7a00");
     }
 
     [Test]
