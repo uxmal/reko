@@ -1,10 +1,10 @@
 #region License
 /* 
- * Copyright (C 1999-2025 John Källén.
+ * Copyright (C) 1999-2025 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2, or (at your option
+ * the Free Software Foundation; either version 2, or (at your option)
  * any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -18,46 +18,24 @@
  */
 #endregion
 
-namespace Reko.Arch.Maxim
-{
-    public enum Mnemonic
-    {
-        Invalid,
-        Nyi,
-        move,
-        and,
-        or,
-        xor,
-        cmp,
-        nop,
-        add,
-        addc,
-        sub,
-        subb,
-        cpl,
-        neg,
-        sla,
-        lcall,
-        scall,
-        ret,
+using Reko.Core.Types;
+using System;
 
-        sla2,
-        sla4,
-        rl,
-        rlc,
-        sra,
-        sra2,
-        sra4,
-        sr,
-        rr,
-        rrc,
-        ldjnz,
-        reti,
-        ljump,
-        push,
-        pop,
-        popi,
-        xch,
-        xchn,
+namespace Reko.Core.Machine;
+
+public class BitOperand : AbstractMachineOperand
+{
+    public BitOperand(MachineOperand op, int bitPos) : base(PrimitiveType.Bool)
+    {
+        this.Operand = op;
+        this.BitPosition = bitPos;
+    }
+
+    public MachineOperand Operand { get; }
+    public int BitPosition { get; }
+
+    protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
+    {
+        throw new NotImplementedException();
     }
 }

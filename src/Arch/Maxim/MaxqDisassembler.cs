@@ -40,6 +40,7 @@ public class MaxqDisassembler : DisassemblerBase<MaxqInstruction, Mnemonic>
     private readonly Word16ImageReader rdr;
     private readonly List<MachineOperand> ops;
     private Address addr;
+    private bool mspPostdecSeen;
 
     public MaxqDisassembler(MaxqArchitecture arch, EndianImageReader rdr)
     {
@@ -55,7 +56,13 @@ public class MaxqDisassembler : DisassemblerBase<MaxqInstruction, Mnemonic>
         if (!rdr.TryReadBeUInt16(out ushort uInstr))
             return null;
         var instr = rootDecoder.Decode(uInstr, this);
-        
+        if (mspPostdecSeen && instr.Mnemonic == Mnemonic.move)
+        {
+            // Transform move to a pop.
+            instr.Mnemonic = Mnemonic.pop;
+            instr.Operands = [ ops[0] ];
+            mspPostdecSeen = false;
+        }
         instr.Address = addr;
         instr.Length = (int) (rdr.Offset - offset);
         if (uInstr == 0)
@@ -121,6 +128,29 @@ public class MaxqDisassembler : DisassemblerBase<MaxqInstruction, Mnemonic>
     private static readonly Mutator<MaxqDisassembler> SP = Register(Registers.SP);
     private static readonly Mutator<MaxqDisassembler> WDCN = Register(Registers.WDCN);
 
+    private static bool c(uint uInstr, MaxqDisassembler dasm)
+    {
+        dasm.ops.Add(Registers.C);
+        return true;
+    }
+
+    private static Mutator<MaxqDisassembler> CCode(CCode code)
+    {
+        return (u, d) =>
+        {
+            var cc = ConditionOperand.Create(code);
+            d.ops.Add(cc);
+            return true;
+        };
+    }
+    private static readonly Mutator<MaxqDisassembler> C = CCode(Maxim.CCode.C);
+    private static readonly Mutator<MaxqDisassembler> NC = CCode(Maxim.CCode.NC);
+    private static readonly Mutator<MaxqDisassembler> Z = CCode(Maxim.CCode.Z);
+    private static readonly Mutator<MaxqDisassembler> NZ = CCode(Maxim.CCode.NZ);
+    private static readonly Mutator<MaxqDisassembler> S = CCode(Maxim.CCode.S);
+    private static readonly Mutator<MaxqDisassembler> E = CCode(Maxim.CCode.E);
+    private static readonly Mutator<MaxqDisassembler> NE = CCode(Maxim.CCode.NE);
+
     private static Mutator<MaxqDisassembler> IndexedReg(RegisterStorage[] regs, int n)
     {
         var reg = regs[n];
@@ -131,10 +161,16 @@ public class MaxqDisassembler : DisassemblerBase<MaxqInstruction, Mnemonic>
         };
     }
 
+    private static bool acc_b(uint u, MaxqDisassembler d)
+    {
+        var bit = bf4l4.Read(u);
+        d.ops.Add(new BitOperand(Registers.Acc, (int)bit));
+        return true;
+    }
+
     private static Mutator<MaxqDisassembler> A(int n) => IndexedReg(Registers.Accumulators, n);
     private static Mutator<MaxqDisassembler> PFX(int n) => IndexedReg(Registers.Prefixes, n);
-    private static Mutator<MaxqDisassembler> MDP(int n) => IndexedReg(Registers.Prefixes, n);
-    private static Mutator<MaxqDisassembler> LC(int n) => IndexedReg(Registers.Prefixes, n);
+    private static Mutator<MaxqDisassembler> LC(int n) => IndexedReg(Registers.LoopCounters, n);
 
     private static bool NUL(uint u, MaxqDisassembler d)
     {
@@ -163,9 +199,13 @@ public class MaxqDisassembler : DisassemblerBase<MaxqInstruction, Mnemonic>
         //MN[n] 1 nnnn 0NNN 8 / 16 nnnn Selects One of First 16 Registers in Module NNN;
         // where NNN = 0 to 5.Access to Second 16 Using PFX[n].
         var n = u & 0b111;
-        if (n > 5)
-            return false;
         d.ops.Add(new ModuleRegister(n, bf4l4.Read(u)));
+        return true;
+    }
+
+    private static bool W0L8(uint u, MaxqDisassembler d)
+    {
+        d.ops.Add(Constant.Byte((byte)u));
         return true;
     }
 
@@ -248,14 +288,34 @@ case 0b0111_1111: return DPn(1, u, d);       // DP[n]          1 0n11 1111 16 n 
         return false;
     }
 
+    private static bool Dst(uint u, MaxqDisassembler d) => false;
+
+
     private static bool DPn(int v, uint u, MaxqDisassembler d)
     {
-        throw new NotImplementedException();
+        var reg = Registers.DataPointers[v];
+        d.ops.Add(reg);
+        return true;
     }
 
-    private static bool MDPpostdec(int v, uint u, MaxqDisassembler d)
+
+    private static Mutator<MaxqDisassembler> MDP(int n)
     {
-        throw new NotImplementedException();
+        var reg = Registers.DataPointers[n]; 
+        return (u, d) =>
+        {
+            var mem = MemoryOperand.Create(PrimitiveType.UInt16, reg, null, IncrementMode.None);
+            d.ops.Add(mem);
+            return true;
+        };
+    }
+
+    private static bool MDPpostdec(int n, uint u, MaxqDisassembler d)
+    {
+        var reg = Registers.DataPointers[n];
+        var mem = MemoryOperand.Create(PrimitiveType.UInt16, reg, null, IncrementMode.PostDecrement);
+        d.ops.Add(mem);
+        return true;
     }
 
     private static bool MDPpostinc(int v, uint u, MaxqDisassembler d)
@@ -265,17 +325,24 @@ case 0b0111_1111: return DPn(1, u, d);       // DP[n]          1 0n11 1111 16 n 
 
     private static bool MDPn(int v, uint u, MaxqDisassembler d)
     {
-        throw new NotImplementedException();
+        var mem = MemoryOperand.Create(PrimitiveType.UInt16, Registers.DataPointers[v], 0, IncrementMode.None);
+        d.ops.Add(mem);
+        return true;
     }
 
     private static bool MSPpostdec(uint u, MaxqDisassembler d)
     {
-        throw new NotImplementedException();
+        var mem = MemoryOperand.Create(PrimitiveType.UInt16, Registers.SP, null, IncrementMode.PostDecrement);
+        d.ops.Add(mem);
+        d.mspPostdecSeen = true;
+        return true;
     }
 
     private static bool LCn_src(int v, uint u, MaxqDisassembler d)
     {
-        throw new NotImplementedException();
+        var reg = Registers.LoopCounters[v];
+        d.ops.Add(reg);
+        return true;
     }
 
     private static bool MSPPostInc(uint u, MaxqDisassembler d)
@@ -316,7 +383,7 @@ case 0b0111_1111: return DPn(1, u, d);       // DP[n]          1 0n11 1111 16 n 
         return (u, d) =>
         {
             var reg = Registers.DataPointers[v];
-            var mem = MemoryOperand.Create(PrimitiveType.UInt16, reg, 0, IncrementMode.PreIncrement);
+            var mem = MemoryOperand.Create(PrimitiveType.UInt16, reg, null, IncrementMode.PreIncrement);
             d.ops.Add(mem);
             return true;
         };
@@ -354,94 +421,9 @@ case 0b0111_1111: return DPn(1, u, d);       // DP[n]          1 0n11 1111 16 n 
     static MaxqDisassembler()
     {
         var invalid = Instr(Mnemonic.Invalid, InstrClass.Invalid);
-        var others = Sparse(8, 8, "  others", invalid,
-(0b0001_1010, Instr(Mnemonic.and, acc, Src)), // AND src Acc ← Acc AND src f001 1010 ssss ssss S, Z Y 1
-(0b1001_1010, Instr(Mnemonic.and, acc, Src)), // AND src Acc ← Acc AND src f001 1010 ssss ssss S, Z Y 1
-/*
-(0bf010_1010, Instr(Mnemonic.or)), // OR src Acc ← Acc OR src f010 1010 ssss ssss S, Z Y 1
-(0bf011_1010, Instr(Mnemonic.xor)), // XOR src Acc ← Acc XOR src f011 1010 ssss ssss S, Z Y 1
-(0b1000_1010, Instr(Mnemonic.cpl)), // CPL Acc ← ~Acc 1000 1010 0001 1010 S, Z Y
-*/
-(0b1000_1010, Sparse(0, 8, "  1000_1010", invalid,
-    (0b1001_1010, Instr(Mnemonic.neg, acc)), // NEG Acc ← ~Acc + 1 1000 1010 1001 1010 S, Z Y
-    (0b0010_1010, Instr(Mnemonic.sla, acc)), // SLA Shift Acc left arithmetically               1000 1010  C, S, Z Y
-    (0b0011_1010, Instr(Mnemonic.sla2, acc)), // SLA2 Shift Acc left arithmetically twice       1000 1010  C, S, Z Y
-    (0b0110_1010, Instr(Mnemonic.sla4, acc)), // SLA4 Shift Acc left arithmetically four times  1000 1010  C, S, Z Y
-    (0b0100_1010, Instr(Mnemonic.rl, acc)), // RL Rotate Acc left (w/o C)                       1000 1010  S Y
-    (0b0101_1010, Instr(Mnemonic.rlc, acc)), // RLC Rotate Acc left (through C)                 1000 1010  C, S, Z Y
-    (0b1111_1010, Instr(Mnemonic.sra, acc)), // SRA Shift Acc right arithmetically              1000 1010  C, Z Y
-    (0b1110_1010, Instr(Mnemonic.sra2, acc)), // SRA2 Shift Acc right arithmetically twice      1000 1010  C, Z Y
-    (0b1011_1010, Instr(Mnemonic.sra4, acc)), // SRA4 Shift Acc right arithmetically four times 1000 1010  C, Z Y
-    (0b1010_1010, Instr(Mnemonic.sr, acc)), // SR Shift Acc right (0 → msbit)                   1000 1010  C, S, Z Y
-    (0b1100_1010, Instr(Mnemonic.rr, acc)), // RR Rotate Acc right (w/o C)                      1000 1010  S Y
-    (0b1101_1010, Instr(Mnemonic.rrc, acc)))), // RRC Rotate Acc right (though C)               1000 1010  C, S, Z Y
-/*
-(0b1110_1010, Instr(Mnemonic.move)), // MOVE C, Acc.<b> C ← Acc.<b> 1110 1010 bbbb 1010 C
-(0b1101_1010, Instr(Mnemonic.move)), // MOVE C, #0 C ← 0 1101 1010 0000 1010 C
-(0b1101_1010, Instr(Mnemonic.move)), // MOVE C, #1 C ← 1 1101 1010 0001 1010 C
-(0b1101_1010, Instr(Mnemonic.cpl)), // CPL C C ← ~C 1101 1010 0010 1010 C
-(0b1111_1010, Instr(Mnemonic.move)), // MOVE Acc.<b>, C Acc.<b> ← C 1111 1010 bbbb 1010 S, Z
-(0b1001_1010, Instr(Mnemonic.and)), // AND Acc.<b> C ← C AND Acc.<b> 1001 1010 bbbb 1010 C
-(0b1010_1010, Instr(Mnemonic.or)), // OR Acc.<b> C ← C OR Acc.<b> 1010 1010 bbbb 1010 C
-(0b1011_1010, Instr(Mnemonic.xor)), // XOR Acc.<b> C ← C XOR Acc.<b> 1011 1010 bbbb 1010 C
-MOVE dst.<b>, #1 dst.<b> ← 1 1ddd dddd 1bbb 0111 C, S, E, Z 2
-MOVE dst.<b>, #0 dst.<b> ← 0 1ddd dddd 0bbb 0111 C, S, E, Z 2
-BIT OPERATIONS
-MOVE C, src.<b> C ← src.<b> fbbb 0111 ssss ssss C
-*/
-(0b0100_1010, Instr(Mnemonic.add, acc, Src)), // ADD src Acc ← Acc + src f100 1010 ssss ssss C, S, Z, OV Y 1
-(0b1100_1010, Instr(Mnemonic.add, acc, Src)), // ADD src Acc ← Acc + src f100 1010 ssss ssss C, S, Z, OV Y 1
-(0b0110_1010, Instr(Mnemonic.addc, acc, Src)), // ADDC src Acc ← Acc + (src + C) f110 1010 ssss ssss C, S, Z, OV Y 1
-(0b1110_1010, Instr(Mnemonic.addc, acc, Src)), // ADDC src Acc ← Acc + (src + C) f110 1010 ssss ssss C, S, Z, OV Y 1
-(0b0101_1010, Instr(Mnemonic.sub, acc, Src)), // SUB src Acc ← Acc – src f101 1010 ssss ssss C, S, Z, OV Y 1
-(0b1101_1010, Instr(Mnemonic.sub, acc, Src)), // SUB src Acc ← Acc – src f101 1010 ssss ssss C, S, Z, OV Y 1
-(0b0111_1010, Instr(Mnemonic.subb, acc, Src)), // SUBB src Acc ← Acc – (src + C) f111 1010 ssss ssss C, S, Z, OV Y 1
-(0b1111_1010, Instr(Mnemonic.subb, acc, Src)), // SUBB src Acc ← Acc – (src + C) f111 1010 ssss ssss C, S, Z, OV Y 1
-/*
-{L/S}JUMP src IP ← IP + src or src f000 1100 ssss ssss 6
-{L/S}JUMP C, src If C=1, IP ← (IP + src) or src f010 1100 ssss ssss 6
-{L/S}JUMP NC, src If C=0, IP ← (IP + src) or src f110 1100 ssss ssss 6
-{L/S}JUMP Z, src If Z=1, IP ← (IP + src) or src f001 1100 ssss ssss 6
-{L/S}JUMP NZ, src If Z=0, IP ← (IP + src) or src f101 1100 ssss ssss 6
-{L/S}JUMP E, src If E=1, IP ← (IP + src) or src 0011 1100 ssss ssss 6
-{L/S}JUMP NE, src If E=0, IP ← (IP + src) or src 0111 1100 ssss ssss 6
-{L/S}JUMP S, src If S=1, IP ← (IP + src) or src f100 1100 ssss ssss 6
-{L/S}DJNZ LC[n], src If --LC[n] <> 0, IP← (IP + src) or src f10n 1101 ssss ssss 6
-*/
-(0b0100_1101, Instr(Mnemonic.ldjnz, InstrClass.ConditionalTransfer, LC(0), Src)),
-(0b0101_1101, Instr(Mnemonic.ldjnz, InstrClass.ConditionalTransfer, LC(1), Src)),
-(0b1100_1101, Instr(Mnemonic.ldjnz, InstrClass.ConditionalTransfer, LC(0), Src)),
-(0b1101_1101, Instr(Mnemonic.ldjnz, InstrClass.ConditionalTransfer, LC(1), Src)),
-/*
-(0b0011_1101, Instr(Mnemonic.lcall, InstrClass.Transfer | InstrClass.Call, Src)), //  { L/S}CALL src @++SP ← IP+1; IP ← (IP+src) or src f011 1101 ssss ssss 6,7
-(0b1011_1101, Instr(Mnemonic.scall, InstrClass.Transfer | InstrClass.Call, Src)), //  { L/S}CALL src @++SP ← IP+1; IP ← (IP+src) or src f011 1101 ssss ssss 6,7
-(0b1000_1100, Instr(Mnemonic.ret, InstrClass.Transfer| InstrClass.Return)), // RET IP ← @SP-- 1000 1100 0000 1101
-/*
-(0b1010_1100, Instr(Mnemonic.ret)), // RET C If C=1, IP ← @SP-- 1010 1100 0000 1101
-(0b1110_1100, Instr(Mnemonic.ret)), // RET NC If C=0, IP ← @SP-- 1110 1100 0000 1101
-(0b1001_1100, Instr(Mnemonic.ret)), // RET Z If Z=1, IP ← @SP-- 1001 1100 0000 1101
-(0b1101_1100, Instr(Mnemonic.ret)), // RET NZ If Z=0, IP ← @SP-- 1101 1100 0000 1101
-(0b1100_1100, Instr(Mnemonic.ret)), // RET S If S=1, IP ← @SP-- 1100 1100 0000 1101
-(0b1000_1100, Instr(Mnemonic.reti)), // RETI IP ← @SP-- ; INS← 0 1000 1100 1000 1101
-(0b1010_1100, Instr(Mnemonic.reti)), // RETI C If C=1, IP ← @SP-- ; INS← 0 1010 1100 1000 1101
-(0b1110_1100, Instr(Mnemonic.reti)), // RETI NC If C=0, IP ← @SP-- ; INS← 0 1110 1100 1000 1101
-(0b1001_1100, Instr(Mnemonic.reti)), // RETI Z If Z=1, IP ← @SP-- ; INS← 0 1001 1100 1000 1101
-(0b1101_1100, Instr(Mnemonic.reti)), // RETI NZ If Z=0, IP ← @SP-- ; INS← 0 1101 1100 1000 1101
-(0b1100_1100, Instr(Mnemonic.reti)), // RETI S If S=1, IP ← @SP-- ; INS← 0 1100 1100 1000 1101
-(0b1000_1010, Instr(Mnemonic.xch)), // XCH (MAXQ20 only) Swap Acc bytes 1000 1010 1000 1010 S Y
-(0b1000_1010, Instr(Mnemonic.xchn)), // XCHN Swap nibbles in each Acc byte 1000 1010 0111 1010 S Y
-//MOVE dst, src dst ← src fddd dddd ssss ssss C, S, Z, E (Note 8) 7, 8
-(0bf000_1101, Instr(Mnemonic.push)), // PUSH src @++SP ← src f000 1101 ssss ssss 7
-(0b0000_1101, Instr(Mnemonic.pop)), // POP dst dst ← @SP-- 1ddd dddd 0000 1101 C, S, Z, E 7
-(0b1000_1101, Instr(Mnemonic.popi)), // POPI dst dst ← @SP-- ; INS ← 0 1ddd dddd 1000 1101 C, S, Z, E 7
-*/
-(0b0111_1000, Instr(Mnemonic.cmp, Src)), // CMP src E ← (Acc = src) f111 1000 ssss ssss E
-(0b1111_1000, Instr(Mnemonic.cmp, Src)) // CMP src E ← (Acc = src) f111 1000 ssss ssss E
-// (0b1101_1010, Instr(Mnemonic.nop)) // NOP No operation 1101 1010 0011 1010
 
-        );
         var specificMoves = Sparse(8, 7, "  Specific moves",
-            others,
+            invalid,
         // Weird encoding. Assume that bits 14..8 are a move destination.
         // if they are not, decode using the "others" decoder.
 (0b000_1000, Instr(Mnemonic.move, AP, Src)),             // 000 1000 8 Accumulator Pointer
@@ -514,12 +496,123 @@ MOVE C, src.<b> C ← src.<b> fbbb 0111 ssss ssss C
 
 // (0b001_1110, Instr(Mnemonic.move, GRH, Src))            // 001 1110 8 High Byte of GR Register
 );
-        rootDecoder = Mask(11, 1, "MAXQx0",
+
+        var sub = Instr(Mnemonic.sub, acc, Src);
+
+        var moves = Mask(11, 1, "MAXQx0",
             Sparse(8, 7, "  Dst bit 11 = 0",
                 Instr(Mnemonic.move, MNn, Src),   // nnn 0NNN 8/16 nnnn Selects One of First 8 Registers in Module NNN; where
-                                                    // NNN= 0 to 5. Access to Next 24 Using PFX[n].
-            (0b111_0110, Instr(Mnemonic.move, NUL, Src))),      // 111 0110 8/16 Null (Virtual) Destination. Intended as a bit bucket to assist
+                                                  // NNN= 0 to 5. Access to Next 24 Using PFX[n].
+                (0b111_0110, Instr(Mnemonic.move, NUL, Src))),      // 111 0110 8/16 Null (Virtual) Destination. Intended as a bit bucket to assist
                                                                 // software with pointer increments/decrements.
             specificMoves);
+
+        var others = Sparse(8, 8, "MAXQx8", moves,
+(0b0001_1010, Instr(Mnemonic.and, acc, Src)), // AND src Acc ← Acc AND src f001 1010 ssss ssss S, Z Y 1
+(0b1001_1010, Select((0, 4), u => u != 0b1010,
+    Instr(Mnemonic.and, acc, Src), // AND src Acc ← Acc AND src f001 1010 ssss ssss S, Z Y 1
+    Instr(Mnemonic.and, c, acc_b))), // AND Acc.<b> C ← C AND Acc.<b> 1001 1010 bbbb 1010 C
+(0b0010_1010, Instr(Mnemonic.or, acc, Src)), // OR src Acc ← Acc OR src f010 1010 ssss ssss S, Z Y 1
+(0b1010_1010, Instr(Mnemonic.or, acc, Src)), // OR src Acc ← Acc OR src f010 1010 ssss ssss S, Z Y 1
+(0b0011_1010, Instr(Mnemonic.xor, acc, Src)), // XOR src Acc ← Acc XOR src f011 1010 ssss ssss S, Z Y 1
+(0b1011_1010, Select((0, 4), u => u != 0b1010,
+    Instr(Mnemonic.xor, acc, Src), // XOR src Acc ← Acc XOR src f011 1010 ssss ssss S, Z Y 1
+    Instr(Mnemonic.xor, c, acc_b))), // XOR Acc.<b> C ← C XOR Acc.<b> 1011 1010 bbbb 1010 C
+(0b1000_1010, Sparse(0, 8, "  1000_1010", moves,
+    (0b0001_1010, Instr(Mnemonic.cpl, acc)), // CPL Acc ← ~Acc                                  0001 1010 S, Z Y
+    (0b1001_1010, Instr(Mnemonic.neg, acc)), // NEG Acc ← ~Acc + 1                          010 1001 1010 S, Z Y
+    (0b0010_1010, Instr(Mnemonic.sla, acc)), // SLA Shift Acc left arithmetically               1000 1010  C, S, Z Y
+    (0b0011_1010, Instr(Mnemonic.sla2, acc)), // SLA2 Shift Acc left arithmetically twice       1000 1010  C, S, Z Y
+    (0b0110_1010, Instr(Mnemonic.sla4, acc)), // SLA4 Shift Acc left arithmetically four times  1000 1010  C, S, Z Y
+    (0b0100_1010, Instr(Mnemonic.rl, acc)), // RL Rotate Acc left (w/o C)                       1000 1010  S Y
+    (0b0101_1010, Instr(Mnemonic.rlc, acc)), // RLC Rotate Acc left (through C)                 1000 1010  C, S, Z Y
+    (0b1111_1010, Instr(Mnemonic.sra, acc)), // SRA Shift Acc right arithmetically              1000 1010  C, Z Y
+    (0b1110_1010, Instr(Mnemonic.sra2, acc)), // SRA2 Shift Acc right arithmetically twice      1000 1010  C, Z Y
+    (0b1011_1010, Instr(Mnemonic.sra4, acc)), // SRA4 Shift Acc right arithmetically four times 1000 1010  C, Z Y
+    (0b1010_1010, Instr(Mnemonic.sr, acc)), // SR Shift Acc right (0 → msbit)                   1000 1010  C, S, Z Y
+    (0b1100_1010, Instr(Mnemonic.rr, acc)), // RR Rotate Acc right (w/o C)                      1000 1010  S Y
+    (0b1101_1010, Instr(Mnemonic.rrc, acc)), // RRC Rotate Acc right (though C)                 1000 1010  C, S, Z Y
+    (0b1000_1010, Instr(Mnemonic.xch, acc)), // XCH (MAXQ20 only) Swap Acc bytes                1000 1010 S Y
+    (0b0111_1010, Instr(Mnemonic.xchn, acc)) // XCHN Swap nibbles in each Acc byte 1000 1010 0111 1010 S Y
+    )),
+/*
+(0b1110_1010, Instr(Mnemonic.move)), // MOVE C, Acc.<b> C ← Acc.<b> 1110 1010 bbbb 1010 C
+*/
+(0b1101_1010, Sparse(0, 8, "  1101_1010", sub,
+    (0b0000_1010, Instr(Mnemonic.move)), // MOVE C, #0 C ← 0        1101 1010 0000 1010 C
+    (0b0001_1010, Instr(Mnemonic.move)), // MOVE C, #1 C ← 1        1101 1010 0001 1010 C
+    (0b0010_1010, Instr(Mnemonic.cpl, acc)),  // CPL C C ← ~C            1101 1010 0010 1010 C
+    (0b0011_1010, Instr(Mnemonic.nop, InstrClass.Linear | InstrClass.Padding)))), // NOP No operation 1101 1010 0011 1010
+/*
+(0b1111_1010, Instr(Mnemonic.move)), // MOVE Acc.<b>, C Acc.<b> ← C 1111 1010 bbbb 1010 S, Z
+(0b1010_1010, Instr(Mnemonic.or)), // OR Acc.<b> C ← C OR Acc.<b> 1010 1010 bbbb 1010 C
+MOVE dst.<b>, #1 dst.<b> ← 1 1ddd dddd 1bbb 0111 C, S, E, Z 2
+MOVE dst.<b>, #0 dst.<b> ← 0 1ddd dddd 0bbb 0111 C, S, E, Z 2
+BIT OPERATIONS
+MOVE C, src.<b> C ← src.<b> fbbb 0111 ssss ssss C
+*/
+(0b0100_1010, Instr(Mnemonic.add, acc, Src)),   // ADD src Acc ← Acc + src f100 1010 ssss ssss C, S, Z, OV Y 1
+(0b1100_1010, Instr(Mnemonic.add, acc, Src)),   // ADD src Acc ← Acc + src f100 1010 ssss ssss C, S, Z, OV Y 1
+(0b0110_1010, Instr(Mnemonic.addc, acc, Src)),  // ADDC src Acc ← Acc + (src + C) f110 1010 ssss ssss C, S, Z, OV Y 1
+(0b1110_1010, Instr(Mnemonic.addc, acc, Src)),  // ADDC src Acc ← Acc + (src + C) f110 1010 ssss ssss C, S, Z, OV Y 1
+(0b0101_1010, Instr(Mnemonic.sub, acc, Src)),   // SUB src Acc ← Acc – src f101 1010 ssss ssss C, S, Z, OV Y 1
+(0b0111_1010, Instr(Mnemonic.subb, acc, Src)),  // SUBB src Acc ← Acc – (src + C) f111 1010 ssss ssss C, S, Z, OV Y 1
+(0b1111_1010, Instr(Mnemonic.subb, acc, Src)),  // SUBB src Acc ← Acc – (src + C) f111 1010 ssss ssss C, S, Z, OV Y 1
+
+(0b0000_1100, Instr(Mnemonic.ljump, InstrClass.Transfer, W0L8)), // {L/S}JUMP src IP ← IP + src or src   0000 1100 ssss ssss 6
+//(0b1000_1100, Instr(Mnemonic.ljump, InstrClass.Transfer, Src)), // {L/S}JUMP src IP ← IP + src or src   0000 1100 ssss ssss 6
+// {L/S}JUMP src IP ← IP + src or src                  1000 1100 ssss ssss 6
+(0b0010_1100, Instr(Mnemonic.ljump, InstrClass.ConditionalTransfer, C, W0L8)),// {L/S}JUMP C, src If C=0, IP ← (IP + src) or src    0110 1100 ssss ssss 6
+// {L/S}JUMP C, src If C=1, IP ← (IP + src) or src     1010 1100 ssss ssss 6
+(0b0110_1100, Instr(Mnemonic.ljump, InstrClass.ConditionalTransfer, NC, W0L8)),// {L/S}JUMP NC, src If C=0, IP ← (IP + src) or src    0110 1100 ssss ssss 6
+// {L/S}JUMP NC, src If C=0, IP ← (IP + src) or src    1110 1100 ssss ssss 6
+(0b0001_1100, Instr(Mnemonic.ljump, InstrClass.ConditionalTransfer, Z, W0L8)),// {L/S}JUMP NC, src If C=0, IP ← (IP + src) or src    0110 1100 ssss ssss 6
+// {L/S}JUMP Z, src If Z=1, IP ← (IP + src) or src     1001 1100 ssss ssss 6
+(0b0101_1100, Instr(Mnemonic.ljump, InstrClass.ConditionalTransfer, NZ, W0L8)), // {L/S}JUMP NZ, src If Z=0, IP ← (IP + src) or src    0101 1100 ssss ssss 6
+// {L/S}JUMP NZ, src If Z=0, IP ← (IP + src) or src    1101 1100 ssss ssss 6
+(0b0011_1100, Instr(Mnemonic.ljump, InstrClass.ConditionalTransfer, E, W0L8)), // {L/S}JUMP E, src If E=1, IP ← (IP + src) or src     0011 1100 ssss ssss 6
+// {L/S}JUMP E, src If E=1, IP ← (IP + src) or src     1011 1100 ssss ssss 6
+(0b0111_1100, Instr(Mnemonic.ljump, InstrClass.ConditionalTransfer, NE, W0L8)),// {L/S}JUMP NE, src If E=0, IP ← (IP + src) or src    0111 1100 ssss ssss 6
+// {L/S}JUMP NE, src If E=0, IP ← (IP + src) or src    1111 1100 ssss ssss 6
+(0b0100_1100, Instr(Mnemonic.ljump, InstrClass.ConditionalTransfer, S, W0L8)),// {L/S}JUMP S, src If S=1, IP ← (IP + src) or src     0100 1100 ssss ssss 6
+// {L/S}JUMP S, src If S=1, IP ← (IP + src) or src     1100 1100 ssss ssss 6
+
+(0b0100_1101, Instr(Mnemonic.ldjnz, InstrClass.ConditionalTransfer, LC(0), Src)),   // {L/S}DJNZ LC[n], src If --LC[n] <> 0, IP← (IP + src) or src f10n 1101 ssss ssss 6
+(0b0101_1101, Instr(Mnemonic.ldjnz, InstrClass.ConditionalTransfer, LC(1), Src)),
+(0b1100_1101, Instr(Mnemonic.ldjnz, InstrClass.ConditionalTransfer, LC(0), Src)),
+(0b1101_1101, Instr(Mnemonic.ldjnz, InstrClass.ConditionalTransfer, LC(1), Src)),
+(0b0011_1101, Instr(Mnemonic.lcall, InstrClass.Transfer | InstrClass.Call, Src)), //  { L/S}CALL src @++SP ← IP+1; IP ← (IP+src) or src f011 1101 ssss ssss 6,7
+(0b1011_1101, Instr(Mnemonic.scall, InstrClass.Transfer | InstrClass.Call, Src)), //  { L/S}CALL src @++SP ← IP+1; IP ← (IP+src) or src f011 1101 ssss ssss 6,7
+(0b1000_1100, Mask(7, 1, 
+    Instr(Mnemonic.ret, InstrClass.Transfer| InstrClass.Return),         // RET IP ← @SP--           1000 1100 0000 1101
+    Instr(Mnemonic.reti, InstrClass.Transfer | InstrClass.Return))),       // RETI IP ← @SP-- ; INS← 0 1000 1100 1000 1101
+(0b1010_1100, Mask(7, 1,
+    Instr(Mnemonic.ret, InstrClass.Transfer | InstrClass.Return, C), // RET C If C=1, IP ← @SP--     1010 1100 0000 1101
+    Instr(Mnemonic.reti, InstrClass.Transfer | InstrClass.Return, C))),  // RETI C If C=1, IP ← @SP-- ; INS← 0 1010 1100 1000 1101
+(0b1110_1100, Mask(7, 1,
+    Instr(Mnemonic.ret, InstrClass.Transfer | InstrClass.Return, NC), // RET NC If C=0, IP ← @SP--              1110 1100 0000 1101
+    Instr(Mnemonic.reti, InstrClass.Transfer | InstrClass.Return, NC))), // RETI NC If C=0, IP ← @SP-- ; INS← 0 1110 1100 1000 1101
+(0b1001_1100, Mask(7, 1,
+    Instr(Mnemonic.ret, InstrClass.Transfer | InstrClass.Return, Z), // RET Z If Z=1, IP ← @SP--     1001 1100 0000 1101
+    Instr(Mnemonic.reti, InstrClass.Transfer | InstrClass.Return, Z))),  // RETI Z If Z=1, IP ← @SP-- ; INS← 0 1001 1100 1000 1101
+(0b1101_1100, Mask(7, 1,
+    Instr(Mnemonic.ret, InstrClass.Transfer | InstrClass.Return, NZ), // RET NZ If Z=0, IP ← @SP--   1101 1100 0000 1101
+    Instr(Mnemonic.reti, InstrClass.Transfer | InstrClass.Return, NZ))), // RETI NZ If Z=0, IP ← @SP-- ; INS← 0    1101 1100 1000 1101
+(0b1100_1100, Mask(7, 1,
+    Instr(Mnemonic.ret, InstrClass.Transfer | InstrClass.Return, S),     // RET S If S=1, IP ← @SP--             1100 1100 0000 1101
+    Instr(Mnemonic.reti, InstrClass.Transfer | InstrClass.Return, S))),  // RETI S If S=1, IP ← @SP-- ; INS← 0     1100 1100 1000 1101
+/*
+//MOVE dst, src dst ← src fddd dddd ssss ssss C, S, Z, E (Note 8) 7, 8
+*/
+(0b0000_1101, Select((0, 16), u => (u&0x80FF) != 0x800D,
+    Instr(Mnemonic.push, Src),   // PUSH src @++SP ← src f000 1101 ssss ssss 7
+    Instr(Mnemonic.pop, Dst))),    // POP dst dst ← @SP-- 1ddd dddd 0000 1101 C, S, Z, E 7
+(0b1000_1101, Select((0, 16), u => (u & 0x80FF) != 0x800D,
+    Instr(Mnemonic.push, Src),   // PUSH src @++SP ← src f000 1101 ssss ssss 7
+    Instr(Mnemonic.popi, Dst))),   // POPI dst dst ← @SP-- ; INS ← 0 1ddd dddd 1000 1101 C, S, Z, E 7
+(0b0111_1000, Instr(Mnemonic.cmp, Src)), // CMP src E ← (Acc = src) f111 1000 ssss ssss E
+(0b1111_1000, Instr(Mnemonic.cmp, Src)) // CMP src E ← (Acc = src) f111 1000 ssss ssss E
+        );
+        rootDecoder = others;
     }
 }

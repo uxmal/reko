@@ -31,39 +31,43 @@ namespace Reko.Arch.Maxim;
 
 public static class Registers
 {
-    public static Dictionary<string, RegisterStorage>? RegsByName { get; internal set; }
-    public static Dictionary<StorageDomain, RegisterStorage>? RegsByDomain { get; internal set; }
+    public static Dictionary<string, RegisterStorage>? RegsByName { get; }
+    public static Dictionary<StorageDomain, RegisterStorage>? RegsByDomain { get; }
 
-    public static RegisterStorage[] Accumulators { get; internal set; }
-    public static RegisterStorage[] DataPointers { get; internal set; }
-    public static RegisterStorage[] Prefixes { get; internal set; }
-    public static RegisterStorage[] LoopCounters { get; internal set; }
+    public static RegisterStorage[] Accumulators { get; }
+    public static RegisterStorage[] DataPointers { get; }
+    public static RegisterStorage[] Prefixes { get; }
+    public static RegisterStorage[] LoopCounters { get; }
     public static Dictionary<RegisterStorage, string> IndexedNames { get; }
 
     public static RegisterStorage AP { get; }
     public static RegisterStorage A_AP { get; }
-    public static RegisterStorage APC { get; internal set; }
-    public static RegisterStorage GRL { get; internal set; }
-    public static RegisterStorage IC { get; internal set; }
-    public static RegisterStorage IIR { get; internal set; }
-    public static RegisterStorage IMR { get; internal set; }
-    public static RegisterStorage MDP { get; internal set; }
-    public static RegisterStorage PSF { get; internal set; }
-    public static RegisterStorage SC { get; internal set; }
-    public static RegisterStorage CKCN { get; internal set; }
-    public static RegisterStorage WDCN { get; internal set; }
-    public static RegisterStorage Acc { get; internal set; }
-    public static RegisterStorage SP { get; internal set; }
-    public static RegisterStorage IV { get; internal set; }
-    public static RegisterStorage OFFS { get; internal set; }
-    public static RegisterStorage IP { get; internal set; }
-    public static RegisterStorage BP { get; internal set; }
-    public static RegisterStorage DPC { get; internal set; }
-    public static RegisterStorage FP { get; internal set; }
-    public static RegisterStorage GR { get; internal set; }
-    public static RegisterStorage GRH { get; internal set; }
-    public static RegisterStorage GRXL { get; internal set; }
-    public static RegisterStorage GRS { get; internal set; }
+    public static RegisterStorage APC { get; }
+    public static RegisterStorage GRL { get; }
+    public static RegisterStorage IC { get; }
+    public static RegisterStorage IIR { get; }
+    public static RegisterStorage IMR { get; }
+    public static RegisterStorage MDP { get; }
+    public static RegisterStorage PSF { get; }
+    public static RegisterStorage SC { get; }
+    public static RegisterStorage CKCN { get; }
+    public static RegisterStorage WDCN { get; }
+    public static RegisterStorage Acc { get; }
+    public static RegisterStorage SP { get; }
+    public static RegisterStorage IV { get; }
+    public static RegisterStorage OFFS { get; }
+    public static RegisterStorage IP { get; }
+    public static RegisterStorage BP { get; }
+    public static RegisterStorage DPC { get; }
+    public static RegisterStorage FP { get; }
+    public static RegisterStorage GR { get; }
+    public static RegisterStorage GRH { get; }
+    public static RegisterStorage GRXL { get; }
+    public static RegisterStorage GRS { get; }
+
+    public static FlagGroupStorage C { get; }
+    public static FlagGroupStorage Z { get; }
+    public static FlagGroupStorage S { get; }
 
     static Registers()
     {
@@ -97,6 +101,10 @@ public static class Registers
         GRXL = factory.Reg16("grxl");
         GRS = factory.Reg16("grs");
 
+        C = new FlagGroupStorage(PSF, (uint) FlagM.CF, "c");
+        Z = new FlagGroupStorage(PSF, (uint) FlagM.ZF, "z");
+        S = new FlagGroupStorage(PSF, (uint) FlagM.SF, "s");
+
         IndexedNames = Accumulators.Select((a, i) => (a, $"a[{i}]"))
             .Concat(DataPointers.Select((dp, i) => (dp, $"dp[{i}]")))
             .Concat(Prefixes.Select((pfx, i) => (pfx, $"pfx[{i}]")))
@@ -104,4 +112,16 @@ public static class Registers
             .Concat([(A_AP, "a[ap]")])
             .ToDictionary(p => p.Item1, p => p.Item2);
     }
+}
+
+[Flags]
+public enum FlagM
+{
+    EF = 1,
+    CF = 2,
+    OV = 4,
+    GPF0 = 8,
+    GPF1 = 16,
+    SF = 64,
+    ZF = 128,
 }

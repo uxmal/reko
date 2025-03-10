@@ -45,8 +45,9 @@ public class MaxqInstruction : MachineInstruction
 
     protected override void RenderOperand(MachineOperand operand, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
     {
-        if (operand is RegisterStorage reg)
+        switch (operand)
         {
+        case RegisterStorage reg:
             if (Registers.IndexedNames.TryGetValue(reg, out string? indexedName))
             {
                 renderer.BeginOperand();
@@ -56,11 +57,20 @@ public class MaxqInstruction : MachineInstruction
             }
             base.RenderOperand(operand, renderer, options);
             return;
-        }
-        if (operand is Constant c)
-        {
+        case Constant c:
             renderer.BeginOperand();
             renderer.WriteFormat("#{0:X2}", c.GetValue());
+            renderer.EndOperand();
+            return;
+        case ConditionOperand<CCode> cc:
+            renderer.BeginOperand();
+            renderer.WriteString(cc.Condition.ToString().ToLower());
+            renderer.EndOperand();
+            return;
+        case BitOperand bit:
+            renderer.BeginOperand();
+            bit.Operand.Render(renderer, options);
+            renderer.WriteString($".<{bit.BitPosition}>");
             renderer.EndOperand();
             return;
         }

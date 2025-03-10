@@ -29,7 +29,7 @@ namespace Reko.Arch.Maxim;
 public class MemoryOperand : AbstractMachineOperand
 {
 
-    private MemoryOperand(PrimitiveType dt, RegisterStorage? baseRegister, MachineOperand offset, IncrementMode mode)
+    private MemoryOperand(PrimitiveType dt, RegisterStorage? baseRegister, MachineOperand? offset, IncrementMode mode)
         : base(dt)
     {
         this.Base = baseRegister;
@@ -43,7 +43,7 @@ public class MemoryOperand : AbstractMachineOperand
         return op;
     }
 
-    public static MemoryOperand Create(PrimitiveType dt, RegisterStorage? baseRegister, MachineOperand index, IncrementMode mode)
+    public static MemoryOperand Create(PrimitiveType dt, RegisterStorage? baseRegister, MachineOperand? index, IncrementMode mode)
     {
         var op = new MemoryOperand(dt, baseRegister, index, mode);
         return op;
@@ -56,7 +56,36 @@ public class MemoryOperand : AbstractMachineOperand
 
     protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
     {
-        throw new NotImplementedException();
+        renderer.WriteChar('@');
+        if (this.Increment == IncrementMode.PreIncrement)
+        {
+            renderer.WriteString("++");
+        } else if (this.Increment == IncrementMode.PreDecrement)
+        {
+            renderer.WriteString("--");
+        }
+        if (this.Base is not null)
+        {
+            var name = this.Base.Name;
+            if (Registers.IndexedNames.TryGetValue(this.Base, out var ixname))
+            {
+                name = ixname;
+            }
+            renderer.WriteString(name);
+            if (Offset is not null)
+            {
+                renderer.WriteChar('[');
+                Offset.Render(renderer, options);
+                renderer.WriteChar(']');
+            }
+        }
+        if (this.Increment == IncrementMode.PostIncrement)
+        {
+            renderer.WriteString("++");
+        }
+        else if (this.Increment == IncrementMode.PostDecrement)
+        {
+            renderer.WriteString("--");
+        }
     }
-
 }
