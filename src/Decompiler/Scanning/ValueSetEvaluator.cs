@@ -18,19 +18,16 @@
  */
 #endregion
 
-using Reko.Core.Expressions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Reko.Core;
-using Reko.Core.Operators;
-using Reko.Core.Types;
-using Reko.Core.Loading;
+using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Memory;
+using Reko.Core.Operators;
+using Reko.Core.Types;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Reko.Scanning
 {
@@ -169,7 +166,7 @@ namespace Reko.Scanning
 
         public ValueSet VisitConditionOf(ConditionOf cof, BitRange bitRange)
         {
-            throw new NotImplementedException();
+            return ValueSet.Any;
         }
 
         public ValueSet VisitConstant(Constant c, BitRange bitRange)

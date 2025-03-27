@@ -18,22 +18,12 @@
  */
 #endregion
 
-using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.Absyn;
-using Reko.Core.Code;
-using Reko.Core.Collections;
 using Reko.Core.Expressions;
-using Reko.Core.Graphs;
 using Reko.Core.Operators;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Threading.Tasks;
-using static Reko.Structure.IfCascadeToSwitchRewriter;
 
 namespace Reko.Structure
 {

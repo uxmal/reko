@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Memory;
 using Reko.Core.Operators;
 using Reko.Core.Rtl;
@@ -104,6 +105,7 @@ namespace Reko.Arch.MN103
                 case Mnemonic.cmp: RewriteCmp(); break;
                 case Mnemonic.div: RewriteDiv(Operator.SDiv, Operator.SMod, PrimitiveType.Int32); break;
                 case Mnemonic.divu: RewriteDiv(Operator.UDiv, Operator.UMod, PrimitiveType.UInt32); break;
+                case Mnemonic.ext: RewriteExt(); break;
                 case Mnemonic.extb: RewriteExtend(PrimitiveType.Byte, PrimitiveType.Int32); break;
                 case Mnemonic.extbu: RewriteExtend(PrimitiveType.Byte, PrimitiveType.UInt32); break;
                 case Mnemonic.exth: RewriteExtend(PrimitiveType.Word16, PrimitiveType.Int32); break;
@@ -134,9 +136,13 @@ namespace Reko.Arch.MN103
                 case Mnemonic.or: RewriteOr(); break;
                 case Mnemonic.ret: RewriteRet(); break;
                 case Mnemonic.retf: RewriteRetf(); break;
+                case Mnemonic.rets: RewriteRets(); break;
+                case Mnemonic.rol: RewriteRol(); break;
+                case Mnemonic.rti: RewriteRti(); break;
                 case Mnemonic.setlb: RewriteSetlb(); break;
                 case Mnemonic.sub: RewriteSub(); break;
                 case Mnemonic.subc: RewriteSubc(); break;
+                case Mnemonic.trap: RewriteTrap(); break;
                 case Mnemonic.xor: RewriteXor(); break;
                 }
                 yield return m.MakeCluster(instr.Address, instr.Length, iclass);
@@ -315,6 +321,7 @@ namespace Reko.Arch.MN103
             var disp8 = (Constant) instr.Operands[2];
 
             SaveRegisters((MultipleRegistersOperand) instr.Operands[1], disp8.ToInt32());
+            m.Call(target, 0);
         }
 
         private void RewriteCalls()
@@ -381,6 +388,14 @@ namespace Reko.Arch.MN103
             Emit_VCNZ(m.Cond(left));
         }
 
+        private void RewriteExt()
+        {
+            var reg = (RegisterStorage) instr.Operands[0];
+            var src = binder.EnsureRegister(reg);
+            var dst = binder.EnsureSequence(PrimitiveType.Word64, Registers.mdr, reg);
+            m.Assign(dst, m.Convert(src, src.DataType, PrimitiveType.Int64));
+        }
+
         private void RewriteExtend(PrimitiveType dtFrom, PrimitiveType dtTo)
         {
             var id = Op(0, dtFrom);
@@ -409,12 +424,18 @@ namespace Reko.Arch.MN103
 
         private void RewriteLcc(ConditionCode cc, FlagGroupStorage grf)
         {
-            //$TODO: manual is hard to read.
-            //var target = (Address) instr.Operands[0];
-            //var flags = binder.EnsureFlagGroup(grf);
-            //m.Branch(m.Test(cc, flags), target);
-            iclass = InstrClass.Invalid;
-            m.Invalid();
+            var flags = binder.EnsureFlagGroup(grf);
+            var lar = state.GetValue(Registers.lar);
+            if (lar is Constant c && c.IsValid)
+            {
+                var addr = arch.MakeAddressFromConstant(c, true);
+                m.Branch(m.Test(cc, flags), addr);
+            }
+            else
+            {
+                m.BranchInMiddleOfInstruction(m.Not(m.Test(cc, flags)), instr.Address + instr.Length, InstrClass.ConditionalTransfer);
+                m.Goto(binder.EnsureRegister(Registers.lar));
+            }
         }
 
         private void RewriteLra()
@@ -463,6 +484,7 @@ namespace Reko.Arch.MN103
 
         private void RewriteMovm()
         {
+            m.SideEffect(m.Fn(movm_intrinsic));
             if (instr.Operands[0] is MultipleRegistersOperand regs)
             {
                 RestoreRegisters(regs, 0);
@@ -518,6 +540,26 @@ namespace Reko.Arch.MN103
             m.Goto(tmp);
         }
 
+        private void RewriteRets()
+        {
+            m.Return(0, 0);
+        }
+
+        private void RewriteRol()
+        {
+            var reg = Op(0, PrimitiveType.Word32);
+            var c = binder.EnsureFlagGroup(Registers.C);
+            m.Assign(reg, m.Fn(CommonOps.RolC.MakeInstance(reg.DataType, PrimitiveType.Byte),
+                reg, m.Byte(1), c));
+            m.Assign(binder.EnsureFlagGroup(Registers.CNZ), m.Cond(reg));
+            m.Assign(binder.EnsureFlagGroup(Registers.V), 0);
+        }
+
+        private void RewriteRti()
+        {
+            m.SideEffect(m.Fn(rti_intrinsic));
+            m.Return(0, 0);
+        }
 
         private void RewriteSetlb()
         {
@@ -542,6 +584,11 @@ namespace Reko.Arch.MN103
             Emit_VCNZ(m.Cond(left));
         }
 
+        private void RewriteTrap()
+        {
+            m.SideEffect(m.Fn(CommonOps.Syscall));
+        }
+
         private void RewriteXor()
         {
             var right = Op(0, PrimitiveType.Word32);
@@ -549,5 +596,11 @@ namespace Reko.Arch.MN103
             m.Assign(left, m.Xor(left, right));
             Emit_00NZ(left);
         }
+
+        private static readonly IntrinsicProcedure movm_intrinsic = IntrinsicBuilder.SideEffect("** MOVM instruction decoding is not clear from documentation")
+            .Void();
+
+        private static readonly IntrinsicProcedure rti_intrinsic = IntrinsicBuilder.SideEffect("__return_from_interrupt")
+            .Void();
     }
 }

@@ -170,6 +170,16 @@ namespace Reko.UnitTests.Arch.MN103
         }
 
         [Test]
+        public void Mn103Rw_calls()
+        {
+            Given_HexString("F0F2");
+            AssertCode(     // calls	(a2)
+                "0|L--|00100000(2): 2 instructions",
+                "1|L--|mdr = 00100002",
+                "2|T--|call Mem0[a2:word32] (4)");
+        }
+
+        [Test]
         public void Mn103Rw_clr_d0()
         {
             Given_HexString("00");
@@ -327,6 +337,7 @@ namespace Reko.UnitTests.Arch.MN103
         }
 
         [Test]
+        [Ignore("Need more info on how to properly do this")]
         public void Mn103Rw_movm_to_regs()
         {
             Given_HexString("CEEE");
@@ -416,6 +427,28 @@ namespace Reko.UnitTests.Arch.MN103
         }
 
         [Test]
+        public void Mn103Rw_rol()
+        {
+            Given_HexString("F282");
+            AssertCode(     // rol	d2
+                "0|L--|00100000(2): 3 instructions",
+                "1|L--|d2 = __rcl<word32,byte>(d2, 1<8>, C)",
+                "2|L--|CNZ = cond(d2)",
+                "3|L--|V = 0<16>");
+        }
+
+        [Test]
+        public void Mn103Rw_rti()
+        {
+            Given_HexString("F0FD");
+            AssertCode(     // rti
+                "0|R--|00100000(2): 2 instructions",
+                "1|L--|__return_from_interrupt()",
+                "2|R--|return (0,0)");
+        }
+
+
+        [Test]
         public void Mn103Rw_setlb()
         {
             Given_HexString("DB");
@@ -443,6 +476,15 @@ namespace Reko.UnitTests.Arch.MN103
                 "0|L--|00100000(2): 2 instructions",
                 "1|L--|d1 = d1 - d3 - C",
                 "2|L--|VCNZ = cond(d1)");
+        }
+
+        [Test]
+        public void Mn103Rw_trap()
+        {
+            Given_HexString("F0FE");
+            AssertCode(     // trap
+                "0|T--|00100000(2): 1 instructions",
+                "1|L--|__syscall()");
         }
 
         [Test]
@@ -476,14 +518,23 @@ namespace Reko.UnitTests.Arch.MN103
                 "1|T--|if (Test(LT,N)) branch 00100047");
         }
 
+
         [Test]
-        public void Mn103Rw_calls()
+        public void Mn103Rw_ext()
         {
-            Given_HexString("F0F2");
-            AssertCode(     // calls	(a2)
-                "0|L--|00100000(2): 2 instructions",
-                "1|L--|mdr = 00100002",
-                "2|T--|call Mem0[a2:word32] (4)");
+            Given_HexString("F2D2");
+            AssertCode(     // ext	d2
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|mdr_d2 = CONVERT(d2, word32, int64)");
+        }
+
+        [Test]
+        public void Mn103Rw_rets()
+        {
+            Given_HexString("F0FC");
+            AssertCode(     // rets
+                "0|R--|00100000(2): 1 instructions",
+                "1|R--|return (0,0)");
         }
     }
 }

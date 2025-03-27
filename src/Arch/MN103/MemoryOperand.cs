@@ -57,13 +57,9 @@ namespace Reko.Arch.MN103
         {
             renderer.WriteChar('(');
             int disp = Displacement;
-            if (disp != 0)
+            if (Base is not null)
             {
-                if (Base is null)
-                {
-                    renderer.WriteFormat("{0:X8}", disp);
-                }
-                else
+                if (disp != 0)
                 {
                     if (disp < 0)
                     {
@@ -72,18 +68,17 @@ namespace Reko.Arch.MN103
                     }
                     renderer.WriteFormat("{0:X}", disp);
                     renderer.WriteChar(',');
-                    renderer.WriteString(Base.Name);
                 }
-            }
-            else
-            {
-                Debug.Assert(this.Base is not null);
                 if (Index is not null)
                 {
                     renderer.WriteString(Index.Name);
                     renderer.WriteChar(',');
                 }
                 renderer.WriteString(Base.Name);
+            }
+            else
+            {
+                renderer.WriteFormat("{0:X8}", disp);
             }
             renderer.WriteChar(')');
         }

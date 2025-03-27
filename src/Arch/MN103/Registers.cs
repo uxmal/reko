@@ -21,9 +21,6 @@
 using Reko.Core;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Arch.MN103
 {
@@ -50,6 +47,8 @@ namespace Reko.Arch.MN103
         public static FlagGroupStorage VN { get; }
         public static FlagGroupStorage VNZ { get; }
         public static FlagGroupStorage Z { get; }
+        public static Dictionary<string, RegisterStorage> RegistersByName { get; }
+        public static Dictionary<StorageDomain, RegisterStorage> RegistersByDomain { get; }
 
         static Registers()
         {
@@ -76,6 +75,9 @@ namespace Reko.Arch.MN103
             VN = new FlagGroupStorage(psw, (uint) (FlagM.NF | FlagM.VF), "VN");
             VNZ = new FlagGroupStorage(psw, (uint) (FlagM.NF | FlagM.VF| FlagM.ZF), "VNZ");
             Z = new FlagGroupStorage(psw, (uint) FlagM.ZF, "Z");
+
+            RegistersByName = factory.NamesToRegisters;
+            RegistersByDomain = factory.DomainsToRegisters;
         }
     }
 

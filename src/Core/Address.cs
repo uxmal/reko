@@ -53,7 +53,7 @@ namespace Reko.Core
         private const byte SegmentedReal = 3;
         private const byte SegmentedProt = 4;
 
-        public readonly IEnumerable<Expression> Children => Array.Empty<Expression>();
+        public readonly IEnumerable<Expression> Children => [];
 
         private Address(DataType dt, byte type, byte bitsize, ulong offset, ushort selector)
         {
@@ -65,68 +65,67 @@ namespace Reko.Core
         }
 
         public DataType DataType {
-            get => dt;
+            readonly get => dt;
             set => dt = value;
         }
 
-        public bool IsNull => ToLinear() == 0;
+        public readonly bool IsNull => ToLinear() == 0;
 
-        public bool IsZero => ToLinear() == 0;
+        public readonly bool IsZero => ToLinear() == 0;
 
         public readonly ulong Offset => uOffset;
 
-        public ushort? Selector => GetInfo().SelectorShift != 0 ? this.selector : null;
+        public readonly ushort? Selector => GetInfo().SelectorShift != 0 ? this.selector : null;
 
-        public Address Add(long offset) => GetInfo().Add(this, offset);
+        public readonly Address Add(long offset) => GetInfo().Add(this, offset);
 
-        public void Accept(IExpressionVisitor visitor)
+        public readonly void Accept(IExpressionVisitor visitor)
         {
             visitor.VisitAddress(this);
         }
 
-        public T Accept<T>(ExpressionVisitor<T> visitor)
+        public readonly T Accept<T>(ExpressionVisitor<T> visitor)
         {
             return visitor.VisitAddress(this);
         }
 
-        public T Accept<T, C>(ExpressionVisitor<T, C> visitor, C context)
+        public readonly T Accept<T, C>(ExpressionVisitor<T, C> visitor, C context)
         {
             return visitor.VisitAddress(this, context);
         }
 
-        public Address Align(int alignment)
+        public readonly Address Align(int alignment)
         {
-            if (alignment <= 0)
-                throw new ArgumentOutOfRangeException(nameof(alignment));
+            ArgumentOutOfRangeException.ThrowIfNegativeOrZero(alignment, nameof(alignment));
             var uAl = (uint) alignment;
-            return GetInfo().NewOffset(this, uAl * ((this.uOffset + uAl - 1) / uAl));
+            return Info.NewOffset(this, uAl * ((this.uOffset + uAl - 1) / uAl));
         }
 
-        public Expression CloneExpression()
+        public readonly Expression CloneExpression()
         {
             return this;
         }
 
-        public int CompareTo(Address that)
+        public readonly int CompareTo(Address that)
         {
             return this.ToLinear().CompareTo(that.ToLinear());
         }
 
-        int IComparable.CompareTo(object? obj)
+        readonly int IComparable.CompareTo(object? obj)
         {
             if (obj is not Address that)
                 return 1;
             return this.CompareTo(that);
         }
 
-        public override bool Equals([NotNullWhen(true)] object? obj)
+        public override readonly bool Equals([NotNullWhen(true)] object? obj)
         {
             if (obj is not Address that)
                 return false;
             return this.ToLinear() == that.ToLinear();
         }
 
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             return this.ToLinear().GetHashCode();
         }
@@ -138,50 +137,50 @@ namespace Reko.Core
             return new Address(dt, LinearHex, (byte)bitSize, value.ToUInt64(), 0);
         }
 
-        public string GenerateName(string prefix, string suffix) => GetInfo().GenerateName(prefix, suffix, this);
+        public readonly string GenerateName(string prefix, string suffix) => GetInfo().GenerateName(prefix, suffix, this);
 
         private readonly Info GetInfo() => infos[this.type];
 
-        public Expression Invert()
+        public readonly Expression Invert()
         {
             throw new NotSupportedException($"Expression of type {GetType().Name} doesn't support Invert.");
         }
 
-        public Address NewOffset(ulong newOffset) => GetInfo().NewOffset(this, newOffset);
+        public readonly Address NewOffset(ulong newOffset) => Info.NewOffset(this, newOffset);
 
-        public int PreferredBase => this.type == LinearOctal ? 8 : 0;
+        public readonly int PreferredBase => this.type == LinearOctal ? 8 : 0;
 
-        void MachineOperand.Render(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
+        readonly void MachineOperand.Render(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             renderer.BeginOperand();
             renderer.WriteAddress(this.ToString()!, this);
             renderer.EndOperand();
         }
 
-        public Constant ToConstant()
+        public readonly Constant ToConstant()
         {
             return Constant.Create(this.dt, this.ToLinear());
         }
 
-        public ushort ToUInt16()
+        public readonly ushort ToUInt16()
         {
             if (this.offsetBitsize > 16)
                 throw new InvalidOperationException("Returning UInt16 would lose precision.");
             return (ushort) this.uOffset;
         }
 
-        public uint ToUInt32()
+        public readonly uint ToUInt32()
         {
             if (this.offsetBitsize > 32)
                 throw new InvalidOperationException("Returning UInt32 would lose precision.");
             return (uint) this.uOffset;
         }
 
-        public ulong ToLinear() => GetInfo().ToLinear(this);
+        public readonly ulong ToLinear() => GetInfo().ToLinear(this);
 
-        public override string ToString() => GetInfo().ConvertToString(this);
+        public override readonly string ToString() => GetInfo().ConvertToString(this);
         
-        string MachineOperand.ToString(MachineInstructionRendererOptions options)
+        readonly string MachineOperand.ToString(MachineInstructionRendererOptions options)
         {
             return ToString();
         }
@@ -397,16 +396,14 @@ namespace Reko.Core
             }
         }
 
-
-
-        private static readonly Info[] infos = new[]
-        {
+        private static readonly Info[] infos =
+        [
             new Info(0, 0, 0),
             new Info(16, 0, 0),
             new Info(8, 0, 0),
             new Info(16, 4, 0xFFFF),
             new Info(16, 9, 0xFFF8),
-        };
+        ];
 
         private record Info(int Base, int SelectorShift, uint SelectorMask)
         {
@@ -448,7 +445,7 @@ namespace Reko.Core
                 return sb.ToString();
             }
 
-            public Address NewOffset(in Address addr, ulong newOffset)
+            public static Address NewOffset(in Address addr, ulong newOffset)
             {
                 var mask = (~0ul >> (64 - addr.offsetBitsize));
                 return new Address(addr.dt, addr.type, addr.offsetBitsize, newOffset & mask, addr.selector);

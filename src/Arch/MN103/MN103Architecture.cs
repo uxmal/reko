@@ -27,21 +27,28 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
 
 namespace Reko.Arch.MN103
 {
     public class MN103Architecture : ProcessorArchitecture
     {
-        public MN103Architecture(IServiceProvider services, string archId, Dictionary<string, object> options, Dictionary<string, RegisterStorage>? regsByName, Dictionary<StorageDomain, RegisterStorage>? regsByDomain) : base(services, archId, options, regsByName, regsByDomain)
+        public MN103Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : this(services, archId, options, Registers.RegistersByName, Registers.RegistersByDomain)
+        {
+        }
+
+        public MN103Architecture(IServiceProvider services, string archId, Dictionary<string, object> options, Dictionary<string, RegisterStorage>? regsByName, Dictionary<StorageDomain, RegisterStorage>? regsByDomain) 
+            : base(services, archId, options, regsByName, regsByDomain)
         {   
-            this.CarryFlag = null!; //$TODO
+            this.CarryFlag = Registers.C;
             this.CodeMemoryGranularity = 8;
             this.Endianness = EndianServices.Little;
             this.FramePointerType = PrimitiveType.Ptr32;
             this.InstructionBitSize = 8;
             this.MemoryGranularity = 8;
             this.PointerType = PrimitiveType.Ptr32;
-            this.StackRegister = null!; //$TODO
+            this.StackRegister = Registers.sp;
             this.WordWidth = PrimitiveType.Word32;
         }
 
@@ -62,7 +69,7 @@ namespace Reko.Arch.MN103
 
         public override ProcessorState CreateProcessorState()
         {
-            return new DefaultProcessorState(this);
+            return new MN103State(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
@@ -72,7 +79,9 @@ namespace Reko.Arch.MN103
 
         public override FlagGroupStorage? GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
-            throw new System.NotImplementedException();
+            var flagregister = Registers.psw;
+            var fl = new FlagGroupStorage(flagregister, grf, GrfToString(flagRegister, "", grf));
+            return fl;
         }
 
         public override FlagGroupStorage? GetFlagGroup(string name)
@@ -95,14 +104,35 @@ namespace Reko.Arch.MN103
             throw new System.NotImplementedException();
         }
 
+        public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
+        {
+            uint grf = flags.FlagGroupBits;
+            if (flags.FlagRegister == Registers.psw)
+            {
+                if ((grf & Registers.Z.FlagGroupBits) != 0) yield return Registers.Z;
+                if ((grf & Registers.N.FlagGroupBits) != 0) yield return Registers.N;
+                if ((grf & Registers.C.FlagGroupBits) != 0) yield return Registers.C;
+                if ((grf & Registers.V.FlagGroupBits) != 0) yield return Registers.V;
+            }
+        }
+
         public override string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)
         {
-            throw new System.NotImplementedException();
+            var sb = new StringBuilder();
+            if (flagRegister == Registers.psw)
+            {
+                if ((grf & (uint) FlagM.ZF) != 0) sb.Append('Z');
+                if ((grf & (uint) FlagM.NF) != 0) sb.Append('N');
+                if ((grf & (uint) FlagM.CF) != 0) sb.Append('C');
+                if ((grf & (uint) FlagM.VF) != 0) sb.Append('V');
+            }
+            return sb.ToString();
+
         }
 
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
-            throw new System.NotImplementedException();
+            return Address.Ptr32(c.ToUInt32());
         }
 
         public override Address? ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)

@@ -32,7 +32,6 @@ public class MaxqDisassemblerTests : DisassemblerTestBase<MaxqInstruction>
 
     public MaxqDisassemblerTests()
     {
-        Reko.Core.Machine.Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
         this.arch = new MaxqArchitecture(CreateServiceContainer(), "maxq", []);
         this.addr = Address.Ptr16(0x100);
     }

@@ -43,7 +43,7 @@ namespace Reko.Arch.MN103
         {
             this.arch = arch;
             this.rdr = rdr;
-            this.ops = new List<MachineOperand>();
+            this.ops = [];
             this.addr = default!;
         }
 

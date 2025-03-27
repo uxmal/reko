@@ -29,7 +29,7 @@ namespace Reko.Core.Machine
     {
         public MachineInstruction()
         {
-            this.Operands = Array.Empty<MachineOperand>();
+            this.Operands = [];
             this.Address = default!;
         }
 
