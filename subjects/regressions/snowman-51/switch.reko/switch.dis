@@ -1,6 +1,5 @@
 char * get(uint32 n)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  Stack +0004:[0..31]
 // LiveOut: eax:[0..31]-get
 // Trashed: eax
@@ -8,24 +7,23 @@ char * get(uint32 n)
 get_entry:
 l10071000:
 	branch n >u 2<32> l10071029
-l10071029:
-	return 0x10072000<p32>
 l1007100A:
 	switch (n + 1<32>) { l10071011 l10071017 l1007101D l10071023 }
-l10071023:
-	return 0x10072008<p32>
-l1007101D:
-	return 0x10072010<p32>
-l10071017:
-	return 0x10072014<p32>
 l10071011:
 	return 0x10072018<p32>
+l10071017:
+	return 0x10072014<p32>
+l1007101D:
+	return 0x10072010<p32>
+l10071023:
+	return 0x10072008<p32>
+l10071029:
+	return 0x10072000<p32>
 get_exit:
 
 
 BOOL DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
 // stackDelta: 16; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut: eax:[0..31]-DllMain
 // Trashed: eax

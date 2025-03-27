@@ -1,6 +1,5 @@
 void fn80000000()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: CVZN d0 d1 fp0 fp1
@@ -14,7 +13,6 @@ fn80000000_exit:
 
 real96 fn80000132(real96 rArg04, real96 rArg10)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn800001F2
 //      fn800002AE
@@ -30,17 +28,17 @@ l80000132:
 l8000014A:
 	rLoc10_67 = SEQ(SLICE(fp0_11, word32, 0), SLICE(fp0_11, word32, 32), SLICE(fp0_11, word32, 64)) (alias)
 	branch CONVERT(dwLoc14_55, int32, real96) >= rArg10 l80000172
-l80000172:
-	return fp0_11
-fn80000132_exit:
 l8000015A:
 	fp0_11 = rLoc10_67 * rArg04
 	dwLoc14_55 = dwLoc14_55 + 1<32>
+	goto l8000014A
+l80000172:
+	return fp0_11
+fn80000132_exit:
 
 
 real96 fn8000018E(real96 rArg04)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn800001F2
 //      fn800002AE
@@ -56,17 +54,17 @@ l8000018E:
 l800001A8:
 	rLoc10_68 = SEQ(SLICE(fp0_11, word32, 0), SLICE(fp0_11, word32, 32), SLICE(fp0_11, word32, 64)) (alias)
 	branch CONVERT(dwLoc14_56, int32, real96) > rArg04 l800001D4
-l800001D4:
-	return fp0_11
-fn8000018E_exit:
 l800001B8:
 	fp0_11 = rLoc10_68 *96 CONVERT(dwLoc14_56, int32, real80)
 	dwLoc14_56 = dwLoc14_56 + 1<32>
+	goto l800001A8
+l800001D4:
+	return fp0_11
+fn8000018E_exit:
 
 
 real96 fn800001F2(real96 rArg04)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn8000036C
 //      fn800003CC
@@ -82,19 +80,19 @@ l800001F2:
 l8000021C:
 	rLoc10_119 = SEQ(SLICE(fp1_87, word32, 0), SLICE(fp1_87, word32, 32), SLICE(fp1_87, word32, 64)) (alias)
 	branch dwLoc20_102 > 0x64<32> l8000028A
-l8000028A:
-	return fp1_87
-fn800001F2_exit:
 l80000224:
 	fp0_85 = CONVERT(CONVERT(CONVERT(CONVERT(fn80000132(rArg04, CONVERT(dwLoc20_102, int32, real96)), real96, real80), real80, real96) /96 CONVERT(fn8000018E(CONVERT(dwLoc20_102, int32, real96)), real96, real80), real96, real80), real80, real96) * rLoc1C_101
 	fp1_87 = rLoc10_119 + CONVERT(fp0_85, real96, real80)
 	rLoc1C_101 = fp0_85
 	dwLoc20_102 = dwLoc20_102 + 2<32>
+	goto l8000021C
+l8000028A:
+	return fp1_87
+fn800001F2_exit:
 
 
 real96 fn800002AE(real96 rArg04)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn8000036C
 //      fn800003CC
@@ -110,19 +108,19 @@ l800002AE:
 l800002DA:
 	rLoc10_118 = SEQ(SLICE(fp0_14, word32, 0), SLICE(fp0_14, word32, 32), SLICE(fp0_14, word32, 64)) (alias)
 	branch dwLoc20_101 > 0x64<32> l80000348
-l80000348:
-	return fp0_14
-fn800002AE_exit:
 l800002E2:
 	fp0_85 = CONVERT(CONVERT(CONVERT(CONVERT(fn80000132(rArg04, CONVERT(dwLoc20_101, int32, real96)), real96, real80), real80, real96) /96 CONVERT(fn8000018E(CONVERT(dwLoc20_101, int32, real96)), real96, real80), real96, real80), real80, real96) * rLoc1C_100
 	fp0_14 = rLoc10_118 + CONVERT(fp0_85, real96, real80)
 	rLoc1C_100 = fp0_85
 	dwLoc20_101 = dwLoc20_101 + 2<32>
+	goto l800002DA
+l80000348:
+	return fp0_14
+fn800002AE_exit:
 
 
 void fn8000036C(real96 rArg04)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn800003CC
 // MayUse:  Stack +0004:[0..95]
@@ -139,7 +137,6 @@ fn8000036C_exit:
 
 void fn800003CC()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn80000000
 // MayUse: 

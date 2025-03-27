@@ -1,6 +1,5 @@
 void CpmCom_Start(byte f)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  f:[0..7]
 // LiveOut:
 // Trashed: SZPC af bc de hl ix iy sp
@@ -30,8 +29,164 @@ l0114_1:
 	a_46 = fn0A08(SLICE(af_30, byte, 8))
 	sp_47 = <invalid>
 	branch a_46 == 0x48<8> l0299
+	goto l0132
+l0120:
+	fn093B()
+	fn0945()
+	a_46 = fn0A08(a_46)
+	sp_47 = <invalid>
+	branch a_46 == 0x48<8> l0299
 l0132:
 	branch a_46 == 0x45<8> l0873
+l0137:
+	branch a_46 == 0x4D<8> l08D9
+l013C:
+	ix_328 = 0xAB3<16>
+	branch a_46 == 0x42<8> l0186
+l0144:
+	branch a_46 == 0x43<8> l01BC
+l0149:
+	branch a_46 == 0x47<8> l01AF
+l014E:
+	branch a_46 == 0x54<8> l015D
+l0152:
+	branch a_46 == 0x20<8> l016A
+l0156:
+	fn0A2A()
+	goto l0120
+l015D:
+	af_517 = fn09C5(f_351, d_675, 0xB30<16>, out d_852)
+	f_351 = SLICE(af_517, byte, 0) (alias)
+	a_534 = SLICE(de_527, byte, 0)
+	branch fn094F(SLICE(af_517, byte, 8), out de_527) l016C
+l016A:
+	a_534 = 1<8>
+l016C:
+	Mem539[0xAAC<16>:byte] = a_534
+	fn02C5(f_351, ix_328, out f_860, out bc_543, out d_861, out hl_862, out ix_328)
+	de_544 = <invalid>
+	af_542 = <invalid>
+	fn01FF(SLICE(af_542, byte, 0), SLICE(bc_543, byte, 0), SLICE(de_544, byte, 8), ix_328, out f_863, out bc_864, out d_865)
+	af_555 = <invalid>
+	f_568 = SLICE(af_555, byte, 0) (alias)
+	a_563 = Mem539[0xAAC<16>:byte]
+	branch a_563 != 1<8> l017A
+l0179_1:
+	return
+l017A:
+	bc_571 = 0xAAE<16>
+l017E:
+	bc_571 = bc_571 - 1<16>
+	branch bc_571 != 0<8> l017E
+l0183:
+	a_534 = a_563 - 1<8> (alias)
+	f_351 = f_568 (alias)
+	goto l016C
+l0186:
+	af_333 = fn09C5(f_351, d_675, 0xB41<16>, out d_845)
+	fn094F(SLICE(af_333, byte, 8), out de_343)
+	Mem349[0xAB0<16>:word16] = de_343
+	f_351 = SLICE(af_333, byte, 0) (alias)
+l0194:
+	fn02C5(f_351, ix_328, out f_866, out bc_353, out d_867, out hl_355, out ix_328)
+	af_352 = <invalid>
+	de_364 = Mem349[0xAB0<16>:word16]
+	h_365 = SLICE(hl_355, byte, 8) (alias)
+	d_367 = SLICE(de_364, byte, 8) (alias)
+	l_370 = SLICE(hl_355, byte, 0) (alias)
+	f_351 = SLICE(af_352, byte, 0) (alias)
+	e_372 = SLICE(de_364, byte, 0) (alias)
+	v29_705 = h_365 == d_367
+	branch h_365 != d_367 l01A8
+l019F:
+	v29_705 = l_370 == e_372
+	branch l_370 != e_372 l01A8
+l01A3:
+	fn02C5(f_351, ix_328, out f_854, out bc_378, out d_855, out hl_856, out ix_383)
+	de_379 = <invalid>
+	af_377 = <invalid>
+	d_388 = SLICE(de_379, byte, 8) (alias)
+	f_389 = SLICE(af_377, byte, 0) (alias)
+l01A6_thunk_fn01FF:
+	fn01FF(f_389, SLICE(bc_378, byte, 0), d_388, ix_383, out f_857, out bc_858, out d_859)
+	return
+l01A8:
+	fn0A24()
+	branch v29_705 l0194
+l01AD:
+	goto l01B7
+l01AF:
+	de_487 = <invalid>
+	af_485 = <invalid>
+	Z_493 = fn02C5(f_351, ix_328, out f_849, out bc_353, out d_850, out hl_851, out ix_328)
+	fn0A24()
+	d_367 = SLICE(de_487, byte, 8) (alias)
+	f_351 = SLICE(af_485, byte, 0) (alias)
+	branch Z_493 l01AF
+l01B7:
+	fn0A27()
+l01BA_thunk_fn01FF:
+	fn01FF(f_351, SLICE(bc_353, byte, 0), d_367, ix_328, out f_868, out bc_869, out d_870)
+	return
+l01BC:
+	fn093B()
+	f_413 = fn027A(f_351, d_675, 0xB00<16>, out d_846, out iy_847) (alias)
+	de_411 = Mem401[0xABA<16>:word16]
+	fn099E(SEQ(SLICE(de_411, byte, 8), f_413), SLICE(de_411, byte, 0), out af_416, out c_848)
+	fn0945()
+	f_438 = SLICE(af_416, byte, 0) (alias)
+	d_437 = SLICE(de_426, byte, 8) (alias)
+	branch fn094F(SLICE(af_416, byte, 8), out de_426) l01DB
+l01D7:
+	Mem432[0xABA<16>:word16] = de_426
+l01DB:
+	iy_433 = 0xAE2<16>
+	b_434 = 5<8>
+l01E1:
+	fn093B()
+	fn09A2(SEQ(Mem447[ix_328:byte], fn027A(f_438, d_437, iy_433, out d_873, out iy_433)), out af_451, out c_874)
+	fn0945()
+	f_438 = SLICE(af_451, byte, 0) (alias)
+	e_467 = SLICE(de_461, byte, 0) (alias)
+	d_437 = SLICE(de_461, byte, 8) (alias)
+	branch fn094F(SLICE(af_451, byte, 8), out de_461) l01F8
+l01F5:
+	Mem468[ix_328:byte] = e_467
+l01F8:
+	ix_328 = ix_328 + 1<16>
+	b_434 = b_434 - 1<8>
+	branch b_434 != 0<8> l01E1
+l01FC:
+	return
+l0299:
+	fn093B()
+	hl_602 = 0xA4B<16>
+	bc_839 = 0x28<16> (alias)
+l02A2:
+	branch bc_839 == 0<8> l02C1
+l02A6:
+	hl_615 = hl_602 + 1<16>
+	e_614 = Mem613[hl_602:byte]
+	d_616 = Mem613[hl_615:byte]
+	sp_620 = sp_47 - 2<16>
+	Mem621[sp_620:word16] = hl_615 + 1<16>
+	Mem624[sp_620 - 2<16>:word16] = bc_839
+	fn099E(SEQ(d_616, f_351), e_614, out af_627, out c_853)
+	fn0A19()
+	bc_635 = Mem624[sp_620 - 2<16>:word16]
+	Mem638[sp_620 - 2<16>:word16] = bc_635
+	f_351 = SLICE(af_627, byte, 0) (alias)
+	branch SLICE(bc_635, byte, 0) != 0xF9<8> l02BC
+l02B9_1:
+	fn093B()
+l02BC:
+	bc_647 = Mem638[sp_620 - 2<16>:word16]
+	hl_602 = Mem638[sp_620:word16]
+	bc_839 = SEQ(SLICE(bc_647 - 1<16>, byte, 8), SLICE(bc_647, byte, 0) - 1<8>) (alias)
+	goto l02A2
+l02C1:
+	fn093B()
+	return
 l0873:
 	af_59 = fn09BA(f_351, 0xB06<16>)
 	fn094F(SLICE(af_59, byte, 8), out de_68)
@@ -46,6 +201,10 @@ l0873:
 	bc_836 = SEQ(b_101 >>u 1<8>, c_106) (alias)
 	bc_836 = SEQ(b_101 >>u 1<8>, c_106) (alias)
 	branch c_106 >=u 0<8> l0895
+	goto l0894
+l088E:
+	bc_836 = bc_836 >>u 1<8>
+	branch SLICE(bc_836, byte, 0) >=u 0<8> l0895
 l0894:
 	a_100 = a_100 + 1<8>
 l0895:
@@ -53,9 +212,6 @@ l0895:
 	e_111 = e_111 - 1<8>
 	bc_127 = bc_836 (alias)
 	branch e_111 != 0<8> l088E
-l088E:
-	bc_836 = bc_836 >>u 1<8>
-	branch SLICE(bc_836, byte, 0) >=u 0<8> l0895
 l0898:
 	branch a_100 == 0<8> l089C
 l089B:
@@ -94,12 +250,11 @@ l08CB:
 	branch e_181 != 0<8> l08BE
 l08D2:
 	branch bc_139 != 0<8> l08D6
-l08D6:
-	bc_139 = bc_139 - 1<16>
 l08D5_1:
 	return
-l0137:
-	branch a_46 == 0x4D<8> l08D9
+l08D6:
+	bc_139 = bc_139 - 1<16>
+	goto l089E
 l08D9:
 	af_224 = fn09BA(f_351, 0xB06<16>)
 	fn094F(SLICE(af_224, byte, 8), out de_233)
@@ -118,6 +273,8 @@ l08E3:
 l08F5:
 	a_267 = fn0A08(a_265)
 	branch a_267 != 0x2E<8> l08FB
+l08FA_1:
+	return
 l08FB:
 	branch a_267 == 0x20<8> l0920
 l08FF:
@@ -130,171 +287,21 @@ l090B:
 	a_297 = fn0A08(a_265)
 	sp_298 = <invalid>
 	branch a_297 == 0xD<8> l0919
+l0912:
+	branch fn0975(a_297, out a_265) l090B
+l0917:
+	goto l0908
 l0919:
 	Mem307[sp_298 - 2<16>:word16] = hl_286
 	hl_252 = fn0E2C(Mem307[sp_298 + 2<16>:byte], Mem307[sp_298:word16])
 l0920:
 	hl_241 = hl_252 + 1<16>
-l0912:
-	branch fn0975(a_297, out a_265) l090B
-l0917:
-l08FA_1:
-	return
-l013C:
-	ix_328 = 0xAB3<16>
-	branch a_46 == 0x42<8> l0186
-l0186:
-	af_333 = fn09C5(f_351, d_675, 0xB41<16>, out d_845)
-	fn094F(SLICE(af_333, byte, 8), out de_343)
-	Mem349[0xAB0<16>:word16] = de_343
-	f_351 = SLICE(af_333, byte, 0) (alias)
-l0194:
-	fn02C5(f_351, ix_328, out f_866, out bc_353, out d_867, out hl_355, out ix_328)
-	af_352 = <invalid>
-	de_364 = Mem349[0xAB0<16>:word16]
-	h_365 = SLICE(hl_355, byte, 8) (alias)
-	d_367 = SLICE(de_364, byte, 8) (alias)
-	l_370 = SLICE(hl_355, byte, 0) (alias)
-	f_351 = SLICE(af_352, byte, 0) (alias)
-	e_372 = SLICE(de_364, byte, 0) (alias)
-	v29_705 = h_365 == d_367
-	branch h_365 != d_367 l01A8
-l019F:
-	v29_705 = l_370 == e_372
-	branch l_370 != e_372 l01A8
-l01A8:
-	fn0A24()
-	branch v29_705 l0194
-l01AD:
-l01A3:
-	fn02C5(f_351, ix_328, out f_854, out bc_378, out d_855, out hl_856, out ix_383)
-	de_379 = <invalid>
-	af_377 = <invalid>
-	d_388 = SLICE(de_379, byte, 8) (alias)
-	f_389 = SLICE(af_377, byte, 0) (alias)
-l01A6_thunk_fn01FF:
-	fn01FF(f_389, SLICE(bc_378, byte, 0), d_388, ix_383, out f_857, out bc_858, out d_859)
-	return
-l0144:
-	branch a_46 == 0x43<8> l01BC
-l01BC:
-	fn093B()
-	f_413 = fn027A(f_351, d_675, 0xB00<16>, out d_846, out iy_847) (alias)
-	de_411 = Mem401[0xABA<16>:word16]
-	fn099E(SEQ(SLICE(de_411, byte, 8), f_413), SLICE(de_411, byte, 0), out af_416, out c_848)
-	fn0945()
-	f_438 = SLICE(af_416, byte, 0) (alias)
-	d_437 = SLICE(de_426, byte, 8) (alias)
-	branch fn094F(SLICE(af_416, byte, 8), out de_426) l01DB
-l01D7:
-	Mem432[0xABA<16>:word16] = de_426
-l01DB:
-	iy_433 = 0xAE2<16>
-	b_434 = 5<8>
-l01E1:
-	fn093B()
-	fn09A2(SEQ(Mem447[ix_328:byte], fn027A(f_438, d_437, iy_433, out d_873, out iy_433)), out af_451, out c_874)
-	fn0945()
-	f_438 = SLICE(af_451, byte, 0) (alias)
-	e_467 = SLICE(de_461, byte, 0) (alias)
-	d_437 = SLICE(de_461, byte, 8) (alias)
-	branch fn094F(SLICE(af_451, byte, 8), out de_461) l01F8
-l01F5:
-	Mem468[ix_328:byte] = e_467
-l01F8:
-	ix_328 = ix_328 + 1<16>
-	b_434 = b_434 - 1<8>
-	branch b_434 != 0<8> l01E1
-l01FC:
-	return
-l0149:
-	branch a_46 == 0x47<8> l01AF
-l01AF:
-	de_487 = <invalid>
-	af_485 = <invalid>
-	Z_493 = fn02C5(f_351, ix_328, out f_849, out bc_353, out d_850, out hl_851, out ix_328)
-	fn0A24()
-	d_367 = SLICE(de_487, byte, 8) (alias)
-	f_351 = SLICE(af_485, byte, 0) (alias)
-	branch Z_493 l01AF
-l01B7:
-	fn0A27()
-l01BA_thunk_fn01FF:
-	fn01FF(f_351, SLICE(bc_353, byte, 0), d_367, ix_328, out f_868, out bc_869, out d_870)
-	return
-l014E:
-	branch a_46 == 0x54<8> l015D
-l015D:
-	af_517 = fn09C5(f_351, d_675, 0xB30<16>, out d_852)
-	f_351 = SLICE(af_517, byte, 0) (alias)
-	a_534 = SLICE(de_527, byte, 0)
-	branch fn094F(SLICE(af_517, byte, 8), out de_527) l016C
-l0152:
-	branch a_46 == 0x20<8> l016A
-l016A:
-	a_534 = 1<8>
-l016C:
-	Mem539[0xAAC<16>:byte] = a_534
-	fn02C5(f_351, ix_328, out f_860, out bc_543, out d_861, out hl_862, out ix_328)
-	de_544 = <invalid>
-	af_542 = <invalid>
-	fn01FF(SLICE(af_542, byte, 0), SLICE(bc_543, byte, 0), SLICE(de_544, byte, 8), ix_328, out f_863, out bc_864, out d_865)
-	af_555 = <invalid>
-	f_568 = SLICE(af_555, byte, 0) (alias)
-	a_563 = Mem539[0xAAC<16>:byte]
-	branch a_563 != 1<8> l017A
-l017A:
-	bc_571 = 0xAAE<16>
-l017E:
-	bc_571 = bc_571 - 1<16>
-	branch bc_571 != 0<8> l017E
-l0183:
-	a_534 = a_563 - 1<8> (alias)
-	f_351 = f_568 (alias)
-l0179_1:
-	return
-l0156:
-	fn0A2A()
-l0120:
-	fn093B()
-	fn0945()
-	a_46 = fn0A08(a_46)
-	sp_47 = <invalid>
-	branch a_46 == 0x48<8> l0299
-l0299:
-	fn093B()
-	hl_602 = 0xA4B<16>
-	bc_839 = 0x28<16> (alias)
-l02A2:
-	branch bc_839 == 0<8> l02C1
-l02C1:
-	fn093B()
-	return
+	goto l08E3
 CpmCom_Start_exit:
-l02A6:
-	hl_615 = hl_602 + 1<16>
-	e_614 = Mem613[hl_602:byte]
-	d_616 = Mem613[hl_615:byte]
-	sp_620 = sp_47 - 2<16>
-	Mem621[sp_620:word16] = hl_615 + 1<16>
-	Mem624[sp_620 - 2<16>:word16] = bc_839
-	fn099E(SEQ(d_616, f_351), e_614, out af_627, out c_853)
-	fn0A19()
-	bc_635 = Mem624[sp_620 - 2<16>:word16]
-	Mem638[sp_620 - 2<16>:word16] = bc_635
-	f_351 = SLICE(af_627, byte, 0) (alias)
-	branch SLICE(bc_635, byte, 0) != 0xF9<8> l02BC
-l02B9_1:
-	fn093B()
-l02BC:
-	bc_647 = Mem638[sp_620 - 2<16>:word16]
-	hl_602 = Mem638[sp_620:word16]
-	bc_839 = SEQ(SLICE(bc_647 - 1<16>, byte, 8), SLICE(bc_647, byte, 0) - 1<8>) (alias)
 
 
 bool fn01FF(byte f, byte b, byte d, word16 ix, byte & fOut, word16 & bcOut, byte & dOut)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      CpmCom_Start
 //      fn02C5
@@ -348,7 +355,6 @@ fn01FF_exit:
 
 byte fn027A(byte f, byte d, word16 iy, byte & dOut, word16 & iyOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      CpmCom_Start
 //      fn01FF
@@ -368,7 +374,6 @@ fn027A_exit:
 
 byte fn027F(byte f, byte d, word16 iy, byte & dOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn01FF
 // MayUse:  d:[0..7] f:[0..7] iy:[0..15]
@@ -386,7 +391,6 @@ fn027F_exit:
 
 byte fn0284(word16 hl, byte & dOut)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn02C5
 // MayUse:  hl:[0..15]
@@ -413,7 +417,6 @@ fn0284_exit:
 
 bool fn02C5(byte f, word16 ix, byte & fOut, word16 & bcOut, byte & dOut, word16 & hlOut, word16 & ixOut)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      CpmCom_Start
 // MayUse:  f:[0..7] ix:[0..15]
@@ -432,17 +435,49 @@ l02C5:
 	d_70 = SLICE(de_6, byte, 8) (alias)
 	a_11 = <invalid>
 	branch a_11 == 0<8> l032E
+l02D9:
+	branch __bit(a_11, 0<8>) l0560
+l02DE:
+	branch a_11 != 0xF1<8> l02FA
+l02E2:
+	bc_339 = SEQ(a_11, c_338) (alias)
+	branch __bit(a_11, 4<8>) l0361
+l02E8:
+	branch a_11 == 0x20<8> l039F
+l02ED:
+	branch a_11 == 0x40<8> l0424
+l02F2:
+	branch a_11 == 0x60<8> l0437
+l02F7:
+	goto l0560
+l02FA:
+	branch a_11 != 0xF9<8> l030C
+l02FE:
+	a_161 = a_11
+	branch !__bit(a_11, 4<8>) l046B
+l0304:
+	branch a_11 == 0x98<8> l0523
+l0309:
+	goto l0530
+l030C:
+	branch a_11 != 0xFB<8> l0320
+l0310:
+	a_161 = a_11 + 0xF0<8>
+	branch __bit(a_11 + 0xF0<8>, 4<8>) l0450
+l0318:
+	branch a_11 <u 0x80<8> l0560
+l031D:
+	goto l046B
+l0320:
+	branch a_11 == 0x4C<8> l03C3
+l0326:
+	branch a_11 == 0x6C<8> l03C9
+l032B:
+	goto l0560
 l032E:
 	Mem24[ix + 1<i16>:byte] = __set(Mem10[ix + 1<i16>:byte], 4<8>)
 	hl_25 = Mem24[0xAAA<16>:word16]
 	branch hl_25 != 0<8> l0340
-l0340:
-	de_35 = fn0755(ix, out hl_36)
-	hl_56 = fn0E2C(Mem24[ix + 1<i16>:byte], fn0E2C(SLICE(de_35, byte, 0), fn0E2C(SLICE(de_35, byte, 8), hl_36) - 1<16>) - 1<16>)
-	fn075C(SLICE(hl_56, byte, 0) - 1<8>, ix, out hl_580)
-	Z_125 = cond(hl_56 - 1<16>) & 0x40<8> (alias)
-	hl_159 = Mem24[0xAAA<16>:word16]
-	bc_171 = 0x429<16>
 l0339:
 l033D_thunk_fn01FF:
 	Z_77 = fn01FF(f, 0x29<8>, d_70, ix, out f_581, out bc_73, out d_582)
@@ -452,21 +487,63 @@ l033D_thunk_fn01FF:
 	hlOut = hl_25
 	ixOut = ix
 	return Z_77 != 0<8>
-l02D9:
-	branch __bit(a_11, 0<8>) l0560
-l02DE:
-	branch a_11 != 0xF1<8> l02FA
-l02FA:
-	branch a_11 != 0xF9<8> l030C
-l030C:
-	branch a_11 != 0xFB<8> l0320
-l0320:
-	branch a_11 == 0x4C<8> l03C3
+l0340:
+	de_35 = fn0755(ix, out hl_36)
+	hl_56 = fn0E2C(Mem24[ix + 1<i16>:byte], fn0E2C(SLICE(de_35, byte, 0), fn0E2C(SLICE(de_35, byte, 8), hl_36) - 1<16>) - 1<16>)
+	fn075C(SLICE(hl_56, byte, 0) - 1<8>, ix, out hl_580)
+	Z_125 = cond(hl_56 - 1<16>) & 0x40<8> (alias)
+	hl_159 = Mem24[0xAAA<16>:word16]
+	bc_171 = 0x429<16>
+	goto l0728
+l0361:
+	fn0E24(hl_12, out af_576, out hl_240)
+	a_239 = <invalid>
+	c_251 = (a_239 >>u 4<8>) - 1<8>
+	bc_252 = CONVERT(c_251, uint8, uint16) (alias)
+	hl_12 = hl_240 + 1<16>
+	a_258 = Mem10[ix + 1<i16>:byte]
+	c_259 = Mem10[bc_252 + 0xB96<16>:byte]
+	b_260 = Mem10[bc_252 + 0xB97<16>:byte]
+	branch __bit(c_251, 1<8>) l0389
+l0384:
+	branch (a_258 & b_260) == 0<8> l038E
+l0387:
+	goto l039A
+l0389:
+	branch (a_258 & b_260) != 0<8> l038E
+l038C:
+	goto l039A
+l038E:
+	fn0E24(hl_240 + 1<16>, out af_584, out hl_272)
+	a_271 = <invalid>
+	de_282 = CONVERT(a_271, uint8, uint16) (alias)
+	branch !__bit(a_271, 7<8>) l0399
+l0398:
+	de_282 = SEQ(0xFF<8>, a_271) (alias)
+l0399:
+	hl_12 = hl_272 + de_282
+l039A:
+	bc_171 = CONVERT(c_259, uint8, uint16) (alias)
+	goto l0727
+l039F:
+	e_302 = SLICE(de_565, byte, 0) (alias)
+	branch fn03E9(hl_12 + 1<16>, out de_565, out hl_159) l03AA
+l03A5:
+	Z_125 = fn03FD(bc_339, e_302, ix, out d_583, out ix)
+	goto l03BD
+l03AA:
+	de_311 = fn0755(ix, out hl_312)
+	hl_324 = fn0E2C(SLICE(de_311, byte, 0), fn0E2C(SLICE(de_311, byte, 8), hl_312) - 1<16>)
+	fn075C(SLICE(hl_324, byte, 0) - 1<8>, ix, out hl_332)
+	Z_125 = cond(hl_324 - 1<16>) & 0x40<8> (alias)
+	hl_159 = de_565
+l03BD:
+	bc_171 = 0x273<16>
+	goto l0728
 l03C3:
 	hl_117 = hl_12 + 1<16>
 	bc_118 = 0x26F<16>
-l0326:
-	branch a_11 == 0x6C<8> l03C9
+	goto l03D7
 l03C9:
 	fn0E24(hl_12 + 1<16>, out af_585, out hl_99)
 	fn0E24(hl_99 + 1<16>, out af_586, out hl_587)
@@ -486,40 +563,44 @@ l03DC:
 l03E5:
 	bc_171 = bc_118
 	hl_159 = de_152
-l032B:
-l0310:
-	a_161 = a_11 + 0xF0<8>
-	branch __bit(a_11 + 0xF0<8>, 4<8>) l0450
+	goto l0728
+l0424:
+	fn0755(ix, out hl_353)
+	fn0E24(hl_353 + 1<16>, out af_577, out hl_357)
+	a_356 = <invalid>
+	Mem362[ix + 1<i16>:byte] = a_356
+	Z_125 = fn0443(hl_357, ix, out d_578, out hl_159)
+	bc_171 = 0x4A5<16>
+	goto l0728
+l0437:
+	Z_125 = fn0440(ix, out d_579, out hl_159)
+	bc_171 = 0x4A9<16>
+	goto l0728
 l0450:
 	branch a_11 != 0xA0<8> l0460
+l0454:
+	Mem170[ix + 4<i16>:byte] = Mem10[ix + 2<i16>:byte]
+	bc_171 = 0x4D9<16>
+	goto l0727
 l0460:
 	a_166 = Mem10[ix + 4<i16>:byte]
 	Mem167[ix + 2<i16>:byte] = a_166
 	c_168 = 0xD1<8>
-l0454:
-	Mem170[ix + 4<i16>:byte] = Mem10[ix + 2<i16>:byte]
-	bc_171 = 0x4D9<16>
-l0318:
-	branch a_11 <u 0x80<8> l0560
-l031D:
-l02FE:
-	a_161 = a_11
-	branch !__bit(a_11, 4<8>) l046B
+	goto l052B
 l046B:
 	c_181 = a_161 >>u 4<8>
 	iy_184 = 0xBB6<16>
 	branch a_161 == 0xF9<8> l0864
 l047F:
 	iy_184 = 0xBBE<16>
-l0304:
-	branch a_11 == 0x98<8> l0523
+	goto l0864
 l0523:
 	a_166 = Mem10[ix + 3<i16>:byte]
 	Mem190[ix:byte] = a_166
 	c_168 = 0xDD<8>
 l052B:
 	fn073E(a_166, ix)
-l0309:
+	goto l055B
 l0530:
 	SZPC_199 = cond(a_11 - 0xB8<8>)
 	branch a_11 != 0xB8<8> l053C
@@ -533,85 +614,16 @@ l053C:
 	c_168 = Mem10[bc_217 + 0xBA6<16>:byte]
 	a_222 = Mem10[bc_217 + 0xBA7<16>:byte]
 	branch bc_217 != 0xF45A<16> l0555
-l0555:
-	a_225 = a_222 | Mem10[ix + 1<i16>:byte]
 l054F:
 	a_225 = ~a_222 & Mem10[ix + 1<i16>:byte]
+	goto l0558
+l0555:
+	a_225 = a_222 | Mem10[ix + 1<i16>:byte]
 l0558:
 	Mem234[ix + 1<i16>:byte] = a_225
 l055B:
 	bc_171 = SEQ(4<8>, c_168) (alias)
-l02E2:
-	bc_339 = SEQ(a_11, c_338) (alias)
-	branch __bit(a_11, 4<8>) l0361
-l0361:
-	fn0E24(hl_12, out af_576, out hl_240)
-	a_239 = <invalid>
-	c_251 = (a_239 >>u 4<8>) - 1<8>
-	bc_252 = CONVERT(c_251, uint8, uint16) (alias)
-	hl_12 = hl_240 + 1<16>
-	a_258 = Mem10[ix + 1<i16>:byte]
-	c_259 = Mem10[bc_252 + 0xB96<16>:byte]
-	b_260 = Mem10[bc_252 + 0xB97<16>:byte]
-	branch __bit(c_251, 1<8>) l0389
-l0389:
-	branch (a_258 & b_260) != 0<8> l038E
-l038C:
-l0384:
-	branch (a_258 & b_260) == 0<8> l038E
-l038E:
-	fn0E24(hl_240 + 1<16>, out af_584, out hl_272)
-	a_271 = <invalid>
-	de_282 = CONVERT(a_271, uint8, uint16) (alias)
-	branch !__bit(a_271, 7<8>) l0399
-l0398:
-	de_282 = SEQ(0xFF<8>, a_271) (alias)
-l0399:
-	hl_12 = hl_272 + de_282
-l0387:
-l039A:
-	bc_171 = CONVERT(c_259, uint8, uint16) (alias)
-l0727:
-	hl_159 = hl_12 + 1<16>
-	Z_125 = cond(hl_159) & 0x40<8> (alias)
-l02E8:
-	branch a_11 == 0x20<8> l039F
-l039F:
-	e_302 = SLICE(de_565, byte, 0) (alias)
-	branch fn03E9(hl_12 + 1<16>, out de_565, out hl_159) l03AA
-l03AA:
-	de_311 = fn0755(ix, out hl_312)
-	hl_324 = fn0E2C(SLICE(de_311, byte, 0), fn0E2C(SLICE(de_311, byte, 8), hl_312) - 1<16>)
-	fn075C(SLICE(hl_324, byte, 0) - 1<8>, ix, out hl_332)
-	Z_125 = cond(hl_324 - 1<16>) & 0x40<8> (alias)
-	hl_159 = de_565
-l03A5:
-	Z_125 = fn03FD(bc_339, e_302, ix, out d_583, out ix)
-l03BD:
-	bc_171 = 0x273<16>
-l02ED:
-	branch a_11 == 0x40<8> l0424
-l0424:
-	fn0755(ix, out hl_353)
-	fn0E24(hl_353 + 1<16>, out af_577, out hl_357)
-	a_356 = <invalid>
-	Mem362[ix + 1<i16>:byte] = a_356
-	Z_125 = fn0443(hl_357, ix, out d_578, out hl_159)
-	bc_171 = 0x4A5<16>
-l02F2:
-	branch a_11 == 0x60<8> l0437
-l0437:
-	Z_125 = fn0440(ix, out d_579, out hl_159)
-	bc_171 = 0x4A9<16>
-l0728:
-	Mem383[0xABA<16>:word16] = hl_159
-	fOut = <invalid>
-	bcOut = bc_171
-	dOut = <invalid>
-	hlOut = hl_159
-	ixOut = ix
-	return Z_125 != 0<8>
-l02F7:
+	goto l0727
 l0560:
 	fn0E24(hl_12, out af_574, out hl_575)
 	a_389 = <invalid>
@@ -621,6 +633,18 @@ l0560:
 	branch a_389 >>u 4<8> >=u 0<8> l0864
 l057B:
 	iy_184 = 0xBF2<16>
+	goto l0864
+l0727:
+	hl_159 = hl_12 + 1<16>
+	Z_125 = cond(hl_159) & 0x40<8> (alias)
+l0728:
+	Mem383[0xABA<16>:word16] = hl_159
+	fOut = <invalid>
+	bcOut = bc_171
+	dOut = <invalid>
+	hlOut = hl_159
+	ixOut = ix
+	return Z_125 != 0<8>
 l0864:
 	iy_415 = iy_184 + CONVERT(c_181, uint8, uint16)
 	sp_423 = sp_2 - 2<16>
@@ -641,7 +665,6 @@ fn02C5_exit:
 
 bool fn03E9(word16 hl, word16 & deOut, word16 & hlOut)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn02C5
 // MayUse:  hl:[0..15]
@@ -656,27 +679,26 @@ l03E9:
 	a_4 = <invalid>
 	SZ_24 = cond(a_13)
 	branch a_13 == 0<8> l03F7
-l03F7:
-	SZPC_28 = cond(4<8> - a_4)
-	branch a_4 <=u 4<8> l03FB
-l03FB:
-	deOut = <invalid>
-	hlOut = <invalid>
-	return (cond(0<8>) & 0x40<8>) != 0<8>
-l03FA_1:
-	deOut = <invalid>
-	hlOut = <invalid>
-	return (SZPC_28 & 0x40<8>) != 0<8>
 l03F6_1:
 	deOut = <invalid>
 	hlOut = <invalid>
 	return (SZ_24 & 0x40<8>) != 0<8>
+l03F7:
+	SZPC_28 = cond(4<8> - a_4)
+	branch a_4 <=u 4<8> l03FB
+l03FA_1:
+	deOut = <invalid>
+	hlOut = <invalid>
+	return (SZPC_28 & 0x40<8>) != 0<8>
+l03FB:
+	deOut = <invalid>
+	hlOut = <invalid>
+	return (cond(0<8>) & 0x40<8>) != 0<8>
 fn03E9_exit:
 
 
 bool fn03FD(word16 bc, byte e, word16 ix, byte & dOut, word16 & ixOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn02C5
 // MayUse:  bc:[0..15] e:[0..7] ix:[0..15]
@@ -697,7 +719,6 @@ fn03FD_exit:
 
 bool fn0440(word16 ix, byte & dOut, word16 & hlOut)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn02C5
 // MayUse:  ix:[0..15]
@@ -719,7 +740,6 @@ fn0440_exit:
 
 bool fn0443(word16 hl, word16 ix, byte & dOut, word16 & hlOut)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn02C5
 // MayUse:  hl:[0..15] ix:[0..15]
@@ -740,7 +760,6 @@ fn0443_exit:
 
 void fn073E(byte a, word16 ix)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn02C5
 // MayUse:  a:[0..7] ix:[0..15]
@@ -756,17 +775,16 @@ l0745:
 l0749:
 	Mem17[ix + 1<i16>:byte] = __res(Mem15[ix + 1<i16>:byte], 7<8>)
 	branch __bit(a, 7<8>) l0750
+l074F_1:
+	return
 l0750:
 	Mem21[ix + 1<i16>:byte] = __set(Mem17[ix + 1<i16>:byte], 7<8>)
-	return
-l074F_1:
 	return
 fn073E_exit:
 
 
 word16 fn0755(word16 ix, word16 & hlOut)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn02C5
 //      fn0440
@@ -783,7 +801,6 @@ fn0755_exit:
 
 byte fn075C(byte l, word16 ix, word16 & hlOut)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn02C5
 //      fn0440
@@ -802,7 +819,6 @@ fn075C_exit:
 
 byte fn0923(byte f, word16 hl)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      CpmCom_Start
 // MayUse:  f:[0..7] hl:[0..15]
@@ -818,7 +834,6 @@ fn0923_exit:
 
 word16 fn0929(word16 af)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      CpmCom_Start
 // MayUse:  af:[0..15]
@@ -834,7 +849,6 @@ fn0929_exit:
 
 void fn0930()
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      CpmCom_Start
 // MayUse: 
@@ -852,7 +866,6 @@ fn0930_exit:
 
 void fn0933()
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      CpmCom_Start
 //      fn0930
@@ -869,7 +882,6 @@ fn0933_exit:
 
 void fn093B()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      CpmCom_Start
 //      fn01FF
@@ -888,7 +900,6 @@ fn093B_exit:
 
 void fn0940()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      CpmCom_Start
 // MayUse: 
@@ -905,7 +916,6 @@ fn0940_exit:
 
 void fn0945()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      CpmCom_Start
 // MayUse: 
@@ -923,7 +933,6 @@ fn0945_exit:
 
 bool fn094F(byte a, word16 & deOut)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      CpmCom_Start
 // MayUse:  a:[0..7]
@@ -935,6 +944,9 @@ l094F:
 	a_5 = fn0A08(a)
 	SZPC_11 = cond(a_5 - 0x20<8>)
 	branch a_5 != 0x20<8> l0955
+l0954_1:
+	deOut = de
+	return (SZPC_11 & 0x40<8>) != 0<8>
 l0955:
 	de = hl
 	hl = 0<16>
@@ -944,22 +956,19 @@ l095E:
 l0961:
 	a_32 = fn0A08(a_24)
 	branch a_32 == 0xD<8> l0972
-l0972:
-	deOut = hl_25
-	return (cond(a_32) & 0x40<8>) != 0<8>
 l0968:
 	branch fn0975(a_32, out a_24) l0961
 l096D:
 	a_24 = fn0997(a_24, hl_25, out hl_25)
-l0954_1:
-	deOut = de
-	return (SZPC_11 & 0x40<8>) != 0<8>
+	goto l0961
+l0972:
+	deOut = hl_25
+	return (cond(a_32) & 0x40<8>) != 0<8>
 fn094F_exit:
 
 
 bool fn0975(byte a, byte & aOut)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      CpmCom_Start
 //      fn094F
@@ -976,6 +985,10 @@ l097D:
 	branch a <u 0x41<8> l0985
 l0981:
 	branch a <u 0x47<8> l098C
+l0985:
+	fn0A2A()
+	aOut = 0<8>
+	return (cond(0<8>) & 0x40<8>) != 0<8>
 l098C:
 	a_13 = a - 0x30<8>
 	branch a <u 0x3A<8> l0994
@@ -984,16 +997,11 @@ l0992:
 l0994:
 	aOut = a_13
 	return (cond(a_13 - 0xFF<8>) & 0x40<8>) != 0<8>
-l0985:
-	fn0A2A()
-	aOut = 0<8>
-	return (cond(0<8>) & 0x40<8>) != 0<8>
 fn0975_exit:
 
 
 byte fn0997(byte a, word16 hl, word16 & hlOut)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      CpmCom_Start
 //      fn094F
@@ -1011,7 +1019,6 @@ fn0997_exit:
 
 bool fn099E(word16 d_f, byte e, word16 & afOut, byte & cOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      CpmCom_Start
 //      fn01FF
@@ -1033,7 +1040,6 @@ fn099E_exit:
 
 bool fn09A2(word16 e_f, word16 & afOut, byte & cOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      CpmCom_Start
 //      fn01FF
@@ -1059,7 +1065,6 @@ fn09A2_exit:
 
 byte fn09A3(byte a)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn099E
 // MayUse:  af:[8..15]
@@ -1080,7 +1085,6 @@ fn09A3_exit:
 
 bool fn09B0(byte a, byte & aOut, byte & cOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn09A2
 //      fn09A3
@@ -1103,7 +1107,6 @@ fn09B0_exit:
 
 word16 fn09BA(byte f, word16 de)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      CpmCom_Start
 // MayUse:  de:[0..15] f:[0..7]
@@ -1119,7 +1122,6 @@ fn09BA_exit:
 
 word16 fn09C5(byte f, byte d, word16 iy, byte & dOut)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      CpmCom_Start
 //      fn09BA
@@ -1138,7 +1140,6 @@ fn09C5_exit:
 
 word16 fn09C7(byte f, byte e, word16 iy, byte & dOut, word16 & iyOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn027A
 //      fn027F
@@ -1154,25 +1155,31 @@ l09C7:
 	d_69 = SLICE(de, byte, 8) (alias)
 	af_82 = SEQ(a_5, f) (alias)
 	branch a_5 != 0x5E<8> l09CD
+l09CC_1:
+	dOut = <invalid>
+	iyOut = iy
+	return af_82
 l09CD:
 	af_114 = SEQ(a_5, f) (alias)
 	branch a_5 == 0x21<8> l09F6
 l09D1:
 	hl_14 = Mem13[0xAB8<16>:word16]
 	branch a_5 != 0x32<8> l09E4
-l09E4:
-	branch a_5 != 0x31<8> l09F1
-l09F1:
-	fn0A2A()
-	af_117 = SEQ(a_5, f) (alias)
-l09E8:
-	fn0E24(hl_14 + 1<16>, out af_124, out hl_125)
-	a_21 = <invalid>
-	fn09A2(SEQ(a_21, f), out af_117, out c_126)
 l09DA:
 	fn0E24(hl_14 + 2<16>, out af_121, out hl_122)
 	a_38 = <invalid>
 	fn09A2(SEQ(a_38, f), out af_117, out c_123)
+	goto l09F5
+l09E4:
+	branch a_5 != 0x31<8> l09F1
+l09E8:
+	fn0E24(hl_14 + 1<16>, out af_124, out hl_125)
+	a_21 = <invalid>
+	fn09A2(SEQ(a_21, f), out af_117, out c_126)
+	goto l09F5
+l09F1:
+	fn0A2A()
+	af_117 = SEQ(a_5, f) (alias)
 l09F5:
 	e_59 = SLICE(de, byte, 0) (alias)
 	d_69 = SLICE(de, byte, 8) (alias)
@@ -1187,16 +1194,11 @@ l09FB:
 	dOut = <invalid>
 	iyOut = iy
 	return af_114
-l09CC_1:
-	dOut = <invalid>
-	iyOut = iy
-	return af_82
 fn09C7_exit:
 
 
 byte fn0A08(byte a)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      CpmCom_Start
 //      fn094F
@@ -1208,11 +1210,9 @@ fn0A08_entry:
 l0A08:
 	fn0A27()
 	branch a == 3<8> l0A21
-l0A21:
-	cpm_warm_boot()
-	return a
 l0A10:
 	branch a != 0x18<8> l0A12_thunk_fn0A19
+	goto l0A14
 l0A12_thunk_fn0A19:
 	fn0A19()
 	return a
@@ -1220,12 +1220,14 @@ l0A14:
 l0A17_thunk_fn0A19:
 	fn0A19()
 	return 0x23<8>
+l0A21:
+	cpm_warm_boot()
+	return a
 fn0A08_exit:
 
 
 byte fn0A19()
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      CpmCom_Start
 //      fn01FF
@@ -1244,7 +1246,6 @@ fn0A19_exit:
 
 void fn0A24()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      CpmCom_Start
 // MayUse: 
@@ -1260,7 +1261,6 @@ fn0A24_exit:
 
 void fn0A27()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      CpmCom_Start
 //      fn0A08
@@ -1277,7 +1277,6 @@ fn0A27_exit:
 
 void fn0A2A()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      CpmCom_Start
 //      fn0933
@@ -1300,7 +1299,6 @@ fn0A2A_exit:
 
 void fn0DA2()
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      CpmCom_Start
 // MayUse: 
@@ -1310,6 +1308,8 @@ void fn0DA2()
 fn0DA2_entry:
 l0DA2:
 	branch Mem0[0x5D<16>:byte] != 0x20<8> l0DA8
+l0DA7_1:
+	return
 l0DA8:
 	de_12 = 0x6D<16>
 	branch Mem0[0x6D<16>:byte] == 0x20<8> l0DC9
@@ -1319,45 +1319,44 @@ l0DB4:
 	a_14 = Mem0[de_12:byte]
 	de_12 = de_12 + 1<16>
 	branch a_14 == 0x20<8> l0DC6
+l0DBB:
+	hl_82 = hl_11 * 2<16>
+	hl_11 = SEQ(SLICE(hl_82 * 8<16>, byte, 8), a_14 + 0xF<8> | SLICE(hl_82, byte, 0) * 8<8>) (alias)
+	goto l0DB4
 l0DC6:
 	Mem19[0xE7A<16>:word16] = hl_11
 l0DC9:
 	branch F_OPEN(0x5C<16>) != 0xFF<8> l0DDE
-l0DDE:
-	de_34 = Mem26[0xE78<16>:word16] + Mem26[0xE7A<16>:word16]
-l0DEF:
-	F_DMAOFF(de_34)
-	de_34 = de_34 + 0x80<16>
-	branch F_READ(0x5C<16>) == 0<8> l0DEA
-l0DEA:
-	Mem53[0xE75<16>:byte] = 1<8>
-l0E06:
-	F_DMAOFF(0x80<16>)
-	F_CLOSE(0x5C<16>)
-	branch Mem42[0xE75<16>:byte] == 0<8> l0E1B
-l0E1B:
-	call BDOS (retsize: 2;)
-		uses: c:9<8>,de:0xE5B<16>,hl:hl_68,Mem:Mem42,sp:fp
-		defs: hl:hl_68
-	return
-l0E1A_1:
-	return
 l0DD5:
 	call BDOS (retsize: 2;)
 		uses: c:9<8>,de:0xE40<16>,hl:hl_78,Mem:Mem26,sp:fp
 		defs: hl:hl_78
 	return
-l0DBB:
-	hl_82 = hl_11 * 2<16>
-	hl_11 = SEQ(SLICE(hl_82 * 8<16>, byte, 8), a_14 + 0xF<8> | SLICE(hl_82, byte, 0) * 8<8>) (alias)
-l0DA7_1:
+l0DDE:
+	de_34 = Mem26[0xE78<16>:word16] + Mem26[0xE7A<16>:word16]
+	goto l0DEF
+l0DEA:
+	Mem53[0xE75<16>:byte] = 1<8>
+l0DEF:
+	F_DMAOFF(de_34)
+	de_34 = de_34 + 0x80<16>
+	branch F_READ(0x5C<16>) == 0<8> l0DEA
+l0E06:
+	F_DMAOFF(0x80<16>)
+	F_CLOSE(0x5C<16>)
+	branch Mem42[0xE75<16>:byte] == 0<8> l0E1B
+l0E1A_1:
+	return
+l0E1B:
+	call BDOS (retsize: 2;)
+		uses: c:9<8>,de:0xE5B<16>,hl:hl_68,Mem:Mem42,sp:fp
+		defs: hl:hl_68
 	return
 fn0DA2_exit:
 
 
 bool fn0E24(word16 hl, word16 & afOut, word16 & hlOut)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      CpmCom_Start
 //      fn02C5
@@ -1381,7 +1380,6 @@ fn0E24_exit:
 
 word16 fn0E2C(byte a, word16 hl)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      CpmCom_Start
 //      fn02C5
@@ -1399,7 +1397,6 @@ fn0E2C_exit:
 
 void fn0E34()
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn02C5
 // MayUse: 
@@ -1414,7 +1411,6 @@ fn0E34_exit:
 
 bool fn0E35(word16 hl, word16 & hlOut)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0E24
 //      fn0E2C

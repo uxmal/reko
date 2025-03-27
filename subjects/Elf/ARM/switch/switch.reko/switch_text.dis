@@ -1,21 +1,19 @@
 void _start(word32 dwArg00, char * ptrArg04, void (* ptrArg08)(), void (* ptrArg0C)(), void * ptrArg10)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  Stack +0000:[0..31] Stack +0004:[0..31] Stack +0008:[0..31] Stack +000C:[0..31] Stack +0010:[0..31]
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-_start_exit:
 _start_entry:
 l00008334:
 	__libc_start_main(Mem16[0x00008364<p32>:word32], dwArg00, &ptrArg04, Mem16[0x00008368<p32>:word32], ptrArg08, ptrArg0C, ptrArg10)
 	abort()
+_start_exit:
 
 
 word32 call_gmon_start()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      _init
 // MayUse: 
@@ -27,19 +25,18 @@ l0000836C:
 	r10_11 = 0x00008380<p32> + Mem7[0x00008394<p32>:word32]
 	r3_12 = Mem7[r10_11 + Mem7[0x00008398<p32>:word32]:word32]
 	branch r3_12 != 0<32> l00008388
+l00008384_1:
+	return r10
 l00008388:
 	call r3_12 (retsize: 0;)
 		uses: lr:0x00008390<p32>,Mem:Mem7,pc:pc_19,r10:r10_11
 		defs: pc:pc_19,r10:r10_17
 	return r10_17
-l00008384_1:
-	return r10
 call_gmon_start_exit:
 
 
 void __do_global_dtors_aux()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      _fini
 // MayUse: 
@@ -50,13 +47,12 @@ __do_global_dtors_aux_entry:
 l0000839C:
 	r5_11 = Mem9[0x000083F4<p32>:word32]
 	branch CONVERT(Mem9[r5_11:byte], byte, word32) == 0<32> l000083B0
+l000083AC_1:
+	return
 l000083B0:
 	r4_15 = Mem9[0x000083F8<p32>:word32]
 	r2_17 = Mem9[Mem9[r4_15:word32]:word32]
 	branch r2_17 == 0<32> l000083E8
-l000083E8:
-	Mem22[r5_11:byte] = 1<8>
-	return
 l000083C4:
 	r3_27 = Mem9[r4_15:word32]
 	Mem29[r4_15:word32] = r3_27 + 4<32>
@@ -64,14 +60,14 @@ l000083C4:
 		uses: lr:0x000083D8<p32>,Mem:Mem29,pc:pc_35,r2:r2_37,r3:r3_27 + 4<32>,r4:r4_15,r5:r5_11
 		defs: pc:pc_35,r2:r2_37
 	return
-l000083AC_1:
+l000083E8:
+	Mem22[r5_11:byte] = 1<8>
 	return
 __do_global_dtors_aux_exit:
 
 
 void call___do_global_dtors_aux()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: lr
@@ -84,7 +80,6 @@ call___do_global_dtors_aux_exit:
 
 void frame_dummy()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      _init
 // MayUse: 
@@ -94,21 +89,20 @@ void frame_dummy()
 frame_dummy_entry:
 l00008404:
 	branch Mem0[Mem0[0x00008424<p32>:word32]:word32] != 0<32> l00008414
+l00008410_1:
+	return
 l00008414:
 	branch Mem0[0x00008428<p32>:word32] != 0<32> l00008420
-l00008420:
-	fn00000000()
-	return
 l0000841C_1:
 	return
-l00008410_1:
+l00008420:
+	fn00000000()
 	return
 frame_dummy_exit:
 
 
 void call_frame_dummy()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: lr
@@ -121,7 +115,6 @@ call_frame_dummy_exit:
 
 word32 frobulate(word32 r0, word32 dwArg00, word32 & fpOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      bazulate
 //      switcheroo
@@ -139,7 +132,6 @@ frobulate_exit:
 
 word32 bazulate(word32 r0, word32 r1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      switcheroo
 // MayUse:  r0:[0..31] r1:[0..31]
@@ -156,7 +148,6 @@ bazulate_exit:
 
 word32 switcheroo(word32 r0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      main
 // MayUse:  r0:[0..31]
@@ -166,17 +157,20 @@ word32 switcheroo(word32 r0)
 switcheroo_entry:
 l000084D4:
 	branch r0 >u 6<32> l000084F4
-l000084F4:
 l000084F0_1:
 	switch (r0) { l00008514 l00008514 l00008514 l00008540 l00008520 l00008540 l00008534 }
-l00008534:
-	bazulate(r0, r0)
-l00008520:
-	frobulate(r0 - 3<32>, r0, out fp_39)
-l00008540:
-	fp_39 = bazulate(0<32>, 0<32>)
+l000084F4:
+	goto l00008540
 l00008514:
 	frobulate(r0, r0, out fp_39)
+	goto l0000854C
+l00008520:
+	frobulate(r0 - 3<32>, r0, out fp_39)
+	goto l0000854C
+l00008534:
+	bazulate(r0, r0)
+l00008540:
+	fp_39 = bazulate(0<32>, 0<32>)
 l0000854C:
 	return Mem16[fp_39 - -4<i32>:word32]
 switcheroo_exit:
@@ -184,7 +178,6 @@ switcheroo_exit:
 
 void main(word32 r0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  r0:[0..31]
 // LiveOut:
 // Trashed: NZCV fp ip lr r0 r1 r2 r3 r4 sp
@@ -198,7 +191,6 @@ main_exit:
 
 word32 __divsi3(word32 r0, word32 r1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      frobulate
 //      bazulate
@@ -217,9 +209,6 @@ l00008598_1:
 	r1_104 = 0<32> - r1
 l0000859C:
 	branch r1 == 0<32> l00008628
-l00008628:
-	__div0(r0)
-	return 0<32>
 l000085A0:
 	branch r0 >= 0<32> l000085A8
 l000085A4_1:
@@ -301,12 +290,14 @@ l00008620_1:
 	r0_112 = 0<32> - r2_106
 l00008624:
 	return r0_112
+l00008628:
+	__div0(r0)
+	return 0<32>
 __divsi3_exit:
 
 
 void __div0(word32 r0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      __divsi3
 // MayUse:  r0:[0..31]
@@ -317,17 +308,16 @@ __div0_entry:
 l00008638:
 	__syscall<word32>(0x900014<32>)
 	branch r0 <u 0xFFFFFC18<32> l00008648
+l00008644_1:
+	return
 l00008648:
 	__syscall<word32>(0x900025<32>)
-	return
-l00008644_1:
 	return
 __div0_exit:
 
 
 void __libc_csu_init()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: NZCV lr pc r0 r1 r10 r2 r3 r4 r5 r6
@@ -338,18 +328,17 @@ l00008654:
 	r1_31 = Mem13[r10_21 + Mem13[0x000086A8<p32>:word32]:word32]
 	r3_33 = Mem13[r10_21 + Mem13[0x000086AC<p32>:word32]:word32] - r1_31
 	branch r4_24 <u r3_33 >> 2<i32> l00008684
+l00008680_1:
+	return
 l00008684:
 	call Mem13[r1_31 + (r4_24 << 2<i32>):word32] (retsize: 0;)
 		uses: lr:0x00008694<p32>,Mem:Mem13,r10:r10_21,r4:r4_24,r5:r3_33,r6:r1_31
-	return
-l00008680_1:
 	return
 __libc_csu_init_exit:
 
 
 void __libc_csu_fini()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: NZCV lr pc r1 r10 r2 r3 r4 r5
@@ -361,20 +350,19 @@ l000086B0:
 	r3_19 = Mem11[r10_16 + Mem11[0x00008708<p32>:word32]:word32] - r1_17
 	r4_22 = (r3_19 >> 2<i32>) - 1<32>
 	branch r3_19 >> 2<i32> == 0<32> l000086F8
-l000086F8:
-l000086FC_thunk__fini:
-	_fini()
-	return
 l000086E0:
 	call Mem11[r1_17 + (r4_22 << 2<i32>):word32] (retsize: 0;)
 		uses: lr:0x000086EC<p32>,Mem:Mem11,r10:r10_16,r4:r4_22,r5:r1_17
+	return
+l000086F8:
+l000086FC_thunk__fini:
+	_fini()
 	return
 __libc_csu_fini_exit:
 
 
 word32 __do_global_ctors_aux()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      _init
 // MayUse: 
@@ -386,19 +374,18 @@ l0000870C:
 	r3_9 = Mem7[0x00008740<p32>:word32]
 	r2_10 = Mem7[r3_9 - 4<i32>:word32]
 	branch r2_10 != 0xFFFFFFFF<32> l00008724
+l00008720_1:
+	return r4
 l00008724:
 	call r2_10 (retsize: 0;)
 		uses: lr:0x00008730<p32>,Mem:Mem7,pc:pc_20,r3:r3_19,r4:r3_9 - 4<32>
 		defs: pc:pc_20,r3:r3_19,r4:r4_17
 	return r4_17
-l00008720_1:
-	return r4
 __do_global_ctors_aux_exit:
 
 
 void call___do_global_ctors_aux()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: lr

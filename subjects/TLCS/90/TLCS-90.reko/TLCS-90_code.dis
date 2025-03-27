@@ -1,6 +1,5 @@
 void fn0000(byte a)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn1BA4
 // MayUse:  a:[0..7]
@@ -17,7 +16,6 @@ fn0000_exit:
 
 byte fn02F4(byte a, byte c, byte b, byte h, word16 ix, word16 & ixOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn164F
 // MayUse:  a:[0..7] b:[0..7] c:[0..7] h:[0..7] ix:[0..15]
@@ -57,7 +55,6 @@ fn02F4_exit:
 
 byte fn034E(byte a, byte b, byte l, byte h, word16 ix, word16 & ixOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn02F4
 // MayUse:  a:[0..7] b:[0..7] h:[0..7] ix:[0..15] l:[0..7]
@@ -77,7 +74,6 @@ fn034E_exit:
 
 word16 fn0350(byte b, byte l, byte h, word16 ix, word16 & ixOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn034E
 //      fn03B2
@@ -110,7 +106,6 @@ fn0350_exit:
 
 byte fn039D(byte a, byte h, word16 ix, word16 & ixOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn034E
 //      fn0350
@@ -133,7 +128,6 @@ fn039D_exit:
 
 void fn03AA()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn22A6
 //      fn3E2D
@@ -142,14 +136,13 @@ void fn03AA()
 // Trashed:
 // Preserved:
 // Terminates process
-fn03AA_exit:
 fn03AA_entry:
 l03AA:
+fn03AA_exit:
 
 
 byte fn03B2(word32 h_l_b_c, byte a, word16 de, word16 ix, word16 wArg24, word16 & ixOut)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn039D
 // MayUse:  a:[0..7] de:[0..15] ix:[0..15] Sequence h:l:b:c:[0..31] Stack +0024:[0..15]
@@ -190,6 +183,7 @@ l03BD:
 	Mem111[ix + -20<i16>:byte] = a_101
 	Mem112[ix + -19<i16>:byte] = a_107
 	branch (a_107 | a_101 | a_95 | v31_87 + 0xFF<8>) != 0<8> l0430_thunk_fn0350
+	goto l0434
 l0430_thunk_fn0350:
 	hl_125 = fn0350(b, l, h_192, ix, out ix_128)
 	ixOut = ix_128
@@ -222,13 +216,11 @@ fn03B2_exit:
 
 void fn04EE(word16 ix)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  ix:[0..15]
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-fn04EE_exit:
 fn04EE_entry:
 l04EE:
 	Mem6[ix + -37<i16>:byte] = 0x37<8>
@@ -301,11 +293,11 @@ l05E8:
 	a_262 = l_258 + Mem257[ix + -16<i16>:byte] + CONVERT(SLICE(a_a_291, byte, 8) <u 0<8>, bool, byte)
 	Mem264[ix + -2<i16>:byte] = a_262
 	Mem272[ix + -1<i16>:byte] = h_265 + Mem264[ix + -15<i16>:byte] + CONVERT(a_262 <u 0<8>, bool, byte)
+fn04EE_exit:
 
 
 void fn0607(byte a, word16 de, word16 ix, word16 wArg20)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn04EE
 // MayUse:  a:[0..7] de:[0..15] ix:[0..15] Stack +0020:[0..15]
@@ -324,7 +316,6 @@ fn0607_exit:
 
 void fn060E(byte a, byte c, word16 de, word16 ix, word16 wArg20)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0607
 //      fn0DFC
@@ -410,7 +401,6 @@ fn060E_exit:
 
 void fn0805()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn1BA4
 // MayUse: 
@@ -418,18 +408,17 @@ void fn0805()
 // Trashed:
 // Preserved:
 // Terminates process
-fn0805_exit:
 fn0805_entry:
 l0805:
 	__disable_interrupts()
 	fn0823()
 	fn0822()
 	__halt()
+fn0805_exit:
 
 
 void fn0822()
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0805
 // MayUse: 
@@ -446,7 +435,6 @@ fn0822_exit:
 
 void fn0823()
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0805
 //      fn0822
@@ -462,7 +450,6 @@ fn0823_exit:
 
 void fn0914(word16 bc, word16 de, word16 hl, word16 ix, word16 wArg00, word16 wArg02, word16 wArg28)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  bc:[0..15] de:[0..15] hl:[0..15] ix:[0..15] Stack +0000:[0..15] Stack +0002:[0..15] Stack +0028:[0..15]
 // LiveOut:
 // Trashed: SZHVNC af bc de hl ix sp
@@ -623,6 +610,7 @@ l0ADE:
 	Mem545[ix + -20<i16>:byte] = a_535
 	Mem546[ix + -19<i16>:byte] = a_541
 	branch (a_541 | a_535 | a_529 | v107_521 + 0xFF<8>) != 0<8> l0B51_thunk_fn0350
+	goto l0B55
 l0B51_thunk_fn0350:
 	fn0350(a_529, a_535, a_541, ix, out ix_856)
 	return
@@ -652,13 +640,11 @@ fn0914_exit:
 
 void fn0BD0(word16 bc, word16 de, word16 hl, word16 ix, word16 wArg00)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  bc:[0..15] de:[0..15] hl:[0..15] ix:[0..15] Stack +0000:[0..15]
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-fn0BD0_exit:
 fn0BD0_entry:
 l0BD0:
 l0BD1:
@@ -698,11 +684,11 @@ l0BFC:
 	Mem90[ix + -35<i16>:byte] = 0xC6<8>
 l0C1C_thunk_fn0C1D:
 	fn0C1D()
+fn0BD0_exit:
 
 
 void fn0C1D()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0BD0
 // MayUse: 
@@ -710,7 +696,6 @@ void fn0C1D()
 // Trashed:
 // Preserved:
 // Terminates process
-fn0C1D_exit:
 fn0C1D_entry:
 l0C1D:
 	a_15 = 4<8>
@@ -719,11 +704,11 @@ l0C2C:
 	branch a_15 != 0<8> l0C2C
 l0C33_thunk_fn0C35:
 	fn0C35()
+fn0C1D_exit:
 
 
 void fn0C35()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0C1D
 //      fn164F
@@ -733,14 +718,13 @@ void fn0C35()
 // Trashed:
 // Preserved:
 // Terminates process
-fn0C35_exit:
 fn0C35_entry:
 l0C35:
+fn0C35_exit:
 
 
 void fn0C39(byte a, byte b, word16 de, byte l, byte h, word16 ix, word16 wArg20)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn164F
 // MayUse:  a:[0..7] b:[0..7] de:[0..15] h:[0..7] ix:[0..15] l:[0..7] Stack +0020:[0..15]
@@ -772,7 +756,6 @@ fn0C39_exit:
 
 void fn0C80(byte a, word16 de, byte l, byte h, word16 ix, word16 wArg20)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0C39
 // MayUse:  a:[0..7] de:[0..15] h:[0..7] ix:[0..15] l:[0..7] Stack +0020:[0..15]
@@ -810,7 +793,6 @@ fn0C80_exit:
 
 void fn0CB7(byte c, byte b, word16 de, byte h, byte l, word16 ix, word16 wArg20)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0C80
 // MayUse:  b:[0..7] c:[0..7] de:[0..15] h:[0..7] ix:[0..15] l:[0..7] Stack +0020:[0..15]
@@ -896,7 +878,6 @@ fn0CB7_exit:
 
 void fn0DFC(byte c, byte b, word16 de, byte l, byte h, word16 ix, word16 wArg20)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0CB7
 // MayUse:  b:[0..7] c:[0..7] de:[0..15] h:[0..7] ix:[0..15] l:[0..7] Stack +0020:[0..15]
@@ -911,6 +892,7 @@ l0DFC:
 	Mem11[ix + -27<i16>:byte] = h
 	a_15 = h | l | b | c
 	branch a_15 != 0<8> l0E0F_thunk_fn060E
+	goto l0E13
 l0E0F_thunk_fn060E:
 	fn060E(a_15, c, de, ix, wArg20)
 	return
@@ -940,7 +922,6 @@ fn0DFC_exit:
 
 void fn0E3B(byte b, byte c, word16 de)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn1BF9
 // MayUse:  b:[0..7] c:[0..7] de:[0..15]
@@ -964,7 +945,6 @@ fn0E3B_exit:
 
 void fn0F96()
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn1C89
 // MayUse: 
@@ -979,7 +959,6 @@ fn0F96_exit:
 
 void fn0F9A()
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: af sp
@@ -992,7 +971,6 @@ fn0F9A_exit:
 
 void fn152A(byte b, word16 hl)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn22A6
 //      fn3E2D
@@ -1009,13 +987,11 @@ fn152A_exit:
 
 void fn164F(byte a, word16 bc, byte h, word16 ix, word16 wArg1B)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  a:[0..7] bc:[0..15] h:[0..7] ix:[0..15] Stack +001B:[0..15]
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-fn164F_exit:
 fn164F_entry:
 l164F:
 	Mem5[ix + -20<i16>:byte] = a
@@ -1024,6 +1000,9 @@ l164F:
 	a_a_209 = Mem11[ix - 8<i16>:ui16] - Mem11[ix - 4<i16>:ui16]
 	sp_68 = <invalid>
 	branch fn02F4(SLICE(a_a_209, byte, 8), SLICE(a_a_206, byte, 0), SLICE(a_a_206, byte, 8), SLICE(a_a_209, byte, 8), ix, out ix_67) != 0<8> l1692
+l168D:
+l168F_thunk_fn0C35:
+	fn0C35()
 l1692:
 	v31_85 = Mem61[sp_68 + 0x1F<16>:word16]
 	v34_92 = Mem61[sp_68 + 0x1D<16>:word16]
@@ -1045,51 +1024,46 @@ l1692:
 	Mem174[sp_68 + 2<16>:word16] = a_a_218
 	Mem177[sp_68:word16] = a_a_221
 	branch fn02F4(SLICE(a_a_221, byte, 8), SLICE(a_a_218, byte, 0), SLICE(a_a_218, byte, 8), SLICE(v52_168, byte, 8), ix_67, out ix_229) != 0<8> l1707
-l1707:
-l1709_thunk_fn0C35:
-	fn0C35()
 l1702:
 l1704_thunk_fn0C35:
 	fn0C35()
-l168D:
-l168F_thunk_fn0C35:
+l1707:
+l1709_thunk_fn0C35:
 	fn0C35()
+fn164F_exit:
 
 
 void fn1873(byte c, byte b, word16 wArg13)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  b:[0..7] c:[0..7] Stack +0013:[0..15]
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-fn1873_exit:
 fn1873_entry:
 l1873:
 	Mem7[wArg13:byte] = c
 	Mem11[wArg13 + 1<i16>:byte] = b
 l187D_thunk_fn0C35:
 	fn0C35()
+fn1873_exit:
 
 
 void fn1BA4()
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-fn1BA4_exit:
 fn1BA4_entry:
 l1BA4:
 	fn0805()
+fn1BA4_exit:
 
 
 void fn1BDE(byte b, byte c, word16 de, word16 ix)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  b:[0..7] c:[0..7] de:[0..15] ix:[0..15]
 // LiveOut:
 // Trashed: SZHVNC a bc de hl sp
@@ -1107,7 +1081,6 @@ fn1BDE_exit:
 
 void fn1BF9(byte b, byte c, word16 de, word16 ix)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn1BA4
 //      fn1BDE
@@ -1129,7 +1102,6 @@ fn1BF9_exit:
 
 void fn1C89(byte a, byte c)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  a:[0..7] c:[0..7]
 // LiveOut:
 // Trashed: SZHVNC af l sp
@@ -1137,12 +1109,12 @@ void fn1C89(byte a, byte c)
 fn1C89_entry:
 l1C89:
 	branch (a | c) == 0<8> l1C92
-l1C92:
-l1C94_thunk_fn0F96:
-	fn0F96()
-	return
 l1C8D:
 l1C8F_thunk_fn0F96:
+	fn0F96()
+	return
+l1C92:
+l1C94_thunk_fn0F96:
 	fn0F96()
 	return
 fn1C89_exit:
@@ -1150,13 +1122,11 @@ fn1C89_exit:
 
 void fn22A6(word16 bc, word16 ix, word16 wArg05, word16 wArg10)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  bc:[0..15] ix:[0..15] Stack +0005:[0..15] Stack +0010:[0..15]
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-fn22A6_exit:
 fn22A6_entry:
 l22A6:
 	Mem7[ix + -4<i16>:byte] = Mem0[ix + -9<i16>:byte]
@@ -1166,17 +1136,16 @@ l22A6:
 	Mem41[ix + -8<i16>:byte] = Mem34[hl_33 + 2<i16>:byte]
 	Mem45[ix + -7<i16>:byte] = Mem41[hl_33 + 3<i16>:byte]
 	fn03AA()
+fn22A6_exit:
 
 
 void fn3E2D(word16 bc, word16 ix, word16 wArg05, word16 wArg10)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  bc:[0..15] ix:[0..15] Stack +0005:[0..15] Stack +0010:[0..15]
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-fn3E2D_exit:
 fn3E2D_entry:
 l3E2D:
 	Mem7[ix + -4<i16>:byte] = Mem0[ix + -9<i16>:byte]
@@ -1186,5 +1155,6 @@ l3E2D:
 	Mem41[ix + -8<i16>:byte] = Mem34[hl_33 + 2<i16>:byte]
 	Mem45[ix + -7<i16>:byte] = Mem41[hl_33 + 3<i16>:byte]
 	fn03AA()
+fn3E2D_exit:
 
 

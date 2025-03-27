@@ -1,21 +1,19 @@
 void fn0000000000001460(word64 x0, word32 dwArg00, char * ptrArg08)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  Stack +0000:[0..31] Stack +0008:[0..63] x0:[0..63]
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-fn0000000000001460_exit:
 fn0000000000001460_entry:
 l0000000000001460:
 	__libc_start_main(Mem0[0x000000000001FFE8<p64>:word64], SLICE(qwArg00, int32, 0), &ptrArg08, Mem0[0x000000000001FFE0<p64>:word64], Mem0[0x000000000001FF98<p64>:word64], x0, fp)
 	abort()
+fn0000000000001460_exit:
 
 
 void fn0000000000001498()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0000000000000D88
 // MayUse: 
@@ -25,18 +23,17 @@ void fn0000000000001498()
 fn0000000000001498_entry:
 l0000000000001498:
 	branch Mem0[0x000000000001FFD0<p64>:word64] == 0<64> l00000000000014A8
-l00000000000014A8:
-	return
 l00000000000014A4:
 l00000000000014A4_thunk_fn0000000000000EB0:
 	fn0000000000000EB0()
+	return
+l00000000000014A8:
 	return
 fn0000000000001498_exit:
 
 
 void fn00000000000014B0()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: NZCV x0 x1 x31
@@ -47,18 +44,17 @@ l00000000000014B0:
 l00000000000014C8:
 	x1_12 = Mem0[0x000000000001FFA0<p64>:word64]
 	branch x1_12 == 0<64> l00000000000014D8
-l00000000000014D8:
-	return
 l00000000000014D4:
 	call x1_12 (retsize: 0;)
 		uses: Mem:Mem0
+	return
+l00000000000014D8:
 	return
 fn00000000000014B0_exit:
 
 
 void fn0000000000001740(word64 x0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  x0:[0..63]
 // LiveOut:
 // Trashed: x0 x1 x2

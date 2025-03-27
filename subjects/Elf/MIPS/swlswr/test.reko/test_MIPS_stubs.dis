@@ -1,36 +1,33 @@
 void __libc_start_main(word32 r28, word32 ra)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  r28:[0..31] ra:[0..31]
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-__libc_start_main_exit:
 __libc_start_main_entry:
 l000009D0:
 	call Mem0[r28 - 32752<i32>:word32] (retsize: 0;)
 		uses: Mem:Mem0,r15:ra,r24:12<i32>
+__libc_start_main_exit:
 
 
 void memset(word32 r28, word32 ra)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  r28:[0..31] ra:[0..31]
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-memset_exit:
 memset_entry:
 l000009E0:
 	call Mem0[r28 - 32752<i32>:word32] (retsize: 0;)
 		uses: Mem:Mem0,r15:ra,r24:11<i32>
+memset_exit:
 
 
 void calloc(word32 r28, word32 ra)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  r28:[0..31] ra:[0..31]
 // LiveOut:
 // Trashed: r15 r24 r25 r28

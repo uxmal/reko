@@ -1,6 +1,5 @@
 void fn0000000000000EB0()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0000000000001498
 // MayUse: 

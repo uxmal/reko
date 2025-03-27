@@ -1,12 +1,10 @@
 void _start(word32 g1, word32 o7, word32 l4, word32 l6, word32 l7, word32 i0, word32 i1, word32 i2, word32 i3, word32 i4, word32 i5, word32 i7, word32 fsr, word32 dwArg40)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  fsr:[0..31] g1:[0..31] i0:[0..31] i1:[0..31] i2:[0..31] i3:[0..31] i4:[0..31] i5:[0..31] i7:[0..31] l4:[0..31] l6:[0..31] l7:[0..31] o7:[0..31] Stack +0040:[0..31]
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-_start_exit:
 _start_entry:
 l00010958:
 	Mem8[0x20E60<32>:word32] = fp + 0x44<32>
@@ -29,18 +27,20 @@ l000109E8:
 	l4 = 1<32>
 l000109F8:
 	branch g1 == 0<32> l00010A04_ds_t
+l00010A04_ds_f:
+	goto l00010A08
 l00010A04_ds_t:
+	goto l00010A10
+l00010A08:
+	atexit(g1)
 l00010A10:
 	atexit(0x10CB8<32>)
 	_init(o7, dwArg40, fp + 0x44<32>, l2_11, 0x20C00<32>, l4, l5_15, l6, l7, i0, i1, i2, i3, i4, i5, 0<32>, i7)
-l00010A04_ds_f:
-l00010A08:
-	atexit(g1)
+_start_exit:
 
 
 void func1()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
@@ -53,7 +53,6 @@ func1_exit:
 
 void func2()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
@@ -66,7 +65,6 @@ func2_exit:
 
 void func3()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
@@ -79,7 +77,6 @@ func3_exit:
 
 void func4()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
@@ -92,7 +89,6 @@ func4_exit:
 
 void func5()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
@@ -105,7 +101,6 @@ func5_exit:
 
 void func6()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
@@ -118,7 +113,6 @@ func6_exit:
 
 void func7()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
@@ -131,7 +125,6 @@ func7_exit:
 
 void func8()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
@@ -144,7 +137,6 @@ func8_exit:
 
 void main(word32 o0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      _start
 // MayUse:  o0:[0..31]
@@ -155,92 +147,124 @@ main_entry:
 l00010B0C:
 	o0_52 = 1<32>
 	branch o0 <= 1<32> l00010B1C_ds_t
+	goto l00010B20
 l00010B1C_ds_t:
 	o0_52 = 0<32>
 l00010B20:
 	branch o0_52 == 0<32> l00010B28_ds_t
-l00010B28_ds_t:
-l00010B34:
-	o0_63 = 0x10A74<32>
 l00010B28_ds_f:
+	goto l00010B2C
+l00010B28_ds_t:
+	goto l00010B34
 l00010B2C:
 	o0_63 = 0x10A5C<32>
+	goto l00010B3C
+l00010B34:
+	o0_63 = 0x10A74<32>
 l00010B3C:
 	branch o0_52 == 0<32> l00010B40_ds_t
-l00010B40_ds_t:
-l00010B4C:
-	o3_100 = 0x10AA4<32>
 l00010B40_ds_f:
+	goto l00010B44
+l00010B40_ds_t:
+	goto l00010B4C
 l00010B44:
 	o3_100 = 0x10A8C<32>
+	goto l00010B54
+l00010B4C:
+	o3_100 = 0x10AA4<32>
 l00010B54:
 	branch o0_52 == 0<32> l00010B58_ds_t
-l00010B58_ds_t:
-l00010B64:
-	o2_107 = 0x10AD4<32>
 l00010B58_ds_f:
+	goto l00010B5C
+l00010B58_ds_t:
+	goto l00010B64
 l00010B5C:
 	o2_107 = 0x10ABC<32>
+	goto l00010B6C
+l00010B64:
+	o2_107 = 0x10AD4<32>
 l00010B6C:
 	branch o0_52 == 0<32> l00010B70_ds_t
-l00010B70_ds_t:
-l00010B7C:
-	o1_113 = 0x10B04<32>
 l00010B70_ds_f:
+	goto l00010B74
+l00010B70_ds_t:
+	goto l00010B7C
 l00010B74:
 	o1_113 = 0x10AEC<32>
+	goto l00010B84
+l00010B7C:
+	o1_113 = 0x10B04<32>
 l00010B84:
 	branch o0_52 == 0<32> l00010B88_ds_t
+l00010B88_ds_f:
+	goto l00010B8C
 l00010B88_ds_t:
+	goto l00010BE8
+l00010B8C:
+	branch o0_63 != 0x10A5C<32> l00010B98_ds_t
+l00010B98_ds_f:
+	goto l00010B9C
+l00010B98_ds_t:
+	goto l00010BDC
+l00010B9C:
+	branch o3_100 != 0x10A8C<32> l00010BA8_ds_t
+l00010BA8_ds_f:
+	goto l00010BAC
+l00010BA8_ds_t:
+	goto l00010BE0
+l00010BAC:
+	branch o2_107 != 0x10ABC<32> l00010BBC_ds_t
+l00010BBC_ds_f:
+	goto l00010BC0
+l00010BBC_ds_t:
+	goto l00010BE0
+l00010BC0:
+	branch o1_113 != 0x10AEC<32> l00010BD0_ds_t
+l00010BD0_ds_f:
+	goto l00010BD4
+l00010BD0_ds_t:
+	goto l00010BE0
+l00010BD4:
+	i1_117 = 1<32>
+	goto l00010C40
+l00010BDC:
+l00010BE0:
+	i1_117 = 0<32>
+	v34_286 = true
+	goto l00010C44
 l00010BE8:
 	branch o0_63 != 0x10A74<32> l00010BF8_ds_t
-l00010BF8_ds_t:
 l00010BF8_ds_f:
+	goto l00010BFC
+l00010BF8_ds_t:
+	goto l00010C3C
 l00010BFC:
 	branch o3_100 != 0x10AA4<32> l00010C3C
 l00010C0C:
 	branch o2_107 != 0x10AD4<32> l00010C3C
 l00010C20:
 	branch o1_113 != 0x10B04<32> l00010C3C
-l00010C3C:
-	i1_117 = 0<32>
 l00010C34:
 	i1_117 = 1<32>
-l00010B88_ds_f:
-l00010B8C:
-	branch o0_63 != 0x10A5C<32> l00010B98_ds_t
-l00010B98_ds_t:
-l00010BDC:
-l00010B98_ds_f:
-l00010B9C:
-	branch o3_100 != 0x10A8C<32> l00010BA8_ds_t
-l00010BA8_ds_t:
-l00010BA8_ds_f:
-l00010BAC:
-	branch o2_107 != 0x10ABC<32> l00010BBC_ds_t
-l00010BBC_ds_t:
-l00010BBC_ds_f:
-l00010BC0:
-	branch o1_113 != 0x10AEC<32> l00010BD0_ds_t
-l00010BD0_ds_t:
-l00010BE0:
+	goto l00010C40
+l00010C3C:
 	i1_117 = 0<32>
-	v34_286 = true
-l00010BD0_ds_f:
-l00010BD4:
-	i1_117 = 1<32>
 l00010C40:
 	v34_286 = i1_117 == 0<32>
 l00010C44:
 	branch v34_286 l00010C48_ds_t
-l00010C48_ds_t:
-l00010C5C:
-	printf("Failed!\n")
 l00010C48_ds_f:
+	goto l00010C4C
+l00010C48_ds_t:
+	goto l00010C5C
 l00010C4C:
 	printf("Pass\n")
+	goto l00010C6C
+l00010C5C:
+	printf("Failed!\n")
 l00010C6C:
 	branch i1_117 == 0<32> l00010C74_ds_t
+	goto l00010C78
 l00010C74_ds_t:
 l00010C78:
 	return

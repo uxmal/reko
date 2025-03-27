@@ -1,6 +1,5 @@
 word32 count_neighbors(word32 arg0, word32 arg1, word32 arg2)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  Stack +0000:[0..31] Stack +0004:[0..31] Stack +0008:[0..31]
 // LiveOut:
 // Trashed: stack
@@ -13,7 +12,6 @@ count_neighbors_exit:
 
 void update_gen(word32 arg0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  Stack +0000:[0..31]
 // LiveOut:
 // Trashed:
@@ -40,12 +38,13 @@ l000C00AC:
 	loc12_39 = v18_58
 	v16_97 = CONVERT(Mem66[v16_51 + v17_63:byte] + Mem66[v16_51 + v18_72 %s 0x64<32>:byte] + Mem66[v17_85 + v18_72 %s 0x64<32>:byte] + Mem66[v17_85 + v17_63:byte], byte, word32)
 	branch v16_97 == 3<32> l000C011F
-l000C011F:
-	loc13_102 = 1<32>
 l000C010C:
 	branch v16_97 != 2<32> l000C0124
 l000C0113:
 	loc13_102 = CONVERT(Mem66[loc1_131 + loc12_39:byte], byte, word32)
+	goto l000C0124
+l000C011F:
+	loc13_102 = 1<32>
 l000C0124:
 	Mem122[loc2_135 + loc12_39:byte] = SLICE(loc13_102, byte, 0)
 	branch v18_58 != 0x64<32> l000C00A8
@@ -61,7 +60,6 @@ update_gen_exit:
 
 word32 main()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: stack

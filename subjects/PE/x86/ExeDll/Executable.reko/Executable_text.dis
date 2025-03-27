@@ -1,6 +1,5 @@
 word32 fn00401000()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      Win32CrtStartup
 // MayUse: 
@@ -20,7 +19,6 @@ fn00401000_exit:
 
 word32 fn00401050()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn00401060
 //      fn0040173F
@@ -36,7 +34,6 @@ fn00401050_exit:
 
 void fn00401060(word32 dwArg04)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn00401000
 // MayUse:  Stack +0004:[0..31]
@@ -58,15 +55,13 @@ fn00401060_exit:
 
 DWORD Win32CrtStartup()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  ebx:[0..31] edi:[0..31] edx:[0..31] esi:[0..31] fs:[0..15]
 // LiveOut: eax:[0..31]-Win32CrtStartup
 // Trashed: eax
 // Preserved:
 Win32CrtStartup_entry:
 	ebx_24_8_135 = SLICE(ebx, word24, 8) (alias)
-l004012CE:
-	fn00401663()
+	goto l004012CE
 l0040115F:
 	ebp_20 = fn00401980(ebx, esi, edi, dwLoc0C, 0x14<32>)
 	esp_37 = fp - 8<i32>
@@ -85,9 +80,6 @@ l0040117E:
 	branch eax_74 == 1<32> l00401177
 l0040119B:
 	branch eax_74 != 0<32> l004011E8
-l004011E8:
-	Mem85[ebp_20 - 25<i32>:byte] = 1<8>
-	ebx_133 = SEQ(ebx_24_8_135, 1<8>) (alias)
 l0040119F:
 	Mem86[0x00403334<p32>:word32] = 1<32>
 	esp_88 = esp_37 - 4<i32>
@@ -95,11 +87,19 @@ l0040119F:
 	Mem91[esp_88 - 4<i32>:word32] = 0x4020E0<32>
 	esp_289 = esp_88 + 4<i32>
 	branch _initterm_e(Mem91[esp_88 - 4<i32>:(ptr32 PVFV)], Mem91[esp_88:(ptr32 PVFV)]) == 0<32> l004011CB
+l004011BA:
+	Mem298[ebp_20 - 4<i32>:word32] = 0xFFFFFFFE<32>
+	eax_295 = 0xFF<32>
+	goto l004012C8
 l004011CB:
 	Mem102[esp_88:word32] = 0x4020DC<32>
 	Mem104[esp_88 - 4<i32>:word32] = 0x4020D4<32>
 	_initterm(Mem104[esp_88 - 4<i32>:(ptr32 PVFV)], Mem104[esp_88:(ptr32 PVFV)])
 	Mem109[0x00403334<p32>:word32] = 2<32>
+	goto l004011ED
+l004011E8:
+	Mem85[ebp_20 - 25<i32>:byte] = 1<8>
+	ebx_133 = SEQ(ebx_24_8_135, 1<8>) (alias)
 l004011ED:
 	esp_114 = esp_37 - 4<i32>
 	Mem115[esp_114:word32] = Mem111[ebp_20 - 36<i32>:word32]
@@ -139,6 +139,9 @@ l0040123B:
 	bl_264 = SLICE(ebx_133, byte, 0) (alias)
 	esp_249 = esp_229
 	branch fn0040188F() != 0<8> l0040126C
+l00401266:
+	Mem297[esp_229 - 4<i32>:word32] = eax_243
+	exit(Mem297[esp_229 - 4<i32>:int32])
 l0040126C:
 	branch bl_264 != 0<8> l00401275
 l00401270:
@@ -151,21 +154,17 @@ l00401275:
 	Mem293[ebp_140 - 4<i32>:word32] = 0xFFFFFFFE<32>
 	esp_289 = esp_276 + 4<i32>
 	eax_295 = eax_243
-l00401266:
-	Mem297[esp_229 - 4<i32>:word32] = eax_243
-	exit(Mem297[esp_229 - 4<i32>:int32])
-l004011BA:
-	Mem298[ebp_20 - 4<i32>:word32] = 0xFFFFFFFE<32>
-	eax_295 = 0xFF<32>
 l004012C8:
 	fn004019C6(ebp_140, Mem304[esp_289 + -4<i32>:word32], out ebp_305, out esi_309, out edi_308)
 	return eax_295
+l004012CE:
+	fn00401663()
+	goto l0040115F
 Win32CrtStartup_exit:
 
 
 void fn004012D8(word32 dwArg04)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  Stack +0004:[0..31]
 // LiveOut:
 // Trashed: eax Top
@@ -181,7 +180,6 @@ fn004012D8_exit:
 
 word32 fn004013FB(word32 dwArg04, word32 dwArg08, word32 & edxOut)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn00401544
 // MayUse:  Stack +0004:[0..31] Stack +0008:[0..31]
@@ -199,8 +197,6 @@ l00401420:
 	branch dwArg08 <u Mem11[edx_16 + 12<i32>:word32] l0040142F
 l00401425:
 	branch dwArg08 <u Mem11[edx_16 + 8<i32>:word32] + Mem11[edx_16 + 12<i32>:word32] l0040143B
-l0040143B:
-	eax_32 = edx_16
 l0040142F:
 	edx_16 = edx_16 + 0x28<32>
 	branch edx_16 != esi_19 l00401420
@@ -209,12 +205,14 @@ l00401436:
 l00401438:
 	edxOut = edx_16
 	return eax_32
+l0040143B:
+	eax_32 = edx_16
+	goto l00401438
 fn004013FB_exit:
 
 
 byte fn0040143F()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      Win32CrtStartup
 // MayUse:  fs:[0..15]
@@ -224,26 +222,26 @@ byte fn0040143F()
 fn0040143F_entry:
 l0040143F:
 	branch fn00401B98() != 0<32> l0040144B
+l00401448:
+	return 0<8>
 l0040144B:
 	edx_20 = Mem18[Mem0[fs:0x18<32>:word32] + 4<i32>:word32]
+	goto l00401460
+l0040145C:
+	branch edx_20 == eax_26 l00401470
 l00401460:
 	__lock()
 	__cmpxchg<word32>(Mem18[0x00403338<p32>:word32], edx_20, 0<32>, out eax_26)
 	branch eax_26 != 0<32> l0040145C
-l0040145C:
-	branch edx_20 == eax_26 l00401470
-l00401470:
-	return 1<8>
 l0040146C:
 	return 0<8>
-l00401448:
-	return 0<8>
+l00401470:
+	return 1<8>
 fn0040143F_exit:
 
 
 byte fn00401474(word32 edx, word32 dwArg04)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      Win32CrtStartup
 // MayUse:  edx:[0..31] Stack +0004:[0..31]
@@ -258,20 +256,20 @@ l0040147D:
 l00401484:
 	fn004019FE(edx)
 	branch fn00401C48() != 0<8> l00401496
-l00401496:
-	branch fn00401C48() != 0<8> l004014A9
-l004014A9:
-	return 1<8>
-l0040149F:
-	fn00401C48()
 l00401492:
 	return 0<8>
+l00401496:
+	branch fn00401C48() != 0<8> l004014A9
+l0040149F:
+	fn00401C48()
+	goto l00401492
+l004014A9:
+	return 1<8>
 fn00401474_exit:
 
 
 void fn004014AD(word32 ebx, word32 edi, word32 dwArg04)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  ebx:[0..31] edi:[0..31] fs:[0..15] Stack +0004:[0..31]
 // LiveOut:
 // Trashed: SCZDOP eax ebp ebx ecx edi edx esi esp Top
@@ -281,16 +279,17 @@ l004014AD:
 	branch dwArg04 == 0<32> l004014C0
 l004014BB:
 	branch dwArg04 != 1<32> l0040153C
-l0040153C:
-	fn00401774(5<32>)
-	int3()
-l00401543_thunk_fn00401544:
-	fn00401544(ebx, dwArg04, edi, out edx_235, out ebx_236, out ebp_237, out esi_238, out edi_239)
-	return
 l004014C0:
 	branch fn00401B98() == 0<32> l004014F3
 l004014C9:
 	branch dwArg04 != 0<32> l004014F3
+l004014CD:
+	branch initialize_onexit_table(0x40333C<32>) == 0<32> l004014E0
+l004014DC:
+	goto l00401537
+l004014E0:
+	initialize_onexit_table(0x403348<32>)
+	goto l00401537
 l004014F3:
 	eax_79 = __ror<word32,byte>(0xFFFFFFFF<32>, 0x20<8> - (Mem11[0x00403004<p32>:byte] & 0x1F<8>)) ^ Mem72[0x00403004<p32>:word32]
 	Mem87[0x0040333C<p32>:word32] = eax_79
@@ -299,19 +298,19 @@ l004014F3:
 	Mem103[0x00403348<p32>:word32] = eax_79
 	Mem107[0x0040334C<p32>:word32] = eax_79
 	Mem111[0x00403350<p32>:word32] = eax_79
-l004014CD:
-	branch initialize_onexit_table(0x40333C<32>) == 0<32> l004014E0
-l004014E0:
-	initialize_onexit_table(0x403348<32>)
-l004014DC:
 l00401537:
+	return
+l0040153C:
+	fn00401774(5<32>)
+	int3()
+l00401543_thunk_fn00401544:
+	fn00401544(ebx, dwArg04, edi, out edx_235, out ebx_236, out ebp_237, out esi_238, out edi_239)
 	return
 fn004014AD_exit:
 
 
 byte fn00401544(word32 ebx, word32 esi, word32 edi, word32 & edxOut, word32 & ebxOut, word32 & ebpOut, word32 & esiOut, word32 & ediOut)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      Win32CrtStartup
 //      fn004014AD
@@ -339,12 +338,13 @@ l00401581:
 	branch eax_40 == 0<32> l004015BF
 l00401598:
 	branch Mem39[eax_40 + 36<i32>:word32] < 0<32> l004015BF
-l004015BF:
-	Mem58[ebp_13 - 4<i32>:word32] = 0xFFFFFFFE<32>
-	eax_86 = SEQ(eax_24_8_87, 0<8>) (alias)
 l0040159E:
 	Mem63[ebp_13 - 4<i32>:word32] = 0xFFFFFFFE<32>
 	eax_86 = SEQ(eax_24_8_87, 1<8>) (alias)
+	goto l004015C8
+l004015BF:
+	Mem58[ebp_13 - 4<i32>:word32] = 0xFFFFFFFE<32>
+	eax_86 = SEQ(eax_24_8_87, 0<8>) (alias)
 l004015C8:
 	ebx_72 = fn004019C6(ebp_13, dwLoc0C, out ebp_71, out esi_75, out edi_74)
 	edxOut = edx
@@ -358,7 +358,6 @@ fn00401544_exit:
 
 void fn004015CE(byte bArg04)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      Win32CrtStartup
 // MayUse:  Stack +0004:[0..7]
@@ -379,7 +378,6 @@ fn004015CE_exit:
 
 void fn004015EB(byte bArg08)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      Win32CrtStartup
 // MayUse:  Stack +0008:[0..7]
@@ -401,7 +399,6 @@ fn004015EB_exit:
 
 word32 fn00401613(word32 dwArg04)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0040164E
 // MayUse:  Stack +0004:[0..31]
@@ -412,10 +409,11 @@ fn00401613_entry:
 l00401613:
 	eax_8 = Mem6[0x00403004<p32>:word32]
 	branch __ror<word32,byte>(eax_8 ^ Mem6[0x0040333C<p32>:word32], SLICE(eax_8, byte, 0) & 0x1F<8>) != 0xFFFFFFFF<32> l00401637
-l00401637:
-	eax_22 = register_onexit_function(0x40333C<32>)
 l00401630:
 	eax_22 = crt_atexit()
+	goto l00401642
+l00401637:
+	eax_22 = register_onexit_function(0x40333C<32>)
 l00401642:
 	return CONVERT(eax_22 != 0<32>, bool, word32) - 1<i32> & dwArg04
 fn00401613_exit:
@@ -423,7 +421,6 @@ fn00401613_exit:
 
 void fn0040164E(word32 dwArg04)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  Stack +0004:[0..31]
 // LiveOut:
 // Trashed: SCZO eax ecx Top
@@ -437,7 +434,6 @@ fn0040164E_exit:
 
 void fn00401663()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      Win32CrtStartup
 // MayUse: 
@@ -452,23 +448,25 @@ l00401663:
 	branch eax_15 == 0xBB40E64E<32> l00401693
 l00401686:
 	branch (eax_15 & 0xFFFF0000<32>) == 0<32> l00401693
+l0040168A:
+	Mem78[0x00403000<p32>:word32] = ~eax_15
+	goto l004016F9
 l00401693:
 	GetSystemTimeAsFileTime(&tLoc10)
 	v17_44 = Mem34[&tLoc10 + 4<i32>:word32] ^ Mem34[&tLoc10:word32] ^ GetCurrentThreadId() ^ GetCurrentProcessId()
 	QueryPerformanceCounter(&tLoc18)
 	ecx_56 = Mem49[&tLoc18 + 4<i32>:word32] ^ Mem49[&tLoc18:word32] ^ v17_44 ^ fp - 8<i32>
 	branch ecx_56 != 0xBB40E64E<32> l004016DB
+l004016D4:
+	ecx_56 = 0xBB40E64F<32>
+	goto l004016EB
 l004016DB:
 	branch (ecx_56 & 0xFFFF0000<32>) != 0<32> l004016EB
 l004016DF:
 	ecx_56 = ecx_56 | (ecx_56 | 0x4711<32>) << 0x10<32>
-l004016D4:
-	ecx_56 = 0xBB40E64F<32>
 l004016EB:
 	Mem74[0x00403004<p32>:word32] = ecx_56
 	Mem76[0x00403000<p32>:word32] = ~ecx_56
-l0040168A:
-	Mem78[0x00403000<p32>:word32] = ~eax_15
 l004016F9:
 	return
 fn00401663_exit:
@@ -476,7 +474,6 @@ fn00401663_exit:
 
 void fn004016FF()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: SCZO eax Top
@@ -489,7 +486,6 @@ fn004016FF_exit:
 
 void fn00401703()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: eax Top
@@ -502,7 +498,6 @@ fn00401703_exit:
 
 void fn00401709()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: SCZO eax Top
@@ -515,7 +510,6 @@ fn00401709_exit:
 
 void fn0040170C()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: Top
@@ -529,7 +523,6 @@ fn0040170C_exit:
 
 void fn00401718()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: SCZDOP eax Top
@@ -537,20 +530,19 @@ void fn00401718()
 fn00401718_entry:
 l00401718:
 	branch controlfp_s(0<32>, 0x10000<32>, 0x30000<32>) != 0<32> l00401731
+l00401730:
+	return
 l00401731:
 	fn00401774(7<32>)
 	int3()
 l00401738_thunk_fn00401739:
 	fn00401739()
 	return
-l00401730:
-	return
 fn00401718_exit:
 
 
 word32 fn00401739()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn00401718
 //      fn0040173F
@@ -566,7 +558,6 @@ fn00401739_exit:
 
 void fn0040173F()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: SCZO eax ecx Top
@@ -587,7 +578,6 @@ fn0040173F_exit:
 
 void fn0040175C()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: SCZO eax Top
@@ -600,7 +590,6 @@ fn0040175C_exit:
 
 word32 fn00401768()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      Win32CrtStartup
 // MayUse: 
@@ -615,7 +604,6 @@ fn00401768_exit:
 
 word32 fn0040176E()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      Win32CrtStartup
 // MayUse: 
@@ -630,7 +618,6 @@ fn0040176E_exit:
 
 void fn00401774(word32 dwArg04)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      Win32CrtStartup
 //      fn004014AD
@@ -642,6 +629,8 @@ void fn00401774(word32 dwArg04)
 fn00401774_entry:
 l00401774:
 	branch IsProcessorFeaturePresent(0x17<32>) == 0<32> l0040178F
+l0040178A:
+	__fastfail(dwArg04)
 l0040178F:
 	Mem31[0x00403368<p32>:word32] = 0<32>
 	memset(fp - 0x328<32>, 0<32>, 0x2CC<32>)
@@ -658,13 +647,10 @@ l0040187C:
 l00401889:
 	return
 fn00401774_exit:
-l0040178A:
-	__fastfail(dwArg04)
 
 
 byte fn0040188F()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      Win32CrtStartup
 // MayUse: 
@@ -675,6 +661,8 @@ fn0040188F_entry:
 l0040188F:
 	eax_6 = GetModuleHandleW(0<32>)
 	branch eax_6 != 0<32> l004018A0
+l0040189D:
+	return 0<8>
 l004018A0:
 	branch Mem5[eax_6:word16] != 0x5A4D<16> l0040189D
 l004018AA:
@@ -686,14 +674,11 @@ l004018C2:
 	branch Mem5[eax_18 + 116<i32>:word32] <=u 0xE<32> l0040189D
 l004018C8:
 	return CONVERT(Mem5[eax_18 + 0xE8<32>:word32] != 0<32>, bool, byte)
-l0040189D:
-	return 0<8>
 fn0040188F_exit:
 
 
 void fn004018D3()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: eax Top
@@ -707,7 +692,6 @@ fn004018D3_exit:
 
 void fn00401920()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: SCZOP Top
@@ -733,7 +717,6 @@ fn00401920_exit:
 
 void fn00401976()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      Win32CrtStartup
 //      fn00401920
@@ -751,7 +734,6 @@ fn00401976_exit:
 
 word32 fn00401980(word32 ebx, word32 esi, word32 edi, word32 dwArg00, word32 dwArg08)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      Win32CrtStartup
 //      fn00401544
@@ -774,7 +756,6 @@ fn00401980_exit:
 
 word32 fn004019C6(word32 ebp, word32 dwArg00, word32 & ebpOut, word32 & esiOut, word32 & ediOut)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      Win32CrtStartup
 //      fn00401544
@@ -796,7 +777,6 @@ fn004019C6_exit:
 
 void fn004019FE(word32 edx)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn00401474
 // MayUse:  edx:[0..31]
@@ -827,12 +807,13 @@ l00401AAF:
 	branch false l00401ABD
 l00401AB6:
 	branch true l00401ACE
-l00401ACE:
-	edi_100 = Mem83[0x00403370<p32>:word32]
 l00401ABD:
 	edi_102 = Mem83[0x00403370<p32>:word32]
 	Mem107[0x00403370<p32>:word32] = edi_102 | 1<32>
 	edi_100 = edi_102 | 1<32>
+	goto l00401AD4
+l00401ACE:
+	edi_100 = Mem83[0x00403370<p32>:word32]
 l00401AD4:
 	branch true l00401B1B
 l00401AE9:
@@ -868,7 +849,6 @@ fn004019FE_exit:
 
 word32 fn00401B98()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0040143F
 //      fn004014AD
@@ -885,7 +865,6 @@ fn00401B98_exit:
 
 void fn00401BA4()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: Top
@@ -898,7 +877,6 @@ fn00401BA4_exit:
 
 byte fn00401C48()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn00401474
 //      fn004015EB

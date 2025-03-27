@@ -1,6 +1,5 @@
 void f(word32 eax)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  eax:[0..31]
 // LiveOut:
 // Trashed: SCZO eax ebp esp

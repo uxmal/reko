@@ -1,6 +1,5 @@
 void __cxa_finalize()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      __do_global_dtors_aux
 // MayUse: 
@@ -18,7 +17,6 @@ __cxa_finalize_exit:
 
 void __libc_start_main()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      _start
 // MayUse: 

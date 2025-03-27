@@ -1,6 +1,5 @@
 void reko_array_byref(word64 rcx)
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      reko_array_01
 // MayUse:  rcx:[0..63]
@@ -10,11 +9,12 @@ void reko_array_byref(word64 rcx)
 reko_array_byref_entry:
 l00000002121D1000:
 	dwLoc0C_38 = 0<32>
-l00000002121D102B:
-	branch dwLoc0C_38 <= 0x1F<32> l00000002121D1015
+	goto l00000002121D102B
 l00000002121D1015:
 	Mem25[rcx + CONVERT(dwLoc0C_38, word32, int64):byte] = SLICE(dwLoc0C_38, byte, 0)
 	dwLoc0C_38 = dwLoc0C_38 + 1<32>
+l00000002121D102B:
+	branch dwLoc0C_38 <= 0x1F<32> l00000002121D1015
 l00000002121D1031:
 	return
 reko_array_byref_exit:
@@ -22,7 +22,6 @@ reko_array_byref_exit:
 
 void reko_array_01()
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: SCZO rax rcx rdx
@@ -36,7 +35,6 @@ reko_array_01_exit:
 
 void reko_array_local()
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: SCZO rax rdx
@@ -44,11 +42,12 @@ void reko_array_local()
 reko_array_local_entry:
 l00000002121D105E:
 	dwLoc0C_39 = 0<32>
-l00000002121D1081:
-	branch dwLoc0C_39 <=u 0x1F<32> l00000002121D106F
+	goto l00000002121D1081
 l00000002121D106F:
 	Mem27[fp - 56<i64> + CONVERT(dwLoc0C_39, int32, int64):byte] = SLICE(dwLoc0C_39, byte, 0)
 	dwLoc0C_39 = dwLoc0C_39 + 1<32>
+l00000002121D1081:
+	branch dwLoc0C_39 <=u 0x1F<32> l00000002121D106F
 l00000002121D1089:
 	return
 reko_array_local_exit:

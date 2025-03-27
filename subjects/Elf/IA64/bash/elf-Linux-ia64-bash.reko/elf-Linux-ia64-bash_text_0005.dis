@@ -1,624 +1,576 @@
 void assign_in_env()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-assign_in_env_exit:
 assign_in_env_entry:
 l400000000006E100:
+assign_in_env_exit:
 
 
 void reinit_special_variables()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-reinit_special_variables_exit:
 reinit_special_variables_entry:
 l400000000006E7C0:
+reinit_special_variables_exit:
 
 
 void set_pipestatus_array()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-set_pipestatus_array_exit:
 set_pipestatus_array_entry:
 l400000000006E880:
+set_pipestatus_array_exit:
 
 
 void save_pipestatus_array()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-save_pipestatus_array_exit:
 save_pipestatus_array_entry:
 l400000000006ED80:
+save_pipestatus_array_exit:
 
 
 void restore_pipestatus_array()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-restore_pipestatus_array_exit:
 restore_pipestatus_array_entry:
 l400000000006EE80:
+restore_pipestatus_array_exit:
 
 
 void set_pipestatus_from_exit()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-set_pipestatus_from_exit_exit:
 set_pipestatus_from_exit_entry:
 l400000000006EF80:
+set_pipestatus_from_exit_exit:
 
 
 void copy_word()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-copy_word_exit:
 copy_word_entry:
 l400000000006EFC0:
+copy_word_exit:
 
 
 void copy_word_list()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-copy_word_list_exit:
 copy_word_list_entry:
 l400000000006F1C0:
+copy_word_list_exit:
 
 
 void copy_redirect()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-copy_redirect_exit:
 copy_redirect_entry:
 l400000000006F300:
+copy_redirect_exit:
 
 
 void copy_redirects()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-copy_redirects_exit:
 copy_redirects_entry:
 l400000000006F580:
+copy_redirects_exit:
 
 
 void copy_command()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-copy_command_exit:
 copy_command_entry:
 l400000000006F6C0:
+copy_command_exit:
 
 
 void copy_function_def_contents()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-copy_function_def_contents_exit:
 copy_function_def_contents_entry:
 l4000000000070440:
+copy_function_def_contents_exit:
 
 
 void copy_function_def()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-copy_function_def_exit:
 copy_function_def_entry:
 l4000000000070580:
+copy_function_def_exit:
 
 
 void get_name_for_error()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-get_name_for_error_exit:
 get_name_for_error_entry:
 l4000000000070600:
+get_name_for_error_exit:
 
 
 void programming_error()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-programming_error_exit:
 programming_error_entry:
 l4000000000070A80:
+programming_error_exit:
 
 
 void report_error()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-report_error_exit:
 report_error_entry:
 l4000000000070D40:
+report_error_exit:
 
 
 void file_error()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-file_error_exit:
 file_error_entry:
 l4000000000070EC0:
+file_error_exit:
 
 
 void fatal_error()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-fatal_error_exit:
 fatal_error_entry:
 l4000000000070F80:
+fatal_error_exit:
 
 
 void internal_error()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-internal_error_exit:
 internal_error_entry:
 l4000000000071080:
+internal_error_exit:
 
 
 void internal_warning()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-internal_warning_exit:
 internal_warning_entry:
 l4000000000071180:
+internal_warning_exit:
 
 
 void sys_error()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-sys_error_exit:
 sys_error_entry:
 l40000000000712C0:
+sys_error_exit:
 
 
 void parser_error()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-parser_error_exit:
 parser_error_entry:
 l4000000000071400:
+parser_error_exit:
 
 
 void command_error()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-command_error_exit:
 command_error_entry:
 l4000000000071980:
+command_error_exit:
 
 
 void command_errstr()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-command_errstr_exit:
 command_errstr_entry:
 l4000000000071A40:
+command_errstr_exit:
 
 
 void err_badarraysub()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-err_badarraysub_exit:
 err_badarraysub_entry:
 l4000000000071AC0:
+err_badarraysub_exit:
 
 
 void err_unboundvar()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-err_unboundvar_exit:
 err_unboundvar_entry:
 l4000000000071B80:
+err_unboundvar_exit:
 
 
 void err_readonly()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-err_readonly_exit:
 err_readonly_entry:
 l4000000000071C00:
+err_readonly_exit:
 
 
 void evalexp()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-evalexp_exit:
 evalexp_entry:
 l4000000000076080:
+evalexp_exit:
 
 
 void find_flag()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-find_flag_exit:
 find_flag_entry:
 l4000000000076340:
+find_flag_exit:
 
 
 void change_flag()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-change_flag_exit:
 change_flag_entry:
 l4000000000076480:
+change_flag_exit:
 
 
 void which_set_flags()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-which_set_flags_exit:
 which_set_flags_entry:
 l4000000000076800:
+which_set_flags_exit:
 
 
 void reset_shell_flags()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-reset_shell_flags_exit:
 reset_shell_flags_entry:
 l40000000000769C0:
+reset_shell_flags_exit:
 
 
 void initialize_flags()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-initialize_flags_exit:
 initialize_flags_entry:
 l4000000000076B40:
+initialize_flags_exit:
 
 
 void init_job_stats()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-init_job_stats_exit:
 init_job_stats_entry:
 l400000000007AE80:
+init_job_stats_exit:
 
 
 void stop_making_children()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-stop_making_children_exit:
 stop_making_children_entry:
 l400000000007AF80:
+stop_making_children_exit:
 
 
 void cleanup_the_pipeline()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-cleanup_the_pipeline_exit:
 cleanup_the_pipeline_entry:
 l400000000007AFC0:
+cleanup_the_pipeline_exit:
 
 
 void save_pipeline()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-save_pipeline_exit:
 save_pipeline_entry:
 l400000000007B100:
+save_pipeline_exit:
 
 
 void restore_pipeline()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-restore_pipeline_exit:
 restore_pipeline_entry:
 l400000000007B180:
+restore_pipeline_exit:
 
 
 void start_pipeline()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-start_pipeline_exit:
 start_pipeline_entry:
 l400000000007B240:
+start_pipeline_exit:
 
 
 void making_children()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-making_children_exit:
 making_children_entry:
 l400000000007B380:
+making_children_exit:
 
 
 void delete_job()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-delete_job_exit:
 delete_job_entry:
 l400000000007B400:
+delete_job_exit:
 
 
 void nohup_job()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-nohup_job_exit:
 nohup_job_entry:
 l400000000007BE00:
+nohup_job_exit:
 
 
 void append_process()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-append_process_exit:
 append_process_entry:
 l400000000007BE80:
+append_process_exit:
 
 
 void terminate_current_pipeline()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-terminate_current_pipeline_exit:
 terminate_current_pipeline_entry:
 l400000000007C000:
+terminate_current_pipeline_exit:
 
 
 void terminate_stopped_jobs()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-terminate_stopped_jobs_exit:
 terminate_stopped_jobs_entry:
 l400000000007C0C0:
+terminate_stopped_jobs_exit:
 
 
 void hangup_all_jobs()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-hangup_all_jobs_exit:
 hangup_all_jobs_entry:
 l400000000007C240:
+hangup_all_jobs_exit:
 
 
 void kill_current_pipeline()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-kill_current_pipeline_exit:
 kill_current_pipeline_entry:
 l400000000007C400:
+kill_current_pipeline_exit:
 
 
 void get_job_by_pid()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-get_job_by_pid_exit:
 get_job_by_pid_entry:
 l400000000007C440:
+get_job_by_pid_exit:
 
 

@@ -1,12 +1,10 @@
 void _start()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved: r15
 // Terminates process
-_start_exit:
 _start_entry:
 l0000000000000600:
 	r15_9 = fp - 160<i64> & 0xFFFFFFFFFFFFFFF0<64>
@@ -14,11 +12,11 @@ l0000000000000600:
 	Mem15[r15_9 - 16<i64>:word64] = %continuation
 	Mem17[r15_9 - 8<i64>:word64] = r15_9 - 176<i64>
 	__libc_start_main()
+_start_exit:
 
 
 void deregister_tm_clones()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      __do_global_dtors_aux
 // MayUse: 
@@ -28,23 +26,22 @@ void deregister_tm_clones()
 deregister_tm_clones_entry:
 l0000000000000648:
 	branch 0x000000000000206F<p64> - 0x0000000000002068<p64> > Mem0[0x00000000000008C8<p64>:word64] l000000000000066A
+l0000000000000668_1:
+	return
 l000000000000066A:
 	r1_13 = Mem0[0x0000000000002030<p64>:word64]
 	branch r1_13 != 0<64> l000000000000067C
+l000000000000067A_1:
+	return
 l000000000000067C:
 	call r1_13 (retsize: 0;)
 		uses: Mem:Mem0
-	return
-l000000000000067A_1:
-	return
-l0000000000000668_1:
 	return
 deregister_tm_clones_exit:
 
 
 void register_tm_clones()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      frame_dummy
 // MayUse: 
@@ -55,23 +52,22 @@ register_tm_clones_entry:
 l0000000000000680:
 	r3_7 = 0x0000000000002068<p64> - 0x0000000000002068<p64>
 	branch (r3_7 >> 3<i32>) + ((r3_7 >> 3<i32>) >>u 63<i32>) >> 1<i32> != 0<64> l00000000000006A8
+l00000000000006A6_1:
+	return
 l00000000000006A8:
 	r1_15 = Mem0[0x0000000000002050<p64>:word64]
 	branch r1_15 != 0<64> l00000000000006BA
+l00000000000006B8_1:
+	return
 l00000000000006BA:
 	call r1_15 (retsize: 0;)
 		uses: Mem:Mem0,r2:0x0000000000002068<p64>
-	return
-l00000000000006B8_1:
-	return
-l00000000000006A6_1:
 	return
 register_tm_clones_exit:
 
 
 void __do_global_dtors_aux()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: CC r1 r11 r12 r13 r14 r15 r2 r4 r5
@@ -93,7 +89,6 @@ __do_global_dtors_aux_exit:
 
 void frame_dummy()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: CC r1 r13 r14 r15 r2 r3
@@ -110,10 +105,10 @@ l0000000000000740:
 	r13_12 = Mem18[v9_17:word64]
 	r15_13 = Mem18[v9_17 + 16<i64>:word64]
 	branch v12_45 l0000000000000680
+	goto l000000000000074C
 l0000000000000746_thunk_register_tm_clones:
 	register_tm_clones()
 	return
-frame_dummy_exit:
 l000000000000074C:
 	r1_32 = Mem11[0x0000000000002048<p64>:word64]
 	v12_45 = r1_32 > 0<64>
@@ -123,11 +118,12 @@ l0000000000000760:
 		uses: Mem:Mem11,r13:r13_36,r14:0x0000000000000762<p64>
 		defs: CC:CC_44,r15:r15_38
 	v12_45 = CC_44
+	goto l0000000000000740
+frame_dummy_exit:
 
 
 word32 fib(word32 r2, word32 & r10Out, word64 & r11Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fib
 //      main
@@ -139,11 +135,12 @@ fib_entry:
 l0000000000000768:
 	r11_22 = fp - 328<i64>
 	branch r2 >u 1<64> l0000000000000792
+l000000000000078A:
+	r1_76 = r2
+	goto l00000000000007CA
 l0000000000000792:
 	fib(r2 - 1<i32>, out r10_121, out r11_41)
 	r1_76 = CONVERT(fib(Mem25[r11_41 + 164<i64>:word32] - 2<i32>, out r10_63, out r11_22) + SLICE(r10_63, int32, 0), uint32, uint64)
-l000000000000078A:
-	r1_76 = r2
 l00000000000007CA:
 	v29_87 = r11_22 + 248<i64>
 	r1_82 = CONVERT(SLICE(r1_76, word32, 0), word32, int64)
@@ -158,7 +155,6 @@ fib_exit:
 
 void main(word64 r3)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  r3:[0..63]
 // LiveOut:
 // Trashed: CC r1 r10 r11 r12 r13 r14 r2 r3 r4
@@ -174,7 +170,6 @@ main_exit:
 
 void __libc_csu_init(word64 r2, word64 r3, word64 r4, word64 r6, word64 r7, word64 r11, word64 r13)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  r11:[0..63] r13:[0..63] r2:[0..63] r3:[0..63] r4:[0..63] r6:[0..63] r7:[0..63]
 // LiveOut:
 // Trashed: CC r1 r10 r11 r12 r13 r14 r2 r3 r4 r6 r7 r8 r9
@@ -205,7 +200,6 @@ __libc_csu_init_exit:
 
 void __libc_csu_fini()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: r14 r15

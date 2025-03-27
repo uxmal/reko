@@ -1,23 +1,24 @@
 void fn0100()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-fn0100_exit:
 fn0100_entry:
+	goto l0100
+l00000110:
+	goto l00000110
 l0100:
 	__mov(0x8000<p16>, 0x04C2<p16>)
 	__mov(0x80E9<p16>, 0x05B7<p16>)
 	fn0111()
-l00000110:
+	goto l00000110
+fn0100_exit:
 
 
 void fn0111()
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0100
 // MayUse: 
@@ -96,7 +97,6 @@ fn0111_exit:
 
 word32 fn01E6(word32 gp0_gp1, word16 gp2, word16 & gp2Out)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0111
 // MayUse:  gp2:[0..15] Sequence gp0:gp1:[0..31]
@@ -107,8 +107,10 @@ fn01E6_entry:
 	gp0 = SLICE(gp0_gp1, word16, 16)
 	gp1 = SLICE(gp0_gp1, word16, 0)
 	gp0_gp1_gp2_9 = SEQ(gp0_gp1, gp2) (alias)
-l01E6:
-	branch gp0_gp1_gp2_9 != Mem0[0x05AB<p16>:real48] l000001EC
+	goto l01E6
+l000001EB:
+	gp2Out = gp2
+	return gp0_gp1
 l000001EC:
 	branch gp0_gp1_gp2_9 >= Mem0[0x05AB<p16>:real48] l000001EE
 l000001ED:
@@ -134,15 +136,14 @@ l00000218:
 	gp1_117 = gp1_106 & 0xFF00<16> | (__xbr(gp1_106) >> 8<16>) + gp6_100 / 2<16> & 0xFF<16>
 	gp2Out = gp2_143
 	return SEQ(gp0_123, gp1_117)
-l000001EB:
-	gp2Out = gp2
-	return gp0_gp1
+l01E6:
+	branch gp0_gp1_gp2_9 != Mem0[0x05AB<p16>:real48] l000001EC
+	goto l000001EB
 fn01E6_exit:
 
 
 word16 fn02BF(word16 gp1, word16 gp4, word16 & gp1Out, word16 & gp2Out, word16 & gp14Out)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn032A
 //      fn034E
@@ -151,20 +152,10 @@ word16 fn02BF(word16 gp1, word16 gp4, word16 & gp1Out, word16 & gp2Out, word16 &
 // Trashed: CPZN gp0 gp1 gp14 gp2 gp3 gp4 gp5 gp6 gp7
 // Preserved: gp15
 fn02BF_entry:
-l02BF:
-	gp2_12 = gp1
-	branch gp1 >= 0<16> l02C8
+	goto l02BF
 l000002C7:
 	gp2_12 = gp1 + 7<16>
-l02C8:
-	gp2_18 = gp2_12 & 0xFFF8<16>
-	branch CONVERT(gp1 - gp2_18, uint16, uint32) > 7<32> l0323
-l0323:
-	gp3_gp4_gp5_46 = Mem31[0x811F<p16>:real48]
-	gp1Out = SLICE(gp3_gp4_gp5_46, word16, 0)
-	gp2Out = SLICE(gp3_gp4_gp5_46, word16, 0)
-	gp14Out = fp
-	return SLICE(gp3_gp4_gp5_46, word16, 16)
+	goto l02C8
 l000002D6:
 	gp2_55 = Mem31[gp2_18 + 0x2DA<16>:word16]
 	call gp2_55 (retsize: 2;)
@@ -174,12 +165,25 @@ l000002D6:
 	gp2Out = gp2_63
 	gp14Out = gp14_58
 	return gp0_62
+l02BF:
+	gp2_12 = gp1
+	branch gp1 >= 0<16> l02C8
+	goto l000002C7
+l02C8:
+	gp2_18 = gp2_12 & 0xFFF8<16>
+	branch CONVERT(gp1 - gp2_18, uint16, uint32) > 7<32> l0323
+	goto l000002D6
+l0323:
+	gp3_gp4_gp5_46 = Mem31[0x811F<p16>:real48]
+	gp1Out = SLICE(gp3_gp4_gp5_46, word16, 0)
+	gp2Out = SLICE(gp3_gp4_gp5_46, word16, 0)
+	gp14Out = fp
+	return SLICE(gp3_gp4_gp5_46, word16, 16)
 fn02BF_exit:
 
 
 word32 fn032A(word32 gp0_gp1, word16 gp2, word16 & gp2Out)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0111
 // MayUse:  gp2:[0..15] Sequence gp0:gp1:[0..31]
@@ -187,12 +191,22 @@ word32 fn032A(word32 gp0_gp1, word16 gp2, word16 & gp2Out)
 // Trashed: CPZN gp0 gp1 gp10 gp14 gp15 gp2 gp3 gp4 gp5 gp6 gp7 gp8 gp9
 // Preserved:
 fn032A_entry:
-l032A:
-	gp5_gp6_gp7_115 = SEQ(gp0_gp1, gp2) (alias)
-	branch gp0_gp1 >= 0<32> l0337
+	goto l032A
 l00000332:
 	gp2_gp3_gp4_19 = Mem0[0x8122<p16>:real48]
 	gp5_gp6_gp7_115 = SEQ(SLICE(gp2_gp3_gp4_19, word32, 0), SLICE(gp2_gp3_gp4_19, word16, 0)) - SEQ(gp0_gp1, gp2)
+	goto l0337
+l00000340:
+	gp4_56 = SLICE(SEQ(SLICE(gp5_gp6_gp7_54, word32, 0), gp7_55) + Mem0[0x8128<p16>:real48], word16, 0) (alias)
+	gp0_gp1_117 = gp0_gp1_45 + Mem0[0x812B<p16>:word32]
+	goto l0344
+l00000347:
+	gp1_80 = SLICE(gp0_gp1_117, word16, 0) + Mem0[0x812D<p16>:word16] (alias)
+	goto l0349
+l032A:
+	gp5_gp6_gp7_115 = SEQ(gp0_gp1, gp2) (alias)
+	branch gp0_gp1 >= 0<32> l0337
+	goto l00000332
 l0337:
 	gp5_gp6_gp7_40 = gp5_gp6_gp7_115 * Mem0[0x8125<p16>:real48]
 	gp0_gp1_45 = CONVERT(gp5_gp6_gp7_40, real48, int32)
@@ -201,14 +215,11 @@ l0337:
 	gp4_56 = gp7_55
 	gp0_gp1_117 = SEQ(SLICE(gp0_gp1_45, word16, 16), CONVERT(gp5_gp6_gp7_40, real48, word16)) (alias)
 	branch gp5_gp6_gp7_54 >= 0.0 l0344
-l00000340:
-	gp4_56 = SLICE(SEQ(SLICE(gp5_gp6_gp7_54, word32, 0), gp7_55) + Mem0[0x8128<p16>:real48], word16, 0) (alias)
-	gp0_gp1_117 = gp0_gp1_45 + Mem0[0x812B<p16>:word32]
+	goto l00000340
 l0344:
 	gp1_80 = SLICE(gp0_gp1_117, word16, 0) (alias)
 	branch gp0_gp1 >= 0<32> l0349
-l00000347:
-	gp1_80 = SLICE(gp0_gp1_117, word16, 0) + Mem0[0x812D<p16>:word16] (alias)
+	goto l00000347
 l0349:
 	gp0_91 = fn02BF(gp1_80, gp4_56, out gp1_92, out gp2_94, out gp14_120)
 	gp2Out = gp2_94
@@ -218,7 +229,6 @@ fn032A_exit:
 
 word32 fn034E(word32 gp0_gp1, word16 gp2, word16 & gp2Out)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0111
 // MayUse:  gp2:[0..15] Sequence gp0:gp1:[0..31]
@@ -226,12 +236,19 @@ word32 fn034E(word32 gp0_gp1, word16 gp2, word16 & gp2Out)
 // Trashed: CPZN gp0 gp1 gp14 gp15 gp2 gp3 gp4 gp5 gp6 gp7
 // Preserved:
 fn034E_entry:
-l034E:
-	gp5_gp6_gp7_94 = SEQ(gp0_gp1, gp2) (alias)
-	branch gp0_gp1 >= 0<32> l0359
+	goto l034E
 l00000354:
 	gp2_gp3_gp4_21 = Mem0[0x812F<p16>:real48] - SEQ(gp0_gp1, gp2)
 	gp5_gp6_gp7_94 = SEQ(SLICE(gp2_gp3_gp4_21, word32, 0), SLICE(gp2_gp3_gp4_21, word16, 0)) (alias)
+	goto l0359
+l00000362:
+	gp4_51 = SLICE(SEQ(SLICE(gp5_gp6_gp7_49, word32, 0), gp7_50) + Mem0[0x8135<p16>:real48], word16, 0) (alias)
+	gp0_gp1_61 = gp0_gp1_40 + Mem0[0x8138<p16>:word32]
+	goto l0366
+l034E:
+	gp5_gp6_gp7_94 = SEQ(gp0_gp1, gp2) (alias)
+	branch gp0_gp1 >= 0<32> l0359
+	goto l00000354
 l0359:
 	gp5_gp6_gp7_35 = gp5_gp6_gp7_94 * Mem0[0x8132<p16>:real48]
 	gp0_gp1_40 = CONVERT(gp5_gp6_gp7_35, real48, int32)
@@ -240,9 +257,7 @@ l0359:
 	gp4_51 = gp7_50
 	gp0_gp1_61 = SEQ(SLICE(gp0_gp1_40, word16, 16), CONVERT(gp5_gp6_gp7_35, real48, word16)) (alias)
 	branch gp5_gp6_gp7_49 >= 0.0 l0366
-l00000362:
-	gp4_51 = SLICE(SEQ(SLICE(gp5_gp6_gp7_49, word32, 0), gp7_50) + Mem0[0x8135<p16>:real48], word16, 0) (alias)
-	gp0_gp1_61 = gp0_gp1_40 + Mem0[0x8138<p16>:word32]
+	goto l00000362
 l0366:
 	gp0_75 = fn02BF(SLICE(gp0_gp1_61, word16, 0) + Mem0[0x813A<p16>:word16], gp4_51, out gp1_76, out gp2_78, out gp14_100)
 	gp2Out = gp2_78
@@ -252,7 +267,6 @@ fn034E_exit:
 
 word16 fn03E0(word32 gp1_gp2, word16 gp0, word16 gp3, word16 & gp14Out)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn04AE
 // MayUse:  gp0:[0..15] gp3:[0..15] Sequence gp1:gp2:[0..31]
@@ -270,7 +284,6 @@ fn03E0_exit:
 
 word16 fn03EC(real48 gp12_gp13_gp14, word16 gp0, word16 gp1, word16 gp11)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn03E0
 // MayUse:  gp0:[0..15] gp1:[0..15] gp11:[0..15] Sequence gp12:gp13:gp14:[0..47]
@@ -281,62 +294,88 @@ fn03EC_entry:
 	gp12 = SLICE(gp12_gp13_gp14, word16, 32)
 	gp13 = SLICE(gp12_gp13_gp14, word16, 16)
 	gp14 = SLICE(gp12_gp13_gp14, word16, 0)
-l03EC:
-	branch (gp12 & 1<u16>) == 0<16> l000003FE
+	goto l03EC
+l000003EE:
+	branch (gp12 & 2<u16>) == 0<16> l000003F5
+l000003F0:
+	gp0_16 = 0x2D20<16>
+	gp12_gp13_gp14 = gp12_gp13_gp14 * Mem0[0x0610<p16>:real48]
+	goto l00000406
+l000003F5:
+	branch gp1 == 6<16> l000003FB
+l000003FA:
+l000003FB:
+	__mov(gp11, 0x0613<p16>)
+	goto l0459
 l000003FE:
 	branch (gp0 | gp12 | gp13 | gp14) == 0<16> l00000404
 l00000402:
 	branch (gp12 & 2<u16>) == 0<16> l000003F5
 l00000404:
 	gp0_16 = 0x2B20<16>
-l000003EE:
-	branch (gp12 & 2<u16>) == 0<16> l000003F5
-l000003F5:
-	branch gp1 == 6<16> l000003FB
-l000003FA:
-l000003FB:
-	__mov(gp11, 0x0613<p16>)
-l000003F0:
-	gp0_16 = 0x2D20<16>
-	gp12_gp13_gp14 = gp12_gp13_gp14 * Mem0[0x0610<p16>:real48]
 l00000406:
 	Mem46[gp11:word16] = gp0_16
 	gp2_192 = 0<16>
 	gp12_gp13_311 = gp12_gp13_gp14 (alias)
 	gp12_gp13_311 = gp12_gp13_gp14 (alias)
 	branch (SLICE(gp12_gp13_gp14, word16, 16) & 0x100<u16>) == 0<16> l00000415
-l00000415:
-	gp14_116 = SLICE(gp12_gp13_311, word16, 0) (alias)
-	branch gp12_gp13_311 >= Mem46[0x060D<p16>:real48] l041D
-l041D:
-	gp0_60 = 0x452D<16>
-l00000419:
-	gp12_gp13_311 = gp12_gp13_311 *48 Mem46[0x060A<p16>:real48]
-	gp2_192 = gp2_192 + 1<16>
 l0000040B:
 	gp14_116 = SLICE(gp12_gp13_311, word16, 0) (alias)
 	branch gp12_gp13_311 < Mem46[0x060A<p16>:real48] l00000412
+l0000040E:
+	gp12_gp13_311 = gp12_gp13_311 /48 Mem46[0x060A<p16>:real48]
+	gp2_192 = gp2_192 + 1<16>
+	goto l0000040B
 l00000412:
 	gp0_60 = 0x452B<16>
+	goto l0000041F
+l00000415:
+	gp14_116 = SLICE(gp12_gp13_311, word16, 0) (alias)
+	branch gp12_gp13_311 >= Mem46[0x060D<p16>:real48] l041D
+l00000419:
+	gp12_gp13_311 = gp12_gp13_311 *48 Mem46[0x060A<p16>:real48]
+	gp2_192 = gp2_192 + 1<16>
+	goto l00000415
 l0000041F:
 	branch gp1 == 6<16> l00000424
-l00000424:
-	Mem87[gp11 + 5<16>:word16] = gp0_60
 l00000421:
 	Mem88[gp11 + 8<16>:word16] = gp0_60
+	goto l00000426
+l00000424:
+	Mem87[gp11 + 5<16>:word16] = gp0_60
 l00000426:
 	gp2_93 = gp2_192 / 0xA<16>
 	gp2_96 = __xbr(gp2_93) | gp2_93 %s 0xA<16>
 	branch gp1 == 6<16> l00000430
-l00000430:
-	Mem102[gp11 + 6<16>:word16] = gp2_96 | 0x3030<16>
 l0000042D:
 	Mem103[gp11 + 9<16>:word16] = gp2_96 | 0x3030<16>
+	goto l00000432
+l00000430:
+	Mem102[gp11 + 6<16>:word16] = gp2_96 | 0x3030<16>
 l00000432:
 	Mem137[gp11:word16] = SEQ(SLICE(Mem135[gp11:word16], byte, 8), SLICE(gp14_116, byte, 0) + 0x30<8>)
 	Mem142[gp11 + 1<16>:word16] = SEQ(0x2E<8>, SLICE(Mem137[gp11 + 1<16>:word16], byte, 0))
 	gp7_104 = 0<16>
 	gp12_gp13_gp14_130 = SEQ(gp12_gp13_311, gp14_116) - CONVERT(CONVERT(SEQ(gp12_gp13_311, gp14_116), real48, int32), int32, real48)
+	goto l0441
+l0000044D:
+	Mem181[gp11 + 1<16>:word16] = SEQ(CONVERT(gp14_152, word16, byte) + 0x30<8>, SLICE(Mem147[gp11 + 1<16>:word16], byte, 0))
+	goto l00000453
+l00000450:
+	Mem176[gp11 + 1<16>:word16] = SEQ(SLICE(Mem147[gp11 + 1<16>:word16], byte, 8), CONVERT(gp14_152, word16, byte) + 0x30<8>)
+	gp11 = gp11 + 1<16>
+l00000453:
+	gp1 = gp1 - 1<16>
+	branch gp1 != 0<16> l0441
+l00000455:
+	Mem189[gp11 + 1<16>:word16] = 0x2020<16>
+	goto l0459
+l03EC:
+	branch (gp12 & 1<u16>) == 0<16> l000003FE
+	goto l000003EE
+l041D:
+	gp0_60 = 0x452D<16>
+	goto l0000041F
 l0441:
 	gp12_gp13_gp14_148 = gp12_gp13_gp14_130 * Mem147[0x060A<p16>:real48]
 	gp14_152 = SLICE(gp12_gp13_gp14_148, word16, 0) (alias)
@@ -344,27 +383,14 @@ l0441:
 	gp14 = SLICE(gp12_gp13_gp14_130, word16, 0) (alias)
 	gp7_104 = gp7_104 + 1<16>
 	branch (gp7_104 & 0x8000<u16>) == 0<16> l00000450
-l00000450:
-	Mem176[gp11 + 1<16>:word16] = SEQ(SLICE(Mem147[gp11 + 1<16>:word16], byte, 8), CONVERT(gp14_152, word16, byte) + 0x30<8>)
-	gp11 = gp11 + 1<16>
-l0000044D:
-	Mem181[gp11 + 1<16>:word16] = SEQ(CONVERT(gp14_152, word16, byte) + 0x30<8>, SLICE(Mem147[gp11 + 1<16>:word16], byte, 0))
-l00000453:
-	gp1 = gp1 - 1<16>
-	branch gp1 != 0<16> l0441
-l00000455:
-	Mem189[gp11 + 1<16>:word16] = 0x2020<16>
+	goto l0000044D
 l0459:
 	return gp14
 fn03EC_exit:
-l0000040E:
-	gp12_gp13_311 = gp12_gp13_311 /48 Mem46[0x060A<p16>:real48]
-	gp2_192 = gp2_192 + 1<16>
 
 
 void fn045A(word16 gp0)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0111
 //      fn045D
@@ -382,7 +408,6 @@ fn045A_exit:
 
 void fn045D(word16 gp0)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn04AE
 // MayUse:  gp0:[0..15]
@@ -390,9 +415,7 @@ void fn045D(word16 gp0)
 // Trashed: PZN gp0 gp10 gp11 gp9
 // Preserved: C gp15
 fn045D_entry:
-l045D:
-	gp11_13 = gp0
-	gp0_14 = 0<16>
+	goto l045D
 l00000460:
 	gp0_19 = SEQ(SLICE(Mem11[gp11_13:word16], byte, 0), SLICE(gp0_14, byte, 0))
 	branch gp0_19 == 0<16> l0000046C
@@ -400,17 +423,21 @@ l00000463:
 	fn045A(gp0_19)
 	gp0_14 = SEQ(SLICE(Mem11[gp11_13:word16], byte, 0), SLICE(Mem11[gp11_13:word16], byte, 0))
 	branch gp0_14 == 0<16> l0000046C
-l0000046C:
-	return
-fn045D_exit:
 l00000468:
 	fn045A(gp0_14)
 	gp11_13 = gp11_13 + 1<16>
+	goto l00000460
+l0000046C:
+	return
+l045D:
+	gp11_13 = gp0
+	gp0_14 = 0<16>
+	goto l00000460
+fn045D_exit:
 
 
 word16 fn04AE(word32 gp0_gp1, word16 gp2)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0111
 // MayUse:  gp2:[0..15] Sequence gp0:gp1:[0..31]
@@ -426,7 +453,6 @@ fn04AE_exit:
 
 void fn04B9(word16 gp0)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0111
 // MayUse:  gp0:[0..15]
@@ -434,16 +460,19 @@ void fn04B9(word16 gp0)
 // Trashed: PZN gp0 gp1
 // Preserved: C gp15
 fn04B9_entry:
-l04B9:
-	gp1_11 = gp0
+	goto l04B9
 l000004BA:
 	gp0_8 = Mem0[gp1_11:word16]
 	branch gp0_8 == 0<16> l000004C1
-l000004C1:
-	return
-fn04B9_exit:
 l000004BD:
 	fn045A(gp0_8)
 	gp1_11 = gp1_11 + 1<16>
+	goto l000004BA
+l000004C1:
+	return
+l04B9:
+	gp1_11 = gp0
+	goto l000004BA
+fn04B9_exit:
 
 

@@ -1,6 +1,5 @@
 void _init()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      __libc_csu_init
 // MayUse: 
@@ -10,6 +9,8 @@ void _init()
 _init_entry:
 l00000588:
 	branch __gmon_start__ == 0<32> l000005B8
+l000005AC:
+	__gmon_start__()
 l000005B8:
 	r25_16 = Mem10[0x00010AB4<p32>:word32]
 	call r25_16 + 2004<i32> (retsize: 0;)
@@ -19,7 +20,5 @@ l000005B8:
 		uses: Mem:Mem10,r25:r25_24 + 2416<i32>
 	return
 _init_exit:
-l000005AC:
-	__gmon_start__()
 
 

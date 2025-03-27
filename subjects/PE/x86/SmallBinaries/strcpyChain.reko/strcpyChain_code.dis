@@ -1,6 +1,5 @@
 void fn12340000()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: SCZO eax ecx edi edx esi

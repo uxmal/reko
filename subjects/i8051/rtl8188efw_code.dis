@@ -1,15 +1,17 @@
 void fn0000(selector __data)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  __data:[0..15]
 // LiveOut:
 // Trashed: CAOP A DPH DPL R1 R7 SFR12C
 // Preserved: SP
 fn0000_entry:
 l0000:
-l0788:
+	goto l0788
 l077A:
 	Mem8[__data:0x001D<p16>:byte] = 0<8>
+	goto l0791
+l0788:
+	goto l077A
 l0791:
 	fn4EF3()
 	Mem32[__data_23:0x157<16>:byte] = 5<8>

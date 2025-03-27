@@ -1,6 +1,5 @@
 word64 _init(word64 r6, word64 r7, word64 r8, word64 r9, word64 r10, word64 r11, word64 r13, word64 & r8Out, word64 & r9Out, word64 & r10Out, word64 & r12Out, word64 & r13Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      __libc_csu_init
 // MayUse:  r10:[0..63] r11:[0..63] r13:[0..63] r6:[0..63] r7:[0..63] r8:[0..63] r9:[0..63]

@@ -1,6 +1,5 @@
 void _fini(word32 o3, word32 o4, word32 o5, word32 o7)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  o3:[0..31] o4:[0..31] o5:[0..31] o7:[0..31]
 // LiveOut:
 // Trashed: NZVC g0

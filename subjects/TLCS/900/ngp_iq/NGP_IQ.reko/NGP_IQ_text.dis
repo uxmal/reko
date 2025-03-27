@@ -1,12 +1,10 @@
 void fn00200089()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-fn00200089_exit:
 fn00200089_entry:
 l00200089:
 	fn0020060C()
@@ -85,12 +83,13 @@ l002001A4:
 	xhl_16_16_196 = SLICE(xhl_188, word16, 16) (alias)
 	fn00200532(SEQ(xhl_16_16_196, 0xD06<16>))
 	branch fn00200532(SEQ(xhl_16_16_196, 0xD05<16>)) l002001E6
-l002001E6:
-l002001EC:
-	fn00200557(0xF<8>, 4<8>, 0x2001E8<32>)
 l002001D0:
 l002001D5:
 	fn00200557(0xF<8>, 4<8>, 0x2001D2<32>)
+	goto l002001FB
+l002001E6:
+l002001EC:
+	fn00200557(0xF<8>, 4<8>, 0x2001E8<32>)
 l002001FB:
 l00200206:
 	fn00200557(2<8>, 8<8>, 0x2001FD<32>)
@@ -115,12 +114,13 @@ l00200256:
 	xhl_16_16_320 = SLICE(xhl_313, word16, 16) (alias)
 	fn00200532(SEQ(xhl_16_16_320, 0xD0A<16>))
 	branch fn00200532(SEQ(xhl_16_16_320, 0xD09<16>)) l00200298
-l00200298:
-l0020029E:
-	fn00200557(0xF<8>, 8<8>, 0x20029A<32>)
 l00200282:
 l00200287:
 	fn00200557(0xF<8>, 8<8>, 0x200284<32>)
+	goto l002002AD
+l00200298:
+l0020029E:
+	fn00200557(0xF<8>, 8<8>, 0x20029A<32>)
 l002002AD:
 l002002BA:
 	fn00200557(2<8>, 0xC<8>, 0x2002AF<32>)
@@ -145,18 +145,20 @@ l0020030A:
 	xhl_16_16_444 = SLICE(xhl_437, word16, 16) (alias)
 	fn00200532(SEQ(xhl_16_16_444, 0xD0E<16>))
 	branch fn00200532(SEQ(xhl_16_16_444, 0xD0D<16>)) l0020034C
-l0020034C:
-l00200352:
-	fn00200557(0xF<8>, 0xC<8>, 0x20034E<32>)
 l00200336:
 l0020033B:
 	fn00200557(0xF<8>, 0xC<8>, 0x200338<32>)
+	goto l00200361
+l0020034C:
+l00200352:
+	fn00200557(0xF<8>, 0xC<8>, 0x20034E<32>)
 l00200361:
+	goto l00200361
+fn00200089_exit:
 
 
 void fn002004F2(byte w)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn00200089
 // MayUse:  xwa:[8..15]
@@ -176,7 +178,6 @@ fn002004F2_exit:
 
 bool fn0020050A(word16 hl)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn00200532
 // MayUse:  xhl:[0..15]
@@ -193,7 +194,6 @@ fn0020050A_exit:
 
 bool fn00200532(word32 xhl)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn00200089
 // MayUse:  xhl:[0..31]
@@ -212,7 +212,6 @@ fn00200532_exit:
 
 word32 fn00200557(byte c, byte b, word32 xhl)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn00200089
 // MayUse:  b:[0..7] c:[0..7] xhl:[0..31]
@@ -248,7 +247,6 @@ fn00200557_exit:
 
 void fn002005B8()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn00200089
 // MayUse: 
@@ -279,7 +277,6 @@ fn002005B8_exit:
 
 void fn002005F5(byte w, byte a, word16 xwa_16_16, word32 xix, word16 sr)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  a:[0..7] sr:[0..15] w:[0..7] xix:[0..31] xwa_16_16:[0..15]
 // LiveOut:
 // Trashed: SZHVNC xwa
@@ -297,7 +294,6 @@ fn002005F5_exit:
 
 void fn0020060C()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn00200089
 // MayUse: 

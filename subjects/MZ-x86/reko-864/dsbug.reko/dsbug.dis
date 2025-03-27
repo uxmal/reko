@@ -1,6 +1,5 @@
 void function()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:

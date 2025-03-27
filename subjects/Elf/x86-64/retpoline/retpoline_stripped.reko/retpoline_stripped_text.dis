@@ -1,22 +1,20 @@
 void fn0000000000400480(word64 rdx, word32 dwArg00, char * ptrArg08)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  rdx:[0..63] Stack +0000:[0..31] Stack +0008:[0..63]
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-fn0000000000400480_exit:
 fn0000000000400480_entry:
 l0000000000400480:
 	__align_stack<word64>(&ptrArg08)
 	__libc_start_main(0x400660<64>, SLICE(qwArg00, int32, 0), &ptrArg08, 0x400710<64>, 0x400780<64>, rdx, fp)
 	__halt()
+fn0000000000400480_exit:
 
 
 void fn00000000004004B0()
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: SCZOP rax rdi Top
@@ -26,18 +24,17 @@ l00000000004004B0:
 	branch true l00000000004004D8
 l00000000004004C1:
 	branch true l00000000004004D8
-l00000000004004D8:
-	return
 l00000000004004CB:
 	call 0<u64> (retsize: 0;)
 		uses: Mem:Mem6,rdi:0x601040<u64>
+	return
+l00000000004004D8:
 	return
 fn00000000004004B0_exit:
 
 
 void fn0000000000400560(word32 edi, word32 esi)
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  edi:[0..31] esi:[0..31]
 // LiveOut:
 // Trashed: SCZO rax rdi rsi Top
@@ -51,23 +48,22 @@ fn0000000000400560_exit:
 
 void fn00000000004006F0()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-fn00000000004006F0_exit:
 fn00000000004006F0_entry:
 l00000000004006F0:
 	fn0000000000400700()
 l00000000004006F5:
 	__pause()
+	goto l00000000004006F5
+fn00000000004006F0_exit:
 
 
 void fn0000000000400700()
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn00000000004006F0
 // MayUse: 

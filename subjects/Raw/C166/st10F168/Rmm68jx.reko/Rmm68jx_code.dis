@@ -1,6 +1,5 @@
 void fn0000(word16 SP)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  SP:[0..15]
 // LiveOut:
 // Trashed: EZVCN DPP0 DPP1 DPP2 DPP3 PSW r0 SP TFR
@@ -19,7 +18,6 @@ fn0000_exit:
 
 void fn0034()
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: EZVCN ADDRSEL1 CP DP3 P3 r1 S0BG S0CON S0EIC S0RIC S0TIC SP STKOV STKUN
@@ -35,6 +33,15 @@ l006A:
 	S0RIC_151 = fn011C(S0RIC_151)
 	r0_34 = <invalid>
 	branch (r0_34 & 0xDF<16>) == 0x44<16> l0098
+l0080:
+	branch (r0_34 & 0xDF<16>) == 0x47<16> l0088
+l0086:
+	goto l006A
+l0088:
+	fn011C(fn011C(S0RIC_151))
+	r0_168 = <invalid>
+	Mem191[0xFBFE<16>:word16] = SEQ(SLICE(r0_168, byte, 0), SLICE(fp, byte, 0))
+	return
 l0098:
 	r0_45 = <invalid>
 	S0RIC_151 = fn011C(S0RIC_151)
@@ -43,9 +50,6 @@ l00A2:
 	r0_55 = <invalid>
 	S0RIC_56 = fn011C(S0RIC_151)
 	branch SLICE(r0_55, byte, 0) == 0<8> l00DA
-l00DA:
-	S0RIC_151 = fn011C(fn011C(fn011C(fn011C(S0RIC_56))))
-	S0TIC_160 = fn0110(S0TIC_160)
 l00AA:
 	r0_107 = <invalid>
 	r0_117 = <invalid>
@@ -63,20 +67,16 @@ l00C0:
 l00CC:
 	S0RIC_151 = fn011C(S0RIC_128)
 	S0TIC_160 = fn0110(S0TIC_160)
-l0080:
-	branch (r0_34 & 0xDF<16>) == 0x47<16> l0088
-l0088:
-	fn011C(fn011C(S0RIC_151))
-	r0_168 = <invalid>
-	Mem191[0xFBFE<16>:word16] = SEQ(SLICE(r0_168, byte, 0), SLICE(fp, byte, 0))
-	return
+	goto l0098
+l00DA:
+	S0RIC_151 = fn011C(fn011C(fn011C(fn011C(S0RIC_56))))
+	S0TIC_160 = fn0110(S0TIC_160)
+	goto l006A
 fn0034_exit:
-l0086:
 
 
 word16 fn0110(word16 S0TIC)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0034
 //      fn0128
@@ -96,7 +96,6 @@ fn0110_exit:
 
 word16 fn011C(word16 S0RIC)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0034
 // MayUse:  S0RIC:[0..15]
@@ -113,7 +112,6 @@ fn011C_exit:
 
 void fn0128(word16 r1, word16 S0TIC)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0034
 // MayUse:  r1:[0..15] S0TIC:[0..15]
@@ -123,11 +121,12 @@ void fn0128(word16 r1, word16 S0TIC)
 fn0128_entry:
 l0128:
 	branch Mem0[r1:byte] == 0<8> l013C
-l013C:
-	return
-fn0128_exit:
 l0132:
 	S0TIC = fn0110(S0TIC)
 	r1 = r1 + 1<16>
+	goto l0128
+l013C:
+	return
+fn0128_exit:
 
 

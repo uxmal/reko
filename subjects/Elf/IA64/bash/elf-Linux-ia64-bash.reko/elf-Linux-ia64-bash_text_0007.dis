@@ -1,546 +1,504 @@
 void char_is_quoted()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-char_is_quoted_exit:
 char_is_quoted_entry:
 l400000000008CE00:
+char_is_quoted_exit:
 
 
 void unclosed_pair()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-unclosed_pair_exit:
 unclosed_pair_entry:
 l400000000008D500:
+unclosed_pair_exit:
 
 
 void split_at_delims()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-split_at_delims_exit:
 split_at_delims_entry:
 l400000000008DCC0:
+split_at_delims_exit:
 
 
 void string_list_internal()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-string_list_internal_exit:
 string_list_internal_entry:
 l400000000008E7C0:
+string_list_internal_exit:
 
 
 void string_list()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-string_list_exit:
 string_list_entry:
 l400000000008EC40:
+string_list_exit:
 
 
 void ifs_firstchar()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-ifs_firstchar_exit:
 ifs_firstchar_entry:
 l400000000008EC80:
+ifs_firstchar_exit:
 
 
 void string_list_dollar_star()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-string_list_dollar_star_exit:
 string_list_dollar_star_entry:
 l400000000008EDC0:
+string_list_dollar_star_exit:
 
 
 void get_word_from_string()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-get_word_from_string_exit:
 get_word_from_string_entry:
 l400000000008EF00:
+get_word_from_string_exit:
 
 
 void strip_trailing_ifs_whitespace()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-strip_trailing_ifs_whitespace_exit:
 strip_trailing_ifs_whitespace_entry:
 l400000000008F800:
+strip_trailing_ifs_whitespace_exit:
 
 
 void list_rest_of_args()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-list_rest_of_args_exit:
 list_rest_of_args_entry:
 l400000000008FAC0:
+list_rest_of_args_exit:
 
 
 void number_of_args()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-number_of_args_exit:
 number_of_args_entry:
 l400000000008FC80:
+number_of_args_exit:
 
 
 void get_dollar_var_value()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-get_dollar_var_value_exit:
 get_dollar_var_value_entry:
 l400000000008FD40:
+get_dollar_var_value_exit:
 
 
 void string_rest_of_args()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-string_rest_of_args_exit:
 string_rest_of_args_entry:
 l400000000008FF40:
+string_rest_of_args_exit:
 
 
 void remove_backslashes()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-remove_backslashes_exit:
 remove_backslashes_entry:
 l4000000000090040:
+remove_backslashes_exit:
 
 
 void quote_escapes()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-quote_escapes_exit:
 quote_escapes_entry:
 l4000000000090180:
+quote_escapes_exit:
 
 
 void dequote_escapes()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-dequote_escapes_exit:
 dequote_escapes_entry:
 l4000000000090740:
+dequote_escapes_exit:
 
 
 void quote_string()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-quote_string_exit:
 quote_string_entry:
 l4000000000090C40:
+quote_string_exit:
 
 
 void string_list_dollar_at()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-string_list_dollar_at_exit:
 string_list_dollar_at_entry:
 l4000000000091100:
+string_list_dollar_at_exit:
 
 
 void dequote_string()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-dequote_string_exit:
 dequote_string_entry:
 l4000000000091400:
+dequote_string_exit:
 
 
 void dequote_list()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-dequote_list_exit:
 dequote_list_entry:
 l4000000000091E80:
+dequote_list_exit:
 
 
 void remove_quoted_escapes()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-remove_quoted_escapes_exit:
 remove_quoted_escapes_entry:
 l4000000000092040:
+remove_quoted_escapes_exit:
 
 
 void remove_quoted_nulls()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-remove_quoted_nulls_exit:
 remove_quoted_nulls_entry:
 l4000000000092100:
+remove_quoted_nulls_exit:
 
 
 void list_string()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-list_string_exit:
 list_string_entry:
 l4000000000092540:
+list_string_exit:
 
 
 void word_list_remove_quoted_nulls()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-word_list_remove_quoted_nulls_exit:
 word_list_remove_quoted_nulls_entry:
 l4000000000093340:
+word_list_remove_quoted_nulls_exit:
 
 
 void string_list_pos_params()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-string_list_pos_params_exit:
 string_list_pos_params_entry:
 l4000000000093400:
+string_list_pos_params_exit:
 
 
 void copy_fifo_list()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-copy_fifo_list_exit:
 copy_fifo_list_entry:
 l4000000000093880:
+copy_fifo_list_exit:
 
 
 void fifos_pending()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-fifos_pending_exit:
 fifos_pending_entry:
 l40000000000939C0:
+fifos_pending_exit:
 
 
 void num_fifos()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-num_fifos_exit:
 num_fifos_entry:
 l4000000000093A00:
+num_fifos_exit:
 
 
 void unlink_fifo()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-unlink_fifo_exit:
 unlink_fifo_entry:
 l4000000000093A40:
+unlink_fifo_exit:
 
 
 void unlink_fifo_list()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-unlink_fifo_list_exit:
 unlink_fifo_list_entry:
 l4000000000093B00:
+unlink_fifo_list_exit:
 
 
 void close_new_fifos()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-close_new_fifos_exit:
 close_new_fifos_entry:
 l4000000000093C00:
+close_new_fifos_exit:
 
 
 void command_substitute()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-command_substitute_exit:
 command_substitute_entry:
 l4000000000093E00:
+command_substitute_exit:
 
 
 void pat_subst()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-pat_subst_exit:
 pat_subst_entry:
 l4000000000095600:
+pat_subst_exit:
 
 
 void string_quote_removal()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-string_quote_removal_exit:
 string_quote_removal_entry:
 l4000000000096E00:
+string_quote_removal_exit:
 
 
 void expand_arith_string()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-expand_arith_string_exit:
 expand_arith_string_entry:
 l4000000000097980:
+expand_arith_string_exit:
 
 
 void do_assignment_no_expand()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-do_assignment_no_expand_exit:
 do_assignment_no_expand_entry:
 l40000000000999C0:
+do_assignment_no_expand_exit:
 
 
 void do_word_assignment()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-do_word_assignment_exit:
 do_word_assignment_entry:
 l4000000000099A40:
+do_word_assignment_exit:
 
 
 void do_assignment()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-do_assignment_exit:
 do_assignment_entry:
 l4000000000099A80:
+do_assignment_exit:
 
 
 void setifs()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-setifs_exit:
 setifs_entry:
 l4000000000099B00:
+setifs_exit:
 
 
 void getifs()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-getifs_exit:
 getifs_entry:
 l4000000000099E40:
+getifs_exit:
 
 
 void word_split()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-word_split_exit:
 word_split_entry:
 l4000000000099E80:
+word_split_exit:
 
 
 void expand_string()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-expand_string_exit:
 expand_string_entry:
 l400000000009A080:
+expand_string_exit:
 
 

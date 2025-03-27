@@ -1,6 +1,5 @@
 void fn000C0154(byte r0h, word16 sb)
 // stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  r0h:[0..7] sb:[0..15]
 // LiveOut:
 // Trashed: OSZC a0 a1 r0 r1 r2
@@ -11,6 +10,8 @@ l000C0154:
 	Mem21[0x043C<p16>:byte] = CONVERT(SLICE(__write_bit<word16,byte>(SEQ(r0h, 0<8>), 0<8>, !!__bit<byte,byte>(Mem8[0x03E4<p16>:byte], 4<8>)), byte, 0), uint8, uint16) == 1<16> ? 0x41<8> : 0x42<8>
 	Mem22[0x043D<p16>:byte] = 0<8>
 	branch Mem22[0x043C<p16>:word16] == 0x41<16> l000C017A
+l000C0177:
+	goto l000C04C9
 l000C017A:
 	fn000C0BBA()
 	fn000C0A08()
@@ -32,21 +33,24 @@ l000C017A:
 	fn000C1186(5<16>, 1<16>, out r1_2021)
 l000C0206:
 	branch true l000C020D
+l000C020A:
+	goto l000C04C6
 l000C020D:
 	Mem192[0x03E8<p16>:byte] = __write_bit<byte,byte>(Mem189[0x03E8<p16>:byte], 6<8>, !!__bit<byte,byte>(Mem189[0x03E9<p16>:byte], 6<8>))
 	branch wLoc04 != 1<16> l000C0230
-l000C0230:
-	Mem196[0x03E9<p16>:byte] = __set_bit<byte,byte>(Mem192[0x03E9<p16>:byte], 1<8>)
-	Mem197[0x03E9<p16>:byte] = __set_bit<byte,byte>(Mem196[0x03E9<p16>:byte], 2<8>)
-	Mem198[0x03ED<p16>:byte] = __set_bit<byte,byte>(Mem197[0x03ED<p16>:byte], 4<8>)
-	Mem199[0x03ED<p16>:byte] = __set_bit<byte,byte>(Mem198[0x03ED<p16>:byte], 6<8>)
-	wLoc04 = 1<16>
 l000C021B:
 	Mem202[0x03E9<p16>:byte] = __set_bit<byte,byte>(Mem192[0x03E9<p16>:byte], 1<8>)
 	Mem203[0x03E9<p16>:byte] = __set_bit<byte,byte>(Mem202[0x03E9<p16>:byte], 2<8>)
 	Mem204[0x03ED<p16>:byte] = __set_bit<byte,byte>(Mem203[0x03ED<p16>:byte], 4<8>)
 	Mem205[0x03ED<p16>:byte] = __set_bit<byte,byte>(Mem204[0x03ED<p16>:byte], 6<8>)
 	wLoc04 = 0<16>
+	goto l000C0243
+l000C0230:
+	Mem196[0x03E9<p16>:byte] = __set_bit<byte,byte>(Mem192[0x03E9<p16>:byte], 1<8>)
+	Mem197[0x03E9<p16>:byte] = __set_bit<byte,byte>(Mem196[0x03E9<p16>:byte], 2<8>)
+	Mem198[0x03ED<p16>:byte] = __set_bit<byte,byte>(Mem197[0x03ED<p16>:byte], 4<8>)
+	Mem199[0x03ED<p16>:byte] = __set_bit<byte,byte>(Mem198[0x03ED<p16>:byte], 6<8>)
+	wLoc04 = 1<16>
 l000C0243:
 	fn000C1186(5<16>, 0<16>, out r1_2027)
 	UART1_putc(0x20<16>)
@@ -129,13 +133,14 @@ l000C043C:
 	UART1_putc(0x20<16>)
 	UART1_putc(0x20<16>)
 	branch CONVERT(SLICE(__write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20<16>), byte, 8), 0<8>), 0<8>, !!__bit<byte,byte>(Mem756[0x03E9<p16>:byte], 6<8>)), byte, 0), uint8, uint16) != 1<16> l000C04BC
-l000C04BC:
-	UART1_putc(0x30<16>)
 l000C04B2:
 	UART1_putc(0x31<16>)
-l000C020A:
+	goto l000C0206
+l000C04BC:
+	UART1_putc(0x30<16>)
+	goto l000C0206
 l000C04C6:
-l000C0177:
+	goto l000C0975
 l000C04C9:
 	fn000C0BBA()
 	fn000C0B0A()
@@ -171,6 +176,8 @@ l000C04C9:
 	fn000C1186(5<16>, 1<16>, out r1_2024)
 l000C05C9:
 	branch true l000C05D0
+l000C05CD:
+	goto l000C0975
 l000C05D0:
 	Mem1082[0x03E8<p16>:byte] = __write_bit<byte,byte>(Mem1079[0x03E8<p16>:byte], 0<8>, !!__bit<byte,byte>(Mem1079[0x03F8<p16>:byte], 0<8>))
 	Mem1085[0x03E8<p16>:byte] = __write_bit<byte,byte>(Mem1082[0x03E8<p16>:byte], 1<8>, !!__bit<byte,byte>(Mem1082[0x03F8<p16>:byte], 1<8>))
@@ -185,13 +192,6 @@ l000C05D0:
 	Mem1112[0x03E5<p16>:byte] = __write_bit<byte,byte>(Mem1109[0x03E5<p16>:byte], 4<8>, !!__bit<byte,byte>(Mem1109[0x03F9<p16>:byte], 6<8>))
 	Mem1115[0x03E5<p16>:byte] = __write_bit<byte,byte>(Mem1112[0x03E5<p16>:byte], 5<8>, !!__bit<byte,byte>(Mem1112[0x03F9<p16>:byte], 7<8>))
 	branch wLoc04 != 1<16> l000C065A
-l000C065A:
-	Mem1119[0x03E9<p16>:byte] = __set_bit<byte,byte>(Mem1115[0x03E9<p16>:byte], 1<8>)
-	Mem1120[0x03E9<p16>:byte] = __set_bit<byte,byte>(Mem1119[0x03E9<p16>:byte], 2<8>)
-	Mem1121[0x03E9<p16>:byte] = __set_bit<byte,byte>(Mem1120[0x03E9<p16>:byte], 7<8>)
-	Mem1122[0x03E9<p16>:byte] = __set_bit<byte,byte>(Mem1121[0x03E9<p16>:byte], 4<8>)
-	Mem1123[0x03E9<p16>:byte] = __set_bit<byte,byte>(Mem1122[0x03E9<p16>:byte], 3<8>)
-	wLoc04 = 1<16>
 l000C0641:
 	Mem1126[0x03E9<p16>:byte] = __set_bit<byte,byte>(Mem1115[0x03E9<p16>:byte], 1<8>)
 	Mem1127[0x03E9<p16>:byte] = __set_bit<byte,byte>(Mem1126[0x03E9<p16>:byte], 2<8>)
@@ -199,6 +199,14 @@ l000C0641:
 	Mem1129[0x03E9<p16>:byte] = __set_bit<byte,byte>(Mem1128[0x03E9<p16>:byte], 4<8>)
 	Mem1130[0x03E9<p16>:byte] = __set_bit<byte,byte>(Mem1129[0x03E9<p16>:byte], 3<8>)
 	wLoc04 = 0<16>
+	goto l000C0671
+l000C065A:
+	Mem1119[0x03E9<p16>:byte] = __set_bit<byte,byte>(Mem1115[0x03E9<p16>:byte], 1<8>)
+	Mem1120[0x03E9<p16>:byte] = __set_bit<byte,byte>(Mem1119[0x03E9<p16>:byte], 2<8>)
+	Mem1121[0x03E9<p16>:byte] = __set_bit<byte,byte>(Mem1120[0x03E9<p16>:byte], 7<8>)
+	Mem1122[0x03E9<p16>:byte] = __set_bit<byte,byte>(Mem1121[0x03E9<p16>:byte], 4<8>)
+	Mem1123[0x03E9<p16>:byte] = __set_bit<byte,byte>(Mem1122[0x03E9<p16>:byte], 3<8>)
+	wLoc04 = 1<16>
 l000C0671:
 	fn000C1186(5<16>, 0<16>, out r1_2025)
 	UART1_putc(CONVERT(CONVERT(SLICE(__write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20<16>), byte, 8), 0<8>), 0<8>, !!__bit<byte,byte>(Mem1152[0x03F8<p16>:byte], 0<8>)), byte, 0), uint8, uint16) == 1<16> ? 0x31<8> : 0x30<8>, uint8, uint16))
@@ -270,7 +278,7 @@ l000C0671:
 	UART1_putc(0x20<16>)
 	UART1_putc(CONVERT(CONVERT(SLICE(__write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20<16>), byte, 8), 0<8>), 0<8>, !!__bit<byte,byte>(Mem1706[0x03F0<p16>:byte], 4<8>)), byte, 0), uint8, uint16) == 1<16> ? 0x31<8> : 0x30<8>, uint8, uint16))
 	UART1_putc(0x20<16>)
-l000C05CD:
+	goto l000C05C9
 l000C0975:
 	return
 fn000C0154_exit:
@@ -278,7 +286,6 @@ fn000C0154_exit:
 
 void fn000C0978()
 // stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn000C0154
 // MayUse: 
@@ -296,7 +303,6 @@ fn000C0978_exit:
 
 void fn000C098C()
 // stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn000C0154
 // MayUse: 
@@ -345,7 +351,6 @@ fn000C098C_exit:
 
 void fn000C0A08()
 // stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn000C0154
 // MayUse: 
@@ -392,7 +397,6 @@ fn000C0A08_exit:
 
 void fn000C0A7E()
 // stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn000C0154
 // MayUse: 
@@ -441,7 +445,6 @@ fn000C0A7E_exit:
 
 void fn000C0B0A()
 // stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn000C0154
 // MayUse: 
@@ -492,7 +495,6 @@ fn000C0B0A_exit:
 
 void fn000C0B92()
 // stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn000C0154
 // MayUse: 
@@ -511,7 +513,6 @@ fn000C0B92_exit:
 
 void fn000C0BA2()
 // stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn000C0154
 // MayUse: 
@@ -530,7 +531,6 @@ fn000C0BA2_exit:
 
 void fn000C0BBA()
 // stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn000C0154
 // MayUse: 
@@ -556,7 +556,6 @@ fn000C0BBA_exit:
 
 void fn000C0BE8()
 // stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn000C0154
 // MayUse: 
@@ -594,7 +593,6 @@ fn000C0BE8_exit:
 
 void fn000C0C46()
 // stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn000C0154
 // MayUse: 
@@ -610,7 +608,6 @@ fn000C0C46_exit:
 
 void fn000C0C52()
 // stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn000C0154
 // MayUse: 
@@ -626,7 +623,6 @@ fn000C0C52_exit:
 
 void fn000C0C5E()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: I a0 a1 fb r0 r1 r2
@@ -640,7 +636,6 @@ fn000C0C5E_exit:
 
 void fn000C0C66()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: I a0 a1 fb r0 r1 r2
@@ -654,7 +649,6 @@ fn000C0C66_exit:
 
 void fn000C0C6E()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: IOSZC a0 a1 fb r0 r1 r2
@@ -677,7 +671,6 @@ fn000C0C6E_exit:
 
 void fn000C0CB4()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: IOSZC a0 a1 fb r0 r1 r2
@@ -700,7 +693,6 @@ fn000C0CB4_exit:
 
 void fn000C0CFA()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: IOSZC a0 a1 fb r0 r1 r2
@@ -718,7 +710,6 @@ fn000C0CFA_exit:
 
 void fn000C0D13()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: OSZC a0 a1 fb r0 r1 r2 r3
@@ -740,7 +731,6 @@ fn000C0D13_exit:
 
 void fn000C0D2A()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: IOSZC a0 a1 fb r0 r1 r2
@@ -758,7 +748,6 @@ fn000C0D2A_exit:
 
 void fn000C0D42()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: I a0 a1 fb r0 r1 r2
@@ -772,7 +761,6 @@ fn000C0D42_exit:
 
 void fn000C0DB4()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: IOSZC a0 a1 fb r0 r1 r2
@@ -790,7 +778,6 @@ fn000C0DB4_exit:
 
 void fn000C0DCC()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: I a0 a1 fb r0 r1 r2
@@ -804,7 +791,6 @@ fn000C0DCC_exit:
 
 void fn000C0DD4()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: I a0 a1 fb r0 r1 r2
@@ -818,7 +804,6 @@ fn000C0DD4_exit:
 
 void fn000C0DDC()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: IOSZC a0 a1 fb r0 r1 r2
@@ -836,7 +821,6 @@ fn000C0DDC_exit:
 
 void fn000C0DF4()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: I a0 a1 fb r0 r1 r2
@@ -850,7 +834,6 @@ fn000C0DF4_exit:
 
 void fn000C0DFC()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: I a0 a1 fb r0 r1 r2
@@ -864,7 +847,6 @@ fn000C0DFC_exit:
 
 void fn000C0E04()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: I a0 a1 fb r0 r1 r2
@@ -878,7 +860,6 @@ fn000C0E04_exit:
 
 void fn000C0E0C()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: I a0 a1 fb r0 r1 r2
@@ -892,7 +873,6 @@ fn000C0E0C_exit:
 
 void fn000C0E14()
 // stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: SZ
@@ -913,7 +893,6 @@ fn000C0E14_exit:
 
 void fn000C0E46()
 // stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn000C0154
 // MayUse: 
@@ -943,7 +922,6 @@ fn000C0E46_exit:
 
 void fn000C0EB0(word16 r1)
 // stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  r1:[0..15]
 // LiveOut:
 // Trashed: OSZC r0 r2
@@ -962,7 +940,6 @@ fn000C0EB0_exit:
 
 void fn000C0F06(word16 r1)
 // stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn000C0154
 // MayUse:  r1:[0..15]
@@ -989,7 +966,6 @@ fn000C0F06_exit:
 
 void fn000C0F9E(word16 sb, ui32 dwArg03)
 // stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  sb:[0..15] Stack +0003:[0..31]
 // LiveOut:
 // Trashed: OSZC a0 a1 r0 r1 r2 r3
@@ -1023,7 +999,6 @@ fn000C0F9E_exit:
 
 word16 fn000C1186(word16 r1, word16 r2, word16 & r1Out)
 // stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn000C0154
 // MayUse:  r1:[0..15] r2:[0..15]
@@ -1060,7 +1035,6 @@ fn000C1186_exit:
 
 word16 fn000C1222(word16 r0, ui32 dwArg03)
 // stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn000C0154
 // MayUse:  r0:[0..15] Stack +0003:[0..31]
@@ -1076,10 +1050,14 @@ l000C1228:
 	wArg03_318 = SLICE(dwArg03_446, word16, 0) (alias)
 	r0h_29 = SLICE(r0, byte, 8) (alias)
 	branch wLoc04_316 <=u 0x64<16> l000C1232
+l000C122F:
+	goto l000C1370
 l000C1232:
 	r0l_18 = Mem11[SEQ(wArg05_319, r0):byte]
 	r0_30 = SEQ(r0h_29, r0l_18) (alias)
 	branch r0l_18 == 0x7E<8> l000C1241
+l000C123E:
+	goto l000C1344
 l000C1241:
 	v15_25 = SLICE(dwArg03_446 + 1<32>, word16, 16) (alias)
 	r0l_32 = Mem26[SEQ(v15_25, r0_30):byte]
@@ -1141,19 +1119,20 @@ l000C1320:
 	r0 = UART1_putc(0x6D<16>)
 l000C133C:
 	dwArg03_446 = SEQ(SLICE(dwArg03_446 + 2<32>, word16, 16), wArg03_318 + 2<16>) (alias)
-l000C123E:
+	goto l000C136A
 l000C1344:
 	r0l_273 = Mem11[SEQ(wArg05_319, r0_30):byte]
 	r0 = SEQ(r0h_29, r0l_273) (alias)
 	branch r0l_273 != 0<8> l000C1355
+l000C134E:
+	wLoc04_316 = 0x64<16>
+	goto l000C136A
 l000C1355:
 	r0 = UART1_putc(CONVERT(Mem11[SEQ(wArg05_319, r0):byte], uint8, uint16))
 	dwArg03_446 = SEQ(SLICE(dwArg03_446 + 1<32>, word16, 16), wArg03_318 + 1<16>) (alias)
-l000C134E:
-	wLoc04_316 = 0x64<16>
 l000C136A:
 	wLoc04_316 = wLoc04_316 + 1<16>
-l000C122F:
+	goto l000C1228
 l000C1370:
 	return r0
 fn000C1222_exit:
@@ -1161,7 +1140,6 @@ fn000C1222_exit:
 
 word16 UART1_putc(word16 r1)
 // stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn000C0154
 //      fn000C0E46
@@ -1203,7 +1181,6 @@ UART1_putc_exit:
 
 void fn000C1392()
 // stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: SZC a0 r0 r1
@@ -1224,7 +1201,6 @@ fn000C1392_exit:
 
 void fn000C13CC()
 // stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn000C0154
 // MayUse: 
@@ -1262,7 +1238,6 @@ fn000C13CC_exit:
 
 void fn000C1432()
 // stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: OSZC a0 r0 r1
@@ -1299,7 +1274,6 @@ fn000C1432_exit:
 
 void fn000C14A0()
 // stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: SZC a0 r0 r1
@@ -1317,7 +1291,6 @@ fn000C14A0_exit:
 
 void fn000C14C4()
 // stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: SZC a0 r0 r1
@@ -1336,7 +1309,6 @@ fn000C14C4_exit:
 
 void fn000C14F0()
 // stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: OSZC a0 r0 r1
@@ -1373,7 +1345,6 @@ fn000C14F0_exit:
 
 void fn000C155E()
 // stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: SZC a0 r0 r1
@@ -1392,7 +1363,6 @@ fn000C155E_exit:
 
 void fn000C158A()
 // stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: SZC a0 r0 r1
@@ -1411,7 +1381,6 @@ fn000C158A_exit:
 
 void fn000C15B6()
 // stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: OSZC a0 r0 r1
@@ -1446,7 +1415,6 @@ fn000C15B6_exit:
 
 void fn000C1616()
 // stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn000C0154
 // MayUse: 
@@ -1465,7 +1433,6 @@ fn000C1616_exit:
 
 void fn000C1634()
 // stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: OSZC a0 r0 r1
@@ -1491,7 +1458,6 @@ fn000C1634_exit:
 
 void fn000C166E()
 // stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: SZC a0 r0 r1
@@ -1507,7 +1473,6 @@ fn000C166E_exit:
 
 void fn000C1684()
 // stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: OSZC a0 r0 r1
@@ -1528,7 +1493,6 @@ fn000C1684_exit:
 
 void fn000C16B0()
 // stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: OSZC a0 r0 r1
@@ -1570,7 +1534,6 @@ fn000C16B0_exit:
 
 void fn000C1730()
 // stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: OSZC a0 r0 r1
@@ -1591,7 +1554,6 @@ fn000C1730_exit:
 
 void fn000C175C()
 // stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: OSZC a0 r0 r1
@@ -1610,7 +1572,6 @@ fn000C175C_exit:
 
 void fn000C177A()
 // stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: SZC a0 r0 r1
@@ -1626,7 +1587,6 @@ fn000C177A_exit:
 
 void fn000C1790()
 // stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: SZC a0 r0 r1
@@ -1644,7 +1604,6 @@ fn000C1790_exit:
 
 word32 fn000C17B4(word32 r2r0, word16 sb)
 // stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn000C0F9E
 // MayUse:  sb:[0..15] Sequence r2r0:[0..31]
@@ -1660,6 +1619,16 @@ l000C17B4:
 	r1_18 = Mem14[sb + 11<i16>:word16]
 	r3_19 = Mem14[sb + 13<i16>:word16]
 	branch r3_19 != 0<16> l000C17D8
+l000C17C2:
+	branch r2 == 0<16> l000C17D2
+l000C17C6:
+	r2r0_81 = CONVERT(r2, uint16, uint32) (alias)
+	r2 = r2r0_81 %u r1_18
+	r3_19 = r2r0_81 /u r1_18
+l000C17D2:
+	r0_162 = SEQ(r2, r0) /u r1_18
+	r2_163 = r3_19
+	goto l000C17FE
 l000C17D8:
 	r2r0_170 = r2r0 (alias)
 	r3_r1_175 = SEQ(r3_19, r1_18) (alias)
@@ -1690,15 +1659,6 @@ l000C17F1:
 l000C17FA:
 	r0_162 = a0_15
 	r2_163 = 0<16>
-l000C17C2:
-	branch r2 == 0<16> l000C17D2
-l000C17C6:
-	r2r0_81 = CONVERT(r2, uint16, uint32) (alias)
-	r2 = r2r0_81 %u r1_18
-	r3_19 = r2r0_81 /u r1_18
-l000C17D2:
-	r0_162 = SEQ(r2, r0) /u r1_18
-	r2_163 = r3_19
 l000C17FE:
 	return SEQ(r2_163, r0_162)
 fn000C17B4_exit:

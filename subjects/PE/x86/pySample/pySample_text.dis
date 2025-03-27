@@ -1,6 +1,5 @@
 PyObject * fn10001000(PyObject * ptrArg04, PyObject * ptrArg08)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  Stack +0008:[0..31]
 // LiveOut: eax:[0..31]-fn10001000
 // Trashed: eax
@@ -9,16 +8,15 @@ fn10001000_entry:
 l10001000:
 	eax_17 = PyArg_ParseTuple(ptrArg08, 0x10002144<32>, &dwLoc04, &dwLoc08)
 	branch eax_17 != 0<32> l10001027
-l10001027:
-	return Py_BuildValue(0x1000214C<32>, Mem16[&dwLoc04:word32] + Mem16[&dwLoc08:word32])
 l10001023:
 	return eax_17
+l10001027:
+	return Py_BuildValue(0x1000214C<32>, Mem16[&dwLoc04:word32] + Mem16[&dwLoc08:word32])
 fn10001000_exit:
 
 
 PyObject * fn10001050(PyObject * ptrArg04, PyObject * ptrArg08)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  Stack +0008:[0..31]
 // LiveOut: eax:[0..31]-fn10001050
 // Trashed: eax
@@ -27,16 +25,15 @@ fn10001050_entry:
 l10001050:
 	eax_17 = PyArg_ParseTuple(ptrArg08, 0x10002150<32>, &dwLoc08, &dwLoc04)
 	branch eax_17 != 0<32> l10001078
-l10001078:
-	return Py_BuildValue(0x1000214C<32>, Mem16[&dwLoc08:word32] - Mem16[&dwLoc04:word32])
 l10001074:
 	return eax_17
+l10001078:
+	return Py_BuildValue(0x1000214C<32>, Mem16[&dwLoc08:word32] - Mem16[&dwLoc04:word32])
 fn10001050_exit:
 
 
 PyObject * fn100010A0(PyObject * ptrArg04, PyObject * ptrArg08)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  Stack +0008:[0..31]
 // LiveOut: eax:[0..31]-fn100010A0
 // Trashed: eax
@@ -45,16 +42,15 @@ fn100010A0_entry:
 l100010A0:
 	eax_17 = PyArg_ParseTuple(ptrArg08, 0x10002158<32>, &dwLoc08, &dwLoc04)
 	branch eax_17 != 0<32> l100010C8
-l100010C8:
-	return Py_BuildValue(0x1000214C<32>, CONVERT(Mem16[&dwLoc08:word32], int32, int64) /32 Mem16[&dwLoc04:word32])
 l100010C4:
 	return eax_17
+l100010C8:
+	return Py_BuildValue(0x1000214C<32>, CONVERT(Mem16[&dwLoc08:word32], int32, int64) /32 Mem16[&dwLoc04:word32])
 fn100010A0_exit:
 
 
 PyObject * fn100010F0(PyObject * ptrArg04, PyObject * ptrArg08)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  Stack +0008:[0..31]
 // LiveOut: eax:[0..31]-fn100010F0
 // Trashed: eax
@@ -63,16 +59,15 @@ fn100010F0_entry:
 l100010F0:
 	eax_17 = PyArg_ParseTuple(ptrArg08, 0x10002160<32>, &rLoc08, &rLoc04)
 	branch eax_17 != 0<32> l10001118
-l10001118:
-	return Py_BuildValue(0x10002168<32>, CONVERT(Mem16[&rLoc08:real32], real32, real64) / CONVERT(Mem16[&rLoc04:real32], real32, real64))
 l10001114:
 	return eax_17
+l10001118:
+	return Py_BuildValue(0x10002168<32>, CONVERT(Mem16[&rLoc08:real32], real32, real64) / CONVERT(Mem16[&rLoc04:real32], real32, real64))
 fn100010F0_exit:
 
 
 void initpySample()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: SCZO eax Top
@@ -86,7 +81,6 @@ initpySample_exit:
 
 word32 fn100011E9(word32 dwArg04, word32 dwArg08, word32 dwArg0C, word32 & ebxOut, word32 & esiOut, word32 & ediOut)
 // stackDelta: 16; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn10001388
 // MayUse:  fs:[0..15] Stack +0004:[0..31] Stack +0008:[0..31] Stack +000C:[0..31]
@@ -99,75 +93,40 @@ l100011E9:
 	branch dwArg08 != 0<32> l10001202
 l100011F4:
 	branch Mem8[0x10003070<p32>:word32] <= 0<32> l10001233
-l10001233:
-	eax_14 = 0<32>
 l100011FC:
 	Mem19[0x10003070<p32>:word32] = Mem8[0x10003070<p32>:word32] - 1<32>
 l10001202:
 	Mem39[0x100033A4<p32>:word32] = Mem24[adjust_fdiv:word32]
 	esp_122 = fp - 16<i32>
 	branch dwArg08 != 1<32> l100012E8
-l100012E8:
-	branch dwArg08 != 0<32> l1000137E
-l100012F0:
-l10001308:
-	branch InterlockedCompareExchange(0x100033AC<p32>, 1<32>, 0<32>) != 0<32> l100012FD
-l100012FD:
-	Sleep(0x3E8<32>)
-l10001312:
-	branch Mem54[0x100033A8<p32>:word32] == 2<32> l10001326
-l10001326:
-	eax_71 = _decode_pointer(Mem54[0x100033B4<p32>:word32])
-	esp_109 = fp - 16<i32>
-	branch eax_71 == 0<32> l1000136F
-l1000133B:
-	esp_101 = fp - 16<i32>
-	edi_85 = _decode_pointer(Mem69[0x100033B0<p32>:word32])
-l10001350:
-	edi_85 = edi_85 - 4<32>
-	branch edi_85 >=u eax_71 l10001348
-l10001348:
-	eax_92 = Mem81[edi_85:word32]
-	branch eax_92 == 0<32> l10001350
-l1000134E:
-	call eax_92 (retsize: 4;)
-		uses: ecx:ecx_103,edx:edx_296,Mem:Mem81
-		defs: ecx:ecx_103,edx:edx_296,esp:esp_101
-l10001357:
-	esp_106 = esp_101 - 4<i32>
-	Mem107[esp_106:word32] = eax_71
-	free(Mem107[esp_106:(ptr32 void)])
-	eax_110 = _encoded_null()
-	Mem111[0x100033B0<p32>:word32] = eax_110
-	Mem112[0x100033B4<p32>:word32] = eax_110
-	esp_109 = esp_106 + 4<i32>
-l1000136F:
-	esp_114 = esp_109 - 4<i32>
-	Mem115[esp_114:word32] = 0<32>
-	Mem118[esp_114 - 4<i32>:word32] = 0x100033AC<p32>
-	Mem120[0x100033A8<p32>:word32] = 0<32>
-	InterlockedExchange(Mem120[esp_114 - 4<i32>:(ptr32 LONG)], Mem120[esp_114:LONG])
-	esp_122 = esp_114 + 4<32>
-l1000131C:
-	_amsg_exit(0x1F<32>)
 l1000121C:
 	edi_128 = Mem39[Mem39[fs:0x18<32>:word32] + 4<i32>:word32]
+	goto l1000124B
+l10001233:
+	eax_14 = 0<32>
+	goto l10001384
+l1000123A:
+	branch eax_140 == edi_128 l10001255
+l1000123E:
+	Sleep(0x3E8<32>)
 l1000124B:
 	eax_140 = InterlockedCompareExchange(0x100033AC<p32>, edi_128, 0<32>)
 	branch eax_140 != 0<32> l1000123A
-l1000123A:
-	branch eax_140 == edi_128 l10001255
+l10001253:
+	goto l10001258
 l10001255:
 	ebp_150 = 1<32>
-l1000123E:
-	Sleep(0x3E8<32>)
-l10001253:
 l10001258:
 	branch Mem139[0x100033A8<p32>:word32] == 0<32> l1000126D
+l10001264:
+	_amsg_exit(0x1F<32>)
 l1000126D:
 	Mem172[0x100033A8<p32>:word32] = 1<32>
 	esp_122 = fp - 16<i32>
 	branch _initterm_e(0x100020A0<32>, 0x100020A8<32>) == 0<32> l10001293
+l1000128C:
+	eax_14 = 0<32>
+	goto l10001381
 l10001293:
 	_initterm(0x10002098<32>, 0x1000209C<32>)
 	Mem188[0x100033A8<p32>:word32] = 2<32>
@@ -186,10 +145,54 @@ l100012CE:
 		defs: ecx:ecx_250,edx:edx_252,esp:esp_248
 l100012DD:
 	Mem256[0x10003070<p32>:word32] = Mem254[0x10003070<p32>:word32] + 1<32>
+	goto l1000137E
+l100012E8:
+	branch dwArg08 != 0<32> l1000137E
+l100012F0:
+	goto l10001308
+l100012FD:
+	Sleep(0x3E8<32>)
+l10001308:
+	branch InterlockedCompareExchange(0x100033AC<p32>, 1<32>, 0<32>) != 0<32> l100012FD
+l10001312:
+	branch Mem54[0x100033A8<p32>:word32] == 2<32> l10001326
+l1000131C:
+	_amsg_exit(0x1F<32>)
+l10001326:
+	eax_71 = _decode_pointer(Mem54[0x100033B4<p32>:word32])
+	esp_109 = fp - 16<i32>
+	branch eax_71 == 0<32> l1000136F
+l1000133B:
+	esp_101 = fp - 16<i32>
+	edi_85 = _decode_pointer(Mem69[0x100033B0<p32>:word32])
+	goto l10001350
+l10001348:
+	eax_92 = Mem81[edi_85:word32]
+	branch eax_92 == 0<32> l10001350
+l1000134E:
+	call eax_92 (retsize: 4;)
+		uses: ecx:ecx_103,edx:edx_296,Mem:Mem81
+		defs: ecx:ecx_103,edx:edx_296,esp:esp_101
+l10001350:
+	edi_85 = edi_85 - 4<32>
+	branch edi_85 >=u eax_71 l10001348
+l10001357:
+	esp_106 = esp_101 - 4<i32>
+	Mem107[esp_106:word32] = eax_71
+	free(Mem107[esp_106:(ptr32 void)])
+	eax_110 = _encoded_null()
+	Mem111[0x100033B0<p32>:word32] = eax_110
+	Mem112[0x100033B4<p32>:word32] = eax_110
+	esp_109 = esp_106 + 4<i32>
+l1000136F:
+	esp_114 = esp_109 - 4<i32>
+	Mem115[esp_114:word32] = 0<32>
+	Mem118[esp_114 - 4<i32>:word32] = 0x100033AC<p32>
+	Mem120[0x100033A8<p32>:word32] = 0<32>
+	InterlockedExchange(Mem120[esp_114 - 4<i32>:(ptr32 LONG)], Mem120[esp_114:LONG])
+	esp_122 = esp_114 + 4<32>
 l1000137E:
 	eax_14 = 1<32>
-l1000128C:
-	eax_14 = 0<32>
 l10001381:
 	esp_272 = esp_122 + 4<i32>
 	edi = Mem269[esp_122:word32]
@@ -201,13 +204,10 @@ l10001384:
 	ediOut = edi
 	return eax_14
 fn100011E9_exit:
-l10001264:
-	_amsg_exit(0x1F<32>)
 
 
 word32 fn10001388(word32 ecx, word32 edx, word32 ebx, word32 esi, word32 edi)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      DllMain
 // MayUse:  ebx:[0..31] ecx:[0..31] edi:[0..31] edx:[0..31] esi:[0..31] fs:[0..15]
@@ -228,6 +228,9 @@ l10001388:
 	branch edx != 0<32> l100013C3
 l100013B3:
 	branch Mem29[0x10003070<p32>:word32] != 0<32> l100013C3
+l100013BB:
+	Mem258[ebp_13 - 28<i32>:word32] = 0<32>
+	goto l1000147A
 l100013C3:
 	branch edx == 1<32> l100013CC
 l100013C7:
@@ -291,8 +294,6 @@ l1000144C:
 	branch Mem227[0x100020CC<p32>:word32] == 0<32> l1000147A
 l10001455:
 	Mem257[ebp_13 - 28<i32>:word32] = fn00000000(ebx_204, esi_206, edi_207)
-l100013BB:
-	Mem258[ebp_13 - 28<i32>:word32] = 0<32>
 l1000147A:
 	Mem263[ebp_13 - 4<i32>:word32] = 0<32>
 	Mem267[ebp_13 - 4<i32>:word32] = 0xFFFFFFFE<32>
@@ -305,7 +306,6 @@ fn10001388_exit:
 
 void fn10001493()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn10001388
 // MayUse: 
@@ -321,7 +321,6 @@ fn10001493_exit:
 
 BOOL DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
 // stackDelta: 16; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  ebx:[0..31] edi:[0..31] esi:[0..31] fs:[0..15] Stack +0008:[0..31] Stack +000C:[0..31]
 // LiveOut: eax:[0..31]-DllMain
 // Trashed: eax
@@ -338,7 +337,6 @@ DllMain_exit:
 
 word32 fn100016D0(word32 dwArg04)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn10001742
 // MayUse:  Stack +0004:[0..31]
@@ -348,19 +346,18 @@ word32 fn100016D0(word32 dwArg04)
 fn100016D0_entry:
 l100016D0:
 	branch Mem0[dwArg04:word16] == 0x5A4D<16> l100016DE
+l100016DB:
+	return 0<32>
 l100016DE:
 	eax_9 = Mem0[dwArg04 + 60<i32>:word32] + dwArg04
 	branch Mem0[eax_9:word32] != 0x4550<32> l100016DB
 l100016EB:
 	return CONVERT(Mem0[eax_9 + 24<i32>:word16] == 0x10B<16>, bool, uint32)
-l100016DB:
-	return 0<32>
 fn100016D0_exit:
 
 
 word32 fn10001700(word32 dwArg04, word32 dwArg08)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn10001742
 // MayUse:  Stack +0004:[0..31] Stack +0008:[0..31]
@@ -393,7 +390,6 @@ fn10001700_exit:
 
 word32 fn10001742(word32 ebx, word32 esi, word32 edi, word32 & ediOut)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn100011E9
 // MayUse:  ebx:[0..31] edi:[0..31] esi:[0..31] fs:[0..15]
@@ -411,12 +407,13 @@ l10001762:
 	dwLoc0C_90 = eax_38 - 0x10000000<p32>
 	eax_45 = fn10001700(0x10000000<p32>, eax_38 - 0x10000000<p32>)
 	branch eax_45 == 0<32> l1000179F
-l1000179F:
-	Mem62[ebp_13 - 4<i32>:word32] = 0xFFFFFFFE<32>
-	eax_63 = 0<32>
 l10001774:
 	eax_63 = ~(Mem44[eax_45 + 36<i32>:word32] >>u 0x1F<32>) & 1<32>
 	Mem74[ebp_13 - 4<i32>:word32] = 0xFFFFFFFE<32>
+	goto l100017A8
+l1000179F:
+	Mem62[ebp_13 - 4<i32>:word32] = 0xFFFFFFFE<32>
+	eax_63 = 0<32>
 l100017A8:
 	ediOut = fn1000182D(ebp_13, dwLoc0C_90)
 	return eax_63
@@ -425,7 +422,6 @@ fn10001742_exit:
 
 word32 fn100017C6(word32 dwArg04, word32 dwArg08)
 // stackDelta: 16; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn10001388
 // MayUse:  Stack +0004:[0..31] Stack +0008:[0..31]
@@ -446,7 +442,6 @@ fn100017C6_exit:
 
 word32 fn100017E8(word32 ebx, word32 esi, word32 edi, word32 dwArg00, word32 dwArg08)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn10001388
 //      fn10001742
@@ -469,7 +464,6 @@ fn100017E8_exit:
 
 word32 fn1000182D(word32 ebp, word32 dwArg00)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn10001388
 //      fn10001742
@@ -487,7 +481,6 @@ fn1000182D_exit:
 
 void fn10001864()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      DllMain
 // MayUse: 
@@ -502,23 +495,25 @@ l10001864:
 	branch eax_9 == 0xBB40E64E<32> l10001894
 l10001887:
 	branch (eax_9 & 0xFFFF0000<32>) == 0<32> l10001894
+l1000188B:
+	Mem79[0x10003004<p32>:word32] = ~eax_9
+	goto l100018F4
 l10001894:
 	GetSystemTimeAsFileTime(&tLoc0C)
 	esi_47 = Mem38[&tLoc0C + 4<i32>:word32] ^ Mem38[&tLoc0C:word32] ^ GetCurrentProcessId() ^ GetCurrentThreadId() ^ GetTickCount()
 	QueryPerformanceCounter(&tLoc14)
 	esi_55 = esi_47 ^ (Mem50[&tLoc14 + 4<i32>:word32] ^ Mem50[&tLoc14:word32])
 	branch esi_55 != 0xBB40E64E<32> l100018DA
+l100018D3:
+	esi_55 = 0xBB40E64F<32>
+	goto l100018E5
 l100018DA:
 	branch (esi_55 & 0xFFFF0000<32>) != 0<32> l100018E5
 l100018DE:
 	esi_55 = esi_55 | esi_55 << 0x10<32>
-l100018D3:
-	esi_55 = 0xBB40E64F<32>
 l100018E5:
 	Mem72[0x10003000<p32>:word32] = esi_55
 	Mem74[0x10003004<p32>:word32] = ~esi_55
-l1000188B:
-	Mem79[0x10003004<p32>:word32] = ~eax_9
 l100018F4:
 	return
 fn10001864_exit:

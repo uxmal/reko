@@ -1,6 +1,5 @@
 word32 fn00011000()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn000110E8
 // MayUse: 
@@ -22,7 +21,6 @@ fn00011000_exit:
 
 DWORD Win32CrtStartup()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut: r2:[0..31]-Win32CrtStartup
 // Trashed: r2
@@ -36,7 +34,6 @@ Win32CrtStartup_exit:
 
 word32 fn000110E8()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      Win32CrtStartup
 // MayUse: 
@@ -55,7 +52,6 @@ fn000110E8_exit:
 
 void fn0001116C(word32 r2, word32 r4)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  r2:[0..31] r4:[0..31]
 // LiveOut:
 // Trashed: r2 r30 r4 r5 r8 ra sp
@@ -73,7 +69,6 @@ fn0001116C_exit:
 
 void fn000111C4()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      Win32CrtStartup
 // MayUse: 
@@ -86,6 +81,9 @@ l000111C4:
 	branch r8_7 == 0<32> l0001120C
 l000111E4:
 	branch r8_7 == 0xB064<32> l0001120C
+l000111F4:
+	Mem42[0x13034<32>:word32] = ~r8_7
+	goto l00011268
 l0001120C:
 	COREDLL.dll!Ordinal_2696()
 	r8_25 = r2_17 >>u 0x10<8> ^ r2_17 & 0xFFFF<32>
@@ -96,8 +94,6 @@ l00011244:
 l0001124C:
 	Mem34[0x13030<32>:word32] = dwLoc0C_51
 	Mem38[0x13034<32>:word32] = ~dwLoc0C_51
-l000111F4:
-	Mem42[0x13034<32>:word32] = ~r8_7
 l00011268:
 	return
 fn000111C4_exit:
@@ -105,7 +101,6 @@ fn000111C4_exit:
 
 void fn00011278(word32 r4)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn000110E8
 // MayUse:  r4:[0..31]
@@ -121,7 +116,6 @@ fn00011278_exit:
 
 void fn000112A8(word32 r4, word32 r5, word32 r6)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn00011278
 //      fn000113D8
@@ -135,37 +129,37 @@ fn000112A8_entry:
 l000112A8:
 	Mem16[0x13038<32>:byte] = SLICE(r6, byte, 0)
 	branch r5 != 0<32> l0001138C
-l0001138C:
-	fn0001147C(0x12018<32>, 0x1201C<32>)
-	branch r6 != 0<32> l000113C8
-l000113C8:
-	return
-fn000112A8_exit:
-l000113B0:
-	TerminateProcess(fn00011460(), r4)
 l000112DC:
 	branch Mem16[0x13040<32>:word32] == 0<32> l00011374
 l000112EC:
 	Mem39[0x1303C<32>:word32] = Mem35[0x1303C<32>:word32] + -4<i32>
 	branch CONVERT(Mem39[0x1303C<32>:word32] <u Mem39[0x13040<32>:word32], bool, word32) != 0<32> l0001134C
+l0001131C:
+	branch Mem39[Mem39[0x1303C<32>:word32]:word32] == 0<32> l00011344
+l00011330:
+	r8_64 = Mem39[Mem39[0x1303C<32>:word32]:word32]
+	call r8_64 (retsize: 0;)
+		uses: Mem:Mem39,r4:r4,r5:r5,r6:r6,r8:r8_64
+l00011344:
+	goto l000112EC
 l0001134C:
 	free(Mem39[0x13040<32>:word32])
 	Mem48[0x1303C<32>:word32] = 0<32>
 	Mem52[0x13040<32>:word32] = Mem48[0x1303C<32>:word32]
 l00011374:
 	fn0001147C(0x12010<32>, 0x12014<32>)
-l0001131C:
-	branch Mem39[Mem39[0x1303C<32>:word32]:word32] == 0<32> l00011344
-l00011344:
-l00011330:
-	r8_64 = Mem39[Mem39[0x1303C<32>:word32]:word32]
-	call r8_64 (retsize: 0;)
-		uses: Mem:Mem39,r4:r4,r5:r5,r6:r6,r8:r8_64
+l0001138C:
+	fn0001147C(0x12018<32>, 0x1201C<32>)
+	branch r6 != 0<32> l000113C8
+l000113B0:
+	TerminateProcess(fn00011460(), r4)
+l000113C8:
+	return
+fn000112A8_exit:
 
 
 void fn000113D8(word32 r4)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  r4:[0..31]
 // LiveOut:
 // Trashed: r4 r5 r6 r8 r9
@@ -179,7 +173,6 @@ fn000113D8_exit:
 
 void fn00011408()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: r4 r5 r6 r8 r9
@@ -193,7 +186,6 @@ fn00011408_exit:
 
 void fn00011434()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: r4 r5 r6 r8 r9
@@ -207,7 +199,6 @@ fn00011434_exit:
 
 word32 fn00011460()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn000112A8
 // MayUse: 
@@ -222,7 +213,6 @@ fn00011460_exit:
 
 void fn0001147C(word32 r4, word32 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn000112A8
 //      fn000114E4
@@ -235,20 +225,20 @@ l0001147C:
 	dwArg00_33 = r4
 l0001148C:
 	branch CONVERT(dwArg00_33 <u r5, bool, word32) == 0<32> l000114D4
+l000114A0:
+	branch Mem11[dwArg00_33:word32] == 0<32> l000114C0
+l000114B0:
+	fn00000000()
+l000114C0:
+	dwArg00_33 = dwArg00_33 + 4<i32>
+	goto l0001148C
 l000114D4:
 	return
 fn0001147C_exit:
-l000114A0:
-	branch Mem11[dwArg00_33:word32] == 0<32> l000114C0
-l000114C0:
-	dwArg00_33 = dwArg00_33 + 4<i32>
-l000114B0:
-	fn00000000()
 
 
 void fn000114E4()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn000110E8
 // MayUse: 
@@ -265,7 +255,6 @@ fn000114E4_exit:
 
 word32 fn0001152C()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn000116FC
 // MayUse: 
@@ -277,6 +266,9 @@ l0001152C:
 	r8_10 = Mem8[0x13040<32>:word32]
 	sp_3 = fp + -56<i32>
 	branch Mem11[0x1303C<32>:word32] >= r8_10 l00011588
+l00011578:
+	dwLoc0C = 0<32>
+	goto l000116E8
 l00011588:
 	branch r8_10 == 0<32> l000115B0
 l000115A0:
@@ -286,6 +278,9 @@ l000115B0:
 	branch CONVERT(Mem35[sp_3 + 24<i32>:word32] <u Mem35[sp_3 + 36<i32>:word32], bool, word32) == 0<32> l000116B0
 l000115C4:
 	branch Mem35[sp_3 + 28<i32>:word32] != 0<32> l000115E8
+l000115D0:
+	Mem69[sp_3 + 20<i32>:word32] = malloc(16<i32>)
+	goto l0001166C
 l000115E8:
 	Mem42[sp_3 + 32<i32>:word32] = Mem35[sp_3 + 24<i32>:word32] << 1<8>
 	branch CONVERT(Mem42[sp_3 + 24<i32>:word32] <u 513<i32>, bool, word32) != 0<32> l00011610
@@ -301,10 +296,11 @@ l00011644:
 	branch CONVERT(Mem58[sp_3 + 24<i32>:word32] <u Mem58[sp_3 + 36<i32>:word32], bool, word32) == 0<32> l0001166C
 l00011658:
 	Mem66[sp_3 + 20<i32>:word32] = realloc(Mem58[sp_3 + 28<i32>:word32], Mem58[sp_3 + 36<i32>:word32])
-l000115D0:
-	Mem69[sp_3 + 20<i32>:word32] = malloc(16<i32>)
 l0001166C:
 	branch Mem71[sp_3 + 20<i32>:word32] != 0<32> l00011688
+l00011678:
+	Mem100[sp_3 + 44<i32>:word32] = 0<32>
+	goto l000116E8
 l00011688:
 	Mem80[sp_3 + 40<i32>:word32] = Mem71[sp_3 + 20<i32>:word32] + __align(Mem71[sp_3 + 40<i32>:word32] - Mem71[sp_3 + 28<i32>:word32], 4<i32>)
 	Mem82[sp_3 + 28<i32>:word32] = Mem80[sp_3 + 20<i32>:word32]
@@ -314,10 +310,6 @@ l000116B0:
 	Mem93[0x1303C<32>:word32] = Mem90[sp_3 + 40<i32>:word32]
 	Mem96[0x13040<32>:word32] = Mem93[sp_3 + 28<i32>:word32]
 	Mem98[sp_3 + 44<i32>:word32] = Mem96[sp_3 + 56<i32>:word32]
-l00011678:
-	Mem100[sp_3 + 44<i32>:word32] = 0<32>
-l00011578:
-	dwLoc0C = 0<32>
 l000116E8:
 	return dwLoc0C
 fn0001152C_exit:
@@ -325,7 +317,6 @@ fn0001152C_exit:
 
 void fn000116FC()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: r2 r4 r5 r8 r9
@@ -333,8 +324,9 @@ void fn000116FC()
 fn000116FC_entry:
 l000116FC:
 	branch fn0001152C() == 0<32> l00011728
-l00011728:
 l0001171C:
+	goto l00011730
+l00011728:
 l00011730:
 	return
 fn000116FC_exit:

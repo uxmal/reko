@@ -1,26 +1,24 @@
 void yyerror()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-yyerror_exit:
 yyerror_entry:
 l400000000002FF80:
+yyerror_exit:
 
 
 void yyparse()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-yyparse_exit:
 yyparse_entry:
 l4000000000037B00:
+yyparse_exit:
 
 

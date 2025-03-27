@@ -1,6 +1,5 @@
 void fn12340000(word32 ecx)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  ecx:[0..31]
 // LiveOut:
 // Trashed: SCZO eax ecx edi edx esi

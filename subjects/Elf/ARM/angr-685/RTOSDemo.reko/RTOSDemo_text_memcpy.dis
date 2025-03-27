@@ -1,6 +1,5 @@
 bool memcpy(word32 r0, word32 r1, word32 r2, word32 & r4Out, word32 & r5Out, word32 & r6Out, word32 & r7Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      prvCopyDataToQueue
 //      prvCopyDataFromQueue
@@ -16,8 +15,6 @@ l0000A5C4:
 	branch r2 <=u 0xF<32> l0000A62C
 l0000A5CC:
 	branch (r1 | r0) << 30<i32> != 0<32> l0000A642
-l0000A642:
-	r5_142 = r0
 l0000A5D4:
 	r4_28 = r1
 	r3_29 = r0
@@ -35,8 +32,6 @@ l0000A5FC:
 	r5_142 = r0 + (r6_55 + 0x10<32>)
 	r1 = r1 + (r6_55 + 0x10<32>)
 	branch (r2 & 0xF<32>) <=u 3<32> l0000A646
-l0000A646:
-	r2 = r2 & 0xF<32>
 l0000A60C:
 	r6_66 = (r2 & 0xF<32>) - 4<32>
 	r3_67 = 0<32>
@@ -64,6 +59,12 @@ l0000A63C:
 	r6Out = r6_131
 	r7Out = r7_132
 	return Z_183 != 0<32>
+l0000A642:
+	r5_142 = r0
+	goto l0000A630
+l0000A646:
+	r2 = r2 & 0xF<32>
+	goto l0000A62C
 memcpy_exit:
 
 

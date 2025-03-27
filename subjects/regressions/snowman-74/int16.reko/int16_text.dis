@@ -1,6 +1,5 @@
 int32 get(int32 dwArg04)
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  ecx:[0..31] Stack +0004:[0..31]
 // LiveOut: eax:[0..31]-get
 // Trashed: eax
@@ -13,7 +12,6 @@ l10071000:
 
 BOOL DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
 // stackDelta: 16; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut: eax:[0..31]-DllMain
 // Trashed: eax

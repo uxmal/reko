@@ -1,390 +1,360 @@
 void dispose_function_def_contents()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-dispose_function_def_contents_exit:
 dispose_function_def_contents_entry:
 l400000000004C700:
+dispose_function_def_contents_exit:
 
 
 void dispose_function_def()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-dispose_function_def_exit:
 dispose_function_def_entry:
 l400000000004C7C0:
+dispose_function_def_exit:
 
 
 void close_fd_bitmap()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-close_fd_bitmap_exit:
 close_fd_bitmap_entry:
 l400000000004CF00:
+close_fd_bitmap_exit:
 
 
 void dispose_fd_bitmap()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-dispose_fd_bitmap_exit:
 dispose_fd_bitmap_entry:
 l400000000004D0C0:
+dispose_fd_bitmap_exit:
 
 
 void new_fd_bitmap()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-new_fd_bitmap_exit:
 new_fd_bitmap_entry:
 l400000000004EE40:
+new_fd_bitmap_exit:
 
 
 void executing_line_number()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-executing_line_number_exit:
 executing_line_number_entry:
 l400000000004EF40:
+executing_line_number_exit:
 
 
 void dispose_exec_redirects()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-dispose_exec_redirects_exit:
 dispose_exec_redirects_entry:
 l400000000004F0C0:
+dispose_exec_redirects_exit:
 
 
 void getcoprocbypid()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-getcoprocbypid_exit:
 getcoprocbypid_entry:
 l400000000004F140:
+getcoprocbypid_exit:
 
 
 void getcoprocbyname()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-getcoprocbyname_exit:
 getcoprocbyname_entry:
 l400000000004F1C0:
+getcoprocbyname_exit:
 
 
 void coproc_init()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-coproc_init_exit:
 coproc_init_entry:
 l400000000004F2C0:
+coproc_init_exit:
 
 
 void coproc_alloc()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-coproc_alloc_exit:
 coproc_alloc_entry:
 l400000000004F340:
+coproc_alloc_exit:
 
 
 void coproc_close()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-coproc_close_exit:
 coproc_close_entry:
 l400000000004F440:
+coproc_close_exit:
 
 
 void coproc_closeall()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-coproc_closeall_exit:
 coproc_closeall_entry:
 l400000000004F540:
+coproc_closeall_exit:
 
 
 void coproc_rclose()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-coproc_rclose_exit:
 coproc_rclose_entry:
 l400000000004F580:
+coproc_rclose_exit:
 
 
 void coproc_wclose()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-coproc_wclose_exit:
 coproc_wclose_entry:
 l400000000004F640:
+coproc_wclose_exit:
 
 
 void coproc_fdsave()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-coproc_fdsave_exit:
 coproc_fdsave_entry:
 l400000000004F700:
+coproc_fdsave_exit:
 
 
 void coproc_fdrestore()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-coproc_fdrestore_exit:
 coproc_fdrestore_entry:
 l400000000004F740:
+coproc_fdrestore_exit:
 
 
 void coproc_pidchk()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-coproc_pidchk_exit:
 coproc_pidchk_entry:
 l400000000004F780:
+coproc_pidchk_exit:
 
 
 void coproc_setvars()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-coproc_setvars_exit:
 coproc_setvars_entry:
 l400000000004F800:
+coproc_setvars_exit:
 
 
 void coproc_fdclose()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-coproc_fdclose_exit:
 coproc_fdclose_entry:
 l400000000004FC40:
+coproc_fdclose_exit:
 
 
 void coproc_checkfd()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-coproc_checkfd_exit:
 coproc_checkfd_entry:
 l400000000004FCC0:
+coproc_checkfd_exit:
 
 
 void coproc_fdchk()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-coproc_fdchk_exit:
 coproc_fdchk_entry:
 l400000000004FD80:
+coproc_fdchk_exit:
 
 
 void coproc_unsetvars()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-coproc_unsetvars_exit:
 coproc_unsetvars_entry:
 l400000000004FDC0:
+coproc_unsetvars_exit:
 
 
 void coproc_dispose()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-coproc_dispose_exit:
 coproc_dispose_entry:
 l400000000004FF00:
+coproc_dispose_exit:
 
 
 void coproc_reap()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-coproc_reap_exit:
 coproc_reap_entry:
 l4000000000050040:
+coproc_reap_exit:
 
 
 void coproc_flush()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-coproc_flush_exit:
 coproc_flush_entry:
 l40000000000500C0:
+coproc_flush_exit:
 
 
 void setup_async_signals()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-setup_async_signals_exit:
 setup_async_signals_entry:
 l4000000000050100:
+setup_async_signals_exit:
 
 
 void shell_execve()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-shell_execve_exit:
 shell_execve_entry:
 l40000000000501C0:
+shell_execve_exit:
 
 
 void execute_command_internal()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-execute_command_internal_exit:
 execute_command_internal_entry:
 l4000000000053C40:
+execute_command_internal_exit:
 
 
 void execute_shell_function()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-execute_shell_function_exit:
 execute_shell_function_entry:
 l400000000005B380:
+execute_shell_function_exit:
 
 

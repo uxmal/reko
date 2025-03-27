@@ -1,14 +1,17 @@
 void fn0000(selector __data)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  __data:[0..15]
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-fn0000_exit:
 fn0000_entry:
 l0000:
+	goto l002C
+l0020:
+	fn0003()
+	fn0003()
+	goto l0020
 l002C:
 	R0_10 = 0x7F<8>
 l002F:
@@ -16,14 +19,12 @@ l002F:
 	R0_10 = R0_10 - 1<8>
 	branch R0_10 != 0<8> l002F
 l0032:
-l0020:
-	fn0003()
-	fn0003()
+	goto l0020
+fn0000_exit:
 
 
 void fn0003()
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0000
 // MayUse: 

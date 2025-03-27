@@ -1,6 +1,5 @@
 void fn0000000000002760(word64 r2)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0000000000002780
 // MayUse:  r2:[0..63]
@@ -18,7 +17,6 @@ fn0000000000002760_exit:
 
 void fn0000000000002780(word64 r2, word64 lr, word64 xer)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  lr:[0..63] r2:[0..63] xer:[0..63]
 // LiveOut:
 // Trashed: cr0 ctr r0 r10 r11 r12 r2 r3 r4 r9 xer

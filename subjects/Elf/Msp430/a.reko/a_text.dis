@@ -1,12 +1,10 @@
 void fn00004000(word16 sr, word16 r8)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  r8:[0..15] sr:[0..15]
 // LiveOut:
 // Trashed:
 // Preserved: sp
 // Terminates process
-fn00004000_exit:
 fn00004000_entry:
 l00004000:
 	Mem3[0x0120<p16>:word16] = 0x5A80<16>
@@ -28,38 +26,37 @@ l0000402C:
 l00004036:
 l00004036_thunk_main:
 	main(sr, r8)
+fn00004000_exit:
 
 
 void task_idle(word16 r8)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  r8:[0..15]
 // LiveOut:
 // Trashed:
 // Preserved: sp
 // Terminates process
-task_idle_exit:
 task_idle_entry:
 l4048:
 	r10_18 = xTaskGetTickCount() + 0x3E8<16>
 l405A:
 	r15_24 = xTaskGetTickCount()
 	branch r10_18 - r15_24 >= 1<16> l4080
-l4080:
 l406A:
 	printf(r8, 0x4040<16>)
 	r10_18 = r15_24 + 0x3E8<16>
+	goto l405A
+l4080:
+task_idle_exit:
 
 
 void task_1(word16 sr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  sr:[0..15]
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-task_1_exit:
 task_1_entry:
 l4096:
 	Mem10[&tLoc02:word16] = xTaskGetTickCount()
@@ -67,17 +64,17 @@ l40A0:
 	Mem14[0x0031<p16>:byte] = Mem11[0x0031<p16>:byte] ^ 1<8>
 	putchar(sr, 0x58<16>)
 	vTaskDelayUntil(0x1F4<16>, &tLoc02)
+	goto l40A0
+task_1_exit:
 
 
 void task_2(word16 sr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  sr:[0..15]
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-task_2_exit:
 task_2_entry:
 l40BC:
 	Mem10[&tLoc02:word16] = xTaskGetTickCount()
@@ -85,17 +82,17 @@ l40C6:
 	Mem14[0x0031<p16>:byte] = Mem11[0x0031<p16>:byte] ^ 2<8>
 	putchar(sr, 0x59<16>)
 	vTaskDelayUntil(0xFA<16>, &tLoc02)
+	goto l40C6
+task_2_exit:
 
 
 void task_3(word16 sr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  sr:[0..15]
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-task_3_exit:
 task_3_entry:
 l40E2:
 	Mem10[&tLoc02:word16] = xTaskGetTickCount()
@@ -103,11 +100,12 @@ l40EC:
 	Mem14[0x0031<p16>:byte] = Mem11[0x0031<p16>:byte] ^ 4<8>
 	putchar(sr, 0x5A<16>)
 	vTaskDelayUntil(0x19<16>, &tLoc02)
+	goto l40EC
+task_3_exit:
 
 
 void main(word16 sr, word16 r8)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn00004000
 // MayUse:  r8:[0..15] sr:[0..15]
@@ -115,7 +113,6 @@ void main(word16 sr, word16 r8)
 // Trashed:
 // Preserved: sp
 // Terminates process
-main_exit:
 main_entry:
 l414C:
 	__set_stackpointer(0xA00<16>)
@@ -130,11 +127,12 @@ l414C:
 	uart_putchar_isr_mode(1<16>)
 	vTaskStartScheduler(xTaskCreate(xTaskCreate(xTaskCreate(xTaskCreate(sr, 0x32<16>, 0x414B<16>, 3<16>, out r15_161), 0x32<16>, 0x414B<16>, 3<16>, out r15_162), 0x32<16>, 0x414B<16>, 3<16>, out r15_163), 0x96<16>, 0x414B<16>, 0<16>, out r15_164))
 l5AD8:
+	goto l5AD8
+main_exit:
 
 
 byte msp430_compute_modulator_bits(ui32 r13_r12, ui32 r15_r14, word16 wArg02)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      init_uart_isr
 // MayUse:  Sequence r13:r12:[0..31] Sequence r15:r14:[0..31] Stack +0002:[0..15]
@@ -180,7 +178,6 @@ msp430_compute_modulator_bits_exit:
 
 void init_uart_isr(word16 r14, word32 dwArg02, byte bArg06)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn00004000
 // MayUse:  r14:[0..15] Stack +0002:[0..31] Stack +0006:[0..7]
@@ -221,7 +218,6 @@ init_uart_isr_exit:
 
 void getchar(word16 sr)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  sr:[0..15]
 // LiveOut:
 // Trashed: VNZC r12 r13 r14 r15 r4 r5 r6 r7 r8
@@ -229,8 +225,9 @@ void getchar(word16 sr)
 getchar_entry:
 l4380:
 	branch x_getchar(sr, 0x64<16>, fp - 2<16>) == 0<16> l4396
-l4396:
 l4390:
+	goto l4398
+l4396:
 l4398:
 	return
 getchar_exit:
@@ -238,7 +235,6 @@ getchar_exit:
 
 void uart_putchar_isr_mode(word16 r15)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn00004000
 // MayUse:  r15:[0..7]
@@ -254,7 +250,6 @@ uart_putchar_isr_mode_exit:
 
 word16 putchar(word16 sr, word16 r15)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      task_1
 //      task_2
@@ -268,12 +263,8 @@ putchar_entry:
 l000043A2:
 	r11_12 = r15
 	branch r15 == 0xA<16> l000043D6
-l000043D6:
-	r11_12 = putchar(sr, 0xD<16>)
 l000043AC:
 	branch Mem5[0x0200<p16>:byte] != 0<8> l000043CA
-l000043CA:
-	r15_26 = x_putchar(sr, 0x64<16>, r11_12)
 l000043B2:
 	branch (Mem5[0x0079<p16>:byte] & 1<8>) == 0<8> l000043B2
 l000043B8:
@@ -281,8 +272,16 @@ l000043B8:
 	r15_26 = 1<16>
 l000043BE:
 	branch r15_26 == 0<16> l000043C6
-l000043C6:
 l000043C2:
+	goto l000043E0
+l000043C6:
+	goto l000043E0
+l000043CA:
+	r15_26 = x_putchar(sr, 0x64<16>, r11_12)
+	goto l000043BE
+l000043D6:
+	r11_12 = putchar(sr, 0xD<16>)
+	goto l000043AC
 l000043E0:
 	return <invalid>
 putchar_exit:
@@ -290,7 +289,6 @@ putchar_exit:
 
 word16 x_getchar(word16 sr, word16 r14, word16 r15)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      getchar
 // MayUse:  r14:[0..15] r15:[0..15] sr:[0..15]
@@ -300,16 +298,15 @@ word16 x_getchar(word16 sr, word16 r14, word16 r15)
 x_getchar_entry:
 l43E4:
 	branch xQueueReceive(sr, r14, r15, Mem0[0x021C<p16>:word16]) == 0<16> l43F8
-l43F8:
-	return 0<16>
 l43F4:
 	return 1<16>
+l43F8:
+	return 0<16>
 x_getchar_exit:
 
 
 word16 x_putchar(word16 sr, word16 r14, word16 r15)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      putchar
 // MayUse:  r14:[0..15] r15:[0..7] sr:[0..15]
@@ -325,13 +322,6 @@ l000043FC:
 l00004410:
 	sr_27 = xQueueSend(sr, r14, fp - 2<16>, Mem11[0x021E<p16>:word16], out r15_22)
 	branch Mem11[0x0220<p16>:word16] == 1<16> l00004430
-l00004430:
-	branch r15_22 != 1<16> l00004420
-l00004434:
-	xQueueReceive(sr_27, 0<16>, fp - 2<16>, Mem11[0x021E<p16>:word16])
-l00004440:
-	Mem55[0x0220<p16>:word16] = 0<16>
-	Mem58[0x007F<p16>:byte] = v6_5
 l00004420:
 	branch Mem59[0x0218<p16>:word16] == 0<16> l0000444A
 l00004426:
@@ -340,6 +330,15 @@ l00004426:
 	branch v15_63 != 1<16> l0000444A
 l0000442C:
 	__enable_interrupts()
+	goto l0000444A
+l00004430:
+	branch r15_22 != 1<16> l00004420
+l00004434:
+	xQueueReceive(sr_27, 0<16>, fp - 2<16>, Mem11[0x021E<p16>:word16])
+l00004440:
+	Mem55[0x0220<p16>:word16] = 0<16>
+	Mem58[0x007F<p16>:byte] = v6_5
+	goto l00004420
 l0000444A:
 	return 1<16>
 x_putchar_exit:
@@ -347,7 +346,6 @@ x_putchar_exit:
 
 void vRxISR(word16 sr)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  sr:[0..15]
 // LiveOut:
 // Trashed: VNZC r10 r11 r4 r5 r6 r7 r8 r9 sr
@@ -364,7 +362,6 @@ vRxISR_exit:
 
 void vTxISR(word16 sr)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  sr:[0..15]
 // LiveOut:
 // Trashed: VNZC sr
@@ -372,10 +369,11 @@ void vTxISR(word16 sr)
 vTxISR_entry:
 l4480:
 	branch xQueueReceiveFromISR(sr, &tLoc0C, fp - 0xA<16>, Mem14[0x021E<p16>:word16]) == 1<16> l44A2
-l44A2:
-	Mem35[0x007F<p16>:byte] = bLoc0A
 l449C:
 	Mem36[0x0220<p16>:word16] = 1<16>
+	goto l44A8
+l44A2:
+	Mem35[0x007F<p16>:byte] = bLoc0A
 l44A8:
 	return
 vTxISR_exit:
@@ -383,7 +381,6 @@ vTxISR_exit:
 
 word16 xTaskCreate(word16 sr, word16 r13, word16 r14, word16 wArg02, word16 & r15Out)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn00004000
 //      vTaskStartScheduler
@@ -395,8 +392,6 @@ xTaskCreate_entry:
 l000044B4:
 	sr_49 = prvAllocateTCBAndStack(sr, r13, out r5_46, out r6_47, out r7_48, out r15_44)
 	branch r15_44 == 0<16> l000045A0
-l000045A0:
-	r10_147 = 0xFFFF<16>
 l000044E2:
 	prvInitialiseTCBVariables(wArg02, r14, r13, r15_44)
 	Mem83[r15_44:word16] = pxPortInitialiseStack(r7_48, r6_47, Mem23[r15_44 + 36<i16>:word16] * 2<16> + Mem23[r15_44 + 2<i16>:word16] - 2<16>)
@@ -404,9 +399,6 @@ l000044E2:
 	Mem86[0x0218<p16>:word16] = Mem83[0x0218<p16>:word16] + 1<16>
 	Mem89[0x0206<p16>:word16] = Mem86[0x0206<p16>:word16] + 1<16>
 	branch Mem89[0x0206<p16>:word16] == 1<16> l00004596
-l00004596:
-	Mem93[0x0202<p16>:word16] = r15_44
-	prvInitialiseTaskLists()
 l00004514:
 	branch Mem89[0x020E<p16>:word16] != 0<16> l0000452A
 l0000451A:
@@ -447,6 +439,14 @@ l00004586:
 	branch Mem168[Mem168[0x0202<p16>:word16] + 6<i16>:word16] <u wArg02 l000045A4
 l00004590:
 	vPortYield(out r5_317, out r6_318, out r7_319, out r8_320, out r9_321, out r10_147, out r11_322)
+	goto l000045A4
+l00004596:
+	Mem93[0x0202<p16>:word16] = r15_44
+	prvInitialiseTaskLists()
+	goto l0000452A
+l000045A0:
+	r10_147 = 0xFFFF<16>
+	goto l00004574
 l000045A4:
 	r15Out = r10_147
 	return sr_49
@@ -455,7 +455,6 @@ xTaskCreate_exit:
 
 void vTaskDelete(word16 r15)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  r15:[0..15]
 // LiveOut:
 // Trashed: VNZC r12 r13 r14 r15 r4 r5 r6 r7 r8
@@ -466,14 +465,10 @@ l45B6:
 	Mem16[0x0218<p16>:word16] = Mem11[0x0218<p16>:word16] + 1<16>
 	r11_17 = r15
 	branch r15 == 0<16> l460C
-l460C:
-	r11_17 = Mem16[0x0202<p16>:word16]
 l45CA:
 	r10_24 = r11_17 + 8<16>
 	vListRemove(r10_24)
 	branch Mem16[r11_17 + 26<i16>:word16] != 0<16> l4600
-l4600:
-	vListRemove(r11_17 + 0x12<16>)
 l45DA:
 	vListInsertEnd(r10_24, 0x296<16>)
 	Mem61[0x0204<p16>:word16] = Mem16[0x0204<p16>:word16] + 1<16>
@@ -488,6 +483,13 @@ l45F6:
 	branch r15 != 0<16> l4612
 l45FA:
 	vPortYield(out r5_162, out r6_163, out r7_164, out r8_165, out r9_166, out r10_167, out r11_168)
+	goto l4612
+l4600:
+	vListRemove(r11_17 + 0x12<16>)
+	goto l45DA
+l460C:
+	r11_17 = Mem16[0x0202<p16>:word16]
+	goto l45CA
 l4612:
 	return
 vTaskDelete_exit:
@@ -495,7 +497,6 @@ vTaskDelete_exit:
 
 void vTaskDelayUntil(word16 r14, word16 r15)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      task_1
 //      task_2
@@ -511,9 +512,6 @@ l0000461A:
 	r10_16 = 0<16>
 	r11_23 = r14 + v9_21
 	branch Mem11[0x0208<p16>:word16] <u v9_21 l00004690
-l00004690:
-	branch r11_23 >=u v9_21 l0000463E
-l00004694:
 l00004634:
 	branch r11_23 <u v9_21 l00004640
 l00004638:
@@ -523,23 +521,30 @@ l0000463E:
 l00004640:
 	Mem42[r15:word16] = r11_23
 	branch r10_16 != 0<16> l00004656
-l00004656:
-	vListRemove(Mem42[0x0202<p16>:word16] + 8<16>)
-	Mem60[Mem42[0x0202<p16>:word16] + 8<i16>:word16] = r11_23
-	branch r11_23 <u Mem60[0x0208<p16>:word16] l00004682
-l00004682:
-	r14_69 = Mem60[0x0202<p16>:word16] + 8<16>
-	r15_71 = Mem60[0x0282<p16>:word16]
-l00004670:
-	r14_69 = Mem60[0x0202<p16>:word16] + 8<16>
-	r15_71 = Mem60[0x0284<p16>:word16]
-l0000467C:
-	vListInsert(r14_69, r15_71)
 l00004648:
 	xTaskResumeAll(out r5_180, out r6_181, out r7_182, out r15_88)
 	branch r15_88 != 0<16> l00004696
 l00004650:
 	vPortYield(out r5_183, out r6_184, out r7_185, out r8_186, out r9_187, out r10_188, out r11_189)
+	goto l00004696
+l00004656:
+	vListRemove(Mem42[0x0202<p16>:word16] + 8<16>)
+	Mem60[Mem42[0x0202<p16>:word16] + 8<i16>:word16] = r11_23
+	branch r11_23 <u Mem60[0x0208<p16>:word16] l00004682
+l00004670:
+	r14_69 = Mem60[0x0202<p16>:word16] + 8<16>
+	r15_71 = Mem60[0x0284<p16>:word16]
+l0000467C:
+	vListInsert(r14_69, r15_71)
+	goto l00004648
+l00004682:
+	r14_69 = Mem60[0x0202<p16>:word16] + 8<16>
+	r15_71 = Mem60[0x0282<p16>:word16]
+	goto l0000467C
+l00004690:
+	branch r11_23 >=u v9_21 l0000463E
+l00004694:
+	goto l00004638
 l00004696:
 	return
 vTaskDelayUntil_exit:
@@ -547,7 +552,6 @@ vTaskDelayUntil_exit:
 
 void vTaskDelay(word16 r15)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  r15:[0..15]
 // LiveOut:
 // Trashed: VNZC r10 r12 r13 r14 r15 r4 r5 r6 r7 r8 r9
@@ -556,25 +560,28 @@ vTaskDelay_entry:
 l469E:
 	r15_58 = 0<16>
 	branch r15 != 0<16> l46B2
+l46A8:
+	branch r15_58 != 0<16> l46F8
+l46AC:
+	vPortYield(out r5_144, out r6_145, out r7_146, out r8_147, out r9_148, out r10_149, out r11_150)
+	goto l46F8
 l46B2:
 	vTaskSuspendAll()
 	r11_16 = r15 + Mem5[0x0208<p16>:word16]
 	vListRemove(Mem5[0x0202<p16>:word16] + 8<16>)
 	Mem30[Mem5[0x0202<p16>:word16] + 8<i16>:word16] = r11_16
 	branch r11_16 <u Mem30[0x0208<p16>:word16] l46EA
-l46EA:
-	r14_39 = Mem30[0x0202<p16>:word16] + 8<16>
-	r15_41 = Mem30[0x0282<p16>:word16]
 l46D4:
 	r14_39 = Mem30[0x0202<p16>:word16] + 8<16>
 	r15_41 = Mem30[0x0284<p16>:word16]
 l46E0:
 	vListInsert(r14_39, r15_41)
 	xTaskResumeAll(out r5_151, out r6_152, out r7_153, out r15_58)
-l46A8:
-	branch r15_58 != 0<16> l46F8
-l46AC:
-	vPortYield(out r5_144, out r6_145, out r7_146, out r8_147, out r9_148, out r10_149, out r11_150)
+	goto l46A8
+l46EA:
+	r14_39 = Mem30[0x0202<p16>:word16] + 8<16>
+	r15_41 = Mem30[0x0282<p16>:word16]
+	goto l46E0
 l46F8:
 	return
 vTaskDelay_exit:
@@ -582,7 +589,6 @@ vTaskDelay_exit:
 
 void vTaskStartScheduler(word16 sr)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn00004000
 // MayUse:  sr:[0..15]
@@ -592,6 +598,8 @@ void vTaskStartScheduler(word16 sr)
 vTaskStartScheduler_entry:
 l00004702:
 	branch Mem0[0x0202<p16>:word16] != 0<16> l0000470A
+l00004708:
+	return
 l0000470A:
 	xTaskCreate(sr, 0x32<16>, 0x46FC<16>, 0<16>, out r15_19)
 	branch r15_19 != 1<16> l00004708
@@ -600,14 +608,12 @@ l00004726:
 	Mem29[0x020E<p16>:word16] = 1<16>
 	Mem30[0x0208<p16>:word16] = 0<16>
 	xPortStartScheduler()
-l00004708:
-	return
+	goto l00004708
 vTaskStartScheduler_exit:
 
 
 void vTaskEndScheduler()
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
@@ -623,7 +629,6 @@ vTaskEndScheduler_exit:
 
 void vTaskSuspendAll()
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      vTaskDelayUntil
 //      vTaskDelay
@@ -654,7 +659,6 @@ vTaskSuspendAll_exit:
 
 word16 xTaskResumeAll(word16 & r5Out, word16 & r6Out, word16 & r7Out, word16 & r15Out)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      vTaskDelayUntil
 //      vTaskDelay
@@ -680,43 +684,10 @@ l00004778:
 	r9_178 = 0<16>
 l0000477A:
 	branch Mem28[0x0286<p16>:word16] == 0<16> l0000480E
-l0000480E:
-	r11_32 = 0<16>
 l00004780:
 	r11_32 = Mem28[Mem28[Mem28[0x0288<p16>:word16] + 2<i16>:word16] + 6<i16>:word16]
 l0000478C:
 	branch r11_32 == 0<16> l000047D8
-l000047D8:
-	branch Mem28[0x0212<p16>:word16] == 0<16> l000047E6
-l000047DE:
-	branch Mem28[0x0212<p16>:word16] != 0<16> l00004802
-l00004802:
-	vTaskIncrementTick()
-	v33_58 = Mem57[0x0212<p16>:word16]
-	Mem60[0x0212<p16>:word16] = v33_58 + 0xFFFF<16>
-	branch v33_58 != 1<16> l00004802
-l0000480C:
-l000047E4:
-	r9_178 = 1<16>
-l000047E6:
-	branch r9_178 == 1<16> l000047FA
-l000047FA:
-	r4 = vPortYield(out r5, out r6, out r7, out r8_15, out r9_289, out r10_290, out r11_291)
-l000047EA:
-	branch Mem87[0x0218<p16>:word16] == 0<16> l00004812
-l000047F0:
-	v22_93 = Mem87[0x0218<p16>:word16]
-	Mem95[0x0218<p16>:word16] = v22_93 + 0xFFFF<16>
-	branch v22_93 != 1<16> l00004812
-l000047F6:
-	__enable_interrupts()
-l00004812:
-	r5Out = r5
-	r6Out = r6
-	r7Out = r7
-	r15Out = r8_15
-	return r4
-xTaskResumeAll_exit:
 l00004790:
 	vListRemove(r11_32 + 0x12<16>)
 	r10_137 = r11_32 + 8<16>
@@ -731,11 +702,48 @@ l000047B6:
 	branch Mem170[Mem170[0x0202<p16>:word16] + 6<i16>:word16] <u Mem170[r11_32 + 6<i16>:word16] l0000477A
 l000047D4:
 	r9_178 = 1<16>
+	goto l0000477A
+l000047D8:
+	branch Mem28[0x0212<p16>:word16] == 0<16> l000047E6
+l000047DE:
+	branch Mem28[0x0212<p16>:word16] != 0<16> l00004802
+l000047E4:
+	r9_178 = 1<16>
+l000047E6:
+	branch r9_178 == 1<16> l000047FA
+l000047EA:
+	branch Mem87[0x0218<p16>:word16] == 0<16> l00004812
+l000047F0:
+	v22_93 = Mem87[0x0218<p16>:word16]
+	Mem95[0x0218<p16>:word16] = v22_93 + 0xFFFF<16>
+	branch v22_93 != 1<16> l00004812
+l000047F6:
+	__enable_interrupts()
+	goto l00004812
+l000047FA:
+	r4 = vPortYield(out r5, out r6, out r7, out r8_15, out r9_289, out r10_290, out r11_291)
+	goto l000047EA
+l00004802:
+	vTaskIncrementTick()
+	v33_58 = Mem57[0x0212<p16>:word16]
+	Mem60[0x0212<p16>:word16] = v33_58 + 0xFFFF<16>
+	branch v33_58 != 1<16> l00004802
+l0000480C:
+	goto l000047E4
+l0000480E:
+	r11_32 = 0<16>
+	goto l0000478C
+l00004812:
+	r5Out = r5
+	r6Out = r6
+	r7Out = r7
+	r15Out = r8_15
+	return r4
+xTaskResumeAll_exit:
 
 
 word16 xTaskGetTickCount()
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      task_idle
 //      task_1
@@ -765,7 +773,6 @@ xTaskGetTickCount_exit:
 
 void uxTaskGetNumberOfTasks()
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: VNZC r15
@@ -789,7 +796,6 @@ uxTaskGetNumberOfTasks_exit:
 
 void vTaskIncrementTick()
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      xTaskResumeAll
 //      prvTickISR
@@ -800,8 +806,6 @@ void vTaskIncrementTick()
 vTaskIncrementTick_entry:
 l0000484A:
 	branch Mem8[0x0210<p16>:word16] != 0<16> l000048D0
-l000048D0:
-	Mem14[0x0212<p16>:word16] = Mem8[0x0212<p16>:word16] + 1<16>
 l00004854:
 	v9_16 = Mem8[0x0208<p16>:word16]
 	Mem18[0x0208<p16>:word16] = v9_16 + 1<16>
@@ -813,23 +817,16 @@ l0000485A:
 l00004868:
 	v16_27 = Mem26[0x0282<p16>:word16]
 	branch Mem26[v16_27:word16] == 0<16> l000048CC
-l000048CC:
-	r11_32 = 0<16>
 l00004872:
 	r11_32 = Mem26[Mem26[Mem26[v16_27 + 2<i16>:word16] + 2<i16>:word16] + 6<i16>:word16]
 l0000487E:
 	branch r11_32 == 0<16> l000048D4
 l00004882:
 	branch Mem26[0x0208<p16>:word16] >=u Mem26[r11_32 + 8<i16>:word16] l000048D4
-l000048D4:
-	return
-vTaskIncrementTick_exit:
 l0000488A:
 	r10_58 = r11_32 + 8<16>
 	vListRemove(r10_58)
 	branch Mem26[r11_32 + 26<i16>:word16] != 0<16> l000048C0
-l000048C0:
-	vListRemove(r11_32 + 0x12<16>)
 l0000489A:
 	Mem82[r11_32 + 8<i16>:word16] = 0<16>
 	v25_83 = Mem82[r11_32 + 6<i16>:word16]
@@ -838,11 +835,22 @@ l000048A8:
 	Mem88[0x020C<p16>:word16] = v25_83
 l000048AC:
 	vListInsertEnd(r10_58, v25_83 * 0x10<16> + 0x222<16>)
+	goto l00004868
+l000048C0:
+	vListRemove(r11_32 + 0x12<16>)
+	goto l0000489A
+l000048CC:
+	r11_32 = 0<16>
+	goto l0000487E
+l000048D0:
+	Mem14[0x0212<p16>:word16] = Mem8[0x0212<p16>:word16] + 1<16>
+l000048D4:
+	return
+vTaskIncrementTick_exit:
 
 
 void vTaskPlaceOnEventList(word16 r14, word16 r15)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      xQueueSend
 //      xQueueReceive
@@ -857,12 +865,13 @@ l000048DA:
 	vListRemove(Mem5[0x0202<p16>:word16] + 8<16>)
 	Mem38[Mem5[0x0202<p16>:word16] + 8<i16>:word16] = r11_24
 	branch r11_24 <u Mem38[0x0208<p16>:word16] l0000491C
-l0000491C:
-	r14_47 = Mem38[0x0202<p16>:word16] + 8<16>
-	r15_49 = Mem38[0x0282<p16>:word16]
 l0000490E:
 	r14_47 = Mem38[0x0202<p16>:word16] + 8<16>
 	r15_49 = Mem38[0x0284<p16>:word16]
+	goto l00004928
+l0000491C:
+	r14_47 = Mem38[0x0202<p16>:word16] + 8<16>
+	r15_49 = Mem38[0x0282<p16>:word16]
 l00004928:
 	vListInsert(r14_47, r15_49)
 	return
@@ -871,7 +880,6 @@ vTaskPlaceOnEventList_exit:
 
 word16 xTaskRemoveFromEventList(word16 r15)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      xQueueSendFromISR
 //      xQueueReceiveFromISR
@@ -883,16 +891,11 @@ word16 xTaskRemoveFromEventList(word16 r15)
 xTaskRemoveFromEventList_entry:
 l00004930:
 	branch Mem8[r15:word16] == 0<16> l000049A2
-l000049A2:
-	r10_13 = 0<16>
 l0000493A:
 	r10_13 = Mem8[Mem8[Mem8[r15 + 2<i16>:word16] + 2<i16>:word16] + 6<i16>:word16]
 l00004946:
 	vListRemove(r10_13 + 0x12<16>)
 	branch Mem8[0x0210<p16>:word16] != 0<16> l0000499A
-l0000499A:
-	r14_36 = r10_13 + 0x12<16>
-	r15_37 = 0x286<16>
 l00004958:
 	vListRemove(r10_13 + 8<16>)
 	Mem48[r10_13 + 8<i16>:word16] = 0<16>
@@ -906,10 +909,19 @@ l00004974:
 l00004982:
 	vListInsertEnd(r14_36, r15_37)
 	branch Mem73[Mem73[0x0202<p16>:word16] + 6<i16>:word16] <u Mem73[r10_13 + 6<i16>:word16] l00004996
-l00004996:
-	r15_112 = 0<16>
 l00004992:
 	r15_112 = 1<16>
+	goto l000049A6
+l00004996:
+	r15_112 = 0<16>
+	goto l000049A6
+l0000499A:
+	r14_36 = r10_13 + 0x12<16>
+	r15_37 = 0x286<16>
+	goto l00004982
+l000049A2:
+	r10_13 = 0<16>
+	goto l00004946
 l000049A6:
 	return r15_112
 xTaskRemoveFromEventList_exit:
@@ -917,24 +929,23 @@ xTaskRemoveFromEventList_exit:
 
 void prvIdleTask()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-prvIdleTask_exit:
 prvIdleTask_entry:
 l49AC:
 	prvCheckTasksWaitingTermination()
 	branch Mem0[0x0222<p16>:word16] >=u 2<16> l49AC
 l49B6:
 	vPortYield(out r5_37, out r6_38, out r7_39, out r8_40, out r9_41, out r10_42, out r11_43)
+	goto l49AC
+prvIdleTask_exit:
 
 
 void prvInitialiseTCBVariables(word16 r12, word16 r13, word16 r14, word16 r15)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      xTaskCreate
 // MayUse:  r12:[0..15] r13:[0..15] r14:[0..15] r15:[0..15]
@@ -963,7 +974,6 @@ prvInitialiseTCBVariables_exit:
 
 void prvInitialiseTaskLists()
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      xTaskCreate
 // MayUse: 
@@ -990,7 +1000,6 @@ prvInitialiseTaskLists_exit:
 
 void prvCheckTasksWaitingTermination()
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      prvIdleTask
 // MayUse: 
@@ -1013,8 +1022,6 @@ l4A7C:
 	__disable_interrupts()
 	Mem36[0x0218<p16>:word16] = Mem5[0x0218<p16>:word16] + 1<16>
 	branch Mem36[0x0296<p16>:word16] == 0<16> l4ABA
-l4ABA:
-	r11_40 = 0<16>
 l4A88:
 	r11_40 = Mem36[Mem36[Mem36[0x0298<p16>:word16] + 2<i16>:word16] + 6<i16>:word16]
 l4A94:
@@ -1030,6 +1037,10 @@ l4AB0:
 	__enable_interrupts()
 l4AB2:
 	prvDeleteTCB()
+	goto l4ABE
+l4ABA:
+	r11_40 = 0<16>
+	goto l4A94
 l4ABE:
 	return
 prvCheckTasksWaitingTermination_exit:
@@ -1037,7 +1048,6 @@ prvCheckTasksWaitingTermination_exit:
 
 word16 prvAllocateTCBAndStack(word16 sr, word16 r15, word16 & r5Out, word16 & r6Out, word16 & r7Out, word16 & r15Out)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      xTaskCreate
 // MayUse:  r15:[0..15] sr:[0..15]
@@ -1053,11 +1063,12 @@ l00004AD6:
 	pvPortMalloc(r15 * 2<16>, out r5_17, out r6_18, out r7_19, out r15_33)
 	Mem42[r15_15 + 2<i16>:word16] = r15_33
 	branch r15_33 != 0<16> l00004AF0
-l00004AF0:
-	sr = memset(sr, r15 * 2<16>, 0xA5<16>, r15_33)
 l00004AE6:
 	vPortFree()
 	r11_24 = 0<16>
+	goto l00004AFA
+l00004AF0:
+	sr = memset(sr, r15 * 2<16>, 0xA5<16>, r15_33)
 l00004AFA:
 	r5Out = r5_17
 	r6Out = r6_18
@@ -1069,7 +1080,6 @@ prvAllocateTCBAndStack_exit:
 
 void prvDeleteTCB()
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      prvCheckTasksWaitingTermination
 // MayUse: 
@@ -1086,7 +1096,6 @@ prvDeleteTCB_exit:
 
 void vTaskSwitchContext()
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      vPortYield
 //      prvTickISR
@@ -1105,18 +1114,18 @@ l00004B30:
 l00004B46:
 	Mem48[Mem30[0x020C<p16>:word16] * 0x10<16> + 0x226<16>:word16] = Mem30[Mem30[Mem30[0x020C<p16>:word16] * 0x10<16> + 0x226<16>:word16] + 2<i16>:word16]
 	branch Mem48[Mem48[0x020C<p16>:word16] * 0x10<16> + 0x226<16>:word16] == Mem48[Mem48[0x020C<p16>:word16] * 0x10<16> + 0x224<16>:word16] l00004BB0
-l00004BB0:
-	Mem85[Mem48[0x020C<p16>:word16] * 0x10<16> + 550<i16>:word16] = Mem48[Mem48[Mem48[0x020C<p16>:word16] * 0x10<16> + 550<i16>:word16] + 2<i16>:word16]
 l00004B98:
 	Mem97[0x0202<p16>:word16] = Mem86[Mem86[Mem86[0x020C<p16>:word16] * 0x10<16> + 550<i16>:word16] + 6<i16>:word16]
 l00004BAE:
 	return
+l00004BB0:
+	Mem85[Mem48[0x020C<p16>:word16] * 0x10<16> + 550<i16>:word16] = Mem48[Mem48[Mem48[0x020C<p16>:word16] * 0x10<16> + 550<i16>:word16] + 2<i16>:word16]
+	goto l00004B98
 vTaskSwitchContext_exit:
 
 
 void vListInitialise(word16 r15)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      prvInitialiseTaskLists
 // MayUse:  r15:[0..15]
@@ -1139,7 +1148,6 @@ vListInitialise_exit:
 
 void vListInitialiseItem(word16 r15)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      prvInitialiseTCBVariables
 //      vListInitialise
@@ -1156,7 +1164,6 @@ vListInitialiseItem_exit:
 
 void vListInsertEnd(word16 r14, word16 r15)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      xTaskCreate
 //      vTaskDelete
@@ -1183,7 +1190,6 @@ vListInsertEnd_exit:
 
 void vListInsert(word16 r14, word16 r15)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      vTaskDelayUntil
 //      vTaskDelay
@@ -1196,14 +1202,6 @@ vListInsert_entry:
 l00004C32:
 	v7_9 = Mem5[r14:word16]
 	branch v7_9 == 0xFFFF<16> l00004C5A
-l00004C5A:
-	v19_13 = Mem5[r15 + 2<i16>:word16]
-	r13_14 = v19_13
-	branch Mem5[Mem5[v19_13 + 2<i16>:word16]:word16] <u 0xFFFF<16> l00004C76
-l00004C68:
-	v22_22 = Mem5[r13_14 + 2<i16>:word16]
-	r13_14 = v22_22
-	branch Mem5[Mem5[v22_22 + 2<i16>:word16]:word16] >=u v7_9 l00004C68
 l00004C3C:
 	v11_30 = Mem5[r15 + 2<i16>:word16]
 	r13_14 = v11_30
@@ -1213,6 +1211,15 @@ l00004C4A:
 	r13_14 = v16_40
 	branch v7_9 <u Mem5[Mem5[v16_40 + 2<i16>:word16]:word16] l00004C4A
 l00004C58:
+	goto l00004C76
+l00004C5A:
+	v19_13 = Mem5[r15 + 2<i16>:word16]
+	r13_14 = v19_13
+	branch Mem5[Mem5[v19_13 + 2<i16>:word16]:word16] <u 0xFFFF<16> l00004C76
+l00004C68:
+	v22_22 = Mem5[r13_14 + 2<i16>:word16]
+	r13_14 = v22_22
+	branch Mem5[Mem5[v22_22 + 2<i16>:word16]:word16] >=u v7_9 l00004C68
 l00004C76:
 	Mem55[r14 + 2<i16>:word16] = Mem5[r13_14 + 2<i16>:word16]
 	Mem58[Mem55[r14 + 2<i16>:word16] + 4<i16>:word16] = r14
@@ -1226,7 +1233,6 @@ vListInsert_exit:
 
 void vListRemove(word16 r15)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      vTaskDelete
 //      vTaskDelayUntil
@@ -1259,7 +1265,6 @@ vListRemove_exit:
 
 word16 xQueueCreate(word16 r15, byte & r6Out, word16 & r7Out, word16 & r15Out)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      init_uart_isr
 // MayUse:  r15:[0..15]
@@ -1269,12 +1274,13 @@ word16 xQueueCreate(word16 r15, byte & r6Out, word16 & r7Out, word16 & r15Out)
 xQueueCreate_entry:
 l00004CC4:
 	branch r15 != 0<16> l00004CD6
+l00004CD2:
+	goto l00004D76
 l00004CD6:
 	r4 = pvPortMalloc(0x32<16>, out r5_82, out r6, out r7, out r15_22)
 	branch r15_22 == 0<16> l00004CD2
 l00004CE4:
 	__disable_interrupts()
-l00004CD2:
 l00004D76:
 	r6Out = r6
 	r7Out = r7
@@ -1285,7 +1291,6 @@ xQueueCreate_exit:
 
 word16 xQueueSend(word16 sr, word16 r13, word16 r14, word16 r15, word16 & r15Out)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      x_putchar
 // MayUse:  r13:[0..15] r14:[0..15] r15:[0..15] sr:[0..15]
@@ -1312,6 +1317,43 @@ l00004DAA:
 	branch prvIsQueueFull(r15) == 0<16> l00004DB8
 l00004DB4:
 	branch r13 != 0<16> l00004E26
+l00004DB8:
+	__disable_interrupts()
+	Mem144[0x0218<p16>:word16] = Mem141[0x0218<p16>:word16] + 1<16>
+	branch Mem144[r11_117 + 40<i16>:word16] >=u Mem144[r11_117 + 42<i16>:word16] l00004DF6
+l00004DC6:
+	r10_186 = 0xFFFD<16>
+l00004DCA:
+	branch Mem194[0x0218<p16>:word16] == 0<16> l00004DD8
+l00004DD0:
+	v22_198 = Mem194[0x0218<p16>:word16]
+	Mem200[0x0218<p16>:word16] = v22_198 + 0xFFFF<16>
+	branch v22_198 != 1<16> l00004DD8
+l00004DD6:
+	__enable_interrupts()
+l00004DD8:
+	branch prvUnlockQueue(r11_117) == 0<16> l00004DF0
+l00004DE2:
+	xTaskResumeAll(out r5_344, out r6_345, out r7_346, out r15_228)
+	branch r15_228 != 0<16> l00004E7A
+l00004DEA:
+	vPortYield(out r5_347, out r6_348, out r7_349, out r8_350, out r9_351, out r10_186, out r11_352)
+	goto l00004E7A
+l00004DF0:
+	xTaskResumeAll(out r5_340, out r6_341, out r7_342, out r15_343)
+	goto l00004E7A
+l00004DF6:
+	sr = memcpy(sr, Mem144[r11_117 + 44<i16>:word16], r9_103, Mem144[r11_117 + 4<i16>:word16])
+	Mem175[r11_117 + 40<i16>:word16] = Mem144[r11_117 + 40<i16>:word16] + 1<16>
+	r15_179 = Mem175[r11_117 + 4<i16>:word16] + Mem175[r11_117 + 44<i16>:word16]
+	Mem180[r11_117 + 4<i16>:word16] = r15_179
+	branch r15_179 >=u Mem180[r11_117 + 2<i16>:word16] l00004E1E
+l00004E1A:
+	Mem185[r11_117 + 4<i16>:word16] = Mem180[r11_117:word16]
+l00004E1E:
+	Mem191[r11_117 + 48<i16>:word16] = Mem188[r11_117 + 48<i16>:word16] + 1<16>
+	r10_186 = 1<16>
+	goto l00004DCA
 l00004E26:
 	vTaskPlaceOnEventList(r13, r15 + 8<16>)
 	__disable_interrupts()
@@ -1319,8 +1361,6 @@ l00004E26:
 	prvUnlockQueue(r15)
 	xTaskResumeAll(out r5_337, out r6_338, out r7_339, out r15_78)
 	branch r15_78 == 0<16> l00004E74
-l00004E74:
-	vPortYield(out r5_353, out r6_354, out r7_355, out r8_356, out r9_103, out r10_357, out r11_117)
 l00004E44:
 	vTaskSuspendAll()
 	__disable_interrupts()
@@ -1342,40 +1382,10 @@ l00004E6A:
 	branch v40_136 != 1<16> l00004DB8
 l00004E70:
 	__enable_interrupts()
-l00004DB8:
-	__disable_interrupts()
-	Mem144[0x0218<p16>:word16] = Mem141[0x0218<p16>:word16] + 1<16>
-	branch Mem144[r11_117 + 40<i16>:word16] >=u Mem144[r11_117 + 42<i16>:word16] l00004DF6
-l00004DF6:
-	sr = memcpy(sr, Mem144[r11_117 + 44<i16>:word16], r9_103, Mem144[r11_117 + 4<i16>:word16])
-	Mem175[r11_117 + 40<i16>:word16] = Mem144[r11_117 + 40<i16>:word16] + 1<16>
-	r15_179 = Mem175[r11_117 + 4<i16>:word16] + Mem175[r11_117 + 44<i16>:word16]
-	Mem180[r11_117 + 4<i16>:word16] = r15_179
-	branch r15_179 >=u Mem180[r11_117 + 2<i16>:word16] l00004E1E
-l00004E1A:
-	Mem185[r11_117 + 4<i16>:word16] = Mem180[r11_117:word16]
-l00004E1E:
-	Mem191[r11_117 + 48<i16>:word16] = Mem188[r11_117 + 48<i16>:word16] + 1<16>
-	r10_186 = 1<16>
-l00004DC6:
-	r10_186 = 0xFFFD<16>
-l00004DCA:
-	branch Mem194[0x0218<p16>:word16] == 0<16> l00004DD8
-l00004DD0:
-	v22_198 = Mem194[0x0218<p16>:word16]
-	Mem200[0x0218<p16>:word16] = v22_198 + 0xFFFF<16>
-	branch v22_198 != 1<16> l00004DD8
-l00004DD6:
-	__enable_interrupts()
-l00004DD8:
-	branch prvUnlockQueue(r11_117) == 0<16> l00004DF0
-l00004DF0:
-	xTaskResumeAll(out r5_340, out r6_341, out r7_342, out r15_343)
-l00004DE2:
-	xTaskResumeAll(out r5_344, out r6_345, out r7_346, out r15_228)
-	branch r15_228 != 0<16> l00004E7A
-l00004DEA:
-	vPortYield(out r5_347, out r6_348, out r7_349, out r8_350, out r9_351, out r10_186, out r11_352)
+	goto l00004DB8
+l00004E74:
+	vPortYield(out r5_353, out r6_354, out r7_355, out r8_356, out r9_103, out r10_357, out r11_117)
+	goto l00004E44
 l00004E7A:
 	r15Out = r10_186
 	return sr
@@ -1384,7 +1394,6 @@ xQueueSend_exit:
 
 word16 xQueueSendFromISR(word16 sr, word16 r13, word16 r14, word16 r15)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      vRxISR
 // MayUse:  r13:[0..15] r14:[0..15] r15:[0..15] sr:[0..15]
@@ -1394,6 +1403,9 @@ word16 xQueueSendFromISR(word16 sr, word16 r13, word16 r14, word16 r15)
 xQueueSendFromISR_entry:
 l4E84:
 	branch Mem8[r15 + 40<i16>:word16] >=u Mem8[r15 + 42<i16>:word16] l4E98
+l4E94:
+	r13_69 = r13
+	goto l4EE8
 l4E98:
 	memcpy(sr, Mem8[r15 + 44<i16>:word16], r14, Mem8[r15 + 4<i16>:word16])
 	Mem33[r15 + 40<i16>:word16] = Mem8[r15 + 40<i16>:word16] + 1<16>
@@ -1405,6 +1417,9 @@ l4EBA:
 l4EBE:
 	v21_46 = Mem45[r15 + 48<i16>:word16]
 	branch v21_46 == 0xFFFF<16> l4ECE
+l4EC6:
+	Mem72[r15 + 48<i16>:word16] = v21_46 + 1<16>
+	goto l4E94
 l4ECE:
 	branch r13 != 0<16> l4E94
 l4ED2:
@@ -1413,10 +1428,6 @@ l4ED8:
 	branch xTaskRemoveFromEventList(r15 + 0x18<16>) == 0<16> l4E94
 l4EE6:
 	r13_69 = 1<16>
-l4EC6:
-	Mem72[r15 + 48<i16>:word16] = v21_46 + 1<16>
-l4E94:
-	r13_69 = r13
 l4EE8:
 	return r13_69
 xQueueSendFromISR_exit:
@@ -1424,7 +1435,6 @@ xQueueSendFromISR_exit:
 
 word16 xQueueReceive(word16 sr, word16 r13, word16 r14, word16 r15)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      x_getchar
 //      x_putchar
@@ -1452,43 +1462,11 @@ l00004F1C:
 	branch prvIsQueueEmpty(r15) == 0<16> l00004F2A
 l00004F26:
 	branch r13 != 0<16> l00004F96
-l00004F96:
-	vTaskPlaceOnEventList(r13, r15 + 0x18<16>)
-	__disable_interrupts()
-	Mem67[0x0218<p16>:word16] = Mem64[0x0218<p16>:word16] + 1<16>
-	prvUnlockQueue(r15)
-	xTaskResumeAll(out r5_337, out r6_338, out r7_339, out r15_78)
-	branch r15_78 == 0<16> l00004FE6
-l00004FE6:
-	vPortYield(out r5_353, out r6_354, out r7_355, out r8_356, out r9_103, out r10_357, out r11_117)
-l00004FB6:
-	vTaskSuspendAll()
-	__disable_interrupts()
-	Mem116[0x0218<p16>:word16] = Mem67[0x0218<p16>:word16] + 1<16>
-	Mem120[r11_117 + 46<i16>:word16] = Mem116[r11_117 + 46<i16>:word16] + 1<16>
-	Mem123[r11_117 + 48<i16>:word16] = Mem120[r11_117 + 48<i16>:word16] + 1<16>
-	branch Mem123[0x0218<p16>:word16] == 0<16> l00004FD6
-l00004FCE:
-	v33_127 = Mem123[0x0218<p16>:word16]
-	Mem129[0x0218<p16>:word16] = v33_127 + 0xFFFF<16>
-	branch v33_127 != 1<16> l00004FD6
-l00004FD4:
-	__enable_interrupts()
-l00004FD6:
-	branch Mem132[0x0218<p16>:word16] == 0<16> l00004F2A
-l00004FDC:
-	v38_136 = Mem132[0x0218<p16>:word16]
-	Mem138[0x0218<p16>:word16] = v38_136 + 0xFFFF<16>
-	branch v38_136 != 1<16> l00004F2A
-l00004FE2:
-	__enable_interrupts()
 l00004F2A:
 	__disable_interrupts()
 	Mem144[0x0218<p16>:word16] = Mem141[0x0218<p16>:word16] + 1<16>
 	v18_147 = Mem144[r11_117 + 40<i16>:word16]
 	branch v18_147 == 0<16> l00004F92
-l00004F92:
-	r10_151 = 0<16>
 l00004F38:
 	v19_152 = Mem144[r11_117 + 44<i16>:word16]
 	r15_156 = Mem144[r11_117 + 6<i16>:word16] + v19_152
@@ -1511,13 +1489,50 @@ l00004F72:
 	__enable_interrupts()
 l00004F74:
 	branch prvUnlockQueue(r11_117) == 0<16> l00004F8C
-l00004F8C:
-	xTaskResumeAll(out r5_340, out r6_341, out r7_342, out r15_343)
 l00004F7E:
 	xTaskResumeAll(out r5_344, out r6_345, out r7_346, out r15_230)
 	branch r15_230 != 0<16> l00004FEC
 l00004F86:
 	vPortYield(out r5_347, out r6_348, out r7_349, out r8_350, out r9_351, out r10_151, out r11_352)
+	goto l00004FEC
+l00004F8C:
+	xTaskResumeAll(out r5_340, out r6_341, out r7_342, out r15_343)
+	goto l00004FEC
+l00004F92:
+	r10_151 = 0<16>
+	goto l00004F66
+l00004F96:
+	vTaskPlaceOnEventList(r13, r15 + 0x18<16>)
+	__disable_interrupts()
+	Mem67[0x0218<p16>:word16] = Mem64[0x0218<p16>:word16] + 1<16>
+	prvUnlockQueue(r15)
+	xTaskResumeAll(out r5_337, out r6_338, out r7_339, out r15_78)
+	branch r15_78 == 0<16> l00004FE6
+l00004FB6:
+	vTaskSuspendAll()
+	__disable_interrupts()
+	Mem116[0x0218<p16>:word16] = Mem67[0x0218<p16>:word16] + 1<16>
+	Mem120[r11_117 + 46<i16>:word16] = Mem116[r11_117 + 46<i16>:word16] + 1<16>
+	Mem123[r11_117 + 48<i16>:word16] = Mem120[r11_117 + 48<i16>:word16] + 1<16>
+	branch Mem123[0x0218<p16>:word16] == 0<16> l00004FD6
+l00004FCE:
+	v33_127 = Mem123[0x0218<p16>:word16]
+	Mem129[0x0218<p16>:word16] = v33_127 + 0xFFFF<16>
+	branch v33_127 != 1<16> l00004FD6
+l00004FD4:
+	__enable_interrupts()
+l00004FD6:
+	branch Mem132[0x0218<p16>:word16] == 0<16> l00004F2A
+l00004FDC:
+	v38_136 = Mem132[0x0218<p16>:word16]
+	Mem138[0x0218<p16>:word16] = v38_136 + 0xFFFF<16>
+	branch v38_136 != 1<16> l00004F2A
+l00004FE2:
+	__enable_interrupts()
+	goto l00004F2A
+l00004FE6:
+	vPortYield(out r5_353, out r6_354, out r7_355, out r8_356, out r9_103, out r10_357, out r11_117)
+	goto l00004FB6
 l00004FEC:
 	return r10_151
 xQueueReceive_exit:
@@ -1525,7 +1540,6 @@ xQueueReceive_exit:
 
 word16 xQueueReceiveFromISR(word16 sr, word16 r13, word16 r14, word16 r15)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      vTxISR
 // MayUse:  r13:[0..15] r14:[0..15] r15:[0..15] sr:[0..15]
@@ -1536,8 +1550,6 @@ xQueueReceiveFromISR_entry:
 l00004FF6:
 	v10_15 = Mem8[r15 + 40<i16>:word16]
 	branch v10_15 == 0<16> l00005060
-l00005060:
-	r15_119 = 0<16>
 l00005008:
 	v13_20 = Mem8[r15 + 44<i16>:word16]
 	r15_24 = Mem8[r15 + 6<i16>:word16] + v13_20
@@ -1550,6 +1562,11 @@ l00005020:
 	memcpy(sr, v13_20, Mem35[r15 + 6<i16>:word16], r14)
 	v21_51 = Mem35[r15 + 46<i16>:word16]
 	branch v21_51 == 0xFFFF<16> l00005042
+l00005038:
+	Mem78[r15 + 46<i16>:word16] = v21_51 + 1<16>
+l0000503E:
+	r15_119 = 1<16>
+	goto l00005062
 l00005042:
 	branch Mem35[r13:word16] != 0<16> l0000503E
 l00005048:
@@ -1558,10 +1575,9 @@ l0000504E:
 	branch xTaskRemoveFromEventList(r15 + 8<16>) == 0<16> l0000503E
 l0000505A:
 	Mem75[r13:word16] = 1<16>
-l00005038:
-	Mem78[r15 + 46<i16>:word16] = v21_51 + 1<16>
-l0000503E:
-	r15_119 = 1<16>
+	goto l0000503E
+l00005060:
+	r15_119 = 0<16>
 l00005062:
 	return r15_119
 xQueueReceiveFromISR_exit:
@@ -1569,7 +1585,6 @@ xQueueReceiveFromISR_exit:
 
 void uxQueueMessagesWaiting()
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: VNZC r15
@@ -1593,7 +1608,6 @@ uxQueueMessagesWaiting_exit:
 
 void vQueueDelete()
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
@@ -1608,7 +1622,6 @@ vQueueDelete_exit:
 
 word16 prvUnlockQueue(word16 r15)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      xQueueSend
 //      xQueueReceive
@@ -1627,10 +1640,6 @@ l00005092:
 l000050A6:
 	Mem20[r15 + 48<i16>:word16] = 0xFFFF<16>
 	branch Mem20[r15 + 24<i16>:word16] != 0<16> l000050F4
-l000050F4:
-	branch xTaskRemoveFromEventList(r15 + 0x18<16>) == 0<16> l000050B0
-l00005100:
-	r10_11 = 1<16>
 l000050B0:
 	branch Mem37[0x0218<p16>:word16] == 0<16> l000050BE
 l000050B6:
@@ -1648,10 +1657,6 @@ l000050BE:
 l000050CA:
 	Mem57[r15 + 46<i16>:word16] = 0xFFFF<16>
 	branch Mem57[r15 + 8<i16>:word16] != 0<16> l000050E4
-l000050E4:
-	branch xTaskRemoveFromEventList(r15 + 8<16>) == 0<16> l000050D4
-l000050F0:
-	r10_11 = 1<16>
 l000050D4:
 	branch Mem75[0x0218<p16>:word16] == 0<16> l00005104
 l000050DA:
@@ -1660,6 +1665,17 @@ l000050DA:
 	branch v19_79 != 1<16> l00005104
 l000050E0:
 	__enable_interrupts()
+	goto l00005104
+l000050E4:
+	branch xTaskRemoveFromEventList(r15 + 8<16>) == 0<16> l000050D4
+l000050F0:
+	r10_11 = 1<16>
+	goto l000050D4
+l000050F4:
+	branch xTaskRemoveFromEventList(r15 + 0x18<16>) == 0<16> l000050B0
+l00005100:
+	r10_11 = 1<16>
+	goto l000050B0
 l00005104:
 	return r10_11
 prvUnlockQueue_exit:
@@ -1667,7 +1683,6 @@ prvUnlockQueue_exit:
 
 word16 prvIsQueueEmpty(word16 r15)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      xQueueReceive
 // MayUse:  r15:[0..15]
@@ -1697,7 +1712,6 @@ prvIsQueueEmpty_exit:
 
 word16 prvIsQueueFull(word16 r15)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      xQueueSend
 // MayUse:  r15:[0..15]
@@ -1710,8 +1724,6 @@ l0000512E:
 	Mem6[0x0218<p16>:word16] = Mem0[0x0218<p16>:word16] + 1<16>
 	r14_13 = 0<16>
 	branch Mem6[r15 + 40<i16>:word16] == Mem6[r15 + 42<i16>:word16] l0000514E
-l0000514E:
-	r14_13 = 1<16>
 l0000513E:
 	branch Mem6[0x0218<p16>:word16] == 0<16> l00005152
 l00005144:
@@ -1720,6 +1732,10 @@ l00005144:
 	branch v12_18 != 1<16> l00005152
 l0000514A:
 	__enable_interrupts()
+	goto l00005152
+l0000514E:
+	r14_13 = 1<16>
+	goto l0000513E
 l00005152:
 	return r14_13
 prvIsQueueFull_exit:
@@ -1727,7 +1743,6 @@ prvIsQueueFull_exit:
 
 word16 pvPortMalloc(word16 r15, word16 & r5Out, word16 & r6Out, word16 & r7Out, word16 & r15Out)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      prvAllocateTCBAndStack
 //      xQueueCreate
@@ -1764,7 +1779,6 @@ pvPortMalloc_exit:
 
 void vPortFree()
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      prvAllocateTCBAndStack
 //      prvDeleteTCB
@@ -1781,7 +1795,6 @@ vPortFree_exit:
 
 void vPortInitialiseBlocks()
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
@@ -1795,7 +1808,6 @@ vPortInitialiseBlocks_exit:
 
 word16 pxPortInitialiseStack(word16 r13, word16 r14, word16 r15)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      xTaskCreate
 // MayUse:  r13:[0..15] r14:[0..15] r15:[0..15]
@@ -1825,7 +1837,6 @@ pxPortInitialiseStack_exit:
 
 void xPortStartScheduler()
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      vTaskStartScheduler
 // MayUse: 
@@ -1842,7 +1853,6 @@ xPortStartScheduler_exit:
 
 void vPortEndScheduler()
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      vTaskEndScheduler
 // MayUse: 
@@ -1857,7 +1867,6 @@ vPortEndScheduler_exit:
 
 word16 vPortYield(word16 & r5Out, word16 & r6Out, word16 & r7Out, word16 & r8Out, word16 & r9Out, word16 & r10Out, word16 & r11Out)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      vRxISR
 //      xTaskCreate
@@ -1899,7 +1908,6 @@ vPortYield_exit:
 
 void prvSetupTimerInterrupt()
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      xPortStartScheduler
 // MayUse: 
@@ -1921,7 +1929,6 @@ prvSetupTimerInterrupt_exit:
 
 void prvTickISR()
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: VNZC r10 r11 r12 r13 r14 r15 r4 r5 r6 r7 r8 r9 sp
@@ -1938,7 +1945,6 @@ prvTickISR_exit:
 
 void printf(word16 r8, word16 wArg02)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn00004000
 //      task_idle
@@ -1955,7 +1961,6 @@ printf_exit:
 
 word16 PRINT(word16 r14, word16 r15)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      vuprintf
 // MayUse:  r14:[0..15] r15:[0..15]
@@ -1967,20 +1972,22 @@ l0000531A:
 	r10_10 = r15
 	r11_12 = r14
 	branch r14 != 0<16> l0000532A
+l00005326:
+	r15_36 = 1<16>
+	goto l00005344
 l0000532A:
 	call Mem16[0x09B2<p16>:word16] (retsize: 2;)
 		uses: Mem:Mem16,r10:r10_15 + 1<16>,r11:r11_25,r14:r14_26,r15:CONVERT(Mem16[r10_15:byte], byte, word16)
 		defs: r10:r10_30,r11:r11_29,r14:r14_32,r15:r15_31
 	branch r15_31 < 0<16> l00005342
-l00005342:
-	r15_36 = 0xFFFF<16>
 l00005338:
 	Mem39[0x021A<p16>:word16] = Mem16[0x021A<p16>:word16] + 1<16>
 	r11_12 = r11_29 + 0xFFFF<16>
 	branch r11_29 != 1<16> l0000532A
 l00005340:
-l00005326:
-	r15_36 = 1<16>
+	goto l00005326
+l00005342:
+	r15_36 = 0xFFFF<16>
 l00005344:
 	return r15_36
 PRINT_exit:
@@ -1988,7 +1995,6 @@ PRINT_exit:
 
 word16 __write_pad(word16 r14, word16 r15)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      vuprintf
 // MayUse:  r14:[0..15] r15:[0..15]
@@ -2007,14 +2013,15 @@ l0000535C:
 		uses: Mem:Mem25,r10:r10_23,r11:r11_27,r14:r14_29,r15:r10_23,r9:r9_28
 		defs: r10:r10_33,r11:r11_32,r14:r14_36,r15:r15_35,r9:r9_34
 	branch r15_35 < 0<16> l00005374
-l00005374:
-	r15_40 = 0xFFFF<16>
 l00005366:
 	Mem43[0x021A<p16>:word16] = Mem25[0x021A<p16>:word16] + 1<16>
 	r11_15 = CONVERT(SLICE(r11_32, byte, 0) + 0xFF<8>, byte, word16)
 	branch r11_15 >= 1<8> l0000535C
 l00005370:
 	r15_40 = r9_13
+	goto l00005376
+l00005374:
+	r15_40 = 0xFFFF<16>
 l00005376:
 	return r15_40
 __write_pad_exit:
@@ -2022,7 +2029,6 @@ __write_pad_exit:
 
 void vuprintf(word16 r8, word16 r13, word16 r14, word16 r15)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      printf
 // MayUse:  r13:[0..15] r14:[0..15] r15:[0..15] r8:[0..15]
@@ -2036,11 +2042,7 @@ l0000537E:
 	r5_1002 = r13
 	r6_1046 = r14
 	dwLoc1C_2132 = 0<32> (alias)
-l53A6:
-	v17_42 = CONVERT(Mem40[r6_1046:byte], byte, word16)
-	r7_43 = v17_42
-	r6_48 = r6_1046
-	branch v17_42 == 0<8> l000053C2
+	goto l53A6
 l000053AE:
 	r6_48 = r6_1046
 	r6_48 = r6_1046
@@ -2056,11 +2058,11 @@ l000053C2:
 	r13_62 = r6_48 - r6_1046
 	branch r13_62 == 0<16> l000053CC
 l000053C8:
-l5916:
-	branch PRINT(r13_62, r6_1046) < 0<16> l5924
-l5920:
+	goto l5916
 l000053CC:
 	branch r7_43 != 0<8> l000053D4
+l000053D0:
+	goto l5924
 l000053D4:
 	r6_1046 = r6_48 + 1<16>
 	bLoc1E_1062 = 0<8>
@@ -2069,136 +2071,183 @@ l000053D4:
 	r11_1015 = 0xFF<16>
 	bLoc24_1065 = 0<8>
 	dwLoc1C_2124 = dwLoc1C_2132 (alias)
+	goto l53E8
+l000053F2:
+	goto l58F0
+l000053F6:
+	branch (r7_264 | 0x20<16>) != 0x78<16> l5406
+l00005402:
+	goto l58F0
+l53A6:
+	v17_42 = CONVERT(Mem40[r6_1046:byte], byte, word16)
+	r7_43 = v17_42
+	r6_48 = r6_1046
+	branch v17_42 == 0<8> l000053C2
+	goto l000053AE
 l53E8:
 	r7_264 = CONVERT(Mem92[r6_1046:byte], byte, word16)
 	r6_1046 = r6_1046 + 1<16>
 l53EC:
 	branch r7_264 != 0x75<16> l000053F6
-l000053F6:
-	branch (r7_264 | 0x20<16>) != 0x78<16> l5406
-l00005402:
-l000053F2:
-l58F0:
-	branch (bLoc1E_1062 & 1<8>) == 0<8> l5906
-l5906:
-	r5_1002 = r5_1002 + 2<16>
-	dwLoc1C_2124 = CONVERT(Mem108[r5_1002:word16], uint16, uint32) (alias)
-l58F6:
-	r5_1002 = r5_1002 + 4<16>
-	dwLoc1C_2124 = Mem128[r5_1002:word32] (alias)
+	goto l000053F2
 l5406:
 	wLoc1A_1119 = SLICE(dwLoc1C_2124, word16, 16) (alias)
 	wLoc1C_1116 = SLICE(dwLoc1C_2124, word16, 0) (alias)
 	branch r7_264 != 0x20<16> l5410
+l540C:
+	goto l58DC
 l5410:
 	branch r7_264 != 0x23<16> l541A
+l5416:
+	goto l58D4
 l541A:
 	branch r7_264 != 0x2A<16> l5424
+l5420:
+	goto l58B8
 l5424:
 	branch r7_264 != 0x2D<16> l542E
+l542A:
+	goto l58A8
 l542E:
 	branch r7_264 != 0x2B<16> l5438
+l5434:
+	goto l589E
 l5438:
 	branch r7_264 != 0x2E<16> l5442
+l543E:
+	goto l5838
 l5442:
 	branch r7_264 != 0x30<16> l544C
+l5448:
+	goto l5822
 l544C:
 	branch r7_264 <u 0x3A<16> l548C
+l5458:
+	r13_776 = 0<16>
+l545A:
+	r14_782 = r13_776 * 2<16>
+	r13_791 = r13_776 * 4<16> + r14_782 + r14_782 * 2<16> + CONVERT(SLICE(r7_264, byte, 0), byte, word16)
+	v64_796 = CONVERT(Mem155[r6_1046:byte], byte, word16)
+	r13_776 = r13_791 + 0xFFD0<16>
+	r7_264 = v64_796
+	r6_1046 = r6_1046 + 1<16>
+	branch v64_796 >=u 0x3A<16> l545A
+l5486:
+	bLoc1D_1064 = SLICE(r13_791, byte, 0) + 0xD0<8>
+	goto l53EC
 l548C:
 	branch r7_264 == 0x68<16> l581A
-l581A:
-	bLoc1E_1062 = bLoc1E_1062 | 4<8>
 l5492:
 	branch r7_264 != 0x6C<16> l549E
+l5498:
+	bLoc1E_1062 = bLoc1E_1062 | 1<8>
+	goto l53E8
 l549E:
 	branch r7_264 == 0x63<16> l580C
-l580C:
-	r5_1002 = r5_1002 + 2<16>
 l54A4:
 	branch r7_264 == 0x44<16> l5806
-l5806:
-	bLoc1E_1062 = bLoc1E_1062 | 1<8>
 l54AA:
 	branch r7_264 == 0x64<16> l57AE
 l54B0:
 	branch r7_264 == 0x69<16> l57AE
-l57AE:
-	branch (bLoc1E_1062 & 1<8>) == 0<8> l57E6
-l57E6:
-	v185_190 = Mem180[r5_1002:word16]
-	r5_1002 = r5_1002 + 2<16>
-	dwLoc1C_2109 = SEQ(CONVERT(v185_190 * 2<16> <u 0<16>, bool, word16) - 1<i16>, v185_190) (alias)
-l57B4:
-	r5_1002 = r5_1002 + 4<16>
-	dwLoc1C_2109 = Mem213[r5_1002:word32] (alias)
-l57C0:
-	wLoc1C_1086 = SLICE(dwLoc1C_2109, word16, 0) (alias)
-	branch SLICE(dwLoc1C_2109, word16, 16) < 0<16> l57CE
-l57CE:
-	bLoc24_1065 = 0x2D<8>
-	dwLoc1C_2109 = SEQ(SLICE(-dwLoc1C_2109, word16, 16), -wLoc1C_1086) (alias)
-l57C6:
-	bLoc18_1092 = 0xA<8>
-	dwLoc1C_2112 = dwLoc1C_2109 (alias)
 l54B6:
 	branch r7_264 == 0x4F<16> l57A8
-l57A8:
-	bLoc1E_1062 = bLoc1E_1062 | 1<8>
 l54BC:
 	branch r7_264 == 0x6F<16> l57A2
-l57A2:
-	bLoc18_1092 = 8<8>
-	dwLoc1C_2115 = dwLoc1C_2124 (alias)
 l54C2:
 	branch r7_264 == 0x70<16> l5784
-l5784:
-	r5_1002 = r5_1002 + 2<16>
-	bLoc18_1092 = 0x10<8>
-	bLoc1E_1062 = bLoc1E_1062 | 0x40<16>
-	r7_264 = 0x78<16>
-	dwLoc1C_2115 = CONVERT(Mem155[r5_1002:word16], uint16, uint32) (alias)
 l54C8:
 	branch r7_264 == 0x73<16> l570C
-l570C:
-	v152_269 = Mem155[r5_1002:word16]
-	r5_1002 = r5_1002 + 2<16>
-	wLoc20_1099 = v152_269
-	branch v152_269 == 0<16> l5756
-l5756:
-	wLoc20_1099 = fp - 0x4C<16>
-l571A:
-	bLoc20_1110 = SLICE(wLoc20_1099, byte, 0) (alias)
-	branch r11_1015 < 0<8> l5740
-l5740:
-	r15_298 = wLoc20_1099 - 1<16>
-l5746:
-	r15_298 = r15_298 + 1<16>
-	branch Mem295[r15_298:byte] != 0<8> l5746
-l574E:
-	r9_311 = CONVERT(SLICE(r15_298, byte, 0) - bLoc20_1110, byte, word16)
-l571E:
-	r15_323 = memchr(CONVERT(SLICE(r11_1015, byte, 0), byte, word16), 0<16>, wLoc20_1099)
-	branch r15_323 == 0<16> l573C
-l5732:
-	r9_311 = CONVERT(SLICE(r15_323, byte, 0) - bLoc20_1110, byte, word16)
-	wLoc20_1297 = wLoc20_1099 (alias)
-	branch r11_1015 >= r9_311 l54F8
-l573C:
-	wLoc20_1297 = wLoc20_1099
-	r9_311 = r11_1015
 l54CE:
 	branch r7_264 == 0x55<16> l5706
-l5706:
-	bLoc1E_1062 = bLoc1E_1062 | 1<8>
 l54D4:
 	branch r7_264 == 0x75<16> l56FE
-l56FE:
-	bLoc18_1092 = 0xA<8>
-	dwLoc1C_2115 = dwLoc1C_2124 (alias)
 l54DA:
 	branch r7_264 == 0x58<16> l55FE
 l54E0:
 	branch r7_264 == 0x78<16> l55FE
+l54E6:
+	branch r7_264 != 0<8> l54EE
+l54EA:
+	goto l5924
+l54EE:
+l54F6:
+	wLoc20_1297 = fp - 0x4C<16>
+	r9_311 = 1<16>
+l54F8:
+	bLoc24_1065 = 0<8>
+l54FC:
+	r11_543 = r9_311
+	r10_549 = CONVERT(bLoc17_1063, byte, word16) - r9_311
+	branch r10_549 < 0<16> l55FA
+l5506:
+	v77_557 = CONVERT(bLoc24_1065, byte, word16)
+	r14_558 = v77_557
+	branch v77_557 == 0<8> l55EE
+l550E:
+	r11_543 = CONVERT(SLICE(r9_311, byte, 0) + 1<8>, byte, word16)
+l5510:
+	v81_584 = CONVERT(bLoc1E_1062, byte, word16)
+	r11_580 = r11_543 + r10_549
+	r8 = v81_584 & 0x30<16>
+	branch (v81_584 & 0x30<16>) != 0<16> l5542
+l551C:
+	r13_598 = CONVERT(bLoc1D_1064 - SLICE(r11_580, byte, 0), byte, word16)
+	branch r13_598 < 1<16> l5542
+l552C:
+	branch __write_pad(r13_598, 0x20<16>) >= 0<16> l553E
+l553A:
+	goto l5924
+l553E:
+	r14_558 = CONVERT(bLoc24_1065, byte, word16)
+l5542:
+	branch r14_558 != 0<8> l55E4
+l5546:
+	branch (CONVERT(bLoc1E_1062, byte, word16) & 0x40<16>) == 0<16> l5576
+l554E:
+	r14_618 = 2<16>
+	r15_621 = fp - 0x22<16>
+l556A:
+	branch PRINT(r14_618, r15_621) >= 0<16> l5576
+l5572:
+	goto l5924
+l5576:
+	branch (v81_584 & 0x30<16>) == 0x20<16> l55C4
+l557C:
+	branch __write_pad(r10_549, 0x30<16>) < 0<16> l5924
+l558A:
+	branch PRINT(CONVERT(SLICE(r9_311, byte, 0), byte, word16), wLoc20_1297) < 0<16> l5924
+l559C:
+	dwLoc1C_2132 = dwLoc1C_2124 (alias)
+	branch (CONVERT(bLoc1E_1062, byte, word16) & 0x10<16>) == 0<16> l53A6
+l55A4:
+	r13_760 = CONVERT(bLoc1D_1064 - SLICE(r11_580, byte, 0), byte, word16)
+	dwLoc1C_2132 = dwLoc1C_2124 (alias)
+	branch r13_760 < 1<16> l53A6
+l55B4:
+	dwLoc1C_2132 = dwLoc1C_2124 (alias)
+	branch __write_pad(r13_760, 0x20<16>) >= 0<16> l53A6
+l55C2:
+	goto l5924
+l55C4:
+	r13_693 = CONVERT(bLoc1D_1064 - SLICE(r11_580, byte, 0), byte, word16)
+	branch r13_693 < 1<16> l557C
+l55D4:
+	branch __write_pad(r13_693, 0x30<16>) >= 0<16> l557C
+l55E2:
+	goto l5924
+l55E4:
+	r14_618 = 1<16>
+	r15_621 = fp - 0x24<16>
+	goto l556A
+l55EE:
+	branch (CONVERT(bLoc1E_1062, byte, word16) & 0x40<16>) == 0<16> l5510
+l55F6:
+	r11_543 = CONVERT(SLICE(r9_311, byte, 0) + 2<8>, byte, word16)
+	goto l5510
+l55FA:
+	r10_549 = 0<16>
+	goto l5506
 l55FE:
 	bLoc18_1092 = 0x10<8>
 	dwLoc1C_2115 = dwLoc1C_2124 (alias)
@@ -2246,11 +2295,6 @@ l5672:
 	fn00005B4E(CONVERT(wLoc14_1717, uint16, uint32), r8, wLoc1C_1157, wLoc1A_1158, out r13_r12_2144, out r15_r14_2145, out r8_447)
 	r14_445 = <invalid>
 	branch r14_445 <u 0xA<16> l56EE
-l56EE:
-	r4_456 = r14_445 + 0x57<16>
-	branch r7_264 != 0x58<16> l5692
-l56F8:
-	r4_456 = r14_445 + 0x57<16> & 0xFFDF<16>
 l568E:
 	r4_456 = r14_445 + 0x30<16>
 l5692:
@@ -2265,6 +2309,11 @@ l5692:
 l56C0:
 	dwLoc1C_2112 = SEQ(r13_488, r12_487) (alias)
 	branch bLoc18_1092 == 8<8> l56D2
+l56C6:
+	r9_311 = CONVERT(SLICE(fp, byte, 0) - 0x4C<8> - SLICE(wLoc20_1168, byte, 0), byte, word16) + 0x28<16>
+	wLoc20_1297 = wLoc20_1168 (alias)
+	dwLoc1C_2124 = dwLoc1C_2112 (alias)
+	goto l54FC
 l56D2:
 	dwLoc1C_2112 = SEQ(r13_488, r12_487) (alias)
 	branch (bLoc1E_1062 & 8<8>) == 0<8> l56C6
@@ -2275,119 +2324,106 @@ l56DE:
 	Mem520[wLoc20_2148 + 0xFFFE<16>:byte] = 0x30<8>
 	wLoc20_1168 = SEQ(SLICE(wLoc20_2148 + 0xFFFE<16>, byte, 8), SLICE(wLoc20_2148, byte, 0) + 0xFE<8>) (alias)
 	dwLoc1C_2112 = SEQ(r13_488, r12_487) (alias)
-l56C6:
-	r9_311 = CONVERT(SLICE(fp, byte, 0) - 0x4C<8> - SLICE(wLoc20_1168, byte, 0), byte, word16) + 0x28<16>
-	wLoc20_1297 = wLoc20_1168 (alias)
-	dwLoc1C_2124 = dwLoc1C_2112 (alias)
-l54E6:
-	branch r7_264 != 0<8> l54EE
-l54EE:
-l54F6:
-	wLoc20_1297 = fp - 0x4C<16>
-	r9_311 = 1<16>
-l54F8:
-	bLoc24_1065 = 0<8>
-l54FC:
-	r11_543 = r9_311
-	r10_549 = CONVERT(bLoc17_1063, byte, word16) - r9_311
-	branch r10_549 < 0<16> l55FA
-l55FA:
-	r10_549 = 0<16>
-l5506:
-	v77_557 = CONVERT(bLoc24_1065, byte, word16)
-	r14_558 = v77_557
-	branch v77_557 == 0<8> l55EE
-l55EE:
-	branch (CONVERT(bLoc1E_1062, byte, word16) & 0x40<16>) == 0<16> l5510
-l55F6:
-	r11_543 = CONVERT(SLICE(r9_311, byte, 0) + 2<8>, byte, word16)
-l550E:
-	r11_543 = CONVERT(SLICE(r9_311, byte, 0) + 1<8>, byte, word16)
-l5510:
-	v81_584 = CONVERT(bLoc1E_1062, byte, word16)
-	r11_580 = r11_543 + r10_549
-	r8 = v81_584 & 0x30<16>
-	branch (v81_584 & 0x30<16>) != 0<16> l5542
-l551C:
-	r13_598 = CONVERT(bLoc1D_1064 - SLICE(r11_580, byte, 0), byte, word16)
-	branch r13_598 < 1<16> l5542
-l552C:
-	branch __write_pad(r13_598, 0x20<16>) >= 0<16> l553E
-l553E:
-	r14_558 = CONVERT(bLoc24_1065, byte, word16)
-l5542:
-	branch r14_558 != 0<8> l55E4
-l55E4:
-	r14_618 = 1<16>
-	r15_621 = fp - 0x24<16>
-l5546:
-	branch (CONVERT(bLoc1E_1062, byte, word16) & 0x40<16>) == 0<16> l5576
-l554E:
-	r14_618 = 2<16>
-	r15_621 = fp - 0x22<16>
-l556A:
-	branch PRINT(r14_618, r15_621) >= 0<16> l5576
-l5576:
-	branch (v81_584 & 0x30<16>) == 0x20<16> l55C4
-l55C4:
-	r13_693 = CONVERT(bLoc1D_1064 - SLICE(r11_580, byte, 0), byte, word16)
-	branch r13_693 < 1<16> l557C
-l55D4:
-	branch __write_pad(r13_693, 0x30<16>) >= 0<16> l557C
-l55E2:
-l557C:
-	branch __write_pad(r10_549, 0x30<16>) < 0<16> l5924
-l558A:
-	branch PRINT(CONVERT(SLICE(r9_311, byte, 0), byte, word16), wLoc20_1297) < 0<16> l5924
-l559C:
-	dwLoc1C_2132 = dwLoc1C_2124 (alias)
-	branch (CONVERT(bLoc1E_1062, byte, word16) & 0x10<16>) == 0<16> l53A6
-l55A4:
-	r13_760 = CONVERT(bLoc1D_1064 - SLICE(r11_580, byte, 0), byte, word16)
-	dwLoc1C_2132 = dwLoc1C_2124 (alias)
-	branch r13_760 < 1<16> l53A6
-l55B4:
-	dwLoc1C_2132 = dwLoc1C_2124 (alias)
-	branch __write_pad(r13_760, 0x20<16>) >= 0<16> l53A6
-l55C2:
-l5572:
-l553A:
-l54EA:
-l5498:
+	goto l56C6
+l56EE:
+	r4_456 = r14_445 + 0x57<16>
+	branch r7_264 != 0x58<16> l5692
+l56F8:
+	r4_456 = r14_445 + 0x57<16> & 0xFFDF<16>
+	goto l5692
+l56FE:
+	bLoc18_1092 = 0xA<8>
+	dwLoc1C_2115 = dwLoc1C_2124 (alias)
+	goto l561C
+l5706:
 	bLoc1E_1062 = bLoc1E_1062 | 1<8>
-l5458:
-	r13_776 = 0<16>
-l545A:
-	r14_782 = r13_776 * 2<16>
-	r13_791 = r13_776 * 4<16> + r14_782 + r14_782 * 2<16> + CONVERT(SLICE(r7_264, byte, 0), byte, word16)
-	v64_796 = CONVERT(Mem155[r6_1046:byte], byte, word16)
-	r13_776 = r13_791 + 0xFFD0<16>
-	r7_264 = v64_796
-	r6_1046 = r6_1046 + 1<16>
-	branch v64_796 >=u 0x3A<16> l545A
-l5486:
-	bLoc1D_1064 = SLICE(r13_791, byte, 0) + 0xD0<8>
-l5448:
+	goto l56FE
+l570C:
+	v152_269 = Mem155[r5_1002:word16]
+	r5_1002 = r5_1002 + 2<16>
+	wLoc20_1099 = v152_269
+	branch v152_269 == 0<16> l5756
+l571A:
+	bLoc20_1110 = SLICE(wLoc20_1099, byte, 0) (alias)
+	branch r11_1015 < 0<8> l5740
+l571E:
+	r15_323 = memchr(CONVERT(SLICE(r11_1015, byte, 0), byte, word16), 0<16>, wLoc20_1099)
+	branch r15_323 == 0<16> l573C
+l5732:
+	r9_311 = CONVERT(SLICE(r15_323, byte, 0) - bLoc20_1110, byte, word16)
+	wLoc20_1297 = wLoc20_1099 (alias)
+	branch r11_1015 >= r9_311 l54F8
+l573C:
+	wLoc20_1297 = wLoc20_1099
+	r9_311 = r11_1015
+	goto l54F8
+l5740:
+	r15_298 = wLoc20_1099 - 1<16>
+l5746:
+	r15_298 = r15_298 + 1<16>
+	branch Mem295[r15_298:byte] != 0<8> l5746
+l574E:
+	r9_311 = CONVERT(SLICE(r15_298, byte, 0) - bLoc20_1110, byte, word16)
+	goto l54F8
+l5756:
+	wLoc20_1099 = fp - 0x4C<16>
+	goto l571A
+l5784:
+	r5_1002 = r5_1002 + 2<16>
+	bLoc18_1092 = 0x10<8>
+	bLoc1E_1062 = bLoc1E_1062 | 0x40<16>
+	r7_264 = 0x78<16>
+	dwLoc1C_2115 = CONVERT(Mem155[r5_1002:word16], uint16, uint32) (alias)
+	goto l561C
+l57A2:
+	bLoc18_1092 = 8<8>
+	dwLoc1C_2115 = dwLoc1C_2124 (alias)
+	goto l561C
+l57A8:
+	bLoc1E_1062 = bLoc1E_1062 | 1<8>
+	goto l57A2
+l57AE:
+	branch (bLoc1E_1062 & 1<8>) == 0<8> l57E6
+l57B4:
+	r5_1002 = r5_1002 + 4<16>
+	dwLoc1C_2109 = Mem213[r5_1002:word32] (alias)
+l57C0:
+	wLoc1C_1086 = SLICE(dwLoc1C_2109, word16, 0) (alias)
+	branch SLICE(dwLoc1C_2109, word16, 16) < 0<16> l57CE
+l57C6:
+	bLoc18_1092 = 0xA<8>
+	dwLoc1C_2112 = dwLoc1C_2109 (alias)
+	goto l5620
+l57CE:
+	bLoc24_1065 = 0x2D<8>
+	dwLoc1C_2109 = SEQ(SLICE(-dwLoc1C_2109, word16, 16), -wLoc1C_1086) (alias)
+	goto l57C6
+l57E6:
+	v185_190 = Mem180[r5_1002:word16]
+	r5_1002 = r5_1002 + 2<16>
+	dwLoc1C_2109 = SEQ(CONVERT(v185_190 * 2<16> <u 0<16>, bool, word16) - 1<i16>, v185_190) (alias)
+	goto l57C0
+l5806:
+	bLoc1E_1062 = bLoc1E_1062 | 1<8>
+	goto l57AE
+l580C:
+	r5_1002 = r5_1002 + 2<16>
+	goto l54F6
+l581A:
+	bLoc1E_1062 = bLoc1E_1062 | 4<8>
+	goto l53E8
 l5822:
 	branch (CONVERT(bLoc1E_1062, byte, word16) & 0x10<16>) == 0<16> l582E
+l582A:
+	goto l53E8
 l582E:
 	bLoc1E_1062 = bLoc1E_1062 | 0x20<16>
-l582A:
-l543E:
+	goto l53E8
 l5838:
 	v54_820 = CONVERT(Mem155[r6_1046:byte], byte, word16)
 	r7_264 = v54_820
 	r6_1046 = r6_1046 + 1<16>
 	branch v54_820 == 0x2A<16> l588A
-l588A:
-	v58_827 = Mem155[r5_1002:word16]
-	r5_1002 = r5_1002 + 2<16>
-	r15_829 = v58_827
-	branch v58_827 >= 0xFFFF<16> l5898
-l5896:
-	r15_829 = 0xFFFF<16>
-l5898:
-	r11_1015 = r15_829
 l5842:
 	r13_835 = 0<16>
 	branch v54_820 <u 0x3A<16> l587C
@@ -2405,31 +2441,57 @@ l5882:
 	r15_867 = 0xFFFF<16>
 l5884:
 	r11_1015 = r15_867
-l5434:
+	goto l53EC
+l588A:
+	v58_827 = Mem155[r5_1002:word16]
+	r5_1002 = r5_1002 + 2<16>
+	r15_829 = v58_827
+	branch v58_827 >= 0xFFFF<16> l5898
+l5896:
+	r15_829 = 0xFFFF<16>
+l5898:
+	r11_1015 = r15_829
+	goto l53E8
 l589E:
 	bLoc24_1065 = 0x2B<8>
-l542A:
-l5420:
+	goto l53E8
+l58A8:
+	bLoc1E_1062 = (bLoc1E_1062 | 0x10<16>) & 0xFFDF<16>
+	goto l53E8
 l58B8:
 	v45_877 = Mem155[r5_1002:byte]
 	r5_1002 = r5_1002 + 2<16>
 	bLoc1D_1064 = v45_877
 	branch v45_877 < 0<8> l58CA
+l58C6:
+	goto l53E8
 l58CA:
 	bLoc1D_1064 = -v45_877
-l58A8:
-	bLoc1E_1062 = (bLoc1E_1062 | 0x10<16>) & 0xFFDF<16>
-l58C6:
-l5416:
+	goto l58A8
 l58D4:
 	bLoc1E_1062 = bLoc1E_1062 | 8<8>
-l540C:
+	goto l53E8
 l58DC:
 	branch bLoc24_1065 == 0<8> l58E6
+l58E2:
+	goto l53E8
 l58E6:
 	bLoc24_1065 = 0x20<8>
-l58E2:
-l000053D0:
+	goto l53E8
+l58F0:
+	branch (bLoc1E_1062 & 1<8>) == 0<8> l5906
+l58F6:
+	r5_1002 = r5_1002 + 4<16>
+	dwLoc1C_2124 = Mem128[r5_1002:word32] (alias)
+	goto l5406
+l5906:
+	r5_1002 = r5_1002 + 2<16>
+	dwLoc1C_2124 = CONVERT(Mem108[r5_1002:word16], uint16, uint32) (alias)
+	goto l5406
+l5916:
+	branch PRINT(r13_62, r6_1046) < 0<16> l5924
+l5920:
+	goto l000053CC
 l5924:
 	return
 vuprintf_exit:
@@ -2437,7 +2499,6 @@ vuprintf_exit:
 
 word16 memchr(word16 r13, word16 r14, word16 r15)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      vuprintf
 // MayUse:  r13:[0..15] r14:[0..15] r15:[0..15]
@@ -2452,13 +2513,14 @@ l00005948:
 l0000594A:
 	r14_13 = r14_13 + 1<16>
 	branch CONVERT(Mem5[r14_13:byte], byte, word16) == r14 l0000595A
-l0000595A:
-	r15_24 = r14_13 + 0xFFFF<16>
 l00005952:
 	r13 = r13 + 0xFFFF<16>
 	branch r13 != 0<16> l0000594A
 l00005956:
 	r15_24 = 0<16>
+	goto l0000595E
+l0000595A:
+	r15_24 = r14_13 + 0xFFFF<16>
 l0000595E:
 	return r15_24
 memchr_exit:
@@ -2466,7 +2528,6 @@ memchr_exit:
 
 void strncpy(word16 r13, word16 r14, word16 r15)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      prvInitialiseTCBVariables
 // MayUse:  r13:[0..15] r14:[0..15] r15:[0..15]
@@ -2483,6 +2544,11 @@ l0000596C:
 	r14 = r14 + 1<16>
 	r12_11 = r12_11 + 1<16>
 	branch CONVERT(Mem16[r12_11:byte], byte, word16) == 0<8> l00005980
+l0000597A:
+	r13 = r13 + 0xFFFF<16>
+	branch r13 != 0<16> l0000596C
+l0000597E:
+	goto l0000598E
 l00005980:
 	r13_25 = r13 + 0xFFFF<16>
 	branch r13_25 == 0<16> l0000598E
@@ -2491,10 +2557,6 @@ l00005984:
 	r12_11 = r12_11 + 1<16>
 	r13_25 = r13_25 + 0xFFFF<16>
 	branch r13_25 != 0<16> l00005984
-l0000597A:
-	r13 = r13 + 0xFFFF<16>
-	branch r13 != 0<16> l0000596C
-l0000597E:
 l0000598E:
 	return
 strncpy_exit:
@@ -2502,7 +2564,6 @@ strncpy_exit:
 
 word16 memcpy(word16 sr, word16 r13, word16 r14, word16 r15)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      xQueueSend
 //      xQueueSendFromISR
@@ -2522,49 +2583,6 @@ l000059A4:
 	branch r15 == r14 l00005A60
 l000059A8:
 	branch r15 <u r14 l00005A02
-l00005A02:
-	r12_23 = r14 + r13
-	r13_233 = r15 + r13
-	r15_27 = r12_23 | r13_233
-	C_70 = cond(r15_27 & 1<16>) & 1<16> (alias)
-	branch (r15_27 & 1<16>) == 0<16> l00005A30
-l00005A12:
-	branch ((r12_23 ^ r13_233) & 1<16>) != 0<16> l00005A20
-l00005A1A:
-	branch r13 <u 3<16> l00005A5A
-l00005A5A:
-	r14_41 = r12_23 & 1<16>
-l00005A20:
-	r14_41 = r13
-l00005A22:
-	r11_12 = r13 - r14_41
-l00005A24:
-	r12_23 = r12_23 + 0xFFFF<16>
-	r13_233 = r13_233 + 0xFFFF<16>
-	Mem56[r13_233:byte] = Mem54[r12_23:byte]
-	r14_41 = r14_41 + 0xFFFF<16>
-	C_70 = cond(r14_41) & 1<16> (alias)
-	branch r14_41 != 0<16> l00005A24
-l00005A30:
-	sr = sr & 0xFFFE<16>
-	r14_73 = __rcr<word16,byte>(r11_12, 1<8>, C_70)
-	branch r14_73 == 0<16> l00005A46
-l00005A3A:
-	r12_23 = r12_23 - 2<16>
-	r13_233 = r13_233 - 2<16>
-	Mem82[r13_233:word16] = Mem80[r12_23:word16]
-	r14_73 = r14_73 + 0xFFFF<16>
-	branch r14_73 != 0<16> l00005A3A
-l00005A46:
-	r14_101 = r11_12 & 1<16>
-	branch r14_101 == 0<16> l00005A60
-l00005A4C:
-	r12_23 = r12_23 + 0xFFFF<16>
-	r13_233 = r13_233 + 0xFFFF<16>
-	Mem100[r13_233:byte] = Mem98[r12_23:byte]
-	r14_101 = r14_101 + 0xFFFF<16>
-	branch r14_101 != 0<16> l00005A4C
-l00005A58:
 l000059AC:
 	r15_106 = r14 | r15
 	C_149 = cond(r15_106 & 1<16>) & 1<16> (alias)
@@ -2573,8 +2591,6 @@ l000059B4:
 	branch ((r14 ^ r15) & 1<16>) != 0<16> l000059C0
 l000059BC:
 	branch r13 <u 2<16> l000059F8
-l000059F8:
-	r14_122 = 2<16> - (r14 & 1<16>)
 l000059C0:
 	r14_122 = r13
 l000059C2:
@@ -2606,6 +2622,55 @@ l000059EA:
 	r14_169 = r14_169 + 0xFFFF<16>
 	branch r14_169 != 0<16> l000059EA
 l000059F6:
+	goto l00005A60
+l000059F8:
+	r14_122 = 2<16> - (r14 & 1<16>)
+	goto l000059C2
+l00005A02:
+	r12_23 = r14 + r13
+	r13_233 = r15 + r13
+	r15_27 = r12_23 | r13_233
+	C_70 = cond(r15_27 & 1<16>) & 1<16> (alias)
+	branch (r15_27 & 1<16>) == 0<16> l00005A30
+l00005A12:
+	branch ((r12_23 ^ r13_233) & 1<16>) != 0<16> l00005A20
+l00005A1A:
+	branch r13 <u 3<16> l00005A5A
+l00005A20:
+	r14_41 = r13
+l00005A22:
+	r11_12 = r13 - r14_41
+l00005A24:
+	r12_23 = r12_23 + 0xFFFF<16>
+	r13_233 = r13_233 + 0xFFFF<16>
+	Mem56[r13_233:byte] = Mem54[r12_23:byte]
+	r14_41 = r14_41 + 0xFFFF<16>
+	C_70 = cond(r14_41) & 1<16> (alias)
+	branch r14_41 != 0<16> l00005A24
+l00005A30:
+	sr = sr & 0xFFFE<16>
+	r14_73 = __rcr<word16,byte>(r11_12, 1<8>, C_70)
+	branch r14_73 == 0<16> l00005A46
+l00005A3A:
+	r12_23 = r12_23 - 2<16>
+	r13_233 = r13_233 - 2<16>
+	Mem82[r13_233:word16] = Mem80[r12_23:word16]
+	r14_73 = r14_73 + 0xFFFF<16>
+	branch r14_73 != 0<16> l00005A3A
+l00005A46:
+	r14_101 = r11_12 & 1<16>
+	branch r14_101 == 0<16> l00005A60
+l00005A4C:
+	r12_23 = r12_23 + 0xFFFF<16>
+	r13_233 = r13_233 + 0xFFFF<16>
+	Mem100[r13_233:byte] = Mem98[r12_23:byte]
+	r14_101 = r14_101 + 0xFFFF<16>
+	branch r14_101 != 0<16> l00005A4C
+l00005A58:
+	goto l00005A60
+l00005A5A:
+	r14_41 = r12_23 & 1<16>
+	goto l00005A22
 l00005A60:
 	return sr
 memcpy_exit:
@@ -2613,7 +2678,6 @@ memcpy_exit:
 
 word16 memset(word16 sr, word16 r13, word16 r14, word16 r15)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      prvAllocateTCBAndStack
 // MayUse:  r13:[0..15] r14:[0..15] r15:[0..15] sr:[0..15]
@@ -2624,6 +2688,15 @@ memset_entry:
 l00005A68:
 	r14_124 = r15
 	branch r13 <u 6<16> l00005A8A
+l00005A7A:
+	branch r13 == 0<16> l00005ACE
+l00005A7E:
+	Mem89[r14_124:byte] = SLICE(r14, byte, 0)
+	r14_124 = r14_124 + 1<16>
+	r13 = r13 + 0xFFFF<16>
+	branch r13 != 0<16> l00005A7E
+l00005A88:
+	goto l00005ACE
 l00005A8A:
 	r11_122 = r14
 	branch r14 == 0<16> l00005A96
@@ -2658,14 +2731,6 @@ l00005AC4:
 	r14_124 = r14_124 + 1<16>
 	r12_71 = r12_71 + 0xFFFF<16>
 	branch r12_71 != 0<16> l00005AC4
-l00005A7A:
-	branch r13 == 0<16> l00005ACE
-l00005A7E:
-	Mem89[r14_124:byte] = SLICE(r14, byte, 0)
-	r14_124 = r14_124 + 1<16>
-	r13 = r13 + 0xFFFF<16>
-	branch r13 != 0<16> l00005A7E
-l00005A88:
 l00005ACE:
 	return sr
 memset_exit:
@@ -2673,7 +2738,6 @@ memset_exit:
 
 ui32 fn00005ADC(word16 r10, word16 r11, word16 r12, word16 r13)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      msp430_compute_modulator_bits
 // MayUse:  r10:[0..15] r11:[0..15] r12:[0..15] r13:[0..15]
@@ -2696,7 +2760,6 @@ fn00005ADC_exit:
 
 word16 fn00005B04(ui32 r11_r10, ui32 r13_r12)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      msp430_compute_modulator_bits
 // MayUse:  Sequence r11:r10:[0..31] Sequence r13:r12:[0..31]
@@ -2740,7 +2803,6 @@ fn00005B04_exit:
 
 bool fn00005B4E(ui32 r11_r10, word16 r8, word16 r12, word16 r13, ui32 & r13_r12Out, ui32 & r15_r14Out, word16 & r8Out)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      vuprintf
 //      fn00005B04
@@ -2755,13 +2817,7 @@ l00005B4E:
 	r15_29 = 0<16>
 	r14_25 = 0<16>
 	r9_18 = 0x21<16>
-l00005B6C:
-	r12 = r12 * 2<16>
-	r13 = r13 * 2<16> + CONVERT(r12 <u 0<16>, bool, word16)
-	r9_18 = r9_18 - 1<16>
-	r8_17 = r8 * 2<16> + CONVERT(r13 <u 0<16>, bool, word16)
-	VNZC_20 = cond(r9_18)
-	branch r9_18 != 0<16> l00005B58
+	goto l00005B6C
 l00005B58:
 	r8 = __rcr<word16,byte>(r8_17, 1<8>, VNZC_20 & 1<16>)
 	r14_25 = r14_25 * 2<16> + CONVERT(r8 <u 0<16>, bool, word16)
@@ -2775,6 +2831,13 @@ l00005B68:
 	r15_r14_61 = SEQ(r15_29, r14_25) - r11_r10
 	r14_25 = SLICE(r15_r14_61, word16, 0) (alias)
 	r15_29 = SLICE(r15_r14_61, word16, 16) (alias)
+l00005B6C:
+	r12 = r12 * 2<16>
+	r13 = r13 * 2<16> + CONVERT(r12 <u 0<16>, bool, word16)
+	r9_18 = r9_18 - 1<16>
+	r8_17 = r8 * 2<16> + CONVERT(r13 <u 0<16>, bool, word16)
+	VNZC_20 = cond(r9_18)
+	branch r9_18 != 0<16> l00005B58
 l00005B76:
 	r13_r12Out = <invalid>
 	r15_r14Out = <invalid>

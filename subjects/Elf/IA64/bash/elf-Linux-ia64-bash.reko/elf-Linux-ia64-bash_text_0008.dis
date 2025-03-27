@@ -1,494 +1,456 @@
 void expand_prompt_string()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-expand_prompt_string_exit:
 expand_prompt_string_entry:
 l40000000000A58C0:
+expand_prompt_string_exit:
 
 
 void cond_expand_word()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-cond_expand_word_exit:
 cond_expand_word_entry:
 l40000000000A6540:
+cond_expand_word_exit:
 
 
 void expand_string_assignment()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-expand_string_assignment_exit:
 expand_string_assignment_entry:
 l40000000000A6700:
+expand_string_assignment_exit:
 
 
 void expand_assignment_string_to_string()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-expand_assignment_string_to_string_exit:
 expand_assignment_string_to_string_entry:
 l40000000000A6940:
+expand_assignment_string_to_string_exit:
 
 
 void expand_string_unsplit()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-expand_string_unsplit_exit:
 expand_string_unsplit_entry:
 l40000000000A6BC0:
+expand_string_unsplit_exit:
 
 
 void expand_string_unsplit_to_string()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-expand_string_unsplit_to_string_exit:
 expand_string_unsplit_to_string_entry:
 l40000000000A6D00:
+expand_string_unsplit_to_string_exit:
 
 
 void expand_word_unsplit()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-expand_word_unsplit_exit:
 expand_word_unsplit_entry:
 l40000000000A6E00:
+expand_word_unsplit_exit:
 
 
 void expand_word_leave_quoted()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-expand_word_leave_quoted_exit:
 expand_word_leave_quoted_entry:
 l40000000000A6F00:
+expand_word_leave_quoted_exit:
 
 
 void expand_string_to_string()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-expand_string_to_string_exit:
 expand_string_to_string_entry:
 l40000000000A7840:
+expand_string_to_string_exit:
 
 
 void expand_word()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-expand_word_exit:
 expand_word_entry:
 l40000000000A8FC0:
+expand_word_exit:
 
 
 void expand_words()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-expand_words_exit:
 expand_words_entry:
 l40000000000A90C0:
+expand_words_exit:
 
 
 void expand_words_no_vars()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-expand_words_no_vars_exit:
 expand_words_no_vars_entry:
 l40000000000A9100:
+expand_words_no_vars_exit:
 
 
 void expand_words_shellexp()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-expand_words_shellexp_exit:
 expand_words_shellexp_entry:
 l40000000000A9140:
+expand_words_shellexp_exit:
 
 
 void phash_create()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-phash_create_exit:
 phash_create_entry:
 l40000000000A9200:
+phash_create_exit:
 
 
 void phash_flush()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-phash_flush_exit:
 phash_flush_entry:
 l40000000000A9280:
+phash_flush_exit:
 
 
 void phash_remove()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-phash_remove_exit:
 phash_remove_entry:
 l40000000000A9300:
+phash_remove_exit:
 
 
 void phash_insert()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-phash_insert_exit:
 phash_insert_entry:
 l40000000000A9480:
+phash_insert_exit:
 
 
 void phash_search()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-phash_search_exit:
 phash_search_entry:
 l40000000000A9780:
+phash_search_exit:
 
 
 void hash_create()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-hash_create_exit:
 hash_create_entry:
 l40000000000A9B00:
+hash_create_exit:
 
 
 void hash_size()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-hash_size_exit:
 hash_size_entry:
 l40000000000A9CC0:
+hash_size_exit:
 
 
 void hash_copy()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-hash_copy_exit:
 hash_copy_entry:
 l40000000000A9D00:
+hash_copy_exit:
 
 
 void hash_string()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-hash_string_exit:
 hash_string_entry:
 l40000000000AA000:
+hash_string_exit:
 
 
 void hash_bucket()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-hash_bucket_exit:
 hash_bucket_entry:
 l40000000000AA0C0:
+hash_bucket_exit:
 
 
 void hash_search()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-hash_search_exit:
 hash_search_entry:
 l40000000000AA1C0:
+hash_search_exit:
 
 
 void hash_remove()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-hash_remove_exit:
 hash_remove_entry:
 l40000000000AA500:
+hash_remove_exit:
 
 
 void hash_insert()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-hash_insert_exit:
 hash_insert_entry:
 l40000000000AA780:
+hash_insert_exit:
 
 
 void hash_flush()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-hash_flush_exit:
 hash_flush_entry:
 l40000000000AA980:
+hash_flush_exit:
 
 
 void hash_dispose()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-hash_dispose_exit:
 hash_dispose_entry:
 l40000000000AAB80:
+hash_dispose_exit:
 
 
 void hash_walk()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-hash_walk_exit:
 hash_walk_entry:
 l40000000000AAC00:
+hash_walk_exit:
 
 
 void time_to_check_mail()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-time_to_check_mail_exit:
 time_to_check_mail_entry:
 l40000000000AB280:
+time_to_check_mail_exit:
 
 
 void reset_mail_timer()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-reset_mail_timer_exit:
 reset_mail_timer_entry:
 l40000000000AB400:
+reset_mail_timer_exit:
 
 
 void reset_mail_files()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-reset_mail_files_exit:
 reset_mail_files_entry:
 l40000000000AB480:
+reset_mail_files_exit:
 
 
 void free_mail_files()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-free_mail_files_exit:
 free_mail_files_entry:
 l40000000000AB540:
+free_mail_files_exit:
 
 
 void make_default_mailpath()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-make_default_mailpath_exit:
 make_default_mailpath_entry:
 l40000000000AB680:
+make_default_mailpath_exit:
 
 
 void remember_mail_dates()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-remember_mail_dates_exit:
 remember_mail_dates_entry:
 l40000000000AB7C0:
+remember_mail_dates_exit:
 
 
 void init_mail_dates()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-init_mail_dates_exit:
 init_mail_dates_entry:
 l40000000000ABB00:
+init_mail_dates_exit:
 
 
 void check_mail()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-check_mail_exit:
 check_mail_entry:
 l40000000000ABB40:
+check_mail_exit:
 
 
 void initialize_traps()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-initialize_traps_exit:
 initialize_traps_entry:
 l40000000000AC380:
+initialize_traps_exit:
 
 

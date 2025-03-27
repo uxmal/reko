@@ -1,6 +1,5 @@
 void deregister_tm_clones()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      __do_global_dtors_aux
 // MayUse: 
@@ -21,7 +20,6 @@ deregister_tm_clones_exit:
 
 void register_tm_clones()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      frame_dummy
 // MayUse: 
@@ -48,7 +46,6 @@ register_tm_clones_exit:
 
 void __do_global_dtors_aux()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: CVZNX a0 a2 a6 a7 d0 d1 d2
@@ -84,7 +81,6 @@ __do_global_dtors_aux_exit:
 
 void call___do_global_dtors_aux()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
@@ -97,7 +93,6 @@ call___do_global_dtors_aux_exit:
 
 void frame_dummy()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: CVZNX a0 a1 a6 a7 d0
@@ -109,6 +104,10 @@ l8000016E:
 	fn00000000(0x8000065C<p32>, 0x8000272A<p32>)
 l8000017E:
 	branch Mem25[0x8000271C<p32>:word32] != 0<32> l8000018E
+l80000188:
+l8000018A_thunk_register_tm_clones:
+	register_tm_clones()
+	return
 l8000018E:
 	branch 0x00000000<p32> == 0<32> l80000188
 l80000198:
@@ -116,16 +115,11 @@ l80000198:
 l800001A0_thunk_register_tm_clones:
 	register_tm_clones()
 	return
-l80000188:
-l8000018A_thunk_register_tm_clones:
-	register_tm_clones()
-	return
 frame_dummy_exit:
 
 
 void call_frame_dummy()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
@@ -138,7 +132,6 @@ call_frame_dummy_exit:
 
 void sine_taylor(real64 rArg04)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      main
 // MayUse:  Stack +0004:[0..63]
@@ -153,7 +146,6 @@ _Z11sine_taylord_exit:
 
 void factorial(int32 dwArg04)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      sine_taylor
 // MayUse:  Stack +0004:[0..31]
@@ -165,16 +157,16 @@ l8000033C:
 	dwLoc08_36 = 2<32>
 l8000034C:
 	branch dwLoc08_36 > dwArg04 l8000036A
+l80000356:
+	dwLoc08_36 = dwLoc08_36 + 1<32>
+	goto l8000034C
 l8000036A:
 	return
 _ZL9factoriali_exit:
-l80000356:
-	dwLoc08_36 = dwLoc08_36 + 1<32>
 
 
 void pow_int(real64 rArg04, int32 dwArg0C)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      sine_taylor
 // MayUse:  Stack +0004:[0..63] Stack +000C:[0..31]
@@ -186,16 +178,16 @@ l80000372:
 	dwLoc08_48 = 0<32>
 l80000386:
 	branch dwLoc08_48 >= dwArg0C l800003A8
+l80000390:
+	dwLoc08_48 = dwLoc08_48 + 1<32>
+	goto l80000386
 l800003A8:
 	return
 _ZL7pow_intdi_exit:
-l80000390:
-	dwLoc08_48 = dwLoc08_48 + 1<32>
 
 
 void sine_taylor(real64 rArg04, int32 dwArg0C)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  fp0:[0..95] Stack +0004:[0..63] Stack +000C:[0..31]
 // LiveOut:
 // Trashed:
@@ -205,26 +197,27 @@ l800003BC:
 	dwLoc08_121 = 3<32>
 l800003D6:
 	branch dwLoc08_121 > dwArg0C l80000428
-l80000428:
-	dwLoc08_124 = 5<32>
-l8000042E:
-	branch dwLoc08_124 > dwArg0C l80000480
-l80000480:
-	return
-_Z11sine_taylordi_exit:
-l80000438:
-	pow_int(rArg04, dwLoc08_124)
-	factorial(dwLoc08_124)
-	dwLoc08_124 = dwLoc08_124 + 4<32>
 l800003E0:
 	pow_int(rArg04, dwLoc08_121)
 	factorial(dwLoc08_121)
 	dwLoc08_121 = dwLoc08_121 + 4<32>
+	goto l800003D6
+l80000428:
+	dwLoc08_124 = 5<32>
+l8000042E:
+	branch dwLoc08_124 > dwArg0C l80000480
+l80000438:
+	pow_int(rArg04, dwLoc08_124)
+	factorial(dwLoc08_124)
+	dwLoc08_124 = dwLoc08_124 + 4<32>
+	goto l8000042E
+l80000480:
+	return
+_Z11sine_taylordi_exit:
 
 
 void main()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: CVZNX d0
@@ -239,7 +232,6 @@ main_exit:
 
 void _sin(real64 rArg04, real64 rArg0C, int32 & tArg14)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      main
 // MayUse:  Stack +0004:[0..63] Stack +000C:[0..63] Stack +0014:[0..31]
@@ -254,20 +246,20 @@ l800004DE:
 	rLoc14_123 = 0x3FF0000000000000<64> (alias)
 l8000051A:
 	branch CONVERT(CONVERT(rLoc0C_115, real64, real96) /96 rLoc14_123, real96, real64) < rArg0C l8000060E
-l8000060E:
-	return
-_Z4_sinddRi_exit:
 l80000530:
 	Mem105[tArg14:word32] = Mem98[tArg14:word32] + 1<32>
 	v19_57 = dwLoc20_121 + 0<32>
 	rLoc0C_115 = CONVERT(CONVERT(CONVERT(CONVERT(rLoc0C_115, real64, real96) *96 v12_14, real96, real64), real64, real96) *96 v12_14, real96, real64)
 	dwLoc20_121 = v19_57 + 3<32>
 	rLoc14_123 = CONVERT(CONVERT(CONVERT(CONVERT(CONVERT(CONVERT(CONVERT(CONVERT(rLoc14_123, real64, real96) *96 CONVERT(v19_57, word32, real80), real96, real64), real64, real96) *96 CONVERT(v19_57 + 1<32>, word32, real80), real96, real64), real64, real96) *96 CONVERT(v19_57 + 2<32>, word32, real80), real96, real64), real64, real96) *96 CONVERT(v19_57 + 3<32>, word32, real80), real96, real64)
+	goto l8000051A
+l8000060E:
+	return
+_Z4_sinddRi_exit:
 
 
 void __do_global_ctors_aux()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: CVZN a0 a2 a6 a7 d0
@@ -292,7 +284,6 @@ __do_global_ctors_aux_exit:
 
 void call___do_global_ctors_aux()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:

@@ -1,13 +1,12 @@
 void _init()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-_init_exit:
 _init_entry:
 l4000000000019230:
+_init_exit:
 
 

@@ -1,6 +1,5 @@
 void _start(word32 r7, word32 r9)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  r7:[0..31] r9:[0..31]
 // LiveOut:
 // Trashed: r0 r4 r5 r7 r9
@@ -16,18 +15,27 @@ _start_exit:
 
 void ___start(word32 r4, word32 r5, word32 r9, word32 r10, word32 r11, word32 pr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  pr:[0..31] r10:[0..31] r11:[0..31] r4:[0..31] r5:[0..31] r9:[0..31]
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-___start_exit:
 ___start_entry:
 l00401DBC:
 	r12_23 = Mem18[0x00401E94<p32>:word32] + 0x00401E94<p32>
 	branch r5 != 0<32> l00401DD4_ds_t
+l00401DD4_ds_f:
+	goto l00401DD6
 l00401DD4_ds_t:
+	goto l00401DEE
+l00401DD6:
+	r2_284 = Mem22[0x00401E98<p32>:word32]
+	call 0x00401DE8<p32> + r2_284 (retsize: 0;)
+		uses: Mem:Mem291,pr:pr,r1:0x13<32>,r10:r10,r11:r11,r12:r12_23,r2:r2_284,r4:4<32>,r5:0<32>,r6:2<32>,r7:Mem22[0x00401E9C<p32>:word32] + r12_23,r8:r5,r9:r9,Stack +0000:0x13<32>
+		defs: pr:pr_299,r10:r10_296,r11:r11_297,r12:r12_298,r5:r5_300,r8:r8_293,r9:r9_295
+	r0_308 = Mem291[0x00401EA0<p32>:word32]
+	call 0x00401DEE<p32> + r0_308 (retsize: 0;)
+		uses: Mem:Mem291,pr:pr_299,r0:r0_308,r10:r10_296,r11:r11_297,r12:r12_298,r4:1<32>,r5:r5_300,r8:r8_293,r9:r9_295
 l00401DEE:
 	r10_29 = Mem22[0x00401EA8<p32>:word32]
 	r2_32 = Mem22[r5 + 8<i32>:word32]
@@ -37,8 +45,6 @@ l00401DEE:
 	r1_37 = Mem36[r5:word32]
 	r2_38 = Mem36[r1_37:word32]
 	branch r2_38 == 0<32> l00401E74
-l00401E74:
-	Mem43[Mem36[r0_35 + r12_23:word32]:word32] = Mem36[0x00401EE4<p32>:word32] + r12_23
 l00401E08:
 	r0_44 = r0_35 + r12_23
 	Mem46[Mem36[r0_44:word32]:word32] = r2_38
@@ -47,14 +53,16 @@ l00401E12:
 	r1_48 = r1_48 + 1<i32>
 	r2_53 = CONVERT(Mem50[r1_48:byte], byte, int32)
 	branch r2_53 != 0<32> l00401E18_ds_t
-l00401E18_ds_t:
-l00401E6A:
-	branch r2_53 != 0x2F<32> l00401E12
-l00401E6E:
-	Mem59[Mem50[r0_44:word32]:word32] = r1_48
 l00401E18_ds_f:
+	goto l00401E1A
+l00401E18_ds_t:
+	goto l00401E6A
 l00401E1A:
 	branch r4 == 0<32> l00401E24
+l00401E1E:
+	r1_264 = Mem65[0x00401EB0<p32>:word32]
+	call 0x00401E24<p32> + r1_264 (retsize: 0;)
+		uses: Mem:Mem65,pr:pr,r1:r1_264,r10:r10_29,r11:r11,r12:r12_23,r4:r4,r5:r5,r8:r5,r9:r9
 l00401E24:
 	r2_66 = Mem65[0x00401EB4<p32>:word32]
 	call 0x00401E2C<p32> + r2_66 (retsize: 0;)
@@ -64,12 +72,6 @@ l00401E24:
 	T_101 = r9_103 >=u r11_100
 l00401E32:
 	branch !T_101 l00401E7E
-l00401E7E:
-	v33_105 = Mem65[r9_103:word32]
-	call Mem65[v33_105:word32] (retsize: 0;)
-		uses: Mem:Mem65,pr:pr_112,r1:v33_105,r10:r10_109,r11:r11_110,r12:r12_111,r4:r4_114,r5:r5_113,r8:r8_108,r9:r9_103 + 4<i32>
-		defs: pr:pr_123,r10:r10_120,r11:r11_121,r12:r12_122,r4:r4_129,r5:r5_124,r8:r8_117,r9:r9_119
-	T_101 = r9_103 >=u r11_100
 l00401E34:
 	r1_134 = Mem65[0x00401EC4<p32>:word32]
 	call 0x00401E3E<p32> + r1_134 (retsize: 0;)
@@ -80,12 +82,6 @@ l00401E34:
 	T_156 = r9_154 >=u r11_155
 l00401E46:
 	branch !T_156 l00401E88
-l00401E88:
-	v32_160 = Mem65[r9_154:word32]
-	call Mem65[v32_160:word32] (retsize: 0;)
-		uses: Mem:Mem65,pr:pr_167,r1:v32_160,r10:r10_164,r11:r11_165,r12:r12_166,r4:r4_169,r5:r5_168,r8:r8_163,r9:r9_158 + 4<i32>
-		defs: pr:pr_178,r10:r10_175,r11:r11_176,r12:r12_177,r4:r4_184,r5:r5_179,r8:r8_172,r9:r9_174
-	T_156 = r9_154 >=u r11_155
 l00401E48:
 	r0_189 = Mem65[0x00401ED4<p32>:word32]
 	r2_188 = Mem65[0x00401ED0<p32>:word32]
@@ -103,24 +99,33 @@ l00401E48:
 	r2_246 = Mem65[0x00401EE0<p32>:word32]
 	call 0x00401E6A<p32> + r2_246 (retsize: 0;)
 		uses: Mem:Mem65,pr:pr_237,r10:r10_234,r11:r11_235,r12:r12_236,r2:r2_246,r4:r0_232,r5:r5_238,r8:r8_231,r9:r9_233
-l00401E1E:
-	r1_264 = Mem65[0x00401EB0<p32>:word32]
-	call 0x00401E24<p32> + r1_264 (retsize: 0;)
-		uses: Mem:Mem65,pr:pr,r1:r1_264,r10:r10_29,r11:r11,r12:r12_23,r4:r4,r5:r5,r8:r5,r9:r9
-l00401DD4_ds_f:
-l00401DD6:
-	r2_284 = Mem22[0x00401E98<p32>:word32]
-	call 0x00401DE8<p32> + r2_284 (retsize: 0;)
-		uses: Mem:Mem291,pr:pr,r1:0x13<32>,r10:r10,r11:r11,r12:r12_23,r2:r2_284,r4:4<32>,r5:0<32>,r6:2<32>,r7:Mem22[0x00401E9C<p32>:word32] + r12_23,r8:r5,r9:r9,Stack +0000:0x13<32>
-		defs: pr:pr_299,r10:r10_296,r11:r11_297,r12:r12_298,r5:r5_300,r8:r8_293,r9:r9_295
-	r0_308 = Mem291[0x00401EA0<p32>:word32]
-	call 0x00401DEE<p32> + r0_308 (retsize: 0;)
-		uses: Mem:Mem291,pr:pr_299,r0:r0_308,r10:r10_296,r11:r11_297,r12:r12_298,r4:1<32>,r5:r5_300,r8:r8_293,r9:r9_295
+l00401E6A:
+	branch r2_53 != 0x2F<32> l00401E12
+l00401E6E:
+	Mem59[Mem50[r0_44:word32]:word32] = r1_48
+	goto l00401E12
+l00401E74:
+	Mem43[Mem36[r0_35 + r12_23:word32]:word32] = Mem36[0x00401EE4<p32>:word32] + r12_23
+	goto l00401E1A
+l00401E7E:
+	v33_105 = Mem65[r9_103:word32]
+	call Mem65[v33_105:word32] (retsize: 0;)
+		uses: Mem:Mem65,pr:pr_112,r1:v33_105,r10:r10_109,r11:r11_110,r12:r12_111,r4:r4_114,r5:r5_113,r8:r8_108,r9:r9_103 + 4<i32>
+		defs: pr:pr_123,r10:r10_120,r11:r11_121,r12:r12_122,r4:r4_129,r5:r5_124,r8:r8_117,r9:r9_119
+	T_101 = r9_103 >=u r11_100
+	goto l00401E32
+l00401E88:
+	v32_160 = Mem65[r9_154:word32]
+	call Mem65[v32_160:word32] (retsize: 0;)
+		uses: Mem:Mem65,pr:pr_167,r1:v32_160,r10:r10_164,r11:r11_165,r12:r12_166,r4:r4_169,r5:r5_168,r8:r8_163,r9:r9_158 + 4<i32>
+		defs: pr:pr_178,r10:r10_175,r11:r11_176,r12:r12_177,r4:r4_184,r5:r5_179,r8:r8_172,r9:r9_174
+	T_156 = r9_154 >=u r11_155
+	goto l00401E46
+___start_exit:
 
 
 void namecmp(word32 r4, word32 r5, word32 r12, word32 pr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  pr:[0..31] r12:[0..31] r4:[0..31] r5:[0..31]
 // LiveOut:
 // Trashed: pr r0 r1 r12 r4 r5
@@ -136,7 +141,6 @@ namecmp_exit:
 
 void revnamecmp(word32 r4, word32 r5, word32 r12, word32 pr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  pr:[0..31] r12:[0..31] r4:[0..31] r5:[0..31]
 // LiveOut:
 // Trashed: pr r0 r1 r12 r4 r5
@@ -152,7 +156,6 @@ revnamecmp_exit:
 
 void modcmp(word32 r4, word32 r5, word32 pr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  pr:[0..31] r4:[0..31] r5:[0..31]
 // LiveOut:
 // Trashed: T r0 r1 r12 r15 r2 r3 r6 r7
@@ -166,53 +169,66 @@ l0040204C:
 	r12_11 = Mem5[0x004020A8<p32>:word32] + 0x004020A8<p32>
 	r0_22 = Mem10[r7_15 + 52<i32>:word32]
 	branch r2_20 > r1_21 l0040206C_ds_t
-l0040206C_ds_t:
 l0040206C_ds_f:
 	r6_25 = Mem10[r3_19 + 52<i32>:word32]
+	goto l0040206E
+l0040206C_ds_t:
+	goto l004020A0
 l0040206E:
 	T_26 = r2_20 >= r1_21
 	branch !T_26 l00402078
 l00402072:
 	branch r0_22 >u r6_25 l00402076_ds_t
-l00402076_ds_t:
-l004020A0:
 l00402076_ds_f:
 	T_26 = r2_20 >= r1_21
+	goto l00402078
+l00402076_ds_t:
+	goto l004020A0
 l00402078:
 	branch !T_26 l0040207A_ds_t
-l0040207A_ds_t:
 l0040207A_ds_f:
 	T_35 = r2_20 > r1_21
+	goto l0040207C
+l0040207A_ds_t:
+	goto l004020A4
 l0040207C:
 	branch T_35 l0040207E_ds_t
-l0040207E_ds_t:
 l0040207E_ds_f:
 	T_39 = r0_22 >=u r6_25
+	goto l00402080
+l0040207E_ds_t:
+	goto l00402082
 l00402080:
 	branch !T_39 l004020A4
-l004020A4:
 l00402082:
 	r2_45 = Mem10[r7_15 + 60<i32>:word32]
 	r1_48 = Mem10[r3_19 + 60<i32>:word32]
 	branch r2_45 > r1_48 l0040208A_ds_t
-l0040208A_ds_t:
 l0040208A_ds_f:
+	goto l0040208C
+l0040208A_ds_t:
+	goto l0040209A
 l0040208C:
 	branch r2_45 < r1_48 l00402090_ds_t
-l00402090_ds_t:
-l0040209A:
-	return
-modcmp_exit:
 l00402090_ds_f:
+	goto l00402092
+l00402090_ds_t:
+	goto l0040209A
 l00402092:
 	r1_66 = Mem10[0x004020AC<p32>:word32]
 	call 0x0040209A<p32> + r1_66 (retsize: 0;)
 		uses: Mem:Mem10,pr:pr,r1:r1_66,r12:r12_11,r4:r4 + 0x54<32>,r5:r5 + 0x54<32>
+l0040209A:
+	return
+l004020A0:
+	goto l0040209A
+l004020A4:
+	goto l0040209A
+modcmp_exit:
 
 
 void revmodcmp(word32 r4, word32 r5, word32 pr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  pr:[0..31] r4:[0..31] r5:[0..31]
 // LiveOut:
 // Trashed: T r0 r1 r12 r15 r2 r3 r5 r6 r7
@@ -226,53 +242,66 @@ l004020B0:
 	r12_11 = Mem5[0x00402114<p32>:word32] + 0x00402114<p32>
 	r0_23 = Mem10[r7_15 + 52<i32>:word32]
 	branch r2_21 > r1_22 l004020D2_ds_t
-l004020D2_ds_t:
 l004020D2_ds_f:
 	r5_26 = Mem10[r3_19 + 52<i32>:word32]
+	goto l004020D4
+l004020D2_ds_t:
+	goto l0040210A
 l004020D4:
 	T_27 = r2_21 >= r1_22
 	branch !T_27 l004020DE
 l004020D8:
 	branch r0_23 >u r5_26 l004020DC_ds_t
-l004020DC_ds_t:
-l0040210A:
 l004020DC_ds_f:
 	T_27 = r2_21 >= r1_22
+	goto l004020DE
+l004020DC_ds_t:
+	goto l0040210A
 l004020DE:
 	branch !T_27 l004020E0_ds_t
-l004020E0_ds_t:
 l004020E0_ds_f:
 	T_36 = r2_21 > r1_22
+	goto l004020E2
+l004020E0_ds_t:
+	goto l0040210E
 l004020E2:
 	branch T_36 l004020E4_ds_t
-l004020E4_ds_t:
 l004020E4_ds_f:
 	T_40 = r0_23 >=u r5_26
+	goto l004020E6
+l004020E4_ds_t:
+	goto l004020E8
 l004020E6:
 	branch !T_40 l0040210E
-l0040210E:
 l004020E8:
 	r2_46 = Mem10[r7_15 + 60<i32>:word32]
 	r1_49 = Mem10[r3_19 + 60<i32>:word32]
 	branch r2_46 > r1_49 l004020F0_ds_t
-l004020F0_ds_t:
 l004020F0_ds_f:
+	goto l004020F2
+l004020F0_ds_t:
+	goto l00402104
 l004020F2:
 	branch r2_46 < r1_49 l004020F6_ds_t
-l004020F6_ds_t:
-l00402104:
-	return
-revmodcmp_exit:
 l004020F6_ds_f:
+	goto l004020F8
+l004020F6_ds_t:
+	goto l00402104
 l004020F8:
 	r1_67 = Mem10[0x00402118<p32>:word32]
 	call 0x00402104<p32> + r1_67 (retsize: 0;)
 		uses: Mem:Mem10,pr:pr,r1:r1_67,r12:r12_11,r4:r5 + 0x54<32>,r5:r4 + 0x54<32>
+l00402104:
+	return
+l0040210A:
+	goto l00402104
+l0040210E:
+	goto l00402104
+revmodcmp_exit:
 
 
 void acccmp(word32 r4, word32 r5, word32 pr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  pr:[0..31] r4:[0..31] r5:[0..31]
 // LiveOut:
 // Trashed: T r0 r1 r12 r15 r2 r3 r6 r7
@@ -286,53 +315,66 @@ l0040211C:
 	r12_11 = Mem5[0x00402178<p32>:word32] + 0x00402178<p32>
 	r0_22 = Mem10[r7_15 + 40<i32>:word32]
 	branch r2_20 > r1_21 l0040213C_ds_t
-l0040213C_ds_t:
 l0040213C_ds_f:
 	r6_25 = Mem10[r3_19 + 40<i32>:word32]
+	goto l0040213E
+l0040213C_ds_t:
+	goto l00402170
 l0040213E:
 	T_26 = r2_20 >= r1_21
 	branch !T_26 l00402148
 l00402142:
 	branch r0_22 >u r6_25 l00402146_ds_t
-l00402146_ds_t:
-l00402170:
 l00402146_ds_f:
 	T_26 = r2_20 >= r1_21
+	goto l00402148
+l00402146_ds_t:
+	goto l00402170
 l00402148:
 	branch !T_26 l0040214A_ds_t
-l0040214A_ds_t:
 l0040214A_ds_f:
 	T_35 = r2_20 > r1_21
+	goto l0040214C
+l0040214A_ds_t:
+	goto l00402174
 l0040214C:
 	branch T_35 l0040214E_ds_t
-l0040214E_ds_t:
 l0040214E_ds_f:
 	T_39 = r0_22 >=u r6_25
+	goto l00402150
+l0040214E_ds_t:
+	goto l00402152
 l00402150:
 	branch !T_39 l00402174
-l00402174:
 l00402152:
 	r2_45 = Mem10[r7_15 + 48<i32>:word32]
 	r1_48 = Mem10[r3_19 + 48<i32>:word32]
 	branch r2_45 > r1_48 l0040215A_ds_t
-l0040215A_ds_t:
 l0040215A_ds_f:
+	goto l0040215C
+l0040215A_ds_t:
+	goto l0040216A
 l0040215C:
 	branch r2_45 < r1_48 l00402160_ds_t
-l00402160_ds_t:
-l0040216A:
-	return
-acccmp_exit:
 l00402160_ds_f:
+	goto l00402162
+l00402160_ds_t:
+	goto l0040216A
 l00402162:
 	r1_66 = Mem10[0x0040217C<p32>:word32]
 	call 0x0040216A<p32> + r1_66 (retsize: 0;)
 		uses: Mem:Mem10,pr:pr,r1:r1_66,r12:r12_11,r4:r4 + 0x54<32>,r5:r5 + 0x54<32>
+l0040216A:
+	return
+l00402170:
+	goto l0040216A
+l00402174:
+	goto l0040216A
+acccmp_exit:
 
 
 void revacccmp(word32 r4, word32 r5, word32 pr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  pr:[0..31] r4:[0..31] r5:[0..31]
 // LiveOut:
 // Trashed: T r0 r1 r12 r15 r2 r3 r5 r6 r7
@@ -346,53 +388,66 @@ l00402180:
 	r12_11 = Mem5[0x004021E4<p32>:word32] + 0x004021E4<p32>
 	r0_23 = Mem10[r7_15 + 40<i32>:word32]
 	branch r2_21 > r1_22 l004021A2_ds_t
-l004021A2_ds_t:
 l004021A2_ds_f:
 	r5_26 = Mem10[r3_19 + 40<i32>:word32]
+	goto l004021A4
+l004021A2_ds_t:
+	goto l004021DA
 l004021A4:
 	T_27 = r2_21 >= r1_22
 	branch !T_27 l004021AE
 l004021A8:
 	branch r0_23 >u r5_26 l004021AC_ds_t
-l004021AC_ds_t:
-l004021DA:
 l004021AC_ds_f:
 	T_27 = r2_21 >= r1_22
+	goto l004021AE
+l004021AC_ds_t:
+	goto l004021DA
 l004021AE:
 	branch !T_27 l004021B0_ds_t
-l004021B0_ds_t:
 l004021B0_ds_f:
 	T_36 = r2_21 > r1_22
+	goto l004021B2
+l004021B0_ds_t:
+	goto l004021DE
 l004021B2:
 	branch T_36 l004021B4_ds_t
-l004021B4_ds_t:
 l004021B4_ds_f:
 	T_40 = r0_23 >=u r5_26
+	goto l004021B6
+l004021B4_ds_t:
+	goto l004021B8
 l004021B6:
 	branch !T_40 l004021DE
-l004021DE:
 l004021B8:
 	r2_46 = Mem10[r7_15 + 48<i32>:word32]
 	r1_49 = Mem10[r3_19 + 48<i32>:word32]
 	branch r2_46 > r1_49 l004021C0_ds_t
-l004021C0_ds_t:
 l004021C0_ds_f:
+	goto l004021C2
+l004021C0_ds_t:
+	goto l004021D4
 l004021C2:
 	branch r2_46 < r1_49 l004021C6_ds_t
-l004021C6_ds_t:
-l004021D4:
-	return
-revacccmp_exit:
 l004021C6_ds_f:
+	goto l004021C8
+l004021C6_ds_t:
+	goto l004021D4
 l004021C8:
 	r1_67 = Mem10[0x004021E8<p32>:word32]
 	call 0x004021D4<p32> + r1_67 (retsize: 0;)
 		uses: Mem:Mem10,pr:pr,r1:r1_67,r12:r12_11,r4:r5 + 0x54<32>,r5:r4 + 0x54<32>
+l004021D4:
+	return
+l004021DA:
+	goto l004021D4
+l004021DE:
+	goto l004021D4
+revacccmp_exit:
 
 
 void statcmp(word32 r4, word32 r5, word32 pr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  pr:[0..31] r4:[0..31] r5:[0..31]
 // LiveOut:
 // Trashed: T r0 r1 r12 r15 r2 r3 r6 r7
@@ -406,53 +461,66 @@ l004021EC:
 	r12_11 = Mem5[0x0040224C<p32>:word32] + 0x0040224C<p32>
 	r0_24 = Mem10[r2_15 + 0x40<32>:word32]
 	branch r7_21 > r3_23 l00402210_ds_t
-l00402210_ds_t:
 l00402210_ds_f:
 	r6_27 = Mem10[r1_19 + 0x40<32>:word32]
+	goto l00402212
+l00402210_ds_t:
+	goto l00402244
 l00402212:
 	T_28 = r7_21 >= r3_23
 	branch !T_28 l0040221C
 l00402216:
 	branch r0_24 >u r6_27 l0040221A_ds_t
-l0040221A_ds_t:
-l00402244:
 l0040221A_ds_f:
 	T_28 = r7_21 >= r3_23
+	goto l0040221C
+l0040221A_ds_t:
+	goto l00402244
 l0040221C:
 	branch !T_28 l0040221E_ds_t
-l0040221E_ds_t:
 l0040221E_ds_f:
 	T_37 = r7_21 > r3_23
+	goto l00402220
+l0040221E_ds_t:
+	goto l00402248
 l00402220:
 	branch T_37 l00402222_ds_t
-l00402222_ds_t:
 l00402222_ds_f:
 	T_41 = r0_24 >=u r6_27
+	goto l00402224
+l00402222_ds_t:
+	goto l00402226
 l00402224:
 	branch !T_41 l00402248
-l00402248:
 l00402226:
 	r2_47 = Mem10[r2_15 + 0x48<32>:word32]
 	r1_50 = Mem10[r1_19 + 0x48<32>:word32]
 	branch r2_47 > r1_50 l0040222E_ds_t
-l0040222E_ds_t:
 l0040222E_ds_f:
+	goto l00402230
+l0040222E_ds_t:
+	goto l0040223E
 l00402230:
 	branch r2_47 < r1_50 l00402234_ds_t
-l00402234_ds_t:
-l0040223E:
-	return
-statcmp_exit:
 l00402234_ds_f:
+	goto l00402236
+l00402234_ds_t:
+	goto l0040223E
 l00402236:
 	r1_68 = Mem10[0x00402250<p32>:word32]
 	call 0x0040223E<p32> + r1_68 (retsize: 0;)
 		uses: Mem:Mem10,pr:pr,r1:r1_68,r12:r12_11,r4:r4 + 0x54<32>,r5:r5 + 0x54<32>
+l0040223E:
+	return
+l00402244:
+	goto l0040223E
+l00402248:
+	goto l0040223E
+statcmp_exit:
 
 
 void revstatcmp(word32 r4, word32 r5, word32 pr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  pr:[0..31] r4:[0..31] r5:[0..31]
 // LiveOut:
 // Trashed: T r0 r1 r12 r15 r2 r3 r5 r6 r7
@@ -466,53 +534,66 @@ l00402254:
 	r12_11 = Mem5[0x004022BC<p32>:word32] + 0x004022BC<p32>
 	r0_25 = Mem10[r2_15 + 0x40<32>:word32]
 	branch r7_21 > r3_23 l0040227A_ds_t
-l0040227A_ds_t:
 l0040227A_ds_f:
 	r5_28 = Mem10[r1_19 + 0x40<32>:word32]
+	goto l0040227C
+l0040227A_ds_t:
+	goto l004022B2
 l0040227C:
 	T_29 = r7_21 >= r3_23
 	branch !T_29 l00402286
 l00402280:
 	branch r0_25 >u r5_28 l00402284_ds_t
-l00402284_ds_t:
-l004022B2:
 l00402284_ds_f:
 	T_29 = r7_21 >= r3_23
+	goto l00402286
+l00402284_ds_t:
+	goto l004022B2
 l00402286:
 	branch !T_29 l00402288_ds_t
-l00402288_ds_t:
 l00402288_ds_f:
 	T_38 = r7_21 > r3_23
+	goto l0040228A
+l00402288_ds_t:
+	goto l004022B6
 l0040228A:
 	branch T_38 l0040228C_ds_t
-l0040228C_ds_t:
 l0040228C_ds_f:
 	T_42 = r0_25 >=u r5_28
+	goto l0040228E
+l0040228C_ds_t:
+	goto l00402290
 l0040228E:
 	branch !T_42 l004022B6
-l004022B6:
 l00402290:
 	r2_48 = Mem10[r2_15 + 0x48<32>:word32]
 	r1_51 = Mem10[r1_19 + 0x48<32>:word32]
 	branch r2_48 > r1_51 l00402298_ds_t
-l00402298_ds_t:
 l00402298_ds_f:
+	goto l0040229A
+l00402298_ds_t:
+	goto l004022AC
 l0040229A:
 	branch r2_48 < r1_51 l0040229E_ds_t
-l0040229E_ds_t:
-l004022AC:
-	return
-revstatcmp_exit:
 l0040229E_ds_f:
+	goto l004022A0
+l0040229E_ds_t:
+	goto l004022AC
 l004022A0:
 	r1_69 = Mem10[0x004022C0<p32>:word32]
 	call 0x004022AC<p32> + r1_69 (retsize: 0;)
 		uses: Mem:Mem10,pr:pr,r1:r1_69,r12:r12_11,r4:r5 + 0x54<32>,r5:r4 + 0x54<32>
+l004022AC:
+	return
+l004022B2:
+	goto l004022AC
+l004022B6:
+	goto l004022AC
+revstatcmp_exit:
 
 
 void sizecmp(word32 r4, word32 r5, word32 pr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  pr:[0..31] r4:[0..31] r5:[0..31]
 // LiveOut:
 // Trashed: T r0 r1 r12 r15 r2 r3 r7
@@ -527,41 +608,49 @@ l004022C4:
 	r7_18 = Mem10[r1_15 + 0x58<32>:word32]
 	r3_24 = Mem10[r1_22 + 0x58<32>:word32]
 	branch r2_17 > r1_25 l004022EA_ds_t
-l004022EA_ds_t:
-l00402310:
 l004022EA_ds_f:
 	T_29 = r2_17 >= r1_25
+	goto l004022EC
+l004022EA_ds_t:
+	goto l00402310
 l004022EC:
 	branch !T_29 l004022F6
 l004022EE:
 	branch r7_18 >u r3_24 l004022F2_ds_t
-l004022F2_ds_t:
 l004022F2_ds_f:
+	goto l004022F4
+l004022F2_ds_t:
+	goto l0040230A
 l004022F4:
 	T_29 = r2_17 >= r1_25
 l004022F6:
 	branch !T_29 l004022F8_ds_t
-l004022F8_ds_t:
 l004022F8_ds_f:
+	goto l004022FA
+l004022F8_ds_t:
+	goto l0040230A
 l004022FA:
 	branch r2_17 > r1_25 l004022FE_ds_t
-l004022FE_ds_t:
 l004022FE_ds_f:
 	T_43 = r7_18 >=u r3_24
+	goto l00402300
+l004022FE_ds_t:
+	goto l00402302
 l00402300:
 	branch !T_43 l0040230A
-l0040230A:
-	return
-sizecmp_exit:
 l00402302:
 	r1_52 = Mem10[0x00402318<p32>:word32]
 	call 0x0040230A<p32> + r1_52 (retsize: 0;)
 		uses: Mem:Mem10,pr:pr,r1:r1_52,r12:r12_11,r4:r4 + 0x54<32>,r5:r5 + 0x54<32>
+l0040230A:
+	return
+l00402310:
+	goto l0040230A
+sizecmp_exit:
 
 
 void revsizecmp(word32 r4, word32 r5, word32 pr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  pr:[0..31] r4:[0..31] r5:[0..31]
 // LiveOut:
 // Trashed: T r0 r1 r12 r15 r2 r3 r6 r7
@@ -576,41 +665,49 @@ l0040231C:
 	r6_18 = Mem10[r1_15 + 0x58<32>:word32]
 	r7_24 = Mem10[r1_22 + 0x58<32>:word32]
 	branch r2_17 > r1_25 l00402342_ds_t
-l00402342_ds_t:
-l0040236E:
 l00402342_ds_f:
+	goto l00402344
+l00402342_ds_t:
+	goto l0040236E
 l00402344:
 	T_30 = r2_17 >= r1_25
 	branch !T_30 l00402350
 l00402348:
 	branch r6_18 >u r7_24 l0040234C_ds_t
-l0040234C_ds_t:
 l0040234C_ds_f:
+	goto l0040234E
+l0040234C_ds_t:
+	goto l00402368
 l0040234E:
 	T_30 = r2_17 >= r1_25
 l00402350:
 	branch !T_30 l00402352_ds_t
-l00402352_ds_t:
 l00402352_ds_f:
+	goto l00402354
+l00402352_ds_t:
+	goto l00402368
 l00402354:
 	branch r2_17 > r1_25 l00402358_ds_t
-l00402358_ds_t:
 l00402358_ds_f:
 	T_44 = r6_18 >=u r7_24
+	goto l0040235A
+l00402358_ds_t:
+	goto l0040235C
 l0040235A:
 	branch !T_44 l00402368
-l00402368:
-	return
-revsizecmp_exit:
 l0040235C:
 	r1_53 = Mem10[0x00402378<p32>:word32]
 	call 0x00402368<p32> + r1_53 (retsize: 0;)
 		uses: Mem:Mem10,pr:pr,r1:r1_53,r12:r12_11,r4:r5 + 0x54<32>,r5:r4 + 0x54<32>
+l00402368:
+	return
+l0040236E:
+	goto l00402368
+revsizecmp_exit:
 
 
 void mastercmp(word32 r4, word32 r5, word32 pr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  pr:[0..31] r4:[0..31] r5:[0..31]
 // LiveOut:
 // Trashed: T pr r0 r1 r12 r2 r3 r4 r5 r7
@@ -625,15 +722,35 @@ l00402396:
 	r5_21 = Mem10[r5:word32]
 	r1_25 = CONVERT(Mem10[r5_21 + 0x48<32>:word16], uint16, uint32)
 	branch r1_25 == 7<32> l00402400
-l00402400:
 l004023A6:
 	branch r7_17 == 0xA<32> l004023AC_ds_t
-l004023AC_ds_t:
 l004023AC_ds_f:
+	goto l004023AE
+l004023AC_ds_t:
+	goto l004023B4
 l004023AE:
 	branch r1_25 != 0xA<32> l004023B2_ds_t
+l004023B2_ds_f:
+	goto l004023B4
 l004023B2_ds_t:
 	T_34 = r7_17 == r1_25
+	goto l004023D2
+l004023B4:
+	branch r1_25 != 0xA<32> l00402404
+l004023BA:
+	branch r7_17 != 0xA<32> l004023C0_ds_t
+l004023C0_ds_f:
+	goto l004023C2
+l004023C0_ds_t:
+	goto l004023CA
+l004023C2:
+	r1_79 = Mem10[0x0040240C<p32>:word32]
+	call 0x004023C8<p32> + r1_79 (retsize: 0;)
+		uses: Mem:Mem10,pr:pr,r1:r1_79,r12:r12_11,r3:r3_94,r4:r4_13,r5:r5_21
+		defs: r3:r3_94
+l004023CA:
+l004023CC:
+	return
 l004023D2:
 	branch T_34 l004023F4
 l004023D4:
@@ -644,35 +761,25 @@ l004023E6:
 	branch r7_17 == 1<32> l004023CC
 l004023EC:
 	branch r1_25 == 1<32> l004023F2_ds_t
-l004023F2_ds_t:
 l004023F2_ds_f:
+	goto l004023F4
+l004023F2_ds_t:
+	goto l004023CA
 l004023F4:
 	r0_51 = Mem10[Mem10[0x00402414<p32>:word32] + r12_11:word32]
 	call Mem10[r0_51:word32] (retsize: 0;)
 		uses: Mem:Mem10,pr:pr,r0:r0_51,r1:r1_64,r12:r12_11,r3:r3_65,r4:r4_13,r5:r5_21
 		defs: r1:r1_64,r3:r3_65
-l004023B2_ds_f:
-l004023B4:
-	branch r1_25 != 0xA<32> l00402404
+	goto l004023CA
+l00402400:
+	goto l004023CA
 l00402404:
-l004023BA:
-	branch r7_17 != 0xA<32> l004023C0_ds_t
-l004023C0_ds_t:
-l004023C0_ds_f:
-l004023C2:
-	r1_79 = Mem10[0x0040240C<p32>:word32]
-	call 0x004023C8<p32> + r1_79 (retsize: 0;)
-		uses: Mem:Mem10,pr:pr,r1:r1_79,r12:r12_11,r3:r3_94,r4:r4_13,r5:r5_21
-		defs: r3:r3_94
-l004023CA:
-l004023CC:
-	return
+	goto l004023CA
 mastercmp_exit:
 
 
 void display(word32 r5, word32 r9, word32 r11, word32 r13, word32 pr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  pr:[0..31] r11:[0..31] r13:[0..31] r5:[0..31] r9:[0..31]
 // LiveOut:
 // Trashed: T mac pr r0 r1 r10 r11 r12 r13 r14 r2 r3 r4 r5 r6 r7 r8 r9
@@ -682,17 +789,23 @@ l00402418:
 	r12_1002 = Mem24[0x00402600<p32>:word32] + 0x00402600<p32>
 	r15_101 = fp + 0xFFFFFF08<32>
 	branch r5 == 0<32> l0040243A_ds_t
-l0040243A_ds_t:
 l0040243A_ds_f:
 	r14_1004 = r5
+	goto l0040243C
+l0040243A_ds_t:
+	goto l004024B0
 l0040243C:
 	branch Mem34[Mem34[Mem34[0x00402604<p32>:word32] + r12_1002:word32]:word32] != 0<32> l00402448_ds_t
-l00402448_ds_t:
 l00402448_ds_f:
+	goto l0040244A
+l00402448_ds_t:
+	goto l00402464
 l0040244A:
 	branch Mem45[Mem45[Mem45[0x00402608<p32>:word32] + r12_1002:word32]:word32] != 0<32> l00402454_ds_t
-l00402454_ds_t:
 l00402454_ds_f:
+	goto l00402456
+l00402454_ds_t:
+	goto l00402466
 l00402456:
 l00402464:
 l00402466:
@@ -700,9 +813,13 @@ l00402466:
 	r8_1031 = r5
 l004024A2:
 	branch r8_1031 == 0<32> l004024AA
+l004024A6:
+	goto l004025C2
 l004024AA:
 	r2_103 = Mem102[r15_101 + 28<i32>:word32]
 	branch r2_103 != 0<32> l004024B4
+l004024B0:
+	goto l0040298C
 l004024B4:
 	r3_107 = Mem102[r15_101 + 0x4C<32>:word32]
 	r9_108 = CONVERT(Mem102[0x004025FA<p32>:word16], word16, int32) + r15_101
@@ -710,10 +827,12 @@ l004024B4:
 	Mem111[r9_108:word32] = r14_1004
 	Mem113[r9_108 + 20<i32>:word32] = r2_103
 	branch r1_109 == 0<32> l004024C6_ds_t
-l004024C6_ds_t:
-	Mem114[r9_108 + 24<i32>:word32] = r3_107
 l004024C6_ds_f:
 	Mem115[r9_108 + 24<i32>:word32] = r3_107
+	goto l004024C8
+l004024C6_ds_t:
+	Mem114[r9_108 + 24<i32>:word32] = r3_107
+	goto l00402598
 l004024C8:
 	r0_117 = Mem115[0x00402614<p32>:word32]
 	r2_118 = Mem115[r15_101 + 8<i32>:word32]
@@ -724,40 +843,17 @@ l004024C8:
 	r1_125 = Mem122[r1_121:word32]
 	Mem126[r9_108 + 8<i32>:word32] = Mem122[r15_101 + 12<i32>:word32]
 	branch r1_125 != 0<32> l004024E0_ds_t
-l004024E0_ds_t:
-	Mem128[r9_108 + 16<i32>:word32] = r2_124
-l004024E6:
-	Mem130[r9_108 + 28<i32>:word32] = 4<32>
 l004024E0_ds_f:
 	Mem132[r9_108 + 16<i32>:word32] = r2_124
+	goto l004024E2
+l004024E0_ds_t:
+	Mem128[r9_108 + 16<i32>:word32] = r2_124
+	goto l004024E6
 l004024E2:
 	r3_133 = Mem132[r15_101 + 52<i32>:word32]
-l004028DC:
-	r0_134 = Mem132[0x004029B8<p32>:word32]
-	r1_136 = Mem132[Mem132[r0_134 + r12_1002:word32]:word32]
-	r2_142 = Mem132[0x004029BC<p32>:word32]
-	call 0x004028FE<p32> + r2_142 (retsize: 0;)
-		uses: mac:mac_219,Mem:Mem132,pr:pr_153,r0:r0_134,r1:r1_136,r10:CONVERT(Mem132[0x004029A2<p32>:word16], word16, int32),r11:r11_151,r12:r12_120,r13:r13_152,r14:r14_110,r2:r2_142,r3:r0_204,r4:r1_136 + 0xFFFFFFFF<32> + r3_133,r5:0<32> - CONVERT(r8_99 > r1_136 + 0xFFFFFFFF<32>, bool, word32) + r10_147,r6:r1_136,r7:0<32> - CONVERT(r8_99 > r1_136, bool, word32),r8:r8_99,r9:r9_108
-		defs: pr:pr_163,r0:r0_156,r1:r1_166,r10:r10_158,r11:r11_159,r12:r12_160,r13:r13_161,r14:r14_162,r15:r15_154,r8:r8_155,r9:r9_157
-	Mem173[r15_154:word32] = r1_166
-	r10_174 = r10_158 + r15_154
-	r1_175 = Mem173[0x004029C0<p32>:word32]
-	call 0x00402910<p32> + r1_175 (retsize: 0;)
-		uses: mac:mac_219,Mem:Mem173,pr:pr_163,r1:r1_175,r10:r10_174,r11:r11_159,r12:r12_160,r13:r13_161,r14:r14_162,r2:r2_215,r3:r0_204,r4:r10_174,r5:0x15<32>,r6:Mem173[0x004029C4<p32>:word32] + r12_160,r7:r0_156,r8:r8_155,r9:r9_157
-		defs: pr:pr_190,r10:r10_185,r11:r11_186,r12:r12_187,r13:r13_188,r14:r14_189,r5:r5_192,r8:r8_182,r9:r9_184
-	r2_200 = Mem173[0x004029C8<p32>:word32]
-	call 0x00402916<p32> + r2_200 (retsize: 0;)
-		uses: mac:mac_219,Mem:Mem173,pr:pr_190,r1:r1_226,r10:r10_185,r11:r11_186,r12:r12_187,r13:r13_188,r14:r14_189,r2:r2_200,r3:r0_204,r4:r10_185,r5:r5_192,r6:r6_218,r7:r7_217,r8:r8_182,r9:r9_184
-		defs: mac:mac_219,pr:pr_211,r0:r0_204,r10:r10_206,r11:r11_207,r12:r12_208,r13:r13_209,r14:r14_210,r15:r15_202,r2:r2_215,r6:r6_218,r7:r7_217,r8:r8_203,r9:r9_205
-	r1_221 = Mem173[0x004029CC<p32>:word32]
-	Mem223[r9_205 + 28<i32>:word32] = r0_204
-	r1_226 = Mem223[Mem223[r12_1002 + r1_221:word32]:word32]
-	branch r1_226 == 0<32> l00402926_ds_t
-l00402926_ds_t:
-l00402926_ds_f:
-l00402928:
-	Mem238[r9_205 + 28<i32>:word32] = r0_204 + SLICE((r0_204 + 0xFFFFFFFF<32>) *s64 Mem223[0x004029D0<p32>:word32], word32, 32) + CONVERT(r8_203 > r0_204 + 0xFFFFFFFF<32>, bool, word32)
-l00402938:
+	goto l004028DC
+l004024E6:
+	Mem130[r9_108 + 28<i32>:word32] = 4<32>
 l004024EC:
 	r3_249 = Mem240[r15_101 + 0x48<32>:word32]
 	r9_250 = CONVERT(Mem240[0x004025FA<p32>:word16], word16, int32) + r15_101
@@ -790,37 +886,27 @@ l004024EC:
 	r1_364 = Mem362[Mem362[0x00402614<p32>:word32] + r12_1002:word32]
 	r10_1000 = Mem362[r1_364:word32]
 	branch r10_1000 != 0<32> l0040253A_ds_t
-l0040253A_ds_t:
-l00402540:
-	Mem368[r9_108 + 48<i32>:word32] = 4<32>
 l0040253A_ds_f:
+	goto l0040253C
+l0040253A_ds_t:
+	goto l00402540
 l0040253C:
 	r2_371 = Mem362[r15_101 + 44<i32>:word32]
-l0040293C:
-	r1_373 = Mem362[0x004029D4<p32>:word32]
-	r6_375 = Mem362[0x004029C4<p32>:word32]
-	Mem377[r15_101:word32] = r2_371
-	call 0x0040294E<p32> + r1_373 (retsize: 0;)
-		uses: mac:mac_418,Mem:Mem377,pr:pr_352,r0:0x54<32>,r1:r1_373,r10:r10_365,r11:r11_348,r12:r12_349,r13:r13_350,r14:r14_351,r2:r2_414,r3:r0_403,r4:r8_344,r5:0x15<32>,r6:r6_375 + r12_349,r7:Mem377[r15_343 + 0x54<32>:word32],r8:r8_344,r9:r9_346
-		defs: pr:pr_389,r10:r10_384,r11:r11_385,r12:r12_386,r13:r13_387,r14:r14_388,r5:r5_391,r8:r8_381,r9:r9_383
-	r2_399 = Mem377[0x004029D8<p32>:word32]
-	call 0x00402954<p32> + r2_399 (retsize: 0;)
-		uses: mac:mac_418,Mem:Mem377,pr:pr_389,r1:r1_425,r10:r10_384,r11:r11_385,r12:r12_386,r13:r13_387,r14:r14_388,r2:r2_399,r3:r0_403,r4:r8_381,r5:r5_391,r6:r6_417,r7:r7_416,r8:r8_381,r9:r9_383
-		defs: mac:mac_418,pr:pr_410,r0:r0_403,r10:r10_405,r11:r11_406,r12:r12_407,r13:r13_408,r14:r14_409,r15:r15_401,r2:r2_414,r5:r5_412,r6:r6_417,r7:r7_416,r8:r8_402,r9:r9_404
-	r1_420 = Mem377[0x004029CC<p32>:word32]
-	Mem422[r9_108 + 48<i32>:word32] = r0_403
-	r1_425 = Mem422[Mem422[r12_1002 + r1_420:word32]:word32]
-	branch r1_425 == 0<32> l00402964_ds_t
-l00402964_ds_t:
-l00402964_ds_f:
-l00402966:
-	Mem437[r9_108 + 48<i32>:word32] = r0_403 + SLICE((r0_403 + 0xFFFFFFFF<32>) *s64 Mem422[0x004029D0<p32>:word32], word32, 32) + CONVERT(r10_1000 > r0_403 + 0xFFFFFFFF<32>, bool, word32)
-l00402976:
+	goto l0040293C
+l00402540:
+	Mem368[r9_108 + 48<i32>:word32] = 4<32>
 l00402544:
 	r2_444 = Mem442[r15_101 + 0x50<32>:word32]
 	branch Mem442[r15_101 + 24<i32>:word32] != 0<32> l0040254C_ds_t
+l0040254C_ds_f:
+	Mem571[r9_108 + 52<i32>:word32] = r2_444
+	goto l0040254E
 l0040254C_ds_t:
 	Mem449[r9_108 + 52<i32>:word32] = r2_444
+	goto l00402552
+l0040254E:
+	r3_572 = Mem571[r15_101 + 24<i32>:word32]
+	goto l00402986
 l00402552:
 	r1_452 = Mem449[0x00402634<p32>:word32]
 	r10_455 = Mem449[0x00402630<p32>:word32] + r12_1002
@@ -844,26 +930,17 @@ l00402552:
 	r1_558 = Mem511[r9_108 + 48<i32>:word32]
 	r2_559 = r0_539 + r3_556
 	branch r2_559 + 1<32> >= r1_558 l0040258E_ds_t
-l0040258E_ds_t:
-	Mem563[r9_108 + 60<i32>:word32] = r0_539
-l00402594:
-	Mem565[r9_108 + 48<i32>:word32] = r2_559 + 2<32>
 l0040258E_ds_f:
 	Mem566[r9_108 + 60<i32>:word32] = r0_539
+	goto l00402590
+l0040258E_ds_t:
+	Mem563[r9_108 + 60<i32>:word32] = r0_539
+	goto l00402594
 l00402590:
 	r1_567 = r1_558 - r0_539
-l0040297A:
-	branch r3_556 >= r1_567 + 0xFFFFFFFE<32> l00402982
-l00402980:
-	Mem570[r9_108 + 56<i32>:word32] = r1_567 + 0xFFFFFFFE<32>
-l00402982:
-l0040254C_ds_f:
-	Mem571[r9_108 + 52<i32>:word32] = r2_444
-l0040254E:
-	r3_572 = Mem571[r15_101 + 24<i32>:word32]
-l00402986:
-	Mem573[r9_108 + 56<i32>:word32] = r3_572
-	Mem574[r9_108 + 60<i32>:word32] = r3_572
+	goto l0040297A
+l00402594:
+	Mem565[r9_108 + 48<i32>:word32] = r2_559 + 2<32>
 l00402598:
 	r0_577 = Mem575[0x00402644<p32>:word32]
 	r1_581 = Mem575[r0_577 + r12_1002:word32]
@@ -874,6 +951,8 @@ l00402598:
 	T_631 = Mem627[Mem627[Mem627[0x00402608<p32>:word32] + r12_612:word32]:word32] == 0<32>
 l004025B0:
 	branch !T_631 l004025B6
+l004025B2:
+	goto l0040298C
 l004025B6:
 	r7_634 = Mem627[0x0040264C<p32>:word32]
 	call 0x004025BC<p32> + r7_634 (retsize: 0;)
@@ -881,39 +960,47 @@ l004025B6:
 		defs: mac:mac_663,pr:pr_655,r1:r1_658,r10:r10_650,r11:r11_651,r12:r12_652,r13:r13_653,r14:r14_654,r2:r2_659,r3:r3_660,r5:r5_657,r6:r6_662,r8:r8_647,r9:r9_649
 	r14_614 = Mem627[r14_654 + 8<i32>:word32]
 	T_631 = r14_614 == 0<32>
-l004025B2:
-l004024B0:
-l0040298C:
-	return
-display_exit:
-l004024A6:
+	goto l004025B0
 l004025C2:
 	r2_697 = CONVERT(Mem102[r8_1031 + 0x48<32>:word16], uint16, uint32)
 	branch r2_697 == 7<32> l004025CE_ds_t
-l004025CE_ds_t:
 l004025CE_ds_f:
+	goto l004025D0
+l004025CE_ds_t:
+	goto l004025D4
 l004025D0:
 	branch r2_697 != 0xA<32> l004025D2_ds_t
+l004025D2_ds_f:
+	goto l004025D4
 l004025D2_ds_t:
+	goto l0040265C
+l004025D4:
+	r1_1474 = Mem102[0x00402650<p32>:word32]
+	call 0x004025DA<p32> + r1_1474 (retsize: 0;)
+		uses: mac:mac_1529,Mem:Mem102,pr:pr_153,r1:r1_1474,r10:r10_147,r11:r11_151,r12:r12_120,r13:r13_152,r14:r14_110,r2:1<32>,r3:0<32>,r4:Mem102[r8_99 + 32<i32>:word32],r5:r5_602,r6:r6_1528,r7:r7_1527,r8:r8_99,r9:r9_1478
+		defs: pr:pr_1496,r0:r0_1489,r10:r10_1491,r11:r11_1492,r12:r12_1493,r13:r13_1494,r14:r14_1495,r15:r15_1487,r8:r8_1488,r9:r9_1490
+	r7_1506 = Mem102[0x00402654<p32>:word32]
+	call 0x004025E8<p32> + r7_1506 (retsize: 0;)
+		uses: mac:mac_1529,Mem:Mem102,pr:pr_1496,r0:0x64<32>,r1:1<32>,r10:r10_1491,r11:r11_1492,r12:r12_1493,r13:r13_1494,r14:r14_1495,r2:1<32>,r3:0<32>,r4:Mem102[r15_1487 + 0x64<32>:word32],r5:r8_1488 + 0x54<32>,r6:r0_1489,r7:r7_1506,r8:r8_1488,r9:r9_1490
+		defs: mac:mac_1529,pr:pr_1521,r10:r10_1516,r11:r11_1517,r12:r12_1518,r13:r13_1519,r14:r14_1520,r15:r15_1512,r5:r5_1523,r6:r6_1528,r7:r7_1527,r8:r8_1513,r9:r9_1515
+	r0_1531 = Mem102[0x00402658<p32>:word32]
+	Mem1535[r8_1031 + 12<i32>:word32] = 1<32>
+	Mem1536[r8_1031 + 16<i32>:word32] = 0<32>
+	Mem1537[r0_1531 + r12_1002:word32] = 1<32>
+l004025F6:
+	r8_1031 = Mem1541[r8_1031 + 8<i32>:word32]
+	goto l004024A2
 l0040265C:
 	branch Mem102[r15_101 + 0x60<32>:word32] == 0<32> l00402666
+l00402662:
+	goto l00402806
 l00402666:
 	r0_707 = Mem102[0x0040284C<p32>:word32]
 	branch r2_697 != 1<32> l00402672
-l00402672:
 l0040266E:
 	r1_709 = Mem102[r0_707 + r12_1002:word32]
-l00402662:
-l00402806:
-	branch CONVERT(Mem102[r8_1031 + 0x54<32>:byte], byte, int32) != 0x2E<32> l00402818
-l0040280E:
-	r1_709 = Mem102[Mem102[0x0040288C<p32>:word32] + r12_1002:word32]
-l00402812:
-	branch Mem102[r1_709:word32] == 0<32> l0040281C
-l0040281C:
-	Mem723[r8_1031 + 12<i32>:word32] = 1<32>
-	Mem724[r8_1031 + 16<i32>:word32] = 0<32>
-l00402818:
+	goto l00402812
+l00402672:
 l00402674:
 	r1_730 = Mem102[r8_1031 + 44<i32>:word32]
 	branch Mem102[r15_101 + 0x4C<32>:word32] >=u r1_730 l0040267E
@@ -925,10 +1012,12 @@ l00402684:
 	r9 = Mem739[r8_1031 + 0x50<32>:word32]
 	r3_748 = Mem739[r9 + 0x64<32>:word32]
 	branch r10_1000 > r3_748 l00402694_ds_t
-l00402694_ds_t:
-	r6_754 = Mem739[r9 + 0x60<32>:word32]
 l00402694_ds_f:
 	r6_754 = Mem739[r9 + 0x60<32>:word32]
+	goto l00402696
+l00402694_ds_t:
+	r6_754 = Mem739[r9 + 0x60<32>:word32]
+	goto l004026A4
 l00402696:
 	branch r10_1000 < r3_748 l004026A0
 l0040269A:
@@ -940,13 +1029,17 @@ l004026A4:
 	r1_767 = Mem766[r9 + 16<i32>:word32]
 	r4_769 = Mem766[r15_101 + 48<i32>:word32]
 	branch r4_769 >u r1_767 l004026AC_ds_t
-l004026AC_ds_t:
 l004026AC_ds_f:
 	r2_772 = Mem766[r9 + 12<i32>:word32]
+	goto l004026AE
+l004026AC_ds_t:
+	goto l004026BE
 l004026AE:
 	branch r4_769 <u r1_767 l004026B2_ds_t
-l004026B2_ds_t:
 l004026B2_ds_f:
+	goto l004026B4
+l004026B2_ds_t:
+	goto l004026BA
 l004026B4:
 	branch Mem766[r15_101 + 0x58<32>:word32] >=u r2_772 l004026BE
 l004026BA:
@@ -961,14 +1054,18 @@ l004026C8:
 	r2_796 = Mem795[r9 + 0x5C<32>:word32]
 	r4_798 = Mem795[r15_101 + 44<i32>:word32]
 	branch r4_798 > r2_796 l004026D4_ds_t
-l004026D4_ds_t:
-	r7_800 = Mem795[r9 + 0x58<32>:word32]
 l004026D4_ds_f:
 	r7_800 = Mem795[r9 + 0x58<32>:word32]
+	goto l004026D6
+l004026D4_ds_t:
+	r7_800 = Mem795[r9 + 0x58<32>:word32]
+	goto l004026E6
 l004026D6:
 	branch r4_798 < r2_796 l004026DA_ds_t
-l004026DA_ds_t:
 l004026DA_ds_f:
+	goto l004026DC
+l004026DA_ds_t:
+	goto l004026E2
 l004026DC:
 	branch Mem795[r15_101 + 0x54<32>:word32] >=u r7_800 l004026E6
 l004026E2:
@@ -977,8 +1074,10 @@ l004026E2:
 l004026E6:
 	r5 = CONVERT(Mem815[0x00402846<p32>:word16], word16, int32)
 	branch (Mem815[r9 + 8<i32>:word32] & Mem815[0x00402850<p32>:word32]) != r5 l004026F2_ds_t
-l004026F2_ds_t:
 l004026F2_ds_f:
+	goto l004026F4
+l004026F2_ds_t:
+	goto l00402724
 l004026F4:
 	r5_823 = Mem815[r9 + 32<i32>:word32]
 	r1_829 = r5_823 >>u 8<i32> & CONVERT(Mem815[0x00402848<p32>:word16], word16, int32)
@@ -1002,20 +1101,15 @@ l00402724:
 	Mem887[r15_101 + 16<i32>:word32] = r3_878 + r7_800
 	Mem893[r15_101 + 20<i32>:word32] = r1_886 + r2_796
 	branch Mem893[Mem893[r0_854 + r12_1002:word32]:word32] != 0<32> l0040274C
+l00402748:
+	r1_1394 = Mem1466[r15_101 + 28<i32>:word32]
+	goto l004028D6
 l0040274C:
 	branch Mem893[Mem893[Mem893[0x0040285C<p32>:word32] + r12_1002:word32]:word32] == 0<32> l00402756_ds_t
-l00402756_ds_t:
-l00402826:
-	r7_916 = Mem893[0x00402890<p32>:word32]
-	call 0x0040282C<p32> + r7_916 (retsize: 0;)
-		uses: mac:mac_1013,Mem:Mem893,pr:pr_153,r1:r1_1008,r10:r10_935,r11:r11_151,r12:r12_120,r13:r13_152,r14:r14_110,r2:r2_1009,r3:r3_1010,r4:Mem893[r9_745 + 24<i32>:word32],r5:0<32>,r6:r6_1012,r7:r7_916,r8:r8_99,r9:r9_745
-		defs: mac:mac_1013,pr:pr_1005,r0:r0_998,r1:r1_1008,r10:r10_1000,r11:r11_1001,r12:r12_1002,r14:r14_1004,r15:r15_996,r2:r2_1009,r3:r3_1010,r6:r6_1012,r8:r8_997,r9:r9_999
-	branch r0_998 != 0<32> l00402830_ds_t
-l00402830_ds_t:
-	r13_1016 = r0_998
-l00402830_ds_f:
-l00402832:
 l00402756_ds_f:
+	goto l00402758
+l00402756_ds_t:
+	goto l00402826
 l00402758:
 	r3_1023 = Mem893[0x00402864<p32>:word32]
 	r13_1024 = r15_101 + 0x68<32>
@@ -1024,19 +1118,10 @@ l00402758:
 		defs: mac:mac_1053,pr:pr_1045,r1:r1_1048,r10:r10_1040,r11:r11_1041,r12:r12_1042,r13:r13_1043,r14:r14_1044,r15:r15_1036,r2:r2_1049,r8:r8_1037,r9:r9_1039
 l0040276A:
 	branch Mem893[Mem893[Mem893[0x0040285C<p32>:word32] + r12_1002:word32]:word32] == 0<32> l00402774_ds_t
-l00402774_ds_t:
-l00402836:
-	r2_1062 = Mem893[0x00402894<p32>:word32]
-	call 0x0040283C<p32> + r2_1062 (retsize: 0;)
-		uses: mac:mac_1089,Mem:Mem893,pr:pr_1070,r1:r1_1084,r10:r10_1066,r11:r11_1067,r12:r12_1057,r13:r13_1068,r14:r14_1069,r2:r2_1062,r3:r3_1086,r4:Mem893[r9_1063 + 28<i32>:word32],r5:0<32>,r6:r6_1088,r7:r7_1087,r8:r8_1065,r9:r9_1063
-		defs: mac:mac_1089,pr:pr_1081,r0:r0_1074,r1:r1_1084,r10:r10_1076,r11:r11_1077,r12:r12_1078,r13:r13_1079,r14:r14_1080,r15:r15_1072,r3:r3_1086,r5:r5_1083,r6:r6_1088,r7:r7_1087,r8:r8_1073,r9:r9_1075
-	branch r0_1074 != 0<32> l00402840_ds_t
-l00402840_ds_t:
-	Mem1092[r15_101 + 32<i32>:word32] = r0_1074
-l00402840_ds_f:
-	Mem1093[r15_101 + 32<i32>:word32] = r0_1074
-l00402842:
 l00402774_ds_f:
+	goto l00402776
+l00402774_ds_t:
+	goto l00402836
 l00402776:
 	r1_1099 = Mem1095[0x00402868<p32>:word32]
 	r11_1100 = r15_101 + 0x74<32>
@@ -1059,16 +1144,20 @@ l0040279C:
 		defs: mac:mac_1199,pr:pr_1191,r0:r0_1184,r10:r10_1186,r11:r11_1187,r12:r12_1188,r13:r13_1189,r14:r14_1190,r15:r15_1182,r2:r2_1195,r3:r3_1196,r5:r5_1193,r6:r6_1198,r8:r8_1183,r9:r9_1185
 	r1_1201 = r0_1184
 	branch Mem1169[r15_1182 + 0x48<32>:word32] >= r0_1184 l004027AC_ds_t
-l004027AC_ds_t:
 l004027AC_ds_f:
+	goto l004027AE
+l004027AC_ds_t:
+	goto l004027B0
 l004027AE:
 	Mem1207[r15_1182 + 0x48<32>:word32] = r0_1184
 l004027B0:
 	r0_1212 = Mem1208[Mem1208[Mem1208[0x00402874<p32>:word32] + r12_1188:word32]:word32]
 	branch r0_1212 == 0<32> l004027BA_ds_t
+l004027BA_ds_f:
+	goto l004027BC
 l004027BA_ds_t:
 	r3_1215 = r11_1187
-l004027BA_ds_f:
+	goto l004027E6
 l004027BC:
 	r3_1217 = Mem1208[0x00402878<p32>:word32]
 	r4_1221 = Mem1208[r9_1185 + 0x6C<32>:word32]
@@ -1084,10 +1173,12 @@ l004027BC:
 		defs: mac:mac_1270,pr:pr_1262,r0:r0_1255,r1:r1_1265,r10:r10_1257,r11:r11_1258,r12:r12_1259,r13:r13_1260,r14:r14_1261,r15:r15_1253,r2:r2_1266,r3:r3_1267,r5:r5_1264,r6:r6_1269,r8:r8_1254,r9:r9_1256
 	r7_1274 = Mem1252[r15_1182 + 0x44<32>:word32]
 	branch r7_1274 >= r0_1212 l004027DC_ds_t
-l004027DC_ds_t:
-	r1_1201 = Mem1252[r15_1182 + 4<i32>:word32]
 l004027DC_ds_f:
 	r1_1201 = Mem1252[r15_1182 + 4<i32>:word32]
+	goto l004027DE
+l004027DC_ds_t:
+	r1_1201 = Mem1252[r15_1182 + 4<i32>:word32]
+	goto l004027E4
 l004027DE:
 	Mem1280[r15_1182 + 0x44<32>:word32] = r0_1212
 l004027E4:
@@ -1100,7 +1191,54 @@ l004027E6:
 		uses: mac:mac_1335,Mem:Mem1294,pr:pr_1313,r1:r1_1330,r10:r10_1304,r11:r11_1306,r12:r12_1307,r13:r13_1309,r14:r14_1311,r2:r2_1331,r3:r3_1287,r4:r3_1287 + 0x12<32> + r0_1297,r5:r5_1315,r6:r6_1334,r7:r7_1293,r8:r8_1300,r9:r9_1302
 		defs: mac:mac_1335,pr:pr_1327,r0:r0_1320,r1:r1_1330,r10:r10_1322,r11:r11_1323,r12:r12_1324,r13:r13_1325,r14:r14_1326,r2:r2_1331,r6:r6_1334,r8:r8_1319
 	branch r0_1320 != 0<32> l004027FC_ds_t
+l004027FC_ds_f:
+	goto l004027FE
 l004027FC_ds_t:
+	goto l00402898
+l004027FE:
+	r0_1443 = Mem1294[0x00402888<p32>:word32]
+	call 0x00402806<p32> + r0_1443 (retsize: 0;)
+		uses: mac:mac_1463,Mem:Mem1294,pr:pr_1327,r0:r0_1443,r1:r1_1458,r10:r10_1322,r11:r11_1323,r12:r12_1324,r13:r13_1325,r14:r14_1326,r2:r2_1459,r3:r3_1460,r4:1<32>,r5:0<32>,r6:r6_1462,r7:r7_1461,r8:r8_1319,r9:r0_1320
+		defs: mac:mac_1463,r1:r1_1458,r2:r2_1459,r3:r3_1460,r6:r6_1462,r7:r7_1461
+l00402806:
+	branch CONVERT(Mem102[r8_1031 + 0x54<32>:byte], byte, int32) != 0x2E<32> l00402818
+l0040280E:
+	r1_709 = Mem102[Mem102[0x0040288C<p32>:word32] + r12_1002:word32]
+l00402812:
+	branch Mem102[r1_709:word32] == 0<32> l0040281C
+l00402818:
+	goto l00402674
+l0040281C:
+	Mem723[r8_1031 + 12<i32>:word32] = 1<32>
+	Mem724[r8_1031 + 16<i32>:word32] = 0<32>
+	goto l004025F6
+l00402826:
+	r7_916 = Mem893[0x00402890<p32>:word32]
+	call 0x0040282C<p32> + r7_916 (retsize: 0;)
+		uses: mac:mac_1013,Mem:Mem893,pr:pr_153,r1:r1_1008,r10:r10_935,r11:r11_151,r12:r12_120,r13:r13_152,r14:r14_110,r2:r2_1009,r3:r3_1010,r4:Mem893[r9_745 + 24<i32>:word32],r5:0<32>,r6:r6_1012,r7:r7_916,r8:r8_99,r9:r9_745
+		defs: mac:mac_1013,pr:pr_1005,r0:r0_998,r1:r1_1008,r10:r10_1000,r11:r11_1001,r12:r12_1002,r14:r14_1004,r15:r15_996,r2:r2_1009,r3:r3_1010,r6:r6_1012,r8:r8_997,r9:r9_999
+	branch r0_998 != 0<32> l00402830_ds_t
+l00402830_ds_f:
+	goto l00402832
+l00402830_ds_t:
+	r13_1016 = r0_998
+	goto l0040276A
+l00402832:
+	goto l00402758
+l00402836:
+	r2_1062 = Mem893[0x00402894<p32>:word32]
+	call 0x0040283C<p32> + r2_1062 (retsize: 0;)
+		uses: mac:mac_1089,Mem:Mem893,pr:pr_1070,r1:r1_1084,r10:r10_1066,r11:r11_1067,r12:r12_1057,r13:r13_1068,r14:r14_1069,r2:r2_1062,r3:r3_1086,r4:Mem893[r9_1063 + 28<i32>:word32],r5:0<32>,r6:r6_1088,r7:r7_1087,r8:r8_1065,r9:r9_1063
+		defs: mac:mac_1089,pr:pr_1081,r0:r0_1074,r1:r1_1084,r10:r10_1076,r11:r11_1077,r12:r12_1078,r13:r13_1079,r14:r14_1080,r15:r15_1072,r3:r3_1086,r5:r5_1083,r6:r6_1088,r7:r7_1087,r8:r8_1073,r9:r9_1075
+	branch r0_1074 != 0<32> l00402840_ds_t
+l00402840_ds_f:
+	Mem1093[r15_101 + 32<i32>:word32] = r0_1074
+	goto l00402842
+l00402840_ds_t:
+	Mem1092[r15_101 + 32<i32>:word32] = r0_1074
+	goto l0040278A
+l00402842:
+	goto l00402776
 l00402898:
 	r1_1339 = Mem1294[0x004029A4<p32>:word32]
 	Mem1342[r0_1320:word32] = r0_1320 + 0xC<32>
@@ -1115,11 +1253,10 @@ l00402898:
 		defs: mac:mac_1386,pr:pr_1378,r1:r1_1381,r10:r10_1373,r11:r11_1374,r12:r12_1375,r13:r13_1376,r14:r14_1377,r15:r15_1369,r3:r3_1383,r5:r5_1380,r6:r6_1385,r7:r7_1384,r8:r8_1370,r9:r9_1372
 	r2_1390 = Mem1367[Mem1367[Mem1367[0x004029AC<p32>:word32] + r12_1002:word32]:word32]
 	branch r2_1390 == 0<32> l004028BC_ds_t
-l004028BC_ds_t:
-l004028D2:
-	Mem1393[r8_1031 + 20<i32>:word32] = r9
-	r1_1394 = Mem1393[r15_101 + 28<i32>:word32]
 l004028BC_ds_f:
+	goto l004028BE
+l004028BC_ds_t:
+	goto l004028D2
 l004028BE:
 	r7_1397 = Mem1367[0x004029B0<p32>:word32]
 	r4_1399 = Mem1367[r15_101 + 0x5C<32>:word32] + 0xE<32> + r9
@@ -1131,37 +1268,81 @@ l004028BE:
 	call 0x004028D2<p32> + r0_1421 (retsize: 0;)
 		uses: mac:mac_1440,Mem:Mem1400,pr:pr_1411,r0:r0_1421,r1:r1_1435,r10:r10_1406,r11:r11_1407,r12:r12_1408,r13:r13_1409,r14:r14_1410,r2:r2_1436,r3:r3_1437,r4:Mem1400[r15_1402 + 36<i32>:word32],r5:r5_1413,r6:r6_1439,r7:r7_1438,r8:r8_1403,r9:r9_1405
 		defs: mac:mac_1440,r1:r1_1435,r2:r2_1436,r3:r3_1437,r6:r6_1439,r7:r7_1438
-l004027FC_ds_f:
-l004027FE:
-	r0_1443 = Mem1294[0x00402888<p32>:word32]
-	call 0x00402806<p32> + r0_1443 (retsize: 0;)
-		uses: mac:mac_1463,Mem:Mem1294,pr:pr_1327,r0:r0_1443,r1:r1_1458,r10:r10_1322,r11:r11_1323,r12:r12_1324,r13:r13_1325,r14:r14_1326,r2:r2_1459,r3:r3_1460,r4:1<32>,r5:0<32>,r6:r6_1462,r7:r7_1461,r8:r8_1319,r9:r0_1320
-		defs: mac:mac_1463,r1:r1_1458,r2:r2_1459,r3:r3_1460,r6:r6_1462,r7:r7_1461
-l00402748:
-	r1_1394 = Mem1466[r15_101 + 28<i32>:word32]
+l004028D2:
+	Mem1393[r8_1031 + 20<i32>:word32] = r9
+	r1_1394 = Mem1393[r15_101 + 28<i32>:word32]
 l004028D6:
 	Mem1471[r15_101 + 28<i32>:word32] = r1_1394 + 1<32>
-l004025D2_ds_f:
-l004025D4:
-	r1_1474 = Mem102[0x00402650<p32>:word32]
-	call 0x004025DA<p32> + r1_1474 (retsize: 0;)
-		uses: mac:mac_1529,Mem:Mem102,pr:pr_153,r1:r1_1474,r10:r10_147,r11:r11_151,r12:r12_120,r13:r13_152,r14:r14_110,r2:1<32>,r3:0<32>,r4:Mem102[r8_99 + 32<i32>:word32],r5:r5_602,r6:r6_1528,r7:r7_1527,r8:r8_99,r9:r9_1478
-		defs: pr:pr_1496,r0:r0_1489,r10:r10_1491,r11:r11_1492,r12:r12_1493,r13:r13_1494,r14:r14_1495,r15:r15_1487,r8:r8_1488,r9:r9_1490
-	r7_1506 = Mem102[0x00402654<p32>:word32]
-	call 0x004025E8<p32> + r7_1506 (retsize: 0;)
-		uses: mac:mac_1529,Mem:Mem102,pr:pr_1496,r0:0x64<32>,r1:1<32>,r10:r10_1491,r11:r11_1492,r12:r12_1493,r13:r13_1494,r14:r14_1495,r2:1<32>,r3:0<32>,r4:Mem102[r15_1487 + 0x64<32>:word32],r5:r8_1488 + 0x54<32>,r6:r0_1489,r7:r7_1506,r8:r8_1488,r9:r9_1490
-		defs: mac:mac_1529,pr:pr_1521,r10:r10_1516,r11:r11_1517,r12:r12_1518,r13:r13_1519,r14:r14_1520,r15:r15_1512,r5:r5_1523,r6:r6_1528,r7:r7_1527,r8:r8_1513,r9:r9_1515
-	r0_1531 = Mem102[0x00402658<p32>:word32]
-	Mem1535[r8_1031 + 12<i32>:word32] = 1<32>
-	Mem1536[r8_1031 + 16<i32>:word32] = 0<32>
-	Mem1537[r0_1531 + r12_1002:word32] = 1<32>
-l004025F6:
-	r8_1031 = Mem1541[r8_1031 + 8<i32>:word32]
+	goto l004025F6
+l004028DC:
+	r0_134 = Mem132[0x004029B8<p32>:word32]
+	r1_136 = Mem132[Mem132[r0_134 + r12_1002:word32]:word32]
+	r2_142 = Mem132[0x004029BC<p32>:word32]
+	call 0x004028FE<p32> + r2_142 (retsize: 0;)
+		uses: mac:mac_219,Mem:Mem132,pr:pr_153,r0:r0_134,r1:r1_136,r10:CONVERT(Mem132[0x004029A2<p32>:word16], word16, int32),r11:r11_151,r12:r12_120,r13:r13_152,r14:r14_110,r2:r2_142,r3:r0_204,r4:r1_136 + 0xFFFFFFFF<32> + r3_133,r5:0<32> - CONVERT(r8_99 > r1_136 + 0xFFFFFFFF<32>, bool, word32) + r10_147,r6:r1_136,r7:0<32> - CONVERT(r8_99 > r1_136, bool, word32),r8:r8_99,r9:r9_108
+		defs: pr:pr_163,r0:r0_156,r1:r1_166,r10:r10_158,r11:r11_159,r12:r12_160,r13:r13_161,r14:r14_162,r15:r15_154,r8:r8_155,r9:r9_157
+	Mem173[r15_154:word32] = r1_166
+	r10_174 = r10_158 + r15_154
+	r1_175 = Mem173[0x004029C0<p32>:word32]
+	call 0x00402910<p32> + r1_175 (retsize: 0;)
+		uses: mac:mac_219,Mem:Mem173,pr:pr_163,r1:r1_175,r10:r10_174,r11:r11_159,r12:r12_160,r13:r13_161,r14:r14_162,r2:r2_215,r3:r0_204,r4:r10_174,r5:0x15<32>,r6:Mem173[0x004029C4<p32>:word32] + r12_160,r7:r0_156,r8:r8_155,r9:r9_157
+		defs: pr:pr_190,r10:r10_185,r11:r11_186,r12:r12_187,r13:r13_188,r14:r14_189,r5:r5_192,r8:r8_182,r9:r9_184
+	r2_200 = Mem173[0x004029C8<p32>:word32]
+	call 0x00402916<p32> + r2_200 (retsize: 0;)
+		uses: mac:mac_219,Mem:Mem173,pr:pr_190,r1:r1_226,r10:r10_185,r11:r11_186,r12:r12_187,r13:r13_188,r14:r14_189,r2:r2_200,r3:r0_204,r4:r10_185,r5:r5_192,r6:r6_218,r7:r7_217,r8:r8_182,r9:r9_184
+		defs: mac:mac_219,pr:pr_211,r0:r0_204,r10:r10_206,r11:r11_207,r12:r12_208,r13:r13_209,r14:r14_210,r15:r15_202,r2:r2_215,r6:r6_218,r7:r7_217,r8:r8_203,r9:r9_205
+	r1_221 = Mem173[0x004029CC<p32>:word32]
+	Mem223[r9_205 + 28<i32>:word32] = r0_204
+	r1_226 = Mem223[Mem223[r12_1002 + r1_221:word32]:word32]
+	branch r1_226 == 0<32> l00402926_ds_t
+l00402926_ds_f:
+	goto l00402928
+l00402926_ds_t:
+	goto l00402938
+l00402928:
+	Mem238[r9_205 + 28<i32>:word32] = r0_204 + SLICE((r0_204 + 0xFFFFFFFF<32>) *s64 Mem223[0x004029D0<p32>:word32], word32, 32) + CONVERT(r8_203 > r0_204 + 0xFFFFFFFF<32>, bool, word32)
+l00402938:
+	goto l004024EC
+l0040293C:
+	r1_373 = Mem362[0x004029D4<p32>:word32]
+	r6_375 = Mem362[0x004029C4<p32>:word32]
+	Mem377[r15_101:word32] = r2_371
+	call 0x0040294E<p32> + r1_373 (retsize: 0;)
+		uses: mac:mac_418,Mem:Mem377,pr:pr_352,r0:0x54<32>,r1:r1_373,r10:r10_365,r11:r11_348,r12:r12_349,r13:r13_350,r14:r14_351,r2:r2_414,r3:r0_403,r4:r8_344,r5:0x15<32>,r6:r6_375 + r12_349,r7:Mem377[r15_343 + 0x54<32>:word32],r8:r8_344,r9:r9_346
+		defs: pr:pr_389,r10:r10_384,r11:r11_385,r12:r12_386,r13:r13_387,r14:r14_388,r5:r5_391,r8:r8_381,r9:r9_383
+	r2_399 = Mem377[0x004029D8<p32>:word32]
+	call 0x00402954<p32> + r2_399 (retsize: 0;)
+		uses: mac:mac_418,Mem:Mem377,pr:pr_389,r1:r1_425,r10:r10_384,r11:r11_385,r12:r12_386,r13:r13_387,r14:r14_388,r2:r2_399,r3:r0_403,r4:r8_381,r5:r5_391,r6:r6_417,r7:r7_416,r8:r8_381,r9:r9_383
+		defs: mac:mac_418,pr:pr_410,r0:r0_403,r10:r10_405,r11:r11_406,r12:r12_407,r13:r13_408,r14:r14_409,r15:r15_401,r2:r2_414,r5:r5_412,r6:r6_417,r7:r7_416,r8:r8_402,r9:r9_404
+	r1_420 = Mem377[0x004029CC<p32>:word32]
+	Mem422[r9_108 + 48<i32>:word32] = r0_403
+	r1_425 = Mem422[Mem422[r12_1002 + r1_420:word32]:word32]
+	branch r1_425 == 0<32> l00402964_ds_t
+l00402964_ds_f:
+	goto l00402966
+l00402964_ds_t:
+	goto l00402976
+l00402966:
+	Mem437[r9_108 + 48<i32>:word32] = r0_403 + SLICE((r0_403 + 0xFFFFFFFF<32>) *s64 Mem422[0x004029D0<p32>:word32], word32, 32) + CONVERT(r10_1000 > r0_403 + 0xFFFFFFFF<32>, bool, word32)
+l00402976:
+	goto l00402544
+l0040297A:
+	branch r3_556 >= r1_567 + 0xFFFFFFFE<32> l00402982
+l00402980:
+	Mem570[r9_108 + 56<i32>:word32] = r1_567 + 0xFFFFFFFE<32>
+l00402982:
+	goto l00402598
+l00402986:
+	Mem573[r9_108 + 56<i32>:word32] = r3_572
+	Mem574[r9_108 + 60<i32>:word32] = r3_572
+	goto l00402598
+l0040298C:
+	return
+display_exit:
 
 
 void traverse(word32 r5, word32 r6, word32 r8, word32 r9, word32 r11, word32 r13, word32 r14, word32 pr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  pr:[0..31] r11:[0..31] r13:[0..31] r14:[0..31] r5:[0..31] r6:[0..31] r8:[0..31] r9:[0..31]
 // LiveOut:
 // Trashed: T pr r0 r1 r10 r11 r12 r13 r14 r2 r3 r4 r5 r6 r7 r8 r9
@@ -1171,8 +1352,10 @@ l004029DC:
 	r12_29 = Mem24[0x00402B7C<p32>:word32] + 0x00402B7C<p32>
 	r6_36 = 0<32>
 	branch Mem35[Mem35[Mem28[0x00402B80<p32>:word32] + r12_29:word32]:word32] != 0<32> l00402A04_ds_t
-l00402A04_ds_t:
 l00402A04_ds_f:
+	goto l00402A06
+l00402A04_ds_t:
+	goto l00402A0A
 l00402A06:
 	r6_36 = Mem35[0x00402B84<p32>:word32] + r12_29
 l00402A0A:
@@ -1181,7 +1364,14 @@ l00402A0A:
 		uses: Mem:Mem35,pr:pr,r1:r1_46,r10:r6,r11:r11,r12:r12_29,r13:r13,r14:r14,r4:r5,r5:r6,r6:r6_56,r8:r8,r9:r9
 		defs: pr:pr_68,r0:r0_61,r10:r10_63,r11:r11_64,r12:r12_65,r13:r13_66,r14:r14_67,r6:r6_69,r9:r9_62
 	branch r0_61 != 0<32> l00402A16_ds_t
+l00402A16_ds_f:
+	goto l00402A18
 l00402A16_ds_t:
+	goto l00402A1E
+l00402A18:
+	r0_583 = Mem35[0x00402B8C<p32>:word32]
+	call 0x00402A1E<p32> + r0_583 (retsize: 0;)
+		uses: Mem:Mem35,pr:pr_68,r0:r0_583,r10:r10_63,r11:r11_64,r12:r12_65,r13:r13_66,r14:r14_67,r4:1<32>,r5:0<32>,r6:r6_69,r8:r0_61,r9:r9_62
 l00402A1E:
 	r1_80 = Mem35[0x00402B90<p32>:word32]
 	call 0x00402A24<p32> + r1_80 (retsize: 0;)
@@ -1193,17 +1383,30 @@ l00402A1E:
 		defs: pr:pr_112,r10:r10_107,r11:r11_108,r12:r12_109,r13:r13_110,r14:r14_111,r5:r5_116,r6:r6_113,r8:r8_104
 	r9_123 = Mem35[Mem35[Mem35[0x00402B98<p32>:word32] + r12_109:word32]:word32]
 	branch r9_123 == 0<32> l00402A36_ds_t
+l00402A36_ds_f:
+	goto l00402A38
 l00402A36_ds_t:
+	goto l00402A52
+l00402A38:
+	r1_538 = Mem35[0x00402B9C<p32>:word32]
+	call 0x00402A3E<p32> + r1_538 (retsize: 0;)
+		uses: Mem:Mem35,pr:pr_112,r1:r1_538,r10:r10_107,r11:r11_108,r12:r12_109,r13:r13_110,r14:r14_111,r4:r8_104,r5:r5_116,r6:r6_113,r8:r8_104,r9:r9_123
+l00402A3E:
+	return
 l00402A52:
 	r11_126 = Mem35[0x00402BA0<p32>:word32]
 	branch Mem35[Mem35[r12_109 + r11_126:word32]:word32] != 0<32> l00402A5C_ds_t
-l00402A5C_ds_t:
 l00402A5C_ds_f:
+	goto l00402A5E
+l00402A5C_ds_t:
+	goto l00402A68
 l00402A5E:
 	branch (r10_107 & 8<32>) == 0<32> l00402A64_ds_t
+l00402A64_ds_f:
+	goto l00402A66
 l00402A64_ds_t:
 	r9_123 = r10_107 & 8<32>
-l00402A64_ds_f:
+	goto l00402A68
 l00402A66:
 	r9_123 = CONVERT(Mem35[0x00402B78<p32>:word16], word16, int32)
 l00402A68:
@@ -1215,84 +1418,11 @@ l00402A6E:
 		uses: Mem:Mem142,pr:pr_152,r1:r1_143,r10:r10_147,r11:r11_148,r12:r12_149,r13:r13_150,r14:r14_151,r4:r8_144,r5:r5_154,r6:r6_153,r8:r8_144,r9:r9_146
 		defs: pr:pr_165,r0:r0_158,r10:r10_160,r11:r11_161,r12:r12_162,r14:r14_164,r15:r15_156,r4:r4_167,r5:r5_169,r6:r6_166,r8:r8_157,r9:r9_159
 	branch r0_158 != 0<32> l00402A78_ds_t
+l00402A78_ds_f:
+	goto l00402A7A
 l00402A78_ds_t:
 	r13_110 = r0_158
-l00402AA4:
-	r2_180 = CONVERT(Mem142[r0_158 + 0x48<32>:word16], uint16, uint32)
-	branch r2_180 >u 7<32> l00402A6E
-l00402AB4:
-	switch (r2_180 + 0xFFFFFFFF<32>) { l00402AFA l00402ACE l00402A6E l00402ADE l00402A6E l00402A6E l00402ADE }
-l00402ADE:
-	r1_188 = Mem142[0x00402BD0<p32>:word32]
-	call 0x00402AE4<p32> + r1_188 (retsize: 0;)
-		uses: Mem:Mem142,pr:pr_165,r1:r1_188,r10:r10_160,r11:r11_161,r12:r12_162,r13:r0_158,r14:r14_164,r4:Mem142[r0_158 + 32<i32>:word32],r5:r5_169,r6:r6_166,r8:r8_157,r9:r9_159
-		defs: pr:pr_210,r0:r0_203,r10:r10_205,r11:r11_206,r12:r12_207,r13:r13_208,r14:r14_209,r8:r8_202,r9:r9_204
-	r1_219 = Mem142[0x00402BD4<p32>:word32]
-	call 0x00402AF2<p32> + r1_219 (retsize: 0;)
-		uses: Mem:Mem142,pr:pr_210,r1:r1_219,r10:r10_205,r11:r11_206,r12:r12_207,r13:r13_208,r14:r14_209,r4:Mem142[0x00402BD8<p32>:word32] + r12_207,r5:r13_208 + 0x54<32>,r6:r0_203,r8:r8_202,r9:r9_204
-		defs: pr:pr_234,r10:r10_229,r11:r11_230,r12:r12_231,r13:r13_232,r14:r14_233,r5:r5_238,r6:r6_235,r8:r8_226,r9:r9_228
-	Mem245[Mem142[0x00402BDC<p32>:word32] + r12_109:word32] = 1<32>
-l00402ACE:
-	r0_246 = Mem142[0x00402BC8<p32>:word32]
-	call 0x00402ADA<p32> + r0_246 (retsize: 0;)
-		uses: Mem:Mem142,pr:pr_165,r0:r0_246,r10:r10_160,r11:r11_161,r12:r12_162,r13:r0_158,r14:r14_164,r4:Mem142[0x00402BCC<p32>:word32] + r12_162,r5:r0_158 + 0x54<32>,r6:r6_166,r8:r8_157,r9:r9_159
-		defs: pr:pr_260,r10:r10_255,r11:r11_256,r12:r12_257,r13:r13_258,r14:r14_259,r5:r5_264,r6:r6_261,r8:r8_252,r9:r9_254
-l00402AFA:
-	branch Mem142[r0_158 + 0x44<32>:word32] == 0<32> l00402B00_ds_t
-l00402B00_ds_t:
-l00402B00_ds_f:
-l00402B02:
-	branch CONVERT(Mem142[r0_158 + 0x54<32>:byte], byte, int32) != 0x2E<32> l00402B14
-l00402B0A:
-	branch Mem142[Mem142[Mem142[0x00402BE0<p32>:word32] + r12_109:word32]:word32] == 0<32> l00402A6E
-l00402B14:
-	branch Mem142[Mem142[Mem142[0x00402BE4<p32>:word32] + r12_109:word32]:word32] != 0<32> l00402B30
-l00402B1E:
-	branch Mem142[r10_141:word32] == 0<32> l00402B24_ds_t
-l00402B24_ds_t:
-	r1_290 = Mem142[r15_156 + 4<i32>:word32]
-l00402B60:
-	branch r1_290 <= 1<32> l00402B66_ds_t
-l00402B66_ds_t:
-l00402B66_ds_f:
-l00402B68:
-	r1_296 = Mem142[0x00402BFC<p32>:word32]
-	r5_298 = Mem142[r0_158 + 28<i32>:word32]
-	Mem300[r15_156:word32] = 1<32>
-	call 0x00402B72<p32> + r1_296 (retsize: 0;)
-		uses: Mem:Mem300,pr:pr_165,r1:r1_296,r10:r10_160,r11:r11_161,r12:r12_162,r13:r0_158,r14:r14_164,r4:r14_164 + r12_162,r5:r5_298,r6:r6_166,r8:r8_157,r9:r9_159
-		defs: pr:pr_315,r10:r10_310,r11:r11_311,r12:r12_312,r13:r13_313,r14:r14_314,r15:r15_306,r6:r6_316,r8:r8_307,r9:r9_309
-	Mem325[r10_141:word32] = Mem300[r15_306:word32]
-l00402B30:
-	r1_327 = Mem326[0x00402BF0<p32>:word32]
-	call 0x00402B38<p32> + r1_327 (retsize: 0;)
-		uses: Mem:Mem326,pr:pr_337,r1:r1_327,r10:r10_332,r11:r11_333,r12:r12_334,r13:r13_335,r14:r14_336,r4:r8_330,r5:r9_328,r6:r6_338,r8:r8_330,r9:r9_328
-		defs: pr:pr_349,r0:r0_342,r10:r10_344,r11:r11_345,r12:r12_346,r13:r13_347,r14:r14_348,r15:r15_340,r6:r6_350,r8:r8_341,r9:r9_343
-	Mem359[r15_340:word32] = r0_342
-	r0_360 = Mem359[0x00402BF4<p32>:word32]
-	call 0x00402B42<p32> + r0_360 (retsize: 0;)
-		uses: Mem:Mem359,pr:pr_349,r0:r0_360,r10:r10_344,r11:r11_345,r12:r12_346,r13:r13_347,r14:r14_348,r4:r13_347,r5:r0_342,r6:r6_350,r8:r8_341,r9:r9_343
-		defs: pr:pr_371,r10:r10_366,r11:r11_367,r12:r12_368,r13:r13_369,r14:r14_370,r15:r15_362,r5:r5_375,r6:r6_372,r8:r8_363,r9:r9_365
-	branch Mem359[Mem359[r12_109 + r11_126:word32]:word32] != 0<32> l00402B4C_ds_t
-l00402B4C_ds_t:
-l00402B4C_ds_f:
-	r3_385 = Mem359[r15_362:word32]
-l00402B4E:
-	branch r3_385 == 0<32> l00402B52_ds_t
-l00402B52_ds_t:
-	r6_113 = 4<32>
-l00402B52_ds_f:
-l00402B54:
-	r1_389 = Mem359[0x00402BF8<p32>:word32]
-	call 0x00402B5C<p32> + r1_389 (retsize: 0;)
-		uses: Mem:Mem359,pr:pr_371,r1:r1_389,r10:r10_366,r11:r11_367,r12:r12_368,r13:r13_369,r14:r14_370,r4:r8_363,r5:r13_369,r6:4<32>,r8:r8_363,r9:r9_365
-		defs: pr:pr_401,r10:r10_396,r11:r11_397,r12:r12_398,r13:r13_399,r14:r14_400,r5:r5_405,r6:r6_402,r8:r8_393,r9:r9_395
-l00402B24_ds_f:
-l00402B26:
-	r1_412 = Mem142[0x00402BEC<p32>:word32]
-	call 0x00402B30<p32> + r1_412 (retsize: 0;)
-		uses: Mem:Mem142,pr:pr_165,r1:r1_412,r10:r10_160,r11:r11_161,r12:r12_162,r13:r0_158,r14:r14_164,r4:Mem142[0x00402BE8<p32>:word32] + r12_162,r5:Mem142[r0_158 + 28<i32>:word32],r6:r6_166,r8:r8_157,r9:r9_159
-l00402A78_ds_f:
+	goto l00402AA4
 l00402A7A:
 	r1_434 = Mem142[0x00402BB0<p32>:word32]
 	call 0x00402A80<p32> + r1_434 (retsize: 0;)
@@ -1316,24 +1446,100 @@ l00402A9A:
 	r0_517 = Mem494[0x00402BC4<p32>:word32]
 	call 0x00402AA4<p32> + r0_517 (retsize: 0;)
 		uses: Mem:Mem494,pr:pr_504,r0:r0_517,r10:r10_499,r11:r11_500,r12:r12_501,r13:r13_502,r14:r14_503,r4:1<32>,r5:Mem494[0x00402BC0<p32>:word32] + r12_501,r6:r6_505,r8:r8_496,r9:r9_498
-l00402A36_ds_f:
-l00402A38:
-	r1_538 = Mem35[0x00402B9C<p32>:word32]
-	call 0x00402A3E<p32> + r1_538 (retsize: 0;)
-		uses: Mem:Mem35,pr:pr_112,r1:r1_538,r10:r10_107,r11:r11_108,r12:r12_109,r13:r13_110,r14:r14_111,r4:r8_104,r5:r5_116,r6:r6_113,r8:r8_104,r9:r9_123
-l00402A3E:
-	return
+l00402AA4:
+	r2_180 = CONVERT(Mem142[r0_158 + 0x48<32>:word16], uint16, uint32)
+	branch r2_180 >u 7<32> l00402A6E
+l00402AB4:
+	switch (r2_180 + 0xFFFFFFFF<32>) { l00402AFA l00402ACE l00402A6E l00402ADE l00402A6E l00402A6E l00402ADE }
+l00402ACE:
+	r0_246 = Mem142[0x00402BC8<p32>:word32]
+	call 0x00402ADA<p32> + r0_246 (retsize: 0;)
+		uses: Mem:Mem142,pr:pr_165,r0:r0_246,r10:r10_160,r11:r11_161,r12:r12_162,r13:r0_158,r14:r14_164,r4:Mem142[0x00402BCC<p32>:word32] + r12_162,r5:r0_158 + 0x54<32>,r6:r6_166,r8:r8_157,r9:r9_159
+		defs: pr:pr_260,r10:r10_255,r11:r11_256,r12:r12_257,r13:r13_258,r14:r14_259,r5:r5_264,r6:r6_261,r8:r8_252,r9:r9_254
+	goto l00402A6E
+l00402ADE:
+	r1_188 = Mem142[0x00402BD0<p32>:word32]
+	call 0x00402AE4<p32> + r1_188 (retsize: 0;)
+		uses: Mem:Mem142,pr:pr_165,r1:r1_188,r10:r10_160,r11:r11_161,r12:r12_162,r13:r0_158,r14:r14_164,r4:Mem142[r0_158 + 32<i32>:word32],r5:r5_169,r6:r6_166,r8:r8_157,r9:r9_159
+		defs: pr:pr_210,r0:r0_203,r10:r10_205,r11:r11_206,r12:r12_207,r13:r13_208,r14:r14_209,r8:r8_202,r9:r9_204
+	r1_219 = Mem142[0x00402BD4<p32>:word32]
+	call 0x00402AF2<p32> + r1_219 (retsize: 0;)
+		uses: Mem:Mem142,pr:pr_210,r1:r1_219,r10:r10_205,r11:r11_206,r12:r12_207,r13:r13_208,r14:r14_209,r4:Mem142[0x00402BD8<p32>:word32] + r12_207,r5:r13_208 + 0x54<32>,r6:r0_203,r8:r8_202,r9:r9_204
+		defs: pr:pr_234,r10:r10_229,r11:r11_230,r12:r12_231,r13:r13_232,r14:r14_233,r5:r5_238,r6:r6_235,r8:r8_226,r9:r9_228
+	Mem245[Mem142[0x00402BDC<p32>:word32] + r12_109:word32] = 1<32>
+	goto l00402A6E
+l00402AFA:
+	branch Mem142[r0_158 + 0x44<32>:word32] == 0<32> l00402B00_ds_t
+l00402B00_ds_f:
+	goto l00402B02
+l00402B00_ds_t:
+	goto l00402B14
+l00402B02:
+	branch CONVERT(Mem142[r0_158 + 0x54<32>:byte], byte, int32) != 0x2E<32> l00402B14
+l00402B0A:
+	branch Mem142[Mem142[Mem142[0x00402BE0<p32>:word32] + r12_109:word32]:word32] == 0<32> l00402A6E
+l00402B14:
+	branch Mem142[Mem142[Mem142[0x00402BE4<p32>:word32] + r12_109:word32]:word32] != 0<32> l00402B30
+l00402B1E:
+	branch Mem142[r10_141:word32] == 0<32> l00402B24_ds_t
+l00402B24_ds_f:
+	goto l00402B26
+l00402B24_ds_t:
+	r1_290 = Mem142[r15_156 + 4<i32>:word32]
+	goto l00402B60
+l00402B26:
+	r1_412 = Mem142[0x00402BEC<p32>:word32]
+	call 0x00402B30<p32> + r1_412 (retsize: 0;)
+		uses: Mem:Mem142,pr:pr_165,r1:r1_412,r10:r10_160,r11:r11_161,r12:r12_162,r13:r0_158,r14:r14_164,r4:Mem142[0x00402BE8<p32>:word32] + r12_162,r5:Mem142[r0_158 + 28<i32>:word32],r6:r6_166,r8:r8_157,r9:r9_159
+l00402B30:
+	r1_327 = Mem326[0x00402BF0<p32>:word32]
+	call 0x00402B38<p32> + r1_327 (retsize: 0;)
+		uses: Mem:Mem326,pr:pr_337,r1:r1_327,r10:r10_332,r11:r11_333,r12:r12_334,r13:r13_335,r14:r14_336,r4:r8_330,r5:r9_328,r6:r6_338,r8:r8_330,r9:r9_328
+		defs: pr:pr_349,r0:r0_342,r10:r10_344,r11:r11_345,r12:r12_346,r13:r13_347,r14:r14_348,r15:r15_340,r6:r6_350,r8:r8_341,r9:r9_343
+	Mem359[r15_340:word32] = r0_342
+	r0_360 = Mem359[0x00402BF4<p32>:word32]
+	call 0x00402B42<p32> + r0_360 (retsize: 0;)
+		uses: Mem:Mem359,pr:pr_349,r0:r0_360,r10:r10_344,r11:r11_345,r12:r12_346,r13:r13_347,r14:r14_348,r4:r13_347,r5:r0_342,r6:r6_350,r8:r8_341,r9:r9_343
+		defs: pr:pr_371,r10:r10_366,r11:r11_367,r12:r12_368,r13:r13_369,r14:r14_370,r15:r15_362,r5:r5_375,r6:r6_372,r8:r8_363,r9:r9_365
+	branch Mem359[Mem359[r12_109 + r11_126:word32]:word32] != 0<32> l00402B4C_ds_t
+l00402B4C_ds_f:
+	r3_385 = Mem359[r15_362:word32]
+	goto l00402B4E
+l00402B4C_ds_t:
+	goto l00402A6E
+l00402B4E:
+	branch r3_385 == 0<32> l00402B52_ds_t
+l00402B52_ds_f:
+	goto l00402B54
+l00402B52_ds_t:
+	r6_113 = 4<32>
+	goto l00402A6E
+l00402B54:
+	r1_389 = Mem359[0x00402BF8<p32>:word32]
+	call 0x00402B5C<p32> + r1_389 (retsize: 0;)
+		uses: Mem:Mem359,pr:pr_371,r1:r1_389,r10:r10_366,r11:r11_367,r12:r12_368,r13:r13_369,r14:r14_370,r4:r8_363,r5:r13_369,r6:4<32>,r8:r8_363,r9:r9_365
+		defs: pr:pr_401,r10:r10_396,r11:r11_397,r12:r12_398,r13:r13_399,r14:r14_400,r5:r5_405,r6:r6_402,r8:r8_393,r9:r9_395
+	goto l00402A6E
+l00402B60:
+	branch r1_290 <= 1<32> l00402B66_ds_t
+l00402B66_ds_f:
+	goto l00402B68
+l00402B66_ds_t:
+	goto l00402B30
+l00402B68:
+	r1_296 = Mem142[0x00402BFC<p32>:word32]
+	r5_298 = Mem142[r0_158 + 28<i32>:word32]
+	Mem300[r15_156:word32] = 1<32>
+	call 0x00402B72<p32> + r1_296 (retsize: 0;)
+		uses: Mem:Mem300,pr:pr_165,r1:r1_296,r10:r10_160,r11:r11_161,r12:r12_162,r13:r0_158,r14:r14_164,r4:r14_164 + r12_162,r5:r5_298,r6:r6_166,r8:r8_157,r9:r9_159
+		defs: pr:pr_315,r10:r10_310,r11:r11_311,r12:r12_312,r13:r13_313,r14:r14_314,r15:r15_306,r6:r6_316,r8:r8_307,r9:r9_309
+	Mem325[r10_141:word32] = Mem300[r15_306:word32]
+	goto l00402B30
 traverse_exit:
-l00402A16_ds_f:
-l00402A18:
-	r0_583 = Mem35[0x00402B8C<p32>:word32]
-	call 0x00402A1E<p32> + r0_583 (retsize: 0;)
-		uses: Mem:Mem35,pr:pr_68,r0:r0_583,r10:r10_63,r11:r11_64,r12:r12_65,r13:r13_66,r14:r14_67,r4:1<32>,r5:0<32>,r6:r6_69,r8:r0_61,r9:r9_62
 
 
 void ls_main(word32 r4, word32 r5, word32 r8, word32 r9, word32 r10, word32 r11, word32 r12, word32 r13, word32 r14, word32 pr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  pr:[0..31] r10:[0..31] r11:[0..31] r12:[0..31] r13:[0..31] r14:[0..31] r4:[0..31] r5:[0..31] r8:[0..31] r9:[0..31]
 // LiveOut:
 // Trashed: T pr r0 r1 r10 r11 r12 r13 r14 r2 r3 r4 r5 r6 r7 r8 r9
@@ -1353,36 +1559,41 @@ l00402C00:
 		uses: Mem:Mem28,pr:pr_68,r10:r10_63,r11:r11_64,r12:r12_65,r13:r13_66,r14:r14_67,r4:1<32>,r5:r5_69,r7:r7_77,r8:r8_60,r9:r9_62
 		defs: pr:pr_88,r0:r0_81,r10:r10_83,r11:r11_84,r12:r12_85,r13:r13_86,r14:r14_87,r15:r15_79,r4:r4_90,r5:r5_89,r8:r8_80,r9:r9_82
 	branch r0_81 != 0<32> l00402C3A
+l00402C36:
+	goto l00402D4E
 l00402C3A:
 	r1_98 = Mem28[0x00402E28<p32>:word32]
 	call 0x00402C48<p32> + r1_98 (retsize: 0;)
 		uses: Mem:Mem28,pr:pr_88,r1:r1_98,r10:r10_83,r11:r11_84,r12:r12_85,r13:r13_86,r14:r14_87,r4:1<32>,r5:Mem28[0x00402E2C<p32>:word32],r6:r15_79 + 8<32>,r8:r15_79 + 8<32>,r9:r9_82
 		defs: pr:pr_113,r0:r0_106,r10:r10_108,r11:r11_109,r12:r12_110,r13:r13_111,r14:r14_112,r4:r4_115,r5:r5_114,r8:r8_105,r9:r9_107
 	branch r0_106 != 0<32> l00402C4C_ds_t
-l00402C4C_ds_t:
 l00402C4C_ds_f:
+	goto l00402C4E
+l00402C4C_ds_t:
+	goto l00402C5E
 l00402C4E:
 	r2_126 = CONVERT(Mem28[r8_105 + 2<i32>:word16], uint16, uint32)
 	branch r2_126 == 0<32> l00402C56_ds_t
-l00402C56_ds_t:
 l00402C56_ds_f:
+	goto l00402C58
+l00402C56_ds_t:
+	goto l00402C5E
 l00402C58:
 	Mem131[r12_110 + Mem28[0x00402E30<p32>:word32]:word32] = r2_126
 l00402C5E:
 	r0_137 = Mem133[0x00402E38<p32>:word32]
 	Mem139[Mem133[Mem133[0x00402E34<p32>:word32] + r12_110:word32]:word32] = 1<32>
 	Mem141[Mem139[r0_137 + r12_110:word32]:word32] = 1<32>
-l00402C36:
-l00402D4E:
-	Mem145[Mem28[Mem28[0x00402E84<p32>:word32] + r12_110:word32]:word32] = 1<32>
 l00402C6A:
 	r1_147 = Mem146[0x00402E3C<p32>:word32]
 	call 0x00402C70<p32> + r1_147 (retsize: 0;)
 		uses: Mem:Mem146,pr:pr_161,r1:r1_147,r10:r10_152,r11:r11_154,r12:r12_156,r13:r13_157,r14:r14_159,r4:r4_165,r5:r5_163,r8:r8_148,r9:r9_150
 		defs: pr:pr_178,r0:r0_171,r11:r11_174,r12:r12_175,r15:r15_169,r9:r9_172
 	branch r0_171 != 0<32> l00402C74_ds_t
-l00402C74_ds_t:
 l00402C74_ds_f:
+	goto l00402C76
+l00402C74_ds_t:
+	goto l00402C7E
 l00402C76:
 	Mem193[Mem146[Mem146[0x00402E40<p32>:word32] + r12_175:word32]:word32] = 1<32>
 l00402C7E:
@@ -1393,15 +1604,101 @@ l00402C7E:
 		uses: Mem:Mem201,pr:pr_178,r1:r1_206,r10:CONVERT(Mem201[0x00402E10<p32>:word16], word16, int32),r11:r11_174,r12:r12_175,r13:0<32>,r14:r14_197 + r12_175,r4:r9_172,r5:r11_174,r6:Mem201[r15_169 + 4<i32>:word32],r8:0x10<32>,r9:r9_172
 		defs: pr:pr_221,r0:r0_214,r10:r10_216,r11:r11_217,r12:r12_218,r13:r13_219,r14:r14_220,r15:r15_212,r4:r4_223,r5:r5_222,r8:r8_213,r9:r9_215
 	branch r0_214 != 0xFFFFFFFF<32> l00402C9A_ds_t
+l00402C9A_ds_f:
+	goto l00402C9C
 l00402C9A_ds_t:
+	goto l00402D56
+l00402C9C:
+	r10_307 = Mem201[Mem201[Mem201[0x00402E4C<p32>:word32] + r12_218:word32]:word32]
+	branch Mem201[Mem201[Mem201[0x00402E38<p32>:word32] + r12_218:word32]:word32] != 0<32> l00402CAC_ds_t
+l00402CAC_ds_f:
+	r9_306 = r9_215 - r10_307
+	goto l00402CAE
+l00402CAC_ds_t:
+	r9_306 = r9_215 - r10_307
+	goto l00402CC2
+l00402CAE:
+	branch Mem201[Mem201[Mem201[0x00402E50<p32>:word32] + r12_218:word32]:word32] != 0<32> l00402CC2
+l00402CB8:
+	branch Mem201[Mem201[Mem201[0x00402E54<p32>:word32] + r12_218:word32]:word32] == 0<32> l00402CDE
+l00402CC2:
+	r7_341 = Mem201[0x00402E5C<p32>:word32]
+	call 0x00402CCA<p32> + r7_341 (retsize: 0;)
+		uses: Mem:Mem201,pr:pr_221,r10:r10_325,r11:r11_217,r12:r12_218,r13:r13_219,r14:r14_220,r4:Mem201[0x00402E58<p32>:word32] + r12_218,r5:r5_222,r7:r7_341,r8:r8_213,r9:r9_345
+		defs: pr:pr_362,r0:r0_355,r10:r10_357,r11:r11_358,r12:r12_359,r13:r13_360,r14:r14_361,r15:r15_353,r5:r5_363,r8:r8_354,r9:r9_356
+	branch r0_355 == 0<32> l00402CCE_ds_t
+l00402CCE_ds_f:
+	goto l00402CD0
+l00402CCE_ds_t:
+	goto l00402CDE
+l00402CD0:
+	r1_374 = Mem201[0x00402E60<p32>:word32]
+	call 0x00402CD6<p32> + r1_374 (retsize: 0;)
+		uses: Mem:Mem201,pr:pr_362,r1:r1_374,r10:r10_357,r11:r11_358,r12:r12_359,r13:r13_360,r14:r14_361,r4:r0_355,r5:r5_363,r8:r8_354,r9:r9_356
+		defs: pr:pr_384,r0:r0_377,r10:r10_379,r11:r11_380,r12:r12_381,r13:r13_382,r15:r15_375,r8:r8_376,r9:r9_378
+	Mem396[r12_218 + Mem201[0x00402E30<p32>:word32]:word32] = r0_377
+l00402CDE:
+	r1_400 = Mem397[Mem397[0x00402E64<p32>:word32] + r12_218:word32]
+	branch Mem397[r1_400:word32] != 0xFFFFFFFF<32> l00402CE8_ds_t
+l00402CE8_ds_f:
+	goto l00402CEA
+l00402CE8_ds_t:
+	goto l00402CEC
+l00402CEA:
+	Mem405[r1_400:word32] = 0<32>
+l00402CEC:
+	r14_311 = Mem406[0x00402E6C<p32>:word32]
+	r1_315 = Mem406[Mem406[Mem406[0x00402E68<p32>:word32] + r12_218:word32]:word32]
+	r3_319 = Mem406[Mem406[r12_218 + r14_311:word32]:word32]
+	r2_317 = Mem406[0x00402E70<p32>:word32]
+	branch r1_315 == 0<32> l00402D04
+l00402D00:
+	T_320 = r3_319 == 0<32>
+	goto l00403068
+l00402D04:
+	branch r3_319 != 0<32> l00402D4A
+l00402D08:
+	branch Mem406[Mem406[Mem406[0x00402E74<p32>:word32] + r12_218:word32]:word32] != 0<32> l00402D32
+l00402D12:
+	branch Mem406[Mem406[Mem406[0x00402E78<p32>:word32] + r12_218:word32]:word32] != 0<32> l00402D32
+l00402D1C:
+	branch Mem406[Mem406[Mem406[0x00402E7C<p32>:word32] + r12_218:word32]:word32] != 0<32> l00402D26_ds_t
+l00402D26_ds_f:
+	goto l00402D28
+l00402D26_ds_t:
+	goto l00402D32
+l00402D28:
+	branch Mem406[r12_218 + r2_317:word32] != 0<32> l00402D2E_ds_t
+l00402D2E_ds_f:
+	goto l00402D30
+l00402D2E_ds_t:
+	goto l00402D32
+l00402D30:
+	r8_213 = r8_213 | 8<32>
+l00402D32:
+	branch Mem441[Mem441[Mem441[0x00402E80<p32>:word32] + r12_218:word32]:word32] != 0<32> l00402D4A
+l00402D3C:
+	branch Mem441[Mem441[Mem441[0x00402E78<p32>:word32] + r12_218:word32]:word32] != 0<32> l00402D46_ds_t
+l00402D46_ds_f:
+	goto l00402D48
+l00402D46_ds_t:
+	goto l00402D4A
+l00402D48:
+	r8_213 = r8_213 | 1<32>
+l00402D4A:
+	goto l0040306E
+l00402D4E:
+	Mem145[Mem28[Mem28[0x00402E84<p32>:word32] + r12_110:word32]:word32] = 1<32>
+	goto l00402C6A
 l00402D56:
 	branch r0_214 <=u 0x78<32> l00402D62
+l00402D5E:
+	goto l0040304A
 l00402D62:
 	r1_237 = CONVERT(Mem201[0x00402D6C<p32> + (r0_214 + 0xFFFFFFCF<32>) * 2<32>:word16], word16, int32)
 	call 0x00402D6C<p32> + r1_237 (retsize: 0;)
 		uses: Mem:Mem201,pr:pr_221,r0:0x00402D6C<p32>,r1:r1_237,r10:r10_216,r11:r11_217,r12:r12_218,r13:r13_219,r14:r14_220,r2:(r0_214 + 0xFFFFFFCF<32>) * 2<32>,r4:r4_223,r5:r5_222,r8:r8_213,r9:r9_215
 	return
-l00402D5E:
 l0040304A:
 	r1_256 = Mem201[0x00403230<p32>:word32]
 	call 0x00403050<p32> + r1_256 (retsize: 0;)
@@ -1417,96 +1714,37 @@ l0040304A:
 	call 0x00403068<p32> + r7_301 (retsize: 0;)
 		uses: Mem:Mem201,pr:pr_292,r10:r10_287,r11:r11_288,r12:r12_289,r13:r13_290,r14:r14_291,r4:1<32>,r5:r5_293,r7:r7_301,r8:r8_284,r9:r9_286
 		defs: pr:pr_312,r1:r1_315,r10:r10_307,r11:r11_308,r12:r12_309,r13:r13_310,r14:r14_311,r15:r15_303,r2:r2_317,r3:r3_319,r8:r8_304,r9:r9_306,T:T_320
-l00402C9A_ds_f:
-l00402C9C:
-	r10_307 = Mem201[Mem201[Mem201[0x00402E4C<p32>:word32] + r12_218:word32]:word32]
-	branch Mem201[Mem201[Mem201[0x00402E38<p32>:word32] + r12_218:word32]:word32] != 0<32> l00402CAC_ds_t
-l00402CAC_ds_t:
-	r9_306 = r9_215 - r10_307
-l00402CAC_ds_f:
-	r9_306 = r9_215 - r10_307
-l00402CAE:
-	branch Mem201[Mem201[Mem201[0x00402E50<p32>:word32] + r12_218:word32]:word32] != 0<32> l00402CC2
-l00402CB8:
-	branch Mem201[Mem201[Mem201[0x00402E54<p32>:word32] + r12_218:word32]:word32] == 0<32> l00402CDE
-l00402CC2:
-	r7_341 = Mem201[0x00402E5C<p32>:word32]
-	call 0x00402CCA<p32> + r7_341 (retsize: 0;)
-		uses: Mem:Mem201,pr:pr_221,r10:r10_325,r11:r11_217,r12:r12_218,r13:r13_219,r14:r14_220,r4:Mem201[0x00402E58<p32>:word32] + r12_218,r5:r5_222,r7:r7_341,r8:r8_213,r9:r9_345
-		defs: pr:pr_362,r0:r0_355,r10:r10_357,r11:r11_358,r12:r12_359,r13:r13_360,r14:r14_361,r15:r15_353,r5:r5_363,r8:r8_354,r9:r9_356
-	branch r0_355 == 0<32> l00402CCE_ds_t
-l00402CCE_ds_t:
-l00402CCE_ds_f:
-l00402CD0:
-	r1_374 = Mem201[0x00402E60<p32>:word32]
-	call 0x00402CD6<p32> + r1_374 (retsize: 0;)
-		uses: Mem:Mem201,pr:pr_362,r1:r1_374,r10:r10_357,r11:r11_358,r12:r12_359,r13:r13_360,r14:r14_361,r4:r0_355,r5:r5_363,r8:r8_354,r9:r9_356
-		defs: pr:pr_384,r0:r0_377,r10:r10_379,r11:r11_380,r12:r12_381,r13:r13_382,r15:r15_375,r8:r8_376,r9:r9_378
-	Mem396[r12_218 + Mem201[0x00402E30<p32>:word32]:word32] = r0_377
-l00402CDE:
-	r1_400 = Mem397[Mem397[0x00402E64<p32>:word32] + r12_218:word32]
-	branch Mem397[r1_400:word32] != 0xFFFFFFFF<32> l00402CE8_ds_t
-l00402CE8_ds_t:
-l00402CE8_ds_f:
-l00402CEA:
-	Mem405[r1_400:word32] = 0<32>
-l00402CEC:
-	r14_311 = Mem406[0x00402E6C<p32>:word32]
-	r1_315 = Mem406[Mem406[Mem406[0x00402E68<p32>:word32] + r12_218:word32]:word32]
-	r3_319 = Mem406[Mem406[r12_218 + r14_311:word32]:word32]
-	r2_317 = Mem406[0x00402E70<p32>:word32]
-	branch r1_315 == 0<32> l00402D04
-l00402D04:
-	branch r3_319 != 0<32> l00402D4A
-l00402D08:
-	branch Mem406[Mem406[Mem406[0x00402E74<p32>:word32] + r12_218:word32]:word32] != 0<32> l00402D32
-l00402D12:
-	branch Mem406[Mem406[Mem406[0x00402E78<p32>:word32] + r12_218:word32]:word32] != 0<32> l00402D32
-l00402D1C:
-	branch Mem406[Mem406[Mem406[0x00402E7C<p32>:word32] + r12_218:word32]:word32] != 0<32> l00402D26_ds_t
-l00402D26_ds_t:
-l00402D26_ds_f:
-l00402D28:
-	branch Mem406[r12_218 + r2_317:word32] != 0<32> l00402D2E_ds_t
-l00402D2E_ds_t:
-l00402D2E_ds_f:
-l00402D30:
-	r8_213 = r8_213 | 8<32>
-l00402D00:
-	T_320 = r3_319 == 0<32>
 l00403068:
 	branch !T_320 l0040306E
 l0040306A:
-l00402D32:
-	branch Mem441[Mem441[Mem441[0x00402E80<p32>:word32] + r12_218:word32]:word32] != 0<32> l00402D4A
-l00402D3C:
-	branch Mem441[Mem441[Mem441[0x00402E78<p32>:word32] + r12_218:word32]:word32] != 0<32> l00402D46_ds_t
-l00402D46_ds_t:
-l00402D46_ds_f:
-l00402D48:
-	r8_213 = r8_213 | 1<32>
-l00402D4A:
+	goto l00402D32
 l0040306E:
 	branch Mem458[Mem458[Mem458[0x0040322C<p32>:word32] + r12_218:word32]:word32] == 0<32> l0040307C
 l00403078:
 	r8_213 = r8_213 | CONVERT(Mem458[0x004031B6<p32>:word16], word16, int32)
 l0040307C:
 	branch (r1_315 | r3_319) != 0<32> l00403082_ds_t
+l00403082_ds_f:
+	goto l00403084
 l00403082_ds_t:
 	T_489 = r13_219 == 0<32>
-l00403082_ds_f:
+	goto l00403092
 l00403084:
 	branch Mem458[Mem458[Mem458[0x00403224<p32>:word32] + r12_218:word32]:word32] == 0<32> l0040308E_ds_t
+l0040308E_ds_f:
+	goto l00403090
 l0040308E_ds_t:
 	r0_497 = r12_218
-l0040308E_ds_f:
+	goto l004030BE
 l00403090:
 	T_489 = r13_219 == 0<32>
 l00403092:
 	r13_219 = Mem458[0x004031FC<p32>:word32]
 	branch !T_489 l00403096_ds_t
-l00403096_ds_t:
 l00403096_ds_f:
+	goto l00403098
+l00403096_ds_t:
+	goto l004030A4
 l00403098:
 	r1_505 = Mem458[0x00403244<p32>:word32]
 	Mem522[r15_212:word32] = r2_317
@@ -1521,72 +1759,33 @@ l004030A4:
 l004030BE:
 	r2_605 = Mem600[r0_497 + r2_317:word32]
 	branch Mem600[Mem600[r0_497 + Mem600[0x0040321C<p32>:word32]:word32]:word32] == 0<32> l004030CA_ds_t
-l004030CA_ds_t:
-l0040316A:
-	branch r2_605 == 1<32> l0040316E_ds_t
-l0040316E_ds_t:
-l0040317C:
-	r1_614 = Mem600[Mem600[0x00403284<p32>:word32] + r12_218:word32]
-l0040316E_ds_f:
-l00403170:
-	branch r2_605 == 2<32> l00403172_ds_t
-l00403172_ds_t:
-l00403182:
-	r2_618 = Mem600[0x00403270<p32>:word32]
-	r1_622 = Mem600[0x00403288<p32>:word32]
-	branch Mem600[Mem600[Mem600[0x004031D8<p32>:word32] + r12_218:word32]:word32] != 0<32> l00403190_ds_t
-l00403190_ds_t:
-l00403190_ds_f:
-l00403192:
-	r1_622 = Mem600[0x0040328C<p32>:word32]
-	branch Mem600[Mem600[r12_218 + Mem600[0x004031D4<p32>:word32]:word32]:word32] != 0<32> l00403164
-l0040319E:
-	r1_631 = Mem600[r12_218 + Mem600[0x00403290<p32>:word32]:word32]
-l00403172_ds_f:
-l00403174:
-	r0_633 = Mem600[0x00403280<p32>:word32]
-	branch r2_605 != 0<32> l004030DA
-l00403178:
-	r1_614 = Mem600[r0_633 + r12_218:word32]
 l004030CA_ds_f:
+	goto l004030CC
+l004030CA_ds_t:
+	goto l0040316A
 l004030CC:
 	branch r2_605 == 1<32> l004030D0_ds_t
-l004030D0_ds_t:
-l0040313C:
-	r0_638 = Mem600[0x0040326C<p32>:word32]
 l004030D0_ds_f:
+	goto l004030D2
+l004030D0_ds_t:
+	goto l0040313C
 l004030D2:
 	branch r2_605 == 2<32> l004030D4_ds_t
-l004030D4_ds_t:
-l00403146:
-	r2_618 = Mem600[0x00403270<p32>:word32]
-	r1_622 = Mem600[0x00403274<p32>:word32]
-	branch Mem600[Mem600[Mem600[0x004031D8<p32>:word32] + r12_218:word32]:word32] != 0<32> l00403154_ds_t
-l00403154_ds_t:
-l00403154_ds_f:
-l00403156:
-	r1_622 = Mem600[0x00403278<p32>:word32]
-	branch Mem600[Mem600[r12_218 + Mem600[0x004031D4<p32>:word32]:word32]:word32] != 0<32> l00403164
-l00403162:
-	r1_622 = Mem600[0x0040327C<p32>:word32]
-l00403164:
-	r1_631 = Mem600[r12_218 + r1_622:word32]
-l00403166:
-	Mem663[r12_218 + r2_618:word32] = r1_631
 l004030D4_ds_f:
+	goto l004030D6
+l004030D4_ds_t:
+	goto l00403146
 l004030D6:
 	r0_638 = Mem600[0x00403248<p32>:word32]
 	branch r2_605 == 0<32> l0040313E
-l0040313E:
-	r1_614 = Mem600[r0_638 + r12_218:word32]
-l00403140:
-	Mem674[Mem600[0x00403270<p32>:word32] + r12_218:word32] = r1_614
 l004030DA:
 	r2_677 = Mem675[0x0040324C<p32>:word32]
 	r1_684 = Mem675[0x00403250<p32>:word32]
 	branch Mem675[Mem675[Mem675[0x004031C4<p32>:word32] + r12_218:word32]:word32] != 0<32> l004030E8_ds_t
-l004030E8_ds_t:
 l004030E8_ds_f:
+	goto l004030EA
+l004030E8_ds_t:
+	goto l0040310E
 l004030EA:
 	r1_684 = Mem675[0x00403254<p32>:word32]
 	branch Mem675[Mem675[r12_218 + Mem675[0x004031CC<p32>:word32]:word32]:word32] != 0<32> l0040310E
@@ -1601,26 +1800,88 @@ l0040310C:
 l0040310E:
 	r1_712 = Mem675[r12_218 + r1_684:word32]
 	branch r9_306 == 0<32> l00403114_ds_t
-l00403114_ds_t:
-	Mem723[r12_218 + r2_677:word32] = r1_712
-l004031A4:
-	r7_734 = Mem723[0x00403298<p32>:word32]
-	call 0x004031B0<p32> + r7_734 (retsize: 0;)
-		uses: Mem:Mem723,pr:pr_764,r10:r10_740,r11:r11_748,r12:r12_613,r13:r13_756,r14:r14_693,r4:1<32>,r5:Mem723[0x00403294<p32>:word32] + r12_613,r6:r8_727,r7:r7_734,r8:r8_727,r9:r9_715
 l00403114_ds_f:
 	Mem796[r12_218 + r2_677:word32] = r1_712
+	goto l00403116
+l00403114_ds_t:
+	Mem723[r12_218 + r2_677:word32] = r1_712
+	goto l004031A4
 l00403116:
 	r1_797 = Mem796[0x00403264<p32>:word32]
 	call 0x00403124<p32> + r1_797 (retsize: 0;)
 		uses: Mem:Mem796,pr:pr_764,r1:r1_797,r10:r10_740,r11:r11_748,r12:r12_613,r13:r13_756,r14:r14_693,r4:r9_715,r5:(r10_740 << 2<i32>) + r11_748,r6:r8_727,r8:r8_727,r9:r9_715
 l00403124:
 	return
+l0040313C:
+	r0_638 = Mem600[0x0040326C<p32>:word32]
+l0040313E:
+	r1_614 = Mem600[r0_638 + r12_218:word32]
+l00403140:
+	Mem674[Mem600[0x00403270<p32>:word32] + r12_218:word32] = r1_614
+	goto l004030DA
+l00403146:
+	r2_618 = Mem600[0x00403270<p32>:word32]
+	r1_622 = Mem600[0x00403274<p32>:word32]
+	branch Mem600[Mem600[Mem600[0x004031D8<p32>:word32] + r12_218:word32]:word32] != 0<32> l00403154_ds_t
+l00403154_ds_f:
+	goto l00403156
+l00403154_ds_t:
+	goto l00403164
+l00403156:
+	r1_622 = Mem600[0x00403278<p32>:word32]
+	branch Mem600[Mem600[r12_218 + Mem600[0x004031D4<p32>:word32]:word32]:word32] != 0<32> l00403164
+l00403162:
+	r1_622 = Mem600[0x0040327C<p32>:word32]
+l00403164:
+	r1_631 = Mem600[r12_218 + r1_622:word32]
+l00403166:
+	Mem663[r12_218 + r2_618:word32] = r1_631
+	goto l004030DA
+l0040316A:
+	branch r2_605 == 1<32> l0040316E_ds_t
+l0040316E_ds_f:
+	goto l00403170
+l0040316E_ds_t:
+	goto l0040317C
+l00403170:
+	branch r2_605 == 2<32> l00403172_ds_t
+l00403172_ds_f:
+	goto l00403174
+l00403172_ds_t:
+	goto l00403182
+l00403174:
+	r0_633 = Mem600[0x00403280<p32>:word32]
+	branch r2_605 != 0<32> l004030DA
+l00403178:
+	r1_614 = Mem600[r0_633 + r12_218:word32]
+	goto l00403140
+l0040317C:
+	r1_614 = Mem600[Mem600[0x00403284<p32>:word32] + r12_218:word32]
+	goto l00403140
+l00403182:
+	r2_618 = Mem600[0x00403270<p32>:word32]
+	r1_622 = Mem600[0x00403288<p32>:word32]
+	branch Mem600[Mem600[Mem600[0x004031D8<p32>:word32] + r12_218:word32]:word32] != 0<32> l00403190_ds_t
+l00403190_ds_f:
+	goto l00403192
+l00403190_ds_t:
+	goto l00403164
+l00403192:
+	r1_622 = Mem600[0x0040328C<p32>:word32]
+	branch Mem600[Mem600[r12_218 + Mem600[0x004031D4<p32>:word32]:word32]:word32] != 0<32> l00403164
+l0040319E:
+	r1_631 = Mem600[r12_218 + Mem600[0x00403290<p32>:word32]:word32]
+	goto l00403166
+l004031A4:
+	r7_734 = Mem723[0x00403298<p32>:word32]
+	call 0x004031B0<p32> + r7_734 (retsize: 0;)
+		uses: Mem:Mem723,pr:pr_764,r10:r10_740,r11:r11_748,r12:r12_613,r13:r13_756,r14:r14_693,r4:1<32>,r5:Mem723[0x00403294<p32>:word32] + r12_613,r6:r8_727,r7:r7_734,r8:r8_727,r9:r9_715
+	goto l00403124
 ls_main_exit:
 
 
 void safe_printpath(word32 r4, word32 pr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  pr:[0..31] r4:[0..31]
 // LiveOut:
 // Trashed: T pr r0 r1 r12 r4 r8 r9
@@ -1630,9 +1891,11 @@ l0040329C:
 	r12_17 = Mem12[0x004032DC<p32>:word32] + 0x004032DC<p32>
 	r8_20 = Mem16[Mem16[Mem16[0x004032E0<p32>:word32] + r12_17:word32]:word32]
 	branch r8_20 == 0<32> l004032B4_ds_t
+l004032B4_ds_f:
+	goto l004032B6
 l004032B4_ds_t:
 	r9_23 = r4
-l004032B4_ds_f:
+	goto l004032C8
 l004032B6:
 	r1_25 = Mem16[0x004032E4<p32>:word32]
 	call 0x004032BC<p32> + r1_25 (retsize: 0;)
@@ -1653,7 +1916,6 @@ safe_printpath_exit:
 
 void printescapedpath(word32 r4, word32 pr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  pr:[0..31] r4:[0..31]
 // LiveOut:
 // Trashed: T pr r0 r1 r12 r4 r8 r9
@@ -1663,9 +1925,11 @@ l004032F4:
 	r12_17 = Mem12[0x00403334<p32>:word32] + 0x00403334<p32>
 	r8_20 = Mem16[Mem16[Mem16[0x00403338<p32>:word32] + r12_17:word32]:word32]
 	branch r8_20 == 0<32> l0040330C_ds_t
+l0040330C_ds_f:
+	goto l0040330E
 l0040330C_ds_t:
 	r9_23 = r4
-l0040330C_ds_f:
+	goto l00403320
 l0040330E:
 	r1_25 = Mem16[0x0040333C<p32>:word32]
 	call 0x00403314<p32> + r1_25 (retsize: 0;)
@@ -1686,7 +1950,6 @@ printescapedpath_exit:
 
 void printlink(word32 r4, word32 r8, word32 pr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  pr:[0..31] r4:[0..31] r8:[0..31]
 // LiveOut:
 // Trashed: T pr r0 r1 r12 r4 r5 r6 r7 r8 r9
@@ -1696,15 +1959,10 @@ l0040334C:
 	r12_18 = Mem12[0x00403428<p32>:word32] + 0x00403428<p32>
 	r15_19 = fp - 16<i32> - CONVERT(Mem12[0x0040341E<p32>:word16], word16, int32)
 	branch Mem17[r4 + 0x44<32>:word32] != 0<32> l0040336E_ds_t
-l0040336E_ds_t:
-l004033BE:
-	r1_29 = Mem17[r4 + 4<i32>:word32]
-	Mem31[r15_19:word32] = r4 + 0x54<32>
-	r1_34 = Mem31[0x00403450<p32>:word32]
-	call 0x004033D0<p32> + r1_34 (retsize: 0;)
-		uses: Mem:Mem31,pr:pr,r1:r1_34,r12:r12_18,r4:r15_19 + 4<32>,r5:CONVERT(Mem31[0x00403420<p32>:word16], word16, int32),r6:Mem31[0x0040344C<p32>:word32] + r12_18,r7:Mem31[r1_29 + 24<i32>:word32],r8:r8,r9:r15_19 + 4<32>
-		defs: pr:pr_43,r12:r12_41,r15:r15_37,r9:r9_40
 l0040336E_ds_f:
+	goto l00403370
+l0040336E_ds_t:
+	goto l004033BE
 l00403370:
 	r1_52 = Mem17[0x00403430<p32>:word32]
 	call 0x0040337C<p32> + r1_52 (retsize: 0;)
@@ -1717,31 +1975,10 @@ l0040337C:
 		uses: Mem:Mem67,pr:pr_77,r1:r1_71,r12:r12_76,r4:r9_69,r5:r8_73,r6:CONVERT(Mem67[0x00403424<p32>:word16], word16, int32),r8:r8_73,r9:r9_69
 		defs: pr:pr_84,r0:r0_80,r12:r12_82,r4:r4_85,r8:r8_79,r9:r9_81
 	branch r0_80 != 0xFFFFFFFF<32> l0040338E_ds_t
-l0040338E_ds_t:
-l004033D4:
-	Mem92[r0_80 + r8_79:byte] = 0<32>
-	r1_93 = Mem92[0x00403454<p32>:word32]
-	call 0x004033DE<p32> + r1_93 (retsize: 0;)
-		uses: Mem:Mem92,pr:pr_84,r1:r1_93,r12:r12_82,r4:Mem92[0x00403458<p32>:word32] + r12_82,r8:r8_79,r9:r9_81
-		defs: pr:pr_102,r12:r12_100,r8:r8_97,r9:r9_99
-	branch Mem92[Mem92[Mem92[0x0040345C<p32>:word32] + r12_100:word32]:word32] != 0<32> l004033F2
-l004033E8:
-	branch Mem92[Mem92[Mem92[0x00403460<p32>:word32] + r12_100:word32]:word32] == 0<32> l004033FC
-l004033FC:
-	branch Mem92[Mem92[Mem92[0x00403468<p32>:word32] + r12_100:word32]:word32] == 0<32> l00403410
-l00403410:
-	r1_120 = Mem92[0x00403470<p32>:word32]
-	call 0x0040341A<p32> + r1_120 (retsize: 0;)
-		uses: Mem:Mem92,pr:pr_102,r1:r1_120,r12:r12_100,r4:Mem92[0x0040342C<p32>:word32] + r12_100,r5:r8_97,r8:r8_97,r9:r9_99
-l00403406:
-	r1_136 = Mem92[0x0040346C<p32>:word32]
-	call 0x0040340C<p32> + r1_136 (retsize: 0;)
-		uses: Mem:Mem92,pr:pr_102,r1:r1_136,r12:r12_100,r4:r8_97,r8:r8_97,r9:r9_99
-l004033F2:
-	r1_151 = Mem92[0x00403464<p32>:word32]
-	call 0x004033F8<p32> + r1_151 (retsize: 0;)
-		uses: Mem:Mem92,pr:pr_102,r1:r1_151,r12:r12_100,r4:r8_97,r8:r8_97,r9:r9_99
 l0040338E_ds_f:
+	goto l00403390
+l0040338E_ds_t:
+	goto l004033D4
 l00403390:
 	r1_171 = Mem67[0x00403438<p32>:word32]
 	call 0x00403396<p32> + r1_171 (retsize: 0;)
@@ -1757,12 +1994,45 @@ l00403390:
 		uses: Mem:Mem67,pr:pr_192,r0:r0_199,r1:r1_205,r12:r12_190,r4:Mem67[r0_199 + r12_190:word32] + CONVERT(Mem67[0x00403426<p32>:word16], word16, int32),r5:Mem67[0x00403444<p32>:word32] + r12_190,r6:r9_189,r7:r0_188,r8:r8_187,r9:r9_189
 l004033B0:
 	return
+l004033BE:
+	r1_29 = Mem17[r4 + 4<i32>:word32]
+	Mem31[r15_19:word32] = r4 + 0x54<32>
+	r1_34 = Mem31[0x00403450<p32>:word32]
+	call 0x004033D0<p32> + r1_34 (retsize: 0;)
+		uses: Mem:Mem31,pr:pr,r1:r1_34,r12:r12_18,r4:r15_19 + 4<32>,r5:CONVERT(Mem31[0x00403420<p32>:word16], word16, int32),r6:Mem31[0x0040344C<p32>:word32] + r12_18,r7:Mem31[r1_29 + 24<i32>:word32],r8:r8,r9:r15_19 + 4<32>
+		defs: pr:pr_43,r12:r12_41,r15:r15_37,r9:r9_40
+	goto l0040337C
+l004033D4:
+	Mem92[r0_80 + r8_79:byte] = 0<32>
+	r1_93 = Mem92[0x00403454<p32>:word32]
+	call 0x004033DE<p32> + r1_93 (retsize: 0;)
+		uses: Mem:Mem92,pr:pr_84,r1:r1_93,r12:r12_82,r4:Mem92[0x00403458<p32>:word32] + r12_82,r8:r8_79,r9:r9_81
+		defs: pr:pr_102,r12:r12_100,r8:r8_97,r9:r9_99
+	branch Mem92[Mem92[Mem92[0x0040345C<p32>:word32] + r12_100:word32]:word32] != 0<32> l004033F2
+l004033E8:
+	branch Mem92[Mem92[Mem92[0x00403460<p32>:word32] + r12_100:word32]:word32] == 0<32> l004033FC
+l004033F2:
+	r1_151 = Mem92[0x00403464<p32>:word32]
+	call 0x004033F8<p32> + r1_151 (retsize: 0;)
+		uses: Mem:Mem92,pr:pr_102,r1:r1_151,r12:r12_100,r4:r8_97,r8:r8_97,r9:r9_99
+	goto l004033B0
+l004033FC:
+	branch Mem92[Mem92[Mem92[0x00403468<p32>:word32] + r12_100:word32]:word32] == 0<32> l00403410
+l00403406:
+	r1_136 = Mem92[0x0040346C<p32>:word32]
+	call 0x0040340C<p32> + r1_136 (retsize: 0;)
+		uses: Mem:Mem92,pr:pr_102,r1:r1_136,r12:r12_100,r4:r8_97,r8:r8_97,r9:r9_99
+	goto l004033B0
+l00403410:
+	r1_120 = Mem92[0x00403470<p32>:word32]
+	call 0x0040341A<p32> + r1_120 (retsize: 0;)
+		uses: Mem:Mem92,pr:pr_102,r1:r1_120,r12:r12_100,r4:Mem92[0x0040342C<p32>:word32] + r12_100,r5:r8_97,r8:r8_97,r9:r9_99
+	goto l004033B0
 printlink_exit:
 
 
 void printpath(word32 r4, word32 pr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  pr:[0..31] r4:[0..31]
 // LiveOut:
 // Trashed: T pr r0 r1 r12 r4 r5 r6
@@ -1771,24 +2041,26 @@ printpath_entry:
 l00403474:
 	r12_11 = Mem5[0x004034AC<p32>:word32] + 0x004034AC<p32>
 	branch Mem10[Mem10[Mem10[0x004034B0<p32>:word32] + r12_11:word32]:word32] == 0<32> l0040348A_ds_t
-l0040348A_ds_t:
-l0040349C:
-	r1_19 = Mem10[0x004034BC<p32>:word32]
-	call 0x004034A6<p32> + r1_19 (retsize: 0;)
-		uses: Mem:Mem10,pr:pr,r1:r1_19,r12:r12_11,r4:Mem10[0x004034C0<p32>:word32] + r12_11,r5:r4 + 0x54<32>
 l0040348A_ds_f:
+	goto l0040348C
+l0040348A_ds_t:
+	goto l0040349C
 l0040348C:
 	r1_34 = Mem10[0x004034B4<p32>:word32]
 	call 0x00403496<p32> + r1_34 (retsize: 0;)
 		uses: Mem:Mem10,pr:pr,r1:r1_34,r12:r12_11,r4:Mem10[0x004034B8<p32>:word32] + r12_11,r5:Mem10[r4 + 28<i32>:word32]
 l00403496:
 	return
+l0040349C:
+	r1_19 = Mem10[0x004034BC<p32>:word32]
+	call 0x004034A6<p32> + r1_19 (retsize: 0;)
+		uses: Mem:Mem10,pr:pr,r1:r1_19,r12:r12_11,r4:Mem10[0x004034C0<p32>:word32] + r12_11,r5:r4 + 0x54<32>
+	goto l00403496
 printpath_exit:
 
 
 void printtotal(word32 r4, word32 pr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  pr:[0..31] r4:[0..31]
 // LiveOut:
 // Trashed: T pr r0 r1 r12 r2 r3 r4 r5 r6 r7 r8
@@ -1803,12 +2075,35 @@ l004034E6:
 	branch Mem13[Mem13[Mem13[0x00403588<p32>:word32] + r12_14:word32]:word32] == 0<32> l00403530
 l004034F0:
 	branch Mem13[Mem13[Mem13[0x0040358C<p32>:word32] + r12_14:word32]:word32] == 0<32> l004034FA_ds_t
+l004034FA_ds_f:
+	goto l004034FC
 l004034FA_ds_t:
+	goto l0040353A
+l004034FC:
+	r1_122 = Mem121[0x00403594<p32>:word32]
+	call 0x00403518<p32> + r1_122 (retsize: 0;)
+		uses: Mem:Mem121,pr:pr,r1:r1_122,r12:r12_14,r2:r2_136,r3:r3_137,r4:fp + 0xFFFFFFEC<32>,r5:5<32>,r6:Mem121[r4 + 12<i32>:word32],r7:Mem121[r4 + 16<i32>:word32],r8:fp + 0xFFFFFFEC<32>,Stack +0000:Mem115[0x00403590<p32>:word32] + r12_14,Stack +0004:0x20<32>,Stack +0008:7<32>
+		defs: pr:pr_130,r0:r0_128,r12:r12_129,r2:r2_136,r3:r3_137,r8:r8_127
+	branch r0_128 != 0xFFFFFFFF<32> l00403526
+l0040351C:
+	r2_159 = Mem121[0x0040359C<p32>:word32]
+	call 0x00403526<p32> + r2_159 (retsize: 0;)
+		uses: Mem:Mem121,pr:pr_130,r12:r12_129,r2:r2_159,r3:r3_172,r4:1<32>,r5:Mem121[0x00403598<p32>:word32] + r12_129,r6:r6_169,r7:r7_170,r8:r8_127
+		defs: r3:r3_172,r6:r6_169,r7:r7_170
+l00403526:
+	r1_142 = Mem121[0x004035A4<p32>:word32]
+	call 0x00403530<p32> + r1_142 (retsize: 0;)
+		uses: Mem:Mem121,pr:pr_130,r1:r1_142,r12:r12_129,r2:r2_154,r3:r3_155,r4:Mem121[0x004035A0<p32>:word32] + r12_129,r5:r8_127,r6:r6_152,r7:r7_153,r8:r8_127
+		defs: r2:r2_154,r3:r3_155,r6:r6_152,r7:r7_153
+l00403530:
+	return
 l0040353A:
 	r8_37 = Mem13[0x004035AC<p32>:word32]
 	branch Mem13[Mem13[Mem13[0x004035A8<p32>:word32] + r12_14:word32]:word32] == 0<32> l00403546_ds_t
-l00403546_ds_t:
 l00403546_ds_f:
+	goto l00403548
+l00403546_ds_t:
+	goto l0040354A
 l00403548:
 	r8_37 = Mem13[0x004035B0<p32>:word32]
 l0040354A:
@@ -1823,31 +2118,12 @@ l0040354A:
 	call 0x0040357C<p32> + r1_87 (retsize: 0;)
 		uses: Mem:Mem13,pr:pr_77,r1:r1_87,r12:r12_76,r2:r2_100,r3:r3_101,r4:r8_74,r5:r0_75,r6:r1_79,r7:r7_99,r8:r8_74
 		defs: r2:r2_100,r3:r3_101,r7:r7_99
-l00403530:
-	return
+	goto l00403530
 printtotal_exit:
-l004034FA_ds_f:
-l004034FC:
-	r1_122 = Mem121[0x00403594<p32>:word32]
-	call 0x00403518<p32> + r1_122 (retsize: 0;)
-		uses: Mem:Mem121,pr:pr,r1:r1_122,r12:r12_14,r2:r2_136,r3:r3_137,r4:fp + 0xFFFFFFEC<32>,r5:5<32>,r6:Mem121[r4 + 12<i32>:word32],r7:Mem121[r4 + 16<i32>:word32],r8:fp + 0xFFFFFFEC<32>,Stack +0000:Mem115[0x00403590<p32>:word32] + r12_14,Stack +0004:0x20<32>,Stack +0008:7<32>
-		defs: pr:pr_130,r0:r0_128,r12:r12_129,r2:r2_136,r3:r3_137,r8:r8_127
-	branch r0_128 != 0xFFFFFFFF<32> l00403526
-l00403526:
-	r1_142 = Mem121[0x004035A4<p32>:word32]
-	call 0x00403530<p32> + r1_142 (retsize: 0;)
-		uses: Mem:Mem121,pr:pr_130,r1:r1_142,r12:r12_129,r2:r2_154,r3:r3_155,r4:Mem121[0x004035A0<p32>:word32] + r12_129,r5:r8_127,r6:r6_152,r7:r7_153,r8:r8_127
-		defs: r2:r2_154,r3:r3_155,r6:r6_152,r7:r7_153
-l0040351C:
-	r2_159 = Mem121[0x0040359C<p32>:word32]
-	call 0x00403526<p32> + r2_159 (retsize: 0;)
-		uses: Mem:Mem121,pr:pr_130,r12:r12_129,r2:r2_159,r3:r3_172,r4:1<32>,r5:Mem121[0x00403598<p32>:word32] + r12_129,r6:r6_169,r7:r7_170,r8:r8_127
-		defs: r3:r3_172,r6:r6_169,r7:r7_170
 
 
 void __sputc.constprop.3(word32 r4, word32 pr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  pr:[0..31] r4:[0..31]
 // LiveOut:
 // Trashed: T pr r0 r1 r12 r2 r3 r4 r5
@@ -1859,20 +2135,16 @@ l004035C0:
 	r2_14 = Mem10[r12_11 + r3_12:word32]
 	r1_16 = Mem10[r2_14 + 0x60<32>:word32]
 	branch r1_16 >= 1<32> l004035DA_ds_t
-l004035DA_ds_t:
-	Mem19[r2_14 + 0x60<32>:word32] = r1_16 + 0xFFFFFFFF<32>
 l004035DA_ds_f:
 	Mem20[r2_14 + 0x60<32>:word32] = r1_16 + 0xFFFFFFFF<32>
+	goto l004035DC
+l004035DA_ds_t:
+	Mem19[r2_14 + 0x60<32>:word32] = r1_16 + 0xFFFFFFFF<32>
+	goto l004035EA
 l004035DC:
 	branch r1_16 + 0xFFFFFFFF<32> < Mem20[r2_14 + 0x70<32>:word32] l00403602
 l004035E2:
 	branch r4 == 0xA<32> l00403600
-l00403600:
-l00403602:
-	r1_31 = Mem20[0x00403618<p32>:word32]
-	call 0x0040360A<p32> + r1_31 (retsize: 0;)
-		uses: Mem:Mem20,pr:pr,r0:r0_39,r1:r1_31,r12:r12_11,r4:r4,r5:Mem20[r12_11 + r3_12:word32] + 0x58<32>
-		defs: r0:r0_39
 l004035E8:
 l004035EA:
 	r1_51 = Mem50[r12_11 + r3_12:word32]
@@ -1881,12 +2153,18 @@ l004035EA:
 	Mem59[r2_55:byte] = r4
 l004035FA:
 	return
+l00403600:
+l00403602:
+	r1_31 = Mem20[0x00403618<p32>:word32]
+	call 0x0040360A<p32> + r1_31 (retsize: 0;)
+		uses: Mem:Mem20,pr:pr,r0:r0_39,r1:r1_31,r12:r12_11,r4:r4,r5:Mem20[r12_11 + r3_12:word32] + 0x58<32>
+		defs: r0:r0_39
+	goto l004035FA
 __sputc.constprop.3_exit:
 
 
 void printtime(word32 r4, word32 r5, word32 r8, word32 r9, word32 r10, word32 r11, word32 r12, word32 pr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  pr:[0..31] r10:[0..31] r11:[0..31] r12:[0..31] r4:[0..31] r5:[0..31] r8:[0..31] r9:[0..31]
 // LiveOut:
 // Trashed: T pr r0 r1 r10 r11 r12 r2 r3 r4 r5 r6 r7 r8 r9
@@ -1898,9 +2176,11 @@ l0040361C:
 		uses: Mem:Mem33,pr:pr,r0:0x004036EC<p32>,r1:r1_25,r10:r10,r11:fp - 0x20<32>,r12:Mem18[0x004036EC<p32>:word32] + 0x004036EC<p32>,r4:fp - 0x20<32>,r5:r5,r8:r8,r9:r9,Stack +0000:r4,Stack +0004:r5,Stack +0008:pr,Stack +000C:r12,Stack +0010:r11,Stack +0014:r10,Stack +0018:r9,Stack +001C:r8
 		defs: pr:pr_42,r0:r0_37,r11:r11_40,r12:r12_41,r5:r5_44
 	branch r0_37 != 0<32> l00403642_ds_t
+l00403642_ds_f:
+	goto l00403644
 l00403642_ds_t:
 	r8_52 = r0_37
-l00403642_ds_f:
+	goto l00403648
 l00403644:
 	r8_52 = Mem33[0x004036F4<p32>:word32] + r12_152
 l00403648:
@@ -1914,63 +2194,10 @@ l00403650:
 	branch r9_149 != r10_150 l00403650
 l0040365A:
 	branch Mem33[Mem33[Mem33[0x004036FC<p32>:word32] + r12_152:word32]:word32] == 0<32> l00403664_ds_t
-l00403664_ds_t:
-l00403688:
-	r3_98 = Mem33[0x00403708<p32>:word32] + r12_152
-	r2_97 = Mem33[r11_151:word32]
-	r1_100 = Mem33[r11_151 + 4<i32>:word32]
-	r7_102 = Mem33[r3_98 + 4<i32>:word32]
-	r6_101 = Mem33[0x0040370C<p32>:word32] + r2_97
-	r5_103 = Mem33[r3_98:word32]
-	branch r1_100 < r7_102 l004036A0_ds_t
-l004036A0_ds_t:
-l004036A0_ds_f:
-	T_108 = r1_100 > r7_102
-l004036A2:
-	branch T_108 l004036A4_ds_t
-l004036A4_ds_t:
-l004036A4_ds_f:
-	T_110 = r6_101 >=u r5_103
-l004036A6:
-	branch !T_110 l004036D2
-l004036A8:
-	r2_116 = r2_97 + Mem33[0x00403710<p32>:word32]
-	branch r7_102 < r1_100 + 0xFFFFFFFF<32> l004036B6_ds_t
-l004036B6_ds_t:
-l004036B6_ds_f:
-	T_122 = r7_102 > r1_100 + 0xFFFFFFFF<32>
-l004036B8:
-	branch T_122 l004036BA_ds_t
-l004036BA_ds_t:
-	r8_124 = r8_52 + 0x10<32>
-l004036BA_ds_f:
-l004036BC:
-	branch r5_103 <u r2_116 l004036C0_ds_t
-l004036C0_ds_t:
-l004036D2:
-	r1_130 = Mem33[0x00403718<p32>:word32]
-	call 0x004036DC<p32> + r1_130 (retsize: 0;)
-		uses: Mem:Mem33,pr:pr_81,r1:r1_130,r10:r10_78,r11:r11_79,r12:r12_80,r4:0x20<32>,r5:r5_103,r8:r8_75,r9:r8_75 + 0x14<32>
-		defs: pr:pr_153,r10:r10_150,r11:r11_151,r12:r12_152,r5:r5_155,r8:r8_147,r9:r9_149
-	r8_124 = r8_147 + 0x18<32>
-l004036DE:
-	r1_164 = Mem33[0x0040371C<p32>:word32]
-	call 0x004036E4<p32> + r1_164 (retsize: 0;)
-		uses: Mem:Mem33,pr:pr_173,r1:r1_164,r10:r10_170,r11:r11_171,r12:r12_172,r4:CONVERT(Mem33[r9_165:byte], byte, int32),r5:r5_174,r8:r8_169,r9:r9_165 + 1<i32>
-		defs: pr:pr_183,r10:r10_180,r11:r11_181,r12:r12_182,r5:r5_185,r8:r8_177,r9:r9_179
-	branch r9_149 != r8_124 l004036DE
-l004036E8:
-l004036C0_ds_f:
-l004036C2:
-	r8_124 = r8_52 + 0x10<32>
-l004036C4:
-	r1_196 = Mem33[0x00403714<p32>:word32]
-	call 0x004036CA<p32> + r1_196 (retsize: 0;)
-		uses: Mem:Mem33,pr:pr_205,r1:r1_196,r10:r10_197 + 1<i32>,r11:r11_203,r12:r12_204,r4:CONVERT(Mem33[r10_197:byte], byte, int32),r5:r5_206,r8:r8_201,r9:r9_202
-		defs: pr:pr_215,r10:r10_212,r11:r11_213,r12:r12_214,r5:r5_217,r8:r8_209,r9:r9_211
-	branch r8_124 != r10_150 l004036C4
-l004036CE:
 l00403664_ds_f:
+	goto l00403666
+l00403664_ds_t:
+	goto l00403688
 l00403666:
 	r8_124 = r8_52 + 0x18<32>
 l00403668:
@@ -1984,12 +2211,78 @@ l00403672:
 	call 0x00403678<p32> + r1_258 (retsize: 0;)
 		uses: Mem:Mem33,pr:pr_265,r1:r1_258,r10:r10_262,r11:r11_263,r12:r12_264,r4:0x20<32>,r5:r5_266,r8:r8_260,r9:r9_261
 	return
+l00403688:
+	r3_98 = Mem33[0x00403708<p32>:word32] + r12_152
+	r2_97 = Mem33[r11_151:word32]
+	r1_100 = Mem33[r11_151 + 4<i32>:word32]
+	r7_102 = Mem33[r3_98 + 4<i32>:word32]
+	r6_101 = Mem33[0x0040370C<p32>:word32] + r2_97
+	r5_103 = Mem33[r3_98:word32]
+	branch r1_100 < r7_102 l004036A0_ds_t
+l004036A0_ds_f:
+	T_108 = r1_100 > r7_102
+	goto l004036A2
+l004036A0_ds_t:
+	goto l004036D2
+l004036A2:
+	branch T_108 l004036A4_ds_t
+l004036A4_ds_f:
+	T_110 = r6_101 >=u r5_103
+	goto l004036A6
+l004036A4_ds_t:
+	goto l004036A8
+l004036A6:
+	branch !T_110 l004036D2
+l004036A8:
+	r2_116 = r2_97 + Mem33[0x00403710<p32>:word32]
+	branch r7_102 < r1_100 + 0xFFFFFFFF<32> l004036B6_ds_t
+l004036B6_ds_f:
+	T_122 = r7_102 > r1_100 + 0xFFFFFFFF<32>
+	goto l004036B8
+l004036B6_ds_t:
+	goto l004036D2
+l004036B8:
+	branch T_122 l004036BA_ds_t
+l004036BA_ds_f:
+	goto l004036BC
+l004036BA_ds_t:
+	r8_124 = r8_52 + 0x10<32>
+	goto l004036C4
+l004036BC:
+	branch r5_103 <u r2_116 l004036C0_ds_t
+l004036C0_ds_f:
+	goto l004036C2
+l004036C0_ds_t:
+	goto l004036D2
+l004036C2:
+	r8_124 = r8_52 + 0x10<32>
+l004036C4:
+	r1_196 = Mem33[0x00403714<p32>:word32]
+	call 0x004036CA<p32> + r1_196 (retsize: 0;)
+		uses: Mem:Mem33,pr:pr_205,r1:r1_196,r10:r10_197 + 1<i32>,r11:r11_203,r12:r12_204,r4:CONVERT(Mem33[r10_197:byte], byte, int32),r5:r5_206,r8:r8_201,r9:r9_202
+		defs: pr:pr_215,r10:r10_212,r11:r11_213,r12:r12_214,r5:r5_217,r8:r8_209,r9:r9_211
+	branch r8_124 != r10_150 l004036C4
+l004036CE:
+	goto l00403672
+l004036D2:
+	r1_130 = Mem33[0x00403718<p32>:word32]
+	call 0x004036DC<p32> + r1_130 (retsize: 0;)
+		uses: Mem:Mem33,pr:pr_81,r1:r1_130,r10:r10_78,r11:r11_79,r12:r12_80,r4:0x20<32>,r5:r5_103,r8:r8_75,r9:r8_75 + 0x14<32>
+		defs: pr:pr_153,r10:r10_150,r11:r11_151,r12:r12_152,r5:r5_155,r8:r8_147,r9:r9_149
+	r8_124 = r8_147 + 0x18<32>
+l004036DE:
+	r1_164 = Mem33[0x0040371C<p32>:word32]
+	call 0x004036E4<p32> + r1_164 (retsize: 0;)
+		uses: Mem:Mem33,pr:pr_173,r1:r1_164,r10:r10_170,r11:r11_171,r12:r12_172,r4:CONVERT(Mem33[r9_165:byte], byte, int32),r5:r5_174,r8:r8_169,r9:r9_165 + 1<i32>
+		defs: pr:pr_183,r10:r10_180,r11:r11_181,r12:r12_182,r5:r5_185,r8:r8_177,r9:r9_179
+	branch r9_149 != r8_124 l004036DE
+l004036E8:
+	goto l00403672
 printtime_exit:
 
 
 void printtype(word32 r4, word32 pr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  pr:[0..31] r4:[0..31]
 // LiveOut:
 // Trashed: T pr r0 r1 r12 r2 r4
@@ -2000,55 +2293,63 @@ l00403720:
 	r1_15 = Mem10[0x004037A0<p32>:word32] & r4
 	r12_11 = Mem5[0x0040379C<p32>:word32] + 0x0040379C<p32>
 	branch r1_15 == r2_13 l00403734_ds_t
-l00403734_ds_t:
-l00403784:
-	r1_18 = Mem10[0x004037C0<p32>:word32]
-	call 0x0040378A<p32> + r1_18 (retsize: 0;)
-		uses: Mem:Mem10,pr:pr,r1:r1_18,r12:r12_11,r4:0x40<32>
 l00403734_ds_f:
 	T_29 = r1_15 >u r2_13
+	goto l00403736
+l00403734_ds_t:
+	goto l00403784
 l00403736:
 	branch T_29 l00403756
+l00403738:
+	branch r1_15 == CONVERT(Mem10[0x00403798<p32>:word16], word16, int32) l0040377A
+l0040373E:
+	branch r1_15 == CONVERT(Mem10[0x0040379A<p32>:word16], word16, int32) l0040376C
+l00403744:
+	branch (r4 & 0x49<32>) == 0<32> l0040374A_ds_t
+l0040374A_ds_f:
+	goto l0040374C
+l0040374A_ds_t:
+	goto l00403774
+l0040374C:
+	r1_88 = Mem10[0x004037A8<p32>:word32]
+	call 0x00403752<p32> + r1_88 (retsize: 0;)
+		uses: Mem:Mem10,pr:pr,r1:r1_88,r12:r12_11,r4:0x2A<32>
+	goto l00403774
 l00403756:
 	branch r1_15 == Mem10[0x004037AC<p32>:word32] l0040378E
-l0040378E:
-	r1_32 = Mem10[0x004037C4<p32>:word32]
-	call 0x00403794<p32> + r1_32 (retsize: 0;)
-		uses: Mem:Mem10,pr:pr,r1:r1_32,r12:r12_11,r4:0x3D<32>
 l0040375C:
 	branch r1_15 != Mem10[0x004037B0<p32>:word32] l00403744
 l00403762:
 	r1_45 = Mem10[0x004037B4<p32>:word32]
 	call 0x00403768<p32> + r1_45 (retsize: 0;)
 		uses: Mem:Mem10,pr:pr,r1:r1_45,r12:r12_11,r4:0x25<32>
-l00403738:
-	branch r1_15 == CONVERT(Mem10[0x00403798<p32>:word16], word16, int32) l0040377A
-l0040377A:
-	r1_58 = Mem10[0x004037BC<p32>:word32]
-	call 0x00403780<p32> + r1_58 (retsize: 0;)
-		uses: Mem:Mem10,pr:pr,r1:r1_58,r12:r12_11,r4:0x7C<32>
-l0040373E:
-	branch r1_15 == CONVERT(Mem10[0x0040379A<p32>:word16], word16, int32) l0040376C
+	goto l00403774
 l0040376C:
 	r1_71 = Mem10[0x004037B8<p32>:word32]
 	call 0x00403772<p32> + r1_71 (retsize: 0;)
 		uses: Mem:Mem10,pr:pr,r1:r1_71,r12:r12_11,r4:0x2F<32>
-l00403744:
-	branch (r4 & 0x49<32>) == 0<32> l0040374A_ds_t
-l0040374A_ds_t:
-l0040374A_ds_f:
-l0040374C:
-	r1_88 = Mem10[0x004037A8<p32>:word32]
-	call 0x00403752<p32> + r1_88 (retsize: 0;)
-		uses: Mem:Mem10,pr:pr,r1:r1_88,r12:r12_11,r4:0x2A<32>
 l00403774:
 	return
+l0040377A:
+	r1_58 = Mem10[0x004037BC<p32>:word32]
+	call 0x00403780<p32> + r1_58 (retsize: 0;)
+		uses: Mem:Mem10,pr:pr,r1:r1_58,r12:r12_11,r4:0x7C<32>
+	goto l00403774
+l00403784:
+	r1_18 = Mem10[0x004037C0<p32>:word32]
+	call 0x0040378A<p32> + r1_18 (retsize: 0;)
+		uses: Mem:Mem10,pr:pr,r1:r1_18,r12:r12_11,r4:0x40<32>
+	goto l00403774
+l0040378E:
+	r1_32 = Mem10[0x004037C4<p32>:word32]
+	call 0x00403794<p32> + r1_32 (retsize: 0;)
+		uses: Mem:Mem10,pr:pr,r1:r1_32,r12:r12_11,r4:0x3D<32>
+	goto l00403774
 printtype_exit:
 
 
 void printaname(word32 r4, word32 r6, word32 r9, word32 pr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  pr:[0..31] r4:[0..31] r6:[0..31] r9:[0..31]
 // LiveOut:
 // Trashed: T pr r0 r1 r10 r11 r12 r13 r2 r3 r4 r5 r6 r7 r8 r9
@@ -2061,9 +2362,11 @@ l004037C8:
 	r11_110 = r4
 	r8_107 = Mem25[Mem25[Mem25[0x00403918<p32>:word32] + r12_145:word32]:word32]
 	branch r8_107 == 0<32> l004037F0_ds_t
+l004037F0_ds_f:
+	goto l004037F2
 l004037F0_ds_t:
 	r13_112 = r6
-l004037F0_ds_f:
+	goto l00403800
 l004037F2:
 	r1_41 = Mem25[0x00403920<p32>:word32]
 	call 0x004037FE<p32> + r1_41 (retsize: 0;)
@@ -2072,12 +2375,67 @@ l004037F2:
 	r8_107 = r0_47
 l00403800:
 	branch Mem25[Mem25[Mem25[0x00403924<p32>:word32] + r12_145:word32]:word32] == 0<32> l0040380A_ds_t
-l0040380A_ds_t:
 l0040380A_ds_f:
+	goto l0040380C
+l0040380A_ds_t:
+	goto l00403852
 l0040380C:
 	branch Mem25[Mem25[Mem25[0x00403928<p32>:word32] + r12_145:word32]:word32] == 0<32> l00403816_ds_t
+l00403816_ds_f:
+	goto l00403818
 l00403816_ds_t:
 	r7_76 = r10_143 + 0x40<32>
+	goto l004038AC
+l00403818:
+	Mem159[r15_116 + 8<i32>:word32] = 7<32>
+	Mem161[r15_116 + 4<i32>:word32] = 0x20<32>
+	Mem167[r15_116:word32] = Mem161[0x0040392C<p32>:word32] + r12_145
+	r9_164 = r15_116 + 0xC<32>
+	r1_169 = Mem167[0x00403930<p32>:word32]
+	call 0x00403836<p32> + r1_169 (retsize: 0;)
+		uses: Mem:Mem167,pr:pr_114,r1:r1_169,r10:r10_69,r11:r11_110,r12:r12_65,r13:r13_112,r4:r9_164,r5:5<32>,r6:Mem167[r10_69 + 0x58<32>:word32],r7:Mem167[r10_69 + 0x5C<32>:word32],r8:r8_107,r9:r9_164
+		defs: pr:pr_180,r0:r0_174,r10:r10_176,r11:r11_177,r12:r12_178,r13:r13_179,r8:r8_173,r9:r9_175
+	branch r0_174 != 0xFFFFFFFF<32> l0040383A_ds_t
+l0040383A_ds_f:
+	goto l0040383C
+l0040383A_ds_t:
+	goto l00403846
+l0040383C:
+	r2_387 = Mem167[0x00403938<p32>:word32]
+	call 0x00403846<p32> + r2_387 (retsize: 0;)
+		uses: Mem:Mem167,pr:pr_180,r10:r10_176,r11:r11_177,r12:r12_178,r13:r13_179,r2:r2_387,r4:1<32>,r5:Mem167[0x00403934<p32>:word32] + r12_178,r6:r9_175,r8:r8_173,r9:r9_175
+l00403846:
+	r1_192 = Mem167[0x00403940<p32>:word32]
+	call 0x00403850<p32> + r1_192 (retsize: 0;)
+		uses: Mem:Mem167,pr:pr_180,r1:r1_192,r10:r10_176,r11:r11_177,r12:r12_178,r13:r13_179,r4:Mem167[0x0040393C<p32>:word32] + r12_178,r5:r13_179,r6:r9_175,r8:r8_173,r9:r9_175
+		defs: pr:pr_203,r0:r0_197,r10:r10_199,r11:r11_200,r12:r12_201,r13:r13_202,r6:r6_206,r8:r8_196,r9:r9_198
+	r8_107 = r8_196 + r0_197
+l00403852:
+	branch Mem213[Mem213[Mem213[0x00403944<p32>:word32] + r12_145:word32]:word32] != 0<32> l00403866
+l0040385C:
+	branch Mem213[Mem213[Mem213[0x00403948<p32>:word32] + r12_145:word32]:word32] == 0<32> l004038F2
+l00403866:
+	r2_278 = Mem213[0x0040394C<p32>:word32]
+	call 0x0040386C<p32> + r2_278 (retsize: 0;)
+		uses: Mem:Mem213,pr:pr_235,r10:r10_233,r11:r11_227,r12:r12_215,r13:r13_234,r2:r2_278,r4:r11_227,r6:r6_236,r8:r8_230,r9:r9_231
+		defs: pr:pr_297,r0:r0_291,r10:r10_293,r11:r11_294,r12:r12_295,r13:r13_296,r6:r6_300,r8:r8_290,r9:r9_292
+	r8_256 = r8_290 + r0_291
+l0040386E:
+	branch Mem213[Mem213[Mem213[0x00403950<p32>:word32] + r12_245:word32]:word32] != 0<32> l00403890
+l00403878:
+	branch Mem213[Mem213[Mem213[0x00403954<p32>:word32] + r12_245:word32]:word32] == 0<32> l00403882_ds_t
+l00403882_ds_f:
+	goto l00403884
+l00403882_ds_t:
+	goto l0040389A
+l00403884:
+	branch (Mem213[r10_243 + 8<i32>:word32] & Mem213[0x00403958<p32>:word32]) != CONVERT(Mem213[0x00403912<p32>:word16], word16, int32) l0040389A
+l00403890:
+	r1_327 = Mem213[0x0040395C<p32>:word32]
+	call 0x00403896<p32> + r1_327 (retsize: 0;)
+		uses: Mem:Mem213,pr:pr_339,r1:r1_327,r10:r10_321,r11:r11_334,r12:r12_309,r13:r13_337,r4:Mem213[r10_321 + 8<i32>:word32],r6:r6_341,r8:r8_317,r9:r9_332
+l0040389A:
+	return
 l004038AC:
 	r9_78 = Mem25[0x0040391C<p32>:word32]
 	branch Mem25[Mem25[Mem25[0x00403960<p32>:word32] + r12_145:word32]:word32] == 0<32> l004038BA
@@ -2095,75 +2453,32 @@ l004038BA:
 		uses: Mem:Mem25,pr:pr_125,r1:r1_135,r10:r10_121,r11:r11_122,r12:r12_123,r13:r13_124,r4:r9_120,r5:r13_124,r6:r0_119,r7:r1_127,r8:r8_118,r9:r9_120
 		defs: pr:pr_147,r0:r0_141,r10:r10_143,r11:r11_144,r12:r12_145,r13:r13_146,r6:r6_150,r8:r8_140,r9:r9_142
 	r8_107 = r8_140 + r0_141
-l00403816_ds_f:
-l00403818:
-	Mem159[r15_116 + 8<i32>:word32] = 7<32>
-	Mem161[r15_116 + 4<i32>:word32] = 0x20<32>
-	Mem167[r15_116:word32] = Mem161[0x0040392C<p32>:word32] + r12_145
-	r9_164 = r15_116 + 0xC<32>
-	r1_169 = Mem167[0x00403930<p32>:word32]
-	call 0x00403836<p32> + r1_169 (retsize: 0;)
-		uses: Mem:Mem167,pr:pr_114,r1:r1_169,r10:r10_69,r11:r11_110,r12:r12_65,r13:r13_112,r4:r9_164,r5:5<32>,r6:Mem167[r10_69 + 0x58<32>:word32],r7:Mem167[r10_69 + 0x5C<32>:word32],r8:r8_107,r9:r9_164
-		defs: pr:pr_180,r0:r0_174,r10:r10_176,r11:r11_177,r12:r12_178,r13:r13_179,r8:r8_173,r9:r9_175
-	branch r0_174 != 0xFFFFFFFF<32> l0040383A_ds_t
-l0040383A_ds_t:
-l00403846:
-	r1_192 = Mem167[0x00403940<p32>:word32]
-	call 0x00403850<p32> + r1_192 (retsize: 0;)
-		uses: Mem:Mem167,pr:pr_180,r1:r1_192,r10:r10_176,r11:r11_177,r12:r12_178,r13:r13_179,r4:Mem167[0x0040393C<p32>:word32] + r12_178,r5:r13_179,r6:r9_175,r8:r8_173,r9:r9_175
-		defs: pr:pr_203,r0:r0_197,r10:r10_199,r11:r11_200,r12:r12_201,r13:r13_202,r6:r6_206,r8:r8_196,r9:r9_198
-	r8_107 = r8_196 + r0_197
-l00403852:
-	branch Mem213[Mem213[Mem213[0x00403944<p32>:word32] + r12_145:word32]:word32] != 0<32> l00403866
-l0040385C:
-	branch Mem213[Mem213[Mem213[0x00403948<p32>:word32] + r12_145:word32]:word32] == 0<32> l004038F2
+	goto l00403852
 l004038F2:
 	branch Mem213[Mem213[Mem213[0x00403974<p32>:word32] + r12_145:word32]:word32] == 0<32> l004038FC_ds_t
-l004038FC_ds_t:
-l00403908:
-	r2_229 = Mem213[0x0040397C<p32>:word32]
-	call 0x0040390E<p32> + r2_229 (retsize: 0;)
-		uses: Mem:Mem213,pr:pr_235,r10:r10_233,r11:r11_227,r12:r12_215,r13:r13_234,r2:r2_229,r4:r11_227,r6:r6_236,r8:r8_230,r9:r9_231
-		defs: pr:pr_247,r0:r0_241,r10:r10_243,r11:r11_244,r12:r12_245,r13:r13_246,r6:r6_250,r8:r8_240,r9:r9_242
-	r8_256 = r8_240 + r0_241
 l004038FC_ds_f:
+	goto l004038FE
+l004038FC_ds_t:
+	goto l00403908
 l004038FE:
 	r1_258 = Mem213[0x00403978<p32>:word32]
 	call 0x00403904<p32> + r1_258 (retsize: 0;)
 		uses: Mem:Mem213,pr:pr_235,r1:r1_258,r10:r10_233,r11:r11_227,r12:r12_215,r13:r13_234,r4:r11_227,r6:r6_236,r8:r8_230,r9:r9_231
 		defs: pr:pr_267,r0:r0_261,r10:r10_263,r11:r11_264,r12:r12_265,r13:r13_266,r6:r6_270,r8:r8_260,r9:r9_262
 	r8_256 = r8_260 + r0_261
-l00403866:
-	r2_278 = Mem213[0x0040394C<p32>:word32]
-	call 0x0040386C<p32> + r2_278 (retsize: 0;)
-		uses: Mem:Mem213,pr:pr_235,r10:r10_233,r11:r11_227,r12:r12_215,r13:r13_234,r2:r2_278,r4:r11_227,r6:r6_236,r8:r8_230,r9:r9_231
-		defs: pr:pr_297,r0:r0_291,r10:r10_293,r11:r11_294,r12:r12_295,r13:r13_296,r6:r6_300,r8:r8_290,r9:r9_292
-	r8_256 = r8_290 + r0_291
-l0040386E:
-	branch Mem213[Mem213[Mem213[0x00403950<p32>:word32] + r12_245:word32]:word32] != 0<32> l00403890
-l00403878:
-	branch Mem213[Mem213[Mem213[0x00403954<p32>:word32] + r12_245:word32]:word32] == 0<32> l00403882_ds_t
-l00403882_ds_t:
-l00403882_ds_f:
-l00403884:
-	branch (Mem213[r10_243 + 8<i32>:word32] & Mem213[0x00403958<p32>:word32]) != CONVERT(Mem213[0x00403912<p32>:word16], word16, int32) l0040389A
-l00403890:
-	r1_327 = Mem213[0x0040395C<p32>:word32]
-	call 0x00403896<p32> + r1_327 (retsize: 0;)
-		uses: Mem:Mem213,pr:pr_339,r1:r1_327,r10:r10_321,r11:r11_334,r12:r12_309,r13:r13_337,r4:Mem213[r10_321 + 8<i32>:word32],r6:r6_341,r8:r8_317,r9:r9_332
-l0040389A:
-	return
+	goto l0040386E
+l00403908:
+	r2_229 = Mem213[0x0040397C<p32>:word32]
+	call 0x0040390E<p32> + r2_229 (retsize: 0;)
+		uses: Mem:Mem213,pr:pr_235,r10:r10_233,r11:r11_227,r12:r12_215,r13:r13_234,r2:r2_229,r4:r11_227,r6:r6_236,r8:r8_230,r9:r9_231
+		defs: pr:pr_247,r0:r0_241,r10:r10_243,r11:r11_244,r12:r12_245,r13:r13_246,r6:r6_250,r8:r8_240,r9:r9_242
+	r8_256 = r8_240 + r0_241
+	goto l0040386E
 printaname_exit:
-l0040383A_ds_f:
-l0040383C:
-	r2_387 = Mem167[0x00403938<p32>:word32]
-	call 0x00403846<p32> + r2_387 (retsize: 0;)
-		uses: Mem:Mem167,pr:pr_180,r10:r10_176,r11:r11_177,r12:r12_178,r13:r13_179,r2:r2_387,r4:1<32>,r5:Mem167[0x00403934<p32>:word32] + r12_178,r6:r9_175,r8:r8_173,r9:r9_175
 
 
 void printscol(word32 r4, word32 pr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  pr:[0..31] r4:[0..31]
 // LiveOut:
 // Trashed: T r0 r1 r15 r8
@@ -2174,15 +2489,17 @@ l00403980:
 	r8_19 = Mem16[r4:word32]
 l00403992:
 	branch r8_19 != 0<32> l004039A0
+l00403996:
+	return
 l004039A0:
 	branch Mem16[r8_19 + 16<i32>:word32] != 0<32> l004039A6_ds_t
-l004039A6_ds_t:
 l004039A6_ds_f:
 	r0_27 = Mem16[r8_19 + 12<i32>:word32]
+	goto l004039A8
+l004039A6_ds_t:
+	goto l004039AC
 l004039A8:
 	branch r0_27 == 1<32> l004039BC
-l004039BC:
-	r8_19 = Mem16[r8_19 + 8<i32>:word32]
 l004039AC:
 	r1_31 = Mem16[0x004039C4<p32>:word32]
 	call 0x004039B6<p32> + r1_31 (retsize: 0;)
@@ -2191,14 +2508,14 @@ l004039AC:
 	r1_55 = Mem16[0x004039C8<p32>:word32]
 	call 0x004039BC<p32> + r1_55 (retsize: 0;)
 		uses: Mem:Mem16,pr:pr_49,r1:r1_55,r12:r12_48,r4:0xA<32>,r8:r8_45,r9:r9_47
-l00403996:
-	return
+l004039BC:
+	r8_19 = Mem16[r8_19 + 8<i32>:word32]
+	goto l00403992
 printscol_exit:
 
 
 void printlong(word32 r4, word32 r8, word32 r9, word32 r10, word32 r11, word32 r12, word32 r13, word32 r14, word32 pr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  pr:[0..31] r10:[0..31] r11:[0..31] r12:[0..31] r13:[0..31] r14:[0..31] r4:[0..31] r8:[0..31] r9:[0..31]
 // LiveOut:
 // Trashed: T pr r0 r1 r10 r11 r12 r13 r14 r2 r3 r4 r5 r6 r7 r8 r9
@@ -2214,6 +2531,10 @@ l004039CC:
 	r0_56 = Mem55[0x00403ABC<p32>:word32]
 	Mem57[r2_54 + 4<i32>:word32] = r1_47
 	branch Mem57[Mem57[r0_56 + r12_238:word32]:word32] != 0<32> l00403A04
+l004039FE:
+	r6_921 = Mem57[0x00403AC0<p32>:word32]
+	call 0x00403A04<p32> + r6_921 (retsize: 0;)
+		uses: Mem:Mem57,pr:pr_44,r10:r10_39,r11:r11_40,r12:r12_41,r13:r13_42,r14:r14_43,r4:r8_36,r6:r6_921,r8:r8_36,r9:r9_38
 l00403A04:
 	r10_236 = Mem57[r8_123:word32]
 	r11_237 = Mem57[0x00403AC4<p32>:word32] + r12_238
@@ -2221,26 +2542,44 @@ l00403A04:
 l00403A0C:
 	r15_104 = fp - 72<i32>
 	branch r10_236 != 0<32> l00403A24
+l00403A10:
+	return
 l00403A24:
 	branch Mem67[r10_236 + 16<i32>:word32] != 0<32> l00403A2A_ds_t
-l00403A2A_ds_t:
-l00403A36:
 l00403A2A_ds_f:
 	r0_72 = Mem67[r10_236 + 12<i32>:word32]
+	goto l00403A2C
+l00403A2A_ds_t:
+	goto l00403A36
 l00403A2C:
 	branch r0_72 != 1<32> l00403A30_ds_t
+l00403A30_ds_f:
+	goto l00403A32
 l00403A30_ds_t:
+	goto l00403A38
+l00403A32:
+	r10_236 = Mem67[r10_236 + 8<i32>:word32]
+	goto l00403A0C
+l00403A36:
 l00403A38:
 	r9_235 = Mem67[r10_236 + 0x50<32>:word32]
 	branch Mem67[Mem67[r11_237:word32]:word32] == 0<32> l00403A52
+l00403A44:
+	r1_874 = Mem67[0x00403ACC<p32>:word32]
+	call 0x00403A52<p32> + r1_874 (retsize: 0;)
+		uses: Mem:Mem67,pr:pr_128,r1:r1_874,r10:r10_65,r11:r11_80,r12:r12_86,r13:r13_265,r14:r14_126,r4:Mem67[0x00403AC8<p32>:word32] + r12_86,r5:Mem67[r8_123 + 40<i32>:word32],r6:Mem67[r9_78 + 12<i32>:word32],r7:Mem67[r9_78 + 16<i32>:word32],r8:r8_123,r9:r9_78
 l00403A52:
 	branch Mem67[Mem67[Mem67[0x00403AD0<p32>:word32] + r12_238:word32]:word32] == 0<32> l00403A5C_ds_t
-l00403A5C_ds_t:
 l00403A5C_ds_f:
+	goto l00403A5E
+l00403A5C_ds_t:
+	goto l00403AF2
 l00403A5E:
 	r1_94 = Mem67[r9_235 + 0x60<32>:word32]
 	r5_95 = Mem67[r9_235 + 0x64<32>:word32]
 	branch Mem67[Mem67[Mem67[0x00403AD4<p32>:word32] + r12_238:word32]:word32] != 0<32> l00403A72
+l00403A6E:
+	goto l00403C02
 l00403A72:
 	r1_111 = Mem107[0x00403ADC<p32>:word32]
 	r2_114 = Mem107[0x00403AD8<p32>:word32] + r12_238
@@ -2248,31 +2587,21 @@ l00403A72:
 		uses: Mem:Mem118,pr:pr_128,r1:r1_111,r10:r10_65,r11:r11_80,r12:r12_86,r13:fp - 0x38<32>,r14:r14_126,r2:r2_114,r4:fp - 0x38<32>,r5:5<32>,r6:(r1_94 << 8<i32>) * 2<32>,r7:r1_94 >>u 0xFFFFFFE9<32> | (r5_95 << 8<i32>) * 2<32>,r8:r8_123,r9:r9_78,Stack +0000:r2_114,Stack +0004:0x20<32>,Stack +0008:7<32>
 		defs: pr:pr_138,r0:r0_131,r10:r10_133,r11:r11_134,r12:r12_135,r13:r13_136,r14:r14_137,r8:r8_130,r9:r9_132
 	branch r0_131 != 0xFFFFFFFF<32> l00403AA2_ds_t
+l00403AA2_ds_f:
+	goto l00403AA4
 l00403AA2_ds_t:
+	goto l00403AE8
+l00403AA4:
+	r2_491 = Mem488[0x00403AE4<p32>:word32]
+	call 0x00403AAE<p32> + r2_491 (retsize: 0;)
+		uses: Mem:Mem488,pr:pr_500,r10:r10_496,r11:r11_497,r12:r12_492,r13:r13_498,r14:r14_499,r2:r2_491,r4:1<32>,r5:Mem488[0x00403AE0<p32>:word32] + r12_492,r8:r8_494,r9:r9_495
+		defs: r0:r0_504,r3:r3_518,r7:r7_516
+	Mem520[r0_504:byte] = r0_504
+	Mem521[r7_516:word32] = r3_518
 l00403AE8:
 	r1_150 = Mem118[0x00403CF0<p32>:word32]
 	call 0x00403AF2<p32> + r1_150 (retsize: 0;)
 		uses: Mem:Mem118,pr:pr_138,r1:r1_150,r10:r10_133,r11:r11_134,r12:r12_135,r13:r13_136,r14:r14_137,r4:Mem118[0x00403CEC<p32>:word32] + r12_135,r5:Mem118[r8_130 + 28<i32>:word32],r8:r8_130,r9:r9_132
-l00403AA2_ds_f:
-l00403A6E:
-l00403C02:
-	r13_173 = Mem67[0x00403D60<p32>:word32]
-	branch Mem67[Mem67[Mem67[0x00403D5C<p32>:word32] + r12_238:word32]:word32] != 0<32> l00403C0E_ds_t
-l00403C0E_ds_t:
-l00403C0E_ds_f:
-l00403C10:
-	r13_173 = Mem67[0x00403D64<p32>:word32]
-l00403C12:
-	r0_181 = Mem67[0x00403D68<p32>:word32]
-	r3_186 = Mem67[Mem67[r0_181 + r12_238:word32]:word32]
-	r2_200 = Mem67[0x00403D6C<p32>:word32]
-	call 0x00403C34<p32> + r2_200 (retsize: 0;)
-		uses: Mem:Mem67,pr:pr_128,r0:r0_181,r10:r10_65,r11:r11_80,r12:r12_86,r13:r13_182 + r12_86,r14:r14_126,r2:r2_200,r3:r3_186,r4:r3_186 + 0xFFFFFFFF<32> + r1_94,r5:r5_95 + (0<32> - (r3_186 < 1<32>)),r6:r3_186,r7:0<32> - (r3_186 < 0<32>),r8:r8_123,r9:r9_78
-		defs: pr:pr_218,r0:r0_211,r1:r1_221,r10:r10_213,r11:r11_214,r12:r12_215,r13:r13_216,r14:r14_217,r8:r8_210,r9:r9_212
-	r1_228 = Mem67[0x00403D70<p32>:word32]
-	call 0x00403C40<p32> + r1_228 (retsize: 0;)
-		uses: Mem:Mem67,pr:pr_218,r1:r1_228,r10:r10_213,r11:r11_214,r12:r12_215,r13:r13_216,r14:r14_217,r4:r13_216,r5:Mem67[r8_210 + 28<i32>:word32],r6:r0_211,r7:r1_221,r8:r8_210,r9:r9_212
-		defs: pr:pr_241,r10:r10_236,r11:r11_237,r12:r12_238,r13:r13_239,r14:r14_240,r15:r15_232,r8:r8_233,r9:r9_235
 l00403AF2:
 	r2_251 = Mem67[0x00403CF4<p32>:word32]
 	r1_254 = r15_104 + 0x18<32>
@@ -2287,9 +2616,11 @@ l00403AF2:
 		defs: pr:pr_302,r10:r10_297,r11:r11_298,r12:r12_299,r13:r13_300,r14:r14_301,r15:r15_293,r8:r8_294,r9:r9_296
 	r1_315 = Mem258[0x00403D04<p32>:word32]
 	branch Mem258[Mem258[Mem258[0x00403D00<p32>:word32] + r12_299:word32]:word32] != 0<32> l00403B1C_ds_t
+l00403B1C_ds_f:
+	goto l00403B1E
 l00403B1C_ds_t:
 	r4_316 = r1_315
-l00403B1C_ds_f:
+	goto l00403B2E
 l00403B1E:
 	r2_318 = Mem258[0x00403D08<p32>:word32]
 	r6_319 = Mem258[r13_300:word32]
@@ -2304,52 +2635,16 @@ l00403B2E:
 		uses: Mem:Mem343,pr:pr_356,r1:r1_344,r10:r10_353,r11:r11_354,r12:r12_346,r13:r13_348,r14:r14_355,r4:r4_345 + r12_346,r5:Mem343[r8_350 + 36<i32>:word32],r6:Mem343[r13_348 + 4<i32>:word32],r8:r8_350,r9:r9_352
 		defs: pr:pr_367,r10:r10_362,r11:r11_363,r12:r12_364,r13:r13_365,r14:r14_366,r15:r15_358,r8:r8_359,r9:r9_361
 	branch Mem343[Mem343[Mem343[0x00403D10<p32>:word32] + r12_364:word32]:word32] == 0<32> l00403B4E
+l00403B42:
+	r2_851 = Mem343[0x00403D18<p32>:word32]
+	call 0x00403B4E<p32> + r2_851 (retsize: 0;)
+		uses: Mem:Mem343,pr:pr_367,r10:r10_362,r11:r11_363,r12:r12_364,r13:r13_365,r14:r14_366,r2:r2_851,r4:Mem343[0x00403D14<p32>:word32] + r12_364,r5:Mem343[r8_359 + 32<i32>:word32],r6:Mem343[r13_365 + 8<i32>:word32],r8:r8_359,r9:r9_361
 l00403B4E:
 	branch (Mem343[r9_361 + 8<i32>:word32] & Mem343[0x00403D1C<p32>:word32]) != r14_366 l00403B58_ds_t
-l00403B58_ds_t:
-l00403C44:
-	branch Mem343[Mem343[Mem343[0x00403D74<p32>:word32] + r12_364:word32]:word32] == 0<32> l00403C54_ds_t
-l00403C54_ds_t:
-l00403C86:
-	r4_394 = Mem343[0x00403D60<p32>:word32]
-	branch Mem343[Mem343[Mem343[0x00403D5C<p32>:word32] + r12_364:word32]:word32] != 0<32> l00403C92_ds_t
-l00403C92_ds_t:
-	r4_398 = r4_394 + r12_364
-l00403C92_ds_f:
-l00403C94:
-	r4_398 = Mem343[0x00403D64<p32>:word32] + r12_364
-l00403C98:
-	r2_403 = Mem343[0x00403D84<p32>:word32]
-	call 0x00403C9E<p32> + r2_403 (retsize: 0;)
-		uses: Mem:Mem343,pr:pr_367,r10:r10_362,r11:r11_363,r12:r12_364,r13:r13_365,r14:r14_366,r2:r2_403,r4:r4_413,r5:Mem343[r8_359 + 48<i32>:word32],r8:r8_359,r9:r9_361
-		defs: pr:pr_424,r10:r10_419,r11:r11_420,r12:r12_421,r13:r13_422,r14:r14_423,r8:r8_416,r9:r9_418
-l00403C54_ds_f:
-l00403C56:
-	Mem434[r15_358 + 8<i32>:word32] = 7<32>
-	Mem436[r15_358 + 4<i32>:word32] = 0x20<32>
-	r2_440 = Mem436[0x00403D7C<p32>:word32]
-	r1_441 = Mem436[0x00403D78<p32>:word32] + r12_364
-	Mem442[r15_358:word32] = r1_441
-	call 0x00403C6E<p32> + r2_440 (retsize: 0;)
-		uses: Mem:Mem442,pr:pr_367,r1:r1_441,r10:r10_362,r11:r11_363,r12:r12_364,r13:r15_358 + 0x10<32>,r14:r14_366,r2:r2_440,r4:r15_358 + 0x10<32>,r5:5<32>,r8:r8_359,r9:r9_361
-		defs: pr:pr_454,r0:r0_447,r10:r10_449,r11:r11_450,r12:r12_451,r13:r13_452,r14:r14_453,r8:r8_446,r9:r9_448
-	branch r0_447 != 0xFFFFFFFF<32> l00403C72_ds_t
-l00403C72_ds_t:
-l00403C78:
-	r1_465 = Mem442[0x00403D80<p32>:word32]
-	call 0x00403C82<p32> + r1_465 (retsize: 0;)
-		uses: Mem:Mem442,pr:pr_454,r1:r1_465,r10:r10_449,r11:r11_450,r12:r12_451,r13:r13_452,r14:r14_453,r4:Mem442[0x00403CEC<p32>:word32] + r12_451,r5:Mem442[r8_446 + 48<i32>:word32],r8:r8_446,r9:r9_448
-		defs: pr:pr_478,r10:r10_473,r11:r11_474,r12:r12_475,r13:r13_476,r14:r14_477,r8:r8_470,r9:r9_472
-l00403C72_ds_f:
-l00403C74:
-l00403AA4:
-	r2_491 = Mem488[0x00403AE4<p32>:word32]
-	call 0x00403AAE<p32> + r2_491 (retsize: 0;)
-		uses: Mem:Mem488,pr:pr_500,r10:r10_496,r11:r11_497,r12:r12_492,r13:r13_498,r14:r14_499,r2:r2_491,r4:1<32>,r5:Mem488[0x00403AE0<p32>:word32] + r12_492,r8:r8_494,r9:r9_495
-		defs: r0:r0_504,r3:r3_518,r7:r7_516
-	Mem520[r0_504:byte] = r0_504
-	Mem521[r7_516:word32] = r3_518
 l00403B58_ds_f:
+	goto l00403B5A
+l00403B58_ds_t:
+	goto l00403C44
 l00403B5A:
 	r2_523 = Mem343[r9_361 + 32<i32>:word32]
 	r2_532 = CONVERT(SLICE(r2_523, byte, 0), byte, uint32)
@@ -2365,98 +2660,156 @@ l00403B5A:
 		defs: pr:pr_556,r10:r10_551,r11:r11_552,r12:r12_553,r13:r13_554,r14:r14_555,r8:r8_548,r9:r9_550
 l00403B8C:
 	branch Mem565[Mem565[Mem565[0x00403D2C<p32>:word32] + r12_421:word32]:word32] != 0<32> l00403B9A
+l00403B96:
+	goto l00403CA2
 l00403B9A:
 	r6_571 = Mem565[0x00403D30<p32>:word32]
 	call 0x00403BA2<p32> + r6_571 (retsize: 0;)
 		uses: Mem:Mem565,pr:pr_580,r10:r10_576,r11:r11_577,r12:r12_567,r13:r13_578,r14:r14_579,r4:Mem565[r9_572 + 40<i32>:word32],r5:Mem565[r9_572 + 44<i32>:word32],r6:r6_571,r8:r8_575,r9:r9_572
 		defs: pr:pr_591,r10:r10_586,r11:r11_587,r12:r12_588,r13:r13_589,r14:r14_590,r8:r8_583,r9:r9_585
-l00403B96:
-l00403CA2:
-	branch Mem565[Mem565[Mem565[0x00403D88<p32>:word32] + r12_421:word32]:word32] == 0<32> l00403CAC_ds_t
-l00403CAC_ds_t:
-l00403CBE:
-	r2_605 = Mem565[0x00403D90<p32>:word32]
-	call 0x00403CC6<p32> + r2_605 (retsize: 0;)
-		uses: Mem:Mem565,pr:pr_580,r10:r10_576,r11:r11_577,r12:r12_567,r13:r13_578,r14:r14_579,r2:r2_605,r4:Mem565[r9_572 + 52<i32>:word32],r5:Mem565[r9_572 + 56<i32>:word32],r8:r8_575,r9:r9_572
-		defs: pr:pr_617,r10:r10_612,r11:r11_613,r12:r12_614,r13:r13_615,r14:r14_616,r8:r8_609,r9:r9_611
-l00403CAC_ds_f:
-l00403CAE:
-	r1_627 = r9_418 + 0x40<32>
-	r1_630 = Mem565[0x00403D8C<p32>:word32]
-	call 0x00403CBA<p32> + r1_630 (retsize: 0;)
-		uses: Mem:Mem565,pr:pr_580,r1:r1_630,r10:r10_576,r11:r11_577,r12:r12_567,r13:r13_578,r14:r14_579,r4:Mem565[r1_627:word32],r5:Mem565[r1_627 + 4<i32>:word32],r8:r8_575,r9:r9_572
-		defs: pr:pr_640,r10:r10_635,r11:r11_636,r12:r12_637,r13:r13_638,r14:r14_639,r8:r8_632,r9:r9_634
 l00403BA2:
 	branch Mem565[Mem565[Mem565[0x00403D34<p32>:word32] + r12_588:word32]:word32] != 0<32> l00403BBA
 l00403BAC:
 	branch Mem565[Mem565[Mem565[0x00403D38<p32>:word32] + r12_588:word32]:word32] != 0<32> l00403BBA
+l00403BB6:
+	goto l00403CCA
 l00403BBA:
 	r6_660 = Mem565[0x00403D3C<p32>:word32]
 	call 0x00403BC0<p32> + r6_660 (retsize: 0;)
 		uses: Mem:Mem565,pr:pr_676,r10:r10_662,r11:r11_669,r12:r12_651,r13:r13_672,r14:r14_674,r4:r10_662,r6:r6_660,r8:r8_665,r9:r9_667
 		defs: pr:pr_688,r10:r10_683,r11:r11_684,r12:r12_685,r13:r13_686,r14:r14_687,r8:r8_680,r9:r9_682
-l00403BB6:
-l00403CCA:
-	branch Mem565[Mem565[Mem565[0x00403D94<p32>:word32] + r12_588:word32]:word32] == 0<32> l00403CDE
-l00403CDE:
-	r2_702 = Mem565[0x00403D9C<p32>:word32]
-	call 0x00403CE4<p32> + r2_702 (retsize: 0;)
-		uses: Mem:Mem565,pr:pr_676,r10:r10_662,r11:r11_669,r12:r12_651,r13:r13_672,r14:r14_674,r2:r2_702,r4:r10_662,r8:r8_665,r9:r9_667
-		defs: pr:pr_712,r10:r10_707,r11:r11_708,r12:r12_709,r13:r13_710,r14:r14_711,r8:r8_704,r9:r9_706
-l00403CD4:
-	r1_721 = Mem565[0x00403D98<p32>:word32]
-	call 0x00403CDA<p32> + r1_721 (retsize: 0;)
-		uses: Mem:Mem565,pr:pr_676,r1:r1_721,r10:r10_662,r11:r11_669,r12:r12_651,r13:r13_672,r14:r14_674,r4:r10_662,r8:r8_665,r9:r9_667
-		defs: pr:pr_731,r10:r10_726,r11:r11_727,r12:r12_728,r13:r13_729,r14:r14_730,r8:r8_723,r9:r9_725
 l00403BC0:
 	branch Mem565[Mem565[Mem565[0x00403D40<p32>:word32] + r12_685:word32]:word32] != 0<32> l00403BCA_ds_t
-l00403BCA_ds_t:
-	r4_747 = Mem565[r9_682 + 8<i32>:word32]
 l00403BCA_ds_f:
 	r4_747 = Mem565[r9_682 + 8<i32>:word32]
+	goto l00403BCC
+l00403BCA_ds_t:
+	r4_747 = Mem565[r9_682 + 8<i32>:word32]
+	goto l00403BE0
 l00403BCC:
 	branch Mem565[Mem565[Mem565[0x00403D44<p32>:word32] + r12_685:word32]:word32] == 0<32> l00403BE6
 l00403BD6:
 	branch (Mem565[0x00403D48<p32>:word32] & r4_747) != CONVERT(Mem565[0x00403CEA<p32>:word16], word16, int32) l00403BE6
+l00403BE0:
+	r6_821 = Mem565[0x00403D4C<p32>:word32]
+	call 0x00403BE6<p32> + r6_821 (retsize: 0;)
+		uses: Mem:Mem565,pr:pr_778,r10:r10_769,r11:r11_771,r12:r12_742,r13:r13_774,r14:r14_776,r4:r4_830,r6:r6_821,r8:r8_767,r9:r9_746
 l00403BE6:
 	branch (Mem565[r9_682 + 8<i32>:word32] & Mem565[0x00403D48<p32>:word32]) != Mem565[0x00403D50<p32>:word32] l00403BF8
+l00403BF2:
+	r1_800 = Mem565[0x00403D54<p32>:word32]
+	call 0x00403BF8<p32> + r1_800 (retsize: 0;)
+		uses: Mem:Mem565,pr:pr_778,r1:r1_800,r10:r10_769,r11:r11_771,r12:r12_742,r13:r13_774,r14:r14_776,r4:r10_769,r8:r8_767,r9:r9_746
 l00403BF8:
 	r2_764 = Mem565[0x00403D58<p32>:word32]
 	call 0x00403BFE<p32> + r2_764 (retsize: 0;)
 		uses: Mem:Mem565,pr:pr_778,r10:r10_769,r11:r11_771,r12:r12_742,r13:r13_774,r14:r14_776,r2:r2_764,r4:0xA<32>,r8:r8_767,r9:r9_746
 		defs: pr:pr_790,r10:r10_785,r11:r11_786,r12:r12_787,r13:r13_788,r14:r14_789,r8:r8_782
 	r10_236 = Mem565[r10_785 + 8<i32>:word32]
-l00403BF2:
-	r1_800 = Mem565[0x00403D54<p32>:word32]
-	call 0x00403BF8<p32> + r1_800 (retsize: 0;)
-		uses: Mem:Mem565,pr:pr_778,r1:r1_800,r10:r10_769,r11:r11_771,r12:r12_742,r13:r13_774,r14:r14_776,r4:r10_769,r8:r8_767,r9:r9_746
-l00403BE0:
-	r6_821 = Mem565[0x00403D4C<p32>:word32]
-	call 0x00403BE6<p32> + r6_821 (retsize: 0;)
-		uses: Mem:Mem565,pr:pr_778,r10:r10_769,r11:r11_771,r12:r12_742,r13:r13_774,r14:r14_776,r4:r4_830,r6:r6_821,r8:r8_767,r9:r9_746
-l00403B42:
-	r2_851 = Mem343[0x00403D18<p32>:word32]
-	call 0x00403B4E<p32> + r2_851 (retsize: 0;)
-		uses: Mem:Mem343,pr:pr_367,r10:r10_362,r11:r11_363,r12:r12_364,r13:r13_365,r14:r14_366,r2:r2_851,r4:Mem343[0x00403D14<p32>:word32] + r12_364,r5:Mem343[r8_359 + 32<i32>:word32],r6:Mem343[r13_365 + 8<i32>:word32],r8:r8_359,r9:r9_361
-l00403A44:
-	r1_874 = Mem67[0x00403ACC<p32>:word32]
-	call 0x00403A52<p32> + r1_874 (retsize: 0;)
-		uses: Mem:Mem67,pr:pr_128,r1:r1_874,r10:r10_65,r11:r11_80,r12:r12_86,r13:r13_265,r14:r14_126,r4:Mem67[0x00403AC8<p32>:word32] + r12_86,r5:Mem67[r8_123 + 40<i32>:word32],r6:Mem67[r9_78 + 12<i32>:word32],r7:Mem67[r9_78 + 16<i32>:word32],r8:r8_123,r9:r9_78
-l00403A30_ds_f:
-l00403A32:
-	r10_236 = Mem67[r10_236 + 8<i32>:word32]
-l00403A10:
-	return
+	goto l00403A0C
+l00403C02:
+	r13_173 = Mem67[0x00403D60<p32>:word32]
+	branch Mem67[Mem67[Mem67[0x00403D5C<p32>:word32] + r12_238:word32]:word32] != 0<32> l00403C0E_ds_t
+l00403C0E_ds_f:
+	goto l00403C10
+l00403C0E_ds_t:
+	goto l00403C12
+l00403C10:
+	r13_173 = Mem67[0x00403D64<p32>:word32]
+l00403C12:
+	r0_181 = Mem67[0x00403D68<p32>:word32]
+	r3_186 = Mem67[Mem67[r0_181 + r12_238:word32]:word32]
+	r2_200 = Mem67[0x00403D6C<p32>:word32]
+	call 0x00403C34<p32> + r2_200 (retsize: 0;)
+		uses: Mem:Mem67,pr:pr_128,r0:r0_181,r10:r10_65,r11:r11_80,r12:r12_86,r13:r13_182 + r12_86,r14:r14_126,r2:r2_200,r3:r3_186,r4:r3_186 + 0xFFFFFFFF<32> + r1_94,r5:r5_95 + (0<32> - (r3_186 < 1<32>)),r6:r3_186,r7:0<32> - (r3_186 < 0<32>),r8:r8_123,r9:r9_78
+		defs: pr:pr_218,r0:r0_211,r1:r1_221,r10:r10_213,r11:r11_214,r12:r12_215,r13:r13_216,r14:r14_217,r8:r8_210,r9:r9_212
+	r1_228 = Mem67[0x00403D70<p32>:word32]
+	call 0x00403C40<p32> + r1_228 (retsize: 0;)
+		uses: Mem:Mem67,pr:pr_218,r1:r1_228,r10:r10_213,r11:r11_214,r12:r12_215,r13:r13_216,r14:r14_217,r4:r13_216,r5:Mem67[r8_210 + 28<i32>:word32],r6:r0_211,r7:r1_221,r8:r8_210,r9:r9_212
+		defs: pr:pr_241,r10:r10_236,r11:r11_237,r12:r12_238,r13:r13_239,r14:r14_240,r15:r15_232,r8:r8_233,r9:r9_235
+	goto l00403AF2
+l00403C44:
+	branch Mem343[Mem343[Mem343[0x00403D74<p32>:word32] + r12_364:word32]:word32] == 0<32> l00403C54_ds_t
+l00403C54_ds_f:
+	goto l00403C56
+l00403C54_ds_t:
+	goto l00403C86
+l00403C56:
+	Mem434[r15_358 + 8<i32>:word32] = 7<32>
+	Mem436[r15_358 + 4<i32>:word32] = 0x20<32>
+	r2_440 = Mem436[0x00403D7C<p32>:word32]
+	r1_441 = Mem436[0x00403D78<p32>:word32] + r12_364
+	Mem442[r15_358:word32] = r1_441
+	call 0x00403C6E<p32> + r2_440 (retsize: 0;)
+		uses: Mem:Mem442,pr:pr_367,r1:r1_441,r10:r10_362,r11:r11_363,r12:r12_364,r13:r15_358 + 0x10<32>,r14:r14_366,r2:r2_440,r4:r15_358 + 0x10<32>,r5:5<32>,r8:r8_359,r9:r9_361
+		defs: pr:pr_454,r0:r0_447,r10:r10_449,r11:r11_450,r12:r12_451,r13:r13_452,r14:r14_453,r8:r8_446,r9:r9_448
+	branch r0_447 != 0xFFFFFFFF<32> l00403C72_ds_t
+l00403C72_ds_f:
+	goto l00403C74
+l00403C72_ds_t:
+	goto l00403C78
+l00403C74:
+	goto l00403AA4
+l00403C78:
+	r1_465 = Mem442[0x00403D80<p32>:word32]
+	call 0x00403C82<p32> + r1_465 (retsize: 0;)
+		uses: Mem:Mem442,pr:pr_454,r1:r1_465,r10:r10_449,r11:r11_450,r12:r12_451,r13:r13_452,r14:r14_453,r4:Mem442[0x00403CEC<p32>:word32] + r12_451,r5:Mem442[r8_446 + 48<i32>:word32],r8:r8_446,r9:r9_448
+		defs: pr:pr_478,r10:r10_473,r11:r11_474,r12:r12_475,r13:r13_476,r14:r14_477,r8:r8_470,r9:r9_472
+	goto l00403B8C
+l00403C86:
+	r4_394 = Mem343[0x00403D60<p32>:word32]
+	branch Mem343[Mem343[Mem343[0x00403D5C<p32>:word32] + r12_364:word32]:word32] != 0<32> l00403C92_ds_t
+l00403C92_ds_f:
+	goto l00403C94
+l00403C92_ds_t:
+	r4_398 = r4_394 + r12_364
+	goto l00403C98
+l00403C94:
+	r4_398 = Mem343[0x00403D64<p32>:word32] + r12_364
+l00403C98:
+	r2_403 = Mem343[0x00403D84<p32>:word32]
+	call 0x00403C9E<p32> + r2_403 (retsize: 0;)
+		uses: Mem:Mem343,pr:pr_367,r10:r10_362,r11:r11_363,r12:r12_364,r13:r13_365,r14:r14_366,r2:r2_403,r4:r4_413,r5:Mem343[r8_359 + 48<i32>:word32],r8:r8_359,r9:r9_361
+		defs: pr:pr_424,r10:r10_419,r11:r11_420,r12:r12_421,r13:r13_422,r14:r14_423,r8:r8_416,r9:r9_418
+	goto l00403B8C
+l00403CA2:
+	branch Mem565[Mem565[Mem565[0x00403D88<p32>:word32] + r12_421:word32]:word32] == 0<32> l00403CAC_ds_t
+l00403CAC_ds_f:
+	goto l00403CAE
+l00403CAC_ds_t:
+	goto l00403CBE
+l00403CAE:
+	r1_627 = r9_418 + 0x40<32>
+	r1_630 = Mem565[0x00403D8C<p32>:word32]
+	call 0x00403CBA<p32> + r1_630 (retsize: 0;)
+		uses: Mem:Mem565,pr:pr_580,r1:r1_630,r10:r10_576,r11:r11_577,r12:r12_567,r13:r13_578,r14:r14_579,r4:Mem565[r1_627:word32],r5:Mem565[r1_627 + 4<i32>:word32],r8:r8_575,r9:r9_572
+		defs: pr:pr_640,r10:r10_635,r11:r11_636,r12:r12_637,r13:r13_638,r14:r14_639,r8:r8_632,r9:r9_634
+	goto l00403BA2
+l00403CBE:
+	r2_605 = Mem565[0x00403D90<p32>:word32]
+	call 0x00403CC6<p32> + r2_605 (retsize: 0;)
+		uses: Mem:Mem565,pr:pr_580,r10:r10_576,r11:r11_577,r12:r12_567,r13:r13_578,r14:r14_579,r2:r2_605,r4:Mem565[r9_572 + 52<i32>:word32],r5:Mem565[r9_572 + 56<i32>:word32],r8:r8_575,r9:r9_572
+		defs: pr:pr_617,r10:r10_612,r11:r11_613,r12:r12_614,r13:r13_615,r14:r14_616,r8:r8_609,r9:r9_611
+	goto l00403BA2
+l00403CCA:
+	branch Mem565[Mem565[Mem565[0x00403D94<p32>:word32] + r12_588:word32]:word32] == 0<32> l00403CDE
+l00403CD4:
+	r1_721 = Mem565[0x00403D98<p32>:word32]
+	call 0x00403CDA<p32> + r1_721 (retsize: 0;)
+		uses: Mem:Mem565,pr:pr_676,r1:r1_721,r10:r10_662,r11:r11_669,r12:r12_651,r13:r13_672,r14:r14_674,r4:r10_662,r8:r8_665,r9:r9_667
+		defs: pr:pr_731,r10:r10_726,r11:r11_727,r12:r12_728,r13:r13_729,r14:r14_730,r8:r8_723,r9:r9_725
+	goto l00403BC0
+l00403CDE:
+	r2_702 = Mem565[0x00403D9C<p32>:word32]
+	call 0x00403CE4<p32> + r2_702 (retsize: 0;)
+		uses: Mem:Mem565,pr:pr_676,r10:r10_662,r11:r11_669,r12:r12_651,r13:r13_672,r14:r14_674,r2:r2_702,r4:r10_662,r8:r8_665,r9:r9_667
+		defs: pr:pr_712,r10:r10_707,r11:r11_708,r12:r12_709,r13:r13_710,r14:r14_711,r8:r8_704,r9:r9_706
+	goto l00403BC0
 printlong_exit:
-l004039FE:
-	r6_921 = Mem57[0x00403AC0<p32>:word32]
-	call 0x00403A04<p32> + r6_921 (retsize: 0;)
-		uses: Mem:Mem57,pr:pr_44,r10:r10_39,r11:r11_40,r12:r12_41,r13:r13_42,r14:r14_43,r4:r8_36,r6:r6_921,r8:r8_36,r9:r9_38
 
 
 void printcol(word32 r4, word32 r8, word32 r9, word32 r14, word32 pr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  pr:[0..31] r14:[0..31] r4:[0..31] r8:[0..31] r9:[0..31]
 // LiveOut:
 // Trashed: T macl pr r0 r1 r10 r11 r12 r13 r14 r2 r3 r4 r5 r6 r8 r9
@@ -2466,18 +2819,18 @@ l00403DA0:
 	r12_126 = Mem24[0x00403F28<p32>:word32] + 0x00403F28<p32>
 	r13_127 = r4
 	branch Mem28[Mem28[Mem28[0x00403F2C<p32>:word32] + r12_126:word32]:word32] == 0<32> l00403DC4_ds_t
-l00403DC4_ds_t:
-	r5_37 = Mem28[r4 + 24<i32>:word32]
 l00403DC4_ds_f:
 	r5_38 = Mem28[r4 + 24<i32>:word32]
+	goto l00403DC6
+l00403DC4_ds_t:
+	r5_37 = Mem28[r4 + 24<i32>:word32]
+	goto l00403DCC
 l00403DC6:
 	r5_37 = r5_38 + Mem28[r4 + 40<i32>:word32] + True<32>
 l00403DCC:
 	branch Mem28[Mem28[Mem28[0x00403F30<p32>:word32] + r12_126:word32]:word32] == 0<32> l00403DE6
 l00403DD6:
 	branch Mem28[Mem28[Mem28[0x00403F34<p32>:word32] + r12_126:word32]:word32] == 0<32> l00403E2A
-l00403E2A:
-	r1_53 = Mem28[r4 + 28<i32>:word32]
 l00403DE0:
 	r1_53 = Mem28[r4 + 48<i32>:word32]
 l00403DE2:
@@ -2492,12 +2845,23 @@ l00403DFC:
 	r11_125 = Mem28[0x00403F40<p32>:word32]
 	r10_124 = r5_37 + 1<32>
 	branch r10_124 * 2<32> <= Mem28[Mem28[r12_126 + r11_125:word32]:word32] l00403E2E
+l00403E10:
+	r1_485 = Mem28[0x00403F44<p32>:word32]
+	call 0x00403E16<p32> + r1_485 (retsize: 0;)
+		uses: Mem:Mem28,pr:pr,r1:r1_485,r10:r10_84,r11:r11_77,r12:r12_29,r13:r4,r14:r14,r4:r4,r8:r8,r9:r9
+l00403E16:
+	return
+l00403E2A:
+	r1_53 = Mem28[r4 + 28<i32>:word32]
+	goto l00403DE2
 l00403E2E:
 	r8_95 = Mem28[0x00403F48<p32>:word32] + r12_126
 	r5_94 = Mem28[r4 + 20<i32>:word32]
 	branch r5_94 <= Mem28[r8_95:word32] l00403E3A_ds_t
-l00403E3A_ds_t:
 l00403E3A_ds_f:
+	goto l00403E3C
+l00403E3A_ds_t:
+	goto l00403E64
 l00403E3C:
 	r9_103 = Mem28[0x00403F4C<p32>:word32] + r12_126
 	r3_102 = Mem28[0x00403F50<p32>:word32]
@@ -2505,6 +2869,15 @@ l00403E3C:
 		uses: Mem:Mem28,pr:pr,r10:r10_84,r11:r11_77,r12:r12_29,r13:r4,r14:r14,r3:r3_102,r4:Mem28[r9_103:word32],r5:r5_94 << 2<i32>,r8:r8_95,r9:r9_103
 		defs: pr:pr_129,r0:r0_122,r10:r10_124,r11:r11_125,r12:r12_126,r13:r13_127,r14:r14_128,r8:r8_121,r9:r9_123
 	branch r0_122 != 0<32> l00403E5C
+l00403E4C:
+	r0_445 = Mem28[0x00403F54<p32>:word32]
+	call 0x00403E52<p32> + r0_445 (retsize: 0;)
+		uses: Mem:Mem28,pr:pr_129,r0:r0_445,r10:r10_124,r11:r11_125,r12:r12_126,r13:r13_127,r14:r14_128,r4:0<32>,r8:r8_121,r9:r9_123
+		defs: pr:pr_456,r10:r10_451,r11:r11_452,r12:r12_453,r13:r13_454,r14:r14_455,r8:r8_448,r9:r9_450
+	r1_465 = Mem28[0x00403F58<p32>:word32]
+	call 0x00403E58<p32> + r1_465 (retsize: 0;)
+		uses: Mem:Mem28,pr:pr_456,r1:r1_465,r10:r10_451,r11:r11_452,r12:r12_453,r13:r13_454,r14:r14_455,r4:r13_454,r8:r8_448,r9:r9_450
+	goto l00403E16
 l00403E5C:
 	r1_139 = Mem28[r13_127 + 20<i32>:word32]
 	Mem140[r9_123:word32] = r0_122
@@ -2515,20 +2888,10 @@ l00403E64:
 	r2_148 = Mem143[Mem143[0x00403F4C<p32>:word32] + r12_126:word32]
 l00403E6A:
 	branch r1_146 != 0<32> l00403E6E_ds_t
-l00403E6E_ds_t:
-l00403EB4:
-	branch Mem153[r1_146 + 16<i32>:word32] != 0<32> l00403EBA_ds_t
-l00403EBA_ds_t:
-l00403EBA_ds_f:
-	r0_157 = Mem153[r1_146 + 12<i32>:word32]
-l00403EBC:
-	branch r0_157 == 1<32> l00403EC8
-l00403EC0:
-	Mem166[(r9_160 << 2<i32>) + r2_148:word32] = r1_146
-	r9_160 = r9_160 + 1<32>
-l00403EC8:
-	r1_146 = Mem169[r1_146 + 8<i32>:word32]
 l00403E6E_ds_f:
+	goto l00403E70
+l00403E6E_ds_t:
+	goto l00403EB4
 l00403E70:
 	r1_180 = Mem153[r12_126 + r11_125:word32]
 	r0_181 = Mem153[0x00403F5C<p32>:word32]
@@ -2545,9 +2908,11 @@ l00403E70:
 		uses: Mem:Mem238,pr:pr_229,r10:r10_224,r11:r11_225,r12:r12_226,r13:r13_227,r14:r14_228,r4:r9_223,r8:r8_221,r9:r9_223
 		defs: pr:pr_249,r0:r0_242,r11:r11_245,r12:r12_246,r13:r13_247,r14:r14_248,r9:r9_243
 	branch r9_243 == r0_242 * r11_245 l00403E92_ds_t
+l00403E92_ds_f:
+	goto l00403E94
 l00403E92_ds_t:
 	r8_261 = r0_242
-l00403E92_ds_f:
+	goto l00403E96
 l00403E94:
 	r8_261 = r0_242 + 1<32>
 l00403E96:
@@ -2559,20 +2924,37 @@ l00403E96:
 	T_297 = r8_277 > r10_280
 l00403EA6:
 	branch !T_297 l00403EA8_ds_t
-l00403EA8_ds_t:
 l00403EA8_ds_f:
+	goto l00403EAA
+l00403EA8_ds_t:
+	goto l00403E16
 l00403EAA:
 	Mem304[r15_276 + 8<i32>:word32] = r10_280 << 2<i32>
 	r14_305 = r10_280
 	r2_306 = 0<32>
-l00403F04:
-	branch r2_306 < r11_281 l00403ECC
+	goto l00403F04
+l00403EB4:
+	branch Mem153[r1_146 + 16<i32>:word32] != 0<32> l00403EBA_ds_t
+l00403EBA_ds_f:
+	r0_157 = Mem153[r1_146 + 12<i32>:word32]
+	goto l00403EBC
+l00403EBA_ds_t:
+	goto l00403EC0
+l00403EBC:
+	branch r0_157 == 1<32> l00403EC8
+l00403EC0:
+	Mem166[(r9_160 << 2<i32>) + r2_148:word32] = r1_146
+	r9_160 = r9_160 + 1<32>
+l00403EC8:
+	r1_146 = Mem169[r1_146 + 8<i32>:word32]
+	goto l00403E6A
 l00403ECC:
 	r4_316 = Mem310[Mem310[r15_276 + 8<i32>:word32] + Mem310[Mem310[0x00403F4C<p32>:word32] + r12_282:word32]:word32]
 	branch Mem310[Mem310[Mem310[0x00403F34<p32>:word32] + r12_282:word32]:word32] == 0<32> l00403EDE_ds_t
-l00403EDE_ds_t:
-l00403F14:
 l00403EDE_ds_f:
+	goto l00403EE0
+l00403EDE_ds_t:
+	goto l00403F14
 l00403EE0:
 l00403EE2:
 	r1_332 = Mem310[0x00403F64<p32>:word32]
@@ -2581,14 +2963,33 @@ l00403EE2:
 		uses: Mem:Mem335,pr:pr_344,r1:r1_332,r10:r10_339,r11:r11_308,r12:r12_312,r13:r13_321,r14:r14_327 + r8_329,r4:r4_316,r8:r8_329,r9:r9_337
 		defs: pr:pr_355,r0:r0_348,r10:r10_350,r11:r11_351,r12:r12_352,r13:r13_353,r14:r14_354,r15:r15_346,r8:r8_347,r9:r9_349
 	branch r9_279 <= r14_305 l00403EEE_ds_t
-l00403EEE_ds_t:
 l00403EEE_ds_f:
 	r2_366 = Mem335[r15_276:word32]
+	goto l00403EF0
+l00403EEE_ds_t:
+	goto l00403F08
 l00403EF0:
 	r1_367 = r0_348
 l00403EF2:
 	branch r1_367 < Mem369[r15_276 + 12<i32>:word32] l00403EF8_ds_t
+l00403EF8_ds_f:
+	goto l00403EFA
 l00403EF8_ds_t:
+	goto l00403F18
+l00403EFA:
+	Mem412[r15_276 + 8<i32>:word32] = Mem369[r15_276 + 8<i32>:word32] + Mem369[r15_276 + 16<i32>:word32]
+	r2_306 = r2_366 + 1<32>
+l00403F04:
+	branch r2_306 < r11_281 l00403ECC
+l00403F08:
+	r3_414 = Mem413[0x00403F68<p32>:word32]
+	call 0x00403F10<p32> + r3_414 (retsize: 0;)
+		uses: Mem:Mem413,pr:pr_424,r10:r10_416 + 1<32>,r11:r11_420,r12:r12_421,r13:r13_422,r14:r14_423,r3:r3_414,r4:0xA<32>,r8:r8_418,r9:r9_419
+		defs: pr:pr_435,r10:r10_430,r11:r11_431,r12:r12_432,r13:r13_433,r15:r15_426,r8:r8_427,r9:r9_429
+	T_297 = r8_277 > r10_280
+	goto l00403EA6
+l00403F14:
+	goto l00403EE2
 l00403F18:
 	r3_374 = Mem369[0x00403F6C<p32>:word32]
 	Mem375[r15_276 + 4<i32>:word32] = r1_367
@@ -2598,36 +2999,12 @@ l00403F18:
 		defs: pr:pr_395,r10:r10_390,r11:r11_391,r12:r12_392,r13:r13_393,r14:r14_394,r15:r15_386,r8:r8_387,r9:r9_389
 	r2_366 = Mem377[r15_276:word32]
 	r1_367 = Mem377[r15_276 + 4<i32>:word32] + 1<32>
-l00403EF8_ds_f:
-l00403EFA:
-	Mem412[r15_276 + 8<i32>:word32] = Mem369[r15_276 + 8<i32>:word32] + Mem369[r15_276 + 16<i32>:word32]
-	r2_306 = r2_366 + 1<32>
-l00403F08:
-	r3_414 = Mem413[0x00403F68<p32>:word32]
-	call 0x00403F10<p32> + r3_414 (retsize: 0;)
-		uses: Mem:Mem413,pr:pr_424,r10:r10_416 + 1<32>,r11:r11_420,r12:r12_421,r13:r13_422,r14:r14_423,r3:r3_414,r4:0xA<32>,r8:r8_418,r9:r9_419
-		defs: pr:pr_435,r10:r10_430,r11:r11_431,r12:r12_432,r13:r13_433,r15:r15_426,r8:r8_427,r9:r9_429
-	T_297 = r8_277 > r10_280
-l00403E4C:
-	r0_445 = Mem28[0x00403F54<p32>:word32]
-	call 0x00403E52<p32> + r0_445 (retsize: 0;)
-		uses: Mem:Mem28,pr:pr_129,r0:r0_445,r10:r10_124,r11:r11_125,r12:r12_126,r13:r13_127,r14:r14_128,r4:0<32>,r8:r8_121,r9:r9_123
-		defs: pr:pr_456,r10:r10_451,r11:r11_452,r12:r12_453,r13:r13_454,r14:r14_455,r8:r8_448,r9:r9_450
-	r1_465 = Mem28[0x00403F58<p32>:word32]
-	call 0x00403E58<p32> + r1_465 (retsize: 0;)
-		uses: Mem:Mem28,pr:pr_456,r1:r1_465,r10:r10_451,r11:r11_452,r12:r12_453,r13:r13_454,r14:r14_455,r4:r13_454,r8:r8_448,r9:r9_450
-l00403E10:
-	r1_485 = Mem28[0x00403F44<p32>:word32]
-	call 0x00403E16<p32> + r1_485 (retsize: 0;)
-		uses: Mem:Mem28,pr:pr,r1:r1_485,r10:r10_84,r11:r11_77,r12:r12_29,r13:r4,r14:r14,r4:r4,r8:r8,r9:r9
-l00403E16:
-	return
+	goto l00403EF2
 printcol_exit:
 
 
 void printacol(word32 r4, word32 r9, word32 r10, word32 r11, word32 r13, word32 r14, word32 pr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  pr:[0..31] r10:[0..31] r11:[0..31] r13:[0..31] r14:[0..31] r4:[0..31] r9:[0..31]
 // LiveOut:
 // Trashed: T pr r0 r1 r10 r11 r12 r13 r14 r4 r5 r6 r7 r8 r9
@@ -2636,18 +3013,18 @@ printacol_entry:
 l00403F70:
 	r12_29 = Mem24[0x00404080<p32>:word32] + 0x00404080<p32>
 	branch Mem28[Mem28[Mem28[0x00404084<p32>:word32] + r12_29:word32]:word32] == 0<32> l00403F94_ds_t
-l00403F94_ds_t:
-	r5_37 = Mem28[r4 + 24<i32>:word32]
 l00403F94_ds_f:
 	r5_38 = Mem28[r4 + 24<i32>:word32]
+	goto l00403F96
+l00403F94_ds_t:
+	r5_37 = Mem28[r4 + 24<i32>:word32]
+	goto l00403F9C
 l00403F96:
 	r5_37 = r5_38 + Mem28[r4 + 40<i32>:word32] + True<32>
 l00403F9C:
 	branch Mem28[Mem28[Mem28[0x00404088<p32>:word32] + r12_29:word32]:word32] == 0<32> l00403FB6
 l00403FA6:
 	branch Mem28[Mem28[Mem28[0x0040408C<p32>:word32] + r12_29:word32]:word32] == 0<32> l00403FF6
-l00403FF6:
-	r1_53 = Mem28[r4 + 28<i32>:word32]
 l00403FB0:
 	r1_53 = Mem28[r4 + 48<i32>:word32]
 l00403FB2:
@@ -2661,6 +3038,14 @@ l00403FCA:
 l00403FCC:
 	r7_83 = Mem28[Mem28[Mem28[0x00404098<p32>:word32] + r12_29:word32]:word32]
 	branch (r5_37 + 1<32>) * 2<32> <= r7_83 l00403FFA
+l00403FDC:
+	r0_347 = Mem28[0x0040409C<p32>:word32]
+	call 0x00403FE2<p32> + r0_347 (retsize: 0;)
+		uses: Mem:Mem28,pr:pr,r0:r0_347,r10:r10,r11:r11,r12:r12_29,r13:r13,r14:r14,r4:r4,r8:r4,r9:r9
+	return
+l00403FF6:
+	r1_53 = Mem28[r4 + 28<i32>:word32]
+	goto l00403FB2
 l00403FFA:
 	r0_87 = Mem28[0x004040A0<p32>:word32]
 	r11_90 = Mem28[r0_87 + r12_29:word32]
@@ -2678,19 +3063,32 @@ l00403FFA:
 	r9_169 = Mem152[r8_154:word32]
 l00404016:
 	branch r9_169 != 0<32> l0040401A_ds_t
+l0040401A_ds_f:
+	goto l0040401C
 l0040401A_ds_t:
+	goto l00404032
+l0040401C:
+	r15_306 = r15_153 + 4<32>
+	r1_305 = Mem152[0x004040A8<p32>:word32]
+	call 0x00404032<p32> + r1_305 (retsize: 0;)
+		uses: Mem:Mem152,pr:Mem152[r15_306:word32],r1:r1_305,r10:Mem152[r15_306 + 20<i32>:word32],r11:Mem152[r15_306 + 16<i32>:word32],r12:Mem152[r15_306 + 12<i32>:word32],r13:Mem152[r15_306 + 8<i32>:word32],r14:Mem152[r15_306 + 4<i32>:word32],r4:0xA<32>,r8:Mem152[r15_306 + 28<i32>:word32],r9:Mem152[r15_306 + 24<i32>:word32]
+	return
 l00404032:
 	branch Mem152[r9_169 + 16<i32>:word32] != 0<32> l00404038_ds_t
-l00404038_ds_t:
 l00404038_ds_f:
 	r0_177 = Mem152[r9_169 + 12<i32>:word32]
+	goto l0040403A
+l00404038_ds_t:
+	goto l0040403E
 l0040403A:
 	branch r0_177 == 1<32> l0040406A
 l0040403E:
 	branch r10_157 < r13_160 l00404042_ds_t
+l00404042_ds_f:
+	goto l00404044
 l00404042_ds_t:
 	r0_186 = r12_159
-l00404042_ds_f:
+	goto l0040404E
 l00404044:
 	r1_189 = Mem152[0x004040AC<p32>:word32]
 	call 0x0040404C<p32> + r1_189 (retsize: 0;)
@@ -2699,9 +3097,10 @@ l00404044:
 	r0_186 = r12_159
 l0040404E:
 	branch Mem152[Mem152[r0_186 + r14_161:word32]:word32] == 0<32> l00404056_ds_t
-l00404056_ds_t:
-l0040406E:
 l00404056_ds_f:
+	goto l00404058
+l00404056_ds_t:
+	goto l0040406E
 l00404058:
 l0040405A:
 	r1_232 = Mem152[0x004040B0<p32>:word32]
@@ -2712,34 +3111,25 @@ l0040405A:
 	r0_267 = Mem152[r15_153:word32]
 l00404064:
 	branch r0_267 > r11_158 l00404072
+l00404068:
+	r10_157 = r10_254 + 1<32>
+l0040406A:
+	r9_169 = Mem152[r9_169 + 8<i32>:word32]
+	goto l00404016
+l0040406E:
+	goto l0040405A
 l00404072:
 	r1_272 = Mem152[0x004040B4<p32>:word32]
 	call 0x0040407A<p32> + r1_272 (retsize: 0;)
 		uses: Mem:Mem152,pr:pr_281,r1:r1_272,r10:r10_277,r11:r11_269 + 1<32>,r12:r12_278,r13:r13_279,r14:r14_280,r4:0x20<32>,r8:r8_275,r9:r9_276
 		defs: pr:pr_292,r10:r10_287,r11:r11_288,r12:r12_289,r13:r13_290,r14:r14_291,r15:r15_283,r8:r8_284,r9:r9_286
 	r0_267 = Mem152[r15_153:word32]
-l00404068:
-	r10_157 = r10_254 + 1<32>
-l0040406A:
-	r9_169 = Mem152[r9_169 + 8<i32>:word32]
-l0040401A_ds_f:
-l0040401C:
-	r15_306 = r15_153 + 4<32>
-	r1_305 = Mem152[0x004040A8<p32>:word32]
-	call 0x00404032<p32> + r1_305 (retsize: 0;)
-		uses: Mem:Mem152,pr:Mem152[r15_306:word32],r1:r1_305,r10:Mem152[r15_306 + 20<i32>:word32],r11:Mem152[r15_306 + 16<i32>:word32],r12:Mem152[r15_306 + 12<i32>:word32],r13:Mem152[r15_306 + 8<i32>:word32],r14:Mem152[r15_306 + 4<i32>:word32],r4:0xA<32>,r8:Mem152[r15_306 + 28<i32>:word32],r9:Mem152[r15_306 + 24<i32>:word32]
-	return
-l00403FDC:
-	r0_347 = Mem28[0x0040409C<p32>:word32]
-	call 0x00403FE2<p32> + r0_347 (retsize: 0;)
-		uses: Mem:Mem28,pr:pr,r0:r0_347,r10:r10,r11:r11,r12:r12_29,r13:r13,r14:r14,r4:r4,r8:r4,r9:r9
-	return
+	goto l00404064
 printacol_exit:
 
 
 void printstream(word32 r4, word32 pr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  pr:[0..31] r4:[0..31]
 // LiveOut:
 // Trashed: T pr r0 r1 r10 r11 r12 r13 r14 r2 r4 r5 r6 r8 r9
@@ -2750,8 +3140,10 @@ l004040B8:
 	r15_110 = fp - 32<i32>
 	r8_138 = Mem29[Mem29[Mem29[0x00404188<p32>:word32] + r12_104:word32]:word32]
 	branch r8_138 == 0<32> l004040D8_ds_t
-l004040D8_ds_t:
 l004040D8_ds_f:
+	goto l004040DA
+l004040D8_ds_t:
+	goto l004040DE
 l004040DA:
 	r8_138 = Mem29[r4 + 40<i32>:word32] + 1<32>
 l004040DE:
@@ -2759,8 +3151,6 @@ l004040DE:
 	branch Mem29[Mem29[Mem29[0x0040418C<p32>:word32] + r12_104:word32]:word32] == 0<32> l004040F8
 l004040E8:
 	branch Mem29[Mem29[Mem29[0x00404190<p32>:word32] + r12_104:word32]:word32] == 0<32> l0040412A
-l0040412A:
-	r1_50 = Mem29[r4 + 28<i32>:word32]
 l004040F2:
 	r1_50 = Mem29[r4 + 48<i32>:word32]
 l004040F4:
@@ -2776,38 +3166,56 @@ l00404104:
 	r14_106 = Mem29[0x00404198<p32>:word32] + r12_104
 l00404110:
 	branch r9_140 != 0<32> l00404114_ds_t
+l00404114_ds_f:
+	goto l00404116
 l00404114_ds_t:
+	goto l0040412E
+l00404116:
+	r15_225 = r15_110 + 4<i32>
+	r1_223 = Mem29[0x0040419C<p32>:word32]
+	call 0x0040412A<p32> + r1_223 (retsize: 0;)
+		uses: Mem:Mem29,pr:Mem29[r15_110:word32],r1:r1_223,r10:Mem29[r15_225 + 16<i32>:word32],r11:Mem29[r15_225 + 12<i32>:word32],r12:Mem29[r15_225 + 8<i32>:word32],r13:Mem29[r15_225 + 4<i32>:word32],r14:Mem29[r15_225:word32],r4:0xA<32>,r8:Mem29[r15_225 + 24<i32>:word32],r9:Mem29[r15_225 + 20<i32>:word32]
+	return
+l0040412A:
+	r1_50 = Mem29[r4 + 28<i32>:word32]
+	goto l004040F4
 l0040412E:
 	branch Mem29[r9_140 + 16<i32>:word32] != 0<32> l00404134_ds_t
-l00404134_ds_t:
 l00404134_ds_f:
 	r0_85 = Mem29[r9_140 + 12<i32>:word32]
+	goto l00404136
+l00404134_ds_t:
+	goto l0040413A
 l00404136:
 	branch r0_85 == 1<32> l00404172
 l0040413A:
 	branch r10_141 <= 0<32> l0040413E_ds_t
-l0040413E_ds_t:
-l0040415E:
-	r1_153 = Mem29[r13_144:word32]
 l0040413E_ds_f:
+	goto l00404140
+l0040413E_ds_t:
+	goto l0040415E
 l00404140:
 	r1_96 = Mem29[0x004041A0<p32>:word32]
 	call 0x00404146<p32> + r1_96 (retsize: 0;)
 		uses: Mem:Mem29,pr:pr_108,r1:r1_96,r10:r10_88 + 2<32>,r11:r11_102,r12:r12_104,r13:r13_92,r14:r14_106,r4:0x2C<32>,r8:r8_99,r9:r9_78
 		defs: pr:pr_120,r10:r10_115,r11:r11_116,r12:r12_117,r13:r13_118,r14:r14_119,r8:r8_112,r9:r9_114
 	branch r10_115 + r8_112 + Mem29[r9_114 + 44<i32>:word32] < Mem29[Mem29[r14_119:word32]:word32] l00404156_ds_t
+l00404156_ds_f:
+	goto l00404158
 l00404156_ds_t:
-l00404176:
-	r1_135 = Mem29[0x004041AC<p32>:word32]
-	call 0x0040417C<p32> + r1_135 (retsize: 0;)
-		uses: Mem:Mem29,pr:pr_120,r1:r1_135,r10:r10_115,r11:r11_116,r12:r12_117,r13:r13_118,r14:r14_119,r4:0x20<32>,r8:r8_112,r9:r9_114
-		defs: pr:pr_146,r10:r10_141,r11:r11_142,r12:r12_143,r13:r13_144,r14:r14_145,r8:r8_138,r9:r9_140
+	goto l00404176
+l00404158:
+	r1_204 = Mem29[0x004041A4<p32>:word32]
+	call 0x0040415E<p32> + r1_204 (retsize: 0;)
+		uses: Mem:Mem29,pr:pr_120,r1:r1_204,r10:0<32>,r11:r11_116,r12:r12_117,r13:r13_118,r14:r14_119,r4:0xA<32>,r8:r8_112,r9:r9_114
+l0040415E:
 	r1_153 = Mem29[r13_144:word32]
 l00404160:
 	branch Mem29[r1_153:word32] == 0<32> l00404166_ds_t
-l00404166_ds_t:
-l00404180:
 l00404166_ds_f:
+	goto l00404168
+l00404166_ds_t:
+	goto l00404180
 l00404168:
 l0040416A:
 	r1_164 = Mem29[0x004041A8<p32>:word32]
@@ -2817,24 +3225,21 @@ l0040416A:
 	r10_141 = r10_187 + r0_185
 l00404172:
 	r9_140 = Mem29[r9_140 + 8<i32>:word32]
-l00404156_ds_f:
-l00404158:
-	r1_204 = Mem29[0x004041A4<p32>:word32]
-	call 0x0040415E<p32> + r1_204 (retsize: 0;)
-		uses: Mem:Mem29,pr:pr_120,r1:r1_204,r10:0<32>,r11:r11_116,r12:r12_117,r13:r13_118,r14:r14_119,r4:0xA<32>,r8:r8_112,r9:r9_114
-l00404114_ds_f:
-l00404116:
-	r15_225 = r15_110 + 4<i32>
-	r1_223 = Mem29[0x0040419C<p32>:word32]
-	call 0x0040412A<p32> + r1_223 (retsize: 0;)
-		uses: Mem:Mem29,pr:Mem29[r15_110:word32],r1:r1_223,r10:Mem29[r15_225 + 16<i32>:word32],r11:Mem29[r15_225 + 12<i32>:word32],r12:Mem29[r15_225 + 8<i32>:word32],r13:Mem29[r15_225 + 4<i32>:word32],r14:Mem29[r15_225:word32],r4:0xA<32>,r8:Mem29[r15_225 + 24<i32>:word32],r9:Mem29[r15_225 + 20<i32>:word32]
-	return
+	goto l00404110
+l00404176:
+	r1_135 = Mem29[0x004041AC<p32>:word32]
+	call 0x0040417C<p32> + r1_135 (retsize: 0;)
+		uses: Mem:Mem29,pr:pr_120,r1:r1_135,r10:r10_115,r11:r11_116,r12:r12_117,r13:r13_118,r14:r14_119,r4:0x20<32>,r8:r8_112,r9:r9_114
+		defs: pr:pr_146,r10:r10_141,r11:r11_142,r12:r12_143,r13:r13_144,r14:r14_145,r8:r8_138,r9:r9_140
+	r1_153 = Mem29[r13_144:word32]
+	goto l00404160
+l00404180:
+	goto l0040416A
 printstream_exit:
 
 
 void printwc(word32 r4, word32 r5, word32 r8, word32 r9, word32 r12, word32 pr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  pr:[0..31] r12:[0..31] r4:[0..31] r5:[0..31] r8:[0..31] r9:[0..31]
 // LiveOut:
 // Trashed: T pr r0 r1 r12 r2 r4 r5 r6 r7 r8 r9
@@ -2847,26 +3252,37 @@ l004041B0:
 		defs: pr:pr_31,r0:r0_28,r12:r12_30,r15:r15_26,r5:r5_33,r8:r8_27
 	r9_40 = r15_26
 	branch r0_28 != 0xFFFFFFFF<32> l004041D2_ds_t
+l004041D2_ds_f:
+	goto l004041D4
 l004041D2_ds_t:
+	goto l004041E2
+l004041D4:
+l004041D6:
+	return
 l004041E2:
 	branch r8_27 != 0<32> l004041E6_ds_t
-l004041E6_ds_t:
-l0040421C:
-	branch r0_28 == 0<32> l00404212
-l0040421E:
 l004041E6_ds_f:
+	goto l004041E8
+l004041E6_ds_t:
+	goto l0040421C
 l004041E8:
 	branch r0_28 == 0<32> l004041EA_ds_t
-l004041EA_ds_t:
 l004041EA_ds_f:
+	goto l004041EC
+l004041EA_ds_t:
+	goto l004041D4
 l004041EC:
 	branch CONVERT(Mem16[r0_28 + 0xFFFFFFFF<32> + r15_26:byte], byte, int32) != 0<32> l004041F6_ds_t
-l004041F6_ds_t:
 l004041F6_ds_f:
+	goto l004041F8
+l004041F6_ds_t:
+	goto l004041FE
 l004041F8:
 	branch r0_28 == 1<32> l004041FA_ds_t
-l004041FA_ds_t:
 l004041FA_ds_f:
+	goto l004041FC
+l004041FA_ds_t:
+	goto l004041D6
 l004041FC:
 l004041FE:
 	r1_64 = Mem16[0x00404230<p32>:word32]
@@ -2878,16 +3294,16 @@ l00404212:
 	r1_84 = Mem16[0x00404234<p32>:word32]
 	call 0x00404218<p32> + r1_84 (retsize: 0;)
 		uses: Mem:Mem16,pr:pr_89,r1:r1_84,r12:r12_88,r4:r8_85,r5:r5_90,r8:r8_85,r9:r9_87
-l004041D2_ds_f:
-l004041D4:
-l004041D6:
-	return
+	goto l004041D6
+l0040421C:
+	branch r0_28 == 0<32> l00404212
+l0040421E:
+	goto l004041FE
 printwc_exit:
 
 
 void safe_print(word32 r4, word32 r10, word32 pr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  pr:[0..31] r10:[0..31] r4:[0..31]
 // LiveOut:
 // Trashed: T pr r0 r1 r10 r12 r2 r4 r5 r6 r8 r9
@@ -2896,9 +3312,11 @@ safe_print_entry:
 l00404238:
 	r12_20 = Mem15[0x004042C4<p32>:word32] + 0x004042C4<p32>
 	branch Mem19[Mem19[Mem19[0x004042C8<p32>:word32] + r12_20:word32]:word32] == 0<32> l00404254_ds_t
+l00404254_ds_f:
+	goto l00404256
 l00404254_ds_t:
 	r9_27 = 0x1D<32>
-l00404254_ds_f:
+	goto l00404258
 l00404256:
 	r9_27 = 0x1F<32>
 l00404258:
@@ -2907,19 +3325,35 @@ l00404258:
 		uses: Mem:Mem19,pr:pr,r1:r1_31,r10:r10,r12:r12_20,r4:r4,r8:r4,r9:r9_34
 		defs: pr:pr_45,r0:r0_41,r10:r10_43,r12:r12_44,r8:r8_40,r9:r9_42
 	branch r0_41 == 0<32> l00404262_ds_t
+l00404262_ds_f:
+	goto l00404264
 l00404262_ds_t:
 	r2_53 = r0_41
-l00404262_ds_f:
+	goto l00404280
 l00404264:
 	branch fn605D4F22() >u 4<32> l00404274_ds_t
+l00404274_ds_f:
+	goto l00404276
 l00404274_ds_t:
+	goto l00404280
+l00404276:
+	r1_185 = Mem19[0x004042D8<p32>:word32]
+	call 0x00404280<p32> + r1_185 (retsize: 0;)
+		uses: Mem:Mem19,pr:pr_65,r1:r1_185,r10:r10_63,r12:r12_64,r4:1<32>,r5:Mem19[0x004042D4<p32>:word32] + r12_64,r8:r8_60,r9:r9_62
 l00404280:
 	r1_76 = Mem19[0x004042DC<p32>:word32]
 	call 0x0040428A<p32> + r1_76 (retsize: 0;)
 		uses: Mem:Mem19,pr:pr_85,r1:r1_76,r10:r10_83,r12:r12_84,r4:(r2_77 << 2<i32>) + 1<32>,r8:r8_81,r9:r9_82
 		defs: pr:pr_93,r0:r0_89,r12:r12_92,r8:r8_88,r9:r9_90
 	branch r0_89 != 0<32> l0040428E_ds_t
+l0040428E_ds_f:
+	goto l00404290
 l0040428E_ds_t:
+	goto l0040429A
+l00404290:
+	r1_168 = Mem19[0x004042E4<p32>:word32]
+	call 0x0040429A<p32> + r1_168 (retsize: 0;)
+		uses: Mem:Mem19,pr:pr_93,r1:r1_168,r10:r0_89,r12:r12_92,r4:1<32>,r5:Mem19[0x004042E0<p32>:word32] + r12_92,r8:r8_88,r9:r9_90
 l0040429A:
 	r1_102 = Mem19[0x004042E8<p32>:word32]
 	call 0x004042A4<p32> + r1_102 (retsize: 0;)
@@ -2934,21 +3368,10 @@ l0040429A:
 		uses: Mem:Mem19,pr:pr_130,r1:r1_137,r10:r10_128,r12:r12_129,r4:r10_128,r8:r8_125,r9:r9_127
 	return
 safe_print_exit:
-l0040428E_ds_f:
-l00404290:
-	r1_168 = Mem19[0x004042E4<p32>:word32]
-	call 0x0040429A<p32> + r1_168 (retsize: 0;)
-		uses: Mem:Mem19,pr:pr_93,r1:r1_168,r10:r0_89,r12:r12_92,r4:1<32>,r5:Mem19[0x004042E0<p32>:word32] + r12_92,r8:r8_88,r9:r9_90
-l00404274_ds_f:
-l00404276:
-	r1_185 = Mem19[0x004042D8<p32>:word32]
-	call 0x00404280<p32> + r1_185 (retsize: 0;)
-		uses: Mem:Mem19,pr:pr_65,r1:r1_185,r10:r10_63,r12:r12_64,r4:1<32>,r5:Mem19[0x004042D4<p32>:word32] + r12_64,r8:r8_60,r9:r9_62
 
 
 void printescaped(word32 r4, word32 r9, word32 r11, word32 r13, word32 r14, word32 pr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  pr:[0..31] r11:[0..31] r13:[0..31] r14:[0..31] r4:[0..31] r9:[0..31]
 // LiveOut:
 // Trashed: T pr r0 r1 r10 r11 r12 r13 r14 r2 r3 r4 r5 r6 r7 r8 r9
@@ -2977,8 +3400,10 @@ l0040434E:
 	T_116 = r8_114 >=u r10_115
 l00404350:
 	branch T_116 l00404352_ds_t
-l00404352_ds_t:
 l00404352_ds_f:
+	goto l00404354
+l00404352_ds_t:
+	goto l00404378
 l00404354:
 	r1_122 = Mem121[0x00404408<p32>:word32]
 	r2_124 = r10_115 - r8_114
@@ -2988,47 +3413,23 @@ l00404354:
 		defs: pr:pr_148,r0:r0_140,r10:r10_142,r11:r11_143,r12:r12_144,r13:r13_145,r15:r15_138,r8:r8_139,r9:r9_141
 	r14_136 = r0_140
 	branch r0_140 != 0<32> l0040436C_ds_t
+l0040436C_ds_f:
+	goto l0040436E
 l0040436C_ds_t:
 	r2_158 = Mem128[r15_125:word32]
+	goto l00404390
+l0040436E:
+	r3_298 = Mem128[0x0040440C<p32>:word32]
+	call 0x00404376<p32> + r3_298 (retsize: 0;)
+		uses: Mem:Mem128,pr:pr_148,r10:r10_142,r11:r11_143,r12:r12_144,r13:r13_145,r14:r0_140,r3:r3_298,r4:Mem128[r15_138 + 16<i32>:word32],r5:r11_143,r8:r8_139,r9:r9_141
+l00404378:
+	return
 l00404390:
 	branch r0_140 != 0xFFFFFFFF<32> l00404394_ds_t
-l00404394_ds_t:
-l004043AE:
-	branch r0_140 != 0xFFFFFFFE<32> l004043B2_ds_t
-l004043B2_ds_t:
-l004043C8:
-	r2_163 = Mem128[r15_125 + 16<i32>:word32]
-	r3_164 = Mem128[0x0040441C<p32>:word32]
-	Mem166[r15_125:word32] = r2_163
-	call 0x004043D2<p32> + r3_164 (retsize: 0;)
-		uses: Mem:Mem166,pr:pr_148,r10:r10_142,r11:r11_143,r12:r12_144,r13:r13_145,r14:r0_140,r2:r2_163,r3:r3_164,r4:r2_163,r8:r8_139,r9:r9_141
-		defs: pr:pr_177,r0:r0_169,r10:r10_171,r11:r11_172,r12:r12_173,r13:r13_174,r14:r14_175,r15:r15_167,r8:r8_168,r9:r9_170
-	branch r0_169 != 0<32> l004043D6_ds_t
-l004043D6_ds_t:
-	r2_186 = Mem166[r15_167:word32]
-l004043D6_ds_f:
-l004043D8:
-	r2_186 = 0x3F<32>
-l004043DA:
-	r1_190 = Mem166[0x00404420<p32>:word32]
-	call 0x004043E2<p32> + r1_190 (retsize: 0;)
-		uses: Mem:Mem166,pr:pr_177,r1:r1_190,r10:r10_171,r11:r11_172,r12:r12_173,r13:r13_174,r14:r14_175,r4:r2_193,r5:r11_172,r8:r8_168,r9:r9_170
-		defs: pr:pr_213,r0:r0_205,r10:r10_207,r11:r11_208,r12:r12_209,r13:r13_210,r14:r14_211,r15:r15_203,r8:r8_204,r9:r9_206
-	r9_111 = r9_206 + r0_205
-	r8_114 = r8_204 + r14_136
-l004043B2_ds_f:
-	r3_223 = Mem128[r15_125 + 12<i32>:word32]
-l004043B4:
-	branch Mem128[Mem128[r3_223:word32]:word32] <=u r2_158 l004043BC_ds_t
-l004043BC_ds_t:
-l004043E8:
-	r8_114 = r10_115
-l004043BC_ds_f:
-l004043BE:
-	r1_230 = Mem128[0x00404418<p32>:word32]
-	call 0x004043C4<p32> + r1_230 (retsize: 0;)
-		uses: Mem:Mem128,pr:pr_148,r1:r1_230,r10:r10_142,r11:r11_143,r12:r12_144,r13:r13_145,r14:r0_140,r4:0x3F<32>,r8:r8_139,r9:r9_141
 l00404394_ds_f:
+	goto l00404396
+l00404394_ds_t:
+	goto l004043AE
 l00404396:
 	r1_252 = Mem128[0x00404410<p32>:word32]
 	call 0x0040439C<p32> + r1_252 (retsize: 0;)
@@ -3039,19 +3440,56 @@ l00404396:
 		uses: Mem:Mem128,pr:pr_264,r10:r10_258,r11:r11_259,r12:r12_260,r13:r13_261,r14:r14_262,r2:r2_272,r4:r13_261,r5:0<32>,r6:CONVERT(Mem128[0x004043EE<p32>:word16], word16, int32),r8:r8_255 + 1<32>,r9:r9_257 + r0_256
 		defs: pr:pr_288,r10:r10_282,r11:r11_283,r12:r12_284,r13:r13_285,r14:r14_286,r15:r15_278,r8:r8_279,r9:r9_281
 	T_116 = r8_114 >=u r10_115
-l0040436C_ds_f:
-l0040436E:
-	r3_298 = Mem128[0x0040440C<p32>:word32]
-	call 0x00404376<p32> + r3_298 (retsize: 0;)
-		uses: Mem:Mem128,pr:pr_148,r10:r10_142,r11:r11_143,r12:r12_144,r13:r13_145,r14:r0_140,r3:r3_298,r4:Mem128[r15_138 + 16<i32>:word32],r5:r11_143,r8:r8_139,r9:r9_141
-l00404378:
-	return
+	goto l00404350
+l004043AE:
+	branch r0_140 != 0xFFFFFFFE<32> l004043B2_ds_t
+l004043B2_ds_f:
+	r3_223 = Mem128[r15_125 + 12<i32>:word32]
+	goto l004043B4
+l004043B2_ds_t:
+	goto l004043C8
+l004043B4:
+	branch Mem128[Mem128[r3_223:word32]:word32] <=u r2_158 l004043BC_ds_t
+l004043BC_ds_f:
+	goto l004043BE
+l004043BC_ds_t:
+	goto l004043E8
+l004043BE:
+	r1_230 = Mem128[0x00404418<p32>:word32]
+	call 0x004043C4<p32> + r1_230 (retsize: 0;)
+		uses: Mem:Mem128,pr:pr_148,r1:r1_230,r10:r10_142,r11:r11_143,r12:r12_144,r13:r13_145,r14:r0_140,r4:0x3F<32>,r8:r8_139,r9:r9_141
+	goto l00404378
+l004043C8:
+	r2_163 = Mem128[r15_125 + 16<i32>:word32]
+	r3_164 = Mem128[0x0040441C<p32>:word32]
+	Mem166[r15_125:word32] = r2_163
+	call 0x004043D2<p32> + r3_164 (retsize: 0;)
+		uses: Mem:Mem166,pr:pr_148,r10:r10_142,r11:r11_143,r12:r12_144,r13:r13_145,r14:r0_140,r2:r2_163,r3:r3_164,r4:r2_163,r8:r8_139,r9:r9_141
+		defs: pr:pr_177,r0:r0_169,r10:r10_171,r11:r11_172,r12:r12_173,r13:r13_174,r14:r14_175,r15:r15_167,r8:r8_168,r9:r9_170
+	branch r0_169 != 0<32> l004043D6_ds_t
+l004043D6_ds_f:
+	goto l004043D8
+l004043D6_ds_t:
+	r2_186 = Mem166[r15_167:word32]
+	goto l004043DA
+l004043D8:
+	r2_186 = 0x3F<32>
+l004043DA:
+	r1_190 = Mem166[0x00404420<p32>:word32]
+	call 0x004043E2<p32> + r1_190 (retsize: 0;)
+		uses: Mem:Mem166,pr:pr_177,r1:r1_190,r10:r10_171,r11:r11_172,r12:r12_173,r13:r13_174,r14:r14_175,r4:r2_193,r5:r11_172,r8:r8_168,r9:r9_170
+		defs: pr:pr_213,r0:r0_205,r10:r10_207,r11:r11_208,r12:r12_209,r13:r13_210,r14:r14_211,r15:r15_203,r8:r8_204,r9:r9_206
+	r9_111 = r9_206 + r0_205
+	r8_114 = r8_204 + r14_136
+	goto l0040434E
+l004043E8:
+	r8_114 = r10_115
+	goto l0040434E
 printescaped_exit:
 
 
 void __sdivsi3(word32 r4, word32 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  r4:[0..31] r5:[0..31]
 // LiveOut:
 // Trashed: T r0 r1 r2 r3
@@ -3059,19 +3497,18 @@ void __sdivsi3(word32 r4, word32 r5)
 __sdivsi3_entry:
 l00404424:
 	branch r5 == 0<32> l004044BE
-l004044BE:
-	return
 l0040442C:
 	r3_10 = 0<32> - __div0s<word32>(r4, 0<32>)
 	__div0s<word32>(r3_10, r5)
 	__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(r3_10, r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5)
+	return
+l004044BE:
 	return
 __sdivsi3_exit:
 
 
 word32 fn004044C4(word32 r4, word32 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      __udivsi3
 // MayUse:  r4:[0..31] r5:[0..31]
@@ -3086,7 +3523,6 @@ fn004044C4_exit:
 
 word32 fn004044C6(word32 r4, word32 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      __udivsi3
 // MayUse:  r4:[0..31] r5:[0..31]
@@ -3101,7 +3537,6 @@ fn004044C6_exit:
 
 word32 fn004044D6(word32 r0, word32 r4, word32 r5, word32 & r4Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      __udivsi3
 // MayUse:  r0:[0..31] r4:[0..31] r5:[0..31]
@@ -3123,7 +3558,6 @@ fn004044D6_exit:
 
 void __udivsi3(word32 r4, word32 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  r4:[0..31] r5:[0..31]
 // LiveOut:
 // Trashed: T r0 r4 r5
@@ -3131,25 +3565,26 @@ void __udivsi3(word32 r4, word32 r5)
 __udivsi3_entry:
 l004044E6:
 	branch CONVERT(SLICE(r5, uint16, 0), uint16, uint32) != r5 l004044EE_ds_t
-l004044EE_ds_t:
-	T_9 = __div0u()
-l00404514:
-	r0_12 = __xtrct<word32,word32>(0<32>, r4)
-	fn004044D6(__rcl<word32,byte>(fn004044D6(__rcl<word32,byte>(fn004044D6(__rcl<word32,byte>(fn004044D6(__rcl<word32,byte>(r0_12, 1<8>, T_9), __xtrct<word32,word32>(r4, r0_12), r5, out r4_16), 1<8>, T_9), r4_16, r5, out r4_19), 1<8>, T_9), r4_19, r5, out r4_22), 1<8>, T_9), r4_22, r5, out r4_55)
-	return
 l004044EE_ds_f:
 	__div0u()
+	goto l004044F0
+l004044EE_ds_t:
+	T_9 = __div0u()
+	goto l00404514
 l004044F0:
 	r0_30 = __swap_w<word32>(r4)
 	r4_35 = fn004044C6(__div1<word32>(fn004044C4(r4 >>u 16<i32>, r5 << 16<i32>), r5 << 16<i32>), r5 << 16<i32>)
 	fn004044C6(__div1<word32>(fn004044C4(__swap_w<word32>(__xtrct<word32,word32>(r4_35, __xtrct<word32,word32>(r0_30, r4_35))), r5 << 16<i32>), r5 << 16<i32>), r5 << 16<i32>)
+	return
+l00404514:
+	r0_12 = __xtrct<word32,word32>(0<32>, r4)
+	fn004044D6(__rcl<word32,byte>(fn004044D6(__rcl<word32,byte>(fn004044D6(__rcl<word32,byte>(fn004044D6(__rcl<word32,byte>(r0_12, 1<8>, T_9), __xtrct<word32,word32>(r4, r0_12), r5, out r4_16), 1<8>, T_9), r4_16, r5, out r4_19), 1<8>, T_9), r4_19, r5, out r4_22), 1<8>, T_9), r4_22, r5, out r4_55)
 	return
 __udivsi3_exit:
 
 
 void main(word32 r12, word32 pr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  pr:[0..31] r12:[0..31]
 // LiveOut:
 // Trashed: pr r0 r1 r12

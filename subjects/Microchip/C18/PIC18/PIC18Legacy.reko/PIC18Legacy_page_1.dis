@@ -1,23 +1,21 @@
 void fn00000000(byte TABLAT)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  TABLAT:[0..7]
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-fn00000000_exit:
 fn00000000_entry:
 l00000000:
 l00013A:
 	Data21[0x0001<p16>:byte] = Data[0x0001<p16>:byte] & 0xBF<8>
 	Data21[1<8>] = 0x00014A<p21>
 	fn00000E(TABLAT, 0<16>, 0<24>)
+fn00000000_exit:
 
 
 void fn00000E(byte TABLAT, word16 FSR0, word24 TBLPTR)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn00000000
 // MayUse:  FSR0:[0..15] TABLAT:[0..7] TBLPTR:[0..23]
@@ -38,11 +36,10 @@ l000028:
 	branch v20_98 l000030
 l00002A:
 	branch Data19[0x00C5<p16>:byte] == 0<8> l00002E
-l00002E:
-l0000AA:
-	return
-fn00000E_exit:
 l00002C:
+	goto l000030
+l00002E:
+	goto l0000AA
 l000030:
 	__tblrd(TBLPTR, 1<8>)
 	Data29[0x00C0<p16>:byte] = TABLAT
@@ -71,13 +68,6 @@ l000080:
 l000082:
 	Data60[0x00C4<p16>:byte] = Data59[0x00C4<p16>:byte]
 	branch Data60[0x00C4<p16>:byte] == 0<8> l000094
-l000094:
-	TBLPTRL_4 = Data60[0x00C7<p16>:byte]
-	TBLPTRH_46 = Data60[0x00C8<p16>:byte]
-	TBLPTRU_49 = Data60[0x00C9<p16>:byte]
-	Data67[0x00C5<p16>:byte] = Data60[0x00C5<p16>:byte] - 1<8>
-	Data71[0x00C6<p16>:byte] = Data67[0x00C6<p16>:byte] - !(cond(Data67[0x00C5<p16>:byte]) & 1<8>)
-	v20_98 = Data71[0x00C6<p16>:byte] != 0<8>
 l000086:
 	__tblrd(TBLPTR, 1<8>)
 	Data77[FSR0:byte] = TABLAT
@@ -87,11 +77,22 @@ l000086:
 	branch Data80[0x00C3<p16>:byte] <u 0<8> l000080
 l000090:
 	Data83[0x00C4<p16>:byte] = Data80[0x00C4<p16>:byte] - 1<8>
+	goto l000086
+l000094:
+	TBLPTRL_4 = Data60[0x00C7<p16>:byte]
+	TBLPTRH_46 = Data60[0x00C8<p16>:byte]
+	TBLPTRU_49 = Data60[0x00C9<p16>:byte]
+	Data67[0x00C5<p16>:byte] = Data60[0x00C5<p16>:byte] - 1<8>
+	Data71[0x00C6<p16>:byte] = Data67[0x00C6<p16>:byte] - !(cond(Data67[0x00C5<p16>:byte]) & 1<8>)
+	v20_98 = Data71[0x00C6<p16>:byte] != 0<8>
+	goto l000028
+l0000AA:
+	return
+fn00000E_exit:
 
 
 void fn0000D0(byte LATB, byte FSR2L, word16 FSR2, word16 FSR1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  FSR1:[0..15] FSR2:[0..15] FSR2L:[0..7] LATB:[0..7]
 // LiveOut:
 // Trashed: ZN BSR FSR2L LATB STKPTR TOS WREG
@@ -101,26 +102,28 @@ l0000D0:
 	Data5[FSR1:byte] = FSR2L
 l0000D8:
 	branch Data11[FSR2 + 0xFE<8>:byte] == 0<8> l0000F4
+l0000DE:
+	branch (Data11[0x00CA<p16>:byte] & 1<8>) != 0<8> l0000E4
+l0000E2:
+	goto l0000F2
+l0000E4:
+	Data24[0x00CA<p16>:byte] = Data11[0x00CA<p16>:byte] & 0xFE<8>
+	branch (LATB & 1<8>) == 0<8> l0000F0
+l0000EC:
+	LATB = LATB | 0x80<8>
+	goto l0000F2
+l0000F0:
+	LATB = LATB & 0x7F<8>
+l0000F2:
+	goto l0000D8
 l0000F4:
 	Data16[FSR1 + 1<16>:byte] = Data11[FSR1 + 1<16>:byte]
 	return
 fn0000D0_exit:
-l0000DE:
-	branch (Data11[0x00CA<p16>:byte] & 1<8>) != 0<8> l0000E4
-l0000E4:
-	Data24[0x00CA<p16>:byte] = Data11[0x00CA<p16>:byte] & 0xFE<8>
-	branch (LATB & 1<8>) == 0<8> l0000F0
-l0000F0:
-	LATB = LATB & 0x7F<8>
-l0000EC:
-	LATB = LATB | 0x80<8>
-l0000E2:
-l0000F2:
 
 
 void fn000128(byte WREG, byte FSR0L, byte FSR0H, byte PRODL, word16 FSR0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  FSR0:[0..15] FSR0H:[0..7] FSR0L:[0..7] PRODL:[0..7] WREG:[0..7]
 // LiveOut:
 // Trashed: ZN FSR0 STKPTR TOS WREG
@@ -128,18 +131,21 @@ void fn000128(byte WREG, byte FSR0L, byte FSR0H, byte PRODL, word16 FSR0)
 fn000128_entry:
 l000128:
 	branch FSR0H <u WREG l00012C
+l00012A:
+	goto l000130
 l00012C:
 	Data6[FSR0:byte] = 0<8>
 	FSR0 = FSR0 + 1<16>
-l00012A:
+	goto l000128
 l000130:
 l000132:
 	branch FSR0L <u PRODL l000136
+l000134:
+	return
 l000136:
 	Data16[FSR0:byte] = 0<8>
 	FSR0 = FSR0 + 1<16>
-l000134:
-	return
+	goto l000132
 fn000128_exit:
 
 

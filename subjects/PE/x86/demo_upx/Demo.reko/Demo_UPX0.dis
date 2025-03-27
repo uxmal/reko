@@ -1,14 +1,13 @@
 void fn00401000()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-fn00401000_exit:
 fn00401000_entry:
 l00401000:
 	ExitProcess(MessageBoxA(0<32>, 0x403000<32>, 0x403007<32>, 0<32>))
+fn00401000_exit:
 
 

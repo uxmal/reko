@@ -1,22 +1,20 @@
 void _start(word64 rdx, word32 dwArg00, char * ptrArg08)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  rdx:[0..63] Stack +0000:[0..31] Stack +0008:[0..63]
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-_start_exit:
 _start_entry:
 l0000000000001080:
 	__align_stack<word64>(&ptrArg08)
 	__libc_start_main(0x00000000000011E0<p64>, SLICE(qwArg00, int32, 0), &ptrArg08, 0x0000000000001280<p64>, 0x00000000000012E0<p64>, rdx, fp)
 	__halt()
+_start_exit:
 
 
 void deregister_tm_clones()
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      __do_global_dtors_aux
 // MayUse: 
@@ -28,17 +26,16 @@ l00000000000010B0:
 	branch 0x0000000000004048<p64> == 0x0000000000004048<p64> l00000000000010D8
 l00000000000010C3:
 	branch _ITM_deregisterTMCloneTable == 0<64> l00000000000010D8
-l00000000000010D8:
-	return
 l00000000000010CF:
 	_ITM_deregisterTMCloneTable()
+	return
+l00000000000010D8:
 	return
 deregister_tm_clones_exit:
 
 
 void register_tm_clones()
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      frame_dummy
 // MayUse: 
@@ -51,17 +48,16 @@ l00000000000010E0:
 	branch (rsi_6 >>u 0x3F<64>) + (rsi_6 >> 3<64>) >> 1<64> == 0<64> l0000000000001118
 l0000000000001104:
 	branch _ITM_registerTMCloneTable == 0<64> l0000000000001118
-l0000000000001118:
-	return
 l0000000000001110:
 	_ITM_registerTMCloneTable()
+	return
+l0000000000001118:
 	return
 register_tm_clones_exit:
 
 
 void __do_global_dtors_aux()
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: SCZO rax rdi Top
@@ -69,8 +65,6 @@ void __do_global_dtors_aux()
 __do_global_dtors_aux_entry:
 l0000000000001120:
 	branch Mem0[0x0000000000004048<p64>:byte] != 0<8> l0000000000001158
-l0000000000001158:
-	return
 l000000000000112D:
 	branch __cxa_finalize == 0<64> l0000000000001147
 l000000000000113B:
@@ -79,12 +73,13 @@ l0000000000001147:
 	deregister_tm_clones()
 	Mem23[0x0000000000004048<p64>:byte] = 1<8>
 	return
+l0000000000001158:
+	return
 __do_global_dtors_aux_exit:
 
 
 void frame_dummy()
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      __libc_csu_init
 // MayUse: 
@@ -101,7 +96,6 @@ frame_dummy_exit:
 
 word32 Q_rsqrt(word32 xmm0, word32 dwArg00)
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      main
 // MayUse:  Stack +0000:[0..31] xmm0:[0..31]
@@ -117,7 +111,6 @@ Q_rsqrt_exit:
 
 word32 lib_rsqrt(word32 xmm0)
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      main
 // MayUse:  xmm0:[0..31]
@@ -127,17 +120,16 @@ word32 lib_rsqrt(word32 xmm0)
 lib_rsqrt_entry:
 l00000000000011A6:
 	branch xmm0 <u 0.0F l00000000000011C3
+l00000000000011AF:
+	return Mem0[0x000000000000207C<p64>:real32] /32 fsqrt(xmm0)
 l00000000000011C3:
 	sqrtf(xmm0)
 	return Mem0[0x000000000000207C<p64>:real32] / sqrtf(xmm0)
-l00000000000011AF:
-	return Mem0[0x000000000000207C<p64>:real32] /32 fsqrt(xmm0)
 lib_rsqrt_exit:
 
 
 void main(word64 rsi)
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  rsi:[0..63]
 // LiveOut:
 // Trashed: SCZOP rax rdi rdx rsi Top xmm0 xmm1 xmm2
@@ -159,7 +151,6 @@ main_exit:
 
 void __libc_csu_init(word32 edi, word64 rsi, word64 rdx)
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  rdi:[0..31] rdx:[0..63] rsi:[0..63]
 // LiveOut:
 // Trashed: SCZOP rax rdi rdx rsi Top
@@ -184,7 +175,6 @@ __libc_csu_init_exit:
 
 void __libc_csu_fini()
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: Top

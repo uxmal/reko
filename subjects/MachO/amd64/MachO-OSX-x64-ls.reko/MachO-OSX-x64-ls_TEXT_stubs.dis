@@ -1,6 +1,5 @@
 void __error()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn00000001000023B0
 //      fn0000000100003AA8
@@ -17,7 +16,6 @@ __error_exit:
 
 void __maskrune()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn000000010000356F
 //      fn0000000100004715
@@ -36,7 +34,6 @@ __maskrune_exit:
 
 void __snprintf_chk(word64 rcx, word64 rdx, word64 rsi, word64 rdi, word64 r8)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0000000100003AA8
 // MayUse:  r8:[0..63] rcx:[0..63] rdi:[0..63] rdx:[0..63] rsi:[0..63]
@@ -52,7 +49,6 @@ __snprintf_chk_exit:
 
 void __stack_chk_fail()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0000000100001B4A
 //      fn0000000100003AA8
@@ -61,15 +57,14 @@ void __stack_chk_fail()
 // Trashed:
 // Preserved:
 // Terminates process
-__stack_chk_fail_exit:
 __stack_chk_fail_entry:
 l0000000100004DC0:
 	__stack_chk_fail()
+__stack_chk_fail_exit:
 
 
 void __tolower()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn000000010000328E
 // MayUse: 
@@ -85,7 +80,6 @@ __tolower_exit:
 
 void acl_free()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0000000100003AA8
 // MayUse: 
@@ -101,7 +95,6 @@ acl_free_exit:
 
 word32 acl_get_entry(word64 rdx, word32 esi, word64 rdi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0000000100003AA8
 // MayUse:  rdi:[0..63] rdx:[0..63] rsi:[0..31]
@@ -116,7 +109,6 @@ acl_get_entry_exit:
 
 void acl_get_flag_np()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0000000100003AA8
 // MayUse: 
@@ -132,7 +124,6 @@ acl_get_flag_np_exit:
 
 void acl_get_flagset_np()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0000000100003AA8
 // MayUse: 
@@ -148,7 +139,6 @@ acl_get_flagset_np_exit:
 
 void acl_get_link_np()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0000000100003AA8
 // MayUse: 
@@ -164,7 +154,6 @@ acl_get_link_np_exit:
 
 void acl_get_perm_np()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0000000100003AA8
 // MayUse: 
@@ -180,7 +169,6 @@ acl_get_perm_np_exit:
 
 void acl_get_permset()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0000000100003AA8
 // MayUse: 
@@ -196,7 +184,6 @@ acl_get_permset_exit:
 
 void acl_get_qualifier()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0000000100003AA8
 // MayUse: 
@@ -212,7 +199,6 @@ acl_get_qualifier_exit:
 
 word32 acl_get_tag_type(word64 rsi, word32 edi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0000000100003AA8
 // MayUse:  rdi:[0..31] rsi:[0..63]
@@ -227,7 +213,6 @@ acl_get_tag_type_exit:
 
 word32 atoi(word64 rdi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn00000001000026A0
 // MayUse:  rdi:[0..63]
@@ -242,7 +227,6 @@ atoi_exit:
 
 void compat_mode()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn00000001000023B0
 //      fn00000001000026A0
@@ -260,7 +244,6 @@ compat_mode_exit:
 
 void err()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0000000100001B4A
 //      fn00000001000023B0
@@ -278,7 +261,6 @@ err_exit:
 
 void exit(word32 edi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0000000100001778
 //      fn00000001000026A0
@@ -288,15 +270,14 @@ void exit(word32 edi)
 // Trashed:
 // Preserved:
 // Terminates process
-exit_exit:
 exit_entry:
 l0000000100004E14:
 	exit(SLICE(rdi, int32, 0))
+exit_exit:
 
 
 void fflagstostr()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0000000100001B4A
 // MayUse: 
@@ -312,7 +293,6 @@ fflagstostr_exit:
 
 void fprintf(word64 rsi, word64 rdi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn000000010000328E
 //      fn0000000100003AA8
@@ -329,7 +309,6 @@ fprintf_exit:
 
 void fputs(word64 rsi, word64 rdi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn000000010000328E
 //      fn0000000100003AA8
@@ -347,7 +326,6 @@ fputs_exit:
 
 void free(word64 rdi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0000000100001B4A
 //      fn0000000100003AA8
@@ -364,7 +342,6 @@ free_exit:
 
 void fts_children$INODE64()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn00000001000023B0
 // MayUse: 
@@ -380,7 +357,6 @@ fts_children$INODE64_exit:
 
 void fts_close$INODE64()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn00000001000023B0
 // MayUse: 
@@ -396,7 +372,6 @@ fts_close$INODE64_exit:
 
 void fts_open$INODE64()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn00000001000023B0
 // MayUse: 
@@ -412,7 +387,6 @@ fts_open$INODE64_exit:
 
 void fts_read$INODE64()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn00000001000023B0
 // MayUse: 
@@ -428,7 +402,6 @@ fts_read$INODE64_exit:
 
 void fts_set$INODE64()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn00000001000023B0
 // MayUse: 
@@ -444,7 +417,6 @@ fts_set$INODE64_exit:
 
 void getbsize()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn00000001000026A0
 // MayUse: 
@@ -460,7 +432,6 @@ getbsize_exit:
 
 word64 getenv(word64 rdi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0000000100001B4A
 //      fn00000001000026A0
@@ -476,7 +447,6 @@ getenv_exit:
 
 word64 getgrgid(word32 edi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0000000100003AA8
 // MayUse:  rdi:[0..31]
@@ -491,7 +461,6 @@ getgrgid_exit:
 
 word32 getopt(word64 rdx, word64 rsi, word32 edi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn00000001000026A0
 // MayUse:  rdi:[0..31] rdx:[0..63] rsi:[0..63]
@@ -506,7 +475,6 @@ getopt_exit:
 
 void getpid()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: eax
@@ -520,7 +488,6 @@ getpid_exit:
 
 word64 getpwuid(word32 edi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0000000100003AA8
 // MayUse:  rdi:[0..31]
@@ -535,7 +502,6 @@ getpwuid_exit:
 
 word32 getuid()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn00000001000026A0
 // MayUse: 
@@ -550,7 +516,6 @@ getuid_exit:
 
 void getxattr()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0000000100003AA8
 // MayUse: 
@@ -566,7 +531,6 @@ getxattr_exit:
 
 void group_from_gid()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0000000100001B4A
 // MayUse: 
@@ -582,7 +546,6 @@ group_from_gid_exit:
 
 void humanize_number()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0000000100003786
 // MayUse: 
@@ -598,7 +561,6 @@ humanize_number_exit:
 
 word32 ioctl(word32 esi, word32 edi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn00000001000026A0
 // MayUse:  rdi:[0..31] rsi:[0..31]
@@ -613,7 +575,6 @@ ioctl_exit:
 
 word32 isatty(word32 edi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn00000001000026A0
 // MayUse:  rdi:[0..31]
@@ -628,7 +589,6 @@ isatty_exit:
 
 void kill()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
@@ -642,7 +602,6 @@ kill_exit:
 
 void listxattr()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0000000100003AA8
 // MayUse: 
@@ -658,7 +617,6 @@ listxattr_exit:
 
 word64 localtime(word32 edi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0000000100003AA8
 // MayUse:  rdi:[0..31]
@@ -673,7 +631,6 @@ localtime_exit:
 
 word64 malloc(word64 rdi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0000000100001B4A
 //      fn0000000100003AA8
@@ -689,7 +646,6 @@ malloc_exit:
 
 void mbr_uuid_to_id()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0000000100003AA8
 // MayUse: 
@@ -705,7 +661,6 @@ mbr_uuid_to_id_exit:
 
 void mbr_uuid_to_string()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0000000100003AA8
 // MayUse: 
@@ -721,7 +676,6 @@ mbr_uuid_to_string_exit:
 
 word64 mbrtowc(word64 rcx, word64 rdx, word64 rsi, word64 rdi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn000000010000356F
 //      fn0000000100004715
@@ -739,7 +693,6 @@ mbrtowc_exit:
 
 word64 memchr(word64 rdx, word32 esi, word64 rdi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn000000010000488B
 // MayUse:  rdi:[0..63] rdx:[0..63] rsi:[0..31]
@@ -754,7 +707,6 @@ memchr_exit:
 
 word64 nl_langinfo(word32 edi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0000000100003AA8
 // MayUse:  rdi:[0..31]
@@ -769,7 +721,6 @@ nl_langinfo_exit:
 
 word32 printf(word64 rdi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn00000001000023B0
 //      fn00000001000035A9
@@ -788,7 +739,6 @@ printf_exit:
 
 word32 putchar(word32 edi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0000000100003201
 //      fn000000010000356F
@@ -807,7 +757,6 @@ putchar_exit:
 
 word64 readlink(word64 rdx, word64 rsi, word64 rdi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0000000100003AA8
 // MayUse:  rdi:[0..63] rdx:[0..63] rsi:[0..63]
@@ -822,7 +771,6 @@ readlink_exit:
 
 void realloc(word64 rsi, word64 rdi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  rdi:[0..63] rsi:[0..63]
 // LiveOut:
 // Trashed: rax
@@ -836,7 +784,6 @@ realloc_exit:
 
 void setenv()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn00000001000026A0
 // MayUse: 
@@ -852,7 +799,6 @@ setenv_exit:
 
 void setlocale(word64 rsi, word32 edi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn00000001000026A0
 // MayUse:  rdi:[0..31] rsi:[0..63]
@@ -868,7 +814,6 @@ setlocale_exit:
 
 void signal(word64 rsi, word32 edi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn00000001000026A0
 // MayUse:  rdi:[0..31] rsi:[0..63]
@@ -884,7 +829,6 @@ signal_exit:
 
 word32 snprintf(word64 rdx, word64 rsi, word64 rdi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0000000100001B4A
 //      fn0000000100003AA8
@@ -900,7 +844,6 @@ snprintf_exit:
 
 void sscanf()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0000000100001B4A
 // MayUse: 
@@ -916,7 +859,6 @@ sscanf_exit:
 
 void strcoll(word64 rsi, word64 rdi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  rdi:[0..63] rsi:[0..63]
 // LiveOut:
 // Trashed: eax
@@ -930,7 +872,6 @@ strcoll_exit:
 
 void strcpy(word64 rsi, word64 rdi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0000000100001B4A
 // MayUse:  rdi:[0..63] rsi:[0..63]
@@ -946,7 +887,6 @@ strcpy_exit:
 
 word64 strdup(word64 rdi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0000000100001B4A
 // MayUse:  rdi:[0..63]
@@ -961,7 +901,6 @@ strdup_exit:
 
 word56 strerror(word32 edi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0000000100001B4A
 //      fn00000001000023B0
@@ -978,7 +917,6 @@ strerror_exit:
 
 void strftime(word64 rcx, word64 rdx, word64 rsi, word64 rdi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0000000100003AA8
 // MayUse:  rcx:[0..63] rdi:[0..63] rdx:[0..63] rsi:[0..63]
@@ -994,7 +932,6 @@ strftime_exit:
 
 word64 strlen(word64 rdi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0000000100001B4A
 //      fn000000010000328E
@@ -1012,7 +949,6 @@ strlen_exit:
 
 void strmode()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0000000100003AA8
 // MayUse: 
@@ -1028,7 +964,6 @@ strmode_exit:
 
 void tgetent()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn00000001000026A0
 // MayUse: 
@@ -1044,7 +979,6 @@ tgetent_exit:
 
 void tgetstr()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn00000001000026A0
 // MayUse: 
@@ -1060,7 +994,6 @@ tgetstr_exit:
 
 void tgoto()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn00000001000033F4
 // MayUse: 
@@ -1076,7 +1009,6 @@ tgoto_exit:
 
 word32 time(word64 rdi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0000000100003AA8
 // MayUse:  rdi:[0..63]
@@ -1091,7 +1023,6 @@ time_exit:
 
 void tputs()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn00000001000033F4
 //      fn00000001000035A9
@@ -1109,7 +1040,6 @@ tputs_exit:
 
 void user_from_uid()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0000000100001B4A
 // MayUse: 
@@ -1125,7 +1055,6 @@ user_from_uid_exit:
 
 void warn()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
@@ -1139,7 +1068,6 @@ warn_exit:
 
 void warnx()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn0000000100001B4A
 //      fn00000001000023B0
@@ -1156,7 +1084,6 @@ warnx_exit:
 
 word32 wcwidth(word16 di)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      fn000000010000356F
 //      fn0000000100004715
@@ -1173,7 +1100,6 @@ wcwidth_exit:
 
 void write(word64 rdx, word64 rsi, word32 edi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  rdi:[0..31] rdx:[0..63] rsi:[0..63]
 // LiveOut:
 // Trashed: rax

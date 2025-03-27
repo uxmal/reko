@@ -1,22 +1,20 @@
 void _start(word64 rdx, word32 dwArg00, char * ptrArg08)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  rdx:[0..63] Stack +0000:[0..31] Stack +0008:[0..63]
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-_start_exit:
 _start_entry:
 l0000000000000620:
 	__align_stack<word64>(&ptrArg08)
 	__libc_start_main(0x0000000000000898<p64>, SLICE(qwArg00, int32, 0), &ptrArg08, 0x0000000000000A70<p64>, 0x0000000000000AE0<p64>, rdx, fp)
 	__halt()
+_start_exit:
 
 
 void deregister_tm_clones()
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      __do_global_dtors_aux
 // MayUse: 
@@ -28,17 +26,16 @@ l0000000000000650:
 	branch 0x0000000000201048<p64> == 0x0000000000201048<p64> l0000000000000680
 l0000000000000667:
 	branch _ITM_deregisterTMCloneTable == 0<64> l0000000000000680
-l0000000000000680:
-	return
 l0000000000000673:
 	_ITM_deregisterTMCloneTable()
+	return
+l0000000000000680:
 	return
 deregister_tm_clones_exit:
 
 
 void register_tm_clones()
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      frame_dummy
 // MayUse: 
@@ -51,17 +48,16 @@ l0000000000000690:
 	branch (rsi_9 >> 3<64>) + ((rsi_9 >> 3<64>) >>u 0x3F<64>) >> 1<64> == 0<64> l00000000000006D0
 l00000000000006B8:
 	branch _ITM_registerTMCloneTable == 0<64> l00000000000006D0
-l00000000000006D0:
-	return
 l00000000000006C4:
 	_ITM_registerTMCloneTable()
+	return
+l00000000000006D0:
 	return
 register_tm_clones_exit:
 
 
 void __do_global_dtors_aux()
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: SCZO rax rdi Top
@@ -69,8 +65,6 @@ void __do_global_dtors_aux()
 __do_global_dtors_aux_entry:
 l00000000000006E0:
 	branch Mem0[0x0000000000201048<p64>:byte] != 0<8> l0000000000000718
-l0000000000000718:
-	return
 l00000000000006E9:
 	branch __cxa_finalize == 0<64> l0000000000000703
 l00000000000006F7:
@@ -79,12 +73,13 @@ l0000000000000703:
 	deregister_tm_clones()
 	Mem23[0x0000000000201048<p64>:byte] = 1<8>
 	return
+l0000000000000718:
+	return
 __do_global_dtors_aux_exit:
 
 
 void frame_dummy()
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: SCZOP rax rdi rsi Top
@@ -99,7 +94,6 @@ frame_dummy_exit:
 
 word64 _mm_malloc(word64 rdi, word64 rsi)
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      main
 // MayUse:  rdi:[0..63] rsi:[0..63]
@@ -110,6 +104,9 @@ _mm_malloc_entry:
 l000000000000072A:
 	qwLoc28_56 = rsi
 	branch rsi != 1<64> l000000000000074F
+l0000000000000741:
+	rax_44 = malloc(rdi)
+	goto l000000000000078B
 l000000000000074F:
 	branch rsi == 2<64> l000000000000075D
 l0000000000000756:
@@ -118,12 +115,11 @@ l000000000000075D:
 	qwLoc28_56 = 8<64>
 l0000000000000765:
 	branch SLICE(posix_memalign(qwLoc28_56, fp - 16<i64>, rdi, qwLoc28_56), word32, 0) != 0<32> l0000000000000786
-l0000000000000786:
-	rax_44 = 0<u64>
 l0000000000000780:
 	rax_44 = qwLoc10
-l0000000000000741:
-	rax_44 = malloc(rdi)
+	goto l000000000000078B
+l0000000000000786:
+	rax_44 = 0<u64>
 l000000000000078B:
 	return rax_44
 _mm_malloc_exit:
@@ -131,7 +127,6 @@ _mm_malloc_exit:
 
 void _mm_free(word64 rdi)
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      main
 // MayUse:  rdi:[0..63]
@@ -147,7 +142,6 @@ _mm_free_exit:
 
 void vec_add(word64 rdi, word64 rsi, word64 rdx, word64 rcx)
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      main
 // MayUse:  rcx:[0..63] rdi:[0..63] rdx:[0..63] rsi:[0..63]
@@ -159,11 +153,12 @@ l00000000000007A8:
 	__align_stack<word64>(fp)
 	rax_31 = CONVERT(rdi, uint64, uint128) /u Mem23[0x0000000000000B00<p64>:word64]
 	qwLoc28_90 = 0<64>
-l0000000000000881:
-	branch qwLoc28_90 <u rax_31 l0000000000000820
+	goto l0000000000000881
 l0000000000000820:
 	Mem67[rsi + (qwLoc28_90 << 5<64>):word256] = __simd_fadd<real64[4]>(Mem42[rdx + (qwLoc28_90 << 5<64>):word256], Mem42[rcx + (qwLoc28_90 << 5<64>):word256])
 	qwLoc28_90 = qwLoc28_90 + 1<64>
+l0000000000000881:
+	branch qwLoc28_90 <u rax_31 l0000000000000820
 l000000000000088B:
 	return
 vec_add_exit:
@@ -171,7 +166,6 @@ vec_add_exit:
 
 void main()
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: SCZOP r10 rax rcx rdi rdx rsi Top xmm0 ymm1
@@ -182,51 +176,57 @@ l0000000000000898:
 	rax_30 = _mm_malloc(0x2000<64>, 0x20<u64>)
 	rax_44 = _mm_malloc(0x2000<64>, 0x20<u64>)
 	qwLoc10_211 = 0<64>
-l000000000000093F:
-	branch qwLoc10_211 <u 0x400<64> l00000000000008FD
+	goto l000000000000093F
 l00000000000008FD:
 	rcx_61 = qwLoc10_211 * 8<64> + rax_16
 	eax_69 = SLICE(qwLoc10_211, word32, 0) (alias)
 	branch qwLoc10_211 < 0<64> l0000000000000921
+l000000000000091A:
+	xmm0 = SEQ(SLICE(xmm0, word64, 64), CONVERT(qwLoc10_211, word64, real64))
+	goto l0000000000000936
 l0000000000000921:
 	v27_76 = CONVERT(qwLoc10_211 >>u 1<64> | CONVERT(eax_69 & 1<32>, word32, uint64), word64, real64)
 	xmm0 = SEQ(0<64>, v27_76 + v27_76)
-l000000000000091A:
-	xmm0 = SEQ(SLICE(xmm0, word64, 64), CONVERT(qwLoc10_211, word64, real64))
 l0000000000000936:
 	Mem85[rcx_61:real64] = SLICE(xmm0, real64, 0)
 	qwLoc10_211 = qwLoc10_211 + 1<64>
+l000000000000093F:
+	branch qwLoc10_211 <u 0x400<64> l00000000000008FD
 l0000000000000949:
 	qwLoc18_217 = 0<64>
-l0000000000000998:
-	branch qwLoc18_217 <u 0x400<64> l0000000000000953
+	goto l0000000000000998
 l0000000000000953:
 	eax_108 = SLICE(qwLoc18_217, word32, 0) + 1<32> (alias)
 	rcx_101 = qwLoc18_217 * 8<64> + rax_30
 	branch qwLoc18_217 < 0xFFFFFFFFFFFFFFFF<64> l000000000000097A
+l0000000000000973:
+	xmm0 = SEQ(SLICE(xmm0, word64, 64), CONVERT(qwLoc18_217 + 1<64>, word64, real64))
+	goto l000000000000098F
 l000000000000097A:
 	v22_115 = CONVERT(qwLoc18_217 + 1<64> >>u 1<64> | CONVERT(eax_108 & 1<32>, word32, uint64), word64, real64)
 	xmm0 = SEQ(0<64>, v22_115 + v22_115)
-l0000000000000973:
-	xmm0 = SEQ(SLICE(xmm0, word64, 64), CONVERT(qwLoc18_217 + 1<64>, word64, real64))
 l000000000000098F:
 	Mem124[rcx_101:real64] = SLICE(xmm0, real64, 0)
 	qwLoc18_217 = qwLoc18_217 + 1<64>
+l0000000000000998:
+	branch qwLoc18_217 <u 0x400<64> l0000000000000953
 l00000000000009A2:
 	qwLoc20_223 = 0<64>
-l00000000000009CC:
-	branch qwLoc20_223 <u 0x400<64> l00000000000009AC
+	goto l00000000000009CC
 l00000000000009AC:
 	Mem140[rax_44 + qwLoc20_223 * 8<64>:real64] = 0.0
 	qwLoc20_223 = qwLoc20_223 + 1<64>
+l00000000000009CC:
+	branch qwLoc20_223 <u 0x400<64> l00000000000009AC
 l00000000000009D6:
 	vec_add(0x400<64>, rax_44, rax_16, rax_30)
 	qwLoc28_232 = 0<64>
-l0000000000000A2D:
-	branch qwLoc28_232 <u 0x400<64> l00000000000009F8
+	goto l0000000000000A2D
 l00000000000009F8:
 	printf("%g\n", Mem161[rax_44 + qwLoc28_232 * 8<64>:word64])
 	qwLoc28_232 = qwLoc28_232 + 1<64>
+l0000000000000A2D:
+	branch qwLoc28_232 <u 0x400<64> l00000000000009F8
 l0000000000000A37:
 	_mm_free(rax_16)
 	_mm_free(rax_30)
@@ -237,7 +237,6 @@ main_exit:
 
 void __libc_csu_init(word32 edi, word64 rsi, word64 rdx)
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  rdi:[0..31] rdx:[0..63] rsi:[0..63]
 // LiveOut:
 // Trashed: SCZOP rax rdi rdx rsi Top
@@ -262,7 +261,6 @@ __libc_csu_init_exit:
 
 void __libc_csu_fini()
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: Top

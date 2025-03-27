@@ -1,13 +1,12 @@
 void _fini()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
-_fini_exit:
 _fini_entry:
 l4000000000137EA0:
+_fini_exit:
 
 

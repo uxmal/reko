@@ -160,21 +160,16 @@ namespace Reko
             {
                 if (o is Procedure proc)
                 {
-                    if (program.NeedsSsaTransform && dfa != null)
+                    if (program.NeedsSsaTransform && dfa is not null)
                     {
                         ProcedureFlow flow = dfa.ProgramDataFlow[proc];
                         TextFormatter f = new TextFormatter(output);
+                        CodeFormatter cf = new CodeFormatter(f);
                         var signature = flow.Signature ?? proc.Signature;
                         signature.Emit(proc.Name, FunctionType.EmitFlags.LowLevelInfo, f);
-                        output.WriteLine();
                         WriteProcedureCallers(program, proc, output);
                         flow.Emit(proc.Architecture, output);
-                        foreach (Block block in new DfsIterator<Block>(proc.ControlGraph).PostOrder().Reverse())
-                        {
-                            if (block is null)
-                                continue;
-                            block.Write(output);
-                        }
+                        new ProcedureFormatter(proc, new BlockDecorator(), cf).WriteProcedureBlocks();
                     }
                     else
                     {

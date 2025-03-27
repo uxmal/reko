@@ -1,6 +1,5 @@
 void _GetExceptDLLinfo(word32 dwArg04)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  fs:[0..15] Stack +0004:[0..31]
 // LiveOut:
 // Trashed: SCZO eax edx Top
@@ -15,7 +14,6 @@ __GetExceptDLLinfo_exit:
 
 void fn00401084()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: ebx esp Top
@@ -28,7 +26,6 @@ fn00401084_exit:
 
 void fn0040110B()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: SCZO eax Top
@@ -49,7 +46,6 @@ fn0040110B_exit:
 
 word32 fn00401158()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      _GetExceptDLLinfo
 //      fn004011B0
@@ -65,7 +61,6 @@ fn00401158_exit:
 
 int32 main(int32 argc, char ** argv)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut: eax:[0..31]-main
 // Trashed: eax
@@ -79,7 +74,6 @@ main_exit:
 
 void fn0040117C()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: Top
@@ -92,7 +86,6 @@ fn0040117C_exit:
 
 void fn00401180()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse: 
 // LiveOut:
 // Trashed: Top
@@ -105,7 +98,6 @@ fn00401180_exit:
 
 void fn004011B0(word32 dwArg04)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // MayUse:  fs:[0..15] Stack +0004:[0..31]
 // LiveOut:
 // Trashed: SCZOP eax ecx edx Top
@@ -128,7 +120,6 @@ fn004011B0_exit:
 
 void fn004011FC(word32 dwArg04)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
 // Called from:
 //      _GetExceptDLLinfo
 //      fn004011B0
