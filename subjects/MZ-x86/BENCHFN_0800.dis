@@ -1067,7 +1067,7 @@ l0800_0A83:
 l0800_0A85:
 	goto l0800_0AA7
 l0800_0A87:
-	_lseek(ds, wArg02, SEQ(0<16> - CONVERT(cx_115 != 0<16>, bool, word16), -cx_115), 2<8>, out dx_316)
+	_lseek(ds, wArg02, CONVERT(-cx_115, uint16, int32), 2<8>, out dx_316)
 	Mem107[ds:(wArg02 << 1<16>) + 0x482<16>:word16] = Mem94[ds:(wArg02 << 1<16>) + 0x482<16>:word16] | 0x200<16>
 l0800_0AA7:
 	ax_156 = di_143 - wArg04

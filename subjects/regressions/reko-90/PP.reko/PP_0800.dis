@@ -15535,7 +15535,7 @@ l0800_BA1D:
 l0800_BA1F:
 	goto l0800_BA41
 l0800_BA21:
-	fn0800_8E29(ds, wArg02, SEQ(0<16> - CONVERT(cx_122 != 0<16>, bool, word16), -cx_122), 1<8>, out cx_359, out dx_360)
+	fn0800_8E29(ds, wArg02, CONVERT(-cx_122, uint16, int32), 1<8>, out cx_359, out dx_360)
 	Mem114[ds:(wArg02 << 1<16>) + 0x24EA<16>:word16] = Mem100[ds:(wArg02 << 1<16>) + 0x24EA<16>:word16] | 0x200<16>
 l0800_BA41:
 	ax_178 = di_155 - wArg04

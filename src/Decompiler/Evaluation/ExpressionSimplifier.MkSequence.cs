@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Expressions;
+using Reko.Core.Hll.Pascal;
 using Reko.Core.Lib;
 using Reko.Core.Operators;
 using Reko.Core.Types;
@@ -154,15 +155,21 @@ namespace Reko.Evaluation
                 if (eFirst is BinaryExpression bin &&
                     bin.Operator.Type == OperatorType.ISub &&
                     (bin.Left.IsZero ||
-                     bin.Left is UnaryExpression un2 && un2.Operator.Type == OperatorType.Neg && un2.Expression.IsZero) &&
-                    bin.Right is BinaryExpression binRight &&
-                    binRight.Left == negated &&
-                    binRight.Right.IsZero)
+                     bin.Left is UnaryExpression un2 && un2.Operator.Type == OperatorType.Neg && un2.Expression.IsZero))
                 {
-                    var bitsize = eFirst.DataType.BitSize + eLast.DataType.BitSize;
-                    var unsignedInt = PrimitiveType.Create(Domain.UnsignedInt, eLast.DataType.BitSize);
-                    var signedInt = PrimitiveType.Create(Domain.SignedInt, bitsize);
-                    return m.Neg(m.Convert(negated, unsignedInt, signedInt));
+                    var binRight = bin.Right;
+                    if (binRight is Conversion conv)
+                        binRight = conv.Expression;
+                    if (binRight is BinaryExpression binRightRight &&
+                        binRightRight.Operator.Type == OperatorType.Ne &&
+                        binRightRight.Left == negated &&
+                        binRightRight.Right.IsZero)
+                    {
+                        var bitsize = eFirst.DataType.BitSize + eLast.DataType.BitSize;
+                        var unsignedInt = PrimitiveType.Create(Domain.UnsignedInt, eLast.DataType.BitSize);
+                        var signedInt = PrimitiveType.Create(Domain.SignedInt, bitsize);
+                        return m.Convert(m.Neg(negated), unsignedInt, signedInt);
+                    }
                 }
             }
             return null;

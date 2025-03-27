@@ -899,7 +899,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
 
             var result = expr.Accept(simplifier);
 
-            AssertChanged("-CONVERT(foo_1, uint32, int64)", result);
+            AssertChanged("CONVERT(-foo_1, uint32, int64)", result);
         }
 
         [Test]
@@ -1409,6 +1409,20 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             exp = RunExpressionSimplifier(exp);
 
             Assert.AreEqual(sExpected, exp.ToString());
+        }
+
+        [Test]
+        public void Exs_Seq_Idiomatic_Negation_and_signextension()
+        {
+            Given_ExpressionSimplifier();
+            Expression exp =
+                m.Seq(
+                    m.ISub(
+                        m.Word32(0),
+                        m.Convert(m.Ne0(foo), PrimitiveType.Bool, PrimitiveType.Word32)),
+                    m.Neg(foo));
+            exp = RunExpressionSimplifier(exp);
+            Assert.AreEqual("CONVERT(-foo_1, uint32, int64)", exp.ToString());
         }
     }
 }

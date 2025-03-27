@@ -804,7 +804,7 @@ Eq_n _read(struct Eq_n * ds, int16 wArg02, Eq_n wArg04, cu16 wArg06)
 				if (al_n == 0x1A)
 				{
 					word16 dx_n;
-					_lseek(ds, wArg02, SEQ(0x00 - (word16) (cx_n != 0x00), -cx_n), 0x02, out dx_n);
+					_lseek(ds, wArg02, (int32) -cx_n, 0x02, out dx_n);
 					ds->a0482[0][wArg02] = ds->a0482[0][wArg02] | 0x0200;
 					goto l0800_nAA7;
 				}

@@ -15103,7 +15103,7 @@ Eq_n fn0800_B97F(Eq_n ds, Eq_n wArg02, Eq_n ptrArg04, Eq_n wArg08)
 				{
 					word16 cx_n;
 					word16 dx_n;
-					fn0800-8E29(ds, wArg02, SEQ(0x00 - (word16) (cx_n != 0x00), -cx_n), 0x01, out cx_n, out dx_n);
+					fn0800-8E29(ds, wArg02, (int32) -cx_n, 0x01, out cx_n, out dx_n);
 					(*((word32) ds + 9450))[wArg02] |= 0x0200;
 					goto l0800_BA41;
 				}
