@@ -23,23 +23,19 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Arch.Maxim;
 
 public static class Registers
 {
-    public static Dictionary<string, RegisterStorage>? RegsByName { get; }
-    public static Dictionary<StorageDomain, RegisterStorage>? RegsByDomain { get; }
+    public static Dictionary<string, RegisterStorage> ByName { get; }
+    public static Dictionary<StorageDomain, RegisterStorage> ByDomain { get; }
 
     public static RegisterStorage[] Accumulators { get; }
     public static RegisterStorage[] DataPointers { get; }
     public static RegisterStorage[] Prefixes { get; }
     public static RegisterStorage[] LoopCounters { get; }
     public static Dictionary<RegisterStorage, string> IndexedNames { get; }
-
     public static RegisterStorage AP { get; }
     public static RegisterStorage A_AP { get; }
     public static RegisterStorage APC { get; }
@@ -68,6 +64,12 @@ public static class Registers
     public static FlagGroupStorage C { get; }
     public static FlagGroupStorage Z { get; }
     public static FlagGroupStorage S { get; }
+    public static FlagGroupStorage E { get; }
+
+    public static FlagGroupStorage CSZ { get; }
+    public static FlagGroupStorage CSZE { get; }
+    public static FlagGroupStorage CSZV { get; }
+    public static FlagGroupStorage SZ { get; }
 
     static Registers()
     {
@@ -104,6 +106,11 @@ public static class Registers
         C = new FlagGroupStorage(PSF, (uint) FlagM.CF, "c");
         Z = new FlagGroupStorage(PSF, (uint) FlagM.ZF, "z");
         S = new FlagGroupStorage(PSF, (uint) FlagM.SF, "s");
+        E = new FlagGroupStorage(PSF, (uint) FlagM.EF, "e");
+        CSZ = new FlagGroupStorage(PSF, (uint) (FlagM.CF | FlagM.SF | FlagM.ZF), "csz");
+        CSZE = new FlagGroupStorage(PSF, (uint) (FlagM.CF | FlagM.SF | FlagM.ZF | FlagM.EF), "csze");
+        CSZV = new FlagGroupStorage(PSF, (uint) (FlagM.CF | FlagM.SF | FlagM.ZF | FlagM.OV), "cszv");
+        SZ = new FlagGroupStorage(PSF, (uint) (FlagM.SF | FlagM.ZF), "sz");
 
         IndexedNames = Accumulators.Select((a, i) => (a, $"a[{i}]"))
             .Concat(DataPointers.Select((dp, i) => (dp, $"dp[{i}]")))
@@ -111,6 +118,9 @@ public static class Registers
             .Concat(LoopCounters.Select((pfx, i) => (pfx, $"lc[{i}]")))
             .Concat([(A_AP, "a[ap]")])
             .ToDictionary(p => p.Item1, p => p.Item2);
+
+        ByName = factory.NamesToRegisters;
+        ByDomain = factory.DomainsToRegisters;
     }
 }
 

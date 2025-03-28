@@ -23,6 +23,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -32,9 +33,17 @@ namespace Reko.Arch.Maxim;
 public class MaxqArchitecture : ProcessorArchitecture
 {
     public MaxqArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-        : base(services, archId, options, Registers.RegsByName, Registers.RegsByDomain) 
+        : base(services, archId, options, Registers.ByName, Registers.ByDomain) 
     {
+        this.CarryFlag = Registers.C;
         this.Endianness = EndianServices.Little;
+        this.InstructionBitSize = 16;
+        this.MemoryGranularity = 16;
+        this.CodeMemoryGranularity = 16;
+        this.FramePointerType = PrimitiveType.Ptr16;
+        this.PointerType = PrimitiveType.Ptr16;
+        this.WordWidth = PrimitiveType.Word16;
+        this.StackRegister = Registers.SP;
     }
 
     public override MemoryArea CreateCodeMemoryArea(Address addr, byte[] bytes)
@@ -59,12 +68,12 @@ public class MaxqArchitecture : ProcessorArchitecture
 
     public override ProcessorState CreateProcessorState()
     {
-        throw new System.NotImplementedException();
+        return new MaxqState(this);
     }
 
     public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
     {
-        throw new System.NotImplementedException();
+        return new MaxqRewriter(this, rdr, state, binder, host);
     }
 
     public override FlagGroupStorage? GetFlagGroup(RegisterStorage flagRegister, uint grf)
@@ -99,7 +108,7 @@ public class MaxqArchitecture : ProcessorArchitecture
 
     public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
     {
-        throw new System.NotImplementedException();
+        return Address.Ptr16(c.ToUInt16());
     }
 
     public override Address? ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
@@ -109,6 +118,6 @@ public class MaxqArchitecture : ProcessorArchitecture
 
     public override bool TryParseAddress(string? txtAddr, [MaybeNullWhen(false)] out Address addr)
     {
-        throw new System.NotImplementedException();
+        return Address.TryParse16(txtAddr, out addr);
     }
 }

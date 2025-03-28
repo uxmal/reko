@@ -52,6 +52,7 @@ public class MaxqDisassembler : DisassemblerBase<MaxqInstruction, Mnemonic>
     public override MaxqInstruction? DisassembleInstruction()
     {
         this.ops.Clear();
+        this.addr = rdr.Address;
         var offset = rdr.Offset;
         if (!rdr.TryReadBeUInt16(out ushort uInstr))
             return null;
@@ -320,7 +321,10 @@ case 0b0111_1111: return DPn(1, u, d);       // DP[n]          1 0n11 1111 16 n 
 
     private static bool MDPpostinc(int v, uint u, MaxqDisassembler d)
     {
-        throw new NotImplementedException();
+        var reg = Registers.DataPointers[v];
+        var mem = MemoryOperand.Create(PrimitiveType.UInt16, reg, null, IncrementMode.PostIncrement);
+        d.ops.Add(mem);
+        return true;
     }
 
     private static bool MDPn(int v, uint u, MaxqDisassembler d)
