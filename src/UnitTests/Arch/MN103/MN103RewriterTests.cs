@@ -170,6 +170,23 @@ namespace Reko.UnitTests.Arch.MN103
         }
 
         [Test]
+        public void Mn103Rw_call()
+        {
+            Given_HexString("CD1A03E014");
+            AssertCode(     // call f,[d2,d3,a2],+14
+                "0|T--|00100000(5): 9 instructions",
+                "1|L--|v4 = sp",
+                "2|L--|v4 = v4 - 4<i32>",
+                "3|L--|Mem0[v4:word32] = d2",
+                "4|L--|v4 = v4 - 4<i32>",
+                "5|L--|Mem0[v4:word32] = d3",
+                "6|L--|v4 = v4 - 4<i32>",
+                "7|L--|Mem0[v4:word32] = a2",
+                "8|L--|sp = sp - 0x14<32>",
+                "9|T--|call 0010031A (0)");
+        }
+
+        [Test]
         public void Mn103Rw_calls()
         {
             Given_HexString("F0F2");
@@ -407,6 +424,20 @@ namespace Reko.UnitTests.Arch.MN103
                 "1|L--|d2 = d2 | d3",
                 "2|L--|NZ = cond(d2)",
                 "3|L--|VC = 0<16>");
+        }
+
+        [Test]
+        public void Mn103Rw_ret()
+        {
+            Given_HexString("DFC00C");
+            AssertCode(     //ret [d2,d3],+0C
+                "0|R--|00100000(3): 6 instructions",
+                "1|L--|sp = sp + 0xC<32>",
+                "2|L--|d3 = Mem0[sp:word32]",
+                "3|L--|sp = sp + 4<i32>",
+                "4|L--|d2 = Mem0[sp:word32]",
+                "5|L--|sp = sp + 4<i32>",
+                "6|R--|return (4,12)");
         }
 
         [Test]

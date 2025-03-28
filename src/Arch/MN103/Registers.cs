@@ -60,8 +60,8 @@ namespace Reko.Arch.MN103
             pc = factory.Reg32("pc");
             mdr = factory.Reg32("mdr");
             psw = factory.Reg16("psw");
-            lir = factory.Reg16("lir");
-            lar = factory.Reg16("lar");
+            lir = factory.Reg32("lir");
+            lar = factory.Reg32("lar");
 
             C = new FlagGroupStorage(psw, (uint) FlagM.CF, "C");
             CNZ = new FlagGroupStorage(psw, (uint) (FlagM.CF | FlagM.NF | FlagM.ZF), "CNZ");

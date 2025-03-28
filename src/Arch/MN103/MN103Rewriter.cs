@@ -194,7 +194,7 @@ namespace Reko.Arch.MN103
             m.Assign(grf, exp);
         }
 
-        private Expression Op(int iop, PrimitiveType dtMem)
+        private Expression Op(int iop, DataType dtMem)
         {
             var op = instr.Operands[iop]; 
             switch (op)
@@ -205,7 +205,7 @@ namespace Reko.Arch.MN103
                 return addr;
             case Constant imm:
                 var n = imm.ToInt32();    // sign extend.
-                return Constant.Word32(n);
+                return Constant.Create(dtMem, n);
             case MemoryOperand mem:
                 var ea = EffectiveAddress(mem);
                 return m.Mem(dtMem, ea);
@@ -257,8 +257,9 @@ namespace Reko.Arch.MN103
 
         private void RewriteAnd()
         {
-            var right = Op(0, PrimitiveType.Word32);
-            var left = Op(1, PrimitiveType.Word32);
+            var dt = instr.Operands[1].DataType;
+            var right = Op(0, dt);
+            var left = Op(1, dt);
             m.Assign(left, m.And(left, right));
             Emit_00NZ(m.Cond(left));
         }
@@ -348,15 +349,17 @@ namespace Reko.Arch.MN103
         private void SaveRegisters(MultipleRegistersOperand regs, int disp8)
         {
             var sp = binder.EnsureRegister(Registers.sp);
+            var tmp = binder.CreateTemporary(PrimitiveType.Word32);
+            m.Assign(tmp, sp);
             foreach (var reg in regs.GetRegisters())
             {
-                m.Assign(sp, m.ISubS(sp, 4));
+                m.Assign(tmp, m.ISubS(tmp, 4));
                 Expression e = binder.EnsureRegister(reg);
                 if (e.DataType.BitSize < 32)
                 {
                     e = m.Convert(e, e.DataType, PrimitiveType.UInt32);
                 }
-                m.Assign(m.Mem32(sp), e);
+                m.Assign(m.Mem32(tmp), e);
             }
             if (disp8 != 0)
             {
@@ -516,18 +519,20 @@ namespace Reko.Arch.MN103
 
         private void RewriteOr()
         {
-            var right = Op(0, PrimitiveType.Word32);
-            var left = Op(1, PrimitiveType.Word32);
+            var dt = instr.Operands[1].DataType;
+            var right = Op(0, dt);
+            var left = Op(1, dt);
             m.Assign(left, m.Or(left, right));
             Emit_00NZ(m.Cond(left));
         }
 
         private void RewriteRet()
         {
+            int extra = ((Constant) instr.Operands[1]).ToInt32();
             RestoreRegisters(
                 (MultipleRegistersOperand) instr.Operands[0],
-                ((Constant) instr.Operands[1]).ToInt32());
-            m.Return(4, 0);
+                extra);
+            m.Return(4, extra);
         }
 
         private void RewriteRetf()
