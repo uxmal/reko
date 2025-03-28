@@ -40,7 +40,7 @@ public class M16CArchitecture : ProcessorArchitecture
     private readonly static ConcurrentDictionary<uint, FlagGroupStorage> flagGroups = new();
 
     public M16CArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-        : base(services, archId, options, Registers.ByName, new())
+        : base(services, archId, options, Registers.ByName, [])
     {
         Endianness = EndianServices.Little;
         this.CarryFlag = Registers.C;

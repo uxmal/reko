@@ -31,7 +31,7 @@ namespace Reko.Arch.Angstrem
     public class KR1878Architecture : ProcessorArchitecture
     {
         public KR1878Architecture(IServiceProvider services, string archId, Dictionary<string, object> options) 
-            : base(services, archId, options, new(), new())
+            : base(services, archId, options, [], [])
         {
             this.Endianness = EndianServices.Little;
             this.CarryFlag = null; //$TODO

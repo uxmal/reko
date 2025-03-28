@@ -42,7 +42,7 @@ namespace Reko.ImageLoaders.LLVM
     {
         private readonly DataLayout layout;
 
-        public LLVMArchitecture(IServiceProvider services, DataLayout layout) : base(services, "llvm", new(), new(), new())
+        public LLVMArchitecture(IServiceProvider services, DataLayout layout) : base(services, "llvm", [], [], [])
         {
             this.layout = layout;
             this.Endianness = layout.Endianness;

@@ -37,7 +37,7 @@ namespace Reko.Arch.Etrax
             IServiceProvider services,
             string archId, 
             Dictionary<string, object> options) 
-            : base(services, archId, options, new(), new())
+            : base(services, archId, options, [], [])
         {
             this.CarryFlag = Registers.C;
             this.Endianness = EndianServices.Little;

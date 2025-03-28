@@ -48,7 +48,7 @@ namespace Reko.Arch.Cray
         private Decoder<YmpDisassembler, Mnemonic, CrayInstruction> rootDecoder;
 
         public CrayYmpArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, options, new(), new())
+            : base(services, archId, options, [], [])
         {
             this.DefaultBase = 8;
             this.Endianness = EndianServices.Big;

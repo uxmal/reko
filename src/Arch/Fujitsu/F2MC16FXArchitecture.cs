@@ -37,7 +37,7 @@ namespace Reko.Arch.Fujitsu
     public class F2MC16FXArchitecture : ProcessorArchitecture
     {
         public F2MC16FXArchitecture(IServiceProvider services, string name, Dictionary<string, object> options)
-            : base(services, name, options, new(), new())
+            : base(services, name, options, [], [])
         {
             this.Endianness = EndianServices.Little;
             this.CarryFlag = Registers.C;

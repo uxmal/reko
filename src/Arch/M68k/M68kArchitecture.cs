@@ -42,7 +42,7 @@ namespace Reko.Arch.M68k
     public class M68kArchitecture : ProcessorArchitecture
     {
         public M68kArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, options, Registers.regsByName, new())
+            : base(services, archId, options, Registers.regsByName, [])
         {
             InstructionBitSize = 16;
             Endianness = EndianServices.Big;

@@ -563,8 +563,8 @@ namespace Reko.Core
     public abstract class ProcessorArchitecture : IProcessorArchitecture
     {
         private RegisterStorage? regStack;
-        protected Dictionary<string, RegisterStorage>? regsByName;
-        protected Dictionary<StorageDomain, RegisterStorage>? regsByDomain;
+        protected IReadOnlyDictionary<string, RegisterStorage>? regsByName;
+        protected IReadOnlyDictionary<StorageDomain, RegisterStorage>? regsByDomain;
 
         /// <summary>
         /// Create an instance of the class.
