@@ -43,7 +43,15 @@ namespace Reko.UnitTests.Decompiler.Loading
                 new ImageSegment("low_memory_area", new ByteMemoryArea(Address.Ptr16(0x0000), new byte[0x100]), AccessMode.ReadWriteExecute));
             var arch = new Mock<IProcessorArchitecture>();
             var platform = new Mock<IPlatform>();
+            platform.Setup(p => p.Architecture).Returns(arch.Object);
             platform.Setup(p => p.CreateAbsoluteMemoryMap()).Returns(mmap);
+            arch.Setup(a => a.CreateCodeMemoryArea(
+                It.IsAny<Address>(),
+                It.IsAny<byte[]>())).
+                Returns(delegate (Address addr, byte[] bytes)
+                {
+                    return new ByteMemoryArea(addr, bytes);
+                });
 
             var ldr = new NullImageLoader(null, ImageLocation.FromUri("foo.exe"), new byte[0x1000]);
             var segMap = ldr.CreatePlatformSegmentMap(platform.Object, Address.Ptr16(0x0100), new(), new byte[] { 0x50 });
@@ -58,6 +66,14 @@ namespace Reko.UnitTests.Decompiler.Loading
         {
             var arch = new Mock<IProcessorArchitecture>();
             var platform = new Mock<IPlatform>();
+            platform.Setup(p => p.Architecture).Returns(arch.Object);
+            arch.Setup(a => a.CreateCodeMemoryArea(
+                It.IsAny<Address>(),
+                It.IsAny<byte[]>())).
+                Returns(delegate (Address addr, byte[] bytes)
+                {
+                    return new ByteMemoryArea(addr, bytes);
+                });
 
             var img = new byte[0x1000];
             var ldr = new NullImageLoader(null, ImageLocation.FromUri("foo.exe"), img);

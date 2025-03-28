@@ -23,6 +23,7 @@ using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Loading;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Loading;
 using Reko.Services;
@@ -100,6 +101,14 @@ namespace Reko.UnitTests.Decompiler.Loading
             this.x86arch.Setup(a => a.Name).Returns("x86-real-16");
             var env = new Mock<PlatformDefinition>();
             this.msdosPlatform = new Mock<IPlatform>();
+            msdosPlatform.Setup(p => p.Architecture).Returns(x86arch.Object);
+            x86arch.Setup(a => a.CreateCodeMemoryArea(
+                It.IsAny<Address>(),
+                It.IsAny<byte[]>()))
+            .Returns(delegate (Address addr, byte[] bytes)
+            {
+                return new ByteMemoryArea(addr, bytes);
+            });
             var map = new SegmentMap(Address.SegPtr(0x0C00, 0));
             var state = new FakeProcessorState(x86arch.Object);
             var rawFile = new RawFileDefinition
@@ -223,6 +232,13 @@ namespace Reko.UnitTests.Decompiler.Loading
                 .Returns(new DefaultPlatform(sc, arch.Object));
             arch.Setup(a => a.LoadUserOptions(It.IsAny<Dictionary<string, object>>()));
             arch.Setup(a => a.Name).Returns("mmix");
+            arch.Setup(a => a.CreateCodeMemoryArea(
+                It.IsAny<Address>(),
+                It.IsAny<byte[]>()))
+                .Returns(delegate (Address addr, byte[] bytes)
+                {
+                    return new ByteMemoryArea(addr, bytes);
+                });
             arch.Setup(a => a.PostprocessProgram(It.IsAny<Program>()));
             var addr = Address.Ptr32(0x00123500);
             arch.Setup(a => a.TryParseAddress(

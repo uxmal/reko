@@ -95,7 +95,7 @@ namespace Reko.Loading
             byte[] rawBytes)
         {
             var segmentMap = platform.CreateAbsoluteMemoryMap() ?? new SegmentMap(loadAddr);
-            var mem = new ByteMemoryArea(loadAddr, rawBytes);
+            var mem = platform.Architecture.CreateCodeMemoryArea(loadAddr, rawBytes);
             if (userSegments.Any())
             {
                 foreach (var useg in userSegments)

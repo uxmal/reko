@@ -54,11 +54,6 @@ namespace Reko.UnitTests.Decompiler.Analysis
             this.segmentMap = new SegmentMap(Address.Ptr32(0));
         }
 
-        private static string Expect(string preserved, string trashed, string consts)
-        {
-            return String.Join(Environment.NewLine, new[] { preserved, trashed, consts });
-        }
-
         private Procedure RunTest(string sExp, Action<ProcedureBuilder> builder)
         {
             var pb = new ProcedureBuilder();
@@ -152,7 +147,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             var urf = new UsedRegisterFinder(
                 program,
                 pf,
-                new Procedure[] { ssa.Procedure },
+                [ ssa.Procedure ],
                 NullDecompilerEventListener.Instance);
             var flow = urf.ComputeLiveIn(ssa, true);
             var sw = new StringWriter();
@@ -188,7 +183,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             var urf = new UsedRegisterFinder(
                 program,
                 pf,
-                new Procedure[] { ssa.Procedure },
+                [ssa.Procedure],
                 NullDecompilerEventListener.Instance);
             var sid = ssa.Identifiers.Single(s => s.Identifier.Name == sidName);
             var flow = urf.Classify(ssa, sid, sid.Identifier.Storage, true);
@@ -423,7 +418,7 @@ DataTypes:
   bx: word16
   cl: byte
 ";
-            RunTest(sExp, new X86ArchitectureFlat32(new ServiceContainer(), "", new Dictionary<string, object>()), m =>
+            RunTest(sExp, new X86ArchitectureFlat32(new ServiceContainer(), "", []), m =>
             {
                 var bx = m.Frame.EnsureRegister(Registers.bx);
                 var cx = m.Frame.EnsureRegister(Registers.cx);
