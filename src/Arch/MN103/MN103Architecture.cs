@@ -127,7 +127,6 @@ namespace Reko.Arch.MN103
                 if ((grf & (uint) FlagM.VF) != 0) sb.Append('V');
             }
             return sb.ToString();
-
         }
 
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)

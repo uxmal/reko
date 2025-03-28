@@ -65,6 +65,7 @@ public static class Registers
     public static FlagGroupStorage Z { get; }
     public static FlagGroupStorage S { get; }
     public static FlagGroupStorage E { get; }
+    public static FlagGroupStorage V { get; }
 
     public static FlagGroupStorage CSZ { get; }
     public static FlagGroupStorage CSZE { get; }
@@ -107,6 +108,7 @@ public static class Registers
         Z = new FlagGroupStorage(PSF, (uint) FlagM.ZF, "z");
         S = new FlagGroupStorage(PSF, (uint) FlagM.SF, "s");
         E = new FlagGroupStorage(PSF, (uint) FlagM.EF, "e");
+        V = new FlagGroupStorage(PSF, (uint) FlagM.OV, "v");
         CSZ = new FlagGroupStorage(PSF, (uint) (FlagM.CF | FlagM.SF | FlagM.ZF), "csz");
         CSZE = new FlagGroupStorage(PSF, (uint) (FlagM.CF | FlagM.SF | FlagM.ZF | FlagM.EF), "csze");
         CSZV = new FlagGroupStorage(PSF, (uint) (FlagM.CF | FlagM.SF | FlagM.ZF | FlagM.OV), "cszv");

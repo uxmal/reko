@@ -1,0 +1,50 @@
+void fn0000(word16 acc, word16 offs, word16 bp, word16 grxl, word16 wArg1A, word16 wArg1C, word16 wArg1E)
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
+// MayUse:  acc:[0..15] bp:[0..15] grxl:[0..15] offs:[0..15] Stack +001A:[0..15] Stack +001C:[0..15] Stack +001E:[0..15]
+// LiveOut:
+// Trashed: csze a0 a4 a5 a6 a7 a8 acc ap apc bp dp0 dp1 grxl lc0 lc1 offs pfx0 pfx2 psf
+// Preserved: sp
+fn0000_entry:
+	sp_2 = fp
+l0000:
+	__read_modreg(1<8>)
+	csze_5 = cond(__read_modreg(1<8>))
+	goto l0091
+l0005:
+	offs = 0<8>
+	goto l00E9
+l0091:
+	branch (acc & 1<8>) == 0<16> l010E
+l0097:
+	Mem19[1<i16>:word16] = 1<8>
+	branch true l00F8
+l00A4:
+	goto l0005
+l00E9:
+	Mem55[bp:word16] = wArg1A
+	__read_modreg(0<8>) = wArg1C
+	csze_58 = cond(__read_modreg(0<8>))
+	__read_modreg(8<8>) = wArg1E
+	sp_2 = fp + 30<i16>
+	csze_60 = cond(__read_modreg(8<8>))
+l00F8:
+	Mem68[offs:word16] = 0<8>
+	call grxl (retsize: 2;)
+		uses: a7:a7_84,a8:a8_96,acc:0<16>,apc:0<16>,bp:0<16>,dp1:dp1_93 + 1<i16>,grxl:grxl,lc0:lc0_117,lc1:lc1_115,Mem:Mem68,offs:Mem68[sp_72 + 2<i16>:word16],pfx0:0x80<16>,pfx2:0<16>
+		defs: a7:a7_84,a8:a8_96,dp1:dp1_93,sp:sp_77
+	offs_98 = Mem68[sp_77:word16]
+	bp_100 = Mem68[sp_77 - 2<i16>:word16]
+	__read_modreg(0<8>) = Mem68[sp_77 - 4<i16>:word16]
+	csze_103 = cond(__read_modreg(0<8>))
+	__read_modreg(0<8>) = Mem68[sp_77 - 6<i16>:word16]
+	csze_105 = cond(__read_modreg(0<8>))
+	Mem106[bp_100 + offs_98:word16] = Mem68[sp_77 - 8<i16>:word16]
+	Mem110[dp1_93 + 1<i16>:word16] = Mem106[sp_77 - 10<i16>:word16]
+	lc1_115 = Mem110[sp_77 - 14<i16>:word16]
+	lc0_117 = Mem110[sp_77 - 16<i16>:word16]
+l010E:
+	__return_from_interrupt()
+	return
+fn0000_exit:
+
+

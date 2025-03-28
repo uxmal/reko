@@ -27,6 +27,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
 
 namespace Reko.Arch.Maxim;
 
@@ -78,7 +79,9 @@ public class MaxqArchitecture : ProcessorArchitecture
 
     public override FlagGroupStorage? GetFlagGroup(RegisterStorage flagRegister, uint grf)
     {
-        throw new System.NotImplementedException();
+        var flagregister = Registers.PSF;
+        var fl = new FlagGroupStorage(flagregister, grf, GrfToString(flagRegister, "", grf));
+        return fl;
     }
 
     public override FlagGroupStorage? GetFlagGroup(string name)
@@ -101,9 +104,31 @@ public class MaxqArchitecture : ProcessorArchitecture
         throw new System.NotImplementedException();
     }
 
+    public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
+    {
+        uint grf = flags.FlagGroupBits;
+        if (flags.FlagRegister == Registers.PSF)
+        {
+            if ((grf & Registers.C.FlagGroupBits) != 0) yield return Registers.C;
+            if ((grf & Registers.S.FlagGroupBits) != 0) yield return Registers.S;
+            if ((grf & Registers.Z.FlagGroupBits) != 0) yield return Registers.Z;
+            if ((grf & Registers.E.FlagGroupBits) != 0) yield return Registers.E;
+            if ((grf & Registers.V.FlagGroupBits) != 0) yield return Registers.V;
+        }
+    }
+
     public override string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)
     {
-        throw new System.NotImplementedException();
+        var sb = new StringBuilder();
+        if (flagRegister == Registers.PSF)
+        {
+            if ((grf & (uint) FlagM.CF) != 0) sb.Append('c');
+            if ((grf & (uint) FlagM.SF) != 0) sb.Append('s');
+            if ((grf & (uint) FlagM.ZF) != 0) sb.Append('z');
+            if ((grf & (uint) FlagM.EF) != 0) sb.Append('e');
+            if ((grf & (uint) FlagM.OV) != 0) sb.Append('v');
+        }
+        return sb.ToString();
     }
 
     public override Address MakeAddressFromConstant(Constant c, bool codeAlign)

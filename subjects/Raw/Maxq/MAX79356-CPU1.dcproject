@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemata.jklnet.org/Reko/v5">
+  <arch>maxq</arch>
+  <input>
+    <location>MAX79356-CPU1.bin</location>
+    <asmDir>MAX79356-CPU1.reko</asmDir>
+    <srcDir>MAX79356-CPU1.reko</srcDir>
+    <includeDir>MAX79356-CPU1.reko</includeDir>
+    <resources>MAX79356-CPU1.reko\resources</resources>
+    <user>
+      <address>0000</address>
+      <loader>raw</loader>
+      <processor name="maxq" />
+      <platform name="default" />
+      <procedure name="fn0000">
+        <address>0000</address>
+      </procedure>
+      <heuristic name="shingle" />
+      <onLoad enabled="false" />
+      <registerValues />
+      <extractResources>false</extractResources>
+      <outputFilePolicy>Segment</outputFilePolicy>
+    </user>
+  </input>
+</project>
