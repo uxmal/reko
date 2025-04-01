@@ -12,6 +12,7 @@ namespace Reko.ImageLoaders.OdbgScript
     using Reko.Core.Expressions;
     using Reko.Core;
     using System.Buffers.Binary;
+    using System.Diagnostics.CodeAnalysis;
 
     public static class Helper
     {
@@ -278,7 +279,7 @@ namespace Reko.ImageLoaders.OdbgScript
         // A hex literal matches:
         // #(..)*#
         // where . is a hex wild character.
-        public static bool TryGetHexLiteral(Expression s, out string pattern)
+        public static bool TryGetHexLiteral(Expression s, [MaybeNullWhen(false)] out string pattern)
         {
             if (s is Application a && a.Procedure is ProcedureConstant pc && 
                 pc.Procedure is IntrinsicProcedure intrinsic && 
@@ -287,7 +288,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 pattern = $"#{a.Arguments[0]}#";
                 return true;
             }
-            pattern = null!;
+            pattern = null;
             return false;
         }
 

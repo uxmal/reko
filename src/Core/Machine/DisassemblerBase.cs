@@ -446,6 +446,19 @@ namespace Reko.Core.Machine
             return fields.Select(f => new Bitfield(f.pos, f.len)).ToArray();
         }
 
+        protected static uint ReadFields(Bitfield[] fields, uint instr)
+        {
+            Decoder.DumpMaskedInstruction(32, instr, fields, "");
+            Bitfield.ReadFields(fields, instr);
+            uint result = 0;
+            foreach (var field in fields)
+            {
+                result <<= field.Length;
+                result |= field.Read(instr);
+            }
+            return result;
+        }
+
         protected virtual void Dispose(bool disposing)
         {
         }

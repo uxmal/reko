@@ -6,48 +6,47 @@ namespace Reko.ImageLoaders.OdbgScript
 {
     using Reko.Core;
     using System.Text;
-    using rulong = System.UInt64;
 
     public partial class Var
     {
-        public enum etype { EMP, DW, STR, FLT, ADR, };
+        public enum EType { EMP, DW, STR, FLT, ADR, };
 
-        private rulong dw;
+        private ulong dw;
         public string? str;
         public double flt;
 
-        public etype type;
+        public EType type;
         public int size;
         public bool IsBuf;
 
         public Reko.Core.Address? Address;
 
-        public static Var Create() { return new Var { type = etype.EMP }; }
-        public static Var Create(rulong rhs) { return new Var { type = etype.DW, dw = (rhs), size = 4 }; }
-        public static Var Create(int rhs) { return new Var { type = etype.DW, dw = (uint)rhs, size = (4) }; } // needed for var = 0
-        public static Var Create(uint rhs) { return new Var { type = etype.DW, dw = (rhs), size = (4) }; }
-        public static Var Create(double rhs) { return new Var { type = etype.FLT, flt = (rhs), size = (8) }; }
-        public static Var Create(Core.Address addr) { return new Var { type = etype.ADR, Address = addr, size = addr.DataType.Size };  }
-        public static Var Empty() { return new Var { type = etype.EMP }; }
+        public static Var Create() { return new Var { type = EType.EMP }; }
+        public static Var Create(ulong rhs) { return new Var { type = EType.DW, dw = (rhs), size = 4 }; }
+        public static Var Create(int rhs) { return new Var { type = EType.DW, dw = (uint)rhs, size = (4) }; } // needed for var = 0
+        public static Var Create(uint rhs) { return new Var { type = EType.DW, dw = (rhs), size = (4) }; }
+        public static Var Create(double rhs) { return new Var { type = EType.FLT, flt = (rhs), size = (8) }; }
+        public static Var Create(Core.Address addr) { return new Var { type = EType.ADR, Address = addr, size = addr.DataType.Size };  }
+        public static Var Empty() { return new Var { type = EType.EMP }; }
         
         protected Var() {}
 
-        public bool IsInteger() { return type == etype.DW; }
+        public bool IsInteger() { return type == EType.DW; }
 
         public static Var Create(string rhs)
         {
             return new StringVar(rhs);
         }
 
-        public bool IsString() { return type == etype.STR; }
+        public bool IsString() { return type == EType.STR; }
 
         public static Var operator +(Var lhs, Var rhs)
         {
             switch (rhs.type)
             {
-            case etype.DW: return Var.Create(lhs.dw + rhs.dw);
-            case etype.STR: return Var.Create(lhs.str + rhs.str);
-            case etype.FLT: return Var.Create(lhs.flt + rhs.flt);
+            case EType.DW: return Var.Create(lhs.dw + rhs.dw);
+            case EType.STR: return Var.Create(lhs.str + rhs.str);
+            case EType.FLT: return Var.Create(lhs.flt + rhs.flt);
             }
             return lhs;
         }
@@ -61,11 +60,11 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             Var v = Var.Create(rhs);
 
-            if (this.type == etype.DW)
+            if (this.type == EType.DW)
             {
                 if (v.IsBuf) // rulong + buf -> buf
                 {
-                    return Var.Create("#" + Helper.rul2hexstr(Helper.ToHostEndianness(this.dw, EndianServices.Little), sizeof(rulong) * 2) + v.ToHexString() + '#');
+                    return Var.Create("#" + Helper.rul2hexstr(Helper.ToHostEndianness(this.dw, EndianServices.Little), sizeof(ulong) * 2) + v.ToHexString() + '#');
                 }
                 else // rulong + str -> str
                 {
@@ -79,7 +78,7 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             public StringVar(string value)
             {
-                type = etype.STR;
+                type = EType.STR;
                 IsBuf = false;
                 size = value.Length;
                 str = value;
@@ -104,11 +103,11 @@ namespace Reko.ImageLoaders.OdbgScript
                 }
             }
 
-            public override Var Add(rulong rhs)
+            public override Var Add(ulong rhs)
             {
                 if (this.IsBuf) // buf + rulong -> buf
                 {
-                    return Var.Create("#" + this.ToHexString() + Helper.rul2hexstr(Helper.ToHostEndianness(rhs, EndianServices.Little), sizeof(rulong) * 2) + '#');
+                    return Var.Create("#" + this.ToHexString() + Helper.rul2hexstr(Helper.ToHostEndianness(rhs, EndianServices.Little), sizeof(ulong) * 2) + '#');
                 }
                 else // str + rulong -> str
                 {
@@ -167,17 +166,17 @@ namespace Reko.ImageLoaders.OdbgScript
             }
         }
 
-        public static Var operator +(Var lhs, rulong rhs)
+        public static Var operator +(Var lhs, ulong rhs)
         {
             return lhs.Add(rhs);
         }
 
-        public virtual Var Add(rulong rhs)
+        public virtual Var Add(ulong rhs)
         {
             switch (type)
             {
-            case etype.DW: return Create(this.dw + rhs);  
-            case etype.FLT: return Create(this.flt + rhs);
+            case EType.DW: return Create(this.dw + rhs);  
+            case EType.FLT: return Create(this.flt + rhs);
             }
             return this;
         }
@@ -189,7 +188,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         public virtual Var Add(double rhs)
         {
-            if (this.type == etype.FLT)
+            if (this.type == EType.FLT)
                 return Var.Create(this.flt + rhs);
             return this;
         }
@@ -200,24 +199,24 @@ namespace Reko.ImageLoaders.OdbgScript
             // zero this == rhs 
             // greater than zero this > rhs 
 
-            if (type != rhs.type || type == etype.EMP)
+            if (type != rhs.type || type == EType.EMP)
                 return -2;
 
             switch (type)
             {
-            case etype.DW:
+            case EType.DW:
                 if (dw < rhs.dw) return -1;
                 if (dw == rhs.dw) return 0;
                 if (dw > rhs.dw) return 1;
                 break;
 
-            case etype.FLT:
+            case EType.FLT:
                 if (flt < rhs.flt) return -1;
                 if (flt == rhs.flt) return 0;
                 if (flt > rhs.flt) return 1;
                 break;
 
-            case etype.STR:
+            case EType.STR:
                 if (IsBuf == rhs.IsBuf)
                     return str!.CompareTo(rhs.str);
                 else
@@ -240,11 +239,11 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             switch (type)
             {
-            case etype.DW:
+            case EType.DW:
                 dw = Helper.resize(dw, newsize);
                 size = newsize;
                 break;
-            case etype.STR:
+            case EType.STR:
                 if (newsize < size)
                 {
                     if (IsBuf)
@@ -261,7 +260,7 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             switch (type)
             {
-            case etype.DW:
+            case EType.DW:
                 dw = Helper.ToHostEndianness(dw, EndianServices.Little);
                 break;
             }
@@ -270,9 +269,9 @@ namespace Reko.ImageLoaders.OdbgScript
 
         public ulong ToUInt64()
         {
-            if (etype.DW == this.type)
+            if (EType.DW == this.type)
                 return dw;
-            else if (etype.ADR == this.type)
+            else if (EType.ADR == this.type)
                 return Address!.Value.ToLinear();
             throw new NotSupportedException();
         }

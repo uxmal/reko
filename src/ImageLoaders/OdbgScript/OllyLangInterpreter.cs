@@ -30,15 +30,12 @@ using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
 namespace Reko.ImageLoaders.OdbgScript
 {
-    using rulong = System.UInt64;
-
     // This is the table for Script Execution
     public class t_dbgmemblock
     {
@@ -59,7 +56,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
     public class t_export
     {
-        public rulong addr;
+        public ulong addr;
         public string? label; // ;label[256];
     }
 
@@ -95,8 +92,8 @@ namespace Reko.ImageLoaders.OdbgScript
         private readonly List<t_dbgmemblock> tMemBlocks = new List<t_dbgmemblock>();
 
         //last breakpoint reason
-        private rulong break_reason;
-        private rulong break_memaddr;
+        private ulong break_reason;
+        private ulong break_memaddr;
         private Address? pmemforexec;
         private Address? membpaddr;
         private ulong membpsize;
@@ -445,7 +442,7 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             public uint call;
             public bool returns_value;
-            public Var.etype return_type;
+            public Var.EType return_type;
         }
 
         private readonly List<callback_t> callbacks = new List<callback_t>();
@@ -560,7 +557,7 @@ namespace Reko.ImageLoaders.OdbgScript
         public class t_reg_backup
         {
             public bool loaded;
-            public Dictionary<RegisterStorage, rulong> regs = new();
+            public Dictionary<RegisterStorage, ulong> regs = new();
             public ulong eflags;
             public uint threadid;
             public int script_pos;
@@ -582,7 +579,7 @@ namespace Reko.ImageLoaders.OdbgScript
         /// <summary>
         /// Constant values.
         /// </summary>
-        readonly static Dictionary<string, ulong> constants = new Dictionary<string, rulong>(StringComparer.InvariantCultureIgnoreCase)
+        readonly static Dictionary<string, ulong> constants = new Dictionary<string, ulong>(StringComparer.InvariantCultureIgnoreCase)
         {
             { "true",  1},
             { "false", 0 },
@@ -852,7 +849,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 {
                     Host.FreeMemory(tMemBlocks[i].address!.Value, tMemBlocks[i].size);
                     if (tMemBlocks[i].result_register)
-                        variables["$RESULT"] = Var.Create((rulong) Debugger.GetContextData(tMemBlocks[i].reg_to_return));
+                        variables["$RESULT"] = Var.Create((ulong) Debugger.GetContextData(tMemBlocks[i].reg_to_return));
                     if (tMemBlocks[i].restore_registers)
                         restore_registers = true;
                     tMemBlocks.RemoveAt(i);
@@ -878,7 +875,7 @@ namespace Reko.ImageLoaders.OdbgScript
             }
             else
             {
-                break_reason = (rulong) reason;
+                break_reason = (ulong) reason;
 
                 if (EOB_row > -1)
                 {
@@ -1188,7 +1185,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         bool GetBool(Expression op, out bool value)
         {
-            if (GetRulong(op, out rulong temp))
+            if (GetRulong(op, out ulong temp))
             {
                 value = temp != 0;
                 return true;
@@ -1218,7 +1215,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 value = variables[id.Name].Address!.Value;
                 return true;
             }
-            if (!GetRulong(op, out rulong uAddr))
+            if (!GetRulong(op, out ulong uAddr))
                 return false;
             value = arch.MakeAddressFromConstant(Constant.UInt64(uAddr), false);
             return true;
@@ -1236,7 +1233,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return arch is not null;
         }
 
-        bool GetRulong(Expression op, out rulong value)
+        bool GetRulong(Expression op, out ulong value)
         {
             value = 0;
             if (op is Identifier id)
@@ -1356,7 +1353,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 }
                 else if (IsVariable(id.Name))
                 {
-                    if (variables[id.Name].type == Var.etype.FLT)
+                    if (variables[id.Name].type == Var.EType.FLT)
                     {
                         value = variables[id.Name].flt;
                         return true;
@@ -1381,10 +1378,10 @@ namespace Reko.ImageLoaders.OdbgScript
             return false;
         }
 
-        bool SetRulong(Expression op, rulong value, int size = 0)
+        bool SetRulong(Expression op, ulong value, int size = 0)
         {
-            if (size > sizeof(rulong))
-                size = sizeof(rulong);
+            if (size > sizeof(ulong))
+                size = sizeof(ulong);
 
             if (op is Identifier id)
             {
@@ -1637,7 +1634,7 @@ namespace Reko.ImageLoaders.OdbgScript
             tMemBlocks.Add(block);
         }
 
-        void regBlockToFree(Address address, rulong size, bool autoclean)
+        void regBlockToFree(Address address, ulong size, bool autoclean)
         {
             t_dbgmemblock block = new t_dbgmemblock();
 
@@ -1829,7 +1826,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return true;
         }
 
-        bool StepCallback(int pos, bool returns_value, Var.etype return_type, ref Var result)
+        bool StepCallback(int pos, bool returns_value, Var.EType return_type, ref Var result)
         {
             callback_t callback;
             callback.call = (uint) calls.Count;
@@ -1862,8 +1859,8 @@ namespace Reko.ImageLoaders.OdbgScript
             Var ret = Var.Empty();
 
             int label = Script.Labels[Label_AutoFixIATEx];
-            variables["$TE_ARG_1"] = Var.Create((rulong)fIATPointer);
-            if (StepCallback(label, true, Var.etype.DW, ref ret))
+            variables["$TE_ARG_1"] = Var.Create((ulong)fIATPointer);
+            if (StepCallback(label, true, Var.EType.DW, ref ret))
                 return (object)ret.ToUInt64();
             else
                 return 0;

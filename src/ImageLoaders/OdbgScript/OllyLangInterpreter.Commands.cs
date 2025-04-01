@@ -642,14 +642,14 @@ namespace Reko.ImageLoaders.OdbgScript
 
                 switch (v.type)
                 {
-                case Var.etype.STR: // empty buf + str . buf
+                case Var.EType.STR: // empty buf + str . buf
                     if (!v.IsBuf)
                     {
                         v = Var.Create("##") + v.str!;
                         variables[id.Name] = v;
                     }
                     break;
-                case Var.etype.DW: // empty buf + dw . buf
+                case Var.EType.DW: // empty buf + dw . buf
                     v = Var.Create("##") + v.ToUInt64();
                     variables[id.Name] = v;
                     break;
@@ -3707,7 +3707,7 @@ string param;
                                     callback_return = variables["$TEMP"];
                                     variables.Remove("$TEMP");
 
-                                    if (callback_return.type == Var.etype.EMP || callback_return.type == callbacks.Last().return_type)
+                                    if (callback_return.type == Var.EType.EMP || callback_return.type == callbacks.Last().return_type)
                                     {
                                         callbacks.RemoveAt(callbacks.Count - 1);
                                         return true;
@@ -3966,10 +3966,10 @@ ulong dw1, dw2;
                 Var v = variables[id.Name];
                 switch (v.type)
                 {
-                case Var.etype.DW: // empty buf + dw ->  buf
+                case Var.EType.DW: // empty buf + dw ->  buf
                     v = Var.Create("##") + v.ToUInt64();
-                    goto case Var.etype.STR;
-                case Var.etype.STR:
+                    goto case Var.EType.STR;
+                case Var.EType.STR:
                     if (v.IsBuf)
                         v = Var.Create(v.to_string());
                     variables[id.Name] = v;
