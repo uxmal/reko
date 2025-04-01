@@ -572,9 +572,8 @@ namespace Reko.Arch.Arc
 
         private void RewriteAddSubsdw(IntrinsicProcedure intrinsic)
         {
-            var dt = new ArrayType(PrimitiveType.Int16, 2);
-            var tmp1 = binder.CreateTemporary(dt);
-            var tmp2 = binder.CreateTemporary(dt);
+            var tmp1 = binder.CreateTemporary(ai16_2);
+            var tmp2 = binder.CreateTemporary(ai16_2);
             m.Assign(tmp1, Operand(1));
             m.Assign(tmp2, Operand(2));
             var dst = Operand(0);
@@ -877,10 +876,11 @@ namespace Reko.Arch.Arc
             m.SideEffect(m.Fn(CommonOps.Syscall_0), instr.InstructionClass);
         }
 
+        private static ArrayType ai16_2 = new ArrayType(PrimitiveType.Int16, 2);
+
         static ARCompactRewriter()
         {
-            var aint16 = new ArrayType(PrimitiveType.Int16, 2);
-            addsdw_intrinsic = IntrinsicBuilder.Binary("__addsdw", aint16);
+            addsdw_intrinsic = IntrinsicBuilder.Binary("__addsdw", ai16_2);
             bit_intrinsic = new IntrinsicBuilder("__bit", false)
                 .Param(PrimitiveType.Word32)
                 .Param(PrimitiveType.Word32)
@@ -889,7 +889,7 @@ namespace Reko.Arch.Arc
                 .Param(PrimitiveType.Word32)
                 .Param(PrimitiveType.Word32)
                 .Returns(PrimitiveType.Word32);
-            divaw_intrinsic = IntrinsicBuilder.Binary("__divaw", aint16);
+            divaw_intrinsic = IntrinsicBuilder.Binary("__divaw", ai16_2);
             flag_intrinsic = new IntrinsicBuilder("__flag", true)
                 .Param(PrimitiveType.Word32)
                 .Returns(PrimitiveType.Bool);
@@ -911,7 +911,7 @@ namespace Reko.Arch.Arc
                 .Param(PrimitiveType.Word32)
                 .Param(PrimitiveType.Word32)
                 .Void();
-            subsdw_intrinsic = IntrinsicBuilder.Binary("__subsdw", aint16);
+            subsdw_intrinsic = IntrinsicBuilder.Binary("__subsdw", ai16_2);
         }
 
         private static readonly IntrinsicProcedure addsdw_intrinsic;

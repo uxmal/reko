@@ -26,7 +26,7 @@ namespace Reko.Core.Rtl
     /// A RtlInstructionCluster contains the <see cref="RtlInstruction"/> that are generated when 
     /// a machine instruction is rewritten.
     /// </summary>
-    public sealed class RtlInstructionCluster
+    public sealed class RtlInstructionCluster : IAddressable
     {
         public RtlInstructionCluster(Address addr, int instrLength, params RtlInstruction[] instrs)
         {

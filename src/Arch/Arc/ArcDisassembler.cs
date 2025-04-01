@@ -53,8 +53,8 @@ namespace Reko.Arch.Arc
         {
             this.arch = arch;
             this.rdr = rdr;
-            this.ops = new List<MachineOperand>();
-            this.instr = null!;
+            this.ops = [];
+            this.instr = default!;
         }
 
         public override ArcInstruction? DisassembleInstruction()

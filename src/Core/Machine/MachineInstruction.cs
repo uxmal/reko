@@ -25,7 +25,7 @@ namespace Reko.Core.Machine
     /// <summary>
     /// Abstract base class for low-level machine instructions.
     /// </summary>
-    public abstract class MachineInstruction
+    public abstract class MachineInstruction : IAddressable
     {
         public MachineInstruction()
         {

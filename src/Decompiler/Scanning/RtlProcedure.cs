@@ -25,7 +25,7 @@ using System.Linq;
 
 namespace Reko.Scanning
 {
-    public class RtlProcedure
+    public class RtlProcedure : IAddressable
     {
         public RtlProcedure(
             IProcessorArchitecture arch,

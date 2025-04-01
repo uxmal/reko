@@ -30,7 +30,7 @@ namespace Reko.Core
     /// <summary>
     /// Represents a basic block of <see cref="Statement"/>s.
     /// </summary>
-    public class Block
+    public class Block : IAddressable
 	{
 		public Block(Procedure proc, Address addr, string id)
 		{
