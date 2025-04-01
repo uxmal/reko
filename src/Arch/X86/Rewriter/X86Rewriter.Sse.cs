@@ -339,7 +339,7 @@ namespace Reko.Arch.X86.Rewriter
         private void RewritePextr(PrimitiveType dt)
         {
             var src1 = SrcOp(1);
-            var byteno = ((Constant) instrCur.Operands[2]).ToInt32() % src1.DataType.Size;
+            var byteno = (((Constant) instrCur.Operands[2]).ToInt32() & 0xFF) % src1.DataType.Size;
             EmitCopy(0, m.Slice(src1, dt, byteno * 8));
         }
 
