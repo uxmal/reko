@@ -20,6 +20,7 @@
 using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.Collections;
+using Reko.Core.Configuration;
 using Reko.Core.Graphs;
 using Reko.Core.Loading;
 using Reko.Core.Output;
@@ -27,12 +28,14 @@ using Reko.Core.Scripts;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.Loading;
 using Reko.Scanning;
 using Reko.Services;
 using Reko.Structure;
 using Reko.Typing;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
 
@@ -48,6 +51,12 @@ namespace Reko
         private readonly IDecompilerEventListener eventListener;
         private readonly IServiceProvider services;
 
+        /// <summary>
+        /// Creates an instance of the Reko decompiler.
+        /// </summary>
+        /// <param name="project">Project to be analyzed.</param>
+        /// <param name="services"><see cref="IServiceProvider"/> instance
+        /// providing services. </param>
         public Decompiler(Project project, IServiceProvider services)
         {
             this.project = project;
@@ -57,6 +66,55 @@ namespace Reko
             BuildImageMaps();
         }
 
+        /// <summary>
+        /// Convenience method that creates a new instance of the decompiler, loading a binary
+        /// file into it. 
+        /// </summary>
+        /// <remarks>
+        /// This method is a convenient way to create a new instance of the decompiler,
+        /// at the cost of flexibility. To attain more flexibility, e.g. the capability
+        /// to override default load address or loading raw binary files that lack
+        /// any structure, you must load the binary file separately using the one of the methods on the <see cref="Loader"/> class,
+        /// and call the constructor of this class with the resulting <see cref="Core.Project"/> instance.
+        /// </remarks>
+        /// <param name="filePath">File system path to the binary file or Reko project file to load.</param>
+        /// <param name="rekoConfigFilePath">File system path to the reko.config file which contains all
+        /// necessary Reko configuration info.
+        /// </param>
+        public static Decompiler Create(string filePath, string rekoConfigFilePath)
+        {
+            var services = new ServiceContainer();
+            var pluginSvc = new PluginLoaderService();
+            services.AddService<IPluginLoaderService>(pluginSvc);
+            var fsSvc = new FileSystemService();
+            services.AddService<IFileSystemService>(fsSvc);
+            var eventListener = new NullDecompilerEventListener();
+            services.AddService<IDecompilerEventListener>(eventListener);
+            services.AddService<IEventListener>(eventListener);
+            var configSvc = RekoConfigurationService.Load(services, rekoConfigFilePath);
+            services.AddService<IConfigurationService>(configSvc);
+            var typelibSvc = new TypeLibraryLoaderServiceImpl(services);
+            services.AddService<ITypeLibraryLoaderService>(typelibSvc);
+            var decFileSvc = new DecompiledFileService(services, fsSvc, eventListener);
+            services.AddService<IDecompiledFileService>(decFileSvc);
+
+            var loader = new Loader(services);
+            var input = loader.Load(ImageLocation.FromUri(filePath));
+            if (input is not Project project)
+            {
+                if (input is not Program program)
+                    throw new InvalidOperationException(
+                        "The input file is not a Reko project or a recognized binary file. " +
+                        "Consider loading the file separately using one of the methods of " +
+                        "Reko.Loading.Loader.");
+                project = Project.FromSingleProgram(program);
+            }
+            return new Decompiler(project, services);
+        }
+
+        /// <summary>
+        /// The Reko project being analyzed.
+        /// </summary>
         public Project Project { get { return project; } set { project = value; ProjectChanged?.Invoke(this, EventArgs.Empty); } }
         public event EventHandler? ProjectChanged;
         private Project project;
@@ -114,7 +172,7 @@ namespace Reko
                     }
                     eventListener.Progress.ShowStatus("Building complex expressions.");
                     dfa.BuildExpressionTrees(ssas);
-                    host.WriteIntermediateCode(program, (name, procs, writer) => { EmitProgram(program, procs, dfa, name, writer); });
+                    host.WriteIntermediateCode(program, (name, procs, writer) => { EmitProgram(program, procs, dfa, writer); });
                 }
                 catch (Exception ex)
                 {
@@ -128,9 +186,18 @@ namespace Reko
             eventListener.Progress.ShowStatus("Interprocedural analysis complete.");
         }
 
+        /// <summary>
+        /// Writes the disassembly of the program to one or more files.
+        /// Each segment of the binary program generates one more output files.
+        /// </summary>
+        /// <param name="program">Program to disassemble.</param>
+        /// <param name="segmentItems">A dictionary mapping each <see cref="ImageSegment"/>
+        /// to a list of <see cref="ImageMapItem"/>s discovered in that segment.
+        /// </param>
+        /// <param name="wr">Object responsible for formatting the output files.
+        /// </param>
         public void DumpAssembler(
             Program program, 
-            string filename, 
             Dictionary<ImageSegment, List<ImageMapItem>> segmentItems,
             Formatter wr)
         {
@@ -152,7 +219,11 @@ namespace Reko
             }
         }
 
-        private void EmitProgram(Program program, IEnumerable<object> objects, DataFlowAnalysis? dfa, string filename, TextWriter output)
+        private void EmitProgram(
+            Program program, 
+            IEnumerable<object> objects,
+            DataFlowAnalysis? dfa,
+            TextWriter output)
         {
             if (output is null)
                 return;
@@ -196,6 +267,9 @@ namespace Reko
             }
         }
 
+        /// <summary>
+        /// Extracts embedded resources from all programs in the project.
+        /// </summary>
         public void ExtractResources()
         {
             if (project is null)
@@ -209,6 +283,11 @@ namespace Reko
             }
         }
 
+        /// <summary>
+        /// Extracts embedded resources from the given program.
+        /// </summary>
+        /// <param name="program">Program file from which to extract resources.
+        /// </param>
         public void ExtractResources(Program program)
         { 
             var prg = program.Resources;
@@ -282,8 +361,6 @@ namespace Reko
         /// <summary>
         /// Extracts type information from the typeless rewritten programs.
         /// </summary>
-        /// <param name="host"></param>
-        /// <param name="ivs"></param>
         public void ReconstructTypes()
         {
             if (Project is null)
@@ -310,7 +387,19 @@ namespace Reko
             }
         }
 
-        public void WriteDecompiledObjects(Program program, string filename, IEnumerable<IAddressable> objects, TextWriter w)
+        /// <summary>
+        /// Writes the high-level language decompiled objects to a file.
+        /// </summary>
+        /// <param name="program">Program that was decompiled.</param>
+        /// <param name="filename">The filename of the written file.</param>
+        /// <param name="objects">Objects that are to be written.</param>
+        /// <param name="w">Formatter object that converts the object to text.
+        /// </param>
+        public void WriteDecompiledObjects(
+            Program program,
+            string filename, 
+            IEnumerable<IAddressable> objects,
+            TextWriter w)
         {
             WriteHeaderComment(filename, program, w);
             //$REFACTOR: common code -- hardwired ".h"
@@ -380,6 +469,12 @@ namespace Reko
             }
         }
 
+        /// <summary>
+        /// Writes all detected global variables to a file.
+        /// </summary>
+        /// <param name="program">Program whose globals are to be written.</param>
+        /// <param name="filename">The name of the source file receiving the written globals.</param>
+        /// <param name="w">Formatting object that converts data globals to text.</param>
         public void WriteGlobals(Program program, string filename, TextWriter w)
         {
             var headerfile = DecompiledFileService.GenerateDerivedFilename(program, ".h");
@@ -515,8 +610,8 @@ namespace Reko
             finally
             {
                 eventListener.Progress.ShowStatus("Writing .asm and .dis files.");
-                host.WriteDisassembly(program, (n, items, w) => DumpAssembler(program, n, items, w));
-                host.WriteIntermediateCode(program, (n, procs, w) => EmitProgram(program, procs, null, n, w));
+                host.WriteDisassembly(program, (n, items, w) => DumpAssembler(program, items, w));
+                host.WriteIntermediateCode(program, (n, procs, w) => EmitProgram(program, procs, null, w));
                 // Uncomment the following for debugging.
                 // WriteSccs(program);
             }

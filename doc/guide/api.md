@@ -23,8 +23,8 @@ class RandomX86ByteDisassembler
         var bytes = new byte[1000];
         rnd.NextBytes(bytes);
 
-        // Put the bytes in a MemoryArea that Reko can consume.
-        var mem = new MemoryArea(Address.Ptr32(0x00123400), bytes);
+        // Put the bytes in a ByteMemoryArea that Reko can consume.
+        var mem = new ByteMemoryArea(Address.Ptr32(0x00123400), bytes);
         
         // Create an instance of an architecture whose disassembler you wish to use.
         var arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32");

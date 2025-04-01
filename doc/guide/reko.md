@@ -36,19 +36,40 @@ If you're comfortable with programming, you can access the Reko object model dir
 using Reko;
 using Reko.Core;
 
-class DumpProcedures {
+public class DumpProcedures {
     public static int Main(string [] args) {
-        var dec = DecompilerDriver.Create();
-        if (!dec.Load("myfile.exe"))
-            return -1;
+        var dec = Reko.Decompiler.Create(args[0], "reko/reko.config");
         dec.ScanPrograms();
         foreach (var program in dec.Project.Programs) {
             foreach (var entry in program.Procedures) {
-                Console.Write("Address {0}, procedure name {1}", entry.Key, entry.Value);
+                Console.WriteLine("Address {0}, procedure name {1}", entry.Key, entry.Value);
             }
         }
+        return 0;
     }
 }
+```
+Now use the following C# project file, calling it, say `procs.csproj`:
+```xml
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Reko.Decompiler.Runtime" Version="0.12.0" />
+  </ItemGroup>
+
+</Project>
+```
+The following command line will build and run the program on a given
+executable file:
+```
+$ dotnet run procs.csproj test.exe
 ```
 
 Reko has a rich API you can use for reverse engineering. [Read on for more details](api.md).
