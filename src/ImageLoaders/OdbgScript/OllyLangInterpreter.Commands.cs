@@ -3593,8 +3593,8 @@ string param;
 
             if (args.Length >= 3 && args.Length <= 4 &&
                 GetAddress(args[0], out Address addr) && 
-                Helper.TryGetHexLiteral(args[1], out string v1) && 
-                Helper.TryGetHexLiteral(args[2], out string v2))
+                Helper.TryGetHexLiteral(args[1], out string? v1) && 
+                Helper.TryGetHexLiteral(args[2], out string? v2))
             {
                 if (args.Length == 4 && !GetRulong(args[3], out len))
                     return false;
