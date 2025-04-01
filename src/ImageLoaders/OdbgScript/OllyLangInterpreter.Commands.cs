@@ -135,7 +135,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         private bool DoASK(Expression[] args)
         {
-            if (args.Length == 1 && GetString(args[0], out string title))
+            if (args.Length == 1 && GetString(args[0], out string? title))
             {
                 variables["$RESULT"] = variables["$RESULT_1"] = Var.Create(0);
 
@@ -162,7 +162,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         private bool DoASM(Expression[] args)
         {
-            if (args.Length >= 2 && args.Length <= 3 && GetAddress(args[0], out Address addr) && GetString(args[1], out string cmd))
+            if (args.Length >= 2 && args.Length <= 3 && GetAddress(args[0], out Address addr) && GetString(args[1], out string? cmd))
             {
                 if (args.Length == 3 && !GetRulong(args[2], out ulong attempt))
                     return false;
@@ -190,7 +190,7 @@ namespace Reko.ImageLoaders.OdbgScript
         /// </remarks>
         private bool DoASMTXT(Expression[] args)
         {
-            if (args.Length == 2 && GetAddress(args[0], out Address addr) && GetString(args[1], out string asmfile))
+            if (args.Length == 2 && GetAddress(args[0], out Address addr) && GetString(args[1], out string? asmfile))
             {
                 int totallen = 0;
                 List<string> lines = Host.getlines_file(asmfile);
@@ -219,7 +219,7 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             ulong @base = 16;
 
-            if (args.Length >= 1 && args.Length <= 2 && GetString(args[0], out string str))
+            if (args.Length >= 1 && args.Length <= 2 && GetString(args[0], out string? str))
             {
                 if (args.Length == 2 && !GetRulong(args[1], out @base))
                     return false;
@@ -326,7 +326,7 @@ namespace Reko.ImageLoaders.OdbgScript
         // TE?
         private bool DoBPCND(Expression[] args)
         {
-            if (args.Length == 2 && GetRulong(args[0], out ulong addr) && GetString(args[1], out string condition))
+            if (args.Length == 2 && GetRulong(args[0], out ulong addr) && GetString(args[1], out string? condition))
             {
                 errorstr = "Unsupported command!";
                 return false;
@@ -413,7 +413,7 @@ namespace Reko.ImageLoaders.OdbgScript
         /// <returns></returns>
         private bool DoBPHWS(Expression[] args)
         {
-            string typestr = "x";
+            string? typestr = "x";
 
             if (args.Length >= 1 && args.Length <= 2 && GetAddress(args[0], out Address addr))
             {
@@ -442,7 +442,7 @@ namespace Reko.ImageLoaders.OdbgScript
         private bool DoBPL(Expression[] args)
         {
             if (args.Length == 2 && GetAddress(args[0], out Address addr) &&
-                GetString(args[1], out string expression))
+                GetString(args[1], out string? expression))
             {
                 errorstr = "Unsupported command!";
                 return false;
@@ -471,8 +471,8 @@ namespace Reko.ImageLoaders.OdbgScript
         private bool DoBPLCND(Expression[] args)
         {
             if (args.Length == 3 && GetAddress(args[0], out Address addr) &&
-                GetString(args[1], out string expression) &&
-                GetString(args[2], out string condition))
+                GetString(args[1], out string? expression) &&
+                GetString(args[2], out string? condition))
             {
                 errorstr = "Unsupported command!";
                 return false;
@@ -549,7 +549,7 @@ namespace Reko.ImageLoaders.OdbgScript
         /// </summary>
         private bool DoBPX(params Expression[] args)
         {
-            if (args.Length >= 1 && args.Length <= 2 && GetString(args[0], out string callname))
+            if (args.Length >= 1 && args.Length <= 2 && GetString(args[0], out string? callname))
             {
                 if (args.Length == 2 && !GetRulong(args[1], out ulong del))
                     return false;
@@ -754,7 +754,7 @@ ulong hwnd;
         // Olly only
         private bool DoCMT(Expression[] args)
         {
-            if (args.Length == 2 && GetRulong(args[0], out ulong addr) && GetString(args[1], out string cmt))
+            if (args.Length == 2 && GetRulong(args[0], out ulong addr) && GetString(args[1], out string? cmt))
             {
                 return true;
             }
@@ -856,7 +856,7 @@ ulong hwnd;
 
         private bool DoDM(Expression[] args)
         {
-            if (args.Length == 3 && GetRulong(args[0], out ulong addr) && GetRulong(args[1], out ulong size) && GetString(args[2], out string filename))
+            if (args.Length == 3 && GetRulong(args[0], out ulong addr) && GetRulong(args[1], out ulong size) && GetString(args[2], out string? filename))
             {
                 if (!Path.IsPathRooted(filename))
                     filename = Host.TE_GetTargetDirectory() + filename;
@@ -876,7 +876,7 @@ ulong hwnd;
             if (args.Length == 3 &&
                 GetAddress(args[0], out Address addr) &&
                 GetRulong(args[1], out ulong uSize) &&
-                GetString(args[2], out string filename))
+                GetString(args[2], out string? filename))
             {
                 int size = (int) uSize;
                 if (!Path.IsPathRooted(filename))
@@ -927,7 +927,7 @@ ulong hwnd;
         {
             IProcessorArchitecture? arch = null;
             if (args.Length >= 2 &&
-                GetString(args[0], out string filename) &&
+                GetString(args[0], out string? filename) &&
                 GetAddress(args[1], out Address ep) &&
                 (args.Length == 2 || GetArchitecture(args[2], out arch)))
             {
@@ -1037,7 +1037,7 @@ ulong hwnd;
 
         private bool DoEVAL(Expression[] args)
         {
-            if (args.Length == 1 && GetString(args[0], out string to_eval))
+            if (args.Length == 1 && GetString(args[0], out string? to_eval))
             {
                 variables["$RESULT"] = Var.Create(InterpolateVariables(to_eval, false));
                 return true;
@@ -1194,7 +1194,7 @@ ulong hwnd;
         /// </remarks>
         private bool DoFIND(params Expression[] args)
         {
-            string finddata;
+            string? finddata;
             ulong maxsize = 0;
 
             if (args.Length < 2 || args.Length > 3 || !GetAddress(args[0], out Address addr))
@@ -1565,7 +1565,7 @@ ulong hwnd;
         // TE?
         private bool DoFINDOP(Expression[] args)
         {
-            string finddata;
+            string? finddata;
             ulong maxsize = 0;
 
             if (args.Length >= 2 && args.Length <= 3 && GetAddress(args[0], out Address addr))
@@ -1860,7 +1860,7 @@ ulong addr;
 
         private bool DoGMA(Expression[] args)
         {
-            if (args.Length == 2 && GetString(args[0], out string mod))
+            if (args.Length == 2 && GetString(args[0], out string? mod))
             {
                 if (mod.Length > 8)
                     mod = mod.Remove(8);
@@ -2405,7 +2405,7 @@ string str;
 
         private bool DoGPA(Expression[] args)
         {
-            if (args.Length >= 2 && args.Length <= 3 && GetString(args[0], out string proc) && GetString(args[1], out string lib))
+            if (args.Length >= 2 && args.Length <= 3 && GetString(args[0], out string? proc) && GetString(args[1], out string? lib))
             {
                 if (args.Length == 3 && !GetBool(args[2], out bool dofree))
                     return false;
@@ -2618,7 +2618,7 @@ string str = "";
 
         private bool DoHANDLE(Expression[] args)
         {
-            if (args.Length == 3 && GetRulong(args[0], out ulong x) && GetRulong(args[1], out ulong y) && GetString(args[2], out string sClassName))
+            if (args.Length == 3 && GetRulong(args[0], out ulong x) && GetRulong(args[1], out ulong y) && GetString(args[2], out string? sClassName))
             {
                 variables["$RESULT"] = Var.Create((ulong) Host.FindHandle(Host.TE_GetMainThreadId(), sClassName, x, y));
                 return true;
@@ -2778,7 +2778,7 @@ string str = "";
         // Olly only
         private bool DoLBL(Expression[] args)
         {
-            if (args.Length == 2 && GetRulong(args[0], out ulong addr) && GetString(args[1], out string lbl))
+            if (args.Length == 2 && GetRulong(args[0], out ulong addr) && GetString(args[1], out string? lbl))
             {
                 return true;
             }
@@ -2870,7 +2870,7 @@ string filename;
 
         private bool DoLEN(Expression[] args)
         {
-            if (args.Length == 1 && GetString(args[0], out string str))
+            if (args.Length == 1 && GetString(args[0], out string? str))
             {
                 variables["$RESULT"] = Var.Create(str.Length);
                 return true;
@@ -2880,7 +2880,7 @@ string filename;
 
         private bool DoLOADLIB(Expression[] args)
         {
-            if (args.Length == 1 && GetString(args[0], out string str))
+            if (args.Length == 1 && GetString(args[0], out string? str))
             {
                 variables["$RESULT"] = Var.Create(0);
 
@@ -2948,7 +2948,7 @@ string filename;
 
         private bool DoLOG(Expression[] args)
         {
-            string prefix = "";
+            string? prefix = "";
 
             if (args.Length >= 1 && args.Length <= 2)
             {
@@ -2969,7 +2969,7 @@ string filename;
                 {
                     @out = Helper.dbl2str(flt);
                 }
-                else if (GetString(args[0], out string str))
+                else if (GetString(args[0], out string? str))
                 {
                     @out = Helper.IsHexLiteral(str) ? str : Helper.CleanString(str);
                 }
@@ -2983,7 +2983,7 @@ string filename;
 
         private bool DoLOGBUF(Expression[] args)
         {
-            string sep = " ";
+            string? sep = " ";
             ulong dw = 0;
 
             if (args.Length >= 1 && args.Length <= 3 && args[0] is Identifier id && IsVariable(id.Name))
@@ -3047,7 +3047,7 @@ string filename;
                     return false;
 
                 ulong dw;
-                string str;
+                string? str;
                 double flt;
 
                 if (!IsWriteable(args[0]) && !DoVAR(args[0]))
@@ -3090,7 +3090,7 @@ string filename;
                     }
                     else if (GetString(args[1], (int) maxsize, out str)) // string
                     {
-                        v = Var.Create(str);
+                        v = Var.Create(str!);
                     }
                     else if (GetFloat(args[1], out flt)) // float
                     {
@@ -3188,7 +3188,7 @@ string filename;
                         }
                         else if (GetString(args[1], (int) maxsize, out str))
                         {
-                            Var v = Var.Create(str);
+                            Var v = Var.Create(str!);
                             if (maxsize == 0)
                                 maxsize = (ulong) v.size;
                             maxsize = Math.Min(maxsize, (ulong) v.size);
@@ -3222,7 +3222,7 @@ string filename;
 
         private bool DoMSGYN(Expression[] args)
         {
-            if (args.Length == 1 && GetString(args[0], out string msg))
+            if (args.Length == 1 && GetString(args[0], out string? msg))
             {
                 if (Host.DialogMSGYN(msg, out int input))
                 {
@@ -3470,9 +3470,9 @@ string param;
         {
             if (args.Length == 2 && 
                 GetRulong(args[1], out ulong maxsize) &&
-                GetString(args[0], (int) maxsize, out string str))
+                GetString(args[0], (int) maxsize, out string? str))
             {
-                variables["$RESULT"] = Var.Create(str);
+                variables["$RESULT"] = Var.Create(str!);
                 return true;
             }
             return false;
@@ -3734,7 +3734,7 @@ string param;
                     variables["$RESULT"] = Var.Create(Helper.ToHostEndianness(dw, arch.Endianness));
                     return true;
                 }
-                else if (GetString(args[0], out string str))
+                else if (GetString(args[0], out string? str))
                 {
                     Var tmp = Var.Create(str);
                     variables["$RESULT"] = tmp.reverse();
@@ -3890,7 +3890,7 @@ ulong dw1, dw2;
                 if (args.Length == 3 && !GetRulong(args[2], out size))
                     return false;
 
-                if (GetString(args[0], (int) size, out string s1) && GetString(args[1], (int) size, out string s2))
+                if (GetString(args[0], (int) size, out string? s1) && GetString(args[1], (int) size, out string? s2))
                 {
                     SetCMPFlags(cmp.Compare(s1, s2));
                     return true;
@@ -4063,7 +4063,7 @@ ulong dw1, dw2;
         // TE?
         private bool DoTICND(Expression[] args)
         {
-            if (args.Length == 1 && GetString(args[0], out string condition))
+            if (args.Length == 1 && GetString(args[0], out string? condition))
             {
                 errorstr = "Unsupported command!";
                 return false;
@@ -4103,7 +4103,7 @@ ulong dw1, dw2;
         // TE?
         private bool DoTOCND(Expression[] args)
         {
-            if (args.Length == 1 && GetString(args[0], out string condition))
+            if (args.Length == 1 && GetString(args[0], out string? condition))
             {
                 errorstr = "Unsupported command!";
                 return false;
@@ -4215,8 +4215,8 @@ string filename, data;
 
         private bool DoWRTA(Expression[] args)
         {
-            string @out = "\r\n";
-            if (args.Length >= 2 && args.Length <= 3 && GetString(args[0], out string filename) && GetAnyValue(args[1], out string? data))
+            string? @out = "\r\n";
+            if (args.Length >= 2 && args.Length <= 3 && GetString(args[0], out string? filename) && GetAnyValue(args[1], out string? data))
             {
                 if (args.Length == 3 && !GetString(args[2], out @out))
                     return false;
@@ -4321,7 +4321,7 @@ string filename, data;
         {
             if (args.Length != 1)
                 return false;
-            if (!GetString(args[0], out string sArch))
+            if (!GetString(args[0], out string? sArch))
                 return false;
             var cfgSvc = services.RequireService<IConfigurationService>();
             var arch = cfgSvc.GetArchitecture(sArch);

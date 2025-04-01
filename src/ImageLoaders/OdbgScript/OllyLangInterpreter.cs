@@ -1103,12 +1103,12 @@ namespace Reko.ImageLoaders.OdbgScript
             return false;
         }
 
-        bool GetString(Expression op, out string? value)
+        bool GetString(Expression op, [MaybeNullWhen(false)] out string value)
         {
             return GetString(op, 0, out value);
         }
 
-        bool GetString(Expression op, int size, out string? value)
+        bool GetString(Expression op, int size, [MaybeNullWhen(false)] out string? value)
         {
             if (op is Identifier id && IsVariable(id.Name))
             {
