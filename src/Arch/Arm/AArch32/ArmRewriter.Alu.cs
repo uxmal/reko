@@ -1057,13 +1057,25 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
+        private void RewriteUsad8()
+        {
+            var opDst = this.Operand(0, PrimitiveType.Word32, true);
+            var opSrc1 = this.Operand(1);
+            var opSrc2 = this.Operand(2);
+            var vSrc1 = binder.CreateTemporary(ab_4);
+            var vSrc2 = binder.CreateTemporary(ab_4);
+            m.Assign(vSrc1, opSrc1);
+            m.Assign(vSrc2, opSrc2);
+            var intrinsic = m.Fn(usad8_intrinsic.MakeInstance(ab_4), vSrc1, vSrc2);
+            m.Assign(opDst, intrinsic);
+        }
+
         private void RewriteUsada8()
         {
             var opDst = this.Operand(0, PrimitiveType.Word32, true);
             var opSrc1 = this.Operand(1);
             var opSrc2 = this.Operand(2);
             var opAcc = this.Operand(3);
-            var ab_4 = new ArrayType(PrimitiveType.Byte, 4);
             var vSrc1 = binder.CreateTemporary(ab_4);
             var vSrc2 = binder.CreateTemporary(ab_4);
             m.Assign(vSrc1, opSrc1);

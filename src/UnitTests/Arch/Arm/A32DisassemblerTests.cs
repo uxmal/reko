@@ -80,7 +80,7 @@ namespace Reko.UnitTests.Arch.Arm
             var dasm = arch.CreateDisassembler(mem.CreateLeReader(0));
             var instr = dasm.First();
 
-            if (sExp != instr.ToString() && !(instr.MnemonicAsString == "Nyi" || instr.MnemonicAsString == "Invalid"))
+            //if (sExp != instr.ToString() && !(instr.MnemonicAsString == "Nyi" || instr.MnemonicAsString == "Invalid"))
             {
                 Assert.AreEqual(sExp, instr.ToString());
             }
@@ -837,7 +837,7 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void ArmDasm_vsri()
         {
-            AssertCode("@@@", "5364D1F3");
+            AssertCode("vsri.i16\tq11,q1,#1", "5264D1F3");
         }
 
         [Test]
@@ -998,7 +998,13 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void ArmDasm_vabs()
         {
-            AssertCode("@@@", "06E7F1F3");
+            AssertCode("vabs.s32\td30,d6", "06E7F9F3");
+        }
+
+        [Test]
+        public void ArmDasm_vabd_float()
+        {
+            AssertCode("vabd.f16\td3,d4,d11", "0B3D34F3");
         }
 
         [Test]
@@ -1009,28 +1015,22 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ArmDasm_vabd_float()
-        {
-            AssertCode("@@@", "1B3D34F3");
-        }
-
-        [Test]
         public void ArmDasm_vceq_f32()
         {
             AssertCode("vceq.f32\td30,d7,d10", "0AEE47F2");
         }
 
         [Test]
-        public void ArmDasm_vclt()
+        public void ArmDasm_vcls()
         {
-            AssertCode("@@@", "0C52F1F3");
+            AssertCode("vcls.s32\td0,d4", "0404B8F3");
+            AssertCode("vcls.s32\tq0,q2", "4404B8F3");
         }
 
         [Test]
-        public void ArmDasm_vcls()
+        public void ArmDasm_vclt()
         {
-            AssertCode("vcls@@@", "0504B8F3");
-            AssertCode("vcls@@@", "4504B8F3");
+            AssertCode("vclt.s8\td21,d12", "0C52F1F3");
         }
 
         [Test]
@@ -2433,12 +2433,6 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Disassemble32(0xF2E8F710);
             Expect_Code("vqshl.i32\td31,d0,#8");
-        }
-
-        [Test]
-        public void ArmDasm_vqshrun()
-        {
-            AssertCode("@@@", "1D38AFF3");
         }
 
         [Test]

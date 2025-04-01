@@ -459,5 +459,8 @@ namespace Reko.Arch.Arm.AArch32
         smlad,
         smladx,
         setpan,
+        vfsml,
+        vfmsl,
+        vfmal,
     }
 }

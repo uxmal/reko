@@ -96,7 +96,6 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
-
         private void RewriteVcvtToInteger(IntrinsicProcedure f32cvt, IntrinsicProcedure f64cvt)
         {
             var src = Operand(1);

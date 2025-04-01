@@ -466,7 +466,7 @@ namespace Reko.Arch.Arm.AArch32
         {
             return (u, d) =>
             {
-                var iValue = Bitfield.ReadFields(fields, u);
+                var iValue = ReadFields(fields, u);
                 var elemType = values[iValue];
                 d.state.vectorData = elemType;
                 return elemType != ArmVectorData.INVALID;
@@ -479,7 +479,7 @@ namespace Reko.Arch.Arm.AArch32
 
         private static readonly Mutator<A32Disassembler> viBH__18 = ves(Bf((18, 2)), I8, I16, INVALID, INVALID);
         private static readonly Mutator<A32Disassembler> viBHW_18 = ves(Bf((18, 2)), I8, I16, I32, INVALID);
-        private static readonly Mutator<A32Disassembler> visBHS_18 = ves(Bf((20, 2)), S8, S16, S32, INVALID);
+        private static readonly Mutator<A32Disassembler> visBHW_18 = ves(Bf((18, 2)), S8, S16, S32, INVALID);
 
         private static readonly Mutator<A32Disassembler> vipB_D_ = ves(Bf((20, 2)), P8, INVALID, P64, INVALID);
 
@@ -1679,6 +1679,12 @@ namespace Reko.Arch.Arm.AArch32
 
         private static Decoder Instr(Mnemonic mnemonic, params Mutator<A32Disassembler>[] mutators)
         {
+            return new InstrDecoder(mnemonic, InstrClass.Linear, ArmVectorData.INVALID, mutators);
+        }
+
+        private static Decoder Instr_v8_1(Mnemonic mnemonic, params Mutator<A32Disassembler>[] mutators)
+        {
+            //$TODO: version specific decoders
             return new InstrDecoder(mnemonic, InstrClass.Linear, ArmVectorData.INVALID, mutators);
         }
 
@@ -3491,7 +3497,7 @@ namespace Reko.Arch.Arm.AArch32
                         invalid),
                     Mask(4, 1, "  opc=0b1011",
                         Instr(Mnemonic.vqrdmulh, vis_HW_, q6, W22_12, W7_16, W5_0),
-                        nyi("VQRDMLAH ARMv8.1")),
+                        Instr_v8_1(Mnemonic.vqrdmlah, vis_HW_, q6, W22_12, W7_16, W5_0)),
 
                     Mask(4, 1, "  0b1100",
                         Mask(20, 2, "  op1=0",
@@ -3746,7 +3752,7 @@ namespace Reko.Arch.Arm.AArch32
                         Instr(Mnemonic.aesmc, x("*")),
                         Instr(Mnemonic.aesimc, x("*"))),
 
-                    Instr(Mnemonic.vcls, visBHW_, q6, W22_12, W5_0),
+                    Instr(Mnemonic.vcls, visBHW_18, q6, W22_12, W5_0),
                     Instr(Mnemonic.vclz, x("*")),
                     Instr(Mnemonic.vcnt, x("*")),
                     Instr(Mnemonic.vmvn, x("(register)")),
@@ -3762,15 +3768,15 @@ namespace Reko.Arch.Arm.AArch32
                     Instr(Mnemonic.vcle, x("(immediate 0)")),
 
                     Mask(10, 1,
-                        Instr(Mnemonic.vclt, q6, visBHS_18, W22_12, D5_0),
+                        Instr(Mnemonic.vclt, q6, visBHW_18, W22_12, D5_0),
                         Instr(Mnemonic.vclt, q6, vf18_HS_, W22_12, D5_0)),
                     Mask(10, 1, "  opc2=x101",
                         Mask(6, 1,
                             invalid,
                             Instr(Mnemonic.sha1h, x("*"))),
                         invalid),
-                    Instr(Mnemonic.vabs, x("*")),
-                    Instr(Mnemonic.vneg, x("*"))),
+                    Instr(Mnemonic.vabs, q6, visBHW_18, W22_12, W5_0),
+                    Instr(Mnemonic.vneg, q6, visBHW_18, W22_12, W5_0)),
 
                 Mask(7, 4, "  opc1=10",
                     Select("  size", 18, 0b11, n => n == 0,
@@ -3937,7 +3943,7 @@ namespace Reko.Arch.Arm.AArch32
 
                 Mask(24, 1, "  U",
                     invalid,
-                    Instr(Mnemonic.vsri, x(""))),
+                    Instr(Mnemonic.vsri, q6, vsh_BHWD_size, W22_12, W5_0, vsh_BHWD)),
                 Mask(24, 1, "  U",
                     Instr(Mnemonic.vshl, q6, vsh_BHWD_size, W22_12, W5_0, vsh_BHWD),
                     Instr(Mnemonic.vsli, q6, vsh_BHWD_size, W22_12, W5_0, vsh_BHWD)),
@@ -3948,7 +3954,7 @@ namespace Reko.Arch.Arm.AArch32
 
                 Mask(6, 2, 24, 1, "  LQ:U",
                     Instr(Mnemonic.vshrn, x("*")),
-                    Instr(Mnemonic.vqshrun, x("*")),
+                    Instr(Mnemonic.vqshrun, viBHW_18, W22_12, W5_0),    //?
                     Instr(Mnemonic.vrshrn, x("*")),
                     Instr(Mnemonic.vqrshrun, x("*")),
 
