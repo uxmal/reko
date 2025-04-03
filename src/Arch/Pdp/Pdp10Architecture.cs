@@ -167,24 +167,7 @@ namespace Reko.Arch.Pdp
 
         public override bool TryParseAddress(string? txtAddr, out Address addr)
         {
-            if (txtAddr is null)
-            {
-                addr = default!;
-                return false;
-            }
-            uint uAddr = 0;
-            foreach (var c in txtAddr)
-            {
-                var u = (uint) (c - '0');
-                if (u > 8)
-                {
-                    addr = default!;
-                    return false;
-                }
-                uAddr = (uAddr << 3) | u;
-            }
-            addr = Pdp10Architecture.Ptr18(uAddr);
-            return true;
+            return PdpTypes.TryParseAddress(txtAddr, out addr);
         } 
 
         public static ulong OctalStringToWord(string octalWord)
