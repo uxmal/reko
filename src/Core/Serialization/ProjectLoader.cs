@@ -274,8 +274,8 @@ namespace Reko.Core.Serialization
                 // use the LoadRawImage path.
                 var archName = sUser.Processor?.Name;
                 var platform = sUser.PlatformOptions?.Name;
-                var image = loader.LoadImageBytes(binLocation);
-                program = loader.ParseRawImage(image, address, new LoadDetails
+                var bytes = loader.LoadImageBytes(binLocation);
+                program = loader.ParseRawImage(bytes, address, new LoadDetails
                 {
                     Location = binLocation,
                     LoaderName = sUser.Loader,
@@ -350,9 +350,11 @@ namespace Reko.Core.Serialization
         /// <summary>
         /// Loads the user-specified data.
         /// </summary>
-        /// <param name="sUser"></param>
-        /// <param name="program"></param>
-        /// <param name="user"></param>
+        /// <param name="sUser">User data from the persistence layer.</param>
+        /// <param name="program">The partially loaded Program.</param>
+        /// <param name="user">UserData object that will be modified.</param>
+        /// <param name="projectLocation">The <see cref="ImageLocation" /> of the project hosting
+        /// this program.</param>
         public void LoadUserData(UserData_v4 sUser, Program program, UserData user, ImageLocation projectLocation)
         {
             if (sUser is null)

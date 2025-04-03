@@ -101,8 +101,8 @@ namespace Reko.Core.Configuration
         /// Given a relative path with respect to the installation directory, 
         /// returns the absolute path.
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
+        /// <param name="pathComponents">The components of the path.</param>
+        /// <returns>An installation-relative file path.</returns>
         string GetInstallationRelativePath(params string[] pathComponents);
         LoaderDefinition? GetImageLoader(string loader);
     }
@@ -136,11 +136,7 @@ namespace Reko.Core.Configuration
             this.symSources = LoadCollection(config.SymbolSources, LoadSymbolSource);
             this.rawFiles = LoadCollection(config.RawFiles, LoadRawFile);
             this.uiPreferences = new UiPreferencesConfiguration();
-            if (config.UiPreferences != null)
-            {
-                this.uiPreferences.Styles =
-                    LoadCollection(config.UiPreferences.Styles, LoadUiStyle);
-            };
+            this.uiPreferences.Styles = LoadCollection(config.UiPreferences?.Styles, LoadUiStyle);
         }
 
         private LoaderDefinition LoadLoaderConfiguration(RekoLoader l)
