@@ -31,7 +31,6 @@ using Reko.Core.Operators;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Evaluation;
-using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -57,7 +56,7 @@ namespace Reko.Analysis
         private Dictionary<Procedure, ProcedureFlow>? procCtx;
         private Dictionary<Block, Context>? blockCtx;
         private Context? ctx;       //$R
-        private ExpressionSimplifier? eval;
+        private ExpressionSimplifier eval;
         private IProcessorArchitecture arch;
         private bool propagateToCallers;
         private bool selfRecursiveCalls;
@@ -79,6 +78,7 @@ namespace Reko.Analysis
             this.worklist = new WorkStack<Block>();
             this.ssas = sccGroup.ToDictionary(s => s.SsaState.Procedure, s => s.SsaState);
             this.program = program;
+            this.eval = default!;
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace Reko.Analysis
             var savedTops = new Dictionary<Procedure, int?>();
             if (arch.TryGetRegister("Top", out var top))
             {
-                savedTops = CollectStackPointers(flow, top!);
+                savedTops = CollectStackPointers(flow, top);
             }
 
             CreateState();
@@ -150,10 +150,10 @@ namespace Reko.Analysis
 
         private static Dictionary<Procedure, int?> CollectStackPointers(
             ProgramDataFlow flow,
-            Storage stackRegister)
+            Storage? stackRegister)
         {
-            if (stackRegister == null)
-                return new Dictionary<Procedure, int?>();
+            if (stackRegister is null)
+                return [];
             return flow.ProcedureFlows.ToDictionary(
                 de => de.Key,
                 de =>
@@ -274,7 +274,8 @@ namespace Reko.Analysis
                 {
                     if (!stm.Instruction.Accept(this))
                         return;
-                } catch (Exception ex)
+                }
+                catch (Exception ex)
                 {
                     listener.Error(
                         listener.CreateStatementNavigator(program, stm),
@@ -348,7 +349,7 @@ namespace Reko.Analysis
 
         public bool VisitAssignment(Assignment ass)
         {
-            var (value, _) = ass.Src.Accept(eval!);
+            var (value, _) = ass.Src.Accept(eval);
             trace.Verbose("{0} = [{1}]", ass.Dst, value);
             ctx!.SetValue(ass.Dst, value);
 
@@ -357,7 +358,7 @@ namespace Reko.Analysis
 
         public bool VisitBranch(Branch branch)
         {
-            branch.Condition.Accept(eval!);
+            branch.Condition.Accept(eval);
             return true;
         }
 
@@ -415,7 +416,7 @@ namespace Reko.Analysis
                         .Where(u => u.Storage == d.Storage)
                         .Select(u =>
                         {
-                            var (e, _) = u.Expression.Accept(eval!);
+                            var (e, _) = u.Expression.Accept(eval);
                             return e;
                         })
                         .SingleOrDefault();
@@ -440,11 +441,11 @@ namespace Reko.Analysis
 
         public bool VisitGotoInstruction(GotoInstruction g)
         {
-            if (g.Condition != null)
+            if (g.Condition is not null)
             {
-                g.Condition.Accept(eval!);
+                g.Condition.Accept(eval);
             }
-            g.Target.Accept(eval!);
+            g.Target.Accept(eval);
             return true;
         }
 
@@ -481,22 +482,22 @@ namespace Reko.Analysis
 
         public bool VisitReturnInstruction(ReturnInstruction ret)
         {
-            if (ret.Expression != null)
+            if (ret.Expression is not null)
             {
-                ret.Expression.Accept(eval!);
+                ret.Expression.Accept(eval);
             }
             return true;
         }
 
         public bool VisitSideEffect(SideEffect side)
         {
-            side.Expression.Accept(eval!);
+            side.Expression.Accept(eval);
             return true;
         }
 
         public bool VisitStore(Store store)
         {
-            var (value, _) = store.Src.Accept(eval!);
+            var (value, _) = store.Src.Accept(eval);
             if (store.Dst is MemoryAccess mem)
             {
                 ctx!.SetValueEa(mem.EffectiveAddress, value);
@@ -506,7 +507,7 @@ namespace Reko.Analysis
 
         public bool VisitSwitchInstruction(SwitchInstruction si)
         {
-            si.Expression.Accept(eval!);
+            si.Expression.Accept(eval);
             return true;
         }
 

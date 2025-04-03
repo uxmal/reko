@@ -104,31 +104,6 @@ public class WebBuilder
 			}
 		}
 
-		public void InsertDeclarations()
-		{
-            /*
-			var deci = new DeclarationInserter(doms);
-			foreach (Web web in this.webs)
-			{
-                bool isLive = web.Uses.Count > 0;
-                bool isOnlyUsedByPhis = web.Uses.All(u => u.Instruction is PhiAssignment);
-                bool isMemoryId = web.Identifier?.Storage is MemoryStorage;
-                if (isLive && !isOnlyUsedByPhis && !isMemoryId)
-                {
-                    deci.InsertDeclaration(web);
-                }
-                else
-                {
-                    var isDefinedByOutArg = OutDefinitionFinder.Find(web.Members);
-                    if (isDefinedByOutArg)
-                    {
-                        deci.InsertDeclaration(web);
-                    }
-                }
-			}
-            */
-		}
-
 		public void Transform()
 		{
             try
