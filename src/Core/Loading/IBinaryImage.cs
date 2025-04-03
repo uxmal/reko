@@ -30,7 +30,7 @@ public interface IBinaryImage
     IBinaryHeader Header { get; }
     EndianServices Endianness { get; }
 
-    IReadOnlyList<IBinarySection> Sections {get;}
+    IReadOnlyList<IBinarySection> Sections { get; }
     IReadOnlyList<IBinarySegment> Segments { get; }
     IBinaryDebugInfo? DebugInfo { get; }
 
