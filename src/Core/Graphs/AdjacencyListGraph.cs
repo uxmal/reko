@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Reko.Core.Graphs
 {
@@ -53,6 +54,9 @@ namespace Reko.Core.Graphs
 
 
         public ICollection<T> Nodes => this.AdjacencyList.Keys;
+
+        public IEnumerable<(T, T)> Edges =>
+            AdjacencyList.SelectMany(kvp => kvp.Value.Select(s => (kvp.Key, s)));
 
         public void AddEdge(T nodeFrom, T nodeTo)
         {

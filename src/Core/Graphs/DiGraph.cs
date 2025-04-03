@@ -183,6 +183,20 @@ namespace Reko.Core.Graphs
             return nodes[item].Succ;
         }
 
+        public IEnumerable<(T, T)> Edges
+        {
+            get
+            {
+                foreach (var (from, n) in nodes)
+                {
+                    foreach (var to in n.Successors)
+                    {
+                        yield return (from, to.value);
+                    }
+                }
+            }
+        }
+
         public ICollection<T> Nodes
         {
             get { return nodeCollection; }
@@ -271,6 +285,19 @@ namespace Reko.Core.Graphs
 
         public ICollection<V> Nodes { get; }
 
+        public IEnumerable<(V, V, E)> Edges
+        {
+            get
+            {
+                foreach (var node in Nodes)
+                {
+                    if (!outEdges.TryGetValue(node, out var succs))
+                        continue;
+                    foreach (var succ in succs)
+                        yield return (node, succ.Item1, succ.Item2);
+                }
+            }
+        }
 
         public void AddEdge(V nodeFrom, V nodeTo, E edgeData)
         {
