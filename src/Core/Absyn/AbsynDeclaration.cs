@@ -24,27 +24,46 @@ using System;
 
 namespace Reko.Core.Absyn
 {
+    /// <summary>
+    /// Abstract syntax node for a declaration statement.
+    /// </summary>
 	public class AbsynDeclaration : AbsynStatement
 	{
+        /// <summary>
+        /// Constructs a declaration statement, with an optional 
+        /// initialization expression.
+        /// </summary>
+        /// <param name="id">Identifier to declare.</param>
+        /// <param name="expr">Optional initialization expression.</param>
 		public AbsynDeclaration(Identifier id, Expression? expr)
 		{
 			this.Identifier = id;
 			this.Expression = expr;
 		}
 
+        /// <summary>
+        /// The identifier being declared.
+        /// </summary>
         public Identifier Identifier { get; }
+
+        /// <summary>
+        /// Optional initialization expression.
+        /// </summary>
         public Expression? Expression { get; set; }
-        
+
+        /// <inheritdoc/>
         public override void Accept(IAbsynVisitor visitor)
 		{
 			visitor.VisitDeclaration(this);
 		}
 
+        /// <inheritdoc/>
         public override T Accept<T>(IAbsynVisitor<T> visitor)
         {
             return visitor.VisitDeclaration(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(IAbsynVisitor<T, C> visitor, C context)
         {
             return visitor.VisitDeclaration(this, context);

@@ -30,6 +30,7 @@ namespace Reko.Core.Machine
     /// Abstract base class for instruction decoders.
     /// </summary>
     /// <typeparam name="TDasm">Disassembler</typeparam>
+    /// <typeparam name="TMnemonic">Mnemonic</typeparam>
     /// <typeparam name="TInstr">Instruction type</typeparam>
     public abstract class Decoder<TDasm, TMnemonic, TInstr> : Decoder
         where TInstr : MachineInstruction

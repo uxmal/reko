@@ -25,25 +25,39 @@ using System.Text;
 
 namespace Reko.Core.Absyn
 {
+    /// <summary>
+    /// Represents a line comment in the abstract syntax tree.
+    /// </summary>
     public class AbsynLineComment : AbsynStatement
     {
+        /// <summary>
+        /// Creates a line comment.
+        /// </summary>
+        /// <param name="comment">The text of the comment.</param>
         public AbsynLineComment(string comment)
         {
             this.Comment = comment;
         }
 
+        /// <summary>
+        /// The text of the comment.
+        /// </summary>
         public string Comment { get; set; }
 
+
+        /// <inheritdoc />
         public override void Accept(IAbsynVisitor visitor)
         {
             visitor.VisitLineComment(this);
         }
 
+        /// <inheritdoc />
         public override T Accept<T>(IAbsynVisitor<T> visitor)
         {
             return visitor.VisitLineComment(this);
         }
 
+        /// <inheritdoc />
         public override T Accept<T, C>(IAbsynVisitor<T, C> visitor, C context)
         {
             return visitor.VisitLineComment(this, context);

@@ -25,14 +25,28 @@ using System.Collections.Generic;
 namespace Reko.Core.Absyn
 {
 	/// <summary>
-	/// Abstract syntax for a traditional 'if' statement.
+	/// Abstract syntax for a traditional "if" statement.
 	/// </summary>
 	public class AbsynIf : AbsynStatement
 	{
-        public AbsynIf(Expression e, List<AbsynStatement> then) : this(e, then, new List<AbsynStatement>())
+        /// <summary>
+        /// Constructs an "if-then" statement.
+        /// </summary>
+        /// <param name="e">The condition of the "if" statement.</param>
+        /// <param name="then">The list of statements to execute if the condition 
+        /// evaluated to non-zero.</param>
+        public AbsynIf(Expression e, List<AbsynStatement> then) : this(e, then, [])
         {
         }
 
+        /// <summary>
+        /// Constructs an "if-then-else" statement.
+        /// </summary>
+        /// <param name="e">The condition of the "if" statement.</param>
+        /// <param name="then">The list of statements to execute if the condition 
+        /// evaluated to non-zero.</param>
+        /// <param name="els">The list of statements to execute if the condition 
+        /// evaluated to zero.</param>
         public AbsynIf(Expression e, List<AbsynStatement> then, List<AbsynStatement> els)
         {
             this.Condition = e;
@@ -40,32 +54,46 @@ namespace Reko.Core.Absyn
             this.Else = els;
         }
 
+        /// <summary>
+        /// The condition of the "if" statement.
+        /// </summary>
         public Expression Condition { get; set; }
 
+        /// <summary>
+        /// The list of statements to execute if the condition evaluated to non-zero.
+        /// </summary>
         public List<AbsynStatement> Then { get; private set; }
 
+        /// <summary>
+        /// The list of statements to execute if the condition evaluated to zero.
+        /// </summary>
         public List<AbsynStatement> Else { get; private set; }
 
+        /// <inheritdoc />
 		public override void Accept(IAbsynVisitor v)
 		{
 			v.VisitIf(this);
 		}
 
+        /// <inheritdoc />
         public override T Accept<T>(IAbsynVisitor<T> visitor)
         {
             return visitor.VisitIf(this); 
         }
 
+        /// <inheritdoc />
         public override T Accept<T, C>(IAbsynVisitor<T, C> visitor, C context)
         {
             return visitor.VisitIf(this, context);
         }
 
+        /// <summary>
+        /// Inverts the condition of this "if" statement, by logicall negating
+        /// the condition and swapping the "then" and "else" statements.
+        /// </summary>
         public void InvertCondition()
         {
-            List<AbsynStatement> t = Then;
-            Then = Else;
-            Else = t;
+            (Else, Then) = (Then, Else);
             Condition = Condition.Invert();
         }
     }

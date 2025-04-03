@@ -18,18 +18,11 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Reko.Core.Code
 {
     /// <summary>
     /// Represents a comment introduced by the user.
     /// </summary>
-    /// <remarks>
     public class CodeComment : Instruction
     {
         public CodeComment(string comment)

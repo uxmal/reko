@@ -100,7 +100,7 @@ namespace Reko.Core.Services
         /// <summary>
         /// Report the state of a procedure to a file determine by the filename.
         /// </summary>
-        /// <param name="filePrefix"></param>
+        /// <param name="fileName"></param>
         /// <param name="testCaption"></param>
         /// <param name="proc"></param>
         void ReportProcedure(string fileName, string testCaption, Procedure proc);

@@ -26,9 +26,9 @@ namespace Reko.Core.Expressions
 {
     /// <summary>
     /// Models an access to the field of a record, like the Pascal expression
-    /// a.field. The <paramref name="expr"/> is expected to be a structure
+    /// a.field. The <see cref="FieldAccess.Structure"/> expression is expected to be a structure
     /// type. If it is a pointer type, that is the expression should be 
-    /// a^.field (as expressed in Pascal), remember to first "wrap" it in
+    /// <c>a^.field</c> (as expressed in Pascal), remember to first "wrap" it in
     /// a <see cref="Dereference" /> instance.
     /// </summary>
 	public class FieldAccess : AbstractExpression

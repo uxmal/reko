@@ -72,7 +72,7 @@ namespace Reko.Core.Memory
         /// until the end of memory.
         /// </summary>
         /// <param name="addr">Address at which to start reading.</param>
-        /// <param name="rdr">A big-endian <see cref="EndianImageReader"/>.</returns>
+        /// <param name="rdr">A big-endian <see cref="EndianImageReader"/>.</param>
         /// <returns>True if the provided address refers to valid memory,
         /// otherwise false.</returns>
         bool TryCreateBeReader(Address addr, [MaybeNullWhen(false)] out EndianImageReader rdr);
@@ -83,7 +83,7 @@ namespace Reko.Core.Memory
         /// until the end of memory.
         /// </summary>
         /// <param name="addr">Address at which to start reading.</param>
-        /// <param name="rdr">A little-endian <see cref="EndianImageReader"/>.</returns>
+        /// <param name="rdr">A little-endian <see cref="EndianImageReader"/>.</param>
         /// <returns>True if the provided address refers to valid memory,
         /// otherwise false.</returns>
         bool TryCreateLeReader(Address addr, [MaybeNullWhen(false)] out EndianImageReader rdr);
@@ -96,7 +96,7 @@ namespace Reko.Core.Memory
         /// <param name="addr">Address at which to start reading.</param>
         /// <param name="cUnits">Number of units to read, after which no more
         /// will be read.</param>
-        /// <param name="rdr">A big-endian <see cref="EndianImageReader"/>.</returns>
+        /// <param name="rdr">A big-endian <see cref="EndianImageReader"/>.</param>
         /// <returns>True if the provided address refers to valid memory,
         /// otherwise false.</returns>
         bool TryCreateBeReader(Address addr, long cUnits, [MaybeNullWhen(false)] out EndianImageReader rdr);
@@ -109,7 +109,7 @@ namespace Reko.Core.Memory
         /// <param name="addr">Address at which to start reading.</param>
         /// <param name="cUnits">Number of units to read, after which no more
         /// will be read.</param>
-        /// <param name="rdr">A little-endian <see cref="EndianImageReader"/>.</returns>
+        /// <param name="rdr">A little-endian <see cref="EndianImageReader"/>.</param>
         /// <returns>True if the provided address refers to valid memory,
         /// otherwise false.</returns>
         bool TryCreateLeReader(Address addr, long cUnits, [MaybeNullWhen(false)] out EndianImageReader rdr);
@@ -164,7 +164,7 @@ namespace Reko.Core.Memory
         /// address <paramref name="addr"/>.
         /// </summary>
         /// <param name="addr">Address to read from.</param>
-        /// <param name="b">Resulting value if successful.</param>
+        /// <param name="s">Resulting value if successful.</param>
         /// <returns>True if address was valid, false if not.
         /// </returns>
         bool TryReadBeInt16(Address addr, out short s);
@@ -174,7 +174,7 @@ namespace Reko.Core.Memory
         /// address <paramref name="addr"/>.
         /// </summary>
         /// <param name="addr">Address to read from.</param>
-        /// <param name="b">Resulting value if successful.</param>
+        /// <param name="s">Resulting value if successful.</param>
         /// <returns>True if address was valid, false if not.
         /// </returns>
         bool TryReadLeInt16(Address addr, out short s);
@@ -184,7 +184,7 @@ namespace Reko.Core.Memory
         /// address <paramref name="addr"/>.
         /// </summary>
         /// <param name="addr">Address to read from.</param>
-        /// <param name="b">Resulting value if successful.</param>
+        /// <param name="s">Resulting value if successful.</param>
         /// <returns>True if address was valid, false if not.
         /// </returns>
         bool TryReadBeUInt16(Address addr, out ushort s);
@@ -194,7 +194,7 @@ namespace Reko.Core.Memory
         /// address <paramref name="addr"/>.
         /// </summary>
         /// <param name="addr">Address to read from.</param>
-        /// <param name="b">Resulting value if successful.</param>
+        /// <param name="s">Resulting value if successful.</param>
         /// <returns>True if address was valid, false if not.
         /// </returns>
         bool TryReadLeUInt16(Address addr, out ushort s);
@@ -204,7 +204,7 @@ namespace Reko.Core.Memory
         /// address <paramref name="addr"/>.
         /// </summary>
         /// <param name="addr">Address to read from.</param>
-        /// <param name="b">Resulting value if successful.</param>
+        /// <param name="i">Resulting value if successful.</param>
         /// <returns>True if address was valid, false if not.
         /// </returns>
         bool TryReadBeInt32(Address addr, out int i);
@@ -214,7 +214,7 @@ namespace Reko.Core.Memory
         /// address <paramref name="addr"/>.
         /// </summary>
         /// <param name="addr">Address to read from.</param>
-        /// <param name="b">Resulting value if successful.</param>
+        /// <param name="i">Resulting value if successful.</param>
         /// <returns>True if address was valid, false if not.
         /// </returns>
         bool TryReadLeInt32(Address addr, out int i);
@@ -224,7 +224,7 @@ namespace Reko.Core.Memory
         /// address <paramref name="addr"/>.
         /// </summary>
         /// <param name="addr">Address to read from.</param>
-        /// <param name="b">Resulting value if successful.</param>
+        /// <param name="u">Resulting value if successful.</param>
         /// <returns>True if address was valid, false if not.
         /// </returns>
         bool TryReadBeUInt32(Address addr, out uint u);
@@ -234,7 +234,7 @@ namespace Reko.Core.Memory
         /// address <paramref name="addr"/>.
         /// </summary>
         /// <param name="addr">Address to read from.</param>
-        /// <param name="b">Resulting value if successful.</param>
+        /// <param name="u">Resulting value if successful.</param>
         /// <returns>True if address was valid, false if not.
         /// </returns>
         bool TryReadLeUInt32(Address addr, out uint u);
@@ -244,7 +244,7 @@ namespace Reko.Core.Memory
         /// address <paramref name="addr"/>.
         /// </summary>
         /// <param name="addr">Address to read from.</param>
-        /// <param name="b">Resulting value if successful.</param>
+        /// <param name="l">Resulting value if successful.</param>
         /// <returns>True if address was valid, false if not.
         /// </returns>
         bool TryReadBeInt64(Address addr, out long l);
@@ -254,7 +254,7 @@ namespace Reko.Core.Memory
         /// address <paramref name="addr"/>.
         /// </summary>
         /// <param name="addr">Address to read from.</param>
-        /// <param name="b">Resulting value if successful.</param>
+        /// <param name="l">Resulting value if successful.</param>
         /// <returns>True if address was valid, false if not.
         /// </returns>
         bool TryReadLeInt64(Address addr, out long l);
@@ -264,7 +264,7 @@ namespace Reko.Core.Memory
         /// address <paramref name="addr"/>.
         /// </summary>
         /// <param name="addr">Address to read from.</param>
-        /// <param name="b">Resulting value if successful.</param>
+        /// <param name="ul">Resulting value if successful.</param>
         /// <returns>True if address was valid, false if not.
         /// </returns>
         bool TryReadBeUInt64(Address addr, out ulong ul);
@@ -274,7 +274,7 @@ namespace Reko.Core.Memory
         /// address <paramref name="addr"/>.
         /// </summary>
         /// <param name="addr">Address to read from.</param>
-        /// <param name="b">Resulting value if successful.</param>
+        /// <param name="ul">Resulting value if successful.</param>
         /// <returns>True if address was valid, false if not.
         /// </returns>
         bool TryReadLeUInt64(Address addr, out ulong ul);

@@ -37,6 +37,12 @@ namespace Reko.Core.Analysis
     [DebuggerDisplay("{Procedure.Name}")]
 	public class SsaState
 	{
+        /// <summary>
+        /// Creates a new SSA state for the given procedure.
+        /// </summary>
+        /// <param name="proc"><see cref="Procedure"/> on which to base 
+        /// this SSA state.
+        /// </param>
 		public SsaState(Procedure proc)
 		{
 			this.Procedure = proc;
@@ -48,6 +54,9 @@ namespace Reko.Core.Analysis
         /// </summary> 
         public SsaIdentifierCollection Identifiers { get; }
 
+        /// <summary>
+        /// A reference to the underlying procedure.
+        /// </summary>
         public Procedure Procedure { get; }
 
         /// <summary>
@@ -101,6 +110,9 @@ namespace Reko.Core.Analysis
             return sid;
         }
 
+        /// <summary>
+        /// Convenience method for dumping the SSA state to the debugging console.
+        /// </summary>
         [Conditional("DEBUG")]
 		public void Dump(bool trace)
 		{
@@ -123,6 +135,11 @@ namespace Reko.Core.Analysis
             ValidateUses(error);
             ValidateDefinitions(error);
         }
+
+        /// <summary>
+        /// Validates all uses of identifiers in the SSA state. If found inconsistent,
+        /// writes an error message to the debug output.
+        /// </summary>
 
         [Conditional("DEBUG")]
         public void ValidateUses()
@@ -385,6 +402,11 @@ namespace Reko.Core.Analysis
             stm.Instruction.Accept(iua);
         }
 
+        /// <summary>
+        /// Add all identifiers used in the expression <paramref name="e"/>.
+        /// </summary>
+        /// <param name="stmUsing">The statement in which <paramref name="e"/> occurs.</param>
+        /// <param name="e">An expression possibly containing identifiers.</param>
         public void AddUses(Statement stmUsing, Expression e)
         {
             var iua = new InstructionUseAdder(stmUsing, Identifiers);

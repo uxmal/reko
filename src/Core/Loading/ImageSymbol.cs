@@ -44,6 +44,7 @@ namespace Reko.Core.Loading
         /// <summary>
         /// Use this method when only the address of the symbol is known.
         /// </summary>
+        /// <param name="arch">Processor architecture of the symbol.</param>
         /// <param name="address">Address of the symbol.</param>
         public static ImageSymbol Location(IProcessorArchitecture arch, Address address)
         {

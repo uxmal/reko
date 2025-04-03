@@ -18,19 +18,26 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Reko.Core.Absyn
 {
+    /// <summary>
+    /// Represents a procedure in the abstract syntax tree.
+    /// </summary>
     public class AbsynProcedure
     {
+        /// <summary>
+        /// Creates an abstract syntax tree node for a procedure.
+        /// </summary>
         public AbsynProcedure()
         {
             Body = new List<AbsynStatement>();
         }
 
+        /// <summary>
+        /// The statements of the procedure.
+        /// </summary>
         public List<AbsynStatement> Body { get; }
     }
 }

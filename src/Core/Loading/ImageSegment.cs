@@ -62,7 +62,6 @@ namespace Reko.Core.Loading
         /// binaries.
         /// </summary>
         /// <param name="name">The name of the segment.</param>
-        /// <param name="addr">The address of the segment.</param>
         /// <param name="mem">The <see cref="Memory.MemoryArea"/>, which 
         /// is not shared with other <see cref="ImageSegment"/>s.</param>
         /// <param name="access">Access mode of this segment.</param>
@@ -228,9 +227,9 @@ namespace Reko.Core.Loading
         /// <param name="address"><see cref="Address"/> to test.</param>
         /// <returns>True of the address is inside the segment, false if not.
         /// </returns>
-        public bool IsInRange(Address addr)
+        public bool IsInRange(Address address)
         {
-            return IsInRange(addr.ToLinear());
+            return IsInRange(address.ToLinear());
         }
 
         /// <summary>

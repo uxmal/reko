@@ -19,33 +19,50 @@
 #endregion
 
 using Reko.Core.Expressions;
-using System;
 using System.Collections.Generic;
 
 namespace Reko.Core.Absyn
 {
+    /// <summary>
+    /// Represents a C-style "switch" statement in the abstract syntax tree.
+    /// </summary>
     public class AbsynSwitch : AbsynStatement
     {
+        /// <summary>
+        /// Creates a switch statement.
+        /// </summary>
+        /// <param name="expr">The expression whose value is used to 
+        /// select a case.</param>
+        /// <param name="statements">The list of statements in the switch statement.</param>
         public AbsynSwitch(Expression expr, List<AbsynStatement> statements)
         {
             this.Expression = expr;
             this.Statements = statements;
         }
 
+        /// <summary>
+        /// The expression whose value is used to select a case.
+        /// </summary>
         public Expression Expression { get; }
 
+        /// <summary>
+        /// The list of statements in the switch statement.
+        /// </summary>
         public List<AbsynStatement> Statements { get; }
 
+        /// <inheritdoc />
         public override void Accept(IAbsynVisitor visitor)
         {
             visitor.VisitSwitch(this);
         }
 
+        /// <inheritdoc />
         public override T Accept<T>(IAbsynVisitor<T> visitor)
         {
             return visitor.VisitSwitch(this);
         }
 
+        /// <inheritdoc />
         public override T Accept<T, C>(IAbsynVisitor<T, C> visitor, C context)
         {
             return visitor.VisitSwitch(this, context);

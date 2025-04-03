@@ -52,6 +52,7 @@ namespace Reko.Core.Emulation
         /// <summary>
         /// When called, emulates a system call.
         /// </summary>
+        /// <param name="emulator">CPU emulator to use.</param>
         /// <param name="operands"></param>
         /// <returns>True if the platform emulator emulated the system call.
         /// False otherwise.</returns>

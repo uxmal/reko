@@ -58,7 +58,7 @@ namespace Reko.Core.Loading
 		/// <param name="addrLoad">Optional base address of the  image. If not specified,
         /// use the image format's default loading address. For some image types -- e.g. 
         /// archives -- the parameter is ignored.</param>
-		/// <returns>An object implementing the <see cref="ILoadedImage>" /> interface.</returns>
+		/// <returns>An object implementing the <see href="ILoadedImage>" /> interface.</returns>
         public abstract ILoadedImage Load(Address? addrLoad);
 
         public virtual ILoadedImage Load(Address? addrLoad, IProcessorArchitecture? arch)

@@ -25,7 +25,7 @@ namespace Reko.Core.Types
 {
     /// <summary>
     /// Generates a more compact and easily parsed string version
-    /// of a datatype. For final output, use <see cref="Reko.Output.TypeFormatter"/>.
+    /// of a datatype. For final output, use <see href="Reko.Output.TypeFormatter"/>.
     /// </summary>
     public class TypeGraphWriter : IDataTypeVisitor<Formatter>
     {

@@ -46,12 +46,12 @@ namespace Reko.Core.Analysis
         /// defined.</param>
         /// <param name="isSideEffect">True if this identifier is the result of
         /// a side effect.</param>
-        /// <returns>A freshly created <see cref="SsaIdentifier>"/></returns>
+        /// <returns>A freshly created <see cref="SsaIdentifier"/></returns>
 		public SsaIdentifier Add(Identifier idOld, Statement? stmDef, bool isSideEffect)
 		{
 			int i = ++serialNumber;
 			Identifier idNew;
-			if (stmDef != null)
+			if (stmDef is not null)
 			{
                 string name = idOld.Storage is MemoryStorage
 					? ReplaceNumericSuffix(idOld.Name, i)
@@ -92,14 +92,25 @@ namespace Reko.Core.Analysis
             sids.Add(id, sid);
         }
 
+        /// <summary>
+        /// The number of identifiers in the collection.
+        /// </summary>
         public int Count => sids.Count;
 
+        /// <summary>
+        /// Clears all the identifiers in the collection.
+        /// </summary>
         public void Clear()
         {
             sids.Clear();
             serialNumber = 0;
         }
 
+        /// <summary>
+        /// Returns true if the given identifier is in the collection.
+        /// </summary>
+        /// <param name="id"><see cref="Identifier"/> to look for.</param>
+        /// <returns>True if the identifier is present, otherwise false.</returns>
         public bool Contains(Identifier id)
         {
             return sids.ContainsKey(id);
@@ -110,21 +121,33 @@ namespace Reko.Core.Analysis
             sids.Values.CopyTo(array, arrayIndex);
         }
 
+        /// <inheritdoc/>
         public IEnumerator<SsaIdentifier> GetEnumerator()
         {
             return sids.Values.GetEnumerator();
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
+
+        /// <summary>
+        /// Removes the given <see cref="SsaIdentifier"/> from the collection.
+        /// </summary>
+        /// <param name="sid"><see cref="SsaIdentifier"/> to remove.</param>
+        /// <returns></returns>
         public bool Remove(SsaIdentifier sid)
         {
             return sids.Remove(sid.Identifier);
         }
 
+        /// <summary>
+        /// Given an identifier, returns the corresponding <see cref="SsaIdentifier"/>.
+        /// </summary>
+        /// <param name="id">The <see cref="Identifier"/> being used as a key.</param>
+        /// <param name="sid">The corresponding <see cref="SsaIdentifier"/> if present.</param>
+        /// <returns>True if a corresponding <see cref="SsaIdentifier "/> was found,
+        /// false if not.
+        /// </returns>
         public bool TryGetValue(Identifier id, [MaybeNullWhen(false)] out SsaIdentifier sid)
         {
             return sids.TryGetValue(id, out sid);

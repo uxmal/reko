@@ -206,6 +206,7 @@ namespace Reko.Core.Expressions
         /// <param name="op">The binary operator of the resulting expression.</param>
         /// <param name="left">The first operand of the resulting expression.</param>
         /// <param name="right">The second operand of the resulting expression.</param>
+        /// <param name="carryFlag">The expression holding the carry flag.</param>
         /// <returns>A binary expression.</returns>
         public BinaryExpression BinC(BinaryOperator op, Expression left, Expression right, Expression carryFlag)
         {
@@ -217,7 +218,7 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
-        /// Short-circuiting 'and' ('&&' in C family of languages)
+        /// Short-circuiting 'and' ('&amp;&amp;' in C family of languages)
         /// </summary>
         /// <param name="a">Antecedent expression.</param>
         /// <param name="b">Subsequent expression.</param>
@@ -356,7 +357,7 @@ namespace Reko.Core.Expressions
 
         /// <summary>
         /// Convenience method for equality comparison. The second parameter
-        /// is converted to a <see cref="Constant" first.
+        /// is converted to a <see cref="Constant"/> first.
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
@@ -369,7 +370,7 @@ namespace Reko.Core.Expressions
         /// <summary>
         /// Equality comparison with zero.
         /// </summary>
-        /// <param name="a">Expression to compare with zero.</param>
+        /// <param name="exp">Expression to compare with zero.</param>
         /// <returns>Comparison expression.</returns>
         public BinaryExpression Eq0(Expression exp)
         {
@@ -580,11 +581,11 @@ namespace Reko.Core.Expressions
         /// <summary>
         /// Generate a function application that applies the function-valued
         /// expression <paramref name="fn"/> to
-        /// the arguments <paramref name="args" /> and returns a value of type 
+        /// the arguments <paramref name="exps" /> and returns a value of type 
         /// <param name="retType"/>.
         /// </summary>
         /// <param name="fn">The function to apply.</param>
-        /// <param name="args">The arguments of the function.</param>
+        /// <param name="exps">The arguments of the function.</param>
         /// <returns>A function application</returns>
         public Application Fn(Expression fn, DataType retType, params Expression[] exps)
         {
@@ -805,6 +806,8 @@ namespace Reko.Core.Expressions
         /// Generates a memory access of the data of type <paramref name="dt"/> at the specified effective address
         /// <paramref name="ea"/> in the address space identified by <paramref name="mid" />.
         /// </summary>
+        /// <param name="mid">The memory identifier to use for this access.</param>
+        /// <param name="dt">The data type of the memory access.</param>
         /// <param name="ea">The address of the memory being accessed.</param>
         /// <returns>A memory access expression.</returns>
         public virtual MemoryAccess Mem(
@@ -1157,7 +1160,8 @@ namespace Reko.Core.Expressions
         /// Generate an ordered sequence of values of type <paramref name="dtSeq"/>.
         /// Use this when expressing values that are too long to fit in a machine registers.
         /// </summary>
-        /// <param name="exprs"></param>
+        /// <param name="dtSeq">The data type of the resulting sequence.</param>
+        /// <param name="exprs">The constituent elements of the sequence.</param>
         /// <returns>A sequence whose DataType is the weak "word" type of the 
         /// combined sizes of the expressions.</returns>
         public MkSequence Seq(DataType dtSeq, params Expression [] exprs)
@@ -1169,6 +1173,7 @@ namespace Reko.Core.Expressions
         /// Generate a segmented access to memory, using <paramref name="basePtr"/>
         /// as the base pointer and the <paramref name="offset"/> as the offset.
         /// </summary>
+        /// <param name="mid">The memory identifier used in this access.</param>
         /// <param name="dt">Data type of the memory access.</param>
         /// <param name="basePtr">Base pointer or segment selector.</param>
         /// <param name="offset">Offset from base pointer.</param>
@@ -1201,9 +1206,9 @@ namespace Reko.Core.Expressions
         /// <param name="basePtr">Base pointer or segment selector.</param>
         /// <param name="offset">Offset from base pointer.</param>
         /// <returns>A segmented memory access expression.</returns>
-        public MemoryAccess SegMem8(Expression basePtr, Expression ptr)
+        public MemoryAccess SegMem8(Expression basePtr, Expression offset)
         {
-            return SegMem(PrimitiveType.Byte, basePtr, ptr);
+            return SegMem(PrimitiveType.Byte, basePtr, offset);
         }
 
         /// <summary>
@@ -1213,9 +1218,9 @@ namespace Reko.Core.Expressions
         /// <param name="basePtr">Base pointer or segment selector.</param>
         /// <param name="offset">Offset from base pointer.</param>
         /// <returns>A segmented memory access expression.</returns>
-        public MemoryAccess SegMem16(Expression basePtr, Expression ptr)
+        public MemoryAccess SegMem16(Expression basePtr, Expression offset)
         {
-            return SegMem(PrimitiveType.Word16, basePtr, ptr);
+            return SegMem(PrimitiveType.Word16, basePtr, offset);
         }
 
         /// <summary>
@@ -1232,6 +1237,7 @@ namespace Reko.Core.Expressions
         /// <summary>
         /// Generates a <see cref="SegmentedPointer"/>.
         /// </summary>
+        /// <param name="dt">Data type of the resulting pointer.</param>
         /// <param name="basePtr">Base or segment of the pointer.</param>
         /// <param name="offset">Offset of the pointer.</param>
         /// <returns>A segmented pointer expression.</returns>
@@ -1269,7 +1275,7 @@ namespace Reko.Core.Expressions
         /// is converted to an integer constant. No assumption about signedness is made.
         /// </summary>
         /// <param name="left">Multiplicand.</param>
-        /// <param name="right">Multiplier.</param>
+        /// <param name="c">Multiplier, which is first converted to a <see cref="Constant"/>.</param>
         /// <returns>An integer multiplication expression</returns>
         public Expression IMul(Expression left, int c)
         {
@@ -1308,7 +1314,7 @@ namespace Reko.Core.Expressions
         /// second parameter is converted to a signed integer constant.
         /// </summary>
         /// <param name="left">Multiplicand.</param>
-        /// <param name="right">Multiplier.</param>
+        /// <param name="c">Multiplier, which is first converted to a signed <see cref="Constant"/>.</param>
         /// <returns>A signed integer multiplication expression</returns>
         public Expression SMul(Expression left, long c)
         {
@@ -1347,7 +1353,7 @@ namespace Reko.Core.Expressions
         /// second parameter is converted to an unsigned integer constant.
         /// </summary>
         /// <param name="left">Multiplicand.</param>
-        /// <param name="right">Multiplier.</param>
+        /// <param name="c">Multiplier, which is first converted to an unsigned <see cref="Constant"/>.</param>
         /// <returns>An unsigned integer multiplication expression</returns>
         public Expression UMul(Expression left, ulong c)
         {
@@ -1450,7 +1456,7 @@ namespace Reko.Core.Expressions
         /// Convenience method to generate a shift left expression ('a &lt;&lt; b' in the C language family). 
         /// The first argument is converted to a 32-bit constant.
         /// </summary>
-        /// <param name="e">Value to shift.</param>
+        /// <param name="c">Value to shift.</param>
         /// <param name="sh">Shift amount.</param>
         /// <returns>Left shift expression.</returns>
         public BinaryExpression Shl(int c, Expression sh)
@@ -1462,7 +1468,7 @@ namespace Reko.Core.Expressions
         /// <summary>
         /// Generates an unsigned shift logical right expression ('a >> b' in the C language family). 
         /// </summary>
-        /// <param name="e">Value to shift.</param>
+        /// <param name="exp">Value to shift.</param>
         /// <param name="sh">Shift amount.</param>
         /// <returns>Logical right shift expression.</returns>
         public BinaryExpression Shr(Expression exp, Expression sh)
@@ -1474,12 +1480,12 @@ namespace Reko.Core.Expressions
         /// Convenience method to generate an unsigned shift logical right
         /// expression ('a >> b' in the C language family). 
         /// </summary>
-        /// <param name="e">Value to shift.</param>
+        /// <param name="exp">Value to shift.</param>
         /// <param name="sh">Shift amount.</param>
         /// <returns>Logical right shift expression.</returns>
-        public BinaryExpression Shr(Expression exp, byte c)
+        public BinaryExpression Shr(Expression exp, byte sh)
         {
-            Constant cc = Constant.Byte(c);
+            Constant cc = Constant.Byte(sh);
             return new BinaryExpression(Operator.Shr, exp.DataType, exp, cc);
         }
 
@@ -1560,8 +1566,8 @@ namespace Reko.Core.Expressions
         /// Generates a bit-slice of type <paramref name="dataType"/> of 
         /// an expression <paramref name="value"/>, starting at bit position 0.
         /// </summary>
-        /// <param name="primitiveType">The type of the bit slice</param>
         /// <param name="value">The value being sliced</param>
+        /// <param name="dataType">The type of the bit slice</param>
         /// <returns>A bit-slice expression.</returns>
         public Slice Slice(Expression value, DataType dataType)
         {
@@ -1573,8 +1579,8 @@ namespace Reko.Core.Expressions
         /// an expression <paramref name="value"/>, starting at bit position
         /// <paramref name="bitOffset"/>.
         /// </summary>
-        /// <param name="primitiveType">The type of the bit slice</param>
         /// <param name="value">The value being sliced</param>
+        /// <param name="dataType">The type of the bit slice</param>
         /// <param name="bitOffset">Slice offset from least significant bit.</param>
         /// <returns>A bit-slice expression.</returns>
         public Slice Slice(Expression value, DataType dataType, int bitOffset)
@@ -1583,17 +1589,17 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
-        /// Generates a bit-slice of type <paramref name="primitiveType"/> of 
+        /// Generates a bit-slice of bit length <paramref name="bitLength"/> of 
         /// an expression <paramref name="value"/>, starting at bit position
         /// <paramref name="bitOffset"/>.
         /// </summary>
-        /// <param name="primitiveType"></param>
-        /// <param name="value"></param>
-        /// <param name="bitOffset"></param>
+        /// <param name="value">The value to slice.</param>
+        /// <param name="bitOffset">Bit position to start at.</param>
+        /// <param name="bitLength">Number of bits to slice.</param>
         /// <returns>A bit-slice expression.</returns>
-        public Slice Slice(Expression value, int bitOffset, int bitlength)
+        public Slice Slice(Expression value, int bitOffset, int bitLength)
         {
-            var type = PrimitiveType.CreateBitSlice(bitlength);
+            var type = PrimitiveType.CreateBitSlice(bitLength);
             return new Slice(type, value, bitOffset);
         }
 
@@ -1755,7 +1761,7 @@ namespace Reko.Core.Expressions
 
         /// <summary>
         /// Generates an unsigned integer less-than-0 comparison
-        /// ('<= 0' in the C language family).
+        /// ('&lt;= 0' in the C language family).
         /// </summary>
         /// <returns>An unsigned integer point inequality comparison.</returns>
         public BinaryExpression Ult0(Expression exp)
@@ -1824,7 +1830,7 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
-        /// Generates an bit-vector of length <paramref name="bitSize"> bits
+        /// Generates an bit-vector of length <paramref name="bitSize" /> bits
         /// from the bit pattern <pararef name="n"/>.
         /// </summary>
         /// <param name="bitSize">
@@ -1840,10 +1846,11 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
-        /// Generates an bit-vector of length <paramref name="bitSize"> bits
+        /// Generates an bit-vector of length <paramref name="bitSize" /> bits
         /// from the bit pattern <pararef name="n"/>.
         /// </summary>
-        /// <param name="b">32 bits</param>
+        /// <param name="bitSize">Bitsize of the resulting constant.</param>
+        /// <param name="n">Value to wrap in a <see cref="Constant"/> object.</param>
         /// <returns>Bit vector constant</returns>
         public Constant Word(int bitSize, ulong n)
         {

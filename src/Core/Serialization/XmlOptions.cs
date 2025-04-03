@@ -28,10 +28,12 @@ namespace Reko.Core.Serialization
     /// <summary>
     /// Reads XML into a <see cref="Dictionary{TKey, TValue}"/> (JSON envy!)
     /// Handles the following XML as follows:
+    /// <code>
     /// &lt;dict&gt;
-    ///   &lt;item key="UK"&gt;United Kingdom&lt/item&gt;
+    ///   &lt;item key="UK"&gt;United Kingdom&lt;/item&gt;
     ///   &lt;item key="FR"&gt;France&lt;/item&gt;
     /// &lt;/dict&gt;
+    /// </code>
     /// </summary>
     public class XmlOptions
     {

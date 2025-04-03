@@ -23,25 +23,39 @@ using System;
 
 namespace Reko.Core.Absyn
 {
+    /// <summary>
+    /// Represents a return statement in the abstract syntax tree.
+    /// </summary>
 	public class AbsynReturn : AbsynStatement
 	{
+        /// <summary>
+        /// Creates an instance of the "return" statement, with 
+        /// an optional return value.
+        /// </summary>
+        /// <param name="retval">An optional return value.</param>
 		public AbsynReturn(Expression? retval)
 		{
 			this.Value = retval;
 		}
 
+        /// <summary>
+        /// An optional return value.
+        /// </summary>
 		public Expression? Value { get; }
 
+        /// <inheritdoc />
         public override void Accept(IAbsynVisitor visitor)
         {
             visitor.VisitReturn(this);
         }
 
+        /// <inheritdoc />
         public override T Accept<T>(IAbsynVisitor<T> visitor)
         {
             return visitor.VisitReturn(this);
         }
 
+        /// <inheritdoc />
         public override T Accept<T, C>(IAbsynVisitor<T, C> visitor, C context)
         {
             return visitor.VisitReturn(this, context);

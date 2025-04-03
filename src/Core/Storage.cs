@@ -87,6 +87,8 @@ namespace Reko.Core
         /// <summary>
         /// Returns true if the Storage <paramref name="that"/> overlaps with this
         /// Storage.
+        /// </summary>
+        /// <param name="that">Storage to overlap with.</param>
         public abstract bool OverlapsWith(Storage that);
 
         /// <summary>
@@ -402,7 +404,7 @@ namespace Reko.Core
     /// <para>
     /// Later, SSA analysis will break apart memory access
     /// after each store operation, giving rise to new address space identifiers
-    /// MEM1, MEM2 &c. If ambitious, memory alias analysis can be done. In this
+    /// MEM1, MEM2 &amp;c. If ambitious, memory alias analysis can be done. In this
     /// case, we will have several MEMx variables before SSA, each MEMx variable
     /// will be an alias class. 
     /// </para>
@@ -658,16 +660,16 @@ namespace Reko.Core
         }
 
         /// <summary>
-        /// Returns true if this register is strictly contained by reg2.
+        /// Returns true if this register is strictly contained by <paramref name="reg"/>.
         /// </summary>
-        /// <param name="reg1"></param>
-        /// <param name="reg2"></param>
-        /// <returns></returns>
-        public bool IsSubRegisterOf(RegisterStorage reg2)
+        /// <param name="reg">Another register to compare with.</param>
+        /// <returns>True if this register is strictly contained by 
+        /// <paramref name="reg"/>.</returns>
+        public bool IsSubRegisterOf(RegisterStorage reg)
         {
-            if (this.BitSize >= reg2.BitSize)
+            if (this.BitSize >= reg.BitSize)
                 return false;
-            return this.OverlapsWith(reg2);
+            return this.OverlapsWith(reg);
         }
 
         public override int OffsetOf(Storage stgSub)

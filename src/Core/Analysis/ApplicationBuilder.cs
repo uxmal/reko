@@ -20,7 +20,6 @@
 
 using Reko.Core.Code;
 using Reko.Core.Expressions;
-using Reko.Core.Lib;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
@@ -41,12 +40,18 @@ namespace Reko.Core.Analysis
     ///
     /// If there is only one 'out' argument, then it is returned as the return value of the
     /// function. If there are several return values:
-    ///   If one and only one of them is a flag register, it becomes the return value.
-    ///   If more registers are returned, they all become out registers and the function
-    ///    is declared void, unless flags are returned.
+    /// <list type="bullet">
+    /// <item>If one and only one of them is a flag register, it becomes the return value.</item>  
+    /// <item>If more registers are returned, they all become out registers and the function
+    ///    is declared void, unless flags are returned.</item>  
+    /// </list>
     /// </remarks>
     public abstract class ApplicationBuilder
     {
+        /// <summary>
+        /// The <see cref="FunctionType">function signature</see> for the called
+        /// procedure.
+        /// </summary>
         protected FunctionType? sigCallee;
 
         /// <summary>
@@ -54,18 +59,65 @@ namespace Reko.Core.Analysis
         /// to the identifiers in the caller's frame.
         /// </summary>
         /// <param name="site">The call site of the calling instruction.</param>
-        /// <param name="callee">The procedure being called.</param>
-        /// <param name="sigCallee">The signature of the procedure being called.</param>
         public ApplicationBuilder(CallSite site)
         {
             Site = site;
         }
 
+
+        /// <summary>
+        /// The <see cref="CallSite"/> of the calling instruction.
+        /// </summary>
         public CallSite Site { get; }
 
+        /// <summary>
+        /// Bind an input argument in the caller's frame to the corresponding
+        /// <see cref="Storage"/>.
+        /// </summary>
+        /// <remarks>
+        /// The <see cref="ApplicationBuilder"/> is responsible for creating
+        /// appropriate argument variables for each of the callee function's 
+        /// input parameters. For instance, if the callee function has a 
+        /// input register parameter "R1", an implementing class must ensure
+        /// that the caller proceudre has a corresponding identifier for
+        /// that register.
+        /// </remarks>
+        /// <param name="stg">The storage to bind in the caller's <see cref="Frame"/>.
+        /// </param>
+        /// <returns>The bound storage, or null if the argument couldn't be
+        /// bound.
+        /// </returns>
         public abstract Expression? BindInArg(Storage stg);
+
+
+        /// <summary>
+        /// Bind an input stack argument in the caller's frame to the corresponding
+        /// <see cref="Storage"/>.
+        /// <remarks>
+        /// See <see cref="BindInArg(Storage)"/>for more details.</remarks>
+        /// </summary>
+        /// <param name="stg">The <see cref="StackStorage"/> to bind in the caller's <see cref="Frame"/>.
+        /// </param>
+        /// <param name="returnAdjustment">The number of storage units to adjust stack offsets.
+        /// </param>
+        /// <returns>The bound storage, or null if the argument couldn't be
+        /// bound.
+        /// </returns>
         public abstract Expression? BindInStackArg(StackStorage stg, int returnAdjustment);
+
+        /// <summary>
+        /// Binds an output argument in the caller's frame to the corresponding
+        /// <see cref="Storage"/>.
+        /// </summary>
         public abstract OutArgument BindOutArg(Storage stg);
+
+        /// <summary>
+        /// Binds the return value of the called procedure into a storage in 
+        /// the calling procedure.
+        /// </summary>
+        /// <param name="stg">The <see cref="Storage"/> in which the called procedure returns
+        /// its values. It is null if the called procedure doesn't return
+        /// any data.</param>
         public abstract Expression? BindReturnValue(Storage? stg);
 
         /// <summary>
@@ -141,9 +193,11 @@ namespace Reko.Core.Analysis
         /// Bind the formal parameters of the signature to actual arguments in
         /// the frame of the calling procedure.
         /// </summary>
-        /// <param name="sigCallee"></param>
-        /// <param name="chr"></param>
-        /// <returns></returns>
+        /// <param name="parameters">The formal parameters of the callee 
+        /// procedure.</param>
+        /// <param name="isVariadic">True if the calle function is variadic (e.g. <c>printf</c>).</param>
+        /// <param name="chr">The <see cref="ProcedureCharacteristics"/> of the called procedure, if any.</param>
+        /// <returns>The resulting list of actual arguments.</returns>
         public virtual List<Expression> BindArguments(Identifier[] parameters, bool isVariadic, ProcedureCharacteristics? chr)
         {
             var actuals = new List<Expression>();
@@ -180,6 +234,17 @@ namespace Reko.Core.Analysis
             }
         }
 
+        /// <summary>
+        /// Bind the variadic arguments of a function call.
+        /// </summary>
+        /// <param name="chr">The <see cref="ProcedureCharacteristics"/> for the
+        /// variadic callee. This contains information about how to interpret
+        /// format strings or other mechanisms to unpack the number of arguments.
+        /// </param>
+        /// <param name="actuals">The list of non-variadic actual arguments of the
+        /// call.</param>
+        /// <returns>A list consisting of all actual arguments including any variadic ones.
+        /// </returns>
         public List<Expression> BindVariadicArguments(ProcedureCharacteristics? chr, List<Expression> actuals)
         {
             actuals.Add(Constant.Word32(0));

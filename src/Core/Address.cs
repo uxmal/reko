@@ -288,11 +288,11 @@ namespace Reko.Core
         /// <summary>
         /// Creates a real-mode segmented address.
         /// </summary>
-        /// <param name="uAddr">Value of the address.</param>
+        /// <param name="seg">Value of the segment selector.</param>
+        /// <param name="offset">Value of the offset.</param>
         /// <returns>A 32-bit segmented address instance.</returns>
         /// <remarks>
-        /// This address type is suitable for
-        /// real-mode x86 programs.
+        /// This address type is suitable for real-mode x86 programs.
         /// </remarks>
         public static Address SegPtr(ushort seg, uint offset)
         {
@@ -307,7 +307,8 @@ namespace Reko.Core
         /// <summary>
         /// Creates a protected-mode segmented address.
         /// </summary>
-        /// <param name="uAddr">Value of the address.</param>
+        /// <param name="seg">Value of the segment selector.</param>
+        /// <param name="offset">Value of the offset.</param>
         /// <returns>A 32-bit segmented address instance.</returns>
         /// <remarks>
         /// This address type is suitable for
@@ -333,13 +334,12 @@ namespace Reko.Core
             return new Address(dt, LinearOctal, (byte) dt.BitSize, offset, 0);
         }
 
-
         /// <summary>
-        /// Converts a string representation of an address to an Address.
+        /// Converts a hexadecimal string representation of an address to an Address.
         /// </summary>
         /// <param name="s">The string representation of the Address</param>
-        /// <param name="radix">The radix used in the  representation, typically 16 for hexadecimal address representation.</param>
-        /// <returns></returns>
+        /// <param name="result">If successful, contains the parsed address.</param>
+        /// <returns>True if the address could be parsed, false otherwise.</returns>
         public static bool TryParse16(string? s, [MaybeNullWhen(false)] out Address result)
         {
             if (s is not null)
@@ -506,6 +506,7 @@ namespace Reko.Core
         /// <param name="Base"></param>
         /// <param name="LinearizeSelectorShift"></param>
         /// <param name="SelectorMask"></param>
+        /// <param name="LinearizeSelectorMask"></param>
         private readonly record struct Info(
             int BitOffset,
             ulong NonOffsetMask,
@@ -695,15 +696,16 @@ namespace Reko.Core
         /// </summary>
         /// <param name="uAddr">Value of the address.</param>
         /// <returns>A 64-bit address instance.</returns>
-        public static CompactAddress Ptr64(ulong addr)
+        public static CompactAddress Ptr64(ulong uAddr)
         {
-            return Create(PrimitiveType.Ptr64, addr);
+            return Create(PrimitiveType.Ptr64, uAddr);
         }
 
         /// <summary>
         /// Creates a real-mode segmented address.
         /// </summary>
-        /// <param name="uAddr">Value of the address.</param>
+        /// <param name="seg">Value of the segment.</param>
+        /// <param name="offset">Value of the offset.</param>
         /// <returns>A 32-bit segmented address instance.</returns>
         /// <remarks>
         /// This address type is suitable for
@@ -720,7 +722,8 @@ namespace Reko.Core
         /// <summary>
         /// Creates a protected-mode segmented address.
         /// </summary>
-        /// <param name="uAddr">Value of the address.</param>
+        /// <param name="seg">Value of the segment.</param>
+        /// <param name="offset">Value of the offset.</param>
         /// <returns>A 32-bit segmented address instance.</returns>
         /// <remarks>
         /// This address type is suitable for
@@ -930,12 +933,12 @@ namespace Reko.Core
         public uint ToUInt32() => GetInfo().ToUInt32(uValue);
         public ulong ToLinear() => GetInfo().ToLinear(uValue);
 
-		/// <summary>
-		/// Converts a string representation of an address to an Address.
-		/// </summary>
-		/// <param name="s">The string representation of the Address</param>
-		/// <param name="radix">The radix used in the  representation, typically 16 for hexadecimal address representation.</param>
-		/// <returns></returns>
+        /// <summary>
+        /// Converts a hexadecimal string representation of an address to an Address.
+        /// </summary>
+        /// <param name="s">The string representation of the Address</param>
+        /// <param name="result">The parsed address if successful.</param>
+        /// <returns>True if an address could be parsed, false otherwise.</returns>
         public static bool TryParse16(string? s, [MaybeNullWhen(false)] out CompactAddress result)
         {
             if (s is not null)

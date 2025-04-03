@@ -32,12 +32,22 @@ namespace Reko.Core.Analysis
         private readonly Statement user;
         private readonly SsaIdentifierCollection ssaIds;
 
+        /// <summary>
+        /// Creates an instance of this class.
+        /// </summary>
+        /// <param name="user"><see cref="Statement"/> that will recorded as using 
+        /// the identifiers in the expression.</param>
+        /// <param name="ssaIds">The <see cref="SsaIdentifierCollection"/> affected
+        /// by these changes.</param>
         public InstructionUseAdder(Statement user, SsaIdentifierCollection ssaIds)
         {
             this.user = user ?? throw new ArgumentNullException(nameof(user));
             this.ssaIds = ssaIds;
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         protected override void UseIdentifier(Identifier id)
         {
             ssaIds[id].Uses.Add(user);

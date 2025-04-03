@@ -134,7 +134,9 @@ namespace Reko.Core.Memory
     /// Reads a NUL-terminated string starting at the current position
     /// and returns it as a <see cref="StringConstant"/>.
     /// </summary>
-    /// <param name="charType"></param>
+    /// <param name="charType">Data type of the code units of the string.</param>
+    /// <param name="encoding">Text encoding to use when decoding
+    /// the string.</param>
     /// <returns>A <see cref="StringConstant"/>.</returns>
     public StringConstant ReadCString(DataType charType, Encoding encoding)
 		{

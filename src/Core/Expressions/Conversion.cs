@@ -25,8 +25,8 @@ using System.Collections.Generic;
 namespace Reko.Core.Expressions
 {
     /// <summary>
-    /// This class represents how the <see cref="Expression"/> <paramref name="exp" /> is converted 
-    /// from the original data type <paramref name="dtFrom" /> to the data type <paramref name="dtTo" />.
+    /// This class represents how the expression <see cref="Expression" /> is converted 
+    /// from the original data type <see cref="SourceDataType" /> to the data type <see cref="Expression.DataType" />.
     /// </summary>
     /// <remarks>
     /// To properly model a data type conversion, we must specify the expression being converted, the 

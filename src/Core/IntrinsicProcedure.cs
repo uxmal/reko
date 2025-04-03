@@ -28,7 +28,7 @@ using System.Collections.Generic;
 namespace Reko.Core
 {
     /// <summary>
-    /// Represents predefined functions or processor instructions that don't have a 
+    /// An intrinsic procedure represents predefined functions or processor instructions that don't have a 
     /// C/C++ equivalent (like rotate operations).
     /// </summary>
     public class IntrinsicProcedure : ProcedureBase, IFunctionalUnit
@@ -61,13 +61,15 @@ namespace Reko.Core
         public const string Align = "__align";
 
         /// <summary>
-        /// Use this constructor for intrinsics that model operators that may have parameters of varying sizes.
+        /// Use this constructor for intrinsics that model operations that may have parameters of varying sizes.
         /// </summary>
         /// <remarks>
         /// E.g. the rotate intrinsic instructions.</remarks>
-        /// <param name="name"></param>
-        /// <param name="returnType"></param>
-        /// <param name="arity"></param>
+        /// <param name="name">The name of the intrinsic procedure.</param>
+        /// <param name="hasSideEffect">True if the intrinsic procedure has a side effect
+        /// that would prevent it from being optimized away.</param>
+        /// <param name="returnType">The return type of this intrinsic.</param>
+        /// <param name="arity">The number of arguments accepted by this instrinsic.</param>
         /// <param name="eval">Optional evaluation function.</param>
 		public IntrinsicProcedure(
             string name, 
@@ -86,7 +88,7 @@ namespace Reko.Core
         /// Creates an <see cref="IntrinsicProcedure"/> with a specific signature.
         /// </summary>
         /// <param name="name">The name of the intrinsic procedure.</param>
-        /// <param name="hasSideEffect">True of the procedure is idempotent (<see cref="ProcedureBase.IsIdempotent"/></param>
+        /// <param name="hasSideEffect">True of the procedure is idempotent (<see cref="ProcedureBase.HasSideEffect"/></param>
         /// <param name="sig">The signature of the procedure.</param>
         /// <param name="eval">Optional evaluation function.</param>
 		public IntrinsicProcedure(
@@ -108,7 +110,8 @@ namespace Reko.Core
         /// <param name="name">The name of the intrinsic procedure.</param>
         /// <param name="genericTypes">The generic types of this procedure.</param>
         /// <param name="isConcrete">True if this is an instance of the generic intrinsic.</param>
-        /// <param name="hasSideEffect">True of the procedure is idempotent (<see cref="ProcedureBase.IsIdempotent"/></param>
+        /// <param name="hasSideEffect">True of the procedure is idempotent (<see cref="ProcedureBase.HasSideEffect"/></param>
+        /// <param name="evaluator">Optional partial evaluator function for this intrinsic.</param>
         /// <param name="sig">The signature of the procedure.</param>
         public IntrinsicProcedure(
             string name, 
@@ -164,7 +167,7 @@ namespace Reko.Core
         /// Makes a concrete instance of this <see cref="IntrinsicProcedure"/> instance, using
         /// the provided <paramref name="concreteTypes" />.
         /// </summary>
-        /// <param name="ptrSizeparams">The bit size of a pointer in the current architecture.</param>
+        /// <param name="ptrSize">The bit size of a pointer in the current architecture.</param>
         /// <param name="concreteTypes">Concrete </param>
         /// <returns>A newly minted or previously cached concrete instance.
         /// </returns>

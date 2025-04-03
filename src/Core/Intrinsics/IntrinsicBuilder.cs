@@ -125,7 +125,7 @@ namespace Reko.Core.Intrinsics
         }
 
         /// <summary>
-        /// Creates a parameter of type "pointer to <paramref name="genericType" />.
+        /// Creates a parameter of type "pointer to <paramref name="dt" />.
         /// </summary>
         public IntrinsicBuilder PtrParam(DataType dt)
         {

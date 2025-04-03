@@ -31,6 +31,15 @@ namespace Reko.Core.Analysis
     /// </summary>
     public class LinearInductionVariable
     {
+        /// <summary>
+        /// Creates an induction variable. The initial and final values define
+        /// a half-open interval, i.e. the final value is not included in the 
+        /// range of values the induction variable can take.
+        /// </summary>
+        /// <param name="initial">The initial value the variable takes.</param>
+        /// <param name="delta">The amount incremented or decremented per interation.</param>
+        /// <param name="final">The final value, not attained by loop since it terminated.</param>
+        /// <param name="isSigned">True if the value should be treated as signed.</param>
         public LinearInductionVariable(
             Constant? initial,
             Constant? delta,
@@ -43,12 +52,27 @@ namespace Reko.Core.Analysis
             IsSigned = isSigned;
         }
 
-        public Constant? Initial { get; private set; }   // First value used by induction variable 
-        public Constant? Delta { get; private set; }		// Amount incremented or decremented per interation
-        public Constant? Final { get; private set; }     // Value not attained by loop since it terminated.
-        public bool IsSigned { get; private set; }      // True if signed compares are used for the induction variable.
+        /// <summary>
+        /// The initial value of the induction variable.
+        /// </summary>
+        public Constant? Initial { get; private set; }
 
-        public static int Gcd(int a, int b)
+        /// <summary>
+        /// The amount incremented or decremented per interation.
+        /// </summary>
+        public Constant? Delta { get; private set; }
+
+        /// <summary>
+        /// The final value, not attained by loop since it terminated.
+        /// </summary>
+        public Constant? Final { get; private set; }
+
+        /// <summary>
+        /// True if signed compares are used for the induction variable.
+        /// </summary>
+        public bool IsSigned { get; private set; }    
+
+        private static int Gcd(int a, int b)
         {
             while (b != 0)
             {
@@ -72,6 +96,15 @@ namespace Reko.Core.Analysis
             }
         }
 
+        /// <summary>
+        /// Merges two induction variables. 
+        /// </summary>
+        /// <param name="liv1">An <see cref="LinearInductionVariable"/>.</param>
+        /// <param name="liv2">Another <see cref="LinearInductionVariable"/>.</param>
+        /// <returns>Returns a new induction variable whose stride is the 
+        /// greatest common divisor (GCD) of the strides of <paramref name="liv1"/> and
+        /// <paramref name="liv2"/> or null if the strides are not compatible.
+        /// </returns>
         public static LinearInductionVariable? Merge(LinearInductionVariable liv1, LinearInductionVariable liv2)
         {
             if (liv1.Delta == null || liv2.Delta == null)
@@ -93,6 +126,10 @@ namespace Reko.Core.Analysis
             }
         }
 
+        /// <summary>
+        /// Shifts the induction variable by a constant amount.
+        /// </summary>
+        /// <param name="c">Amount with which to shift the induction variable.</param>
         public void AddIncrement(Constant c)
         {
             if (Initial != null)
@@ -101,6 +138,11 @@ namespace Reko.Core.Analysis
                 Final = Operator.IAdd.ApplyConstants(Final.DataType, Final, c);
         }
 
+        /// <summary>
+        /// Scales the induction variable by a constant amount.
+        /// </summary>
+        /// <param name="c">Amount with which to scale the induction variable.</param>
+        /// <returns>A new, scaled induction variable.</returns>
         public LinearInductionVariable Scale(Constant c)
         {
             Constant? initial = Initial;
@@ -115,6 +157,9 @@ namespace Reko.Core.Analysis
             return new LinearInductionVariable(initial, delta, final, IsSigned);
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         public override string ToString()
         {
             var sb = new StringBuilder();

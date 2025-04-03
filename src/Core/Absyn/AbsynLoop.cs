@@ -25,19 +25,31 @@ using System.Collections.Generic;
 namespace Reko.Core.Absyn
 {
 	/// <summary>
-	/// Common Representation of loops.
+	/// Abstract base class for Representation of loops.
 	/// </summary>
 	public abstract class AbsynLoop : AbsynStatement
 	{
+        /// <summary>
+        /// Creates a loop statement.
+        /// </summary>
+        /// <param name="condition">Expression controlling the loop.</param>
+        /// <param name="body">The body of the loop.</param>
 		protected AbsynLoop(Expression condition, List<AbsynStatement> body)
 		{
-            if (condition == null)
+            if (condition is null)
                 throw new ArgumentNullException(nameof(condition));
 			this.Condition = condition;
 			this.Body = body;
 		}
 
+        /// <summary>
+        /// The body of the loop.
+        /// </summary>
 		public List<AbsynStatement> Body { get; }
+
+        /// <summary>
+        /// The expression controlling the loop.
+        /// </summary>
 		public Expression Condition { get; }
 	}
 }

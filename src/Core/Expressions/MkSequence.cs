@@ -30,6 +30,7 @@ namespace Reko.Core.Expressions
 	/// </summary>
     /// <remarks>The elements of the sequence form a whole.
     /// The <see cref="DataType"/> indicates what kind of whole it is.
+    /// </remarks>
 	public class MkSequence : AbstractExpression
 	{
         public MkSequence(DataType dt, params Expression [] exprs) : base(dt)

@@ -28,7 +28,6 @@ namespace Reko.Core.Graphs
 	/// Implementation of Tarjan's algorithm for finding strongly connected
     /// components (SCC's) in a directed graph.
 	/// </summary>
-	/// </remarks>
 	public static class SccFinder
 	{
         /// <summary>
@@ -37,7 +36,7 @@ namespace Reko.Core.Graphs
         /// </summary>
         /// <typeparam name="TNode">The type of the nodes in the graph.</typeparam>
         /// <param name="graph">A directed graph of nodes.</param>
-        /// <returns>A <see cref="List{TNode[]}"/>. Each item in the list is an array
+        /// <returns>A <see href="List{TNode[]}"/>. Each item in the list is an array
         /// consisting of the nodes forming the SCC.</returns>
         /// <remarks>
         /// This implementation avoids overflowing the processor stack if the

@@ -91,12 +91,12 @@ namespace Reko.Core.Types
         }
 
         /// <summary>
-        /// Compute the size of the data type <paramref name="dt"/>.
+        /// Compute the size of the data type.
         /// </summary>
-        /// <param name="dt"></param>
         /// <remarks>
-        /// We don't trust the <see cref="DataType.Size"/> property because
-        /// the types may be inferred. For instance, inferred <see cref="StructureType"/>s
+        /// We don't trust the <see cref="DataType.Size"/> property on complex types
+        /// because the types may be inferred.
+        /// For instance, inferred <see cref="StructureType"/>s
         /// don't have a value for their Size properties.
         /// </remarks>
         //$TODO: convert to virtual method.

@@ -148,15 +148,16 @@ namespace Reko.Core.Code
 
         /// <summary>
         /// Convenience method that takes the base pointer <paramref name="basePtr"/>>
-        /// and the effective address <paramref name="ea"/>
+        /// and the effective address <paramref name="offset"/>
         /// and wraps them in a segmented memory access expression. The resulting expression
         /// is used to generate the l-value of a `Store` instruction.
         /// </summary>
-        /// <param name="ea">Effective address to be wrapped.</param>
+        /// <param name="basePtr">Base pointer.</param>
+        /// <param name="offset">Effective address to be wrapped.</param>
         /// <param name="src">R-Value.</param>
-        public Statement SStore(Expression basePtr, Expression ea, Expression src)
+        public Statement SStore(Expression basePtr, Expression offset, Expression src)
         {
-            var s = new Store(SegMem(src.DataType, basePtr, ea), src);
+            var s = new Store(SegMem(src.DataType, basePtr, offset), src);
             return Emit(s);
         }
 

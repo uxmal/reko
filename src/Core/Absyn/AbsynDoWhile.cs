@@ -29,22 +29,30 @@ namespace Reko.Core.Absyn
 	/// </summary>
 	public class AbsynDoWhile : AbsynLoop
 	{
+        /// <summary>
+        /// Constructns a do-while loop.
+        /// </summary>
+        /// <param name="body">The body of the do-while loop.</param>
+        /// <param name="condition">The condition of the do-while loop.</param>
 		public AbsynDoWhile(List<AbsynStatement> body, Expression condition) : base(condition, body)
 		{
 			if (body is null)
 				throw new ArgumentNullException(nameof(body), "Body of do-while mustn't be null");
 		}
 
+        /// <inheritdoc/>
 		public override void Accept(IAbsynVisitor visitor)
 		{
 			visitor.VisitDoWhile(this);
 		}
 
+        /// <inheritdoc/>
         public override T Accept<T>(IAbsynVisitor<T> visitor)
         {
             return visitor.VisitDoWhile(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(IAbsynVisitor<T, C> visitor, C context)
         {
             return visitor.VisitDoWhile(this, context);

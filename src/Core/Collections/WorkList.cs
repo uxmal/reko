@@ -47,7 +47,7 @@ namespace Reko.Core.Collections
         /// <summary>
         /// Adds an item to the work list, but only if it isn't there already.
         /// </summary>
-        /// <param name="t"></param>
+        /// <param name="item">Item to add.</param>
 		public void Add(T item)
 		{
 			if (!inQ.Contains(item))
@@ -133,7 +133,7 @@ namespace Reko.Core.Collections
         /// <summary>
         /// Adds an item to the work list, but only if it isn't there already.
         /// </summary>
-        /// <param name="t"></param>
+        /// <param name="item">Item to add.</param>
 		public void Add(T item)
 		{
 			if (!inStack.Contains(item))

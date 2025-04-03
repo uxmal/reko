@@ -39,9 +39,8 @@ namespace Reko.Core.Rtl
         /// branch, and annullment allows the delay slot to not be executed if the
         /// branch is not taken.
         /// </summary>
-        /// <param name="condition"></param>
-        /// <param name="instr"></param>
-        /// <param name="annulled"></param>
+        /// <param name="condition">The condition of the <see cref="RtlIf"/> instruction.</param>
+        /// <param name="instr">The instruction that is condititonally executed if <paramref name="condition"/> is true.</param>
         public RtlIf(Expression condition, RtlInstruction instr)
         {
             this.Condition = condition;

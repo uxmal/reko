@@ -37,7 +37,7 @@ namespace Reko.Core.Services
     /// write
     /// <code>
     ///     var foo = sp.GetService&lt;ISampleService&gt;();
-    ///     serviceContainer.AddService&lt;IOtherService&gt(otherservice);
+    ///     serviceContainer.AddService&lt;IOtherService&gt;(otherservice);
     /// </code>
     /// </remarks>
     public static class TypedServiceProvider

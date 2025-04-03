@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Configuration;
 using Reko.Core.Types;
 
 namespace Reko.Core.Loading;
@@ -32,7 +33,7 @@ public interface IBinaryHeader
     /// </summary>
     /// <remarks>
     /// The string is in a format suitable for direct
-    /// consumption by Reko (e.g. <see cref="IConfigurationService.GetArchitecture"/>).
+    /// consumption by Reko (e.g. <see cref="IConfigurationService.GetArchitecture(string)"/>).
     /// </remarks>
     string Architecture { get; }
 

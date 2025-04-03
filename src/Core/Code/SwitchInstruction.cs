@@ -27,8 +27,8 @@ using System.Text;
 namespace Reko.Core.Code
 {
     /// <summary>
-    /// Models a computed n-way GOTO instruction, which picks one of its <paramref name="Targets" />
-    /// depending on the evaluated value of the <paramref name="Expression"/>.
+    /// Models a computed n-way GOTO instruction, which picks one of its <see cref="Targets" />
+    /// depending on the evaluated value of the <see cref="Expression"/>.
     /// </summary>
     public class SwitchInstruction : Instruction
     {

@@ -23,10 +23,10 @@ using Reko.Core.Expressions;
 
 namespace Reko.Core.Code
 {
-	/// <summary>
-	/// An Assignment copies data from <paramref name="Src" /> to <paramref name="Dst" />.
-	/// </summary>
-	public class Assignment : Instruction
+    /// <summary>
+    /// An Assignment copies data from <see cref="Src" /> to <see cref="Dst" />.
+    /// </summary>
+    public class Assignment : Instruction
 	{
         public Assignment(Identifier dst, Expression src)
         {

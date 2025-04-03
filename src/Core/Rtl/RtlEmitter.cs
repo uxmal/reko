@@ -281,7 +281,7 @@ namespace Reko.Core.Rtl
         /// Generates an unconditional <see cref="RtlMicroGoto"/> to another instruction inside
         /// the current <see cref="RtlInstructionCluster"/>.
         /// </summary>
-        /// <param name="index">The index of the target <see cref="RtlInstruction"/>
+        /// <param name="index">The index of the target <see cref="RtlInstruction"/></param>
         /// <returns>A reference to this <see cref="RtlEmitter"/>.</returns>
         public RtlEmitter MicroGoto(int index)
         {
@@ -294,7 +294,7 @@ namespace Reko.Core.Rtl
         /// the current <see cref="RtlInstructionCluster"/>.
         /// </summary>
         /// <param name="cond">Condition which, when true, causes a transfer to the targetted instruction</param>
-        /// <param name="index">The index of the target <see cref="RtlInstruction"/>.
+        /// <param name="index">The index of the target <see cref="RtlInstruction"/>.</param>
         /// <returns>A reference to this <see cref="RtlEmitter"/>.</returns>
         public RtlEmitter MicroBranch(Expression cond, int index)
         {

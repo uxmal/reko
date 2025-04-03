@@ -32,7 +32,6 @@ namespace Reko.Core
     /// or more parameters, dispatches to sub-services with potentially
     /// different signatures.
     /// </summary>
-    /// <remarks>
     public class DispatchProcedure : ProcedureBase
     {
         private List<(SyscallInfo, ExternalProcedure)> services;

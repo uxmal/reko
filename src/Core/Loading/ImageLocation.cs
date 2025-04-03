@@ -58,7 +58,7 @@ namespace Reko.Core
         /// <summary>
         /// Constructs an <see cref="ImageLocation"/> from a file system path.
         /// </summary>
-        /// <param name="filesystemPath">A path into the file system.</param>
+        /// <param name="uri">A path into the file system.</param>
         /// <returns>An <see cref="ImageLocation"/>.
         /// </returns>
         /// <remarks>

@@ -26,7 +26,7 @@ using System.Collections.Generic;
 namespace Reko.Core.Expressions
 {
     /// <summary>
-    /// Models an access to memory, using the effective address <paramref name="ea"/> and the datatype
+    /// Models an access to memory, using the effective address and the datatype
     /// of the accessed memory.
     /// </summary>
     public class MemoryAccess : AbstractExpression
@@ -48,14 +48,15 @@ namespace Reko.Core.Expressions
         /// <summary>
         /// Creates an access to the memory whose effective address is <paramref name="effectiveAddress"/>.
         /// The data type of the accessed memory is <paramref name="dt"/>. The memory access
-        /// takes place in the address space <paramref name="space"/>.
+        /// takes place in the address space <paramref name="memoryId"/>.
         /// </summary>
+        /// <param name="memoryId">Memory identifier.</param>
         /// <param name="effectiveAddress">Effective address of the access.</param>
         /// <param name="dt">Data type of the access.</param>
-        public MemoryAccess(Identifier space, Expression effectiveAddress, DataType dt)
+        public MemoryAccess(Identifier memoryId, Expression effectiveAddress, DataType dt)
             : base(dt)
         {
-            this.MemoryId = space;
+            this.MemoryId = memoryId;
             this.EffectiveAddress = effectiveAddress ?? throw new ArgumentNullException(nameof(effectiveAddress));
         }
 

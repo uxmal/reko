@@ -59,7 +59,7 @@ namespace Reko.Core
 
         /// <summary>
         /// Optional user-supplied label. When rendering blocks, it takes 
-        /// precedence over the <see cref="Name"/> property, but should only 
+        /// precedence over the <see cref="Id"/> property, but should only 
         /// be used for rendering purposes. It must not conflict with any
         /// other UserLabel or Id of the blocks in the <see cref="Procedure" />.
         /// </summary>

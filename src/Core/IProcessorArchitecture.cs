@@ -171,6 +171,7 @@ namespace Reko.Core
         /// machine instruction calling or jumping to the address, or a 
         /// reference to the address stored in memory.
         /// </summary>
+        /// <param name="map">Memory to scan.</param>
         /// <param name="rdr"></param>
         /// <param name="knownAddresses"></param>
         /// <param name="flags"></param>
@@ -192,7 +193,7 @@ namespace Reko.Core
         /// </summary>
         /// <param name="memory">Memory to read</param>
         /// <param name="addr">Address at which to start</param>
-        /// <param>An <see cref="EndianImageReader"/> of the appropriate endianness</returns>
+        /// <param name="rdr">An <see cref="EndianImageReader"/> of the appropriate endianness</param>
         /// <returns>True if the address was a valid memory address, false if not.</returns>
         bool TryCreateImageReader(IMemory memory, Address addr, [MaybeNullWhen(false)] out EndianImageReader rdr);
 
@@ -203,7 +204,7 @@ namespace Reko.Core
         /// <param name="memory">Memory to read</param>
         /// <param name="addr">Address at which to start</param>
         /// <param name="cbUnits">Number of memory units after which stop reading.</param>
-        /// <param>An <see cref="EndianImageReader"/> of the appropriate endianness</returns>
+        /// <param name="rdr">An <see cref="EndianImageReader"/> of the appropriate endianness</param>
         /// <returns>True if the address was a valid memory address, false if not.</returns>
         bool TryCreateImageReader(IMemory memory, Address addr, long cbUnits, [MaybeNullWhen(false)] out EndianImageReader rdr);
 
@@ -272,6 +273,12 @@ namespace Reko.Core
         /// </returns>
         T? CreateExtension<T>() where T : class;
 
+        /// <summary>
+        /// Renders the instruction opcode of the given instruction as a string.
+        /// </summary>
+        /// <param name="instr">The <see cref="MachineInstruction"/> to render.</param>
+        /// <param name="rdr">The <see cref="EndianImageReader"/> to use.</param>
+        /// <returns></returns>
         string RenderInstructionOpcode(MachineInstruction instr, EndianImageReader rdr);
 
         /// <summary>
@@ -360,13 +367,13 @@ namespace Reko.Core
         IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator);
 
         /// <summary>
-        /// Provide an architecture-defined <see cref="CallingConvention"/>.
+        /// Provide an architecture-defined <see cref="ICallingConvention"/>.
         /// </summary>
         /// <param name="ccName">The name of the calling convention, if any. Most
         /// architectures define a default calling convention, which is returned
         /// by passing 'null' or the empty string.
         /// </param>
-        /// <returns>Returns an instance of <see cref="CallingConvention"/>, or
+        /// <returns>Returns an instance of <see cref="ICallingConvention"/>, or
         /// null if no calling convention with the name <paramref name="ccName"/> 
         /// is known.
         /// </returns>
@@ -400,11 +407,10 @@ namespace Reko.Core
         /// Given a register, returns any sub register occupying the 
         /// given bit range.
         /// </summary>
-        /// <param name="reg">Register to examine</param>
-        /// <param name="offset">Bit offset of expected subregister.</param>
-        /// <param name="width">Bit size of subregister.</param>
+        /// <param name="domain">The <see cref="StorageDomain"/> of the register.</param>
+        /// <param name="range">Bit range inside the <paramref name="domain"/>.</param>
         /// <returns>If an invalid domain is passed, null is returned. If 
-        /// the bitrange exceeds the extent of a register, return null.
+        /// the bitrange exceeds the extent of a register, returns null.
         /// Otherwise return the smallest register that completely covers
         /// the <paramref name="range"/>.
         /// </returns>
@@ -440,7 +446,7 @@ namespace Reko.Core
         /// </summary>
         /// <param name="flagRegister"></param>
         /// <param name="grf"></param>
-        /// <returns>A <see cref="FlagGroupStorage>"/> instance based on <paramref name="flagRegister"/>
+        /// <returns>A <see cref="FlagGroupStorage"/> instance based on <paramref name="flagRegister"/>
         /// with the flags in <paramref name="grf"/> set to TRUE.
         /// </returns>
         FlagGroupStorage? GetFlagGroup(RegisterStorage flagRegister, uint grf);
@@ -456,10 +462,11 @@ namespace Reko.Core
         /// condition code bits which tend to be the most commonly used, and use a string prefix
         /// if bits from other registers are needed.
         /// </remarks>
-        /// <param name="flagRegister"></param>
-        /// <param name="name"></param>
-        /// <returns></returns>
+        /// <param name="name">The combined flag registers to deserialize</param>
+        /// <returns>A <see cref="FlagGroupStorage"/> if the name was successfully decoded
+        /// as a flag group, otherwise null.</returns>
         FlagGroupStorage? GetFlagGroup(string name);
+
         Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType);
         //$REFACTOR: this should probably live in FrameApplicationBuilder instead.
         Expression CreateFpuStackAccess(IStorageBinder binder, int offset, DataType dataType);  //$REVIEW: generalize these two methods?
@@ -486,6 +493,8 @@ namespace Reko.Core
         /// the call.</param>
         /// <param name="rdr">Image reader primed to start at <paramref name="addrCallee"/>.
         /// </param>
+        /// <param name="binder">A <see cref="IStorageBinder"/> instance used to materialize
+        /// actual arguments.</param>
         /// <returns>null if no inlining was performed, otherwise a list of the inlined
         /// instructions.</returns>
         List<RtlInstruction>? InlineCall(Address addrCallee, Address addrContinuation, EndianImageReader rdr, IStorageBinder binder);
@@ -574,6 +583,10 @@ namespace Reko.Core
         /// <param name="options">A dictionary of architecture options to apply (e.g. processor endianness,
         /// word size, or processor features.)
         /// </param>
+        /// <param name="regsByName">An optional dictionary of all the CPU's registers,
+        /// by their names.</param>
+        /// <param name="regsByDomain">An optional dictionary of all the CPU's registers,
+        /// ordered by their <see cref="StorageDomain"/>.</param>
         public ProcessorArchitecture(
             IServiceProvider services,
             string archId, 
@@ -719,7 +732,7 @@ namespace Reko.Core
         }
 
         /// <summary>
-        /// Create a stack access to a variable offset by <paramref name="cbOffsets"/>
+        /// Create a stack access to a variable offset by <paramref name="cbOffset"/>
         /// from the stack pointer
         /// </summary>
         /// <remarks>
@@ -727,10 +740,10 @@ namespace Reko.Core
         /// of x86 segmented memory accesses is dealt with in that processor's 
         /// implementation of this method.
         /// </remarks>
-        /// <param name="bindRegister"></param>
-        /// <param name="cbOffset"></param>
-        /// <param name="dataType"></param>
-        /// <returns></returns>
+        /// <param name="binder">Storage binder to use when creating the expression.</param>
+        /// <param name="cbOffset">Offset from the stack pointer.</param>
+        /// <param name="dataType">Data type of the stack access.</param>
+        /// <returns>The resulting memory access.</returns>
         public virtual Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
         {
             var sp = binder.EnsureRegister(StackRegister);
@@ -768,6 +781,13 @@ namespace Reko.Core
             return frameOffset >= 0;
         }
 
+        /// <inheritdoc/>
+        /// <remarks>
+        /// Most modern CPU architectures are byte-oriented, and share this
+        /// common implementation where the bytes of the machine instruction
+        /// are rended as hex digits in chunks corresponding to the instruction
+        /// bit size of the CPU.
+        /// </remarks>
         public virtual string RenderInstructionOpcode(MachineInstruction instr, EndianImageReader rdr)
         {
             // Assumes byte granularity.

@@ -23,18 +23,25 @@ using System;
 
 namespace Reko.Core.Absyn
 {
-	public class AbsynContinue : AbsynStatement 
+    /// <summary>
+    /// Abstract syntax for a "continue" statement used in 
+    /// C-like languages.
+    /// </summary>
+    public class AbsynContinue : AbsynStatement 
 	{
+        /// <inheritdoc/>
 		public override void Accept(IAbsynVisitor visitor)
 		{
 			visitor.VisitContinue(this);
 		}
 
+        /// <inheritdoc/>
         public override T Accept<T>(IAbsynVisitor<T> visitor)
         {
             return visitor.VisitContinue(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(IAbsynVisitor<T, C> visitor, C context)
         {
             return visitor.VisitContinue(this, context);

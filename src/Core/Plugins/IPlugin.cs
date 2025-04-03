@@ -35,7 +35,7 @@ namespace Reko.Core.Plugins
     public interface IPlugin
     {
         /// <summary>
-        /// The collection of <see cref="IProcessorArchitecture">s supported
+        /// The collection of <see cref="IProcessorArchitecture"/>s supported
         /// by this plugin.
         /// </summary>
         /// <remarks>
@@ -51,7 +51,7 @@ namespace Reko.Core.Plugins
         /// by this plugin.
         /// </summary>
         /// <remarks>
-        /// The <see cref="LoaderDefinition.Name"/> and <see cref="LoaderDefinition.Type"/>
+        /// The <see cref="LoaderDefinition.Label"/> and <see cref="LoaderDefinition.Type"/>
         /// properties are essential to the proper operation of the plugin. Neglecting to specify
         /// these properties will cause the architecture to fail to load.
         /// </remarks>

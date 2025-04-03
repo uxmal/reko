@@ -28,23 +28,33 @@ namespace Reko.Core.Absyn
 	/// </summary>
 	public class AbsynSideEffect : AbsynStatement
 	{
+        /// <summary>
+        /// Creates a new side effect statement.
+        /// </summary>
+        /// <param name="expr">Expression which is only evaluated for its side effect.</param>
 		public AbsynSideEffect(Expression expr)
 		{
             Expression = expr;
 		}
 
+        /// <summary>
+        /// Expression which is only evaluated for its side effect.
+        /// </summary>
 		public Expression Expression { get; }
 
+        /// <inheritdoc />
         public override void Accept(IAbsynVisitor visitor)
         {
             visitor.VisitSideEffect(this);
         }
 
+        /// <inheritdoc />
         public override T Accept<T>(IAbsynVisitor<T> visitor)
         {
             return visitor.VisitSideEffect(this);
         }
 
+        /// <inheritdoc />
         public override T Accept<T, C>(IAbsynVisitor<T, C> visitor, C context)
         {
             return visitor.VisitSideEffect(this, context);

@@ -54,6 +54,7 @@ namespace Reko.Core.Expressions
         /// The most typical case are calls to varargs procedures, where the 
         /// formal signature may have fewer parameters than the actual
         /// arguments used when calling it.
+        /// </remarks>
         public ProcedureConstant(DataType ptrType, FunctionType sig, ProcedureBase proc) : base(ptrType)
         {
             this.Procedure = proc;

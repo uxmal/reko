@@ -27,8 +27,15 @@ using System.IO;
 
 namespace Reko.Core.Assemblers
 {
+    /// <summary>
+    /// Represents a symbol encountered during assembly.
+    /// </summary>
 	public class Symbol
 	{
+        /// <summary>
+        /// Creates a symbol named <paramref name="s"/>.
+        /// </summary>
+        /// <param name="s">Name of the symbol.</param>
 		public Symbol(string s)
 		{
 			Name = s;
@@ -37,13 +44,33 @@ namespace Reko.Core.Assemblers
 			Patches = new List<BackPatch>();
 		}
 
+        /// <summary>
+        /// True of the symbol has a known address or offset.
+        /// </summary>
         public bool IsResolved { get; set; }
+
+        /// <summary>
+        /// Offset of the symbol.
+        /// </summary>
         public int Offset { get; set; }
+
+        /// <summary>
+        /// The name of the symbol.
+        /// </summary>
         public string Name { get; }
+
+        /// <summary>
+        /// List of forward references of this symbol.
+        /// </summary>
         public List<BackPatch> Patches { get; }
 
-
-        // Add forward references to the backpatch list.
+        /// <summary>
+        /// Add a forward reference to the backpatch list.
+        /// </summary>
+        /// <param name="offset">Position at which the reference is made.</param>
+        /// <param name="width">Size of the reference.</param>
+        /// <param name="unitSize">Size of the storage units used in 
+        /// the backing memory (usually 8 bits).</param>
         public void AddForwardReference(int offset, DataType width, int unitSize)
 		{
 			Patches.Add(new BackPatch(offset, width, unitSize));
@@ -66,6 +93,10 @@ namespace Reko.Core.Assemblers
             }
         }
 
+        /// <summary>
+        /// Refer to this symbol, and if the symbol's address is 
+        /// resolved, patch the target little-endian.
+        /// </summary>
         public void ReferToLe(int off, DataType width, IEmitter emitter)
         {
             if (IsResolved)
@@ -110,6 +141,7 @@ namespace Reko.Core.Assemblers
             }
         }
 
+        /// <inheritdoc/>
 		public override string ToString()
 		{
 			return Name;
@@ -132,6 +164,9 @@ namespace Reko.Core.Assemblers
         public DataType Size { get; }
     }
 
+    /// <summary>
+    /// Symbol table to keep track of the symbols found during assembly.
+    /// </summary>
 	public class SymbolTable 
 	{
         private readonly SortedList<string, Symbol> symbols;

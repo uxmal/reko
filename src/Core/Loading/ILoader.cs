@@ -77,7 +77,7 @@ namespace Reko.Core.Loading
         byte[] LoadImageBytes(ImageLocation binLocation);
 
         /// <summary>
-        /// Given a file image in <param name="bytes">, determines which file 
+        /// Given a file image in <paramref name="bytes"/>, determines which file 
         /// format the file has and delegates parsing to a specific image loader.
         /// </summary>
         /// <param name="imageLocation">The <see cref="ImageLocation"/> from where the 
@@ -85,6 +85,8 @@ namespace Reko.Core.Loading
         /// <param name="bytes">The contents of the executable file.</param>
         /// <param name="loader">The (optional) name of a specific loader. Providing a
         /// non-zero loader will override the file format determination process.</param>
+        /// <param name="arch">The (optional) <see cref="IProcessorArchitecture"/> to use
+        /// when loading the file.</param>
         /// <param name="loadAddress">Address at which to load the binary. This may be null,
         /// in which case the default address of the image loader will be used.</param>
         /// <returns>
@@ -133,7 +135,7 @@ namespace Reko.Core.Loading
             Address loadAddress);
 
         /// <summary>
-        /// Loads a file containing symbolic, type, or other metadata into a <see cref="Reko.Core.TypeLibrary>"/>.
+        /// Loads a file containing symbolic, type, or other metadata into a <see href="Reko.Core.TypeLibrary>"/>.
         /// </summary>
         /// <param name="metadataLocation">The location of the metadata information.</param>
         /// <param name="platform">The operating environment for the file.</param>

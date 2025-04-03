@@ -118,7 +118,7 @@ namespace Reko.Core.Machine
 
         /// <summary>
         /// This method creates an invalid instruction. The instruction must 
-        /// have its <see cref="MachineInstruction.InstrClass" /> property set
+        /// have its <see cref="MachineInstruction.InstructionClass" /> property set
         /// to <see cref="InstrClass.Invalid" />
         /// </summary>
         /// <remarks>
@@ -152,8 +152,9 @@ namespace Reko.Core.Machine
         /// with the given <paramref name="mnemonic"/>, with the given <see cref="InstrClass"/>
         /// <paramref name="iclass"/>, and with operands generatedby the <paramref name="mutators"/>.
         /// </summary>
-        /// <param name="mnemonic"></param>
-        /// <param name="mutators"></param>
+        /// <param name="mnemonic">Mnemonic to use.</param>
+        /// <param name="iclass">Instruction class use.</param>
+        /// <param name="mutators">Operator decoders to use.</param>
         /// <returns>An instance of <see cref="InstrDecoder{TDasm, TMnemonic, TInstr}"/>.</returns>
         public static Decoder<TDasm, TMnemonic, TInstr> Instr<TDasm>(TMnemonic mnemonic, InstrClass iclass, params Mutator<TDasm>[] mutators)
             where TDasm : DisassemblerBase<TInstr, TMnemonic>

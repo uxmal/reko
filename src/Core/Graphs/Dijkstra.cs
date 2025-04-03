@@ -41,20 +41,20 @@ namespace Reko.Core.Graphs
         /// Implementation of the Dijkstra's shortest-path algorithm. Given a <paramref name="graph"/>
         /// it computes the shortest paths that can be reached starting at <paramref name="source"/>.
         /// </summary>
-        /// <param name="Graph"></param>
+        /// <param name="graph"></param>
         /// <param name="source"></param>
         /// <param name="weight"></param>
         /// <returns></returns>
-        public static Dijkstra<T> ShortestPath(DirectedGraph<T> Graph, T source, Func<T, T, double> weight)
+        public static Dijkstra<T> ShortestPath(DirectedGraph<T> graph, T source, Func<T, T, double> weight)
         {
             var Q = new FibonacciHeap<double, T>();
-            var q = new HashSet<T>(Graph.Nodes);
-            var self = new Dijkstra<T>(Graph.Nodes.ToDictionary(K => K, V => double.PositiveInfinity));
+            var q = new HashSet<T>(graph.Nodes);
+            var self = new Dijkstra<T>(graph.Nodes.ToDictionary(K => K, V => double.PositiveInfinity));
 
             self.dist[source] = 0;                        // Distance from source to source
 
 
-            foreach (var v in Graph.Nodes)
+            foreach (var v in graph.Nodes)
             {
                 Q.Insert(v, self.dist[v]);
             }
@@ -63,7 +63,7 @@ namespace Reko.Core.Graphs
             {
                 var u = Q.removeMin();                            // Remove and return best vertex
                 q.Remove(u);
-                foreach (var v in Graph.Successors(u))
+                foreach (var v in graph.Successors(u))
                 {
                     // only v that is still in Q
                     var alt = self.dist[u] + weight(u, v);

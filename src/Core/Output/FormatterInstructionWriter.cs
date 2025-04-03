@@ -44,6 +44,11 @@ namespace Reko.Core.Output
         /// </summary>
         /// <param name="formatter">A <see cref="Formatter"/> to which the 
         /// machine rendering is sent.</param>
+        /// <param name="procedures"> A dictionary of procedures, keyed by their
+        /// address.</param>
+        /// <param name="symbols">A dictionary of symbols, keyed by their
+        /// address.
+        /// </param>
         /// <param name="separateWithTab">If true, separate the mnemonic and the
         /// first operand with a tab, otherwise use a single space.</param>
         public FormatterInstructionWriter(

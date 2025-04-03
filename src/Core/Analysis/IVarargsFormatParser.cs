@@ -23,10 +23,20 @@ using Reko.Core.Types;
 
 namespace Reko.Core.Analysis
 {
+    /// <summary>
+    /// Interface implemented by classes that parse format strings used in 
+    /// variadic functions.
+    /// </summary>
     public interface IVarargsFormatParser
     {
+        /// <summary>
+        /// The list of argument types extracted from the format string.
+        /// </summary>
         List<DataType> ArgumentTypes { get; }
 
+        /// <summary>
+        /// Initiates the parsing of the format string.
+        /// </summary>
         void Parse();
     }
 }

@@ -30,12 +30,30 @@ namespace Reko.Core.Absyn
     /// </summary>
     public abstract class AbsynStatement
     {
+        /// <summary>
+        /// Accepts a visitor implementing the <see cref="IAbsynVisitor"/> interface.
+        /// </summary>
+        /// <param name="visitor">A visitor object.</param>
         public abstract void Accept(IAbsynVisitor visitor);
 
+        /// <summary>
+        /// Accepts a visitor implementing the <see cref="IAbsynVisitor{T}"/> interface.
+        /// </summary>
+        /// <param name="visitor">A visitor object.</param>
+        /// <returns>The result of accepting the visitor.</returns>
         public abstract T Accept<T>(IAbsynVisitor<T> visitor);
 
+        /// <summary>
+        /// Accepts a visitor implementing the <see cref="IAbsynVisitor{T, C}"/> interface.
+        /// </summary>
+        /// <param name="visitor">A visitor object.</param>
+        /// <param name="context">A context from the caller.</param>
+        /// <returns>The result of accepting the visitor.</returns>
         public abstract T Accept<T, C>(IAbsynVisitor<T, C> visitor, C context);
 
+        /// <summary>
+        /// Returns a string representation of the statement.
+        /// </summary>
 		public override sealed string ToString()
 		{
 			StringWriter sw = new StringWriter();

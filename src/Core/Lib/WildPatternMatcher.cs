@@ -36,10 +36,11 @@ namespace Reko.Core.Lib
         */
 
 
-        /// </summary>
+        /// <summary>
         /// Given a text T over the alphabet Σ and a pattern P
         /// over the alphabet Σ∪{∗}, find all the occurrences of
         /// P in T.
+        /// </summary>
         /// <param name="T"></param>
         /// <param name="P"></param>
         public IEnumerable<int> FindDcp(string T, string P)

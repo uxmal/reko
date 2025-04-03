@@ -434,7 +434,7 @@ namespace Reko.Core
         /// Given the absolute file name of a binary being decompiled, make sure that 
         /// absolute file names for each of the output directories.
         /// </summary>
-        /// <param name="absFileName">Absolute URI of the binary being decompiled.</param>
+        /// <param name="imageLocation">Location of the binary being decompiled.</param>
         public void EnsureDirectoryNames(ImageLocation imageLocation)
         {
             //$TODO how to handle nested archives? 
@@ -469,7 +469,7 @@ namespace Reko.Core
         /// is used.</param>
         /// <param name="addr"><see cref="Address"/> at which to start reading.</param>
         /// <param name="rdr">An <see cref="EndianByteImageReader"/> spanning the memory area 
-        /// starting at <paramref name="addr"> and ending at the end of the segment in which
+        /// starting at <paramref name="addr"/> and ending at the end of the segment in which
         /// the address is located.
         /// </param>
         /// <returns>True if the address was a valid memory address, false if not.</returns>
@@ -491,8 +491,10 @@ namespace Reko.Core
         /// <param name="arch"><see cref="IProcessorArchitecture"/> whose endianness
         /// is used.</param>
         /// <param name="addrBegin"><see cref="Address"/> at which to start reading.</param>
+        /// <param name="cUnits">Number of storage units to read before stopping.</param>
         /// <param name="rdr">An <see cref="EndianByteImageReader"/> spanning the memory area 
-        /// starting at <paramref name="addrBegin"> and ending at <paramref name="addrEnd" />.
+        /// starting at <paramref name="addrBegin"/> and stopping after having read <paramref name="cUnits" /> 
+        /// memory units.
         /// </param>
         /// <returns>True if the address was a valid memory address, false if not.</returns>
         public bool TryCreateImageReader(
@@ -592,6 +594,7 @@ namespace Reko.Core
         /// <summary>
         /// This method is called when the user has created a global item.
         /// </summary>
+        /// <param name="arch">Processor architecture needed to create the item.</param>
         /// <param name="address"></param>
         /// <param name="dataType"></param>
         /// <returns></returns>
@@ -684,6 +687,8 @@ namespace Reko.Core
         /// <summary>
         /// Ensure that there is a procedure at address <paramref name="addr"/>.
         /// </summary>
+        /// <param name="arch">The processor architecture the procedure was originally
+        /// written for.</param>
         /// <param name="addr">The address at which there must be a procedure after 
         /// this method returns.
         /// </param>

@@ -77,7 +77,7 @@ namespace Reko.Core
         /// <summary>
         /// Creates an <see cref="EndianImageReader"/> that starts reading at the <see cref="Address"/>
         /// <paramref name="address"/>. The endianness of the image reader is controlled by the
-        /// <see cref="arch"/>. 
+        /// <paramref name="arch"/>. 
         /// </summary>
         /// <param name="address">Address at which to start reading.</param>
         /// <param name="arch"><see cref="IProcessorArchitecture"/> that determines the 
@@ -232,13 +232,16 @@ namespace Reko.Core
         /// <summary>
         /// Creates an <see cref="EndianImageReader"/> that starts reading at the <see cref="Address"/>
         /// <paramref name="address"/>. The endianness of the image reader is controlled by the
-        /// <see cref="arch"/>. 
+        /// <paramref name="arch"/>. 
         /// </summary>
         /// <param name="address">Address at which to start reading.</param>
         /// <param name="arch"><see cref="IProcessorArchitecture"/> that determines the 
         /// endianness, byte granularity and other processor-specific details.
         /// </param>
-        /// <returns>The resulting <see cref="EndianImageReader"/> instance.</returns>
+        /// <param name="rdr">The resulting <see cref="EndianImageReader"/> instance.</param>
+        /// <returns>True if an image reader could be created at the requested address,
+        /// otherwise false.
+        /// </returns>
         public bool TryCreateImageReader(
             Address address,
             IProcessorArchitecture arch,

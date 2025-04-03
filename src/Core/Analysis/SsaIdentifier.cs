@@ -33,13 +33,25 @@ namespace Reko.Core.Analysis
     /// </summary>
 	public class SsaIdentifier
 	{
+        /// <summary>
+        /// Creates an SSA identifier.
+        /// </summary>
+        /// <param name="id">The <see cref="Identifier"/> used to represent
+        /// this SSA identifier.</param>
+        /// <param name="idOrig">The original identifier in the <see cref="Procedure"/>
+        /// before its SSA counterpart was created.
+        /// </param>
+        /// <param name="stmDef">The statement that defined this SSA identifier.</param>
+        /// <param name="isSideEffect">True if the SSA identifier was defined as a 
+        /// side effect of an <see cref="Application"/>.</param>
+        /// <exception cref="ArgumentNullException"></exception>
 		public SsaIdentifier(Identifier id, Identifier idOrig, Statement? stmDef, bool isSideEffect)
 		{
             this.Identifier = id ?? throw new ArgumentNullException(nameof(id));
 			this.OriginalIdentifier = idOrig ?? throw new ArgumentNullException(nameof(idOrig));
 			this.DefStatement = stmDef!;
             this.IsSideEffect = isSideEffect;
-			this.Uses = new List<Statement>();
+			this.Uses = [];
 		}
 
         /// <summary>
@@ -83,6 +95,7 @@ namespace Reko.Core.Analysis
         /// </summary>
         public Identifier OriginalIdentifier { get; }
 
+        /// <inheritdoc/>
 		public override string ToString()
 		{
 			var sb = new StringWriter();
@@ -111,6 +124,13 @@ namespace Reko.Core.Analysis
             return null;
         }
 
+        /// <summary>
+        /// Writes the SSA identifier, its defining statment, and any
+        /// using statements to the provided <see cref="TextWriter"/>.
+        /// </summary>
+        /// <param name="writer">A <see cref="TextWriter"/> to which textual
+        /// output is written.
+        /// </param>
         public void Write(TextWriter writer)
 		{
 			if (IsOriginal)

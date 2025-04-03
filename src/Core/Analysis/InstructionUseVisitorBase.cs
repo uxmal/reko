@@ -31,11 +31,13 @@ namespace Reko.Core.Analysis
     {
         #region InstructionVisitor Members
 
+        /// <inheritdoc/>
         public override void VisitAssignment(Assignment a)
         {
             a.Src.Accept(this);
         }
 
+        /// <inheritdoc/>
         public override void VisitCallInstruction(CallInstruction ci)
         {
             ci.Callee.Accept(this);
@@ -43,10 +45,12 @@ namespace Reko.Core.Analysis
                 use.Expression.Accept(this);
         }
 
+        /// <inheritdoc/>
         public override void VisitDefInstruction(DefInstruction def)
         {
         }
 
+        /// <inheritdoc/>
         public override void VisitStore(Store store)
         {
             store.Src.Accept(this);
@@ -63,6 +67,7 @@ namespace Reko.Core.Analysis
             store.Dst.Accept(this);
         }
 
+        /// <inheritdoc/>
         public override void VisitPhiAssignment(PhiAssignment phi)
 
         {
@@ -73,11 +78,13 @@ namespace Reko.Core.Analysis
 
         #region IExpressionVisitor Members
 
+        /// <inheritdoc/>
         public override void VisitIdentifier(Identifier id)
         {
             UseIdentifier(id);
         }
 
+        /// <inheritdoc/>
         public override void VisitOutArgument(OutArgument outArg)
         {
             if (outArg.Expression is Identifier)
@@ -87,6 +94,7 @@ namespace Reko.Core.Analysis
 
         #endregion
 
+        /// <inheritdoc/>
         protected abstract void UseIdentifier(Identifier id);
     }
 }

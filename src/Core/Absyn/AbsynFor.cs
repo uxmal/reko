@@ -19,21 +19,22 @@
 #endregion
 
 using Reko.Core.Expressions;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Core.Absyn
 {
+    /// <summary>
+    /// Abstract syntax for a C-type "for" statement.
+    /// </summary>
     public class AbsynFor : AbsynStatement
     {
-        public AbsynAssignment Initialization { get; set; }
-        public Expression Condition { get; }
-        public AbsynAssignment Iteration { get; set; }
-        public List<AbsynStatement> Body { get; }
-
+        /// <summary>
+        /// Constructs an instance of a "for" statement.
+        /// </summary>
+        /// <param name="init">Initialization statement.</param>
+        /// <param name="condition">The condition that controls the loop.</param>
+        /// <param name="iteration">Statement that updates any control variables.</param>
+        /// <param name="body">The body of the loop.</param>
         public AbsynFor(AbsynAssignment init, Expression condition, AbsynAssignment iteration, List<AbsynStatement> body)
         {
             this.Initialization = init;
@@ -42,16 +43,40 @@ namespace Reko.Core.Absyn
             this.Body = body;
         }
 
+        /// <summary>
+        /// The initialization statement.
+        /// </summary>
+        public AbsynAssignment Initialization { get; set; }
+
+        /// <summary>
+        /// The condition that controls the loop.
+        /// </summary>
+        public Expression Condition { get; }
+
+        /// <summary>
+        /// The statement that updates any control variables.
+        /// </summary>
+        public AbsynAssignment Iteration { get; set; }
+
+        /// <summary>
+        /// The body of the loop.
+        /// </summary>
+        public List<AbsynStatement> Body { get; }
+
+
+        /// <inheritdoc />
         public override void Accept(IAbsynVisitor visitor)
         {
             visitor.VisitFor(this);
         }
 
+        /// <inheritdoc />
         public override T Accept<T>(IAbsynVisitor<T> visitor)
         {
             return visitor.VisitFor(this);
         }
 
+        /// <inheritdoc />
         public override T Accept<T, C>(IAbsynVisitor<T, C> visitor, C context)
         {
             return visitor.VisitFor(this, context);

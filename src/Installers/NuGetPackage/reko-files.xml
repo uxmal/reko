@@ -3,6 +3,7 @@
     <vars>
         <var id="var.SolutionDir">$SolutionDir$/</var>
         <var id="var.Core.TargetPath">$SolutionDir$/Core/$TargetDir$/Reko.Core.dll</var>
+        <var id="var.Core.TargetDir">$SolutionDir$/Core/$TargetDir$/Reko.Core.xml</var>
         <var id="var.Decompiler.ProjectDir">$SolutionDir$/Decompiler/</var>
         <var id="var.Decompiler.TargetPath">$SolutionDir$/Decompiler/$TargetDir$/Reko.Decompiler.dll</var>
         <var id="var.Gui.TargetDir">$SolutionDir$/Gui/</var>
@@ -161,6 +162,7 @@
 
       <!-- Core binaries -->
       <File Source="$(var.Core.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.Core.TargetDir)" nuget_target="f:" />
       <File Source="$(var.Decompiler.TargetPath)" nuget_target="f:" />
       <File Source="$(var.WindowsDecompiler.ProjectDir)..\reko.config" Name="reko.config" nuget_target="c:" />
         

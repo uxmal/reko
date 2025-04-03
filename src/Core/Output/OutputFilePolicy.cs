@@ -72,6 +72,8 @@ namespace Reko.Core.Output
         /// Returns a placement mapping for rendering high-level items.
         /// </summary>
         /// <param name="fileExtension"></param>
+        /// <param name="listener">Provides a way for users to stop long
+        /// running printouts.</param>
         /// <returns></returns>
         public abstract Dictionary<string, IDictionary<Address, IAddressable>> GetObjectPlacements(
             string fileExtension,
@@ -129,12 +131,14 @@ namespace Reko.Core.Output
 
         /// <summary>
         /// Given an addressable object <paramref name="addressable"/> with
-        /// its filename <paramref name="filename" /> and address <paramref name="addr"/>,
+        /// its filename <paramref name="filename" />,
         /// create a placement for it in the <paramref name="result"/> dictionary.
         /// </summary>
-        /// <param name="addressable"></param>
-        /// <param name="filename"></param>
-        /// <param name="result"></param>
+        /// <param name="addressable">Object with an <see cref="Address"/>.</param>
+        /// <param name="filename">Filename into which the addressable object has been placed.</param>
+        /// <param name="result">A dictionary of placements into which this addressable object
+        /// will be placed.
+        /// </param>
         public void PlaceObject(
             IAddressable addressable,
             string filename,

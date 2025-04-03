@@ -26,7 +26,7 @@ using System.Text;
 namespace Reko.Core.Types
 {
     /// <summary>
-    /// Models C++ '&' references.
+    /// Models C++ '&amp;' references.
     /// </summary>
     public class ReferenceTo : DataType
     {

@@ -25,7 +25,7 @@ using System.Text;
 namespace Reko.Core.Collections
 {
     /// <summary>
-    /// A <see cref="Counter{T}"/> is a wrapper around a <see cref="Dictionary{TKey, int}"/>
+    /// A <see cref="Counter{T}"/> is a wrapper around a <see href="Dictionary{TKey, int}"/>
     /// which provides convenient counts of items.
     /// </summary>
     /// <typeparam name="T">Item type to be tallied.</typeparam>

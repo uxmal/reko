@@ -48,9 +48,9 @@ namespace Reko.Core.Loading
         /// <summary>
         /// Loads a program image into memory.
         /// </summary>
-        /// <param name="addrLoad">Optional base address of the program image. If not specified,
+        /// <param name="address">Optional base address of the program image. If not specified,
         /// use the image format's default loading address.</param>
-        /// <returns>An object implementing the <see cref="ILoadedImage>" /> interface.</returns>
+        /// <returns>An object implementing the <see href="ILoadedImage>" /> interface.</returns>
         public abstract Program LoadProgram(Address? address);
         
         /// <summary>
@@ -61,6 +61,7 @@ namespace Reko.Core.Loading
         /// <param name="addrLoad"></param>
         /// <param name="arch"></param>
         /// <param name="platform"></param>
+        /// <param name="userSegments"></param>
         /// <returns></returns>
         public virtual Program LoadProgram(
             //$REVIEW: this is just LoadDetails all over again

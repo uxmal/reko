@@ -29,20 +29,28 @@ namespace Reko.Core.Absyn
 	/// </summary>
 	public class AbsynWhile : AbsynLoop
 	{
+        /// <summary>
+        /// Creates a while statement.
+        /// </summary>
+        /// <param name="condition">The condition that controls the while loop.</param>
+        /// <param name="body">The body of the while loop.</param>
 		public AbsynWhile(Expression condition, List<AbsynStatement> body) : base(condition, body)
 		{
 		}
 
+        /// <inheritdoc />
 		public override void Accept(IAbsynVisitor visitor)
-		{
+        {
 			visitor.VisitWhile(this);
 		}
 
+        /// <inheritdoc />
         public override T Accept<T>(IAbsynVisitor<T> visitor)
         {
             return visitor.VisitWhile(this);
         }
 
+        /// <inheritdoc />
         public override T Accept<T, C>(IAbsynVisitor<T, C> visitor, C context)
         {
             return visitor.VisitWhile(this, context);

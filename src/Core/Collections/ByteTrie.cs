@@ -40,7 +40,7 @@ namespace Reko.Core.Collections
         }
 
         /// <summary>
-        /// Add a byte pattern with its associated <see cref="TValue"/> to the
+        /// Add a byte pattern with its associated <see href="TValue"/> to the
         /// trie.
         /// </summary>
         /// <param name="pattern">Pattern as a sequence of bytes.</param>
@@ -49,7 +49,7 @@ namespace Reko.Core.Collections
             => Add(pattern, value, false);
 
         /// <summary>
-        /// Add a byte pattern with its associated <see cref="TValue"/> to the
+        /// Add a byte pattern with its associated <see href="TValue"/> to the
         /// trie, optionally replacing any previously added pattern.
         /// </summary>
         /// <param name="pattern">Pattern as a sequence of bytes.</param>
@@ -84,12 +84,12 @@ namespace Reko.Core.Collections
         }
 
         /// <summary>
-        /// Add a byte pattern with its associated <see cref="TValue"/> to the
+        /// Add a byte pattern with its associated <see href="TValue"/> to the
         /// trie, together with a <paramref name="mask"/> that allows for 
         /// "wildcards".
         /// </summary>
         /// <param name="pattern">Pattern as a sequence of bytes.</param>
-        /// <param name="pattern">Mask bytes.</param>
+        /// <param name="mask">Mask bytes.</param>
         /// <param name="value">Value to associate with the pattern.</param>
         public void Add(ReadOnlySpan<byte> pattern, ReadOnlySpan<byte> mask, TValue value)
         {
@@ -146,7 +146,7 @@ namespace Reko.Core.Collections
         }
 
         /// <summary>
-        /// Tries to find a position in the given byte <paramref name="data">
+        /// Tries to find a position in the given byte <paramref name="data"/>
         /// that matches one of the patterns in the trie. 
         /// </summary>
         /// <param name="data">Data in which to look for patterns.</param>

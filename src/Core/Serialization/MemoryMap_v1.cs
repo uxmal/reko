@@ -51,6 +51,8 @@ namespace Reko.Core.Serialization
         /// <summary>
         /// Loads an image map from a <see cref="Stream"/> containing the XML description of the
         /// segments inside.
+        /// </summary>
+        /// <paramref name="stm">The stream from which to deserialize the library.</paramref>
         public static MemoryMap_v1? Deserialize(Stream stm)
         {
             var ser = SerializedLibrary.CreateSerializer(

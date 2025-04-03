@@ -33,11 +33,20 @@ namespace Reko.Core.Analysis
     {
         private readonly List<Identifier> definitions;
 
+        /// <summary>
+        /// Creates an instance of this class.
+        /// </summary>
         public SsaDefinitionsCollector()
         {
             this.definitions = new List<Identifier>();
         }
 
+        /// <summary>
+        /// Collects all defined <see cref="Identifier"/>s in the given 
+        /// <see cref="Statement"/>.
+        /// </summary>
+        /// <param name="stm">Statement to analyze.</param>
+        /// <returns>A collection of defined identifiers.</returns>
         public ICollection<Identifier> CollectDefinitions(Statement stm)
         {
             definitions.Clear();
@@ -47,12 +56,14 @@ namespace Reko.Core.Analysis
 
         #region InstructionVisitor Members
 
+        /// <inheritdoc/>
         public override void VisitAssignment(Assignment a)
         {
             base.VisitAssignment(a);
             definitions.Add(a.Dst);
         }
 
+        /// <inheritdoc/>
         public override void VisitCallInstruction(CallInstruction ci)
         {
             base.VisitCallInstruction(ci);
@@ -61,18 +72,21 @@ namespace Reko.Core.Analysis
                 .Where(i => i != null)!);
         }
 
+        /// <inheritdoc/>
         public override void VisitDefInstruction(DefInstruction def)
         {
             base.VisitDefInstruction(def);
             definitions.Add(def.Identifier);
         }
 
+        /// <inheritdoc/>
         public override void VisitPhiAssignment(PhiAssignment phi)
         {
             base.VisitPhiAssignment(phi);
             definitions.Add(phi.Dst);
         }
 
+        /// <inheritdoc/>
         public override void VisitStore(Store store)
         {
             base.VisitStore(store);
@@ -86,6 +100,7 @@ namespace Reko.Core.Analysis
 
         #region IExpressionVisitor Members
 
+        /// <inheritdoc/>
         public override void VisitOutArgument(OutArgument outArg)
         {
             if (outArg.Expression is Identifier outId)

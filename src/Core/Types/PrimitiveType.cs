@@ -248,7 +248,7 @@ namespace Reko.Core.Types
         /// with the supplied domain mask. If the resulting domain is empty, use the 
         /// supplied domain.
         /// </summary>
-        /// <param name="dom"></param>
+        /// <param name="domainMask">Domains to keep.</param>
         /// <returns></returns>
 		public PrimitiveType MaskDomain(Domain domainMask)
 		{

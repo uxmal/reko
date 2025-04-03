@@ -23,18 +23,25 @@ using System;
 
 namespace Reko.Core.Absyn
 {
+    /// <summary>
+    /// Abstract syntax for a "break" statement used in 
+    /// C-like languages.
+    /// </summary>
 	public class AbsynBreak : AbsynStatement
 	{
+        /// <inheritdoc/>
 		public override void Accept(IAbsynVisitor visitor)
 		{
 			visitor.VisitBreak(this);
 		}
 
+        /// <inheritdoc/>
         public override T Accept<T>(IAbsynVisitor<T> visitor)
         {
             return visitor.VisitBreak(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(IAbsynVisitor<T, C> visitor, C context)
         {
             return visitor.VisitBreak(this, context);

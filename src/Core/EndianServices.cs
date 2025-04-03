@@ -44,7 +44,7 @@ namespace Reko.Core
         /// </summary>
         /// <param name="memory">Memory to read</param>
         /// <param name="addr">Address at which to start</param>
-        /// <param name="rdr"> An <seealso cref="ImageReader"/> of the appropriate endianness</returns>
+        /// <param name="rdr"> An <seealso cref="ImageReader"/> of the appropriate endianness</param>
         /// <returns>True if the provided address refers to valid memory,
         /// otherwise false.</returns>
         public abstract bool TryCreateImageReader(IMemory memory, Address addr, [MaybeNullWhen(false)] out EndianImageReader rdr);
@@ -56,7 +56,7 @@ namespace Reko.Core
         /// <param name="memory">Memory to read</param>
         /// <param name="addr">Address at which to start</param>
         /// <param name="cbUnits">Number of memory units after which stop reading.</param>
-        /// <param name="rdr"> An <seealso cref="ImageReader"/> of the appropriate endianness</returns>
+        /// <param name="rdr"> An <seealso cref="ImageReader"/> of the appropriate endianness</param>
         /// <returns>True if the provided address refers to valid memory,
         /// otherwise false.</returns>
         public abstract bool TryCreateImageReader(IMemory memory, Address addr, long cbUnits, [MaybeNullWhen(false)] out EndianImageReader rdr);
@@ -64,7 +64,7 @@ namespace Reko.Core
         /// <summary>
         /// Creates an <see cref="EndianImageReader" /> with the preferred endianness of the processor.
         /// </summary>
-        /// <param name="img">Program image to read</param>
+        /// <param name="mem">Memory area to read</param>
         /// <param name="addr">Address at which to start</param>
         /// <returns>An <seealso cref="ImageReader"/> of the appropriate endianness</returns>
         public abstract EndianImageReader CreateImageReader(MemoryArea mem, Address addr);
@@ -75,7 +75,7 @@ namespace Reko.Core
         /// </summary>
         /// <param name="memoryArea">Memory area to read</param>
         /// <param name="addr">Address at which to start</param>
-        /// <param name="cbBytes">Number of memory units after which stop reading.</param>
+        /// <param name="cbUnits">Number of memory units after which stop reading.</param>
         /// <returns>An <seealso cref="EndianImageReader"/> of the appropriate endianness</returns>
         public abstract EndianImageReader CreateImageReader(MemoryArea memoryArea, Address addr, long cbUnits);
 
@@ -95,18 +95,18 @@ namespace Reko.Core
         /// endianness of the processor.
         /// </summary>
         /// <param name="mem">Memory area to read</param>
-        /// <param name="addr">offset from the start of the image</param>
+        /// <param name="offset">offset from the start of the image</param>
         /// <returns>An <seealso cref="ImageReader"/> of the appropriate endianness</returns>
-        public abstract EndianImageReader CreateImageReader(MemoryArea mem, long off);
+        public abstract EndianImageReader CreateImageReader(MemoryArea mem, long offset);
 
         /// <summary>
         /// Creates an <see cref="EndianImageReader" /> with the preferred
         /// endianness of the processor.
         /// </summary>
         /// <param name="bytes">Memory area to read</param>
-        /// <param name="addr">offset from the start of the image</param>
+        /// <param name="offset">offset from the start of the image</param>
         /// <returns>An <seealso cref="ImageReader"/> of the appropriate endianness</returns>
-        public abstract EndianImageReader CreateImageReader(byte[] bytes, long off);
+        public abstract EndianImageReader CreateImageReader(byte[] bytes, long offset);
 
         /// <summary>
         /// Creates an <see cref="ImageWriter" /> with the preferred 
@@ -139,11 +139,11 @@ namespace Reko.Core
 
         /// <summary>
         /// Creates an <see cref="ImageWriter"/> with the preferred endianness, which will 
-        /// write into the given <paramref name="memoryArea"/>
-        /// starting at address <paramref name="addr"/>.
+        /// write into the given <paramref name="bytes"/>
+        /// starting at address <paramref name="offset"/>.
         /// </summary>
         /// <param name="bytes">Bytes to write to.</param>
-        /// <param name="addr">Address to start writing at.</param>
+        /// <param name="offset">Offset at which to start writing at.</param>
         /// <returns>An <see cref="ImageWriter"/> of the appropriate endianness.</returns>
         public abstract ImageWriter CreateImageWriter(byte [] bytes, long offset);
 

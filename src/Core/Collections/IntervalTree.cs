@@ -6,12 +6,16 @@
 /////////////////////////////////////////////////////////////////////
 #define TREE_WITH_PARENT_POINTERS
 
+#pragma warning disable CS1572
+#pragma warning disable CS1573
+
 namespace Reko.Core.Collections
 {
     using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
 
@@ -129,6 +133,7 @@ namespace Reko.Core.Collections
     /// Interval Tree class
     /// </summary>
     /// <typeparam name="T"></typeparam>
+    /// <typeparam name="TypeValue"></typeparam>
     public class IntervalTree<T, TypeValue> :
         IEnumerable<KeyValuePair<Interval<T>, TypeValue>>
         where T : IComparable<T>
@@ -177,7 +182,9 @@ namespace Reko.Core.Collections
         /// other data structure for better performance depending on your
         /// problem needs.
         /// </summary>
-        /// <param name="arg">The arg.</param>
+        /// <param name="x">Start position.</param>
+        /// <param name="y">End position.</param>
+        /// <param name="value">Value.</param>
         public void Add(T x, T y, TypeValue value)
         {
             Add(new Interval<T>(x, y), value);
@@ -195,7 +202,8 @@ namespace Reko.Core.Collections
         /// data structure for better performance depending on your problem
         /// needs
         /// </summary>
-        /// <param name="arg">The arg.</param>
+        /// <param name="interval">The interval.</param>
+        /// <param name="value">The value at the interval.</param>
         public bool Add(Interval<T> interval, TypeValue value)
         {
             bool wasAdded = false;
@@ -393,11 +401,10 @@ namespace Reko.Core.Collections
         /// <summary>
         /// Tries to the get the value associated with the interval.
         /// </summary>
-        /// <param name="subtree">The subtree.</param>
         /// <param name="data">The data.</param>
         /// <param name="value">The value.</param>
         /// <returns></returns>
-        public bool TryGetInterval(Interval<T> data, out TypeValue value)
+        public bool TryGetInterval(Interval<T> data, [MaybeNullWhen(false)] out TypeValue value)
         {
             return this.TryGetIntervalImpl(this.root, data, out value);
         }
@@ -447,8 +454,9 @@ namespace Reko.Core.Collections
         /// </summary>
         /// <param name="subtree">The subtree.</param>
         /// <param name="data">The data.</param>
+        /// <param name="value">The retrieved value.</param>
         /// <returns></returns>
-        private bool TryGetIntervalImpl(IntervalNode? subtree, Interval<T> data, out TypeValue value)
+        private bool TryGetIntervalImpl(IntervalNode? subtree, Interval<T> data, [MaybeNullWhen(false)] out TypeValue value)
         {
             if (subtree != null)
             {
@@ -500,7 +508,6 @@ namespace Reko.Core.Collections
         /// <summary>
         /// IntervalNode class. 
         /// </summary>
-        /// <typeparam name="TElem">The type of the elem.</typeparam>
         private class IntervalNode
         {
             #region Fields
@@ -542,7 +549,7 @@ namespace Reko.Core.Collections
             /// Adds the specified elem.
             /// </summary>
             /// <param name="elem">The elem.</param>
-            /// <param name="data">The data.</param>
+            /// <param name="interval">The data.</param>
             /// <returns></returns>
             public static IntervalNode Add(IntervalNode? elem, Interval<T> interval, TypeValue value, ref bool wasAdded, ref bool wasSuccessful)
             {

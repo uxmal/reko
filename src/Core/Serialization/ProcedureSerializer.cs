@@ -300,8 +300,7 @@ namespace Reko.Core.Serialization
         /// <summary>
         /// Deserializes an argument.
         /// </summary>
-        /// <param name="arg"></param>
-        /// <param name="idx"></param>
+        /// <param name="arg">Argument to deserialize</param>
         /// <param name="convention"></param>
         /// <returns></returns>
         public Identifier? DeserializeArgument(Argument_v1 arg, string? convention)

@@ -193,7 +193,8 @@ namespace Reko.Core.Memory
         /// or [[segment]] data type. Otherwise a neutral [[word]] is returned.
         /// </remarks>
         /// <param name="imageOffset">Offset from image start, in bytes.</param>
-        /// <param name="type">Size of the word being requested.</param>
+        /// <param name="type">Size of the value being requested.</param>
+        /// <param name="c">If successful, returns the requested value.</param>
         /// <returns>Typed constant from the image.</returns>
         public override bool TryReadLe(long imageOffset, DataType type, out Constant c)
         {

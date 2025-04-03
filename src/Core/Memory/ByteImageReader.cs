@@ -201,8 +201,11 @@ namespace Reko.Core.Memory
         /// <summary>
         /// Reads a chunk of bytes and interprets it in Little-Endian mode.
         /// </summary>
-        /// <param name="type">Enough bytes read </param>
-        /// <returns>The read value as a <see cref="Constant"/>.</returns>
+        /// <param name="dataType">The size of the bytes to read.</param>
+        /// <param name="c">If successful, the read value as a <see cref="Constant"/>.</param>
+        /// <returns>True of it was possible to read a constant of the requested size,
+        /// otherwise false.
+        /// </returns>
         public bool TryReadLe(DataType dataType, [MaybeNullWhen(false)] out Constant c)
         {
             var size = dataType.Size;
@@ -224,8 +227,11 @@ namespace Reko.Core.Memory
         /// <summary>
         /// Reads a chunk of bytes and interprets it in Big-Endian mode.
         /// </summary>
-        /// <param name="type">Enough bytes read </param>
-        /// <returns>The read value as a <see cref="Constant"/>.</returns>
+        /// <param name="dataType">The size of the bytes to read.</param>
+        /// <param name="c">If successful, the read value as a <see cref="Constant"/>.</param>
+        /// <returns>True of it was possible to read a constant of the requested size,
+        /// otherwise false.
+        /// </returns>
         public bool TryReadBe(DataType dataType, [MaybeNullWhen(false)] out Constant c)
         {
             var size = dataType.Size;

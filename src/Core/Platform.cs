@@ -158,12 +158,12 @@ namespace Reko.Core
 
         /// <summary>
         /// Given the name of a calling convention and a return address size,
-        /// creates an instance of a <see cref="CallingConvention"/>.
+        /// creates an instance of a <see cref="ICallingConvention"/>.
         /// </summary>
         /// <param name="ccName">The name of the calling convention. Passing
         /// null or the empty string will use the default convention for this
         /// platform.</param>
-        /// <returns>A <see cref="CallingConvention"/> instance if one with a
+        /// <returns>A <see cref="ICallingConvention"/> instance if one with a
         /// matching name was found.
         /// </returns>
         ICallingConvention? GetCallingConvention(string? ccName);
@@ -179,14 +179,14 @@ namespace Reko.Core
         string? GetPrimitiveTypeName(PrimitiveType t, string language);
 
         /// <summary>
-        /// Determines whether the instructions <paramref name="instrs"/> 
-        /// starting at address <paramref name="addrInstr"/> are a "trampoline"
+        /// Determines whether the instructions <paramref name="clusters"/> 
+        /// starting at address <paramref name="addrJumpInstr"/> are a "trampoline"
         /// or program linkage table (PLT) stub. 
         /// </summary>
-        /// <param name="addrInstr">The address at which the potential stub
+        /// <param name="addrJumpInstr">The address at which the potential stub
         /// makes an indirect jump.</param>
-        /// <param name="instrs">A sequence of rewritten instructions ending
-        /// at <paramref name="addrInstr">.</param>
+        /// <param name="clusters">A sequence of rewritten instructions ending
+        /// at <paramref name="addrJumpInstr"/>.</param>
         /// <param name="host">An instance of <see cref="IRewriterHost"/> used
         /// to get details from the hosting environment.
         /// </param>
@@ -203,7 +203,7 @@ namespace Reko.Core
         /// <param name="addrInstr">The address at which the potential stub
         /// starts.</param>
         /// <param name="instrs">A sequence of rewritten instructions starting
-        /// at <paramref name="addrInstr">.</param>
+        /// at <paramref name="addrInstr" />.</param>
         /// <param name="host">An instance of <see cref="IRewriterHost"/> used
         /// to get details from the hosting environment.
         /// </param>
@@ -216,7 +216,7 @@ namespace Reko.Core
         /// Given an executable entry point, find the initial value of the global
         /// pointer -- if the architecture supports it.
         /// </summary>
-        /// <param name="imageMap">Program image in which to search</param>
+        /// <param name="program">Program in which to search</param>
         /// <param name="addrStart">The entrypoint according to the image.</param>
         /// <returns>null if no global pointer initialization code was found, otherwise the 
         /// an <see cref="Address"/> corresponding to the global pointer of this 
@@ -227,7 +227,7 @@ namespace Reko.Core
         /// Given an executable entry point, find the location of the "main" program,
         /// bypassing any runtime startup code.
         /// </summary>
-        /// <param name="imageMap">Program image in which to search</param>
+        /// <param name="program">Program in which to search</param>
         /// <param name="addrStart">The entrypoint according to the image.</param>
         /// <returns>null if no known runtime code was found, otherwise the 
         /// an ImageSymbol corresponding to the "real" user main procedure.</returns>
@@ -243,6 +243,7 @@ namespace Reko.Core
         /// </remarks>
         /// <param name="vector"></param>
         /// <param name="state"></param>
+        /// <param name="memory"><see cref="IMemory"/> instance to use.</param>
         /// <returns></returns>
         SystemService? FindService(int vector, ProcessorState? state, IMemory? memory);
         SystemService? FindService(RtlInstruction call, ProcessorState? state, IMemory? memory);
@@ -362,7 +363,10 @@ namespace Reko.Core
         /// <summary>
         /// Initializes a Platform instance
         /// </summary>
-        /// <param name="arch"></param>
+        /// <param name="services">An <see cref="IServiceProvider"/> instance
+        /// used to obtain services from the environment.</param>
+        /// <param name="arch">Default processor architecture of the environment.</param>
+        /// <param name="platformId">Platform ID for the platform.</param>
         protected Platform(IServiceProvider services, IProcessorArchitecture arch, string platformId)
         {
             this.Services = services;
@@ -464,7 +468,7 @@ namespace Reko.Core
         }
 
         /// <summary>
-        /// Obtains an instance of a <see cref="CallingConvention" /> that understands the calling convention named
+        /// Obtains an instance of a <see cref="ICallingConvention" /> that understands the calling convention named
         /// <paramref name="ccName"/>.
         /// </summary>
         /// <remarks>
@@ -707,8 +711,11 @@ namespace Reko.Core
         /// although the PowerPC 64 has 64-bit addresses, the Playstation3 implementation 
         /// uses 32-bit addresses.
         /// </remarks>
-        /// <param name="uAddr"></param>
-        /// <returns></returns>
+        /// <param name="uAddr">Address expressed as an unsigned long.</param>
+        /// <param name="codeAlign">If true, align the resulting <see cref="Address"/> correctly
+        /// for a code pointer.
+        /// </param>
+        /// <returns>The resulting address.</returns>
         public virtual Address MakeAddressFromLinear(ulong uAddr, bool codeAlign)
         {
             return Address.Create(Architecture.PointerType, uAddr);

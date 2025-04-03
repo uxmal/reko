@@ -18,17 +18,15 @@
  */
 #endregion
 
-using System;
-using System.Diagnostics;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
-using System.Linq;
 
 namespace Reko.Core.Types
 {
 	/// <summary>
 	/// Represents an equivalence class of types; i.e. types that are joined by equalities, function 
-	/// argument assignments, phi function merges &c.
+	/// argument assignments, phi function merges &amp;c.
 	/// </summary>
 	public class EquivalenceClass : DataType
 	{

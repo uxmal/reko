@@ -35,6 +35,13 @@ namespace Reko.Core.Analysis
         private readonly Statement user;
         private readonly SsaIdentifierCollection ssaIds;
 
+        /// <summary>
+        /// Creates a new <see cref="ExpressionUseRemover"/> instance.
+        /// </summary>
+        /// <param name="user"><see cref="Statement" /> from which uses are
+        /// to be removed.</param>
+        /// <param name="ssaIds">The <see cref="SsaIdentifierCollection"/> 
+        /// from which the uses are to be removed.</param>
         public ExpressionUseRemover(Statement user, SsaIdentifierCollection ssaIds)
         {
             this.user = user ?? throw new ArgumentNullException(nameof(user));

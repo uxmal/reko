@@ -92,7 +92,7 @@ namespace Reko.Core.Collections
         #endregion
 
         /// <summary>
-        /// Attempt to peek <see cref="ahead"/> items forward in the enumeration.
+        /// Attempt to peek <paramref name="ahead"/> items forward in the enumeration.
         /// </summary>
         /// <param name="ahead">Number of steps ahead to peek.</param>
         /// <param name="result">If the peek was successful, the peeked

@@ -54,15 +54,15 @@ namespace Reko.Core.Hll.C
         /// <param name="symbolTable">Information about types that may be needed to calculate sizes of objects.</param>
         /// <param name="pointerSize">The size of a pointer on this platform.</param>
         /// <exception cref="ArgumentNullException"></exception>
-        public NamedDataTypeExtractor(IPlatform platform, IEnumerable<DeclSpec> specs, SymbolTable symbolTyable, int pointerSize)
+        public NamedDataTypeExtractor(IPlatform platform, IEnumerable<DeclSpec> specs, SymbolTable symbolTable, int pointerSize)
         {
             this.platform = platform ?? throw new ArgumentNullException(nameof(platform));
             this.specs = specs;
-            this.symbolTable = symbolTyable;
+            this.symbolTable = symbolTable;
             this.pointerSize = pointerSize;
             this.callingConvention = CTokenType.None;
             this.isNear = false;
-            this.eval = new CConstantEvaluator(platform, symbolTyable.Constants);
+            this.eval = new CConstantEvaluator(platform, symbolTable.Constants);
             this.basicType = CBasicType.None;
             foreach (var declspec in specs)
             {
@@ -258,6 +258,7 @@ namespace Reko.Core.Hll.C
         /// Attributes named [[reko::reg(&lt;tokens&gt;)]] expect a single register
         /// in &lt;tokens&gt;. Remaining tokens are ignored
         /// </summary>
+        /// <param name="paramType"></param>
         /// <param name="attrs"></param>
         /// <returns></returns>
         public (SerializedKind?, bool isOut) GetArgumentKindFromAttributes(string paramType, List<CAttribute>? attrs)

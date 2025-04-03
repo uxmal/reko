@@ -32,11 +32,22 @@ namespace Reko.Core.Analysis
     {
         private readonly IDictionary<Identifier, int> idMap;
 
+        /// <summary>
+        /// Creates an instance of this class.
+        /// </summary>
         public InstructionUseCollector()
         {
             this.idMap = new Dictionary<Identifier, int>();
         }
 
+        /// <summary>
+        /// For a given <see cref="Statement"/>, returns all the <see cref="Identifier"/>s
+        /// referenced within, as well the number of times each identifier occurred.
+        /// </summary>
+        /// <param name="stm">Statement to analyze.</param>
+        /// <returns>A dictionary associating each <see cref="Identifier"/> with the 
+        /// number of times it occurs in the statement.
+        /// </returns>
         public IDictionary<Identifier, int> CollectUses(Statement stm)
         {
             idMap.Clear();
@@ -44,6 +55,10 @@ namespace Reko.Core.Analysis
             return idMap;
         }
 
+        /// <summary>
+        /// Increments the count of the given identifier in the <see cref="idMap"/>.
+        /// </summary>
+        /// <param name="id"></param>
         protected override void UseIdentifier(Identifier id)
         {
             if (idMap.ContainsKey(id))

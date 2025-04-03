@@ -36,12 +36,16 @@ namespace Reko.Core.Machine
 
         /// <summary>
         /// Renders the operand as a string, according to the specified
-        /// <paramref name="options" />.
+        /// <paramref name="options"/>.
+        /// </summary>
+        /// <param name="options">Options that control the rendering 
+        /// of the machine operand.</param>
         string ToString(MachineInstructionRendererOptions options);
 
         /// <summary>
         /// Renders the operand to a <see cref="MachineInstructionRenderer" />,
         /// according to the specified <paramref name="options" />.
+        /// </summary>
         public void Render(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options);
     }
 
@@ -78,6 +82,7 @@ namespace Reko.Core.Machine
         /// <summary>
         /// Converts a signed integer constant to string representatioon.
         /// </summary>
+        /// <param name="c">Constant to render into a string.</param>
         /// <param name="forceSign">Should signed integers always be
         /// formatted with a leading sign character? Setting this to true
         /// allows chaining a sequence of numbers into an expression,
@@ -105,6 +110,7 @@ namespace Reko.Core.Machine
         /// <summary>
         /// Converts a numeric constant to string representatioon.
         /// </summary>
+        /// <param name="c"> Constant to render into a string.</param>
         /// <param name="forceSignForSignedIntegers">sign Should signed
         /// integers always be formatted with a leading sign character?
         /// Setting this to true allows chaining a sequence of numbers into an

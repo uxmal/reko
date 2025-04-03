@@ -22,25 +22,39 @@ using System;
 
 namespace Reko.Core.Absyn
 {
+    /// <summary>
+    /// Represents a goto statement target.
+    /// </summary>
 	public class AbsynLabel : AbsynStatement
 	{
+
+        /// <summary>
+        /// Constructs a label with the given name.
+        /// </summary>
+        /// <param name="label"></param>
 		public AbsynLabel(string label)
 		{
 			this.Name = label;
 		}
 
+        /// <summary>
+        /// The name of the label.
+        /// </summary>
         public string Name { get; }
 
+        /// <inheritdoc />
         public override void Accept(IAbsynVisitor visitor)
 		{
 			visitor.VisitLabel(this);
 		}
 
+        /// <inheritdoc />
         public override T Accept<T>(IAbsynVisitor<T> visitor)
         {
             return visitor.VisitLabel(this);
         }
 
+        /// <inheritdoc />
         public override T Accept<T, C>(IAbsynVisitor<T, C> visitor, C context)
         {
             return visitor.VisitLabel(this, context);

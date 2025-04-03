@@ -25,11 +25,36 @@ using Reko.Core.Loading;
 
 namespace Reko.Core.Assemblers
 {
+    /// <summary>
+    /// Interface for classes that assemble assembly language programs into
+    /// machine code.
+    /// </summary>
     public interface IAssembler
 	{
+        /// <summary>
+        /// The address used as a base address for this assembler.
+        /// </summary>
         Address StartAddress { get; }
+
+        /// <summary>
+        /// List of entry points in the assembly language program.
+        /// </summary>
+        /// <remarks>
+        /// These entry points are usually denoted with <c>ORG</c>
+        /// directives or the like.
+        /// </remarks>
         ICollection<ImageSymbol> EntryPoints { get; }
+
+        /// <summary>
+        /// List of symbols encountered in the assembly language 
+        /// program.
+        /// </summary>
         ICollection<ImageSymbol> ImageSymbols { get; }
+
+        /// <summary>
+        /// Any external symbols referenced in the assembly language
+        /// program.
+        /// </summary>
         Dictionary<Address, ImportReference> ImportReferences { get; }
 
         /// <summary>
@@ -38,6 +63,12 @@ namespace Reko.Core.Assemblers
         /// </summary>
         Program Assemble(Address baseAddress, string filename, TextReader reader);
 
+        /// <summary>
+        /// Assembles the assembly language program in <paramref name="asmFragment"/> into a new
+        /// </summary>
+        /// <param name="baseAddress">Address at which to assemble the fragment.</param>
+        /// <param name="asmFragment">Fragment of assembly language to assemble.</param>
+        /// <returns>A <see cref="Program"/> containing the results of assembling.</returns>
         Program AssembleFragment(Address baseAddress, string asmFragment);
 
         /// <summary>
@@ -45,7 +76,7 @@ namespace Reko.Core.Assemblers
         /// the provided <paramref name="program"/> starting at <paramref name="address"/>. 
         /// </summary>
         /// <param name="program">The program to mutate.</param>
-        /// <param name="baseAddress">Location at which to start writing machine code.</param>
+        /// <param name="address">Location at which to start writing machine code.</param>
         /// <param name="reader">Assembly language source code.</param>
         /// <returns>The number of machine code bytes written.</returns>
         /// <remarks>
@@ -60,7 +91,7 @@ namespace Reko.Core.Assemblers
         /// starting at the address <paramref name="address"/>.
         /// </summary>
         /// <param name="program">Program to mutate.</param>
-        /// <param name="address">Address at which to start.</param>
+        /// <param name="address">Address at which to start the assembly.</param>
         /// <param name="asmFragment">String containing assembly language 
         /// instructions.</param>
         /// <returns>The number of machine code bytes written.</returns>

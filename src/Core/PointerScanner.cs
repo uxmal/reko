@@ -137,10 +137,11 @@ namespace Reko.Core
         /// The implementations of this abstract method should read a chunk of bytes
         /// equal to the size of an opcode in the relevant architecture.
         /// </summary>
-        /// <remarks>Most architectures have opcode whose size <= 32 bits, which should
+        /// <remarks>Most architectures have opcode whose size &lt;= 32 bits, which should
         /// fit comfortably in a System.UInt32.</remarks>
-        /// <param name="rdr"></param>
-        /// <returns>The opcode at the current position of the reader.</returns>
+        /// <param name="rdr">Imagereader used to read.</param>
+        /// <param name="opcode">The opcode at the current position of the reader.</param>
+        /// <returns>True of the peek operation was successful, false otherwise.</returns>
         public abstract bool TryPeekOpcode(EndianImageReader rdr, out uint opcode);
 
         public abstract bool TryPeekPointer(EndianImageReader rdr, out T target);

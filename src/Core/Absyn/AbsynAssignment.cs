@@ -18,41 +18,51 @@
  */
 #endregion
 
-using Reko.Core.Code;
 using Reko.Core.Expressions;
-using System;
-using System.IO;
 
-namespace Reko.Core.Absyn
+namespace Reko.Core.Absyn;
+
+/// <summary>
+/// Adapter that holds an Instruction.
+/// </summary>
+public class AbsynAssignment : AbsynStatement
 {
-	/// <summary>
-	/// Adapter that holds an Instruction.
-	/// </summary>
-	public class AbsynAssignment : AbsynStatement
-	{
-		public AbsynAssignment(Expression dst, Expression src)
-		{
-			this.Dst = dst;
-			this.Src = src;
-		}
+    /// <summary>
+    /// Creates an instance of an abstract syntax node that represents an assignment
+    /// </summary>
+    /// <param name="dst">Destination of the assignment.</param>
+    /// <param name="src">Source of the assignment.</param>
+    public AbsynAssignment(Expression dst, Expression src)
+    {
+        this.Dst = dst;
+        this.Src = src;
+    }
 
-		public Expression Dst { get; }
-		public Expression Src { get; }
+    /// <summary>
+    /// Destination of the assignment.
+    /// </summary>
+    public Expression Dst { get; }
 
+    /// <summary>
+    /// Source of the assignment.
+    /// </summary>
+    public Expression Src { get; }
 
-        public override void Accept(IAbsynVisitor visitor)
-        {
-            visitor.VisitAssignment(this);
-        }
+    /// <inheritdoc/>
+    public override void Accept(IAbsynVisitor visitor)
+    {
+        visitor.VisitAssignment(this);
+    }
 
-        public override T Accept<T>(IAbsynVisitor<T> visitor)
-        {
-            return visitor.VisitAssignment(this);
-        }
+    /// <inheritdoc/>
+    public override T Accept<T>(IAbsynVisitor<T> visitor)
+    {
+        return visitor.VisitAssignment(this);
+    }
 
-        public override T Accept<T, C>(IAbsynVisitor<T, C> visitor, C context)
-        {
-            return visitor.VisitAssignment(this, context);
-        }
+    /// <inheritdoc/>
+    public override T Accept<T, C>(IAbsynVisitor<T, C> visitor, C context)
+    {
+        return visitor.VisitAssignment(this, context);
     }
 }

@@ -25,6 +25,12 @@ using System.Linq;
 
 namespace Reko.Core.Analysis
 {
+    /// <summary>
+    /// A derived class of <see cref="ApplicationBuilder"/>, intended to be used early
+    /// in the analysis of a procedure. Specifically, it is used during the 
+    /// scanning phase when procedures with known signatures (e.g. from metadata files)
+    /// are encountered.
+    /// </summary>
     public class FrameApplicationBuilder : ApplicationBuilder, StorageVisitor<Expression>
     {
         protected readonly IProcessorArchitecture arch;
@@ -46,11 +52,13 @@ namespace Reko.Core.Analysis
             this.binder = binder;
         }
 
+        /// <inheritdoc/>
         public override Expression BindInArg(Storage stg)
         {
             return stg.Accept(this);
         }
 
+        /// <inheritdoc/>
         public override Expression? BindReturnValue(Storage? stg)
         {
             if (stg is null)
@@ -58,6 +66,7 @@ namespace Reko.Core.Analysis
             return stg.Accept(this);
         }
 
+        /// <inheritdoc/>
         public override OutArgument BindOutArg(Storage stg)
         {
             var actualArg = stg.Accept(this);
@@ -66,31 +75,37 @@ namespace Reko.Core.Analysis
 
         #region StorageVisitor<Expression> Members
 
+        /// <inheritdoc/>
         public Expression VisitFlagGroupStorage(FlagGroupStorage grf)
         {
             return binder.EnsureFlagGroup(grf.FlagRegister, grf.FlagGroupBits, grf.Name);
         }
 
+        /// <inheritdoc/>
         public virtual Expression VisitFpuStackStorage(FpuStackStorage fpu)
         {
             return binder.EnsureFpuStackVariable(fpu.FpuStackOffset, fpu.DataType);
         }
 
+        /// <inheritdoc/>
         public Expression VisitMemoryStorage(MemoryStorage global)
         {
             throw new NotSupportedException(string.Format("A {0} can't be used as a formal parameter.", global.GetType().FullName));
         }
 
+        /// <inheritdoc/>
         public Expression VisitOutArgumentStorage(OutArgumentStorage arg)
         {
             return arg.OriginalIdentifier.Storage.Accept(this);
         }
 
+        /// <inheritdoc/>
         public Expression VisitRegisterStorage(RegisterStorage reg)
         {
             return binder.EnsureRegister(reg);
         }
 
+        /// <inheritdoc/>
         public Expression VisitSequenceStorage(SequenceStorage seq)
         {
             var exps = seq.Elements.Select(e => e.Accept(this) as Identifier).ToArray();
@@ -99,11 +114,13 @@ namespace Reko.Core.Analysis
             throw new NotImplementedException("Handle case when stack parameter is passed.");
         }
 
+        /// <inheritdoc/>
         public Expression VisitStackStorage(StackStorage stack)
         {
             return BindInStackArg(stack, Site.SizeOfReturnAddressOnStack);
         }
 
+        /// <inheritdoc/>
         public override Expression BindInStackArg(StackStorage stack, int returnAdjustment)
         {
             if (!arch.IsStackArgumentOffset(stack.StackOffset))
@@ -112,6 +129,7 @@ namespace Reko.Core.Analysis
             return arch.CreateStackAccess(binder, netOffset, stack.DataType);
         }
 
+        /// <inheritdoc/>
         public Expression VisitTemporaryStorage(TemporaryStorage temp)
         {
             throw new NotSupportedException(string.Format("A {0} can't be used as a formal parameter.", temp.GetType().FullName));

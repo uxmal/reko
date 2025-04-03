@@ -67,9 +67,10 @@ namespace Reko.Core.Dfa
         /// <summary>
         /// Returns a sequence of positions at which the automaton pattern matches.
         /// </summary>
-        /// <param name="bytes"></param>
-        /// <param name="iStart"></param>
-        /// <returns></returns>
+        /// <param name="bytes">Bytes on which the match is to be done.</param>
+        /// <param name="iStart">Starting position in the byte array.</param>
+        /// <param name="iEnd">Ending position in the byte array.</param>
+        /// <returns>A collection of indices where matches were found.</returns>
         public IEnumerable<int> GetMatches(byte[] bytes, int iStart, int iEnd)
         {
             bool isMatching = false; // true if we have found the beginning of a pattern and are matching.

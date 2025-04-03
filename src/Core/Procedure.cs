@@ -117,9 +117,10 @@ namespace Reko.Core
 		/// Creates a procedure with the specified name; if no name is specified (null string)
 		/// the address is used instead.
 		/// </summary>
-		/// <param name="name"></param>
-		/// <param name="addr"></param>
-		/// <param name="f"></param>
+        /// <param name="arch"><see cref="IProcessorArchitecture"/> used by this procedure.</param>
+		/// <param name="name">Name of the procedure.</param>
+		/// <param name="addr">Address of the procedure's entry point.</param>
+		/// <param name="f">The <see cref="Frame"/> of this procedure.</param>
 		/// <returns></returns>
 		public static Procedure Create(IProcessorArchitecture arch, string? name, Address addr, Frame f)
 		{

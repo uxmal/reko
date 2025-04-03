@@ -45,11 +45,11 @@ namespace Reko.Core.Rtl
             Expression target,
             int stackPushedReturnAddressSize,
             InstrClass rtlClass,
-            IProcessorArchitecture? arch = null) : base(target, rtlClass)
+            IProcessorArchitecture? archSwitch = null) : base(target, rtlClass)
         {
             Debug.Assert((rtlClass & (InstrClass.Call | InstrClass.Transfer)) != 0);
             this.ReturnAddressSize = stackPushedReturnAddressSize;
-            this.Architecture = arch;
+            this.Architecture = archSwitch;
         }
 
         /// <summary>

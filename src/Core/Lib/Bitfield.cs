@@ -177,15 +177,15 @@ namespace Reko.Core.Lib
         /// extension of the concatenation of those values.
         /// </summary>
         /// <param name="bitfields">Sequence of bit fields to read.</param>
-        /// <param name="u">Unsigned long integer to read the fields from.</param>
+        /// <param name="ul">Unsigned long integer to read the fields from.</param>
         /// <returns>An signed long value consisting of the sign extension of
         /// the bitwise concatenation of the bitfield values.
         /// </returns>
-        public static long ReadSignedFields(Bitfield[] fields, ulong ul)
+        public static long ReadSignedFields(Bitfield[] bitfields, ulong ul)
         {
             long n = 0;
             int bitsTotal = 0;
-            foreach (var bitfield in fields)
+            foreach (var bitfield in bitfields)
             {
                 n = n << bitfield.Length | (long) ((ul >> bitfield.Position) & bitfield.Mask);
                 bitsTotal += bitfield.Length;

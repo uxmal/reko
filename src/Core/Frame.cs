@@ -68,6 +68,7 @@ namespace Reko.Core
         /// <summary>
         /// Creates a Frame instance for maintaining the local variables and arguments.
         /// </summary>
+        /// <param name="arch">Processor architecture used in this frame.</param>
         /// <param name="framePointerSize">The size of the frame pointer must match the size of the 
         /// stack register, if any, or at the least the size of a pointer.</param>
         /// <param name="codeAddressSize">The size of the return address. Usually it is the same
@@ -215,9 +216,7 @@ namespace Reko.Core
 		/// <summary>
 		/// Ensures a register access in this function. 
 		/// </summary>
-		/// <param name="reg"></param>
-		/// <param name="name"></param>
-		/// <param name="vt"></param>
+		/// <param name="reg">Register to use.</param>
 		/// <returns></returns>
 		public Identifier EnsureRegister(RegisterStorage reg)
 		{

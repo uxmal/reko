@@ -19,29 +19,42 @@
 #endregion
 
 using Reko.Core.Expressions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Core.Absyn
 {
+    /// <summary>
+    /// Constructs a C-style compound assignment.
+    /// </summary>
+    /// <remarks>
+    /// A compound assignment is an assignment that combines a binary operation with 
+    /// an assignment. For example, the expression <c>x += y</c> is equivalent to
+    /// <c>x = x + y</c>.
+    /// </remarks>
     public class AbsynCompoundAssignment : AbsynAssignment
     {
+        /// <summary>
+        /// Constructs a compound assignment.
+        /// </summary>
+        /// <param name="dst">The destination of the compound assignment.</param>
+        /// <param name="src">The source of the compound assignment.</param>
         public AbsynCompoundAssignment(Expression dst, BinaryExpression src) : base(dst, src)
         {
             this.Src = src;
         }
 
+        /// <summary>
+        /// The binary expression that represents the compound assignment.
+        /// </summary>
         public new BinaryExpression Src { get; private set; }
 
 
+        /// <inheritdoc/>
         public override void Accept(IAbsynVisitor visitor)
         {
             visitor.VisitCompoundAssignment(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(IAbsynVisitor<T> visitor)
         {
             return visitor.VisitCompoundAssignment(this);
