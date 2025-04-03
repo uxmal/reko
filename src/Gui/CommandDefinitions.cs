@@ -186,7 +186,7 @@ namespace Reko.Gui
             new CmdDefinition { id = CmdIds.ProcedureDebugTrace, cmdSet = Reko, container = GroupIds.GrpProcedureListDebug, text = "_Debug procedure decompilation" },
 
             new CmdDefinition { id = CmdIds.CollapseAllNodes, cmdSet = Reko, container = GroupIds.GrpBrowserToolbar, imageKey = "Collapse.ico", tip = "Collapse All" },
-            new CmdDefinition { id = CmdIds.CreateUserSegment, cmdSet = Reko, container = GroupIds.GrpBrowserToolbar, imageKey = "CreateSegment.ico", tip = "Create Segment" },
+            new CmdDefinition { id = CmdIds.EditSegments, cmdSet = Reko, container = GroupIds.GrpBrowserToolbar, imageKey = "CreateSegment.ico", tip = "Edit Segments..." },
 
             new CmdDefinition { id = CmdIds.LoadSymbols, cmdSet = Reko, container = GroupIds.GrpBrowser, text = "Load Symbols..." },
         };

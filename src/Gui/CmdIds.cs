@@ -162,7 +162,7 @@ namespace Reko.Gui
 		ShowCallGraphNavigator,
 		ProcedureDebugTrace,
 		CollapseAllNodes,
-		CreateUserSegment,
+		EditSegments,
 		LoadSymbols,
 
 		FileMru = 2200

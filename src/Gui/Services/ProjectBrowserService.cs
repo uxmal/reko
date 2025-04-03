@@ -162,7 +162,7 @@ namespace Reko.Gui.Services
                 case CmdIds.CollapseAllNodes: 
                     status.Status = MenuStatus.Visible | MenuStatus.Enabled;
                     return true;
-                case CmdIds.CreateUserSegment:
+                case CmdIds.EditSegments:
                     status.Status =
                         IsSegmentSelected()
                             ? MenuStatus.Visible | MenuStatus.Enabled
@@ -186,7 +186,7 @@ namespace Reko.Gui.Services
                 switch ((CmdIds) cmdId.ID)
                 {
                 case CmdIds.CollapseAllNodes: tree.CollapseAll(); return true;
-                case CmdIds.CreateUserSegment: await CreateUserSegment(); return true;
+                case CmdIds.EditSegments: await EditSegments(); return true;
                 }
             }
             return false;
@@ -200,7 +200,7 @@ namespace Reko.Gui.Services
             return des.Component is ImageSegment;
         }
 
-        private async ValueTask CreateUserSegment()
+        private async ValueTask EditSegments()
         {
             var des = GetSelectedDesigner();
             if (des is null)
