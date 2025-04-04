@@ -409,9 +409,7 @@ namespace Reko.Arch.M68k.Rewriter
             }
             throw new AddressCorrelatedException(
                 addrInstr,
-                "Unimplemented RewriteUnary for operand {0} of type {1}.",
-                operand.ToString()!,
-                operand.GetType().Name);
+                $"Unimplemented RewriteUnary for operand {operand} of type {operand.GetType().Name}.");
         }
 
         public Expression RewriteMoveDst(MachineOperand opDst, Address addrInstr, PrimitiveType dataWidth, Expression src)

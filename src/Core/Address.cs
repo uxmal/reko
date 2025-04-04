@@ -53,6 +53,7 @@ namespace Reko.Core
         private const byte SegmentedReal = 3;
         private const byte SegmentedProt = 4;
 
+        /// <inheritdoc/>
         public readonly IEnumerable<Expression> Children => [];
 
         private Address(DataType dt, byte type, byte bitsize, ulong offset, ushort selector)
@@ -64,36 +65,63 @@ namespace Reko.Core
             this.offsetBitsize = bitsize;
         }
 
+        /// <inheritdoc />
         public DataType DataType {
             readonly get => dt;
             set => dt = value;
         }
 
+        /// <summary>
+        /// Returns true if this pointer is to be regarded as a null pointer.
+        /// </summary>
         public readonly bool IsNull => ToLinear() == 0;
 
+        /// <summary>
+        /// Returns true if this pointer is to be regarded as a null pointer.
+        /// </summary>
         public readonly bool IsZero => ToLinear() == 0;
 
+        /// <summary>
+        /// Returns the offset part of this address.
+        /// </summary>
         public readonly ulong Offset => uOffset;
 
+        /// <summary>
+        /// Returns the selector part of this address, if the address is segmented.
+        /// </summary>
         public readonly ushort? Selector => GetInfo().SelectorShift != 0 ? this.selector : null;
 
+
+        /// <summary>
+        /// Adds an offset to this address and returns the result.
+        /// </summary>
+        /// <param name="offset">Offset to add to this address.</param>
+        /// <returns>The offset address.</returns>
         public readonly Address Add(long offset) => GetInfo().Add(this, offset);
 
+        /// <inheritdoc/>
         public readonly void Accept(IExpressionVisitor visitor)
         {
             visitor.VisitAddress(this);
         }
 
+        /// <inheritdoc/>
         public readonly T Accept<T>(ExpressionVisitor<T> visitor)
         {
             return visitor.VisitAddress(this);
         }
 
+        /// <inheritdoc/>
         public readonly T Accept<T, C>(ExpressionVisitor<T, C> visitor, C context)
         {
             return visitor.VisitAddress(this, context);
         }
 
+        /// <summary>
+        /// Aligns this address to the next multiple of <paramref name="alignment"/>.
+        /// </summary>
+        /// <param name="alignment">Alignment to use.</param>
+        /// <returns>An aligned address value.</returns>
         public readonly Address Align(int alignment)
         {
             ArgumentOutOfRangeException.ThrowIfNegativeOrZero(alignment, nameof(alignment));
@@ -101,11 +129,13 @@ namespace Reko.Core
             return Info.NewOffset(this, uAl * ((this.uOffset + uAl - 1) / uAl));
         }
 
+        /// <inheritdoc/>
         public readonly Expression CloneExpression()
         {
             return this;
         }
 
+        /// <inheritdoc/>
         public readonly int CompareTo(Address that)
         {
             return this.ToLinear().CompareTo(that.ToLinear());
@@ -118,6 +148,7 @@ namespace Reko.Core
             return this.CompareTo(that);
         }
 
+        /// <inheritdoc/>
         public override readonly bool Equals([NotNullWhen(true)] object? obj)
         {
             if (obj is not Address that)
@@ -125,11 +156,17 @@ namespace Reko.Core
             return this.ToLinear() == that.ToLinear();
         }
 
+        /// <inheritdoc/>
         public override readonly int GetHashCode()
         {
             return this.ToLinear().GetHashCode();
         }
 
+        /// <summary>
+        /// Create an address from a constant value.
+        /// </summary>
+        /// <param name="value">Constant value to convert.</param>
+        /// <returns>The resluting address.</returns>
         public static Address FromConstant(Constant value)
         {
             int bitSize = value.DataType.BitSize;
@@ -137,17 +174,35 @@ namespace Reko.Core
             return new Address(dt, LinearHex, (byte)bitSize, value.ToUInt64(), 0);
         }
 
+        /// <summary>
+        /// Given a prefix and a suffix, generates a name for this address.
+        /// </summary>
+        /// <param name="prefix">Prefix to use in the generated name.</param>
+        /// <param name="suffix">Suffix to use in the generated name.</param>
+        /// <returns>The resulting name.</returns>
         public readonly string GenerateName(string prefix, string suffix) => GetInfo().GenerateName(prefix, suffix, this);
 
         private readonly Info GetInfo() => infos[this.type];
 
+        /// <inheritdoc/>
         public readonly Expression Invert()
         {
             throw new NotSupportedException($"Expression of type {GetType().Name} doesn't support Invert.");
         }
 
+        /// <summary>
+        /// Creates a new address with the same seletor (if one is present)
+        /// but with a different offset.
+        /// </summary>
+        /// <param name="newOffset">The new offset to use.</param>
+        /// <returns>A new <see cref="Address"/> instance that uses the new
+        /// offset.
+        /// </returns>
         public readonly Address NewOffset(ulong newOffset) => Info.NewOffset(this, newOffset);
 
+        /// <summary>
+        /// The preferred base this address should be displayed in.
+        /// </summary>
         public readonly int PreferredBase => this.type == LinearOctal ? 8 : 0;
 
         readonly void MachineOperand.Render(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
@@ -157,11 +212,19 @@ namespace Reko.Core
             renderer.EndOperand();
         }
 
+        /// <summary>
+        /// Converts this address to a <see cref="Constant"/> value.
+        /// </summary>
+        /// <returns>The resulting constant.</returns>
         public readonly Constant ToConstant()
         {
             return Constant.Create(this.dt, this.ToLinear());
         }
 
+        /// <summary>
+        /// Tries to convert this address to a 16-bit unsigned integer.
+        /// </summary>
+        /// <returns>The converted value if possible.</returns>
         public readonly ushort ToUInt16()
         {
             if (this.offsetBitsize > 16)
@@ -169,6 +232,10 @@ namespace Reko.Core
             return (ushort) this.uOffset;
         }
 
+        /// <summary>
+        /// Tries to convert this address to a 32-bit unsigned integer.
+        /// </summary>
+        /// <returns>The converted value if possible.</returns>
         public readonly uint ToUInt32()
         {
             if (this.offsetBitsize > 32)
@@ -176,8 +243,18 @@ namespace Reko.Core
             return (uint) this.uOffset;
         }
 
+        /// <summary>
+        /// Converts an address to a linear value.
+        /// </summary>
+        /// <remarks>
+        /// If the address is "flat", this is a trivial operation.
+        /// If the address is segmented, various tricks need to be
+        /// applied to generate a "flat" linear value.
+        /// </remarks>
+        /// <returns>An unsigned long value.</returns>
         public readonly ulong ToLinear() => GetInfo().ToLinear(this);
 
+        /// <inheritdoc/>
         public override readonly string ToString() => GetInfo().ConvertToString(this);
         
         readonly string MachineOperand.ToString(MachineInstructionRendererOptions options)
@@ -185,57 +262,123 @@ namespace Reko.Core
             return ToString();
         }
 
-
+        /// <summary>
+        /// Tests if two addresses are equal.
+        /// </summary>
+        /// <param name="a">First address.</param>
+        /// <param name="b">Second address.</param>
+        /// <returns>Returns true if the addresses are equal.</returns>
         public static bool operator ==(Address a, Address b)
         {
             return a.ToLinear() == b.ToLinear();
         }
 
+        /// <summary>
+        /// Tests if two addresses are not equal.
+        /// </summary>
+        /// <param name="a">First address.</param>
+        /// <param name="b">Second address.</param>
+        /// <returns>Returns true if the addresses are not equal.</returns>
         public static bool operator !=(Address a, Address b)
         {
             return a.ToLinear() != b.ToLinear();
         }
 
+        /// <summary>
+        /// Tests if address <paramref name="a"/> is strictly less than
+        /// <paramref name="b"/>.
+        /// </summary>
+        /// <param name="a">First address.</param>
+        /// <param name="b">Second address.</param>
+        /// <returns>Returns true if the <paramref name="a"/> is strictly less
+        /// than <paramref name="b"/>.</returns>
         public static bool operator <(Address a, Address b)
         {
             return a.ToLinear() < b.ToLinear();
         }
 
+        /// <summary>
+        /// Tests if address <paramref name="a"/> is less than
+        /// or equal to <paramref name="b"/>.
+        /// </summary>
+        /// <param name="a">First address.</param>
+        /// <param name="b">Second address.</param>
+        /// <returns>Returns true if the <paramref name="a"/> is less
+        /// than or equal to <paramref name="b"/>.</returns>
         public static bool operator <=(Address a, Address b)
         {
             return a.ToLinear() <= b.ToLinear();
         }
 
+        /// <summary>
+        /// Tests if address <paramref name="a"/> is strictly greater than
+        /// <paramref name="b"/>.
+        /// </summary>
+        /// <param name="a">First address.</param>
+        /// <param name="b">Second address.</param>
+        /// <returns>Returns true if the <paramref name="a"/> is strictly greater
+        /// than <paramref name="b"/>.</returns>
         public static bool operator >(Address a, Address b)
         {
             return a.ToLinear() > b.ToLinear();
         }
 
+        /// <summary>
+        /// Tests if address <paramref name="a"/> is greater than or equal to
+        /// <paramref name="b"/>.
+        /// </summary>
+        /// <param name="a">First address.</param>
+        /// <param name="b">Second address.</param>
+        /// <returns>Returns true if the <paramref name="a"/> is greater
+        /// than or equal to <paramref name="b"/>.</returns>
         public static bool operator >=(Address a, Address b)
         {
             return a.ToLinear() >= b.ToLinear();
         }
 
+        /// <summary>
+        /// Adds an unsigned offset to an address.
+        /// </summary>
+        /// <param name="a">Augend.</param>
+        /// <param name="off">Unsigned offset.</param>
+        /// <returns>The new address.</returns>
         public static Address operator +(Address a, ulong off)
         {
             return a.Add((long) off);
         }
 
+        /// <summary>
+        /// Adds an signed offset to an address.
+        /// </summary>
+        /// <param name="a">Augend.</param>
+        /// <param name="off">Signed offset.</param>
+        /// <returns>The new address.</returns>
         public static Address operator +(Address a, long off)
         {
             return a.Add(off);
         }
 
-        public static Address operator -(Address a, long delta)
+        /// <summary>
+        /// Subtracts an signed offset from an address.
+        /// </summary>
+        /// <param name="a">Minuend.</param>
+        /// <param name="off">Signed offset.</param>
+        /// <returns>The new address.</returns>
+        public static Address operator -(Address a, long off)
         {
-            return a.Add(-delta);
+            return a.Add(-off);
         }
 
+        /// <summary>
+        /// Computes the signed difference between two addresses.
+        /// </summary>
+        /// <param name="a">Minuend.</param>
+        /// <param name="b">Subtrahend.</param>
+        /// <returns>The difference between the addresses.</returns>
         public static long operator -(Address a, Address b)
         {
             return (long) a.ToLinear() - (long) b.ToLinear();
         }
-
 
         /// <summary>
         /// Returns the larger of two <see cref="Address">Addresses</see>.
@@ -269,17 +412,32 @@ namespace Reko.Core
                 return b;
         }
 
+        /// <summary>
+        /// Create a 16-bit linear address.
+        /// </summary>
+        /// <param name="uAddr">Unsigned value.</param>
+        /// <returns>A 16-bit linear address.</returns>
 
         public static Address Ptr16(ushort uAddr)
         {
             return new Address(PrimitiveType.Ptr16, LinearHex, 16, uAddr, 0);
         }
 
+        /// <summary>
+        /// Create a 32-bit linear address.
+        /// </summary>
+        /// <param name="uAddr">Unsigned value.</param>
+        /// <returns>A 32-bit linear address.</returns>
         public static Address Ptr32(uint uAddr)
         {
             return new Address(PrimitiveType.Ptr32, LinearHex, 32, uAddr, 0);
         }
 
+        /// <summary>
+        /// Create a 64-bit linear address.
+        /// </summary>
+        /// <param name="uAddr">Unsigned value.</param>
+        /// <returns>A 64-bit linear address.</returns>
         public static Address Ptr64(ulong uAddr)
         {
             return new Address(PrimitiveType.Ptr64, LinearHex, 64, uAddr, 0);
@@ -324,14 +482,27 @@ namespace Reko.Core
                 seg);
         }
 
-        public static Address Create(DataType dt, ulong offset)
+        /// <summary>
+        /// Create a linear address of a given size.
+        /// </summary>
+        /// <param name="dt">The size of the address.</param>
+        /// <param name="uAddr">Unsigned value.</param>
+        /// <returns>A linear address.</returns>
+        public static Address Create(DataType dt, ulong uAddr)
         {
-            return new Address(dt, LinearHex, (byte) dt.BitSize, offset, 0);
+            return new Address(dt, LinearHex, (byte) dt.BitSize, uAddr, 0);
         }
 
-        public static Address OctalPtr(DataType dt, ulong offset)
+        /// <summary>
+        /// Create a linear address of a given size, which prefers
+        /// to be rendered in octal.
+        /// </summary>
+        /// <param name="dt">The size of the address.</param>
+        /// <param name="uAddr">Unsigned value.</param>
+        /// <returns>A linear address.</returns>
+        public static Address OctalPtr(DataType dt, ulong uAddr)
         {
-            return new Address(dt, LinearOctal, (byte) dt.BitSize, offset, 0);
+            return new Address(dt, LinearOctal, (byte) dt.BitSize, uAddr, 0);
         }
 
         /// <summary>
@@ -354,6 +525,14 @@ namespace Reko.Core
             return false;
         }
 
+        /// <summary>
+        /// Tries to parse a hexadecimal string representation of an address to a 32-bit address.
+        /// </summary>
+        /// <param name="s">Hexadecimal string.</param>
+        /// <param name="result">The resulting 32-bit address</param>
+        /// <returns>True if the provided string <paramref name="s"/> was a valid 
+        /// hexadecimal string, false otherwise.
+        /// </returns>
         public static bool TryParse32(string? s, [MaybeNullWhen(false)] out Address result)
         {
             if (s is not null)
@@ -368,6 +547,14 @@ namespace Reko.Core
             return false;
         }
 
+        /// <summary>
+        /// Tries to parse a hexadecimal string representation of an address to a 64-bit address.
+        /// </summary>
+        /// <param name="s">Hexadecimal string.</param>
+        /// <param name="result">The resulting 64-bit address</param>
+        /// <returns>True if the provided string <paramref name="s"/> was a valid 
+        /// hexadecimal string, false otherwise.
+        /// </returns>
         public static bool TryParse64(string? s, [MaybeNullWhen(false)] out Address result)
         {
             if (s is not null)
@@ -382,14 +569,18 @@ namespace Reko.Core
             return false;
         }
 
-
+        /// <summary>
+        /// <see cref="Address"/>-specific implementation of <see cref="IEqualityComparer{T}"/>.
+        /// </summary>
         public class Comparer : IEqualityComparer<Address>
         {
+            /// <inheritdoc/>
             public bool Equals(Address x, Address y)
             {
                 return x.ToLinear() == y.ToLinear();
             }
 
+            /// <inheritdoc/>
             public int GetHashCode(Address obj)
             {
                 return obj.ToLinear().GetHashCode();
@@ -460,6 +651,7 @@ namespace Reko.Core
         }
     }
 
+#pragma warning disable CS1591
     public struct CompactAddress : Expression, IComparable<CompactAddress>, IComparable,
         MachineOperand
     {

@@ -44,8 +44,29 @@ namespace Reko.Core.Expressions
         /// </summary>
         bool IsZero { get; }
 
+        /// <summary>
+        /// Accepts a visitor to this expression.
+        /// </summary>
+        /// <param name="visitor">The visitor.</param>
         void Accept(IExpressionVisitor visitor);
+
+        /// <summary>
+        /// Accepts a visitor to this expression.
+        /// </summary>
+        /// <param name="visitor">The visitor, all of whose methods
+        /// return <typeparamref name="T"/> or derived types of <typeparamref name="T"/>.
+        /// </param>
         T Accept<T>(ExpressionVisitor<T> visitor);
+
+        /// <summary>
+        /// Accepts a context-sensitive visitor to this expression.
+        /// </summary>
+        /// <param name="visitor">The visitor, all of whose methods
+        /// accept a context of type <typeparamref name="C"/> and
+        /// return <typeparamref name="T"/> or derived types of <typeparamref name="T"/>.
+        /// </param>
+        /// <param name="context">The context provided by the analysis.
+        /// </param>
         T Accept<T, C>(ExpressionVisitor<T, C> visitor, C context);
         
         /// <summary>

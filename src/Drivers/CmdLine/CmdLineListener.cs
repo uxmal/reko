@@ -99,6 +99,11 @@ namespace Reko.CmdLine
             Warn(string.Format(message, args));
         }
 
+        public void Warn(ProgramAddress paddr, string message)
+        {
+            Warn(CreateAddressNavigator(paddr.Program, paddr.Address), message);
+        }
+
         public void Warn(ICodeLocation location, string message)
         {
             EnsureNewLine();
@@ -119,6 +124,11 @@ namespace Reko.CmdLine
         public void Error(string message, params object[] args)
         {
             Error(string.Format(message, args));
+        }
+
+        public void Error(ProgramAddress paddr, string message)
+        {
+            Error(CreateAddressNavigator(paddr.Program, paddr.Address), message);
         }
 
         public void Error(ICodeLocation location, string message)

@@ -60,14 +60,6 @@ namespace Reko.Arch.Mos6502
             this.instrCur = default!;
         }
 
-        private AddressCorrelatedException NYI()
-        {
-            return new AddressCorrelatedException(
-                instrCur.Address,
-                "Rewriting 6502 instruction '{0}' is not supported yet.",
-                instrCur.Mnemonic);
-        }
-
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
             while (dasm.MoveNext())

@@ -38,17 +38,49 @@ namespace Reko.Core.Loading;
 
 public interface IBinarySection
 {
+    /// <summary>
+    /// The index for the section.
+    /// Index value 0 is reserved.
+    /// </summary>
     int Index { get; }
+
+    /// <summary>
+    /// The name of the section.
+    /// </summary>
     string Name { get; }
+
+    /// <summary>
+    /// The size of the section.
+    /// </summary>
     ulong Size { get; }
 
+    /// <summary>
+    /// The address at which this section is expected to be loaded.
+    /// </summary>
     Address VirtualAddress { get; }
 
+    /// <summary>
+    /// The offset in the file at which this section starts.
+    /// </summary>
     ulong FileOffset { get; }
 
+    /// <summary>
+    /// The size of the section in the file.
+    /// </summary>
+    ulong FileSize { get; }
+
+    /// <summary>
+    /// The alignment requirement for this section.
+    /// </summary>
     ulong Alignment { get; }
 
+    /// <summary>
+    /// Provider-specific flags.
+    /// </summary>
     ulong Flags { get; }
 
+    /// <summary>
+    /// Access mode for this section.
+    /// </summary>
     AccessMode AccessMode { get; }
 }

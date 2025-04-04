@@ -111,6 +111,11 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             diagnosticSvc.Error(new NullCodeLocation(""), ex, message, args);
         }
 
+        public void Error(ProgramAddress paddr, string message)
+        {
+            diagnosticSvc.Error(new AddressNavigator(paddr.Program, paddr.Address, services), message);
+        }
+
         public void Error(ICodeLocation location, string message)
         {
             diagnosticSvc.Error(location, message);
@@ -234,6 +239,11 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
         public void Warn(string message, params object[] args)
         {
             diagnosticSvc.Warn(new NullCodeLocation(""), message, args);
+        }
+
+        public void Warn(ProgramAddress paddr, string message)
+        {
+            diagnosticSvc.Warn(new AddressNavigator(paddr.Program, paddr.Address, services), message);
         }
 
         public void Warn(ICodeLocation location, string message)

@@ -49,6 +49,7 @@ namespace Reko.Core.Services
         void Info(ICodeLocation location, string message, params object[] args);
         void Warn(string message);
         void Warn(string message, params object[] args);
+        void Warn(ProgramAddress paddr, string message);
         void Warn(ICodeLocation location, string message);
         void Warn(ICodeLocation location, string message, params object[] args);
         void Error(string message);
@@ -56,6 +57,7 @@ namespace Reko.Core.Services
         void Error(Exception ex, string message);
         void Error(Exception ex, string message, params object[] args);
 
+        void Error(ProgramAddress paddr, string message);
         void Error(ICodeLocation location, string message);
         void Error(ICodeLocation location, string message, params object[] args);
         void Error(ICodeLocation location, Exception ex, string message);
@@ -115,6 +117,11 @@ namespace Reko.Core.Services
             Debug.Print("Warning: {0}", string.Format(message, args));
         }
 
+        public void Warn(ProgramAddress paddr, string message)
+        {
+            Debug.Print("Warning: {0}: {1}", paddr.Address, message);
+        }
+
         public void Warn(ICodeLocation location, string message)
         {
             Debug.Print("Warning: {0}: {1}", location, message);
@@ -146,6 +153,11 @@ namespace Reko.Core.Services
             Debug.Print("Error: {0} {1}",
                 string.Format(message, args),
                 ex.Message);
+        }
+
+        public void Error(ProgramAddress paddr, string message)
+        {
+            Debug.Print("Error: {0}: {1}", paddr.Address, message);
         }
 
         public void Error(ICodeLocation location, string message)

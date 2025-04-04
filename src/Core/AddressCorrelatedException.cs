@@ -19,9 +19,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Core
 {
@@ -30,14 +27,19 @@ namespace Reko.Core
     /// </summary>
     public class AddressCorrelatedException : Exception
     {
-        public AddressCorrelatedException(Address addr, string format, params object[] args)
-            : base(string.Format(format, args))
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AddressCorrelatedException"/> class.
+        /// </summary>
+        /// <param name="addr">The address at which the problem occurred.</param>
+        /// <param name="message"></param>
+        public AddressCorrelatedException(Address addr, string message)
+            : base(message)
         {
             this.Address = addr;
         }
 
-        public AddressCorrelatedException(Address addr, Exception innerException, string format, params object[] args)
-            : base(string.Format(format, args), innerException)
+        public AddressCorrelatedException(Address addr, Exception innerException, string message)
+            : base(message, innerException)
         {
             this.Address = addr;
         }

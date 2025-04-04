@@ -51,6 +51,8 @@ namespace Reko.ImageLoaders.Elf
 
         public ulong Size { get; set; }
 
+        ulong IBinarySection.FileSize => Size;
+
         public Address VirtualAddress { get; set; }
 
         public ulong FileOffset { get; set; }

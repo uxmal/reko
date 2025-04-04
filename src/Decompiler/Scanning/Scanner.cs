@@ -742,7 +742,8 @@ namespace Reko.Scanning
                 var global = impref.ResolveImport(
                     dynamicLinker,
                     Program.Platform,
-                    new AddressContext(Program, addrInstruction, this.eventListener));
+                    new ProgramAddress(Program, addrInstruction),
+                    this.eventListener);
                 return global;
             }
             return null;
@@ -764,7 +765,8 @@ namespace Reko.Scanning
                 var extProc = impref.ResolveImportedProcedure(
                     dynamicLinker,
                     Program.Platform,
-                    new AddressContext(Program, addrInstruction, this.eventListener));
+                    new ProgramAddress(Program, addrInstruction),
+                    this.eventListener);
                 return extProc;
             }
 

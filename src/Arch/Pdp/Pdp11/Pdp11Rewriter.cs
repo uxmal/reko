@@ -218,8 +218,7 @@ namespace Reko.Arch.Pdp.Pdp11
             default:
                 throw new AddressCorrelatedException(
                     dasm.Current.Address,
-                    "Not implemented: addressing mode {0}.",
-                    memOp.Mode);
+                    $"Not implemented: addressing mode {memOp.Mode}.");
             case AddressMode.RegDef:
                 return r!;
             case AddressMode.Absolute:
@@ -320,8 +319,7 @@ namespace Reko.Arch.Pdp.Pdp11
                 default:
                     throw new AddressCorrelatedException(
                         dasm.Current.Address,
-                        "Not implemented: addressing mode {0}.", 
-                        memOp.Mode);
+                        $"Not implemented: addressing mode {memOp.Mode}."); 
                 case AddressMode.RegDef:
                     return m.Mem(this.dasm.Current.DataWidth!, r!);
                 case AddressMode.Absolute:
@@ -403,8 +401,7 @@ namespace Reko.Arch.Pdp.Pdp11
                 default:
                     throw new AddressCorrelatedException(
                         dasm.Current.Address,
-                        "Not implemented: addressing mode {0}.",
-                        memOp.Mode);
+                        $"Not implemented: addressing mode {memOp.Mode}.");
                 case AddressMode.Absolute:
                     m.Assign(
                         m.Mem(
@@ -513,8 +510,7 @@ namespace Reko.Arch.Pdp.Pdp11
                 default:
                     throw new AddressCorrelatedException(
                         dasm.Current.Address,
-                        "Not implemented: addressing mode {0}.",
-                        memOp.Mode);
+                        $"Not implemented: addressing mode {memOp.Mode}.");
                 case AddressMode.RegDef:
                     m.Assign(tmp, gen(m.Mem(tmp.DataType, r!), src));
                     m.Assign(m.Mem(tmp.DataType, r!), tmp);

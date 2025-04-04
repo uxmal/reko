@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
 using Reko.Core;
 using Reko.Core.Output;
 using Reko.Core.Scripts;
@@ -86,6 +87,13 @@ namespace Reko.UnitTests.Mocks
             Warn(string.Format(message, args));
         }
 
+        public void Warn(ProgramAddress paddr, string message)
+        {
+            AddDiagnostic(
+                CreateAddressNavigator(paddr.Program, paddr.Address),
+                new WarningDiagnostic(message));
+        }
+
         public void Warn(ICodeLocation location, string message)
         {
             AddDiagnostic(location, new WarningDiagnostic(message));
@@ -114,6 +122,13 @@ namespace Reko.UnitTests.Mocks
         public void Error(Exception ex, string message, params object[] args)
         {
             Error(new NullCodeLocation(""), ex, string.Format(message, args));
+        }
+
+        public void Error(ProgramAddress paddr, string message)
+        {
+            AddDiagnostic(
+                CreateAddressNavigator(paddr.Program, paddr.Address),
+                new ErrorDiagnostic(message));
         }
 
         public void Error(ICodeLocation location, string message)

@@ -71,6 +71,8 @@ namespace Reko.ImageLoaders.Elf
             var innerLoader = CreateLoader(binaryImage);
             innerLoader.LoadFileHeader();
 
+            var arch = innerLoader.CreateArchitecture(binaryImage.Header.Machine, innerLoader.Endianness);
+            var platform = innerLoader.LoadPlatform(elfHeader.osAbi, arch);
             var headers = innerLoader.LoadSegments();
             binaryImage.AddSections(innerLoader.LoadSectionHeaders());
             innerLoader.LoadSymbolsFromSections();
@@ -92,8 +94,6 @@ namespace Reko.ImageLoaders.Elf
             //innerLoader.Dump();           // This spews a lot into the unit test output.
             Program program;
             Dictionary<ElfSymbol, Address> plt;
-            var arch = innerLoader.CreateArchitecture(binaryImage.Header.Machine, innerLoader.Endianness);
-            var platform = innerLoader.LoadPlatform(elfHeader.osAbi, arch);
             if (headers.Count > 0)
             {
                 program = innerLoader.LoadImage(platform, RawImage);

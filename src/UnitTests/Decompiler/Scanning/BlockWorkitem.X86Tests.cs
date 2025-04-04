@@ -125,7 +125,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             {
                 ImportReference p;
                 if (importThunks.TryGetValue(addrThunk, out p))
-                    return p.ResolveImportedProcedure(this, null, new AddressContext(null, addrInstr, null));
+                    return p.ResolveImportedProcedure(this, null, new ProgramAddress(null, addrInstr), default);
                 else
                     return null;
             }

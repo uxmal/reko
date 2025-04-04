@@ -348,7 +348,8 @@ namespace Reko.Core
                 var extProc = impref.ResolveImportedProcedure(
                     this,
                     program.Platform,
-                    new AddressContext(program, addrInstruction, this.eventListener));
+                    new ProgramAddress(program, addrInstruction),
+                    this.eventListener);
                 return new ProcedureConstant(program.Platform.PointerType, extProc);
             }
         }

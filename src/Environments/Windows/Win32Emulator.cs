@@ -108,7 +108,7 @@ namespace Reko.Environments.Windows
         {
             foreach (var imp in importReferences)
             {
-                uint pseudoPfn = ((SimulatedProc)imp.Value.ResolveImportedProcedure(this, null!, null!)).uFakedAddress;
+                uint pseudoPfn = ((SimulatedProc)imp.Value.ResolveImportedProcedure(this, null!, null!, default!)).uFakedAddress;
                 WriteLeUInt32(imp.Key, pseudoPfn);
             }
         }

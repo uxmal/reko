@@ -19,8 +19,10 @@
 #endregion
 
 using Reko.Core.Expressions;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
+using System.ComponentModel.Design;
 
 namespace Reko.Core.Loading
 {
@@ -44,9 +46,9 @@ namespace Reko.Core.Loading
 
         public SymbolType SymbolType { get; }
 
-        public abstract Expression? ResolveImport(IDynamicLinker dynamicLinker, IPlatform platform, AddressContext ctx);
+        public abstract Expression? ResolveImport(IDynamicLinker dynamicLinker, IPlatform platform, ProgramAddress paddr, IEventListener listener);
 
-        public abstract ExternalProcedure ResolveImportedProcedure(IDynamicLinker dynamicLinker, IPlatform platform, AddressContext ctx);
+        public abstract ExternalProcedure ResolveImportedProcedure(IDynamicLinker dynamicLinker, IPlatform platform, ProgramAddress paddr, IEventListener listener);
 
         public abstract int CompareTo(ImportReference? that);
 
@@ -96,7 +98,8 @@ namespace Reko.Core.Loading
         public override Expression? ResolveImport(
             IDynamicLinker resolver,
             IPlatform platform,
-            AddressContext ctx)
+            ProgramAddress paddr,
+            IEventListener listener)
         {
             return resolver.ResolveImport(ModuleName, ImportName, platform);
         }
@@ -104,18 +107,19 @@ namespace Reko.Core.Loading
         public override ExternalProcedure ResolveImportedProcedure(
             IDynamicLinker resolver,
             IPlatform platform,
-            AddressContext ctx)
+            ProgramAddress paddr,
+            IEventListener listener)
         {
             var ep = resolver.ResolveProcedure(ModuleName, ImportName, platform);
             if (ep is not null)
             {
                 if (!ep.Signature.ParametersValid)
                 {
-                    ctx.Warn("Unable to guess parameters of {0}.", this);
+                    listener.Warn(paddr, $"Unable to guess parameters of {this}.");
                 }
                 return ep;
             }
-            ctx.Warn("Unable to resolve imported reference {0}.", this);
+            listener.Warn(paddr, $"Unable to resolve imported reference {this}.");
             return new ExternalProcedure(ToString(), new FunctionType());
         }
 
@@ -161,24 +165,25 @@ namespace Reko.Core.Loading
             return cmp;
         }
 
-        public override Expression? ResolveImport(IDynamicLinker dynamicLinker, IPlatform platform, AddressContext ctx)
+        public override Expression? ResolveImport(IDynamicLinker dynamicLinker, IPlatform platform, ProgramAddress paddr, IEventListener listener)
         {
             var imp = dynamicLinker.ResolveImport(ModuleName!, Ordinal, platform);
             if (imp != null)
                 return imp;
-            ctx.Warn("Unable to resolve imported reference {0}.", this);
+            listener.Warn(paddr, $"Unable to resolve imported reference {this}.");
             return null;
         }
 
-        public override ExternalProcedure ResolveImportedProcedure(IDynamicLinker resolver, IPlatform platform, AddressContext ctx)
+        public override ExternalProcedure ResolveImportedProcedure(IDynamicLinker resolver, IPlatform platform, ProgramAddress paddr, IEventListener listener)
         {
             var ep = resolver.ResolveProcedure(ModuleName!, Ordinal, platform);
             if (ep != null)
                 return ep;
-            ctx.Warn("Unable to resolve imported reference {0}.", this);
+            listener.Warn(paddr, $"Unable to resolve imported reference {this}.");
             return new ExternalProcedure(ToString(), new FunctionType());
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             return string.Format("{0}!Ordinal_{1}", ModuleName, Ordinal);

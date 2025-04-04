@@ -32,6 +32,12 @@ namespace Reko.Core
     /// </summary>
     public class Block : IAddressable
 	{
+        /// <summary>
+        /// Creates an instance of the <see cref="Block"/> class.
+        /// </summary>
+        /// <param name="proc">The <see cref="Procedure"/> to which this block belongs.</param>
+        /// <param name="addr">The address at which the basic block is located.</param>
+        /// <param name="id">A reasonably unique identifier.</param>
 		public Block(Procedure proc, Address addr, string id)
 		{
             if (string.IsNullOrEmpty(id))
@@ -79,23 +85,48 @@ namespace Reko.Core
         /// If true, this block is synthesized and not present in the original binary.
         /// </summary>
         public bool IsSynthesized { get; set; }
-       
+
+
+        /// <summary>
+        /// Convenience property to access the first successor of this block.
+        /// </summary>
         public Block ElseBlock
         {
             get { return Succ[0]; }
             set { Succ[0] = value; }
         }
 
+        /// <summary>
+        /// Convenience property to access the second successor of this block.
+        /// </summary>
         public Block ThenBlock
         {
             get { return Succ[1]; }
             set { Succ[1] = value; }
         }
 
+        /// <summary>
+        /// The <see cref="Block"/>s that are predecessors of this basic block.
+        /// </summary>
         public List<Block> Pred { get; }
+
+        /// <summary>
+        /// The <see cref="Block"/>s that are successors of this basic block.
+        /// </summary>
         public List<Block> Succ { get; private set; }
+
+        /// <summary>
+        /// The <see cref="Statement"/>s contained in this basic block.
+        /// </summary>
         public StatementList Statements { get; }
 
+        /// <summary>
+        /// Coalesces two basic blocks into one. The statements in the <paramref name="next"/>
+        /// basic block are moved into the <paramref name="block"/> basic block, and the edges
+        /// between the two blocks are removed.
+        /// </summary>
+        /// <param name="block">Basic block that will absorb the other basic block's statements.</param>
+        /// <param name="next">Basic block that will be absorbed.</param>
 		public static void Coalesce(Block block, Block next)
 		{
 			foreach (Statement stm in next.Statements.ToArray())
@@ -161,17 +192,26 @@ namespace Reko.Core
 			return change;
 		}
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             return DisplayName;
         }
 
-		public void Write(TextWriter sb)
+        /// <summary>
+        /// Writes the basic block to the specified <see cref="TextWriter"/>.
+        /// </summary>
+        /// <param name="writer">Output <see cref="TextWriter"/>.</param>
+		public void Write(TextWriter writer)
 		{
-			sb.WriteLine("{0}:", DisplayName);
-			WriteStatements(sb);
+			writer.WriteLine("{0}:", DisplayName);
+			WriteStatements(writer);
 		}
 
+        /// <summary>
+        /// Writes the statements of this basic block to the specified <see cref="TextWriter"/>.
+        /// </summary>
+        /// <param name="writer">Output <see cref="TextWriter"/>.</param>
 		public void WriteStatements(TextWriter writer)
 		{
             var f = new TextFormatter(writer)
@@ -189,6 +229,9 @@ namespace Reko.Core
 			}
 		}
 
+        /// <summary>
+        /// Debugging helper function that writes the contents of this block to the debugger output.
+        /// </summary>
         public void Dump()
         {
             var sb = new StringWriter();

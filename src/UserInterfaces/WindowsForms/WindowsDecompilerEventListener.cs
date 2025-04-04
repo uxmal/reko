@@ -227,6 +227,11 @@ namespace Reko.UserInterfaces.WindowsForms
             diagnosticSvc.Warn(new NullCodeLocation(""), message, args);
         }
 
+        public void Warn(ProgramAddress paddr, string message)
+        {
+            diagnosticSvc.Warn(new AddressNavigator(paddr.Program, paddr.Address, sp), message);
+        }
+
         public void Warn(ICodeLocation location, string message)
         {
             diagnosticSvc.Warn(location, message);
@@ -255,6 +260,11 @@ namespace Reko.UserInterfaces.WindowsForms
         public void Error(Exception ex, string message, params object[] args)
         {
             diagnosticSvc.Error(new NullCodeLocation(""), ex, message, args);
+        }
+
+        public void Error(ProgramAddress paddr, string message)
+        {
+            diagnosticSvc.Error(new AddressNavigator(paddr.Program, paddr.Address, sp), message);
         }
 
         public void Error(ICodeLocation location, string message)

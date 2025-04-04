@@ -25,6 +25,9 @@ namespace Reko.Core
     /// </summary>
     public interface IAddressable
     {
+        /// <summary>
+        /// The address of the object.
+        /// </summary>
         Address Address { get; }
     }
 }

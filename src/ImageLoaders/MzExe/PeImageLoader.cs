@@ -1008,7 +1008,10 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
 			public ulong Flags { get; set; }
 
 			public uint OffsetRawData { get; set; }
+
             ulong IBinarySection.FileOffset => OffsetRawData;
+
+            ulong IBinarySection.FileSize => SizeRawData;
 
             public ulong Alignment { get; set; }
 

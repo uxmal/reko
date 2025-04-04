@@ -170,7 +170,7 @@ namespace Reko.Core.Output
             }
             catch (Exception ex)
             {
-                throw new AddressCorrelatedException(addr, ex, "An error occurred following a pointer at address {0}.", addr);
+                throw new AddressCorrelatedException(addr, ex, "An error occurred following a pointer.");
             }
             return 0;
         }

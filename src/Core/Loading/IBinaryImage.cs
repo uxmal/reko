@@ -27,18 +27,59 @@ namespace Reko.Core.Loading;
 /// </summary>
 public interface IBinaryImage
 {
+    /// <summary>
+    /// Represents the header of a binary object file.
+    /// </summary>
     IBinaryHeader Header { get; }
+
+    /// <summary>
+    /// The endianness of the binary object.
+    /// </summary>
     EndianServices Endianness { get; }
 
+    /// <summary>
+    /// The <see cref="IBinarySection"/>s contained in the biary object.
+    /// </summary>
+    /// <remarks>
+    /// Not all binary files will contain sections.
+    /// </remarks>
     IReadOnlyList<IBinarySection> Sections { get; }
+
+    /// <summary>
+    /// The <see cref="IBinarySegment"/>s contained in the binary object.
+    /// </summary>
     IReadOnlyList<IBinarySegment> Segments { get; }
+
+    /// <summary>
+    /// Optional debugging information contained in the binary object.
+    /// </summary>
     IBinaryDebugInfo? DebugInfo { get; }
 
+    /// <summary>
+    /// Symbols contained in the biary object.
+    /// </summary>
     IReadOnlyList<IBinarySymbol> Symbols { get; }
+
+    /// <summary>
+    /// Special symbols that are used to resolve dynamic references.
+    /// </summary>
     IReadOnlyDictionary<int, IBinarySymbol> DynamicSymbols { get; }
 
+    /// <summary>
+    /// Relocations contained in the binary object, indexed by 
+    /// section.
+    /// </summary>
     IReadOnlyDictionary<int, IReadOnlyList<IRelocation>> Relocations { get; }
+
+    /// <summary>
+    /// Relocations specific to dynamic linking.
+    /// </summary>
     IReadOnlyList<IRelocation> DynamicRelocations { get; }
 
+    /// <summary>
+    /// Loads the binary image from the specified file.
+    /// </summary>
+    /// <returns>A <see cref="Program"/> instance.
+    /// </returns>
     Program Load();
 }

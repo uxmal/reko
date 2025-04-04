@@ -35,8 +35,16 @@ namespace Reko.Core
     /// </summary>
     public abstract class EndianServices
     {
+        /// <summary>
+        /// An instance of <see cref="EndianServices"/> that can be used
+        /// to perform little-endian memory operations.
+        /// </summary>
         public static EndianServices Little { get; } = new LeServices();
 
+        /// <summary>
+        /// An instance of <see cref="EndianServices"/> that can be used
+        /// to perform little-endian memory operations.
+        /// </summary>
         public static EndianServices Big { get; } = new BeServices();
 
         /// <summary>
