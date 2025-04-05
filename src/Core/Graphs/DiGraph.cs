@@ -36,6 +36,9 @@ namespace Reko.Core.Graphs
         private readonly Dictionary<T, Node> nodes;
         private readonly NodeCollection nodeCollection;
 
+        /// <summary>
+        /// Creates an empty <see cref="DiGraph{T}"./>
+        /// </summary>
         public DiGraph()
         {
             this.nodes = new Dictionary<T, Node>();
@@ -173,11 +176,13 @@ namespace Reko.Core.Graphs
             }
         }
 
+        /// <inheritdoc/>
         public ICollection<T> Predecessors(T item)
         {
             return nodes[item].Pred;
         }
 
+        /// <inheritdoc/>
         public ICollection<T> Successors(T item)
         {
             return nodes[item].Succ;
@@ -197,11 +202,13 @@ namespace Reko.Core.Graphs
             }
         }
 
+        /// <inheritdoc/>
         public ICollection<T> Nodes
         {
             get { return nodeCollection; }
         }
 
+        /// <inheritdoc/>
         public void AddNode(T item)
         {
             if (!nodes.ContainsKey(item))
@@ -211,6 +218,7 @@ namespace Reko.Core.Graphs
             }
         }
 
+        /// <inheritdoc/>
         public bool RemoveNode(T item)
         {
             if (!nodes.TryGetValue(item, out Node? node))
@@ -229,6 +237,7 @@ namespace Reko.Core.Graphs
             return true;
         }
 
+        /// <inheritdoc/>
         public void AddEdge(T itemFrom, T itemTo)
         {
             var nFrom = nodes[itemFrom];
@@ -237,6 +246,7 @@ namespace Reko.Core.Graphs
             nTo.Predecessors.Add(nFrom);
         }
 
+        /// <inheritdoc/>
         public void RemoveEdge(T itemFrom, T itemTo)
         {
             var nFrom = nodes[itemFrom];
@@ -250,6 +260,7 @@ namespace Reko.Core.Graphs
             }
         }
 
+        /// <inheritdoc/>
         public bool ContainsEdge(T itemFrom, T itemTo)
         {
             var nFrom = nodes[itemFrom];
@@ -259,6 +270,7 @@ namespace Reko.Core.Graphs
             return (iSucc >= 0 && iPred >= 0);
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             return string.Format("Nodes = {0}", nodes.Count);
@@ -266,7 +278,7 @@ namespace Reko.Core.Graphs
     }
 
     /// <summary>
-    /// Directed graph with edge annotations
+    /// Directed graph with edge labels.
     /// </summary>
     public class DiGraph<V, E> : DirectedGraph<V, E>
         where V : notnull
@@ -274,15 +286,30 @@ namespace Reko.Core.Graphs
         private readonly Dictionary<V, List<(V, E)>> inEdges;
         private readonly Dictionary<V, List<(V, E)>> outEdges;
         private readonly IEqualityComparer<V> cmp;
+        private readonly IEqualityComparer<E> labelCmp;
 
+        /// <summary>
+        /// Creates an empty graph.
+        /// </summary>
         public DiGraph()
+            : this(EqualityComparer<E>.Default)
+        {
+        }
+
+        /// <summary>
+        /// Creates an empty graph.
+        /// </summary>
+        /// <param name="labelComparer"><see cref="IEqualityComparer{E}"/> to use when comparing edges </param>
+        public DiGraph(IEqualityComparer<E> labelComparer)
         {
             this.Nodes = new HashSet<V>();
             this.inEdges = new Dictionary<V, List<(V, E)>>();
             this.outEdges = new Dictionary<V, List<(V, E)>>();
             this.cmp = EqualityComparer<V>.Default;
+            this.labelCmp = EqualityComparer<E>.Default;
         }
 
+        /// <inheritdoc/>
         public ICollection<V> Nodes { get; }
 
         public IEnumerable<(V, V, E)> Edges
@@ -299,6 +326,7 @@ namespace Reko.Core.Graphs
             }
         }
 
+        /// <inheritdoc/>
         public void AddEdge(V nodeFrom, V nodeTo, E edgeData)
         {
             if (!outEdges.TryGetValue(nodeFrom, out var succs))
@@ -315,6 +343,7 @@ namespace Reko.Core.Graphs
             preds.Add((nodeFrom, edgeData));
         }
 
+        /// <inheritdoc/>
         public bool ContainsEdge(V nodeFrom, V nodeTo)
         {
             if (!outEdges.TryGetValue(nodeFrom, out var succs))
@@ -326,6 +355,23 @@ namespace Reko.Core.Graphs
             return (preds.FindIndex(p => cmp.Equals(p.Item1, nodeFrom)) >= 0);
         }
 
+        /// <inheritdoc/>
+        public bool ContainsEdge(V nodeFrom, V nodeTo, E edgeLabel)
+        {
+            if (!outEdges.TryGetValue(nodeFrom, out var succs))
+                return false;
+            if (succs.FindIndex(s => 
+                cmp.Equals(s.Item1, nodeTo) &&
+                labelCmp.Equals(s.Item2, edgeLabel)) < 0)
+                return false;
+            if (!inEdges.TryGetValue(nodeTo, out var preds))
+                return false;
+            return (preds.FindIndex(p =>
+                cmp.Equals(p.Item1, nodeFrom) &&
+                labelCmp.Equals(p.Item2, edgeLabel)) >= 0);
+        }
+
+        /// <inheritdoc/>
         public ICollection<(V, E)> Predecessors(V node)
         {
             if (!inEdges.TryGetValue(node, out var preds))
@@ -333,6 +379,7 @@ namespace Reko.Core.Graphs
             return preds;
         }
 
+        /// <inheritdoc/>
         public void RemoveEdge(V nodeFrom, V nodeTo)
         {
             if (outEdges.TryGetValue(nodeFrom, out var succs))
@@ -351,6 +398,30 @@ namespace Reko.Core.Graphs
             }
         }
 
+        /// <inheritdoc/>
+        public void RemoveEdge(V nodeFrom, V nodeTo, E edgeLabel)
+        {
+            if (outEdges.TryGetValue(nodeFrom, out var succs))
+            {
+                var idx = succs.FindIndex(s =>
+                    cmp.Equals(s.Item1, nodeTo) &&
+                    labelCmp.Equals(s.Item2, edgeLabel));
+                if (idx < 0)
+                    return;
+                succs.RemoveAt(idx);
+            }
+            if (inEdges.TryGetValue(nodeTo, out var preds))
+            {
+                var idx = preds.FindIndex(p =>
+                    cmp.Equals(p.Item1, nodeFrom) &&
+                    labelCmp.Equals(p.Item2, edgeLabel));
+                if (idx < 0)
+                    return;
+                preds.RemoveAt(idx);
+            }
+        }
+
+        /// <inheritdoc/>
         public ICollection<(V, E)> Successors(V node)
         {
             if (!inEdges.TryGetValue(node, out var preds))

@@ -19,90 +19,86 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace Reko.Core.Emulation
+namespace Reko.Core.Emulation;
+
+/// <summary>
+/// Interface for processor emulation.
+/// </summary>
+public interface IProcessorEmulator
 {
     /// <summary>
-    /// Interface for processor emulation.
+    /// This event gets fired when the <see cref="Start"/> method is called.
     /// </summary>
-    public interface IProcessorEmulator
-    {
-        /// <summary>
-        /// This event gets fired when the <see cref="Start"/> method is called.
-        /// </summary>
-        /// <remarks>
-        /// Listeners get a chance to modify the state of the emulator before
-        /// execution.
-        /// </remarks>
-        event EventHandler BeforeStart;
+    /// <remarks>
+    /// Listeners get a chance to modify the state of the emulator before
+    /// execution.
+    /// </remarks>
+    event EventHandler BeforeStart;
 
-        /// <summary>
-        /// This event get fired if the emulator ran into an exception while executing.
-        /// </summary>
-        event EventHandler<EmulatorExceptionEventArgs> ExceptionRaised;
+    /// <summary>
+    /// This event get fired if the emulator ran into an exception while executing.
+    /// </summary>
+    event EventHandler<EmulatorExceptionEventArgs> ExceptionRaised;
 
-        /// <summary>
-        /// The current instruction address.
-        /// </summary>
-        Address InstructionPointer { get; set; }
+    /// <summary>
+    /// The current instruction address.
+    /// </summary>
+    Address InstructionPointer { get; set; }
 
-        /// <summary>
-        /// Reads a register's current value in the emulator state.
-        /// </summary>
-        /// <param name="reg">The register whose value is read.</param>
-        /// <returns>The value of that register.
-        /// </returns>
-        ulong ReadRegister(RegisterStorage reg);
+    /// <summary>
+    /// Reads a register's current value in the emulator state.
+    /// </summary>
+    /// <param name="reg">The register whose value is read.</param>
+    /// <returns>The value of that register.
+    /// </returns>
+    ulong ReadRegister(RegisterStorage reg);
 
-        /// <summary>
-        /// Writes a register value to the emulator state.
-        /// </summary>
-        /// <param name="reg">Registers whose value is to be written.</param>
-        /// <param name="value">The new value of that register.</param>
-        /// <returns>The written value.</returns>
-        ulong WriteRegister(RegisterStorage reg, ulong value);
+    /// <summary>
+    /// Writes a register value to the emulator state.
+    /// </summary>
+    /// <param name="reg">Registers whose value is to be written.</param>
+    /// <param name="value">The new value of that register.</param>
+    /// <returns>The written value.</returns>
+    ulong WriteRegister(RegisterStorage reg, ulong value);
 
-        /// <summary>
-        /// Starts emulating instructions at the address <see cref="InstructionPointer"/>.
-        /// Execution will continue until <see cref="Stop"/> is called or an unrecoverable exception
-        /// occurs.
-        /// </summary>
-        void Start();
+    /// <summary>
+    /// Starts emulating instructions at the address <see cref="InstructionPointer"/>.
+    /// Execution will continue until <see cref="Stop"/> is called or an unrecoverable exception
+    /// occurs.
+    /// </summary>
+    void Start();
 
-        /// <summary>
-        /// Stops the emulator.
-        /// </summary>
-        void Stop();
+    /// <summary>
+    /// Stops the emulator.
+    /// </summary>
+    void Stop();
 
-        /// <summary>
-        /// Asks the emulator to execute a single instruction, then perform a callback.
-        /// </summary>
-        /// <param name="callback">Callback to invoke.</param>
-        void StepInto(Action callback);
+    /// <summary>
+    /// Asks the emulator to execute a single instruction, then perform a callback.
+    /// </summary>
+    /// <param name="callback">Callback to invoke.</param>
+    void StepInto(Action callback);
 
-        /// <summary>
-        /// Asks the emulator to execute until the instruction pointer reaches the next
-        /// instruction. 
-        /// </summary>
-        /// <param name="callback">Callback to invoke.</param>
-        void StepOver(Action callback);
+    /// <summary>
+    /// Asks the emulator to execute until the instruction pointer reaches the next
+    /// instruction. 
+    /// </summary>
+    /// <param name="callback">Callback to invoke.</param>
+    void StepOver(Action callback);
 
-        /// <summary>
-        /// Sets a breakpoint that will be invoked when the instruction pointer 
-        /// contains the linear address <paramref name="linearAddress"/>, at which point the 
-        /// <paramref name="callback"/> is invoked.
-        /// </summary>
-        /// <param name="linearAddress">Address of the breakpoint.</param>
-        /// <param name="callback">Callback to invoke when the breakpoint is hit.</param>
-        void SetBreakpoint(ulong linearAddress, Action callback);
+    /// <summary>
+    /// Sets a breakpoint that will be invoked when the instruction pointer 
+    /// contains the linear address <paramref name="linearAddress"/>, at which point the 
+    /// <paramref name="callback"/> is invoked.
+    /// </summary>
+    /// <param name="linearAddress">Address of the breakpoint.</param>
+    /// <param name="callback">Callback to invoke when the breakpoint is hit.</param>
+    void SetBreakpoint(ulong linearAddress, Action callback);
 
-        /// <summary>
-        /// Deletes any breakpoint at the given <paramref name="linearAddress"/>.
-        /// </summary>
-        /// <param name="linearAddress">Breakpoint to delete.</param>
-        void DeleteBreakpoint(ulong linearAddress);
-    }
+    /// <summary>
+    /// Deletes any breakpoint at the given <paramref name="linearAddress"/>.
+    /// </summary>
+    /// <param name="linearAddress">Breakpoint to delete.</param>
+    void DeleteBreakpoint(ulong linearAddress);
 }

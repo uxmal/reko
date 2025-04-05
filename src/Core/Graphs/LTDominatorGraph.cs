@@ -37,7 +37,7 @@ namespace Reko.Core.Graphs
             return new Builder(graph, root).Dominators();
         }
 
-        public class Builder
+        private class Builder
         {
             private readonly DirectedGraph<TNode> graph;
             private readonly TNode root;

@@ -529,7 +529,7 @@ namespace Reko.ImageLoaders.OdbgScript
         // Commands
         bool GetByte(Expression op, out byte value)
         {
-            if (GetRulong(op, out ulong temp) && temp <= Byte.MaxValue)
+            if (GetUlong(op, out ulong temp) && temp <= Byte.MaxValue)
             {
                 value = (byte) temp;
                 return true;
@@ -1092,7 +1092,7 @@ namespace Reko.ImageLoaders.OdbgScript
             {
                 return GetString(mem, out value);
             }
-            else if (GetRulong(op, out ulong dw))
+            else if (GetUlong(op, out ulong dw))
             {
                 if (hex8forExec)
                     value = '0' + Helper.rul2hexstr(dw).ToUpperInvariant();
@@ -1185,7 +1185,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         bool GetBool(Expression op, out bool value)
         {
-            if (GetRulong(op, out ulong temp))
+            if (GetUlong(op, out ulong temp))
             {
                 value = temp != 0;
                 return true;
@@ -1201,8 +1201,8 @@ namespace Reko.ImageLoaders.OdbgScript
             {
                 // Possible segmented address. Evaluate part before
                 // and after colon.
-                if (GetRulong(seq.Expressions[0], out var seg) &&
-                    GetRulong(seq.Expressions[1], out var off))
+                if (GetUlong(seq.Expressions[0], out var seg) &&
+                    GetUlong(seq.Expressions[1], out var off))
                 {
                     var cSeg = Constant.UInt16((ushort) seg);
                     var cOff = Constant.UInt32((uint) off);
@@ -1215,7 +1215,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 value = variables[id.Name].Address!.Value;
                 return true;
             }
-            if (!GetRulong(op, out ulong uAddr))
+            if (!GetUlong(op, out ulong uAddr))
                 return false;
             value = arch.MakeAddressFromConstant(Constant.UInt64(uAddr), false);
             return true;
@@ -1233,7 +1233,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return arch is not null;
         }
 
-        bool GetRulong(Expression op, out ulong value)
+        bool GetUlong(Expression op, out ulong value)
         {
             value = 0;
             if (op is Identifier id)
@@ -1291,8 +1291,8 @@ namespace Reko.ImageLoaders.OdbgScript
             }
             else if (op is BinaryExpression bin)
             {
-                if (!GetRulong(bin.Left, out value) ||
-                    !GetRulong(bin.Right, out var right))
+                if (!GetUlong(bin.Left, out value) ||
+                    !GetUlong(bin.Right, out var right))
                     return false;
 
                 if (bin.Operator is UDivOperator && right == 0)
@@ -1378,7 +1378,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return false;
         }
 
-        bool SetRulong(Expression op, ulong value, int size = 0)
+        bool SetULong(Expression op, ulong value, int size = 0)
         {
             if (size > sizeof(ulong))
                 size = sizeof(ulong);

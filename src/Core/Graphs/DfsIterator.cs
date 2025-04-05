@@ -32,6 +32,7 @@ namespace Reko.Core.Graphs
         private readonly DirectedGraph<T> graph;
         private readonly HashSet<T> visited = new HashSet<T>();
 
+
         public DfsIterator(DirectedGraph<T> graph)
         {
             this.graph = graph;

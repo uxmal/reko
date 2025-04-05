@@ -18,8 +18,6 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Core.Lib;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

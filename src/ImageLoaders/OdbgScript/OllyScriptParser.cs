@@ -84,7 +84,7 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             int lastLineNumber = 0;
 
-            while (lexerStack!.Count > 0)
+            while (lexerStack.Count > 0)
             {
                 this.lexer = lexerStack.Pop();
                 var line = Line();
