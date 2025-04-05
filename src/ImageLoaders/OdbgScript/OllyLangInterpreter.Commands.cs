@@ -44,23 +44,23 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             if (args.Length == 2)
             {
-                if (GetAddress(args[0], out Address addr) && GetRulong(args[1], out ulong dw))
+                if (GetAddress(args[0], out Address addr) && GetUlong(args[1], out ulong dw))
                 {
                     return SetAddress(args[0], addr + dw);
                 }
-                if (GetRulong(args[0], out ulong dw1) && GetRulong(args[1], out ulong dw2))
+                if (GetUlong(args[0], out ulong dw1) && GetUlong(args[1], out ulong dw2))
                 {
-                    return SetRulong(args[0], dw1 + dw2);
+                    return SetULong(args[0], dw1 + dw2);
                 }
                 else if (GetFloat(args[0], out double flt1) && GetFloat(args[1], out double flt2))
                 {
                     return SetFloat(args[0], flt1 + flt2);
                 }
-                else if (GetFloat(args[0], out flt1) && GetRulong(args[1], out dw2))
+                else if (GetFloat(args[0], out flt1) && GetUlong(args[1], out dw2))
                 {
                     return SetFloat(args[0], flt1 + dw2);
                 }
-                else if (GetString(args[0], out string? str1) && GetRulong(args[1], out dw2))
+                else if (GetString(args[0], out string? str1) && GetUlong(args[1], out dw2))
                 {
                     Var v1 = Var.Create(str1), v2 = Var.Create(dw2);
                     Var v3 = v1 + v2;
@@ -88,7 +88,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         private bool DoALLOC(Expression[] args)
         {
-            if (args.Length == 1 && GetRulong(args[0], out ulong size))
+            if (args.Length == 1 && GetUlong(args[0], out ulong size))
             {
                 Address addr = Host.AllocateMemory(size);
                 variables["$RESULT"] = Var.Create(addr);
@@ -116,9 +116,9 @@ namespace Reko.ImageLoaders.OdbgScript
 
         private bool DoAND(Expression[] args)
         {
-            if (args.Length == 2 && GetRulong(args[0], out ulong dw1) && GetRulong(args[1], out ulong dw2))
+            if (args.Length == 2 && GetUlong(args[0], out ulong dw1) && GetUlong(args[1], out ulong dw2))
             {
-                return SetRulong(args[0], dw1 & dw2);
+                return SetULong(args[0], dw1 & dw2);
             }
             return false;
         }
@@ -164,7 +164,7 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             if (args.Length >= 2 && args.Length <= 3 && GetAddress(args[0], out Address addr) && GetString(args[1], out string? cmd))
             {
-                if (args.Length == 3 && !GetRulong(args[2], out ulong attempt))
+                if (args.Length == 3 && !GetUlong(args[2], out ulong attempt))
                     return false;
 
                 int len = Host.Assemble(FormatAsmDwords(cmd), addr);
@@ -221,7 +221,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
             if (args.Length >= 1 && args.Length <= 2 && GetString(args[0], out string? str))
             {
-                if (args.Length == 2 && !GetRulong(args[1], out @base))
+                if (args.Length == 2 && !GetUlong(args[1], out @base))
                     return false;
 
                 variables["$RESULT"] = Var.Create(Helper.str2rul(str, (uint) @base));
@@ -292,7 +292,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
             if (args.Length >= 0 && args.Length <= 1)
             {
-                if (args.Length == 1 && !GetRulong(args[0], out start))
+                if (args.Length == 1 && !GetUlong(args[0], out start))
                     return false;
 
                 return true;
@@ -326,7 +326,7 @@ namespace Reko.ImageLoaders.OdbgScript
         // TE?
         private bool DoBPCND(Expression[] args)
         {
-            if (args.Length == 2 && GetRulong(args[0], out ulong addr) && GetString(args[1], out string? condition))
+            if (args.Length == 2 && GetUlong(args[0], out ulong addr) && GetString(args[1], out string? condition))
             {
                 errorstr = "Unsupported command!";
                 return false;
@@ -382,7 +382,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 {
                     return DoBPHWCA();
                 }
-                else if (GetRulong(args[0], out ulong addr))
+                else if (GetUlong(args[0], out ulong addr))
                 {
                     ulong[] DRX = new ulong[4];
 
@@ -512,7 +512,7 @@ namespace Reko.ImageLoaders.OdbgScript
         /// </summary>
         private bool DoBPRM(Expression[] args)
         {
-            if (args.Length == 2 && GetAddress(args[0], out Address addr) && GetRulong(args[1], out ulong size))
+            if (args.Length == 2 && GetAddress(args[0], out Address addr) && GetUlong(args[1], out ulong size))
             {
                 if (membpaddr is not null && membpsize != 0)
                     DoBPMC();
@@ -529,7 +529,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         private bool DoBPWM(Expression[] args)
         {
-            if (args.Length == 2 && GetAddress(args[0], out Address addr) && GetRulong(args[1], out ulong size))
+            if (args.Length == 2 && GetAddress(args[0], out Address addr) && GetUlong(args[1], out ulong size))
             {
                 if (membpaddr != null && membpsize != 0)
                     DoBPMC();
@@ -551,7 +551,7 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             if (args.Length >= 1 && args.Length <= 2 && GetString(args[0], out string? callname))
             {
-                if (args.Length == 2 && !GetRulong(args[1], out ulong del))
+                if (args.Length == 2 && !GetUlong(args[1], out ulong del))
                     return false;
 
                 errorstr = "Unsupported command!";
@@ -690,7 +690,7 @@ ulong hwnd;
 		{
 			return true;
 		}
-		else if(GetRulong(args[0],  out hwnd) && hwnd)
+		else if(GetUlong(args[0],  out hwnd) && hwnd)
 		{
 			DestroyWindow((HWND)hwnd);
 			return true;
@@ -707,16 +707,16 @@ ulong hwnd;
 
             if (args.Length >= 2 && args.Length <= 3)
             {
-                if (args.Length == 3 && !GetRulong(args[2], out size))
+                if (args.Length == 3 && !GetUlong(args[2], out size))
                     return false;
 
                 Var v1, v2;
-                if (GetRulong(args[0], out ulong dw1) && GetRulong(args[1], out ulong dw2))
+                if (GetUlong(args[0], out ulong dw1) && GetUlong(args[1], out ulong dw2))
                 {
                     v1 = Var.Create(dw1);
                     v2 = Var.Create(dw2);
                 }
-                else if (GetAddress(args[0], out Address addr1) && GetRulong(args[1], out ulong dw))
+                else if (GetAddress(args[0], out Address addr1) && GetUlong(args[1], out ulong dw))
                 {
                     v1 = Var.Create(addr1.ToLinear());
                     v2 = Var.Create(dw);
@@ -754,7 +754,7 @@ ulong hwnd;
         // Olly only
         private bool DoCMT(Expression[] args)
         {
-            if (args.Length == 2 && GetRulong(args[0], out ulong addr) && GetString(args[1], out string? cmt))
+            if (args.Length == 2 && GetUlong(args[0], out ulong addr) && GetString(args[1], out string? cmt))
             {
                 return true;
             }
@@ -811,10 +811,10 @@ ulong hwnd;
         {
             if (args.Length == 1)
             {
-                if (GetRulong(args[0], out ulong dw))
+                if (GetUlong(args[0], out ulong dw))
                 {
                     dw--;
-                    return SetRulong(args[0], dw);
+                    return SetULong(args[0], dw);
                 }
                 else if (GetFloat(args[0], out double flt))
                 {
@@ -829,19 +829,19 @@ ulong hwnd;
         {
             if (args.Length == 2)
             {
-                if (GetRulong(args[0], out ulong dw1) && GetRulong(args[1], out ulong dw2) && dw2 != 0)
+                if (GetUlong(args[0], out ulong dw1) && GetUlong(args[1], out ulong dw2) && dw2 != 0)
                 {
-                    return SetRulong(args[0], dw1 / dw2);
+                    return SetULong(args[0], dw1 / dw2);
                 }
                 else if (GetFloat(args[0], out double flt1) && GetFloat(args[1], out double flt2) && flt2 != 0)
                 {
                     return SetFloat(args[0], flt1 / flt2);
                 }
-                else if (GetFloat(args[0], out flt1) && GetRulong(args[1], out dw2) && dw2 != 0)
+                else if (GetFloat(args[0], out flt1) && GetUlong(args[1], out dw2) && dw2 != 0)
                 {
                     return SetFloat(args[0], flt1 / dw2);
                 }
-                else if (GetRulong(args[0], out dw1) && GetFloat(args[1], out flt2) && flt2 != 0)
+                else if (GetUlong(args[0], out dw1) && GetFloat(args[1], out flt2) && flt2 != 0)
                 {
                     return SetFloat(args[0], dw1 / flt2);
                 }
@@ -856,7 +856,7 @@ ulong hwnd;
 
         private bool DoDM(Expression[] args)
         {
-            if (args.Length == 3 && GetRulong(args[0], out ulong addr) && GetRulong(args[1], out ulong size) && GetString(args[2], out string? filename))
+            if (args.Length == 3 && GetUlong(args[0], out ulong addr) && GetUlong(args[1], out ulong size) && GetString(args[2], out string? filename))
             {
                 if (!Path.IsPathRooted(filename))
                     filename = Host.TE_GetTargetDirectory() + filename;
@@ -875,7 +875,7 @@ ulong hwnd;
         {
             if (args.Length == 3 &&
                 GetAddress(args[0], out Address addr) &&
-                GetRulong(args[1], out ulong uSize) &&
+                GetUlong(args[1], out ulong uSize) &&
                 GetString(args[2], out string? filename))
             {
                 int size = (int) uSize;
@@ -1153,7 +1153,7 @@ ulong hwnd;
         private bool DoFILL(Expression[] args)
         {
             byte val = 0;
-            if (args.Length == 3 && GetAddress(args[0], out Address addr) && GetRulong(args[1], out ulong len) && GetByte(args[2], out val))
+            if (args.Length == 3 && GetAddress(args[0], out Address addr) && GetUlong(args[1], out ulong len) && GetByte(args[2], out val))
             {
                 byte[] membuf = new byte[PAGE_SIZE];
                 int cb = Math.Min((int)len, membuf.Length);
@@ -1200,10 +1200,10 @@ ulong hwnd;
             if (args.Length < 2 || args.Length > 3 || !GetAddress(args[0], out Address addr))
                 return false;
 
-            if (args.Length == 3 && !GetRulong(args[2], out maxsize))
+            if (args.Length == 3 && !GetUlong(args[2], out maxsize))
                 return false;
 
-            if (GetRulong(args[1], out ulong dw))
+            if (GetUlong(args[1], out ulong dw))
             {
                 finddata = Helper.rul2hexstr(Helper.ToHostEndianness(dw, arch.Endianness));
                 // Remove trailing zeroes, keep even character args.Length
@@ -1272,7 +1272,7 @@ ulong hwnd;
             //bool bRefVisible = false, bResetDisam = false;
             //, @base, size, disamsel = 0;
 
-            if (args.Length >= 1 && args.Length <= 2 && GetRulong(args[0], out ulong addr))
+            if (args.Length >= 1 && args.Length <= 2 && GetUlong(args[0], out ulong addr))
             {
                 errorstr = "Unsupported command!";
                 return true;
@@ -1293,7 +1293,7 @@ ulong hwnd;
             if (td==null)
                 return false;
 
-            if(GetRulong(ops[0], addr))
+            if(GetUlong(ops[0], addr))
             {
                 if(addr < base || addr >= (base+size))
                 {
@@ -1394,7 +1394,7 @@ ulong hwnd;
 
             ulong tmpaddr = TE_AllocMemory(0x100);
 
-            if (GetRulong(ops[0], addr) 
+            if (GetUlong(ops[0], addr) 
                 && GetString(ops[1], cmds))
             {
                 if (addr<base || addr>=(base+size)) {
@@ -1502,7 +1502,7 @@ ulong hwnd;
             if(!CreateOp(args, ops, 2))
                 return false;
 
-            if (GetRulong(ops[0], addr) 
+            if (GetUlong(ops[0], addr) 
                 && GetString(ops[1], cmds))
             {
 
@@ -1570,10 +1570,10 @@ ulong hwnd;
 
             if (args.Length >= 2 && args.Length <= 3 && GetAddress(args[0], out Address addr))
             {
-                if (args.Length == 3 && !GetRulong(args[2], out maxsize))
+                if (args.Length == 3 && !GetUlong(args[2], out maxsize))
                     return false;
 
-                if (GetRulong(args[1], out ulong dw))
+                if (GetUlong(args[1], out ulong dw))
                 {
                     finddata = Helper.rul2hexstr(Helper.ToHostEndianness(dw, arch.Endianness));
                     // Remove trailing zeroes, keep even character args.Length
@@ -1668,7 +1668,7 @@ ulong hwnd;
 
             if (args.Length >= 1 && args.Length <= 2 && GetAddress(args[0], out Address addr))
             {
-                if (args.Length == 2 && !GetRulong(args[1], out size))
+                if (args.Length == 2 && !GetUlong(args[1], out size))
                     return false;
 
                 variables["$RESULT"] = Var.Create(0);
@@ -1685,7 +1685,7 @@ ulong hwnd;
 
         private bool DoGAPI(Expression[] args)
         {
-            if (args.Length == 1 && GetRulong(args[0], out ulong addr))
+            if (args.Length == 1 && GetUlong(args[0], out ulong addr))
             {
                 errorstr = "Unsupported command!";
                 return false;
@@ -1807,7 +1807,7 @@ ulong hwnd;
         // Olly only
         private bool DoGCMT(Expression[] args)
         {
-            if (args.Length == 1 && GetRulong(args[0], out ulong addr))
+            if (args.Length == 1 && GetUlong(args[0], out ulong addr))
             {
                 variables["$RESULT"] = Var.Create("");
                 return true;
@@ -1820,7 +1820,7 @@ ulong hwnd;
             throw new NotImplementedException();
 #if LATER
 ulong addr;
-	if(args.Length == 1 && GetRulong(args[0],  out addr))
+	if(args.Length == 1 && GetUlong(args[0],  out addr))
 	{
 		variables["$RESULT"] = Var.Create(0);
 
@@ -1850,7 +1850,7 @@ ulong addr;
         // Olly only
         private bool DoGLBL(Expression[] args)
         {
-            if (args.Length == 1 && GetRulong(args[0], out ulong addr))
+            if (args.Length == 1 && GetUlong(args[0], out ulong addr))
             {
                 variables["$RESULT"] = Var.Create(0);
                 return true;
@@ -1913,7 +1913,7 @@ ulong addr;
         // Olly only
         private bool DoNAMES(Expression[] args)
         {
-            if (args.Length == 1 && GetRulong(args[0], out ulong addr))
+            if (args.Length == 1 && GetUlong(args[0], out ulong addr))
             {
                 return true;
             }
@@ -1923,9 +1923,9 @@ ulong addr;
         private bool DoGMEXP(Expression[] args)
         {
             ulong num = 0;
-            if (args.Length >= 2 && args.Length <= 3 && GetRulong(args[0], out ulong addr))
+            if (args.Length >= 2 && args.Length <= 3 && GetUlong(args[0], out ulong addr))
             {
-                if (args.Length == 3 && !GetRulong(args[2], out num))
+                if (args.Length == 3 && !GetUlong(args[2], out num))
                     return false;
 
                 errorstr = "Unsupported command!";
@@ -2004,7 +2004,7 @@ ulong addr;
 ulong addr;
 string str;
 
-	if(args.Length == 2 && GetRulong(args[0],  out addr))
+	if(args.Length == 2 && GetUlong(args[0],  out addr))
 	{
 		List<MODULEENTRY32> Modules;
 		MODULEENTRY32 Module;
@@ -2193,9 +2193,9 @@ string str;
             ulong num = 0;
             string str;
 
-            if (args.Length >= 2 && args.Length <= 3 && GetRulong(args[0], out ulong addr) && args[1] is Identifier cmd)
+            if (args.Length >= 2 && args.Length <= 3 && GetUlong(args[0], out ulong addr) && args[1] is Identifier cmd)
             {
-                if (args.Length == 3 && !GetRulong(args[2], out num))
+                if (args.Length == 3 && !GetUlong(args[2], out num))
                     return false;
 
                 errorstr = "Unsupported command!";
@@ -2298,7 +2298,7 @@ string str;
 
         private bool DoGN(Expression[] args)
         {
-            if (args.Length == 1 && GetRulong(args[0], out ulong addr))
+            if (args.Length == 1 && GetUlong(args[0], out ulong addr))
             {
                 string pAPI = Importer.GetAPIName(addr);
                 string pDLL = Importer.GetDLLName(addr);
@@ -2341,7 +2341,7 @@ string str;
 
             if (args.Length == 3 &&
                 GetAddress(args[0], out Address _) &&
-                GetRulong(args[1], out ulong index) &&
+                GetUlong(args[1], out ulong index) &&
                 args[2] is Identifier cmd)
             {
                 if (index < 1 || index > 3)
@@ -2537,7 +2537,7 @@ string str;
         {
             if (args.Length >= 0 && args.Length <= 1)
             {
-                if (args.Length == 1 && !GetRulong(args[0], out ulong line))
+                if (args.Length == 1 && !GetUlong(args[0], out ulong line))
                     return false;
 
                 variables["$RESULT"] = Var.Create(0);
@@ -2549,7 +2549,7 @@ string str;
         // Olly only
         private bool DoGRO(Expression[] args)
         {
-            if (args.Length == 1 && GetRulong(args[0], out ulong addr))
+            if (args.Length == 1 && GetUlong(args[0], out ulong addr))
             {
                 variables["$RESULT"] = Var.Create(0);
                 return true;
@@ -2586,7 +2586,7 @@ string str = "";
             ulong size = 2;
             if (args.Length >= 1 && args.Length <= 2 && GetAddress(args[0], out Address addr))
             {
-                if (args.Length == 2 && !GetRulong(args[1], out size))
+                if (args.Length == 2 && !GetUlong(args[1], out size))
                     return false;
 
                 variables["$RESULT"] = variables["$RESULT_1"] = Var.Create(0);
@@ -2618,7 +2618,7 @@ string str = "";
 
         private bool DoHANDLE(Expression[] args)
         {
-            if (args.Length == 3 && GetRulong(args[0], out ulong x) && GetRulong(args[1], out ulong y) && GetString(args[2], out string? sClassName))
+            if (args.Length == 3 && GetUlong(args[0], out ulong x) && GetUlong(args[1], out ulong y) && GetString(args[2], out string? sClassName))
             {
                 variables["$RESULT"] = Var.Create((ulong) Host.FindHandle(Host.TE_GetMainThreadId(), sClassName, x, y));
                 return true;
@@ -2630,10 +2630,10 @@ string str = "";
         {
             if (args.Length == 1)
             {
-                if (GetRulong(args[0], out ulong dw))
+                if (GetUlong(args[0], out ulong dw))
                 {
                     dw++;
-                    return SetRulong(args[0], dw);
+                    return SetULong(args[0], dw);
                 }
                 else if (GetFloat(args[0], out double flt))
                 {
@@ -2647,7 +2647,7 @@ string str = "";
         // Olly only
         private bool DoHISTORY(Expression[] args)
         {
-            if (args.Length == 1 && GetRulong(args[0], out ulong dw))
+            if (args.Length == 1 && GetUlong(args[0], out ulong dw))
             {
                 return true;
             }
@@ -2657,9 +2657,9 @@ string str = "";
         private bool DoITOA(Expression[] args)
         {
             ulong @base = 16;
-            if (args.Length >= 1 && args.Length <= 2 && GetRulong(args[0], out ulong dw))
+            if (args.Length >= 1 && args.Length <= 2 && GetUlong(args[0], out ulong dw))
             {
-                if (args.Length == 2 && !GetRulong(args[1], out @base))
+                if (args.Length == 2 && !GetUlong(args[1], out @base))
                     return false;
 
                 if (@base >= 2 && @base <= 32)
@@ -2758,7 +2758,7 @@ string str = "";
         private bool DoKEY(Expression[] args)
         {
             bool shift = false, ctrl = false;
-            if (args.Length >= 1 && args.Length <= 3 && GetRulong(args[0], out ulong key))
+            if (args.Length >= 1 && args.Length <= 3 && GetUlong(args[0], out ulong key))
             {
                 switch (args.Length)
                 {
@@ -2778,7 +2778,7 @@ string str = "";
         // Olly only
         private bool DoLBL(Expression[] args)
         {
-            if (args.Length == 2 && GetRulong(args[0], out ulong addr) && GetString(args[1], out string? lbl))
+            if (args.Length == 2 && GetUlong(args[0], out ulong addr) && GetString(args[1], out string? lbl))
             {
                 return true;
             }
@@ -2792,7 +2792,7 @@ string str = "";
 ulong addr, size;
 string filename;
 
-    if(args.Length == 3 && GetRulong(args[0],  out addr) && GetRulong(args[1],  out size) && GetString(args[2],  out filename))
+    if(args.Length == 3 && GetUlong(args[0],  out addr) && GetUlong(args[1],  out size) && GetString(args[2],  out filename))
     {
 		if(!Helper.isfullpath(filename))
 			filename = Host.TE_GetTargetDirectory() + filename;	
@@ -2961,7 +2961,7 @@ string filename;
 
                 string @out;
 
-                if (GetRulong(args[0], out ulong dw))
+                if (GetUlong(args[0], out ulong dw))
                 {
                     @out = Helper.rul2hexstr(dw, sizeof(ulong) * 2).ToUpperInvariant();
                 }
@@ -2994,7 +2994,7 @@ string filename;
                     if (!GetString(args[2], out sep)) return false;
                     goto case 2;
                 case 2:
-                    if (!GetRulong(args[1], out dw)) return false;
+                    if (!GetUlong(args[1], out dw)) return false;
                     break;
                 }
 
@@ -3043,7 +3043,7 @@ string filename;
             if (args.Length >= 2 && args.Length <= 3)
             {
                 ulong maxsize = 0;
-                if (args.Length == 3 && !GetRulong(args[2], out maxsize))
+                if (args.Length == 3 && !GetUlong(args[2], out maxsize))
                     return false;
 
                 ulong dw;
@@ -3075,7 +3075,7 @@ string filename;
                         else
                             v = Var.Create(0);
                     }
-                    else if (maxsize <= sizeof(ulong) && GetRulong(args[1], out dw)) // ulong
+                    else if (maxsize <= sizeof(ulong) && GetUlong(args[1], out dw)) // ulong
                     {
                         // DW to DW/FLT var
                         if (maxsize == 0)
@@ -3106,7 +3106,7 @@ string filename;
                 else if (arch.TryGetRegister(id.Name, out RegisterStorage? reg))
                 {
                     // Dest is register
-                    if (GetRulong(args[1], out dw))
+                    if (GetUlong(args[1], out dw))
                     {
                         if (maxsize == 0)
                             maxsize = (uint)reg.DataType.Size;
@@ -3180,7 +3180,7 @@ string filename;
                                 return true;
                             }
                         }
-                        else if (maxsize <= sizeof(ulong) && GetRulong(args[1], out dw))
+                        else if (maxsize <= sizeof(ulong) && GetUlong(args[1], out dw))
                         {
                             if (maxsize == 0)
                                 maxsize = sizeof(ulong);
@@ -3271,9 +3271,9 @@ string param;
 
         private bool DoOR(Expression[] args)
         {
-            if (args.Length == 2 && GetRulong(args[0], out ulong dw1) && GetRulong(args[1], out ulong dw2))
+            if (args.Length == 2 && GetUlong(args[0], out ulong dw1) && GetUlong(args[1], out ulong dw2))
             {
-                return SetRulong(args[0], dw1 | dw2);
+                return SetULong(args[0], dw1 | dw2);
             }
             return false;
         }
@@ -3282,19 +3282,19 @@ string param;
         {
             if (args.Length == 2)
             {
-                if (GetRulong(args[0], out ulong dw1) && GetRulong(args[1], out ulong dw2))
+                if (GetUlong(args[0], out ulong dw1) && GetUlong(args[1], out ulong dw2))
                 {
-                    return SetRulong(args[0], dw1 * dw2);
+                    return SetULong(args[0], dw1 * dw2);
                 }
                 else if (GetFloat(args[0], out double flt1) && GetFloat(args[1], out double flt2))
                 {
                     return SetFloat(args[0], flt1 * flt2);
                 }
-                else if (GetFloat(args[0], out  flt1) && GetRulong(args[1], out dw2))
+                else if (GetFloat(args[0], out  flt1) && GetUlong(args[1], out dw2))
                 {
                     return SetFloat(args[0], flt1 * dw2);
                 }
-                else if (GetRulong(args[0], out dw1) && GetFloat(args[1], out flt2))
+                else if (GetUlong(args[0], out dw1) && GetFloat(args[1], out flt2))
                 {
                     return SetFloat(args[0], dw1 * flt2);
                 }
@@ -3306,9 +3306,9 @@ string param;
         {
             if (args.Length == 1)
             {
-                if (GetRulong(args[0], out ulong dw))
+                if (GetUlong(args[0], out ulong dw))
                 {
-                    return SetRulong(args[0], (ulong) (-(long) dw));
+                    return SetULong(args[0], (ulong) (-(long) dw));
                 }
                 else if (GetFloat(args[0], out double flt))
                 {
@@ -3320,9 +3320,9 @@ string param;
 
         private bool DoNOT(Expression[] args)
         {
-            if (args.Length == 1 && GetRulong(args[0], out ulong dw))
+            if (args.Length == 1 && GetUlong(args[0], out ulong dw))
             {
-                return SetRulong(args[0], ~dw);
+                return SetULong(args[0], ~dw);
             }
             return false;
         }
@@ -3354,15 +3354,15 @@ string param;
         // Olly only
         private bool DoOPENDUMP(Expression[] args)
         {
-            if (args.Length >= 1 && args.Length <= 3 && GetRulong(args[0], out ulong addr))
+            if (args.Length >= 1 && args.Length <= 3 && GetUlong(args[0], out ulong addr))
             {
                 switch (args.Length)
                 {
                 case 3:
-                    if (!GetRulong(args[2], out ulong size)) return false;
+                    if (!GetUlong(args[2], out ulong size)) return false;
                     goto case 2;
                 case 2:
-                    if (!GetRulong(args[1], out ulong @base)) return false;
+                    if (!GetUlong(args[1], out ulong @base)) return false;
                     break;
                 }
 
@@ -3395,7 +3395,7 @@ string param;
         {
             if (args.Length >= 0 && args.Length <= 1)
             {
-                if (args.Length == 1 && !GetRulong(args[0], out ulong dw))
+                if (args.Length == 1 && !GetUlong(args[0], out ulong dw))
                     return false;
 
                 ulong CSP = Debugger.GetContextData(eContextData.UE_CSP);
@@ -3408,7 +3408,7 @@ string param;
                     if (!segment.MemoryArea.TryReadLeUInt32(ea, out var value))
                         throw new AccessViolationException();
                     dw = value;
-                    return SetRulong(args[0], dw);
+                    return SetULong(args[0], dw);
                 }
                 return true;
             }
@@ -3448,7 +3448,7 @@ string param;
 
         private bool DoPUSH(Expression[] args)
         {
-            if (args.Length == 1 && GetRulong(args[0], out ulong dw))
+            if (args.Length == 1 && GetUlong(args[0], out ulong dw))
             {
                 ulong CSP = Debugger.GetContextData(eContextData.UE_CSP) - sizeof(ulong);
                 Debugger.SetContextData(eContextData.UE_CSP, CSP);
@@ -3469,7 +3469,7 @@ string param;
         private bool DoREADSTR(Expression[] args)
         {
             if (args.Length == 2 && 
-                GetRulong(args[1], out ulong maxsize) &&
+                GetUlong(args[1], out ulong maxsize) &&
                 GetString(args[0], (int) maxsize, out string? str))
             {
                 variables["$RESULT"] = Var.Create(str!);
@@ -3561,7 +3561,7 @@ string param;
         {
             string str = "MEMORY";
 
-            if (args.Length >= 1 && args.Length <= 2 && GetRulong(args[0], out ulong addr))
+            if (args.Length >= 1 && args.Length <= 2 && GetUlong(args[0], out ulong addr))
             {
                 if (args.Length == 2 && args[1] is Identifier domain)
                     str = domain.Name.ToUpperInvariant();
@@ -3596,7 +3596,7 @@ string param;
                 Helper.TryGetHexLiteral(args[1], out string? v1) && 
                 Helper.TryGetHexLiteral(args[2], out string? v2))
             {
-                if (args.Length == 4 && !GetRulong(args[3], out len))
+                if (args.Length == 4 && !GetUlong(args[3], out len))
                     return false;
                 if (args.Length == 3)
                 {
@@ -3729,7 +3729,7 @@ string param;
         {
             if (args.Length == 1)
             {
-                if (GetRulong(args[0], out ulong dw))
+                if (GetUlong(args[0], out ulong dw))
                 {
                     variables["$RESULT"] = Var.Create(Helper.ToHostEndianness(dw, arch.Endianness));
                     return true;
@@ -3750,7 +3750,7 @@ string param;
 #if LATER
 ulong dw1, dw2;
 
-	if(args.Length == 2 && GetRulong(args[0],  out dw1) && GetRulong(args[1],  out dw2))
+	if(args.Length == 2 && GetUlong(args[0],  out dw1) && GetUlong(args[1],  out dw2))
 	{
 		return SetRulong(args[0],  rol(dw1, out dw2));
 	}
@@ -3764,7 +3764,7 @@ ulong dw1, dw2;
 #if LATER
     ulong dw1, dw2;
 
-	if(args.Length == 2 && GetRulong(args[0],  out dw1) && GetRulong(args[1],  out dw2))
+	if(args.Length == 2 && GetUlong(args[0],  out dw1) && GetUlong(args[1],  out dw2))
 	{
 		return SetRulong(args[0],  ror(dw1, out dw2));
 	}
@@ -3887,7 +3887,7 @@ ulong dw1, dw2;
             if (args.Length >= 2 && args.Length <= 3)
             {
                 ulong size = 0;
-                if (args.Length == 3 && !GetRulong(args[2], out size))
+                if (args.Length == 3 && !GetUlong(args[2], out size))
                     return false;
 
                 if (GetString(args[0], (int) size, out string? s1) && GetString(args[1], (int) size, out string? s2))
@@ -3916,18 +3916,18 @@ ulong dw1, dw2;
 
         private bool DoSHL(Expression[] args)
         {
-            if (args.Length == 2 && GetRulong(args[0], out ulong dw1) && GetRulong(args[1], out ulong dw2))
+            if (args.Length == 2 && GetUlong(args[0], out ulong dw1) && GetUlong(args[1], out ulong dw2))
             {
-                return SetRulong(args[0], dw1 << (int)dw2);
+                return SetULong(args[0], dw1 << (int)dw2);
             }
             return false;
         }
 
         private bool DoSHR(Expression[] args)
         {
-            if (args.Length == 2 && GetRulong(args[0], out ulong dw1) && GetRulong(args[1], out ulong dw2))
+            if (args.Length == 2 && GetUlong(args[0], out ulong dw1) && GetUlong(args[1], out ulong dw2))
             {
-                return SetRulong(args[0], dw1 >> (int)dw2);
+                return SetULong(args[0], dw1 >> (int)dw2);
             }
             return false;
         }
@@ -3981,11 +3981,11 @@ ulong dw1, dw2;
 
         private bool DoSUB(Expression[] args)
         {
-            if (args.Length == 2 && GetRulong(args[0], out ulong dw1) && GetRulong(args[1], out ulong dw2))
+            if (args.Length == 2 && GetUlong(args[0], out ulong dw1) && GetUlong(args[1], out ulong dw2))
             {
-                if (GetRulong(args[0], out dw1) && GetRulong(args[1], out dw2))
+                if (GetUlong(args[0], out dw1) && GetUlong(args[1], out dw2))
                 {
-                    return SetRulong(args[0], dw1 - dw2);
+                    return SetULong(args[0], dw1 - dw2);
                 }
                 else if (GetFloat(args[0], out double flt1) && GetFloat(args[1], out double flt2))
                 {
@@ -4014,7 +4014,7 @@ ulong dw1, dw2;
                     zf = (addr1.ToLinear() & addr2.ToLinear()) == 0;
                     return true;
                 }
-                if (GetRulong(args[0], out ulong dw1) && GetRulong(args[1], out ulong dw2))
+                if (GetUlong(args[0], out ulong dw1) && GetUlong(args[1], out ulong dw2))
                 {
                     zf = ((dw1 & dw2) == 0);
                     return true;
@@ -4039,7 +4039,7 @@ ulong dw1, dw2;
 
             if (args.Length >= 0 && args.Length <= 2)
             {
-                if (args.Length == 2 && !GetRulong(args[1], out timeref))
+                if (args.Length == 2 && !GetUlong(args[1], out timeref))
                     return false;
 
                 ulong tickcount = Helper.MyTickCount() - tickcount_startup;
@@ -4157,9 +4157,9 @@ ulong dw1, dw2;
         {
             if (args.Length == 2)
             {
-                if (GetRulong(args[0], out ulong dw1) && GetRulong(args[1], out ulong dw2))
+                if (GetUlong(args[0], out ulong dw1) && GetUlong(args[1], out ulong dw2))
                 {
-                    return SetRulong(args[0], dw2) && SetRulong(args[1], dw1);
+                    return SetULong(args[0], dw2) && SetULong(args[1], dw1);
                 }
                 else if (GetFloat(args[0], out double flt1) && GetFloat(args[1], out double flt2))
                 {
@@ -4181,10 +4181,10 @@ ulong dw1, dw2;
         private bool DoXOR(Expression[] args)
         {
             if (args.Length == 2 &&
-                GetRulong(args[0], out ulong dw1) &&
-                GetRulong(args[1], out ulong dw2))
+                GetUlong(args[0], out ulong dw1) &&
+                GetUlong(args[1], out ulong dw2))
             {
-                return SetRulong(args[0], dw1 ^ dw2);
+                return SetULong(args[0], dw1 ^ dw2);
             }
             return false;
         }
@@ -4242,7 +4242,7 @@ string filename, data;
             if (args.Length == 2)
             {
                 if (GetAddress(args[0], out Address addr) &&
-                    GetRulong(args[1], out ulong seg))
+                    GetUlong(args[1], out ulong seg))
                 {
                     Host.AddSegmentReference(addr, (ushort) seg);
                     return true;
@@ -4250,7 +4250,7 @@ string filename, data;
             }
             else if (args.Length == 1)
             {
-                if (GetRulong(args[0], out ulong uSeg))
+                if (GetUlong(args[0], out ulong uSeg))
                 {
                     var addrSeg = Address.SegPtr((ushort) uSeg, 0);
                     if (this.Host.SegmentMap.TryFindSegment(addrSeg, out var seg))
@@ -4269,7 +4269,7 @@ string filename, data;
             if (args.Length < 1)
                 return false;
             ulong count = 0x80;
-            if (args.Length == 2 && !GetRulong(args[1], out count))
+            if (args.Length == 2 && !GetUlong(args[1], out count))
                 return false;
             if (!GetAddress(args[0], out Address addr))
                 return false;
@@ -4300,7 +4300,7 @@ string filename, data;
             ulong count = 10;
             if (args.Length == 2)
             {
-                if (!GetRulong(args[1], out count))
+                if (!GetUlong(args[1], out count))
                     return false;
             }
             if (!this.Host.SegmentMap.TryCreateImageReader(addr, arch, out var rdr))

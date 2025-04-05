@@ -46,7 +46,7 @@ namespace Reko.Core.Analysis
         /// defined.</param>
         /// <param name="isSideEffect">True if this identifier is the result of
         /// a side effect.</param>
-        /// <returns>A freshly created <see cref="SsaIdentifier>"/></returns>
+        /// <returns>A freshly created <see cref="SsaIdentifier"/></returns>
 		public SsaIdentifier Add(Identifier idOld, Statement? stmDef, bool isSideEffect)
 		{
 			int i = ++serialNumber;
