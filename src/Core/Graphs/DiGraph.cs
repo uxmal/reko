@@ -188,6 +188,7 @@ namespace Reko.Core.Graphs
             return nodes[item].Succ;
         }
 
+        /// <inheritdoc/>
         public IEnumerable<(T, T)> Edges
         {
             get
