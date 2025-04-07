@@ -22,9 +22,6 @@
 
 using Reko.Core.Expressions;
 using Reko.Core.Memory;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Reko.Core
 {
@@ -48,7 +45,15 @@ namespace Reko.Core
     /// </remarks>
     public interface EvaluationContext
     {
+        /// <summary>
+        /// The endianness used when evaluating.
+        /// </summary>
         EndianServices Endianness { get; }
+
+        /// <summary>
+        /// The size of a memory storage unit in bits. On most modern 
+        /// architectures this is 8, but some architectures differ.
+        /// </summary>
         int MemoryGranularity { get; }
 
         /// <summary>
@@ -69,17 +74,79 @@ namespace Reko.Core
         /// of <see cref="InvalidConstant"/> if the address couldn't be resolved.
         /// </returns>
         Expression GetValue(MemoryAccess access, IMemory memory);
+
+
+        /// <summary>
+        /// Evaluates the given application, which might return in a simplification
+        /// depending on the arguments of the call.
+        /// </summary>
+        /// <param name="appl">An application to evaluate.</param>
+        /// <returns>The evaluated value.</returns>
         Expression GetValue(Application appl);
+        
+        /// <summary>
+        /// Given an identifier, finds the expression that defined it.
+        /// </summary>
+        /// <param name="id">Identifier whose definition is to be found.</param>
+        /// <returns>The defining expression, or null if it can't be found.
+        /// </returns>
         Expression? GetDefiningExpression(Identifier id);
 
+        /// <summary>
+        /// Indicate that all identifiers in the expression is used in the current statement.
+        /// </summary>
+        /// <param name="expr">Expression whose identifiers are to be marked as used.
+        /// </param>
         void UseExpression(Expression expr);
-        void RemoveExpressionUse(Expression expr);
-        void SetValue(Identifier id, Expression value);
-        void SetValueEa(Expression ea, Expression value);
-        void SetValueEa(Expression basePointer, Expression ea, Expression value);
 
+        /// <summary>
+        /// Indicate that all identifiers in the expression is no longer used in the current statement.
+        /// </summary>
+        /// <param name="expr">Expression whose identifiers are to be marked as unused.
+        /// </param>
+        void RemoveExpressionUse(Expression expr);
+
+        /// <summary>
+        /// Record that the identifier <paramref name="id"/> has the given value.
+        /// </summary>
+        /// <param name="id">Identifier whose value is to be recorded.</param>
+        /// <param name="value">The value to record.
+        /// </param>
+        void SetValue(Identifier id, Expression value);
+
+        /// <summary>
+        /// Given the effective address <paramref name="ea"/>, set the value of the memory
+        /// at that address to <paramref name="value"/>.
+        /// </summary>
+        /// <param name="ea">Effective address.</param>
+        /// <param name="value">Value to wrote to that address.</param>
+        void SetValueEa(Expression ea, Expression value);
+
+        /// <summary>
+        /// Given the segmented effective address consisting of the <paramref name="basePointer"/>
+        /// and the <paramref name="offset"/>, set the value of the memory
+        /// at that address to <paramref name="value"/>.
+        /// </summary>
+        /// <param name="basePointer">Base pointer or selector.</param>
+        /// <param name="offset">Effective address.</param>
+        /// <param name="value">Value to wrote to that address.</param>
+        void SetValueEa(Expression basePointer, Expression offset, Expression value);
+
+        /// <summary>
+        /// Returns true if the identifier is used in a <see cref="PhiFunction"/>.
+        /// </summary>
+        /// <param name="id">Identifier to test.</param>
+        /// <returns>True if the identifier is used in a <see cref="PhiFunction"/>.
+        /// </returns>
         bool IsUsedInPhi(Identifier id);
-        Expression MakeSegmentedAddress(Constant c1, Constant c2);
+
+        /// <summary>
+        /// Given two constants, creates a segmented address expression.
+        /// </summary>
+        /// <param name="selector">Segment selector.</param>
+        /// <param name="offset">Offset.</param>
+        /// <returns>A segmented address expression.</returns>
+        Expression MakeSegmentedAddress(Constant selector, Constant offset);
 
         /// <summary>
         /// Reinterprets a string of raw bits as a floating point number appropriate

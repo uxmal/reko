@@ -27,13 +27,29 @@ using System.Xml.Serialization;
 
 namespace Reko.Core
 {
+    /// <summary>
+    /// A characteristics library contains <see cref="ProcedureCharacteristics"/>
+    /// of procedures.
+    /// </summary>
     public class CharacteristicsLibrary
     {
+        /// <summary>
+        /// Creates a new empty characteristics library.
+        /// </summary>
         public CharacteristicsLibrary()
         {
-            Entries = new Dictionary<string, Serialization.ProcedureCharacteristics>();
+            Entries = new Dictionary<string, ProcedureCharacteristics>();
         }
 
+        /// <summary>
+        /// Loads a characteristics library from the specified file.
+        /// </summary>
+        /// <param name="filename">Name of the file containing the characteristics library.
+        /// </param>
+        /// <param name="fsSvc">Instance of <see cref="IFileSystemService"/> used to access
+        /// the file.
+        /// </param>
+        /// <returns>The loaded characteristcs library.</returns>
         public static CharacteristicsLibrary Load(string filename, IFileSystemService fsSvc)
         {
             var ser = new XmlSerializer(typeof(Serialization.CharacteristicsLibrary_v1));
@@ -56,8 +72,17 @@ namespace Reko.Core
             }
         }
 
-        public Dictionary<string, ProcedureCharacteristics> Entries { get; set; }
+        /// <summary>
+        /// The entries in the characteristics library. The key is the name of the procedure.
+        /// </summary>
+        public Dictionary<string, ProcedureCharacteristics> Entries { get; private init; }
 
+        /// <summary>
+        /// Looks up the characteristics of a procedure by name.
+        /// </summary>
+        /// <param name="procName">The name of the procedure.</param>
+        /// <returns>If found, a <see cref="ProcedureCharacteristics"/> instance, otherwise null.
+        /// </returns>
         public ProcedureCharacteristics? Lookup(string procName)
         {
             if (!Entries.TryGetValue(procName, out ProcedureCharacteristics? ch))

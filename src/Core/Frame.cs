@@ -62,7 +62,6 @@ namespace Reko.Core
     public class Frame : IStorageBinder
 	{
         private readonly IProcessorArchitecture arch;
-		private readonly List<Identifier> identifiers;	// Identifiers for each access.
         private readonly NamingPolicy namingPolicy;
 		
         /// <summary>
@@ -81,7 +80,7 @@ namespace Reko.Core
             if (framePointerSize is null)
                 throw new ArgumentNullException(nameof(framePointerSize));
             this.arch = arch;
-			identifiers = new List<Identifier>();
+            this.Identifiers = [];
             this.namingPolicy = NamingPolicy.Instance;
 
 			// There is always a "variable" for the global memory and the frame
@@ -93,6 +92,13 @@ namespace Reko.Core
             this.Continuation = CreateTemporary("%continuation", codeAddressSize);
 		}
 
+        /// <summary>
+        /// Creates a Frame instance for maintaining the local variables and arguments whose
+        /// frame pointer size is same as a general purpose pointer size.
+        /// </summary>
+        /// <param name="arch">Processor architecture used in this frame.</param>
+        /// <param name="pointerSize">The size of a pointer.
+        /// </param>
         public Frame(IProcessorArchitecture arch, PrimitiveType pointerSize) : this(arch, pointerSize, pointerSize)
         {
         }
@@ -105,7 +111,7 @@ namespace Reko.Core
         /// </summary>
         public Identifier FramePointer { get; }
         public Identifier Continuation { get; }
-        public List<Identifier> Identifiers { get { return identifiers; } }
+        public List<Identifier> Identifiers { get; }
         public Identifier Memory { get; private set; }
 
         /// <summary>
@@ -120,14 +126,14 @@ namespace Reko.Core
         {
             var name = string.Join("_", elements.Select(e => e.Name));
             var id = new Identifier(name, dt, new SequenceStorage(dt, elements));
-            identifiers.Add(id);
+            Identifiers.Add(id);
             return id;
         }
 
         public Identifier CreateSequence(DataType dt, string name, params Storage[] elements)
         {
             var id = new Identifier(name, dt, new SequenceStorage(dt, elements));
-            identifiers.Add(id);
+            Identifiers.Add(id);
             return id;
         }
 
@@ -160,18 +166,18 @@ namespace Reko.Core
 		/// <returns></returns>
 		public Identifier CreateTemporary(DataType dt)
 		{
-            string name = "v" + identifiers.Count;
+            string name = "v" + Identifiers.Count;
 			var id = new Identifier(name, dt,
-                new TemporaryStorage(name, identifiers.Count, dt));
-			identifiers.Add(id);
+                new TemporaryStorage(name, Identifiers.Count, dt));
+			Identifiers.Add(id);
 			return id;
 		}
 
 		public Identifier CreateTemporary(string name, DataType dt)
 		{
             var id = new Identifier(name, dt, 
-                new TemporaryStorage(name, identifiers.Count, dt));
-			identifiers.Add(id);
+                new TemporaryStorage(name, Identifiers.Count, dt));
+			Identifiers.Add(id);
 			return id;
 		}
 
@@ -183,7 +189,7 @@ namespace Reko.Core
 			if (id is null)
 			{
 				id = Identifier.Create(new FlagGroupStorage(freg, grfMask, name));
-				identifiers.Add(id);
+				Identifiers.Add(id);
 			}
 			return id;
 		}
@@ -196,7 +202,7 @@ namespace Reko.Core
             if (id is null)
             {
                 id = Identifier.Create(new FlagGroupStorage(grf.FlagRegister, grf.FlagGroupBits, grf.Name));
-                identifiers.Add(id);
+                Identifiers.Add(id);
             }
             return id;
         }
@@ -208,7 +214,7 @@ namespace Reko.Core
 			{
 				string name = string.Format("{0}{1}", (depth < 0 ? "rLoc" : "rArg"), Math.Abs(depth));
 				id = new Identifier(name, type, new FpuStackStorage(depth, type));
-				identifiers.Add(id);
+				Identifiers.Add(id);
 			}
 			return id;
 		}
@@ -224,7 +230,7 @@ namespace Reko.Core
 			if (id is null)
 			{
                 id = Identifier.Create(reg);
-				identifiers.Add(id);
+				Identifiers.Add(id);
 			}
 			return id;
 		}
@@ -235,7 +241,7 @@ namespace Reko.Core
 			if (idOut is null)
 			{
 				idOut = new Identifier(idOrig.Name + "Out", outArgumentPointer, new OutArgumentStorage(idOrig));
-				identifiers.Add(idOut);
+				Identifiers.Add(idOut);
 			}
 			return idOut;
 		}
@@ -246,7 +252,7 @@ namespace Reko.Core
             if (idSeq is null)
             {
                 idSeq = new Identifier(sequence.Name, sequence.DataType, sequence);
-                identifiers.Add(idSeq);
+                Identifiers.Add(idSeq);
             }
             return idSeq;
         }
@@ -288,7 +294,7 @@ namespace Reko.Core
 			if (id == null)
 			{
 				id = new Identifier(namingPolicy.StackLocalName(type, cbOffset, name), type, new StackStorage(cbOffset, type));
-				identifiers.Add(id);
+				Identifiers.Add(id);
 			}
 			return id;
 		}
@@ -307,7 +313,7 @@ namespace Reko.Core
 					namingPolicy.StackArgumentName(type, cbOffset, argName), 
 					type, 
 					new StackStorage(cbOffset, type));
-				identifiers.Add(id);
+				Identifiers.Add(id);
 			}			
 			return id;
 		}
@@ -334,7 +340,7 @@ namespace Reko.Core
 
         public Identifier? FindSequence(Storage[] elements)
         {
-            foreach (Identifier id in identifiers)
+            foreach (Identifier id in Identifiers)
             {
                 if (id.Storage is SequenceStorage seq &&
                     seq.Elements.Length == elements.Length)
@@ -353,7 +359,7 @@ namespace Reko.Core
 
 		public Identifier? FindFlagGroup(RegisterStorage reg, uint grfMask)
 		{
-			foreach (Identifier id in identifiers)
+			foreach (Identifier id in Identifiers)
 			{
                 if (id.Storage is FlagGroupStorage flags &&
                     flags.FlagRegister == reg &&
@@ -367,7 +373,7 @@ namespace Reko.Core
 
 		public Identifier? FindFpuStackVariable(int off)
 		{
-			foreach (Identifier id in identifiers)
+			foreach (Identifier id in Identifiers)
 			{
                 if (id.Storage is FpuStackStorage fst && fst.FpuStackOffset == off)
                     return id;
@@ -377,7 +383,7 @@ namespace Reko.Core
 
 		public Identifier? FindOutArgument(Identifier idOrig)
 		{
-			foreach (Identifier id in identifiers)
+			foreach (Identifier id in Identifiers)
 			{
                 if (id.Storage is OutArgumentStorage s && s.OriginalIdentifier == idOrig)
                 {
@@ -389,7 +395,7 @@ namespace Reko.Core
 
 		public Identifier? FindRegister(RegisterStorage reg)
 		{
-			foreach (Identifier id in identifiers)
+			foreach (Identifier id in Identifiers)
 			{
                 if (id.Storage is RegisterStorage s && s == reg)
                     return id;
@@ -399,7 +405,7 @@ namespace Reko.Core
 
         public Identifier? FindTemporary(TemporaryStorage tmp)
         {
-            foreach (var id in identifiers)
+            foreach (var id in Identifiers)
             {
                 if (id.Storage is TemporaryStorage t && t == tmp)
                     return id;
@@ -409,7 +415,7 @@ namespace Reko.Core
 
 		public Identifier? FindStackArgument(int offset, int size)
 		{
-			foreach (Identifier id in identifiers)
+			foreach (Identifier id in Identifiers)
 			{
                 if (id.Storage is StackStorage s && s.StackOffset == offset && id.DataType.Size == size)
                 {
@@ -421,7 +427,7 @@ namespace Reko.Core
 
 		public Identifier? FindStackLocal(int offset, DataType dt)
 		{
-			foreach (Identifier id in identifiers)
+			foreach (Identifier id in Identifiers)
 			{
                 if (id.Storage is StackStorage loc &&
                     loc.StackOffset == offset &&
@@ -435,7 +441,7 @@ namespace Reko.Core
 
         public Identifier? FindTemporary(string name)
         {
-            return (from id in identifiers
+            return (from id in Identifiers
                    let tmp = id.Storage as TemporaryStorage
                    where tmp != null && id.Name == name
                    select id).SingleOrDefault();
@@ -443,7 +449,7 @@ namespace Reko.Core
 
 		public void Write(TextWriter text)
 		{
-			foreach (Identifier id in identifiers)
+			foreach (Identifier id in Identifiers)
 			{
 				text.Write("// ");
 				text.Write(id.Name);

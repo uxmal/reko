@@ -49,6 +49,7 @@ namespace Reko.Core.Collections
 
         #region IEnumerator<T> Members
 
+        /// <inheritdoc/>
         public T Current
         {
             get
@@ -59,6 +60,7 @@ namespace Reko.Core.Collections
             }
         }
 
+        /// <inheritdoc/>
         public void Dispose()
         {
             GC.SuppressFinalize(this);
@@ -70,6 +72,7 @@ namespace Reko.Core.Collections
             get { return Current!; }
         }
 
+        /// <inheritdoc/>
         public bool MoveNext()
         {
             if (iCur < peeked.Count-1)
@@ -82,6 +85,7 @@ namespace Reko.Core.Collections
             return e.MoveNext();
         }
 
+        /// <inheritdoc/>
         public void Reset()
         {
             iCur = 0;
@@ -133,8 +137,14 @@ namespace Reko.Core.Collections
             return true;
         }
 
+        /// <summary>
+        /// Skip <paramref name="skip"/> items in the enumeration.
+        /// </summary>
+        /// <param name="skip">Number of items to skip.</param>
         public void Skip(int skip)
         {
+            if (skip < 0)
+                throw new ArgumentOutOfRangeException("Parameter must be non-negative.", nameof(skip));
             int itemsInBuffer = peeked.Count - iCur;
             if (skip < itemsInBuffer)
             {

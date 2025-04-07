@@ -28,30 +28,64 @@ using System.Threading.Tasks;
 
 namespace Reko.Core.Emulation
 {
+    /// <summary>
+    /// A default implementation of the <see cref="IPlatformEmulator"/> interface 
+    /// that does nothing.
+    /// </summary>
     public class DefaultPlatformEmulator : IPlatformEmulator
     {
+        /// <summary>
+        /// Creates a new instance of the <see cref="DefaultPlatformEmulator"/> class.
+        /// </summary>
         public DefaultPlatformEmulator()
         {
             this.InterceptedCalls = new Dictionary<Address, ExternalProcedure>();
         }
 
+        /// <summary>
+        /// A dictionary of intercepted calls. No calls are intercepted by this class.
+        /// </summary>
         public Dictionary<Address, ExternalProcedure> InterceptedCalls { get; }
 
-        public bool InterceptCall(IProcessorEmulator emulator, uint calledAddress)
+        /// <summary>
+        /// Dummy implementation of <see cref="IPlatformEmulator.InterceptCall(IProcessorEmulator, uint)"/>.
+        /// No calls are actually intercepted.
+        /// </summary>
+        /// <param name="emulator">Ignored.</param>
+        /// <param name="calledAddress">Ignored.</param>
+        /// <returns>Always false.</returns>
+        public bool InterceptCall(IProcessorEmulator emulator, ulong calledAddress)
         {
+            //$TODO: this is not implemented yet.
             return false;
         }
 
+        /// <summary>
+        /// No system calls are emulated by this class.
+        /// </summary>
+        /// <param name="emulator">Ignored.</param>
+        /// <param name="operands">Ignored.</param>
+        /// <returns>Always false.</returns>
         public bool EmulateSystemCall(IProcessorEmulator emulator, params MachineOperand[] operands)
         {
             return false;
         }
 
+        /// <summary>
+        /// The stack is not affected by this class.
+        /// </summary>
+        /// <param name="emulator">Ignored.</param>
+        /// <param name="state">Ignored.</param>
+        /// <returns>Nothing.</returns>
         public ImageSegment? InitializeStack(IProcessorEmulator emulator, ProcessorState state)
         {
             return null;
         }
 
+        /// <summary>
+        /// This class has a dummy implementation of this method.
+        /// </summary>
+        /// <param name="stackSeg">Ignored.</param>
         public void TearDownStack(ImageSegment? stackSeg)
         {
         }

@@ -18,44 +18,68 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading;
 
 namespace Reko.Core.Diagnostics
 {
+    /// <summary>
+    /// Extension methods for the <see cref="TraceSwitch"/> class.
+    /// </summary>
     public static class DebugEx
     {
+        /// <summary>
+        /// Writes a debug message if the <see cref="TraceSwitch"/> is set to tracing errors.
+        /// </summary>
+        /// <param name="trace">The <see cref="TraceSwitch"/> controlling the output.</param>
+        /// <param name="format">Format string to use.</param>
+        /// <param name="args">Zero or more arguments to use in the format string.</param>
         [Conditional("DEBUG")]
-        public static void Error(this TraceSwitch trace, string message, params object[] args)
+        public static void Error(this TraceSwitch trace, string format, params object[] args)
         {
             if (trace != null && trace.TraceError)
             {
-                Debug.Print(message, args);
+                Debug.Print(format, args);
             }
         }
 
+        /// <summary>
+        /// Writes a debug message if the <see cref="TraceSwitch"/> is set to tracing warnings.
+        /// </summary>
+        /// <param name="trace">The <see cref="TraceSwitch"/> controlling the output.</param>
+        /// <param name="format">Format string to use.</param>
+        /// <param name="args">Zero or more arguments to use in the format string.</param>
         [Conditional("DEBUG")]
-        public static void Warn(this TraceSwitch trace, string message, params object[] args)
+        public static void Warn(this TraceSwitch trace, string format, params object[] args)
         {
             if (trace != null && trace.TraceWarning)
             {
-                Debug.Print(message, args);
+                Debug.Print(format, args);
             }
         }
 
+        /// <summary>
+        /// Writes a debug message if the <see cref="TraceSwitch"/> is set to tracing informational
+        /// messages.
+        /// </summary>
+        /// <param name="trace">The <see cref="TraceSwitch"/> controlling the output.</param>
+        /// <param name="format">Format string to use.</param>
+        /// <param name="args">Zero or more arguments to use in the format string.</param>
         [Conditional("DEBUG")]
-        public static void Inform(this TraceSwitch trace, string message, params object[] args)
+        public static void Inform(this TraceSwitch trace, string format, params object[] args)
         {
             if (trace != null && trace.TraceInfo)
             {
-                Debug.Print(message, args);
+                Debug.Print(format, args);
             }
         }
 
+        /// <summary>
+        /// Writes a debug message if the <see cref="TraceSwitch"/> is set to tracing verbose
+        /// messages.
+        /// </summary>
+        /// <param name="trace">The <see cref="TraceSwitch"/> controlling the output.</param>
+        /// <param name="message">Message to display.</param>
         [Conditional("DEBUG")]
         public static void Verbose(this TraceSwitch trace, string message)
         {
@@ -65,12 +89,19 @@ namespace Reko.Core.Diagnostics
             }
         }
 
+        /// <summary>
+        /// Writes a debug message if the <see cref="TraceSwitch"/> is set to tracing verbose
+        /// messages.
+        /// </summary>
+        /// <param name="trace">The <see cref="TraceSwitch"/> controlling the output.</param>
+        /// <param name="format">Format string to use.</param>
+        /// <param name="args">Zero or more arguments to use in the format string.</param>
         [Conditional("DEBUG")]
-        public static void Verbose(this TraceSwitch trace, string message, params object[]args)
+        public static void Verbose(this TraceSwitch trace, string format, params object[]args)
         {
             if (trace != null && trace.TraceVerbose)
             {
-                Debug.Print(message, args);
+                Debug.Print(format, args);
             }
         }
 

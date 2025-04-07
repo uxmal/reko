@@ -18,12 +18,13 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Reko.Core
 {
+    /// <summary>
+    /// Utility class for handling hexadecimal encodings of binary data.
+    /// </summary>
     public static class BytePattern
     {
         /// <summary>
@@ -67,6 +68,14 @@ namespace Reko.Core
             return bytes.ToArray();
         }
 
+        /// <summary>
+        /// Parses a single hexadecimal digit and returns its value.
+        /// </summary>
+        /// <param name="c">Hexadecimal digit.</param>
+        /// <param name="b">The numerical value of that digit.</param>
+        /// <returns>True if the given digit was a valid hexadecimal character, 
+        /// otherwise false.
+        /// </returns>
         public static bool TryParseHexDigit(char c, out byte b)
         {
             int i = c - '0';
@@ -80,6 +89,13 @@ namespace Reko.Core
             return false;
         }
 
+        /// <summary>
+        /// Tests whether the given character is a valid hexadecimal digit.
+        /// </summary>
+        /// <param name="c">Character to test.</param>
+        /// <returns>True if the given character is a valid hexadecimal digit, 
+        /// otherwise false.
+        /// </returns>
         public static bool IsHexDigit(char c)
         {
             int i = c - '0';

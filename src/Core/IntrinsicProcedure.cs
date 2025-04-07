@@ -43,7 +43,6 @@ namespace Reko.Core
             new(new InstanceCacheComparer());
 
 		private readonly int arity;
-        private readonly DataType returnType;
 		private readonly FunctionType? sig;
 
         /// <summary>
@@ -79,7 +78,7 @@ namespace Reko.Core
             Func<DataType, Constant[], Constant?>? eval = null)
             : base(name, hasSideEffect)
 		{
-            this.returnType = returnType;
+            this.ReturnType = returnType;
 			this.arity = arity;
             this.Evaluate = eval ?? FailEvaluator;
 		}
@@ -99,7 +98,7 @@ namespace Reko.Core
             : base(name, hasSideEffect)
 		{
 			this.sig = sig;
-            this.returnType = sig.ReturnValue?.DataType!;
+            this.ReturnType = sig.ReturnValue?.DataType!;
             this.Evaluate = eval ?? FailEvaluator;
 		}
 
@@ -123,7 +122,7 @@ namespace Reko.Core
             : base(name, genericTypes, isConcrete, hasSideEffect)
         {
             this.sig = sig;
-            this.returnType = sig.ReturnValue?.DataType!;
+            this.ReturnType = sig.ReturnValue?.DataType!;
             this.Evaluate = evaluator ?? FailEvaluator;
         }
 
@@ -133,6 +132,9 @@ namespace Reko.Core
         private Func<DataType, Constant[], Constant?> Evaluate { get; }
 
 
+        /// <summary>
+        /// The number of parameters used by this intrinsuc procedure.
+        /// </summary>
         public int Arity
 		{
 			get 
@@ -142,17 +144,19 @@ namespace Reko.Core
             }
 		}
 
-        public DataType ReturnType
-        {
-            get { return returnType; }
-        }
+        /// <summary>
+        /// The return type of this procedure.
+        /// </summary>
+        public DataType ReturnType { get; }
 
+        /// <inheritdoc/>
 		public override FunctionType Signature
 		{
 			get { return sig!; }
 			set { throw new InvalidOperationException("Changing the signature of an IntrinsicProcedure is not allowed."); }
 		}
 
+        /// <inheritdoc />
         public virtual Expression Create(DataType dt, params Expression[] exprs)
         {
             return new Application(new ProcedureConstant(PrimitiveType.Ptr32, this), dt, exprs);
@@ -168,7 +172,7 @@ namespace Reko.Core
         /// the provided <paramref name="concreteTypes" />.
         /// </summary>
         /// <param name="ptrSize">The bit size of a pointer in the current architecture.</param>
-        /// <param name="concreteTypes">Concrete </param>
+        /// <param name="concreteTypes">Concrete types to use.</param>
         /// <returns>A newly minted or previously cached concrete instance.
         /// </returns>
         public IntrinsicProcedure MakeInstance(int ptrSize, params DataType[] concreteTypes)
@@ -187,6 +191,13 @@ namespace Reko.Core
             return instance;
         }
 
+        /// <summary>
+        /// Create an instance of the intrinsic procedure with the given concrete types.
+        /// Subclasses can override this method to provide custom behavior.
+        /// </summary>
+        /// <param name="concreteTypes">Data types to use to make the concrete instance.</param>
+        /// <param name="sig">Function signature of the concrete instance.</param>
+        /// <returns></returns>
         protected virtual IntrinsicProcedure DoMakeInstance(DataType[] concreteTypes, FunctionType sig)
         {
             return new IntrinsicProcedure(this.Name, concreteTypes, true, this.HasSideEffect, Evaluate, sig)
@@ -196,6 +207,13 @@ namespace Reko.Core
             };
         }
 
+        /// <summary>
+        /// Makes a concrete instance of this <see cref="IntrinsicProcedure"/> instance, using
+        /// the provided <paramref name="concreteTypes" />.
+        /// </summary>
+        /// <param name="concreteTypes">Concrete types to use.</param>
+        /// <returns>A newly minted or previously cached concrete instance.
+        /// </returns>
         public IntrinsicProcedure MakeInstance(params DataType[] concreteTypes)
             => MakeInstance(0, concreteTypes);
 
@@ -254,6 +272,7 @@ namespace Reko.Core
             };
         }
 
+        /// <inheritdoc/>
         public override string ToString()
 		{
 			if (Signature != null)

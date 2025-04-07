@@ -76,13 +76,13 @@ namespace Reko.UnitTests.Decompiler.Scanning
 
         private void BuildTest32(Action<X86Assembler> m)
         {
-            var arch = new X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>());
+            var arch = new X86ArchitectureFlat32(sc, "x86-protected-32", []);
             BuildTest(arch, Address.Ptr32(0x10000), new FakePlatform(sc, arch), m);
         }
 
         private void BuildTest16(Action<X86Assembler> m)
         {
-            var arch = new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>());
+            var arch = new X86ArchitectureReal(sc, "x86-real-16", []);
             BuildTest(arch, Address.SegPtr(0x0C00, 0x000), new MsdosPlatform(sc, arch), m);
         }
 
@@ -123,8 +123,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
 
             public ExternalProcedure GetImportedProcedure(IProcessorArchitecture arch, Address addrThunk, Address addrInstr)
             {
-                ImportReference p;
-                if (importThunks.TryGetValue(addrThunk, out p))
+                if (importThunks.TryGetValue(addrThunk, out ImportReference p))
                     return p.ResolveImportedProcedure(this, null, new ProgramAddress(null, addrInstr), default);
                 else
                     return null;
@@ -183,7 +182,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
         {
             proc = new Procedure(arch, "test", addr, arch.CreateFrame());
             block = proc.AddBlock(addr, "testblock");
-            var asm = new X86Assembler(arch, addr, new List<ImageSymbol>());
+            var asm = new X86Assembler(arch, addr, []);
             scanner = new Mock<IScannerServices>();
             scanner.Setup(s => s.Services).Returns(sc);
             this.state = arch.CreateProcessorState();

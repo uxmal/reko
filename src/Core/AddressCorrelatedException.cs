@@ -38,12 +38,21 @@ namespace Reko.Core
             this.Address = addr;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AddressCorrelatedException"/> class.
+        /// </summary>
+        /// <param name="addr">The address at which the problem occurred.</param>
+        /// <param name="innerException">Inner exception.</param>
+        /// <param name="message"></param>
         public AddressCorrelatedException(Address addr, Exception innerException, string message)
             : base(message, innerException)
         {
             this.Address = addr;
         }
 
+        /// <summary>
+        /// The address at which the problem occurred.
+        /// </summary>
         public Address Address { get; }
     }
 }

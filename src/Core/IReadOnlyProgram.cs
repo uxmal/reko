@@ -38,23 +38,67 @@ namespace Reko.Core
     /// </remarks>
     public interface IReadOnlyProgram
     {
+        /// <summary>
+        /// The default <see cref="IProcessorArchitecture"/> of the program.
+        /// </summary>
         IProcessorArchitecture Architecture { get; }
+
+        /// <summary>
+        /// A read-only view of the program's call graph.
+        /// </summary>
         IReadOnlyCallGraph CallGraph { get; }
+
+
         Identifier Globals { get; }
         StructureType GlobalFields { get; }
+        
+        /// <summary>
+        /// A read-only view of the programs's induction variables.
+        /// </summary>
         IReadOnlyDictionary<Identifier, LinearInductionVariable> InductionVariables { get; }
+
+        /// <summary>
+        /// The program's memory.
+        /// </summary>
         IMemory Memory { get; }
 
         /// <summary>
         /// Policy to use when giving names to things.
         /// </summary>
         NamingPolicy NamingPolicy { get; }
+
+        /// <summary>
+        /// True if the program requires SSA transform.
+        /// </summary>
+        /// <remarks>
+        /// Some program images are already in SSA state and 
+        /// don't require SSA Transform.
+        /// </remarks>
         bool NeedsSsaTransform { get; }
         IPlatform Platform { get; }
+
+        /// <summary>
+        /// Read-only view of the program's segments.
+        /// </summary>
         IReadOnlySegmentMap SegmentMap { get; }
+
+        /// <summary>
+        /// Text encoding of the program. This is used to decode strings.
+        /// </summary>
         Encoding TextEncoding { get; }
+
+        /// <summary>
+        /// Read-only view of the program's user annotations.
+        /// </summary>
         IReadOnlyUserData User { get; }
 
+        /// <summary>
+        /// Creates an <see cref="EndianImageReader"/> for the given address.
+        /// </summary>
+        /// <param name="arch"><see cref="IProcessorArchitecture"/> used for byte order etc.</param>
+        /// <param name="addr">Address at which to start.</param>
+        /// <param name="rdr">Resulting image reader if the given address was valid.</param>
+        /// <returns>True if the given address is a valid readable memory address; otherwise false.</returns>
         bool TryCreateImageReader(IProcessorArchitecture arch, Address addr, [MaybeNullWhen(false)] out EndianImageReader rdr);
 
         /// <summary>
@@ -64,7 +108,6 @@ namespace Reko.Core
         /// <returns>True if the given address specifies a location in read-only
         /// memory, otherwise false;</returns>
         public bool IsPtrToReadonlySection(Address addr);
-
 
         /// <summary>
         /// Attempt to use <paramref name="expr"/> as an <see cref="Address"/>, possibly

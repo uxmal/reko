@@ -32,6 +32,12 @@ namespace Reko.Core
     /// </summary>
 	public class ExternalProcedure : ProcedureBase
 	{
+        /// <summary>
+        /// Creates an instance of the <see cref="ExternalProcedure"/> class.
+        /// </summary>
+        /// <param name="name">The name of the external procedure.</param>
+        /// <param name="signature">The function signature of the procedure.</param>
+        /// <param name="chars">Optional procedure characteristics.</param>
         public ExternalProcedure(
             string name,
             FunctionType signature,
@@ -46,8 +52,12 @@ namespace Reko.Core
             }
         }
 
+        /// <summary>
+        /// The function signature of the external procedure.
+        /// </summary>
 		public override FunctionType Signature { get; set; }
 
+        /// <inheritdoc />
 		public override string ToString()
 		{
 			var sw = new StringWriter();

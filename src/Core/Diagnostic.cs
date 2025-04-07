@@ -23,6 +23,7 @@ using System.Text;
 
 namespace Reko.Core
 {
+    //$REFACTOR: move to Reko.Gui.
     public class Diagnostic
     {
         public Diagnostic(string message)

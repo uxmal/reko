@@ -37,7 +37,7 @@ namespace Reko.Core.Graphs
         private readonly NodeCollection nodeCollection;
 
         /// <summary>
-        /// Creates an empty <see cref="DiGraph{T}"./>
+        /// Creates an empty <see cref="DiGraph{T}"/>.
         /// </summary>
         public DiGraph()
         {

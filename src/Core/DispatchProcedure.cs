@@ -29,11 +29,20 @@ namespace Reko.Core
     /// or more parameters, dispatches to sub-services with potentially
     /// different signatures.
     /// </summary>
+    /// <remarks>
+    /// An example of a dispatch procedure is the CP/M BDOS service located
+    /// at address 0x0005.
+    /// </remarks>
     public class DispatchProcedure : ProcedureBase
     {
         private List<(SyscallInfo, ExternalProcedure)> services;
         private FunctionType dummySig;
 
+        /// <summary>
+        /// Creates an instance of a dispatch procedure.
+        /// </summary>
+        /// <param name="name">The name of the procedure.</param>
+        /// <param name="services">A list of <see cref="SyscallInfo"/> -  <see cref="ExternalProcedure"/> pairs</param>.
         public DispatchProcedure(string name, List<(SyscallInfo, ExternalProcedure)> services) : base(name, true)
         {
             this.services = services;
@@ -49,6 +58,14 @@ namespace Reko.Core
             set { throw new NotSupportedException(); }
         }
 
+        /// <summary>
+        /// Determine which sub-service is intended based a given <cref name="ProcessorState"/>.
+        /// </summary>
+        /// <param name="state"><see cref="ProcessorState"/> instance containing register
+        /// values prior to the call to the dispath procedure.
+        /// </param>
+        /// <returns>An <see cref="ExternalProcedure"/> if a match is found, otherwise null.
+        /// </returns>
         public ExternalProcedure? FindService(ProcessorState state)
         {
             foreach (var (si, proc) in services)

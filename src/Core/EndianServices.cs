@@ -250,6 +250,16 @@ namespace Reko.Core
         }
 
 
+        /// <summary>
+        /// Creates a <see cref="MemoryAccess"/> using the effect address and the
+        /// given byte offset.
+        /// </summary>
+        /// <param name="memoryId">Memory identifier to use.</param>
+        /// <param name="effectiveAddress">Effective address to start with.</param>
+        /// <param name="byteOffset">Storage unit offset from the effective address.</param>
+        /// <param name="bitRange">The bitrange of the slice.</param>
+        /// <returns>A memory access with the same bit size as <paramref name="bitRange"/>, offset
+        /// from the original effective address by <paramref name="byteOffset"/>.</returns>
         protected MemoryAccess MakeSlicedMemoryAccess(
             Identifier memoryId,
             Expression effectiveAddress,

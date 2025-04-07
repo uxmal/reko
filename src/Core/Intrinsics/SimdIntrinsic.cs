@@ -22,8 +22,6 @@ using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Operators;
 using Reko.Core.Types;
-using System;
-using System.Diagnostics;
 using System.Numerics;
 
 namespace Reko.Core.Intrinsics

@@ -33,8 +33,17 @@ namespace Reko.Core
     [Designer("Reko.Gui.Design.SystemServiceDesigner,Reko.Gui")]
 	public class SystemService
 	{
-        public string? ModuleName;
+        /// <summary>
+        /// Optional name of the module that exports this system service.
+        /// </summary>
+        public string? ModuleName { get; set; }
+
+        /// <summary>
+        /// Optional name of the system service. At times, names are not
+        /// available.
+        /// </summary>
 		public string? Name;
+
 		public SyscallInfo? SyscallInfo;
 		public FunctionType? Signature;
 		public ProcedureCharacteristics? Characteristics;

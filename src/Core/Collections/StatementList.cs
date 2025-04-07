@@ -23,15 +23,29 @@ using System.Collections.Generic;
 
 namespace Reko.Core.Collections
 {
+    /// <summary>
+    /// Represents a list of <see cref="Statement"/>s in a <see cref="Block"/>.
+    /// </summary>
     public class StatementList : List<Statement>
     {
         private readonly Block block;
 
+        /// <summary>
+        /// Creates a new <see cref="StatementList"/> instance.
+        /// </summary>
+        /// <param name="block"></param>
         public StatementList(Block block)
         {
             this.block = block;
         }
 
+        /// <summary>
+        /// Adds an <see cref="Instruction"/> to the end of the statement list,
+        /// creating a <see cref="Statement"/>.
+        /// </summary>
+        /// <param name="address">Address of the instruction</param>
+        /// <param name="instr">The <see cref="Instruction"/> to add.</param>
+        /// <returns>The resulting <see cref="Statement"/>.</returns>
         public Statement Add(Address address, Instruction instr)
         {
             var stm = new Statement(address, instr, block);
@@ -39,6 +53,14 @@ namespace Reko.Core.Collections
             return stm;
         }
 
+        /// <summary>
+        /// Inserts an <see cref="Instruction"/> in the statement list at 
+        /// <paramref name="position"/>, creating a <see cref="Statement"/>.
+        /// </summary>
+        /// <param name="position">Position at which to insert the instruction.</param>
+        /// <param name="address">Address of the instruction</param>
+        /// <param name="instr">The <see cref="Instruction"/> to insert.</param>
+        /// <returns>The resulting <see cref="Statement"/>.</returns>
         public Statement Insert(int position, Address address, Instruction instr)
         {
             var stm = new Statement(address, instr, block);

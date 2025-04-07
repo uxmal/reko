@@ -28,7 +28,15 @@ namespace Reko.Core
     /// </summary>
     public interface ICodeLocation
     {
+        /// <summary>
+        /// String representation of the location.
+        /// </summary>
         string Text { get; }
+
+        /// <summary>
+        /// In a user interface, this method is called to navigate to the location.
+        /// </summary>
+        /// <returns></returns>
         ValueTask NavigateTo();
     }
 }

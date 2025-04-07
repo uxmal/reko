@@ -49,13 +49,44 @@ namespace Reko.Core
     /// </summary>
     public interface IPlatform
     {
+        /// <summary>
+        /// A string identifier for this platform.
+        /// </summary>
         string Name { get; }
+
+        /// <summary>
+        /// Default processor architecture of the platform.
+        /// </summary>
         IProcessorArchitecture Architecture { get; }
+
+        /// <summary>
+        /// Known calling conventions keyed by their names.
+        /// </summary>
         IReadOnlyDictionary<string, IReadOnlyCollection<string>> CallingConventions { get; }
+
+        /// <summary>
+        /// The name of the default calling convention of this platform.
+        /// </summary>
         string DefaultCallingConvention { get; }
+
+        /// <summary>
+        /// The default text encoding of this platform.
+        /// </summary>
         Encoding DefaultTextEncoding { get; set; }
+
+        /// <summary>
+        /// A description of this platform.
+        /// </summary>
         string Description { get; set; }
+
+        /// <summary>
+        /// The size of pointers used to access the stack frame in this platform.
+        /// </summary>
         PrimitiveType FramePointerType { get; }
+
+        /// <summary>
+        /// Any platform-specific heuristics to use on this platform.
+        /// </summary>
         PlatformHeuristics Heuristics { get; }
 
         /// <summary>
@@ -64,7 +95,12 @@ namespace Reko.Core
         /// available in the MemoryMap.
         /// </summary>
         MemoryMap_v1? MemoryMap { get; set; }
+
         string PlatformIdentifier { get; }
+
+        /// <summary>
+        /// Default pointer type for this platform.
+        /// </summary>
         PrimitiveType PointerType { get; }
 
         /// <summary>
@@ -86,6 +122,11 @@ namespace Reko.Core
         /// <returns>A set of registers</returns>
         IReadOnlySet<RegisterStorage> TrashedRegisters { get; }
 
+        /// <summary>
+        /// Creates a set of registers that the "standard" ABI requires
+        /// procedures to preserve across calls.
+        /// </summary>
+        /// <returns>A set of <see cref="RegisterStorage"/>s.</returns>
         IReadOnlySet<RegisterStorage> PreservedRegisters { get; }
 
         /// <summary>

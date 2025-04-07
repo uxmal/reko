@@ -28,12 +28,15 @@ using System.Text;
 namespace Reko.Core.Emulation
 
 {
-    using TWord = System.UInt32;
     /// <summary>
     /// Provides services for CPU emulators for specific environments
     /// </summary>
     public interface IPlatformEmulator
     {
+        /// <summary>
+        /// A dictionary of platform services that were called by the emulated
+        /// program, organized by the address of the calling instruction.
+        /// </summary>
         Dictionary<Address, ExternalProcedure> InterceptedCalls { get; }
 
         /// <summary>
@@ -47,7 +50,7 @@ namespace Reko.Core.Emulation
         /// <param name="calledAddress">The address called</param>
         /// <returns>True if the platform emulator intercepted the call and simulated it.
         /// False otherwise.</returns>
-        bool InterceptCall(IProcessorEmulator emulator, TWord calledAddress);
+        bool InterceptCall(IProcessorEmulator emulator, ulong calledAddress);
 
         /// <summary>
         /// When called, emulates a system call.
@@ -58,8 +61,18 @@ namespace Reko.Core.Emulation
         /// False otherwise.</returns>
         bool EmulateSystemCall(IProcessorEmulator emulator, params MachineOperand[] operands);
 
+        /// <summary>
+        /// Requests the platform emulator to create and initialize the stack segment.
+        /// </summary>
+        /// <param name="emulator">Processor emulator instance.</param>
+        /// <param name="state">Processor register state.</param>
+        /// <returns>The newly create stack segment if applicable.</returns>
         ImageSegment? InitializeStack(IProcessorEmulator emulator, ProcessorState state);
 
+        /// <summary>
+        /// Destroys the stack segment created by the platform emulator.
+        /// </summary>
+        /// <param name="stackSeg">A stack segment previously created by the emulator.</param>
         void TearDownStack(ImageSegment? stackSeg);
     }
 }

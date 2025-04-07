@@ -141,7 +141,12 @@ namespace Reko.Core
 			next.Succ.Clear();
 		}
 
-
+        /// <summary>
+        /// Replace all jumps to <paramref name="block"/> with jumps to <paramref name="next"/>.
+        /// </summary>
+        /// <param name="block">The basic block to be replaced.</param>
+        /// <param name="next">The basic block to be replaced with.</param>
+        /// <returns>True if any replacements were made.</returns>
         public static bool ReplaceJumpsFrom(Block block, Block next)
 		{
 			bool change = false;

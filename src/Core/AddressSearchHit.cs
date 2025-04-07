@@ -22,17 +22,37 @@ using Reko.Core;
 
 namespace Reko.Core
 {
+    /// <summary>
+    /// Represents a hit when searching in a <see cref="Program"/>.
+    /// </summary>
     public class AddressSearchHit
     {
-        public readonly Program Program;
-        public readonly Address Address;
-        public readonly int Length;
-
+        /// <summary>
+        /// Creates an instance of the <see cref="AddressSearchHit"/> class.
+        /// </summary>
+        /// <param name="program">The program in which the hit was found.</param>
+        /// <param name="address">The address at which the hit was found.</param>
+        /// <param name="length">The length of the hit in storage units.</param>
         public AddressSearchHit(Program program, Address address, int length)
         {
             this.Program = program;
             this.Address = address;
             this.Length = length;
         }
+
+        /// <summary>
+        /// The program in which the hit was found.
+        /// </summary>
+        public Program Program { get; }
+
+        /// <summary>
+        /// The address at which the hit was found.
+        /// </summary>
+        public Address Address { get; }
+
+        /// <summary>
+        /// The length of the hit in storage units.
+        /// </summary>
+        public int Length { get; }
     }
 }

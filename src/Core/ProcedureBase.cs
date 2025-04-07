@@ -34,17 +34,35 @@ namespace Reko.Core
 	[DefaultProperty("Name")]
 	public abstract class ProcedureBase
 	{
+        /// <summary>
+        /// Event raised when the name of the procedure changes.
+        /// </summary>
+        public event EventHandler? NameChanged;
+
         private readonly DataType[] genericArguments;
         private readonly bool isConcrete;
 
+        /// <summary>
+        /// Initializes the fields of a concrete <see cref="ProcedureBase"/>.
+        /// </summary>
+        /// <param name="name">The name of the procedure.</param>
+        /// <param name="hasSideEffect">True if this procedure has side effects.
+        /// </param>
 		public ProcedureBase(string name, bool hasSideEffect)
 		{
 			this.name = name;
-            this.genericArguments = Array.Empty<DataType>();
+            this.genericArguments = [];
             this.HasSideEffect = hasSideEffect;
 			this.Characteristics = DefaultProcedureCharacteristics.Instance;
 		}
 
+        /// <summary>
+        /// Initializes the fields of a generic <see cref="ProcedureBase"/>.
+        /// </summary>
+        /// <param name="name">The name of the procedure.</param>
+        /// <param name="genericArguments">An array of type arguments.</param>
+        /// <param name="isConcrete">True if this procedure is a concretization of a generic procedure.</param>
+        /// <param name="hasSideEffect">True if this procedure has side effects.</param>
         public ProcedureBase(
             string name, 
             DataType[] genericArguments,
@@ -90,11 +108,16 @@ namespace Reko.Core
                 NameChanged?.Invoke(this, EventArgs.Empty);
             }
         }
-        public event EventHandler? NameChanged;
         private string name;
-
+        
+        /// <summary>
+        /// The <see cref="FunctionType">function signature</see> of this procedure.
+        /// </summary>
 		public abstract FunctionType Signature { get; set; }
 
+        /// <summary>
+        /// The <see cref="ProcedureCharacteristics"/> of this procedure.
+        /// </summary>
 		public ProcedureCharacteristics Characteristics { get; set; }
 
         /// <summary>
@@ -133,6 +156,13 @@ namespace Reko.Core
         /// </returns>
         public DataType[] GetGenericArguments() => this.genericArguments;
 
+        /// <summary>
+        /// Creates a concrete signature from the generic signature of this procedure.
+        /// </summary>
+        /// <param name="ptrSize">Size of pointers in storage units, or 0 if pointer sizes
+        /// are not relevant in this procedure's signature.</param>
+        /// <param name="concreteTypes">The concrete types to use in the </param>
+        /// <returns>The concretized signature.</returns>
         protected FunctionType MakeConcreteSignature(int ptrSize, DataType[] concreteTypes)
         {
             var sig = this.Signature;
@@ -215,16 +245,17 @@ namespace Reko.Core
         /// <summary>
         /// If the procedure is a member of a class, write the class name first.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The fully qualified name.</returns>
         public string QualifiedName()
         {
             if (EnclosingType == null)
                 return Name;
             if (EnclosingType is StructType_v1 str)
-                return string.Format("{0}::{1}", str.Name, Name);
+                return $"{str.Name}::{Name}";
             return Name;
         }
 
+        /// <inheritdoc />
         public override string ToString()
         {
             var sw = new StringWriter();

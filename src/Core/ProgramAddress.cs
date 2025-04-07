@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2025 John Källén.
  *
@@ -30,13 +30,25 @@ namespace Reko.Core
     /// </summary>
     public class ProgramAddress
     {
-        public readonly Program Program;
-        public readonly Address Address;
-
+        /// <summary>
+        /// Constructs a new instance of the <see cref="ProgramAddress"/> class.
+        /// </summary>
+        /// <param name="program">A <see cref="Program"/> instance.</param>
+        /// <param name="addr">An <see cref="Address"/> within the program.</param>
         public ProgramAddress(Program program, Address addr)
         {
             this.Program = program;
             this.Address = addr;
         }
+
+        /// <summary>
+        /// A <see cref="Reko.Core.Program"/> instance.
+        /// </summary>
+        public Program Program { get; }
+
+        /// <summary>
+        /// An <see cref="Address"/> within the program.
+        /// </summary>
+        public Address Address { get; }
     }
 }

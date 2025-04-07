@@ -20,9 +20,6 @@
 
 using Reko.Core.NativeInterface;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Core
 {
@@ -35,30 +32,93 @@ namespace Reko.Core
     [NativeInterop]
     public enum InstrClass
     {
+        /// <summary>
+        /// Undefined instruction class.
+        /// </summary>
         None,
 
         // Main instruction types
-        Linear =      0x0001,   // ALU instruction, computational (like ADD, SHR, or MOVE)
-        Transfer =    0x0002,   // Control flow transfer like JMP, CALL
-        Terminates =  0x0004,   // Instruction terminates execution.
+
+        /// <summary>
+        /// ALU instruction, computational (like ADD, SHR, or MOVE).
+        /// </summary>
+        Linear = 0x0001,
+
+        /// <summary>
+        /// Control flow transfer like JMP, CALL.
+        /// </summary>
+        Transfer = 0x0002,
+
+        /// <summary>
+        /// Instruction terminates execution.
+        /// </summary>
+        Terminates = 0x0004,
 
         // Modifiers
-        Conditional = 0x0008,   // Conditionally executed (like branches or CMOV instructions)
-        Privileged =  0x0010,   // Privileged instruction
+
+        /// <summary>
+        /// Conditionally executed (like branches or CMOV instructions).
+        /// </summary>
+        Conditional = 0x0008,
+
+        /// <summary>
+        /// Privileged instruction.
+        /// </summary>
+        Privileged =  0x0010,
 
         // Transfer instructions
-        Call =        0x0020,   // Instruction saves its continuation, and may resume execution to the following instruction.
-        Return =      0x0040,   // Return instruction
-        Indirect =    0x0080,   // Indirect transfer instruction
-        Delay =       0x0100,   // The following instruction is in a delay slot.
-        Annul =       0x0200,   // The following instruction is anulled.
+
+        /// <summary>
+        /// Instruction saves its continuation, and may resume execution to the following instruction.
+        /// </summary>
+        Call =        0x0020,
+
+        /// <summary>
+        /// Return instruction.
+        /// </summary>
+        Return =      0x0040,
+
+        /// <summary>
+        /// Indirect transfer instruction.
+        /// </summary>
+        Indirect =    0x0080,
+
+        /// <summary>
+        /// The following instruction is in a delay slot.
+        /// </summary>
+        Delay =       0x0100,
+
+        /// <summary>
+        /// The following instruction is anulled.
+        /// </summary>
+        Annul =       0x0200,
 
         // Further classification used by scanners
-        Padding =     0x0400,   // Instruction _could_ be used as alignment padding between procedures.
-        Invalid =     0x0800,   // The instruction is invalid
-        Zero =        0x1000,   // The instruction's first "unit" was zero.
-        Unlikely =    0x2000,   // The instruction is valid, but unlikely to exist in a real program.
 
+
+        /// <summary>
+        /// Instruction _could_ be used as alignment padding between procedures.
+        /// </summary>
+        Padding =     0x0400,
+
+        /// <summary>
+        /// The instruction is invalid.
+        /// </summary>
+        Invalid =     0x0800,
+
+        /// <summary>
+        /// The instruction's first "unit" was zero.
+        /// </summary>
+        Zero =        0x1000,
+
+        /// <summary>
+        /// The instruction is valid, but unlikely to exist in a real program.
+        /// </summary>
+        Unlikely =    0x2000,
+
+        /// <summary>
+        /// The instruction is a conditional transfer instruction or branch.
+        /// </summary>
         ConditionalTransfer = Conditional | Transfer,
     }
 }

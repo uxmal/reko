@@ -32,7 +32,15 @@ namespace Reko.Core.Emulation
     /// </summary>
     public abstract class EmulatorBase : IProcessorEmulator
     {
+        /// <summary>
+        /// This event is fired before the emulator starts executing instructions.
+        /// It is a good place to initialize debuggers, set breakpoints, etc.
+        /// </summary>
         public event EventHandler? BeforeStart;
+
+        /// <summary>
+        /// This event is fired if the emulator ran into an exception while executing.
+        /// </summary>
         public event EventHandler<EmulatorExceptionEventArgs>? ExceptionRaised;
 
         private readonly SegmentMap map;
@@ -41,17 +49,35 @@ namespace Reko.Core.Emulation
         private bool stepInto;
         private ulong stepOverAddress;
 
+        /// <summary>
+        /// Initiallizes the emulator with the given <paramref name="map" />.
+        /// </summary>
+        /// <param name="map">A <see cref="SegmentMap"/> instance describing the 
+        /// memory of the emulated process.</param>
         public EmulatorBase(SegmentMap map)
         {
             this.map = map;
             this.bpExecute = new Dictionary<ulong, Action>();
         }
 
+        /// <summary>
+        /// The current value of the instruction pointer.
+        /// </summary>
         public abstract Address InstructionPointer { get; set; }
+
+        /// <summary>
+        /// The current instruction being emulated.
+        /// </summary>
         public abstract MachineInstruction CurrentInstruction { get; }
 
+        /// <summary>
+        /// Returns true if the emulator is currently running.
+        /// </summary>
         public bool IsRunning { get; private set; }
 
+        /// <summary>
+        /// Starts the emulator.
+        /// </summary>
         public void Start()
         {
             IsRunning = true;
@@ -82,12 +108,24 @@ namespace Reko.Core.Emulation
             stepAction = callback;
         }
 
+        /// <summary>
+        /// Requests the emulator to place itself in step-into mode. This means
+        /// it should execute the next instruction then call the provided
+        /// <paramref name="callback"/>. If the instruction is a CALL-type 
+        /// instruction, the emulator will step into the called function.
+        /// For a REP-style instruction, only one iteration of the repeated
+        /// instruction is emulated.
+        /// </summary>
+        /// <param name="callback"></param>
         public void StepInto(Action callback)
         {
             stepInto = true;
             stepAction = callback;
         }
 
+        /// <summary>
+        /// Stops the emulator.
+        /// </summary>
         public void Stop()
         {
             IsRunning = false;
@@ -99,18 +137,38 @@ namespace Reko.Core.Emulation
         /// </summary>
         protected abstract void Run();
 
+        /// <summary>
+        /// Sets a breakpoint at the given <paramref name="address"/>.
+        /// </summary>
+        /// <param name="address"></param>
+        /// <param name="callback"></param>
         public void SetBreakpoint(ulong address, Action callback)
         {
             bpExecute.Add(address, callback);
         }
 
+        /// <summary>
+        /// Deletes any breakpoints at the given <paramref name="address"/>.
+        /// </summary>
+        /// <param name="address"></param>
         public void DeleteBreakpoint(ulong address)
         {
             bpExecute.Remove(address);
         }
 
+        /// <summary>
+        /// Reads a register's current value from the emulator state.
+        /// </summary>
+        /// <param name="reg">Register whose value is to be retrieved.</param>
+        /// <returns>Register value as a bit vector.</returns>
         public abstract ulong ReadRegister(RegisterStorage reg);
 
+        /// <summary>
+        /// Writes a register value to the emulator state.
+        /// </summary>
+        /// <param name="reg">Register whose value is to be written.</param>
+        /// <param name="value">Register value as a bit vector.</param>
+        /// <returns>The new value in the register.</returns>
         public abstract ulong WriteRegister(RegisterStorage reg, ulong value);
 
         /// <summary>
@@ -143,8 +201,15 @@ namespace Reko.Core.Emulation
             return IsRunning;
         }
 
+        /// <summary>
+        /// Reads a byte from the address <paramref name="ea"/>.
+        /// </summary>
+        /// <param name="ea">Address to read from.</param>
+        /// <param name="b">Byte read.</param>
+        /// <returns>True if successful; othewise an <see cref="AccessViolationException"/> is thrown</returns>
         public bool TryReadByte(ulong ea, out byte b)
         {
+            //$REVIEW: consider using an "EmulatorException" instead.
             if (!map.TryFindSegment(ea, out ImageSegment? segment))
                 throw new AccessViolationException();
             var mem = segment.MemoryArea;

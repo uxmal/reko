@@ -36,6 +36,10 @@ namespace Reko.Core
 	{
         private bool isCaseInsensitive;
 
+        /// <summary>
+        /// Creates an empty type library where string comparisons 
+        /// are case sensitive.
+        /// </summary>
         public TypeLibrary() : this(
             false,
             new Dictionary<string, DataType>(),
@@ -45,7 +49,14 @@ namespace Reko.Core
             new Dictionary<string, DataType>())
         {
         }
-   
+
+        /// <summary>
+        /// Creates an empty type library.
+        /// </summary>
+        /// <param name="caseInsensitive">Determines whether 
+        /// names in the type library are matched using case sensitive
+        /// or insensitive comparisons.
+        /// </param>
         public TypeLibrary(bool caseInsensitive) : this(
             caseInsensitive,
             new Dictionary<string, DataType>(),
@@ -57,16 +68,27 @@ namespace Reko.Core
         }
 
 
+        /// <summary>
+        /// Builds a type library from the given data collections.
+        /// </summary>
+        /// <param name="caseInsensitive">Whether name string comparisons should be 
+        /// case sensitive or insensitive.</param>
+        /// <param name="types">A dictionary mapping names to <see cref="DataType"/>s.</param>
+        /// <param name="signatures">A dictionary mapping names to <see cref="FunctionType"/></param>
+        /// <param name="characteristics">A dictionary mapping names to <see cref="ProcedureCharacteristics"/>.</param>
+        /// <param name="importedGlobals">A dictionary mapping names to the <see cref="DataType"/>s of 
+        /// global variables.
+        /// </param>
         public TypeLibrary(
             bool caseInsensitive,
             IDictionary<string,DataType> types,
-            IDictionary<string, FunctionType> procedures,
+            IDictionary<string, FunctionType> signatures,
             IDictionary<string, ProcedureCharacteristics> characteristics,
             IDictionary<string, DataType> importedGlobals)
         {
             this.isCaseInsensitive = caseInsensitive;
             this.Types = types;
-            this.Signatures = procedures;
+            this.Signatures = signatures;
             this.Characteristics = characteristics;
             this.ImportedGlobals = importedGlobals;
             this.Procedures = new Dictionary<Address, (string, FunctionType)>();
@@ -76,6 +98,9 @@ namespace Reko.Core
             this.Segments = new SortedList<Address, ImageSegment>();
         }
 
+        /// <summary>
+        /// Maps addresses to procedure names and signatures.
+        /// </summary>
         public IDictionary<Address, (string Name, FunctionType Signature)> Procedures { get; private set; }
         public IDictionary<Address, UserGlobal> GlobalsByAddress { get; private set; }
         public IDictionary<string, DataType> Types { get; private set; }

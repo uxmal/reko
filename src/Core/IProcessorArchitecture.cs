@@ -467,6 +467,7 @@ namespace Reko.Core
         /// as a flag group, otherwise null.</returns>
         FlagGroupStorage? GetFlagGroup(string name);
 
+
         Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType);
         //$REFACTOR: this should probably live in FrameApplicationBuilder instead.
         Expression CreateFpuStackAccess(IStorageBinder binder, int offset, DataType dataType);  //$REVIEW: generalize these two methods?

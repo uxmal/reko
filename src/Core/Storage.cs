@@ -71,9 +71,27 @@ namespace Reko.Core
         public string Name { get; }
 
 
+        /// <summary>
+        /// Accept a <see cref="StorageVisitor{T}"/>.
+        /// </summary>
+        /// <typeparam name="T">Return value from the visitor.</typeparam>
+        /// <param name="visitor">A <see cref="StorageVisitor{T}"/>.</param>
+        /// <returns>Values from the visitor.
+        /// </returns>
         public abstract T Accept<T>(StorageVisitor<T> visitor);
-        public abstract T Accept<T, C>(StorageVisitor<T, C> visitor, C context);
 
+        /// <summary>
+        /// Accept a context-sensitive <see cref="StorageVisitor{T}"/>.
+        /// </summary>
+        /// <typeparam name="T">Return value from the visitor.</typeparam>
+        /// <typeparam name="C">Contextual information.</typeparam>
+        /// <param name="visitor">A <see cref="StorageVisitor{T, C}"/>.</param>
+        /// <param name="context">Any contextual data the visitor requires in 
+        /// addition to the <see cref="Storage"/> itself.
+        /// </param>
+        /// <returns>Values from the visitor.
+        /// </returns>
+        public abstract T Accept<T, C>(StorageVisitor<T, C> visitor, C context);
 
         /// <summary>
         /// Returns the bit offset of <paramref name="storage"/> within this 
@@ -101,21 +119,37 @@ namespace Reko.Core
         /// </summary>
         public abstract bool Covers(Storage that);
 
+        /// <summary>
+        /// A storage <c>a</c> is said to exceed a storage <c>b</c> if they alias a location,
+        /// but after assigning <c>a</c> with <c>b</c>, some of the original contents of <c>a</c>
+        /// aren't overwritten by <c>b</c>.
+        /// </summary>
+        /// <param name="that"></param>
+        /// <returns>True </returns>
         public virtual bool Exceeds(Storage that)
         {
             throw new NotImplementedException($"Exceeds() not implemented for {this.GetType().Name}.");
         }
 
+        /// <summary>
+        /// The bit range covered by this storage.
+        /// </summary>
+        /// <returns></returns>
         public virtual BitRange GetBitRange()
         {
             return new BitRange(0, (int)BitSize);
         }
 
+        /// <summary>
+        /// Serializes this storage to a <see cref="SerializedKind"/>.
+        /// </summary>
+        /// <returns>A serialized value.</returns>
         public virtual SerializedKind Serialize()
         {
             throw new NotImplementedException(this.GetType().Name + ".Serialize() not implemented.");
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             var w = new StringWriter();
@@ -123,6 +157,11 @@ namespace Reko.Core
             return w.ToString();
         }
 
+        /// <summary>
+        /// Writes a textual representation of this storage to the specified 
+        /// <see cref="TextWriter"/> <paramref name="writer"/>.
+        /// </summary>
+        /// <param name="writer">A <see cref="TextWriter"/> instance to write to.</param>
         public abstract void Write(TextWriter writer);
 
         public class ArrayComparer : IEqualityComparer<Storage[]>
@@ -155,16 +194,68 @@ namespace Reko.Core
         }
     }
 
+    /// <summary>
+    /// A storage domain is a distinct place where a variable's bits 
+    /// are stored in a computer.
+    /// </summary>
     public enum StorageDomain
     {
+        /// <summary>
+        /// A missing or invalid storage domain.
+        /// </summary>
         None = -1,
-        Register = 0,           // Few architectures have 4096 general purpose registers (fingers xD)
-        Memory = 4096,          // Refers to a memory space
+
+        /// <summary>
+        /// Every machine register forms a distinct storage domain. Individual
+        /// bits with a registers are accessed with respect to the storage domain.
+        /// </summary>
+        /// <remarks>
+        /// In general register domains are formed by adding the architectural number
+        /// of a particular register to the <see cref="StorageDomain.Register"/> value.</remarks>
+        /// The register domain is a number between 0 and 4095, implicitly
+        /// assuming that few architectures have more than 4096 general purpose registers (fingers xD).
+        Register = 0,
+
+        /// <summary>
+        /// Refers to a memory space. See <see cref="MemoryStorage"/>.
+        /// </summary>
+        Memory = 4096,
+
+
+        /// <summary>
+        /// A particular slot in an FPU stack. The x87 FPU has 8 slots in its stack.
+        /// </summary>
         FpuStack = 4098,
-        Global = 8191,          // Global variable within a memory space
-        SystemRegister = 8192,  // Space for system / control registers (1 million should be enough)
-        PseudoRegister = (1 << 20), // Things that look like registers but are in fact enumerations.
+
+        /// <summary>
+        /// A global variable within a memory space.
+        /// </summary>
+        Global = 8191,
+
+        /// <summary>
+        /// Space for system / control registers (1 million should be enough)
+        /// </summary>
+        SystemRegister = 8192,
+
+        /// <summary>
+        /// The maximum number assigned to system registers.
+        /// </summary>
+        MaxSystemRegister = (1 << 20),
+
+        /// <summary>
+        /// Things that look like registers but are in fact enumerations.
+        /// </summary>
+        PseudoRegister = (1 << 20), 
+
+        /// <summary>
+        /// Storage is located in the stack frame.
+        /// </summary>
         Stack = (1 << 30),
+
+        /// <summary>
+        /// Non-architectural temporary storage. This is used to model
+        /// temporary results during computation.
+        /// </summary>
         Temporary = (1 << 31),
     }
 
@@ -175,6 +266,12 @@ namespace Reko.Core
     /// </summary>
 	public class FlagGroupStorage : Storage, MachineOperand
     {
+        /// <summary>
+        /// Creates an instance of <see cref="FlagGroupStorage"/>.
+        /// </summary>
+        /// <param name="freg">Register in which the group of flags is located.</param>
+        /// <param name="grfMask">Bitmask representing the group of flags.</param>
+        /// <param name="name">Human-readable acronym for the flags.</param>
         public FlagGroupStorage(RegisterStorage freg, uint grfMask, string name)
             : base(freg.Domain, name, freg.DataType)
         {
@@ -183,6 +280,7 @@ namespace Reko.Core
             this.BitSize = (uint) freg.DataType.BitSize;
         }
 
+        /// <inheritdoc/>
         public override string Kind => "FlagGroup";
 
         DataType MachineOperand.DataType
@@ -202,16 +300,19 @@ namespace Reko.Core
         /// </summary>
         public uint FlagGroupBits { get; }
 
+        /// <inheritdoc/>
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
             return visitor.VisitFlagGroupStorage(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(StorageVisitor<T, C> visitor, C context)
         {
             return visitor.VisitFlagGroupStorage(this, context);
         }
 
+        /// <inheritdoc/>
         public override bool Covers(Storage sThat)
         {
             if (sThat is not FlagGroupStorage that || this.FlagRegister != that.FlagRegister)
@@ -219,6 +320,7 @@ namespace Reko.Core
             return (this.FlagGroupBits | that.FlagGroupBits) == this.FlagGroupBits;
         }
 
+        /// <inheritdoc/>
         public override bool Equals(object? obj)
         {
             if (obj is not FlagGroupStorage that)
@@ -226,6 +328,7 @@ namespace Reko.Core
             return this.FlagGroupBits == that.FlagGroupBits;
         }
 
+        /// <inheritdoc/>
         public override bool Exceeds(Storage sThat)
         {
             if (sThat is not FlagGroupStorage that || this.FlagRegister != that.FlagRegister)
@@ -233,6 +336,12 @@ namespace Reko.Core
             return (this.FlagGroupBits & ~that.FlagGroupBits) != 0;
         }
 
+        /// <summary>
+        /// Enumerates the individual bits in the flag group, one at a time.
+        /// </summary>
+        /// <returns>An <see cref="IEnumerable{T}"/> of the individual bits constituting
+        /// the flag group.
+        /// </returns>
         public IEnumerable<uint> GetFlagBitMasks()
         {
             for (uint bitMask = 1; bitMask <= FlagGroupBits; bitMask <<= 1)
@@ -244,11 +353,13 @@ namespace Reko.Core
             }
         }
 
+        /// <inheritdoc/>
         public override int GetHashCode()
         {
             return GetType().GetHashCode() ^ FlagGroupBits.GetHashCode();
         }
 
+        /// <inheritdoc/>
         public override int OffsetOf(Storage stgSub)
         {
             if (stgSub is not FlagGroupStorage f)
@@ -256,6 +367,7 @@ namespace Reko.Core
             return ((f.FlagGroupBits & FlagGroupBits) != 0) ? 0 : -1;
         }
 
+        /// <inheritdoc/>
         public override bool OverlapsWith(Storage sThat)
         {
             if (sThat is not FlagGroupStorage that || this.FlagRegister != that.FlagRegister)
@@ -280,16 +392,25 @@ namespace Reko.Core
         void MachineOperand.Render(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options) =>
             Render(renderer, options);
         
+        /// <inheritdoc/>
         public override SerializedKind Serialize()
         {
             return new FlagGroup_v1(Name);
         }
 
+        /// <inheritdoc/>
         public override void Write(TextWriter writer)
         {
             writer.Write(Name);
         }
 
+        /// <summary>
+        /// Returns a string that represents this <see cref="FlagGroupStorage"/>.
+        /// </summary>
+        /// <param name="options">An instance of <see cref="MachineInstructionRendererOptions"/>
+        /// that controls the rendering of the flag group.
+        /// </param>
+        /// <returns></returns>
         public string ToString(MachineInstructionRendererOptions options) => Name;
     }
 
@@ -308,6 +429,7 @@ namespace Reko.Core
             MakeName(depth);
         }
 
+        /// <inheritdoc/>
         public override string Kind => "FpuStack";
 
         private static string MakeName(int depth)
@@ -322,26 +444,34 @@ namespace Reko.Core
             }
         }
 
+        /// <inheritdoc/>
         public override ulong BitSize => (ulong)DataType.BitSize;
 
+        /// <summary>
+        /// The offset of this FPU stack location from the top of the FPU stack.
+        /// </summary>
         public int FpuStackOffset { get; }
 
+        /// <inheritdoc/>
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
             return visitor.VisitFpuStackStorage(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(StorageVisitor<T, C> visitor, C context)
         {
             return visitor.VisitFpuStackStorage(this, context);
         }
 
+        /// <inheritdoc/>
         public override bool Covers(Storage other)
         {
             return other is FpuStackStorage that &&
                 this.FpuStackOffset == that.FpuStackOffset;
         }
 
+        /// <inheritdoc/>
         public override bool Equals(object? obj)
         {
             if (obj is not FpuStackStorage that)
@@ -349,16 +479,19 @@ namespace Reko.Core
             return this.FpuStackOffset == that.FpuStackOffset;
         }
 
+        /// <inheritdoc/>
         public override bool Exceeds(Storage that)
         {
             return false;
         }
 
+        /// <inheritdoc/>
         public override int GetHashCode()
         {
             return GetType().GetHashCode() ^ FpuStackOffset.GetHashCode();
         }
 
+        /// <inheritdoc/>
         public override int OffsetOf(Storage stgSub)
         {
             if (stgSub is not FpuStackStorage that)
@@ -368,12 +501,14 @@ namespace Reko.Core
             return 0;
         }
 
+        /// <inheritdoc/>
         public override bool OverlapsWith(Storage sThat)
         {
             return sThat is FpuStackStorage that &&
                 this.FpuStackOffset == that.FpuStackOffset;
         }
 
+        /// <inheritdoc/>
         public override void Write(TextWriter writer)
         {
             if (FpuStackOffset >= 0)
@@ -470,6 +605,7 @@ namespace Reko.Core
             this.OriginalIdentifier = originalId;
         }
 
+        /// <inheritdoc/>
         public override string Kind => "out";
 
         public Identifier OriginalIdentifier { get; }
@@ -526,8 +662,21 @@ namespace Reko.Core
     /// <summary>
     /// Used to represent a machine register.
     /// </summary>
+    /// <remarks>
+    /// Registers commonly alias each other (e.g. the X86 registers 'eax' and 'ax').
+    /// To achive aliasing, registers are given the same <see cref="StorageDomain"/>,
+    /// but differing bit addresses and/or data types.
+    /// </remarks>
 	public class RegisterStorage : Storage, MachineOperand, IComparable<RegisterStorage>
     {
+        /// <summary>
+        /// Creates an instance of <see cref="RegisterStorage"/>.
+        /// </summary>
+        /// <param name="regName">The name of the register.</param>
+        /// <param name="number">The architectural number of the register, 
+        /// distinguishing it from other registers.</param>
+        /// <param name="bitAddress"></param>
+        /// <param name="dataType"></param>
         public RegisterStorage(string regName, int number, uint bitAddress, PrimitiveType dataType)
             : base(StorageDomain.Register + number, regName, dataType)
         {
@@ -544,33 +693,69 @@ namespace Reko.Core
             }
         }
 
+        /// <inheritdoc/>
         public override string Kind => "Register";
 
+        /// <summary>
+        /// Returns true if a register is a system or control register.
+        /// </summary>
         public bool IsSystemRegister
         {
             get
             {
                 return
                     StorageDomain.SystemRegister <= this.Domain &&
-                    this.Domain < StorageDomain.PseudoRegister;
+                    this.Domain < StorageDomain.MaxSystemRegister;
             }
         }
 
+        /// <summary>
+        /// Creates an eight bit register.
+        /// </summary>
+        /// <param name="name">Name of the register to create.</param>
+        /// <param name="number">Architectural number identifying the register.</param>
+        /// <param name="bitOffset">Bit offset within the architectural register.
+        /// </param>
+        /// <returns>An instance of <see cref="RegisterStorage" />.</returns>
         public static RegisterStorage Reg8(string name, int number, uint bitOffset = 0)
         {
             return new RegisterStorage(name, number, bitOffset, PrimitiveType.Byte);
         }
 
+        /// <summary>
+        /// Creates a 16-bit register.
+        /// </summary>
+        /// <param name="name">Name of the register to create.</param>
+        /// <param name="number">Architectural number identifying the register.</param>
+        /// <param name="bitOffset">Bit offset within the architectural register.
+        /// </param>
+        /// <returns>An instance of <see cref="RegisterStorage" />.</returns>
         public static RegisterStorage Reg16(string name, int number, uint bitOffset = 0)
         {
             return new RegisterStorage(name, number, bitOffset, PrimitiveType.Word16);
         }
 
+        /// <summary>
+        /// Creates a 32-bit register.
+        /// </summary>
+        /// <param name="name">Name of the register to create.</param>
+        /// <param name="number">Architectural number identifying the register.</param>
+        /// <param name="bitOffset">Bit offset within the architectural register.
+        /// </param>
+        /// <returns>An instance of <see cref="RegisterStorage" />.</returns>
         public static RegisterStorage Reg32(string name, int number, uint bitOffset = 0)
         {
             return new RegisterStorage(name, number, bitOffset, PrimitiveType.Word32);
         }
 
+        /// <summary>
+        /// Creates a 64-bit register.
+        /// </summary>
+        /// <param name="name">Name of the register to create.</param>
+        /// <param name="number">Architectural number identifying the register.</param>
+        /// <param name="bitOffset">Bit offset within the architectural register.
+        /// </param>
+        /// <returns>An instance of <see cref="RegisterStorage" />.</returns>
         public static RegisterStorage Reg64(string name, int number, uint bitOffset = 0)
         {
             return new RegisterStorage(name, number, bitOffset, PrimitiveType.Word64);
@@ -590,6 +775,7 @@ namespace Reko.Core
             return new RegisterStorage(name, number + (int) StorageDomain.PseudoRegister, 0, size);
         }
 
+        /// <inheritdoc/>
         public override ulong BitSize
         {
             get { return (ulong) DataType.BitSize; }
@@ -607,18 +793,25 @@ namespace Reko.Core
             set => throw new NotSupportedException();
         }
 
+        /// <summary>
+        /// Unique number of this register, usually dictated by the processor
+        /// architecture.
+        /// </summary>
         public int Number { get; }
 
+        /// <inheritdoc/>
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
             return visitor.VisitRegisterStorage(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(StorageVisitor<T, C> visitor, C context)
         {
             return visitor.VisitRegisterStorage(this, context);
         }
 
+        /// <inheritdoc/>
         public override bool Covers(Storage other)
         {
             if (other is not RegisterStorage that || that.Domain != this.Domain)
@@ -626,12 +819,19 @@ namespace Reko.Core
             return (this.BitMask | that.BitMask) == this.BitMask;
         }
 
+        /// <summary>
+        /// Returns true if the given <paramref name="range"/> is covered by
+        /// this register.
+        /// </summary>
+        /// <param name="range">Bitrange to test.</param>
+        /// <returns>True if this register covers the given bit range.</returns>
         public bool Covers(BitRange range)
         {
             return this.BitAddress <= (ulong)range.Msb &&
                 this.BitAddress + BitSize >= (ulong)range.Msb;
         }
 
+        /// <inheritdoc/>
         public override bool Exceeds(Storage sThat)
         {
             if (sThat is not RegisterStorage that || that.Domain != this.Domain)
@@ -639,6 +839,7 @@ namespace Reko.Core
             return (this.BitMask & ~that.BitMask) != 0;
         }
 
+        /// <inheritdoc/>
         public override bool Equals(object? obj)
         {
             return obj is RegisterStorage that &&
@@ -647,11 +848,13 @@ namespace Reko.Core
                 this.BitSize == that.BitSize;
         }
 
+        /// <inheritdoc/>
         public override int GetHashCode()
         {
             return (int) Domain * 17 ^ BitAddress.GetHashCode() ^ BitSize.GetHashCode();
         }
 
+        /// <inheritdoc/>
         public override BitRange GetBitRange()
         {
             int bitOffset = (int) BitAddress;
@@ -672,6 +875,7 @@ namespace Reko.Core
             return this.OverlapsWith(reg);
         }
 
+        /// <inheritdoc/>
         public override int OffsetOf(Storage stgSub)
         {
             if (stgSub is not RegisterStorage that)
@@ -681,6 +885,7 @@ namespace Reko.Core
             return (int) (that.BitAddress - this.BitAddress);
         }
 
+        /// <inheritdoc/>
         public override bool OverlapsWith(Storage sThat)
         {
             if (sThat is not RegisterStorage that || this.Domain != that.Domain)
@@ -692,14 +897,10 @@ namespace Reko.Core
             return thisStart < thatEnd && thatStart < thisEnd;
         }
 
+        /// <inheritdoc/>
         public override SerializedKind Serialize()
         {
             return new Register_v1(Name);
-        }
-
-        public virtual void SetRegisterStateValues(Expression value, bool isValid, Dictionary<Storage, Expression> ctx)
-        {
-            ctx[this] = value;
         }
 
         public int SubregisterOffset(RegisterStorage subReg)
@@ -709,6 +910,7 @@ namespace Reko.Core
             return -1;
         }
 
+        /// <inheritdoc/>
         public override void Write(TextWriter writer)
         {
             writer.Write(Name);
@@ -766,9 +968,9 @@ namespace Reko.Core
     }
 
     /// <summary>
-    /// Represents a value that is stored sequentially as a tuple of sub-
-    /// storages (like the dx:ax idiom on x86). Sub-storages are not 
-    /// restricted to being <see cref="RegisterStorage"/>s.
+    /// Represents a value that is stored sequentially as an 
+    /// ordered tuple of sub-storages (like the <c>dx:ax</c> idiom on x86).
+    /// Sub-storages are not restricted to being <see cref="RegisterStorage"/>s.
     /// </summary>
     public class SequenceStorage : Storage, MachineOperand
     {
@@ -790,8 +992,14 @@ namespace Reko.Core
             this.BitSize = (ulong) dt.BitSize;
         }
 
+        /// <summary>
+        /// The sub-storages that make up this sequence. The sub-storages are ordered
+        /// in big-endian order; the most significant sub-storage is first in the
+        /// array.
+        /// </summary>
         public Storage[] Elements { get; }
 
+        /// <inheritdoc/>
         public override string Kind => "Sequence";
 
         DataType MachineOperand.DataType
@@ -800,16 +1008,19 @@ namespace Reko.Core
             set => throw new NotSupportedException();
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
             return visitor.VisitSequenceStorage(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(StorageVisitor<T, C> visitor, C context)
         {
             return visitor.VisitSequenceStorage(this, context);
         }
 
+        /// <inheritdoc/>
         public override bool Covers(Storage that)
         {
             if (this == that)
@@ -824,6 +1035,7 @@ namespace Reko.Core
             return false;
         }
 
+        /// <inheritdoc/>
         public override bool Equals(object? obj)
         {
             if (obj is not SequenceStorage that)
@@ -838,6 +1050,7 @@ namespace Reko.Core
             return true;
         }
 
+        /// <inheritdoc/>
         public override bool Exceeds(Storage that)
         {
             if (this == that)
@@ -851,6 +1064,7 @@ namespace Reko.Core
             return false;
         }
 
+        /// <inheritdoc/>
         public override int GetHashCode()
         {
             return GetType().GetHashCode() ^
@@ -859,6 +1073,7 @@ namespace Reko.Core
                 Elements[1].GetHashCode() * 33;
         }
 
+        /// <inheritdoc/>
         public override int OffsetOf(Storage stgSub)
         {
             int offPrev = 0;
@@ -873,6 +1088,7 @@ namespace Reko.Core
             return -1;
         }
 
+        /// <inheritdoc/>
         public override bool OverlapsWith(Storage that)
         {
             if (this == that)
@@ -894,6 +1110,7 @@ namespace Reko.Core
             renderer.EndOperand();
         }
 
+        /// <inheritdoc/>
         public override SerializedKind Serialize()
         {
             return new SerializedSequence(this);
@@ -906,6 +1123,7 @@ namespace Reko.Core
             return sr.ToString();
         }
 
+        /// <inheritdoc/>
         public override void Write(TextWriter writer)
         {
             writer.Write("Sequence {0}", Name);
@@ -942,16 +1160,19 @@ namespace Reko.Core
         /// </remarks>
         public int StackOffset { get; }
 
+        /// <inheritdoc/>
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
             return visitor.VisitStackStorage(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(StorageVisitor<T, C> visitor, C context)
         {
             return visitor.VisitStackStorage(this, context);
         }
 
+        /// <inheritdoc/>
         public override bool Equals(object? obj)
         {
             if (obj is not StackStorage that)
@@ -959,11 +1180,13 @@ namespace Reko.Core
             return this.StackOffset == that.StackOffset;
         }
 
+        /// <inheritdoc/>
         public override int GetHashCode()
         {
             return StackOffset.GetHashCode();
         }
 
+        /// <inheritdoc/>
         public override int OffsetOf(Storage stgSub)
         {
             if (stgSub is not StackStorage that)
@@ -974,6 +1197,7 @@ namespace Reko.Core
             return -1;
         }
 
+        /// <inheritdoc/>
         public override bool OverlapsWith(Storage other)
         {
             if (other is not StackStorage that)
@@ -985,6 +1209,7 @@ namespace Reko.Core
             return thisStart < thatEnd && thatStart < thisEnd;
         }
 
+        /// <inheritdoc/>
         public override bool Covers(Storage other)
         {
             if (other is not StackStorage that)
@@ -996,11 +1221,13 @@ namespace Reko.Core
             return thisStart <= thatStart && thatEnd <= thisEnd;
         }
 
+        /// <inheritdoc/>
         public override SerializedKind Serialize()
         {
             return new StackVariable_v1();
         }
 
+        /// <inheritdoc/>
         public override void Write(TextWriter writer)
         {
             var sign = StackOffset >= 0 ? "+" : "-";
@@ -1031,6 +1258,7 @@ namespace Reko.Core
             BitSize = (uint)dt.BitSize;
         }
 
+        /// <inheritdoc/>
         public override string Kind => "Temporary";
 
         public TemporaryStorage(string name, int number, DataType dt)
@@ -1038,26 +1266,31 @@ namespace Reko.Core
         {
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
             return visitor.VisitTemporaryStorage(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(StorageVisitor<T, C> visitor, C context)
         {
             return visitor.VisitTemporaryStorage(this, context);
         }
 
+        /// <inheritdoc/>
         public override bool Covers(Storage that)
         {
             return ReferenceEquals(this, that);
         }
 
+        /// <inheritdoc/>
         public override bool Exceeds(Storage that)
         {
             return false;
         }
 
+        /// <inheritdoc/>
         public override int OffsetOf(Storage stgSub)
         {
             if (ReferenceEquals(this, stgSub))
@@ -1066,11 +1299,13 @@ namespace Reko.Core
                 return -1;
         }
 
+        /// <inheritdoc/>
         public override bool OverlapsWith(Storage that)
         {
             return ReferenceEquals(this, that);
         }
 
+        /// <inheritdoc/>
         public override void Write(TextWriter writer)
         {
             writer.Write(Name);

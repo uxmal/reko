@@ -29,6 +29,9 @@ using System.Threading.Tasks;
 
 namespace Reko.Core.Hll.Pascal
 {
+    /// <summary>
+    /// Performs lexical analysis of Pascal source code.
+    /// </summary>
     public class PascalLexer
     {
         private static readonly Dictionary<string, TokenType> keywords = new Dictionary<string, TokenType>(StringComparer.OrdinalIgnoreCase)

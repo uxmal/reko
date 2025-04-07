@@ -23,8 +23,17 @@ using System.Text;
 
 namespace Reko.Core
 {
+    /// <summary>
+    /// Extension methods for the <see cref="BinaryReader"/> class.
+    /// </summary>
     public static class BinaryReaderExtensions
 	{
+        /// <summary>
+        /// Reads a null-terminated ASCII string from the current position
+        /// in the stream and advances the position of the stream.
+        /// </summary>
+        /// <param name="rdr">A <see cref="BinaryReader"/> instance to read from.</param>
+        /// <returns>The resulting string.</returns>
 		public static string ReadNullTerminatedString(this BinaryReader rdr)
 		{
 			var sb = new StringBuilder();

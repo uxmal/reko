@@ -27,6 +27,11 @@ namespace Reko.Core
 	/// </summary>
 	public class AddressRange
 	{
+        /// <summary>
+        /// Creates an instance of the <see cref="AddressRange"/> class.
+        /// </summary>
+        /// <param name="addrBegin">The inclusive beginning of the range.</param>
+        /// <param name="addrEnd">The exclusing end of the range.</param>
 		public AddressRange(Address addrBegin, Address addrEnd)
 		{
             this.Begin = addrBegin;
@@ -53,21 +58,35 @@ namespace Reko.Core
         /// </summary>
         public long Length => this.End - this.Begin;
 
+        /// <summary>
+        /// Compares two address ranges for equality.
+        /// </summary>
+        /// <param name="left">One address range</param>
+        /// <param name="right">Another address range.</param>
+        /// <returns>True if the ranges are equal.</returns>
         public static bool operator == (AddressRange left, AddressRange right)
         {
             return left.Begin == right.Begin && left.End == right.End;
         }
 
+        /// <summary>
+        /// Compares two address ranges for inequality.
+        /// </summary>
+        /// <param name="left">One address range</param>
+        /// <param name="right">Another address range.</param>
+        /// <returns>True if the ranges are not equal.</returns>
         public static bool operator != (AddressRange left, AddressRange right)
         {
             return !(left == right);
         }
 
+        /// <inheritdoc/>
         public override bool Equals(object? obj)
         {
             return obj is AddressRange that && this == that;
         }
 
+        /// <inheritdoc/>
         public override int GetHashCode() => HashCode.Combine(Begin, End);
 
         /// <summary>

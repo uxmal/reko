@@ -19,9 +19,6 @@
 #endregion
 
 using Reko.Core.Types;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Reko.Core
 {
@@ -30,6 +27,12 @@ namespace Reko.Core
     /// </summary>
     public class GlobalVariable : IAddressable
     {
+        /// <summary>
+        /// Constructs a new instance of the <see cref="GlobalVariable"/> class.
+        /// </summary>
+        /// <param name="addr">Address of the global variable.</param>
+        /// <param name="dt">Data type of the global variable.</param>
+        /// <param name="name">The name of the global variable.</param>
         public GlobalVariable(Address addr, DataType dt, string name)
         {
             this.Address = addr;
@@ -37,8 +40,19 @@ namespace Reko.Core
             this.Name = name;
         }
 
+        /// <summary>
+        /// The address of the global variable.
+        /// </summary>
         public Address Address { get; }
+
+        /// <summary>
+        /// The data type of the global variable.
+        /// </summary>
         public DataType DataType { get; }
+
+        /// <summary>
+        /// The name of the global variable.
+        /// </summary>
         public string  Name { get; }
     }
 }

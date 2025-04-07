@@ -130,65 +130,119 @@ namespace Reko.Core.Machine
         /// Add a sequence parameter.
         /// </summary>
         void SequenceParam(params Storage[] stgs);
+
+        /// <summary>
+        /// Add a sequence parameter.
+        /// </summary>
         void SequenceParam(SequenceStorage seq);
 
         /// <summary>
-        /// Indicate that a sequence is returned.
+        /// Indicate that a sequence of storages is returned.
         /// </summary>
+        /// <param name="stgs">An ordered sequence of starges to use for returning 
+        /// a value.</param>
         void SequenceReturn(params Storage[] stgs);
+
+        /// <summary>
+        /// Indicate that a sequence of storages is returned.
+        /// </summary>
+        /// <param name="seq">An ordered sequence of starges to use for returning 
+        /// a value.</param>
         void SequenceReturn(SequenceStorage seq);
 
         /// <summary>
         /// Indicate that the implicit "this" pointer is passed in a register.
         /// </summary>
-        /// <param name="dtThis"></param>
+        /// <param name="dtThis">The data type of the "this" pointer.</param>
         void ImplicitThisRegister(Storage dtThis);
 
         /// <summary>
         /// Indicate that the implicit "this" pointer is passed on the stack.
         /// </summary>
+        /// <param name="dtThis">The data type of the "this" pointer.</param>
         void ImplicitThisStack(DataType dtThis);
 
         /// <summary>
         /// Add a stack parameter of the type dt.
         /// </summary>
-        /// <param name="dt"></param>
+        /// <param name="dt">The data type of the stack parameter.</param>
         void StackParam(DataType dt);
+
+        /// <summary>
+        /// Indicate that the procedure writes its return value to the stack.
+        /// </summary>
+        /// <param name="dtRet">The data type of the stack-based return value.</param>
         void StackReturn(DataType dtRet);
     }
-
+         
+    /// <summary>
+    /// A class implemeting <see cref="ICallingConventionEmitter"/>.
+    /// </summary>
     public class CallingConventionEmitter : ICallingConventionEmitter
     {
         private int stackAlignment;
         private int stackOffset;
 
+        /// <summary>
+        /// Creates an instance of <see cref="CallingConventionEmitter"/>.
+        /// </summary>
         public CallingConventionEmitter()
         {
-            Parameters = new List<Storage>();
+            Parameters = [];
         }
 
+        /// <summary>
+        /// The <see cref="Storage"/> used to pass the hidden "this" pointer, if any.
+        /// </summary>
         public Storage? ImplicitThis { get; private set; }
+
+        /// <summary>
+        /// The <see cref="Storage"/> used to return a value.
+        /// </summary>
         public Storage? Return { get; private set; }
+
+        /// <summary>
+        /// The <see cref="Storage"/>s used pass parameters into a procedure."/>
+        /// </summary>
         public List<Storage> Parameters { get; private set; }
+
+        /// <summary>
+        /// The net effect on the stack pointer after calling this procedudre.
+        /// </summary>
         public int StackDelta { get; private set; }
+
+        /// <summary>
+        /// The net effect on the FPU stack pointer after calling this procedure
+        /// (for machines that have FPU stacks).
+        /// </summary>
         public int FpuStackDelta { get; private set; }
 
+        /// <summary>
+        /// Aligns the given size up to the next higher multiple of the given quantum.
+        /// </summary>
+        /// <param name="n">Value to align.</param>
+        /// <param name="quantum">Desierd alignment.</param>
+        /// <returns>Returns an aligned value, which is either equal to the original
+        /// value <paramref name="n"/> or greater by at most <paramref name="quantum"/> - 1.</returns>
         public static int Align(int n, int quantum)
         {
             int units = (n + quantum - 1) / quantum;
             return units * quantum;
         }
 
+        /// <inheritdoc />
         public void CalleeCleanup()
         {
             StackDelta = stackOffset;
         }
 
+        /// <inheritdoc />
         public void CallerCleanup(int retAddressOnStack)
         {
             StackDelta = retAddressOnStack;
         }
 
+        /// <inheritdoc />
         public void ImplicitThisRegister(Storage dtThis)
         {
             ImplicitThis = dtThis;
@@ -200,6 +254,7 @@ namespace Reko.Core.Machine
             stackOffset += Align(dt.Size, stackAlignment);
         }
 
+        /// <inheritdoc />
         public void LowLevelDetails(int stackAlignment, int initialStackOffset)
         {
             this.stackAlignment = stackAlignment;

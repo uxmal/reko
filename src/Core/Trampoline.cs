@@ -41,6 +41,13 @@ namespace Reko.Core
     /// </remarks>
     public class Trampoline
     {
+        /// <summary>
+        /// Creates an instance of a <see cref="Trampoline"/>.
+        /// </summary>
+        /// <param name="addrStub">Address of the trampoline code.</param>
+        /// <param name="procedure">The procedure reached when executing
+        /// the trampoline code.
+        /// </param>
         public Trampoline(Address addrStub, ProcedureBase procedure)
         {
             this.StubAddress = addrStub;
@@ -57,6 +64,7 @@ namespace Reko.Core
         /// </summary>
         public ProcedureBase Procedure { get; }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             return $"Trampoline@{StubAddress} to {Procedure.Name}";

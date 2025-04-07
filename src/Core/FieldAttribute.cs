@@ -20,7 +20,6 @@
  
  using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Reflection;
@@ -28,9 +27,15 @@ using Reko.Core.Memory;
 
 namespace Reko.Core
 {
+    /// <summary>
+    /// Custom attribute to control the reading of fields in a structure.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Field)]
     public class FieldAttribute : Attribute
     {
+        /// <summary>
+        /// Alignment of the field in the structure.
+        /// </summary>
         public int Align = 1;
 
         private static readonly Dictionary<Type, Func<EndianImageReader, object>> readers = new()
@@ -40,7 +45,16 @@ namespace Reko.Core
             { typeof(short), r => r.ReadInt16() },
             { typeof(int), r => r.ReadInt32() },
         };
-                
+
+        /// <summary>
+        /// Reads the value of a field from the image reader.
+        /// </summary>
+        /// <param name="f"><see cref="FieldInfo"/> describing the field to read.</param>
+        /// <param name="rdr"><see cref="EndianImageReader"/> from which to read the value.
+        /// </param>
+        /// <param name="ctx"></param>
+        /// <returns></returns>
+        /// <exception cref="NotSupportedException"></exception>
         public virtual object ReadValue(FieldInfo f, EndianImageReader rdr, ReaderContext ctx)
         {
             if (readers.TryGetValue(f.FieldType, out var fn))

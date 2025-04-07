@@ -136,9 +136,9 @@ public class ValuePropagator : IAnalysis<SsaState>
         {
             bool changed;
             evalCtx.Statement = stm;
-            trace.Verbose("From: {0}", stm.Instruction.ToString());
+            trace.Verbose("VP: From: {0}", stm.Instruction.ToString());
             (stm.Instruction, changed) = stm.Instruction.Accept(this);
-            trace.Verbose("  To: {0}", stm.Instruction.ToString());
+            trace.Verbose("VP:   To: {0}", stm.Instruction.ToString());
             return changed;
         }
 
@@ -404,7 +404,7 @@ public class ValuePropagator : IAnalysis<SsaState>
 
         private (Expression, bool) ReplaceIndirectCallToImport(Expression e)
         {
-            if (dynamicLinker != null && 
+            if (dynamicLinker is not null && 
                 e is MemoryAccess mem && 
                 mem.EffectiveAddress is Constant c)
             {
@@ -412,7 +412,7 @@ public class ValuePropagator : IAnalysis<SsaState>
                 var pc = dynamicLinker.ResolveToImportedValue(stm, c);
                 if (pc is not null)
                 {
-                    Debug.Print("Const: {0} was replaced with ", c, pc);
+                    trace.Verbose("VP: Const: {0} was replaced with ", c, pc);
                     return (pc, true);
                 }
             }
