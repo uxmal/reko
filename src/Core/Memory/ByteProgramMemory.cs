@@ -32,7 +32,14 @@ namespace Reko.Core.Memory
 
         public bool TryReadBeInt16(Address addr, out short s)
         {
-            throw new NotImplementedException();
+            if (!this.SegmentMap.TryFindSegment(addr, out var segment))
+            {
+                s = 0;
+                return false;
+            }
+            bool result = segment.MemoryArea.TryReadBeUInt16(addr, out var v);
+            s = (short) v;
+            return result;
         }
 
         public bool TryReadBeInt32(Address addr, out int value)
@@ -89,24 +96,53 @@ namespace Reko.Core.Memory
             return segment.MemoryArea.TryReadBeUInt64(addr, out value);
         }
 
-        public bool TryReadInt8(Address addr, out byte b)
+        public bool TryReadInt8(Address addr, out sbyte value)
         {
-            throw new NotImplementedException();
+            if (!this.SegmentMap.TryFindSegment(addr, out var segment))
+            {
+                value = 0;
+                return false;
+            }
+            var offset = addr - segment.MemoryArea.BaseAddress;
+            var retval = segment.MemoryArea.TryReadByte(offset, out byte v);
+            value = (sbyte) v;
+            return retval;
         }
 
-        public bool TryReadLeInt16(Address addr, out short s)
+        public bool TryReadLeInt16(Address addr, out short value)
         {
-            throw new NotImplementedException();
+            if (!this.SegmentMap.TryFindSegment(addr, out var segment))
+            {
+                value = 0;
+                return false;
+            }
+            var result = segment.MemoryArea.TryReadLeUInt16(addr, out var s);
+            value = (short) s;
+            return result;
         }
 
-        public bool TryReadLeInt32(Address addr, out int i)
+        public bool TryReadLeInt32(Address addr, out int value)
         {
-            throw new NotImplementedException();
+            if (!this.SegmentMap.TryFindSegment(addr, out var segment))
+            {
+                value = 0;
+                return false;
+            }
+            var result = segment.MemoryArea.TryReadLeUInt32(addr, out var u);
+            value = (int) u;
+            return result;
         }
 
-        public bool TryReadLeInt64(Address addr, out long l)
+        public bool TryReadLeInt64(Address addr, out long value)
         {
-            throw new NotImplementedException();
+            if (!this.SegmentMap.TryFindSegment(addr, out var segment))
+            {
+                value = 0;
+                return false;
+            }
+            var result = segment.MemoryArea.TryReadLeUInt64(addr, out var u);
+            value = (long) u;
+            return result;
         }
 
         public bool TryReadLeUInt16(Address addr, out ushort value)
@@ -139,19 +175,29 @@ namespace Reko.Core.Memory
             return segment.MemoryArea.TryReadLeUInt64(addr, out value);
         }
 
-        public bool TryReadUInt8(Address addr, out sbyte b)
+        public bool TryReadUInt8(Address addr, out byte value)
         {
-            throw new NotImplementedException();
+            if (!this.SegmentMap.TryFindSegment(addr, out var segment))
+            {
+                value = 0;
+                return false;
+            }
+            var offset = addr - segment.MemoryArea.BaseAddress;
+            return segment.MemoryArea.TryReadByte(offset, out value);
         }
 
         public void TryWriteInt8(Address addr, sbyte b)
         {
-            throw new NotImplementedException();
+            if (!this.SegmentMap.TryFindSegment(addr, out var segment))
+                return;
+            segment.MemoryArea.WriteByte(addr - segment.MemoryArea.BaseAddress, (byte) b);
         }
 
         public void TryWriteUInt8(Address addr, byte b)
         {
-            throw new NotImplementedException();
+            if (!this.SegmentMap.TryFindSegment(addr, out var segment))
+                return;
+            segment.MemoryArea.WriteByte(addr - segment.MemoryArea.BaseAddress, b);
         }
 
         public void WriteBeUInt16(Address addr, ushort value)

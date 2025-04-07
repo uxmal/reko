@@ -148,7 +148,7 @@ namespace Reko.Core.Memory
         /// <param name="b">Resulting value if successful.</param>
         /// <returns>True if address was valid, false if not.
         /// </returns>
-        bool TryReadInt8(Address addr, out byte b);
+        bool TryReadInt8(Address addr, out sbyte b);
 
         /// <summary>
         /// Read an unsigned octet from address <paramref name="addr"/>.
@@ -157,7 +157,7 @@ namespace Reko.Core.Memory
         /// <param name="b">Resulting value if successful.</param>
         /// <returns>True if address was valid, false if not.
         /// </returns>
-        bool TryReadUInt8(Address addr, out sbyte b);
+        bool TryReadUInt8(Address addr, out byte b);
 
         /// <summary>
         /// Read a big endian signed 16-bit integer from 
