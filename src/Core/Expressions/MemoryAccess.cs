@@ -60,48 +60,82 @@ namespace Reko.Core.Expressions
             this.EffectiveAddress = effectiveAddress ?? throw new ArgumentNullException(nameof(effectiveAddress));
         }
 
+        /// <summary>
+        /// Identifier of the memory space being accessed.
+        /// </summary>
+        /// <remarks>
+        /// For machines with von Neumann architecture, there only a single memory space accessed:
+        /// <see cref="MemoryStorage.GlobalMemory"/>. Machines with Harvard architecture may define 
+        /// multiple memory spaces.
+        /// </remarks>
         public Identifier MemoryId { get; }
+
+        /// <summary>
+        /// The effective address of the memory access.
+        /// </summary>
         public Expression EffectiveAddress { get; }
 
+        /// <inheritdoc/>
         public override IEnumerable<Expression> Children
         {
             get { yield return EffectiveAddress; }
         }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
         {
             return v.VisitMemoryAccess(this, context);
         }
 
+        /// <inheritdoc/>
         public override void Accept(IExpressionVisitor v)
         {
             v.VisitMemoryAccess(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitMemoryAccess(this);
         }
 
+        /// <inheritdoc/>
         public override Expression CloneExpression()
         {
             return new MemoryAccess(this.MemoryId, EffectiveAddress.CloneExpression(), DataType);
         }
 
-        public static MemoryAccess Create(Expression baseRegister, int offset, DataType dt)
+        /// <summary>
+        /// Creates a memory access whose effective address is <paramref name="baseExpr"/> plus the given
+        /// <paramref name="offset"/> and whose data type is <paramref name="dt"/>.
+        /// </summary>
+        /// <param name="baseExpr">The base expression to use.</param>
+        /// <param name="offset">Signed offset from the base expression.
+        /// </param>
+        /// <param name="dt">The data type of the access.</param>
+        /// <returns>A <see cref="MemoryAccess"/> instance.</returns>
+        public static MemoryAccess Create(Expression baseExpr, int offset, DataType dt)
         {
-            return new MemoryAccess(MemoryStorage.GlobalMemory, CreateEffectiveAddress(baseRegister, offset), dt);
+            return new MemoryAccess(MemoryStorage.GlobalMemory, CreateEffectiveAddress(baseExpr, offset), dt);
         }
 
-        public static Expression CreateEffectiveAddress(Expression baseRegister, int offset)
+        /// <summary>
+        /// Creates an effective address expression <paramref name="baseExpr"/> plus the given
+        /// <paramref name="offset"/>.
+        /// </summary>
+        /// <param name="baseExpr">The base expression to use.</param>
+        /// <param name="offset">Signed offset from the base expression.
+        /// </param>
+        /// <returns>A <see cref="MemoryAccess"/> instance.</returns>
+        public static Expression CreateEffectiveAddress(Expression baseExpr, int offset)
         {
             if (offset == 0)
-                return baseRegister;
+                return baseExpr;
             else
-                return new BinaryExpression(Operators.Operator.IAdd,
-                    baseRegister.DataType,
-                    baseRegister,
-                    Constant.Create(PrimitiveType.Create(Domain.SignedInt, baseRegister.DataType.BitSize), offset));
+                return new BinaryExpression(Operator.IAdd,
+                    baseExpr.DataType,
+                    baseExpr,
+                    Constant.Create(PrimitiveType.Create(Domain.SignedInt, baseExpr.DataType.BitSize), offset));
         }
 
         /// <summary>

@@ -25,14 +25,21 @@ using System.Linq;
 
 namespace Reko.Core.Expressions
 {
-	/// <summary>
-	/// Models an ordered sequence consisting of multiple expressions.
-	/// </summary>
-    /// <remarks>The elements of the sequence form a whole.
+    /// <summary>
+    /// Models an ordered sequence consisting of multiple expressions.
+    /// The expressions are arranged in big-endian order, meaning that the first expression
+    /// in the sequence is the most significant one.
+    /// </summary>
+    /// <remarks>The elements of the sequence form a whole. 
     /// The <see cref="DataType"/> indicates what kind of whole it is.
     /// </remarks>
-	public class MkSequence : AbstractExpression
+    public class MkSequence : AbstractExpression
 	{
+        /// <summary>
+        /// Creates an instance of the <see cref="MkSequence"/> class.
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <param name="exprs"></param>
         public MkSequence(DataType dt, params Expression [] exprs) : base(dt)
         {
             if (exprs.Length < 1)
@@ -40,28 +47,36 @@ namespace Reko.Core.Expressions
             this.Expressions = exprs;
         }
 
+        /// <summary>
+        /// The elements of the sequence.
+        /// </summary>
         public Expression[] Expressions { get; }
 
+        /// <inheritdoc/>
         public override IEnumerable<Expression> Children
         {
             get { return Expressions; }
         }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
         {
             return v.VisitMkSequence(this, context);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitMkSequence(this);
         }
 
+        /// <inheritdoc/>
 		public override void Accept(IExpressionVisitor visit)
 		{
 			visit.VisitMkSequence(this);
 		}
 
+        /// <inheritdoc/>
 		public override Expression CloneExpression()
 		{
             var clones = Expressions.Select(e => e.CloneExpression()).ToArray();

@@ -29,6 +29,11 @@ namespace Reko.Core.Expressions
     /// </summary>
     public class BigConstant : Constant
     {
+        /// <summary>
+        /// Creates a new instance of the <see cref="BigConstant"/> class.
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <param name="value"></param>
         public BigConstant(DataType dt, BigInteger value) : base(dt)
         {
             this.Value = value;
@@ -64,6 +69,7 @@ namespace Reko.Core.Expressions
 
         public BigInteger Value { get; }
 
+        /// <inheritdoc/>
         public override Expression CloneExpression()
         {
             return new BigConstant(this.DataType, Value);

@@ -102,13 +102,45 @@ namespace Reko.Core
         /// Maps addresses to procedure names and signatures.
         /// </summary>
         public IDictionary<Address, (string Name, FunctionType Signature)> Procedures { get; private set; }
+
+        /// <summary>
+        /// Maps addresses to global variables.
+        /// </summary>
         public IDictionary<Address, UserGlobal> GlobalsByAddress { get; private set; }
+
+        /// <summary>
+        /// Maps names to data types.
+        /// </summary>
         public IDictionary<string, DataType> Types { get; private set; }
+
+        /// <summary>
+        /// Maps names to function signatures.
+        /// </summary>
         public IDictionary<string, FunctionType> Signatures { get; private set; }
+        
+        /// <summary>
+        /// Maps procedure names to characteristics.
+        /// </summary>
         public IDictionary<string, ProcedureCharacteristics> Characteristics { get; private set; }
+
+        /// <summary>
+        /// Maps global variable names to datatypes.
+        /// </summary>
         public IDictionary<string, DataType> ImportedGlobals { get; private set; }
+
+        /// <summary>
+        /// Maps names to module descriptors.
+        /// </summary>
         public IDictionary<string, ModuleDescriptor> Modules { get; private set; }
+
+        /// <summary>
+        /// Maps addresses to annotations (comments).
+        /// </summary>
         public IDictionary<Address, Annotation> Annotations { get; private set; }
+
+        /// <summary>
+        /// Maps addresses to segments.
+        /// </summary>
         public SortedList<Address, ImageSegment> Segments { get; }
 
         private static StringComparer Comparer(bool caseSensitive) =>
@@ -116,6 +148,11 @@ namespace Reko.Core
                 ? StringComparer.InvariantCultureIgnoreCase
                 : StringComparer.InvariantCulture;
 
+        /// <summary>
+        /// Creates a copy of this type library.
+        /// </summary>
+        /// <returns>A copy of this type library.
+        /// </returns>
         public TypeLibrary Clone()
         {
             var clone = new TypeLibrary(this.isCaseInsensitive)

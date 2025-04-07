@@ -613,18 +613,30 @@ namespace Reko.Core
             this.regsByDomain = regsByDomain;
         }
 
+        /// <inheritdoc/>
         public IServiceProvider Services { get; }
+        /// <inheritdoc/>
         public string Name { get; }
+        /// <inheritdoc/>
         public string? Description { get; set; }
+        /// <inheritdoc/>
         public int DefaultBase { get; set; }
+        /// <inheritdoc/>
         public EndianServices Endianness { get; protected set; }
+        /// <inheritdoc/>
         public PrimitiveType FramePointerType { get; protected set; }
+        /// <inheritdoc/>
         public int MemoryGranularity { get; protected set; }
+        /// <inheritdoc/>
         public int CodeMemoryGranularity { get; protected set; }
+        /// <inheritdoc/>
         public PrimitiveType PointerType { get; protected set; }
+        /// <inheritdoc/>
         public MaskedPattern[] ProcedurePrologs { get; internal set; }
+        /// <inheritdoc/>
         public PrimitiveType WordWidth { get; protected set; }
 
+        /// <inheritdoc/>
         public Dictionary<string, object> Options { get; protected set; }
 
         /// <summary>
@@ -661,34 +673,57 @@ namespace Reko.Core
             set { this.regStack = value; }
         }
 
+        /// <inheritdoc/>
         public RegisterStorage? FpuStackRegister { get; protected set; }
+        /// <inheritdoc/>
         public FlagGroupStorage? CarryFlag { get; protected set; }
 
+        /// <inheritdoc/>
         public virtual IAssembler CreateAssembler(string? asmDialect) => throw new NotSupportedException("This architecture doesn't support assembly language.");
+        /// <inheritdoc/>
         public abstract IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader);
+        /// <inheritdoc/>
         public virtual T? CreateExtension<T>() where T : class => default;
+        /// <inheritdoc/>
         public Frame CreateFrame() { return new Frame(this, FramePointerType); }
+        /// <inheritdoc/>
         public bool TryCreateImageReader(IMemory mem, Address addr, [MaybeNullWhen(false)] out EndianImageReader rdr) => this.Endianness.TryCreateImageReader(mem, addr, out rdr);
+        /// <inheritdoc/>
         public bool TryCreateImageReader(IMemory mem, Address addr, long cbUnits, [MaybeNullWhen(false)] out EndianImageReader rdr) => this.Endianness.TryCreateImageReader(mem, addr, cbUnits, out rdr);
+        /// <inheritdoc/>
         public EndianImageReader CreateImageReader(MemoryArea mem, Address addr) => this.Endianness.CreateImageReader(mem, addr);
+        /// <inheritdoc/>
         public EndianImageReader CreateImageReader(MemoryArea mem, Address addr, long cbUnits) => this.Endianness.CreateImageReader(mem, addr, cbUnits);
+        /// <inheritdoc/>
         public EndianImageReader CreateImageReader(MemoryArea mem, long offsetBegin, long offsetEnd) => Endianness.CreateImageReader(mem, offsetBegin, offsetEnd);
+        /// <inheritdoc/>
         public EndianImageReader CreateImageReader(MemoryArea mem, long off) => Endianness.CreateImageReader(mem, off);
+        /// <inheritdoc/>
         public ImageWriter CreateImageWriter() => Endianness.CreateImageWriter();
+        /// <inheritdoc/>
         public ImageWriter CreateImageWriter(MemoryArea mem, Address addr) => Endianness.CreateImageWriter(mem, addr);
+        /// <inheritdoc/>
         public bool TryRead(IMemory mem, Address addr, PrimitiveType dt, [MaybeNullWhen(false)] out Constant value) => Endianness.TryRead(mem, addr, dt, out value);
+        /// <inheritdoc/>
         public bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, [MaybeNullWhen(false)] out Constant value) => Endianness.TryRead(mem, addr, dt, out value);
+        /// <inheritdoc/>
         public virtual bool TryRead(EndianImageReader rdr, PrimitiveType dt, [MaybeNullWhen(false)] out Constant value) => rdr.TryRead(dt, out value);
+        /// <inheritdoc/>
         public abstract IEqualityComparer<MachineInstruction>? CreateInstructionComparer(Normalize norm);
+        /// <inheritdoc/>
         public abstract ProcessorState CreateProcessorState();
+        /// <inheritdoc/>
         public abstract IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);
+        /// <inheritdoc/>
         public abstract IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host);
         
+        /// <inheritdoc/>
         public virtual IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
         {
             throw new NotImplementedException("Emulation has not been implemented for this processor architecture yet.");
         }
 
+        /// <inheritdoc/>
         public virtual ICallingConvention? GetCallingConvention(string? name)
         {
             // By default, there is no calling convention defined for architectures. Some
@@ -696,6 +731,7 @@ namespace Reko.Core
             return null;
         }
 
+        /// <inheritdoc/>
         public virtual RegisterStorage? GetRegister(string name)
         {
             if (regsByName is null)
@@ -706,6 +742,7 @@ namespace Reko.Core
                 return null;
         }
 
+        /// <inheritdoc/>
         public virtual RegisterStorage? GetRegister(StorageDomain domain, BitRange range)
         {
             if (regsByDomain is null)
@@ -716,9 +753,13 @@ namespace Reko.Core
                 return null;
         }
 
+        /// <inheritdoc/>
         public abstract RegisterStorage[] GetRegisters();
+
+        /// <inheritdoc/>
         public virtual FlagGroupStorage[] GetFlags() => throw new NotImplementedException("GetFlags not implemented this architecture.");
 
+        /// <inheritdoc/>
         public virtual FrameApplicationBuilder CreateFrameApplicationBuilder(
             IStorageBinder binder,
             CallSite site)
@@ -726,6 +767,7 @@ namespace Reko.Core
             return new FrameApplicationBuilder(this, binder, site);
         }
 
+        /// <inheritdoc/>
         public virtual MemoryArea CreateCodeMemoryArea(Address addr, byte[] bytes)
         {
             // Most CPU's -- but not all -- are byte-addressed.
@@ -751,6 +793,7 @@ namespace Reko.Core
             return MemoryAccess.Create(sp, cbOffset, dataType);
         }
 
+        /// <inheritdoc/>
         public virtual Expression CreateFpuStackAccess(IStorageBinder binder, int offset, DataType dataType)
         {
             // Only Intel x86/x87 has a FPU stack
@@ -769,11 +812,13 @@ namespace Reko.Core
         /// <returns></returns>
         public abstract SortedList<string, int> GetMnemonicNames();
 
+        /// <inheritdoc/>
         public virtual IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
         {
             throw new NotImplementedException($"Your architecture must implement {nameof(GetSubFlags)}.");
         }
 
+        /// <inheritdoc/>
         public virtual bool IsStackArgumentOffset(long frameOffset)
         {
             // In the majority of architectures, the stack grows towards lower
@@ -821,20 +866,30 @@ namespace Reko.Core
                 throw new NotImplementedException($"Need a value for {nameof(regsByName)}.");
             return regsByName.TryGetValue(name, out reg);
         }
+        /// <inheritdoc/>
         public abstract FlagGroupStorage? GetFlagGroup(RegisterStorage flagRegister, uint grf);
+        /// <inheritdoc/>
         public abstract FlagGroupStorage? GetFlagGroup(string name);
+        /// <inheritdoc/>
         public abstract string GrfToString(RegisterStorage flagRegister, string prefix, uint grf);
+        /// <inheritdoc/>
         public virtual List<RtlInstruction>? InlineCall(Address addrCallee, Address addrContinuation, EndianImageReader rdr, IStorageBinder binder)
         {
             return null;
         }
 
+        /// <inheritdoc/>
         public virtual void LoadUserOptions(Dictionary<string, object>? options) { }
+        /// <inheritdoc/>
         public abstract Address MakeAddressFromConstant(Constant c, bool codeAlign);
+        /// <inheritdoc/>
         public virtual Address MakeSegmentedAddress(Constant seg, Constant offset) { throw new NotSupportedException("This architecture doesn't support segmented addresses."); }
+        /// <inheritdoc/>
         public virtual void PostprocessProgram(Program program) { }
+        /// <inheritdoc/>
         public abstract Address? ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state);
 
+        /// <inheritdoc/>
         public virtual Constant ReinterpretAsFloat(Constant rawBits)
         {
             // Most platforms -- but certainly not all -- use IEEE 754 float representation.
@@ -849,8 +904,10 @@ namespace Reko.Core
             throw new NotImplementedException($"Unsupported IEEE floating point size {rawBits.DataType.BitSize}.");
         }
 
+        /// <inheritdoc/>
         public virtual Dictionary<string, object>? SaveUserOptions() { return null; }
 
+        /// <inheritdoc/>
         public abstract bool TryParseAddress(string? txtAddr, [MaybeNullWhen(false)] out Address addr);
     }
 

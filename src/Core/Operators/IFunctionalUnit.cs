@@ -24,7 +24,7 @@ using Reko.Core.Types;
 namespace Reko.Core.Operators
 {
     /// <summary>
-    /// Represents a function unit on a CPU. This unit can evaluate 
+    /// Represents a functional unit on a CPU. This unit can evaluate 
     /// constant data and create instances of the implementing class
     /// using the provided argument expressions.
     /// </summary>

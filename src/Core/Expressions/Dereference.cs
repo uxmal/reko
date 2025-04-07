@@ -19,43 +19,56 @@
 #endregion
 
 using Reko.Core.Types;
-using System;
 using System.Collections.Generic;
 
 namespace Reko.Core.Expressions
 {
 	/// <summary>
-	/// Represents a C-style dereferenced pointer: *foo
+	/// Represents a C-style dereferenced pointer: <c>*foo</c>
 	/// </summary>
 	public class Dereference : AbstractExpression
 	{
+        /// <summary>
+        /// Creates a new dereference expression.
+        /// </summary>
+        /// <param name="ptrType"></param>
+        /// <param name="exp"></param>
 		public Dereference(DataType ptrType, Expression exp) : base(ptrType)
 		{
             this.Expression = exp;
         }
 
+        /// <inheritdoc/>
         public override IEnumerable<Expression> Children
         {
             get { yield return Expression; }
         }
 
+        /// <summary>
+        /// The expression being dereferenced.
+        /// </summary>
         public Expression Expression { get; }
 
+
+        /// <inheritdoc/>
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
         {
             return v.VisitDereference(this, context);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitDereference(this);
         }
 
+        /// <inheritdoc/>
 		public override void Accept(IExpressionVisitor visit)
 		{
 			visit.VisitDereference(this);
 		}
 
+        /// <inheritdoc/>
 		public override Expression CloneExpression()
 		{
 			return new Dereference(DataType, this.Expression.CloneExpression());

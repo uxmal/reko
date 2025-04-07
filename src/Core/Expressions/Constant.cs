@@ -33,16 +33,32 @@ namespace Reko.Core.Expressions
     /// </summary>
 	public abstract class Constant : AbstractExpression, MachineOperand
     {
-        protected Constant(DataType t)
-            : base(t)
+        /// <summary>
+        /// Initializes the constant with the given data type.
+        /// </summary>
+        /// <param name="dt">Datatype of the constant.</param>
+        protected Constant(DataType dt)
+            : base(dt)
         {
         }
 
+        /// <summary>
+        /// Create and return a new integer constant.
+        /// </summary>
+        /// <param name="dt">Datatype of the constant.</param>
+        /// <param name="value">Raw bit representation of the constant.</param>
+        /// <returns>An instance of the <see cref="Constant"/> class.</returns>
         public static Constant Create(DataType dt, ulong value)
         {
             return Create(dt, (long) value);
         }
 
+        /// <summary>
+        /// Create and return a new integer constant.
+        /// </summary>
+        /// <param name="dt">Datatype of the constant.</param>
+        /// <param name="value">Raw bit representation of the constant.</param>
+        /// <returns>An instance of the <see cref="Constant"/> class.</returns>
         public static Constant Create(DataType dt, long value)
         {
             Debug.Assert(dt.BitSize > 0, "Bad constant size; this should never happen.");
@@ -131,17 +147,31 @@ namespace Reko.Core.Expressions
             throw new NotSupportedException($"Constants of type {dt} are not supported.");
         }
 
+        /// <summary>
+        /// Creates an integral constant from the given <see cref="DataType"/> <paramref name="dt"/>
+        /// and a big integer <paramref name="value"/>.
+        /// </summary>
+        /// <param name="dt">The data type </param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static Constant Create(DataType dt, BigInteger value)
         {
             if (dt.BitSize > 64)
                 return new BigConstant(dt, value);
-            else
-            {
-                var uValue = value & Bits.Mask(dt.BitSize);
-                return Create(dt, (ulong) uValue);
-            }
+            var uValue = value & Bits.Mask(dt.BitSize);
+            return Create(dt, (ulong) uValue);
         }
 
+        /// <summary>
+        /// Replicate the given <paramref name="valueToReplicate"/> enough times to 
+        /// be the same size as <paramref name="dt"/> and return a new <see cref="Constant"/>
+        /// instance.
+        /// </summary>
+        /// <param name="dt">Datatype that indicates the target size of the
+        /// replicated value.</param>
+        /// <param name="valueToReplicate">The value to replicate.</param>
+        /// <returns>A new constant consisting of the replicated value.
+        /// </returns>
         public static Constant Replicate(DataType dt, Constant valueToReplicate)
         {
             if (dt.BitSize > 64)
@@ -158,16 +188,19 @@ namespace Reko.Core.Expressions
             return Create(dt, result);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
         {
             return v.VisitConstant(this, context);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitConstant(this);
         }
 
+        /// <inheritdoc/>
         public override void Accept(IExpressionVisitor v)
         {
             v.VisitConstant(this);
@@ -206,11 +239,25 @@ namespace Reko.Core.Expressions
             throw new ArgumentException($"Data type {dt} is not a floating point type.");
         }
 
+        /// <summary>
+        /// Create a 32-bit floating point constant from the give 32-bit IEEE 
+        /// bit pattern.
+        /// </summary>
+        /// <param name="bits">Bit representation of an IEEE 32-bit floating point number.</param>
+        /// <returns>A new floating point constant.
+        /// </returns>
         public static Constant FloatFromBitpattern(long bits)
         {
             return ConstantReal32.CreateFromBits(PrimitiveType.Real32, (int) bits);
         }
 
+        /// <summary>
+        /// Create a 64-bit floating point constant from the given 64-bit IEEE 
+        /// bit pattern.
+        /// </summary>
+        /// <param name="bits">Bit representation of an IEEE 64-bit floating point number.</param>
+        /// <returns>A new floating point constant.
+        /// </returns>
         public static Constant DoubleFromBitpattern(long bits)
         {
             return Constant.Real64(BitConverter.Int64BitsToDouble(bits));

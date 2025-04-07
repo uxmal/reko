@@ -25,7 +25,7 @@ using System.Collections.Generic;
 namespace Reko.Core.Expressions
 {
 	/// <summary>
-	/// Corresponds to the :: operator of C++; 
+	/// Corresponds to the `::` operator of C++; 
 	/// </summary>
 	public class ScopeResolution : AbstractExpression
 	{

@@ -19,12 +19,7 @@
 #endregion
 
 using Reko.Core.Expressions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Reko.Core.Types;
-using Reko.Core.Machine;
 
 namespace Reko.Core
 {
@@ -34,12 +29,64 @@ namespace Reko.Core
     /// </summary>
     public interface IStorageBinder
     {
+        /// <summary>
+        /// Ensures that an identifier is bound for the given <see cref="Storage"/>,
+        /// creating a new identifier if necessary.
+        /// </summary>
+        /// <param name="stgForeign">The <see cref="Storage"/> to be ensured.</param>
+        /// <returns>The existing <see cref="Identifier"/> for the given <see cref="Storage"/>,
+        /// or a newly created identifier if the storage wasn't present before.
+        /// </returns>
         Identifier EnsureIdentifier(Storage stgForeign);
+
+        /// <summary>
+        /// Ensures that an identifier is bound for the given <see cref="RegisterStorage"/>.
+        /// </summary>
+        /// <param name="reg">Register to bind.</param>
+        /// <returns>The existing <see cref="Identifier"/> for the given <see cref="Storage"/>,
+        /// or a newly created identifier if the storage wasn't present before.
+        /// </returns>
         Identifier EnsureRegister(RegisterStorage reg);
+
+        /// <summary>
+        /// Ensures that an identifier is bound for the given <see cref="FlagGroupStorage"/>.
+        /// </summary>
+        /// <param name="grf">Flag group to bind.</param>
+        /// <returns>The existing <see cref="Identifier"/> for the given <see cref="Storage"/>,
+        /// or a newly created identifier if the storage wasn't present before.
+        /// </returns>
         Identifier EnsureFlagGroup(FlagGroupStorage grf);
+
+
+        /// <summary>
+        /// Ensures that an identifier is bound for the given <see cref="FlagGroupStorage"/>.
+        /// </summary>
+        /// <param name="flagRegister">The flag register the flag group is located in.</param>
+        /// <param name="flagGroupBits">Flag group to bind.</param>
+        /// <param name="name">Name to give the flag group.</param>
+        /// <returns>The existing <see cref="Identifier"/> for the given <see cref="Storage"/>,
+        /// or a newly created identifier if the storage wasn't present before.
+        /// </returns>
         Identifier EnsureFlagGroup(RegisterStorage flagRegister, uint flagGroupBits, string name);
-        Identifier EnsureFpuStackVariable(int v, DataType dataType);
+
+        /// <summary>
+        /// Ensures that an identifier is bound for an FPU stack entry at the given <paramref name="offset"/>.
+        /// </summary>
+        /// <param name="offset">Offset from the FPU stack top (upon entry to the procedure).</param>
+        /// <param name="dataType">Data type of the identifier.</param>
+        /// <returns>An existing <see cref="Identifier"/>,
+        /// or a newly created identifier if the storage wasn't present before.
+        /// </returns>
+        Identifier EnsureFpuStackVariable(int offset, DataType dataType);
         Identifier EnsureOutArgument(Identifier idOrig, DataType dtOutArgument);
+
+        /// <summary>
+        /// Ensures that an identifier is bound for the <see cref="SequenceStorage"/>.
+        /// </summary>
+        /// <param name="sequence">A <see cref="SequenceStorage"/> modeling an orderd register tuple.</param>
+        /// <returns>An existing <see cref="Identifier"/>,
+        /// or a newly created identifier if the sequence storage wasn't present before.
+        /// </returns>
         Identifier EnsureSequence(SequenceStorage sequence);
         Identifier EnsureSequence(DataType dataType, params Storage[] elements);
         Identifier EnsureSequence(DataType dataType, string name, params Storage [] elements);

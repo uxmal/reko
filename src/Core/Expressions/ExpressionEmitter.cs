@@ -298,12 +298,12 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
-        /// Generates a simple Dereference operation ('*a' in the C language
+        /// Generates a simple Dereference operation ('<c>*a</c>' in the C language
         /// family). If you don't know the exact data type of <paramref name="a"/>,
-        /// use one of the `Mem...` methods instead.
+        /// use one of the <c>Mem...</c> methods instead.
         /// </summary>
-        /// <param name="a"></param>
-        /// <returns>A C-stype dereference.</returns>
+        /// <param name="a">Expression to dereference.</param>
+        /// <returns>A C-style dereference.</returns>
         public Dereference Deref(Expression a)
         {
             return new Dereference(a.DataType, a);
@@ -1116,6 +1116,14 @@ namespace Reko.Core.Expressions
             return new BinaryExpression(Operator.SDiv, b.DataType, a, b);
         }
 
+        /// <summary>
+        /// Generate a signed integer division, returning a value of the 
+        /// specified type <paramref name="dt"/>.
+        /// </summary>
+        /// <param name="dt">Data type of the quotient.</param>
+        /// <param name="a">Dividend.</param>
+        /// <param name="b">Divisor.</param>
+        /// <returns>A signed division expression.</returns>
         public BinaryExpression SDiv(DataType dt, Expression a, Expression b)
         {
             return new BinaryExpression(Operator.SDiv, dt, a, b);
@@ -1127,7 +1135,7 @@ namespace Reko.Core.Expressions
         /// segmented pointers on architectures like the x86.
         /// </summary>
         /// <remarks>
-        /// This method is ised for the very common case of a two-element
+        /// This method is used for the very common case of a two-element
         /// sequence, especially in contexts where x86-style segment:offset
         /// pairs exist.</remarks>
         /// <param name="head">Most significant part of value.</param>

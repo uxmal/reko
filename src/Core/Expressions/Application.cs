@@ -20,7 +20,6 @@
 
 using Reko.Core.Operators;
 using Reko.Core.Types;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -31,35 +30,54 @@ namespace Reko.Core.Expressions
 	/// </summary>
 	public class Application : AbstractExpression
 	{
+        /// <summary>
+        /// Creates an instance of the <see cref="Application"/> class.
+        /// </summary>
+        /// <param name="proc">Procedure to be invoked.</param>
+        /// <param name="retVal">Data type of the returned value.</param>
+        /// <param name="arguments">Arguments to the procedure call.</param>
 		public Application(Expression proc, DataType retVal, params Expression [] arguments) : base(retVal)
 		{
 			this.Procedure = proc;
 			this.Arguments = arguments;
 		}
 
+        /// <inheritdoc/>
         public override IEnumerable<Expression> Children
         {
             get { return new Expression[] { Procedure }.Concat(Arguments); }
         }
 
+        /// <summary>
+        /// The procedure being called. This is usually a <see cref="ProcedureConstant"/>
+        /// but can also be any <see cref="Expression"/>.
+        /// </summary>
         public Expression Procedure { get; set; }
+
+        /// <summary>
+        /// The arguments to the procedure call.
+        /// </summary>
         public Expression[] Arguments { get; set; }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
         {
             return v.VisitApplication(this, context);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitApplication(this);
         }
 
+        /// <inheritdoc/>
 		public override void Accept(IExpressionVisitor v)
 		{
 			v.VisitApplication(this);
 		}
 
+        /// <inheritdoc/>
 		public override Expression CloneExpression()
 		{
 			Expression [] p = new Expression[Arguments.Length];
@@ -70,6 +88,7 @@ namespace Reko.Core.Expressions
 			return new Application(this.Procedure, this.DataType, p);
 		}
 
+        /// <inheritdoc/>
 		public override Expression Invert()
 		{
 			return new UnaryExpression(Operator.Not, PrimitiveType.Bool, this);

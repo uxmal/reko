@@ -18,8 +18,6 @@
  */
 #endregion
 
-using Reko.Core.Code;
-
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -43,11 +41,13 @@ namespace Reko.Core.Types
 			this.Number = n;
 		}
 
+        /// <inheritdoc/>
         public override void Accept(IDataTypeVisitor v)
         {
             v.VisitTypeVariable(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
             return v.VisitTypeVariable(this);
@@ -62,6 +62,7 @@ namespace Reko.Core.Types
             set { eqClass = value;  }
         }
 
+        /// <inheritdoc/>
         public override DataType Clone(IDictionary<DataType, DataType>? clonedTypes)
 		{
 			return this;
@@ -76,8 +77,6 @@ namespace Reko.Core.Types
             get { return dt!; }
             set { MonitorChange(dt, value); dt = value; }
         }
-
-
         private DataType? dt;
 
 		public int Number { get; }
@@ -92,7 +91,8 @@ namespace Reko.Core.Types
 			set { MonitorChange(dtOriginal, value); dtOriginal = value; }
 		}
 
-		public override int Size
+        /// <inheritdoc/>
+        public override int Size
 		{
 			get { return 0; }
 			set { ThrowBadSize(); }

@@ -55,7 +55,7 @@ namespace Reko.Arch.M68k.Rewriter
         /// <summary>
         /// Rewrite operands being used as sources.
         /// </summary>
-        /// <param name="operand"></param>
+        /// <param name="operand">Operand being rewritten.</param>
         /// <param name="addrInstr">Address of the current instruction</param>
         public Expression RewriteSrc(MachineOperand operand, Address addrInstr, bool addressAsAddress = false)
         {

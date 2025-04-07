@@ -19,10 +19,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Core.Configuration
 {
@@ -65,6 +61,7 @@ namespace Reko.Core.Configuration
         /// </summary>
         public ListOption_v1[] Choices { get; set; } = Array.Empty<ListOption_v1>();
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             return Text ?? "";

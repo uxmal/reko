@@ -18,7 +18,7 @@
  */
 #endregion
 #pragma warning disable IDE1006
-
+#pragma warning disable CS1591
 using System;
 
 namespace Reko.Core.Expressions

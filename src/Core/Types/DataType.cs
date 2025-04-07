@@ -80,9 +80,30 @@ namespace Reko.Core.Types
         /// </remarks>
         public abstract int Size { get; set; }
 
+        /// <summary>
+        /// Accepts a visitor.
+        /// </summary>
+        /// <param name="v">Visitor instance.</param>
         public abstract void Accept(IDataTypeVisitor v);
+
+        /// <summary>
+        /// Accepts a visitor returning <typeparamref name="T"/>.
+        /// </summary>
+        /// <param name="v">Visitor instance.</param>
+        /// <returns>The vistor's return value of type <typeparamref name="T"/>.
+        /// </returns>
         public abstract T Accept<T>(IDataTypeVisitor<T> v);
+
+        /// <summary>
+        /// Clones the data type, creating a new instance of the same type
+        /// if the data type is mutable.
+        /// </summary>
+        /// <param name="clonedTypes">A dictionary mapping original data types to
+        /// their cloned counterparts.
+        /// </param>
+        /// <returns>The cloned data type.</returns>
         public abstract DataType Clone(IDictionary<DataType, DataType>? clonedTypes);
+
         object ICloneable.Clone() { return Clone(); }
 
         public DataType Clone()

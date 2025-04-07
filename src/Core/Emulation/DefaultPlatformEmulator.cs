@@ -48,7 +48,7 @@ namespace Reko.Core.Emulation
         public Dictionary<Address, ExternalProcedure> InterceptedCalls { get; }
 
         /// <summary>
-        /// Dummy implementation of <see cref="IPlatformEmulator.InterceptCall(IProcessorEmulator, uint)"/>.
+        /// Dummy implementation of <see cref="IPlatformEmulator.InterceptCall(IProcessorEmulator, ulong)"/>.
         /// No calls are actually intercepted.
         /// </summary>
         /// <param name="emulator">Ignored.</param>

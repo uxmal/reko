@@ -47,6 +47,13 @@ namespace Reko.Core.Operators
             return ApplyConstants(dt, cs[0], cs[1]);
         }
 
+        /// <summary>
+        /// Applies the operator to two constants.
+        /// </summary>
+        /// <param name="dt">Datatype of the result.</param>
+        /// <param name="c1">The left operand.</param>
+        /// <param name="c2">The right operand.</param>
+        /// <returns>The resulting value.</returns>
         public abstract Constant ApplyConstants(DataType dt, Constant c1, Constant c2);
 
 

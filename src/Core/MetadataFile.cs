@@ -28,7 +28,14 @@ namespace Reko.Core
     [Designer("Reko.Gui.Design.MetadataFileDesigner,Reko.Gui")]
     public class MetadataFile 
     {
+        /// <summary>
+        /// Executable module associated with this metadata file.
+        /// </summary>
         public string? ModuleName { get; set; }
+
+        /// <summary>
+        /// The location from which the metadat file was loaded.
+        /// </summary>
         public ImageLocation? Location { get; set; }
     }
 }

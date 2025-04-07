@@ -25,6 +25,10 @@ using System.Numerics;
 
 namespace Reko.Core.Operators
 {
+    /// <summary>
+    /// Base class for operators. This class is used to model expressions
+    /// that have counterparts in the C language. 
+    /// </summary>
     public abstract class Operator : IFunctionalUnit
     {
         public static readonly BinaryOperator IAdd = new IAddOperator();

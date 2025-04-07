@@ -28,45 +28,65 @@ using System.Threading.Tasks;
 
 namespace Reko.Core.Expressions
 {
+    /// <summary>
+    /// Represents a string constant.
+    /// </summary>
     public class StringConstant : AbstractExpression
     {
         private readonly string str;
 
+        /// <summary>
+        /// Creates an instance of the <see cref="StringConstant"/> class.
+        /// </summary>
+        /// <param name="type">The data type of the string.</param>
+        /// <param name="str">The literal string value.</param>
         public StringConstant(DataType type, string str)
             : base(type)
         {
             this.str = str;
         }
 
+        /// <summary>
+        /// The literal string value.
+        /// </summary>
         public string Literal => str;
 
+        /// <summary>
+        /// The length of the string.
+        /// </summary>
         public int Length => str.Length;
 
+        /// <inheritdoc/>
         public override void Accept(IExpressionVisitor visitor)
         {
             visitor.VisitStringConstant(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(ExpressionVisitor<T> visitor)
         {
             return visitor.VisitStringConstant(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(ExpressionVisitor<T, C> visitor, C context)
         {
             return visitor.VisitStringConstant(this, context);
         }
 
+        /// <inheritdoc/>
         public override Expression CloneExpression()
         {
             return this;
         }
 
+        /// <inheritdoc/>
         public override IEnumerable<Expression> Children
         {
             get { yield break; }
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             return str;

@@ -395,9 +395,17 @@ namespace Reko.Core
         /// inclusion of resources in the binary itself (MacOS classic resource forks also count)
         /// </summary>
         public List<ProgramResource> Resources { get; private set; }
-    
-		public TypeFactory TypeFactory { get; private set; }
+
+        /// <summary>
+        /// The type factory is used to create new types.
+        /// </summary>
+
+        public TypeFactory TypeFactory { get; private set; }
 		
+        /// <summary>
+        /// The type store is used to maintain the types discovered during
+        /// decompilation.
+        /// </summary>
 		public TypeStore TypeStore { get; private set; }
 
         /// <summary>

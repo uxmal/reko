@@ -19,10 +19,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Core
 {
@@ -120,6 +116,7 @@ namespace Reko.Core
         // corresponding to a full 64-bit address space without using BigInteger.
         public long Length { get; }
 
+        /// <inheritdoc/>
         public override bool Equals(object? obj)
         {
             if (obj is not ProgramAddressRange that)
@@ -127,6 +124,7 @@ namespace Reko.Core
             return this == that;
         }
 
+        /// <inheritdoc/>
         public override int GetHashCode()
         {
             return HashCode.Combine(this.Program, this.Address, this.Length);
@@ -144,6 +142,7 @@ namespace Reko.Core
             !(left == right);
 
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             if (Length > 1)

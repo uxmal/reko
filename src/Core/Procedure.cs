@@ -94,6 +94,9 @@ namespace Reko.Core
         /// </summary>
         public Block ExitBlock { get; }
 
+        /// <summary>
+        /// <see cref="Reko.Core.Frame"/> associated with this procedure.
+        /// </summary>
         public Frame Frame { get; }
 
         /// <summary>
@@ -120,7 +123,7 @@ namespace Reko.Core
 		/// <param name="name">Name of the procedure.</param>
 		/// <param name="addr">Address of the procedure's entry point.</param>
 		/// <param name="f">The <see cref="Frame"/> of this procedure.</param>
-		/// <returns></returns>
+		/// <returns>A new <see cref="Procedure"/> instance.</returns>
 		public static Procedure Create(IProcessorArchitecture arch, string? name, Address addr, Frame f)
 		{
 			name ??= NamingPolicy.Instance.ProcedureName(addr);

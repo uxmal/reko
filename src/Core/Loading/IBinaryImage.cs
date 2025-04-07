@@ -38,7 +38,7 @@ public interface IBinaryImage
     EndianServices Endianness { get; }
 
     /// <summary>
-    /// The <see cref="IBinarySection"/>s contained in the biary object.
+    /// The <see cref="IBinarySection"/>s contained in the binary object.
     /// </summary>
     /// <remarks>
     /// Not all binary files will contain sections.
@@ -56,7 +56,7 @@ public interface IBinaryImage
     IBinaryDebugInfo? DebugInfo { get; }
 
     /// <summary>
-    /// Symbols contained in the biary object.
+    /// Symbols contained in the binary object.
     /// </summary>
     IReadOnlyList<IBinarySymbol> Symbols { get; }
 
@@ -79,7 +79,9 @@ public interface IBinaryImage
     /// <summary>
     /// Loads the binary image from the specified file.
     /// </summary>
+    /// <param name="addrLoad">An optional base address. If none is provided,
+    /// the loader will loader the image at its preferred address.</param>
     /// <returns>A <see cref="Program"/> instance.
     /// </returns>
-    Program Load();
+    Program Load(Address? addrLoad = null);
 }

@@ -215,7 +215,7 @@ namespace Reko.Core
         /// <paramref name="language"/>
         /// </summary>
         /// <param name="t">Primitive type</param>
-        /// <param name="language">Programming language to use</param>
+        /// <param name="language">Programming language to use.</param>
         /// <returns></returns>
         string? GetPrimitiveTypeName(PrimitiveType t, string language);
 
@@ -355,8 +355,15 @@ namespace Reko.Core
         /// </returns>
         Address? MakeAddressFromConstant(Constant c, bool codeAlign);
 
+        /// <summary>
+        /// Given a constant <pararef name="uAddr" /> creates a corresponding <see cref="Address"/>.
+        /// </summary>
+        /// <param name="uAddr">The constant to use to create an address.</param>
+        /// <param name="codeAlign">If true, ensures that the resulting <see cref="Address"/> is correctly
+        /// aligned for code addresses.</param>
+        /// <returns>An <see cref="Address"/>.
+        /// </returns>
         Address MakeAddressFromLinear(ulong uAddr, bool codeAlign);
-
 
         /// <summary>
         /// Given a sequence of <see cref="Storage"/>s, determine whether one

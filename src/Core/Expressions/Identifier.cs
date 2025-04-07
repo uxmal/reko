@@ -35,31 +35,62 @@ namespace Reko.Core.Expressions
     /// </remarks>
 	public class Identifier : AbstractExpression
 	{
+        /// <summary>
+        /// Creates an instance of the <see cref="Identifier"/> class.
+        /// </summary>
+        /// <param name="name">The name of the identifier.</param>
+        /// <param name="type">The data type of the identifier.</param>
+        /// <param name="stg">The backing <see cref="Storage"/> of the identifier.
+        /// </param>
 		public Identifier(string name, DataType type, Storage stg) : base(type)
 		{
 			this.Name = name;
 			this.Storage = stg;
 		}
 
-        public static Identifier Create(Storage reg)
+        /// <summary>
+        /// Create an identifier whose backing <see cref="Reko.Core.Storage"/> is <paramref name="stg"/>.
+        /// </summary>
+        /// <param name="stg">Backing storage.</param>
+        /// <returns>A new <see cref="Identifier"/> with the same name and 
+        /// data type as the storage.</returns>
+        public static Identifier Create(Storage stg)
         {
-            return new Identifier(reg.Name, reg.DataType, reg);
+            return new Identifier(stg.Name, stg.DataType, stg);
         }
 
+        /// <summary>
+        /// Creates a temporary and unique identifier named <paramref name="name"/> and with
+        /// the data type <paramref name="dt"/>.
+        /// </summary>
+        /// <param name="name">Name to give the identifier.</param>
+        /// <param name="dt">Date type for the identifier.</param>
+        /// <returns>A new identifier.</returns>
         public static Identifier CreateTemporary(string name, DataType dt)
         {
             var tmp = new TemporaryStorage(name, 0, dt);
             return new Identifier(name, dt, tmp);
         }
 
+        /// <summary>
+        /// Creates a identifier for a global variable named <paramref name="name" />
+        /// and with the data type <paramref name="dt"/>.
+        /// </summary>
+        /// <param name="name">Name to give the identifier.</param>
+        /// <param name="dt">Date type for the identifier.</param>
+        /// <returns>A new identifier.</returns>
         public static Identifier Global(string name, DataType dt)
         {
             var globalStorage = new GlobalStorage(name, dt);
             return new Identifier(name, dt, globalStorage);
         }
 
+        /// <summary>
+        /// The name of this identifier.
+        /// </summary>
         public string Name { get; }
 
+        /// <inheritdoc/>
         public override IEnumerable<Expression> Children
         {
             get { yield break; }
@@ -79,28 +110,33 @@ namespace Reko.Core.Expressions
         /// </remarks>
         public Storage Storage { get; }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
         {
             return v.VisitIdentifier(this, context);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitIdentifier(this);
         }
 
+        /// <inheritdoc/>
 		public override void Accept(IExpressionVisitor v)
 		{
 			v.VisitIdentifier(this);
 		}
 
+        /// <inheritdoc/>
 		public override Expression CloneExpression()
-		{
+        {
 			return this;
 		}
 
+        /// <inheritdoc/>
 		public override Expression Invert()
-		{
+        {
 			return new UnaryExpression(Operator.Not, PrimitiveType.Bool, this);
 		}
 

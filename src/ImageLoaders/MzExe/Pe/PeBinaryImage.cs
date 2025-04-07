@@ -62,7 +62,7 @@ public class PeBinaryImage : IBinaryImage
     public List<PeExport> Exports { get; }
     public int ExportBaseOrdinal { get; internal set; }
 
-    Program IBinaryImage.Load()
+    Program IBinaryImage.Load(Address? addrBase)
     {
         throw new System.NotImplementedException();
     }

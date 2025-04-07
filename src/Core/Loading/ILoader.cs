@@ -121,12 +121,31 @@ namespace Reko.Core.Loading
         //$TODO: deprecate this method.
         Program LoadRawImage(byte[] bytes, LoadDetails raw);
 
+        /// <summary>
+        /// Assembles the assembly language source file located at <paramref name="asmfileLocation"/>
+        /// into a new <see cref="Program"/>.
+        /// </summary>
+        /// <param name="asmfileLocation">The location of the assembly language source file.</param>
+        /// <param name="asm">Assembler to be used for assembling.</param>
+        /// <param name="platform">Platform to be used for assembling.</param>
+        /// <param name="loadAddress">Address at which the assembled program should be loaded.</param>
+        /// <returns>A <see cref="Program"/> instance ready to be analyzed.</returns>
         Program AssembleExecutable(
             ImageLocation asmfileLocation,
             IAssembler asm,
             IPlatform platform,
             Address loadAddress);
 
+        /// <summary>
+        /// Assembles the assembly language source bytes, given a location at <paramref name="asmfileLocation"/>,
+        /// into a new <see cref="Program"/>.
+        /// </summary>
+        /// <param name="asmfileLocation">The location of the assembly language source file.</param>
+        /// <param name="bytes">The raw bytes of the assembly language program.</param>
+        /// <param name="asm">Assembler to be used for assembling.</param>
+        /// <param name="platform">Platform to be used for assembling.</param>
+        /// <param name="loadAddress">Address at which the assembled program should be loaded.</param>
+        /// <returns>A <see cref="Program"/> instance ready to be analyzed.</returns>
         Program AssembleExecutable(
             ImageLocation asmfileLocation,
             byte[] bytes,
@@ -181,7 +200,7 @@ namespace Reko.Core.Loading
 
         /// <summary>
         /// Name of the processor architecture to use. Architecture names are found 
-        /// in the reko.config file.
+        /// in the <c>reko.config</c> file.
         /// </summary>
         public string? ArchitectureName;
         

@@ -38,6 +38,9 @@ namespace Reko.Core.Collections
             public T Value;
         }
 
+        /// <summary>
+        /// Creates an empty priority queue.
+        /// </summary>
         public PriorityQueue()
         {
             heap = new HeapItem[4];

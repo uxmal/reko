@@ -29,6 +29,12 @@ namespace Reko.Core.Expressions
     /// </summary>
     public class SegmentedPointer : AbstractExpression
     {
+        /// <summary>
+        /// Creates and instance of a <see cref="SegmentedPointer"/>.
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <param name="basePointer"></param>
+        /// <param name="offset"></param>
         public SegmentedPointer(DataType dt, Expression basePointer, Expression offset)
             : base(dt)
         {

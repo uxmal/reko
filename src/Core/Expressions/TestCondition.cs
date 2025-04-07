@@ -19,9 +19,7 @@
 #endregion
 
 using Reko.Core.Types;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Reko.Core.Expressions
 {
@@ -46,31 +44,38 @@ namespace Reko.Core.Expressions
         public ConditionCode ConditionCode { get; }
         public Expression Expression { get; }
 
+
+        /// <inheritdoc/>
         public override IEnumerable<Expression> Children
         {
             get { yield return Expression; }
         }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
         {
             return v.VisitTestCondition(this, context);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(ExpressionVisitor<T> visitor)
         {
             return visitor.VisitTestCondition(this);
         }
 
+        /// <inheritdoc/>
         public override void Accept(IExpressionVisitor visitor)
         {
             visitor.VisitTestCondition(this);
         }
 
+        /// <inheritdoc/>
         public override Expression CloneExpression()
         {
             return new TestCondition(ConditionCode, Expression);
         }
 
+        /// <inheritdoc/>
         public override Expression Invert()
         {
             ConditionCode cc = this.ConditionCode.Invert();

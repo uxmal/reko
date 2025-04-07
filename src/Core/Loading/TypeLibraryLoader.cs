@@ -24,10 +24,19 @@ using System.IO;
 
 namespace Reko.Core.Loading
 {
+    /// <summary>
+    /// Metadata loader class that can load Reko XML type libraries.
+    /// </summary>
     public class TypeLibraryLoader : MetadataLoader
     {
         private Stream stream;
 
+        /// <summary>
+        /// Creates an instance of a Reko type library loader.
+        /// </summary>
+        /// <param name="services"><see cref="IServiceProvider"/> instance.</param>
+        /// <param name="imageLocation">The location of the type library.</param>
+        /// <param name="bytes">The raw bytes of the type library.</param>
         public TypeLibraryLoader(IServiceProvider services, ImageLocation imageLocation, byte[] bytes)
             : base(services, imageLocation, bytes)
         {

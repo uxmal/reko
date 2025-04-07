@@ -29,41 +29,60 @@ namespace Reko.Core.Expressions
     /// </summary>
 	public class UnaryExpression : AbstractExpression
 	{
+        /// <summary>
+        /// Creates an instance of the <see cref="UnaryExpression"/> class.
+        /// </summary>
+        /// <param name="op">The operator for the unary expression.</param>
+        /// <param name="type">The result of the unary expression.</param>
+        /// <param name="expr">The operand of the expression.</param>
 		public UnaryExpression(UnaryOperator op, DataType type, Expression expr) : base(type)
 		{
 			this.Operator = op; this.Expression = expr;
 		}
 
+        /// <summary>
+        /// The operator for the unary expression.
+        /// </summary>
         public UnaryOperator Operator { get; }
+
+        /// <summary>
+        /// The operand of the expression.
+        /// </summary>
         public Expression Expression { get; }
 
+        /// <inheritdoc/>
         public override IEnumerable<Expression> Children
         {
             get { yield return Expression; }
         }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
         {
             return v.VisitUnaryExpression(this, context);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitUnaryExpression(this);
         }
 
+        /// <inheritdoc/>
 		public override void Accept(IExpressionVisitor v)
 		{
 			v.VisitUnaryExpression(this);
 		}
 
+        /// <inheritdoc/>
 		public override Expression CloneExpression()
 		{
             return new UnaryExpression(Operator, DataType.Clone(), Expression.CloneExpression());
 		}
 
+        /// <inheritdoc/>
 		public override Expression Invert()
-		{
+        {
 			if (Operator == Operators.Operator.Not)
 				return Expression;
 			else

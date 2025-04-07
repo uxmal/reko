@@ -300,9 +300,9 @@ namespace Reko.Environments.Windows
             }
         }
 
-        public bool InterceptCall(IProcessorEmulator emu, TWord l)
+        public bool InterceptCall(IProcessorEmulator emu, ulong l)
         {
-            if (!this.InterceptedCalls.TryGetValue(Address.Ptr32(l), out ExternalProcedure? epProc))
+            if (!this.InterceptedCalls.TryGetValue(Address.Ptr32((uint)l), out ExternalProcedure? epProc))
                 return false;
             ((SimulatedProc)epProc).Emulator(emu);
             return true;

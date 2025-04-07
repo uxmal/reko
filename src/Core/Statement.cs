@@ -29,6 +29,12 @@ namespace Reko.Core
     /// </summary>
 	public class Statement
 	{
+        /// <summary>
+        /// Creates an instance of the <see cref="Statement"/> class.
+        /// </summary>
+        /// <param name="address">The address associated with the statement.</param>
+        /// <param name="instr">The <see cref="Instruction"/> associated with the statement.</param>
+        /// <param name="block">The basic block associated with the statement.</param>
         public Statement(Address address, Instruction instr, Block block)
         {
             this.Address = address;
@@ -36,10 +42,22 @@ namespace Reko.Core
             this.Block = block;
         }
 
+        /// <summary>
+        /// Basic block in which this statement is located.
+        /// </summary>
         public Block Block { get; set; }
+
+        /// <summary>
+        /// The instruction associated with this statement.
+        /// </summary>
         public Instruction Instruction { get; set; }
+
+        /// <summary>
+        /// The address of the instruction associated with this statement.
+        /// </summary>
         public Address Address { get; }
 
+        /// <inheritdoc />
 		public override string ToString()
 		{
 			return Instruction.ToString();

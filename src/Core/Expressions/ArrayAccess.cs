@@ -29,35 +29,54 @@ namespace Reko.Core.Expressions
     /// </summary>
 	public class ArrayAccess : AbstractExpression
 	{
+        /// <summary>
+        /// Creates an instance of the <see cref="ArrayAccess"/> class.
+        /// </summary>
+        /// <param name="elementType">The data type of the array's elements.</param>
+        /// <param name="array">The array being accessed.</param>
+        /// <param name="index">The index into the array.</param>
+        /// <exception cref="ArgumentNullException"></exception>
 		public ArrayAccess(DataType elementType, Expression array, Expression index) : base(elementType)
 		{
             Array = array ?? throw new ArgumentNullException(nameof(array));
             Index = index ?? throw new ArgumentNullException(nameof(index));
 		}
 
+        /// <summary>
+        /// The array being accessed.
+        /// </summary>
         public Expression Array { get; }
+
+        /// <summary>
+        /// The index into the array.
+        /// </summary>
         public Expression Index { get; }
 
+        /// <inheritdoc/>
         public override IEnumerable<Expression> Children
         {
             get { yield return Array;  yield return Index; }
         }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
         {
             return v.VisitArrayAccess(this, context);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitArrayAccess(this);
         }
 
+        /// <inheritdoc/>
 		public override void Accept(IExpressionVisitor visit)
 		{
 			visit.VisitArrayAccess(this);
 		}
 
+        /// <inheritdoc/>
 		public override Expression CloneExpression()
 		{
 			return new ArrayAccess(DataType, Array.CloneExpression(), Index.CloneExpression());

@@ -55,26 +55,31 @@ namespace Reko.Core.Expressions
 
         public Expression Expression { get; }
 
+        /// <inheritdoc/>
         public override IEnumerable<Expression> Children
         {
             get { yield return Expression; }
         }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
         {
             return v.VisitConditionOf(this, context);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(ExpressionVisitor<T> visitor)
         {
             return visitor.VisitConditionOf(this);
         }
 
+        /// <inheritdoc/>
 		public override void Accept(IExpressionVisitor v)
 		{
 			v.VisitConditionOf(this);
 		}
 
+        /// <inheritdoc/>
 		public override Expression CloneExpression()
 		{
 			return new ConditionOf(Expression.CloneExpression());

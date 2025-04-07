@@ -76,7 +76,7 @@ namespace Reko.ImageLoaders.Elf
             this.iSections.Add(section);
         }
 
-        public Program Load()
+        public Program Load(Address? addrBase)
         {
             throw new NotImplementedException();
         }

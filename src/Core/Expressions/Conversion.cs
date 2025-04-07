@@ -53,6 +53,7 @@ namespace Reko.Core.Expressions
             this.Expression = exp;
         }
 
+        /// <inheritdoc/>
         public override IEnumerable<Expression> Children
         {
             get { yield return Expression; }
@@ -69,21 +70,25 @@ namespace Reko.Core.Expressions
         /// </summary>
         public DataType SourceDataType { get; }
 
+        /// <inheritdoc/>
         public override void Accept(IExpressionVisitor visitor)
         {
             visitor.VisitConversion(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(ExpressionVisitor<T> visitor)
         {
             return visitor.VisitConversion(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(ExpressionVisitor<T, C> visitor, C context)
         {
             return visitor.VisitConversion(this, context);
         }
 
+        /// <inheritdoc/>
         public override Expression CloneExpression()
         {
             return new Conversion(this.Expression.CloneExpression(), this.SourceDataType, this.DataType);

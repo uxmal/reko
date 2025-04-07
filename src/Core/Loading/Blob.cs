@@ -26,14 +26,24 @@ namespace Reko.Core.Loading
     /// </summary>
     public class Blob : ILoadedImage
     {
+        /// <summary>
+        /// Creates a new instance of the <see cref="Blob"/> class.
+        /// </summary>
+        /// <param name="location">The <see cref="ImageLocation"/> from which the blob
+        /// was loaded.</param>
+        /// <param name="image">The raw bytes of the blob.</param>
         public Blob(ImageLocation location, byte[] image)
         {
             this.Image = image;
             this.Location = location;
         }
 
+        /// <inheritdoc/>
         public ImageLocation Location { get; }
 
+        /// <summary>
+        /// The raw bytes of the blob.
+        /// </summary>
         public byte[] Image { get; }
 
         public T Accept<T, C>(ILoadedImageVisitor<T, C> visitor, C context)

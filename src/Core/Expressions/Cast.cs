@@ -20,7 +20,6 @@
 
 using Reko.Core.Operators;
 using Reko.Core.Types;
-using System;
 using System.Collections.Generic;
 
 namespace Reko.Core.Expressions
@@ -62,6 +61,7 @@ namespace Reko.Core.Expressions
 			return new Cast(DataType, Expression.CloneExpression());
 		}
 
+        /// <invert/>
         public override Expression Invert()
         { 
             return new UnaryExpression(Operator.Not, PrimitiveType.Bool, this);

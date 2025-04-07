@@ -30,26 +30,37 @@ namespace Reko.Core.Types
     /// </summary>
     public class ReferenceTo : DataType
     {
+        /// <summary>
+        /// Creates an instance of the <see cref="ReferenceTo"/>.
+        /// </summary>
+        /// <param name="referent"></param>
         public ReferenceTo(DataType referent)
             : base(Domain.Pointer)
         {
             this.Referent = referent;
-        } 
+        }
 
+        /// <summary>
+        /// The data type that this reference points to.
+        /// </summary>
         public DataType Referent { get; set; }
 
+        /// <inheritdoc/>
         public override int Size { get { return Referent.Size; } set { Referent.Size = value; } }
 
+        /// <inheritdoc/>
         public override void Accept(IDataTypeVisitor v)
         {
             v.VisitReference(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
             return v.VisitReference(this);
         }
 
+        /// <inheritdoc/>
         public override DataType Clone(IDictionary<DataType, DataType>? clonedTypes)
         {
             return new ReferenceTo(Referent.Clone(clonedTypes)) { Qualifier = this.Qualifier };

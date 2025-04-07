@@ -30,33 +30,46 @@ namespace Reko.Core.Expressions
 	/// </summary>
 	public class PhiFunction : AbstractExpression
 	{
+        /// <summary>
+        /// Creates a new instance of the <see cref="PhiFunction"/> class.
+        /// </summary>
+        /// <param name="joinType">The data type of the phi function.</param>
+        /// <param name="arguments">The arguments of the phi function.</param>
 		public PhiFunction(DataType joinType, params PhiArgument[] arguments) : base(joinType)
 		{
 			this.Arguments = arguments;
 		}
 
+        /// <summary>
+        /// The arguments of the phi function.
+        /// </summary>
         public PhiArgument[] Arguments { get; }
 
+        /// <inheritdoc/>
         public override IEnumerable<Expression> Children
         {
             get { return Arguments.Select(de => de.Value); }
         }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
         {
             return v.VisitPhiFunction(this, context);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitPhiFunction(this);
         }
 
+        /// <inheritdoc/>
 		public override void Accept(IExpressionVisitor v)
 		{
 			v.VisitPhiFunction(this);
 		}
 
+        /// <inheritdoc/>
         public override Expression CloneExpression()
         {
             var args = Arguments
@@ -72,19 +85,40 @@ namespace Reko.Core.Expressions
     /// </summary>
     public readonly struct PhiArgument
     {
-        public readonly Expression Value;
-        public readonly Block Block;
-
+        /// <summary>
+        /// Creates an instance of a phi function argument.
+        /// </summary>
+        /// <param name="block">The <see cref="Block">basic block</see> from which
+        /// this argument came.</param>
+        /// <param name="value">The value of this argument.</param>
         public PhiArgument(Block block, Expression value)
         {
             this.Value = value;
             this.Block = block;
         }
 
+        /// <summary>
+        /// Deconstructs the <see cref="PhiArgument"/> into its constituent parts.
+        /// </summary>
+        /// <param name="block">The <see cref="Block">basic block</see> from which
+        /// this argument came.</param>
+        /// <param name="value">The value of this argument.</param>
         public void Deconstruct(out Block block, out Expression value)
         {
             block = this.Block;
             value = this.Value;
         }
+
+        /// <summary>
+        /// The <see cref="Block">basic block</see> from which
+        /// this argument came.
+        /// </summary>
+        public Block Block { get; }
+
+        /// <summary>
+        /// The value of this argument.
+        /// </summary>
+        public Expression Value { get; }
+
     }
 }

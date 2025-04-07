@@ -47,7 +47,7 @@ namespace Reko.Environments.C64
             throw new NotImplementedException();
         }
 
-        public bool InterceptCall(IProcessorEmulator emulator, uint calledAddress)
+        public bool InterceptCall(IProcessorEmulator emulator, ulong calledAddress)
         {
             switch (calledAddress)
             {

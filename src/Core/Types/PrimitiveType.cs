@@ -58,16 +58,19 @@ namespace Reko.Core.Types
 
         public override bool IsPointer => Domain == Domain.Pointer;
 
+        /// <inheritdoc/>
         public override void Accept(IDataTypeVisitor v)
         {
             v.VisitPrimitive(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
             return v.VisitPrimitive(this);
         }
 
+        /// <inheritdoc/>
         public override DataType Clone(IDictionary<DataType, DataType>? clonedTypes)
 		{
 			return this;

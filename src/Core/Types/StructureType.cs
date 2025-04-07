@@ -78,7 +78,11 @@ namespace Reko.Core.Types
 			return s;
 		}
 
+        /// <summary>
+        /// The fields of the structure, ordered by their offset.
+        /// </summary>
         public StructureFieldCollection Fields { get; private set; }
+
 		public override bool IsComplex  { get { return true; } }
 
         /// <summary>

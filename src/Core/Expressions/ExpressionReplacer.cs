@@ -19,10 +19,7 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Core.Expressions
 {
@@ -49,6 +46,8 @@ namespace Reko.Core.Expressions
             var rep = new ExpressionReplacer(original, replacement);
             return root.Accept(rep);
         }
+
+#pragma warning disable CS1591
 
         public Expression VisitAddress(Address addr)
         {

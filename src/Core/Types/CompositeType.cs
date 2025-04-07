@@ -30,6 +30,13 @@ namespace Reko.Core.Types
         protected CompositeType(Domain domain, string? name) : base(domain, name)
         { }
 
+        /// <summary>
+        /// A flag indicating whether this type is user-defined or not.
+        /// </summary>
+        /// <remarks>
+        /// User-defined data types are considered immutable or canonical.
+        /// Type inference will not modify such types.
+        /// </remarks>
         public bool UserDefined { get; protected set; }
     }
 }

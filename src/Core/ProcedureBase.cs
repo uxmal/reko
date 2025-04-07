@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Reko.Core.Types;
-using Reko.Core.Serialization;
+using Reko.Core.Expressions;
 using Reko.Core.Output;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
 using System;
 using System.ComponentModel;
 using System.IO;
-using Reko.Core.Expressions;
 
 namespace Reko.Core
 {

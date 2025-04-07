@@ -36,13 +36,14 @@ namespace Reko.Core.Types
             this.name = name;
 		}
 
+        /// <inheritdoc/>
         public override string Name
         {
             get { return name ?? DefaultName(); }
             set { name = value; }
         }
 
-        public bool IsNameSet => name != null;
+        public bool IsNameSet => name is not null;
 
         private string? name;
 

@@ -33,39 +33,58 @@ namespace Reko.Core.Expressions
     /// </summary>
 	public class FieldAccess : AbstractExpression
 	{
+        /// <summary>
+        /// Creates an instance of the <see cref="FieldAccess"/> class.
+        /// </summary>
+        /// <param name="fieldType">The data type of the value fetched from the field</param>
+        /// <param name="expr">An expression of a structure type that includes the given <see cref="Field"/>.</param>
+        /// <param name="field">The <see cref="Field"/> to access.</param>
 		public FieldAccess(DataType fieldType, Expression expr, Field field) : base(fieldType)
 		{
 			this.Structure = expr; this.Field = field;
 		}
 
+        /// <summary>
+        /// An expression of the structure type that the field is part of.
+        /// </summary>
         public Expression Structure { get; }
+        
+        /// <summary>
+        /// The field to access.
+        /// </summary>
         public Field Field { get; }
 
+        /// <inheritdoc/>
         public override IEnumerable<Expression> Children
         {
             get { yield return Structure; }
         }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
         {
             return v.VisitFieldAccess(this, context);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitFieldAccess(this);
         }
 
+        /// <inheritdoc/>
 		public override void Accept(IExpressionVisitor visit)
 		{
 			visit.VisitFieldAccess(this);
 		}
 
+        /// <inheritdoc/>
 		public override Expression CloneExpression()
 		{
 			return new FieldAccess(DataType, Structure.CloneExpression(), Field);
 		}
 
+        /// <inheritdoc/>
 		public override Expression Invert()
 		{
 			return new UnaryExpression(Operator.Not, PrimitiveType.Bool, this);

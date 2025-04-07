@@ -18,21 +18,30 @@
  */
 #endregion
 
-using Reko.Core.Expressions;
-using System;
-using System.Collections.Generic;
+namespace Reko.Core.Types;
 
-namespace Reko.Core.Types
+
+/// <summary>
+/// Models a field in a structure or class.
+/// </summary>
+public abstract class Field
 {
-    public abstract class Field
+    /// <summary>
+    /// Initalizes a <see cref="Field"/> instance.
+    /// </summary>
+    /// <param name="type"></param>
+    protected Field(DataType type)
     {
-        protected Field(DataType type)
-        {
-            this.DataType = type;
-        }
-
-        public DataType DataType { get; set; }
-
-        public abstract string Name { get; set; }
+        this.DataType = type;
     }
+
+    /// <summary>
+    /// DataType of the field.
+    /// </summary>
+    public DataType DataType { get; set; }
+
+    /// <summary>
+    /// Name of the field.
+    /// </summary>
+    public abstract string Name { get; set; }
 }

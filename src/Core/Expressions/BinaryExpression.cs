@@ -46,6 +46,7 @@ namespace Reko.Core.Expressions
 			this.Right = right;
 		}
 
+        /// <inheritdoc/>
         public override IEnumerable<Expression> Children {
             get {
                 yield return Left;
@@ -53,25 +54,40 @@ namespace Reko.Core.Expressions
             }
         }
 
-        public BinaryOperator Operator { get; } 
+        /// <summary>
+        /// The <see cref="BinaryOperator"/> being applied.
+        /// </summary>
+        public BinaryOperator Operator { get; }
+
+        /// <summary>
+        /// The left operand of the binary expression.
+        /// </summary>
         public Expression Left { get; }
+
+        /// <summary>
+        /// The right operand of the binary expression.
+        /// </summary>
         public Expression Right { get; set; }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
         {
             return v.VisitBinaryExpression(this, context);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitBinaryExpression(this);
         }
 
+        /// <inheritdoc/>
 		public override void Accept(IExpressionVisitor v)
 		{
 			v.VisitBinaryExpression(this);
 		}
 
+        /// <inheritdoc/>
 		public override Expression CloneExpression()
 		{
 			return new BinaryExpression(Operator, DataType, Left.CloneExpression(), Right.CloneExpression());
@@ -90,6 +106,7 @@ namespace Reko.Core.Expressions
                 Left);
         }
 
+        /// <inheritdoc/>
 		public override Expression Invert()
 		{
             switch (Operator.Type)

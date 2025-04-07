@@ -22,6 +22,9 @@ using Reko.Core.NativeInterface;
 
 namespace Reko.Core.Expressions
 {
+    /// <summary>
+    /// Represents a low-level condition.
+    /// </summary>
     [NativeInterop]
     public enum ConditionCode
     {

@@ -18,7 +18,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
@@ -32,12 +31,19 @@ namespace Reko.Core.Collections
 		private readonly HashSet<T> inQ;
 		private readonly Queue<T> q;
 
+        /// <summary>
+        /// Creates an empty work list.
+        /// </summary>
 		public WorkList()
 		{
 			q = new Queue<T>();
 			inQ = new HashSet<T>();
 		}
 
+        /// <summary>
+        /// Creates a work list from an existing collection.
+        /// </summary>
+        /// <param name="coll"></param>
 		public WorkList(IEnumerable<T> coll)
 		{
 			q = new Queue<T>(coll);
@@ -57,27 +63,54 @@ namespace Reko.Core.Collections
 			}
 		}
 
+        /// <summary>
+        /// Adds a sequence of items to the work list, but only if they aren't there already.
+        /// </summary>
+        /// <param name="items">Items to add to the work list.</param>
         public void AddRange(IEnumerable<T> items)
         {
             foreach (var item in items)
                 Add(item);
         }
 
+        /// <summary>
+        /// The number of items in the work list.
+        /// </summary>
 		public int Count
 		{
 			get { return inQ.Count; }
 		}
 
+        /// <summary>
+        /// True if the work list is empty.
+        /// </summary>
 		public bool IsEmpty
 		{
 			get { return inQ.Count == 0; }
 		}
 
+        /// <summary>
+        /// Determines if the work list contains the given item.
+        /// </summary>
+        /// <param name="item">Item to check.</param>
+        /// <returns>
+        /// If the work list contains the given item.
+        /// </returns>
         public bool Contains(T item)
         {
             return inQ.Contains(item);
         }
 
+        /// <summary>
+        /// Try to extract a work item from the work list, removing it from the
+        /// list if one is present.
+        /// </summary>
+        /// <param name="item">If there are work items in the work list, the
+        /// extracted item.
+        /// </param>
+        /// <returns>
+        /// True if an item is successfully removed; otherwise false.
+        /// </returns>
 		public bool TryGetWorkItem([MaybeNullWhen(false)] out T item)
 		{
 			while (q.TryDequeue(out var t))

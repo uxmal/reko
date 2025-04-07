@@ -107,11 +107,23 @@ namespace Reko.Core
         public int FrameOffset { get; set; }
 
         /// <summary>
-        /// A virtual register that is a constant pointer to 
+        /// A virtual register that is considered to coincide with the value
+        /// of the stack pointer at the entry to a procedure.
         /// </summary>
         public Identifier FramePointer { get; }
+
+        /// <summary>
+        /// A symbolic value for the continuation (return address) of this
+        /// procedure.
+        /// </summary>
         public Identifier Continuation { get; }
+
+        /// <summary>
+        /// The list of identifiers of this frame.
+        /// </summary>
         public List<Identifier> Identifiers { get; }
+
+
         public Identifier Memory { get; private set; }
 
         /// <summary>
@@ -447,6 +459,13 @@ namespace Reko.Core
                    select id).SingleOrDefault();
         }
 
+        /// <summary>
+        /// Writes a textual representation of the identifiers of this frame
+        /// to the provided <see cref="TextWriter"/>.
+        /// </summary>
+        /// <param name="text">A <see cref="TextWriter"/> instance to which 
+        /// the textual representation is written.
+        /// </param>
 		public void Write(TextWriter text)
 		{
 			foreach (Identifier id in Identifiers)

@@ -41,7 +41,7 @@ namespace Reko.Environments.Msdos
 
         public Dictionary<Address, ExternalProcedure> InterceptedCalls { get; }
 
-        public bool InterceptCall(IProcessorEmulator emulator, uint calledAddress)
+        public bool InterceptCall(IProcessorEmulator emulator, ulong calledAddress)
         {
             return false;
         }

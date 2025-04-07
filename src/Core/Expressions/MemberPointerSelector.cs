@@ -23,13 +23,13 @@ using System.Collections.Generic;
 
 namespace Reko.Core.Expressions
 {
-	/// <summary>
-	/// Implements the C++ construct ptr.*mp
-	/// </summary>
+    /// <summary>
+    /// Implements the C++ construct <c>ptr.*mp</c>
+    /// </summary>
     /// <remarks>This construct is used to model 8086 real mode code, where "far pointers"
     /// consist of a segment and an offset. The offset corresponds to a member pointer selector.
     /// </remarks>
-	public class MemberPointerSelector : AbstractExpression
+    public class MemberPointerSelector : AbstractExpression
 	{
 		public MemberPointerSelector(DataType dt, Expression basePtr, Expression memberPtr) : base(dt)
 		{

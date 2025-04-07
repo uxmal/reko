@@ -21,12 +21,10 @@
 using Reko.Core.Expressions;
 using Reko.Core.Loading;
 using Reko.Core.Output;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Linq;
 
 namespace Reko.Core.Types
 {
@@ -40,10 +38,40 @@ namespace Reko.Core.Types
         /// Get the inferred data type of <paramref name="exp"/>.
         /// </summary>
         DataType? GetDataTypeOf(Expression exp);
+
+        /// <summary>
+        /// Sets the data type of <paramref name="exp"/> to <paramref name="dt"/>.
+        /// </summary>
+        /// <param name="exp"><see cref="Expression"/> whose data type is to be set.</param>
+        /// <param name="dt">Datatype to set.</param>
         void SetDataTypeOf(Expression exp, DataType dt);
+
+        /// <summary>
+        /// Merge the equivalence classes associated with <paramref name="tv1"/> and
+        /// <paramref name="tv2"/>.
+        /// </summary>
+        /// <param name="tv1">The first type variable.</param>
+        /// <param name="tv2">The other type varaible.</param>
+        /// <returns>The resulting equivalence class.</returns>
         EquivalenceClass MergeClasses(TypeVariable tv1, TypeVariable tv2);
+
+        /// <summary>
+        /// Writes the contents of the type store to the given <paramref name="writer"/>.
+        /// </summary>
+        /// <param name="showExprAddresses">If true, write the address associated with the
+        /// expressions in the type store.</param>
+        /// <param name="writer"><see cref="TextWriter"/> to which the output is written.
+        /// </param>
         void Write(bool showExprAddresses, TextWriter writer);
+
+
         void BuildEquivalenceClassDataTypes(TypeFactory factory);
+
+        /// <summary>
+        /// Creates a new <see cref="TypeVariable"/> and associates it with the
+        /// </summary>
+        /// <param name="factory"></param>
+        /// <returns></returns>
         TypeVariable CreateTypeVariable(TypeFactory factory);
 
         /// <summary>
@@ -67,6 +95,14 @@ namespace Reko.Core.Types
         // but it's used in some hacky places.
         void ClearTypeVariable(Expression expr);
 
+        /// <summary>
+        /// Get the type variable for the <paramref name="expression"/>.
+        /// </summary>
+        /// <param name="expression">Expression whose type variable is to be found.</param>
+        /// <param name="tv">The <see cref="TypeVariable"/> of <paramref name="expression"/>,
+        /// if present in the store.</param>
+        /// <returns>True if there is a type variable for the expression; otherwise false.
+        /// </returns>
         bool TryGetTypeVariable(Expression expression, [MaybeNullWhen(false)] out TypeVariable tv);
     }
 

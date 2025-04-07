@@ -35,11 +35,17 @@ namespace Reko.Core
     /// </remarks>
     public class NamingPolicy
     {
+        /// <summary>
+        /// Creates a naming policy.
+        /// </summary>
         public NamingPolicy()
         {
             this.Types = new TypeNamingPolicy();
         }
 
+        /// <summary>
+        /// The naming policy used for automatically naming types.
+        /// </summary>
         public TypeNamingPolicy Types { get; }
 
         /// <summary>

@@ -76,6 +76,7 @@ namespace Reko.Core.Expressions
                 this.FalseExp);
         }
 
+        /// <inheritdoc />
         public override Expression Invert()
         {
             var t = this.ThenExp.Invert();
