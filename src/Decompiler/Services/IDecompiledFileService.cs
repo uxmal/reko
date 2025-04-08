@@ -18,18 +18,16 @@
  */
 #endregion
 
-using Reko.Core.Configuration;
 using Reko.Core;
-using System;
-using System.IO;
-using System.Threading;
-using Reko.Core.Output;
-using Reko.Core.Services;
-using System.Linq;
-using System.Text;
-using System.Collections.Generic;
 using Reko.Core.Collections;
 using Reko.Core.Loading;
+using Reko.Core.Output;
+using Reko.Core.Services;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
 
 namespace Reko.Services
 {

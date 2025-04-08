@@ -21,7 +21,6 @@
 using Reko.Core.Configuration;
 using Reko.Core.Loading;
 using Reko.Core.Services;
-using Reko.Services;
 using System;
 using System.Collections.Generic;
 

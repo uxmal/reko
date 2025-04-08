@@ -32,7 +32,6 @@ using Reko.Core.Lib;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Core.Services;
-using Reko.Services;
 using System;
 using System.Diagnostics;
 using System.Linq;
