@@ -415,7 +415,7 @@ namespace Reko.ImageLoaders.Elf
 
         public IPlatform LoadPlatform(byte osAbi, IProcessorArchitecture arch)
         {
-            string envName;
+            string envName = string.Empty;
             var cfgSvc = Services.RequireService<IConfigurationService>();
             var options = new Dictionary<string, object>();
             switch (osAbi)
@@ -438,7 +438,7 @@ namespace Reko.ImageLoaders.Elf
             default:
                 var eventListener = Services.GetService<IEventListener>();
                 eventListener?.Warn("Unsupported ELF ABI 0x{0:X2}.", osAbi);
-                return new DefaultPlatform(Services, arch);
+                break;
             }
             var env = cfgSvc.GetEnvironment(envName);
             this.platform = env.Load(Services, arch);
