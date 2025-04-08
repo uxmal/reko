@@ -146,6 +146,6 @@ namespace Reko.Core.Serialization
         [XmlAttribute("addr")]
         public string? Address;
         
-        public SerializedType? Type;
+        public SerializedType? DataType;
     }
 }

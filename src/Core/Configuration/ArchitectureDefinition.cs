@@ -73,5 +73,11 @@ namespace Reko.Core.Configuration
         /// Other "nicknames" for this architecture.
         /// </summary>
         public HashSet<string> Aliases { get; set; } = new();
+
+        /// <summary>
+        /// Optional name of a file containing the memory map
+        /// definition for this architecture.
+        /// </summary>
+        public string? MemoryMapFile { get; set; }
     }
 }

@@ -91,7 +91,7 @@ namespace Reko.Core.Loading
             return new GlobalVariable_v1
             {
                 Name = item.Name,
-                Type = item.DataType,
+                DataType = item.DataType,
                 Ordinal = GlobalVariable_v1.NoOrdinal,
                 Address = item.Address,
             };

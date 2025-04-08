@@ -105,6 +105,17 @@ namespace Reko.Core.Configuration
         /// <returns>An installation-relative file path.</returns>
         string GetInstallationRelativePath(params string[] pathComponents);
         LoaderDefinition? GetImageLoader(string loader);
+
+        /// <summary>
+        /// Loads a memory map file.
+        /// </summary>
+        /// <param name="memoryMapFile">Installation-relative path to the
+        /// memory map file.
+        /// </param>
+        /// <returns>An <see cref="MemoryMap_v1"/> instance if successful; otherwise
+        /// null.
+        /// </returns>
+        MemoryMap_v1? LoadMemoryMap(string memoryMapFile);
     }
 
     public class RekoConfigurationService : IConfigurationService
@@ -174,6 +185,7 @@ namespace Reko.Core.Configuration
                 ProcedurePrologs = LoadMaskedPatterns(sArch.ProcedurePrologs),
                 Aliases = LoadDelimiterSeparatedValues(sArch.Aliases, ',')
                     .ToHashSet(),
+                MemoryMapFile = sArch.MemoryMapFile
             };
             return ad;
         }
@@ -189,6 +201,16 @@ namespace Reko.Core.Configuration
                 TypeName = sOption.TypeName,
                 Choices = sOption.Choices ?? Array.Empty<ListOption_v1>()
             };
+        }
+
+        public MemoryMap_v1? LoadMemoryMap(string path)
+        {
+            var fsSvc = services.GetService<IFileSystemService>();
+            if (fsSvc is null)
+                return null;
+            var filePath = GetInstallationRelativePath(path);
+            using var stm = fsSvc.CreateFileStream(filePath, FileMode.Open, FileAccess.Read);
+            return MemoryMap_v1.Deserialize(stm);
         }
 
         private ModelDefinition LoadModelDefinition(ModelDefinition_v1 sModel)
@@ -534,6 +556,10 @@ namespace Reko.Core.Configuration
             if (arch is ProcessorArchitecture a)
             {
                 a.ProcedurePrologs = elem.ProcedurePrologs.ToArray();
+                if (!string.IsNullOrEmpty(elem.MemoryMapFile))
+                {
+                    a.MemoryMap = this.LoadMemoryMap(elem.MemoryMapFile);
+                }
             }
             return arch;
         }

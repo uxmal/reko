@@ -27,6 +27,7 @@ using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
+using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -95,6 +96,13 @@ namespace Reko.Core
         /// <remarks>Most modern CPU:s have byte addressability, so this will typically be 8.
         /// </remarks>
         int MemoryGranularity { get; }
+
+        /// <summary>
+        /// Some architectures, especially microcomputers, have well-known
+        /// procedures and global variables at absolute addresses. These are
+        /// available in the MemoryMap.
+        /// </summary>
+        MemoryMap_v1? MemoryMap { get; set; }
 
         /// <summary>
         /// Short name used to refer to an architecture.
@@ -627,6 +635,8 @@ namespace Reko.Core
         public PrimitiveType FramePointerType { get; protected set; }
         /// <inheritdoc/>
         public int MemoryGranularity { get; protected set; }
+        /// <inheritdoc/>
+        public MemoryMap_v1? MemoryMap { get; set; }
         /// <inheritdoc/>
         public int CodeMemoryGranularity { get; protected set; }
         /// <inheritdoc/>

@@ -99,7 +99,7 @@ namespace Reko.Core.Serialization
         public static AccessMode ConvertAccess(string? attributes)
         {
             var mode = AccessMode.Read;
-            if (attributes == null)
+            if (attributes is null)
                 return mode;
             foreach (var ch in attributes)
             {

@@ -84,9 +84,9 @@ namespace Reko.Core
             var mod = EnsureModule(this.moduleName, this.library);
             if (sLib.Globals != null)
             {
-                foreach (var g in sLib.Globals.Where(gg => !string.IsNullOrEmpty(gg.Name) && gg.Type != null))
+                foreach (var g in sLib.Globals.Where(gg => !string.IsNullOrEmpty(gg.Name) && gg.DataType != null))
                 {
-                    var globalType = g.Type!;
+                    var globalType = g.DataType!;
                     var globalName = g.Name!;
                     if (platform.Architecture.TryParseAddress(g.Address, out var addr))
                     {

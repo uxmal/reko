@@ -90,6 +90,9 @@ namespace Reko.Core.Configuration
         [XmlAttribute("Type")]
         public string? Type;
 
+        [XmlAttribute("MemoryMap")]
+        public string? MemoryMapFile;
+
         [XmlArray("Models")]
         [XmlArrayItem("Model")]
         public ModelDefinition_v1[]? Models;

@@ -24,9 +24,8 @@ using Reko.Core.Configuration;
 using Reko.Core.Machine;
 using Reko.Core.Services;
 using Reko.UnitTests.Mocks;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -38,6 +37,7 @@ namespace Reko.UnitTests.Core.Configuration
         private ServiceContainer sc;
         private FakeDecompilerEventListener listener;
         private Mock<IPluginLoaderService> pluginSvc;
+        private Mock<IFileSystemService> fsSvc;
 
         [SetUp]
         public void Setup()
@@ -45,8 +45,10 @@ namespace Reko.UnitTests.Core.Configuration
             this.sc = new ServiceContainer();
             this.listener = new FakeDecompilerEventListener();
             this.pluginSvc = new Mock<IPluginLoaderService>();
+            this.fsSvc = new Mock<IFileSystemService>();
             sc.AddService<IEventListener>(listener);
             sc.AddService<IPluginLoaderService>(pluginSvc.Object);
+            sc.AddService<IFileSystemService>(fsSvc.Object);
         }
 
         [Test]
@@ -266,5 +268,42 @@ namespace Reko.UnitTests.Core.Configuration
             Assert.AreEqual("fake", arch.Name);
         }
 
+        [Test]
+        public void Rcfg_Arch_MemoryMap()
+        {
+            var cfgSvc = new RekoConfigurationService(sc, "reko.config", new RekoConfiguration_v1
+            {
+                Architectures = new[]{
+                    new Architecture_v1
+                    {
+                        Name = "fayk",
+                        Type = typeof(FakeArchitecture).AssemblyQualifiedName,
+                        MemoryMapFile = "fakeMemorymap.xml"
+                    }
+                }
+            });
+
+            var sMemoryMap = @"<memory xmlns=""http://schemata.jklnet.org/Reko/v4"">>
+  <segment>
+    <global name=""g1"" addr=""0x0004"">
+      <ptr size=""2"">
+        <fn />
+      </ptr>
+    </global>
+  </segment>
+</memory>";
+            pluginSvc.Setup(p => p.GetType(It.IsAny<string>()))
+                .Returns(typeof(FakeArchitecture));
+            fsSvc.Setup(f => f.CreateFileStream(
+                It.IsAny<string>(),
+                FileMode.Open,
+                FileAccess.Read))
+                .Returns(new MemoryStream(Encoding.UTF8.GetBytes(sMemoryMap)));
+
+            var arch = cfgSvc.GetArchitecture("fayk");
+
+            Assert.IsNotNull(arch.MemoryMap);
+            Assert.AreEqual(1, arch.MemoryMap.Segments[0].Globals.Count);
+        }
     }
 }

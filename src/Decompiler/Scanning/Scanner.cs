@@ -1058,6 +1058,19 @@ namespace Reko.Scanning
             {
                 dataScanner.EnqueueUserGlobalData(sym.Address!, sym.DataType!, sym.Name!);
             }
+
+            var mapSegments = Program.Platform.MemoryMap?.Segments;
+            if (mapSegments is not null)
+            {
+                foreach (var global in mapSegments.SelectMany(s => s.Globals ?? []))
+                {
+                    if (!Program.Platform.Architecture.TryParseAddress(global.Address, out var addr))
+                        continue;
+                    var dt = global.DataType?.Accept(tlDeser)!;
+                    dataScanner.EnqueueUserGlobalData(addr, dt, global.Name);
+                }
+            }
+
             dataScanner.ProcessQueue();
             foreach (var sym in dataScanner.Procedures.Values)
             {

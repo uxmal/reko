@@ -327,7 +327,7 @@ namespace Reko.UnitTests.Core
                      {
                          Name = "errno",
                          Ordinal = 42,
-                         Type = PrimitiveType_v1.Int32(),
+                         DataType = PrimitiveType_v1.Int32(),
                      }
                  }
             });

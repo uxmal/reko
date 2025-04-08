@@ -79,18 +79,7 @@ namespace Reko.Core.Configuration
             if (!string.IsNullOrEmpty(MemoryMapFile))
             {
                 var cfgSvc = services.RequireService<IConfigurationService>();
-                var fsSvc = services.RequireService<IFileSystemService>();
-                var listener = services.RequireService<IEventListener>();
-                try
-                {
-                    var filePath = cfgSvc.GetInstallationRelativePath(MemoryMapFile!);
-                    using var stm = fsSvc.CreateFileStream(filePath, FileMode.Open, FileAccess.Read);
-                    platform.MemoryMap = MemoryMap_v1.Deserialize(stm);
-                }
-                catch (Exception ex)
-                {
-                    listener.Error(ex, "Unable to open memory map file '{0}.", MemoryMapFile!);
-                }
+                platform.MemoryMap = cfgSvc.LoadMemoryMap(MemoryMapFile);
             }
             platform.PlatformProcedures = LoadPlatformProcedures(platform);
             platform.Description = this.Description!;

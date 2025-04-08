@@ -19,11 +19,10 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Assemblers;
 using Reko.Core.Configuration;
+using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Reko.UnitTests.Mocks
 {
@@ -104,6 +103,11 @@ namespace Reko.UnitTests.Mocks
         }
 
         public ICollection<SymbolSourceDefinition> GetSymbolSources()
+        {
+            throw new NotImplementedException();
+        }
+
+        public MemoryMap_v1 LoadMemoryMap(string memoryMapFile)
         {
             throw new NotImplementedException();
         }
