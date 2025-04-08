@@ -28,6 +28,7 @@ using Reko.Core.Assemblers;
 using Reko.Arch.M68k;
 using Reko.Environments.AmigaOS;
 using System.ComponentModel.Design;
+using Reko.Core.Serialization;
 
 namespace Reko.Tools.HunkTool
 {
@@ -108,6 +109,11 @@ namespace Reko.Tools.HunkTool
         }
 
         public ICollection<SymbolSourceDefinition> GetSymbolSources()
+        {
+            throw new NotImplementedException();
+        }
+
+        public MemoryMap_v1 LoadMemoryMap(string memoryMapFile)
         {
             throw new NotImplementedException();
         }

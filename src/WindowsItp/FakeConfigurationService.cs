@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Serialization;
 using Reko.Gui.Services;
 using System;
 using System.Collections.Generic;
@@ -113,6 +114,11 @@ namespace Reko.WindowsItp
                 new SymbolSourceDefinition { Name = "Bobsym", Description="BOB symbol loader", TypeName="BobSymSource,Bob" },
                 new SymbolSourceDefinition { Name = "PDB", Description="PDB", TypeName="PDBSymSource,PDBLoader" }
             };
+        }
+
+        public MemoryMap_v1 LoadMemoryMap(string memoryMapFile)
+        {
+            throw new NotImplementedException();
         }
     }
 }

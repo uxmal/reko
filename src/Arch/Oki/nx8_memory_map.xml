@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<memory>
+    <segment name="vector_table" addr="0000" size="007A">
+        <global addr="0000" name="nmi_vector"><ptr size="2"><fn /></ptr></global>
+        <global addr="0002" name="nmi_vector">
+            <array length="60">
+                <ptr size="2"><fn /></ptr>
+            </array>
+        </global>
+    </segment> 
+</memory>
