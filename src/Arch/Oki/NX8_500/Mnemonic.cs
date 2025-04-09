@@ -18,7 +18,7 @@
  */
 #endregion
 
-namespace Reko.Arch.Oki;
+namespace Reko.Arch.Oki.NX8_500;
 
 public enum Mnemonic
 {

@@ -324,7 +324,8 @@
         <File Source="$(var.Msp430.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Nec.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Oki.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.Oki.ProjectDir)nx8_memory_map.xml" nuget_target="c:" />
+        <File Source="$(var.Oki.ProjectDir)NX8_200/nx8_200_memory_map.xml" nuget_target="c:" />
+        <File Source="$(var.Oki.ProjectDir)NX8_500/nx8_500_memory_map.xml" nuget_target="c:" />
         <File Source="$(var.OpenRISC.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Padauk.TargetPath)" nuget_target="f:" />
         <File Source="$(var.PaRisc.TargetPath)" nuget_target="f:" />

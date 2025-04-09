@@ -194,7 +194,8 @@ by the PreBuild.targets file.
     <Architectures Include="$(SolutionDir)Arch\zSeries\bin\$(StandardOutputDir)\Reko.Arch.zSeries.*" />
 
     <DecompilerMetadata Include="$(SolutionDir)Decompiler\Loading\Signatures\*.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Arch\Oki\nx8_memory_map.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Arch\Oki\NX8_200\nx8_200_memory_map.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Arch\Oki\NX8_500\nx8_500_memory_map.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\AtariTOS\atariTOS.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\C64\*.inc" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Cpm\cpm_map.xml" />

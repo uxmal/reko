@@ -20,18 +20,19 @@
 
 using NUnit.Framework;
 using Reko.Arch.Oki;
+using Reko.Arch.Oki.NX8_500;
 using Reko.Core;
 
 namespace Reko.UnitTests.Arch.Oki;
 
 [TestFixture]
-public class NX8DisassemblerTests : DisassemblerTestBase<NX8Instruction>
+public class NX8_500DisassemblerTests : DisassemblerTestBase<NX8_500Instruction>
 {
-    private readonly NX8Architecture arch;
+    private readonly NX8_500Architecture arch;
 
-    public NX8DisassemblerTests()
+    public NX8_500DisassemblerTests()
     {
-        this.arch = new NX8Architecture(CreateServiceContainer(), "nx8", new());
+        this.arch = new NX8_500Architecture(CreateServiceContainer(), "nx8", new());
         this.LoadAddress = Address.Ptr16(0x0100);
     }
 

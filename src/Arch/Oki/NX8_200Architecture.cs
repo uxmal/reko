@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Arch.Oki.NX8_200;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
@@ -28,9 +29,9 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Reko.Arch.Oki;
 
-public class NX8Architecture : ProcessorArchitecture
+public class NX8_200Architecture : ProcessorArchitecture
 {
-    public NX8Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
+    public NX8_200Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
         : base(services, archId, options, Registers.ByName, Registers.ByDomain)
     {
         this.CarryFlag = null!;
@@ -45,7 +46,7 @@ public class NX8Architecture : ProcessorArchitecture
 
     public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
     {
-        return new NX8Disassembler(this, imageReader);
+        return new NX8_200Disassembler(this, imageReader);
     }
 
     public override IEqualityComparer<MachineInstruction>? CreateInstructionComparer(Normalize norm)

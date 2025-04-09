@@ -22,7 +22,7 @@ using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 
-namespace Reko.Arch.Oki;
+namespace Reko.Arch.Oki.NX8_500;
 
 public class MemoryOperand : AbstractMachineOperand
 {
@@ -55,7 +55,7 @@ public class MemoryOperand : AbstractMachineOperand
 
     protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
     {
-        var b = this.Base;
+        var b = Base;
         if (b is not null)
         {
             if (Offset != 0)

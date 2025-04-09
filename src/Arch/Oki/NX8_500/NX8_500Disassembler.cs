@@ -6,38 +6,38 @@ using Reko.Core.Memory;
 using Reko.Core.Services;
 using System.Runtime.Intrinsics.Arm;
 
-namespace Reko.Arch.Oki;
+namespace Reko.Arch.Oki.NX8_500;
 
-public class NX8Disassembler : DisassemblerBase<NX8Instruction, Mnemonic>
+public class NX8_500Disassembler : DisassemblerBase<NX8_500Instruction, Mnemonic>
 {
-    private static readonly Decoder<NX8Disassembler, Mnemonic, NX8Instruction> rootDecoder;
-    private static readonly Decoder<NX8Disassembler, Mnemonic, NX8Instruction>[] prefixDecoders;
+    private static readonly Decoder<NX8_500Disassembler, Mnemonic, NX8_500Instruction> rootDecoder;
+    private static readonly Decoder<NX8_500Disassembler, Mnemonic, NX8_500Instruction>[] prefixDecoders;
     private static readonly Bitfield bf0L7 = new Bitfield(0, 7);
 
-    private readonly NX8Architecture arch;
+    private readonly NX8_500Architecture arch;
     private readonly EndianImageReader rdr;
     private readonly List<MachineOperand> ops;
     private Address addr;
     private bool ddSet;
     private bool? ddSetThisInstruction;
 
-    public NX8Disassembler(NX8Architecture arch, EndianImageReader rdr)
+    public NX8_500Disassembler(NX8_500Architecture arch, EndianImageReader rdr)
     {
         this.arch = arch;
         this.rdr = rdr;
         this.ops = [];
     }
 
-    public override NX8Instruction CreateInvalidInstruction()
+    public override NX8_500Instruction CreateInvalidInstruction()
     {
-        return new NX8Instruction
+        return new NX8_500Instruction
         {
             InstructionClass = InstrClass.Invalid,
             Mnemonic = Mnemonic.Invalid,
         };
     }
 
-    public override NX8Instruction? DisassembleInstruction()
+    public override NX8_500Instruction? DisassembleInstruction()
     {
         this.addr = rdr.Address;
         long offset = rdr.Offset;
@@ -51,9 +51,9 @@ public class NX8Disassembler : DisassemblerBase<NX8Instruction, Mnemonic>
         return instr;
     }
 
-    public override NX8Instruction MakeInstruction(InstrClass iclass, Mnemonic mnemonic)
+    public override NX8_500Instruction MakeInstruction(InstrClass iclass, Mnemonic mnemonic)
     {
-        return new NX8Instruction
+        return new NX8_500Instruction
         {
             InstructionClass = iclass,
             Mnemonic = mnemonic,
@@ -61,11 +61,11 @@ public class NX8Disassembler : DisassemblerBase<NX8Instruction, Mnemonic>
         };
     }
 
-    public override NX8Instruction NotYetImplemented(string message)
+    public override NX8_500Instruction NotYetImplemented(string message)
     {
         var testGenSvc = arch.Services.GetService<ITestGenerationService>();
         testGenSvc?.ReportMissingDecoder("Nx8Dasm", this.addr, this.rdr, message);
-        return new NX8Instruction
+        return new NX8_500Instruction
         {
             InstructionClass = InstrClass.Invalid,
             Mnemonic = Mnemonic.nyi,
@@ -79,13 +79,13 @@ public class NX8Disassembler : DisassemblerBase<NX8Instruction, Mnemonic>
         return ddSet;
     }
 
-    private static bool ClearDDflag(uint uInstr, NX8Disassembler dasm)
+    private static bool ClearDDflag(uint uInstr, NX8_500Disassembler dasm)
     {
         dasm.ddSet = false;
         return true;
     }
 
-    private static bool SetDDflag(uint uInstr, NX8Disassembler dasm)
+    private static bool SetDDflag(uint uInstr, NX8_500Disassembler dasm)
     {
         dasm.ddSet = true;
         return true;
@@ -95,7 +95,7 @@ public class NX8Disassembler : DisassemblerBase<NX8Instruction, Mnemonic>
     /// Operand decoder for specific registers.
     /// </summary>
     /// <param name="reg">Specific register to add to the operands list.</param>
-    private static Mutator<NX8Disassembler> Register(RegisterStorage reg)
+    private static Mutator<NX8_500Disassembler> Register(RegisterStorage reg)
     {
         return (u, d) =>
         {
@@ -103,32 +103,32 @@ public class NX8Disassembler : DisassemblerBase<NX8Instruction, Mnemonic>
             return true;
         };
     }
-    private static readonly Mutator<NX8Disassembler> a = Register(Registers.Acc);
-    private static readonly Mutator<NX8Disassembler> ER0 = Register(Registers.ERegisters[0]);
-    private static readonly Mutator<NX8Disassembler> ER1 = Register(Registers.ERegisters[1]);
-    private static readonly Mutator<NX8Disassembler> ER2 = Register(Registers.ERegisters[2]);
-    private static readonly Mutator<NX8Disassembler> ER3 = Register(Registers.ERegisters[3]);
+    private static readonly Mutator<NX8_500Disassembler> a = Register(Registers.Acc);
+    private static readonly Mutator<NX8_500Disassembler> ER0 = Register(Registers.ERegisters[0]);
+    private static readonly Mutator<NX8_500Disassembler> ER1 = Register(Registers.ERegisters[1]);
+    private static readonly Mutator<NX8_500Disassembler> ER2 = Register(Registers.ERegisters[2]);
+    private static readonly Mutator<NX8_500Disassembler> ER3 = Register(Registers.ERegisters[3]);
 
-    private static readonly Mutator<NX8Disassembler> PR0 = Register(Registers.X1);
-    private static readonly Mutator<NX8Disassembler> PR1 = Register(Registers.X2);
-    private static readonly Mutator<NX8Disassembler> PR2 = Register(Registers.Dp);
-    private static readonly Mutator<NX8Disassembler> PR3 = Register(Registers.Usp);
+    private static readonly Mutator<NX8_500Disassembler> PR0 = Register(Registers.X1);
+    private static readonly Mutator<NX8_500Disassembler> PR1 = Register(Registers.X2);
+    private static readonly Mutator<NX8_500Disassembler> PR2 = Register(Registers.Dp);
+    private static readonly Mutator<NX8_500Disassembler> PR3 = Register(Registers.Usp);
 
-    private static readonly Mutator<NX8Disassembler> X1 = Register(Registers.X1);
-    private static readonly Mutator<NX8Disassembler> X2 = Register(Registers.X2);
-    private static readonly Mutator<NX8Disassembler> DP = Register(Registers.Dp);
-    private static readonly Mutator<NX8Disassembler> USP = Register(Registers.Usp);
-    private static readonly Mutator<NX8Disassembler> R0 = Register(Registers.BRegisters[0]);
-    private static readonly Mutator<NX8Disassembler> R1 = Register(Registers.BRegisters[1]);
-    private static readonly Mutator<NX8Disassembler> R2 = Register(Registers.BRegisters[2]);
-    private static readonly Mutator<NX8Disassembler> R3 = Register(Registers.BRegisters[3]);
-    private static readonly Mutator<NX8Disassembler> R4 = Register(Registers.BRegisters[4]);
-    private static readonly Mutator<NX8Disassembler> R5 = Register(Registers.BRegisters[5]);
-    private static readonly Mutator<NX8Disassembler> R6 = Register(Registers.BRegisters[6]);
-    private static readonly Mutator<NX8Disassembler> R7 = Register(Registers.BRegisters[7]);
-    private static readonly Mutator<NX8Disassembler> pswl = Register(Registers.Pswl);
+    private static readonly Mutator<NX8_500Disassembler> X1 = Register(Registers.X1);
+    private static readonly Mutator<NX8_500Disassembler> X2 = Register(Registers.X2);
+    private static readonly Mutator<NX8_500Disassembler> DP = Register(Registers.Dp);
+    private static readonly Mutator<NX8_500Disassembler> USP = Register(Registers.Usp);
+    private static readonly Mutator<NX8_500Disassembler> R0 = Register(Registers.BRegisters[0]);
+    private static readonly Mutator<NX8_500Disassembler> R1 = Register(Registers.BRegisters[1]);
+    private static readonly Mutator<NX8_500Disassembler> R2 = Register(Registers.BRegisters[2]);
+    private static readonly Mutator<NX8_500Disassembler> R3 = Register(Registers.BRegisters[3]);
+    private static readonly Mutator<NX8_500Disassembler> R4 = Register(Registers.BRegisters[4]);
+    private static readonly Mutator<NX8_500Disassembler> R5 = Register(Registers.BRegisters[5]);
+    private static readonly Mutator<NX8_500Disassembler> R6 = Register(Registers.BRegisters[6]);
+    private static readonly Mutator<NX8_500Disassembler> R7 = Register(Registers.BRegisters[7]);
+    private static readonly Mutator<NX8_500Disassembler> pswl = Register(Registers.Pswl);
 
-    private static bool fix8(uint uInstr, NX8Disassembler dasm)
+    private static bool fix8(uint uInstr, NX8_500Disassembler dasm)
     {
         if (!dasm.rdr.TryReadByte(out byte loFix))
             return false;
@@ -136,7 +136,7 @@ public class NX8Disassembler : DisassemblerBase<NX8Instruction, Mnemonic>
         return true;
     }
 
-    private static bool off8(uint uInstr, NX8Disassembler dasm)
+    private static bool off8(uint uInstr, NX8_500Disassembler dasm)
     {
         if (!dasm.rdr.TryReadByte(out byte loOff))
             return false;
@@ -145,7 +145,7 @@ public class NX8Disassembler : DisassemblerBase<NX8Instruction, Mnemonic>
     }
 
 
-    private static bool sfr8(uint uInstr, NX8Disassembler dasm)
+    private static bool sfr8(uint uInstr, NX8_500Disassembler dasm)
     {
         if (!dasm.rdr.TryReadByte(out byte sfrOff))
             return false;
@@ -153,7 +153,7 @@ public class NX8Disassembler : DisassemblerBase<NX8Instruction, Mnemonic>
         return true;
     }
 
-    private static bool dir(uint uInstr, NX8Disassembler dasm)
+    private static bool dir(uint uInstr, NX8_500Disassembler dasm)
     {
         if (!dasm.rdr.TryReadLeUInt16(out ushort uAddr))
             return false;
@@ -161,7 +161,7 @@ public class NX8Disassembler : DisassemblerBase<NX8Instruction, Mnemonic>
         return true;
     }
 
-    private static bool N8(uint uInstr, NX8Disassembler dasm)
+    private static bool N8(uint uInstr, NX8_500Disassembler dasm)
     {
         if (!dasm.rdr.TryReadByte(out byte b))
             return false;
@@ -169,7 +169,7 @@ public class NX8Disassembler : DisassemblerBase<NX8Instruction, Mnemonic>
         return true;
     }
 
-    private static bool N16(uint uInstr, NX8Disassembler dasm)
+    private static bool N16(uint uInstr, NX8_500Disassembler dasm)
     {
         if (!dasm.rdr.TryReadLeUInt16(out ushort n16))
             return false;
@@ -177,7 +177,7 @@ public class NX8Disassembler : DisassemblerBase<NX8Instruction, Mnemonic>
         return true;
     }
 
-    private static bool Ndd(uint uInstr, NX8Disassembler dasm)
+    private static bool Ndd(uint uInstr, NX8_500Disassembler dasm)
     {
         MachineOperand op;
         if (dasm.IsDDflagSet())
@@ -196,7 +196,7 @@ public class NX8Disassembler : DisassemblerBase<NX8Instruction, Mnemonic>
         return true;
     }
 
-    private static bool Mdp_n7(uint uInstr, NX8Disassembler dasm)
+    private static bool Mdp_n7(uint uInstr, NX8_500Disassembler dasm)
     {
         if (!dasm.rdr.TryReadByte(out byte n))
             return false;
@@ -205,7 +205,7 @@ public class NX8Disassembler : DisassemblerBase<NX8Instruction, Mnemonic>
         return true;
     }
 
-    private static Mutator<NX8Disassembler> Mindexed(RegisterStorage @base, RegisterStorage index)
+    private static Mutator<NX8_500Disassembler> Mindexed(RegisterStorage @base, RegisterStorage index)
     {
         return (u, d) =>
         {
@@ -213,10 +213,10 @@ public class NX8Disassembler : DisassemblerBase<NX8Instruction, Mnemonic>
             return true;
         };
     }
-    private static readonly Mutator<NX8Disassembler> Mx1_a = Mindexed(Registers.X1, Registers.Acc);
-    private static readonly Mutator<NX8Disassembler> Mx1_r0 = Mindexed(Registers.X1, Registers.BRegisters[0]);
+    private static readonly Mutator<NX8_500Disassembler> Mx1_a = Mindexed(Registers.X1, Registers.Acc);
+    private static readonly Mutator<NX8_500Disassembler> Mx1_r0 = Mindexed(Registers.X1, Registers.BRegisters[0]);
 
-    private static Mutator<NX8Disassembler> Indirect(RegisterStorage seg, RegisterStorage reg)
+    private static Mutator<NX8_500Disassembler> Indirect(RegisterStorage seg, RegisterStorage reg)
     {
         return (u, d) =>
         {
@@ -225,10 +225,10 @@ public class NX8Disassembler : DisassemblerBase<NX8Instruction, Mnemonic>
             return true;
         };
     }
-    private static readonly Mutator<NX8Disassembler> Mdp = Indirect(Registers.Dsr, Registers.Dp);
-    private static readonly Mutator<NX8Disassembler> Mx1 = Indirect(Registers.Dsr, Registers.X1);
+    private static readonly Mutator<NX8_500Disassembler> Mdp = Indirect(Registers.Dsr, Registers.Dp);
+    private static readonly Mutator<NX8_500Disassembler> Mx1 = Indirect(Registers.Dsr, Registers.X1);
 
-    private static Mutator<NX8Disassembler> IndirectOffset(RegisterStorage seg, RegisterStorage reg)
+    private static Mutator<NX8_500Disassembler> IndirectOffset(RegisterStorage seg, RegisterStorage reg)
     {
         return (u, d) =>
         {
@@ -239,25 +239,25 @@ public class NX8Disassembler : DisassemblerBase<NX8Instruction, Mnemonic>
             return true;
         };
     }
-    private static readonly Mutator<NX8Disassembler> Md16_X1 = IndirectOffset(Registers.Dsr, Registers.X1);
-    private static readonly Mutator<NX8Disassembler> Md16_X2 = IndirectOffset(Registers.Dsr, Registers.X2);
+    private static readonly Mutator<NX8_500Disassembler> Md16_X1 = IndirectOffset(Registers.Dsr, Registers.X1);
+    private static readonly Mutator<NX8_500Disassembler> Md16_X2 = IndirectOffset(Registers.Dsr, Registers.X2);
 
 
-    private static bool Mdp_plus(uint uInstr, NX8Disassembler dasm)
+    private static bool Mdp_plus(uint uInstr, NX8_500Disassembler dasm)
     {
         var mem = MemoryOperand.PostIncremented(Registers.Dsr, Registers.Dp);
         dasm.ops.Add(mem);
         return true;
     }
 
-    private static bool Mdp_minus(uint uInstr, NX8Disassembler dasm)
+    private static bool Mdp_minus(uint uInstr, NX8_500Disassembler dasm)
     {
         var mem = MemoryOperand.PostDecremented(Registers.Dsr, Registers.Dp);
         dasm.ops.Add(mem);
         return true;
     }
 
-    private static bool Addr16(uint uInstr, NX8Disassembler dasm)
+    private static bool Addr16(uint uInstr, NX8_500Disassembler dasm)
     {
         if (!dasm.rdr.TryReadLeUInt16(out ushort addr16))
             return false;
@@ -265,7 +265,7 @@ public class NX8Disassembler : DisassemblerBase<NX8Instruction, Mnemonic>
         return true;
     }
 
-    private static bool rdiff8(uint uInstr, NX8Disassembler dasm)
+    private static bool rdiff8(uint uInstr, NX8_500Disassembler dasm)
     {
         if (!dasm.rdr.TryReadByte(out byte b))
             return false;
@@ -274,7 +274,7 @@ public class NX8Disassembler : DisassemblerBase<NX8Instruction, Mnemonic>
         return true;
     }
 
-    private static Mutator<NX8Disassembler> Imm(byte n)
+    private static Mutator<NX8_500Disassembler> Imm(byte n)
     {
         return (u, d) =>
         {
@@ -283,12 +283,12 @@ public class NX8Disassembler : DisassemblerBase<NX8Instruction, Mnemonic>
             return true;
         };
     }
-    private static readonly Mutator<NX8Disassembler> imm1 = Imm(1);
-    private static readonly Mutator<NX8Disassembler> imm2 = Imm(2);
-    private static readonly Mutator<NX8Disassembler> imm3 = Imm(3);
-    private static readonly Mutator<NX8Disassembler> imm4 = Imm(4);
+    private static readonly Mutator<NX8_500Disassembler> imm1 = Imm(1);
+    private static readonly Mutator<NX8_500Disassembler> imm2 = Imm(2);
+    private static readonly Mutator<NX8_500Disassembler> imm3 = Imm(3);
+    private static readonly Mutator<NX8_500Disassembler> imm4 = Imm(4);
 
-    private static bool SwapOperands(uint uInstr, NX8Disassembler dasm)
+    private static bool SwapOperands(uint uInstr, NX8_500Disassembler dasm)
     {
         var t = dasm.ops[1];
         dasm.ops[1] = dasm.ops[0];
@@ -296,14 +296,14 @@ public class NX8Disassembler : DisassemblerBase<NX8Instruction, Mnemonic>
         return true;
     }
 
-    private static Decoder<NX8Disassembler, Mnemonic, NX8Instruction> Instr(Mnemonic mnemonic, InstrClass iclass, params Mutator<NX8Disassembler>[] mutators)
+    private static Decoder<NX8_500Disassembler, Mnemonic, NX8_500Instruction> Instr(Mnemonic mnemonic, InstrClass iclass, params Mutator<NX8_500Disassembler>[] mutators)
     {
-        return new InstrDecoder<NX8Disassembler, Mnemonic, NX8Instruction>(iclass, mnemonic, mutators);
+        return new InstrDecoder<NX8_500Disassembler, Mnemonic, NX8_500Instruction>(iclass, mnemonic, mutators);
     }
 
-    private static Decoder<NX8Disassembler, Mnemonic, NX8Instruction> Instr(Mnemonic mnemonic, params Mutator<NX8Disassembler>[] mutators)
+    private static Decoder<NX8_500Disassembler, Mnemonic, NX8_500Instruction> Instr(Mnemonic mnemonic, params Mutator<NX8_500Disassembler>[] mutators)
     {
-        return new InstrDecoder<NX8Disassembler, Mnemonic, NX8Instruction>(InstrClass.Linear, mnemonic, mutators);
+        return new InstrDecoder<NX8_500Disassembler, Mnemonic, NX8_500Instruction>(InstrClass.Linear, mnemonic, mutators);
     }
 
     /// <summary>
@@ -314,41 +314,41 @@ public class NX8Disassembler : DisassemblerBase<NX8Instruction, Mnemonic>
     /// <param name="mnemonicW">Mnemonic to use when DD=1</param>
     /// <param name="mutators">Operand decoders</param>
     /// <returns>An instance of <see cref="DdInstrDecoder"/></returns>
-    private static Decoder<NX8Disassembler, Mnemonic, NX8Instruction> InstrDD(Mnemonic mnemonicB, Mnemonic mnemonicW,  params Mutator<NX8Disassembler>[] mutators)
+    private static Decoder<NX8_500Disassembler, Mnemonic, NX8_500Instruction> InstrDD(Mnemonic mnemonicB, Mnemonic mnemonicW,  params Mutator<NX8_500Disassembler>[] mutators)
     {
         return new DdInstrDecoder(mnemonicB, mnemonicW, InstrClass.Linear, mutators);
     }
 
-    private static Decoder<NX8Disassembler, Mnemonic, NX8Instruction> InstrDD(Mnemonic mnemonicB, Mnemonic mnemonicW, InstrClass iclass, params Mutator<NX8Disassembler>[] mutators)
+    private static Decoder<NX8_500Disassembler, Mnemonic, NX8_500Instruction> InstrDD(Mnemonic mnemonicB, Mnemonic mnemonicW, InstrClass iclass, params Mutator<NX8_500Disassembler>[] mutators)
     {
         return new DdInstrDecoder(mnemonicB, mnemonicW, iclass, mutators);
     }
 
 
-    private static Decoder<NX8Disassembler, Mnemonic, NX8Instruction> Prefix(Mutator<NX8Disassembler> mutator)
+    private static Decoder<NX8_500Disassembler, Mnemonic, NX8_500Instruction> Prefix(Mutator<NX8_500Disassembler> mutator)
     {
         return new PrefixDecoder(mutator, null);
     }
 
-    private static Decoder<NX8Disassembler, Mnemonic, NX8Instruction> BPrefix(Mutator<NX8Disassembler> mutator)
+    private static Decoder<NX8_500Disassembler, Mnemonic, NX8_500Instruction> BPrefix(Mutator<NX8_500Disassembler> mutator)
     {
         return new PrefixDecoder(mutator, false);
     }
 
-    private static Decoder<NX8Disassembler, Mnemonic, NX8Instruction> WPrefix(Mutator<NX8Disassembler> mutator)
+    private static Decoder<NX8_500Disassembler, Mnemonic, NX8_500Instruction> WPrefix(Mutator<NX8_500Disassembler> mutator)
     {
         return new PrefixDecoder(mutator, true);
     }
 
 
-    private class DdInstrDecoder : Decoder<NX8Disassembler, Mnemonic, NX8Instruction>
+    private class DdInstrDecoder : Decoder<NX8_500Disassembler, Mnemonic, NX8_500Instruction>
     {
         private readonly Mnemonic mnemonicB;
         private readonly Mnemonic mnemonicW;
         private readonly InstrClass iclass;
-        private readonly Mutator<NX8Disassembler>[] mutators;
+        private readonly Mutator<NX8_500Disassembler>[] mutators;
 
-        internal DdInstrDecoder(Mnemonic mnemonicB, Mnemonic mnemonicW, InstrClass iclass, Mutator<NX8Disassembler>[] mutators)
+        internal DdInstrDecoder(Mnemonic mnemonicB, Mnemonic mnemonicW, InstrClass iclass, Mutator<NX8_500Disassembler>[] mutators)
         {
             this.mnemonicB = mnemonicB;
             this.mnemonicW = mnemonicW;
@@ -356,7 +356,7 @@ public class NX8Disassembler : DisassemblerBase<NX8Instruction, Mnemonic>
             this.mutators = mutators;
         }
 
-        public override NX8Instruction Decode(uint uInstr, NX8Disassembler dasm)
+        public override NX8_500Instruction Decode(uint uInstr, NX8_500Disassembler dasm)
         {
             foreach (var m in mutators)
             {
@@ -368,18 +368,18 @@ public class NX8Disassembler : DisassemblerBase<NX8Instruction, Mnemonic>
         }
     }
 
-    private class PrefixDecoder : Decoder<NX8Disassembler, Mnemonic, NX8Instruction>
+    private class PrefixDecoder : Decoder<NX8_500Disassembler, Mnemonic, NX8_500Instruction>
     {
-        private readonly Mutator<NX8Disassembler> mutator;
+        private readonly Mutator<NX8_500Disassembler> mutator;
         private readonly bool? setDd;
 
-        public PrefixDecoder(Mutator<NX8Disassembler> mutator, bool? setDd)
+        public PrefixDecoder(Mutator<NX8_500Disassembler> mutator, bool? setDd)
         {
             this.mutator = mutator;
             this.setDd = setDd;
         }
 
-        public override NX8Instruction Decode(uint uInstr, NX8Disassembler dasm)
+        public override NX8_500Instruction Decode(uint uInstr, NX8_500Disassembler dasm)
         {
             dasm.ddSetThisInstruction = this.setDd;
             if (!mutator(uInstr, dasm))
@@ -390,11 +390,11 @@ public class NX8Disassembler : DisassemblerBase<NX8Instruction, Mnemonic>
         }
     }
 
-    static NX8Disassembler()
+    static NX8_500Disassembler()
     {
-        var nyi = new NyiDecoder<NX8Disassembler, Mnemonic, NX8Instruction>("nyi");
+        var nyi = new NyiDecoder<NX8_500Disassembler, Mnemonic, NX8_500Instruction>("nyi");
         
-        prefixDecoders = new Decoder<NX8Disassembler, Mnemonic, NX8Instruction>[] {
+        prefixDecoders = new Decoder<NX8_500Disassembler, Mnemonic, NX8_500Instruction>[] {
             // 0x00
             nyi,
             nyi,

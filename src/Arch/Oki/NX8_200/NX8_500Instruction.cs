@@ -21,9 +21,9 @@
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 
-namespace Reko.Arch.Oki;
+namespace Reko.Arch.Oki.NX8_200;
 
-public class NX8Instruction : MachineInstruction
+public class NX8_200Instruction : MachineInstruction
 {
     public Mnemonic Mnemonic { get; set; }
     public override int MnemonicAsInteger => (int) Mnemonic;
@@ -45,7 +45,20 @@ public class NX8Instruction : MachineInstruction
     {
         if (operand is Constant imm)
         {
-            renderer.WriteFormat("#0x{0:X}", imm.ToUInt16());
+            renderer.WriteFormat("#0{0:X}h", imm.ToUInt16());
+            return;
+        }
+        if (operand is BitOperand bop)
+        {
+            if (bop.Operand is Constant imm2)
+            {
+                renderer.WriteFormat("0{0:X}h", imm2.ToUInt16());
+            }
+            else
+            {
+                RenderOperand(bop.Operand, renderer, options);
+            }
+            renderer.WriteFormat(".{0}", bop.BitPosition);
             return;
         }
         base.RenderOperand(operand, renderer, options);

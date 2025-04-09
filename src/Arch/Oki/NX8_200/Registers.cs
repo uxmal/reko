@@ -21,7 +21,7 @@
 using Reko.Core;
 using Reko.Core.Types;
 
-namespace Reko.Arch.Oki;
+namespace Reko.Arch.Oki.NX8_200;
 
 public static class Registers
 {
@@ -30,6 +30,7 @@ public static class Registers
     public static RegisterStorage Acc { get; }
     public static RegisterStorage Psw { get; }
     public static RegisterStorage Pswl { get; }
+    public static RegisterStorage Pswh { get; }
 
     /// <summary>
     /// Program counter register.
@@ -50,6 +51,9 @@ public static class Registers
     public static RegisterStorage Csr { get; }
     public static RegisterStorage Tsr { get; }
     public static RegisterStorage Dsr { get; }
+
+
+    public static FlagGroupStorage C { get; }
 
     static Registers()
     {
@@ -78,6 +82,9 @@ public static class Registers
             })
             .ToArray();
         Pswl = new RegisterStorage("pswl", Psw.Number, 0, PrimitiveType.Byte);
+        Pswh = new RegisterStorage("pswh", Psw.Number, 8, PrimitiveType.Byte);
+
+        C = new FlagGroupStorage(Psw, (uint) FlagM.C, "C");
     }
 
     [Flags]

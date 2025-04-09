@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<memory>
+    <segment name="vector_table" addr="0000" size="0028">
+        <global addr="0000" name="reset_vector"><ptr size="2"><fn /></ptr></global>
+        <global addr="0002" name="brk_vector"><ptr size="2"><fn /></ptr></global>
+        <global addr="0004" name="trap_vector"><ptr size="2"><fn /></ptr></global>
+        <global addr="0006" name="nmi_vector"><ptr size="2"><fn /></ptr></global>
+        <global addr="0008" name="int0_vector"><ptr size="2"><fn /></ptr></global>
+        <global addr="000A" name="rx_ready_vector"><ptr size="2"><fn /></ptr></global>
+        <global addr="000C" name="tx_ready_vector"><ptr size="2"><fn /></ptr></global>
+        <global addr="000E" name="brg_rx_vector"><ptr size="2"><fn /></ptr></global>
+        <global addr="0010" name="timer0_overflow_vector"><ptr size="2"><fn /></ptr></global>
+        <global addr="0012" name="timer0_vector"><ptr size="2"><fn /></ptr></global>
+        <global addr="0014" name="timer1_overflow_vector"><ptr size="2"><fn /></ptr></global>
+        <global addr="0016" name="timer1_vector"><ptr size="2"><fn /></ptr></global>
+        <global addr="0018" name="timer2_overflow_vector"><ptr size="2"><fn /></ptr></global>
+        <global addr="001A" name="timer2_vector"><ptr size="2"><fn /></ptr></global>
+        <global addr="001C" name="timer3_overflow_vector"><ptr size="2"><fn /></ptr></global>
+        <global addr="001E" name="timer3_vector"><ptr size="2"><fn /></ptr></global>
+        <global addr="0020" name="a2d_complete_vector"><ptr size="2"><fn /></ptr></global>
+        <global addr="0022" name="pwm_timer_vector"><ptr size="2"><fn /></ptr></global>
+        <global addr="0024" name="brg_tx_vector"><ptr size="2"><fn /></ptr></global>
+        <global addr="0026" name="int1_vector"><ptr size="2"><fn /></ptr></global>
+    </segment> 
+</memory>
