@@ -18,9 +18,11 @@
  */
 #endregion
 
+using Microsoft.VisualStudio.TestPlatform.Common.Utilities;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -64,7 +66,7 @@ namespace Reko.UnitTests.Core.Configuration
             var element = new PlatformDefinition
             {
             };
-            var platform = new DefaultPlatform(null, null);
+            var platform = new DefaultPlatform(null, new FakeArchitecture());
             element.LoadSettingsFromConfiguration(null, platform);
             Assert.IsNotNull(platform.Heuristics);
             Assert.IsNotNull(platform.Heuristics.ProcedurePrologs);
