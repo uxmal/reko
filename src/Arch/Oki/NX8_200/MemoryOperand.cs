@@ -47,7 +47,7 @@ public class MemoryOperand : AbstractMachineOperand
         return new MemoryOperand(segment, null, offset);
     }
 
-    public static MachineOperand Indirect(RegisterStorage segment, RegisterStorage @base, int offset)
+    public static MachineOperand Indirect(RegisterStorage? segment, RegisterStorage @base, int offset)
     {
         return new MemoryOperand(segment, @base, offset);
     }
@@ -58,12 +58,18 @@ public class MemoryOperand : AbstractMachineOperand
         var b = Base;
         if (b is not null)
         {
+            if (b == Registers.Lrb)
+            {
+                renderer.WriteString("off ");
+                renderer.WriteString($"0{Offset:X}h");
+                return;
+            }
             if (Offset != 0)
             {
                 renderer.WriteFormat("{0}", Offset);
             }
             renderer.WriteChar('[');
-            renderer.WriteString(Segment.Name);
+            renderer.WriteString(Segment?.Name ?? "");
             renderer.WriteChar(':');
             renderer.WriteString(b.Name);
             if (PostIncrement)

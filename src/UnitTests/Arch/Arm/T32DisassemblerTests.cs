@@ -41,7 +41,6 @@ namespace Reko.UnitTests.Arch.Arm
 
         protected MachineInstruction Disassemble16(params ushort[] instrs)
         {
-            Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
             Given_Instructions(instrs);
             Assert.IsTrue(dasm.MoveNext());
             var armInstr = dasm.Current;

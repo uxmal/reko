@@ -54,6 +54,9 @@ public static class Registers
 
 
     public static FlagGroupStorage C { get; }
+    public static FlagGroupStorage Z { get; }
+    public static FlagGroupStorage CZ { get; }
+    public static FlagGroupStorage CZSV { get; }
 
     static Registers()
     {
@@ -85,6 +88,9 @@ public static class Registers
         Pswh = new RegisterStorage("pswh", Psw.Number, 8, PrimitiveType.Byte);
 
         C = new FlagGroupStorage(Psw, (uint) FlagM.C, "C");
+        Z = new FlagGroupStorage(Psw, (uint) FlagM.Z, "Z");
+        CZ = new FlagGroupStorage(Psw, (uint)(FlagM.C | FlagM.Z), "CZ");
+        CZSV = new FlagGroupStorage(Psw, (uint)(FlagM.C | FlagM.Z | FlagM.S | FlagM.OV), "CZSV");
     }
 
     [Flags]

@@ -141,9 +141,9 @@ fn00000000: error: An error occurred while rewriting procedure to high-level lan
    at Reko.Core.Memory.ByteMemoryArea.TryReadLe(Int64 imageOffset, DataType type, Constant& c) in c:\dev\uxmal\reko\master\src\Core\Memory\ByteMemoryArea.cs:line 208
    at Reko.Core.Memory.ByteImageReader.TryReadLe(DataType dataType, Constant& c) in c:\dev\uxmal\reko\master\src\Core\Memory\ByteImageReader.cs:line 221
    at Reko.Core.Memory.LeImageReader.TryRead(PrimitiveType dataType, Constant& c) in c:\dev\uxmal\reko\master\src\Core\Memory\EndianImageReader.cs:line 253
-   at Reko.Core.ProcessorArchitecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in c:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 680
+   at Reko.Core.ProcessorArchitecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in c:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 720
    at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 282
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 68
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 70
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 402
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 60
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 251
@@ -157,9 +157,9 @@ fn00000000: error: An error occurred while rewriting procedure to high-level lan
    at Reko.Core.Memory.ByteMemoryArea.TryReadLe(Int64 imageOffset, DataType type, Constant& c) in c:\dev\uxmal\reko\master\src\Core\Memory\ByteMemoryArea.cs:line 208
    at Reko.Core.Memory.ByteImageReader.TryReadLe(DataType dataType, Constant& c) in c:\dev\uxmal\reko\master\src\Core\Memory\ByteImageReader.cs:line 221
    at Reko.Core.Memory.LeImageReader.TryRead(PrimitiveType dataType, Constant& c) in c:\dev\uxmal\reko\master\src\Core\Memory\EndianImageReader.cs:line 253
-   at Reko.Core.ProcessorArchitecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in c:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 680
+   at Reko.Core.ProcessorArchitecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in c:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 720
    at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 282
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 68
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 70
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 402
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 60
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 251
@@ -200,7 +200,7 @@ c:\dev\uxmal\reko\master\subjects\Elf\IA64\bash\elf-Linux-ia64-bash: error: An i
    at Reko.Scanning.ShingledScanner.ScanRange(IProcessorArchitecture arch, MemoryArea mem, Address addrStart, UInt32 cbAlloc, UInt64 workToDo) in c:\dev\uxmal\reko\master\src\Decompiler\Scanning\ShingledScanner.cs:line 202
    at Reko.Scanning.ScannerInLinq.ScanInstructions(ScanResults sr) in c:\dev\uxmal\reko\master\src\Decompiler\Scanning\ScannerInLinq.cs:line 158
    at Reko.Scanning.ScannerInLinq.ScanImage(ScanResults sr) in c:\dev\uxmal\reko\master\src\Decompiler\Scanning\ScannerInLinq.cs:line 65
-   at Reko.Scanning.Scanner.ShingleScanProcedures() in c:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 1146
+   at Reko.Scanning.Scanner.ShingleScanProcedures() in c:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 1159
    at Reko.Scanning.Scanner.Time(Action fn) in c:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 876
    at Reko.Scanning.Scanner.ScanImage() in c:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 863
    at Reko.Decompiler.ScanProgram(Program program) in c:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 606
@@ -290,7 +290,7 @@ Error: Unable to load metadata file windows32.xml.
    at Reko.Core.TypeLibraryDeserializer.LoadType(SerializedType sType) in c:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 259
    at Reko.Core.TypeLibraryDeserializer.LoadTypes(SerializedLibrary serializedLibrary) in c:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 252
    at Reko.Core.TypeLibraryDeserializer.Load(SerializedLibrary sLib) in c:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 63
-   at Reko.Core.Loading.TypeLibraryLoader.Load(IPlatform platform, TypeLibrary dstLib) in c:\dev\uxmal\reko\master\src\Core\Loading\TypeLibraryLoader.cs:line 42
+   at Reko.Core.Loading.TypeLibraryLoader.Load(IPlatform platform, TypeLibrary dstLib) in c:\dev\uxmal\reko\master\src\Core\Loading\TypeLibraryLoader.cs:line 51
    at Reko.Core.Loading.MetadataLoader.Load(IPlatform platform, String moduleName, TypeLibrary dstLib) in c:\dev\uxmal\reko\master\src\Core\Loading\MetadataLoader.cs:line 51
    at Reko.Core.Services.TypeLibraryLoaderServiceImpl.LoadMetadataIntoLibrary(IPlatform platform, TypeLibraryDefinition tlElement, TypeLibrary libDst) in c:\dev\uxmal\reko\master\src\Core\Services\ITypeLibraryLoaderService.cs:line 70
 Error: Unable to load metadata file wsock32.xml.
@@ -298,7 +298,7 @@ Error: Unable to load metadata file wsock32.xml.
        at Reko.Core.TypeLibraryDeserializer.LoadProcedure(Procedure_v1 sp) in c:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 202
    at Reko.Core.TypeLibraryDeserializer.LoadProcedures(SerializedLibrary serializedLibrary) in c:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 126
    at Reko.Core.TypeLibraryDeserializer.Load(SerializedLibrary sLib) in c:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 64
-   at Reko.Core.Loading.TypeLibraryLoader.Load(IPlatform platform, TypeLibrary dstLib) in c:\dev\uxmal\reko\master\src\Core\Loading\TypeLibraryLoader.cs:line 42
+   at Reko.Core.Loading.TypeLibraryLoader.Load(IPlatform platform, TypeLibrary dstLib) in c:\dev\uxmal\reko\master\src\Core\Loading\TypeLibraryLoader.cs:line 51
    at Reko.Core.Loading.MetadataLoader.Load(IPlatform platform, String moduleName, TypeLibrary dstLib) in c:\dev\uxmal\reko\master\src\Core\Loading\MetadataLoader.cs:line 51
    at Reko.Core.Services.TypeLibraryLoaderServiceImpl.LoadMetadataIntoLibrary(IPlatform platform, TypeLibraryDefinition tlElement, TypeLibrary libDst) in c:\dev\uxmal\reko\master\src\Core\Services\ITypeLibraryLoaderService.cs:line 70
        at System.Collections.Generic.List`1.get_Item(Int32 index)
@@ -422,8 +422,8 @@ fn000F4A65: error: An internal error occurred while building the expressions of 
 fn00116E5E: error: An internal error occurred while building the expressions of fn00116E5E
     The given key 'l00117142' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 192
-   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 45
+   at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 190
+   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 43
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(IReadOnlyCollection`1 ssts) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 260
 l000ECC80: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
 l000D7BAC: warning: Non-integral switch expression
@@ -434,7 +434,7 @@ l000F1DEA: warning: Non-integral switch expression
 fn00116E5E: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l00117142' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 192
+   at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 190
    at Reko.Structure.StructureAnalysis.Execute() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 147
    at Reko.Structure.StructureAnalysis.Structure() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 80
    at Reko.Decompiler.StructureProgram() in c:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 683
@@ -966,12 +966,12 @@ Error: An error occurred while writing assembly language output.
    at Reko.Core.Memory.EndianByteImageReader..ctor(ByteMemoryArea img, Address addr, Int64 cUnits) in c:\dev\uxmal\reko\master\src\Core\Memory\EndianImageReader.cs:line 70
    at Reko.Core.Memory.BeImageReader..ctor(ByteMemoryArea image, Address addr, Int64 cUnits) in c:\dev\uxmal\reko\master\src\Core\Memory\EndianImageReader.cs:line 264
    at Reko.Core.Memory.ByteMemoryArea.CreateBeReader(Address addr, Int64 cUnits) in c:\dev\uxmal\reko\master\src\Core\Memory\ByteMemoryArea.cs:line 78
-   at Reko.Core.EndianServices.BeServices.CreateImageReader(MemoryArea mem, Address addr, Int64 cUnits) in c:\dev\uxmal\reko\master\src\Core\EndianServices.cs:line 411
-   at Reko.Core.ProcessorArchitecture.CreateImageReader(MemoryArea mem, Address addr, Int64 cbUnits) in c:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 673
-   at Reko.Core.Output.Dumper.DumpData(IProcessorArchitecture arch, MemoryArea mem, Address address, Int64 cUnits, Formatter stm) in c:\dev\uxmal\reko\master\src\Core\Output\Dumper.cs:line 197
-   at Reko.Core.Output.Dumper.DumpData(SegmentMap map, IProcessorArchitecture arch, Address address, Int64 cbBytes, Formatter stm) in c:\dev\uxmal\reko\master\src\Core\Output\Dumper.cs:line 184
-   at Reko.Core.Output.Dumper.DumpItem(ImageSegment segment, ImageMapItem i, Formatter formatter) in c:\dev\uxmal\reko\master\src\Core\Output\Dumper.cs:line 126
-   at Reko.Core.Output.Dumper.Dump(Dictionary`2 segmentItems, Formatter formatter) in c:\dev\uxmal\reko\master\src\Core\Output\Dumper.cs:line 70
+   at Reko.Core.EndianServices.BeServices.CreateImageReader(MemoryArea mem, Address addr, Int64 cUnits) in c:\dev\uxmal\reko\master\src\Core\EndianServices.cs:line 421
+   at Reko.Core.ProcessorArchitecture.CreateImageReader(MemoryArea mem, Address addr, Int64 cbUnits) in c:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 706
+   at Reko.Core.Output.Dumper.DumpData(IProcessorArchitecture arch, MemoryArea mem, Address address, Int64 cUnits, Formatter stm) in c:\dev\uxmal\reko\master\src\Core\Output\Dumper.cs:line 195
+   at Reko.Core.Output.Dumper.DumpData(SegmentMap map, IProcessorArchitecture arch, Address address, Int64 cbBytes, Formatter stm) in c:\dev\uxmal\reko\master\src\Core\Output\Dumper.cs:line 182
+   at Reko.Core.Output.Dumper.DumpItem(ImageSegment segment, ImageMapItem i, Formatter formatter) in c:\dev\uxmal\reko\master\src\Core\Output\Dumper.cs:line 124
+   at Reko.Core.Output.Dumper.Dump(Dictionary`2 segmentItems, Formatter formatter) in c:\dev\uxmal\reko\master\src\Core\Output\Dumper.cs:line 68
    at Reko.Decompiler.DumpAssembler(Program program, Dictionary`2 segmentItems, Formatter wr) in c:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 214
 
 *** MachO\amd64\MachO-OSX-x64-ls
@@ -1141,16 +1141,16 @@ Error: An error occurred while writing assembly language output.
 fn0000000100003AA8: error: An internal error occurred while building the expressions of fn0000000100003AA8
     The given key 'l0000000100004703' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 192
-   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 45
+   at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 190
+   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 43
    at Reko.Core.Graphs.BlockDominatorGraph..ctor(DirectedGraph`1 graph, Block entry) in c:\dev\uxmal\reko\master\src\Core\Graphs\BlockDominatorGraph.cs:line 34
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(IReadOnlyCollection`1 ssts) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 260
 l0000000100003AE7: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
 fn0000000100003AA8: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0000000100004703' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 192
-   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 45
+   at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 190
+   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 43
    at Reko.Structure.StructureAnalysis.Execute() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 147
    at Reko.Structure.StructureAnalysis.Structure() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 80
    at Reko.Decompiler.StructureProgram() in c:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 683
@@ -1171,7 +1171,7 @@ fn0001B1D0: warning: Structure analysis stopped making progress, quitting. Pleas
 fn0001B1F8: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 fn0001B2AC: error: An error occurred while rewriting procedure to high-level language.
     Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
-       at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in c:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 145
+       at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in c:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 155
    at Reko.Structure.CompoundConditionCoalescer.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
    at Reko.Structure.StructureAnalysis.Structure() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 78
    at Reko.Decompiler.StructureProgram() in c:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 683
@@ -1251,6 +1251,8 @@ finish: error: An error occurred while renaming variables.
     The given key 'l004028A8' was not present in the dictionary.
        at Reko.Analysis.SsaLivenessAnalysis.LiveOutAtBlock(Block b, SsaIdentifier v) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 170
    at Reko.Analysis.SsaLivenessAnalysis.BuildInterferenceGraph(SsaIdentifierCollection ssaIds) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 100
+   at Reko.Analysis.SsaLivenessAnalysis..ctor(SsaState ssa) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 62
+   at Reko.Analysis.LiveCopyInserter..ctor(SsaState ssa) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 41
    at Reko.Analysis.WebBuilder.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 111
 l00401628: warning: Non-integral switch expression
 l00401614: warning: Non-integral switch expression
@@ -1343,9 +1345,9 @@ Borland C v3 runtime detected
 1483:0CA6: warning: Call target address 1483:FD4E is invalid.
 fn0800_8F97: error: An internal error occurred while building the expressions of fn0800_8F97
     Dominator graph calculation timed out.
-       at Reko.Core.Graphs.DominatorGraph`1.Intersect(Dictionary`2 postdoms, T b1, T b2) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 232
-   at Reko.Core.Graphs.DominatorGraph`1.Build(DirectedGraph`1 graph, T entryNode) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 161
-   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 43
+       at Reko.Core.Graphs.DominatorGraph`1.Intersect(Dictionary`2 postdoms, T b1, T b2) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 230
+   at Reko.Core.Graphs.DominatorGraph`1.Build(DirectedGraph`1 graph, T entryNode) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 159
+   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 41
    at Reko.Core.Graphs.BlockDominatorGraph..ctor(DirectedGraph`1 graph, Block entry) in c:\dev\uxmal\reko\master\src\Core\Graphs\BlockDominatorGraph.cs:line 34
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(IReadOnlyCollection`1 ssts) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 260
 fn0800_1CF6: error: An error occurred while renaming variables.
@@ -1663,7 +1665,7 @@ Error: Unable to load metadata file windows32.xml.
        at Reko.Core.TypeLibraryDeserializer.LoadProcedure(Procedure_v1 sp) in c:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 202
    at Reko.Core.TypeLibraryDeserializer.LoadProcedures(SerializedLibrary serializedLibrary) in c:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 126
    at Reko.Core.TypeLibraryDeserializer.Load(SerializedLibrary sLib) in c:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 64
-   at Reko.Core.Loading.TypeLibraryLoader.Load(IPlatform platform, TypeLibrary dstLib) in c:\dev\uxmal\reko\master\src\Core\Loading\TypeLibraryLoader.cs:line 42
+   at Reko.Core.Loading.TypeLibraryLoader.Load(IPlatform platform, TypeLibrary dstLib) in c:\dev\uxmal\reko\master\src\Core\Loading\TypeLibraryLoader.cs:line 51
    at Reko.Core.Loading.MetadataLoader.Load(IPlatform platform, String moduleName, TypeLibrary dstLib) in c:\dev\uxmal\reko\master\src\Core\Loading\MetadataLoader.cs:line 51
    at Reko.Core.Services.TypeLibraryLoaderServiceImpl.LoadMetadataIntoLibrary(IPlatform platform, TypeLibraryDefinition tlElement, TypeLibrary libDst) in c:\dev\uxmal\reko\master\src\Core\Services\ITypeLibraryLoaderService.cs:line 70
        at Reko.Environments.Windows.MipsCallingConvention.SetReturnRegister(ICallingConventionEmitter ccr, DataType dtArg) in c:\dev\uxmal\reko\master\src\Environments\Windows\Arch\MipsCallingConvention.cs:line 166
@@ -2189,31 +2191,31 @@ Error: Unable to load metadata file windows32.xml.
 fn00009746: error: An internal error occurred while building the expressions of fn00009746
     The given key 'l00009858' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 192
-   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 45
+   at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 190
+   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 43
    at Reko.Core.Graphs.BlockDominatorGraph..ctor(DirectedGraph`1 graph, Block entry) in c:\dev\uxmal\reko\master\src\Core\Graphs\BlockDominatorGraph.cs:line 34
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(IReadOnlyCollection`1 ssts) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 260
 fn00008EC2: error: An internal error occurred while building the expressions of fn00008EC2
     The given key 'fn00008EC2_exit' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 192
-   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 45
+   at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 190
+   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 43
    at Reko.Core.Graphs.BlockDominatorGraph..ctor(DirectedGraph`1 graph, Block entry) in c:\dev\uxmal\reko\master\src\Core\Graphs\BlockDominatorGraph.cs:line 34
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(IReadOnlyCollection`1 ssts) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 260
 l00009735: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
 fn00008EC2: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l00009735' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 192
-   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 45
+   at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 190
+   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 43
    at Reko.Structure.StructureAnalysis.Execute() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 147
    at Reko.Structure.StructureAnalysis.Structure() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 80
    at Reko.Decompiler.StructureProgram() in c:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 683
 fn00009746: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0000985B' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 192
-   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 45
+   at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 190
+   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 43
    at Reko.Structure.StructureAnalysis.Execute() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 147
    at Reko.Structure.StructureAnalysis.Structure() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 80
    at Reko.Decompiler.StructureProgram() in c:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 683
@@ -2315,4 +2317,4 @@ PE Debug type 14 not supported yet.
 === PE\x86\VCExeSample\VCExeSample
 Signature of 'Microsoft Visual C++ 8' detected.
 
-Decompiled 98 binaries in 94.02 seconds.
+Decompiled 98 binaries in 203.19 seconds.

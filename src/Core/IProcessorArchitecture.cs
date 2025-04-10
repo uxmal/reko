@@ -676,7 +676,7 @@ namespace Reko.Core
         {
             get
             {
-                if (this.regStack == null)
+                if (this.regStack is null)
                     throw new InvalidOperationException("This architecture has no stack pointer. The platform must define it.");
                 return regStack;
             }

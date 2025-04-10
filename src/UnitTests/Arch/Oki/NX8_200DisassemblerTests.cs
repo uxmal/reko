@@ -74,6 +74,8 @@ public class NX8_200DisassemblerTests : DisassemblerTestBase<NX8_200Instruction>
         AssertCode("clr\t0D4h", "C5D415");
     }
 
+
+
     [Test]
     public void NX8_200Dasm_mb_n8()
     {
@@ -86,5 +88,9 @@ public class NX8_200DisassemblerTests : DisassemblerTestBase<NX8_200Instruction>
         AssertCode("mov\tssp,#047Fh", "A0987F04");
     }
 
-
+    [Test]
+    public void NX8_200Dasm_jbr_off8()
+    {
+        AssertCode("jbr\toff 010h.7,1006", "DF1003");
+    }
 }

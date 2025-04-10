@@ -41,6 +41,7 @@ public class NX8_200Architecture : ProcessorArchitecture
         this.InstructionBitSize = 8;
         this.MemoryGranularity = 8;
         this.PointerType = PrimitiveType.Ptr16;
+        this.StackRegister = Registers.Usp;
         this.WordWidth = PrimitiveType.Word16;
     }
 
@@ -61,12 +62,12 @@ public class NX8_200Architecture : ProcessorArchitecture
 
     public override ProcessorState CreateProcessorState()
     {
-        throw new NotImplementedException();
+        return new DefaultProcessorState(this);
     }
 
     public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
     {
-        throw new NotImplementedException();
+        return new NX8_200Rewriter(this, rdr, state, binder, host);
     }
 
     public override FlagGroupStorage? GetFlagGroup(RegisterStorage flagRegister, uint grf)
@@ -101,7 +102,7 @@ public class NX8_200Architecture : ProcessorArchitecture
 
     public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
     {
-        throw new NotImplementedException();
+        return Address.Ptr16((ushort) c.ToUInt32());
     }
 
     public override Address? ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)

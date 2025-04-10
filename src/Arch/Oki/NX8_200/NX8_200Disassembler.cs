@@ -161,36 +161,11 @@ public class NX8_200Disassembler : DisassemblerBase<NX8_200Instruction, Mnemonic
     }
     private static readonly Mutator<NX8_200Disassembler> c = FlagGroup(Registers.C);
 
-    private static bool fix8(uint uInstr, NX8_200Disassembler dasm)
-    {
-        if (!dasm.rdr.TryReadByte(out byte loFix))
-            return false;
-        dasm.ops.Add(MemoryOperand.Direct(Registers.Dsr, 0x200 + loFix));
-        return true;
-    }
-
     private static bool off8(uint uInstr, NX8_200Disassembler dasm)
     {
         if (!dasm.rdr.TryReadByte(out byte loOff))
             return false;
-        dasm.ops.Add(MemoryOperand.Direct(Registers.Dsr, 0x000 + loOff));
-        return true;
-    }
-
-
-    private static bool sfr8(uint uInstr, NX8_200Disassembler dasm)
-    {
-        if (!dasm.rdr.TryReadByte(out byte sfrOff))
-            return false;
-        dasm.ops.Add(MemoryOperand.Direct(Registers.Dsr, 0x000 + sfrOff));
-        return true;
-    }
-
-    private static bool dir(uint uInstr, NX8_200Disassembler dasm)
-    {
-        if (!dasm.rdr.TryReadLeUInt16(out ushort uAddr))
-            return false;
-        dasm.ops.Add(MemoryOperand.Direct(Registers.Dsr, uAddr));
+        dasm.ops.Add(MemoryOperand.Indirect(Registers.Dsr, Registers.Lrb, loOff));
         return true;
     }
 
@@ -261,7 +236,7 @@ public class NX8_200Disassembler : DisassemblerBase<NX8_200Instruction, Mnemonic
     private static readonly Mutator<NX8_200Disassembler> Mdp = Indirect(Registers.Dsr, Registers.Dp);
     private static readonly Mutator<NX8_200Disassembler> Mx1 = Indirect(Registers.Dsr, Registers.X1);
 
-    private static Mutator<NX8_200Disassembler> IndirectOffset8(RegisterStorage seg, RegisterStorage reg)
+    private static Mutator<NX8_200Disassembler> IndirectOffset8(RegisterStorage? seg, RegisterStorage reg)
     {
         return (u, d) =>
         {
@@ -272,7 +247,7 @@ public class NX8_200Disassembler : DisassemblerBase<NX8_200Instruction, Mnemonic
             return true;
         };
     }
-    private static readonly Mutator<NX8_200Disassembler> Md8_usp = IndirectOffset16(Registers.Dsr, Registers.Usp);
+    private static readonly Mutator<NX8_200Disassembler> Md8_usp = IndirectOffset8(null, Registers.Usp);
 
     private static Mutator<NX8_200Disassembler> IndirectOffset16(RegisterStorage seg, RegisterStorage reg)
     {
@@ -567,15 +542,15 @@ public class NX8_200Disassembler : DisassemblerBase<NX8_200Instruction, Mnemonic
             Instr(Mnemonic.divb, ClearOperands),
             Instr(Mnemonic.div, ClearOperands),
 
-            Instr(Mnemonic.mb, bit0),
-            Instr(Mnemonic.mb, bit1),
-            Instr(Mnemonic.mb, bit2),
-            Instr(Mnemonic.mb, bit3),
+            Instr(Mnemonic.mb, bit0, c),
+            Instr(Mnemonic.mb, bit1, c),
+            Instr(Mnemonic.mb, bit2, c),
+            Instr(Mnemonic.mb, bit3, c),
 
-            Instr(Mnemonic.mb, bit4),
-            Instr(Mnemonic.mb, bit5),
-            Instr(Mnemonic.mb, bit6),
-            Instr(Mnemonic.mb, bit7),
+            Instr(Mnemonic.mb, bit4, c),
+            Instr(Mnemonic.mb, bit5, c),
+            Instr(Mnemonic.mb, bit6, c),
+            Instr(Mnemonic.mb, bit7, c),
 
             // 0x40
             nyi,
@@ -720,7 +695,7 @@ public class NX8_200Disassembler : DisassemblerBase<NX8_200Instruction, Mnemonic
             nyi,
 
             Instr(Mnemonic.cmpc, a, SwapOperands),
-            nyi,        //$TODO CMPC -- offset
+            nyi,
             nyi,
             nyi,
 
@@ -834,7 +809,7 @@ public class NX8_200Disassembler : DisassemblerBase<NX8_200Instruction, Mnemonic
             Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding|InstrClass.Zero),
             Instr(Mnemonic.rt, InstrClass.Transfer|InstrClass.Return),
             Instr(Mnemonic.rti, InstrClass.Transfer|InstrClass.Return),
-            Instr(Mnemonic.j, Addr16),
+            Instr(Mnemonic.j, InstrClass.Transfer, Addr16),
 
             nyi,
             nyi,
@@ -852,15 +827,15 @@ public class NX8_200Disassembler : DisassemblerBase<NX8_200Instruction, Mnemonic
             InstrDD(Mnemonic.addb, Mnemonic.add, a, rr7),
 
             // 0x10
-            Instr(Mnemonic.vcal, Addr(0x0028)),
-            Instr(Mnemonic.vcal, Addr(0x002A)),
-            Instr(Mnemonic.vcal, Addr(0x002C)),
-            Instr(Mnemonic.vcal, Addr(0x002E)),
+            Instr(Mnemonic.vcal, InstrClass.Transfer|InstrClass.Call, Addr(0x0028)),
+            Instr(Mnemonic.vcal, InstrClass.Transfer|InstrClass.Call, Addr(0x002A)),
+            Instr(Mnemonic.vcal, InstrClass.Transfer|InstrClass.Call, Addr(0x002C)),
+            Instr(Mnemonic.vcal, InstrClass.Transfer|InstrClass.Call, Addr(0x002E)),
 
-            Instr(Mnemonic.vcal, Addr(0x0030)),
-            Instr(Mnemonic.vcal, Addr(0x0032)),
-            Instr(Mnemonic.vcal, Addr(0x0034)),
-            Instr(Mnemonic.vcal, Addr(0x0036)),
+            Instr(Mnemonic.vcal, InstrClass.Transfer|InstrClass.Call, Addr(0x0030)),
+            Instr(Mnemonic.vcal, InstrClass.Transfer|InstrClass.Call, Addr(0x0032)),
+            Instr(Mnemonic.vcal, InstrClass.Transfer|InstrClass.Call, Addr(0x0034)),
+            Instr(Mnemonic.vcal, InstrClass.Transfer|InstrClass.Call, Addr(0x0036)),
 
             InstrDD(Mnemonic.adcb, Mnemonic.adc, a, rr0),
             InstrDD(Mnemonic.adcb, Mnemonic.adc, a, rr1),
@@ -957,15 +932,15 @@ public class NX8_200Disassembler : DisassemblerBase<NX8_200Instruction, Mnemonic
             nyi,
 
             // 0x60
-            nyi,
-            nyi,
+            Instr(Mnemonic.mov, X1, imm16),
+            Instr(Mnemonic.mov, X2, imm16),
             Instr(Mnemonic.mov, DP, imm16),
             InstrDD(Mnemonic.srlb, Mnemonic.srl, a),
 
             Instr(Mnemonic.pops, LRB),
             Instr(Mnemonic.pops, a, SetDDflag),
             nyi,
-            Instr(Mnemonic.l, a, Ndd, SetDDflag),
+            Instr(Mnemonic.l, a, imm16, SetDDflag),
 
             Instr(Mnemonic.xor, a, ER0),
             Instr(Mnemonic.xor, a, ER1),
@@ -1009,15 +984,15 @@ public class NX8_200Disassembler : DisassemblerBase<NX8_200Instruction, Mnemonic
             Instr(Mnemonic.add, a, Ndd),
             nyi,
 
-            InstrDD(Mnemonic.stb, Mnemonic.st, rr0),
-            InstrDD(Mnemonic.stb, Mnemonic.st, rr1),
-            InstrDD(Mnemonic.stb, Mnemonic.st, rr2),
-            InstrDD(Mnemonic.stb, Mnemonic.st, rr3),
+            InstrDD(Mnemonic.stb, Mnemonic.st, a, rr0),
+            InstrDD(Mnemonic.stb, Mnemonic.st, a, rr1),
+            InstrDD(Mnemonic.stb, Mnemonic.st, a, rr2),
+            InstrDD(Mnemonic.stb, Mnemonic.st, a, rr3),
 
-            InstrDD(Mnemonic.stb, Mnemonic.st, rr4),
-            InstrDD(Mnemonic.stb, Mnemonic.st, rr5),
-            InstrDD(Mnemonic.stb, Mnemonic.st, rr6),
-            InstrDD(Mnemonic.stb, Mnemonic.st, rr7),
+            InstrDD(Mnemonic.stb, Mnemonic.st, a, rr4),
+            InstrDD(Mnemonic.stb, Mnemonic.st, a, rr5),
+            InstrDD(Mnemonic.stb, Mnemonic.st, a, rr6),
+            InstrDD(Mnemonic.stb, Mnemonic.st, a, rr7),
 
             // 0x90
             WPrefix(X1),
@@ -1030,15 +1005,15 @@ public class NX8_200Disassembler : DisassemblerBase<NX8_200Instruction, Mnemonic
             InstrDD(Mnemonic.adcb, Mnemonic.adc, a, Ndd),
             nyi,
 
-            nyi,
-            nyi,
-            nyi,
-            nyi,
+            Instr(Mnemonic.movb, R0, imm8),
+            Instr(Mnemonic.movb, R1, imm8),
+            Instr(Mnemonic.movb, R2, imm8),
+            Instr(Mnemonic.movb, R3, imm8),
 
-            nyi,
-            nyi,
-            nyi,
-            nyi,
+            Instr(Mnemonic.movb, R4, imm8),
+            Instr(Mnemonic.movb, R5, imm8),
+            Instr(Mnemonic.movb, R6, imm8),
+            Instr(Mnemonic.movb, R7, imm8),
 
             // 0xA0
             WPrefix(SSP),
@@ -1048,7 +1023,7 @@ public class NX8_200Disassembler : DisassemblerBase<NX8_200Instruction, Mnemonic
 
             WPrefix(LRB),
             nyi,
-            InstrDD(Mnemonic.subb, Mnemonic.sub, Ndd),
+            InstrDD(Mnemonic.subb, Mnemonic.sub, a, Ndd),
             nyi,
 
             nyi,
@@ -1067,9 +1042,9 @@ public class NX8_200Disassembler : DisassemblerBase<NX8_200Instruction, Mnemonic
             WPrefix(Mdp),
             Instr(Mnemonic.xnbl, off8),
 
-            nyi,
-            nyi,
-            InstrDD(Mnemonic.sbcb, Mnemonic.sbc, Ndd),
+            WPrefix(off8),
+            WPrefix(Dir8),
+            InstrDD(Mnemonic.sbcb, Mnemonic.sbc, a, Ndd),
             nyi,
 
             nyi,
@@ -1086,9 +1061,9 @@ public class NX8_200Disassembler : DisassemblerBase<NX8_200Instruction, Mnemonic
             Prefix(Md16_X1),
             Prefix(Md16_X2),
             Prefix(Mdp),
-            nyi,
+            Prefix(Md8_usp),
 
-            nyi,
+            Prefix(off8),
             Prefix(Dir8),
             InstrDD(Mnemonic.cmpb, Mnemonic.cmp, a, Ndd),
             nyi,
@@ -1114,15 +1089,15 @@ public class NX8_200Disassembler : DisassemblerBase<NX8_200Instruction, Mnemonic
             InstrDD(Mnemonic.andb, Mnemonic.and, a, Ndd),
             nyi,
 
-            nyi,
-            nyi,
-            nyi,
-            nyi,
+            Instr(Mnemonic.jbr, off8, bit0, pcdisp8),
+            Instr(Mnemonic.jbr, off8, bit1, pcdisp8),
+            Instr(Mnemonic.jbr, off8, bit2, pcdisp8),
+            Instr(Mnemonic.jbr, off8, bit3, pcdisp8),
 
-            nyi,
-            nyi,
-            nyi,
-            nyi,
+            Instr(Mnemonic.jbr, off8, bit4, pcdisp8),
+            Instr(Mnemonic.jbr, off8, bit5, pcdisp8),
+            Instr(Mnemonic.jbr, off8, bit6, pcdisp8),
+            Instr(Mnemonic.jbr, off8, bit7, pcdisp8),
 
             // 0xE0
             Instr(Mnemonic.l, a, Md16_X1, SetDDflag),
@@ -1133,26 +1108,26 @@ public class NX8_200Disassembler : DisassemblerBase<NX8_200Instruction, Mnemonic
             Instr(Mnemonic.l, a, off8, SetDDflag),
             Instr(Mnemonic.l, a, Dir8, SetDDflag),
             InstrDD(Mnemonic.orb, Mnemonic.or, a, Ndd),
-            nyi,
+            InstrDD(Mnemonic.orb, Mnemonic.or, off8, Ndd),
 
-            nyi,
-            nyi,
-            nyi,
-            nyi,
+            Instr(Mnemonic.jbs, off8, bit0, pcdisp8),
+            Instr(Mnemonic.jbs, off8, bit1, pcdisp8),
+            Instr(Mnemonic.jbs, off8, bit2, pcdisp8),
+            Instr(Mnemonic.jbs, off8, bit3, pcdisp8),
 
-            nyi,
-            nyi,
-            nyi,
-            nyi,
+            Instr(Mnemonic.jbs, off8, bit4, pcdisp8),
+            Instr(Mnemonic.jbs, off8, bit5, pcdisp8),
+            Instr(Mnemonic.jbs, off8, bit6, pcdisp8),
+            Instr(Mnemonic.jbs, off8, bit7, pcdisp8),
 
             // 0xF0
             Instr(Mnemonic.lb, a, Md16_X1, ClearDDflag),
             Instr(Mnemonic.lb, a, Md16_X2, ClearDDflag),
-            Instr(Mnemonic.l, a, Mdp, ClearDDflag),
+            Instr(Mnemonic.lb, a, Mdp, ClearDDflag),
             Instr(Mnemonic.lb, a, Md8_usp, ClearDDflag),
 
             Instr(Mnemonic.lb, a, off8, ClearDDflag),
-            Instr(Mnemonic.l, a, Dir8, ClearDDflag),
+            Instr(Mnemonic.lb, a, Dir8, ClearDDflag),
             InstrDD(Mnemonic.xorb, Mnemonic.xor, a, Ndd),
             nyi,
 
