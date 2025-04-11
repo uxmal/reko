@@ -40,8 +40,8 @@ namespace Reko.Core.Graphs
             this.reversePostOrder = new Dictionary<T, int>();
             this.idoms = Build(graph, entryNode);
             this.idoms[entryNode] = null;		// No-one dominates the root node.
-            this.domFrontier = BuildDominanceFrontiers(graph, idoms);
-        }
+                this.domFrontier = BuildDominanceFrontiers(graph, idoms);
+            }
 
         public Dictionary<T, int> ReversePostOrder { get { return reversePostOrder; } }
 
@@ -187,7 +187,7 @@ namespace Reko.Core.Graphs
                 foreach (T p in pred)
                 {
                     T? r = p;
-                    while (r != null && r != idoms[bb])
+                    while (r != null && (!idoms.TryGetValue(bb, out var idom) || r != idom))
                     {
                         // Add b to the dominance frontier of r.
 

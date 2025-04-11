@@ -1064,6 +1064,24 @@ int8 * fn00008CCE(int8 * r0, struct Eq_n * ap, struct Eq_n & r2Out, struct Eq_n 
 //      fn0000802E
 void fn00008EC2(struct Eq_n * fp)
 {
+	fp->wFFFFFEE8 = 0x00;
+	fp->bFFFFFEEA = 0x0E;
+	fp->bFFFFFEEB = 0x02;
+	fp->dwFFFFFEEC = 0x00;
+	fp->wFFFFFEE0 = 0x00;
+	fp->bFFFFFEE2 = 0x0E;
+	fp->bFFFFFEE3 = 0x02;
+	fp->dwFFFFFEE4 = 0x00;
+	fp->wFFFFFED8 = 0x00;
+	fp->bFFFFFEDA = 0x0E;
+	fp->bFFFFFEDB = 0x02;
+	fp->dwFFFFFEDC = 0x00;
+	fp->wFFFFFED0 = 0x00;
+	fp->bFFFFFED2 = 0x0E;
+	fp->bFFFFFED3 = 0x02;
+	fp->dwFFFFFED4 = 0x00;
+	*(word32 *) ~0x0001882B = 0x01;
+	fn000098B6();
 }
 
 // 00009746: void fn00009746(Register (ptr32 Eq_n) fp)
@@ -1071,6 +1089,11 @@ void fn00008EC2(struct Eq_n * fp)
 //      fn00008EC2
 void fn00009746(struct Eq_n * fp)
 {
+	fp->wFFFFFFEC = 0x00;
+	fp->bFFFFFFEE = 0x0E;
+	fp->bFFFFFFEF = 0x02;
+	fp->dwFFFFFFF0 = 0x00;
+	fn00018F66();
 }
 
 // 000098B6: void fn000098B6()

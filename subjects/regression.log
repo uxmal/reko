@@ -419,27 +419,20 @@ fn000F4A65: error: An internal error occurred while building the expressions of 
    at Reko.Analysis.Coalescer.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 233
    at Reko.Analysis.Coalescer.Transform(SsaState ssa) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 57
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(IReadOnlyCollection`1 ssts) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 251
-fn00116E5E: error: An internal error occurred while building the expressions of fn00116E5E
-    The given key 'l00117142' was not present in the dictionary.
-       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 190
-   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 43
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(IReadOnlyCollection`1 ssts) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 260
 l000ECC80: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
 l000D7BAC: warning: Non-integral switch expression
 l000D7FBC: warning: Non-integral switch expression
 l000DCF8B: warning: Non-integral switch expression
 l000E98AB: warning: Non-integral switch expression
 l000F1DEA: warning: Non-integral switch expression
-fn00116E5E: error: An error occurred while rewriting procedure to high-level language.
-    The given key 'l00117142' was not present in the dictionary.
-       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 190
-   at Reko.Structure.StructureAnalysis.Execute() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 147
-   at Reko.Structure.StructureAnalysis.Structure() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 80
-   at Reko.Decompiler.StructureProgram() in c:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 683
+fn00116E5E: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 fn001179EC: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 l0011DD0D: warning: Non-integral switch expression
+0000000C: warning: Expected sizes of arrays to have been determined by now
+00000018: warning: Expected sizes of arrays to have been determined by now
+00000024: warning: Expected sizes of arrays to have been determined by now
+00000030: warning: Expected sizes of arrays to have been determined by now
+0000003C: warning: Expected sizes of arrays to have been determined by now
 0000000F: warning: Expected sizes of arrays to have been determined by now
 0000001B: warning: Expected sizes of arrays to have been determined by now
 0000001F: warning: Expected sizes of arrays to have been determined by now
@@ -478,6 +471,11 @@ l0011DD0D: warning: Non-integral switch expression
 00000A48: warning: Expected sizes of arrays to have been determined by now
 000018F0: warning: Expected sizes of arrays to have been determined by now
 00001910: warning: Expected sizes of arrays to have been determined by now
+0000000C: warning: Expected sizes of arrays to have been determined by now
+00000018: warning: Expected sizes of arrays to have been determined by now
+00000024: warning: Expected sizes of arrays to have been determined by now
+00000030: warning: Expected sizes of arrays to have been determined by now
+0000003C: warning: Expected sizes of arrays to have been determined by now
 0000000F: warning: Expected sizes of arrays to have been determined by now
 0000001B: warning: Expected sizes of arrays to have been determined by now
 0000001F: warning: Expected sizes of arrays to have been determined by now
@@ -1138,22 +1136,7 @@ Error: An error occurred while writing assembly language output.
 0000000100004EB6: warning: Unable to resolve imported reference mbr_uuid_to_string.
 0000000100004505: warning: Unable to resolve imported reference __stderrp.
 0000000100004DD8: warning: Unable to resolve imported reference acl_get_flag_np.
-fn0000000100003AA8: error: An internal error occurred while building the expressions of fn0000000100003AA8
-    The given key 'l0000000100004703' was not present in the dictionary.
-       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 190
-   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 43
-   at Reko.Core.Graphs.BlockDominatorGraph..ctor(DirectedGraph`1 graph, Block entry) in c:\dev\uxmal\reko\master\src\Core\Graphs\BlockDominatorGraph.cs:line 34
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(IReadOnlyCollection`1 ssts) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 260
-l0000000100003AE7: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
-fn0000000100003AA8: error: An error occurred while rewriting procedure to high-level language.
-    The given key 'l0000000100004703' was not present in the dictionary.
-       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 190
-   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 43
-   at Reko.Structure.StructureAnalysis.Execute() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 147
-   at Reko.Structure.StructureAnalysis.Structure() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 80
-   at Reko.Decompiler.StructureProgram() in c:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 683
+fn0000000100003AA8: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 
 === Hunk-m68k\MATRIXMU
 
@@ -1171,7 +1154,9 @@ fn0001B1D0: warning: Structure analysis stopped making progress, quitting. Pleas
 fn0001B1F8: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 fn0001B2AC: error: An error occurred while rewriting procedure to high-level language.
     Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
-       at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in c:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 155
+       at System.Collections.Generic.List`1.get_Item(Int32 index)
+   at Reko.Core.Block.get_ThenBlock() in c:\dev\uxmal\reko\master\src\Core\Block.cs:line 104
+   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in c:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
    at Reko.Structure.CompoundConditionCoalescer.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
    at Reko.Structure.StructureAnalysis.Structure() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 78
    at Reko.Decompiler.StructureProgram() in c:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 683
@@ -1249,7 +1234,8 @@ fn0001B2CC: warning: Structure analysis stopped making progress, quitting. Pleas
 004008DC: warning: Call target address 00000000 is invalid.
 finish: error: An error occurred while renaming variables.
     The given key 'l004028A8' was not present in the dictionary.
-       at Reko.Analysis.SsaLivenessAnalysis.LiveOutAtBlock(Block b, SsaIdentifier v) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 170
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.SsaLivenessAnalysis.LiveOutAtBlock(Block b, SsaIdentifier v) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 170
    at Reko.Analysis.SsaLivenessAnalysis.BuildInterferenceGraph(SsaIdentifierCollection ssaIds) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 100
    at Reko.Analysis.SsaLivenessAnalysis..ctor(SsaState ssa) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 62
    at Reko.Analysis.LiveCopyInserter..ctor(SsaState ssa) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 41
@@ -2188,37 +2174,8 @@ Error: Unable to load metadata file windows32.xml.
 0000E793: warning: Call target address 0000001A is invalid.
 0000C35C: warning: Call target address 40009A48 is invalid.
 0000A9E4: warning: Call target address 40009A48 is invalid.
-fn00009746: error: An internal error occurred while building the expressions of fn00009746
-    The given key 'l00009858' was not present in the dictionary.
-       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 190
-   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 43
-   at Reko.Core.Graphs.BlockDominatorGraph..ctor(DirectedGraph`1 graph, Block entry) in c:\dev\uxmal\reko\master\src\Core\Graphs\BlockDominatorGraph.cs:line 34
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(IReadOnlyCollection`1 ssts) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 260
-fn00008EC2: error: An internal error occurred while building the expressions of fn00008EC2
-    The given key 'fn00008EC2_exit' was not present in the dictionary.
-       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 190
-   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 43
-   at Reko.Core.Graphs.BlockDominatorGraph..ctor(DirectedGraph`1 graph, Block entry) in c:\dev\uxmal\reko\master\src\Core\Graphs\BlockDominatorGraph.cs:line 34
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(IReadOnlyCollection`1 ssts) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 260
-l00009735: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
-fn00008EC2: error: An error occurred while rewriting procedure to high-level language.
-    The given key 'l00009735' was not present in the dictionary.
-       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 190
-   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 43
-   at Reko.Structure.StructureAnalysis.Execute() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 147
-   at Reko.Structure.StructureAnalysis.Structure() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 80
-   at Reko.Decompiler.StructureProgram() in c:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 683
-fn00009746: error: An error occurred while rewriting procedure to high-level language.
-    The given key 'l0000985B' was not present in the dictionary.
-       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 190
-   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in c:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 43
-   at Reko.Structure.StructureAnalysis.Execute() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 147
-   at Reko.Structure.StructureAnalysis.Structure() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 80
-   at Reko.Decompiler.StructureProgram() in c:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 683
+fn00008EC2: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+fn00009746: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 fn000125CA: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 00007C24: warning: Expected sizes of arrays to have been determined by now
 00008394: warning: Expected sizes of arrays to have been determined by now
@@ -2317,4 +2274,4 @@ PE Debug type 14 not supported yet.
 === PE\x86\VCExeSample\VCExeSample
 Signature of 'Microsoft Visual C++ 8' detected.
 
-Decompiled 98 binaries in 203.19 seconds.
+Decompiled 98 binaries in 48.71 seconds.

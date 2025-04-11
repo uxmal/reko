@@ -4356,85 +4356,58 @@ word32 fn00116E5E(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg
 // Trashed: stack
 // Preserved:
 fn00116E5E_entry:
-	def Mem0
-	def arg2
-	def arg7
-	def arg5
-	def arg4
-	def arg6
-	def arg0
-	def arg1
-	def loc94
-	def loc68
-	def loc48
-	arg7_280 = arg7
-	arg4_293 = arg4
-	arg6_303 = arg6
-	arg1_352 = arg1
-	arg3_1032 = arg3
+	arg7_1019 = arg7
+	arg4_1029 = arg4
+	arg6_1021 = arg6
+	arg1_1027 = arg1
+	arg3_1024 = arg3
 l00116E5E:
 	v124_228 = Mem0[0x00140030<p32>:word32]
 	Mem233[0x00140030<p32>:word32] = Mem0[0x00140030<p32>:word32] + 0x10<32>
-	loc127_229 = v124_228
+	loc127 = v124_228
 	branch Mem233[0x00140030<p32>:word32] < Mem233[0x00140034<p32>:word32] l00116E77
 l00116E72:
 	abortStackOverflow(0x10<32>)
 l00116E77:
-	loc102_240 = v124_228
+	loc102 = v124_228
 	loc10_249 = arg2
 l00116E88:
-	loc10_250 = PHI((loc10_249, l00116E77), (loc10_271, l00116EB5))
-	branch loc10_250 != arg3 l00116E9C
+	branch loc10_249 != arg3 l00116E9C
 l00116E95:
-	loc11_275 = arg3
+	loc11_273 = arg3
 	goto l00116EC2
 l00116E9C:
-	branch Mem233[loc10_250:word32] != 0<32> l00116EB5
+	branch Mem233[loc10_249:word32] != 0<32> l00116EB5
 l00116EAE:
-	loc11_273 = loc10_250
+	loc11_273 = loc10_249
 	goto l00116EC2
 l00116EB5:
-	loc10_271 = loc10_250 + 4<32>
+	loc10_249 = loc10_249 + 4<32>
 	goto l00116E88
 l00116EC2:
-	loc11_319 = PHI((loc11_275, l00116E95), (loc11_273, l00116EAE))
 	Mem288[arg7:word32] = arg5
 	Mem298[arg4:word32] = arg2
-	loc37_305 = arg6
-	loc38_314 = arg0 + 8<32>
-	loc12_316 = arg2
-	loc13_318 = arg5
-	loc14_321 = loc11_319
+	loc37 = arg6
+	loc38 = arg0 + 8<32>
+	loc12_218 = arg2
+	loc13_221 = arg5
+	loc14_224 = loc11_273
 l00116EEB:
-	loc127_954 = PHI((loc127_229, l00116EC2), (loc127, l00117191))
-	arg7_579 = PHI((arg7_280, l00116EC2), (arg7_1019, l00117191))
-	loc94_530 = PHI((loc94, l00116EC2), (loc94_535, l00117191))
-	arg4_415 = PHI((arg4_293, l00116EC2), (arg4_1029, l00117191))
-	loc38_399 = PHI((loc38_314, l00116EC2), (loc38, l00117191))
-	loc37_390 = PHI((loc37_305, l00116EC2), (loc37, l00117191))
-	loc14_375 = PHI((loc14_321, l00116EC2), (loc14_224, l00117191))
-	loc102_363 = PHI((loc102_240, l00116EC2), (loc102, l00117191))
-	Mem359 = PHI((Mem298, l00116EC2), (Mem360, l00117191))
-	arg1_347 = PHI((arg1_352, l00116EC2), (arg1_1027, l00117191))
-	arg6_333 = PHI((arg6_303, l00116EC2), (arg6_1021, l00117191))
-	loc13_331 = PHI((loc13_318, l00116EC2), (loc13_221, l00117191))
-	arg3_324 = PHI((arg3_1032, l00116EC2), (arg3_1024, l00117191))
-	loc12_322 = PHI((loc12_316, l00116EC2), (loc12_218, l00117191))
-	branch !(loc13_331 == arg6_333 | loc12_322 == arg3_324) l00116F11
+	branch !(loc13_221 == arg6_1021 | loc12_218 == arg3_1024) l00116F11
 l00116F06:
-	loc126_471 = 0x35<32>
+	loc126_461 = 0x35<32>
 	goto l001171A0
 l00116F11:
-	Mem374[loc102_363:word64] = Mem359[arg1_347:word64]
-	v124_409 = fn000DB419(Mem374[loc38_399:word32])
+	Mem374[loc102:word64] = Mem359[arg1_1027:word64]
+	v124_409 = fn000DB419(Mem374[loc38:word32])
 	Mem412[0x00140048<p32>:word32] = 0<32>
-	v124_423 = invoke_iiiiii(0x1B9<32>, loc13_331, arg4_415, loc14_375 - loc12_322 >> 2<32>, loc37_390 - loc13_331, arg1_347)
+	v124_423 = invoke_iiiiii(0x1B9<32>, loc13_221, arg4_1029, loc14_224 - loc12_218 >> 2<32>, loc37 - loc13_221, arg1_1027)
 	v124_425 = Mem412[0x00140048<p32>:word32]
 	Mem428[0x00140048<p32>:word32] = 0<32>
-	loc48_410 = v124_409
+	loc48 = v124_409
 	branch !(v124_425 & 1<32>) l00116F7F
 l00116F78:
-	loc126_467 = 0xB<32>
+	loc126_461 = 0xB<32>
 	goto l001171A0
 l00116F7F:
 	branch v124_409 == 0<32> != 0<32> l00116FB2
@@ -4445,16 +4418,16 @@ l00116F8B:
 	Mem448[0x00140048<p32>:word32] = 0<32>
 	branch !(v124_445 & 1<32>) l00116FB1
 l00116FAA:
-	loc126_465 = 0xA<32>
+	loc126_461 = 0xA<32>
 	goto l001171A0
 l00116FB1:
 l00116FB2:
 	switch (v124_423 - 0xFFFFFFFF<32>) { l00116FC4 l00116FD0 }
 l00116FC4:
-	loc126_463 = 0x10<32>
+	loc126_461 = 0x10<32>
 	goto l001171A0
 l00116FD0:
-	loc48_790 = v124_409
+	loc48 = v124_409
 	loc126_461 = 0x32<32>
 	goto l001171A0
 l001170DA:
@@ -4467,52 +4440,46 @@ l001170EA:
 	v124_118 = Mem112[arg7_1019:word32]
 	Mem126[arg7_1019:word32] = v124_118 + 1<32>
 	Mem130[v124_118:byte] = v133_113
-	v124_135 = v124_135
-	v124_137 = v124_137
 	goto l001170DA
 l00117125:
 	v124_143 = Mem112[arg4_1029:word32]
 	Mem151[arg4_1029:word32] = v124_143 + 4<32>
 	loc17_153 = v124_143 + 4<32>
 l00117142:
-	loc17_154 = PHI((loc17_153, l00117125), (loc17_175, l0011716F))
-	branch loc17_154 != arg3_1024 l00117156
+	branch loc17_153 != arg3_1024 l00117156
 l0011714F:
-	loc18_179 = arg3_1024
+	loc18_177 = arg3_1024
 	goto l0011717C
 l00117156:
-	branch Mem151[loc17_154:word32] != 0<32> l0011716F
+	branch Mem151[loc17_153:word32] != 0<32> l0011716F
 l00117168:
-	loc18_177 = loc17_154
+	loc18_177 = loc17_153
 	goto l0011717C
 l0011716F:
-	loc17_175 = loc17_154 + 4<32>
+	loc17_153 = loc17_153 + 4<32>
 	goto l00117142
 l0011717C:
-	loc18_186 = PHI((loc18_179, l0011714F), (loc18_177, l00117168))
 	v124_184 = Mem151[arg7_1019:word32]
 l00117191:
-	loc94_535 = loc94_33
+	loc94 = loc94_33
 	Mem360 = Mem151
 	loc12_218 = v124_143 + 4<32>
 	loc13_221 = v124_184
-	loc14_224 = loc18_186
+	loc14_224 = loc18_177
 	goto l00116EEB
 l001171A0:
-	loc48_777 = PHI((loc48, l00116F06), (loc48_410, l00116F78), (loc48_410, l00116FAA), (loc48_410, l00116FC4), (loc48_790, l00116FD0))
-	loc126_472 = PHI((loc126_471, l00116F06), (loc126_467, l00116F78), (loc126_465, l00116FAA), (loc126_463, l00116FC4), (loc126_461, l00116FD0))
-	branch loc126_472 != 0xA<32> l001171BA
+	branch loc126_461 != 0xA<32> l001171BA
 l001171AB:
 	fn000D0E65(___cxa_find_matching_catch_3(0<32>))
 	goto l001173FB
 l001171BA:
-	branch loc126_472 != 0xB<32> l00117209
+	branch loc126_461 != 0xB<32> l00117209
 l001171C1:
 	v124_773 = ___cxa_find_matching_catch_2()
-	branch loc48_777 == 0<32> != 0<32> l00117204
+	branch loc48 == 0<32> != 0<32> l00117204
 l001171D5:
 	Mem798[0x00140048<p32>:word32] = 0<32>
-	invoke_ii(0x17E<32>, loc48_777)
+	invoke_ii(0x17E<32>, loc48)
 	v124_802 = Mem798[0x00140048<p32>:word32]
 	Mem805[0x00140048<p32>:word32] = 0<32>
 	branch !(v124_802 & 1<32>) l00117203
@@ -4523,31 +4490,27 @@ l00117204:
 	___resumeException(v124_773)
 	goto l001173FA
 l00117209:
-	branch loc126_472 != 0x10<32> l0011736A
+	branch loc126_461 != 0x10<32> l0011736A
 l00117210:
-	Mem590[arg7_579:word32] = loc13_331
-	loc16_597 = loc12_322
-	loc69_599 = loc13_331
+	Mem590[arg7_1019:word32] = loc13_221
+	loc16_597 = loc12_218
+	loc69_599 = loc13_221
 l00117221:
-	loc68_722 = PHI((loc68, l00117210), (loc68_620, l001172C1))
-	loc69_624 = PHI((loc69_599, l00117210), (loc69_687, l001172C1))
-	loc16_605 = PHI((loc16_597, l00117210), (loc16_685, l001172C1))
-	Mem602 = PHI((Mem590, l00117210), (Mem678, l001172C1))
-	branch loc16_605 != Mem602[arg4_415:word32] l0011723C
+	branch loc16_597 != Mem602[arg4_1029:word32] l0011723C
 l00117235:
-	loc126_695 = 0x1C<32>
+	loc126_461 = 0x1C<32>
 	goto l001172E7
 l0011723C:
-	v124_612 = Mem602[loc16_605:word32]
-	v124_619 = fn000DB419(Mem602[loc38_399:word32])
+	v124_612 = Mem602[loc16_597:word32]
+	v124_619 = fn000DB419(Mem602[loc38:word32])
 	Mem622[0x00140048<p32>:word32] = 0<32>
-	v124_629 = invoke_iiii(0x1BA<32>, loc69_624, v124_612, loc102_363)
+	v124_629 = invoke_iiii(0x1BA<32>, loc69_599, v124_612, loc102)
 	v124_631 = Mem622[0x00140048<p32>:word32]
 	Mem634[0x00140048<p32>:word32] = 0<32>
-	loc68_620 = v124_619
+	loc68 = v124_619
 	branch !(v124_631 & 1<32>) l0011727C
 l00117275:
-	loc126_693 = 0x16<32>
+	loc126_461 = 0x16<32>
 	goto l001172E7
 l0011727C:
 	branch v124_619 == 0<32> != 0<32> l001172AF
@@ -4558,36 +4521,33 @@ l00117288:
 	Mem654[0x00140048<p32>:word32] = 0<32>
 	branch !(v124_651 & 1<32>) l001172AE
 l001172A7:
-	loc126_691 = 0x15<32>
+	loc126_461 = 0x15<32>
 	goto l001172E7
 l001172AE:
 l001172AF:
-	Mem669 = PHI((Mem634, l0011727C), (Mem654, l001172AE))
 	branch v124_629 != 0xFFFFFFFF<32> l001172C1
 l001172BA:
-	loc126_689 = 0x1C<32>
+	loc126_461 = 0x1C<32>
 	goto l001172E7
 l001172C1:
-	v124_674 = Mem669[arg7_579:word32] + v124_629
-	Mem678[arg7_579:word32] = v124_674
-	loc16_685 = loc16_605 + 4<32>
-	loc69_687 = v124_674
+	v124_674 = Mem669[arg7_1019:word32] + v124_629
+	Mem678[arg7_1019:word32] = v124_674
+	loc16_597 = loc16_597 + 4<32>
+	loc69_599 = v124_674
 	goto l00117221
 l001172E7:
-	loc68_721 = PHI((loc68_722, l00117235), (loc68_620, l00117275), (loc68_620, l001172A7), (loc68_620, l001172BA))
-	loc126_696 = PHI((loc126_695, l00117235), (loc126_693, l00117275), (loc126_691, l001172A7), (loc126_689, l001172BA))
-	branch loc126_696 != 0x15<32> l001172FF
+	branch loc126_461 != 0x15<32> l001172FF
 l001172F0:
 	fn000D0E65(___cxa_find_matching_catch_3(0<32>))
 	goto l00117368
 l001172FF:
-	branch loc126_696 != 0x16<32> l0011734E
+	branch loc126_461 != 0x16<32> l0011734E
 l00117306:
 	v124_716 = ___cxa_find_matching_catch_2()
-	branch loc68_721 == 0<32> != 0<32> l00117349
+	branch loc68 == 0<32> != 0<32> l00117349
 l0011731A:
 	Mem745[0x00140048<p32>:word32] = 0<32>
-	invoke_ii(0x17E<32>, loc68_721)
+	invoke_ii(0x17E<32>, loc68)
 	v124_749 = Mem745[0x00140048<p32>:word32]
 	Mem752[0x00140048<p32>:word32] = 0<32>
 	branch !(v124_749 & 1<32>) l00117348
@@ -4598,28 +4558,28 @@ l00117349:
 	___resumeException(v124_716)
 	goto l00117367
 l0011734E:
-	branch loc126_696 != 0x1C<32> l00117367
+	branch loc126_461 != 0x1C<32> l00117367
 l00117355:
-	Mem711[arg4_415:word32] = loc16_605
-	loc126_715 = 0x32<32>
+	Mem711[arg4_1029:word32] = loc16_597
+	loc126_461 = 0x32<32>
 	goto l001173FC
 l00117367:
 l00117367:
 l00117368:
 	goto l001173F9
 l0011736A:
-	branch loc126_472 != 0x23<32> l00117380
+	branch loc126_461 != 0x23<32> l00117380
 l00117371:
 	fn000D0E65(___cxa_find_matching_catch_3(0<32>))
 	goto l001173F8
 l00117380:
-	branch loc126_472 != 0x24<32> l001173CF
+	branch loc126_461 != 0x24<32> l001173CF
 l00117387:
 	v124_525 = ___cxa_find_matching_catch_2()
-	branch loc94_530 == 0<32> != 0<32> l001173CA
+	branch loc94 == 0<32> != 0<32> l001173CA
 l0011739B:
 	Mem550[0x00140048<p32>:word32] = 0<32>
-	invoke_ii(0x17E<32>, loc94_530)
+	invoke_ii(0x17E<32>, loc94)
 	v124_554 = Mem550[0x00140048<p32>:word32]
 	Mem557[0x00140048<p32>:word32] = 0<32>
 	branch !(v124_554 & 1<32>) l001173C9
@@ -4630,39 +4590,31 @@ l001173CA:
 	___resumeException(v124_525)
 	goto l001173F7
 l001173CF:
-	branch loc126_472 != 0x31<32> l001173DF
+	branch loc126_461 != 0x31<32> l001173DF
 l001173D6:
-	loc126_524 = 0x32<32>
+	loc126_461 = 0x32<32>
 	goto l001173F6
 l001173DF:
-	branch loc126_472 != 0x33<32> l001173F6
+	branch loc126_461 != 0x33<32> l001173F6
 l001173E6:
-	loc126_506 = 0x35<32>
+	loc126_461 = 0x35<32>
 l001173F6:
-	loc126_833 = PHI((loc126_472, l001173DF), (loc126_506, l001173E6))
 l001173F6:
-	loc126_832 = PHI((loc126_833, l001173F6), (loc126_524, l001173D6))
 l001173F7:
-	loc126_831 = PHI((loc126_832, l001173F6), (loc126_472, l001173CA))
 l001173F8:
-	loc126_830 = PHI((loc126_831, l001173F7), (loc126_472, l00117371))
 l001173F9:
-	loc126_829 = PHI((loc126_830, l001173F8), (loc126_696, l00117368))
 l001173FA:
-	loc126_828 = PHI((loc126_829, l001173F9), (loc126_472, l00117204))
 l001173FB:
-	loc126_827 = PHI((loc126_828, l001173FA), (loc126_472, l001171AB))
 l001173FC:
-	loc126_826 = PHI((loc126_715, l00117355), (loc126_827, l001173FB))
-	branch loc126_826 != 0x32<32> l00117409
+	branch loc126_461 != 0x32<32> l00117409
 l00117404:
 	goto l00117423
 l00117409:
-	branch loc126_826 != 0x35<32> l00117423
+	branch loc126_461 != 0x35<32> l00117423
 l00117410:
 l00117423:
 l00117423:
-	Mem982[0x00140030<p32>:word32] = loc127_954
+	Mem982[0x00140030<p32>:word32] = loc127
 	return <invalid>
 fn00116E5E_exit:
 
