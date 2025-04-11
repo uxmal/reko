@@ -512,7 +512,7 @@ public class NX8_200Rewriter : IEnumerable<RtlInstructionCluster>
         var left = OpSrc(0, dt);
         var right = OpSrc(1, dt);
         var c = binder.EnsureFlagGroup(Registers.C);
-        var result = OpDst(0, m.ISubC(left, right, c));
+        var result = OpDst(0, m.ISubC(left, right, c), dt);
         var cz = binder.EnsureFlagGroup(Registers.CZ);
         m.Assign(cz, m.Cond(result));
     }
