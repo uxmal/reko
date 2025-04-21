@@ -59,6 +59,7 @@ namespace Reko.Structure
         private DominatorGraph<Region> postDoms;
         private Queue<(Region, ISet<Region>)> unresolvedCycles;
         private Queue<Region> unresolvedSwitches;
+        private readonly Dictionary<Region, Region> orphanedFollows;
         private readonly IDecompilerEventListener eventListener;
 
 #nullable disable
@@ -67,6 +68,7 @@ namespace Reko.Structure
             this.eventListener = listener;
             this.program = program;
             this.proc = proc;
+            this.orphanedFollows = [];
         }
 #nullable enable
 
@@ -147,6 +149,7 @@ namespace Reko.Structure
                 this.doms = new DominatorGraph<Region>(this.regionGraph, this.entry);
                 this.unresolvedCycles = new Queue<(Region, ISet<Region>)>();
                 this.unresolvedSwitches = new Queue<Region>();
+                this.orphanedFollows.Clear();
                 var postOrder = new DfsIterator<Region>(regionGraph).PostOrder(entry).ToList();
 
                 foreach (var n in postOrder)
@@ -1049,6 +1052,8 @@ are added during loop refinement, which we discuss next.
             {
                 if (s == n)
                 {
+                    // n is a sucessor of itself -- a self-loop.
+                    // If it's the only successor, then it's an infinite loop.
                     AbsynStatement loopStm;
                     if (succs.Length == 1)
                     {
@@ -1196,10 +1201,10 @@ refinement on the loop body, which we describe below.
         {
             head = EnsureSingleEntry(head, loopNodes);
             var (follow, latch) = DetermineFollowLatch(head, loopNodes);
-            if (follow == null && latch == null)
+            if (follow is null && latch is null)
                 return false;
             var lexicalNodes = GetLexicalNodes(head, follow!, loopNodes);
-            var virtualized = VirtualizeIrregularExits(head, latch!, follow!, lexicalNodes);
+            var virtualized = VirtualizeIrregularLoopExits(head, latch!, follow!, lexicalNodes);
             if (virtualized)
                 return true;
             foreach (var n in lexicalNodes)
@@ -1393,14 +1398,18 @@ refinement on the loop body, which we describe below.
             return regionGraph.Successors(n).Where(s => (s == follow)).Any();
         }
 
-        private LoopType DetermineLoopType(Region header, Region latch, Region follow)
+        private LoopType DetermineLoopType(Region header, Region latch, Region follow, ISet<Region> loopNodes)
         {
             if (!HasExitEdgeFrom(latch, follow))
                 return LoopType.While;
-            if (!HasExitEdgeFrom(header, follow))
-                return LoopType.DoWhile;
-            if (header.Statements.Count > 0)
-                return LoopType.DoWhile;
+            var preds = loopNodes.Intersect(this.regionGraph.Predecessors(header));
+            if (preds.Count() == 1)
+            {
+                if (!HasExitEdgeFrom(header, follow))
+                    return LoopType.DoWhile;
+                if (header.Statements.Count > 0)
+                    return LoopType.DoWhile;
+            }
             return LoopType.While;
         }
 
@@ -1417,10 +1426,10 @@ refinement on the loop body, which we describe below.
         /// <param name="follow">The node that follows the loop.</param>
         /// <param name="lexicalNodes"></param>
         /// <returns>True if at least one edge was virtualized.</returns>
-        private bool VirtualizeIrregularExits(Region header, Region latch, Region follow, ISet<Region> lexicalNodes)
+        private bool VirtualizeIrregularLoopExits(Region header, Region latch, Region follow, ISet<Region> lexicalNodes)
         {
             bool didVirtualize = false;
-            var loopType = DetermineLoopType(header, latch, follow);
+            var loopType = DetermineLoopType(header, latch, follow, lexicalNodes);
             foreach (var n in lexicalNodes)
             {
                 var vEdges = new List<VirtualEdge>();
@@ -1449,6 +1458,11 @@ refinement on the loop body, which we describe below.
                 {
                     didVirtualize = true;
                     VirtualizeEdge(edge);
+                }
+                if (regionGraph.Predecessors(follow).Count == 0)
+                {
+                    // The follow node is unreachable, remember it.
+                    this.orphanedFollows.Add(header, follow);
                 }
             }
             return didVirtualize;
