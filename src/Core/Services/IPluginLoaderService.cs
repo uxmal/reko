@@ -45,8 +45,12 @@ namespace Reko.Core.Services
         Type GetType(string fullyQualifiedName);
     }
 
+    /// <summary>
+    /// Implementation of <see cref="IPluginLoaderService"/>.
+    /// </summary>
     public class PluginLoaderService : IPluginLoaderService
     {
+        /// <inheritdoc/>
         public Type GetType(string fullyQualifiedTypeName)
         {
             var components = fullyQualifiedTypeName.Split(',');

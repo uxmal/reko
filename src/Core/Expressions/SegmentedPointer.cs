@@ -53,23 +53,28 @@ namespace Reko.Core.Expressions
 
         public Expression Offset { get; }
 
-        public override IEnumerable<Expression> Children => throw new NotImplementedException();
+        /// <inheritdoc/>
+        public override IEnumerable<Expression> Children => [];
 
+        /// <inheritdoc/>
         public override void Accept(IExpressionVisitor visitor)
         {
             visitor.VisitSegmentedAddress(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(ExpressionVisitor<T> visitor)
         {
             return visitor.VisitSegmentedAddress(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(ExpressionVisitor<T, C> visitor, C context)
         {
             return visitor.VisitSegmentedAddress(this, context);
         }
 
+        /// <inheritdoc/>
         public override Expression CloneExpression()
         {
             return new SegmentedPointer(this.DataType, this.BasePointer, this.Offset);

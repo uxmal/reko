@@ -18,8 +18,6 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Core.Analysis;
 using Reko.Core.Expressions;
 using System;
 
@@ -38,10 +36,10 @@ namespace Reko.Core.Analysis
         /// <summary>
         /// Creates a new <see cref="ExpressionUseRemover"/> instance.
         /// </summary>
-        /// <param name="user"><see cref="Statement" /> from which uses are
-        /// to be removed.</param>
-        /// <param name="ssaIds">The <see cref="SsaIdentifierCollection"/> 
-        /// from which the uses are to be removed.</param>
+        /// <param name="user">Statement from which the expressions are being removed.</param>
+        /// <param name="ssaIds"><see cref="SsaIdentifierCollection"/> to use when 
+        /// adjusting <see cref="SsaIdentifier"/> usages.
+        /// </param>
         public ExpressionUseRemover(Statement user, SsaIdentifierCollection ssaIds)
         {
             this.user = user ?? throw new ArgumentNullException(nameof(user));

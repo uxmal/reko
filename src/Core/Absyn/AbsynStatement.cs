@@ -33,7 +33,7 @@ namespace Reko.Core.Absyn
         /// <summary>
         /// Accepts a visitor implementing the <see cref="IAbsynVisitor"/> interface.
         /// </summary>
-        /// <param name="visitor">A visitor object.</param>
+        /// <param name="visitor">A typeless visitor object.</param>
         public abstract void Accept(IAbsynVisitor visitor);
 
         /// <summary>
@@ -44,11 +44,13 @@ namespace Reko.Core.Absyn
         public abstract T Accept<T>(IAbsynVisitor<T> visitor);
 
         /// <summary>
-        /// Accepts a visitor implementing the <see cref="IAbsynVisitor{T, C}"/> interface.
+        /// Accept a visitor with context.
         /// </summary>
-        /// <param name="visitor">A visitor object.</param>
-        /// <param name="context">A context from the caller.</param>
-        /// <returns>The result of accepting the visitor.</returns>
+        /// <param name="visitor">Visitor expecting <paramref name="context"/> and 
+        /// returning <typeparamref name="T"/>.
+        /// </param>
+        /// <param name="context">Contextual information.</param>
+        /// <returns>An instance of <typeparamref name="T"/>.</returns>
         public abstract T Accept<T, C>(IAbsynVisitor<T, C> visitor, C context);
 
         /// <summary>

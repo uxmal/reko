@@ -41,7 +41,8 @@ namespace Reko.Core.Expressions
         /// <param name="field">The <see cref="Field"/> to access.</param>
 		public FieldAccess(DataType fieldType, Expression expr, Field field) : base(fieldType)
 		{
-			this.Structure = expr; this.Field = field;
+			this.Structure = expr;
+            this.Field = field;
 		}
 
         /// <summary>

@@ -40,14 +40,39 @@ namespace Reko.Core.Types
 	[Flags]
     public enum Domain
     {
-        // Domain of the Unit, or 'void' data type. 
+        /// <summary>
+        /// Domain of the Unit, or 'void' data type. 
+        /// </summary>
         None = 0,
 
+        /// <summary>
+        /// Boolean data types.
+        /// </summary>
         Boolean = 1,                // f
+        
+        /// <summary>
+        /// Domain of character data.
+        /// </summary>
         Character = 2,              // c
+
+        /// <summary>
+        /// Domain of signed integers.
+        /// </summary>
         SignedInt = 4,              // i 
+
+        /// <summary>
+        /// Domain of unsigned integers.
+        /// </summary>
         UnsignedInt = 8,            // u
+
+        /// <summary>
+        /// Either a signed or unsigned integer.
+        /// </summary>
         Integer = SignedInt | UnsignedInt,
+
+        /// <summary>
+        /// Binary coded decimals.
+        /// </summary>
         Bcd = 16,                   // b - Binary coded decimal; a decimal digit stored in each nybble of a byte.
         Real = 32,                  // r
         Pointer = 64,               // p

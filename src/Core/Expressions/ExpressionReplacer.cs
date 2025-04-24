@@ -23,6 +23,9 @@ using System.Linq;
 
 namespace Reko.Core.Expressions
 {
+    /// <summary>
+    /// An expression visitor that replaces all occurrences of a given expression with a replacement.
+    /// </summary>
     public class ExpressionReplacer : ExpressionVisitor<Expression>
     {
         private readonly ExpressionValueComparer cmp;
@@ -47,8 +50,7 @@ namespace Reko.Core.Expressions
             return root.Accept(rep);
         }
 
-#pragma warning disable CS1591
-
+        /// <inheritdoc/>
         public Expression VisitAddress(Address addr)
         {
             if (cmp.Equals(addr, original))

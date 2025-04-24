@@ -44,7 +44,6 @@ namespace Reko.Core.Analysis
         /// <param name="stmDef">The statement that defined this SSA identifier.</param>
         /// <param name="isSideEffect">True if the SSA identifier was defined as a 
         /// side effect of an <see cref="Application"/>.</param>
-        /// <exception cref="ArgumentNullException"></exception>
 		public SsaIdentifier(Identifier id, Identifier idOrig, Statement? stmDef, bool isSideEffect)
 		{
             this.Identifier = id ?? throw new ArgumentNullException(nameof(id));

@@ -29,16 +29,18 @@ namespace Reko.Core.Absyn
 	public class AbsynSideEffect : AbsynStatement
 	{
         /// <summary>
-        /// Creates a new side effect statement.
+        /// Construct a side effect statement.
         /// </summary>
-        /// <param name="expr">Expression which is only evaluated for its side effect.</param>
+        /// <param name="expr">Expression (typically a function) whose side effect
+        /// is significant.
+        /// </param>
 		public AbsynSideEffect(Expression expr)
 		{
             Expression = expr;
 		}
 
         /// <summary>
-        /// Expression which is only evaluated for its side effect.
+        /// The expression with a side effect.
         /// </summary>
 		public Expression Expression { get; }
 

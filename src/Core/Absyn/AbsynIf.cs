@@ -19,7 +19,6 @@
 #endregion
 
 using Reko.Core.Expressions;
-using System;
 using System.Collections.Generic;
 
 namespace Reko.Core.Absyn
@@ -30,23 +29,20 @@ namespace Reko.Core.Absyn
 	public class AbsynIf : AbsynStatement
 	{
         /// <summary>
-        /// Constructs an "if-then" statement.
+        /// Constructs an if-then statement.
         /// </summary>
-        /// <param name="e">The condition of the "if" statement.</param>
-        /// <param name="then">The list of statements to execute if the condition 
-        /// evaluated to non-zero.</param>
-        public AbsynIf(Expression e, List<AbsynStatement> then) : this(e, then, [])
+        /// <param name="e">Predicate expression.</param>
+        /// <param name="then">Statements to execute when expression is true.</param>
+        public AbsynIf(Expression e, List<AbsynStatement> then) : this(e, then, new List<AbsynStatement>())
         {
         }
 
         /// <summary>
-        /// Constructs an "if-then-else" statement.
+        /// Constructs an if-then-else statement.
         /// </summary>
-        /// <param name="e">The condition of the "if" statement.</param>
-        /// <param name="then">The list of statements to execute if the condition 
-        /// evaluated to non-zero.</param>
-        /// <param name="els">The list of statements to execute if the condition 
-        /// evaluated to zero.</param>
+        /// <param name="e">Predicate expression.</param>
+        /// <param name="then">Statements to execute when expression is true.</param>
+        /// <param name="els">Statements to execute when expression is false.</param>
         public AbsynIf(Expression e, List<AbsynStatement> then, List<AbsynStatement> els)
         {
             this.Condition = e;
@@ -55,7 +51,7 @@ namespace Reko.Core.Absyn
         }
 
         /// <summary>
-        /// The condition of the "if" statement.
+        /// The predicate expression.
         /// </summary>
         public Expression Condition { get; set; }
 
@@ -88,8 +84,8 @@ namespace Reko.Core.Absyn
         }
 
         /// <summary>
-        /// Inverts the condition of this "if" statement, by logicall negating
-        /// the condition and swapping the "then" and "else" statements.
+        /// Inverts the logical condition of this statement and swaps the
+        /// consequent and alternative statements.
         /// </summary>
         public void InvertCondition()
         {

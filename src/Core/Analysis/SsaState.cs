@@ -46,7 +46,7 @@ namespace Reko.Core.Analysis
 		public SsaState(Procedure proc)
 		{
 			this.Procedure = proc;
-			this.Identifiers = new SsaIdentifierCollection();
+            this.Identifiers = [];
 		}
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace Reko.Core.Analysis
         public SsaIdentifierCollection Identifiers { get; }
 
         /// <summary>
-        /// A reference to the underlying procedure.
+        /// The procedure this SSA state was derived from.
         /// </summary>
         public Procedure Procedure { get; }
 
@@ -111,8 +111,11 @@ namespace Reko.Core.Analysis
         }
 
         /// <summary>
-        /// Convenience method for dumping the SSA state to the debugging console.
+        /// Render the SSA state to a string. This is used for debugging purposes.
         /// </summary>
+        /// <param name="trace">Flag controlling whether debug output should be generated
+        /// or not.
+        /// </param>
         [Conditional("DEBUG")]
 		public void Dump(bool trace)
 		{
@@ -395,7 +398,7 @@ namespace Reko.Core.Analysis
         /// <summary>
         /// Add all identifiers used in <paramref name="stm"/>.
         /// </summary>
-        /// <param name="stm"></param>
+        /// <param name="stm">Statement to examine.</param>
         public void AddUses(Statement stm)
         {
             var iua = new InstructionUseAdder(stm, Identifiers);

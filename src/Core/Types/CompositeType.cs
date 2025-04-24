@@ -25,8 +25,16 @@ using System.Text;
 
 namespace Reko.Core.Types
 {
+    /// <summary>
+    /// Abstract base class for composite types.
+    /// </summary>
     public abstract class CompositeType : DataType
     {
+        /// <summary>
+        /// Initializes the composite type.
+        /// </summary>
+        /// <param name="domain">The domain of the composite type.</param>
+        /// <param name="name">Optional name of the type.</param>
         protected CompositeType(Domain domain, string? name) : base(domain, name)
         { }
 

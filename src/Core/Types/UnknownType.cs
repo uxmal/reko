@@ -33,27 +33,32 @@ namespace Reko.Core.Types
 	{
         private readonly int size;
 
+        /// <inheritdoc/>
 		public UnknownType(int size = 0)
             : base(Domain.Any)
 		{
             this.size = size;
 		}
 
+        /// <inheritdoc/>
         public override void Accept(IDataTypeVisitor v)
         {
             v.VisitUnknownType(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
             return v.VisitUnknownType(this);
         }
 
+        /// <inheritdoc/>
         public override DataType Clone(IDictionary<DataType, DataType>? clonedTypes)
 		{
 			return this;
 		}
 
+        /// <inheritdoc/>
 		public override int Size
 		{
 			get { return size; }

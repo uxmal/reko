@@ -35,7 +35,6 @@ namespace Reko.Core.Expressions
         /// <param name="elementType">The data type of the array's elements.</param>
         /// <param name="array">The array being accessed.</param>
         /// <param name="index">The index into the array.</param>
-        /// <exception cref="ArgumentNullException"></exception>
 		public ArrayAccess(DataType elementType, Expression array, Expression index) : base(elementType)
 		{
             Array = array ?? throw new ArgumentNullException(nameof(array));

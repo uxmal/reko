@@ -19,7 +19,6 @@
 #endregion
 
 using Reko.Core.Expressions;
-using System;
 
 namespace Reko.Core.Absyn
 {
@@ -29,10 +28,9 @@ namespace Reko.Core.Absyn
 	public class AbsynReturn : AbsynStatement
 	{
         /// <summary>
-        /// Creates an instance of the "return" statement, with 
-        /// an optional return value.
+        /// Constructs a return statement with an optional return value.
         /// </summary>
-        /// <param name="retval">An optional return value.</param>
+        /// <param name="retval">Optional expression to return.</param>
 		public AbsynReturn(Expression? retval)
 		{
 			this.Value = retval;

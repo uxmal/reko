@@ -63,7 +63,7 @@ namespace Reko.Core
 	{
         private readonly IProcessorArchitecture arch;
         private readonly NamingPolicy namingPolicy;
-		
+
         /// <summary>
         /// Creates a Frame instance for maintaining the local variables and arguments.
         /// </summary>
@@ -132,8 +132,16 @@ namespace Reko.Core
         /// which implies that in those architectures the return address size should be zero.
         /// </summary>
         public int ReturnAddressSize { get; set; }
+
         public bool ReturnAddressKnown { get; set; }
 
+        /// <summary>
+        /// Creates a new identifier for a sequence of storages.
+        /// </summary>
+        /// <param name="dt">The data type for this identifier.</param>
+        /// <param name="elements">The storages constituting the sequemce,
+        /// in big-endian order: the most significant sub-storage appears first.</param>
+        /// <returns></returns>
         public Identifier CreateSequence(DataType dt, params Storage [] elements)
         {
             var name = string.Join("_", elements.Select(e => e.Name));
@@ -142,6 +150,15 @@ namespace Reko.Core
             return id;
         }
 
+
+        /// <summary>
+        /// Creates a new identifier for a sequence of storages with a given name.
+        /// </summary>
+        /// <param name="dt">The data type for this identifier.</param>
+        /// <param name="name">The name to use for the resulting identifier.</param>
+        /// <param name="elements">The storages constituting the sequemce,
+        /// in big-endian order: the most significant sub-storage appears first.</param>
+        /// <returns></returns>
         public Identifier CreateSequence(DataType dt, string name, params Storage[] elements)
         {
             var id = new Identifier(name, dt, new SequenceStorage(dt, elements));
@@ -149,9 +166,16 @@ namespace Reko.Core
             return id;
         }
 
-        public Identifier EnsureIdentifier(Storage stgForeign)
+        /// <summary>
+        /// Given a <see cref="Storage"/> ensures there is an identifier backed by that
+        /// storage.
+        /// </summary>
+        /// <param name="storage">The given <see cref="Storage"/> instance.</param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public Identifier EnsureIdentifier(Storage storage)
         {
-            switch (stgForeign)
+            switch (storage)
             {
             case RegisterStorage reg:
                 return EnsureRegister(reg);
@@ -168,14 +192,14 @@ namespace Reko.Core
             }
             throw new NotImplementedException(string.Format(
                 "Unsupported storage {0}.",
-                stgForeign != null ? stgForeign.ToString() : "(null)"));
+                storage != null ? storage.ToString() : "(null)"));
         }
 
 		/// <summary>
 		/// Creates a temporary variable whose storage and name is guaranteed not to collide with any other variable.
 		/// </summary>
-		/// <param name="dt"></param>
-		/// <returns></returns>
+        /// <param name="dt">Datatype of the identifier.</param>
+        /// <returns>A new identifier.</returns>
 		public Identifier CreateTemporary(DataType dt)
 		{
             string name = "v" + Identifiers.Count;
@@ -185,6 +209,12 @@ namespace Reko.Core
 			return id;
 		}
 
+        /// <summary>
+        /// Creates an identifier with a given name whose storage is guaranteed not to collide with any other variable.
+        /// </summary>
+        /// <param name="name">Name to give the identifier.</param>
+        /// <param name="dt">Datatype of the identifier.</param>
+        /// <returns>A new identifier.</returns>
 		public Identifier CreateTemporary(string name, DataType dt)
 		{
             var id = new Identifier(name, dt, 
@@ -193,6 +223,16 @@ namespace Reko.Core
 			return id;
 		}
 
+        /// <summary>
+        /// Given a status register and a bitmask, ensures that there is a 
+        /// corresponding identifier in this frame.
+        /// </summary>
+        /// <param name="freg">Backing status register.</param>
+        /// <param name="grfMask">Bitmask for the various status flags.</param>
+        /// <param name="name">A name for the identifier.</param>
+        /// <returns>A previously existing identifier with the same 
+        /// status register and flag mask, or a newly created one.
+        /// </returns>
         public Identifier EnsureFlagGroup(RegisterStorage freg, uint grfMask, string name)
 		{
             if (grfMask == 0)
@@ -206,6 +246,14 @@ namespace Reko.Core
 			return id;
 		}
 
+        /// <summary>
+        /// Given a <see cref="FlagGroupStorage"/>, ensures that there is a 
+        /// corresponding identifier in this frame.
+        /// </summary>
+        /// <param name="grf">A <see cref="FlagGroupStorage"/> instance.</param>    
+        /// <returns>A previously existing identifier with the same 
+        /// flag group storage, or a newly created one.
+        /// </returns>
         public Identifier EnsureFlagGroup(FlagGroupStorage grf)
         {
             if (grf.FlagGroupBits == 0)
@@ -219,6 +267,12 @@ namespace Reko.Core
             return id;
         }
 
+        /// <summary>
+        /// Ensures the existence of a floating-point stack storage in this frame.
+        /// </summary>
+        /// <param name="depth">The </param>
+        /// <param name="type"></param>
+        /// <returns></returns>
 		public Identifier EnsureFpuStackVariable(int depth, DataType type)
 		{
 			Identifier? id = FindFpuStackVariable(depth);

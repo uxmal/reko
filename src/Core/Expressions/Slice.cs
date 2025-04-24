@@ -73,7 +73,8 @@ namespace Reko.Core.Expressions
         {
             get { yield return Expression; }
         }
-
+       
+        /// <inheritdoc/>
         /// <inheritdoc/>
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
         {

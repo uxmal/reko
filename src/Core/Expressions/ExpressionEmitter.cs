@@ -25,6 +25,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
+#pragma warning disable CA1822
+
 namespace Reko.Core.Expressions
 {
     /// <summary>
@@ -1311,7 +1313,7 @@ namespace Reko.Core.Expressions
         /// <param name="dtProduct">Data type of product.</param>
         /// <param name="left">Multiplicand.</param>
         /// <param name="right">Multiplier.</param>
-        /// <returns>A signed integer multiplication expression</returns>
+        /// <returns>A signed integer multiplication expression.</returns>
         public Expression SMul(PrimitiveType dtProduct, Expression left, Expression right)
         {
             return new BinaryExpression(Operator.SMul, dtProduct, left, right);
@@ -1601,9 +1603,9 @@ namespace Reko.Core.Expressions
         /// an expression <paramref name="value"/>, starting at bit position
         /// <paramref name="bitOffset"/>.
         /// </summary>
-        /// <param name="value">The value to slice.</param>
-        /// <param name="bitOffset">Bit position to start at.</param>
-        /// <param name="bitLength">Number of bits to slice.</param>
+        /// <param name="value">The expression to slice.</param>
+        /// <param name="bitOffset">The bit offset at which the slice begins.</param>
+        /// <param name="bitlength">The bit length of the slice.</param>
         /// <returns>A bit-slice expression.</returns>
         public Slice Slice(Expression value, int bitOffset, int bitLength)
         {
@@ -1617,7 +1619,7 @@ namespace Reko.Core.Expressions
         /// </summary>
         /// <param name="cc">Condition code being implemented.</param>
         /// <param name="expr">Flag bits used to generate condition code.</param>
-        /// <returns></returns>
+        /// <returns>A <see cref="TestCondition"/> instance.</returns>
         public TestCondition Test(ConditionCode cc, Expression expr)
         {
             return new TestCondition(cc, expr);
@@ -1854,7 +1856,7 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
-        /// Generates an bit-vector of length <paramref name="bitSize" /> bits
+        /// Generates an bit-vector of length <paramref name="bitSize"/> bits
         /// from the bit pattern <pararef name="n"/>.
         /// </summary>
         /// <param name="bitSize">Bitsize of the resulting constant.</param>

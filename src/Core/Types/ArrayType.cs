@@ -18,8 +18,6 @@
  */
 #endregion
 
-using System;
-using System.IO;
 using System.Collections.Generic;
 
 namespace Reko.Core.Types
@@ -29,22 +27,32 @@ namespace Reko.Core.Types
     /// </summary>
 	public class ArrayType : DataType
 	{
+        /// <summary>
+        /// Constructs an array type.
+        /// </summary>
+        /// <param name="elType">Array element type.</param>
+        /// <param name="length">Number of elements in the array, or 0 if 
+        /// the number of elements is unknown.
+        /// </param>
 		public ArrayType(DataType elType, int length) : base(Domain.Array)
 		{
 			this.ElementType = elType;
 			this.Length = length;
 		}
 
+        /// <inheritdoc/>
         public override void Accept(IDataTypeVisitor v)
         {
             v.VisitArray(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
             return v.VisitArray(this);
         }
 
+        /// <inheritdoc/>
         public override DataType Clone(IDictionary<DataType, DataType>? clonedTypes)
 		{
             return new ArrayType(ElementType, Length) { Qualifier = this.Qualifier };
@@ -55,15 +63,21 @@ namespace Reko.Core.Types
 		/// </summary>
 		public DataType ElementType { get; set; }
 
-        public bool IsUnbounded { get { return Length == 0; } }
+        /// <summary>
+        /// True if the array is unbounded, i.e. has no known length.
+        /// </summary>
+        public bool IsUnbounded => Length == 0;
 
 		/// <summary>
 		/// Number of elements. 0 means unknown number of elements.
 		/// </summary>
 		public int Length { get; set; }
 
-		public override bool IsComplex { get { return true; } }
+        /// <inheritdoc/>
+		public override bool IsComplex => true;
 
+
+        /// <inheritdoc/>
 		public override int Size
 		{
 			get { return ElementType.Size * Length; }

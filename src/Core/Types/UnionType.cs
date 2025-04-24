@@ -33,12 +33,6 @@ namespace Reko.Core.Types
 	/// </remarks>
 	public class UnionType : DataType
 	{
-		private readonly UnionAlternativeCollection alts = new UnionAlternativeCollection();
-
-        public UnionType() : this(null, null, false)
-        {
-        }
-
         public UnionType(string? name, DataType? preferredType) : this(name, preferredType, false)
         {
         }
@@ -58,6 +52,7 @@ namespace Reko.Core.Types
         public UnionType(string? name, DataType? preferredType, bool userDefined, params DataType[] alternatives) 
             : base(Domain.Union, name)
         {
+            this.Alternatives = [];
             this.PreferredType = preferredType;
             this.UserDefined = userDefined;
             foreach (DataType dt in alternatives)
@@ -66,16 +61,18 @@ namespace Reko.Core.Types
             }
         }
 
-        public UnionAlternativeCollection Alternatives => alts;
+        public UnionAlternativeCollection Alternatives { get; }
         
         public DataType? PreferredType { get; set; }
         public bool UserDefined { get; private set; }
 
+        /// <inheritdoc/>
         public override void Accept(IDataTypeVisitor v)
         {
             v.VisitUnion(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
             return v.VisitUnion(this);
@@ -190,6 +187,7 @@ namespace Reko.Core.Types
             : base(DataTypeComparer.Instance)
         {
         }
+
 		public void Add(UnionAlternative a)
 		{
             base[a.DataType] = a;

@@ -98,7 +98,7 @@ namespace Reko.Arch.X86.Rewriter
                 }
                 else if (exg != null)
                 {
-                    return new UnaryExpression(Operator.AddrOf, dt, exg);
+                    return m.Unary(Operator.AddrOf, dt, exg);
                 }
                 var exp = host.GetImportedProcedure(arch, addrThunk, instr.Address);
                 if (exp != null)
@@ -253,7 +253,7 @@ namespace Reko.Arch.X86.Rewriter
 
         public UnaryExpression AddrOf(Expression expr)
         {
-            return new UnaryExpression(Operator.AddrOf,
+            return m.Unary(Operator.AddrOf,
                 PrimitiveType.Create(Domain.Pointer, arch.WordWidth.BitSize), expr);
         }
 

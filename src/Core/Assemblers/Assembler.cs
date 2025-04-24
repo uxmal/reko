@@ -26,8 +26,8 @@ using Reko.Core.Loading;
 namespace Reko.Core.Assemblers
 {
     /// <summary>
-    /// Interface for classes that assemble assembly language programs into
-    /// machine code.
+    /// Interface for an assembler. An assembler is responsible for converting 
+    /// assembly language to machine code.
     /// </summary>
     public interface IAssembler
 	{
@@ -58,9 +58,13 @@ namespace Reko.Core.Assemblers
         Dictionary<Address, ImportReference> ImportReferences { get; }
 
         /// <summary>
-        /// Assembles the provided assembly langugage program into a new
+        /// Assembles the provided assembly language program file into a new
         /// <see cref="Program"/>.
         /// </summary>
+        /// <param name="baseAddress">Address at which to assemble the program.</param>
+        /// <param name="filename">File name of the assembly language program.</param>
+        /// <param name="reader">Assembly language source code.</param>
+        /// <returns>The resulting <see cref="Program"/>.</returns>
         Program Assemble(Address baseAddress, string filename, TextReader reader);
 
         /// <summary>
@@ -73,7 +77,7 @@ namespace Reko.Core.Assemblers
 
         /// <summary>
         /// Assembles the assembly language program from <paramref name="reader"/> and mutates 
-        /// the provided <paramref name="program"/> starting at <paramref name="address"/>. 
+        /// the provided <paramref name="program"/> starting at <paramref name="baseAddress"/>. 
         /// </summary>
         /// <param name="program">The program to mutate.</param>
         /// <param name="address">Location at which to start writing machine code.</param>
@@ -84,7 +88,7 @@ namespace Reko.Core.Assemblers
         /// mutated, and <see cref="ImageSymbol"/>s may be added to 
         /// <see cref="Program.ImageSymbols"/>.
         /// </remarks>
-        int AssembleAt(Program program, Address address, TextReader reader);
+        int AssembleAt(Program program, Address baseAddress, TextReader reader);
 
         /// <summary>
         /// Assembles the assembly language instructions in <paramref name="asmFragment"/>

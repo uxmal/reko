@@ -171,7 +171,7 @@ namespace Reko.Evaluation
                     }
                     if (cRight.IsMaxUnsigned && sameBitsize)
                     {
-                        (e, _) = new UnaryExpression(Operator.Comp, left.DataType, left).Accept(this);
+                        (e, _) = m.Unary(Operator.Comp, left.DataType, left).Accept(this);
                         return (e, true);
                     }
                     break;

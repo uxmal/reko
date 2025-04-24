@@ -27,9 +27,6 @@ namespace Reko.Core.Code
 	/// </summary>
 	public class PhiAssignment : Instruction
 	{
-		public Identifier Dst;
-		public PhiFunction Src;
-
 		public PhiAssignment(Identifier d, params PhiArgument[] args)
 		{
 			Dst = d;
@@ -43,11 +40,24 @@ namespace Reko.Core.Code
 			Src = p;
 		}
 
-		public override Instruction Accept(InstructionTransformer xform)
+        /// <summary>
+        /// The destination of the phi assignment.
+        /// </summary>
+        public Identifier Dst { get; set; }
+
+        /// <summary>
+        /// The source of the phi assignment.
+        /// </summary>
+        public PhiFunction Src { get; set; }
+
+
+        /// <inheritdoc/>
+        public override Instruction Accept(InstructionTransformer xform)
 		{
 			return xform.TransformPhiAssignment(this);
 		}
 
+        /// <inheritdoc/>
         public override T Accept<T>(InstructionVisitor<T> visitor)
         {
             return visitor.VisitPhiAssignment(this);

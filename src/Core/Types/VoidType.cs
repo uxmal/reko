@@ -32,24 +32,31 @@ namespace Reko.Core.Types
         {
         }
 
+        /// <summary>
+        /// The single instance of the void type.
+        /// </summary>
         public static VoidType Instance { get; } = new VoidType();
 
+        /// <inheritdoc/>
         public override int Size
         {
             get { return 0; }
             set { throw new NotSupportedException(); }
         }
 
+        /// <inheritdoc/>
         public override void Accept(IDataTypeVisitor v)
         {
             v.VisitVoidType(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
             return v.VisitVoidType(this);
         }
 
+        /// <inheritdoc/>
         public override DataType Clone(IDictionary<DataType, DataType>? clonedTypes)
         {
             return this;

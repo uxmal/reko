@@ -19,7 +19,6 @@
 #endregion
 
 using Reko.Core.Expressions;
-using System;
 using System.Collections.Generic;
 
 namespace Reko.Core.Absyn
@@ -30,10 +29,10 @@ namespace Reko.Core.Absyn
 	public class AbsynWhile : AbsynLoop
 	{
         /// <summary>
-        /// Creates a while statement.
+        /// Constructs a while loop.
         /// </summary>
-        /// <param name="condition">The condition that controls the while loop.</param>
-        /// <param name="body">The body of the while loop.</param>
+        /// <param name="condition">Expression which is pretested before entering the loop body.</param>
+        /// <param name="body">Statements constituting the loop body.</param>
 		public AbsynWhile(Expression condition, List<AbsynStatement> body) : base(condition, body)
 		{
 		}

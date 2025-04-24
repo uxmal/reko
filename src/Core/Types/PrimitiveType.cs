@@ -237,13 +237,18 @@ namespace Reko.Core.Types
 		}
 
         /// <summary>
-        /// True if the type can only be some kind of integral numeric type
+        /// True if the type can only be some kind of integral numeric type.
         /// </summary>
 		public override bool IsIntegral =>
             (Domain & Domain.Integer) != 0 && (Domain & ~Domain.Integer) == 0;
         public override bool IsReal =>
             Domain == Domain.Real;
 
+        /// <summary>
+        /// True if the only thing we known about the type is its size.
+        /// It is in effect a vector of bits, and its semantic interpretation
+        /// is unknown.
+        /// </summary>
         public override bool IsWord { get; }
 
         /// <summary>
@@ -261,8 +266,7 @@ namespace Reko.Core.Types
             return Create(dom, BitSize);
 		}
 
-        public override int BitSize
-            => this.bitSize;
+        public override int BitSize => this.bitSize;
 
         /// <summary>
         /// Size of this primitive type in bytes.

@@ -28,7 +28,7 @@ namespace Reko.Core.Absyn
     public class AbsynProcedure
     {
         /// <summary>
-        /// Creates an abstract syntax tree node for a procedure.
+        /// Constructs an instance <see cref="AbsynProcedure"/>.
         /// </summary>
         public AbsynProcedure()
         {

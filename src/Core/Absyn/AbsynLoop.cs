@@ -30,9 +30,9 @@ namespace Reko.Core.Absyn
 	public abstract class AbsynLoop : AbsynStatement
 	{
         /// <summary>
-        /// Creates a loop statement.
+        /// Initializes a new instance of the <see cref="AbsynLoop"/> class.
         /// </summary>
-        /// <param name="condition">Expression controlling the loop.</param>
+        /// <param name="condition">The predicate controlling the loop.</param>
         /// <param name="body">The body of the loop.</param>
 		protected AbsynLoop(Expression condition, List<AbsynStatement> body)
 		{
@@ -48,7 +48,7 @@ namespace Reko.Core.Absyn
 		public List<AbsynStatement> Body { get; }
 
         /// <summary>
-        /// The expression controlling the loop.
+        /// The predicate controlling the loop.
         /// </summary>
 		public Expression Condition { get; }
 	}

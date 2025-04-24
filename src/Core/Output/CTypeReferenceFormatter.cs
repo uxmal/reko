@@ -18,10 +18,6 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Reko.Core.Types;
 
 namespace Reko.Core.Output
@@ -33,21 +29,28 @@ namespace Reko.Core.Output
     {
         private IPlatform platform;
 
+        /// <summary>
+        /// Constructs a C type reference formatter.
+        /// </summary>
+        /// <param name="platform">Current platform.</param>
+        /// <param name="writer">Output sink.</param>
         public CTypeReferenceFormatter(IPlatform platform, Formatter writer)
             : base(writer)
         {
             this.platform = platform;
         }
 
+        /// <inheritdoc/>
         public override void WritePrimitiveTypeName(PrimitiveType t)
         {
             var keywordName = platform.GetPrimitiveTypeName(t, "C");
-            if (keywordName != null)
+            if (keywordName is not null)
                 this.Formatter.WriteKeyword(keywordName);
             else
                 this.Formatter.WriteType(t.Name, t);
         }
 
+        /// <inheritdoc/>
         public override void WriteVoidType(VoidType t)
         {
             this.Formatter.WriteKeyword("void");

@@ -25,17 +25,23 @@ namespace Reko.Core.Expressions
 {
     /// <summary>
     /// Wraps a reference to a <see cref="ProcedureBase"/> inside of an
-    /// <see cref="Expression" />.
+    /// <see cref="Expression" />. It can be considered a pointer to
+    /// the procedure's code.
     /// </summary>
 	public class ProcedureConstant : AbstractExpression
 	{
         private readonly FunctionType? sig;
 
+        /// <summary>
+        /// Creates a procedure constant.
+        /// </summary>
+        /// <param name="ptrType"></param>
+        /// <param name="proc"></param>
 		public ProcedureConstant(DataType ptrType, ProcedureBase proc) : base(ptrType)
 		{
             this.Procedure = proc;
             this.sig = null;
-            // Clone user-defined ot platform-defined signatures so that they
+            // Clone user-defined or platform-defined signatures so that they
             // can not be changed during Type Analysis
             if (proc.Signature is not null && proc.Signature.UserDefined)
             {
@@ -60,33 +66,44 @@ namespace Reko.Core.Expressions
             this.sig = sig;
         }
 
+        /// <summary>
+        /// The <see cref="ProcedureBase"/> being referred to.
+        /// </summary>
         public ProcedureBase Procedure { get; }
 
+        /// <summary>
+        /// The signature of the procedure.
+        /// </summary>
         public FunctionType Signature
         {
             get => this.sig ?? Procedure.Signature;
         }
 
+        /// <inheritdoc/>
         public override IEnumerable<Expression> Children
         {
             get { yield break; }
         }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
         {
             return v.VisitProcedureConstant(this, context);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitProcedureConstant(this);
         }
 
+        /// <inheritdoc/>
 		public override void Accept(IExpressionVisitor visit)
 		{
 			visit.VisitProcedureConstant(this);
 		}
 
+        /// <inheritdoc/>
 		public override Expression CloneExpression()
 		{
             return this;

@@ -39,15 +39,25 @@ namespace Reko.Core.Types
 
         private string? name;
 
+        /// <summary>
+        /// Initializes the domain of the <see cref="DataType"/>.
+        /// </summary>
+        /// <param name="domain">The domain of this data type.</param>
 		protected DataType(Domain domain)
 		{
             this.Domain = domain;
 		}
 
+        /// <summary>
+        /// Initializes the domain of the <see cref="DataType"/> and
+        /// optionally its name.
+        /// </summary>
+        /// <param name="domain">The domain of this data type.</param>
+        /// <param name="name">An optional name for the data type.</param>
 		protected DataType(Domain domain, string? name)
 		{
             this.Domain = domain;
-			this.name = name!;
+			this.name = name;
 		}
 
         public virtual int BitSize { get { return Size * BitsPerByte; } }       //$REVIEW: Wrong for 36-bit machines
@@ -57,9 +67,26 @@ namespace Reko.Core.Types
         /// </summary>
         public Domain Domain { get; protected set; }
 
+        /// <summary>
+        /// Returns true if this data type is a complex type, such as a structure or union;
+        /// otherwise false.
+        /// </summary>
         public virtual bool IsComplex { get { return false; } }
+
+        /// <summary>
+        /// Returns true if this data type is a pointer type; otherwise false.
+        /// </summary>
         public virtual bool IsPointer { get { return false; } }
+
+        /// <summary>
+        /// Returns true if this data type is an integer data type, signed
+        /// or unsigned.
+        /// </summary>
         public virtual bool IsIntegral { get { return false; } }
+
+        /// <summary>
+        /// Returns true if this data type is a floating-point data type.
+        /// </summary>
         public virtual bool IsReal => false;
 
         /// <summary>
@@ -81,18 +108,25 @@ namespace Reko.Core.Types
         public abstract int Size { get; set; }
 
         /// <summary>
-        /// Accepts a visitor.
+        /// Accepts an <see cref="IDataTypeVisitor"/>.
         /// </summary>
-        /// <param name="v">Visitor instance.</param>
-        public abstract void Accept(IDataTypeVisitor v);
+        /// <param name="visitor">The visitor to accept.</param>
+        public abstract void Accept(IDataTypeVisitor visitor);
+
 
         /// <summary>
-        /// Accepts a visitor returning <typeparamref name="T"/>.
+        /// Accepts an <see cref="IDataTypeVisitor{T}"/>.
         /// </summary>
-        /// <param name="v">Visitor instance.</param>
-        /// <returns>The vistor's return value of type <typeparamref name="T"/>.
-        /// </returns>
-        public abstract T Accept<T>(IDataTypeVisitor<T> v);
+        /// <param name="visitor">The visitor to accept.</param>
+        public abstract T Accept<T>(IDataTypeVisitor<T> visitor);
+
+        /// <summary>
+        /// Clones this <see cref="DataType"/>.
+        /// </summary>
+        /// <param name="clonedTypes">An optional dictionary mapping original 
+        /// data types to their cloned counterparts.
+        /// </param>
+        /// <returns>A cloned version of the data type.</returns>
 
         /// <summary>
         /// Clones the data type, creating a new instance of the same type
@@ -106,13 +140,17 @@ namespace Reko.Core.Types
 
         object ICloneable.Clone() { return Clone(); }
 
+        /// <summary>
+        /// Clones this <see cref="DataType"/>.
+        /// </summary>
+        /// <returns>A cloned copy of the data type.</returns>
         public DataType Clone()
         {
             return Clone(null);
         }
 
         /// <summary>
-        /// Compute the size of the data type.
+        /// Compute the size in storage units of the data type.
         /// </summary>
         /// <remarks>
         /// We don't trust the <see cref="DataType.Size"/> property on complex types
@@ -191,6 +229,14 @@ namespace Reko.Core.Types
             }
         }
 
+        /// <summary>
+        /// Compute the size in bits of the data type.
+        /// </summary>
+        /// <remarks>
+        /// We don't trust the <see cref="DataType.Size"/> property because
+        /// the types may be inferred. For instance, inferred <see cref="StructureType"/>s
+        /// don't have a value for their Size properties.
+        /// </remarks>
         public int MeasureBitSize(int bitsPerUnit)
         {
             DataType dt = this;
@@ -311,6 +357,7 @@ namespace Reko.Core.Types
 			throw new InvalidOperationException($"Can't set size of {GetType().Name}.");
 		}
 
+        /// <inheritdoc/>
 		public sealed override string ToString()
 		{
             var sw = new StringWriter();

@@ -34,6 +34,11 @@ namespace Reko.Core.Expressions
     /// </remarks>
     public class TestCondition : AbstractExpression
     {
+        /// <summary>
+        /// Constructs an instance of the <see cref="TestCondition"/> class.
+        /// </summary>
+        /// <param name="cc">Condition code being tested.</param>
+        /// <param name="expr">Expression containing the processor flags.</param>
         public TestCondition(ConditionCode cc, Expression expr)
             : base(PrimitiveType.Bool)
         {

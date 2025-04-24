@@ -47,7 +47,7 @@ namespace Reko.Core.Absyn
         /// </summary>
         public new BinaryExpression Src { get; private set; }
 
-
+        /// <inheritdoc/>
         /// <inheritdoc/>
         public override void Accept(IAbsynVisitor visitor)
         {

@@ -35,6 +35,13 @@ namespace Reko.Core.Absyn
         /// <param name="condition">The condition that controls the loop.</param>
         /// <param name="iteration">Statement that updates any control variables.</param>
         /// <param name="body">The body of the loop.</param>
+        /// <summary>
+        /// Constructs a for-loop.
+        /// </summary>
+        /// <param name="init">The initializing statement of the for loop.</param>
+        /// <param name="condition">The expression that controls the loop.</param>
+        /// <param name="iteration">Statement that updates the loop variable.</param>
+        /// <param name="body">The body of the for-loop.</param>
         public AbsynFor(AbsynAssignment init, Expression condition, AbsynAssignment iteration, List<AbsynStatement> body)
         {
             this.Initialization = init;

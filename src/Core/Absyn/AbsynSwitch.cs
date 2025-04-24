@@ -29,11 +29,13 @@ namespace Reko.Core.Absyn
     public class AbsynSwitch : AbsynStatement
     {
         /// <summary>
-        /// Creates a switch statement.
+        /// Create a switch statement, consisitong of a
         /// </summary>
-        /// <param name="expr">The expression whose value is used to 
-        /// select a case.</param>
-        /// <param name="statements">The list of statements in the switch statement.</param>
+        /// <param name="expr">Condition used to select switch statement.</param>
+        /// <param name="statements">The body of the switch statement.
+        /// It is expected that the caller passes <see cref="AbsynCase"/> and 
+        /// <see cref="AbsynDefault"/> statements interspered in the statements.
+        /// </param>
         public AbsynSwitch(Expression expr, List<AbsynStatement> statements)
         {
             this.Expression = expr;
@@ -46,7 +48,7 @@ namespace Reko.Core.Absyn
         public Expression Expression { get; }
 
         /// <summary>
-        /// The list of statements in the switch statement.
+        /// The body of the switch statement.
         /// </summary>
         public List<AbsynStatement> Statements { get; }
 

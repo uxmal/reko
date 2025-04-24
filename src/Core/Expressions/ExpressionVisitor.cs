@@ -30,99 +30,571 @@ namespace Reko.Core.Expressions
 	/// </summary>
 	public interface IExpressionVisitor
 	{
+        /// <summary>
+        /// Called when visiting an <see cref="Address"/> expression.
+        /// </summary>
+        /// <param name="addr">The visited address.</param>
         void VisitAddress(Address addr);
+
+        /// <summary>
+        /// Called when visiting an <see cref="Application"/> expression.
+        /// </summary>
+        /// <param name="appl">The visited application.</param>
 		void VisitApplication(Application appl);
+
+        /// <summary>
+        /// Called when visiting an <see cref="ArrayAccess"/> expression.
+        /// </summary>
+        /// <param name="acc">The visited array access.</param>
 		void VisitArrayAccess(ArrayAccess acc);
+
+        /// <summary>
+        /// Called when visiting a <see cref="BinaryExpression"/> expression.
+        /// </summary>
+        /// <param name="binExp">The visited binary expression.</param>
 		void VisitBinaryExpression(BinaryExpression binExp);
+
+        /// <summary>
+        /// Called when visiting a <see cref="Cast"/> expression.
+        /// </summary>
+        /// <param name="cast">The visited cast expression.</param>
 		void VisitCast(Cast cast);
+
+        /// <summary>
+        /// Called when visiting a ternary <see cref="ConditionalExpression"/> expression.
+        /// </summary>
+        /// <param name="cond">The visited conditional expression.</param>
         void VisitConditionalExpression(ConditionalExpression cond);
+
+        /// <summary>
+        /// Called when visiting a <see cref="ConditionOf"/> expression.
+        /// </summary>
+        /// <param name="cof">The visited condition-of expression.</param>
         void VisitConditionOf(ConditionOf cof);
+
+        /// <summary>
+        /// Called when visiting a <see cref="Constant"/> expression.
+        /// </summary>
+        /// <param name="c">The visited constant expression.</param>
 		void VisitConstant(Constant c);
-		void VisitDereference(Dereference deref);
-		void VisitFieldAccess(FieldAccess acc);
-		void VisitIdentifier(Identifier id);
-		void VisitMemberPointerSelector(MemberPointerSelector mps);
-		void VisitMemoryAccess(MemoryAccess access);
-        void VisitMkSequence(MkSequence seq);
-        void VisitOutArgument(OutArgument outArgument);
-        void VisitPhiFunction(PhiFunction phi);
-		void VisitPointerAddition(PointerAddition pa);
-		void VisitProcedureConstant(ProcedureConstant pc);
-		void VisitScopeResolution(ScopeResolution scopeResolution);
-        void VisitSegmentedAddress(SegmentedPointer address);
-        void VisitSlice(Slice slice);
-        void VisitStringConstant(StringConstant str);
-        void VisitTestCondition(TestCondition tc);
+
+        /// <summary>
+        /// Called when visiting a <see cref="Conversion">conversion</see> expression.
+        /// </summary>
+        /// <param name="conversion">The visited conversion expression</param>
         void VisitConversion(Conversion conversion);
+
+        /// <summary>
+        /// Called when visiting a <see cref="Dereference"/> expression.
+        /// </summary>
+        /// <param name="deref">The visited dereference expression.</param>
+		void VisitDereference(Dereference deref);
+
+        /// <summary>
+        /// Called when visiting a <see cref="FieldAccess"/> expression.
+        /// </summary>
+        /// <param name="acc">The visited field access expression.</param>
+		void VisitFieldAccess(FieldAccess acc);
+
+        /// <summary>
+        /// Called when visiting an <see cref="Identifier"/>.
+        /// </summary>
+        /// <param name="id">The visited identifier.</param>
+		void VisitIdentifier(Identifier id);
+
+        /// <summary>
+        /// Called when visiting a <see cref="MemberPointerSelector">member pointer selector expression</see>.
+        /// </summary>
+        /// <param name="mps">The visited member pointer selector expression.</param>
+		void VisitMemberPointerSelector(MemberPointerSelector mps);
+
+        /// <summary>
+        /// Called when visiting a <see cref="MemoryAccess">memory access</see>.
+        /// </summary>
+        /// <param name="access">The visitied memory access.</param>
+		void VisitMemoryAccess(MemoryAccess access);
+
+        /// <summary>
+        /// Called when visiting a sequence expression.
+        /// </summary>
+        /// <param name="seq">The visited sequence expression.</param>
+        void VisitMkSequence(MkSequence seq);
+
+        /// <summary>
+        /// Called when vising an output argument.
+        /// </summary>
+        /// <param name="outArgument">The visited output argument.</param>
+        void VisitOutArgument(OutArgument outArgument);
+
+        /// <summary>
+        /// Called when visiting a <see cref="PhiFunction">phi function</see>.
+        /// </summary>
+        /// <param name="phi">The visited phi function.</param>
+        void VisitPhiFunction(PhiFunction phi);
+
+        /// <summary>
+        /// Called when visiting a <see cref="PointerAddition">pointer addition</see> expression.
+        /// </summary>
+        /// <param name="pa">The visited pointer addition expression.</param>
+		void VisitPointerAddition(PointerAddition pa);
+
+        /// <summary>
+        /// Called when visiting a <see cref="ProcedureConstant">procedure constant</see>.
+        /// </summary>
+        /// <param name="pc">The visited procedure constant.</param>
+		void VisitProcedureConstant(ProcedureConstant pc);
+
+        /// <summary>
+        /// Called when visiting a <see cref="ScopeResolution">scope resolution</see> expression.
+        /// </summary>
+        /// <param name="scopeResolution"></param>
+		void VisitScopeResolution(ScopeResolution scopeResolution);
+
+        /// <summary>
+        /// Called when visiting a <see cref="SegmentedPointer">segmented pointer</see> expression.
+        /// </summary>
+        /// <param name="address">The visited segmented pointer.</param>
+        void VisitSegmentedAddress(SegmentedPointer address);
+
+        /// <summary>
+        /// Called when visiting a <see cref="Slice">slice expression</see>.
+        /// </summary>
+        /// <param name="slice">The visited slice expression.</param>
+        void VisitSlice(Slice slice);
+
+        /// <summary>
+        /// Called when visting a <see cref="StringConstant">string literal constant</see>.
+        /// </summary>
+        /// <param name="str">The visited string literal.</param>
+        void VisitStringConstant(StringConstant str);
+
+        /// <summary>
+        /// Called when visiting a <see cref="TestCondition"/> expression.
+        /// </summary>
+        /// <param name="tc">The visited test condition.</param>
+        void VisitTestCondition(TestCondition tc);
+
+        /// <summary>
+        /// Called when visiting a <see cref="UnaryExpression">unary expression</see>.
+        /// </summary>
+        /// <param name="unary">The visited unary expression.</param>
         void VisitUnaryExpression(UnaryExpression unary);
     }
 
+    /// <summary>
+    /// Using the 'Visitor' pattern, any class interested in examining 
+    /// classes implementing the <see cref="Expression"/> interface 
+    /// without having to probe their class
+    /// type explicity (with casts or 'as' and 'is'). The generic type
+    /// <typeparamref name="T"/> is the return type of the visitor methods.
+    /// </summary>
     public interface ExpressionVisitor<T>
     {
+        /// <summary>
+        /// Called when visiting an <see cref="Address"/> expression.
+        /// </summary>
+        /// <param name="addr">The visited address.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
         T VisitAddress(Address addr);
-        T VisitApplication(Application appl);
-        T VisitArrayAccess(ArrayAccess acc);
-        T VisitBinaryExpression(BinaryExpression binExp);
-        T VisitCast(Cast cast);
+
+        /// <summary>
+        /// Called when visiting an <see cref="Application"/> expression.
+        /// </summary>
+        /// <param name="appl">The visited application.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
+		T VisitApplication(Application appl);
+
+        /// <summary>
+        /// Called when visiting an <see cref="ArrayAccess"/> expression.
+        /// </summary>
+        /// <param name="acc">The visited array access.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
+		T VisitArrayAccess(ArrayAccess acc);
+
+        /// <summary>
+        /// Called when visiting a <see cref="BinaryExpression"/> expression.
+        /// </summary>
+        /// <param name="binExp">The visited binary expression.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
+		T VisitBinaryExpression(BinaryExpression binExp);
+
+        /// <summary>
+        /// Called when visiting a <see cref="Cast"/> expression.
+        /// </summary>
+        /// <param name="cast">The visited cast expression.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
+		T VisitCast(Cast cast);
+
+        /// <summary>
+        /// Called when visiting a ternary <see cref="ConditionalExpression"/> expression.
+        /// </summary>
+        /// <param name="cond">The visited conditional expression.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
         T VisitConditionalExpression(ConditionalExpression cond);
+
+        /// <summary>
+        /// Called when visiting a <see cref="ConditionOf"/> expression.
+        /// </summary>
+        /// <param name="cof">The visited condition-of expression.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
         T VisitConditionOf(ConditionOf cof);
-        T VisitConstant(Constant c);
+
+        /// <summary>
+        /// Called when visiting a <see cref="Constant"/> expression.
+        /// </summary>
+        /// <param name="c">The visited constant expression.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
+		T VisitConstant(Constant c);
+
+        /// <summary> 
+        /// Called when visiting a <see cref="Conversion">conversion</see> expression.
+        /// </summary>
+        /// <param name="conversion">The visited conversion expression</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
         T VisitConversion(Conversion conversion);
-        T VisitDereference(Dereference deref);
-        T VisitFieldAccess(FieldAccess acc);
-        T VisitIdentifier(Identifier id);
-        T VisitMemberPointerSelector(MemberPointerSelector mps);
-        T VisitMemoryAccess(MemoryAccess access);
+
+        /// <summary>
+        /// Called when visiting a <see cref="Dereference"/> expression.
+        /// </summary>
+        /// <param name="deref">The visited dereference expression.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
+		T VisitDereference(Dereference deref);
+
+        /// <summary>
+        /// Called when visiting a <see cref="FieldAccess"/> expression.
+        /// </summary>
+        /// <param name="acc">The visited field access expression.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
+		T VisitFieldAccess(FieldAccess acc);
+
+        /// <summary>
+        /// Called when visiting an <see cref="Identifier"/>.
+        /// </summary>
+        /// <param name="id">The visited identifier.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
+		T VisitIdentifier(Identifier id);
+
+        /// <summary>
+        /// Called when visiting a <see cref="MemberPointerSelector">member pointer selector expression</see>.
+        /// </summary>
+        /// <param name="mps">The visited member pointer selector expression.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
+		T VisitMemberPointerSelector(MemberPointerSelector mps);
+
+        /// <summary>
+        /// Called when visiting a <see cref="MemoryAccess">memory access</see>.
+        /// </summary>
+        /// <param name="access">The visitied memory access.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
+		T VisitMemoryAccess(MemoryAccess access);
+
+        /// <summary>
+        /// Called when visiting a sequence expression.
+        /// </summary>
+        /// <param name="seq">The visited sequence expression.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
         T VisitMkSequence(MkSequence seq);
+
+        /// <summary>
+        /// Called when vising an output argument.
+        /// </summary>
+        /// <param name="outArgument">The visited output argument.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
         T VisitOutArgument(OutArgument outArgument);
+
+        /// <summary>
+        /// Called when visiting a <see cref="PhiFunction">phi function</see>.
+        /// </summary>
+        /// <param name="phi">The visited phi function.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
         T VisitPhiFunction(PhiFunction phi);
-        T VisitPointerAddition(PointerAddition pa);
-        T VisitProcedureConstant(ProcedureConstant pc);
-        T VisitScopeResolution(ScopeResolution scopeResolution);
+
+        /// <summary>
+        /// Called when visiting a <see cref="PointerAddition">pointer addition</see> expression.
+        /// </summary>
+        /// <param name="pa">The visited pointer addition expression.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
+		T VisitPointerAddition(PointerAddition pa);
+
+        /// <summary>
+        /// Called when visiting a <see cref="ProcedureConstant">procedure constant</see>.
+        /// </summary>
+        /// <param name="pc">The visited procedure constant.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
+		T VisitProcedureConstant(ProcedureConstant pc);
+
+        /// <summary>
+        /// Called when visiting a <see cref="ScopeResolution">scope resolution</see> expression.
+        /// </summary>
+        /// <param name="scopeResolution"></param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
+		T VisitScopeResolution(ScopeResolution scopeResolution);
+
+        /// <summary>
+        /// Called when visiting a <see cref="SegmentedPointer">segmented pointer</see> expression.
+        /// </summary>
+        /// <param name="address">The visited segmented pointer.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
         T VisitSegmentedAddress(SegmentedPointer address);
+
+        /// <summary>
+        /// Called when visiting a <see cref="Slice">slice expression</see>.
+        /// </summary>
+        /// <param name="slice">The visited slice expression.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
         T VisitSlice(Slice slice);
+
+        /// <summary>
+        /// Called when visting a <see cref="StringConstant">string literal constant</see>.
+        /// </summary>
+        /// <param name="str">The visited string literal.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
         T VisitStringConstant(StringConstant str);
+
+        /// <summary>
+        /// Called when visiting a <see cref="TestCondition"/> expression.
+        /// </summary>
+        /// <param name="tc">The visited test condition.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
         T VisitTestCondition(TestCondition tc);
+
+        /// <summary>
+        /// Called when visiting a <see cref="UnaryExpression">unary expression</see>.
+        /// </summary>
+        /// <param name="unary">The visited unary expression.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
         T VisitUnaryExpression(UnaryExpression unary);
     }
 
+    /// <summary>
+    /// Using the 'Visitor' pattern, any class interested in examining 
+    /// classes implementing the <see cref="Expression"/> interface 
+    /// without having to probe their class
+    /// type explicity (with casts or 'as' and 'is'). A context <typeparamref name="C"/>
+    /// is passed as an argument at each visited expression.
+    /// The generic type
+    /// <typeparamref name="T"/> is the return type of the visitor methods.
+    /// </summary>
     public interface ExpressionVisitor<T, C>
     {
-        T VisitAddress(Address addr, C ctx);
-        T VisitApplication(Application appl, C ctx);
-        T VisitArrayAccess(ArrayAccess acc, C ctx);
-        T VisitBinaryExpression(BinaryExpression binExp, C ctx);
-        T VisitCast(Cast cast, C ctx);
-        T VisitConditionalExpression(ConditionalExpression c, C context);
-        T VisitConditionOf(ConditionOf cof, C ctx);
-        T VisitConstant(Constant c, C ctx);
+        /// <summary>
+        /// Called when visiting an <see cref="Address"/> expression.
+        /// </summary>
+        /// <param name="addr">The visited address.</param>
+        /// <param name="context">The context provided by the caller.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
+        T VisitAddress(Address addr, C context);
+
+        /// <summary>
+        /// Called when visiting an <see cref="Application"/> expression.
+        /// </summary>
+        /// <param name="appl">The visited application.</param>
+        /// <param name="context">The context provided by the caller.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
+		T VisitApplication(Application appl, C context);
+
+        /// <summary>
+        /// Called when visiting an <see cref="ArrayAccess"/> expression.
+        /// </summary>
+        /// <param name="acc">The visited array access.</param>
+        /// <param name="context">The context provided by the caller.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
+		T VisitArrayAccess(ArrayAccess acc, C context);
+
+        /// <summary>
+        /// Called when visiting a <see cref="BinaryExpression"/> expression.
+        /// </summary>
+        /// <param name="binExp">The visited binary expression.</param>
+        /// <param name="context">The context provided by the caller.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
+		T VisitBinaryExpression(BinaryExpression binExp, C context);
+
+        /// <summary>
+        /// Called when visiting a <see cref="Cast"/> expression.
+        /// </summary>
+        /// <param name="cast">The visited cast expression.</param>
+        /// <param name="context">The context provided by the caller.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
+		T VisitCast(Cast cast, C context);
+
+        /// <summary>
+        /// Called when visiting a ternary <see cref="ConditionalExpression"/> expression.
+        /// </summary>
+        /// <param name="cond">The visited conditional expression.</param>
+        /// <param name="context">The context provided by the caller.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
+        T VisitConditionalExpression(ConditionalExpression cond, C context);
+
+        /// <summary>
+        /// Called when visiting a <see cref="ConditionOf"/> expression.
+        /// </summary>
+        /// <param name="cof">The visited condition-of expression.</param>
+        /// <param name="context">The context provided by the caller.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
+        T VisitConditionOf(ConditionOf cof, C context);
+
+        /// <summary>
+        /// Called when visiting a <see cref="Constant"/> expression.
+        /// </summary>
+        /// <param name="c">The visited constant expression.</param>
+        /// <param name="context">The context provided by the caller.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
+		T VisitConstant(Constant c, C context);
+
+        /// <summary> 
+        /// Called when visiting a <see cref="Conversion">conversion</see> expression.
+        /// </summary>
+        /// <param name="conversion">The visited conversion expression</param>
+        /// <param name="context">The context provided by the caller.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
         T VisitConversion(Conversion conversion, C context);
-        T VisitDereference(Dereference deref, C ctx);
-        T VisitFieldAccess(FieldAccess acc, C ctx);
-        T VisitIdentifier(Identifier id, C ctx);
-        T VisitMemberPointerSelector(MemberPointerSelector mps, C ctx);
-        T VisitMemoryAccess(MemoryAccess access, C ctx);
-        T VisitMkSequence(MkSequence seq, C ctx);
-        T VisitOutArgument(OutArgument outArgument, C ctx);
-        T VisitPhiFunction(PhiFunction phi, C ctx);
-        T VisitPointerAddition(PointerAddition pa, C ctx);
-        T VisitProcedureConstant(ProcedureConstant pc, C ctx);
-        T VisitScopeResolution(ScopeResolution scopeResolution, C ctx);
-        T VisitSegmentedAddress(SegmentedPointer address, C ctx);
-        T VisitSlice(Slice slice, C ctx);
-        T VisitStringConstant(StringConstant str, C ctx);
-        T VisitTestCondition(TestCondition tc, C ctx);
-        T VisitUnaryExpression(UnaryExpression unary, C ctx);
+
+        /// <summary>
+        /// Called when visiting a <see cref="Dereference"/> expression.
+        /// </summary>
+        /// <param name="deref">The visited dereference expression.</param>
+        /// <param name="context">The context provided by the caller.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
+		T VisitDereference(Dereference deref, C context);
+
+        /// <summary>
+        /// Called when visiting a <see cref="FieldAccess"/> expression.
+        /// </summary>
+        /// <param name="acc">The visited field access expression.</param>
+        /// <param name="context">The context provided by the caller.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
+		T VisitFieldAccess(FieldAccess acc, C context);
+
+        /// <summary>
+        /// Called when visiting an <see cref="Identifier"/>.
+        /// </summary>
+        /// <param name="id">The visited identifier.</param>
+        /// <param name="context">The context provided by the caller.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
+		T VisitIdentifier(Identifier id, C context);
+
+        /// <summary>
+        /// Called when visiting a <see cref="MemberPointerSelector">member pointer selector expression</see>.
+        /// </summary>
+        /// <param name="mps">The visited member pointer selector expression.</param>
+        /// <param name="context">The context provided by the caller.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
+		T VisitMemberPointerSelector(MemberPointerSelector mps, C context);
+
+        /// <summary>
+        /// Called when visiting a <see cref="MemoryAccess">memory access</see>.
+        /// </summary>
+        /// <param name="access">The visitied memory access.</param>
+        /// <param name="context">The context provided by the caller.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
+		T VisitMemoryAccess(MemoryAccess access, C context);
+
+        /// <summary>
+        /// Called when visiting a sequence expression.
+        /// </summary>
+        /// <param name="seq">The visited sequence expression.</param>
+        /// <param name="context">The context provided by the caller.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
+        T VisitMkSequence(MkSequence seq, C context);
+
+        /// <summary>
+        /// Called when vising an output argument.
+        /// </summary>
+        /// <param name="outArgument">The visited output argument.</param>
+        /// <param name="context">The context provided by the caller.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
+        T VisitOutArgument(OutArgument outArgument, C context);
+
+        /// <summary>
+        /// Called when visiting a <see cref="PhiFunction">phi function</see>.
+        /// </summary>
+        /// <param name="phi">The visited phi function.</param>
+        /// <param name="context">The context provided by the caller.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
+        T VisitPhiFunction(PhiFunction phi, C context);
+
+        /// <summary>
+        /// Called when visiting a <see cref="PointerAddition">pointer addition</see> expression.
+        /// </summary>
+        /// <param name="pa">The visited pointer addition expression.</param>
+        /// <param name="context">The context provided by the caller.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
+		T VisitPointerAddition(PointerAddition pa, C context);
+
+        /// <summary>
+        /// Called when visiting a <see cref="ProcedureConstant">procedure constant</see>.
+        /// </summary>
+        /// <param name="pc">The visited procedure constant.</param>
+        /// <param name="context">The context provided by the caller.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
+		T VisitProcedureConstant(ProcedureConstant pc, C context);
+
+        /// <summary>
+        /// Called when visiting a <see cref="ScopeResolution">scope resolution</see> expression.
+        /// </summary>
+        /// <param name="scopeResolution"></param>
+        /// <param name="context">The context provided by the caller.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
+		T VisitScopeResolution(ScopeResolution scopeResolution, C context);
+
+        /// <summary>
+        /// Called when visiting a <see cref="SegmentedPointer">segmented pointer</see> expression.
+        /// </summary>
+        /// <param name="address">The visited segmented pointer.</param>
+        /// <param name="context">The context provided by the caller.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
+        T VisitSegmentedAddress(SegmentedPointer address, C context);
+
+        /// <summary>
+        /// Called when visiting a <see cref="Slice">slice expression</see>.
+        /// </summary>
+        /// <param name="slice">The visited slice expression.</param>
+        /// <param name="context">The context provided by the caller.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
+        T VisitSlice(Slice slice, C context);
+
+        /// <summary>
+        /// Called when visting a <see cref="StringConstant">string literal constant</see>.
+        /// </summary>
+        /// <param name="str">The visited string literal.</param>
+        /// <param name="context">The context provided by the caller.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
+        T VisitStringConstant(StringConstant str, C context);
+
+        /// <summary>
+        /// Called when visiting a <see cref="TestCondition"/> expression.
+        /// </summary>
+        /// <param name="tc">The visited test condition.</param>
+        /// <param name="context">The context provided by the caller.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
+        T VisitTestCondition(TestCondition tc, C context);
+
+        /// <summary>
+        /// Called when visiting a <see cref="UnaryExpression">unary expression</see>.
+        /// </summary>
+        /// <param name="unary">The visited unary expression.</param>
+        /// <param name="context">The context provided by the caller.</param>
+        /// <returns>The result of the visit as an instance of <typeparamref name="T"/>.</returns>
+        T VisitUnaryExpression(UnaryExpression unary, C context);
     }
 
-	public class ExpressionVisitorBase : IExpressionVisitor
+    /// <summary>
+    /// Boiler-plate implementation of the <see cref="IExpressionVisitor"/> interface.
+    /// </summary>
+    /// <remarks>
+    /// This class is used as a base class for implementation of the <see cref="IExpressionVisitor"/>
+    /// interface where only a few methods need to be overridden.
+    /// </remarks>
+    public class ExpressionVisitorBase : IExpressionVisitor
 	{
 		#region IExpressionVisitor Members
 
+        /// <inheritdoc/>
         public virtual void VisitAddress(Address addr)
         {
         }
 
+        /// <inheritdoc/>
 		public virtual void VisitApplication(Application appl)
 		{
 			appl.Procedure.Accept(this);
@@ -132,23 +604,27 @@ namespace Reko.Core.Expressions
 			}
 		}
 
+        /// <inheritdoc/>
 		public void VisitArrayAccess(ArrayAccess acc)
 		{
 			acc.Array.Accept(this);
 			acc.Index.Accept(this);
 		}
 
+        /// <inheritdoc/>
 		public void VisitBinaryExpression(BinaryExpression binExp)
 		{
 			binExp.Left.Accept(this);
 			binExp.Right.Accept(this);
 		}
 
+        /// <inheritdoc/>
 		public void VisitCast(Cast cast)
 		{
 			cast.Expression.Accept(this);
 		}
 
+        /// <inheritdoc/>
         public void VisitConditionalExpression(ConditionalExpression cond)
         {
             cond.Condition.Accept(this);
@@ -156,42 +632,50 @@ namespace Reko.Core.Expressions
             cond.FalseExp.Accept(this);
         }
 
+        /// <inheritdoc/>
         public void VisitConditionOf(ConditionOf cof)
 		{
 			cof.Expression.Accept(this);
 		}
 
+        /// <inheritdoc/>
 		public void VisitConstant(Constant c)
 		{
 		}
 
+        /// <inheritdoc/>
         public virtual void VisitConversion(Conversion conversion)
         {
             conversion.Expression.Accept(this);
         }
 
+        /// <inheritdoc/>
 		public void VisitDereference(Dereference deref)
 		{
 			deref.Expression.Accept(this);
 		}
 
+        /// <inheritdoc/>
 		public void VisitFieldAccess(FieldAccess acc)
 		{
 			acc.Structure.Accept(this);
 		}
 
+        /// <inheritdoc/>
 		public void VisitMemberPointerSelector(MemberPointerSelector mps)
 		{
 			mps.BasePointer.Accept(this);
 			mps.MemberPointer.Accept(this);
 		}
 
+        /// <inheritdoc/>
 		public void VisitMemoryAccess(MemoryAccess access)
 		{
 			access.EffectiveAddress.Accept(this);
             access.MemoryId.Accept(this);
         }
 
+        /// <inheritdoc/>
 		public void VisitMkSequence(MkSequence seq)
 		{
             for (int i = 0; i < seq.Expressions.Length; ++i)
@@ -200,15 +684,18 @@ namespace Reko.Core.Expressions
             }
         }
 
+        /// <inheritdoc/>
 		public virtual void VisitIdentifier(Identifier id)
 		{
 		}
 
+        /// <inheritdoc/>
         public virtual void VisitOutArgument(OutArgument outArg)
         {
             outArg.Expression.Accept(this);
         }
 
+        /// <inheritdoc/>
 		public void VisitPhiFunction(PhiFunction phi)
 		{
 			foreach (var arg in phi.Arguments)
@@ -217,39 +704,47 @@ namespace Reko.Core.Expressions
 			}
 		}
 
+        /// <inheritdoc/>
 		public void VisitPointerAddition(PointerAddition pa)
 		{
 			pa.Pointer.Accept(this);
 		}
 
+        /// <inheritdoc/>
 		public void VisitProcedureConstant(ProcedureConstant pc)
 		{
 		}
 
+        /// <inheritdoc/>
 		public void VisitTestCondition(TestCondition tc)
 		{
 			tc.Expression.Accept(this);
 		}
 
+        /// <inheritdoc/>
         public void VisitSegmentedAddress(SegmentedPointer address)
         {
             address.BasePointer.Accept(this);
             address.Offset.Accept(this);
         }
 
+        /// <inheritdoc/>
         public void VisitScopeResolution(ScopeResolution scope)
 		{
 		}
 
+        /// <inheritdoc/>
 		public void VisitSlice(Slice slice)
 		{
 			slice.Expression.Accept(this);
 		}
 
+        /// <inheritdoc/>
         public void VisitStringConstant(StringConstant str)
         {
         }
 
+        /// <inheritdoc/>
 		public void VisitUnaryExpression(UnaryExpression unary)
 		{
 			unary.Expression.Accept(this);
@@ -258,25 +753,39 @@ namespace Reko.Core.Expressions
 		#endregion
 	}
 
+    /// <summary>
+    /// Boiler-plate implementation of the <see cref="ExpressionVisitor{T}"/> interface.
+    /// </summary>
+    /// <remarks>
+    /// This class is used as a base class for implementation of the <see cref="IExpressionVisitor"/>
+    /// interface where only a few methods need to be overridden.
+    /// </remarks>
     public abstract class ExpressionVisitorBase<T> : ExpressionVisitor<T>
     {
+        /// <summary>
+        /// Default value to use if derived classes provide no overriding implementation.
+        /// </summary>
         public abstract T DefaultValue { get; }
 
+        /// <inheritdoc/>
         public virtual T VisitAddress(Address addr)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public virtual T VisitApplication(Application appl)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public virtual T VisitArrayAccess(ArrayAccess acc)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public virtual T VisitBinaryExpression(BinaryExpression binExp)
         {
             binExp.Left.Accept(this);
@@ -284,106 +793,127 @@ namespace Reko.Core.Expressions
             return DefaultValue;
         }
 
+        /// <inheritdoc/>
         public virtual T VisitCast(Cast cast)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public virtual T VisitConditionalExpression(ConditionalExpression cond)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public virtual T VisitConditionOf(ConditionOf cof)
         {
             return cof.Expression.Accept(this);
         }
 
+        /// <inheritdoc/>
         public virtual T VisitConstant(Constant c)
         {
             return DefaultValue;
         }
 
+        /// <inheritdoc/>
         public virtual T VisitConversion(Conversion conversion)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public virtual T VisitDereference(Dereference deref)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public virtual T VisitFieldAccess(FieldAccess acc)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public virtual T VisitIdentifier(Identifier id)
         {
             return DefaultValue;
         }
 
+        /// <inheritdoc/>
         public virtual T VisitMemberPointerSelector(MemberPointerSelector mps)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public virtual T VisitMemoryAccess(MemoryAccess access)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public virtual T VisitMkSequence(MkSequence seq)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public virtual T VisitOutArgument(OutArgument outArg)
         {
             return outArg.Expression.Accept(this);
         }
 
+        /// <inheritdoc/>
         public virtual T VisitPhiFunction(PhiFunction phi)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public virtual T VisitPointerAddition(PointerAddition pa)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public virtual T VisitProcedureConstant(ProcedureConstant pc)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public virtual T VisitScopeResolution(ScopeResolution scopeResolution)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public virtual T VisitSegmentedAddress(SegmentedPointer address)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public virtual T VisitSlice(Slice slice)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public virtual T VisitStringConstant(StringConstant str)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public virtual T VisitTestCondition(TestCondition tc)
         {
             return tc.Expression.Accept(this);
         }
 
+        /// <inheritdoc/>
         public virtual T VisitUnaryExpression(UnaryExpression unary)
         {
             throw new NotImplementedException();

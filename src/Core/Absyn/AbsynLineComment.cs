@@ -31,33 +31,32 @@ namespace Reko.Core.Absyn
     public class AbsynLineComment : AbsynStatement
     {
         /// <summary>
-        /// Creates a line comment.
+        /// Constructs a line comment.
         /// </summary>
-        /// <param name="comment">The text of the comment.</param>
+        /// <param name="comment">The comment text.</param>
         public AbsynLineComment(string comment)
         {
             this.Comment = comment;
         }
 
         /// <summary>
-        /// The text of the comment.
+        /// The comment text.
         /// </summary>
         public string Comment { get; set; }
 
-
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public override void Accept(IAbsynVisitor visitor)
         {
             visitor.VisitLineComment(this);
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public override T Accept<T>(IAbsynVisitor<T> visitor)
         {
             return visitor.VisitLineComment(this);
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public override T Accept<T, C>(IAbsynVisitor<T, C> visitor, C context)
         {
             return visitor.VisitLineComment(this, context);

@@ -43,28 +43,36 @@ namespace Reko.Core.Expressions
             this.Expression = id;
         }
 
+        /// <summary>
+        /// The out argument.
+        /// </summary>
         public Expression Expression { get; }
 
+        /// <inheritdoc/>
         public override IEnumerable<Expression> Children
         {
             get { yield return Expression; }
         }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
         {
             return v.VisitOutArgument(this, context);
         }
 
+        /// <inheritdoc/>
         public override void Accept(IExpressionVisitor visitor)
         {
             visitor.VisitOutArgument(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(ExpressionVisitor<T> visitor)
         {
             return visitor.VisitOutArgument(this);
         }
 
+        /// <inheritdoc/>
         public override Expression CloneExpression()
         {
             return new OutArgument(DataType, Expression.CloneExpression());

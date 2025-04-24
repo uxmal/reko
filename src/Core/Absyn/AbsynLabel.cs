@@ -23,15 +23,14 @@ using System;
 namespace Reko.Core.Absyn
 {
     /// <summary>
-    /// Represents a goto statement target.
+    /// Models the target of a <see cref="AbsynGoto"/> statement.
     /// </summary>
 	public class AbsynLabel : AbsynStatement
 	{
-
         /// <summary>
-        /// Constructs a label with the given name.
+        /// Constructs a label statement.
         /// </summary>
-        /// <param name="label"></param>
+        /// <param name="label">The name of the label.</param>
 		public AbsynLabel(string label)
 		{
 			this.Name = label;

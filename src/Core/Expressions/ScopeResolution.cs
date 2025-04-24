@@ -34,26 +34,31 @@ namespace Reko.Core.Expressions
         {
         }
 
+        /// <inheritdoc/>
         public override IEnumerable<Expression> Children
         {
             get { yield break; }
         }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
         {
             return v.VisitScopeResolution(this, context);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitScopeResolution(this);
         }
 
+        /// <inheritdoc/>
         public override void Accept(IExpressionVisitor visit)
 		{
 			visit.VisitScopeResolution(this);
 		}
 
+        /// <inheritdoc/>
 		public override Expression CloneExpression()
 		{
 			return new ScopeResolution(DataType);

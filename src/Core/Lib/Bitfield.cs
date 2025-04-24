@@ -158,11 +158,20 @@ namespace Reko.Core.Lib
             return n;
         }
 
-        public static int ReadSignedFields(Bitfield[] fields, uint u)
+        /// <summary>
+        /// Reads a sequence of bit field values and returns the sign
+        /// extension of the concatenation of those values.
+        /// </summary>
+        /// <param name="bitfields">Sequence of bit fields to read.</param>
+        /// <param name="u">Unsigned 32-bit integer to read the fields from.</param>
+        /// <returns>An signed integer value consisting of the sign extension of
+        /// the bitwise concatenation of the bitfield values.
+        /// </returns>
+        public static int ReadSignedFields(Bitfield[] bitfields, uint u)
         {
             int n = 0;
             int bitsTotal = 0;
-            foreach (var bitfield in fields)
+            foreach (var bitfield in bitfields)
             {
                 n = n << bitfield.Length | (int)((u >> bitfield.Position) & bitfield.Mask);
                 bitsTotal += bitfield.Length;
@@ -195,6 +204,7 @@ namespace Reko.Core.Lib
             return n;
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             return $"[{Position}..{Position + Length})";

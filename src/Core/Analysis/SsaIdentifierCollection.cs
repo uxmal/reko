@@ -134,7 +134,7 @@ namespace Reko.Core.Analysis
         /// Removes the given <see cref="SsaIdentifier"/> from the collection.
         /// </summary>
         /// <param name="sid"><see cref="SsaIdentifier"/> to remove.</param>
-        /// <returns></returns>
+        /// <returns>True if the identifier existed and was removed; otherwise false.</returns>
         public bool Remove(SsaIdentifier sid)
         {
             return sids.Remove(sid.Identifier);
@@ -162,7 +162,7 @@ namespace Reko.Core.Analysis
         {
             for (int i = str.Length-1; i >= 0; --i)
             {
-                if (!Char.IsDigit(str[i]))
+                if (!char.IsDigit(str[i]))
                 {
                     if (i >= str.Length - 1)
                         return str + newSuffix;

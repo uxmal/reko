@@ -50,7 +50,7 @@ namespace Reko.Core.Emulation
         private ulong stepOverAddress;
 
         /// <summary>
-        /// Initiallizes the emulator with the given <paramref name="map" />.
+        /// Initializes the emulator with the given <paramref name="map" />.
         /// </summary>
         /// <param name="map">A <see cref="SegmentMap"/> instance describing the 
         /// memory of the emulated process.</param>
@@ -213,55 +213,84 @@ namespace Reko.Core.Emulation
             if (!map.TryFindSegment(ea, out ImageSegment? segment))
                 throw new AccessViolationException();
             var mem = segment.MemoryArea;
-            var off = ea - mem.BaseAddress.ToLinear();
+            var off = address - mem.BaseAddress.ToLinear();
             return segment.MemoryArea.TryReadByte((long) off, out b);
         }
 
-        public ushort ReadLeUInt16(ulong ea)
+        /// <summary>
+        /// Attempt to read a 16-bit unsigned integer at the given address.
+        /// </summary>
+        /// <param name="address">Address from which to read the 16-bit unsigned integer.</param>
+        /// <returns>The read value if the address was readable.</returns>
+        public ushort ReadLeUInt16(ulong address)
         {
-            if (!map.TryFindSegment(ea, out ImageSegment? segment))
+            if (!map.TryFindSegment(address, out ImageSegment? segment))
                 throw new AccessViolationException();
             var mem = segment.MemoryArea;
-            var off = ea - mem.BaseAddress.ToLinear();
+            var off = address - mem.BaseAddress.ToLinear();
             if (!mem.TryReadLeUInt16((uint) off, out ushort retvalue))
                 throw new AccessViolationException();
             return retvalue;
         }
 
-        public uint ReadLeUInt32(ulong ea)
+        /// <summary>
+        /// Attempt to read a 32-bit unsigned integer at the given address.
+        /// </summary>
+        /// <param name="address">Address from which to read the 32-bit unsigned integer.</param>
+        /// <returns>The read value if the address was readable.</returns>
+        public uint ReadLeUInt32(ulong address)
         {
-            if (!map.TryFindSegment(ea, out ImageSegment? segment))
+            if (!map.TryFindSegment(address, out ImageSegment? segment))
                 throw new AccessViolationException();
             var mem = segment.MemoryArea;
-            var off = ea - mem.BaseAddress.ToLinear();
+            var off = address - mem.BaseAddress.ToLinear();
             if (!mem.TryReadLeUInt32((uint) off, out var retvalue))
                 throw new AccessViolationException();
             return retvalue;
         }
 
-        public void WriteByte(ulong ea, byte value)
+        /// <summary>
+        /// Writes a byte to the given address.
+        /// </summary>
+        /// <param name="address">Addres at which to write a byte.</param>
+        /// <param name="value">Byte to write.</param>
+        /// <exception cref="AccessViolationException"></exception>
+
+        public void WriteByte(ulong address, byte value)
         {
-            if (!map.TryFindSegment(ea, out ImageSegment? segment))
+            if (!map.TryFindSegment(address, out ImageSegment? segment))
                 throw new AccessViolationException();
             var mem = segment.MemoryArea;
-            mem.WriteByte((long) (ea - mem.BaseAddress.ToLinear()), value);
+            mem.WriteByte((long) (address - mem.BaseAddress.ToLinear()), value);
         }
 
-        public void WriteLeUInt16(ulong ea, ushort value)
+        /// <summary>
+        /// Writes a 16-bit unsigned integer to the given address.
+        /// </summary>
+        /// <param name="address">Address at which to write the value.</param>
+        /// <param name="value">16-bit unsigned integer to write.</param>
+        /// <exception cref="AccessViolationException"></exception>
+        public void WriteLeUInt16(ulong address, ushort value)
         {
-            if (!map.TryFindSegment(ea, out ImageSegment? segment))
+            if (!map.TryFindSegment(address, out ImageSegment? segment))
                 throw new AccessViolationException();
             var mem = segment.MemoryArea;
-            var off = ea - mem.BaseAddress.ToLinear();
+            var off = address - mem.BaseAddress.ToLinear();
             segment.MemoryArea.WriteLeUInt16((uint) off, value);
         }
 
-        public void WriteLeUInt32(ulong ea, uint value)
+        /// <summary>
+        /// Writes a 32-bit unsigned integer to the given address.
+        /// </summary>
+        /// <param name="address">Address at which to write the value.</param>
+        /// <param name="value">32-bit unsigned integer to write.</param>
+        /// <exception cref="AccessViolationException"></exception>
+        public void WriteLeUInt32(ulong address, uint value)
         {
-            if (!map.TryFindSegment(ea, out ImageSegment? segment))
+            if (!map.TryFindSegment(address, out ImageSegment? segment))
                 throw new AccessViolationException();
             var mem = segment.MemoryArea;
-            var off = ea - mem.BaseAddress.ToLinear();
+            var off = address - mem.BaseAddress.ToLinear();
             segment.MemoryArea.WriteLeUInt32((long) off, value);
         }
     }

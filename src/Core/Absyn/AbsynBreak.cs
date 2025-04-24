@@ -18,8 +18,6 @@
  */
 #endregion
 
-using Reko.Core.Code;
-using System;
 
 namespace Reko.Core.Absyn
 {

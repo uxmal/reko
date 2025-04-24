@@ -27,15 +27,11 @@ using System.Text;
 namespace Reko.Core.Expressions
 {
     /// <summary>
-    /// Wraps a tree with the DirectedGraph interface so that
-    /// DfsIterator can walk it.
+    /// Wraps a tree with the <see cref="DirectedGraph{T}" /> interface so that
+    /// <see cref="DfsIterator{T}"/> can walk it.
     /// </summary>
     public class ExpressionTree : DirectedGraph<Expression>
     {
-        public ExpressionTree()
-        {
-        }
-
         public ICollection<Expression> Nodes
         {
             get

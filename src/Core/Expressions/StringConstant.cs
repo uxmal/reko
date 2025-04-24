@@ -19,12 +19,7 @@
 #endregion
 
 using Reko.Core.Types;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Core.Expressions
 {
@@ -47,7 +42,7 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
-        /// The literal string value.
+        /// The value of the string literal.
         /// </summary>
         public string Literal => str;
 
@@ -81,10 +76,7 @@ namespace Reko.Core.Expressions
         }
 
         /// <inheritdoc/>
-        public override IEnumerable<Expression> Children
-        {
-            get { yield break; }
-        }
+        public override IEnumerable<Expression> Children => [];
 
         /// <inheritdoc/>
         public override string ToString()

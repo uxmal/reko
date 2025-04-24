@@ -33,7 +33,7 @@ namespace Reko.Core.Analysis
         private readonly IDictionary<Identifier, int> idMap;
 
         /// <summary>
-        /// Creates an instance of this class.
+        /// Constructs an instance of this class.
         /// </summary>
         public InstructionUseCollector()
         {

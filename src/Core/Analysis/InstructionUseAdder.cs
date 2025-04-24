@@ -46,8 +46,10 @@ namespace Reko.Core.Analysis
         }
 
         /// <summary>
-        /// <inheritdoc/>
+        /// When an <see cref="Identifier"/> is encountered, add a use to its
+        /// corresponding <see cref="SsaIdentifier"/>.
         /// </summary>
+        /// <param name="id">Identified that was visited.</param>
         protected override void UseIdentifier(Identifier id)
         {
             ssaIds[id].Uses.Add(user);

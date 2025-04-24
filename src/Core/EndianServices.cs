@@ -43,7 +43,7 @@ namespace Reko.Core
 
         /// <summary>
         /// An instance of <see cref="EndianServices"/> that can be used
-        /// to perform little-endian memory operations.
+        /// to perform big-endian memory operations.
         /// </summary>
         public static EndianServices Big { get; } = new BeServices();
 
@@ -148,7 +148,7 @@ namespace Reko.Core
         /// <summary>
         /// Creates an <see cref="ImageWriter"/> with the preferred endianness, which will 
         /// write into the given <paramref name="bytes"/>
-        /// starting at address <paramref name="offset"/>.
+        /// starting at offset <paramref name="offset"/>.
         /// </summary>
         /// <param name="bytes">Bytes to write to.</param>
         /// <param name="offset">Offset at which to start writing at.</param>

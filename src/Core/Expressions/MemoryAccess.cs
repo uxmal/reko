@@ -32,8 +32,8 @@ namespace Reko.Core.Expressions
     public class MemoryAccess : AbstractExpression
     {
         /// <summary>
-        /// Creates an access to the memory whose effective address is <paramref name="ea"/>.
-        /// The data type of the accessed memory is <paramref name="dt"/>. The memory access
+        /// Creates an access to the memory whose effective address is <see cref="EffectiveAddress"/>.
+        /// The data type of the accessed memory is <see cref="Expression.DataType"/>. The memory access
         /// takes place in the <see cref="MemoryStorage.GlobalMemory"/> address space.
         /// </summary>
         /// <param name="ea">Effective address of the access.</param>
@@ -132,10 +132,11 @@ namespace Reko.Core.Expressions
             if (offset == 0)
                 return baseExpr;
             else
-                return new BinaryExpression(Operator.IAdd,
-                    baseExpr.DataType,
-                    baseExpr,
-                    Constant.Create(PrimitiveType.Create(Domain.SignedInt, baseExpr.DataType.BitSize), offset));
+                return new BinaryExpression(
+                    Operator.IAdd,
+                    baseRegister.DataType,
+                    baseRegister,
+                    Constant.Create(PrimitiveType.Create(Domain.SignedInt, baseRegister.DataType.BitSize), offset));
         }
 
         /// <summary>

@@ -36,10 +36,11 @@ namespace Reko.Core.Expressions
     public class MkSequence : AbstractExpression
 	{
         /// <summary>
-        /// Creates an instance of the <see cref="MkSequence"/> class.
+        /// Constructs a expression sequence.
         /// </summary>
-        /// <param name="dt"></param>
-        /// <param name="exprs"></param>
+        /// <param name="dt">The data type of the total sequence.</param>
+        /// <param name="exprs">An array expressions forming part of the sequence,
+        /// in big-endian order: the most significant expressions first.</param>
         public MkSequence(DataType dt, params Expression [] exprs) : base(dt)
         {
             if (exprs.Length < 1)
@@ -48,7 +49,8 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
-        /// The elements of the sequence.
+        /// The expressions forming part of the sequence, arranged in big-endian order.
+        /// The most significant expression is first.
         /// </summary>
         public Expression[] Expressions { get; }
 

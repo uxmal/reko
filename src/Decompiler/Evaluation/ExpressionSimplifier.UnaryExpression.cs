@@ -29,7 +29,7 @@ namespace Reko.Evaluation
         {
             var (e, changed) = unary.Expression.Accept(this);
             if (changed)
-                unary = new UnaryExpression(unary.Operator, unary.DataType, e);
+                unary = m.Unary(unary.Operator, unary.DataType, e);
             e = negSub.Match(unary);
             if (e is not null)
             {

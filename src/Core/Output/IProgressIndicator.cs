@@ -81,26 +81,32 @@ namespace Reko.Core.Output
         {
         }
 
+        /// <inheritdoc />
         public void SetCaption(string newCaption)
         {
         }
 
+        /// <inheritdoc />
         public void ShowStatus(string caption)
         {
         }
 
+        /// <inheritdoc />
         public void ShowProgress(string caption, int numerator, int denominator)
         {
         }
 
+        /// <inheritdoc />
         public void ShowProgress(int numerator, int denominator)
         {
         }
 
+        /// <inheritdoc />
         public void Advance(int count)
         {
         }
 
+        /// <inheritdoc />
         public void Finish()
         {
         }

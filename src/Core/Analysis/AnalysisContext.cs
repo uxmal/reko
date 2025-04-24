@@ -30,18 +30,17 @@ namespace Reko.Core.Analysis
     public class AnalysisContext
     {
         /// <summary>
-        /// The <see cref="Program"/> currently being analyzed.
+        /// A read-only view of the current <see cref="Program"/> being analyzed.
         /// </summary>
         public IReadOnlyProgram Program { get; }
 
         /// <summary>
-        /// The strongly connected component (SCC) of procedures that are 
-        /// being analyzed.
+        /// The set of procedures that constitute the strongly connected component (SCC)
+        /// currently being analyzed.
         /// </summary>
         /// <remarks>
-        /// Normally, analysis proceeds one procedure at a time, but
-        /// when mutually recursive procedures are encountered, they
-        /// have to be processed together.
+        /// This will typically be a single procedure, but may be more when a set
+        /// of mutually recursive procedures is being analyzed.
         /// </remarks>
         public IReadOnlySet<Procedure> SccProcedures { get; }
 
@@ -127,8 +126,7 @@ namespace Reko.Core.Analysis
         PreSsa = 0,
 
         /// <summary>
-        /// The analysis has performed SSA translation on regiters,
-        /// but not stack variables.
+        /// SSA transformation has been performed on registers.
         /// </summary>
         AfterRegisterSsa = 1000,
 

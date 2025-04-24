@@ -127,21 +127,21 @@ namespace Reko.Core.Analysis
         }
 
         /// <summary>
-        /// Shifts the induction variable by a constant amount.
+        /// Offset the induction variable by a constant.
         /// </summary>
-        /// <param name="c">Amount with which to shift the induction variable.</param>
+        /// <param name="c">Offset to add to the induction variable.</param>
         public void AddIncrement(Constant c)
         {
-            if (Initial != null)
+            if (Initial is not null)
                 Initial = Operator.IAdd.ApplyConstants(Initial.DataType, Initial, c);
-            if (Final != null)
+            if (Final is not null)
                 Final = Operator.IAdd.ApplyConstants(Final.DataType, Final, c);
         }
 
         /// <summary>
-        /// Scales the induction variable by a constant amount.
+        /// Scale the induction variable by a constant.
         /// </summary>
-        /// <param name="c">Amount with which to scale the induction variable.</param>
+        /// <param name="c"></param>
         /// <returns>A new, scaled induction variable.</returns>
         public LinearInductionVariable Scale(Constant c)
         {
@@ -157,9 +157,7 @@ namespace Reko.Core.Analysis
             return new LinearInductionVariable(initial, delta, final, IsSigned);
         }
 
-        /// <summary>
         /// <inheritdoc/>
-        /// </summary>
         public override string ToString()
         {
             var sb = new StringBuilder();

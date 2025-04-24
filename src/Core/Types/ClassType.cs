@@ -30,6 +30,10 @@ namespace Reko.Core.Types
     /// </summary>
     public class ClassType : CompositeType
     {
+        /// <summary>
+        /// Constructs a ClassType instance.
+        /// </summary>
+        /// <param name="name">Optional name for the class.</param>
         public ClassType(string? name = null) :
             base(Domain.Class, name)
         {
@@ -38,26 +42,45 @@ namespace Reko.Core.Types
             Bases = new List<ClassBase>();
         }
 
+        /// <summary>
+        /// The fields of this class, ordered by offset.
+        /// </summary>
         public List<ClassField> Fields { get; private set; }
+
+        /// <summary>
+        /// The methods of this class.
+        /// </summary>
         public List<ClassMethod> Methods { get; private set; }
+
+        /// <summary>
+        /// Zero or more base classes of this class.
+        /// </summary>
         public List<ClassBase> Bases { get; private set; }
+
+        /// <inheritdoc/>
         public override int Size { get; set; }
 
+        /// <inheritdoc/>
         public override void Accept(IDataTypeVisitor v)
         {
             v.VisitClass(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
             return v.VisitClass(this);
         }
 
+        /// <inheritdoc/>
         public override DataType Clone(IDictionary<DataType, DataType>? clonedTypes)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Fetches all the virtual methods of this class, ordered by offset.
+        /// </summary>
         public IEnumerable<ClassMethod> VirtualMethods
         {
             get
@@ -73,15 +96,15 @@ namespace Reko.Core.Types
     {
         private string? name;
 
-        public ClassProtection Protection;
-        public ClassMemberAttribute Attribute;
+        public ClassProtection Protection { get; set; }
+        public ClassMemberAttribute Attribute { get; set; }
         public string Name {
             get { return name ?? DefaultFieldName(); }
             set { this.name = value; }
         }
 
-        public int Offset;  // Offset of a field, self-evident
-                            // Offset of a method, in a virtual table.
+        public int Offset { get; set; }  // Offset of a field, self-evident
+                                         // Offset of a method, in a virtual table.
 
         private string DefaultFieldName()
         {

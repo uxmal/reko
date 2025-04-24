@@ -33,22 +33,22 @@ namespace Reko.Core
 	public class ExternalProcedure : ProcedureBase
 	{
         /// <summary>
-        /// Creates an instance of the <see cref="ExternalProcedure"/> class.
+        /// Constructs an <see cref="ExternalProcedure"/> instance.
         /// </summary>
         /// <param name="name">The name of the external procedure.</param>
-        /// <param name="signature">The function signature of the procedure.</param>
-        /// <param name="chars">Optional procedure characteristics.</param>
+        /// <param name="signature">The function signature of the external procedure.</param>
+        /// <param name="characteristics">The <see cref="ProcedureCharacteristics"/> of the external procedure.</param>
         public ExternalProcedure(
             string name,
             FunctionType signature,
-            ProcedureCharacteristics? chars = null) : base(name, true)
+            ProcedureCharacteristics? characteristics = null) : base(name, true)
         {
             this.Signature = signature ?? throw new ArgumentNullException(
                 nameof(signature),
                 $"External procedure {name} must have a signature.");
-            if (chars != null)
+            if (characteristics != null)
             {
-                this.Characteristics = chars;
+                this.Characteristics = characteristics;
             }
         }
 

@@ -18,10 +18,7 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Core.Types
 {
@@ -31,22 +28,29 @@ namespace Reko.Core.Types
     /// </summary>
     public class CodeType : DataType
     {
+        /// <summary>
+        /// Constructs an instance of <see cref="CodeType"/>.
+        /// </summary>
         public CodeType() : base(Domain.Function)
         {
         }
 
+        /// <inheritdoc/>
         public override int Size { get; set; }
 
+        /// <inheritdoc/>
         public override void Accept(IDataTypeVisitor v)
         {
             v.VisitCode(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
             return v.VisitCode(this);
         }
 
+        /// <inheritdoc/>
         public override DataType Clone(IDictionary<DataType, DataType>? clonedTypes)
         {
             return new CodeType

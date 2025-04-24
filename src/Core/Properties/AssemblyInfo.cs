@@ -19,7 +19,6 @@
 #endregion
 
 using System.Reflection;
-using System.Runtime.CompilerServices;
 
 //
 // General Information about an assembly is controlled through the following 
@@ -37,6 +36,8 @@ using System.Runtime.CompilerServices;
 
 [assembly: AssemblyVersion(Reko.AssemblyMetadata.AssemblyVersion)]
 [assembly: AssemblyFileVersion(Reko.AssemblyMetadata.AssemblyFileVersion)]
+
+#pragma warning disable CS1591
 
 namespace Reko
 {

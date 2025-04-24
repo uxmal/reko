@@ -47,7 +47,7 @@ namespace Reko.Core.Expressions
         /// <summary>
         /// Accepts a visitor to this expression.
         /// </summary>
-        /// <param name="visitor">The visitor.</param>
+        /// <param name="visitor">Typeless visitor.</param>
         void Accept(IExpressionVisitor visitor);
 
         /// <summary>
@@ -67,6 +67,7 @@ namespace Reko.Core.Expressions
         /// </param>
         /// <param name="context">The context provided by the analysis.
         /// </param>
+        /// <returns>An instance of <typeparamref name="T"/>.</returns>
         T Accept<T, C>(ExpressionVisitor<T, C> visitor, C context);
         
         /// <summary>

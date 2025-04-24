@@ -91,10 +91,7 @@ namespace Reko.Core.Expressions
         public string Name { get; }
 
         /// <inheritdoc/>
-        public override IEnumerable<Expression> Children
-        {
-            get { yield break; }
-        }
+        public override IEnumerable<Expression> Children => [];
 
         /// <summary>
         /// What storage area the identifier refers to.

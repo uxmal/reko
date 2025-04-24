@@ -100,6 +100,7 @@ namespace Reko.Core.Types
             return new FunctionType(VoidReturnValue(), parameters);
         }
 
+
         public bool IsVariadic { get; set; }
 
         /// <summary>
@@ -110,7 +111,16 @@ namespace Reko.Core.Types
         /// be the empty string.
         /// </remarks>
         public Identifier ReturnValue { get { return retValue!; } set { retValue = value; } }
+
+        /// <summary>
+        /// The parameters of the function.
+        /// </summary>
+        /// <remarks>
+        /// There may be additional arguments to the function if it is a variadic
+        /// function.
+        /// </remarks>
         public Identifier[]? Parameters { get; private set; }
+
         public bool HasVoidReturn { get { return ReturnValue == null || ReturnValue.DataType is VoidType; } }
         public TypeVariable? TypeVariable { get; set; }  //$REVIEW: belongs on the Procedure itself!
 

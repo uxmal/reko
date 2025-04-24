@@ -30,36 +30,66 @@ namespace Reko.Core.Types
 	/// </summary>
 	public class StructureType : CompositeType
 	{
+        /// <summary>
+        /// Constructs a structure instance.
+        /// </summary>
         public StructureType() : this(null, 0, false)
 		{
 		}
 
+        /// <summary>
+        /// Constructs a structure with a known size.
+        /// </summary>
+        /// <param name="size">The size of the structure in
+        /// storage units, or 0 if the size is unknown.
+        /// </param>
         public StructureType(int size) : this(null, size, false)
         {
         }
 
+        /// <summary>
+        /// Constructs a structure with a known size and name.
+        /// </summary>
+        /// <param name="name">Optional name.</param>
+        /// <param name="size">The size of the structure in storage units,
+        /// or 0 if the size is unknown.</param>
 		public StructureType(string? name, int size) : this(name, size, false)
 		{
 		}
 
+        /// <summary>
+        /// Constructs a structure with a known size and name.
+        /// </summary>
+        /// <param name="name">Optional name.</param>
+        /// <param name="size">The size of the structure in storage units,
+        /// or 0 if the size is unknown.</param>
+        /// <param name="userDefined">True if the structure is user-defined; false otherwise.
+        /// </param>
         public StructureType(string? name, int size, bool userDefined) 
             : base(Domain.Structure, name)
         {
             this.UserDefined = userDefined;
-            this.Fields = new StructureFieldCollection();
+            this.Fields = [];
             this.Size = size;
         }
 
+        /// <inheritdoc />
         public override void Accept(IDataTypeVisitor v)
         {
             v.VisitStructure(this);
         }
 
+        /// <inheritdoc />
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
             return v.VisitStructure(this);
         }
 
+        /// <summary>
+        /// Clones the structure type. The clone is a deep copy of the structure type.
+        /// </summary>
+        /// <param name="clonedTypes"></param>
+        /// <returns>A cloned copy of the structure.</returns>
         public override DataType Clone(IDictionary<DataType, DataType>? clonedTypes)
 		{
             clonedTypes ??= new Dictionary<DataType, DataType>();
@@ -85,6 +115,9 @@ namespace Reko.Core.Types
 
 		public override bool IsComplex  { get { return true; } }
 
+        /// <inheritdoc />
+        public override bool IsComplex => true;
+
         /// <summary>
         /// If true, then this structure can never be simplfied by Simplify().
         /// </summary>
@@ -95,7 +128,11 @@ namespace Reko.Core.Types
         /// segments must never be converted to primitive types.
         /// </summary>
         public bool IsSegment { get ; set; }
-        public bool IsEmpty { get { return Size == 0 && Fields.Count == 0; } }
+
+        /// <summary>
+        /// Returns true if the structur has no known size and zero fields.
+        /// </summary>
+        public bool IsEmpty => Size == 0 && Fields.Count == 0;
 
         /// <summary>
         /// Specific size. This is set if the actual size of a structure is known
@@ -109,7 +146,9 @@ namespace Reko.Core.Types
         /// If the exact size is not known, compute the deferred size by finding 
         /// the field with the highest offset.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The exact size if known, otherwise the inferred size
+        /// based on data type analysis.
+        /// </returns>
         public int GetInferredSize()
         {
             if (Size > 0)
@@ -120,6 +159,13 @@ namespace Reko.Core.Types
             return maxField.Offset + maxField.DataType.Size;    //$BUG: nested structs?
         }
 
+        /// <summary>
+        /// Simplifies the structure type. If the structure type has only one field, and
+        /// it is at offset 0, return that field's type.
+        /// </summary>
+        /// <returns>If the structure can be simplified, returns the type of the
+        /// field; otherwise return the whole structure.
+        /// </returns>
         public DataType Simplify()
         {
             if (Fields.Count == 1 && !IsSegment && !ForceStructure)

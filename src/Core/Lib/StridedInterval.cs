@@ -75,6 +75,7 @@ namespace Reko.Core.Lib
             get { return Stride < 0; }
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             if (Stride < 0)

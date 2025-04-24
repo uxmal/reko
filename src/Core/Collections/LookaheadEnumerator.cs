@@ -27,7 +27,7 @@ using System.Text;
 namespace Reko.Core.Collections
 {
     /// <summary>
-    /// An extension of <see cref="IEnumerator{T}" /> that wraps an IEnumerator and 
+    /// An extension of <see cref="IEnumerator{T}" /> that wraps an <see cref="IEnumerator{T}"/> and 
     /// which lets the caller peek ahead in the underlying enumeration.
     /// </summary>
     public class LookaheadEnumerator<T> : IEnumerator<T>
@@ -36,13 +36,22 @@ namespace Reko.Core.Collections
         private readonly List<T> peeked;
         private int iCur;
 
+        /// <summary>
+        /// Creates a new <see cref="LookaheadEnumerator{T}"/> that wraps the specified
+        /// <paramref name="innerEnumerator"/>.
+        /// </summary>
+        /// <param name="innerEnumerator"><see cref="IEnumerable{T}"/> instance to wrap.</param>
         public LookaheadEnumerator(IEnumerator<T> innerEnumerator)
         {
             this.e = innerEnumerator ?? throw new ArgumentNullException(nameof(innerEnumerator));
-            this.peeked = new List<T>();
+            this.peeked = [];
             this.iCur = 0;
         }
 
+        /// <summary>
+        /// Convenience 
+        /// </summary>
+        /// <param name="collection"></param>
         public LookaheadEnumerator(IEnumerable<T> collection) : this(collection.GetEnumerator())
         {
         }

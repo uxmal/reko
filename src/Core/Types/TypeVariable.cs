@@ -31,11 +31,20 @@ namespace Reko.Core.Types
 		private DataType? dtOriginal;
         private EquivalenceClass? eqClass;
 
+        /// <summary>
+        /// Constructs a type variable.
+        /// </summary>
+        /// <param name="n">The identifier of the type variable.</param>
 		public TypeVariable(int n) : base(Domain.Any, "T_" + n)
 		{
 			this.Number = n;
 		}
 
+        /// <summary>
+        /// Constructs a type variable with a given name.
+        /// </summary>
+        /// <param name="name">Name of the type variable.</param>
+        /// <param name="n">The identifier of the type variable.</param>
 		public TypeVariable(string name, int n) : base(Domain.Any, name)
 		{
 			this.Number = n;
@@ -79,6 +88,9 @@ namespace Reko.Core.Types
         }
         private DataType? dt;
 
+        /// <summary>
+        /// The number identify this type variable.
+        /// </summary>
 		public int Number { get; }
 
 		/// <summary>

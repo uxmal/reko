@@ -364,7 +364,7 @@ namespace Reko.Evaluation
                 subs[i] = unaries[i].Expression;
             }
             var (sub, _) = new MkSequence(dt, subs).Accept(this);
-            return new UnaryExpression(opPrev!, dt, sub);
+            return m.Unary(opPrev!, dt, sub);
         }
 
         public Expression? FuseLogicalOperations(DataType dt, Expression[] exps)
