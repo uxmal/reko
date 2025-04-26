@@ -39,8 +39,14 @@ namespace Reko.Core.Expressions
         {
         }
 
+        /// <inheritdoc/>
         public override bool IsZero => false;
 
+        /// <summary>
+        /// Creates an <see cref="InvalidConstant"/> instance of the given size.
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <returns></returns>
         public static InvalidConstant Create(DataType dt)
         {
             lock (cacheLock)
@@ -54,40 +60,55 @@ namespace Reko.Core.Expressions
             }
         }
 
+        /// <inheritdoc/>
         public override bool IsMaxUnsigned => false;
 
+        /// <inheritdoc/>
         public override bool IsValid => false;
 
+        /// <inheritdoc/>
         public override Expression CloneExpression() => this;
 
+        /// <inheritdoc/>
         public override Constant Complement() => this;
 
+        /// <inheritdoc/>
         public override int GetHashOfValue()
         {
             return unchecked((int) pseudoValue) ^ DataType.GetHashCode();
         }
 
+        /// <inheritdoc/>
         public override object GetValue() => throw new NotImplementedException();
 
+        /// <inheritdoc/>
         public override Constant Slice(DataType dt, int offset)
         {
             return new InvalidConstant(dt);
         }
 
+        /// <inheritdoc/>
         public override byte ToByte() => unchecked((byte) pseudoValue);
 
+        /// <inheritdoc/>
         public override short ToInt16() => unchecked((short)pseudoValue);
 
+        /// <inheritdoc/>
         public override int ToInt32() => unchecked((int) pseudoValue);
 
+        /// <inheritdoc/>
         public override long ToInt64() => pseudoValue;
 
+        /// <inheritdoc/>
         public override ushort ToUInt16() => unchecked((ushort) pseudoValue);
 
+        /// <inheritdoc/>
         public override uint ToUInt32() => pseudoValue;
 
+        /// <inheritdoc/>
         public override ulong ToUInt64() => pseudoValue;
 
+        /// <inheritdoc/>
         public override BigInteger ToBigInteger() => pseudoValue;
     }
 }

@@ -21,7 +21,6 @@
 #pragma warning disable IDE1006
 
 using Reko.Core.Expressions;
-using Reko.Core.Lib;
 using Reko.Core.Types;
 using System;
 using System.Diagnostics.CodeAnalysis;

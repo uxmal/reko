@@ -324,7 +324,7 @@ namespace Reko.Scanning
 
         public Identifier VisitFlagGroupStorage(FlagGroupStorage grf)
         {
-            return procCalling.Frame.EnsureFlagGroup(grf.FlagRegister, grf.FlagGroupBits, grf.Name);
+            return procCalling.Frame.EnsureFlagGroup(grf);
         }
 
         public Identifier VisitFpuStackStorage(FpuStackStorage fpu)

@@ -24,36 +24,53 @@ using Reko.Core.Expressions;
 namespace Reko.Core.Code
 {
     /// <summary>
-    /// An Assignment copies data from <see cref="Src" /> to <see cref="Dst" />.
+	/// An Assignment copies data from <see cref="Src" /> to <see cref="Dst" />.
     /// </summary>
     public class Assignment : Instruction
 	{
+        /// <summary>
+        /// Constructs an assignment instruction.
+        /// </summary>
+        /// <param name="dst">The destination of the assignment.</param>
+        /// <param name="src">The source of the assignment.</param>
         public Assignment(Identifier dst, Expression src)
         {
             this.Dst = dst ?? throw new ArgumentNullException(nameof(dst));
             this.Src = src ?? throw new ArgumentNullException(nameof(src));
         }
 
+        /// <summary>
+        /// The destination of the assignment. This is an identifier.
+        /// </summary>
         public Identifier Dst { get; set; }
+
+        /// <summary>
+        /// The source of the assignment.
+        /// </summary>
         public Expression Src { get; set; }
+
+        /// <inheritdoc/>
         public override bool IsControlFlow => false;
         
+        /// <inheritdoc/>
         public override Instruction Accept(InstructionTransformer xform)
 		{
 			return xform.TransformAssignment(this);
 		}
 
+        /// <inheritdoc/>
         public override T Accept<T>(InstructionVisitor<T> visitor)
         {
             return visitor.VisitAssignment(this);
         }
 
-
+        /// <inheritdoc/>
         public override T Accept<T, C>(InstructionVisitor<T, C> visitor, C ctx)
         {
             return visitor.VisitAssignment(this, ctx);
         }
 
+        /// <inheritdoc/>
         public override void Accept(InstructionVisitor v)
 		{
 			v.VisitAssignment(this);
@@ -65,33 +82,50 @@ namespace Reko.Core.Code
 	/// </summary>
 	public class Store : Instruction
 	{
+        /// <summary>
+        /// Constructs a store instruction.
+        /// </summary>
+        /// <param name="dst">The destination of the store instruction.</param>
+        /// <param name="src">The source of the store instruction.</param>
+        /// <exception cref="ArgumentNullException"></exception>
 		public Store(Expression dst, Expression src)
 		{
             Dst = dst ?? throw new ArgumentNullException(nameof(dst));
 			Src = src ?? throw new ArgumentNullException(nameof(src));
         }
 
+        /// <summary>
+        /// The destination of the store instruction.
+        /// </summary>
         public Expression Dst { get; set; }
 
+        /// <summary>
+        /// The source of the store instruction.
+        /// </summary>
         public Expression Src { get; set; }
 
+        /// <inheritdoc/>
         public override bool IsControlFlow => false;
         
+        /// <inheritdoc/>
         public override Instruction Accept(InstructionTransformer xform)
 		{
 			return xform.TransformStore(this);
 		}
 
+        /// <inheritdoc/>
         public override T Accept<T>(InstructionVisitor<T> visitor)
         {
             return visitor.VisitStore(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(InstructionVisitor<T, C> visitor, C ctx)
         {
             return visitor.VisitStore(this, ctx);
         }
 
+        /// <inheritdoc/>
         public override void Accept(InstructionVisitor v)
 		{
 			v.VisitStore(this);
@@ -105,6 +139,11 @@ namespace Reko.Core.Code
     /// </summary>
     public class AliasAssignment : Assignment
     {
+        /// <summary>
+        /// Constructs an instance of <see cref="AliasAssignment"/>.
+        /// </summary>
+        /// <param name="idDst">Destination of the assignment.</param>
+        /// <param name="expSrc">Source of the assignment.</param>
         public AliasAssignment(Identifier idDst, Expression expSrc) : base(idDst, expSrc)
         {
         }

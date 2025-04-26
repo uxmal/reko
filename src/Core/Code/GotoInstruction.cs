@@ -40,30 +40,34 @@ namespace Reko.Core.Code
             this.Condition = null;
         }
 
+        /// <inheritdoc/>
         public override Instruction Accept(InstructionTransformer xform)
         {
             return xform.TransformGotoInstruction(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(InstructionVisitor<T> visitor)
         {
             return visitor.VisitGotoInstruction(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(InstructionVisitor<T, C> visitor, C ctx)
         {
             return visitor.VisitGotoInstruction(this, ctx);
         }
 
+        /// <inheritdoc/>
         public override void Accept(InstructionVisitor v)
         {
             v.VisitGotoInstruction(this);
         }
 
-        public bool IsConditional => Condition != null;
-
+        /// <inheritdoc/>
         public override bool IsControlFlow => true;
 
+        /// <inheritdoc/>
         public Expression? Condition { get; set; }
 
         /// <summary>

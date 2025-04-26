@@ -61,6 +61,9 @@ namespace Reko.Core
         private Encoding encoding;
 
 #nullable disable
+        /// <summary>
+        /// Creates an empty instance of a <see cref="Program"/>.
+        /// </summary>
         public Program()
         {
             this.Architectures = new Dictionary<string, IProcessorArchitecture>();
@@ -89,6 +92,12 @@ namespace Reko.Core
             this.NeedsTypeReconstruction = true;
         }
 
+        /// <summary>
+        /// Creates an instance of the Program class.
+        /// </summary>
+        /// <param name="memory">Memory of the loaded program.</param>
+        /// <param name="arch">Default architecture of the program.</param>
+        /// <param name="platform">Platform on which the program is running.</param>
         public Program(
             IMemory memory,
             IProcessorArchitecture arch, 
@@ -101,6 +110,14 @@ namespace Reko.Core
             this.Platform = platform;
         }
 
+        /// <summary>
+        /// Creates an instance of the Program class.
+        /// </summary>
+        /// <param name="memory">Memory of the loaded program.</param>
+        /// <param name="arch">Default architecture of the program.</param>
+        /// <param name="platform">Platform on which the program is running.</param>
+        /// <param name="symbols">Image symbols of the program.</param>
+        /// <param name="entryPoints">Entry points to of the program.</param>
         public Program(
             IMemory memory,
             IProcessorArchitecture arch, 
@@ -299,17 +316,33 @@ namespace Reko.Core
             return new SymbolTable(Platform, primitiveTypes, namedTypes);
         }
 
+        /// <summary>
+        /// Creates a <see cref="ProcedureSerializer"/> suitable for this program.
+        /// </summary>
+        /// <returns>A <see cref="ProcedureSerializer"/> instance.
+        /// </returns>
+
         public ProcedureSerializer CreateProcedureSerializer()
         {
             var typeLoader = new TypeLibraryDeserializer(Platform, true, EnvironmentMetadata.Clone());
             return new ProcedureSerializer(Platform, typeLoader, Platform.DefaultCallingConvention);
         }
 
+        /// <summary>
+        /// Creates a <see cref="TypeLibraryDeserializer"/> suitable for this program.
+        /// </summary>
+        /// <returns>A <see cref="TypeLibraryDeserializer"/> instance.</returns>
         public TypeLibraryDeserializer CreateTypeLibraryDeserializer()
         {
             return new TypeLibraryDeserializer(Platform, true, EnvironmentMetadata.Clone());
         }
 
+        /// <summary>
+        /// Looks up the characteristics of a procedure by its name.
+        /// </summary>
+        /// <param name="procName">Procedure name.</param>
+        /// <returns>Characteristics of procedure if they are known; null otherwise.
+        /// </returns>
         public virtual ProcedureCharacteristics? LookupCharacteristicsByName(string procName)
         {
             if (EnvironmentMetadata.Characteristics.TryGetValue(
@@ -369,7 +402,7 @@ namespace Reko.Core
         /// </remarks>
         public Dictionary<Address, ExternalProcedure> InterceptedCalls { get; private set; }
 
-        //$REVIEW: shouldnt these belong in Procedure?
+        //$REVIEW: shouldn't these belong in SsaState?
         public Dictionary<Identifier, LinearInductionVariable> InductionVariables { get; private set; }
 
         /// <summary>
@@ -400,6 +433,9 @@ namespace Reko.Core
         /// The type factory is used to create new types.
         /// </summary>
 
+        /// <summary>
+        /// Type factory used to create types for this program.
+        /// </summary>
         public TypeFactory TypeFactory { get; private set; }
 		
         /// <summary>
@@ -435,6 +471,7 @@ namespace Reko.Core
         /// </summary>
         public string ResourcesDirectory { get; set; }
 
+        /// <inheritdoc/>
         public T Accept<T, C>(ILoadedImageVisitor<T, C> visitor, C context)
             => visitor.VisitProgram(this, context);
 
@@ -442,7 +479,7 @@ namespace Reko.Core
         /// Given the absolute file name of a binary being decompiled, make sure that 
         /// absolute file names for each of the output directories.
         /// </summary>
-        /// <param name="imageLocation">Location of the binary being decompiled.</param>
+        /// <param name="imageLocation">Absolute URI of the binary being decompiled.</param>
         public void EnsureDirectoryNames(ImageLocation imageLocation)
         {
             //$TODO how to handle nested archives? 
@@ -489,6 +526,16 @@ namespace Reko.Core
             return arch.Endianness.TryCreateImageReader(this.Memory, addr, out rdr);
         }
 
+        /// <summary>
+        /// Creates an <see cref="EndianByteImageReader"/> of the appropriate
+        /// endianness for the default architecture.
+        /// </summary>
+        /// <param name="addr"><see cref="Address"/> at which to start reading.</param>
+        /// <param name="rdr">An <see cref="EndianByteImageReader"/> spanning the memory area 
+        /// starting at <paramref name="addr"/> and ending at the end of the segment in which
+        /// the address is located.
+        /// </param>
+        /// <returns>True if the address was a valid memory address, false if not.</returns>
         public bool TryCreateImageReader(Address addr, [MaybeNullWhen(false)] out EndianImageReader rdr) =>
             TryCreateImageReader(this.Architecture, addr, out rdr);
 

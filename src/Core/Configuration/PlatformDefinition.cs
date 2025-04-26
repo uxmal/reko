@@ -22,16 +22,19 @@ using Reko.Core.Serialization;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace Reko.Core.Configuration
 {
+    /// <summary>
+    /// Describes a <see cref="IPlatform"/>.
+    /// </summary>
     public class PlatformDefinition
     {
+        /// <summary>
+        /// Creates a platform definition.
+        /// </summary>
         public PlatformDefinition()
         {
             this.TypeLibraries = new List<TypeLibraryDefinition>();
@@ -41,24 +44,69 @@ namespace Reko.Core.Configuration
             this.Options = new Dictionary<string, object>();
         }
 
+        /// <summary>
+        /// Programmatic identifier for the platform.
+        /// </summary>
         public string? Name { get; set; }
 
+        /// <summary>
+        /// Human readable description of the platform.
+        /// </summary>
         public string? Description { get; set; }
 
+        /// <summary>
+        /// Any platform-specific heuristics to use when disassembling
+        /// binaries of this platfirm.
+        /// </summary>
         public PlatformHeuristics_v1? Heuristics { get; set; }
 
+        /// <summary>
+        /// The CLR type name of this platform.
+        /// </summary>
         public string? TypeName { get; set; }
 
+        /// <summary>
+        /// Optional absolute memory map for this platform.
+        /// </summary>
         public string? MemoryMapFile { get; set; }
 
+        /// <summary>
+        /// True if symbol names are case insensitive.
+        /// </summary>
         public bool CaseInsensitive { get; set; }
 
+        /// <summary>
+        /// Type libraries used by this platform.
+        /// </summary>
         public virtual List<TypeLibraryDefinition> TypeLibraries { get; internal set; }
+
+        /// <summary>
+        /// Characteristics libraries used by this platform.
+        /// </summary>
         public virtual List<TypeLibraryDefinition> CharacteristicsLibraries { get; internal set; }
+
+        /// <summary>
+        /// Architecture-specific settings for this platform.
+        /// </summary>
         public virtual List<PlatformArchitectureDefinition> Architectures { get; internal set; }
+
+        /// <summary>
+        /// Signature files applicable to this platform.
+        /// </summary>
         public virtual List<SignatureFileDefinition> SignatureFiles { get; internal set; }
+
+        /// <summary>
+        /// Platform-specific options.
+        /// </summary>
         public virtual Dictionary<string, object> Options { get; internal set; }
 
+        /// <summary>
+        /// Creates an <see cref="IPlatform"/> instance, given a processor architecture.
+        /// </summary>
+        /// <param name="services"><see cref="IServiceProvider"/> instance to
+        /// inject services into the <see cref="IPlatform"/> instance.</param>
+        /// <param name="arch"><see cref="IProcessorArchitecture"/> instance to use.</param>
+        /// <returns>An <see cref="IPlatform"/> instance.</returns>
         public virtual IPlatform Load(IServiceProvider services, IProcessorArchitecture arch)
         {
             if (TypeName is null)
@@ -73,6 +121,11 @@ namespace Reko.Core.Configuration
             return platform;
         }
 
+        /// <summary>
+        /// Initializes a <see cref="Platform"/> instance with settings.
+        /// </summary>
+        /// <param name="services"><see cref="IServiceProvider"/> instance.</param>
+        /// <param name="platform">Platform instance to initialize.</param>
         public void LoadSettingsFromConfiguration(IServiceProvider services, Platform platform)
         {
             platform.Name = this.Name!;

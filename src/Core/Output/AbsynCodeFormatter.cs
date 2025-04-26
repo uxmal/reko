@@ -19,12 +19,12 @@
 #endregion
 
 using Reko.Core.Expressions;
-using Reko.Core.Lib;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 
 namespace Reko.Core.Output
@@ -39,6 +39,7 @@ namespace Reko.Core.Output
 
         }
 
+        /// <inheritdoc/>
         public override void VisitAddress(Address addr)
         {
             if (addr.IsNull)
@@ -51,6 +52,7 @@ namespace Reko.Core.Output
             }
         }
 
+        /// <inheritdoc/>
         public override void VisitConstant(Constant c)
         {
             if (c.IsValid)
@@ -112,8 +114,8 @@ namespace Reko.Core.Output
             else
             {
                 var sb = new StringBuilder();
-                if ((p & msb) != 0 && 
-                    Bits.BitCount(m & p) > Bits.BitCount(m & ~p))
+                if ((p & msb) != 0 &&
+                    BitOperations.PopCount(m & p) > BitOperations.PopCount(m & ~p))
                 {
                     sb.Append('~');
                     p = m & ~p;

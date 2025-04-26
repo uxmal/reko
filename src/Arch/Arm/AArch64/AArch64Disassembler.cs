@@ -29,6 +29,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 
 namespace Reko.Arch.Arm.AArch64
@@ -4376,7 +4377,7 @@ namespace Reko.Arch.Arm.AArch64
                 {
                     var immb = (u >> 16) & 7;
                     var immh = (u >> 19) & 0xF;
-                    return immb == 0 && Bits.BitCount(immh) == 1;
+                    return immb == 0 && BitOperations.PopCount(immh) == 1;
                 }
 
                 AdvancedSimdShiftByImm = Select((19, 4), IsZero, "  Advanced SIMD shift by immediate",

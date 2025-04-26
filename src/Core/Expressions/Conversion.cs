@@ -25,7 +25,7 @@ using System.Collections.Generic;
 namespace Reko.Core.Expressions
 {
     /// <summary>
-    /// This class represents how the expression <see cref="Expression" /> is converted 
+    /// This class represents how the <see cref="Expression"/> is converted 
     /// from the original data type <see cref="SourceDataType" /> to the data type <see cref="Expression.DataType" />.
     /// </summary>
     /// <remarks>

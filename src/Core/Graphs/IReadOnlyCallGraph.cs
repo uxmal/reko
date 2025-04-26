@@ -33,17 +33,35 @@ namespace Reko.Core.Graphs
         /// </summary>
         IEnumerable<Statement> FindCallerStatements(ProcedureBase procedure);
 
+        /// <summary>
+        /// Adds an edge from the given <paramref name="stmCur"/> to the
+        /// <paramref name="procCallee"/>.
+        /// </summary>
+        /// <param name="stmCur">Source of the edge.</param>
+        /// <param name="procCallee">Destination of the edge.</param>
         //$BUG: mutable state. Used in ValuePropagator when 
         // new procedure constants are discovered. Need to
         // change this so that mutations of the call graph
         // are done safely.
         void AddEdge(Statement stmCur, ProcedureBase procCallee);
 
+        /// <summary>
+        /// Removes a calling <see cref="Statement"/> from the
+        /// call graph.
+        /// </summary>
+        /// <param name="stm">A <see cref="Statement"/> being 
+        /// removed from the call graph.
+        /// </param>
         //$BUG: mutable state. Only used in SsaTransform
         // when unreachable code is discovered. Need to
         // change this so that mutations of the call graph
         // are done safely.
         void RemoveCaller(Statement stm);
+
+        /// <summary>
+        /// Writes a representation of the graph to the given text writer.
+        /// </summary>
+        /// <param name="writer">Output sink.</param>
         void Write(TextWriter writer);
     }
 }

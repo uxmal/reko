@@ -27,6 +27,11 @@ namespace Reko.Core.Code
 	/// </summary>
 	public class PhiAssignment : Instruction
 	{
+        /// <summary>
+        /// Constructs an instance of a <see cref="PhiAssignment"/> instruction.
+        /// </summary>
+        /// <param name="d">Destination identifier.</param>
+        /// <param name="args">Phi arguments.</param>
 		public PhiAssignment(Identifier d, params PhiArgument[] args)
 		{
 			Dst = d;
@@ -34,10 +39,15 @@ namespace Reko.Core.Code
 			Src = phi;
 		}
 
-		public PhiAssignment(Identifier d, PhiFunction p)
+        /// <summary>
+        /// Constructs an instance of a <see cref="PhiAssignment"/> instruction.
+        /// </summary>
+        /// <param name="d">Destination identifier.</param>
+        /// <param name="phi">Phi function.</param>
+		public PhiAssignment(Identifier d, PhiFunction phi)
 		{
 			Dst = d;
-			Src = p;
+			Src = phi;
 		}
 
         /// <summary>
@@ -63,16 +73,19 @@ namespace Reko.Core.Code
             return visitor.VisitPhiAssignment(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(InstructionVisitor<T, C> visitor, C ctx)
         {
             return visitor.VisitPhiAssignment(this, ctx);
         }
 
+        /// <inheritdoc/>
         public override void Accept(InstructionVisitor v)
 		{
 			v.VisitPhiAssignment(this);
 		}
 
+        /// <inheritdoc/>
         public override bool IsControlFlow => false;
 	}
 }

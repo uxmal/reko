@@ -30,17 +30,6 @@ namespace Reko.UnitTests.Core.Lib
 	[TestFixture]
     public class BitsTests
     {
-		[Test]
-		public void Bits_BitCount()
-        {
-            Assert.AreEqual(63, Bits.BitCount(~1ul));
-            Assert.AreEqual(0, Bits.BitCount(0));
-            Assert.AreEqual(2, Bits.BitCount(9));
-            Assert.AreEqual(2, Bits.BitCount(12));
-            Assert.AreEqual(3, Bits.BitCount(14));
-            Assert.AreEqual(7, Bits.BitCount(254));
-        }
-
         [Test]
         public void Bits_PowersOfTwo()
         {

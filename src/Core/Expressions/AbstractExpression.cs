@@ -35,7 +35,7 @@ namespace Reko.Core.Expressions
         /// Initializes an <see cref="AbstractExpression"/>.
         /// </summary>
         /// <param name="dataType">Data type of the expression.</param>
-        public AbstractExpression(DataType dataType)
+        protected AbstractExpression(DataType dataType)
         {
             this.DataType = dataType;
         }
@@ -53,10 +53,13 @@ namespace Reko.Core.Expressions
         public virtual bool IsZero => false;
 
         // Visitor methods that must be implemented by concrete derived classes.
+
         /// <inheritdoc />
         public abstract void Accept(IExpressionVisitor visitor);
+
         /// <inheritdoc />
         public abstract T Accept<T>(ExpressionVisitor<T> visitor);
+
         /// <inheritdoc />
         public abstract T Accept<T, C>(ExpressionVisitor<T, C> visitor, C context);
 

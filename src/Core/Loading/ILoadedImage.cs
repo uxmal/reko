@@ -61,47 +61,49 @@ namespace Reko.Core.Loading
         /// <typeparam name="C">Context provided by the caller.</typeparam>
         /// <param name="visitor">Visitor object.</param>
         /// <param name="context">Any relevant context.</param>
-        /// <returns></returns>
+        /// <returns>Value returned by visitor.</returns>
         T Accept<T, C>(ILoadedImageVisitor<T, C> visitor, C context);
     }
+
 
     /// <summary>
     /// Visitor interface for loaded images.
     /// </summary>
-    /// <typeparam name="T">Visitor return type.</typeparam>
-    /// <typeparam name="C">Type of any context provided by the caller.</typeparam>
+    /// <typeparam name="T">Visitor's return value.</typeparam>
+    /// <typeparam name="C">Context parameter.</typeparam>
     public interface ILoadedImageVisitor<T, C>
     {
         /// <summary>
-        /// This method is called when the visitor visits a <see cref="Program"/>.
+        /// Called when visiting a <see cref="Program"/>.
         /// </summary>
-        /// <param name="program">The visited <see cref="Program"/>.</param>
-        /// <param name="context">Relevant context, if any.</param>
-        /// <returns>An instance of <typeparamref name="T"/>.</returns>
+        /// <param name="program">Program being visited.</param>
+        /// <param name="context">Context passed by caller.</param>
+        /// <returns>Visitor return value.</returns>
         T VisitProgram(Program program, C context);
 
         /// <summary>
-        /// This method is called when the visitor visits a <see cref="Project"/>.
+        /// Called when visiting a Reko <see cref="Project"/>.
         /// </summary>
-        /// <param name="project">The visited <see cref="Project"/>.</param>
-        /// <param name="context">Relevant context, if any.</param>
-        /// <returns>An instance of <typeparamref name="T"/>.</returns>
+        /// <param name="project">Project being visited.</param>
+        /// <param name="context">Context passed by caller.</param>
+        /// <returns>Visitor return value.</returns>
         T VisitProject(Project project, C context);
 
         /// <summary>
-        /// This method is called when the visitor visits an <see cref="IArchive"/>.
+        /// Called when visiting a <see cref="IArchive"/>.
         /// </summary>
-        /// <param name="archive">The visited <see cref="IArchive"/>.</param>
-        /// <param name="context">Relevant context, if any.</param>
-        /// <returns>An instance of <typeparamref name="T"/>.</returns>
+        /// <param name="archive">Archivebeing visited.</param>
+        /// <param name="context">Context passed by caller.</param>
+        /// <returns>Visitor return value.</returns>
+        /// 
         T VisitArchive(IArchive archive, C context);
 
         /// <summary>
-        /// This method is called when the visitor visits a <see cref="Blob"/>.
+        /// Called when visiting a <see cref="Blob"/>.
         /// </summary>
-        /// <param name="blob">The visited <see cref="Blob"/>.</param>
-        /// <param name="context">Relevant context, if any.</param>
-        /// <returns>An instance of <typeparamref name="T"/>.</returns>
+        /// <param name="blob">Blob being visited.</param>
+        /// <param name="context">Context passed by caller.</param>
+        /// <returns>Visitor return value.</returns>
         T VisitBlob(Blob blob, C context);
     }
 }

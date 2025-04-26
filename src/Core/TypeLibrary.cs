@@ -67,7 +67,15 @@ namespace Reko.Core
         {
         }
 
-
+        /// <summary>
+        /// Constructs a type library.
+        /// </summary>
+        /// <param name="caseInsensitive">True if name comparisons are made 
+        /// case insensitively.</param>
+        /// <param name="types">Data types to include in the type library.</param>
+        /// <param name="procedures">Functions to include in the type library.</param>
+        /// <param name="characteristics"><see cref="ProcedureCharacteristics"/> to include in the type library.</param>
+        /// <param name="importedGlobals">Global variables to include in the type library.</param>
         /// <summary>
         /// Builds a type library from the given data collections.
         /// </summary>
@@ -171,6 +179,10 @@ namespace Reko.Core
             return clone;
         }
 
+        /// <summary>
+        /// Writes a text representation of the type library to a <see cref="TextWriter"/>.
+        /// </summary>
+        /// <param name="writer">Output sink.</param>
 		public void Write(TextWriter writer)
 		{
             var f = new TextFormatter(writer);

@@ -46,9 +46,15 @@ namespace Reko.Core.Expressions
             this.Expression = expr;
         }
 
+        /// <summary>
+        /// The condition code being tested.
+        /// </summary>
         public ConditionCode ConditionCode { get; }
-        public Expression Expression { get; }
 
+        /// <summary>
+        /// The expression containing the processor flags.
+        /// </summary>
+        public Expression Expression { get; }
 
         /// <inheritdoc/>
         public override IEnumerable<Expression> Children

@@ -34,7 +34,7 @@ namespace Reko.Core.Expressions
 	public abstract class Constant : AbstractExpression, MachineOperand
     {
         /// <summary>
-        /// Initializes the constant with the given data type.
+        /// Initializes the <see cref="DataType"/> property.
         /// </summary>
         /// <param name="dt">Datatype of the constant.</param>
         protected Constant(DataType dt)
@@ -148,12 +148,11 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
-        /// Creates an integral constant from the given <see cref="DataType"/> <paramref name="dt"/>
-        /// and a big integer <paramref name="value"/>.
+        /// Create a <see cref="Constant"/> of the given data type.
         /// </summary>
-        /// <param name="dt">The data type </param>
-        /// <param name="value"></param>
-        /// <returns></returns>
+        /// <param name="dt">Datatype of the constant.</param>
+        /// <param name="value">The numeric value of the constant.</param>
+        /// <returns>Resulting constant.</returns>
         public static Constant Create(DataType dt, BigInteger value)
         {
             if (dt.BitSize > 64)
@@ -163,15 +162,11 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
-        /// Replicate the given <paramref name="valueToReplicate"/> enough times to 
-        /// be the same size as <paramref name="dt"/> and return a new <see cref="Constant"/>
-        /// instance.
+        /// Replicates the given value to fill the entire size of <paramref name="dt"/>.
         /// </summary>
-        /// <param name="dt">Datatype that indicates the target size of the
-        /// replicated value.</param>
-        /// <param name="valueToReplicate">The value to replicate.</param>
-        /// <returns>A new constant consisting of the replicated value.
-        /// </returns>
+        /// <param name="dt">Resulting size.</param>
+        /// <param name="valueToReplicate">Value to replicate.</param>
+        /// <returns>A <see cref="Constant"/> with the replicated value.</returns>
         public static Constant Replicate(DataType dt, Constant valueToReplicate)
         {
             if (dt.BitSize > 64)
@@ -206,6 +201,11 @@ namespace Reko.Core.Expressions
             v.VisitConstant(this);
         }
 
+        /// <summary>
+        /// Creates a byte-sized <see cref="Constant"/>.
+        /// </summary>
+        /// <param name="c">Value.</param>
+        /// <returns>The resulting constant.</returns>
         public static Constant Byte(byte c)
         {
             return new ConstantByte(PrimitiveType.Byte, c);
@@ -240,29 +240,33 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
-        /// Create a 32-bit floating point constant from the give 32-bit IEEE 
-        /// bit pattern.
+        /// Creates a 32-bit floating point constant from an IEEE-785 bit pattern.
         /// </summary>
-        /// <param name="bits">Bit representation of an IEEE 32-bit floating point number.</param>
-        /// <returns>A new floating point constant.
-        /// </returns>
+        /// <param name="bits">Raw bit pattern.</param>
+        /// <returns>Constant wrapping a 32-bit float.</returns>
         public static Constant FloatFromBitpattern(long bits)
         {
             return ConstantReal32.CreateFromBits(PrimitiveType.Real32, (int) bits);
         }
 
         /// <summary>
-        /// Create a 64-bit floating point constant from the given 64-bit IEEE 
-        /// bit pattern.
+        /// Creates a 64-bit floating point constant from an IEEE-785 bit pattern.
         /// </summary>
-        /// <param name="bits">Bit representation of an IEEE 64-bit floating point number.</param>
-        /// <returns>A new floating point constant.
-        /// </returns>
+        /// <param name="bits">Raw bit pattern.</param>
+        /// <returns>Constant wrapping a 64-bit float.</returns>
         public static Constant DoubleFromBitpattern(long bits)
         {
             return Constant.Real64(BitConverter.Int64BitsToDouble(bits));
         }
 
+        /// <summary>
+        /// Constructs a real number from its components
+        /// </summary>
+        /// <param name="exponent">Exponent to use.</param>
+        /// <param name="expBias">Exponent bias to use.</param>
+        /// <param name="mantissa">Mantissa of value.</param>
+        /// <param name="mantissaSize">Size of mantissa.</param>
+        /// <returns></returns>
         public static double MakeReal(int exponent, int expBias, long mantissa, int mantissaSize)
         {
             if (exponent == 0)
@@ -289,16 +293,28 @@ namespace Reko.Core.Expressions
             return mantissa * IntPow(m, exponent);
         }
 
+        /// <summary>
+        /// Creates a constant representing the boolean value 'false'
+        /// </summary>
         public static Constant False()
         {
             return new ConstantBool(PrimitiveType.Bool, false);
         }
 
+        /// <inheritdoc/>
         public override IEnumerable<Expression> Children
         {
             get { yield break; }
         }
 
+        /// <summary>
+        /// Slices this constant of size <paramref name="dt"/> at bit position 
+        /// <paramref name="offset"/>.
+        /// </summary>
+        /// <param name="dt">Size of the requested slice.</param>
+        /// <param name="offset">Bit offset of the slice.</param>
+        /// <returns>A constant respresenting the requested slice.
+        /// </returns>
         protected virtual Constant DoSlice(DataType dt, int offset)
         {
             var val = this.ToUInt64();
@@ -306,20 +322,41 @@ namespace Reko.Core.Expressions
             return Create(dt, (val & mask) >> offset);
         }
 
-        protected virtual Constant DoDepositBits(Constant bits, int offset)
+        /// <summary>
+        /// Deposits the <paramref name="newBits"/> at bit offset
+        /// <paramref name="bitOffset"/> in this constant.
+        /// </summary>
+        /// <param name="newBits">Bits to deposit.</param>
+        /// <param name="bitOffset">Position at which to deposit them.</param>
+        /// <returns>Resulting constant.</returns>
+        protected virtual Constant DoDepositBits(Constant newBits, int bitOffset)
         {
             var val = this.ToUInt64();
-            ulong mask = Bits.Mask(offset, bits.DataType.BitSize);
-            var newVal = (val & ~mask) | ((bits.ToUInt64() << offset) & mask);
+            ulong mask = Bits.Mask(bitOffset, newBits.DataType.BitSize);
+            var newVal = (val & ~mask) | ((newBits.ToUInt64() << bitOffset) & mask);
             return Constant.Create(this.DataType, newVal);
         }
 
+        /// <summary>
+        /// The CLR representation of the constant value.
+        /// </summary>
         public abstract object GetValue();
 
-        // Get the hash code of the value. We do it this way to avoid incurring the
-        // cost of a boxing operation.
+        /// <summary>
+        /// Get the hash code of the value. We do it this way to avoid incurring the
+        /// cost of a boxing operation.
+        /// </summary>
+        /// <returns>Resulting hash value.</returns>
         public abstract int GetHashOfValue();
 
+
+        /// <summary>
+        /// Raise the floating point value <paramref name="b"/> to the integer power
+        /// <paramref name="e"/>.
+        /// </summary>
+        /// <param name="b">Number to exponentiate.</param>
+        /// <param name="e">Exponent to use.</param>
+        /// <returns>Exponentiated value.</returns>
         //$REVIEW: move to Reko.Core.Lib?
         public static double IntPow(double b, int e)
         {
@@ -343,13 +380,19 @@ namespace Reko.Core.Expressions
             return negativeExp ? 1.0 / acc : acc;
         }
 
+        /// <inheritdoc/>
         public override Expression Invert()
         {
             return new ConstantBool(DataType, IsZero);
         }
 
+        /// <inheritdoc/>
         public override bool IsZero => IsIntegerZero;
 
+        /// <summary>
+        /// Returns true if this is a zero value that isn't
+        /// a floating point value.
+        /// </summary>
         public virtual bool IsIntegerZero
         {
             get
@@ -360,6 +403,9 @@ namespace Reko.Core.Expressions
             }
         }
 
+        /// <summary>
+        /// Returns true if this is a one value that isn't floating-point.
+        /// </summary>
         public virtual bool IsIntegerOne
         {
             get
@@ -368,6 +414,10 @@ namespace Reko.Core.Expressions
             }
         }
 
+        /// <summary>
+        /// Returns true if this is the maximum unsigned number
+        /// of the data type given in <see cref="Expression.DataType"/>.
+        /// </summary>
         public virtual bool IsMaxUnsigned
         {
             get
@@ -377,6 +427,9 @@ namespace Reko.Core.Expressions
             }
         }
 
+        /// <summary>
+        /// Returns true if this constant is negative.
+        /// </summary>
         public virtual bool IsNegative
         {
             get
@@ -393,8 +446,14 @@ namespace Reko.Core.Expressions
             }
         }
 
+        /// <summary>
+        /// Returns true if this constant is floating point.
+        /// </summary>
         public bool IsReal => DataType.Domain == Domain.Real;
 
+        /// <summary>
+        /// Returns true if this constant is not invalid.
+        /// </summary>
         public virtual bool IsValid => true;
 
         /// <summary>
@@ -403,6 +462,13 @@ namespace Reko.Core.Expressions
         /// </summary>
         public abstract Constant Complement();
 
+        /// <summary>
+        /// Deposits the <paramref name="newBits"/> at bit offset
+        /// <paramref name="bitOffset"/> in this constant.
+        /// </summary>
+        /// <param name="newBits">Bits to deposit.</param>
+        /// <param name="bitOffset">Position at which to deposit them.</param>
+        /// <returns>Resulting constant.</returns>
         public Constant DepositBits(Constant newBits, int bitOffset)
         {
             if (bitOffset < 0 || newBits.DataType.BitSize + bitOffset > this.DataType.BitSize)
@@ -412,6 +478,10 @@ namespace Reko.Core.Expressions
             return DoDepositBits(newBits, bitOffset);
         }
 
+        /// <summary>
+        /// Computes the negative of this constant.
+        /// </summary>
+        /// <returns>The negation of the constant.</returns>
         public virtual Constant Negate()
         {
             var p = DataType;
@@ -437,31 +507,44 @@ namespace Reko.Core.Expressions
                 throw new InvalidOperationException($"Type {p} doesn't support negation.");
         }
 
+        /// <summary>
+        /// The constant value π.
+        /// </summary>
         public static Constant Pi()
         {
             return Constant.Real64(Math.PI);
         }
 
+        /// <summary>
+        /// log(2) of 10.
+        /// </summary>
         public static Constant Lg10()
         {
-            // log(2) of 10.
             return Constant.Real64(3.3219280948873623478703194294894);
         }
 
+        /// <summary>
+        /// log(2) of e.
+        /// </summary>
         public static Constant LgE()
         {
             // log(2) of e.
             return Constant.Real64(1.4426950408889634073599246810019);
         }
 
+        /// <summary>
+        /// Natural logarithm of 2.
+        /// </summary>
         public static Constant Ln2()
         {
             return Constant.Real64(0.69314718055994530941723212145818);
         }
 
+        /// <summary>
+        /// log(10) of 2
+        /// </summary>
         public static Constant Log2()
         {
-            // log(10) of 2
             return Constant.Real64(0.30102999566398119521373889472449);
         }
 
@@ -504,47 +587,98 @@ namespace Reko.Core.Expressions
             renderer.EndOperand();
         }
 
+        /// <summary>
+        /// Coerces this constant to a CLR boolean.
+        /// </summary>
         public virtual bool ToBoolean()
         {
             return Convert.ToBoolean(GetValue());
         }
 
+        /// <summary>
+        /// Coerces this constant to a CLR 8-bit unsigned integer.
+        /// </summary>
         public abstract byte ToByte();
+
+        /// <summary>
+        /// Coerces this constant to a CLR 16-bit unsigned integer.
+        /// </summary>
         public abstract ushort ToUInt16();
+
+        /// <summary>
+        /// Coerces this constant to a CLR 32-bit unsigned integer.
+        /// </summary>
         public abstract uint ToUInt32();
+
+        /// <summary>
+        /// Coerces this constant to a CLR 64-bit unsigned integer.
+        /// </summary>
         public abstract ulong ToUInt64();
 
+        /// <summary>
+        /// Coerces this constant to a CLR 16-bit signed integer.
+        /// </summary>
         public abstract short ToInt16();
+
+        /// <summary>
+        /// Coerces this constant to a CLR 32-bit signed integer.
+        /// </summary>
         public abstract int ToInt32();
+
+        /// <summary>
+        /// Coerces this constant to a CLR 64-bit signed integer.
+        /// </summary>
         public abstract long ToInt64();
+
+        /// <summary>
+        /// Coerces this constant to a CLR <see cref="BigInteger"/>.
+        /// </summary>
         public abstract BigInteger ToBigInteger();
 
-
+        /// <summary>
+        /// Coerces this constant to a CLR double precision floating point number.
+        /// </summary>
         public double ToDouble()
         {
             return Convert.ToDouble(GetValue());
         }
 
+        /// <summary>
+        /// Coerces this constant to a CLR single precision floating point number.
+        /// </summary>
         public virtual float ToFloat()
         {
             return Convert.ToSingle(GetValue());
         }
 
+        /// <summary>
+        /// Coerces this constant to a CLR double precision floating point number.
+        /// </summary>
         public virtual double ToReal64()
         {
             return Convert.ToDouble(GetValue());
         }
 
+        /// <summary>
+        /// Creates a constant representing the boolean value 'true'.
+        /// </summary>
         public static Constant True()
         {
             return new ConstantBool(PrimitiveType.Bool, true);
         }
 
+        /// <summary>
+        /// Creates a boolean constant.
+        /// </summary>
+        /// <param name="f">Boolean value.</param>
         public static Constant Bool(bool f)
         {
             return new ConstantBool(PrimitiveType.Bool, f);
         }
 
+        /// <summary>
+        /// Creates a constant representing an 8-bit signed integer.
+        /// </summary>
         public static Constant SByte(sbyte p)
         {
             return new ConstantSByte(PrimitiveType.SByte, p);
@@ -563,103 +697,156 @@ namespace Reko.Core.Expressions
             return Create(dtInt, l);
         }
 
+        /// <summary>
+        /// Creates a constant representing an 16-bit signed integer.
+        /// </summary>
         public static Constant Int16(short s)
         {
             return new ConstantInt16(PrimitiveType.Int16, s);
         }
 
+        /// <summary>
+        /// Creates a constant representing an 32-bit signed integer.
+        /// </summary>
         public static Constant Int32(int i)
         {
             return new ConstantInt32(PrimitiveType.Int32, i);
         }
 
+        /// <summary>
+        /// Creates a constant representing an 64-bit signed integer.
+        /// </summary>
         public static Constant Int64(long l)
         {
             return new ConstantInt64(PrimitiveType.Int64, l);
         }
 
+        /// <summary>
+        /// Creates a constant representing an 32-bit floating point number.
+        /// </summary>
         public static Constant Real32(float f)
         {
             return new ConstantReal32(PrimitiveType.Real32, f);
         }
 
+        /// <summary>
+        /// Creates a constant representing an 64-bit floating point number.
+        /// </summary>
         public static Constant Real64(double d)
         {
             return new ConstantReal64(PrimitiveType.Real64, d);
         }
 
+        /// <summary>
+        /// Creates a constant representing an 80-bit floating point number.
+        /// </summary>
         public static Constant Real80(Float80 f80)
         {
             return new ConstantReal80(PrimitiveType.Real80, f80);
         }
 
-
+        /// <summary>
+        /// Creates a constant representing an 16-bit unsigned integer.
+        /// </summary>
         public static Constant UInt16(ushort u)
         {
             return new ConstantUInt16(PrimitiveType.UInt16, u);
         }
 
+        /// <summary>
+        /// Creates a constant representing an 32-bit unsigned integer.
+        /// </summary>
         public static Constant UInt32(uint w)
         {
             return new ConstantUInt32(PrimitiveType.UInt32, w);
         }
 
+        /// <summary>
+        /// Creates a constant representing an 64-bit unsigned integer.
+        /// </summary>
         public static Constant UInt64(ulong ul)
         {
             return new ConstantUInt64(PrimitiveType.UInt64, ul);
         }
 
+        /// <summary>
+        /// Creates a constant representing an 16-bit word.
+        /// </summary>
         public static Constant Word16(ushort n)
         {
             return new ConstantUInt16(PrimitiveType.Word16, n);
         }
 
+        /// <summary>
+        /// Creates a constant representing an 32-bit word.
+        /// </summary>
         public static Constant Word32(int n)
         {
             return new ConstantUInt32(PrimitiveType.Word32, (uint) n);
         }
 
+        /// <summary>
+        /// Creates a constant representing an 32-bit word.
+        /// </summary>
         public static Constant Word32(uint n)
         {
             return new ConstantUInt32(PrimitiveType.Word32, n);
         }
 
+        /// <summary>
+        /// Creates a constant representing an 64-bit word.
+        /// </summary>
         public static Constant Word64(long n)
         {
             return new ConstantUInt64(PrimitiveType.Word64, (ulong) n);
         }
 
+        /// <summary>
+        /// Creates a constant representing an 64-bit word.
+        /// </summary>
         public static Constant Word64(ulong n)
         {
             return new ConstantUInt64(PrimitiveType.Word64, n);
         }
 
+        /// <summary>
+        /// Creates a constant representing a word of the given size.
+        /// </summary>
+        /// <param name="bitSize">Bit size of the word.</param>
+        /// <param name="value">CLR value to encapsulate.</param>
         public static Constant Word(int bitSize, long value)
         {
             return Create(PrimitiveType.CreateWord(bitSize), value);
         }
 
+        /// <summary>
+        /// Creates a constant representing a word of the given size.
+        /// </summary>
+        /// <param name="bitSize">Bit size of the word.</param>
+        /// <param name="value">CLR value to encapsulate.</param>
         public static Constant Word(int bitSize, ulong value)
         {
             return Create(PrimitiveType.CreateWord(bitSize), value);
         }
 
+        /// <summary>
+        /// Create a zero-valued constant of the given data type.
+        /// </summary>
+        /// <param name="dataType">Datatype to give the constant.</param>
         public static Constant Zero(DataType dataType)
         {
             return Constant.Create(dataType, 0);
         }
 
+        /// <summary>
+        /// Creates a string literal of the given type.
+        /// </summary>
+        /// <param name="str">String literal.</param>
+        /// <param name="strType">Data type to use for the string constant.</param>
         public static StringConstant String(string str, StringType strType)
         {
             return new StringConstant(strType, str);
         }
-
-        //public static readonly Constant Invalid = new ConstantUInt32(VoidType.Instance, 0xBADDCAFE);
-        //public static readonly Constant Unknown = new ConstantUInt32(VoidType.Instance, 0xDEADFACE);
-
-        //public abstract string ToString(string format, IFormatProvider formatProvider)
-        //{
-        //}
     }
 
     internal class ConstantBool : Constant
@@ -1373,12 +1560,25 @@ namespace Reko.Core.Expressions
 
     }
 
+    /// <summary>
+    /// Abstract base class for floating point constants.
+    /// </summary>
     public abstract class ConstantReal : Constant
     {
-        public ConstantReal(DataType dt) : base(dt)
+        /// <summary>
+        /// Initializes the data type property of this class.
+        /// </summary>
+        /// <param name="dt">Datatype of this property.</param>
+        protected ConstantReal(DataType dt) : base(dt)
         {
         }
 
+        /// <summary>
+        /// Creates a real constant of the size <paramref name="dt"/>.
+        /// </summary>
+        /// <param name="dt">Requested data type.</param>
+        /// <param name="value">Floating point value to encapsulate.</param>
+        /// <returns>Resulting constant.</returns>
         public static Constant Create(DataType dt, double value)
         {
             var pt = PrimitiveType.Create(Domain.Real, dt.BitSize);
@@ -1393,109 +1593,145 @@ namespace Reko.Core.Expressions
             return InvalidConstant.Create(dt);
         }
 
+        /// <inheritdoc/>
         public override bool IsIntegerOne => false;
 
+        /// <inheritdoc/>
         public override sealed bool IsMaxUnsigned => false;
 
     }
 
+    /// <summary>
+    /// Constant encapsulating 16-bit floating point numbers.
+    /// </summary>
     public class ConstantReal16 : ConstantReal
     {
         private readonly Half value;
 
+        /// <summary>
+        /// Constructs a constant of the given data type and value.
+        /// </summary>
+        /// <param name="dt">Data type to use.</param>
+        /// <param name="value">64-bit floating point number to convert 
+        /// to 16-bits.</param>
         public ConstantReal16(DataType dt, double value)
             : base(dt)
         {
             this.value = (Half) value;
         }
 
+        /// <summary>
+        /// Constructs a constant of the given data type and value.
+        /// </summary>
+        /// <param name="dt">Data type to use.</param>
+        /// <param name="value">16-bit floating point number to
+        /// encapsulate.</param>
         public ConstantReal16(DataType dt, Half value)
            : base(dt)
         {
             this.value = value;
         }
 
+        /// <inheritdoc/>
         public override Expression CloneExpression()
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override Constant Complement()
         {
             throw new NotSupportedException("Cannot complement a real value.");
         }
 
+        /// <inheritdoc/>
         protected override Constant DoSlice(DataType dt, int offset)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override object GetValue()
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override int GetHashOfValue()
         {
             return value.GetHashCode();
         }
 
+        /// <inheritdoc/>
         public override bool IsValid => !Half.IsNaN(value);
 
+        /// <inheritdoc/>
         public override Constant Negate()
         {
             return new ConstantReal16(this.DataType, -((float)value));
         }
 
+        /// <inheritdoc/>
         public override byte ToByte()
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override ushort ToUInt16()
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override uint ToUInt32()
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override ulong ToUInt64()
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override short ToInt16()
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override int ToInt32()
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override long ToInt64()
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override float ToFloat()
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override double ToReal64()
         {
             return (double) value;
         }
 
+        /// <inheritdoc/>
         public override BigInteger ToBigInteger() => throw new InvalidCastException();
-
     }
 
+    /// <summary>
+    /// Constant encapsulating 32-bit floating point numbers.
+    /// </summary>
     internal class ConstantReal32 : ConstantReal
     {
         private readonly float value;
@@ -1590,6 +1826,9 @@ namespace Reko.Core.Expressions
 
     }
 
+    /// <summary>
+    /// Constant encapsulating 80-bit floating point numbers.
+    /// </summary>
     internal class ConstantReal80 : ConstantReal
     {
         private readonly Float80 value;
@@ -1669,6 +1908,9 @@ namespace Reko.Core.Expressions
 
     }
 
+    /// <summary>
+    /// Constant encapsulating 64-bit floating point numbers.
+    /// </summary>
     internal class ConstantReal64 : ConstantReal
     {
         private readonly double value;

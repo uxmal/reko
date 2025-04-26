@@ -31,21 +31,24 @@ namespace Reko.Core.Collections
         private readonly Block block;
 
         /// <summary>
-        /// Creates a new <see cref="StatementList"/> instance.
+        /// Constructs a <see cref="StatementList"/>.
         /// </summary>
-        /// <param name="block"></param>
+        /// <param name="block">The <see cref="Block"/> in which the statements
+        /// are located.
+        /// </param>
         public StatementList(Block block)
         {
             this.block = block;
         }
 
         /// <summary>
-        /// Adds an <see cref="Instruction"/> to the end of the statement list,
-        /// creating a <see cref="Statement"/>.
+        /// Adds an instruction to the end of the statement list.
         /// </summary>
-        /// <param name="address">Address of the instruction</param>
-        /// <param name="instr">The <see cref="Instruction"/> to add.</param>
-        /// <returns>The resulting <see cref="Statement"/>.</returns>
+        /// <param name="address">Address from which the <see cref="Instruction"/>
+        /// was lifted.</param>
+        /// <param name="instr">Instruction to add.
+        /// </param>
+        /// <returns>The new created <see cref="Statement"/>.</returns>
         public Statement Add(Address address, Instruction instr)
         {
             var stm = new Statement(address, instr, block);
@@ -54,13 +57,14 @@ namespace Reko.Core.Collections
         }
 
         /// <summary>
-        /// Inserts an <see cref="Instruction"/> in the statement list at 
-        /// <paramref name="position"/>, creating a <see cref="Statement"/>.
+        /// Inserts an instruction at a given position in the statement list.
         /// </summary>
-        /// <param name="position">Position at which to insert the instruction.</param>
-        /// <param name="address">Address of the instruction</param>
-        /// <param name="instr">The <see cref="Instruction"/> to insert.</param>
-        /// <returns>The resulting <see cref="Statement"/>.</returns>
+        /// <param name="position">Index at which to insert the statement.</param>
+        /// <param name="address">Address from which the <see cref="Instruction"/>
+        /// was lifted.</param>
+        /// <param name="instr">Instruction to insert.
+        /// </param>
+        /// <returns>The new created <see cref="Statement"/>.</returns>
         public Statement Insert(int position, Address address, Instruction instr)
         {
             var stm = new Statement(address, instr, block);

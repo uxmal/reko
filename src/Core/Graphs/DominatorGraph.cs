@@ -34,6 +34,11 @@ namespace Reko.Core.Graphs
         private readonly Dictionary<T, List<T>> domFrontier;
         private Dictionary<T, int> reversePostOrder;
 
+        /// <summary>
+        /// Creates a new dominator graph for the given directed graph.
+        /// </summary>
+        /// <param name="graph">A directed graph.</param>
+        /// <param name="entryNode">The entry node of the directed graph.</param>
         public DominatorGraph(DirectedGraph<T> graph, T entryNode)
         {
             this.idoms = new Dictionary<T, T?>();
@@ -43,9 +48,7 @@ namespace Reko.Core.Graphs
                 this.domFrontier = BuildDominanceFrontiers(graph, idoms);
             }
 
-        public Dictionary<T, int> ReversePostOrder { get { return reversePostOrder; } }
-
-        public Dictionary<T, int> ReversePostorderNumbering(DirectedGraph<T> graph)
+        private Dictionary<T, int> ReversePostorderNumbering(DirectedGraph<T> graph)
         {
             var reversePostOrder = new Dictionary<T, int>();
             foreach (T node in new DfsIterator<T>(graph).PostOrder())
@@ -55,7 +58,7 @@ namespace Reko.Core.Graphs
             return reversePostOrder;
         }
 
-        public Dictionary<T, int> ReversePostorderNumbering(DirectedGraph<T> graph, T entry)
+        private Dictionary<T, int> ReversePostorderNumbering(DirectedGraph<T> graph, T entry)
         {
             var postorder = new Dictionary<T, int>();
             foreach (T node in new DfsIterator<T>(graph).PostOrder(entry))
@@ -107,17 +110,30 @@ namespace Reko.Core.Graphs
             return domFrontier[node];
         }
 
-        public bool DominatesStrictly(T? dominator, T d)
+        /// <summary>
+        /// Returns true if <paramref name="dominator"/> dominates <paramref name="node"/>
+        /// strictly.
+        /// </summary>
+        /// <param name="dominator">Potential dominator node.</param>
+        /// <param name="node">Node whose possible dominator is being tested.</param>
+        /// <returns>True if <paramref name="dominator"/> dominates <paramref name="node"/> strictly;
+        /// otherwise false.</returns>
+        public bool DominatesStrictly(T? dominator, T node)
         {
-            while (idoms.TryGetValue(d, out T? iDom) && iDom != null)
+            while (idoms.TryGetValue(node, out T? iDom) && iDom != null)
             {
                 if (iDom == dominator)
                     return true;
-                d = iDom;
+                node = iDom;
             }
             return false;
         }
 
+        /// <summary>
+        /// Get the immediate dominator of the given node.
+        /// </summary>
+        /// <param name="node">Node whose immediate dominator is being queried.</param>
+        /// <returns>The immediate dominator if it exists; otherwise null.</returns>
         public T? ImmediateDominator(T node)
         {
             if (idoms.TryGetValue(node, out T? idom))

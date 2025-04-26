@@ -31,6 +31,17 @@ namespace Reko.Core.Code
     /// </summary>
     public class CallSite
     {
+        /// <summary>
+        /// Constructs a call site.
+        /// </summary>
+        /// <param name="sizeOfReturnAddressOnStack">The size of the return address
+        /// pushed on the stack before calling. On RISC architectures, the return 
+        /// address is passed in a register so this will be 0.
+        /// </param>
+        /// <param name="fpuStackDepthBefore">The amount of values in a FPU stack
+        /// before calling. On most architectures, there is no FPU stack, so this
+        /// will typically be 0 except on X86 family architectures.
+        /// </param>
         //$REVIEW: perhaps this can be architecture-specific? M68K doesn't need fpuStack,
         // and PowerPC doesn't need sizeOfReturnAddressOnStack.
         public CallSite(int sizeOfReturnAddressOnStack, int fpuStackDepthBefore)
@@ -50,6 +61,7 @@ namespace Reko.Core.Code
         /// </summary>
         public int SizeOfReturnAddressOnStack { get; private set; }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             var sb = new StringBuilder();

@@ -22,6 +22,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.Intrinsics.Arm;
 
 namespace Reko.Core.Memory
 {
@@ -34,16 +35,23 @@ namespace Reko.Core.Memory
 
         public SegmentMap SegmentMap { get; }
 
-        public ImageWriter CreateBeWriter(Address addr)
+        /// <inheritdoc/>
+        public ImageWriter? CreateBeWriter(Address addr)
         {
-            throw new NotImplementedException();
+            if (!SegmentMap.TryFindSegment(addr, out var segment))
+                return null;
+            return segment.MemoryArea.CreateBeWriter(addr);
         }
 
-        public ImageWriter CreateLeWriter(Address addr)
+        /// <inheritdoc/>
+        public ImageWriter? CreateLeWriter(Address addr)
         {
-            throw new NotImplementedException();
+            if (!SegmentMap.TryFindSegment(addr, out var segment))
+                return null;
+            return segment.MemoryArea.CreateBeWriter(addr);
         }
 
+        /// <inheritdoc/>
         public bool IsExecutableAddress(Address addr)
         {
             if (!SegmentMap.TryFindSegment(addr, out var segment))
@@ -51,6 +59,7 @@ namespace Reko.Core.Memory
             return segment.IsExecutable;
         }
 
+        /// <inheritdoc/>
         public bool IsReadonly(Address addr)
         {
             if (!SegmentMap.TryFindSegment(addr, out var segment))
@@ -58,8 +67,10 @@ namespace Reko.Core.Memory
             return segment.IsReadonly;
         }
 
+        /// <inheritdoc/>
         public bool IsValidAddress(Address addr) => SegmentMap.IsValidAddress(addr);
 
+        /// <inheritdoc/>
         public bool IsWriteable(Address addr)
         {
             if (!SegmentMap.TryFindSegment(addr, out var segment))
@@ -67,6 +78,7 @@ namespace Reko.Core.Memory
             return segment.IsWriteable;
         }
 
+        /// <inheritdoc/>
         public bool TryCreateBeReader(Address addr, [MaybeNullWhen(false)] out EndianImageReader rdr)
         {
             if (!SegmentMap.TryFindSegment(addr, out var segment))
@@ -78,6 +90,7 @@ namespace Reko.Core.Memory
             return true;
         }
 
+        /// <inheritdoc/>
         public bool TryCreateBeReader(Address addr, long cUnits, [MaybeNullWhen(false)] out EndianImageReader rdr)
         {
             if (!SegmentMap.TryFindSegment(addr, out var segment))
@@ -89,6 +102,7 @@ namespace Reko.Core.Memory
             return true;
         }
 
+        /// <inheritdoc/>
         public bool TryCreateLeReader(Address addr, [MaybeNullWhen(false)] out EndianImageReader rdr)
         {
             if (!SegmentMap.TryFindSegment(addr, out var segment))
@@ -100,6 +114,7 @@ namespace Reko.Core.Memory
             return true;
         }
 
+        /// <inheritdoc/>
         public bool TryCreateLeReader(Address addr, long cUnits, [MaybeNullWhen(false)] out EndianImageReader rdr)
         {
             if (!SegmentMap.TryFindSegment(addr, out var segment))
@@ -111,6 +126,7 @@ namespace Reko.Core.Memory
             return true;
         }
 
+        /// <inheritdoc/>
         public bool TryReadBe(Address addr, PrimitiveType dt, [MaybeNullWhen(false)] out Constant c)
         {
             if (!this.SegmentMap.TryFindSegment(addr, out var segment))
@@ -121,6 +137,7 @@ namespace Reko.Core.Memory
             return segment.MemoryArea.TryReadBe(addr, dt, out c);
         }
 
+        /// <inheritdoc/>
         public bool TryReadLe(Address addr, PrimitiveType dt, [MaybeNullWhen(false)] out Constant c)
         {
             if (!this.SegmentMap.TryFindSegment(addr, out var segment))

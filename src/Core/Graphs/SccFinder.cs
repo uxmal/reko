@@ -36,7 +36,7 @@ namespace Reko.Core.Graphs
         /// </summary>
         /// <typeparam name="TNode">The type of the nodes in the graph.</typeparam>
         /// <param name="graph">A directed graph of nodes.</param>
-        /// <returns>A <see href="List{TNode[]}"/>. Each item in the list is an array
+        /// <returns>A <see cref="List{T}"/>. Each item in the list is an array
         /// consisting of the nodes forming the SCC.</returns>
         /// <remarks>
         /// This implementation avoids overflowing the processor stack if the
@@ -143,6 +143,11 @@ namespace Reko.Core.Graphs
             return new Condensation<TNode>(condensation, members);
         }
 
+        /// <summary>
+        /// Performs a robust topological sort of a directed graph.
+        /// </summary>
+        /// <param name="graph">The directed graph to sort.</param>
+        /// <returns>The nodes, topologically sorted.</returns>
         public static List<TNode[]> RobustTopologicalSort<TNode>(DirectedGraph<TNode> graph)
             where TNode : notnull
         {
@@ -181,6 +186,11 @@ namespace Reko.Core.Graphs
             return TopologicalSort(component_graph);
         }
 
+        /// <summary>
+        /// Performs a topological sort of a directed graph.
+        /// </summary>
+        /// <param name="graph">The directed graph to sort.</param>
+        /// <returns>The nodes, topologically sorted.</returns>
         public static List<TNode> TopologicalSort<TNode>(DirectedGraph<TNode> graph)
             where TNode : notnull
         {

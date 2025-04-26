@@ -19,11 +19,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Core.Lib
 {
@@ -33,11 +28,17 @@ namespace Reko.Core.Lib
     /// </summary>
     public struct Float80 : IFormattable, IConvertible
     {
-        public readonly ulong significand;
-        public readonly ushort exponent;
-        public const ushort SignBit = 0x8000;
-        public const ushort MaxExponent = 0x7FFF;
+        private const ushort SignBit = 0x8000;
+        private const ushort MaxExponent = 0x7FFF;
 
+        private readonly ulong significand;
+        private readonly ushort exponent;
+
+        /// <summary>
+        /// Construct an 80-bit floating point number.
+        /// </summary>
+        /// <param name="expSign">Combined exponent and sign.</param>
+        /// <param name="significand">Significand / mantissa.</param>
         public Float80(ushort expSign, ulong significand)
         {
             this.significand = significand;

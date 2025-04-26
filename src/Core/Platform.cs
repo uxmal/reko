@@ -32,7 +32,6 @@ using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -55,12 +54,12 @@ namespace Reko.Core
         string Name { get; }
 
         /// <summary>
-        /// Default processor architecture of the platform.
+        /// Default architecture of this platform.
         /// </summary>
         IProcessorArchitecture Architecture { get; }
 
         /// <summary>
-        /// Known calling conventions keyed by their names.
+        /// The platform-defined calling conventions, organized by name.
         /// </summary>
         IReadOnlyDictionary<string, IReadOnlyCollection<string>> CallingConventions { get; }
 
@@ -70,12 +69,13 @@ namespace Reko.Core
         string DefaultCallingConvention { get; }
 
         /// <summary>
-        /// The default text encoding of this platform.
+        /// Default encoding for text strings. This is used when reading strings
+        /// from the program image.
         /// </summary>
         Encoding DefaultTextEncoding { get; set; }
 
         /// <summary>
-        /// A description of this platform.
+        /// Human-readable description of the platform.
         /// </summary>
         string Description { get; set; }
 
@@ -96,10 +96,13 @@ namespace Reko.Core
         /// </summary>
         MemoryMap_v1? MemoryMap { get; set; }
 
+        /// <summary>
+        /// Unique identifier for this platform.
+        /// </summary>
         string PlatformIdentifier { get; }
 
         /// <summary>
-        /// Default pointer type for this platform.
+        /// The default pointer type for this platform.
         /// </summary>
         PrimitiveType PointerType { get; }
 
@@ -123,10 +126,15 @@ namespace Reko.Core
         IReadOnlySet<RegisterStorage> TrashedRegisters { get; }
 
         /// <summary>
-        /// Creates a set of registers that the "standard" ABI requires
-        /// procedures to preserve across calls.
+        /// Creates a set of registers that the "standard" ABI guarantees will
+        /// survive a call.
         /// </summary>
-        /// <returns>A set of <see cref="RegisterStorage"/>s.</returns>
+        /// <remarks>
+        /// Reko will do its best to determine what registers are preserved by a
+        /// procedure, but when indirect calls are involved we have to guess.
+        /// If Reko's guess is incorrect, users can override it by proving
+        /// oracular type information.
+        /// </remarks>
         IReadOnlySet<RegisterStorage> PreservedRegisters { get; }
 
         /// <summary>
@@ -137,10 +145,28 @@ namespace Reko.Core
         /// </summary>
         int StructureMemberAlignment { get; }
 
+        /// <summary>
+        /// Some architectures platforms (looking at you, ARM Thumb) will use addresses
+        /// that are offset by 1. Most don't.
+        /// </summary>
+        /// <param name="addrCode"></param>
+        /// <returns>Adjusted address</returns>
         Address AdjustProcedureAddress(Address addrCode);
 
-        IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> addr, PointerScannerFlags flags);
+        /// <summary>
+        /// Creates a pointer scanner for this platform.
+        /// </summary>
+        /// <param name="map">Segment map describing the memory layout.</param>
+        /// <param name="rdr">Image reader position at the start of the memory to be scanned.</param>
+        /// <param name="addresses">Known addresses.</param>
+        /// <param name="flags">Flags controlling the pointer scanner.</param>
+        /// <returns>A new pointer scanner instance.</returns>
+        IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> addresses, PointerScannerFlags flags);
 
+        /// <summary>
+        /// Loads the metadata for this platform into a <see cref="TypeLibrary"/>.
+        /// </summary>
+        /// <returns>A <see cref="TypeLibrary"/> with metadata for this platform.</returns>
         TypeLibrary CreateMetadata();
 
         /// <summary>
@@ -226,7 +252,7 @@ namespace Reko.Core
         /// </summary>
         /// <param name="addrJumpInstr">The address at which the potential stub
         /// makes an indirect jump.</param>
-        /// <param name="clusters">A sequence of rewritten instructions ending
+        /// <param name="clusters">A sequence of lifted instructions ending
         /// at <paramref name="addrJumpInstr"/>.</param>
         /// <param name="host">An instance of <see cref="IRewriterHost"/> used
         /// to get details from the hosting environment.
@@ -271,7 +297,7 @@ namespace Reko.Core
         /// <param name="program">Program in which to search</param>
         /// <param name="addrStart">The entrypoint according to the image.</param>
         /// <returns>null if no known runtime code was found, otherwise the 
-        /// an ImageSymbol corresponding to the "real" user main procedure.</returns>
+        /// an <see cref="ImageSymbol"/> corresponding to the "real" user main procedure.</returns>
         ImageSymbol? FindMainProcedure(Program program, Address addrStart);
 
         /// <summary>
@@ -282,12 +308,41 @@ namespace Reko.Core
         /// This method is used to resolve system calls or traps where 
         /// the actual service are selected by registers or stack values.
         /// </remarks>
-        /// <param name="vector"></param>
-        /// <param name="state"></param>
-        /// <param name="memory"><see cref="IMemory"/> instance to use.</param>
-        /// <returns></returns>
+        /// <param name="vector">Interrupt vector selected by the program code.</param>
+        /// <param name="state">Register and stack values at the point where the system
+        /// service was invoked.</param>
+        /// <param name="memory">Memory state to use .</param>
+        /// <returns>A <see cref="SystemService"/> instance if one can be found
+        /// matching the system call criteria given by <paramref name="vector"/> and 
+        /// <paramref name="state"/>; otherwise null.
+        /// </returns>
         SystemService? FindService(int vector, ProcessorState? state, IMemory? memory);
+
+        /// <summary>
+        /// Given an <see cref="RtlInstruction"/> and the current processor state, finds a system
+        /// service.
+        /// </summary>
+        /// <remarks>
+        /// This method is used to resolve system calls or traps where 
+        /// the actual service are selected by registers or stack values.
+        /// </remarks>
+        /// <param name="call">RTL instruction invoking the stystem call.</param>
+        /// <param name="state">Register and stack values at the point where the system
+        /// service was invoked.</param>
+        /// <param name="memory">Memory state to use .</param>
+        /// <returns>A <see cref="SystemService"/> instance if one can be found
+        /// matching the system call criteria given by <paramref name="call"/> and 
+        /// <paramref name="state"/>; otherwise null.
+        /// </returns>
         SystemService? FindService(RtlInstruction call, ProcessorState? state, IMemory? memory);
+
+        /// <summary>
+        /// Finds a known dispatcher procedure at the given address.
+        /// </summary>
+        /// <param name="addr">Address of a known dispatcher procedure.</param>
+        /// <returns>True if the platform defines a dispatcher procedure at the address;
+        /// otherwise null.
+        /// </returns>
         DispatchProcedure_v1? FindDispatcherProcedureByAddress(Address addr);
 
         /// <summary>
@@ -325,6 +380,10 @@ namespace Reko.Core
         /// </remarks>
         bool IsPossibleArgumentRegister(RegisterStorage reg);
 
+        /// <summary>
+        /// Load user options for this platform.
+        /// </summary>
+        /// <param name="options">Options to load into the platform.</param>
         void LoadUserOptions(Dictionary<string, object> options);
         
         /// <summary>
@@ -339,10 +398,34 @@ namespace Reko.Core
         /// </remarks>
         ProcedureBase? LookupProcedureByAddress(Address address);
 
+        /// <summary>
+        /// Look up an imported procedure by its name.
+        /// </summary>
+        /// <param name="moduleName">Optional module name.</param>
+        /// <param name="procName">Name of the external procedure.</param>
+        /// <returns>A known external procedure if one is found; otherwise null.
+        /// </returns>
         ExternalProcedure? LookupProcedureByName(string? moduleName, string procName);
+
+        /// <summary>
+        /// Look up an imported procedure by its module name and ordinal.
+        /// </summary>
+        /// <param name="moduleName">Module name.</param>
+        /// <param name="ordinal">Ordinal of the external procedure within the module.</param>
+        /// <returns>A known external procedure if one is found; otherwise null.
+        /// </returns>
         ExternalProcedure? LookupProcedureByOrdinal(string moduleName, int ordinal);
+
+
         Expression? ResolveImportByName(string? moduleName, string globalName);
         Expression? ResolveImportByOrdinal(string moduleName, int ordinal);
+
+        /// <summary>
+        /// Given a procedure name, look up its characteristics.
+        /// </summary>
+        /// <param name="procName">Procedure name.</param>
+        /// <returns>The procedure's characteristics; or null if there are none.
+        /// </returns>
         ProcedureCharacteristics? LookupCharacteristicsByName(string procName);
 
         /// <summary>
@@ -356,13 +439,12 @@ namespace Reko.Core
         Address? MakeAddressFromConstant(Constant c, bool codeAlign);
 
         /// <summary>
-        /// Given a constant <pararef name="uAddr" /> creates a corresponding <see cref="Address"/>.
+        /// Given a linear address, create an <see cref="Address"/>.
         /// </summary>
-        /// <param name="uAddr">The constant to use to create an address.</param>
+        /// <param name="uAddr">The linear address to convert.</param>
         /// <param name="codeAlign">If true, ensures that the resulting <see cref="Address"/> is correctly
         /// aligned for code addresses.</param>
-        /// <returns>An <see cref="Address"/>.
-        /// </returns>
+        /// <returns>The resulting address.</returns>
         Address MakeAddressFromLinear(ulong uAddr, bool codeAlign);
 
         /// <summary>
@@ -389,9 +471,28 @@ namespace Reko.Core
         /// </returns>
         Address? ResolveIndirectCall(RtlCall instr);
 
+        /// <summary>
+        /// Given a string, attempts to parse it into an <see cref="Address"/>.
+        /// </summary>
+        /// <param name="sAddress">Textual representation of an address.</param>
+        /// <param name="addr">Resulting address.</param>
+        /// <returns></returns>
         bool TryParseAddress(string? sAddress, [MaybeNullWhen(false)] out Address addr);
+
+        /// <summary>
+        /// Extract user settings from this instance.
+        /// </summary>
+        /// <returns>A dictionary of user options.
+        /// </returns>
         Dictionary<string, object>? SaveUserOptions();
-        ProcedureBase_v1? SignatureFromName(string importName);
+
+        /// <summary>
+        /// Guess signature from the name of the procedure.
+        /// </summary>
+        /// <param name="fnName"></param>
+        /// <returns>null if there is no way to guess a ProcedureSignature from the name.</returns>
+        ProcedureBase_v1? SignatureFromName(string fnName);
+
         (string, SerializedType, SerializedType)? DataTypeFromImportName(string importName);
 
         /// <summary>
@@ -435,11 +536,22 @@ namespace Reko.Core
             this.PreservedRegisters = new HashSet<RegisterStorage>(LoadPreservedRegisters(platformDef));
         }
 
+        /// <inheritdoc/>
         public IProcessorArchitecture Architecture { get; }
+
+        /// <inheritdoc/>
         public IServiceProvider Services { get; }
+
+        /// <inheritdoc/>
         public virtual TypeLibrary? Metadata { get; protected set; }
+
+        /// <inheritdoc/>
         public CharacteristicsLibrary[] CharacteristicsLibs { get; protected set; }
+
+        /// <inheritdoc/>
         public string Description { get; set; }
+
+        /// <inheritdoc/>
         public PlatformHeuristics Heuristics { get; set; }
         public string Name { get; set; }
 
@@ -508,6 +620,7 @@ namespace Reko.Core
             throw new NotImplementedException("Emulation has not been implemented for this platform yet.");
         }
 
+        /// <inheritdoc/>
         public IEnumerable<Address> CreatePointerScanner(
             SegmentMap segmentMap,
             EndianImageReader rdr,
@@ -809,6 +922,7 @@ namespace Reko.Core
             return null;
         }
 
+        /// <inheritdoc/>
         public virtual ProcedureBase? LookupProcedureByAddress(Address addr)
         {
             return this.PlatformProcedures.TryGetValue(addr, out var extProc)

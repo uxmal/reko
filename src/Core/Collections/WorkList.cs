@@ -41,9 +41,9 @@ namespace Reko.Core.Collections
 		}
 
         /// <summary>
-        /// Creates a work list from an existing collection.
+        /// Creates a work list and populates it with some items.
         /// </summary>
-        /// <param name="coll"></param>
+        /// <param name="coll">Items to populate the work list with.</param>
 		public WorkList(IEnumerable<T> coll)
 		{
 			q = new Queue<T>(coll);
@@ -53,7 +53,7 @@ namespace Reko.Core.Collections
         /// <summary>
         /// Adds an item to the work list, but only if it isn't there already.
         /// </summary>
-        /// <param name="item">Item to add.</param>
+        /// <param name="item">Item to add to the work list.</param>
 		public void Add(T item)
 		{
 			if (!inQ.Contains(item))
@@ -64,7 +64,7 @@ namespace Reko.Core.Collections
 		}
 
         /// <summary>
-        /// Adds a sequence of items to the work list, but only if they aren't there already.
+        /// Adds a range of items to the work list.
         /// </summary>
         /// <param name="items">Items to add to the work list.</param>
         public void AddRange(IEnumerable<T> items)
@@ -74,27 +74,20 @@ namespace Reko.Core.Collections
         }
 
         /// <summary>
-        /// The number of items in the work list.
+        /// Gets the number of items in the worklist.
         /// </summary>
-		public int Count
-		{
-			get { return inQ.Count; }
-		}
+		public int Count => inQ.Count;
 
         /// <summary>
-        /// True if the work list is empty.
+        /// Returns true if the worklist is empty.
         /// </summary>
-		public bool IsEmpty
-		{
-			get { return inQ.Count == 0; }
-		}
+		public bool IsEmpty => inQ.Count == 0;
 
         /// <summary>
-        /// Determines if the work list contains the given item.
+        /// Returns true if the worklist contains the item.
         /// </summary>
-        /// <param name="item">Item to check.</param>
-        /// <returns>
-        /// If the work list contains the given item.
+        /// <param name="item">Item to check for</param>
+        /// <returns>True if the worklist contains the item; otherwise false.
         /// </returns>
         public bool Contains(T item)
         {
@@ -126,12 +119,18 @@ namespace Reko.Core.Collections
             return false;
 		}
 
+        /// <summary>
+        /// Removes an item from the work list.
+        /// </summary>
 		public void Remove(T t)
 		{
 			inQ.Remove(t);
 		}
 	}
 
+    /// <summary>
+    /// Helper class for worklist-related methods.
+    /// </summary>
     public static class WorkList
     {
         /// <summary>
@@ -151,12 +150,19 @@ namespace Reko.Core.Collections
 		private readonly HashSet<T> inStack;
 		private readonly Stack<T> s;
 
+        /// <summary>
+        /// Creates an empty workstack.
+        /// </summary>
 		public WorkStack()
 		{
 			s = new Stack<T>();
 			inStack = new HashSet<T>();
 		}
 
+        /// <summary>
+        /// Creates a workstack and initializes it with items.
+        /// </summary>
+        /// <param name="coll"></param>
 		public WorkStack(IEnumerable<T> coll)
 		{
 			s = new Stack<T>(coll);
@@ -166,7 +172,7 @@ namespace Reko.Core.Collections
         /// <summary>
         /// Adds an item to the work list, but only if it isn't there already.
         /// </summary>
-        /// <param name="item">Item to add.</param>
+        /// <param name="item">Item to add to the worklist.</param>
 		public void Add(T item)
 		{
 			if (!inStack.Contains(item))
@@ -176,22 +182,33 @@ namespace Reko.Core.Collections
 			}
 		}
 
+        /// <summary>
+        /// Adds a range of items to the work stack.
+        /// </summary>
+        /// <param name="items">Items to add.</param>
         public void AddRange(IEnumerable<T> items)
         {
             foreach (var item in items)
                 Add(item);
         }
 
-		public int Count
-		{
-			get { return inStack.Count; }
-		}
+        /// <summary>
+        /// Gets the number of items in the workstack.
+        /// </summary>
+		public int Count => inStack.Count;
 
-		public bool IsEmpty
-		{
-			get { return inStack.Count == 0; }
-		}
+        /// <summary>
+        /// Returns true if there are no items in the workstack.
+        /// </summary>
+		public bool IsEmpty => inStack.Count == 0;
 
+
+        /// <summary>
+        /// Gets a work item out of the workstack.
+        /// </summary>
+        /// <param name="item">If succesful, a work item.</param>
+        /// <returns>True if there was at least one item in the workstack;
+        /// otherwise false.</returns>
 		public bool TryGetWorkItem([MaybeNullWhen(false)] out T item)
 		{
 			while (!IsEmpty)
@@ -208,9 +225,13 @@ namespace Reko.Core.Collections
             return false;
 		}
 
-		public void Remove(T t)
+        /// <summary>
+        /// Removes an item from the workstack.
+        /// </summary>
+        /// <param name="item">Item to remove.</param>
+		public void Remove(T item)
 		{
-			inStack.Remove(t);
+			inStack.Remove(item);
 		}
     }
 }

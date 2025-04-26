@@ -30,21 +30,33 @@ namespace Reko.Core.Expressions
     public class BigConstant : Constant
     {
         /// <summary>
-        /// Creates a new instance of the <see cref="BigConstant"/> class.
+        /// Constructs a large constant.
         /// </summary>
-        /// <param name="dt"></param>
-        /// <param name="value"></param>
+        /// <param name="dt">Datatype of the value.</param>
+        /// <param name="value">Large constant value.</param>
         public BigConstant(DataType dt, BigInteger value) : base(dt)
         {
             this.Value = value;
         }
 
+        /// <summary>
+        /// Constructs a large unsigned constant of a given size.
+        /// </summary>
+        /// <param name="dt">Datatype of the value.</param>
+        /// <param name="value">Large constant value, to be converted to unsigned.</param>
+        /// <returns>Resulting <see cref="BigConstant"/> instance.</returns>
         public static BigConstant CreateUnsigned(DataType dt, BigInteger value)
         {
             var mask = (BigInteger.One << dt.BitSize) - 1;
             return new BigConstant(dt, value & mask);
         }
 
+        /// <summary>
+        /// Replicates <paramref name="valueToReplicate"/> to fill the entire size of <paramref name="dt"/>.
+        /// </summary>
+        /// <param name="dt">Required datatype of the result.</param>
+        /// <param name="valueToReplicate">Value to replicate.</param>
+        /// <returns>Replicated value as a <see cref="BigConstant"/>.</returns>
         public static new BigConstant Replicate(DataType dt, Constant valueToReplicate)
         {
             var n = valueToReplicate.ToBigInteger();
@@ -59,14 +71,19 @@ namespace Reko.Core.Expressions
             return new BigConstant(dt, result);
         }
 
+        /// <inheritdoc/>
         public override bool IsMaxUnsigned => false;    //$TODO: consider implementing this.
 
+        /// <inheritdoc/>
         public override bool IsIntegerZero => this.Value.IsZero;
         
+        /// <inheritdoc/>
         public override bool IsIntegerOne => this.Value.IsOne;
 
+        /// <inheritdoc/>
         public override bool IsZero => this.Value.IsZero;
 
+        /// <inheritdoc/>
         public BigInteger Value { get; }
 
         /// <inheritdoc/>
@@ -75,12 +92,14 @@ namespace Reko.Core.Expressions
             return new BigConstant(this.DataType, Value);
         }
 
+        /// <inheritdoc/>
         public override Constant Complement()
         {
             var pow = (BigInteger.One << this.DataType.BitSize) - Value - BigInteger.One;
             return new BigConstant(this.DataType, pow);
         }
 
+        /// <inheritdoc/>
         protected override Constant DoSlice(DataType dt, int offset)
         {
             if (dt.BitSize <= 64)
@@ -104,35 +123,46 @@ namespace Reko.Core.Expressions
             }
         }
 
+        /// <inheritdoc/>
         public override int GetHashOfValue()
         {
             return Value.GetHashCode();
         }
 
+        /// <inheritdoc/>
         public override object GetValue()
         {
             return Value;
         }
 
+        /// <inheritdoc/>
         public override Constant Negate()
         {
             return new BigConstant(this.DataType, -this.Value);
         }
 
+        /// <inheritdoc/>
         public override byte ToByte() => (byte) Value;
 
+        /// <inheritdoc/>
         public override short ToInt16() => (short) Value;
 
+        /// <inheritdoc/>
         public override int ToInt32() => (int) Value;
 
+        /// <inheritdoc/>
         public override long ToInt64() => (long) Value;
 
+        /// <inheritdoc/>
         public override ushort ToUInt16() => (ushort) Value;
 
+        /// <inheritdoc/>
         public override uint ToUInt32() => (uint) Value;
 
+        /// <inheritdoc/>
         public override ulong ToUInt64() => (ulong) Value;
 
+        /// <inheritdoc/>
         public override BigInteger ToBigInteger() => Value;
     }
 }

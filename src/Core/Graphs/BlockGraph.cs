@@ -18,20 +18,24 @@
  */
 #endregion
 
-using Reko.Core.Lib;
-using Reko.Core.Output;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
 namespace Reko.Core.Graphs
 {
+    /// <summary>
+    /// Represents a directed graph of <see cref="Block"/>s.
+    /// </summary>
     public class BlockGraph : DirectedGraph<Block>
     {
         private IList<Block> blocks;
 
+        /// <summary>
+        /// Constructs a new <see cref="BlockGraph"/> from the given list of blocks.
+        /// </summary>
+        /// <param name="blocks">The list of blocks from a <see cref="Procedure"/>.</param>
         public BlockGraph(IList<Block> blocks)
         {
             this.blocks = blocks;
@@ -59,25 +63,30 @@ namespace Reko.Core.Graphs
 
         #region DirectedGraph<Block> Members
 
+        /// <inheritdoc/>
         public ICollection<Block> Predecessors(Block node)
         {
             return node.Pred;
         }
 
+        /// <inheritdoc/>
         public ICollection<Block> Successors(Block node)
         {
             return node.Succ;
         }
 
+        /// <inheritdoc/>
         public IList<Block> Blocks { get { return blocks; } }
         ICollection<Block> DirectedGraph<Block>.Nodes { get { return blocks; } }
 
+        /// <inheritdoc/>
         public void AddEdge(Block nodeFrom, Block nodeTo)
         {
             nodeFrom.Succ.Add(nodeTo);
             nodeTo.Pred.Add(nodeFrom);
         }
 
+        /// <inheritdoc/>
         public void RemoveEdge(Block nodeFrom, Block nodeTo)
         {
             if (nodeFrom.Succ.Contains(nodeTo) && nodeTo.Pred.Contains(nodeFrom))
@@ -87,6 +96,7 @@ namespace Reko.Core.Graphs
             }
         }
 
+        /// <inheritdoc/>
         public bool ContainsEdge(Block from, Block to)
         {
             return from.Succ.Contains(to);
@@ -94,6 +104,10 @@ namespace Reko.Core.Graphs
 
         #endregion
 
+        /// <summary>
+        /// Validates the graph by checking that the edges are consistent.
+        /// </summary>
+        /// <returns>True if the graph is consistent.</returns>
         public bool Validate()
         {
             // p -> sedges

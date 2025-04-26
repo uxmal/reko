@@ -113,8 +113,6 @@ namespace Reko.Core.Types
         /// </summary>
         public StructureFieldCollection Fields { get; private set; }
 
-		public override bool IsComplex  { get { return true; } }
-
         /// <inheritdoc />
         public override bool IsComplex => true;
 

@@ -202,15 +202,15 @@ namespace Reko.Core.Emulation
         }
 
         /// <summary>
-        /// Reads a byte from the address <paramref name="ea"/>.
+        /// Reads a byte from the address <paramref name="address"/>.
         /// </summary>
-        /// <param name="ea">Address to read from.</param>
+        /// <param name="address">Address to read from.</param>
         /// <param name="b">Byte read.</param>
         /// <returns>True if successful; othewise an <see cref="AccessViolationException"/> is thrown</returns>
-        public bool TryReadByte(ulong ea, out byte b)
+        public bool TryReadByte(ulong address, out byte b)
         {
             //$REVIEW: consider using an "EmulatorException" instead.
-            if (!map.TryFindSegment(ea, out ImageSegment? segment))
+            if (!map.TryFindSegment(address, out ImageSegment? segment))
                 throw new AccessViolationException();
             var mem = segment.MemoryArea;
             var off = address - mem.BaseAddress.ToLinear();

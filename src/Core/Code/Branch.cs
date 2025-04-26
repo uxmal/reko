@@ -27,32 +27,49 @@ namespace Reko.Core.Code
 	/// </summary>
 	public class Branch : Instruction
 	{
+        /// <summary>
+        /// Construct a <see cref="Branch"/> instance.
+        /// </summary>
+        /// <param name="cond">The branch predicate.</param>
+        /// <param name="target">Destination block if predicate is true.</param>
         public Branch(Expression cond, Block target)
         {
             this.Condition = cond;
             this.Target = target;
         }
 
+        /// <summary>
+        /// The condition of the branch.
+        /// </summary>
         public Expression Condition { get; set; }
+
+        /// <inheritdoc/>
         public override bool IsControlFlow => true;
 
+        /// <summary>
+        /// The target of the branch (if <see cref="Condition"/> evalutes to true).
+        /// </summary>
         public Block Target { get; set; }
 
+        /// <inheritdoc/>
 		public override Instruction Accept(InstructionTransformer xform)
 		{
 			return xform.TransformBranch(this);
 		}
 
+        /// <inheritdoc/>
         public override T Accept<T>(InstructionVisitor<T> visitor)
         {
             return visitor.VisitBranch(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(InstructionVisitor<T, C> visitor, C ctx)
         {
             return visitor.VisitBranch(this, ctx);
         }
 
+        /// <inheritdoc/>
         public override void Accept(InstructionVisitor v)
 		{
 			v.VisitBranch(this);

@@ -32,6 +32,13 @@ namespace Reko.Core.Graphs
     /// <typeparam name="TNode"></typeparam>
     public class LTDominatorGraph<TNode> where TNode: class
     {
+        /// <summary>
+        /// Createds a dominator tree for the given graph, using the Lengauer-Tarjan
+        /// algorithm.
+        /// </summary>
+        /// <param name="graph">A directed graph.</param>
+        /// <param name="root">The root of the directed graph.</param>
+        /// <returns></returns>
         public static Dictionary<TNode,TNode?> Create(DirectedGraph<TNode> graph, TNode root)
         {
             return new Builder(graph, root).Dominators();

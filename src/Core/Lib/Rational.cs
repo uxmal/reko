@@ -27,6 +27,12 @@ namespace Reko.Core.Lib
     /// </summary>
     public readonly struct Rational
     {
+        /// <summary>
+        /// Creates a rational number from two long integers.
+        /// </summary>
+        /// <param name="num">Numerator.</param>
+        /// <param name="den">Denominator.</param>
+        /// <returns>A rational number.</returns>
         public static Rational FromIntegers(long num, long den)
         {
             var g = gcd(num, den);
@@ -69,14 +75,23 @@ namespace Reko.Core.Lib
             return Rational.FromIntegers(h1, k1);
         }
 
-        public readonly long Numerator;
-        public readonly long Denominator;
+        /// <summary>
+        /// Numerator of this rational number.
+        /// </summary>
+        public long Numerator { get; }
 
-        public Rational(long num, long den)
+        /// <summary>
+        /// Denominator of this rational number.
+        /// </summary>
+        public long Denominator { get; }
+
+        private Rational(long num, long den)
         {
             this.Numerator = num;
             this.Denominator = den;
         }
+
+#pragma warning disable CS1591
 
         public static Rational operator +(Rational r, long n)
         {
@@ -104,16 +119,26 @@ namespace Reko.Core.Lib
             return a;
         }
 
+        /// <summary>
+        /// Computes the reciprocal of this number.
+        /// </summary>
         public Rational Reciprocal()
         {
             return FromIntegers(Denominator, Numerator);
         }
 
+        /// <summary>
+        /// Converts this number to a floating-point number.
+        /// </summary>
+        /// <returns></returns>
         public double ToDouble()
         {
             return (double)Numerator / (double)Denominator;
         }
 
+        /// <summary>
+        /// Converts this number to its string representation.
+        /// </summary>
         public override readonly string ToString()
         {
             return string.Format("{0}/{1}", Numerator, Denominator);

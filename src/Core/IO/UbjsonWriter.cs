@@ -27,15 +27,26 @@ using System.Text;
 
 namespace Reko.Core.IO
 {
+    /// <summary>
+    /// A class that writes the UBJSON file format.
+    /// </summary>
     public class UbjsonWriter
     {
         private readonly Stream stm;
 
+        /// <summary>
+        /// Constructs an instance of <see cref="UbjsonWriter"/>.
+        /// </summary>
+        /// <param name="stm">The stream to write to.</param>
         public UbjsonWriter(Stream stm)
         {
             this.stm = stm;
         }
 
+        /// <summary>
+        /// Serializes an object to the UBJSON stream.
+        /// </summary>
+        /// <param name="o">Object to serialize.</param>
         public void Write(object? o)
         {
             switch (o)

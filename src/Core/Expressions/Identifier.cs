@@ -49,14 +49,14 @@ namespace Reko.Core.Expressions
 		}
 
         /// <summary>
-        /// Create an identifier whose backing <see cref="Reko.Core.Storage"/> is <paramref name="stg"/>.
+        /// Creates an identifier from a <see cref="Storage"/> object. The 
+        /// identifier's name will be the same as that of the storage.
         /// </summary>
-        /// <param name="stg">Backing storage.</param>
-        /// <returns>A new <see cref="Identifier"/> with the same name and 
-        /// data type as the storage.</returns>
-        public static Identifier Create(Storage stg)
+        /// <param name="storage">Storage backing the identifier.</param>
+        /// <returns>An identifier with the same name as the storage.</returns>
+        public static Identifier Create(Storage storage)
         {
-            return new Identifier(stg.Name, stg.DataType, stg);
+            return new Identifier(storage.Name, storage.DataType, storage);
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
-        /// The name of this identifier.
+        /// The name of the identifier.
         /// </summary>
         public string Name { get; }
 
@@ -94,7 +94,7 @@ namespace Reko.Core.Expressions
         public override IEnumerable<Expression> Children => [];
 
         /// <summary>
-        /// What storage area the identifier refers to.
+        /// The <see cref="Storage">backing storage</see> of the identifier.
         /// </summary>
         /// <remarks>
         /// Especially when considering register storage, the size of the 
@@ -137,6 +137,11 @@ namespace Reko.Core.Expressions
 			return new UnaryExpression(Operator.Not, PrimitiveType.Bool, this);
 		}
 
+        /// <summary>
+        /// Writes a textual representation of the identifier to a text writer.
+        /// </summary>
+        /// <param name="writeStorage">If true, write the backing storage.</param>
+        /// <param name="writer"><see cref="TextWriter"/> to write to.</param>
 		public void Write(bool writeStorage, TextWriter writer)
 		{
 			WriteType(writeStorage, writer);
@@ -144,6 +149,11 @@ namespace Reko.Core.Expressions
 			writer.Write(Name);
 		}
 
+        /// <summary>
+        /// Write the datatype of the identifier to a text writer.
+        /// </summary>
+        /// <param name="writeStorage">If true, write the backing storage.</param>
+        /// <param name="writer"><see cref="TextWriter"/> to write to.</param>
 		public void WriteType(bool writeStorage, TextWriter writer)
 		{
 			if (writeStorage)

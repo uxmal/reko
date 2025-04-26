@@ -67,14 +67,38 @@ namespace Reko.Core
         /// </summary>
         public virtual Address InstructionPointer { get; set; }
 
+        /// <summary>
+        /// Create an identical copy of this <see cref="ProcessorState"/> instance.
+        /// </summary>
+        /// <returns>A copy of the state.</returns>
         public abstract ProcessorState Clone();
 
+        /// <summary>
+        /// Create a new <see cref="ProcessorState"/> instance with a new
+        /// architecture.
+        /// </summary>
+        /// <param name="arch">Architecture to inject into the new instance.</param>
+        /// <returns>A new processor state with a new architecture.
+        /// </returns>
         public virtual ProcessorState WithArchitecture(IProcessorArchitecture arch)
         {
             throw new NotSupportedException();
         }
 
+        /// <summary>
+        /// Get the value of a register.
+        /// </summary>
+        /// <param name="r">Register whose value we are reading.</param>
+        /// <returns>A <see cref="Constant"/>, or <see cref="InvalidConstant"/>
+        /// if no value is defined.
+        /// </returns>
         public abstract Constant GetRegister(RegisterStorage r);
+
+        /// <summary>
+        /// Sets the value of a register.
+        /// </summary>
+        /// <param name="r">Register being written.</param>
+        /// <param name="v">Value to assign to register.</param>
         public abstract void SetRegister(RegisterStorage r, Constant v);
 
         /// <summary>

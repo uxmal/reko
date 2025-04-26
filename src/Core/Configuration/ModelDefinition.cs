@@ -18,9 +18,7 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Reko.Core.Configuration
 {
@@ -29,8 +27,14 @@ namespace Reko.Core.Configuration
     /// </summary>
     public class ModelDefinition
     {
+        /// <summary>
+        /// The name of the CPU model.
+        /// </summary>
         public string? Name { get; set; }
 
+        /// <summary>
+        /// CPU options for that CPU model.
+        /// </summary>
         public List<ListOption_v1> Options { get; set; } = new List<ListOption_v1>();
     }
 }

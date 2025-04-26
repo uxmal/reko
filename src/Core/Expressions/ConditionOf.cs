@@ -48,11 +48,18 @@ namespace Reko.Core.Expressions
     /// </remarks>
 	public class ConditionOf : AbstractExpression
 	{
+        /// <summary>
+        /// Constructns an instance of <see cref="ConditionOf"/>.
+        /// </summary>
+        /// <param name="exp">Expression setting condition codes.</param>
 		public ConditionOf(Expression exp) : base(PrimitiveType.Byte)
 		{
 			Expression = exp;
 		}
 
+        /// <summary>
+        /// The expression that produces condition codes.
+        /// </summary>
         public Expression Expression { get; }
 
         /// <inheritdoc/>

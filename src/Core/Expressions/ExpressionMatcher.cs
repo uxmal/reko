@@ -39,10 +39,15 @@ namespace Reko.Core.Expressions
     {
         private Expression pattern;
 
+        /// <summary>
+        /// Constructs an expression matcher.
+        /// </summary>
+        /// <param name="pattern">Pattern to match.</param>
         public ExpressionMatcher(Expression pattern)
         {
             this.pattern = pattern;
         }
+
 
         public static ExpressionMatcher Build(Func<ExpressionMatcherEmitter, Expression> builder)
         {
@@ -50,6 +55,11 @@ namespace Reko.Core.Expressions
             return new ExpressionMatcher(pattern);
         }
 
+        /// <summary>
+        /// Matches the given expression to the pattern.
+        /// </summary>
+        /// <param name="expr">Expression to match.</param>
+        /// <returns>An <see cref="ExpressionMatch"/> instance.</returns>
         public ExpressionMatch Match(Expression expr)
         {
             var m = new ExpressionMatch();

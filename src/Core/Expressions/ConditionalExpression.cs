@@ -18,12 +18,8 @@
  */
 #endregion 
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Reko.Core.Types;
+using System.Collections.Generic;
 
 namespace Reko.Core.Expressions
 {
@@ -32,6 +28,13 @@ namespace Reko.Core.Expressions
     /// </summary>
     public class ConditionalExpression : AbstractExpression
     {
+        /// <summary>
+        /// Constructs a ternary conditional expression.
+        /// </summary>
+        /// <param name="dataType">The resulting data type of the expression.</param>
+        /// <param name="cond">Predicate of the conditional expresssion.</param>
+        /// <param name="th">Consequent expression.</param>
+        /// <param name="fa">Alternative expression.</param>
         public ConditionalExpression(
             DataType dataType,
             Expression cond,
@@ -43,30 +46,46 @@ namespace Reko.Core.Expressions
             this.FalseExp = fa;
         }
 
+        /// <summary>
+        /// Predicate expression.
+        /// </summary>
         public Expression Condition { get; }
+
+        /// <summary>
+        /// Consequent expression.
+        /// </summary>
         public Expression ThenExp { get; }
+
+        /// <summary>
+        /// Alternate expression.
+        /// </summary>
         public Expression FalseExp { get; }
 
+        /// <inheritdoc/>
         public override IEnumerable<Expression> Children
         {
             get { return new[] { Condition, ThenExp, FalseExp }; }
         }
 
+        /// <inheritdoc/>
         public override void Accept(IExpressionVisitor visitor)
         {
             visitor.VisitConditionalExpression(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(ExpressionVisitor<T> visitor)
         {
             return visitor.VisitConditionalExpression(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(ExpressionVisitor<T, C> visitor, C context)
         {
             return visitor.VisitConditionalExpression(this, context);
         }
 
+        /// <inheritdoc/>
         public override Expression CloneExpression()
         {
             return new ConditionalExpression(

@@ -32,13 +32,21 @@ namespace Reko.Core.Graphs
         private readonly DirectedGraph<T> graph;
         private readonly HashSet<T> visited = new HashSet<T>();
 
-
+        /// <summary>
+        /// Creates a new depth-first iterator for the given graph.
+        /// </summary>
+        /// <param name="graph">Graph to traverse.</param>
         public DfsIterator(DirectedGraph<T> graph)
         {
             this.graph = graph;
             this.visited = new HashSet<T>();
         }
 
+        /// <summary>
+        /// Visit every node in the graph in pre-order depth first order.
+        /// </summary>
+        /// <returns>An <see cref="IEnumerable{T}"/> of the nodes in 
+        /// pre-order.</returns>
         public IEnumerable<T> PreOrder()
         {
             foreach (T node in graph.Nodes)
@@ -99,6 +107,12 @@ namespace Reko.Core.Graphs
             }
         }
 
+        /// <summary>
+        /// Visit graph nodes in post-order depth first order, starting at 
+        /// <paramref name="item"/>.
+        /// </summary>
+        /// <param name="item">Starting node.</param>
+        /// <returns>The nodes in post-order.</returns>
         public IEnumerable<T> PostOrder(T item)
         {
             var stack = new Stack<PostOrderItem>();
@@ -123,6 +137,10 @@ namespace Reko.Core.Graphs
             }
         }
 
+        /// <summary>
+        /// Visit all graph nodes in reverse post-order depth first order.
+        /// </summary>
+        /// <returns>An <see cref="IEnumerable{T}"/> of the nodes in RPO.</returns>
         public IEnumerable<T> ReversePostOrder()
         {
             return PostOrder().Reverse();

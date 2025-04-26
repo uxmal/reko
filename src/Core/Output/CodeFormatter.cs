@@ -61,12 +61,19 @@ namespace Reko.Core.Output
         private const int PrecedenceConditional = 14;
         private const int PrecedenceLeast = 20;
 
+        /// <summary>
+        /// Creates an instance of the <see cref="CodeFormatter"/> class.
+        /// </summary>
+        /// <param name="writer"><see cref="Formatter"/> used as an output sink.</param>
 		public CodeFormatter(Formatter writer)
 		{
             this.InnerFormatter = writer;
             this.typeWriter = new TypeGraphWriter(writer);
 		}
 
+        /// <summary>
+        /// The output sink.
+        /// </summary>
         public Formatter InnerFormatter { get; }
 
 		static CodeFormatter()
@@ -161,6 +168,10 @@ namespace Reko.Core.Output
 
         #region IExpressionVisitor members ///////////////////////
 
+        /// <summary>
+        /// Renders an address.
+        /// </summary>
+        /// <param name="addr">Address to render.</param>
         public virtual void VisitAddress(Address addr)
         {
             var s = addr.ToString();
@@ -172,6 +183,10 @@ namespace Reko.Core.Output
             InnerFormatter.Write(s);
         }
 
+        /// <summary>
+        /// Renders an <see cref="Application"/>.
+        /// </summary>
+        /// <param name="appl">Application to render.</param>
 		public void VisitApplication(Application appl)
 		{
 			int prec = SetPrecedence(PrecedenceApplication);
@@ -180,6 +195,10 @@ namespace Reko.Core.Output
 			WriteActuals(appl.Arguments);
 		}
 
+        /// <summary>
+        /// Renders an array access.
+        /// </summary>
+        /// <param name="acc">Array access to render.</param>
 		public void VisitArrayAccess(ArrayAccess acc)
 		{
 			int prec = SetPrecedence(PrecedenceArrayAccess);
@@ -190,6 +209,10 @@ namespace Reko.Core.Output
 			InnerFormatter.Write("]");
 		}
 
+        /// <summary>
+        /// Renders a binary expression.
+        /// </summary>
+        /// <param name="binExp">Binary expression to render.</param>
 		public void VisitBinaryExpression(BinaryExpression binExp)
 		{
 			int prec = SetPrecedence((int) precedences[binExp.Operator.Type]);
@@ -225,6 +248,10 @@ namespace Reko.Core.Output
             InnerFormatter.Write(sOperator);
         }
 
+        /// <summary>
+        /// Renders a cast expression.
+        /// </summary>
+        /// <param name="cast">Cast expression to render.</param>
         public void VisitCast(Cast cast)
 		{
 			int prec = SetPrecedence(PrecedenceCase);
@@ -235,6 +262,10 @@ namespace Reko.Core.Output
 			ResetPresedence(prec);
 		}
 
+        /// <summary>
+        /// Renders a conditional expression.
+        /// </summary>
+        /// <param name="cond">Conditional expression to render.</param>
         public void VisitConditionalExpression(ConditionalExpression cond)
         {
             int prec = SetPrecedence(PrecedenceConditional);
@@ -246,6 +277,10 @@ namespace Reko.Core.Output
             ResetPresedence(prec);
         }
 
+        /// <summary>
+        /// Renders a <see cref="ConditionOf"/>.
+        /// </summary>
+        /// <param name="cond"><see cref="ConditionOf"/> expression to render.</param>
         public void VisitConditionOf(ConditionOf cond)
 		{
 			InnerFormatter.Write("cond(");
@@ -255,6 +290,10 @@ namespace Reko.Core.Output
 
         private static readonly char[] nosuffixRequired = new[] { '.', 'E', 'e' };
 
+        /// <summary>
+        /// Renders a constant.
+        /// </summary>
+        /// <param name="c">Constant to render.</param>
         public virtual void VisitConstant(Constant c)
         {
             var dt = c.DataType;
@@ -315,7 +354,6 @@ namespace Reko.Core.Output
             return;
         }
 
-
         private void WriteEscapedCharacter(char ch, bool inString)
         {
             switch (ch)
@@ -348,6 +386,10 @@ namespace Reko.Core.Output
             }
         }
 
+        /// <summary>
+        /// Renders a conversion.
+        /// </summary>
+        /// <param name="conversion">Conversion to render.</param>
         public void VisitConversion(Conversion conversion)
 		{
             InnerFormatter.Write("CONVERT(");
@@ -360,6 +402,10 @@ namespace Reko.Core.Output
 			InnerFormatter.Write(")");
 		}
 
+        /// <summary>
+        /// Renders a dereference expression.
+        /// </summary>
+        /// <param name="deref">Dereference to render.</param>
 		public void VisitDereference(Dereference deref)
 		{
 			int prec = SetPrecedence(PrecedenceDereference);
@@ -368,6 +414,10 @@ namespace Reko.Core.Output
 			ResetPresedence(prec);
 		}
 
+        /// <summary>
+        /// Renders a field access.
+        /// </summary>
+        /// <param name="acc">Field access to render.</param>
 		public void VisitFieldAccess(FieldAccess acc)
 		{
 			int prec = SetPrecedence(PrecedenceFieldAccess);
@@ -392,6 +442,10 @@ namespace Reko.Core.Output
             ResetPresedence(prec);
 		}
 
+        /// <summary>
+        /// Renders a <see cref="MemberPointerSelector"/> expression.
+        /// </summary>
+        /// <param name="mps">Member pointer selector expression to render.</param>
 		public void VisitMemberPointerSelector(MemberPointerSelector mps)
 		{
 			int prec = SetPrecedence(PrecedenceMemberPointerSelector);
@@ -412,6 +466,10 @@ namespace Reko.Core.Output
             ResetPresedence(prec);
 		}
 
+        /// <summary>
+        /// Renders an identifier.
+        /// </summary>
+        /// <param name="id">Identifier to render.</param>
 		public void VisitIdentifier(Identifier id)
 		{
 			InnerFormatter.Write(id.Name);
@@ -757,6 +815,10 @@ namespace Reko.Core.Output
 			a.Src.Accept(this);
 		}
 
+        /// <summary>
+        /// Renders a break statement.
+        /// </summary>
+        /// <param name="brk">Break statement to render.</param>
 		public void VisitBreak(AbsynBreak brk)
 		{
 			InnerFormatter.Indent();
@@ -764,6 +826,10 @@ namespace Reko.Core.Output
 			InnerFormatter.Terminate(";");
 		}
 
+        /// <summary>
+        /// Renders a switch case.
+        /// </summary>
+        /// <param name="c">Switch case to render.</param>
         public void VisitCase(AbsynCase c)
         {
             InnerFormatter.Indentation -= InnerFormatter.TabSize;
@@ -775,6 +841,10 @@ namespace Reko.Core.Output
             InnerFormatter.Indentation += InnerFormatter.TabSize;
         }
 
+        /// <summary>
+        /// Renders a default switch case.
+        /// </summary>
+        /// <param name="d">Default case to render.</param>
         public void VisitDefault(AbsynDefault d)
         {
             InnerFormatter.Indentation -= InnerFormatter.TabSize;
@@ -784,6 +854,10 @@ namespace Reko.Core.Output
             InnerFormatter.Indentation += InnerFormatter.TabSize;
         }
 		
+        /// <summary>
+        /// Renders a continue statement.
+        /// </summary>
+        /// <param name="cont">Continue statement to render.</param>
         public void VisitContinue(AbsynContinue cont)
 		{
             InnerFormatter.Indent();
@@ -791,6 +865,10 @@ namespace Reko.Core.Output
             InnerFormatter.Terminate(";");
 		}
 
+        /// <summary>
+        /// Renderes a declaration statement.
+        /// </summary>
+        /// <param name="decl">Declaration statement to render.</param>
 		public void VisitDeclaration(AbsynDeclaration decl)
 		{
 			InnerFormatter.Indent();
@@ -805,7 +883,7 @@ namespace Reko.Core.Output
                 InnerFormatter.Write(" ");
                 decl.Identifier.Accept(this);
             }
-			if (decl.Expression != null)
+			if (decl.Expression is not null)
 			{
 				InnerFormatter.Write(" = ");
 				decl.Expression.Accept(this);
@@ -813,6 +891,10 @@ namespace Reko.Core.Output
 			InnerFormatter.Terminate(";");
 		}
 
+        /// <summary>
+        /// Renders a do-while loop.
+        /// </summary>
+        /// <param name="loop">The do-while loop to render.</param>
 		public void VisitDoWhile(AbsynDoWhile loop)
 		{
 			InnerFormatter.Indent();
@@ -828,6 +910,10 @@ namespace Reko.Core.Output
 			InnerFormatter.Terminate(");");
 		}
 
+        /// <summary>
+        /// Renders a for loop.
+        /// </summary>
+        /// <param name="forLoop">The for loop to render.</param>
         public void VisitFor(AbsynFor forLoop)
         {
             InnerFormatter.Indent();
@@ -858,6 +944,10 @@ namespace Reko.Core.Output
             }
         }
 
+        /// <summary>
+        /// Renders a goto statement.
+        /// </summary>
+        /// <param name="g">Goto statement to render.</param>
         public void VisitGoto(AbsynGoto g)
 		{
 			InnerFormatter.Indent();
@@ -867,6 +957,10 @@ namespace Reko.Core.Output
 			InnerFormatter.Terminate(";");
 		}
 
+        /// <summary>
+        /// Renders an if statement
+        /// </summary>
+        /// <param name="ifs">If statement to render.</param>
 		public void VisitIf(AbsynIf ifs)
 		{
 			InnerFormatter.Indent();
@@ -900,6 +994,12 @@ namespace Reko.Core.Output
             }
 		}
 
+        /// <summary>
+        /// Formats an unsigned value.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         protected virtual string UnsignedFormatString(PrimitiveType type, ulong value)
         {
             if (value < 10)
@@ -1007,12 +1107,20 @@ namespace Reko.Core.Output
             return elseIf is not null;
         }
 
+        /// <summary>
+        /// Renders a label.
+        /// </summary>
+        /// <param name="lbl">Label to render.</param>
 		public void VisitLabel(AbsynLabel lbl)
 		{
 			InnerFormatter.Write(lbl.Name);
 			InnerFormatter.Terminate(":");
 		}
 
+        /// <summary>
+        /// Renders a line comment.
+        /// </summary>
+        /// <param name="comment">Line comment to render.</param>
         public void VisitLineComment(AbsynLineComment comment)
         {
             foreach (var line in Lines(comment.Comment))
@@ -1023,6 +1131,10 @@ namespace Reko.Core.Output
             }
         }
 
+        /// <summary>
+        /// Renders a return statement.
+        /// </summary>
+        /// <param name="ret">Return statement to render.</param>
 		public void VisitReturn(AbsynReturn ret)
 		{
 			InnerFormatter.Indent();
@@ -1035,6 +1147,10 @@ namespace Reko.Core.Output
 			InnerFormatter.Terminate(";");
 		}
 
+        /// <summary>
+        /// Renders a side effect statement.
+        /// </summary>
+        /// <param name="side">Side effect statement to render.</param>
 		public void VisitSideEffect(AbsynSideEffect side)
 		{
 			InnerFormatter.Indent();
@@ -1042,6 +1158,10 @@ namespace Reko.Core.Output
 			InnerFormatter.Terminate(";");
 		}
 
+        /// <summary>
+        /// Renders a switch statement.
+        /// </summary>
+        /// <param name="s">The switch statment to render.</param>
         public void VisitSwitch(AbsynSwitch s)
         {
             InnerFormatter.Indent();
@@ -1052,6 +1172,10 @@ namespace Reko.Core.Output
             WriteIndentedStatements(s.Statements, false);
         }
 
+        /// <summary>
+        /// Renders a while statement.
+        /// </summary>
+        /// <param name="loop">The while statment to render.</param>
 		public void VisitWhile(AbsynWhile loop)
 		{
 			InnerFormatter.Indent();
@@ -1065,6 +1189,10 @@ namespace Reko.Core.Output
 
 #endregion
 
+        /// <summary>
+        /// Renders a <see cref="Procedure"/> to the output.
+        /// </summary>
+        /// <param name="proc">Procedure to render.</param>
 		public void Write(Procedure proc)
 		{
 			proc.Signature.Emit(proc.QualifiedName(), FunctionType.EmitFlags.None, InnerFormatter, this, new TypeReferenceFormatter(InnerFormatter));
@@ -1118,6 +1246,13 @@ namespace Reko.Core.Output
 			precedenceCur = prec;
 		}
 
+
+        /// <summary>
+        /// Writes a formal argument to the output.
+        /// </summary>
+        /// <param name="arg">Argument to write.</param>
+        /// <param name="writeStorage">If true, writes the storage type also.</param>
+        /// <param name="t"><see cref="TypeReferenceFormatter"/> used to render types.</param>
         public void WriteFormalArgument(Identifier arg, bool writeStorage, TypeReferenceFormatter t)
         {
             if (writeStorage)
@@ -1139,6 +1274,13 @@ namespace Reko.Core.Output
             }
         }
 
+        /// <summary>
+        /// Write the type of a formal argument.
+        /// </summary>
+        /// <param name="arg">The formal argument.</param>
+        /// <param name="writeStorage">If true, writes the <see cref="Storage"/> of the
+        /// identifier as well.
+        /// </param>
         public void WriteFormalArgumentType(Identifier arg, bool writeStorage)
         {
             if (writeStorage)
@@ -1157,7 +1299,7 @@ namespace Reko.Core.Output
             typeWriter.WriteReference(arg.DataType);
         }
 
-		public void WriteIndentedStatement(AbsynStatement stm)
+		private void WriteIndentedStatement(AbsynStatement stm)
 		{
 			InnerFormatter.Indentation += InnerFormatter.TabSize;
 			if (stm != null)
@@ -1170,7 +1312,7 @@ namespace Reko.Core.Output
 			InnerFormatter.Indentation -= InnerFormatter.TabSize;
 		}
 
-        public void WriteIndentedStatements(List<AbsynStatement> stms, bool suppressNewline)
+        private void WriteIndentedStatements(List<AbsynStatement> stms, bool suppressNewline)
         {
             if (HasSmallBody(stms))
             {
@@ -1227,6 +1369,9 @@ namespace Reko.Core.Output
 			}
 		}
 
+        /// <summary>
+        /// Writes "null" as a keyword.
+        /// </summary>
         public void WriteNull()
         {
             InnerFormatter.WriteKeyword("null");

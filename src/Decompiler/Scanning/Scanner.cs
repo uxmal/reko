@@ -568,11 +568,11 @@ namespace Reko.Scanning
                 else if (!string.IsNullOrEmpty(sym.Name))
                 {
                     var sProc = Program.Platform.SignatureFromName(sym.Name!);
-                    if (sProc != null)
+                    if (sProc is not null)
                     {
                         var loader = Program.CreateTypeLibraryDeserializer();
                         var exp = loader.LoadExternalProcedure(sProc);
-                        if (exp != null)
+                        if (exp is not null)
                         {
                             proc.Name = exp!.Name;
                             proc.Signature = exp.Signature;
@@ -588,7 +588,7 @@ namespace Reko.Scanning
                 var state = sym.ProcessorState ?? sym.Architecture.CreateProcessorState();
                 var pb = ScanProcedure(sym.Architecture, sym.Address!, sym.Name, state);
                 proc = pb as Procedure;
-                if (isEntryPoint && proc != null)
+                if (isEntryPoint && proc is not null)
                 {
                     Program.CallGraph.AddEntryPoint(proc);
                 }

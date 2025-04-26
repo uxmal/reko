@@ -20,7 +20,6 @@
 
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
-using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -35,6 +34,12 @@ namespace Reko.Core.Code
     /// </remarks>
     public class CallInstruction : Instruction
     {
+        /// <summary>
+        /// Construct a call instruction.
+        /// </summary>
+        /// <param name="callee">The called function.</param>
+        /// <param name="site">A <see cref="Code.CallSite"/> describing the call site.
+        /// </param>
         public CallInstruction(Expression callee, CallSite site)
         {
             this.Callee = callee ?? throw new ArgumentNullException(nameof(callee));
@@ -43,7 +48,14 @@ namespace Reko.Core.Code
             this.Uses = new HashSet<CallBinding>();
         }
 
+        /// <summary>
+        /// The called function.
+        /// </summary>
         public Expression Callee { get; set; }
+
+        /// <summary>
+        /// The call site of this call instruction.
+        /// </summary>
         public CallSite CallSite { get; }
 
         /// <summary>
@@ -58,29 +70,37 @@ namespace Reko.Core.Code
         /// </summary> 
         public HashSet<CallBinding> Definitions { get; }
 
+        /// <inheritdoc/>
         public override bool IsControlFlow => false;
 
+        /// <inheritdoc/>
         public override Instruction Accept(InstructionTransformer xform)
         {
             return xform.TransformCallInstruction(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(InstructionVisitor<T> visitor)
         {
             return visitor.VisitCallInstruction(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(InstructionVisitor<T, C> visitor, C ctx)
         {
             return visitor.VisitCallInstruction(this, ctx);
         }
 
+        /// <inheritdoc/>
         public override void Accept(InstructionVisitor v)
         {
             v.VisitCallInstruction(this);
         }
     }
 
+    /// <summary>
+    /// Models a binding between a value and a <see cref="Storage"/>.
+    /// </summary>
     public class CallBinding
     {
         /// <summary>
@@ -99,6 +119,11 @@ namespace Reko.Core.Code
         /// </summary>
         public BitRange BitRange { get; }
 
+        /// <summary>
+        /// Constructs a call binding.
+        /// </summary>
+        /// <param name="stg">The <see cref="Storage"/> being bound.</param>
+        /// <param name="exp">The value bound to the storage.</param>
         public CallBinding(Storage stg, Expression exp)
         {
             this.Storage = stg;
@@ -106,6 +131,7 @@ namespace Reko.Core.Code
             this.BitRange = new BitRange(0, exp.DataType.BitSize);
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             var sb = new StringBuilder();

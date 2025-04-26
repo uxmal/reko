@@ -19,7 +19,6 @@
 #endregion
 
 using Reko.Core.Types;
-using System;
 using System.Collections.Generic;
 
 namespace Reko.Core.Expressions
@@ -30,11 +29,11 @@ namespace Reko.Core.Expressions
     public class SegmentedPointer : AbstractExpression
     {
         /// <summary>
-        /// Creates and instance of a <see cref="SegmentedPointer"/>.
+        /// Constructs a segmented pointer.
         /// </summary>
-        /// <param name="dt"></param>
-        /// <param name="basePointer"></param>
-        /// <param name="offset"></param>
+        /// <param name="dt">Data type of the pointer.</param>
+        /// <param name="basePointer">The base or selector part.</param>
+        /// <param name="offset">The offset part.</param>
         public SegmentedPointer(DataType dt, Expression basePointer, Expression offset)
             : base(dt)
         {
@@ -42,6 +41,11 @@ namespace Reko.Core.Expressions
             this.Offset = offset;
         }
 
+        /// <summary>
+        /// Create a segmented pointer from a base pointer and an offset.
+        /// </summary>
+        /// <param name="basePointer">The base or selector part of the segmented pointer.</param>
+        /// <param name="offset">The offset part of the segmented pointer.</param>
         public static SegmentedPointer Create(Expression basePointer, Expression offset)
         {
             var bitsize = basePointer.DataType.BitSize + offset.DataType.BitSize;
@@ -49,8 +53,14 @@ namespace Reko.Core.Expressions
             return new SegmentedPointer(dt, basePointer, offset);
         }
 
+        /// <summary>
+        /// The base or selector part of the segmented pointer.
+        /// </summary>
         public Expression BasePointer { get; }
 
+        /// <summary>
+        /// The offset part of the segment pointer.
+        /// </summary>
         public Expression Offset { get; }
 
         /// <inheritdoc/>

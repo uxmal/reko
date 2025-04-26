@@ -39,12 +39,36 @@ namespace Reko.Core.Configuration
     /// </summary>
     public interface IConfigurationService
     {
+        /// <summary>
+        /// Gets a list of available image loaders.
+        /// </summary>
         ICollection<LoaderDefinition> GetImageLoaders();
+
+        /// <summary>
+        /// Gets a list of available processor architectures.
+        /// </summary>
         ICollection<ArchitectureDefinition> GetArchitectures();
+
+        /// <summary>
+        /// Gets a list of available operating systems or environments.
+        /// </summary>
         ICollection<PlatformDefinition> GetEnvironments();
+
+        /// <summary>
+        /// Gets a list of available signature files.
+        /// </summary>
         ICollection<SignatureFileDefinition> GetSignatureFiles();
+
+        /// <summary>
+        /// Gets a list of known raw file formats.
+        /// </summary>
         ICollection<RawFileDefinition> GetRawFiles();
 
+        /// <summary>
+        /// Given an platform or environment name, gets its corresponding platform definition.
+        /// </summary>
+        /// <param name="envName">Name of the environment.</param>
+        /// <returns>A platform definition for that environment.</returns>
         PlatformDefinition GetEnvironment(string envName);
 
         /// <summary>
@@ -92,9 +116,21 @@ namespace Reko.Core.Configuration
         /// </returns>
         IProcessorArchitecture? GetArchitecture(string archLabel, Dictionary<string, object>? options);
 
+        /// <summary>
+        /// Gets a list of available symbol sources.
+        /// </summary>
         ICollection<SymbolSourceDefinition> GetSymbolSources();
+
+        /// <summary>
+        /// For a given raw file format identifier, get its corresponding description.
+        /// </summary>
+        /// <param name="rawFileFormat"></param>
+        /// <returns>The raw file definition if it exists.</returns>
         RawFileDefinition? GetRawFile(string rawFileFormat);
 
+        /// <summary>
+        /// Get the default UI preferences.
+        /// </summary>
         IEnumerable<UiStyleDefinition> GetDefaultPreferences();
 
         /// <summary>
@@ -104,6 +140,14 @@ namespace Reko.Core.Configuration
         /// <param name="pathComponents">The components of the path.</param>
         /// <returns>An installation-relative file path.</returns>
         string GetInstallationRelativePath(params string[] pathComponents);
+
+        /// <summary>
+        /// Given an image loader id, gets its definition.
+        /// </summary>
+        /// <param name="loader">Image format ID.</param>
+        /// <returns>The corresponding <see cref="LoaderDefinition"/> if one exists;
+        /// otherwise null.
+        /// </returns>
         LoaderDefinition? GetImageLoader(string loader);
 
         /// <summary>
@@ -118,6 +162,9 @@ namespace Reko.Core.Configuration
         MemoryMap_v1? LoadMemoryMap(string memoryMapFile);
     }
 
+    /// <summary>
+    /// Implementation of <see cref="IConfigurationService"/>.
+    /// </summary>
     public class RekoConfigurationService : IConfigurationService
     {
         private readonly string configFileRoot;
@@ -132,6 +179,12 @@ namespace Reko.Core.Configuration
         private readonly UiPreferencesConfiguration uiPreferences;
         private bool pluginsLoaded;
 
+        /// <summary>
+        /// Creates an instanc of the Reko configuration service.
+        /// </summary>
+        /// <param name="services"><see cref="IServiceProvider"/> instance.</param>
+        /// <param name="rekoConfigPath">File system path to the <c>reko.config</c> file.</param>
+        /// <param name="config">Deserialized contents of <c>reko.config</c>.</param>
         public RekoConfigurationService(IServiceProvider services, string rekoConfigPath, RekoConfiguration_v1 config)
         {
             var pluginSvc = services.GetService<IPluginLoaderService>();
@@ -456,44 +509,51 @@ namespace Reko.Core.Configuration
             return 0;
         }
 
-
+        /// <inheritdoc/>
         public virtual ICollection<LoaderDefinition> GetImageLoaders()
         {
             EnsurePlugins();
             return loaders;
         }
 
+        /// <inheritdoc/>
         public virtual ICollection<SignatureFileDefinition> GetSignatureFiles()
         {
             return sigFiles;
         }
 
+        /// <inheritdoc/>
         public virtual ICollection<ArchitectureDefinition> GetArchitectures()
         {
             EnsurePlugins();
             return architectures;
         }
 
+        /// <inheritdoc/>
         public virtual ICollection<SymbolSourceDefinition> GetSymbolSources()
         {
             return symSources;
         }
 
+        /// <inheritdoc/>
         public virtual ICollection<PlatformDefinition> GetEnvironments()
         {
             return opEnvs;
         }
 
+        /// <inheritdoc/>
         public virtual ICollection<RawFileDefinition> GetRawFiles()
         {
             return rawFiles;
         }
 
+        /// <inheritdoc/>
         public IProcessorArchitecture? GetArchitecture(string archLabel)
         {
             return GetArchitecture(archLabel, new Dictionary<string, object>());
         }
 
+        /// <inheritdoc/>
         public IProcessorArchitecture? GetArchitecture(string archLabel, string? modelName)
         {
             if (modelName is null)
@@ -531,6 +591,7 @@ namespace Reko.Core.Configuration
             return GetArchitecture(archLabel, options);
         }
 
+        /// <inheritdoc/>
         public IProcessorArchitecture? GetArchitecture(string archLabel, Dictionary<string, object>? options)
         {
             var elem = FindArchitectureByLabel(archLabel);
@@ -571,6 +632,7 @@ namespace Reko.Core.Configuration
                             e.Aliases.Contains(archLabel)).SingleOrDefault();
         }
 
+        /// <inheritdoc/>
         public PlatformDefinition GetEnvironment(string envName)
         {
             var env = GetEnvironments()
@@ -584,11 +646,13 @@ namespace Reko.Core.Configuration
             };
         }
 
+        /// <inheritdoc/>
         public virtual LoaderDefinition? GetImageLoader(string loaderName)
         {
             return GetImageLoaders().FirstOrDefault(ldr => ldr.Label == loaderName);
         }
 
+        /// <inheritdoc/>
         public virtual RawFileDefinition? GetRawFile(string rawFileFormat)
         {
             return GetRawFiles()
@@ -596,11 +660,13 @@ namespace Reko.Core.Configuration
                 .SingleOrDefault();
         }
 
+        /// <inheritdoc/>
         public IEnumerable<UiStyleDefinition> GetDefaultPreferences()
         {
             return uiPreferences.Styles;
         }
 
+        /// <inheritdoc/>
         public string GetInstallationRelativePath(params string[] pathComponents)
         {
             var installationRelvativePath = new List<string> { configFileRoot };
@@ -608,6 +674,11 @@ namespace Reko.Core.Configuration
             return MakeInstallationRelativePath(installationRelvativePath.ToArray());
         }
 
+        /// <summary>
+        /// Makes an installation-relative path into an absolute path.
+        /// </summary>
+        /// <param name="pathComponents">Components of the path.</param>
+        /// <returns>An absolute path.</returns>
         public static string MakeInstallationRelativePath(string[] pathComponents)
         {
             var filename = Path.Combine(pathComponents);

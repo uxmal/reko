@@ -29,16 +29,17 @@ namespace Reko.Core.Expressions
 	/// </summary>
 	public class ScopeResolution : AbstractExpression
 	{
+        /// <summary>
+        /// Constructs a <see cref="ScopeResolution"/> instance.
+        /// </summary>
+        /// <param name="dt"></param>
         public ScopeResolution(DataType dt)
             : base(dt)
         {
         }
 
         /// <inheritdoc/>
-        public override IEnumerable<Expression> Children
-        {
-            get { yield break; }
-        }
+        public override IEnumerable<Expression> Children => [];
 
         /// <inheritdoc/>
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)

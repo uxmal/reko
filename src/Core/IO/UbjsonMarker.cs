@@ -18,6 +18,8 @@
  */
 #endregion
  
+#pragma warning disable CS1591 
+
 namespace Reko.Core.IO
 {
     public enum UbjsonMarker

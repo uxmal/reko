@@ -30,6 +30,9 @@ namespace Reko.Core.Memory
     /// </summary>
     public interface IMemory
     {
+        /// <summary>
+        /// The <see cref="SegmentMap"/> of the memory.
+        /// </summary>
         SegmentMap SegmentMap { get; }
 
         /// <summary>
@@ -184,20 +187,20 @@ namespace Reko.Core.Memory
         /// address <paramref name="addr"/>.
         /// </summary>
         /// <param name="addr">Address to read from.</param>
-        /// <param name="s">Resulting value if successful.</param>
+        /// <param name="us">Resulting value if successful.</param>
         /// <returns>True if address was valid, false if not.
         /// </returns>
-        bool TryReadBeUInt16(Address addr, out ushort s);
+        bool TryReadBeUInt16(Address addr, out ushort us);
 
         /// <summary>
         /// Read a little endian unsigned 16-bit integer from 
         /// address <paramref name="addr"/>.
         /// </summary>
         /// <param name="addr">Address to read from.</param>
-        /// <param name="s">Resulting value if successful.</param>
+        /// <param name="us">Resulting value if successful.</param>
         /// <returns>True if address was valid, false if not.
         /// </returns>
-        bool TryReadLeUInt16(Address addr, out ushort s);
+        bool TryReadLeUInt16(Address addr, out ushort us);
 
         /// <summary>
         /// Read a big endian signed 32-bit integer from 

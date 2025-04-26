@@ -38,25 +38,38 @@ namespace Reko.Core.Code
             this.Targets = targets;
         }
 
+        /// <summary>
+        /// Conditional expression that selects which one of the targets to transfer control to.
+        /// </summary>
         public Expression Expression { get; set; }
+
+        /// <inheritdoc/>
         public override bool IsControlFlow => true;
+
+        /// <summary>
+        /// The array of targets.
+        /// </summary>
         public Block[] Targets { get; set; }
 
+        /// <inheritdoc/>
         public override Instruction Accept(InstructionTransformer xform)
         {
             return xform.TransformSwitchInstruction(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(InstructionVisitor<T> visitor)
         {
             return visitor.VisitSwitchInstruction(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(InstructionVisitor<T, C> visitor, C ctx)
         {
             return visitor.VisitSwitchInstruction(this, ctx);
         }
 
+        /// <inheritdoc/>
         public override void Accept(InstructionVisitor v)
         {
             v.VisitSwitchInstruction(this);

@@ -32,6 +32,11 @@ namespace Reko.Core.Graphs
     {
         private readonly Dictionary<T, List<T>> predecessors;
 
+        /// <summary>
+        /// Constructs an adjacency list graph from a dictionary of lists.
+        /// </summary>
+        /// <param name="adjacencyList">A dictionary mapping nodes to lists of successors.
+        /// </param>
         public AdjacencyListGraph(IDictionary<T, List<T>> adjacencyList)
         {
             this.AdjacencyList = adjacencyList;
@@ -42,7 +47,7 @@ namespace Reko.Core.Graphs
                 {
                     if (!predecessors.TryGetValue(s, out var preds))
                     {
-                        preds = new List<T>();
+                        preds = [];
                         predecessors.Add(s, preds);
                     }
                     preds.Add(n);
@@ -50,14 +55,19 @@ namespace Reko.Core.Graphs
             }
         }
 
+        /// <summary>
+        /// The underlying adjacency list of the graph.
+        /// </summary>
         public IDictionary<T, List<T>> AdjacencyList { get; }
 
 
+        /// <inheritdoc/>
         public ICollection<T> Nodes => this.AdjacencyList.Keys;
 
         public IEnumerable<(T, T)> Edges =>
             AdjacencyList.SelectMany(kvp => kvp.Value.Select(s => (kvp.Key, s)));
 
+        /// <inheritdoc/>
         public void AddEdge(T nodeFrom, T nodeTo)
         {
             if (!AdjacencyList.TryGetValue(nodeFrom, out var succs))
@@ -75,6 +85,7 @@ namespace Reko.Core.Graphs
             preds.Add(nodeFrom);
         }
 
+        /// <inheritdoc/>
         public bool ContainsEdge(T nodeFrom, T nodeTo)
         {
             if (AdjacencyList.TryGetValue(nodeFrom, out var succs))
@@ -82,6 +93,7 @@ namespace Reko.Core.Graphs
             return false;
         }
 
+        /// <inheritdoc/>
         public ICollection<T> Predecessors(T node)
         {
             if (predecessors.TryGetValue(node, out var preds))
@@ -90,6 +102,7 @@ namespace Reko.Core.Graphs
                 return Array.Empty<T>();
         }
 
+        /// <inheritdoc/>
         public void RemoveEdge(T nodeFrom, T nodeTo)
         {
             if (AdjacencyList.TryGetValue(nodeFrom, out var succs))
@@ -98,6 +111,7 @@ namespace Reko.Core.Graphs
                 preds.Remove(nodeFrom);
         }
 
+        /// <inheritdoc/>
         public ICollection<T> Successors(T node)
         {
             if (AdjacencyList.TryGetValue(node, out var succs))

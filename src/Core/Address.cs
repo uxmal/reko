@@ -489,7 +489,7 @@ namespace Reko.Core
         /// <returns>The resulting address.</returns>
         public static Address Create(DataType dt, ulong offset)
         {
-            return new Address(dt, LinearHex, (byte) dt.BitSize, uAddr, 0);
+            return new Address(dt, LinearHex, (byte) dt.BitSize, offset, 0);
         }
 
         /// <summary>
@@ -501,7 +501,7 @@ namespace Reko.Core
         /// <returns>The resulting address.</returns>
         public static Address OctalPtr(DataType dt, ulong offset)
         {
-            return new Address(dt, LinearOctal, (byte) dt.BitSize, uAddr, 0);
+            return new Address(dt, LinearOctal, (byte) dt.BitSize, offset, 0);
         }
 
         /// <summary>

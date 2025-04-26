@@ -18,20 +18,27 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Core.Configuration
 {
+    /// <summary>
+    /// Definition of a file containing procedure "fingerprints"
+    /// </summary>
     public class SignatureFileDefinition
     {
+        /// <summary>
+        /// Filename of the signature file.
+        /// </summary>
         public string? Filename { get; set; }
 
+        /// <summary>
+        /// Identifying label.
+        /// </summary>
         public string? Label { get; set; }
 
+        /// <summary>
+        /// CLR type responsible for loading the signature file.
+        /// </summary>
         public string? TypeName { get; set; }
     }
 }

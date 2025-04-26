@@ -32,16 +32,18 @@ namespace Reko.Core.Memory
         /// memory address <paramref name="addr" />.
         /// </summary>
         /// <param name="addr">Address at which to start writing.</param>
-        /// <returns>A big-endian <see cref="ImageWriter"/>.</returns>
-        ImageWriter CreateBeWriter(Address addr);
+        /// <returns>A big-endian <see cref="ImageWriter"/> if the address is 
+        /// a valid, writeable address; otherwise null.</returns>
+        ImageWriter? CreateBeWriter(Address addr);
 
         /// <summary>
         /// Create a little-endian <see cref="ImageWriter"/> starting at the
         /// memory address <paramref name="addr" />.
         /// </summary>
         /// <param name="addr">Address at which to start writing.</param>
-        /// <returns>A big-endian <see cref="ImageWriter"/>.</returns>
-        ImageWriter CreateLeWriter(Address addr);
+        /// <returns>A little-endian <see cref="ImageWriter"/> if the address is 
+        /// a valid, writeable address; otherwise null.</returns>
+        ImageWriter? CreateLeWriter(Address addr);
     }
 
     /// <summary>

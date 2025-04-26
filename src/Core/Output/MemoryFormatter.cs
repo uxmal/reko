@@ -62,8 +62,8 @@ namespace Reko.Core.Output
         /// </remarks>
         /// <param name="dtChunk">Datatype representing the size of the chunks
         /// to render.</param>
-        /// <param name="unitsPerChunk">Number of storage units per chunk.</param>
-        /// <param name="chunksPerLine">Number of chunks per line. </param>
+        /// <param name="unitsPerChunk">The number of storage units per chunk.</param>
+        /// <param name="chunksPerLine">The number of chunks per line. </param>
         /// <param name="charsPerNumericChunk">The number of characters in a chunk
         /// when rendered as a numeric string.</param>
         /// <param name="charsPerTextChunk">The number of characters in a chunk

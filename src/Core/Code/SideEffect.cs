@@ -29,33 +29,45 @@ namespace Reko.Core.Code
 	/// </summary>
 	public class SideEffect : Instruction
 	{
+        /// <summary>
+        /// Creates an instance of the <see cref="SideEffect"/> class.
+        /// </summary>
+        /// <param name="expr">Expression which is evaluated for its side effect.</param>
 		public SideEffect(Expression expr)
 		{
 			this.Expression = expr;
 		}
 
+        /// <summary>
+        /// Expression evaluated for its side effect.
+        /// </summary>
 		public Expression Expression { get; set; }
 
+        /// <inheritdoc/>
 		public override Instruction Accept(InstructionTransformer xform)
 		{
 			return xform.TransformSideEffect(this);
 		}
 
+        /// <inheritdoc/>
         public override T Accept<T>(InstructionVisitor<T> visitor)
         {
             return visitor.VisitSideEffect(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(InstructionVisitor<T, C> visitor, C ctx)
         {
             return visitor.VisitSideEffect(this, ctx);
         }
 
+        /// <inheritdoc/>
         public override void Accept(InstructionVisitor v)
 		{
 			v.VisitSideEffect(this);
 		}
 
+        /// <inheritdoc/>
 		public override bool IsControlFlow => false;
 	}
 }

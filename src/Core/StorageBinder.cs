@@ -101,7 +101,7 @@ namespace Reko.Core
             switch (stg)
             {
             case RegisterStorage reg: return EnsureRegister(reg);
-            case SequenceStorage seq: return EnsureSequence(seq.DataType, seq.Name, seq.Elements);
+            case SequenceStorage seq: return EnsureSequence(seq);
             default: throw new NotImplementedException();
             }
         }
@@ -142,6 +142,7 @@ namespace Reko.Core
         }
 
 
+        [Obsolete("", true)]
         public Identifier EnsureSequence(DataType dataType, string name, params Storage [] elements)
         {
             if (this.seqs.TryGetValue(elements, out var idSeq))

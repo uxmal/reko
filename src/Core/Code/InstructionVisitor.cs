@@ -23,8 +23,6 @@ using System;
 
 namespace Reko.Core.Code
 {
-#pragma warning disable IDE1006
-
     public interface InstructionVisitor
 	{
 		void VisitAssignment(Assignment ass);

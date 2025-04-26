@@ -37,7 +37,7 @@ namespace Reko.Core
         /// </summary>
         /// <param name="proc">The <see cref="Procedure"/> to which this block belongs.</param>
         /// <param name="addr">The address at which the basic block is located.</param>
-        /// <param name="id">A reasonably unique identifier.</param>
+        /// <param name="id">Unique string identifier of the block.</param>
 		public Block(Procedure proc, Address addr, string id)
 		{
             if (string.IsNullOrEmpty(id))
@@ -90,6 +90,7 @@ namespace Reko.Core
         /// <summary>
         /// Convenience property to access the first successor of this block.
         /// </summary>
+
         public Block ElseBlock
         {
             get { return Succ[0]; }

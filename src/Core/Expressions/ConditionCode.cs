@@ -23,36 +23,123 @@ using Reko.Core.NativeInterface;
 namespace Reko.Core.Expressions
 {
     /// <summary>
-    /// Represents a low-level condition.
+    /// Condition codes are used to represent the result of a comparison.
     /// </summary>
     [NativeInterop]
     public enum ConditionCode
     {
+        /// <summary>
+        /// No condition.
+        /// </summary>
         None,
-        UGT,	// Unsigned >
+
+        /// <summary>
+        /// Unsigned &gt;
+        /// </summary>
+
+        UGT,
+        /// <summary>
+        /// Unsigned &gt;=
+        /// </summary>
         ULE,	// Unsigned <=
+
+        /// <summary>
+        /// Unsigned &lt;
+        /// </summary>
         ULT,	// Unsigned <
+
+        /// <summary>
+        /// Greater than.
+        /// </summary>
         GT,		// >
+
+        /// <summary>
+        /// Greater than or equal.
+        /// </summary>
+        /// 
         GE,		// >=
+
+        /// <summary>
+        /// Less than.
+        /// </summary>
         LT,		// <
+
+        /// <summary>
+        /// Less than or equal.
+        /// </summary>
         LE,		// <=
+
+        /// <summary>
+        /// Unsigned &gt;=
+        /// </summary>
         UGE,	// Unsigned >=
+
+        /// <summary>
+        /// No overflow
+        /// </summary>
         NO,		// No overflow
+
+        /// <summary>
+        /// Not negative.
+        /// </summary>
         NS,		// >= 0
+
+        /// <summary>
+        /// Not equal.
+        /// </summary>
         NE,		// != 
+
+        /// <summary>
+        /// Overflow.
+        /// </summary>
         OV,		// Overflow
+
+        /// <summary>
+        /// Negative.
+        /// </summary>
         SG,		// < 0
+
+        /// <summary>
+        /// Equals.
+        /// </summary>
         EQ,		// ==	
+
+        /// <summary>
+        /// Parity even.
+        /// </summary>
         PE,     // Parity even
+
+        /// <summary>
+        /// Parity odd.
+        /// </summary>
         PO,     // parity odd
 
-        ALWAYS, // Some architectures have this.
+        /// <summary>
+        /// Always true. 
+        /// Some architectures have this.
+        /// </summary>
+        ALWAYS,
+
+        /// <summary>
+        /// Never true. 
+        /// Some architectures have this.
+        /// </summary>
         NEVER,
 
+        /// <summary>
+        /// Floating point operation resulted a NaN.
+        /// </summary>
         IS_NAN,     // comparison discovered an floating point NaN
+
+        /// <summary>
+        /// Floating point comparison didn't result in a NaN.
+        /// </summary>
         NOT_NAN,    // comparison didn't discover a NaN
     }
 
+    /// <summary>
+    /// Extension methods for <see cref="ConditionCode"/>.
+    /// </summary>
     public static class ConditionCodeEx
     {
         private static readonly ConditionCode[] invertMap = new[]

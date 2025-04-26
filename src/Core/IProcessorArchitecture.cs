@@ -179,11 +179,11 @@ namespace Reko.Core
         /// machine instruction calling or jumping to the address, or a 
         /// reference to the address stored in memory.
         /// </summary>
-        /// <param name="map">Memory to scan.</param>
-        /// <param name="rdr"></param>
-        /// <param name="knownAddresses"></param>
-        /// <param name="flags"></param>
-        /// <returns></returns>
+        /// <param name="map">Segment map of valid memory areas.</param>
+        /// <param name="rdr">Image reader used to read data.</param>
+        /// <param name="knownAddresses">A collection of known addresses.</param>
+        /// <param name="flags">Flags controlling the pointer scanner.</param>
+        /// <returns>Addresses being referred to.</returns>
         IEnumerable<Address> CreatePointerScanner(
             SegmentMap map,
             EndianImageReader rdr,
@@ -282,11 +282,11 @@ namespace Reko.Core
         T? CreateExtension<T>() where T : class;
 
         /// <summary>
-        /// Renders the instruction opcode of the given instruction as a string.
+        /// Given a machine instruction, renders its opcode to a string.
         /// </summary>
-        /// <param name="instr">The <see cref="MachineInstruction"/> to render.</param>
-        /// <param name="rdr">The <see cref="EndianImageReader"/> to use.</param>
-        /// <returns></returns>
+        /// <param name="instr">Machine instruction to render.</param>
+        /// <param name="rdr">Image reader, positioned at the beginning of the instruction.</param>
+        /// <returns>String representation of the instruction's opcode(s).</returns>
         string RenderInstructionOpcode(MachineInstruction instr, EndianImageReader rdr);
 
         /// <summary>
@@ -412,7 +412,7 @@ namespace Reko.Core
         RegisterStorage? GetRegister(string name);
 
         /// <summary>
-        /// Given a register, returns any sub register occupying the 
+        /// Given a storage domain, returns any sub register occupying the 
         /// given bit range.
         /// </summary>
         /// <param name="domain">The <see cref="StorageDomain"/> of the register.</param>
@@ -454,7 +454,7 @@ namespace Reko.Core
         /// </summary>
         /// <param name="flagRegister"></param>
         /// <param name="grf"></param>
-        /// <returns>A <see cref="FlagGroupStorage"/> instance based on <paramref name="flagRegister"/>
+        /// <returns>A <see cref="FlagGroupStorage" /> instance based on <paramref name="flagRegister"/>
         /// with the flags in <paramref name="grf"/> set to TRUE.
         /// </returns>
         FlagGroupStorage? GetFlagGroup(RegisterStorage flagRegister, uint grf);
@@ -472,11 +472,26 @@ namespace Reko.Core
         /// </remarks>
         /// <param name="name">The combined flag registers to deserialize</param>
         /// <returns>A <see cref="FlagGroupStorage"/> if the name was successfully decoded
-        /// as a flag group, otherwise null.</returns>
+        /// as a flag group; otherwise null.</returns>
         FlagGroupStorage? GetFlagGroup(string name);
 
-
+        /// <summary>
+        /// Creates a stack access expression for the given offset and data type.
+        /// </summary>
+        /// <param name="binder">Storage binder to use.</param>
+        /// <param name="cbOffset">Offset from the stack pointer.</param>
+        /// <param name="dataType">Data type of the access.</param>
+        /// <returns>A stack access, usually a <see cref="MemoryAccess"/>.</returns>
         Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType);
+
+
+        /// <summary>
+        /// Creates a floating point stack access expression for the given offset and data type.
+        /// </summary>
+        /// <param name="binder">Storage binder to use.</param>
+        /// <param name="offset">Offset from the FPU stack pointer.</param>
+        /// <param name="dataType">Data type of the access.</param>
+        /// <returns>An access to the FPU stack.</returns>
         //$REFACTOR: this should probably live in FrameApplicationBuilder instead.
         Expression CreateFpuStackAccess(IStorageBinder binder, int offset, DataType dataType);  //$REVIEW: generalize these two methods?
 
@@ -514,9 +529,31 @@ namespace Reko.Core
         /// </summary>
         bool IsStackArgumentOffset(long frameOffset);
 
+        /// <summary>
+        /// Reads an address large enough to hold a code address from the given image reader.
+        /// </summary>
+        /// <param name="size"></param>
+        /// <param name="rdr"></param>
+        /// <param name="state"></param>
+        /// <returns></returns>
         Address? ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state);
+
+        /// <summary>
+        /// Creates a segmented address from the given segment and offset.
+        /// </summary>
+        /// <param name="seg">Segment selector.</param>
+        /// <param name="offset">Segment offset.</param>
+        /// <returns>The resulting address.</returns>
         Address MakeSegmentedAddress(Constant seg, Constant offset);
 
+        /// <summary>
+        /// Given a flag register and a bitmask, returns a string representation
+        /// of the bits set.
+        /// </summary>
+        /// <param name="flagRegister">Backing flag registers.</param>
+        /// <param name="prefix">Prefix to use.</param>
+        /// <param name="grf">Bit mask to render as a string.</param>
+        /// <returns>The resulting string representation.</returns>
         string GrfToString(RegisterStorage flagRegister, string prefix, uint grf);                       // Converts a union of processor flag bits to its string representation
 
         /// <summary>
@@ -568,9 +605,18 @@ namespace Reko.Core
     [Flags]
     public enum Normalize
     {
-        Nothing,        // Match identically
-        Constants,      // all constants treated as wildcards
-        Registers,      // all registers treated as wildcards.
+        /// <summary>
+        /// Match identically
+        /// </summary> 
+        Nothing,
+        /// <summary>
+        /// all constants treated as wildcards
+        /// </summary>
+        Constants,
+        /// <summary>
+        /// all registers treated as wildcards.
+        /// </summary>
+        Registers,
     }
 
     /// <summary>
@@ -581,7 +627,13 @@ namespace Reko.Core
     public abstract class ProcessorArchitecture : IProcessorArchitecture
     {
         private RegisterStorage? regStack;
+        /// <summary>
+        /// Registers indexed by name.
+        /// </summary>
         protected IReadOnlyDictionary<string, RegisterStorage>? regsByName;
+        /// <summary>
+        /// Registers indexed by storage domain.
+        /// </summary>
         protected IReadOnlyDictionary<StorageDomain, RegisterStorage>? regsByDomain;
 
         /// <summary>
@@ -590,8 +642,7 @@ namespace Reko.Core
         /// <param name="services">Object that provides services available in the execution environment.</param>
         /// <param name="archId">Short string identifier for the processor architecture.</param>
         /// <param name="options">A dictionary of architecture options to apply (e.g. processor endianness,
-        /// word size, or processor features.)
-        /// </param>
+        /// word size, or processor features.)</param>
         /// <param name="regsByName">An optional dictionary of all the CPU's registers,
         /// by their names.</param>
         /// <param name="regsByDomain">An optional dictionary of all the CPU's registers,
@@ -623,26 +674,37 @@ namespace Reko.Core
 
         /// <inheritdoc/>
         public IServiceProvider Services { get; }
+
         /// <inheritdoc/>
         public string Name { get; }
+
         /// <inheritdoc/>
         public string? Description { get; set; }
+
         /// <inheritdoc/>
         public int DefaultBase { get; set; }
+
         /// <inheritdoc/>
         public EndianServices Endianness { get; protected set; }
+
         /// <inheritdoc/>
         public PrimitiveType FramePointerType { get; protected set; }
+
         /// <inheritdoc/>
         public int MemoryGranularity { get; protected set; }
-        /// <inheritdoc/>
-        public MemoryMap_v1? MemoryMap { get; set; }
+
         /// <inheritdoc/>
         public int CodeMemoryGranularity { get; protected set; }
+
+        /// <inheritdoc/>
+        public MemoryMap_v1? MemoryMap { get; set; }
+
         /// <inheritdoc/>
         public PrimitiveType PointerType { get; protected set; }
+
         /// <inheritdoc/>
         public MaskedPattern[] ProcedurePrologs { get; internal set; }
+
         /// <inheritdoc/>
         public PrimitiveType WordWidth { get; protected set; }
 
@@ -685,48 +747,68 @@ namespace Reko.Core
 
         /// <inheritdoc/>
         public RegisterStorage? FpuStackRegister { get; protected set; }
+
         /// <inheritdoc/>
         public FlagGroupStorage? CarryFlag { get; protected set; }
 
         /// <inheritdoc/>
         public virtual IAssembler CreateAssembler(string? asmDialect) => throw new NotSupportedException("This architecture doesn't support assembly language.");
+
         /// <inheritdoc/>
         public abstract IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader);
+
         /// <inheritdoc/>
         public virtual T? CreateExtension<T>() where T : class => default;
+
         /// <inheritdoc/>
         public Frame CreateFrame() { return new Frame(this, FramePointerType); }
+
         /// <inheritdoc/>
         public bool TryCreateImageReader(IMemory mem, Address addr, [MaybeNullWhen(false)] out EndianImageReader rdr) => this.Endianness.TryCreateImageReader(mem, addr, out rdr);
+
         /// <inheritdoc/>
         public bool TryCreateImageReader(IMemory mem, Address addr, long cbUnits, [MaybeNullWhen(false)] out EndianImageReader rdr) => this.Endianness.TryCreateImageReader(mem, addr, cbUnits, out rdr);
+
         /// <inheritdoc/>
         public EndianImageReader CreateImageReader(MemoryArea mem, Address addr) => this.Endianness.CreateImageReader(mem, addr);
+
         /// <inheritdoc/>
         public EndianImageReader CreateImageReader(MemoryArea mem, Address addr, long cbUnits) => this.Endianness.CreateImageReader(mem, addr, cbUnits);
+
         /// <inheritdoc/>
         public EndianImageReader CreateImageReader(MemoryArea mem, long offsetBegin, long offsetEnd) => Endianness.CreateImageReader(mem, offsetBegin, offsetEnd);
+
         /// <inheritdoc/>
         public EndianImageReader CreateImageReader(MemoryArea mem, long off) => Endianness.CreateImageReader(mem, off);
+
         /// <inheritdoc/>
         public ImageWriter CreateImageWriter() => Endianness.CreateImageWriter();
+
         /// <inheritdoc/>
         public ImageWriter CreateImageWriter(MemoryArea mem, Address addr) => Endianness.CreateImageWriter(mem, addr);
+
         /// <inheritdoc/>
         public bool TryRead(IMemory mem, Address addr, PrimitiveType dt, [MaybeNullWhen(false)] out Constant value) => Endianness.TryRead(mem, addr, dt, out value);
+
         /// <inheritdoc/>
         public bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, [MaybeNullWhen(false)] out Constant value) => Endianness.TryRead(mem, addr, dt, out value);
+
         /// <inheritdoc/>
         public virtual bool TryRead(EndianImageReader rdr, PrimitiveType dt, [MaybeNullWhen(false)] out Constant value) => rdr.TryRead(dt, out value);
+
         /// <inheritdoc/>
         public abstract IEqualityComparer<MachineInstruction>? CreateInstructionComparer(Normalize norm);
+
         /// <inheritdoc/>
         public abstract ProcessorState CreateProcessorState();
+
         /// <inheritdoc/>
         public abstract IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);
+
         /// <inheritdoc/>
         public abstract IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host);
-        
+
+        /// <inheritdoc/>
         /// <inheritdoc/>
         public virtual IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
         {
@@ -734,10 +816,12 @@ namespace Reko.Core
         }
 
         /// <inheritdoc/>
+        /// <remarks>
+        /// By default, there is no calling convention defined for architectures. Some
+        /// manufacturers however, define calling conventions.
+        /// </remarks>
         public virtual ICallingConvention? GetCallingConvention(string? name)
         {
-            // By default, there is no calling convention defined for architectures. Some
-            // manufacturers however, define calling conventions.
             return null;
         }
 
@@ -778,9 +862,11 @@ namespace Reko.Core
         }
 
         /// <inheritdoc/>
+        /// <remarks>
+        /// Most CPU's -- but not all -- are byte-addressed.
+        /// </remarks>
         public virtual MemoryArea CreateCodeMemoryArea(Address addr, byte[] bytes)
         {
-            // Most CPU's -- but not all -- are byte-addressed.
             return new ByteMemoryArea(addr, bytes);
         }
 
@@ -793,10 +879,10 @@ namespace Reko.Core
         /// of x86 segmented memory accesses is dealt with in that processor's 
         /// implementation of this method.
         /// </remarks>
-        /// <param name="binder">Storage binder to use when creating the expression.</param>
-        /// <param name="cbOffset">Offset from the stack pointer.</param>
-        /// <param name="dataType">Data type of the stack access.</param>
-        /// <returns>The resulting memory access.</returns>
+        /// <param name="binder">Storage binder to use.</param>
+        /// <param name="cbOffset">Byte offset from the stack pointer.</param>
+        /// <param name="dataType">Data type of the resulting access.</param>
+        /// <returns>A <see cref="MemoryAccess"/> to a stack offset.</returns>
         public virtual Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
         {
             var sp = binder.EnsureRegister(StackRegister);
@@ -870,18 +956,23 @@ namespace Reko.Core
             return sb.ToString().ToUpperInvariant();
         }
             
+        /// <inheritdoc/>
         public virtual bool TryGetRegister(string name, [MaybeNullWhen(false)] out RegisterStorage reg)
         {
             if (this.regsByName is null)
                 throw new NotImplementedException($"Need a value for {nameof(regsByName)}.");
             return regsByName.TryGetValue(name, out reg);
         }
+
         /// <inheritdoc/>
         public abstract FlagGroupStorage? GetFlagGroup(RegisterStorage flagRegister, uint grf);
+
         /// <inheritdoc/>
         public abstract FlagGroupStorage? GetFlagGroup(string name);
+
         /// <inheritdoc/>
         public abstract string GrfToString(RegisterStorage flagRegister, string prefix, uint grf);
+
         /// <inheritdoc/>
         public virtual List<RtlInstruction>? InlineCall(Address addrCallee, Address addrContinuation, EndianImageReader rdr, IStorageBinder binder)
         {
@@ -890,12 +981,16 @@ namespace Reko.Core
 
         /// <inheritdoc/>
         public virtual void LoadUserOptions(Dictionary<string, object>? options) { }
+
         /// <inheritdoc/>
         public abstract Address MakeAddressFromConstant(Constant c, bool codeAlign);
+
         /// <inheritdoc/>
         public virtual Address MakeSegmentedAddress(Constant seg, Constant offset) { throw new NotSupportedException("This architecture doesn't support segmented addresses."); }
+
         /// <inheritdoc/>
         public virtual void PostprocessProgram(Program program) { }
+
         /// <inheritdoc/>
         public abstract Address? ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state);
 
@@ -921,5 +1016,8 @@ namespace Reko.Core
         public abstract bool TryParseAddress(string? txtAddr, [MaybeNullWhen(false)] out Address addr);
     }
 
+    /// <summary>
+    /// Interface implemented by extensions to the <see cref="IProcessorArchitecture"/> interface.
+    /// </summary>
     public interface IExtension { }
 }

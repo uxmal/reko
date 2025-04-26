@@ -29,10 +29,10 @@ namespace Reko.Core.Collections
     /// <typeparam name="T"></typeparam>
     public class PriorityQueue<T> : ICollection<T>
     {
-        HeapItem[] heap;
-        int count;
+        private HeapItem[] heap;
+        private int count;
 
-        public struct HeapItem
+        private struct HeapItem
         {
             public int Priority;
             public T Value;
@@ -89,6 +89,11 @@ namespace Reko.Core.Collections
             throw new NotSupportedException();
         }
 
+        /// <summary>
+        /// Add an item with a given priority to the queue.
+        /// </summary>
+        /// <param name="priority">The priority of the item.</param>
+        /// <param name="value">The item to add to the queue.</param>
         public void Enqueue(int priority, T value)
         {
             ++count;
@@ -97,6 +102,12 @@ namespace Reko.Core.Collections
             BubbleUp(count - 1, new HeapItem { Priority = priority, Value = value });
         }
 
+        /// <summary>
+        /// Dequeues the item with the highest priority, removing it from
+        /// the priority queue.
+        /// </summary>
+        /// <returns>The item with the highest priority.</returns>
+        /// <exception cref="InvalidOperationException"></exception>
         public T Dequeue()
         {
             if (count <= 0)
@@ -107,6 +118,13 @@ namespace Reko.Core.Collections
             return value;
         }
 
+        /// <summary>
+        /// Attempts to dequeue the item with the highest priority, removing it from
+        /// the priority queue.
+        /// </summary>
+        /// <param name="value">The item with the highest priority (if there is one in
+        /// the priority queue).</param>
+        /// <returns>True if an item was dequeued; otherwise false.</returns>
         public bool TryDequeue([MaybeNullWhen(false)] out T value)
         {
             if (count <= 0)
@@ -120,12 +138,14 @@ namespace Reko.Core.Collections
             return true;
         }
 
+        /// <inheritdoc/>
         public void Clear()
         {
             count = 0;
             heap = new HeapItem[4];
         }
 
+        /// <inheritdoc/>
         public bool Contains(T item)
         {
             for (int i = 0; i < count; ++i)
@@ -136,6 +156,7 @@ namespace Reko.Core.Collections
             return false;
         }
 
+        /// <inheritdoc/>
         public void CopyTo(T[] array, int arrayIndex)
         {
             for (int i = 0; i < count; ++i, ++arrayIndex)
@@ -144,15 +165,11 @@ namespace Reko.Core.Collections
             }
         }
 
-        public int Count
-        {
-            get { return count; }
-        }
+        /// <inheritdoc/>
+        public int Count => count;
 
-        public bool IsReadOnly
-        {
-            get { return false; }
-        }
+        /// <inheritdoc/>
+        public bool IsReadOnly => false;
 
         bool ICollection<T>.Remove(T item)
         {
@@ -163,6 +180,7 @@ namespace Reko.Core.Collections
 
         #region IEnumerable<T> Members
 
+        /// <inheritdoc/>
         public IEnumerator<T> GetEnumerator()
         {
             for (int i = 0; i < count; ++i)

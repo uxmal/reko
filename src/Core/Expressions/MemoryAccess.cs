@@ -26,7 +26,7 @@ using System.Collections.Generic;
 namespace Reko.Core.Expressions
 {
     /// <summary>
-    /// Models an access to memory, using the effective address and the datatype
+    /// Models an access to memory, using the effective address <see cref="EffectiveAddress"/> and the datatype
     /// of the accessed memory.
     /// </summary>
     public class MemoryAccess : AbstractExpression
@@ -134,9 +134,9 @@ namespace Reko.Core.Expressions
             else
                 return new BinaryExpression(
                     Operator.IAdd,
-                    baseRegister.DataType,
-                    baseRegister,
-                    Constant.Create(PrimitiveType.Create(Domain.SignedInt, baseRegister.DataType.BitSize), offset));
+                    baseExpr.DataType,
+                    baseExpr,
+                    Constant.Create(PrimitiveType.Create(Domain.SignedInt, baseExpr.DataType.BitSize), offset));
         }
 
         /// <summary>

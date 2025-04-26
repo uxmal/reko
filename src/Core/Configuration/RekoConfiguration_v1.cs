@@ -23,6 +23,8 @@ using System.ComponentModel;
 using System.Xml;
 using System.Xml.Serialization;
 
+#pragma warning disable CS1591
+
 namespace Reko.Core.Configuration
 {
     /// <summary>

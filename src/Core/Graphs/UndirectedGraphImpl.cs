@@ -20,32 +20,33 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Core.Graphs
 {
+    /// <summary>
+    /// An implementation of an undirected graph.
+    /// </summary>
     public class UndirectedGraphImpl<T> : UndirectedGraph<T>
     {
-        public UndirectedGraphImpl()
-        {
-        }
-
+        /// <inheritdoc/>
         public ICollection<T> Neighbors(T node)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void AddEdge(T nodeFrom, T nodeTo)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void RemoveEdge(T nodeFrom, T nodeTo)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public bool ContainsEdge(T nodeFrom, T nodeTo)
         {
             throw new NotImplementedException();

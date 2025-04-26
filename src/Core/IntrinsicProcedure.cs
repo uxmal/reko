@@ -87,7 +87,7 @@ namespace Reko.Core
         /// Creates an <see cref="IntrinsicProcedure"/> with a specific signature.
         /// </summary>
         /// <param name="name">The name of the intrinsic procedure.</param>
-        /// <param name="hasSideEffect">True of the procedure is idempotent (<see cref="ProcedureBase.HasSideEffect"/></param>
+        /// <param name="hasSideEffect">True of the procedure has a side effect (<see cref="ProcedureBase.HasSideEffect"/></param>
         /// <param name="sig">The signature of the procedure.</param>
         /// <param name="eval">Optional evaluation function.</param>
 		public IntrinsicProcedure(
@@ -109,8 +109,8 @@ namespace Reko.Core
         /// <param name="name">The name of the intrinsic procedure.</param>
         /// <param name="genericTypes">The generic types of this procedure.</param>
         /// <param name="isConcrete">True if this is an instance of the generic intrinsic.</param>
-        /// <param name="hasSideEffect">True of the procedure is idempotent (<see cref="ProcedureBase.HasSideEffect"/></param>
-        /// <param name="evaluator">Optional partial evaluator function for this intrinsic.</param>
+        /// <param name="hasSideEffect">True of the procedure has a side effect (<see cref="ProcedureBase.HasSideEffect"/></param>
+        /// <param name="evaluator">Optional partial evaluation procedure.</param>
         /// <param name="sig">The signature of the procedure.</param>
         public IntrinsicProcedure(
             string name, 
@@ -133,35 +133,42 @@ namespace Reko.Core
 
 
         /// <summary>
-        /// The number of parameters used by this intrinsuc procedure.
+        /// The number of arguments expected by this intrinsic procedure.
         /// </summary>
         public int Arity
 		{
 			get 
-            { return sig != null && sig.Parameters != null
-                ? sig.Parameters.Length 
-                : arity; 
+            {
+                return sig?.Parameters?.Length ?? arity;
             }
 		}
 
         /// <summary>
-        /// The return type of this procedure.
+        /// The return type of this intrinsic procedure.
         /// </summary>
         public DataType ReturnType { get; }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// The signature of this intrinsic procedure.
+        /// </summary>
 		public override FunctionType Signature
 		{
 			get { return sig!; }
 			set { throw new InvalidOperationException("Changing the signature of an IntrinsicProcedure is not allowed."); }
 		}
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Creates an <see cref="Application"/> expression that calls this intrinsic procedure.
+        /// </summary>
+        /// <param name="dt">Datatype of the result.</param>
+        /// <param name="exprs">Argument values.</param>
+        /// <returns>An <see cref="Application"/> instance invoking this intrinsic.</returns>
         public virtual Expression Create(DataType dt, params Expression[] exprs)
         {
             return new Application(new ProcedureConstant(PrimitiveType.Ptr32, this), dt, exprs);
         }
 
+        /// <inheritdoc/>
         public virtual Constant? ApplyConstants(DataType dt, params Constant[] cs)
         {
             return this.Evaluate(dt, cs);
@@ -192,12 +199,13 @@ namespace Reko.Core
         }
 
         /// <summary>
-        /// Create an instance of the intrinsic procedure with the given concrete types.
-        /// Subclasses can override this method to provide custom behavior.
+        /// Makes a concrete instance of this <see cref="IntrinsicProcedure"/> instance, using
+        /// the provided <paramref name="concreteTypes" />.
         /// </summary>
-        /// <param name="concreteTypes">Data types to use to make the concrete instance.</param>
-        /// <param name="sig">Function signature of the concrete instance.</param>
-        /// <returns></returns>
+        /// <param name="concreteTypes">Concrete types to use as type parameters.</param>
+        /// <param name="sig">The signature of the concrete instance.</param>
+        /// <returns>A newly minted concrete instance.
+        /// </returns>
         protected virtual IntrinsicProcedure DoMakeInstance(DataType[] concreteTypes, FunctionType sig)
         {
             return new IntrinsicProcedure(this.Name, concreteTypes, true, this.HasSideEffect, Evaluate, sig)
@@ -208,12 +216,11 @@ namespace Reko.Core
         }
 
         /// <summary>
-        /// Makes a concrete instance of this <see cref="IntrinsicProcedure"/> instance, using
-        /// the provided <paramref name="concreteTypes" />.
+        /// Creates a concrete instance of this <see cref="IntrinsicProcedure"/> instance, using
+        /// the given concrete types.
         /// </summary>
-        /// <param name="concreteTypes">Concrete types to use.</param>
-        /// <returns>A newly minted or previously cached concrete instance.
-        /// </returns>
+        /// <param name="concreteTypes">Concrete types to use as type parameters.</param>
+        /// <returns>A concrete instance of the intrinsic procedure.</returns>
         public IntrinsicProcedure MakeInstance(params DataType[] concreteTypes)
             => MakeInstance(0, concreteTypes);
 
@@ -272,10 +279,12 @@ namespace Reko.Core
             };
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Returns a string representation of this <see cref="IntrinsicProcedure"/>.
+        /// </summary>
         public override string ToString()
 		{
-			if (Signature != null)
+			if (Signature is not null)
 			{
                 return base.ToString();
 			}

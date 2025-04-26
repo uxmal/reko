@@ -36,7 +36,7 @@ namespace Reko.Core
     public class NamingPolicy
     {
         /// <summary>
-        /// Creates a naming policy.
+        /// Creates an instance of the <see cref="NamingPolicy"/> class.
         /// </summary>
         public NamingPolicy()
         {
@@ -182,7 +182,9 @@ namespace Reko.Core
             return string.Format(fmt, this.Types.ShortPrefix(type), prefix, cbOffset);
         }
 
-
+        /// <summary>
+        /// Default instance of the <see cref="NamingPolicy"/> class.
+        /// </summary>
         public static readonly NamingPolicy Instance = new();
     }
 }

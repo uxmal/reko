@@ -51,10 +51,17 @@ namespace Reko.Core.Collections
         private readonly KeyCollection keyCollection;
         private readonly ValueCollection valueCollection;
 
+        /// <summary>
+        /// Constructs an empty <see cref="Collections.BTreeDictionary{TKey, TValue}"/>.
+        /// </summary>
         public BTreeDictionary() :
             this(Comparer<TKey>.Default) {
         }
 
+        /// <summary>
+        /// Constructs an empty <see cref="Collections.BTreeDictionary{TKey, TValue}"/>
+        /// using the given <see cref="IComparer{TKey}"/> to use for comparing keys.
+        /// </summary>
         public BTreeDictionary(IComparer<TKey> cmp)
         {
             this.Comparer = cmp ?? throw new ArgumentNullException(nameof(cmp));
@@ -65,6 +72,11 @@ namespace Reko.Core.Collections
             this.valueCollection = new ValueCollection(this);
         }
 
+        /// <summary>
+        /// Creates a <see cref="Collections.BTreeDictionary{TKey, TValue}"/> and
+        /// populates it with values from the given <paramref name="entries"/> dictionary.
+        /// </summary>
+        /// <param name="entries">Initial values.</param>
         public BTreeDictionary(IDictionary<TKey,TValue> entries) :
             this()
         {
@@ -73,6 +85,13 @@ namespace Reko.Core.Collections
             Populate(entries);
         }
 
+        /// <summary>
+        /// Creates a <see cref="Collections.BTreeDictionary{TKey, TValue}"/>
+        /// with the given <see cref="IComparer{TKey}"/> and
+        /// populates it with values from the given <paramref name="entries"/> dictionary.
+        /// </summary>
+        /// <param name="entries">Initial values.</param>
+        /// <param name="comparer">Comparer to use.</param>
         public BTreeDictionary(IDictionary<TKey,TValue> entries, IComparer<TKey> comparer) :
             this(comparer)
         {
@@ -325,11 +344,12 @@ namespace Reko.Core.Collections
             }
         }
 
+        /// <inheritdoc/>
         public TValue this[TKey key]
         {
             get
             {
-                if (root == null)
+                if (root is null)
                     throw new KeyNotFoundException();
                 var (value, found) = root.Get(key, this);
                 if (!found)
@@ -348,20 +368,32 @@ namespace Reko.Core.Collections
             }
         }
 
+        /// <summary>
+        /// <see cref="IComparer{TKey}"/> instance used to compare keys.
+        /// </summary>
         public IComparer<TKey> Comparer { get; }
 
         ICollection<TKey> IDictionary<TKey, TValue>.Keys => Keys;
 
         ICollection<TValue> IDictionary<TKey, TValue>.Values => Values;
 
+        /// <summary>
+        /// The keys of this collection.
+        /// </summary>
         public KeyCollection Keys => keyCollection;
 
+        /// <summary>
+        /// The values of this collection.
+        /// </summary>
         public ValueCollection Values => valueCollection;
 
+        /// <inheritdoc/>
         public int Count => root != null ? root.totalCount : 0;
 
+        /// <inheritdoc/>
         public bool IsReadOnly => false;
 
+        /// <inheritdoc/>
         public void Add(TKey key, TValue value)
         {
             EnsureRoot();
@@ -372,25 +404,29 @@ namespace Reko.Core.Collections
             // Validate(root);
         }
 
+        /// <inheritdoc/>
         public void Add(KeyValuePair<TKey, TValue> item)
         {
             Add(item.Key, item.Value);
         }
 
+        /// <inheritdoc/>
         public void Clear()
         {
             ++version;
             root = null;
         }
 
+        /// <inheritdoc/>
         public bool Contains(KeyValuePair<TKey, TValue> item)
         {
-            if (root == null)
+            if (root is null)
                 return false;
             var (value, found) = root.Get(item.Key, this);
             return found && object.Equals(item.Value, value);
         }
 
+        /// <inheritdoc/>
         public bool ContainsKey(TKey key)
         {
             if (root is null)
@@ -399,11 +435,18 @@ namespace Reko.Core.Collections
             return found;
         }
 
+        /// <summary>
+        /// Returns true if the BTreeDictionary contains the given <paramref name="value"/>.
+        /// </summary>
+        /// <param name="value">Value whose presence is to be tested.</param>
+        /// <returns>True if the value is present, false otherwise.</returns>
+        /// <remarks>This method is O(n) and will be slow on large collections.</remarks>
         public bool ContainsValue(TValue value)
         {
             return this.Any(e => e.Value!.Equals(value));
         }
 
+        /// <inheritdoc/>
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
         {
             if (array is null) throw new ArgumentNullException(nameof(array));
@@ -416,6 +459,7 @@ namespace Reko.Core.Collections
             }
         }
 
+        /// <inheritdoc/>
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
             if (root is null)
@@ -487,6 +531,7 @@ namespace Reko.Core.Collections
             return ~(totalBefore + i);
         }
 
+        /// <inheritdoc/>
         public bool Remove(TKey key)
         {
             if (root == null)
@@ -507,6 +552,7 @@ namespace Reko.Core.Collections
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public bool TryGetValue(TKey key, [NotNullWhen(returnValue: true)] out TValue value)
         {
             if (root == null)
@@ -647,28 +693,37 @@ namespace Reko.Core.Collections
                 this.btree = btree;
             }
 
+            /// <inheritdoc/>
             public int Count => btree.Count;
 
+            /// <inheritdoc/>
             public bool IsReadOnly => true;
 
+            /// <inheritdoc/>
             public abstract T this[int index] { get; }
-            
+
+            /// <inheritdoc/>
             public void Add(T item)
             {
                 throw new NotSupportedException();
             }
 
+            /// <inheritdoc/>
             public void Clear()
             {
                 throw new NotSupportedException();
             }
 
+            /// <inheritdoc/>
             public abstract bool Contains(T item);
 
+            /// <inheritdoc/>
             public abstract void CopyTo(T[] array, int arrayIndex);
 
+            /// <inheritdoc/>
             public abstract IEnumerator<T> GetEnumerator();
 
+            /// <inheritdoc/>
             public bool Remove(T item)
             {
                 throw new NotSupportedException();
@@ -687,10 +742,13 @@ namespace Reko.Core.Collections
             {
             }
 
+            /// <inheritdoc/>
             public override TKey this[int index] => btree.GetEntry(index).Key;
 
+            /// <inheritdoc/>
             public override bool Contains(TKey item) => btree.ContainsKey(item);
 
+            /// <inheritdoc/>
             public override void CopyTo(TKey[] array, int arrayIndex)
             {
                 if (array == null) throw new ArgumentNullException(nameof(array));
@@ -703,11 +761,20 @@ namespace Reko.Core.Collections
                 }
             }
 
+            /// <summary>
+            /// Index of the given key.
+            /// </summary>
+            /// <param name="item">Key whose index we are seeking.</param>
+            /// <returns>The index of the key, or -1 if it isn't present.</returns>
             public int IndexOf(TKey item) => btree.IndexOfKey(item);
 
+            /// <inheritdoc/>
             public override IEnumerator<TKey> GetEnumerator() => btree.Select(e => e.Key).GetEnumerator();
         }
 
+        /// <summary>
+        /// A collection of <typeparamref name="TValue"/> items.
+        /// </summary>
         public class ValueCollection : Collection<TValue>
         {
             internal ValueCollection(BTreeDictionary<TKey, TValue> btree) :
@@ -715,10 +782,17 @@ namespace Reko.Core.Collections
             {
             }
 
+            /// <summary>
+            /// Gets the entry at index <paramref name="index"/>.
+            /// </summary>
+            /// <param name="index">Index of the entry to retrieve.</param>
+            /// <returns>The retrieved value.</returns>
             public override TValue this[int index] => btree.GetEntry(index).Value;
 
+            /// <inheritdoc/>
             public override bool Contains(TValue item) => btree.ContainsValue(item);
 
+            /// <inheritdoc/>
             public override void CopyTo(TValue[] array, int arrayIndex)
             {
                 if (array == null) throw new ArgumentNullException(nameof(array));
@@ -732,6 +806,7 @@ namespace Reko.Core.Collections
                 }
             }
 
+            /// <inheritdoc/>
             public override IEnumerator<TValue> GetEnumerator() => btree.Select(e => e.Value).GetEnumerator();
         }
     }

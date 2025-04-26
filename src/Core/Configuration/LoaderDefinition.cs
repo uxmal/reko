@@ -18,14 +18,13 @@
  */
 #endregion
 
-using Reko.Core;
 using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
 
 namespace Reko.Core.Configuration
 {
+    /// <summary>
+    /// Describes an image loader.
+    /// </summary>
     public class LoaderDefinition
     {
         /// <summary>

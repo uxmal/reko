@@ -18,47 +18,77 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Core.Configuration
 {
-    //<!-- Raw files have no headers, so we need a hint from the user -->
-    //<RawFiles>
-    //  <RawFile Name="ms-dos-com" Arch="x86-real-16" Env="ms-dos" Base="0C00:0100">
-    //    <Entry Addr="0C00:0000" Name="MsDosCom_Start">
-    //      <Register Name="ax" Value="0" />
-    //    </Entry>
-    //  </RawFile>
-    //</RawFiles>
+    /// <summary>
+    /// Definition of a raw file. Since raw files have no headers, we need one
+    /// or more hints from the user, but some details may be available, or 
+    /// some reasonable defaults may be provided.
+    /// </summary>
+    /// <remarks>
+    /// <code>
+    ///&lt;RawFiles&gt;
+    ///  &lt;RawFile Name="ms-dos-com" Arch="x86-real-16" Env="ms-dos" Base="0C00:0100"&gt;
+    ///    &lt;Entry Addr="0C00:0000" Name="MsDosCom_Start"&gt;
+    ///      &lt;Register Name="ax" Value="0" /&gt;
+    ///    &lt;/Entry&gt;
+    ///  &lt;/RawFile&gt;
+    ///&lt;/RawFiles&gt;
+    /// </code>
+    /// </remarks>
 
     [DebuggerDisplay("{Name}")]
     public class RawFileDefinition
     {
+        /// <summary>
+        /// Creates an instance of the <see cref="RawFileDefinition"/> class.
+        /// </summary>
         public RawFileDefinition()
         {
             this.EntryPoint = new EntryPointDefinition();
         }
 
+        /// <summary>
+        /// The identifier for this raw file definition
+        /// </summary>
         public string? Name { get; set; }
 
+        /// <summary>
+        /// A human-friendly description of this raw file format.
+        /// </summary>
         public string? Description { get; set; }
 
+        /// <summary>
+        /// Default architecture to use, if any.
+        /// </summary>
         public string? Architecture { get; set; }
 
+        /// <summary>
+        /// Default platform to use, if any.
+        /// </summary>
         public string? Environment { get; set; }
 
+        /// <summary>
+        /// Default loading address to use, if any.
+        /// </summary>
         public string? BaseAddress { get; set; }
 
+        /// <summary>
+        /// Type name of the loader of this class.
+        /// </summary>
         public string? Loader { get; set; }
 
+        /// <summary>
+        /// Entry point, if any.
+        /// </summary>
         public EntryPointDefinition EntryPoint { get; set; }
     }
 
+    /// <summary>
+    /// Defines an entry point in a binary file.
+    /// </summary>
     //    <Entry Addr="0C00:0000" Name="MsDosCom_Start">
     //      <Register Name="ax" Value="0" />
     //    </Entry>

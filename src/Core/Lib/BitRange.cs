@@ -28,8 +28,16 @@ namespace Reko.Core.Lib
     /// </summary>
     public readonly struct BitRange : IComparable<BitRange>
     {
+        /// <summary>
+        /// The empty bit range.
+        /// </summary>
         public static readonly BitRange Empty = new(0, 0);
 
+        /// <summary>
+        /// Constructs a bit range.
+        /// </summary>
+        /// <param name="lsb">Inclusive lower endpoint of the range.</param>
+        /// <param name="msb">Exclusive upper endpoint of the range.</param>
         public BitRange(int lsb, int msb)
         {
             Lsb = (short) lsb;
@@ -47,6 +55,10 @@ namespace Reko.Core.Lib
         public short Msb { get; }
 
 
+        /// <summary>
+        /// Get the bitmask corresponding to the bitrange.
+        /// </summary>
+        /// <returns></returns>
         public ulong BitMask()
         {
             var low = 1ul << Lsb;
@@ -54,26 +66,44 @@ namespace Reko.Core.Lib
                 - low;
         }
 
+        /// <summary>
+        /// Returns the extent of the bitrange.
+        /// </summary>
         public int Extent
         {
             get { return Math.Max(Msb - Lsb, 0); }
         }
 
+        /// <summary>
+        /// True if the bit range is empty.
+        /// </summary>
         public bool IsEmpty
         {
             get { return Lsb >= Msb; }
         }
 
+        /// <summary>
+        /// Compares this bit range to another bit range.
+        /// </summary>
+        /// <param name="that">The other bit range.</param>
+        /// <returns></returns>
         public int CompareTo(BitRange that)
         {
             return Msb - Lsb - (that.Msb - that.Lsb);
         }
 
+        /// <summary>
+        /// Determines whether this bitrange covers another bit range.
+        /// </summary>
+        /// <param name="that">Another bit range.</param>
+        /// <returns>Returns true if the other bit range is a subset
+        /// of this bit range.</returns>
         public bool Covers(BitRange that)
         {
             return Lsb <= that.Lsb && Msb >= that.Msb;
         }
 
+        /// <inheritdoc/>
         public override bool Equals(object? obj)
         {
             if (obj is BitRange that)
@@ -83,6 +113,7 @@ namespace Reko.Core.Lib
             return false;
         }
 
+        /// <inheritdoc/>
         public override int GetHashCode()
         {
             if (IsEmpty)
@@ -90,11 +121,22 @@ namespace Reko.Core.Lib
             return Lsb.GetHashCode() ^ Msb.GetHashCode() * 5;
         }
 
+        /// <summary>
+        /// Returns true if this bit range contains the given bit position.
+        /// </summary>
+        /// <param name="bitpos">The bit position to test.</param>
+        /// <returns>True if the bit range contains the bit position; otherwise false.
+        /// </returns>
         public bool Contains(int bitpos)
         {
             return Lsb <= bitpos && bitpos < Msb;
         }
 
+        /// <summary>
+        /// Returns the intersection with another bit range.
+        /// </summary>
+        /// <param name="that">The other bit range.</param>
+        /// <returns>The resulting intersection.</returns>
         public BitRange Intersect(BitRange that)
         {
             int lsb = Math.Max(Lsb, that.Lsb);
@@ -102,15 +144,29 @@ namespace Reko.Core.Lib
             return new BitRange(lsb, msb);
         }
 
+        /// <summary>
+        /// Creates a new bit range offset from this one.
+        /// </summary>
+        /// <param name="offset">Amount to offset.</param>
+        /// <returns>Resulting offset image.</returns>
         public BitRange Offset(int offset)
         {
             return new BitRange(Lsb + offset, Msb + offset);
         }
 
+        /// <summary>
+        /// Check whether this range overlaps part or all of the bit range
+        /// <paramref name="that"/>.
+        /// </summary>
+        /// <param name="that">Bit range to check.</param>
+        /// <returns>True if this bit range overlaps part of <paramref name="that"/>;
+        /// otherwise false.</returns>
         public bool Overlaps(BitRange that)
         {
             return that.Lsb < Msb && Lsb < that.Msb;
         }
+
+#pragma warning disable CS1591
 
         public static BitRange operator |(BitRange a, BitRange b)
         {
@@ -164,6 +220,7 @@ namespace Reko.Core.Lib
             return a.Lsb != b.Lsb || a.Msb != b.Msb;
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             if (IsEmpty)

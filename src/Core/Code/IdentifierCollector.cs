@@ -31,11 +31,16 @@ namespace Reko.Core.Code
     {
         private readonly IDictionary<string, Identifier> identifiers;
 
+        /// <summary>
+        /// Constructs an instance of <see cref="IdentifierCollector"/>.
+        /// </summary>
+        /// <param name="ids">Dictionary into which identifiers are collected.</param>
         public IdentifierCollector(IDictionary<string, Identifier> ids)
         {
             this.identifiers = ids;
         }
 
+        /// <inheritdoc/>
         public override void VisitIdentifier(Identifier id)
         {
             identifiers[id.Name] = id;

@@ -46,7 +46,7 @@ namespace Reko.Core
     public interface EvaluationContext
     {
         /// <summary>
-        /// The endianness used when evaluating.
+        /// Gets the endianness of the program being analyzed.
         /// </summary>
         EndianServices Endianness { get; }
 
@@ -123,20 +123,21 @@ namespace Reko.Core
         void SetValueEa(Expression ea, Expression value);
 
         /// <summary>
-        /// Given the segmented effective address consisting of the <paramref name="basePointer"/>
-        /// and the <paramref name="offset"/>, set the value of the memory
-        /// at that address to <paramref name="value"/>.
+        /// Set the value at the memory address specified by <paramref name="basePointer"/>
+        /// and <paramref name="ea"/> to the <paramref name="value"/>.
         /// </summary>
-        /// <param name="basePointer">Base pointer or selector.</param>
-        /// <param name="offset">Effective address.</param>
-        /// <param name="value">Value to wrote to that address.</param>
-        void SetValueEa(Expression basePointer, Expression offset, Expression value);
+        /// <param name="basePointer"></param>
+        /// <param name="ea">Effective address of the address whose value is to be set.</param>
+        /// <param name="value">Value to set.</param>
+        void SetValueEa(Expression basePointer, Expression ea, Expression value);
 
         /// <summary>
-        /// Returns true if the identifier is used in a <see cref="PhiFunction"/>.
+        /// Determines whether the identifier <paramref name="id"/> is used in a
+        /// <see cref="PhiFunction"/>.
         /// </summary>
         /// <param name="id">Identifier to test.</param>
-        /// <returns>True if the identifier is used in a <see cref="PhiFunction"/>.
+        /// <returns>True if the identifier is used in a <see cref="PhiFunction"/>;
+        /// otherwise false.
         /// </returns>
         bool IsUsedInPhi(Identifier id);
 

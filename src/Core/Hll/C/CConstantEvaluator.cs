@@ -23,42 +23,74 @@ using System.Collections.Generic;
 
 namespace Reko.Core.Hll.C
 {
+    /// <summary>
+    /// Evaluate a C expression to a constant value.
+    /// </summary>
     public class CConstantEvaluator : CExpressionVisitor<object>
     {
         private IPlatform platform;
         private Dictionary<string, int> constants;
 
+        /// <summary>
+        /// Constructs an instance of the <see cref="CConstantEvaluator"/> class.
+        /// </summary>
+        /// <param name="platform">Operating environment in which to evaluate the 
+        /// expression.</param>
+        /// <param name="constants">Map from the names of known constants to their values.
+        /// </param>
         public CConstantEvaluator(IPlatform platform, Dictionary<string, int> constants)
         {
             this.platform = platform;
             this.constants = constants;
         }
     
+        /// <summary>
+        /// Evaluates a C constant.
+        /// </summary>
+        /// <param name="constExp"></param>
+        /// <returns>The constant's value.</returns>
         public object VisitConstant(ConstExp constExp)
         {
             return constExp.Const;
         }
 
+        /// <summary>
+        /// Evaluates a C identifier.
+        /// </summary>
+        /// <param name="id">Identifier whose value is to be evaluated.</param>
+        /// <returns>The current value of that identifier.</returns>
         public object VisitIdentifier(CIdentifier id)
         {
             return constants[id.Name];
         }
 
+        /// <summary>
+        /// Evaluates a C function application.
+        /// </summary>
+        /// <param name="application"></param>
+        /// <returns>The result of evaluating the function.</returns>
         public object VisitApplication(Application application)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public object VisitArrayAccess(CArrayAccess aref)
         {
             throw new NotFiniteNumberException();
         }
 
+        /// <inheritdoc/>
         public object VisitMember(MemberExpression memberExpression)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Evaluates a C unary expression.
+        /// </summary>
+        /// <param name="unary">C unary expression to evaluate.</param>
+        /// <returns>The evaluated expression.</returns>
         public object VisitUnary(CUnaryExpression unary)
         {
             switch (unary.Operation)
@@ -71,6 +103,12 @@ namespace Reko.Core.Hll.C
             }
         }
 
+        /// <summary>
+        /// Evaluates a C binary expression.
+        /// </summary>
+        /// <param name="bin">The C binary expression to evaluate.</param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
         public object VisitBinary(CBinaryExpression bin)
         {
             var left = bin.Left.Accept(this);
@@ -100,16 +138,19 @@ namespace Reko.Core.Hll.C
             }
         }
 
+        /// <inheritdoc/>
         public object VisitAssign(AssignExpression assignExpression)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public object VisitCast(CastExpression castExpression)
         {
             return castExpression.Expression.Accept(this);
         }
 
+        /// <inheritdoc/>
         public object VisitConditional(ConditionalExpression cond)
         {
             if (Convert.ToBoolean(cond.Condition.Accept(this)))
@@ -122,11 +163,13 @@ namespace Reko.Core.Hll.C
             }
         }
 
+        /// <inheritdoc/>
         public object VisitIncrement(IncrementExpression incrementExpression)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public object VisitSizeof(SizeofExpression sizeOf)
         {
             var bits = platform.GetBitSizeFromCBasicType(CBasicType.Int);

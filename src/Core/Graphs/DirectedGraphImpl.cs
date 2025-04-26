@@ -38,6 +38,9 @@ namespace Reko.Core.Graphs
 		private int cEdges;
 		private NodeCollection nodeCollection;
 
+        /// <summary>
+        /// Creates an instance of the <see cref="DirectedGraphImpl{T}"/> class.
+        /// </summary>
 		public DirectedGraphImpl()
 		{
 			this.nodeCollection = new NodeCollection(this);
@@ -78,6 +81,7 @@ namespace Reko.Core.Graphs
 			return cNodes++;
 		}
 
+        /// <inheritdoc/>
 		public void AddEdge(T from, T to)
 		{
 			int iFrom = NodeIndex(from);
@@ -132,6 +136,7 @@ namespace Reko.Core.Graphs
 			++nodes[iTo].cPred;
 		}
 
+        /// <inheritdoc/>
         public bool ContainsEdge(T from, T to)
         {
             if (edges == null)
@@ -171,16 +176,19 @@ namespace Reko.Core.Graphs
 				return -1;
 		}
 
+        /// <inheritdoc/>
 		public ICollection<T> Nodes
 		{
 			get { return nodeCollection; }
 		}
 
+        /// <inheritdoc/>
 		public ICollection<T> Predecessors(T o)
 		{
 			return CreateEdgeCollectionCore(o, false);
 		}
 
+        /// <inheritdoc/>
 		public void RemoveEdge(T from, T to)
 		{
 			int iFrom = NodeIndex(from);
@@ -229,6 +237,7 @@ namespace Reko.Core.Graphs
 			--nodes[iTo].cPred;
 		}
 
+        /// <inheritdoc/>
 		public ICollection<T> Successors(T node)
 		{
 			return CreateEdgeCollectionCore(node, true);

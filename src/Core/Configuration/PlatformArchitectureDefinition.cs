@@ -31,6 +31,9 @@ namespace Reko.Core.Configuration
     /// </summary>
     public class PlatformArchitectureDefinition
     {
+        /// <summary>
+        /// Creates a platform architecture definition.
+        /// </summary>
         public PlatformArchitectureDefinition()
         {
             this.TrashedRegisters = new List<string>();
@@ -40,12 +43,39 @@ namespace Reko.Core.Configuration
             this.CallingConventions = new List<string>();
         }
 
+        /// <summary>
+        /// The name of the architecture.
+        /// </summary>
         public string? Name { get; set; }
+
+        /// <summary>
+        /// The caller-save registers of this platform's ABI.
+        /// </summary>
         public List<string> TrashedRegisters { get; set; }
+
+        /// <summary>
+        /// The callee-save registers of this Platform's ABI.
+        /// </summary>
         public List<string> PreservedRegisters { get; set; }
+
+        /// <summary>
+        /// Architecture-specific type libraries used by this platform.
+        /// </summary>
         public List<TypeLibraryDefinition> TypeLibraries { get; set; }
+
+        /// <summary>
+        /// Typical procedure prologs for this architecture.
+        /// </summary>
         public List<MaskedPattern> ProcedurePrologs { get; set; }
+
+        /// <summary>
+        /// The names of calling conventions used in this architecture.
+        /// </summary>
         public List<string> CallingConventions { get; set; }
+
+        /// <summary>
+        /// The name of the default calling convention of this architecture.
+        /// </summary>
         public string? DefaultCallingConvention { get; set; }
     }
 }

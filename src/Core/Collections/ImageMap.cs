@@ -33,28 +33,43 @@ namespace Reko.Core.Collections
     /// </summary>
     public class ImageMap
     {
+        /// <summary>
+        /// Constructs an instance of <see cref="ImageMap"/>.
+        /// </summary>
+        /// <param name="addrBase">The base address of the image map.</param>
         public ImageMap(Address addrBase)
         {
             BaseAddress = addrBase;
             Items = new ConcurrentBTreeDictionary<Address, ImageMapItem>(new ItemComparer());
         }
 
+        /// <summary>
+        /// Constructs a copy if the image map.
+        /// </summary>
+        /// <param name="that"></param>
         public ImageMap(ImageMap that)
         {
             BaseAddress = that.BaseAddress;
             Items = new ConcurrentBTreeDictionary<Address, ImageMapItem>(that.Items);
         }
 
+        /// <summary>
+        /// The base address of the image map.
+        /// </summary>
         public Address BaseAddress { get; }
 
+        /// <summary>
+        /// The items contained in the image map.
+        /// </summary>
         public ConcurrentBTreeDictionary<Address, ImageMapItem> Items { get; }
 
         /// <summary>
-        /// Adds an image map item at the specified address. 
+        /// Adds an image map item at the specified address, possibly splitting
+        /// items that were already at that location.
         /// </summary>
-        /// <param name="addr"></param>
-        /// <param name="itemNew"></param>
-        /// <returns></returns>
+        /// <param name="addr">Address at which to add the item.</param>
+        /// <param name="itemNew">The item to add.</param>
+        /// <returns>An item corresponding to the added item.</returns>
         public ImageMapItem AddItem(Address addr, ImageMapItem itemNew)
         {
             itemNew.Address = addr;
@@ -106,6 +121,11 @@ namespace Reko.Core.Collections
             }
         }
 
+        /// <summary>
+        /// Add a sized <paramref name="itemNew"/> to the image map at the given <paramref name="addr"/>.
+        /// </summary>
+        /// <param name="addr">Address at which to add the item.</param>
+        /// <param name="itemNew">Item to add.</param>
         public void AddItemWithSize(Address addr, ImageMapItem itemNew)
         {
             if (!TryFindItem(addr, out var item))

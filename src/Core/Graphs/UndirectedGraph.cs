@@ -27,11 +27,41 @@ using System.Text;
 
 namespace Reko.Core.Graphs
 {
+    /// <summary>
+    /// Interface describing an undirected graph.
+    /// </summary>
+    /// <typeparam name="T">Node type.</typeparam>
     public interface UndirectedGraph<T>
     {
+        /// <summary>
+        /// Returns the neighbors of the given node. 
+        /// </summary>
+        /// <param name="node">Node whose neighbors are to be retrieved.</param>
+        /// <returns>A collection of the neighbors of <paramref name="node"/>.</returns>
         ICollection<T> Neighbors(T node);
+
+        /// <summary>
+        /// Adds an edge between two nodes.
+        /// </summary>
+        /// <param name="nodeFrom">One node.</param>
+        /// <param name="nodeTo">Other node.</param>
         void AddEdge(T nodeFrom, T nodeTo);
+
+        /// <summary>
+        /// Removes an edge between two nodes.
+        /// </summary>
+        /// <param name="nodeFrom">One node.</param>
+        /// <param name="nodeTo">Other node.</param>
         void RemoveEdge(T nodeFrom, T nodeTo);
+
+        /// <summary>
+        /// Determines whether there is a node between two nodes.
+        /// </summary>
+        /// <param name="nodeFrom">One node.</param>
+        /// <param name="nodeTo">Other node.</param>
+        /// <returns>Returns true if an edge exists in the graph between the
+        /// two nodes; otherwise false.
+        /// </returns>
         bool ContainsEdge(T nodeFrom, T nodeTo);
     }
 }

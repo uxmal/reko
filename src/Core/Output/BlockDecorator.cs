@@ -31,17 +31,38 @@ namespace Reko.Core.Output
     /// </summary>
     public class BlockDecorator
     {
+        /// <summary>
+        /// If true, render the edges of the block graph.
+        /// </summary>
         public bool ShowEdges { get; set; }
 
+        /// <summary>
+        /// Called before the block is rendered. Derived classes can override this
+        /// to write additional information before the block is rendered.
+        /// </summary>
+        /// <param name="block">Block to render.</param>
+        /// <param name="lines">A list of strings, to collect the output.</param>
         public virtual void BeforeBlock(Block block, List<string> lines)
         {
         }
 
+        /// <summary>
+        /// Called after the block is rendered. Derived classes can override this
+        /// to write additional information before the block is rendered. By default,
+        /// this method renders the graph edges after the block contents.
+        /// </summary>
+        /// <param name="block">Block to render.</param>
+        /// <param name="lines">A list of strings, to collect the output.</param>
         public virtual void AfterBlock(Block block, List<string> lines)
         {
              WriteBlockGraphEdges(block, lines);
         }
 
+        /// <summary>
+        /// Render the basic block's successor edges.
+        /// </summary>
+        /// <param name="block">Basic block whose successor edges are to be rendered.</param>
+        /// <param name="lines">A list of strings, to collect the output.</param>
         public virtual void WriteBlockGraphEdges(Block block, List<string> lines)
         {
             if (ShowEdges && block.Succ.Count > 0)

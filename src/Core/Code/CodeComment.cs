@@ -25,30 +25,42 @@ namespace Reko.Core.Code
     /// </summary>
     public class CodeComment : Instruction
     {
+        /// <summary>
+        /// Constructs a comment "instruction".
+        /// </summary>
+        /// <param name="comment">The text of the comment.</param>
         public CodeComment(string comment)
         {
             this.Text = comment;
         }
 
+        /// <inheritdoc/>
         public override bool IsControlFlow => false;
 
+        /// <summary>
+        /// The text of the comment.
+        /// </summary>
         public string Text { get; set; }
 
+        /// <inheritdoc/>
         public override Instruction Accept(InstructionTransformer xform)
         {
             return xform.TransformComment(this);
         }
 
+        /// <inheritdoc/>
         public override void Accept(InstructionVisitor v)
         {
             v.VisitComment(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(InstructionVisitor<T> visitor)
         {
             return visitor.VisitComment(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(InstructionVisitor<T, C> visitor, C ctx)
         {
             return visitor.VisitComment(this, ctx);

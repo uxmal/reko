@@ -286,10 +286,10 @@ namespace Reko.Core
 		}
 
 		/// <summary>
-		/// Ensures a register access in this function. 
+		/// Ensures a register accessed in this function. 
 		/// </summary>
-		/// <param name="reg">Register to use.</param>
-		/// <returns></returns>
+		/// <param name="reg">Register storage backing the identifier.</param>
+		/// <returns>The resulting identifier.</returns>
 		public Identifier EnsureRegister(RegisterStorage reg)
 		{
 			Identifier? id = FindRegister(reg);
@@ -323,6 +323,7 @@ namespace Reko.Core
             return idSeq;
         }
 
+        /// <inheritdoc />
 		public Identifier EnsureSequence(DataType dt, params Storage [] elements)
         {
 			Identifier? idSeq = FindSequence(elements);
@@ -333,6 +334,7 @@ namespace Reko.Core
 			return idSeq;
 		}
 
+        [Obsolete("", true)]
         public Identifier EnsureSequence(DataType dt, string name, params Storage [] elements)
         {
             Identifier? idSeq = FindSequence(elements);

@@ -32,10 +32,24 @@ namespace Reko.Core.Code
     {
         private int localStackOffset;
 
+        /// <summary>
+        /// Current <see cref="Frame"/> instance.
+        /// </summary>
         public abstract Frame Frame { get; }
 
+        /// <summary>
+        /// Emit a specific <see cref="Instruction"/>.
+        /// </summary>
+        /// <param name="instr">Instruction to emit.</param>
+        /// <returns>The resulting <see cref="Statement"/>.</returns>
         public abstract Statement Emit(Instruction instr);
 
+        /// <summary>
+        /// Emits an <see cref="AliasAssignment"/>.
+        /// </summary>
+        /// <param name="dst">Destination of the assignment.</param>
+        /// <param name="src">Source of the assignment.</param>
+        /// <returns>The created alias assignment.</returns>
         public virtual AliasAssignment Alias(Identifier dst, Expression src)
         {
             var ass = new AliasAssignment(dst, src);
@@ -43,6 +57,12 @@ namespace Reko.Core.Code
             return ass;
         }
 
+        /// <summary>
+        /// Emits an <see cref="Assignment"/>.
+        /// </summary>
+        /// <param name="dst">Destination of the assignment.</param>
+        /// <param name="src">Source of the assignment.</param>
+        /// <returns>The created assignment.</returns>
         public virtual Assignment Assign(Identifier dst, Expression src)
         {
             var ass = new Assignment(dst, src);
@@ -50,55 +70,95 @@ namespace Reko.Core.Code
             return ass;
         }
 
+        /// <summary>
+        /// Emits an <see cref="Assignment"/>. This overload creates 
+        /// a constant assignment, where the constant is the same size
+        /// as the <paramref name="dst"/> identifier.
+        /// </summary>
+        /// <param name="dst">Destination of the assignment.</param>
+        /// <param name="n">Constant source of the assignment.</param>
+        /// <returns>The created assignment.</returns>
         public virtual Assignment Assign(Identifier dst, int n)
         {
             return Assign(dst, Constant.Create(dst.DataType, n));
         }
 
+        /// <summary>
+        /// Emits an <see cref="Assignment"/>. This overload creates 
+        /// a constant boolean assignment, where the constant is the same size
+        /// as the <paramref name="dst"/> identifier.
+        /// </summary>
+        /// <param name="dst">Destination of the assignment.</param>
+        /// <param name="f">Constant boolean source of the assignment.</param>
+        /// <returns>The created assignment.</returns>
         public virtual Assignment Assign(Identifier dst, bool f)
         {
             return Assign(dst, f ? Constant.True() : Constant.False());
         }
 
+        /// <summary>
+        /// Emits a <see cref="CodeComment"/>.
+        /// </summary>
+        /// <param name="comment">The text of the comment.</param>
         public void Comment(string comment)
         {
             Emit(new CodeComment(comment));
         }
 
+        /// <summary>
+        /// Emits a <see cref="DefInstruction"/>.
+        /// </summary>
+        /// <param name="id">Identifier defined by the <see cref="DefInstruction"/>.</param>
         public void Def(Identifier id)
         {
             Emit(new DefInstruction(id));
         }
 
-        public GotoInstruction Goto(Expression dest)
+        /// <summary>
+        /// Emits a <see cref="GotoInstruction"/> to the given <paramref name="target"/>
+        /// </summary>
+        /// <param name="target">Target of the goto instruction.</param>
+        /// <returns>The created goto instruction.</returns>
+        public GotoInstruction Goto(Expression target)
         {
-            var gi = new GotoInstruction(dest);
+            var gi = new GotoInstruction(target);
             Emit(gi);
             return gi;
         }
 
-        public virtual GotoInstruction Goto(uint linearAddress)
-        {
-            var gi = new GotoInstruction(Address.Ptr32(linearAddress));
-            Emit(gi);
-            return gi;
-        }
-
+        /// <summary>
+        /// Emits a <c>reg = Mem[ea]</c> assignment. The assignment's size 
+        /// is determined by the destination, <paramref name="reg"/>.
+        /// </summary>
+        /// <param name="reg">Assignment destination.</param>
+        /// <param name="ea">Effective address to be dereferenced.</param>
         public void LoadId(Identifier reg, Expression ea)
         {
             Assign(reg, new MemoryAccess(MemoryStorage.GlobalMemory, ea, reg.DataType));
         }
 
+        /// <summary>
+        /// Generates a <see cref="ReturnInstruction"/> that returns nothing.
+        /// </summary>
         public virtual void Return()
         {
             Emit(new ReturnInstruction());
         }
 
+        /// <summary>
+        /// Generates a <see cref="ReturnInstruction"/> that returns an expression.
+        /// </summary>
+        /// <param name="exp">Expression to be returned.</param>
         public virtual void Return(Expression exp)
         {
             Emit(new ReturnInstruction(exp));
         }
 
+        /// <summary>
+        /// Generates a <see cref="Code.SideEffect"/>.
+        /// </summary>
+        /// <param name="side">Expression evaluated for its side effect.</param>
+        /// <returns>The resulting <see cref="Statement"/>.</returns>
         public Statement SideEffect(Expression side)
         {
             return Emit(new SideEffect(side));
@@ -140,6 +200,14 @@ namespace Reko.Core.Code
             return Emit(s);
         }
 
+        /// <summary>
+        /// Takes the effective address <paramref name="ea"/>
+        /// and wraps it in a memory access expression. The resulting expression
+        /// is used to generate the l-value of a <see cref="Store" /> instruction.
+        /// </summary>
+        /// <param name="mem">Identifier for the memory space to use.</param>
+        /// <param name="ea">Effective address to be wrapped.</param>
+        /// <param name="src">R-Value.</param>
         public Statement MStore(Identifier mem, Expression ea, Expression src)
         {
             var s = new Store(new MemoryAccess(mem, ea, src.DataType), src);
@@ -235,6 +303,12 @@ namespace Reko.Core.Code
             return Frame.CreateTemporary(name, type);
         }
 
+
+        /// <summary>
+        /// Generate a <see cref="UseInstruction"/> using the given identifier.
+        /// </summary>
+        /// <param name="id">Identifier to mark as used.</param>
+        /// <returns></returns>
         public Statement Use(Identifier id)
         {
             return Emit(new UseInstruction(id));

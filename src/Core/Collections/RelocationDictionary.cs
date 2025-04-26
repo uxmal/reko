@@ -49,18 +49,35 @@ namespace Reko.Core.Collections
             }
         }
 
+        /// <summary>
+        /// Add a reference to a relocated pointer.
+        /// </summary>
+        /// <param name="linAddress">Address at which the relocation occurred.</param>
+        /// <param name="pointer">Relocated pointer value.</param>
         public void AddPointerReference(ulong linAddress, uint pointer)
         {
             var c = Constant.Create(PrimitiveType.Ptr32, pointer);
             map.Add(linAddress, c);
         }
 
+        /// <summary>
+        /// Add a reference to a relocated segment selector.
+        /// </summary>
+        /// <param name="linAddress">Address at which the relocation occurred.</param>
+        /// <param name="segmentSelector">Relocated selector value.</param>
         public void AddSegmentReference(ulong linAddress, ushort segmentSelector)
         {
             var c = Constant.Create(PrimitiveType.SegmentSelector, segmentSelector);
             map.Add(linAddress, c);
         }
 
+        /// <summary>
+        /// Returns true if this relocation dictionary contains a relocation
+        /// at <paramref name="linAddress"/>.
+        /// </summary>
+        /// <param name="linAddress">Address to check.</param>
+        /// <returns>True if there is a relocation at the given address; otherwise false.
+        /// </returns>
         public bool Contains(uint linAddress)
         {
             return map.ContainsKey(linAddress);
@@ -70,7 +87,9 @@ namespace Reko.Core.Collections
         /// Returns true if the specified address + length partially overlaps
         /// a relocation. 
         /// </summary>
-        /// <returns></returns>
+        /// <returns>True if a relocated address is located in the specified
+        /// range; otherwise false.
+        /// </returns>
         public bool Overlaps(Address addr, uint length)
         {
             ulong linAddr = addr.ToLinear();
@@ -99,11 +118,16 @@ namespace Reko.Core.Collections
             return false;
         }
 
-        public int Count
-        {
-            get { return map.Count; }
-        }
+        /// <summary>
+        /// Gets the number of items in the relocation dictionary.
+        /// </summary>
+        public int Count => map.Count;
 
+
+        /// <summary>
+        /// Dumps the contants of the relocation dictionary to debug output.
+        /// </summary>
+        /// <param name="addrBase"></param>
         [Conditional("DEBUG")]
         public void Dump(Address addrBase)
         {

@@ -34,20 +34,25 @@ namespace Reko.Core.Lib
     /// </remarks>
     public readonly struct StridedInterval
     {
-        public readonly long Low;
-        public readonly long High;
-        public readonly int Stride;
+        public readonly long Low { get; }
+        public readonly long High { get; }
+        public readonly int Stride { get; }
 
-        // The empty set.
+        /// <summary>
+        /// The empty set.
+        /// </summary>
         public static StridedInterval Empty { get; } = new StridedInterval(-1, 0, 0);
-        // The universal set.
+
+        /// <summary>
+        /// The universal set.
+        /// </summary>
         public static StridedInterval All { get; } = new StridedInterval(1, long.MinValue, long.MaxValue);
 
         /// <summary>
         /// Creates a strided interval containing a single value <paramref name="c"/>.
         /// </summary>
         /// <param name="c"></param>
-        /// <returns></returns>
+        /// <returns>A strided interval of a single value.</returns>
         public static StridedInterval Constant(Constant c)
         {
             long v = c.ToInt64();
@@ -70,10 +75,10 @@ namespace Reko.Core.Lib
             Stride = stride;
         }
 
-        public bool IsEmpty
-        {
-            get { return Stride < 0; }
-        }
+        /// <summary>
+        /// Is true of the interval is empty.
+        /// </summary>
+        public bool IsEmpty => Stride < 0;
 
         /// <inheritdoc/>
         public override string ToString()

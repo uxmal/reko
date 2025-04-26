@@ -19,7 +19,6 @@
 #endregion
 
 using Reko.Core.Types;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -31,9 +30,9 @@ namespace Reko.Core.Expressions
 	public class PhiFunction : AbstractExpression
 	{
         /// <summary>
-        /// Creates a new instance of the <see cref="PhiFunction"/> class.
+        /// Constructs a phi function.
         /// </summary>
-        /// <param name="joinType">The data type of the phi function.</param>
+        /// <param name="joinType">The datatype of the phi function.</param>
         /// <param name="arguments">The arguments of the phi function.</param>
 		public PhiFunction(DataType joinType, params PhiArgument[] arguments) : base(joinType)
 		{
@@ -86,11 +85,10 @@ namespace Reko.Core.Expressions
     public readonly struct PhiArgument
     {
         /// <summary>
-        /// Creates an instance of a phi function argument.
+        /// Constructs a phi function argument.
         /// </summary>
-        /// <param name="block">The <see cref="Block">basic block</see> from which
-        /// this argument came.</param>
-        /// <param name="value">The value of this argument.</param>
+        /// <param name="block">The <see cref="Block"/> from which the value comes.</param>
+        /// <param name="value">The value.</param>
         public PhiArgument(Block block, Expression value)
         {
             this.Value = value;

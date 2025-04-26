@@ -36,21 +36,46 @@ namespace Reko.Core.Output
     {
         private readonly Program program;
 
+        /// <summary>
+        /// Creates a <see cref="Dumper"/> for the given <see cref="Program"/>.
+        /// </summary>
+        /// <param name="program">Program to dump.</param>
         public Dumper(Program program)
 		{
             this.program = program;
 		}
 
+        /// <summary>
+        /// If true, the disassembler will render instructions in a canonical form.
+        /// If false, pseudoinstructions will be rendered where possible.
+        /// </summary>
         public bool RenderInstructionsCanonically { get; set; }
+
+        /// <summary>
+        /// If true, the disassembler will show the address of each instruction.
+        /// </summary>
         public bool ShowAddresses { get; set; }
+
+        /// <summary>
+        /// If true, the disassembler will show the raw bytes of each instruction.
+        /// </summary>
         public bool ShowCodeBytes { get; set; }
 
+        /// <summary>
+        /// Dumps the program to the given formatter.
+        /// </summary>
+        /// <param name="formatter">Output sink.</param>
         public void Dump(Formatter formatter)
         {
             var mappedItems = program.GetItemsBySegment();
             Dump(mappedItems, formatter);
         }
 
+        /// <summary>
+        /// Dumps the segment items to the given formatter.
+        /// </summary>
+        /// <param name="segmentItems">Segment items to dump.</param>
+        /// <param name="formatter">Output sink.</param>
         public void Dump(Dictionary<ImageSegment, List<ImageMapItem>> segmentItems, Formatter formatter)
         {
             foreach (var segmentEntry in segmentItems)
@@ -163,38 +188,69 @@ namespace Reko.Core.Output
             }
         }
 
-        public void DumpData(SegmentMap map, IProcessorArchitecture arch, Address address, int cbBytes, Formatter stm)
+        /// <summary>
+        /// Dumps the data at the given address in the given segment.
+        /// </summary>
+        /// <param name="map">Segment map of the program.</param>
+        /// <param name="arch">Processor architecture to use.</param>
+        /// <param name="address">Starting address.</param>
+        /// <param name="cUnits">Number of storage units to dump.</param>
+        /// <param name="formatter">Output sink.</param>
+        public void DumpData(SegmentMap map, IProcessorArchitecture arch, Address address, int cUnits, Formatter formatter)
         {
-            if (cbBytes < 0)
+            if (cUnits < 0)
                 throw new ArgumentException("Must be a nonnegative number.", "cbBytes"); 
-            DumpData(map, arch, address, (uint)cbBytes, stm);
+            DumpData(map, arch, address, (uint)cUnits, formatter);
         }
 
-        public void DumpData(SegmentMap map, IProcessorArchitecture arch, AddressRange range, Formatter stm)
+        /// <summary>
+        /// Dumps the data at the given address in the given segment.
+        /// </summary>
+        /// <param name="map">Segment map of the program.</param>
+        /// <param name="arch">Processor architecture to use.</param>
+        /// <param name="range">A range of addresses to render.</param>
+        /// <param name="formatter">Output sink.</param>
+        public void DumpData(SegmentMap map, IProcessorArchitecture arch, AddressRange range, Formatter formatter)
         {
-            DumpData(map, arch, range.Begin, range.End - range.Begin, stm);
+            DumpData(map, arch, range.Begin, range.End - range.Begin, formatter);
         }
 
-        public void DumpData(SegmentMap map, IProcessorArchitecture arch, Address address, long cbBytes, Formatter stm)
+        /// <summary>
+        /// Dumps the data at the given address in the given segment.
+        /// </summary>
+        /// <param name="map">Segment map of the program.</param>
+        /// <param name="arch">Processor architecture to use.</param>
+        /// <param name="address">Starting address.</param>
+        /// <param name="cUnits">Number of storage units to dump.</param>
+        /// <param name="formatter">Output sink.</param>
+        public void DumpData(SegmentMap map, IProcessorArchitecture arch, Address address, long cUnits, Formatter formatter)
         {
             if (!map.TryFindSegment(address, out var segment) || segment.MemoryArea == null)
                 return;
-            DumpData(arch, segment.MemoryArea, address, cbBytes, stm);
+            DumpData(arch, segment.MemoryArea, address, cUnits, formatter);
         }
 
+        /// <summary>
+        /// Dumps the data at the given address in the given segment.
+        /// </summary>
+        /// <param name="arch">Processor architecture to use.</param>
+        /// <param name="mem">Memory area to render.</param>
+        /// <param name="address">Starting address.</param>
+        /// <param name="cUnits">Number of storage units to dump.</param>
+        /// <param name="formatter">Output sink.</param>
         public void DumpData(
             IProcessorArchitecture arch,
             MemoryArea mem,
             Address address,
             long cUnits,
-            Formatter stm)
+            Formatter formatter)
         {
             long offset = address - mem.BaseAddress;
             if (offset < 0 || cUnits <= 0)
                 return;
 			var rdr = arch.CreateImageReader(mem, address, cUnits);
             var memfmt = mem.Formatter;
-            var output = new TextMemoryFormatterOutput(stm);
+            var output = new TextMemoryFormatterOutput(formatter);
 
             //try
             {
@@ -207,11 +263,21 @@ namespace Reko.Core.Output
             //}
         }
 
+
+        /// <summary>
+        /// Dumps the assembler code at the given address in the given segment to 
+        /// the formatter.
+        /// </summary>
+        /// <param name="arch">Processor architecture to use.</param>
+        /// <param name="mem">Memory area containing the address.</param>
+        /// <param name="addrStart">Address at which to start.</param>
+        /// <param name="cUnits">Number of storage units to write.</param>
+        /// <param name="formatter">Output sink.</param>
         public void DumpAssembler(
             IProcessorArchitecture arch,
             MemoryArea mem,
             Address addrStart,
-            long cbBytes,
+            long cUnits,
             Formatter formatter)
         {
             var dasm = arch.CreateDisassembler(arch.CreateImageReader(mem, addrStart));
@@ -226,12 +292,12 @@ namespace Reko.Core.Output
                     syntax: "");
                 foreach (var instr in dasm)
                 {
-                    if (cbBytes <= 0)
+                    if (cUnits <= 0)
                         break;
                     if (!DumpAssemblerLine(mem, arch, instr, writer, options))
                         break;
 
-                    cbBytes -= instr.Length;
+                    cUnits -= instr.Length;
                 }
             }
             catch (Exception ex)
@@ -241,6 +307,15 @@ namespace Reko.Core.Output
             }
         }
 
+        /// <summary>
+        /// Writes a single assembler line to the formatter.
+        /// </summary>
+        /// <param name="mem">Memory area containing the instruction.</param>
+        /// <param name="arch">Processor architecture to use.</param>
+        /// <param name="instr">Disassembled instruction to write.</param>
+        /// <param name="writer">Output sink.</param>
+        /// <param name="options">Rendering options.</param>
+        /// <returns></returns>
         public bool DumpAssemblerLine(
             MemoryArea mem, 
             IProcessorArchitecture arch, 
@@ -294,7 +369,7 @@ namespace Reko.Core.Output
             w.Write("\t");
         }
 
-        public void WriteOpcodes(MemoryArea image, IProcessorArchitecture arch, Address begin, Address addrEnd, FormatterInstructionWriter writer)
+        private void WriteOpcodes(MemoryArea image, IProcessorArchitecture arch, Address begin, Address addrEnd, FormatterInstructionWriter writer)
 		{
 			EndianImageReader rdr = arch.CreateImageReader(image, begin);
             var byteSize = (7 + arch.InstructionBitSize) / 8;

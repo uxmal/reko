@@ -29,11 +29,11 @@ namespace Reko.Core.Expressions
 	public class Dereference : AbstractExpression
 	{
         /// <summary>
-        /// Creates a new dereference expression.
+        /// Constructs a <see cref="Dereference"/> expression.
         /// </summary>
-        /// <param name="ptrType"></param>
-        /// <param name="exp"></param>
-		public Dereference(DataType ptrType, Expression exp) : base(ptrType)
+        /// <param name="dt">Datatype of the dereferenced expression.</param>
+        /// <param name="exp">Expression that is deferenced.</param>
+		public Dereference(DataType dt, Expression exp) : base(dt)
 		{
             this.Expression = exp;
         }
@@ -48,7 +48,6 @@ namespace Reko.Core.Expressions
         /// The expression being dereferenced.
         /// </summary>
         public Expression Expression { get; }
-
 
         /// <inheritdoc/>
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)

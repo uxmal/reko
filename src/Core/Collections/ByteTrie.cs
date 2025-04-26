@@ -34,13 +34,16 @@ namespace Reko.Core.Collections
     {
         private readonly HighNode[] root;
 
+        /// <summary>
+        /// Creates an instance of <see cref="ByteTrie{TValue}"/>.
+        /// </summary>
         public ByteTrie()
         {
             this.root = new HighNode[16];
         }
 
         /// <summary>
-        /// Add a byte pattern with its associated <see href="TValue"/> to the
+        /// Add a byte pattern with its associated <typeparamref name="TValue"/> to the
         /// trie.
         /// </summary>
         /// <param name="pattern">Pattern as a sequence of bytes.</param>
@@ -49,7 +52,7 @@ namespace Reko.Core.Collections
             => Add(pattern, value, false);
 
         /// <summary>
-        /// Add a byte pattern with its associated <see href="TValue"/> to the
+        /// Add a byte pattern with its associated <typeparamref name="TValue"/> to the
         /// trie, optionally replacing any previously added pattern.
         /// </summary>
         /// <param name="pattern">Pattern as a sequence of bytes.</param>
@@ -84,7 +87,7 @@ namespace Reko.Core.Collections
         }
 
         /// <summary>
-        /// Add a byte pattern with its associated <see href="TValue"/> to the
+        /// Add a byte pattern with its associated <typeparamref name="TValue"/> to the
         /// trie, together with a <paramref name="mask"/> that allows for 
         /// "wildcards".
         /// </summary>
@@ -201,6 +204,9 @@ namespace Reko.Core.Collections
             }
         }
 
+        /// <summary>
+        /// Dump debug output to the debugger output.
+        /// </summary>
         public void Dump()
         {
             static void Dump(HighNode[] hinodes, int depth)

@@ -24,17 +24,44 @@ using System.Linq;
 
 namespace Reko.Core
 {
+    /// <summary>
+    /// Platform-specific heuristics.
+    /// </summary>
     public class PlatformHeuristics
     {
+        /// <summary>
+        /// Gets <see cref="MaskedPattern"/>s for bit patterns that might be
+        /// procedure prologs.
+        /// </summary>
         public MaskedPattern[]? ProcedurePrologs;
     }
 
+    /// <summary>
+    /// Represents a pattern of bytes and a mask that can be used to match patterns.
+    /// </summary>
     public class MaskedPattern
     {
-        public byte[]? Bytes;
-        public byte[]? Mask;
+        /// <summary>
+        /// The pattern of bytes to match.
+        /// </summary>
+        public byte[]? Bytes { get; init; }
+
+        /// <summary>
+        /// The mask to apply to the pattern. A byte of 0x00 means "don't care".
+        /// </summary>
+        public byte[]? Mask { get; init; }
+
         public EndianServices Endianness = EndianServices.Big;
 
+        /// <summary>
+        /// Load a <see cref="MaskedPattern"/> from a string of hexadecimal digits.
+        /// </summary>
+        /// <param name="sBytes">Byte pattern expressed as hexadecimal digits.</param>
+        /// <param name="sMask">Mask pattern expressed as hexadecimal digits.</param>
+        /// <param name="sEndianness">Endianness to apply to the bytes.</param>
+        /// <returns>A <see cref="MaskedPattern"/> instance; or null if the data is 
+        /// incorrect.
+        /// </returns>
         public static MaskedPattern? Load(string? sBytes, string? sMask, string? sEndianness = null)
         {
             if (sBytes is null)

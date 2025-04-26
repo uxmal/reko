@@ -30,14 +30,15 @@ namespace Reko.Core.Code
     /// <remarks>Use this class if most of your transformations will be simple
     /// copies, but you need to make exceptions for a few types of 
     /// expressions. If your transformation will affect most or all of the
-    /// instruction and/or expression types, use <code>ExpressionVisitor</code>
+    /// instruction and/or expression types, use <see cref="ExpressionVisitor{T}" />
     /// directly instead.</remarks>
 	public class InstructionTransformer : ExpressionVisitor<Expression>
 	{
-		public InstructionTransformer()
-		{
-		}
-
+        /// <summary>
+        /// Applies a transformation to the given <paramref name="instr"/>.
+        /// </summary>
+        /// <param name="instr">Instruction to transform.</param>
+        /// <returns>A transformed instruction.</returns>
         public Instruction Transform(Instruction instr)
 		{
 			return instr.Accept(this);

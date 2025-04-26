@@ -32,9 +32,9 @@ namespace Reko.Core.Expressions
         /// <summary>
         /// Creates an instance of the <see cref="UnaryExpression"/> class.
         /// </summary>
-        /// <param name="op">The operator for the unary expression.</param>
-        /// <param name="type">The result of the unary expression.</param>
-        /// <param name="expr">The operand of the expression.</param>
+        /// <param name="op">The unary operation.</param>
+        /// <param name="type">The result of the unary operation.</param>
+        /// <param name="expr">The expression being operated on.</param>
 		public UnaryExpression(UnaryOperator op, DataType type, Expression expr) : base(type)
 		{
 			this.Operator = op; this.Expression = expr;

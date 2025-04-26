@@ -19,14 +19,15 @@
 #endregion
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 
 namespace Reko.Core.IO
 {
+    /// <summary>
+    /// Class that can read UBJSON files.
+    /// </summary>
     public class UbjsonReader
     {
         private readonly Stream stm;
@@ -39,11 +40,19 @@ namespace Reko.Core.IO
         {
         }
 
+        /// <summary>
+        /// Constructs an <see cref="UbjsonReader"/> instance.
+        /// </summary>
+        /// <param name="stm"><see cref="Stream"/> to read from.</param>
         public UbjsonReader(Stream stm)
         {
             this.stm = stm;
         }
 
+        /// <summary>
+        /// Reads an object from the stream.
+        /// </summary>
+        /// <returns>An object, or null.</returns>
         public object? Read()
         {
             int n = stm.ReadByte();

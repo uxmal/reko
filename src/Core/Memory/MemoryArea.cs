@@ -42,6 +42,14 @@ namespace Reko.Core.Memory
     /// </remarks>
     public abstract class MemoryArea
     {
+        /// <summary>
+        /// Initializes a memory area.
+        /// </summary>
+        /// <param name="addrBase">Address of the start of the memory area.</param>
+        /// <param name="length">The length of the area.</param>
+        /// <param name="cellBitSize">Size of individual storage units.</param>
+        /// <param name="formatter">Preferred formatter to use when displaying memory.
+        /// </param>
         protected MemoryArea(Address addrBase, int length, int cellBitSize, MemoryFormatter formatter)
         {
             this.BaseAddress = addrBase;
@@ -71,30 +79,135 @@ namespace Reko.Core.Memory
         /// </summary>
         public MemoryFormatter Formatter { get; set; }
 
+        /// <summary>
+        /// Relocations made in the memory area are tracked here..
+        /// </summary>
+        //$TODO: move to Program.
+        public RelocationDictionary Relocations { get; }
 
-        public RelocationDictionary Relocations { get; private set; }
-
-
+        /// <summary>
+        /// Creates a big-endian reader for the memory area. The reader will read
+        /// starting at address <paramref name="addr"/>.
+        /// </summary>
+        /// <param name="addr">Address at which to start.</param>
+        /// <returns>A big-endian reader.</returns>
         public abstract EndianImageReader CreateBeReader(Address addr);
+
+        /// <summary>
+        /// Creates a big-endian reader for the memory area. The reader will read
+        /// starting at address <paramref name="addr"/>, up to <paramref name="cUnits"/>
+        /// storage units.
+        /// </summary>
+        /// <param name="addr">Address at which to start.</param>
+        /// <param name="cUnits">Maximal number of storage units to read.</param>
+        /// <returns>A big-endian reader.</returns>
         public abstract EndianImageReader CreateBeReader(Address addr, long cUnits);
+
+        /// <summary>
+        /// Creates a big-endian reader for the memory area. The reader will read
+        /// starting at offset <paramref name="offset"/>.
+        /// </summary>
+        /// <param name="offset">Offset at which to start.</param>
+        /// <returns>A big-endian reader.</returns>
         public abstract EndianImageReader CreateBeReader(long offset);
+
+        /// <summary>
+        /// Creates a big-endian reader for the memory area. The reader will read
+        /// starting at offset <paramref name="offsetBegin"/>, and stop at offet
+        /// <paramref name="offsetEnd"/>.
+        /// </summary>
+        /// <param name="offsetBegin">Offset at which to start.</param>
+        /// <param name="offsetEnd">Offset at which to end.</param>
+        /// <returns>A big-endian reader.</returns>
         public abstract EndianImageReader CreateBeReader(long offsetBegin, long offsetEnd);
+
+        /// <summary>
+        /// Creates a big-endian writer for the memory area. The writer will write
+        /// starting at address <paramref name="addr"/>.
+        /// </summary>
+        /// <param name="addr">Address at which to start writing.</param>
+        /// <returns>A big-endian writer.</returns>
         public abstract BeImageWriter CreateBeWriter(Address addr);
+
+        /// <summary>
+        /// Creates a big-endian writer for the memory area. The writer will write
+        /// starting at offset <paramref name="offset"/>.
+        /// </summary>
+        /// <param name="offset">Address at which to start writing.</param>
+        /// <returns>A big-endian writer.</returns>
         public abstract BeImageWriter CreateBeWriter(long offset);
 
 
+        /// <summary>
+        /// Creates a little-endian reader for the memory area. The reader will read
+        /// starting at address <paramref name="addr"/>.
+        /// </summary>
+        /// <param name="addr">Address at which to start.</param>
+        /// <returns>A little-endian reader.</returns>
         public abstract EndianImageReader CreateLeReader(Address addr);
+
+        /// <summary>
+        /// Creates a little-endian reader for the memory area. The reader will read
+        /// starting at address <paramref name="addr"/>, up to <paramref name="cUnits"/>
+        /// storage units.
+        /// </summary>
+        /// <param name="addr">Address at which to start.</param>
+        /// <param name="cUnits">Maximal number of storage units to read.</param>
+        /// <returns>A little-endian reader.</returns>
         public abstract EndianImageReader CreateLeReader(Address addr, long cUnits);
+
+        /// <summary>
+        /// Creates a big-endian reader for the memory area. The reader will read
+        /// starting at offset <paramref name="offset"/>.
+        /// </summary>
+        /// <param name="offset">Offset at which to start.</param>
+        /// <returns>A big-endian reader.</returns>
         public abstract EndianImageReader CreateLeReader(long offset);
+
+        /// <summary>
+        /// Creates a little-endian reader for the memory area. The reader will read
+        /// starting at offset <paramref name="offsetBegin"/>, and stop at offet
+        /// <paramref name="offsetEnd"/>.
+        /// </summary>
+        /// <param name="offsetBegin">Offset at which to start.</param>
+        /// <param name="offsetEnd">Offset at which to end.</param>
+        /// <returns>A little-endian reader.</returns>
         public abstract EndianImageReader CreateLeReader(long offsetBegin, long offsetEnd);
+
+        /// <summary>
+        /// Creates a little-endian writer for the memory area. The writer will write
+        /// starting at address <paramref name="addr"/>.
+        /// </summary>
+        /// <param name="addr">Address at which to start writing.</param>
+        /// <returns>A little-endian writer.</returns>
         public abstract LeImageWriter CreateLeWriter(Address addr);
+
+        /// <summary>
+        /// Creates a little-endian writer for the memory area. The writer will write
+        /// starting at offset <paramref name="offset"/>.
+        /// </summary>
+        /// <param name="offset">Address at which to start writing.</param>
+        /// <returns>A little-endian writer.</returns>
+
         public abstract LeImageWriter CreateLeWriter(long offset);
 
+        /// <summary>
+        /// Determines whether the specified address is valid in this memory area.
+        /// </summary>
+        /// <param name="addr">Address to test.</param>
+        /// <returns>True if the address is in the range of the memory area;
+        /// otherwise false.</returns>
         public bool IsValidAddress(Address addr)
         {
             return IsValidLinearAddress(addr.ToLinear());
         }
 
+        /// <summary>
+        /// Determines whether the specified linear address is valid in this memory area.
+        /// </summary>
+        /// <param name="linearAddr">Linear address to test.</param>
+        /// <returns>True if the linear address is in the range of the memory area;
+        /// otherwise false.</returns>
         public bool IsValidLinearAddress(ulong linearAddr)
         {
             if (linearAddr < BaseAddress.ToLinear())

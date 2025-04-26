@@ -25,7 +25,13 @@ using System.Text;
 
 namespace Reko.Core.Graphs
 {
-    // Impleented after pseudocode on https://en.wikipedia.org/wiki/Biconnected_component
+    /// <summary>
+    /// A class that finds the articulation point of a directed graph.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <remarks>
+    /// Impleented after pseudocode on https://en.wikipedia.org/wiki/Biconnected_component
+    /// </remarks>
     public class ArticulationPointFinder<T>
             where T : notnull
     {
@@ -36,6 +42,10 @@ namespace Reko.Core.Graphs
         private Dictionary<T, T> parent;
         private HashSet<T> visited;
 
+        /// <summary>
+        /// Constructs an articulation point finder for the given graph.
+        /// </summary>
+        /// <param name="graph"></param>
         public ArticulationPointFinder(DirectedGraph<T> graph)
         {
             this.graph = graph;
@@ -79,6 +89,11 @@ namespace Reko.Core.Graphs
             }
         }
 
+        /// <summary>
+        /// Given a set of nodes, find the articulation points in the graph.
+        /// </summary>
+        /// <param name="nodes">List of graph nodes.</param>
+        /// <returns>The articulation points.</returns>
         public HashSet<T> FindArticulationPoints(IEnumerable<T> nodes)
         {
             // Call the recursive helper function to find articulation

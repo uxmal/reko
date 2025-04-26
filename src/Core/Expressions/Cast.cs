@@ -25,43 +25,56 @@ using System.Collections.Generic;
 namespace Reko.Core.Expressions
 {
     /// <summary>
-    /// Models a C-style cast. The specified expression is cast to the data type <see href="Expression.DataType" />.
+    /// Models a C-style cast. The specified expression is cast to the data type <see cref="Expression.DataType" />.
     /// </summary>
 	public class Cast : AbstractExpression
 	{
+        /// <summary>
+        /// Constructs a cast expression.
+        /// </summary>
+        /// <param name="dt">Datatype to cast to.</param>
+        /// <param name="expr">Expression to cast.</param>
 		public Cast(DataType dt, Expression expr) : base(dt)
 		{
 			this.Expression = expr;
 		}
 
+        /// <summary>
+        /// Expression to cast.
+        /// </summary>
         public Expression Expression { get; }
 
+        /// <inheritdoc/>
         public override IEnumerable<Expression> Children
         {
             get { yield return Expression; }
         }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
         {
             return v.VisitCast(this, context);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(ExpressionVisitor<T> v)
         {
             return v.VisitCast(this);
         }
 
+        /// <inheritdoc/>
 		public override void Accept(IExpressionVisitor visit)
 		{
 			visit.VisitCast(this);
 		}
 
+        /// <inheritdoc/>
 		public override Expression CloneExpression()
 		{
 			return new Cast(DataType, Expression.CloneExpression());
 		}
 
-        /// <invert/>
+        /// <inheritdoc/>
         public override Expression Invert()
         { 
             return new UnaryExpression(Operator.Not, PrimitiveType.Bool, this);

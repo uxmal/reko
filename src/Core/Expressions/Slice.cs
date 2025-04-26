@@ -32,11 +32,11 @@ namespace Reko.Core.Expressions
 	public class Slice : AbstractExpression
 	{
         /// <summary>
-        /// Creates a new slice expression.
+        /// Constructs a slice expression.
         /// </summary>
-        /// <param name="dt">The data type of the slice.</param>
-        /// <param name="expression">The expression being sliced.</param>
-        /// <param name="bitOffset">Bit offset at which to start the slice.</param>
+        /// <param name="dt">Size of the slice.</param>
+        /// <param name="expression">The sliced expression.</param>
+        /// <param name="bitOffset">The offset at which the slice is taken.</param>
         public Slice(DataType dt, Expression expression, int bitOffset) : base(dt)
         {
             if (bitOffset < 0)

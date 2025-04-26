@@ -36,6 +36,12 @@ namespace Reko.Core.Graphs
         private DirectedGraphImpl<ProcedureBase> graphExternals = new DirectedGraphImpl<ProcedureBase>();
         private DirectedGraphImpl<object> graphStms = new DirectedGraphImpl<object>();
 
+        /// <summary>
+        /// Adds an edge to the call graph. The edge is directed from the caller 
+        /// <see cref="Statement"/> to the callee <see cref="ProcedureBase"/>.
+        /// </summary>
+        /// <param name="stmCaller">The calling <see cref="Statement"/>.</param>
+        /// <param name="callee">The called procedure.</param>
         public void AddEdge(Statement stmCaller, ProcedureBase callee)
         {
             switch (callee)
@@ -61,10 +67,20 @@ namespace Reko.Core.Graphs
             }
         }
 
-        public List<Procedure> EntryPoints { get; } = new List<Procedure>();
+        /// <summary>
+        /// The entry points of the program.
+        /// </summary>
+        public List<Procedure> EntryPoints { get; } = [];
 
+        /// <summary>
+        /// The procedures of the call graph.
+        /// </summary>
         public DirectedGraph<Procedure> Procedures => graphProcs;
 
+        /// <summary>
+        /// Adds an entry point procedure to the call graph.
+        /// </summary>
+        /// <param name="proc">The <see cref="Procedure"/> to add.</param>
         public void AddEntryPoint(Procedure proc)
         {
             AddProcedure(proc);
@@ -74,19 +90,17 @@ namespace Reko.Core.Graphs
             }
         }
 
+        /// <summary>
+        /// Adds a procedure to the graph.
+        /// </summary>
+        /// <param name="proc">Procedure to add.</param>
         public void AddProcedure(Procedure proc)
         {
             graphProcs.AddNode(proc);
             graphStms.AddNode(proc);
         }
 
-        /// <summary>
-        /// Removes a calling <see cref="Statement"/> from the
-        /// call graph.
-        /// </summary>
-        /// <param name="stm">A <see cref="Statement"/> being 
-        /// removed from the call graph.
-        /// </param>
+        /// <inheritdoc />
         public void RemoveCaller(Statement stm)
         {
             if (!graphStms.Nodes.Contains(stm))
@@ -98,6 +112,11 @@ namespace Reko.Core.Graphs
             }
         }
 
+        /// <summary>
+        /// Gets the of procedures called by the statement <paramref name="stm"/>.
+        /// </summary>
+        /// <param name="stm">The calling statement.</param>
+        /// <returns>An <see cref="IEnumerable{Object}"/> of callees.</returns>
         public IEnumerable<object> Callees(Statement stm)
         {
             return graphStms.Successors(stm);
