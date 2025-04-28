@@ -35,6 +35,7 @@ namespace Reko.Core.Types
             this.Members = new SortedList<string, long>(members);
         }
 
+        /// <inheritdoc/>
         public override int Size
         {
             get { return size; }
@@ -43,16 +44,19 @@ namespace Reko.Core.Types
 
         public readonly IReadOnlyDictionary<string, long> Members;
 
+        /// <inheritdoc/>
         public override void Accept(IDataTypeVisitor v)
         {
             v.VisitEnum(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
             return v.VisitEnum(this);
         }
 
+        /// <inheritdoc/>
         public override DataType Clone(IDictionary<DataType, DataType>? clonedTypes)
         {
             return this;

@@ -34,20 +34,18 @@ namespace Reko.Core
             this.Length = length;
         }
 
-        public static ProgramAddressRange Create(Program program, AddressRange range)
-        {
-            return ProgramAddressRange.HalfOpenRange(program, range.Begin, range.End);
-        }
-
+        /// <summary>
+        /// Creates a new <see cref="ProgramAddressRange"/> instance.
+        /// </summary>
+        /// <param name="program">Program to use.</param>
+        /// <param name="address">Starting address.</param>
+        /// <param name="length">Length of the address range.</param>
+        /// <returns>A new <see cref="ProgramAddressRange"/> instance.</returns>
         public static ProgramAddressRange Create(Program program, Address address, long length)
         {
             return new ProgramAddressRange(program, address, length);
         }
 
-        public static ProgramAddressRange Empty(Program program, Address address)
-        {
-            return new ProgramAddressRange(program, address, 0);
-        }
 
         /// <summary>
         /// Creates a half open range from two <see cref="Address"/>es. The addresses
@@ -130,6 +128,11 @@ namespace Reko.Core
             return HashCode.Combine(this.Program, this.Address, this.Length);
         }
 
+        /// <summary>
+        /// Returns true if the two address ranges are equal.
+        /// </summary>
+        /// <param name="left">The first address range.</param>
+        /// <param name="right">The second address range.</param>
         public static bool operator==(ProgramAddressRange left, ProgramAddressRange right)
         {
             return
@@ -138,11 +141,18 @@ namespace Reko.Core
                 left.Address == right.Address;
         }
 
+        /// <summary>
+        /// Returns true if the two address ranges are not equal.
+        /// </summary>
+        /// <param name="left">The first address range.</param>
+        /// <param name="right">The second address range.</param>
         public static bool operator !=(ProgramAddressRange left, ProgramAddressRange right) =>
             !(left == right);
 
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Returns a string representation of the address range.
+        /// </summary>
         public override string ToString()
         {
             if (Length > 1)

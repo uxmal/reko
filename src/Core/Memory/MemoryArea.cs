@@ -216,13 +216,35 @@ namespace Reko.Core.Memory
             return offset < (ulong) Length;
         }
 
+        /// <summary>
+        /// Reads a constant from the memory area at the specified offset.
+        /// </summary>
+        /// <param name="imageOffset">Offset from which to read the constant.</param>
+        /// <param name="type">Datatype to read.</param>
+        /// <param name="c">Constant that was read.</param>
+        /// <returns>True if the <paramref name="imageOffset"/> was valid and a constant could
+        /// successfully be read; otherwise false.</returns>
         public abstract bool TryReadBe(long imageOffset, DataType type, [MaybeNullWhen(false)] out Constant c);
 
+        /// <summary>
+        /// Reads a big-endian constant from the memory area at the specified address.
+        /// </summary>
+        /// <param name="addr">Address from which to read the constant.</param>
+        /// <param name="type">Datatype to read.</param>
+        /// <param name="c">Constant that was read.</param>
+        /// <returns>True if the address <paramref name="addr"/> was valid and a constant could
+        /// successfully be read; otherwise false.</returns>
         public bool TryReadBe(Address addr, PrimitiveType type, [MaybeNullWhen(false)] out Constant c)
         {
             return TryReadBe(addr - BaseAddress, type, out c);
         }
 
+        /// <summary>
+        /// Reads a 64-bit big endian IEEE floating point number from the offset <paramref name="off"/>.
+        /// </summary>
+        /// <param name="off">Offset from which to read the 64-bit floating point number.</param>
+        /// <param name="retvalue">The value read.</param>
+        /// <returns>True of the offset is valid and a 64-bit value could be read; otherwise false.</returns>
         public bool TryReadBeDouble(long off, out double retvalue)
         {
             if (TryReadBeUInt64(off, out ulong uDouble))
@@ -237,22 +259,84 @@ namespace Reko.Core.Memory
             }
         }
 
+        /// <summary>
+        /// Reads a 16-bit big endian unsigned integer from offset <paramref name="off"/>.
+        /// </summary>
+        /// <param name="off">Offset from which to read the value.</param>
+        /// <param name="retvalue">The value read.</param>
+        /// <returns>True of the offset is valid and a value could be read; otherwise false.</returns>
         public abstract bool TryReadBeUInt16(long off, out ushort retvalue);
+
+        /// <summary>
+        /// Reads a 32-bit big endian unsigned integer from offset <paramref name="off"/>.
+        /// </summary>
+        /// <param name="off">Offset from which to read the value.</param>
+        /// <param name="retvalue">The value read.</param>
+        /// <returns>True of the offset is valid and a value could be read; otherwise false.</returns>
         public abstract bool TryReadBeUInt32(long off, out uint retvalue);
+
+        /// <summary>
+        /// Reads a 64-bit big endian unsigned integer from offset <paramref name="off"/>.
+        /// </summary>
+        /// <param name="off">Offset from which to read the value.</param>
+        /// <param name="retvalue">The value read.</param>
+        /// <returns>True of the offset is valid and a value could be read; otherwise false.</returns>
         public abstract bool TryReadBeUInt64(long off, out ulong retvalue);
 
-        public bool TryReadBeUInt16(Address off, out ushort retvalue) => TryReadBeUInt16(off - BaseAddress, out retvalue);
-        public bool TryReadBeUInt32(Address off, out uint retvalue) => TryReadBeUInt32(off - BaseAddress, out retvalue);
-        public bool TryReadBeUInt64(Address off, out ulong retvalue) => TryReadBeUInt64(off - BaseAddress, out retvalue);
 
+        /// <summary>
+        /// Reads a 16-bit big endian unsigned integer from address <paramref name="addr"/>.
+        /// </summary>
+        /// <param name="addr">Address from which to read the value.</param>
+        /// <param name="retvalue">The value read.</param>
+        /// <returns>True of the address is valid and a value could be read; otherwise false.</returns>
+        public bool TryReadBeUInt16(Address addr, out ushort retvalue) => TryReadBeUInt16(addr - BaseAddress, out retvalue);
 
+        /// <summary>
+        /// Reads a 32-bit big endian unsigned integer from address <paramref name="addr"/>.
+        /// </summary>
+        /// <param name="addr">Address from which to read the value.</param>
+        /// <param name="retvalue">The value read.</param>
+        /// <returns>True of the address is valid and a value could be read; otherwise false.</returns>
+        public bool TryReadBeUInt32(Address addr, out uint retvalue) => TryReadBeUInt32(addr - BaseAddress, out retvalue);
+
+        /// <summary>
+        /// Reads a 64-bit big endian unsigned integer from address <paramref name="addr"/>.
+        /// </summary>
+        /// <param name="addr">Address from which to read the value.</param>
+        /// <param name="retvalue">The value read.</param>
+        /// <returns>True of the address is valid and a value could be read; otherwise false.</returns>
+        public bool TryReadBeUInt64(Address addr, out ulong retvalue) => TryReadBeUInt64(addr - BaseAddress, out retvalue);
+
+        /// <summary>
+        /// Reads a little endian constant from the memory area at the specified offset.
+        /// </summary>
+        /// <param name="imageOffset">Offset from which to read the constant.</param>
+        /// <param name="type">Datatype to read.</param>
+        /// <param name="c">Constant that was read.</param>
+        /// <returns>True if the address <paramref name="imageOffset"/> was valid and a constant could
+        /// successfully be read; otherwise false.</returns>
         public abstract bool TryReadLe(long imageOffset, DataType type, [MaybeNullWhen(false)] out Constant c);
 
+        /// <summary>
+        /// Reads a little endian constant from the memory area at the specified address.
+        /// </summary>
+        /// <param name="addr">Offset from which to read the constant.</param>
+        /// <param name="type">Datatype to read.</param>
+        /// <param name="c">Constant that was read.</param>
+        /// <returns>True if the <paramref name="addr"/> was valid and a constant could
+        /// successfully be read; otherwise false.</returns>
         public bool TryReadLe(Address addr, PrimitiveType type, [MaybeNullWhen(false)] out Constant c)
         {
             return TryReadLe(addr - BaseAddress, type, out c);
         }
 
+        /// <summary>
+        /// Reads a 64-bit little endian IEEE floating point number from the offset <paramref name="off"/>.
+        /// </summary>
+        /// <param name="off">Offset from which to read the 64-bit floating point number.</param>
+        /// <param name="retvalue">The value read.</param>
+        /// <returns>True of the offset is valid and a 64-bit value could be read; otherwise false.</returns>
         public bool TryReadLeDouble(long off, out double retvalue)
         {
             if (TryReadLeUInt64(off, out ulong uDouble))
@@ -267,17 +351,70 @@ namespace Reko.Core.Memory
             }
         }
 
-        public abstract bool TryReadLeInt32(long off, out int retvalue);
+        /// <summary>
+        /// Reads a 32-bit little endian signed integer from offset <paramref name="offset"/>.
+        /// </summary>
+        /// <param name="offset">Offset from which to read the value.</param>
+        /// <param name="retvalue">The value read.</param>
+        /// <returns>True of the address is valid and a value could be read; otherwise false.</returns>
+        public abstract bool TryReadLeInt32(long offset, out int retvalue);
 
-        public abstract bool TryReadLeUInt16(long off, out ushort retvalue);
-        public abstract bool TryReadLeUInt32(long off, out uint retvalue);
-        public abstract bool TryReadLeUInt64(long off, out ulong retvalue);
+        /// <summary>
+        /// Reads a 16-bit little endian unsigned integer from offset <paramref name="offset"/>.
+        /// </summary>
+        /// <param name="offset">Offset from which to read the value.</param>
+        /// <param name="retvalue">The value read.</param>
+        /// <returns>True of the address is valid and a value could be read; otherwise false.</returns>
+        public abstract bool TryReadLeUInt16(long offset, out ushort retvalue);
+
+        /// <summary>
+        /// Reads a 32-bit little endian unsigned integer from offset <paramref name="offset"/>.
+        /// </summary>
+        /// <param name="offset">Offset from which to read the value.</param>
+        /// <param name="retvalue">The value read.</param>
+        /// <returns>True of the address is valid and a value could be read; otherwise false.</returns>
+        public abstract bool TryReadLeUInt32(long offset, out uint retvalue);
+
+        /// <summary>
+        /// Reads a 64-bit little endian unsigned integer from offset <paramref name="offset"/>.
+        /// </summary>
+        /// <param name="offset">Offset from which to read the value.</param>
+        /// <param name="retvalue">The value read.</param>
+        /// <returns>True of the address is valid and a value could be read; otherwise false.</returns>
+        public abstract bool TryReadLeUInt64(long offset, out ulong retvalue);
 
 
-        public bool TryReadLeUInt16(Address off, out ushort retvalue) => TryReadLeUInt16(off - BaseAddress, out retvalue);
-        public bool TryReadLeUInt32(Address off, out uint retvalue) => TryReadLeUInt32(off - BaseAddress, out retvalue);
-        public bool TryReadLeUInt64(Address off, out ulong retvalue) => TryReadLeUInt64(off - BaseAddress, out retvalue);
-        public abstract bool TryReadByte(long off, out byte b);
+        /// <summary>
+        /// Reads a 16-bit little endian unsigned integer from address <paramref name="addr"/>.
+        /// </summary>
+        /// <param name="addr">Address from which to read the value.</param>
+        /// <param name="retvalue">The value read.</param>
+        /// <returns>True of the address is valid and a value could be read; otherwise false.</returns>
+        public bool TryReadLeUInt16(Address addr, out ushort retvalue) => TryReadLeUInt16(addr - BaseAddress, out retvalue);
+
+        /// <summary>
+        /// Reads a 32-bit little endian unsigned integer from address <paramref name="addr"/>.
+        /// </summary>
+        /// <param name="addr">Address from which to read the value.</param>
+        /// <param name="retvalue">The value read.</param>
+        /// <returns>True of the address is valid and a value could be read; otherwise false.</returns>
+        public bool TryReadLeUInt32(Address addr, out uint retvalue) => TryReadLeUInt32(addr - BaseAddress, out retvalue);
+
+        /// <summary>
+        /// Reads a 64-bit little endian unsigned integer from address <paramref name="addr"/>.
+        /// </summary>
+        /// <param name="addr">Address from which to read the value.</param>
+        /// <param name="retvalue">The value read.</param>
+        /// <returns>True of the address is valid and a value could be read; otherwise false.</returns>
+        public bool TryReadLeUInt64(Address addr, out ulong retvalue) => TryReadLeUInt64(addr - BaseAddress, out retvalue);
+        
+        /// <summary>
+        /// Reads a byte from the offset <paramref name="offset"/>.
+        /// </summary>
+        /// <param name="offset">Offset from which to read one byte.</param>
+        /// <param name="b">The byte that was read.</param>
+        /// <returns>True if the offset is a valid position; otherwise false.</returns>
+        public abstract bool TryReadByte(long offset, out byte b);
 
 
         public abstract void WriteByte(long off, byte value);

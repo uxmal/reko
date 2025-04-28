@@ -459,7 +459,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             {
                 Identifier arg1 = m.Local32("arg1");
                 Identifier ret = m.Register("r1");
-                m.Procedure.Signature = FunctionType.Func(ret, arg1);
+                m.Procedure.Signature = FunctionType.Create(ret, arg1);
                 m.Procedure.Signature.Parameters[0] = arg1;
                 m.Assign(ret, m.IAdd(arg1, 1));
                 m.Return(ret);

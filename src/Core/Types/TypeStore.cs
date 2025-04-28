@@ -64,7 +64,11 @@ namespace Reko.Core.Types
         /// </param>
         void Write(bool showExprAddresses, TextWriter writer);
 
-
+        /// <summary>
+        /// Once the type store has been populated with type variables and their equiva
+        /// , this method
+        /// </summary>
+        /// <param name="factory"></param>
         void BuildEquivalenceClassDataTypes(TypeFactory factory);
 
         /// <summary>
@@ -207,6 +211,14 @@ namespace Reko.Core.Types
             Debug.WriteLine(w.ToString());
         }
 
+        /// <summary>
+        /// Finds the expression associated with a type variable.
+        /// </summary>
+        /// <param name="tv">Type variable whose association is 
+        /// requested.</param>
+        /// <returns>The corresponding <see cref="Expression"/>, or
+        /// null if none is found.
+        /// </returns>
         public Expression? ExpressionOf(TypeVariable tv)
         {
             if (tvSources.TryGetValue(tv, out (Address?, Expression) dbg))
@@ -223,7 +235,7 @@ namespace Reko.Core.Types
                 return null;
         }
 
-
+        /// <inheritdoc/>
         public EquivalenceClass MergeClasses(TypeVariable tv1, TypeVariable tv2)
         {
             EquivalenceClass class1 = tv1.Class;
@@ -250,13 +262,15 @@ namespace Reko.Core.Types
             }
         }
 
+        /// <summary>
+        /// Returns the equivalence classes that are in use in the program.
+        /// </summary>
         public IList<EquivalenceClass> UsedEquivalenceClasses
         {
             get { return usedClasses.Values; }
         }
 
-        public void Write(TextWriter w) => Write(false, w);
-
+        /// <inheritdoc/>
         public void Write(bool showExprAddresses, TextWriter w)
         {
             var writer = new TextFormatter(w);
@@ -282,9 +296,15 @@ namespace Reko.Core.Types
             }
         }
 
-        public void WriteExpressionOf(TypeVariable tvMember, bool showExprAddresses, Formatter writer)
+        /// <summary>
+        /// Given a type variable, writes the corresponding expression if one is available.
+        /// </summary>
+        /// <param name="tv">Type varaible</param>
+        /// <param name="showExprAddresses">If trie show the address of the expression.</param>
+        /// <param name="writer">Output sink.</param>
+        public void WriteExpressionOf(TypeVariable tv, bool showExprAddresses, Formatter writer)
         {
-            if (tvSources.TryGetValue(tvMember, out (Address? addr, Expression e) dbg) && 
+            if (tvSources.TryGetValue(tv, out (Address? addr, Expression e) dbg) && 
                 dbg.e is { })
             {
                 writer.Write(" (in {0}", dbg.e);
@@ -301,7 +321,7 @@ namespace Reko.Core.Types
             }
         }
 
-        public void WriteEntry(TypeVariable tv, bool showExprAddresses, Formatter writer)
+        private void WriteEntry(TypeVariable tv, bool showExprAddresses, Formatter writer)
         {
             writer.Write(tv.Name);
             writer.Write(":");
@@ -316,17 +336,6 @@ namespace Reko.Core.Types
 
             writer.Write("  OrigDataType: ");
             writer.WriteLine(tv.OriginalDataType);
-        }
-
-        private void WriteEntry(TypeVariable tv, DataType dt, bool showExprAddresses, Formatter writer)
-        {
-            writer.Write("{0}: ", tv);
-            if (dt != null)
-            {
-                dt.Accept(new TypeGraphWriter(writer));
-                WriteExpressionOf(tv, showExprAddresses, writer);
-            }
-            writer.WriteLine();
         }
 
         public DataType? GetDataTypeOf(Expression exp)

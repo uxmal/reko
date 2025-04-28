@@ -36,11 +36,13 @@ namespace Reko.Core
     public class Trampoline
     {
         /// <summary>
-        /// Creates an instance of a <see cref="Trampoline"/>.
+        /// Construct a trampoline.
         /// </summary>
-        /// <param name="addrStub">Address of the trampoline code.</param>
-        /// <param name="procedure">The procedure reached when executing
-        /// the trampoline code.
+        /// <param name="addrStub">Address at which the trampoline instructions 
+        /// are located, typically a handful of instructions followed by an
+        /// indirect jump.</param>
+        /// <param name="procedure">The procedure that the trampoline is supposed
+        /// to invoke.
         /// </param>
         public Trampoline(Address addrStub, ProcedureBase procedure)
         {
@@ -58,7 +60,9 @@ namespace Reko.Core
         /// </summary>
         public ProcedureBase Procedure { get; }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Returns a string representation of the trampoline.
+        /// </summary>
         public override string ToString()
         {
             return $"Trampoline@{StubAddress} to {Procedure.Name}";

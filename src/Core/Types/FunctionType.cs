@@ -47,6 +47,9 @@ namespace Reko.Core.Types
 	{
         private Identifier? retValue;
 
+        /// <summary>
+        /// Constructs an empty function type.
+        /// </summary>
         public FunctionType()
             : base(Domain.Function, null)
         {
@@ -54,6 +57,11 @@ namespace Reko.Core.Types
             this.FpuStackArgumentMax = -1;
         }
 
+        /// <summary>
+        /// Constructs a function type with a known return value and parameters.
+        /// </summary>
+        /// <param name="returnValue">Return value.</param>
+        /// <param name="parameters">Parameters.</param>
         public FunctionType(
             Identifier? returnValue,    // 'null' means Void return value.
             params Identifier [] parameters)
@@ -71,12 +79,24 @@ namespace Reko.Core.Types
             return new Identifier("", VoidType.Instance, null!);
         }
 
-        public static FunctionType Create(Identifier? returnId, params Identifier [] formals)
+        /// <summary>
+        /// Factory method to create a function type.
+        /// </summary>
+        /// <param name="returnId">Return value.</param>
+        /// <param name="formals">Formal parameters.</param>
+        /// <returns>The new function type.</returns>
+        public static FunctionType CreateX(Identifier? returnId, params Identifier [] formals)
         {
             var ret = returnId ?? VoidReturnValue();
             return new FunctionType(ret, formals);
         }
 
+        /// <summary>
+        /// Factory method to create a user defined function type.
+        /// </summary>
+        /// <param name="returnId">Return value.</param>
+        /// <param name="formals">Formal parameters.</param>
+        /// <returns>The new function type.</returns>
         public static FunctionType CreateUserDefined(
             Identifier? returnId, params Identifier[] formals)
         {
@@ -85,8 +105,15 @@ namespace Reko.Core.Types
             return ft;
         }
 
-        public static FunctionType Func(Identifier returnId, params Identifier[] formals)
+        /// <summary>
+        /// Factory method to create a function type.
+        /// </summary>
+        /// <param name="returnId">Return value.</param>
+        /// <param name="formals">Formal parameters.</param>
+        /// <returns>The new function type.</returns>
+        public static FunctionType Create(Identifier? returnId, params Identifier[] formals)
         {
+            var ret = returnId ?? VoidReturnValue();
             return new FunctionType(returnId, formals);
         }
 
@@ -101,6 +128,9 @@ namespace Reko.Core.Types
         }
 
 
+        /// <summary>
+        /// True if the function type is variadic.
+        /// </summary>
         public bool IsVariadic { get; set; }
 
         /// <summary>
@@ -121,24 +151,40 @@ namespace Reko.Core.Types
         /// </remarks>
         public Identifier[]? Parameters { get; private set; }
 
+        /// <summary>
+        /// Indicates if the function return type is 'void'.
+        /// </summary>
         public bool HasVoidReturn { get { return ReturnValue == null || ReturnValue.DataType is VoidType; } }
+
+        /// <summary>
+        /// Type variable associated with this function type.
+        /// </summary>
         public TypeVariable? TypeVariable { get; set; }  //$REVIEW: belongs on the Procedure itself!
 
+        /// <inheritdoc/>
         public override void Accept(IDataTypeVisitor v)
         {
             v.VisitFunctionType(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
             return v.VisitFunctionType(this);
         }
 
+        /// <inheritdoc/>
         public override DataType Clone(IDictionary<DataType, DataType>? clonedTypes)
         {
             return Clone(clonedTypes, false);
         }
 
+        /// <summary>
+        /// Creates a copy of the function type.
+        /// </summary>
+        /// <param name="clonedTypes">Optional already cloned members.</param>
+        /// <param name="shareIncompleteTypes"></param>
+        /// <returns></returns>
         public FunctionType Clone(
             IDictionary<DataType, DataType>? clonedTypes = null,
             bool shareIncompleteTypes = false)
@@ -231,6 +277,7 @@ namespace Reko.Core.Types
         /// </summary>
         public bool IsInstanceMetod { get; set; }
 
+        /// <inheritdoc/>
         public override int Size
 		{
 			get { return 0; }
@@ -238,16 +285,37 @@ namespace Reko.Core.Types
 		}
 
         #region Output methods
+
+        /// <summary>
+        /// Writes a text representation of the function type to a <see cref="TextWriter"/>.
+        /// </summary>
+        /// <param name="fnName">Name of the function.</param>
+        /// <param name="f">Flags controlling the output.</param>
+        /// <param name="writer">Output sink.</param>
         public void Emit(string fnName, EmitFlags f, TextWriter writer)
         {
             Emit(fnName, f, new TextFormatter(writer));
         }
 
-        public void Emit(string fnName, EmitFlags f, Formatter fmt)
+        /// <summary>
+        /// Writes a text representation of the function type to a <see cref="Formatter"/>.
+        /// </summary>
+        /// <param name="fnName">Name of the function.</param>
+        /// <param name="flags">Flags controlling the output.</param>
+        /// <param name="formatter">Output sink.</param>
+        public void Emit(string fnName, EmitFlags flags, Formatter formatter)
         {
-            Emit(fnName, f, fmt, new CodeFormatter(fmt), new TypeReferenceFormatter(fmt));
+            Emit(fnName, flags, formatter, new CodeFormatter(formatter), new TypeReferenceFormatter(formatter));
         }
 
+        /// <summary>
+        /// Writes a text representation of the function type to a <see cref="Formatter"/>.
+        /// </summary>
+        /// <param name="fnName">Name of the function.</param>
+        /// <param name="f">Flags controlling the output.</param>
+        /// <param name="fmt">Output sink.</param>
+        /// <param name="w">Code formatter.</param>
+        /// <param name="t">Type reference formatter.</param>
         public void Emit(string fnName, EmitFlags f, Formatter fmt, CodeFormatter w, TypeReferenceFormatter t)
         {
             bool emitStorage = (f & EmitFlags.ArgumentKind) == EmitFlags.ArgumentKind;
@@ -316,6 +384,11 @@ namespace Reko.Core.Types
             }
         }
 
+        /// <summary>
+        /// Creates a string representation of the function type.
+        /// </summary>
+        /// <param name="name">Optionalal function name.</param>
+        /// <param name="flags">Flags controlling output.</param>
         public string ToString(string name, EmitFlags flags = EmitFlags.ArgumentKind)
         {
             var sw = new StringWriter();
@@ -326,12 +399,30 @@ namespace Reko.Core.Types
             return sw.ToString();
         }
 
+        /// <summary>
+        /// Flags controlling the output formatting of the function type.
+        /// </summary>
         [Flags]
         public enum EmitFlags
         {
+            /// <summary>
+            /// Default value.
+            /// </summary>
             None = 0,
+
+            /// <summary>
+            /// Render the storage for each parameter.
+            /// </summary>
             ArgumentKind = 1,
+
+            /// <summary>
+            /// Emit low-level information about the parameters.
+            /// </summary>
             LowLevelInfo = 2,
+
+            /// <summary>
+            /// Emit full information.
+            /// </summary>
             AllDetails = ArgumentKind|LowLevelInfo,
         }
         #endregion

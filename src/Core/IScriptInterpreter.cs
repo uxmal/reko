@@ -25,10 +25,31 @@ using System.Text;
 
 namespace Reko.Core
 {
+    /// <summary>
+    /// Interface for script interpreters.
+    /// </summary>
     public interface IScriptInterpreter
     {
-        void LoadFromFile(string filename, Program program, string currentDir);
+        /// <summary>
+        /// Loads a script from the specified file.
+        /// </summary>
+        /// <param name="path">File path to the script file.</param>
+        /// <param name="program">Program being analyzed.</param>
+        /// <param name="currentDir">Used as the current directory.</param>
+        void LoadFromFile(string path, Program program, string currentDir);
+
+        /// <summary>
+        /// Loads a script directly from a string.
+        /// </summary>
+        /// <param name="script">Script source code.
+        /// </param>
+        /// <param name="program">Program being analyzed.</param>
+        /// <param name="currentDir">Used as the current directory.</param>
         void LoadFromString(string script, Program program, string currentDir);
+
+        /// <summary>
+        /// Executes the script.
+        /// </summary>
         void Run();
     }
 }

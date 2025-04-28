@@ -169,7 +169,7 @@ namespace Reko.Environments.OS2
         public override ExternalProcedure? LookupProcedureByName(string? moduleName, string procName)
         {
             var metadata = EnsureTypeLibraries(PlatformIdentifier);
-            if (moduleName != null && metadata.Modules.TryGetValue(moduleName.ToUpper(), out ModuleDescriptor? mod))
+            if (moduleName is not null && metadata.Modules.TryGetValue(moduleName.ToUpper(), out ModuleDescriptor? mod))
             {
                 if (mod.ServicesByName.TryGetValue(procName, out SystemService? svc))
                 {

@@ -28,11 +28,26 @@ namespace Reko.Core
     public class AddressSearchHit
     {
         /// <summary>
-        /// Creates an instance of the <see cref="AddressSearchHit"/> class.
+        /// The program in which the hit was found.
         /// </summary>
-        /// <param name="program">The program in which the hit was found.</param>
-        /// <param name="address">The address at which the hit was found.</param>
-        /// <param name="length">The length of the hit in storage units.</param>
+        public Program Program { get; }
+
+        /// <summary>
+        /// The address at which the hit was found.
+        /// </summary>
+        public Address Address { get; }
+
+        /// <summary>
+        /// The length of the hit object.
+        /// </summary>
+        public int Length { get; }
+
+        /// <summary>
+        /// Constructs an instance of <see cref="AddressSearchHit"/>.
+        /// </summary>
+        /// <param name="program">Program in which the hit occurred.</param>
+        /// <param name="address">Address at which the hit occurred.</param>
+        /// <param name="length">The length of the hit object.</param>
         public AddressSearchHit(Program program, Address address, int length)
         {
             this.Program = program;

@@ -41,8 +41,12 @@ namespace Reko.Core.Output
 		private readonly object Defined = 2;
         private int nesting;
 
-        public enum Mode { Writing, Scanning }
+        private enum Mode { Writing, Scanning }
 
+        /// <summary>
+        /// Constructs an type formatter.
+        /// </summary>
+        /// <param name="writer">Output sink.</param>
 		public TypeFormatter(Formatter writer)
 		{
             this.writer = writer;
@@ -50,26 +54,36 @@ namespace Reko.Core.Output
 			this.mode = Mode.Writing;
 		}
 
+        /// <summary>
+        /// Begins a new line of output.
+        /// </summary>
 		public void BeginLine()
-		{
-			BeginLine("");
-		}
-
-		public void BeginLine(string s)
 		{
 			writer.Indent();
 		}
 
+        /// <summary>
+        /// Ends a line of output.
+        /// </summary>
 		public void EndLine()
 		{
             writer.Terminate();
 		}
 
+        /// <summary>
+        /// Ends a line of output with a terminator string.
+        /// </summary>
+        /// <param name="terminator">Final string on the line.</param>
 		public void EndLine(string terminator)
 		{
 			writer.Terminate(terminator);
 		}
 
+        /// <summary>
+        /// Ends a line of output with a terminator string and a line-end comment.
+        /// </summary>
+        /// <param name="terminator">Final string on the line.</param>
+        /// <param name="comment">Optional line-end comment.</param>
 		public void EndLine(string terminator, string? comment)
 		{
 			writer.Write(terminator);
@@ -77,6 +91,10 @@ namespace Reko.Core.Output
 			writer.Terminate();
 		}
 
+        /// <summary>
+        /// Write a line end comment.
+        /// </summary>
+        /// <param name="comment"></param>
 		public void LineEndComment(string? comment)
 		{
 			if (comment != null)
@@ -86,17 +104,27 @@ namespace Reko.Core.Output
 			}
 		}
 
+        /// <summary>
+        /// Write an opening beace with an optional trailing comment.
+        /// </summary>
 		public void OpenBrace()
 		{
 			OpenBrace(null);
 		}
 
+        /// <summary>
+        /// Write an opening beace with an optional trailing comment.
+        /// </summary>
+        /// <param name="trailingComment">Optional trailing comment.</param>
 		public void OpenBrace(string? trailingComment)
 		{
 			EndLine(" {", trailingComment);
             writer.Indentation += writer.TabSize;
 		}
 
+        /// <summary>
+        /// Write a closing brace.
+        /// </summary>
 		public void CloseBrace()
 		{
             writer.Indentation -= writer.TabSize;
@@ -106,6 +134,7 @@ namespace Reko.Core.Output
 
 		#region IDataTypeVisitor methods ///////////////////////////////////////
 
+        /// <inheritdoc/>
 		public Formatter VisitArray(ArrayType at)
 		{
 			string? oldName = name;
@@ -135,6 +164,7 @@ namespace Reko.Core.Output
             return writer;
 		}
 
+        /// <inheritdoc/>
         public Formatter VisitClass(ClassType ct)
         {
             var n = this.name;
@@ -218,6 +248,7 @@ namespace Reko.Core.Output
             }
         }
 
+        /// <inheritdoc/>
         public Formatter VisitCode(CodeType c)
         {
             if (mode == Mode.Writing)
@@ -228,6 +259,7 @@ namespace Reko.Core.Output
             return writer;
         }
 
+        /// <inheritdoc/>
         public Formatter VisitEnum(EnumType e)
         {
             if (mode == Mode.Writing)
@@ -266,6 +298,7 @@ namespace Reko.Core.Output
             return writer;
         }
 
+        /// <inheritdoc/>
 		public Formatter VisitEquivalenceClass(EquivalenceClass eq)
 		{
             if (mode == Mode.Writing)
@@ -284,6 +317,7 @@ namespace Reko.Core.Output
             return writer;
 		}
 
+        /// <inheritdoc/>
 		public Formatter VisitFunctionType(FunctionType ft)
 		{
 			string? oldName = name;
@@ -324,11 +358,13 @@ namespace Reko.Core.Output
             return writer;
 		}
 
+        /// <inheritdoc/>
         public Formatter VisitString(StringType str)
         {
             return VisitArray(str);
         }
 
+        /// <inheritdoc/>
 		public Formatter VisitStructure(StructureType str)
 		{
 			string? n = name;
@@ -379,7 +415,7 @@ namespace Reko.Core.Output
             return writer;
 		}
 
-		public void ScanFields(StructureType str)
+		private void ScanFields(StructureType str)
 		{
 			Mode m = mode;
 			mode = Mode.Scanning;
@@ -391,7 +427,7 @@ namespace Reko.Core.Output
 			mode = m;
 		}
 
-        public void ScanFields(ClassType ct)
+        private void ScanFields(ClassType ct)
         {
             Mode m = mode;
             mode = Mode.Scanning;
@@ -402,7 +438,7 @@ namespace Reko.Core.Output
             mode = m;
         }
 
-        public void ScanMethods(ClassType ct)
+        private void ScanMethods(ClassType ct)
         {
             Mode m = mode;
             mode = Mode.Scanning;
@@ -414,6 +450,7 @@ namespace Reko.Core.Output
             mode = m;
         }
 
+        /// <inheritdoc/>
 		public Formatter VisitMemberPointer(MemberPointer memptr)
 		{
             DataType baseType;
@@ -443,6 +480,7 @@ namespace Reko.Core.Output
             return writer;
 		}
 
+        /// <inheritdoc/>
 		public Formatter VisitPointer(Pointer pt)
 		{
 			if (mode == Mode.Writing)
@@ -480,6 +518,7 @@ namespace Reko.Core.Output
             return writer;
         }
 
+        /// <inheritdoc/>
         public Formatter VisitReference(ReferenceTo refTo)
         {
             if (mode == Mode.Writing)
@@ -493,6 +532,7 @@ namespace Reko.Core.Output
             return writer;
         }
 
+        /// <inheritdoc/>
         public Formatter VisitPrimitive(PrimitiveType pt)
 		{
 			if (mode == Mode.Writing)
@@ -503,6 +543,7 @@ namespace Reko.Core.Output
             return writer;
 		}
 
+        /// <inheritdoc/>
         public Formatter VisitTypeReference(TypeReference typeref)
         {
             if (mode == Mode.Writing)
@@ -513,12 +554,14 @@ namespace Reko.Core.Output
             return writer;
         }
 
+        /// <inheritdoc/>
         public Formatter VisitTypeVariable(TypeVariable t)
 		{
             this.writer.WriteType(t.Name, t);
             return writer;
 		}
 
+        /// <inheritdoc/>
         public Formatter VisitUnion(UnionType ut)
 		{
 			string? n = name;
@@ -543,6 +586,7 @@ namespace Reko.Core.Output
             return writer;
 		}
 
+        /// <inheritdoc/>
 		public Formatter VisitUnknownType(UnknownType ut)
 		{
 			if (mode == Mode.Writing)
@@ -552,6 +596,7 @@ namespace Reko.Core.Output
             return writer;
 		}
 
+        /// <inheritdoc/>
         public Formatter VisitVoidType(VoidType vt)
         {
             if (mode == Mode.Writing)
@@ -560,14 +605,23 @@ namespace Reko.Core.Output
             }
             return writer;
         }
-		#endregion
+        #endregion
 
-		public void Write(DataType dt, string? name)
+        /// <summary>
+        /// Write a data type to the output sink.
+        /// </summary>
+        /// <param name="dt">Data time</param>
+        /// <param name="name">Optional variable name</param>
+        public void Write(DataType dt, string? name)
 		{
 			this.name = name;
 			dt.Accept(this);
 		}
 
+        /// <summary>
+        /// Write a collection of data types to the output sink.
+        /// </summary>
+        /// <param name="datatypes">Data types to write.</param>
 		public void WriteTypes(IEnumerable<DataType> datatypes)
 		{
 			foreach (DataType dt in datatypes)

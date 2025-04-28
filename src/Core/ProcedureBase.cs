@@ -43,11 +43,11 @@ namespace Reko.Core
         private readonly bool isConcrete;
 
         /// <summary>
-        /// Initializes the fields of a concrete <see cref="ProcedureBase"/>.
+        /// Initialize an instance of <see cref="ProcedureBase"/>.
         /// </summary>
-        /// <param name="name">The name of the procedure.</param>
-        /// <param name="hasSideEffect">True if this procedure has side effects.
-        /// </param>
+        /// <param name="name">The name of the callable.</param>
+        /// <param name="hasSideEffect">True if calling this procedure has a side effect not
+        /// visible in architectural registers; otherwise false.</param>
 		public ProcedureBase(string name, bool hasSideEffect)
 		{
 			this.name = name;
@@ -57,12 +57,14 @@ namespace Reko.Core
 		}
 
         /// <summary>
-        /// Initializes the fields of a generic <see cref="ProcedureBase"/>.
+        /// Initialize a generic instance of <see cref="ProcedureBase"/>.
         /// </summary>
-        /// <param name="name">The name of the procedure.</param>
-        /// <param name="genericArguments">An array of type arguments.</param>
-        /// <param name="isConcrete">True if this procedure is a concretization of a generic procedure.</param>
-        /// <param name="hasSideEffect">True if this procedure has side effects.</param>
+        /// <param name="name">The name of the callable.</param>
+        /// <param name="genericArguments">An array of <see cref="DataType"/> objects that 
+        /// represent the type arguments of a generic procedure.</param>
+        /// <param name="isConcrete">True if this is a concrete instance of a generic procedure; otherwise false.</param>
+        /// <param name="hasSideEffect">True if calling this procedure has a side effect not
+        /// visible in architectural registers; otherwise false.</param>
         public ProcedureBase(
             string name, 
             DataType[] genericArguments,
@@ -109,9 +111,16 @@ namespace Reko.Core
             }
         }
         private string name;
+        /// <summary>
+        /// Event that is raised when the name of the procedure changes.
+        /// </summary>
+        public event EventHandler? NameChanged;
         
         /// <summary>
         /// The <see cref="FunctionType">function signature</see> of this procedure.
+        /// </summary>
+        /// <summary>
+        /// The function signature of the procedure.
         /// </summary>
 		public abstract FunctionType Signature { get; set; }
 
@@ -157,12 +166,13 @@ namespace Reko.Core
         public DataType[] GetGenericArguments() => this.genericArguments;
 
         /// <summary>
-        /// Creates a concrete signature from the generic signature of this procedure.
+        /// Creates a concrete version of this procedure by applying the provided
+        /// concrete types to the generic arguments of the procedure.
         /// </summary>
-        /// <param name="ptrSize">Size of pointers in storage units, or 0 if pointer sizes
-        /// are not relevant in this procedure's signature.</param>
-        /// <param name="concreteTypes">The concrete types to use in the </param>
-        /// <returns>The concretized signature.</returns>
+        /// <param name="ptrSize">Optional size of pointers, in bits.</param>
+        /// <param name="concreteTypes">Concrete types to instantiate with.</param>
+        /// <returns>A concrete version of the original generic version.
+        /// </returns>
         protected FunctionType MakeConcreteSignature(int ptrSize, DataType[] concreteTypes)
         {
             var sig = this.Signature;
@@ -203,7 +213,7 @@ namespace Reko.Core
                         ResolvePointer(ret.DataType, concreteTypes[index], ptrSize),
                         ret.Storage);
                 }
-                concreteSig = FunctionType.Func(ret, parameters);
+                concreteSig = FunctionType.Create(ret, parameters);
             }
             concreteSig.IsVariadic = sig.IsVariadic;
             return concreteSig;
@@ -255,7 +265,9 @@ namespace Reko.Core
             return Name;
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Returns a string representation of the procedure.
+        /// </summary>
         public override string ToString()
         {
             var sw = new StringWriter();

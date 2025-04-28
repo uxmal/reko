@@ -29,25 +29,134 @@ namespace Reko.Core
     /// <typeparam name="T">Returned value</typeparam>
 	public interface StorageVisitor<T>
 	{
+        /// <summary>
+        /// Called when a <see cref="FlagGroupStorage"/> is visited.
+        /// </summary>
+        /// <param name="grf">Flag group being visited.</param>
+        /// <returns>A value of type <typeparamref name="T"/></returns>
 		T VisitFlagGroupStorage(FlagGroupStorage grf);
+
+        /// <summary>
+        /// Called when a <see cref="FpuStackStorage"/> is visited.
+        /// </summary>
+        /// <param name="fpu">FPU stack entry being visited.</param>
+        /// <returns>A value of type <typeparamref name="T"/></returns>
 		T VisitFpuStackStorage(FpuStackStorage fpu);
-		T VisitMemoryStorage(MemoryStorage global);
-		T VisitOutArgumentStorage(OutArgumentStorage arg);
-		T VisitRegisterStorage(RegisterStorage reg);
-		T VisitSequenceStorage(SequenceStorage seq);
+
+        /// <summary>
+        /// Called when a <see cref="MemoryStorage"/> is visited.
+        /// </summary>
+        /// <param name="mem">Memory storage being visited.</param>
+        /// <returns>A value of type <typeparamref name="T"/></returns>
+		T VisitMemoryStorage(MemoryStorage mem);
+
+        /// <summary>
+        /// Called when a <see cref="OutArgumentStorage"/> is visited.
+        /// </summary>
+        /// <param name="arg">Out argument being visited.</param>
+        /// <returns>A value of type <typeparamref name="T"/></returns>
+        T VisitOutArgumentStorage(OutArgumentStorage arg);
+
+        /// <summary>
+        /// Called when a <see cref="RegisterStorage"/> is visited.
+        /// </summary>
+        /// <param name="reg">Register being visited.</param>
+        /// <returns>A value of type <typeparamref name="T"/></returns>
+        T VisitRegisterStorage(RegisterStorage reg);
+
+        /// <summary>
+        /// Called when a <see cref="SequenceStorage"/> is visited.
+        /// </summary>
+        /// <param name="seq">Sequence storage being visited.</param>
+        /// <returns>A value of type <typeparamref name="T"/></returns>
+        T VisitSequenceStorage(SequenceStorage seq);
+
+        /// <summary>
+        /// Called when a <see cref="StackStorage"/> is visited.
+        /// </summary>
+        /// <param name="stack">Stack storage being visited.</param>
+        /// <returns>A value of type <typeparamref name="T"/></returns>
 		T VisitStackStorage(StackStorage stack);
+
+        /// <summary>
+        /// Called when a <see cref="TemporaryStorage"/> is visited.
+        /// </summary>
+        /// <param name="temp">Stack storage being visited.</param>
+        /// <returns>A value of type <typeparamref name="T"/></returns>
 		T VisitTemporaryStorage(TemporaryStorage temp);
     }
 
+    /// <summary>
+    /// Visitor interface for storages, parametrized by the returned value of
+    /// all the visitor methods and a context.
+    /// </summary>
+    /// <typeparam name="T">Returned value</typeparam>
+    /// <typeparam name="C">Context object type.</typeparam>
+
     public interface StorageVisitor<T, C>
     {
-        T VisitFlagGroupStorage(FlagGroupStorage grf, C context);
-        T VisitFpuStackStorage(FpuStackStorage fpu, C context);
-        T VisitMemoryStorage(MemoryStorage global, C context);
+        /// <summary>
+        /// Called when a <see cref="FlagGroupStorage"/> is visited.
+        /// </summary>
+        /// <param name="grf">Flag group being visited.</param>
+        /// <param name="context">Context object.</param>
+        /// <returns>A value of type <typeparamref name="T"/></returns>
+		T VisitFlagGroupStorage(FlagGroupStorage grf, C context);
+
+        /// <summary>
+        /// Called when a <see cref="FpuStackStorage"/> is visited.
+        /// </summary>
+        /// <param name="fpu">FPU stack entry being visited.</param>
+        /// <param name="context">Context object.</param>
+        /// <returns>A value of type <typeparamref name="T"/></returns>
+		T VisitFpuStackStorage(FpuStackStorage fpu, C context);
+
+        /// <summary>
+        /// Called when a <see cref="MemoryStorage"/> is visited.
+        /// </summary>
+        /// <param name="mem">Memory storage being visited.</param>
+        /// <param name="context">Context object.</param>
+        /// <returns>A value of type <typeparamref name="T"/></returns>
+		T VisitMemoryStorage(MemoryStorage mem, C context);
+
+        /// <summary>
+        /// Called when a <see cref="OutArgumentStorage"/> is visited.
+        /// </summary>
+        /// <param name="arg">Out argument being visited.</param>
+        /// <param name="context">Context object.</param>
+        /// <returns>A value of type <typeparamref name="T"/></returns>
         T VisitOutArgumentStorage(OutArgumentStorage arg, C context);
+
+        /// <summary>
+        /// Called when a <see cref="RegisterStorage"/> is visited.
+        /// </summary>
+        /// <param name="reg">Register being visited.</param>
+        /// <param name="context">Context object.</param>
+        /// <returns>A value of type <typeparamref name="T"/></returns>
         T VisitRegisterStorage(RegisterStorage reg, C context);
+
+        /// <summary>
+        /// Called when a <see cref="SequenceStorage"/> is visited.
+        /// </summary>
+        /// <param name="seq">Sequence storage being visited.</param>
+        /// <param name="context">Context object.</param>
+        /// <returns>A value of type <typeparamref name="T"/></returns>
         T VisitSequenceStorage(SequenceStorage seq, C context);
-        T VisitStackStorage(StackStorage stack, C context);
-        T VisitTemporaryStorage(TemporaryStorage temp, C context);
+
+        /// <summary>
+        /// Called when a <see cref="StackStorage"/> is visited.
+        /// </summary>
+        /// <param name="stack">Stack storage being visited.</param>
+        /// <param name="context">Context object.</param>
+        /// <returns>A value of type <typeparamref name="T"/></returns>
+		T VisitStackStorage(StackStorage stack, C context);
+
+        /// <summary>
+        /// Called when a <see cref="TemporaryStorage"/> is visited.
+        /// </summary>
+        /// <param name="temp">Stack storage being visited.</param>
+        /// <param name="context">Context object.</param>
+        /// <returns>A value of type <typeparamref name="T"/></returns>
+		T VisitTemporaryStorage(TemporaryStorage temp, C context);
     }
 }

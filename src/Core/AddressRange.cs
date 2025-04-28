@@ -70,11 +70,10 @@ namespace Reko.Core
         }
 
         /// <summary>
-        /// Compares two address ranges for inequality.
+        /// Returns true if the address ranges are unequal.
         /// </summary>
-        /// <param name="left">One address range</param>
-        /// <param name="right">Another address range.</param>
-        /// <returns>True if the ranges are not equal.</returns>
+        /// <param name="left">First address range.</param>
+        /// <param name="right">Second address range.</param>
         public static bool operator != (AddressRange left, AddressRange right)
         {
             return !(left == right);

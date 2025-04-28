@@ -506,7 +506,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
         {
             var frame = new Frame(program.Architecture, PrimitiveType.Ptr32);
             var proc2 = new Procedure(program.Architecture, "fn2000", Address.Ptr32(0x2000), frame);
-            var sig = FunctionType.Func(
+            var sig = FunctionType.Create(
                 proc2.Frame.EnsureRegister(RegisterStorage.Reg32("r1", 1)),
                 proc2.Frame.EnsureRegister(RegisterStorage.Reg32("r2", 2)),
                 proc2.Frame.EnsureRegister(RegisterStorage.Reg32("r3", 3)));
@@ -832,7 +832,7 @@ testProc_exit:
             var procCallee = new Procedure(program.Architecture, null, addrCallee, program.Architecture.CreateFrame())
             {
                 Name = "testFn",
-                Signature = FunctionType.Func(
+                Signature = FunctionType.Create(
                     new Identifier("", PrimitiveType.Int32, r0.Storage),
                         new Identifier("str", new Pointer(PrimitiveType.Char, 32), r0.Storage),
                     new Identifier("f", PrimitiveType.Real32, r1.Storage))

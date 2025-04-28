@@ -98,7 +98,7 @@ namespace Reko.UnitTests.Arch.X86.Analysis
         {
             var site = new CallSite(0, 0);
             CreateApplicationBuilder(site);
-            var sigCallee = FunctionType.Func(
+            var sigCallee = FunctionType.Create(
                 new Identifier(
                     "",         // return values don't have names!
                     PrimitiveType.Real64,

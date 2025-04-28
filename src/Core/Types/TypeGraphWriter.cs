@@ -25,7 +25,7 @@ namespace Reko.Core.Types
 {
     /// <summary>
     /// Generates a more compact and easily parsed string version
-    /// of a datatype. For final output, use <see href="Reko.Output.TypeFormatter"/>.
+    /// of a datatype. For final output, use <see cref="Reko.Core.Output.TypeFormatter"/>.
     /// </summary>
     public class TypeGraphWriter : IDataTypeVisitor<Formatter>
     {
@@ -39,11 +39,16 @@ namespace Reko.Core.Types
         private bool reference;
         private int nesting;
 
+        /// <summary>
+        /// Constructs a type graph writer.
+        /// </summary>
+        /// <param name="writer">Output sink.</param>
         public TypeGraphWriter(Formatter writer)
         {
             this.writer = writer;
         }
-        
+
+        /// <inheritdoc/>
         public Formatter VisitArray(ArrayType at)
         {
             writer.Write("(arr ");
@@ -65,6 +70,7 @@ namespace Reko.Core.Types
             return writer;
         }
 
+        /// <inheritdoc/>
         public Formatter VisitClass(ClassType ct)
         {
             if (this.visited == null)
@@ -94,12 +100,14 @@ namespace Reko.Core.Types
             return writer;
         }
 
+        /// <inheritdoc/>
         public Formatter VisitCode(CodeType c)
         {
             writer.Write("code");
             return writer;
         }
 
+        /// <inheritdoc/>
         public Formatter VisitEnum(EnumType e)
         {
             writer.Write("(enum");
@@ -120,12 +128,14 @@ namespace Reko.Core.Types
             return writer;
         }
 
+        /// <inheritdoc/>
         public Formatter VisitEquivalenceClass(EquivalenceClass eq)
         {
             writer.Write(eq.Name);
             return writer;
         }
 
+        /// <inheritdoc/>
         public Formatter VisitFunctionType(FunctionType ft)
         {
             writer.Write("(fn ");
@@ -149,6 +159,7 @@ namespace Reko.Core.Types
             return writer;
         }
 
+        /// <inheritdoc/>
         public Formatter VisitPrimitive(PrimitiveType pt)
         {
             writer.Write(pt.Name);
@@ -156,6 +167,7 @@ namespace Reko.Core.Types
             return writer;
         }
 
+        /// <inheritdoc/>
         public Formatter VisitMemberPointer(MemberPointer memptr)
         {
             writer.Write("(memptr ");
@@ -166,6 +178,7 @@ namespace Reko.Core.Types
             return writer;
         }
 
+        /// <inheritdoc/>
         public Formatter VisitPointer(Pointer ptr)
         {
 			writer.Write($"(ptr{ptr.BitSize} ");
@@ -184,6 +197,7 @@ namespace Reko.Core.Types
             return writer;
 		}
 
+        /// <inheritdoc/>
         public Formatter WriteQualifier(Qualifier q)
         {
             var sep = "";
@@ -208,6 +222,7 @@ namespace Reko.Core.Types
             return writer;
         }
 
+        /// <inheritdoc/>
         public Formatter VisitReference(ReferenceTo refTo)
         {
             writer.Write("(ref ");
@@ -216,6 +231,7 @@ namespace Reko.Core.Types
             return writer;
         }
 
+        /// <inheritdoc/>
         public Formatter VisitString(StringType str)
         {
             writer.Write("(str");
@@ -233,6 +249,7 @@ namespace Reko.Core.Types
             return writer;
         }
 
+        /// <inheritdoc/>
         public Formatter VisitStructure(StructureType str)
         {
             if (this.visited == null)
@@ -278,6 +295,7 @@ namespace Reko.Core.Types
             return writer;
         }
 
+        /// <inheritdoc/>
         public Formatter VisitTypeReference(TypeReference typeref)
         {
             if (string.IsNullOrEmpty(typeref.Name))
@@ -291,12 +309,14 @@ namespace Reko.Core.Types
             return writer;
         }
 
+        /// <inheritdoc/>
         public Formatter VisitTypeVariable(TypeVariable tv)
         {
             writer.Write(tv.Name);
             return writer;
         }
 
+        /// <inheritdoc/>
         public Formatter VisitUnion(UnionType ut)
         {
             if (visited == null)
@@ -337,6 +357,7 @@ namespace Reko.Core.Types
             return writer;
         }
 
+        /// <inheritdoc/>
         public Formatter VisitUnknownType(UnknownType ut)
         {
             if (ut.BitSize == 0)
@@ -346,6 +367,7 @@ namespace Reko.Core.Types
             return writer;
         }
 
+        /// <inheritdoc/>
         public Formatter VisitVoidType(VoidType vt)
         {
             writer.Write("void");

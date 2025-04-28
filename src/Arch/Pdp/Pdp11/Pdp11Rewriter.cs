@@ -319,7 +319,7 @@ namespace Reko.Arch.Pdp.Pdp11
                 default:
                     throw new AddressCorrelatedException(
                         dasm.Current.Address,
-                        $"Not implemented: addressing mode {memOp.Mode}."); 
+                        $"Not implemented: addressing mode {memOp.Mode}.");
                 case AddressMode.RegDef:
                     return m.Mem(this.dasm.Current.DataWidth!, r!);
                 case AddressMode.Absolute:

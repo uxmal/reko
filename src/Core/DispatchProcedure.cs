@@ -39,10 +39,12 @@ namespace Reko.Core
         private FunctionType dummySig;
 
         /// <summary>
-        /// Creates an instance of a dispatch procedure.
+        /// Constructs a <see cref="DispatchProcedure"/> instance.
         /// </summary>
         /// <param name="name">The name of the procedure.</param>
-        /// <param name="services">A list of <see cref="SyscallInfo"/> -  <see cref="ExternalProcedure"/> pairs</param>.
+        /// <param name="services">A list of (<see cref="SyscallInfo"/>, 
+        /// <see cref="ExternalProcedure"/>) pairs.
+        /// </param>
         public DispatchProcedure(string name, List<(SyscallInfo, ExternalProcedure)> services) : base(name, true)
         {
             this.services = services;
@@ -59,12 +61,14 @@ namespace Reko.Core
         }
 
         /// <summary>
-        /// Determine which sub-service is intended based a given <cref name="ProcessorState"/>.
+        /// Given a <see cref="ProcessorState"/>, find the service that matches
+        /// that state.
         /// </summary>
-        /// <param name="state"><see cref="ProcessorState"/> instance containing register
-        /// values prior to the call to the dispath procedure.
+        /// <param name="state"><see cref="ProcessorState"/> to use to determine
+        /// the specific procedure dispatched to.
         /// </param>
-        /// <returns>An <see cref="ExternalProcedure"/> if a match is found, otherwise null.
+        /// <returns>An <see cref="ExternalProcedure"/> if enough information 
+        /// was supplied to determine the procedure; otherwise null.
         /// </returns>
         public ExternalProcedure? FindService(ProcessorState state)
         {

@@ -33,10 +33,20 @@ namespace Reko.Core.Types
         private readonly SortedSet<TypeVariable> types = new SortedSet<TypeVariable>(
             Comparer<TypeVariable>.Create((a, b) => a.Number - b.Number));
 
+        /// <summary>
+        /// Constructs an empty equivalence class with a given representative.
+        /// </summary>
+        /// <param name="rep">Representative type variable for the equivalence class.</param>
 		public EquivalenceClass(TypeVariable rep) : this(rep, null)
 		{
 		}
 
+
+        /// <summary>
+        /// Constructs an equivalence class with a given representative and an initial data type.
+        /// </summary>
+        /// <param name="rep">Representative type variable for the equivalence class.</param>
+        /// <param name="dt">Initial data type.</param>
         public EquivalenceClass(TypeVariable rep, DataType? dt)
             : base(Domain.Any)
         {
@@ -45,21 +55,27 @@ namespace Reko.Core.Types
             types.Add(rep);
         }
 
+        /// <inheritdoc/>
         public override void Accept(IDataTypeVisitor v)
         {
             v.VisitEquivalenceClass(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
             return v.VisitEquivalenceClass(this);
         }
 
+        /// <inheritdoc/>
         public override DataType Clone(IDictionary<DataType, DataType>? clonedTypes)
 		{
 			return this;
 		}
 
+        /// <summary>
+        /// Data type of the equivalence class.
+        /// </summary>
         public DataType DataType
         {
             get { return dt!; }
@@ -72,6 +88,7 @@ namespace Reko.Core.Types
         private DataType? dt;
         //$REVIEW Avoid making equivalence classes early to make this "nullable" unnecessary?
 
+        /// <inheritdoc/>
         public override bool IsComplex => true;
 
 		/// <summary>
@@ -106,18 +123,23 @@ namespace Reko.Core.Types
 			return class1;
 		}
 
+        /// <inheritdoc/>
 		public override string Name
 		{
 			get { return "Eq_" + Representative.Number; }
 		}
 
+        /// <summary>
+        /// Unique number of the equivalence class.
+        /// </summary>
 		public int Number
 		{
 			get { return Representative.Number; }
 		}
 		
+        /// <inheritdoc/>
 		public override int Size
-		{
+        {
             get
             {
                 if (DataType == null)
@@ -132,6 +154,9 @@ namespace Reko.Core.Types
 			set { ThrowBadSize(); }
 		}
 
+        /// <summary>
+        /// Representative type variable of the equivalence class.
+        /// </summary>
 		public TypeVariable Representative { get; private set; }
 
 		/// <summary>
@@ -147,6 +172,10 @@ namespace Reko.Core.Types
 			get { return types; }
 		}
 
+        /// <summary>
+        /// Writes the body of the equivalence class to a text writer.
+        /// </summary>
+        /// <param name="writer">Output sink.</param>
 		public void WriteBody(TextWriter writer)
 		{
 			writer.Write("{0}: {{", Name);

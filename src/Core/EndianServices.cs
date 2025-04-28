@@ -251,15 +251,13 @@ namespace Reko.Core
 
 
         /// <summary>
-        /// Creates a <see cref="MemoryAccess"/> using the effect address and the
-        /// given byte offset.
+        /// Create a sliced memory access expression.
         /// </summary>
-        /// <param name="memoryId">Memory identifier to use.</param>
-        /// <param name="effectiveAddress">Effective address to start with.</param>
-        /// <param name="byteOffset">Storage unit offset from the effective address.</param>
-        /// <param name="bitRange">The bitrange of the slice.</param>
-        /// <returns>A memory access with the same bit size as <paramref name="bitRange"/>, offset
-        /// from the original effective address by <paramref name="byteOffset"/>.</returns>
+        /// <param name="memoryId">Memory identifier of the expresion.</param>
+        /// <param name="effectiveAddress">Effective address of the expression.</param>
+        /// <param name="byteOffset">Byte offset from the beginning of the effective address.</param>
+        /// <param name="bitRange">The bit range of interest.</param>
+        /// <returns></returns>
         protected MemoryAccess MakeSlicedMemoryAccess(
             Identifier memoryId,
             Expression effectiveAddress,
@@ -364,9 +362,7 @@ namespace Reko.Core
                 return oLsb + size == oMsb;
             }
 
-            /// <summary>
             /// <inheritdoc />
-            /// </summary>
             public override MemoryAccess SliceMemoryAccess(Identifier memoryId, Expression effectiveAddress, DataType dataType, BitRange bitRange, int granularity)
             {
                 var byteOffset = bitRange.Lsb / granularity;

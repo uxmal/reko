@@ -80,7 +80,7 @@ namespace Reko.Core.Analysis
         /// <inheritdoc/>
         public Expression VisitFlagGroupStorage(FlagGroupStorage grf)
         {
-            return binder.EnsureFlagGroup(grf.FlagRegister, grf.FlagGroupBits, grf.Name);
+            return binder.EnsureFlagGroup(grf);
         }
 
         /// <inheritdoc/>

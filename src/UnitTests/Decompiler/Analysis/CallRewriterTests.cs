@@ -457,7 +457,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             var sst = new SsaTransform(program, m.Procedure, new HashSet<Procedure>(), null, new ProgramDataFlow());
             sst.Transform();
             sst.AddUsesToExitBlock();
-            sst.SsaState.Procedure.Signature = FunctionType.Func(
+            sst.SsaState.Procedure.Signature = FunctionType.Create(
                 new Identifier("", PrimitiveType.Word32, Registers.eax),
                 new Identifier("eax", PrimitiveType.Word32, Registers.eax));
 
@@ -520,7 +520,7 @@ CrwSinglePredecessorToExitBlock_exit:
             var sst = new SsaTransform(program, m.Procedure, new HashSet<Procedure>(), null, new ProgramDataFlow());
             sst.Transform();
             sst.AddUsesToExitBlock();
-            sst.SsaState.Procedure.Signature = FunctionType.Func(
+            sst.SsaState.Procedure.Signature = FunctionType.Create(
                 new Identifier("", PrimitiveType.Word32, Registers.eax),
                 new Identifier("eax", PrimitiveType.Word32, Registers.eax));
 
@@ -850,7 +850,7 @@ main_exit:
             Given_Procedure("fn", m => { });
             Given_Signature(
                 "fn",
-                FunctionType.Func(
+                FunctionType.Create(
                     new Identifier(
                         "ret",
                         PrimitiveType.Word32,
@@ -889,7 +889,7 @@ main_exit:
             Given_Procedure("fn", m => { });
             Given_Signature(
                 "fn",
-                FunctionType.Func(
+                FunctionType.Create(
                     new Identifier(
                         "ret",
                         ret.DataType,
@@ -981,7 +981,7 @@ main_exit:
             });
             Given_Signature(
                 "main",
-                FunctionType.Func(
+                FunctionType.Create(
                     new Identifier(
                         "ret",
                         PrimitiveType.Word32,
@@ -1022,7 +1022,7 @@ main_exit:
             });
             Given_Signature(
                 "main",
-                FunctionType.Func(
+                FunctionType.Create(
                     new Identifier(
                         "reth",
                         PrimitiveType.Word16,
@@ -1110,7 +1110,7 @@ main_exit:
             });
             Given_Signature(
                 "main",
-                FunctionType.Func(
+                FunctionType.Create(
                     new Identifier(
                         "reth",
                         PrimitiveType.Word32,

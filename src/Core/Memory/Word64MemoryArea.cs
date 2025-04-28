@@ -29,29 +29,55 @@ namespace Reko.Core.Memory
     /// </summary>
     public class Word64MemoryArea : MemoryArea
     {
+        /// <summary>
+        /// Construct a memory area with 64-bit words.
+        /// </summary>
+        /// <param name="addr">Address of the beginning of the memory area.</param>
+        /// <param name="words"></param>
         public Word64MemoryArea(Address addr, ulong[] words) :
             base(addr, words.Length, 64, new MemoryFormatter(PrimitiveType.Word64, 1, 2, 16, 8))
         {
             this.Words = words;
         }
 
+        /// <summary>
+        /// The underlying data.
+        /// </summary>
         public ulong[] Words { get; }
 
+        /// <summary>
+        /// Creates a big-endian image reader for this memory area.
+        /// </summary>
+        /// <param name="addr">Address at which to start reading.</param>
+        /// <returns>Big endian image reader.</returns>
         public override EndianImageReader CreateBeReader(Address addr)
         {
             return new Word64BeReader(this, addr);
         }
 
+        /// <summary>
+        /// Creates a big-endian image reader for this memory area.
+        /// </summary>
+        /// <param name="addr">Address at which to start reading.</param>
+        /// <param name="cUnits">Maximum number of words to read.</param>
+        /// <returns>Big endian image reader.</returns>
         public override EndianImageReader CreateBeReader(Address addr, long cUnits)
         {
             return new Word64BeReader(this, addr, cUnits);
         }
 
+        /// <summary>
+        /// Creates a big-endian image reader for this memory area.
+        /// </summary>
+        /// <param name="offset">Offset from the start of the memory area from
+        /// which to start reading.</param>
+        /// <returns>Big endian image reader.</returns>
         public override EndianImageReader CreateBeReader(long offset)
         {
             return new Word64BeReader(this, offset);
         }
 
+#pragma warning disable CS1591
         public override EndianImageReader CreateBeReader(long offsetBegin, long offsetEnd)
         {
             throw new System.NotImplementedException();
@@ -106,6 +132,8 @@ namespace Reko.Core.Memory
         {
             throw new System.NotImplementedException();
         }
+
+#pragma warning restore CS1591
 
         public override bool TryReadBeUInt32(long off, out uint retvalue)
         {

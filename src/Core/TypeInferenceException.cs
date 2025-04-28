@@ -27,12 +27,11 @@ namespace Reko.Core
 	/// </summary>
 	public class TypeInferenceException : ApplicationException
 	{
+        /// <summary>
+        /// Creates an exception with the specified message.
+        /// </summary>
+        /// <param name="msg">Message explaining the error.</param>
 		public TypeInferenceException(string msg) : base(msg)
-		{
-		}
-
-		public TypeInferenceException(string fmt, params object [] args) :
-			base(string.Format(fmt, args))
 		{
 		}
 	}

@@ -31,6 +31,10 @@ namespace Reko.Core
     /// </summary>
     public class Project : ILoadedImage
     {
+        /// <summary>
+        /// Creates a Reko decompiler project.
+        /// </summary>
+        /// <param name="location">Location from which the project was loaded.</param>
         public Project(ImageLocation location)
         {
             Programs = new ObservableRangeCollection<Program>();
@@ -98,6 +102,11 @@ namespace Reko.Core
         public T Accept<T, C>(ILoadedImageVisitor<T, C> visitor, C context)
             => visitor.VisitProject(this, context);
 
+        /// <summary>
+        /// Add a new <see cref="Program"/> to the project.
+        /// </summary>
+        /// <param name="programLocation">Location from which the program was loaded.</param>
+        /// <param name="program">The loaded program.</param>
         public void AddProgram(ImageLocation programLocation, Program program)
         {
             program.Location = programLocation;

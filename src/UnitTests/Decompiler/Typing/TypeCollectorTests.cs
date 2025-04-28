@@ -297,7 +297,7 @@ namespace Reko.UnitTests.Decompiler.Typing
         public void TycoCallFunctionWithArraySize()
         {
             var m = new ProcedureBuilder();
-            var sig = FunctionType.Func(
+            var sig = FunctionType.Create(
                 new Identifier("", new Pointer(VoidType.Instance, 32), null),
                 m.Frame.EnsureStackArgument(0, PrimitiveType.Word32));
             var ex = new ExternalProcedure("malloc", sig, new ProcedureCharacteristics

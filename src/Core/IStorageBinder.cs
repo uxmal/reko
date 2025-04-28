@@ -109,16 +109,6 @@ namespace Reko.Core
         Identifier EnsureSequence(DataType dataType, params Storage[] elements);
 
         /// <summary>
-        /// Given an sequence of <see cref="Storage"/>s, ensures there is an
-        /// identifier backed by that sequence.
-        /// </summary>
-        /// <param name="dataType">Data type of the identifier.</param>
-        /// <param name="elements">Sequence storage elements.</param>
-        /// <returns>An identifier backed by the sequence storage.</returns>
-        [Obsolete("", true)]
-        Identifier EnsureSequence(DataType dataType, string name, params Storage [] elements);
-
-        /// <summary>
         /// Given a stack offset, ensures that there is an identifier backed by
         /// that stack offset.
         /// </summary>

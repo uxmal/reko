@@ -191,7 +191,7 @@ namespace Reko.UnitTests.Core.Code
 			int stack = PrimitiveType.Word16.Size;
 			f.EnsureStackLocal(-stack, PrimitiveType.Word16);
 
-            FunctionType sig = FunctionType.Func(
+            FunctionType sig = FunctionType.Create(
                 ax,
                 cx,
                 new Identifier("arg0", PrimitiveType.Word16, new StackStorage(0, PrimitiveType.Word16)));

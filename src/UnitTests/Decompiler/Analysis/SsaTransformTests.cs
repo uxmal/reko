@@ -1673,7 +1673,7 @@ proc1_exit:
             {
                 var ebx = m.Reg32("ebx", 2);
                 var C = m.Flags("C");
-                var func = new ExternalProcedure("os_service", FunctionType.Func(C, ebx));
+                var func = new ExternalProcedure("os_service", FunctionType.Create(C, ebx));
 
                 m.Assign(C, m.Fn(func, ebx, m.Out(ebx.DataType, ebx)));
                 m.MStore(m.Word32(0x123400), ebx);
@@ -1842,7 +1842,7 @@ proc1_exit:
                     PrimitiveType.Ptr32,
                     new ExternalProcedure(
                         "ImportedFunc",
-                        FunctionType.Func(Reg(14), Reg(6)))));
+                        FunctionType.Create(Reg(14), Reg(6)))));
 
             RunTestOld(sExp, m =>
             {
@@ -4322,7 +4322,7 @@ proc1_exit:
             RunTestOld(sExp, m =>
             {
                 var al = m.Reg8("al", 0);
-                m.Procedure.Signature = FunctionType.Func(
+                m.Procedure.Signature = FunctionType.Create(
                     new Identifier("", PrimitiveType.Byte, al.Storage));
 
                 m.Assign(al, m.Mem8(m.Word32(0x00123400)));

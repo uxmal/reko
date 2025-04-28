@@ -182,7 +182,7 @@ test_exit:
             {
                 parameters.Add(frame.EnsureStackArgument(offset, pb.Program.Architecture.WordWidth));
             }
-            var proc = new ExternalProcedure(name, FunctionType.Func(
+            var proc = new ExternalProcedure(name, FunctionType.Create(
                 idRet, 
                 parameters.ToArray()));
             return proc;

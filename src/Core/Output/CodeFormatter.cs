@@ -475,6 +475,10 @@ namespace Reko.Core.Output
 			InnerFormatter.Write(id.Name);
 		}
 
+        /// <summary>
+        /// Renders a memory access.
+        /// </summary>
+        /// <param name="access">Memory access to render.</param>
 		public void VisitMemoryAccess(MemoryAccess access)
 		{
 			access.MemoryId.Accept(this);
@@ -485,6 +489,10 @@ namespace Reko.Core.Output
 			InnerFormatter.Write("]");
 		}
 
+        /// <summary>
+        /// Renders a segmented address.
+        /// </summary>
+        /// <param name="segptr"></param>
         public void VisitSegmentedAddress(SegmentedPointer segptr)
         {
             WriteExpression(segptr.BasePointer);

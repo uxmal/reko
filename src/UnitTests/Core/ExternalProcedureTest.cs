@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void ExtpBind()
 		{
-			var sig = FunctionType.Func(
+			var sig = FunctionType.Create(
 				new Identifier(Registers.ax.Name, PrimitiveType.Word16, Registers.ax),
 				new Identifier [] {
 					new Identifier(Registers.bx.Name, PrimitiveType.Word16, Registers.bx),

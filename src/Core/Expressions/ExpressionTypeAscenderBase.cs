@@ -40,6 +40,11 @@ namespace Reko.Core.Expressions
         private readonly TypeFactory factory;
         private readonly StructureType globalFields;
 
+        /// <summary>
+        /// Initializes an instance of the <see cref="ExpressionTypeAscenderBase"/> class.
+        /// </summary>
+        /// <param name="program">Program being analyzed.</param>
+        /// <param name="factory">Type factory to use when constructing types.</param>
         public ExpressionTypeAscenderBase(IReadOnlyProgram program, TypeFactory factory)
         {
             this.platform = program.Platform;

@@ -680,7 +680,7 @@ namespace Reko.Evaluation
                     (binInner.Operator.Type == OperatorType.Shr || binInner.Operator.Type == OperatorType.Sar) &&
                     cmp.Equals(cRight, binInner.Right))
                 {
-                    var sig = FunctionType.Func(
+                    var sig = FunctionType.Create(
                         new Identifier("", bin.DataType, null!),
                         new Identifier("x", binInner.Left.DataType, null!),
                         new Identifier("y", PrimitiveType.Int32, null!));

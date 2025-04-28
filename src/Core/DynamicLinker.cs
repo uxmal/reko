@@ -80,52 +80,49 @@ namespace Reko.Core
         /// </returns>
         ExternalProcedure? ResolveProcedure(string moduleName, int ordinal, IPlatform platform);
 
+
         /// <summary>
-        /// Find an external imported global, based on a module name and an ordinal. The optional
-        /// <paramref name="moduleName"/> allows specifying a particular
-        /// code module hosting the external procedure.
+        /// Resolves an imported global variable by name, and optionally by <paramref name="moduleName"/>
         /// </summary>
-        /// <param name="moduleName">
-        /// Optional name of the module hosting the externa procedure.
+        /// <param name="moduleName">Optional name of module in which a global variable is defined.
         /// </param>
-        /// <param name="globalName">
-        /// The name of the external procedure.
+        /// <param name="globalName">The name of a global variable.
         /// </param>
         /// <param name="platform">
         /// The operating environment hosting the executable program.
         /// </param>
         /// <returns>
-        /// If an external global variable matching <paramref name="globalName"/>
-        /// and <paramref name="moduleName"/> can be located, it is returned,
-        /// otherwise null.
+        /// If a global variable matching the <paramref name="globalName"/> and optionally 
+        /// the <paramref name="moduleName"/>, returns an expression referring to the 
+        /// global variable, otherwise null.
         /// </returns>
         Expression? ResolveImport(string? moduleName, string globalName, IPlatform platform);
 
         /// <summary>
-        /// Find an external imported global, based on a module name and an ordinal. The optional
-        /// <paramref name="moduleName"/> allows specifying a particular
-        /// code module hosting the external global variable.
+        /// Resolves an imported global variable by the given <paramref name="moduleName"/> and 
+        /// the <paramref name="ordinal"/>.
         /// </summary>
-        /// <param name="moduleName">
-        /// Optional name of the module hosting the externa procedure.
+        /// <param name="moduleName">Name of module in which a global variable is defined.
         /// </param>
-        /// <param name="ordinal">
-        /// The ordinal of the external global variable.
+        /// <param name="ordinal">The ordinal of a global variable.
         /// </param>
         /// <param name="platform">
         /// The operating environment hosting the executable program.
         /// </param>
         /// <returns>
-        /// If an external global variable matching <paramref name="ordinal"/>
-        /// and <paramref name="moduleName"/> can be located, it is returned,
-        /// otherwise null.
+        /// If a global variable matching the <paramref name="ordinal"/> and 
+        /// the <paramref name="moduleName"/>, returns an expression referring to the 
+        /// global variable, otherwise null.
         /// </returns>
+
         Expression? ResolveImport(string moduleName, int ordinal, IPlatform platform);
 
         Expression? ResolveToImportedValue(Statement stm, Constant c);
     }
 
-
+    /// <summary>
+    /// The <see cref="DynamicLinker"/> class implements the <see cref="IDynamicLinker"/>.
+    /// </summary>
     public class DynamicLinker : IDynamicLinker
     {
         private readonly Project project;
@@ -133,6 +130,13 @@ namespace Reko.Core
         private readonly IEventListener eventListener;
         private readonly Dictionary<string, ImageSymbol> localProcs;
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="DynamicLinker"/> class.
+        /// </summary>
+        /// <param name="project">Project in which the program is hosted.</param>
+        /// <param name="program">Current program.</param>
+        /// <param name="eventListener"><see cref="IEventListener" /> interface to report errors to.
+        /// </param>
         public DynamicLinker(Project project, Program program, IEventListener eventListener)
         {
             this.project = project ?? throw new ArgumentNullException(nameof(project));
@@ -154,6 +158,7 @@ namespace Reko.Core
             return svc.Signature ?? new FunctionType();
         }
 
+        /// <inheritdoc/>
         public ExternalProcedure? ResolveProcedure(string? moduleName, string importName, IPlatform platform)
         {
             var ep = LookupProcedure(moduleName, importName, platform);
@@ -223,6 +228,7 @@ namespace Reko.Core
             return platform.LookupProcedureByName(moduleName, importName);
         }
 
+        /// <inheritdoc/>
         public ExternalProcedure? ResolveProcedure(string moduleName, int ordinal, IPlatform platform)
         {
             foreach (var program in project.Programs)
@@ -269,6 +275,7 @@ namespace Reko.Core
             return platform.LookupProcedureByOrdinal(moduleName, ordinal);
         }
 
+        /// <inheritdoc/>
         public Expression? ResolveImport(string? moduleName, string name, IPlatform platform)
         {
             var global = LookupImport(moduleName, name, platform);
@@ -322,6 +329,7 @@ namespace Reko.Core
             return platform.ResolveImportByName(moduleName, name);
         }
 
+        /// <inheritdoc/>
         public SystemService? ResolveService(string moduleName, int ordinal)
         {
             foreach (var program in project.Programs)
@@ -337,6 +345,7 @@ namespace Reko.Core
             return null;
         }
 
+        /// <inheritdoc/>
         public Expression? ResolveImport(string moduleName, int ordinal, IPlatform platform)
         {
             foreach (var program in project.Programs)
@@ -376,6 +385,7 @@ namespace Reko.Core
             }
         }
 
+        /// <inheritdoc/>
         public Expression? ResolveToImportedValue(Statement stm, Constant c)
         {
             var addrInstruction = stm.Address;

@@ -147,7 +147,7 @@ struct a {
         [Test]
         public void TyfoFn()
         {
-            FunctionType fn = FunctionType.Func(
+            FunctionType fn = FunctionType.Create(
                 new Identifier("", PrimitiveType.Int32, null),
                 new Identifier[] { new Identifier("", PrimitiveType.Word32, null) });
             tyreffo.WriteDeclaration(fn, "fn");

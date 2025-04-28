@@ -23,17 +23,24 @@ using System.Collections.Generic;
 namespace Reko.Core.Collections
 {
     /// <summary>
-    /// A <see cref="Counter{T}"/> is a wrapper around a <see href="Dictionary{TKey, int}"/>
-    /// which provides convenient counts of items.
+    /// A <see cref="Counter{T}"/> provides convenient counts of items.
     /// </summary>
     /// <typeparam name="T">Item type to be tallied.</typeparam>
     public class Counter<T> : Dictionary<T, int>
         where T : notnull
     {
+        /// <summary>
+        /// Creates an empty counter instance.
+        /// </summary>
         public Counter()
         {
         }
 
+        /// <summary>
+        /// Creates an instance of the <see cref="Counter{T}"/> class and initializes
+        /// the counts of the items in the given collection.
+        /// </summary>
+        /// <param name="items">Collection to tally.</param>
         public Counter(IEnumerable<T> items)
         {
             foreach (var item in items)

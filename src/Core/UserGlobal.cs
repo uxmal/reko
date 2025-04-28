@@ -30,11 +30,32 @@ namespace Reko.Core
     /// </summary>
     public class UserGlobal
     {
+        /// <summary>
+        /// The address of the global variable.
+        /// </summary>
         public Address Address { get; set; }
+
+        /// <summary>
+        /// The name of the global variable.
+        /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// The type of the global variable.
+        /// </summary>
         public SerializedType DataType { get; set; }
+
+        /// <summary>
+        /// Optional comment for the global variable.
+        /// </summary>
         public string? Comment { get; set; }
 
+        /// <summary>
+        /// Constructs a user global variable.
+        /// </summary>
+        /// <param name="address">Address of the variable.</param>
+        /// <param name="name">Name of the variable.</param>
+        /// <param name="dataType">Data type of the variable.</param>
         public UserGlobal(Address address, string name, SerializedType dataType)
         {
             Address = address;
@@ -42,6 +63,8 @@ namespace Reko.Core
             DataType = dataType;
         }
 
+        /// <summary>
+        /// Generates a default name for the global variable, based on its address.
         public static string GenerateDefaultName(Address address) => $"g_{address.ToLinear():X}";
     }
 }

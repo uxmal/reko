@@ -19,16 +19,22 @@
 #endregion
 
 using Reko.Core.Serialization;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Reko.Core
 {
+    /// <summary>
+    /// User-provided information about a procedure.
+    /// </summary>
     public class UserProcedure
     {
         public const int NoOrdinal = -1;
-        
+
+        /// <summary>
+        /// Constructs a new user procedure.
+        /// </summary>
+        /// <param name="address">Address of the procedure.</param>
+        /// <param name="name">User-provided name.</param>
         public UserProcedure(Address address, string name)
         {
             Address = address;
@@ -37,22 +43,52 @@ namespace Reko.Core
             Characteristics = new ProcedureCharacteristics();
         }
 
+        /// <summary>
+        /// The address of the procedure.
+        /// </summary>
         public Address Address { get; set; }
 
+        /// <summary>
+        /// The name of the procedure.
+        /// </summary>
         public string Name { get; set; }
 
+        /// <summary>
+        /// True if user wishes to decompile the procedure.
+        /// </summary>
         public bool Decompile { get; set; } = true;
-        
+
+        /// <summary>
+        /// The registers in Assume are assumed to have specific values upon entry 
+        /// to the procedure.
+        /// </summary>
         public List<RegisterValue_v2> Assume { get; set; }
-        
+
+        /// <summary>
+        /// The C signature of the procedure.
+        /// </summary>
         public string? CSignature { get; set; }
-        
+
+        /// <summary>
+        /// Optional specification of which file the decompiled code should be
+        /// written to.
+        /// </summary>
         public string? OutputFile { get; set; }
 
+        /// <summary>
+        /// Optional ordinal of the procedure. This is used when the procedure is
+        /// imported from an external module.
+        /// </summary>
         public int Ordinal { get; set; } = NoOrdinal;
-        
+
+        /// <summary>
+        /// Optional reko signature of the procedure.
+        /// </summary>
         public SerializedSignature? Signature { get; set; }
 
+        /// <summary>
+        /// Optional characteristics of the procedure.
+        /// </summary>
         public ProcedureCharacteristics Characteristics { get; set; }
     }
 }

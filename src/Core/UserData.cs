@@ -53,18 +53,64 @@ namespace Reko.Core
         }
 
         // 'Oracular' information provided by the user.
+        /// <summary>
+        /// Label of <see cref="ImageLoader"/> to use.
+        /// </summary>
         public string? Loader { get; set; }
+
+        /// <summary>
+        /// Architecture identifier to use when disassembling code.
+        /// </summary>
         public string? Processor { get; set; }
+
+        /// <summary>
+        /// Platform identifier to use.
+        /// </summary>
         public string? Environment { get; set; }
+
+        /// <summary>
+        /// Address at which to load the image.
+        /// </summary>
         public Address? LoadAddress { get; set; }
+
+        /// <summary>
+        /// User-provided procedures, indexed by address.
+        /// </summary>
         public SortedList<Address, UserProcedure> Procedures { get; set; }
+
+        /// <summary>
+        /// User-provided information about call sites, indexed by address.
+        /// </summary>
         public SortedList<Address, UserCallData> Calls { get; set; }
+
+        /// <summary>
+        /// User-provided information about global variables, indexed by address.
+        /// </summary>
         public SortedList<Address, UserGlobal> Globals { get; set; }
+
+        /// <summary>
+        /// User-provided information about indirect jumps, indexed by name.
+        /// </summary>
         public SortedList<Address, UserIndirectJump> IndirectJumps { get; set; }
+
+        /// <summary>
+        /// User-provided information about jumps tables, indexed by address.
+        /// </summary>
         public SortedList<Address, ImageMapVectorTable> JumpTables { get; set; }
+
+        /// <summary>
+        /// User-provided information annotations.
+        /// </summary>
         public AnnotationList Annotations { get; set; }
+
+        /// <summary>
+        /// User-provided segments.
+        /// </summary>
         public List<UserSegment> Segments { get; set; }
 
+        /// <summary>
+        /// User-provided block labels.
+        /// </summary>
         //$BUG: this should be Address => string.
         public Dictionary<string, string> BlockLabels { get; set; }
         
@@ -136,15 +182,30 @@ namespace Reko.Core
         public HashSet<string> DebugTraceProcedures { get; set; }
     }
 
+    /// <summary>
+    /// Models a user-specified annotation about an address.
+    /// </summary>
     public class Annotation
     {
+        /// <summary>
+        /// Constructns an annotation.
+        /// </summary>
+        /// <param name="address">Address for the annotation.</param>
+        /// <param name="text">Text of the annotation.</param>
         public Annotation(Address address, string text)
         {
             this.Address = address;
             this.Text = text;
         }
 
+        /// <summary>
+        /// The address of the annotation.
+        /// </summary>
         public Address Address { get; }
+
+        /// <summary>
+        /// The text of the annotation.
+        /// </summary>
         public string Text { get; }
     }
 
@@ -153,22 +214,46 @@ namespace Reko.Core
     /// </summary>
     public class UserCallData
     {
-        public Address Address { get; set; } // The address of the call.
+        /// <summary>
+        /// The address of the call.
+        /// </summary>
+        public Address Address { get; set; }
 
+        /// <summary>
+        /// Optional comment for the call.
+        /// </summary>
         public string? Comment { get; set; }
 
+        /// <summary>
+        /// True if the call diverges and never returns.
+        /// </summary>
         public bool NoReturn { get; set; }
 
+        /// <summary>
+        /// Optional function signature for the call.
+        /// </summary>
         public FunctionType? Signature { get; set; }
     }
 
+    /// <summary>
+    /// User-specified information about an indirect jump.
+    /// </summary>
     public class UserIndirectJump
     {
-        public Address Address { get; set; } // the address of the jump
+        /// <summary>
+        /// The address of the jump.
+        /// </summary>
+        public Address Address { get; set; }
 
-        public RegisterStorage? IndexRegister { get; set; }  // Index register used in jump
+        /// <summary>
+        /// Index register used in jump.
+        /// </summary>
+        public RegisterStorage? IndexRegister { get; set; }
 
-        public ImageMapVectorTable? Table { get; set; } // Table of destinations
+        /// <summary>
+        /// Table of destinations.
+        /// </summary>
+        public ImageMapVectorTable? Table { get; set; } 
     }
 
     /// <summary>

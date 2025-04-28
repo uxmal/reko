@@ -36,6 +36,12 @@ namespace Reko.Core
     /// </summary>
     public abstract class Storage
     {
+        /// <summary>
+        /// Initializes an instance of <see cref="Storage"/>.
+        /// </summary>
+        /// <param name="domain"><see cref="StorageDomain"/> of this storage.</param>
+        /// <param name="name">The name of the storage.</param>
+        /// <param name="dataType">The size of the storage.</param>
         public Storage(StorageDomain domain, string name, DataType dataType)
         {
             this.Domain = domain;
@@ -43,6 +49,9 @@ namespace Reko.Core
             this.Name = name;
         }
 
+        /// <summary>
+        /// Textual representation of the kind of this storage.
+        /// </summary>
         public abstract string Kind { get; }
 
         /// <summary>
@@ -72,12 +81,11 @@ namespace Reko.Core
 
 
         /// <summary>
-        /// Accept a <see cref="StorageVisitor{T}"/>.
+        /// Accepts a visitor and calls the appropriate method on it.
         /// </summary>
-        /// <typeparam name="T">Return value from the visitor.</typeparam>
-        /// <param name="visitor">A <see cref="StorageVisitor{T}"/>.</param>
-        /// <returns>Values from the visitor.
-        /// </returns>
+        /// <typeparam name="T">Return type from the visitor.</typeparam>
+        /// <param name="visitor">Visitor to accept.</param>
+        /// <returns>Value returned from visitor.</returns>
         public abstract T Accept<T>(StorageVisitor<T> visitor);
 
         /// <summary>
@@ -149,7 +157,9 @@ namespace Reko.Core
             throw new NotImplementedException(this.GetType().Name + ".Serialize() not implemented.");
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Returns a string representation of this storage.
+        /// </summary>
         public override string ToString()
         {
             var w = new StringWriter();
@@ -158,14 +168,19 @@ namespace Reko.Core
         }
 
         /// <summary>
-        /// Writes a textual representation of this storage to the specified 
-        /// <see cref="TextWriter"/> <paramref name="writer"/>.
+        /// Writes a string representation of this storage to <paramref name="writer"/>.
         /// </summary>
-        /// <param name="writer">A <see cref="TextWriter"/> instance to write to.</param>
+        /// <param name="writer">Output sink.</param>
         public abstract void Write(TextWriter writer);
 
+        /// <summary>
+        /// Compares two arrays of storages for equality.
+        /// </summary>
         public class ArrayComparer : IEqualityComparer<Storage[]>
         {
+            /// <summary>
+            /// Compares two arrays of storages for equality.
+            /// </summary>
             public bool Equals(Storage[]? x, Storage[]? y)
             {
                 if (x is null && y is null)
@@ -182,6 +197,10 @@ namespace Reko.Core
                 return true;
             }
 
+            /// <summary>
+            /// Returns a hash code for the array of storages.
+            /// </summary>
+            /// <param name="obj">Array of storages to compute the hash for.</param>
             public int GetHashCode(Storage[] obj)
             {
                 var h = 0;
@@ -195,71 +214,6 @@ namespace Reko.Core
     }
 
     /// <summary>
-    /// A storage domain is a distinct place where a variable's bits 
-    /// are stored in a computer.
-    /// </summary>
-    public enum StorageDomain
-    {
-        /// <summary>
-        /// A missing or invalid storage domain.
-        /// </summary>
-        None = -1,
-
-        /// <summary>
-        /// Every machine register forms a distinct storage domain. Individual
-        /// bits with a registers are accessed with respect to the storage domain.
-        /// </summary>
-        /// <remarks>
-        /// In general register domains are formed by adding the architectural number
-        /// of a particular register to the <see cref="StorageDomain.Register"/> value.</remarks>
-        /// The register domain is a number between 0 and 4095, implicitly
-        /// assuming that few architectures have more than 4096 general purpose registers (fingers xD).
-        Register = 0,
-
-        /// <summary>
-        /// Refers to a memory space. See <see cref="MemoryStorage"/>.
-        /// </summary>
-        Memory = 4096,
-
-
-        /// <summary>
-        /// A particular slot in an FPU stack. The x87 FPU has 8 slots in its stack.
-        /// </summary>
-        FpuStack = 4098,
-
-        /// <summary>
-        /// A global variable within a memory space.
-        /// </summary>
-        Global = 8191,
-
-        /// <summary>
-        /// Space for system / control registers (1 million should be enough)
-        /// </summary>
-        SystemRegister = 8192,
-
-        /// <summary>
-        /// The maximum number assigned to system registers.
-        /// </summary>
-        MaxSystemRegister = (1 << 20),
-
-        /// <summary>
-        /// Things that look like registers but are in fact enumerations.
-        /// </summary>
-        PseudoRegister = (1 << 20), 
-
-        /// <summary>
-        /// Storage is located in the stack frame.
-        /// </summary>
-        Stack = (1 << 30),
-
-        /// <summary>
-        /// Non-architectural temporary storage. This is used to model
-        /// temporary results during computation.
-        /// </summary>
-        Temporary = (1 << 31),
-    }
-
-    /// <summary>
     /// This class represents groups of bits stored in flag registers. 
     /// Typically, these are the Carry, Zero, Overflow etc flags that are set
     /// after ALU operations.
@@ -267,11 +221,11 @@ namespace Reko.Core
 	public class FlagGroupStorage : Storage, MachineOperand
     {
         /// <summary>
-        /// Creates an instance of <see cref="FlagGroupStorage"/>.
+        /// Constructs a flag group storage.
         /// </summary>
-        /// <param name="freg">Register in which the group of flags is located.</param>
-        /// <param name="grfMask">Bitmask representing the group of flags.</param>
-        /// <param name="name">Human-readable acronym for the flags.</param>
+        /// <param name="freg">The backing status register.</param>
+        /// <param name="grfMask">The individual bits constituting the flag storage.</param>
+        /// <param name="name">The name of the flag group.</param>
         public FlagGroupStorage(RegisterStorage freg, uint grfMask, string name)
             : base(freg.Domain, name, freg.DataType)
         {
@@ -336,23 +290,6 @@ namespace Reko.Core
             return (this.FlagGroupBits & ~that.FlagGroupBits) != 0;
         }
 
-        /// <summary>
-        /// Enumerates the individual bits in the flag group, one at a time.
-        /// </summary>
-        /// <returns>An <see cref="IEnumerable{T}"/> of the individual bits constituting
-        /// the flag group.
-        /// </returns>
-        public IEnumerable<uint> GetFlagBitMasks()
-        {
-            for (uint bitMask = 1; bitMask <= FlagGroupBits; bitMask <<= 1)
-            {
-                if ((FlagGroupBits & bitMask) != 0)
-                {
-                    yield return bitMask;
-                }
-            }
-        }
-
         /// <inheritdoc/>
         public override int GetHashCode()
         {
@@ -382,6 +319,11 @@ namespace Reko.Core
             return sr.ToString();
         }
 
+        /// <summary>
+        /// Renders the flag group storage as a string to the <see cref="MachineInstructionRenderer"/>.
+        /// </summary>
+        /// <param name="renderer">Output sink.</param>
+        /// <param name="options">Options controlling the rendering.</param>
         private void Render(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             renderer.BeginOperand();
@@ -419,6 +361,11 @@ namespace Reko.Core
     /// </summary>
     public class FpuStackStorage : Storage
     {
+        /// <summary>
+        /// Constructs an instance of <see cref="FpuStackStorage"/>.
+        /// </summary>
+        /// <param name="depth">The depth within the FPU stack (0..7 inclusive).</param>
+        /// <param name="dataType">Data type of the value.</param>
         public FpuStackStorage(int depth, DataType dataType) 
             : base(
                   StorageDomain.FpuStack + depth,
@@ -546,47 +493,67 @@ namespace Reko.Core
     /// </remarks>
     public class MemoryStorage : Storage
     {
+        /// <summary>
+        /// Default instance of memory storage.
+        /// </summary>
         public static MemoryStorage Instance { get; } = new MemoryStorage("Mem", StorageDomain.Memory);
+
+        /// <summary>
+        /// Identifier using the default memory storage.
+        /// </summary>
         public static Identifier GlobalMemory { get; } = new Identifier("Mem0", new UnknownType(), MemoryStorage.Instance);
 
+        /// <summary>
+        /// Constructs an instance of <see cref="MemoryStorage"/>.
+        /// </summary>
+        /// <param name="name">The name of this memory storage.</param>
+        /// <param name="domain">Its storage domain.</param>
         public MemoryStorage(string name, StorageDomain domain) : base(domain, name, null!)
         {
             this.BitAddress = 0;
             this.BitSize = 1;
         }
 
+        /// <inheritdoc/>
         public override string Kind => Name;
 
+        /// <inheritdoc/>
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
             return visitor.VisitMemoryStorage(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(StorageVisitor<T, C> visitor, C context)
         {
             return visitor.VisitMemoryStorage(this, context);
         }
 
+        /// <inheritdoc/>
         public override bool Covers(Storage that)
         {
             return true;
         }
 
+        /// <inheritdoc/>
         public override bool Exceeds(Storage that)
         {
             return false;
         }
 
+        /// <inheritdoc/>
         public override int OffsetOf(Storage stgSub)
         {
             return -1;
         }
 
+        /// <inheritdoc/>
         public override bool OverlapsWith(Storage that)
         {
             return that is MemoryStorage;
         }
 
+        /// <inheritdoc/>
         public override void Write(TextWriter writer)
         {
             writer.Write(Name);
@@ -599,6 +566,10 @@ namespace Reko.Core
     /// </summary>
     public class OutArgumentStorage : Storage
     {
+        /// <summary>
+        /// Constructs an instance of the <see cref="OutArgumentStorage"/> class.
+        /// </summary>
+        /// <param name="originalId">Id originally referred to.</param>
         public OutArgumentStorage(Identifier originalId) 
             : base(originalId.Storage.Domain, $"out_{originalId.Name}", originalId.DataType)
         {
@@ -608,23 +579,28 @@ namespace Reko.Core
         /// <inheritdoc/>
         public override string Kind => "out";
 
+        /// <inheritdoc/>
         public Identifier OriginalIdentifier { get; }
 
+        /// <inheritdoc/>
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
             return visitor.VisitOutArgumentStorage(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(StorageVisitor<T, C> visitor, C context)
         {
             return visitor.VisitOutArgumentStorage(this, context);
         }
 
+        /// <inheritdoc/>
         public override bool Covers(Storage that)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override bool Equals(object? obj)
         {
             if (obj is not OutArgumentStorage that)
@@ -632,26 +608,31 @@ namespace Reko.Core
             return this.OriginalIdentifier.Equals(that.OriginalIdentifier);
         }
 
+        /// <inheritdoc/>
         public override int GetHashCode()
         {
             return GetType().GetHashCode() ^ OriginalIdentifier.GetHashCode();
         }
 
+        /// <inheritdoc/>
         public override int OffsetOf(Storage stgSub)
         {
             return -1;
         }
 
+        /// <inheritdoc/>
         public override bool OverlapsWith(Storage that)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override SerializedKind Serialize()
         {
             return OriginalIdentifier.Storage.Serialize();
         }
 
+        /// <inheritdoc/>
         public override void Write(TextWriter writer)
         {
             writer.Write("Out:");
@@ -660,7 +641,7 @@ namespace Reko.Core
     }
 
     /// <summary>
-    /// Used to represent a machine register.
+    /// Represents a machine register.
     /// </summary>
     /// <remarks>
     /// Registers commonly alias each other (e.g. the X86 registers 'eax' and 'ax').
@@ -670,13 +651,17 @@ namespace Reko.Core
 	public class RegisterStorage : Storage, MachineOperand, IComparable<RegisterStorage>
     {
         /// <summary>
-        /// Creates an instance of <see cref="RegisterStorage"/>.
+        /// Constructs a register storage.
         /// </summary>
         /// <param name="regName">The name of the register.</param>
-        /// <param name="number">The architectural number of the register, 
-        /// distinguishing it from other registers.</param>
-        /// <param name="bitAddress"></param>
-        /// <param name="dataType"></param>
+        /// <param name="number">Unique number of the register. These do not 
+        /// necessarily correspond to the architecture's encoding of the register,
+        /// as encodings may overlap.</param>
+        /// <param name="bitAddress">Position of the least significant bit in the backking storage.
+        /// This allows us to express registers like the X86 <c>ah</c> register as being
+        /// in the same storage domain as the <c>rax</c> register, but at a different bit offset
+        /// and data size.</param>
+        /// <param name="dataType">The size of this register.</param>
         public RegisterStorage(string regName, int number, uint bitAddress, PrimitiveType dataType)
             : base(StorageDomain.Register + number, regName, dataType)
         {
@@ -697,7 +682,7 @@ namespace Reko.Core
         public override string Kind => "Register";
 
         /// <summary>
-        /// Returns true if a register is a system or control register.
+        /// True if this register is a system register.
         /// </summary>
         public bool IsSystemRegister
         {
@@ -710,52 +695,52 @@ namespace Reko.Core
         }
 
         /// <summary>
-        /// Creates an eight bit register.
+        /// Factory method to create an 8-bit register.
         /// </summary>
-        /// <param name="name">Name of the register to create.</param>
-        /// <param name="number">Architectural number identifying the register.</param>
-        /// <param name="bitOffset">Bit offset within the architectural register.
-        /// </param>
-        /// <returns>An instance of <see cref="RegisterStorage" />.</returns>
+        /// <param name="name">Name of the register.</param>
+        /// <param name="number">Identifier for the storage domain of the register.</param>
+        /// <param name="bitOffset">Bit offset within the storage domain.</param>
+        /// <returns>A new register storage.
+        /// </returns>
         public static RegisterStorage Reg8(string name, int number, uint bitOffset = 0)
         {
             return new RegisterStorage(name, number, bitOffset, PrimitiveType.Byte);
         }
 
         /// <summary>
-        /// Creates a 16-bit register.
+        /// Factory method to create an 16-bit register.
         /// </summary>
-        /// <param name="name">Name of the register to create.</param>
-        /// <param name="number">Architectural number identifying the register.</param>
-        /// <param name="bitOffset">Bit offset within the architectural register.
-        /// </param>
-        /// <returns>An instance of <see cref="RegisterStorage" />.</returns>
+        /// <param name="name">Name of the register.</param>
+        /// <param name="number">Identifier for the storage domain of the register.</param>
+        /// <param name="bitOffset">Bit offset within the storage domain.</param>
+        /// <returns>A new register storage.
+        /// </returns>
         public static RegisterStorage Reg16(string name, int number, uint bitOffset = 0)
         {
             return new RegisterStorage(name, number, bitOffset, PrimitiveType.Word16);
         }
 
         /// <summary>
-        /// Creates a 32-bit register.
+        /// Factory method to create an 32-bit register.
         /// </summary>
-        /// <param name="name">Name of the register to create.</param>
-        /// <param name="number">Architectural number identifying the register.</param>
-        /// <param name="bitOffset">Bit offset within the architectural register.
-        /// </param>
-        /// <returns>An instance of <see cref="RegisterStorage" />.</returns>
+        /// <param name="name">Name of the register.</param>
+        /// <param name="number">Identifier for the storage domain of the register.</param>
+        /// <param name="bitOffset">Bit offset within the storage domain.</param>
+        /// <returns>A new register storage.
+        /// </returns>
         public static RegisterStorage Reg32(string name, int number, uint bitOffset = 0)
         {
             return new RegisterStorage(name, number, bitOffset, PrimitiveType.Word32);
         }
 
         /// <summary>
-        /// Creates a 64-bit register.
+        /// Factory method to create an 64-bit register.
         /// </summary>
-        /// <param name="name">Name of the register to create.</param>
-        /// <param name="number">Architectural number identifying the register.</param>
-        /// <param name="bitOffset">Bit offset within the architectural register.
-        /// </param>
-        /// <returns>An instance of <see cref="RegisterStorage" />.</returns>
+        /// <param name="name">Name of the register.</param>
+        /// <param name="number">Identifier for the storage domain of the register.</param>
+        /// <param name="bitOffset">Bit offset within the storage domain.</param>
+        /// <returns>A new register storage.
+        /// </returns>
         public static RegisterStorage Reg64(string name, int number, uint bitOffset = 0)
         {
             return new RegisterStorage(name, number, bitOffset, PrimitiveType.Word64);
@@ -770,12 +755,18 @@ namespace Reko.Core
             return new RegisterStorage(name, number + (int) StorageDomain.SystemRegister, 0, size);
         }
 
+        /// <summary>
+        /// Creates a pseudo register named <paramref name="name"/>, whose number is <paramref name="number"/>
+        /// and whose size is <paramref name="size"/>.
+        /// </summary>
         public static RegisterStorage PseudoReg(string name, int number, PrimitiveType size)
         {
             return new RegisterStorage(name, number + (int) StorageDomain.PseudoRegister, 0, size);
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Size of the register, in bits.
+        /// </summary>
         public override ulong BitSize
         {
             get { return (ulong) DataType.BitSize; }
@@ -794,8 +785,7 @@ namespace Reko.Core
         }
 
         /// <summary>
-        /// Unique number of this register, usually dictated by the processor
-        /// architecture.
+        /// Unique register number.
         /// </summary>
         public int Number { get; }
 
@@ -902,26 +892,29 @@ namespace Reko.Core
         {
             return new Register_v1(Name);
         }
-
-        public int SubregisterOffset(RegisterStorage subReg)
-        {
-            if (subReg is RegisterStorage sub && Number == sub.Number)
-                return 0;
-            return -1;
-        }
-
+        /// <inheritdoc/>
         /// <inheritdoc/>
         public override void Write(TextWriter writer)
         {
             writer.Write(Name);
         }
 
+        /// <summary>
+        /// Dummy value to represent the lack of a register.
+        /// </summary>
+        //$REVIEW: consider simply using null here. With the stronger
+        // C# checking for nullness, a 'None' value is no longer needed.
         public static RegisterStorage None { get; } =
             new RegisterStorage("None", -1, 0, PrimitiveType.Create(Types.Domain.Any, 0))
             {
             };
 
 
+        /// <summary>
+        /// Given an expression that is a valid integer bit vector, slice that expression to the bits covered by this register.
+        /// </summary>
+        /// <param name="value">Expression to be sliced.</param>
+        //$REVIEW: only used in unit tests.
         public Expression GetSlice(Expression value)
         {
             if (value is Constant c && c.IsValid && !c.IsReal)
@@ -933,6 +926,10 @@ namespace Reko.Core
                 return InvalidConstant.Create(this.DataType);
         }
 
+        /// <summary>
+        /// Compare this register with another register.
+        /// </summary>
+        /// <param name="that">Other register.</param>
         public int CompareTo(RegisterStorage? that)
         {
             if (that is null)
@@ -943,6 +940,7 @@ namespace Reko.Core
             return this.BitMask.CompareTo(that.BitMask);
         }
 
+        /// <inheritdoc/>
         public DataType Width
         {
             get => this.DataType;
@@ -974,17 +972,38 @@ namespace Reko.Core
     /// </summary>
     public class SequenceStorage : Storage, MachineOperand
     {
+        /// <summary>
+        /// Constructs a sequence storage based on indivudual sub-storages.
+        /// </summary>
+        /// <param name="elements">The substorages to combine, arranged in big-endian order;
+        /// that is, the first element in the array is the most significant one.
+        /// </param>
         public SequenceStorage(params Storage[] elements) : this(
             PrimitiveType.CreateWord(elements.Sum(e => (int)e.BitSize)), 
             elements)
         {
         }
 
+        /// <summary>
+        /// Constructs a sequence storage based on indivudual sub-storages.
+        /// </summary>
+        /// <param name="dt">Data type of the sequence storage.</param>
+        /// <param name="elements">The substorages to combine, arranged in big-endian order;
+        /// that is, the first element in the array is the most significant one.
+        /// </param>
         public SequenceStorage(DataType dt, params Storage [] elements)
             : this(string.Join(":", elements.Select(e => e.Name)), dt, elements)
         {
         }
 
+        /// <summary>
+        /// Constructs a sequence storage based on indivudual sub-storages.
+        /// </summary>
+        /// <param name="name">Name of the sequence storage.</param>
+        /// <param name="dt">Data type of the sequence storage.</param>
+        /// <param name="elements">The substorages to combine, arranged in big-endian order;
+        /// that is, the first element in the array is the most significant one.
+        /// </param>
         public SequenceStorage(string name, DataType dt, params Storage [] elements)
             : base(StorageDomain.None, name, dt)
         {
@@ -1103,6 +1122,7 @@ namespace Reko.Core
             return false;
         }
 
+        /// <inheritdoc/>
         public void Render(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             renderer.BeginOperand();
@@ -1136,6 +1156,11 @@ namespace Reko.Core
     /// </summary>
     public class StackStorage : Storage
     {
+        /// <summary>
+        /// Constructs an instance of <see cref="StackStorage"/>.
+        /// </summary>
+        /// <param name="offset">offset from the stack frame start.</param>
+        /// <param name="dt">Data type of this storage.</param>
         public StackStorage(int offset, DataType dt)
             : base(StorageDomain.Stack + offset, "stack", dt)
         {
@@ -1143,6 +1168,7 @@ namespace Reko.Core
             this.BitSize = (uint)dt.BitSize;
         }
 
+        /// <inheritdoc/>
         public override string Kind => "Stack";
 
         /// <summary>
@@ -1252,6 +1278,12 @@ namespace Reko.Core
     /// </remarks>
 	public class TemporaryStorage : Storage
     {
+        /// <summary>
+        /// Constructs an instance of <see cref="TemporaryStorage"/>.
+        /// </summary>
+        /// <param name="name">The name of the temporary storage.</param>
+        /// <param name="domain">Storage domain to use for the temporary variable.</param>
+        /// <param name="dt">Size of the temporary variable.</param>
         protected TemporaryStorage(string name, StorageDomain domain, DataType dt)
             : base(domain, name, dt)
         {
@@ -1261,6 +1293,12 @@ namespace Reko.Core
         /// <inheritdoc/>
         public override string Kind => "Temporary";
 
+        /// <summary>
+        /// Constructs an instance of <see cref="TemporaryStorage"/>.
+        /// </summary>
+        /// <param name="name">The name of the temporary storage.</param>
+        /// <param name="number">Storage domain to use for the temporary variable.</param>
+        /// <param name="dt">Size of the temporary variable.</param>
         public TemporaryStorage(string name, int number, DataType dt)
             : this(name, StorageDomain.Temporary + number, dt)
         {
@@ -1312,6 +1350,9 @@ namespace Reko.Core
         }
     }
 
+    /// <summary>
+    /// Global storage is used to represent global variables.
+    /// </summary>
     public class GlobalStorage : TemporaryStorage
     {
         public GlobalStorage(string name, DataType dt)

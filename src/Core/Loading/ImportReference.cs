@@ -46,9 +46,9 @@ namespace Reko.Core.Loading
 
         public SymbolType SymbolType { get; }
 
-        public abstract Expression? ResolveImport(IDynamicLinker dynamicLinker, IPlatform platform, ProgramAddress paddr, IEventListener listener);
+        public abstract Expression? ResolveImport(IDynamicLinker dynamicLinker, IPlatform platform, ProgramAddress addr, IEventListener listener);
 
-        public abstract ExternalProcedure ResolveImportedProcedure(IDynamicLinker dynamicLinker, IPlatform platform, ProgramAddress paddr, IEventListener listener);
+        public abstract ExternalProcedure ResolveImportedProcedure(IDynamicLinker dynamicLinker, IPlatform platform, ProgramAddress addr, IEventListener listener);
 
         public abstract int CompareTo(ImportReference? that);
 
@@ -98,7 +98,7 @@ namespace Reko.Core.Loading
         public override Expression? ResolveImport(
             IDynamicLinker resolver,
             IPlatform platform,
-            ProgramAddress paddr,
+            ProgramAddress addr,
             IEventListener listener)
         {
             return resolver.ResolveImport(ModuleName, ImportName, platform);
@@ -107,7 +107,7 @@ namespace Reko.Core.Loading
         public override ExternalProcedure ResolveImportedProcedure(
             IDynamicLinker resolver,
             IPlatform platform,
-            ProgramAddress paddr,
+            ProgramAddress addr,
             IEventListener listener)
         {
             var ep = resolver.ResolveProcedure(ModuleName, ImportName, platform);
@@ -123,6 +123,9 @@ namespace Reko.Core.Loading
             return new ExternalProcedure(ToString(), new FunctionType());
         }
 
+        /// <summary>
+        /// Returns a string representation of this import reference.
+        /// </summary>
         public override string ToString()
         {
             return string.Format(
@@ -165,7 +168,11 @@ namespace Reko.Core.Loading
             return cmp;
         }
 
-        public override Expression? ResolveImport(IDynamicLinker dynamicLinker, IPlatform platform, ProgramAddress paddr, IEventListener listener)
+        public override Expression? ResolveImport(
+            IDynamicLinker dynamicLinker, 
+            IPlatform platform, 
+            ProgramAddress addr,
+            IEventListener listener)
         {
             var imp = dynamicLinker.ResolveImport(ModuleName!, Ordinal, platform);
             if (imp != null)
@@ -174,16 +181,22 @@ namespace Reko.Core.Loading
             return null;
         }
 
-        public override ExternalProcedure ResolveImportedProcedure(IDynamicLinker resolver, IPlatform platform, ProgramAddress paddr, IEventListener listener)
+        public override ExternalProcedure ResolveImportedProcedure(
+            IDynamicLinker resolver,
+            IPlatform platform,
+            ProgramAddress ctx,
+            IEventListener listener)
         {
             var ep = resolver.ResolveProcedure(ModuleName!, Ordinal, platform);
-            if (ep != null)
+            if (ep is not null)
                 return ep;
             listener.Warn(paddr, $"Unable to resolve imported reference {this}.");
             return new ExternalProcedure(ToString(), new FunctionType());
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Returns a string representation of this import reference.
+        /// </summary>
         public override string ToString()
         {
             return string.Format("{0}!Ordinal_{1}", ModuleName, Ordinal);

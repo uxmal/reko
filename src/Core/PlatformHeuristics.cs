@@ -51,6 +51,9 @@ namespace Reko.Core
         /// </summary>
         public byte[]? Mask { get; init; }
 
+        /// <summary>
+        /// Endianness to apply to the bytes. This is used when matching the pattern.
+        /// </summary>
         public EndianServices Endianness = EndianServices.Big;
 
         /// <summary>

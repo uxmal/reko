@@ -283,7 +283,7 @@ foo_exit:
                 m.MStore(m.Ptr32(0x123418), r2);
                 m.Return();
 
-                m.Procedure.Signature = FunctionType.Func(
+                m.Procedure.Signature = FunctionType.Create(
                     new Identifier(null, PrimitiveType.Word32, _r1),
                     new Identifier("arg1", PrimitiveType.Word32, _r2));
             });
@@ -470,7 +470,7 @@ main_exit:
         {
             Given_Procedure("fn", m =>
             {
-                m.Ssa.Procedure.Signature = FunctionType.Func(
+                m.Ssa.Procedure.Signature = FunctionType.Create(
                     new Identifier("", lowA.DataType, lowA));
                 var a = m.Reg("a", regA);
                 m.Label("body");
@@ -506,7 +506,7 @@ fn_exit:
             });
             Given_Procedure("main", m =>
             {
-                m.Ssa.Procedure.Signature = FunctionType.Func(
+                m.Ssa.Procedure.Signature = FunctionType.Create(
                     new Identifier("", lowA.DataType, lowA));
                 var a = m.Reg("a", regA);
                 m.Label("body");
@@ -559,7 +559,7 @@ main_exit:
             });
             Given_Procedure("main", m =>
             {
-                m.Ssa.Procedure.Signature = FunctionType.Func(
+                m.Ssa.Procedure.Signature = FunctionType.Create(
                     new Identifier("", lowA.DataType, lowA));
                 var a = m.Reg("a", regA);
                 var C_2 = m.Flags("C_2", this.C);

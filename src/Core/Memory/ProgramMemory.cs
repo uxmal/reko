@@ -20,19 +20,27 @@
 
 using Reko.Core.Expressions;
 using Reko.Core.Types;
-using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.Intrinsics.Arm;
 
 namespace Reko.Core.Memory
 {
+    /// <summary>
+    /// Represents the program memory of a binary image.
+    /// </summary>
     public class ProgramMemory : IWriteableMemory
     {
+        /// <summary>
+        /// Creates an instance of the <see cref="ProgramMemory"/> class.
+        /// </summary>
+        /// <param name="segmentMap">Segment map of the program memory.</param>
         public ProgramMemory(SegmentMap segmentMap)
         {
             this.SegmentMap = segmentMap;
         }
 
+        /// <summary>
+        /// Segment map describing the structure of the program memory.
+        /// </summary>
         public SegmentMap SegmentMap { get; }
 
         /// <inheritdoc/>

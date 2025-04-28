@@ -53,7 +53,6 @@ namespace Reko.Environments.Windows
             this.platform = platform;
             this.uPseudoFn = 0xDEAD0000u;   // unlikely to be a real pointer to a function
             this.InterceptedCalls = new Dictionary<Address, ExternalProcedure>();
-
             modules = new Dictionary<string, Module>(StringComparer.InvariantCultureIgnoreCase);
             AddWellKnownProcedures();
             InterceptCallsToImports(importReferences);
@@ -108,7 +107,7 @@ namespace Reko.Environments.Windows
         {
             foreach (var imp in importReferences)
             {
-                uint pseudoPfn = ((SimulatedProc)imp.Value.ResolveImportedProcedure(this, null!, null!, default!)).uFakedAddress;
+                uint pseudoPfn = ((SimulatedProc)imp.Value.ResolveImportedProcedure(this, null!, null!, null!)).uFakedAddress;
                 WriteLeUInt32(imp.Key, pseudoPfn);
             }
         }

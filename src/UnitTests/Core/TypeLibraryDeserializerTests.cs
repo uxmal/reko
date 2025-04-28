@@ -279,7 +279,7 @@ namespace Reko.UnitTests.Core
             arch.Setup(a => a.GetRegister("r3")).Returns(RegisterStorage.Reg32("r3", 3));
             arch.Setup(a => a.MemoryGranularity).Returns(8);
             var r3 = RegisterStorage.Reg32("r3", 3);
-            Given_ProcedureSignature(FunctionType.Func(
+            Given_ProcedureSignature(FunctionType.Create(
                 new Identifier("", PrimitiveType.Int32, r3),
                 new Identifier("", PrimitiveType.Real32, r3)));
 

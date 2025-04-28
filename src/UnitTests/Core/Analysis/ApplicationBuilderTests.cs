@@ -52,7 +52,7 @@ namespace Reko.UnitTests.Core.Analysis
             arg08 = new Identifier("arg08", PrimitiveType.Word16, new StackStorage(8, PrimitiveType.Word16));
             arg0C = new Identifier("arg0C", PrimitiveType.Byte, new StackStorage(0x0C, PrimitiveType.Byte));
             regOut = new Identifier("edxOut", PrimitiveType.Word32, new OutArgumentStorage(frame.EnsureRegister(Registers.edx)));
-            sig = FunctionType.Func(
+            sig = FunctionType.Create(
                 ret,
                 new Identifier[] { arg04, arg08, arg0C, regOut });
         }
@@ -111,7 +111,7 @@ namespace Reko.UnitTests.Core.Analysis
             var ab = arch.CreateFrameApplicationBuilder(
                 callee.Frame,
                 new CallSite(4, 0));
-            var sig = FunctionType.Func(new Identifier("bRet", PrimitiveType.Byte, Registers.eax));
+            var sig = FunctionType.Create(new Identifier("bRet", PrimitiveType.Byte, Registers.eax));
             var instr = ab.CreateInstruction(
                 new Identifier("foo", PrimitiveType.Ptr32, null),
                 sig,
@@ -142,7 +142,7 @@ namespace Reko.UnitTests.Core.Analysis
             var ab = arch.CreateFrameApplicationBuilder(
                 caller.Frame,
                 new CallSite(4, 0));
-            var sig = FunctionType.Func(new Identifier("", PrimitiveType.Int32, new StackStorage(4, PrimitiveType.Int32)));
+            var sig = FunctionType.Create(new Identifier("", PrimitiveType.Int32, new StackStorage(4, PrimitiveType.Int32)));
             var instr = ab.CreateInstruction(new ProcedureConstant(PrimitiveType.Ptr32, rand), sig, null);
             Assert.AreEqual("Mem0[esp:int32] = rand()", instr.ToString());
         }
@@ -155,7 +155,7 @@ namespace Reko.UnitTests.Core.Analysis
             var ab = arch.CreateFrameApplicationBuilder(
                 caller.Frame,
                 new CallSite(4, 0));
-            var sig = FunctionType.Func(
+            var sig = FunctionType.Create(
                     new Identifier("", PrimitiveType.Int32, new StackStorage(12, PrimitiveType.Int32)),
                     new Identifier("str", PrimitiveType.Ptr32, new StackStorage(8, PrimitiveType.Int32)),
                     new Identifier("stm", PrimitiveType.Ptr32, new StackStorage(4, PrimitiveType.Int32)));
@@ -171,7 +171,7 @@ namespace Reko.UnitTests.Core.Analysis
             var ab = arch.CreateFrameApplicationBuilder(
                 caller.Frame,
                 new CallSite(4, 0));
-            var sig = FunctionType.Func(
+            var sig = FunctionType.Create(
                 new Identifier("", PrimitiveType.Int32, arch.GetRegister("eax")),
                 new Identifier("cArg", PrimitiveType.Char, arch.GetRegister("ecx")));
             var instr = ab.CreateInstruction(new ProcedureConstant(PrimitiveType.Ptr32, testfn), sig, null);

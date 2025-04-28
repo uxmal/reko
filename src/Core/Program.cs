@@ -561,9 +561,31 @@ namespace Reko.Core
             return arch.Endianness.TryCreateImageReader(this.Memory, addrBegin, cUnits, out rdr);
         }
 
+        /// <summary>
+        /// Creates an <see cref="EndianByteImageReader"/> of the appropriate
+        /// endianness for the default <see cref="IProcessorArchitecture"/>, limited to
+        /// <paramref name="cUnits"/> storage units.
+        /// </summary>
+        /// <param name="addrBegin"><see cref="Address"/> at which to start reading.</param>
+        /// <param name="cUnits">Maximum number of storage units to read.</param>
+        /// <param name="rdr">An <see cref="EndianByteImageReader"/> spanning the memory area 
+        /// starting at <paramref name="addrBegin"/> and ending after <paramref name="cUnits" />
+        /// units have been read.
+        /// </param>
+        /// <returns>True if the address was a valid memory address, false if not.</returns>
         public bool TryCreateImageReader(Address addrBegin, long cUnits, [MaybeNullWhen(false)] out EndianImageReader rdr) =>
             TryCreateImageReader(this.Architecture, addrBegin, cUnits, out rdr);
 
+
+        /// <summary>
+        /// Creates an <see cref="ImageWriter"/> of the appropriate
+        /// endianness for the given <see cref="IProcessorArchitecture"/>, staring at
+        /// address <paramref name="addr"/>.
+        /// </summary>
+        /// <param name="arch"><see cref="IProcessorArchitecture"/> whose endianness
+        /// is used.</param>
+        /// <param name="addr"><see cref="Address"/> at which to start writing.</param>
+        /// <returns>A new <see cref="ImageWriter"/> instance.</returns>
         public ImageWriter CreateImageWriter(IProcessorArchitecture arch, Address addr)
         {
             if (!SegmentMap.TryFindSegment(addr, out var segment))
@@ -571,6 +593,14 @@ namespace Reko.Core
             return arch.CreateImageWriter(segment.MemoryArea, addr);
         }
 
+        /// <summary>
+        /// Creates a disassembler for the given <see cref="IProcessorArchitecture"/>, 
+        /// starting at the given address <paramref name="addr"/>.
+        /// </summary>
+        /// <param name="arch">Processor architecture to use for the disassembler.</param>
+        /// <param name="addr">Address at which to start.</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> of disassembled instructions.
+        /// </returns>
         public IEnumerable<MachineInstruction> CreateDisassembler(IProcessorArchitecture arch, Address addr)
         {
             if (!SegmentMap.TryFindSegment(addr, out var segment))
@@ -579,6 +609,10 @@ namespace Reko.Core
                 arch.CreateImageReader(segment.MemoryArea, addr));
         }
 
+        /// <summary>
+        /// Retrieves all the image map items in the program, grouped by the
+        /// image segment in which they are located.
+        /// </summary>
         public Dictionary<ImageSegment, List<ImageMapItem>> GetItemsBySegment()
         {
             return (from seg in this.SegmentMap.Segments.Values
@@ -596,6 +630,11 @@ namespace Reko.Core
         IReadOnlySegmentMap IReadOnlyProgram.SegmentMap => this.SegmentMap;
 
 
+        /// <summary>
+        /// Determines whether an <see cref="Address"/> refers to read-only memory.
+        /// </summary>
+        /// <param name="addr">Address to check.</param>
+        /// <returns>True if the address is in read-only memory; otherwise false.</returns>
         public bool IsPtrToReadonlySection(Address addr)
         {
             if (!this.SegmentMap.TryFindSegment(addr, out ImageSegment? seg))
@@ -603,6 +642,15 @@ namespace Reko.Core
             return (seg.Access & AccessMode.ReadWrite) == AccessMode.Read;
         }
 
+        /// <summary>
+        /// Attempt to interpret an <see cref="Expression"/> as an address.
+        /// </summary>
+        /// <param name="e">Expression to interpret.</param>
+        /// <param name="codeAlign">If true, force the address into the appropriate 
+        /// value for code addresses.</param>
+        /// <param name="addr">The resulting address.</param>
+        /// <returns>True of the expression could be interpreted as an address;
+        /// otherwise false.</returns>
         public bool TryInterpretAsAddress(Expression e, bool codeAlign, [MaybeNullWhen(false)] out Address addr)
         {
             if (e is Address a)
@@ -626,6 +674,18 @@ namespace Reko.Core
 
         // Mutators /////////////////////////////////////////////////////////////////
 
+        /// <summary>
+        /// Ensures that architecture specified by <paramref name="archLabel"/> is in the
+        /// <see cref="Architectures"/> collection.
+        /// </summary>
+        /// <param name="archLabel">Identifier for the architecture to be ensured.</param>
+        /// <param name="getter">If the architecture has not yet been loaded, this
+        /// delegate is invoked passing the architecture label. The delegate is responsible
+        /// for loading the corresponding instance of <see cref="IProcessorArchitecture"/>.
+        /// </param>
+        /// <returns>
+        /// Either a previously loaded or newly created instance of <see cref="IProcessorArchitecture"/>.
+        /// </returns>
         public IProcessorArchitecture EnsureArchitecture(string archLabel, Func<string,IProcessorArchitecture> getter)
         {
             if (Architectures.TryGetValue(archLabel, out var arch))
@@ -649,10 +709,11 @@ namespace Reko.Core
         /// <summary>
         /// This method is called when the user has created a global item.
         /// </summary>
-        /// <param name="arch">Processor architecture needed to create the item.</param>
-        /// <param name="address"></param>
-        /// <param name="dataType"></param>
-        /// <returns></returns>
+        /// <param name="arch">Current processor architecture.</param>
+        /// <param name="address">Address of the global item.</param>
+        /// <param name="dataType">Data type of the global item.</param>
+        /// <returns>An <see cref="ImageMapItem"/> corresponding to the global item.
+        /// </returns>
         public ImageMapItem AddUserGlobalItem(IProcessorArchitecture arch, Address address, DataType dataType)
         {
             ImageMapItem item = AddGlobalItem(arch, address, dataType);
@@ -662,6 +723,14 @@ namespace Reko.Core
             return item;
         }
 
+        /// <summary>
+        /// Creates an <see cref="ImageMapItem"/> method is called when the user has created a global item.
+        /// </summary>
+        /// <param name="arch">Current processor architecture.</param>
+        /// <param name="address">Address of the global item.</param>
+        /// <param name="dataType">Data type of the global item.</param>
+        /// <returns>An <see cref="ImageMapItem"/> corresponding to the global item.
+        /// </returns>
         public ImageMapItem AddGlobalItem(IProcessorArchitecture arch, Address address, DataType dataType)
         {
             //$TODO: if user enters a segmented address, we need to 
@@ -798,22 +867,16 @@ namespace Reko.Core
             return proc;
         }
 
-
-        public IntrinsicProcedure EnsureIntrinsicProcedure(string name, bool isIdempotent, FunctionType sig)
-        {
-            if (!Intrinsics.TryGetValue(name, out var de))
-            {
-                de = new Dictionary<FunctionType, IntrinsicProcedure>(new DataTypeComparer());
-                Intrinsics[name] = de;
-            }
-            if (!de.TryGetValue(sig, out var intrinsic))
-            {
-                intrinsic = new IntrinsicProcedure(name, isIdempotent, sig);
-                de.Add(sig, intrinsic);
-            }
-            return intrinsic;
-        }
-
+        /// <summary>
+        /// Record a user-defined procedure at the given address.
+        /// </summary>
+        /// <param name="address">Address the user wishes to record as a procedure entry.
+        /// </param>
+        /// <param name="name">Optional user-provided name.</param>
+        /// <param name="decompile">If true, this procedure should be decompiled when 
+        /// running the analyses; if false, do not decompile the procedure.</param>
+        /// <returns>A new or previously existing <see cref="UserProcedure"/> instance.
+        /// </returns>
         public UserProcedure EnsureUserProcedure(Address address, string? name, bool decompile = true)
         {
             if (!User.Procedures.TryGetValue(address, out var up))
@@ -828,6 +891,14 @@ namespace Reko.Core
             return up;
         }
 
+        /// <summary>
+        /// Modify an existing or create a new user-defined global variable.
+        /// </summary>
+        /// <param name="arch">Processor architecture to use.</param>
+        /// <param name="address">Address of the global variable.</param>
+        /// <param name="dataType">Data type of the variable.</param>
+        /// <param name="name">Name of the user-defined global variable.</param>
+        /// <returns>A new or modified <see cref="UserGlobal"/> instance.</returns>
         public UserGlobal ModifyUserGlobal(IProcessorArchitecture arch, Address address, SerializedType dataType, string name)
         {
             if (!User.Globals.TryGetValue(address, out var gbl))
@@ -860,6 +931,10 @@ namespace Reko.Core
             return gbl;
         }
 
+        /// <summary>
+        /// Removes any global items at the given address.
+        /// </summary>
+        /// <param name="address">Address at which to remove a global item.</param>
         public void RemoveUserGlobal(Address address)
         {
             User.Globals.Remove(address);
@@ -869,8 +944,13 @@ namespace Reko.Core
             ImageMap.RemoveItem(address);
         }
 
+        /// <summary>
+        /// Cleans up any analysis artifacts from the previous decompilation.
+        /// </summary>
         //$REVIEW: why not always call this from Reko.Decompiler right before 
         // scanning, in Decompiler.BuildImageMaps?
+        // Even better, separate data from the loading of the image, which shouldn't
+        // be changing, from data that is obtained by the analysis into separate classes.
         public void Reset()
         {
             Procedures.Clear();
@@ -881,6 +961,12 @@ namespace Reko.Core
             BuildImageMap();
         }
 
+        /// <summary>
+        /// Add a field to the "globals" structure.
+        /// </summary>
+        /// <param name="address"></param>
+        /// <param name="dt"></param>
+        /// <param name="name"></param>
         public void AddGlobalField(Address address, DataType dt, string name)
         {
             int offset;
@@ -897,7 +983,7 @@ namespace Reko.Core
                 fields = GlobalFields.Fields;
             }
             var globalField = fields.AtOffset(offset);
-            if (globalField != null)
+            if (globalField is not null)
             {
                 fields.Remove(globalField);
             }

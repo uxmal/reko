@@ -149,7 +149,7 @@ namespace Reko.Typing
                 EmitAccessTrait(basePointer, left, dataType.BitSize, 0);
 				return;
 			}
-            throw new TypeInferenceException("Couldn't generate address traits for binary operator {0}.", op);
+            throw new TypeInferenceException($"Couldn't generate address traits for binary operator {op}.");
 		}
 
 		public void VisitCast(Cast cast)

@@ -61,9 +61,20 @@ namespace Reko.Core.Types
             }
         }
 
+        /// <summary>
+        /// The alternatives of the union.
+        /// </summary>
         public UnionAlternativeCollection Alternatives { get; }
         
+        /// <summary>
+        /// If not null, the preferred alternative.
+        /// </summary>
         public DataType? PreferredType { get; set; }
+
+        /// <summary>
+        /// True if this union is "user-defined" and shouldn't be mutated
+        /// by type inference.
+        /// </summary>
         public bool UserDefined { get; private set; }
 
         /// <inheritdoc/>
@@ -78,6 +89,13 @@ namespace Reko.Core.Types
             return v.VisitUnion(this);
         }
 
+        /// <summary>
+        /// Adds an alternative to this union.
+        /// </summary>
+        /// <param name="dt">Data type of the laternative.
+        /// </param>
+        /// <returns>An instance of <see cref="UnionAlternative"/>.
+        /// </returns>
         public UnionAlternative AddAlternative(DataType dt)
         {
             var alt = new UnionAlternative(dt, Alternatives.Count);
@@ -85,6 +103,7 @@ namespace Reko.Core.Types
             return alt;
         }
 
+        /// <inheritdoc/>
         public override DataType Clone(IDictionary<DataType, DataType>? clonedTypes)
 		{
 			var pre = PreferredType?.Clone(clonedTypes);
@@ -98,6 +117,9 @@ namespace Reko.Core.Types
 			return u;
 		}
 
+        /// <summary>
+        /// Finds the alternative matching <paramref name="dtOrig"/>.
+        /// </summary>
 		public UnionAlternative? FindAlternative(DataType dtOrig)
 		{
 			foreach (UnionAlternative alt in Alternatives.Values)
@@ -108,13 +130,13 @@ namespace Reko.Core.Types
 			return null;
 		}
 
-		public override bool IsComplex
-		{
-			get { return true; }
-		}
+        /// <inheritdoc/>
+        public override bool IsComplex => true;
 
         private static int nestoMatic;
 
+
+        /// <inheritdoc/>
 		public override int BitSize
 		{
 			get
@@ -132,12 +154,17 @@ namespace Reko.Core.Types
 			}
 		}
 
+        /// <inheritdoc/>
         public override int Size
         {
             get { return (BitSize + (BitsPerByte - 1)) / BitsPerByte; }
             set { ThrowBadSize(); }
         }
 
+        /// <summary>
+        /// Simplifies the union; if there is only one alternative, return
+        /// that single alternative.
+        /// </summary>
         public DataType Simplify()
 		{
 			if (Alternatives.Count == 1)
@@ -149,6 +176,9 @@ namespace Reko.Core.Types
 		}
 	}
 
+    /// <summary>
+    /// Represents one of the alternative of a <see cref="UnionType"/>.
+    /// </summary>
 	public class UnionAlternative : Field
 	{
         public UnionAlternative(DataType dt, int index) : base(dt)
@@ -157,6 +187,13 @@ namespace Reko.Core.Types
             this.Index = index;
 		}
 
+        /// <summary>
+        /// Constructs a union alternative.
+        /// </summary>
+        /// <param name="name">Optional name of the alternative.</param>
+        /// <param name="dt">Data type of the alternative.</param>
+        /// <param name="index">Index within the union.
+        /// </param>
 		public UnionAlternative(string? name, DataType dt, int index) : base(dt)
 		{
 			DataType = dt;

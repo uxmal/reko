@@ -60,16 +60,19 @@ namespace Reko.Core.Types
             this.PrefixOffset = prefixOffset;
         }
 
+        /// <inheritdoc/>
         public override void Accept(IDataTypeVisitor v)
         {
             v.VisitString(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
             return v.VisitString(this);
         }
 
+        /// <inheritdoc/>
         public override DataType Clone(IDictionary<DataType, DataType>? clonedTypes)
         {
             return new StringType(this.ElementType, this.LengthPrefixType, this.PrefixOffset)

@@ -37,6 +37,15 @@ namespace Reko.Core
 	{
         private readonly List<Block> blocks;
 
+        /// <summary>
+        /// Constructs an instance of the <inheritdoc cref="Procedure"/> class.
+        /// </summary>
+        /// <param name="arch"><see cref="IProcessorArchitecture"/> for the procedure.</param>
+        /// <param name="name">Name of the procedure.</param>
+        /// <param name="addrEntry">Address of the entry point of the procedure.</param>
+        /// <param name="frame">The <see cref="Frame"/> of the procedure, containing
+        /// all registers, flags etc used by it.
+        /// </param>
 		public Procedure(
             IProcessorArchitecture arch, 
             string name, 
@@ -120,21 +129,34 @@ namespace Reko.Core
 		/// the address is used instead.
 		/// </summary>
         /// <param name="arch"><see cref="IProcessorArchitecture"/> used by this procedure.</param>
-		/// <param name="name">Name of the procedure.</param>
-		/// <param name="addr">Address of the procedure's entry point.</param>
-		/// <param name="f">The <see cref="Frame"/> of this procedure.</param>
-		/// <returns>A new <see cref="Procedure"/> instance.</returns>
+        /// <param name="name">Optional name of the procedure; if null a name is automatically
+        /// generated.</param>
+        /// <param name="addr">Entry point address of the procedure.</param>
+        /// <param name="f"><see cref="Frame"/> of the procedure.</param>
+        /// <returns>A new instance of a <see cref="Procedure"/>.</returns>
 		public static Procedure Create(IProcessorArchitecture arch, string? name, Address addr, Frame f)
 		{
 			name ??= NamingPolicy.Instance.ProcedureName(addr);
 			return new Procedure(arch, name, addr, f);
 		}
 
+        /// <summary>
+        /// Creates a procedure. The address of the procedure is used to generate
+        /// a name.
+        /// </summary>
+        /// <param name="arch">The architecture of the procedure.</param>
+        /// <param name="addr">Entry point address of the procedure.</param>
+        /// <param name="f"><see cref="Frame"/> of the procedure.</param>
+        /// <returns>A new instance of a <see cref="Procedure"/>.</returns>
 		public static Procedure Create(IProcessorArchitecture arch, Address addr, Frame f)
 		{
 			return new Procedure(arch, NamingPolicy.Instance.ProcedureName(addr), addr, f);
 		}
 
+        /// <summary>
+        /// Writes the procedure to the debug output window.
+        /// </summary>
+        /// <param name="dump">If true performs the dump; otherwise no dump is made.</param>
         [Conditional("DEBUG")]
 		public void Dump(bool dump)
 		{
@@ -146,6 +168,9 @@ namespace Reko.Core
 			Debug.WriteLine(sb.ToString());
 		}
 
+        /// <summary>
+        /// Creates a dominator graph for the procedure.
+        /// </summary>
         public BlockDominatorGraph CreateBlockDominatorGraph()
         {
             return new BlockDominatorGraph(new BlockGraph(blocks), EntryBlock);
@@ -156,6 +181,14 @@ namespace Reko.Core
         /// </summary>
         public class BlockComparer : IComparer<Block>
         {
+            /// <summary>
+            /// Compares two blocks for display purposes.
+            /// </summary>
+            /// <param name="x">First block.</param>
+            /// <param name="y">Second block.</param>
+            /// <returns>A number indicating the expected ordering 
+            /// of the two blocks.
+            /// </returns>
             public int Compare(Block? x, Block? y)
             {
                 if (x == y) 
@@ -186,13 +219,20 @@ namespace Reko.Core
         /// <summary>
         /// Writes the blocks sorted by address ascending.
         /// </summary>
-        /// <param name="emitFrame"></param>
-        /// <param name="writer"></param>
+        /// <param name="emitFrame">If true, write the contents of the procedure's <see cref="Frame"/> also.</param>
+        /// <param name="writer">Output sink.</param>
 		public void Write(bool emitFrame, TextWriter writer)
         {
             Write(emitFrame, true, false, writer);
         }
 
+        /// <summary>
+        /// Writes the procedure to a text writer.
+        /// </summary>
+        /// <param name="emitFrame">If true, write the contents of the procedure's <see cref="Frame"/> also.</param>
+        /// <param name="showEdges">If true, write the successor edges as well.</param>
+        /// <param name="lowLevelInfo">If true, display low level information.</param>
+        /// <param name="writer">Output sink.</param>
 		public void Write(
             bool emitFrame, bool showEdges, bool lowLevelInfo, TextWriter writer)
         {
@@ -214,12 +254,25 @@ namespace Reko.Core
             WriteBody(showEdges, writer);
         }
 
+        /// <summary>
+        /// Writes the body of the procedure to a text writer.
+        /// </summary>
+        /// <param name="showEdges">If true, write the successor edges as well.</param>
+        /// <param name="writer">Output sink.</param>
         public void WriteBody(bool showEdges, TextWriter writer)
         {
             var formatter = CreateCodeFormatter(new TextFormatter(writer));
             new ProcedureFormatter(this, new BlockDecorator { ShowEdges = showEdges }, formatter).WriteProcedureBlocks();
         }
 
+        /// <summary>
+        /// Writes the procedure to a text writer.
+        /// </summary>
+        /// <param name="emitFrame">If true, writes the contents of the procedure's 
+        /// <see cref="Frame"/> also.</param>
+        /// <param name="decorator">Auxiliary class that generates extra output
+        /// for each block.</param>
+        /// <param name="writer">Output sink.</param>
         public void Write(bool emitFrame, BlockDecorator decorator, TextWriter writer)
         {
             writer.WriteLine("// {0}", Name);
@@ -232,33 +285,29 @@ namespace Reko.Core
             new ProcedureFormatter(this, decorator, codeFormatter).WriteProcedureBlocks();
         }
 
+        /// <summary>
+        /// Creates a code formatter, suitable for this procedure.
+        /// </summary>
+        /// <param name="formatter">Output sink.</param>
         public CodeFormatter CreateCodeFormatter(Formatter formatter)
         {
             return new CodeFormatter(formatter);
         }
 
-        public void WriteGraph(TextWriter writer)
-        {
-            foreach (var b in SortBlocksByName())
-            {
-                writer.WriteLine(b.DisplayName);
-                writer.Write("    Pred:");
-                foreach (var p in b.Pred)
-                    writer.Write(" {0}", p.DisplayName);
-                writer.WriteLine();
-                b.WriteStatements(writer);
-                writer.Write("    Succ:");
-                foreach (var s in b.Succ)
-                    writer.Write(" {0}", s.DisplayName);
-                writer.WriteLine();
-            }
-        }
-
+        /// <summary>
+        /// Returns the blocks of this procedure, sorted by their name.
+        /// </summary>
         public IOrderedEnumerable<Block> SortBlocksByName()
         {
             return blocks.OrderBy((x => x), new BlockComparer());
         }
 
+        /// <summary>
+        /// Adds a block to the procedure.
+        /// </summary>
+        /// <param name="addr">Address of the block.</param>
+        /// <param name="name">Identifier for the block.</param>
+        /// <returns>An empty <see cref="Block"/> instance.</returns>
         public Block AddBlock(Address addr, string name)
         {
             var block = new Block(this, addr, name);
@@ -266,6 +315,13 @@ namespace Reko.Core
             return block;
         }
 
+        /// <summary>
+        /// Adds a synthetic block to the procedure. A synthetic block is one that
+        /// doesn't correspond to code in the original binary, but is created by the decompiler.
+        /// </summary>
+        /// <param name="addr">Address of the block.</param>
+        /// <param name="name">Identifier for the block.</param>
+        /// <returns>An empty <see cref="Block"/> instance.</returns>
         public Block AddSyntheticBlock(Address addr, string name)
         {
             var block = AddBlock(addr, name);
@@ -273,11 +329,25 @@ namespace Reko.Core
             return block;
         }
 
+        /// <summary>
+        /// Adds a block to the procedure.
+        /// </summary>
+        /// <param name="block">Block to add.</param>
         public void AddBlock(Block block)
         {
             blocks.Add(block);
         }
 
+        /// <summary>
+        /// Removes a block from the procedure.
+        /// </summary>
+        /// <remarks>
+        /// Note that any graph edges
+        /// are not removed, so calling this method may leave the procedure's 
+        /// block graph in an inconsistent state. Consider using <see cref="ControlGraph"/>
+        /// methods instead.
+        /// </remarks>
+        /// <param name="block">Block to remove.</param>
         public void RemoveBlock(Block block)
         {
             blocks.Remove(block);

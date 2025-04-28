@@ -179,12 +179,9 @@ namespace Reko.UnitTests.Mocks
             Dictionary<string, DataType> globals,
             ModuleDescriptor module)
         {
-            if (types == null)
-                types = new Dictionary<string, DataType>();
-            if (signatures == null)
-                signatures = new Dictionary<string, FunctionType>();
-            if (globals == null)
-                globals = new Dictionary<string, DataType>();
+            types ??= new Dictionary<string, DataType>();
+            signatures ??= new Dictionary<string, FunctionType>();
+            globals ??= new Dictionary<string, DataType>();
             var loaderMetadata = new TypeLibrary(
                 false,
                 types,

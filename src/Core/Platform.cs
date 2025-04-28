@@ -416,8 +416,25 @@ namespace Reko.Core
         /// </returns>
         ExternalProcedure? LookupProcedureByOrdinal(string moduleName, int ordinal);
 
-
+        /// <summary>
+        /// Looks up an imported global variable by its name, and optionally 
+        /// its module name.
+        /// </summary>
+        /// <param name="moduleName">Optional module name.</param>
+        /// <param name="globalName">Name of the global variable.</param>
+        /// <returns>An expression for the global variable if the name is resolved;
+        /// otherwise null.
+        /// </returns>
         Expression? ResolveImportByName(string? moduleName, string globalName);
+
+        /// <summary>
+        /// Looks up an imported global variable by its module name and ordinal.
+        /// </summary>
+        /// <param name="moduleName">Module name.</param>
+        /// <param name="ordinal">Ordinal of the global variable.</param>
+        /// <returns>An expression for the global variable if the name is resolved;
+        /// otherwise null.
+        /// </returns>
         Expression? ResolveImportByOrdinal(string moduleName, int ordinal);
 
         /// <summary>
@@ -493,6 +510,14 @@ namespace Reko.Core
         /// <returns>null if there is no way to guess a ProcedureSignature from the name.</returns>
         ProcedureBase_v1? SignatureFromName(string fnName);
 
+        /// <summary>
+        /// Given an imported symbol name, attempts unmangle the name to a type.
+        /// </summary>
+        /// <param name="importName">Name to demangle.</param>
+        /// <returns>A triple consisting of the "bare" name, the data type of the name,
+        /// and the data type of any class containing the name.
+        /// </returns>
+
         (string, SerializedType, SerializedType)? DataTypeFromImportName(string importName);
 
         /// <summary>
@@ -553,6 +578,7 @@ namespace Reko.Core
 
         /// <inheritdoc/>
         public PlatformHeuristics Heuristics { get; set; }
+        /// <inheritdoc/>
         public string Name { get; set; }
 
         /// <inheritdoc/>
@@ -563,10 +589,14 @@ namespace Reko.Core
         }
         private MemoryMap_v1? mmap;
 
+        /// <inheritdoc/>
         public virtual PrimitiveType FramePointerType { get { return Architecture.FramePointerType; } }
+        /// <inheritdoc/>
         public virtual PrimitiveType PointerType { get { return Architecture.PointerType; } }
+        /// <inheritdoc/>
         public MaskedPattern[] ProcedurePrologs { get; }
 
+        /// <inheritdoc/>
         public int StructureMemberAlignment { get; protected set; }
 
         /// <summary>
@@ -589,9 +619,13 @@ namespace Reko.Core
         /// </summary>
         public IReadOnlyDictionary<string, IReadOnlyCollection<string>> CallingConventions { get; }
 
+        /// <inheritdoc/>
         public abstract string DefaultCallingConvention { get; }
 
+        /// <inheritdoc/>
         public virtual IReadOnlySet<RegisterStorage> TrashedRegisters { get; protected set; }
+
+        /// <inheritdoc/>
         public virtual IReadOnlySet<RegisterStorage> PreservedRegisters { get; protected set; }
 
 
@@ -615,6 +649,7 @@ namespace Reko.Core
             return addr;
         }
 
+        /// <inheritdoc/>
         public virtual IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
         {
             throw new NotImplementedException("Emulation has not been implemented for this platform yet.");
@@ -630,6 +665,7 @@ namespace Reko.Core
             return Architecture.CreatePointerScanner(segmentMap, rdr, address, pointerScannerFlags);
         }
 
+        /// <inheritdoc/>
         public TypeLibrary CreateMetadata()
         {
             var metadata = EnsureTypeLibraries(PlatformIdentifier);
@@ -672,6 +708,7 @@ namespace Reko.Core
         }
 
 
+        /// <inheritdoc/>
         public virtual CParser CreateCParser(TextReader rdr, ParserState? state)
         {
             state ??= new ParserState();
@@ -680,6 +717,7 @@ namespace Reko.Core
             return parser;
         }
 
+        /// <inheritdoc/>
         public virtual ICallingConvention? DetermineCallingConvention(FunctionType signature, IProcessorArchitecture? arch)
         {
             return null;
@@ -754,8 +792,10 @@ namespace Reko.Core
             return result;
         }
 
+        /// <inheritdoc/>
         public abstract int GetBitSizeFromCBasicType(CBasicType cb);
 
+        /// <inheritdoc/>
         public virtual string? GetPrimitiveTypeName(PrimitiveType pt, string language)
         {
             return null;
@@ -767,6 +807,7 @@ namespace Reko.Core
             return null;
         }
 
+        /// <inheritdoc/>
         public virtual ImageSymbol? FindMainProcedure(Program program, Address addrStart)
         {
             // By default, we don't provide this service, but individual platforms 
@@ -774,18 +815,22 @@ namespace Reko.Core
             return null;
         }
 
+        /// <inheritdoc/>
         public abstract SystemService? FindService(int vector, ProcessorState? state, IMemory? memory);
 
+        /// <inheritdoc/>
         public virtual DispatchProcedure_v1? FindDispatcherProcedureByAddress(Address addr)
         {
             return null;
         }
 
+        /// <inheritdoc/>
         public virtual SystemService? FindService(RtlInstruction rtl, ProcessorState? state, IMemory? memory)
         {
             return null;
         }
 
+        /// <inheritdoc/>
         public virtual SystemService FindService(string name)
         {
             throw new NotSupportedException();
@@ -801,6 +846,7 @@ namespace Reko.Core
             return null;
         }
 
+        /// <inheritdoc/>
         public virtual ProcedureBase? GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
         {
             return null;
@@ -820,11 +866,13 @@ namespace Reko.Core
             return reg == Architecture.StackRegister;
         }
 
+        /// <inheritdoc/>
         public virtual bool IsPossibleArgumentRegister(RegisterStorage reg)
         {
             return false;
         }
 
+        /// <inheritdoc/>
         protected RegisterStorage[] LoadTrashedRegisters(PlatformDefinition? platformDef)
         {
             var pa = platformDef?.Architectures?.SingleOrDefault(a => a.Name == Architecture.Name);
@@ -836,6 +884,7 @@ namespace Reko.Core
                 .ToArray()!;
         }
 
+        /// <inheritdoc/>
         protected RegisterStorage[] LoadPreservedRegisters(PlatformDefinition? platformDef)
         {
             var pa = platformDef?.Architectures?.SingleOrDefault(a => a.Name == Architecture.Name);
@@ -847,11 +896,13 @@ namespace Reko.Core
                 .ToArray()!;
         }
 
+        /// <inheritdoc/>
         public virtual Address? MakeAddressFromConstant(Constant c, bool codeAlign)
         {
             return Architecture.MakeAddressFromConstant(c, codeAlign);
         }
 
+        /// <inheritdoc/>
         public virtual void InjectProcedureEntryStatements(Procedure proc, Address addr, CodeEmitter emitter)
         {
         }
@@ -890,6 +941,7 @@ namespace Reko.Core
             return Address.Create(Architecture.PointerType, uAddr);
         }
 
+        /// <inheritdoc/>
         public virtual bool TryParseAddress(string? sAddress, [MaybeNullWhen(false)] out Address addr)
         {
             return Architecture.TryParseAddress(sAddress, out addr);
@@ -917,6 +969,7 @@ namespace Reko.Core
             return null;
         }
 
+        /// <inheritdoc/>
         public virtual (string, SerializedType, SerializedType)? DataTypeFromImportName(string importName)
         {
             return null;
@@ -930,18 +983,22 @@ namespace Reko.Core
                 : null;
         }
 
+        /// <inheritdoc/>
         public abstract ExternalProcedure? LookupProcedureByName(string? moduleName, string procName);
 
+        /// <inheritdoc/>
         public virtual ExternalProcedure? LookupProcedureByOrdinal(string moduleName, int ordinal)
         {
             return null;
         }
 
+        /// <inheritdoc/>
         public virtual Storage? PossibleReturnValue(IEnumerable<Storage> storages)
         {
             return null;
         }
 
+        /// <inheritdoc/>
         public virtual Expression? ResolveImportByName(string? moduleName, string globalName)
         {
             var ep = LookupProcedureByName(moduleName, globalName);
@@ -951,6 +1008,7 @@ namespace Reko.Core
                 return null;
         }
 
+        /// <inheritdoc/>
         public virtual Expression? ResolveImportByOrdinal(string moduleName, int ordinal)
         {
             var ep = LookupProcedureByOrdinal(moduleName, ordinal);
@@ -973,6 +1031,7 @@ namespace Reko.Core
             return null;
         }
 
+        /// <inheritdoc/>
         public virtual ProcedureCharacteristics? LookupCharacteristicsByName(string procName)
         {
             var metadata = EnsureTypeLibraries(PlatformIdentifier);
@@ -981,6 +1040,7 @@ namespace Reko.Core
                 .FirstOrDefault();
         }
 
+        /// <inheritdoc/>
         public virtual void WriteMetadata(Program program, string path)
         {
         }
@@ -994,6 +1054,11 @@ namespace Reko.Core
     /// </remarks>
     public class DefaultPlatform : Platform
     {
+        /// <summary>
+        /// Creates a new instance of the default platform.
+        /// </summary>
+        /// <param name="services"><see cref="IServiceProvider"/> instance.</param>
+        /// <param name="arch">Default <see cref="IProcessorArchitecture"/>.</param>
         public DefaultPlatform(
             IServiceProvider services,
             IProcessorArchitecture arch)
@@ -1005,6 +1070,12 @@ namespace Reko.Core
             this.TrashedRegisters = new HashSet<RegisterStorage>();
         }
 
+        /// <summary>
+        /// Creates a new instance of the default platform.
+        /// </summary>
+        /// <param name="services"><see cref="IServiceProvider"/> instance.</param>
+        /// <param name="arch">Default <see cref="IProcessorArchitecture"/>.</param>
+        /// <param name="description">Platform description.</param>
         public DefaultPlatform(
             IServiceProvider services,
             IProcessorArchitecture arch,
@@ -1016,17 +1087,22 @@ namespace Reko.Core
             this.TrashedRegisters = new HashSet<RegisterStorage>();
         }
 
+        /// <inheritdoc/>
         public List<TypeLibrary> TypeLibraries { get; }
 
+        /// <inheritdoc/>
         public override string DefaultCallingConvention => "";
 
+        /// <inheritdoc/>
         public override IReadOnlySet<RegisterStorage> TrashedRegisters { get; protected set; }
 
+        /// <inheritdoc/>
         public override SystemService? FindService(int vector, ProcessorState? state, IMemory? memory)
         {
             return null;
         }
 
+        /// <inheritdoc/>
         public override int GetBitSizeFromCBasicType(CBasicType cb)
         {
             switch (cb)
@@ -1046,6 +1122,7 @@ namespace Reko.Core
             }
         }
 
+        /// <inheritdoc/>
         public override ExternalProcedure? LookupProcedureByName(string? moduleName, string procName)
         {
             //$Identical to Win32, move into base class?

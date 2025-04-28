@@ -22,10 +22,19 @@ using Reko.Core.Types;
 
 namespace Reko.Core
 {
+    /// <summary>
+    /// Naming policy for data types.
+    /// </summary>
     public class TypeNamingPolicy
     {
         private readonly PrefixPolicy prefixPolicy = new PrefixPolicy();
 
+        /// <summary>
+        /// Returns a short prefix for the given data type.
+        /// </summary>
+        /// <param name="dt">Data type whose prefix is requested.</param>
+        /// <returns>A short prefix used as a sigil when naming data types.
+        /// </returns>
         public virtual string ShortPrefix(DataType dt)
         {
             return dt.Accept(prefixPolicy);
@@ -145,14 +154,26 @@ namespace Reko.Core
             }
         }
 
+        /// <summary>
+        /// Generate the name for a structure field.
+        /// </summary>
+        /// <param name="field">Field to name.</param>
+        /// <param name="userGivenName">Optional user-provided override.</param>
+        /// <returns>A structure field name.</returns>
         public virtual string StructureFieldName(StructureField field, string? userGivenName)
         {
             if (!string.IsNullOrEmpty(userGivenName))
-                return userGivenName!;
+                return userGivenName;
             var prefix = field.DataType.Accept(this.prefixPolicy);
             return $"{prefix}{field.Offset:X4}";
         }
 
+        /// <summary>
+        /// Generate the name for a union alternative.
+        /// </summary>
+        /// <param name="alt">Alternative to name.</param>
+        /// <param name="userGivenName">Optional user-provided override.</param>
+        /// <returns>A union alternative name.</returns>
         public virtual string UnionAlternativeName(UnionAlternative alt, string userGivenName)
         {
             if (!string.IsNullOrEmpty(userGivenName))

@@ -38,6 +38,7 @@ namespace Reko.Core.NativeInterface
     [NativeInterop]
     public interface INativeRtlEmitter
     {
+#pragma warning disable CS1591
         [PreserveSig] void Assign(HExpr dst, HExpr src);
         [PreserveSig] void Branch(HExpr exp, HExpr dst, InstrClass rtlClass);
         [PreserveSig] void BranchInMiddleOfInstruction(HExpr exp, HExpr dst, InstrClass rtlClass);

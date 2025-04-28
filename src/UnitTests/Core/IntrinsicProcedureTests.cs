@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Core
         public void Intrinsic_Generic()
         {
             var args = new DataType[] { t, u };
-            var sig = FunctionType.Func(
+            var sig = FunctionType.Create(
                 new Identifier("", u, null!),
                 new Identifier("arg1", t, null!),
                 new Identifier("arg2", t, null!));
@@ -54,7 +54,7 @@ namespace Reko.UnitTests.Core
         public void Intrinsic_MakeGenericInstance()
         {
             var args = new DataType[] { t, u };
-            var sig = FunctionType.Func(
+            var sig = FunctionType.Create(
                 new Identifier("", u, null!),
                 new Identifier("arg1", t, null!),
                 new Identifier("arg2", t, null!));
@@ -69,7 +69,7 @@ namespace Reko.UnitTests.Core
         public void Intrinsic_MakeGenericInstance_AreSame()
         {
             var args = new DataType[] { t, u };
-            var sig = FunctionType.Func(
+            var sig = FunctionType.Create(
                 new Identifier("", u, null!),
                 new Identifier("arg1", t, null!),
                 new Identifier("arg2", t, null!));
@@ -85,7 +85,7 @@ namespace Reko.UnitTests.Core
         public void Intrinsic_MakeGenericPointer()
         {
             var args = new DataType[] { t };
-            var sig = FunctionType.Func(
+            var sig = FunctionType.Create(
                 new Identifier("", new Pointer(t, 0), null!),   // generic ptr
                 new Identifier("arg1", t, null!));
             var generic = new IntrinsicProcedure("PtrOf", args, false, false, null, sig);

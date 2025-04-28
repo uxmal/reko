@@ -235,16 +235,19 @@ namespace Reko.Core
             return InvalidConstant.Create(PrimitiveType.Word32);    //$BUG: should be data type of access
         }
 
+        /// <inheritdoc/>
         public Expression GetValue(Application appl)
         {
             return InvalidConstant.Create(appl.DataType);
         }
 
+        /// <inheritdoc>/>
         public Expression? GetDefiningExpression(Identifier id)
         {
             return null;
         }
 
+        /// <inheritdoc>/>
         public Expression MakeSegmentedAddress(Constant seg, Constant off)
         {
             return Architecture.MakeSegmentedAddress(seg, off);

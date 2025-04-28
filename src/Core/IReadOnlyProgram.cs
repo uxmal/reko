@@ -44,21 +44,27 @@ namespace Reko.Core
         IProcessorArchitecture Architecture { get; }
 
         /// <summary>
-        /// A read-only view of the program's call graph.
+        /// Read-only view of the <see cref="Graphs.CallGraph"/> of this program.
         /// </summary>
         IReadOnlyCallGraph CallGraph { get; }
 
-
+        /// <summary>
+        /// The "global" identifier, representing the space of all global variables.
+        /// </summary>
         Identifier Globals { get; }
+
+        /// <summary>
+        /// The global variables in the program.
+        /// </summary>
         StructureType GlobalFields { get; }
         
         /// <summary>
         /// A read-only view of the programs's induction variables.
         /// </summary>
         IReadOnlyDictionary<Identifier, LinearInductionVariable> InductionVariables { get; }
-
+        
         /// <summary>
-        /// The program's memory.
+        /// The global memory of the program.
         /// </summary>
         IMemory Memory { get; }
 
@@ -75,11 +81,16 @@ namespace Reko.Core
         /// don't require SSA Transform.
         /// </remarks>
         bool NeedsSsaTransform { get; }
+
+        /// <summary>
+        /// The platform that this program is running on.
+        /// </summary>
         IPlatform Platform { get; }
 
         /// <summary>
-        /// Read-only view of the program's segments.
+        /// Memory map.
         /// </summary>
+        //$TODO: use the segment map in IMemory.
         IReadOnlySegmentMap SegmentMap { get; }
 
         /// <summary>

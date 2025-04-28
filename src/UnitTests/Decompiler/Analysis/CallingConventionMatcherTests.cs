@@ -131,14 +131,14 @@ namespace Reko.UnitTests.Decompiler.Analysis
         }
 
         private FunctionType Func(Storage arg1, Storage ret) {
-            return FunctionType.Func(
+            return FunctionType.Create(
                 new Identifier("", ret.DataType, ret),
                 new Identifier(arg1.Name, arg1.DataType, arg1));
         }
 
         private FunctionType Func(Storage arg1, Storage arg2, Storage ret)
         {
-            return FunctionType.Func(
+            return FunctionType.Create(
                 new Identifier("", ret.DataType, ret),
                 new Identifier(arg1.Name, arg1.DataType, arg1),
                 new Identifier(arg2.Name, arg2.DataType, arg2));
@@ -146,7 +146,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
 
         private FunctionType Func(Storage arg1, Storage arg2, Storage arg3, Storage ret)
         {
-            return FunctionType.Func(
+            return FunctionType.Create(
                 new Identifier("", ret.DataType, ret),
                 new Identifier(arg1.Name, arg1.DataType, arg1),
                 new Identifier(arg2.Name, arg2.DataType, arg2),

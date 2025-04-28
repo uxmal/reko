@@ -42,22 +42,22 @@ namespace Reko.Core
         /// <summary>
         /// ALU instruction, computational (like ADD, SHR, or MOVE).
         /// </summary>
-        Linear = 0x0001,
+        Linear =      0x0001,
 
         /// <summary>
         /// Control flow transfer like JMP, CALL.
         /// </summary>
-        Transfer = 0x0002,
+        Transfer =    0x0002,
 
         /// <summary>
         /// Instruction terminates execution.
         /// </summary>
-        Terminates = 0x0004,
+        Terminates =  0x0004,
 
         // Modifiers
 
         /// <summary>
-        /// Conditionally executed (like branches or CMOV instructions).
+        /// Conditionally executed (like branches or CMOV instructions)
         /// </summary>
         Conditional = 0x0008,
 
@@ -95,7 +95,6 @@ namespace Reko.Core
 
         // Further classification used by scanners
 
-
         /// <summary>
         /// Instruction _could_ be used as alignment padding between procedures.
         /// </summary>
@@ -104,20 +103,20 @@ namespace Reko.Core
         /// <summary>
         /// The instruction is invalid.
         /// </summary>
-        Invalid =     0x0800,
+        Invalid = 0x0800,
 
         /// <summary>
         /// The instruction's first "unit" was zero.
         /// </summary>
         Zero =        0x1000,
-
+        
         /// <summary>
         /// The instruction is valid, but unlikely to exist in a real program.
         /// </summary>
         Unlikely =    0x2000,
 
         /// <summary>
-        /// The instruction is a conditional transfer instruction or branch.
+        /// Instruction is a conditional transfer instruction.
         /// </summary>
         ConditionalTransfer = Conditional | Transfer,
     }

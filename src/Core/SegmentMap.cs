@@ -35,12 +35,26 @@ namespace Reko.Core
     /// </summary>
     public class SegmentMap : IReadOnlySegmentMap
     {
+        /// <summary>
+        /// Event that is raised when the segment map changes.
+        /// </summary>
         public event EventHandler? MapChanged;
 
+        /// <summary>
+        /// Constructs an segment map with the given segments. The <see cref="BaseAddress"/>
+        /// is initialized to the minimium address of all segments.
+        /// </summary>
+        /// <param name="segments">Image segments to add.
+        /// </param>
         public SegmentMap(params ImageSegment[] segments) : this(MinBaseAddr(segments), segments)
         {
         }
 
+        /// <summary>
+        /// Computes the base address as the minimum address of all segments.
+        /// </summary>
+        /// <param name="segments">At least one image segment.</param>
+        /// <returns>The minimum starting address of all segments.</returns>
         private static Address MinBaseAddr(ImageSegment[] segments)
         {
             if (segments.Length == 0)
@@ -53,6 +67,12 @@ namespace Reko.Core
             return addr;
         }
 
+        /// <summary>
+        /// Creates an instance of the <see cref="SegmentMap"/> class.
+        /// </summary>
+        /// <param name="addrBase">Base address of the segment map.</param>
+        /// <param name="segments">The image segments constituting the segment map.
+        /// </param>
         public SegmentMap(Address addrBase, params ImageSegment[] segments)
         {
             this.BaseAddress = addrBase;
@@ -65,9 +85,16 @@ namespace Reko.Core
             }
         }
 
+        /// <summary>
+        /// The base address of the segment map.
+        /// </summary>
         public Address BaseAddress { get; }
 
+        /// <summary>
+        /// The segments in the segment map, sorted by their starting address.
+        /// </summary>
         public SortedList<Address, ImageSegment> Segments { get; }
+
         private SortedList<ulong, ImageSegment> SegmentByLinAddress { get; }
 
         public Dictionary<ushort, ImageSegment> Selectors { get; }
@@ -306,6 +333,11 @@ namespace Reko.Core
             }
         }
 
+        /// <summary>
+        /// Creates an <see cref="ImageMap"/> based on this <see cref="SegmentMap"/>.
+        /// </summary>
+        /// <returns>A new <see cref="ImageMap"/> instance.
+        /// </returns>
         public ImageMap CreateImageMap()
         {
             var imageMap = new ImageMap(this.BaseAddress);

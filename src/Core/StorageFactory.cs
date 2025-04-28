@@ -22,24 +22,34 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Core
 {
     /// <summary>
-    /// Convenient utility class for making <see cref="Storage"/>s.
+    /// Convenient utility class for making <see cref="RegisterStorage"/>s.
+    /// The registers' storage domains are allocated consecutively from a starting value.
     /// </summary>
     public class StorageFactory
     {
         private int iReg;
 
+        /// <summary>
+        /// Create an instance of the <see cref="StorageFactory"/> class.
+        /// </summary>
+        /// <param name="domain">Starting value to use when allocating storage domains.</param>
         public StorageFactory(StorageDomain domain = StorageDomain.Register)
         {
             this.iReg = (int) domain;
         }
 
+        /// <summary>
+        /// A dictionary of register names to register storages, created so far.
+        /// </summary>
         public Dictionary<string, RegisterStorage> NamesToRegisters { get; } = new Dictionary<string, RegisterStorage>();
+
+        /// <summary>
+        /// A dictionary of register storages to register names, created so far.
+        /// </summary>
         public Dictionary<StorageDomain, RegisterStorage> DomainsToRegisters { get; } = new Dictionary<StorageDomain, RegisterStorage>();
 
         /// <summary>
@@ -67,6 +77,13 @@ namespace Reko.Core
             return reg;
         }
 
+        /// <summary>
+        /// Replace an existing register with a new one. The old register is replaced 
+        /// in the <see cref="DomainsToRegisters"/> and <see cref="NamesToRegisters"/> dictionaries."/>
+        /// </summary>
+        /// <param name="regOld">Old register.</param>
+        /// <param name="regNew">Replacement register.</param>
+        /// <returns></returns>
         public RegisterStorage Replace(RegisterStorage regOld, RegisterStorage regNew)
         {
             DomainsToRegisters[regOld.Domain] = regNew;

@@ -301,6 +301,12 @@ namespace Reko.Core
 			return id;
 		}
 
+        /// <summary>
+        /// Ensures an out argument identifier for the given original identifier in this frame.
+        /// </summary>
+        /// <param name="idOrig">Original identifier.</param>
+        /// <param name="outArgumentPointer">Data type to use for pointers.</param>
+		/// <returns>The resulting identifier.</returns>
 		public Identifier EnsureOutArgument(Identifier idOrig, DataType outArgumentPointer)
 		{
 			Identifier? idOut = FindOutArgument(idOrig);
@@ -312,6 +318,7 @@ namespace Reko.Core
 			return idOut;
 		}
 
+        /// <inheritdoc />
         public Identifier EnsureSequence(SequenceStorage sequence)
         {
             var idSeq = FindSequence(sequence.Elements);
@@ -333,17 +340,6 @@ namespace Reko.Core
 			}
 			return idSeq;
 		}
-
-        [Obsolete("", true)]
-        public Identifier EnsureSequence(DataType dt, string name, params Storage [] elements)
-        {
-            Identifier? idSeq = FindSequence(elements);
-            if (idSeq == null)
-            {
-                idSeq = CreateSequence(dt, name, elements);
-            }
-            return idSeq;
-        }
 
         /// <summary>
         /// Makes sure that there is a local variable at the given offset.

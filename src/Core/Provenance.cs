@@ -31,28 +31,78 @@ namespace Reko.Core
     /// </summary>
     public class Provenance
     {
-        public ProvenanceType ProvenanceType;
-        public string? Comment;
+        /// <summary>
+        /// The origin of the object.
+        /// </summary>
+        public ProvenanceType ProvenanceType { get; }
+
+        /// <summary>
+        /// Optional comment about the origin.
+        /// </summary>
+        public string? Comment { get; }
     }
 
+    /// <summary>
+    /// An enumeration of the possible origins of objects discovered during analysis.
+    /// </summary>
     public enum ProvenanceType
     {
+        /// <summary>
+        /// Default uninitialized value.
+        /// </summary>
         None,
-        Image,              // reached here because image file "said so".
-        ImageEntrypoint,    // An image defined this as the entry point.
-        Environment,        // This object is dictated by the environment/platform.
-        UserInput,          // reached here because user's input "said so".
-        Scanning,           // reached here as part of the scanning process.
-        Heuristic,          // reached here as a guess.
+
+
+        /// <summary>
+        /// The object's presence is determined by the image. Confidence is very high.
+        /// </summary>
+        Image,
+        /// <summary>
+        /// An image defined this as the entry point. Confidence is very high.
+        /// </summary>
+        ImageEntrypoint,
+        /// <summary>
+        /// The presence of this object is determined from envionment metadata. Confidence is very high.
+        /// </summary>
+        Environment,
+
+        /// <summary>
+        /// The presece of this object reached here because user's input dictated it.
+        /// We blindly trust the user.
+        UserInput,
+
+        /// <summary>
+        /// The object was discovered by recursive scanning. Confidence is high.
+        /// </summary>
+        Scanning,
+        /// <summary>
+        /// The object was discovered by using a heuristic or guessing. Confidence is low.
+        /// </summary>
+        Heuristic,          
     }
 
+    /// <summary>
+    /// A generic version of <see cref="Provenance"/> that allows for tracing the origin
+    /// of an object.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class Provenance<T> : Provenance
     {
-        public readonly T ReachedFrom;
 
+        /// <summary>
+        /// Creates an instance of a "tracking" provenance.
+        /// </summary>
+        /// <param name="from">The object from which this provenance was discovered.
+        /// </param>
         public Provenance(T from)
         {
             this.ReachedFrom = from;
         }
+
+        /// <summary>
+        /// The object from which this provenance was discovered.
+        /// </summary>
+        public T ReachedFrom { get; }
+
     }
 }

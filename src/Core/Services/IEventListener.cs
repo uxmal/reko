@@ -37,10 +37,52 @@ namespace Reko.Core.Services
         /// </summary>
         IProgressIndicator Progress { get; }
 
+        /// <summary>
+        /// Creates an address navigator.
+        /// </summary>
+        /// <param name="program">Program containing the address.</param>
+        /// <param name="address">Address to navigate to.</param>
+        /// <returns>An address navigator.
+        /// </returns>
         ICodeLocation CreateAddressNavigator(IReadOnlyProgram program, Address address);
+
+        /// <summary>
+        /// Creates an procedure navigator.
+        /// </summary>
+        /// <param name="program">Program containing the address.</param>
+        /// <param name="proc">Procedure to navigate to.</param>
+        /// <returns>An procedure navigator.
+        /// </returns>
         ICodeLocation CreateProcedureNavigator(IReadOnlyProgram program, Procedure proc);
+
+        /// <summary>
+        /// Creates an block navigator.
+        /// </summary>
+        /// <param name="program">Program containing the address.</param>
+        /// <param name="block">Basic block to navigate to.</param>
+        /// <returns>An procedure navigator.
+        /// </returns>
+
         ICodeLocation CreateBlockNavigator(IReadOnlyProgram program, Block block);
+
+        /// <summary>
+        /// Creates an block navigator.
+        /// </summary>
+        /// <param name="program">Program containing the address.</param>
+        /// <param name="stm"><see cref="Statement"/> to navigate to.</param>
+        /// <returns>An procedure navigator.
+        /// </returns>
         ICodeLocation CreateStatementNavigator(IReadOnlyProgram program, Statement stm);
+
+        /// <summary>
+        /// Creates an jump table navigator.
+        /// </summary>
+        /// <param name="program">Program containing the address.</param>
+        /// <param name="arch">Architecture.</param>
+        /// <param name="addrIndirectJump">Address of the indirect jump.</param>
+        /// <param name="stm"><see cref="Statement"/> to navigate to.</param>
+        /// <returns>An procedure navigator.
+        /// </returns>
         ICodeLocation CreateJumpTableNavigator(IReadOnlyProgram program, IProcessorArchitecture arch, Address addrIndirectJump, Address? addrVector, int stride);
 
         void Info(string message);

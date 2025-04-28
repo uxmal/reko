@@ -28,10 +28,10 @@ namespace Reko.Core
     public class AddressCorrelatedException : Exception
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AddressCorrelatedException"/> class.
+        /// Constructs an instance of <see cref="AddressCorrelatedException"/>.
         /// </summary>
-        /// <param name="addr">The address at which the problem occurred.</param>
-        /// <param name="message"></param>
+        /// <param name="addr">The address at which the exception happened.</param>
+        /// <param name="message">A message that describes the error.</param>
         public AddressCorrelatedException(Address addr, string message)
             : base(message)
         {
@@ -39,11 +39,12 @@ namespace Reko.Core
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AddressCorrelatedException"/> class.
+        /// Constructs an instance of <see cref="AddressCorrelatedException"/>
+        /// that wraps an inner exception.
         /// </summary>
-        /// <param name="addr">The address at which the problem occurred.</param>
-        /// <param name="innerException">Inner exception.</param>
-        /// <param name="message"></param>
+        /// <param name="addr">The address at which the exception happened.</param>
+        /// <param name="innerException">An inner exception.</param>
+        /// <param name="message">A message that describes the error.</param>
         public AddressCorrelatedException(Address addr, Exception innerException, string message)
             : base(message, innerException)
         {
@@ -51,7 +52,7 @@ namespace Reko.Core
         }
 
         /// <summary>
-        /// The address at which the problem occurred.
+        /// The address at which the exception happened.
         /// </summary>
         public Address Address { get; }
     }

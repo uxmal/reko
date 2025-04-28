@@ -101,9 +101,9 @@ namespace Reko.UnitTests.Decompiler.Scanning
             {
                 ReturnValue = new Argument_v1(null, new PrimitiveType_v1(Domain.Character, 1), null, false),
             };
-            var ft1 = FunctionType.Func(
+            var ft1 = FunctionType.Create(
                 new Identifier("", PrimitiveType.Int32, null));
-            var ft2 = FunctionType.Func(
+            var ft2 = FunctionType.Create(
                 new Identifier("", PrimitiveType.Char, null));
             var str = new StructureType();
             var fields = new StructureField[] {
@@ -156,7 +156,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             };
             Given_Program(Address.Ptr32(0x43210000), bytes);
 
-            var ft = FunctionType.Func(
+            var ft = FunctionType.Create(
                 new Identifier("", PrimitiveType.Real32, null),
                 Array.Empty<Identifier>());
             var str = new StructureType("str", 0);
@@ -188,7 +188,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             };
             Given_Program(Address.Ptr32(0x43210000), bytes);
 
-            var ft = FunctionType.Func(
+            var ft = FunctionType.Create(
                 new Identifier("", PrimitiveType.Real32, null),
                 Array.Empty<Identifier>());
             var str = new StructureType();
@@ -211,7 +211,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
         {
             var addr = Address.Ptr32(0x12340000);
             Given_Program(addr, new byte[4]);
-            var ft = FunctionType.Func(
+            var ft = FunctionType.Create(
                new Identifier("", PrimitiveType.Real32, null),
                Array.Empty<Identifier>());
             scanner.Setup(s => s.EnqueueUserProcedure(

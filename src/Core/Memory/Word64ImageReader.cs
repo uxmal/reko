@@ -26,11 +26,19 @@ using System.IO;
 
 namespace Reko.Core.Memory
 {
+    /// <summary>
+    /// Image reader for a memory area organized in 64-bit words.
+    /// </summary>
     public class Word64ImageReader : ImageReader
     {
         protected readonly Word64MemoryArea mem;
         private readonly long endOffset;
 
+        /// <summary>
+        /// Constructs a new image reader for a memory area organized in 64-bit words.
+        /// </summary>
+        /// <param name="mem">64-bit memory area.</param>
+        /// <param name="beginOffset">Starting offset.</param>
         public Word64ImageReader(Word64MemoryArea mem, long beginOffset)
             : this(mem, beginOffset, mem.Words.Length)
         {

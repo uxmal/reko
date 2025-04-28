@@ -34,7 +34,8 @@ namespace Reko.Core
         /// </summary>
         /// <param name="address">The address associated with the statement.</param>
         /// <param name="instr">The <see cref="Instruction"/> associated with the statement.</param>
-        /// <param name="block">The basic block associated with the statement.</param>
+        /// <param name="block"><see cref="Block">Basic block</see> in which the statement is located.
+        /// </param>
         public Statement(Address address, Instruction instr, Block block)
         {
             this.Address = address;
@@ -57,7 +58,9 @@ namespace Reko.Core
         /// </summary>
         public Address Address { get; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Render the statement as a string.
+        /// </summary>
 		public override string ToString()
 		{
 			return Instruction.ToString();

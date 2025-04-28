@@ -26,8 +26,14 @@ using System.Threading.Tasks;
 
 namespace Reko.Core
 {
+    /// <summary>
+    /// Read-only view of the user-provided settings and data.
+    /// </summary>
     public interface IReadOnlyUserData
     {
+        /// <summary>
+        /// The user-provided heuristics guiding the decompilation of the program.
+        /// </summary>
         ISet<string> Heuristics { get; }
     }
 }

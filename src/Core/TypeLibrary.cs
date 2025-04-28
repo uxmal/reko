@@ -200,12 +200,21 @@ namespace Reko.Core
             }
 		}
 
+        /// <summary>
+        /// Lookup a function signature by name.
+        /// </summary>
+        /// <param name="procedureName">Procedure name.</param>
 		public FunctionType? Lookup(string procedureName)
 		{
             if (!Signatures.TryGetValue(procedureName, out FunctionType? sig))
                 return null;
 			return sig;
 		}
+
+        /// <summary>
+        /// Lookup a type by name.
+        /// </summary>
+        /// <param name="typedefName">Data type name.</param>
 
         public DataType? LookupType(string typedefName)
         {

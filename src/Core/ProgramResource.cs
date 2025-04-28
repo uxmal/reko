@@ -26,33 +26,74 @@ using System.Text;
 
 namespace Reko.Core
 {
+    /// <summary>
+    /// A program resource extracted from an executable image.
+    /// </summary>
     public class ProgramResource
     {
+        /// <summary>
+        /// Optional name of the resource.
+        /// </summary>
         public string? Name { get; set; }
 
+        /// <summary>
+        /// Returns a string representation of the resource's name.
+        /// </summary>
+        /// <returns></returns>
         public override string ToString() => Name ?? "(null)";
     }
 
+    /// <summary>
+    /// Represents a group of program resources.
+    /// </summary>
     [Designer("Reko.Gui.Design.ProgramResourceGroupDesigner,Reko.Gui")]
     public class ProgramResourceGroup : ProgramResource
     {
+        /// <summary>
+        /// The sub-resources of this resource group.
+        /// </summary>
         public List<ProgramResource> Resources { get; }
 
+        /// <summary>
+        /// Creates an instance of a resource group.
+        /// </summary>
         public ProgramResourceGroup()
         {
             this.Resources = new List<ProgramResource>();
         }
     }
 
+    /// <summary>
+    /// A program resource extracted from a binary..
+    /// </summary>
+
     [Designer("Reko.Gui.Design.ProgramResourceInstanceDesigner,Reko.Gui")]
     public class ProgramResourceInstance : ProgramResource
     {
+        /// <summary>
+        /// Raw bytes of the resource.
+        /// </summary>
         public byte[]? Bytes { get; set; }
+
+        /// <summary>
+        /// Content type of the resource.
+        /// </summary>
         public string? Type { get; set; }
 
+        /// <summary>
+        /// Optional file extension of the resource.
+        /// </summary>
         public string? FileExtension { get; set; }
+
+        /// <summary>
+        /// Optional text encoding of the resource.
+        /// </summary>
         public string? TextEncoding { get; set; }
 
+        /// <summary>
+        /// Returns a string representation of the resource.
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return $"id:{this.Name}, type:{this.Type}, ext:{FileExtension}, enc:{TextEncoding}";

@@ -30,9 +30,27 @@ namespace Reko.Core
     /// </summary>
     public interface IReadOnlySegmentMap
     {
+        /// <summary>
+        /// Maps the selector values to their corresponding segments.
+        /// </summary>
         IReadOnlyDictionary<ushort, ImageSegment> Selectors { get; }
 
+        /// <summary>
+        /// Returns true if <paramref name="addr"/> is a valid address in the
+        /// segment map.
+        /// </summary>
+        /// <param name="addr"></param>
+        /// <returns></returns>
         bool IsValidAddress(Address addr);
+
+        /// <summary>
+        /// Given an address, locates the segment the address is in.
+        /// </summary>
+        /// <param name="addr">Address to use.</param>
+        /// <param name="seg">The image segment containing that address, if any.
+        /// </param>
+        /// <returns>True if a segment was found; otherwise false.
+        /// </returns>
         bool TryFindSegment(Address addr, [MaybeNullWhen(false)] out ImageSegment seg);
     }
 }

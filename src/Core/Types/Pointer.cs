@@ -49,31 +49,38 @@ namespace Reko.Core.Types
 			this.bitSize = bitSize;
 		}
 
+        /// <inheritdoc/>
         public override int BitSize => this.bitSize;
 
+        /// <inheritdoc/>
         public override bool IsComplex => true;
 
+        /// <inheritdoc/>
         public override bool IsPointer => true;
 
         public DataType Pointee { get; set; }
 
 
+        /// <inheritdoc/>
         public override int Size
         {
             get { return (bitSize + (BitsPerByte - 1)) / BitsPerByte; }
             set { ThrowBadSize(); }
         }
 
+        /// <inheritdoc/>
         public override void Accept(IDataTypeVisitor v)
         {
             v.VisitPointer(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
             return v.VisitPointer(this);
         }
 
+        /// <inheritdoc/>
         public override DataType Clone(IDictionary<DataType, DataType>? clonedTypes)
 		{
             return new Pointer(Pointee.Clone(clonedTypes), bitSize)

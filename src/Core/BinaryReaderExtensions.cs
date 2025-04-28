@@ -29,11 +29,10 @@ namespace Reko.Core
     public static class BinaryReaderExtensions
 	{
         /// <summary>
-        /// Reads a null-terminated ASCII string from the current position
-        /// in the stream and advances the position of the stream.
+        /// Reads a null-terminated ASCII string from <paramref name="rdr"/>.
         /// </summary>
-        /// <param name="rdr">A <see cref="BinaryReader"/> instance to read from.</param>
-        /// <returns>The resulting string.</returns>
+        /// <param name="rdr"><see cref="BinaryReader"/> to read from.</param>
+        /// <returns>A string decoded from the ASCII characters.</returns>
 		public static string ReadNullTerminatedString(this BinaryReader rdr)
 		{
 			var sb = new StringBuilder();

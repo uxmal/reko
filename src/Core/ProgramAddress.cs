@@ -37,13 +37,14 @@ namespace Reko.Core
         }
 
         /// <summary>
-        /// A <see cref="Reko.Core.Program"/> instance.
+        /// The program in which the address lives.
         /// </summary>
         public Program Program { get; }
 
         /// <summary>
-        /// An <see cref="Address"/> within the program.
+        /// The address in the program.
         /// </summary>
         public Address Address { get; }
+
     }
 }

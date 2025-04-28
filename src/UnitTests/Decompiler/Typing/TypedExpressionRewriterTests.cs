@@ -596,7 +596,7 @@ namespace Reko.UnitTests.Decompiler.Typing
                 var ax = m.Reg16("ax", 0);
                 var rand = new ExternalProcedure(
                     "rand",
-                    FunctionType.Func(
+                    FunctionType.Create(
                         new Identifier("ax", PrimitiveType.Int16, ax.Storage),
                         Array.Empty<Identifier>()));
                 m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);

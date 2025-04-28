@@ -54,9 +54,16 @@ namespace Reko.Core.Types
             this.referent = default!;
         }
 
+        /// <inheritdoc/>
         public override bool IsComplex => Referent.IsComplex;
+
+        /// <inheritdoc/>
         public override bool IsIntegral => Referent.IsIntegral;
+
+        /// <inheritdoc/>
         public override bool IsPointer => Referent.IsPointer;
+
+        /// <inheritdoc/>
         public override bool IsReal => Referent.IsReal;
 
         public DataType Referent
@@ -65,22 +72,26 @@ namespace Reko.Core.Types
             set { referent = value; Domain = referent.Domain; }
         }
 
+        /// <inheritdoc/>
         public override int Size
         {
             get { return Referent.Size; }
             set { ThrowBadSize(); }
         }
 
+        /// <inheritdoc/>
         public override void Accept(IDataTypeVisitor v)
         {
             v.VisitTypeReference(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
             return v.VisitTypeReference(this);
         }
 
+        /// <inheritdoc/>
         public override DataType Clone(IDictionary<DataType, DataType>? clonedTypes)
         {
             return this;
