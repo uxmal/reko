@@ -417,15 +417,61 @@ namespace Reko.Core.Memory
         public abstract bool TryReadByte(long offset, out byte b);
 
 
+        /// <summary>
+        /// Writes a byte at the specified offset.
+        /// </summary>
+        /// <param name="off">Offset to write the byte at.</param>
+        /// <param name="value">Value to write.</param>
         public abstract void WriteByte(long off, byte value);
 
+        /// <summary>
+        /// Writes a big-endian 16-bit value at the specified offset.
+        /// </summary>
+        /// <param name="off">Offset to write the byte at.</param>
+        /// <param name="value">Value to write.</param>
         public abstract void WriteBeUInt16(long off, ushort value);
+
+        /// <summary>
+        /// Writes a big-endian 32-bit value at the specified offset.
+        /// </summary>
+        /// <param name="off">Offset to write the byte at.</param>
+        /// <param name="value">Value to write.</param>
         public abstract void WriteBeUInt32(long off, uint value);
+
+        /// <summary>
+        /// Writes a big-endian 64-bit value at the specified offset.
+        /// </summary>
+        /// <param name="off">Offset to write the byte at.</param>
+        /// <param name="value">Value to write.</param>
         public abstract void WriteBeUInt64(long off, ulong value);
 
+        /// <summary>
+        /// Writes a little-endian 16-bit value at the specified offset.
+        /// </summary>
+        /// <param name="off">Offset to write the byte at.</param>
+        /// <param name="value">Value to write.</param>
         public abstract void WriteLeUInt16(long off, ushort value);
+
+        /// <summary>
+        /// Writes a little-endian 32-bit value at the specified offset.
+        /// </summary>
+        /// <param name="off">Offset to write the byte at.</param>
+        /// <param name="value">Value to write.</param>
         public abstract void WriteLeUInt32(long off, uint value);
+
+        /// <summary>
+        /// Writes a little-endian 64-bit value at the specified offset.
+        /// </summary>
+        /// <param name="off">Offset to write the byte at.</param>
+        /// <param name="value">Value to write.</param>
         public abstract void WriteLeUInt64(long off, ulong value);
-        public void WriteLeUInt32(Address ea, uint value) => WriteLeUInt32(ea - BaseAddress, value);
+
+        /// <summary>
+        /// Writes a little-endian 32-bit value at the specified address.
+        /// </summary>
+        /// <param name="address">Address at which to write the byte.</param>
+        /// <param name="value">Value to write.</param>
+
+        public void WriteLeUInt32(Address address, uint value) => WriteLeUInt32(address - BaseAddress, value);
     }
 }

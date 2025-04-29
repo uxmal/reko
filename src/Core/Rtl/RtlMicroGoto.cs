@@ -61,15 +61,19 @@ namespace Reko.Core.Rtl
         /// </summary>
         public int Target { get; }
 
+        /// <inheritdoc/>
         public override T Accept<T>(RtlInstructionVisitor<T> visitor)
         {
             return visitor.VisitMicroGoto(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(IRtlInstructionVisitor<T, C> visitor, C context)
         {
             return visitor.VisitMicroGoto(this, context);
         }
+
+        /// <inheritdoc/>
         protected override void WriteInner(TextWriter writer)
         {
             if (Condition != null)

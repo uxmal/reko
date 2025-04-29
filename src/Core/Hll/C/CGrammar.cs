@@ -20,11 +20,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Core.Hll.C
 {
+    /// <summary>
+    /// Factory class for creating C language constructs.
+    /// </summary>
     public class CGrammar
     {
         public CExpression Const(object value)

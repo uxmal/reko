@@ -23,7 +23,7 @@ using System.Collections.Generic;
 namespace Reko.Core.Collections
 {
     /// <summary>
-    /// A <see cref="Counter{T}"/> provides convenient counts of items.
+    /// A <see cref="Counter{T}"/> counts the number of occurrences of items in a collection.
     /// </summary>
     /// <typeparam name="T">Item type to be tallied.</typeparam>
     public class Counter<T> : Dictionary<T, int>

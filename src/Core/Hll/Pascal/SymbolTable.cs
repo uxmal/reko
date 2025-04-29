@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2025 John Källén.
  *
@@ -18,25 +18,33 @@
  */
 #endregion
 
- using System;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Core.Hll.Pascal
 {
+    /// <summary>
+    /// A symbol table used by the Pascal parser.
+    /// </summary>
     public class SymbolTable
     {
         private IPlatform platform;
         private Dictionary<string, Declaration> declarations;
 
+        /// <summary>
+        /// Constructs a symbol table.
+        /// </summary>
+        /// <param name="platform"></param>
         public SymbolTable(IPlatform platform)
         {
             this.platform = platform;
             this.declarations = new Dictionary<string, Declaration>(StringComparer.OrdinalIgnoreCase);
         }
 
+        /// <summary>
+        /// Adds a declaration to the symbol table.
+        /// </summary>
+        /// <param name="decl"></param>
         public void Add(Declaration decl)
         {
             this.declarations[decl.Name] = decl;

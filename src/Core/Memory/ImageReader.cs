@@ -62,6 +62,9 @@ namespace Reko.Core.Memory
         /// </returns>
         bool IsValidOffset(long offset);
 
+        /// <summary>
+        /// Creates a <see cref="BinaryReader"/> on the underlying data.
+        /// </summary>
         BinaryReader CreateBinaryReader();
 
         /// <summary>

@@ -35,12 +35,12 @@ namespace Reko.UnitTests.Core.Hll.Pascal
     {
         private Token T(TokenType tt)
         {
-            return new Token { Type = tt };
+            return new Token(tt);
         }
 
         private Token T(TokenType tt, object value)
         {
-            return new Token { Type = tt, Value = value };
+            return new Token(tt, value);
         }
 
         private void RunTest(string src, params Token[] expectedTokens)

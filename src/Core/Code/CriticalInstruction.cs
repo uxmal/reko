@@ -167,7 +167,7 @@ namespace Reko.Core.Code
         /// </summary>
         /// <param name="use">Use instruction being visited.</param>
         /// <returns>True.</returns>
-		public bool VisitUseInstruction(UseInstruction u)
+		public bool VisitUseInstruction(UseInstruction use)
 		{
 			return true;
 		}

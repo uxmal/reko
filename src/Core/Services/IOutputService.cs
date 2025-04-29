@@ -28,6 +28,11 @@ namespace Reko.Core.Services
     /// </summary>
     public interface IOutputService
     {
+        /// <summary>
+        /// Establishes a channel to some output window.
+        /// </summary>
+        /// <param name="sourceName"></param>
+        /// <returns></returns>
         public TextWriter EnsureOutputSource(string sourceName);
     }
 }

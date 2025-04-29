@@ -28,34 +28,156 @@ using System.Text;
 
 namespace Reko.Core.Memory
 {
+    /// <summary>
+    /// This interface is used to read multi-byte quantities from a byte array or memory area
+    /// using a default endianness.
+    /// </summary>
     public interface EndianImageReader : ImageReader
     {
+        /// <summary>
+        /// Create a new <see cref="EndianImageReader" /> with the same endianness as this one.
+        /// </summary>
+        /// <returns>A clone of this reader.</returns>
         EndianImageReader Clone();
 
+        /// <summary>
+        /// Creates a new <see cref="EndianImageReader" /> with the same endianness as this one,
+        /// but with a different backing memory area.
+        /// </summary>
+        /// <param name="image">Memory area to use for the new image reader.</param>
+        /// <param name="addr">Address at which to position the new image reader.</param>
+        /// <returns>A new <see cref="EndianImageReader"/> with the same endianness
+        /// as this one.</returns>
         EndianImageReader CreateNew(MemoryArea image, Address addr);
 
+        /// <summary>
+        /// Reads a character of size <paramref name="dtChar"/> and determines if it is 
+        /// the NUL character. 
+        /// </summary>
+        /// <param name="dtChar">Size of the character to read.</param>
+        /// <returns>True if a NUL character was encountered; false otherwise.
+        /// </returns>
         bool ReadNullCharTerminator(DataType dtChar);
 
         string ReadNulTerminatedString(DataType charType, Encoding encoding);
 
         StringConstant ReadCString(DataType charType, Encoding encoding);
 
+        /// <summary>
+        /// Reads a 16-bit signed integer from the current position of the underlying array,
+        /// then advances the reader's position.
+        /// </summary>
+        /// <returns>The read value.</returns>
         short ReadInt16();
+
+        /// <summary>
+        /// Reads a 32-bit signed integer from the current position of the underlying array,
+        /// then advances the reader's position.
+        /// </summary>
+        /// <returns>The read value.</returns>
         int ReadInt32();
+
+        /// <summary>
+        /// Reads a 64-bit signed integer from the current position of the underlying array,
+        /// then advances the reader's position.
+        /// </summary>
+        /// <returns>The read value.</returns>
         long ReadInt64();
 
+        /// <summary>
+        /// Reads a 16-bit unsigned integer from the current position of the underlying array,
+        /// then advances the reader's position.
+        /// </summary>
+        /// <returns>The read value.</returns>
         ushort ReadUInt16();
+
+        /// <summary>
+        /// Reads a 16-bit unsigned integer from the current position of the underlying array.
+        /// then advances the reader's position.
+        /// </summary>
+        /// <returns>The read value.</returns>
         uint ReadUInt32();
+
+        /// <summary>
+        /// Reads a 16-bit unsigned integer from the current position of the underlying array,
+        /// then advances the reader's position.
+        /// </summary>
+        /// <returns>The read value.</returns>
         ulong ReadUInt64();
 
+        /// <summary>
+        /// Reads a 32-bit unsigned integer from the current position of the underlying array, offset
+        /// by <paramref name="offset"/>, but doesn't advance the reader's current position.
+        /// </summary>
+        /// <param name="offset">Offset from the current position from which to read.</param>
+        /// <param name="value">The read value.</param>
+        /// <returns>True if the offset position was within bounds; otherwise false.</returns>
         bool TryPeekUInt32(int offset, out uint value);
+
+        /// <summary>
+        /// Reads a 32-bit unsigned integer from the current position of the underlying array, offset
+        /// by <paramref name="offset"/>, but doesn't advance the reader's current position.
+        /// </summary>
+        /// <param name="offset">Offset from the current position from which to read.</param>
+        /// <param name="value">The read value.</param>
+        /// <returns>True if the offset position was within bounds; otherwise false.</returns>
         bool TryPeekUInt64(int offset, out ulong value);
+
+        /// <summary>
+        /// Reads a <see cref="Constant"/> of type <paramref name="dataType"/>, 
+        /// and advances the reader's current position.
+        /// </summary>
+        /// <param name="dataType">Data type of the value to be read.
+        /// <param name="value">The read value.</param>
+        /// <returns>True if the offset position was within bounds; otherwise false.</returns>
         bool TryRead(PrimitiveType dataType, [MaybeNullWhen(false)] out Constant value);
+
+        /// <summary>
+        /// Reads a 16-bit signed integer from the current position of the underlying array,
+        /// then advances the reader's position.
+        /// </summary>
+        /// <param name="value">The read value.</param>
+        /// <returns>True if the offset position was within bounds; otherwise false.</returns>
         bool TryReadInt16(out short value);
+
+        /// <summary>
+        /// Reads a 32-bit signed integer from the current position of the underlying array,
+        /// then advances the reader's position.
+        /// </summary>
+        /// <param name="value">The read value.</param>
+        /// <returns>True if the offset position was within bounds; otherwise false.</returns>
         bool TryReadInt32(out int value);
+
+        /// <summary>
+        /// Reads a 64-bit signed integer from the current position of the underlying array,
+        /// then advances the reader's position.
+        /// </summary>
+        /// <param name="value">The read value.</param>
+        /// <returns>True if the offset position was within bounds; otherwise false.</returns>
         bool TryReadInt64(out long value);
+
+        /// <summary>
+        /// Reads a 16-bit unsigned integer from the current position of the underlying array,
+        /// then advances the reader's position.
+        /// </summary>
+        /// <param name="value">The read value.</param>
+        /// <returns>True if the offset position was within bounds; otherwise false.</returns>
         bool TryReadUInt16(out ushort value);
+
+        /// <summary>
+        /// Reads a 32-bit unsigned integer from the current position of the underlying array,
+        /// then advances the reader's position.
+        /// </summary>
+        /// <param name="value">The read value.</param>
+        /// <returns>True if the offset position was within bounds; otherwise false.</returns>
         bool TryReadUInt32(out uint value);
+
+        /// <summary>
+        /// Reads a 64-bit unsigned integer from the current position of the underlying array,
+        /// then advances the reader's position.
+        /// </summary>
+        /// <param name="value">The read value.</param>
+        /// <returns>True if the offset position was within bounds; otherwise false.</returns>
         bool TryReadUInt64(out ulong value);
     }
 
@@ -77,12 +199,24 @@ namespace Reko.Core.Memory
         /// <summary>
         /// Create a new EndianImageReader with the same endianness as this one.
         /// </summary>
-        /// <param name="bytes"></param>
-        /// <param name="offset"></param>
-        /// <returns></returns>
+        /// <param name="bytes">Byte area to read from.</param>
+        /// <param name="offset">Offset from which to read.</param>
+        /// <returns>A new <see cref="EndianImageReader"/>.</returns>
 		public abstract EndianImageReader CreateNew(byte[] bytes, long offset);
-        public abstract EndianImageReader CreateNew(MemoryArea image, Address addr);
 
+        /// <summary>
+        /// Create a new EndianImageReader with the same endianness as this one.
+        /// </summary>
+        /// <param name="mem">Memory area to read from.</param>
+        /// <param name="address">Address from which to read.</param>
+        /// <returns>A new <see cref="EndianImageReader"/>.</returns>
+        public abstract EndianImageReader CreateNew(MemoryArea mem, Address address);
+
+        /// <summary>
+        /// Creates a new <see cref="EndianImageReader"/> with the same endianness as this one.
+        /// </summary>
+        /// <returns>A copy if this reader.
+        /// </returns>
         public new virtual EndianImageReader Clone()
         {
             EndianImageReader rdr;
@@ -104,10 +238,7 @@ namespace Reko.Core.Memory
             return base.ReadAt(offset, rdr => action.Invoke((EndianImageReader) rdr));
         }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="charType"></param>
-        /// <returns></returns>
+        /// <inheritdoc/>
         public bool ReadNullCharTerminator(DataType charType)
         {
             return charType.BitSize switch
@@ -136,6 +267,8 @@ namespace Reko.Core.Memory
     /// <param name="charType">Data type of the code units of the string.</param>
     /// <param name="encoding">Text encoding to use when decoding
     /// the string.</param>
+    /// <param name="encoding">The <see cref="Encoding"/> to use when decoding the string.
+    /// </param>
     /// <returns>A <see cref="StringConstant"/>.</returns>
     public StringConstant ReadCString(DataType charType, Encoding encoding)
 		{
@@ -168,31 +301,163 @@ namespace Reko.Core.Memory
             return cStr;
 		}
 
+        /// <summary>
+        /// Reads a 16-bit signed integer from the current position of the underlying array,
+        /// advancing the reader's position.
+        /// </summary>
+        /// <returns>The read value.</returns>
 		public abstract short ReadInt16();
+
+        /// <summary>
+        /// Reads a 16-bit signed integer from the current position of the underlying array,
+        /// advancing the reader's position.
+        /// </summary>
+        /// <param name="i16">The read value.</param>
+        /// <returns>True if the reader's position was within bounds; otherwise false.</returns>
 		public abstract bool TryReadInt16(out short i16);
+
+        /// <summary>
+        /// Reads a 32-bit signed integer from the current position of the underlying array,
+        /// advancing the reader's position.
+        /// </summary>
+        /// <returns>The read value.</returns>
 		public abstract int ReadInt32();
+
+        /// <summary>
+        /// Reads a 32-bit signed integer from the current position of the underlying array,
+        /// advancing the reader's position.
+        /// </summary>
+        /// <param name="i32">The read value.</param>
+        /// <returns>True if the reader's position was within bounds; otherwise false.</returns>
         public abstract bool TryReadInt32(out int i32);
+
+        /// <summary>
+        /// Reads a 64-bit signed integer from the current position of the underlying array,
+        /// advancing the reader's position.
+        /// </summary>
+        /// <returns>The read value.</returns>
 		public abstract long ReadInt64();
+
+        /// <summary>
+        /// Reads a 64-bit signed integer from the current position of the underlying array,
+        /// advancing the reader's position.
+        /// </summary>
+        /// <param name="value">The read value.</param>
+        /// <returns>True if the reader's position was within bounds; otherwise false.</returns>
 		public abstract bool TryReadInt64(out long value);
 
+        /// <summary>
+        /// Reads a 16-bit unsigned integer from the current position of the underlying array,
+        /// advancing the reader's position.
+        /// </summary>
+        /// <returns>The read value.</returns>
 		public abstract ushort ReadUInt16();
+
+        /// <summary>
+        /// Reads a 16-bit unsigned integer from the current position of the underlying array,
+        /// advancing the reader's position.
+        /// </summary>
+        /// <param name="ui16">The read value.</param>
+        /// <returns>True if the reader's position was within bounds; otherwise false.</returns>
 		public abstract bool TryReadUInt16(out ushort ui16);
+
+        /// <summary>
+        /// Reads a 32-bit unsigned integer from the current position of the underlying array,
+        /// advancing the reader's position.
+        /// </summary>
+        /// <returns>The read value.</returns>
 		public abstract uint ReadUInt32();
+
+        /// <summary>
+        /// Reads a 32-bit unsigned integer from the current position of the underlying array,
+        /// advancing the reader's position.
+        /// </summary>
+        /// <param name="ui32">The read value.</param>
+        /// <returns>True if the reader's position was within bounds; otherwise false.</returns>
 		public abstract bool TryReadUInt32(out uint ui32);
+
+        /// <summary>
+        /// Reads a 64-bit unsigned integer from the current position of the underlying array,
+        /// advancing the reader's position.
+        /// </summary>
+        /// <returns>The read value.</returns>
 		public abstract ulong ReadUInt64();
+
+        /// <summary>
+        /// Reads a 64-bit unsigned integer from the current position of the underlying array,
+        /// advancing the reader's position.
+        /// </summary>
+        /// <param name="ui64">The read value.</param>
+        /// <returns>True if the reader's position was within bounds; otherwise false.</returns>
 		public abstract bool TryReadUInt64(out ulong ui64);
 
+        /// <summary>
+        /// Reads a 16-bit signed integer from the current position offset by <paramref name="offset"/>
+        /// of the underlying array, but doesn't advance the reader's position.
+        /// </summary>
+        /// <returns>The read value.</returns>
 		public abstract short ReadInt16(int offset);
+
+        /// <summary>
+        /// Reads a 32-bit signed integer from the current position offset by <paramref name="offset"/>
+        /// of the underlying array, but doesn't advance the reader's position.
+        /// </summary>
+        /// <returns>The read value.</returns>
 		public abstract int ReadInt32(int offset);
+
+        /// <summary>
+        /// Reads a 64-bit signed integer from the current position offset by <paramref name="offset"/>
+        /// of the underlying array, but doesn't advance the reader's position.
+        /// </summary>
+        /// <returns>The read value.</returns>
 		public abstract long ReadInt64(int offset);
 
+        /// <summary>
+        /// Reads a 16-bit unsigned integer from the current position offset by <paramref name="offset"/>
+        /// of the underlying array, but doesn't advance the reader's position.
+        /// </summary>
+        /// <returns>The read value.</returns>
 		public abstract ushort ReadUInt16(int offset);
+
+        /// <summary>
+        /// Reads a 32-bit unsigned integer from the current position offset by <paramref name="offset"/>
+        /// of the underlying array, but doesn't advance the reader's position.
+        /// </summary>
+        /// <returns>The read value.</returns>
 		public abstract uint ReadUInt32(int offset);
+
+        /// <summary>
+        /// Reads a 64-bit unsigned integer from the current position offset by <paramref name="offset"/>
+        /// of the underlying array, but doesn't advance the reader's position.
+        /// </summary>
+        /// <returns>The read value.</returns>
 		public abstract ulong ReadUInt64(int offset);
 
+        /// <summary>
+        /// Reads a <see cref="Constant"/> of type <paramref name="dataType"/>, 
+        /// and advances the reader's current position.
+        /// </summary>
+        /// <param name="dataType">Data type of the value to be read.
+        /// <param name="c">The read value.</param>
+        /// <returns>True if the reader's position was within bounds; otherwise false.</returns>
 		public abstract bool TryRead(PrimitiveType dataType, [MaybeNullWhen(false)] out Constant c);
 
+        /// <summary>
+        /// Reads a 32-bit unsigned integer from the current position offset by <paramref name="offset"/>
+        /// of the underlying array, but doesn't advance the reader's position.
+        /// </summary>
+        /// <param name="offset">Offset from the current position from which to read.</param>
+        /// <param name="value">The read value.</param>
+        /// <returns>True if the offset position was within bounds; otherwise false.</returns>
 		public abstract bool TryPeekUInt32(int offset, out uint value);
+
+        /// <summary>
+        /// Reads a 64-bit unsigned integer from the current position offset by <paramref name="offset"/>
+        /// of the underlying array, but doesn't advance the reader's position.
+        /// </summary>
+        /// <param name="offset">Offset from the current position from which to read.</param>
+        /// <param name="value">The read value.</param>
+        /// <returns>True if the offset position was within bounds; otherwise false.</returns>
 		public abstract bool TryPeekUInt64(int offset, out ulong value);
 	}
 
@@ -221,34 +486,75 @@ namespace Reko.Core.Memory
 			return new LeImageReader((ByteMemoryArea) image, (uint)(addr - image.BaseAddress));
 		}
 
+        /// <inheritdoc/>
         public T ReadAt<T>(long offset, Func<LeImageReader, T> action)
         {
             return base.ReadAt(offset, rdr => action.Invoke((LeImageReader)rdr));
         }
 
+        /// <inheritdoc/>
         public override short ReadInt16() { return ReadLeInt16(); }
+
+        /// <inheritdoc/>
 		public override int ReadInt32() { return ReadLeInt32(); }
+
+        /// <inheritdoc/>
 		public override long ReadInt64() { return ReadLeInt64(); }
+
+        /// <inheritdoc/>
 		public override ushort ReadUInt16() { return ReadLeUInt16(); }
+
+        /// <inheritdoc/>
 		public override uint ReadUInt32() { return ReadLeUInt32(); }
+
+        /// <inheritdoc/>
 		public override ulong ReadUInt64() { return ReadLeUInt64(); }
+
+        /// <inheritdoc/>
 		public override bool TryPeekUInt32(int offset, out uint value) { return TryPeekLeUInt32(offset, out value); }
+
+        /// <inheritdoc/>
 		public override bool TryPeekUInt64(int offset, out ulong value) { return TryPeekLeUInt64(offset, out value); }
 
+
+        /// <inheritdoc/>
 		public override bool TryReadInt16(out short i16) { return TryReadLeInt16(out i16); }
+
+        /// <inheritdoc/>
 		public override bool TryReadInt32(out int i32) { return TryReadLeInt32(out i32); }
+
+        /// <inheritdoc/>
 		public override bool TryReadInt64(out long value) { return TryReadLeInt64(out value); }
+
+        /// <inheritdoc/>
 		public override bool TryReadUInt16(out ushort value) { return TryReadLeUInt16(out value); }
+
+        /// <inheritdoc/>
 		public override bool TryReadUInt32(out uint ui32) { return TryReadLeUInt32(out ui32); }
+
+        /// <inheritdoc/>
 		public override bool TryReadUInt64(out ulong ui64) { return TryReadLeUInt64(out ui64); }
 
+
+        /// <inheritdoc/>
 		public override short ReadInt16(int offset) { return PeekLeInt16(offset); }
+
+        /// <inheritdoc/>
 		public override int ReadInt32(int offset) { return PeekLeInt32(offset); }
+
+        /// <inheritdoc/>
 		public override long ReadInt64(int offset) { return PeekLeInt64(offset); }
+
+        /// <inheritdoc/>
 		public override ushort ReadUInt16(int offset) { return PeekLeUInt16(offset); }
+
+        /// <inheritdoc/>
 		public override uint ReadUInt32(int offset) { return PeekLeUInt32(offset); }
+
+        /// <inheritdoc/>
 		public override ulong ReadUInt64(int offset) { return PeekLeUInt64(offset); }
 
+        /// <inheritdoc/>
 		public override bool TryRead(PrimitiveType dataType, [MaybeNullWhen(false)] out Constant c) => TryReadLe(dataType, out c);
 	}
 
@@ -267,43 +573,86 @@ namespace Reko.Core.Memory
         public BeImageReader(byte[] bytes, long offset) : base(bytes, offset, bytes.Length) { }
         public BeImageReader(byte[] bytes) : base(bytes, 0, bytes.Length) { }
 
+        /// <inheritdoc/>
         public override EndianImageReader CreateNew(byte[] bytes, long offset)
 		{
 			return new BeImageReader(bytes, offset, this.offEnd);
 		}
 
+        /// <inheritdoc/>
 		public override EndianImageReader CreateNew(MemoryArea image, Address addr)
 		{
 			return new BeImageReader((ByteMemoryArea)image, (uint)(addr - image.BaseAddress));
 		}
 
+        /// <inheritdoc/>
         public T ReadAt<T>(long offset, Func<BeImageReader, T> action)
         {
             return base.ReadAt<T>(offset, rdr => action((BeImageReader)rdr));
         }
 
+        /// <inheritdoc/>
         public override short ReadInt16() { return ReadBeInt16(); }
+
+        /// <inheritdoc/>
 		public override int ReadInt32() { return ReadBeInt32(); }
+
+        /// <inheritdoc/>
 		public override long ReadInt64() { return ReadBeInt64(); }
+
+        /// <inheritdoc/>
 		public override ushort ReadUInt16() { return ReadBeUInt16(); }
+
+        /// <inheritdoc/>
 		public override uint ReadUInt32() { return ReadBeUInt32(); }
+
+        /// <inheritdoc/>
 		public override ulong ReadUInt64() { return ReadBeUInt64(); }
+
+        /// <inheritdoc/>
 		public override bool TryPeekUInt32(int offset, out uint value) { return TryPeekBeUInt32(offset, out value); }
+
+        /// <inheritdoc/>
 		public override bool TryPeekUInt64(int offset, out ulong value) { return TryPeekBeUInt64(offset, out value); }
+
+        /// <inheritdoc/>
 		public override bool TryReadInt16(out short i16) { return TryReadBeInt16(out i16); }
+
+        /// <inheritdoc/>
 		public override bool TryReadInt32(out int i32) { return TryReadBeInt32(out i32); }
+
+        /// <inheritdoc/>
 		public override bool TryReadInt64(out long value) { return TryReadBeInt64(out value); }
+
+        /// <inheritdoc/>
 		public override bool TryReadUInt16(out ushort ui16) { return TryReadBeUInt16(out ui16); }
+
+        /// <inheritdoc/>
 		public override bool TryReadUInt32(out uint ui32) { return TryReadBeUInt32(out ui32); }
+
+        /// <inheritdoc/>
 		public override bool TryReadUInt64(out ulong ui64) { return TryReadBeUInt64(out ui64); }
 
+        /// <inheritdoc/>
 		public override short ReadInt16(int offset) { return PeekBeInt16(offset); }
+
+        /// <inheritdoc/>
 		public override int ReadInt32(int offset) { return PeekBeInt32(offset); }
+
+        /// <inheritdoc/>
 		public override long ReadInt64(int offset) { return PeekBeInt64(offset); }
+
+        /// <inheritdoc/>
 		public override ushort ReadUInt16(int offset) { return PeekBeUInt16(offset); }
+
+        /// <inheritdoc/>
 		public override uint ReadUInt32(int offset) { return PeekBeUInt32(offset); }
+
+        /// <inheritdoc/>
 		public override ulong ReadUInt64(int offset) { return PeekBeUInt64(offset); }
 
+
+        /// <inheritdoc/>
 		public override bool TryRead(PrimitiveType dataType, [MaybeNullWhen(false)] out Constant c) => TryReadBe(dataType, out c);
     }
 }

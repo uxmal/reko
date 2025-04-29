@@ -26,10 +26,14 @@ using System.Numerics;
 
 namespace Reko.Core.Operators
 {
+    /// <summary>
+    /// Models the unsigned division operator.
+    /// </summary>
 	public class UDivOperator : BinaryOperator
 	{
         internal UDivOperator() : base(OperatorType.UDiv) { }
 
+        /// <inheritdoc/>
         public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
@@ -46,16 +50,19 @@ namespace Reko.Core.Operators
             return BuildConstant(c1.DataType, c2.DataType, (long) (c1.ToUInt64() / c2.ToUInt64()));
 		}
 
+        /// <inheritdoc/>
         public override string AsCompound()
         {
             return " /= ";
         }
 
+        /// <inheritdoc/>
         public override string ToString()
-		{
+        {
 			return " /u ";
 		}
 
+        /// <inheritdoc/>
         public new Constant BuildConstant(DataType dtN, DataType dtD, BigInteger value)
         {
             var dtResult = PrimitiveType.Create(Domain.UnsignedInt, Math.Min(dtN.BitSize, dtD.BitSize));

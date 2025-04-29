@@ -30,6 +30,10 @@ namespace Reko.Core.Operators
     /// </summary>
     public abstract class ConditionalOperator : BinaryOperator
     {
+        /// <summary>
+        /// Initializes a conditional operator.
+        /// </summary>
+        /// <param name="type">Operator type.</param>
         protected ConditionalOperator(OperatorType type) : base(type) { }
 
         /// <summary>
@@ -39,6 +43,12 @@ namespace Reko.Core.Operators
         /// </summary>
         public abstract BinaryOperator Mirror();
 
+        /// <summary>
+        /// Converts a signed conditional operator to an unsigned one.
+        /// </summary>
+        /// <returns>
+        /// If the operator is already unsigned, it is returned as-is.
+        /// </returns>
         public ConditionalOperator ToUnsigned()
         {
             switch (base.Type)
@@ -63,10 +73,14 @@ namespace Reko.Core.Operators
         }
     }
 
+    /// <summary>
+    /// Models a short-circuiting AND operator.
+    /// </summary>
     public class CandOperator : BinaryOperator
 	{
         internal CandOperator() : base(OperatorType.Cand) { }
 
+        /// <inheritdoc/>
         public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
         {
             if (c1.IsZero)
@@ -74,16 +88,21 @@ namespace Reko.Core.Operators
             return c2;
         }
 
+        /// <inheritdoc/>
 		public override string ToString()
 		{
 			return " && ";
 		}
 	}
 
+    /// <summary>
+    /// Models a short-circuiting OR operator.
+    /// </summary>
 	public class CorOperator : BinaryOperator
 	{
         internal CorOperator() : base(OperatorType.Cor) { }
 
+        /// <inheritdoc/>
         public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
 		{
             if (!c1.IsZero)
@@ -91,16 +110,21 @@ namespace Reko.Core.Operators
             return c2;
 		}
 
+        /// <inheritdoc/>
 		public override string ToString()
 		{
 			return " || ";
 		}
 	}
 
+    /// <summary>
+    /// Models the equality operator.
+    /// </summary>
 	public class EqOperator : ConditionalOperator
 	{
         internal EqOperator() : base(OperatorType.Eq) { }
 
+        /// <inheritdoc/>
         public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
@@ -108,15 +132,24 @@ namespace Reko.Core.Operators
             return c1.ToInt64() == c2.ToInt64() ? Constant.True() : Constant.False();
 		}
 
+        /// <inheritdoc/>
         public override Operator Invert() => Ne;
+
+        /// <inheritdoc/>
         public override BinaryOperator Mirror() => Eq;
+
+        /// <inheritdoc/>
         public override string ToString() => " == ";
     }
 
+    /// <summary>
+    /// Models the inequality operator.
+    /// </summary>
 	public class NeOperator : ConditionalOperator
 	{
         internal NeOperator() : base(OperatorType.Ne) { }
 
+        /// <inheritdoc/>
         public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
@@ -126,9 +159,13 @@ namespace Reko.Core.Operators
 				: Constant.False();
 		}
 
+        /// <inheritdoc/>
         public override Operator Invert() => Eq;
+
+        /// <inheritdoc/>
         public override BinaryOperator Mirror() => Ne;
 
+        /// <inheritdoc/>
         public override string ToString() => " != ";
     }
 }

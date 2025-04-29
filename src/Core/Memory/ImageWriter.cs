@@ -505,9 +505,13 @@ namespace Reko.Core.Memory
             return w;
         }
 
+        /// <inheritdoc/>
         public override ImageWriter WriteUInt16(ushort us) { return WriteBeUInt16(us); }
+        /// <inheritdoc/>
         public override ImageWriter WriteUInt32(uint w) { return WriteBeUInt32(w); }
+        /// <inheritdoc/>
         public override ImageWriter WriteUInt32(uint offset, uint w) { return WriteBeUInt32(offset, w); }
+        /// <inheritdoc/>
         public override ImageWriter WriteUInt64(ulong w) { return WriteBeUInt64(w); }
     }
 

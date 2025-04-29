@@ -50,25 +50,42 @@ namespace Reko.Core.Intrinsics
         private Dictionary<string, DataType>? genericTypeDictionary;
         private bool isVariadic;
 
+        /// <summary>
+        /// Construct an instance of <see cref="IntrinsicBuilder"/>.
+        /// </summary>
+        /// <param name="intrinsicName">The name of the instrinsic function being built.</param>
+        /// <param name="hasSideEffect">True if the function has side effects.</param>
         public IntrinsicBuilder(string intrinsicName, bool hasSideEffect) : this(intrinsicName, hasSideEffect, DefaultProcedureCharacteristics.Instance)
         {
         }
 
+        /// <summary>
+        /// Construct an instance of <see cref="IntrinsicBuilder"/>.
+        /// </summary>
+        /// <param name="intrinsicName">The name of the instrinsic function being built.</param>
+        /// <param name="op">The <see cref="IFunctionalUnit"/> that implements the intrinsic.</param>
+        /// <param name="characteristics">Optional procedure characteristics.</param>
         public IntrinsicBuilder(string intrinsicName, IFunctionalUnit op, ProcedureCharacteristics? characteristics = null)
         {
             this.intrinsicName = intrinsicName;
             this.simdOp = op;
             this.hasSideEffect = false;
             this.characteristics = characteristics ?? DefaultProcedureCharacteristics.Instance;
-            this.parameters = new List<Identifier>();
+            this.parameters = [];
         }
 
+        /// <summary>
+        /// Construct an instance of <see cref="IntrinsicBuilder"/>.
+        /// </summary>
+        /// <param name="intrinsicName">The name of the instrinsic function being built.</param>
+        /// <param name="hasSideEffect">True if the function has side effects.</param>
+        /// <param name="characteristics">Optional procedure characteristics.</param>
         public IntrinsicBuilder(string intrinsicName, bool hasSideEffect, ProcedureCharacteristics characteristics)
         {
             this.intrinsicName = intrinsicName;
             this.hasSideEffect = hasSideEffect;
             this.characteristics = characteristics;
-            this.parameters = new List<Identifier>();
+            this.parameters = [];
         }
 
         /// <summary>
@@ -100,6 +117,10 @@ namespace Reko.Core.Intrinsics
             return this;
         }
 
+        /// <summary>
+        /// Creates a out parameter of type <paramref name="dt" />.
+        /// </summary>
+        /// <param name="dt">Type of the out parameter.</param>
         public IntrinsicBuilder OutParam(DataType dt)
         {
             var param = new Identifier($"p{parameters.Count + 1}", dt, null!);
@@ -107,11 +128,19 @@ namespace Reko.Core.Intrinsics
             return this;
         }
 
+        /// <summary>
+        /// Creates a generic out parameter.
+        /// </summary>
+        /// <param name="genericType">Generic type.</param>
         public IntrinsicBuilder OutParam(string genericType)
         {
             return OutParam(GetGenericArgument(genericType));
         }
 
+        /// <summary>
+        /// Adds a parameter to the intrinsic function.
+        /// </summary>
+        /// <param name="dt">Data type of the parameter.</param>
         public IntrinsicBuilder Param(DataType dt)
         {
             var param = new Identifier($"p{parameters.Count + 1}", dt, null!);
@@ -119,6 +148,10 @@ namespace Reko.Core.Intrinsics
             return this;
         }
 
+        /// <summary>
+        /// Adds a generic parameter to the intrinsic function.
+        /// </summary>
+        /// <param name="genericType">Generic type.</param>
         public IntrinsicBuilder Param(string genericType)
         {
             return Param(GetGenericArgument(genericType));
@@ -146,6 +179,10 @@ namespace Reko.Core.Intrinsics
             return Param(new Pointer(GetGenericArgument(genericType), 0));
         }
 
+        /// <summary>
+        /// Adds a list of generic types to the intrinsic function.
+        /// </summary>
+        /// <param name="genericTypes">Generic types.</param>
         public IntrinsicBuilder Params(params string[] genericTypes)
         {
             foreach (var type in genericTypes)
@@ -174,6 +211,10 @@ namespace Reko.Core.Intrinsics
             return MakeIntrinsic(signature);
         }
 
+        /// <summary>
+        /// Creates a return value of type <paramref name="dt" />.
+        /// </summary>
+        /// <param name="dt">Return type.</param>
         public IntrinsicProcedure Returns(DataType dt)
         {
             var signature = FunctionType.CreateUserDefined(
@@ -183,6 +224,10 @@ namespace Reko.Core.Intrinsics
             return MakeIntrinsic(signature);
         }
 
+        /// <summary>
+        /// Creates a return value of generic type type <paramref name="genericType" />.
+        /// </summary>
+        /// <param name="genericType">Generic return type.</param>
         public IntrinsicProcedure Returns(string genericType)
         {
             var signature = FunctionType.CreateUserDefined(
@@ -202,6 +247,10 @@ namespace Reko.Core.Intrinsics
             return Returns(new Pointer(dt, 0));
         }
 
+        /// <summary>
+        /// Mark the procedure as variadic.
+        /// </summary>
+        /// <returns></returns>
         public IntrinsicBuilder Variadic()
         {
             this.isVariadic = true;
@@ -230,16 +279,28 @@ namespace Reko.Core.Intrinsics
             return proc;
         }
 
+        /// <summary>
+        /// Creates an intrinsic function with no side effects.
+        /// </summary>
+        /// <param name="name">Name of the intrinsic procedure.</param>
         public static IntrinsicBuilder Pure(string name)
         {
             return new IntrinsicBuilder(name, false);
         }
 
+        /// <summary>
+        /// Creates an intrinsic function with side effects.
+        /// </summary>
+        /// <param name="name">Name of the intrinsic procedure.</param>
         public static IntrinsicBuilder SideEffect(string name)
         {
             return new IntrinsicBuilder(name, true);
         }
 
+        /// <summary>
+        /// Creates an intrinsic ternary function with no side effects.
+        /// </summary>
+        /// <param name="name">Name of the intrinsic procedure.</param>
         public static IntrinsicProcedure GenericTernary(string name)
         {
             return new IntrinsicBuilder(name, false)
@@ -250,6 +311,11 @@ namespace Reko.Core.Intrinsics
                 .Returns("T");
         }
 
+        /// <summary>
+        /// Creates an intrinsic ternary function with no side effects.
+        /// </summary>
+        /// <param name="name">Name of the intrinsic procedure.</param>
+        /// <param name="operation">Function to apply to the constants.</param>
         public static IntrinsicProcedure GenericTernary(string name, Func<DataType, Constant[], Constant?> operation)
         {
             return new IntrinsicBuilder(name, false)
@@ -261,6 +327,10 @@ namespace Reko.Core.Intrinsics
                 .Returns("T");
         }
 
+        /// <summary>
+        /// Creates an intrinsic binary function with no side effects.
+        /// </summary>
+        /// <param name="name">Name of the intrinsic procedure.</param>
         public static IntrinsicProcedure GenericBinary(string name)
         {
             return new IntrinsicBuilder(name, false)
@@ -270,6 +340,11 @@ namespace Reko.Core.Intrinsics
                 .Returns("T");
         }
 
+        /// <summary>
+        /// Creates an intrinsic binary function with no side effects.
+        /// </summary>
+        /// <param name="name">Name of the intrinsic procedure.</param>
+        /// <param name="eval">Function to apply to the constants.</param>
         public static IntrinsicProcedure GenericBinary(string name, Func<DataType, Constant[], Constant> eval)
         {
             return new IntrinsicBuilder(name, false)
@@ -280,6 +355,11 @@ namespace Reko.Core.Intrinsics
                 .Returns("T");
         }
 
+        /// <summary>
+        /// Creates an intrinsic binary SIMD function with no side effects.
+        /// </summary>
+        /// <param name="name">Name of the intrinsic procedure.</param>
+        /// <param name="op">Function to apply to the constants.</param>
         public static IntrinsicProcedure SimdBinary(string name, IFunctionalUnit op)
         {
             return new IntrinsicBuilder(name, op)
@@ -289,6 +369,11 @@ namespace Reko.Core.Intrinsics
                 .Returns("T");
         }
 
+        /// <summary>
+        /// Creates an intrinsic binary SIMD function with no side effects.
+        /// </summary>
+        /// <param name="name">Name of the intrinsic procedure.</param>
+        /// <param name="intrinsic">Function to apply to the constants.</param>
         public static IntrinsicProcedure SimdBinary(string name, IntrinsicProcedure intrinsic)
         {
             return new IntrinsicBuilder(name, intrinsic)
@@ -298,6 +383,11 @@ namespace Reko.Core.Intrinsics
                 .Returns("T");
         }
 
+        /// <summary>
+        /// Creates an intrinsic ternary SIMD function with no side effects.
+        /// </summary>
+        /// <param name="name">Name of the intrinsic procedure.</param>
+        /// <param name="intrinsic">Function to apply to the constants.</param>
         public static IntrinsicProcedure SimdTernary(string name, IntrinsicProcedure intrinsic)
         {
             return new IntrinsicBuilder(name, intrinsic)
@@ -308,6 +398,11 @@ namespace Reko.Core.Intrinsics
                 .Returns("T");
         }
 
+        /// <summary>
+        /// Creates an intrinsic unary SIMD function with no side effects.
+        /// </summary>
+        /// <param name="name">Name of the intrinsic procedure.</param>
+        /// <param name="fn">Function to apply to the constants.</param>
         public static IntrinsicProcedure SimdUnary(string name, IFunctionalUnit fn)
         {
             return new IntrinsicBuilder(name, fn)
@@ -316,6 +411,11 @@ namespace Reko.Core.Intrinsics
                 .Returns("T");
         }
 
+        /// <summary>
+        /// Creates a generic binary function.
+        /// </summary>
+        /// <param name="name">Name of the intrinsic procedure.</param>
+        /// <param name="hasSideEffect">True if the intrinsic has a side effect.</param>
         public static IntrinsicProcedure GenericBinary(string name, bool hasSideEffect)
         {
             return new IntrinsicBuilder(name, hasSideEffect)
@@ -325,7 +425,10 @@ namespace Reko.Core.Intrinsics
                 .Returns("T");
         }
 
-
+        /// <summary>
+        /// Creates a generic unary function.
+        /// </summary>
+        /// <param name="name">Name of the intrinsic procedure.</param>
         public static IntrinsicProcedure GenericUnary(string name)
         {
             return new IntrinsicBuilder(name, false)
@@ -334,6 +437,11 @@ namespace Reko.Core.Intrinsics
                 .Returns("T");
         }
 
+        /// <summary>
+        /// Creates an intrinsic unary function with no side effects.
+        /// </summary>
+        /// <param name="name">Name of the intrinsic procedure.</param>
+        /// <param name="eval">Function to apply to the constants.</param>
         public static IntrinsicProcedure GenericUnary(string name, Func<DataType, Constant[], Constant> eval)
         {
             return new IntrinsicBuilder(name, false)
@@ -343,11 +451,21 @@ namespace Reko.Core.Intrinsics
                 .Returns("T");
         }
 
+        /// <summary>
+        /// Creates an intrinsic binary function with no side effects.
+        /// </summary>
+        /// <param name="intrinsicName">Name of the intrinsic procedure.</param>
+        /// <param name="dt">Data type of input parameters and return value.</param>
         public static IntrinsicProcedure Binary(string intrinsicName, DataType dt)
         {
             return new IntrinsicBuilder(intrinsicName, false).Param(dt).Param(dt).Returns(dt);
         }
 
+        /// <summary>
+        /// Creates an intrinsic ternary function with no side effects.
+        /// </summary>
+        /// <param name="intrinsicName">Name of the intrinsic procedure.</param>
+        /// <param name="dt">Data type of input parameters and return value.</param>
         public static IntrinsicProcedure Ternary(string intrinsicName, DataType dt)
         {
             return new IntrinsicBuilder(intrinsicName, false)
@@ -357,11 +475,21 @@ namespace Reko.Core.Intrinsics
                 .Returns(dt);
         }
 
+        /// <summary>
+        /// Creates an intrinsic unary function with no side effects.
+        /// </summary>
+        /// <param name="intrinsicName">Name of the intrinsic procedure.</param>
+        /// <param name="dt">Data type of input parameter and return value.</param>
         public static IntrinsicProcedure Unary(string intrinsicName, PrimitiveType dt)
         {
             return new IntrinsicBuilder(intrinsicName, false).Param(dt).Returns(dt);
         }
 
+        /// <summary>
+        /// Creates an intrinsic function with no side effects and a boolean return value.
+        /// </summary>
+        /// <param name="intrinsicName">Name of the intrinsic procedure.</param>
+        /// <param name="dataTypes">Data type of input parameter and return value.</param>
         public static IntrinsicProcedure Predicate(string intrinsicName, params DataType[] dataTypes)
         {
             var b = new IntrinsicBuilder(intrinsicName, false);
@@ -371,6 +499,5 @@ namespace Reko.Core.Intrinsics
             }
             return b.Returns(PrimitiveType.Bool);
         }
-
     }
 }

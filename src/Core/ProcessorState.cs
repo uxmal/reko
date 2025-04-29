@@ -241,13 +241,13 @@ namespace Reko.Core
             return InvalidConstant.Create(appl.DataType);
         }
 
-        /// <inheritdoc>/>
+        /// <inheritdoc/>
         public Expression? GetDefiningExpression(Identifier id)
         {
             return null;
         }
 
-        /// <inheritdoc>/>
+        /// <inheritdoc/>
         public Expression MakeSegmentedAddress(Constant seg, Constant off)
         {
             return Architecture.MakeSegmentedAddress(seg, off);

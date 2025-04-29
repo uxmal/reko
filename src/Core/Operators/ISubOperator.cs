@@ -20,18 +20,17 @@
 
 using Reko.Core.Expressions;
 using Reko.Core.Types;
-using System;
-using System.Numerics;
 
 namespace Reko.Core.Operators
 {
     /// <summary>
-    /// Integer subtraction.
+    /// Models integer subtraction.
     /// </summary>
 	public class ISubOperator : BinaryOperator
 	{
         internal ISubOperator() : base(OperatorType.ISub) { }
 
+        /// <inheritdoc/>
         public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
@@ -56,11 +55,13 @@ namespace Reko.Core.Operators
             }
 		}
 
+        /// <inheritdoc/>
         public override string AsCompound()
         {
             return " -= ";
         }
 
+        /// <inheritdoc/>
         public override string ToString()
 		{
 			return " - ";
@@ -75,6 +76,7 @@ namespace Reko.Core.Operators
     {
         internal USubOperator() : base(OperatorType.USub) { }
 
+        /// <inheritdoc/>
         public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
         {
             if (!ValidArgs(c1, c2))
@@ -83,11 +85,13 @@ namespace Reko.Core.Operators
             return BuildConstant(c1.DataType, c2.DataType, (int) (c1.ToUInt64() - c2.ToUInt64()));
         }
 
+        /// <inheritdoc/>
         public override string AsCompound()
         {
             return " -= ";
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             return " -u ";

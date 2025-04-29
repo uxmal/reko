@@ -42,6 +42,8 @@ namespace Reko.Core.Output
         /// <summary>
         /// Creates a <see cref="FormatterInstructionWriter"/>.
         /// </summary>
+        /// <param name="procedures"> A dictionary of procedures, indexed by their address.</param>
+        /// <param name="symbols"> A dictionary of symbols, indexed by their address.</param>
         /// <param name="formatter">A <see cref="Formatter"/> to which the 
         /// machine rendering is sent.</param>
         /// <param name="procedures"> A dictionary of procedures, keyed by their

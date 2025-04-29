@@ -80,10 +80,16 @@ namespace Reko.Core.Services
         /// <param name="program">Program containing the address.</param>
         /// <param name="arch">Architecture.</param>
         /// <param name="addrIndirectJump">Address of the indirect jump.</param>
-        /// <param name="stm"><see cref="Statement"/> to navigate to.</param>
+        /// <param name="addrVector">Address of the start of the table.</param>
+        /// <param name="stride">The stride of the entries in the table.</param>
         /// <returns>An procedure navigator.
         /// </returns>
-        ICodeLocation CreateJumpTableNavigator(IReadOnlyProgram program, IProcessorArchitecture arch, Address addrIndirectJump, Address? addrVector, int stride);
+        ICodeLocation CreateJumpTableNavigator(
+            IReadOnlyProgram program, 
+            IProcessorArchitecture arch, 
+            Address addrIndirectJump, 
+            Address? addrVector,
+            int stride);
 
         void Info(string message);
         void Info(string message, params object [] args);

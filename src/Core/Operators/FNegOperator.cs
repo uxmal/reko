@@ -23,10 +23,14 @@ using System;
 
 namespace Reko.Core.Operators
 {
+    /// <summary>
+    /// Models the floating point negation operator.
+    /// </summary>
     public class FNegOperator : UnaryOperator
     {
         internal FNegOperator() : base(OperatorType.FNeg) { }
 
+        /// <inheritdoc/>
         public override Constant ApplyConstant(Constant c)
         {
             if (c.IsValid)
@@ -35,6 +39,7 @@ namespace Reko.Core.Operators
                 return c;
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             return "-";

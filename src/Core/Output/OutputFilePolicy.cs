@@ -34,6 +34,9 @@ namespace Reko.Core.Output
     /// </summary>
     public abstract class OutputFilePolicy
     {
+        /// <summary>
+        /// The program whose output is being partitioned.
+        /// </summary>
         protected readonly Program program;
 
         /// <summary>
@@ -63,6 +66,10 @@ namespace Reko.Core.Output
             }
         }
 
+        /// <summary>
+        /// Initializes an instance of <see cref="OutputFilePolicy"/>.
+        /// </summary>
+        /// <param name="program">Program whose output is to be governed.</param>
         public OutputFilePolicy(Program program)
         {
             this.program = program;
@@ -71,7 +78,8 @@ namespace Reko.Core.Output
         /// <summary>
         /// Returns a placement mapping for rendering high-level items.
         /// </summary>
-        /// <param name="fileExtension"></param>
+        /// <param name="fileExtension">File extension to use.</param>
+        /// <param name="listener">Event listener to report progress.</param>
         /// <param name="listener">Provides a way for users to stop long
         /// running printouts.</param>
         /// <returns></returns>
@@ -109,6 +117,11 @@ namespace Reko.Core.Output
             return new (StructureField, Address)[0];
         }
 
+        /// <summary>
+        /// Make workitems for all fields in the segments of the program.
+        /// </summary>
+        /// <returns>A list of work items.
+        /// </returns>
         public IEnumerable<(StructureField, Address)> MakeSegmentWorkitems()
         {
             var typeStore = program.TypeStore;

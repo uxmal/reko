@@ -19,13 +19,12 @@
 #endregion
 
 using Reko.Core.Loading;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Core.Services
 {
+    /// <summary>
+    /// Provides service to create an image unpacker for a packed executable.
+    /// </summary>
     public interface IUnpackerService
     {
         /// <summary>

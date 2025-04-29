@@ -195,7 +195,9 @@ namespace Reko.Core.Memory
         /// <param name="imageOffset">Offset from image start, in bytes.</param>
         /// <param name="type">Size of the value being requested.</param>
         /// <param name="c">If successful, returns the requested value.</param>
-        /// <returns>Typed constant from the image.</returns>
+        /// <param name="c">Typed constant from the image.</param>
+        /// <returns>True if the read succeeded; false if the <paramref name="imageOffset"/> was outside
+        /// the memory area.</returns>
         public override bool TryReadLe(long imageOffset, DataType type, out Constant c)
         {
             var rc = ReadRelocation(imageOffset);

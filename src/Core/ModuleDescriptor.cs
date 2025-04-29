@@ -30,6 +30,10 @@ namespace Reko.Core
     /// </summary>
     public class ModuleDescriptor
     {
+        /// <summary>
+        /// Constructs an instance of a module descriptor.
+        /// </summary>
+        /// <param name="name"></param>
         public ModuleDescriptor(string name)
         {
             this.ModuleName = name;
@@ -40,6 +44,10 @@ namespace Reko.Core
             this.GlobalsByOrdinal = new Dictionary<int, ImageSymbol>();
         }
 
+        /// <summary>
+        /// Constructs a copy of an existing module descriptor.
+        /// </summary>
+        /// <param name="other">Other module descriptor.</param>
         public ModuleDescriptor(ModuleDescriptor other)
         {
             this.ModuleName = other.ModuleName;
@@ -52,13 +60,39 @@ namespace Reko.Core
             this.GlobalsByOrdinal = new Dictionary<int, ImageSymbol>();
         }
 
+        /// <summary>
+        /// The name of the module. This is typically the name of a DLL.
+        /// </summary>
         public string ModuleName { get; private set; }
+
+        /// <summary>
+        /// The list of system services provided by this module, sorted by name.
+        /// </summary>
         public IDictionary<string, SystemService> ServicesByName { get; private set; }
+
+        /// <summary>
+        /// The list of system services provided by this module, sorted by ordinal.
+        /// </summary>
         public IDictionary<int, SystemService> ServicesByOrdinal { get; private set; }
+
+        /// <summary>
+        /// The list of system services provided by this module, sorted by service vector.
+        /// </summary>
         public IDictionary<int, List<SystemService>> ServicesByVector { get; private set; }
+
+        /// <summary>
+        /// The list of global variables provided by this module, sorted by name.
+        /// </summary>
         public IDictionary<string, ImageSymbol> GlobalsByName { get; private set; }
+
+        /// <summary>
+        /// The list of global variables provided by this module, sorted by ordinal.
+        /// </summary>
         public IDictionary<int, ImageSymbol> GlobalsByOrdinal { get; private set; }
 
+        /// <summary>
+        /// Creates a copy of this module descriptor.
+        /// </summary>
         public ModuleDescriptor Clone()
         {
             return new ModuleDescriptor(this);

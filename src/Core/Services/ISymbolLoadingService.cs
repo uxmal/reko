@@ -24,10 +24,26 @@ using System.Collections.Generic;
 
 namespace Reko.Core.Services
 {
+    /// <summary>
+    /// Provides a service for loading symbols from a symbol source.
+    /// </summary>
     public interface ISymbolLoadingService
     {
+        /// <summary>
+        /// Given a filename, returns the symbol source that is responsible for
+        /// extracting symbols from that file.
+        /// </summary>
+        /// <param name="filename">Path to a file that may be associated with symbols.
+        /// </param>
+        /// <returns>A <see cref="ISymbolSource"/> implementation if symbols were foind;
+        /// otherwise null.</returns>
         ISymbolSource? GetSymbolSource(string filename);
 
+        /// <summary>
+        /// Gets a list of available symbol sources.
+        /// </summary>
+        /// <returns>A list of available symbol sources.
+        /// </returns>
         List<SymbolSourceDefinition> GetSymbolSources();
     }
 }

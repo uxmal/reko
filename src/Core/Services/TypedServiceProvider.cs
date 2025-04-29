@@ -42,11 +42,30 @@ namespace Reko.Core.Services
     /// </remarks>
     public static class TypedServiceProvider
     {
+        /// <summary>
+        /// Gets a reference to the requested service, or null if it couldn't be found.
+        /// </summary>
+        /// <typeparam name="T">Type of the requested service.
+        /// </typeparam>
+        /// <param name="sp"><see cref="IServiceProvider"/> from which to request the service.
+        /// </param>
+        /// <returns>If the service exists, an instance of <typeparamref name="T"/>; otherwise null.
+        /// </returns>
         public static T? GetService<T>(this IServiceProvider sp)
         {
             return (T?)sp.GetService(typeof(T));
         }
 
+        /// <summary>
+        /// Requests a reference to the requested service. If the service is not available
+        /// throws an exception.
+        /// </summary>
+        /// <typeparam name="T">Type of the requested service.
+        /// </typeparam>
+        /// <param name="sp"><see cref="IServiceProvider"/> from which to request the service.
+        /// </param>
+        /// <returns>An instance of <typeparamref name="T"/>.
+        /// </returns>
         public static T RequireService<T>(this IServiceProvider sp) where T : class
         {
             var result = sp.GetService<T>();
@@ -55,6 +74,12 @@ namespace Reko.Core.Services
             return result;
         }
 
+        /// <summary>
+        /// Adds a service to a <see cref="IServiceContainer"/>.
+        /// </summary>
+        /// <typeparam name="T">Type of the added service.</typeparam>
+        /// <param name="sc">Service container to add the service to.</param>
+        /// <param name="service">Service to add.</param>
         public static void AddService<T>(this IServiceContainer sc, T service)
             where T : notnull
         {

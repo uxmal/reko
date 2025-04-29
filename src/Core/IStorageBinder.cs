@@ -59,18 +59,6 @@ namespace Reko.Core
         Identifier EnsureFlagGroup(FlagGroupStorage grf);
 
         /// <summary>
-        /// Given the components of a <see cref="FlagGroupStorage" />, ensures
-        /// there is an identifier backed by that flag group storage.
-        /// </summary>
-        /// <param name="flagRegister">Backing flag register.</param>
-        /// <param name="flagGroupBits">Flag group bits.</param>
-        /// <param name="name">Name of the flag group storage.</param>
-        /// <returns>An <see cref="Identifier"/> backed by that flag group storage.
-        /// </returns>
-        [Obsolete("Use EnsureFlagGroup(FlagGroupStorage) instead.")]
-        Identifier EnsureFlagGroup(RegisterStorage flagRegister, uint flagGroupBits, string name);
-
-        /// <summary>
         /// Given a FPU stack variable at FPU stack offset <paramref name="offset"/>,
         /// identifier backed by that FPU stack offset.
         /// </summary>
@@ -124,7 +112,6 @@ namespace Reko.Core
         /// <param name="dt">Data type to use for the identifier.</param>
         /// <returns>The new temporary identifier.</returns>
         Identifier CreateTemporary(DataType dt);
-
 
         /// <summary>
         /// Creates a new temporary identifier with the given name

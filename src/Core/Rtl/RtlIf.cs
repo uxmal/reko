@@ -48,6 +48,9 @@ namespace Reko.Core.Rtl
             this.Class = instr.Class | InstrClass.Conditional;
         }
 
+        /// <summary>
+        /// Predicate of the RTL if.
+        /// </summary>
         public Expression Condition { get; }
 
         /// <summary>
@@ -55,15 +58,19 @@ namespace Reko.Core.Rtl
         /// </summary>
         public RtlInstruction Instruction { get; }
 
+        /// <inheritdoc/>
         public override T Accept<T>(RtlInstructionVisitor<T> visitor)
         {
             return visitor.VisitIf(this);
         }
+
+        /// <inheritdoc/>
         public override T Accept<T, C>(IRtlInstructionVisitor<T, C> visitor, C context)
         {
             return visitor.VisitIf(this, context);
         }
 
+        /// <inheritdoc/>
         protected override void WriteInner(TextWriter writer)
         {
             writer.Write("if ({0}) ", Condition);

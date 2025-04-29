@@ -23,10 +23,14 @@ using Reko.Core.Types;
 
 namespace Reko.Core.Operators
 {
+    /// <summary>
+    /// Models the comma operator.
+    /// </summary>
     public class CommaOperator : BinaryOperator
     {
         internal CommaOperator() : base(OperatorType.Comma) { }
 
+        /// <inheritdoc/>
         public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
         {
             return c2;

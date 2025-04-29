@@ -28,6 +28,9 @@ using System.Linq;
 
 namespace Reko.Core.Output
 {
+    /// <summary>
+    /// This class is used to trace pointers discovered by data type analysis.
+    /// </summary>
     public class GlobalObjectTracer : IDataTypeVisitor<int>
     {
         private readonly Program program;
@@ -64,6 +67,7 @@ namespace Reko.Core.Output
             return program.GlobalFields.Fields;
         }
 
+        /// <inheritdoc/>
         public void TraceObject(DataType dataType, Address addr)
         {
             try
@@ -82,6 +86,7 @@ namespace Reko.Core.Output
             }
         }
 
+        /// <inheritdoc/>
         public int VisitArray(ArrayType at)
         {
             for (int i = 0; i < at.Length; ++i)
@@ -91,22 +96,26 @@ namespace Reko.Core.Output
             return 0;
         }
 
+        /// <inheritdoc/>
         public int VisitClass(ClassType ct)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public int VisitCode(CodeType c)
         {
             //$TODO: found fragment of code.
             return 0;
         }
 
+        /// <inheritdoc/>
         public int VisitEnum(EnumType e)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public int VisitEquivalenceClass(EquivalenceClass eq)
         {
             if (eq.DataType is null || recursionGuard > 100)
@@ -117,16 +126,19 @@ namespace Reko.Core.Output
             return 0;
         }
 
+        /// <inheritdoc/>
         public int VisitFunctionType(FunctionType ft)
         {
             return 0;
         }
 
+        /// <inheritdoc/>
         public int VisitMemberPointer(MemberPointer memptr)
         {
             return 0;
         }
 
+        /// <inheritdoc/>
         public int VisitPointer(Pointer ptr)
         {
             var addr = rdr.Address;
@@ -175,21 +187,25 @@ namespace Reko.Core.Output
             return 0;
         }
 
+        /// <inheritdoc/>
         public int VisitPrimitive(PrimitiveType pt)
         {
             return 0;
         }
 
+        /// <inheritdoc/>
         public int VisitReference(ReferenceTo refTo)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public int VisitString(StringType str)
         {
             return 0;
         }
 
+        /// <inheritdoc/>
         public int VisitStructure(StructureType str)
         {
             var structOffset = rdr!.Offset;
@@ -202,16 +218,19 @@ namespace Reko.Core.Output
             return 0;
         }
 
+        /// <inheritdoc/>
         public int VisitTypeReference(TypeReference typeref)
         {
             return typeref.Referent.Accept(this);
         }
 
+        /// <inheritdoc/>
         public int VisitTypeVariable(TypeVariable tv)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public int VisitUnion(UnionType ut)
         {
             var alt = ut.Alternatives.Values.OrderBy(v => v.DataType, cmp).First();
@@ -219,11 +238,13 @@ namespace Reko.Core.Output
             return 0;
         }
 
+        /// <inheritdoc/>
         public int VisitUnknownType(UnknownType ut)
         {
             return 0;
         }
 
+        /// <inheritdoc/>
         public int VisitVoidType(VoidType voidType)
         {
             return 0;

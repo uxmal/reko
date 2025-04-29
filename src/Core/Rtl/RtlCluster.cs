@@ -28,6 +28,14 @@ namespace Reko.Core.Rtl
     /// </summary>
     public sealed class RtlInstructionCluster : IAddressable
     {
+        /// <summary>
+        /// Constructs a new <see cref="RtlInstructionCluster"/> instance.
+        /// </summary>
+        /// <param name="addr">Address from which this cluster was lifted.</param>
+        /// <param name="instrLength">The length of the machine code instruction
+        /// that was lifted to this cluster.</param>
+        /// <param name="instrs">Array of RTL instructions for this cluster.
+        /// </param>
         public RtlInstructionCluster(Address addr, int instrLength, params RtlInstruction[] instrs)
         {
             this.Address = addr;
@@ -40,8 +48,15 @@ namespace Reko.Core.Rtl
         /// </summary>
         public Address Address { get; }
 
+        /// <summary>
+        /// The instruction class of the original machine instruction.
+        /// </summary>
         public InstrClass Class { get; set; }
 
+        /// <summary>
+        /// The instructions that were generated when the original machine instruction
+        /// was lifted.
+        /// </summary>
         public RtlInstruction[] Instructions { get; }
 
         /// <summary>
@@ -49,11 +64,13 @@ namespace Reko.Core.Rtl
         /// </summary>
         public int Length { get; }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             return string.Format("{0}({1}): {2} instructions", Address, Length, Instructions.Length);
         }
 
+        /// <inheritdoc/>
         public void Write(TextWriter writer)
         {
             writer.WriteLine("{0}({1}):", Address, Length);

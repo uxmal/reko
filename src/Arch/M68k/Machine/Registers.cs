@@ -19,13 +19,10 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace Reko.Arch.M68k.Machine
 {
@@ -76,7 +73,8 @@ namespace Reko.Arch.M68k.Machine
         public static readonly FlagGroupStorage CZN;
         public static readonly FlagGroupStorage CZNX;
         public static readonly FlagGroupStorage CVZNX;
-
+        public static readonly FlagGroupStorage FPUFLAGS;
+        
         public static readonly RegisterStorage VAL;
         public static readonly RegisterStorage SFC;
         public static readonly RegisterStorage DFC;
@@ -98,7 +96,6 @@ namespace Reko.Arch.M68k.Machine
         internal static RegisterStorage[] regs;
         internal static FlagGroupStorage[] flags;
         internal static readonly RegisterStorage[] mmuregs;
-        internal static int Max;
         internal static readonly Dictionary<string, RegisterStorage> regsByName;
         internal static readonly Dictionary<uint, RegisterStorage> sregsByCode;
 
@@ -150,7 +147,11 @@ namespace Reko.Arch.M68k.Machine
             VN = new FlagGroupStorage(ccr, (uint) (FlagM.NF | FlagM.VF), nameof(VN));
             VZN = new FlagGroupStorage(ccr, (uint) (FlagM.NF | FlagM.ZF | FlagM.VF), nameof(VZN));
             ZN = new FlagGroupStorage(ccr, (uint) (FlagM.NF | FlagM.ZF), nameof(ZN));
-            Max = 29;
+
+            FPUFLAGS = new FlagGroupStorage(
+                    Registers.fpsr,
+                    0xFF000000u,
+                    "FPUFLAGS");
 
             regs = new RegisterStorage[] {
                 d0,

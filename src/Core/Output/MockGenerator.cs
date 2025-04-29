@@ -45,6 +45,12 @@ namespace Reko.Core.Output
         private readonly Dictionary<OperatorType, string> mpopstr;
         private readonly string prefix;
 
+        /// <summary>
+        /// Constructs a mock generator.
+        /// </summary>
+        /// <param name="writer">Output sink.</param>
+        /// <param name="prefix">Prefix to use before prefix names.
+        /// </param>
         public MockGenerator(TextWriter writer, string prefix)
         {
             this.writer = new IndentingTextWriter(writer, false, 4);
@@ -131,7 +137,11 @@ namespace Reko.Core.Output
             return identifiers.Values;
         }
 
-
+        /// <summary>
+        /// Writes a class enclosing the given <paramref name="proc"/>.
+        /// </summary>
+        /// <param name="proc">Procedure to emit mock code for.
+        /// </param>
         public void WriteClass(Procedure proc)
         {
             WriteClassPrologue(proc);
@@ -140,6 +150,10 @@ namespace Reko.Core.Output
             WriteClassEpilogue();
         }
 
+        /// <summary>
+        /// Writes mock generation code for the given <paramref name="proc"/>.
+        /// </summary>
+        /// <param name="proc">Procedure to generate mock code for.</param>
         public void WriteMethod(Procedure proc)
         {
             WriteMethodPrologue(proc);
@@ -669,6 +683,7 @@ namespace Reko.Core.Output
 
         #region IDataTypeVisitor Members
 
+        /// <inheritdoc />
         public int VisitArray(ArrayType at)
         {
             writer.Write("new ArrayType(");
@@ -677,27 +692,32 @@ namespace Reko.Core.Output
             return 0;
         }
 
+        /// <inheritdoc />
         public int VisitClass(ClassType ct)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc />
         public int VisitCode(CodeType c)
         {
             writer.Write("new CodeType()", c.Size);
             return 0;
         }
 
+        /// <inheritdoc />
         public int VisitEnum(EnumType e)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc />
         public int VisitEquivalenceClass(EquivalenceClass eq)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc />
         public int VisitFunctionType(FunctionType ft)
         {
             void writeArg(Identifier arg)
@@ -722,6 +742,7 @@ namespace Reko.Core.Output
             return 0;
         }
 
+        /// <inheritdoc />
         public int VisitPrimitive(PrimitiveType pt)
         {
             writer.Write(StringFromPrimitive(pt));
@@ -765,11 +786,13 @@ namespace Reko.Core.Output
             return sb.ToString();
         }
 
+        /// <inheritdoc />
         public int VisitMemberPointer(MemberPointer memptr)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc />
         public int VisitPointer(Pointer ptr)
         {
             writer.Write("new Pointer(");
@@ -778,6 +801,7 @@ namespace Reko.Core.Output
             return 0;
         }
 
+        /// <inheritdoc />
         public int VisitReference(ReferenceTo ptr)
         {
             writer.Write("new ReferenceTo(");
@@ -786,6 +810,7 @@ namespace Reko.Core.Output
             return 0;
         }
 
+        /// <inheritdoc />
         public int VisitString(StringType str)
         {
             writer.Write("new StringType(");
@@ -801,12 +826,14 @@ namespace Reko.Core.Output
             return 0;
         }
 
+        /// <inheritdoc />
         public int VisitStructure(StructureType str)
         {
             writer.Write("new StructureType({0})", str.Name ?? "<not-set>");
             return 0;
         }
 
+        /// <inheritdoc />
         public int VisitTypeReference(TypeReference typeref)
         {
             writer.Write("new TypeReference(");
@@ -815,17 +842,20 @@ namespace Reko.Core.Output
             return 0;
         }
 
+        /// <inheritdoc />
         public int VisitTypeVariable(TypeVariable tv)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc />
         public int VisitUnion(UnionType ut)
         {
             writer.Write("new UnionType({0})", ut.Name ?? "<not-set>");
             return 0;
         }
 
+        /// <inheritdoc />
         public int VisitUnknownType(UnknownType ut)
         {
             writer.Write("new UnknownType(");
@@ -835,6 +865,7 @@ namespace Reko.Core.Output
             return 0;
         }
 
+        /// <inheritdoc />
         public int VisitVoidType(VoidType vt)
         {
             writer.Write("VoidType.Instance");

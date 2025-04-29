@@ -48,16 +48,26 @@ namespace Reko.Core.Memory
         {
         }
 
+        /// <summary>
+        /// Clones this instance of <see cref="EndianImageReader"/>.
+        /// </summary>
+        /// <returns>A copy of this <see cref="Word16BeImageReader"/>.</returns>
         public EndianImageReader Clone()
         {
             return new Word16BeImageReader(this.mem, this.Offset);
         }
 
+        /// <summary>
+        /// Creates a new <see cref="Word16BeImageReader"/> on the given
+        /// <see cref="MemoryArea"/> at the given address.
+        /// </summary>
+        /// <returns>A copy of this <see cref="Word16BeImageReader"/>.</returns>
         public EndianImageReader CreateNew(MemoryArea image, Address addr)
         {
             return new Word16BeImageReader((Word16MemoryArea) image, addr);
         }
-
+        
+        /// <inheritdoc />
         public string ReadNulTerminatedString(DataType charType, Encoding enc)
         {
             throw new NotImplementedException();

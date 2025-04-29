@@ -25,10 +25,26 @@ using System.IO;
 
 namespace Reko.Core.Services
 {
+    /// <summary>
+    /// Provides services for loading type libraries.
+    /// </summary>
     public interface ITypeLibraryLoaderService
     {
+        /// <summary>
+        /// Given a type library, loads metadata into the library.
+        /// </summary>
+        /// <param name="platform"><see cref="IPlatform"/> implementation to use.</param>
+        /// <param name="tlElement">Type library definition describing the metadata file.</param>
+        /// <param name="libDst">Existing type information.</param>
+        /// <returns>An augmented type library complete with the metadata extracted from the 
+        /// type library described in <paramref name="tlElement"/>.</returns>
         TypeLibrary LoadMetadataIntoLibrary(IPlatform platform, TypeLibraryDefinition tlElement, TypeLibrary libDst);
 
+        /// <summary>
+        /// Location of the metadata files.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         string InstalledFileLocation(string name);
 
         /// <summary>
@@ -36,19 +52,27 @@ namespace Reko.Core.Services
         /// named 'name'.
         /// </summary>
         /// <param name="name"></param>
-        /// <returns></returns>
+        /// <returns>A characteristics library.</returns>
         CharacteristicsLibrary LoadCharacteristics(string name);
     }
 
+    /// <summary>
+    /// Standard implementation of the typelibrary loader service.
+    /// </summary>
     public class TypeLibraryLoaderServiceImpl : ITypeLibraryLoaderService
     {
         private readonly IServiceProvider services;
 
+        /// <summary>
+        /// Constructs an instance of <see cref="TypeLibraryLoaderServiceImpl"/>.
+        /// </summary>
+        /// <param name="services"></param>
         public TypeLibraryLoaderServiceImpl(IServiceProvider services)
         {
             this.services = services;
         }
 
+        /// <inheritdoc/>
         public TypeLibrary LoadMetadataIntoLibrary(IPlatform platform, TypeLibraryDefinition tlElement, TypeLibrary libDst)
         {
             var cfgSvc = services.RequireService<IConfigurationService>();
@@ -77,6 +101,7 @@ namespace Reko.Core.Services
             }
         }
 
+        /// <inheritdoc/>
         public MetadataLoader? CreateLoader(TypeLibraryDefinition tlElement, ImageLocation imageUri, byte[] bytes)
         {
             Type? loaderType = null;
@@ -111,6 +136,7 @@ namespace Reko.Core.Services
             return (MetadataLoader)Activator.CreateInstance(loaderType, services, imageUri, bytes)!;
         }
 
+        /// <inheritdoc/>
         public CharacteristicsLibrary LoadCharacteristics(string name)
         {
             var filename = InstalledFileLocation(name);
@@ -121,12 +147,14 @@ namespace Reko.Core.Services
             return lib;
         }
 
+        /// <inheritdoc/>
         public string InstalledFileLocation(string name)
         {
             string assemblyDir = Path.GetDirectoryName(GetType().Assembly.Location)!;
             return Path.Combine(assemblyDir, name);
         }
 
+        /// <inheritdoc/>
         public string ImportFileLocation(string dllName)
         {
             string assemblyDir = Path.GetDirectoryName(GetType().Assembly.Location)!;

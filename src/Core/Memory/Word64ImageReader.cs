@@ -61,111 +61,136 @@ namespace Reko.Core.Memory
             this.endOffset = endOffset;
         }
 
+        /// <inheritdoc/>
         public Address Address => mem.BaseAddress + Offset;
 
+        /// <inheritdoc/>
         public int CellBitSize => 64;
 
+        /// <inheritdoc/>
         public bool IsValid => (ulong) Offset < (ulong) endOffset; 
 
+        /// <inheritdoc/>
         public long Offset { get; set; }
 
+        /// <inheritdoc/>
         public Word64MemoryArea MemoryArea => mem;
 
+        /// <inheritdoc/>
         public BinaryReader CreateBinaryReader()
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public bool IsValidOffset(long offset)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public short PeekBeInt16(int offset)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public int PeekBeInt32(int offset)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public uint PeekBeUInt32(int offset)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public ulong PeekBeUInt64(int offset)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public byte PeekByte(int offset)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public short PeekLeInt16(int offset)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public int PeekLeInt32(int offset)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public ushort PeekLeUInt16(int offset)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public uint PeekLeUInt32(int offset)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public ulong PeekLeUInt64(int offset)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public sbyte PeekSByte(int offset)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public short ReadBeInt16()
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public int ReadBeInt32()
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public ushort ReadBeUInt16()
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public uint ReadBeUInt32()
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public ulong ReadBeUInt64()
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public byte ReadByte()
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public byte[] ReadBytes(int addressUnits)
         {
             var bytes = new byte[addressUnits * 8];
@@ -186,139 +211,167 @@ namespace Reko.Core.Memory
             return bytes;
         }
 
+        /// <inheritdoc/>
         public byte[] ReadBytes(uint addressUnits) => ReadBytes((int) addressUnits);
 
+        /// <inheritdoc/>
         public byte[] ReadToEnd()
         {
             return ReadBytes((int) (endOffset - Offset));
         }
 
+        /// <inheritdoc/>
         public short ReadLeInt16()
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public int ReadLeInt32()
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public long ReadLeInt64()
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public ushort ReadLeUInt16()
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public uint ReadLeUInt32()
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public ulong ReadLeUInt64()
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public sbyte ReadSByte()
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public long Seek(long offset, SeekOrigin origin = SeekOrigin.Current)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public bool TryPeekBeUInt16(int offset, out ushort value)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public bool TryPeekBeUInt32(int offset, out uint value)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public bool TryPeekBeUInt64(int offset, out ulong value)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public bool TryPeekByte(int offset, out byte value)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public bool TryPeekLeUInt16(int offset, out ushort value)
         {
             throw new NotImplementedException();
         }
 
 
+        /// <inheritdoc/>
         public bool TryPeekLeUInt32(int offset, out uint value)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public bool TryReadBe(DataType dataType, [MaybeNullWhen(false)] out Constant value)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public bool TryReadBeInt16(out short value)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public bool TryReadBeInt32(out int value)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public bool TryReadBeUInt16(out ushort value)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public bool TryReadBeUInt32(out uint value)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public bool TryReadByte(out byte value)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public bool TryReadLe(DataType dataType, [MaybeNullWhen(false)] out Constant value)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public bool TryReadLeInt16(out short value)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public bool TryReadLeSigned(DataType dataType, out long value)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public bool TryReadLeUInt16(out ushort value)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public bool TryReadLeUInt32(out uint value)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public bool TryReadLeUInt64(out ulong value)
         {
             throw new NotImplementedException();

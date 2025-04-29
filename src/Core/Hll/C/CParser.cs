@@ -44,6 +44,11 @@ namespace Reko.Core.Hll.C
         private readonly LookAheadLexer lexer;
         private readonly CGrammar grammar;
 
+        /// <summary>
+        /// Constructs a C parser.
+        /// </summary>
+        /// <param name="parserState">Initial parser state.</param>
+        /// <param name="lexer">Lexer to use.</param>
         public CParser(ParserState parserState, CLexer lexer)
         {
             this.ParserState = parserState;
@@ -53,6 +58,9 @@ namespace Reko.Core.Hll.C
             this.grammar = new CGrammar();
         }
 
+        /// <summary>
+        /// Parser state, which contains the symbol table and other information.
+        /// </summary>
         public ParserState ParserState { get; }
 
 #nullable disable
@@ -128,13 +136,18 @@ namespace Reko.Core.Hll.C
             throw new CParserException(string.Format("Expected token '{0}' but saw '{1}' on line {2}.", expected, actual, lexer.LineNumber));
         }
 
-        public bool IsTypeName(CToken x)
+        private bool IsTypeName(CToken x)
         {
             if (x.Type != CTokenType.Id)
                 return false;
             return ParserState.Typedefs.Contains((string)x.Value);
         }
 
+        /// <summary>
+        /// Determines whether the given string is a type name.
+        /// </summary>
+        /// <param name="id">String to test.</param>
+        /// <returns>True if the string is a known typedef.</returns>
         public bool IsTypeName(string id)
         {
             return ParserState.Typedefs.Contains(id);
@@ -347,9 +360,12 @@ IGNORE tab + cr + lf
 
         //---------- Compilation Unit ----------
 
+        /// <summary>
+        /// Parses a compilation unit, which consists of a list of external declarations.
+        /// </summary>
+        /// <returns>A list of external declarations./</returns>
         //CompilationUnit = 
         //    ExternalDecl {ExternalDecl}.
-
         public List<Decl> Parse()
         {
             var list = new List<Decl>();
@@ -364,6 +380,11 @@ IGNORE tab + cr + lf
             return list;
         }
 
+        /// <summary>
+        /// Parses an external declaration, which can be a function definition or a declaration.
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="CParserException"></exception>
         //ExternalDecl = 
         //  [ AttributeSequence ]
         //  DeclSpecifierList 
@@ -483,6 +504,10 @@ IGNORE tab + cr + lf
 
         //---------- Declarations ----------
 
+        /// <summary>
+        /// Parses a declaration, which can be a typedef, variable, or function declaration.
+        /// </summary>
+        /// <returns></returns>
         //Decl ::= [attributes-seq] DeclSpecifierList [InitDeclarator {',' InitDeclarator}] ';'.
         public Decl Parse_Decl()
         {
@@ -900,6 +925,10 @@ IGNORE tab + cr + lf
             return null;
         }
 
+        /// <summary>
+        /// Parses a declarator, which can be a pointer, reference, or function pointer.
+        /// </summary>
+        /// <returns></returns>
         //Declarator ::=
         //    [Pointer]
         //    ( ident
@@ -1238,7 +1267,7 @@ IGNORE tab + cr + lf
 #nullable enable
         // May be null.
         // AttributeSpecifier ::= [ [ <attrs> ] ] 
-        public List<CAttribute>? ParseAttributeSpecifierSeq()
+        private List<CAttribute>? ParseAttributeSpecifierSeq()
         {
             if (lexer.Peek(0).Type == CTokenType.LBracket &&
                 lexer.Peek(1).Type == CTokenType.LBracket)
@@ -1253,12 +1282,11 @@ IGNORE tab + cr + lf
             }
             return null;
         }
-#nullable disable
 
         // May be null:
-        public List<CAttribute> Parse_GccExtensions()
+        private List<CAttribute>? Parse_GccExtensions()
         {
-            List<CAttribute> attrs = null;
+            List<CAttribute>? attrs = null;
             for (; ;)
             {
                 if (PeekThenDiscard(CTokenType.__Attribute))
@@ -1276,12 +1304,17 @@ IGNORE tab + cr + lf
             }
         }
 
+
+        /// <summary>
+        /// Parse an attribute specifier.
+        /// </summary>
+        /// <returns></returns>
         public CAttribute Parse_AttributeSpecifier()
         {
             ExpectToken(CTokenType.LBracket);
             ExpectToken(CTokenType.LBracket);
             QualifiedName qname = Parse_AttributeToken();
-            List<CToken> tokens = null;
+            List<CToken>? tokens = null;
             if (PeekThenDiscard(CTokenType.LParen))
             {
                 tokens = Parse_BalancedTokenSeq();
@@ -1296,7 +1329,10 @@ IGNORE tab + cr + lf
             };
         }
 
-        public List<CAttribute> Parse_GccAttributeSpecifier()
+#nullable disable
+
+
+        private List<CAttribute> Parse_GccAttributeSpecifier()
         {
             var attrs = new List<CAttribute>();
             ExpectToken(CTokenType.LParen);
@@ -1351,7 +1387,7 @@ IGNORE tab + cr + lf
             return new QualifiedName(comps.ToArray());
         }
 
-        public List<CToken> Parse_BalancedTokenSeq()
+        private List<CToken> Parse_BalancedTokenSeq()
         {
             var tokens = new List<CToken>();
             for (;;)
@@ -1574,6 +1610,11 @@ IGNORE tab + cr + lf
 
         };
 
+
+        /// <summary>
+        /// Parse a C expression.
+        /// </summary>
+        /// <returns></returns>
         //Expr       = AssignExpr {','  AssignExpr}.
         public CExpression Parse_Expr()
         {
@@ -1589,7 +1630,7 @@ IGNORE tab + cr + lf
         }
 
         //AssignExpr = CondExpr [AssignOp AssignExpr]. // relaxed
-        public CExpression Parse_AssignExpr()
+        private CExpression Parse_AssignExpr()
         {
             var left = Parse_CondExpr();
             var token = PeekToken();
@@ -1615,7 +1656,7 @@ IGNORE tab + cr + lf
         }
 
         //CondExpr   = LogOrExpr ['?' Expr ':' CondExpr].
-        public CExpression Parse_CondExpr()
+        private CExpression Parse_CondExpr()
         {
             var cond = Parse_LogOrExpr();
             if (PeekThenDiscard(CTokenType.Question))
@@ -1629,7 +1670,7 @@ IGNORE tab + cr + lf
         }
 
         //LogOrExpr  = LogAndExpr {"||" LogAndExpr}.
-        public CExpression Parse_LogOrExpr()
+        private CExpression Parse_LogOrExpr()
         {
             var left = Parse_LogAndExpr();
             while (PeekThenDiscard(CTokenType.LogicalOr))
@@ -1641,7 +1682,7 @@ IGNORE tab + cr + lf
         }
 
         //LogAndExpr = OrExpr {"&&" OrExpr}.
-        public CExpression Parse_LogAndExpr()
+        private CExpression Parse_LogAndExpr()
         {
             var left = Parse_OrExpr();
             while (PeekThenDiscard(CTokenType.LogicalAnd))
@@ -1652,7 +1693,7 @@ IGNORE tab + cr + lf
             return left;
         }
         //OrExpr     = XorExpr {'|' XorExpr}.
-        public CExpression Parse_OrExpr()
+        private CExpression Parse_OrExpr()
         {
             var left = Parse_XorExpr();
             while (PeekThenDiscard(CTokenType.Pipe))
@@ -1664,7 +1705,7 @@ IGNORE tab + cr + lf
         }
 
         //XorExpr    = AndExpr {'^' AndExpr}.
-        public CExpression Parse_XorExpr()
+        private CExpression Parse_XorExpr()
         {
             var left = Parse_AndExpr();
             while (PeekThenDiscard(CTokenType.Xor))
@@ -1676,7 +1717,7 @@ IGNORE tab + cr + lf
         }
 
         //AndExpr    = EqlExpr {'&' EqlExpr}.
-        public CExpression Parse_AndExpr()
+        private CExpression Parse_AndExpr()
         {
             var left = Parse_EqlExpr();
             while (PeekThenDiscard(CTokenType.Ampersand))
@@ -1687,7 +1728,7 @@ IGNORE tab + cr + lf
             return left;
         }
         //EqlExpr    = RelExpr {("==" | "!=") RelExpr}.
-        public CExpression Parse_EqlExpr()
+        private CExpression Parse_EqlExpr()
         {
             var left = Parse_RelExpr();
             var token = PeekToken().Type;
@@ -1701,7 +1742,7 @@ IGNORE tab + cr + lf
             return left;
         }
         //RelExpr    = ShiftExpr {('<' | '>' | "<=" | ">=") ShiftExpr}.
-        public CExpression Parse_RelExpr()
+        private CExpression Parse_RelExpr()
         {
             var left = Parse_ShiftExpr();
             var token = PeekToken().Type;
@@ -1716,7 +1757,7 @@ IGNORE tab + cr + lf
             return left;
         }
         //ShiftExpr  = AddExpr {("<<" | ">>") AddExpr}.
-        public CExpression Parse_ShiftExpr()
+        private CExpression Parse_ShiftExpr()
         {
             var left = Parse_AddExpr();
             var token = PeekToken().Type;
@@ -1730,7 +1771,7 @@ IGNORE tab + cr + lf
             return left;
         }
         //AddExpr    = MultExpr {('+' | '-') MultExpr}.
-        public CExpression Parse_AddExpr()
+        private CExpression Parse_AddExpr()
         {
             var left = Parse_MultExpr();
             var token = PeekToken().Type;
@@ -1744,7 +1785,7 @@ IGNORE tab + cr + lf
             return left;
         }
         //MultExpr   = CastExpr {('*' | '/' | '%') CastExpr}.
-        public CExpression Parse_MultExpr()
+        private CExpression Parse_MultExpr()
         {
             var left = Parse_CastExpr();
             var token = PeekToken().Type;
@@ -1760,7 +1801,7 @@ IGNORE tab + cr + lf
         }
         //CastExpr   = IF(IsType1()) '(' TypeName ')' CastExpr
         //           | UnaryExpr.
-        public CExpression Parse_CastExpr()
+        private CExpression Parse_CastExpr()
         {
             if (IsType1())
             {
@@ -1782,7 +1823,7 @@ IGNORE tab + cr + lf
         //  | UnaryOp CastExpr
         //  | "sizeof"  (IF(IsType1()) '(' TypeName ')' | UnaryExpr)
         //  ).
-        public CExpression Parse_UnaryExpr()
+        private CExpression Parse_UnaryExpr()
         {
             CExpression expr;
             var token = PeekToken().Type;
@@ -1829,7 +1870,7 @@ IGNORE tab + cr + lf
         //  | "++" 
         //  | "--"
         //  }.
-        public CExpression Parse_PostfixExpr()
+        private CExpression Parse_PostfixExpr()
         {
             var left = Parse_Primary();
             string id;
@@ -1881,7 +1922,7 @@ IGNORE tab + cr + lf
 
         //Primary = ident | intcon | floatcon | charcon | string | '(' Expr ')'.
 
-        public CExpression Parse_Primary()
+        private CExpression Parse_Primary()
         {
             var token = PeekToken();
             switch (token.Type)
@@ -1934,6 +1975,10 @@ IGNORE tab + cr + lf
 
         //---------- Statements ----------
 
+        /// <summary>
+        /// Parse a C statement.
+        /// </summary>
+        /// <returns>The parsed statement.</returns>
         //Stat =
         //      IF(IsLabel()) (ident | "case" ConstExpr | "default") ':' Stat
         //    | Expr ';'

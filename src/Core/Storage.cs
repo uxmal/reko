@@ -486,7 +486,7 @@ namespace Reko.Core
     /// <para>
     /// Later, SSA analysis will break apart memory access
     /// after each store operation, giving rise to new address space identifiers
-    /// MEM1, MEM2 &amp;c. If ambitious, memory alias analysis can be done. In this
+    /// MEM1, MEM2 etc. If ambitious, memory alias analysis can be done. In this
     /// case, we will have several MEMx variables before SSA, each MEMx variable
     /// will be an alias class. 
     /// </para>

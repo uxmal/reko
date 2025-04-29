@@ -498,8 +498,8 @@ ProcedureBuilder_exit:
                 var r3 = m.Reg32("r3", 3);
                 var r4 = m.Reg32("r4", 4);
                 var flags = RegisterStorage.Reg32("flags", 0x0A);
-                var SCZ = m.Frame.EnsureFlagGroup(flags, 0x7, "SZC");
-                var C = m.Frame.EnsureFlagGroup(flags, 0x4, "C");
+                var SCZ = m.Frame.EnsureFlagGroup(new FlagGroupStorage(flags, 0x7, "SZC"));
+                var C = m.Frame.EnsureFlagGroup(new FlagGroupStorage(flags, 0x4, "C"));
 
                 m.Assign(r1, m.IAdd(r1, r2));
                 m.Assign(SCZ, m.Cond(r1));
@@ -1224,7 +1224,7 @@ ProcedureBuilder_exit:
                 var r2 = m.Reg32("r2", 2);
                 var ctr = m.Reg32("ctr", 12);
                 var psw = RegisterStorage.Reg16("psw", 2);
-                var SCZO = m.Frame.EnsureFlagGroup(psw, 0xF, "SCZO");
+                var SCZO = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 0xF, "SCZO"));
 
                 m.Label("m1");
                 m.Assign(r2, m.And(r2, 0x7F));

@@ -23,10 +23,14 @@ using Reko.Core.Types;
 
 namespace Reko.Core.Operators
 {
+    /// <summary>
+    /// Models the unsigned integer modulo operator.
+    /// </summary>
     public class UModOperator : BinaryOperator
     {
         internal UModOperator() : base(OperatorType.UMod) { }
 
+        /// <inheritdoc/>
         public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
         {
             if (!ValidArgs(c1, c2))
@@ -38,11 +42,13 @@ namespace Reko.Core.Operators
             return BuildConstant(c1.DataType, c2.DataType, c1.ToUInt64() % c2.ToUInt64());
         }
 
+        /// <inheritdoc/>
         public override string AsCompound()
         {
             return " %= ";
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             return " %u ";

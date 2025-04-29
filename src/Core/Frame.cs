@@ -132,7 +132,6 @@ namespace Reko.Core
         /// which implies that in those architectures the return address size should be zero.
         /// </summary>
         public int ReturnAddressSize { get; set; }
-
         public bool ReturnAddressKnown { get; set; }
 
         /// <summary>
@@ -224,29 +223,6 @@ namespace Reko.Core
 		}
 
         /// <summary>
-        /// Given a status register and a bitmask, ensures that there is a 
-        /// corresponding identifier in this frame.
-        /// </summary>
-        /// <param name="freg">Backing status register.</param>
-        /// <param name="grfMask">Bitmask for the various status flags.</param>
-        /// <param name="name">A name for the identifier.</param>
-        /// <returns>A previously existing identifier with the same 
-        /// status register and flag mask, or a newly created one.
-        /// </returns>
-        public Identifier EnsureFlagGroup(RegisterStorage freg, uint grfMask, string name)
-		{
-            if (grfMask == 0)
-                throw new ArgumentException("Argument must be non-zero.", nameof(grfMask));
-			Identifier? id = FindFlagGroup(freg, grfMask);
-			if (id is null)
-			{
-				id = Identifier.Create(new FlagGroupStorage(freg, grfMask, name));
-				Identifiers.Add(id);
-			}
-			return id;
-		}
-
-        /// <summary>
         /// Given a <see cref="FlagGroupStorage"/>, ensures that there is a 
         /// corresponding identifier in this frame.
         /// </summary>
@@ -261,7 +237,7 @@ namespace Reko.Core
             var id = FindFlagGroup(grf.FlagRegister, grf.FlagGroupBits);
             if (id is null)
             {
-                id = Identifier.Create(new FlagGroupStorage(grf.FlagRegister, grf.FlagGroupBits, grf.Name));
+                id = Identifier.Create(grf);
                 Identifiers.Add(id);
             }
             return id;

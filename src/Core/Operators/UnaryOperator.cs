@@ -24,10 +24,18 @@ using System;
 
 namespace Reko.Core.Operators
 {
+    /// <summary>
+    /// Models a unary operator.
+    /// </summary>
 	public abstract class UnaryOperator : Operator
 	{
+        /// <summary>
+        /// Initializes a unary operator.
+        /// </summary>
+        /// <param name="type">Operator type.</param>
         protected UnaryOperator(OperatorType type) : base(type) { }
 
+        /// <inheritdoc/>
         public sealed override Constant ApplyConstants(DataType dt, params Constant[] cs)
         {
             if (cs.Length != 1)
@@ -35,6 +43,7 @@ namespace Reko.Core.Operators
             return ApplyConstant(cs[0]);
         }
 
+        /// <inheritdoc/>
         public sealed override Expression Create(DataType dt, params Expression[] exprs)
         {
             if (exprs.Length != 1)
@@ -42,6 +51,7 @@ namespace Reko.Core.Operators
             return new UnaryExpression(this, dt, exprs[0]);
         }
 
+        /// <inheritdoc/>
         public abstract Constant ApplyConstant(Constant c);
 	}
 
@@ -52,6 +62,7 @@ namespace Reko.Core.Operators
 	{
         internal NotOperator() : base(OperatorType.Not) { }
 
+        /// <inheritdoc/>
 		public override Constant ApplyConstant(Constant c)
 		{
             return c.IsZero
@@ -59,51 +70,67 @@ namespace Reko.Core.Operators
                 : Constant.Create(c.DataType, 0);
 		}
 
+        /// <inheritdoc/>
 		public override string ToString()
 		{
 			return "!";
 		}
 	}
 
-	public class NegateOperator : UnaryOperator
+    /// <summary>
+    /// Negation operator ("-" in C/C++).
+    /// </summary>
+    public class NegateOperator : UnaryOperator
 	{
         internal NegateOperator() : base(OperatorType.Neg) { }
 
+        /// <inheritdoc/>
         public override Constant ApplyConstant(Constant c)
 		{
             return c.Negate();
 		}
 
+        /// <inheritdoc/>
 		public override string ToString()
 		{
 			return "-";
 		}
 	}
 
+    /// <summary>
+    /// Bitwise not operator ("~" in C/C++).
+    /// </summary>
 	public class ComplementOperator : UnaryOperator
 	{
         internal ComplementOperator() : base(OperatorType.Comp) { }
 
+        /// <inheritdoc/>
         public override Constant ApplyConstant(Constant c)
 		{
             return c.Complement();
 		}
 
+        /// <inheritdoc/>
 		public override string ToString()
 		{
 			return "~";
 		}
 	}
 
+    /// <summary>
+    /// Models the address-of operator ("<c>&amp;</c>" in C/C++).
+    /// </summary>
 	public class AddressOfOperator : UnaryOperator
 	{
         internal AddressOfOperator() : base(OperatorType.AddrOf) { }
 
+        /// <inheritdoc/>
         public override Constant ApplyConstant(Constant c)
 		{
 			throw new NotImplementedException();
 		}
 
+        /// <inheritdoc/>
 		public override string ToString()
 		{
 			return "&";

@@ -33,16 +33,19 @@ namespace Reko.Core.Rtl
 
         public Expression Expression { get; }
 
+        /// <inheritdoc/>
         public override T Accept<T>(RtlInstructionVisitor<T> visitor)
         {
             return visitor.VisitSideEffect(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(IRtlInstructionVisitor<T, C> visitor, C context)
         {
             return visitor.VisitSideEffect(this, context);
         }
 
+        /// <inheritdoc/>
         protected override void WriteInner(TextWriter writer)
         {
             writer.Write(Expression);

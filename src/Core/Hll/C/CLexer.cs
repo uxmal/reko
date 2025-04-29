@@ -54,6 +54,11 @@ namespace Reko.Core.Hll.C
         private readonly Dictionary<string, CTokenType> keywordHash;
         private CToken currentToken; // used by IEnumerator.
 
+        /// <summary>
+        /// Constructs a C lexer.
+        /// </summary>
+        /// <param name="rdr">Underlying text reader.</param>
+        /// <param name="keywords">Dictionary mapping strings to C keywords.</param>
         public CLexer(TextReader rdr, Dictionary<string, CTokenType> keywords)
         {
             this.rdr = rdr;
@@ -62,18 +67,27 @@ namespace Reko.Core.Hll.C
             this.keywordHash = keywords;
         }
 
+        /// <inheritdoc/>
         public void Dispose()
         {
         }
 
+        /// <inheritdoc/>
         public void Reset() => throw new NotSupportedException();
 
+        /// <summary>
+        /// Reads the next token from the input stream.
+        /// </summary>
+        /// <returns>True if a token could be read; otherwise false.</returns>
         public bool MoveNext()
         {
             this.currentToken = Read();
             return currentToken.Type != CTokenType.EOF;
         }
 
+        /// <summary>
+        /// The most recently read token.
+        /// </summary>
         public CToken Current
         {
             get
@@ -130,6 +144,9 @@ namespace Reko.Core.Hll.C
             BackSlash,
         }
 
+        /// <summary>
+        /// Current 1-based line number.
+        /// </summary>
         public int LineNumber { get; private set; }
 
         /// <summary>
@@ -152,6 +169,10 @@ namespace Reko.Core.Hll.C
         /// </summary>
         public static Dictionary<string, CTokenType> MsvcCeKeywords { get; }
 
+        /// <summary>
+        /// Read a token.
+        /// </summary>
+        /// <returns>A <see cref="CToken"/>.</returns>
         public CToken Read()
         {
             bool wideLiteral = false;
@@ -919,6 +940,9 @@ namespace Reko.Core.Hll.C
             }
         }
 
+        /// <summary>
+        /// Skip input to the next line.
+        /// </summary>
         public void SkipToNextLine()
         {
             for (; ; )
@@ -1059,6 +1083,9 @@ namespace Reko.Core.Hll.C
         }
     }
 
+    /// <summary>
+    /// Represents a C language token.
+    /// </summary>
     public struct CToken
     {
         public CToken(CTokenType type) : this(type, null)

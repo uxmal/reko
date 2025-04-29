@@ -41,6 +41,7 @@ namespace Reko.Core
         /// <summary>
         /// The default <see cref="IProcessorArchitecture"/> of the program.
         /// </summary>
+        /// </summary>
         IProcessorArchitecture Architecture { get; }
 
         /// <summary>

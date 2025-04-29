@@ -25,10 +25,14 @@ using System.Numerics;
 
 namespace Reko.Core.Operators
 {
+    /// <summary>
+    /// Models the bitwise AND operator.
+    /// </summary>
 	public class AndOperator : BinaryOperator
 	{
         internal AndOperator() : base(OperatorType.And) { }
 
+        /// <inheritdoc/>
         public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
@@ -43,11 +47,13 @@ namespace Reko.Core.Operators
             }
 		}
 
+        /// <inheritdoc/>
         public override string AsCompound()
         {
             return " &= ";
         }
 
+        /// <inheritdoc/>
         public override string ToString()
 		{
 			return " & ";

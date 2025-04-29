@@ -33,6 +33,7 @@ namespace Reko.Core.Operators
 
         internal IMulOperator(OperatorType type) : base(type) { }
 
+        /// <inheritdoc/>
         public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
@@ -40,11 +41,13 @@ namespace Reko.Core.Operators
             return Constant.Create(dt, c1.ToInt64() * c2.ToInt64());
 		}
 
+        /// <inheritdoc/>
         public override string AsCompound()
         {
             return " *= ";
         }
 
+        /// <inheritdoc/>
         public override string ToString()
 		{
 			return " * ";

@@ -19,8 +19,15 @@ namespace Reko.Core.Hll.C
         private CToken tokenPrev;
         private CToken tokenString; // Only valid in firstString state.
 
+        /// <summary>
+        /// Current line number.
+        /// </summary>
         public int LineNumber => lexer.LineNumber;
 
+        /// <summary>
+        /// Constructs a string concatenator.
+        /// </summary>
+        /// <param name="lexer">Lexer used to tokenize a compilation unit.</param>
         public StringConcatenator(CDirectiveLexer lexer)
         {
             this.lexer = lexer;
@@ -35,6 +42,12 @@ namespace Reko.Core.Hll.C
             NextString,
         }
 
+        /// <summary>
+        /// Read the next token, concatenating string literals as necessary.
+        /// </summary>
+        /// <returns>A <see cref="CToken"/>. When the end-of-file is reached,
+        /// the returned C token's <see cref="CToken.Type"/> will be <see cref="CTokenType.EOF"/>.
+        /// </returns>
         public CToken Read()
         {
             var state = State.Start;

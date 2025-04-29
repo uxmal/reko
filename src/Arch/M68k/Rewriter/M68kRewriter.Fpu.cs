@@ -143,10 +143,7 @@ namespace Reko.Arch.M68k.Rewriter
 
         private Identifier FpuFlagGroup()
         {
-            return binder.EnsureFlagGroup(
-                Registers.fpsr,
-                0xFF000000u,
-                "FPUFLAGS");
+            return binder.EnsureFlagGroup(Registers.FPUFLAGS);
         }
 
         private void RewriteFcmp()

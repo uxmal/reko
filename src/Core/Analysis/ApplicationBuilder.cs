@@ -64,7 +64,6 @@ namespace Reko.Core.Analysis
             Site = site;
         }
 
-
         /// <summary>
         /// The <see cref="CallSite"/> of the calling instruction.
         /// </summary>
@@ -106,9 +105,10 @@ namespace Reko.Core.Analysis
         public abstract Expression? BindInStackArg(StackStorage stg, int returnAdjustment);
 
         /// <summary>
-        /// Binds an output argument in the caller's frame to the corresponding
-        /// <see cref="Storage"/>.
+        /// Binds the storage of a output parameter to a local expression.
         /// </summary>
+        /// <param name="stg">Storage to bind.</param>
+        /// <returns>An expression expressed in the local frame.</returns>
         public abstract OutArgument BindOutArg(Storage stg);
 
         /// <summary>

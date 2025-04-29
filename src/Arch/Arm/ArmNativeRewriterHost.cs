@@ -83,7 +83,8 @@ namespace Reko.Arch.Arm
         public HExpr EnsureFlagGroup(int baseReg, int bitmask, string name)
         {
             var reg = regs[baseReg];
-            var id = frame.EnsureFlagGroup(reg, (uint)bitmask, name);
+            var grf = new FlagGroupStorage(reg, (uint) bitmask, name);
+            var id = frame.EnsureFlagGroup(grf);
             return m.MapToHandle(id);
         }
 

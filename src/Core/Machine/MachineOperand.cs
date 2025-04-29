@@ -40,6 +40,7 @@ namespace Reko.Core.Machine
         /// </summary>
         /// <param name="options">Options that control the rendering 
         /// of the machine operand.</param>
+        /// </summary>
         string ToString(MachineInstructionRendererOptions options);
 
         /// <summary>

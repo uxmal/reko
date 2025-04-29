@@ -154,7 +154,7 @@ namespace Reko.Core.Loading
             Address loadAddress);
 
         /// <summary>
-        /// Loads a file containing symbolic, type, or other metadata into a <see href="Reko.Core.TypeLibrary>"/>.
+        /// Loads a file containing symbolic, type, or other metadata into a <see cref="TypeLibrary"/>.
         /// </summary>
         /// <param name="metadataLocation">The location of the metadata information.</param>
         /// <param name="platform">The operating environment for the file.</param>

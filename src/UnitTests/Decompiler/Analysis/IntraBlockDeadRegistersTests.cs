@@ -99,10 +99,10 @@ namespace Reko.UnitTests.Decompiler.Analysis
             RunTest(m =>
             {
                 var flags = RegisterStorage.Reg32("flags", 0x0A);
-                var CN = m.Frame.EnsureFlagGroup(flags, 0x3, "CN");
-                var C = m.Frame.EnsureFlagGroup(flags, 0x1, "C");
-                var N = m.Frame.EnsureFlagGroup(flags, 0x2, "N");
-                var Z = m.Frame.EnsureFlagGroup(flags, 0x4, "Z");
+                var CN = m.Frame.EnsureFlagGroup(new FlagGroupStorage(flags, 0x3, "CN"));
+                var C = m.Frame.EnsureFlagGroup(new FlagGroupStorage(flags, 0x1, "C"));
+                var N = m.Frame.EnsureFlagGroup(new FlagGroupStorage(flags, 0x2, "N"));
+                var Z = m.Frame.EnsureFlagGroup(new FlagGroupStorage(flags, 0x4, "Z"));
                 
                 var a = m.Frame.EnsureRegister(RegisterStorage.Reg32("a", 0));
                 m.Assign(N, m.Cond(a));
@@ -123,10 +123,10 @@ namespace Reko.UnitTests.Decompiler.Analysis
             RunTest(m =>
             {
                 var flags = RegisterStorage.Reg32("flags", 0xA);
-                var CN = m.Frame.EnsureFlagGroup(flags, 0x3, "CN");
-                var C = m.Frame.EnsureFlagGroup(flags, 0x1, "C");
-                var N = m.Frame.EnsureFlagGroup(flags, 0x2, "N");
-                var Z = m.Frame.EnsureFlagGroup(flags, 0x4, "Z");
+                var CN = m.Frame.EnsureFlagGroup(new FlagGroupStorage(flags, 0x3, "CN"));
+                var C = m.Frame.EnsureFlagGroup(new FlagGroupStorage(flags, 0x1, "C"));
+                var N = m.Frame.EnsureFlagGroup(new FlagGroupStorage(flags, 0x2, "N"));
+                var Z = m.Frame.EnsureFlagGroup(new FlagGroupStorage(flags, 0x4, "Z"));
                 var a = m.Frame.EnsureRegister(RegisterStorage.Reg32("a", 0));
                 m.Assign(a, m.IAdd(a, 3));
                 m.Assign(N, m.Cond(a));

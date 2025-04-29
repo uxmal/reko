@@ -69,6 +69,7 @@ namespace Reko.Core
         /// <summary>
         /// The presece of this object reached here because user's input dictated it.
         /// We blindly trust the user.
+        /// </summary>
         UserInput,
 
         /// <summary>

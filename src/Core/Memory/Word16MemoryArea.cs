@@ -72,18 +72,30 @@ namespace Reko.Core.Memory
         /// </summary>
         public ushort[] Words { get; }
 
+        /// <inheritdoc/>
         public override EndianImageReader CreateBeReader(Address addr) => new Word16BeImageReader(this, addr);
+        /// <inheritdoc/>
         public override EndianImageReader CreateBeReader(Address addr, long cUnits) => new Word16BeImageReader(this, addr, cUnits);
+        /// <inheritdoc/>
         public override EndianImageReader CreateBeReader(long offset) => new Word16BeImageReader(this, offset);
+        /// <inheritdoc/>
         public override EndianImageReader CreateBeReader(long beginOffset, long endOffset) => new Word16BeImageReader(this, beginOffset, endOffset);
+        /// <inheritdoc/>
         public override BeImageWriter CreateBeWriter(Address addr) => throw new NotImplementedException();
+        /// <inheritdoc/>
         public override BeImageWriter CreateBeWriter(long offset) => throw new NotImplementedException();
 
+        /// <inheritdoc/>
         public override EndianImageReader CreateLeReader(Address addr) => new Word16LeImageReader(this, addr);
+        /// <inheritdoc/>
         public override EndianImageReader CreateLeReader(Address addr, long cUnits) => new Word16LeImageReader(this, addr, cUnits);
+        /// <inheritdoc/>
         public override EndianImageReader CreateLeReader(long offset) => new Word16LeImageReader(this, offset);
+        /// <inheritdoc/>
         public override EndianImageReader CreateLeReader(long beginOffset, long endOffset) => new Word16LeImageReader(this, beginOffset, endOffset);
+        /// <inheritdoc/>
         public override LeImageWriter CreateLeWriter(Address addr) => throw new NotImplementedException();
+        /// <inheritdoc/>
         public override LeImageWriter CreateLeWriter(long offset) => throw new NotImplementedException();
 
         public uint ReadBeUInt32(long offset)

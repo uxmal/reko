@@ -23,10 +23,14 @@ using Reko.Core.Types;
 
 namespace Reko.Core.Operators
 {
+    /// <summary>
+    /// Models the arithmetic right shift operator.
+    /// </summary>
 	public class SarOperator : BinaryOperator
 	{
         internal SarOperator() : base(OperatorType.Sar) { }
 
+        /// <inheritdoc/>
         public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
@@ -36,11 +40,13 @@ namespace Reko.Core.Operators
                 c1.ToInt64() >> c2.ToInt32());
         }
 
+        /// <inheritdoc/>
         public override string AsCompound()
         {
             return " >>= ";
         }
 
+        /// <inheritdoc/>
         public override string ToString()
 		{
 			return " >> ";

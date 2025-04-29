@@ -18,19 +18,21 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Core.Output
 {
+    /// <summary>
+    /// Formats intermediate representation (IR) code for output.
+    /// </summary>
     public class IRFormatter
     {
         private TextWriter w;
 
+        /// <summary>
+        /// Constructs an instance of <see cref="IRFormatter"/>.
+        /// </summary>
+        /// <param name="w">Output sink.</param>
         public IRFormatter(TextWriter w)
         {
             this.w = w;

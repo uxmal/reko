@@ -66,21 +66,15 @@ namespace Reko.Core
 
         public Identifier EnsureFlagGroup(FlagGroupStorage grf)
         {
-            return EnsureFlagGroup(grf.FlagRegister, grf.FlagGroupBits, grf.Name);
-        }
-
-        public Identifier EnsureFlagGroup(RegisterStorage flagRegister, uint flagGroupBits, string name)
-        {
-            if (!this.grfs.TryGetValue(flagRegister, out var grfs))
+            if (!this.grfs.TryGetValue(grf.FlagRegister, out var grfs))
             {
                 grfs = new Dictionary<uint, Identifier>();
-                this.grfs.Add(flagRegister, grfs);
+                this.grfs.Add(grf.FlagRegister, grfs);
             }
-            if (grfs.TryGetValue(flagGroupBits, out var id))
+            if (grfs.TryGetValue(grf.FlagGroupBits, out var id))
                 return id;
-            var grf = new FlagGroupStorage(flagRegister, flagGroupBits, name);
             id = Identifier.Create(grf);
-            grfs.Add(flagGroupBits, id);
+            grfs.Add(grf.FlagGroupBits, id);
             ids.Add(id);
             return id;
         }

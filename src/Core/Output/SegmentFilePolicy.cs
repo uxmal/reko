@@ -41,6 +41,10 @@ namespace Reko.Core.Output
         private string defaultFile;
         private string defaultDataFile;
 
+        /// <summary>
+        /// Constructs an instance of <see cref="SegmentFilePolicy"/>.
+        /// </summary>
+        /// <param name="program">Program to analyze.</param>
         public SegmentFilePolicy(Program program) : base(program)
         {
             this.segmentFilenames = new Dictionary<ImageSegment, string>();
@@ -49,6 +53,7 @@ namespace Reko.Core.Output
             this.defaultDataFile = "";
         }
 
+        /// <inheritdoc/>
         public override Dictionary<string, IDictionary<Address, IAddressable>> GetObjectPlacements(
             string fileExtension,
             IEventListener listener)
@@ -83,6 +88,7 @@ namespace Reko.Core.Output
             return result;
         }
 
+        /// <inheritdoc/>
         public override Dictionary<string, Dictionary<ImageSegment, List<ImageMapItem>>> GetItemPlacements(string fileExtension)
         {
             var mappedItems = program.GetItemsBySegment();

@@ -23,10 +23,14 @@ using Reko.Core.Types;
 
 namespace Reko.Core.Operators
 {
+    /// <summary>
+    /// Models the signed integer division operator.
+    /// </summary>
 	public class SDivOperator : BinaryOperator
 	{
         internal SDivOperator() : base(OperatorType.SDiv) { }
 
+        /// <inheritdoc/>
         public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
@@ -37,13 +41,15 @@ namespace Reko.Core.Operators
             return Constant.Create(dt, c1.ToInt64() / denom);
 		}
 
+        /// <inheritdoc/>
         public override string AsCompound()
         {
             return " /= ";
         }
 
+        /// <inheritdoc/>
         public override string ToString()
-		{
+        {
 			return " / ";
 		}
 	}

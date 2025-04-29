@@ -54,6 +54,11 @@ namespace Reko.Core.Hll.C
         private State state;
         private bool ignoreTokens;
 
+        /// <summary>
+        /// Creates a C directive lexer.
+        /// </summary>
+        /// <param name="state">Parser state.</param>
+        /// <param name="lexer">Lexer used to tokenize input.</param>
         public CDirectiveLexer(ParserState state, CLexer lexer)
         {
             this.parserState = state;

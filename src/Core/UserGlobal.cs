@@ -65,6 +65,7 @@ namespace Reko.Core
 
         /// <summary>
         /// Generates a default name for the global variable, based on its address.
+        /// </summary>
         public static string GenerateDefaultName(Address address) => $"g_{address.ToLinear():X}";
     }
 }

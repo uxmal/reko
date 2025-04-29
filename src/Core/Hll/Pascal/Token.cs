@@ -18,19 +18,47 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Reko.Core.Hll.Pascal
 {
+
+    /// <summary>
+    /// A Pascal token.
+    /// </summary>
     public class Token
     {
-        public TokenType Type;
+        /// <summary>
+        /// Constructs a token of the specified type.
+        /// </summary>
+        /// <param name="type">Token type.</param>
+        public Token(TokenType type)
+        {
+            Type = type;
+        }
+
+        /// <summary>
+        /// Constructs a token of the specified type and value.
+        /// </summary>
+        /// <param name="type">Token type.</param>
+        /// <param name="value">Token value.</param>
+        public Token(TokenType type, object? value = null)
+        {
+            Type = type;
+            Value = value;
+        }
+
+        /// <summary>
+        /// The <see cref="TokenType" /> of this token.
+        /// </summary>
+        public TokenType Type { get; }
+
+        /// <summary>
+        /// The value of this token.
+        /// </summary>
         public object? Value;
 
+        /// <summary>
+        /// Returns a string representation of this token.
+        /// </summary>
         public override string ToString()
         {
             if (Value is null)
@@ -40,8 +68,12 @@ namespace Reko.Core.Hll.Pascal
         }
     }
 
+    /// <summary>
+    /// An enumeration of the various token types in the Pascal language.
+    /// </summary>
     public enum TokenType
     {
+#pragma warning disable CS1591
         EOF,
 
         Colon,

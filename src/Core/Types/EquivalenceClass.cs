@@ -26,7 +26,7 @@ namespace Reko.Core.Types
 {
 	/// <summary>
 	/// Represents an equivalence class of types; i.e. types that are joined by equalities, function 
-	/// argument assignments, phi function merges &amp;c.
+	/// argument assignments, phi function merges etc.
 	/// </summary>
 	public class EquivalenceClass : DataType
 	{

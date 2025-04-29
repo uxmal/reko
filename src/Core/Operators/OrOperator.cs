@@ -23,10 +23,14 @@ using Reko.Core.Types;
 
 namespace Reko.Core.Operators
 {
+    /// <summary>
+    /// Models the bitwise OR operator.
+    /// </summary>
 	public class OrOperator : BinaryOperator
 	{
         internal OrOperator() : base(OperatorType.Or) { }
 
+        /// <inheritdoc/>
         public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
@@ -41,13 +45,15 @@ namespace Reko.Core.Operators
             }
         }
 
+        /// <inheritdoc/>
         public override string AsCompound()
         {
             return " |= ";
         }
 
+        /// <inheritdoc/>
         public override string ToString()
-		{
+        {
 			return " | ";
 		}
 	}

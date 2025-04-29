@@ -33,7 +33,7 @@ public interface IBinaryHeader
     /// </summary>
     /// <remarks>
     /// The string is in a format suitable for direct
-    /// consumption by Reko (e.g. <see cref="IConfigurationService.GetArchitecture(string)"/>).
+    /// consumption by Reko (e.g. <see cref="Reko.Core.Configuration.IConfigurationService.GetArchitecture(System.String)"/>).
     /// </remarks>
     string Architecture { get; }
 

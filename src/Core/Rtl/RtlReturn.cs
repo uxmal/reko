@@ -50,16 +50,19 @@ namespace Reko.Core.Rtl
         /// </remarks>
         public int ExtraBytesPopped { get; }
 
+        /// <inheritdoc/>
         public override T Accept<T>(RtlInstructionVisitor<T> visitor)
         {
             return visitor.VisitReturn(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(IRtlInstructionVisitor<T, C> visitor, C context)
         {
             return visitor.VisitReturn(this, context);
         }
 
+        /// <inheritdoc/>
         protected override void WriteInner(TextWriter writer)
         {
             writer.Write("return ({0},{1})", ReturnAddressBytes, ExtraBytesPopped);

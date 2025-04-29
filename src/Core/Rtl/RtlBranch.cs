@@ -23,33 +23,46 @@ using System.IO;
 
 namespace Reko.Core.Rtl
 {
+    /// <summary>
+    /// Models a branch instruction in the RTL.
+    /// </summary>
     public sealed class RtlBranch : RtlTransfer
     {
+        /// <summary>
+        /// Constructs an RTL branch instruction.
+        /// </summary>
+        /// <param name="condition">Predicate of the branch condition.</param>
+        /// <param name="target">Target of the branch if the predicate evaluates to 'true'.</param>
+        /// <param name="rtlClass"><see cref="InstrClass"/> of the branch.</param>
         public RtlBranch(Expression condition, Expression target, InstrClass rtlClass) 
             : base(target, rtlClass)
         {
             this.Condition = condition;
         }
 
+        /// <summary>
+        /// Predicate of the branch instruction.
+        /// </summary>
         public Expression Condition { get; }
 
+        /// <inheritdoc/>
         public override T Accept<T>(RtlInstructionVisitor<T> visitor)
         {
             return visitor.VisitBranch(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(IRtlInstructionVisitor<T, C> visitor, C context)
         {
             return visitor.VisitBranch(this, context);
         }
+
+        /// <inheritdoc/>
         protected override void WriteInner(TextWriter writer)
         {
-            if (Condition != null)
-            {
-                writer.Write("if (");
-                writer.Write(Condition);
-                writer.Write(") ");
-            }
+            writer.Write("if (");
+            writer.Write(Condition);
+            writer.Write(") ");
             writer.Write("branch {0}", Target);
         }
     }

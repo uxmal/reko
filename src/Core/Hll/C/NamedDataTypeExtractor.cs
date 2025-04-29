@@ -80,6 +80,7 @@ namespace Reko.Core.Hll.C
             return nt;
         }
 
+        /// <inheritdoc/>
         public Func<NamedDataType, NamedDataType> VisitId(IdDeclarator id)
         {
             return (nt) => new NamedDataType { Name = id.Name, DataType = nt.DataType, Size = nt.Size};

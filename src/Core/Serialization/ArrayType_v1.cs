@@ -28,10 +28,19 @@ using System.Xml.Serialization;
 
 namespace Reko.Core.Serialization
 {
+    /// <summary>
+    /// Serialized representation of an array type.
+    /// </summary>
     public class ArrayType_v1 : SerializedType
     {
+        /// <summary>
+        /// The type of the elements in the array.
+        /// </summary>
         public SerializedType? ElementType;
 
+        /// <summary>
+        /// The number of elements in the array.
+        /// </summary>
         [XmlAttribute("length")]
         [DefaultValue(0)]
         public int Length;

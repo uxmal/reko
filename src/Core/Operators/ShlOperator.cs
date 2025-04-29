@@ -24,10 +24,14 @@ using System;
 
 namespace Reko.Core.Operators
 {
+    /// <summary>
+    /// Models the left shift operator.
+    /// </summary>
 	public class ShlOperator : BinaryOperator
 	{
         internal ShlOperator() : base(OperatorType.Shl) { }
 
+        /// <inheritdoc/>
         public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
@@ -41,10 +45,13 @@ namespace Reko.Core.Operators
                 c1.ToInt64() << c2.ToInt32());
 		}
 
+        /// <inheritdoc/>
         public override string AsCompound()
         {
             return " <<= ";
         }
+
+        /// <inheritdoc/>
         public override string ToString()
 		{
 			return " << ";

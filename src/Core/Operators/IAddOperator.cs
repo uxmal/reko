@@ -32,6 +32,7 @@ namespace Reko.Core.Operators
 	{
         internal IAddOperator() : base(OperatorType.IAdd) { }
 
+        /// <inheritdoc/>
 		public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
@@ -72,11 +73,13 @@ namespace Reko.Core.Operators
             }
         }
 
+        /// <inheritdoc/>
         public override string AsCompound()
         {
             return " += ";
         }
 
+        /// <inheritdoc/>
         public override string ToString()
 		{
 			return " + ";

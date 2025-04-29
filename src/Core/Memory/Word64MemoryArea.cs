@@ -77,57 +77,67 @@ namespace Reko.Core.Memory
             return new Word64BeReader(this, offset);
         }
 
-#pragma warning disable CS1591
+        /// <inheritdoc/>
         public override EndianImageReader CreateBeReader(long offsetBegin, long offsetEnd)
         {
             throw new System.NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override BeImageWriter CreateBeWriter(Address addr)
         {
             throw new System.NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override BeImageWriter CreateBeWriter(long offset)
         {
             throw new System.NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override EndianImageReader CreateLeReader(Address addr)
         {
             throw new System.NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override EndianImageReader CreateLeReader(Address addr, long cUnits)
         {
             throw new System.NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override EndianImageReader CreateLeReader(long offset)
         {
             throw new System.NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override EndianImageReader CreateLeReader(long offsetBegin, long offsetEnd)
         {
             throw new System.NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override LeImageWriter CreateLeWriter(Address addr)
         {
             throw new System.NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override LeImageWriter CreateLeWriter(long offset)
         {
             throw new System.NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override bool TryReadBe(long imageOffset, DataType type, out Constant c)
         {
             throw new System.NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override bool TryReadBeUInt16(long off, out ushort retvalue)
         {
             throw new System.NotImplementedException();
@@ -135,6 +145,7 @@ namespace Reko.Core.Memory
 
 #pragma warning restore CS1591
 
+        /// <inheritdoc/>
         public override bool TryReadBeUInt32(long off, out uint retvalue)
         {
             if (0 <= off && off < Words.Length)
@@ -149,71 +160,85 @@ namespace Reko.Core.Memory
             }
         }
 
+        /// <inheritdoc/>
         public override bool TryReadBeUInt64(long off, out ulong retvalue)
         {
             throw new System.NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override bool TryReadByte(long off, out byte b)
         {
             throw new System.NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override bool TryReadLe(long imageOffset, DataType type, out Constant c)
         {
             throw new System.NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override bool TryReadLeInt32(long off, out int retvalue)
         {
             throw new System.NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override bool TryReadLeUInt16(long off, out ushort retvalue)
         {
             throw new System.NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override bool TryReadLeUInt32(long off, out uint retvalue)
         {
             throw new System.NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override bool TryReadLeUInt64(long off, out ulong retvalue)
         {
             throw new System.NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override void WriteBeUInt16(long off, ushort value)
         {
             throw new System.NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override void WriteBeUInt32(long off, uint value)
         {
             throw new System.NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override void WriteBeUInt64(long off, ulong value)
         {
             throw new System.NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override void WriteByte(long off, byte value)
         {
             throw new System.NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override void WriteLeUInt16(long off, ushort value)
         {
             throw new System.NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override void WriteLeUInt32(long off, uint value)
         {
             throw new System.NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override void WriteLeUInt64(long off, ulong value)
         {
             throw new System.NotImplementedException();

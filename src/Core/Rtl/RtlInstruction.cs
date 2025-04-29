@@ -36,7 +36,24 @@ namespace Reko.Core.Rtl
         /// </summary>
         public InstrClass Class { get; set; }
 
+        /// <summary>
+        /// Accepts a visitor returning <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">Value returned by the visitor.</typeparam>
+        /// <param name="visitor">Visitor returning <typeparamref name="T"/>.</param>
+        /// <returns>The returned value.</returns>
         public abstract T Accept<T>(RtlInstructionVisitor<T> visitor);
+
+        /// <summary>
+        /// Accepts a visitor requiring a context of type <typeparamref name="C"/> and 
+        /// returning <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">Value returned by the visitor.</typeparam>
+        /// <typeparam name="C">Type of the context.</typeparam>
+        /// <param name="visitor">Visitor accepting a context of type 
+        /// <typeparamref name="C"/> and returning <typeparamref name="T"/>.</param>
+        /// <param name="context">Context to pass to the visitor.</param>
+        /// <returns>The returned value.</returns>
         public abstract T Accept<T, C>(IRtlInstructionVisitor<T, C> visitor, C context);
 
         /// <summary>
@@ -47,6 +64,9 @@ namespace Reko.Core.Rtl
         /// </summary>
         public bool NextStatementRequiresLabel { get; set; }
 
+        /// <summary>
+        /// Returns a string representation of this instruction.
+        /// </summary>
         public override string ToString()
         {
             var sw = new StringWriter();
@@ -54,13 +74,26 @@ namespace Reko.Core.Rtl
             return sw.ToString();
         }
 
+        /// <summary>
+        /// Writes a string representation of this instruction to the <paramref name="writer"/>
+        /// </summary>
+        /// <param name="writer">Output sink.</param>
         public void Write(TextWriter writer)
         {
             WriteInner(writer);
         }
 
+        /// <summary>
+        /// Writes a string representation of this instruction to the <paramref name="writer"/>
+        /// </summary>
+        /// <param name="writer">Output sink.</param>
         protected abstract void WriteInner(TextWriter writer);
 
+        /// <summary>
+        /// Formats a <see cref="InstrClass"/> as a string.
+        /// </summary>
+        /// <param name="rtlClass">Value to format.</param>
+        /// <returns>A string representation of the <see cref="InstrClass"/>.</returns>
         public static string FormatClass(InstrClass rtlClass)
         {
             var sb = new StringBuilder();

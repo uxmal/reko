@@ -22,8 +22,16 @@ using Reko.Core.Expressions;
 
 namespace Reko.Core.Rtl
 {
+    /// <summary>
+    /// Abstract base class for all RTL control transfer instructions.
+    /// </summary>
     public abstract class RtlTransfer : RtlInstruction
     {
+        /// <summary>
+        /// Initializes an instance of <see cref="RtlTransfer"/>.
+        /// </summary>
+        /// <param name="target">Destination of the control transfer.</param>
+        /// <param name="rtlClass">Instruction class of this control transfer instruction.</param>
         public RtlTransfer(Expression target, InstrClass rtlClass)
         {
             this.Target = target;

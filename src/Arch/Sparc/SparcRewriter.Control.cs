@@ -36,10 +36,11 @@ namespace Reko.Arch.Sparc
     {
         private Identifier Grf(FlagM grf)
         {
-            return binder.EnsureFlagGroup(
+            var fgs = new FlagGroupStorage(
                 arch.Registers.psr,
                 (uint) grf,
                 arch.GrfToString(arch.Registers.psr, "", (uint) grf));
+            return binder.EnsureFlagGroup(fgs);
         }
 
         private void RewriteBranch(Expression cond)

@@ -19,16 +19,13 @@
 #endregion
 
 using Reko.Core.Types;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Core.Intrinsics
 {
+#pragma warning disable CS1591 
     public class AtomicOps
     {
+
         //$TODO: standard header file
         public static readonly IntrinsicProcedure atomic_compare_exchange_weak = new IntrinsicBuilder("atomic_compare_exchange_weak", true)
             .GenericTypes("T")

@@ -25,24 +25,32 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 // http://www.felix-colibri.com/papers/compilers/pascal_grammar/pascal_grammar.html
 // https://freepascal.org/docs-html/current/prog/progch1.html
 namespace Reko.Core.Hll.Pascal
 {
+    /// <summary>
+    /// A parser for the Pascal language.
+    /// </summary>
     public class PascalParser
     {
         private readonly PascalLexer lexer;
 
+        /// <summary>
+        /// Constructs a Pascal parser.
+        /// </summary>
+        /// <param name="lexer">Pascal lexer.</param>
         public PascalParser(PascalLexer lexer)
         {
             this.lexer = lexer;
         }
 
+        /// <summary>
+        /// Parses a Pascal compilation unit.
+        /// </summary>
+        /// <returns>A list of declarations.
+        /// </returns>
         public List<Declaration> Parse()
         {
             var decls = new List<Declaration>();
@@ -63,6 +71,10 @@ namespace Reko.Core.Hll.Pascal
             return decls;
         }
 
+        /// <summary>
+        /// Parses a Pascal <c>UNIT</c>.
+        /// </summary>
+        /// <returns></returns>
         public List<Declaration> ParseUnit()
         {
             var decls = new List<Declaration>();
@@ -293,6 +305,10 @@ namespace Reko.Core.Hll.Pascal
             }
         }
 
+        /// <summary>
+        /// Parses a Pascal type declaration.
+        /// </summary>
+        /// <returns>A derived class of <see cref="PascalType"/>.</returns>
         public PascalType ParseType()
         {
             switch (lexer.Peek().Type)
@@ -394,7 +410,7 @@ namespace Reko.Core.Hll.Pascal
             }
         }
 
-        public Record ParseRecord()
+        private Record ParseRecord()
         {
             var (fields, variantPart) = ParseFieldList();
             Expect(TokenType.End);
@@ -405,7 +421,7 @@ namespace Reko.Core.Hll.Pascal
             };
         }
 
-        public ObjectType ParseObject()
+        private ObjectType ParseObject()
         {
             var members = new List<Declaration>();
             for (; ;)
@@ -610,6 +626,10 @@ namespace Reko.Core.Hll.Pascal
             };
         }
 
+        /// <summary>
+        /// Parses a Pascal expression.
+        /// </summary>
+        /// <returns>The parsed expression.</returns>
         public Exp ParseExp()
         {
             var term = ParseTerm();

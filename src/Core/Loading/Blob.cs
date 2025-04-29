@@ -46,6 +46,7 @@ namespace Reko.Core.Loading
         /// </summary>
         public byte[] Image { get; }
 
+        /// <inheritdoc/>
         public T Accept<T, C>(ILoadedImageVisitor<T, C> visitor, C context)
         {
             return visitor.VisitBlob(this, context);

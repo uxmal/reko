@@ -24,15 +24,26 @@ using System;
 
 namespace Reko.Core.Operators
 {
+    /// <summary>
+    /// Models a binary conditional operator for unsigned integers.
+    /// </summary>
 	public abstract class UnsignedIntOperator : ConditionalOperator
 	{
+        /// <summary>
+        /// Initializes a conditional operator for unsigned integers.
+        /// </summary>
+        /// <param name="type">Operator type.</param>
         protected UnsignedIntOperator(OperatorType type) : base(type) { }
 	}
 
+    /// <summary>
+    /// Models the unsigned integer less-than operator.
+    /// </summary>
 	public class UltOperator : UnsignedIntOperator
 	{
         internal UltOperator() : base(OperatorType.Ult) { }
 
+        /// <inheritdoc/>
 		public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
@@ -42,17 +53,24 @@ namespace Reko.Core.Operators
 			return Constant.Bool(v1 < v2);
 		}
 
+        /// <inheritdoc/>
         public override Operator Invert() => Uge;
 
+        /// <inheritdoc/>
         public override BinaryOperator Mirror() => Ugt;
 
+        /// <inheritdoc/>
         public override string ToString() => " <u ";
     }
 
+    /// <summary>
+    /// Models the unsigned integer greater-than operator.
+    /// </summary>
     public class UgtOperator : UnsignedIntOperator
 	{
         internal UgtOperator() : base(OperatorType.Ugt) { }
 
+        /// <inheritdoc/>
         public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
@@ -62,17 +80,24 @@ namespace Reko.Core.Operators
             return Constant.Bool(v1 <= v2);
 		}
 
+        /// <inheritdoc/>
         public override Operator Invert() => Ule;
 
+        /// <inheritdoc/>
         public override BinaryOperator Mirror() => Ult;
 
+        /// <inheritdoc/>
         public override string ToString() => " >u ";
     }
 
+    /// <summary>
+    /// Models the unsigned integer less-than-or-equal operator.
+    /// </summary>
     public class UleOperator : UnsignedIntOperator
 	{
         internal UleOperator() : base(OperatorType.Ule) { }
 
+        /// <inheritdoc/>
         public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
@@ -83,17 +108,24 @@ namespace Reko.Core.Operators
             return Constant.Bool(v1 <= v2);
 		}
 
+        /// <inheritdoc/>
         public override Operator Invert() => Ugt;
 
+        /// <inheritdoc/>
         public override BinaryOperator Mirror() => Uge;
 
+        /// <inheritdoc/>
         public override string ToString() => " <=u ";
     }
 
+    /// <summary>
+    /// Models the unsigned integer greater-than-or-equal operator.
+    /// </summary>
     public class UgeOperator : UnsignedIntOperator
 	{
         internal UgeOperator() : base(OperatorType.Uge) { }
 
+        /// <inheritdoc/>
         public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
@@ -104,10 +136,13 @@ namespace Reko.Core.Operators
 			return Constant.Bool(v1 >= v2);
 		}
 
+        /// <inheritdoc/>
         public override Operator Invert() => Ult;
 
+        /// <inheritdoc/>
         public override BinaryOperator Mirror() => Ule;
 
+        /// <inheritdoc/>
         public override string ToString() => " >=u ";
     }
 }

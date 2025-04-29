@@ -29,7 +29,6 @@ namespace Reko.Core
     /// or more parameters, dispatches to sub-services with potentially
     /// different signatures.
     /// </summary>
-    /// <remarks>
     /// An example of a dispatch procedure is the CP/M BDOS service located
     /// at address 0x0005.
     /// </remarks>

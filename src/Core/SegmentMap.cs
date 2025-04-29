@@ -266,8 +266,8 @@ namespace Reko.Core
         /// endianness, byte granularity and other processor-specific details.
         /// </param>
         /// <param name="rdr">The resulting <see cref="EndianImageReader"/> instance.</param>
-        /// <returns>True if an image reader could be created at the requested address,
-        /// otherwise false.
+        /// <returns>True if the reader was created successfully;
+        /// false if the address is not in a segment.
         /// </returns>
         public bool TryCreateImageReader(
             Address address,

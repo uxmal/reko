@@ -24,10 +24,14 @@ using System;
 
 namespace Reko.Core.Operators
 {
+    /// <summary>
+    /// Models the floating point modulo operator.
+    /// </summary>
     public class FModOperator : BinaryOperator
     {
         internal FModOperator() : base(OperatorType.FMod) { }
 
+        /// <inheritdoc/>
         public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
         {
             if (!ValidArgs(c1, c2))
@@ -35,11 +39,13 @@ namespace Reko.Core.Operators
             return BuildConstant(dt, c2.DataType, c1.ToReal64() % c2.ToReal64());
         }
 
+        /// <inheritdoc/>
         public override string AsCompound()
         {
             return " %= ";
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             return " % ";

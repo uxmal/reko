@@ -65,7 +65,7 @@ namespace Reko.Core.Machine
     }
 
     /// <summary>
-    /// This class is the 64-bit version of <see cref="MaskDecoder{TDasm, TMnemonic, TInstr}" />: it performs the same
+    /// This class is the 64-bit version of <see cref="MaskDecoder{A,B,C}" />: it performs the same
     /// function on 64-bit opcodes.
     /// </summary>
     public class WideMaskDecoder<TDasm, TMnemonic, TInstr> : WideDecoder<TDasm, TMnemonic, TInstr>

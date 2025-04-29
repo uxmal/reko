@@ -31,6 +31,8 @@ namespace Reko.Core.Intrinsics
     /// </summary>
     public static class CommonOps
     {
+#pragma warning disable CS1591
+
         // Bit manipulation
         public static readonly IntrinsicProcedure Bit = new IntrinsicBuilder("__bit", false)
             .GenericTypes("TData", "TBit")

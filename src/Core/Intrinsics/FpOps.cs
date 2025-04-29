@@ -31,6 +31,7 @@ namespace Reko.Core.Intrinsics
 
     public static class FpOps
     {
+#pragma warning disable CS1591 
         public static readonly IntrinsicProcedure AcosGeneric = IntrinsicBuilder.GenericUnary("acos");
         public static readonly IntrinsicProcedure AsinGeneric = IntrinsicBuilder.GenericUnary("asin");
         public static readonly IntrinsicProcedure AtanGeneric = IntrinsicBuilder.GenericUnary("atan");

@@ -69,6 +69,12 @@ namespace Reko.Core.Hll.Pascal
         private int lineNumber;
         private State st;
 
+        /// <summary>
+        /// Constructs a Pascal lexer.
+        /// </summary>
+        /// <param name="rdr">Underlying text stream.</param>
+        /// <param name="allowNestedComments">Allow nested comments.
+        /// </param>
         public PascalLexer(TextReader rdr, bool allowNestedComments)
         {
             this.rdr = rdr;
@@ -78,6 +84,10 @@ namespace Reko.Core.Hll.Pascal
             this.allowNestedComments = allowNestedComments;
         }
 
+        /// <summary>
+        /// Read a Pascal token.
+        /// </summary>
+        /// <returns>A <see cref="Token"/> instance.</returns>
         public Token Read()
         {
             if (this.token != null)
@@ -89,6 +99,10 @@ namespace Reko.Core.Hll.Pascal
             return Get();
         }
 
+        /// <summary>
+        /// Peek at the next token without consuming it.
+        /// </summary>
+        /// <returns>A <see cref="Token"/> instance.</returns>
         public Token Peek()
         {
             if (this.token != null)
@@ -445,9 +459,9 @@ namespace Reko.Core.Hll.Pascal
             st = State.Init;
             TokenType tok;
             if (keywords.TryGetValue(str, out tok))
-                return new Token { Type = tok };
+                return new Token(tok);
             else
-                return new Token { Type = TokenType.Id, Value = str };
+                return new Token(TokenType.Id, str);
         }
 
         private void Nyi(State state, char ch)
@@ -458,13 +472,13 @@ namespace Reko.Core.Hll.Pascal
         private Token Tok(TokenType type, object? value = null)
         {
             st = State.Init;
-            return new Token { Type = type, Value = value };
+            return new Token(type, value);
         }
 
         private Token Tok(TokenType type, State st, object? value = null)
         {
             this.st = st;
-            return new Token { Type = type, Value = value };
+            return new Token(type, value);
         }
 
         private static bool IsHexDigit(char ch)

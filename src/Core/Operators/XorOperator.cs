@@ -24,10 +24,14 @@ using System;
 
 namespace Reko.Core.Operators
 {
+    /// <summary>
+    /// Models the bitwise exclusive OR operator.
+    /// </summary>
 	public class XorOperator : BinaryOperator
 	{
         internal XorOperator() : base(OperatorType.Xor) { }
 
+        /// <inheritdoc/>
         public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
@@ -42,10 +46,13 @@ namespace Reko.Core.Operators
             }
         }
 
+        /// <inheritdoc/>
         public override string AsCompound()
         {
             return " ^= ";
         }
+
+        /// <inheritdoc/>
         public override string ToString()
 		{
 			return " ^ ";

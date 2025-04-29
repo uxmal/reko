@@ -31,7 +31,7 @@ namespace Reko.Core.Collections
     /// Represents thread-safe collection that provides notifications
     /// when items get added, removed, or when the whole list is refreshed.
     /// This is lock-based wrapper of
-    /// <see href="Reko.Core.Collections.ObservableRangeCollection{T}{T}"/>.
+    /// <see cref="Reko.Core.Collections.ObservableRangeCollection{T}"/>.
     /// Locks will make the collection thread safe but will also cause
     /// performance to drop if there is contention on the lock.
     /// </summary>

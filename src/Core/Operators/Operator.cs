@@ -30,6 +30,7 @@ namespace Reko.Core.Operators
     /// </summary>
     public abstract class Operator : IFunctionalUnit
     {
+#pragma warning disable CS1591
         public static readonly BinaryOperator IAdd = new IAddOperator();
         public static readonly BinaryOperator ISub = new ISubOperator();
         public static readonly BinaryOperator USub = new USubOperator();
@@ -87,23 +88,53 @@ namespace Reko.Core.Operators
         public static readonly UnaryOperator AddrOf = new AddressOfOperator();
 
         public static readonly BinaryOperator Comma = new CommaOperator();
+#pragma warning restore CS1591
 
+        /// <summary>
+        /// Initializes the operator with the given operator type.
+        /// </summary>
+        /// <param name="type">Operator type for this operator.</param>
         protected Operator(OperatorType type)
         {
             this.Type = type;
         }
 
+        /// <summary>
+        /// The operator type for this operator.
+        /// </summary>
         public OperatorType Type { get; }
 
+        /// <summary>
+        /// Applies this operator to the given constant values and data type.
+        /// </summary>
+        /// <param name="dt">Data type of the result.</param>
+        /// <param name="cs">Constants to apply.</param>
+        /// <returns></returns>
         public abstract Constant ApplyConstants(DataType dt, params Constant[] cs);
 
+        /// <summary>
+        /// Create an expression for this operator, using the given data type and expressions.
+        /// </summary>
+        /// <param name="dt">Data type of the result.</param>
+        /// <param name="exprs">Expressions to use.</param>
+        /// <returns>An operation consisting of this operator and the operands <paramref name="exprs"/>.</returns>
         public abstract Expression Create(DataType dt, params Expression[] exprs);
 
+        /// <summary>
+        /// Attempt to convert this operator to a compound assignment operator.
+        /// </summary>
+        /// <returns>The symbol for a compound assignment.</returns>
+        //$REVIEW: this probably belongs in a C/C++-specific output stage.
         public virtual string AsCompound()
         {
             throw new NotSupportedException($"The {this} operator can't be used in a compound assignment.");
         }
 
+        /// <summary>
+        /// Inverts the operator logically; e.g. the inverse of '==' is '!='.
+        /// </summary>
+        /// <returns>The inverted operation.</returns>
+        /// <exception cref="NotImplementedException"></exception>
         public virtual Operator Invert()
 		{
 			throw new NotImplementedException();

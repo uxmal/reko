@@ -132,7 +132,8 @@ namespace Reko.Core.Collections
     /// <summary>
     /// Interval Tree class
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">Key Type.</typeparam>
+    /// <typeparam name="TypeValue">Value type.</typeparam>
     /// <typeparam name="TypeValue"></typeparam>
     public class IntervalTree<T, TypeValue> :
         IEnumerable<KeyValuePair<Interval<T>, TypeValue>>
@@ -182,9 +183,9 @@ namespace Reko.Core.Collections
         /// other data structure for better performance depending on your
         /// problem needs.
         /// </summary>
-        /// <param name="x">Start position.</param>
-        /// <param name="y">End position.</param>
-        /// <param name="value">Value.</param>
+        /// <param name="x">Start of the interval.</param>
+        /// <param name="y">End of the interval.</param>
+        /// <param name="value">Value to place at the interval.</param>
         public void Add(T x, T y, TypeValue value)
         {
             Add(new Interval<T>(x, y), value);
@@ -202,8 +203,8 @@ namespace Reko.Core.Collections
         /// data structure for better performance depending on your problem
         /// needs
         /// </summary>
-        /// <param name="interval">The interval.</param>
-        /// <param name="value">The value at the interval.</param>
+        /// <param name="interval">The interval to add.</param>
+        /// <param name="value">The value to place at the interval.</param>
         public bool Add(Interval<T> interval, TypeValue value)
         {
             bool wasAdded = false;
@@ -455,7 +456,7 @@ namespace Reko.Core.Collections
         /// <param name="subtree">The subtree.</param>
         /// <param name="data">The data.</param>
         /// <param name="value">The retrieved value.</param>
-        /// <returns></returns>
+        /// <returns>True if a value was found; otherwise false.</returns>
         private bool TryGetIntervalImpl(IntervalNode? subtree, Interval<T> data, [MaybeNullWhen(false)] out TypeValue value)
         {
             if (subtree != null)
@@ -549,8 +550,11 @@ namespace Reko.Core.Collections
             /// Adds the specified elem.
             /// </summary>
             /// <param name="elem">The elem.</param>
-            /// <param name="interval">The data.</param>
-            /// <returns></returns>
+            /// <param name="interval">The interval where it is to be added.</param>
+            /// <param name="value">The data.</param>
+            /// <param name="wasAdded">True if the data was added.</param>
+            /// <param name="wasSuccessful">True if the data was added successfully.</param>
+            /// <returns>A new interval node.</returns>
             public static IntervalNode Add(IntervalNode? elem, Interval<T> interval, TypeValue value, ref bool wasAdded, ref bool wasSuccessful)
             {
                 if (elem == null)
@@ -818,6 +822,8 @@ namespace Reko.Core.Collections
             /// </summary>
             /// <param name="node">The node.</param>
             /// <param name="arg">The arg.</param>
+            /// <param name="wasDeleted"></param>
+            /// <param name="wasSuccessful"></param>
             /// <returns></returns>
             public static IntervalNode? Delete(IntervalNode node, Interval<T> arg, ref bool wasDeleted, ref bool wasSuccessful)
             {
@@ -986,7 +992,7 @@ namespace Reko.Core.Collections
             /// Returns all intervals beginning at the specified start value. The intervals are sorted based on their End value (i.e. returned in ascending order of their End values)
             /// </summary>
             /// <param name="subtree">The subtree.</param>
-            /// <param name="data">The data.</param>
+            /// <param name="start">The starting position.</param>
             /// <returns></returns>
             public static List<KeyValuePair<Interval<T>, TypeValue>>? GetIntervalsStartingAt(IntervalNode? subtree, T start)
             {

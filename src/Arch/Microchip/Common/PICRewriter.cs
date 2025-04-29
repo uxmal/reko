@@ -105,11 +105,12 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         protected Identifier FlagGroup(FlagM flags)
             => binder.EnsureFlagGroup(
-                PICRegisters.STATUS, 
-                (uint)flags, 
-                arch.GrfToString(PICRegisters.STATUS, 
+                new (
+                    PICRegisters.STATUS, 
+                    (uint)flags, 
+                    arch.GrfToString(PICRegisters.STATUS, 
                     "",
-                    (uint)flags));
+                    (uint)flags)));
 
         protected static MemoryAccess DataMem8(Expression ea)
             => new MemoryAccess(PICRegisters.GlobalData, ea, PrimitiveType.Byte);

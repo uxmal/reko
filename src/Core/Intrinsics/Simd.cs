@@ -27,6 +27,7 @@ namespace Reko.Core.Intrinsics
     /// </summary>
     public static class Simd
     {
+#pragma warning disable CS1591
         public static readonly IntrinsicProcedure Abs = IntrinsicBuilder.SimdUnary("__simd_abs", CommonOps.Abs);
         public static readonly IntrinsicProcedure Add = IntrinsicBuilder.SimdBinary("__simd_add", Operator.IAdd);
         public static readonly IntrinsicProcedure FAbs = IntrinsicBuilder.SimdUnary("__simd_fabs", FpOps.fabs);

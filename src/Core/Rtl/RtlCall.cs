@@ -64,20 +64,23 @@ namespace Reko.Core.Rtl
         /// </summary>
         public int ReturnAddressSize { get; }
 
+
+        /// <inheritdoc/>
         public override T Accept<T>(RtlInstructionVisitor<T> visitor)
         {
             return visitor.VisitCall(this);
         }
 
-
+        /// <inheritdoc/>
         public override T Accept<T,C>(IRtlInstructionVisitor<T,C> visitor, C context)
         {
             return visitor.VisitCall(this, context);
         }
 
+        /// <inheritdoc/>
         protected override void WriteInner(TextWriter writer)
         {
-            if (Architecture != null)
+            if (Architecture is not null)
                 writer.Write("callx {0} {1} ({2})", Architecture.Name, Target, ReturnAddressSize);
             else
                 writer.Write("call {0} ({1})", Target, ReturnAddressSize);

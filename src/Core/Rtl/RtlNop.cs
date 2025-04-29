@@ -32,15 +32,19 @@ namespace Reko.Core.Rtl
             base.Class = InstrClass.Padding | InstrClass.Linear | iclass;
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(RtlInstructionVisitor<T> visitor)
         {
             return visitor.VisitNop(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(IRtlInstructionVisitor<T, C> visitor, C context)
         {
             return visitor.VisitNop(this, context);
         }
+
+        /// <inheritdoc/>
         protected override void WriteInner(TextWriter writer)
         {
             writer.Write("nop");

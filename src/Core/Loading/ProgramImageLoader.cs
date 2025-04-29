@@ -50,7 +50,7 @@ namespace Reko.Core.Loading
         /// </summary>
         /// <param name="address">Optional base address of the program image. If not specified,
         /// use the image format's default loading address.</param>
-        /// <returns>An object implementing the <see href="ILoadedImage>" /> interface.</returns>
+        /// <returns>An object implementing the <see cref="ILoadedImage"/> interface.</returns>
         public abstract Program LoadProgram(Address? address);
         
         /// <summary>

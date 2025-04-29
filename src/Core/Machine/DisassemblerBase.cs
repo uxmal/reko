@@ -152,9 +152,9 @@ namespace Reko.Core.Machine
         /// with the given <paramref name="mnemonic"/>, with the given <see cref="InstrClass"/>
         /// <paramref name="iclass"/>, and with operands generatedby the <paramref name="mutators"/>.
         /// </summary>
-        /// <param name="mnemonic">Mnemonic to use.</param>
-        /// <param name="iclass">Instruction class use.</param>
-        /// <param name="mutators">Operator decoders to use.</param>
+        /// <param name="mnemonic">Mnemonic to give the generated <see cref="MachineInstruction"/>.</param>
+        /// <param name="iclass">Instruction class to give the generated <see cref="MachineInstruction"/>.</param>
+        /// <param name="mutators">Operand decoders that will fill in the instruction.</param>
         /// <returns>An instance of <see cref="InstrDecoder{TDasm, TMnemonic, TInstr}"/>.</returns>
         public static Decoder<TDasm, TMnemonic, TInstr> Instr<TDasm>(TMnemonic mnemonic, InstrClass iclass, params Mutator<TDasm>[] mutators)
             where TDasm : DisassemblerBase<TInstr, TMnemonic>
