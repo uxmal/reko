@@ -19,14 +19,14 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Core.NativeInterface
 {
+    /// <summary>
+    /// Interface used by <see cref="INativeInstruction"/> implementations to render
+    /// disassembled instructions as text.
+    /// </summary>
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     [Guid("62AB8B0D-8181-4F6A-8896-4833D695265A")]
     [ComVisible(true)]
@@ -40,11 +40,40 @@ namespace Reko.Core.NativeInterface
         /// <param name="a"></param>
         [PreserveSig] void AddAnnotation([MarshalAs(UnmanagedType.LPStr)] string? a);
 
+        /// <summary>
+        /// Renders a mnemonic.
+        /// </summary>
+        /// <param name="sMnemonic">Mnemonic to render.</param>
         [PreserveSig] void WriteMnemonic([MarshalAs(UnmanagedType.LPStr)]string sMnemonic);
+
+        /// <summary>
+        /// Renders an address.
+        /// </summary>
+        /// <param name="formattedAddress">Formatted address.</param>
+        /// <param name="uAddr">Address value.</param>
         [PreserveSig] void WriteAddress([MarshalAs(UnmanagedType.LPStr)]string formattedAddress, ulong uAddr);
+
+        /// <summary>
+        /// Skips to the next tab stop.
+        /// </summary>
         [PreserveSig] void Tab();
+
+        /// <summary>
+        /// Renders a string.
+        /// </summary>
+        /// <param name="s">String to render.</param>
         [PreserveSig] void WriteString([MarshalAs(UnmanagedType.LPStr)] string? s);
+
+        /// <summary>
+        /// Renders a character.
+        /// </summary>
+        /// <param name="c">Character to render.</param>
         [PreserveSig] void WriteChar(char c);
+
+        /// <summary>
+        /// Renders an unsigned integer.
+        /// </summary>
+        /// <param name="n">Integer to render.</param>
         [PreserveSig] void WriteUInt32(uint n);
     }
 }

@@ -25,12 +25,11 @@ using System.Xml.Serialization;
 
 namespace Reko.Core.Serialization
 {
+    /// <summary>
+    /// Serialized representation of a system service.
+    /// </summary>
 	public class SerializedService : ProcedureBase_v1
 	{
-		public SerializedService()
-		{
-		}
-
         /// <summary>
         /// If non-null, specifies the address of a dispatcher function.
         /// </summary>
@@ -44,11 +43,18 @@ namespace Reko.Core.Serialization
 		[XmlElement("syscallinfo")]
 		public SyscallInfo_v1? SyscallInfo;
 
+        /// <summary>
+        /// Build a <see cref="SystemService"/> instance from its
+        /// serialized representation.
+        /// </summary>
+        /// <param name="platform"><see cref="IPlatform"/> in question.</param>
+        /// <param name="library">Typelibrary to consult for type references.</param>
+        /// <returns>The deserialized <see cref="SystemService"/>.</returns>
 		public SystemService Build(IPlatform platform, TypeLibrary library)
 		{
 			SystemService svc = new SystemService();
 			svc.Name = Name;
-            if (this.SyscallInfo != null)
+            if (this.SyscallInfo is not null)
             {
                 var syscallinfo = this.SyscallInfo.Build(platform);
                 svc.SyscallInfo = syscallinfo;
@@ -72,17 +78,35 @@ namespace Reko.Core.Serialization
 		}
     }
 
+    /// <summary>
+    /// Serialized representation of a system call info.
+    /// </summary>
 	public class SyscallInfo_v1
 	{
+        /// <summary>
+        /// Interrupt vector number, expressed as a hexadecimal string.
+        /// </summary>
 		[XmlElement("vector")]
 		public string? Vector;
 
+        /// <summary>
+        /// Required register values for this system call.
+        /// </summary>
 		[XmlElement("regvalue")]
 		public SerializedRegValue[]? RegisterValues;
 
+        /// <summary>
+        /// Required values for this system call.
+        /// </summary>
         [XmlElement("stackvalue")]
         public StackValue_v1[]? StackValues;
 
+        /// <summary>
+        /// Build a <see cref="SystemService"/> instance from its
+        /// serialized representation.
+        /// </summary>
+        /// <param name="platform"><see cref="IPlatform"/> in question.</param>
+        /// <returns>The deserialized <see cref="SystemService"/>.</returns>
         public SyscallInfo Build(IPlatform platform)
         {
             var syscallinfo = new SyscallInfo();
@@ -116,18 +140,36 @@ namespace Reko.Core.Serialization
         }
     }
 
+    /// <summary>
+    /// Serialized register value.
+    /// </summary>
     public class SerializedRegValue
 	{
+        /// <summary>
+        /// Register name.
+        /// </summary>
 		[XmlAttribute("reg")]
 		public string? Register;
 
+        /// <summary>
+        /// Register value expressed as a hexadecimal string.
+        /// </summary>
 		[XmlText]
 		public string? Value;
 
+        /// <summary>
+        /// Create an uninitialized instance of <see cref="SerializedRegValue"/>.
+        /// </summary>
 		public SerializedRegValue()
 		{
 		}
 
+        /// <summary>
+        /// Create an initialized instance of <see cref="SerializedRegValue"/>.
+        /// </summary>
+        /// <param name="reg">Register name.</param>
+        /// <param name="val">Register value expressed as a hexadecimal string.
+        /// </param>
 		public SerializedRegValue(string reg, string val)
 		{
 			Register = reg;

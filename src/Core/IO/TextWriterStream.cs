@@ -30,44 +30,58 @@ namespace Reko.Core.IO
     {
         private readonly TextWriter writer;
 
+        /// <summary>
+        /// Creates a new instance of <see cref="TextWriterStream"/>.
+        /// </summary>
+        /// <param name="writer">Text writer wrapped inside the stream.</param>
         public TextWriterStream(TextWriter writer)
         {
             this.writer = writer;
         }
 
+        /// <inheritdoc />
         public override bool CanRead => false;
 
+        /// <inheritdoc />
         public override bool CanSeek => false;
 
+        /// <inheritdoc />
         public override bool CanWrite => true;
 
+        /// <inheritdoc />
         public override long Length => throw new NotSupportedException();
 
+        /// <inheritdoc />
         public override long Position
         {
             get => throw new NotSupportedException();
             set => throw new NotSupportedException();
         }
 
+        /// <inheritdoc />
         public override void Flush()
         {
         }
 
+        /// <inheritdoc />
         public override int Read(byte[] buffer, int offset, int count)
         {
             throw new NotSupportedException();
         }
 
+        /// <inheritdoc />
         public override long Seek(long offset, SeekOrigin origin)
         {
             throw new NotSupportedException();
         }
 
+        /// <inheritdoc />
         public override void SetLength(long value)
         {
             throw new NotSupportedException();
         }
 
+        /// <inheritdoc />
         public override void Write(byte[] buffer, int offset, int count)
         {
             var str = writer.Encoding.GetString(buffer, offset, count);

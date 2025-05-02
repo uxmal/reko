@@ -19,23 +19,40 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
-using System.Text;
 
 namespace Reko.Core.Configuration
 {
+    /// <summary>
+    /// Type library definition.
+    /// </summary>
     public class TypeLibraryDefinition
     {
+        /// <summary>
+        /// Unique identifier for referring to the type library programmatically.
+        /// </summary>
         public string? Name { get; set; }
 
+        /// <summary>
+        /// Optinal comma-separated list of CPU architectures for which this type library is applicable.
+        /// </summary>
         public string? Architecture { get; set; }
 
+        /// <summary>
+        /// Optional name of the module that contains the objects described by the type library.
+        /// </summary>
         public string? Module { get; set; }
 
+        /// <summary>
+        /// CLR type name of the loader that can interpret the contents of the serialized type library.
+        /// </summary>
         public string? Loader { get; set; }
 
+        /// <summary>
+        /// Checks if a given architecture matches any architecture of this type library.
+        /// </summary>
+        /// <param name="archName">Identifier of the architecture to check.</param>
+        /// <returns>True if the architecture is a match; otherwise false.</returns>
         public bool MatchArchitecture(string archName)
         {
             if (Architecture is null)

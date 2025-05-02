@@ -60,12 +60,18 @@ namespace Reko.Core.Collections
 
         private Dictionary<TValue, Node> nodes;
 
+        /// <summary>
+        /// Creates a new fibonacci heap.
+        /// </summary>
         public FibonacciHeap()
         {
             this.nodes = new Dictionary<TValue, Node>();
         }
 
-        public int Count {  get { return n; } }
+        /// <summary>
+        /// Number of items in the heap.
+        /// </summary>
+        public int Count => n;
 
         /**
          * Removes all elements from this heap.
@@ -148,6 +154,11 @@ namespace Reko.Core.Collections
             }
         }
 
+        /// <summary>
+        /// "Decrease the key".
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="k"></param>
         public void decreaseKey(TValue x, TKey k)
         {
             DecreaseKey(nodes[x], x, k);
@@ -358,10 +369,15 @@ namespace Reko.Core.Collections
             return H;
         }
 
+        /// <summary>
+        /// Gets the list of nodes.
+        /// </summary>
+        /// <returns></returns>
         public List<Node> NodeList()
         {
             var l = new List<Node>();
-            if (min != null) min.AddToList(l);
+            if (min is not null)
+                min.AddToList(l);
             return l;
         }
 
@@ -509,6 +525,10 @@ namespace Reko.Core.Collections
                 mark = false;
             }
 
+            /// <summary>
+            /// Add nodes to heap.
+            /// </summary>
+            /// <param name="l"></param>
             public void AddToList(List<Node> l)
             {
                 Node cur = this;

@@ -24,7 +24,10 @@ using System.Xml.Serialization;
 
 namespace Reko.Core.Serialization
 {
-	public class StackVariable_v1 : SerializedKind
+    /// <summary>
+    /// Serialization format for stack variables.
+    /// </summary>
+	public class StackVariable_v1 : SerializedStorage
 	{
 		public StackVariable_v1() {}
 

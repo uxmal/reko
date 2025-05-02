@@ -3,13 +3,13 @@ using Reko.Core.NativeInterface.Interfaces;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Core.NativeInterface
 {
+    /// <summary>
+    /// Standard implementation of <see cref="ISymbolSource"/> for native code.
+    /// </summary>
     public class NativeSymbolSource : ISymbolSource
 	{
         private IProcessorArchitecture arch;
@@ -19,6 +19,12 @@ namespace Reko.Core.NativeInterface
 
 		private const string SYM_NAME = "gSymProvider";
 
+        /// <summary>
+        /// Constructs a native symbol source.
+        /// </summary>
+        /// <param name="arch">Processor architecture.</param>
+        /// <param name="libPath">File system path to the symbol source.</param>
+        /// <param name="ldr"><see cref="ILibraryLoader"/> instance used to load native code.</param>
 		public NativeSymbolSource(IProcessorArchitecture arch, string libPath, ILibraryLoader ldr)
 		{
             this.arch = arch;
@@ -29,16 +35,19 @@ namespace Reko.Core.NativeInterface
 			prv = (NativeSymbolSourceProvider)Marshal.PtrToStructure(gSymProvider, typeof(NativeSymbolSourceProvider))!;
 		}
 
+        /// <inheritdoc/>
 		public bool CanLoad(string filename, byte[] fileContents)
 		{
 			return false;
 		}
 
+        /// <inheritdoc/>
 		public void Dispose()
 		{
 			prv.Dispose();
 		}
 
+        /// <inheritdoc/>
 		public List<ImageSymbol> GetAllSymbols()
 		{
 			//TODO: ask if number of symbols is available and preallocate list

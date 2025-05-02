@@ -62,12 +62,6 @@ namespace Reko.Core.Output
 			MakePrefix();
 		}
 
-        [Obsolete("", true)]
-		public TextWriter InnerTextWriter
-		{
-			get { return writer; }
-		}
-
         /// <summary>
         /// De-indent one tab stop.
         /// </summary>
@@ -85,13 +79,6 @@ namespace Reko.Core.Output
 		private void MakePrefix()
 		{
 			prefix = useTabs ? new String('\t', tabStops) : new String(' ', tabStops * tabWidth);
-		}
-
-        [Obsolete("", true)]
-		public bool SuspendIndent
-        {
-			get { return !writePrefix; }
-			set { writePrefix = !value; }
 		}
 
         /// <summary>

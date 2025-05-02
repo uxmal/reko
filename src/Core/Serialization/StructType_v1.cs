@@ -19,14 +19,15 @@
 #endregion
 
 using Reko.Core.Types;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 using System.Xml.Serialization;
 
 namespace Reko.Core.Serialization
 {
+    /// <summary>
+    /// Serialization format for <see cref="StructureType"/>.
+    /// </summary>
 	public class StructType_v1 : SerializedTaggedType
 	{
 		[XmlAttribute("size")]
@@ -44,11 +45,13 @@ namespace Reko.Core.Serialization
 		[XmlElement("field", typeof (StructField_v1))]
 		public StructField_v1[]? Fields;
 
+        /// <inheritdoc/>
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
         {
             return visitor.VisitStructure(this);
         }
 
+        /// <inheritdoc/>
 		public override string ToString()
 		{
 			var sb = new StringBuilder("struct(");

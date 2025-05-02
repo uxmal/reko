@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2025 John Källén.
  *
@@ -23,6 +23,9 @@ using System.Runtime.InteropServices;
 
 namespace Reko.Core.NativeInterface
 {
+    /// <summary>
+    /// Interface implemented by native code disassemblers.
+    /// </summary>
     [ComVisible(true)]
     [Guid("10475E6B-D167-4DB3-B211-610F6073A313")]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -30,6 +33,12 @@ namespace Reko.Core.NativeInterface
     [NativeInterop]
     public interface INativeDisassembler
     {
+        /// <summary>
+        /// Disassembles one instruction.
+        /// </summary>
+        /// <returns>An instance of <see cref="INativeInstruction"/> if all
+        /// went well; otherwise null.
+        /// </returns>
         [PreserveSig] INativeInstruction NextInstruction();
     }
 }

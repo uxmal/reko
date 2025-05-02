@@ -45,6 +45,11 @@ namespace Reko.Core.Lib
             this.exponent = expSign;
         }
 
+        /// <summary>
+        /// Negates the floating point number.
+        /// </summary>
+        /// <param name="a">Number to negate.</param>
+        /// <returns>Negated number.</returns>
         public static Float80 operator - (Float80 a)
         {
             return new Float80((ushort)(a.exponent ^ SignBit), a.significand);
@@ -57,7 +62,7 @@ namespace Reko.Core.Lib
 
         public override string ToString()
         {
-            return ToString("G",System.Globalization.CultureInfo.CurrentCulture);
+            return ToString("G", System.Globalization.CultureInfo.CurrentCulture);
         }
 
         public string ToString(string? format, IFormatProvider? formatProvider)

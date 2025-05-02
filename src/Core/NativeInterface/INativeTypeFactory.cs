@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2025 John Källén.
  *
@@ -19,14 +19,13 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Core.NativeInterface
 {
+    /// <summary>
+    /// Native interface equivalent of <see cref="Types.TypeFactory"/>.
+    /// </summary>
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     [Guid("22D115E1-E432-4FD1-86D6-F42225063768")]
     [ComVisible(true)]
@@ -34,16 +33,62 @@ namespace Reko.Core.NativeInterface
     [NativeInterop]
     public interface INativeTypeFactory
     {
+        /// <summary>
+        /// Creates an array of the specified data type.
+        /// </summary>
+        /// <param name="dt">Element data type.</param>
+        /// <param name="length">Number elements.</param>
+        /// <returns>A handle to the new array type.</returns>
         [PreserveSig] HExpr ArrayOf(HExpr dt, int length);
 
+        /// <summary>
+        /// Creates a pointer to the specified data type.
+        /// </summary>
+        /// <param name="dt">Pointee data type.</param>
+        /// <param name="byte_size">Size of the pointer.</param>
+        /// <returns>A handle to the created pointer.</returns>
         [PreserveSig] HExpr PtrTo(HExpr dt, int byte_size);
 
+        /// <summary>
+        /// Starts a new structure definition.
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <param name="byte_size">Size of the struct is known; or 0 if it isnt.
+        /// </param>
         [PreserveSig] void BeginStruct(HExpr dt, int byte_size);
+
+        /// <summary>
+        /// Adds a field to the current structure definition.
+        /// </summary>
+        /// <param name="dt">Data type of the field.</param>
+        /// <param name="offset">Offset within the structire of that field.</param>
+        /// <param name="name">Optional name of the field.</param>
         [PreserveSig] void Field(HExpr dt, int offset, [MarshalAs(UnmanagedType.LPStr)]  string name);
+
+        /// <summary>
+        /// Finishes the current structure definition.
+        /// </summary>
+        /// <returns>A handle to the structure type.</returns>
         [PreserveSig] HExpr EndStruct();
 
+        /// <summary>
+        /// Starts a function type definition.
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <param name="byte_size">Size of a pointer.</param>
         [PreserveSig] void BeginFunc(HExpr dt, int byte_size);
+
+        /// <summary>
+        /// Adds a parameter to the current function definition.
+        /// </summary>
+        /// <param name="dt">Data type of the parameter.</param>
+        /// <param name="name">Name of teh parameter.</param>
         [PreserveSig] void Parameter(HExpr dt, [MarshalAs(UnmanagedType.LPStr)] string name);
+
+        /// <summary>
+        /// Finishes a function type definition.
+        /// </summary>
+        /// <returns>A handle wrapping <see cref="Types.FunctionType"/>.</returns>
         [PreserveSig] HExpr EndFunc();
     }
 }

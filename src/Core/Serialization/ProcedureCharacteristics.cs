@@ -31,9 +31,17 @@ namespace Reko.Core.Serialization
 	/// </summary>
 	public class ProcedureCharacteristics
 	{
+        /// <summary>
+        /// Creates an empty instance of the <see cref="ProcedureCharacteristics"/> class.
+        /// </summary>
 		public ProcedureCharacteristics()
 		{
 		}
+
+        /// <summary>
+        /// Creates a copy of the given <see cref="ProcedureCharacteristics"/> instance.
+        /// </summary>
+        /// <param name="old">Instance to copy.</param>
 
         public ProcedureCharacteristics(ProcedureCharacteristics old)
         {
@@ -45,6 +53,10 @@ namespace Reko.Core.Serialization
             ReturnAddressAdjustment = old.ReturnAddressAdjustment;
         }
 
+        /// <summary>
+        /// True if this procedure is an alloca() function, i.e. it allocates
+        /// memory on the stack.
+        /// </summary>
 		[XmlElement("is-alloca")]
 		[DefaultValue(false)]
 		public virtual bool IsAlloca { get; set; }
@@ -67,6 +79,9 @@ namespace Reko.Core.Serialization
         [XmlElement("array-size")]
         public ArraySizeCharacteristic? ArraySize { get; set; }
 
+        /// <summary>
+        /// CLR type name of a class that can be used to parse varargs.
+        /// </summary>
         [XmlElement("varargs")]
         public virtual string? VarargsParserClass { get; set; }
 
@@ -85,7 +100,12 @@ namespace Reko.Core.Serialization
         [DefaultValue(0)]
         public int ReturnAddressAdjustment { get; set; }
 
-        public bool IsDefaultCharactaristics { get =>
+        /// <summary>
+        /// True if this instance has the default characteristics.
+        /// </summary>
+        public bool IsDefaultCharactaristics
+        { 
+            get =>
                 IsAlloca == false &&
                 Terminates == false &&
                 Allocator == false &&
@@ -95,6 +115,9 @@ namespace Reko.Core.Serialization
         }
     }
 
+    /// <summary>
+    /// Default procedure characterstics.
+    /// </summary>
 	public class DefaultProcedureCharacteristics : ProcedureCharacteristics
 	{
 		private DefaultProcedureCharacteristics()
@@ -106,20 +129,26 @@ namespace Reko.Core.Serialization
 			Instance = new DefaultProcedureCharacteristics();
 		}
 
+        /// <summary>
+        /// Shared immutable instance.
+        /// </summary>
 		public static DefaultProcedureCharacteristics Instance { get; }
 
+        /// <inheritdoc/>
 		public override bool IsAlloca
 		{
 			get { return base.IsAlloca; }
 			set { throw Invalid(); }
 		}
 
+        /// <inheritdoc/>
 		public override bool Terminates
 		{
 			get { return base.Terminates; }
 			set { throw Invalid(); }
 		}
 
+        /// <inheritdoc/>
         [XmlElement("varargs")]
         public override string? VarargsParserClass { get { return ""; } set { throw Invalid(); } }
 		

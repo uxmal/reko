@@ -25,23 +25,41 @@ using System.Linq;
 
 namespace Reko.Core.Collections
 {
+    /// <summary>
+    /// A collectionof <see cref="Annotation"/>s.
+    /// </summary>
     public class AnnotationList : IEnumerable<Annotation>
     {
+        /// <summary>
+        /// Event that is raised when the list of annotations changes.
+        /// </summary>
         public event EventHandler? AnnotationChanged;
 
         private readonly Dictionary<Address, string> annotations;
 
+        /// <summary>
+        /// Constructs an empty <see cref="AnnotationList"/>.
+        /// </summary>
         public AnnotationList()
         {
             annotations = new Dictionary<Address, string>();
         }
 
+        /// <summary>
+        /// Constructs an <see cref="AnnotationList"/> from a collection of 
+        /// <see cref="Annotation"/>s.
+        /// </summary>
+        /// <param name="annotations"></param>
         public AnnotationList(IEnumerable<Annotation> annotations) : this()
         {
             foreach (var annotation in annotations)
                 this.annotations.Add(annotation.Address, annotation.Text);
         }
 
+        /// <summary>
+        /// Stores an annotation for the specified address.
+        /// </summary>
+        /// <param name="addr">Address at which to place the annotation.</param>
         public string? this[Address addr]
         {
             get
@@ -60,12 +78,17 @@ namespace Reko.Core.Collections
             }
         }
 
+        /// <summary>
+        /// Removes the annotation at the specified address.
+        /// </summary>
+        /// <param name="addr">Address to remove.</param>
         public void Remove(Address addr)
         {
             annotations.Remove(addr);
             AnnotationChanged?.Invoke(this, EventArgs.Empty);
         }
 
+        /// <inheritdoc/>
         public IEnumerator<Annotation> GetEnumerator()
         {
             return annotations

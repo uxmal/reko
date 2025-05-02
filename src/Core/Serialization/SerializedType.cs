@@ -163,6 +163,9 @@ namespace Reko.Core.Serialization
     /// </summary>
     public abstract class SerializedTaggedType : SerializedType
     {
+        /// <summary>
+        /// Name of the tagged type.
+        /// </summary>
         [XmlAttribute("name")]
         public string? Name;
     }

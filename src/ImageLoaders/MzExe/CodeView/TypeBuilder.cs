@@ -178,7 +178,7 @@ namespace Reko.ImageLoaders.MzExe.CodeView
             sig.Arguments = TranslateArgs(p.ParameterCount, p.ParameterTypeList);
         }
 
-        private SerializedKind ReturnTypeStorage(int byteSize)
+        private SerializedStorage ReturnTypeStorage(int byteSize)
         {
             switch (byteSize)
             {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -20,19 +20,24 @@ namespace Reko.Core.NativeInterface
 		public static extern IntPtr GetProcAddress(IntPtr hModule, string procName);
 	}
 
+    /// <summary>
+    /// Windows implementation of <see cref="ILibraryLoader"/>.
+    /// </summary>
 	public class WindowsLibraryLoader : ILibraryLoader
 	{
-
+        /// <inheritdoc/>
 		public IntPtr GetSymbol(IntPtr handle, string symName)
 		{
 			return WindowsNativeMethods.GetProcAddress(handle, symName);
 		}
 
+        /// <inheritdoc/>
 		public IntPtr LoadLibrary(string libPath)
-		{
+        {
 			return WindowsNativeMethods.LoadLibrary(libPath);
 		}
 
+        /// <inheritdoc/>
 		public int Unload(IntPtr handle)
 		{
 			return Convert.ToInt32(

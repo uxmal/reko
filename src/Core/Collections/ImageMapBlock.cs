@@ -27,13 +27,24 @@ namespace Reko.Core.Collections
     /// </summary>
     public class ImageMapBlock : ImageMapItem
     {
-        public Block? Block { get; set; }
+        /// <summary>
+        /// Constructs an instance of <see cref="ImageMapBlock"/>.
+        /// </summary>
+        /// <param name="addr">Address of the block.</param>
 
         public ImageMapBlock(Address addr) : base(addr)
         {
             DataType = new CodeType();
         }
 
+        /// <summary>
+        /// The basic block.
+        /// </summary>
+        public Block? Block { get; set; }
+
+        /// <summary>
+        /// The string representation of the block.
+        /// </summary>
         public override string ToString()
         {
             return "ImageMapBlock: " + Address.ToString() + ", size: " + Size.ToString("X4");

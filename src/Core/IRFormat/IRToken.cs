@@ -20,8 +20,12 @@
 
 namespace Reko.Core.IRFormat
 {
+    /// <summary>
+    /// Token types for the IR parser.
+    /// </summary>
     public enum IRTokenType
     {
+#pragma warning disable CS1591
         None,
 
         EOF,

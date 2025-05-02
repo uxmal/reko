@@ -19,15 +19,15 @@
 #endregion
 
 using Reko.Core.Types;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Core.Serialization
 {
-    public class VoidType_v1 :  SerializedType
+    /// <summary>
+    /// Serialization of <see cref="VoidType"/>.
+    /// </summary>
+    public class VoidType_v1 : SerializedType
     {
+        /// <inheritdoc/>
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
         {
             return visitor.VisitVoidType(this);

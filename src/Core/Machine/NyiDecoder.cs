@@ -34,17 +34,30 @@ namespace Reko.Core.Machine
     {
         private readonly string message;
 
+        /// <summary>
+        /// Constructs a not-yet-implemented decoder.
+        /// </summary>
+        /// <param name="message">Diagnostic message.</param>
         public NyiDecoder(string message)
         {
             this.message = message;
         }
 
+        /// <summary>
+        /// By decoding a NYI instruction, the disassembler will generate a unit test.
+        /// </summary>
+        /// <param name="wInstr"></param>
+        /// <param name="dasm"></param>
+        /// <returns></returns>
         public override TInstr Decode(uint wInstr, TDasm dasm)
         {
             return dasm.NotYetImplemented(message);
         }
     }
 
+    /// <summary>
+    /// Wide version of the <see cref="NyiDecoder{TDasm, TMnemonic, TInstr}"/> class.
+    /// </summary>
     public class WideNyiDecoder<TDasm, TMnemonic, TInstr> : WideDecoder<TDasm, TMnemonic, TInstr>
         where TInstr : MachineInstruction
         where TMnemonic : struct
@@ -52,11 +65,21 @@ namespace Reko.Core.Machine
     {
         private readonly string message;
 
+        /// <summary>
+        /// Constructs a not-yet-implemented decoder.
+        /// </summary>
+        /// <param name="message">Diagnostic message.</param>
         public WideNyiDecoder(string message)
         {
             this.message = message;
         }
 
+        /// <summary>
+        /// By decoding a NYI instruction, the disassembler will generate a unit test.
+        /// </summary>
+        /// <param name="wInstr"></param>
+        /// <param name="dasm"></param>
+        /// <returns></returns>
         public override TInstr Decode(ulong wInstr, TDasm dasm)
         {
             return dasm.NotYetImplemented(message);

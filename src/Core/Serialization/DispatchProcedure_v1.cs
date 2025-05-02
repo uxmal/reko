@@ -18,10 +18,6 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Xml.Serialization;
 
 namespace Reko.Core.Serialization
@@ -33,9 +29,15 @@ namespace Reko.Core.Serialization
     /// </summary>
     public class DispatchProcedure_v1 : ProcedureBase_v1
     {
+        /// <summary>
+        /// Address at which the dispatch procedure is located.
+        /// </summary>
         [XmlAttribute("address")]
         public string? Address;
 
+        /// <summary>
+        /// Sub-services provided by the dispatch procedure.
+        /// </summary>
         [XmlElement("service")]
         public SerializedService[]? Services;
     }

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2025 John Källén.
  *
@@ -27,8 +27,14 @@ using System.Threading.Tasks;
 
 namespace Reko.Core.NativeInterface
 {
+    /// <summary>
+    /// Interoperabilty services between managed and native code.
+    /// </summary>
     public static class Interop
     {
+        /// <summary>
+        /// Mapping from <see cref="BaseType"/> to <see cref="DataType"/>.
+        /// </summary>
         public static readonly Dictionary<BaseType, DataType> DataTypes = new Dictionary<BaseType, DataType>
         {
             { BaseType.Void, VoidType.Instance },

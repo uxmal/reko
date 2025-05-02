@@ -262,11 +262,11 @@ namespace Reko.Core.Hll.C
         /// <param name="paramType"></param>
         /// <param name="attrs"></param>
         /// <returns></returns>
-        public (SerializedKind?, bool isOut) GetArgumentKindFromAttributes(string paramType, List<CAttribute>? attrs)
+        public (SerializedStorage?, bool isOut) GetArgumentKindFromAttributes(string paramType, List<CAttribute>? attrs)
         {
             if (attrs is null)
                 return (null, false);
-            SerializedKind? kind = null;
+            SerializedStorage? kind = null;
             bool isOut = false;
             foreach (var attr in attrs)
             {

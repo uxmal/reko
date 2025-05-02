@@ -111,7 +111,7 @@ namespace Reko.Core.Assemblers
         /// Write a string to the stream using the provided text encoding.
         /// </summary>
         /// <param name="str">Text string to write.</param>
-        /// <param name="encoding">Text encoding to use.</param>
+        /// <param name="encoding">Encoding to use when writing the string.</param>
         void EmitString(string str, Encoding encoding);
 
         /// <summary>

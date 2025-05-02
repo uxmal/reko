@@ -25,20 +25,34 @@ using System.IO;
 
 namespace Reko.Core.Output
 {
+    /// <summary>
+    /// Writes the contents of a <see cref="Program"/> in JSON format.
+    /// </summary>
     public class JsonFormatter : InstructionVisitor
     {
         private readonly JsonWriter w;
 
+        /// <summary>
+        /// Constructs a JSON formatter.
+        /// </summary>
+        /// <param name="w">Output sink.</param>
         public JsonFormatter(TextWriter w)
         {
             this.w = new JsonWriter(w);
         }
 
+        /// <summary>
+        /// Flushes any pending characters to the output device.
+        /// </summary>
         public void Flush()
         {
             w.Flush();
         }
 
+        /// <summary>
+        /// Writes a whole <see cref="Program"/> as JSON.
+        /// </summary>
+        /// <param name="program">Program to format.</param>
         public void WriteProgram(Program program)
         {
             w.WriteStartObject();
@@ -46,22 +60,26 @@ namespace Reko.Core.Output
             w.Write("reko-IR-v1");
             w.WritePropertyName("procs");
             w.WriteStartArray();
-            foreach (var proc in program.Procedures)
+            foreach (var proc in program.Procedures.Values)
             {
-                 WriteProcedure(proc);
+                 WriteProcedure(proc.EntryAddress, proc);
             }
             w.WriteEnd();
             w.WriteEnd();
         }
 
-        public void WriteProcedure(KeyValuePair<Address,Procedure> de)
+        /// <summary>
+        /// Writes a <see cref="Procedure"/> as JSON.
+        /// </summary>
+        /// <param name="addr">Address to format.</param>
+        /// <param name="proc"><see cref="Procedure"/>) to format.</param>
+        public void WriteProcedure(Address addr, Procedure proc)
         {
-            var proc = de.Value;
             w.WriteStartObject();
             w.WritePropertyName("name");
-            w.Write(de.Value.Name);
+            w.Write(proc.Name);
             w.WritePropertyName("addr");
-            w.Write(de.Key.ToString());
+            w.Write(addr.ToString());
             w.WritePropertyName("blocks");
 
             w.WriteStartArray();
@@ -92,61 +110,73 @@ namespace Reko.Core.Output
 
         #region InstructionVisitor methods
 
+        /// <inheritdoc/>
         public void VisitAssignment(Assignment ass)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitBranch(Branch branch)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitCallInstruction(CallInstruction ci)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitComment(CodeComment comment)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitDefInstruction(DefInstruction def)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitGotoInstruction(GotoInstruction g)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitPhiAssignment(PhiAssignment phi)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitReturnInstruction(ReturnInstruction ret)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitSideEffect(SideEffect side)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitStore(Store store)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitSwitchInstruction(SwitchInstruction si)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitUseInstruction(UseInstruction use)
         {
             throw new NotImplementedException();

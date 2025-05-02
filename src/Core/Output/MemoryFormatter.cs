@@ -160,6 +160,14 @@ namespace Reko.Core.Output
             return moreData && rdr.IsValid;
         }
 
+        /// <summary>
+        /// Render a single storage unit's worth of data.
+        /// </summary>
+        /// <param name="addr">Address of the storage unit.</param>
+        /// <param name="c">The numeric value of the unit.</param>
+        /// <param name="output"><see cref="IMemoryFormatterOutput"/> interface to which
+        /// the output is sent.
+        /// </param>
         protected virtual void DoRenderUnit(Address addr, Constant c, IMemoryFormatterOutput output)
         {
             output.RenderUnit(addr, string.Format(hexChunkFormat, c.GetValue()));

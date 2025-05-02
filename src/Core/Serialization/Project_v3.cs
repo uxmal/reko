@@ -27,6 +27,8 @@ using System.Xml.Serialization;
 
 namespace Reko.Core.Serialization
 {
+#pragma warning disable CS1591
+
     public class Heuristic_v3
     {
         [XmlAttribute("name")]

@@ -25,9 +25,24 @@ namespace Reko.Core.Serialization
     /// </summary>
     public class GlobalDataItem_v2
     {
+        /// <summary>
+        /// Address of the global variable.
+        /// </summary>
         public string? Address;
+
+        /// <summary>
+        /// Data type of the global variable.
+        /// </summary>
         public SerializedType? DataType;
+
+        /// <summary>
+        /// Name of the global variable.
+        /// </summary>
         public string? Name;
+
+        /// <summary>
+        /// Optional user comment for the global variable.
+        /// </summary>
         public string? Comment;
     }
 }

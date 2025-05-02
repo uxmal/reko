@@ -26,7 +26,7 @@ namespace Reko.Core.Serialization
 	/// <summary>
 	/// XML format for a FPU stack variable.
 	/// </summary>
-	public class FpuStackVariable_v1 : SerializedKind
+	public class FpuStackVariable_v1 : SerializedStorage
 	{
 		[XmlAttribute("size")]
 		public int ByteSize;

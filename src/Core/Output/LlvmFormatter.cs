@@ -25,15 +25,26 @@ using System.Linq;
 
 namespace Reko.Core.Output
 {
+    /// <summary>
+    /// Formats an instruction in LLVM IR format.
+    /// </summary>
     public class LlvmFormatter : InstructionVisitor
     {
         private readonly TextWriter w;
 
+        /// <summary>
+        /// Constructs an instance of <see cref="LlvmFormatter"/>.
+        /// </summary>
+        /// <param name="writer">Output sink.</param>
         public LlvmFormatter(TextWriter writer)
         {
             this.w = writer;
         }
 
+        /// <summary>
+        /// Writes a whole program.
+        /// </summary>
+        /// <param name="program">Program to write.</param>
         public void Write(Program program)
         {
             //WriteTriple();
@@ -44,6 +55,10 @@ namespace Reko.Core.Output
             }
         }
 
+        /// <summary>
+        /// Writes a procedure in LLVM format.
+        /// </summary>
+        /// <param name="proc"><see cref="Procedure"/> to write.</param>
         public void WriteProcedure(Procedure proc)
         {
             // write attrs
@@ -85,26 +100,32 @@ namespace Reko.Core.Output
         }
 
         #region InstructionVisitor methods
+
+        /// <inheritdoc/>
         public void VisitAssignment(Assignment ass)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitBranch(Branch branch)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitCallInstruction(CallInstruction ci)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitComment(CodeComment comment)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitDefInstruction(DefInstruction def)
         {
             throw new NotImplementedException();
@@ -115,11 +136,13 @@ namespace Reko.Core.Output
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitPhiAssignment(PhiAssignment phi)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitReturnInstruction(ReturnInstruction ret)
         {
             w.Write("ret ");
@@ -129,21 +152,25 @@ namespace Reko.Core.Output
             }
         }
 
+        /// <inheritdoc/>
         public void VisitSideEffect(SideEffect side)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitStore(Store store)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitSwitchInstruction(SwitchInstruction si)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitUseInstruction(UseInstruction use)
         {
             throw new NotImplementedException();

@@ -18,11 +18,8 @@
  */
 #endregion
 
-using Reko.Core.Code;
-using Reko.Core.Expressions;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
-using Reko.Core.Types;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -38,6 +35,10 @@ namespace Reko.Core.Hll.C
     {
         private readonly Program program;
 
+        /// <summary>
+        /// Constructs a new <see cref="UserSignatureBuilder"/> instance.
+        /// </summary>
+        /// <param name="program">Program context.</param>
         public UserSignatureBuilder(Program program)
         {
             this.program = program;
@@ -57,6 +58,12 @@ namespace Reko.Core.Hll.C
             }
         }
 
+        /// <summary>
+        /// Builds a signature for the specified procedure, if there is 
+        /// user data for it.
+        /// </summary>
+        /// <param name="addr">Address of the procedure.</param>
+        /// <param name="proc">Procedure whose signature is to be built.</param>
         public void BuildSignature(Address addr, Procedure proc)
         {
             if (program.User.Procedures.TryGetValue(addr, out var userProc))
@@ -77,6 +84,12 @@ namespace Reko.Core.Hll.C
             }
         }
 
+        /// <summary>
+        /// Given a user procedure, deserialize the signature.
+        /// </summary>
+        /// <param name="userProc">User procedure.</param>
+        /// <param name="proc">Procedure corresponding </param>
+        /// <returns></returns>
         public ProcedureBase_v1? DeserializeSignature(UserProcedure userProc, Procedure proc)
         {
             if (!string.IsNullOrEmpty(userProc.CSignature))
@@ -86,6 +99,11 @@ namespace Reko.Core.Hll.C
             return null;
         }
 
+        /// <summary>
+        /// Parses a C function declaration and returns the signature.
+        /// </summary>
+        /// <param name="fnDecl"></param>
+        /// <returns></returns>
         public ProcedureBase_v1? ParseFunctionDeclaration(string? fnDecl)
         {
             if (string.IsNullOrEmpty(fnDecl))
@@ -97,7 +115,8 @@ namespace Reko.Core.Hll.C
                 var cstate = new ParserState(symbols);
                 var cParser = program.Platform.CreateCParser(rdr, cstate);
                 var decl = cParser.Parse_ExternalDecl();
-                if (decl is null)
+                if (decl is null
+                    )
                     return null;
 
                 //$HACK: Relying on a side effect here to
@@ -117,6 +136,11 @@ namespace Reko.Core.Hll.C
             }
         }
 
+        /// <summary>
+        /// Parses a user's global variable declaration.
+        /// </summary>
+        /// <param name="txtGlobal">Global variable declaration.</param>
+        /// <returns>A global data item.</returns>
         public GlobalDataItem_v2? ParseGlobalDeclaration(string txtGlobal)
         {
             try
@@ -144,10 +168,17 @@ namespace Reko.Core.Hll.C
             }
         }
 
-        //$REFACTOR: this is language and platform dependent.
+        private static readonly Regex regexCIdentifier = new Regex("^[_a-zA-Z][_a-zA-Z0-9]*$");
+
+        /// <summary>
+        /// Determines if the given identifier is a valid C identifier.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static bool IsValidCIdentifier(string id)
         {
-            return Regex.IsMatch(id, "^[_a-zA-Z][_a-zA-Z0-9]*$");
+            //$REFACTOR: this is language and platform dependent.
+            return regexCIdentifier.IsMatch(id);
         }
     }
 }

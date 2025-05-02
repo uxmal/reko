@@ -24,7 +24,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Text;
 
 namespace Reko.Core.Collections
 {
@@ -54,11 +53,18 @@ namespace Reko.Core.Collections
         private readonly KeyCollection keyCollection;
         private readonly ValueCollection valueCollection;
 
+        /// <summary>
+        /// Creates an empty concurrent BTree dictionary.
+        /// </summary>
         public ConcurrentBTreeDictionary() :
             this(Comparer<TKey>.Default)
         {
         }
 
+        /// <summary>
+        /// Creates an empty concurrent BTree dictionary with the specified comparer.
+        /// </summary>
+        /// <param name="cmp">Comparer used to compare elements.</param>
         public ConcurrentBTreeDictionary(IComparer<TKey> cmp)
         {
             this.Comparer = cmp ?? throw new ArgumentNullException(nameof(cmp));
@@ -69,6 +75,10 @@ namespace Reko.Core.Collections
             this.valueCollection = new ValueCollection(this);
         }
 
+        /// <summary>
+        /// Creates a copy from another concurrent btree dictionary.
+        /// </summary>
+        /// <param name="that"></param>
         public ConcurrentBTreeDictionary(ConcurrentBTreeDictionary<TKey, TValue> that)
         {
             this.Comparer = that.Comparer;
@@ -80,6 +90,10 @@ namespace Reko.Core.Collections
             this.root = that.root;  // Snapshot the old tree.
         }
 
+        /// <summary>
+        /// Creates a concurrent BTree dictionary from another dictionary.
+        /// </summary>
+        /// <param name="entries"> Dictionary to copy from.</param>
         public ConcurrentBTreeDictionary(IDictionary<TKey, TValue> entries) :
             this()
         {
@@ -88,6 +102,11 @@ namespace Reko.Core.Collections
             Populate(entries);
         }
 
+        /// <summary>
+        /// Creates a concurrent BTree dictionary from another dictionary, using the specified comparer.
+        /// </summary>
+        /// <param name="entries"> Dictionary to copy from.</param>
+        /// <param name="comparer">Comparer used to compare elements.</param>
         public ConcurrentBTreeDictionary(IDictionary<TKey, TValue> entries, IComparer<TKey> comparer) :
             this(comparer)
         {
@@ -435,6 +454,7 @@ namespace Reko.Core.Collections
             }
         }
 
+        /// <inheritdoc/>
         public TValue this[TKey key]
         {
             get
@@ -460,20 +480,28 @@ namespace Reko.Core.Collections
             }
         }
 
+        /// <summary>
+        /// Comparer used to compare items.
+        /// </summary>
         public IComparer<TKey> Comparer { get; }
 
         ICollection<TKey> IDictionary<TKey, TValue>.Keys => Keys;
 
         ICollection<TValue> IDictionary<TKey, TValue>.Values => Values;
 
+        /// <inheritdoc/>
         public KeyCollection Keys => keyCollection;
 
+        /// <inheritdoc/>
         public ValueCollection Values => valueCollection;
 
+        /// <inheritdoc/>
         public int Count => root != null ? root.totalCount : 0;
 
+        /// <inheritdoc/>
         public bool IsReadOnly => false;
 
+        /// <inheritdoc/>
         public void Add(TKey key, TValue value)
         {
             EnsureRoot();
@@ -488,17 +516,20 @@ namespace Reko.Core.Collections
             Validate(root);
         }
 
+        /// <inheritdoc/>
         public void Add(KeyValuePair<TKey, TValue> item)
         {
             Add(item.Key, item.Value);
         }
 
+        /// <inheritdoc/>
         public void Clear()
         {
             ++version;
             root = null;
         }
 
+        /// <inheritdoc/>
         public bool Contains(KeyValuePair<TKey, TValue> item)
         {
             if (root == null)
@@ -507,6 +538,7 @@ namespace Reko.Core.Collections
             return found && object.Equals(item.Value, value);
         }
 
+        /// <inheritdoc/>
         public bool ContainsKey(TKey key)
         {
             if (root == null)
@@ -515,11 +547,13 @@ namespace Reko.Core.Collections
             return found;
         }
 
+        /// <inheritdoc/>
         public bool ContainsValue(TValue value)
         {
             return this.Any(e => e.Value!.Equals(value));
         }
 
+        /// <inheritdoc/>
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
         {
             if (array == null) throw new ArgumentNullException(nameof(array));
@@ -532,6 +566,7 @@ namespace Reko.Core.Collections
             }
         }
 
+        /// <inheritdoc/>
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
             if (root == null)
@@ -619,6 +654,7 @@ namespace Reko.Core.Collections
             return ~(totalBefore + i);
         }
 
+        /// <inheritdoc/>
         public bool Remove(TKey key)
         {
             if (root == null)
@@ -641,6 +677,7 @@ namespace Reko.Core.Collections
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public bool TryGetValue(TKey key, [NotNullWhen(returnValue: true)] out TValue value)
         {
             if (root == null)
@@ -653,6 +690,13 @@ namespace Reko.Core.Collections
             return found;
         }
 
+        /// <summary>
+        /// Find the first key that is greater than or equal to <paramref name="key"/>.
+        /// </summary>
+        /// <param name="key">Key whose lower bound is to be found.</param>
+        /// <param name="value">Lower bound retrieved.</param>
+        /// <returns>True if a lower bound could be found; otherwise false.
+        /// </returns>
         public bool TryGetLowerBound(TKey key, [MaybeNullWhen(returnValue: false)] out TValue value)
         {
             var snapshot = this.root;
@@ -689,6 +733,13 @@ namespace Reko.Core.Collections
             return set;
         }
 
+        /// <summary>
+        /// Find the first key that is less than or equal to <paramref name="key"/>.
+        /// </summary>
+        /// <param name="key">Key whose upper bound is to be found.</param>
+        /// <param name="value">Upper bound retrieved.</param>
+        /// <returns>True if a upper bound could be found; otherwise false.
+        /// </returns>
         public bool TryGetUpperBound(TKey key, [MaybeNullWhen(returnValue: false)] out TValue value)
         {
             var snapshot = this.root;
@@ -725,6 +776,13 @@ namespace Reko.Core.Collections
             return set;
         }
 
+        /// <summary>
+        /// Find the first key that is greater than or equal to <paramref name="key"/>.
+        /// </summary>
+        /// <param name="key">Key whose lower bound is to be found.</param>
+        /// <param name="closestKey">Lower bound retrieved.</param>
+        /// <returns>True if a lower bound could be found; otherwise false.
+        /// </returns>
         public bool TryGetLowerBoundKey(TKey key, out TKey closestKey)
         {
             var snapshot = this.root;
@@ -761,6 +819,13 @@ namespace Reko.Core.Collections
             return set;
         }
 
+        /// <summary>
+        /// Find the first key that is less than or equal to <paramref name="key"/>.
+        /// </summary>
+        /// <param name="key">Key whose upper bound is to be found.</param>
+        /// <param name="closestKey">Upper bound retrieved.</param>
+        /// <returns>True if a upper bound could be found; otherwise false.
+        /// </returns>
         public bool TryGetUpperBoundKey(TKey key, out TKey closestKey)
         {
             var snapshot = this.root;
@@ -797,6 +862,13 @@ namespace Reko.Core.Collections
             return set;
         }
 
+        /// <summary>
+        /// Find the index of the first key that is greater than or equal to <paramref name="key"/>.
+        /// </summary>
+        /// <param name="key">Key whose lower bound is to be found.</param>
+        /// <param name="closestIndex">Lower bound retrieved.</param>
+        /// <returns>True if a lower bound could be found; otherwise false.
+        /// </returns>
         public bool TryGetLowerBoundIndex(TKey key, out int closestIndex)
         {
             var snapshot = this.root;
@@ -833,6 +905,13 @@ namespace Reko.Core.Collections
             return set;
         }
 
+        /// <summary>
+        /// Find the index of the first key that is less than or equal to <paramref name="key"/>.
+        /// </summary>
+        /// <param name="key">Key whose upper bound is to be found.</param>
+        /// <param name="closestIndex">Upper bound retrieved.</param>
+        /// <returns>True if a upper bound could be found; otherwise false.
+        /// </returns>
         public bool TryGetUpperBoundIndex(TKey key, out int closestIndex)
         {
             var snapshot = this.root;
@@ -935,6 +1014,9 @@ namespace Reko.Core.Collections
 
         #region Debugging code 
 
+        /// <summary>
+        /// Debugging code.
+        /// </summary>
         [Conditional("DEBUG")]
         public void Dump()
         {
@@ -943,6 +1025,9 @@ namespace Reko.Core.Collections
             Dump(root!, 0);
         }
 
+        /// <summary>
+        /// Debugging code.
+        /// </summary>
         [Conditional("DEBUG")]
         private void Dump(Node n, int depth)
         {
@@ -999,37 +1084,57 @@ namespace Reko.Core.Collections
         }
         #endregion
 
+        /// <summary>
+        /// Abstract collection used for projections.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
         public abstract class Collection<T> : ICollection<T>
         {
+            /// <summary>
+            /// Root of the B-tree.
+            /// </summary>
             protected readonly ConcurrentBTreeDictionary<TKey, TValue> btree;
 
+            /// <summary>
+            /// Initializes the collection.
+            /// </summary>
+            /// <param name="btree">Root of the btree.</param>
             protected Collection(ConcurrentBTreeDictionary<TKey, TValue> btree)
             {
                 this.btree = btree;
             }
 
+            /// <inheritdoc/>
             public int Count => btree.Count;
 
+            /// <inheritdoc/>
             public bool IsReadOnly => true;
 
+            /// <inheritdoc/>
             public abstract T this[int index] { get; }
 
+            /// <inheritdoc/>
             public void Add(T item)
             {
                 throw new NotSupportedException();
             }
 
+            /// <inheritdoc/>
             public void Clear()
             {
                 throw new NotSupportedException();
             }
 
+            /// <inheritdoc/>
             public abstract bool Contains(T item);
 
+            /// <inheritdoc/>
             public abstract void CopyTo(T[] array, int arrayIndex);
 
+            /// <inheritdoc/>
             public abstract IEnumerator<T> GetEnumerator();
 
+            /// <inheritdoc/>
             public bool Remove(T item)
             {
                 throw new NotSupportedException();
@@ -1041,6 +1146,9 @@ namespace Reko.Core.Collections
             }
         }
 
+        /// <summary>
+        /// Projection of the keys in the B-tree.
+        /// </summary>
         public class KeyCollection : Collection<TKey>
         {
             internal KeyCollection(ConcurrentBTreeDictionary<TKey, TValue> btree) :
@@ -1048,10 +1156,13 @@ namespace Reko.Core.Collections
             {
             }
 
+            /// <inheritdoc/>
             public override TKey this[int index] => GetEntry(btree.root, index).Key;
 
+            /// <inheritdoc/>
             public override bool Contains(TKey item) => btree.ContainsKey(item);
 
+            /// <inheritdoc/>
             public override void CopyTo(TKey[] array, int arrayIndex)
             {
                 if (array == null) throw new ArgumentNullException(nameof(array));
@@ -1064,11 +1175,16 @@ namespace Reko.Core.Collections
                 }
             }
 
+            /// <inheritdoc/>
             public int IndexOf(TKey item) => btree.IndexOfKey(item);
 
+            /// <inheritdoc/>
             public override IEnumerator<TKey> GetEnumerator() => btree.Select(e => e.Key).GetEnumerator();
         }
 
+        /// <summary>
+        /// Value project of the B-Tree entries.
+        /// </summary>
         public class ValueCollection : Collection<TValue>
         {
             internal ValueCollection(ConcurrentBTreeDictionary<TKey, TValue> btree) :
@@ -1076,10 +1192,13 @@ namespace Reko.Core.Collections
             {
             }
 
+            /// <inheritdoc/>
             public override TValue this[int index] => GetEntry(btree.root, index).Value;
 
+            /// <inheritdoc/>
             public override bool Contains(TValue item) => btree.ContainsValue(item);
 
+            /// <inheritdoc/>
             public override void CopyTo(TValue[] array, int arrayIndex)
             {
                 if (array == null) throw new ArgumentNullException(nameof(array));
@@ -1092,6 +1211,7 @@ namespace Reko.Core.Collections
                 }
             }
 
+            /// <inheritdoc/>
             public override IEnumerator<TValue> GetEnumerator() => btree.Select(e => e.Value).GetEnumerator();
         }
     }

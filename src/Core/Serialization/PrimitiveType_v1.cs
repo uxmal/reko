@@ -122,11 +122,13 @@ namespace Reko.Core.Serialization
 			this.ByteSize = byteSize;
 		}
 
+        /// <inheritdoc/>
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
         {
             return visitor.VisitPrimitive(this);
         }
 
+        /// <inheritdoc/>
 		public override string ToString()
 		{
             var sb = new StringBuilder();

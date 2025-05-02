@@ -149,10 +149,10 @@ namespace Reko.Core
         }
 
         /// <summary>
-        /// Serializes this storage to a <see cref="SerializedKind"/>.
+        /// Serializes this storage to a <see cref="SerializedStorage"/>.
         /// </summary>
         /// <returns>A serialized value.</returns>
-        public virtual SerializedKind Serialize()
+        public virtual SerializedStorage Serialize()
         {
             throw new NotImplementedException(this.GetType().Name + ".Serialize() not implemented.");
         }
@@ -335,7 +335,7 @@ namespace Reko.Core
             Render(renderer, options);
         
         /// <inheritdoc/>
-        public override SerializedKind Serialize()
+        public override SerializedStorage Serialize()
         {
             return new FlagGroup_v1(Name);
         }
@@ -627,7 +627,7 @@ namespace Reko.Core
         }
 
         /// <inheritdoc/>
-        public override SerializedKind Serialize()
+        public override SerializedStorage Serialize()
         {
             return OriginalIdentifier.Storage.Serialize();
         }
@@ -888,7 +888,7 @@ namespace Reko.Core
         }
 
         /// <inheritdoc/>
-        public override SerializedKind Serialize()
+        public override SerializedStorage Serialize()
         {
             return new Register_v1(Name);
         }
@@ -1131,7 +1131,7 @@ namespace Reko.Core
         }
 
         /// <inheritdoc/>
-        public override SerializedKind Serialize()
+        public override SerializedStorage Serialize()
         {
             return new SerializedSequence(this);
         }
@@ -1248,7 +1248,7 @@ namespace Reko.Core
         }
 
         /// <inheritdoc/>
-        public override SerializedKind Serialize()
+        public override SerializedStorage Serialize()
         {
             return new StackVariable_v1();
         }

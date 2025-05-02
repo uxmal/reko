@@ -32,6 +32,11 @@ namespace Reko.Core.Code
     /// </summary>
     public class SwitchInstruction : Instruction
     {
+        /// <summary>
+        /// Constructs an instance of a <see cref="SwitchInstruction"/> instruction.
+        /// </summary>
+        /// <param name="expr">Condition expression.</param>
+        /// <param name="targets">Target blocks.</param>
         public SwitchInstruction(Expression expr, Block[] targets)
         {
             this.Expression = expr;

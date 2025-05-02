@@ -57,18 +57,48 @@ namespace Reko.Core.Machine
         /// </summary>
         Address Address { get; }
 
+        /// <summary>
+        /// Write an address.
+        /// </summary>
+        /// <param name="formattedAddress">Address formatted in the 
+        /// preferred way of this architecture and syntax.</param>
+        /// <param name="addr">Numeric value of the string.</param>
         void WriteAddress(string formattedAddress, Address addr);
-        void WriteFormat(string fmt, params object[] parms);
+
+        /// <summary>
+        /// Writes a format string to the renderer.
+        /// </summary>
+        /// <param name="fmt">Format string.</param>
+        /// <param name="args">Arguments to use in the format string.</param>
+        void WriteFormat(string fmt, params object[] args);
     }
 
+
+    /// <summary>
+    /// Flags conrolling the rendering of machine instructions.
+    /// </summary>
     [Flags]
     [NativeInterop]
     public enum MachineInstructionRendererFlags
     {
+        /// <summary>
+        /// No special flags are set.
+        /// </summary>
         None = 0,
+
+        /// <summary>
+        /// Render the instruction with a specific operand size.
+        /// </summary>
         ExplicitOperandSize = 1,
+
+        /// <summary>
+        /// Resolve PC-relative addresses to their actual address.
+        /// </summary>
         ResolvePcRelativeAddress = 2,
-        RenderInstructionsCanonically = 4,           // Render pseudoinstruction as their 'base' instructions.
+        /// <summary>
+        /// Render pseudoinstructions as their 'base' instructions.
+        /// </summary>
+        RenderInstructionsCanonically = 4,           
     }
 
 
@@ -77,6 +107,13 @@ namespace Reko.Core.Machine
     /// </summary>
     public class MachineInstructionRendererOptions
     {
+        /// <summary>
+        /// Constructs a new instance of the <see cref="MachineInstructionRendererOptions"/> class.
+        /// </summary>
+        /// <param name="syntax">Assembler syntax to use.</param>
+        /// <param name="flags">Machine instruction renderer flags.</param>
+        /// <param name="operandSeparator">String to use for separating operands.</param>
+        /// <param name="platform">Current platform.</param>
         public MachineInstructionRendererOptions(
             string? syntax = "",
             MachineInstructionRendererFlags flags = MachineInstructionRendererFlags.None,
@@ -100,6 +137,9 @@ namespace Reko.Core.Machine
         /// </remarks>
         public string? Syntax { get; }
 
+        /// <summary>
+        /// The flags that control the rendering of assembly language instructions.
+        /// </summary>
         public MachineInstructionRendererFlags Flags { get; }
 
         /// <summary>
@@ -140,6 +180,15 @@ namespace Reko.Core.Machine
             operandSeparator: ",");
     }
 
+    /// <summary>
+    /// Delegate used to resolve a symbol name from an address.
+    /// </summary>
+    /// <param name="addr">Address.</param>
+    /// <param name="symbolName">Symbol name.</param>
+    /// <param name="offset">Offset from the symbol name.</param>
+    /// <returns>
+    /// True if a symbol name could be found; otherwise false.
+    /// </returns>
     public delegate bool SymbolResolver(Address addr, [MaybeNullWhen(false)] out string symbolName, out long offset);
 
     /// <summary>
@@ -150,11 +199,15 @@ namespace Reko.Core.Machine
         private readonly StringBuilder sb;
         private Address addrInstr;
 
+        /// <summary>
+        /// Constructs a new instance of the <see cref="StringRenderer"/> class.
+        /// </summary>
         public StringRenderer() 
         {
             sb = new StringBuilder();
         }
 
+        /// <inheritdoc/>
         public Address Address => addrInstr;
 
         /// <summary>
@@ -165,63 +218,76 @@ namespace Reko.Core.Machine
         {
         }
 
+        /// <inheritdoc/>
         public void BeginInstruction(Address addr)
         {
             this.addrInstr = addr;
         }
 
+        /// <inheritdoc/>
         public void EndInstruction()
         {
         }
 
+        /// <inheritdoc/>
         public void BeginOperand()
         {
         }
 
+        /// <inheritdoc/>
         public void EndOperand()
         {
         }
 
+        /// <inheritdoc/>
         public void WriteMnemonic(string sMnemonic)
         {
             sb.Append(sMnemonic);
         }
 
+        /// <inheritdoc/>
         public void Tab()
         {
             sb.Append('\t');
         }
 
+        /// <inheritdoc/>
         public void WriteAddress(string formattedAddress, Address addr)
         {
             sb.Append(formattedAddress);
         }
 
+        /// <inheritdoc/>
         public void WriteAddress(string formattedAddress, ulong uAddr)
         {
             WriteAddress(formattedAddress, Address.Ptr64(uAddr));
         }
 
+        /// <inheritdoc/>
         public void WriteChar(char c)
         {
             sb.Append(c);
         }
 
+        /// <inheritdoc/>
         public void WriteString(string? s)
         {
             sb.Append(s);
         }
 
+        /// <inheritdoc/>
         public void WriteUInt32(uint u)
         {
             sb.Append(u);
         }
 
+        /// <inheritdoc/>
         public void WriteFormat(string fmt, params object[] parms)
         {
             sb.AppendFormat(fmt, parms);
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             return sb.ToString();

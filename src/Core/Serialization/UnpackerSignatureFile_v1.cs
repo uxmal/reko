@@ -19,14 +19,14 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 
 namespace Reko.Core.Serialization
 {
+    /// <summary>
+    /// Format of the unpacker signature file.
+    /// </summary>
     [Serializable()]
     [XmlRoot(ElementName="SIGNATURES", Namespace = "", IsNullable = false)]
     public partial class UnpackerSignatureFile_v1
@@ -35,15 +35,28 @@ namespace Reko.Core.Serialization
         public UnpackerSignature_v1[]? Signatures;
     }
 
+    /// <summary>
+    /// Serialization format for a single unpacker signature.
+    /// </summary>
+
     [Serializable]
     public partial class UnpackerSignature_v1
     {
+        /// <summary>
+        /// Name of the signature.
+        /// </summary>
         [XmlElement(ElementName = "NAME", Form = XmlSchemaForm.Unqualified)]
         public string? Name;
 
+        /// <summary>
+        /// Comments about the signature.
+        /// </summary>
         [XmlElement(ElementName = "COMMENTS", Form = XmlSchemaForm.Unqualified)]
         public string? Comments;
 
+        /// <summary>
+        /// Pattern to identify the unpacker.
+        /// </summary>
         [XmlElement(ElementName = "ENTRYPOINT", Form = XmlSchemaForm.Unqualified)]
         public string? EntryPoint;
 

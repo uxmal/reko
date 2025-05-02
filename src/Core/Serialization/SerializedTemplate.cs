@@ -22,12 +22,32 @@ using System.Text;
 
 namespace Reko.Core.Serialization
 {
+    /// <summary>
+    /// Serialization format for a templated type.
+    /// </summary>
     public class SerializedTemplate : SerializedType
     {
+        /// <summary>
+        /// Namespace scope of the type.
+        /// </summary>
         public string[] Scope;
+
+        /// <summary>
+        /// Name of the type.
+        /// </summary>
         public string Name;
+
+        /// <summary>
+        /// Generic type arguments.
+        /// </summary>
         public SerializedType[] TypeArguments;
 
+        /// <summary>
+        /// Constructs a serialized template type.
+        /// </summary>
+        /// <param name="scope"></param>
+        /// <param name="name"></param>
+        /// <param name="typeArguments"></param>
         public SerializedTemplate(string[] scope, string name, SerializedType[] typeArguments)
         {
             this.Scope = scope;
@@ -35,11 +55,13 @@ namespace Reko.Core.Serialization
             this.TypeArguments = typeArguments;
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
         {
             return visitor.VisitTemplate(this);
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             var sb = new StringBuilder();

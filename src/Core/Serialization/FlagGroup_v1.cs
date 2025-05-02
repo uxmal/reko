@@ -23,7 +23,7 @@ using System.Xml.Serialization;
 
 namespace Reko.Core.Serialization
 {
-	public class FlagGroup_v1 : SerializedKind
+	public class FlagGroup_v1 : SerializedStorage
 	{
 		[XmlText]
 		public string? Name;

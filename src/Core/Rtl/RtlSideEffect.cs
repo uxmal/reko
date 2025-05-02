@@ -23,14 +23,26 @@ using System.IO;
 
 namespace Reko.Core.Rtl
 {
+    /// <summary>
+    /// Represents a side effect in the RTL code. This is used to model
+    /// instructions which are executed for their side effects.
+    /// </summary>
     public sealed class RtlSideEffect : RtlInstruction
     {
+        /// <summary>
+        /// Constructs a side effect instruction.
+        /// </summary>
+        /// <param name="sideEffect">Expression evaluated for its side effect.</param>
+        /// <param name="iclass">The <see cref="InstrClass"/> of this instruction.</param>
         public RtlSideEffect(Expression sideEffect, InstrClass iclass)
         {
             this.Expression = sideEffect;
             this.Class = iclass;
         }
 
+        /// <summary>
+        /// Expression to be evaluated for its side effect.
+        /// </summary>
         public Expression Expression { get; }
 
         /// <inheritdoc/>

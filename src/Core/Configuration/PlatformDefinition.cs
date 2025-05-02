@@ -195,6 +195,9 @@ namespace Reko.Core.Configuration
             }
         }
 
+        /// <summary>
+        /// Returns a string representation of the platform definition.
+        /// </summary>
         public override string ToString()
         {
             return Description ?? "";

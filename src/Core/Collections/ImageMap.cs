@@ -192,6 +192,10 @@ namespace Reko.Core.Collections
             }
         }
 
+        /// <summary>
+        /// Make a copy of the image map.
+        /// </summary>
+        /// <returns></returns>
         public ImageMap Clone()
         {
             return new ImageMap(this);
@@ -215,11 +219,15 @@ namespace Reko.Core.Collections
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Terminate any existing item at address <paramref name="addr"/>.
+        /// </summary>
+        /// <param name="addr">Address to terminate block at.</param>
         public void TerminateItem(Address addr)
         {
             if (!TryFindItem(addr, out ImageMapItem? item))
                 return;
-            long delta = addr - item!.Address;
+            long delta = addr - item.Address;
             if (delta == 0)
                 return;
 
@@ -234,6 +242,10 @@ namespace Reko.Core.Collections
             item.Size = (uint) delta;
         }
 
+        /// <summary>
+        /// Remove the item that is exactly at address <paramref name="addr"/>.
+        /// </summary>
+        /// <param name="addr">Address of the item to be removed.</param>
         public void RemoveItem(Address addr)
         {
             if (!TryFindItemExact(addr, out ImageMapItem item))
@@ -299,6 +311,9 @@ namespace Reko.Core.Collections
             }
         }
 
+        /// <summary>
+        /// Debugging method.
+        /// </summary>
         [Conditional("DEBUG")]
         public void Dump()
         {
@@ -316,11 +331,32 @@ namespace Reko.Core.Collections
     /// </summary>
     public class ImageMapItem
     {
-        private uint _size;
-        public uint Size { get { return _size; } set { if ((int) value < 0) throw new ArgumentException(); _size = value; } }
-        public string? Name;
-        public DataType DataType;
 
+        /// <summary>
+        /// The size of the item in bytes.
+        /// </summary>
+        public uint Size
+        { 
+            get { return _size; } 
+            set { if ((int) value < 0) throw new ArgumentException(); _size = value; } 
+        }
+        private uint _size;
+
+        /// <summary>
+        /// Optional name of the item.
+        /// </summary>
+        public string? Name { get; set; }
+
+        /// <summary>
+        /// Data type of the item.
+        /// </summary>
+        public DataType DataType { get; set; }
+
+        /// <summary>
+        /// Constructs an instance of <see cref="ImageMapItem"/>.
+        /// </summary>
+        /// <param name="addr">The address of the item.</param>
+        /// <param name="size">The size of the item.</param>
         public ImageMapItem(Address addr, uint size)
         {
             Address = addr;
@@ -328,27 +364,51 @@ namespace Reko.Core.Collections
             DataType = new UnknownType();
         }
 
+        /// <summary>
+        /// Constructs an instance of <see cref="ImageMapItem"/>
+        /// of unknown size.
+        /// </summary>
+        /// <param name="addr"></param>
         public ImageMapItem(Address addr)
         {
             Address = addr;
             DataType = new UnknownType();
         }
 
+        /// <summary>
+        /// The address of the item.
+        /// </summary>
         public Address Address { get; set; }
 
-        public Address EndAddress { get { return Address + Size; } }
+        /// <summary>
+        /// The end address of the item.
+        /// </summary>
+        public Address EndAddress => Address + Size;
 
+        /// <summary>
+        /// Determines whether the address is contained in the item.
+        /// </summary>
+        /// <param name="addr"></param>
+        /// <returns>True if the address is in range.</returns>
         public bool IsInRange(Address addr)
         {
             return IsInRange(addr.ToLinear());
         }
 
+        /// <summary>
+        /// Determines whether the linear  address is contained in the item.
+        /// </summary>
+        /// <param name="linearAddress"></param>
+        /// <returns>True if the address is in range.</returns>
         public bool IsInRange(ulong linearAddress)
         {
             ulong linItem = Address.ToLinear();
             return linItem <= linearAddress && linearAddress < linItem + Size;
         }
 
+        /// <summary>
+        /// Returns a string representation of the item.
+        /// </summary>
         public override string ToString()
         {
             return string.Format("{0}, size: {1}, type:{2}", Address, Size, DataType);

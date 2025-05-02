@@ -18,21 +18,20 @@
  */
 #endregion
 
-using Reko.Core.Types;
-using System;
-using System.Collections.Generic;
-using System.Xml.Serialization;
-using System.Text;
-
 namespace Reko.Core.Serialization
 {
+    /// <summary>
+    /// Serialized representation of a code type.
+    /// </summary>
     public class CodeType_v1 : SerializedType
     {
+        /// <inheritdoc/>
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
         {
             return visitor.VisitCode(this);
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             return "code";

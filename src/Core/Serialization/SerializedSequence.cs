@@ -24,7 +24,7 @@ using System.Xml.Serialization;
 
 namespace Reko.Core.Serialization
 {
-	public class SerializedSequence : SerializedKind
+	public class SerializedSequence : SerializedStorage
 	{
 		[XmlElement("reg")]
 		public Register_v1[]? Registers;

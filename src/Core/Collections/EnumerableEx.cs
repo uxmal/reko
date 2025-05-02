@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Reko.Core.Collections
@@ -29,6 +30,17 @@ namespace Reko.Core.Collections
     /// </summary>
     public static class EnumerableEx
     {
+        /// <summary>
+        /// Creates a <see cref="SortedList{TKey, TSource}"/> from an <see cref="IEnumerable{TSource}"/>
+        /// </summary>
+        /// <typeparam name="TSource">Type of the input sequence</typeparam>
+        /// <typeparam name="TKey">Key type.</typeparam>
+        /// <param name="source">Input sequence.</param>
+        /// <param name="keySelector">Function to select the <typeparamref name="TKey"/> from
+        /// a <typeparamref name="TSource"/> element.
+        /// </param>
+        /// <returns>A <see cref="SortedList{TKey, TSource}"/>.
+        /// </returns>
         public static SortedList<TKey, TSource> ToSortedList<TSource, TKey>(
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector)
@@ -42,6 +54,21 @@ namespace Reko.Core.Collections
             return list;
         }
 
+        /// <summary>
+        /// Creates a <see cref="SortedList{TKey, TElement}"/> from an <see cref="IEnumerable{TSource}"/>
+        /// </summary>
+        /// <typeparam name="TSource">Type of the input sequence</typeparam>
+        /// <typeparam name="TKey">Key type.</typeparam>
+        /// <typeparam name="TElement">Value type.</typeparam>
+        /// <param name="source">Input sequence.</param>
+        /// <param name="keySelector">Function to select the <typeparamref name="TKey"/> from
+        /// a <typeparamref name="TSource"/> element.
+        /// </param>
+        /// <param name="elementSelector">Function to select the <typeparamref name="TElement"/>
+        /// from a <typeparamref name="TSource"/> element.
+        /// </param>
+        /// <returns>A <see cref="SortedList{TKey, TSource}"/>.
+        /// </returns>
         public static SortedList<TKey, TElement> ToSortedList<TSource, TKey, TElement>(
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector,
@@ -56,6 +83,18 @@ namespace Reko.Core.Collections
             return list;
         }
 
+        /// <summary>
+        /// Creates a <see cref="SortedList{TKey, TSource}"/> from an <see cref="IEnumerable{TSource}"/>
+        /// </summary>
+        /// <typeparam name="TSource">Type of the input sequence</typeparam>
+        /// <typeparam name="TKey">Key type.</typeparam>
+        /// <param name="source">Input sequence.</param>
+        /// <param name="keySelector">Function to select the <typeparamref name="TKey"/> from
+        /// a <typeparamref name="TSource"/> element.
+        /// </param>
+        /// <param name="comparer">Comparer to use in the sorted list.</param>
+        /// <returns>A <see cref="SortedList{TKey, TSource}"/>.
+        /// </returns>
         public static SortedList<TKey, TSource> ToSortedList<TSource, TKey>(
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector,
@@ -70,6 +109,22 @@ namespace Reko.Core.Collections
             return list;
         }
 
+        /// <summary>
+        /// Creates a <see cref="SortedList{TKey, TElement}"/> from an <see cref="IEnumerable{TSource}"/>
+        /// </summary>
+        /// <typeparam name="TSource">Type of the input sequence</typeparam>
+        /// <typeparam name="TKey">Key type.</typeparam>
+        /// <typeparam name="TValue">Value type.</typeparam>
+        /// <param name="source">Input sequence.</param>
+        /// <param name="keySelector">Function to select the <typeparamref name="TKey"/> from
+        /// a <typeparamref name="TSource"/> element.
+        /// </param>
+        /// <param name="valueSelector">Function to select the <typeparamref name="TValue"/>
+        /// from a <typeparamref name="TSource"/> element.
+        /// </param>
+        /// <param name="comparer">Comparer to use in the sorted list.</param>
+        /// <returns>A <see cref="SortedList{TKey, TSource}"/>.
+        /// </returns>
         public static SortedList<TKey, TValue> ToSortedList<TSource, TKey, TValue>(
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector,
@@ -85,12 +140,27 @@ namespace Reko.Core.Collections
             return list;
         }
 
+        /// <summary>
+        /// Creates a <see cref="SortedSet{TElement}"/> from an <see cref="IEnumerable{TElement}"/>.
+        /// </summary>
+        /// <typeparam name="TElement">Element type.</typeparam>
+        /// <param name="source">Input sequece.</param>
+        /// <returns>A <see cref="SortedSet{TElement}"/>.
+        /// </returns>
         public static SortedSet<TElement> ToSortedSet<TElement>(
             this IEnumerable<TElement> source)
         {
             return new SortedSet<TElement>(source);
         }
 
+        /// <summary>
+        /// "Chops up" a sequence of elements into chunks; sub-sequences of a given size.
+        /// </summary>
+        /// <typeparam name="T">Element type.</typeparam>
+        /// <param name="enumerable">Input seqience.</param>
+        /// <param name="chunkSize">Chunk size.</param>
+        /// <returns>A chunked sequence.
+        /// </returns>
         public static IEnumerable<IEnumerable<T>> Chunks<T>(
             this IEnumerable<T> enumerable,
             int chunkSize)
@@ -160,6 +230,12 @@ namespace Reko.Core.Collections
             }
         }
 
+        /// <summary>
+        /// Enqueues a range of items into a queue.
+        /// </summary>
+        /// <typeparam name="T">Item type.</typeparam>
+        /// <param name="queue">Queue to add items to.</param>
+        /// <param name="items">Items to add to queue.</param>
         public static void EnqueueRange<T>(this Queue<T> queue, IEnumerable<T> items)
         {
             foreach (var item in items)

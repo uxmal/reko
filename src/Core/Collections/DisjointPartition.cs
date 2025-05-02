@@ -31,16 +31,28 @@ namespace Reko.Core.Collections
     {
         private readonly Dictionary<T, Set> items;
 
+        /// <summary>
+        /// Creates an empty disjoint partition.
+        /// </summary>
         public DisjointPartition()
         {
             items = new Dictionary<T, Set>();
         }
 
+        /// <summary>
+        /// Adds an item to the partition.
+        /// </summary>
+        /// <param name="item"></param>
         public void Add(T item)
         {
             items.Add(item, new Set(item));
         }
 
+        /// <summary>
+        /// Unifies two sets.
+        /// </summary>
+        /// <param name="x">First set.</param>
+        /// <param name="y">Second set.</param>
         public void Union(T x, T y)
         {
             Set xRoot = FindSet(items[x]);
@@ -60,6 +72,12 @@ namespace Reko.Core.Collections
             }
         }
 
+        /// <summary>
+        /// Find the representative of the set containing the item.
+        /// </summary>
+        /// <param name="item">Item whose representative is to be found.</param>
+        /// <returns>The representative.
+        /// </returns>
         public T Find(T item)
         {
             Set x = items[item];

@@ -40,8 +40,8 @@ namespace Reko.Core.Serialization
         /// <summary>
         /// Constructs an instance of the <see cref="ArgumentDeserializer"/>
         /// </summary>
-        /// <param name="procSer"><see cref="ProcedureSerializer"/> instance used in conjunction<\
-        /// with this class./param>
+        /// <param name="procSer"><see cref="ProcedureSerializer"/> instance used in conjunction
+        /// with this class.</param>
         /// <param name="arch">Processor architecture to use.</param>
         /// <param name="frame">Frame of the calling procedure.</param>
         /// <param name="retAddressOnStack">The size of the return address on the stack.</param>
@@ -187,7 +187,7 @@ namespace Reko.Core.Serialization
             return arg.Kind?.Deserialize(this);
         }
 
-        public Identifier? Deserialize(Argument_v1 arg, SerializedKind kind)
+        public Identifier? Deserialize(Argument_v1 arg, SerializedStorage kind)
         {
             argCur = arg;
             return kind.Deserialize(this);

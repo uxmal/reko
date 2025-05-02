@@ -52,9 +52,23 @@ namespace Reko.Core.Expressions
             this.factory = factory;
         }
 
+        /// <summary>
+        /// Records the data type of an expression.
+        /// </summary>
+        /// <param name="dt">Data type inference.</param>
+        /// <param name="exp">Expression being the target of the inference.</param>
+        /// <returns></returns>
         protected abstract DataType RecordDataType(DataType dt, Expression exp);
+
+        /// <summary>
+        /// Ensures the type variable for the expression has a data type.
+        /// </summary>
+        /// <param name="dt">Data type inference.</param>
+        /// <param name="exp">Expression being the target of the inference.</param>
+        /// <returns></returns>
         protected abstract DataType EnsureDataType(DataType dt, Expression exp);
 
+        /// <inheritdoc />
         public DataType VisitAddress(Address addr)
         {
             var c = addr.ToConstant();
@@ -63,6 +77,7 @@ namespace Reko.Core.Expressions
             return RecordDataType(dt, addr);
         }
 
+        /// <inheritdoc />
         public DataType VisitApplication(Application appl)
         {
             foreach (var a in appl.Arguments)
@@ -87,6 +102,7 @@ namespace Reko.Core.Expressions
             }
             return dt;
         }
+        /// <inheritdoc />
         public DataType VisitArrayAccess(ArrayAccess acc)
         {
             acc.Array.Accept(this);
@@ -99,6 +115,7 @@ namespace Reko.Core.Expressions
             return new NotImplementedException(string.Format("Not implemented: {0}", e));
         }
 
+        /// <inheritdoc />
         public DataType VisitBinaryExpression(BinaryExpression binExp)
         {
             DataType dtLeft = binExp.Left.Accept(this);
@@ -108,14 +125,14 @@ namespace Reko.Core.Expressions
             {
             case OperatorType.IAdd:
                 var dtField = GetPossibleFieldType(dtLeft, dtRight, binExp.Right);
-                if (dtField != null)
+                if (dtField is not null)
                 {
                     dt = dtField;
                 }
                 else
                 {
                     dtField = GetPossibleFieldType(dtRight, dtLeft, binExp.Left);
-                    if (dtField != null)
+                    if (dtField is not null)
                     {
                         dt = dtField;
                     }
@@ -319,6 +336,7 @@ namespace Reko.Core.Expressions
             return dtLeft;
         }
 
+        /// <inheritdoc />
         public DataType VisitCast(Cast cast)
         {
             cast.Expression.Accept(this);
@@ -326,6 +344,7 @@ namespace Reko.Core.Expressions
             return cast.DataType;
         }
 
+        /// <inheritdoc />
         public DataType VisitConditionalExpression(ConditionalExpression cond)
         {
             cond.ThenExp.Accept(this);
@@ -334,6 +353,7 @@ namespace Reko.Core.Expressions
             return RecordDataType(cond.DataType, cond);
         }
 
+        /// <inheritdoc />
         public DataType VisitConditionOf(ConditionOf cof)
         {
             cof.Expression.Accept(this);
@@ -341,6 +361,7 @@ namespace Reko.Core.Expressions
             return cof.DataType;
         }
 
+        /// <inheritdoc />
         public DataType VisitConstant(Constant c)
         {
             var dt = ExistingGlobalField(c) ?? c.DataType;
@@ -355,6 +376,7 @@ namespace Reko.Core.Expressions
             return GetPossibleFieldType(global, PrimitiveType.Int32, c);
         }
 
+        /// <inheritdoc />
         public DataType VisitConversion(Conversion conversion)
         {
             conversion.Expression.Accept(this);
@@ -362,6 +384,7 @@ namespace Reko.Core.Expressions
             return conversion.DataType;
         }
 
+        /// <inheritdoc />
         public DataType VisitDereference(Dereference deref)
         {
             //$TODO: if deref.Expression is of pointer type, this
@@ -369,21 +392,25 @@ namespace Reko.Core.Expressions
             return deref.DataType;
         }
 
+        /// <inheritdoc />
         public DataType VisitFieldAccess(FieldAccess acc)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc />
         public DataType VisitIdentifier(Identifier id)
         {
             return EnsureDataType(id.DataType, id);
         }
 
+        /// <inheritdoc />
         public DataType VisitMemberPointerSelector(MemberPointerSelector mps)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc />
         public DataType VisitMemoryAccess(MemoryAccess access)
         {
             var dtEa = access.EffectiveAddress.Accept(this);
@@ -403,6 +430,7 @@ namespace Reko.Core.Expressions
             return RecordDataType(dt, access);
         }
 
+        /// <inheritdoc />
         public DataType VisitMkSequence(MkSequence seq)
         {
             var dtElems = seq.Expressions.Select(e => e.Accept(this)).ToArray();
@@ -430,6 +458,7 @@ namespace Reko.Core.Expressions
             return dt.Domain == Domain.Selector;
         }
 
+        /// <inheritdoc />
         public DataType VisitOutArgument(OutArgument outArgument)
         {
             var dt = outArgument.Expression.Accept(this);
@@ -438,26 +467,31 @@ namespace Reko.Core.Expressions
             //return RecordDataType(OutPointerTo(outArgument.TypeVariable), exp);
         }
 
+        /// <inheritdoc />
         public DataType VisitPhiFunction(PhiFunction phi)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc />
         public DataType VisitPointerAddition(PointerAddition pa)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc />
         public DataType VisitProcedureConstant(ProcedureConstant pc)
         {
             return pc.DataType;
         }
 
+        /// <inheritdoc />
         public DataType VisitScopeResolution(ScopeResolution scopeResolution)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc />
         public DataType VisitSegmentedAddress(SegmentedPointer address)
         {
             var dtBase = address.BasePointer.Accept(this);
@@ -466,23 +500,27 @@ namespace Reko.Core.Expressions
             return RecordDataType(segptrType, address);
         }
 
+        /// <inheritdoc />
         public DataType VisitSlice(Slice slice)
         {
             slice.Expression.Accept(this);
             return RecordDataType(slice.DataType, slice);
         }
 
+        /// <inheritdoc />
         public DataType VisitStringConstant(StringConstant str)
         {
             return RecordDataType(str.DataType, str);
         }
 
+        /// <inheritdoc />
         public DataType VisitTestCondition(TestCondition tc)
         {
             tc.Expression.Accept(this);
             return RecordDataType(PrimitiveType.Bool, tc);
         }
 
+        /// <inheritdoc />
         public DataType VisitUnaryExpression(UnaryExpression unary)
         {
             var dt = unary.Expression.Accept(this);

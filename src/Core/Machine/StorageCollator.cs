@@ -31,14 +31,20 @@ namespace Reko.Core.Machine
     /// </summary>
     public class StorageCollator : IComparer<Identifier>
     {
-        private readonly IReadOnlyDictionary<StorageDomain, int> collationOrder;
+        private readonly Dictionary<StorageDomain, int> collationOrder;
 
+        /// <summary>
+        /// Constructs a new <see cref="StorageCollator"/> instance.
+        /// </summary>
+        /// <param name="collationOrder">Registers in collation order.
+        /// </param>
         public StorageCollator(RegisterStorage[] collationOrder)
         {
             this.collationOrder = collationOrder.Select((x, i) => (x, i))
                 .ToDictionary(p => p.x.Domain, p => p.i);
         }
 
+        /// <inheritdoc/>
         public int Compare(Identifier? x, Identifier? y)
         {
             if (x is null)

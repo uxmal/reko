@@ -39,6 +39,8 @@ namespace Reko.Core.Serialization
     [XmlRoot(ElementName = "project", Namespace = "http://schemata.jklnet.org/Reko/v4")]
     public class Project_v4 : SerializedProject
     {
+#pragma warning disable CS1591
+
         public const string FileExtension = ".dcproject";
 
         public Project_v4()

@@ -27,6 +27,10 @@ namespace Reko.Core.Rtl
     /// </summary>
     public sealed class RtlNop : RtlInstruction
     {
+        /// <summary>
+        /// Creates a no-op instruction.
+        /// </summary>
+        /// <param name="iclass">Instruction class for the instruction.</param>
         public RtlNop(InstrClass iclass = 0)
         {
             base.Class = InstrClass.Padding | InstrClass.Linear | iclass;

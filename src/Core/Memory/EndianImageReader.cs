@@ -127,7 +127,7 @@ namespace Reko.Core.Memory
         /// Reads a <see cref="Constant"/> of type <paramref name="dataType"/>, 
         /// and advances the reader's current position.
         /// </summary>
-        /// <param name="dataType">Data type of the value to be read.
+        /// <param name="dataType">Data type of the value to be read.</param>
         /// <param name="value">The read value.</param>
         /// <returns>True if the offset position was within bounds; otherwise false.</returns>
         bool TryRead(PrimitiveType dataType, [MaybeNullWhen(false)] out Constant value);
@@ -437,7 +437,7 @@ namespace Reko.Core.Memory
         /// Reads a <see cref="Constant"/> of type <paramref name="dataType"/>, 
         /// and advances the reader's current position.
         /// </summary>
-        /// <param name="dataType">Data type of the value to be read.
+        /// <param name="dataType">Data type of the value to be read.</param>
         /// <param name="c">The read value.</param>
         /// <returns>True if the reader's position was within bounds; otherwise false.</returns>
 		public abstract bool TryRead(PrimitiveType dataType, [MaybeNullWhen(false)] out Constant c);

@@ -49,7 +49,7 @@ namespace Reko.Core.Configuration
         /// <remarks>
         /// When locating and creating architecture instances, Reko
         /// will prefer this property over the <see cref="TypeName"/> property.
-        /// <see cref="Reko.Core.Plugins.IPlugin"/> implementations will typically
+        /// <see cref="Plugins.IPlugin"/> implementations will typically
         /// provide this property in preference to <see cref="TypeName"/>.
         /// </remarks>
         public Type? Type { get; set; }

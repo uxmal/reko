@@ -19,49 +19,77 @@
 #endregion
 
 using Reko.Core.Types;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Xml.Serialization;
 
 namespace Reko.Core.Serialization
 {
     public class SerializedEnumType : SerializedTaggedType
     {
+        /// <summary>
+        /// Size in storage units of the enum type values.
+        /// </summary>
         [XmlAttribute("size")]
         [DefaultValue(0)]
         public int Size;
 
+        /// <summary>
+        /// Type domain for the values -- typically <see cref="Domain.SignedInt"/> or
+        /// <see cref="Domain.UnsignedInt"/>.
+        /// </summary>
         [XmlAttribute("Domain")]
         [DefaultValue(Domain.None)]
         public Domain Domain;
 
+        /// <summary>
+        /// The collection of values of this enumerated type.
+        /// </summary>
         [XmlElement("member")]
         public SerializedEnumValue[]? Values;
 
+        /// <summary>
+        /// Creates an uninitialized serialized enum type.
+        /// </summary>
         public SerializedEnumType()
         {
         }
 
-        public SerializedEnumType(int size, Types.Domain domain, string p)
+        /// <summary>
+        /// Constructs a serialized enum type.
+        /// </summary>
+        /// <param name="size">The size of the enum type values.</param>
+        /// <param name="domain">Type domain for the values -- typically <see cref="Domain.SignedInt"/>
+        /// or <see cref="Domain.UnsignedInt"/>.
+        /// </param>
+        /// <param name="name">Name of the enumerated type.</param>
+        public SerializedEnumType(int size, Types.Domain domain, string name)
         {
             this.Size = size;
             this.Domain = domain;
-            this.Name = p;
+            this.Name = name;
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
         {
             return visitor.VisitEnum(this);
         }
     }
 
+    /// <summary>
+    /// Serialized value of an enumerated type.
+    /// </summary>
     public class SerializedEnumValue
     {
+        /// <summary>
+        /// Name of the value.
+        /// </summary>
         [XmlAttribute("name")]
         public string? Name;
+
+        /// <summary>
+        /// The value of the item.
+        /// </summary>
         [XmlAttribute("value")]
         public int Value;
     }

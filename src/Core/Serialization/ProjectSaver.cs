@@ -30,12 +30,25 @@ using System.Xml;
 
 namespace Reko.Core.Serialization
 {
+    /// <summary>
+    /// This class saves a <see cref="Project"/> to an XML file.
+    /// </summary>
     public class ProjectSaver : ProjectPersister
     {
+        /// <summary>
+        /// Creates an instance of the <see cref="ProjectSaver"/> class.
+        /// </summary>
+        /// <param name="services"><see cref="IServiceProvider"/> instance.</param>
         public ProjectSaver(IServiceProvider services) : base(services)
         {
         }
 
+        /// <summary>
+        /// Saves a V5 project to the given <see cref="XmlWriter"/>.
+        /// </summary>
+        /// <param name="sProject">Serialize project to save.
+        /// </param>
+        /// <param name="xw">Output sink.</param>
         public void Save(Project_v5 sProject, XmlWriter xw)
         {
             var ser = SerializedLibrary.CreateSerializer_v5(typeof(Project_v5));
@@ -68,6 +81,7 @@ namespace Reko.Core.Serialization
             return sp;
         }
 
+        /// <inheritdoc/>
         public DecompilerInput_v5 VisitProgram(ImageLocation projectLocation, Program program)
         {
             var projectPath = projectLocation.FilesystemPath;
@@ -332,6 +346,7 @@ namespace Reko.Core.Serialization
             }
         }
 
+        /// <inheritdoc />
         public MetadataFile_v3 VisitMetadataFile(ImageLocation projectLocation, MetadataFile metadata)
         {
             return new MetadataFile_v3

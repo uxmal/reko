@@ -41,11 +41,13 @@ namespace Reko.Core.Serialization
         [XmlElement("alt", typeof(UnionAlternative_v1))]
         public UnionAlternative_v1[]? Alternatives;
 
+        /// <inheritdoc/>
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
         {
             return visitor.VisitUnion(this);
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();

@@ -29,9 +29,27 @@ namespace Reko.Core.Machine
     /// </summary>
     public static class ProcessorOption
     {
+        /// <summary>
+        /// Option: processor model. Selecting a model chooses several properties 
+        /// of the processor at once.
+        /// </summary>
         public const string Model = "Model";
+
+        /// <summary>
+        /// Option: endianness. This is the byte order of multi-byte values.
+        /// </summary>
         public const string Endianness = "Endianness";
+
+        /// <summary>
+        /// Option: word size. This is the "natural" size of a word in bits.
+        /// </summary>
         public const string WordSize = "WordSize";
+
+        /// <summary>
+        /// Option: ISA (Instruction Set Architecture). This is the set of instructions
+        /// to be used. A Processor architecture may support different ISAs. They usually,
+        /// but not always, are backwards compatible with each other.
+        /// </summary>
         public const string InstructionSet = "ISA";
 
         /// <summary>

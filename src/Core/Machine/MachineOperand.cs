@@ -50,20 +50,30 @@ namespace Reko.Core.Machine
         public void Render(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options);
     }
 
+    /// <summary>
+    /// Abstract base class for implementing machine operands.
+    /// </summary>
     public abstract class AbstractMachineOperand : MachineOperand
 	{
+        /// <inheritdoc/>
         public virtual DataType DataType { get; set; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AbstractMachineOperand"/> class.
+        /// </summary>
+        /// <param name="width"></param>
 		protected AbstractMachineOperand(DataType width)
 		{
 			this.DataType = width;
 		}
 
+        /// <inheritdoc/>
         public sealed override string ToString()
         {
             return ToString(MachineInstructionRendererOptions.Default);
         }
 
+        /// <inheritdoc/>
 		public string ToString(MachineInstructionRendererOptions options)
 		{
             var sr = new StringRenderer();
@@ -71,6 +81,7 @@ namespace Reko.Core.Machine
 			return sr.ToString();
 		}
 
+        /// <inheritdoc/>
         public void Render(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             renderer.BeginOperand();
@@ -78,6 +89,11 @@ namespace Reko.Core.Machine
             renderer.EndOperand();
         }
 
+        /// <summary>
+        /// Derived classes implement this method to render the operand.
+        /// </summary>
+        /// <param name="renderer">Output sink.</param>
+        /// <param name="options">Rendering options.</param>
         protected abstract void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options);
 
         /// <summary>

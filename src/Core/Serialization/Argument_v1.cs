@@ -42,7 +42,7 @@ namespace Reko.Core.Serialization
         /// <param name="type">The serialized data type of the argument.</param>
         /// <param name="kind">The storage type of the argument.</param>
         /// <param name="outParameter">True if this argument is an out parameter.</param>
-        public Argument_v1(string name, SerializedType type, SerializedKind kind, bool outParameter)
+        public Argument_v1(string name, SerializedType type, SerializedStorage kind, bool outParameter)
         {
             Name = name;
             Type = type;
@@ -70,7 +70,7 @@ namespace Reko.Core.Serialization
         [XmlElement("seq", typeof(SerializedSequence))]
         [XmlElement("flag", typeof(FlagGroup_v1))]
         [ReadOnly(true)]
-        public SerializedKind? Kind { get; set; }
+        public SerializedStorage? Kind { get; set; }
 
         /// <summary>
         /// Whether this is an out parameter or not.

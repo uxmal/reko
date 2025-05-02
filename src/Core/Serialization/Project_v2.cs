@@ -23,6 +23,8 @@ using System.Xml.Serialization;
 
 namespace Reko.Core.Serialization
 {
+#pragma warning disable CS1591
+
     public class Script_v2
     {
         [XmlAttribute("enabled")]

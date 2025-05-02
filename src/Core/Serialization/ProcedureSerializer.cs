@@ -71,7 +71,15 @@ namespace Reko.Core.Serialization
         /// Current FPU stack offset.
         /// </summary>
         public int FpuStackOffset { get; set; }
+
+        /// <summary>
+        /// True if FPU stack is growing downwards.
+        /// </summary>
         public bool FpuStackGrowing { get; set; }
+
+        /// <summary>
+        /// True if FPU stack is growing upwards.
+        /// </summary>
         public bool FpuStackShrinking => !FpuStackGrowing;
 
         /// <summary>
@@ -294,6 +302,11 @@ namespace Reko.Core.Serialization
             }
         }
 
+        /// <summary>
+        /// Serializes a function signature to a <see cref="SerializedSignature"/>".
+        /// </summary>
+        /// <param name="sig">Functn signature to serialize.</param>
+        /// <returns>Its serialized counterpart.</returns>
         public SerializedSignature Serialize(FunctionType sig)
         {
             SerializedSignature ssig = new SerializedSignature();
@@ -317,6 +330,12 @@ namespace Reko.Core.Serialization
             return ssig;
         }
 
+        /// <summary>
+        /// Serlizes information about a procedure.
+        /// </summary>
+        /// <param name="proc"></param>
+        /// <param name="addr"></param>
+        /// <returns></returns>
         public Procedure_v1 Serialize(Procedure proc, Address addr)
         {
             var sproc = new Procedure_v1

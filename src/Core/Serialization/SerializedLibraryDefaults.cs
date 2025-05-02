@@ -23,8 +23,14 @@ using System.Xml.Serialization;
 
 namespace Reko.Core.Serialization
 {
+    /// <summary>
+    /// Defaults to serialize for a library.
+    /// </summary>
 	public class SerializedLibraryDefaults
 	{
+        /// <summary>
+        /// Default signature.
+        /// </summary>
 		[XmlElement("signature")]
 		public SerializedSignature? Signature;
 	}

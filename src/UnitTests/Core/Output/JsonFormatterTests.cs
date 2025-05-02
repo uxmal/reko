@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2025 John Källén.
  *
@@ -43,7 +43,7 @@ namespace Reko.UnitTests.Core.Output
 
             var sw = new StringWriter();
             var llvm = new JsonFormatter(sw);
-            llvm.WriteProcedure(new KeyValuePair<Address, Procedure>(Address.Ptr32(0x123400), pb.Procedure));
+            llvm.WriteProcedure(Address.Ptr32(0x123400), pb.Procedure);
             llvm.Flush();
 
             var sActual = sw.ToString();

@@ -23,12 +23,19 @@ using System.Collections.Generic;
 
 namespace Reko.Core.Hll.C
 {
+    /// <summary>
+    /// Lexer that can look ahead in the stream of tokens.
+    /// </summary>
     public class LookAheadLexer
     {
         private readonly StringConcatenator sc;
         private readonly List<CToken> queue;
         private int iRead;
 
+        /// <summary>
+        /// Constructs a look-ahead lexer.
+        /// </summary>
+        /// <param name="sc">String concatenator lexer.</param>
         public LookAheadLexer(StringConcatenator sc)
         {
             this.sc = sc;
@@ -36,8 +43,15 @@ namespace Reko.Core.Hll.C
             iRead= 0;
         }
 
+        /// <summary>
+        /// Current line number.
+        /// </summary>
         public int LineNumber => sc.LineNumber;
 
+        /// <summary>
+        /// Read the next token.
+        /// </summary>
+        /// <returns>The next <see cref="CToken"/> in the input.</returns>
         public CToken Read()
         {
             if (iRead < queue.Count)
@@ -53,6 +67,11 @@ namespace Reko.Core.Hll.C
             return sc.Read();
         }
 
+        /// <summary>
+        /// Peeks at a token in the stream of tokens.
+        /// </summary>
+        /// <param name="n">Number of tokens ahead to parse.</param>
+        /// <returns>The peeked token.</returns>
         public CToken Peek(int n)
         {
             if (n < 0)

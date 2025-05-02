@@ -31,13 +31,51 @@ namespace Reko.Core.Collections
     /// <typeparam name="T"></typeparam>
     public interface IDequeue<T> : IEnumerable<T>
     {
+        /// <summary>
+        /// Peeks at the front item of the dequeue without removing it.
+        /// </summary>
+        /// <returns>The front item.</returns>
         T PeekFront();
+
+        /// <summary>
+        /// Removes the front item from the dequeue and returns it.
+        /// </summary>
+        /// <returns>The front item.</returns>
         T PopFront();
+
+        /// <summary>
+        /// Adds an item to the front of the dequeue.
+        /// </summary>
+        /// <param name="item">Item to add.</param>
         void PushFront(T item);
+
+        /// <summary>
+        /// Peeks at the back item of the dequeue without removing it.
+        /// </summary>
+        /// <returns>The back item.</returns>
         T PeekBack();
+
+        /// <summary>
+        /// Removes the back item from the dequeue and returns it.
+        /// </summary>
+        /// <returns>The back item.
+        /// </returns>
         T PopBack();
+
+        /// <summary>
+        /// Adds an item to the back of the dequeue.
+        /// </summary>
+        /// <param name="item">Item to add.</param>
         void PushBack(T item);
+
+        /// <summary>
+        /// Removes all items from the dequeue.
+        /// </summary>
         void Clear();
+
+        /// <summary>
+        /// Gets the number of items in the dequeue.
+        /// </summary>
         int Count { get; }
     }
 
@@ -51,11 +89,19 @@ namespace Reko.Core.Collections
         private int iFront;
         private int iBack;
 
+        /// <summary>
+        /// Creates an empty dequeue.
+        /// </summary>
         public Dequeue()
         {
             storage = new T[16];
         }
 
+        /// <summary>
+        /// Creates an empty dequeue with the specified capacity.
+        /// </summary>
+        /// <param name="capacity">Starting capacity of the dequeue.
+        /// </param>
         public Dequeue(int capacity)
         {
             storage = new T[capacity];
@@ -63,12 +109,14 @@ namespace Reko.Core.Collections
 
         #region IDequeue<T> Members
 
+        /// <inheritdoc/>
         public T PeekFront()
         {
             EnsureNotEmpty();
             return storage[iFront];
         }
 
+        /// <inheritdoc/>
         public T PopFront()
         {
             EnsureNotEmpty();
@@ -78,6 +126,7 @@ namespace Reko.Core.Collections
             return item;
         }
 
+        /// <inheritdoc/>
         public void PushFront(T item)
         {
             int iFrontNew = (storage.Length + (iFront - 1)) % storage.Length;
@@ -87,12 +136,14 @@ namespace Reko.Core.Collections
             iFront = iFrontNew;
         }
 
+        /// <inheritdoc/>
         public T PeekBack()
         {
             EnsureNotEmpty();
             return storage[iBack - 1];
         }
 
+        /// <inheritdoc/>
         public T PopBack()
         {
             EnsureNotEmpty();
@@ -114,6 +165,7 @@ namespace Reko.Core.Collections
                 throw new InvalidOperationException("Dequeue empty.");
         }
 
+        /// <inheritdoc/>
         public void PushBack(T item)
         {
             int iBackNew = BoundIndex(iBack + 1);
@@ -139,12 +191,14 @@ namespace Reko.Core.Collections
             iBack = i;
         }
 
+        /// <inheritdoc/>
         public void Clear()
         {
             Array.Clear(storage, 0, storage.Length);
             iFront = iBack = 0;
         }
 
+        /// <inheritdoc/>
         public int Count
         {
             get
@@ -160,6 +214,7 @@ namespace Reko.Core.Collections
 
         #region IEnumerable<T> Members
 
+        /// <inheritdoc/>
         public IEnumerator<T> GetEnumerator()
         {
             for (int i = iFront; i != iBack; i = BoundIndex(i + 1))

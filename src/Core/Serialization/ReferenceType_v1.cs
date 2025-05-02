@@ -18,23 +18,33 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace Reko.Core.Serialization
 {
+    /// <summary>
+    /// Serialization format of a C++ reference type.
+    /// </summary>
     public class ReferenceType_v1 : SerializedType
     {
+        /// <summary>
+        /// The type of the referent. This is the type that is referred to by
+        /// the reference.
+        /// </summary>
         public SerializedType? Referent;
+
+        /// <summary>
+        /// The implementation's size of the reference, in storage units.
+        /// </summary>
         public int Size;
 
+        /// <inheritdoc/>
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
         {
             return visitor.VisitReference(this);
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             var sb = new StringBuilder();

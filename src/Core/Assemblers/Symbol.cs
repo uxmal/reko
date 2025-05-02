@@ -35,9 +35,9 @@ namespace Reko.Core.Assemblers
         /// Creates a symbol named <paramref name="s"/>.
         /// </summary>
         /// <param name="s">Name of the symbol.</param>
-		public Symbol(string s)
+		public Symbol(string name)
 		{
-			Name = s;
+			Name = name;
 			IsResolved = false;
 			Offset = 0;
 			Patches = new List<BackPatch>();

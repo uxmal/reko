@@ -19,7 +19,6 @@
 #endregion
 
 using Reko.Core.Lib;
-using Reko.Core.TreeMatching;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -41,31 +40,44 @@ namespace Reko.Core.Machine
         where TInstr : MachineInstruction
         where TMnemonic : struct
     {
+        /// <inheritdoc/>
         public Enumerator GetEnumerator() => new Enumerator(this);
 
         IEnumerator<TInstr> IEnumerable<TInstr>.GetEnumerator() => GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
+        /// <summary>
+        /// Enumerator class for iterating through instructions.
+        /// </summary>
         public struct Enumerator : IEnumerator<TInstr>
         {
             private readonly DisassemblerBase<TInstr, TMnemonic> dasm;
             private TInstr current;
 
-            public Enumerator(DisassemblerBase<TInstr, TMnemonic> disassemblerBase)
+            /// <summary>
+            /// Constructs an instance of <see cref="Enumerator"/>.
+            /// </summary>
+            /// <param name="dasm">Disassembler to use when decoding an
+            /// instruction.
+            /// </param>
+            public Enumerator(DisassemblerBase<TInstr, TMnemonic> dasm)
             {
-                this.dasm = disassemblerBase;
+                this.dasm = dasm;
                 this.current = default!;
             }
 
+            /// <inheritdoc/>
             public readonly TInstr Current => this.current;
 
             readonly object IEnumerator.Current => this.current;
 
+            /// <inheritdoc/>
             public readonly void Dispose()
             {
             }
 
+            /// <inheritdoc/>
             public bool MoveNext()
             {
                 var instr = dasm.DisassembleInstruction();
@@ -75,6 +87,9 @@ namespace Reko.Core.Machine
                 return true;
             }
 
+
+            /// <inheritdoc/>
+            /// <exception cref="NotSupportedException"></exception>
             public readonly void Reset()
             {
                 throw new NotSupportedException();

@@ -20,12 +20,27 @@
 
 namespace Reko.Core.Serialization
 {
+    /// <summary>
+    /// Serialization of a member pointer type.
+    /// </summary>
     public class MemberPointer_v1 : SerializedType
     {
+        /// <summary>
+        /// The class that contains the member pointer.
+        /// </summary>
         public TypeReference_v1? DeclaringClass;
+
+        /// <summary>
+        /// The member that is pointed to.
+        /// </summary>
         public SerializedType? MemberType;
+
+        /// <summary>
+        /// Size of the pointer in storage units.
+        /// </summary>
         public int Size;
 
+        /// <inheritdoc/>
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
         {
             return visitor.VisitMemberPointer(this);

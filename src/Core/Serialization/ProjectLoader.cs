@@ -43,6 +43,9 @@ namespace Reko.Core.Serialization
     /// </summary>
     public class ProjectLoader : ProjectPersister
     {
+        /// <summary>
+        /// Event that is raised when a program is loaded.
+        /// </summary>
         public event EventHandler<Program>? ProgramLoaded;
 
         private readonly ILoader loader;
@@ -51,6 +54,15 @@ namespace Reko.Core.Serialization
         private IPlatform? platform;
         private IProcessorArchitecture? arch;
 
+        /// <summary>
+        /// Constructs an instance of <see cref="ProjectLoader"/>.
+        /// </summary>
+        /// <param name="services"><see cref="IServiceProvider"/> instance to use.</param>
+        /// <param name="loader"><see cref="ILoader"/> instance to use.</param>
+        /// <param name="location"><see cref="ImageLocation"/> of the project file.</param>
+        /// <param name="listener"><see cref="IEventListener"/> interface to use when
+        /// communicating errors.
+        /// </param>
         public ProjectLoader(
             IServiceProvider services,
             ILoader loader,
@@ -60,6 +72,15 @@ namespace Reko.Core.Serialization
         {
         }
 
+        /// <summary>
+        /// Constructs an instance of <see cref="ProjectLoader"/>.
+        /// </summary>
+        /// <param name="services"><see cref="IServiceProvider"/> instance to use.</param>
+        /// <param name="loader"><see cref="ILoader"/> instance to use.</param>
+        /// <param name="project">Empty <see cref="Project"/> object.</param>
+        /// <param name="listener"><see cref="IEventListener"/> interface to use when
+        /// communicating errors.
+        /// </param>
         public ProjectLoader(
             IServiceProvider services,
             ILoader loader,
@@ -98,8 +119,9 @@ namespace Reko.Core.Serialization
         /// <remarks>
         /// We do not attempt to handle UTF-8 encoded Unicode BOM characters.
         /// </remarks>
-        /// <param name="image"></param>
-        /// <returns></returns>
+        /// <param name="image">Bytes of the loaded file.</param>
+        /// <returns>True if an XML processing instruction was encountered; otherwise false.
+        /// </returns>
         private static bool IsXmlFile(byte[] image)
         {
             if (ByteMemoryArea.CompareArrays(image, 0, new byte[] { 0x3C, 0x3F, 0x78, 0x6D, 0x6C }, 5)) // <?xml
@@ -107,6 +129,10 @@ namespace Reko.Core.Serialization
             return false;
         }
 
+        /// <summary>
+        /// Loads a project from the file system.
+        /// </summary>
+        /// <returns></returns>
         public Project? LoadProject()
         {
             var filename = project.Location.FilesystemPath;
@@ -299,6 +325,11 @@ namespace Reko.Core.Serialization
             return program;
         }
 
+        /// <summary>
+        /// Processes a project input file.
+        /// </summary>
+        /// <param name="sInput">Input file to process.</param>
+        /// <returns>Returns a <see cref="Program"/>.</returns>
         public Program VisitInputFile(DecompilerInput_v5 sInput)
         {
             ImageLocation binAbsLocation;  // file: URL to the location of the file.
@@ -695,6 +726,12 @@ namespace Reko.Core.Serialization
             return up;
         }
 
+        /// <summary>
+        /// Processes a loaded metadata descriptor.
+        /// </summary>
+        /// <param name="sMetadata">Metadata descriptor.</param>
+        /// <returns>Loaded metadata file.
+        /// </returns>
         public MetadataFile VisitMetadataFile(MetadataFile_v3 sMetadata)
         {
             //$BUG: what if both sMetaData.Uri and sMetata.Filename are null?
@@ -744,6 +781,11 @@ namespace Reko.Core.Serialization
             throw new NotImplementedException("Multiple platforms possible; not implemented yet.");
         }
 
+        /// <summary>
+        /// Processes a script file.
+        /// </summary>
+        /// <param name="sScript">Script file definition.</param>
+        /// <returns>Loaded script file.</returns>
         public ScriptFile? VisitScriptFile(ScriptFile_v5 sScript)
         {
             ImageLocation scriptLocation;
@@ -762,6 +804,9 @@ namespace Reko.Core.Serialization
             return loader.LoadScript(scriptLocation);
         }
 
+        /// <summary>
+        /// TODO
+        /// </summary>
         public Program VisitAssemblerFile(AssemblerFile_v3 sAsmFile)
         {
             throw new NotImplementedException("return loader.AssembleExecutable(sAsmFile.Filename, sAsmFile.Assembler, null);");

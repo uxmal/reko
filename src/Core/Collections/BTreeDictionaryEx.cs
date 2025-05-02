@@ -31,26 +31,36 @@ namespace Reko.Core.Collections
     /// </summary>
     public static class BTreeDictionaryEx
     {
-        public static bool TryGetLowerBound<K, V>(this BTreeDictionary<K, V> list, K key, [MaybeNullWhen(false)] out V value)
+        /// <summary>
+        /// Finds the lower bound of a key in a BTreeDictionary.
+        /// </summary>
+        /// <typeparam name="K">Key type.</typeparam>
+        /// <typeparam name="V">Value type.</typeparam>
+        /// <param name="dictionary">The dictionary.</param>
+        /// <param name="key">Key to use.</param>
+        /// <param name="value">Value which is the lower bound of the key.</param>
+        /// <returns>True if a lower bound could be find.
+        /// </returns>
+        public static bool TryGetLowerBound<K, V>(this BTreeDictionary<K, V> dictionary, K key, [MaybeNullWhen(false)] out V value)
         {
-            var cmp = list.Comparer;
+            var cmp = dictionary.Comparer;
             int lo = 0;
-            int hi = list.Count - 1;
+            int hi = dictionary.Count - 1;
             value = default!;
             bool set = false;
             while (lo <= hi)
             {
                 int mid = (hi - lo) / 2 + lo;
-                K k = list.Keys[mid];
+                K k = dictionary.Keys[mid];
                 int c = cmp.Compare(k, key);
                 if (c == 0)
                 {
-                    value = list.Values[mid];
+                    value = dictionary.Values[mid];
                     return true;
                 }
                 if (c < 0)
                 {
-                    value = list.Values[mid];
+                    value = dictionary.Values[mid];
                     set = true;
                     lo = mid + 1;
                 }
@@ -62,26 +72,37 @@ namespace Reko.Core.Collections
             return set;
         }
 
-        public static bool TryGetUpperBound<K, V>(this BTreeDictionary<K, V> list, K key, [MaybeNullWhen(false)] out V value)
+        /// <summary>
+        /// Finds the upper bound of a key in a BTreeDictionary.
+        /// </summary>
+        /// <typeparam name="K">Key type.</typeparam>
+        /// <typeparam name="V">Value type.</typeparam>
+        /// <param name="dictionary">The dictionary.</param>
+        /// <param name="key">Key to use.</param>
+        /// <param name="value">Value which is the upper bound of the key.</param>
+        /// <returns>True if a upper bound could be find.
+        /// </returns>
+
+        public static bool TryGetUpperBound<K, V>(this BTreeDictionary<K, V> dictionary, K key, [MaybeNullWhen(false)] out V value)
         {
-            var cmp = list.Comparer;
+            var cmp = dictionary.Comparer;
             int lo = 0;
-            int hi = list.Count - 1;
+            int hi = dictionary.Count - 1;
             value = default!;
             bool set = false;
             while (lo <= hi)
             {
                 int mid = (hi - lo) / 2 + lo;
-                K k = list.Keys[mid];
+                K k = dictionary.Keys[mid];
                 int c = cmp.Compare(k, key);
                 if (c == 0)
                 {
-                    value = list.Values[mid];
+                    value = dictionary.Values[mid];
                     return true;
                 }
                 if (c > 0)
                 {
-                    value = list.Values[mid];
+                    value = dictionary.Values[mid];
                     set = true;
                     hi = mid - 1;
                 }
@@ -94,17 +115,27 @@ namespace Reko.Core.Collections
         }
 
 
-        public static bool TryGetLowerBoundKey<K, V>(this BTreeDictionary<K, V> list, K key, [MaybeNullWhen(false)] out K closestKey)
+        /// <summary>
+        /// Finds the lower bound of a key in a BTreeDictionary.
+        /// </summary>
+        /// <typeparam name="K">Key type.</typeparam>
+        /// <typeparam name="V">Value type.</typeparam>
+        /// <param name="dictionary">The dictionary.</param>
+        /// <param name="key">Key to use.</param>
+        /// <param name="closestKey">Key which is the lower bound of the key.</param>
+        /// <returns>True if a lower bound could be find.
+        /// </returns>
+        public static bool TryGetLowerBoundKey<K, V>(this BTreeDictionary<K, V> dictionary, K key, [MaybeNullWhen(false)] out K closestKey)
         {
-            var cmp = list.Comparer;
+            var cmp = dictionary.Comparer;
             int lo = 0;
-            int hi = list.Count - 1;
+            int hi = dictionary.Count - 1;
             closestKey = default!;
             bool set = false;
             while (lo <= hi)
             {
                 int mid = (hi - lo) / 2 + lo;
-                K k = list.Keys[mid];
+                K k = dictionary.Keys[mid];
                 int c = cmp.Compare(k, key);
                 if (c == 0)
                 {
@@ -125,17 +156,27 @@ namespace Reko.Core.Collections
             return set;
         }
 
-        public static bool TryGetUpperBoundKey<K, V>(this BTreeDictionary<K, V> list, K key, [MaybeNullWhen(false)] out K closestKey)
+        /// <summary>
+        /// Finds the upper bound of a key in a BTreeDictionary.
+        /// </summary>
+        /// <typeparam name="K">Key type.</typeparam>
+        /// <typeparam name="V">Value type.</typeparam>
+        /// <param name="dictionary">The dictionary.</param>
+        /// <param name="key">Key to use.</param>
+        /// <param name="closestKey">Key which is the upper bound of the key.</param>
+        /// <returns>True if a upper bound could be find.
+        /// </returns>
+        public static bool TryGetUpperBoundKey<K, V>(this BTreeDictionary<K, V> dictionary, K key, [MaybeNullWhen(false)] out K closestKey)
         {
-            var cmp = list.Comparer;
+            var cmp = dictionary.Comparer;
             int lo = 0;
-            int hi = list.Count - 1;
+            int hi = dictionary.Count - 1;
             closestKey = default!;
             bool set = false;
             while (lo <= hi)
             {
                 int mid = (hi - lo) / 2 + lo;
-                K k = list.Keys[mid];
+                K k = dictionary.Keys[mid];
                 int c = cmp.Compare(k, key);
                 if (c == 0)
                 {
@@ -156,17 +197,27 @@ namespace Reko.Core.Collections
             return set;
         }
 
-        public static bool TryGetLowerBoundIndex<K, V>(this BTreeDictionary<K, V> list, K key, [MaybeNullWhen(false)] out int closestIndex)
+        /// <summary>
+        /// Finds the index of lower bound of a key in a BTreeDictionary.
+        /// </summary>
+        /// <typeparam name="K">Key type.</typeparam>
+        /// <typeparam name="V">Value type.</typeparam>
+        /// <param name="dictionary">The dictionary.</param>
+        /// <param name="key">Key to use.</param>
+        /// <param name="closestIndex">Index which is the lower bound of the key.</param>
+        /// <returns>True if a lower bound could be find.
+        /// </returns>
+        public static bool TryGetLowerBoundIndex<K, V>(this BTreeDictionary<K, V> dictionary, K key, [MaybeNullWhen(false)] out int closestIndex)
         {
-            var cmp = list.Comparer;
+            var cmp = dictionary.Comparer;
             int lo = 0;
-            int hi = list.Count - 1;
+            int hi = dictionary.Count - 1;
             closestIndex = -1;
             bool set = false;
             while (lo <= hi)
             {
                 int mid = (hi - lo) / 2 + lo;
-                K k = list.Keys[mid];
+                K k = dictionary.Keys[mid];
                 int c = cmp.Compare(k, key);
                 if (c == 0)
                 {

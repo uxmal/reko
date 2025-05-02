@@ -18,38 +18,71 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-
 namespace Reko.Core.Configuration
 {
+    /// <summary>
+    /// A style definition.
+    /// </summary>
     public class UiStyleDefinition
     {
+        /// <summary>
+        /// Style class name.
+        /// </summary>
         public string? Name { get; set; }
 
+        /// <summary>
+        /// Font name.
+        /// </summary>
         public string? FontName { get; set; }
 
+        /// <summary>
+        /// Font size.
+        /// </summary>
         public double? FontSize { get; set; }
 
+        /// <summary>
+        /// Forground color.
+        /// </summary>
         public string? ForeColor { get; set; }
 
+        /// <summary>
+        /// Background color.
+        /// </summary>
         public string? BackColor { get; set; }
 
+        /// <summary>
+        /// Cursor to use.
+        /// </summary>
         public string? Cursor { get; set; }
 
+        /// <summary>
+        /// Width of the element.
+        /// </summary>
         public string? Width { get; set; }
 
+        /// <summary>
+        /// Text alignment.
+        /// </summary>
         public string? TextAlign { get; set; }
 
+        /// <summary>
+        /// Top padding of the element.
+        /// </summary>
         public string? PaddingTop { get; set; }
 
+        /// <summary>
+        /// Left padding of the element.
+        /// </summary>
         public string? PaddingLeft { get; set; }
 
+        /// <summary>
+        /// Bottom padding of the element.
+        /// </summary>
         public string? PaddingBottom { get; set; }
 
+        /// <summary>
+        /// Right padding of the element.
+        /// </summary>
         public string? PaddingRight { get; set; }
     }
 }

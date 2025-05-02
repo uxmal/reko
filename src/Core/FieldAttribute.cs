@@ -25,6 +25,8 @@ using System.Text;
 using System.Reflection;
 using Reko.Core.Memory;
 
+#pragma warning disable CS1591
+
 namespace Reko.Core
 {
     /// <summary>

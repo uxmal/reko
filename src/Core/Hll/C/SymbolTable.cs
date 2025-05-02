@@ -34,6 +34,11 @@ namespace Reko.Core.Hll.C
         private readonly IPlatform platform;
         private readonly int pointerSize;
 
+        /// <summary>
+        /// Creates a symbol table.
+        /// </summary>
+        /// <param name="platform"><see cref="IPlatform"/> instance to use.
+        /// </param>
         public SymbolTable(IPlatform platform) : this(
             platform,
             new Dictionary<string, PrimitiveType_v1>(),
@@ -41,6 +46,13 @@ namespace Reko.Core.Hll.C
         {
         }
 
+        /// <summary>
+        /// Creates a symbol table.
+        /// </summary>
+        /// <param name="platform"><see cref="IPlatform"/> instance to use.
+        /// </param>
+        /// <param name="pointerSize">The size of a pointer measured in storage units.
+        /// </param>
         public SymbolTable(IPlatform platform, int pointerSize) : this(
             platform,
             new Dictionary<string, PrimitiveType_v1>(),
@@ -49,6 +61,12 @@ namespace Reko.Core.Hll.C
             this.pointerSize = pointerSize;
         }
 
+        /// <summary>
+        /// Creates a symbol, filling it with previously known types.
+        /// </summary>
+        /// <param name="platform"><see cref="IPlatform"/> instance to use.</param>
+        /// <param name="primitiveTypes">C primitive types.</param>
+        /// <param name="namedTypes">Known type names.</param>
         public SymbolTable(
             IPlatform platform,
             Dictionary<string, PrimitiveType_v1> primitiveTypes,
@@ -71,19 +89,65 @@ namespace Reko.Core.Hll.C
             this.Sizer = new TypeSizer(platform, this.NamedTypes);
         }
 
-        public List<SerializedType> Types { get; private set; }
-        public Dictionary<string, StructType_v1> StructsSeen { get; private set; }
-        public Dictionary<string, UnionType_v1> UnionsSeen { get; private set; }
-        public Dictionary<string, SerializedEnumType> EnumsSeen { get; private set; }
-        public Dictionary<string, int> Constants { get; private set; }
-        public Dictionary<string, SerializedType> NamedTypes { get; private set; }
-        public Dictionary<string, PrimitiveType_v1> PrimitiveTypes { get; private set; }
-        public List<ProcedureBase_v1> Procedures { get; private set; }
-        public List<GlobalDataItem_v2> Variables { get; private set; }
-        public List<Annotation_v3> Annotations { get; private set; }
-        public List<MemorySegment_v1> Segments { get; private set; }
+        /// <summary>
+        /// The list of types in the symbol table.
+        /// </summary>
+        public List<SerializedType> Types { get; }
 
-        public TypeSizer Sizer { get; private set; }
+        /// <summary>
+        /// Tagged structs seen so far.
+        /// </summary>
+        public Dictionary<string, StructType_v1> StructsSeen { get; }
+
+        /// <summary>
+        /// Tagged unions seen so far.
+        /// </summary>
+        public Dictionary<string, UnionType_v1> UnionsSeen { get; }
+
+        /// <summary>
+        /// Enums seen so far.
+        /// </summary>
+        public Dictionary<string, SerializedEnumType> EnumsSeen { get; }
+
+        /// <summary>
+        /// Constants.
+        /// </summary>
+        public Dictionary<string, int> Constants { get; }
+
+        /// <summary>
+        /// Named types seen.
+        /// </summary>
+        public Dictionary<string, SerializedType> NamedTypes { get; }
+
+        /// <summary>
+        /// C primitive types.
+        /// </summary>
+        public Dictionary<string, PrimitiveType_v1> PrimitiveTypes { get; }
+
+        /// <summary>
+        /// The procedures.
+        /// </summary>
+        public List<ProcedureBase_v1> Procedures { get; }
+
+        /// <summary>
+        /// The global variables from [[reko::global]] attributes.
+        /// </summary>
+        public List<GlobalDataItem_v2> Variables { get; }
+
+        /// <summary>
+        /// Annotations (from [[reko::annotation]] attributes).
+        /// </summary>
+        public List<Annotation_v3> Annotations { get; }
+
+        /// <summary>
+        /// Segments (from [[reko::segment]] attributes).
+        /// </summary>
+        public List<MemorySegment_v1> Segments { get; }
+
+        /// <summary>
+        /// Auxiliary class that computes the size of C data types.
+        /// </summary>
+        public TypeSizer Sizer { get; }
 
         /// <summary>
         /// Given a C declaration, adds it to the symbol table 

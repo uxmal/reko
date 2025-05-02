@@ -23,22 +23,33 @@ using System.IO;
 
 namespace Reko.Core.Rtl
 {
+    /// <summary>
+    /// Represents an unconditional RTL control transfer instruction.
+    /// </summary>
     public sealed class RtlGoto : RtlTransfer
     {
+        /// <summary>
+        /// Constructs an instance of <see cref="RtlGoto"/> with the specified target.
+        /// </summary>
+        /// <param name="target">Target of the <c>goto</c> instruction.</param>
+        /// <param name="rtlClass"><see cref="InstrClass"/> of the instruction.</param>
         public RtlGoto(Expression target, InstrClass rtlClass) : base(target, rtlClass)
         {
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(RtlInstructionVisitor<T> visitor)
         {
             return visitor.VisitGoto(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T, C>(IRtlInstructionVisitor<T, C> visitor, C context)
         {
             return visitor.VisitGoto(this, context);
         }
 
+        /// <inheritdoc/>
         protected override void WriteInner(TextWriter writer)
         {
             writer.Write("goto {0}", Target);

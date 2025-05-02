@@ -18,12 +18,10 @@
  */
 #endregion
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Text;
 
 namespace Reko.Core.Collections
 {
@@ -38,6 +36,9 @@ namespace Reko.Core.Collections
     /// <typeparam name="T"></typeparam>
     public class ConcurrentObservableCollection<T> : IEnumerable<T>
     {
+        /// <summary>
+        /// Event fired when the collection changes.
+        /// </summary>
         public event NotifyCollectionChangedEventHandler? CollectionChanged
         {
             add
@@ -58,11 +59,18 @@ namespace Reko.Core.Collections
 
         private readonly ObservableRangeCollection<T> collection;
 
+        /// <summary>
+        /// Creates an empty <see cref="ConcurrentObservableCollection{T}"/>.
+        /// </summary>
         public ConcurrentObservableCollection()
         {
             this.collection = new ObservableRangeCollection<T>();
         }
 
+        /// <summary>
+        /// Adds a range of items to the collection.
+        /// </summary>
+        /// <param name="range">Items to add.</param>
         public void AddRange(IEnumerable<T> range)
         {
             lock (collection)
@@ -70,6 +78,11 @@ namespace Reko.Core.Collections
                 collection.AddRange(range);
             }
         }
+
+        /// <summary>
+        /// Adds one item to the collection.
+        /// </summary>
+        /// <param name="item">Item to add.</param>
 
         public void Add(T item)
         {
@@ -79,6 +92,11 @@ namespace Reko.Core.Collections
             }
         }
 
+        /// <summary>
+        /// Removes an item from the collection.
+        /// </summary>
+        /// <param name="item">Item to remove.</param>
+        /// <returns>True if an item was removed; otherwise false.</returns>
         public bool Remove(T item)
         {
             lock (collection)
@@ -87,6 +105,7 @@ namespace Reko.Core.Collections
             }
         }
 
+        /// <inheritdoc/>
         public IEnumerator<T> GetEnumerator()
         {
             lock (collection)

@@ -20,11 +20,29 @@
 
 namespace Reko.Core.Configuration
 {
+    /// <summary>
+    /// Describes a symbol source.
+    /// </summary>
     public class SymbolSourceDefinition
     {
+        /// <summary>
+        /// Description of the symbol source.
+        /// </summary>
         public string? Description { get; set; }
+
+        /// <summary>
+        /// File extension for this type of symbol source.
+        /// </summary>
         public string? Extension { get; set; }
+
+        /// <summary>
+        /// Identifier to use programmatically to refer to this symbol source.
+        /// </summary>
         public string? Name { get; set; }
+
+        /// <summary>
+        /// CLR type name to load for this symbol source.
+        /// </summary>
         public string? TypeName { get; set; }
     }
 }

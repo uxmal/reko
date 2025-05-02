@@ -40,8 +40,16 @@ namespace Reko.Core.Output
         private readonly StructureFieldCollection globalFields;
         private readonly IEventListener eventListener;
         private int recursionGuard;
-        private EndianImageReader rdr; 
+        private EndianImageReader rdr;
 
+        /// <summary>
+        /// Constructs an instance of <see cref="GlobalObjectTracer"/>.
+        /// </summary>
+        /// <param name="program">Program being traced.</param>
+        /// <param name="wl">Worklist of fields to trace.</param>
+        /// <param name="eventListener"><see cref="IEventListener"/> interface to
+        /// provide feedback.
+        /// </param>
         public GlobalObjectTracer(Program program, WorkList<(StructureField, Address)> wl, IEventListener eventListener)
         {
             this.program = program;

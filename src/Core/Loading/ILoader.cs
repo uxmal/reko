@@ -187,9 +187,12 @@ namespace Reko.Core.Loading
         public ImageLocation? Location;
 
         /// <summary>
-        /// Name of the loader to use. Loader names are found in the reko.config file.
+        /// Name of the loader to use. Loader names are found in the <c>reko.config</c> file,
+        /// and can be considered shortcuts. For example loading the well known ELF 
+        /// format, use <c>elf</c>.
+        /// <para/>
         /// In addition, specifying a fully-qualified class name makes it possible to load
-        /// custom file formats.
+        /// custom file formats without needing to register them in the <c>reko.config</c> file.
         /// </summary>
         public string? LoaderName;
 
@@ -209,11 +212,10 @@ namespace Reko.Core.Loading
         /// set of options, like endianness, processor models etc.
         /// </summary>
         public Dictionary<string,object>? ArchitectureOptions;
-        
+
         /// <summary>
         /// Name of the platform to use. Platform names are found in the 
-        /// Name of the platform to use. Platform names are found in the 
-        /// reko.config file.
+        /// <c>reko.config</c> file.
         /// </summary>
         public string? PlatformName;
         

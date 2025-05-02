@@ -38,13 +38,18 @@ namespace Reko.Core.Serialization
     [XmlRoot(ElementName = "memory", Namespace = SerializedLibrary.Namespace_v4)]
     public class MemoryMap_v1
     {
-
         //$REVIEW: tantalizing similarity to SerializedLibrary. 
 
+        /// <summary>
+        /// Data types of this memory map.
+        /// </summary>
         [XmlElement(ElementName = "types")]
         [XmlArray( Namespace = SerializedLibrary.Namespace_v4)]
         public SerializedType[]? Types;
 
+        /// <summary>
+        /// Segments in the memory map.
+        /// </summary>
         [XmlElement("segment")]
         public MemorySegment_v1[]? Segments;
 
@@ -62,6 +67,13 @@ namespace Reko.Core.Serialization
             return mmap;
         }
 
+        /// <summary>
+        /// Loads an <see cref="ImageSegment"/> based on the given <see cref="MemorySegment_v1"/>.
+        /// </summary>
+        /// <param name="segment">Memory segment to load.</param>
+        /// <param name="platform">Current platform.</param>
+        /// <param name="listener">Event listener to report errors to.</param>
+        /// <returns></returns>
         public static ImageSegment? LoadSegment(MemorySegment_v1 segment, IPlatform platform, IEventListener listener)
         {
             if (segment.Name is null)
@@ -96,7 +108,7 @@ namespace Reko.Core.Serialization
             return new ImageSegment(segment.Name, mem, ConvertAccess(segment.Attributes));
         }
 
-        public static AccessMode ConvertAccess(string? attributes)
+        private static AccessMode ConvertAccess(string? attributes)
         {
             var mode = AccessMode.Read;
             if (attributes is null)
@@ -114,29 +126,52 @@ namespace Reko.Core.Serialization
         }
     }
 
+    /// <summary>
+    /// Serialized description of a memory map segment.
+    /// </summary>
     public partial class MemorySegment_v1
     {
+        /// <summary>
+        /// Name of the segment.
+        /// </summary>
         [XmlAttribute("name")]
         public string? Name;
 
+        /// <summary>
+        /// Address of the segment.
+        /// </summary>
         [XmlAttribute("addr")]
         public string? Address;
 
+        /// <summary>
+        /// Size in storage units of the segment.
+        /// </summary>
         [XmlAttribute("size")]
         public string? Size;
 
+        /// <summary>
+        /// Protection attributes of the segment.
+        /// </summary>
         [XmlAttribute("attr")]
         public string? Attributes;
 
+        /// <summary>
+        /// Description of the segment.
+        /// </summary>
         [XmlElement("description")]
         public string? Description;
 
-
+        /// <summary>
+        /// Procedures in the segment.
+        /// </summary>
         [XmlElement("procedure", typeof(Procedure_v1))]
         [XmlElement("service", typeof(SerializedService))]
         [XmlElement("dispatch-procedure", typeof(DispatchProcedure_v1))]
         public List<ProcedureBase_v1>? Procedures;
 
+        /// <summary>
+        /// Global variables in the segment.
+        /// </summary>
         [XmlElement("global", typeof(GlobalVariable_v1))]
         public List<GlobalVariable_v1>? Globals;
     }

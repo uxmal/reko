@@ -24,6 +24,9 @@ using System.IO;
 
 namespace Reko.Core.Output
 {
+    /// <summary>
+    /// Simple JSON serializer class.
+    /// </summary>
     public class JsonWriter
     {
         private const int EMPTY_OBJ = 1;
@@ -34,12 +37,19 @@ namespace Reko.Core.Output
         private readonly PrettyPrinter pp;
         private readonly Stack<int> state;
 
+        /// <summary>
+        /// Constructs an instance of <see cref="JsonWriter"/>.
+        /// </summary>
+        /// <param name="w"></param>
         public JsonWriter(TextWriter w)
         {
             this.pp = new PrettyPrinter(w, 120);
             this.state = new Stack<int>();
         }
 
+        /// <summary>
+        /// Writes the start of a JSON object.
+        /// </summary>
         public void WriteStartObject()
         {
             pp.PrintCharacter('{');
@@ -48,6 +58,11 @@ namespace Reko.Core.Output
             state.Push(EMPTY_OBJ);
         }
 
+        /// <summary>
+        /// Writes a JSON property name.
+        /// </summary>
+        /// <param name="n">The name of the property.</param>
+        /// <exception cref="InvalidOperationException"></exception>
         public void WritePropertyName(string n)
         {
             if (state.Count == 0)
@@ -60,8 +75,13 @@ namespace Reko.Core.Output
             pp.PrintString(string.Format("\"{0}\":", n));
         }
 
+        /// <summary>
+        /// Writes a string
+        /// </summary>
+        /// <param name="s">String to write</param>
         public void Write(string s)
         {
+            //$BUG: no escaping!
             pp.PrintString(string.Format("\"{0}\"", s));
             if (state.Count > 0 && state.Peek() == PROP)
             {
@@ -69,6 +89,9 @@ namespace Reko.Core.Output
             }
         }
 
+        /// <summary>
+        /// Write the start of an array.
+        /// </summary>
         public void WriteStartArray()
         {
             pp.PrintCharacter('[');
@@ -77,6 +100,9 @@ namespace Reko.Core.Output
             state.Push(ARR);
         }
 
+        /// <summary>
+        /// Writes the ending character of a JSON object or array.
+        /// </summary>
         public void WriteEnd()
         {
             if (state.Count == 0)
@@ -90,6 +116,9 @@ namespace Reko.Core.Output
             pp.Outdent(4);
         }
 
+        /// <summary>
+        /// Flushes any pending characters to the output device.
+        /// </summary>
         public void Flush()
         {
             pp.Flush();

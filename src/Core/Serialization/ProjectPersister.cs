@@ -20,20 +20,28 @@
 
 using Reko.Core.Services;
 using System;
-using System.Diagnostics;
 using System.IO;
-using System.Text;
 
 namespace Reko.Core.Serialization
 {
+    /// <summary>
+    /// Abstract base class for all project persistence.
+    /// </summary>
     public class ProjectPersister
     {
+        /// <summary>
+        /// Initializes this instance of <see cref="ProjectPersister"/>.
+        /// </summary>
+        /// <param name="services"><see cref="IServiceProvider"/> instance.</param>
         public ProjectPersister(IServiceProvider services)
         {
             Services = services;
         }
 
-        public IServiceProvider Services { get; private set; }
+        /// <summary>
+        /// <see cref="IServiceProvider"/> instance to use.
+        /// </summary>
+        protected IServiceProvider Services { get; }
 
         /// <summary>
         /// Takes a project-relative path, and returns it as an absolute path.
@@ -53,6 +61,12 @@ namespace Reko.Core.Serialization
             return Path.GetFullPath(combined);
         }
 
+        /// <summary>
+        /// Takes a project-relative URI, and returns it as an absolute URI.
+        /// </summary>
+        /// <param name="projectLocation">Absolute location.</param>
+        /// <param name="projectRelativeUri">Project relative URI.</param>
+        /// <returns>Absolute URI version of <paramref name="projectRelativeUri"/>.</returns>
         public static ImageLocation? ConvertToAbsoluteLocation(
             ImageLocation projectLocation, string? projectRelativeUri)
         {
@@ -65,7 +79,7 @@ namespace Reko.Core.Serialization
         /// <summary>
         /// Takes an absolute path and returns it as a project-relative path.
         /// </summary>
-        /// <param name="projectAbsPath"></param>
+        /// <param name="projectAbsPath">Absolute project path.</param>
         /// <param name="absPath"></param>
         /// <returns></returns>
         public string ConvertToProjectRelativePath(string projectAbsPath, string absPath)
@@ -76,6 +90,13 @@ namespace Reko.Core.Serialization
             return fsSvc.MakeRelativePath(projectAbsPath, absPath);
         }
 
+
+        /// <summary>
+        /// Takes an absolute URI and returns it as a project-relative URI.
+        /// </summary>
+        /// <param name="projectUri">Location of the project.</param>
+        /// <param name="absoluteUri">Absolute path to the location.</param>
+        /// <returns></returns>
         public string? ConvertToProjectRelativeUri(ImageLocation projectUri, ImageLocation? absoluteUri)
         {
             if (absoluteUri is null)

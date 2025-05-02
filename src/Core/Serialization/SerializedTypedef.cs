@@ -18,11 +18,6 @@
  */
 #endregion
 
-using Reko.Core.Types;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Xml.Serialization;
 
 namespace Reko.Core.Serialization
@@ -32,16 +27,25 @@ namespace Reko.Core.Serialization
     /// </summary>
     public class SerializedTypedef : SerializedType
     {
+        /// <summary>
+        /// Alias being introduced.
+        /// </summary>
         [XmlAttribute("name")]
         public string? Name;
 
+        /// <summary>
+        /// Datatype being aliased.
+        /// </summary>
+
         public SerializedType? DataType;
 
+        /// <inheritdoc/>
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
         {
             return visitor.VisitTypedef(this);
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             return string.Format("typedef({0}, {1})", Name, DataType);

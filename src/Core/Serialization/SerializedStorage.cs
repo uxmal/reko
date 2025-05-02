@@ -23,8 +23,17 @@ using System;
 
 namespace Reko.Core.Serialization
 {
-	public abstract class SerializedKind
+    /// <summary>
+    /// Abstract base class for serialized storages.
+    /// </summary>
+	public abstract class SerializedStorage
 	{
+        /// <summary>
+        /// Deserializes a storage.
+        /// </summary>
+        /// <param name="sser"><see cref="ArgumentDeserializer"/>.</param>
+        /// <returns>Resulting identifier.
+        /// </returns>
 		public abstract Identifier? Deserialize(ArgumentDeserializer sser);
 	}
 }

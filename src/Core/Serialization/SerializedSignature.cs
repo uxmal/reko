@@ -30,15 +30,21 @@ namespace Reko.Core.Serialization
 	/// </summary>
 	public class SerializedSignature : SerializedType
 	{
-        public SerializedSignature()
-        {
-        }
-
+        /// <summary>
+        /// The type of the enclosing class, if any.
+        /// </summary>
         [XmlElement("type")]
         public SerializedType? EnclosingType;
 
+        /// <summary>
+        /// The return value of the function. If null, the function is void.
+        /// </summary>
 		[XmlElement("return")]
 		public Argument_v1? ReturnValue;
+
+        /// <summary>
+        /// Optional calling convention.
+        /// </summary>
 
 		[XmlAttribute("convention")]
 		public string? Convention;
@@ -56,26 +62,42 @@ namespace Reko.Core.Serialization
 		[DefaultValue(0)]
         public int ReturnAddressOnStack;
 
+        /// <summary>
+        /// The change in the stack pointer that occurs after 
+        /// having called the function.
+        /// </summary>
         [XmlAttribute("stackDelta")]
 		[DefaultValue(0)]
 		public int StackDelta;
 
+        /// <summary>
+        /// The parameters of the function.
+        /// </summary>
 		[XmlElement("arg")]
 		public Argument_v1[]? Arguments;
 
+        /// <summary>
+        /// The change in the floating point unit stack pointer
+        /// after having called the function.
+        /// </summary>
         [XmlAttribute("fpuStackDelta")]
         [DefaultValue(0)]
         public int FpuStackDelta;
 
+        /// <summary>
+        /// True if the parameters are valid.
+        /// </summary>
         [XmlAttribute("parametersValid")]
         [DefaultValue(true)]
         public bool ParametersValid = true;
 
+        /// <inheritdoc/>
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
         {
             return visitor.VisitSignature(this);
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             var sb = new StringBuilder();

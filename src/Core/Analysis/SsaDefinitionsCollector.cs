@@ -34,7 +34,7 @@ namespace Reko.Core.Analysis
         private readonly List<Identifier> definitions;
 
         /// <summary>
-        /// Creates an instance of this class.
+        /// Constructs a new <see cref="SsaDefinitionsCollector"/> instance.
         /// </summary>
         public SsaDefinitionsCollector()
         {
@@ -42,11 +42,11 @@ namespace Reko.Core.Analysis
         }
 
         /// <summary>
-        /// Collects all defined <see cref="Identifier"/>s in the given 
-        /// <see cref="Statement"/>.
+        /// Collects all defined <see cref="Identifier"/>s in the provided 
+        /// statement.
         /// </summary>
-        /// <param name="stm">Statement to analyze.</param>
-        /// <returns>A collection of defined identifiers.</returns>
+        /// <param name="stm">Statement to visit.</param>
+        /// <returns>Identifiers defined in <paramref name="stm"/>.</returns>
         public ICollection<Identifier> CollectDefinitions(Statement stm)
         {
             definitions.Clear();

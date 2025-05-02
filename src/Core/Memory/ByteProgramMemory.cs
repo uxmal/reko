@@ -23,13 +23,22 @@ using System;
 
 namespace Reko.Core.Memory
 {
+    /// <summary>
+    /// Represents the program memory of a binary image, where the memory is 
+    /// byte-granular.
+    /// </summary>
     public class ByteProgramMemory : ProgramMemory, IByteWriteableMemory
     {
+        /// <summary>
+        /// Creates an instance of the <see cref="ByteProgramMemory"/> class.
+        /// </summary>
+        /// <param name="segmentMap">Underlying <see cref="SegmentMap"/>.</param>
         public ByteProgramMemory(SegmentMap segmentMap)
             : base(segmentMap)
         {
         }
 
+        /// <inheritdoc/>
         public bool TryReadBeInt16(Address addr, out short s)
         {
             if (!this.SegmentMap.TryFindSegment(addr, out var segment))
@@ -42,6 +51,7 @@ namespace Reko.Core.Memory
             return result;
         }
 
+        /// <inheritdoc/>
         public bool TryReadBeInt32(Address addr, out int value)
         {
             if (!this.SegmentMap.TryFindSegment(addr, out var segment))
@@ -54,6 +64,7 @@ namespace Reko.Core.Memory
             return result;
         }
 
+        /// <inheritdoc/>
         public bool TryReadBeInt64(Address addr, out long value)
         {
             if (!this.SegmentMap.TryFindSegment(addr, out var segment))
@@ -66,6 +77,7 @@ namespace Reko.Core.Memory
             return result;
         }
 
+        /// <inheritdoc/>
         public bool TryReadBeUInt16(Address addr, out ushort value)
         {
             if (!this.SegmentMap.TryFindSegment(addr, out var segment))
@@ -76,6 +88,7 @@ namespace Reko.Core.Memory
             return segment.MemoryArea.TryReadBeUInt16(addr, out value);
         }
 
+        /// <inheritdoc/>
         public bool TryReadBeUInt32(Address addr, out uint value)
         {
             if (!this.SegmentMap.TryFindSegment(addr, out var segment))
@@ -86,6 +99,7 @@ namespace Reko.Core.Memory
             return segment.MemoryArea.TryReadBeUInt32(addr, out value);
         }
 
+        /// <inheritdoc/>
         public bool TryReadBeUInt64(Address addr, out ulong value)
         {
             if (!this.SegmentMap.TryFindSegment(addr, out var segment))
@@ -96,7 +110,8 @@ namespace Reko.Core.Memory
             return segment.MemoryArea.TryReadBeUInt64(addr, out value);
         }
 
-        public bool TryReadInt8(Address addr, out sbyte value)
+        /// <inheritdoc/>
+        public bool TryReadInt8(Address addr, out byte value)
         {
             if (!this.SegmentMap.TryFindSegment(addr, out var segment))
             {
@@ -109,6 +124,7 @@ namespace Reko.Core.Memory
             return retval;
         }
 
+        /// <inheritdoc/>
         public bool TryReadLeInt16(Address addr, out short value)
         {
             if (!this.SegmentMap.TryFindSegment(addr, out var segment))
@@ -121,6 +137,7 @@ namespace Reko.Core.Memory
             return result;
         }
 
+        /// <inheritdoc/>
         public bool TryReadLeInt32(Address addr, out int value)
         {
             if (!this.SegmentMap.TryFindSegment(addr, out var segment))
@@ -133,6 +150,7 @@ namespace Reko.Core.Memory
             return result;
         }
 
+        /// <inheritdoc/>
         public bool TryReadLeInt64(Address addr, out long value)
         {
             if (!this.SegmentMap.TryFindSegment(addr, out var segment))
@@ -145,6 +163,7 @@ namespace Reko.Core.Memory
             return result;
         }
 
+        /// <inheritdoc/>
         public bool TryReadLeUInt16(Address addr, out ushort value)
         {
             if (!this.SegmentMap.TryFindSegment(addr, out var segment))
@@ -155,6 +174,7 @@ namespace Reko.Core.Memory
             return segment.MemoryArea.TryReadLeUInt16(addr, out value);
         }
 
+        /// <inheritdoc/>
         public bool TryReadLeUInt32(Address addr, out uint value)
         {
             if (!this.SegmentMap.TryFindSegment(addr, out var segment))
@@ -165,6 +185,7 @@ namespace Reko.Core.Memory
             return segment.MemoryArea.TryReadLeUInt32(addr, out value);
         }
 
+        /// <inheritdoc/>
         public bool TryReadLeUInt64(Address addr, out ulong value)
         {
             if (!this.SegmentMap.TryFindSegment(addr, out var segment))
@@ -175,7 +196,8 @@ namespace Reko.Core.Memory
             return segment.MemoryArea.TryReadLeUInt64(addr, out value);
         }
 
-        public bool TryReadUInt8(Address addr, out byte value)
+        /// <inheritdoc/>
+        public bool TryReadUInt8(Address addr, out sbyte value)
         {
             if (!this.SegmentMap.TryFindSegment(addr, out var segment))
             {
@@ -186,6 +208,7 @@ namespace Reko.Core.Memory
             return segment.MemoryArea.TryReadByte(offset, out value);
         }
 
+        /// <inheritdoc/>
         public void TryWriteInt8(Address addr, sbyte b)
         {
             if (!this.SegmentMap.TryFindSegment(addr, out var segment))
@@ -193,6 +216,7 @@ namespace Reko.Core.Memory
             segment.MemoryArea.WriteByte(addr - segment.MemoryArea.BaseAddress, (byte) b);
         }
 
+        /// <inheritdoc/>
         public void TryWriteUInt8(Address addr, byte b)
         {
             if (!this.SegmentMap.TryFindSegment(addr, out var segment))
@@ -200,6 +224,7 @@ namespace Reko.Core.Memory
             segment.MemoryArea.WriteByte(addr - segment.MemoryArea.BaseAddress, b);
         }
 
+        /// <inheritdoc/>
         public void WriteBeUInt16(Address addr, ushort value)
         {
             if (!this.SegmentMap.TryFindSegment(addr, out var segment))
@@ -207,6 +232,7 @@ namespace Reko.Core.Memory
             segment.MemoryArea.WriteBeUInt16(addr - segment.MemoryArea.BaseAddress, value);
         }
 
+        /// <inheritdoc/>
         public void WriteBeUInt32(Address addr, uint value)
         {
             if (!this.SegmentMap.TryFindSegment(addr, out var segment))
@@ -214,6 +240,7 @@ namespace Reko.Core.Memory
             segment.MemoryArea.WriteBeUInt32(addr - segment.MemoryArea.BaseAddress, value); 
         }
 
+        /// <inheritdoc/>
         public void WriteBeUInt64(Address addr, ulong value)
         {
             if (!this.SegmentMap.TryFindSegment(addr, out var segment))
@@ -221,6 +248,7 @@ namespace Reko.Core.Memory
             segment.MemoryArea.WriteBeUInt64(addr - segment.MemoryArea.BaseAddress, value);
         }
 
+        /// <inheritdoc/>
         public void WriteLeUInt16(Address addr, ushort value)
         {
             if (!this.SegmentMap.TryFindSegment(addr, out var segment))
@@ -228,6 +256,7 @@ namespace Reko.Core.Memory
             segment.MemoryArea.WriteLeUInt16(addr - segment.MemoryArea.BaseAddress, value);
         }
 
+        /// <inheritdoc/>
         public void WriteLeUInt32(Address addr, uint value)
         {
             if (!this.SegmentMap.TryFindSegment(addr, out var segment))
@@ -235,6 +264,7 @@ namespace Reko.Core.Memory
             segment.MemoryArea.WriteLeUInt32(addr - segment.MemoryArea.BaseAddress, value);
         }
 
+        /// <inheritdoc/>
         public void WriteLeUInt64(Address addr, ulong value)
         {
             if (!this.SegmentMap.TryFindSegment(addr, out var segment))

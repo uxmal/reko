@@ -167,6 +167,8 @@ namespace Reko.Core.Configuration
     /// </summary>
     public class RekoConfigurationService : IConfigurationService
     {
+        private const string PluginsDirectory = "plugins";
+
         private readonly string configFileRoot;
         private readonly IPluginLoaderService pluginSvc;
         private readonly IServiceProvider services;
@@ -697,7 +699,7 @@ namespace Reko.Core.Configuration
             if (pluginsLoaded)
                 return;
             pluginsLoaded = true;
-            var plugins = LoadPluginsFromDirectory(GetInstallationRelativePath("plugins"));
+            var plugins = LoadPluginsFromDirectory(GetInstallationRelativePath(PluginsDirectory));
             foreach (var plugin in plugins)
             {
                 this.architectures.AddRange(plugin.Architectures);

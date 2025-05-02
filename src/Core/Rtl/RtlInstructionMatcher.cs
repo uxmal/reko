@@ -25,17 +25,31 @@ using System.Linq;
 
 namespace Reko.Core.Rtl
 {
+    /// <summary>
+    /// Matches an RTL instruction against a pattern.
+    /// </summary>
     public class RtlInstructionMatcher : IRtlInstructionVisitor<bool, ExpressionMatch>
     {
         private RtlInstruction pattern;
         private readonly ExpressionMatcher matcher;
 
+        /// <summary>
+        /// Constructs an <see cref="RtlInstructionMatcher"/> that matches RTL code agains
+        /// the provided pattern.
+        /// </summary>
+        /// <param name="pattern">Pattern to match.
+        /// </param>
         public RtlInstructionMatcher(RtlInstruction pattern)
         {
             this.pattern = pattern;
             this.matcher = new ExpressionMatcher(null!);
         }
 
+        /// <summary>
+        /// Builds a matcher from the provided builder.
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <returns></returns>
         public static RtlInstructionMatcher Build(Action<RtlInstructionMatcherEmitter> builder)
         {
             var instrs = new List<RtlInstruction>();
@@ -44,6 +58,12 @@ namespace Reko.Core.Rtl
             return new RtlInstructionMatcher(instrs.Last());
         }
 
+        /// <summary>
+        /// Match an RTL instruction against the pattern.
+        /// </summary>
+        /// <param name="instr">Instruction to match.</param>
+        /// <returns>The result of the match, expressed in an <see cref="ExpressionMatch"/> instance.
+        /// </returns>
         public ExpressionMatch Match(RtlInstruction instr)
         {
             var match = new ExpressionMatch();
@@ -58,6 +78,7 @@ namespace Reko.Core.Rtl
 
         #region RtlInstructionVisitor<bool>
 
+        /// <inheritdoc/>
         public bool VisitAssignment(RtlAssignment ass, ExpressionMatch m)
         {
             if (pattern is not RtlAssignment assPat)
@@ -67,6 +88,7 @@ namespace Reko.Core.Rtl
             return matcher.Match(assPat.Dst, ass.Dst, m);
         }
 
+        /// <inheritdoc/>
         public bool VisitGoto(RtlGoto go, ExpressionMatch m)
         {
             if (pattern is not RtlGoto gPat)
@@ -74,6 +96,7 @@ namespace Reko.Core.Rtl
             return matcher.Match(gPat.Target, go.Target, m);
         }
 
+        /// <inheritdoc/>
         public bool VisitMicroGoto(RtlMicroGoto mgo, ExpressionMatch m)
         {
             if (pattern is not RtlMicroGoto mgPat)
@@ -88,6 +111,7 @@ namespace Reko.Core.Rtl
             return mgo.Target == mgPat.Target;
         }
 
+        /// <inheritdoc/>
         public bool VisitIf(RtlIf rtlIf, ExpressionMatch m)
         {
             if (pattern is not RtlIf pIf)
@@ -97,16 +121,19 @@ namespace Reko.Core.Rtl
             return this.Match(pIf.Instruction, rtlIf.Instruction, m);
         }
 
+        /// <inheritdoc/>
         public bool VisitInvalid(RtlInvalid invalid, ExpressionMatch m)
         {
             return pattern is RtlInvalid;
         }
 
+        /// <inheritdoc/>
         public bool VisitNop(RtlNop nop, ExpressionMatch m)
         {
             return pattern is RtlNop;
         }
 
+        /// <inheritdoc/>
         public bool VisitBranch(RtlBranch branch, ExpressionMatch m)
         {
             if (pattern is not RtlBranch branchPat)
@@ -114,6 +141,7 @@ namespace Reko.Core.Rtl
             return matcher.Match(branchPat.Condition, branch.Condition, m);
         }
 
+        /// <inheritdoc/>
         public bool VisitCall(RtlCall call, ExpressionMatch m)
         {
             if (pattern is not RtlCall callPat)
@@ -121,11 +149,13 @@ namespace Reko.Core.Rtl
             return matcher.Match(callPat.Target, call.Target, m);
         }
 
+        /// <inheritdoc/>
         public bool VisitReturn(RtlReturn ret, ExpressionMatch m)
         {
             return pattern is RtlReturn;
         }
 
+        /// <inheritdoc/>
         public bool VisitSideEffect(RtlSideEffect side, ExpressionMatch m)
         {
             if (pattern is not RtlSideEffect sidePat)
@@ -133,6 +163,7 @@ namespace Reko.Core.Rtl
             return matcher.Match(sidePat.Expression, side.Expression, m);
         }
 
+        /// <inheritdoc/>
         public bool VisitSwitch(RtlSwitch sw, ExpressionMatch m)
         {
             if (pattern is not RtlSwitch swPat)

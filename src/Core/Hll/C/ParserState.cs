@@ -18,14 +18,11 @@
  */
 #endregion
 
-using Reko.Core.Serialization;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Core.Hll.C
 {
+
     public class ParserState
     {
         private Stack<int> alignments;

@@ -27,6 +27,9 @@ using System.Xml.Serialization;
 
 namespace Reko.Core.Serialization
 {
+    /// <summary>
+    /// Serialization of <see cref="StringType"/>.
+    /// </summary>
     public class StringType_v2 : SerializedType
     {
         public const string ZeroTermination = "z";
@@ -37,6 +40,7 @@ namespace Reko.Core.Serialization
 
         public SerializedType? CharType;
 
+        /// <inheritdoc/>
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
         {
             return visitor.VisitString(this);

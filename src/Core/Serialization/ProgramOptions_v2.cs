@@ -20,8 +20,15 @@
 
 namespace Reko.Core.Serialization
 {
+    /// <summary>
+    /// User-specified options.
+    /// </summary>
     public class ProgramOptions_v2
     {
+        /// <summary>
+        /// Use heuristic scanning to locate machine code that 
+        /// isn't reachable using recursive traversal.
+        /// </summary>
         public bool HeuristicScanning;
     }
 }

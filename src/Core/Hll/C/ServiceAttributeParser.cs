@@ -32,11 +32,23 @@ namespace Reko.Core.Hll.C
         private readonly List<CToken>? tokens;
         private int iToken;
 
+        /// <summary>
+        /// Creates an instance of the <see cref="ServiceAttributeParser"/> class.
+        /// </summary>
+        /// <param name="attrService"></param>
         public ServiceAttributeParser(CAttribute attrService)
         {
             this.tokens = attrService.Tokens;
         }
 
+        /// <summary>
+        /// Parses the tokens in the [[reko::service]] attribute,
+        /// extracting information to create a <see cref="SyscallInfo_v1"/>
+        /// instance.
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        /// <exception cref="CParserException"></exception>
         public SyscallInfo_v1 Parse()
         {
             int? nVector = null;

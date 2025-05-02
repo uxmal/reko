@@ -29,11 +29,20 @@ public class LiteralOperand : AbstractMachineOperand
 {
     private readonly string literal;
 
+    /// <summary>
+    /// Constructs a literal operand.
+    /// </summary>
+    /// <param name="value">Literal operand.</param>
     public LiteralOperand(string value) : base(PrimitiveType.Byte)
     {
         this.literal = value;
     }
 
+    /// <summary>
+    /// Returns the string value of the literal operand.
+    /// </summary>
+    /// <param name="renderer">Output sink.</param>
+    /// <param name="options">Options controlling the output</param>
     protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
     {
         renderer.WriteString(literal);

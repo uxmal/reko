@@ -18,14 +18,14 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
+using System.Collections.Generic;
 
 namespace Reko.Core.IRFormat
 {
+
     public class IRProcedureBuilder : ExpressionEmitter
     {
         private IProcessorArchitecture arch;

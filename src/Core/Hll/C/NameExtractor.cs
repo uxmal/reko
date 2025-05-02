@@ -20,17 +20,21 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Core.Hll.C
 {
+    /// <summary>
+    /// Extracts the name from a C declarator.
+    /// </summary>
     public class NameExtractor : DeclaratorVisitor<string>
     {
-        public NameExtractor()
-        {
-        }
-
+        /// <summary>
+        /// Extracts the name from a declarator and decl-specs.
+        /// </summary>
+        /// <param name="declspecs">List of decl-specifications.</param>
+        /// <param name="declarator"></param>
+        /// <param name="state"></param>
+        /// <returns></returns>
         public static string? GetName(IEnumerable<DeclSpec> declspecs, Declarator? declarator, ParserState state)
         {
             var ndte = new NameExtractor();

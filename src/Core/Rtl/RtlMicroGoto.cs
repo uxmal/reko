@@ -34,12 +34,24 @@ namespace Reko.Core.Rtl
     /// </remarks>
     public sealed class RtlMicroGoto : RtlInstruction
     {
+        /// <summary>
+        /// Constructs an unconditional <see cref="RtlMicroGoto"/> instance.
+        /// </summary>
+        /// <param name="indexTarget">Index into the RTL instructions of the current 
+        /// RTL cluster.</param>
         public RtlMicroGoto(int indexTarget)
         {
             this.Target = indexTarget;
             this.Class = InstrClass.Transfer;
         }
 
+
+        /// <summary>
+        /// Constructs a conditional <see cref="RtlMicroGoto"/> instance.
+        /// </summary>
+        /// <param name="condition">Predicate for the conditonal jump</param>
+        /// <param name="indexTarget">Index into the RTL instructions of the current 
+        /// RTL cluster.</param>
         public RtlMicroGoto(Expression? condition, int indexTarget)
         {
             this.Condition = condition;

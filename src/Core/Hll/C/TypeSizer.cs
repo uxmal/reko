@@ -50,58 +50,68 @@ namespace Reko.Core.Hll.C
             return size;
         }
 
+        /// <inheritdoc/>
         public (int, int) VisitCode(CodeType_v1 code)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public (int, int) VisitPrimitive(PrimitiveType_v1 primitive)
         {
             var size = primitive.ByteSize;
             return (size, size);
         }
 
+        /// <inheritdoc/>
         public (int, int) VisitPointer(PointerType_v1 pointer)
         {
             var ptrSize = platform.PointerType.Size;
             return (ptrSize, ptrSize);
         }
 
+        /// <inheritdoc/>
         public (int, int) VisitReference(ReferenceType_v1 pointer)
         {
             var refSize = platform.PointerType.Size;
             return (refSize, refSize);
         }
 
+        /// <inheritdoc/>
         public (int, int) VisitMemberPointer(MemberPointer_v1 memptr)
         {
             var mpSize = platform.FramePointerType.Size;
             return (mpSize, mpSize);
         }
 
+        /// <inheritdoc/>
         public (int, int) VisitArray(ArrayType_v1 array)
         {
             var (elemSize, elemAlign) = array.ElementType!.Accept(this);
             return (Align(elemSize) * array.Length, elemAlign);
         }
 
+        /// <inheritdoc/>
         public (int, int) VisitEnum(SerializedEnumType e)
         {
             //$BUGBUG: at most sizeof int according to the C lang def, but varies widely among compilers.
             return (4, 4);
         }
 
+        /// <inheritdoc/>
         public (int, int) VisitSignature(SerializedSignature signature)
         {
             return (0, 1);
         }
 
+        /// <inheritdoc/>
         public (int, int) VisitString(StringType_v2 str)
         {
             var pstrSize = platform.PointerType.Size;
             return (pstrSize, pstrSize);
         }
 
+        /// <inheritdoc/>
         public (int, int) VisitStructure(StructType_v1 structure)
         {
             var size = 0;
@@ -139,6 +149,7 @@ namespace Reko.Core.Hll.C
             return alignment * ((offset + (alignment - 1)) / alignment);
         }
 
+        /// <inheritdoc/>
         public (int, int) VisitTypedef(SerializedTypedef typedef)
         {
             //int size = typedef.DataType.Accept(this);
@@ -149,6 +160,7 @@ namespace Reko.Core.Hll.C
             return size;
         }
 
+        /// <inheritdoc/>
         public (int, int) VisitTypeReference(TypeReference_v1 typeReference)
         {
             if (!typedefs.TryGetValue(typeReference.TypeName!, out var dataType))
@@ -159,6 +171,7 @@ namespace Reko.Core.Hll.C
             return dataType.Accept(this);
         }
 
+        /// <inheritdoc/>
         public (int, int) VisitUnion(UnionType_v1 union)
         {
             if (union.Alternatives == null)
@@ -175,11 +188,13 @@ namespace Reko.Core.Hll.C
             return (size, alignment);
         }
 
+        /// <inheritdoc/>
         public (int, int) VisitVoidType(VoidType_v1 voidType)
         {
             return (0,1);
         }
 
+        /// <inheritdoc/>
         public (int, int) VisitTemplate(SerializedTemplate template)
         {
             throw new NotImplementedException();

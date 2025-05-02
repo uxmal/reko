@@ -24,8 +24,15 @@ using System.Xml.Serialization;
 
 namespace Reko.Core.Serialization
 {
+    /// <summary>
+    /// Abstract base class for serialized procedures.
+    /// </summary>
     public abstract class ProcedureBase_v1 
     {
+        /// <summary>
+        /// The default value for the Ordinal property, indicating that
+        /// there is no ordinal number for the procedure.
+        /// </summary>
         public const int NoOrdinal = -1;
 
         /// <summary>
@@ -48,10 +55,17 @@ namespace Reko.Core.Serialization
         [XmlElement("signature")]
         public SerializedSignature? Signature;
 
+        /// <summary>
+        /// Procedure characteristics. If non-null, the user has specified
+        /// one or more procedure characteristic.
+        /// </summary>
         [XmlElement("characteristics")]
         public ProcedureCharacteristics? Characteristics;
     }
 
+    /// <summary>
+    /// Serialized user procedure.
+    /// </summary>
     public class Procedure_v1 : ProcedureBase_v1
     {
         /// <summary>
@@ -94,16 +108,27 @@ namespace Reko.Core.Serialization
         public string? OutputFile;
     }
 
+    /// <summary>
+    /// Serialized representation of a register value.
+    /// </summary>
     public class RegisterValue_v2
     {
-        // Optional address; if not specified, use parent context
-        // (e.g. address of user-provided procedure)
+        /// <summary>
+        /// Optional address; if not specified, use parent context
+        /// (e.g. address of user-provided procedure)
+        /// </summary>
         [XmlAttribute("addr")]
         public string? Address;
 
+        /// <summary>
+        /// Register name.
+        /// </summary>
         [XmlAttribute("reg")]
         public string? Register;
 
+        /// <summary>
+        /// Register value, represented as a hexadecimal string.
+        /// </summary>
         [XmlAttribute("value")]
         public string? Value;
     }

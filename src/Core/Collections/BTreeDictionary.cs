@@ -625,14 +625,20 @@ namespace Reko.Core.Collections
 
         #region Debugging code 
 
+        /// <summary>
+        /// Debugging code.
+        /// </summary>
         [Conditional("DEBUG")]
         public void Dump()
         {
-            if (root == null)
+            if (root is null)
                 Debug.Print("(empty)");
             Dump(root!, 0);
         }
 
+        /// <summary>
+        /// Debugging code.
+        /// </summary>
         [Conditional("DEBUG")]
         private void Dump(Node n, int depth)
         {
@@ -684,10 +690,21 @@ namespace Reko.Core.Collections
         }
         #endregion
 
+        /// <summary>
+        /// Abstract collection for items in the BTreeDictionary.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
         public abstract class Collection<T> : ICollection<T>
         {
+            /// <summary>
+            /// BTree nodes for this level.
+            /// </summary>
             protected readonly BTreeDictionary<TKey, TValue> btree;
 
+            /// <summary>
+            /// Initializes the btree nodes for this collection.
+            /// </summary>
+            /// <param name="btree"></param>
             protected Collection(BTreeDictionary<TKey, TValue> btree)
             {
                 this.btree = btree;
@@ -737,6 +754,11 @@ namespace Reko.Core.Collections
 
         public class KeyCollection : Collection<TKey>
         {
+            /// <summary>
+            /// Collection of keys in the BTreeDictionary.
+            /// </summary>
+            /// <param name="btree">Root node of the btree dictionary.
+            /// </param>
             internal KeyCollection(BTreeDictionary<TKey, TValue> btree) : 
                 base(btree)
             {

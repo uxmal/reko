@@ -27,10 +27,13 @@ namespace Reko.Core.Machine
     /// </summary>
     public abstract class MachineInstruction : IAddressable
     {
+        /// <summary>
+        /// Initializes an instance of the <see cref="MachineInstruction"/> class.
+        /// </summary>
         public MachineInstruction()
         {
             this.Operands = [];
-            this.Address = default!;
+            this.Address = default;
         }
 
         //$TODO: make MachineInstruction have a ctor with (Address, Length, Operands)
@@ -84,6 +87,11 @@ namespace Reko.Core.Machine
             renderer.EndInstruction();
         }
 
+        /// <summary>
+        /// Derived classes should implement this method to render the instruction.
+        /// </summary>
+        /// <param name="renderer">Output sink.</param>
+        /// <param name="options">Option controlling the output.</param>
         protected abstract void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options);
 
         /// <summary>
@@ -96,7 +104,10 @@ namespace Reko.Core.Machine
         /// characters [a-z0-9_]
         /// </summary>
         public abstract string MnemonicAsString { get; }
-        
+
+        /// <summary>
+        /// Returns a string representation of the instruction.
+        /// </summary>
         public sealed override string ToString()
         {
             var renderer = new StringRenderer();
@@ -104,6 +115,10 @@ namespace Reko.Core.Machine
             return renderer.ToString();
         }
 
+        /// <summary>
+        /// Returns a string representation of the instruction, given the specified
+        /// <paramref name="options"/>.
+        /// </summary>
         public string ToString(MachineInstructionRendererOptions options)
         {
             var renderer = new StringRenderer();
@@ -129,6 +144,12 @@ namespace Reko.Core.Machine
             }
         }
 
+        /// <summary>
+        /// Renders a single operand.
+        /// </summary>
+        /// <param name="operand">Operand to render.</param>
+        /// <param name="renderer">Output sink.</param>
+        /// <param name="options">Options controlling the output.</param>
         protected virtual void RenderOperand(MachineOperand operand, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             operand.Render(renderer, options);

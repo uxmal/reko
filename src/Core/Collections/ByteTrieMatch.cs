@@ -31,6 +31,9 @@ namespace Reko.Core.Collections
     /// <typeparam name="T">Value associated with the match.</typeparam>
     public class ByteTrieMatch<T>
     {
+        /// <summary>
+        /// An empty match, which indicates that no match was found.
+        /// </summary>
         public static ByteTrieMatch<T> Empty { get; } = new ByteTrieMatch<T>(null, -1, -1, default)
         {
             Success = false,

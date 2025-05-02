@@ -22,8 +22,22 @@ using System.IO;
 
 namespace Reko.Core.Rtl
 {
+    /// <summary>
+    /// Models an RTL return instruction.
+    /// </summary>
     public sealed class RtlReturn : RtlInstruction
     {
+        /// <summary>
+        /// Constructs an <see cref="RtlReturn"/> instruction.
+        /// </summary>
+        /// <param name="returnAddressBytes">Number of bytes the return address occupies
+        /// on the stack.
+        /// </param>
+        /// <param name="extraBytesPopped">Any extra bytes removed from the stack, excluding
+        /// the return address.
+        /// </param>
+        /// <param name="rtlClass"><see cref="InstrClass"/> of this instruction.
+        /// </param>
         public RtlReturn(int returnAddressBytes, int extraBytesPopped, InstrClass rtlClass)
         {
             this.ReturnAddressBytes = returnAddressBytes;

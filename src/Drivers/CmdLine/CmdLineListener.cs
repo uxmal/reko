@@ -27,6 +27,9 @@ using System;
 
 namespace Reko.CmdLine
 {
+    /// <summary>
+    /// Implements <see cref="IDecompilerEventListener"/> for the command line client.
+    /// </summary>
     public class CmdLineListener : IDecompilerEventListener
     {
         private bool isCanceled;

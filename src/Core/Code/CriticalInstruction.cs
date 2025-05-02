@@ -176,8 +176,10 @@ namespace Reko.Core.Code
 
         #region ExpressionVisitor /////////////////////////////
 
+        /// <inheritdoc/>
         public bool VisitAddress(Address addr) => false;
 
+        /// <inheritdoc/>
         public bool VisitApplication(Application appl)
         {
             var argsCritical = appl.Arguments.Any(a => a.Accept(this));
@@ -193,68 +195,91 @@ namespace Reko.Core.Code
             }
         }
 
+        /// <inheritdoc/>
         public bool VisitArrayAccess(ArrayAccess arr) =>
             arr.Array.Accept(this) || arr.Index.Accept(this);
 
+        /// <inheritdoc/>
         public bool VisitBinaryExpression(BinaryExpression bin) =>
             bin.Left.Accept(this) || bin.Right.Accept(this);
 
+        /// <inheritdoc/>
         public bool VisitCast(Cast cast) =>
             cast.Expression.Accept(this);
 
+        /// <inheritdoc/>
         public bool VisitConditionalExpression(ConditionalExpression cond) =>
             cond.Condition.Accept(this) ||
             cond.ThenExp.Accept(this) ||
             cond.FalseExp.Accept(this);
 
+        /// <inheritdoc/>
         public bool VisitConditionOf(ConditionOf cond) =>
             cond.Expression.Accept(this);
 
+        /// <inheritdoc/>
         public bool VisitConstant(Constant c) => false;
 
+        /// <inheritdoc/>
         public bool VisitConversion(Conversion conversion) =>
             conversion.Expression.Accept(this);
 
+        /// <inheritdoc/>
         public bool VisitDereference(Dereference deref) => true;
-        
+
+        /// <inheritdoc/>
         public bool VisitFieldAccess(FieldAccess access) =>
             access.Structure.Accept(this);
 
+        /// <inheritdoc/>
         public bool VisitIdentifier(Identifier id) => false;
 
+        /// <inheritdoc/>
         public bool VisitMemberPointerSelector(MemberPointerSelector mps) =>
             mps.BasePointer.Accept(this) ||
             mps.MemberPointer.Accept(this);
 
+        /// <inheritdoc/>
         public bool VisitMkSequence(MkSequence seq) =>
             seq.Expressions.Any(e => e.Accept(this));
 
+        /// <inheritdoc/>
         public bool VisitOutArgument(OutArgument outArgument) => false;
 
+        /// <inheritdoc/>
         public bool VisitMemoryAccess(MemoryAccess access) =>
             access.EffectiveAddress.Accept(this);
 
+        /// <inheritdoc/>
         public bool VisitPhiFunction(PhiFunction phi) => false;
-        
+
+        /// <inheritdoc/>
         public bool VisitPointerAddition(PointerAddition pa) =>
             pa.Pointer.Accept(this);
 
+        /// <inheritdoc/>
         public bool VisitProcedureConstant(ProcedureConstant pc) => false;
 
+        /// <inheritdoc/>
         public bool VisitScopeResolution(ScopeResolution sc) => false;
 
+        /// <inheritdoc/>
         public bool VisitSegmentedAddress(SegmentedPointer segptr) =>
             segptr.BasePointer.Accept(this) ||
             segptr.Offset.Accept(this);
 
+        /// <inheritdoc/>
         public bool VisitSlice(Slice slice) =>
             slice.Expression.Accept(this);
 
+        /// <inheritdoc/>
         public bool VisitStringConstant(StringConstant str) => false;
-        
+
+        /// <inheritdoc/>
         public bool VisitTestCondition(TestCondition test) =>
             test.Expression.Accept(this);
 
+        /// <inheritdoc/>
         public bool VisitUnaryExpression(UnaryExpression unary) =>
             unary.Expression.Accept(this);
 

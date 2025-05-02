@@ -35,7 +35,7 @@ namespace Reko.Core.Analysis
         List<DataType> ArgumentTypes { get; }
 
         /// <summary>
-        /// Initiates the parsing of the format string.
+        /// Parses the varargs format string and populates the <see cref="ArgumentTypes"/>
         /// </summary>
         void Parse();
     }

@@ -27,6 +27,9 @@ using System.Text;
 
 namespace Reko.Core.IRFormat
 {
+    /// <summary>
+    /// Lexer for the IR format.
+    /// </summary>
     public class IRFormatLexer
     {
         private static readonly IReadOnlyDictionary<string, IRTokenType> keywords = new Dictionary<string, IRTokenType>()
@@ -38,6 +41,10 @@ namespace Reko.Core.IRFormat
         private readonly TextReader rdr;
         private int lineNumber;
 
+        /// <summary>
+        /// Constructs a lexer for the IR format.
+        /// </summary>
+        /// <param name="rdr">Textreader of the source code.</param>
         public IRFormatLexer(TextReader rdr)
         {
             this.rdr = rdr;
@@ -66,6 +73,10 @@ namespace Reko.Core.IRFormat
             Bang,
         }
 
+        /// <summary>
+        /// Reads a token from the input stream.
+        /// </summary>
+        /// <returns>The read token.</returns>
         public Token Read()
         {
             var st = State.Initial;

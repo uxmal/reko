@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Core.Serialization
 		{
 			SerializedType st = new PrimitiveType_v1(Domain.SignedInt, 4);
 			Assert.AreEqual("prim(SignedInt,4)", st.ToString());
-			st = new PointerType_v1(new PrimitiveType_v1(Domain.UnsignedInt, 4));
+			st = new PointerType_v1(new PrimitiveType_v1(Domain.UnsignedInt, 4), 4);
 			Assert.AreEqual("ptr(prim(UnsignedInt,4))", st.ToString());
 		}
 
@@ -87,7 +87,7 @@ namespace Reko.UnitTests.Core.Serialization
 		[Test]
 		public void StWritePrimitive()
 		{
-			SerializedType st = new PointerType_v1(new PrimitiveType_v1(Domain.SignedInt, 4));
+			SerializedType st = new PointerType_v1(new PrimitiveType_v1(Domain.SignedInt, 4), 4);
 			StringWriter writer = new StringWriter();
 			XmlSerializer ser = SerializedLibrary.CreateSerializer_v4(st.GetType());
 			ser.Serialize(writer, st);

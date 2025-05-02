@@ -18,10 +18,7 @@
  */
 #endregion
 
-using System;
-using System.ComponentModel;
 using System.Collections.Generic;
-using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -44,6 +41,9 @@ namespace Reko.Core.Serialization
     {
         public const string FileExtension = ".dcproject";
 
+        /// <summary>
+        /// Creates an instance of <see cref="Project_v5"/>.
+        /// </summary>
         public Project_v5()
         {
             this.InputFiles = new List<DecompilerInput_v5>();
@@ -52,66 +52,125 @@ namespace Reko.Core.Serialization
             this.ScriptFiles = new List<ScriptFile_v5>();
         }
 
+        /// <summary>
+        /// Name of the default architecture.
+        /// </summary>
         [XmlElement("arch")]
         public string? ArchitectureName;
 
+        /// <summary>
+        /// Name of the platform used in this project.
+        /// </summary>
         [XmlElement("platform")]
         public string? PlatformName;
 
+        /// <summary>
+        /// Input files to be decompiled.
+        /// </summary>
         [XmlElement("input", typeof(DecompilerInput_v5))]
         public List<DecompilerInput_v5> InputFiles;
+
+        /// <summary>
+        /// User-specified metadata files.
+        /// </summary>
         [XmlElement("metadata", typeof(MetadataFile_v3))]
         public List<MetadataFile_v3> MetadataFiles;
+
+        /// <summary>
+        /// Files to assemble.
+        /// </summary>
         [XmlElement("asm", typeof(AssemblerFile_v3))]
         public List<AssemblerFile_v3> AssemblerFiles;
+
+        /// <summary>
+        /// Script files to be executed.
+        /// </summary>
         [XmlElement("script", typeof(ScriptFile_v5))]
         public List<ScriptFile_v5> ScriptFiles;
 
+        /// <inheritdoc/>
         public override T Accept<T>(ISerializedProjectVisitor<T> visitor)
         {
             return visitor.VisitProject_v5(this);
         }
     }
 
+    /// <summary>
+    /// Serialization format for decompiler input files.
+    /// </summary>
     public class DecompilerInput_v5
     {
+        /// <summary>
+        /// Creates an instance of <see cref="DecompilerInput_v5"/>.
+        /// </summary>
         public DecompilerInput_v5()
         {
             User = new UserData_v4();
         }
 
+        /// <summary>
+        /// Location of this input file.
+        /// </summary>
         [XmlElement("location")]
         public string? Location;
 
-        // Kept for backwards compatibility only, use Location field wherever possible.
+        /// <summary>
+        /// Kept for backwards compatibility only, use Location field wherever possible.
+        /// </summary>
         [XmlElement("filename")]
         public string? Filename;
 
+        /// <summary>
+        /// Comment for this input file.
+        /// </summary>
         [XmlElement("comment")]
         public string? Comment;
 
+        /// <summary>
+        /// Directory where the disassembly output will be written.
+        /// </summary>
         [XmlElement("asmDir")]
         public string? DisassemblyDirectory;
 
+        /// <summary>
+        /// Directory where the source code output will be written.
+        /// </summary>
         [XmlElement("srcDir")]
         public string? SourceDirectory;
 
+        /// <summary>
+        /// Directory where the include files will be written.
+        /// </summary>
         [XmlElement("includeDir")]
         public string? IncludeDirectory;
 
+        /// <summary>
+        /// Directory where the resources will be written.
+        /// </summary>
         [XmlElement("resources")]
         public string? ResourcesDirectory;
 
+        /// <summary>
+        /// User-specified data.
+        /// </summary>
         [XmlElement("user")]
         public UserData_v4? User;
     }
 
+    /// <summary>
+    /// Serialization format for script files.
+    /// </summary>
     public class ScriptFile_v5
     {
+        /// <summary>
+        /// Location of the file.
+        /// </summary>
         [XmlElement("location")]
         public string? Location;
 
-        // Kept for backwards compatibility only, use Location field wherever possible.
+        /// <summary>
+        /// Kept for backwards compatibility only, use Location field wherever possible.
+        /// </summary>
         [XmlElement("filename")]
         public string? Filename;
     }

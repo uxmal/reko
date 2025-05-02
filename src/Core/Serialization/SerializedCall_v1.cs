@@ -38,20 +38,38 @@ namespace Reko.Core.Serialization
 		[XmlElement("address")]
 		public string? InstructionAddress;
 
+        /// <summary>
+        /// The function signature used for the call.
+        /// </summary>
 		[XmlElement("signature")]
 		public SerializedSignature? Signature;
 
+        /// <summary>
+        /// Optional comment.
+        /// </summary>
         [XmlElement("comment")]
         public string? Comment;
 
+        /// <summary>
+        /// True if the call is a "noreturn" call. This means that the function
+        /// diverges and does not return to the caller.
+        /// </summary>
         [XmlElement("noreturn")]
         [DefaultValue(false)]
         public bool NoReturn;
 
+        /// <summary>
+        /// Creates an uninitialized serialized call.
+        /// </summary>
 		public SerializedCall_v1()
 		{
 		}
 
+        /// <summary>
+        /// Constructs a serialized call with the specified address and signature.
+        /// </summary>
+        /// <param name="addr">Address at which the call takes place.</param>
+        /// <param name="sig">Function signature of the call.</param>
 		public SerializedCall_v1(Address addr, SerializedSignature sig)
 		{
 			InstructionAddress = addr.ToString();

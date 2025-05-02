@@ -24,32 +24,60 @@ using System.Xml.Serialization;
 
 namespace Reko.Core.Serialization
 {
+    /// <summary>
+    /// Serialized representation of serialized pointer types.
+    /// </summary>
 	public class PointerType_v1 : SerializedType
 	{
+        /// <summary>
+        /// Data type of the pointer's pointee.
+        /// </summary>
 		public SerializedType? DataType;
+
+        /// <summary>
+        /// The size of the pointer, in storage units.
+        /// </summary>
         [XmlAttribute("size")]
         [DefaultValue(0)]
         public int PointerSize;
 
+        /// <summary>
+        /// Constructs an empty instance of <see cref="PointerType_v1"/>.
+        /// </summary>
 		public PointerType_v1()
 		{
 		}
 
-		public PointerType_v1(SerializedType pointee)
+        /// <summary>
+        /// Constructs an instance of <see cref="PointerType_v1"/>.
+        /// </summary>
+        /// <param name="pointee">Data type of the pointer's pointee.</param>
+        /// <param name="pointerSize">Size of the pointer, in storage units.</param>
+		public PointerType_v1(SerializedType pointee, int pointerSize)
 		{
 			DataType = pointee;
+            PointerSize = pointerSize;
 		}
 
+        /// <summary>
+        /// Creates a serialized pointer type.
+        /// </summary>
+        /// <param name="dt">Pointee type.</param>
+        /// <param name="n">Pointer size in storage units.
+        /// </param>
+        /// <returns></returns>
         public static SerializedType Create(SerializedType dt, int n)
         {
-            return new PointerType_v1 { DataType = dt, PointerSize = n };
+            return new PointerType_v1(dt, n);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
         {
             return visitor.VisitPointer(this);
         }
 
+        /// <inheritdoc/>
 		public override string ToString()
         {
             var sb = new StringBuilder();

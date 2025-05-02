@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2025 John Källén.
  *
@@ -28,6 +28,10 @@ using System.Threading.Tasks;
 
 namespace Reko.Core.NativeInterface
 {
+    /// <summary>
+    /// Implementation of <see cref="INativeTypeFactory"/> that creates
+    /// handles to data types for use by native code.
+    /// </summary>
     [ComVisible(true)]
     [ClassInterface(ClassInterfaceType.None)]
     public class NativeTypeFactory : MarshalByRefObject, INativeTypeFactory
@@ -36,6 +40,9 @@ namespace Reko.Core.NativeInterface
         private SortedList<HExpr, DataType> types;
         private int counter = 1000;
 
+        /// <summary>
+        /// Creates an instance of the <see cref="NativeTypeFactory"/> class.
+        /// </summary>
         public NativeTypeFactory()
         {
             this.handles = new SortedList<DataType, HExpr>(new DataTypeComparer());
@@ -47,6 +54,11 @@ namespace Reko.Core.NativeInterface
             }
         }
 
+        /// <summary>
+        /// For a given type handle, gets the corresponding Reko data type.
+        /// </summary>
+        /// <param name="a">Type handle.</param>
+        /// <returns>Corresponding Reko data type.</returns>
         public DataType GetRekoType(HExpr a)
         {
             return types[a];
@@ -68,6 +80,7 @@ namespace Reko.Core.NativeInterface
             return types[dt];
         }
 
+        /// <inheritdoc/>>
         public HExpr ArrayOf(HExpr dt, int length)
         {
             var dataType = GetDataType(dt);
@@ -75,36 +88,43 @@ namespace Reko.Core.NativeInterface
             return MapToHandle(a);
         }
 
+        /// <inheritdoc/>>
         public void BeginFunc(HExpr dt, int byte_size)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>>
         public void BeginStruct(HExpr dt, int byte_size)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>>
         public HExpr EndFunc()
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>>
         public HExpr EndStruct()
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>>
         public void Field(HExpr dt, int offset, string name)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>>
         public void Parameter(HExpr dt, string name)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>>
         public HExpr PtrTo(HExpr dt, int byte_size)
         {
             throw new NotImplementedException();

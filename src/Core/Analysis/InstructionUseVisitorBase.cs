@@ -94,7 +94,9 @@ namespace Reko.Core.Analysis
 
         #endregion
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Called when an <see cref="Identifier"/> is used in an instruction.
+        /// </summary>
         protected abstract void UseIdentifier(Identifier id);
     }
 }

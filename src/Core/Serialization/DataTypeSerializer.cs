@@ -18,36 +18,41 @@
  */
 #endregion
 
-using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Reko.Core.Serialization
 {
+    /// <summary>
+    /// Class that serializes a <see cref="DataType"/> into a <see cref="SerializedType"/>.
+    /// </summary>
     public class DataTypeSerializer : IDataTypeVisitor<SerializedType>
     {
         private HashSet<string> structs = new HashSet<string>();
         private HashSet<string> unions = new HashSet<string>();
 
+        /// <inheritdoc/>
         public SerializedType VisitArray(ArrayType at)
         {
             var et = at.ElementType.Accept(this);
             return new ArrayType_v1 { ElementType = et, Length = at.Length };
         }
 
+        /// <inheritdoc/>
         public SerializedType VisitClass(ClassType ct)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public SerializedType VisitCode(CodeType c)
         {
             return new CodeType_v1();
         }
 
+        /// <inheritdoc/>
         public SerializedType VisitEnum(EnumType e)
         {
             var members = e.Members?.Select(
@@ -60,11 +65,13 @@ namespace Reko.Core.Serialization
             };
         }
 
+        /// <inheritdoc/>
         public SerializedType VisitEquivalenceClass(EquivalenceClass eq)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public SerializedType VisitFunctionType(FunctionType ft)
         {
             Argument_v1? ret = null;
@@ -103,6 +110,7 @@ namespace Reko.Core.Serialization
             };
         }
 
+        /// <inheritdoc/>
         public SerializedType VisitPrimitive(PrimitiveType pt)
         {
             return new PrimitiveType_v1
@@ -112,11 +120,13 @@ namespace Reko.Core.Serialization
             };
         }
 
+        /// <inheritdoc/>
         public SerializedType VisitMemberPointer(MemberPointer memptr)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public SerializedType VisitPointer(Pointer ptr)
         {
             return new PointerType_v1
@@ -126,6 +136,7 @@ namespace Reko.Core.Serialization
             };
         }
 
+        /// <inheritdoc/>
         public SerializedType VisitReference(ReferenceTo refTo)
         {
             return new ReferenceType_v1
@@ -135,6 +146,7 @@ namespace Reko.Core.Serialization
             };
         }
 
+        /// <inheritdoc/>
         public SerializedType VisitString(StringType str)
         {
             return new StringType_v2 { 
@@ -143,6 +155,7 @@ namespace Reko.Core.Serialization
             };
         }
 
+        /// <inheritdoc/>
         public SerializedType VisitStructure(StructureType str)
         {
             var sStr = new StructType_v1
@@ -167,16 +180,19 @@ namespace Reko.Core.Serialization
             return sStr;
         }
 
+        /// <inheritdoc/>
         public SerializedType VisitTypeReference(TypeReference typeref)
         {
             return new TypeReference_v1(typeref.Name);
         }
 
+        /// <inheritdoc/>
         public SerializedType VisitTypeVariable(TypeVariable tv)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public SerializedType VisitUnion(UnionType ut)
         {
             var union = new UnionType_v1
@@ -201,11 +217,13 @@ namespace Reko.Core.Serialization
             return union;
         }
 
+        /// <inheritdoc/>
         public SerializedType VisitUnknownType(UnknownType ut)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public SerializedType VisitVoidType(VoidType ut)
         {
             return new VoidType_v1();

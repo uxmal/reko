@@ -25,10 +25,12 @@ using Reko.Core.Types;
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Text.RegularExpressions;
 
 namespace Reko.Core.IRFormat
 {
+    /// <summary>
+    /// Parses the IR format.
+    /// </summary>
     public class IRFormatParser
     {
         private readonly IRFormatLexer lex;
@@ -36,6 +38,11 @@ namespace Reko.Core.IRFormat
         private Token? token;
         private IRProcedureBuilder? m;
 
+        /// <summary>
+        /// Constructs an <see cref="IRFormatParser"/> that reads from the
+        /// <paramref name="rdr"/>.
+        /// </summary>
+        /// <param name="rdr">The text reader from which to read the source code.</param>
         public IRFormatParser(TextReader rdr)
         {
             this.lex = new IRFormatLexer(rdr);
@@ -43,6 +50,10 @@ namespace Reko.Core.IRFormat
             this.m = null;
         }
 
+        /// <summary>
+        /// Parses a program in IR form.
+        /// </summary>
+        /// <returns></returns>
         public Program Parse()
         {
             this.program = new Program();
@@ -56,6 +67,9 @@ namespace Reko.Core.IRFormat
             return program;
         }
 
+        /// <summary>
+        /// Parses a program item.
+        /// </summary>
         public void ParseProgramItem()
         {
             switch (ReadToken().Type)
@@ -66,6 +80,9 @@ namespace Reko.Core.IRFormat
             }
         }
 
+        /// <summary>
+        /// Parses a procedure definition.
+        /// </summary>
         public void ParseProcedureDefinition()
         {
             //var name = Expect(IRTokenType.ID).Value;
@@ -83,6 +100,11 @@ namespace Reko.Core.IRFormat
         }
 
 
+        /// <summary>
+        /// Parses a statement.
+        /// </summary>
+        /// <returns>An <see cref="Instruction"/>.
+        /// </returns>
         public Instruction ParseStatement()
         {
             if (m is null)
@@ -90,6 +112,13 @@ namespace Reko.Core.IRFormat
             return ParseStatement(m);
         }
 
+
+        /// <summary>
+        /// Parses a statement.
+        /// </summary>
+        /// <param name="m">IR procedure builder.</param>
+        /// <returns>An <see cref="Instruction"/>.
+        /// </returns>
         public Instruction ParseStatement(IRProcedureBuilder m)
         {
             this.m = m;

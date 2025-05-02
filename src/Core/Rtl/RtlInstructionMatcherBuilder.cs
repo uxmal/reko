@@ -24,28 +24,59 @@ using System.Collections.Generic;
 
 namespace Reko.Core.Rtl
 {
+    /// <summary>
+    /// Builds a matcher for RTL instructions.
+    /// </summary>
     public class RtlInstructionMatcherEmitter : RtlEmitter
     {
+        /// <summary>
+        /// Constructs a matcher emitter.
+        /// </summary>
+        /// <param name="instrs"></param>
         public RtlInstructionMatcherEmitter(List<RtlInstruction> instrs) 
             : base(instrs) 
         { 
         }
 
+        /// <summary>
+        /// Creates a matcher for any identifier.
+        /// </summary>
+        /// <param name="label">If non-null, records the matched identifer with the provided
+        /// <paramref name="label"/>.</param>
+        /// <returns>An identifer matcher.</returns>
         public Identifier AnyId(string? label = null)
         {
             return ExpressionMatcher.AnyId(label);
         }
 
+        /// <summary>
+        /// Creates a matcher for any <see cref="Constant"/>.
+        /// </summary>
+        /// <param name="label">If non-null, records the matched constant with the provided
+        /// <paramref name="label"/>.</param>
+        /// <returns>A constant matcher.</returns>
         public Expression AnyConst(string? label = null)
         {
             return ExpressionMatcher.AnyConstant(label);
         }
 
+        /// <summary>
+        /// Creates a matcher for any <see cref="DataType"/>.
+        /// </summary>
+        /// <param name="label">If non-null, records the matched data type with the provided
+        /// <paramref name="label"/>.</param>
+        /// <returns>A data type matcher.</returns>
         public DataType AnyDataType(string? label)
         {
             return ExpressionMatcher.AnyDataType(label);
         }
 
+        /// <summary>
+        /// Creates a matcher for any expression.
+        /// </summary>
+        /// <param name="label">If non-null, records the matched expression with the provided
+        /// <paramref name="label"/>.</param>
+        /// <returns>An expression matcher.</returns>
         public Expression AnyExpr(string? label = null)
         {
             return ExpressionMatcher.AnyExpression(label);

@@ -28,14 +28,25 @@ namespace Reko.Core.Rtl
     /// </summary>
     public sealed class RtlSwitch : RtlInstruction
     {
+        /// <summary>
+        /// Constructs a <see cref="RtlSwitch"/> instruction.
+        /// </summary>
+        /// <param name="expr">Condition expression.</param>
+        /// <param name="targets">The addresses of the cases of the RTL switch.</param>
         public RtlSwitch(Expression expr, Address [] targets)
         {
             this.Expression = expr;
             this.Targets = targets;
         }
 
+        /// <summary>
+        /// Condition expression of the switch instruction.
+        /// </summary>
         public Expression Expression { get; }
 
+        /// <summary>
+        /// The addresses of the cases of the RTL switch.
+        /// </summary>
         public Address[] Targets { get; }
 
         /// <inheritdoc/>

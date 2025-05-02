@@ -105,7 +105,7 @@ namespace Reko.UnitTests.Decompiler.Loading
                             Arguments = new Argument_v1[]
                             {
                                 new Argument_v1("arg1", PrimitiveType_v1.Int32(), new StackVariable_v1(), false),
-                                new Argument_v1("arg2", new PointerType_v1(PrimitiveType_v1.Char8()) { PointerSize = 4 }, new StackVariable_v1(), false),
+                                new Argument_v1("arg2", new PointerType_v1(PrimitiveType_v1.Char8(), 4), new StackVariable_v1(), false),
                             },
                             ReturnValue = new Argument_v1
                             {

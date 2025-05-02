@@ -36,6 +36,15 @@ namespace Reko.Core.Machine
         private readonly Decoder<TDasm, TMnemonic, TInstr>[] decoders;
         private readonly string tag;
 
+        /// <summary>
+        /// Constructs a <see cref="MaskDecoder{TDasm, TMnemonic, TInstr}"/>.
+        /// </summary>
+        /// <param name="bitfield">Bitfield which will be extracted from the
+        /// opcode to select one of the sub-decoders.</param>
+        /// <param name="tag">Debugging tag.</param>
+        /// <param name="decoders">Sub-decoders which will be selected by the value
+        /// read with <paramref name="bitfield"/>.
+        /// </param>
         public MaskDecoder(in Bitfield bitfield, string tag, params Decoder<TDasm, TMnemonic, TInstr>[] decoders)
         {
             this.bitfield = bitfield;
@@ -44,6 +53,13 @@ namespace Reko.Core.Machine
             this.tag = tag;
         }
 
+        /// <summary>
+        /// Decodes the instruction by reading the bitfield and dispatching to
+        /// one of the sub-decoders.
+        /// </summary>
+        /// <param name="wInstr">Opcode of the instruction.</param>
+        /// <param name="dasm">Reference to the assembler.</param>
+        /// <returns>A disassembled instruction.</returns>
         public override TInstr Decode(uint wInstr, TDasm dasm)
         {
             TraceDecoder(wInstr);
@@ -51,6 +67,11 @@ namespace Reko.Core.Machine
             return decoders[op].Decode(wInstr, dasm);
         }
 
+        /// <summary>
+        /// Debug method to dump the instruction and the mask used to select the
+        /// bitfield.
+        /// </summary>
+        /// <param name="wInstr"></param>
         [Conditional("DEBUG")]
         public void TraceDecoder(uint wInstr)
         {
@@ -58,6 +79,9 @@ namespace Reko.Core.Machine
             DumpMaskedInstruction(32, wInstr, shMask, tag);
         }
 
+        /// <summary>
+        /// Returns a string representation of this class.
+        /// </summary>
         public override string ToString()
         {
             return $"{{Mask {bitfield} {tag}}}";
@@ -77,6 +101,15 @@ namespace Reko.Core.Machine
         private readonly WideDecoder<TDasm, TMnemonic, TInstr>[] decoders;
         private readonly string tag;
 
+        /// <summary>
+        /// Constructs a <see cref="MaskDecoder{TDasm, TMnemonic, TInstr}"/>.
+        /// </summary>
+        /// <param name="bitfield">Bitfield which will be extracted from the
+        /// opcode to select one of the sub-decoders.</param>
+        /// <param name="tag">Debugging tag.</param>
+        /// <param name="decoders">Sub-decoders which will be selected by the value
+        /// read with <paramref name="bitfield"/>.
+        /// </param>
         public WideMaskDecoder(Bitfield bitfield, string tag, params WideDecoder<TDasm, TMnemonic, TInstr>[] decoders)
         {
             this.bitfield = bitfield;
@@ -85,6 +118,13 @@ namespace Reko.Core.Machine
             this.tag = tag;
         }
 
+        /// <summary>
+        /// Decodes the instruction by reading the bitfield and dispatching to
+        /// one of the sub-decoders.
+        /// </summary>
+        /// <param name="wInstr">Opcode of the instruction.</param>
+        /// <param name="dasm">Reference to the assembler.</param>
+        /// <returns>A disassembled instruction.</returns>
         public override TInstr Decode(ulong wInstr, TDasm dasm)
         {
             TraceDecoder(wInstr);
@@ -92,13 +132,11 @@ namespace Reko.Core.Machine
             return decoders[op].Decode(wInstr, dasm);
         }
 
-        [Conditional("DEBUG")]
-        public void TraceDecoder(uint wInstr)
-        {
-            var shMask = this.bitfield.Mask << this.bitfield.Position;
-            DumpMaskedInstruction(32, wInstr, shMask, tag);
-        }
-
+        /// <summary>
+        /// Debug method to dump the instruction and the mask used to select the
+        /// bitfield.
+        /// </summary>
+        /// <param name="wInstr"></param>
         [Conditional("DEBUG")]
         public void TraceDecoder(ulong wInstr)
         {
@@ -106,6 +144,9 @@ namespace Reko.Core.Machine
             DumpMaskedInstruction(64, wInstr, shMask, tag);
         }
 
+        /// <summary>
+        /// Returns a string representation of this class.
+        /// </summary>
         public override string ToString()
         {
             return $"{{Mask {bitfield}}}";

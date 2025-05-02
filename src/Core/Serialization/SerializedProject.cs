@@ -33,9 +33,26 @@ namespace Reko.Core.Serialization
         public abstract T Accept<T>(ISerializedProjectVisitor<T> visitor);
     }
 
+    /// <summary>
+    /// Visitor interface for serialized projects.
+    /// </summary>
+    /// <typeparam name="T">Result returned by the visitor.</typeparam>
     public interface ISerializedProjectVisitor<T>
     {
+        /// <summary>
+        /// Called when visiting a <see cref="Project_v4"/>.
+        /// </summary>
+        /// <param name="sProject"><see cref="Project_v4"/> instance being visited.</param>
+        /// <returns>A value of type <typeparamref name="T"/>.
+        /// </returns>
         T VisitProject_v4(Project_v4 sProject);
+
+        /// <summary>
+        /// Called when visiting a <see cref="Project_v5"/>.
+        /// </summary>
+        /// <param name="sProject"><see cref="Project_v5"/> instance being visited.</param>
+        /// <returns>A value of type <typeparamref name="T"/>.
+        /// </returns>
         T VisitProject_v5(Project_v5 sProject);
     }
 }

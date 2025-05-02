@@ -28,9 +28,15 @@ using System.Threading.Tasks;
 
 namespace Reko.Core.NativeInterface
 {
+    /// <summary>
+    /// Opaque handle to an expression.
+    /// </summary>
     [NativeInterop]
     public enum HExpr { }
 
+    /// <summary>
+    /// Native equivalent to <see cref="Rtl.RtlEmitter"/>.
+    /// </summary>
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     [Guid("412E748A-3181-4DBE-AD2A-AE23B5ECEAC2")]
     [ComVisible(true)]

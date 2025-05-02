@@ -18,18 +18,18 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Configuration;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Core.Configuration
 {
+    /// <summary>
+    /// UI preferences.
+    /// </summary>
     public class UiPreferencesConfiguration
     {
+        /// <summary>
+        /// List of style rules.
+        /// </summary>
         public List<UiStyleDefinition> Styles { get; set; } = new List<UiStyleDefinition>();
     }
 }

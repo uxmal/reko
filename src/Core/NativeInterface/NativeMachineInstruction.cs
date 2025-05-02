@@ -23,11 +23,18 @@ using System;
 
 namespace Reko.Core.NativeInterface
 {
+    /// <summary>
+    /// Native equivalent of <see cref="MachineInstruction"/>.
+    /// </summary>
     public class NativeMachineInstruction : MachineInstruction
     {
+        /// <inheritdoc/>
         public override int MnemonicAsInteger => throw new NotImplementedException();
+
+        /// <inheritdoc/>
         public override string MnemonicAsString => throw new NotImplementedException();
 
+        /// <inheritdoc/>
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
         }

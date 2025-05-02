@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2025 John Källén.
  *
@@ -26,9 +26,14 @@ using System.Threading.Tasks;
 
 namespace Reko.Core.NativeInterface
 {
+    /// <summary>
+    /// Enumeration of all base types that can be used in native code,
+    /// each corresponding to a static member of <see cref="Types.PrimitiveType"/>.
+    /// </summary>
     [NativeInterop]
     public enum BaseType
     {
+#pragma warning disable CS1591
         Void,
 
         Bool,

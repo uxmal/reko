@@ -38,6 +38,12 @@ namespace Reko.Core.Machine
         private readonly TMnemonic mnemonic;
         private readonly Mutator<TDasm>[] mutators;
 
+        /// <summary>
+        /// Constructs a intruction decoder.
+        /// </summary>
+        /// <param name="iclass">InstrClass </param>
+        /// <param name="mnemonic">Mnemonic for this instruction.</param>
+        /// <param name="mutators">Operand decoders.</param>
         public InstrDecoder(InstrClass iclass, TMnemonic mnemonic, params Mutator<TDasm>[] mutators)
         {
             this.iclass = iclass;
@@ -45,6 +51,14 @@ namespace Reko.Core.Machine
             this.mutators = mutators;
         }
 
+        /// <summary>
+        /// Decodes the instruction by applying the mutators to the disassembler,
+        /// resulting in a <see cref="MachineInstruction"/>.
+        /// </summary>
+        /// <param name="wInstr">Opcode to decode.</param>
+        /// <param name="dasm">Disassembler instance.</param>
+        /// <returns>The decoded machine instruction.
+        /// </returns>
         public override TInstr Decode(uint wInstr, TDasm dasm)
         {
             DumpMaskedInstruction(wInstr, 0, this.mnemonic);
@@ -56,12 +70,21 @@ namespace Reko.Core.Machine
             return dasm.MakeInstruction(this.iclass, this.mnemonic);
         }
 
+        /// <summary>
+        /// Returns a string representation of the instruction decoder.
+        /// </summary>
         public override string ToString()
         {
             return $"{iclass}:{mnemonic}";
         }
     }
 
+    /// <summary>
+    /// A 64-bit version of the <see cref="InstrDecoder{TDasm, TMnemonic, TInstr}"/>.
+    /// </summary>
+    /// <typeparam name="TDasm"></typeparam>
+    /// <typeparam name="TMnemonic"></typeparam>
+    /// <typeparam name="TInstr"></typeparam>
     public class WideInstrDecoder<TDasm, TMnemonic, TInstr> : WideDecoder<TDasm, TMnemonic, TInstr>
         where TDasm : DisassemblerBase<TInstr, TMnemonic>
         where TMnemonic : struct
@@ -71,6 +94,12 @@ namespace Reko.Core.Machine
         private readonly TMnemonic mnemonic;
         private readonly WideMutator<TDasm>[] mutators;
 
+        /// <summary>
+        /// Constructs a intruction decoder.
+        /// </summary>
+        /// <param name="iclass">InstrClass </param>
+        /// <param name="mnemonic">Mnemonic for this instruction.</param>
+        /// <param name="mutators">Operand decoders.</param>
         public WideInstrDecoder(InstrClass iclass, TMnemonic mnemonic, params WideMutator<TDasm>[] mutators)
         {
             this.iclass = iclass;
@@ -78,6 +107,14 @@ namespace Reko.Core.Machine
             this.mutators = mutators;
         }
 
+        /// <summary>
+        /// Decodes the instruction by applying the mutators to the disassembler,
+        /// resulting in a <see cref="MachineInstruction"/>.
+        /// </summary>
+        /// <param name="ulInstr">Opcode to decode.</param>
+        /// <param name="dasm">Disassembler instance.</param>
+        /// <returns>The decoded machine instruction.
+        /// </returns>
         public override TInstr Decode(ulong ulInstr, TDasm dasm)
         {
             foreach (var m in mutators)
@@ -88,10 +125,12 @@ namespace Reko.Core.Machine
             return dasm.MakeInstruction(this.iclass, this.mnemonic);
         }
 
+        /// <summary>
+        /// Returns a string representation of the instruction decoder.
+        /// </summary>
         public override string ToString()
         {
             return $"{iclass}:{mnemonic}";
         }
-
     }
 }
