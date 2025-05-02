@@ -30,6 +30,12 @@ namespace Reko.Core.Types
     /// </remarks>
 	public class MemberPointer : DataType
 	{
+        /// <summary>
+        /// Constructs an instance of the <see cref="MemberPointer"/> class.
+        /// </summary>
+        /// <param name="basePtr">Data type of the base pointer.</param>
+        /// <param name="pointee">Data type of the offset from base pointer.</param>
+        /// <param name="bitSize">The size of this pointer.</param>
 		public MemberPointer(DataType basePtr, DataType pointee, int bitSize)
             : base(Domain.Offset)
 		{
@@ -38,16 +44,19 @@ namespace Reko.Core.Types
 			this.BitSize = bitSize;
 		}
 
+        /// <inheritdoc/>
         public override void Accept(IDataTypeVisitor v)
         {
             v.VisitMemberPointer(this);
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
             return v.VisitMemberPointer(this);
         }
 
+        /// <inheritdoc/>
         public override DataType Clone(IDictionary<DataType, DataType>? clonedTypes)
 		{
             return new MemberPointer(BasePointer.Clone(clonedTypes), Pointee.Clone(clonedTypes), BitSize)
@@ -56,8 +65,10 @@ namespace Reko.Core.Types
             };
 		}
 
+        /// <inheritdoc/>
         public override int BitSize { get; }
-        
+
+        /// <inheritdoc/>
         public override bool IsComplex => true;
 
 		/// <summary>
@@ -65,12 +76,14 @@ namespace Reko.Core.Types
 		/// </summary>
 		public DataType Pointee { get; set; }
 
+        /// <inheritdoc/>
 		public override int Size
-		{
+        {
             get { return (BitSize + (BitsPerByte - 1)) / BitsPerByte; }
             set { ThrowBadSize(); }
 		}
 
+        /// <inheritdoc/>
 		public DataType BasePointer { get; set; }
 	}
 }

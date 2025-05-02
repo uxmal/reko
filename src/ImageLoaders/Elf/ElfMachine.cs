@@ -18,14 +18,10 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace Reko.ImageLoaders.Elf
 {
     // https://fossies.org/linux/gdb/include/elf/common.h
+    // https://gabi.xinuos.com/elf/a-emachine.html
     public enum ElfMachine : ushort
     {
         EM_NONE = 0,            // No machine 
@@ -158,6 +154,9 @@ namespace Reko.ImageLoaders.Elf
         EM_TI_C2000 = 141,      // The Texas Instruments TMS320C2000 DSP family
         EM_TI_C5500 = 142,      // The Texas Instruments TMS320C55x DSP family
         EM_TI_PRU = 144,        // Texas Instruments Programmable Realtime Unit
+
+        // 145–159 Reserved for future use
+
         EM_MMDSP_PLUS = 160,    // STMicroelectronics 64bit VLIW Data Signal Processor
         EM_CYPRESS_M8C = 161,   // Cypress M8C microprocessor
         EM_R32C = 162,          // Renesas R32C series microprocessors
@@ -176,17 +175,18 @@ namespace Reko.ImageLoaders.Elf
         EM_MANIK = 171,         // M2000 Reconfigurable RISC Microprocessor
         EM_CRAYNV2 = 172,       // Cray Inc. NV2 vector architecture
         EM_RX = 173,            // Renesas RX family
-        EM_METAG = 174,         // Imagination Technologies META processor
-                                // architecture
+        EM_METAG = 174,         // Imagination Technologies META processor architecture
         EM_MCST_ELBRUS = 175,   // MCST Elbrus general purpose hardware architecture
         EM_ECOG16 = 176,        // Cyan Technology eCOG16 family
-        EM_CR16 = 177,          // National Semiconductor CompactRISC CR16 16-bit
-                                // microprocessor
+        EM_CR16 = 177,          // National Semiconductor CompactRISC CR16 16-bit microprocessor
         EM_ETPU = 178,          // Freescale Extended Time Processing Unit
         EM_SLE9X = 179,         // Infineon Technologies SLE9X core
         EM_L10M = 180,          // Intel L10M
         EM_K10M = 181,          // Intel K10M
         EM_AARCH64 = 183,       // ARM AArch64
+
+        // reserved = 184,         // Reserved for future ARM use
+
         EM_AVR32 = 185,         // Atmel Corporation 32-bit microprocessor family
         EM_STM8 = 186,          // STMicroeletronics STM8 8-bit microcontroller
         EM_TILE64 = 187,        // Tilera TILE64 multicore architecture family
@@ -219,7 +219,7 @@ namespace Reko.ImageLoaders.Elf
         EM_KVARC = 214,         // KM211 KVARC processor
         EM_CDP = 215,           // Paneve CDP architecture family
         EM_COGE = 216,          // Cognitive Smart Memory Processor
-        EM_COOL = 217,          // iCelero CoolEngine
+        EM_COOL = 217,          // Bluechip iCelero CoolEngine
         EM_NORC = 218,          // Nanoradio Optimized RISC
         EM_CSR_KALIMBA = 219,   // CSR Kalimba architecture family
         EM_Z80 = 220,           // Zilog Z80
@@ -227,6 +227,9 @@ namespace Reko.ImageLoaders.Elf
         EM_FT32 = 222,          // FTDI Chip FT32 high performance 32-bit RISC architecture
         EM_MOXIE = 223,         // Moxie processor family
         EM_AMDGPU = 224,        // AMD GPU architecture
+
+        // 225–242 - Reserved for future use
+
         EM_RISCV = 243,         // RISC-V
         EM_LANAI = 244,         // Lanai 32-bit processor
         EM_CEVA = 245,          // CEVA Processor Architecture Family
@@ -247,6 +250,12 @@ namespace Reko.ImageLoaders.Elf
         EM_U16_U8CORE = 260,    // LAPIS nX-U16/U8
         EM_TACHYUM = 261,       // Tachyum
         EM_56800EF = 262,       // NXP 56800EF Digital Signal Controller (DSC)
+        EM_SBF = 263,           // Solana Bytecode Format
+        EM_AIENGINE = 264,      // AMD/Xilinx AIEngine architecture
+        EM_SIMA_MLA = 265,      // SiMa MLA
+        EM_BANG = 266,          // Cambricon BANG
+        EM_LOONGGPU = 267,      // Loongson LoongGPU
+
 
         // Unofficial definitions; some manufacturers do not register thier EM_*
         // values officially.

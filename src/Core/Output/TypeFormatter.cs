@@ -184,9 +184,9 @@ namespace Reko.Core.Output
                     writer.WriteHyperlink(ct.Name, ct);
                     OpenBrace(ct.Size > 0 ? string.Format("size: {0} {0:X}", ct.Size) : null);
 
-                    WriteClassMembers(ct, ClassProtection.Public, "public");
-                    WriteClassMembers(ct, ClassProtection.Protected, "protected");
-                    WriteClassMembers(ct, ClassProtection.Private, "private");
+                    WriteClassMembers(ct, AccessSpecifier.Public, "public");
+                    WriteClassMembers(ct, AccessSpecifier.Protected, "protected");
+                    WriteClassMembers(ct, AccessSpecifier.Private, "private");
 
                     CloseBrace();
                     visited[ct] = Defined;
@@ -210,7 +210,7 @@ namespace Reko.Core.Output
             return writer;
         }
 
-        private void WriteClassMembers(ClassType ct, ClassProtection protection, string sectionName)
+        private void WriteClassMembers(ClassType ct, AccessSpecifier protection, string sectionName)
         { 
             var methods = ct.Methods.Where(m => m.Protection == protection)
                 .OrderBy(m => m.Offset).ThenBy(m => m.Name)

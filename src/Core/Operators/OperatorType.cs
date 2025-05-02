@@ -25,6 +25,8 @@ namespace Reko.Core.Operators
     /// </summary>
     public enum OperatorType
     {
+#pragma warning disable CS1591
+
         IAdd,
         ISub,
         USub,

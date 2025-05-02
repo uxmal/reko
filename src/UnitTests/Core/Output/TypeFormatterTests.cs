@@ -305,20 +305,20 @@ struct a {
             var ct = new ClassType("TestClass");
             ct.Fields.Add(new ClassField(PrimitiveType.Int32)
             {
-                Protection = ClassProtection.Private,
+                Protection = AccessSpecifier.Private,
                 Offset = 4,
                 Name = "m_n0004",
             });
             ct.Fields.Add(new ClassField(new Pointer(ct, 32))
             {
-                Protection = ClassProtection.Private,
+                Protection = AccessSpecifier.Private,
                 Offset = 8,
                 Name = "m_ptr0008",
             });
 
             ct.Methods.Add(new ClassMethod
             {
-                Protection = ClassProtection.Public,
+                Protection = AccessSpecifier.Public,
                 Attribute = ClassMemberAttribute.Virtual,
                 Procedure = new Procedure(arch.Object, "do_something", Address.Ptr32(0x00123400), null),
                 Name = "do_something",

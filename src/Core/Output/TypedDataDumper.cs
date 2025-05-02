@@ -25,19 +25,29 @@ using System.Diagnostics;
 
 namespace Reko.Core.Output
 {
+    /// <summary>
+    /// Formats typed data as pseudo-assembly language.
+    /// </summary>
     public class TypedDataDumper : IDataTypeVisitor
     {
         private readonly EndianImageReader rdr;
         private readonly uint cbSize;
         private readonly Formatter fmt;
 
-        public TypedDataDumper(EndianImageReader rdr, uint cbSize, Formatter stm) 
+        /// <summary>
+        /// Creates an instance of the <see cref="TypedDataDumper"/> class.
+        /// </summary>
+        /// <param name="rdr">Image readed to read from.</param>
+        /// <param name="cbSize">Size of the object being dumped.</param>
+        /// <param name="formatter">Output sink.</param>
+        public TypedDataDumper(EndianImageReader rdr, uint cbSize, Formatter formatter) 
         {
             this.rdr = rdr;
             this.cbSize = cbSize;
-            this.fmt = stm;
+            this.fmt = formatter;
         }
 
+        /// <inheritdoc/>
         public void VisitArray(ArrayType at)
         {
             var addrEnd = rdr.Address + cbSize;
@@ -49,36 +59,43 @@ namespace Reko.Core.Output
             }
         }
 
+        /// <inheritdoc/>
         public void VisitClass(ClassType ct)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitCode(CodeType c)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitEnum(EnumType e)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitEquivalenceClass(EquivalenceClass eq)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitFunctionType(FunctionType ft)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitMemberPointer(MemberPointer memptr)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitPointer(Pointer ptr)
         {
             switch (ptr.Size)
@@ -104,6 +121,7 @@ namespace Reko.Core.Output
             }
         }
 
+        /// <inheritdoc/>
         public void VisitPrimitive(PrimitiveType pt)
         {
             switch (pt.Size)
@@ -164,11 +182,13 @@ namespace Reko.Core.Output
             fmt.WriteLine();
         }
 
+        /// <inheritdoc/>
         public void VisitReference(ReferenceTo refTo)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitString(StringType str)
         {
             if (str.LengthPrefixType == null)
@@ -213,6 +233,7 @@ namespace Reko.Core.Output
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitStructure(StructureType str)
         {
             var structOffset = rdr.Offset;
@@ -247,21 +268,25 @@ namespace Reko.Core.Output
             }
         }
 
+        /// <inheritdoc/>
         public void VisitTypeReference(TypeReference typeref)
         {
             typeref.Referent.Accept(this);
         }
 
+        /// <inheritdoc/>
         public void VisitTypeVariable(TypeVariable tv)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitUnion(UnionType ut)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitUnknownType(UnknownType ut)
         {
             if (ut.Size > 0)
@@ -270,6 +295,7 @@ namespace Reko.Core.Output
             }
         }
 
+        /// <inheritdoc/>
         public void VisitVoidType(VoidType voidType)
         {
             throw new NotImplementedException();

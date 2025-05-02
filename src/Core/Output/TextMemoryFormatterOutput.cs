@@ -23,6 +23,10 @@ using System.Text;
 
 namespace Reko.Core.Output
 {
+    /// <summary>
+    /// <see cref="IMemoryFormatterOutput"/> implementation that formats
+    /// output to a <see cref="Formatter"/>.
+    /// </summary>
     public class TextMemoryFormatterOutput : IMemoryFormatterOutput
     {
         private readonly Formatter stm;
@@ -31,20 +35,27 @@ namespace Reko.Core.Output
         private Constant[]? prevLine = null;
         private bool showEllipsis = true;
 
-        public TextMemoryFormatterOutput(Formatter stm)
+        /// <summary>
+        /// Constructs an instance of <see cref="TextMemoryFormatterOutput"/>.
+        /// </summary>
+        /// <param name="formatter">Output sink.</param>
+        public TextMemoryFormatterOutput(Formatter formatter)
         {
-            this.stm = stm;
+            this.stm = formatter;
         }
 
+        /// <inheritdoc/>
         public void BeginLine()
         {
         }
 
+        /// <inheritdoc/>
         public void RenderAddress(Address addr)
         {
             sbHex.AppendFormat("{0}", addr);
         }
 
+        /// <inheritdoc/>
         public void RenderFillerSpan(int nChunks, int nCellsPerChunk)
         {
             // Extra 1 cell for padding between chunks.
@@ -53,22 +64,26 @@ namespace Reko.Core.Output
                 sbHex.Append(' ');
         }
 
+        /// <inheritdoc/>
         public void RenderUnit(Address addr, string sUnit)
         {
             sbHex.Append(' ');
             sbHex.Append(sUnit);
         }
 
+        /// <inheritdoc/>
         public void RenderUnitAsText(Address addr, string sUnit)
         {
             sb.Append(sUnit);
         }
 
+        /// <inheritdoc/>
         public void RenderTextFillerSpan(int padding)
         {
             sb.Append(' ', padding);
         }
 
+        /// <inheritdoc/>
         public void EndLine(Constant[] chunks)
         {
             if (!HaveSameZeroBytes(prevLine, chunks))
@@ -93,7 +108,7 @@ namespace Reko.Core.Output
 
         private bool HaveSameZeroBytes(Constant[]? prevLine, Constant[] line)
         {
-            if (prevLine == null)
+            if (prevLine is null)
                 return false;
             if (prevLine.Length != line.Length)
                 return false;

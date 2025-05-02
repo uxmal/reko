@@ -53,7 +53,7 @@ namespace Reko.Scanning
         private readonly IProcessorArchitecture arch;
         private readonly Address addrStart;
         private Block? blockCur;
-        private Frame? frame;
+        private Frame frame;
         private RtlInstruction? ri;
         private RtlInstructionCluster? ric;
         private IEnumerator<RtlInstructionCluster>? rtlStream;
@@ -75,6 +75,7 @@ namespace Reko.Scanning
             this.program = program;
             this.arch = arch;
             this.state = state;
+            this.frame = default!;
             this.eval = new ExpressionSimplifier(
                 program.Memory,
                 state,
@@ -207,12 +208,6 @@ namespace Reko.Scanning
         private static bool BlockHasBeenScanned(Block block)
         {
             return block.Statements.Count > 0;
-        }
-
-        private Instruction BuildApplication(Expression fn, FunctionType sig, ProcedureCharacteristics? c, CallSite site)
-        {
-            var ab = arch.CreateFrameApplicationBuilder(frame!, site);
-            return ab.CreateInstruction(fn, sig, c);
         }
 
         public Expression GetValue(Expression op)
@@ -686,14 +681,9 @@ namespace Reko.Scanning
 
             if (callTarget is Constant c)
             {
-                if (c.IsValid)
-                {
-                    return arch.MakeAddressFromConstant(c, true);
-                }
-                else
-                {
+                if (!c.IsValid)
                     return null;
-                }
+                return arch.MakeAddressFromConstant(c, true);
             }
             return program.Platform.ResolveIndirectCall(call);
         }
@@ -1278,7 +1268,7 @@ namespace Reko.Scanning
         //$TODO: merge the followng two procedures?
         private void AffectProcessorState(FunctionType sig)
         {
-            if (sig == null)
+            if (sig is null)
                 return;
             if (!sig.HasVoidReturn)
                 TrashVariable(sig.ReturnValue.Storage);
@@ -1293,7 +1283,7 @@ namespace Reko.Scanning
 
         public void TrashVariable(Storage stg)
         {
-            if (stg == null)
+            if (stg is null)
                 return;
             switch (stg)
             {

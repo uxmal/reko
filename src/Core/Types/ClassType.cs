@@ -92,17 +92,35 @@ namespace Reko.Core.Types
         }
     }
 
+    /// <summary>
+    /// Represents members in a <see cref="ClassType"/>.
+    /// </summary>
     public class ClassMember
     {
         private string? name;
 
-        public ClassProtection Protection { get; set; }
+        /// <summary>
+        /// The protection level of this member.
+        /// </summary>
+        public AccessSpecifier Protection { get; set; }
+
+        /// <summary>
+        /// The attributes of this member.
+        /// </summary>
         public ClassMemberAttribute Attribute { get; set; }
+
+        /// <summary>
+        /// The name of this member.
+        /// </summary>
         public string Name {
             get { return name ?? DefaultFieldName(); }
             set { this.name = value; }
         }
 
+        /// <summary>
+        /// If this is a field, the offset within the class data.
+        /// If this is a method, the offset within a virtual table.
+        /// </summary>
         public int Offset { get; set; }  // Offset of a field, self-evident
                                          // Offset of a method, in a virtual table.
 
@@ -112,28 +130,52 @@ namespace Reko.Core.Types
         }
     }
 
+    /// <summary>
+    /// A data field in a class.
+    /// </summary>
     public class ClassField : ClassMember
     {
-        public DataType DataType;
+        /// <summary>
+        /// The data type of this field.
+        /// </summary>
+        public DataType DataType { get; }
 
+        /// <summary>
+        /// Constructs a <see cref="ClassField" /> instance.
+        /// </summary>
+        /// <param name="type">Data type of the field.</param>
         public ClassField(DataType type)
         {
             this.DataType = type;
         }
     }
 
+    /// <summary>
+    /// Represents a method in a class.
+    /// </summary>
     public class ClassMethod : ClassMember
     {
-       public ProcedureBase? Procedure;
+        /// <summary>
+        /// The procedure that implements this method.
+        /// </summary>
+        public ProcedureBase? Procedure { get; set; }
     }
 
-    public enum ClassProtection
+#pragma warning disable CS1591
+
+    /// <summary>
+    /// The access specifier level of a class member.
+    /// </summary>
+    public enum AccessSpecifier
     {
         Private,
         Protected,
         Public
     }
 
+    /// <summary>
+    /// Attributes of a class member.
+    /// </summary>
     public enum ClassMemberAttribute
     {
         None,
@@ -143,7 +185,7 @@ namespace Reko.Core.Types
 
     public class ClassBase
     {
-        public ClassProtection Protection;
+        public AccessSpecifier Protection;
         public CompositeType? BaseType;
     }
 }

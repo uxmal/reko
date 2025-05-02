@@ -57,6 +57,8 @@ namespace Reko.ImageLoaders.Elf
 
         public ulong FileOffset { get; set; }
 
+        public ulong FileSize { get; set; }
+
         public ulong Alignment { get; set; }
 
         public ulong Flags { get; set; }

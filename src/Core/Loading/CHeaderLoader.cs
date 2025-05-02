@@ -36,6 +36,12 @@ namespace Reko.Core.Loading
     {
         private readonly Stream stream;
 
+        /// <summary>
+        /// Constructs an instance of <see cref="CHeaderLoader"/>.
+        /// </summary>
+        /// <param name="services"><see cref="IServiceProvider"/> instance providing services.</param>
+        /// <param name="imagelocation">Location from which the C source code was loaded.</param>
+        /// <param name="bytes">Contents of the C source file.</param>
         public CHeaderLoader(IServiceProvider services, ImageLocation imagelocation, byte[] bytes)
             : base(services, imagelocation, bytes)
         {

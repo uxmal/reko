@@ -23,13 +23,26 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+#pragma warning disable CS1591 
+
 namespace Reko.Core.Hll.C
 {
+    /// <summary>
+    /// Base class for all C syntax nodes.
+    /// </summary>
     public abstract class CSyntax
     {
+        /// <summary>
+        /// Accepts a visitor return <typeparamref name="T"/>.
+        /// </summary>
+        /// <param name="visitor">Visitor being accepted.</param>
+        /// <returns>The value returned by the visitor.</returns>
         public abstract T Accept<T>(CSyntaxVisitor<T> visitor);
     }
 
+    /// <summary>
+    /// Base class for declarations.
+    /// </summary>
     public class Decl : CSyntax
     {
         public List<CAttribute>? attribute_list;
@@ -77,6 +90,9 @@ namespace Reko.Core.Hll.C
         }
     }
 
+    /// <summary>
+    /// A function declaration.
+    /// </summary>
     public class FunctionDecl : Decl
     {
         public Decl Signature;
@@ -109,6 +125,10 @@ namespace Reko.Core.Hll.C
         }
     }
 
+    /// <summary>
+    /// Visitor interface for <see cref="CSyntax"/> objects.
+    /// </summary>
+    /// <typeparam name="T">Type returned from the visitor.</typeparam>
     public interface DeclSpecVisitor<T>
     {
         T VisitSimpleType(SimpleTypeSpec simpleType);
@@ -120,6 +140,9 @@ namespace Reko.Core.Hll.C
         T VisitExtendedDeclspec(ExtendedDeclspec extendedDeclspec);
     }
 
+    /// <summary>
+    /// A C decl-specifier.
+    /// </summary>
     public abstract class DeclSpec : CSyntax
     {
         public sealed override T Accept<T>(CSyntaxVisitor<T> visitor)
@@ -130,6 +153,9 @@ namespace Reko.Core.Hll.C
         public abstract T Accept<T>(DeclSpecVisitor<T> visitor);
     }
 
+    /// <summary>
+    /// An extended declspec, such as <c>__declspec(dllexport)</c>.
+    /// </summary>
     public class ExtendedDeclspec : DeclSpec
     {
         public string Name;
@@ -150,10 +176,16 @@ namespace Reko.Core.Hll.C
         }
     }
 
+    /// <summary>
+    /// A C type specifier.
+    /// </summary>
     public abstract class TypeSpec : DeclSpec
     {
     }
 
+    /// <summary>
+    /// A type qualifier, such as <c>const</c> or <c>volatile</c>.
+    /// </summary>
     public class TypeQualifier : DeclSpec
     {
         public CTokenType Qualifier;
@@ -166,6 +198,9 @@ namespace Reko.Core.Hll.C
         public override string ToString() { return Qualifier.ToString(); }
     }
 
+    /// <summary>
+    /// A storage class specifier.
+    /// </summary>
     public class StorageClassSpec : DeclSpec
     {
         public CTokenType Type;
@@ -178,6 +213,9 @@ namespace Reko.Core.Hll.C
         public override string ToString() { return Type.ToString(); }
     }
 
+    /// <summary>
+    /// Represents a simple type specifier, such as <c>int</c>, <c>char</c>, etc.
+    /// </summary>
     public class SimpleTypeSpec : TypeSpec
     {
         public CTokenType Type;
@@ -190,6 +228,9 @@ namespace Reko.Core.Hll.C
         public override string ToString() { return Type.ToString(); }
     }
 
+    /// <summary>
+    /// Represents a typedef name.
+    /// </summary>
     public class TypeDefName : TypeSpec
     {
         public string Name;
@@ -207,6 +248,9 @@ namespace Reko.Core.Hll.C
         public override string ToString() { return Name; }
     }
 
+    /// <summary>
+    /// Represents a C type.
+    /// </summary>
     public class CType : CSyntax
     {
         public List<DeclSpec> DeclSpecList;
@@ -240,6 +284,9 @@ namespace Reko.Core.Hll.C
         }
     }
 
+    /// <summary>
+    /// Represents a complex type, such as <c>struct</c>, <c>union</c>, or <c>enum</c>.
+    /// </summary>
     public class ComplexTypeSpec : TypeSpec
     {
         public CTokenType Type;
@@ -287,6 +334,9 @@ namespace Reko.Core.Hll.C
         }
     }
 
+    /// <summary>
+    /// Represents an enumerator type, i.e. <c>enum</c>.
+    /// </summary>
     public class EnumeratorTypeSpec : TypeSpec
     {
         public string? Tag;
@@ -347,6 +397,10 @@ namespace Reko.Core.Hll.C
         }
     }
 
+    /// <summary>
+    /// Visitor interface used to visit <see cref="Declarator"/> objects.
+    /// </summary>
+    /// <typeparam name="T">Value returned from the visitor.</typeparam>
     public interface DeclaratorVisitor<T>
     {
         T VisitId(IdDeclarator idDeclarator);
@@ -358,6 +412,9 @@ namespace Reko.Core.Hll.C
         T VisitCallConvention(CallConventionDeclarator callConvention);
     }
 
+    /// <summary>
+    /// A C init declarator.
+    /// </summary>
     public class InitDeclarator : CSyntax
     {
         public Declarator Declarator;
@@ -393,6 +450,9 @@ namespace Reko.Core.Hll.C
         public abstract T Accept<T>(DeclaratorVisitor<T> visitor);
     }
 
+    /// <summary>
+    /// A parameter declarator.
+    /// </summary>
     public class ParamDecl : CSyntax
     {
         public List<CAttribute>? Attributes;
@@ -436,6 +496,9 @@ namespace Reko.Core.Hll.C
         }
     }
 
+    /// <summary>
+    /// A pointer declarator.
+    /// </summary>
     public class PointerDeclarator : Declarator
     {
         public Declarator? Pointee;
@@ -462,6 +525,9 @@ namespace Reko.Core.Hll.C
         }
     }
 
+    /// <summary>
+    /// A C++ reference declarator.
+    /// </summary>
     public class ReferenceDeclarator : Declarator
     {
         public Declarator? Referent;
@@ -489,6 +555,9 @@ namespace Reko.Core.Hll.C
 
     }
 
+    /// <summary>
+    /// An identifier declarator.
+    /// </summary>
     public class IdDeclarator : Declarator
     {
         public string Name;
@@ -506,6 +575,9 @@ namespace Reko.Core.Hll.C
         public override string ToString() { return Name; }
     }
 
+    /// <summary>
+    /// A function declarator.
+    /// </summary>
     public class FunctionDeclarator : Declarator
     {
         public Declarator Declarator;
@@ -544,6 +616,9 @@ namespace Reko.Core.Hll.C
         }
     }
 
+    /// <summary>
+    /// A calling convention declarator.
+    /// </summary>
     public class CallConventionDeclarator : Declarator
     {
         public CTokenType Convention;
@@ -568,6 +643,9 @@ namespace Reko.Core.Hll.C
         }
     }
 
+    /// <summary>
+    /// an array declarator.
+    /// </summary>
     public class ArrayDeclarator : Declarator
     {
         public Declarator Declarator;
@@ -587,6 +665,9 @@ namespace Reko.Core.Hll.C
         public override string ToString() { return string.Format("(arr {0} {1})", Declarator, Size); }
     }
 
+    /// <summary>
+    /// A <c>struct</c> declarator.
+    /// </summary>
     public class StructDecl : CSyntax
     {
         public List<DeclSpec> SpecQualifierList;
@@ -633,6 +714,9 @@ namespace Reko.Core.Hll.C
         }
     }
 
+    /// <summary>
+    /// A field declarator.
+    /// </summary>
     public class FieldDeclarator : Declarator
     {
         public Declarator Declarator;
@@ -660,10 +744,16 @@ namespace Reko.Core.Hll.C
         }
     }
 
+    /// <summary>
+    /// Abstract initializer.
+    /// </summary>
     public abstract class Initializer
     {
     }
 
+    /// <summary>
+    /// List initializer.
+    /// </summary>
     public class ListInitializer : Initializer
     {
         public ListInitializer()
@@ -674,6 +764,9 @@ namespace Reko.Core.Hll.C
         public List<Initializer> List { get; }
     }
 
+    /// <summary>
+    /// Expression initializer.
+    /// </summary>
     public class ExpressionInitializer : Initializer
     {
         public CExpression Expression;
@@ -686,6 +779,9 @@ namespace Reko.Core.Hll.C
         public override string ToString() { return Expression.ToString()!; }
     }
 
+    /// <summary>
+    /// C attribute.
+    /// </summary>
     public class CAttribute : CSyntax
     {
         public QualifiedName Name;
@@ -994,6 +1090,9 @@ namespace Reko.Core.Hll.C
 
     #region Statements
 
+    /// <summary>
+    /// Abstract C statement.
+    /// </summary>
     public abstract class Stat : CSyntax
     {
         public override T Accept<T>(CSyntaxVisitor<T> visitor)
@@ -1002,6 +1101,9 @@ namespace Reko.Core.Hll.C
         }
     }
 
+    /// <summary>
+    /// Represents a labeled statement.
+    /// </summary>
     public class LabeledStat : Stat
     {
         public Label Label;
@@ -1014,6 +1116,9 @@ namespace Reko.Core.Hll.C
         }
     }
 
+    /// <summary>
+    /// Represents a declaration statement.
+    /// </summary>
     public class DeclStat : Stat
     {
         public Decl Declaration;
@@ -1030,6 +1135,9 @@ namespace Reko.Core.Hll.C
     {
     }
 
+    /// <summary>
+    /// Represents a <c>goto</c> statment's target label.
+    /// </summary>
     public class LineLabel : Label
     {
         public string Name;
@@ -1042,6 +1150,10 @@ namespace Reko.Core.Hll.C
         public override string ToString() { return $"(label {Name})"; }
     }
 
+
+    /// <summary>
+    /// Represents <c>case</c> and <c>default</c> labels.
+    /// </summary>
     public class CaseLabel : Label
     {
         public CExpression Value;
@@ -1060,6 +1172,9 @@ namespace Reko.Core.Hll.C
         }
     }
 
+    /// <summary>
+    /// Represents an if-statement.
+    /// </summary>
     public class IfStat : Stat
     {
         public CExpression Expression;
@@ -1074,6 +1189,9 @@ namespace Reko.Core.Hll.C
         }
     }
 
+    /// <summary>
+    /// Represents a while-statement.
+    /// </summary>
     public class WhileStat : Stat
     {
         public CExpression Expression;
@@ -1086,6 +1204,9 @@ namespace Reko.Core.Hll.C
         }
     }
 
+    /// <summary>
+    /// Represents a do-while statement.
+    /// </summary>
     public class DoWhileStat : Stat
     {
         public Stat Body;
@@ -1109,6 +1230,9 @@ namespace Reko.Core.Hll.C
         }
     }
 
+    /// <summary>
+    /// Represents a for-statement.
+    /// </summary>
     public class ForStat : Stat
     {
         public Stat? Initializer;
@@ -1125,6 +1249,9 @@ namespace Reko.Core.Hll.C
         }
     }
 
+    /// <summary>
+    /// Represents a goto statement.
+    /// </summary>
     public class GotoStat : Stat
     {
         public string Label;
@@ -1135,6 +1262,9 @@ namespace Reko.Core.Hll.C
         }
     }
 
+    /// <summary>
+    /// Represents a return statement.
+    /// </summary>
     public class ReturnStat : Stat
     {
         public CExpression Expression;
@@ -1145,6 +1275,10 @@ namespace Reko.Core.Hll.C
         }
     }
 
+    /// <summary>
+    /// Represents an expression statement; either an assignment 
+    /// or a function call.
+    /// </summary>
     public class ExprStat : Stat
     {
         public CExpression? Expression;
@@ -1162,6 +1296,9 @@ namespace Reko.Core.Hll.C
         }
     }
 
+    /// <summary>
+    /// Represent a compound statement.
+    /// </summary>
     public class CompoundStatement : Stat
     {
         public List<Stat> Statements;
@@ -1185,10 +1322,20 @@ namespace Reko.Core.Hll.C
     }
     #endregion
 
-    public struct QualifiedName
+    /// <summary>
+    /// A qualified name, such as <c>std::string</c>.
+    /// </summary>
+    public readonly struct QualifiedName
     {
-        public readonly string[] Components;
+        /// <summary>
+        /// The components of the qualified name.
+        /// </summary>
+        public string[] Components { get; }
 
+        /// <summary>
+        /// Constructs a qualified name from an array of components.
+        /// </summary>
+        /// <param name="components"></param>
         public QualifiedName(params string[] components)
         {
             this.Components = components;

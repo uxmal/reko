@@ -20,7 +20,6 @@
 
 using Reko.Core.Loading;
 using Reko.Core.Machine;
-using System;
 using System.Collections.Generic;
 
 namespace Reko.Core.Output
@@ -67,31 +66,40 @@ namespace Reko.Core.Output
             this.addrInstr = Address.Ptr32(0);
         }
 
+        /// <summary>
+        /// The address of the instruction being rendered.
+        /// </summary>
         public Address Address => addrInstr;
 
+        /// <inheritdoc/>
         public void BeginInstruction(Address addr)
         {
             this.addrInstr = addr;
         }
 
+        /// <inheritdoc/>
         public void EndInstruction()
         {
         }
 
+        /// <inheritdoc/>
         public void BeginOperand()
         {
         }
 
+        /// <inheritdoc/>
         public void EndOperand()
         {
         }
 
+        /// <inheritdoc/>
         public void Tab()
         {
             ++chars;
             formatter.Write(separateWithTab ? "\t" : " ");
         }
 
+        /// <inheritdoc/>
         public void WriteString(string? s)
         {
             if (s is not null)
@@ -101,6 +109,7 @@ namespace Reko.Core.Output
             }
         }
 
+        /// <inheritdoc/>
         public void WriteUInt32(uint n)
         {
             var nn = n.ToString();
@@ -108,12 +117,14 @@ namespace Reko.Core.Output
             formatter.Write(nn);
         }
 
+        /// <inheritdoc/>
         public void WriteChar(char c)
         {
             ++chars;
             formatter.Write(c);
         }
 
+        /// <inheritdoc/>
         public void WriteFormat(string fmt, params object[] parms)
         {
             var s = string.Format(fmt, parms);
@@ -121,12 +132,14 @@ namespace Reko.Core.Output
             formatter.Write(s);
         }
 
+        /// <inheritdoc/>
         public void WriteAddress(string formattedAddress, ulong uAddr)
         {
             chars += formattedAddress.Length;
             formatter.WriteHyperlink(formattedAddress, uAddr);
         }
 
+        /// <inheritdoc/>
         public void WriteAddress(string formattedAddress, Address addr)
         {
             if (procedures.TryGetValue(addr, out Procedure? proc))
@@ -142,12 +155,14 @@ namespace Reko.Core.Output
             formatter.WriteHyperlink(formattedAddress, addr);
         }
 
+        /// <inheritdoc/>
         public void WriteMnemonic(string sMnemonic)
         {
             chars += sMnemonic.Length;
             formatter.Write(sMnemonic);
         }
 
+        /// <inheritdoc/>
         public void WriteLine()
         {
             if (annotations.Count > 0)
@@ -166,6 +181,7 @@ namespace Reko.Core.Output
             formatter.WriteLine();
         }
 
+        /// <inheritdoc/>
         public void AddAnnotation(string? annotation)
         {
             if (!string.IsNullOrEmpty(annotation))

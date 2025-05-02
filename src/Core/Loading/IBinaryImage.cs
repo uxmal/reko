@@ -66,8 +66,7 @@ public interface IBinaryImage
     IReadOnlyDictionary<int, IBinarySymbol> DynamicSymbols { get; }
 
     /// <summary>
-    /// Relocations contained in the binary object, indexed by 
-    /// section.
+    /// The static relocations in this binary image.
     /// </summary>
     IReadOnlyDictionary<int, IReadOnlyList<IRelocation>> Relocations { get; }
 

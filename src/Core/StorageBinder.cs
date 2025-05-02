@@ -38,6 +38,9 @@ namespace Reko.Core
         private readonly Dictionary<int, Identifier> fpus;
         private readonly List<Identifier> ids;
 
+        /// <summary>
+        /// Creates a new storage binder.
+        /// </summary>
         public StorageBinder()
         {
             this.regs = new Dictionary<RegisterStorage, Identifier>();
@@ -47,6 +50,7 @@ namespace Reko.Core
             this.ids = new List<Identifier>();
         }
 
+        /// <inheritdoc/>
         public Identifier CreateTemporary(DataType dt)
         {
             var name = "v" + ids.Count;
@@ -56,6 +60,7 @@ namespace Reko.Core
             return id;
         }
 
+        /// <inheritdoc/>
         public Identifier CreateTemporary(string name, DataType dt)
         {
             var tmp = new TemporaryStorage(name, ids.Count, dt);
@@ -64,6 +69,7 @@ namespace Reko.Core
             return id;
         }
 
+        /// <inheritdoc/>
         public Identifier EnsureFlagGroup(FlagGroupStorage grf)
         {
             if (!this.grfs.TryGetValue(grf.FlagRegister, out var grfs))
@@ -79,6 +85,7 @@ namespace Reko.Core
             return id;
         }
 
+        /// <inheritdoc/>
         public Identifier EnsureFpuStackVariable(int v, DataType dataType)
         {
             if (this.fpus.TryGetValue(v, out var id))
@@ -90,6 +97,7 @@ namespace Reko.Core
             return id;
         }
 
+        /// <inheritdoc/>
         public Identifier EnsureIdentifier(Storage stg)
         {
             switch (stg)
@@ -100,11 +108,13 @@ namespace Reko.Core
             }
         }
 
+        /// <inheritdoc/>
         public Identifier EnsureOutArgument(Identifier idOrig, DataType outArgumentPointer)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public Identifier EnsureRegister(RegisterStorage reg)
         {
             if (regs.TryGetValue(reg, out var id))
@@ -115,11 +125,13 @@ namespace Reko.Core
             return id;
         }
 
+        /// <inheritdoc/>
         public Identifier EnsureSequence(SequenceStorage sequence)
         {
             return EnsureSequence(sequence.DataType, sequence.Elements);
         }
 
+        /// <inheritdoc/>
         public Identifier EnsureSequence(DataType dataType, params Storage [] elements)
         {
             var stg = new SequenceStorage(elements);
@@ -135,21 +147,7 @@ namespace Reko.Core
             return id;
         }
 
-
-        [Obsolete("", true)]
-        public Identifier EnsureSequence(DataType dataType, string name, params Storage [] elements)
-        {
-            if (this.seqs.TryGetValue(elements, out var idSeq))
-            {
-                return idSeq;
-            }
-            var seq = new SequenceStorage(name, dataType, elements);
-            var id = Identifier.Create(seq);
-            seqs.Add(seq.Elements, id);
-            ids.Add(id);
-            return id;
-        }
-
+        /// <inheritdoc/>
         public Identifier EnsureStackVariable(int offset, DataType dataType, string? name)
         {
             throw new NotImplementedException();

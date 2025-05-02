@@ -4,7 +4,7 @@
 // fp:fp
 // %continuation:%continuation
 // r1:Stack -0004
-// return address size: 0
+// return address size: ?
 define ReturnMock
 ReturnMock_entry:
 	// succ:  l1

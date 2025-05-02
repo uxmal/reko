@@ -97,6 +97,9 @@ namespace Reko.Core
 
         private SortedList<ulong, ImageSegment> SegmentByLinAddress { get; }
 
+        /// <summary>
+        /// A mapping from 16-bit selectors to segments.
+        /// </summary>
         public Dictionary<ushort, ImageSegment> Selectors { get; }
 
         IReadOnlyDictionary<ushort, ImageSegment> IReadOnlySegmentMap.Selectors => this.Selectors;
@@ -162,6 +165,13 @@ namespace Reko.Core
             return segment;
         }
 
+        /// <summary>
+        /// Adds a segment to the segment map. The segment is assumed to be disjoint from
+        /// other segments.
+        /// </summary>
+        /// <param name="segNew">Segment to add.</param>
+        /// <returns>A (possibly split) segment.
+        /// </returns>
         public ImageSegment AddSegment(ImageSegment segNew)
         {
             if (!TryFindSegment(segNew.Address, out ImageSegment? seg))
@@ -211,6 +221,10 @@ namespace Reko.Core
             }
         }
 
+        /// <summary>
+        /// Returns the total number of storage units spanned by all the 
+        /// segments.
+        /// </summary>
         public long GetExtent()
         {
             if (Segments.Count == 0)
@@ -219,19 +233,37 @@ namespace Reko.Core
             return (lastMem.BaseAddress - BaseAddress) + lastMem.Length;
         }
 
+        /// <summary>
+        /// Determines whether an address is contained in one of the segments in the segment map.
+        /// </summary>
+        /// <param name="address">Address to check.</param>
+        /// <returns>True if the address is valid; otherwise false.
+        /// </returns>
         public bool IsValidAddress(Address address)
         {
             return TryFindSegment(address, out var _);
         }
 
-        public bool IsReadOnlyAddress(Address addr)
+        /// <summary>
+        /// Determines whether an address is read-only.
+        /// </summary>
+        /// <param name="address">Address to check.</param>
+        /// <returns>True if the address is read-only; otherwise false.
+        /// </returns>
+        public bool IsReadOnlyAddress(Address address)
         {
-            return TryFindSegment(addr, out var seg) && seg.IsWriteable;
+            return TryFindSegment(address, out var seg) && !seg.IsWriteable;
         }
 
-        public bool IsExecutableAddress(Address addr)
+        /// <summary>
+        /// Determines whether an address is executable.
+        /// </summary>
+        /// <param name="address">Address to check.</param>
+        /// <returns>True if the address is executable; otherwise false.
+        /// </returns>
+        public bool IsExecutableAddress(Address address)
         {
-            return TryFindSegment(addr, out var seg) && seg.IsExecutable;
+            return TryFindSegment(address, out var seg) && seg.IsExecutable;
         }
 
         /// <summary>
@@ -324,6 +356,9 @@ namespace Reko.Core
             return segment is not null;
         }
 
+        /// <summary>
+        /// Dumps the segments in the segment map to the debug output window.
+        /// </summary>
         [Conditional("DEBUG")]
         public void DumpSections()
         {

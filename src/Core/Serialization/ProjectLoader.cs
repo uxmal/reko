@@ -43,7 +43,7 @@ namespace Reko.Core.Serialization
     /// </summary>
     public class ProjectLoader : ProjectPersister
     {
-        public event EventHandler<ProgramEventArgs>? ProgramLoaded;
+        public event EventHandler<Program>? ProgramLoaded;
 
         private readonly ILoader loader;
         private readonly Project project;
@@ -334,7 +334,7 @@ namespace Reko.Core.Serialization
             program.ResourcesDirectory = ConvertToAbsolutePath(projectPath, sInput.ResourcesDirectory)!;
             program.EnsureDirectoryNames(program.Location);
             program.User.LoadAddress = address;
-            ProgramLoaded?.Invoke(this, new ProgramEventArgs(program));
+            ProgramLoaded?.Invoke(this, program);
             return program;
         }
 
@@ -605,6 +605,13 @@ namespace Reko.Core.Serialization
             });
         }
 
+        /// <summary>
+        /// Loads a user segment from the serialized representation.
+        /// </summary>
+        /// <param name="sSegment">Serialized representation of a user segment.
+        /// </param>
+        /// <returns>A deserialized user segment.
+        /// </returns>
         public UserSegment? LoadUserSegment(Segment_v4 sSegment)
         {
             if (!platform!.TryParseAddress(sSegment.Address, out Address addr))
@@ -703,6 +710,12 @@ namespace Reko.Core.Serialization
             return LoadMetadataFile(metadataUri);
         }
 
+        /// <summary>
+        /// Loads a metadata file from the given location.
+        /// If it fails, it will return an empty TypeLibrary object.
+        /// </summary>
+        /// <param name="metadataUri"></param>
+        /// <returns></returns>
         public MetadataFile LoadMetadataFile(ImageLocation metadataUri)
         {
             var platform = DeterminePlatform();
@@ -753,25 +766,5 @@ namespace Reko.Core.Serialization
         {
             throw new NotImplementedException("return loader.AssembleExecutable(sAsmFile.Filename, sAsmFile.Assembler, null);");
         }
-    }
-
-    public class ProgramEventArgs : EventArgs
-    {
-        public ProgramEventArgs(Program program)
-        {
-            this.Program = program;
-        }
-
-        public Program Program { get; }
-    }
-
-    public class TypeLibraryEventArgs : EventArgs
-    {
-        public TypeLibraryEventArgs(TypeLibrary typelib)
-        { 
-            this.TypeLibrary = typelib; 
-        }
-
-        public TypeLibrary TypeLibrary { get; }
     }
 }

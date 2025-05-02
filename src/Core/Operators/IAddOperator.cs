@@ -21,7 +21,6 @@
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System;
-using System.Numerics;
 
 namespace Reko.Core.Operators
 {

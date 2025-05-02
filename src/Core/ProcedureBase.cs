@@ -111,10 +111,6 @@ namespace Reko.Core
             }
         }
         private string name;
-        /// <summary>
-        /// Event that is raised when the name of the procedure changes.
-        /// </summary>
-        public event EventHandler? NameChanged;
         
         /// <summary>
         /// The <see cref="FunctionType">function signature</see> of this procedure.

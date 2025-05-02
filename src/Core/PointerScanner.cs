@@ -41,6 +41,12 @@ namespace Reko.Core
         private readonly HashSet<T> knownLinAddresses;
         private readonly PointerScannerFlags flags;
 
+        /// <summary>
+        /// Initializes a pointer scanner instance.
+        /// </summary>
+        /// <param name="rdr">Image reader to read.</param>
+        /// <param name="knownLinAddresses"></param>
+        /// <param name="flags"></param>
         public PointerScanner(EndianImageReader rdr, HashSet<T> knownLinAddresses, PointerScannerFlags flags)
         {
             this.rdr = rdr;
@@ -131,6 +137,10 @@ namespace Reko.Core
 
         public abstract T GetLinearAddress(Address address);
 
+        /// <summary>
+        /// The alignment of pointers in the target architecture, expressed
+        /// in storage units.
+        /// </summary>
         public abstract int PointerAlignment { get; }
 
         /// <summary>

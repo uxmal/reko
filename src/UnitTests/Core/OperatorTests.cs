@@ -18,10 +18,9 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
-using NUnit.Framework;
-using System;
 using Reko.Core.Types;
 
 namespace Reko.UnitTests.Core

@@ -22,26 +22,26 @@ namespace Reko.Core.Types;
 
 
 /// <summary>
-/// Models a field in a structure or class.
+/// Represents a field in a structure or class.
 /// </summary>
 public abstract class Field
 {
-    /// <summary>
-    /// Initalizes a <see cref="Field"/> instance.
-    /// </summary>
-    /// <param name="type"></param>
+        /// <summary>
+        /// Initializes a new instance of a subclass of the <see cref="Field"/> class.
+        /// </summary>
+        /// <param name="type"></param>
     protected Field(DataType type)
     {
         this.DataType = type;
     }
 
-    /// <summary>
-    /// DataType of the field.
-    /// </summary>
+        /// <summary>
+        /// The data type of this field.
+        /// </summary>
     public DataType DataType { get; set; }
 
-    /// <summary>
-    /// Name of the field.
-    /// </summary>
+        /// <summary>
+        /// The name of this field.
+        /// </summary>
     public abstract string Name { get; set; }
 }

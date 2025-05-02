@@ -31,6 +31,13 @@ namespace Reko.Core.Loading
     /// </summary>
     public abstract class ImportReference : IComparable<ImportReference>
     {
+        /// <summary>
+        /// Initializes the field of this instance.
+        /// </summary>
+        /// <param name="addr"></param>
+        /// <param name="moduleName"></param>
+        /// <param name="entryName"></param>
+        /// <param name="symType"></param>
         public ImportReference(Address addr, string? moduleName, string entryName, SymbolType symType)
         {
             ReferenceAddress = addr;
@@ -115,11 +122,11 @@ namespace Reko.Core.Loading
             {
                 if (!ep.Signature.ParametersValid)
                 {
-                    listener.Warn(paddr, $"Unable to guess parameters of {this}.");
+                    listener.Warn(addr, $"Unable to guess parameters of {this}.");
                 }
                 return ep;
             }
-            listener.Warn(paddr, $"Unable to resolve imported reference {this}.");
+            listener.Warn(addr, $"Unable to resolve imported reference {this}.");
             return new ExternalProcedure(ToString(), new FunctionType());
         }
 
@@ -177,20 +184,20 @@ namespace Reko.Core.Loading
             var imp = dynamicLinker.ResolveImport(ModuleName!, Ordinal, platform);
             if (imp != null)
                 return imp;
-            listener.Warn(paddr, $"Unable to resolve imported reference {this}.");
+            listener.Warn(addr, $"Unable to resolve imported reference {this}.");
             return null;
         }
 
         public override ExternalProcedure ResolveImportedProcedure(
             IDynamicLinker resolver,
             IPlatform platform,
-            ProgramAddress ctx,
+            ProgramAddress addr,
             IEventListener listener)
         {
             var ep = resolver.ResolveProcedure(ModuleName!, Ordinal, platform);
             if (ep is not null)
                 return ep;
-            listener.Warn(paddr, $"Unable to resolve imported reference {this}.");
+            listener.Warn(addr, $"Unable to resolve imported reference {this}.");
             return new ExternalProcedure(ToString(), new FunctionType());
         }
 

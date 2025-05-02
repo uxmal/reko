@@ -99,6 +99,7 @@ namespace Reko.Core
         /// </summary>
         public TypeLibrary LoadedMetadata { get; set; }
 
+        /// <inheritdoc/>
         public T Accept<T, C>(ILoadedImageVisitor<T, C> visitor, C context)
             => visitor.VisitProject(this, context);
 

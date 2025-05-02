@@ -24,6 +24,9 @@ using System.Text;
 
 namespace Reko.Core.Loading
 {
+    /// <summary>
+    /// An entry in an archive.
+    /// </summary>
     public interface ArchiveDirectoryEntry
     {
         /// <summary>
@@ -37,10 +40,20 @@ namespace Reko.Core.Loading
         ArchiveDirectoryEntry? Parent { get; }
     }
 
+    /// <summary>
+    /// A file in an archive.
+    /// </summary>
     public interface ArchivedFile : ArchiveDirectoryEntry
     {
+        /// <summary>
+        /// File length.
+        /// </summary>
         long Length { get; }
 
+        /// <summary>
+        /// File contents.
+        /// </summary>
+        /// <returns></returns>
         byte[] GetBytes();
 
         /// <summary>
@@ -53,8 +66,14 @@ namespace Reko.Core.Loading
         ILoadedImage LoadImage(IServiceProvider services, Address? addrPreferred);
     }
 
+    /// <summary>
+    /// Interface representing a folder in an archive.
+    /// </summary>
     public interface ArchivedFolder : ArchiveDirectoryEntry
     {
+        /// <summary>
+        /// The entries of the folder.
+        /// </summary>
         ICollection<ArchiveDirectoryEntry> Entries { get; }
     }
 }

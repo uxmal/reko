@@ -19,21 +19,33 @@
 #endregion
 
 using Reko.Core.Expressions;
-using Reko.Core.Machine;
-using Reko.Core.Types;
 using System;
 
 namespace Reko.Core.Serialization
 {
+    /// <summary>
+    /// Serializes an <see cref="Identifier"/> to a serialized argument.
+    /// </summary>
 	public class ArgumentSerializer 
 	{
 		private IProcessorArchitecture arch;
 
+        /// <summary>
+        /// Constructs an instance of <see cref="ArgumentSerializer"/>.
+        /// </summary>
+        /// <param name="arch">Processor architecture.</param>
         public ArgumentSerializer(IProcessorArchitecture arch)
 		{
 			this.arch = arch;
         }
         
+        /// <summary>
+        /// Given an <see cref="Identifier"/> serializes it to
+        /// an <see cref="Argument_v1"/> serialization class.
+        /// </summary>
+        /// <param name="arg">Argument identifier to serialize</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public static Argument_v1? Serialize(Identifier? arg)
         {
             if (arg is null)

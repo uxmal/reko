@@ -239,6 +239,9 @@ namespace Reko.Core
             return MakeUri(fsAbsolute, imageLocation.Fragments);
         }
 
+        /// <summary>
+        /// Returns a string representation of this <see cref="ImageLocation"/>.
+        /// </summary>
         public override string ToString()
         {
             return MakeUri(this.FilesystemPath, Fragments);

@@ -5,7 +5,7 @@
 // %continuation:%continuation
 // r1:Stack -0004
 // r2:Stack -0008
-// return address size: 0
+// return address size: ?
 define FnMock
 FnMock_entry:
 	// succ:  l1

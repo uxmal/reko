@@ -7,7 +7,7 @@
 // r3:Stack -0008
 // Z:Z
 // r1:Stack -000C
-// return address size: 0
+// return address size: ?
 define FactorialMock
 FactorialMock_entry:
 	goto l1

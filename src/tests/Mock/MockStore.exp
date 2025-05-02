@@ -4,7 +4,7 @@
 // fp:fp
 // %continuation:%continuation
 // r0:Stack -0004
-// return address size: 0
+// return address size: ?
 define StoreMock
 StoreMock_entry:
 	// succ:  l1

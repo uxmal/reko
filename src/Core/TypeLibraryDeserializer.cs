@@ -287,6 +287,7 @@ namespace Reko.Core
             }
         }
 
+        /// <inheritdoc/>
         public DataType VisitPrimitive(PrimitiveType_v1 primitive)
         {
             var bitSize = primitive.Domain != Domain.Boolean
@@ -298,6 +299,7 @@ namespace Reko.Core
             return pt;
         }
 
+        /// <inheritdoc/>
         public DataType VisitPointer(PointerType_v1 pointer)
         {
             DataType dt;
@@ -334,6 +336,7 @@ namespace Reko.Core
             return new Pointer(dt, bitSize) { Qualifier = pointer.Qualifier };
         }
 
+        /// <inheritdoc/>
         public DataType VisitMemberPointer(MemberPointer_v1 memptr)
         {
             DataType baseType;
@@ -349,6 +352,7 @@ namespace Reko.Core
             return new MemberPointer(baseType, dt, platform.PointerType.BitSize);
         }
 
+        /// <inheritdoc/>
         public DataType VisitReference(ReferenceType_v1 reference)
         {
             DataType dt;
@@ -359,17 +363,20 @@ namespace Reko.Core
             return new ReferenceTo(dt);
         }
 
+        /// <inheritdoc/>
         public DataType VisitArray(ArrayType_v1 array)
         {
             var dt = array.ElementType!.Accept(this);
             return new ArrayType(dt, array.Length);
         }
 
+        /// <inheritdoc/>
         public DataType VisitCode(CodeType_v1 code)
         {
             return new CodeType();
         }
 
+        /// <inheritdoc/>
         public DataType VisitString(StringType_v2 str)
         {
             var dt = str.CharType!.Accept(this);
@@ -422,6 +429,7 @@ namespace Reko.Core
             }
         }
 
+        /// <inheritdoc/>
         public DataType VisitTypedef(SerializedTypedef typedef)
         {
             var dt = typedef.DataType!.Accept(this);
@@ -438,6 +446,7 @@ namespace Reko.Core
             return dt;
         }
 
+        /// <inheritdoc/>
         public DataType VisitTypeReference(TypeReference_v1 typeReference)
         {
             var typeName = typeReference.TypeName!;
@@ -446,6 +455,7 @@ namespace Reko.Core
             return new TypeReference(typeName, new UnknownType());
         }
 
+        /// <inheritdoc/>
         public DataType VisitUnion(UnionType_v1 sUnion)
         {
             if (sUnion.Name == null || !unions.TryGetValue(sUnion.Name, out var union))
@@ -473,6 +483,7 @@ namespace Reko.Core
             }
         }
 
+        /// <inheritdoc/>
         public DataType VisitEnum(SerializedEnumType enumType)
         {
             var members = enumType.Values != null
@@ -497,6 +508,7 @@ namespace Reko.Core
             };
         }
 
+        /// <inheritdoc/>
         public DataType VisitVoidType(VoidType_v1 voidType)
         {
             return VoidType.Instance;

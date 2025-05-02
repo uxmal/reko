@@ -21,14 +21,11 @@
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Core.Serialization
 {
     /// <summary>
-    /// Deserializes serialized arguments into Identifiers.
+    /// Deserializes serialized arguments into <see cref="Identifier"/>s.
     /// </summary>
     public class ArgumentDeserializer
     {
@@ -40,6 +37,16 @@ namespace Reko.Core.Serialization
         //$REFACTOR: pass argCur as parameter. 
         private Argument_v1? argCur;
 
+        /// <summary>
+        /// Constructs an instance of the <see cref="ArgumentDeserializer"/>
+        /// </summary>
+        /// <param name="procSer"><see cref="ProcedureSerializer"/> instance used in conjunction<\
+        /// with this class./param>
+        /// <param name="arch">Processor architecture to use.</param>
+        /// <param name="frame">Frame of the calling procedure.</param>
+        /// <param name="retAddressOnStack">The size of the return address on the stack.</param>
+        /// <param name="stackAlign">Alignment requirement on stack parameters.
+        /// </param>
         public ArgumentDeserializer(
             ProcedureSerializer procSer, 
             IProcessorArchitecture arch, 
@@ -54,6 +61,7 @@ namespace Reko.Core.Serialization
             this.stackAlignment = stackAlign;
         }
 
+        /// <inheritdoc/>
         public Identifier? VisitRegister(Register_v1 reg)
         {
             var regName = reg.Name;
@@ -69,7 +77,7 @@ namespace Reko.Core.Serialization
                 dt = regStorage.DataType;
             if (dt is VoidType)
                 return null;
-            var idArg = procSer.CreateId(
+            var idArg = new Identifier(
                 argCur.Name ?? regStorage.Name,
                 dt,
                 regStorage);
@@ -83,6 +91,11 @@ namespace Reko.Core.Serialization
             return idArg;
         }
 
+        /// <summary>
+        /// Deserializes a stack variable, after which the stack offset is incremented by the size of the
+        /// variable.
+        /// </summary>
+        /// <returns>An identifier for the next stack variable.</returns>
         public Identifier? Deserialize(StackVariable_v1 _)
         {
             if (argCur!.Name == "...")
@@ -90,8 +103,8 @@ namespace Reko.Core.Serialization
                 procSer.IsVariadic = true;
                 return null;
             }
-            if (argCur.Type == null)
-                throw new ApplicationException(string.Format("Argument '{0}' has no type.", argCur.Name));
+            if (argCur.Type is null)
+                throw new ApplicationException($"Argument '{argCur.Name}' has no type.");
             var dt = this.argCur.Type.Accept(procSer.TypeLoader);
             if (dt is VoidType)
             {
@@ -101,7 +114,7 @@ namespace Reko.Core.Serialization
                 dt,
                 procSer.StackOffset + retAddressOnStack,
                 argCur.Name);
-            var idArg = procSer.CreateId(
+            var idArg = new Identifier(
                 name,
                 dt,
                 new StackStorage(procSer.StackOffset + retAddressOnStack, dt));
@@ -110,13 +123,17 @@ namespace Reko.Core.Serialization
             return idArg;
         }
 
+        /// <summary>
+        /// Deserializes an FPU stack variable, after which the FPU stack offset is incremented by one.
+        /// </summary>
+        /// <returns>An identifier for the next stack variable.</returns>
         public Identifier Deserialize(FpuStackVariable_v1 _)
         {
             if (procSer.FpuStackShrinking)
             {
                 --procSer.FpuStackOffset;
             }
-            var idArg = procSer.CreateId(
+            var idArg = new Identifier(
                 argCur!.Name ?? "fpArg" + procSer.FpuStackOffset, 
                 PrimitiveType.Real64,
                 new FpuStackStorage(procSer.FpuStackOffset, PrimitiveType.Real64));
@@ -133,6 +150,11 @@ namespace Reko.Core.Serialization
             return frame.EnsureFlagGroup(flags);
         }
 
+        /// <summary>
+        /// Deserializes a sequence storage.
+        /// </summary>
+        /// <param name="sq">Sequence to deserialize.</param>
+        /// <returns>The deserialized parameter.</returns>
         public Identifier? Deserialize(SerializedSequence sq)
         {
             var hName = sq.Registers?[0].Name?.Trim();

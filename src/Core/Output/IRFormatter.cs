@@ -38,6 +38,10 @@ namespace Reko.Core.Output
             this.w = w;
         }
 
+        /// <summary>
+        /// Formats the program to the output.
+        /// </summary>
+        /// <param name="program">Program to format.</param>
         public void WriteProgram(Program program)
         {
             w.WriteLine("// reko-IR");
@@ -47,6 +51,10 @@ namespace Reko.Core.Output
             }
         }
 
+        /// <summary>
+        /// Formats the procedure to the output.
+        /// </summary>
+        /// <param name="procedure">Procedure to format.</param>
         public void WriteProcedure(Procedure procedure)
         {
             //@"define void @empty() {

@@ -126,10 +126,9 @@ namespace Reko.Loading
         {
             byte[] image = LoadFileBytes(imageLocation.FilesystemPath);
 
-            var project = new Project(imageLocation);
-            var projectLoader = new ProjectLoader(this.Services, this, project, Services.RequireService<IEventListener>());
-            projectLoader.ProgramLoaded += (s, e) => { RunScriptOnProgramImage(e.Program, e.Program.User.OnLoadedScript); };
-            project = projectLoader.LoadProject(image);
+            var projectLoader = new ProjectLoader(this.Services, this, imageLocation, Services.RequireService<IEventListener>());
+            projectLoader.ProgramLoaded += (s, e) => { RunScriptOnProgramImage(e, e.User.OnLoadedScript); };
+            var project = projectLoader.LoadProject(image);
             if (project is not null)
             {
                 project.FireScriptEvent(ScriptEvent.OnProgramLoaded);

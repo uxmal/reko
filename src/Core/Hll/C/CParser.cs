@@ -27,6 +27,9 @@ namespace Reko.Core.Hll.C
 {
     // https://web.archive.org/web/20200223191833/http://www.ssw.uni-linz.ac.at/Coco/C/C.atg
 
+    /// <summary>
+    /// A parser capable of parsing various dialects of the C language.
+    /// </summary>
     public class CParser
     {
         /* ANSI C 89 grammar as specified in

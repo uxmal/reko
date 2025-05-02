@@ -18,11 +18,7 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Core.Code;
 using Reko.Core.Expressions;
-using Reko.Core.Types;
-using System;
 using System.Linq;
 using System.Xml.Serialization;
 

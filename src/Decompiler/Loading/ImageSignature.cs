@@ -23,12 +23,15 @@ using System.Diagnostics;
 
 namespace Reko.Loading
 {
+    /// <summary>
+    /// The "fingerprint" of a procedure.
+    /// </summary>
     public class ImageSignature
     {
-        public string? Name;
-        public string? Comments;
-        public string? EntryPointPattern;
-        public string? ImagePattern;
+        public string? Name { get; set; }
+        public string? Comments { get; set; }
+        public string? EntryPointPattern { get; set; }
+        public string? ImagePattern { get; set; }
 
         //$PERF: of course we should compile pattern files into a trie for super performance.
         //$REVIEW: move to ImageSignature class?

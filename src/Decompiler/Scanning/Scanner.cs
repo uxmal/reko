@@ -476,10 +476,10 @@ namespace Reko.Scanning
 
             callRetThunkBlock.Statements.Add(addrFrom, new ReturnInstruction());
             procOld.ControlGraph.AddEdge(callRetThunkBlock, procOld.ExitBlock);
-            if (procNew.Frame.ReturnAddressKnown)
+            if (procNew.Frame.ReturnAddressSize.HasValue)
             {
                 SetProcedureReturnAddressBytes(
-                    procOld, procNew.Frame.ReturnAddressSize, addrFrom);
+                    procOld, procNew.Frame.ReturnAddressSize.Value, addrFrom);
             }
             SetProcedureStackDelta(procOld, procNew.Signature.StackDelta, addrFrom);
             return callRetThunkBlock;
@@ -952,9 +952,9 @@ namespace Reko.Scanning
 
         public void SetProcedureReturnAddressBytes(Procedure proc, int returnAddressBytes, Address address)
         {
-            if (proc.Frame.ReturnAddressKnown)
+            if (proc.Frame.ReturnAddressSize.HasValue)
             {
-                if (proc.Frame.ReturnAddressSize != returnAddressBytes)
+                if (proc.Frame.ReturnAddressSize.Value != returnAddressBytes)
                 {
                     this.Warn(
                         address,
@@ -963,13 +963,12 @@ namespace Reko.Scanning
                             "but now seems to have a return address of {0} bytes on the stack.",
                             returnAddressBytes,
                             proc.Name,
-                            proc.Frame.ReturnAddressSize));
+                            proc.Frame.ReturnAddressSize.Value));
                 }
             }
             else
             {
                 proc.Frame.ReturnAddressSize = returnAddressBytes;
-                proc.Frame.ReturnAddressKnown = true;
                 proc.Signature.ReturnAddressOnStack = returnAddressBytes;
             }
         }

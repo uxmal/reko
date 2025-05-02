@@ -22,13 +22,23 @@ using System.Collections.Generic;
 
 namespace Reko.Core.Types
 {
+    /// <summary>
+    /// Represents an enumeration type.
+    /// </summary>
     public class EnumType : DataType
     {
         private readonly int size;
 
+        /// <summary>
+        /// Constructs an instance of the <see cref="EnumType"/> class.
+        /// </summary>
+        /// <param name="name">Name of the enumerated type.</param>
+        /// <param name="size">Size of the enumerated type.</param>
+        /// <param name="members">The members of the enumerated type.</param>
         public EnumType(
-            string name, int size, IDictionary<string, long> members
-        )
+            string name,
+            int size,
+            IDictionary<string, long> members)
             : base(Domain.Enum, name)
         {
             this.size = size;
@@ -42,7 +52,10 @@ namespace Reko.Core.Types
             set { ThrowBadSize(); }
         }
 
-        public readonly IReadOnlyDictionary<string, long> Members;
+        /// <summary>
+        /// The members of the enumeration.
+        /// </summary>
+        public IReadOnlyDictionary<string, long> Members { get; }
 
         /// <inheritdoc/>
         public override void Accept(IDataTypeVisitor v)

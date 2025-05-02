@@ -18,12 +18,6 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Reko.Core;
 
 /// <summary>
@@ -73,6 +67,11 @@ public enum StorageDomain
     /// Space for system / control registers (1 million should be enough)
     /// </summary>
     SystemRegister = 8192,
+
+    /// <summary>
+    /// Maximum value for a system register.
+    /// </summary>
+    MaxSystemRegister = 8192 + 65536,
 
     /// <summary>
     /// Things that look like registers but are in fact other identifiers,

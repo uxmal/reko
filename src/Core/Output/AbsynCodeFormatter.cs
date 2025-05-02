@@ -29,11 +29,18 @@ using System.Text;
 
 namespace Reko.Core.Output
 {
+    /// <summary>
+    /// Code formatter for Absyn instructions.
+    /// </summary>
     public class AbsynCodeFormatter : CodeFormatter
     {
         private const string DecimalSymbols = "0123456789";
         private const string HexSymbols = "0123456789ABCDEF";
 
+        /// <summary>
+        /// Constructs an instance of <see cref="AbsynCodeFormatter"/>.
+        /// </summary>
+        /// <param name="writer">Output sink.</param>
         public AbsynCodeFormatter(Formatter writer) : base(writer)
         {
 

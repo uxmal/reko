@@ -28,21 +28,6 @@ namespace Reko.Core
     public class AddressSearchHit
     {
         /// <summary>
-        /// The program in which the hit was found.
-        /// </summary>
-        public Program Program { get; }
-
-        /// <summary>
-        /// The address at which the hit was found.
-        /// </summary>
-        public Address Address { get; }
-
-        /// <summary>
-        /// The length of the hit object.
-        /// </summary>
-        public int Length { get; }
-
-        /// <summary>
         /// Constructs an instance of <see cref="AddressSearchHit"/>.
         /// </summary>
         /// <param name="program">Program in which the hit occurred.</param>

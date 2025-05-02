@@ -34,6 +34,12 @@ namespace Reko.Core.Loading
         private readonly IComparer<string> filenameComparer;
         private readonly Dictionary<string, ArchiveDirectoryEntry> root;
 
+        /// <summary>
+        /// Initializes fields of <see cref="AbstractHierarchicalArchive"/>.
+        /// </summary>
+        /// <param name="location"><see cref="ImageLocation" /> from which the archive was loaded.</param>
+        /// <param name="pathSeparator">Path separator to use.</param>
+        /// <param name="comparer">Comparer used to compare file names. </param>
         public AbstractHierarchicalArchive(ImageLocation location, char pathSeparator, IComparer<string> comparer)
         {
             this.Location = location;
@@ -42,15 +48,19 @@ namespace Reko.Core.Loading
             this.root = new Dictionary<string, ArchiveDirectoryEntry>();
         }
 
+        /// <inheritdoc/>
         public ArchiveDirectoryEntry? this[string path] => GetEntry(path);
 
+        /// <inheritdoc/>
         public ImageLocation Location { get; }
 
+        /// <inheritdoc/>
         public List<ArchiveDirectoryEntry> RootEntries
             => root.Values
                 .OrderBy(e => e.Name, this.filenameComparer)
                 .ToList();
 
+        /// <inheritdoc/>
         public T Accept<T, C>(ILoadedImageVisitor<T, C> visitor, C context)
             => visitor.VisitArchive(this, context);
 
@@ -70,6 +80,13 @@ namespace Reko.Core.Loading
             return entry;
         }
 
+        /// <summary>
+        /// Adds a file to the archive.
+        /// </summary>
+        /// <param name="path">Relative path.</param>
+        /// <param name="fileCreator">Delegate which when called returns an <see cref="ArchivedFile"/> instance.
+        /// </param>
+        /// <returns></returns>
         public virtual ArchivedFile AddFile(
             string path, 
             Func<IArchive, ArchiveDirectoryEntry?, string, ArchivedFile> fileCreator)
@@ -84,7 +101,7 @@ namespace Reko.Core.Loading
                 string pathSegment = pathSegments[i];
                 if (!curDir.TryGetValue(pathSegment, out var entry))
                 {
-                    entry = parentDir = new ArchiveDictionary(this, pathSegment, parentDir);;
+                    entry = parentDir = new ArchiveDictionary(this, pathSegment, parentDir);
                     curDir.Add(pathSegment, entry);
                 }
                 if (entry is not ArchiveDictionary nextDir)
@@ -106,6 +123,7 @@ namespace Reko.Core.Loading
             throw new DuplicateFilenameException($"Duplicated file name '{filename}.");
         }
 
+        /// <inheritdoc/>
         public virtual string GetRootPath(ArchiveDirectoryEntry? entry)
         {
             if (entry is null)
@@ -133,24 +151,22 @@ namespace Reko.Core.Loading
                 this.entries = new Dictionary<string, ArchiveDirectoryEntry>();
             }
 
+            /// <inheritdoc/>
             public ICollection<ArchiveDirectoryEntry> Entries
                 => entries.Values
                     .OrderBy(e => e.Name, archive.filenameComparer)
                     .ToList();
 
+            /// <inheritdoc/>
             public string Name { get; }
 
+            /// <inheritdoc/>
             public ArchiveDirectoryEntry? Parent { get; }
 
             public void AddEntry(string name, ArchiveDirectoryEntry entry)
             {
                 entries[name] = entry;
             }
-        }
-
-        public List<ArchiveDirectoryEntry> Load(Stream stm)
-        {
-            throw new NotImplementedException();
         }
     }
 }

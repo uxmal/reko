@@ -19,9 +19,6 @@
 #endregion
 
 using Reko.Core.Serialization;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Reko.Core
 {

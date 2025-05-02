@@ -67,11 +67,33 @@ public interface IBinaryHeader
     PrimitiveType PointerType { get; }
 }
 
+/// <summary>
+/// Type of binary file.
+/// </summary>
 public enum BinaryFileType
 {
+    /// <summary>
+    /// Unknown file type.
+    /// </summary>
     Unknown,
+
+    /// <summary>
+    /// An executable file.
+    /// </summary>
     Executable,
+
+    /// <summary>
+    /// A shared library or dynamic-link library.
+    /// </summary>
     SharedLibrary,
+
+    /// <summary>
+    /// An object file.
+    /// </summary>
     ObjectFile,
+
+    /// <summary>
+    /// A core dump.
+    /// </summary>
     CoreImage,
 }

@@ -18,11 +18,9 @@
  */
 #endregion
 
-using Reko.Core;
 using Reko.Core.Diagnostics;
 using Reko.Core.Expressions;
 using System;
-using System.Buffers;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;

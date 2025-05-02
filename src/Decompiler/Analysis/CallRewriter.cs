@@ -376,7 +376,10 @@ namespace Reko.Analysis
                     var id = frame.EnsureStackArgument(
                         item.stg!.StackOffset,
                         PrimitiveType.CreateWord(item.range.Extent));
-                    return (item.stg.StackOffset - frame.ReturnAddressSize, id);
+                    int retSize = frame.ReturnAddressSize.HasValue
+                        ? frame.ReturnAddressSize.Value 
+                        : 0;
+                    return (item.stg.StackOffset - retSize, id);
                 });
         }
 

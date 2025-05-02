@@ -125,6 +125,16 @@ namespace Reko.Core.Loading
             };
         }
 
+        /// <summary>
+        /// Creates an image symbol. This is the most general method of creating
+        /// one.
+        /// </summary>
+        /// <param name="type">Symbol type.</param>
+        /// <param name="arch"><see cref="IProcessorArchitecture"/> associated with the symbol.</param>
+        /// <param name="address">The address of the symbol.</param>
+        /// <param name="name">The symbol's name.</param>
+        /// <param name="dataType">The data type of the symbol.</param>
+        /// <param name="decompile">Whether the decompiler should decompile this symbol.</param>
         public static ImageSymbol Create(
             SymbolType type,
             IProcessorArchitecture arch,
@@ -185,6 +195,9 @@ namespace Reko.Core.Loading
         /// </summary>
         public SerializedSignature? Signature { get; set; }
 
+        /// <summary>
+        /// The data type of this symbol.
+        /// </summary>
         public DataType? DataType { get; set; }
 
         /// <summary>
@@ -193,6 +206,9 @@ namespace Reko.Core.Loading
         /// </summary>
         public int? Ordinal { get; set; }
 
+        /// <summary>
+        /// Returns a string representation of this symbol.
+        /// </summary>
         public override string ToString()
         {
             return string.Format(
@@ -202,14 +218,44 @@ namespace Reko.Core.Loading
         }
     }
 
+    /// <summary>
+    /// Symbol classification.
+    /// </summary>
     public enum SymbolType
     {
-        Unknown,            // Unknown type
-        Code,               // executable code, not necessarily the entry point of a procedure.
-        Data,               // non-executable data
-        Procedure,          // Something that is called.
-        ExternalProcedure,   // A procedure outside of the binary
+        /// <summary>
+        /// Unknown type.
+        /// </summary>
+        Unknown,
+
+        /// <summary>
+        /// Executable code, not necessarily the entry point of a procedure.
+        /// </summary>
+        Code,
+
+        /// <summary>
+        /// Non-executable data.
+        /// </summary>
+        Data,
+
+        /// <summary>
+        /// Executable code that is definitely a function entry.
+        /// </summary>
+        Procedure,
+
+        /// <summary>
+        /// A procedure outside of the binary
+        /// </summary>
+        ExternalProcedure,
+
+        /// <summary>
+        /// An address space.
+        /// </summary>
         AddressSpace,
+        
+        /// <summary>
+        /// A table of items.
+        /// </summary>
         Table
     }
 }

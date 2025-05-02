@@ -35,7 +35,15 @@ namespace Reko.Core.Types
 	/// </remarks>
 	public abstract class DataType : ICloneable
 	{
-		public const int BitsPerByte = 8;
+        //$REVIEW: find ways to get rid of this constant.
+        /// <summary>
+        /// The number of bits in a byte.
+        /// </summary>
+        /// <remarks>
+        /// This will not work on all architectures, so wherever possible
+        /// don't use this constant.
+        /// </remarks>
+        public const int BitsPerByte = 8;
 
         private string? name;
 
@@ -60,6 +68,9 @@ namespace Reko.Core.Types
 			this.name = name;
 		}
 
+        /// <summary>
+        /// The size of this data type in bits.
+        /// </summary>
         public virtual int BitSize { get { return Size * BitsPerByte; } }       //$REVIEW: Wrong for 36-bit machines
 
         /// <summary>
@@ -306,6 +317,16 @@ namespace Reko.Core.Types
             }
         }
 
+        /// <summary>
+        /// Resolve this data type to a specific type <typeparamref name="T"/>, by chasing 
+        /// through type references and equivalence classes.
+        /// </summary>
+        /// <typeparam name="T">Type expected after navigating past all aliases.
+        /// </typeparam>
+        /// <returns>
+        /// Either an instance of <typeparamref name="T"/>, or null
+        /// if the data type cannot be resolved to that type.
+        /// </returns>
         public T? ResolveAs<T>() where T : DataType
         {
             DataType dt = this;
@@ -335,11 +356,18 @@ namespace Reko.Core.Types
             return dt as T;
         }
 
+        /// <summary>
+        /// Resolves this data type to a specific type <typeparamref name="T"/>, by chasing
+        /// all type references.
+        /// </summary>
+        /// <returns>The target type <typeparamref name="T"/> or null if it 
+        /// wasn't reached.
+        /// </returns>
         public T? TypeReferenceAs<T>() where T : DataType
         {
             DataType dt = this;
             TypeReference? typeRef = dt as TypeReference;
-            while (typeRef != null)
+            while (typeRef is not null)
             {
                 dt = typeRef.Referent;
                 typeRef = dt as TypeReference;
@@ -352,6 +380,10 @@ namespace Reko.Core.Types
         /// </summary>
         public virtual bool IsWord => false;
 
+        /// <summary>
+        /// Throws an exception if the size is being modified when it isn't 
+        /// possible to do so.
+        /// </summary>
         protected void ThrowBadSize()
 		{
 			throw new InvalidOperationException($"Can't set size of {GetType().Name}.");

@@ -500,6 +500,7 @@ namespace Reko.Core.Output
             WriteExpression(segptr.Offset);
         }
 
+        /// <inheritdoc/>
         public void VisitMkSequence(MkSequence seq)
         {
             InnerFormatter.Write("SEQ(");
@@ -513,6 +514,7 @@ namespace Reko.Core.Output
             InnerFormatter.Write(")");
         }
 
+        /// <inheritdoc/>
         public void VisitOutArgument(OutArgument outArg)
         {
             InnerFormatter.WriteKeyword("out");
@@ -520,6 +522,7 @@ namespace Reko.Core.Output
             WriteExpression(outArg.Expression);
         }
 
+        /// <inheritdoc/>
 		public void VisitPhiFunction(PhiFunction phi)
 		{
 			InnerFormatter.WriteKeyword("PHI");
@@ -538,6 +541,7 @@ namespace Reko.Core.Output
             InnerFormatter.Write(")");
         }
 
+        /// <inheritdoc/>
         public void VisitPointerAddition(PointerAddition pa)
 		{
             InnerFormatter.Write("PTRADD(");
@@ -545,6 +549,7 @@ namespace Reko.Core.Output
             InnerFormatter.Write(",{0})", pa.Offset);
 		}
 
+        /// <inheritdoc/>
 		public virtual void VisitProcedureConstant(ProcedureConstant pc)
 		{
 			InnerFormatter.WriteHyperlink(pc.Procedure.Name, pc.Procedure);
@@ -563,6 +568,7 @@ namespace Reko.Core.Output
             }
 		}
 
+        /// <inheritdoc/>
 		public void VisitTestCondition(TestCondition tc)
 		{
 			InnerFormatter.Write("Test({0},", tc.ConditionCode);
@@ -570,11 +576,13 @@ namespace Reko.Core.Output
 			InnerFormatter.Write(")");
 		}
 
+        /// <inheritdoc/>
         public void VisitScopeResolution(ScopeResolution scope)
         {
             InnerFormatter.WriteType(scope.DataType.Name, scope.DataType);
         }
 
+        /// <inheritdoc/>
         public void VisitSlice(Slice slice)
 		{
 			InnerFormatter.Write("SLICE(");
@@ -582,6 +590,7 @@ namespace Reko.Core.Output
 			InnerFormatter.Write(", {0}, {1})", slice.DataType, slice.Offset);
 		}
 
+        /// <inheritdoc/>
 		public void VisitUnaryExpression(UnaryExpression unary)
 		{
 			int prec = SetPrecedence((int) precedences[unary.Operator.Type]);
@@ -595,6 +604,7 @@ namespace Reko.Core.Output
 
 		#region InstructionVisitor ///////////////////////////////
 		
+        /// <inheritdoc/>
 		public void VisitAssignment(Assignment a)
 		{
 			InnerFormatter.Indent();
@@ -609,6 +619,7 @@ namespace Reko.Core.Output
 			InnerFormatter.Terminate();
 		}
 
+        /// <inheritdoc/>
 		public void VisitBranch(Branch b)
 		{
 			InnerFormatter.Indent();
@@ -620,6 +631,7 @@ namespace Reko.Core.Output
 			InnerFormatter.Terminate();
 		}
 
+        /// <inheritdoc/>
 		public void VisitCallInstruction(CallInstruction ci)
 		{
 			InnerFormatter.Indent();
@@ -660,6 +672,8 @@ namespace Reko.Core.Output
                 binding.Expression.Accept(this);
             }
         }
+
+        /// <inheritdoc/>
         public void VisitComment(CodeComment comment)
         {
             foreach (var line in Lines(comment.Text))
@@ -682,6 +696,7 @@ namespace Reko.Core.Output
             InnerFormatter.Terminate(";");
         }
 
+        /// <inheritdoc/>
         public void WriteCompoundAssignment(AbsynCompoundAssignment compound)
         { 
             if (compound.Src.Right is Constant c &&
@@ -704,6 +719,7 @@ namespace Reko.Core.Output
             compound.Src.Right.Accept(this);
         }
 
+        /// <inheritdoc/>
 		public void VisitDefInstruction(DefInstruction def)
 		{
 			InnerFormatter.Indent();
@@ -713,6 +729,7 @@ namespace Reko.Core.Output
 			InnerFormatter.Terminate();
 		}
 
+        /// <inheritdoc/>
         public void VisitGotoInstruction(GotoInstruction g)
         {
             InnerFormatter.Indent();
@@ -729,6 +746,7 @@ namespace Reko.Core.Output
             InnerFormatter.Terminate();
         }
 
+        /// <inheritdoc/>
 		public void VisitPhiAssignment(PhiAssignment phi)
 		{
 			InnerFormatter.Indent();
@@ -738,6 +756,7 @@ namespace Reko.Core.Output
 			InnerFormatter.Terminate();
 		}
 
+        /// <inheritdoc/>
 		public void VisitReturnInstruction(ReturnInstruction ret)
 		{
 			InnerFormatter.Indent();
@@ -750,6 +769,7 @@ namespace Reko.Core.Output
 			InnerFormatter.Terminate();
 		}
 
+        /// <inheritdoc/>
 		public void VisitSideEffect(SideEffect side)
 		{
 			InnerFormatter.Indent();
@@ -757,6 +777,7 @@ namespace Reko.Core.Output
 			InnerFormatter.Terminate();
 		}
 
+        /// <inheritdoc/>
 		public void VisitStore(Store store)
 		{
 			InnerFormatter.Indent();
@@ -766,6 +787,7 @@ namespace Reko.Core.Output
 			InnerFormatter.Terminate();
         }
 
+        /// <inheritdoc/>
         public void VisitStringConstant(StringConstant s)
         {
             InnerFormatter.Write('"');
@@ -777,6 +799,7 @@ namespace Reko.Core.Output
             return;
         }
 
+        /// <inheritdoc/>
         public void VisitSwitchInstruction(SwitchInstruction si)
 		{
 			InnerFormatter.Indent();
@@ -792,6 +815,7 @@ namespace Reko.Core.Output
 			InnerFormatter.Terminate();
 		}
 
+        /// <inheritdoc/>
 		public void VisitUseInstruction(UseInstruction u)
 		{
 			InnerFormatter.Indent();
@@ -809,6 +833,7 @@ namespace Reko.Core.Output
 
         #region IAbsynStatementVisitor //////////////////////
 
+        /// <inheritdoc/>
         public void VisitAssignment(AbsynAssignment a)
         {
             InnerFormatter.Indent();
@@ -1369,6 +1394,11 @@ namespace Reko.Core.Output
             return singleStatements.Contains(stm.GetType());
         }
 
+        /// <summary>
+        /// Writes a list of statements to the output.
+        /// </summary>
+        /// <param name="list">List of statements to be written.
+        /// </param>
         public void WriteStatementList(List<AbsynStatement> list)
 		{
 			foreach (AbsynStatement s in list)

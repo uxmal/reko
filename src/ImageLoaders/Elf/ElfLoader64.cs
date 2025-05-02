@@ -445,19 +445,6 @@ namespace Reko.ImageLoaders.Elf
             };
         }
 
-        [Obsolete]
-        public override ElfRelocation LoadRelEntry(EndianImageReader rdr)
-        {
-            var rel = Elf64_Rel.Read(rdr);
-            return new ElfRelocation
-            {
-                Offset = rel.r_offset,
-                Info = rel.r_info,
-                Type = (uint) rel.r_info,
-                SymbolIndex = rel.SymbolIndex
-            };
-        }
-
         public override ElfRelocation LoadRelaEntry(EndianImageReader rdr, IDictionary<int, ElfSymbol> symbols)
         {
             var rela = Elf64_Rela.Read(rdr);
@@ -470,21 +457,6 @@ namespace Reko.ImageLoaders.Elf
                 Addend = rela.r_addend,
                 SymbolIndex = symbolIndex,
                 Symbol = symbols[symbolIndex]
-            };
-        }
-
-
-        [Obsolete]
-        public override ElfRelocation LoadRelaEntry(EndianImageReader rdr)
-        {
-            var rela = Elf64_Rela.Read(rdr);
-            return new ElfRelocation
-            {
-                Offset = rela.r_offset,
-                Info = rela.r_info,
-                Type = (uint) rela.r_info,
-                Addend = rela.r_addend,
-                SymbolIndex = (int) (rela.r_info >> 32),
             };
         }
 
@@ -538,6 +510,9 @@ namespace Reko.ImageLoaders.Elf
                         ? platform!.MakeAddressFromLinear(shdr.sh_addr, false)
                         : default,
                     FileOffset = shdr.sh_offset,
+                    FileSize = shdr.sh_type == SectionHeaderType.SHT_NOBITS
+                        ? 0
+                        : shdr.sh_size,
                     Size = shdr.sh_size,
                     Alignment = shdr.sh_addralign,
                     EntrySize = shdr.sh_entsize,

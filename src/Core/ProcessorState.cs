@@ -106,6 +106,13 @@ namespace Reko.Core
         /// </summary>
         /// <param name="addr"></param>
         public abstract void OnProcedureEntered(Address addr);
+
+        /// <summary>
+        /// Called when a procedure is leaving. This is used to update the
+        /// registers when a procedure is left.
+        /// </summary>
+        /// <param name="procedureSignature">Signature of the function that was left.
+        /// </param>
         public abstract void OnProcedureLeft(FunctionType procedureSignature);
 
         /// <summary>
@@ -153,6 +160,7 @@ namespace Reko.Core
             return false;
         }
 
+        /// <inheritdoc/>
         public Expression GetValue(Identifier id)
         {
             if (id.Storage is TemporaryStorage)
@@ -162,6 +170,7 @@ namespace Reko.Core
             return GetValue(reg);
         }
 
+        /// <inheritdoc/>
         public Expression GetValue(RegisterStorage reg)
         {
             Expression? exp = GetRegister(reg);
@@ -172,6 +181,7 @@ namespace Reko.Core
             return InvalidConstant.Create(reg.DataType);
         }
 
+        /// <inheritdoc/>
         public Expression GetValue(MemoryAccess access, IMemory memory)
         {
             if (access.EffectiveAddress is SegmentedPointer segptr)
@@ -207,6 +217,7 @@ namespace Reko.Core
             return InvalidConstant.Create(access.DataType);
         }
 
+        /// <inheritdoc/>
         public Expression GetMemoryValue(Address addr, DataType dt, IMemory memory)
         {
             if (dt is not PrimitiveType pt)
@@ -227,6 +238,7 @@ namespace Reko.Core
             return InvalidConstant.Create(dt);
         }
 
+        /// <inheritdoc/>
         //$TODO: needs the data type of the value being fetched.
         public Expression GetStackValue(int offset)
         {
@@ -253,19 +265,23 @@ namespace Reko.Core
             return Architecture.MakeSegmentedAddress(seg, off);
         }
 
+        /// <inheritdoc/>
         public Constant ReinterpretAsFloat(Constant rawBits)
         {
             return Architecture.ReinterpretAsFloat(rawBits);
         }
 
+        /// <inheritdoc/>
         public void UseExpression(Expression expr)
         {
         }
 
+        /// <inheritdoc/>
         public void RemoveExpressionUse(Expression expr)
         {
         }
 
+        /// <inheritdoc/>
         public void SetValue(Identifier id, Expression value)
         {
             if (id.Storage is TemporaryStorage)
@@ -275,6 +291,7 @@ namespace Reko.Core
             SetValue(reg, value);
         }
 
+        /// <inheritdoc/>
         public Constant SetValue(RegisterStorage reg, Expression value)
         {
             if (value is Address addr && !addr.Selector.HasValue)
@@ -308,18 +325,21 @@ namespace Reko.Core
             return invValue2;
         }
 
+        /// <inheritdoc/>
         public void SetValueEa(Expression ea, Expression value)
         {
             if (GetStackOffset(ea, out int stackOffset))
                 stackState[stackOffset] = value;
         }
 
+        /// <inheritdoc/>
         public void SetValueEa(Expression basePtr, Expression ea, Expression value)
         {
             if (GetStackOffset(ea, out int stackOffset))
                 stackState[stackOffset] = value;
         }
 
+        /// <inheritdoc/>
         public bool IsUsedInPhi(Identifier id)
         {
             return false;
@@ -337,35 +357,43 @@ namespace Reko.Core
             this.Architecture = arch;
         }
 
+        /// <inheritdoc/>
         public override IProcessorArchitecture Architecture { get; }
 
+        /// <inheritdoc/>
         public override ProcessorState Clone()
         {
             return new DefaultProcessorState(Architecture);
         }
 
+        /// <inheritdoc/>
         public override Constant GetRegister(RegisterStorage r)
         {
             return InvalidConstant.Create(r.DataType);
         }
 
+        /// <inheritdoc/>
         public override void OnAfterCall(FunctionType? sigCallee)
         {
         }
 
+        /// <inheritdoc/>
         public override CallSite OnBeforeCall(Identifier stackReg, int returnAddressSize)
         {
             return new CallSite(returnAddressSize, 0);
         }
 
+        /// <inheritdoc/>
         public override void OnProcedureEntered(Address _)
         {
         }
 
+        /// <inheritdoc/>
         public override void OnProcedureLeft(FunctionType procedureSignature)
         {
         }
 
+        /// <inheritdoc/>
         public override void SetRegister(RegisterStorage r, Constant v)
         {
         }

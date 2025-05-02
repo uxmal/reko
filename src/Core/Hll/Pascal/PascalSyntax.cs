@@ -24,9 +24,13 @@ using System.Globalization;
 using System.IO;
 
 #nullable disable
+#pragma warning disable CS1591 
 
 namespace Reko.Core.Hll.Pascal
 {
+    /// <summary>
+    /// Abstract base class for Pascal syntax nodes.
+    /// </summary>
     public abstract class PascalSyntax
     {
 
@@ -59,6 +63,9 @@ namespace Reko.Core.Hll.Pascal
 
     }
 
+    /// <summary>
+    /// Abstract base class for Pascal declarations.
+    /// </summary>
     public abstract class Declaration : PascalSyntax
     {
         protected Declaration(string name)
@@ -69,6 +76,9 @@ namespace Reko.Core.Hll.Pascal
         public string Name;
     }
 
+    /// <summary>
+    /// A Pascal constant declaration.
+    /// </summary>
     public class ConstantDeclaration : Declaration
     {
         public ConstantDeclaration(string name, Exp exp, PascalType type = null) : base(name)
@@ -101,6 +111,9 @@ namespace Reko.Core.Hll.Pascal
         }
     }
 
+    /// <summary>
+    /// A Pascal type declaration.
+    /// </summary>
     public class TypeDeclaration : Declaration
     {
         public PascalType Type;
@@ -179,10 +192,16 @@ namespace Reko.Core.Hll.Pascal
         }
     }
 
+    /// <summary>
+    /// Abstract base class for Pascal exprssions.
+    /// </summary>
     public abstract class Exp : PascalSyntax
     {
     }
 
+    /// <summary>
+    /// Pascal boolean literal.
+    /// </summary>
     public class BooleanLiteral : Exp
     {
         public bool Value;
@@ -200,6 +219,9 @@ namespace Reko.Core.Hll.Pascal
         }
     }
 
+    /// <summary>
+    /// Pascal integer literal.
+    /// </summary>
     public class NumericLiteral : Exp
     {
         public long Value;
@@ -220,8 +242,11 @@ namespace Reko.Core.Hll.Pascal
         {
             writer.Write(Value);
         }
-
     }
+
+    /// <summary>
+    /// Pascal floating-point literal.
+    /// </summary>
     public class RealLiteral : Exp
     {
         public double Value;
@@ -238,6 +263,9 @@ namespace Reko.Core.Hll.Pascal
         }
     }
 
+    /// <summary>
+    /// Pascal string literal.
+    /// </summary>
     public class StringLiteral : Exp
     {
         public string String;
@@ -256,9 +284,13 @@ namespace Reko.Core.Hll.Pascal
         }
     }
 
+    /// <summary>
+    /// Pascal identifier.
+    /// </summary>
     public class Id : Exp
     {
-        public string Name;
+        public string Name { get; }
+
         public Id(string name) { this.Name = name; }
 
         public override T Accept<T>(IPascalSyntaxVisitor<T> visitor)
@@ -272,6 +304,9 @@ namespace Reko.Core.Hll.Pascal
         }
     }
 
+    /// <summary>
+    /// Pascal binary expression.
+    /// </summary>
     public class BinExp : Exp
     {
         public TokenType Op;
@@ -307,6 +342,9 @@ namespace Reko.Core.Hll.Pascal
         }
     }
 
+    /// <summary>
+    /// Pascal unary expression.
+    /// </summary>
     public class UnaryExp : Exp
     {
         public TokenType op;
@@ -333,11 +371,17 @@ namespace Reko.Core.Hll.Pascal
         }
     }
 
+    /// <summary>
+    /// Abstract base class for Pascal type definitions and references.
+    /// </summary>
     public abstract class PascalType : PascalSyntax
     {
 
     }
 
+    /// <summary>
+    /// Pascal primitive type.
+    /// </summary>
     public class Primitive : PascalType
     {
         public readonly Serialization.SerializedType Type;
@@ -374,6 +418,11 @@ namespace Reko.Core.Hll.Pascal
         }
     }
 
+
+    /// <summary>
+    /// Pascal pointer type.
+    /// </summary>
+
     public class Pointer : PascalType
     {
         public PascalType pointee;
@@ -395,6 +444,9 @@ namespace Reko.Core.Hll.Pascal
         }
     }
 
+    /// <summary>
+    /// Pascal file type.
+    /// </summary>
     public class File : PascalType
     {
         public File() { }
@@ -410,6 +462,9 @@ namespace Reko.Core.Hll.Pascal
         }
     }
 
+    /// <summary>
+    /// Pascal type reference.
+    /// </summary>
     public class TypeReference : PascalType
     {
         public string TypeName;
@@ -430,6 +485,9 @@ namespace Reko.Core.Hll.Pascal
         }
     }
 
+    /// <summary>
+    /// Pascal array type.
+    /// </summary>
     public class Array : PascalType
     {
         public PascalType ElementType { get; internal set; }
@@ -472,6 +530,9 @@ namespace Reko.Core.Hll.Pascal
         }
     }
 
+    /// <summary>
+    /// Pascal set type.
+    /// </summary>
     public class SetType : PascalType
     {
         public string EnumName { get; internal set; }
@@ -501,6 +562,9 @@ namespace Reko.Core.Hll.Pascal
         }
     }
 
+    /// <summary>
+    /// Pascal string type.
+    /// </summary>
     public class StringType : PascalType
     {
         public Exp Size;
@@ -522,6 +586,9 @@ namespace Reko.Core.Hll.Pascal
         }
     }
 
+    /// <summary>
+    /// Pascal record type.
+    /// </summary>
     public class Record : PascalType
     {
         public List<Field> Fields;
@@ -555,6 +622,9 @@ namespace Reko.Core.Hll.Pascal
         }
     }
 
+    /// <summary>
+    /// (Extended) Pascal object type.
+    /// </summary>
     public class ObjectType : PascalType
     {
         public ObjectType(List<Declaration> members)
@@ -578,6 +648,9 @@ namespace Reko.Core.Hll.Pascal
         }
     }
 
+    /// <summary>
+    /// Variant part of a variant record.
+    /// </summary>
     public class VariantPart
     {
         public string VariantTag;
@@ -606,6 +679,9 @@ namespace Reko.Core.Hll.Pascal
         }
     }
 
+    /// <summary>
+    /// Variant record definition.
+    /// </summary>
     public class Variant
     { 
         public List<Exp> TagValues;
@@ -613,6 +689,9 @@ namespace Reko.Core.Hll.Pascal
         public VariantPart VariantPart;
     }
 
+    /// <summary>
+    /// Pascal record field definition.
+    /// </summary>
     public class Field : PascalSyntax
     {
         public List<string> Names;
@@ -631,6 +710,9 @@ namespace Reko.Core.Hll.Pascal
         }
     }
 
+    /// <summary>
+    /// Pascal parameter declaration.
+    /// </summary>
     public class ParameterDeclaration
     {
         public List<string> ParameterNames { get; internal set; }
@@ -659,6 +741,9 @@ namespace Reko.Core.Hll.Pascal
         }
     }
 
+    /// <summary>
+    /// Pascal enumerated type.
+    /// </summary>
     public class EnumType : PascalType
     {
         public List<string> Names;
@@ -676,6 +761,9 @@ namespace Reko.Core.Hll.Pascal
         }
     }
 
+    /// <summary>
+    /// Pascal range type.
+    /// </summary>
     public class RangeType : PascalType
     {
         public Exp Low;
@@ -697,6 +785,9 @@ namespace Reko.Core.Hll.Pascal
         }
     }
 
+    /// <summary>
+    /// Pascal callable type (<c>function</c> or <c>procedure</c>
+    /// </summary>
     public class CallableType : PascalType
     {
         public CallableType(List<ParameterDeclaration> procParameters, PascalType returnType = null)
@@ -741,17 +832,26 @@ namespace Reko.Core.Hll.Pascal
         }
     }
 
+    /// <summary>
+    /// Represents an array dimensions upper and lower bounds.
+    /// </summary>
     public class ArrayDimension
     {
         public Exp Low;
         public Exp High;
     }
 
+    /// <summary>
+    /// Abstract base class for blocks of code.
+    /// </summary>
     public abstract class Block : PascalSyntax
     {
     }
 
 
+    /// <summary>
+    /// Represents Pascal inline machine code (used heavily in MacOS programming)
+    /// </summary>
     public class InlineMachineCode : Block
     {
         public List<Exp> Opcodes { get; set; }
@@ -782,6 +882,9 @@ namespace Reko.Core.Hll.Pascal
         }
     }
 
+    /// <summary>
+    /// Visitor interface to Pascal syntax elements.
+    /// </summary>
     public interface IPascalSyntaxVisitor<T>
     {
         T VisitArrayType(Array array);

@@ -421,14 +421,13 @@ namespace Reko.UnitTests.Decompiler.Analysis
         public void GcrStackArguments()
         {
             Frame f = program.Architecture.CreateFrame();
-            f.ReturnAddressKnown = true;
             f.ReturnAddressSize = PrimitiveType.Word16.Size;
 
             var uses = new List<KeyValuePair<Storage, BitRange>>
             {
-                new KeyValuePair<Storage,BitRange>(new StackStorage(8, PrimitiveType.Word16), new BitRange(0, 16)),
-                new KeyValuePair<Storage,BitRange>(new StackStorage(6, PrimitiveType.Word16), new BitRange(0, 16)),
-                new KeyValuePair<Storage,BitRange>(new StackStorage(0xE, PrimitiveType.Word32), new BitRange(0, 32))
+                new (new StackStorage(8, PrimitiveType.Word16), new BitRange(0, 16)),
+                new (new StackStorage(6, PrimitiveType.Word16), new BitRange(0, 16)),
+                new (new StackStorage(0xE, PrimitiveType.Word32), new BitRange(0, 32))
             };
 
             CallRewriter gcr = new CallRewriter(null, null, new FakeDecompilerEventListener());
@@ -635,7 +634,7 @@ CrwManyPredecessorsToExitBlock_exit:
 // rLoc1:FPU -1
 // rLoc2:FPU -2
 // rLoc3:FPU -3
-// return address size: 0
+// return address size: ?
 void main()
 main_entry:
 	// succ:  l1
@@ -664,7 +663,7 @@ FpuStack real64 FpuMultiplyAdd(FpuStack real64 rArg0, FpuStack real64 rArg1, Fpu
 // rArg1:FPU +1
 // rArg0:FPU +0
 // rArg2:FPU +2
-// return address size: 0
+// return address size: ?
 real64 FpuMultiplyAdd(real64 rArg0, real64 rArg1, real64 rArg2)
 FpuMultiplyAdd_entry:
 	def rArg1
@@ -735,7 +734,7 @@ FpuMultiplyAdd_exit:
 // r1:r1
 // r2:r2
 // r63:r63
-// return address size: 0
+// return address size: ?
 void main(word32 r1, word32 r2)
 main_entry:
 	def r1
@@ -765,7 +764,7 @@ Register word32 fnOutParam(Register word32 r1, Register word32 r2, Register out 
 // r2:r2
 // r63:r63
 // r2Out:Out:r2
-// return address size: 0
+// return address size: ?
 word32 fnOutParam(word32 r1, word32 r2, word32 & r2Out)
 fnOutParam_entry:
 	def r1

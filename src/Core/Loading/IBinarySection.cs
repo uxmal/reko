@@ -29,37 +29,35 @@ namespace Reko.Core.Loading;
 /// concepts (e.g. PE). In general, sections are smaller, or
 /// contained within segments.
 /// </remarks>
-
 public interface IBinarySection
 {
     /// <summary>
-    /// The index for the section.
-    /// Index value 0 is reserved.
+    /// The index of this section.
     /// </summary>
     int Index { get; }
 
     /// <summary>
-    /// The name of the section.
+    /// The name of this section.
     /// </summary>
     string Name { get; }
 
     /// <summary>
-    /// The size of the section.
+    /// The size (in memory) of this item.
     /// </summary>
     ulong Size { get; }
 
     /// <summary>
-    /// The address at which this section is expected to be loaded.
+    /// The address at which the section is to be loaded.
     /// </summary>
     Address VirtualAddress { get; }
 
     /// <summary>
-    /// The offset in the file at which this section starts.
+    /// Offset in the file from which the section is loaded.
     /// </summary>
     ulong FileOffset { get; }
 
     /// <summary>
-    /// The size of the section in the file.
+    /// Size in the file from which the section is loaded.
     /// </summary>
     ulong FileSize { get; }
 
@@ -69,7 +67,7 @@ public interface IBinarySection
     ulong Alignment { get; }
 
     /// <summary>
-    /// Provider-specific flags.
+    /// Image format specific flags.
     /// </summary>
     ulong Flags { get; }
 

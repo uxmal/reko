@@ -26,15 +26,23 @@ using System.Collections.Generic;
 
 namespace Reko.Loading
 {
+    /// <summary>
+    /// Standard implementation of <see cref="ISymbolLoadingService"/>.
+    /// </summary>
     public class SymbolLoadingService : ISymbolLoadingService
     {
         private readonly IServiceProvider services;
 
+        /// <summary>
+        /// Constructs an instance of the <see cref="SymbolLoadingService"/> class.
+        /// </summary>
+        /// <param name="services"><see cref="IServiceProvider"/> instance.</param>
         public SymbolLoadingService(IServiceProvider services)
         {
             this.services = services;
         }
 
+        /// <inheritdoc/>
         public ISymbolSource? GetSymbolSource(string filename)
         {
             var cfgSvc = services.RequireService<IConfigurationService>();

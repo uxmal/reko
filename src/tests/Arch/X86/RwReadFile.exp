@@ -55,7 +55,7 @@ fn0C00_0000_exit:
 // ah:ah
 // al:al
 // Top:Top
-// return address size: 0
+// return address size: ?
 define fn0C00_001F
 fn0C00_001F_entry:
 	sp = fp

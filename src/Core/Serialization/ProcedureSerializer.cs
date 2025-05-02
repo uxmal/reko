@@ -35,6 +35,12 @@ namespace Reko.Core.Serialization
         private readonly IPlatform platform;
         private ArgumentDeserializer? argDeser;
 
+        /// <summary>
+        /// Constructs an instance of the <see cref="ProcedureSerializer"/> class.
+        /// </summary>
+        /// <param name="platform"><see cref="IPlatform"/> instance to use.</param>
+        /// <param name="typeLoader"><see cref="ISerializedTypeVisitor{DataType}"/> instance used to load data types.</param>
+        /// <param name="defaultConvention">Default calling convention name.</param>
         public ProcedureSerializer(
             IPlatform platform, 
             ISerializedTypeVisitor<DataType> typeLoader, 
@@ -46,16 +52,46 @@ namespace Reko.Core.Serialization
 			this.DefaultConvention = defaultConvention;
 		}
 
+        /// <summary>
+        /// Default processor architecture to use.
+        /// </summary>
         public IProcessorArchitecture Architecture { get; }
+
+        /// <summary>
+        /// This object is used to deserialize serialized types.
+        /// </summary>
         public ISerializedTypeVisitor<DataType> TypeLoader { get; }
+
+        /// <summary>
+        /// The name of the default calling convention on this platform.
+        /// </summary>
         public string DefaultConvention { get; set; }
 
+        /// <summary>
+        /// Current FPU stack offset.
+        /// </summary>
         public int FpuStackOffset { get; set; }
         public bool FpuStackGrowing { get; set; }
         public bool FpuStackShrinking => !FpuStackGrowing;
+
+        /// <summary>
+        /// Current stack offset.
+        /// </summary>
         public int StackOffset { get; set; }
+
+        /// <summary>
+        /// True if the procedure signature being deserialized is variadic.
+        /// </summary>
         public bool IsVariadic { get; set; }
 
+        /// <summary>
+        /// Applies the serialized signature <paramref name="ssig"/> to the 
+        /// <see cref="FunctionType"/> <paramref name="sig"/>.
+        /// </summary>
+        /// <param name="ssig">Serialized signature whose properties are to be 
+        /// applied to the function type.</param>
+        /// <param name="sig">The function type to receive the changes.
+        /// </param>
         public void ApplyConvention(SerializedSignature ssig, FunctionType sig)
         {
             if (ssig.StackDelta != 0)
@@ -68,11 +104,6 @@ namespace Reko.Core.Serialization
             else
                 sig.ReturnAddressOnStack = Architecture.ReturnAddressOnStack;   //$BUG: x86 real mode?
         }
-
-        public Identifier CreateId(string name, DataType type, Storage storage)
-		{
-			return new Identifier(name, type, storage);
-		}
 
         private bool HasExplicitStorage(Argument_v1 sArg)
         {

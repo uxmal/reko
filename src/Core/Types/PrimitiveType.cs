@@ -18,13 +18,10 @@
  */
 #endregion
 
-using Reko.Core.Lib;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 using System.Text;
 
 namespace Reko.Core.Types
@@ -56,6 +53,7 @@ namespace Reko.Core.Types
             this.IsWord = isWord;
 		}
 
+        /// <inheritdoc/>
         public override bool IsPointer => Domain == Domain.Pointer;
 
         /// <inheritdoc/>
@@ -76,6 +74,12 @@ namespace Reko.Core.Types
 			return this;
 		}
 
+        /// <summary>
+        /// Compares this primitive type with another <see cref="PrimitiveType"/>,
+        /// first by <see cref="Domain"/>, then by <see cref="BitSize"/>.
+        /// </summary>
+        /// <param name="that">Other <see cref="PrimitiveType"/>.</param>
+        /// <returns>An integer reflecting the </returns>
 		public int Compare(PrimitiveType that)
 		{
 			int d = (int) this.Domain - (int) that.Domain;
@@ -84,6 +88,12 @@ namespace Reko.Core.Types
 			return this.bitSize - that.bitSize;
 		}
 
+        /// <summary>
+        /// Creates a new primitive type, with the specified domain and bit size.
+        /// </summary>
+        /// <param name="dom">The domain of the type.</param>
+        /// <param name="bitSize">The size of the type in bits.</param>
+        /// <returns>A new instance of <see cref="PrimitiveType"/>.</returns>
 		public static PrimitiveType Create(Domain dom, int bitSize)
 		{
 			return Create(dom, bitSize, null);
@@ -124,6 +134,10 @@ namespace Reko.Core.Types
 			return shared;
 		}
 
+        /// <summary>
+        /// Creates a new primitive type of word, with the specified bit size.
+        /// </summary>
+        /// <param name="bitSize">Bit size of the word to be created.</param>
         public static PrimitiveType CreateWord(int bitSize)
 		{
             if (bitSize <= 0)
@@ -153,9 +167,14 @@ namespace Reko.Core.Types
             return ptWord;
 		}
 
+        /// <summary>
+        /// Creates a new primitive type of word, with the specified bit size.
+        /// </summary>
+        /// <param name="bitSize">Bit size of the word to be created.</param>
         public static PrimitiveType CreateWord(uint bitSize)
             => CreateWord((int)bitSize);
 
+        /// <inheritdoc/>
 		public override bool Equals(object? obj)
 		{
             return (obj is PrimitiveType that &&
@@ -171,9 +190,8 @@ namespace Reko.Core.Types
         /// The Reko output formatters are responsible for translation to
         /// C (or whatever output language has been chosen by the user).
         /// </remarks>
-        /// <param name="dom"></param>
-        /// <param name="bitSize"></param>
-        /// <returns></returns>
+        /// <param name="dom">Type domain.</param>
+        /// <param name="bitSize">Bit size.</param>
 		public static string GenerateName(Domain dom, int bitSize)
 		{
 			StringBuilder sb;
@@ -226,11 +244,21 @@ namespace Reko.Core.Types
 			}
 		}
 
+        /// <summary>
+        /// Given a string <paramref name="primitiveTypeName"/>, tries to parse it into a
+        /// <see cref="PrimitiveType"/> instance.
+        /// </summary>
+        /// <param name="primitiveTypeName">String representation of a primitive data type.</param>
+        /// <param name="type">The corresponding <see cref="PrimitiveType"/> instance.</param>
+        /// <returns>True if a primitive type with the name <paramref name="primitiveTypeName"/>
+        /// existed.
+        /// </returns>
         public static bool TryParse(string primitiveTypeName, [MaybeNullWhen(false)] out PrimitiveType type)
         {
             return lookupByName.TryGetValue(primitiveTypeName, out type);
         }
 
+        /// <inheritdoc/>
 		public override int GetHashCode()
 		{
 			return bitSize * 256 ^ Domain.GetHashCode();
@@ -241,6 +269,8 @@ namespace Reko.Core.Types
         /// </summary>
 		public override bool IsIntegral =>
             (Domain & Domain.Integer) != 0 && (Domain & ~Domain.Integer) == 0;
+
+        /// <inheritdoc/>
         public override bool IsReal =>
             Domain == Domain.Real;
 
@@ -266,6 +296,7 @@ namespace Reko.Core.Types
             return Create(dom, BitSize);
 		}
 
+        /// <inheritdoc/>
         public override int BitSize => this.bitSize;
 
         /// <summary>

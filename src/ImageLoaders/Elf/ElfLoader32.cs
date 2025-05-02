@@ -453,20 +453,6 @@ namespace Reko.ImageLoaders.Elf
             };
         }
 
-        [Obsolete]
-        public override ElfRelocation LoadRelEntry(EndianImageReader rdr)
-        {
-            var rela = Elf32_Rel.Read(rdr);
-            int symbolIndex = (int) (rela.r_info >> 8);
-            return new ElfRelocation
-            {
-                Offset = rela.r_offset,
-                Info = rela.r_info,
-                Type = (byte) rela.r_info,
-                SymbolIndex = symbolIndex,
-            };
-        }
-
         public override ElfRelocation LoadRelaEntry(EndianImageReader rdr, IDictionary<int, ElfSymbol> symbols)
         {
             var rela = Elf32_Rela.Read(rdr);
@@ -479,21 +465,6 @@ namespace Reko.ImageLoaders.Elf
                 Addend = rela.r_addend,
                 SymbolIndex = symbolIndex,
                 Symbol = symbols[symbolIndex]
-            };
-        }
-
-        [Obsolete]
-        public override ElfRelocation LoadRelaEntry(EndianImageReader rdr)
-        {
-            var rela = Elf32_Rela.Read(rdr);
-            int symbolIndex = (int) (rela.r_info >> 8);
-            return new ElfRelocation
-            {
-                Offset = rela.r_offset,
-                Info = rela.r_info,
-                Type = (byte) rela.r_info,
-                Addend = rela.r_addend,
-                SymbolIndex = symbolIndex,
             };
         }
 
@@ -547,6 +518,9 @@ namespace Reko.ImageLoaders.Elf
                     Flags = shdr.sh_flags,
                     VirtualAddress = Address.Ptr32(shdr.sh_addr),
                     FileOffset = shdr.sh_offset,
+                    FileSize = shdr.sh_type == SectionHeaderType.SHT_NOBITS
+                        ? 0
+                        : shdr.sh_size,
                     Size = shdr.sh_size,
                     Alignment = shdr.sh_addralign,
                     EntrySize = shdr.sh_entsize,

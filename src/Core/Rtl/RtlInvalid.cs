@@ -22,8 +22,14 @@ using System.IO;
 
 namespace Reko.Core.Rtl
 {
+    /// <summary>
+    /// Models invalid instructions.
+    /// </summary>
     public sealed class RtlInvalid : RtlInstruction
     {
+        /// <summary>
+        /// Constructs an invalid instruction.
+        /// </summary>
         public RtlInvalid()
         {
             this.Class = InstrClass.Invalid;

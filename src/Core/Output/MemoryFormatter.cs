@@ -31,9 +31,13 @@ namespace Reko.Core.Output
     /// </summary>
     /// <remarks>
     /// A memory dump typically has the format:
+    /// <code>
     ///   AAAAAAAA BB BB BB BB... BB CCCCCCCCCCCCCCCC
+    /// </code>
     /// or 
+    /// <code>
     ///   AAAAAAAA BBBB BBBB... BBBB CCCCCCCCCCCCCCCC
+    /// </code>
     /// 
     /// where 'A' is the address, 'B' are the individual chunks displayed in 
     /// a numeric format (e.g. hexadecimal), and 'C' are the bytes interpreted

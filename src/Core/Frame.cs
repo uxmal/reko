@@ -131,8 +131,7 @@ namespace Reko.Core
         /// the return address. Some architectures pass the return address in a register,
         /// which implies that in those architectures the return address size should be zero.
         /// </summary>
-        public int ReturnAddressSize { get; set; }
-        public bool ReturnAddressKnown { get; set; }
+        public int? ReturnAddressSize { get; set; }
 
         /// <summary>
         /// Creates a new identifier for a sequence of storages.
@@ -148,7 +147,6 @@ namespace Reko.Core
             Identifiers.Add(id);
             return id;
         }
-
 
         /// <summary>
         /// Creates a new identifier for a sequence of storages with a given name.
@@ -191,7 +189,7 @@ namespace Reko.Core
             }
             throw new NotImplementedException(string.Format(
                 "Unsupported storage {0}.",
-                storage != null ? storage.ToString() : "(null)"));
+                storage is not null ? storage.ToString() : "(null)"));
         }
 
 		/// <summary>
@@ -331,7 +329,7 @@ namespace Reko.Core
 		public Identifier EnsureStackLocal(int cbOffset, DataType type, string? name)
 		{
 			Identifier? id = FindStackLocal(cbOffset, type);
-			if (id == null)
+			if (id is null)
 			{
 				id = new Identifier(namingPolicy.StackLocalName(type, cbOffset, name), type, new StackStorage(cbOffset, type));
 				Identifiers.Add(id);
@@ -347,7 +345,7 @@ namespace Reko.Core
 		public Identifier EnsureStackArgument(int cbOffset, DataType type, string? argName)
 		{
 			Identifier? id = FindStackArgument(cbOffset, type.Size);
-			if (id == null)
+			if (id is null)
 			{
 				id = new Identifier(
 					namingPolicy.StackArgumentName(type, cbOffset, argName), 
@@ -360,7 +358,7 @@ namespace Reko.Core
 
 		public Identifier EnsureStackVariable(Constant imm, int cbOffset, DataType type)
 		{
-			if (imm != null && imm.IsValid)
+			if (imm is not null && imm.IsValid)
 			{
 				cbOffset = imm.ToInt32() - cbOffset;
 			}
@@ -483,7 +481,7 @@ namespace Reko.Core
         {
             return (from id in Identifiers
                    let tmp = id.Storage as TemporaryStorage
-                   where tmp != null && id.Name == name
+                   where tmp is not null && id.Name == name
                    select id).SingleOrDefault();
         }
 
@@ -506,7 +504,9 @@ namespace Reko.Core
 			}
 			if (Escapes)
 				text.WriteLine("// Frame escapes");
-			text.WriteLine("// return address size: {0}", ReturnAddressSize);
+			text.WriteLine("// return address size: {0}", ReturnAddressSize.HasValue
+                ? ReturnAddressSize.Value.ToString()
+                : "?");
 		}
     }
 }

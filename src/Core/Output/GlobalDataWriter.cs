@@ -25,7 +25,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
 namespace Reko.Core.Output
 {
@@ -47,6 +46,15 @@ namespace Reko.Core.Output
         private EndianImageReader rdr;
         private int recursionGuard;     //$REVIEW: remove this once deep recursion bugs have been flushed out.
 
+        /// <summary>
+        /// Constructs an instance of <see cref="GlobalDataWriter"/>.
+        /// </summary>
+        /// <param name="program">Program whose globals are being rendered.</param>
+        /// <param name="formatter">Output sink.</param>
+        /// <param name="chasePointers">If true, follow any pointers encountered
+        /// and render them also.</param>
+        /// <param name="showAddressInComment">If true, show object addresses in a comment.</param>
+        /// <param name="services"><see cref="IServiceProvider"/> interface.</param>
         public GlobalDataWriter(Program program, Formatter formatter, bool chasePointers, bool showAddressInComment, IServiceProvider services)
         {
             this.program = program;
@@ -81,6 +89,9 @@ namespace Reko.Core.Output
             this.rdr = default!;
         }
 
+        /// <summary>
+        /// Writes all global variables.
+        /// </summary>
         public void Write()
         {
             if (queue.Count == 0)
@@ -133,6 +144,12 @@ namespace Reko.Core.Output
             }
         }
 
+        /// <summary>
+        /// Writes a global variable.
+        /// </summary>
+        /// <param name="address">Address of the global variable.</param>
+        /// <param name="dataType">Data type of the global variable.</param>
+        /// <param name="name">Name of the global variable.</param>
         public void WriteGlobalVariable(Address address, DataType dataType, string name)
         {
             this.globals = new StructureType();
@@ -191,6 +208,7 @@ namespace Reko.Core.Output
             };
         }
 
+        /// <inheritdoc/>
         public bool VisitArray(ArrayType at)
         {
             if (at.Length == 0)
@@ -221,23 +239,26 @@ namespace Reko.Core.Output
             return ok;
         }
 
+        /// <inheritdoc/>
         public bool VisitClass(ClassType ct)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public bool VisitCode(CodeType c)
         {
             codeFormatter.InnerFormatter.Write("<code>");
             return true;
         }
 
+        /// <inheritdoc/>
         public bool VisitEnum(EnumType e)
         {
             throw new NotImplementedException();
         }
 
-
+        /// <inheritdoc/>
         public bool VisitEquivalenceClass(EquivalenceClass eq)
         {
             if (recursionGuard > 100)
@@ -260,6 +281,7 @@ namespace Reko.Core.Output
             }
         }
 
+        /// <inheritdoc/>
         public bool VisitFunctionType(FunctionType ft)
         {
             codeFormatter.InnerFormatter.Write("??");
@@ -267,6 +289,7 @@ namespace Reko.Core.Output
             return true;
         }
 
+        /// <inheritdoc/>
         public bool VisitPrimitive(PrimitiveType pt)
         {
             if (IsLargeBlob(pt))
@@ -315,6 +338,7 @@ namespace Reko.Core.Output
             fmt.Write("}");
         }
 
+        /// <inheritdoc/>
         public bool VisitMemberPointer(MemberPointer memptr)
         {
             if (!rdr.TryRead(PrimitiveType.Create(Domain.Offset, memptr.BitSize), out var c))
@@ -323,6 +347,7 @@ namespace Reko.Core.Output
             return true;
         }
 
+        /// <inheritdoc/>
         public bool VisitPointer(Pointer ptr)
         {
             if (!rdr.TryRead(PrimitiveType.Create(Domain.Pointer, ptr.BitSize), out var c))
@@ -366,11 +391,13 @@ namespace Reko.Core.Output
             return true;
         }
 
+        /// <inheritdoc/>
         public bool VisitReference(ReferenceTo refTo)
         {
             throw new NotSupportedException("Global variables cannot be references.");
         }
 
+        /// <inheritdoc/>
         public bool VisitString(StringType str)
         {
             var offset = rdr.Offset;
@@ -384,6 +411,7 @@ namespace Reko.Core.Output
             return true;
         }
 
+        /// <inheritdoc/>
         public bool VisitStructure(StructureType str)
         {
             var fmt = codeFormatter.InnerFormatter;
@@ -410,16 +438,19 @@ namespace Reko.Core.Output
             return ok;
         }
 
+        /// <inheritdoc/>
         public bool VisitTypeReference(TypeReference typeref)
         {
             return typeref.Referent.Accept(this);
         }
 
+        /// <inheritdoc/>
         public bool VisitTypeVariable(TypeVariable tv)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public bool VisitUnion(UnionType ut)
         {
             var fmt = codeFormatter.InnerFormatter;
@@ -445,11 +476,13 @@ namespace Reko.Core.Output
             return ok;
         }
 
+        /// <inheritdoc/>
         public bool VisitUnknownType(UnknownType ut)
         {
             return true;
         }
 
+        /// <inheritdoc/>
         public bool VisitVoidType(VoidType voidType)
         {
             // This "can't happen": data can't have void type.

@@ -145,12 +145,6 @@ namespace Reko.ImageLoaders.Elf
 
         public abstract ElfRelocation LoadRelaEntry(EndianImageReader rdr, IDictionary<int, ElfSymbol> symbols);
 
-        [Obsolete]
-        public abstract ElfRelocation LoadRelEntry(EndianImageReader rdr);
-
-        [Obsolete]
-        public abstract ElfRelocation LoadRelaEntry(EndianImageReader rdr);
-
         public abstract ElfSymbol? LoadSymbol(ulong offsetSymtab, ulong symbolIndex, ulong entrySize, ulong offsetStringTable);
 
         public abstract Dictionary<int, ElfSymbol> LoadSymbolsSection(ElfSection symSection);

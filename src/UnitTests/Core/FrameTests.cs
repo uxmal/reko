@@ -83,7 +83,7 @@ namespace Reko.UnitTests.Core.Code
 // ax:ax
 // dx:dx
 // dx_ax:Sequence dx:ax
-// return address size: 0
+// return address size: ?
 ";
                 #endregion
             RunTest(sExpected, f);
@@ -105,7 +105,7 @@ namespace Reko.UnitTests.Core.Code
 // fp:fp
 // %continuation:%continuation
 // SZ:SZ
-// return address size: 0
+// return address size: ?
 ";
                 #endregion
             RunTest(sExpected, f);
@@ -126,7 +126,7 @@ namespace Reko.UnitTests.Core.Code
 // %continuation:%continuation
 // wLoc02:Stack -0002
 // dwLoc04:Stack -0004
-// return address size: 0
+// return address size: ?
 ";
                 #endregion
             RunTest(sExpected, f);
@@ -150,7 +150,7 @@ namespace Reko.UnitTests.Core.Code
 // ax:ax
 // dx:dx
 // dx_ax:Sequence dx:ax
-// return address size: 0
+// return address size: ?
 ";
             #endregion
             RunTest(sExpected, f);
@@ -171,7 +171,7 @@ namespace Reko.UnitTests.Core.Code
 					new Identifier("arg0", PrimitiveType.Word16, new StackStorage(4, PrimitiveType.Word16)),
 					new Identifier("arg1", PrimitiveType.Word16, new StackStorage(6, PrimitiveType.Word16)));
 
-			var cs = new CallSite(f.ReturnAddressSize + 2 * 4, 0);
+			var cs = new CallSite(f.ReturnAddressSize.Value + 2 * 4, 0);
 			var fn = new ProcedureConstant(PrimitiveType.Ptr32, new IntrinsicProcedure("foo", true, sig));
 			var ab = arch.CreateFrameApplicationBuilder(f, cs);
             Instruction instr = ab.CreateInstruction(fn, sig, null);
@@ -210,7 +210,7 @@ namespace Reko.UnitTests.Core.Code
 // wLoc02:Stack -0002
 // sp:sp
 // ss:ss
-// return address size: 0
+// return address size: ?
 ";
             #endregion
             RunTest(sExpected, f);
@@ -233,7 +233,7 @@ namespace Reko.UnitTests.Core.Code
 // rLoc1:FPU -1
 // rLoc2:FPU -2
 // rArg0:FPU +0
-// return address size: 0
+// return address size: ?
 ";
             #endregion
             RunTest(sExpected, f);

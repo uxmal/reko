@@ -18,8 +18,6 @@
  */
 #endregion
 
-using Reko.Core.Types;
-using System;
 using System.ComponentModel;
 using System.Text;
 using System.Xml.Serialization;

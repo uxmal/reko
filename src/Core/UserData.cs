@@ -19,12 +19,9 @@
 #endregion
 
 using Reko.Core.Collections;
-using Reko.Core.Lib;
 using Reko.Core.Loading;
 using Reko.Core.Types;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace Reko.Core
@@ -34,6 +31,9 @@ namespace Reko.Core
     /// </summary>
     public class UserData : IReadOnlyUserData
     {
+        /// <summary>
+        /// Constructs a new instance of <see cref="UserData"/>.
+        /// </summary>
         public UserData()
         {
             this.Procedures = new SortedList<Address, UserProcedure>();

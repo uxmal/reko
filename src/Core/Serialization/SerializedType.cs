@@ -34,13 +34,20 @@ namespace Reko.Core.Serialization
     /// </summary>
     public abstract class SerializedType
     {
-        public SerializedType()
-        {
-        }
-
+        /// <summary>
+        /// The qualifier of the type. This is used to indicate whether the type
+        /// is <c>const</c>, <c>volatile</c>, or <c>restricted</c>.
+        /// </summary>
         [DefaultValue(Qualifier.None)]
         public Qualifier Qualifier;
 
+        /// <summary>
+        /// Accepts a visitor implementing the <see cref="ISerializedTypeVisitor{T}"/>
+        /// interface. The visitor is expected to return a value of type <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="visitor">Accepted visitor.</param>
+        /// <returns>Value returned by visitor.</returns>
         public abstract T Accept<T>(ISerializedTypeVisitor<T> visitor);
 
         /// <summary>
@@ -127,6 +134,11 @@ namespace Reko.Core.Serialization
             return sertypeAttributes;
         }
 
+        /// <summary>
+        /// Writes the qualifiers of the type to the given <see cref="StringBuilder"/>.
+        /// </summary>
+        /// <param name="q">Qualifier to render.</param>
+        /// <param name="sb">Output sink.</param>
         protected void WriteQualifier(Qualifier q, StringBuilder sb)
         {
             if ((q & Qualifier.Const) != 0)
@@ -145,6 +157,10 @@ namespace Reko.Core.Serialization
 
     }
 
+    /// <summary>
+    /// Base class for serialized types that have a name, like <c>struct</c>
+    /// or <c>union</c>.
+    /// </summary>
     public abstract class SerializedTaggedType : SerializedType
     {
         [XmlAttribute("name")]

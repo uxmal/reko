@@ -35,6 +35,15 @@ namespace Reko.Core.Output
 		private string prefix;
 		private bool writePrefix;
 
+        /// <summary>
+        /// Constructs an instance of the <see cref="IndentingTextWriter"/>.
+        /// </summary>
+        /// <param name="writer">Output sink.</param>
+        /// <param name="useTabs">
+        /// If true, use tab characters (U+0009) for indentation;
+        /// if false, use space characters (U+0020) for indentation.</param>
+        /// <param name="tabWidth">Width of each indentation step in characters/
+        /// </param>
 		public IndentingTextWriter(TextWriter writer, bool useTabs, int tabWidth)
 		{
 			this.writer = writer;
@@ -44,17 +53,24 @@ namespace Reko.Core.Output
 			this.prefix = "";
 		}
 
+        /// <summary>
+        /// Indent one tab stop.
+        /// </summary>
 		public void Indent()
 		{
 			++tabStops;
 			MakePrefix();
 		}
 
+        [Obsolete("", true)]
 		public TextWriter InnerTextWriter
 		{
 			get { return writer; }
 		}
 
+        /// <summary>
+        /// De-indent one tab stop.
+        /// </summary>
 		public void Outdent()
 		{
 			--tabStops;
@@ -71,18 +87,28 @@ namespace Reko.Core.Output
 			prefix = useTabs ? new String('\t', tabStops) : new String(' ', tabStops * tabWidth);
 		}
 
+        [Obsolete("", true)]
 		public bool SuspendIndent
-		{
+        {
 			get { return !writePrefix; }
 			set { writePrefix = !value; }
 		}
 
+        /// <summary>
+        /// Write the <paramref name="s"/> string to the output.
+        /// </summary>
+        /// <param name="s">String to output.</param>
 		public void Write(string s)
 		{
 			WriteIndentation();
 			writer.Write(s);
 		}
 
+        /// <summary>
+        /// Write the <paramref name="formatString"/> format string to the output.
+        /// </summary>
+        /// <param name="formatString">Format string to output.</param>
+        /// <param name="objs">Values to use in the format string.</param>
 		public void Write(string formatString, params object [] objs)
 		{
 			WriteIndentation();
@@ -98,6 +124,9 @@ namespace Reko.Core.Output
 			}
 		}
 
+        /// <summary>
+        /// Writes a new line.
+        /// </summary>
 		public void WriteLine()
 		{
 			WriteIndentation();
@@ -105,6 +134,9 @@ namespace Reko.Core.Output
 			writePrefix = true;
 		}
 
+        /// <summary>
+        /// Writes a string, followed by a new line.
+        /// </summary>
 		public void WriteLine(string s)
 		{
 			WriteIndentation();
@@ -112,6 +144,12 @@ namespace Reko.Core.Output
 			writePrefix = true;
 		}
 
+        /// <summary>
+        /// Write the <paramref name="formatString"/> format string to the output,
+        /// followed by a newline.
+        /// </summary>
+        /// <param name="formatString">Format string to output.</param>
+        /// <param name="objs">Values to use in the format string.</param>
 		public void WriteLine(string formatString, params object [] objs)
 		{
 			WriteIndentation();
