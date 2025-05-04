@@ -38,7 +38,7 @@ namespace Reko.UnitTests.Environments.Windows
 
         private MipsLe32Architecture arch;
         private Reko.Environments.Windows.MipsCallingConvention cc;
-        private ICallingConventionEmitter ccr;
+        private ICallingConventionBuilder ccr;
 
         [SetUp]
         public void Setup()
@@ -70,7 +70,7 @@ namespace Reko.UnitTests.Environments.Windows
         {
             var cc = new MipsCallingConvention(arch);
             this.cc = cc;
-            this.ccr = new CallingConventionEmitter();
+            this.ccr = new CallingConventionBuilder();
         }
 
         [Test]

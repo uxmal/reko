@@ -48,7 +48,7 @@ namespace Reko.Arch.PowerPC
         }
 
         public override void Generate(
-            ICallingConventionEmitter ccr,
+            ICallingConventionBuilder ccr,
             int retAddressOnStack,
             DataType? dtRet,
             DataType? dtThis,
@@ -109,7 +109,7 @@ namespace Reko.Arch.PowerPC
             }
         }
 
-        public void SetReturnRegister(ICallingConventionEmitter ccr, DataType dt)
+        public void SetReturnRegister(ICallingConventionBuilder ccr, DataType dt)
         {
             if (dt.Domain == Domain.Real)
             {

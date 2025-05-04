@@ -55,7 +55,7 @@ namespace Reko.Environments.SysV.ArchSpecific
         }
 
         public override void Generate(
-            ICallingConventionEmitter ccr,
+            ICallingConventionBuilder ccr,
             int retAddressOnStack,
             DataType? dtRet,
             DataType? dtThis,
@@ -107,7 +107,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             }
         }
 
-        public void SetReturnRegister(ICallingConventionEmitter ccr, DataType dtArg)
+        public void SetReturnRegister(ICallingConventionBuilder ccr, DataType dtArg)
         {
             var ptArg = dtArg as PrimitiveType;
             if (ptArg != null)

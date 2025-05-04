@@ -34,7 +34,7 @@ namespace Reko.Core.Memory
         /// <summary>
         /// Constructs a reader on a memory area, starting at the given offset.
         /// </summary>
-        /// <param name="mem">A <see cref="Word64MemoryArea"/> to read from.</param>
+        /// <param name="mem">A <see cref="Word16MemoryArea"/> to read from.</param>
         /// <param name="offset">An offset within the words of the memory area.</param>
         public Word16LeImageReader(Word16MemoryArea mem, long offset)
             : base(mem, offset, mem.Words.Length)
@@ -44,7 +44,7 @@ namespace Reko.Core.Memory
         /// <summary>
         /// Constructs a reader on a memory area, starting at the given address.
         /// </summary>
-        /// <param name="mem">A <see cref="Word64MemoryArea"/> to read from.</param>
+        /// <param name="mem">A <see cref="Word16MemoryArea"/> to read from.</param>
         /// <param name="addr">An address within the words of the memory area.</param>
         public Word16LeImageReader(Word16MemoryArea mem, Address addr)
             : base(mem, addr - mem.BaseAddress)
@@ -55,7 +55,7 @@ namespace Reko.Core.Memory
         /// Constructs a reader on the memory area, starting at the given address,
         /// and reading at most <paramref name="cUnits"/> words.
         /// </summary>
-        /// <param name="mem">A <see cref="Word64MemoryArea"/> to read from.</param>
+        /// <param name="mem">A <see cref="Word16MemoryArea"/> to read from.</param>
         /// <param name="addr">An address within the words of the memory area.</param>
         /// <param name="cUnits">Maximum number of words to read before stopping.</param>
         public Word16LeImageReader(Word16MemoryArea mem, Address addr, long cUnits)

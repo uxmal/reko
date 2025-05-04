@@ -260,7 +260,7 @@ namespace Reko.Scanning
                 .Select(p => p.DataType)
                 .Concat(argumentTypes)
                 .ToList();
-            var ccr = new CallingConventionEmitter();
+            var ccr = new CallingConventionBuilder();
             cc!.Generate(
                 ccr,
                 sig.ReturnAddressOnStack,

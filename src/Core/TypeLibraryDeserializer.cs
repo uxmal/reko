@@ -45,6 +45,12 @@ namespace Reko.Core
         private string? moduleName;
         private readonly int bitsPerStorageUnit;
 
+        /// <summary>
+        /// Constructs a type library deserializer.
+        /// </summary>
+        /// <param name="platform"><see cref="IPlatform"/> instance to use.</param>
+        /// <param name="caseInsensitive">True if string comparisons should be case insensitive.</param>
+        /// <param name="dstLib">Type library to populate.</param>
         public TypeLibraryDeserializer(IPlatform platform, bool caseInsensitive, TypeLibrary dstLib)
         {
             this.library = dstLib ?? throw new ArgumentNullException(nameof(dstLib));
@@ -56,6 +62,11 @@ namespace Reko.Core
             this.bitsPerStorageUnit = platform.Architecture.MemoryGranularity;
         }
 
+        /// <summary>
+        /// Loads a serialized type library.
+        /// </summary>
+        /// <param name="sLib">Serialized type library.</param>
+        /// <returns>The resulting type library.</returns>
         public TypeLibrary Load(SerializedLibrary sLib)
         {
             moduleName = sLib.ModuleName;
@@ -160,24 +171,28 @@ namespace Reko.Core
             }
         }
 
-        public void LoadProcedure(Procedure_v1 sp)
+        /// <summary>
+        /// Loads the procedure from the serialized library.
+        /// </summary>
+        /// <param name="sProc">Seralized procedure.</param>
+        public void LoadProcedure(Procedure_v1 sProc)
         {
             try
             {
-                if (sp.Name is null)
+                if (sProc.Name is null)
                     return;
-                if (sp.Characteristics != null)
+                if (sProc.Characteristics is not null)
                 {
-                    library.Characteristics[sp.Name] = sp.Characteristics;
+                    library.Characteristics[sProc.Name] = sProc.Characteristics;
                 }
                 var sser = new ProcedureSerializer(platform, this, this.defaultConvention ?? "");
-                var signature = sser.Deserialize(sp.Signature, platform.Architecture.CreateFrame());
+                var signature = sser.Deserialize(sProc.Signature, platform.Architecture.CreateFrame());
                 if (signature is null)
                     return;
-                library.Signatures[sp.Name] = signature;
-                if (platform.TryParseAddress(sp.Address, out var addr))
+                library.Signatures[sProc.Name] = signature;
+                if (platform.TryParseAddress(sProc.Address, out var addr))
                 {
-                    this.library.Procedures[addr] = (sp.Name, signature);
+                    this.library.Procedures[addr] = (sProc.Name, signature);
                 }
                 else
                 {
@@ -185,26 +200,32 @@ namespace Reko.Core
                     var svc = new SystemService
                     {
                         ModuleName = mod.ModuleName,
-                        Name = sp.Name,
+                        Name = sProc.Name,
                         Signature = signature,
                     };
-                    mod.ServicesByName[sp.Name] = svc;    //$BUGBUG: catch dupes?
+                    mod.ServicesByName[sProc.Name] = svc;    //$BUGBUG: catch dupes?
 
-                    if (sp.Ordinal != Procedure_v1.NoOrdinal)
+                    if (sProc.Ordinal != Procedure_v1.NoOrdinal)
                     {
-                        mod.ServicesByOrdinal[sp.Ordinal] = svc;
+                        mod.ServicesByOrdinal[sProc.Ordinal] = svc;
                     }
                 }
             }
             catch (Exception ex)
             {
-                Debug.Print("An error occurred when loading the signature of procedure {0}.", sp.Name);
+                Debug.Print("An error occurred when loading the signature of procedure {0}.", sProc.Name);
                 throw new ApplicationException(
-                    string.Format("An error occurred when loading the signature of procedure {0}.", sp.Name),
+                    string.Format("An error occurred when loading the signature of procedure {0}.", sProc.Name),
                     ex);
             }
         }
 
+        /// <summary>
+        /// Loads a serialized service into the type library.
+        /// </summary>
+        /// <param name="ssvc">Serialized service instance.</param>
+        /// <returns>Deserialized service.
+        /// </returns>
         public SystemService LoadService(SerializedService ssvc)
         {
             var svc = ssvc.Build(platform, this.library);
@@ -212,12 +233,22 @@ namespace Reko.Core
             return svc;
         }
 
+        /// <summary>
+        /// Loads a serialized service into the type library.
+        /// </summary>
+        /// <param name="entryName">Entry name of the service.</param>
+        /// <param name="svc">Servie instance.</param>
         public void LoadService(string entryName, SystemService svc)
         {
             var mod = EnsureModule(svc.ModuleName, this.library);
             mod.ServicesByName[entryName] = svc;
         }
 
+        /// <summary>
+        /// Loads a serialized service into the type library.
+        /// </summary>
+        /// <param name="ordinal">Ordinal of the service.</param>
+        /// <param name="svc">Servie instance.</param>
         public void LoadService(int ordinal, SystemService svc)
         {
             var mod = EnsureModule(svc.ModuleName, this.library);
@@ -232,7 +263,7 @@ namespace Reko.Core
                     mod.ServicesByOrdinal.Add(ordinal, svc);
                 }
             }
-            if (svc.SyscallInfo != null)
+            if (svc.SyscallInfo is not null)
             {
                 if (!mod.ServicesByVector.TryGetValue(svc.SyscallInfo.Vector, out var services))
                 {
@@ -254,11 +285,26 @@ namespace Reko.Core
             }
         }
 
+        /// <summary>
+        /// Loads a serialized type into the type library.
+        /// </summary>
+        /// <param name="sType">Serialized type.</param>
+        /// <returns>The deserialized type.</returns>
         public DataType LoadType(SerializedType sType)
         {
             return sType.Accept(this);
         }
 
+        /// <summary>
+        /// Loads an external procedure from the serialized library.
+        /// </summary>
+        /// <param name="sProc">Serialized library.</param>
+        /// <param name="chr">Optional procedure characteristics.
+        /// </param>
+        /// <returns>
+        /// Loaded external procedure, or null if the procedure
+        /// is missing a name or signature.
+        /// </returns>
         public ExternalProcedure? LoadExternalProcedure(
             ProcedureBase_v1 sProc, ProcedureCharacteristics? chr = null)
         {
@@ -275,9 +321,14 @@ namespace Reko.Core
             };
         }
 
+        /// <summary>
+        /// Loads the default calling convention from the serialized library.
+        /// </summary>
+        /// <param name="defaults">Default settings.
+        /// </param>
         public void ReadDefaults(SerializedLibraryDefaults? defaults)
         {
-            if (defaults != null && defaults.Signature != null)
+            if (defaults is not null && defaults.Signature is not null)
             {
                 defaultConvention = defaults.Signature.Convention;
             }
@@ -387,12 +438,14 @@ namespace Reko.Core
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public DataType VisitSignature(SerializedSignature sSig)
         {
             var sser = new ProcedureSerializer(platform, this, this.defaultConvention!);
             return sser.Deserialize(sSig, platform.Architecture.CreateFrame())!;
         }
 
+        /// <inheritdoc/>
         public DataType VisitStructure(StructType_v1 structure)
         {
             if (structure.Name == null || !structures.TryGetValue(structure.Name, out var str))
@@ -514,6 +567,10 @@ namespace Reko.Core
             return VoidType.Instance;
         }
 
+        /// <summary>
+        /// Sets the module name.
+        /// </summary>
+        /// <param name="libName">New module name.</param>
         public void SetModuleName(string libName)
         {
             this.moduleName = libName;

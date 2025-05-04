@@ -43,7 +43,7 @@ namespace Reko.Arch.Arm.AArch32
         }
 
         public override void Generate(
-            ICallingConventionEmitter ccr,
+            ICallingConventionBuilder ccr,
             int retAddressOnStack,
             DataType? dtRet,
             DataType? dtThis,
@@ -101,7 +101,7 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
-        public void SetReturnRegister(ICallingConventionEmitter ccr, int bitSize)
+        public void SetReturnRegister(ICallingConventionBuilder ccr, int bitSize)
         {
             if (bitSize <= 32)
             {

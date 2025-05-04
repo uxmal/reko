@@ -42,7 +42,7 @@ namespace Reko.Environments.SysV.ArchSpecific
         }
 
         public override void Generate(
-            ICallingConventionEmitter ccr,
+            ICallingConventionBuilder ccr,
             int retAddressOnStack,
             DataType? dtRet,
             DataType? dtThis,
@@ -91,7 +91,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             return ((dt.Size + 3) / 4) * 4; 
         }
 
-        public void SetReturnRegister(ICallingConventionEmitter ccr, int bitSize)
+        public void SetReturnRegister(ICallingConventionBuilder ccr, int bitSize)
         {
             if (bitSize <= 32)
             {

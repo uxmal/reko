@@ -52,6 +52,9 @@ namespace Reko.Core.Types
 
 		private static DataTypeComparer ourGlobalComparer = new DataTypeComparer();
 
+        /// <summary>
+        /// Constructs a data type comparer.
+        /// </summary>
         public DataTypeComparer()
         {
             this.compareResult = new ConcurrentDictionary<(DataType, DataType), int>();
@@ -71,7 +74,7 @@ namespace Reko.Core.Types
             return Compare(x, y, 0);
         }
 
-        public int Compare(DataType? x, DataType? y, int count)
+        internal int Compare(DataType? x, DataType? y, int count)
         {
             if (x is null)
                 return y is null ? 0 : -1;
@@ -93,7 +96,7 @@ namespace Reko.Core.Types
             return d;
         }
 
-        public int CompareInternal(DataType x, DataType y, int count)
+        internal int CompareInternal(DataType x, DataType y, int count)
         {
             if (count > 20)
             {
@@ -222,7 +225,7 @@ namespace Reko.Core.Types
 			throw new NotImplementedException(string.Format("NYI: comparison between {0} and {1}", x.GetType(), y.GetType()));
 		}
 
-		public int Compare(UnionType x, UnionType y, int count)
+		internal int Compare(UnionType x, UnionType y, int count)
 		{
 			int d;
 			d = x.Alternatives.Count - y.Alternatives.Count;
@@ -240,7 +243,7 @@ namespace Reko.Core.Types
 			return 0;
 		}
 
-		public int Compare(ArrayType x, ArrayType y, int count)
+		internal int Compare(ArrayType x, ArrayType y, int count)
 		{
 			int d = Compare(x.ElementType, y.ElementType, ++count);
 			if (d != 0)
@@ -248,7 +251,7 @@ namespace Reko.Core.Types
 			return x.Length - y.Length;
 		}
 
-        public int Compare(StringType x, StringType y, int count)
+        internal int Compare(StringType x, StringType y, int count)
         {
             int d = Compare(x.ElementType, y.ElementType, ++count);
             if (d != 0)
@@ -262,7 +265,7 @@ namespace Reko.Core.Types
             return Compare(x.LengthPrefixType, y.LengthPrefixType, ++count);
         }
 
-		public int Compare(StructureType x, StructureType y, int count)
+		internal int Compare(StructureType x, StructureType y, int count)
 		{
 			int d;
 			if (x.Size > 0 && y.Size > 0)
@@ -293,7 +296,7 @@ namespace Reko.Core.Types
 			return 0;
 		}
 
-        public int Compare(FunctionType x, FunctionType y, int count)
+        internal int Compare(FunctionType x, FunctionType y, int count)
         {
             int d = x.Parameters!.Length - y.Parameters!.Length;
             if (d != 0)
@@ -308,11 +311,18 @@ namespace Reko.Core.Types
             return Compare(x.ReturnValue!.DataType, y.ReturnValue!.DataType, count);
         }
 
+        /// <summary>
+        /// Compares two data types for equality.
+        /// </summary>
+        /// <param name="a">First data type.</param>
+        /// <param name="b">Second data type.</param>
+        /// <returns>True if they are equal.</returns>
         public bool Equals(DataType? a, DataType? b)
         {
             return Compare(a, b) == 0;
         }
 
+        /// <inheritdoc/>
         public int GetHashCode(DataType dt)
         {
             switch (dt)
@@ -349,94 +359,114 @@ namespace Reko.Core.Types
 
 		#region IDataTypeVisitor Members /////////////////////////////////////////
 
+        /// <inheritdoc/>
 		public int VisitArray(ArrayType at)
 		{
 			return Array;
 		}
 
+        /// <inheritdoc/>
         public int VisitClass(ClassType ct)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public int VisitCode(CodeType c)
         {
             return Code;
         }
 
+        /// <inheritdoc/>
         public int VisitEnum(EnumType e)
         {
             return Enum;
         }
 
+        /// <inheritdoc/>
 		public int VisitEquivalenceClass(EquivalenceClass eq)
 		{
 			return EqClass;
 		}
 
+        /// <inheritdoc/>
 		public int VisitFunctionType(FunctionType ft)
 		{
 			return Fn;
 		}
 
+        /// <inheritdoc/>
 		public int VisitMemberPointer(MemberPointer memptr)
 		{
 			return MemPtr;
 		}
 
+        /// <inheritdoc/>
 		public int VisitPrimitive(PrimitiveType pt)
 		{
 			return Prim;
 		}
 
+        /// <inheritdoc/>
         public int VisitString(StringType str)
         {
             return String;
         }
 
+        /// <inheritdoc/>
 		public int VisitStructure(StructureType str)
 		{
 			return Struct;
 		}
 
+        /// <inheritdoc/>
 		public int VisitPointer(Pointer ptr)
 		{
 			return Ptr;
 		}
 
+        /// <inheritdoc/>
         public int VisitReference(ReferenceTo refTo)
         {
             return Ref;
         }
 
+        /// <inheritdoc/>
         public int VisitTypeReference(TypeReference typeref)
         {
             return TRef;
         }
 
+        /// <inheritdoc/>
 		public int VisitTypeVariable(TypeVariable tv)
 		{
 			return TVar;
 		}
 
+        /// <inheritdoc/>
 		public int VisitUnion(UnionType ut)
 		{
 			return Union;
 		}
 
+        /// <inheritdoc/>
 		public int VisitUnknownType(UnknownType ut)
 		{
 			return Unk;
 		}
 
+        /// <inheritdoc/>
         public int VisitVoidType(VoidType vt)
         {
             return Void;
         }
-		#endregion
+        #endregion
 
         //$REVIEW: this is thread-unsafe. We keep it because we have really deep type comparisons due to
         // unresolved bugs in type inference. Once those are resolved, performance should improve.
-		public static DataTypeComparer Instance => ourGlobalComparer;
+        /// <summary>
+        /// Global instance of the data type comparer.
+        /// </summary>
+        public static DataTypeComparer Instance => ourGlobalComparer;
 	}
 }

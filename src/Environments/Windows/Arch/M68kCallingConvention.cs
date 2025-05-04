@@ -19,7 +19,7 @@ namespace Reko.Environments.Windows
 		}
 
         public override void Generate(
-            ICallingConventionEmitter ccr,
+            ICallingConventionBuilder ccr,
             int retAddressOnStack,
             DataType? dtRet,
             DataType? dtThis,

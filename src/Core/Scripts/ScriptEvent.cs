@@ -18,8 +18,6 @@
  */
 #endregion
 
-using System;
-
 namespace Reko.Core.Scripts
 {
     /// <summary>

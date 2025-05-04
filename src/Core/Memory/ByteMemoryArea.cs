@@ -646,9 +646,16 @@ namespace Reko.Core.Memory
             return true;
         }
 
-        public static int ReadBeInt32(byte[] abImage, long off)
+        /// <summary>
+        /// Reads a 32-bit signed big endian value from the given offset from the start
+        /// of the <paramref name="abImage"/>.
+        /// </summary>
+        /// <param name="abImage">Bytes to read from.</param>
+        /// <param name="offset">Offset to read from.</param>
+        /// <returns>The value read.</returns>
+        public static int ReadBeInt32(byte[] abImage, long offset)
         {
-            var span = abImage.AsSpan((int) off, 4);
+            var span = abImage.AsSpan((int) offset, 4);
             return BinaryPrimitives.ReadInt32BigEndian(span);
         }
 
@@ -733,9 +740,16 @@ namespace Reko.Core.Memory
             }
         }
 
-        public static int ReadLeInt32(byte[] abImage, long off)
+        /// <summary>
+        /// Reads a 32-bit signed little endian value from the given offset from the start
+        /// of the <paramref name="abImage"/>.
+        /// </summary>
+        /// <param name="abImage">Bytes to read from.</param>
+        /// <param name="offset">Offset to read from.</param>
+        /// <returns>The value read.</returns>
+        public static int ReadLeInt32(byte[] abImage, long offset)
         {
-            var span = abImage.AsSpan((int) off, 4);
+            var span = abImage.AsSpan((int) offset, 4);
             return BinaryPrimitives.ReadInt32LittleEndian(span);
         }
 
@@ -800,15 +814,29 @@ namespace Reko.Core.Memory
             }
         }
 
-        public static short ReadBeInt16(byte[] img, long offset)
+        /// <summary>
+        /// Reads a 16-bit signed big endian value from the given offset from the start
+        /// of the <paramref name="bytes"/>.
+        /// </summary>
+        /// <param name="bytes">Bytes to read from.</param>
+        /// <param name="offset">Offset to read from.</param>
+        /// <returns>The value read.</returns>
+        public static short ReadBeInt16(byte[] bytes, long offset)
         {
-            var span = img.AsSpan((int) offset, 2);
+            var span = bytes.AsSpan((int) offset, 2);
             return BinaryPrimitives.ReadInt16BigEndian(span);
         }
 
-        public static short ReadLeInt16(byte[] abImage, long offset)
+        /// <summary>
+        /// Reads a 16-bit signed little endian value from the given offset from the start
+        /// of the <paramref name="bytes"/>.
+        /// </summary>
+        /// <param name="bytes">Bytes to read from.</param>
+        /// <param name="offset">Offset to read from.</param>
+        /// <returns>The value read.</returns>
+        public static short ReadLeInt16(byte[] bytes, long offset)
         {
-            var span = abImage.AsSpan((int) offset, 2);
+            var span = bytes.AsSpan((int) offset, 2);
             return BinaryPrimitives.ReadInt16LittleEndian(span);
         }
 
@@ -828,54 +856,124 @@ namespace Reko.Core.Memory
             return true;
         }
 
-        public static Constant ReadBeDouble(byte[] abImage, long off)
+        /// <summary>
+        /// Reads a big endian double precision floating point value from 
+        /// the given offset from the start of the <paramref name="bytes"/>.
+        /// </summary>
+        /// <param name="bytes">Bytes to read from.</param>
+        /// <param name="offset">Offset to read from.</param>
+        /// <returns>The value read.</returns>
+        public static Constant ReadBeDouble(byte[] bytes, long offset)
         {
-            return Constant.DoubleFromBitpattern(ReadBeInt64(abImage, off));
+            return Constant.DoubleFromBitpattern(ReadBeInt64(bytes, offset));
         }
 
-        public static Constant ReadLeDouble(byte[] abImage, long off)
+        /// <summary>
+        /// Reads a little endian double precision floating point value from 
+        /// the given offset from the start of the <paramref name="bytes"/>.
+        /// </summary>
+        /// <param name="bytes">Bytes to read from.</param>
+        /// <param name="offset">Offset to read from.</param>
+        /// <returns>The value read.</returns>
+        public static Constant ReadLeDouble(byte[] bytes, long offset)
         {
-            return Constant.DoubleFromBitpattern(ReadLeInt64(abImage, off));
+            return Constant.DoubleFromBitpattern(ReadLeInt64(bytes, offset));
         }
 
-        public static Constant ReadBeFloat(byte[] abImage, long off)
+        /// <summary>
+        /// Reads a big endian single precision floating point value from 
+        /// the given offset from the start of the <paramref name="bytes"/>.
+        /// </summary>
+        /// <param name="bytes">Bytes to read from.</param>
+        /// <param name="offset">Offset to read from.</param>
+        /// <returns>The value read.</returns>
+        public static Constant ReadBeFloat(byte[] bytes, long offset)
         {
-            return Constant.FloatFromBitpattern(ReadBeInt32(abImage, off));
+            return Constant.FloatFromBitpattern(ReadBeInt32(bytes, offset));
         }
 
-        public static Constant ReadLeFloat(byte[] abImage, long off)
+        /// <summary>
+        /// Reads a little endian single precision floating point value from 
+        /// the given offset from the start of the <paramref name="bytes"/>.
+        /// </summary>
+        /// <param name="bytes">Bytes to read from.</param>
+        /// <param name="offset">Offset to read from.</param>
+        /// <returns>The value read.</returns>
+        public static Constant ReadLeFloat(byte[] bytes, long offset)
         {
-            return Constant.FloatFromBitpattern(ReadLeInt32(abImage, off));
+            return Constant.FloatFromBitpattern(ReadLeInt32(bytes, offset));
         }
 
-        public static ulong ReadBeUInt64(byte[] abImage, long off)
+        /// <summary>
+        /// Reads a 64-bit big endian unsigned integer from the
+        /// given offset from the start of the <paramref name="bytes"/>.
+        /// </summary>
+        /// <param name="bytes">Bytes to read from.</param>
+        /// <param name="offset">Offset to read from.</param>
+        /// <returns>The value read.</returns>
+        public static ulong ReadBeUInt64(byte[] bytes, long offset)
         {
-            return (ulong)ReadBeInt64(abImage, off);
+            return (ulong)ReadBeInt64(bytes, offset);
         }
 
-        public static ulong ReadLeUInt64(byte[] img, long off)
+        /// <summary>
+        /// Reads a 64-bit little endian unsigned integer from the
+        /// given offset from the start of the <paramref name="bytes"/>.
+        /// </summary>
+        /// <param name="bytes">Bytes to read from.</param>
+        /// <param name="offset">Offset to read from.</param>
+        /// <returns>The value read.</returns>
+        public static ulong ReadLeUInt64(byte[] bytes, long offset)
         {
-            return (ulong)ReadLeInt64(img, off);
+            return (ulong)ReadLeInt64(bytes, offset);
         }
 
-        public static uint ReadBeUInt32(byte[] abImage, long off)
+        /// <summary>
+        /// Reads a 32-bit big endian unsigned integer from the
+        /// given offset from the start of the <paramref name="bytes"/>.
+        /// </summary>
+        /// <param name="bytes">Bytes to read from.</param>
+        /// <param name="offset">Offset to read from.</param>
+        /// <returns>The value read.</returns>
+        public static uint ReadBeUInt32(byte[] bytes, long offset)
         {
-            return (uint)ReadBeInt32(abImage, off);
+            return (uint)ReadBeInt32(bytes, offset);
         }
 
-        public static uint ReadLeUInt32(byte[] img, long off)
+        /// <summary>
+        /// Reads a 32-bit little endian unsigned integer from the
+        /// given offset from the start of the <paramref name="bytes"/>.
+        /// </summary>
+        /// <param name="bytes">Bytes to read from.</param>
+        /// <param name="offset">Offset to read from.</param>
+        /// <returns>The value read.</returns>
+        public static uint ReadLeUInt32(byte[] bytes, long offset)
         {
-            return (uint)ReadLeInt32(img, off);
+            return (uint)ReadLeInt32(bytes, offset);
         }
 
-        public static ushort ReadBeUInt16(byte[] abImage, long off)
+        /// <summary>
+        /// Reads a 16-bit big endian unsigned integer from the
+        /// given offset from the start of the <paramref name="bytes"/>.
+        /// </summary>
+        /// <param name="bytes">Bytes to read from.</param>
+        /// <param name="offset">Offset to read from.</param>
+        /// <returns>The value read.</returns>
+        public static ushort ReadBeUInt16(byte[] bytes, long offset)
         {
-            return (ushort) ReadBeInt16(abImage, off);
+            return (ushort) ReadBeInt16(bytes, offset);
         }
 
-        public static ushort ReadLeUInt16(byte[] img, long off)
+        /// <summary>
+        /// Reads a 16-bit big endian unsigned integer from the
+        /// given offset from the start of the <paramref name="bytes"/>.
+        /// </summary>
+        /// <param name="bytes">Bytes to read from.</param>
+        /// <param name="offset">Offset to read from.</param>
+        /// <returns>The value read.</returns>
+        public static ushort ReadLeUInt16(byte[] bytes, long offset)
         {
-            return (ushort)ReadLeInt16(img, off);
+            return (ushort)ReadLeInt16(bytes, offset);
         }
 
         public static bool TryReadByte(byte[] img, long off, out byte b)
@@ -914,18 +1012,87 @@ namespace Reko.Core.Memory
             }
         }
 
+        /// <summary>
+        /// Reads a 32-bit big endian signed integer from the
+        /// given offset.
+        /// </summary>
+        /// <param name="off">Offset to read from.</param>
+        /// <returns>The value read.</returns>
         public int ReadBeInt32(uint off) { return ReadBeInt32(this.Bytes, off); }
+
+        /// <summary>
+        /// Reads a 32-bit big endian unsigned integer from the
+        /// given offset.
+        /// </summary>
+        /// <param name="off">Offset to read from.</param>
+        /// <returns>The value read.</returns>
         public uint ReadBeUInt32(uint off) { return ReadBeUInt32(this.Bytes, off); }
+
+        /// <summary>
+        /// Reads a 16-bit big endian signed integer from the
+        /// given offset.
+        /// </summary>
+        /// <param name="off">Offset to read from.</param>
+        /// <returns>The value read.</returns>
         public short ReadBeInt16(uint off) { return ReadBeInt16(this.Bytes, off); }
+
+        /// <summary>
+        /// Reads a 16-bit big endian unsigned integer from the
+        /// given offset.
+        /// </summary>
+        /// <param name="off">Offset to read from.</param>
+        /// <returns>The value read.</returns>
         public ushort ReadBeUInt16(uint off) { return ReadBeUInt16(this.Bytes, off); }
 
         public Constant ReadLeDouble(long off) { return ReadLeDouble(Bytes, off); }
         public Constant ReadLeFloat(long off) { return ReadLeFloat(Bytes, off); }
-		public long ReadLeInt64(uint off) {  return ReadLeInt64(this.Bytes, off); }
-		public ulong ReadLeUint64(uint off) { return ReadLeUInt64(this.Bytes, off); }
+
+        /// <summary>
+        /// Reads a 64-bit little endian signed integer from the
+        /// given offset.
+        /// </summary>
+        /// <param name="off">Offset to read from.</param>
+        /// <returns>The value read.</returns>
+        public long ReadLeInt64(uint off) {  return ReadLeInt64(this.Bytes, off); }
+
+        /// <summary>
+        /// Reads a 64-bit little endian unsigned integer from the
+        /// given offset.
+        /// </summary>
+        /// <param name="off">Offset to read from.</param>
+        /// <returns>The value read.</returns>
+		public ulong ReadLeUInt64(uint off) { return ReadLeUInt64(this.Bytes, off); }
+
+        /// <summary>
+        /// Reads a 32-bit little endian signed integer from the
+        /// given offset.
+        /// </summary>
+        /// <param name="off">Offset to read from.</param>
+        /// <returns>The value read.</returns>
         public int ReadLeInt32(uint off) { return ReadLeInt32(this.Bytes, off); }
+
+        /// <summary>
+        /// Reads a 32-bit little endian unsigned integer from the
+        /// given offset.
+        /// </summary>
+        /// <param name="off">Offset to read from.</param>
+        /// <returns>The value read.</returns>
         public uint ReadLeUInt32(uint off) { return ReadLeUInt32(this.Bytes, off); }
+
+        /// <summary>
+        /// Reads a 16-bit little endian signed integer from the
+        /// given offset.
+        /// </summary>
+        /// <param name="off">Offset to read from.</param>
+        /// <returns>The value read.</returns>
         public short ReadLeInt16(uint off) { return ReadLeInt16(this.Bytes, off); }
+
+        /// <summary>
+        /// Reads a 16-bit little endian unsigned integer from the
+        /// given offset.
+        /// </summary>
+        /// <param name="off">Offset to read from.</param>
+        /// <returns>The value read.</returns>
         public ushort ReadLeUInt16(uint off) { return ReadLeUInt16(this.Bytes, off); }
 
         public override bool TryReadByte(long off, out byte b) { return TryReadByte(this.Bytes, off, out b); }

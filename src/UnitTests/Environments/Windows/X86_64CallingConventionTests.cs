@@ -40,16 +40,16 @@ namespace Reko.UnitTests.Environments.Windows
         private PrimitiveType r64 = PrimitiveType.Real64;
 
         private X86_64CallingConvention cc;
-        private ICallingConventionEmitter ccr;
+        private ICallingConventionBuilder ccr;
 
         [SetUp]
         public void Setup()
         {
             this.cc = new X86_64CallingConvention();
-            this.ccr = new CallingConventionEmitter();
+            this.ccr = new CallingConventionBuilder();
         }
 
-        private void AssertEqual(string sExp, ICallingConventionEmitter ccr)
+        private void AssertEqual(string sExp, ICallingConventionBuilder ccr)
         {
             var sActual = ccr.ToString();
             if (sExp != sActual)

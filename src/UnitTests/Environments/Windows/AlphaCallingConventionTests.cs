@@ -42,17 +42,17 @@ namespace Reko.UnitTests.Environments.Windows
         private PrimitiveType r64 = PrimitiveType.Real64;
 
         private AlphaCallingConvention cc;
-        private ICallingConventionEmitter ccr;
+        private ICallingConventionBuilder ccr;
 
         [SetUp]
         public void Setup()
         {
             var arch = new AlphaArchitecture(new ServiceContainer(), "alpha", new Dictionary<string, object>());
             this.cc = new AlphaCallingConvention(arch);
-            this.ccr = new CallingConventionEmitter();
+            this.ccr = new CallingConventionBuilder();
         }
 
-        private void AssertEqual(string sExp, ICallingConventionEmitter ccr)
+        private void AssertEqual(string sExp, ICallingConventionBuilder ccr)
         {
             var sActual = ccr.ToString();
             if (sExp != sActual)

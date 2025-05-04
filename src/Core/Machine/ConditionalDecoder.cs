@@ -20,10 +20,6 @@
 
 using Reko.Core.Lib;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Core.Machine
 {
@@ -42,6 +38,14 @@ namespace Reko.Core.Machine
         private readonly Decoder<TDasm, TMnemonic, TInstr> falseDecoder;
         private readonly string tag;
 
+        /// <summary>
+        /// Constructor for a conditional decoder.
+        /// </summary>
+        /// <param name="bitfields">Bit fields to extract a value from.</param>
+        /// <param name="predicate">Predicate to test the extracted value.</param>
+        /// <param name="tag">Tag used in debugging.</param>
+        /// <param name="trueDecoder">Decoder to use if the predicate is true.</param>
+        /// <param name="falseDecoder">Decoder to use if the predicate is false.</param>
         public ConditionalDecoder(
             Bitfield[] bitfields, 
             Predicate<uint> predicate, 
@@ -56,6 +60,7 @@ namespace Reko.Core.Machine
             this.tag = tag;
         }
 
+        /// <inheritdoc/>
         public override TInstr Decode(uint wInstr, TDasm dasm)
         {
             DumpMaskedInstruction(32, wInstr, this.bitfields, tag);
@@ -80,6 +85,14 @@ namespace Reko.Core.Machine
         private readonly WideDecoder<TDasm, TMnemonic, TInstr> falseDecoder;
         private readonly string tag;
 
+        /// <summary>
+        /// Constructs a conditional decoder.
+        /// </summary>
+        /// <param name="bitfields">Bitfields used to extract a value for the predicate.</param>
+        /// <param name="predicate">Predicate that tests the extracted value.</param>
+        /// <param name="tag">Tag used for debugging.</param>
+        /// <param name="trueDecoder">Decoder to use if the predicate evaluates to true.</param>
+        /// <param name="falseDecoder">Decoder to use if the predicate evaliates to false.</param>
         public WideConditionalDecoder(
             Bitfield[] bitfields,
             Predicate<ulong> predicate,

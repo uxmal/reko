@@ -41,7 +41,7 @@ namespace Reko.Arch.OpenRISC.Aeon
             this.iregs = Registers.GpRegisters[3..9];
         }
 
-        public override void Generate(ICallingConventionEmitter ccr, int retAddressOnStack, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
+        public override void Generate(ICallingConventionBuilder ccr, int retAddressOnStack, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
         {
             ccr.LowLevelDetails(4, 24); //$REVIEW: verify this.
             if (dtRet is not null)

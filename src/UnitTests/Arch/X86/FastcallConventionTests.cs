@@ -44,7 +44,7 @@ namespace Reko.UnitTests.Arch.X86
         private CommonMockFactory mockFactory;
         private IntelArchitecture arch;
         private FastcallConvention fcc;
-        private ICallingConventionEmitter ccr;
+        private ICallingConventionBuilder ccr;
         private Win32Platform platform;
         private ISerializedTypeVisitor<DataType> deserializer;
         private readonly PrimitiveType i16 = PrimitiveType.Int16;
@@ -63,7 +63,7 @@ namespace Reko.UnitTests.Arch.X86
 
         private void Given_32bit_CallingConvention()
         {
-            this.ccr = new CallingConventionEmitter();
+            this.ccr = new CallingConventionBuilder();
             this.deserializer = new FakeTypeDeserializer(32);
             FastcallConvention fcc = new FastcallConvention(
                 Registers.ecx, Registers.edx, 4);
@@ -72,7 +72,7 @@ namespace Reko.UnitTests.Arch.X86
 
         private void Given_16bit_CallingConvention(string cConvention)
         {
-            this.ccr = new CallingConventionEmitter();
+            this.ccr = new CallingConventionBuilder();
             this.deserializer = new FakeTypeDeserializer(32);
             FastcallConvention fcc = new FastcallConvention(
                 Registers.cx, Registers.dx, 4);

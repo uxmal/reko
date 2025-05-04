@@ -40,13 +40,13 @@ namespace Reko.UnitTests.Arch.OpenRISC
 
         private readonly AeonArchitecture arch = new AeonArchitecture(new ServiceContainer(), "aeon", new());
         private AeonCallingConvention cc;
-        private ICallingConventionEmitter ccr;
+        private ICallingConventionBuilder ccr;
 
         [SetUp]
         public void Setup()
         {
             this.cc = new AeonCallingConvention(arch);
-            this.ccr = new CallingConventionEmitter();
+            this.ccr = new CallingConventionBuilder();
         }
 
         /*

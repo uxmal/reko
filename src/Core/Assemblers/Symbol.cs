@@ -44,12 +44,12 @@ namespace Reko.Core.Assemblers
 		}
 
         /// <summary>
-        /// True of the symbol has a known address or offset.
+        /// True if the symbol's offset is resolved; otherwise false.
         /// </summary>
         public bool IsResolved { get; set; }
 
         /// <summary>
-        /// Offset of the symbol.
+        /// The offset of the symbol in the binary
         /// </summary>
         public int Offset { get; set; }
 
@@ -59,7 +59,7 @@ namespace Reko.Core.Assemblers
         public string Name { get; }
 
         /// <summary>
-        /// List of forward references of this symbol.
+        /// The list of backpatches that need to be resolved.
         /// </summary>
         public List<BackPatch> Patches { get; }
 

@@ -20,6 +20,8 @@
 
 using System.Runtime.InteropServices;
 
+#pragma warning disable CS1591
+
 namespace Reko.Core.NativeInterface.Interfaces
 {
 	[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CustomAnsiStringMarshaler))]

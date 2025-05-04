@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         private PrimitiveType i32 = PrimitiveType.Int32;
         private PrimitiveType i64 = PrimitiveType.Int64;
         private PrimitiveType r64 = PrimitiveType.Real64;
-        private ICallingConventionEmitter ccr;
+        private ICallingConventionBuilder ccr;
 
         [SetUp]
         public void Setup()
@@ -57,7 +57,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         private void Given_CallingConvention()
         {
             this.cc = new PowerPcCallingConvention(arch);
-            this.ccr = new CallingConventionEmitter();
+            this.ccr = new CallingConventionBuilder();
         }
 
         [Test]

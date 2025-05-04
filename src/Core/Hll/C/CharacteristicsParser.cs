@@ -19,7 +19,6 @@
 #endregion
 
 using Reko.Core.Serialization;
-using System;
 using System.Collections.Generic;
 
 namespace Reko.Core.Hll.C

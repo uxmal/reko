@@ -49,6 +49,9 @@ namespace Reko.Core.Serialization
 		[XmlAttribute("convention")]
 		public string? Convention;
 
+        /// <summary>
+        /// True if this is an instance method.
+        /// </summary>
         [XmlAttribute("isInstance")]
         [DefaultValue(false)]
         public bool IsInstanceMethod;

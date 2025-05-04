@@ -23,30 +23,55 @@ using System.Collections.Generic;
 
 namespace Reko.Core.Machine
 {
+    /// <summary>
+    /// Compares instructions for equality.
+    /// </summary>
     public abstract class InstructionComparer : IEqualityComparer<MachineInstruction>
     {
         private readonly Normalize norm;
 
+        /// <summary>
+        /// Constructs an instruction comparer.
+        /// </summary>
+        /// <param name="norm">Normalization to use.</param>
         public InstructionComparer(Normalize norm)
         {
             this.norm = norm;
         }
 
+        /// <summary>
+        /// Compares the operands of two instructions.
+        /// </summary>
+        /// <param name="x">First machine instruction.</param>
+        /// <param name="y">Second machine instruction.</param>
+        /// <returns>True if all operands compare equal; otherwise false.</returns>
         public abstract bool CompareOperands(MachineInstruction x, MachineInstruction y);
 
+        /// <summary>
+        /// Compares the two <see cref="RegisterStorage"/>s.
+        /// </summary>
+        /// <param name="regA">First register.</param>
+        /// <param name="regB">Second register.</param>
+        /// <returns>True if registers are equal; otherwise false.</returns>
         public bool CompareRegisters(RegisterStorage? regA, RegisterStorage? regB)
         {
-            if (regA == null)
+            if (regA is null)
             {
-                return regB == null;
+                return regB is null;
             }
-            if (regB == null)
+            if (regB is null)
             {
-                return regA == null;
+                return regA is null;
             }
             return NormalizeRegisters || regA == regB;
         }
 
+        /// <summary>
+        /// Compares the two <see cref="Constant"/>s.
+        /// </summary>
+        /// <param name="constA">First constant.</param>
+        /// <param name="constB">Second constant.</param>
+        /// <returns>True if registers are equal; otherwise false.</returns>
         public bool CompareValues(Constant? constA, Constant? constB)
         {
             if (constA is null)
@@ -60,6 +85,7 @@ namespace Reko.Core.Machine
             return NormalizeConstants || constA.GetValue().Equals(constB.GetValue());
         }
 
+        /// <inheritdoc/>
         public virtual bool Equals(MachineInstruction? x, MachineInstruction? y)
         {
             if (x is null)
@@ -71,6 +97,11 @@ namespace Reko.Core.Machine
             return CompareOperands(x, y);
         }
 
+        /// <summary>
+        /// Computes a hash code for the given <see cref="Constant"/>.
+        /// </summary>
+        /// <param name="c">Constant whose hash code is to be computed.</param>
+        /// <returns>Hash code of the constant, normalized if necessary.</returns>
         public int GetConstantHash(Constant? c)
         {
             if ((norm & Normalize.Constants) != 0 || c is null)
@@ -78,6 +109,11 @@ namespace Reko.Core.Machine
             return c.GetValue().GetHashCode();
         }
 
+        /// <summary>
+        /// Computes a hash code for the given <see cref="RegisterStorage"/>.
+        /// </summary>
+        /// <param name="r">Register whose hash code is to be computed.</param>
+        /// <returns>Hash code of the register, normalized if necessary.</returns>
         public int GetRegisterHash(RegisterStorage? r)
         {
             if ((norm & Normalize.Registers) != 0 || r is null)
@@ -91,6 +127,12 @@ namespace Reko.Core.Machine
             return h ^ GetOperandsHash(instr);
         }
 
+        /// <summary>
+        /// Computes a hash code for the operands of the given instruction.
+        /// </summary>
+        /// <param name="instr">Machine instruction whose operands will have their hash compited.</param>
+        /// <returns>The hash code of the operands, respecting the <see cref="norm"/>.
+        /// </returns>
         public abstract int GetOperandsHash(MachineInstruction instr);
 
         /// <summary>

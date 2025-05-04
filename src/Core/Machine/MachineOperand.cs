@@ -167,6 +167,12 @@ namespace Reko.Core.Machine
                 return "X8";
 		}
 
+        /// <summary>
+        /// Converts an unsigned integer constant to string representation.
+        /// </summary>
+        /// <param name="c">Constant to render.</param>
+        /// <param name="format">Format string to use to render.</param>
+        /// <returns>The rendered number.</returns>
 		public static string FormatUnsignedValue(Constant c, string format = "{0}{1}")
 		{
 			return string.Format(format, "", c.ToUInt64().ToString(FormatString(c.DataType)));

@@ -42,7 +42,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
 
         private Arm32Architecture arch;
         private ICallingConvention cc;
-        private ICallingConventionEmitter ccr;
+        private ICallingConventionBuilder ccr;
 
         [SetUp]
         public void Setup()
@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         private void Given_CallingConvention()
         {
             this.cc = new Arm32CallingConvention(arch);
-            this.ccr = new CallingConventionEmitter();
+            this.ccr = new CallingConventionBuilder();
         }
 
         [Test]

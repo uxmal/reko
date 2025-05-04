@@ -34,8 +34,21 @@ namespace Reko.Core.Lib
     /// </remarks>
     public readonly struct StridedInterval
     {
+        /// <summary>
+        /// Minimum value of the interval.
+        /// </summary>
         public readonly long Low { get; }
+
+        /// <summary>
+        /// Maximum value of the interval.
+        /// </summary>
         public readonly long High { get; }
+
+        /// <summary>
+        /// The stride of the interval. A stride of 0
+        /// is interpreted as a constant value. A negative
+        /// stride is interpreted as the empty set.
+        /// </summary>
         public readonly int Stride { get; }
 
         /// <summary>
@@ -59,6 +72,13 @@ namespace Reko.Core.Lib
             return new StridedInterval(0, v, v);
         }
 
+        /// <summary>
+        /// Creates a strided interval.
+        /// </summary>
+        /// <param name="stride">Stride interval.</param>
+        /// <param name="low">Minimum value.</param>
+        /// <param name="high">Maximum value.</param>
+        /// <returns>A strided interval of the given values.</returns>
         public static StridedInterval Create(int stride, long low, long high)
         {
             if (stride < 0)

@@ -70,21 +70,70 @@ namespace Reko.Core.Types
         /// Binary coded decimals.
         /// </summary>
         Bcd = 16,                   // b - Binary coded decimal; a decimal digit stored in each nybble of a byte.
+
+        /// <summary>
+        /// Floating point numbers.
+        /// </summary>
         Real = 32,                  // r
+
+        /// <summary>
+        /// Pointers.
+        /// </summary>
         Pointer = 64,               // p
+
+        /// <summary>
+        /// Segment-relative offsets.
+        /// </summary>
         Offset = 128,               // n - "near pointer" (x86)
+
+        /// <summary>
+        /// Segment selectors.
+        /// </summary>
         Selector = 256,             // S
+
+        /// <summary>
+        /// Segment pointers.
+        /// </summary>
         SegPointer = 512,           // P - Segmented pointer (x86-style)
+
+        /// <summary>
+        /// Enumerated types.
+        /// </summary>
         Enum = 0x400,               // An enumerated type.
 
-        // Composite types are constructed from other types.
+        /// <summary>
+        /// Composite types are constructed from other types.
+        /// </summary>
         Composite = 0x1000,
+
+        /// <summary>
+        /// Structure types.
+        /// </summary>
         Structure = 0x2000 | Composite, // A product type (T_1 x T_2 x ... x T_n)
+
+        /// <summary>
+        /// Arrays.
+        /// </summary>
         Array = 0x4000 | Composite,     // An array of values
+
+        /// <summary>
+        /// Union types.
+        /// </summary>
         Union = 0x6000 | Composite,     // A union type
+
+        /// <summary>
+        /// Class types.
+        /// </summary>
         Class = 0x8000 | Composite,     // A C++ class, a fancy version of Structure
+
+        /// <summary>
+        /// Function types.
+        /// </summary>
         Function = 0xA000 | Composite,  // Executable code.
 
+        /// <summary>
+        /// All types.
+        /// </summary>
         Any = Boolean | Character | SignedInt | UnsignedInt | Bcd | Real | Pointer | Offset | Selector | SegPointer | Enum 
             | Structure | Array | Union | Class | Function
     }

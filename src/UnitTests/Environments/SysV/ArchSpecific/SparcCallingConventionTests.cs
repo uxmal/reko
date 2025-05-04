@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
 
         private SparcArchitecture32 arch;
         private SparcCallingConvention cc;
-        private CallingConventionEmitter ccr;
+        private CallingConventionBuilder ccr;
 
         [SetUp]
         public void Setup()
@@ -50,7 +50,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         private void Given_CallingConvention()
         {
             this.cc = new SparcCallingConvention(arch);
-            this.ccr = new CallingConventionEmitter();
+            this.ccr = new CallingConventionBuilder();
         }
 
         [Test]

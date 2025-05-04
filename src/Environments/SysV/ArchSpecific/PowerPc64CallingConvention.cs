@@ -306,7 +306,7 @@ complex) in f1:f4.
         }
 
         public override void Generate(
-            ICallingConventionEmitter ccr,
+            ICallingConventionBuilder ccr,
             int retAddressOnStack,
             DataType? dtRet,
             DataType? dtThis,
@@ -340,7 +340,7 @@ complex) in f1:f4.
             }
         }
 
-        private (int, int)  GenerateReturn(ICallingConventionEmitter ccr, DataType? dtRet)
+        private (int, int)  GenerateReturn(ICallingConventionBuilder ccr, DataType? dtRet)
         {
             if (dtRet is null || dtRet is VoidType)
             {

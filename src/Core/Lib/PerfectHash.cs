@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 
 #nullable disable
+#pragma warning disable CS1591
 
 namespace Reko.Core.Lib
 {

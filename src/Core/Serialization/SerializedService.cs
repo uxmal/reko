@@ -18,7 +18,6 @@
  */
 #endregion
 
-using Reko.Core;
 using System;
 using System.Linq;
 using System.Xml.Serialization;
@@ -177,11 +176,20 @@ namespace Reko.Core.Serialization
 		}
 	}
 
+    /// <summary>
+    /// Serialized stackvalue.
+    /// </summary>
     public class StackValue_v1
     {
+        /// <summary>
+        /// Offset of the stack value, expressed as a hexadecimal string.
+        /// </summary>
         [XmlAttribute("Offset")]
         public string? Offset;
 
+        /// <summary>
+        /// Value, expressed as a hexadecimal string.
+        /// </summary>
         [XmlText]
         public string? Value;
     }

@@ -22,12 +22,30 @@ using System;
 
 namespace Reko.Core
 {
+    /// <summary>
+    /// Flags controlling a pointer scanner.
+    /// </summary>
     [Flags]
     public enum PointerScannerFlags 
     {
+        /// <summary>
+        /// Follow potential pointers.
+        /// </summary>
         Pointers = 1,
+
+        /// <summary>
+        /// Follow potential calls.
+        /// </summary>
         Calls = 2,
+
+        /// <summary>
+        /// Follow potential jumps.
+        /// </summary>
         Jumps = 4,
+
+        /// <summary>
+        /// Follow all potential pointers.
+        /// </summary>
         All = Pointers | Calls | Jumps,
     }
 }

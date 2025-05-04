@@ -234,7 +234,18 @@ namespace Reko.Core.Machine
             return new WideMaskDecoder<TDasm, TMnemonic, TInstr>(new Bitfield(bitPos, bitLength), tag, decoders);
         }
 
-
+        /// <summary>
+        /// Creates a <see cref="Decoder"/> which, when executed, extracts two bitfields
+        /// which when combined yields the index of a sub-decoder to dispatch to.
+        /// </summary>
+        /// <param name="p1">Bit position of first field.</param>
+        /// <param name="l1">Length of first field.</param>
+        /// <param name="p2">Bit position of second field.</param>
+        /// <param name="l2">Length of second field.</param>
+        /// <param name="tag">A tag for use when debugging.</param>
+        /// <param name="decoders">The sub-decoders to which to dispatch.</param>
+        /// <returns>An instance of <see cref="BitfieldDecoder{TDasm, TMnemonic, TInstr}"/>.
+        /// </returns>
         public static BitfieldDecoder<TDasm, TMnemonic, TInstr> Mask<TDasm>(
             int p1, int l1, int p2, int l2,
             string tag,
@@ -243,6 +254,19 @@ namespace Reko.Core.Machine
             return new BitfieldDecoder<TDasm, TMnemonic, TInstr>(Bf((p1, l1), (p2, l2)), tag, decoders);
         }
 
+        /// <summary>
+        /// Creates a <see cref="Decoder"/> which, when executed, extracts two bitfields
+        /// which when combined yields the index of a sub-decoder to dispatch to.
+        /// </summary>
+        /// <param name="p1">Bit position of first field.</param>
+        /// <param name="l1">Length of first field.</param>
+        /// <param name="p2">Bit position of second field.</param>
+        /// <param name="l2">Length of second field.</param>
+        /// <param name="tag">A tag for use when debugging.</param>
+        /// <param name="defaultDecoder">Default decoder to use.</param>
+        /// <param name="sparseDecoders">Sparse set of sub-decoders.</param>
+        /// <returns>An instance of <see cref="BitfieldDecoder{TDasm, TMnemonic, TInstr}"/>.
+        /// </returns>
         public static BitfieldDecoder<TDasm, TMnemonic, TInstr> Mask<TDasm>(
             int p1, int l1, int p2, int l2, 
             string tag,
@@ -258,6 +282,16 @@ namespace Reko.Core.Machine
             return new BitfieldDecoder<TDasm, TMnemonic, TInstr>(fields, tag, decoders);
         }
 
+        /// <summary>
+        /// Creates a <see cref="Decoder"/> which, when executed, extracts values from
+        /// several bitfields, which when combined yields the index of a sub-decoder
+        /// to dispatch to.
+        /// </summary>
+        /// <param name="bitfields">Bit fields used to extract values.</param>
+        /// <param name="tag">A tag for use when debugging.</param>
+        /// <param name="decoders">Sub-decoders.</param>
+        /// <returns>An instance of <see cref="BitfieldDecoder{TDasm, TMnemonic, TInstr}"/>.
+        /// </returns>
         public static BitfieldDecoder<TDasm, TMnemonic, TInstr> Mask<TDasm>(
             Bitfield[] bitfields,
             string tag,
@@ -266,6 +300,15 @@ namespace Reko.Core.Machine
             return new BitfieldDecoder<TDasm, TMnemonic, TInstr>(bitfields, tag, decoders);
         }
 
+        /// <summary>
+        /// Creates a <see cref="Decoder"/> which, when executed, extracts values from
+        /// several bitfields, which when combined yields the index of a sub-decoder
+        /// to dispatch to.
+        /// </summary>
+        /// <param name="bitfields">Bit fields used to extract values.</param>
+        /// <param name="decoders">Sub-decoders.</param>
+        /// <returns>An instance of <see cref="BitfieldDecoder{TDasm, TMnemonic, TInstr}"/>.
+        /// </returns>
         public static BitfieldDecoder<TDasm, TMnemonic, TInstr> Mask<TDasm>(
             Bitfield[] bitfields,
             params Decoder<TDasm, TMnemonic, TInstr>[] decoders)
@@ -273,6 +316,14 @@ namespace Reko.Core.Machine
             return new BitfieldDecoder<TDasm, TMnemonic, TInstr>(bitfields, "", decoders);
         }
 
+        /// <summary>
+        /// Creates a conditional decoder which selects a sub-decoder depending on a predicate.
+        /// </summary>
+        /// <typeparam name="TDasm"></typeparam>
+        /// <param name="predicate">Predicate accepting the instruction opcode.</param>
+        /// <param name="decoderTrue">Sub-decoder to invoke when the predicate evaluates to true.</param>
+        /// <param name="decoderFalse">Sub-decoder to invoke when the predicate evaluates to false.</param>
+        /// <returns>A conditional decoder.</returns>
         public static ConditionalDecoder<TDasm, TMnemonic, TInstr> Select<TDasm>(
             Predicate<uint> predicate,
             Decoder<TDasm, TMnemonic, TInstr> decoderTrue,
@@ -285,6 +336,13 @@ namespace Reko.Core.Machine
             return new ConditionalDecoder<TDasm, TMnemonic, TInstr>(fields, predicate, "", decoderTrue, decoderFalse);
         }
 
+        /// <summary>
+        /// Creates a if decoder which invokes a sub-decoder if the predicate is true.
+        /// </summary>
+        /// <typeparam name="TDasm"></typeparam>
+        /// <param name="predicate">Predicate accepting the instruction opcode.</param>
+        /// <param name="decoderTrue">Sub-decoder to invoke when the predicate evaluates to true.</param>
+        /// <returns>A if decoder.</returns>
         public static IfDecoder<TDasm, TMnemonic, TInstr> If<TDasm>(
             Predicate<uint> predicate,
             Decoder<TDasm, TMnemonic, TInstr> decoderTrue)
@@ -294,6 +352,15 @@ namespace Reko.Core.Machine
             return new IfDecoder<TDasm, TMnemonic, TInstr>(bf, predicate, decoderTrue);
         }
 
+        /// <summary>
+        /// Creates a if decoder which invokes a sub-decoder if the predicate is true.
+        /// </summary>
+        /// <typeparam name="TDasm"></typeparam>
+        /// <param name="bitpos">Bit position of the bitfield to extract.</param>
+        /// <param name="bitlen">Bit size of the bitfield to extract.</param>
+        /// <param name="predicate">Predicate accepting the extracted value.</param>
+        /// <param name="decoderTrue">Sub-decoder to invoke when the predicate evaluates to true.</param>
+        /// <returns>A if decoder.</returns>
         public static IfDecoder<TDasm, TMnemonic, TInstr> If<TDasm>(
             int bitpos, int bitlen,
             Predicate<uint> predicate,
@@ -304,6 +371,16 @@ namespace Reko.Core.Machine
             return new IfDecoder<TDasm, TMnemonic, TInstr>(bf, predicate, decoderTrue);
         }
 
+        /// <summary>
+        /// Creates a conditional decoder which selects a sub-decoder depending on a predicate.
+        /// </summary>
+        /// <typeparam name="TDasm"></typeparam>
+        /// <param name="fieldSpecifier">Specifies the bit position and size.</param>
+        /// <param name="predicate">Predicate accepting the instruction opcode.</param>
+        /// <param name="tag">Tag used for debugging.</param>
+        /// <param name="decoderTrue">Sub-decoder to invoke when the predicate evaluates to true.</param>
+        /// <param name="decoderFalse">Sub-decoder to invoke when the predicate evaluates to false.</param>
+        /// <returns>A conditional decoder.</returns>
         public static ConditionalDecoder<TDasm, TMnemonic, TInstr> Select<TDasm>(
             (int, int) fieldSpecifier,
             Predicate<uint> predicate,
@@ -318,6 +395,16 @@ namespace Reko.Core.Machine
             return new ConditionalDecoder<TDasm, TMnemonic, TInstr>(fields, predicate, tag, decoderTrue, decoderFalse);
         }
 
+        /// <summary>
+        /// Creates a conditional decoder which selects a sub-decoder depending on a predicate.
+        /// </summary>
+        /// <typeparam name="TDasm"></typeparam>
+        /// <param name="fieldSpecifier">Specifies the bit position and size.</param>
+        /// <param name="predicate">Predicate accepting the instruction opcode.</param>
+        /// <param name="tag">Tag used for debugging.</param>
+        /// <param name="decoderTrue">Sub-decoder to invoke when the predicate evaluates to true.</param>
+        /// <param name="decoderFalse">Sub-decoder to invoke when the predicate evaluates to false.</param>
+        /// <returns>A conditional decoder.</returns>
         public static WideConditionalDecoder<TDasm, TMnemonic, TInstr> WideSelect<TDasm>(
             (int, int) fieldSpecifier,
             Predicate<ulong> predicate,
@@ -332,7 +419,15 @@ namespace Reko.Core.Machine
             return new WideConditionalDecoder<TDasm, TMnemonic, TInstr>(fields, predicate, tag, decoderTrue, decoderFalse);
         }
 
-
+        /// <summary>
+        /// Creates a conditional decoder which selects a sub-decoder depending on a predicate.
+        /// </summary>
+        /// <typeparam name="TDasm"></typeparam>
+        /// <param name="fieldSpecifier">Specifies the bit position and size.</param>
+        /// <param name="predicate">Predicate accepting the instruction opcode.</param>
+        /// <param name="decoderTrue">Sub-decoder to invoke when the predicate evaluates to true.</param>
+        /// <param name="decoderFalse">Sub-decoder to invoke when the predicate evaluates to false.</param>
+        /// <returns>A conditional decoder.</returns>
         public static ConditionalDecoder<TDasm, TMnemonic, TInstr> Select<TDasm>(
             (int, int) fieldSpecifier,
             Predicate<uint> predicate,
@@ -346,6 +441,14 @@ namespace Reko.Core.Machine
             return new ConditionalDecoder<TDasm, TMnemonic, TInstr>(fields, predicate, "", decoderTrue, decoderFalse);
         }
 
+        /// <summary>
+        /// Creates a conditional decoder which selects a sub-decoder depending on a predicate.
+        /// </summary>
+        /// <param name="fields">Specifies fields to read a value to pass to the predicate.</param>
+        /// <param name="predicate">Predicate accepting the instruction opcode.</param>
+        /// <param name="decoderTrue">Sub-decoder to invoke when the predicate evaluates to true.</param>
+        /// <param name="decoderFalse">Sub-decoder to invoke when the predicate evaluates to false.</param>
+        /// <returns>A conditional decoder.</returns>
         public static ConditionalDecoder<TDasm, TMnemonic, TInstr> Select<TDasm>(
             Bitfield[] fields,
             Predicate<uint> predicate,
@@ -355,6 +458,15 @@ namespace Reko.Core.Machine
             return new ConditionalDecoder<TDasm, TMnemonic, TInstr>(fields, predicate, "", decoderTrue, decoderFalse);
         }
 
+        /// <summary>
+        /// Creates a conditional decoder which selects a sub-decoder depending on a predicate.
+        /// </summary>
+        /// <param name="fields">Specifies fields to read a value to pass to the predicate.</param>
+        /// <param name="predicate">Predicate accepting the instruction opcode.</param>
+        /// <param name="tag">Tag used for debugging.</param>
+        /// <param name="decoderTrue">Sub-decoder to invoke when the predicate evaluates to true.</param>
+        /// <param name="decoderFalse">Sub-decoder to invoke when the predicate evaluates to false.</param>
+        /// <returns>A conditional decoder.</returns>
         public static ConditionalDecoder<TDasm, TMnemonic, TInstr> Select<TDasm>(
              Bitfield[] fields,
              Predicate<uint> predicate,
@@ -393,17 +505,21 @@ namespace Reko.Core.Machine
             foreach (var (code, decoder) in sparseDecoders)
             {
                 Debug.Assert(0 <= code && code < decoders.Length);
-                Debug.Assert(decoders[code] == null, $"Decoder {code:X} has already a value!");
+                Debug.Assert(decoders[code] is null, $"Decoder {code:X} has already a value!");
                 decoders[code] = decoder;
             }
             for (int i = 0; i < decoders.Length; ++i)
             {
-                if (decoders[i] == null)
+                if (decoders[i] is null)
                     decoders[i] = defaultDecoder;
             }
             return new WideMaskDecoder<TDasm, TMnemonic, TInstr>(new Bitfield(bitPosition, bits), tag, decoders);
         }
 
+        /// <summary>
+        /// Creates a sparsely populated <see cref="MaskDecoder{TDasm, TMnemonic, TInstr}"/> where 
+        /// most of the decoders default to <paramref name="defaultDecoder"/>.
+        /// </summary>
         public static MaskDecoder<TDasm, TMnemonic, TInstr> Sparse<TDasm>(
             int bitPosition, int bits,
             Decoder<TDasm, TMnemonic, TInstr> defaultDecoder,
@@ -419,12 +535,18 @@ namespace Reko.Core.Machine
     /// </summary>
     public class DisassemblerBase : IDisposable
     {
+        /// <summary>
+        /// Disposes the disassembler.
+        /// </summary>
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
+        /// <summary>
+        /// Finalizer for the disassembler.
+        /// </summary>
         ~DisassemblerBase()
         {
             Dispose(false);
@@ -462,6 +584,12 @@ namespace Reko.Core.Machine
             return fields.Select(f => new Bitfield(f.pos, f.len)).ToArray();
         }
 
+        /// <summary>
+        /// Reads the fields from the instruction and returns the result.
+        /// </summary>
+        /// <param name="fields"></param>
+        /// <param name="instr"></param>
+        /// <returns></returns>
         protected static uint ReadFields(Bitfield[] fields, uint instr)
         {
             Decoder.DumpMaskedInstruction(32, instr, fields, "");
@@ -475,6 +603,12 @@ namespace Reko.Core.Machine
             return result;
         }
 
+        /// <summary>
+        /// Handles the disposal of the disassembler.
+        /// </summary>
+        /// <param name="disposing">True if being disposed; false 
+        /// if being finalized.
+        /// </param>
         protected virtual void Dispose(bool disposing)
         {
         }

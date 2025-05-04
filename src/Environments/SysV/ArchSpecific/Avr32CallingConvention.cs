@@ -72,7 +72,7 @@ What the different instructions do is explained in the Atmel AVR 32-bit Architec
         }
 
         public override void Generate(
-            ICallingConventionEmitter ccr,
+            ICallingConventionBuilder ccr,
             int retAddressOnStack,
             DataType? dtRet,
             DataType? dtThis,

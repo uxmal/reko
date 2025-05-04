@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Arch.Arm
 
         private Arm64Architecture arch;
         private AArch64CallingConvention cc;
-        private CallingConventionEmitter ccr;
+        private CallingConventionBuilder ccr;
 
         public Arm64CallingConventionTests()
         {
@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void Setup()
         {
             this.cc = new AArch64CallingConvention(arch);
-            this.ccr = new CallingConventionEmitter();
+            this.ccr = new CallingConventionBuilder();
         }
 
         [Test]

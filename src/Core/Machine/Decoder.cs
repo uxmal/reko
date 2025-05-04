@@ -36,27 +36,51 @@ namespace Reko.Core.Machine
         where TInstr : MachineInstruction
         where TMnemonic : struct
     {
+        /// <summary>
+        /// Decodes an instruction opcode.
+        /// </summary>
+        /// <param name="wInstr">Instruction opcode.</param>
+        /// <param name="dasm">Disassembler instance.</param>
+        /// <returns>Decoded instruction.</returns>
         public abstract TInstr Decode(uint wInstr, TDasm dasm);
 
+        /// <summary>
+        /// Dumps a masked instruction to the debugger output and console.
+        /// </summary>
+        /// <param name="wInstr">Instruction opcode.</param>
+        /// <param name="shMask">Shifted mask.</param>
+        /// <param name="mnemonic">Mnemonic of the decoded instruction.</param>
         [Conditional("DEBUG")]
         public static void DumpMaskedInstruction(uint wInstr, uint shMask, TMnemonic mnemonic)
         {
             DumpMaskedInstruction(32, wInstr, shMask, mnemonic.ToString()!);
         }
 
+        /// <summary>
+        /// Dumps a masked instruction to the debugger output and console.
+        /// </summary>
+        /// <param name="wInstr">Instruction opcode.</param>
+        /// <param name="shMask">Shifted mask.</param>
+        /// <param name="mnemonic">Mnemonic of the decoded instruction.</param>
         [Conditional("DEBUG")]
-        public static void DumpMaskedInstruction64(uint wInstr, uint shMask, TMnemonic mnemonic)
+        public static void DumpMaskedInstruction64(ulong wInstr, uint shMask, TMnemonic mnemonic)
         {
             DumpMaskedInstruction(64, wInstr, shMask, mnemonic.ToString()!);
         }
 
+        /// <summary>
+        /// Dumps a masked instruction to the debugger output and console.
+        /// </summary>
+        /// <param name="wInstr">Instruction opcode.</param>
+        /// <param name="shMask">Shifted mask.</param>
+        /// <param name="tag">Tag to display.</param>
         [Conditional("DEBUG")]
         public static void DumpMaskedInstruction64(uint wInstr, uint shMask, string tag)
         {
             DumpMaskedInstruction(64, wInstr, shMask, tag);
         }
 
-        public static Decoder<TDasm, TMnemonic, TInstr>[] BuildSparseDecoderArray(int bits, Decoder<TDasm, TMnemonic, TInstr> defaultDecoder, (uint, Decoder<TDasm, TMnemonic, TInstr>)[] sparseDecoders)
+        internal static Decoder<TDasm, TMnemonic, TInstr>[] BuildSparseDecoderArray(int bits, Decoder<TDasm, TMnemonic, TInstr> defaultDecoder, (uint, Decoder<TDasm, TMnemonic, TInstr>)[] sparseDecoders)
         {
             var decoders = new Decoder<TDasm, TMnemonic, TInstr>[1 << bits];
             foreach (var (code, decoder) in sparseDecoders)
@@ -81,21 +105,41 @@ namespace Reko.Core.Machine
         where TInstr : MachineInstruction
         where TMnemonic : struct
     {
+        /// <inheritdoc/>
         public sealed override TInstr Decode(uint wInstr, TDasm dasm)
         {
             throw new InvalidOperationException("32-bit decoding is not allowed with wide decoders.");
         }
 
+        /// <summary>
+        /// Decodes an instruction opcode.
+        /// </summary>
+        /// <param name="ulInstr">Instruction opcode.</param>
+        /// <param name="dasm">Disassembler instance.</param>
+        /// <returns>Decoded instruction.</returns>
         public abstract TInstr Decode(ulong ulInstr, TDasm dasm);
     }
 
+    /// <summary>
+    /// Utility class of methods to assist in decoding instructions.
+    /// </summary>
     public class Decoder
     {
+        /// <summary>
+        /// Trace switch for tracing the progress of machine code decoders.
+        /// </summary>
         public static readonly TraceSwitch trace = new TraceSwitch(nameof(Decoder), "Trace the progress of machine code decoders")
         {
             Level = TraceLevel.Warning
         };
 
+        /// <summary>
+        /// Dumps a masked instruction to the debugger output and console.
+        /// </summary>
+        /// <param name="instrBitSize">Size of the instruction to dump.</param>
+        /// <param name="wInstr">Opcode to dump.</param>
+        /// <param name="bitfields">Bitfields to dump.</param>
+        /// <param name="tag">Debug tag.</param>
         [Conditional("DEBUG")]
         public static void DumpMaskedInstruction(int instrBitSize, ulong wInstr, Bitfield[] bitfields, string tag)
         {
@@ -103,6 +147,13 @@ namespace Reko.Core.Machine
             DumpMaskedInstruction(instrBitSize, wInstr, shMask, tag);
         }
 
+        /// <summary>
+        /// Dumps a masked instruction to the debugger output and console.
+        /// </summary>
+        /// <param name="instrBitSize">Size of the instruction to dump.</param>
+        /// <param name="wInstr">Opcode to dump.</param>
+        /// <param name="shMask">Shifted mask of the bits to dump.</param>
+        /// <param name="tag">Debug tag.</param>
         [Conditional("DEBUG")]
         public static void DumpMaskedInstruction(int instrBitSize, ulong wInstr, ulong shMask, string tag)
         {

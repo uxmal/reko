@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         {
             var arch = new PowerPcBe64Architecture(new ServiceContainer(), "ppc-be-64", new Dictionary<string, object>());
             var cc = new PowerPc64CallingConvention(arch);
-            var ccr = new CallingConventionEmitter();
+            var ccr = new CallingConventionBuilder();
             cc.Generate(ccr, 0, retType, null, args.ToList());
             Assert.AreEqual(sExp.Trim(), ccr.ToString());
         }

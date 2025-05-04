@@ -38,7 +38,7 @@ namespace Reko.Environments.RT11
         }
 
         public override void Generate(
-            ICallingConventionEmitter ccr,
+            ICallingConventionBuilder ccr,
             int retAddressOnStack,
             DataType? dtRet,
             DataType? dtThis,
@@ -60,7 +60,7 @@ namespace Reko.Environments.RT11
             ccr.CallerCleanup(arch.PointerType.Size);
         }
 
-        public void SetReturnRegisters(ICallingConventionEmitter ccr, DataType dtRet)
+        public void SetReturnRegisters(ICallingConventionBuilder ccr, DataType dtRet)
         {
             //$TODO: use dtRet?
             ccr.RegReturn(arch.GetRegister("r0")!);

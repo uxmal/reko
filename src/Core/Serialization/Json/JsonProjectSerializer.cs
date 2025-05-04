@@ -18,19 +18,23 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Core.Serialization.Json
 {
+    /// <summary>
+    /// Serializes a <see cref="Project"/> to JSON.
+    /// </summary>
     public class JsonProjectSerializer
     {
         private JsonWriter? js;
 
+        /// <summary>
+        /// Serializes a <see cref="Project"/> to JSON.
+        /// </summary>
+        /// <param name="project">The project to serialize.</param>
+        /// <param name="writer">Output sink.</param>
         public void Serialize(Project project, TextWriter writer)
         {
             this.js = new JsonWriter(writer);
@@ -39,6 +43,10 @@ namespace Reko.Core.Serialization.Json
             js.EndObject();
         }
 
+        /// <summary>
+        /// Serializes a <see cref="Program"/> to JSON.
+        /// </summary>
+        /// <param name="program">Program to serialize.</param>
         public void WriteProgram(Program program)
         {
             js!.BeginObject();
@@ -47,6 +55,10 @@ namespace Reko.Core.Serialization.Json
             js.EndObject();
         }
 
+        /// <summary>
+        /// Serializes a <see cref="Procedure"/> to JSON.
+        /// </summary>
+        /// <param name="proc">Address-Procedure pair.</param>
         public void WriteProcedure(KeyValuePair<Address, Procedure> proc)
         {
             js!.BeginObject();

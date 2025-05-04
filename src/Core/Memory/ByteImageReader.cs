@@ -46,6 +46,7 @@ namespace Reko.Core.Memory
 
         /// <summary>
         /// Offset of the first readable byte the image in the byte array.
+        /// </summary>
         protected long offStart;
 
         /// <summary>

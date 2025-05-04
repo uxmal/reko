@@ -61,7 +61,7 @@ namespace Reko.Environments.SysV.ArchSpecific
         // https://en.wikipedia.org/wiki/Calling_convention#SuperH
         // https://www.renesas.com/en-eu/doc/products/tool/001/rej10b0152_sh.pdf
         public override void Generate(
-            ICallingConventionEmitter ccr,
+            ICallingConventionBuilder ccr,
             int retAddressOnStack,
             DataType? dtRet,
             DataType? dtThis,

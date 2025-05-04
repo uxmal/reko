@@ -1,12 +1,11 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Core.NativeInterface
 {
+    /// <summary>
+    /// Windows-specific native methods for loading libraries and getting symbols.
+    /// </summary>
 	internal class WindowsNativeMethods
 	{
 		[DllImport("kernel32", SetLastError = true, CharSet = CharSet.Ansi)]

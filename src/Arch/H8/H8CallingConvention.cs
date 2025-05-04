@@ -93,7 +93,7 @@ To return, the subprogram pops its local variables from the stack, restores the 
 registers from the stack, and executes RTS.
 There may be more than one such return point in a subprogram         * 
          */
-        public override void Generate(ICallingConventionEmitter ccr, int retAddressOnStack, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
+        public override void Generate(ICallingConventionBuilder ccr, int retAddressOnStack, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
         {
             ccr.LowLevelDetails(2, 2);
             int iParam = 0;

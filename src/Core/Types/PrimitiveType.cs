@@ -99,6 +99,11 @@ namespace Reko.Core.Types
 			return Create(dom, bitSize, null);
 		}
 
+        /// <summary>
+        /// Creates a new integer primitive type, with the specified bit size.
+        /// </summary>
+        /// <param name="bitlength">The size of the type in bits.</param>
+        /// <returns>A new instance of <see cref="PrimitiveType"/>.</returns>
         public static PrimitiveType CreateBitSlice(int bitlength)
         {
             if (!cache.TryGetValue((Domain.Integer, bitlength), out PrimitiveType? shared))
@@ -308,6 +313,9 @@ namespace Reko.Core.Types
 			set => throw new InvalidOperationException("Size of a primitive type cannot be changed."); 
 		}
 
+        /// <summary>
+        /// All primitive types that have been created so far, indexed by name.
+        /// </summary>
         public static ConcurrentDictionary<string, PrimitiveType> AllTypes => lookupByName;
 
         static PrimitiveType()
@@ -377,56 +385,185 @@ namespace Reko.Core.Types
             Word512 = CreateWord(512);
         }
 
+        /// <summary>
+        /// One-byte boolean type.
+        /// </summary>
         public static PrimitiveType Bool { get; }
 
+        /// <summary>
+        /// Eight-bit byte.
+        /// </summary>
 		public static PrimitiveType Byte { get; }
-        // 8-bit character
+
+        /// <summary>
+        /// 8-bit character.
+        /// </summary>
         public static PrimitiveType Char { get; }
+
+        /// <summary>
+        /// A signed 8-bit byte.
+        /// </summary>
 		public static PrimitiveType SByte { get; }
+
+        /// <summary>
+        /// Eight-bit signed integer.
+        /// </summary>
 		public static PrimitiveType Int8 { get; }
+
+        /// <summary>
+        /// Eight-bit unsigned integer.
+        /// </summary>
 		public static PrimitiveType UInt8 { get; }
 
+        /// <summary>
+        /// 16-bit word.
+        /// </summary>
 		public static PrimitiveType Word16 { get; }
+
+        /// <summary>
+        /// 16-bit signed integer.
+        /// </summary>
 		public static PrimitiveType Int16 { get; }
+
+        /// <summary>
+        /// 16-bit unsigned integer.
+        /// </summary>
 		public static PrimitiveType UInt16 { get; }
+
+        /// <summary>
+        /// 16-bit pointer.
+        /// </summary>
         public static PrimitiveType Ptr16 { get; }
+
+        /// <summary>
+        /// 16-bit segment offset.
+        /// </summary>
         public static PrimitiveType Offset16 { get; }
+
+        /// <summary>
+        /// 16-bit floating point number.
+        /// </summary>
         public static PrimitiveType Real16 { get; }
 
+        /// <summary>
+        /// Segment selector.
+        /// </summary>
 		public static PrimitiveType SegmentSelector  {get; }
 
+        /// <summary>
+        /// 32-bit word.
+        /// </summary>
 		public static PrimitiveType Word32 { get; }
+
+        /// <summary>
+        /// 32-bit signed integer.
+        /// </summary>
 		public static PrimitiveType Int32 { get; }
+
+        /// <summary>
+        /// 32-bit unsigned integer.
+        /// </summary>
 		public static PrimitiveType UInt32 { get; }
+
+        /// <summary>
+        /// 32-bit pointer.
+        /// </summary>
 		public static PrimitiveType Ptr32 { get; }
+
+        /// <summary>
+        /// 32-bit floating point number.
+        /// </summary>
 		public static PrimitiveType Real32 { get; }
+
+        /// <summary>
+        /// 32-bit segmented pointer.
+        /// </summary>
         public static PrimitiveType SegPtr32 { get; }
 
+        /// <summary>
+        /// 48-bit segmented pointer.
+        /// </summary>
         public static PrimitiveType SegPtr48 { get; }
 
 
+        /// <summary>
+        /// 64-bit word.
+        /// </summary>
         public static PrimitiveType Word64 { get; }
+
+        /// <summary>
+        /// 64-bit signed integer.
+        /// </summary>
 		public static PrimitiveType Int64 { get; }
+
+        /// <summary>
+        /// 64-bit unsigned integer.
+        /// </summary>
 		public static PrimitiveType UInt64 { get; }
+
+        /// <summary>
+        /// 64-bit pointer.
+        /// </summary>
 		public static PrimitiveType Ptr64 { get; }
+
+        /// <summary>
+        /// 64-bit floating point number.
+        /// </summary>
         public static PrimitiveType Real64 { get; }
 
+        /// <summary>
+        /// 80-bit word.
+        /// </summary>
         public static PrimitiveType Word80 { get; }
+
+        /// <summary>
+        /// 80-bit floating point number.
+        /// </summary>
 		public static PrimitiveType Real80 { get; }
+
+        /// <summary>
+        /// 80-bit binary coded decimal number.
+        /// </summary>
         public static PrimitiveType Bcd80 { get; }
 
-
+        /// <summary>
+        /// 96-bit floating point number.
+        /// </summary>
         public static PrimitiveType Real96 { get; }
 
+        /// <summary>
+        /// 128-bit word.
+        /// </summary>
         public static PrimitiveType Word128 { get; }
+
+        /// <summary>
+        /// 128-bit signed integer.
+        /// </summary>
         public static PrimitiveType Int128 { get; }
+
+        /// <summary>
+        /// 128-bit unsigned integer.
+        /// </summary>
         public static PrimitiveType UInt128 { get; }
+
+        /// <summary>
+        /// 128-bit floating point number.
+        /// </summary>
         public static PrimitiveType Real128 { get; }
 
+        /// <summary>
+        /// 256-bit word.
+        /// </summary>
         public static PrimitiveType Word256 { get; }
 
+        /// <summary>
+        /// 512-bit word.
+        /// </summary>
         public static PrimitiveType Word512 { get; }
 
+        /// <summary>
+        /// 16-bit wide character.
+        /// </summary>
         public static PrimitiveType WChar { get; }
     }
 }

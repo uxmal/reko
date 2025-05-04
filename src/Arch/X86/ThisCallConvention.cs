@@ -50,7 +50,7 @@ namespace Reko.Arch.X86
         /// the first of the dtParams will be treated as a `this`.
         /// </summary>
         public override void Generate(
-            ICallingConventionEmitter ccr,
+            ICallingConventionBuilder ccr,
             int retAddressOnStack,
             DataType? dtRet,
             DataType? dtThis,

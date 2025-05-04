@@ -18,27 +18,42 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
 using System.Xml.Serialization;
-using System.Text;
 
 namespace Reko.Core.Serialization
 {
+    /// <summary>
+    /// Array size specifying an array size.
+    /// </summary>
     public class ArraySizeCharacteristic
     {
+        /// <summary>
+        /// Name of the argument.
+        /// </summary>
         [XmlAttribute("argument")]
         public string? Argument { get; set; }
 
+        /// <summary>
+        /// Sizes of the array definitions.
+        /// </summary>
         [XmlElement("factor")]
         public ArraySizeFactor[]? Factors { get; set; }
     }
 
+    /// <summary>
+    /// Array dimension size.
+    /// </summary>
     public class ArraySizeFactor
     {
+        /// <summary>
+        /// Argumment name.
+        /// </summary>
         [XmlAttribute("argument")]
         public string? Argument { get; set; }
 
+        /// <summary>
+        /// Constant value.
+        /// </summary>
         [XmlAttribute("constant")]
         public string? Constant { get; set; }
     }

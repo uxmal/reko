@@ -98,7 +98,7 @@ char - just clr r25). Arguments to functions with variable argument lists
         }
 
         public override void Generate(
-            ICallingConventionEmitter ccr,
+            ICallingConventionBuilder ccr,
             int retAddressOnStack,
             DataType? dtRet,
             DataType? dtThis,
@@ -181,7 +181,7 @@ Arguments of varargs functions are passed on the stack. This applies even to the
      
         }
 
-        private void GenerateReturnValue(DataType dtRet, ICallingConventionEmitter ccr)
+        private void GenerateReturnValue(DataType dtRet, ICallingConventionBuilder ccr)
         {
             int size = dtRet.Size;
             if ((size & 1) != 0) // odd sized register occupies two regs

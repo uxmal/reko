@@ -50,7 +50,7 @@ namespace Reko.Arch.X86
         }
 
         public override void Generate(
-            ICallingConventionEmitter ccr,
+            ICallingConventionBuilder ccr,
             int retSizeOnStack,
             DataType? dtRet,
             DataType? dtThis,

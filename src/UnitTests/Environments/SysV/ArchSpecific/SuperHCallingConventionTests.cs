@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
     {
         private SuperHArchitecture arch;
         private SuperHCallingConvention cc;
-        private CallingConventionEmitter ccr;
+        private CallingConventionBuilder ccr;
         private PrimitiveType c = PrimitiveType.Char;
         private PrimitiveType s = PrimitiveType.Int16;
         private PrimitiveType i = PrimitiveType.Int32;
@@ -66,7 +66,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         private void Given_CallingConvention()
         {
             this.cc = new SuperHCallingConvention(arch);
-            this.ccr = new CallingConventionEmitter();
+            this.ccr = new CallingConventionBuilder();
         }
 
         [Test]

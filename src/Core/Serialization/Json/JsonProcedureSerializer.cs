@@ -28,16 +28,28 @@ using System.Linq;
 
 namespace Reko.Core.Serialization.Json
 {
+    /// <summary>
+    /// Serializes a procedure to JSON.
+    /// </summary>
     public class JsonProcedureSerializer : InstructionVisitor, IExpressionVisitor
     {
         private TextWriter w;
         private JsonWriter js;
 
+        /// <summary>
+        /// Constructs an instance of <see cref="JsonProcedureSerializer"/>.
+        /// </summary>
         public JsonProcedureSerializer()
         {
             this.w = TextWriter.Null;
             this.js = new JsonWriter(w);
         }
+
+        /// <summary>
+        /// Serializes a procedure to JSON. 
+        /// </summary>
+        /// <param name="proc">Procedure to serialize.</param>
+        /// <returns>JSON data.</returns>
         public string Serialize(Procedure proc)
         {
             var sw = new StringWriter();
@@ -164,11 +176,13 @@ namespace Reko.Core.Serialization.Json
             w.Write("]");
         }
 
+        /// <inheritdoc/>
         public void VisitAddress(Address addr)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitApplication(Application appl)
         {
             w.Write('[');
@@ -177,11 +191,13 @@ namespace Reko.Core.Serialization.Json
             js.WriteListContents(appl.Arguments, e => e.Accept(this));
         }
 
+        /// <inheritdoc/>
         public void VisitArrayAccess(ArrayAccess acc)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitAssignment(Assignment ass)
         {
             js.Write("=");
@@ -191,6 +207,7 @@ namespace Reko.Core.Serialization.Json
             ass.Src.Accept(this);
         }
 
+        /// <inheritdoc/>
         public void VisitBinaryExpression(BinaryExpression binExp)
         {
             w.Write('[');
@@ -202,6 +219,7 @@ namespace Reko.Core.Serialization.Json
             w.Write(']');
         }
 
+        /// <inheritdoc/>
         public void VisitBranch(Branch branch)
         {
             js.Write("bra");
@@ -211,6 +229,7 @@ namespace Reko.Core.Serialization.Json
             js.Write(branch.Target.DisplayName);
         }
 
+        /// <inheritdoc/>
         public void VisitCallInstruction(CallInstruction ci)
         {
             js.Write("call");
@@ -229,11 +248,13 @@ namespace Reko.Core.Serialization.Json
         {
         }
 
+        /// <inheritdoc/>
         public void VisitCast(Cast cast)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitComment(CodeComment comment)
         {
             js.Write("cmt");
@@ -241,11 +262,13 @@ namespace Reko.Core.Serialization.Json
             w.Write(comment.Text);
         }
 
+        /// <inheritdoc/>
         public void VisitConditionalExpression(ConditionalExpression cond)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitConditionOf(ConditionOf cof)
         {
             js.Write("cof");
@@ -253,6 +276,7 @@ namespace Reko.Core.Serialization.Json
             cof.Expression.Accept(this);
         }
 
+        /// <inheritdoc/>
         public void VisitConstant(Constant c)
         {
             w.Write('[');
@@ -262,41 +286,49 @@ namespace Reko.Core.Serialization.Json
             w.Write(']');
         }
 
+        /// <inheritdoc/>
         public void VisitConversion(Conversion conversion)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitDefInstruction(DefInstruction def)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitDereference(Dereference deref)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitFieldAccess(FieldAccess acc)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitGotoInstruction(GotoInstruction gotoInstruction)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitIdentifier(Identifier id)
         {
             js.Write(id.Name);
         }
 
+        /// <inheritdoc/>
         public void VisitMemberPointerSelector(MemberPointerSelector mps)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitMemoryAccess(MemoryAccess access)
         {
             w.Write('[');
@@ -310,36 +342,43 @@ namespace Reko.Core.Serialization.Json
             w.Write(']');
         }
 
+        /// <inheritdoc/>
         public void VisitMkSequence(MkSequence seq)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitOutArgument(OutArgument outArgument)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitPhiAssignment(PhiAssignment phi)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitPhiFunction(PhiFunction phi)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitPointerAddition(PointerAddition pa)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitProcedureConstant(ProcedureConstant pc)
         {
             js.Write(pc.Procedure.Name);
         }
 
+        /// <inheritdoc/>
         public void VisitReturnInstruction(ReturnInstruction ret)
         {
             js.Write("ret");
@@ -350,31 +389,37 @@ namespace Reko.Core.Serialization.Json
             }
         }
 
+        /// <inheritdoc/>
         public void VisitScopeResolution(ScopeResolution scopeResolution)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitSegmentedAddress(SegmentedPointer address)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitSideEffect(SideEffect side)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitSlice(Slice slice)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitStringConstant(StringConstant str)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitStore(Store store)
         {
             w.Write('[');
@@ -386,11 +431,13 @@ namespace Reko.Core.Serialization.Json
             w.Write(']');
         }
 
+        /// <inheritdoc/>
         public void VisitSwitchInstruction(SwitchInstruction si)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitTestCondition(TestCondition tc)
         {
             w.Write('[');
@@ -402,6 +449,7 @@ namespace Reko.Core.Serialization.Json
             w.Write(']');
         }
 
+        /// <inheritdoc/>
         public void VisitUnaryExpression(UnaryExpression unary)
         {
             w.Write('[');
@@ -411,6 +459,7 @@ namespace Reko.Core.Serialization.Json
             w.Write(']');
         }
 
+        /// <inheritdoc/>
         public void VisitUseInstruction(UseInstruction use)
         {
             throw new NotImplementedException();

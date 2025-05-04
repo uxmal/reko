@@ -38,8 +38,16 @@ namespace Reko.Core.Machine
         /// </summary>
         string Name { get; }
 
+        /// <summary>
+        /// Generates 
+        /// </summary>
+        /// <param name="ccr"></param>
+        /// <param name="retAddressOnStack"></param>
+        /// <param name="dtRet"></param>
+        /// <param name="dtThis"></param>
+        /// <param name="dtParams"></param>
         void Generate(
-            ICallingConventionEmitter ccr,
+            ICallingConventionBuilder ccr,
             int retAddressOnStack,
             DataType? dtRet,
             DataType? dtThis,
@@ -67,7 +75,10 @@ namespace Reko.Core.Machine
         IComparer<Identifier>? OutArgumentComparer { get; }
     }
 
-    public interface ICallingConventionEmitter
+    /// <summary>
+    /// Interface for a builder that builds a calling convention.
+    /// </summary>
+    public interface ICallingConventionBuilder
     {
         /// <summary>
         /// Allocate a stack slot of size <paramref name="dt"/>, without
@@ -129,11 +140,13 @@ namespace Reko.Core.Machine
         /// <summary>
         /// Add a sequence parameter.
         /// </summary>
+        /// <param name="stgs">Sequence storage used to pass a parameter value.</param>
         void SequenceParam(params Storage[] stgs);
 
         /// <summary>
         /// Add a sequence parameter.
         /// </summary>
+        /// <param name="seq">Sequence storage used to pass a parameter value.</param>
         void SequenceParam(SequenceStorage seq);
 
         /// <summary>
@@ -178,15 +191,18 @@ namespace Reko.Core.Machine
     /// <summary>
     /// A class implemeting <see cref="ICallingConventionEmitter"/>.
     /// </summary>
-    public class CallingConventionEmitter : ICallingConventionEmitter
+    /// <summary>
+    /// Implements the <see cref="ICallingConventionBuilder"/> interface.
+    /// </summary>
+    public class CallingConventionBuilder : ICallingConventionBuilder
     {
         private int stackAlignment;
         private int stackOffset;
 
         /// <summary>
-        /// Creates an instance of <see cref="CallingConventionEmitter"/>.
+        /// Constructs a <see cref="CallingConventionBuilder"/> instance.
         /// </summary>
-        public CallingConventionEmitter()
+        public CallingConventionBuilder()
         {
             Parameters = [];
         }
@@ -248,7 +264,7 @@ namespace Reko.Core.Machine
             ImplicitThis = dtThis;
         }
 
-        void ICallingConventionEmitter.ImplicitThisStack(DataType dt)
+        void ICallingConventionBuilder.ImplicitThisStack(DataType dt)
         {
             ImplicitThis = new StackStorage(stackOffset, dt);
             stackOffset += Align(dt.Size, stackAlignment);
@@ -261,46 +277,55 @@ namespace Reko.Core.Machine
             stackOffset = initialStackOffset;
         }
 
+        /// <inheritdoc />
         public void Param(Storage stg)
         {
             Parameters.Add(stg);
         }
 
+        /// <inheritdoc />
         public void RegParam(RegisterStorage stg)
         {
             Parameters.Add(stg);
         }
 
+        /// <inheritdoc />
         public void RegReturn(RegisterStorage stg)
         {
             Return = stg;
         }
 
+        /// <inheritdoc />
         public void ReverseParameters()
         {
             Parameters.Reverse();
         }
 
+        /// <inheritdoc />
         public void SequenceParam(params Storage[] stgs)
         {
             Parameters.Add(new SequenceStorage(stgs));
         }
 
+        /// <inheritdoc />
         public void SequenceParam(SequenceStorage seq)
         {
             Parameters.Add(seq);
         }
 
+        /// <inheritdoc />
         public void SequenceReturn(params Storage[] stgs)
         {
             Return = new SequenceStorage(stgs);
         }
 
+        /// <inheritdoc />
         public void SequenceReturn(SequenceStorage seq)
         {
             Return = seq;
         }
 
+        /// <inheritdoc />
         public Storage AllocateStackSlot(DataType dt)
         {
             var stg = new StackStorage(stackOffset, dt);
@@ -308,12 +333,14 @@ namespace Reko.Core.Machine
             return stg;
         }
 
+        /// <inheritdoc />
         public void StackParam(DataType dt)
         {
             var stg = AllocateStackSlot(dt);
             Parameters.Add(stg);
         }
 
+        /// <inheritdoc />
         public void StackReturn(DataType dt)
         {
             var stg = new StackStorage(stackOffset, dt);
@@ -321,12 +348,14 @@ namespace Reko.Core.Machine
             Return = stg;
         }
 
+        /// <inheritdoc />
         public void FpuReturn(int depth, DataType dt)
         {
             Return = new FpuStackStorage(depth, dt);
             FpuStackDelta = 1;
         }
 
+        /// <inheritdoc />
         public override string ToString()
         {
             var sb = new StringBuilder();

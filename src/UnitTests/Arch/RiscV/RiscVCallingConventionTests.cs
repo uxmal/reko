@@ -42,7 +42,7 @@ namespace Reko.UnitTests.Arch.RiscV
 
         private RiscVArchitecture arch;
         private RiscVCallingConvention cc;
-        private ICallingConventionEmitter ccr;
+        private ICallingConventionBuilder ccr;
 
         [SetUp]
         public void Setup()
@@ -60,7 +60,7 @@ namespace Reko.UnitTests.Arch.RiscV
                     { "FloatAbi", floatAbi }
                 });
             this.cc = new RiscVCallingConvention(arch);
-            this.ccr = new CallingConventionEmitter();
+            this.ccr = new CallingConventionBuilder();
         }
 
         [Test]

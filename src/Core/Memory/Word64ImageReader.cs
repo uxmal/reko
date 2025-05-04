@@ -31,6 +31,9 @@ namespace Reko.Core.Memory
     /// </summary>
     public class Word64ImageReader : ImageReader
     {
+        /// <summary>
+        /// Memory area organized in 64-bit words.
+        /// </summary>
         protected readonly Word64MemoryArea mem;
         private readonly long endOffset;
 
@@ -44,16 +47,33 @@ namespace Reko.Core.Memory
         {
         }
 
+        /// <summary>
+        /// Constructs a new image reader for a memory area organized in 64-bit words.
+        /// </summary>
+        /// <param name="mem">64-bit memory area.</param>
+        /// <param name="addr">Starting address.</param>
         public Word64ImageReader(Word64MemoryArea mem, Address addr)
             : this(mem, addr - mem.BaseAddress, mem.Words.Length)
         {
         }
 
+        /// <summary>
+        /// Constructs a new image reader for a memory area organized in 64-bit words.
+        /// </summary>
+        /// <param name="mem">64-bit memory area.</param>
+        /// <param name="addr">Starting address.</param>
+        /// <param name="cUnits">Maximum number of words to read.</param>
         public Word64ImageReader(Word64MemoryArea mem, Address addr, long cUnits)
             : this(mem, addr - mem.BaseAddress, (addr - mem.BaseAddress) + cUnits)
         {
         }
 
+        /// <summary>
+        /// Constructs a new image reader for a memory area organized in 64-bit words.
+        /// </summary>
+        /// <param name="mem">64-bit memory area.</param>
+        /// <param name="beginOffset">Starting offset.</param>
+        /// <param name="endOffset">Ending offset.</param>
         public Word64ImageReader(Word64MemoryArea mem, long beginOffset, long endOffset)
         {
             this.mem = mem;

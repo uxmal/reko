@@ -210,7 +210,7 @@ namespace Reko.Core.Serialization
                         ReturnAddressOnStack = retAddrSize,
                     };
                 }
-                var res = new CallingConventionEmitter();
+                var res = new CallingConventionBuilder();
                 cc.Generate(res, retAddrSize, dtRet, dtThis, dtParameters);
                 if (res.Return != null)
                 {

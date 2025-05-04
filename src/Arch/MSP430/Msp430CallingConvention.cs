@@ -214,7 +214,7 @@ Alignment "holes" can occur between arguments passed on the stack, but "back-fil
                     .ToArray();
         }
 
-        public override void Generate(ICallingConventionEmitter ccr, int retAddressOnStack, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
+        public override void Generate(ICallingConventionBuilder ccr, int retAddressOnStack, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
         {
             ccr.LowLevelDetails(2, 0);
             int iReg = 0;

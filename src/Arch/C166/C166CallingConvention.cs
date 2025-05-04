@@ -33,7 +33,7 @@ namespace Reko.Arch.C166
         public C166CallingConvention() : base("") { }
 
         public override void Generate(
-            ICallingConventionEmitter ccr,
+            ICallingConventionBuilder ccr,
             int retAddressOnStack,
             DataType? dtRet,
             DataType? dtThis,

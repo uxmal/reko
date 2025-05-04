@@ -24,8 +24,18 @@ using System.Linq;
 
 namespace Reko.Core.Scripts
 {
+    /// <summary>
+    /// Represents an error encountered when running a script.
+    /// </summary>
     public class ScriptError
     {
+        /// <summary>
+        /// Constructs a new instance of <see cref="ScriptError"/>.
+        /// </summary>
+        /// <param name="fileName">File name.</param>
+        /// <param name="ex">Exception.</param>
+        /// <param name="message">Error message.</param>
+        /// <param name="stackFrames">List of stack frames.</param>
         public ScriptError(
             string fileName,
             Exception ex,
@@ -39,10 +49,29 @@ namespace Reko.Core.Scripts
             this.LineNumber = FindFileLine(FileName, stackFrames);
         }
 
+        /// <summary>
+        /// File name to which the error refers.
+        /// </summary>
         public readonly string FileName;
+
+        /// <summary>
+        /// Line number in the file to which the error refers.
+        /// </summary>
         public readonly int? LineNumber;
+
+        /// <summary>
+        /// Exception that was thrown.
+        /// </summary>
         public readonly Exception Exception;
+
+        /// <summary>
+        /// Message describing the error.
+        /// </summary>
         public readonly string Message;
+
+        /// <summary>
+        /// Stack frames.
+        /// </summary>
         public readonly IList<ScriptStackFrame> StackFrames;
 
         private static int? FindFileLine(

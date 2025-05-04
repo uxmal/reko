@@ -43,7 +43,7 @@ namespace Reko.Core.Machine
 
         public virtual IComparer<Identifier>? OutArgumentComparer { get; protected set; }
 
-        public abstract void Generate(ICallingConventionEmitter ccr, int retAddressOnStack, DataType? dtRet, DataType? dtThis, List<DataType> dtParams);
+        public abstract void Generate(ICallingConventionBuilder ccr, int retAddressOnStack, DataType? dtRet, DataType? dtThis, List<DataType> dtParams);
         public abstract bool IsArgument(Storage stg);
         public abstract bool IsOutArgument(Storage stg);
 

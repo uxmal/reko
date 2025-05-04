@@ -1088,22 +1088,43 @@ namespace Reko.Core.Hll.C
     /// </summary>
     public struct CToken
     {
+        /// <summary>
+        /// Constructs a C token.
+        /// </summary>
+        /// <param name="type">Token type.</param>
         public CToken(CTokenType type) : this(type, null)
         {
         }
 
+        /// <summary>
+        /// Constructs a C token with a value.
+        /// </summary>
+        /// <param name="type">Token type.</param>
+        /// <param name="value">Token value.</param>
         public CToken(CTokenType type, object? value)
         {
             this.Type = type;
             this.Value = value;
         }
 
+        /// <summary>
+        /// Token type.
+        /// </summary>
         public CTokenType Type { get; }
+
+        /// <summary>
+        /// Token value.
+        /// </summary>
         public object? Value { get; }
     }
 
+    /// <summary>
+    /// Represents the type of a C token.
+    /// </summary>
     public enum CTokenType
     {
+#pragma warning disable CS1591
+
         EOF = -1,
 
         None = 0,

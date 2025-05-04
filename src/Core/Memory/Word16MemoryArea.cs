@@ -31,13 +31,27 @@ namespace Reko.Core.Memory
     /// </summary>
     public class Word16MemoryArea : MemoryArea
     {
+        /// <summary>
+        /// Constructs an instance of <see cref="Word16MemoryArea"/>.
+        /// </summary>
+        /// <param name="addrBase">Base address of the memory area.</param>
+        /// <param name="words">16-bit words.
+        /// </param>
         public Word16MemoryArea(Address addrBase, ushort[] words)
             : base(addrBase, words.Length, 16, new MemoryFormatter(PrimitiveType.Word16, 1, 8, 4, 2))
         {
             this.Words = words;
         }
 
-        public static MemoryArea CreateFromBeBytes(Address address, byte[] bytes)
+        /// <summary>
+        /// Factory method to create a <see cref="Word16MemoryArea"/> from a byte array.
+        /// The bytes are grouped into 16-bit words, and the byte order is big-endian.
+        /// </summary>
+        /// <param name="address">Base address of the memory area.</param>
+        /// <param name="bytes">Bytes to be treated as 16-bit big-endian words.</param>
+        /// <returns>An instance of <see cref="Word16MemoryArea"/>.
+        /// </returns>
+        public static Word16MemoryArea CreateFromBeBytes(Address address, byte[] bytes)
         {
             static ushort[] CreateFromBeBytes(byte[] bytes)
             {
@@ -52,6 +66,14 @@ namespace Reko.Core.Memory
             return new Word16MemoryArea(address, words);
         }
 
+        /// <summary>
+        /// Factory method to create a <see cref="Word16MemoryArea"/> from a byte array.
+        /// The bytes are grouped into 16-bit words, and the byte order is little-endian.
+        /// </summary>
+        /// <param name="address">Base address of the memory area.</param>
+        /// <param name="bytes">Bytes to be treated as 16-bit little-endian words.</param>
+        /// <returns>An instance of <see cref="Word16MemoryArea"/>.
+        /// </returns>
         public static MemoryArea CreateFromLeBytes(Address address, byte[] bytes)
         {
             static ushort[] CreateFromLeBytes(byte[] bytes)

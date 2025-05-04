@@ -59,8 +59,19 @@ namespace Reko.Core.Memory
         /// </returns>
         bool ReadNullCharTerminator(DataType dtChar);
 
+        /// <summary>
+        /// Reads a null terminated string starting at the current position of the reader.
+        /// </summary>
+        /// <param name="charType">Data type of the individual characters.</param>
+        /// <param name="encoding">Text encoding to use to decode the string.</param>
         string ReadNulTerminatedString(DataType charType, Encoding encoding);
 
+        /// <summary>
+        /// Reads a null terminated string starting at the current position of the reader
+        /// and wrtaps in a <see cref="StringConstant"/>.
+        /// </summary>
+        /// <param name="charType">Data type of the individual characters.</param>
+        /// <param name="encoding">Text encoding to use to decode the string.</param>
         StringConstant ReadCString(DataType charType, Encoding encoding);
 
         /// <summary>
@@ -187,13 +198,63 @@ namespace Reko.Core.Memory
     /// </summary>
 	public abstract class EndianByteImageReader : ByteImageReader, EndianImageReader
     {
+        /// <summary>
+        /// Initializes an instance.
+        /// </summary>
+        /// <param name="img">Byte memory area.</param>
+        /// <param name="addr">Address to start reading at.</param>
         protected EndianByteImageReader(ByteMemoryArea img, Address addr) : base(img, addr) { }
+
+        /// <summary>
+        /// Initializes an instance.
+        /// </summary>
+        /// <param name="img">Byte memory area.</param>
+        /// <param name="addr">Address to start reading at.</param>
+        /// <param name="cUnits">Maximum number of bytes to read.</param>
         protected EndianByteImageReader(ByteMemoryArea img, Address addr, long cUnits) : base(img, addr, cUnits) { }
+
+        /// <summary>
+        /// Initializes an instance.
+        /// </summary>
+        /// <param name="img">Byte memory area.</param>
+        /// <param name="offsetBegin">Offset at which to start reading.</param>
+        /// <param name="offsetEnd">Offset at which to stop reading.</param>
         protected EndianByteImageReader(ByteMemoryArea img, long offsetBegin, long offsetEnd) : base(img, offsetBegin, offsetEnd) { }
+
+        /// <summary>
+        /// Initializes an instance.
+        /// </summary>
+        /// <param name="img">Byte memory area.</param>
+        /// <param name="addrBegin">Address at which to start reading.</param>
+        /// <param name="addrEnd">Address at which to stop reading.</param>
         protected EndianByteImageReader(ByteMemoryArea img, Address addrBegin, Address addrEnd) : base(img, addrBegin, addrEnd) { }
-        protected EndianByteImageReader(ByteMemoryArea img, long off) : base(img, off) { }
-        protected EndianByteImageReader(byte[] img, long off, long offEnd) : base(img, off, offEnd) { }
-        protected EndianByteImageReader(byte[] img, long off) : base(img, off, img.Length) { }
+
+        /// <summary>
+        /// Initializes an instance.
+        /// </summary>
+        /// <param name="img">Byte memory area.</param>
+        /// <param name="offset">Offset at which to start reading.</param>
+        protected EndianByteImageReader(ByteMemoryArea img, long offset) : base(img, offset) { }
+
+        /// <summary>
+        /// Initializes an instance.
+        /// </summary>
+        /// <param name="img">Byte array to read from.</param>
+        /// <param name="offsetBegin">Offset at which to start reading.</param>
+        /// <param name="offsetEnd">Offset at which to stop reading.</param>
+        protected EndianByteImageReader(byte[] img, long offsetBegin, long offsetEnd) : base(img, offsetBegin, offsetEnd) { }
+
+        /// <summary>
+        /// Initializes an instance.
+        /// </summary>
+        /// <param name="img">Byte array to read from.</param>
+        /// <param name="offset">Offset at which to start reading.</param>
+        protected EndianByteImageReader(byte[] img, long offset) : base(img, offset, img.Length) { }
+
+        /// <summary>
+        /// Initializes an instance.
+        /// </summary>
+        /// <param name="img">Byte array to read from.</param>
         protected EndianByteImageReader(byte[] img) : base(img, 0, img.Length) { }
 
         /// <summary>
@@ -232,7 +293,7 @@ namespace Reko.Core.Memory
             return rdr;
         }
 
-
+        /// <inheritdoc/>
         public T ReadAt<T>(long offset, Func<EndianImageReader, T> action)
         {
             return base.ReadAt(offset, rdr => action.Invoke((EndianImageReader) rdr));
@@ -249,6 +310,7 @@ namespace Reko.Core.Memory
             };
         }
 
+        /// <inheritdoc/>
         public string ReadNulTerminatedString(DataType charType, Encoding encoding)
         {
             int iStart = (int) Offset;
@@ -467,20 +529,30 @@ namespace Reko.Core.Memory
 	/// </summary>
 	public class LeImageReader : EndianByteImageReader
 	{
+        /// <inheritdoc/>
 		public LeImageReader(ByteMemoryArea image, long offset) : base(image, offset) { }
+        /// <inheritdoc/>
 		public LeImageReader(ByteMemoryArea image, Address addr) : base(image, addr) { }
+        /// <inheritdoc/>
 		public LeImageReader(ByteMemoryArea image, Address addr, long cUnits) : base(image, addr, cUnits) { }
+        /// <inheritdoc/>
 		public LeImageReader(ByteMemoryArea image, long offsetBegin, long offsetEnd) : base(image, offsetBegin, offsetEnd) { }
+        /// <inheritdoc/>
 		public LeImageReader(ByteMemoryArea image, Address addrBegin, Address addrEnd) : base(image, addrBegin, addrEnd) { }
+        /// <inheritdoc/>
         public LeImageReader(byte[] bytes, long offsetBegin, long offsetEnd) : base(bytes, offsetBegin, offsetEnd) { }
+        /// <inheritdoc/>
         public LeImageReader(byte[] bytes, long offset) : base(bytes, offset, bytes.Length) { }
+        /// <inheritdoc/>
         public LeImageReader(byte[] bytes) : base(bytes, 0, bytes.Length) { }
 
+        /// <inheritdoc/>
         public override EndianImageReader CreateNew(byte[] bytes, long offset)
 		{
 			return new LeImageReader(bytes, offset);
 		}
 
+        /// <inheritdoc/>
 		public override EndianImageReader CreateNew(MemoryArea image, Address addr)
 		{
 			return new LeImageReader((ByteMemoryArea) image, (uint)(addr - image.BaseAddress));
@@ -564,13 +636,21 @@ namespace Reko.Core.Memory
 	/// </summary>
 	public class BeImageReader : EndianByteImageReader
 	{
+        /// <inheritdoc/>
 		public BeImageReader(ByteMemoryArea image, long offset) : base(image, offset) { }
+        /// <inheritdoc/>
 		public BeImageReader(ByteMemoryArea image, Address addr) : base(image, addr) { }
+        /// <inheritdoc/>
 		public BeImageReader(ByteMemoryArea image, Address addr, long cUnits) : base(image, addr, cUnits) { }
+        /// <inheritdoc/>
         public BeImageReader(ByteMemoryArea image, long offsetBegin, long offsetEnd) : base(image, offsetBegin, offsetEnd) { }
+        /// <inheritdoc/>
 		public BeImageReader(ByteMemoryArea image, Address addrBegin, Address addrEnd) : base(image, addrBegin, addrEnd) { }
+        /// <inheritdoc/>
         public BeImageReader(byte[] bytes, long offset, long offsetEnd) : base(bytes, offset, offsetEnd) { }
+        /// <inheritdoc/>
         public BeImageReader(byte[] bytes, long offset) : base(bytes, offset, bytes.Length) { }
+        /// <inheritdoc/>
         public BeImageReader(byte[] bytes) : base(bytes, 0, bytes.Length) { }
 
         /// <inheritdoc/>

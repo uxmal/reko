@@ -38,7 +38,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
     {
         private Avr8Architecture arch;
         private Avr8CallingConvention cc;
-        private CallingConventionEmitter ccr;
+        private CallingConventionBuilder ccr;
 
         [SetUp]
         public void Setup()
@@ -49,7 +49,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         private void Given_CallingConvention()
         {
             this.cc = new Avr8CallingConvention(arch);
-            this.ccr = new CallingConventionEmitter();
+            this.ccr = new CallingConventionBuilder();
         }
 
         [Test] 

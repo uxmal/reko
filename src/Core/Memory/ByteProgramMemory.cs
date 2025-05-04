@@ -111,7 +111,7 @@ namespace Reko.Core.Memory
         }
 
         /// <inheritdoc/>
-        public bool TryReadInt8(Address addr, out byte value)
+        public bool TryReadInt8(Address addr, out sbyte value)
         {
             if (!this.SegmentMap.TryFindSegment(addr, out var segment))
             {
@@ -197,7 +197,7 @@ namespace Reko.Core.Memory
         }
 
         /// <inheritdoc/>
-        public bool TryReadUInt8(Address addr, out sbyte value)
+        public bool TryReadUInt8(Address addr, out byte value)
         {
             if (!this.SegmentMap.TryFindSegment(addr, out var segment))
             {

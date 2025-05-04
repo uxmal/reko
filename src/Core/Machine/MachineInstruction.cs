@@ -78,8 +78,8 @@ namespace Reko.Core.Machine
         /// <summary>
         /// Renders this instruction to the provided <see cref="MachineInstructionRenderer"/>.
         /// </summary>
-        /// <param name="renderer"></param>
-        /// <param name="options"></param>
+        /// <param name="renderer">Output sink.</param>
+        /// <param name="options">Options controlling the output.</param>
         public void Render(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             renderer.BeginInstruction(Address);
@@ -91,7 +91,7 @@ namespace Reko.Core.Machine
         /// Derived classes should implement this method to render the instruction.
         /// </summary>
         /// <param name="renderer">Output sink.</param>
-        /// <param name="options">Option controlling the output.</param>
+        /// <param name="options">Options controlling the output.</param>
         protected abstract void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options);
 
         /// <summary>
@@ -129,8 +129,8 @@ namespace Reko.Core.Machine
         /// <summary>
         /// Utility function to render the operands, separated by commas.
         /// </summary>
-        /// <param name="renderer"></param>
-        /// <param name="options"></param>
+        /// <param name="renderer">Output sink.</param>
+        /// <param name="options">Options controlling the output.</param>
         protected void RenderOperands(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             if (Operands.Length == 0)

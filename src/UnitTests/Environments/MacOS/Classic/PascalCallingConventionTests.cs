@@ -32,7 +32,7 @@ namespace Reko.UnitTests.Environments.MacOS.Classic
     public class PascalCallingConventionTests
     {
         private M68kArchitecture arch;
-        private CallingConventionEmitter emitter;
+        private CallingConventionBuilder emitter;
 
         public PascalCallingConventionTests()
         {
@@ -42,7 +42,7 @@ namespace Reko.UnitTests.Environments.MacOS.Classic
         [SetUp]
         public void Setup()
         {
-            this.emitter = new CallingConventionEmitter();
+            this.emitter = new CallingConventionBuilder();
         }
 
         [Test]

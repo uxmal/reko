@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 
 namespace Reko.Core.NativeInterface.Interfaces
 {
-	public interface INativeSymbolSource : IDisposable
+#pragma warning disable CS1591
+
+    public interface INativeSymbolSource : IDisposable
 	{
 		//TODO
 	}

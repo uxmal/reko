@@ -29,32 +29,38 @@ namespace Reko.Core.Types
 	/// </summary>
 	public abstract class DataTypeTransformer : IDataTypeVisitor<DataType>
 	{
+        /// <inheritdoc/>
 		public virtual DataType VisitArray(ArrayType at)
 		{
 			at.ElementType = at.ElementType.Accept(this);
 			return at;
 		}
 
+        /// <inheritdoc/>
         public virtual DataType VisitClass(ClassType ct)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public virtual DataType VisitCode(CodeType c)
         {
             return c;
         }
 
+        /// <inheritdoc/>
         public virtual DataType VisitEnum(EnumType e)
         {
             return e;
         }
 
+        /// <inheritdoc/>
 		public virtual DataType VisitEquivalenceClass(EquivalenceClass eq)
 		{
 			return eq;
 		}
 
+        /// <inheritdoc/>
         public virtual DataType VisitFunctionType(FunctionType ft)
         {
             if (ft.ReturnValue != null)
@@ -72,11 +78,13 @@ namespace Reko.Core.Types
 			return ft;
 		}
 
+        /// <inheritdoc/>
         public virtual DataType VisitPrimitive(PrimitiveType pt)
 		{
 			return pt;
 		}
 
+        /// <inheritdoc/>
         public virtual DataType VisitStructure(StructureType str)
 		{
             // Do not transform user-defined types
@@ -89,6 +97,7 @@ namespace Reko.Core.Types
 			return str;
 		}
 
+        /// <inheritdoc/>
         public virtual DataType VisitMemberPointer(MemberPointer memptr)
 		{
 			var pointee = memptr.Pointee.Accept(this);
@@ -96,33 +105,39 @@ namespace Reko.Core.Types
             return new MemberPointer(basePointer, pointee, memptr.BitSize);
 		}
 
+        /// <inheritdoc/>
         public virtual DataType VisitPointer(Pointer ptr)
 		{
 			ptr.Pointee = ptr.Pointee.Accept(this);
 			return ptr;
 		}
 
+        /// <inheritdoc/>
         public virtual DataType VisitReference(ReferenceTo refTo)
         {
             refTo.Referent = refTo.Referent.Accept(this);
             return refTo;
         }
 
+        /// <inheritdoc/>
         public virtual DataType VisitString(StringType str)
         {
             return str;
         }
 
+        /// <inheritdoc/>
         public virtual DataType VisitTypeReference(TypeReference typeref)
         {
             return new TypeReference(typeref.Name, typeref.Referent.Accept(this));
         }
 
+        /// <inheritdoc/>
         public virtual DataType VisitTypeVariable(TypeVariable tv)
 		{
 			return tv;
 		}
 
+        /// <inheritdoc/>
         public virtual DataType VisitUnion(UnionType ut)
 		{
             // Do not transform user-defined types
@@ -135,11 +150,13 @@ namespace Reko.Core.Types
 			return ut;
 		}
 
+        /// <inheritdoc/>
         public virtual DataType VisitUnknownType(UnknownType unk)
 		{
 			return unk;
 		}
 
+        /// <inheritdoc/>
         public virtual DataType VisitVoidType(VoidType vt)
         {
             return vt;

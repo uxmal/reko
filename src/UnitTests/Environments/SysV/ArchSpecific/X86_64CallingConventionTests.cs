@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
 
         private X86ArchitectureFlat64 arch;
         private X86_64CallingConvention cc;
-        private ICallingConventionEmitter ccr;
+        private ICallingConventionBuilder ccr;
 
         [SetUp]
         public void Setup()
@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         private void Given_CallingConvention()
         {
             this.cc = new X86_64CallingConvention(arch);
-            this.ccr = new CallingConventionEmitter();
+            this.ccr = new CallingConventionBuilder();
         }
 
         [Test]

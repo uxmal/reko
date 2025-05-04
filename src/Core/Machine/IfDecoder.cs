@@ -25,7 +25,8 @@ namespace Reko.Core.Machine
 {
     /// <summary>
     /// This decoder tests a predicate. If true, it will evaluate
-    /// the given subdecoder. If false, the disassembler's CreateInvalidInstruction
+    /// the given subdecoder. If false, the disassembler's 
+    /// <see cref="DisassemblerBase{TInstr,TMnemonic}.CreateInvalidInstruction" />
     /// metod is called.
     /// </summary>
     public class IfDecoder<TDasm, TMnemonic, TInstr> : Decoder<TDasm, TMnemonic, TInstr>
@@ -37,6 +38,12 @@ namespace Reko.Core.Machine
         private readonly Predicate<uint> predicate;
         private readonly Decoder<TDasm, TMnemonic, TInstr> trueDecoder;
 
+        /// <summary>
+        /// Constructs a conditional decoder.
+        /// </summary>
+        /// <param name="bf">Bitfield to extract a value from.</param>
+        /// <param name="predicate">Predicate used to test the extracted value.</param>
+        /// <param name="trueDecoder">Decoder to invoke when predicate tests true.</param>
         public IfDecoder(
             in Bitfield bf,
             Predicate<uint> predicate,
@@ -47,6 +54,7 @@ namespace Reko.Core.Machine
             this.trueDecoder = trueDecoder;
         }
 
+        /// <inheritdoc/>
         public override TInstr Decode(uint wInstr, TDasm dasm)
         {
             DumpMaskedInstruction(32, wInstr, bitfield.Mask << bitfield.Position, "");

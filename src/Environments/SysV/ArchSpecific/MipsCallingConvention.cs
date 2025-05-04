@@ -56,7 +56,7 @@ namespace Reko.Environments.SysV.ArchSpecific
         }
 
         public override void Generate(
-            ICallingConventionEmitter ccr,
+            ICallingConventionBuilder ccr,
             int retAddressOnStack,
             DataType? dtRet,
             DataType? dtThis,
@@ -137,7 +137,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             }
         }
 
-        public void SetReturnRegister(ICallingConventionEmitter ccr, DataType dt)
+        public void SetReturnRegister(ICallingConventionBuilder ccr, DataType dt)
         {
             int bitSize = dt.BitSize;
             if (dt.Domain == Domain.Real)

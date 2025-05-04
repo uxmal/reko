@@ -1290,7 +1290,7 @@ namespace Reko.Environments.PalmOS
 
         private static FunctionType BuildSignature(in TrapInfo trap)
         {
-            var cce = new CallingConventionEmitter();
+            var cce = new CallingConventionBuilder();
             cce.LowLevelDetails(2, 4);
             var ret = CreateReturnIdentifier(trap.rType);
             if (trap.args is not null)

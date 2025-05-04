@@ -469,7 +469,7 @@ namespace Reko.Core.Memory
         }
 
         /// <summary>
-        /// Create an empty big-endian image writer.
+        /// Create a big-endian image writer on an array of bytes.
         /// </summary>
         /// <param name="image">Image to write to.</param>
         /// <param name="offset">Offset into the image at which to start writing.</param>
@@ -479,7 +479,7 @@ namespace Reko.Core.Memory
         }
 
         /// <summary>
-        /// Create an empty big-endian image writer.
+        /// Create a big-endian image writer on an array of bytes.
         /// </summary>
         /// <param name="mem">Memory area to write to.</param>
         /// <param name="addr">Address at which to start writing.</param>
@@ -489,7 +489,7 @@ namespace Reko.Core.Memory
         }
 
         /// <summary>
-        /// Create an empty big-endian image writer.
+        /// Create a big-endian image writer on an array of bytes.
         /// </summary>
         /// <param name="mem">Memory area to write to.</param>
         /// <param name="offset">Offset into the image at which to start writing.</param>
@@ -515,41 +515,74 @@ namespace Reko.Core.Memory
         public override ImageWriter WriteUInt64(ulong w) { return WriteBeUInt64(w); }
     }
 
+    /// <summary>
+    /// Big-endian image writer.
+    /// </summary>
     public class LeImageWriter : ImageWriter
     {
+        /// <summary>
+        /// Create an empty little-endian image writer.
+        /// </summary>
         public LeImageWriter()
             : base()
         {
         }
 
+        /// <summary>
+        /// Create a big-endian image writer on an array of bytes.
+        /// </summary>
+        /// <param name="image">Image to write to.</param>
         public LeImageWriter(byte [] image) :base(image)
         {
         }
 
+        /// <summary>
+        /// Create a little-endian image writer on an array of bytes.
+        /// </summary>
+        /// <param name="image">Image to write to.</param>
+        /// <param name="offset">Offset into the image at which to start writing.</param>
         public LeImageWriter(byte[] image, uint offset)
             : base(image, offset)
         {
         }
 
+        /// <summary>
+        /// Create a little-endian image writer on an array of bytes.
+        /// </summary>
+        /// <param name="mem">Memory area to write to.</param>
+        /// <param name="addr">Address at which to start writing.</param>
         public LeImageWriter(ByteMemoryArea mem, Address addr) 
             : base(mem, addr)
         {
         }
 
+        /// <summary>
+        /// Create a little-endian image writer on an array of bytes.
+        /// </summary>
+        /// <param name="mem">Memory area to write to.</param>
+        /// <param name="offset">Offset into the image at which to start writing.</param>
         public LeImageWriter(ByteMemoryArea mem, long offset)
             : base(mem, offset)
         {
         }
 
+        /// <inheritdoc/>
         public override ImageWriter Clone()
         {
             var w = new LeImageWriter(Bytes, (uint)Position);
             return w;
         }
 
+        /// <inheritdoc/>
         public override ImageWriter WriteUInt16(ushort us) { return WriteLeUInt16(us); }
+
+        /// <inheritdoc/>
         public override ImageWriter WriteUInt32(uint w) { return WriteLeUInt32(w); }
+
+        /// <inheritdoc/>
         public override ImageWriter WriteUInt32(uint offset, uint w) { return WriteLeUInt32(offset, w); }
+
+        /// <inheritdoc/>
         public override ImageWriter WriteUInt64(ulong w) { return WriteLeUInt64(w); }
     }
 }

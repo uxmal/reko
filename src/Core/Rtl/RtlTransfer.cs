@@ -38,6 +38,9 @@ namespace Reko.Core.Rtl
             this.Class = rtlClass;
         }
 
+        /// <summary>
+        /// The target of the control transfer instruction.
+        /// </summary>
         public Expression Target { get; }
     }
 }

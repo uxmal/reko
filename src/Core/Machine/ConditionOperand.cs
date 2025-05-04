@@ -22,6 +22,9 @@ using Reko.Core.Types;
 
 namespace Reko.Core.Machine;
 
+/// <summary>
+/// Utility class for creating condition code operands.
+/// </summary>
 public static class ConditionOperand
 {
     public static ConditionOperand<TCondCode> Create<TCondCode>(TCondCode code)
@@ -31,18 +34,29 @@ public static class ConditionOperand
     }
 }
 
+/// <summary>
+/// Represents a condition code operand in a machine instruction.
+/// </summary>
+/// <typeparam name="TCondCode">Type of condition code.</typeparam>
 public class ConditionOperand<TCondCode> : AbstractMachineOperand
     where TCondCode : System.Enum
 {
-
+    /// <summary>
+    /// Constructs a condition code operand.
+    /// </summary>
+    /// <param name="code">Condition code.</param>
     public ConditionOperand(TCondCode code)
         : base(PrimitiveType.Byte)
     {
         this.Condition = code;
     }
 
+    /// <summary>
+    /// The condition code of this operand.
+    /// </summary>
     public TCondCode Condition { get; }
 
+    /// <inheritdoc/>
     protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
     {
         renderer.WriteString(Condition.ToString());

@@ -26,23 +26,50 @@ using System.Text;
 
 namespace Reko.Core.Memory
 {
+    /// <summary>
+    /// A big-endian image reader for a memory area organized in 16-bit words.
+    /// </summary>
     public class Word16BeImageReader : Word16ImageReader, EndianImageReader
     {
+        /// <summary>
+        /// Constructs a reader on a memory area, starting at the given offset.
+        /// </summary>
+        /// <param name="mem">A <see cref="Word16MemoryArea"/> to read from.</param>
+        /// <param name="offset">An offset within the words of the memory area.</param>
         public Word16BeImageReader(Word16MemoryArea mem, long offset)
             : base(mem, offset, mem.Words.Length)
         {
         }
 
+        /// <summary>
+        /// Constructs a reader on a memory area, starting at the given address.
+        /// </summary>
+        /// <param name="mem">A <see cref="Word16MemoryArea"/> to read from.</param>
+        /// <param name="addr">An address within the words of the memory area.</param>
         public Word16BeImageReader(Word16MemoryArea mem, Address addr)
             : base(mem, addr - mem.BaseAddress)
         {
         }
 
+        /// <summary>
+        /// Constructs a reader on the memory area, starting at the given address,
+        /// and reading at most <paramref name="cUnits"/> words.
+        /// </summary>
+        /// <param name="mem">A <see cref="Word16MemoryArea"/> to read from.</param>
+        /// <param name="addr">An address within the words of the memory area.</param>
+        /// <param name="cUnits">Maximum number of words to read before stopping.</param>
         public Word16BeImageReader(Word16MemoryArea mem, Address addr, long cUnits)
             : base(mem, addr - mem.BaseAddress, (addr - mem.BaseAddress) + cUnits)
         {
         }
 
+        /// <summary>
+        /// Constructs a reader on the memory area, restricted to reading words
+        /// between the two given offsets.
+        /// </summary>
+        /// <param name="mem">A <see cref="Word64MemoryArea"/> to read from.</param>
+        /// <param name="offset">Starting offset.</param>
+        /// <param name="endOffset">Ending offset.</param>
         public Word16BeImageReader(Word16MemoryArea mem, long offset, long endOffset) 
             : base(mem, offset, endOffset)
         {
@@ -73,34 +100,61 @@ namespace Reko.Core.Memory
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public StringConstant ReadCString(DataType charType, Encoding encoding)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public short ReadInt16() => ReadBeInt16();
+
+        /// <inheritdoc/>
         public int ReadInt32() => ReadBeInt32();
+
+        /// <inheritdoc/>
         public long ReadInt64() => ReadBeInt64();
 
+        /// <inheritdoc/>
         public bool ReadNullCharTerminator(DataType dtChar)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public ushort ReadUInt16() => ReadBeUInt16();
+
+        /// <inheritdoc/>
         public uint ReadUInt32() => ReadBeUInt32();
+
+        /// <inheritdoc/>
         public ulong ReadUInt64() => ReadBeUInt64();
 
+        /// <inheritdoc/>
         public bool TryPeekUInt32(int offset, out uint value) => TryPeekBeUInt32(offset, out value);
+
+        /// <inheritdoc/>
         public bool TryPeekUInt64(int offset, out ulong value) => TryPeekBeUInt64(offset, out value);
 
+        /// <inheritdoc/>
         public bool TryRead(PrimitiveType dataType, [MaybeNullWhen(false)] out Constant value) => TryReadBe(dataType, out value);
 
+        /// <inheritdoc/>
         public bool TryReadInt16(out short value) => TryReadBeInt16(out value);
+
+        /// <inheritdoc/>
         public bool TryReadInt32(out int value) => TryReadBeInt32(out value);
+
+        /// <inheritdoc/>
         public bool TryReadInt64(out long value) => TryReadBeInt64(out value);
+
+        /// <inheritdoc/>
         public bool TryReadUInt16(out ushort value) => TryReadBeUInt16(out value);
+
+        /// <inheritdoc/>
         public bool TryReadUInt32(out uint value) => TryReadBeUInt32(out value);
+
+        /// <inheritdoc/>
         public bool TryReadUInt64(out ulong value) => TryReadBeUInt64(out value);
     }
 }

@@ -124,7 +124,7 @@ the address need not be recalculated. In turn, the called routine can use the ad
 the temporary buffer using memcpy, which returns the destination address (e.g., r0 has the desired value),
 or passes it to in-line code which uses r0 as a base register.
 */
-        public override void Generate(ICallingConventionEmitter ccr, int retAddressOnStack, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
+        public override void Generate(ICallingConventionBuilder ccr, int retAddressOnStack, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
         {
             ccr.LowLevelDetails(4, 16);
             int iReg = 0;

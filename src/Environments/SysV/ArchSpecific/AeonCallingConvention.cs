@@ -39,7 +39,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             this.iregs = Enumerable.Range(3, 6).Select(i => arch.GetRegister((StorageDomain) i, default)!).ToArray();
         }
 
-        public override void Generate(ICallingConventionEmitter ccr, int retAddressOnStack, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
+        public override void Generate(ICallingConventionBuilder ccr, int retAddressOnStack, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
         {
             ccr.LowLevelDetails(4, 24);
             if (dtRet != null)
@@ -61,7 +61,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             }
         }
 
-        private void SetReturnRegister(DataType dtRet, ICallingConventionEmitter ccr)
+        private void SetReturnRegister(DataType dtRet, ICallingConventionBuilder ccr)
         {
             var r3 = arch.GetRegister((StorageDomain) 3, default)!;
             if (dtRet.BitSize <= 32)

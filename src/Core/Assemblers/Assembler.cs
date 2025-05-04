@@ -18,10 +18,9 @@
  */
 #endregion
 
-using System;
-using System.IO;
-using System.Collections.Generic;
 using Reko.Core.Loading;
+using System.Collections.Generic;
+using System.IO;
 
 namespace Reko.Core.Assemblers
 {

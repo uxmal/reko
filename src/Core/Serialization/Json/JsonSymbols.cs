@@ -20,16 +20,19 @@
 
 using Reko.Core.Operators;
 using Reko.Core.Types;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Core.Serialization.Json
 {
+    /// <summary>
+    /// Predefined symbols used in JSON serialization.
+    /// </summary>
     public class JsonSymbols
     {
+        /// <summary>
+        /// Symbols for well known primitive types.
+        /// </summary>
         public readonly static Dictionary<DataType, string> PrimitiveNames = new Dictionary<DataType, string>
         {
             { PrimitiveType.Bool, "f" },
@@ -58,9 +61,14 @@ namespace Reko.Core.Serialization.Json
             { PrimitiveType.Real64, "r64" },
         };
 
+        /// <summary>
+        /// Primitive types keyed by name.
+        /// </summary>
         public static readonly Dictionary<string,DataType> PrimitivesByName = PrimitiveNames.ToDictionary(k => k.Value, v => v.Key);
 
-
+        /// <summary>
+        /// Operation names for the various operators.
+        /// </summary>
         public static readonly Dictionary<OperatorType, string> OpNames = new()
         {
             { OperatorType.AddrOf, "addr" },
@@ -108,6 +116,9 @@ namespace Reko.Core.Serialization.Json
             { OperatorType.Xor, "^" },
         };
 
+        /// <summary>
+        /// Operations by name.
+        /// </summary>
         public static readonly Dictionary<string, OperatorType> OpsByName = OpNames.ToDictionary(k => k.Value, v => v.Key);
 
     }

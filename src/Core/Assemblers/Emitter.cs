@@ -18,9 +18,7 @@
  */
 #endregion
 
-using Reko.Core;
 using Reko.Core.Expressions;
-using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Types;
 using System;
@@ -193,7 +191,7 @@ namespace Reko.Core.Assemblers
         /// Creates an instance of the <see cref="Emitter"/> class. 
         /// The output of the assembler is written to a <see cref="MemoryArea"/>.
         /// </summary>
-        /// <param name="mem"></param>
+        /// <param name="mem">Memory area to write to.</param>
         public Emitter(MemoryArea mem)
         {
             var existingBytes = ((ByteMemoryArea) mem).Bytes;

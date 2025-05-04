@@ -55,7 +55,7 @@ namespace Reko.Environments.Windows
         public X86_64CallingConvention() : base("") { }
 
         public override void Generate(
-            ICallingConventionEmitter ccr,
+            ICallingConventionBuilder ccr,
             int retAddressOnStack,
             DataType? dtRet,
             DataType? dtThis,

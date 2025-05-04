@@ -38,12 +38,18 @@ namespace Reko.Core
         private readonly SortedList<int, Expression> stackState;
 
 #nullable disable
+        /// <summary>
+        /// Initializes a <see cref="ProcessorState"/> instance.
+        /// </summary>
         public ProcessorState()
         {
             this.linearDerived = new Dictionary<RegisterStorage, Expression>();
             this.stackState = new SortedList<int, Expression>();
         }
 
+        /// <summary>
+        /// Initializes a <see cref="ProcessorState"/> instance from another.
+        /// </summary>
         public ProcessorState(ProcessorState orig)
         {
             this.linearDerived = new Dictionary<RegisterStorage, Expression>(orig.linearDerived);
@@ -52,7 +58,14 @@ namespace Reko.Core
         }
 #nullable enable
 
+        /// <summary>
+        /// Endianness of the processor state.
+        /// </summary>
         public EndianServices Endianness => Architecture.Endianness;
+
+        /// <summary>
+        /// Memory granularity, in bits.
+        /// </summary>
         public int MemoryGranularity => Architecture.MemoryGranularity;
 
         /// <summary>
@@ -60,6 +73,9 @@ namespace Reko.Core
         /// </summary>
         public Action<string>? ErrorListener { get; set; }
 
+        /// <summary>
+        /// Processor architecture.
+        /// </summary>
         public abstract IProcessorArchitecture Architecture { get; }
 
         /// <summary>
@@ -352,6 +368,10 @@ namespace Reko.Core
     /// </summary>
     public class DefaultProcessorState : ProcessorState
     {
+        /// <summary>
+        /// Creates a default processor state instance.
+        /// </summary>
+        /// <param name="arch"></param>
         public DefaultProcessorState(IProcessorArchitecture arch)
         {
             this.Architecture = arch;

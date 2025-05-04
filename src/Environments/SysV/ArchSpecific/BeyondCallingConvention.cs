@@ -17,7 +17,7 @@ namespace Reko.Environments.SysV.ArchSpecific
                 .ToArray();
         }
 
-        public override void Generate(ICallingConventionEmitter ccr, int retAddressOnStack, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
+        public override void Generate(ICallingConventionBuilder ccr, int retAddressOnStack, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
         {
             ccr.LowLevelDetails(4, 0);
             if (dtRet is not null && dtRet is not VoidType)

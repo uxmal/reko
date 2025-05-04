@@ -3,6 +3,9 @@ using System.Runtime.InteropServices;
 
 namespace Reko.Core.NativeInterface
 {
+    /// <summary>
+    /// Posix-specific native methods for loading libraries and getting symbols.
+    /// </summary>
 	internal class PosixNativeMethods
 	{
 		public const int RTLD_LAZY = 1;
@@ -22,18 +25,24 @@ namespace Reko.Core.NativeInterface
 		public static extern int dlclose(IntPtr handle);
 	}
 
-	public class PosixLibraryLoader : ILibraryLoader
+    /// <summary>
+    /// Posix implementation of <see cref="ILibraryLoader"/>.
+    /// </summary>
+    public class PosixLibraryLoader : ILibraryLoader
 	{
+        /// <inheritdoc/>
 		public IntPtr GetSymbol(IntPtr handle, string symName)
 		{
 			return PosixNativeMethods.dlsym(handle, symName);
 		}
 
+        /// <inheritdoc/>
 		public IntPtr LoadLibrary(string libPath)
 		{
 			return PosixNativeMethods.dlopen(libPath, PosixNativeMethods.RTLD_GLOBAL | PosixNativeMethods.RTLD_LAZY);
 		}
 
+        /// <inheritdoc/>
 		public int Unload(IntPtr handle)
 		{
 			return PosixNativeMethods.dlclose(handle);

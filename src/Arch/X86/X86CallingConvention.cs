@@ -59,7 +59,7 @@ namespace Reko.Arch.X86
         }
 
         public override void Generate(
-            ICallingConventionEmitter ccr,
+            ICallingConventionBuilder ccr,
             int retAddressOnStack, 
             DataType? dtRet, 
             DataType? dtThis,
@@ -97,7 +97,7 @@ namespace Reko.Arch.X86
             }
         }
 
-        public static void SetReturnStorage(ICallingConventionEmitter ccr, DataType? dtRet, int stackAlignment)
+        public static void SetReturnStorage(ICallingConventionBuilder ccr, DataType? dtRet, int stackAlignment)
         {
             if (dtRet == null)
                 return;

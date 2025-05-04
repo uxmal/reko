@@ -59,7 +59,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
 
             public IComparer<Identifier> OutArgumentComparer { get; set; }
 
-            public void Generate(ICallingConventionEmitter ccr, int retAddressOnStack, DataType dtRet, DataType dtThis, List<DataType> dtParams)
+            public void Generate(ICallingConventionBuilder ccr, int retAddressOnStack, DataType dtRet, DataType dtThis, List<DataType> dtParams)
             {
                 throw new NotImplementedException();
             }
@@ -91,7 +91,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
 
             public IComparer<Identifier> OutArgumentComparer => throw new NotImplementedException();
 
-            public void Generate(ICallingConventionEmitter ccr, int retAddressOnStack, DataType dtRet, DataType dtThis, List<DataType> dtParams)
+            public void Generate(ICallingConventionBuilder ccr, int retAddressOnStack, DataType dtRet, DataType dtThis, List<DataType> dtParams)
             {
                 throw new NotImplementedException();
             }

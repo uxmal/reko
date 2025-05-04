@@ -18,11 +18,6 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace Reko.Core.Serialization
 {
     /// <summary>
@@ -30,6 +25,13 @@ namespace Reko.Core.Serialization
     /// </summary>
     public abstract class SerializedProject
     {
+        /// <summary>
+        /// Accepts a visitor, which will be called with the concrete type of this
+        /// class.
+        /// </summary>
+        /// <typeparam name="T">Type returned by the visitor.</typeparam>
+        /// <param name="visitor">Visitor being accepted.</param>
+        /// <returns>Value returned by the visitor.</returns>
         public abstract T Accept<T>(ISerializedProjectVisitor<T> visitor);
     }
 
