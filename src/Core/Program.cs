@@ -51,9 +51,19 @@ namespace Reko.Core
     [Designer("Reko.Gui.Design.ProgramDesigner,Reko.Gui")]
     public class Program : IReadOnlyProgram, ILoadedImage, INotifyPropertyChanged
     {
+        /// <summary>
+        /// Event raised when a property changes.
+        /// </summary>
         public event PropertyChangedEventHandler? PropertyChanged;
 
+        /// <summary>
+        /// The name of the policy used to store all the program's data in a single file.
+        /// </summary>
         public const string SingleFilePolicy = "SingleFile";
+
+        /// <summary>
+        /// The name of the policy used to store the program's data in multiple files.
+        /// </summary>
         public const string SegmentFilePolicy = "Segment";
 
         private IProcessorArchitecture archDefault;
@@ -403,6 +413,9 @@ namespace Reko.Core
         public Dictionary<Address, ExternalProcedure> InterceptedCalls { get; private set; }
 
         //$REVIEW: shouldn't these belong in SsaState?
+        /// <summary>
+        /// The program's linear induction variables, indexed by their identifier.
+        /// </summary>
         public Dictionary<Identifier, LinearInductionVariable> InductionVariables { get; private set; }
 
         /// <summary>
@@ -789,6 +802,14 @@ namespace Reko.Core
             }
         }
 
+        /// <summary>
+        /// Gets the size of an object at address <paramref name="addr"/> with
+        /// the data type <paramref name="dt"/>.
+        /// </summary>
+        /// <param name="arch">Architecture to use.</param>
+        /// <param name="addr">Address of object.</param>
+        /// <param name="dt">Datatype of object.</param>
+        /// <returns>Object size in storage units.</returns>
         public uint GetDataSize(IProcessorArchitecture arch, Address addr, DataType dt)
         {
             if (dt is not StringType strDt)

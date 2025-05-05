@@ -34,11 +34,19 @@ namespace Reko.Core.Dfa
         private readonly List<(int, int, int)> Dtran;
         private readonly NodeComparer nodeComparer;
 
+        /// <summary>
+        /// Constructs a DFA from the given pattern.
+        /// </summary>
+        /// <param name="pattern">Regular expression pattern.</param>
         public DfaBuilder(string pattern)
             : this(new PatternParser(pattern).Parse() ?? new TreeNode { Type = NodeType.EOS })
         {
         }
 
+        /// <summary>
+        /// Constructs a DFA from the given parse tree.
+        /// </summary>
+        /// <param name="node">Parse tree.</param>
         public DfaBuilder(TreeNode node)
         {
             this.ParseTree = node;
@@ -47,8 +55,19 @@ namespace Reko.Core.Dfa
             Dtran = new List<(int, int, int)>();
         }
 
+        /// <summary>
+        /// The parse tree of the regular expression.
+        /// </summary>
         public TreeNode ParseTree { get; private set; }
+
+        /// <summary>
+        /// DFA states.
+        /// </summary>
         public State[]? States { get; set; }
+
+        /// <summary>
+        /// Transitions between states.
+        /// </summary>
         public int[,]? Transitions { get; set; }
 
         private class IntermediateState
@@ -91,6 +110,9 @@ namespace Reko.Core.Dfa
 
         }
 
+        /// <summary>
+        /// Builds the DFA automaton from the parse tree.
+        /// </summary>
         public void BuildAutomaton()
         {
             BuildAutomaton(this.ParseTree);
@@ -113,7 +135,11 @@ namespace Reko.Core.Dfa
             return state;
         }
 
-        public void BuildAutomaton(TreeNode tree)
+        /// <summary>
+        /// Builds the DFA automaton from the parse tree.
+        /// </summary>
+        /// <param name="tree">Parse tree.</param>
+        internal void BuildAutomaton(TreeNode tree)
         {
             var unmarked = new Queue<IntermediateState>();
             var state = CreateIntermediateState(tree.FirstPos!);
@@ -169,12 +195,18 @@ namespace Reko.Core.Dfa
             return states;
         }
 
+        /// <summary>
+        /// Builds node sets for the parse tree.
+        /// </summary>
         public void BuildNodeSets()
         {
             BuildNodeSets(this.ParseTree);
         }
 
-        public void BuildNodeSets(TreeNode node)
+        /// <summary>
+        /// Builds node sets for the parse tree.
+        /// </summary>
+        internal void BuildNodeSets(TreeNode node)
         {
             if (node == null)
                 return;
@@ -277,6 +309,9 @@ namespace Reko.Core.Dfa
             }
         }
 
+        /// <summary>
+        /// Extend the parse tree with an EOS node.
+        /// </summary>
         public void ExtendWithEos()
         {
             int max = MaxSignificant(ParseTree) + 1;

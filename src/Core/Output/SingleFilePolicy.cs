@@ -36,12 +36,17 @@ namespace Reko.Core.Output
         private string defaultFile;
         private string defaultDataFile;
 
+        /// <summary>
+        /// Constructs a <see cref="SingleFilePolicy"/> instance.
+        /// </summary>
+        /// <param name="program">Program being rendered.</param>
         public SingleFilePolicy(Program program) : base(program)
         {
             this.defaultFile = ""; 
             this.defaultDataFile = "";
         }
 
+        /// <inheritdoc/>
         public override Dictionary<string, IDictionary<Address, IAddressable>> GetObjectPlacements(string fileExtension, IEventListener listener)
         {
             this.defaultFile = Path.ChangeExtension(program.Name, fileExtension);
@@ -69,6 +74,7 @@ namespace Reko.Core.Output
             return result;
         }
 
+        /// <inheritdoc/>
         public override Dictionary<string, Dictionary<ImageSegment, List<ImageMapItem>>> GetItemPlacements(string fileExtension)
         {
             var filename = Path.ChangeExtension(program.Name, fileExtension);

@@ -28,6 +28,8 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 
+#pragma warning disable CS1591
+
 namespace Reko.Core.IO
 {
     public class SpanStream : Stream

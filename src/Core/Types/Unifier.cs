@@ -39,16 +39,28 @@ namespace Reko.Core.Types
         private readonly TraceSwitch trace;
 		private readonly IDictionary<(DataType, DataType), bool> cache = new Dictionary<(DataType, DataType), bool>();
 
+        /// <summary>
+        /// Constructs a <see cref="Unifier"/> instance.
+        /// </summary>
         public Unifier()
             : this(new TypeFactory(), classTrace)
         {
         }
 
+        /// <summary>
+        /// Constructs a <see cref="Unifier"/> instance.
+        /// </summary>
+        /// <param name="factory">Type factory to use.</param>
         public Unifier(TypeFactory factory)
             : this(factory, classTrace)
         {
         }
 
+        /// <summary>
+        /// Constructs a <see cref="Unifier"/> instance.
+        /// </summary>
+        /// <param name="factory">Type factory to use.</param>
+        /// <param name="trace">Trace switch governing debug output.</param>
 		public Unifier(TypeFactory factory, TraceSwitch trace)
 		{
 			this.factory = factory;
@@ -276,6 +288,15 @@ namespace Reko.Core.Types
         private int recDepth;
 
         //$TODO: change the signature to disallow nulls.
+
+        /// <summary>
+        /// Unifies two data types, returning a new type that is the
+        /// mgu (minimal general unifier) of the two types.
+        /// </summary>
+        /// <param name="a">First type.</param>
+        /// <param name="b">Second type.</param>
+        /// <returns>The minimal general unifier of the types.
+        /// </returns>
 		public DataType? Unify(DataType? a, DataType? b)
 		{
             if (++recDepth > 100)
@@ -552,7 +573,7 @@ namespace Reko.Core.Types
             }
         }
 
-		public DataType UnifyArrays(ArrayType a, ArrayType b)
+		private DataType UnifyArrays(ArrayType a, ArrayType b)
 		{
 			if (a.ElementType.Size == b.ElementType.Size)
 			{
@@ -563,6 +584,12 @@ namespace Reko.Core.Types
 			}
 			return MakeUnion(a, b);
 		}
+
+        /// <summary>
+        /// Unify a datatype into a union.
+        /// </summary>
+        /// <param name="u">Union to unify into.</param>
+        /// <param name="dt">Datatype to unify.</param>
 
 		public void UnifyIntoUnion(UnionType u, DataType dt)
 		{
@@ -577,7 +604,7 @@ namespace Reko.Core.Types
 			u.Alternatives.Add(new UnionAlternative(dt, u.Alternatives.Count));
 		}
 
-		public DataType UnifyFunctions(FunctionType a, FunctionType b)
+		private DataType UnifyFunctions(FunctionType a, FunctionType b)
 		{
             if (!a.ParametersValid && !b.ParametersValid)
             {
@@ -825,7 +852,7 @@ namespace Reko.Core.Types
             public StructureField? NextFieldB { get; private set; }
         }
 
-        public DataType? UnifyPointer(Pointer ptrA, DataType b)
+        private DataType? UnifyPointer(Pointer ptrA, DataType b)
 		{
             if (b is PrimitiveType pb)
             {
@@ -838,7 +865,7 @@ namespace Reko.Core.Types
             return null;
 		}
 
-		public DataType? UnifyMemberPointer(MemberPointer mpA, DataType b)
+		private DataType? UnifyMemberPointer(MemberPointer mpA, DataType b)
 		{
             if (b is PrimitiveType pb)
             {
@@ -852,6 +879,12 @@ namespace Reko.Core.Types
             return null;
 		}
 
+        /// <summary>
+        /// Unifies two type variables.
+        /// </summary>
+        /// <param name="tA">First type variable.</param>
+        /// <param name="tB">Second type variable.</param>
+        /// <returns>The union of the type variables.</returns>
 		public virtual DataType UnifyTypeVariables(TypeVariable tA, TypeVariable tB)
 		{
 			if (tA.Number == tB.Number)
@@ -867,6 +900,12 @@ namespace Reko.Core.Types
             return dt;
         }
 
+        /// <summary>
+        /// Unifies two union types.
+        /// </summary>
+        /// <param name="u1">First union type.</param>
+        /// <param name="u2">Second union type.</param>
+        /// <returns>The union of the types.</returns>
         public UnionType UnifyUnions(UnionType u1, UnionType u2)
 		{
 			UnionType u = new UnionType(null, null);
@@ -881,7 +920,7 @@ namespace Reko.Core.Types
 			return u;
 		}
 
-		public UnionType MakeUnion(DataType a, DataType b)
+		private UnionType MakeUnion(DataType a, DataType b)
 		{
 			return factory.CreateUnionType(null, null, new DataType [] { a, b } );
 		}

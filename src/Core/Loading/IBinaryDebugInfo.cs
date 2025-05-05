@@ -20,6 +20,9 @@
 
 namespace Reko.Core.Loading;
 
+/// <summary>
+/// Interface for binary debug information.
+/// </summary>
 public interface IBinaryDebugInfo
 {
 

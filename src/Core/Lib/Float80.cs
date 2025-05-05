@@ -60,11 +60,13 @@ namespace Reko.Core.Lib
             return significand == 0 && (exponent & MaxExponent) == 0;
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             return ToString("G", System.Globalization.CultureInfo.CurrentCulture);
         }
 
+        /// <inheritdoc/>
         public string ToString(string? format, IFormatProvider? formatProvider)
         {
             //$TODO: to maintain precision will require an implementation
@@ -74,6 +76,7 @@ namespace Reko.Core.Lib
             return d.ToString(format, formatProvider);
         }
 
+        /// <inheritdoc/>
         public double ToDouble(IFormatProvider? formatProvider)
         {
             bool isNegative = (exponent & SignBit) != 0;

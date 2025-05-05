@@ -31,6 +31,7 @@ using System.ComponentModel.Design;
 using Reko.Core.Memory;
 using Reko.Core.Loading;
 using Reko.Arch.X86.Rewriter;
+using Reko.Gui;
 
 namespace Reko.UnitTests.Arch.X86.Rewriter
 {

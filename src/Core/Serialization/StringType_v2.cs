@@ -32,12 +32,26 @@ namespace Reko.Core.Serialization
     /// </summary>
     public class StringType_v2 : SerializedType
     {
+        /// <summary>
+        /// Flag indicating zero-termination.
+        /// </summary>
         public const string ZeroTermination = "z";
+
+        /// <summary>
+        /// Flag indicating the string is terminated when a byte
+        /// has its high bit set.
+        /// </summary>
         public const string MsbTermination =  "m";
 
+        /// <summary>
+        /// How the string is terminated.
+        /// </summary>
         [XmlAttribute("term")]
         public string? Termination;
 
+        /// <summary>
+        /// Character type.
+        /// </summary>
         public SerializedType? CharType;
 
         /// <inheritdoc/>

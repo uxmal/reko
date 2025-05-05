@@ -30,9 +30,10 @@ namespace Reko.Core
     public class CodePatch
     {
         /// <summary>
-        /// Creates an instance of a code patch.
+        /// Constructs a new <see cref="CodePatch"/> instance.
         /// </summary>
-        /// <param name="cluster">The cluster to serve as a patch.</param>
+        /// <param name="cluster">Cluster of RTL instructions used as replacement.
+        /// </param>
         public CodePatch(RtlInstructionCluster cluster)
         {
             this.Code = cluster;

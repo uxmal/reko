@@ -29,11 +29,13 @@ namespace Reko.Core.Diagnostics
     public static class DebugEx
     {
         /// <summary>
-        /// Writes a debug message if the <see cref="TraceSwitch"/> is set to tracing errors.
+        /// Prints a message to the debug output if the trace switch is set to 
+        /// <see cref="TraceLevel.Error"/>.
         /// </summary>
-        /// <param name="trace">The <see cref="TraceSwitch"/> controlling the output.</param>
-        /// <param name="format">Format string to use.</param>
-        /// <param name="args">Zero or more arguments to use in the format string.</param>
+        /// <param name="trace"><see cref="TraceSwitch"/> controlling the output.</param>
+        /// <param name="format">Format string.</param>
+        /// <param name="args">Arguments to be interpolated into the format string.
+        /// </param>
         [Conditional("DEBUG")]
         public static void Error(this TraceSwitch trace, string format, params object[] args)
         {
@@ -44,11 +46,13 @@ namespace Reko.Core.Diagnostics
         }
 
         /// <summary>
-        /// Writes a debug message if the <see cref="TraceSwitch"/> is set to tracing warnings.
+        /// Prints a message to the debug output if the trace switch is set to 
+        /// <see cref="TraceLevel.Warning"/>.
         /// </summary>
-        /// <param name="trace">The <see cref="TraceSwitch"/> controlling the output.</param>
-        /// <param name="format">Format string to use.</param>
-        /// <param name="args">Zero or more arguments to use in the format string.</param>
+        /// <param name="trace"><see cref="TraceSwitch"/> controlling the output.</param>
+        /// <param name="format">Format string.</param>
+        /// <param name="args">Arguments to be interpolated into the format string.
+        /// </param>
         [Conditional("DEBUG")]
         public static void Warn(this TraceSwitch trace, string format, params object[] args)
         {
@@ -59,12 +63,13 @@ namespace Reko.Core.Diagnostics
         }
 
         /// <summary>
-        /// Writes a debug message if the <see cref="TraceSwitch"/> is set to tracing informational
-        /// messages.
+        /// Prints a message to the debug output if the trace switch is set to 
+        /// <see cref="TraceLevel.Info"/>.
         /// </summary>
-        /// <param name="trace">The <see cref="TraceSwitch"/> controlling the output.</param>
-        /// <param name="format">Format string to use.</param>
-        /// <param name="args">Zero or more arguments to use in the format string.</param>
+        /// <param name="trace"><see cref="TraceSwitch"/> controlling the output.</param>
+        /// <param name="format">Format string.</param>
+        /// <param name="args">Arguments to be interpolated into the format string.
+        /// </param>
         [Conditional("DEBUG")]
         public static void Inform(this TraceSwitch trace, string format, params object[] args)
         {
@@ -75,11 +80,11 @@ namespace Reko.Core.Diagnostics
         }
 
         /// <summary>
-        /// Writes a debug message if the <see cref="TraceSwitch"/> is set to tracing verbose
-        /// messages.
+        /// Prints a message to the debug output if the trace switch is set to 
+        /// <see cref="TraceLevel.Verbose"/>.
         /// </summary>
-        /// <param name="trace">The <see cref="TraceSwitch"/> controlling the output.</param>
-        /// <param name="message">Message to display.</param>
+        /// <param name="trace"><see cref="TraceSwitch"/> controlling the output.</param>
+        /// <param name="message">Message to write.</param>
         [Conditional("DEBUG")]
         public static void Verbose(this TraceSwitch trace, string message)
         {
@@ -90,12 +95,13 @@ namespace Reko.Core.Diagnostics
         }
 
         /// <summary>
-        /// Writes a debug message if the <see cref="TraceSwitch"/> is set to tracing verbose
-        /// messages.
+        /// Prints a message to the debug output if the trace switch is set to 
+        /// <see cref="TraceLevel.Verbose"/>.
         /// </summary>
-        /// <param name="trace">The <see cref="TraceSwitch"/> controlling the output.</param>
-        /// <param name="format">Format string to use.</param>
-        /// <param name="args">Zero or more arguments to use in the format string.</param>
+        /// <param name="trace"><see cref="TraceSwitch"/> controlling the output.</param>
+        /// <param name="format">Format string.</param>
+        /// <param name="args">Arguments to be interpolated into the format string.
+        /// </param>
         [Conditional("DEBUG")]
         public static void Verbose(this TraceSwitch trace, string format, params object[]args)
         {

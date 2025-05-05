@@ -28,14 +28,26 @@ namespace Reko.Core.Loading
     /// </summary>
     public abstract class MetadataLoader
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MetadataLoader"/> class.
+        /// </summary>
+        /// <param name="services"><see cref="IServiceProvider"/> interface to use.</param>
+        /// <param name="imagelocation">Location of the metadata file.</param>
+        /// <param name="bytes">Raw contents of the file.</param>
         public MetadataLoader(IServiceProvider services, ImageLocation imagelocation, byte[] bytes)
         {
             Services = services;
             Location = imagelocation;
         }
 
+        /// <summary>
+        /// <see cref="IServiceProvider"/> instance to use.
+        /// </summary>
         public IServiceProvider Services { get; }
 
+        /// <summary>
+        /// The location from which the metadata was loaded.
+        /// </summary>
         public ImageLocation Location { get; }
 
         /// <summary>
@@ -46,19 +58,33 @@ namespace Reko.Core.Loading
         /// <returns></returns>
         public abstract TypeLibrary Load(IPlatform platform, TypeLibrary dstLib);
 
+        /// <summary>
+        /// Loads metadata from the file specified in the constructor.
+        /// </summary>
+        /// <param name="platform">Current platform.</param>
+        /// <param name="moduleName">Module name.</param>
+        /// <param name="dstLib">Library into which to load the metadata.</param>
+        /// <returns></returns>
         public virtual TypeLibrary Load(IPlatform platform, string? moduleName, TypeLibrary dstLib)
         {
             return Load(platform, dstLib);
         }
     }
 
+    /// <summary>
+    /// Dummy metadata loader that does nothing.
+    /// </summary>
     public class NullMetadataLoader : MetadataLoader
     {
+        /// <summary>
+        /// Creates a new instance of the <see cref="NullMetadataLoader"/> class.
+        /// </summary>
         public NullMetadataLoader()
             : base(new ServiceContainer(), ImageLocation.FromUri(""), Array.Empty<byte>())
         {
         }
 
+        /// <inheritdoc/>
         public override TypeLibrary Load(IPlatform platform, TypeLibrary dstLib)
         {
             return dstLib;

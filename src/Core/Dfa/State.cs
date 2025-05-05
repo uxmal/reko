@@ -18,11 +18,6 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace Reko.Core.Dfa
 {
     /// <summary>
@@ -30,8 +25,17 @@ namespace Reko.Core.Dfa
     /// </summary>
     public class State
     {
+        /// <summary>
+        /// State number.
+        /// </summary>
         public int Number;
+        /// <summary>
+        /// True if this is a start state.
+        /// </summary>
         public bool Starts;
+        /// <summary>
+        /// True if this is an accepting state.
+        /// </summary>
         public bool Accepts;
     }
 }

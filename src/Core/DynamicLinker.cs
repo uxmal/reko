@@ -117,6 +117,12 @@ namespace Reko.Core
 
         Expression? ResolveImport(string moduleName, int ordinal, IPlatform platform);
 
+        /// <summary>
+        /// $TODO: write me!
+        /// </summary>
+        /// <param name="stm"></param>
+        /// <param name="c"></param>
+        /// <returns></returns>
         Expression? ResolveToImportedValue(Statement stm, Constant c);
     }
 

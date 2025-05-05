@@ -1355,6 +1355,11 @@ namespace Reko.Core
     /// </summary>
     public class GlobalStorage : TemporaryStorage
     {
+        /// <summary>
+        /// Constructs an instance of <see cref="GlobalStorage"/>.
+        /// </summary>
+        /// <param name="name">Name of the global.</param>
+        /// <param name="dt">Data type of the global.</param>
         public GlobalStorage(string name, DataType dt)
             : base(name, StorageDomain.Global, dt)
         {

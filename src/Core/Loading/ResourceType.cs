@@ -30,6 +30,12 @@ namespace Reko.Core.Loading
     /// </summary>
     public struct ResourceType
     {
+        /// <summary>
+        /// Constructs a new resource type.
+        /// </summary>
+        /// <param name="id">Numeric identifier of the resource.</param>
+        /// <param name="name">Name of the resource.</param>
+        /// <param name="fileExtension">File extension of the resource.</param>
         public ResourceType(int id, string name, string fileExtension)
         {
             this.Value = id;
@@ -52,22 +58,42 @@ namespace Reko.Core.Loading
         /// </summary>
         public string FileExtension { get; }
 
+        /// <summary>
+        /// Equality operator for resource types.
+        /// </summary>
+        /// <param name="a">First resource.</param>
+        /// <param name="b">Second resource.</param>
+        /// <returns>True if the resources are equal; otherwise false.</returns>
         public static bool operator ==(ResourceType a, ResourceType b) =>
             a.Value == b.Value;
+
+        /// <summary>
+        /// Inquality operator for resource types.
+        /// </summary>
+        /// <param name="a">First resource.</param>
+        /// <param name="b">Second resource.</param>
+        /// <returns>False if the resources are equal; otherwise true.</returns>
         public static bool operator !=(ResourceType a, ResourceType b) =>
             a.Value != b.Value;
 
+        /// <inheritdoc/>
         public override bool Equals(object? obj)
         {
             return obj is ResourceType that &&
                 this.Value == that.Value;
         }
 
+        /// <inheritdoc/>
         public override int GetHashCode()
         {
             return this.Value.GetHashCode();
         }
 
+        /// <summary>
+        /// Constructs a dictionary of resource types from the given type.
+        /// </summary>
+        /// <param name="type">Type defining various resource types.</param>
+        /// <returns>A dictionary of the various resource types.</returns>
         public static Dictionary<int, ResourceType> MakeDictionary(Type type)
         {
             return type

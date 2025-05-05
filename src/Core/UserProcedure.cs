@@ -28,6 +28,9 @@ namespace Reko.Core
     /// </summary>
     public class UserProcedure
     {
+        /// <summary>
+        /// Indicates the lack of an ordinal.
+        /// </summary>
         public const int NoOrdinal = -1;
 
         /// <summary>

@@ -25,8 +25,16 @@ using System.Collections.Generic;
 
 namespace Reko.Core.Lib
 {
+    /// <summary>
+    /// Suffix array helper class.
+    /// </summary>
     public static class SuffixArray
     {
+        /// <summary>
+        /// Creates a suffix array from a string.
+        /// </summary>
+        /// <param name="str">String from which to create the suffix array.</param>
+        /// <returns>Resulting suffix array.</returns>
         public static SuffixArray<char> Create(string str)
         {
             if (str == null)
@@ -34,13 +42,23 @@ namespace Reko.Core.Lib
             return new SuffixArray<char>(str.ToCharArray());
         }
 
+        /// <summary>
+        /// Creates a suffix array from an array of values.
+        /// </summary>
+        /// <param name="arr">Array of values.</param>
         public static SuffixArray<byte> Create(byte[] arr)
         {
-            if (arr == null)
+            if (arr is null)
                 arr = Array.Empty<byte>();
             return new SuffixArray<byte>(arr);
         }
 
+        /// <summary>
+        /// Creates a suffix array from an array of values
+        /// and the suffix indices.
+        /// </summary>
+        /// <param name="arr">Array of values.</param>
+        /// <param name="intArray">Suffix array indices.</param>
         public static SuffixArray<T> Load<T>(T[] arr, int [] intArray)
             where T : notnull
         {
@@ -48,6 +66,10 @@ namespace Reko.Core.Lib
         }
     }
 
+    /// <summary>
+    /// Represents a suffix array.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class SuffixArray<T>
             where T : notnull
     {
@@ -84,6 +106,11 @@ namespace Reko.Core.Lib
             BuildLcpArray();
         }
 
+        /// <summary>
+        /// Constructs a suffix array.
+        /// </summary>
+        /// <param name="str">Base string.</param>
+        /// <param name="sa">Suffix array.</param>
         public SuffixArray(T[] str, int [] sa)
         {
             m_str = str;
@@ -93,11 +120,20 @@ namespace Reko.Core.Lib
             BuildLcpArray();
         }
 
+        /// <summary>
+        /// Indexes the suffix array.
+        /// </summary>
+        /// <param name="index">Index.</param>
+        /// <returns>The position into the original string of the <paramref name="index"/>'th
+        /// suffix.</returns>
         public int this[int index]
         {
             get { return m_sa[index]; }
         }
 
+        /// <summary>
+        /// The length of the suffix array.
+        /// </summary>
         public int Length
         {
             get { return m_sa.Length; }
@@ -111,6 +147,9 @@ namespace Reko.Core.Lib
             get { return m_lcp; }
         }
 
+        /// <summary>
+        /// The base string.
+        /// </summary>
         public T[] Str
         {
             get { return m_str; }
@@ -154,13 +193,18 @@ namespace Reko.Core.Lib
             }
         }
 
+        /// <summary>
+        /// Find the index of all the occurrences of a substring.
+        /// </summary>
+        /// <param name="substr"></param>
+        /// <returns></returns>
         public IEnumerable<int> FindOccurences(T[] substr)
         {
             int lo = 0;
             int hi = m_sa.Length - 1;
             int m = -1;
 
-            if (substr == null || substr.Length ==0)
+            if (substr is null || substr.Length ==0)
             {
                 yield break;
             }
@@ -241,6 +285,9 @@ namespace Reko.Core.Lib
             }
         }
 
+        /// <summary>
+        /// Returns the suffix array.
+        /// </summary>
         public int[] Save()
         {
             return this.m_sa;
@@ -430,6 +477,9 @@ namespace Reko.Core.Lib
             return lcp;
         }
 
+        /// <summary>
+        /// Returns a string representation of the suffix array.
+        /// </summary>
         public override string ToString()
         {
             return string.Format("[{0}]", string.Join(", ", m_sa.Take(80)));

@@ -43,16 +43,34 @@ namespace Reko.Core.Types
     /// </remarks>
     public class StringType : ArrayType
     {
+        /// <summary>
+        /// Creats a null-terminated string type.
+        /// </summary>
+        /// <param name="charType">Type of the characters in the string.</param>
+        /// <returns>A <see cref="StringType"/>.</returns>
         public static StringType NullTerminated(DataType charType)
         {
             return new StringType(charType, null, 0);
         }
 
+        /// <summary>
+        /// Creats a length-prefixed string type.
+        /// </summary>
+        /// <param name="charType">Type of the characters in the string.</param>
+        /// <param name="lengthPrefixType">Type of the length prefix.</param>
+        /// <returns>A <see cref="StringType"/>.</returns>
         public static StringType LengthPrefixedStringType(PrimitiveType charType, PrimitiveType lengthPrefixType)
         {
             return new StringType(charType, lengthPrefixType, 0);
         }
 
+        /// <summary>
+        /// Constructs a string type.
+        /// </summary>
+        /// <param name="charType">Type of the characters in the string.</param>
+        /// <param name="lengthPrefixType">Type of the length prefix, if any.</param>
+        /// <param name="prefixOffset">The offset of the length prefix, measured 
+        /// from the start of the characters in the string.</param>
         public StringType(DataType charType, PrimitiveType? lengthPrefixType, int prefixOffset)
             : base(charType, 0)
         {

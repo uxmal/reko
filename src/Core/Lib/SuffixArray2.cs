@@ -1,12 +1,12 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Core.Lib
 {
+    /// <summary>
+    /// Implementation of the Suffix Array and LCP array.
+    /// </summary>
     public class SuffixArray2
     {
 
@@ -195,6 +195,11 @@ namespace Reko.Core.Lib
             return 0;
         }
 
+        /// <summary>
+        /// Creates the suffix array for the given bytes.
+        /// </summary>
+        /// <param name="a">Bytes for which to create the suffix array.</param>
+        /// <returns>A suffix array.</returns>
         public static SuffixArray2 Create(byte[] a)
         {
             var sa = buildSuffixArray(a);
@@ -202,14 +207,26 @@ namespace Reko.Core.Lib
             return new SuffixArray2(sa, lcp);
         }
 
+        /// <summary>
+        /// Constructs an instance of <see cref="SuffixArray2"/> with the specified
+        /// suffix array and LCP array.
+        /// </summary>
+        /// <param name="sa">Suffix array indices.</param>
+        /// <param name="lcp">Longest common prefix.</param>
         public SuffixArray2(int[] sa, int[] lcp)
         {
             this.SuffixArray = sa;
             this.Lcp = lcp;
         }
 
+        /// <summary>
+        /// Longest common prefix array.
+        /// </summary>
         public int[] Lcp { get; }
 
+        /// <summary>
+        /// Suffix array.
+        /// </summary>
         public int [] SuffixArray { get; }
     }
 }

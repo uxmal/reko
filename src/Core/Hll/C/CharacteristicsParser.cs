@@ -23,16 +23,26 @@ using System.Collections.Generic;
 
 namespace Reko.Core.Hll.C
 {
+    /// <summary>
+    /// Parses the Reko-specific characteristics attribute of a procedure.
+    /// </summary>
     public class CharacteristicsParser
     {
         private readonly List<CToken>? tokens;
         private int iToken;
 
+        /// <summary>
+        /// Constructs a <see cref="CharacteristicsParser"/>.
+        /// </summary>
+        /// <param name="attrCharacteristics">The attribute definition.</param>
         public CharacteristicsParser(CAttribute attrCharacteristics)
         {
             this.tokens = attrCharacteristics.Tokens;
         }
 
+        /// <summary>
+        /// Parses the characteristics attribute.
+        /// </summary>
         public ProcedureCharacteristics Parse()
         {
             if (!PeekAndDiscard(CTokenType.LBrace))

@@ -132,21 +132,13 @@ namespace Reko.Core.Types
         public abstract T Accept<T>(IDataTypeVisitor<T> visitor);
 
         /// <summary>
-        /// Clones this <see cref="DataType"/>.
+        /// Clones the data type, creating a new instance of the same type
+        /// if the data type is mutable.
         /// </summary>
         /// <param name="clonedTypes">An optional dictionary mapping original 
         /// data types to their cloned counterparts.
         /// </param>
         /// <returns>A cloned version of the data type.</returns>
-
-        /// <summary>
-        /// Clones the data type, creating a new instance of the same type
-        /// if the data type is mutable.
-        /// </summary>
-        /// <param name="clonedTypes">A dictionary mapping original data types to
-        /// their cloned counterparts.
-        /// </param>
-        /// <returns>The cloned data type.</returns>
         public abstract DataType Clone(IDictionary<DataType, DataType>? clonedTypes);
 
         object ICloneable.Clone() { return Clone(); }

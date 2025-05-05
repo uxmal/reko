@@ -79,7 +79,6 @@ namespace Reko.Core.Output
         /// Returns a placement mapping for rendering high-level items.
         /// </summary>
         /// <param name="fileExtension">File extension to use.</param>
-        /// <param name="listener">Event listener to report progress.</param>
         /// <param name="listener">Provides a way for users to stop long
         /// running printouts.</param>
         /// <returns></returns>
@@ -96,6 +95,9 @@ namespace Reko.Core.Output
         public abstract Dictionary<string, Dictionary<ImageSegment, List<ImageMapItem>>> GetItemPlacements(
             string fileExtension);
 
+        /// <summary>
+        /// Creates a list of workitems for every global variable.
+        /// </summary>
         public IEnumerable<(StructureField, Address)> MakeGlobalWorkItems()
         {
             var globals = program.TypeStore.TryGetTypeVariable(program.Globals, out var tvGlobals) &&
@@ -114,7 +116,7 @@ namespace Reko.Core.Output
                          program.Platform.MakeAddressFromLinear((uint) field.Offset, false)));
                 }
             }
-            return new (StructureField, Address)[0];
+            return [];
         }
 
         /// <summary>

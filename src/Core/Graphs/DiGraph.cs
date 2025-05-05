@@ -313,6 +313,7 @@ namespace Reko.Core.Graphs
         /// <inheritdoc/>
         public ICollection<V> Nodes { get; }
 
+        /// <inheritdoc/>
         public IEnumerable<(V, V, E)> Edges
         {
             get

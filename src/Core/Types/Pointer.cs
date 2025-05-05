@@ -58,6 +58,9 @@ namespace Reko.Core.Types
         /// <inheritdoc/>
         public override bool IsPointer => true;
 
+        /// <summary>
+        /// The type that this pointer points to.
+        /// </summary>
         public DataType Pointee { get; set; }
 
 

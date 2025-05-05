@@ -27,6 +27,12 @@ namespace Reko.Core.Machine;
 /// </summary>
 public static class ConditionOperand
 {
+    /// <summary>
+    /// Constructs a condition code operand.
+    /// </summary>
+    /// <typeparam name="TCondCode">Architecture-specific condition code type.</typeparam>
+    /// <param name="code">Condition code to wrap.</param>
+    /// <returns>A <see cref="ConditionOperand{TCondCode}"/> instance.</returns>
     public static ConditionOperand<TCondCode> Create<TCondCode>(TCondCode code)
         where TCondCode : System.Enum
     {

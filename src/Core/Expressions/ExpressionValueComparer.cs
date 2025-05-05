@@ -436,6 +436,7 @@ namespace Reko.Core.Expressions
 
         #region IEqualityComparer Members
 
+        /// <inheritdoc/>
         public bool Equals(Expression? x, Expression? y)
         {
             if (x == null && y == null)
@@ -472,6 +473,7 @@ namespace Reko.Core.Expressions
             return hashes[t](obj);
         }
 
+        /// <inheritdoc/>
         public int GetHashCode(Expression obj)
         {
             return GetHashCodeImpl(obj);

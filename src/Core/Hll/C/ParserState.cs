@@ -22,11 +22,16 @@ using System.Collections.Generic;
 
 namespace Reko.Core.Hll.C
 {
-
+    /// <summary>
+    /// The C parser state.
+    /// </summary>
     public class ParserState
     {
         private Stack<int> alignments;
-        
+
+        /// <summary>
+        /// Constructs a <see cref="ParserState"/> instance.
+        /// </summary>
         public ParserState()
         {
             Typedefs = new HashSet<string>();
@@ -36,21 +41,40 @@ namespace Reko.Core.Hll.C
             Typedefs.Add("va_list");
         }
 
+        /// <summary>
+        /// Constructs a <see cref="ParserState"/> instance.
+        /// </summary>
+        /// <param name="symbolTable">Symbol table to initialize with.
+        /// </param>
         public ParserState(SymbolTable symbolTable) : this()
         {
             Typedefs.UnionWith(symbolTable.PrimitiveTypes.Keys);
             Typedefs.UnionWith(symbolTable.NamedTypes.Keys);
         }
 
+        /// <summary>
+        /// The set of typedefs that are known to the parser.
+        /// </summary>
         public HashSet<string> Typedefs { get; private set; }
 
+        /// <summary>
+        /// Current memory alignment.
+        /// </summary>
         public int Alignment { get { return alignments.Peek(); } }
 
+        /// <summary>
+        /// Pushes the current alignment on the stack and makes another alignment current.
+        /// </summary>
+        /// <param name="align">New alignment to start using.
+        /// </param>
         public void PushAlignment(int align)
         {
             alignments.Push(align);
         }
 
+        /// <summary>
+        /// Removes the most recent alignment from the alignment stack.
+        /// </summary>
         public void PopAlignment()
         {
             alignments.Pop();

@@ -33,8 +33,19 @@ namespace Reko.Core.Serialization
     [XmlRoot(ElementName = "library", Namespace = SerializedLibrary.Namespace_v1)]
     public class SerializedLibrary
     {
+        /// <summary>
+        /// Namespace to use for Reko file format 5.
+        /// </summary>
         public const string Namespace_v5 = "http://schemata.jklnet.org/Reko/v5";
+
+        /// <summary>
+        /// Namespace to use for Reko file format 4.
+        /// </summary>
         public const string Namespace_v4 = "http://schemata.jklnet.org/Reko/v4";
+
+        /// <summary>
+        /// Namespace to use for Reko file format 1.
+        /// </summary>
         public const string Namespace_v1 = "http://schemata.jklnet.org/Decompiler";
 
         /// <summary>

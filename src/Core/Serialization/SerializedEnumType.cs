@@ -24,6 +24,9 @@ using System.Xml.Serialization;
 
 namespace Reko.Core.Serialization
 {
+    /// <summary>
+    /// Serialization format of an enumerated type.
+    /// </summary>
     public class SerializedEnumType : SerializedTaggedType
     {
         /// <summary>

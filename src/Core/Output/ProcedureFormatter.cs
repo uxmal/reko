@@ -34,6 +34,11 @@ namespace Reko.Core.Output
         private readonly BlockDecorator decorator;
         private readonly Procedure proc;
 
+        /// <summary>
+        /// Constructs a procedure formatter.
+        /// </summary>
+        /// <param name="procedure">Procedure to format.</param>
+        /// <param name="formatter">Output sink.</param>
         public ProcedureFormatter(Procedure procedure, CodeFormatter formatter)
         {
             this.proc = procedure;
@@ -41,6 +46,12 @@ namespace Reko.Core.Output
             this.formatter = formatter;
         }
 
+        /// <summary>
+        /// Constructs a procedure formatter.
+        /// </summary>
+        /// <param name="procedure">Procedure to format.</param>
+        /// <param name="decorator">Block decorator.</param>
+        /// <param name="formatter">Output sink.</param>
         public ProcedureFormatter(Procedure procedure, BlockDecorator decorator, CodeFormatter formatter)
         {
             this.proc = procedure;
@@ -48,6 +59,9 @@ namespace Reko.Core.Output
             this.formatter = formatter;
         }
 
+        /// <summary>
+        /// Writes the basic blocks of the procedure to the output.
+        /// </summary>
         public void WriteProcedureBlocks()
         {
             var blocks = proc.SortBlocksByName().ToArray();
@@ -94,6 +108,11 @@ namespace Reko.Core.Output
             }
         }
 
+        /// <summary>
+        /// Writes a basic block to the output.
+        /// </summary>
+        /// <param name="block">Basic block to write.</param>
+        /// <param name="writer">Output sunk.</param>
         public void WriteBlock(Block block, CodeFormatter writer)
         {
             if (!string.IsNullOrEmpty(block.DisplayName))

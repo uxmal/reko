@@ -72,10 +72,9 @@ namespace Reko.Core.Types
         void BuildEquivalenceClassDataTypes(TypeFactory factory);
 
         /// <summary>
-        /// Creates a new <see cref="TypeVariable"/> and associates it with the
+        /// Creates a type variable.
         /// </summary>
-        /// <param name="factory"></param>
-        /// <returns></returns>
+        /// <param name="factory">Factory to create the type variable with.</param>
         TypeVariable CreateTypeVariable(TypeFactory factory);
 
         /// <summary>
@@ -97,6 +96,10 @@ namespace Reko.Core.Types
 
         //$TODO: this is only used temporarily - we eventually want to get rid of this
         // but it's used in some hacky places.
+        /// <summary>
+        /// Clears the type variable associated with the expression <paramref name="expr"/>.
+        /// </summary>
+        /// <param name="expr">Expression whose type variable we wish to clear.</param>
         void ClearTypeVariable(Expression expr);
 
         /// <summary>
@@ -110,12 +113,18 @@ namespace Reko.Core.Types
         bool TryGetTypeVariable(Expression expression, [MaybeNullWhen(false)] out TypeVariable tv);
     }
 
+    /// <summary>
+    /// Implementation of <see cref="ITypeStore"/>.
+    /// </summary>
     public class TypeStore : ITypeStore
     {
         private readonly SortedList<int, EquivalenceClass> usedClasses;
         private readonly Dictionary<TypeVariable, (Address? uAddr, Expression e)> tvSources;
         private readonly Dictionary<Expression, TypeVariable> mapExprToTypevar;
 
+        /// <summary>
+        /// Constructs an empty type store.
+        /// </summary>
         public TypeStore()
         {
             TypeVariables = new List<TypeVariable>();
@@ -130,14 +139,17 @@ namespace Reko.Core.Types
         /// </summary>
         public List<TypeVariable> TypeVariables { get; private set; }
 
+        /// <summary>
+        /// All the <see cref="ImageSegment"/>s and their corresponding <see cref="StructureType"/>s."/>
+        /// </summary>
         public Dictionary<ImageSegment, StructureType> SegmentTypes { get; private set; }
 
-        public TypeVariable EnsureExpressionTypeVariable(TypeFactory factory, Address? addr, Expression e)
-        {
-            return EnsureExpressionTypeVariable(factory, addr, e, null);
-        }
-
         //$TODO: pass dt and dtOriginal
+        /// <summary>
+        /// Creates a type variable.
+        /// </summary>
+        /// <param name="factory">Type factory to use.</param>
+        /// <returns>A new type variable.</returns>
         public TypeVariable CreateTypeVariable(TypeFactory factory)
         {
             TypeVariable tv = factory.CreateTypeVariable();
@@ -147,6 +159,26 @@ namespace Reko.Core.Types
             return tv;
         }
 
+        /// <summary>
+        /// Ensures that the expression <paramref name="e"/> has a type variable associated with it.
+        /// </summary>
+        /// <param name="factory">Type factory to use.</param>
+        /// <param name="addr">Optional address of the expression.</param>
+        /// <param name="e">Expression.</param>
+        /// <returns>A new or existing <see cref="TypeVariable"/>.</returns>
+        public TypeVariable EnsureExpressionTypeVariable(TypeFactory factory, Address? addr, Expression e)
+        {
+            return EnsureExpressionTypeVariable(factory, addr, e, null);
+        }
+
+        /// <summary>
+        /// Ensures that the expression <paramref name="e"/> has a type variable associated with it.
+        /// </summary>
+        /// <param name="factory">Type factory to use.</param>
+        /// <param name="addr">Optional address of the expression.</param>
+        /// <param name="e">Expression.</param>
+        /// <param name="name">Optional name of the type variable.</param>
+        /// <returns>A new or existing <see cref="TypeVariable"/>.</returns>
         public TypeVariable EnsureExpressionTypeVariable(TypeFactory factory, Address? addr, Expression e, string? name)
         {
             if (this.TryGetTypeVariable(e, out var tv))
@@ -162,6 +194,12 @@ namespace Reko.Core.Types
             return tv;
         }
 
+        /// <summary>
+        /// Sets the expression associated with a type variable.
+        /// </summary>
+        /// <param name="typeVariable">Type variable.</param>
+        /// <param name="addr">Optional address of the expression.</param>
+        /// <param name="binExp">Expression.</param>
         public void SetTypeVariableExpression(TypeVariable typeVariable, Address? addr, Expression binExp)
         {
             tvSources[typeVariable] = (addr, binExp);
@@ -173,6 +211,7 @@ namespace Reko.Core.Types
                 tvSources.Add(tv, (uAddr, e));
         }
 
+        /// <inheritdoc/>
         public void BuildEquivalenceClassDataTypes(TypeFactory factory)
         {
             Unifier u = new DataTypeBuilderUnifier(factory, this);
@@ -194,6 +233,9 @@ namespace Reko.Core.Types
             }
         }
 
+        /// <summary>
+        /// Dumps the contents of the type store to the debugger output window.
+        /// </summary>
 
         [Conditional("DEBUG")]
         public void Dump()
@@ -203,6 +245,9 @@ namespace Reko.Core.Types
             Debug.WriteLine(sw.ToString());
         }
 
+        /// <summary>
+        /// Dumps the contents of the type store to the given file.
+        /// </summary>
         [Conditional("DEBUG")]
         public void Dump(string dir, string filename)
         {
@@ -227,6 +272,13 @@ namespace Reko.Core.Types
                 return null;
         }
 
+        /// <summary>
+        /// Retrieves the address of the expression associated with a type variable, if any.
+        /// </summary>
+        /// <param name="tv">Type variable whose association is requested.</param>
+        /// <returns>The corresponding <see cref="Address"/>, or 
+        /// null if none is found.
+        /// </returns>
         public Address? AddressOf(TypeVariable tv)
         {
             if (tvSources.TryGetValue(tv, out (Address?, Expression) dbg))
@@ -338,6 +390,7 @@ namespace Reko.Core.Types
             writer.WriteLine(tv.OriginalDataType);
         }
 
+        /// <inheritdoc/>
         public DataType? GetDataTypeOf(Expression exp)
         {
             return this.mapExprToTypevar.TryGetValue(exp, out var tv)
@@ -345,16 +398,19 @@ namespace Reko.Core.Types
                 : null;
         }
 
+        /// <inheritdoc/>
         public TypeVariable GetTypeVariable(Expression expr)
         {
             return this.mapExprToTypevar[expr];
         }
 
+        /// <inheritdoc/>
         public bool TryGetTypeVariable(Expression expr, [MaybeNullWhen(false)] out TypeVariable tv)
         {
             return this.mapExprToTypevar.TryGetValue(expr, out tv);
         }
 
+        /// <inheritdoc/>
         public void SetDataTypeOf(Expression expr, DataType dt)
         {
             var tv = this.mapExprToTypevar[expr];
@@ -362,6 +418,7 @@ namespace Reko.Core.Types
             tv.OriginalDataType = dt;
         }
 
+        /// <inheritdoc/>
         public void SetTypeVariable(Expression expr, TypeVariable tv)
         {
             //$TODO: ideally, the type variable of an expression is never updated. 
@@ -370,11 +427,15 @@ namespace Reko.Core.Types
             this.mapExprToTypevar[expr] = tv;
         }
 
+        /// <inheritdoc/>
         public void ClearTypeVariable(Expression expr)
         {
             mapExprToTypevar.Remove(expr);
         }
 
+        /// <summary>
+        /// Clears the type store.
+        /// </summary>
         public void Clear()
         {
             foreach(var dbg in tvSources.Values)

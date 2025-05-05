@@ -34,7 +34,7 @@ namespace Reko.Core
     public class CharacteristicsLibrary
     {
         /// <summary>
-        /// Creates a new empty characteristics library.
+        /// Constructs an empty characteristics library.
         /// </summary>
         public CharacteristicsLibrary()
         {

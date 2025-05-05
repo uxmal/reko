@@ -30,18 +30,30 @@ namespace Reko.Core.Serialization
     /// </summary>
 	public class StructType_v1 : SerializedTaggedType
 	{
+        /// <summary>
+        /// Specified size of the structure in storage units.
+        /// </summary>
 		[XmlAttribute("size")]
         [DefaultValue(0)]
 		public int ByteSize;
 
+        /// <summary>
+        /// Disallow simplification of this structure type.
+        /// </summary>
         [XmlAttribute("force")]
         [DefaultValue(false)]
         public bool ForceStructure;
 
+        /// <summary>
+        /// Construct an uninitialized instance of <see cref="StructType_v1"/>.
+        /// </summary>
         public StructType_v1()
 		{
 		}
 
+        /// <summary>
+        /// Collections of fields.
+        /// </summary>
 		[XmlElement("field", typeof (StructField_v1))]
 		public StructField_v1[]? Fields;
 
@@ -71,22 +83,43 @@ namespace Reko.Core.Serialization
 		}
 	}
 
+    /// <summary>
+    /// Serialization format for a structure field.
+    /// </summary>
 	public class StructField_v1
 	{
+        /// <summary>
+        /// Field offset.
+        /// </summary>
 		[XmlAttribute("offset")]
 		public int Offset;
 
+        /// <summary>
+        /// Field name.
+        /// </summary>
 		[XmlAttribute("name")]
 		public string? Name;
 
+        /// <summary>
+        /// Field type.
+        /// </summary>
 		[XmlElement("prim", typeof (PrimitiveType_v1))]
 		[XmlElement("ptr", typeof (PointerType_v1))]
 		public SerializedType? Type;
 
+        /// <summary>
+        /// Construct an uninitialized instance of <see cref="StructField_v1"/>.
+        /// </summary>
 		public StructField_v1()
 		{
 		}
 
+        /// <summary>
+        /// Construct an instance of <see cref="StructField_v1"/>.
+        /// </summary>
+        /// <param name="offset">Field offset.</param>
+        /// <param name="name">Field name.</param>
+        /// <param name="type">Field data type.</param>
 		public StructField_v1(int offset, string name, SerializedType type)
 		{
 			this.Offset = offset;

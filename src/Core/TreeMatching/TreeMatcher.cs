@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2025 John Källén.
  *
@@ -54,7 +54,7 @@ namespace Reko.Core.TreeMatching
     //        post_process(n);
     //    }
     //}
-    #if noz
+#if noz
     let K be keywords
     make root node
     foreach k in K
@@ -63,10 +63,11 @@ namespace Reko.Core.TreeMatching
     add transition from state s to t on c 
     failure:
 
-#endif
-
-    public interface TreeMatchAdapter
+        public interface TreeMatchAdapter
     {
 
     }
+
+#endif
+
 }

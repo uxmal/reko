@@ -37,6 +37,11 @@ namespace Reko.Core.Hll.C
         private readonly Dictionary<SerializedTaggedType, (int,int)> tagSizes;
         private int structureAlignment;
 
+        /// <summary>
+        /// Constructs a <see cref="TypeSizer"/> instance.
+        /// </summary>
+        /// <param name="platform">Current <see cref="IPlatform"/>.</param>
+        /// <param name="typedefs">Known type definitions.</param>
         public TypeSizer(IPlatform platform, IDictionary<string, SerializedType> typedefs)
         {
             this.platform = platform;
@@ -200,6 +205,12 @@ namespace Reko.Core.Hll.C
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Force a size calculation for a tagged type.
+        /// </summary>
+        /// <param name="str">Tagged type.</param>
+        /// <param name="structureAlignment">Alignment of structure members.
+        /// </param>
         public void SetSize(SerializedTaggedType str, int structureAlignment)
         {
             this.structureAlignment = structureAlignment;

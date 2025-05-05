@@ -105,6 +105,12 @@ namespace Reko.Core.Graphs
             return dominator;
         }
 
+        /// <summary>
+        /// Gets the dominator frontier of the given node.
+        /// </summary>
+        /// <param name="node">Node whose dominator frontier is requested.</param>
+        /// <returns>A list of nodes in the dominator frontier.
+        /// </returns>
         public List<T> DominatorFrontier(T node)
         {
             return domFrontier[node];
@@ -217,6 +223,9 @@ namespace Reko.Core.Graphs
             return fronts;
         }
 
+        /// <summary>
+        /// Writes the dominator graph to the debug output.
+        /// </summary>
         [Conditional("DEBUG")]
         public void Dump()
         {
@@ -250,6 +259,10 @@ namespace Reko.Core.Graphs
             return i1;
         }
 
+        /// <summary>
+        /// Writes the dominator graph to the given text writer.
+        /// </summary>
+        /// <param name="writer">Output sink.</param>
         public void Write(TextWriter writer)
         {
             var blocks = new SortedDictionary<string, T?>();

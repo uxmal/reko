@@ -108,6 +108,10 @@ namespace Reko.Core.Output
             this.prefix = prefix;
         }
 
+        /// <summary>
+        /// Writes a procedure.
+        /// </summary>
+        /// <param name="proc">Procedure to write.</param>
         public static void DumpMethod(Procedure proc)
         {
             var sw = new StringWriter();
@@ -115,6 +119,10 @@ namespace Reko.Core.Output
             var mg = new MockGenerator(sw, "m.");
         }
 
+        /// <summary>
+        /// Writes a class method.
+        /// </summary>
+        /// <param name="proc">Class method.</param>
         public static void DumpClass(Procedure proc)
         {
             var sw = new StringWriter();

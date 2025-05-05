@@ -25,6 +25,7 @@ namespace Reko.Core.Hll.C
     /// </summary>
     public enum CBasicType
     {
+#pragma warning disable CS1591
         None,
         Bool,
         Char,

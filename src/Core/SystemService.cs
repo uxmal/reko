@@ -42,27 +42,67 @@ namespace Reko.Core
         /// Optional name of the system service. At times, names are not
         /// available.
         /// </summary>
+
+        /// <summary>
+        /// Name of the system service.
+        /// </summary>
 		public string? Name;
 
+        /// <summary>
+        /// Register state that selects the system service.
+        /// </summary>
 		public SyscallInfo? SyscallInfo;
+
+        /// <summary>
+        /// Function signature of the service.
+        /// </summary>
 		public FunctionType? Signature;
+
+        /// <summary>
+        /// Optional characteristics of the system service.
+        /// </summary>
 		public ProcedureCharacteristics? Characteristics;
 
+        /// <summary>
+        /// Creates an external procedure from this system service.
+        /// </summary>
+        /// <param name="arch"><see cref="IProcessorArchitecture"/> to use.</param>
+        /// <returns>An <see cref="ExternalProcedure"/>.</returns>
 		public ExternalProcedure CreateExternalProcedure(IProcessorArchitecture arch)
 		{
             return new ExternalProcedure(Name!, Signature!, Characteristics);
 		}
 	}
 
+    /// <summary>
+    /// A register value.
+    /// </summary>
 	public class RegValue
 	{
+        /// <summary>
+        /// Register.
+        /// </summary>
 		public RegisterStorage? Register;
+
+        /// <summary>
+        /// Value in register.
+        /// </summary>
 		public int Value;
 	}
 
+    /// <summary>
+    /// A stack value.
+    /// </summary>
     public class StackValue
     {
+        /// <summary>
+        /// Stack offset.
+        /// </summary>
         public int Offset;
+
+        /// <summary>
+        /// Value in stack.
+        /// </summary>
         public int Value;
     }
 
@@ -87,6 +127,13 @@ namespace Reko.Core
         /// </summary>
         public StackValue[]? StackValues;
 
+        /// <summary>
+        /// Returns true if the given vector and processor state match this system call.
+        /// </summary>
+        /// <param name="vector">Interrupt vector invoked.</param>
+        /// <param name="state">Current processor state.</param>
+        /// <returns>True if this syscallinfo matches; otherwise false.
+        /// </returns>
 		public bool Matches(int vector, ProcessorState? state)
 		{
 			if (Vector != vector)
@@ -94,6 +141,12 @@ namespace Reko.Core
             return Matches(state);
 		}
 
+        /// <summary>
+        /// Returns true if the given processor state matches this system call.
+        /// </summary>
+        /// <param name="state">Current processor state.</param>
+        /// <returns>True if this syscallinfo matches; otherwise false.
+        /// </returns>
         public bool Matches(ProcessorState? state)
         {
             if (state == null &&

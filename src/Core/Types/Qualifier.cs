@@ -22,12 +22,30 @@ using System;
 
 namespace Reko.Core.Types
 {
+    /// <summary>
+    /// Type qualifiers.
+    /// </summary>
     [Flags]
     public enum Qualifier
     {
+        /// <summary>
+        /// No type qualifier
+        /// </summary>
         None = 0,
+
+        /// <summary>
+        /// Type is a constant value.
+        /// </summary>
         Const = 1,
+
+        /// <summary>
+        /// Type is a volatile value.
+        /// </summary>
         Volatile = 2,
+
+        /// <summary>
+        /// Type is a restrict value, and doesn't alias any other value.
+        /// </summary>
         Restricted = 4, // C99
     }
 }

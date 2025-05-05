@@ -25,11 +25,15 @@ using System.Linq;
 
 namespace Reko.Core.Graphs
 {
+    /// <summary>
+    /// Implements Dijkstra's shortest-path algorithm for a directed graph.
+    /// </summary>
+    /// <typeparam name="T">Node type of the graph.</typeparam>
     public class Dijkstra<T>
         where T : notnull
     {
-        public Dictionary<T, double> dist;
-        public Dictionary<T, T> prev;
+        private Dictionary<T, double> dist;
+        private Dictionary<T, T> prev;
 
         private Dijkstra(Dictionary<T, double> dist)
         {
@@ -78,6 +82,12 @@ namespace Reko.Core.Graphs
             return self;
         }
 
+        /// <summary>
+        /// The shortest path to the destination.
+        /// </summary>
+        /// <param name="destination">Destination for which we
+        /// want a path.</param>
+        /// <returns>A list of nodes to the destination.</returns>
         public List<T> GetPath(T destination)
         {
             var path = new List<T>();

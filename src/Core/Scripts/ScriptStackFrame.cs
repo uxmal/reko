@@ -24,8 +24,17 @@ using System.Text;
 
 namespace Reko.Core.Scripts
 {
+    /// <summary>
+    /// Represents a stack frame in a script trace.
+    /// </summary>
     public class ScriptStackFrame
     {
+        /// <summary>
+        /// Constructs an instance of <see cref="ScriptStackFrame"/>.
+        /// </summary>
+        /// <param name="file">Name of the script file.</param>
+        /// <param name="line">Line of the script file.</param>
+        /// <param name="method">Method name.</param>
         public ScriptStackFrame(string file, int line, string method)
         {
             this.FileName = file;
@@ -33,10 +42,24 @@ namespace Reko.Core.Scripts
             this.MethodName = method;
         }
 
-        public readonly string FileName;
-        public readonly int LineNumber;
-        public readonly string MethodName;
+        /// <summary>
+        /// Name of the script file.
+        /// </summary>
+        public string FileName { get; }
 
+        /// <summary>
+        /// Line number in the script file.
+        /// </summary>
+        public int LineNumber { get; }
+
+        /// <summary>
+        /// Name of the method in the script file.
+        /// </summary>
+        public string MethodName { get; }
+
+        /// <summary>
+        /// Returns a string representation of the stack frame.
+        /// </summary>
         public override string ToString()
         {
             return $"File \"{FileName}\", line {LineNumber}, in {MethodName}";

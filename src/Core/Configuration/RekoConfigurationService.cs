@@ -258,6 +258,11 @@ namespace Reko.Core.Configuration
             };
         }
 
+        /// <summary>
+        /// Loads a memory map file.
+        /// </summary>
+        /// <param name="path">Path where the memory map is locatd.</param>
+        /// <returns></returns>
         public MemoryMap_v1? LoadMemoryMap(string path)
         {
             var fsSvc = services.GetService<IFileSystemService>();

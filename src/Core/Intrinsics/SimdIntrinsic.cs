@@ -38,6 +38,14 @@ namespace Reko.Core.Intrinsics
     /// </remarks>
     public class SimdIntrinsic : IntrinsicProcedure
     {
+        /// <summary>
+        /// Constructs a SIMD intrinsic.
+        /// </summary>
+        /// <param name="name">Name of the function to create.</param>
+        /// <param name="laneOp">Operation for each lane.</param>
+        /// <param name="genericTypes">Generic types used.</param>
+        /// <param name="isConcrete">True if this instance is concrete.</param>
+        /// <param name="signature">Type signature.</param>
         public SimdIntrinsic(
             string name,
             IFunctionalUnit laneOp,
@@ -49,9 +57,12 @@ namespace Reko.Core.Intrinsics
             this.Operator = laneOp;
         }
 
-        public int LaneCount { get; }
+        /// <summary>
+        /// Operator used for each lane.
+        /// </summary>
         public IFunctionalUnit Operator { get; }
 
+        /// <inheritdoc/>
         protected override IntrinsicProcedure DoMakeInstance(DataType[] concreteTypes, FunctionType sig)
         {
             return new SimdIntrinsic(
@@ -66,11 +77,19 @@ namespace Reko.Core.Intrinsics
             };
         }
 
+        /// <inheritdoc/>
         public override Constant? ApplyConstants(DataType dt, params Constant[] cs)
         {
             return ApplyConstants(this.Operator, dt, cs);
         }
 
+        /// <summary>
+        /// Apply the given operation to the given constants, repaeating across all lanes.
+        /// </summary>
+        /// <param name="operation">Operation to perform.</param>
+        /// <param name="dt">Size of a lane result.</param>
+        /// <param name="cs">Constant inputs for each lane.</param>
+        /// <returns>Possible constant result.</returns>
         public Constant? ApplyConstants(
             IFunctionalUnit operation,
             DataType dt,
@@ -103,23 +122,42 @@ namespace Reko.Core.Intrinsics
             return Constant.Create(dt, output);
         }
 
+        /// <inheritdoc/>
         public override Expression Create(DataType dt, params Expression[] exprs)
         {
             return base.Create(dt, exprs);
         }
 
+        /// <summary>
+        /// Returns the type of the input lane for the given parameter.
+        /// </summary>
+        /// <param name="iParameter">0-based index of the paramter.</param>
+        /// <returns>Data type for the input lane of the parameter.
+        /// </returns>
         public DataType InputLaneType(int iParameter)
         {
             var arrayType = (ArrayType) Signature.Parameters![iParameter].DataType;
             return arrayType.ElementType;
         }
 
+        /// <summary>
+        /// Returns the type of the output lane for the given parameter.
+        /// </summary>
+        /// <returns>Data type for the output lane of the parameter.
+        /// </returns>
         public DataType OutputLaneType()
         {
             var laneType = ((ArrayType) base.Signature.ReturnValue!.DataType).ElementType;
             return laneType;
         }
 
+        /// <summary>
+        /// Slices a SIMD intrinsic into one of its component lanes.
+        /// </summary>
+        /// <param name="arguments">Arguments to be sliced.</param>
+        /// <param name="lane">Lane number.</param>
+        /// <returns>Sliced arguments.
+        /// </returns>
         public Expression MakeSlice(Expression[] arguments, int lane)
         {
             var laneType = ((ArrayType) base.Signature.Parameters![0].DataType).ElementType;

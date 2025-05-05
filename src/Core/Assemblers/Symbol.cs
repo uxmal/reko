@@ -32,15 +32,15 @@ namespace Reko.Core.Assemblers
 	public class Symbol
 	{
         /// <summary>
-        /// Creates a symbol named <paramref name="s"/>.
+        /// Creates a symbol named <paramref name="name"/>.
         /// </summary>
-        /// <param name="s">Name of the symbol.</param>
+        /// <param name="name">Name of the symbol.</param>
 		public Symbol(string name)
 		{
 			Name = name;
 			IsResolved = false;
 			Offset = 0;
-			Patches = new List<BackPatch>();
+            Patches = [];
 		}
 
         /// <summary>
@@ -109,6 +109,7 @@ namespace Reko.Core.Assemblers
             }
         }
 
+        /// <inheritdoc/>
         public void ReferToLeWordCount(int off, DataType width, IEmitter emitter)
         {
             if (IsResolved)
@@ -122,45 +123,77 @@ namespace Reko.Core.Assemblers
             }
         }
 
+        /// <summary>
+        /// Resolve all backpatches to this symbol in big-endian order.
+        /// </summary>
+        /// <param name="emitter">Emitter to write to.
+        /// </param>
         public void ResolveBe(IEmitter emitter)
         {
             Debug.Assert(IsResolved);
             foreach (BackPatch patch in Patches)
             {
-                emitter.PatchBe(patch.offset, Offset, patch.Size);
+                emitter.PatchBe(patch.Offset, Offset, patch.Size);
             }
         }
 
+        /// <summary>
+        /// Resolve all backpatches to this symbol in little-endian order.
+        /// </summary>
+        /// <param name="emitter">Emitter to write to.
+        /// </param>
         public void ResolveLe(IEmitter emitter)
         {
             Debug.Assert(IsResolved);
             foreach (BackPatch patch in Patches)
             {
-                emitter.PatchLe(patch.offset, this.Offset / patch.UnitSize, patch.Size);
+                emitter.PatchLe(patch.Offset, this.Offset / patch.UnitSize, patch.Size);
             }
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Returns the name of the symbol.
+        /// </summary>
 		public override string ToString()
 		{
 			return Name;
 		}
     }
 
-
+    /// <summary>
+    /// A relocation, or "backpatch" of a forward reference.
+    /// </summary>
 	public class BackPatch
 	{
-		public int	offset;
-        public int UnitSize;
+        /// <summary>
+        /// Offset in the output where the patch is to be made.
+        /// </summary>
+		public int Offset { get; set; }
 
-		public BackPatch(int o, DataType s, int unitSize)
+        /// <summary>
+        /// Size of the patch in storage units.
+        /// </summary>
+        public int UnitSize { get; set; }
+
+        /// <summary>
+        /// Constructs a backpatch.
+        /// </summary>
+        /// <param name="offset">Offset for the patch.</param>
+        /// <param name="dt">Data type of the patch.</param>
+        /// <param name="unitSize">Size of the type in storage units.
+        /// </param>
+		public BackPatch(int offset, DataType dt, int unitSize)
 		{
-			offset = o; 
-			Size = s;
+			Offset = offset; 
+			Size = dt;
             this.UnitSize = unitSize;
 		}
 
-        public DataType Size { get; }
+        /// <summary>
+        /// Data type of the patch.
+        /// </summary>
+
+        public DataType Size { get; set; }
     }
 
     /// <summary>
@@ -170,14 +203,26 @@ namespace Reko.Core.Assemblers
 	{
         private readonly SortedList<string, Symbol> symbols;
 
+        /// <summary>
+        /// Constructs a symbol table.
+        /// </summary>
         public SymbolTable()
 		{
 			symbols = new SortedList<string,Symbol>();
 			Equates = new Dictionary<string,int>();
 		}
 
+        /// <summary>
+        /// A dictionary of equates that have been encountered.
+        /// </summary>
         public Dictionary<string, int> Equates { get; }
 
+        /// <summary>
+        /// Creates a symbol. If the symbol already exists, it is returned.
+        /// If it doesn't exist already, a forward reference is generated.
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
         public Symbol CreateSymbol(string s)
 		{
             if (!symbols.TryGetValue(s, out Symbol? sym))
@@ -189,25 +234,35 @@ namespace Reko.Core.Assemblers
             return sym;
 		}
 
-		public Symbol DefineSymbol(string s, int off)
+        /// <summary>
+        /// Defines a symbol. If the symbol already exists, an error 
+        /// is raised.
+        /// </summary>
+        /// <param name="symbolName">Symbol name.</param>
+        /// <param name="offset">Offset for the symbol.</param>
+        /// <returns>The defined <see cref="Symbol"/>.</returns>
+		public Symbol DefineSymbol(string symbolName, int offset)
 		{
 			Symbol	sym;
-			if (symbols.ContainsKey(s))
+			if (symbols.ContainsKey(symbolName))
 			{
-				sym = symbols[s];
+				sym = symbols[symbolName];
 				if (sym.IsResolved || sym.Offset != 0)
-					throw new ApplicationException("symbol '" + s + "' redefined");
+					throw new ApplicationException("symbol '" + symbolName + "' redefined");
 			}
 			else
 			{
-				sym = new Symbol(s);
-				symbols[s] = sym;
+				sym = new Symbol(symbolName);
+				symbols[symbolName] = sym;
 			}
 			sym.IsResolved = true;
-			sym.Offset = off;
+			sym.Offset = offset;
 			return sym;
 		}
 
+        /// <summary>
+        /// Get an array of all symbols that haven't been resolved yet.
+        /// </summary>
         public Symbol [] GetUndefinedSymbols()
 		{
             var undef = new List<Symbol>();
@@ -219,6 +274,10 @@ namespace Reko.Core.Assemblers
             return undef.ToArray();
 		}
 
+        /// <summary>
+        /// Writes the symbol table to a text writer.
+        /// </summary>
+        /// <param name="txt">Output sink.</param>
 		public void Write(TextWriter txt)
 		{
 			foreach (KeyValuePair<string,Symbol> de in symbols)

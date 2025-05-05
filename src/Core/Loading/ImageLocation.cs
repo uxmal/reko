@@ -90,12 +90,29 @@ namespace Reko.Core
             return new ImageLocation(uri);
         }
 
+        /// <summary>
+        /// File system path to a file.
+        /// </summary>
         public string FilesystemPath { get; }
 
+        /// <summary>
+        /// Path fragments inside the file. These corresponds to paths inside
+        /// possible nested archives.
+        /// </summary>
         public string[] Fragments { get; }
 
+        /// <summary>
+        /// True if this <see cref="ImageLocation"/> has fragments.
+        /// </summary>
         public bool HasFragments => this.Fragments.Length > 0;
 
+        /// <summary>
+        /// Creates a new <see cref="ImageLocation"/> with an additional
+        /// path fragment.
+        /// </summary>
+        /// <param name="name">Additional path fragment.</param>
+        /// <returns>New image location.
+        /// </returns>
         public ImageLocation AppendFragment(string name)
         {
             var newFragments = new string[this.Fragments.Length + 1];
@@ -104,6 +121,11 @@ namespace Reko.Core
             return new ImageLocation(this.FilesystemPath, newFragments);
         }
 
+        /// <summary>
+        /// Combines this <see cref="ImageLocation"/> with a relative URI.
+        /// </summary>
+        /// <param name="relativeUri">Relative uri to append.</param>
+        /// <returns>A new <see cref="ImageLocation"/>.</returns>
         public ImageLocation Combine(string relativeUri)
         {
             if (this.HasFragments)
@@ -113,6 +135,7 @@ namespace Reko.Core
             return new ImageLocation(fsPath, relative.Fragments);
         }
 
+        /// <inheritdoc/>
         public int CompareTo(ImageLocation? that) => throw new NotImplementedException();
 
         /// <summary>
@@ -229,7 +252,12 @@ namespace Reko.Core
         }
 
 
-
+        /// <summary>
+        /// Creates a relative URI from this <see cref="ImageLocation"/> to the given
+        /// image location.
+        /// </summary>
+        /// <param name="imageLocation">Image location to relativize.</param>
+        /// <returns>Relative image location.</returns>
         public string MakeRelativeUri(ImageLocation imageLocation)
         {
             if (this.HasFragments)

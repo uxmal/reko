@@ -25,22 +25,37 @@ using System.Text;
 
 namespace Reko.Core.Hll.C
 {
+    /// <summary>
+    /// Parse result can either have a value or an error.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class ParseResult<T>
     {
         private T result;
         private string? error;
 
+        /// <summary>
+        /// Construct a successful parse result.
+        /// </summary>
+        /// <param name="result">Parse result.</param>
         public ParseResult(T result)
         {
             this.result = result;
         }
 
+        /// <summary>
+        /// Construct a failed parse result.
+        /// </summary>
+        /// <param name="error">Error describing the failure.</param>
         public ParseResult(string error)
         {
             this.error = error ?? throw new ArgumentNullException(nameof(error));
             this.result = default!;
         }
 
+        /// <summary>
+        /// The parsed value, if successful.
+        /// </summary>
         public T Result
         {
             get
@@ -52,8 +67,17 @@ namespace Reko.Core.Hll.C
         }
     }
 
+    /// <summary>
+    /// Helper class for <see cref="ParseResult{T}"/>.
+    /// </summary>
     public static class ParseResult
     {
+        /// <summary>
+        /// Creates a successful parse result.
+        /// </summary>
+        /// <typeparam name="T">Type of the parse result</typeparam>.
+        /// <param name="item">Parse result.</param>
+        /// <returns>An instance off <see cref="ParseResult{T}"/>.</returns>
         public static ParseResult<T> Ok<T>(T item){
             return new ParseResult<T>(item);
         }

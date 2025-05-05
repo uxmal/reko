@@ -23,6 +23,9 @@ using System.Collections.Generic;
 
 namespace Reko.Core.Expressions
 {
+    /// <summary>
+    /// Represents the result of a pattern match.
+    /// </summary>
     public class ExpressionMatch
     {
         private readonly Dictionary<string, Expression> capturedExpressions;
@@ -35,6 +38,9 @@ namespace Reko.Core.Expressions
             Success = false;
         }
 
+        /// <summary>
+        /// True if the pattern match was successful.
+        /// </summary>
         public bool Success { get; internal set; }
         internal Expression? Pattern { get; set; }
 
@@ -60,6 +66,12 @@ namespace Reko.Core.Expressions
             return true;
         }
 
+        /// <summary>
+        /// Finds the expression that was captured by the given label.
+        /// </summary>
+        /// <param name="label">Label to query.</param>
+        /// <returns>An expression if a match with that label was found; otherwise null.
+        /// </returns>
         public Expression? CapturedExpression(string? label)
         {
             if (string.IsNullOrEmpty(label) || !capturedExpressions.TryGetValue(label, out Expression? value))
@@ -67,6 +79,12 @@ namespace Reko.Core.Expressions
             return value;
         }
 
+        /// <summary>
+        /// Finds the operator that was captured by the given label.
+        /// </summary>
+        /// <param name="label">Label to query.</param>
+        /// <returns>Operator if a match with that label was found; otherwise null.
+        /// </returns>
         public Operator? CapturedOperator(string? label)
         {
             if (string.IsNullOrEmpty(label) || !capturedOperators.TryGetValue(label, out Operator? value))

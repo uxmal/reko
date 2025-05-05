@@ -21,6 +21,8 @@
 using System;
 using System.Runtime.InteropServices;
 
+#pragma warning disable CS1591
+
 namespace Reko.Core.NativeInterface
 {
     public class CustomAnsiStringMarshaler : ICustomMarshaler

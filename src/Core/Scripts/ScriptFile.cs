@@ -29,11 +29,20 @@ namespace Reko.Core.Scripts
     [Designer("Reko.Gui.Design.ScriptFileDesigner,Reko.Gui")]
     public abstract class ScriptFile
     {
+        /// <summary>
+        /// Constructs an instance of <see cref="ScriptFile"/>.
+        /// </summary>
+        /// <param name="services"><see cref="IServiceProvider"/> instance.</param>
+        /// <param name="scriptLocation">Location of the script file.</param>
+        /// <param name="bytes">Raw bytes of the script file.</param>
         public ScriptFile(IServiceProvider services, ImageLocation scriptLocation, byte[] bytes)
         {
             this.Location = scriptLocation;
         }
 
+        /// <summary>
+        /// The location from which the script was loaded.
+        /// </summary>
         public ImageLocation Location { get; }
 
         /// <summary>

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2025 John Källén.
  *
@@ -33,6 +33,12 @@ namespace Reko.Core.Loading
     /// </summary>
     public abstract class ImageSegmentRenderer
     {
+        /// <summary>
+        /// Renders the contents of the image segment.
+        /// </summary>
+        /// <param name="segment">Segment to render.</param>
+        /// <param name="program">Program context of the segment.</param>
+        /// <param name="formatter">Output sink.</param>
         public abstract void Render(ImageSegment segment, Program program, Formatter formatter);
     }
 }

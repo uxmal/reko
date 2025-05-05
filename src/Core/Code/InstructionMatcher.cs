@@ -23,17 +23,32 @@ using System;
 
 namespace Reko.Core.Code
 {
+    /// <summary>
+    /// Matches an instruction against a pattern.
+    /// </summary>
     public class InstructionMatcher : InstructionVisitor<bool, ExpressionMatch>
     {
         private Instruction pattern;
         private ExpressionMatcher matcher;
 
+        /// <summary>
+        /// Constructs an instruction matcher.
+        /// </summary>
+        /// <param name="pattern">Pattern to use when matching.
+        /// </param>
         public InstructionMatcher(Instruction pattern)
         {
             this.pattern = pattern;
             this.matcher = new ExpressionMatcher(null!);
         }
 
+        /// <summary>
+        /// Matches an instruction against the pattern.
+        /// </summary>
+        /// <param name="instr">Instruction to match.</param>
+        /// <returns>An <see cref="ExpressionMatch"/> containing
+        /// any captured expressions, if there was a match.
+        /// </returns>
         public ExpressionMatch Match(Instruction instr)
         {
             var match = new ExpressionMatch();
@@ -43,6 +58,7 @@ namespace Reko.Core.Code
 
         #region InstructionVisitor<bool>
 
+        /// <inheritdoc/>
         public bool VisitAssignment(Assignment ass, ExpressionMatch m)
         {
             if (pattern is not Assignment assPat)
@@ -52,6 +68,7 @@ namespace Reko.Core.Code
             return matcher.Match(assPat.Dst, ass.Dst, m);
         }
 
+        /// <inheritdoc/>
         public bool VisitBranch(Branch branch, ExpressionMatch m)
         {
             if (pattern is not Branch branchPat)
@@ -59,11 +76,13 @@ namespace Reko.Core.Code
             return matcher.Match(branchPat.Condition, branch.Condition, m);
         }
 
+        /// <inheritdoc/>
         public bool VisitCallInstruction(CallInstruction ci, ExpressionMatch m)
         {
             return pattern is CallInstruction;
         }
 
+        /// <inheritdoc/>
         public bool VisitComment(CodeComment comment, ExpressionMatch m)
         {
             if (pattern is not CodeComment commentPat)
@@ -71,6 +90,7 @@ namespace Reko.Core.Code
             return true;
         }
 
+        /// <inheritdoc/>
         public bool VisitDefInstruction(DefInstruction def, ExpressionMatch m)
         {
             if (pattern is not DefInstruction defPat)
@@ -78,6 +98,7 @@ namespace Reko.Core.Code
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public bool VisitGotoInstruction(GotoInstruction gotoInstruction, ExpressionMatch m)
         {
             if (pattern is not GotoInstruction gotoPat)
@@ -85,6 +106,7 @@ namespace Reko.Core.Code
             return matcher.Match(gotoPat.Target, gotoInstruction.Target, m);
         }
 
+        /// <inheritdoc/>
         public bool VisitPhiAssignment(PhiAssignment phi, ExpressionMatch m)
         {
             if (pattern is not PhiAssignment defPat)
@@ -92,6 +114,7 @@ namespace Reko.Core.Code
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public bool VisitReturnInstruction(ReturnInstruction ret, ExpressionMatch m)
         {
             if (pattern is not ReturnInstruction retPat)
@@ -103,6 +126,7 @@ namespace Reko.Core.Code
             return matcher.Match(retPat.Expression, ret.Expression, m);
         }
 
+        /// <inheritdoc/>
         public bool VisitSideEffect(SideEffect side, ExpressionMatch m)
         {
             if (pattern is not SideEffect sidePat)
@@ -110,6 +134,7 @@ namespace Reko.Core.Code
             return matcher.Match(sidePat.Expression, side.Expression, m);
         }
 
+        /// <inheritdoc/>
         public bool VisitStore(Store store, ExpressionMatch m)
         {
             if (pattern is not Store storePat)
@@ -119,6 +144,7 @@ namespace Reko.Core.Code
             return matcher.Match(storePat.Dst ,store.Dst, m);
         }
 
+        /// <inheritdoc/>
         public bool VisitSwitchInstruction(SwitchInstruction si, ExpressionMatch m)
         {
             if (pattern is not SwitchInstruction swPat)
@@ -126,6 +152,7 @@ namespace Reko.Core.Code
             return matcher.Match(swPat.Expression, si.Expression, m);
         }
 
+        /// <inheritdoc/>
         public bool VisitUseInstruction(UseInstruction u, ExpressionMatch m)
         {
             if (pattern is not UseInstruction uPattern)

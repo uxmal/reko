@@ -79,6 +79,10 @@ namespace Reko.Core.Serialization
         [DefaultValue(false)]
         public bool OutParameter { get; set; }
 
+
+        /// <summary>
+        /// Returns a string representation of this argument.
+        /// </summary>
         public override string ToString()
         {
             var sb = new StringBuilder("arg(");

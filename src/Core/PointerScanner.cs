@@ -54,6 +54,9 @@ namespace Reko.Core
             this.flags = flags;
         }
 
+        /// <summary>
+        /// Returns an enumerator that iterates through the collection.
+        /// </summary>
         public IEnumerator<T> GetEnumerator()
         {
             return new Enumerator(this, this.rdr.Clone());
@@ -100,6 +103,13 @@ namespace Reko.Core
             public void Dispose() { }
         }
 
+        /// <summary>
+        /// Reads a word from the image reader and checks if they are pointers.
+        /// </summary>
+        /// <param name="rdr">Image readed to read from.</param>
+        /// <param name="linAddrInstr">Resulting address of instruction.</param>
+        /// <returns>True if a pointer appears to have been found; otherwise false.
+        /// </returns>
         public virtual bool ProbeForPointer(EndianImageReader rdr, out T linAddrInstr)
         {
             linAddrInstr = GetLinearAddress(rdr.Address);
@@ -135,6 +145,12 @@ namespace Reko.Core
             return false;
         }
 
+        /// <summary>
+        /// Converts the given address to a linear address.
+        /// </summary>
+        /// <param name="address">Address given.</param>
+        /// <returns>Linear counterpart.
+        /// </returns>
         public abstract T GetLinearAddress(Address address);
 
         /// <summary>
@@ -149,15 +165,35 @@ namespace Reko.Core
         /// </summary>
         /// <remarks>Most architectures have opcode whose size &lt;= 32 bits, which should
         /// fit comfortably in a System.UInt32.</remarks>
-        /// <param name="rdr">Imagereader used to read.</param>
+        /// <param name="rdr">Image reader to read from.</param>
         /// <param name="opcode">The opcode at the current position of the reader.</param>
         /// <returns>True of the peek operation was successful, false otherwise.</returns>
         public abstract bool TryPeekOpcode(EndianImageReader rdr, out uint opcode);
 
+        /// <summary>
+        /// Reads a pointer-sized value from the image reader and checks if it is a pointer.
+        /// </summary>
+        /// <param name="rdr">Image reader to read from.</param>
+        /// <param name="target">The read pointer-sized value.</param>
+        /// <returns>True if a value could be read; otherwise false.</returns>
         public abstract bool TryPeekPointer(EndianImageReader rdr, out T target);
 
+        /// <summary>
+        /// Reads an instruction from the image reader and checks if it is a call.
+        /// </summary>
+        /// <param name="rdr">Image reader to read from.</param>
+        /// <param name="opcode">Expected opcode.</param>
+        /// <param name="target">The target of the call.</param>
+        /// <returns>True if a value could be read; otherwise false.</returns>
         public abstract bool MatchCall(EndianImageReader rdr, uint opcode, out T target);
 
+        /// <summary>
+        /// Reads an instruction from the image reader and checks if it is a jump.
+        /// </summary>
+        /// <param name="rdr">Image reader to read from.</param>
+        /// <param name="opcode">Expected opcode.</param>
+        /// <param name="target">The target of the jump.</param>
+        /// <returns>True if a value could be read; otherwise false.</returns>
         public abstract bool MatchJump(EndianImageReader rdr, uint opcode, out T target);
     }
 }

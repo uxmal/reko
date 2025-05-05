@@ -118,6 +118,10 @@ namespace Reko.Core.Loading
             return file;
         }
 
+        /// <summary>
+        /// Called when a duplicate file name is detected.
+        /// </summary>
+        /// <param name="filename">Duplicated file name.</param>
         protected virtual void ReportDuplicatedFilename(string filename)
         {
             throw new DuplicateFilenameException($"Duplicated file name '{filename}.");
@@ -138,11 +142,20 @@ namespace Reko.Core.Loading
             return string.Join(pathSeparator, components);
         }
 
+        /// <summary>
+        /// Represents a directory in an archive.
+        /// </summary>
         public class ArchiveDictionary : ArchivedFolder
         {
             private readonly AbstractHierarchicalArchive archive;
             internal readonly Dictionary<string, ArchiveDirectoryEntry> entries;
 
+            /// <summary>
+            /// Constructs an instance of <see cref="ArchiveDictionary"/>.
+            /// </summary>
+            /// <param name="archive">The containing archive.</param>
+            /// <param name="name">Name of the directory.</param>
+            /// <param name="parent">Parent node of the directory, if any.</param>
             public ArchiveDictionary(AbstractHierarchicalArchive archive, string name, ArchivedFolder? parent)
             {
                 this.archive = archive;
@@ -163,6 +176,11 @@ namespace Reko.Core.Loading
             /// <inheritdoc/>
             public ArchiveDirectoryEntry? Parent { get; }
 
+            /// <summary>
+            /// Adds an entry to the directory.
+            /// </summary>
+            /// <param name="name">Name of the entry.</param>
+            /// <param name="entry">Directory entry.</param>
             public void AddEntry(string name, ArchiveDirectoryEntry entry)
             {
                 entries[name] = entry;

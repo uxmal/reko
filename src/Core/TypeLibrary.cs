@@ -70,23 +70,12 @@ namespace Reko.Core
         /// <summary>
         /// Constructs a type library.
         /// </summary>
-        /// <param name="caseInsensitive">True if name comparisons are made 
-        /// case insensitively.</param>
         /// <param name="types">Data types to include in the type library.</param>
-        /// <param name="procedures">Functions to include in the type library.</param>
+        /// <param name="signatures">Functions to include in the type library.</param>
         /// <param name="characteristics"><see cref="ProcedureCharacteristics"/> to include in the type library.</param>
         /// <param name="importedGlobals">Global variables to include in the type library.</param>
-        /// <summary>
-        /// Builds a type library from the given data collections.
-        /// </summary>
         /// <param name="caseInsensitive">Whether name string comparisons should be 
         /// case sensitive or insensitive.</param>
-        /// <param name="types">A dictionary mapping names to <see cref="DataType"/>s.</param>
-        /// <param name="signatures">A dictionary mapping names to <see cref="FunctionType"/></param>
-        /// <param name="characteristics">A dictionary mapping names to <see cref="ProcedureCharacteristics"/>.</param>
-        /// <param name="importedGlobals">A dictionary mapping names to the <see cref="DataType"/>s of 
-        /// global variables.
-        /// </param>
         public TypeLibrary(
             bool caseInsensitive,
             IDictionary<string,DataType> types,

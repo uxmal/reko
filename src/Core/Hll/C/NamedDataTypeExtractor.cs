@@ -70,6 +70,12 @@ namespace Reko.Core.Hll.C
             }
         }
 
+        /// <summary>
+        /// Given a declarator, returns a <see cref="NamedDataType"/> that contains the
+        /// name and type of the declared entity.
+        /// </summary>
+        /// <param name="declarator">Declarator to analyze.</param>
+        /// <returns>A <see cref="NamedDataType"/> instance.</returns>
         public NamedDataType GetNameAndType(Declarator declarator)
         {
             var nt = new NamedDataType { DataType = dt, Size = byteSize };
@@ -86,6 +92,7 @@ namespace Reko.Core.Hll.C
             return (nt) => new NamedDataType { Name = id.Name, DataType = nt.DataType, Size = nt.Size};
         }
 
+        /// <inheritdoc/>
         public Func<NamedDataType, NamedDataType> VisitArray(ArrayDeclarator array)
         {
             Func<NamedDataType, NamedDataType> fn;
@@ -114,6 +121,7 @@ namespace Reko.Core.Hll.C
             };
         }
 
+        /// <inheritdoc/>
         public Func<NamedDataType, NamedDataType> VisitField(FieldDeclarator field)
         {
             Func<NamedDataType, NamedDataType> fn;
@@ -128,6 +136,7 @@ namespace Reko.Core.Hll.C
             return fn;
         }
 
+        /// <inheritdoc/>
         public Func<NamedDataType,NamedDataType> VisitPointer(PointerDeclarator pointer)
         {
             Func<NamedDataType, NamedDataType> fn;
@@ -152,6 +161,7 @@ namespace Reko.Core.Hll.C
             };
         }
 
+        /// <inheritdoc/>
         public Func<NamedDataType, NamedDataType> VisitReference(ReferenceDeclarator reference)
         {
             Func<NamedDataType, NamedDataType> fn;
@@ -188,6 +198,7 @@ namespace Reko.Core.Hll.C
             return this.pointerSize;
         }
 
+        /// <inheritdoc/>
         public Func<NamedDataType, NamedDataType> VisitFunction(FunctionDeclarator function)
         {
             var fn = function.Declarator.Accept(this);
@@ -366,6 +377,7 @@ namespace Reko.Core.Hll.C
             }
         }
 
+        /// <inheritdoc/>
         public Func<NamedDataType,NamedDataType> VisitCallConvention(CallConventionDeclarator conv)
         {
             ApplyCallConvention(conv.Convention);
@@ -379,6 +391,7 @@ namespace Reko.Core.Hll.C
             callingConvention = convention;
         }
 
+        /// <inheritdoc/>
         public SerializedType? VisitSimpleType(SimpleTypeSpec simpleType)
         {
             switch (simpleType.Type)
@@ -484,6 +497,7 @@ namespace Reko.Core.Hll.C
             };
         }
 
+        /// <inheritdoc/>
         public SerializedType VisitTypedef(TypeDefName typeDefName)
         {
             if (symbolTable.PrimitiveTypes.TryGetValue(typeDefName.Name, out var prim))
@@ -501,6 +515,7 @@ namespace Reko.Core.Hll.C
             return new TypeReference_v1(typeDefName.Name);
         }
 
+        /// <inheritdoc/>
         public SerializedType VisitComplexType(ComplexTypeSpec complexType)
         {
             if (complexType.Type == CTokenType.Struct)
@@ -562,6 +577,7 @@ namespace Reko.Core.Hll.C
                 return c.Alignment;
         }
 
+        /// <inheritdoc/>
         public SerializedType VisitEnum(EnumeratorTypeSpec e)
         {
             if (e.Tag == null || !symbolTable.EnumsSeen.TryGetValue(e.Tag, out var _))
@@ -641,6 +657,7 @@ namespace Reko.Core.Hll.C
             return rawAlign * ((offset + (rawAlign - 1)) / rawAlign);
         }
 
+        /// <inheritdoc/>
         public SerializedType? VisitStorageClass(StorageClassSpec storageClassSpec)
         {
             switch (storageClassSpec.Type)
@@ -656,11 +673,13 @@ namespace Reko.Core.Hll.C
             return dt;       //$TODO make use of CDECL.
         }
 
+        /// <inheritdoc/>
         public SerializedType? VisitExtendedDeclspec(ExtendedDeclspec declspec)
         {
             return null;
         }
 
+        /// <inheritdoc/>
         public SerializedType? VisitTypeQualifier(TypeQualifier typeQualifier)
         {
             if (typeQualifier.Qualifier == CTokenType._Near)

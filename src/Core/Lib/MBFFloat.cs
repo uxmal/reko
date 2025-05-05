@@ -37,41 +37,52 @@ namespace Reko.Core.Lib
         private const int MantissaSize = ExponentBitOffset - 1;
         private const int ExponentBias = 128;
 
+        /// <summary>
+        /// Constructs an instance of <see cref="MBFFloat32"/> from a 32-bit word.
+        /// </summary>
+        /// <param name="value"></param>
         public MBFFloat32(uint value)
         {
             this.value = value;
         }
 
+        /// <inheritdoc/>
         public TypeCode GetTypeCode()
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public bool ToBoolean(IFormatProvider? provider)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public byte ToByte(IFormatProvider? provider)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public char ToChar(IFormatProvider? provider)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public DateTime ToDateTime(IFormatProvider? provider)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public decimal ToDecimal(IFormatProvider? provider)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public double ToDouble(IFormatProvider? provider)
         {
             long mant = value & 0x007FFFFF;
@@ -85,56 +96,67 @@ namespace Reko.Core.Lib
             return d;
         }
 
+        /// <inheritdoc/>
         public short ToInt16(IFormatProvider? provider)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public int ToInt32(IFormatProvider? provider)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public long ToInt64(IFormatProvider? provider)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public sbyte ToSByte(IFormatProvider? provider)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public float ToSingle(IFormatProvider? provider)
         {
             return (float) ToDouble(provider);
         }
 
+        /// <inheritdoc/>
         public string ToString(IFormatProvider? provider)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public string ToString(string? format, IFormatProvider? formatProvider)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public object ToType(Type conversionType, IFormatProvider? provider)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public ushort ToUInt16(IFormatProvider? provider)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public uint ToUInt32(IFormatProvider? provider)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public ulong ToUInt64(IFormatProvider? provider)
         {
             throw new NotImplementedException();

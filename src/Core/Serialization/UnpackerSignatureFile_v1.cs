@@ -31,6 +31,9 @@ namespace Reko.Core.Serialization
     [XmlRoot(ElementName="SIGNATURES", Namespace = "", IsNullable = false)]
     public partial class UnpackerSignatureFile_v1
     {
+        /// <summary>
+        /// Signatures contained in the file.
+        /// </summary>
         [XmlElement("ENTRY", Form = XmlSchemaForm.Unqualified)]
         public UnpackerSignature_v1[]? Signatures;
     }
@@ -60,6 +63,9 @@ namespace Reko.Core.Serialization
         [XmlElement(ElementName = "ENTRYPOINT", Form = XmlSchemaForm.Unqualified)]
         public string? EntryPoint;
 
+        /// <summary>
+        /// Pattern to identify the program entry.
+        /// </summary>
         [XmlElement(ElementName = "ENTIREPE", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public string? EntirePE;
     }

@@ -26,18 +26,27 @@ using System.Text;
 namespace Reko.Core.Types
 {
     /// <summary>
-    /// Refers to another type by name; think of C's "typedef"
+    /// Refers to another type by name; think of C's <c>typedef</c>
     /// type builder.
     /// </summary>
     public class TypeReference : DataType
     {
         private DataType referent;
 
+        /// <summary>
+        /// Creates a type reference. The type reference refers to a <see cref="DataType"/>.
+        /// </summary>
+        /// <param name="dataType">The type being aliased.</param>
         public TypeReference(DataType dataType) : base(dataType.Domain)
         {
             this.referent = dataType;
         }
 
+        /// <summary>
+        /// Creates a type reference. The type reference refers to a <see cref="DataType"/>.
+        /// </summary>
+        /// <param name="name">Name of the type alias.</param>
+        /// <param name="dataType">The type being aliased.</param>
         public TypeReference(string name, DataType dataType) : base(dataType.Domain, name)
         {
             this.referent = dataType;
@@ -66,6 +75,9 @@ namespace Reko.Core.Types
         /// <inheritdoc/>
         public override bool IsReal => Referent.IsReal;
 
+        /// <summary>
+        /// The type being aliased.
+        /// </summary>
         public DataType Referent
         {
             get { return referent; }

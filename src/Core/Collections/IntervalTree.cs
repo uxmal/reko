@@ -20,14 +20,27 @@ namespace Reko.Core.Collections
     using System.Linq;
 
     /// <summary>
-    /// Interval structure
+    /// Represents an interval.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public readonly struct Interval<T> where T : IComparable<T>
     {
-        public readonly T Start;
-        public readonly T End;
+        /// <summary>
+        /// The start of the interval.
+        /// </summary>
+        public T Start { get; }
 
+        /// <summary>
+        /// The end of the interval.
+        /// </summary>
+        public T End { get; }
+
+        /// <summary>
+        /// Constructs an interval.
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <exception cref="ArgumentException"></exception>
         public Interval(T start, T end)
         {
             if (start.CompareTo(end) > 0)
@@ -39,6 +52,13 @@ namespace Reko.Core.Collections
             this.End = end;
         }
 
+        /// <summary>
+        /// Determines whether the specified object is equal to this instance.
+        /// </summary>
+        /// <param name="obj">Other object.</param>
+        /// <returns>True if the other object is an <see cref="Interval{T}"/>
+        /// with the same extent; otherwise false.
+        /// </returns>
         public override readonly bool Equals(object? obj)
         {
             if (obj is not Interval<T> that)
@@ -47,17 +67,34 @@ namespace Reko.Core.Collections
                    this.End.CompareTo(that.End)==0;
         }
 
+        /// <summary>
+        /// Returns a hash code for this instance.
+        /// </summary>
         public override int GetHashCode()
         {
             return Start.GetHashCode() ^ End.GetHashCode() * 17;
         }
 
+        /// <summary>
+        /// Compares two intervals for equality.
+        /// </summary>
+        /// <param name="a">First interval.</param>
+        /// <param name="b">Second interval.</param>
+        /// <returns>True if the intervals are equal; false if not.
+        /// </returns>
         public static bool operator == (Interval<T> a, Interval<T> b)
         {
             return a.Start.CompareTo(b.Start) == 0 &&
                    a.End.CompareTo(b.End) == 0;
         }
 
+        /// <summary>
+        /// Compares two intervals for inequality.
+        /// </summary>
+        /// <param name="a">First interval.</param>
+        /// <param name="b">Second interval.</param>
+        /// <returns>True if the intervals are not equal; false if they are equal.
+        /// </returns>
         public static bool operator != (Interval<T> a, Interval<T> b)
         {
             return a.Start.CompareTo(b.Start) != 0 ||
@@ -86,11 +123,21 @@ namespace Reko.Core.Collections
             return this.Start.CompareTo(that.Start) <= 0 && this.End.CompareTo(that.End) >= 0;
         }
 
+        /// <summary>
+        /// Returns a string representation of the interval.
+        /// </summary>
         public override string ToString()
         {
             return $"[{this.Start}, {this.End}]";
         }
 
+        /// <summary>
+        /// Computs the intersection of this interval with the specified interval.
+        /// </summary>
+        /// <param name="that">Other interval to compute intersection with.</param>
+        /// <returns>The intersection of the intervals, or an empty interval
+        /// if there is no intersection.
+        /// </returns>
         public Interval<T> Intersect(Interval<T> that)
         {
             T min = this.Start.CompareTo(that.Start) >= 0
@@ -104,6 +151,12 @@ namespace Reko.Core.Collections
             return new Interval<T>(min, max);
         }
 
+        /// <summary>
+        /// Computes the difference between this interval and the specified interval.
+        /// </summary>
+        /// <param name="that">Other interval.</param>
+        /// <returns>The difference between the intervals.
+        /// </returns>
         public Interval<T> Except(Interval<T> that)
         {
             var newBegin = this.Start.CompareTo(that.End) > 0
@@ -120,8 +173,19 @@ namespace Reko.Core.Collections
         }
     }
 
+    /// <summary>
+    /// Factory class for creating intervals.
+    /// </summary>
     public static class Interval
     {
+        /// <summary>
+        /// Creates the specified interval.
+        /// </summary>
+        /// <typeparam name="T">Value type for the interval.</typeparam>
+        /// <param name="begin">Start of the interval.</param>
+        /// <param name="end">End of the interval.</param>
+        /// <returns>An <see cref="Interval{T}"/> instance.
+        /// </returns>
         public static Interval<T> Create<T>(T begin, T end)
             where T : IComparable<T>
         {
@@ -134,7 +198,6 @@ namespace Reko.Core.Collections
     /// </summary>
     /// <typeparam name="T">Key Type.</typeparam>
     /// <typeparam name="TypeValue">Value type.</typeparam>
-    /// <typeparam name="TypeValue"></typeparam>
     public class IntervalTree<T, TypeValue> :
         IEnumerable<KeyValuePair<Interval<T>, TypeValue>>
         where T : IComparable<T>
@@ -167,6 +230,9 @@ namespace Reko.Core.Collections
             }
         }
 
+        /// <summary>
+        /// Number of intervals in the tree.
+        /// </summary>
         public int Count { get; private set; }
 
         #region Methods
@@ -387,6 +453,7 @@ namespace Reko.Core.Collections
             }
         }
 
+        /// <inheritdoc/>
         public IEnumerator<KeyValuePair<Interval<T>, TypeValue>> GetEnumerator()
         {
             return IntervalValuePairs.GetEnumerator();
@@ -442,6 +509,9 @@ namespace Reko.Core.Collections
             });
         }
 
+        /// <summary>
+        /// Dumps this instance to the debug output.
+        /// </summary>
         [Conditional("DEBUG")]
         public void Dump()
         {
@@ -1418,7 +1488,7 @@ namespace Reko.Core.Collections
             }
         }
 
-        public static class ComparerUtil
+        private static class ComparerUtil
         {
             public static IComparer<T> GetComparer()
             {

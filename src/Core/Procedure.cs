@@ -80,7 +80,11 @@ namespace Reko.Core
         /// The <see cref="IProcessorArchitecture"/> used to decompile this procedure.
         /// </summary>
         public IProcessorArchitecture Architecture { get; }
-
+        
+        //$TODO: move to a separate place; we have AbsynProcedure already!
+        /// <summary>
+        /// The abstract syntax corresponding to the procedure.
+        /// </summary>
         public List<AbsynStatement>? Body { get; set; }
 
         /// <summary>

@@ -103,7 +103,14 @@ namespace Reko.Core
         {
         }
 
+        /// <summary>
+        /// True if frame escapes, and is used by a callee.
+        /// </summary>
         public bool Escapes { get; set; }
+
+        /// <summary>
+        /// Frame offset from the frame of the caller.
+        /// </summary>
         public int FrameOffset { get; set; }
 
         /// <summary>
@@ -123,7 +130,9 @@ namespace Reko.Core
         /// </summary>
         public List<Identifier> Identifiers { get; }
 
-
+        /// <summary>
+        /// The memory storage for this frame.
+        /// </summary>
         public Identifier Memory { get; private set; }
 
         /// <summary>
@@ -318,14 +327,22 @@ namespace Reko.Core
         /// <summary>
         /// Makes sure that there is a local variable at the given offset.
         /// </summary>
-        /// <param name="cbOffset"></param>
-        /// <param name="type"></param>
-        /// <returns></returns>
+        /// <param name="cbOffset">Stack offset.</param>
+        /// <param name="type">Local variable.</param>
+        /// <returns>Identifier of a stack local.</returns>
         public Identifier EnsureStackLocal(int cbOffset, DataType type)
 		{
 			return EnsureStackLocal(cbOffset, type, null);
 		}
 
+        /// <summary>
+        /// Makes sure that there is a local variable at the given offset.
+        /// </summary>
+        /// <param name="cbOffset">Stack offset.</param>
+        /// <param name="type">Local variable.</param>
+        /// <param name="name">Name of the variable, or null to generate it
+        /// automatically.</param>
+        /// <returns>Identifier of a stack local.</returns>
 		public Identifier EnsureStackLocal(int cbOffset, DataType type, string? name)
 		{
 			Identifier? id = FindStackLocal(cbOffset, type);
@@ -337,11 +354,25 @@ namespace Reko.Core
 			return id;
 		}
 
+        /// <summary>
+        /// Makes sure that there is a stack argument variable at the given offset.
+        /// </summary>
+        /// <param name="cbOffset">Stack offset.</param>
+        /// <param name="type">Local variable.</param>
+        /// <returns>Identifier of a stack argument.</returns>
 		public Identifier EnsureStackArgument(int cbOffset, DataType type)
 		{
 			return EnsureStackArgument(cbOffset, type, null);
 		}
 
+        /// <summary>
+        /// Makes sure that there is a stack argument variable at the given offset.
+        /// </summary>
+        /// <param name="cbOffset">Stack offset.</param>
+        /// <param name="type">Local variable.</param>
+        /// <param name="argName">Name of the variable, or null to generate it
+        /// automatically.</param>
+        /// <returns>Identifier of a stack argument.</returns>
 		public Identifier EnsureStackArgument(int cbOffset, DataType type, string? argName)
 		{
 			Identifier? id = FindStackArgument(cbOffset, type.Size);
@@ -356,19 +387,14 @@ namespace Reko.Core
 			return id;
 		}
 
-		public Identifier EnsureStackVariable(Constant imm, int cbOffset, DataType type)
-		{
-			if (imm is not null && imm.IsValid)
-			{
-				cbOffset = imm.ToInt32() - cbOffset;
-			}
-			else
-				cbOffset = -cbOffset;
-			return (cbOffset >= 0)
-				? EnsureStackArgument(cbOffset, type)
-				: EnsureStackLocal(cbOffset, type);
-		}
-
+        /// <summary>
+        /// Ensures that there is a stack variable at the given offset.
+        /// </summary>
+        /// <param name="byteOffset">Offset from frame pointer, in storage units.</param>
+        /// <param name="type">Data type of the variable.</param>
+        /// <param name="name">The name of the variable, or null to
+        /// automatically generate name.</param>
+        /// <returns>Identifier of a stack variable.</returns>
         public Identifier EnsureStackVariable(int byteOffset, DataType type, string? name = null)
         {
             return arch.IsStackArgumentOffset(byteOffset)
@@ -376,6 +402,14 @@ namespace Reko.Core
                 : EnsureStackLocal(byteOffset, type, name);
         }
 
+        /// <summary>
+        /// Finds an identifier in this frame that is backed by the given
+        /// sequence of storages.
+        /// </summary>
+        /// <param name="elements">Sequence of storages.</param>
+        /// <returns>The corresponding <see cref="Identifier"/>, or 
+        /// null if no sequence was found.
+        /// </returns>
         public Identifier? FindSequence(Storage[] elements)
         {
             foreach (Identifier id in Identifiers)
@@ -395,6 +429,14 @@ namespace Reko.Core
             return null;
         }
 
+        /// <summary>
+        /// Finds an identifier in this frame that is backed by the given
+        /// register <paramref name="reg"/>.
+        /// </summary>
+        /// <param name="reg">Backing register.</param>
+        /// <param name="grfMask">Bits of the flag group.</param>
+        /// <returns>A matching identifier if one is found; otherwise null.
+        /// </returns>
 		public Identifier? FindFlagGroup(RegisterStorage reg, uint grfMask)
 		{
 			foreach (Identifier id in Identifiers)
@@ -409,16 +451,30 @@ namespace Reko.Core
 			return null;
 		}
 
-		public Identifier? FindFpuStackVariable(int off)
+        /// <summary>
+        /// Finds the identifier for an FPU stack variable at the given offset.
+        /// </summary>
+        /// <param name="offset">Offset of the stack variable.</param>
+        /// <returns>The corrsesponding identifier, or null if none
+        /// was found.
+        /// </returns>
+		public Identifier? FindFpuStackVariable(int offset)
 		{
 			foreach (Identifier id in Identifiers)
 			{
-                if (id.Storage is FpuStackStorage fst && fst.FpuStackOffset == off)
+                if (id.Storage is FpuStackStorage fst && fst.FpuStackOffset == offset)
                     return id;
             }
 			return null;
 		}
 
+        /// <summary>
+        /// Finds the identifier for an output variable .
+        /// </summary>
+        /// <param name="idOrig">The original identifier.</param>
+        /// <returns>The corrsesponding identifier, or null if none
+        /// was found.
+        /// </returns>
 		public Identifier? FindOutArgument(Identifier idOrig)
 		{
 			foreach (Identifier id in Identifiers)
@@ -431,6 +487,13 @@ namespace Reko.Core
 			return null;
 		}
 
+        /// <summary>
+        /// Finds the identifier for the given register.
+        /// </summary>
+        /// <param name="reg">Register to find.</param>
+        /// <returns>The corresponding identifier, or null if none
+        /// was found.
+        /// </returns>
 		public Identifier? FindRegister(RegisterStorage reg)
 		{
 			foreach (Identifier id in Identifiers)
@@ -441,16 +504,14 @@ namespace Reko.Core
 			return null;
 		}
 
-        public Identifier? FindTemporary(TemporaryStorage tmp)
-        {
-            foreach (var id in Identifiers)
-            {
-                if (id.Storage is TemporaryStorage t && t == tmp)
-                    return id;
-            }
-            return null;
-        }
-
+        /// <summary>
+        /// Finds the identifier for a stack argument at the given offset.
+        /// </summary>
+        /// <param name="offset">Offset of the stack argument.</param>
+        /// <param name="size">Size of the variable in storage units.</param>
+        /// <returns>The corresponding identifier, or null if none
+        /// was found.
+        /// </returns>
 		public Identifier? FindStackArgument(int offset, int size)
 		{
 			foreach (Identifier id in Identifiers)
@@ -463,6 +524,14 @@ namespace Reko.Core
 			return null;
 		}
 
+        /// <summary>
+        /// Finds the identifier for a stack local variable at the given offset.
+        /// </summary>
+        /// <param name="offset">Offset of the stack variable.</param>
+        /// <param name="dt">Size of the variable.</param>
+        /// <returns>The corresponding identifier, or null if none
+        /// was found.
+        /// </returns>
 		public Identifier? FindStackLocal(int offset, DataType dt)
 		{
 			foreach (Identifier id in Identifiers)
@@ -476,14 +545,6 @@ namespace Reko.Core
             }
 			return null;
 		}
-
-        public Identifier? FindTemporary(string name)
-        {
-            return (from id in Identifiers
-                   let tmp = id.Storage as TemporaryStorage
-                   where tmp is not null && id.Name == name
-                   select id).SingleOrDefault();
-        }
 
         /// <summary>
         /// Writes a textual representation of the identifiers of this frame

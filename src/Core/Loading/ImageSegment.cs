@@ -96,6 +96,10 @@ namespace Reko.Core.Loading
         /// </remarks>
         public uint Size { get; set; }
 
+        /// <summary>
+        /// Size of the segment content in storage in address units. This will
+        /// always be less than or equal to <see cref="Size" />.
+        /// </summary>
         public uint ContentSize { get { return ctSize != 0 ? ctSize : Size; } set { ctSize = value; } }
 
         /// <summary>
@@ -132,8 +136,14 @@ namespace Reko.Core.Loading
         // E.g. a Z80 ROM program whose base adress is 0xFF00 and whose size
         // is 0x100 would have an end address of 0xFF00 + 0x100 = 0x10000,
         // which can't be represented as a Address16.
+        /// <summary>
+        /// End address of this segment.
+        /// </summary>
         public Address EndAddress { get { return Address + ContentSize; } }
 
+        /// <summary>
+        /// If set to true, this segment is discardable.
+        /// </summary>
         public bool IsDiscardable { get; set; }
 
         /// <summary>
@@ -174,6 +184,9 @@ namespace Reko.Core.Loading
         /// </remarks>
         public Identifier Identifier { get; set; }
 
+        /// <summary>
+        /// The provenance of the segment.
+        /// </summary>
         public ProvenanceType Provenance { get; set; }
 
         private StructureType CreateFields(int size)
@@ -245,6 +258,9 @@ namespace Reko.Core.Loading
             return linItem <= linearAddress && linearAddress < linItem + Size;
         }
 
+        /// <summary>
+        /// Returns a string representation of the segment.
+        /// </summary>
         public override string ToString()
         {
             return $"Segment {Name} at {Address}, {ContentSize} / {Size} bytes";
@@ -267,15 +283,40 @@ namespace Reko.Core.Loading
         }
     }
 
+    /// <summary>
+    /// Access modes for segments.
+    /// </summary>
     [Flags]
     public enum AccessMode
     {
+        /// <summary>
+        /// Read access.
+        /// </summary>
         Read = 4,
+
+        /// <summary>
+        /// Write access.
+        /// </summary>
         Write = 2,
+
+        /// <summary>
+        /// Execute access.
+        /// </summary>
         Execute = 1,
 
+        /// <summary>
+        /// Read and execute access.
+        /// </summary>
         ReadExecute = Read | Execute,
+
+        /// <summary>
+        /// Read and write access.
+        /// </summary>
         ReadWrite = Read | Write,
+
+        /// <summary>
+        /// Read, write and execute access.
+        /// </summary>
         ReadWriteExecute = Read | Write | Execute,
     }
 }

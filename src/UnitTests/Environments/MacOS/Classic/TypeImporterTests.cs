@@ -29,6 +29,8 @@ using System.Collections.Generic;
 
 namespace Reko.UnitTests.Environments.MacOS.Classic
 {
+    using Field = Reko.Core.Hll.Pascal.Field;
+
     [TestFixture]
     public class TypeImporterTests
     {

@@ -64,6 +64,7 @@ namespace Reko.Core.Graphs
         /// <inheritdoc/>
         public ICollection<T> Nodes => this.AdjacencyList.Keys;
 
+        /// <inheritdoc/>
         public IEnumerable<(T, T)> Edges =>
             AdjacencyList.SelectMany(kvp => kvp.Value.Select(s => (kvp.Key, s)));
 

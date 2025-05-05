@@ -100,6 +100,14 @@ namespace Reko.Core.Loading
             IProcessorArchitecture? arch,
             Address? loadAddress);
 
+        /// <summary>
+        /// Given a file image in <paramref name="bytes"/>, parses the
+        /// contents of the file using the provided <paramref name="loadDetails"/>.
+        /// </summary>
+        /// <param name="imageLocation">Location of the file.</param>
+        /// <param name="bytes">The contents of the file.</param>
+        /// <param name="loadDetails">Extra information to assist in parsing the file.</param>
+        /// <returns></returns>
         ILoadedImage ParseBinaryImage(
             ImageLocation imageLocation,
             byte[] bytes,
@@ -116,9 +124,20 @@ namespace Reko.Core.Loading
         /// </returns>
         Program ParseRawImage(byte[] image, Address? loadAddress, LoadDetails details);
 
+        /// <summary>
+        /// Loads a raw image from the specified location. 
+        /// </summary>
+        /// <param name="raw">Details about the raw file.</param>
+        /// <returns>A <see cref="Program"/>.</returns>
         Program LoadRawImage(LoadDetails raw);
 
         //$TODO: deprecate this method.
+        /// <summary>
+        /// Loads a raw image from the specified bytes. 
+        /// </summary>
+        /// <param name="bytes">Raw bytes.</param>
+        /// <param name="raw">Details about the raw file.</param>
+        /// <returns>A <see cref="Program"/>.</returns>
         Program LoadRawImage(byte[] bytes, LoadDetails raw);
 
         /// <summary>

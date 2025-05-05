@@ -76,6 +76,9 @@ namespace Reko.Core.Serialization
         [DefaultValue(false)]
         public bool Allocator { get; set; }
 
+        /// <summary>
+        /// Array size characteristic.
+        /// </summary>
         [XmlElement("array-size")]
         public ArraySizeCharacteristic? ArraySize { get; set; }
 

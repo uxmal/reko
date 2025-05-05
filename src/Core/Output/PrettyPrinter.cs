@@ -42,6 +42,11 @@ namespace Reko.Core.Output
         private int totalEnqueuedTokens;
         private int totalFlushedTokens;
 
+        /// <summary>
+        /// Construct a pretty printer.
+        /// </summary>
+        /// <param name="writer">Output sink.</param>
+        /// <param name="width">Width of the output device.</param>
         public PrettyPrinter(TextWriter writer, int width)
         {
             this.buffer = new Dequeue<Token>();
@@ -50,11 +55,17 @@ namespace Reko.Core.Output
             this.breakLevel = -1;
         }
 
+        /// <summary>
+        /// Begins a new group.
+        /// </summary>
         public void BeginGroup()
         {
             ++currentGroupLevel;
         }
 
+        /// <summary>
+        /// Ends the current group.
+        /// </summary>
         public void EndGroup()
         {
             --currentGroupLevel;
@@ -62,16 +73,27 @@ namespace Reko.Core.Output
                 breakLevel = currentGroupLevel;
         }
 
+        /// <summary>
+        /// Request an indentation of the output.
+        /// </summary>
+        /// <param name="indentWidth">Amount to indent.</param>
         public void Indent(int indentWidth)
         {
             EnqueueToken(new IndentToken(indentWidth, output));
         }
 
+        /// <summary>
+        /// Request an outdentation of the output.
+        /// </summary>
+        /// <param name="indentWidth">Amount to outdent.</param>
         public void Outdent(int indentWidth)
         {
             EnqueueToken(new IndentToken(-indentWidth, output));
         }
 
+        /// <summary>
+        /// Forces a line break at the current position.
+        /// </summary>
         public void ForceLineBreak()
         {
             breaks.Clear();
@@ -80,6 +102,9 @@ namespace Reko.Core.Output
             PrintBuffer(buffer.Count);
         }
 
+        /// <summary>
+        /// Hints that a line break may be desirable at the current position.
+        /// </summary>
         public void OptionalLineBreak()
         {
             // Discard breaks we are no longer interested in
@@ -94,6 +119,10 @@ namespace Reko.Core.Output
             EnqueueBreak(false);
         }
 
+        /// <summary>
+        /// Request a line break at the current position. It will be linked
+        /// to other breaks in the same group.
+        /// </summary>
         public void ConnectedLineBreak()
         {
             if (breakLevel < currentGroupLevel)
@@ -117,12 +146,20 @@ namespace Reko.Core.Output
             }
         }
 
+        /// <summary>
+        /// Print a string to the output.
+        /// </summary>
+        /// <param name="s">String to output.</param>
         public void PrintString(string s)
         {
             foreach (var c in s)
                 PrintCharacter(c);
         }
 
+        /// <summary>
+        /// Prints a character to the output.
+        /// </summary>
+        /// <param name="ch">Character to putput.</param>
         public void PrintCharacter(char ch)
         {
             if (output.MustSplitLine)  // must split line
@@ -148,6 +185,9 @@ namespace Reko.Core.Output
             ++output.total_pchars_enqueued;
         }
 
+        /// <summary>
+        /// Flush the output buffer.
+        /// </summary>
         public void Flush()
         {
             PrintBuffer(buffer.Count);
@@ -251,12 +291,34 @@ namespace Reko.Core.Output
             }
         }
 
+        /// <summary>
+        /// Describes a break point in the output.
+        /// </summary>
         public class Break
         {
+            /// <summary>
+            /// Number of tokens enqueued before this break.
+            /// </summary>
             public int TokensEnqueued { get; private set; }
+
+            /// <summary>
+            /// Level of the group that this break belongs to.
+            /// </summary>
             public int Level { get; private set; }
+
+            /// <summary>
+            /// True if this break is connected to other breaks in the same group.
+            /// </summary>
             public bool IsConnected { get; private set; }
 
+            /// <summary>
+            /// Construct a break point.
+            /// </summary>
+            /// <param name="count">Number of enqueued tokens.</param>
+            /// <param name="level">Group level.</param>
+            /// <param name="connected">True if this break is connected to other breaks in 
+            /// the same group.
+            /// </param>
             public Break(int count, int level, bool connected)
             {
                 this.TokensEnqueued = count;

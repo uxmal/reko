@@ -121,6 +121,12 @@ namespace Reko.Core.Machine
             return r.Number.GetHashCode();
         }
 
+        /// <summary>
+        /// Computes a hash code for the given instruction.
+        /// </summary>
+        /// <param name="instr">Instruction for which to compute
+        /// the hash code.</param>
+        /// <returns>A hash code.</returns>
         public int GetHashCode(MachineInstruction instr)
         {
             int h = instr.MnemonicAsInteger.GetHashCode();

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2025 John Källén.
  *
@@ -19,14 +19,18 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Core.Hll.C
 {
+    /// <summary>
+    /// Represents an error that occurred while parsing a C source file.
+    /// </summary>
     public class CParserException : Exception
     {
+        /// <summary>
+        /// Constructs a new <see cref="CParserException"/> with the specified message.
+        /// </summary>
+        /// <param name="message">Error message.</param>
         public CParserException(string message) : base(message)
         {
         }

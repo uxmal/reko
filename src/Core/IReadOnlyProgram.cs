@@ -41,7 +41,6 @@ namespace Reko.Core
         /// <summary>
         /// The default <see cref="IProcessorArchitecture"/> of the program.
         /// </summary>
-        /// </summary>
         IProcessorArchitecture Architecture { get; }
 
         /// <summary>
@@ -58,6 +57,8 @@ namespace Reko.Core
         /// The global variables in the program.
         /// </summary>
         StructureType GlobalFields { get; }
+
+        //$TODO: move this to SsaState.
         
         /// <summary>
         /// A read-only view of the programs's induction variables.

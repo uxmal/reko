@@ -24,29 +24,49 @@ using System.IO;
 
 namespace Reko.Core.Serialization.Json
 {
+    /// <summary>
+    /// Writes JSON data to a text writer.
+    /// </summary>
     public class JsonWriter
     {
         private TextWriter w;
         private Stack<bool> needsSeparator;
 
+        /// <summary>
+        /// Creates an instance of <see cref="JsonWriter"/> with the specified text writer.
+        /// </summary>
+        /// <param name="w">Output sink.</param>
         public JsonWriter(TextWriter w)
         {
             this.w = w;
             this.needsSeparator = new Stack<bool>();
         }
 
+        /// <summary>
+        /// Begins writing a JSON object.
+        /// </summary>
         public void BeginObject()
         {
             needsSeparator.Push(false);
             w.Write('{');
         }
 
+
+        /// <summary>
+        /// Terminates a JSON object.
+        /// </summary>
         public void EndObject()
         {
             needsSeparator.Pop();
             w.Write('}');
         }
 
+        /// <summary>
+        /// Writes a JSON array.
+        /// </summary>
+        /// <typeparam name="T">Array item type.</typeparam>
+        /// <param name="items">The items to render.</param>
+        /// <param name="itemWriter">Delegate used to write individual items.</param>
         public void WriteList<T>(IEnumerable<T> items, Action<T> itemWriter)
         {
             w.Write('[');
@@ -54,6 +74,11 @@ namespace Reko.Core.Serialization.Json
             w.Write(']');
         }
 
+        /// <summary>
+        /// Writes the contents of a JSON array.
+        /// </summary>
+        /// <param name="items">The items to render.</param>
+        /// <param name="itemWriter">Delegate used to write individual items.</param>
         public void WriteListContents<T>(IEnumerable<T> items, Action<T> itemWriter)
         {
             bool sep = false;
@@ -77,6 +102,10 @@ namespace Reko.Core.Serialization.Json
                 { typeof(string), (js, o) => js.Write((string)o) },
             };
 
+        /// <summary>
+        /// Writes a JSON value.
+        /// </summary>
+        /// <param name="o">Value to write.</param>
         public void Write(object o)
         {
             if (o is null)
@@ -93,11 +122,19 @@ namespace Reko.Core.Serialization.Json
             throw new NotImplementedException(string.Format("Don't know how to write {0}.", o.GetType()));
         }
 
+        /// <summary>
+        /// Writes a JSON boolean value.
+        /// </summary>
+        /// <param name="value">Value to write.</param>
         public void Write(bool value)
         {
             w.Write(value ? "true" : "false");
         }
 
+        /// <summary>
+        /// Writes a JSON integer value.
+        /// </summary>
+        /// <param name="u64">Value to write.</param>
         public void Write(ulong u64)
         {
             // Max integer representable with a IEEE 64-bit double
@@ -108,6 +145,10 @@ namespace Reko.Core.Serialization.Json
                 w.Write(u64);
         }
 
+        /// <summary>
+        /// Writes a JSON integer value.
+        /// </summary>
+        /// <param name="i64">Value to write.</param>
         public void Write(long i64)
         {
             // Max integer representable with a IEEE 64-bit double
@@ -118,6 +159,10 @@ namespace Reko.Core.Serialization.Json
                 w.Write(i64);
         }
 
+        /// <summary>
+        /// Writes a JSON string value.
+        /// </summary>
+        /// <param name="s">String to write.</param>
         public void Write(string s)
         {
             w.Write('"');
@@ -147,6 +192,11 @@ namespace Reko.Core.Serialization.Json
             w.Write('"');
         }
 
+        /// <summary>
+        /// Writes a key-value pair to the JSON object.
+        /// </summary>
+        /// <param name="key">Key to write.</param>
+        /// <param name="value">Value to write.</param>
         public void WriteKeyValue(string key, object value)
         {
             WriteSeparator();
@@ -155,6 +205,11 @@ namespace Reko.Core.Serialization.Json
             Write(value);
         }
 
+        /// <summary>
+        /// Writes a key-value pair to the JSON object.
+        /// </summary>
+        /// <param name="key">Key to write.</param>
+        /// <param name="valueWriter">Delegate that writes the value.</param>
         public void WriteKeyValue(string key, Action valueWriter)
         {
             WriteSeparator();

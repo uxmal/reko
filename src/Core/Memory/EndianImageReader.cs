@@ -327,8 +327,6 @@ namespace Reko.Core.Memory
     /// and returns it as a <see cref="StringConstant"/>.
     /// </summary>
     /// <param name="charType">Data type of the code units of the string.</param>
-    /// <param name="encoding">Text encoding to use when decoding
-    /// the string.</param>
     /// <param name="encoding">The <see cref="Encoding"/> to use when decoding the string.
     /// </param>
     /// <returns>A <see cref="StringConstant"/>.</returns>

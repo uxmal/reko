@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Reko.Environments.Trs80.Dmk
 {
-	internal class Sector : IByteSource
+	internal class Sector
 	{
 		private int SectorNumber = -1;
 		private int m_actualSize;

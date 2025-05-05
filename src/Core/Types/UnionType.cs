@@ -33,10 +33,23 @@ namespace Reko.Core.Types
 	/// </remarks>
 	public class UnionType : DataType
 	{
+        /// <summary>
+        /// Constructs a union type with a specific name and an optional preferred
+        /// alternative type.
+        /// </summary>
+        /// <param name="name">Optional name.</param>
+        /// <param name="preferredType">Optional preferred type.</param>
         public UnionType(string? name, DataType? preferredType) : this(name, preferredType, false)
         {
         }
 
+        /// <summary>
+        /// Constructs a union type with a specific name and an optional preferred
+        /// alternative type.
+        /// </summary>
+        /// <param name="name">Optional name.</param>
+        /// <param name="preferredType">Optional preferred type.</param>
+        /// <param name="alternatives">Collection of alternatives.</param>
 		public UnionType(string? name, DataType? preferredType, ICollection<DataType> alternatives) : this(name, preferredType, false)
         {
             foreach (DataType dt in alternatives)
@@ -45,10 +58,25 @@ namespace Reko.Core.Types
             }
         }
 
+        /// <summary>
+        /// Constructs a union type with a specific name and an optional preferred
+        /// alternative type.
+        /// </summary>
+        /// <param name="name">Optional name.</param>
+        /// <param name="preferredType">Optional preferred type.</param>
+        /// <param name="alternatives">Collection of alternatives.</param>
         public UnionType(string? name, DataType? preferredType, params DataType [] alternatives) : this(name, preferredType, false, alternatives)
         {
         }
 
+        /// <summary>
+        /// Constructs a union type with a specific name and an optional preferred
+        /// alternative type.
+        /// </summary>
+        /// <param name="name">Optional name.</param>
+        /// <param name="preferredType">Optional preferred type.</param>
+        /// <param name="userDefined">True if the union is user-defined.</param>
+        /// <param name="alternatives">Collection of alternatives.</param>
         public UnionType(string? name, DataType? preferredType, bool userDefined, params DataType[] alternatives) 
             : base(Domain.Union, name)
         {
@@ -181,6 +209,11 @@ namespace Reko.Core.Types
     /// </summary>
 	public class UnionAlternative : Field
 	{
+        /// <summary>
+        /// Constructs a union alternative with no specific name.
+        /// </summary>
+        /// <param name="dt">Data type of the alternative.</param>
+        /// <param name="index">Index within the union.</param>
         public UnionAlternative(DataType dt, int index) : base(dt)
 		{
 			this.DataType = dt;
@@ -188,7 +221,7 @@ namespace Reko.Core.Types
 		}
 
         /// <summary>
-        /// Constructs a union alternative.
+        /// Constructs a union alternative with a name.
         /// </summary>
         /// <param name="name">Optional name of the alternative.</param>
         /// <param name="dt">Data type of the alternative.</param>
@@ -201,8 +234,12 @@ namespace Reko.Core.Types
             Index = index;
         }
 
-        public override string Name { get { if (name == null) return GenerateDefaultName(); return name; } set { name = value; } }
+        /// <inheritdoc/>
+        public override string Name { get { if (name is null) return GenerateDefaultName(); return name; } set { name = value; } }
 
+        /// <summary>
+        /// Index of the union alternative within the union.
+        /// </summary>
         public int Index { get; }
 
         private string? name;
@@ -212,29 +249,51 @@ namespace Reko.Core.Types
             return string.Format("u{0}", Index);
         }
 
+        /// <summary>
+        /// Clones this alternative.
+        /// </summary>
+        /// <returns>Creates a new union alternative.</returns>
         public UnionAlternative Clone()
         {
             return new UnionAlternative(name, DataType, Index);
         }
     }
 
+    /// <summary>
+    /// Represents a collection of union alternatives.
+    /// </summary>
 	public class UnionAlternativeCollection : SortedList<DataType,UnionAlternative>
 	{
+        /// <summary>
+        /// Constructs an empty collection of union alternatives.
+        /// </summary>
         public UnionAlternativeCollection()
             : base(DataTypeComparer.Instance)
         {
         }
 
+        /// <summary>
+        /// Adds a new alternative to the union.
+        /// </summary>
+        /// <param name="a">Alternative to add.</param>
 		public void Add(UnionAlternative a)
 		{
             base[a.DataType] = a;
 		}
 
+        /// <summary>
+        /// Adds a new alternative to the union.
+        /// </summary>
+        /// <param name="dt">Datatype to add.</param>
 		public void Add(DataType dt)
 		{
 			Add(new UnionAlternative(dt, Count));
 		}
 
+        /// <summary>
+        /// Adds a range of alternatives to the union.
+        /// </summary>
+        /// <param name="alternatives">Alternatives to add.</param>
         public void AddRange(IEnumerable<UnionAlternative> alternatives)
         {
             foreach (var alt in alternatives)

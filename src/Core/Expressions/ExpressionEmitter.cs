@@ -1605,7 +1605,7 @@ namespace Reko.Core.Expressions
         /// </summary>
         /// <param name="value">The expression to slice.</param>
         /// <param name="bitOffset">The bit offset at which the slice begins.</param>
-        /// <param name="bitlength">The bit length of the slice.</param>
+        /// <param name="bitLength">The bit length of the slice.</param>
         /// <returns>A bit-slice expression.</returns>
         public Slice Slice(Expression value, int bitOffset, int bitLength)
         {

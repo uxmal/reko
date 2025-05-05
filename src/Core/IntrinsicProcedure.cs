@@ -51,6 +51,7 @@ namespace Reko.Core
         /// </summary>
         public const string Syscall = "__syscall";  // Invokes a system call.
 
+#pragma warning disable CS1591
         // MIPS-style unaligned memory accesses
         public const string LwL = "__lwl";
         public const string LwR = "__lwr";
@@ -58,6 +59,7 @@ namespace Reko.Core
         public const string SwR = "__swr";
 
         public const string Align = "__align";
+#pragma warning restore CS1591
 
         /// <summary>
         /// Use this constructor for intrinsics that model operations that may have parameters of varying sizes.

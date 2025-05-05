@@ -49,6 +49,11 @@ namespace Reko.Core.Expressions
         }
 
 
+        /// <summary>
+        /// Builds a matcher from the given builder function.
+        /// </summary>
+        /// <param name="builder">Delegate that builds a matcher</param>
+        /// <returns>Resulting <see cref="ExpressionMatcher"/>.</returns>
         public static ExpressionMatcher Build(Func<ExpressionMatcherEmitter, Expression> builder)
         {
             var pattern = builder(new ExpressionMatcherEmitter());
@@ -315,37 +320,55 @@ namespace Reko.Core.Expressions
         #endregion
 
 
-
-        public static Expression AnyConstant()
-        {
-            return new WildConstant(null);
-        }
-
+        /// <summary>
+        /// Matches any contant.
+        /// </summary>
+        /// <param name="label">Optional label for this match.</param>
         public static Expression AnyConstant(string? label)
         {
             return new WildConstant(label);
         }
 
+        /// <summary>
+        /// Matches any expression.
+        /// </summary>
+        /// <param name="label">Optional label for this match.</param>
         public static Expression AnyExpression(string? label)
         {
             return new WildExpression(label);
         }
 
+        /// <summary>
+        /// Matches any identifier.
+        /// </summary>
+        /// <param name="label">Optional label for this match.</param>
         public static Identifier AnyId(string? label = null)
         {
             return new WildId(label);
         }
 
+        /// <summary>
+        /// Matches any unary expression.
+        /// </summary>
+        /// <param name="label">Optional label for this match.</param>
         public static UnaryOperator AnyUnaryOperator(string label)
         {
             return new WildUnaryOperator(label);
         }
 
+        /// <summary>
+        /// Matches any binary expression.
+        /// </summary>
+        /// <param name="label">Optional label for this match.</param>
         public static BinaryOperator AnyBinaryOperator(string label)
         {
             return new WildBinaryOperator(label);
         }
 
+        /// <summary>
+        /// Matches any data type.
+        /// </summary>
+        /// <param name="label">Optional label for this match.</param>
         public static DataType AnyDataType(string? label)
         {
             return new WildDataType(label);

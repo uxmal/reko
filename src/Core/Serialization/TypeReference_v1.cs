@@ -32,38 +32,69 @@ namespace Reko.Core.Serialization
     /// </summary>
     public class TypeReference_v1 : SerializedType
     {
+        /// <summary>
+        /// Name of the type.
+        /// </summary>
         [XmlText]
         public string? TypeName;
 
+        /// <summary>
+        /// Scope or namespace of the time.
+        /// </summary>
         [XmlElement]
         public string[]? Scope;
         
+        /// <summary>
+        /// Generic type arguments if any.
+        /// </summary>
         [XmlElement("tyArg")]
         public SerializedType[]? TypeArguments;
 
+        /// <summary>
+        /// Creates an empty instance of <see cref="TypeReference_v1"/>.
+        /// </summary>
         public TypeReference_v1()
         {
         }
 
+        /// <summary>
+        /// Creates an instance of <see cref="TypeReference_v1"/> in 
+        /// the global namespace.
+        /// </summary>
         public TypeReference_v1(string typeName)
         {
             this.TypeName = typeName;
         }
 
+        /// <summary>
+        /// Creates an instance of <see cref="TypeReference_v1"/>.
+        /// </summary>
+        /// <param name="scope">Scope or namespace.</param>
+        /// <param name="typeName">Name of the type.</param>
+        /// <param name="typeArgs">Generic type arguments.</param>
         public TypeReference_v1(string[] scope, string typeName, SerializedType[] typeArgs)
         {
         }
 
+        /// <summary>
+        /// Creates an instance of <see cref="TypeReference_v1"/>.
+        /// </summary>
+        /// <param name="scope">Scope or namespace.</param>
+        /// <param name="typeName">Name of the type.</param>
         public TypeReference_v1(string [] scope, string typeName)
         {
             this.TypeName = typeName;
         }
 
+        /// <inheritdoc/>
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
         {
             return visitor.VisitTypeReference(this);
         }
 
+        /// <summary>
+        /// Returns a string representation of the type reference.
+        /// </summary>
         public override string ToString()
         {
             return TypeName ?? "";

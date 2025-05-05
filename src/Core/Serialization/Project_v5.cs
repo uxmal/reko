@@ -39,6 +39,9 @@ namespace Reko.Core.Serialization
     [XmlRoot(ElementName = "project", Namespace = "http://schemata.jklnet.org/Reko/v5")]
     public class Project_v5 : SerializedProject
     {
+        /// <summary>
+        /// File extension for Reko decompiler project files.
+        /// </summary>
         public const string FileExtension = ".dcproject";
 
         /// <summary>

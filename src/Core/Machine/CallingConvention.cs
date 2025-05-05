@@ -39,13 +39,14 @@ namespace Reko.Core.Machine
         string Name { get; }
 
         /// <summary>
-        /// Generates 
+        /// Generates a procedure signature for the calling convention. The signature is
+        /// collected from the <see cref="ICallingConventionBuilder"/> after the call.
         /// </summary>
-        /// <param name="ccr"></param>
-        /// <param name="retAddressOnStack"></param>
-        /// <param name="dtRet"></param>
-        /// <param name="dtThis"></param>
-        /// <param name="dtParams"></param>
+        /// <param name="ccr"><see cref="ICallingConventionBuilder"/> instance.</param>
+        /// <param name="retAddressOnStack">Size of the return address on the stack.</param>
+        /// <param name="dtRet">Return type.</param>
+        /// <param name="dtThis">Optional type of C++ <c>this</c> pointer.</param>
+        /// <param name="dtParams">Parameter types.</param>
         void Generate(
             ICallingConventionBuilder ccr,
             int retAddressOnStack,
@@ -187,9 +188,9 @@ namespace Reko.Core.Machine
         /// <param name="dtRet">The data type of the stack-based return value.</param>
         void StackReturn(DataType dtRet);
     }
-         
+
     /// <summary>
-    /// A class implemeting <see cref="ICallingConventionEmitter"/>.
+    /// A class implemeting <see cref="ICallingConventionBuilder"/>.
     /// </summary>
     /// <summary>
     /// Implements the <see cref="ICallingConventionBuilder"/> interface.

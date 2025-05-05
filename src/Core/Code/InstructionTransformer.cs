@@ -44,43 +44,78 @@ namespace Reko.Core.Code
 			return instr.Accept(this);
 		}
 
-		#region InstructionTransformer Members
+        #region InstructionTransformer Members
 
-		public virtual Instruction TransformAssignment(Assignment a)
+        /// <summary>
+        /// Transforms an assignment instruction.
+        /// </summary>
+        /// <param name="a">Assignment instruction to transform.</param>
+        /// <returns>Transformed instruction.</returns>
+        public virtual Instruction TransformAssignment(Assignment a)
 		{
 			a.Src = a.Src.Accept(this);
 			a.Dst = (Identifier) a.Dst.Accept(this);
 			return a;
 		}
 
+        /// <summary>
+        /// Transforms a branch instruction.
+        /// </summary>
+        /// <param name="b">Branch instruction to transform.</param>
+        /// <returns>Transformed instruction.</returns>
 		public virtual Instruction TransformBranch(Branch b)
 		{
 			b.Condition = b.Condition.Accept(this);
 			return b;
 		}
 
+        /// <summary>
+        /// Transforms a call instruction.
+        /// </summary>
+        /// <param name="ci">Call instruction to transform.</param>
+        /// <returns>Transformed instruction.</returns>
 		public virtual Instruction TransformCallInstruction(CallInstruction ci)
 		{
 			ci.Callee = ci.Callee.Accept(this);
             return ci;
 		}
 
+        /// <summary>
+        /// Transforms a comment.
+        /// </summary>
+        /// <param name="codeComment">Comment to transform.</param>
+        /// <returns>Transformed instruction.</returns>
         public virtual Instruction TransformComment(CodeComment codeComment)
         {
             return codeComment;
         }
 
+        /// <summary>
+        /// Transforms a <see cref="DefInstruction"/>.
+        /// </summary>
+        /// <param name="def"><see cref="DefInstruction"/> to transform.</param>
+        /// <returns>Transformed instruction.</returns>
 		public virtual Instruction TransformDefInstruction(DefInstruction def)
 		{
 			return def;
 		}
 
+        /// <summary>
+        /// Transforms a goto instruction.
+        /// </summary>
+        /// <param name="gotoInstruction">Goto instruction to transform.</param>
+        /// <returns>Transformed instruction.</returns>
         public virtual Instruction TransformGotoInstruction(GotoInstruction gotoInstruction)
         {
             gotoInstruction.Target = gotoInstruction.Target.Accept(this);
             return gotoInstruction;
         }
 
+        /// <summary>
+        /// Transforms a <see cref="PhiAssignment"/>.
+        /// </summary>
+        /// <param name="phi"><see cref="PhiAssignment"/> to transform.</param>
+        /// <returns>Transformed instruction.</returns>
 		public virtual Instruction TransformPhiAssignment(PhiAssignment phi)
 		{
             var args = phi.Src.Arguments;
@@ -93,19 +128,34 @@ namespace Reko.Core.Code
 			return phi;
 		}
 
-		public virtual Instruction TransformReturnInstruction(ReturnInstruction ret)
+        /// <summary>
+        /// Transforms a return instruction.
+        /// </summary>
+        /// <param name="ret">Return instruction to transform.</param>
+        /// <returns>Transformed instruction.</returns>
+        public virtual Instruction TransformReturnInstruction(ReturnInstruction ret)
 		{
 			if (ret.Expression != null)
 				ret.Expression = ret.Expression.Accept(this);
 			return ret;
 		}
 
+        /// <summary>
+        /// Transforms a side effect instruction.
+        /// </summary>
+        /// <param name="side">Side effect instruction to transform.</param>
+        /// <returns>Transformed instruction.</returns>
 		public virtual Instruction TransformSideEffect(SideEffect side)
 		{
 			side.Expression = side.Expression.Accept(this);
 			return side;
 		}
 
+        /// <summary>
+        /// Transforms a store instruction.
+        /// </summary>
+        /// <param name="store">Store instruction to transform.</param>
+        /// <returns>Transformed instruction.</returns>
 		public virtual Instruction TransformStore(Store store)
 		{
 			store.Src = store.Src.Accept(this);
@@ -113,12 +163,22 @@ namespace Reko.Core.Code
 			return store;
 		}
 
+        /// <summary>
+        /// Transforms a switch instruction.
+        /// </summary>
+        /// <param name="si">Switch instruction to transform.</param>
+        /// <returns>Transformed instruction.</returns>
 		public virtual Instruction TransformSwitchInstruction(SwitchInstruction si)
 		{
 			si.Expression = si.Expression.Accept(this);
 			return si;
 		}
 
+        /// <summary>
+        /// Transforms a <see cref="UseInstruction"/>.
+        /// </summary>
+        /// <param name="u"><see cref="UseInstruction"/> to transform.</param>
+        /// <returns>Transformed instruction.</returns>
 		public virtual Instruction TransformUseInstruction(UseInstruction u)
 		{
 			u.Expression = u.Expression.Accept(this);
@@ -129,11 +189,13 @@ namespace Reko.Core.Code
 
 		#region IExpressionTransformer Members
 
+        /// <inheritdoc/>
         public virtual Expression VisitAddress(Address addr)
         {
             return addr;
         }
 
+        /// <inheritdoc/>
         public virtual Expression VisitApplication(Application appl)
         {
             appl.Procedure = appl.Procedure.Accept(this);
@@ -144,6 +206,7 @@ namespace Reko.Core.Code
             return appl;
         }
 
+        /// <inheritdoc/>
 		public virtual Expression VisitArrayAccess(ArrayAccess acc)
 		{
 			var a = acc.Array.Accept(this);
@@ -151,6 +214,7 @@ namespace Reko.Core.Code
 			return new ArrayAccess(acc.DataType, a, i);
 		}
 
+        /// <inheritdoc/>
 		public virtual Expression VisitBinaryExpression(BinaryExpression binExp)
 		{
 			var left = binExp.Left.Accept(this);
@@ -158,12 +222,14 @@ namespace Reko.Core.Code
             return new BinaryExpression(binExp.Operator, binExp.DataType, left, right);
 		}
 
+        /// <inheritdoc/>
         public virtual Expression VisitCast(Cast cast)
         {
             var e = cast.Expression.Accept(this);
             return new Cast(cast.DataType, e);
         }
 
+        /// <inheritdoc/>
         public virtual Expression VisitConditionalExpression(ConditionalExpression cond)
         {
             var c = cond.Condition.Accept(this);
@@ -172,40 +238,47 @@ namespace Reko.Core.Code
             return new ConditionalExpression(cond.DataType, c, i, e);
         }
 
+        /// <inheritdoc/>
 		public Expression VisitConditionOf(ConditionOf cof)
 		{
 			var e = cof.Expression.Accept(this);
 			return new ConditionOf(e);
 		}
 
+        /// <inheritdoc/>
 		public virtual Expression VisitConstant(Constant c)
 		{
 			return c;
 		}
 
+        /// <inheritdoc/>
         public virtual Expression VisitConversion(Conversion conversion)
         {
             var e = conversion.Expression.Accept(this);
             return new Conversion(e, conversion.SourceDataType, conversion.DataType);
         }
 
+        /// <inheritdoc/>
 		public virtual Expression VisitDereference(Dereference deref)
 		{
 			var e = deref.Expression.Accept(this);
             return new Dereference(deref.DataType, e);
 		}
 
+        /// <inheritdoc/>
 		public virtual Expression VisitFieldAccess(FieldAccess acc)
 		{
 			var str = acc.Structure.Accept(this);
             return new FieldAccess(acc.DataType, str, acc.Field);
 		}
 
+        /// <inheritdoc/>
 		public virtual Expression VisitIdentifier(Identifier id)
 		{
 			return id;
 		}
 
+        /// <inheritdoc/>
 		public virtual Expression VisitMemberPointerSelector(MemberPointerSelector mps)
 		{
             var b = mps.BasePointer.Accept(this);
@@ -213,6 +286,7 @@ namespace Reko.Core.Code
 			return new MemberPointerSelector(mps.DataType, b, m);
 		}
 		
+        /// <inheritdoc/>
 		public virtual Expression VisitMemoryAccess(MemoryAccess access)
 		{
 			var ea = access.EffectiveAddress.Accept(this);
@@ -220,6 +294,7 @@ namespace Reko.Core.Code
 			return new MemoryAccess(memId, ea, access.DataType);
 		}
 
+        /// <inheritdoc/>
 		public virtual Expression VisitMkSequence(MkSequence seq)
 		{
             for (int i = 0; i < seq.Expressions.Length; ++i)
@@ -229,11 +304,13 @@ namespace Reko.Core.Code
             return new MkSequence(seq.DataType, seq.Expressions);
 		}
 
+        /// <inheritdoc/>
         public virtual Expression VisitOutArgument(OutArgument outArg)
         {
             return new OutArgument(outArg.DataType, outArg.Expression.Accept(this));
         }
 
+        /// <inheritdoc/>
 		public virtual Expression VisitPhiFunction(PhiFunction phi)
 		{
 			for (int i = 0; i < phi.Arguments.Length; ++i)
@@ -246,16 +323,19 @@ namespace Reko.Core.Code
 			return phi;
 		}
 
+        /// <inheritdoc/>
 		public virtual Expression VisitPointerAddition(PointerAddition pa)
 		{
 			return new PointerAddition(pa.DataType, pa.Pointer.Accept(this), pa.Offset);
 		}
 
+        /// <inheritdoc/>
 		public virtual Expression VisitProcedureConstant(ProcedureConstant pc)
 		{
 			return pc;
 		}
 
+        /// <inheritdoc/>
         public virtual Expression VisitSegmentedAddress(SegmentedPointer address)
         {
             var sel = address.BasePointer.Accept(this);
@@ -263,28 +343,33 @@ namespace Reko.Core.Code
             return new SegmentedPointer(address.DataType, sel, offset);
         }
 
+        /// <inheritdoc/>
         public virtual Expression VisitScopeResolution(ScopeResolution scope)
 		{
 			return scope;
 		}
 
+        /// <inheritdoc/>
 		public virtual Expression VisitSlice(Slice slice)
 		{
 			var e = slice.Expression.Accept(this);
 			return new Slice(slice.DataType, e, slice.Offset);
 		}
 
+        /// <inheritdoc/>
         public virtual Expression VisitStringConstant(StringConstant str)
         {
             return str;
         }
 
+        /// <inheritdoc/>
         public virtual Expression VisitTestCondition(TestCondition tc)
         {
             var e = tc.Expression.Accept(this);
             return new TestCondition(tc.ConditionCode, e);
         }
 
+        /// <inheritdoc/>
 		public virtual Expression VisitUnaryExpression(UnaryExpression unary)
 		{
 			var e = unary.Expression.Accept(this);

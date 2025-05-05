@@ -21,12 +21,15 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Text;
+
+#pragma warning disable CS1591
 
 namespace Reko.Core.IO
 {
+    /// <summary>
+    /// Extensions to <see cref="ReadOnlySpan{T}"/>.
+    /// </summary>
 	public static class SpanExtensions
 	{
 		public unsafe static T Read<T>(this ReadOnlySpan<byte> data, int offset) where T : unmanaged {

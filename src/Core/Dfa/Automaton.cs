@@ -33,6 +33,11 @@ namespace Reko.Core.Dfa
         private readonly int[,] transitions;
         private readonly State[] states;
 
+        /// <summary>
+        /// Creates a DFA automaton from a pattern string.
+        /// </summary>
+        /// <param name="pattern">Regular expression pattern string.</param>
+        /// <returns></returns>
         public static Automaton? CreateFromPattern(string pattern)
         {
             try
@@ -53,12 +58,23 @@ namespace Reko.Core.Dfa
             }
         }
 
+        /// <summary>
+        /// Creates an automaton from a set of states and a transition table.
+        /// </summary>
+        /// <param name="states"></param>
+        /// <param name="transitions"></param>
         public Automaton(State[] states, int[,] transitions)
         {
             this.states = states;
             this.transitions = transitions;
         }
 
+        /// <summary>
+        /// Finds all match positions in the given byte array that match the pattern.
+        /// </summary>
+        /// <param name="bytes">Byte array to search.</param>
+        /// <param name="iStart">Index to start at.</param>
+        /// <returns>A collection of matches.</returns>
         public IEnumerable<int> GetMatches(byte[] bytes, int iStart)
         {
             return GetMatches(bytes, iStart, bytes.Length);

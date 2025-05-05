@@ -22,17 +22,29 @@ using System;
 
 namespace Reko.Core.Hll.C
 {
+    /// <summary>
+    /// Evaluates a C enum value.
+    /// </summary>
     public class EnumEvaluator
     {
         private int value;
         private readonly CConstantEvaluator ceval;
 
+        /// <summary>
+        /// Constructs an <see cref="EnumEvaluator"/> instance.
+        /// </summary>
+        /// <param name="ceval">Constant evaluator.</param>
         public EnumEvaluator(CConstantEvaluator ceval)
         {
             this.value = 0;
             this.ceval = ceval;
         }
 
+        /// <summary>
+        /// Evaluates an expression to a value.
+        /// </summary>
+        /// <param name="cExpression"></param>
+        /// <returns></returns>
         public int GetValue(CExpression? cExpression)
         {
             if (cExpression != null)

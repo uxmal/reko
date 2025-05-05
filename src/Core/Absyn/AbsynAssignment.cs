@@ -32,11 +32,6 @@ public class AbsynAssignment : AbsynStatement
     /// </summary>
     /// <param name="dst">Destination of the assignment.</param>
     /// <param name="src">Source of the assignment.</param>
-        /// <summary>
-        /// Creates an assignment statement.
-        /// </summary>
-        /// <param name="dst">Destination of assignment.</param>
-        /// <param name="src">Source of assignment.</param>
     public AbsynAssignment(Expression dst, Expression src)
     {
         this.Dst = dst;

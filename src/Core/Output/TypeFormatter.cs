@@ -494,6 +494,11 @@ namespace Reko.Core.Output
             return writer;
 		}
 
+        /// <summary>
+        /// Writes a C style qualifier.
+        /// </summary>
+        /// <param name="q">Qualifier.</param>
+        /// <param name="writer">Output sink.</param>
         public static Formatter WriteQualifier(Qualifier q, Formatter writer)
         {
             var sep = "";

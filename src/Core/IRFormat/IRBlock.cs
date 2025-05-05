@@ -33,19 +33,35 @@ namespace Reko.Core.IRFormat
         private string? name;
         private readonly List<(Address, Instruction)> stmts;
 
-        public IRBlock(Address addrCur, string id, string? name)
+        /// <summary>
+        /// Constructs a basic block.
+        /// </summary>
+        /// <param name="addr">Address of the basic block.</param>
+        /// <param name="id">Unique identifier for the block.</param>
+        /// <param name="name">Optional user-provided label for the block.
+        /// </param>
+        public IRBlock(Address addr, string id, string? name)
         {
-            this.addrCur = addrCur;
+            this.addrCur = addr;
             this.id = id;
             this.name = name;
             this.stmts = new List<(Address, Instruction)>(); 
         }
 
+        /// <summary>
+        /// The statements in this basic block.
+        /// </summary>
         public IReadOnlyList<(Address, Instruction)> Statements => stmts;
 
-        public Instruction AddStatement(Address addrCur, Instruction instr)
+        /// <summary>
+        /// Adds a statement to the basic block.
+        /// </summary>
+        /// <param name="addr">Statement address.</param>
+        /// <param name="instr"><see cref="Instruction"/> to add.</param>
+        /// <returns></returns>
+        public Instruction AddStatement(Address addr, Instruction instr)
         {
-            stmts.Add((addrCur, instr));
+            stmts.Add((addr, instr));
             return instr;
         }
     }

@@ -96,6 +96,10 @@ namespace Reko.Core.Graphs
             public PostOrderItem(T item, IEnumerator<T> children) { Item = item; Children = children; }
         }
 
+        /// <summary>
+        /// Visit every node in the graph in post-order depth first order.
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<T> PostOrder()
         {
             foreach (T item in graph.Nodes)

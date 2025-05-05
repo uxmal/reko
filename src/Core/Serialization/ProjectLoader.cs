@@ -386,7 +386,6 @@ namespace Reko.Core.Serialization
         /// <param name="user">UserData object that will be modified.</param>
         /// <param name="projectLocation">The <see cref="ImageLocation" /> of the project hosting
         /// this program.</param>
-        /// <param name="projectLocation"></param>
         public void LoadUserData(UserData_v4 sUser, Program program, UserData user, ImageLocation projectLocation)
         {
             if (sUser is null)

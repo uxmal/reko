@@ -40,11 +40,15 @@ namespace Reko.Core.Serialization
         [DefaultValue(0)]
         public int Length;
 
+        /// <inheritdoc/>
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
         {
             return visitor.VisitArray(this);
         }
 
+        /// <summary>
+        /// Returns a string representation of the array type.
+        /// </summary>
         public override string ToString()
         {
             return string.Format("arr({0},{1})", ElementType, Length);

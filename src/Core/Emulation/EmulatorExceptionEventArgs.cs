@@ -31,11 +31,18 @@ namespace Reko.Core.Emulation
     /// </summary>
     public class EmulatorExceptionEventArgs : EventArgs
     {
+        /// <summary>
+        /// Constructs an <see cref="EmulatorExceptionEventArgs"/> instance.
+        /// </summary>
+        /// <param name="ex"></param>
         public EmulatorExceptionEventArgs(Exception ex)
         {
             this.Exception = ex;
         }
 
+        /// <summary>
+        /// The exception that was caught by the emulator.
+        /// </summary>
         public Exception Exception { get; }
     }
 }

@@ -24,22 +24,39 @@ using System.Xml.Serialization;
 
 namespace Reko.Core.Serialization
 {
+    /// <summary>
+    /// Serialized representation of a sequence of registers.
+    /// </summary>
 	public class SerializedSequence : SerializedStorage
 	{
+        /// <summary>
+        /// Register sequence.
+        /// </summary>
 		[XmlElement("reg")]
 		public Register_v1[]? Registers;
 
+
+        /// <summary>
+        /// Constructs an empty instance of <see cref="SerializedSequence"/>.
+        /// </summary>
 		public SerializedSequence()
 		{
 		}
 
-		public SerializedSequence(SequenceStorage seq)
+        /// <summary>
+        /// Constructs an instance of <see cref="SerializedSequence"/> with the given
+        /// sequence storage.
+        /// </summary>
+        /// <param name="seq">Sequence storage to serialize.</param>
+
+        public SerializedSequence(SequenceStorage seq)
 		{
             Registers = seq.Elements
                 .Select(e => new Register_v1(e.Name))
                 .ToArray();
 		}
 
+        /// <inheritdoc/>
 		public override Identifier? Deserialize(ArgumentDeserializer sser)
 		{
 			return sser.Deserialize(this);

@@ -28,9 +28,9 @@ namespace Reko.Core.Types
     public class ReferenceTo : DataType
     {
         /// <summary>
-        /// Creates an instance of the <see cref="ReferenceTo"/>.
+        /// Constructs an instance of <see cref="ReferenceTo"/>.
         /// </summary>
-        /// <param name="referent"></param>
+        /// <param name="referent">Type being referenced.</param>
         public ReferenceTo(DataType referent)
             : base(Domain.Pointer)
         {

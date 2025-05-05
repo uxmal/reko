@@ -22,10 +22,24 @@ using Reko.Core.Serialization;
 
 namespace Reko.Core.Hll.C
 {
+    /// <summary>
+    /// Represents a named data type.
+    /// </summary>
     public class NamedDataType
     {
+        /// <summary>
+        /// The name of the data type.
+        /// </summary>
         public string? Name { get; set; }
+
+        /// <summary>
+        /// The size of the data type in storage units.
+        /// </summary>
         public int Size { get; set; } // in bytes.
+
+        /// <summary>
+        /// Its corresponding Reko data type.
+        /// </summary>
         public SerializedType? DataType { get; set; }
     }
 }

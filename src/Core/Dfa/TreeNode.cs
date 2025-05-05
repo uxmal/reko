@@ -26,20 +26,72 @@ using System.Linq;
 
 namespace Reko.Core.Dfa
 {
+    /// <summary>
+    /// A parsed node of a regular expresion.
+    /// </summary>
     public class TreeNode
     {
+        /// <summary>
+        /// Type of node.
+        /// </summary>
         public NodeType Type;
+
+        /// <summary>
+        /// Node number.
+        /// </summary>
         public int Number;
+
+        /// <summary>
+        /// Value of the node.
+        /// </summary>
         public byte Value;
+
+        /// <summary>
+        /// Value class of the node.
+        /// </summary>
         public BitArray? ValueClass;
+
+        /// <summary>
+        /// Optional left child of the node.
+        /// </summary>
         public TreeNode? Left;
+
+        /// <summary>
+        /// Optional right child of the node.
+        /// </summary>
         public TreeNode? Right;
+
+        /// <summary>
+        /// True if this node is nullable.
+        /// </summary>
         public bool Nullable;
+
+        /// <summary>
+        /// True if this node is a start state.
+        /// </summary>
         public bool Starts;
+
+        /// <summary>
+        /// Nodes that can be reached from this node by following
+        /// nullable (epsilon) transitions.
+        /// </summary>
         public HashSet<TreeNode>? FirstPos;
+
+        /// <summary>
+        /// Nodes at the end of this node by following nullable (epsilon) transitions.
+        /// </summary>
         public HashSet<TreeNode>? LastPos;
+
+        /// <summary>
+        /// Nodes that can be reached from this node.
+        /// </summary>
         public HashSet<TreeNode>? FollowPos;
 
+        /// <summary>
+        /// Get the set of characters that can be used to transition
+        /// out of this node.
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<byte> GetTransitionCharacters()
         {
             if (Type == NodeType.Char)
@@ -66,6 +118,9 @@ namespace Reko.Core.Dfa
             }
         }
 
+        /// <summary>
+        /// Returns a string representation of this node.
+        /// </summary>
         public override string ToString()
         {
             var sw = new StringWriter();
@@ -73,6 +128,10 @@ namespace Reko.Core.Dfa
             return sw.ToString();
         }
 
+        /// <summary>
+        /// Write a string representation of this node to the specified <see cref="TextWriter"/>.
+        /// </summary>
+        /// <param name="writer">Output sink.</param>
         public void Write(TextWriter writer)
         {
             writer.Write("{0}", Type);
@@ -102,19 +161,59 @@ namespace Reko.Core.Dfa
         }
     }
 
+    /// <summary>
+    /// DFA node types.
+    /// </summary>
     public enum NodeType
     {
+        /// <summary>
+        /// End of input.
+        /// </summary>
         EOS = -1,
 
+        /// <summary>
+        /// A cut node.
+        /// </summary>
         Cut = 1,
+
+        /// <summary>
+        /// An or node
+        /// </summary>
         Or = 2,
+
+        /// <summary>
+        /// A concatenation node.
+        /// </summary>
         Cat = 3,
+
+        /// <summary>
+        /// A kleene star node.
+        /// </summary>
         Star = 4,
+
+        /// <summary>
+        /// A plus node; like a star, but requires at least one match.
+        /// </summary>
         Plus = 5,
 
+        /// <summary>
+        /// Exact character match.
+        /// </summary>
         Char = 6,
+
+        /// <summary>
+        /// Character class match.
+        /// </summary>
         CharClass = 7,
+
+        /// <summary>
+        /// Matches any character.
+        /// </summary>
         Any = 8,
+
+        /// <summary>
+        /// Epsilon transition.
+        /// </summary>
         Epsilon = 9,
     }
 }

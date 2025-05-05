@@ -20,16 +20,19 @@
 
 using Reko.Core.Expressions;
 using Reko.Core.Types;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Core.Machine
 {
+    /// <summary>
+    /// Abstract base class for calling convention implementations.
+    /// </summary>
     public abstract class AbstractCallingConvention : ICallingConvention
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AbstractCallingConvention"/> class.
+        /// </summary>
+        /// <param name="name">Name of the calling convention</param>
         protected AbstractCallingConvention(string name)
         {
             this.Name = name;
@@ -37,16 +40,25 @@ namespace Reko.Core.Machine
             this.OutArgumentComparer = null;
         }
 
+        /// <inheritdoc/>
         public string Name { get; }
 
+        /// <inheritdoc/>
         public virtual IComparer<Identifier>? InArgumentComparer { get; protected set; }
 
+        /// <inheritdoc/>
         public virtual IComparer<Identifier>? OutArgumentComparer { get; protected set; }
 
+        /// <inheritdoc/>
         public abstract void Generate(ICallingConventionBuilder ccr, int retAddressOnStack, DataType? dtRet, DataType? dtThis, List<DataType> dtParams);
+        /// <inheritdoc/>
         public abstract bool IsArgument(Storage stg);
+        /// <inheritdoc/>
         public abstract bool IsOutArgument(Storage stg);
 
+        /// <summary>
+        /// Returns a string representation of the calling convention.
+        /// </summary>
         public override string ToString()
         {
             return Name.Length != 0 ? Name : "(default calling convention)";

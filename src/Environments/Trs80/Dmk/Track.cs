@@ -210,7 +210,7 @@ namespace Reko.Environments.Trs80.Dmk
             return index >= 0 && index < this.m_sectors.Count && this.m_sectors[index].doubleDensity;
         }
 
-        public IByteSource? sectorData(int index)
+        public Sector? sectorData(int index)
         {
             if (index < 0)
             {

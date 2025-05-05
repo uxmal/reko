@@ -30,27 +30,46 @@ namespace Reko.Core.Types
     /// </summary>
 	public class StructureField : Field
 	{
+        /// <summary>
+        /// Constructs a new <see cref="StructureField"/> instance.
+        /// </summary>
+        /// <param name="offset">Offset of the field.</param>
+        /// <param name="type">Data type of the field.</param>
+        /// <param name="name">Optional field name.</param>
 		public StructureField(int offset, DataType type, string? name = null) : base(type)
 		{
             this.Offset = offset;
             this.name = name;
 		}
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// The name of this field.
+        /// </summary>
         public override string Name
         {
             get { return name ?? DefaultName(); }
             set { name = value; }
         }
 
+        /// <summary>
+        /// True if the name is user-defined.
+        /// </summary>
         public bool IsNameSet => name is not null;
 
         private string? name;
 
         //$TODO: make offsets long, to handle the situation where the Program
         // globals struct is maintaining 64-bit addresses.
+        /// <summary>
+        /// Signed field offset (in storage units) from the start of the structure.
+        /// </summary>
         public int Offset { get; set; }
 
+        /// <summary>
+        /// Clones this structure field.
+        /// </summary>
+        /// <param name="clonedTypes">Dictionary to use when cloning types.</param>
+        /// <returns></returns>
         public StructureField Clone(IDictionary<DataType, DataType>? clonedTypes = null)
 		{
 			return new StructureField(Offset, DataType.Clone(clonedTypes), name);
@@ -61,6 +80,12 @@ namespace Reko.Core.Types
             return NamingPolicy.Instance.Types.StructureFieldName(this, this.name);
         }
 
+        /// <summary>
+        /// Given a constant, returns the offset as an integer.
+        /// </summary>
+        /// <param name="offset">Offset as a <see cref="Constant"/>.</param>
+        /// <returns>An integer offset, or null if the offset wasn't an integer.
+        /// </returns>
         public static int? ToOffset(Constant? offset)
         {
             if (offset is null)
@@ -76,34 +101,64 @@ namespace Reko.Core.Types
                 return (int) offset.ToUInt32();
         }
 
+        /// <summary>
+        /// Returns a string representation of this field.
+        /// </summary>
         public override string ToString()
         {
             return string.Format("{0:X}: {1}: {2}", Offset, Name, DataType);
         }
 	}
 
+    /// <summary>
+    /// Collection of <see cref="StructureField"/> instances.
+    /// </summary>
 	public class StructureFieldCollection : ICollection<StructureField>
 	{
         private const int BinarySearchLimit = 0;
 
         private readonly List<StructureField> innerList = new List<StructureField>();
 
+        /// <summary>
+        /// Gets the field at position <paramref name="i"/> in the collection, <em>not</em>
+        /// the offset.
+        /// </summary>
+        /// <param name="i">Index into the collection.</param>
+        /// <returns>The field of that index.</returns>
         public StructureField this[int i]
         {
             get { return innerList[i]; }
         }
 
+        /// <summary>
+        /// Adds a field to the collection.
+        /// </summary>
+        /// <param name="offset">Offset for the field.</param>
+        /// <param name="dt">Data type of the field.</param>
+        /// <returns>The new structure field.</returns>
 		public StructureField Add(int offset, DataType dt)
 		{
 			return Add(new StructureField(offset, dt));
 		}
 
+        /// <summary>
+        /// Adds an (optinally named) field to the collection.
+        /// </summary>
+        /// <param name="offset">Offset for the field.</param>
+        /// <param name="dt">Data type of the field.</param>
+        /// <param name="name">Optional name for the field.</param>
+        /// <returns>The new structure field.</returns>
 		public StructureField Add(int offset, DataType dt, string? name)
 		{
 			return Add(new StructureField(offset, dt, name));
 		}
 
         //$PERF: slow, should use binary search.
+        /// <summary>
+        /// Adds a field to the collection.
+        /// </summary>
+        /// <param name="f">Field to add.</param>
+        /// <returns>The added field.</returns>
 		public StructureField Add(StructureField f)
 		{
 			int i;
@@ -181,6 +236,10 @@ namespace Reko.Core.Types
             Add(f);
         }
 
+        /// <summary>
+        /// Adds a range of fields to the collection.
+        /// </summary>
+        /// <param name="fields">Fields to add.</param>
         public void AddRange(IEnumerable<StructureField> fields)
         {
             foreach (var field in fields)
@@ -246,6 +305,10 @@ namespace Reko.Core.Types
 			return fPrev;
 		}
 
+        /// <summary>
+        /// Removes the field at the specified index.
+        /// </summary>
+        /// <param name="i">Index of field to remove.</param>
         public void RemoveAt(int i)
         {
             innerList.RemoveAt(i);
@@ -254,31 +317,52 @@ namespace Reko.Core.Types
         #region ICollection<StructureField> Members
 
 
+        /// <summary>
+        /// Clears the collection.
+        /// </summary>
         public void Clear()
         {
             innerList.Clear();
         }
 
+        /// <summary>
+        /// Returns true if the collection contains the specified field.
+        /// </summary>
+        /// <param name="item">Field to look for.</param>
+        /// <returns>True if the field is contained in the collection; otherwise false.</returns>
         public bool Contains(StructureField item)
         {
             return innerList.Contains(item);
         }
 
+        /// <inheritdoc/>
         public void CopyTo(StructureField[] array, int arrayIndex)
         {
             innerList.CopyTo(array, arrayIndex);
         }
 
+        /// <summary>
+        /// Returns the number of fields in the collection.
+        /// </summary>
         public int Count
         {
             get { return innerList.Count; }
         }
 
+        /// <summary>
+        /// Returns true if the collection is read-only.
+        /// </summary>
         public bool IsReadOnly
         {
             get { return false; }
         }
 
+        /// <summary>
+        /// Removes the specified field from the collection.
+        /// </summary>
+        /// <param name="item">Field to remove.</param>
+        /// <returns>True if the field was found and removed; otherwise false.
+        /// </returns>
         public bool Remove(StructureField item)
         {
             return innerList.Remove(item);
@@ -288,6 +372,9 @@ namespace Reko.Core.Types
 
         #region IEnumerable<StructureField> Members
 
+        /// <summary>
+        /// Returns an enumerator that iterates through the  fields in the collection.
+        /// </summary>
         public IEnumerator<StructureField> GetEnumerator()
         {
             return innerList.GetEnumerator();

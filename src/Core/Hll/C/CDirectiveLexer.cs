@@ -73,6 +73,9 @@ namespace Reko.Core.Hll.C
             this.ignoreTokens = false;
         }
 
+        /// <summary>
+        /// Current line number in the input stream.
+        /// </summary>
         public int LineNumber => lexer.LineNumber;
 
         private enum State
@@ -95,6 +98,10 @@ namespace Reko.Core.Hll.C
             Undef,
         }
 
+        /// <summary>
+        /// Reads the next token from the input stream.
+        /// </summary>
+        /// <returns>A <see cref="CToken"/>.</returns>
         public CToken Read()
         {
             var token = ReadToken();
@@ -258,6 +265,14 @@ namespace Reko.Core.Hll.C
             return lexer.Read();
         }
 
+        /// <summary>
+        /// Reads a <c>#define</c> directive.
+        /// </summary>
+        /// <param name="ignoreTokens">If true, we only parse the directive,
+        /// but don't perform any work because we are in a disabled
+        /// part of code (e.g. <c>#ifdef</c>).
+        /// </param>
+        /// <returns>The token after the <c>#define</c>.</returns>
         public CToken ReadDefine(bool ignoreTokens)
         {
             var macroName = (string) Expect(CTokenType.Id)!;
@@ -282,6 +297,11 @@ namespace Reko.Core.Hll.C
             }
         }
 
+        /// <summary>
+        /// Reads a <c>#undef</c> directive.
+        /// </summary>
+        /// <param name="ignoreUndef">If true, ignores the directive.</param>
+        /// <returns>The next token.</returns>
         public CToken ReadUndef(bool ignoreUndef)
         {
             var macroName = (string) Expect(CTokenType.Id)!;
@@ -290,6 +310,13 @@ namespace Reko.Core.Hll.C
             return ReadToken();
         }
 
+        /// <summary>
+        /// Reads a <c>#pragma</c> directive.
+        /// </summary>
+        /// <param name="pragma">Pragma name</param>
+        /// <param name="ignorePragma">If true, ignores the effect of the pragma.</param>
+        /// <returns></returns>
+        /// <exception cref="FormatException"></exception>
         public virtual CToken ReadPragma(string pragma, bool ignorePragma)
         {
             if (pragma == "once")

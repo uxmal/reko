@@ -121,7 +121,7 @@ namespace Reko.ImageLoaders.MzExe
         private Address addrImportStubs;
         private IProcessorArchitecture arch;
         private IPlatform platform;
-        private Address addrEntry;
+        private Address? addrEntry;
         private List<ImageSymbol?> entryPoints;
         private NE_TARGETOS bTargetOs;
         private ushort cResourceTableEntries;
@@ -284,9 +284,9 @@ namespace Reko.ImageLoaders.MzExe
                 program.ImportReferences.Add(impRef.Item1, impRef.Item2);
             }
 
-            if (addrEntry != null)
+            if (addrEntry.HasValue)
             {
-                entryPoints.Add(ImageSymbol.Procedure(program.Architecture, addrEntry));
+                entryPoints.Add(ImageSymbol.Procedure(program.Architecture, addrEntry.Value));
             }
             foreach (var ep in entryPoints.Where(e => e != null && e.Type != SymbolType.Data))
             {

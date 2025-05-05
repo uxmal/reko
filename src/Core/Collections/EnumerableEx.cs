@@ -200,6 +200,14 @@ namespace Reko.Core.Collections
                 return def!;
         }
 
+        /// <summary>
+        /// Zips together many sequences into a single sequence of tuples.
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="selector"></param>
+        /// <returns></returns>
         public static IEnumerable<TResult> ZipMany<TSource, TResult>(
             IEnumerable<IEnumerable<TSource>> source,
             Func<IEnumerable<TSource>, TResult> selector)

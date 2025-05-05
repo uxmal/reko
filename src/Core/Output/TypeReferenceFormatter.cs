@@ -26,6 +26,9 @@ using Reko.Core.Types;
 
 namespace Reko.Core.Output
 {
+    /// <summary>
+    /// Formats a type reference in C/C++ style.
+    /// </summary>
     public class TypeReferenceFormatter
     {
         private bool declaration;
@@ -33,13 +36,24 @@ namespace Reko.Core.Output
         private int depth;//$BUG: used to avoid infinite recursion
         private bool wantSpace;
 
+        /// <summary>
+        /// Constructs a <see cref="TypeReferenceFormatter"/> instance.
+        /// </summary>
+        /// <param name="writer">Output sink.</param>
         public TypeReferenceFormatter(Formatter writer)
         {
             this.Formatter = writer;
         }
 
+        /// <summary>
+        /// Output sink being used.
+        /// </summary>
         public Formatter Formatter { get; }
 
+        /// <summary>
+        /// Writes a type reference to the output sink.
+        /// </summary>
+        /// <param name="dt">Data type reference.</param>
         public void WriteTypeReference(DataType dt)
         {
             this.declaration = false;
@@ -50,6 +64,11 @@ namespace Reko.Core.Output
         /* declaration:
                 declaration-specifiers init-declarator-list(opt) ;  */
 
+        /// <summary>
+        /// Writes a type declaration to the output sink.
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <param name="name"></param>
         public void WriteDeclaration(DataType dt, string name)
         {
             this.declaration = true;
@@ -246,12 +265,20 @@ namespace Reko.Core.Output
             wantSpace = true;
         }
 
+        /// <summary>
+        /// Writes the name of a primitive type to the output sink.
+        /// </summary>
+        /// <param name="t">Primitive type.</param>
         public virtual void WritePrimitiveTypeName(PrimitiveType t)
         {
             Formatter.WriteType(t.Name, t);
             wantSpace = true;
         }
 
+        /// <summary>
+        /// Writes the name of a void type to the output sink.
+        /// </summary>
+        /// <param name="t">Void type.</param>
         public virtual void WriteVoidType(VoidType t)
         {
             Formatter.WriteType(t.Name, t);

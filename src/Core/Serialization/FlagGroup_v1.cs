@@ -23,20 +23,34 @@ using System.Xml.Serialization;
 
 namespace Reko.Core.Serialization
 {
+    /// <summary>
+    /// Serialized representation of a flag group.
+    /// </summary>
 	public class FlagGroup_v1 : SerializedStorage
 	{
+        /// <summary>
+        /// Flag group name.
+        /// </summary>
 		[XmlText]
 		public string? Name;
 
+        /// <summary>
+        /// Constructs an empty flag group.
+        /// </summary>
 		public FlagGroup_v1()
 		{
 		}
 
+        /// <summary>
+        /// Constructs a flag group with the given name.
+        /// </summary>
+        /// <param name="name">Flag group name.</param>
 		public FlagGroup_v1(string name)
 		{
 			this.Name = name;
 		}
 
+        /// <inheritdoc/>
 		public override Identifier Deserialize(ArgumentDeserializer sser)
 		{
 			return sser.Deserialize(this);

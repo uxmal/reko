@@ -33,17 +33,28 @@ namespace Reko.Core.Lib
     /// </summary>
     public struct Float96 : IFormattable, IConvertible
     {
-        public readonly ulong significand;
-        public readonly ushort exponent;
-        public const ushort SignBit = 0x8000;
-        public const ushort MaxExponent = 0x7FFF;
+        private readonly ulong significand;
+        private readonly ushort exponent;
+        private const ushort SignBit = 0x8000;
+        private const ushort MaxExponent = 0x7FFF;
 
+        /// <summary>
+        /// Constructs a 96-bit floating point number.
+        /// </summary>
+        /// <param name="expSign">Exponent and sign.</param>
+        /// <param name="significand">Significand.</param>
         public Float96(ushort expSign, ulong significand)
         {
             this.significand = significand;
             this.exponent = expSign;
         }
 
+        /// <summary>
+        /// Negates a 96-bit floating point number.
+        /// </summary>
+        /// <param name="a">Number to negate.</param>
+        /// <returns>The negative of the given number.
+        /// </returns>
         public static Float96 operator -(Float96 a)
         {
             return new Float96((ushort) (a.exponent ^ SignBit), a.significand);
@@ -54,11 +65,13 @@ namespace Reko.Core.Lib
             return significand == 0 && (exponent & MaxExponent) == 0;
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             return ToString("G", System.Globalization.CultureInfo.CurrentCulture);
         }
 
+        /// <inheritdoc/>
         public string ToString(string? format, IFormatProvider? formatProvider)
         {
             //$TODO: to maintain precision will require an implementation
@@ -68,6 +81,11 @@ namespace Reko.Core.Lib
             return d.ToString(format, formatProvider);
         }
 
+        /// <summary>
+        /// Converts this 96-bit float to a double. The conversion is lossy.
+        /// </summary>
+        /// <param name="formatProvider">Optional format provider.</param>
+        /// <returns>An IEEE double precision floating point number.</returns>
         public double ToDouble(IFormatProvider? formatProvider)
         {
             bool isNegative = (exponent & SignBit) != 0;

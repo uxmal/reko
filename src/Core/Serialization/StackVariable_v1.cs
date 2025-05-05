@@ -29,8 +29,12 @@ namespace Reko.Core.Serialization
     /// </summary>
 	public class StackVariable_v1 : SerializedStorage
 	{
+        /// <summary>
+        /// Constructs an empty instance of <see cref="StackVariable_v1"/>.
+        /// </summary>
 		public StackVariable_v1() {}
 
+        /// <inheritdoc/>
 		public override Identifier? Deserialize(ArgumentDeserializer sser)
 		{
 			return sser.Deserialize(this);

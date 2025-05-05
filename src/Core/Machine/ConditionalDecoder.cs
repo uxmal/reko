@@ -107,6 +107,7 @@ namespace Reko.Core.Machine
             this.tag = tag;
         }
 
+        /// <inheritdoc/>
         public override TInstr Decode(ulong wInstr, TDasm dasm)
         {
             DumpMaskedInstruction(64, wInstr, this.bitfields, tag);

@@ -20,16 +20,26 @@
 
 namespace Reko.Core.Types
 {
+    /// <summary>
+    /// Unifies two <see cref="TypeVariable"/>s by merging their
+    /// data types.
+    /// </summary>
     public class DataTypeBuilderUnifier : Unifier
     {
         private readonly ITypeStore store;
 
+        /// <summary>
+        /// Constructs a <see cref="DataTypeBuilderUnifier"/> instance.
+        /// </summary>
+        /// <param name="factory">Type factory to use.</param>
+        /// <param name="store">Type store to use.</param>
         public DataTypeBuilderUnifier(TypeFactory factory, ITypeStore store)
             : base(factory)
         {
             this.store = store;
         }
 
+        /// <inheritdoc/>
         public override DataType UnifyTypeVariables(TypeVariable tA, TypeVariable tB)
         {
             var dt = Unify(tA.Class.DataType, tB.Class.DataType)!;

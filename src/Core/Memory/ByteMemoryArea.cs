@@ -300,7 +300,6 @@ namespace Reko.Core.Memory
         /// <param name="imageOffset">Offset from image start, in bytes.</param>
         /// <param name="type">Size of the value being requested.</param>
         /// <param name="c">If successful, returns the requested value.</param>
-        /// <param name="c">Typed constant from the image.</param>
         /// <returns>True if the read succeeded; false if the <paramref name="imageOffset"/> was outside
         /// the memory area.</returns>
         public override bool TryReadLe(long imageOffset, DataType type, out Constant c)
@@ -659,16 +658,33 @@ namespace Reko.Core.Memory
             return BinaryPrimitives.ReadInt32BigEndian(span);
         }
 
-        public static bool TryReadBeInt32(byte[] abImage, long off, out int value)
+        /// <summary>
+        /// Reads a 32-bit signed big endian value from the given offset from the start
+        /// of the <paramref name="abImage"/>.
+        /// </summary>
+        /// <param name="abImage">Bytes to read from.</param>
+        /// <param name="offset">Offset to read from.</param>
+        /// <param name="value">The value read.</param>
+        /// <returns>True if a value was successfully read; otherwise false.</returns>
+        public static bool TryReadBeInt32(byte[] abImage, long offset, out int value)
         {
-            return TryReadBeInt32(abImage, off, abImage.Length, out value);
+            return TryReadBeInt32(abImage, offset, abImage.Length, out value);
         }
 
-        public static bool TryReadBeInt32(byte[] abImage, long off, long offEnd, out int value)
+        /// <summary>
+        /// Reads a 32-bit signed big endian value from the given offset from the start
+        /// of the <paramref name="abImage"/>.
+        /// </summary>
+        /// <param name="abImage">Bytes to read from.</param>
+        /// <param name="offset">Offset to read from.</param>
+        /// <param name="offsetEnd">End offset of memory area to read.</param>
+        /// <param name="value">The value read.</param>
+        /// <returns>True if a value was successfully read; otherwise false.</returns>
+        public static bool TryReadBeInt32(byte[] abImage, long offset, long offsetEnd, out int value)
         {
-            if (off <= offEnd - 4)
+            if (offset <= offsetEnd - 4)
             {
-                var span = abImage.AsSpan((int) off, 4);
+                var span = abImage.AsSpan((int) offset, 4);
                 value = BinaryPrimitives.ReadInt32BigEndian(span);
                 return true;
             }
@@ -680,16 +696,33 @@ namespace Reko.Core.Memory
         }
 
 
-        public static bool TryReadLeInt32(byte[] abImage, long off, out int value)
+        /// <summary>
+        /// Reads a 32-bit signed little endian value from the given offset from the start
+        /// of the <paramref name="abImage"/>.
+        /// </summary>
+        /// <param name="abImage">Bytes to read from.</param>
+        /// <param name="offset">Offset to read from.</param>
+        /// <param name="value">The value read.</param>
+        /// <returns>True if a value was successfully read; otherwise false.</returns>
+        public static bool TryReadLeInt32(byte[] abImage, long offset, out int value)
         {
-            return TryReadLeInt32(abImage, off, abImage.Length, out value);
+            return TryReadLeInt32(abImage, offset, abImage.Length, out value);
         }
 
-        public static bool TryReadLeInt32(byte [] abImage, long off, long offEnd, out int value)
+        /// <summary>
+        /// Reads a 32-bit signed little endian value from the given offset from the start
+        /// of the <paramref name="abImage"/>.
+        /// </summary>
+        /// <param name="abImage">Bytes to read from.</param>
+        /// <param name="offset">Offset to read from.</param>
+        /// <param name="offsetEnd">End offset of memory area to read.</param>
+        /// <param name="value">The value read.</param>
+        /// <returns>True if a value was successfully read; otherwise false.</returns>
+        public static bool TryReadLeInt32(byte [] abImage, long offset, long offsetEnd, out int value)
         {
-            if (off <= offEnd - 4)
+            if (offset <= offsetEnd - 4)
             {
-                var span = abImage.AsSpan((int) off, 4);
+                var span = abImage.AsSpan((int) offset, 4);
                 value = BinaryPrimitives.ReadInt32LittleEndian(span);
                 return true;
             }
@@ -700,16 +733,33 @@ namespace Reko.Core.Memory
             }
         }
 
-        public static bool TryReadLeUInt32(byte[] abImage, long off, out uint value)
+        /// <summary>
+        /// Reads a 32-bit unsigned little endian value from the given offset from the start
+        /// of the <paramref name="abImage"/>.
+        /// </summary>
+        /// <param name="abImage">Bytes to read from.</param>
+        /// <param name="offset">Offset to read from.</param>
+        /// <param name="value">The value read.</param>
+        /// <returns>True if a value was successfully read; otherwise false.</returns>
+        public static bool TryReadLeUInt32(byte[] abImage, long offset, out uint value)
         {
-            return TryReadLeUInt32(abImage, off, abImage.Length, out value);
+            return TryReadLeUInt32(abImage, offset, abImage.Length, out value);
         }
 
-        public static bool TryReadLeUInt32(byte[] abImage, long off, long offEnd, out uint value)
+        /// <summary>
+        /// Reads a 32-bit unsigned little endian value from the given offset from the start
+        /// of the <paramref name="abImage"/>.
+        /// </summary>
+        /// <param name="abImage">Bytes to read from.</param>
+        /// <param name="offset">Offset to read from.</param>
+        /// <param name="offsetEnd">End offset of memory area to read.</param>
+        /// <param name="value">The value read.</param>
+        /// <returns>True if a value was successfully read; otherwise false.</returns>
+        public static bool TryReadLeUInt32(byte[] abImage, long offset, long offsetEnd, out uint value)
         {
-            if (off <= offEnd - 4)
+            if (offset <= offsetEnd - 4)
             {
-                var span = abImage.AsSpan((int) off, 4);
+                var span = abImage.AsSpan((int) offset, 4);
                 value = BinaryPrimitives.ReadUInt32LittleEndian(span);
                 return true;
             }
@@ -720,16 +770,33 @@ namespace Reko.Core.Memory
             }
         }
 
-        public static bool TryReadBeUInt32(byte[] abImage, long off, out uint value)
+        /// <summary>
+        /// Reads a 32-bit unsigned little big value from the given offset from the start
+        /// of the <paramref name="abImage"/>.
+        /// </summary>
+        /// <param name="abImage">Bytes to read from.</param>
+        /// <param name="offset">Offset to read from.</param>
+        /// <param name="value">The value read.</param>
+        /// <returns>True if a value was successfully read; otherwise false.</returns>
+        public static bool TryReadBeUInt32(byte[] abImage, long offset, out uint value)
         {
-            return TryReadBeUInt32(abImage, off, abImage.Length, out value);
+            return TryReadBeUInt32(abImage, offset, abImage.Length, out value);
         }
 
-        public static bool TryReadBeUInt32(byte[] abImage, long off, long offEnd, out uint value)
+        /// <summary>
+        /// Reads a 32-bit unsigned big endian value from the given offset from the start
+        /// of the <paramref name="abImage"/>.
+        /// </summary>
+        /// <param name="abImage">Bytes to read from.</param>
+        /// <param name="offset">Offset to read from.</param>
+        /// <param name="offsetEnd">End offset of memory area to read.</param>
+        /// <param name="value">The value read.</param>
+        /// <returns>True if a value was successfully read; otherwise false.</returns>
+        public static bool TryReadBeUInt32(byte[] abImage, long offset, long offsetEnd, out uint value)
         {
-            if (off <= offEnd - 4)
+            if (offset <= offsetEnd - 4)
             {
-                var span = abImage.AsSpan((int) off, 4);
+                var span = abImage.AsSpan((int) offset, 4);
                 value = BinaryPrimitives.ReadUInt32BigEndian(span);
                 return true;
             }
@@ -753,15 +820,31 @@ namespace Reko.Core.Memory
             return BinaryPrimitives.ReadInt32LittleEndian(span);
         }
 
-
+        /// <summary>
+        /// Reads a 16-bit signed big endian value from the given offset from the start
+        /// of the <paramref name="img"/>.
+        /// </summary>
+        /// <param name="img">Bytes to read from.</param>
+        /// <param name="offset">Offset to read from.</param>
+        /// <param name="value">The value read.</param>
+        /// <returns>True if a value was successfully read; otherwise false.</returns>
         public static bool TryReadBeInt16(byte[] img, long offset, out short value)
         {
             return TryReadBeInt16(img, offset, img.Length, out value);
         }
 
-        public static bool TryReadBeInt16(byte[] img, long offset, long offEnd, out short value)
+        /// <summary>
+        /// Reads a 16-bit signed big endian value from the given offset from the start
+        /// of the <paramref name="img"/>.
+        /// </summary>
+        /// <param name="img">Bytes to read from.</param>
+        /// <param name="offset">Offset to read from.</param>
+        /// <param name="offsetEnd">End offset of memory area to read.</param>
+        /// <param name="value">The value read.</param>
+        /// <returns>True if a value was successfully read; otherwise false.</returns>
+        public static bool TryReadBeInt16(byte[] img, long offset, long offsetEnd, out short value)
         {
-            if (offset <= offEnd - 2)
+            if (offset <= offsetEnd - 2)
             {
                 var span = img.AsSpan((int) offset, 2);
                 value = BinaryPrimitives.ReadInt16BigEndian(span);
@@ -774,14 +857,31 @@ namespace Reko.Core.Memory
             }
         }
 
+        /// <summary>
+        /// Reads a 16-bit unsigned big endian value from the given offset from the start
+        /// of the <paramref name="img"/>.
+        /// </summary>
+        /// <param name="img">Bytes to read from.</param>
+        /// <param name="offset">Offset to read from.</param>
+        /// <param name="value">The value read.</param>
+        /// <returns>True if a value was successfully read; otherwise false.</returns>
         public static bool TryReadBeUInt16(byte[] img, long offset, out ushort value)
         {
             return TryReadBeUInt16(img, offset, img.Length, out value);
         }
 
-        public static bool TryReadBeUInt16(byte[] img, long offset, long offEnd, out ushort value)
+        /// <summary>
+        /// Reads a 16-bit unsigned big endian value from the given offset from the start
+        /// of the <paramref name="img"/>.
+        /// </summary>
+        /// <param name="img">Bytes to read from.</param>
+        /// <param name="offset">Offset to read from.</param>
+        /// <param name="offsetEnd">End offset of memory area to read.</param>
+        /// <param name="value">The value read.</param>
+        /// <returns>True if a value was successfully read; otherwise false.</returns>
+        public static bool TryReadBeUInt16(byte[] img, long offset, long offsetEnd, out ushort value)
         {
-            if (offset <= offEnd - 2)
+            if (offset <= offsetEnd - 2)
             {
                 var span = img.AsSpan((int) offset, 2);
                 value = BinaryPrimitives.ReadUInt16BigEndian(span);
@@ -794,14 +894,31 @@ namespace Reko.Core.Memory
             }
         }
 
+        /// <summary>
+        /// Reads a 16-bit signed little endian value from the given offset from the start
+        /// of the <paramref name="abImage"/>.
+        /// </summary>
+        /// <param name="abImage">Bytes to read from.</param>
+        /// <param name="offset">Offset to read from.</param>
+        /// <param name="s">The value read.</param>
+        /// <returns>True if a value was successfully read; otherwise false.</returns>
         public static bool TryReadLeInt16(byte[] abImage, long offset, out short s)
         {
             return TryReadLeInt16(abImage, offset, abImage.Length, out s);
         }
 
-        public static bool TryReadLeInt16(byte[] img, long offset, long offEnd, out short value)
+        /// <summary>
+        /// Reads a 16-bit signed big endian value from the given offset from the start
+        /// of the <paramref name="img"/>.
+        /// </summary>
+        /// <param name="img">Bytes to read from.</param>
+        /// <param name="offset">Offset to read from.</param>
+        /// <param name="offsetEnd">End offset of memory area to read.</param>
+        /// <param name="value">The value read.</param>
+        /// <returns>True if a value was successfully read; otherwise false.</returns>
+        public static bool TryReadLeInt16(byte[] img, long offset, long offsetEnd, out short value)
         {
-            if (offset <= offEnd - 2)
+            if (offset <= offsetEnd - 2)
             {
                 var span = img.AsSpan((int) offset, 2);
                 value = BinaryPrimitives.ReadInt16LittleEndian(span);
@@ -840,14 +957,31 @@ namespace Reko.Core.Memory
             return BinaryPrimitives.ReadInt16LittleEndian(span);
         }
 
+        /// <summary>
+        /// Reads a 16-bit unsigned little endian value from the given offset from the start
+        /// of the <paramref name="abImage"/>.
+        /// </summary>
+        /// <param name="abImage">Bytes to read from.</param>
+        /// <param name="offset">Offset to read from.</param>
+        /// <param name="us">The value read.</param>
+        /// <returns>True if a value was successfully read; otherwise false.</returns>
         public static bool TryReadLeUInt16(byte[] abImage, long offset, out ushort us)
         {
             return TryReadLeUInt16(abImage, offset, abImage.Length, out us);
         }
 
-        public static bool TryReadLeUInt16(byte[] abImage, long offset,long offEnd, out ushort us)
+        /// <summary>
+        /// Reads a 16-bit unsigned little endian value from the given offset from the start
+        /// of the <paramref name="abImage"/>.
+        /// </summary>
+        /// <param name="abImage">Bytes to read from.</param>
+        /// <param name="offset">Offset to read from.</param>
+        /// <param name="offsetEnd">End offset of memory area to read.</param>
+        /// <param name="us">The value read.</param>
+        /// <returns>True if a value was successfully read; otherwise false.</returns>
+        public static bool TryReadLeUInt16(byte[] abImage, long offset,long offsetEnd, out ushort us)
         {
-            if (offset + 1 >= offEnd)
+            if (offset + 1 >= offsetEnd)
             {
                 us = 0;
                 return false;
@@ -976,6 +1110,13 @@ namespace Reko.Core.Memory
             return (ushort)ReadLeInt16(bytes, offset);
         }
 
+        /// <summary>
+        /// Reads a byte from the given offset from the start of the <paramref name="img"/>.
+        /// </summary>
+        /// <param name="img">Bytes to read from.</param>
+        /// <param name="off">Offset to read from.</param>
+        /// <param name="b">Byte read.</param>
+        /// <returns>True if the offset was valid; otherwise false.</returns>
         public static bool TryReadByte(byte[] img, long off, out byte b)
         {
             if (off >= img.Length)
@@ -990,6 +1131,13 @@ namespace Reko.Core.Memory
             }
         }
 
+        /// <summary>
+        /// Reads bytes from the given offset.
+        /// </summary>
+        /// <param name="off">Offset from which to read.</param>
+        /// <param name="length">Number of bytes to read.</param>
+        /// <param name="membuf">Destination of the read bytes.</param>
+        /// <returns>True if arguments were in range; otherwise false.</returns>
         public bool TryReadBytes(long off, int length, byte[] membuf)
         {
             if (length < 0)
@@ -1044,7 +1192,20 @@ namespace Reko.Core.Memory
         /// <returns>The value read.</returns>
         public ushort ReadBeUInt16(uint off) { return ReadBeUInt16(this.Bytes, off); }
 
+        /// <summary>
+        /// Reads a 64-bit little endian double precision floating point value from the
+        /// given offset.
+        /// </summary>
+        /// <param name="off">Offset to read from.</param>
+        /// <returns>The value read.</returns>
         public Constant ReadLeDouble(long off) { return ReadLeDouble(Bytes, off); }
+
+        /// <summary>
+        /// Reads a 32-bit little endian single precision floating point value from the
+        /// given offset.
+        /// </summary>
+        /// <param name="off">Offset to read from.</param>
+        /// <returns>The value read.</returns>
         public Constant ReadLeFloat(long off) { return ReadLeFloat(Bytes, off); }
 
         /// <summary>
@@ -1095,18 +1256,101 @@ namespace Reko.Core.Memory
         /// <returns>The value read.</returns>
         public ushort ReadLeUInt16(uint off) { return ReadLeUInt16(this.Bytes, off); }
 
+        /// <summary>
+        /// Reads a byte from the given offset from the start of this memory area.
+        /// </summary>
+        /// <param name="off">Offset to read from.</param>
+        /// <param name="b">The value read.</param>
+        /// <returns>True if the offset was valid; otherwise false.</returns>
         public override bool TryReadByte(long off, out byte b) { return TryReadByte(this.Bytes, off, out b); }
 
+        /// <summary>
+        /// Reads a 64-bit little endian double precision floating point value from the
+        /// given address.
+        /// </summary>
+        /// <param name="addr">Address to read from.</param>
+        /// <returns>The value read.</returns>
         public Constant ReadLeDouble(Address addr) { return ReadLeDouble(Bytes, ToOffset(addr)); }
+
+        /// <summary>
+        /// Reads a 32-bit little endian single precision floating point value from the
+        /// given address.
+        /// </summary>
+        /// <param name="addr">Address to read from.</param>
+        /// <returns>The value read.</returns>
         public Constant ReadLeFloat(Address addr) { return ReadLeFloat(Bytes, ToOffset(addr)); }
+
+        /// <summary>
+        /// Reads a 64-bit little endian signed integer from the
+        /// given address.
+        /// </summary>
+        /// <param name="addr">Address to read from.</param>
+        /// <returns>The value read.</returns>
         public long ReadLeInt64(Address addr) { return ReadLeInt64(this.Bytes, ToOffset(addr)); }
-        public ulong ReadLeUint64(Address addr) { return ReadLeUInt64(this.Bytes, ToOffset(addr)); }
+
+        /// <summary>
+        /// Reads a 64-bit little endian unsigned integer from the
+        /// given address.
+        /// </summary>
+        /// <param name="addr">Address to read from.</param>
+        /// <returns>The value read.</returns>
+        public ulong ReadLeUInt64(Address addr) { return ReadLeUInt64(this.Bytes, ToOffset(addr)); }
+
+        /// <summary>
+        /// Reads a 32-bit little endian signed integer from the
+        /// given address.
+        /// </summary>
+        /// <param name="addr">Address to read from.</param>
+        /// <returns>The value read.</returns>
         public int ReadLeInt32(Address addr) { return ReadLeInt32(this.Bytes, ToOffset(addr)); }
+
+        /// <summary>
+        /// Reads a 32-bit little endian unsigned integer from the
+        /// given address.
+        /// </summary>
+        /// <param name="addr">Address to read from.</param>
+        /// <returns>The value read.</returns>
         public uint ReadLeUInt32(Address addr) { return ReadLeUInt32(this.Bytes, ToOffset(addr)); }
+
+        /// <summary>
+        /// Reads a 16-bit little endian signed integer from the
+        /// given address.
+        /// </summary>
+        /// <param name="addr">Address to read from.</param>
+        /// <returns>The value read.</returns>
         public short ReadLeInt16(Address addr) { return ReadLeInt16(this.Bytes, ToOffset(addr)); }
+
+        /// <summary>
+        /// Reads a 32-bit little endian unsigned integer from the
+        /// given address.
+        /// </summary>
+        /// <param name="addr">Address to read from.</param>
+        /// <returns>The value read.</returns>
         public ushort ReadLeUInt16(Address addr) { return ReadLeUInt16(this.Bytes, ToOffset(addr)); }
+
+        /// <summary>
+        /// Reads a byte from the given address.
+        /// </summary>
+        /// <param name="addr">Address to read from.</param>
+        /// <returns>The value read.</returns>
         public byte ReadByte(Address addr) { return this.Bytes[ToOffset(addr)]; }
+
+        /// <summary>
+        /// Reads a byte from the given address.
+        /// </summary>
+        /// <param name="addr">Address to read from.</param>
+        /// <param name="b">The value read</param>
+        /// <returns>True if the address was within bounds; otherwise false.</returns>
         public bool TryReadByte(Address addr, out byte b) { return TryReadByte(this.Bytes, ToOffset(addr), out b); }
+
+        /// <summary>
+        /// Reads bytes from the given address.
+        /// </summary>
+        /// <param name="addr">Address to read from.</param>
+        /// <param name="length">The number of bytes to read.</param>
+        /// <param name="membuf">Buffer into which to store the bytes.
+        /// </param>
+        /// <returns>True if the arguments were valid; otherwise false.</returns>
         public bool TryReadBytes(Address addr, int length, byte[] membuf) { return TryReadBytes(ToOffset(addr), length, membuf); }
 
         private long ToOffset(Address addr)
@@ -1134,6 +1378,7 @@ namespace Reko.Core.Memory
 			Bytes[offset+1] = (byte) (w >> 8);
 		}
 
+        /// <inheritdoc/>
         public override void WriteBeUInt32(long offset, uint dw)
         {
             Bytes[offset + 0] = (byte) (dw >> 24);
@@ -1208,11 +1453,24 @@ namespace Reko.Core.Memory
         /// <inheritdoc/>
         public void WriteLeUInt16(Address addr, ushort w) { WriteLeUInt16(ToOffset(addr), w); }
 
+        /// <summary>
+        /// Writes bytes to the given offset.
+        /// </summary>
+        /// <param name="srcBytes">Bytes to write.</param>
+        /// <param name="offset">Position in the memory area to write to.</param>
+        /// <param name="count">Number of bytes to write.</param>
         public void WriteBytes(byte[] srcBytes, long offset, int count)
         {
             WriteBytes(srcBytes, offset, count, this.Bytes);
         }
 
+        /// <summary>
+        /// Writes bytes to the given offset in <paramref name="dstBytes"/>.
+        /// </summary>
+        /// <param name="srcBytes">Bytes to write.</param>
+        /// <param name="offset">Position in the <paramref name="dstBytes"/> to write to.</param>
+        /// <param name="count">Number of bytes to write.</param>
+        /// <param name="dstBytes">Destination byte array to write to.</param>
         public static void WriteBytes(byte[] srcBytes, long offset, int count, byte[] dstBytes)
         {
             Array.Copy(srcBytes, 0, dstBytes, offset, count);

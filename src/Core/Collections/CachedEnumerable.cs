@@ -21,7 +21,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
+
+#pragma warning disable CS1591
 
 namespace Reko.Core.Collections
 {

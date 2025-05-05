@@ -27,23 +27,44 @@ namespace Reko.Core
     /// </summary>
     public class StatementCorrelatedException : Exception
     {
+        /// <summary>
+        /// Constructs a statement correlated exception.
+        /// </summary>
+        /// <param name="stm">The <see cref="Core.Statement"/> at which 
+        /// the exception occurred.</param>
         public StatementCorrelatedException(Statement stm)
         {
             this.Statement = stm;
         }
 
+        /// <summary>
+        /// Constructs a statement correlated exception.
+        /// </summary>
+        /// <param name="stm">The <see cref="Core.Statement"/> at which 
+        /// the exception occurred.</param>
+        /// <param name="message">Error message.</param>
         public StatementCorrelatedException(Statement stm, string message) :
             base(message)
         {
             this.Statement = stm;
         }
 
+        /// <summary>
+        /// Constructs a statement correlated exception.
+        /// </summary>
+        /// <param name="stm">The <see cref="Core.Statement"/> at which 
+        /// the exception occurred.</param>
+        /// <param name="message">Error message.</param>
+        /// <param name="innerException">Inner exception.</param>
         public StatementCorrelatedException(Statement stm, string message, Exception innerException) :
             base(message, innerException)
         {
             this.Statement = stm;
         }
 
+        /// <summary>
+        /// The <see cref="Core.Statement"/> at which the exception occurred.
+        /// </summary>
         public Statement Statement { get; }
     }
 }

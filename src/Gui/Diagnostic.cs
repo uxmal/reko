@@ -21,7 +21,7 @@
 using System;
 using System.Text;
 
-namespace Reko.Core
+namespace Reko.Gui
 {
     //$REFACTOR: move to Reko.Gui.
     public class Diagnostic

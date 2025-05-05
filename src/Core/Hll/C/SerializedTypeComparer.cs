@@ -24,6 +24,9 @@ using System.Collections.Generic;
 
 namespace Reko.Core.Hll.C
 {
+    /// <summary>
+    /// Compares two <see cref="SerializedType"/> instances for equality.
+    /// </summary>
     public class SerializedTypeComparer :
             IEqualityComparer<SerializedType>,
             ISerializedTypeVisitor<bool>

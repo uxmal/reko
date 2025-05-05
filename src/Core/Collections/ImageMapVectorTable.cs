@@ -28,6 +28,12 @@ namespace Reko.Core.Collections
     /// </summary>
     public class ImageMapVectorTable : ImageMapItem
     {
+        /// <summary>
+        /// Constructs an instance of <see cref="ImageMapVectorTable"/> with the specified address and size.
+        /// </summary>
+        /// <param name="addr">Address of the table.</param>
+        /// <param name="vector">Entries in the table.</param>
+        /// <param name="size">Size of the backing memory.</param>
         public ImageMapVectorTable(Address addr, Address[] vector, int size)
             : base(addr)
         {

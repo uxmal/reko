@@ -33,6 +33,9 @@ namespace Reko.Core.Serialization
             return visitor.VisitVoidType(this);
         }
 
+        /// <summary>
+        /// Returns a string representation of the type.
+        /// </summary>
         public override string ToString()
         {
             return "void";

@@ -23,21 +23,41 @@ using System;
 
 namespace Reko.Core.IO
 {
+    /// <summary>
+    /// Indicates the endianness of a field or structure.
+    /// </summary>
     /* http://stackoverflow.com/a/2624377 */
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Struct, Inherited = true)]
     public class EndianAttribute : Attribute
     {
+        /// <summary>
+        /// Endianness of the field or structure.
+        /// </summary>
         public Endianness Endianness { get; private set; }
 
+        /// <summary>
+        /// Constructs a new <see cref="EndianAttribute"/> instance.
+        /// </summary>
+        /// <param name="endianness">Endiannesss to use.</param>
         public EndianAttribute(Endianness endianness)
         {
             this.Endianness = endianness;
         }
     }
 
+    /// <summary>
+    /// Represents the endianness of a field or structure.
+    /// </summary>
     public enum Endianness
     {
+        /// <summary>
+        /// Big-endian byte order.
+        /// </summary>
         BigEndian,
+
+        /// <summary>
+        /// Little-endian byte order.
+        /// </summary>
         LittleEndian
     }
 }

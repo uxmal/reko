@@ -33,14 +33,26 @@ namespace Reko.Core.Serialization
     [XmlRoot(ElementName = "characteristics", Namespace = SerializedLibrary.Namespace_v1)]
     public class CharacteristicsLibrary_v1
     {
+        /// <summary>
+        /// The entries of the libary.
+        /// </summary>
         [XmlElement("entry")]
         public Entry[]? Entries;
 
+        /// <summary>
+        /// A single entry in the characteristics library.
+        /// </summary>
         public class Entry
         {
+            /// <summary>
+            /// Procedure name.
+            /// </summary>
             [XmlAttribute("name")]
             public string? ProcedureName;
 
+            /// <summary>
+            /// The characterstics of the procedure.
+            /// </summary>
             [XmlElement("characteristics")]
             public ProcedureCharacteristics? Characteristics;
         }

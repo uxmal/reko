@@ -144,6 +144,11 @@ namespace Reko.Core.Serialization
             return idArg;
         }
 
+        /// <summary>
+        /// Deserializes a flag group.
+        /// </summary>
+        /// <param name="flag">Flag group to deserialize.</param>
+        /// <returns>An <see cref="Identifier"/> for the flag group.</returns>
         public Identifier Deserialize(FlagGroup_v1 flag)
         {
             var flags = arch.GetFlagGroup(flag.Name!)!;
@@ -181,16 +186,27 @@ namespace Reko.Core.Serialization
             return idArg;
         }
 
+        /// <summary>
+        /// Deserialize an argument.
+        /// </summary>
+        /// <param name="arg">Argument to deserialize.</param>
+        /// <returns></returns>
         public Identifier? Deserialize(Argument_v1 arg)
         {
             argCur = arg;
             return arg.Kind?.Deserialize(this);
         }
 
-        public Identifier? Deserialize(Argument_v1 arg, SerializedStorage kind)
+        /// <summary>
+        /// Deserializes an argument of a given storage.
+        /// </summary>
+        /// <param name="arg">Argument to deserialize.</param>
+        /// <param name="stg">Storage for the argument.</param>
+        /// <returns></returns>
+        public Identifier? Deserialize(Argument_v1 arg, SerializedStorage stg)
         {
             argCur = arg;
-            return kind.Deserialize(this);
+            return stg.Deserialize(this);
         }
     }
 }

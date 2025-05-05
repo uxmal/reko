@@ -120,6 +120,7 @@ namespace Reko.Core.Memory
         /// <inheritdoc/>
         public override LeImageWriter CreateLeWriter(long offset) => throw new NotImplementedException();
 
+        /// <inheritdoc/>
         public uint ReadBeUInt32(long offset)
         {
             var hi = (uint)Words[offset];
@@ -127,6 +128,7 @@ namespace Reko.Core.Memory
             return (hi << 16) | lo;
         }
 
+        /// <inheritdoc/>
         public ulong ReadBeUInt64(long offset)
         {
             var w0 = (ulong) Words[offset];
@@ -137,37 +139,44 @@ namespace Reko.Core.Memory
         }
 
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             return string.Format("Image {0}{1} - length {2} 16-bit words {3}", "{", BaseAddress, this.Length, "}");
         }
 
 
+        /// <inheritdoc/>
         public override bool TryReadByte(long off, out byte b)
         {
             throw new NotSupportedException("Byte reads are not supported.");
         }
 
+        /// <inheritdoc/>
         public override bool TryReadBe(long imageOffset, DataType type, out Constant c)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override bool TryReadBeUInt16(long off, out ushort retvalue)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override bool TryReadBeUInt32(long off, out uint retvalue)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override bool TryReadBeUInt64(long off, out ulong retvalue)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override bool TryReadLe(long imageOffset, DataType type, [MaybeNullWhen(false)] out Constant c)
         {
             switch (type.BitSize)
@@ -192,11 +201,13 @@ namespace Reko.Core.Memory
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override bool TryReadLeInt32(long off, out int retvalue)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override bool TryReadLeUInt16(long off, out ushort retvalue)
         {
             if (off >= Words.Length)
@@ -208,6 +219,7 @@ namespace Reko.Core.Memory
             return true;
         }
 
+        /// <inheritdoc/>
         public override bool TryReadLeUInt32(long off, out uint retvalue)
         {
             if (off + 1 >= Words.Length)
@@ -221,41 +233,49 @@ namespace Reko.Core.Memory
             return true;
         }
 
+        /// <inheritdoc/>
         public override bool TryReadLeUInt64(long off, out ulong retvalue)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override void WriteByte(long off, byte value)
         {
             throw new NotSupportedException("Writing individual bytes is not supported.");
         }
 
+        /// <inheritdoc/>
         public override void WriteBeUInt16(long off, ushort value)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override void WriteBeUInt32(long off, uint value)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override void WriteBeUInt64(long off, ulong value)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override void WriteLeUInt16(long off, ushort value)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override void WriteLeUInt32(long off, uint value)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override void WriteLeUInt64(long off, ulong value)
         {
             throw new NotImplementedException();

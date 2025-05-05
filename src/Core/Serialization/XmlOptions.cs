@@ -68,9 +68,16 @@ namespace Reko.Core.Serialization
                 comparer);
         }
 
+        /// <summary>
+        /// Loads the given XML elements into a dictionary.
+        /// </summary>
+        /// <param name="options">XML elements.</param>
+        /// <param name="comparer">Comparer to use when adding dictionary elements.
+        /// </param>
+        /// <returns>A dictionary of options.</returns>
         public static Dictionary<string, object> LoadIntoDictionary(XmlElement[]? options, StringComparer comparer)
         {
-            if (options == null)
+            if (options is null)
                 return new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
             return ReadDictionaryElements(options, comparer);
         }

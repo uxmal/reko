@@ -30,6 +30,12 @@ namespace Reko.Core.Loading
     /// </summary>
     public abstract class ProgramImageLoader : ImageLoader
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProgramImageLoader"/> class.
+        /// </summary>
+        /// <param name="services"><see cref="IServiceProvider"/> to use.</param>
+        /// <param name="imageLocation">Location of the program file.</param>
+        /// <param name="imgRaw">Raw contents of the program file.</param>
         public ProgramImageLoader(IServiceProvider services, ImageLocation imageLocation, byte[] imgRaw) 
             : base(services, imageLocation, imgRaw)
         {
@@ -40,6 +46,12 @@ namespace Reko.Core.Loading
         /// </summary>
         public abstract Address PreferredBaseAddress { get; set; }
 
+        /// <summary>
+        /// Loads the image into memory at the specified address, optionally
+        /// overriding the base address.
+        /// </summary>
+        /// <param name="addrLoad">Optional base address to use.</param>
+        /// <returns>A <see cref="ILoadedImage"/>.</returns>
         public override ILoadedImage Load(Address? addrLoad)
         {
             return LoadProgram(addrLoad);

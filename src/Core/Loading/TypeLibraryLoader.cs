@@ -43,6 +43,7 @@ namespace Reko.Core.Loading
             stream = new MemoryStream(bytes);
         }
 
+        /// <inheritdoc/>
         public override TypeLibrary Load(IPlatform platform, TypeLibrary dstLib)
         {
             var ser = SerializedLibrary.CreateSerializer();

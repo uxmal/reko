@@ -32,13 +32,17 @@ namespace Reko.Core.Dfa
         private int idx;
         private int significantNodes;
 
+        /// <summary>
+        /// Creates a new parser for the specified pattern.
+        /// </summary>
+        /// <param name="pattern">Regular expression.</param>
         public PatternParser(string pattern)
         {
             this.pattern = pattern;
             this.idx = 0;
         }
 
-        public TreeNode? Parse()
+        internal TreeNode? Parse()
         {
             var head = ParseOr();
             if (PeekAndDiscard(']'))

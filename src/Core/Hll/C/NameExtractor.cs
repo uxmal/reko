@@ -44,36 +44,43 @@ namespace Reko.Core.Hll.C
                 return null;
         }
 
+        /// <inheritdoc/>
         public string VisitId(IdDeclarator id)
         {
             return id.Name;
         }
 
+        /// <inheritdoc/>
         public string VisitArray(ArrayDeclarator array)
         {
             return array.Declarator.Accept(this);
         }
 
+        /// <inheritdoc/>
         public string VisitField(FieldDeclarator field)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public string VisitPointer(PointerDeclarator pointer)
         {
             return pointer.Pointee!.Accept(this);
         }
 
+        /// <inheritdoc/>
         public string VisitReference(ReferenceDeclarator reference)
         {
             return reference.Referent!.Accept(this);
         }
 
+        /// <inheritdoc/>
         public string VisitFunction(FunctionDeclarator function)
         {
             return function.Declarator.Accept(this);
         }
 
+        /// <inheritdoc/>
         public string VisitCallConvention(CallConventionDeclarator callConvention)
         {
             return callConvention.Declarator.Accept(this);

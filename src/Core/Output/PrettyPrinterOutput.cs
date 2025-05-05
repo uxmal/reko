@@ -25,6 +25,9 @@ using System.Text;
 
 namespace Reko.Core.Output
 {
+    /// <summary>
+    /// Rerpresents the <see cref="PrettyPrinter"/>'s output device.
+    /// </summary>
     public class PrettyPrinterOutput
     {
         private TextWriter writer;
@@ -33,6 +36,11 @@ namespace Reko.Core.Output
         private int totalCharsFlushed;
         private bool emitIndentationFirst;
 
+        /// <summary>
+        /// Construct a new <see cref="PrettyPrinterOutput"/> instance.
+        /// </summary>
+        /// <param name="writer">Output sink.</param>
+        /// <param name="width">Device width.</param>
         public PrettyPrinterOutput(TextWriter writer, int width)
         {
             this.writer = writer;
@@ -40,13 +48,23 @@ namespace Reko.Core.Output
             emitIndentationFirst = true;
         }
 
+        /// <summary>
+        /// Number of enqueued printable characters.
+        /// </summary>
         public int total_pchars_enqueued { get; set; }
 
+        /// <summary>
+        /// Change the left column position.
+        /// </summary>
+        /// <param name="indentAmount">Amount to change.</param>
         public void Indent(int indentAmount)
         {
             indentColumn += indentAmount;
         }
 
+        /// <summary>
+        /// Returns true if the current line must be split.
+        /// </summary>
         public bool MustSplitLine
         {
             get
@@ -56,6 +74,10 @@ namespace Reko.Core.Output
             }
         }
 
+        /// <summary>
+        /// Displays a printable character.
+        /// </summary>
+        /// <param name="c">Character to display.</param>
         public void PrintCharacter(char c)
         {
             if (emitIndentationFirst)
@@ -67,17 +89,26 @@ namespace Reko.Core.Output
             ++totalCharsFlushed;
         }
 
+        /// <summary>
+        /// Ends a line.
+        /// </summary>
         public void PrintLine()
         {
             WriteLine();
             emitIndentationFirst = true;
         }
 
+        /// <summary>
+        /// Emits a line break.
+        /// </summary>
         public virtual void WriteLine()
         {
             writer.WriteLine();
         }
 
+        /// <summary>
+        /// Writes indentation to the output device.
+        /// </summary>
         public virtual void WriteIndentation()
         {
             writer.Write(new string(' ', this.indentColumn));

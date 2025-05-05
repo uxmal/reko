@@ -22,8 +22,15 @@ using System;
 
 namespace Reko.Core.Loading
 {
+    /// <summary>
+    /// Exception thrown when a duplicate filename is encountered in an archive.
+    /// </summary>
     public class DuplicateFilenameException : Exception
     {
+        /// <summary>
+        /// Constructs an instance of <see cref="DuplicateFilenameException"/>
+        /// </summary>
+        /// <param name="message">Error message.</param>
         public DuplicateFilenameException(string? message) : base(message)
         {
         }

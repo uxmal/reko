@@ -149,12 +149,6 @@ namespace Reko.Core
         /// <param name="block">The basic block to be replaced.</param>
         /// <param name="next">The basic block to be replaced with.</param>
         /// <returns>True if any replacements were made.</returns>
-        /// <summary>
-        /// Replaces all edges outgoing from <paramref name="block"/> with edges to <paramref name="next"/>.
-        /// </summary>
-        /// <param name="block">Block to visit.</param>
-        /// <param name="next">Block to replace with.</param>
-        /// <returns></returns>
         public static bool ReplaceJumpsFrom(Block block, Block next)
 		{
 			bool change = false;

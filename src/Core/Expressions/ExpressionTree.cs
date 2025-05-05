@@ -32,6 +32,7 @@ namespace Reko.Core.Expressions
     /// </summary>
     public class ExpressionTree : DirectedGraph<Expression>
     {
+        /// <inheritdoc/>
         public ICollection<Expression> Nodes
         {
             get
@@ -40,26 +41,31 @@ namespace Reko.Core.Expressions
             }
         }
 
+        /// <inheritdoc/>
         public void AddEdge(Expression nodeFrom, Expression nodeTo)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public bool ContainsEdge(Expression nodeFrom, Expression nodeTo)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public ICollection<Expression> Predecessors(Expression node)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void RemoveEdge(Expression nodeFrom, Expression nodeTo)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public ICollection<Expression> Successors(Expression node)
         {
             return node.Children.ToList();

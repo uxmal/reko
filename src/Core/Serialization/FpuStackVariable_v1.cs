@@ -28,13 +28,20 @@ namespace Reko.Core.Serialization
 	/// </summary>
 	public class FpuStackVariable_v1 : SerializedStorage
 	{
+        /// <summary>
+        /// Size of the stack variable in bytes.
+        /// </summary>
 		[XmlAttribute("size")]
 		public int ByteSize;
 
+        /// <summary>
+        /// Creates an uninitialized instance of <see cref="FpuStackVariable_v1"/>.
+        /// </summary>
 		public FpuStackVariable_v1()
 		{
 		}
 
+        /// <inheritdoc/>
 		public override Identifier Deserialize(ArgumentDeserializer sser)
 		{
 			return sser.Deserialize(this);

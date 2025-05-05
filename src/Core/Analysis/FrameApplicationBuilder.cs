@@ -33,8 +33,14 @@ namespace Reko.Core.Analysis
     /// </summary>
     public class FrameApplicationBuilder : ApplicationBuilder, StorageVisitor<Expression>
     {
-#pragma warning disable CS1591
+        /// <summary>
+        /// Processor architecture to use.
+        /// </summary>
         protected readonly IProcessorArchitecture arch;
+
+        /// <summary>
+        /// Storage binder to use.
+        /// </summary>
         protected readonly IStorageBinder binder;
 #pragma warning restore CS1591
 

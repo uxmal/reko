@@ -59,6 +59,7 @@ namespace Reko.Core.Expressions
                 return addr;
         }
 
+        /// <inheritdoc/>
         public Expression VisitApplication(Application appl)
         {
             if (cmp.Equals(appl, original))
@@ -68,11 +69,13 @@ namespace Reko.Core.Expressions
             return new Application(fn, appl.DataType, args);
         }
 
+        /// <inheritdoc/>
         public Expression VisitArrayAccess(ArrayAccess acc)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public Expression VisitBinaryExpression(BinaryExpression binExp)
         {
             if (cmp.Equals(binExp, original))
@@ -82,6 +85,7 @@ namespace Reko.Core.Expressions
             return new BinaryExpression(binExp.Operator, binExp.DataType, left, right);
         }
 
+        /// <inheritdoc/>
         public Expression VisitCast(Cast cast)
         {
             if (cmp.Equals(cast, original))
@@ -90,11 +94,13 @@ namespace Reko.Core.Expressions
             return new Cast(cast.DataType, exp);
         }
 
+        /// <inheritdoc/>
         public Expression VisitConditionalExpression(ConditionalExpression cond)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public Expression VisitConditionOf(ConditionOf cof)
         {
             if (cmp.Equals(cof, original))
@@ -103,6 +109,7 @@ namespace Reko.Core.Expressions
             return new ConditionOf(expr);
         }
 
+        /// <inheritdoc/>
         public Expression VisitConstant(Constant c)
         {
             if (cmp.Equals(c, original))
@@ -111,6 +118,7 @@ namespace Reko.Core.Expressions
                 return c;
         }
 
+        /// <inheritdoc/>
         public Expression VisitConversion(Conversion conversion)
         {
             if (cmp.Equals(conversion, original))
@@ -119,16 +127,19 @@ namespace Reko.Core.Expressions
             return new Conversion(expr, conversion.SourceDataType, conversion.DataType);
         }
 
+        /// <inheritdoc/>
         public Expression VisitDereference(Dereference deref)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public Expression VisitFieldAccess(FieldAccess acc)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public Expression VisitIdentifier(Identifier id)
         {
             if (cmp.Equals(id, original))
@@ -137,11 +148,13 @@ namespace Reko.Core.Expressions
                 return id;
         }
 
+        /// <inheritdoc/>
         public Expression VisitMemberPointerSelector(MemberPointerSelector mps)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public Expression VisitMemoryAccess(MemoryAccess access)
         {
             if (cmp.Equals(access, original))
@@ -150,6 +163,7 @@ namespace Reko.Core.Expressions
             return new MemoryAccess(ea, access.DataType);
         }
 
+        /// <inheritdoc/>
         public Expression VisitMkSequence(MkSequence seq)
         {
             if (cmp.Equals(seq, original))
@@ -160,21 +174,25 @@ namespace Reko.Core.Expressions
             return new MkSequence(seq.DataType, exprs);
         }
 
+        /// <inheritdoc/>
         public Expression VisitOutArgument(OutArgument outArgument)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public Expression VisitPhiFunction(PhiFunction phi)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public Expression VisitPointerAddition(PointerAddition pa)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public Expression VisitProcedureConstant(ProcedureConstant pc)
         {
             if (cmp.Equals(pc, original))
@@ -183,11 +201,13 @@ namespace Reko.Core.Expressions
                 return pc;
         }
 
+        /// <inheritdoc/>
         public Expression VisitScopeResolution(ScopeResolution scopeResolution)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public Expression VisitSegmentedAddress(SegmentedPointer address)
         {
             if (cmp.Equals(address, original))
@@ -197,6 +217,7 @@ namespace Reko.Core.Expressions
             return new SegmentedPointer(address.DataType, sel, off);
         }
 
+        /// <inheritdoc/>
         public Expression VisitSlice(Slice slice)
         {
             if (cmp.Equals(slice, original))
@@ -205,6 +226,7 @@ namespace Reko.Core.Expressions
             return new Slice(slice.DataType, exp, slice.Offset);
         }
 
+        /// <inheritdoc/>
         public Expression VisitStringConstant(StringConstant str)
         {
             if (cmp.Equals(str, original))
@@ -213,6 +235,7 @@ namespace Reko.Core.Expressions
                 return str;
         }
 
+        /// <inheritdoc/>
         public Expression VisitTestCondition(TestCondition tc)
         {
             if (cmp.Equals(tc, original))
@@ -221,6 +244,7 @@ namespace Reko.Core.Expressions
             return new TestCondition(tc.ConditionCode, exp);
         }
 
+        /// <inheritdoc/>
         public Expression VisitUnaryExpression(UnaryExpression unary)
         {
             if (cmp.Equals(unary, original))

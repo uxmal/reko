@@ -79,7 +79,7 @@ namespace Reko.Core.Assemblers
         /// the provided <paramref name="program"/> starting at <paramref name="baseAddress"/>. 
         /// </summary>
         /// <param name="program">The program to mutate.</param>
-        /// <param name="address">Location at which to start writing machine code.</param>
+        /// <param name="baseAddress">Location at which to start writing machine code.</param>
         /// <param name="reader">Assembly language source code.</param>
         /// <returns>The number of machine code bytes written.</returns>
         /// <remarks>

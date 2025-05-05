@@ -29,11 +29,25 @@ namespace Reko.Core.Graphs
     /// </summary>
    public class BlockDominatorGraph : DominatorGraph<Block>
    {
-       public BlockDominatorGraph(DirectedGraph<Block> graph, Block entry) : base(graph, entry)
-       {
-       }
-       
-       public bool DominatesStrictly(Statement stmDom, Statement stm)
+        /// <summary>
+        /// Constructs a dominator graph for the basic  blocks in a procedure.
+        /// </summary>
+        /// <param name="graph">Control graph for the basic blocks.</param>
+        /// <param name="entry">The entry basic block.</param>
+        public BlockDominatorGraph(DirectedGraph<Block> graph, Block entry) : base(graph, entry)
+        {
+        }
+
+        /// <summary>
+        /// Determines whether the statement <paramref name="stmDom"/> dominates
+        /// <paramref name="stm"/> strictly.
+        /// </summary>
+        /// <param name="stmDom">Statement that might be dominating.</param>
+        /// <param name="stm">Statement that might be dominated.</param>
+        /// <returns>True if <paramref name="stmDom"/> dominates <paramref name="stm"/>
+        /// strictly.
+        /// </returns>
+        public bool DominatesStrictly(Statement stmDom, Statement stm)
        {
            if (stmDom == stm)
                return false;

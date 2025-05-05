@@ -24,6 +24,8 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
+#pragma warning disable CS1591
+
 namespace Reko.Core.Memory
 {
     [AttributeUsage(AttributeTargets.Field)]

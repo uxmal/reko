@@ -23,20 +23,34 @@ using System.Xml.Serialization;
 
 namespace Reko.Core.Serialization
 {
+    /// <summary>
+    /// Serialized representation of a register.
+    /// </summary>
 	public class Register_v1 : SerializedStorage
 	{
+        /// <summary>
+        /// Register name.
+        /// </summary>
 		[XmlText]
 		public string? Name;
 
+        /// <summary>
+        /// Constructs an empty instance of <see cref="Register_v1"/>.
+        /// </summary>
 		public Register_v1()
 		{
 		}
 
+        /// <summary>
+        /// Constructs an instance of <see cref="Register_v1"/> with the given name.
+        /// </summary>
+        /// <param name="name"></param>
 		public Register_v1(string name)
 		{
 			this.Name = name;
 		}
 
+        /// <inheritdoc/>
 		public override Identifier? Deserialize(ArgumentDeserializer sser)
 		{
 			return sser.VisitRegister(this);

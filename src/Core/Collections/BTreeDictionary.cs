@@ -752,13 +752,11 @@ namespace Reko.Core.Collections
             }
         }
 
+        /// <summary>
+        /// Collection of keys in the BTreeDictionary.
+        /// </summary>
         public class KeyCollection : Collection<TKey>
         {
-            /// <summary>
-            /// Collection of keys in the BTreeDictionary.
-            /// </summary>
-            /// <param name="btree">Root node of the btree dictionary.
-            /// </param>
             internal KeyCollection(BTreeDictionary<TKey, TValue> btree) : 
                 base(btree)
             {

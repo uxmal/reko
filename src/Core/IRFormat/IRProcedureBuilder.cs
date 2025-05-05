@@ -25,7 +25,9 @@ using System.Collections.Generic;
 
 namespace Reko.Core.IRFormat
 {
-
+    /// <summary>
+    /// Builds an intermediate representation of a procedure.
+    /// </summary>
     public class IRProcedureBuilder : ExpressionEmitter
     {
         private IProcessorArchitecture arch;
@@ -33,6 +35,12 @@ namespace Reko.Core.IRFormat
         private Address addrCur;
         private string name;
 
+        /// <summary>
+        /// Constructs an <see cref="IRProcedureBuilder"/> with the given name, architecture, and address.
+        /// </summary>
+        /// <param name="name">Name of the procedure being built.</param>
+        /// <param name="arch"><see cref="IProcessorArchitecture"/> of the procedure.</param>
+        /// <param name="address">Address of the procedure.</param>
         public IRProcedureBuilder(string name, IProcessorArchitecture arch, Address address)
         {
             this.name = name;
@@ -41,9 +49,22 @@ namespace Reko.Core.IRFormat
             this.BlocksByName = new Dictionary<string, IRBlock>();
         }
 
+        /// <summary>
+        /// Size of instruction.
+        /// </summary>
         public uint InstructionSize { get; set; }
+
+        /// <summary>
+        /// The blocks of the procedure, indexed by their name.
+        /// </summary>
         public Dictionary<string, IRBlock> BlocksByName { get; }
 
+        /// <summary>
+        /// Creates an assignment instruction.
+        /// </summary>
+        /// <param name="id">Destination of the assignment.</param>
+        /// <param name="e">Source of the assignment.</param>
+        /// <returns>An <see cref="Assignment"/> statement.</returns>
         public Instruction Assign(Identifier id, Expression e)
         {
             var ass = new Assignment(id, e);
@@ -51,6 +72,10 @@ namespace Reko.Core.IRFormat
             return ass;
         }
 
+        /// <summary>
+        /// Creates a new basic block, with the given label.
+        /// </summary>
+        /// <param name="name">Name of the label.</param>
         public void Label(string name)
         {
             var oldBlock = this.block;
@@ -82,6 +107,14 @@ namespace Reko.Core.IRFormat
             addrCur += InstructionSize;
         }
 
+        /// <summary>
+        /// Emits a store instruction.
+        /// </summary>
+        /// <param name="memid">Memory identifier.</param>
+        /// <param name="dt">Data type of the store.</param>
+        /// <param name="ea">Effective address of the store.</param>
+        /// <param name="src">Source of the store.</param>
+        /// <returns>A <see cref="Store"/> instruction.</returns>
         public Instruction Store(Identifier memid, DataType dt, Expression ea, Expression src)
         {
             var mem = Mem(memid, dt, ea);
