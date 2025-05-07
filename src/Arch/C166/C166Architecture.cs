@@ -61,7 +61,7 @@ DPP3	If DPP3 is modified in the assembler subroutine, it must be reset to 3 (SYS
 
         public override IEqualityComparer<MachineInstruction>? CreateInstructionComparer(Normalize norm)
         {
-            throw new NotImplementedException();
+            return new C166InstructionComparer(norm);
         }
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)

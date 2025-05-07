@@ -69,7 +69,7 @@ namespace Reko.Arch.Cray
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
-            throw new NotImplementedException();
+            return new CrayInstructionComparer(norm);
         }
 
         private InstructionSet CreateInstructionSet()

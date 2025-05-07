@@ -115,18 +115,6 @@ namespace Reko.UnitTests.Arch.X86.Disassembler
                 PrimitiveType.Word16);
         }
 
-        private void AssertCode16(string sExp, params byte[] bytes)
-        {
-            var instr = Disassemble16(bytes);
-            Assert.AreEqual(sExp, instr.ToString());
-        }
-
-        private void AssertCode16(string sExp, string hexBytes)
-        {
-            var instr = Disassemble16(BytePattern.FromHexBytes(hexBytes));
-            Assert.AreEqual(sExp, instr.ToString());
-        }
-
         private X86Instruction AssertCode64(string sExp, params byte[] bytes)
         {
             if (bytes.Length == 0)
@@ -648,11 +636,6 @@ movzx	ax,byte ptr [bp+4h]
             AssertCode64("movsd\txmm0,double ptr [rbp-20h]", 0xF2, 0x0F, 0x10, 0x45, 0xE0);
         }
 
-        [Test]
-        public void X86dis_movups_16bit()
-        {
-            AssertCode16("movups\txmm7,xmm3", 0x0F, 0x10, 0xFB);
-        }
 
         [Test]
         public void X86dis_ucomiss()
@@ -676,13 +659,6 @@ movzx	ax,byte ptr [bp+4h]
         public void X86dis_cvtsi2ss()
         {
             AssertCode64("cvtsi2ss\txmm0,rax", 0xF3, 0x48, 0x0F, 0x2A, 0xC0);
-        }
-
-        [Test]
-        public void X86dis_out_dx()
-        {
-            AssertCode16("out\tdx,al", 0xEE);
-            AssertCode16("out\tdx,ax", 0xEF);
         }
 
         [Test]
@@ -2375,13 +2351,6 @@ movzx	ax,byte ptr [bp+4h]
         }
 
         [Test]
-        public void X86Dis_pop_group_1A_16bit()
-        {
-            AssertCode16("pop\tbx", "8FC3");
-            AssertCode16("pop\tbx", "8FCB");
-        }
-
-        [Test]
         public void X86Dis_pop_group_1A_64bit()
         {
             AssertCode64("pop\trbx", "8FC3");
@@ -2403,24 +2372,10 @@ movzx	ax,byte ptr [bp+4h]
         }
 
         [Test]
-        public void X86Dis_cwd16()
-        {
-            AssertCode16("cwd", "99");
-            AssertCode16("cdq", "66 99");
-        }
-
-        [Test]
         public void X86Dis_cdq64()
         {
             AssertCode64("cdq", "99");
             AssertCode64("cqo", "48 99");
-        }
-
-        [Test]
-        public void X86Dis_cbw16()
-        {
-            AssertCode16("cbw", "98");
-            AssertCode16("cwde", "66 98");
         }
 
         [Test]
@@ -2446,7 +2401,6 @@ movzx	ax,byte ptr [bp+4h]
         [Test]
         public void X86Dis_jcxz()
         {
-            AssertCode16("jcxz\t0006h", "E3 04");
             AssertCode64("jrcxz\t10006h", "E3 04");
         }
 
@@ -2825,12 +2779,6 @@ movzx	ax,byte ptr [bp+4h]
             AssertCode64("pextrd\tdword ptr [rbx],xmm0,4h", "66 0F 3A 16 03 04");
             AssertCode64("pextrq\trbx,xmm0,4h", "66 48 0f 3a 16 c3 04");
             AssertCode64("pextrq\tqword ptr [rbx],xmm0,4h", "66 48 0f 3a 16 03 04");
-        }
-
-        [Test]
-        public void X86Dis_segment_override_string_instr()
-        {
-            AssertCode16("rep movsb\tbyte ptr es:[di],byte ptr es:[si]", "F3 26 A4");
         }
     }
 }

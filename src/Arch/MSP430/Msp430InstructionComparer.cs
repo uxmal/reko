@@ -17,58 +17,62 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
- 
-using System;
-using System.Collections.Generic;
+
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using System;
 
 namespace Reko.Arch.Msp430
 {
     internal class Msp430InstructionComparer : InstructionComparer 
     {
+        private const int MemCode = 0x10;
+
         public Msp430InstructionComparer(Normalize norm) : base(norm)
         {
         }
 
-        public override bool CompareOperands(MachineInstruction x, MachineInstruction y)
+        public override bool DoCompareOperands(MachineOperand op1, MachineOperand op2)
         {
-            var a = (Msp430Instruction)x;
-            var b = (Msp430Instruction)y;
-            return CompareOperands(a.Operands[0], b.Operands[0]) && CompareOperands(a.Operands[1], b.Operands[1]);
-        }
-
-        private bool CompareOperands(MachineOperand op1, MachineOperand op2)
-        {
-            if (op1 is null && op2 is null)
-                return true;
-            if (op1 is null || op2 is null)
-                return false;
-            if (op1.GetType() != op2.GetType())
-                return false;
-            if (op1 is RegisterStorage r1)
+            return op1 switch
             {
-                var r2 = (RegisterStorage) op2;
-                return CompareRegisters(r1, r2);
+                RegisterStorage reg1 => CompareRegisters(reg1, (RegisterStorage) op2),
+                Constant c1 => CompareConstants(c1, (Constant) op2),
+                Address a1 => CompareAddresses(a1, (Address) op2),
+                MemoryOperand m1 => CompareMemoryOperands(m1, (MemoryOperand) op2),
+                _ => throw new NotImplementedException(op1.GetType().Name)
+            };
+        }
+
+        private bool CompareMemoryOperands(MemoryOperand m1, MemoryOperand m2)
+        {
+            if (!CompareRegisters(m1.Base, m2.Base))
+                return false;
+            if (!CompareConstants(m1.Offset, m2.Offset))
+                return false;
+            return m1.PostIncrement == m2.PostIncrement;
             }
-            throw new NotImplementedException();
-        }
 
-        public override int GetOperandsHash(MachineInstruction instr)
+        public override int GetOperandHash(MachineOperand op)
         {
-            var a = (Msp430Instruction)instr;
-            var h = GetOperandHash(a.Operands[0]) ^ GetOperandHash(a.Operands[1]) * 37;
-            return h;
-        }
-
-        private int GetOperandHash(MachineOperand op)
-        {
-            var h = op.GetType().GetHashCode();
-            if (op is RegisterStorage r)
+            return op switch
             {
-                return GetRegisterHash(r);
-            }
-            throw new NotImplementedException();
+                RegisterStorage reg => GetRegisterHash(reg),
+                Constant c => GetConstantHash(c),
+                Address a => GetAddressHash(a),
+                MemoryOperand m => GetMemoryHash(m),
+                _ => throw new NotImplementedException(op.GetType().Name)
+            };
         }
-    }
+
+        private int GetMemoryHash(MemoryOperand m)
+        {
+            int hash = MemCode;
+            hash = hash * 17 ^ GetRegisterHash(m.Base);
+            hash = hash * 17 ^ GetConstantHash(m.Offset);
+            hash = hash * 3 ^ (m.PostIncrement ? 1 : 0);
+            return hash;
+            }
+        }
 }

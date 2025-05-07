@@ -74,6 +74,9 @@ namespace Reko.Arch.Sparc
             case RegisterStorage reg:
                 renderer.WriteFormat("%{0}", reg.Name);
                 return;
+            case ConditionOperand<ConditionField> cond:
+                renderer.WriteString($"%{cond.Condition}");
+                break;
             default:
                 op.Render(renderer, options);
                 return;

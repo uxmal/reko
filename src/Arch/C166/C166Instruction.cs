@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
@@ -40,6 +41,17 @@ namespace Reko.Arch.C166
         private void RenderMnemonic(MachineInstructionRenderer renderer)
         {
             renderer.WriteMnemonic(Mnemonic.ToString());
+        }
+
+        protected override void RenderOperand(MachineOperand operand, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
+        {
+            if (operand is BitOperand bitOp)
+            {
+                bitOp.Operand.Render(renderer, options);
+                renderer.WriteFormat(":{0}", bitOp.BitPosition);
+                return;
+            }
+            base.RenderOperand(operand, renderer, options);
         }
     }
 }

@@ -27,7 +27,6 @@ namespace Reko.Arch.RiscV
 {
     public class MemoryOperand : AbstractMachineOperand
     {
-
         public MemoryOperand(PrimitiveType width, RegisterStorage baseRegister, MachineOperand offset) : base(width)
         {
             this.Base = baseRegister;

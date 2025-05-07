@@ -48,7 +48,7 @@ namespace Reko.Arch.Angstrem
 
         public override IEqualityComparer<MachineInstruction>? CreateInstructionComparer(Normalize norm)
         {
-            throw new NotImplementedException();
+            return new KR1878InstructionComparer(this, norm);
         }
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)

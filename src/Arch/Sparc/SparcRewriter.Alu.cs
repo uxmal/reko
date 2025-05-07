@@ -186,7 +186,7 @@ namespace Reko.Arch.Sparc
                 m.Assign(dst, dst);
                 return;
             }
-            var ccField = ((ConditionCodeOperand) instrCur.Operands[0]).Field;
+            var ccField = ((ConditionOperand<ConditionField>) instrCur.Operands[0]).Condition;
             FlagGroupStorage grf;
             switch (ccField)
             {

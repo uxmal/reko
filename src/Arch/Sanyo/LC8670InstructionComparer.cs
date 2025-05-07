@@ -18,32 +18,25 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Machine;
-using Reko.Core.Types;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace Reko.Arch.C166
+namespace Reko.Arch.Sanyo;
+
+public class LC8670InstructionComparer : InstructionComparer
 {
-    /// <summary>
-    /// Decorate another operand with a bit.
-    /// </summary>
-    public class BitOfOperand : AbstractMachineOperand
+    public LC8670InstructionComparer(Normalize norm) : base(norm)
     {
-        public BitOfOperand(int bit, MachineOperand innerOp) : base(PrimitiveType.Bool)
-        {
-            this.Bit = bit;
-            this.Operand = innerOp;
-        }
+    }
 
-        public int Bit { get; }
-        public MachineOperand Operand { get; }
+    public override bool DoCompareOperands(MachineOperand op1, MachineOperand op2)
+    {
+        throw new System.NotImplementedException();
+    }
 
-        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
-        {
-            Operand.Render(renderer, options);
-            renderer.WriteFormat(":{0}", Bit);
-        }
+    public override int GetOperandHash(MachineOperand op)
+    {
+        throw new System.NotImplementedException();
     }
 }

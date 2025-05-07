@@ -18,88 +18,63 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using System;
 
-namespace Reko.Arch.RiscV
+namespace Reko.Arch.RiscV;
+
+public class RiscVInstructionComparer : InstructionComparer
 {
-    public class RiscVInstructionComparer : InstructionComparer
-    {
+    private const int MemCode = 0x10;
+
         public RiscVInstructionComparer(Normalize norm) : base(norm)
         {
         }
 
-        public override bool CompareOperands(MachineInstruction x, MachineInstruction y)
+    public override bool DoCompareOperands(MachineOperand opA, MachineOperand opB)
         {
-            var a = (RiscVInstruction)x;
-            var b = (RiscVInstruction)y;
-            return
-                CompareOperands(a.Operands[0], b.Operands[0]) &&
-                CompareOperands(a.Operands[1], b.Operands[1]) &&
-                CompareOperands(a.Operands[2], b.Operands[2]);
-        }
-
-        private bool CompareOperands(MachineOperand opA, MachineOperand opB)
-        {
-            if (opA is null && opB is null)
-                return true;
-            if (opA is null || opB is null)
-                return false;
-            if (opA.GetType() != opB.GetType())
-                return false;
-
             switch (opA)
             {
             case RegisterStorage ropA:
-                var ropB = (RegisterStorage) opB;
-                return NormalizeRegisters || ropA == ropB;
+            return CompareRegisters(ropA, (RegisterStorage) opB);
             case Constant immA:
-                var immB = (Constant) opB;
-                return NormalizeConstants || base.CompareValues(immA, immB);
+            return CompareConstants(immA, (Constant) opB);
             case Address addrA:
-                var addrB = (Address) opB;
-                return NormalizeConstants || addrA == addrB;
+            return CompareAddresses(addrA, (Address)opB);
+        case MemoryOperand memA:
+            return CompareMemoryOperands(memA, (MemoryOperand) opB);
             default:
-                throw new NotImplementedException();
+            throw new NotImplementedException(opA.GetType().Name);
             }
         }
 
-        public override int GetOperandsHash(MachineInstruction instr)
+    private bool CompareMemoryOperands(MemoryOperand memA, MemoryOperand memB)
         {
-            var i = (RiscVInstruction)instr;
-            int hash =
-                GetOperandHash(i.Operands[0]) * 23 ^
-                GetOperandHash(i.Operands[1]) * 19 ^
-                GetOperandHash(i.Operands[2]);
-            return hash;
+        if (!CompareRegisters(memA.Base, memB.Base))
+            return false;
+        return CompareOperands(memA.Offset, memB.Offset);
         }
 
-        private int GetOperandHash(MachineOperand op)
+    public override int GetOperandHash(MachineOperand op)
         {
             return op switch
             {
-                RegisterStorage rop =>
-                    (NormalizeRegisters)
-                        ? 0
-                        : rop.Number.GetHashCode(),
-
-                Constant immop =>
-                    (NormalizeConstants)
-                        ? 0
-                        : base.GetConstantHash(immop),
-
-                Address aop =>
-                    (NormalizeConstants)
-                        ? 0
-                        : aop.GetHashCode(),
-                null => 0,
-                _ =>
-                throw new NotImplementedException(
+            RegisterStorage rop => GetRegisterHash(rop),
+            Constant immop => GetConstantHash(immop),
+            Address aop => GetAddressHash(aop),
+            MemoryOperand mop => GetMemoryHash(mop),
+            _ => throw new NotImplementedException(
                     string.Format("RiscV operand {0} ({1}) not implemented.", op, op.GetType().Name))
             };
         }
+
+    private int GetMemoryHash(MemoryOperand mop)
+    {
+        int hash = MemCode;
+        hash = hash * 17 ^ GetRegisterHash(mop.Base);
+        hash = hash * 7 ^ GetOperandHash(mop.Offset);
+        return hash;
     }
 }

@@ -19,45 +19,30 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 
-namespace Reko.Arch.Sparc
+namespace Reko.Arch.Sparc;
+
+public class SparcInstructionComparer : InstructionComparer
 {
-    public class SparcInstructionComparer : InstructionComparer
-    {
+    private const int MemCode = 0x10;
+    private const int CondCode = 0x11;
         public SparcInstructionComparer(Normalize norm) : base(norm)
         {
         }
 
-        public override bool CompareOperands(MachineInstruction x, MachineInstruction y)
+    public override bool DoCompareOperands(MachineOperand a, MachineOperand b)
         {
-            var a = (SparcInstruction)x;
-            var b = (SparcInstruction)y;
-            return CompareOperands(a.Operands[0], b.Operands[0]) &&
-                   CompareOperands(a.Operands[1], b.Operands[1]) &&
-                   CompareOperands(a.Operands[2], b.Operands[2]);
-        }
-
-        private bool CompareOperands(MachineOperand a, MachineOperand b)
-        {
-            if (a is null && b is null)
-                return true;
-            if (a is null || b is null)
-                return false;
-            if (a.GetType() != b.GetType())
-                return false;
             switch (a)
             {
             case RegisterStorage rA:
                 return CompareRegisters(rA, (RegisterStorage) b);
             case Constant immA:
-                return CompareValues(immA, (Constant) b);
+            return CompareConstants(immA, (Constant) b);
             case Address addrA:
-                return NormalizeConstants ||
-                    addrA.ToLinear() == ((Address) b).ToLinear();
+            return CompareAddresses(addrA, (Address) b);
             case MemoryOperand mA:
                 var mB = (MemoryOperand) b;
                 if (!CompareRegisters(mA.Base, mB.Base))
@@ -70,23 +55,15 @@ namespace Reko.Arch.Sparc
                 {
                     return CompareRegisters(mA.Index, mB.Index);
                 }
+        case ConditionOperand<ConditionField> cA:
+            var cB = (ConditionOperand<ConditionField>) b;
+            return cA.Condition == cB.Condition;
             }
-            throw new NotImplementedException();
+        throw new NotImplementedException(a.GetType().Name);
         }
 
-        public override int GetOperandsHash(MachineInstruction sInstr)
+    public override int GetOperandHash(MachineOperand op)
         {
-            var instr = (SparcInstruction)sInstr;
-            return
-                17 * GetOperandHash(instr.Operands[0]) ^
-                23 * GetOperandHash(instr.Operands[1]) ^
-                59 * GetOperandHash(instr.Operands[2]);
-        }
-
-        private int GetOperandHash(MachineOperand op)
-        {
-            if (op is null)
-                return 0;
             switch (op)
             {
             case RegisterStorage r:
@@ -96,12 +73,13 @@ namespace Reko.Arch.Sparc
             case Address a:
                 return a.GetHashCode();
             case MemoryOperand m:
-                var h = GetRegisterHash(m.Base);
+            var h = MemCode ^ GetRegisterHash(m.Base);
                 h = h ^ 29 * m.IntOffset();
                 h = h ^ 59 * GetRegisterHash(m.Index);
                 return h;
+        case ConditionOperand<ConditionField> c:
+            return CondCode * 17 ^ (int) c.Condition;
             }
-            throw new NotImplementedException();
+        throw new NotImplementedException(op.GetType().Name);
         }
-    }
 }

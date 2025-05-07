@@ -27,7 +27,6 @@ using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
-using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,7 +60,7 @@ namespace Reko.Arch.Pdp
 
         public override IEqualityComparer<MachineInstruction>? CreateInstructionComparer(Normalize norm)
         {
-            throw new NotImplementedException();
+            return new Pdp10InstructionComparer(norm);
         }
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)

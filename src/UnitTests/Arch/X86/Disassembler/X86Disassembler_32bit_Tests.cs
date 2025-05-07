@@ -22,7 +22,6 @@ using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Arch.X86.Assembler;
 using Reko.Core;
-using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Types;
 using System.Collections.Generic;

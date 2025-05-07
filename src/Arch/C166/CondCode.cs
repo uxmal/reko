@@ -18,39 +18,26 @@
  */
 #endregion
 
-using Reko.Core.Machine;
-using Reko.Core.Types;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+namespace Reko.Arch.C166;
 
-namespace Reko.Arch.Sparc
+public enum CondCode
 {
-    public class ConditionCodeOperand : AbstractMachineOperand
-    {
-        public ConditionCodeOperand(ConditionField cf) : base(PrimitiveType.Byte)
-        {
-            this.Field = cf;
-        }
-
-        public ConditionField Field { get; }
-
-        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
-        {
-            renderer.WriteString($"%{Field}");
-        }
-    }
-
-    public enum ConditionField
-    {
-        None,
-        fcc0,
-        fcc1,
-        fcc2,
-        fcc3,
-        icc,
-        xcc
-    }
+    cc_UC,
+    cc_NET,
+    cc_Z,
+    cc_NZ,
+    cc_V,
+    cc_NV,
+    cc_N,
+    cc_NN,
+    cc_C,
+    cc_NC,
+    //cc_ULT C = 1 Unsigned less than 8H
+    //cc_UGE C = 0 Unsigned greater than or equal 9H
+    cc_SGT,
+    cc_SLE,
+    cc_SLT,
+    cc_SGE,
+    cc_UGT,
+    cc_ULE,
 }

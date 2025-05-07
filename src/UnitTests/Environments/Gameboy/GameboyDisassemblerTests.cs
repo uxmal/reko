@@ -21,9 +21,7 @@
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Environments.Gameboy;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Reko.UnitTests.Environments.Gameboy
 {

@@ -18,56 +18,83 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using System;
 
-namespace Reko.Arch.Vax
+namespace Reko.Arch.Vax;
+
+internal class VaxInstructionComparer : InstructionComparer
 {
-    internal class VaxInstructionComparer : InstructionComparer
+    private const int MemCode = 0x10;
+    private const int IndexCode = 0x20;
+
+    public VaxInstructionComparer(Normalize norm) : base(norm)
     {
-        public VaxInstructionComparer(Normalize norm) : base(norm)
-        {
-        }
+    }
 
-        public override bool CompareOperands(MachineInstruction x, MachineInstruction y)
+    public override bool DoCompareOperands(MachineOperand op1, MachineOperand op2)
+    {
+        return op1 switch
         {
-            var a = (VaxInstruction)x;
-            var b = (VaxInstruction)y;
-            if (a.Operands.Length != b.Operands.Length)
-                return false;
-            for (int i = 0; i < a.Operands.Length; ++i)
-            {
-                if (!Compare(a.Operands[i], b.Operands[i]))
-                    return false;
-            }
-            return true;
-        }
+            RegisterStorage reg1 => CompareRegisters(reg1, (RegisterStorage) op2),
+            Constant c1 => CompareConstants(c1, (Constant) op2),
+            Address a1 => CompareAddresses(a1, (Address) op2),
+            MemoryOperand m1 => CompareMemoryOperands(m1, (MemoryOperand) op2),
+            IndexOperand ix1 => CompareIndexOperands(ix1, (IndexOperand) op2),
+            _ => throw new NotImplementedException(op1.GetType().Name)
+        };
+    }
 
-        private bool Compare(MachineOperand a, MachineOperand b)
-        {
-            if (a.GetType() != b.GetType())
-                return false;
-            if (a is RegisterStorage rA)
-            {
-                if (NormalizeRegisters)
-                    return true;
-                return b is RegisterStorage rB && rA == rB;
-            }
-            throw new NotImplementedException();
-        }
+    private bool CompareIndexOperands(IndexOperand ix1, IndexOperand ix2)
+    { 
+        if (!CompareOperands(ix1.Base, ix2.Base))
+            return false;
+        return CompareRegisters(ix1.Index, ix2.Index);
+    }
 
-        public override int GetOperandsHash(MachineInstruction vInstr)
+    private bool CompareMemoryOperands(MemoryOperand m1, MemoryOperand m2)
+    {
+        if (m1.Deferred != m2.Deferred ||
+            m1.AutoIncrement != m2.AutoIncrement ||
+            m1.AutoDecrement != m2.AutoDecrement)
+            return false;
+
+        if (!CompareConstants(m1.Offset, m2.Offset))
+            return false;
+        return CompareOperands(m1.Base, m2.Base);
+    }
+
+    public override int GetOperandHash(MachineOperand op)
+    {
+        return op switch
         {
-            var instr = (VaxInstruction)vInstr;
-            int h = 0;
-            for (int i = 0; i<instr.Operands.Length;++i)
-            {
-                h = h * 17 ^ instr.Operands[i].GetType().GetHashCode();
-            }
-            return h;
-        }
+            RegisterStorage reg => GetRegisterHash(reg),
+            Constant c => GetConstantHash(c),
+            Address a => GetAddressHash(a),
+            MemoryOperand m => GetMemoryHash(m),
+            IndexOperand ix => GetIndexHash(ix),
+            _ => throw new NotImplementedException(op.GetType().Name)
+        };
+    }
+
+    private int GetIndexHash(IndexOperand ix)
+    {
+        int hash = IndexCode;
+        hash = hash * 17 ^ GetOperandHash(ix.Base);
+        hash = hash * 17 ^ GetRegisterHash(ix.Index);
+        return hash;
+    }
+
+    private int GetMemoryHash(MemoryOperand m)
+    {
+        int hash = MemCode;
+        hash = hash * 17 ^ (m.Base is null ? 0 : GetOperandHash(m.Base));
+        hash = hash * 7 ^ GetConstantHash(m.Offset);
+        hash = hash ^ (m.Deferred ? 4 : 0);
+        hash = hash ^ (m.AutoIncrement ? 2 : 0);
+        hash = hash ^ (m.AutoDecrement ? 1 : 0);
+        return hash;
     }
 }

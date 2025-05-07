@@ -30,8 +30,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Arch.Motorola;
 
@@ -58,7 +56,7 @@ public class M88kArchitecture : ProcessorArchitecture
 
     public override IEqualityComparer<MachineInstruction>? CreateInstructionComparer(Normalize norm)
     {
-        throw new NotImplementedException();
+        return new M88kInstructionComparer(norm); 
     }
 
     public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)

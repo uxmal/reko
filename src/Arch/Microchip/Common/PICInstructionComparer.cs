@@ -43,11 +43,8 @@ namespace Reko.Arch.MicrochipPIC.Common
         {
         }
 
-        public bool CompareOperands(MachineOperand opA, MachineOperand opB)
+        public override bool DoCompareOperands(MachineOperand opA, MachineOperand opB)
         {
-            if (opA.GetType() != opB.GetType())
-                return false;
-
             switch (opA)
             {
                 case RegisterStorage regOpA:
@@ -142,35 +139,20 @@ namespace Reko.Arch.MicrochipPIC.Common
             bool retval = true;
             if (instrA.NumberOfOperands > 0)
             {
-                retval = CompareOperands(instrA.Operands[0], instrB.Operands[0]);
+                retval = DoCompareOperands(instrA.Operands[0], instrB.Operands[0]);
                 if (retval && instrA.NumberOfOperands > 1)
                 {
-                    retval = CompareOperands(instrA.Operands[1], instrB.Operands[1]);
+                    retval = DoCompareOperands(instrA.Operands[1], instrB.Operands[1]);
                     if (retval && instrA.NumberOfOperands > 2)
                     {
-                        retval = CompareOperands(instrA.Operands[2], instrB.Operands[2]);
+                        retval = DoCompareOperands(instrA.Operands[2], instrB.Operands[2]);
                     }
                 }
             }
             return retval;
         }
 
-        public override int GetOperandsHash(MachineInstruction inst)
-        {
-            var instr = (PICInstruction)inst;
-            int hash = instr.NumberOfOperands.GetHashCode();
-            if (instr.NumberOfOperands > 0)
-            {
-                hash = hash * 23 + GetHashCode(instr.Operands[0]);
-                if (instr.NumberOfOperands > 1)
-                {
-                    hash = hash * 17 + GetHashCode(instr.Operands[1]);
-                }
-            }
-            return hash;
-        }
-
-        private int GetHashCode(MachineOperand op)
+        public override int GetOperandHash(MachineOperand op)
         {
             switch (op)
             {
@@ -181,7 +163,7 @@ namespace Reko.Arch.MicrochipPIC.Common
                     return GetConstantHash(immOp);
 
                 case Address addrOp:
-                    return NormalizeConstants ? 1 : addrOp.GetHashCode();
+                    return GetAddressHash(addrOp);
 
                 case PICOperandPseudo pseudoOp:
                     return NormalizeConstants ? 1 : pseudoOp.Values.GetHashCode();
@@ -190,16 +172,18 @@ namespace Reko.Arch.MicrochipPIC.Common
                     return GetConstantHash(immedOp.ImmediateValue);
 
                 case PICOperandFast fastOp:
-                    return fastOp.IsFast.GetHashCode();
+                    return fastOp.IsFast ? 1 : 0;
 
                 case PICOperandRegister picregOp:
                     return GetRegisterHash(picregOp.Register);
 
                 case PICOperandProgMemoryAddress progMemOp:
-                    return NormalizeConstants ? 1 : progMemOp.CodeTarget.GetHashCode();
+                    return GetAddressHash(progMemOp.CodeTarget);
 
                 case PICOperandDataMemoryAddress dataMemOp:
-                    return NormalizeConstants ? 1 : dataMemOp.DataTarget.GetHashCode();
+                    return NormalizeConstants 
+                        ? 0
+                        : (int)dataMemOp.DataTarget.Offset;
 
                 case PICOperandBankedMemory bankmemOp:
                     return NormalizeConstants ? 1 : bankmemOp.Offset.GetHashCode();

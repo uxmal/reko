@@ -22,11 +22,13 @@ using NUnit.Framework;
 using Reko.Arch.Motorola;
 using Reko.Arch.Motorola.M68k.Disassembler;
 using Reko.Arch.Motorola.M68k.Machine;
+using Reko.Arch.Sparc;
 using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using System.Collections.Generic;
 using System.Linq;
+using static Reko.Scanning.ScanResults;
 
 namespace Reko.UnitTests.Arch.Motorola.M68k
 {
@@ -78,9 +80,16 @@ namespace Reko.UnitTests.Arch.Motorola.M68k
 
         public MachineInstruction Disassemble()
         {
-            if (dasm.MoveNext())
-                return dasm.Current;
+            if (!dasm.MoveNext())
             return null;
+            var instr = dasm.Current;
+            if (DisassemblerTestBase<M68kInstruction>.traceInstrComparer.TraceVerbose)
+            {
+                var cmp = arch.CreateInstructionComparer(Normalize.Nothing);
+                Assert.IsTrue(cmp.Equals(instr, instr));
+                cmp.GetHashCode(instr);
+        }
+            return instr;
         }
 
         [Test]

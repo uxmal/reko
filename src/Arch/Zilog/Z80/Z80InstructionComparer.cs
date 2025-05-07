@@ -28,104 +28,54 @@ namespace Reko.Arch.Zilog.Z80
 {
     public class Z80InstructionComparer : InstructionComparer
     {
+        private const int MemCode = 0x10;
+
         public Z80InstructionComparer(Normalize norm) : base(norm)
         {
         }
 
-        public override bool CompareOperands(MachineInstruction x, MachineInstruction y)
+        public override bool DoCompareOperands(MachineOperand opA, MachineOperand opB)
         {
-            var a = (Z80Instruction)x;
-            var b = (Z80Instruction)y;
-            return CompareOp(a.Operands[0], b.Operands[0]) &&
-                CompareOp(a.Operands[1], b.Operands[1]);
+            return opA switch
+            {
+                RegisterStorage regOpA => CompareRegisters(regOpA, (RegisterStorage) opB),
+                Constant immOpA => CompareConstants(immOpA, (Constant) opB),
+                Address addrOpA => CompareAddresses(addrOpA, (Address) opB),
+                ConditionOperand<CondCode> condOpA =>
+                    condOpA.Condition == ((ConditionOperand<CondCode>) opB).Condition,
+                MemoryOperand memOpA => CompareMemoryOperand(memOpA, (MemoryOperand) opB),
+                _ => throw new NotImplementedException(opA.GetType().Name)
+            };
         }
 
-        private bool CompareOp(MachineOperand opA, MachineOperand opB)
+        private bool CompareMemoryOperand(MemoryOperand memOpA, MemoryOperand memOpB)
         {
-            if (opA is null && opB is null)
-                return true;
-            if (opA is null || opB is null)
+            if (!CompareRegisters(memOpA.Base, memOpB.Base))
                 return false;
-            if (opA.GetType() != opB.GetType())
+            if (!CompareConstants(memOpA.Offset, memOpB.Offset))
                 return false;
-            switch (opA)
-            {
-            case RegisterStorage regOpA:
-                if (NormalizeRegisters)
                     return true;
-                var regOpB = (RegisterStorage) opB;
-                return regOpA == regOpB;
-            case Constant immOpA:
-                if (NormalizeConstants)
-                    return true;
-                var immOpB = (Constant) opB;
-                return CompareValues(immOpA, immOpB);
-            case Address addrOpA:
-                if (NormalizeConstants)
-                    return true;
-                var addrOpB = (Address) opB;
-                return addrOpA.ToLinear() == addrOpB.ToLinear();
-            case ConditionOperand<CondCode> condOpA:
-                return condOpA.Condition == ((ConditionOperand<CondCode>) opB).Condition;
-            case MemoryOperand memOpA:
-                var memOpB = (MemoryOperand) opB;
-                if (NormalizeRegisters && !CompareRegisters(memOpA.Base, memOpB.Base))
-                    return false;
-                if (NormalizeConstants && !CompareValues(memOpA.Offset, memOpB.Offset))
-                    return false;
-                return true;
             }
-            throw new NotImplementedException();
+
+        public override int GetOperandHash(MachineOperand op)
+        {
+            return op switch
+            {
+                RegisterStorage regOp => GetRegisterHash(regOp),
+                Constant immOp => GetConstantHash(immOp),
+                Address addrOp => GetAddressHash(addrOp),
+                ConditionOperand<CondCode> condOp => (int) condOp.Condition,
+                MemoryOperand memOp => GetMemoryOperandHash(memOp),
+                _ => throw new NotImplementedException(string.Format("{0} ({1})", op, op.GetType().Name))
+            };
         }
 
-        public override int GetOperandsHash(MachineInstruction i)
+        private int GetMemoryOperandHash(MemoryOperand memOp)
         {
-            var instr = (Z80Instruction)i;
-
-            return
-                HashOp(instr.Operands[0]) ^
-                HashOp(instr.Operands[1]) * 17;
-        }
-
-        private int HashOp(MachineOperand op)
-        {
-            if (op is null)
-                return 0;
-            int h = op.GetType().GetHashCode();
-            if (op is RegisterStorage regOp)
-            {
-                if (NormalizeRegisters)
-                    return h;
-                else
-                    return h * 29 ^ regOp.GetHashCode();
-            }
-            if (op is Constant immOp)
-            {
-                if (NormalizeConstants)
-                    return h;
-                else
-                    return h * 13 ^ GetConstantHash(immOp);
-            }
-            if (op is Address addrOp)
-            {
-                if (NormalizeConstants)
-                    return h;
-                else
-                    return h * 29 ^ addrOp.GetHashCode();
-            }
-            if (op is ConditionOperand<CondCode> condOp)
-            {
-                return h * 19 ^ condOp.Condition.GetHashCode();
-            }
-            if (op is MemoryOperand memOp)
-            {
-                if (!NormalizeRegisters && memOp.Base is not null)
-                    h = h * 23 ^ memOp.Base.GetHashCode();
-                if (!NormalizeConstants && memOp.Offset is not null)
+            int h = MemCode;
+            h = h * 23 ^ GetRegisterHash(memOp.Base);
                     h = h * 17 ^ GetConstantHash(memOp.Offset);
                 return h;
             }
-            throw new NotImplementedException(string.Format("{0} ({1})", op, op.GetType().Name));
         }
-    }
 }

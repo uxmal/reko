@@ -28,46 +28,31 @@ namespace Reko.Arch.Mips
 {
     public class MipsInstructionComparer : InstructionComparer
     {
+        private const int MultiRegCode = 0x11;
         public MipsInstructionComparer(Normalize norm) : base(norm)
         {
         }
 
-        public override bool CompareOperands(MachineInstruction x, MachineInstruction y)
+        public override bool DoCompareOperands(MachineOperand op1, MachineOperand op2)
         {
-            var a = (MipsInstruction)x;
-            var b = (MipsInstruction)y;
-            return Compare(a.Operands[0], b.Operands[0]) &&
-                   Compare(a.Operands[1], b.Operands[1]) &&
-                   Compare(a.Operands[2], b.Operands[2]) &&
-                   Compare(a.Operands[3], b.Operands[3]);
-        }
-
-        private bool Compare(MachineOperand a, MachineOperand b)
-        {
-            if (a is null && b is null)
-                return true;
-            if (a is null || b is null)
-                return false;
-            if (a.GetType() != b.GetType())
-                return false;
-            switch (a) {
+            switch (op1) {
             case RegisterStorage rA:
                 if (NormalizeRegisters)
                     return true;
-                var rB = (RegisterStorage)b;
+                var rB = (RegisterStorage)op2;
                 return rA == rB;
             case Constant iA:
                 if (NormalizeConstants)
                     return true;
-                var iB = (Constant)b;
-                return CompareValues(iA, iB);
+                var iB = (Constant)op2;
+                return CompareConstants(iA, iB);
             case Address aA:
                 if (NormalizeConstants)
                     return true;
-                var aB = (Address)b;
+                var aB = (Address)op2;
                 return aA.ToLinear() == aB.ToLinear();
             case MemoryOperand mA:
-                var mB = (MemoryOperand)b;
+                var mB = (MemoryOperand)op2;
                 if (!NormalizeRegisters && mA.Base != mB.Base)
                     return false;
                 if (mA.Offset is not null)
@@ -83,25 +68,19 @@ namespace Reko.Arch.Mips
                         return false;
                 }
                 return true;
+            case MultiRegisterOperand mreg:
+                return CompareMultiRegisterOperands(mreg, (MultiRegisterOperand) op2);
             }
-            throw new NotImplementedException();
+            throw new NotImplementedException(op1.GetType().Name);
         }
 
-        public override int GetOperandsHash(MachineInstruction oinstr)
+        private bool CompareMultiRegisterOperands(MultiRegisterOperand mreg1, MultiRegisterOperand mreg2)
         {
-            int h = 0;
-            var instr = (MipsInstruction)oinstr;
-            h = h*23 ^ GetHashCode(instr.Operands[0]);
-            h = h*23 ^ GetHashCode(instr.Operands[1]);
-            h = h*23 ^ GetHashCode(instr.Operands[2]);
-            h = h*23 ^ GetHashCode(instr.Operands[3]);
-            return h;
+            return mreg1.Bitmask == mreg2.Bitmask;
         }
 
-        private int GetHashCode(MachineOperand op)
+        public override int GetOperandHash(MachineOperand op)
         {
-            if (op is null)
-                return 0;
             switch (op)
             {
             case RegisterStorage r:
@@ -128,8 +107,10 @@ namespace Reko.Arch.Mips
                 if (m.Index is not null)
                     h ^= GetRegisterHash(m.Index);
                 return h;
+            case MultiRegisterOperand mreg:
+                return MultiRegCode * 17 ^ (int)mreg.Bitmask;
             }
-            return 42;
+            throw new NotImplementedException(op.GetType().Name);
         }
     }
 }

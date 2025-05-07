@@ -27,7 +27,6 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.Intrinsics.Arm;
 
 namespace Reko.ImageLoaders.WebAssembly
 {
@@ -56,7 +55,7 @@ namespace Reko.ImageLoaders.WebAssembly
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
-            throw new NotImplementedException();
+            return new WasmInstructionComparer(norm);
         }
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)

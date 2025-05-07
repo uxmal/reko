@@ -18,9 +18,8 @@
  */
 #endregion
 
-using Reko.Core.Machine;
 using Reko.Core;
-using System;
+using Reko.Core.Machine;
 using Reko.Core.Types;
 
 namespace Reko.Arch.Msp430

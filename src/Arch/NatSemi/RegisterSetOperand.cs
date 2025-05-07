@@ -34,17 +34,17 @@ public class RegisterSetOperand : AbstractMachineOperand
     public RegisterSetOperand(byte registerRet)
         : base(PrimitiveType.Word32)
     {
-        this.registerSet = registerRet;
+        this.RegisterSet = registerRet;
     }
 
-    private int registerSet;
+    public int RegisterSet { get; }
 
     public IEnumerable<RegisterStorage> GetRegisters()
     {
         int m = 1;
         for (int i = 0; i < 8; ++i, m <<= 1)
         {
-            if ((registerSet & m) != 0)
+            if ((RegisterSet & m) != 0)
             {
                 yield return Registers.GpRegisters[i];
             }

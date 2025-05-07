@@ -18,12 +18,14 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Services;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Reko.UnitTests.Arch
@@ -31,6 +33,11 @@ namespace Reko.UnitTests.Arch
     public abstract class DisassemblerTestBase<TInstruction> : ArchTestBase
         where TInstruction : MachineInstruction
     {
+        internal static readonly TraceSwitch traceInstrComparer = new TraceSwitch("InstrComparer", "Runs instruction comparer during disassembler tests.")
+        {
+            Level = TraceLevel.Verbose
+        };
+
         protected ServiceContainer CreateServiceContainer()
         {
             var sc = new ServiceContainer();
@@ -68,7 +75,14 @@ namespace Reko.UnitTests.Arch
         public TInstruction Disassemble(MemoryArea mem)
         {
             var dasm = this.CreateDisassembler(Architecture.CreateImageReader(mem, 0U));
-            return (TInstruction) dasm.First();
+            var instr = (TInstruction) dasm.First();
+            if (traceInstrComparer.TraceVerbose)
+            {
+                var cmp = Architecture.CreateInstructionComparer(Normalize.Nothing);
+                Assert.IsTrue(cmp.Equals(instr, instr));
+                cmp.GetHashCode(instr);
+            }
+            return instr;
         }
 
         protected virtual IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)

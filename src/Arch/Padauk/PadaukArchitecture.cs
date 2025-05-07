@@ -20,8 +20,6 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
-using Reko.Core.Hll.Pascal;
-using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
@@ -59,7 +57,7 @@ namespace Reko.Arch.Padauk
 
         public override IEqualityComparer<MachineInstruction>? CreateInstructionComparer(Normalize norm)
         {
-            throw new NotImplementedException();
+            return new PadaukInstructionComparer(norm);
         }
 
         public override MemoryArea CreateCodeMemoryArea(Address addr, byte[] bytes)

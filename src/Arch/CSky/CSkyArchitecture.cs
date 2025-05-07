@@ -64,7 +64,7 @@ namespace Reko.Arch.CSky
 
         public override IEqualityComparer<MachineInstruction>? CreateInstructionComparer(Normalize norm)
         {
-            throw new NotImplementedException();
+            return new CSkyInstructionComparer(norm);
         }
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)

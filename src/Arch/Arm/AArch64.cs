@@ -137,9 +137,9 @@ namespace Reko.Arch.Arm
             throw new NotImplementedException();
         }
 
-        public override IEqualityComparer<MachineInstruction>? CreateInstructionComparer(Normalize norm)
+        public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
-            return null;
+            return new AArch64InstructionComparer(norm);
         }
 
         public override ProcessorState CreateProcessorState()

@@ -24,33 +24,18 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 
-namespace Reko.Arch.Tlcs.Tlcs900
+namespace Reko.Arch.Tlcs.Tlcs900;
+
+public class Tlcs900InstructionComparer : InstructionComparer
 {
-    public class Tlcs900InstructionComparer : InstructionComparer
-    {
-        private Normalize norm;
+    private const int MemCode = 0x10;
 
         public Tlcs900InstructionComparer(Normalize norm) : base(norm)
         {
-            this.norm = norm;
         }
 
-        public override bool CompareOperands(MachineInstruction x, MachineInstruction y)
+    public override bool DoCompareOperands(MachineOperand opA, MachineOperand opB)
         {
-            var a = (Tlcs900Instruction)x;
-            var b = (Tlcs900Instruction)y;
-            return CompareOp(a.Operands[0], b.Operands[0]) &&
-                   CompareOp(a.Operands[1], b.Operands[1]);
-        }
-
-        private bool CompareOp(MachineOperand opA, MachineOperand opB)
-        {
-            if (opA is null && opB is null)
-                return true;
-            if (opA is null || opB is null)
-                return false;
-            if (opA.GetType() != opB.GetType())
-                return false;
             switch (opA)
             {
             case RegisterStorage regOpA:
@@ -62,7 +47,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 if (NormalizeConstants)
                     return true;
                 var immOpB = (Constant)opB;
-                return CompareValues(immOpA, immOpB);
+            return CompareConstants(immOpA, immOpB);
             case Address addrOpA:
                 if (NormalizeConstants)
                     return true;
@@ -74,60 +59,31 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 var memOpB = (MemoryOperand) opB;
                 if (NormalizeRegisters && !CompareRegisters(memOpA.Base, memOpB.Base))
                     return false;
-                if (NormalizeConstants && !CompareValues(memOpA.Offset, memOpB.Offset))
+            if (NormalizeConstants && !CompareConstants(memOpA.Offset, memOpB.Offset))
                     return false;
                 return true;
             }
-            throw new NotImplementedException();
+        throw new NotImplementedException(opA.GetType().Name);
         }
 
-        public override int GetOperandsHash(MachineInstruction instr)
+    public override int GetOperandHash(MachineOperand op)
         {
-            var tinstr = (Tlcs900Instruction)instr;
-            return
-                HashOp(tinstr.Operands[0]) ^
-                HashOp(tinstr.Operands[1]) * 17;
+        return op switch
+        {
+            RegisterStorage regOp => GetRegisterHash(regOp),
+            Constant immOp => GetConstantHash(immOp),
+            Address addr => GetAddressHash(addr),
+            ConditionOperand<CondCode> condOp => (int) condOp.Condition,
+            MemoryOperand memOp => GetMemoryOperandHash(memOp),
+            _ => throw new NotImplementedException(string.Format("{0} ({1})", op, op.GetType().Name))
+        };
         }
 
-        private int HashOp(MachineOperand op)
+    private int GetMemoryOperandHash(MemoryOperand memOp)
         {
-            if (op is null)
-                return 0;
-            int h = op.GetType().GetHashCode();
-            if (op is RegisterStorage regOp)
-            {
-                if (NormalizeRegisters)
-                    return h;
-                else
-                    return h * 29 ^ regOp.GetHashCode();
-            }
-            if (op is Constant immOp)
-            {
-                if (NormalizeConstants)
-                    return h;
-                else
-                    return h * 13 ^ GetConstantHash(immOp);
-            }
-            if (op is Address addrOp)
-            {
-                if (NormalizeConstants)
-                    return h;
-                else
-                    return h * 29 ^ addrOp.GetHashCode();
-            }
-            if (op is ConditionOperand<CondCode> condOp)
-            {
-                return h * 19 ^ condOp.Condition.GetHashCode();
-            }
-            if (op is MemoryOperand memOp)
-            {
-                if (!NormalizeRegisters && memOp.Base is not null)
-                    h = h * 23 ^ memOp.Base.GetHashCode();
-                if (!NormalizeConstants && memOp.Offset is not null)
+        int h = MemCode;
+        h = h * 23 ^ GetRegisterHash(memOp.Base);
                     h = h * 17 ^ GetConstantHash(memOp.Offset);
                 return h;
             }
-            throw new NotImplementedException(string.Format("{0} ({1})", op, op.GetType().Name));
-        }
-    }
 }

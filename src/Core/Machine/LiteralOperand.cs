@@ -27,16 +27,19 @@ namespace Reko.Core.Machine;
 /// </summary>
 public class LiteralOperand : AbstractMachineOperand
 {
-    private readonly string literal;
-
     /// <summary>
     /// Constructs a literal operand.
     /// </summary>
     /// <param name="value">Literal operand.</param>
     public LiteralOperand(string value) : base(PrimitiveType.Byte)
     {
-        this.literal = value;
+        this.Literal = value;
     }
+
+    /// <summary>
+    /// The literal string value of the operand.
+    /// </summary>
+    public string Literal { get; }
 
     /// <summary>
     /// Returns the string value of the literal operand.
@@ -45,6 +48,6 @@ public class LiteralOperand : AbstractMachineOperand
     /// <param name="options">Options controlling the output</param>
     protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
     {
-        renderer.WriteString(literal);
+        renderer.WriteString(Literal);
     }
 }

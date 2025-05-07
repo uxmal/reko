@@ -51,7 +51,7 @@ public class Pdp1Architecture : ProcessorArchitecture
 
     public override IEqualityComparer<MachineInstruction>? CreateInstructionComparer(Normalize norm)
     {
-        throw new NotImplementedException();
+        return new Pdp1InstructionComparer(norm);
     }
 
     public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)

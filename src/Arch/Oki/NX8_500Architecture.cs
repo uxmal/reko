@@ -51,7 +51,7 @@ public class NX8_500Architecture : ProcessorArchitecture
 
     public override IEqualityComparer<MachineInstruction>? CreateInstructionComparer(Normalize norm)
     {
-        throw new NotImplementedException();
+        return new NX8_500InstructionComparer(norm);
     }
 
     public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)

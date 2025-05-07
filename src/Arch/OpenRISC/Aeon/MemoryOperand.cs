@@ -31,7 +31,9 @@ namespace Reko.Arch.OpenRISC.Aeon
 {
     public class MemoryOperand : AbstractMachineOperand
     {
-        public MemoryOperand(PrimitiveType dt) : base(dt) { }
+        public MemoryOperand(PrimitiveType dt) : base(dt)
+        {
+        }
 
         public RegisterStorage? Base { get; set; }
         public int Offset { get; set; }

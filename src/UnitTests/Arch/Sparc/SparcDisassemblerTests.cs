@@ -53,7 +53,14 @@ namespace Reko.UnitTests.Arch.Sparc
             var sc = new ServiceContainer();
             var arch = new SparcArchitecture32(sc, "sparc", new Dictionary<string, object>());
             var dasm = new SparcDisassembler(arch, arch.Decoder, bmem.CreateBeReader(0U));
-            return dasm.First();
+            var instr = dasm.First();
+            if (DisassemblerTestBase<SparcInstruction>.traceInstrComparer.TraceVerbose)
+            {
+                var cmp = arch.CreateInstructionComparer(Normalize.Nothing);
+                Assert.IsTrue(cmp.Equals(instr, instr));
+                cmp.GetHashCode(instr);
+            }
+            return instr;
         }
 
         private static SparcInstruction Disassemble64(ByteMemoryArea bmem)
@@ -68,17 +75,6 @@ namespace Reko.UnitTests.Arch.Sparc
         {
             var instr = DisassembleWord(word);
             Assert.AreEqual(expected, instr.ToString());
-        }
-
-        private void AssertCode(string sExp, string hexBytes)
-        {
-            byte[] bytes = BytePattern.FromHexBytes(hexBytes);
-            var mem = new ByteMemoryArea(Address.Ptr32(0x00100000), bytes);
-            var sc = new ServiceContainer();
-            var arch = new SparcArchitecture32(sc, "sparc", new Dictionary<string, object>());
-            var dasm = new SparcDisassembler(arch, arch.Decoder, mem.CreateBeReader(0U));
-            var instr = dasm.First();
-            Assert.AreEqual(sExp, instr.ToString());
         }
 
         private void AssertInstruction64(uint word, string expected)

@@ -322,7 +322,7 @@ namespace Reko.Arch.C166
             {
                 var qq = Decode8bitReg(PrimitiveType.Word16, Registers.GpRegs, (int) qqField.Read(u));
                 var q = (int)qField.Read(u);
-                d.ops.Add(new BitOfOperand(q, qq));
+                d.ops.Add(new BitOperand(qq, q));
                 return true;
             };
         }
@@ -342,8 +342,8 @@ namespace Reko.Arch.C166
                 var zz = Decode8bitReg(PrimitiveType.Word16, Registers.GpRegs, (int) zzField.Read(u));
                 var q = (int)qField.Read(u);
                 var z = (int) zField.Read(u);
-                d.ops.Add(new BitOfOperand(z, zz));
-                d.ops.Add(new BitOfOperand(q, qq));
+                d.ops.Add(new BitOperand(zz, z));
+                d.ops.Add(new BitOperand(qq, q));
                 return true;
             };
         }
@@ -361,7 +361,7 @@ namespace Reko.Arch.C166
                 u |= ((uint) hiword) << 16;
                 var qq = Decode8bitReg(PrimitiveType.Word16, Registers.GpRegs, (int) qqField.Read(u));
                 var q = (int) qField.Read(u);
-                d.ops.Add(new BitOfOperand(q, qq));
+                d.ops.Add(new BitOperand(qq, q));
                 var offset = rrField.ReadSigned(u) << 1;
                 var addr = d.rdr.Address + offset;
                 d.ops.Add(addr);
@@ -398,7 +398,7 @@ namespace Reko.Arch.C166
         private static bool c(uint uInstr, C166Disassembler dasm)
         {
             var c = (CondCode) ((uInstr >> 12) & 0xF);
-            dasm.ops.Add(new ConditionalOperand(c));
+            dasm.ops.Add(new ConditionOperand<CondCode>(c));
             return true;
         }
 
@@ -409,7 +409,7 @@ namespace Reko.Arch.C166
         private static bool c4(uint uInstr, C166Disassembler dasm)
         {
             var c = (CondCode) ((uInstr >> 4) & 0xF);
-            dasm.ops.Add(new ConditionalOperand(c));
+            dasm.ops.Add(new ConditionOperand<CondCode>(c));
             return true;
         }
 

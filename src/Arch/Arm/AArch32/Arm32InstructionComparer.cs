@@ -27,11 +27,8 @@ namespace Reko.Arch.Arm.AArch32
 {
     public class Arm32InstructionComparer : InstructionComparer
     {
-        private Normalize norm;
-
         public Arm32InstructionComparer(Normalize norm) : base(norm)
         {
-            this.norm = norm;
         }
 
         public override bool CompareOperands(MachineInstruction x, MachineInstruction y)
@@ -103,9 +100,14 @@ namespace Reko.Arch.Arm.AArch32
         */
         }
 
-        public override int GetOperandsHash(MachineInstruction instr)
+        public override bool DoCompareOperands(MachineOperand op1, MachineOperand op2)
         {
-            return 1;
+            throw new NotImplementedException(op1.GetType().Name);
+        }
+
+        public override int GetOperandHash(MachineOperand op)
+        {
+            throw new NotImplementedException(op.GetType().Name);
             /*
             var arm = ((Arm32InstructionOld)instr).instruction;
             if (arm is null)

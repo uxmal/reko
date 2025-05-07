@@ -308,7 +308,7 @@ namespace Reko.Arch.Sparc
         internal static bool fcc(uint wInstr, SparcDisassembler dasm)
         {
             var fccCode = ccField.Read(wInstr);
-            dasm.ops.Add(new ConditionCodeOperand(ffields[fccCode]));
+            dasm.ops.Add(ConditionOperand.Create(ffields[fccCode]));
             return true;
         }
 
@@ -320,7 +320,7 @@ namespace Reko.Arch.Sparc
             var iccCode = ifields[ccField.Read(wInstr)];
             if (iccCode == ConditionField.None)
                 return false;
-            dasm.ops.Add(new ConditionCodeOperand(iccCode));
+            dasm.ops.Add(ConditionOperand.Create(iccCode));
             return true;
         }
 

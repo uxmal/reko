@@ -19,46 +19,24 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 
-namespace Reko.Arch.PowerPC
+namespace Reko.Arch.PowerPC;
+
+public class PowerPcInstructionComparer : InstructionComparer
 {
-    public class PowerPcInstructionComparer : InstructionComparer
-    {
-        private Normalize norm;
+    private const int MemCode = 0x10;
+    private const int CondCode = 0x11;
+    private const int FuncCode = 0x12;
 
         public PowerPcInstructionComparer(Normalize norm) : base(norm)
         {
-            this.norm = norm;
         }
 
-        public override bool CompareOperands(MachineInstruction x, MachineInstruction y)
+    public override bool DoCompareOperands(MachineOperand opA, MachineOperand opB)
         {
-            var a = (PowerPcInstruction)x;
-            var b = (PowerPcInstruction)y;
-            return
-                Compare(a.Operands[0], b.Operands[0]) &&
-                Compare(a.Operands[1], b.Operands[1]) &&
-                Compare(a.Operands[2], b.Operands[2]) &&
-                Compare(a.Operands[3], b.Operands[3]) &&
-                Compare(a.Operands[4], b.Operands[4]);
-        }
-
-        private bool Compare(MachineOperand opA, MachineOperand opB)
-        {
-            if (opA is null && opB is null)
-                return true;
-            if (opA is null || opB is null)
-                return false;
-
-            if (opA.GetType() != opB.GetType())
-                return false;
             switch (opA)
             {
             case RegisterStorage regA:
@@ -66,7 +44,7 @@ namespace Reko.Arch.PowerPC
                 return CompareRegisters(regA, regB);
             case Constant immA:
                 var immB = (Constant) opB;
-                return CompareValues(immA, immB);
+            return CompareConstants(immA, immB);
             case Address addrA:
                 var addrB = (Address) opB;
                 return NormalizeConstants || addrA == addrB;
@@ -77,22 +55,14 @@ namespace Reko.Arch.PowerPC
             case ConditionOperand cA:
                 var cB = (ConditionOperand) opB;
                 return cA.condition == cB.condition;
+        case FunctionCodeOperand fcA:
+            var fcB = (FunctionCodeOperand) opB;
+            return fcA.FunctionCode == fcB.FunctionCode;
             }
             throw new NotImplementedException(string.Format("PowerPC operand type {0} not implemented.", opA.GetType().Name));
         }
 
-        public override int GetOperandsHash(MachineInstruction instr)
-        {
-            var i = (PowerPcInstruction)instr;
-            return
-                OperandHash(i.Operands[0]) * 23 ^
-                OperandHash(i.Operands[1]) * 29 ^
-                OperandHash(i.Operands[2]) * 9 ^
-                OperandHash(i.Operands[3]) * 7 ^
-                OperandHash(i.Operands[4]) * 3;
-        }
-
-        private int OperandHash(MachineOperand op)
+    public override int GetOperandHash(MachineOperand op)
         {
             if (op is null)
                 return 0;
@@ -104,24 +74,23 @@ namespace Reko.Arch.PowerPC
                     h ^= GetRegisterHash(reg);
                 return h;
             case Constant imm:
-                if (!NormalizeConstants)
-                    h ^= base.GetConstantHash(imm);
-                return h;
+            return GetConstantHash(imm);
             case Address addr:
-                if (!NormalizeConstants)
-                    h ^= addr.GetHashCode();
-                return h;
+            return GetAddressHash(addr);
             case MemoryOperand mem:
+            h = MemCode;
                 if (!NormalizeRegisters)
                     h ^= GetRegisterHash(mem.BaseRegister);
                 if (!NormalizeConstants)
-                    h ^= mem.Offset.GetHashCode();
+                h = h*17 ^ GetOperandHash(mem.Offset);
                 return h;
             case ConditionOperand c:
-                h ^= c.condition.GetHashCode();
+            h ^= CondCode ^ 17 * (int)c.condition;
                 return h;
+        case FunctionCodeOperand fc:
+            h ^= FuncCode ^ 17 * (int) fc.FunctionCode;
+            return h;
             }
             throw new NotImplementedException(string.Format("PowerPC operand type {0} not implemented.", op.GetType().Name));
         }
-    }
 }

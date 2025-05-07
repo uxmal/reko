@@ -22,11 +22,6 @@ using NUnit.Framework;
 using Reko.Arch.Fujitsu;
 using Reko.Arch.Fujitsu.F2MC16FX;
 using Reko.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Arch.Fujitsu.F2MC16FX
 {

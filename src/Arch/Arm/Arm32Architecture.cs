@@ -141,7 +141,7 @@ namespace Reko.Arch.Arm
 
         public override IEqualityComparer<MachineInstruction>? CreateInstructionComparer(Normalize norm)
         {
-            return null;
+            return new Arm32InstructionComparer(norm);
         }
 
         public override ProcessorState CreateProcessorState()

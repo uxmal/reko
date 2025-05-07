@@ -65,7 +65,7 @@ namespace Reko.Arch.Mos6502
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
-            throw new NotImplementedException();
+            return new Mos6502InstructionComparer(norm);
         }
 
         public override ProcessorState CreateProcessorState()

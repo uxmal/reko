@@ -51,7 +51,7 @@ public class C33Architecture : ProcessorArchitecture
 
     public override IEqualityComparer<MachineInstruction>? CreateInstructionComparer(Normalize norm)
     {
-        throw new System.NotImplementedException();
+        return new C33InstructionComparer(norm);
     }
 
     public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)

@@ -18,26 +18,26 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Machine;
-using Reko.Core.Types;
-using System;
+using System.Collections.Generic;
 
-namespace Reko.Arch.Renesas.Rl78
+namespace Reko.Arch.Mos6502;
+
+public class Mos6502InstructionComparer : InstructionComparer
 {
-    public class BitOperand : AbstractMachineOperand
+    public Mos6502InstructionComparer(Normalize norm)
+        : base(norm)
     {
-        public BitOperand(MachineOperand op, int bitPos) : base(PrimitiveType.Bool)
-        {
-            this.Operand = op;
-            this.BitPosition = bitPos;
-        }
+    }
 
-        public MachineOperand Operand { get; }
-        public int BitPosition { get; }
+    public override bool DoCompareOperands(MachineOperand op1, MachineOperand op2)
+    {
+        throw new System.NotImplementedException();
+    }
 
-        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
-        {
-            throw new NotImplementedException();
-        }
+    public override int GetOperandHash(MachineOperand op)
+    {
+        throw new System.NotImplementedException();
     }
 }

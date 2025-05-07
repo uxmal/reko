@@ -124,8 +124,8 @@ namespace Reko.Arch.C166
 
         private (Expression bit, Expression exp) BitOp(int iop)
         {
-            var b = (BitOfOperand) instr.Operands[iop];
-            return (m.Int16((short)b.Bit), Src(b.Operand));
+            var b = (BitOperand) instr.Operands[iop];
+            return (Constant.Int16((short)b.BitPosition), Src(b.Operand));
         }
 
         private void EmitCond(FlagGroupStorage grf, Expression e) => EmitCc(grf, m.Cond(grf.DataType, e));
@@ -345,7 +345,7 @@ namespace Reko.Arch.C166
 
         private void RewriteCalla()
         {
-            var cc = ((ConditionalOperand) instr.Operands[0]).CondCode;
+            var cc = ((ConditionOperand<CondCode>)instr.Operands[0]).Condition;
             var addr = (Address) instr.Operands[1];
             if (cc == CondCode.cc_UC)
             {
@@ -383,7 +383,7 @@ namespace Reko.Arch.C166
         private void RewriteJmpa()
         {
             var target = (Address) Src(1);
-            var c = ((ConditionalOperand) instr.Operands[0]).CondCode;
+            var c = ((ConditionOperand<CondCode>) instr.Operands[0]).Condition;
             if (c == CondCode.cc_UC)
             {
                 m.Goto(target);
@@ -398,7 +398,7 @@ namespace Reko.Arch.C166
         private void RewriteJmpr()
         {
             var target = (Address) Src(1);
-            var c = ((ConditionalOperand) instr.Operands[0]).CondCode;
+            var c = ((ConditionOperand<CondCode>) instr.Operands[0]).Condition;
             if (c == CondCode.cc_UC)
             {
                 m.Goto(target);

@@ -59,7 +59,7 @@ public class MaxqArchitecture : ProcessorArchitecture
 
     public override IEqualityComparer<MachineInstruction>? CreateInstructionComparer(Normalize norm)
     {
-        throw new System.NotImplementedException();
+        return new MaxqInstructionComparer(norm);
     }
 
     public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)

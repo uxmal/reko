@@ -31,9 +31,8 @@ namespace Reko.Arch.Infineon.M8C;
 
 public class MemoryOperand : AbstractMachineOperand
 {
-    private Type addressingMode;
 
-    private enum Type
+    public enum Type
     {
         Direct,
         DirectIndexed,
@@ -46,11 +45,12 @@ public class MemoryOperand : AbstractMachineOperand
     {
         Offset = uAddr;
         Index = index;
-        addressingMode = type;
+        AddressingMode = type;
     }
 
     public int Offset { get; }
     public RegisterStorage? Index { get; }
+    public Type AddressingMode { get; }
 
     public static MemoryOperand Direct(uint uAddr)
     {
@@ -81,7 +81,7 @@ public class MemoryOperand : AbstractMachineOperand
     protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
     {
         renderer.WriteChar('[');
-        if (this.addressingMode == Type.IndirectPostinc)
+        if (this.AddressingMode == Type.IndirectPostinc)
         {
             renderer.WriteChar('[');
         }
@@ -97,7 +97,7 @@ public class MemoryOperand : AbstractMachineOperand
                 renderer.WriteString($"+0x{this.Offset:X}");
             }
         }
-        if (this.addressingMode == Type.IndirectPostinc)
+        if (this.AddressingMode == Type.IndirectPostinc)
         {
             renderer.WriteString("]++");
         }

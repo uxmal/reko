@@ -55,6 +55,19 @@ namespace Reko.UnitTests.Arch.X86.Disassembler
             AssertCode("illegal", "63 C3");
         }
 
+
+        [Test]
+        public void X86_8086_cwd()
+        {
+            AssertCode("cwd", "99");
+        }
+
+        [Test]
+        public void X86_8086_cbw()
+        {
+            AssertCode("cbw", "98");
+        }
+
         [Test]
         public void X86_8086_fs_prefix_invalid()
         {
@@ -66,5 +79,37 @@ namespace Reko.UnitTests.Arch.X86.Disassembler
         {
             AssertCode("fadd\tst(3),st(0)", "DC C3");
         }
+
+        [Test]
+        public void X86_8086_jcxz()
+        {
+            AssertCode("jcxz\t0006h", "E3 04");
+        }
+
+
+        [Test]
+        public void X86_8086_out_dx()
+        {
+            AssertCode("out\tdx,al", "EE");
+            AssertCode("out\tdx,ax", "EF");
+        }
+
+        [Test]
+        public void X86_8086_pop_group_1A()
+        {
+            AssertCode("pop\tbx", "8FC3");
+            AssertCode("pop\tbx", "8FCB");
+        }
+
+        [Test]
+        public void X86_8086_segment_override_string_instr()
+        {
+            AssertCode("rep movsb\tbyte ptr es:[di],byte ptr es:[si]", "F3 26 A4");
+        }
+
+
+
+
+
     }
 }
