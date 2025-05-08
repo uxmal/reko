@@ -23,13 +23,8 @@ using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Types;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
 
 namespace Reko.Arch.X86
 {
@@ -149,8 +144,13 @@ namespace Reko.Arch.X86
 
             public override X86Instruction Decode(uint op, X86Disassembler disasm)
             {
-                disasm.decodingContext.RegisterExtensionPrefixByte = (byte) op;
-                if (disasm.decodingContext.RegisterExtension.FlagWideValue)
+                bool isWide = (op & 0x8) != 0;
+                disasm.decodingContext.RexPrefix = true;
+                disasm.decodingContext.IsWide = isWide;
+                disasm.decodingContext.RExtension = (int)(op & 4) << 1;
+                disasm.decodingContext.XExtension = (int)(op & 2) << 2;
+                disasm.decodingContext.BExtension = (int)(op & 1) << 3;
+                if (isWide)
                 {
                     var w64 = PrimitiveType.Word64;
                     disasm.decodingContext.dataWidth = w64;
@@ -159,6 +159,47 @@ namespace Reko.Arch.X86
                 if (!disasm.TryReadByte(out var op2))
                     return disasm.CreateInvalidInstruction();
                 return decoders[op2].Decode(op2, disasm);
+            }
+        }
+
+        public class Rex2Decoder : Decoder
+        {
+            private static readonly Bitfield[] bfR = Bf((6, 1), (2, 1));
+            private static readonly Bitfield[] bfX = Bf((5, 1), (1, 1));
+            private static readonly Bitfield[] bfB = Bf((4, 1), (0, 1));
+
+            private readonly Decoder[] map0decoders;
+            private readonly Decoder[] map1decoders;
+
+            public Rex2Decoder(Decoder[] map0decoders, Decoder[] map1decoders)
+            {
+                this.map0decoders = map0decoders;
+                this.map1decoders = map1decoders;
+            }
+
+            public override X86Instruction Decode(uint rex2Prefix, X86Disassembler disasm)
+            {
+                if (!disasm.TryReadByte(out var rex2))
+                    return disasm.CreateInvalidInstruction();
+                if (!disasm.TryReadByte(out var op))
+                    return disasm.CreateInvalidInstruction();
+
+                var map = Bits.IsBitSet(rex2, 7)
+                    ? map1decoders
+                    : map0decoders;
+                disasm.decodingContext.RexPrefix = true;
+                disasm.decodingContext.RExtension = (int) Bitfield.ReadFields(bfR, rex2) << 3;
+                disasm.decodingContext.XExtension = (int) Bitfield.ReadFields(bfX, rex2) << 3;
+                disasm.decodingContext.BExtension = (int) Bitfield.ReadFields(bfB, rex2) << 3;
+
+                if (Bits.IsBitSet(rex2, 3))
+                {
+                    // REX2.W
+                    disasm.decodingContext.IsWide = true;
+                    disasm.decodingContext.dataWidth = PrimitiveType.Word64;
+                    disasm.decodingContext.iWidth = PrimitiveType.Word64;
+                }
+                return map[op].Decode(op, disasm);
             }
         }
 
@@ -392,12 +433,13 @@ namespace Reko.Arch.X86
                 {
                     return disasm.CreateInvalidInstruction();
                 }
-                var r = (~op2 >> 5) & 4;
+                var r = (~op2 >> 4) & 0x8;
                 var vvvv = (~op2 >> 3) & 0xF;
                 var pp = op2 & 3;
+                ctx.RexPrefix = true;
                 ctx.IsVex = true;
                 ctx.VexRegister = (byte) vvvv;
-                ctx.RegisterExtensionPrefixByte = (byte) r;
+                ctx.RExtension = r;
                 ctx.VexLongCode = (byte)((op2 & 4) >> 2);
                 ctx.F2Prefix = pp == 3;
                 ctx.F3Prefix = pp == 2;
@@ -431,25 +473,26 @@ namespace Reko.Arch.X86
             public override X86Instruction Decode(uint op, X86Disassembler disasm)
             {
                 var ctx = disasm.decodingContext;
-                if (ctx.RegisterExtension.ByteValue != 0 || ctx.SizeOverridePrefix || ctx.F2Prefix || ctx.F3Prefix)
+                if (ctx.RexPrefix || ctx.SizeOverridePrefix || ctx.F2Prefix || ctx.F3Prefix)
                     return disasm.CreateInvalidInstruction();
                 if (!disasm.TryReadByte(out byte vex1))
                     return disasm.CreateInvalidInstruction();
                 if (!disasm.TryReadByte(out byte vex2))
                     return disasm.CreateInvalidInstruction();
-                var rxb = vex1 >> 5;
+                var rxb = ~vex1 >> 5;
                 var mmmmm = vex1 & 0x1F;
                 var w = vex2 >> 7;
                 var vvvv = (~vex2 >> 3) & 0xF;
                 var pp = vex2 & 0x3;
 
+                ctx.RexPrefix = true;
                 ctx.IsVex = true;
                 ctx.VexRegister = (byte) vvvv;
                 ctx.VexLongCode = (byte)((vex2 & 4) >> 2);
-                ctx.RegisterExtension.FlagWideValue = w != 0;
-                ctx.RegisterExtension.FlagTargetModrmRegister = (rxb & 4) == 0;
-                ctx.RegisterExtension.FlagTargetSIBIndex = (rxb & 2) == 0;
-                ctx.RegisterExtension.FlagTargetModrmRegOrMem = (rxb & 1) == 0;
+                ctx.IsWide = w != 0;
+                ctx.RExtension = (rxb & 4) << 1;
+                ctx.XExtension = (rxb & 2) << 2;
+                ctx.BExtension = (rxb & 1) << 3;
                 ctx.F2Prefix = pp == 3;
                 ctx.F3Prefix = pp == 2;
                 ctx.SizeOverridePrefix = pp == 1;
@@ -496,7 +539,7 @@ namespace Reko.Arch.X86
                 var ctx = disasm.decodingContext;
                 if (ctx.F2Prefix |
                     ctx.F3Prefix |
-                    ctx.IsRegisterExtensionActive() |
+                    ctx.RexPrefix |
                     ctx.SizeOverridePrefix)
                     return disasm.CreateInvalidInstruction();
                 // The EVEX prefix consists of a leading 0x62 byte, and three
@@ -511,21 +554,22 @@ namespace Reko.Arch.X86
                     return disasm.CreateInvalidInstruction();
                 }
                 var mm = p0 & 3;
-                var rxb = p0 >> 5;
+                var rxb = ~p0 >> 5;
                 var pp = p1 & 3;
                 var w = p1 >> 7;
                 var vvvv = p1Vvvv.Read(~(uint)p1);
                 if (!Bits.IsBitSet(p2, 3))
                     vvvv |= 0x10;
+                ctx.RexPrefix = true;
                 ctx.IsVex = true;
                 ctx.IsEvex = true;
                 ctx.VexRegister = (byte) vvvv;
                 ctx.VexLongCode = (byte)((p2 >> 5) & 3);
                 ctx.OpMask = (byte)(p2 & 7);
-                ctx.RegisterExtension.FlagWideValue = w != 0;
-                ctx.RegisterExtension.FlagTargetModrmRegister = (rxb & 4) == 0;
-                ctx.RegisterExtension.FlagTargetSIBIndex = (rxb & 2) == 0;
-                ctx.RegisterExtension.FlagTargetModrmRegOrMem = (rxb & 1) == 0;
+                ctx.IsWide = w != 0;
+                ctx.RExtension = (rxb & 4) << 1;
+                ctx.XExtension = (rxb & 2) << 2;
+                ctx.BExtension = (rxb & 1) << 3;
                 ctx.EvexR = !Bits.IsBitSet(p0, 4);
                 ctx.EvexX = !Bits.IsBitSet(p0, 6);
                 ctx.EvexMergeMode = p2 >> 7;
@@ -683,8 +727,7 @@ namespace Reko.Arch.X86
 
             public override X86Instruction Decode(uint op, X86Disassembler dasm)
             {
-                bool isWide = (dasm.isRegisterExtensionEnabled &&
-                               dasm.decodingContext.RegisterExtension.FlagWideValue);
+                bool isWide = dasm.decodingContext.IsWide;
 
                 if (dasm.decodingContext.F2Prefix)
                 {

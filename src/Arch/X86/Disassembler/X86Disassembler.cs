@@ -29,7 +29,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace Reko.Arch.X86
 {
@@ -46,100 +45,6 @@ namespace Reko.Arch.X86
         };
 
 #pragma warning disable IDE1006
-        private class X86LegacyCodeRegisterExtension
-        {
-            internal X86LegacyCodeRegisterExtension(byte value)
-            {
-                this.ByteValue = value;
-            }
-
-            public void Reset()
-            {
-                ByteValue = 0;
-            }
-
-            internal byte ByteValue { get; set; }
-
-            /// <summary>
-            /// Rex.W = 48h
-            /// </summary>
-            internal bool FlagWideValue
-            {
-                get
-                {
-                    return ((this.ByteValue & 0x8) == 0x8);
-                }
-                set
-                {
-                    if (value)
-                    {
-                        this.ByteValue = (byte)(this.ByteValue | 0x8);
-                    }
-                    else
-                    {
-                        this.ByteValue = (byte)(this.ByteValue & ~0x8);
-                    }
-                }
-            }
-            internal bool FlagTargetModrmRegister
-            {
-                get
-                {
-                    return ((this.ByteValue & 0x4) == 0x4);
-                }
-                set
-                {
-                    if (value)
-                    {
-                        this.ByteValue = (byte)(this.ByteValue | 0x4);
-                    }
-                    else
-                    {
-                        this.ByteValue = (byte)(this.ByteValue & ~0x4);
-                    }
-                }
-            }
-
-            /// <summary>
-            /// Rex=0x41
-            /// </summary>
-            internal bool FlagTargetModrmRegOrMem
-            {
-                get
-                {
-                    return ((this.ByteValue & 0x1) == 0x1);
-                }
-                set
-                {
-                    if (value)
-                    {
-                        this.ByteValue = (byte)(this.ByteValue | 0x1);
-                    }
-                    else
-                    {
-                        this.ByteValue = (byte)(this.ByteValue & ~0x1);
-                    }
-                }
-            }
-            internal bool FlagTargetSIBIndex
-            {
-                get
-                {
-                    return ((this.ByteValue & 0x2) == 0x2);
-                }
-                set
-                {
-                    if (value)
-                    {
-                        this.ByteValue = (byte)(this.ByteValue | 0x2);
-                    }
-                    else
-                    {
-                        this.ByteValue = (byte)(this.ByteValue & ~0x2);
-                    }
-                }
-            }
-        }
 
         private class X86InstructionDecodeInfo
         {
@@ -148,9 +53,6 @@ namespace Reko.Arch.X86
 
             bool isSegmentOverrideActive;
             RegisterStorage segmentOverride;
-
-            bool isRegisterExtensionActive;
-            X86LegacyCodeRegisterExtension registerExtension;
 
             // These fields are for synthesis.
             public PrimitiveType dataWidth;
@@ -161,7 +63,6 @@ namespace Reko.Arch.X86
 #nullable disable
             internal X86InstructionDecodeInfo()
             {
-                this.registerExtension = new X86LegacyCodeRegisterExtension(0);
                 this.ops = new List<MachineOperand>();
                 this.Reset();
             }
@@ -175,8 +76,11 @@ namespace Reko.Arch.X86
                 this.segmentOverride = RegisterStorage.None;
 
                 // We do not reset isRegisterExtensionPrefixEnabled as that is set by the processor mode
-                this.isRegisterExtensionActive = false;
-                this.registerExtension.Reset();
+                this.RexPrefix = false;
+                this.RExtension = 0;
+                this.XExtension = 0;
+                this.BExtension = 0;
+                this.IsWide = false;
 
                 this.F2Prefix = false;
                 this.F3Prefix = false;
@@ -222,31 +126,12 @@ namespace Reko.Arch.X86
                 }
             }
 
-            internal bool IsRegisterExtensionActive()
-            {
-                return this.isRegisterExtensionActive;
-            }
+            internal bool RexPrefix { get; set; }
 
-            internal X86LegacyCodeRegisterExtension RegisterExtension
-            {
-                get
-                {
-                    return this.registerExtension;
-                }
-            }
-
-            internal byte RegisterExtensionPrefixByte
-            {
-                get
-                {
-                    return this.isRegisterExtensionActive ? this.registerExtension.ByteValue : (byte)0;
-                }
-                set
-                {
-                    this.isRegisterExtensionActive = true;
-                    this.registerExtension.ByteValue = value;
-                }
-            }
+            internal int RExtension { get; set; }
+            internal int XExtension { get; set; }
+            internal int BExtension { get; set; }
+            internal bool IsWide { get; set; }
 
             internal bool IsModRegMemByteActive()
             {
@@ -428,14 +313,14 @@ namespace Reko.Arch.X86
         private RegisterStorage RegFromBitsRexB(int bits, DataType dataWidth)
         {
             int reg_bits = bits & 7;
-            reg_bits |= this.decodingContext.RegisterExtension.FlagTargetModrmRegOrMem ? 8 : 0;
+            reg_bits |= this.decodingContext.BExtension;
             return GpRegFromBits(reg_bits, dataWidth);
         }
 
         private RegisterStorage RegFromBitsRexR(int bits, PrimitiveType dataWidth, Func<int, PrimitiveType, RegisterStorage> fnReg)
         {
             int reg_bits = bits & 7;
-            reg_bits |= this.decodingContext.RegisterExtension.FlagTargetModrmRegister ? 8 : 0;
+            reg_bits |= this.decodingContext.RExtension;
             reg_bits |= this.decodingContext.EvexR ? 16 : 0;
             return fnReg(reg_bits, dataWidth);
         }
@@ -461,14 +346,14 @@ namespace Reko.Arch.X86
         private RegisterStorage RegFromBitsRexX(int bits, PrimitiveType dataWidth, Func<int, PrimitiveType, RegisterStorage> fnReg)
         {
             int reg_bits = bits & 7;
-            reg_bits |= this.decodingContext.RegisterExtension.FlagTargetSIBIndex ? 8 : 0;
+            reg_bits |= this.decodingContext.XExtension;
             return fnReg(reg_bits, dataWidth);
         }
 
         private RegisterStorage RegFromBitsRexB(int bits, PrimitiveType dataWidth, Func<int, PrimitiveType, RegisterStorage> fnReg)
         {
             int reg_bits = bits & 7;
-            reg_bits |= this.decodingContext.RegisterExtension.FlagTargetModrmRegOrMem ? 8 : 0;
+            reg_bits |= this.decodingContext.BExtension;
             reg_bits |= this.decodingContext.EvexX ? 16 : 0;
             return fnReg(reg_bits, dataWidth);
         }
@@ -486,10 +371,10 @@ namespace Reko.Arch.X86
 				case 1: return Registers.cl;
 				case 2: return Registers.dl;
 				case 3: return Registers.bl;
-                case 4: return this.decodingContext.IsRegisterExtensionActive() ? Registers.spl : Registers.ah;
-                case 5: return this.decodingContext.IsRegisterExtensionActive() ? Registers.bpl : Registers.ch;
-                case 6: return this.decodingContext.IsRegisterExtensionActive() ? Registers.sil : Registers.dh;
-                case 7: return this.decodingContext.IsRegisterExtensionActive() ? Registers.dil : Registers.bh;
+                case 4: return this.decodingContext.RexPrefix ? Registers.spl : Registers.ah;
+                case 5: return this.decodingContext.RexPrefix ? Registers.bpl : Registers.ch;
+                case 6: return this.decodingContext.RexPrefix ? Registers.sil : Registers.dh;
+                case 7: return this.decodingContext.RexPrefix ? Registers.dil : Registers.bh;
                 case 8: return Registers.r8b;
                 case 9: return Registers.r9b;
                 case 10: return Registers.r10b;
@@ -1431,7 +1316,7 @@ namespace Reko.Arch.X86
             }
             else
             {
-                if (dasm.decodingContext.RegisterExtension.FlagWideValue)
+                if (dasm.decodingContext.IsWide)
                     reg = Registers.rdx;
                 else
                     reg = Registers.edx;
@@ -1653,7 +1538,7 @@ public static NyiDecoder<X86Disassembler, Mnemonic, X86Instruction> nyi(string m
             case OperandType.x:
                 return VexVectorLength[this.decodingContext.VexLongCode];
             case OperandType.y:
-                return (this.isRegisterExtensionEnabled && this.decodingContext.RegisterExtension.FlagWideValue) ? PrimitiveType.Word64: PrimitiveType.Word32;
+                return (this.decodingContext.IsWide) ? PrimitiveType.Word64: PrimitiveType.Word32;
             case OperandType.z:
                 return this.decodingContext.dataWidth.BitSize == 64 ? PrimitiveType.Int32 : this.decodingContext.dataWidth;
             }
@@ -1884,7 +1769,7 @@ public static NyiDecoder<X86Disassembler, Mnemonic, X86Instruction> nyi(string m
                     else
                     {
                         disp8Scale = decodingContext.EvexBroadcast
-                            ? (decodingContext.RegisterExtension.FlagWideValue ? 3 : 2)
+                            ? (decodingContext.IsWide ? 3 : 2)
                             : VexVectorDisp8Shifts[decodingContext.VexLongCode];
                     }
                     offset = Constant.Int32(offset.ToInt32() << disp8Scale);
@@ -1940,7 +1825,7 @@ public static NyiDecoder<X86Disassembler, Mnemonic, X86Instruction> nyi(string m
                 3 => "0F3A",
                 _ => "0F"
             });
-            fragments.Add((ctx.RegisterExtension.FlagWideValue) ? "W1" : "W0");
+            fragments.Add(ctx.IsWide ? "W1" : "W0");
             var msg = string.Format("{0} {1:X2}",
                 string.Join('.', fragments),
                 (uint) op);
