@@ -204,7 +204,7 @@ namespace Reko.Arch.X86
 
         public override X86Disassembler CreateDisassembler(IServiceProvider services, Decoder[] rootDecoders, EndianImageReader rdr, Dictionary<string, object> options)
         {
-            var dasm = new X86Disassembler(services, rootDecoders, this, rdr, PrimitiveType.Word16, PrimitiveType.Word16, false);
+            var dasm = new X86Disassembler(services, rootDecoders, this, rdr, PrimitiveType.Word16, PrimitiveType.Word16);
             if (!options.ContainsKey("Emulate8087") || (string) options["Emulate8087"] == "true")
             {
                 dasm.Emulate8087 = true;
@@ -255,7 +255,7 @@ namespace Reko.Arch.X86
 
         public override X86Disassembler CreateDisassembler(IServiceProvider services, Decoder[] rootDecoders, EndianImageReader rdr, Dictionary<string,object> options)
         {
-            return new X86Disassembler(services, rootDecoders, this, rdr, PrimitiveType.Word16, PrimitiveType.Word16, false);
+            return new X86Disassembler(services, rootDecoders, this, rdr, PrimitiveType.Word16, PrimitiveType.Word16);
         }
 
         public override IProcessorEmulator CreateEmulator(IntelArchitecture arch, SegmentMap segmentMap, IPlatformEmulator envEmulator)
@@ -374,7 +374,7 @@ namespace Reko.Arch.X86
 
         public override X86Disassembler CreateDisassembler(IServiceProvider services, Decoder[] rootDecoders, EndianImageReader rdr, Dictionary<string, object> options)
         {
-            return new X86Disassembler(services, rootDecoders, this, rdr, PrimitiveType.Word32, PrimitiveType.Word32, false);
+            return new X86Disassembler(services, rootDecoders, this, rdr, PrimitiveType.Word32, PrimitiveType.Word32);
         }
 
         public override IProcessorEmulator CreateEmulator(IntelArchitecture arch, SegmentMap segmentMap, IPlatformEmulator envEmulator)
@@ -454,7 +454,7 @@ namespace Reko.Arch.X86
 
         public override X86Disassembler CreateDisassembler(IServiceProvider services, Decoder[] rootDecoders, EndianImageReader rdr, Dictionary<string, object> options)
         {
-            return new X86Disassembler(services, rootDecoders, this, rdr, PrimitiveType.Word32, PrimitiveType.Word64, true);
+            return new X86Disassembler(services, rootDecoders, this, rdr, PrimitiveType.Word32, PrimitiveType.Word64);
         }
 
         public override IProcessorEmulator CreateEmulator(IntelArchitecture arch, SegmentMap segmentMap, IPlatformEmulator envEmulator)

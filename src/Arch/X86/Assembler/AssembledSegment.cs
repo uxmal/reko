@@ -19,10 +19,7 @@
 #endregion
 
 using Reko.Core.Assemblers;
-using System;
 using System.Collections.Generic;
-using System.Text;
-using Reko.Core.Types;
 
 namespace Reko.Arch.X86.Assembler
 {

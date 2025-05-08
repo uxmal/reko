@@ -22,7 +22,6 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using System;
-using System.Collections;
 
 namespace Reko.Arch.X86
 {

@@ -74,10 +74,8 @@ namespace Reko.UnitTests.Arch.X86.Disassembler
                 ProcessorMode.Protected64,
                 rdr,
                 PrimitiveType.Word32,
-                PrimitiveType.Word64,
-                true);
-            var instrs = dasm.ToArray();    //$DEBUG
-            return instrs.First();
+                PrimitiveType.Word64);
+            return dasm.First();
         }
 
         private void CreateDisassembler16(params byte[] bytes)
@@ -95,25 +93,11 @@ namespace Reko.UnitTests.Arch.X86.Disassembler
                 ProcessorMode.Real,
                 mem.CreateLeReader(mem.BaseAddress),
                 PrimitiveType.Word16,
-                PrimitiveType.Word16,
-                false);
+                PrimitiveType.Word16);
             if (options != null && options.ContainsKey("Emulate8087"))
             {
                 dasm.Emulate8087 = true;
             }
-        }
-
-        private void CreateDisassembler32(MemoryArea mem)
-        {
-            var decoders = ProcessorMode.Protected32.CreateRootDecoders(options);
-            dasm = new X86Disassembler(
-                sc,
-                decoders,
-                ProcessorMode.Protected32,
-                mem.CreateLeReader(mem.BaseAddress),
-                PrimitiveType.Word32,
-                PrimitiveType.Word32,
-                false);
         }
 
         private void CreateDisassembler16(EndianImageReader rdr)
@@ -125,8 +109,7 @@ namespace Reko.UnitTests.Arch.X86.Disassembler
                 ProcessorMode.Real,
                 rdr,
                 PrimitiveType.Word16,
-                PrimitiveType.Word16,
-                false);
+                PrimitiveType.Word16);
         }
 
         private void AssertCode16(string sExp, params byte[] bytes)
@@ -362,8 +345,7 @@ movzx	ax,byte ptr [bp+4h]
                 ProcessorMode.Protected32,
                 rdr,
                 PrimitiveType.Word32,
-                PrimitiveType.Word32,
-                false);
+                PrimitiveType.Word32);
             X86Instruction instr = dasm.First();
             Assert.AreEqual("mov\teax,12345678h", instr.ToString());
             Assert.AreEqual("ptr32", instr.Operands[1].DataType.ToString());

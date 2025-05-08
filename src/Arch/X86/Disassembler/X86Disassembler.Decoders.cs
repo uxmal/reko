@@ -433,7 +433,7 @@ namespace Reko.Arch.X86
                 {
                     return disasm.CreateInvalidInstruction();
                 }
-                var r = (~op2 >> 4) & 0x8;
+                var r = (~op2 >>> 4) & 0x8;
                 var vvvv = (~op2 >> 3) & 0xF;
                 var pp = op2 & 3;
                 ctx.RexPrefix = true;

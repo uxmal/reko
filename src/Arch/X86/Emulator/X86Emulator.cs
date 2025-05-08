@@ -92,7 +92,7 @@ namespace Reko.Arch.X86.Emulator
             map = segmentMap;
             this.ipReg = ipReg;
             this.cxReg = cxReg;
-            Registers = new ulong[40];
+            Registers = new ulong[56];
             iFlags = X86.Registers.eflags.Number;
             this.envEmulator = envEmulator;
             dasm = default!;

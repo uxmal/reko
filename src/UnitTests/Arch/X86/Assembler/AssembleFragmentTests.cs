@@ -91,8 +91,7 @@ namespace Reko.UnitTests.Arch.X86.Assembler
                 ProcessorMode.Real,
                 mem.CreateLeReader(mem.BaseAddress),
                 PrimitiveType.Word16,
-                PrimitiveType.Word16,
-                false);
+                PrimitiveType.Word16);
             StringBuilder sb = new StringBuilder();
             try
             {

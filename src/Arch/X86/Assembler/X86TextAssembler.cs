@@ -18,7 +18,6 @@
  */
 #endregion
 
-using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Assemblers;
 using Reko.Core.Loading;

@@ -23,7 +23,6 @@ using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 
 namespace Reko.Arch.X86
 {
@@ -66,6 +65,7 @@ namespace Reko.Arch.X86
             private readonly Decoder[] Grp17;
             private readonly Decoder[] s_fpuDecoders;
             private Func<Mnemonic, InstrClass, Mutator<X86Disassembler>[], Decoder> rexInstr;
+            private Func<Decoder, Decoder> rex2Instr;
             private Func<Mnemonic, InstrClass, Mutator<X86Disassembler>[], Decoder> instr186;
             private Func<Decoder, Decoder> instr286;
             private Func<Decoder, Decoder> instr386;
@@ -89,6 +89,15 @@ namespace Reko.Arch.X86
                     isa.rexInstr = isa.MakeRexDecoder;
                 else
                     isa.rexInstr = Instr;
+
+                if (options.TryGetValue("apx", out var oApx))
+                {
+                    isa.rex2Instr = isa.MakeRex2Decoder;
+                }
+                else
+                {
+                    isa.rex2Instr = d => d;
+                }
 
                 if (options.TryGetValue(ProcessorOption.InstructionSet, out var oIsa))
                 {
@@ -237,9 +246,19 @@ namespace Reko.Arch.X86
                 return rexInstr(mnemonic, InstrClass.Linear, mutators);
             }
 
+            public Decoder Rex2Instr(Decoder fallback)
+            {
+                return rex2Instr(fallback);
+            }
+
             public Decoder MakeRexDecoder(Mnemonic mnemonic, InstrClass iclass, Mutator<X86Disassembler>[] mutators)
             {
                 return new Rex_or_InstructionDecoder(this.rootDecoders);
+            }
+
+            public Decoder MakeRex2Decoder(Decoder fallback)
+            {
+                return new Rex2Decoder(this.rootDecoders, this.s_decoders0F);
             }
 
             public static VexInstructionDecoder VexInstr(Mnemonic vex, params Mutator<X86Disassembler>[] mutators)

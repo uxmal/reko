@@ -29,6 +29,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using System.Runtime.Intrinsics.Arm;
+using System.Security.Cryptography;
 
 namespace Reko.Arch.X86
 {
@@ -205,7 +207,6 @@ namespace Reko.Arch.X86
 		private readonly EndianImageReader rdr;
         private readonly InstrClass privilegedMask;
 
-        private readonly bool isRegisterExtensionEnabled;
         private readonly X86InstructionDecodeInfo decodingContext;
 
         private Address addr;
@@ -223,19 +224,17 @@ namespace Reko.Arch.X86
             ProcessorMode mode,
             EndianImageReader rdr,
             PrimitiveType defaultWordSize,
-            PrimitiveType defaultAddressSize,
-            bool useRexPrefix)
+            PrimitiveType defaultAddressSize)
 		{
             this.services = services;
             this.rootDecoders = rootDecoders;
-            Debug.Assert(rootDecoders != null);
+            Debug.Assert(rootDecoders is not null);
             this.mode = mode;
             this.privilegedMask = mode.IsProtected ? InstrClass.None : InstrClass.Privileged;
 			this.rdr = rdr;
             this.addr = rdr.Address;
 			this.defaultDataWidth = defaultWordSize;
 			this.defaultAddressWidth = defaultAddressSize;
-            this.isRegisterExtensionEnabled = useRexPrefix;
             this.decodingContext = new X86InstructionDecodeInfo();
         }
 
@@ -361,97 +360,30 @@ namespace Reko.Arch.X86
         private RegisterStorage GpRegFromBits(int bits, DataType dataWidth)
 		{
             int bitSize = dataWidth.BitSize;
-            bits &= 0xF;
-			switch (bitSize)
+            bits &= 0x1F;
+            RegisterStorage[] bank;
+            switch (bitSize)
             {
             case 8:
-				switch (bits)
-				{
-				case 0: return Registers.al;
-				case 1: return Registers.cl;
-				case 2: return Registers.dl;
-				case 3: return Registers.bl;
-                case 4: return this.decodingContext.RexPrefix ? Registers.spl : Registers.ah;
-                case 5: return this.decodingContext.RexPrefix ? Registers.bpl : Registers.ch;
-                case 6: return this.decodingContext.RexPrefix ? Registers.sil : Registers.dh;
-                case 7: return this.decodingContext.RexPrefix ? Registers.dil : Registers.bh;
-                case 8: return Registers.r8b;
-                case 9: return Registers.r9b;
-                case 10: return Registers.r10b;
-                case 11: return Registers.r11b;
-                case 12: return Registers.r12b;
-                case 13: return Registers.r13b;
-                case 14: return Registers.r14b;
-                case 15: return Registers.r15b;
-				}
+                bank = decodingContext.RexPrefix
+                    ? Registers.Gp8BitRegisters_Rex
+                    : Registers.Gp8BitRegisters;
                 break;
             case 16:
-				switch (bits)
-				{
-				case 0: return Registers.ax;
-				case 1: return Registers.cx;
-				case 2: return Registers.dx;
-				case 3: return Registers.bx;
-				case 4: return Registers.sp;
-				case 5: return Registers.bp;
-				case 6: return Registers.si;
-				case 7: return Registers.di;
-                case 8: return Registers.r8w;
-                case 9: return Registers.r9w;
-                case 10: return Registers.r10w;
-                case 11: return Registers.r11w;
-                case 12: return Registers.r12w;
-                case 13: return Registers.r13w;
-                case 14: return Registers.r14w;
-                case 15: return Registers.r15w;
-				}
-			    break;
+                bank = Registers.Gp16BitRegisters;
+                break;
             case 32:
             case 48:        // 48-bit far pointer
-                switch (bits)
-				{
-				case 0: return Registers.eax;
-				case 1: return Registers.ecx;
-				case 2: return Registers.edx;
-				case 3: return Registers.ebx;
-				case 4: return Registers.esp;
-				case 5: return Registers.ebp;
-				case 6: return Registers.esi;
-				case 7: return Registers.edi;
-                case 8: return Registers.r8d;
-                case 9: return Registers.r9d;
-                case 10: return Registers.r10d;
-                case 11: return Registers.r11d;
-                case 12: return Registers.r12d;
-                case 13: return Registers.r13d;
-                case 14: return Registers.r14d;
-                case 15: return Registers.r15d;
-                }
+                bank = Registers.Gp32BitRegisters;
                 break;
             case 64:
-                switch (bits)
-                {
-                case 0: return Registers.rax;
-                case 1: return Registers.rcx;
-                case 2: return Registers.rdx;
-                case 3: return Registers.rbx;
-                case 4: return Registers.rsp;
-                case 5: return Registers.rbp;
-                case 6: return Registers.rsi;
-                case 7: return Registers.rdi;
-                case 8: return Registers.r8;
-                case 9: return Registers.r9;
-                case 10: return Registers.r10;
-                case 11: return Registers.r11;
-                case 12: return Registers.r12;
-                case 13: return Registers.r13;
-                case 14: return Registers.r14;
-                case 15: return Registers.r15;
-                }
+                bank = Registers.Gp64BitRegisters;
                 break;
-			}
-			throw new ArgumentOutOfRangeException("Unsupported data width: " + dataWidth.ToString());
-		}
+            default:
+                throw new ArgumentOutOfRangeException("Unsupported data width: " + dataWidth.ToString());
+            }
+            return bank[bits];
+        }
 
         private RegisterStorage XmmRegFromBits(int bits, DataType dataWidth)
         {
@@ -532,7 +464,7 @@ namespace Reko.Arch.X86
             if (!dasm.TryEnsureModRM(out byte modRm))
                 return false;
             var creg = dasm.mode.GetControlRegister((modRm >> 3) & 7);
-            if (creg == null)
+            if (creg is null)
                 return false;
             var operand = creg;
             dasm.decodingContext.ops.Add(operand);
@@ -547,7 +479,7 @@ namespace Reko.Arch.X86
             if (!dasm.TryEnsureModRM(out byte modRm))
                 return false;
             var dreg = dasm.mode.GetDebugRegister((modRm >> 3) & 7);
-            if (dreg == null)
+            if (dreg is null)
                 return false;
             var operand = dreg;
             dasm.decodingContext.ops.Add(operand);
@@ -565,7 +497,7 @@ namespace Reko.Arch.X86
                 var width = d.OperandWidth(opType);
                 d.decodingContext.iWidth = width;
                 var op = d.DecodeModRM(opType, width, d.GpRegFromBits);
-                if (op == null)
+                if (op is null)
                     return false;
                 d.decodingContext.ops.Add(op);
                 return true;
@@ -652,7 +584,7 @@ namespace Reko.Arch.X86
                 var width = d.OperandWidth(opType);
                 d.decodingContext.iWidth = width;
                 var op = d.GpRegFromBits(d.decodingContext.VexRegister, width);
-                if (op == null)
+                if (op is null)
                     return false;
                 d.decodingContext.ops.Add(op);
                 return true;
@@ -792,7 +724,7 @@ namespace Reko.Arch.X86
                 var ops = d.decodingContext.ops;
                 width = d.OperandWidth(opType); 
                 var op = d.CreateImmediateOperand(width);
-                if (op == null)
+                if (op is null)
                     return false;
                 d.decodingContext.ops.Add(op);
                 return true;
@@ -816,7 +748,7 @@ namespace Reko.Arch.X86
             width = (PrimitiveType) ops[^1].DataType;
             d.decodingContext.iWidth = width;
             var op = d.CreateImmediateOperand(width);
-            if (op == null)
+            if (op is null)
                 return false;
             d.decodingContext.ops.Add(op);
             return true;
@@ -1005,7 +937,7 @@ namespace Reko.Arch.X86
                 if (width.BitSize == 0)
                     return false;
                 var op = d.DecodeModRM(opType, width, d.MmxRegFromBits);
-                if (op == null)
+                if (op is null)
                     return false;
                 d.decodingContext.ops.Add(op);
                 return true;
@@ -1200,7 +1132,7 @@ namespace Reko.Arch.X86
                 if (width.BitSize == 0)
                     return false;
                 var op = d.DecodeModRM(opType, width, d.XmmRegFromBits);
-                if (op == null)
+                if (op is null)
                     return false;
                 d.decodingContext.ops.Add(op);
                 return true;
@@ -1272,12 +1204,6 @@ namespace Reko.Arch.X86
             dasm.decodingContext.ops.Add(reg);
             return true;
         }
-        /*                d.decodingContext.iWidth = d.OperandWidth(width);
-                var op = new RegisterStorage(d.RegFromBitsRexB(
-                    (byte)u, 
-                    d.decodingContext.iWidth));
-                d.decodingContext.ops.Add(op);
-*/
 
         /// <summary>
         /// Force the current data width to 'byte'.
@@ -1428,14 +1354,14 @@ namespace Reko.Arch.X86
             return true;
         }
 
-/// <summary>
-/// Use the <see cref="NyiDecoder{TDasm, TMnemonic, TInstr}"/> to mark instructions for which no decoder has 
-/// been written yet.
-/// </summary>
-/// <remarks>
-/// The x86 instruction set is large and keeps growing....
-/// </remarks>
-public static NyiDecoder<X86Disassembler, Mnemonic, X86Instruction> nyi(string message)
+        /// <summary>
+        /// Use the <see cref="NyiDecoder{TDasm, TMnemonic, TInstr}"/> to mark instructions for which no decoder has 
+        /// been written yet.
+        /// </summary>
+        /// <remarks>
+        /// The x86 instruction set is large and keeps growing....
+        /// </remarks>
+        public static NyiDecoder<X86Disassembler, Mnemonic, X86Instruction> nyi(string message)
         {
             return new NyiDecoder<X86Disassembler, Mnemonic, X86Instruction>(message);
         }
@@ -1459,7 +1385,9 @@ public static NyiDecoder<X86Disassembler, Mnemonic, X86Instruction> nyi(string m
             return true;
 		}
 
-        // Operand types as defined by the Intel manual section A.2.2
+        /// <summary>
+        /// Operand types as defined by the Intel manual section A.2.2
+        /// </summary>
         private enum OperandType
         {
             None,
@@ -1595,10 +1523,10 @@ public static NyiDecoder<X86Disassembler, Mnemonic, X86Instruction> nyi(string m
 
 		private static readonly RegisterStorage [] s_ma16Index =
 		{
-			Registers.si,	 
-			Registers.di,	 
-			Registers.si,	 
-			Registers.di,	 
+			Registers.si,
+			Registers.di,
+			Registers.si,
+			Registers.di,
 			RegisterStorage.None,
 			RegisterStorage.None,
 			RegisterStorage.None,
@@ -1747,7 +1675,7 @@ public static NyiDecoder<X86Disassembler, Mnemonic, X86Instruction> nyi(string m
             // Now fetch the offset if there was any.
 
             Constant? offset;
-            if (offsetWidth != null)
+            if (offsetWidth is not null)
             {
                 if (!TryReadLe(offsetWidth, out offset))
                     return null;

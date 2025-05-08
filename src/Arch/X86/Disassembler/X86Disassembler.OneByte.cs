@@ -356,7 +356,7 @@ namespace Reko.Arch.X86
                     s_invalid);
 				d[0xD5] = Amd64Instr(
                     Instr(Mnemonic.aad, Ib),
-				    s_invalid);
+				    Rex2Instr(s_invalid));
                 d[0xD6] = s_invalid;
 				d[0xD7] = Instr(Mnemonic.xlat, b);
 

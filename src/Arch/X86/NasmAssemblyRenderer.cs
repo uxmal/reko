@@ -18,12 +18,7 @@
  */
 #endregion
 
-using Reko.Core.Expressions;
-using Reko.Core.Machine;
 using Reko.Core.Types;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Reko.Arch.X86
 {

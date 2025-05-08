@@ -32,16 +32,17 @@ namespace Reko.Arch.X86.Analysis
 {
     /// <summary>
     /// This analysis evaluates X86 procedures, looking for specific code
-    /// patterns involving the `fstsw` instruction. If the patterns are
+    /// patterns involving the <c>fstsw</c> instruction. If the patterns are
     /// present, this analyis will replace them with constructs that will be
     /// cleaned up by the <see cref="ConditionCodeEliminator"/>.
     /// </summary>
     /// <remarks>
     /// The patterns usually  manifest as sequences of instructions like:
-    /// 
+    /// <code>
     ///     fstsw   ax
     ///     test    ah,40h
     ///     jpe     somewhere
+    /// </code>
     ///     
     /// where the bits in the x87 status word are copied to the AX register 
     /// and then examined. 
@@ -49,28 +50,34 @@ namespace Reko.Arch.X86.Analysis
     /// By the time this transform is applied, lifting and SSA transformation
     /// will have resulted in intermediate code like:
     /// 
+    /// <code>
     ///     ax_1 = __fstsw(FPUF)
     ///     ah_2 = SLICE(ax_1, byte, 0)
-    ///     SZP_3 = cond(ah_2 & 0x40<8>)
+    ///     SZP_3 = cond(ah_2 &amp; 0x40&lt;8&gt;)
     ///     O_4 = false
     ///     C_4 = false
-    ///     P_5 = SZP_3 & 0x20<32>
+    ///     P_5 = SZP_3 &amp; 0x20&lt;32&gt;
     ///     branch Test(PE,P_5) somewhere
+    /// </code>
     ///     
     /// The net effect of this analysis is to bypass all that bit twiddling,
     /// resulting in the following code:
     /// 
+    /// <code>
     ///     ax_1 = __fstsw(FPUF)
     ///     ah_2 = SLICE(ax_1, byte, 0)
-    ///     SZP_3 = cond(ah_2 & 0x40<8>)
+    ///     SZP_3 = cond(ah_2 &amp; 0x40&lt;8&gt;)
     ///     O_4 = false
     ///     C_4 = false
-    ///     P_5 = SZP_3 & 0x20<32>
-    ///     branch Test(EQ,FPUF) somewhere <= note the changed Test instruction
+    ///     P_5 = SZP_3 &amp; 0x20&lt;32&gt;
+    ///     branch Test(EQ,FPUF) somewhere &lt;= note the changed Test instruction
+    /// </code>
     ///     
-    /// After value propagation and dead code elminiation, we get:
+    /// After value propagation and dead code elimination, we get:
     /// 
+    /// <code>
     ///     branch Test(EQ,FPUF)
+    /// </code>
     /// 
     /// This analysis used to be done by the <see cref="X86Rewriter"/>, but
     /// because no SSA is available that early, simplifying assumptions had

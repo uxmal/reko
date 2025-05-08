@@ -366,8 +366,7 @@ foo		endp
                 ProcessorMode.Real,
                 mem.CreateLeReader(addr),
                 PrimitiveType.Word16,
-                PrimitiveType.Word16,
-                false);
+                PrimitiveType.Word16);
             Assert.AreEqual("mov\tword ptr [0400h],1234h", dasm.First().ToString());
         }
 

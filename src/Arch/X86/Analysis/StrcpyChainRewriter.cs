@@ -29,7 +29,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace Reko.Arch.X86.Analysis
 {
     /// <summary>
-    /// Rewrites x86 strcpy chain. Expression coalescing should be done before.
+    /// Rewrites x86 strcpy chains. Expression coalescing should be done before.
     /// </summary>
     /// <remarks>
     /// Many x86 binaries contain strcpy(&lt;dst&gt;, &lt;src&gt;) compiled

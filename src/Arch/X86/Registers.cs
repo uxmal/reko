@@ -20,7 +20,6 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
-using Reko.Core.Lib;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -107,6 +106,22 @@ namespace Reko.Arch.X86
         public static readonly RegisterStorage r13;
         public static readonly RegisterStorage r14;
         public static readonly RegisterStorage r15;
+        public static readonly RegisterStorage r16;
+        public static readonly RegisterStorage r17;
+        public static readonly RegisterStorage r18;
+        public static readonly RegisterStorage r19;
+        public static readonly RegisterStorage r20;
+        public static readonly RegisterStorage r21;
+        public static readonly RegisterStorage r22;
+        public static readonly RegisterStorage r23;
+        public static readonly RegisterStorage r24;
+        public static readonly RegisterStorage r25;
+        public static readonly RegisterStorage r26;
+        public static readonly RegisterStorage r27;
+        public static readonly RegisterStorage r28;
+        public static readonly RegisterStorage r29;
+        public static readonly RegisterStorage r30;
+        public static readonly RegisterStorage r31;
 
         public static readonly RegisterStorage r8d;
         public static readonly RegisterStorage r9d;
@@ -116,6 +131,22 @@ namespace Reko.Arch.X86
         public static readonly RegisterStorage r13d;
         public static readonly RegisterStorage r14d;
         public static readonly RegisterStorage r15d;
+        public static readonly RegisterStorage r16d;
+        public static readonly RegisterStorage r17d;
+        public static readonly RegisterStorage r18d;
+        public static readonly RegisterStorage r19d;
+        public static readonly RegisterStorage r20d;
+        public static readonly RegisterStorage r21d;
+        public static readonly RegisterStorage r22d;
+        public static readonly RegisterStorage r23d;
+        public static readonly RegisterStorage r24d;
+        public static readonly RegisterStorage r25d;
+        public static readonly RegisterStorage r26d;
+        public static readonly RegisterStorage r27d;
+        public static readonly RegisterStorage r28d;
+        public static readonly RegisterStorage r29d;
+        public static readonly RegisterStorage r30d;
+        public static readonly RegisterStorage r31d;
 
         public static readonly RegisterStorage r8w;
         public static readonly RegisterStorage r9w;
@@ -125,6 +156,22 @@ namespace Reko.Arch.X86
         public static readonly RegisterStorage r13w;
         public static readonly RegisterStorage r14w;
         public static readonly RegisterStorage r15w;
+        public static readonly RegisterStorage r16w;
+        public static readonly RegisterStorage r17w;
+        public static readonly RegisterStorage r18w;
+        public static readonly RegisterStorage r19w;
+        public static readonly RegisterStorage r20w;
+        public static readonly RegisterStorage r21w;
+        public static readonly RegisterStorage r22w;
+        public static readonly RegisterStorage r23w;
+        public static readonly RegisterStorage r24w;
+        public static readonly RegisterStorage r25w;
+        public static readonly RegisterStorage r26w;
+        public static readonly RegisterStorage r27w;
+        public static readonly RegisterStorage r28w;
+        public static readonly RegisterStorage r29w;
+        public static readonly RegisterStorage r30w;
+        public static readonly RegisterStorage r31w;
 
         public static readonly RegisterStorage spl;
         public static readonly RegisterStorage bpl;
@@ -138,6 +185,22 @@ namespace Reko.Arch.X86
         public static readonly RegisterStorage r13b;
         public static readonly RegisterStorage r14b;
         public static readonly RegisterStorage r15b;
+        public static readonly RegisterStorage r16b;
+        public static readonly RegisterStorage r17b;
+        public static readonly RegisterStorage r18b;
+        public static readonly RegisterStorage r19b;
+        public static readonly RegisterStorage r20b;
+        public static readonly RegisterStorage r21b;
+        public static readonly RegisterStorage r22b;
+        public static readonly RegisterStorage r23b;
+        public static readonly RegisterStorage r24b;
+        public static readonly RegisterStorage r25b;
+        public static readonly RegisterStorage r26b;
+        public static readonly RegisterStorage r27b;
+        public static readonly RegisterStorage r28b;
+        public static readonly RegisterStorage r29b;
+        public static readonly RegisterStorage r30b;
+        public static readonly RegisterStorage r31b;
 
         public static readonly RegisterStorage xmm0;
         public static readonly RegisterStorage xmm1;
@@ -280,6 +343,10 @@ namespace Reko.Arch.X86
         internal static readonly RegisterStorage[] All;
 
         internal static readonly RegisterStorage[] Gp64BitRegisters;
+        internal static readonly RegisterStorage[] Gp32BitRegisters;
+        internal static readonly RegisterStorage[] Gp16BitRegisters;
+        internal static readonly RegisterStorage[] Gp8BitRegisters;
+        internal static readonly RegisterStorage[] Gp8BitRegisters_Rex;
         internal static readonly RegisterStorage[] XmmRegisters;
         internal static readonly RegisterStorage[] YmmRegisters;
         internal static readonly RegisterStorage[] ZmmRegisters;
@@ -310,6 +377,22 @@ namespace Reko.Arch.X86
             r13 = factory.Reg64("r13");
             r14 = factory.Reg64("r14");
             r15 = factory.Reg64("r15");
+            r16 = factory.Reg64("r16");
+            r17 = factory.Reg64("r17");
+            r18 = factory.Reg64("r18");
+            r19 = factory.Reg64("r19");
+            r20 = factory.Reg64("r20");
+            r21 = factory.Reg64("r21");
+            r22 = factory.Reg64("r22");
+            r23 = factory.Reg64("r23");
+            r24 = factory.Reg64("r24");
+            r25 = factory.Reg64("r25");
+            r26 = factory.Reg64("r26");
+            r27 = factory.Reg64("r27");
+            r28 = factory.Reg64("r28");
+            r29 = factory.Reg64("r29");
+            r30 = factory.Reg64("r30");
+            r31 = factory.Reg64("r31");
 
             eax = RegisterStorage.Reg32("eax", rax.Number);
             ecx = RegisterStorage.Reg32("ecx", rcx.Number);
@@ -388,6 +471,24 @@ namespace Reko.Arch.X86
             r13d = RegisterStorage.Reg32("r13d", r13.Number);
             r14d = RegisterStorage.Reg32("r14d", r14.Number);
             r15d = RegisterStorage.Reg32("r15d", r15.Number);
+            r16d = RegisterStorage.Reg32("r16d", r16.Number);
+            r17d = RegisterStorage.Reg32("r17d", r17.Number);
+            r18d = RegisterStorage.Reg32("r18d", r18.Number);
+            r19d = RegisterStorage.Reg32("r19d", r19.Number);
+            r20d = RegisterStorage.Reg32("r20d", r20.Number);
+            r21d = RegisterStorage.Reg32("r21d", r21.Number);
+            r22d = RegisterStorage.Reg32("r22d", r22.Number);
+            r23d = RegisterStorage.Reg32("r23d", r23.Number);
+            r24d = RegisterStorage.Reg32("r24d", r24.Number);
+            r25d = RegisterStorage.Reg32("r25d", r25.Number);
+            r26d = RegisterStorage.Reg32("r26d", r26.Number);
+            r27d = RegisterStorage.Reg32("r27d", r27.Number);
+            r28d = RegisterStorage.Reg32("r28d", r28.Number);
+            r29d = RegisterStorage.Reg32("r29d", r29.Number);
+            r30d = RegisterStorage.Reg32("r30d", r30.Number);
+            r31d = RegisterStorage.Reg32("r31d", r31.Number);
+
+
             r8w = RegisterStorage.Reg16("r8w", r8.Number);
             r9w = RegisterStorage.Reg16("r9w", r9.Number);
             r10w = RegisterStorage.Reg16("r10w", r10.Number);
@@ -396,6 +497,22 @@ namespace Reko.Arch.X86
             r13w = RegisterStorage.Reg16("r13w", r13.Number);
             r14w = RegisterStorage.Reg16("r14w", r14.Number);
             r15w = RegisterStorage.Reg16("r15w", r15.Number);
+            r16w = RegisterStorage.Reg32("r16w", r16.Number);
+            r17w = RegisterStorage.Reg32("r17w", r17.Number);
+            r18w = RegisterStorage.Reg32("r18w", r18.Number);
+            r19w = RegisterStorage.Reg32("r19w", r19.Number);
+            r20w = RegisterStorage.Reg32("r20w", r20.Number);
+            r21w = RegisterStorage.Reg32("r21w", r21.Number);
+            r22w = RegisterStorage.Reg32("r22w", r22.Number);
+            r23w = RegisterStorage.Reg32("r23w", r23.Number);
+            r24w = RegisterStorage.Reg32("r24w", r24.Number);
+            r25w = RegisterStorage.Reg32("r25w", r25.Number);
+            r26w = RegisterStorage.Reg32("r26w", r26.Number);
+            r27w = RegisterStorage.Reg32("r27w", r27.Number);
+            r28w = RegisterStorage.Reg32("r28w", r28.Number);
+            r29w = RegisterStorage.Reg32("r29w", r29.Number);
+            r30w = RegisterStorage.Reg32("r30w", r30.Number);
+            r31w = RegisterStorage.Reg32("r31w", r31.Number);
 
             spl = RegisterStorage.Reg8("spl", rsp.Number);
             bpl = RegisterStorage.Reg8("bpl", rbp.Number);
@@ -410,6 +527,22 @@ namespace Reko.Arch.X86
             r13b = RegisterStorage.Reg8("r13b", r13.Number);
             r14b = RegisterStorage.Reg8("r14b", r14.Number);
             r15b = RegisterStorage.Reg8("r15b", r15.Number);
+            r16b = RegisterStorage.Reg32("r16b", r16.Number);
+            r17b = RegisterStorage.Reg32("r17b", r17.Number);
+            r18b = RegisterStorage.Reg32("r18b", r18.Number);
+            r19b = RegisterStorage.Reg32("r19b", r19.Number);
+            r20b = RegisterStorage.Reg32("r20b", r20.Number);
+            r21b = RegisterStorage.Reg32("r21b", r21.Number);
+            r22b = RegisterStorage.Reg32("r22b", r22.Number);
+            r23b = RegisterStorage.Reg32("r23b", r23.Number);
+            r24b = RegisterStorage.Reg32("r24b", r24.Number);
+            r25b = RegisterStorage.Reg32("r25b", r25.Number);
+            r26b = RegisterStorage.Reg32("r26b", r26.Number);
+            r27b = RegisterStorage.Reg32("r27b", r27.Number);
+            r28b = RegisterStorage.Reg32("r28b", r28.Number);
+            r29b = RegisterStorage.Reg32("r29b", r29.Number);
+            r30b = RegisterStorage.Reg32("r30b", r30.Number);
+            r31b = RegisterStorage.Reg32("r31b", r31.Number);
 
             mm0 = factory.Reg64("mm0");
             mm1 = factory.Reg64("mm1");
@@ -603,6 +736,23 @@ namespace Reko.Arch.X86
                 r13,
                 r14,
                 r15,
+                r16,
+                r17,
+                r18,
+                r19,
+                r20,
+                r21,
+                r22,
+                r23,
+                r24,
+                r25,
+                r26,
+                r27,
+                r28,
+                r29,
+                r30,
+                r31,
+
                 r8d,
                 r9d,
                 r10d,
@@ -611,6 +761,22 @@ namespace Reko.Arch.X86
                 r13d,
                 r14d,
                 r15d,
+                r16d,
+                r17d,
+                r18d,
+                r19d,
+                r20d,
+                r21d,
+                r22d,
+                r23d,
+                r24d,
+                r25d,
+                r26d,
+                r27d,
+                r28d,
+                r29d,
+                r30d,
+                r31d,
 
                 r8w,
                 r9w,
@@ -620,6 +786,22 @@ namespace Reko.Arch.X86
                 r13w,
                 r14w,
                 r15w,
+                r16w,
+                r17w,
+                r18w,
+                r19w,
+                r20w,
+                r21w,
+                r22w,
+                r23w,
+                r24w,
+                r25w,
+                r26w,
+                r27w,
+                r28w,
+                r29w,
+                r30w,
+                r31w,
 
                 spl,
                 bpl,
@@ -634,6 +816,22 @@ namespace Reko.Arch.X86
                 r13b,
                 r14b,
                 r15b,
+                r16b,
+                r17b,
+                r18b,
+                r19b,
+                r20b,
+                r21b,
+                r22b,
+                r23b,
+                r24b,
+                r25b,
+                r26b,
+                r27b,
+                r28b,
+                r29b,
+                r30b,
+                r31b,
 
                 mm0 ,
                 mm1 ,
@@ -771,6 +969,23 @@ namespace Reko.Arch.X86
                 { r13.Domain, new [] { r13, r13d, r13w, r13b, } },
                 { r14.Domain, new [] { r14, r14d, r14w, r14b, } },
                 { r15.Domain, new [] { r15, r15d, r15w, r15b, } },
+                { r16.Domain, new [] { r16, r16d, r16w, r16b, } },
+                { r17.Domain, new [] { r17, r17d, r17w, r17b, } },
+                { r18.Domain, new [] { r18, r18d, r18w, r18b, } },
+                { r19.Domain, new [] { r19, r19d, r19w, r19b, } },
+                { r20.Domain, new [] { r20, r20d, r20w, r20b, } },
+                { r21.Domain, new [] { r21, r21d, r21w, r21b, } },
+                { r22.Domain, new [] { r22, r22d, r22w, r22b, } },
+                { r23.Domain, new [] { r23, r23d, r23w, r23b, } },
+                { r24.Domain, new [] { r24, r24d, r24w, r24b, } },
+                { r25.Domain, new [] { r25, r25d, r25w, r25b, } },
+                { r26.Domain, new [] { r26, r26d, r26w, r26b, } },
+                { r27.Domain, new [] { r27, r27d, r27w, r27b, } },
+                { r28.Domain, new [] { r28, r28d, r28w, r28b, } },
+                { r29.Domain, new [] { r29, r29d, r29w, r29b, } },
+                { r30.Domain, new [] { r30, r30d, r30w, r30b, } },
+                { r31.Domain, new [] { r31, r31d, r31w, r31b, } },
+
                 { zmm0.Domain, new [] { zmm0, ymm0, xmm0 } },
                 { zmm1.Domain, new [] { zmm1, ymm1, xmm1 } },
                 { zmm2.Domain, new [] { zmm2, ymm2, xmm2 } },
@@ -807,7 +1022,39 @@ namespace Reko.Arch.X86
 
             Gp64BitRegisters = new[]
             {
-                rax, rcx, rdx, rbx, rsp, rbp, rsi, rdi, r8, r9, r10, r11, r12, r13, r14, r15,
+                rax, rcx, rdx, rbx, rsp, rbp, rsi, rdi,
+                r8,  r9,  r10, r11, r12, r13, r14, r15,
+                r16, r17, r18, r19, r20, r21, r22, r23,
+                r24, r25, r26, r27, r28, r29, r30, r31
+            };
+
+            Gp32BitRegisters = new[]
+            {
+                eax,  ecx,  edx,  ebx,  esp,  ebp,  esi,  edi,
+                r8d,  r9d,  r10d, r11d, r12d, r13d, r14d, r15d,
+                r16d, r17d, r18d, r19d, r20d, r21d, r22d, r23d,
+                r24d, r25d, r26d, r27d, r28d, r29d, r30d, r31d
+            };
+
+            Gp16BitRegisters = new[]
+            {
+                ax,   cx,   dx,   bx,   sp,   bp,   si,   di,
+                r8w,  r9w,  r10w, r11w, r12w, r13w, r14w, r15w,
+                r16w, r17w, r18w, r19w, r20w, r21w, r22w, r23w,
+                r24w, r25w, r26w, r27w, r28w, r29w, r30w, r31w
+            };
+
+            Gp8BitRegisters = new[]
+            {
+                al,   cl,   dl,   bl,   ah,   ch,   dh,   bh,
+            };
+
+            Gp8BitRegisters_Rex = new[]
+            {
+                al,   cl,   dl,   bl,   spl,  bpl,  sil,  dil,
+                r8b,  r9b,  r10b, r11b, r12b, r13b, r14b, r15b,
+                r16b, r17b, r18b, r19b, r20b, r21b, r22b, r23b,
+                r24b, r25b, r26b, r27b, r28b, r29b, r30b, r31b
             };
 
             XmmRegisters = new[]

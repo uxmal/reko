@@ -18,45 +18,20 @@
  */
 #endregion
 
-using Reko.Core.Assemblers;
 using Reko.Core.Machine;
 
-namespace Reko.Arch.X86.Assembler
+namespace Reko.Arch.X86.Disassembler;
+
+using Decoder = Decoder<X86Disassembler, Mnemonic, X86Instruction>;
+
+public partial class X86Disassembler
 {
-	public class ParsedOperand
-	{
-		private MachineOperand op;
-		private bool longJmp;
 
-		public ParsedOperand(MachineOperand op, Symbol? sym, bool longJmp)
-		{
-			this.op = op;
-			this.Symbol = sym;
-			this.longJmp = longJmp;
-		}
+    public partial class InstructionSet
+    {
+        private static void CreateApxLegacyDecoders(Decoder[] decoders)
+        {
 
-		public ParsedOperand(MachineOperand op, Symbol? sym)
-		{
-			this.op = op;
-			this.Symbol = sym;
-		}
-
-		public ParsedOperand(MachineOperand op)
-		{
-			this.op = op;
-			this.Symbol = null;
-		}
-
-		public bool Long
-		{
-			get { return longJmp; }
-		}
-
-		public MachineOperand Operand
-		{
-			get { return op; }
-		}
-
-		public Symbol? Symbol { get; set; }
-	}
+        }
+    }
 }

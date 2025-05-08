@@ -18,20 +18,19 @@
  */
 #endregion
 
-using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Assemblers;
 using Reko.Core.Expressions;
+using Reko.Core.Loading;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Diagnostics;
-using System.Text;
+using System.IO;
 using System.Linq;
-using Reko.Core.Memory;
-using Reko.Core.Loading;
+using System.Text;
 
 namespace Reko.Arch.X86.Assembler
 {

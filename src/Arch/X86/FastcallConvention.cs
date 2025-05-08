@@ -19,14 +19,9 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Arch.X86
 {
@@ -36,8 +31,8 @@ namespace Reko.Arch.X86
     /// </summary>
     public class FastcallConvention : AbstractCallingConvention
     {
-        private RegisterStorage[] iArgs;
-        private int stackAlignment;
+        private readonly RegisterStorage[] iArgs;
+        private readonly int stackAlignment;
 
         public FastcallConvention(
             RegisterStorage arg1,
