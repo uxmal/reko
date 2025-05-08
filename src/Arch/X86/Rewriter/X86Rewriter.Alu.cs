@@ -272,7 +272,7 @@ namespace Reko.Arch.X86.Rewriter
             int iOp = (instrCur.Operands.Length == 3) ? 1 : 0;
             var opL = SrcOp(iOp++);
             var opR = SrcOp(iOp);
-            EmitBinOp(opr, 0, instrCur.dataWidth, opL, opR, CopyFlags.EmitCc);
+            EmitBinOp(opr, 0, instrCur.DataWidth, opL, opR, CopyFlags.EmitCc);
         }
 
         private void RewriteBsf()
@@ -464,7 +464,7 @@ namespace Reko.Arch.X86.Rewriter
                 Z,
                 m.Fn(
                     cmpxchg_intrinsic.MakeInstance(op1.DataType),
-                    op1, op2, acc, m.Out(instrCur.dataWidth, acc)));
+                    op1, op2, acc, m.Out(instrCur.DataWidth, acc)));
         }
 
         private void RewriteCmpxchgNb(
@@ -484,7 +484,7 @@ namespace Reko.Arch.X86.Rewriter
                 Z,
                 m.Fn(
                     intrinsic.MakeInstance(op1.DataType),
-                    op1, op2, acc, m.Out(instrCur.dataWidth, op1)));
+                    op1, op2, acc, m.Out(instrCur.DataWidth, op1)));
         }
 
         private void EmitDaaDas(IntrinsicProcedure intrinsic)
@@ -506,7 +506,7 @@ namespace Reko.Arch.X86.Rewriter
             Identifier regQuotient;
             Identifier regRemainder;
 
-            switch (instrCur.dataWidth.Size)
+            switch (instrCur.DataWidth.Size)
             {
             case 1:
                 regQuotient = orw.AluRegister(Registers.al);
@@ -529,7 +529,7 @@ namespace Reko.Arch.X86.Rewriter
                 regDividend = binder.EnsureSequence(PrimitiveType.Word128, regRemainder.Storage, regQuotient.Storage);
                 break;
             default:
-                throw new ArgumentOutOfRangeException(string.Format("{0}-byte divisions not supported.", instrCur.dataWidth.Size));
+                throw new ArgumentOutOfRangeException(string.Format("{0}-byte divisions not supported.", instrCur.DataWidth.Size));
             };
             PrimitiveType p = ((PrimitiveType)regRemainder.DataType).MaskDomain(domain);
             var tmp = binder.CreateTemporary(regDividend.DataType);
@@ -550,7 +550,7 @@ namespace Reko.Arch.X86.Rewriter
             var sp = StackPointer();
             m.Assign(bp, MaybeSlice(bp.DataType, sp));
             var cbExtraSavedBytes = 
-                instrCur.dataWidth.Size * ((Constant)instrCur.Operands[1]).ToInt32() +
+                instrCur.DataWidth.Size * ((Constant)instrCur.Operands[1]).ToInt32() +
                 ((Constant)instrCur.Operands[0]).ToInt32();
             if (cbExtraSavedBytes != 0)
             {
@@ -769,7 +769,7 @@ namespace Reko.Arch.X86.Rewriter
             MemoryOperand mem = (MemoryOperand)instrCur.Operands[1];
             if (mem.Offset is null)
             {
-                mem = new MemoryOperand(mem.DataType, mem.Base, mem.Index, mem.Scale, Constant.Create(instrCur.addrWidth, 0));
+                mem = new MemoryOperand(mem.DataType, mem.Base, mem.Index, mem.Scale, Constant.Create(instrCur.AddressWidth, 0));
             }
 
             var ptr = PrimitiveType.Create(Domain.Pointer, seg.DataType.BitSize + reg.DataType.BitSize);
@@ -906,23 +906,23 @@ namespace Reko.Arch.X86.Rewriter
                     return;
                 }
             }
-            var value = SrcOp(0, instrCur.dataWidth);
+            var value = SrcOp(0, instrCur.DataWidth);
             Debug.Assert(
                 value.DataType.BitSize == 16 ||
                 value.DataType.BitSize == 32 ||
                 value.DataType.BitSize == 64,
-                $"Unexpected size {dasm.Current.dataWidth}");
+                $"Unexpected size {dasm.Current.DataWidth}");
             RewritePush(PrimitiveType.CreateWord(value.DataType.BitSize), value);
         }
 
         private void RewritePush(RegisterStorage reg)
         {
-            RewritePush(instrCur.dataWidth, orw.AluRegister(reg));
+            RewritePush(instrCur.DataWidth, orw.AluRegister(reg));
         }
 
         private void RewritePusha()
         {
-            if (instrCur.dataWidth == PrimitiveType.Word16)
+            if (instrCur.DataWidth == PrimitiveType.Word16)
             {
                 Identifier temp = binder.CreateTemporary(Registers.sp.DataType);
                 m.Assign(temp, orw.AluRegister(Registers.sp));
@@ -1061,19 +1061,19 @@ namespace Reko.Arch.X86.Rewriter
 
         private void EmitPop(RegisterStorage reg)
         {
-            RewritePop(orw.AluRegister(reg), instrCur.dataWidth);
+            RewritePop(orw.AluRegister(reg), instrCur.DataWidth);
         }
 
         private void RewritePopa()
         {
-            Debug.Assert(instrCur.dataWidth == PrimitiveType.Word16 || instrCur.dataWidth == PrimitiveType.Word32);
+            Debug.Assert(instrCur.DataWidth == PrimitiveType.Word16 || instrCur.DataWidth == PrimitiveType.Word32);
             var sp = StackPointer();
-            if (instrCur.dataWidth == PrimitiveType.Word16)
+            if (instrCur.DataWidth == PrimitiveType.Word16)
             {
                 EmitPop(Registers.di);
                 EmitPop(Registers.si);
                 EmitPop(Registers.bp);
-                m.Assign(sp, m.IAdd(sp, instrCur.dataWidth.Size));
+                m.Assign(sp, m.IAdd(sp, instrCur.DataWidth.Size));
                 EmitPop(Registers.bx);
                 EmitPop(Registers.dx);
                 EmitPop(Registers.cx);
@@ -1084,7 +1084,7 @@ namespace Reko.Arch.X86.Rewriter
                 EmitPop(Registers.edi);
                 EmitPop(Registers.esi);
                 EmitPop(Registers.ebp);
-                m.Assign(sp, m.IAdd(sp, instrCur.dataWidth.Size));
+                m.Assign(sp, m.IAdd(sp, instrCur.DataWidth.Size));
                 EmitPop(Registers.ebx);
                 EmitPop(Registers.edx);
                 EmitPop(Registers.ecx);
@@ -1206,7 +1206,7 @@ namespace Reko.Arch.X86.Rewriter
         {
             var src = SrcOp(1);
             var dst = SrcOp(0);
-            var value = EmitBinOp(Operator.Sar, 0, instrCur.dataWidth, dst, src);
+            var value = EmitBinOp(Operator.Sar, 0, instrCur.DataWidth, dst, src);
 
             if (src is Constant c && c.ToInt32() == 1)
             {
@@ -1260,7 +1260,7 @@ namespace Reko.Arch.X86.Rewriter
         public MemoryAccess MemIndex(int iOp, RegisterStorage defaultSeg, Identifier indexRegister)
         {
             var ea = MemIndexPtr(iOp, defaultSeg, indexRegister);
-            return new MemoryAccess(MemoryStorage.GlobalMemory, ea, instrCur.dataWidth);
+            return new MemoryAccess(MemoryStorage.GlobalMemory, ea, instrCur.DataWidth);
         }
 
         public MemoryAccess Mem(Expression defaultSegment, Expression effectiveAddress)
@@ -1270,27 +1270,27 @@ namespace Reko.Arch.X86.Rewriter
             {
                 effectiveAddress = new SegmentedPointer(ptrType, defaultSegment, effectiveAddress);
             }
-            return new MemoryAccess(MemoryStorage.GlobalMemory, effectiveAddress, instrCur.dataWidth);
+            return new MemoryAccess(MemoryStorage.GlobalMemory, effectiveAddress, instrCur.DataWidth);
         }
 
 		public Identifier RegAl
 		{
-			get { return orw.AluRegister(Registers.rax, instrCur.dataWidth); }
+			get { return orw.AluRegister(Registers.rax, instrCur.DataWidth); }
 		}
 
         public Identifier RegCx
         {
-            get { return orw.AluRegister(Registers.rcx, instrCur.addrWidth); }
+            get { return orw.AluRegister(Registers.rcx, instrCur.AddressWidth); }
         }
 
         public Identifier RegDi
 		{
-			get { return orw.AluRegister(Registers.rdi, instrCur.addrWidth); }
+			get { return orw.AluRegister(Registers.rdi, instrCur.AddressWidth); }
 		}
 
 		public Identifier RegSi
 		{
-			get { return orw.AluRegister(Registers.rsi, instrCur.addrWidth); }
+			get { return orw.AluRegister(Registers.rsi, instrCur.AddressWidth); }
 		}
 
         /// <summary>
@@ -1312,9 +1312,9 @@ namespace Reko.Arch.X86.Rewriter
                 return;
             var topOfLoop = instrCur.Address;
             Identifier? regCX = null;
-            if (instrCur.repPrefix != 0)
+            if (instrCur.RepPrefix != 0)
             {
-                regCX = orw.AluRegister(Registers.rcx, instrCur.addrWidth);
+                regCX = orw.AluRegister(Registers.rcx, instrCur.AddressWidth);
                 m.BranchInMiddleOfInstruction(m.Eq0(regCX), instrCur.Address + instrCur.Length, InstrClass.ConditionalTransfer);
             }
 
@@ -1343,7 +1343,7 @@ namespace Reko.Arch.X86.Rewriter
                 break;
             case Mnemonic.movs:
             case Mnemonic.movsb:
-                Identifier tmp = binder.CreateTemporary(instrCur.dataWidth);
+                Identifier tmp = binder.CreateTemporary(instrCur.DataWidth);
                 m.Assign(tmp, MemIndex(1, ds, RegSi));
                 m.Assign(MemIndex(0, es, RegDi), tmp);
                 incSi = true;
@@ -1352,7 +1352,7 @@ namespace Reko.Arch.X86.Rewriter
             case Mnemonic.ins:
             case Mnemonic.insb:
                 regDX = binder.EnsureRegister(Registers.dx);
-                m.Assign(RegAl, m.Fn(in_intrinsic.MakeInstance(instrCur.dataWidth), regDX));
+                m.Assign(RegAl, m.Fn(in_intrinsic.MakeInstance(instrCur.DataWidth), regDX));
                 incDi = true;
                 break;
             case Mnemonic.outs:
@@ -1377,12 +1377,12 @@ namespace Reko.Arch.X86.Rewriter
 
             if (incSi)
             {
-                m.Assign(RegSi, incOperator(RegSi, instrCur.dataWidth.Size));
+                m.Assign(RegSi, incOperator(RegSi, instrCur.DataWidth.Size));
             }
 
             if (incDi)
             {
-                m.Assign(RegDi, incOperator(RegDi, instrCur.dataWidth.Size));
+                m.Assign(RegDi, incOperator(RegDi, instrCur.DataWidth.Size));
             }
             if (regCX is null)
                 return;
@@ -1396,7 +1396,7 @@ namespace Reko.Arch.X86.Rewriter
             case Mnemonic.scas:
             case Mnemonic.scasb:
                 {
-                    var cc = (instrCur.repPrefix == 2)
+                    var cc = (instrCur.RepPrefix == 2)
                         ? ConditionCode.NE
                         : ConditionCode.EQ;
                     m.Branch(new TestCondition(cc, binder.EnsureFlagGroup(Registers.Z)).Invert(), topOfLoop, InstrClass.ConditionalTransfer);
@@ -1463,7 +1463,7 @@ namespace Reko.Arch.X86.Rewriter
         private void RewriteXlat()
         {
             var al = orw.AluRegister(Registers.al);
-            var bx = orw.AluRegister(Registers.rbx, instrCur.addrWidth);
+            var bx = orw.AluRegister(Registers.rbx, instrCur.AddressWidth);
             var offsetType = PrimitiveType.Create(Domain.UnsignedInt, bx.DataType.BitSize); 
             m.Assign(
                 al,

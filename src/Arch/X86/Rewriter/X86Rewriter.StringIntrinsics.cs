@@ -78,7 +78,7 @@ namespace Reko.Arch.X86.Rewriter
             m.Assign(di, m.IAdd(di, MaybeSlice(cx.DataType, size)));
             m.Assign(
                 binder.EnsureFlagGroup(X86Instruction.DefCc(Mnemonic.cmp)!),
-                m.Cond(m.Const(instrCur.dataWidth, 0)));
+                m.Cond(m.Const(instrCur.DataWidth, 0)));
             return true;
         }
 
@@ -104,16 +104,16 @@ namespace Reko.Arch.X86.Rewriter
             {
                 dt = PrimitiveType.UInt32;
             }
-            return m.UMul(dt, regCx, Constant.Create(regCx.DataType, instrCur.dataWidth.Size));
+            return m.UMul(dt, regCx, Constant.Create(regCx.DataType, instrCur.DataWidth.Size));
         }
 
         private bool RewriteCmpsToToFindFirstDifference()
         {
             var regCx = RegCx;
             var result = binder.CreateTemporary(
-                "cmpResult", instrCur.addrWidth);
+                "cmpResult", instrCur.AddressWidth);
             var firstDifference = binder.CreateTemporary(
-                "firstDifference", instrCur.addrWidth);
+                "firstDifference", instrCur.AddressWidth);
             var size = MakeSizeExpression(regCx);
             var si = RegSi;
             var di = RegDi;
@@ -131,17 +131,17 @@ namespace Reko.Arch.X86.Rewriter
 
         private bool IsRepNe()
         {
-            return instrCur.repPrefix == 2;
+            return instrCur.RepPrefix == 2;
         }
 
         private bool IsRepE()
         {
-            return instrCur.repPrefix == 3;
+            return instrCur.RepPrefix == 3;
         }
 
         private bool IsRep()
         {
-            return instrCur.repPrefix == 3;
+            return instrCur.RepPrefix == 3;
         }
 
         private bool IsAutoIncrementingMode()

@@ -184,7 +184,7 @@ namespace Reko.Arch.X86.Emulator
         {
             if (!ignoreRep)
             {
-                if (instr.repPrefix == 2)
+                if (instr.RepPrefix == 2)
                 {
                     // repne
                     switch (instr.Mnemonic)
@@ -194,7 +194,7 @@ namespace Reko.Arch.X86.Emulator
                     }
                     throw new NotImplementedException();
                 }
-                else if (instr.repPrefix == 3)
+                else if (instr.RepPrefix == 3)
                 {
                     // rep / repe
                     switch (instr.Mnemonic)

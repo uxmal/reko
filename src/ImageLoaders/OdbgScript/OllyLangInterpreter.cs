@@ -1804,7 +1804,7 @@ namespace Reko.ImageLoaders.OdbgScript
                     so we'll stepinto except for a few exceptions
                     */
                     var instr = (X86Instruction?) Host.Disassemble(Debugger.InstructionPointer);
-                    if (instr != null && (instr.Mnemonic == Arch.X86.Mnemonic.call || instr.repPrefix != 0))
+                    if (instr != null && (instr.Mnemonic == Mnemonic.call || instr.RepPrefix != 0))
                         Debugger.StepOver(StepOverCallback);
                     else
                         Debugger.StepInto(StepIntoCallback);

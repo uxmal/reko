@@ -66,7 +66,7 @@ namespace Reko.Arch.X86.Emulator
 
         protected override void Scas(X86Instruction instr)
         {
-            var dt = instr.dataWidth;
+            var dt = instr.DataWidth;
             var mask = masks[dt.Size];
             var a = ReadRegister(X86.Registers.eax) & mask.value;
             var edi = ReadRegister(X86.Registers.edi);

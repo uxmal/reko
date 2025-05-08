@@ -18,12 +18,11 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
 using Reko.Arch.M68k.Machine;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using System;
 
 namespace Reko.Arch.M68k
 {

@@ -85,13 +85,13 @@ namespace Reko.Arch.X86
         {
             s.Append(instr.MnemonicAsString);
             if (IsStringInstruction(instr))
-            switch (instr.dataWidth.Size)
+            switch (instr.DataWidth.Size)
             {
             case 1: break;
             case 2: s.Append('w'); break;
             case 4: s.Append('d'); break;
             case 8: s.Append('q'); break;
-            default: throw new ArgumentOutOfRangeException($"Unrecognized operand size {instr.dataWidth.Size}.");
+            default: throw new ArgumentOutOfRangeException($"Unrecognized operand size {instr.DataWidth.Size}.");
             }
         }
 
@@ -166,12 +166,12 @@ namespace Reko.Arch.X86
         protected static void RenderPrefix(X86Instruction instr, MachineInstructionRenderer renderer)
         {
             //$TODO: make 'lock' a prefix
-            if (instr.repPrefix == 3)
+            if (instr.RepPrefix == 3)
             {
                 renderer.WriteMnemonic("rep");
                 renderer.WriteChar(' ');
             }
-            else if (instr.repPrefix == 2)
+            else if (instr.RepPrefix == 2)
             {
                 renderer.WriteMnemonic("repne");
                 renderer.WriteChar(' ');

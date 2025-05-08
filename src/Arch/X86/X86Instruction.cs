@@ -30,10 +30,33 @@ namespace Reko.Arch.X86
     /// </summary>
     public class X86Instruction : MachineInstruction
 	{
-		public Mnemonic Mnemonic { get; set; }  // Instruction mnemonic.
+        /// <summary>
+        /// Instruction mnemonic.
+        /// </summary>
+		public Mnemonic Mnemonic { get; set; }
+
+        /// <summary>
+        /// Width of the data (if it's a word).
+        /// </summary>
+        public DataType DataWidth { get; set; }
+
+        /// <summary>
+        /// Width of the address mode.
+        /// </summary>
+        public PrimitiveType AddressWidth { get; set; }
+
+        /// <summary>
+        /// <c>rep</c> prefix used in the instruction:
+        /// 0 = no prefix, 2 = <c>repnz</c>, 3 = <c>repz</c>.
+        /// </summary>
+        public int RepPrefix { get; set; }
+
+        [Obsolete("Use the `RepPrefix` property", true)]
         public int repPrefix;                   // 0 = no prefix, 2 = repnz, 3 = repz
-		public DataType dataWidth;	            // Width of the data (if it's a word).
-		public PrimitiveType addrWidth;	        // width of the address mode.	// TODO: belongs in MemoryOperand
+        [Obsolete("Use the `DataWidth` property", true)]
+		public DataType dataWidth = default!;	            // Width of the data (if it's a word).
+        [Obsolete("Use the `AddressWidth` property", true)]
+		public PrimitiveType addrWidth = default!;	        // width of the address mode.	// TODO: belongs in MemoryOperand
 
         public byte OpMask { get; set; }        // EVEX Mask register to use.
         public byte MergingMode { get; set; }   // EVEX merging mode
@@ -45,8 +68,8 @@ namespace Reko.Arch.X86
 		{
 			this.Mnemonic = mnemonic;
             this.InstructionClass = iclass;
-			this.dataWidth = dataWidth;
-			this.addrWidth = addrWidth;
+			this.DataWidth = dataWidth;
+			this.AddressWidth = addrWidth;
             this.Operands = ops;
 		}
 

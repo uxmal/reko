@@ -307,7 +307,7 @@ movzx	ax,byte ptr [bp+4h]
             Assert.AreEqual("add\tsi,1h", instr.ToString());
             Assert.AreEqual(PrimitiveType.Word16, instr.Operands[0].DataType);
             Assert.AreEqual(PrimitiveType.Byte, instr.Operands[1].DataType);
-            Assert.AreEqual(PrimitiveType.Word16, instr.dataWidth);
+            Assert.AreEqual(PrimitiveType.Word16, instr.DataWidth);
         }
 
 
@@ -390,7 +390,7 @@ movzx	ax,byte ptr [bp+4h]
             Assert.AreEqual("test\tbyte ptr [5426h],1h", instr.ToString());
             Assert.AreSame(PrimitiveType.Byte, instr.Operands[0].DataType);
             Assert.AreSame(PrimitiveType.Byte, instr.Operands[1].DataType);
-            Assert.AreSame(PrimitiveType.Byte, instr.dataWidth, "Instruction data width should be byte");
+            Assert.AreSame(PrimitiveType.Byte, instr.DataWidth, "Instruction data width should be byte");
         }
 
         [Test]
@@ -413,8 +413,8 @@ movzx	ax,byte ptr [bp+4h]
         {
             var instr = Disassemble16(0xD7);
             Assert.AreEqual("xlat", instr.ToString());
-            Assert.AreEqual(PrimitiveType.Byte, instr.dataWidth);
-            Assert.AreEqual(PrimitiveType.Word16, instr.addrWidth);
+            Assert.AreEqual(PrimitiveType.Byte, instr.DataWidth);
+            Assert.AreEqual(PrimitiveType.Word16, instr.AddressWidth);
         }
 
         [Test]

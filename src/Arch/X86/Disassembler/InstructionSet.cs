@@ -44,6 +44,7 @@ namespace Reko.Arch.X86
             private readonly Decoder[] s_decoders0F;
             private readonly Decoder[] s_decoders0F38;
             private readonly Decoder[] s_decoders0F3A;
+            private readonly Decoder[] ApxLegacy;
             private readonly Decoder[] Grp1;
             private readonly Decoder[] Grp1A;
             private readonly Decoder[] Grp2;
@@ -116,6 +117,7 @@ namespace Reko.Arch.X86
                 this.s_decoders0F = new Decoder[256];
                 this.s_decoders0F38 = new Decoder[256];
                 this.s_decoders0F3A = new Decoder[256];
+                this.ApxLegacy = new Decoder[256];
                 this.Grp1 = new Decoder[8];
                 this.Grp1A = new Decoder[8];
                 this.Grp2 = new Decoder[8];

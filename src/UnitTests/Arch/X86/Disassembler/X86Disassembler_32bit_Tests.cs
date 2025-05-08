@@ -999,33 +999,33 @@ namespace Reko.UnitTests.Arch.X86.Disassembler
             var instr = dasm.Cast<X86Instruction>().Take(15).ToList();
             Assert.AreEqual(Mnemonic.movsb, instr[0].Mnemonic);
             Assert.AreEqual(Mnemonic.movs, instr[1].Mnemonic);
-            Assert.AreEqual("word16", instr[1].dataWidth.Name);
+            Assert.AreEqual("word16", instr[1].DataWidth.Name);
             Assert.AreEqual(Mnemonic.movs, instr[2].Mnemonic);
-            Assert.AreEqual("word32", instr[2].dataWidth.Name);
+            Assert.AreEqual("word32", instr[2].DataWidth.Name);
 
             Assert.AreEqual(Mnemonic.scasb, instr[3].Mnemonic);
             Assert.AreEqual(Mnemonic.scas, instr[4].Mnemonic);
-            Assert.AreEqual("word16", instr[4].dataWidth.Name);
+            Assert.AreEqual("word16", instr[4].DataWidth.Name);
             Assert.AreEqual(Mnemonic.scas, instr[5].Mnemonic);
-            Assert.AreEqual("word32", instr[5].dataWidth.Name);
+            Assert.AreEqual("word32", instr[5].DataWidth.Name);
 
             Assert.AreEqual(Mnemonic.cmpsb, instr[6].Mnemonic);
             Assert.AreEqual(Mnemonic.cmps, instr[7].Mnemonic);
-            Assert.AreEqual("word16", instr[7].dataWidth.Name);
+            Assert.AreEqual("word16", instr[7].DataWidth.Name);
             Assert.AreEqual(Mnemonic.cmps, instr[8].Mnemonic);
-            Assert.AreEqual("word32", instr[8].dataWidth.Name);
+            Assert.AreEqual("word32", instr[8].DataWidth.Name);
 
             Assert.AreEqual(Mnemonic.lodsb, instr[9].Mnemonic);
             Assert.AreEqual(Mnemonic.lods, instr[10].Mnemonic);
-            Assert.AreEqual("word16", instr[10].dataWidth.Name);
+            Assert.AreEqual("word16", instr[10].DataWidth.Name);
             Assert.AreEqual(Mnemonic.lods, instr[11].Mnemonic);
-            Assert.AreEqual("word32", instr[11].dataWidth.Name);
+            Assert.AreEqual("word32", instr[11].DataWidth.Name);
 
             Assert.AreEqual(Mnemonic.stosb, instr[12].Mnemonic);
             Assert.AreEqual(Mnemonic.stos, instr[13].Mnemonic);
-            Assert.AreEqual("word16", instr[13].dataWidth.Name);
+            Assert.AreEqual("word16", instr[13].DataWidth.Name);
             Assert.AreEqual(Mnemonic.stos, instr[14].Mnemonic);
-            Assert.AreEqual("word32", instr[14].dataWidth.Name);
+            Assert.AreEqual("word32", instr[14].DataWidth.Name);
         }
 
 
@@ -1115,8 +1115,8 @@ namespace Reko.UnitTests.Arch.X86.Disassembler
         {
             var instr = DisassembleBytes(0xD7);
             Assert.AreEqual("xlat", instr.ToString());
-            Assert.AreEqual(PrimitiveType.Byte, instr.dataWidth);
-            Assert.AreEqual(PrimitiveType.Word32, instr.addrWidth);
+            Assert.AreEqual(PrimitiveType.Byte, instr.DataWidth);
+            Assert.AreEqual(PrimitiveType.Word32, instr.AddressWidth);
         }
 
         [Test]

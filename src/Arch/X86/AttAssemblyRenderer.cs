@@ -82,7 +82,7 @@ namespace Reko.Arch.X86
             case Mnemonic.outs:
             case Mnemonic.stos:
                 sb.Append(instr.MnemonicAsString);
-                sb.Append(MnemonicSuffix(instr.dataWidth));
+                sb.Append(MnemonicSuffix(instr.DataWidth));
                 return;
 
             case Mnemonic.movsx:

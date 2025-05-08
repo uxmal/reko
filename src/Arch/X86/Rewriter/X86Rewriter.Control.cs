@@ -236,7 +236,7 @@ namespace Reko.Arch.X86.Rewriter
 
         private void RewriteLoop(FlagGroupStorage? useFlags, ConditionCode cc)
         {
-            Identifier cx = orw.AluRegister(Registers.rcx, instrCur.dataWidth);
+            Identifier cx = orw.AluRegister(Registers.rcx, instrCur.DataWidth);
             m.Assign(cx, m.ISub(cx, 1));
             if (useFlags != null)
             {
@@ -278,7 +278,7 @@ namespace Reko.Arch.X86.Rewriter
         public void RewriteIret()
         {
             RewritePop(
-                binder.EnsureFlagGroup(Registers.SCZO), instrCur.dataWidth);
+                binder.EnsureFlagGroup(Registers.SCZO), instrCur.DataWidth);
             m.Return(
                 Registers.cs.DataType.Size +
                 arch.WordWidth.Size, 
