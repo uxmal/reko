@@ -286,7 +286,7 @@ namespace Reko.Arch.X86
 
         /// <summary>
         /// Different decoding depending on whether the next byte has its high two bits set
-        /// (corresponding to a ModRM byte reg access) or not (correspondong to a memory
+        /// (corresponding to a ModRM byte reg access) or not (corresponding to a memory
         /// access).
         /// </summary>
         /// <remarks>

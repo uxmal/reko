@@ -30,7 +30,7 @@ namespace Reko.Arch.X86
     {
         public partial class InstructionSet
         {
-            private void CreateTwobyteDecoders(Decoder [] d)
+            private void CreateTwobyteDecoders(Decoder [] d, bool isRex2)
             {
                 var reservedNop = Instr(Mnemonic.nop, InstrClass.Linear | InstrClass.Padding, Ev);
 
@@ -375,18 +375,18 @@ namespace Reko.Arch.X86
                     dec66:VexInstr(Mnemonic.comisd, Mnemonic.vcomisd, Vsd,Wsd,Sae));
 
 				// 0F 30
-				d[0x30] = Instr(Mnemonic.wrmsr, InstrClass.Linear|InstrClass.Privileged);
-                d[0x31] = Instr(Mnemonic.rdtsc, InstrClass.Linear | InstrClass.Privileged);
-                d[0x32] = Instr(Mnemonic.rdmsr, InstrClass.Linear|InstrClass.Privileged);
-                d[0x33] = Instr(Mnemonic.rdpmc, InstrClass.Linear | InstrClass.Privileged);
-                d[0x34] = Instr(Mnemonic.sysenter);
-                d[0x35] = Instr(Mnemonic.sysexit, InstrClass.Transfer|InstrClass.Return);
+				d[0x30] = isRex2 ? s_invalid : Instr(Mnemonic.wrmsr, InstrClass.Linear|InstrClass.Privileged);
+                d[0x31] = isRex2 ? s_invalid : Instr(Mnemonic.rdtsc, InstrClass.Linear | InstrClass.Privileged);
+                d[0x32] = isRex2 ? s_invalid : Instr(Mnemonic.rdmsr, InstrClass.Linear|InstrClass.Privileged);
+                d[0x33] = isRex2 ? s_invalid : Instr(Mnemonic.rdpmc, InstrClass.Linear | InstrClass.Privileged);
+                d[0x34] = isRex2 ? s_invalid : Instr(Mnemonic.sysenter);
+                d[0x35] = isRex2 ? s_invalid : Instr(Mnemonic.sysexit, InstrClass.Transfer|InstrClass.Return);
                 d[0x36] = s_invalid;
-                d[0x37] = Instr(Mnemonic.getsec, InstrClass.Linear|InstrClass.Privileged);
+                d[0x37] = isRex2 ? s_invalid : Instr(Mnemonic.getsec, InstrClass.Linear|InstrClass.Privileged);
 
-                d[0x38] = new AdditionalByteDecoder(s_decoders0F38); // 0F 38
+                d[0x38] = isRex2 ? s_invalid : new AdditionalByteDecoder(s_decoders0F38); // 0F 38
                 d[0x39] = s_invalid;
-                d[0x3A] = new AdditionalByteDecoder(s_decoders0F3A); // 0F 3A
+                d[0x3A] = isRex2 ? s_invalid : new AdditionalByteDecoder(s_decoders0F3A); // 0F 3A
                 d[0x3B] = s_invalid;
                 d[0x3C] = s_invalid;
                 d[0x3D] = s_invalid;
@@ -685,27 +685,27 @@ namespace Reko.Arch.X86
                     decF3:VexInstr(Mnemonic.movdqu, Mnemonic.vmovdqu, Wx,Vx));
 
                 // 0F 80
-                d[0x80] = Instr(Mnemonic.jo, InstrClass.ConditionalTransfer, Jv);
-				d[0x81] = Instr(Mnemonic.jno, InstrClass.ConditionalTransfer, Jv);
-				d[0x82] = Instr(Mnemonic.jc,	InstrClass.ConditionalTransfer, Jv);
-				d[0x83] = Instr(Mnemonic.jnc,	InstrClass.ConditionalTransfer, Jv);
-                d[0x84] = VexInstr(
+                d[0x80] = isRex2 ? s_invalid : Instr(Mnemonic.jo, InstrClass.ConditionalTransfer, Jv);
+				d[0x81] = isRex2 ? s_invalid : Instr(Mnemonic.jno, InstrClass.ConditionalTransfer, Jv);
+				d[0x82] = isRex2 ? s_invalid : Instr(Mnemonic.jc,	InstrClass.ConditionalTransfer, Jv);
+				d[0x83] = isRex2 ? s_invalid : Instr(Mnemonic.jnc,	InstrClass.ConditionalTransfer, Jv);
+                d[0x84] = isRex2 ? s_invalid : VexInstr(
                     Instr(Mnemonic.jz, InstrClass.ConditionalTransfer, Jv),
                     Instr(Mnemonic.jkz, InstrClass.ConditionalTransfer, vK, Jv));
-                d[0x85] = VexInstr(
+                d[0x85] = isRex2 ? s_invalid : VexInstr(
                     Instr(Mnemonic.jnz, InstrClass.ConditionalTransfer, Jv),
                     Instr(Mnemonic.jknz, InstrClass.ConditionalTransfer, vK, Jv));
-                d[0x86] = Instr(Mnemonic.jbe, InstrClass.ConditionalTransfer, Jv);
-				d[0x87] = Instr(Mnemonic.ja,  InstrClass.ConditionalTransfer, Jv);
+                d[0x86] = isRex2 ? s_invalid : Instr(Mnemonic.jbe, InstrClass.ConditionalTransfer, Jv);
+				d[0x87] = isRex2 ? s_invalid : Instr(Mnemonic.ja,  InstrClass.ConditionalTransfer, Jv);
 
-				d[0x88] = Instr(Mnemonic.js,  InstrClass.ConditionalTransfer, Jv);
-				d[0x89] = Instr(Mnemonic.jns, InstrClass.ConditionalTransfer, Jv);
-				d[0x8A] = Instr(Mnemonic.jpe, InstrClass.ConditionalTransfer, Jv);
-				d[0x8B] = Instr(Mnemonic.jpo, InstrClass.ConditionalTransfer, Jv);
-				d[0x8C] = Instr(Mnemonic.jl,  InstrClass.ConditionalTransfer, Jv);
-				d[0x8D] = Instr(Mnemonic.jge, InstrClass.ConditionalTransfer, Jv);
-				d[0x8E] = Instr(Mnemonic.jle, InstrClass.ConditionalTransfer, Jv);
-				d[0x8F] = Instr(Mnemonic.jg,  InstrClass.ConditionalTransfer, Jv);
+				d[0x88] = isRex2 ? s_invalid : Instr(Mnemonic.js,  InstrClass.ConditionalTransfer, Jv);
+				d[0x89] = isRex2 ? s_invalid : Instr(Mnemonic.jns, InstrClass.ConditionalTransfer, Jv);
+				d[0x8A] = isRex2 ? s_invalid : Instr(Mnemonic.jpe, InstrClass.ConditionalTransfer, Jv);
+				d[0x8B] = isRex2 ? s_invalid : Instr(Mnemonic.jpo, InstrClass.ConditionalTransfer, Jv);
+				d[0x8C] = isRex2 ? s_invalid : Instr(Mnemonic.jl,  InstrClass.ConditionalTransfer, Jv);
+				d[0x8D] = isRex2 ? s_invalid : Instr(Mnemonic.jge, InstrClass.ConditionalTransfer, Jv);
+				d[0x8E] = isRex2 ? s_invalid : Instr(Mnemonic.jle, InstrClass.ConditionalTransfer, Jv);
+				d[0x8F] = isRex2 ? s_invalid : Instr(Mnemonic.jg,  InstrClass.ConditionalTransfer, Jv);
 
                 // 0F 90
                 d[0x90] = VexInstr(

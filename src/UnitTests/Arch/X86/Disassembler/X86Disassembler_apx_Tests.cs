@@ -64,5 +64,13 @@ public class X86Disassembler_apx_Tests : DisassemblerTestBase<X86Instruction>
         AssertCode("add\tr8,[r14+r11*8]",  "D50F0304DE");
         AssertCode("add\tr24,[r30+r27*8]", "D57F0304DE");
     }
+
+    [Test]
+    public void X86Dis_rex2_illegal_opcodes()
+    {
+        AssertCode("illegal", "D508 40 03C4");
+        AssertCode("illegal", "D508 72 45");
+        AssertCode("illegal", "D508 A0 42");
+    }
 }
 

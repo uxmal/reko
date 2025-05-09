@@ -43,7 +43,9 @@ namespace Reko.Arch.X86
             private readonly Decoder[] s_decoders0F;
             private readonly Decoder[] s_decoders0F38;
             private readonly Decoder[] s_decoders0F3A;
-            private readonly Decoder[] ApxLegacy;
+            private readonly Decoder[] rex2Legacy0;
+            private readonly Decoder[] rex2Legacy1;
+            private readonly Decoder[] eevexLegacy;
             private readonly Decoder[] Grp1;
             private readonly Decoder[] Grp1A;
             private readonly Decoder[] Grp2;
@@ -126,7 +128,9 @@ namespace Reko.Arch.X86
                 this.s_decoders0F = new Decoder[256];
                 this.s_decoders0F38 = new Decoder[256];
                 this.s_decoders0F3A = new Decoder[256];
-                this.ApxLegacy = new Decoder[256];
+                this.rex2Legacy0 = new Decoder[256];
+                this.rex2Legacy1 = new Decoder[256];
+                this.eevexLegacy = new Decoder[256];
                 this.Grp1 = new Decoder[8];
                 this.Grp1A = new Decoder[8];
                 this.Grp2 = new Decoder[8];
@@ -173,8 +177,10 @@ namespace Reko.Arch.X86
                 CreateGroupDecoders();
                 Create0F38Decoders(s_decoders0F38);
                 Create0F3ADecoders(s_decoders0F3A);
-                CreateOnebyteDecoders(s_decoders0F);
-                CreateTwobyteDecoders(s_decoders0F);
+                CreateOnebyteDecoders(rootDecoders, false, s_decoders0F);
+                CreateOnebyteDecoders(rex2Legacy0, true, []);
+                CreateTwobyteDecoders(s_decoders0F, false);
+                CreateTwobyteDecoders(rex2Legacy1, true);
 
                 Debug.Assert(s_fpuDecoders.Length == 8 * 0x48);
                 return rootDecoders;
@@ -246,9 +252,9 @@ namespace Reko.Arch.X86
                 return rexInstr(mnemonic, InstrClass.Linear, mutators);
             }
 
-            public Decoder Rex2Instr(Decoder fallback)
+            public Decoder Rex2Prefix(Decoder legacy)
             {
-                return rex2Instr(fallback);
+                return rex2Instr(legacy);
             }
 
             public Decoder MakeRexDecoder(Mnemonic mnemonic, InstrClass iclass, Mutator<X86Disassembler>[] mutators)
@@ -258,7 +264,7 @@ namespace Reko.Arch.X86
 
             public Decoder MakeRex2Decoder(Decoder fallback)
             {
-                return new Rex2Decoder(this.rootDecoders, this.s_decoders0F);
+                return new Rex2Decoder(this.rex2Legacy0, this.rex2Legacy1);
             }
 
             public static VexInstructionDecoder VexInstr(Mnemonic vex, params Mutator<X86Disassembler>[] mutators)
