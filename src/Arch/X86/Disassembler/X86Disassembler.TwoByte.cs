@@ -30,9 +30,21 @@ namespace Reko.Arch.X86
     {
         public partial class InstructionSet
         {
-            private void CreateTwobyteDecoders(Decoder [] d, bool isRex2)
+            /// <summary>
+            /// Constructs the decoders for the legacy 1, two-byte, or "0F"-prefixed
+            /// instructions.
+            /// </summary>
+            /// <param name="d">Decoder arrray to fill.</param>
+            /// <param name="isRex2">True if the decoders being built
+            /// are used in conjunction with a REX2 prefix.</param>
+            /// <param name="isEevex">True if the decoders being built
+            /// are used in conjunction with an extended EVEX prefix.
+            /// </param>
+            private void CreateTwobyteDecoders(Decoder [] d, bool isRex2, bool isEevex)
             {
-                var reservedNop = Instr(Mnemonic.nop, InstrClass.Linear | InstrClass.Padding, Ev);
+                var reservedNop = isEevex
+                    ? s_invalid
+                    : Instr(Mnemonic.nop, InstrClass.Linear | InstrClass.Padding, Ev);
 
                 var cmppsMnemonics = new Dictionary<byte, Mnemonic>
                 {
@@ -241,7 +253,7 @@ namespace Reko.Arch.X86
                 d[0x0A] = s_invalid;
                 d[0x0B] = Instr(Mnemonic.ud2, InstrClass.Invalid);
                 d[0x0C] = s_invalid;
-                d[0x0D] = Instr(Mnemonic.prefetchw, Ev);
+                d[0x0D] = isEevex ? s_invalid : Instr(Mnemonic.prefetchw, Ev);
                 d[0x0E] = Instr(Mnemonic.femms);    // AMD-specific
                 d[0x0F] = s_invalid; // nyi("AMD 3D-Now instructions"); //$TODO: this requires adding separate processor model for AMD
 
@@ -302,12 +314,12 @@ namespace Reko.Arch.X86
                     VexInstr(Mnemonic.movhpd, Mnemonic.vmovhpd, Mq,Vq));
 
                 d[0x18] = new GroupDecoder(Grp16);
-                d[0x19] = Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding, Ev);
-                d[0x1A] = Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding, Ev);
-                d[0x1B] = Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding, Ev);
+                d[0x19] = isEevex ? s_invalid : Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding, Ev);
+                d[0x1A] = isEevex ? s_invalid : Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding, Ev);
+                d[0x1B] = isEevex ? s_invalid : Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding, Ev);
 
                 d[0x1C] = Instr(Mnemonic.cldemote, Mb);
-                d[0x1D] = Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding, Ev);
+                d[0x1D] = isEevex ? s_invalid : Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding, Ev);
                 d[0x1E] = new PrefixedDecoder(
                     dec: reservedNop,
                     dec66: reservedNop,
@@ -318,7 +330,7 @@ namespace Reko.Arch.X86
                     decF2: reservedNop,
                     decWide: reservedNop,
                     dec66Wide: reservedNop);
-                d[0x1F] = Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding, Ev);
+                d[0x1F] = isEevex ? s_invalid : Instr(Mnemonic.nop, InstrClass.Linear | InstrClass.Padding, Ev);
 
 				// 0F 20
                 d[0x20] = Amd64Instr(

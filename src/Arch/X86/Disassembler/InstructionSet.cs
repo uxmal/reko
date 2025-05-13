@@ -45,7 +45,8 @@ namespace Reko.Arch.X86
             private readonly Decoder[] s_decoders0F3A;
             private readonly Decoder[] rex2Legacy0;
             private readonly Decoder[] rex2Legacy1;
-            private readonly Decoder[] eevexLegacy;
+            private readonly Decoder[] eevexLegacy0;
+            private readonly Decoder[] eevexLegacy1;
             private readonly Decoder[] Grp1;
             private readonly Decoder[] Grp1A;
             private readonly Decoder[] Grp2;
@@ -130,7 +131,8 @@ namespace Reko.Arch.X86
                 this.s_decoders0F3A = new Decoder[256];
                 this.rex2Legacy0 = new Decoder[256];
                 this.rex2Legacy1 = new Decoder[256];
-                this.eevexLegacy = new Decoder[256];
+                this.eevexLegacy0 = new Decoder[256];
+                this.eevexLegacy1 = new Decoder[256];
                 this.Grp1 = new Decoder[8];
                 this.Grp1A = new Decoder[8];
                 this.Grp2 = new Decoder[8];
@@ -177,10 +179,12 @@ namespace Reko.Arch.X86
                 CreateGroupDecoders();
                 Create0F38Decoders(s_decoders0F38);
                 Create0F3ADecoders(s_decoders0F3A);
-                CreateOnebyteDecoders(rootDecoders, false, s_decoders0F);
-                CreateOnebyteDecoders(rex2Legacy0, true, []);
-                CreateTwobyteDecoders(s_decoders0F, false);
-                CreateTwobyteDecoders(rex2Legacy1, true);
+                CreateOnebyteDecoders(rootDecoders, false, false, s_decoders0F);
+                CreateOnebyteDecoders(rex2Legacy0, true, false, []);
+                CreateOnebyteDecoders(eevexLegacy0, true, true, []);
+                CreateTwobyteDecoders(s_decoders0F, false, false);
+                CreateTwobyteDecoders(rex2Legacy1, true, false);
+                CreateTwobyteDecoders(eevexLegacy1, true, true);
 
                 Debug.Assert(s_fpuDecoders.Length == 8 * 0x48);
                 return rootDecoders;

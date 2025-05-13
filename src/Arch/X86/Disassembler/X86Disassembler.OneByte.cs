@@ -32,11 +32,12 @@ namespace Reko.Arch.X86
             private void CreateOnebyteDecoders(
                 Decoder[] d,
                 bool isRex2,
+                bool isEevex,
                 Decoder[] decoders0F)
             {
 				// 00
-				d[0x00] = Instr(Mnemonic.add, InstrClass.Linear|InstrClass.Zero, Eb,Gb);
-				d[0x01] = Instr(Mnemonic.add, Ev,Gv);
+				d[0x00] = isEevex ? s_invalid : Instr(Mnemonic.add, InstrClass.Linear|InstrClass.Zero, Eb,Gb);
+				d[0x01] = Instr(Mnemonic.add, Ndd,Ev,Gv);
 				d[0x02] = Instr(Mnemonic.add, Gb,Eb);
 				d[0x03] = Instr(Mnemonic.add, Gv,Ev);
 				d[0x04] = Instr(Mnemonic.add, AL,Ib);
@@ -179,7 +180,11 @@ namespace Reko.Arch.X86
                     s_invalid);
                 d[0x62] = isRex2 ? s_invalid : Amd64Instr(
                     Instr186(Mnemonic.bound, Gv,Mv),
-                    new EvexDecoder(this.s_decoders0F, s_decoders0F38, s_decoders0F3A));
+                    new EvexDecoder(
+                        eevexLegacy0,
+                        s_decoders0F,
+                        s_decoders0F38,
+                        s_decoders0F3A));
                 d[0x63] = Amd64Instr(
     				Instr286(Mnemonic.arpl, Ew,rw),
     				Instr(Mnemonic.movsxd, Gv,Ed));

@@ -520,16 +520,18 @@ namespace Reko.Arch.X86
             private readonly Decoder[] decoders0F;
             private readonly Decoder[] decoders0F38;
             private readonly Decoder[] decoders0F3A;
+            private readonly Decoder[] decodersLegacy;
 
             private static readonly Bitfield p0Reserved = new Bitfield(2, 2);
             private static readonly Bitfield p1Reserved = new Bitfield(2, 1);
             private static readonly Bitfield p1Vvvv = new Bitfield(3, 4);
 
-            public EvexDecoder(Decoder[] decoders0F, Decoder[] decoders0F38, Decoder[] decoders0F3A)
+            public EvexDecoder(Decoder[] legacy, Decoder[] decoders0F, Decoder[] decoders0F38, Decoder[] decoders0F3A)
             {
                 this.decoders0F = decoders0F;
                 this.decoders0F38 = decoders0F38;
                 this.decoders0F3A = decoders0F3A;
+                this.decodersLegacy = legacy;
             }
 
             public override X86Instruction Decode(uint op, X86Disassembler disasm)
@@ -583,6 +585,7 @@ namespace Reko.Arch.X86
                 {
                 case 2: decoders = decoders0F38; break;
                 case 3: decoders = decoders0F3A; break;
+                case 4: decoders = decodersLegacy; break;
                 default: decoders = decoders0F; break;
                 }
                 if (!disasm.TryReadByte(out byte op2))

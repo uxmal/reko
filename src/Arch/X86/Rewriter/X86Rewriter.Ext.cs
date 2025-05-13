@@ -121,6 +121,17 @@ namespace Reko.Arch.X86.Rewriter
             m.SideEffect(m.Fn(mfence_intrinsic));
         }
 
+        private void RewriteMonitor()
+        {
+            var bitsize = instrCur.AddressWidth.BitSize;
+            var rAX = arch.GetRegister(Registers.eax.Domain, new(0, bitsize))!;
+            var ptr = binder.EnsureRegister(rAX);
+            var ecx = binder.EnsureRegister(Registers.ecx);
+            var edx = binder.EnsureRegister(Registers.edx);
+            m.SideEffect(
+                m.Fn(monitor_intrinsic.MakeInstance(rAX.DataType), ptr, ecx, edx));
+        }
+
         private void RewriteMovdq()
         {
             var src = SrcOp(1);

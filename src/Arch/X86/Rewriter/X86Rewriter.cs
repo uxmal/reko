@@ -417,6 +417,7 @@ namespace Reko.Arch.X86.Rewriter
                 case Mnemonic.vminsd: RewriteMaxMinsd(min_intrinsic, PrimitiveType.Real64, true); break;
                 case Mnemonic.minss: RewriteMaxMinsd(fmin_intrinsic, PrimitiveType.Real32, false); break;
                 case Mnemonic.vminss: RewriteMaxMinsd(fmin_intrinsic, PrimitiveType.Real32, true); break;
+                case Mnemonic.monitor: RewriteMonitor(); break;
                 case Mnemonic.mov: RewriteMov(); break;
                 case Mnemonic.movapd:
                 case Mnemonic.movaps:
@@ -1126,6 +1127,12 @@ namespace Reko.Arch.X86.Rewriter
             maskmovq_intrinsic = GenericBinaryIntrinsic("__maskmovq");
             mfence_intrinsic = new IntrinsicBuilder("__mfence", true)
                 .Void();
+            monitor_intrinsic = new IntrinsicBuilder("__monitor", true)
+                .GenericTypes("T")
+                .Param("T")
+                .Param(PrimitiveType.Word32)
+                .Param(PrimitiveType.Word32)
+                .Void();
             movmskb_intrinsic = new IntrinsicBuilder("__movmskb", false)
                 .GenericTypes("T")
                 .Param("T")
@@ -1554,6 +1561,7 @@ namespace Reko.Arch.X86.Rewriter
         private static readonly IntrinsicProcedure max_intrinsic;
         private static readonly IntrinsicProcedure mfence_intrinsic;
         private static readonly IntrinsicProcedure min_intrinsic;
+        private static readonly IntrinsicProcedure monitor_intrinsic;
         private static readonly IntrinsicProcedure movbe_intrinsic;
         private static readonly IntrinsicProcedure movddup_intrinsic = GenericUnaryIntrinsic("__movddup");
         private static readonly IntrinsicProcedure movntps_intrinsic = GenericUnaryIntrinsic("__movntps");

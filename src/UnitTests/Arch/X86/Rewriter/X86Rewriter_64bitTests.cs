@@ -701,6 +701,15 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
         }
 
         [Test]
+        public void X86Rw_monitor()
+        {
+            Given_HexString("0F01C8");
+            AssertCode(     // monitor
+                "0|S--|0000000140000000(3): 1 instructions",
+                "1|L--|__monitor<word64>(rax, ecx, edx)");
+        }
+
+        [Test]
         public void X86Rw_mov_imm_64()
         {
             Given_HexString("48B88A7A6A5A4A3A2A1A");
@@ -1656,11 +1665,6 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
                 "15|L--|ymm14 = CONVERT(xmm14, word128, word256)",
                 "16|L--|ymm15 = CONVERT(xmm15, word128, word256)");
         }
-
-
-
-
-
 
     }
 }

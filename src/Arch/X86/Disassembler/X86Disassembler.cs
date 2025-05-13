@@ -96,6 +96,7 @@ namespace Reko.Arch.X86
                 this.EvexX = false;
                 this.EvexMergeMode = 0;
                 this.EvexBroadcast = false;
+                this.NewDataDestination = null;
 
                 this.ops.Clear();
             }
@@ -193,6 +194,11 @@ namespace Reko.Arch.X86
 
             // EVEX broadcast bit
             public bool EvexBroadcast{ get; set; }
+
+            /// <summary>
+            /// APX : New data destination register encoding
+            /// </summary>
+            public int? NewDataDestination { get; set; }
         }
 
         //$REVIEW: Instructions longer than this cause exceptions on modern x86 processors.
@@ -1181,6 +1187,10 @@ namespace Reko.Arch.X86
             return true;
         }
 
+        /// <summary>
+        /// Gets the RAX register or part thereof as dictated by the 
+        /// current data width.
+        /// </summary>
         private static bool rAX(uint uInstr, X86Disassembler dasm)
         {
             RegisterStorage reg;
@@ -1350,6 +1360,28 @@ namespace Reko.Arch.X86
                 if (dasm.decodingContext.ops[^1] is MemoryOperand)
                     return true;
                 dasm.decodingContext.ops.Add(new SaeOperand(EvexRoundMode.Sae));
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// NDD - New Data Destination. If an extended EVEX prefix
+        /// has been decoded, extract the new data destination from
+        /// the NDD field of the prefix.
+        /// </summary>
+        /// <remarks>
+        /// We need the data width available, so the Ndd has to go 
+        /// at the end of the list of decoders, even though the 
+        /// operand it encodes is the first of the operands.
+        /// </remarks>
+        private static bool Ndd(uint op, X86Disassembler dasm)
+        {
+            var dc = dasm.decodingContext;
+            if (dc.NewDataDestination is not null)
+            {
+                var ireg = dc.NewDataDestination.Value;
+                var reg = dasm.GpRegFromBits(ireg, dasm.decodingContext.dataWidth);
+                dc.ops.Insert(0, reg);
             }
             return true;
         }

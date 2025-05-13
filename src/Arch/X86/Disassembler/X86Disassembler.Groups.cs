@@ -26,6 +26,10 @@ namespace Reko.Arch.X86
     {
         public partial class InstructionSet
         {
+            /// <summary>
+            /// Creates decoders for "group" instructions, where part of the
+            /// opcode is in the modrm byte.
+            /// </summary>
             private void CreateGroupDecoders()
             {
                 Grp1[0] = Instr(Mnemonic.add);
@@ -64,8 +68,8 @@ namespace Reko.Arch.X86
                 Grp3[6] = Instr(Mnemonic.div);
                 Grp3[7] = Instr(Mnemonic.idiv);
 
-                Grp4[0] = Instr(Mnemonic.inc, Eb);
-                Grp4[1] = Instr(Mnemonic.dec, Eb);
+                Grp4[0] = Instr(Mnemonic.inc, Eb, Ndd);
+                Grp4[1] = Instr(Mnemonic.dec, Eb, Ndd);
                 Grp4[2] = s_invalid;
                 Grp4[3] = s_invalid;
                 Grp4[4] = s_invalid;
@@ -73,9 +77,8 @@ namespace Reko.Arch.X86
                 Grp4[6] = s_invalid;
                 Grp4[7] = s_invalid;
 
-
-                Grp5[0] = Instr(Mnemonic.inc, Ev);
-                Grp5[1] = Instr(Mnemonic.dec, Ev);
+                Grp5[0] = Instr(Mnemonic.inc, Ev, Ndd);
+                Grp5[1] = Instr(Mnemonic.dec, Ev, Ndd);
                 Grp5[2] = Amd64Instr(
                         Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, Ev),
                         Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, Eq));
