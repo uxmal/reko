@@ -647,6 +647,8 @@ namespace Reko.Core.Output
             else if (c.DataType == PrimitiveType.Byte)
             {
                 Method("Byte");
+                writer.Write("0x{0:X})", c.ToByte());
+                return;
             }
             if (c.DataType == PrimitiveType.Word32)
             {
