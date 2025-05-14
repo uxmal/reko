@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
+using Reko.Core.Output;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -33,8 +34,8 @@ namespace Reko.Services
     public class TestGenerationService : ITestGenerationService
     {
         private readonly IServiceProvider services;
-        private readonly object decoderLock = new ();
-        private readonly object rewriterLock = new ();
+        private readonly object decoderLock = new();
+        private readonly object rewriterLock = new();
         private readonly Dictionary<string, HashSet<byte[]>> emittedDecoderTests;
         private readonly Dictionary<string, HashSet<string>> emittedRewriterTests;
 
@@ -187,7 +188,7 @@ namespace Reko.Services
         }
 
         public static string GenerateRewriterUnitTest(string testPrefix, MachineInstruction instr, string mnemonic, EndianImageReader rdr, string message, string hexbytes)
-        { 
+        {
             var sb = new StringWriter();
 
             if (!string.IsNullOrEmpty(message))
@@ -294,6 +295,23 @@ namespace Reko.Services
         {
             writer.WriteLine(testCaption);
             proc.Write(false, writer);
+            writer.WriteLine();
+        }
+
+        public void GenerateUnitTestFromProcedure(string fileName, string testCaption, Procedure proc)
+        {
+            var fsSvc = services.RequireService<IFileSystemService>();
+            var dir = GetOutputDirectory(fsSvc)!;
+            var absFileName = Path.Combine(dir, fileName);
+            using var w = fsSvc.CreateStreamWriter(absFileName, true, Encoding.UTF8);
+            GenerateUnitTestFromProcedure(testCaption, proc, w);
+        }
+
+        public static void GenerateUnitTestFromProcedure(string testCaption, Procedure proc, TextWriter writer)
+        {
+            writer.WriteLine(testCaption);
+            var mg = new MockGenerator(writer, "m.");
+            mg.WriteMethod(proc);
             writer.WriteLine();
         }
 

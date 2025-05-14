@@ -63,7 +63,7 @@ namespace Reko.Analysis
             this.services = services;
             this.eventListener = services.RequireService<IDecompilerEventListener>();
 			this.ProgramDataFlow = new ProgramDataFlow(program);
-            this.phaseNumbering = new Dictionary<string, int>();
+            this.phaseNumbering = [];
 		}
 
         public Program Program { get; }
@@ -88,10 +88,7 @@ namespace Reko.Analysis
 				output.WriteLine();
 				foreach (Block block in proc.ControlGraph.Blocks)
 				{
-					if (block != null)
-					{
-						block.Write(output);
-					}
+					block?.Write(output);
 				}
 				Debug.WriteLine(output.ToString());
 			}
@@ -117,7 +114,7 @@ namespace Reko.Analysis
         {
             eventListener.Progress.ShowProgress("Rewriting procedures.", 0, Program.Procedures.Count);
 
-            IReadOnlyCollection<SsaTransform> ssts = Array.Empty<SsaTransform>();
+            IReadOnlyCollection<SsaTransform> ssts = [];
             IntraBlockDeadRegisters.Apply(Program, eventListener);
             if (eventListener.IsCanceled())
                 return ssts;
@@ -157,7 +154,7 @@ namespace Reko.Analysis
             // so we clear it to save space. It's possible that in the future, we do all the 
             // type analysis as part of the Analysis stage.
             foreach (var procflow in ProgramDataFlow.ProcedureFlows.Values)
-                procflow.LiveInDataTypes = new Dictionary<Storage, DataType>(0);
+                procflow.LiveInDataTypes.Clear();
             return ssts;
         }
 
@@ -314,10 +311,7 @@ namespace Reko.Analysis
         public void ClearTestFiles()
         {
             var testSvc = this.services.GetService<ITestGenerationService>();
-            if (testSvc is not null)
-            {
-                testSvc.RemoveFiles("analysis_");
-            }
+            testSvc?.RemoveFiles("analysis_");
         }
 
         [Conditional("DEBUG")]
@@ -352,12 +346,12 @@ namespace Reko.Analysis
             if (Program.User.DebugTraceProcedures.Contains(ssa.Procedure.Name))
                 ssa.Validate(s =>
             {
-                Console.WriteLine("== SSA validation failure; {0} {1}", caption, ssa.Procedure.Name,  s);
+                Console.WriteLine("== SSA validation failure; {0} {1}", caption, ssa.Procedure.Name);
                 Console.WriteLine("    {0}", s);
                 ssa.Write(Console.Out);
                 ssa.Procedure.Write(false, Console.Out);
 
-                Debug.Print("== SSA validation failure; {0} {1}", caption, ssa.Procedure.Name, s);
+                Debug.Print("== SSA validation failure; {0} {1}", caption, ssa.Procedure.Name);
                 Debug.Print("    {0}", s);
                 ssa.Dump(true);
             });
@@ -372,14 +366,16 @@ namespace Reko.Analysis
                 //MockGenerator.DumpMethod(proc);
                 proc.Dump(true);
                 var testSvc = this.services.GetService<ITestGenerationService>();
-                if (testSvc != null)
+                if (testSvc is not null)
                 {
                     if (!this.phaseNumbering.TryGetValue(phase, out int n))
                     {
                         n = phaseNumbering.Count + 1;
                         phaseNumbering.Add(phase, n);
                     }
-                    testSvc.ReportProcedure($"analysis_{n:00}_{phase}.txt", $"// {proc.Name} ===========", proc);
+                    var banner = $"// {proc.Name} ===========";
+                    testSvc.ReportProcedure($"analysis_{n:00}_{phase}.txt", banner, proc);
+                    testSvc.GenerateUnitTestFromProcedure($"analysis_{n:00}_{phase}.rekoir", banner, proc);
                 }
             }
         }

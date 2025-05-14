@@ -48,7 +48,7 @@ namespace Reko.Analysis
         /// <summary>
         /// The data types inferred for each live-in storage.
         /// </summary>
-        public Dictionary<Storage, DataType> LiveInDataTypes;
+        public Dictionary<Storage, DataType> LiveInDataTypes { get; }
 
         /// <summary>
         /// A collection of all storages that are live-out after the procedure 
@@ -133,7 +133,7 @@ namespace Reko.Analysis
             BitsLiveOut = new Dictionary<Storage, LiveOutUse>();
 
             this.BitsUsed = new Dictionary<Storage, BitRange>();
-            this.LiveInDataTypes = new Dictionary<Storage, DataType>();
+            this.LiveInDataTypes = [];
         }
 
         [Conditional("DEBUG")]

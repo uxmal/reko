@@ -104,5 +104,13 @@ namespace Reko.Core.Services
         /// <param name="testCaption"></param>
         /// <param name="proc"></param>
         void ReportProcedure(string fileName, string testCaption, Procedure proc);
+
+        /// <summary>
+        /// Generate compileable C# unit test code for the given procedure.
+        /// </summary>
+        /// <param name="fileName">Filename to output to.</param>
+        /// <param name="testCaption">Caption to identify the test.</param>
+        /// <param name="proc">Procedure from which to generate unit test code.</param>
+        void GenerateUnitTestFromProcedure(string fileName, string testCaption, Procedure proc);
     }
 }

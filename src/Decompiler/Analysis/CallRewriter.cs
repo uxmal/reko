@@ -170,11 +170,11 @@ namespace Reko.Analysis
                 sb.AddInParam(id.Item2);
             }
 
-            foreach (var oFpu in flow.BitsUsed
-                .Where(f => f.Key is FpuStackStorage)
-                .OrderBy(r => ((FpuStackStorage) r.Key).FpuStackOffset))
+            foreach (var fpu in flow.BitsUsed
+                .Select(f => f.Key)
+                .OfType<FpuStackStorage>()
+                .OrderBy(r => r.FpuStackOffset))
             {
-                var fpu = (FpuStackStorage) oFpu.Key;
                 var id = frame.EnsureFpuStackVariable(fpu.FpuStackOffset, fpu.DataType);
                 sb.AddFpuStackArgument(fpu.FpuStackOffset, id);
             }

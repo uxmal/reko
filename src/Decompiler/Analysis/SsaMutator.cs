@@ -49,18 +49,21 @@ namespace Reko.Analysis
         /// any definitions of that register from the signature of the procedure.
         /// 
         /// Example: suppose we know that the SP register is incremented by 2 
-        /// after the Call instruction:
-        /// 
+        /// after the <c>call</c> instruction:
+        /// <code>
         /// call [something]
         ///     uses: SP_42, [other registers]
         ///     defs: SP_94, [other registers]
+        /// </code>
         ///     
         /// this function modifies it to look like this:
         /// 
+        /// <code>
         /// call [something]
         ///     uses: SP_42, [other registers]
         ///     defs: [other registers]
         /// SP_94 = SP_42 + 2
+        /// </code>
         /// </remarks>
         /// <param name="stm">The Statement containing the CallInstruction.</param>
         /// <param name="call">The CallInstruction.</param>
