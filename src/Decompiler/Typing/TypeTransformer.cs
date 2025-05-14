@@ -307,7 +307,7 @@ namespace Reko.Typing
         {
             if (!fn.HasVoidReturn)
             {
-                fn.ReturnValue.DataType = fn.ReturnValue.DataType.Accept(this);
+                fn.Outputs[0].DataType = fn.Outputs[0].DataType.Accept(this);
             }
             if (fn.Parameters != null)
             {

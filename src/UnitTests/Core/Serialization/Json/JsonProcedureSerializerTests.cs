@@ -157,11 +157,12 @@ namespace Reko.UnitTests.Core.Serialization.Json
                           "'succ':['sub_exit']}]}";
 
             var sin = new ExternalProcedure("sin", new FunctionType(
-                new Identifier("", PrimitiveType.Real64, null),
-                new Identifier("arg", PrimitiveType.Real64, null)));
+                [ new Identifier("arg", PrimitiveType.Real64, null)],
+                [ new Identifier("", PrimitiveType.Real64, null) ]
+                 ));
             var cos = new ExternalProcedure("cos", new FunctionType(
-                new Identifier("", PrimitiveType.Real64, null),
-                new Identifier("arg", PrimitiveType.Real64, null)));
+                [new Identifier("arg", PrimitiveType.Real64, null)],
+                [new Identifier("", PrimitiveType.Real64, null)]));
 
             pb.Add("main", m =>
             {

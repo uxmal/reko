@@ -45,8 +45,6 @@ namespace Reko.Core.Types
     // a sibling class "LowLevelFunctionType".
     public class FunctionType : CompositeType
 	{
-        private Identifier? retValue;
-
         /// <summary>
         /// Constructs an empty function type.
         /// </summary>
@@ -55,23 +53,27 @@ namespace Reko.Core.Types
         {
             this.ParametersValid = false;
             this.FpuStackArgumentMax = -1;
+            this.Outputs = [];
         }
 
         /// <summary>
         /// Constructs a function type with a known return value and parameters.
         /// </summary>
-        /// <param name="returnValue">Return value.</param>
-        /// <param name="parameters">Parameters.</param>
+        /// <param name="inputs">Input parameters.</param>
+        /// <param name="outputs">Return values. If multiple values
+        /// are supplied, the first one will become the "return" value,
+        /// any others will be used as "out" parameters.</param>
         public FunctionType(
-            Identifier? returnValue,    // 'null' means Void return value.
-            params Identifier [] parameters)
+            Identifier[] inputs,
+            Identifier[] outputs)
             : base(Domain.Function, null)
         {
-            this.Parameters = parameters;
+            this.Parameters = inputs;
             this.ParametersValid = true;
             this.FpuStackArgumentMax = -1;
-            returnValue ??= VoidReturnValue();
-            this.ReturnValue = returnValue;
+            this.Outputs = outputs.Length > 0
+                ? outputs
+                : [ VoidReturnValue() ];
         }
 
         private static Identifier VoidReturnValue()
@@ -80,41 +82,31 @@ namespace Reko.Core.Types
         }
 
         /// <summary>
-        /// Factory method to create a function type.
-        /// </summary>
-        /// <param name="returnId">Return value.</param>
-        /// <param name="formals">Formal parameters.</param>
-        /// <returns>The new function type.</returns>
-        public static FunctionType CreateX(Identifier? returnId, params Identifier [] formals)
-        {
-            var ret = returnId ?? VoidReturnValue();
-            return new FunctionType(ret, formals);
-        }
-
-        /// <summary>
         /// Factory method to create a user defined function type.
         /// </summary>
-        /// <param name="returnId">Return value.</param>
+        /// <param name="returnId">Optional return value.</param>
         /// <param name="formals">Formal parameters.</param>
         /// <returns>The new function type.</returns>
         public static FunctionType CreateUserDefined(
             Identifier? returnId, params Identifier[] formals)
         {
-            var ft = Create(returnId, formals);
+            returnId ??= VoidReturnValue();
+            var ft = new FunctionType(formals, [ returnId ]);
             ft.UserDefined = true;
             return ft;
         }
 
         /// <summary>
-        /// Factory method to create a function type.
+        /// Factory method to create a function type with a single
+        /// return value.
         /// </summary>
         /// <param name="returnId">Return value.</param>
         /// <param name="formals">Formal parameters.</param>
         /// <returns>The new function type.</returns>
         public static FunctionType Create(Identifier? returnId, params Identifier[] formals)
         {
-            var ret = returnId ?? VoidReturnValue();
-            return new FunctionType(returnId, formals);
+            var ret = new Identifier[] { returnId ?? VoidReturnValue() };
+            return new FunctionType(formals, ret);
         }
 
         /// <summary>
@@ -124,7 +116,7 @@ namespace Reko.Core.Types
         /// <returns>A function type.</returns>
         public static FunctionType Action(params Identifier [] parameters)
         {
-            return new FunctionType(VoidReturnValue(), parameters);
+            return new FunctionType(parameters, [VoidReturnValue() ]);
         }
 
 
@@ -134,13 +126,18 @@ namespace Reko.Core.Types
         public bool IsVariadic { get; set; }
 
         /// <summary>
+        /// The return types of the function.
+        /// </summary>
+        public Identifier[] Outputs { get; private set; }
+
+        /// <summary>
         /// The return value of a function. 
         /// </summary>
         /// <remarks>
         /// The 'Name' property of the <see cref="Identifier"/> is not applicable, and will typically
         /// be the empty string.
         /// </remarks>
-        public Identifier ReturnValue { get { return retValue!; } set { retValue = value; } }
+        public Identifier? ReturnValue => Outputs.Length == 0 ? null : Outputs[0];
 
         /// <summary>
         /// The parameters of the function.
@@ -184,7 +181,7 @@ namespace Reko.Core.Types
         /// </summary>
         /// <param name="clonedTypes">Optional already cloned members.</param>
         /// <param name="shareIncompleteTypes"></param>
-        /// <returns></returns>
+        /// <returns>A cloned copy of the <see cref="FunctionType"/>.</returns>
         public FunctionType Clone(
             IDictionary<DataType, DataType>? clonedTypes = null,
             bool shareIncompleteTypes = false)
@@ -192,11 +189,13 @@ namespace Reko.Core.Types
             FunctionType ft;
             if (ParametersValid)
             {
-                var ret = CloneIdentifier(ReturnValue, clonedTypes, shareIncompleteTypes);
-                Identifier[] parameters = this.Parameters!
+                var outputs = this.Outputs
                     .Select(p => CloneIdentifier(p, clonedTypes, shareIncompleteTypes))
                     .ToArray();
-                ft = new FunctionType(ret, parameters);
+                var parameters = this.Parameters!
+                    .Select(p => CloneIdentifier(p, clonedTypes, shareIncompleteTypes))
+                    .ToArray();
+                ft = new FunctionType(parameters, outputs);
             }
             else
             {

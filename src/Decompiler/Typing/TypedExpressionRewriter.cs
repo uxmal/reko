@@ -93,7 +93,7 @@ namespace Reko.Typing
         private void RewriteFormals(FunctionType sig)
         {
             if (!sig.HasVoidReturn)
-                sig.ReturnValue.DataType = store.GetTypeVariable(sig.ReturnValue).DataType;
+                sig.Outputs[0].DataType = store.GetTypeVariable(sig.Outputs[0]).DataType;
             if (sig.Parameters != null)
             {
                 foreach (Identifier formalArg in sig.Parameters)

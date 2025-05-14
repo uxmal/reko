@@ -264,7 +264,7 @@ namespace Reko.Scanning
             cc!.Generate(
                 ccr,
                 sig.ReturnAddressOnStack,
-                sig.ReturnValue.DataType,
+                sig.Outputs[0].DataType,
                 null, //$TODO: what to do about implicit this?
                 allTypes);
             var varArgs = argumentTypes.Zip(

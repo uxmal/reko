@@ -1271,7 +1271,7 @@ namespace Reko.Scanning
             if (sig is null)
                 return;
             if (!sig.HasVoidReturn)
-                TrashVariable(sig.ReturnValue.Storage);
+                TrashVariable(sig.Outputs[0].Storage);
             for (int i = 0; i < sig.Parameters!.Length; ++i)
             {
                 if (sig.Parameters[i].Storage is OutArgumentStorage os)

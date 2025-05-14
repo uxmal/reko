@@ -63,7 +63,7 @@ namespace Reko.Core.Types
         /// <returns>The created function type.</returns>
 		public FunctionType CreateFunctionType(Identifier returnType, Identifier [] parameters)
 		{
-			return new FunctionType(returnType, parameters);
+			return new FunctionType(parameters, [returnType]);
 		}
 
         /// <summary>

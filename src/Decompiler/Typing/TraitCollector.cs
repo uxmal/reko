@@ -71,7 +71,7 @@ namespace Reko.Typing
 			FunctionType sig = proc.Signature;
             if (!sig.HasVoidReturn)
             {
-                handler.DataTypeTrait(sig.ReturnValue, sig.ReturnValue.DataType);
+                handler.DataTypeTrait(sig.Outputs[0], sig.Outputs[0].DataType);
             }
 		}
 
@@ -93,7 +93,7 @@ namespace Reko.Typing
                 sig.Parameters[i].Accept(this);
             }
             if (!sig.HasVoidReturn)
-                handler.EqualTrait(appl, sig.ReturnValue);
+                handler.EqualTrait(appl, sig.Outputs[0]);
         }
 
 		public void CollectEffectiveAddress(Expression field, Expression effectiveAddress)
@@ -230,7 +230,7 @@ namespace Reko.Typing
             var dt = ret.Expression.Accept(this);
             if (!proc!.Signature.HasVoidReturn)
             {
-                dt = handler.EqualTrait(proc.Signature.ReturnValue, ret.Expression);
+                dt = handler.EqualTrait(proc.Signature.Outputs[0], ret.Expression);
             }
             return dt;
         }
@@ -606,7 +606,7 @@ namespace Reko.Typing
                     }
                 }
             }
-            return sig != null && !sig.HasVoidReturn ? sig.ReturnValue.DataType : null;
+            return sig != null && !sig.HasVoidReturn ? sig.Outputs[0].DataType : null;
 		}
 
         private void CollectProcedureCharacteristics()

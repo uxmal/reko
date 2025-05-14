@@ -77,10 +77,9 @@ namespace Reko.UnitTests.Core.Serialization
         {
             Given_ProcedureSerializer("stdapi");
             FunctionType sig = new FunctionType(
-                new Identifier("qax", PrimitiveType.Word32, Registers.eax),
-                new Identifier[] {
-                    new Identifier("qbx", PrimitiveType.Word32, Registers.ebx)
-                });
+                [ new Identifier("qbx", PrimitiveType.Word32, Registers.ebx) ],
+                [new Identifier("qax", PrimitiveType.Word32, Registers.eax) ]
+                );
 
             SerializedSignature ssig = ser.Serialize(sig);
             Assert.IsNotNull(ssig.ReturnValue);
@@ -104,7 +103,7 @@ namespace Reko.UnitTests.Core.Serialization
                 new SequenceStorage(PrimitiveType.SegPtr32, Registers.es, Registers.bx));
             Given_ProcedureSerializer("stdapi");
 
-            SerializedSignature ssig = ser.Serialize(new FunctionType(seq, Array.Empty<Identifier>()));
+            SerializedSignature ssig = ser.Serialize(new FunctionType([], [seq]));
             Verify(ssig, "Core/SsigSerializeSequence.txt");
         }
 
@@ -129,10 +128,10 @@ namespace Reko.UnitTests.Core.Serialization
             Procedure proc = new Procedure(arch, "foo", addr, arch.CreateFrame())
             {
                 Signature = new FunctionType(
-                    new Identifier("eax", PrimitiveType.Word32, Registers.eax),
-                    new Identifier[] {
+                    [
                         new Identifier("arg00", PrimitiveType.Word32, new StackStorage(0, PrimitiveType.Word32))
-                    })
+                    ],
+                    [new Identifier("eax", PrimitiveType.Word32, Registers.eax)])
             };
 
             Given_ProcedureSerializer("stdapi");

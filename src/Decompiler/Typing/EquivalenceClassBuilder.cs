@@ -109,7 +109,7 @@ namespace Reko.Typing
                 return;
             if (!signature.HasVoidReturn)
             {
-                signature.ReturnValue.Accept(this);
+                signature.Outputs[0].Accept(this);
             }
             foreach (var param in signature.Parameters!)
             {
@@ -302,7 +302,7 @@ namespace Reko.Typing
             ret.Expression.Accept(this);
             if (signature != null && !signature.HasVoidReturn)
             {
-                if (!store.TryGetTypeVariable(signature.ReturnValue, out var tvReturn))
+                if (!store.TryGetTypeVariable(signature.Outputs[0], out var tvReturn))
                 {
                     trace.Warn("Eqb: {0:X}: Type variable for return value of signature of {1} is missing", stmCur!.Address, stmCur.Block.Procedure.Name);
                     return;

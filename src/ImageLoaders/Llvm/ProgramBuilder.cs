@@ -221,7 +221,7 @@ namespace Reko.ImageLoaders.LLVM
                     sigParameters.Add(id);
                 }
             }
-            return new FunctionType(sigRet, sigParameters.ToArray());
+            return new FunctionType(sigParameters.ToArray(), [sigRet]);
         }
 
         public DataType TranslateType(LLVMType type)

@@ -96,7 +96,7 @@ namespace Reko.Typing
         public bool VisitFunctionType(FunctionType ft)
         {
             return ft.ParametersValid &&
-                (Find(ft.ReturnValue.DataType) ||
+                (Find(ft.Outputs[0].DataType) ||
                  ft.Parameters!.Any(p => Find(p.DataType)));
         }
 

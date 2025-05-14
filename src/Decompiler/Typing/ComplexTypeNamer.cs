@@ -97,7 +97,7 @@ namespace Reko.Typing
                 param.DataType.Accept(this);
             }
             if (!ft.HasVoidReturn)
-                ft.ReturnValue.DataType.Accept(this);
+                ft.Outputs[0].DataType.Accept(this);
             return ft;
         }
 

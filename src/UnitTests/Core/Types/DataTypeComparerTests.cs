@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2025 John Källén.
  *
@@ -36,11 +36,11 @@ namespace Reko.UnitTests.Core.Types
         public void Dtcmp_Functions()
         {
             var sig1 = new FunctionType(
-                new Identifier("", PrimitiveType.Int32, null),
-                new Identifier("arg1", PrimitiveType.Real64, null));
+                [new Identifier("arg1", PrimitiveType.Real64, null)],
+                [new Identifier("", PrimitiveType.Int32, null)]);
             var sig2 = new FunctionType(
-                new Identifier("", PrimitiveType.Int32, null),
-                new Identifier("arg1", PrimitiveType.Real64, null));
+                [new Identifier("arg1", PrimitiveType.Real64, null)],
+                [new Identifier("", PrimitiveType.Int32, null)]);
             var dtcmp = new DataTypeComparer();
             Assert.AreEqual(dtcmp.GetHashCode(sig1), dtcmp.GetHashCode(sig2));
             Assert.AreEqual(0, dtcmp.Compare(sig1, sig2));

@@ -171,7 +171,7 @@ namespace Reko.Typing
             FunctionType sig = proc.Signature;
             if (!sig.HasVoidReturn)
             {
-                desc.MeetDataType(sig.ReturnValue, sig.ReturnValue.DataType);
+                desc.MeetDataType(sig.Outputs[0], sig.Outputs[0].DataType);
             }
             if (sig.Parameters != null)
             {

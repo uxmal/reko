@@ -504,8 +504,8 @@ namespace Reko.ImageLoaders.WebAssembly
                     new StackStorage(0, dt));
             }
             return new FunctionType(
-                ret,
-                args.ToArray());
+                args.ToArray(),
+                ret is not null ? [ret] : []);
         }
 
         private DataType? ReadValueType(WasmImageReader rdr)

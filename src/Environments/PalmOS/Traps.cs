@@ -1309,7 +1309,7 @@ namespace Reko.Environments.PalmOS
                         null),
                     p.DataType,
                     p));
-            return new FunctionType(ret, parameters.ToArray());
+            return new FunctionType(parameters.ToArray(), [ret]);
         }
 
         private static DataType GetPointerParameter(ReadOnlySpan<char> a)

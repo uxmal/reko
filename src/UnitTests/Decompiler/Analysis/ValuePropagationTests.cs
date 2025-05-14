@@ -86,7 +86,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             Identifier ret,
             params Identifier[] parameters)
         {
-            var ep = new ExternalProcedure(name, new FunctionType(ret, parameters));
+            var ep = new ExternalProcedure(name, new FunctionType(parameters, [ret]));
             ep.Signature.ReturnAddressOnStack = 4;
             ep.Signature.StackDelta = stackDelta;
             return ep;

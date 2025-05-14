@@ -118,10 +118,10 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
             }
 
             var parameters = inputTypes.Select(Arg).ToArray();
-            var retvalue = outputType != 0
-                ? new Identifier("", DataTypeFromValType(outputType), null!)
-                : null;
-            var ft = new FunctionType(retvalue, parameters);
+            Identifier[] retvalues = outputType != 0
+                ? [ new Identifier("", DataTypeFromValType(outputType), null!) ]
+                : [];
+            var ft = new FunctionType(parameters, retvalues);
             funcTypes.Add(ft);
         }
 

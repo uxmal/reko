@@ -201,7 +201,7 @@ namespace Reko.Core
             }
             else
             {
-                var ret = sig.ReturnValue;
+                Identifier ret = sig.ReturnValue!;
                 if (TryGetGenericArgument(ret.DataType, out int index))
                 {
                     ret = new Identifier(
@@ -209,7 +209,7 @@ namespace Reko.Core
                         ResolvePointer(ret.DataType, concreteTypes[index], ptrSize),
                         ret.Storage);
                 }
-                concreteSig = FunctionType.Create(ret, parameters);
+                concreteSig = new FunctionType(parameters, [ ret ]);
             }
             concreteSig.IsVariadic = sig.IsVariadic;
             return concreteSig;

@@ -122,7 +122,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             {
                 argIds.Add(proc.Frame.EnsureRegister(arg));
             }
-            return new FunctionType(retReg, argIds.ToArray());
+            return new FunctionType(argIds.ToArray(), [ retReg ]);
         }
 
         private void Given_Segment(string segName, uint addr, int size, AccessMode mode)

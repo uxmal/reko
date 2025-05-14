@@ -434,10 +434,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
                     new ExternalProcedure(
                         "GlobalHandle",
                         new FunctionType(
-                            new Identifier("eax", tHglobal, Reko.Arch.X86.Registers.eax),
-                            new Identifier[] {
-                                new Identifier("pv",  tLpvoid, new StackStorage(4, PrimitiveType.Word32))
-                            })
+                            [ new Identifier("pv",  tLpvoid, new StackStorage(4, PrimitiveType.Word32)) ],
+                            [ new Identifier("eax", tHglobal, Reko.Arch.X86.Registers.eax)])
                         {
                             StackDelta = 4,
                         }));
@@ -447,10 +445,9 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 .Returns(new ExternalProcedure(
                     "GlobalUnlock",
                     new FunctionType(
-                        new Identifier("eax",  tBool, Reko.Arch.X86.Registers.eax),
-                        new Identifier[] {
-                            new Identifier("hMem", tHglobal, new StackStorage(4, PrimitiveType.Word32))
-                        })
+                        [new Identifier("hMem", tHglobal, new StackStorage(4, PrimitiveType.Word32))],
+                        [new Identifier("eax", tBool, Registers.eax)])
+
                     {
                         StackDelta = 4,
                     }));
@@ -461,10 +458,10 @@ namespace Reko.UnitTests.Decompiler.Analysis
              .Returns(new ExternalProcedure(
                  "GlobalFree",
                  new FunctionType(
-                     new Identifier("eax",  tBool, Reko.Arch.X86.Registers.eax),
                      new[] {
                         new Identifier("hMem", tHglobal, new StackStorage(4, PrimitiveType.Word32))
-                     })
+                     },
+                     [ new Identifier("eax",  tBool, Reko.Arch.X86.Registers.eax),])
                      {
                          StackDelta = 4,
                      }));

@@ -321,8 +321,8 @@ namespace Reko.Analysis
                 if (!sig.HasVoidReturn)
                 {
                     liveOutStorages.Add(
-                        sig.ReturnValue.Storage,
-                        new(new BitRange(0, sig.ReturnValue.DataType.BitSize),
+                        sig.Outputs[0].Storage,
+                        new(new BitRange(0, sig.Outputs[0].DataType.BitSize),
                          procCallee));
                 }
             }

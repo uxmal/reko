@@ -374,7 +374,7 @@ namespace Reko.ImageLoaders.WebAssembly.Output
             }
             dataStack.RemoveRange(dataStack.Count - cParams, cParams);
             if (!sig.HasVoidReturn)
-                dataStack.Add(sig.ReturnValue.DataType);
+                dataStack.Add(sig.Outputs[0].DataType);
         }
 
         private string GetFunctionName(int ifunc)

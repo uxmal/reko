@@ -589,7 +589,10 @@ namespace Reko.UnitTests.Decompiler.Typing
         public void Unify_CodeFn()
         {
             var t1 = new Pointer(new CodeType(), 32);
-            var t2 = new Pointer(new FunctionType(Id("r0", 0), new[] { Id("r1", 1), Id("r2", 2) }), 32);
+            var t2 = new Pointer(new FunctionType(
+                    [ Id("r1", 1), Id("r2", 2) ],
+                    [ Id("r0", 0)]),
+                32);
             Assert.IsTrue(un.AreCompatible(t1, t2));
             Assert.AreEqual("(ptr32 (fn word32 (word32, word32)))", un.Unify(t1, t2).ToString());
         }

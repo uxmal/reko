@@ -84,18 +84,18 @@ namespace Reko.UnitTests.Decompiler.Scanning
                     "Reko.Libraries.Libc.PrintfFormatParser,Reko.Libraries.Libc"
             };
             this.x86PrintfSig = new FunctionType(
-                null,
-                StackId(null, 4, CStringType32())) { ReturnAddressOnStack = 4, IsVariadic = true };
+                [StackId(null, 4, CStringType32())], []) { ReturnAddressOnStack = 4, IsVariadic = true };
             this.x86SprintfSig = new FunctionType(
-                null,
-                StackId(null,   4, CStringType32()),
-                StackId(null,   8, CStringType32())) { ReturnAddressOnStack = 4, IsVariadic = true };
+                [
+                    StackId(null,   4, CStringType32()),
+                    StackId(null,   8, CStringType32())
+                ], []) { ReturnAddressOnStack = 4, IsVariadic = true };
             this.win_x86_64PrintfSig = new FunctionType(
-                null,
-                RegId(null, win_x86_64, "rcx", CStringType64())) { ReturnAddressOnStack=8, IsVariadic = true };
+                [ RegId(null, win_x86_64, "rcx", CStringType64())],
+                []) { ReturnAddressOnStack=8, IsVariadic = true };
             this.ppcPrintfSig = new FunctionType(
-                null,
-                RegId(null,  sysV_ppc, "r3", CStringType32())) { IsVariadic = true };
+                [ RegId(null,  sysV_ppc, "r3", CStringType32())],
+                []) { IsVariadic = true };
             this.addrInstr = Address.Ptr32(0x123400);
             this.listener = new FakeDecompilerEventListener();
             sc.AddService<IDecompilerEventListener>(listener);

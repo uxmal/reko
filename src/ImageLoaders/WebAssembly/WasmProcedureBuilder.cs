@@ -546,7 +546,7 @@ namespace Reko.ImageLoaders.WebAssembly
             }
             else
             {
-                var id = PushValue(sig.ReturnValue.DataType);
+                var id = PushValue(sig.Outputs[0].DataType);
                 Assign(id, application);
             }
         }

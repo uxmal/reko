@@ -163,12 +163,7 @@ VarargsParserClass: {ep.Characteristics.VarargsParserClass}";
             };
 
             var barSig = new FunctionType(
-                    new Identifier(
-                        "res",
-                        PrimitiveType.Word16,
-                        RegisterStorage.Reg16("ax", 0)
-                    ),
-                    new[] {
+                    [
                         new Identifier(
                             "a",
                             PrimitiveType.Word16,
@@ -179,7 +174,13 @@ VarargsParserClass: {ep.Characteristics.VarargsParserClass}";
                             PrimitiveType.Word16,
                             RegisterStorage.Reg16("dx", 0)
                         )
-                    }
+                    ],
+                    [
+                        new Identifier(
+                            "res",
+                            PrimitiveType.Word16,
+                            RegisterStorage.Reg16("ax", 0))
+                        ]
                 );
 
             program.EnvironmentMetadata.Modules.Add("foo", new ModuleDescriptor("foo")

@@ -54,7 +54,7 @@ namespace Reko.ImageLoaders.WebAssembly
                 if (!func.HasVoidReturn)
                 {
                     formatter.Write(" (result ");
-                    FormatAsWasmType(func.ReturnValue.DataType, formatter);
+                    FormatAsWasmType(func.Outputs[0].DataType, formatter);
                     formatter.Write(")");
                 }
                 formatter.WriteLine(")");

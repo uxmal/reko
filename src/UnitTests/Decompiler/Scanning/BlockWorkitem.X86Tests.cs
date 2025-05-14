@@ -195,8 +195,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                     {
                         "GetDC",
                         new FunctionType(
-                            new Identifier("", new Pointer(VoidType.Instance, 32), RegisterStorage.Reg32("eax", 0)),
-                            new [] {
+                            [
                                 new Identifier("arg",
                                     new TypeReference(
                                         "HWND",
@@ -204,7 +203,9 @@ namespace Reko.UnitTests.Decompiler.Scanning
                                     new StackStorage(4, new TypeReference(
                                         "HWND",
                                         new Pointer(VoidType.Instance, 32))))
-                            })
+                            ],
+                            [ new Identifier("", new Pointer(VoidType.Instance, 32), RegisterStorage.Reg32("eax", 0)) ]
+                            )
                         {
                             StackDelta = 4,
                         }
@@ -337,8 +338,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
             {
                 Address = Address.SegPtr(0xC00, 0),
                 Signature = new FunctionType(
-                        Reg(Registers.ax),
-                        new Identifier[] { Reg(Registers.cx) })
+                        [ Reg(Registers.cx) ],
+                        [ Reg(Registers.ax) ])
             };
             program.User.Calls.Add(uc.Address, uc);
 

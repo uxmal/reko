@@ -103,9 +103,13 @@ namespace Reko.UnitTests.Decompiler
         {
             var program = new Program();
             var sig = new FunctionType(
-                new Identifier("return", PrimitiveType.Int32, null!),
+                [
                 new Identifier("this", PrimitiveType.Ptr32, null!),
-                new Identifier("r64", PrimitiveType.Real64, null!))
+                new Identifier("r64", PrimitiveType.Real64, null!)
+                ],
+                [
+                    new Identifier("return", PrimitiveType.Int32, null!),
+                ])
             {
                 IsInstanceMetod = true,
             };

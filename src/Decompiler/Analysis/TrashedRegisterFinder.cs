@@ -252,7 +252,7 @@ namespace Reko.Analysis
             // we will always trust that rather than the flow.
             if (!sig.HasVoidReturn)
             {
-                procFlow.Trashed.Add(sig.ReturnValue.Storage);
+                procFlow.Trashed.Add(sig.Outputs[0].Storage);
             }
             foreach (var stg in sig.Parameters!
                 .Select(p => p.Storage)

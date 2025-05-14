@@ -136,10 +136,11 @@ namespace Reko.UnitTests.Core.Serialization
 		public static FunctionType MkSigAxBxCl()
 		{
 			Identifier ret = new Identifier(Registers.ax.Name, Registers.ax.DataType, Registers.ax);
-			Identifier [] args = new Identifier[2];
-			args[0] = new Identifier(Registers.bx.Name, Registers.bx.DataType, Registers.bx);
-			args[1] = new Identifier(Registers.cl.Name, Registers.cl.DataType, Registers.cl);
-			return new FunctionType(ret, args);
+			Identifier [] args = [
+			    new Identifier(Registers.bx.Name, Registers.bx.DataType, Registers.bx),
+			    new Identifier(Registers.cl.Name, Registers.cl.DataType, Registers.cl)
+			];
+            return new FunctionType(args, [ret]);
 		}
 
 		private SerializedSignature BuildSsigStack()

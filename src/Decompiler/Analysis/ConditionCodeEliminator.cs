@@ -791,8 +791,8 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
         public Expression ComparisonFromParity(BinaryExpression bin, bool isNegated)
         {
             var sig = new FunctionType(
-                new Identifier("", PrimitiveType.Bool, null!),
-                new Identifier("", bin.DataType, null!));
+                [ new Identifier("", bin.DataType, null!) ],
+                [ new Identifier("", PrimitiveType.Bool, null!) ]);
             Expression e = new Application(
                 new ProcedureConstant(
                     program.Platform.PointerType,
@@ -813,9 +813,13 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
         public Expression OrderedComparison(BinaryExpression bin, bool isNegated)
 		{
             var sig = new FunctionType(
-                new Identifier("", PrimitiveType.Bool, null!),
-                new Identifier("x", bin.DataType, null!),
-                new Identifier("y", bin.DataType, null!));
+                [
+                    new Identifier("x", bin.DataType, null!),
+                    new Identifier("y", bin.DataType, null!)
+                ],
+                [
+                    new Identifier("", PrimitiveType.Bool, null!)
+                ]);
             Expression e = m.Fn(
                 new ProcedureConstant(
                     program.Platform.PointerType,
