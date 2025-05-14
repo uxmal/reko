@@ -29,6 +29,7 @@ using System.IO;
 using System.Text;
 using System.Diagnostics;
 using System.Linq;
+using Microsoft.Win32.SafeHandles;
 
 namespace Reko.Core.Output
 {
@@ -183,25 +184,145 @@ namespace Reko.Core.Output
 
         private void WriteIdentifierDeclarations(Procedure proc, IEnumerable<Identifier> identifiers)
         {
-            foreach (Identifier id in identifiers)
+            var idGroups = identifiers
+                .GroupBy(id => id.Storage)
+                .OrderBy(g => g.Key, StorageCollator.Instance)
+                .ToArray();
+            var stgVarNames = new Dictionary<Storage, string>();
+            foreach (var group in idGroups)
             {
-                if (id.Storage is MemoryStorage)
+                var stg = group.Key;
+                if (stg is MemoryStorage)
                     continue;
-                writer.Write("Identifier {0} = ", id.Name);
-                if (id == proc.Frame.FramePointer)
+                if (stg == proc.Frame.FramePointer.Storage)
+                    continue;
+                if (stg == proc.Frame.Continuation.Storage)
+                    continue;
+                var stgName = WriteStorageDeclaration(group.Key, stgVarNames, this.writer);
+            }
+            foreach (var group in idGroups)
+            {
+                if (group.Key is MemoryStorage)
+                    continue;
+                foreach (var id in group)
                 {
-                    writer.Write("m.Frame.FramePointer");
+                    writer.Write("Identifier {0} = ", id.Name);
+                    if (id == proc.Frame.FramePointer)
+                    {
+                        writer.Write("m.Frame.FramePointer");
+                    }
+                    else if (id.Storage == proc.Frame.Continuation.Storage)
+                    {
+                        writer.Write("m.Frame.Continuation");
+                    }
+                    else if (id.Storage is RegisterStorage reg)
+                    {
+                        writer.Write($"m.Frame.EnsureRegister({stgVarNames[reg]})");
+                    }
+                    else if (id.Storage is SequenceStorage seq)
+                    {
+                        writer.Write($"m.Frame.EnsureSequence(");
+                        id.DataType.Accept(this);
+                        writer.Write($", {stgVarNames[seq]})");
+                    }
+                    else if (id.Storage is FlagGroupStorage grf)
+                    {
+                        writer.Write($"m.Frame.EnsureFlagGroup({stgVarNames[grf]})");
+                    }
+                    else if (id.Storage is FpuStackStorage fpu)
+                    {
+                        writer.Write($"m.Frame.EnsureFpuStackVariable({fpu.FpuStackOffset}");
+                        id.DataType.Accept(this);
+                        writer.Write(")");
+                    }
+                    else if (id.Storage is OutArgumentStorage outArg)
+                    {
+                        writer.Write($"m.Frame.EnsureOutArgument({outArg.OriginalIdentifier.Name}, ");
+                        id.DataType.Accept(this);
+                        writer.Write(")");
+                    }
+                    else if (id.Storage is StackStorage stk)
+                    {
+                        writer.Write("m.Frame.EnsureStackVariable(");
+                        writer.Write($"{stk.StackOffset}, ");
+                        id.DataType.Accept(this);
+                        writer.Write($", \"{id.Name}\")");
+                    }
+                    else
+                    {
+                        writer.WriteLine($"****** Storage {id.Storage.GetType().Name} for {id.Name} not implemented yet.");
+                    }
+                    writer.WriteLine(";");
                 }
-                else
-                {
-                    Method("Local");
-                    id.DataType.Accept(this);
-                    writer.Write(", \"{0}\")", id.Name);
-                }
-                writer.WriteLine(";");
             }
         }
-        
+
+        private string WriteStorageDeclaration(
+            Storage stg,
+            Dictionary<Storage, string> stgVarNames,
+            IndentingTextWriter writer)
+        {
+            if (stgVarNames.TryGetValue(stg, out var stgName))
+                return stgName;
+            switch (stg)
+            {
+            case RegisterStorage reg:
+                stgName = $"reg_{reg.Name}";
+                writer.Write("RegisterStorage {0} = new RegisterStorage(", stgName);
+                writer.Write($"\"{reg.Name}\", {reg.Number}, {reg.BitAddress}, ");
+                reg.DataType.Accept(this);
+                writer.WriteLine(");");
+                break;
+            case StackStorage stk:
+                stgName = "";
+                break;
+            case SequenceStorage seq:
+                var stgNames = new List<string>();
+                for (int i = 0; i < seq.Elements.Length; ++i)
+                {
+                    var stgElem = seq.Elements[i];
+                    if (!stgVarNames.TryGetValue(stgElem, out var subName))
+                    {
+                        subName = WriteStorageDeclaration(stgElem, stgVarNames, writer);
+                    }
+                    stgNames.Add(subName);
+                }
+                stgName = $"seq_{string.Join('_', seq.Elements.Select(e => e.Name))}";
+                writer.Write($"SequenceStorage {stgName} = new SequenceStorage(");
+                seq.DataType.Accept(this);
+                foreach (var s in stgNames)
+                {
+                    writer.Write(", {0}", s);
+                }
+                writer.WriteLine(");");
+                break;
+            case FlagGroupStorage grf:
+                if (!stgVarNames.TryGetValue(grf.FlagRegister, out var flagRegName))
+                {
+                    flagRegName = WriteStorageDeclaration(grf.FlagRegister, stgVarNames, writer);
+                }
+                stgName = $"grf_{grf.Name}";
+                writer.WriteLine($"FlagGroupStorage {stgName} = new FlagGroupStorage({flagRegName}, 0x{grf.FlagGroupBits:X}, {grf.Name});");
+                break;
+            case FpuStackStorage fpu:
+                stgName = $"fpu_{fpu.Name}";
+                writer.Write($"FpuStackStorage {stgName} = new FpuStackStorage({fpu.FpuStackOffset}, ");
+                fpu.DataType.Accept(this);
+                writer.WriteLine(");");
+                break;
+            case OutArgumentStorage outArg:
+                stgName = $"outarg_{outArg.Name}";
+                writer.WriteLine($"OutArgumentStorage {stgName} = new OutArgumentStorage({outArg.OriginalIdentifier.Name});");
+                break;
+            default:
+                writer.WriteLine($"***** Not implemented {stg.GetType().Name}");
+                stgName = stg.Name;
+                break;
+            }
+            stgVarNames.Add(stg, stgName);
+            return stgName;
+        }
+
         private void WriteCode(Procedure proc)
         {
             BlockGraph graph = proc.ControlGraph;
@@ -523,9 +644,21 @@ namespace Reko.Core.Output
                 }
                 return;
             }
+            else if (c.DataType == PrimitiveType.Byte)
+            {
+                Method("Byte");
+            }
             if (c.DataType == PrimitiveType.Word32)
             {
                 Method("Word32");
+            }
+            else if (c.DataType == PrimitiveType.Word64)
+            {
+                Method("Word64");
+            }
+            else if (c.DataType == PrimitiveType.Word16)
+            {
+                Method("Word16");
             }
             else if (c.DataType==PrimitiveType.Int32)
             {
@@ -536,15 +669,6 @@ namespace Reko.Core.Output
                 else
                     writer.Write("{0})", v);
                 return;
-            }
-
-            else if (c.DataType == PrimitiveType.Word16)
-            {
-                Method("Word16");
-            }
-            else if (c.DataType == PrimitiveType.Byte)
-            {
-                Method("Byte");
             }
             else
             {
@@ -761,14 +885,14 @@ namespace Reko.Core.Output
         {
             var sb = new StringBuilder();
             sb.Append("PrimitiveType.");
-            if (pt == PrimitiveType.Word32)
-                sb.Append("Word32");
-            else if (pt == PrimitiveType.Int32)
-                sb.Append("Int32");
-            else if (pt == PrimitiveType.Word16)
-                sb.Append("Word16");
-            else if (pt == PrimitiveType.Byte)
+            if (pt == PrimitiveType.Byte)
                 sb.Append("Byte");
+            else if (pt.IsWord)
+                sb.Append($"Word{pt.BitSize}");
+            else if (pt.Domain == Domain.SignedInt)
+                sb.Append($"Int{pt.BitSize}");
+            else if (pt.Domain == Domain.UnsignedInt)
+                sb.Append($"UInt{pt.BitSize}");
             else if (pt == PrimitiveType.SegmentSelector)
                 sb.Append("SegmentSelector");
             else if (pt == PrimitiveType.Bool)
@@ -777,19 +901,12 @@ namespace Reko.Core.Output
                 sb.Append("Ptr32");
             else
             {
-                if (pt.Domain == Domain.SignedInt)
-                {
-                    sb.Append($"Int{pt.BitSize}");
-                }
-                else
-                {
-                    sb.Append("Create(");
-                    sb.Append(string.Join("|",
-                        pt.Domain.ToString()
-                            .Split(',').Select(s => $"Domain.{s.Trim()}")));
-                    sb.Append($", {pt.BitSize}");
-                    sb.Append(")");
-                }
+                sb.Append("Create(");
+                sb.Append(string.Join("|",
+                    pt.Domain.ToString()
+                        .Split(',').Select(s => $"Domain.{s.Trim()}")));
+                sb.Append($", {pt.BitSize}");
+                sb.Append(")");
             }
             return sb.ToString();
         }
@@ -915,6 +1032,96 @@ namespace Reko.Core.Output
                 writer.Write(s);
                 s = separator;
                 w(item);
+            }
+        }
+
+        private class StorageCollator : IComparer<Storage>
+        {
+
+            private static Dictionary<Type, int> precedences =
+            new() {
+                { typeof(RegisterStorage), 1 },
+                { typeof(SequenceStorage), 2 },
+                { typeof(StackStorage), 3 },
+                { typeof(FlagGroupStorage), 4 },
+                { typeof(FpuStackStorage), 5 },
+                { typeof(TemporaryStorage), 6 },
+                { typeof(OutArgumentStorage), 7 },
+                { typeof(GlobalStorage), 8 },
+                { typeof(MemoryStorage), 9 },
+            };
+
+            public static StorageCollator Instance { get; } = new StorageCollator();
+
+            public int Compare(Storage? x, Storage? y)
+            {
+                if (x is null)
+                    return y is null ? 0 : -1;
+                if (y is null)
+                    return 1;
+                if (x.GetType() != y.GetType())
+                {
+                    try
+                    {
+                        return precedences[x.GetType()].CompareTo(precedences[y.GetType()]);
+                    }
+                    catch (Exception ex)
+                    {
+                        if (x.GetType().Name.Contains("PIC") ||
+                            y.GetType().Name.Contains("PIC"))
+                            return x.Domain.CompareTo(y.Domain);
+                        throw;
+                    }
+                }
+                if (x is StackStorage stgX && y is StackStorage stgY)
+                {
+                    if (stgX.StackOffset >= 0)
+                    {
+                        // X is an argument.
+                        if (stgY.StackOffset >= 0)
+                            return stgX.StackOffset.CompareTo(stgY.StackOffset);
+                        return -1;
+                    }
+                    if (stgY.StackOffset >= 0)
+                    {
+                        // x is a local, y is an argument.
+                        return 1;
+                    }
+                    return stgY.StackOffset.CompareTo(stgX.StackOffset);
+                }
+                else if (x is SequenceStorage seqX && x is SequenceStorage seqY)
+                {
+                    var d = seqX.Elements.Length.CompareTo(seqY.Elements.Length);
+                    if (d != 0)
+                        return d;
+                    for (int i = 0; i < Math.Min(seqX.Elements.Length, seqY.Elements.Length); i++)
+                    {
+                        var cmp = this.Compare(seqX.Elements[i], seqY.Elements[i]);
+                        if (cmp != 0)
+                            return cmp;
+                    }
+                    return 0;
+                }
+                else if (x is FlagGroupStorage grfX && y is FlagGroupStorage grfY)
+                {
+                    var d = Compare(grfX.FlagRegister, grfY.FlagRegister);
+                    if (d != 0)
+                        return d;
+                    return grfX.FlagGroupBits.CompareTo(grfY.FlagGroupBits);
+                }
+                else if (x is OutArgumentStorage outX && y is OutArgumentStorage outY)
+                {
+                    return Compare(outX.OriginalIdentifier.Storage, outY.OriginalIdentifier.Storage);
+                }
+                else if (x is FpuStackStorage fpuX && y is FpuStackStorage fpuY)
+                {
+                    return fpuX.FpuStackOffset.CompareTo(fpuY.FpuStackOffset);
+                }
+                if (x.Domain != y.Domain)
+                    return x.Domain.CompareTo(y.Domain);
+                if (x.BitSize != y.BitSize)
+                    return x.BitSize.CompareTo(y.BitSize);
+                return 0;
             }
         }
     }

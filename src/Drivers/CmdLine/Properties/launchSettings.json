@@ -3,7 +3,7 @@
     "CmdLine": {
       "commandName": "Project",
       "commandLineArgs": "decompile --heuristic shingle --arch pic --arch-option model=\"PIC18F1220\" --loader IntelHex --base 0000 --entry 0000 PIC18Legacy.hex",
-      "workingDirectory": "d:\\dev\\uxmal\\reko\\master\\subjects\\Microchip\\C18\\PIC18"
+      "workingDirectory": "c:\\dev\\uxmal\\reko\\master\\subjects\\Microchip\\C18\\PIC18"
     }
   },
   "iisSettings": {

@@ -241,6 +241,14 @@ namespace Reko
                         WriteProcedureCallers(program, proc, output);
                         flow.Emit(proc.Architecture, output);
                         new ProcedureFormatter(proc, new BlockDecorator(), cf).WriteProcedureBlocks();
+
+                        /// For debugging
+                        //output.WriteLine();
+                        //output.WriteLine("/*");
+                        //var mockWriter = new MockGenerator(output, "m.");
+                        //mockWriter.WriteMethod(proc);
+                        //output.WriteLine("*/");
+                        //output.WriteLine();
                     }
                     else
                     {

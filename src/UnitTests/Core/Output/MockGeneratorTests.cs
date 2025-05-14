@@ -26,6 +26,7 @@ using NUnit.Framework;
 using System;
 using System.IO;
 using System.Diagnostics;
+using Reko.Core;
 
 namespace Reko.UnitTests.Core.Output
 {
@@ -102,7 +103,7 @@ namespace Reko.UnitTests.Core.Output
             string sExp =
                 "public class ProcedureBuilder : ProcedureMock" + nl +
                 "{" + nl +
-                "    Identifier id = Local(PrimitiveType.Word32, \"id\");" + nl +
+                "    Identifier id = m.Frame.EnsureStackVariable(-4, PrimitiveType.Word32, \"id\");" + nl +
                 "    " + nl +
                 "    Label(\"l1\");" + nl +
                 "    Assign(id, Word32(0x2A));" + nl +
@@ -126,8 +127,8 @@ namespace Reko.UnitTests.Core.Output
             string sExp =
                 "public class ProcedureBuilder : ProcedureMock" + nl +
                 "{" + nl +
-                "    Identifier a = Local(PrimitiveType.Word32, \"a\");" + nl +
-                "    Identifier b = Local(PrimitiveType.Word32, \"b\");" + nl +
+                "    Identifier a = m.Frame.EnsureStackVariable(-4, PrimitiveType.Word32, \"a\");" + nl +
+                "    Identifier b = m.Frame.EnsureStackVariable(-8, PrimitiveType.Word32, \"b\");" + nl +
                 "    " + nl +
                 "    Label(\"l1\");" + nl +
                 "    Assign(a, SMul(UMul(a, b), IAdd(a, ISub(b, IMul(a, b)))));" + nl +
@@ -168,8 +169,8 @@ namespace Reko.UnitTests.Core.Output
             });
             string sExp = 
 "public class ProcedureBuilder : ProcedureMock" + nl + 
-"{" + nl + 
-"    Identifier id = Local(PrimitiveType.Word16, \"id\");" + nl + 
+"{" + nl +
+"    Identifier id = m.Frame.EnsureStackVariable(-4, PrimitiveType.Word16, \"id\");" + nl + 
 "    " + nl + 
 "    Label(\"l1\");" + nl + 
 "    Assign(id, Word16(0x1234));" + nl + 
@@ -193,8 +194,8 @@ namespace Reko.UnitTests.Core.Output
             string sExp =
 "public class ProcedureBuilder : ProcedureMock" + nl + 
 "{" + nl + 
-"    Identifier inp = Local(PrimitiveType.Word32, \"inp\");" + nl + 
-"    Identifier outp = Local(PrimitiveType.Word32, \"outp\");" + nl + 
+"    Identifier inp = m.Frame.EnsureStackVariable(-4, PrimitiveType.Word32, \"inp\");" + nl +
+"    Identifier outp = m.Frame.EnsureStackVariable(-8, PrimitiveType.Word32, \"outp\");" + nl +
 "    " + nl + 
 "    Label(\"l1\");" + nl + 
 "    Assign(inp, Word32(0x0));" + nl + 
@@ -216,7 +217,7 @@ namespace Reko.UnitTests.Core.Output
             string sExp = 
 "public class ProcedureBuilder : ProcedureMock" + nl + 
 "{" + nl + 
-"    Identifier es = Local(PrimitiveType.SegmentSelector, \"es\");" + nl + 
+"    Identifier es = m.Frame.EnsureStackVariable(-2, PrimitiveType.SegmentSelector, \"es\");" + nl + 
 "    " + nl + 
 "    Label(\"l1\");" + nl + 
 "    SideEffect(Fn(\"foo\", es));" + nl + 
@@ -242,7 +243,7 @@ namespace Reko.UnitTests.Core.Output
             string sExp = 
 "public class ProcedureBuilder : ProcedureMock" + nl + 
 "{" + nl + 
-"    Identifier i = Local(PrimitiveType.Int32, \"i\");" + nl + 
+"    Identifier i = m.Frame.EnsureStackVariable(-4, PrimitiveType.Int32, \"i\");" + nl + 
 "    " + nl + 
 "    Label(\"l1\");" + nl + 
 "    BranchIf(Eq(i, Int32(0)), \"skip\");" + nl + 
@@ -279,9 +280,9 @@ namespace Reko.UnitTests.Core.Output
             VerifyTest(
                 "public class ProcedureBuilder : ProcedureMock" + nl +
                 "{" + nl +
-                "    Identifier a = Local(PrimitiveType.Word32, \"a\");" + nl +
-                "    Identifier b = Local(PrimitiveType.Word32, \"b\");" + nl +
-                "    Identifier f = Local(PrimitiveType.Bool, \"f\");" + nl +
+                "    Identifier f = m.Frame.EnsureStackVariable(-1, PrimitiveType.Bool, \"f\");" + nl +
+                "    Identifier a = m.Frame.EnsureStackVariable(-5, PrimitiveType.Word32, \"a\");" + nl +
+                "    Identifier b = m.Frame.EnsureStackVariable(-9, PrimitiveType.Word32, \"b\");" + nl +
                 "    " + nl +
                 "    Label(\"l1\");" + nl +
                 "    Assign(f, Le(a, b));" + nl +
@@ -294,8 +295,6 @@ namespace Reko.UnitTests.Core.Output
                 "    Assign(f, Ult(a, b));" + nl +
                 "}" + nl +
                 "" + nl);
-
-
         }
 
         [Test]
@@ -312,9 +311,9 @@ namespace Reko.UnitTests.Core.Output
             VerifyTest(
                 "public class ProcedureBuilder : ProcedureMock" + nl +
                 "{" + nl +
-                "    Identifier a = Local(PrimitiveType.Word32, \"a\");" + nl +
-                "    Identifier b = Local(PrimitiveType.Word32, \"b\");" + nl +
-                "    Identifier f = Local(PrimitiveType.Bool, \"f\");" + nl +
+                "    Identifier f = m.Frame.EnsureStackVariable(-1, PrimitiveType.Bool, \"f\");" + nl +
+                "    Identifier a = m.Frame.EnsureStackVariable(-5, PrimitiveType.Word32, \"a\");" + nl +
+                "    Identifier b = m.Frame.EnsureStackVariable(-9, PrimitiveType.Word32, \"b\");" + nl +
                 "    " + nl +
                 "    Label(\"l1\");" + nl +
                 "    Assign(f, Cand(a, Cor(a, b)));" + nl +
@@ -337,9 +336,9 @@ namespace Reko.UnitTests.Core.Output
             VerifyTest(
                 "public class ProcedureBuilder : ProcedureMock" + nl +
                 "{" + nl +
-                "    Identifier a = Local(PrimitiveType.Word32, \"a\");" + nl +
-                "    Identifier b = Local(PrimitiveType.Word32, \"b\");" + nl +
-                "    Identifier c = Local(PrimitiveType.Word32, \"c\");" + nl +
+                "    Identifier a = m.Frame.EnsureStackVariable(-4, PrimitiveType.Word32, \"a\");" + nl +
+                "    Identifier b = m.Frame.EnsureStackVariable(-8, PrimitiveType.Word32, \"b\");" + nl +
+                "    Identifier c = m.Frame.EnsureStackVariable(-12, PrimitiveType.Word32, \"c\");" + nl +
                 "    " + nl +
                 "    Label(\"l1\");" + nl +
                 "    Assign(c, Xor(a, Or(a, And(a, b))));" + nl +
@@ -361,8 +360,8 @@ namespace Reko.UnitTests.Core.Output
             VerifyTest(
                 "public class ProcedureBuilder : ProcedureMock" + nl +
                 "{" + nl +
-                "    Identifier a = Local(PrimitiveType.Word32, \"a\");" + nl +
-                "    Identifier b = Local(PrimitiveType.Word32, \"b\");" + nl +
+                "    Identifier a = m.Frame.EnsureStackVariable(-4, PrimitiveType.Word32, \"a\");" + nl +
+                "    Identifier b = m.Frame.EnsureStackVariable(-8, PrimitiveType.Word32, \"b\");" + nl +
                 "    " + nl +
                 "    Label(\"l1\");" + nl +
                 "    Assign(a, Seq(Slice(PrimitiveType.Word16, a, 16), Slice(PrimitiveType.Word16, b, 16)));" + nl +
@@ -406,5 +405,53 @@ namespace Reko.UnitTests.Core.Output
 
 ");
         }
+
+        [Test]
+        public void Mg_RegisterVar()
+        {
+            CompileMethodTest(m =>
+            {
+                var eax = m.Register(RegisterStorage.Reg32("eax", 0));
+                var ebx = m.Register(RegisterStorage.Reg32("ebx", 3));
+                m.Assign(eax, m.IAdd(ebx, 1));
+            });
+            VerifyTest(@"RunTest(m =>
+{
+    RegisterStorage reg_eax = new RegisterStorage(""eax"", 0, 0, PrimitiveType.Word32);
+    RegisterStorage reg_ebx = new RegisterStorage(""ebx"", 3, 0, PrimitiveType.Word32);
+    Identifier eax = m.Frame.EnsureRegister(reg_eax);
+    Identifier ebx = m.Frame.EnsureRegister(reg_ebx);
+    
+    m.Label(""l1"");
+    m.Assign(eax, m.IAdd(ebx, m.Word32(0x1)));
+});
+
+");
+        }
+
+        [Test]
+        public void Mg_SequenceVariable()
+        {
+            CompileMethodTest(m =>
+            {
+                var eax = m.Register(RegisterStorage.Reg32("eax", 0));
+                var ebx = m.Register(RegisterStorage.Reg32("ebx", 3));
+                var ebx_eax = m.Frame.EnsureSequence(PrimitiveType.Word64, ebx.Storage, eax.Storage);
+                m.Assign(ebx_eax, 1);
+            });
+            VerifyTest(@"RunTest(m =>
+{
+    RegisterStorage reg_ebx = new RegisterStorage(""ebx"", 3, 0, PrimitiveType.Word32);
+    RegisterStorage reg_eax = new RegisterStorage(""eax"", 0, 0, PrimitiveType.Word32);
+    SequenceStorage seq_ebx_eax = new SequenceStorage(PrimitiveType.Word64, reg_ebx, reg_eax);
+    Identifier ebx_eax = m.Frame.EnsureSequence(PrimitiveType.Word64, seq_ebx_eax);
+    
+    m.Label(""l1"");
+    m.Assign(ebx_eax, m.Word64(0x1));
+});
+
+");
+        }
+
     }
 }
