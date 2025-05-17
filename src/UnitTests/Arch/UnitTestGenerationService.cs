@@ -78,5 +78,10 @@ namespace Reko.UnitTests.Arch
             Console.WriteLine("== {0} ===============", fileName);
             TestGenerationService.ReportProcedure(testCaption, proc, Console.Out);
         }
+
+        public void GenerateUnitTestFromProcedure(string fileName, string testCaption, Procedure proc)
+        {
+            TestGenerationService.GenerateUnitTestFromProcedure(testCaption, proc, Console.Out);
+        }
     }
 }
