@@ -56,7 +56,7 @@ namespace Reko.Core.Analysis
             store.Src.Accept(this);
 
             // Do not count assignments to out identifiers as uses.
-            if (store.Dst is Identifier idOut && idOut.Storage is OutArgumentStorage)
+            if (store.Dst is Identifier)
                 return;
             // Do not add memory identifier to uses
             if (store.Dst is MemoryAccess access)

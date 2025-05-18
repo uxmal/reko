@@ -145,8 +145,8 @@ namespace Reko.Core.Serialization
             }
 
             var parameters = new List<Identifier>();
+            var outputs = new List<Identifier>();
 
-            Identifier? ret = null;
             if (UseUserSpecifiedStorages(ss))
             {
                 this.argDeser = new ArgumentDeserializer(
@@ -155,6 +155,7 @@ namespace Reko.Core.Serialization
                     frame,
                     retAddrSize,
                     Architecture.WordWidth.Size);
+
                 if (ss.Arguments != null)
                 {
                     FpuStackGrowing = true;
@@ -164,18 +165,25 @@ namespace Reko.Core.Serialization
                         var arg = DeserializeArgument(sArg, ss.Convention);
                         if (arg != null)
                         {
-                            parameters.Add(arg);
+                            if (sArg.OutParameter)
+                                outputs.Add(arg);
+                            else
+                                parameters.Add(arg);
                         }
                     }
                 }
+                Identifier? ret = null;
                 if (ss.ReturnValue != null)
                 {
                     FpuStackGrowing = false;
                     ret = DeserializeArgument(ss.ReturnValue, "");
                 }
+                ret ??= new Identifier("", VoidType.Instance, null!);
+                outputs.Insert(0, ret);
+
                 FpuStackOffset = -FpuStackOffset;
                 var sig = FunctionType.CreateUserDefined(
-                    ret, parameters.ToArray());
+                    parameters.ToArray(), outputs.ToArray());
                 sig.IsVariadic = this.IsVariadic;
                 sig.IsInstanceMetod = ss.IsInstanceMethod;
                 ApplyConvention(ss, sig);
@@ -214,10 +222,11 @@ namespace Reko.Core.Serialization
                 cc.Generate(res, retAddrSize, dtRet, dtThis, dtParameters);
                 if (res.Return != null)
                 {
-                    ret = new Identifier(
+                    var ret = new Identifier(
                         res.Return is RegisterStorage retReg ? retReg.Name : "",
                         dtRet ?? VoidType.Instance,
                         res.Return);
+                    outputs.Add(ret);
                 }
                 if (res.ImplicitThis != null)
                 {
@@ -242,7 +251,7 @@ namespace Reko.Core.Serialization
                     }
                 }
                 var ft = FunctionType.CreateUserDefined(
-                    ret, parameters.ToArray());
+                    parameters.ToArray(), outputs.ToArray());
                 ft.IsInstanceMetod = ss.IsInstanceMethod;
                 ft.StackDelta = ss.StackDelta != 0
                         ? ss.StackDelta
@@ -317,12 +326,17 @@ namespace Reko.Core.Serialization
             }
             var parameters = sig.Parameters!;
             var argSer = new ArgumentSerializer(Architecture);
-            ssig.ReturnValue = ArgumentSerializer.Serialize(sig.ReturnValue);
+            ssig.ReturnValue = ArgumentSerializer.Serialize(sig.Outputs[0], false);
             ssig.Arguments = new Argument_v1[parameters.Length];
             for (int i = 0; i < parameters.Length; ++i)
             {
                 Identifier formal = parameters[i];
-                ssig.Arguments[i] = ArgumentSerializer.Serialize(formal)!;
+                ssig.Arguments[i] = ArgumentSerializer.Serialize(formal, false)!;
+            }
+            for (int i = 1; i < sig.Outputs.Length; ++i)
+            {
+                Identifier formal = sig.Outputs[i];
+                ssig.Arguments[i] = ArgumentSerializer.Serialize(formal, true)!;
             }
             ssig.StackDelta = sig.StackDelta;
             ssig.FpuStackDelta = sig.FpuStackDelta;

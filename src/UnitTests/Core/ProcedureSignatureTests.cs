@@ -42,9 +42,9 @@ namespace Reko.UnitTests.Core
 				Identifier argF = new Identifier(arch.GetFlagGroup("CZ").ToString(), PrimitiveType.Bool, new FlagGroupStorage(Registers.eflags, f, "CZ"));
 				Identifier argR = new Identifier(Registers.ax.Name, Registers.ax.DataType, Registers.ax);
 				
-				argF.Write(true, fut.TextWriter);
+				argF.Write(true, false, fut.TextWriter);
 				fut.TextWriter.WriteLine();
-				argR.Write(true, fut.TextWriter);
+				argR.Write(true, false,fut.TextWriter);
 				fut.TextWriter.WriteLine();
 
 				fut.AssertFilesEqual();

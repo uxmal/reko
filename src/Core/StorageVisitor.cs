@@ -51,13 +51,6 @@ namespace Reko.Core
 		T VisitMemoryStorage(MemoryStorage mem);
 
         /// <summary>
-        /// Called when a <see cref="OutArgumentStorage"/> is visited.
-        /// </summary>
-        /// <param name="arg">Out argument being visited.</param>
-        /// <returns>A value of type <typeparamref name="T"/></returns>
-        T VisitOutArgumentStorage(OutArgumentStorage arg);
-
-        /// <summary>
         /// Called when a <see cref="RegisterStorage"/> is visited.
         /// </summary>
         /// <param name="reg">Register being visited.</param>
@@ -118,14 +111,6 @@ namespace Reko.Core
         /// <param name="context">Context object.</param>
         /// <returns>A value of type <typeparamref name="T"/></returns>
 		T VisitMemoryStorage(MemoryStorage mem, C context);
-
-        /// <summary>
-        /// Called when a <see cref="OutArgumentStorage"/> is visited.
-        /// </summary>
-        /// <param name="arg">Out argument being visited.</param>
-        /// <param name="context">Context object.</param>
-        /// <returns>A value of type <typeparamref name="T"/></returns>
-        T VisitOutArgumentStorage(OutArgumentStorage arg, C context);
 
         /// <summary>
         /// Called when a <see cref="RegisterStorage"/> is visited.

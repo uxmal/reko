@@ -206,22 +206,22 @@ Eq_116: (fn (ptr64 int32) ())
 Eq_122: (fn byte (up32))
 	T_122 (in fn000000014000164C @ 000000014000120B : ptr64)
 	T_123 (in signature of fn000000014000164C @ 000000014000164C : void)
-Eq_129: (fn (ptr64 (ptr64 code)) (word32, word64, Eq_100, (ptr64 Eq_134)))
+Eq_129: (fn (ptr64 (ptr64 code)) (word32, word64, Eq_100, (ptr64 Eq_136)))
 	T_129 (in fn0000000140001974 @ 000000014000127E : ptr64)
 	T_130 (in signature of fn0000000140001974 @ 0000000140001974 : void)
 	T_161 (in fn0000000140001974 @ 0000000140001289 : ptr64)
 	T_238 (in fn0000000140001974 @ 00000001400012DE : ptr64)
 	T_259 (in fn0000000140001974 @ 0000000140001303 : ptr64)
 	T_570 (in fn0000000140001974 @ 000000014000170F : ptr64)
-Eq_134: (struct "_EXCEPTION_POINTERS" (0 PEXCEPTION_RECORD ExceptionRecord) (4 PCONTEXT ContextRecord))
-	T_134 (in rcxOut @ 000000014000127E : (ptr64 Eq_134))
-	T_137 (in out rcx_211 @ 000000014000127E : word64)
+Eq_136: (struct "_EXCEPTION_POINTERS" (0 PEXCEPTION_RECORD ExceptionRecord) (4 PCONTEXT ContextRecord))
+	T_136 (in out rcx_211 @ 000000014000127E : word64)
+	T_137 (in rcxOut @ 000000014000127E : (ptr64 Eq_136))
 	T_164 (in out rcx_212 @ 0000000140001289 : word64)
 	T_243 (in out rcx_341 @ 00000001400012DE : word64)
 	T_262 (in out rcx_50 @ 0000000140001303 : word64)
 	T_575 (in out rcx_20 @ 000000014000170F : word64)
 	T_982 (in &tLoc0588 @ 0000000140001A8F : (ptr64 (struct "_EXCEPTION_POINTERS")))
-	T_983 (in rcx_93 @ 0000000140001A8F : (ptr64 Eq_134))
+	T_983 (in rcx_93 @ 0000000140001A8F : (ptr64 Eq_136))
 Eq_139: (fn void ())
 	T_139 (in int3 @ 0000000140001283 : ptr64)
 	T_140 (in signature of int3 : void)
@@ -1258,7 +1258,7 @@ T_128: (in fn000000014000164C(1<32>) == 0<8> @ 000000014000120B : bool)
 T_129: (in fn0000000140001974 @ 000000014000127E : ptr64)
   Class: Eq_129
   DataType: (ptr64 Eq_129)
-  OrigDataType: (ptr64 (fn T_138 (T_135, T_99, T_100, T_137)))
+  OrigDataType: (ptr64 (fn T_138 (T_134, T_99, T_100, T_136)))
 T_130: (in signature of fn0000000140001974 @ 0000000140001974 : void)
   Class: Eq_129
   DataType: (ptr64 Eq_129)
@@ -1275,21 +1275,21 @@ T_133: (in tArg10 @ 000000014000127E : Eq_100)
   Class: Eq_100
   DataType: Eq_100
   OrigDataType: ULONGLONG
-T_134: (in rcxOut @ 000000014000127E : (ptr64 Eq_134))
-  Class: Eq_134
-  DataType: (ptr64 Eq_134)
-  OrigDataType: word64
-T_135: (in 7<32> @ 000000014000127E : word32)
+T_134: (in 7<32> @ 000000014000127E : word32)
   Class: Eq_131
   DataType: word32
   OrigDataType: word32
-T_136: (in rcx_211 @ 000000014000127E : word64)
-  Class: Eq_136
+T_135: (in rcx_211 @ 000000014000127E : word64)
+  Class: Eq_135
   DataType: word64
   OrigDataType: word64
-T_137: (in out rcx_211 @ 000000014000127E : word64)
-  Class: Eq_134
-  DataType: (ptr64 Eq_134)
+T_136: (in out rcx_211 @ 000000014000127E : word64)
+  Class: Eq_136
+  DataType: (ptr64 Eq_136)
+  OrigDataType: word64
+T_137: (in rcxOut @ 000000014000127E : (ptr64 Eq_136))
+  Class: Eq_136
+  DataType: (ptr64 Eq_136)
   OrigDataType: word64
 T_138: (in fn0000000140001974(7<32>, rbx, tArg08, out rcx_211) @ 000000014000127E : word64)
   Class: Eq_138
@@ -1396,8 +1396,8 @@ T_163: (in rcx_212 @ 0000000140001289 : word64)
   DataType: word64
   OrigDataType: word64
 T_164: (in out rcx_212 @ 0000000140001289 : word64)
-  Class: Eq_134
-  DataType: (ptr64 Eq_134)
+  Class: Eq_136
+  DataType: (ptr64 Eq_136)
   OrigDataType: word64
 T_165: (in fn0000000140001974(7<32>, rbx, tArg08, out rcx_212) @ 0000000140001289 : word64)
   Class: Eq_138
@@ -1712,8 +1712,8 @@ T_242: (in rcx_341 @ 00000001400012DE : word64)
   DataType: word64
   OrigDataType: word64
 T_243: (in out rcx_341 @ 00000001400012DE : word64)
-  Class: Eq_134
-  DataType: (ptr64 Eq_134)
+  Class: Eq_136
+  DataType: (ptr64 Eq_136)
   OrigDataType: word64
 T_244: (in fn0000000140001974(7<32>, qwLoc40, tLoc30, out rcx_341) @ 00000001400012DE : word64)
   Class: Eq_138
@@ -1788,8 +1788,8 @@ T_261: (in rcx_50 @ 0000000140001303 : word64)
   DataType: word64
   OrigDataType: word64
 T_262: (in out rcx_50 @ 0000000140001303 : word64)
-  Class: Eq_134
-  DataType: (ptr64 Eq_134)
+  Class: Eq_136
+  DataType: (ptr64 Eq_136)
   OrigDataType: word64
 T_263: (in fn0000000140001974(7<32>, qwLoc40, tLoc30, out rcx_50) @ 0000000140001303 : word64)
   Class: Eq_138
@@ -3040,8 +3040,8 @@ T_574: (in rcx_20 @ 000000014000170F : (ptr64 (ptr64 code)))
   DataType: (ptr64 (ptr64 code))
   OrigDataType: word64
 T_575: (in out rcx_20 @ 000000014000170F : word64)
-  Class: Eq_134
-  DataType: (ptr64 Eq_134)
+  Class: Eq_136
+  DataType: (ptr64 Eq_136)
   OrigDataType: word64
 T_576: (in fn0000000140001974(5<32>, qwLoc50, tLoc40, out rcx_20) @ 000000014000170F : word64)
   Class: Eq_138
@@ -4668,12 +4668,12 @@ T_981: (in bl_88 @ 0000000140001A7F : byte)
   DataType: byte
   OrigDataType: byte
 T_982: (in &tLoc0588 @ 0000000140001A8F : (ptr64 (struct "_EXCEPTION_POINTERS")))
-  Class: Eq_134
-  DataType: (ptr64 Eq_134)
+  Class: Eq_136
+  DataType: (ptr64 Eq_136)
   OrigDataType: (ptr64 (struct "_EXCEPTION_POINTERS"))
-T_983: (in rcx_93 @ 0000000140001A8F : (ptr64 Eq_134))
-  Class: Eq_134
-  DataType: (ptr64 Eq_134)
+T_983: (in rcx_93 @ 0000000140001A8F : (ptr64 Eq_136))
+  Class: Eq_136
+  DataType: (ptr64 Eq_136)
   OrigDataType: (ptr64 (struct "_EXCEPTION_POINTERS"))
 T_984: (in SEQ(rax_32_32_146, eax_94) @ 0000000140001A9A : word64)
   Class: Eq_875
@@ -6581,7 +6581,7 @@ typedef code * * (Eq_129)(word32, word64, Eq_100, _EXCEPTION_POINTERS *);
 typedef struct _EXCEPTION_POINTERS {
 	PEXCEPTION_RECORD ExceptionRecord;	// 0
 	PCONTEXT ContextRecord;	// 4
-} Eq_134;
+} Eq_136;
 
 typedef void (Eq_139)();
 

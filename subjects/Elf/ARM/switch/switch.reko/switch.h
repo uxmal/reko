@@ -31,15 +31,15 @@ Eq_1: (struct "Globals"
 		(10858 (ptr32 code) __libc_start_main_GOT)
 		(10870 byte b10870))
 	globals_t (in globals : (ptr32 (struct "Globals")))
-Eq_4: (fn word32 ())
-	T_4 (in call_gmon_start @ 000082F4 : ptr32)
-	T_5 (in signature of call_gmon_start @ 0000836C : void)
-Eq_8: (fn void ())
-	T_8 (in frame_dummy @ 000082F8 : ptr32)
-	T_9 (in signature of frame_dummy @ 00008404 : void)
-Eq_11: (fn word32 ())
-	T_11 (in __do_global_ctors_aux @ 000082FC : ptr32)
-	T_12 (in signature of __do_global_ctors_aux @ 0000870C : void)
+Eq_3: (fn word32 ())
+	T_3 (in call_gmon_start @ 000082F4 : ptr32)
+	T_4 (in signature of call_gmon_start @ 0000836C : void)
+Eq_7: (fn void ())
+	T_7 (in frame_dummy @ 000082F8 : ptr32)
+	T_8 (in signature of frame_dummy @ 00008404 : void)
+Eq_10: (fn word32 ())
+	T_10 (in __do_global_ctors_aux @ 000082FC : ptr32)
+	T_11 (in signature of __do_global_ctors_aux @ 0000870C : void)
 Eq_17: (fn void ())
 	T_17 (in ptrArg08 @ 00008300 : (ptr32 Eq_17))
 	T_26 (in fini @ 00008358 : (ptr32 (fn void ())))
@@ -63,13 +63,13 @@ Eq_97: (fn word32 ())
 Eq_100: (union "Eq_100" (int32 u0) (uint32 u1))
 	T_100 (in r0 @ 00008430 : Eq_100)
 	T_101 (in dwArg00 @ 00008430 : Eq_100)
-	T_102 (in fpOut @ 00008430 : Eq_100)
-	T_105 (in r0 @ 00008460 : Eq_100)
-	T_106 (in r1 @ 00008460 : Eq_100)
-	T_107 (in r0 * r0 @ 00008460 : word32)
-	T_108 (in 0x539<32> @ 00008460 : word32)
-	T_109 (in __divsi3(r0 * r0, 0x539<32>) @ 00008460 : word32)
-	T_110 (in r0_25 @ 00008460 : Eq_100)
+	T_104 (in r0 @ 00008460 : Eq_100)
+	T_105 (in r1 @ 00008460 : Eq_100)
+	T_106 (in r0 * r0 @ 00008460 : word32)
+	T_107 (in 0x539<32> @ 00008460 : word32)
+	T_108 (in __divsi3(r0 * r0, 0x539<32>) @ 00008460 : word32)
+	T_109 (in r0_25 @ 00008460 : Eq_100)
+	T_110 (in fpOut @ 0000846C : Eq_100)
 	T_112 (in r0 @ 0000846C : Eq_100)
 	T_113 (in r1 @ 0000846C : Eq_100)
 	T_118 (in r0 + r1 @ 000084C4 : word32)
@@ -120,9 +120,9 @@ Eq_100: (union "Eq_100" (int32 u0) (uint32 u1))
 	T_252 (in r2_106 | r3_137 >> 3<i32> @ 00008604 : word32)
 	T_260 (in r1_104 >> 4<i32> @ 00008610 : word32)
 	T_266 (in 0xFFFFFC18<32> @ 00008644 : word32)
-Eq_103: (fn Eq_100 (Eq_100, Eq_100))
-	T_103 (in __divsi3 @ 00008460 : ptr32)
-	T_104 (in signature of __divsi3 @ 00008588 : void)
+Eq_102: (fn Eq_100 (Eq_100, Eq_100))
+	T_102 (in __divsi3 @ 00008460 : ptr32)
+	T_103 (in signature of __divsi3 @ 00008588 : void)
 	T_116 (in __divsi3 @ 000084C4 : ptr32)
 	T_117 (in __divsi3 @ 000084C4 : ptr32)
 Eq_119: (fn Eq_100 (Eq_100, Eq_100, Eq_100))
@@ -190,52 +190,52 @@ T_2: (in r4 : word32)
   Class: Eq_2
   DataType: word32
   OrigDataType: word32
-T_3: (in r10Out : word32)
+T_3: (in call_gmon_start @ 000082F4 : ptr32)
   Class: Eq_3
-  DataType: word32
-  OrigDataType: word32
-T_4: (in call_gmon_start @ 000082F4 : ptr32)
-  Class: Eq_4
-  DataType: (ptr32 Eq_4)
-  OrigDataType: (ptr32 (fn T_6 ()))
-T_5: (in signature of call_gmon_start @ 0000836C : void)
-  Class: Eq_4
-  DataType: (ptr32 Eq_4)
+  DataType: (ptr32 Eq_3)
+  OrigDataType: (ptr32 (fn T_5 ()))
+T_4: (in signature of call_gmon_start @ 0000836C : void)
+  Class: Eq_3
+  DataType: (ptr32 Eq_3)
   OrigDataType: 
-T_6: (in call_gmon_start() @ 000082F4 : word32)
-  Class: Eq_3
+T_5: (in call_gmon_start() @ 000082F4 : word32)
+  Class: Eq_5
   DataType: word32
   OrigDataType: word32
-T_7: (in r10_9 @ 000082F4 : word32)
-  Class: Eq_3
+T_6: (in r10_9 @ 000082F4 : word32)
+  Class: Eq_5
   DataType: word32
   OrigDataType: word32
-T_8: (in frame_dummy @ 000082F8 : ptr32)
-  Class: Eq_8
-  DataType: (ptr32 Eq_8)
-  OrigDataType: (ptr32 (fn T_10 ()))
-T_9: (in signature of frame_dummy @ 00008404 : void)
-  Class: Eq_8
-  DataType: (ptr32 Eq_8)
+T_7: (in frame_dummy @ 000082F8 : ptr32)
+  Class: Eq_7
+  DataType: (ptr32 Eq_7)
+  OrigDataType: (ptr32 (fn T_9 ()))
+T_8: (in signature of frame_dummy @ 00008404 : void)
+  Class: Eq_7
+  DataType: (ptr32 Eq_7)
   OrigDataType: 
-T_10: (in frame_dummy() @ 000082F8 : void)
-  Class: Eq_10
+T_9: (in frame_dummy() @ 000082F8 : void)
+  Class: Eq_9
   DataType: void
   OrigDataType: void
-T_11: (in __do_global_ctors_aux @ 000082FC : ptr32)
-  Class: Eq_11
-  DataType: (ptr32 Eq_11)
-  OrigDataType: (ptr32 (fn T_13 ()))
-T_12: (in signature of __do_global_ctors_aux @ 0000870C : void)
-  Class: Eq_11
-  DataType: (ptr32 Eq_11)
+T_10: (in __do_global_ctors_aux @ 000082FC : ptr32)
+  Class: Eq_10
+  DataType: (ptr32 Eq_10)
+  OrigDataType: (ptr32 (fn T_12 ()))
+T_11: (in signature of __do_global_ctors_aux @ 0000870C : void)
+  Class: Eq_10
+  DataType: (ptr32 Eq_10)
   OrigDataType: 
-T_13: (in __do_global_ctors_aux() @ 000082FC : word32)
+T_12: (in __do_global_ctors_aux() @ 000082FC : word32)
   Class: Eq_2
   DataType: word32
   OrigDataType: word32
-T_14: (in r4_26 @ 000082FC : word32)
+T_13: (in r4_26 @ 000082FC : word32)
   Class: Eq_2
+  DataType: word32
+  OrigDataType: word32
+T_14: (in r10Out @ 00008300 : word32)
+  Class: Eq_5
   DataType: word32
   OrigDataType: word32
 T_15: (in dwArg00 @ 00008300 : int32)
@@ -586,39 +586,39 @@ T_101: (in dwArg00 @ 00008430 : Eq_100)
   Class: Eq_100
   DataType: Eq_100
   OrigDataType: word32
-T_102: (in fpOut @ 00008430 : Eq_100)
-  Class: Eq_100
-  DataType: Eq_100
-  OrigDataType: word32
-T_103: (in __divsi3 @ 00008460 : ptr32)
-  Class: Eq_103
-  DataType: (ptr32 Eq_103)
-  OrigDataType: (ptr32 (fn T_109 (T_107, T_108)))
-T_104: (in signature of __divsi3 @ 00008588 : void)
-  Class: Eq_103
-  DataType: (ptr32 Eq_103)
+T_102: (in __divsi3 @ 00008460 : ptr32)
+  Class: Eq_102
+  DataType: (ptr32 Eq_102)
+  OrigDataType: (ptr32 (fn T_108 (T_106, T_107)))
+T_103: (in signature of __divsi3 @ 00008588 : void)
+  Class: Eq_102
+  DataType: (ptr32 Eq_102)
   OrigDataType: 
-T_105: (in r0 @ 00008460 : Eq_100)
+T_104: (in r0 @ 00008460 : Eq_100)
   Class: Eq_100
   DataType: Eq_100
   OrigDataType: (union (int32 u0) (uint32 u1))
-T_106: (in r1 @ 00008460 : Eq_100)
+T_105: (in r1 @ 00008460 : Eq_100)
   Class: Eq_100
   DataType: Eq_100
   OrigDataType: int32
-T_107: (in r0 * r0 @ 00008460 : word32)
+T_106: (in r0 * r0 @ 00008460 : word32)
   Class: Eq_100
   DataType: Eq_100
   OrigDataType: ui32
-T_108: (in 0x539<32> @ 00008460 : word32)
+T_107: (in 0x539<32> @ 00008460 : word32)
   Class: Eq_100
   DataType: int32
   OrigDataType: word32
-T_109: (in __divsi3(r0 * r0, 0x539<32>) @ 00008460 : word32)
+T_108: (in __divsi3(r0 * r0, 0x539<32>) @ 00008460 : word32)
   Class: Eq_100
   DataType: Eq_100
   OrigDataType: word32
-T_110: (in r0_25 @ 00008460 : Eq_100)
+T_109: (in r0_25 @ 00008460 : Eq_100)
+  Class: Eq_100
+  DataType: Eq_100
+  OrigDataType: word32
+T_110: (in fpOut @ 0000846C : Eq_100)
   Class: Eq_100
   DataType: Eq_100
   OrigDataType: word32
@@ -643,12 +643,12 @@ T_115: (in sp_32 @ 00008498 : (ptr32 Eq_100))
   DataType: (ptr32 Eq_100)
   OrigDataType: (ptr32 (struct (0 T_131 t0000)))
 T_116: (in __divsi3 @ 000084C4 : ptr32)
-  Class: Eq_103
-  DataType: (ptr32 Eq_103)
+  Class: Eq_102
+  DataType: (ptr32 Eq_102)
   OrigDataType: (ptr32 (fn T_135 (T_124, T_134)))
 T_117: (in __divsi3 @ 000084C4 : ptr32)
-  Class: Eq_103
-  DataType: (ptr32 Eq_103)
+  Class: Eq_102
+  DataType: (ptr32 Eq_102)
   OrigDataType: (ptr32 (fn T_124 (T_118, T_123)))
 T_118: (in r0 + r1 @ 000084C4 : word32)
   Class: Eq_100
@@ -893,7 +893,7 @@ T_177: (in 0<32> - r1 @ 00008598 : word32)
 T_178: (in __div0 @ 0000862C : ptr32)
   Class: Eq_178
   DataType: (ptr32 Eq_178)
-  OrigDataType: (ptr32 (fn T_181 (T_105)))
+  OrigDataType: (ptr32 (fn T_181 (T_104)))
 T_179: (in signature of __div0 @ 00008638 : void)
   Class: Eq_178
   DataType: (ptr32 Eq_178)
@@ -1275,7 +1275,7 @@ T_273: (in r10_21 @ 00008664 : ptr32)
   DataType: ptr32
   OrigDataType: ptr32
 T_274: (in out r10_21 @ 00008664 : word32)
-  Class: Eq_3
+  Class: Eq_5
   DataType: word32
   OrigDataType: word32
 T_275: (in _init(out r10_21) @ 00008664 : word32)
@@ -1579,11 +1579,11 @@ typedef struct Globals {
 	byte b10870;	// 10870
 } Eq_1;
 
-typedef word32 (Eq_4)();
+typedef word32 (Eq_3)();
 
-typedef void (Eq_8)();
+typedef void (Eq_7)();
 
-typedef word32 (Eq_11)();
+typedef word32 (Eq_10)();
 
 typedef void (Eq_17)();
 
@@ -1604,7 +1604,7 @@ typedef union Eq_100 {
 	uint32 u1;
 } Eq_100;
 
-typedef Eq_100 (Eq_103)(Eq_100, Eq_100);
+typedef Eq_100 (Eq_102)(Eq_100, Eq_100);
 
 typedef Eq_100 (Eq_119)(Eq_100, Eq_100, Eq_100);
 

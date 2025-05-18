@@ -235,12 +235,6 @@ namespace Reko.Core.Output
                         id.DataType.Accept(this);
                         writer.Write(")");
                     }
-                    else if (id.Storage is OutArgumentStorage outArg)
-                    {
-                        writer.Write($"m.Frame.EnsureOutArgument({outArg.OriginalIdentifier.Name}, ");
-                        id.DataType.Accept(this);
-                        writer.Write(")");
-                    }
                     else if (id.Storage is StackStorage stk)
                     {
                         writer.Write("m.Frame.EnsureStackVariable(");
@@ -309,10 +303,6 @@ namespace Reko.Core.Output
                 writer.Write($"FpuStackStorage {stgName} = new FpuStackStorage({fpu.FpuStackOffset}, ");
                 fpu.DataType.Accept(this);
                 writer.WriteLine(");");
-                break;
-            case OutArgumentStorage outArg:
-                stgName = $"outarg_{outArg.Name}";
-                writer.WriteLine($"OutArgumentStorage {stgName} = new OutArgumentStorage({outArg.OriginalIdentifier.Name});");
                 break;
             default:
                 writer.WriteLine($"***** Not implemented {stg.GetType().Name}");
@@ -1048,9 +1038,8 @@ namespace Reko.Core.Output
                 { typeof(FlagGroupStorage), 4 },
                 { typeof(FpuStackStorage), 5 },
                 { typeof(TemporaryStorage), 6 },
-                { typeof(OutArgumentStorage), 7 },
-                { typeof(GlobalStorage), 8 },
-                { typeof(MemoryStorage), 9 },
+                { typeof(GlobalStorage), 7 },
+                { typeof(MemoryStorage), 8 },
             };
 
             public static StorageCollator Instance { get; } = new StorageCollator();
@@ -1067,7 +1056,7 @@ namespace Reko.Core.Output
                     {
                         return precedences[x.GetType()].CompareTo(precedences[y.GetType()]);
                     }
-                    catch (Exception ex)
+                    catch
                     {
                         if (x.GetType().Name.Contains("PIC") ||
                             y.GetType().Name.Contains("PIC"))
@@ -1110,10 +1099,6 @@ namespace Reko.Core.Output
                     if (d != 0)
                         return d;
                     return grfX.FlagGroupBits.CompareTo(grfY.FlagGroupBits);
-                }
-                else if (x is OutArgumentStorage outX && y is OutArgumentStorage outY)
-                {
-                    return Compare(outX.OriginalIdentifier.Storage, outY.OriginalIdentifier.Storage);
                 }
                 else if (x is FpuStackStorage fpuX && y is FpuStackStorage fpuY)
                 {

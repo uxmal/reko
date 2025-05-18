@@ -77,35 +77,35 @@ namespace Reko.Core.Serialization
             Argument_v1? ret = null;
             if (!ft.HasVoidReturn)
             {
-                ret = SerializeArgument(null, null, ft.ReturnValue!.DataType);
+                ret = SerializeArgument(null, false, ft.ReturnValue!.DataType);
             }
-            Argument_v1[] parms;
+            List<Argument_v1> parms = [];
             if (ft.Parameters != null)
             {
-                parms = new Argument_v1[ft.Parameters.Length];
                 for (int i = 0; i < ft.Parameters.Length; ++i)
                 {
-                    parms[i] = SerializeArgument(ft.Parameters[i].Name, null, ft.Parameters[i].DataType);
+                    parms.Add(SerializeArgument(ft.Parameters[i].Name, false, ft.Parameters[i].DataType));
                 }
             }
-            else
+            for (int i = 1; i < ft.Outputs.Length; ++i)
             {
-                parms = Array.Empty<Argument_v1>();
+                var outParam = ft.Outputs[i];
+                parms.Add(SerializeArgument(outParam.Name, true, outParam.DataType));
             }
             return new SerializedSignature
             {
-                Arguments = parms,
+                Arguments = parms.ToArray(),
                 ReturnValue = ret
             };
         }
 
-        private Argument_v1 SerializeArgument(string? name, Storage? stg, DataType dt)
+        private Argument_v1 SerializeArgument(string? name, bool isOutParameter, DataType dt)
         {
             return new Argument_v1
             {
                 Name = name,
                 //    Kind = arg.Storage.Serialize(),
-                OutParameter = stg is OutArgumentStorage,
+                OutParameter = isOutParameter,
                 Type = dt.Accept(this)
             };
         }

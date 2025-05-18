@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Core.Code
             var reg_edx = RegisterStorage.Reg32("edx", 1);
             var id2 = new Identifier("bar", PrimitiveType.Word32, new TemporaryStorage("bar", -1, PrimitiveType.Word32));
             var r = new Identifier(reg_edx.Name, reg_edx.DataType, reg_edx);
-            var arg = new Identifier("barOut", PrimitiveType.Ptr32, new OutArgumentStorage(r));
+            var arg = new Identifier("barOut", PrimitiveType.Ptr32, reg_edx);
             var use2 = new UseInstruction(id2, arg);
             Assert.AreSame(id2, use2.Expression);
             Assert.AreEqual("barOut", use2.OutArgument.Name);
@@ -60,7 +60,7 @@ namespace Reko.UnitTests.Core.Code
             Assert.AreEqual("use foo", use.ToString());
 
             var r = new Identifier(reg_edx.Name, reg_edx.DataType, reg_edx);
-            var arg = new Identifier("edxOut", PrimitiveType.Ptr32, new OutArgumentStorage(r));
+            var arg = new Identifier("edxOut", PrimitiveType.Ptr32, reg_edx);
             use = new UseInstruction(id1, arg);
             Assert.AreEqual("use foo (=> edxOut)", use.ToString());
         }

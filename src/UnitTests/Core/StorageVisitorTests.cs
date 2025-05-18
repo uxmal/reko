@@ -82,11 +82,6 @@ namespace Reko.UnitTests.Core
 			return "global";
 		}
 
-		public string VisitOutArgumentStorage(OutArgumentStorage arg)
-		{
-			return "org";
-		}
-
 		public string VisitRegisterStorage(RegisterStorage reg)
 		{
 			return "reg";

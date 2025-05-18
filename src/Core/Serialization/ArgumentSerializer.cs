@@ -44,9 +44,9 @@ namespace Reko.Core.Serialization
         /// an <see cref="Argument_v1"/> serialization class.
         /// </summary>
         /// <param name="arg">Argument identifier to serialize</param>
+        /// <param name="isOutParameter">Argument is an out parameter.</param>
         /// <returns></returns>
-        /// <exception cref="ArgumentNullException"></exception>
-        public static Argument_v1? Serialize(Identifier? arg)
+        public static Argument_v1? Serialize(Identifier? arg, bool isOutParameter)
         {
             if (arg is null)
                 return null;
@@ -56,7 +56,7 @@ namespace Reko.Core.Serialization
             {
 			    Name = arg.Name,
 			    Kind = arg.Storage?.Serialize(),
-                OutParameter = arg.Storage is OutArgumentStorage,
+                OutParameter = isOutParameter,
                 Type = arg.DataType.Accept(new DataTypeSerializer()),
             };
             return sarg;

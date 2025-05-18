@@ -144,20 +144,38 @@ namespace Reko.Typing
 
 			if (sig != null)
 			{
-				if (!sig.IsVariadic && sig.Parameters!.Length != appl.Arguments.Length)
+                var totalArgs = sig.Parameters!.Length + sig.Outputs.Length - 1;
+				if (!sig.IsVariadic && totalArgs != appl.Arguments.Length)
 					throw new InvalidOperationException("Parameter count must match.");
 			}
 
+            var inputs = sig?.Parameters;
+            var outputs = sig?.Outputs;
 			for (int i = 0; i < appl.Arguments.Length; ++i)
 			{
 				appl.Arguments[i].Accept(this);
-				if (sig != null && (!sig.IsVariadic || i < sig.Parameters!.Length))
+                if (sig is null)
+                    continue;
+                Debug.Assert(inputs is not null);
+                Debug.Assert(outputs is not null);
+                if (i < inputs.Length)
 				{
-					EnsureTypeVariable(sig.Parameters![i]);
+					EnsureTypeVariable(inputs[i]);
                     var tvArgument = store.GetTypeVariable(appl.Arguments[i]);
-                    var tvParameter = store.GetTypeVariable(sig.Parameters[i]);
+                    var tvParameter = store.GetTypeVariable(inputs[i]);
                     store.MergeClasses(tvArgument, tvParameter);
 				}
+                else
+                {
+                    int iOut = i - inputs.Length + 1;
+                    if (iOut < outputs.Length)
+                    {
+                        EnsureTypeVariable(outputs[iOut]);
+                        var tvArgument = store.GetTypeVariable(appl.Arguments[i]);
+                        var tvParameter = store.GetTypeVariable(outputs[iOut]);
+                        store.MergeClasses(tvArgument, tvParameter);
+                    }
+                }
 			}
 			EnsureTypeVariable(appl);
             signature = oldSig;

@@ -26,7 +26,8 @@ void CpmCom_Start()
 	fn0226(f);
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg0 = <invalid>;
+	Eq_n stackArg0;
+	stackArg0.u0 = <invalid>;
 	byte b;
 	fn0602(b, stackArg0);
 	struct Eq_n * sp_n;
@@ -204,20 +205,20 @@ void fn021B()
 {
 	byte * de;
 	fn0D12(de);
-	byte af_n;
+	word16 af_n;
 	fn021E(out af_n);
 }
 
-// 021E: FlagGroup byte fn021E(Register out byte afOut)
+// 021E: FlagGroup Eq_n fn021E(Register out Eq_n afOut)
 // Called from:
 //      fn01FB
 //      fn0226
 //      fn04F3
-byte fn021E(byte & afOut)
+Eq_n fn021E(union Eq_n & afOut)
 {
 	byte * de;
 	fn0221(de);
-	afOut = <invalid>;
+	afOut.u0 = <invalid>;
 	return <invalid>;
 }
 
@@ -648,19 +649,19 @@ bool fn04E9(Fcb * de, uint8 & aOut)
 	return (cond(a_n + 0x01) & 0x40) != 0x00;
 }
 
-// 04EE: Register byte fn04EE(Register (ptr16 byte) de, Register out byte bOut, Register out (ptr16 Eq_n) hlOut, Register out (ptr16 Eq_n) hl'Out)
+// 04EE: Register Eq_n fn04EE(Register (ptr16 byte) de, Register out Eq_n bOut, Register out (ptr16 Eq_n) hlOut, Register out (ptr16 Eq_n) hl'Out)
 // Called from:
 //      fn0540
 //      fn0542
 //      fn06B0
 //      fn0AB3
 //      fn0B4F
-byte fn04EE(byte * de, byte & bOut, struct Eq_n & hlOut, struct Eq_n & hl'Out)
+Eq_n fn04EE(byte * de, union Eq_n & bOut, struct Eq_n & hlOut, struct Eq_n & hl'Out)
 {
 	F_DMAOFF(de);
 	word16 af_n;
 	fn04F3(out af_n);
-	bOut = <invalid>;
+	bOut.u0 = <invalid>;
 	hlOut = (struct Eq_n *) <invalid>;
 	hl'Out = (struct Eq_n *) <invalid>;
 	return <invalid>;
@@ -674,7 +675,7 @@ byte fn04EE(byte * de, byte & bOut, struct Eq_n & hlOut, struct Eq_n & hl'Out)
 //      fn0CE1
 byte fn04F3(struct Eq_n & afOut)
 {
-	byte af_n;
+	word16 af_n;
 	uint8 a_n = C_STAT();
 	byte SZ_n = cond(a_n);
 	if (a_n != 0x00)
@@ -705,10 +706,10 @@ byte fn04F3(struct Eq_n & afOut)
 	}
 }
 
-// 0514: FlagGroup byte fn0514(Register out byte aOut, Register out byte bOut, Register out word16 deOut, Register out word16 hlOut)
+// 0514: FlagGroup Eq_n fn0514(Register out Eq_n aOut, Register out Eq_n bOut, Register out word16 deOut, Register out word16 hlOut)
 // Called from:
 //      fn06B0
-byte fn0514(byte & aOut, byte & bOut, word16 & deOut, word16 & hlOut)
+Eq_n fn0514(union Eq_n & aOut, union Eq_n & bOut, word16 & deOut, word16 & hlOut)
 {
 	word16 af_n;
 	word16 bc_n;
@@ -716,8 +717,8 @@ byte fn0514(byte & aOut, byte & bOut, word16 & deOut, word16 & hlOut)
 	word16 hl_n;
 	word16 hl'_33;
 	fn0515(out af_n, out bc_n, out de_n, out hl_n, out hl'_33);
-	aOut = <invalid>;
-	bOut = <invalid>;
+	aOut.u0 = <invalid>;
+	bOut.u0 = <invalid>;
 	deOut = de_n;
 	hlOut = hl_n;
 	return <invalid>;
@@ -752,7 +753,8 @@ byte fn0515(struct Eq_n & afOut, word16 & bcOut, word16 & deOut, word16 & hlOut,
 			deOut = de_n;
 			hlOut = hl_n;
 			hl'Out = (struct Eq_n *) <invalid>;
-			byte SZPC_n = <invalid>;
+			Eq_n SZPC_n;
+			SZPC_n.u0 = <invalid>;
 			return SZPC_n & 0x40 | SZPC_n & 0x80 | SZPC_n & 0x04 | SZPC_n & 0x01;
 		}
 		++hl_n;
@@ -777,27 +779,27 @@ byte fn0515(struct Eq_n & afOut, word16 & bcOut, word16 & deOut, word16 & hlOut,
 	return SZP_n & 0x40 | SZP_n & 0x80 | SZP_n & 0x04 | C_n;
 }
 
-// 052E: Register (ptr16 Eq_n) fn052E(Register out byte bOut, Register out (ptr16 byte) deOut, Register out word16 hlOut)
+// 052E: Register (ptr16 Eq_n) fn052E(Register out Eq_n bOut, Register out (ptr16 byte) deOut, Register out word16 hlOut)
 // Called from:
 //      CpmCom_Start
 //      fn05A3
-struct Eq_n * fn052E(byte & bOut, byte & deOut, word16 & hlOut)
+struct Eq_n * fn052E(union Eq_n & bOut, byte & deOut, word16 & hlOut)
 {
 	word16 bc_n;
 	byte * de_n;
 	word16 hl_n;
 	fn0531(out bc_n, out de_n, out hl_n);
-	bOut = <invalid>;
+	bOut.u0 = <invalid>;
 	deOut = de_n;
 	hlOut = hl_n;
 	return (struct Eq_n *) <invalid>;
 }
 
-// 0531: Register byte fn0531(Register out word16 bcOut, Register out word16 deOut, Register out word16 hlOut)
+// 0531: Register Eq_n fn0531(Register out word16 bcOut, Register out word16 deOut, Register out word16 hlOut)
 // Called from:
 //      fn0515
 //      fn052E
-byte fn0531(word16 & bcOut, word16 & deOut, word16 & hlOut)
+Eq_n fn0531(word16 & bcOut, word16 & deOut, word16 & hlOut)
 {
 	Eq_n hl_n = *(union Eq_n *) 0x1767;
 	byte l_n = (byte) hl_n;
@@ -827,11 +829,11 @@ byte fn0531(word16 & bcOut, word16 & deOut, word16 & hlOut)
 	}
 }
 
-// 0538: Register byte fn0538(Register Eq_n hl, Register out word16 bcOut, Register out word16 deOut, Register out word16 hlOut)
+// 0538: Register Eq_n fn0538(Register Eq_n hl, Register out word16 bcOut, Register out word16 deOut, Register out word16 hlOut)
 // Called from:
 //      fn052E
 //      fn0531
-byte fn0538(Eq_n hl, word16 & bcOut, word16 & deOut, word16 & hlOut)
+Eq_n fn0538(Eq_n hl, word16 & bcOut, word16 & deOut, word16 & hlOut)
 {
 	*(union Eq_n *) 0x1767 = hl;
 	word16 wArg04;
@@ -1028,10 +1030,10 @@ l05ED:
 	return fn0F2A(0x00, 0x15, hl_n, out hl_n) != 0x00;
 }
 
-// 0602: void fn0602(Register byte b, Stack byte bArg00)
+// 0602: void fn0602(Register byte b, Stack Eq_n bArg00)
 // Called from:
 //      CpmCom_Start
-void fn0602(byte b, byte bArg00)
+void fn0602(byte b, Eq_n bArg00)
 {
 	word16 wArg00;
 	byte a_n;
@@ -1368,8 +1370,10 @@ l075C:
 		if (*(uint16 *) 6063 != hl_n)
 			fn0D1E();
 		ui16 bc_n = fn0F13((struct Eq_n *) 0x17B1, out de_n);
-		byte d_n = <invalid>;
-		byte e_n = <invalid>;
+		Eq_n d_n;
+		d_n.u0 = <invalid>;
+		Eq_n e_n;
+		e_n.u0 = <invalid>;
 		if ((SLICE(bc_n, byte, 8) | (byte) bc_n | d_n | e_n) != 0x00)
 			fn0D1E();
 		Eq_n Z_n = fn04C4();
@@ -1575,13 +1579,13 @@ void fn08CF(byte a, ui16 bc)
 byte g_b08D3 = 100; // 08D3
 word16 g_w08DC = 0x00; // 08DC
 byte g_b08F9 = 0x10; // 08F9
-// 0905: FlagGroup bool fn0905(Register ui16 hl, Register out byte eOut, Register out (ptr16 byte) hlOut)
+// 0905: FlagGroup bool fn0905(Register ui16 hl, Register out Eq_n eOut, Register out (ptr16 byte) hlOut)
 // Called from:
 //      fn06B0
 //      fn08CF
-bool fn0905(ui16 hl, byte & eOut, byte & hlOut)
+bool fn0905(ui16 hl, union Eq_n & eOut, byte & hlOut)
 {
-	eOut = <invalid>;
+	eOut.u0 = <invalid>;
 	hlOut = hl * 0x03 + 0x1A01;
 	return (cond(hl * 0x03 + 0x1A01) & 0x01) != 0x00;
 }
@@ -1824,10 +1828,10 @@ void fn0A8F(byte * bc, byte * de)
 	}
 }
 
-// 0AB3: Register byte fn0AB3(Register (ptr16 byte) de, Register out word16 deOut)
+// 0AB3: Register Eq_n fn0AB3(Register (ptr16 byte) de, Register out word16 deOut)
 // Called from:
 //      fn0A8F
-byte fn0AB3(byte * de, word16 & deOut)
+Eq_n fn0AB3(byte * de, word16 & deOut)
 {
 	byte b_n;
 	word16 hl_n;

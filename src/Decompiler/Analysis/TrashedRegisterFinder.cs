@@ -250,15 +250,10 @@ namespace Reko.Analysis
         {
             //$REVIEW: do we need this? if a procedure has a signature,
             // we will always trust that rather than the flow.
-            if (!sig.HasVoidReturn)
+            foreach (var id in sig.Outputs)
             {
-                procFlow.Trashed.Add(sig.Outputs[0].Storage);
-            }
-            foreach (var stg in sig.Parameters!
-                .Select(p => p.Storage)
-                .OfType<OutArgumentStorage>())
-            {
-                procFlow.Trashed.Add(stg.OriginalIdentifier.Storage);
+                if (id.DataType.Domain != Domain.None)
+                    procFlow.Trashed.Add(sig.Outputs[0].Storage);
             }
         }
 

@@ -1285,18 +1285,23 @@ namespace Reko.Core.Output
         /// </summary>
         /// <param name="arg">Argument to write.</param>
         /// <param name="writeStorage">If true, writes the storage type also.</param>
+        /// <param name="isOutParameter">If true, the argument is an out parameter.</param>
         /// <param name="t"><see cref="TypeReferenceFormatter"/> used to render types.</param>
-        public void WriteFormalArgument(Identifier arg, bool writeStorage, TypeReferenceFormatter t)
+        public void WriteFormalArgument(
+            Identifier arg,
+            bool writeStorage,
+            bool isOutParameter,
+            TypeReferenceFormatter t)
         {
             if (writeStorage)
             {
-                WriteFormalArgumentType(arg, writeStorage);
+                WriteFormalArgumentType(arg, writeStorage, isOutParameter);
                 InnerFormatter.Write(" ");
                 InnerFormatter.Write(arg.Name);
             }
             else
             {
-                if (arg.Storage is OutArgumentStorage)
+                if (isOutParameter)
                 {
                     t.WriteDeclaration(new ReferenceTo(arg.DataType), arg.Name);
                 }
@@ -1314,18 +1319,18 @@ namespace Reko.Core.Output
         /// <param name="writeStorage">If true, writes the <see cref="Storage"/> of the
         /// identifier as well.
         /// </param>
-        public void WriteFormalArgumentType(Identifier arg, bool writeStorage)
+        /// <param name="isOutParameter">If true the argument is an out parameter.</param>
+        public void WriteFormalArgumentType(Identifier arg, bool writeStorage, bool isOutParameter)
         {
-            if (writeStorage)
+            if (writeStorage && arg.Storage is not null)
             {
-                if (arg.Storage is OutArgumentStorage os)
+                InnerFormatter.Write(arg.Storage.Kind);
+                if (isOutParameter)
                 {
-                    InnerFormatter.Write(os.OriginalIdentifier.Storage.Kind);
                     InnerFormatter.Write(" out ");
                 }
-                else if (arg.Storage is not null)
+                else
                 {
-                    InnerFormatter.Write(arg.Storage.Kind);
                     InnerFormatter.Write(" ");
                 }
             }

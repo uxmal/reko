@@ -45,14 +45,14 @@ namespace Reko.UnitTests.Core.Serialization
         [Test]
         public void ArgSer_SerializeNullArgument()
         {
-            Assert.IsNull(ArgumentSerializer.Serialize(null));
+            Assert.IsNull(ArgumentSerializer.Serialize(null, false));
         }
 
         [Test]
         public void ArgSer_SerializeRegister()
         {
             var arg = new Identifier(Registers.ax.Name, Registers.ax.DataType, Registers.ax);
-            Argument_v1 sarg = ArgumentSerializer.Serialize(arg);
+            Argument_v1 sarg = ArgumentSerializer.Serialize(arg, false);
             Assert.AreEqual("ax", sarg.Name);
             Register_v1 sreg = (Register_v1)sarg.Kind;
             Assert.IsNotNull(sreg);
@@ -64,7 +64,7 @@ namespace Reko.UnitTests.Core.Serialization
         {
             var arg = Identifier.Create(
                 new FlagGroupStorage(Registers.eflags, 3, "SZ"));
-            Argument_v1 sarg = ArgumentSerializer.Serialize(arg);
+            Argument_v1 sarg = ArgumentSerializer.Serialize(arg, false);
             Assert.AreEqual("SZ", sarg.Name);
             FlagGroup_v1 sflag = (FlagGroup_v1)sarg.Kind;
             Assert.AreEqual("SZ", sflag.Name);
@@ -73,9 +73,11 @@ namespace Reko.UnitTests.Core.Serialization
         [Test]
         public void ArgSer_SerializeOutArgument()
         {
-            Identifier id = new Identifier("qOut", PrimitiveType.Word32,
-                new OutArgumentStorage(new Identifier("q", PrimitiveType.Word32, RegisterStorage.Reg32("q", 4))));
-            Argument_v1 arg = ArgumentSerializer.Serialize(id);
+            Identifier id = new Identifier(
+                "qOut",
+                PrimitiveType.Word32,
+                RegisterStorage.Reg32("q", 4));
+            Argument_v1 arg = ArgumentSerializer.Serialize(id, true);
             Assert.AreEqual("qOut", arg.Name);
             Assert.IsTrue(arg.OutParameter);
             Register_v1 sr = (Register_v1)arg.Kind;

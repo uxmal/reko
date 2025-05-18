@@ -47,7 +47,13 @@ namespace Reko.Analysis
         private readonly Statement stmCall;
         private readonly SsaMutator mutator;
         private readonly IProcessorArchitecture arch;
+        /// <summary>
+        /// The definitions reaching the call being rewritten.
+        /// </summary>
         private readonly BindingDictionary defs;
+        /// <summary>
+        /// The live uses leaving the call after it is called.
+        /// </summary>
         private readonly BindingDictionary uses;
         private readonly bool guessStackArgs;
 
@@ -108,10 +114,10 @@ namespace Reko.Analysis
         {
             throw new NotImplementedException();
         }
-
-        public Expression VisitOutArgumentStorage(OutArgumentStorage arg, (BindingDictionary map, ApplicationBindingType bindUses) ctx)
+        
+        private Expression DoBindOutArgument(Storage arg, (BindingDictionary map, ApplicationBindingType bindUses) ctx)
         {
-            if (defs.TryGetValue(arg.OriginalIdentifier.Storage, out var binding))
+            if (defs.TryGetValue(arg, out var binding))
             {
                 return binding.Expression;
             }
@@ -119,32 +125,39 @@ namespace Reko.Analysis
             {
                 // This out variable is dead, but we need to create a dummy identifier
                 // for it to maintain the consistency of the SSA graph.
-                var sid = ssaCaller.Identifiers.Add(arg.OriginalIdentifier, stmCall, true);
+                var sid = ssaCaller.Identifiers.Add(Identifier.Create(arg), stmCall, true);
                 return sid.Identifier;
             }
         }
 
         public Expression? VisitRegisterStorage(RegisterStorage reg, (BindingDictionary map, ApplicationBindingType bindUses) ctx)
         {
-            // If the architecture has no subregisters, this test will
-            // be true.
-            if (ctx.map.TryGetValue(reg, out CallBinding? cb))
-                return cb.Expression;
-
-            // If the architecture has subregisters, we need a more
-            // expensive test.
-            //$TODO: perhaps this can be done with another level of lookup, 
-            // eg by using a Dictionary<StorageDomain<Dictionary<Storage, CallBinding>>
-            foreach (var de in ctx.map)
+            if (ctx.bindUses != ApplicationBindingType.Out)
             {
-                if (reg.OverlapsWith(de.Value.Storage))
+                // If the architecture has no subregisters, this test will
+                // be true.
+                if (ctx.map.TryGetValue(reg, out CallBinding? cb))
+                    return cb.Expression;
+
+                // If the architecture has subregisters, we need a more
+                // expensive test.
+                //$TODO: perhaps this can be done with another level of lookup, 
+                // eg by using a Dictionary<StorageDomain<Dictionary<Storage, CallBinding>>
+                foreach (var de in ctx.map)
                 {
-                    return de.Value.Expression;
+                    if (reg.OverlapsWith(de.Value.Storage))
+                    {
+                        return de.Value.Expression;
+                    }
                 }
+                if (ctx.bindUses == ApplicationBindingType.In)
+                    return EnsureRegister(reg);
+                return null;
             }
-            if (ctx.bindUses == ApplicationBindingType.In)
-                return EnsureRegister(reg);
-            return null;
+            else
+            {
+                return DoBindOutArgument(reg, ctx);
+            }
         }
 
         public Expression VisitSequenceStorage(SequenceStorage seq, (BindingDictionary map, ApplicationBindingType bindUses) ctx)

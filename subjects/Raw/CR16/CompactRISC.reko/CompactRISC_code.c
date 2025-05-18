@@ -2790,8 +2790,8 @@ l00005816:
 						Eq_n r9_r8_n;
 						r9_r8_n.u1 = r3_r2.u1->t0038.u1;
 						fn0000B09C(r9_r8_n);
-						r11.u0 = <invalid>;
-						r10.u0 = <invalid>;
+						r10 = (word16) r11_r10_n;
+						r11.u2 = SLICE(r11_r10_n, word16, 16);
 						r9 = SLICE(r9_r8_n, word16, 16);
 						r8 = (word16) r9_r8_n;
 						Eq_n r0_n;

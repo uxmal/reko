@@ -63,6 +63,7 @@ namespace Reko.Core
 	{
         private readonly IProcessorArchitecture arch;
         private readonly NamingPolicy namingPolicy;
+        private readonly List<Identifier> outParameters;
 
         /// <summary>
         /// Creates a Frame instance for maintaining the local variables and arguments.
@@ -81,6 +82,7 @@ namespace Reko.Core
                 throw new ArgumentNullException(nameof(framePointerSize));
             this.arch = arch;
             this.Identifiers = [];
+            this.outParameters = [];
             this.namingPolicy = NamingPolicy.Instance;
 
 			// There is always a "variable" for the global memory and the frame
@@ -295,8 +297,9 @@ namespace Reko.Core
 			Identifier? idOut = FindOutArgument(idOrig);
 			if (idOut is null)
 			{
-				idOut = new Identifier(idOrig.Name + "Out", outArgumentPointer, new OutArgumentStorage(idOrig));
+				idOut = new Identifier(idOrig.Name + "Out", outArgumentPointer, idOrig.Storage);
 				Identifiers.Add(idOut);
+                outParameters.Add(idOut);
 			}
 			return idOut;
 		}
@@ -475,11 +478,11 @@ namespace Reko.Core
         /// <returns>The corrsesponding identifier, or null if none
         /// was found.
         /// </returns>
-		public Identifier? FindOutArgument(Identifier idOrig)
+		private Identifier? FindOutArgument(Identifier idOrig)
 		{
-			foreach (Identifier id in Identifiers)
+			foreach (Identifier id in this.outParameters)
 			{
-                if (id.Storage is OutArgumentStorage s && s.OriginalIdentifier == idOrig)
+                if (id.Storage == idOrig.Storage)
                 {
                     return id;
                 }
@@ -560,7 +563,9 @@ namespace Reko.Core
 				text.Write("// ");
 				text.Write(id.Name);
 				text.Write(":");
-				id.Storage.Write(text);
+                if (this.outParameters.Contains(id))
+                    text.Write("Out:");
+                id.Storage.Write(text);
 				text.WriteLine();
 			}
 			if (Escapes)

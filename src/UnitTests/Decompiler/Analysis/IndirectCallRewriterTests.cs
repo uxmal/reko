@@ -152,7 +152,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 .Where(stg => stg != null);
             var stackDelta = storages.Count() == 0 ? 4 :
                 storages.Max(stg => stg.StackOffset + stg.DataType.Size);
-            var ft = new FunctionType(parameters, [returnValue])
+            var ft = new FunctionType(parameters, [returnValue ?? new Identifier("", VoidType.Instance, null)])
             {
                 StackDelta = stackDelta,
             };

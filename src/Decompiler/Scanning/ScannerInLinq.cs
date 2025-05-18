@@ -54,8 +54,8 @@ namespace Reko.Scanning
 
         public ScanResults ScanImage(ScanResults sr)
         {
-            sr.WatchedAddresses.Add(Address.Ptr32(0x001126FC)); //$DEBUG
-            sr.WatchedAddresses.Add(Address.Ptr32(0x00112762)); //$DEBUG
+            sr.WatchedAddresses.Add(Address.Ptr32(0x001126FC));
+            sr.WatchedAddresses.Add(Address.Ptr32(0x00112762));
             
             // At this point, we have some entries in the image map
             // that are data, and unscanned ranges in betweeen. We

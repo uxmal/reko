@@ -31,21 +31,6 @@ using System.ComponentModel.Design;
 namespace Reko.UnitTests.Core
 {
 	[TestFixture]
-	public class OutStorageTests
-	{
-		[Test]
-		public void CreateOutArgumentRegister()
-		{
-			RegisterStorage mr = RegisterStorage.Reg32("r1", 1);
-			Identifier oarg = new Identifier("r1Out", PrimitiveType.Word32, new OutArgumentStorage(
-				new Identifier(mr.Name, PrimitiveType.Word32, mr)));
-			StringWriter w = new StringWriter();
-			oarg.Write(true, w);
-			Assert.AreEqual("Register out word32 r1Out", w.ToString());
-		}
-	}
-
-	[TestFixture]
 	public class StackArgumentTests
 	{
 		private Frame f;

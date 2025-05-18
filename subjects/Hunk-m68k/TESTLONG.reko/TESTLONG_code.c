@@ -842,7 +842,7 @@ l00001B84:
 					{
 						do
 						{
-							word16 a0_n;
+							word32 a0_n;
 							if (fn00001D98((int32) *(fp + -6 + d2_n), a5_n, out a0_n, out a5_n) == ~0x00)
 							{
 								d0_n = d6_n;
@@ -858,7 +858,7 @@ l00001B84:
 				{
 					do
 					{
-						word16 a0_n;
+						word32 a0_n;
 						if (fn00001D98(0x30, a5_n, out a0_n, out a5_n) == ~0x00)
 						{
 							d0_n = d6_n;
@@ -872,7 +872,7 @@ l00001B84:
 				d2_n.u0 = 0x00;
 				while (d2_n < dwLoc0A_n)
 				{
-					word16 a0_n;
+					word32 a0_n;
 					if (fn00001D98((int32) *(a3_n + d2_n), a5_n, out a0_n, out a5_n) == ~0x00)
 					{
 						d0_n = d6_n;
@@ -887,7 +887,7 @@ l00001B84:
 					up32 d2_n;
 					for (d2_n = 0x00; d2_n < dwLoc44_n; ++d2_n)
 					{
-						word16 a0_n;
+						word32 a0_n;
 						d0 = fn00001D98(0x20, a5_n, out a0_n, out a5_n);
 						if (d0 == ~0x00)
 						{
@@ -902,7 +902,7 @@ l00001B84:
 			else
 			{
 				++a4_n;
-				word16 a0_n;
+				word32 a0_n;
 				d0 = fn00001D98((int32) *a4_n, a5_n, out a0_n, out a5_n);
 				if (d0 == ~0x00)
 				{
@@ -1740,7 +1740,7 @@ void fn00002AFC(struct Eq_n * dwArg04)
 {
 	if (dwArg04 != null)
 	{
-		word16 a0_n;
+		word32 a0_n;
 		word32 a5_n;
 		fn00001F08(dwArg04, out a0_n, out a5_n);
 	}
@@ -1751,7 +1751,7 @@ void fn00002AFC(struct Eq_n * dwArg04)
 		{
 			if ((a2_n->dw0018 & 0x02) != 0x00)
 			{
-				word16 a0_n;
+				word32 a0_n;
 				word32 a5_n;
 				fn00001F08(a2_n, out a0_n, out a5_n);
 			}
@@ -2819,7 +2819,7 @@ uint32 fn00003BB0(Eq_n d4, Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, Eq_n dwArg1
 //      fn00002B8C
 ui32 fn00003C30(struct Eq_n * dwArg04, byte & a5Out)
 {
-	word16 a0_n;
+	word32 a0_n;
 	byte * a5_n = fn00002388();
 	ui32 d0_n;
 	if (dwArg04 == null)
@@ -2893,7 +2893,7 @@ word32 fn00003D2C()
 	{
 		if ((a2_n->dw0018 & 0x0202) == 0x0202 && a2_n->dw0000 != 0x00)
 		{
-			word16 a0_n;
+			word32 a0_n;
 			fn00001F08(a2_n, out a0_n, out a5);
 		}
 	}

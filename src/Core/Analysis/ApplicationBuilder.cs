@@ -154,12 +154,14 @@ namespace Reko.Core.Analysis
             DataType dtOut = VoidType.Instance;
             if (!sigCallee.HasVoidReturn)
             {
-                var bindingOut = BindReturnValue(sigCallee.ReturnValue?.Storage);
+                var bindingOut = BindReturnValue(sigCallee.Outputs[0].Storage);
                 expOut = bindingOut;
                 dtOut = sigCallee.ReturnValue!.DataType;
             }
-            var actuals = BindArguments(parameters, sigCallee.IsVariadic, chr).ToArray();
-            Expression appl = new Application(callee, dtOut, actuals);
+            var arguments = BindArguments(parameters, sigCallee.IsVariadic, chr);
+            arguments.AddRange(BindOutputs(sigCallee.Outputs, chr));
+
+            Expression appl = new Application(callee, dtOut, arguments.ToArray());
 
             switch (expOut)
             {
@@ -167,7 +169,7 @@ namespace Reko.Core.Analysis
                 {
                     if (idOut.Storage is not FlagGroupStorage)
                     {
-                        int extraBits = idOut.DataType.BitSize - sigCallee.ReturnValue.DataType.BitSize;
+                        int extraBits = idOut.DataType.BitSize - dtOut.BitSize;
                         if (extraBits > 0)
                         {
                             // The non-live bits of expOut can safely be replaced with anything,
@@ -189,39 +191,33 @@ namespace Reko.Core.Analysis
             }
         }
 
+
+
         /// <summary>
-        /// Bind the formal parameters of the signature to actual arguments in
+        /// Bind the formal input parameters of the signature to actual arguments in
         /// the frame of the calling procedure.
         /// </summary>
         /// <param name="parameters">The formal parameters of the callee 
         /// procedure.</param>
-        /// <param name="isVariadic">True if the calle function is variadic (e.g. <c>printf</c>).</param>
+        /// <param name="isVariadic">True if the called function is variadic (e.g. <c>printf</c>).</param>
         /// <param name="chr">The <see cref="ProcedureCharacteristics"/> of the called procedure, if any.</param>
         /// <returns>The resulting list of actual arguments.</returns>
-        public virtual List<Expression> BindArguments(Identifier[] parameters, bool isVariadic, ProcedureCharacteristics? chr)
+        public List<Expression> BindArguments(Identifier[] parameters, bool isVariadic, ProcedureCharacteristics? chr)
         {
             var actuals = new List<Expression>();
             for (int i = 0; i < parameters.Length; ++i)
             {
                 var formalArg = parameters[i];
-                if (formalArg.Storage is OutArgumentStorage outStg)
+                var actualArg = BindInArg(formalArg.Storage);
+                //$REVIEW: what does null mean here? Forcing an error here generates
+                // regressions in the unit tests.
+                if (actualArg is not null)
                 {
-                    var outArg = BindOutArg(outStg);
-                    actuals.Add(outArg);
-                }
-                else
-                {
-                    var actualArg = BindInArg(formalArg.Storage);
-                    //$REVIEW: what does null mean here? Forcing an error here generates
-                    // regressions in the unit tests.
-                    if (actualArg is not null)
+                    if (actualArg.DataType.BitSize > formalArg.DataType.BitSize)
                     {
-                        if (actualArg.DataType.BitSize > formalArg.DataType.BitSize)
-                        {
-                            actualArg = new Slice(formalArg.DataType, actualArg, 0);
-                        }
-                        actuals.Add(actualArg);
+                        actualArg = new Slice(formalArg.DataType, actualArg, 0);
                     }
+                    actuals.Add(actualArg);
                 }
             }
             if (isVariadic)
@@ -232,6 +228,30 @@ namespace Reko.Core.Analysis
             {
                 return actuals;
             }
+        }
+
+        /// <summary>
+        /// Binds the formal output parameters to variables in the caller's 
+        /// frame.
+        /// </summary>
+        /// <param name="outputs">Output parameters (of which the first
+        /// one has already been processed).</param>
+        /// <param name="chr">Procedure characteristics.</param>
+        /// <returns>The bound output parameters.
+        /// </returns>
+        private List<Expression> BindOutputs(Identifier[] outputs, ProcedureCharacteristics? chr)
+        {
+            var actuals = new List<Expression>();
+            // We've already processed the first output parameter, which is 
+            // modeled as the return value. All other parameters are modeled
+            // as OutArguments.
+            for (int i = 1; i < outputs.Length; ++i)
+            {
+                var formalArg = outputs[i];
+                var outArg = BindOutArg(formalArg.Storage);
+                actuals.Add(outArg);
+            }
+            return actuals;
         }
 
         /// <summary>

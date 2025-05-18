@@ -34,7 +34,7 @@ sp_2: orig: sp
 Top_3: orig: Top
 ax_4: orig: ax
 bx_5: orig: bx
-bxOut:Out:bx
+bxOut:bx
 // fn0C00_000E
 // Return size: 0
 word16 fn0C00_000E(word16 & bxOut)

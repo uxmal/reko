@@ -102,12 +102,6 @@ namespace Reko.Core.Analysis
         }
 
         /// <inheritdoc/>
-        public Expression VisitOutArgumentStorage(OutArgumentStorage arg)
-        {
-            return arg.OriginalIdentifier.Storage.Accept(this);
-        }
-
-        /// <inheritdoc/>
         public Expression VisitRegisterStorage(RegisterStorage reg)
         {
             return binder.EnsureRegister(reg);

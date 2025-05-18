@@ -218,17 +218,26 @@ namespace Reko.Analysis
             // Prefer emitting in this order: [flags, sequences, registers, fpu args]
             // Sort the names in a stable way to avoid regression tests failing.
 
+            int cOutParameters = 0;
             foreach (var grf in grfLiveOut.OrderBy(g => g.Name))
             {
                 var grfOut = frame.EnsureFlagGroup(grf);
                 if (Bits.IsSingleBitSet(grf.FlagGroupBits))
                     grfOut.DataType = PrimitiveType.Bool;
                 sb.AddOutParam(grfOut);
+                ++cOutParameters;
             }
 
             foreach (var seq in seqLiveOut.OrderBy(r => r.Key.Name))
             {
-                sb.AddOutParam(frame.EnsureSequence(seq.Key.DataType, seq.Key.Elements));
+                var seqOut = sb.AddOutParam(frame.EnsureSequence(seq.Key.DataType, seq.Key.Elements));
+                ++cOutParameters;
+                if (cOutParameters > 1 &&
+                    !ssa.Identifiers.TryGetValue(seqOut, out var sidOut))
+                {
+                    // Ensure there are SSA identifiers for 'out' registers.
+                    ssa.Identifiers.Add(seqOut, null, false);
+                }
             }
 
             foreach (var reg in regsLiveOut.OrderBy(r => r.Key.Number).ThenBy(r => r.Key.BitAddress))
@@ -250,8 +259,10 @@ namespace Reko.Analysis
                         idReg.DataType = pt;
                     }
                     var regOut = sb.AddOutParam(idReg);
+                    ++cOutParameters;
+
 #endif
-                    if (regOut.Storage is OutArgumentStorage &&
+                    if (cOutParameters > 1 &&
                         !ssa.Identifiers.TryGetValue(regOut, out var sidOut))
                     {
                         // Ensure there are SSA identifiers for 'out' registers.
@@ -508,9 +519,10 @@ namespace Reko.Analysis
                 int insertPos = block.Statements.FindIndex(s => s.Instruction is ReturnInstruction);
                 Debug.Assert(insertPos >= 0, "Should have found a return instruction.");
                 var stm = block.Statements[insertPos];
-                var idRet = sig.ReturnValue;
-                if (idRet != null && idRet.DataType is not VoidType)
+                if (sig.Outputs.Length > 0 &&
+                    sig.Outputs[0].DataType is not VoidType)
                 {
+                    var idRet = sig.Outputs[0];
                     Expression e;
                     if (idRet.Storage is SequenceStorage seq)
                     {
@@ -527,15 +539,12 @@ namespace Reko.Analysis
                     stm.Instruction = new ReturnInstruction(e);
                     ssa.AddUses(stm);
                 }
-                foreach (var param in sig.Parameters!)
+                foreach (var param in sig.Outputs.Skip(1))
                 {
-                    if (param.Storage is OutArgumentStorage outStg)
-                    {
-                        Store store = MakeOutParameterStore(bindings, outStg, param);
-                        var stmIns = block.Statements.Insert(insertPos, stm.Address, store);
-                        ssa.AddUses(stmIns);
-                        ++insertPos;
-                    }
+                    Store store = MakeOutParameterStore(bindings, param);
+                    var stmIns = block.Statements.Insert(insertPos, stm.Address, store);
+                    ssa.AddUses(stmIns);
+                    ++insertPos;
                 }
             }
         }
@@ -601,11 +610,10 @@ namespace Reko.Analysis
 
         private static Store MakeOutParameterStore(
             CallBinding[] bindings,
-            OutArgumentStorage outStg,
             Identifier param)
         {
             var idStg = bindings
-                .Where(cb => cb.Storage == outStg.OriginalIdentifier.Storage)
+                .Where(cb => cb.Storage == param.Storage)
                 .FirstOrDefault();
             var store = new Store(
                 param,

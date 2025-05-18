@@ -141,10 +141,11 @@ namespace Reko.Core.Expressions
         /// Writes a textual representation of the identifier to a text writer.
         /// </summary>
         /// <param name="writeStorage">If true, write the backing storage.</param>
+        /// <param name="isOutput">If true, the identifier is used as an output parameter.</param>
         /// <param name="writer"><see cref="TextWriter"/> to write to.</param>
-		public void Write(bool writeStorage, TextWriter writer)
+		public void Write(bool writeStorage, bool isOutput, TextWriter writer)
 		{
-			WriteType(writeStorage, writer);
+			WriteType(writeStorage, isOutput, writer);
 			writer.Write(' ');
 			writer.Write(Name);
 		}
@@ -153,14 +154,15 @@ namespace Reko.Core.Expressions
         /// Write the datatype of the identifier to a text writer.
         /// </summary>
         /// <param name="writeStorage">If true, write the backing storage.</param>
+        /// <param name="isOutput">If true, the identifier is used as an output parameter.</param>
         /// <param name="writer"><see cref="TextWriter"/> to write to.</param>
-		public void WriteType(bool writeStorage, TextWriter writer)
+		public void WriteType(bool writeStorage, bool isOutput, TextWriter writer)
 		{
 			if (writeStorage)
 			{
-				if (Storage is OutArgumentStorage os)
+				if (isOutput)
 				{
-					writer.Write(os.OriginalIdentifier.Storage.Kind);
+					writer.Write(Storage.Kind);
 					writer.Write(" out ");
 				}	
 				else

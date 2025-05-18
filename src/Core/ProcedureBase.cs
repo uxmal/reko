@@ -24,6 +24,7 @@ using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 
 namespace Reko.Core

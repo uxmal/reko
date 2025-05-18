@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Core.Expressions
         {
             var reg_internal = RegisterStorage.Reg32("eax", 0);
             reg = new Identifier("eax", PrimitiveType.Word32, reg_internal);
-            outReg = new Identifier("eaxOut", PrimitiveType.Ptr32, new OutArgumentStorage(reg));
+            outReg = new Identifier("eaxOut", PrimitiveType.Ptr32, reg_internal);
         }
 
         [Test]

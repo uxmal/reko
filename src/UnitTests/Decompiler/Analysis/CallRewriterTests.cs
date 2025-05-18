@@ -436,7 +436,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 foreach ((int, Identifier) de in gcr.GetSortedStackArguments(f, uses))
                 {
                     fut.TextWriter.Write("{0:X4} ", de.Item1);
-                    de.Item2.Write(true, fut.TextWriter);
+                    de.Item2.Write(true, false, fut.TextWriter);
                     fut.TextWriter.WriteLine();
                 }
                 fut.AssertFilesEqual();
@@ -849,15 +849,15 @@ main_exit:
             Given_Procedure("fn", m => { });
             Given_Signature(
                 "fn",
-                FunctionType.Create(
-                    new Identifier(
-                        "ret",
-                        PrimitiveType.Word32,
-                        ret),
-                    new Identifier(
+                new FunctionType(
+                    [ new Identifier(
                         "arg",
                         PrimitiveType.Word32,
-                        arg)));
+                        arg)],
+                    [new Identifier(
+                        "ret",
+                        PrimitiveType.Word32,
+                        ret)]));
 
             When_RewriteCalls(ssa);
 
@@ -888,11 +888,12 @@ main_exit:
             Given_Procedure("fn", m => { });
             Given_Signature(
                 "fn",
-                FunctionType.Create(
-                    new Identifier(
+                new FunctionType(
+                    [],
+                    [ new Identifier(
                         "ret",
                         ret.DataType,
-                        ret)));
+                        ret)]));
 
             When_RewriteCalls(ssa);
 
@@ -972,7 +973,7 @@ main_exit:
         public void CrwReturnRegisterNotFound()
         {
             var ret = RegisterStorage.Reg32("ret", 1);
-            var rOut = RegisterStorage.Reg32("out", 1);
+            var rOut = RegisterStorage.Reg32("out", 2);
             var ssa = Given_Procedure("main", m =>
             {
                 m.Label("body");
@@ -980,16 +981,18 @@ main_exit:
             });
             Given_Signature(
                 "main",
-                FunctionType.Create(
-                    new Identifier(
-                        "ret",
-                        PrimitiveType.Word32,
-                        ret),
-                    new Identifier(
-                        "out",
-                        PrimitiveType.Word32,
-                        new OutArgumentStorage(
-                            ssa.Procedure.Frame.EnsureRegister(rOut)))));
+                new FunctionType(
+                    [],
+                    [
+                        new Identifier(
+                            "ret",
+                            PrimitiveType.Word32,
+                            ret),
+                        new Identifier(
+                            "out",
+                            PrimitiveType.Word32,
+                            rOut)
+                    ]));
 
             When_RewriteReturns(ssa);
 
@@ -1021,11 +1024,12 @@ main_exit:
             });
             Given_Signature(
                 "main",
-                FunctionType.Create(
-                    new Identifier(
+                new FunctionType(
+                    [],
+                    [new Identifier(
                         "reth",
                         PrimitiveType.Word16,
-                        reth)));
+                        reth)]));
 
             When_RewriteReturns(ssa);
 
@@ -1109,11 +1113,12 @@ main_exit:
             });
             Given_Signature(
                 "main",
-                FunctionType.Create(
-                    new Identifier(
+                new FunctionType(
+                    [],
+                    [ new Identifier(
                         "reth",
                         PrimitiveType.Word32,
-                        CV)));
+                        CV)]));
 
             When_RewriteReturns(ssa);
 

@@ -6729,12 +6729,12 @@ void fn000000000040D740(struct Eq_n * rdi, word32 esi)
 	}
 }
 
-// 000000000040D7B0: Register (ptr64 char) fn000000000040D7B0(Register up32 esi, Register (ptr64 char) rdi, Register (ptr32 Eq_n) fs, Register out word24 ecxOut)
+// 000000000040D7B0: Register (ptr64 char) fn000000000040D7B0(Register up32 esi, Register (ptr64 char) rdi, Register (ptr32 Eq_n) fs, Register out Eq_n ecxOut)
 // Called from:
 //      fn000000000040D8A0
-char * fn000000000040D7B0(up32 esi, char * rdi, struct Eq_n * fs, word24 & ecxOut)
+char * fn000000000040D7B0(up32 esi, char * rdi, struct Eq_n * fs, union Eq_n & ecxOut)
 {
-	word24 ecx_n;
+	word32 ecx_n;
 	char * rax_n = dcgettext(null, rdi, 5);
 	char * rbx_n = rax_n;
 	if (rax_n == rdi)
@@ -6766,7 +6766,7 @@ char * fn000000000040D7B0(up32 esi, char * rdi, struct Eq_n * fs, word24 & ecxOu
 	else
 	{
 l000000000040D7D7:
-		ecxOut = <invalid>;
+		ecxOut.u0 = <invalid>;
 		return rbx_n;
 	}
 }
@@ -6885,9 +6885,9 @@ uint8 * fn000000000040D8A0(Eq_n rcx, Eq_n rdx, uint8 * rsi, Eq_n rdi, up32 r8d, 
 	case 0x08:
 		if (r8d != 0x08)
 		{
-			word24 ecx_n;
+			word32 ecx_n;
 			qwLoc88_n = fn000000000040D7B0(r8d, "`", fs, out ecx_n);
-			word24 ecx_n;
+			word32 ecx_n;
 			qwLoc90_n = fn000000000040D7B0(r8d, "'", fs, out ecx_n);
 		}
 		rbx_n = null;
@@ -10153,10 +10153,10 @@ void fn0000000000411880(FILE * rdi)
 	}
 }
 
-// 0000000000411900: Register (ptr64 char) fn0000000000411900(Register (ptr32 Eq_n) fs, Register out word24 ecxOut)
+// 0000000000411900: Register (ptr64 char) fn0000000000411900(Register (ptr32 Eq_n) fs, Register out Eq_n ecxOut)
 // Called from:
 //      fn000000000040D7B0
-char * fn0000000000411900(struct Eq_n * fs, word24 & ecxOut)
+char * fn0000000000411900(struct Eq_n * fs, union Eq_n & ecxOut)
 {
 	word64 rax_n = fs->qw0028;
 	char * rax_n = nl_langinfo(0x0E);
@@ -10188,7 +10188,7 @@ l000000000041196A:
 			__stack_chk_fail();
 		else
 		{
-			ecxOut = <invalid>;
+			ecxOut.u0 = <invalid>;
 			return rbx_n;
 		}
 	}

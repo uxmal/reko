@@ -358,11 +358,6 @@ namespace Reko.Analysis
             return false;
         }
 
-        public bool VisitOutArgumentStorage(OutArgumentStorage arg, bool defining)
-        {
-            throw new NotImplementedException();
-        }
-
         public bool VisitRegisterStorage(RegisterStorage reg, bool defining)
         {
             if (defining)

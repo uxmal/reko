@@ -53,8 +53,11 @@ public class DeclarationInserter : IAbsynVisitor<int, Path>
     public DeclarationInserter(Procedure proc)
     {
         this.proc = proc;
+
         this.parameters = proc.Signature.ParametersValid
-            ? proc.Signature.Parameters!.Select(p => p.Name).ToHashSet()
+            ? proc.Signature.Parameters!.Concat(proc.Signature.Outputs.Skip(1))
+                .Select(p => p.Name)
+                .ToHashSet()
             : new HashSet<string>();
         this.statements = proc.Body!;
         this.containingStatements = new Dictionary<AbsynStatement, List<AbsynStatement>>();

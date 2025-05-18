@@ -1270,14 +1270,12 @@ namespace Reko.Scanning
         {
             if (sig is null)
                 return;
-            if (!sig.HasVoidReturn)
-                TrashVariable(sig.Outputs[0].Storage);
-            for (int i = 0; i < sig.Parameters!.Length; ++i)
+            for (int i = 0; i < sig.Outputs.Length; ++i)
             {
-                if (sig.Parameters[i].Storage is OutArgumentStorage os)
-                {
-                    TrashVariable(os.OriginalIdentifier.Storage);
-                }
+                var id = sig.Outputs[i];
+                if (id.DataType is VoidType)
+                    continue;
+                TrashVariable(id.Storage);
             }
         }
 

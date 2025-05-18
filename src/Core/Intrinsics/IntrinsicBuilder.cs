@@ -218,8 +218,8 @@ namespace Reko.Core.Intrinsics
         public IntrinsicProcedure Returns(DataType dt)
         {
             var signature = FunctionType.CreateUserDefined(
-                new Identifier("", dt, null!),
-                parameters.ToArray());
+                parameters.ToArray(),
+                [ new Identifier("", dt, null!) ]);
             signature.IsVariadic = isVariadic;
             return MakeIntrinsic(signature);
         }
@@ -231,8 +231,8 @@ namespace Reko.Core.Intrinsics
         public IntrinsicProcedure Returns(string genericType)
         {
             var signature = FunctionType.CreateUserDefined(
-                new Identifier("", GetGenericArgument(genericType), null!),
-                parameters.ToArray());
+                parameters.ToArray(),
+                [new Identifier("", GetGenericArgument(genericType), null!)]);
             return MakeIntrinsic(signature);
         }
 

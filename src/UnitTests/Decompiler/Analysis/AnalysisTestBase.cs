@@ -159,7 +159,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 program = asm.Assemble(Address.SegPtr(0xC00, 0), relativePath, rdr);
                 program.Platform = new MsdosPlatform(sc, arch);
             }
-            Rewrite(program, asm, configFile);
+             Rewrite(program, asm, configFile);
             return program;
         }
 

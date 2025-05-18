@@ -86,7 +86,8 @@ namespace Reko.Typing
 
             appl.Procedure.Accept(this, TypeVar(appl.Procedure));
             TypeVariable[] paramTypes = new TypeVariable[appl.Arguments.Length];
-            for (int i = 0; i < appl.Arguments.Length; ++i)
+            int i;
+            for (i = 0; i < appl.Arguments.Length; ++i)
             {
                 appl.Arguments[i].Accept(this, TypeVar(appl.Arguments[i]));
                 paramTypes[i] = TypeVar(appl.Arguments[i]);
@@ -116,18 +117,42 @@ namespace Reko.Typing
             var sig = ExtractSignature(appl.Procedure);
             if (sig is null || !sig.ParametersValid)
                 return;
-            var parameters = sig.Parameters!;
-            if (!sig.IsVariadic && appl.Arguments.Length != parameters.Length)
-                throw new InvalidOperationException(
-                    string.Format("Call to {0} had {1} arguments instead of the expected {2}.",
-                    appl.Procedure, appl.Arguments.Length, parameters.Length));
-            for (int i = 0; i < appl.Arguments.Length; ++i)
+            var inputs = sig.Parameters!;
+            var outputs = sig.Outputs;
+            ValidateArgumentCounts(appl, sig);
+            int i;
+            for (i = 0; i < appl.Arguments.Length; ++i)
             {
-                if (!sig.IsVariadic || i < parameters.Length)
+                if (i < inputs.Length)
                 {
-                    MeetDataType(appl.Arguments[i], parameters[i].DataType);
+                    MeetDataType(appl.Arguments[i], inputs[i].DataType);
+                }
+                else
+                {
+                    var iOut = i - inputs.Length + 1;
+                    if (iOut < outputs.Length)
+                    {
+                        MeetDataType(appl.Arguments[i], outputs[iOut].DataType);
+                    }
                 }
             }
+        }
+
+        private static void ValidateArgumentCounts(Application appl, FunctionType sig)
+        {
+            if (sig.IsVariadic)
+                return;
+            var cParameters = sig.Outputs!.Length;
+            if (cParameters > 0)
+            {
+                // The first output parameter is the return value.
+                --cParameters;
+            }
+            cParameters += sig.Parameters!.Length;
+            if (appl.Arguments.Length != cParameters)
+                throw new InvalidOperationException(
+                    string.Format("Call to {0} had {1} arguments instead of the expected {2}.",
+                    appl.Procedure, appl.Arguments.Length, cParameters));
         }
 
         public void FunctionTrait(Expression function, int funcPtrBitSize, TypeVariable ret, params TypeVariable[] actuals)

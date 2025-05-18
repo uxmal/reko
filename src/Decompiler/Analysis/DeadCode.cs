@@ -230,8 +230,7 @@ namespace Reko.Analysis
 
 		public override void VisitStore(Store store)
 		{
-            if (store.Dst is not Identifier idDst ||
-                idDst.Storage is not OutArgumentStorage)
+            if (store.Dst is not Identifier idDst)
             {
                 store.Dst.Accept(this);
             }

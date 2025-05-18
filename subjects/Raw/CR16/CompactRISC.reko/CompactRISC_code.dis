@@ -1547,8 +1547,8 @@ l00005032:
 	Mem528[r13_2534 + 4<32>:word16] = 0x71<16>
 	r9_r8_529 = Mem528[r3_r2 + 0x38<32>:word32]
 	fn0000B09C(r9_r8_529)
-	r11 = <invalid>
-	r10 = <invalid>
+	r10 = SLICE(r11_r10_6695, word16, 0) (alias)
+	r11 = SLICE(r11_r10_6695, word16, 16) (alias)
 	r9 = SLICE(r9_r8_529, word16, 16) (alias)
 	r8 = SLICE(r9_r8_529, word16, 0) (alias)
 	r0_545 = Mem528[r9_r8_529 + 0x14<32>:word16]

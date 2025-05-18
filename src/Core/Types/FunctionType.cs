@@ -84,14 +84,14 @@ namespace Reko.Core.Types
         /// <summary>
         /// Factory method to create a user defined function type.
         /// </summary>
-        /// <param name="returnId">Optional return value.</param>
         /// <param name="formals">Formal parameters.</param>
+        /// <param name="outputs">Output parameters.</param>
         /// <returns>The new function type.</returns>
         public static FunctionType CreateUserDefined(
-            Identifier? returnId, params Identifier[] formals)
+            Identifier[] formals,
+            Identifier[] outputs)
         {
-            returnId ??= VoidReturnValue();
-            var ft = new FunctionType(formals, [ returnId ]);
+            var ft = new FunctionType(formals, outputs);
             ft.UserDefined = true;
             return ft;
         }
@@ -151,7 +151,7 @@ namespace Reko.Core.Types
         /// <summary>
         /// Indicates if the function return type is 'void'.
         /// </summary>
-        public bool HasVoidReturn { get { return ReturnValue == null || ReturnValue.DataType is VoidType; } }
+        public bool HasVoidReturn => Outputs.Length == 0 || Outputs[0].DataType == VoidType.Instance;
 
         /// <summary>
         /// Type variable associated with this function type.
@@ -329,7 +329,7 @@ namespace Reko.Core.Types
                     }
                     else
                     {
-                        w.WriteFormalArgumentType(ReturnValue!, emitStorage);
+                        w.WriteFormalArgumentType(ReturnValue!, emitStorage, false);
                         fmt.Write(" ");
                     }
                     fmt.Write("{0}(", fnName);
@@ -356,7 +356,13 @@ namespace Reko.Core.Types
                     {
                         fmt.Write(sep);
                         sep = ", ";
-                        w.WriteFormalArgument(p, emitStorage, t);
+                        w.WriteFormalArgument(p, emitStorage, false, t);
+                    }
+                    foreach (var op in Outputs.Skip(1))
+                    {
+                        fmt.Write(sep);
+                        sep = ", ";
+                        w.WriteFormalArgument(op, emitStorage, true, t);
                     }
                     if (this.IsVariadic)
                     {

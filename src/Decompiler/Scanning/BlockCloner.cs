@@ -337,11 +337,6 @@ namespace Reko.Scanning
             return procCalling.Frame.Memory;
         }
 
-        public Identifier VisitOutArgumentStorage(OutArgumentStorage arg)
-        {
-            throw new NotImplementedException();
-        }
-
         public Identifier VisitRegisterStorage(RegisterStorage reg)
         {
             return procCalling.Frame.EnsureRegister(reg);

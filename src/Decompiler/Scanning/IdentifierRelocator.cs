@@ -101,11 +101,5 @@ namespace Reko.Scanning
         {
             return frameNew.EnsureSequence(id!.DataType, seq.Elements);
         }
-
-        public Identifier VisitOutArgumentStorage(OutArgumentStorage ost)
-        {
-            var idOut = id;
-            return frameNew.EnsureOutArgument((Identifier) VisitIdentifier(ost.OriginalIdentifier), idOut!.DataType);
-        }
     }
 }

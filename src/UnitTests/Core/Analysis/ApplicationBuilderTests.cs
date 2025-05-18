@@ -51,10 +51,10 @@ namespace Reko.UnitTests.Core.Analysis
             arg04 = new Identifier("arg04", PrimitiveType.Word32, new StackStorage(4, PrimitiveType.Word32));
             arg08 = new Identifier("arg08", PrimitiveType.Word16, new StackStorage(8, PrimitiveType.Word16));
             arg0C = new Identifier("arg0C", PrimitiveType.Byte, new StackStorage(0x0C, PrimitiveType.Byte));
-            regOut = new Identifier("edxOut", PrimitiveType.Word32, new OutArgumentStorage(frame.EnsureRegister(Registers.edx)));
-            sig = FunctionType.Create(
-                ret,
-                new Identifier[] { arg04, arg08, arg0C, regOut });
+            regOut = new Identifier("edxOut", PrimitiveType.Word32, Registers.edx);
+            sig = new FunctionType(
+                [ arg04, arg08, arg0C ],
+                [ ret, regOut ]);
         }
 
         [Test]
@@ -76,7 +76,7 @@ namespace Reko.UnitTests.Core.Analysis
         [Test]
         public void AppBld_BuildApplication()
         {
-            Assert.IsTrue(sig.Parameters[3].Storage is OutArgumentStorage);
+            Assert.IsTrue(sig.Outputs[1].Storage is RegisterStorage);
             ab = arch.CreateFrameApplicationBuilder(frame, new CallSite(4, 0));
             var callee = new Identifier("foo", PrimitiveType.Word32, null);
             var instr = ab.CreateInstruction(callee, sig, null);

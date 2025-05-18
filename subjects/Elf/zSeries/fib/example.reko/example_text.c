@@ -100,7 +100,7 @@ Eq_n fib(Eq_n r2, union Eq_n & r10Out, ptr64 & r11Out)
 		r1_n = r2;
 	else
 	{
-		word32 r10_n;
+		word64 r10_n;
 		struct Eq_n * r11_n;
 		fib(r2 - 1, out r10_n, out r11_n);
 		word64 r10_n;
@@ -121,7 +121,7 @@ Eq_n fib(Eq_n r2, union Eq_n & r10Out, ptr64 & r11Out)
 void main(word64 r3)
 {
 	struct Eq_n * r11_n;
-	word32 r10_n;
+	word64 r10_n;
 	int64 r1_n = (int64) fib(0x0A, out r10_n, out r11_n);
 	r11_n->ptr0120();
 }

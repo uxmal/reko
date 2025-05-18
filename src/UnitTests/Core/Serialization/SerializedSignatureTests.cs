@@ -110,7 +110,7 @@ namespace Reko.UnitTests.Core.Serialization
                 OutParameter = true
             };
 			SerializedSignature sig = new SerializedSignature();
-			sig.Arguments = new Argument_v1[] { arg };
+			sig.Arguments = [ arg ];
             Given_X86ProcedureSerializer();
             FunctionType ps = sser.Deserialize(sig, arch.CreateFrame());
 			Assert.AreEqual("void foo(Register out word16 bpOut)", ps.ToString("foo"));

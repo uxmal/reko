@@ -2293,7 +2293,7 @@ l566E:
 	bLoc16_1156 = 1<8>
 l5672:
 	fn00005B4E(CONVERT(wLoc14_1717, uint16, uint32), r8, wLoc1C_1157, wLoc1A_1158, out r13_r12_2144, out r15_r14_2145, out r8_447)
-	r14_445 = <invalid>
+	r14_445 = SLICE(r15_r14_2145, word16, 0) (alias)
 	branch r14_445 <u 0xA<16> l56EE
 l568E:
 	r4_456 = r14_445 + 0x30<16>
@@ -2301,13 +2301,11 @@ l5692:
 	wLoc20_1168 = wLoc20_2148 + 0xFFFF<16>
 	Mem476[wLoc20_1168:byte] = SLICE(r4_456, byte, 0)
 	fn00005B4E(CONVERT(wLoc14_1717, uint16, uint32), r8_447, wLoc1C_1157, wLoc1A_1158, out r13_r12_2146, out r15_r14_2147, out r8)
-	r13_488 = <invalid>
-	r12_487 = <invalid>
-	dwLoc1C_2106 = SEQ(r13_488, r12_487) (alias)
+	dwLoc1C_2106 = r13_r12_2146 (alias)
 	wLoc20_2148 = wLoc20_1168
 	branch bLoc16_1156 != 0<8> l5658
 l56C0:
-	dwLoc1C_2112 = SEQ(r13_488, r12_487) (alias)
+	dwLoc1C_2112 = r13_r12_2146 (alias)
 	branch bLoc18_1092 == 8<8> l56D2
 l56C6:
 	r9_311 = CONVERT(SLICE(fp, byte, 0) - 0x4C<8> - SLICE(wLoc20_1168, byte, 0), byte, word16) + 0x28<16>
@@ -2315,15 +2313,15 @@ l56C6:
 	dwLoc1C_2124 = dwLoc1C_2112 (alias)
 	goto l54FC
 l56D2:
-	dwLoc1C_2112 = SEQ(r13_488, r12_487) (alias)
+	dwLoc1C_2112 = r13_r12_2146 (alias)
 	branch (bLoc1E_1062 & 8<8>) == 0<8> l56C6
 l56D8:
-	dwLoc1C_2112 = SEQ(r13_488, r12_487) (alias)
+	dwLoc1C_2112 = r13_r12_2146 (alias)
 	branch r4_456 == 0x30<16> l56C6
 l56DE:
 	Mem520[wLoc20_2148 + 0xFFFE<16>:byte] = 0x30<8>
 	wLoc20_1168 = SEQ(SLICE(wLoc20_2148 + 0xFFFE<16>, byte, 8), SLICE(wLoc20_2148, byte, 0) + 0xFE<8>) (alias)
-	dwLoc1C_2112 = SEQ(r13_488, r12_487) (alias)
+	dwLoc1C_2112 = r13_r12_2146 (alias)
 	goto l56C6
 l56EE:
 	r4_456 = r14_445 + 0x57<16>

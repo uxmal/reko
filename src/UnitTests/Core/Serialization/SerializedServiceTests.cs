@@ -67,8 +67,12 @@ namespace Reko.UnitTests.Core.Serialization
                 Signature = new SerializedSignature
                 {
                     ReturnValue = ArgumentSerializer.Serialize(
-                        new Identifier("C", PrimitiveType.Bool,
-                        new FlagGroupStorage(Registers.eflags, (uint)FlagM.CF, "C")))
+                        new Identifier(
+                            "C",
+                            PrimitiveType.Bool,
+                            new FlagGroupStorage(
+                                Registers.eflags, (uint)FlagM.CF, "C")),
+                        false)
                 }
             };
 		}

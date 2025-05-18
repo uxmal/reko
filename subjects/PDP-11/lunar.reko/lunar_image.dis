@@ -102,14 +102,10 @@ l0300:
 	branch Mem0[0x0068<p16>:word16] == 0<16> l03A8
 l0306:
 	fn114A(Mem0[0x0064<p16>:word16], 0x2904<16>, out r2_r3_171)
-	r3_26 = <invalid>
-	r2_25 = <invalid>
-	fn126C(0x64<16>, r2_25, r3_26, out r3_35)
+	fn126C(0x64<16>, SLICE(r2_r3_171, word16, 16), SLICE(r2_r3_171, word16, 0), out r3_35)
 	Mem40[0x0066<p16>:word16] = r3_35
 	fn114A(Mem40[0x006E<p16>:word16], r3_35, out r2_r3_172)
-	r3_46 = <invalid>
-	r2_45 = <invalid>
-	fn126C(0x5DC<16>, r2_45, r3_46, out r3_55)
+	fn126C(0x5DC<16>, SLICE(r2_r3_172, word16, 16), SLICE(r2_r3_172, word16, 0), out r3_55)
 	r3_60 = r3_55 - Mem40[0x0068<p16>:word16]
 	branch r3_60 < 0<16> l0340
 l0336:
@@ -129,9 +125,7 @@ l0358:
 	fn126C(0xA<16>, 0<16>, r3_63, out r3_92)
 	Mem99[0x006A<p16>:word16] = r3_92 + 0x37DC<16>
 	fn114A(Mem99[0x0066<p16>:word16], 0x3ED7<16>, out r2_r3_173)
-	r3_105 = <invalid>
-	r2_104 = <invalid>
-	fn126C(r4, r2_104, r3_105, out r3_116)
+	fn126C(r4, SLICE(r2_r3_173, word16, 16), SLICE(r2_r3_173, word16, 0), out r3_116)
 	Mem121[0x004E<p16>:word16] = r3_116
 	fn125E(r3_116, Mem121[0x004A<p16>:word16], out r2_128)
 	Mem134[0x0050<p16>:word16] = r2_128
@@ -249,9 +243,7 @@ l048E:
 	r1_14 = -r1_14
 l0490:
 	fn114A(Mem0[0x006E<p16>:word16], r1_14, out r2_r3_209)
-	r3_16 = <invalid>
-	r2_15 = <invalid>
-	fn126C(0xBB8<16>, r2_15, r3_16, out r3_25)
+	fn126C(0xBB8<16>, SLICE(r2_r3_209, word16, 16), SLICE(r2_r3_209, word16, 0), out r3_25)
 	branch Mem0[0x0050<p16>:word16] > 0<16> l04A8
 l04A6:
 	r3_25 = -r3_25
@@ -278,9 +270,7 @@ l04E6:
 	r1_101 = -r1_101
 l04E8:
 	fn114A(Mem96[0x006E<p16>:word16], r1_101, out r2_r3_210)
-	r3_109 = <invalid>
-	r2_108 = <invalid>
-	fn126C(0xBB8<16>, r2_108, r3_109, out r3_118)
+	fn126C(0xBB8<16>, SLICE(r2_r3_210, word16, 16), SLICE(r2_r3_210, word16, 0), out r3_118)
 	branch Mem96[0x0052<p16>:word16] > 0<16> l0500
 l04FE:
 	r3_118 = -r3_118
@@ -558,9 +548,7 @@ l0A4C:
 l0A4E:
 	r0_48 = Mem32[0x34B6<p16>:word16] - Mem32[0x007A<p16>:word16]
 	fn114A(r0_48, r1_40, out r2_r3_222)
-	r3_55 = <invalid>
-	r2_54 = <invalid>
-	fn126C(Mem32[0x004C<p16>:word16], r2_54, r3_55, out r3_64)
+	fn126C(Mem32[0x004C<p16>:word16], SLICE(r2_r3_222, word16, 16), SLICE(r2_r3_222, word16, 0), out r3_64)
 	r4_69 = r0_48 + r3_64
 	branch Mem32[0x004A<p16>:word16] < 0<16> l0A6E
 l0A6C:
@@ -574,7 +562,7 @@ l0A6E:
 l0A82:
 	r4_149 = 0x96<16> - r4_69
 	fn114A(r4_149, Mem88[0x0064<p16>:word16], out r2_r3_223)
-	r3_100 = <invalid>
+	r3_100 = SLICE(r2_r3_223, word16, 0) (alias)
 	branch r3_100 >> 4<i16> == 0<16> l0B00
 l0A98:
 	wLoc02_184 = r3_100 >> 4<i16>
@@ -1237,20 +1225,16 @@ l1244:
 	r1 = -r1
 l1246:
 	fn114A(r0, r1, out r2_r3_67)
-	r2_43 = <invalid>
-	r2Out = r2_43
-	r3_44 = <invalid>
-	r3Out = r3_44
+	r2Out = SLICE(r2_r3_67, word16, 16)
+	r3Out = SLICE(r2_r3_67, word16, 0)
 	return r0
 l124C:
 	branch r1 > 0<16> l1246
 l1250:
 	r1 = -r1
 l1252:
-	r2_28 = <invalid>
-	r2Out = -(r2_28 + fn114A(r0, r1, out r2_r3_66))
-	r3_29 = <invalid>
-	r3Out = -r3_29
+	r2Out = -(SLICE(r2_r3_66, word16, 16) + fn114A(r0, r1, out r2_r3_66))
+	r3Out = -SLICE(r2_r3_66, word16, 0)
 	return r0
 fn123A_exit:
 

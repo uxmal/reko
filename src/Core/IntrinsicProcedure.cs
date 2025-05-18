@@ -260,19 +260,21 @@ namespace Reko.Core
             FunctionType newSig;
             if (sig.HasVoidReturn)
             {
-                newSig = FunctionType.CreateUserDefined(null, parameters);
+                newSig = FunctionType.CreateUserDefined(parameters, []);
             }
             else
             {
                 var ret = sig.ReturnValue;
-                if (ret.DataType is Pointer ptr)
+                if (ret?.DataType is Pointer ptr)
                 {
                     ret = new Identifier(
                         ret.Name,
                         ResolvePointer(ret.DataType, ptr.Pointee, ptrSize),
                         ret.Storage);
                 }
-                newSig = FunctionType.CreateUserDefined(ret, parameters);
+                newSig = FunctionType.CreateUserDefined(
+                    parameters, 
+                    ret is null ? [] : [ret]);
             }
             return new IntrinsicProcedure(this.Name, this.HasSideEffect, newSig, Evaluate)
             {

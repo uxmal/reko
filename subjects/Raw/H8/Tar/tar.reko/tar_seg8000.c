@@ -825,25 +825,25 @@ word16 fn00008AEA(word16 er0_16_n, word16 er4_16_n, int16 r6, union Eq_n & er2Ou
 	word32 er4_n;
 	Eq_n er2_n;
 	fn00009BB6((<anonymous> *) 0x1A4E, 0x2002, 0x02, r6, 0x07);
-	word16 er2_n;
+	word32 er2_n;
 	uipr32 er4_n;
 	fn00009C18(0x1E, SEQ(er4_16_n, 0x07), r6, out er2_n, out er4_n);
 	fn00009BB6((<anonymous> *) 0x1A4E, 0x2002, 0x03, r6, (word16) er4_n);
-	word16 er2_n;
+	word32 er2_n;
 	uipr32 er4_n;
 	fn00009C18(0x55, er4_n, r6, out er2_n, out er4_n);
 	fn00009BB6((<anonymous> *) 0x1A4E, 0x2001, 0x01, r6, (word16) er4_n);
-	word16 er2_n;
+	word32 er2_n;
 	uipr32 er4_n;
 	fn00009C18(200, er4_n, r6, out er2_n, out er4_n);
 	fn00009BB6((<anonymous> *) 0x1A4E, 0x2001, 0x02, r6, (word16) er4_n);
-	word16 er2_n;
+	word32 er2_n;
 	uipr32 er4_n;
 	fn00009C18(0xD2, er4_n, r6, out er2_n, out er4_n);
 	uint16 r4_n = (word16) er4_n;
 	fn00009BB6((<anonymous> *) 0x1A4E, 0x2001, 0x03, r6, r4_n);
 	fn00009BB6((<anonymous> *) 0x1A4E, 0x2002, 0x01, r6, r4_n);
-	word16 er2_n;
+	word32 er2_n;
 	uipr32 er4_n;
 	fn00009C18(0x1E, er4_n, r6, out er2_n, out er4_n);
 	fn00009BB6((<anonymous> *) 0x1A4E, 0x2002, 0x03, r6, (word16) er4_n);
@@ -1005,7 +1005,7 @@ l00008DA2:
 	else
 	{
 		fn00009BB6((<anonymous> *) 0x1A4E, 0x2000, 0x02, r6, 0x07);
-		word16 er2_n;
+		word32 er2_n;
 		uipr32 er4_n;
 		fn00009C18(0x14, er4_n, r6, out er2_n, out er4_n);
 		word16 er0_16_16_n = 0x00;
@@ -1072,7 +1072,7 @@ word16 fn00008F4E(word16 er0_16_n, uipr32 er4, int16 r6, uint32 & er4Out)
 	fn00009BB6((<anonymous> *) 0x1A4E, 0x2000, 0x03, r6, 0x07);
 	g_wFFFF9E34 = ~0x00;
 	fn00009BB6((<anonymous> *) 0x1A4E, 0x2002, 0x01, r6, 0x07);
-	word16 er2_n;
+	word32 er2_n;
 	uipr32 er4_n;
 	fn00009C18(0x01C2, SEQ(er4_16_16_n, 0x07), r6, out er2_n, out er4_n);
 	fn00009BF4(0x00, 0x00, 200);
@@ -1108,7 +1108,7 @@ word16 fn00008F4E(word16 er0_16_n, uipr32 er4, int16 r6, uint32 & er4Out)
 	uipr32 er4_n;
 	fn00008BB0(~0x00, 0x00, 0x00, SEQ(er4_16_16_n, 0x07), r6_n, out er4_n);
 	fn00009BB6((<anonymous> *) 0x1A4E, 0x2000, 0x02, r6_n, (word16) er4_n);
-	word16 er2_n;
+	word32 er2_n;
 	uipr32 er4_n;
 	fn00009C18(0x96, er4_n, r6_n, out er2_n, out er4_n);
 	fn00009BB6((<anonymous> *) 0x1A4E, 0x2000, 0x01, 0x00, (word16) er4_n);
@@ -1145,11 +1145,11 @@ word16 fn00008F4E(word16 er0_16_n, uipr32 er4, int16 r6, uint32 & er4Out)
 	uipr32 er4_n;
 	fn00008BB0(0x00, 0x00, 0x00, SEQ(er4_16_16_n, 0x07), r6_n, out er4_n);
 	fn00009BB6((<anonymous> *) 0x1A4E, 0x2002, 0x02, r6_n, (word16) er4_n);
-	word16 er2_n;
+	word32 er2_n;
 	uipr32 er4_n;
 	fn00009C18(0x2A, er4_n, r6_n, out er2_n, out er4_n);
 	fn00009BB6((<anonymous> *) 0x1A4E, 0x2002, 0x03, r6_n, (word16) er4_n);
-	word16 er2_n;
+	word32 er2_n;
 	uipr32 er4_n;
 	fn00009C18(0x55, er4_n, r6_n, out er2_n, out er4_n);
 	fn00009BB6((<anonymous> *) 0x1A4E, 0x2000, 0x02, r6_n, (word16) er4_n);
@@ -1173,21 +1173,21 @@ word16 fn00008F4E(word16 er0_16_n, uipr32 er4, int16 r6, uint32 & er4Out)
 	}
 	fn00009BB6((<anonymous> *) 0x1A4E, 0x2000, 0x03, r6_n, 0x07);
 	fn00009BB6((<anonymous> *) 0x1A4E, 0x2002, 0x01, r6_n, 0x07);
-	word16 er2_n;
+	word32 er2_n;
 	uipr32 er4_n;
 	fn00009C18(0x2A, SEQ(er4_16_16_n, 0x07), r6_n, out er2_n, out er4_n);
 	fn00009BB6((<anonymous> *) 0x1A4E, 0x2002, 0x03, r6_n, (word16) er4_n);
-	word16 er2_n;
+	word32 er2_n;
 	uipr32 er4_n;
 	fn00009C18(0x55, er4_n, r6_n, out er2_n, out er4_n);
 	uipr32 er4_n;
 	fn00008BB0(0x00, 0x00, 0x05, er4_n, r6_n, out er4_n);
 	fn00009BB6((<anonymous> *) 0x1A4E, 0x2002, 0x02, r6_n, (word16) er4_n);
-	word16 er2_n;
+	word32 er2_n;
 	uipr32 er4_n;
 	fn00009C18(0x2A, er4_n, r6_n, out er2_n, out er4_n);
 	fn00009BB6((<anonymous> *) 0x1A4E, 0x2002, 0x03, r6_n, (word16) er4_n);
-	word16 er2_n;
+	word32 er2_n;
 	uipr32 er4_n;
 	fn00009C18(0x55, er4_n, r6_n, out er2_n, out er4_n);
 	fn00009BB6((<anonymous> *) 0x1A4E, 0x2000, 0x02, r6_n, (word16) er4_n);
@@ -1211,11 +1211,11 @@ word16 fn00008F4E(word16 er0_16_n, uipr32 er4, int16 r6, uint32 & er4Out)
 	}
 	fn00009BB6((<anonymous> *) 0x1A4E, 0x2000, 0x03, r6_n, 0x07);
 	fn00009BB6((<anonymous> *) 0x1A4E, 0x2002, 0x01, r6_n, 0x07);
-	word16 er2_n;
+	word32 er2_n;
 	uipr32 er4_n;
 	fn00009C18(0x2A, SEQ(er4_16_16_n, 0x07), r6_n, out er2_n, out er4_n);
 	fn00009BB6((<anonymous> *) 0x1A4E, 0x2002, 0x03, r6_n, (word16) er4_n);
-	word16 er2_n;
+	word32 er2_n;
 	uipr32 er4_n;
 	fn00009C18(0x55, er4_n, r6_n, out er2_n, out er4_n);
 	ci16 r2_n = g_wFFFF9E3E;
@@ -1226,7 +1226,7 @@ word16 fn00008F4E(word16 er0_16_n, uipr32 er4, int16 r6, uint32 & er4Out)
 	uipr32 er4_n;
 	fn00008BB0(~0x00, 0x00, 0x00, er4_n, r6_n, out er4_n);
 	fn00009BB6((<anonymous> *) 0x1A4E, 0x2002, 0x02, r6_n, (word16) er4_n);
-	word16 er2_n;
+	word32 er2_n;
 	word32 er4_n;
 	fn00009C18(300, er4_n, r6_n, out er2_n, out er4_n);
 	fn00009BB6((<anonymous> *) 0x1A4E, 0x2002, 0x03, r6_n, (word16) er4_n);
@@ -1277,12 +1277,12 @@ word32 fn00009370(word16 er0_16_n, word16 er2_16_n, word16 er3_16_n, uint16 r4, 
 				fn00008BB0(r4_n, er0_16_n, r1_n - 0x01, er4_n, r6_n, out er4_n);
 				sp_n->wFFFFFFF8 = 0x07;
 				fn00009BB6((<anonymous> *) 0x1A4E, 0x2002, 0x02, r6_n, sp_n->wFFFFFFF8);
-				word16 er2_n;
+				word32 er2_n;
 				uipr32 er4_n;
 				fn00009C18(0x2A, er4_n, r6_n, out er2_n, out er4_n);
 				sp_n->wFFFFFFF8 = 0x07;
 				fn00009BB6((<anonymous> *) 0x1A4E, 0x2002, 0x03, r6_n, sp_n->wFFFFFFF8);
-				word16 er2_n;
+				word32 er2_n;
 				uipr32 er4_n;
 				fn00009C18(0x55, er4_n, r6_n, out er2_n, out er4_n);
 				word16 r4_n = (word16) er4_n;
@@ -1293,7 +1293,7 @@ word32 fn00009370(word16 er0_16_n, word16 er2_16_n, word16 er3_16_n, uint16 r4, 
 				}
 				sp_n->wFFFFFFF8 = 0x07;
 				fn00009BB6((<anonymous> *) 0x1A4E, 0x2002, 0x01, r6_n, sp_n->wFFFFFFF8);
-				word16 er2_n;
+				word32 er2_n;
 				uipr32 er4_n;
 				fn00009C18(0x2A, er4_n, r6_n, out er2_n, out er4_n);
 				sp_n->wFFFFFFF8 = 0x07;
@@ -1334,7 +1334,7 @@ word16 fn00009478(word16 er0_16_n, word16 er1_16_n, word16 er2_16_n, word16 er3_
 	word32 er6_n;
 	word32 er5_n;
 	word32 er3_n;
-	word16 er2_n;
+	word32 er2_n;
 	word32 er1_n;
 	word32 er6_n;
 	word32 er5_n;
@@ -1516,7 +1516,7 @@ l00009584:
 						word32 er6_n;
 						r6 = (word16) er6_n;
 						word32 er1_n;
-						word16 er2_n;
+						word32 er2_n;
 						word32 er3_n;
 						word32 er4_n;
 						word32 er5_n;
@@ -1626,7 +1626,7 @@ l0000966A:
 					word32 er2_n;
 					word32 er3_n;
 					uipr32 er4_n;
-					word16 er5_n;
+					word32 er5_n;
 					word16 r6_n;
 					fn00008866(r7_n + 0x0A, r7_n + 0x0C, er1_16_n, 0x01, er2_16_16_n, er3_16_n, 0x04, er4_16_16_n, r5_n, er5_16_n, r6, out er1_n, out er2_n, out er3_n, out er4_n, out er5_n, out r6_n);
 					struct Eq_n * sp_n = (struct Eq_n *) <invalid>;
@@ -1692,7 +1692,7 @@ l00009740:
 				uint16 * sp_n = sp_n - 2;
 				*sp_n = 0x07;
 				fn00009BB6((<anonymous> *) 0x1A4E, 0x2002, 0x02, r6, *sp_n);
-				word16 er2_n;
+				word32 er2_n;
 				word32 er4_n;
 				fn00009C18(300, 0x07, r6, out er2_n, out er4_n);
 				r4_n = (word16) er4_n;
@@ -2039,7 +2039,7 @@ word16 fn00009D6A(word16 er0_16_n, int16 r6, union Eq_n & er2Out)
 	fn00009B90((<anonymous> *) 10156, r6);
 	fn00009B90((<anonymous> *) 10184, r6);
 	fn00009BA6((<anonymous> *) 0x299A, 0x4004, 0x00, r6);
-	word16 er2_n;
+	word32 er2_n;
 	fn00009DC0(0x00, r6, out er2_n);
 	fn00009B90((<anonymous> *) 0x2A62, r6);
 	fn00009BA6((<anonymous> *) 15258, 0x9F10, 0x9F00, r6);

@@ -168,11 +168,6 @@ namespace Reko.Core
             throw new NotImplementedException();
         }
 
-        Identifier StorageVisitor<Identifier>.VisitOutArgumentStorage(OutArgumentStorage arg)
-        {
-            throw new NotImplementedException();
-        }
-
         Identifier StorageVisitor<Identifier>.VisitRegisterStorage(RegisterStorage reg)
         {
             return EnsureRegister(reg);

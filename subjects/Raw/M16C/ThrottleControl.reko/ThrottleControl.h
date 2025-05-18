@@ -1717,7 +1717,7 @@ Eq_3493: (fn word16 (Eq_3495, word16))
 	T_3610 (in fn000C1894 @ 000C18EE : ptr16)
 Eq_3495: (union "Eq_3495" (int32 u0) (uint16 u1))
 	T_3495 (in r1 @ 000C182D : Eq_3495)
-	T_3497 (in r1 *s32 r2 @ 000C182D : word32)
+	T_3496 (in r1 *s32 r2 @ 000C182D : word32)
 	T_3549 (in 0<16> @ 000C1899 : word16)
 	T_3606 (in r2 @ 000C18BF : Eq_3495)
 	T_3638 (in (*SEQ(SLICE(SEQ(wArg05 - (word16) (wArg03 < 8<16>), wArg03 + 0xFFF8<16>) + 4<32>, word16, 16), r0_14) << 2<i16>) + 0xFFF8<16> @ 000C1927 : word16)
@@ -2218,7 +2218,7 @@ T_99: (in fn000C1222 @ 000C01E4 : ptr16)
 T_100: (in fn000C1186 @ 000C01E4 : ptr16)
   Class: Eq_100
   DataType: (ptr16 Eq_100)
-  OrigDataType: (ptr16 (fn T_109 (T_105, T_106, T_108)))
+  OrigDataType: (ptr16 (fn T_109 (T_104, T_105, T_107)))
 T_101: (in signature of fn000C1186 @ 000C1186 : void)
   Class: Eq_100
   DataType: (ptr16 Eq_100)
@@ -2231,24 +2231,24 @@ T_103: (in r2 @ 000C01E4 : uint16)
   Class: Eq_103
   DataType: uint16
   OrigDataType: cup16
-T_104: (in r1Out @ 000C01E4 : word16)
-  Class: Eq_104
-  DataType: word16
-  OrigDataType: word16
-T_105: (in 1<16> @ 000C01E4 : word16)
+T_104: (in 1<16> @ 000C01E4 : word16)
   Class: Eq_102
   DataType: uint16
   OrigDataType: word16
-T_106: (in 5<16> @ 000C01E4 : word16)
+T_105: (in 5<16> @ 000C01E4 : word16)
   Class: Eq_103
   DataType: uint16
   OrigDataType: word16
-T_107: (in r1_2019 @ 000C01E4 : word16)
+T_106: (in r1_2019 @ 000C01E4 : word16)
+  Class: Eq_106
+  DataType: word16
+  OrigDataType: word16
+T_107: (in out r1_2019 @ 000C01E4 : word16)
   Class: Eq_107
   DataType: word16
   OrigDataType: word16
-T_108: (in out r1_2019 @ 000C01E4 : word16)
-  Class: Eq_104
+T_108: (in r1Out @ 000C01E4 : word16)
+  Class: Eq_107
   DataType: word16
   OrigDataType: word16
 T_109: (in fn000C1186(1<16>, 5<16>, out r1_2019) @ 000C01E4 : word16)
@@ -2300,7 +2300,7 @@ T_120: (in r1_2020 @ 000C01FA : word16)
   DataType: word16
   OrigDataType: word16
 T_121: (in out r1_2020 @ 000C01FA : word16)
-  Class: Eq_104
+  Class: Eq_107
   DataType: word16
   OrigDataType: word16
 T_122: (in fn000C1186(1<16>, 0x20<16>, out r1_2020) @ 000C01FA : word16)
@@ -2332,7 +2332,7 @@ T_128: (in r1_2021 @ 000C0203 : word16)
   DataType: word16
   OrigDataType: word16
 T_129: (in out r1_2021 @ 000C0203 : word16)
-  Class: Eq_104
+  Class: Eq_107
   DataType: word16
   OrigDataType: word16
 T_130: (in fn000C1186(5<16>, 1<16>, out r1_2021) @ 000C0203 : word16)
@@ -2504,7 +2504,7 @@ T_171: (in r1_2022 @ 000C050E : word16)
   DataType: word16
   OrigDataType: word16
 T_172: (in out r1_2022 @ 000C050E : word16)
-  Class: Eq_104
+  Class: Eq_107
   DataType: word16
   OrigDataType: word16
 T_173: (in fn000C1186(1<16>, 5<16>, out r1_2022) @ 000C050E : word16)
@@ -3148,7 +3148,7 @@ T_332: (in r1_2023 @ 000C05BD : word16)
   DataType: word16
   OrigDataType: word16
 T_333: (in out r1_2023 @ 000C05BD : word16)
-  Class: Eq_104
+  Class: Eq_107
   DataType: word16
   OrigDataType: word16
 T_334: (in fn000C1186(1<16>, 0x2C<16>, out r1_2023) @ 000C05BD : word16)
@@ -3180,7 +3180,7 @@ T_340: (in r1_2024 @ 000C05C6 : word16)
   DataType: word16
   OrigDataType: word16
 T_341: (in out r1_2024 @ 000C05C6 : word16)
-  Class: Eq_104
+  Class: Eq_107
   DataType: word16
   OrigDataType: word16
 T_342: (in fn000C1186(5<16>, 1<16>, out r1_2024) @ 000C05C6 : word16)
@@ -4008,7 +4008,7 @@ T_547: (in r1_2025 @ 000C0675 : word16)
   DataType: word16
   OrigDataType: word16
 T_548: (in out r1_2025 @ 000C0675 : word16)
-  Class: Eq_104
+  Class: Eq_107
   DataType: word16
   OrigDataType: word16
 T_549: (in fn000C1186(5<16>, 0<16>, out r1_2025) @ 000C0675 : word16)
@@ -5564,7 +5564,7 @@ T_936: (in r1_2026 @ 000C086B : word16)
   DataType: word16
   OrigDataType: word16
 T_937: (in out r1_2026 @ 000C086B : word16)
-  Class: Eq_104
+  Class: Eq_107
   DataType: word16
   OrigDataType: word16
 T_938: (in fn000C1186(9<16>, 0<16>, out r1_2026) @ 000C086B : word16)
@@ -6436,7 +6436,7 @@ T_1154: (in r1_2027 @ 000C0247 : word16)
   DataType: word16
   OrigDataType: word16
 T_1155: (in out r1_2027 @ 000C0247 : word16)
-  Class: Eq_104
+  Class: Eq_107
   DataType: word16
   OrigDataType: word16
 T_1156: (in fn000C1186(5<16>, 0<16>, out r1_2027) @ 000C0247 : word16)
@@ -7548,7 +7548,7 @@ T_1432: (in r1_722 @ 000C0429 : Eq_76)
   DataType: Eq_76
   OrigDataType: word16
 T_1433: (in out r1_722 @ 000C0429 : word16)
-  Class: Eq_104
+  Class: Eq_107
   DataType: word16
   OrigDataType: word16
 T_1434: (in fn000C1186(9<16>, 0<16>, out r1_722) @ 000C0429 : word16)
@@ -12936,7 +12936,7 @@ T_2779: (in r0_107 @ 000C121C : word16)
   DataType: word16
   OrigDataType: word16
 T_2780: (in 0x48<16> @ 000C121F : word16)
-  Class: Eq_104
+  Class: Eq_107
   DataType: word16
   OrigDataType: word16
 T_2781: (in 0x4F<16> @ 000C11BC : word16)
@@ -15790,7 +15790,7 @@ T_3492: (in r2 @ 000C181D : int16)
 T_3493: (in fn000C1894 @ 000C182D : ptr16)
   Class: Eq_3493
   DataType: (ptr16 Eq_3493)
-  OrigDataType: (ptr16 (fn T_3500 (T_3497, T_3499)))
+  OrigDataType: (ptr16 (fn T_3500 (T_3496, T_3498)))
 T_3494: (in signature of fn000C1894 @ 000C1894 : void)
   Class: Eq_3493
   DataType: (ptr16 Eq_3493)
@@ -15799,20 +15799,20 @@ T_3495: (in r1 @ 000C182D : Eq_3495)
   Class: Eq_3495
   DataType: Eq_3495
   OrigDataType: cu16
-T_3496: (in r2Out @ 000C182D : word16)
-  Class: Eq_3496
-  DataType: word16
-  OrigDataType: word16
-T_3497: (in r1 *s32 r2 @ 000C182D : word32)
+T_3496: (in r1 *s32 r2 @ 000C182D : word32)
   Class: Eq_3495
   DataType: Eq_3495
   OrigDataType: (union (int32 u0) (uint16 u1))
-T_3498: (in r2_19 @ 000C182D : ui16)
-  Class: Eq_3498
+T_3497: (in r2_19 @ 000C182D : ui16)
+  Class: Eq_3497
   DataType: ui16
   OrigDataType: word16
-T_3499: (in out r2_19 @ 000C182D : word16)
-  Class: Eq_3496
+T_3498: (in out r2_19 @ 000C182D : word16)
+  Class: Eq_3498
+  DataType: word16
+  OrigDataType: word16
+T_3499: (in r2Out @ 000C182D : word16)
+  Class: Eq_3498
   DataType: word16
   OrigDataType: word16
 T_3500: (in fn000C1894(r1 *s32 r2, out r2_19) @ 000C182D : word16)
@@ -15834,7 +15834,7 @@ T_3503: (in r0_17 != 0<16> @ 000C1838 : bool)
 T_3504: (in fn000C1DB0 @ 000C184E : ptr16)
   Class: Eq_3504
   DataType: (ptr16 Eq_3504)
-  OrigDataType: (ptr16 (fn T_3512 (T_3510, T_3501, T_3498, T_3511)))
+  OrigDataType: (ptr16 (fn T_3512 (T_3510, T_3501, T_3497, T_3511)))
 T_3505: (in signature of fn000C1DB0 @ 000C1DB0 : void)
   Class: Eq_3504
   DataType: (ptr16 Eq_3504)
@@ -15848,7 +15848,7 @@ T_3507: (in wArg03 @ 000C184E : word16)
   DataType: word16
   OrigDataType: word16
 T_3508: (in wArg05 @ 000C184E : ui16)
-  Class: Eq_3498
+  Class: Eq_3497
   DataType: ui16
   OrigDataType: ui16
 T_3509: (in wArg07 @ 000C184E : Eq_3509)
@@ -15868,7 +15868,7 @@ T_3512: (in fn000C1DB0(0<16>, r0_17, r2_19, r1 *s32 r2) @ 000C184E : void)
   DataType: void
   OrigDataType: void
 T_3513: (in 0<16> @ 000C183C : word16)
-  Class: Eq_3498
+  Class: Eq_3497
   DataType: ui16
   OrigDataType: word16
 T_3514: (in r2_19 == 0<16> @ 000C183C : bool)
@@ -16092,7 +16092,7 @@ T_3568: (in r2_20 != 0<16> @ 000C18B5 : bool)
   DataType: bool
   OrigDataType: bool
 T_3569: (in 0<16> @ 000C189F : word16)
-  Class: Eq_3496
+  Class: Eq_3498
   DataType: word16
   OrigDataType: word16
 T_3570: (in 0<16> @ 000C189F : word16)
@@ -16200,7 +16200,7 @@ T_3595: (in r2_r0_109 + 8<32> @ 000C18E4 : ui32)
   DataType: ui32
   OrigDataType: ui32
 T_3596: (in SLICE(r2_r0_109 + 8<32>, word16, 16) @ 000C18E4 : word16)
-  Class: Eq_3496
+  Class: Eq_3498
   DataType: word16
   OrigDataType: word16
 T_3597: (in 2<16> @ 000C18D2 : word16)
@@ -16232,7 +16232,7 @@ T_3603: (in r0_19 != 0<16> @ 000C18B9 : bool)
   DataType: bool
   OrigDataType: bool
 T_3604: (in 0<16> @ 000C18BF : word16)
-  Class: Eq_3496
+  Class: Eq_3498
   DataType: word16
   OrigDataType: word16
 T_3605: (in 0<16> @ 000C18BF : word16)
@@ -16264,7 +16264,7 @@ T_3611: (in r2_16 @ 000C18EE : ui16)
   DataType: ui16
   OrigDataType: word16
 T_3612: (in out r2_16 @ 000C18EE : word16)
-  Class: Eq_3496
+  Class: Eq_3498
   DataType: word16
   OrigDataType: word16
 T_3613: (in fn000C1894(r2, out r2_16) @ 000C18EE : word16)

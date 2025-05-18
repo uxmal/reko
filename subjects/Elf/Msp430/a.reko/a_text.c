@@ -168,7 +168,7 @@ void init_uart_isr(ui16 r14, ui32 dwArg02, byte bArg06)
 	__disable_interrupts();
 	++usCriticalNesting;
 	word16 v19_n = (word16) bArg06;
-	byte r6_n;
+	word16 r6_n;
 	word16 r7_n;
 	Eq_n r15_n;
 	xQueueCreate(v19_n, out r6_n, out r7_n, out r15_n);
@@ -210,13 +210,13 @@ void uart_putchar_isr_mode(word16 r15)
 	g_a0200[0] = (byte) r15;
 }
 
-// 43A2: Register cu16 putchar(Register cui16 sr, Register word16 r15)
+// 43A2: Register word16 putchar(Register cui16 sr, Register word16 r15)
 // Called from:
 //      task_n
 //      task_n
 //      task_n
 //      putchar
-cu16 putchar(cui16 sr, word16 r15)
+word16 putchar(cui16 sr, word16 r15)
 {
 	word16 r11_n = r15;
 	if (r15 == 0x0A)
@@ -1953,8 +1953,7 @@ l564A:
 					byte bLoc16_n;
 					cu16 r4_n;
 					struct Eq_n * wLoc20_n;
-					cu16 r13_n;
-					cu16 r12_n;
+					Eq_n r13_r12_n;
 					do
 					{
 						uint16 wLoc1A_n = SLICE(dwLoc1C_n, word16, 16);
@@ -1966,7 +1965,7 @@ l564A:
 						ui32 r15_r14_n;
 						uint16 r8_n;
 						fn00005B4E((uint32) wLoc14_n, r8, wLoc1C_n, wLoc1A_n, out r13_r12_n, out r15_r14_n, out r8_n);
-						cu16 r14_n = <invalid>;
+						cu16 r14_n = (word16) r15_r14_n;
 						if (r14_n >= 0x0A)
 							r4_n = r14_n + 0x30;
 						else
@@ -1977,26 +1976,23 @@ l564A:
 						}
 						wLoc20_n = wLoc20_n + 0x0000FFFF;
 						wLoc20_n->b0000 = (byte) r4_n;
-						ui32 r13_r12_n;
 						ui32 r15_r14_n;
 						fn00005B4E((uint32) wLoc14_n, r8_n, wLoc1C_n, wLoc1A_n, out r13_r12_n, out r15_r14_n, out r8);
-						r13_n = <invalid>;
-						r12_n = <invalid>;
-						dwLoc1C_n = SEQ(r13_n, r12_n);
+						dwLoc1C_n = r13_r12_n;
 						wLoc20_n = wLoc20_n;
 					} while (bLoc16_n != 0x00);
-					dwLoc1C_n = SEQ(r13_n, r12_n);
+					dwLoc1C_n = r13_r12_n;
 					if (bLoc18_n == 0x08)
 					{
-						dwLoc1C_n = SEQ(r13_n, r12_n);
+						dwLoc1C_n = r13_r12_n;
 						if ((bLoc1E_n & 0x08) != 0x00)
 						{
-							dwLoc1C_n = SEQ(r13_n, r12_n);
+							dwLoc1C_n = r13_r12_n;
 							if (r4_n != 0x30)
 							{
 								wLoc20_n[0x0000FFFE] = (struct Eq_n) 0x30;
 								wLoc20_n = SEQ(SLICE(wLoc20_n + 0x0000FFFE, byte, 8), (byte) wLoc20_n + ~0x01);
-								dwLoc1C_n = SEQ(r13_n, r12_n);
+								dwLoc1C_n = r13_r12_n;
 							}
 						}
 					}

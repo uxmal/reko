@@ -1403,11 +1403,6 @@ namespace Reko.Analysis
                 return new RegisterTransformer(id!, stm!, transform);
             }
 
-            public IdentifierTransformer VisitOutArgumentStorage(OutArgumentStorage arg)
-            {
-                throw new NotImplementedException();
-            }
-
             public IdentifierTransformer VisitRegisterStorage(RegisterStorage reg)
             {
                 return new RegisterTransformer(id!, stm!, transform);

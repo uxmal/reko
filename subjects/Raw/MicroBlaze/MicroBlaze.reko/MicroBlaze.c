@@ -18324,13 +18324,13 @@ struct Eq_n * fn0002D260(struct Eq_n * r0, struct Eq_n * r5, int32 r6, struct Eq
 	}
 l0002D3D4:
 	r25_n->dw004C += r24_n;
-	r3_n->ptr0000 = (struct Eq_n ***) r0;
-	r3_n->ptr0004 = (struct Eq_n ***) r0;
+	r3_n->ptr0000 = (struct Eq_n **) r0;
+	r3_n->ptr0004 = (struct Eq_n **) r0;
 	r4_n = r22_n + r19_n;
 	if (r21_n != null)
 	{
 		r3_n->dw0008 = r4_n;
-		r21_n->ptr0000 = (struct Eq_n ***) r3_n;
+		r21_n->ptr0000 = (struct Eq_n **) r3_n;
 		r6_n = r22_n;
 		r5_n = (struct Eq_n *) ((char *) &g_t0003.t0008 + 1);
 	}
@@ -18342,7 +18342,7 @@ l0002D3D4:
 		r5_n = (struct Eq_n *) ((char *) &g_t0003.t0008 + 1);
 	}
 l0002D400:
-	r3_n->ptr0004 = (struct Eq_n ***) r6_n;
+	r3_n->ptr0004 = (struct Eq_n **) r6_n;
 	r3_n->dw0008 = r4_n - r22_n;
 	r3Out = r3_n + r5_n;
 	return r0;

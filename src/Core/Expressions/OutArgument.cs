@@ -34,12 +34,13 @@ namespace Reko.Core.Expressions
     public class OutArgument : AbstractExpression
     {
         /// <summary>
-        /// Builds an outparameter.
+        /// Builds an out argument expression.
         /// </summary>
         /// <param name="dt">The type of argument</param>
         /// <param name="id">An identifier for the argument.</param>
         public OutArgument(DataType dt, Expression id) : base(dt)
         {
+            ArgumentNullException.ThrowIfNull(id, nameof(id));
             this.Expression = id;
         }
 

@@ -25,6 +25,7 @@ using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Reko.Analysis
 {
@@ -37,26 +38,29 @@ namespace Reko.Analysis
     public class SignatureBuilder
 	{
 		private readonly List<Identifier> parameters;
+        private readonly List<Identifier> outputs;
 		private readonly IStorageBinder binder;
 		private readonly IProcessorArchitecture arch;
-        private Identifier? ret = null;
 
         public SignatureBuilder(IStorageBinder binder, IProcessorArchitecture arch)
 		{
 			this.binder = binder;
 			this.arch = arch;
-			parameters = new List<Identifier>();
-		}
+            parameters = [];
+            outputs = [];
+        }
 
 		public void AddFlagGroupReturnValue(KeyValuePair<RegisterStorage, uint> bits, IStorageBinder binder)
 		{
             var grf = arch.GetFlagGroup(bits.Key, bits.Value)!;
-			ret = binder.EnsureFlagGroup(grf);
+            Debug.Assert(outputs.Count == 0, "Flag group return value should be the first output");  
+            var ret = binder.EnsureFlagGroup(grf);
             if (Bits.IsSingleBitSet(grf.FlagGroupBits))
                 ret.DataType = PrimitiveType.Bool;
-		}
+            outputs.Add(ret);
+        }
 
-		public void AddFpuStackArgument(int x, Identifier id)
+        public void AddFpuStackArgument(int x, Identifier id)
 		{
 			AddInParam(binder.EnsureFpuStackVariable(x, id.DataType));
 		}
@@ -73,20 +77,13 @@ namespace Reko.Analysis
 
         public Identifier AddOutParam(Identifier idOrig)
         {
-            if (this.ret is null)
+            var idOut = idOrig;
+            if (this.outputs.Count > 0)
             {
-                this.ret = idOrig;
-                return ret;
+                idOut = binder.EnsureOutArgument(idOrig, idOrig.DataType);
             }
-            else
-            {
-                //$REVIEW: out arguments are weird, as they are synthetic. It's possible that 
-                // future versions of reko will opt to model multiple values return from functions
-                // explicitly instead of using destructive updates of this kind.
-                var parameter = binder.EnsureOutArgument(idOrig, idOrig.DataType);
-                parameters.Add(parameter);
-                return parameter;
-            }
+            this.outputs.Add(idOut);
+            return idOut;
         }
 
         public void AddInParam(Identifier arg)
@@ -96,7 +93,9 @@ namespace Reko.Analysis
 
 		public FunctionType BuildSignature()
 		{
-			return FunctionType.Create(ret, parameters.ToArray());
+			return new FunctionType(
+                parameters.ToArray(),
+                outputs.ToArray());
 		}
 
         public FunctionType BuildSignature(ICallingConvention? cconv)
@@ -105,7 +104,7 @@ namespace Reko.Analysis
             var cmp = cconv?.InArgumentComparer;
             if (cmp is not null)
                 Array.Sort(rawArgs, cmp);
-            return FunctionType.Create(ret, rawArgs);
+            return new FunctionType(rawArgs, outputs.ToArray());
         }
     }
 }

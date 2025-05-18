@@ -81,6 +81,7 @@ namespace Reko.UnitTests.Arch
 
         public void GenerateUnitTestFromProcedure(string fileName, string testCaption, Procedure proc)
         {
+            Console.WriteLine("== {0} ===============", fileName);
             TestGenerationService.GenerateUnitTestFromProcedure(testCaption, proc, Console.Out);
         }
     }

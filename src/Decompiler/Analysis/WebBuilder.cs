@@ -215,8 +215,6 @@ public class WebBuilder
 
 			public override Expression VisitIdentifier(Identifier id)
 			{
-                if (id.Storage is OutArgumentStorage)
-                    return id;
 				return bld.webOf[id].Identifier!;
 			}
 

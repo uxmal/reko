@@ -9,7 +9,6 @@ Eq_n g_t0002;
 Eq_n g_t0033;
 Eq_n g_t004F;
 Eq_n g_t0063;
-Eq_n g_t00FF;
 Eq_n g_t0401;
 word32 g_dwFFFE77D4; // FFFE77D4
 struct Eq_n * g_ptrFFFE790C; // FFFE790C
