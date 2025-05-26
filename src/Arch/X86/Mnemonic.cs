@@ -737,7 +737,7 @@ namespace Reko.Arch.X86
             vcmpge_oqpd,
             vcmpgt_oqpd,
             vcmptrue_uspd,
-        vcmpps,
+            vcmpps,
             vcmpeqps,
             vcmpltps,
             vcmpleps,

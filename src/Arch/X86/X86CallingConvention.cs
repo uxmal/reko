@@ -26,7 +26,7 @@ using System.Collections.Generic;
 namespace Reko.Arch.X86
 {
     /// <summary>
-    /// The __cdecl calling convention on X86 passes all parameters on the 
+    /// The <c>__cdecl</c> calling convention on X86 passes all parameters on the 
     /// and returns any results in eax or edx:eax
     /// </summary>
     public class X86CallingConvention : AbstractCallingConvention

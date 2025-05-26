@@ -453,5 +453,54 @@ namespace Reko.UnitTests.Core.Output
 ");
         }
 
+        [Test]
+        public void Mg_TempIdentifiers()
+        {
+            CompileMethodTest(m =>
+            {
+                var tmp = m.Frame.CreateTemporary(PrimitiveType.Word32);
+                var eax = m.Register(RegisterStorage.Reg32("eax", 0));
+                var ebx = m.Register(RegisterStorage.Reg32("ebx", 3));
+                m.Assign(tmp, eax);
+                m.Assign(ebx, tmp);
+            });
+            VerifyTest(@"RunTest(m =>
+{
+    RegisterStorage reg_eax = new RegisterStorage(""eax"", 0, 0, PrimitiveType.Word32);
+    RegisterStorage reg_ebx = new RegisterStorage(""ebx"", 3, 0, PrimitiveType.Word32);
+    Identifier eax = m.Frame.EnsureRegister(reg_eax);
+    Identifier ebx = m.Frame.EnsureRegister(reg_ebx);
+    Identifier v3 = m.Frame.CreateTemporary(""v3"", 3, PrimitiveType.Word32);
+    
+    m.Label(""l1"");
+    m.Assign(v3, eax);
+    m.Assign(ebx, v3);
+});
+
+");
+        }
+
+        [Test]
+        public void Mg_FlagGroups()
+        {
+            CompileMethodTest(m =>
+            {
+                var status = new RegisterStorage("Status", 42, 0, PrimitiveType.Word32);
+                var grf = m.Frame.EnsureFlagGroup(new FlagGroupStorage(status, 0x3, "CZ"));
+                m.Assign(grf, m.Cond(m.Mem32(Address.Ptr32(0x123400))));
+            });
+            VerifyTest(@"RunTest(m =>
+{
+    RegisterStorage reg_Status = new RegisterStorage(""Status"", 42, 0, PrimitiveType.Word32);
+    FlagGroupStorage grf_CZ = new FlagGroupStorage(reg_Status, 0x3, ""CZ"");
+    Identifier CZ = m.Frame.EnsureFlagGroup(grf_CZ);
+    
+    m.Label(""l1"");
+    m.Assign(CZ, m.Cond(m.Mem(PrimitiveType.Word32, Address.Ptr32(0x123400))));
+});
+
+");
+        }
+
     }
 }

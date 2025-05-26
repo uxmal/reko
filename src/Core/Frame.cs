@@ -232,6 +232,21 @@ namespace Reko.Core
 		}
 
         /// <summary>
+        /// Creates a temporary identifier with the given name and number.
+        /// </summary>
+        /// <param name="name">Name to give the identifier.</param>
+        /// <param name="number">Number of the identifier.</param>
+        /// <param name="dt">Data type of the identifier.</param>
+        /// <returns>A new identifier.</returns>
+        public Identifier CreateTemporary(string name, int number, DataType dt)
+        {
+            var id = new Identifier(name, dt,
+                new TemporaryStorage(name, number, dt));
+            Identifiers.Add(id);
+            return id;
+        }
+
+        /// <summary>
         /// Given a <see cref="FlagGroupStorage"/>, ensures that there is a 
         /// corresponding identifier in this frame.
         /// </summary>

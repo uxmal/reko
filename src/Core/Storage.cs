@@ -1224,6 +1224,12 @@ namespace Reko.Core
         {
         }
 
+        /// <summary>
+        /// Unique number for the temporary, within the 
+        /// procedure using it.
+        /// </summary>
+        public int Number => Domain - StorageDomain.Temporary;
+
         /// <inheritdoc/>
         public override T Accept<T>(StorageVisitor<T> visitor)
         {

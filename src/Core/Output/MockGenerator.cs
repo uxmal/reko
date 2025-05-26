@@ -192,7 +192,7 @@ namespace Reko.Core.Output
             foreach (var group in idGroups)
             {
                 var stg = group.Key;
-                if (stg is MemoryStorage)
+                if (stg is MemoryStorage || stg is TemporaryStorage)
                     continue;
                 if (stg == proc.Frame.FramePointer.Storage)
                     continue;
@@ -241,6 +241,13 @@ namespace Reko.Core.Output
                         writer.Write($"{stk.StackOffset}, ");
                         id.DataType.Accept(this);
                         writer.Write($", \"{id.Name}\")");
+                    }
+                    else if (id.Storage is TemporaryStorage tmp)
+                    {
+                        writer.Write("m.Frame.CreateTemporary(");
+                        writer.Write($"\"{tmp.Name}\", {tmp.Number}, ");
+                        id.DataType.Accept(this);
+                        writer.Write(")");
                     }
                     else
                     {
@@ -296,7 +303,7 @@ namespace Reko.Core.Output
                     flagRegName = WriteStorageDeclaration(grf.FlagRegister, stgVarNames, writer);
                 }
                 stgName = $"grf_{grf.Name}";
-                writer.WriteLine($"FlagGroupStorage {stgName} = new FlagGroupStorage({flagRegName}, 0x{grf.FlagGroupBits:X}, {grf.Name});");
+                writer.WriteLine($"FlagGroupStorage {stgName} = new FlagGroupStorage({flagRegName}, 0x{grf.FlagGroupBits:X}, \"{grf.Name}\");");
                 break;
             case FpuStackStorage fpu:
                 stgName = $"fpu_{fpu.Name}";
