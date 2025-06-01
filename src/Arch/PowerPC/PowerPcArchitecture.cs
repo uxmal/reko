@@ -483,4 +483,37 @@ namespace Reko.Arch.PowerPC
             return Address.TryParse64(txtAddress, out addr);
         }
     }
+
+    public class PowerPcLe64Architecture : PowerPcArchitecture
+    {
+        public PowerPcLe64Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, EndianServices.Little, PrimitiveType.Word64, PrimitiveType.Int64, options)
+        { }
+
+        public override IEnumerable<Address> CreatePointerScanner(
+            SegmentMap map,
+            EndianImageReader rdr,
+            IEnumerable<Address> knownAddresses,
+            PointerScannerFlags flags)
+        {
+            var knownLinAddresses = knownAddresses
+                .Select(a => a.ToLinear())
+                .ToHashSet();
+            return new PowerPcPointerScanner64(rdr, knownLinAddresses, flags)
+                .Select(u => Address.Ptr64(u));
+        }
+
+        public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
+        {
+            var uAddr = c.ToUInt64();
+            if (codeAlign)
+                uAddr &= ~3u;
+            return Address.Ptr64(uAddr);
+        }
+
+        public override bool TryParseAddress(string? txtAddress, [MaybeNullWhen(false)] out Address addr)
+        {
+            return Address.TryParse64(txtAddress, out addr);
+        }
+    }
 }

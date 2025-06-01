@@ -26,6 +26,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Loading;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
+using Reko.Core.Rtl;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.ImageLoaders.Elf.Relocators;
@@ -91,9 +92,14 @@ namespace Reko.ImageLoaders.Elf
                 // would be great to get our sweaty little hands on
                 // such a binary.
                 archName = endianness == EndianServices.Little ? "mips-le-64" :  "mips-be-64";
+                options[ProcessorOption.WordSize] = 64;
                 break;
             case ElfMachine.EM_PARISC:
                 archName = "paRisc";
+                options[ProcessorOption.WordSize] = 64;
+                break;
+            case ElfMachine.EM_PPC64:
+                archName = endianness == EndianServices.Little ? "ppc-le-64" : "ppc-be-64";
                 options[ProcessorOption.WordSize] = 64;
                 break;
             case ElfMachine.EM_RISCV: 
@@ -123,7 +129,7 @@ namespace Reko.ImageLoaders.Elf
             var cfgSvc = Services.RequireService<IConfigurationService>();
             var arch = cfgSvc.GetArchitecture(archName, options);
             if (arch is null)
-                throw new InvalidOperationException($"Unknown architecture '{arch}'.");
+                throw new InvalidOperationException($"Unknown architecture '{archName}'.");
             return arch;
         }
 
@@ -295,13 +301,25 @@ namespace Reko.ImageLoaders.Elf
             }
             else if (this.BinaryImage.Header.Machine == ElfMachine.EM_PPC64)
             {
+                if (BinaryImage.Header.Flags == 2)
+                {
+                    estate = program.Architecture.CreateProcessorState();
+                    var uAddr_r2 = Ppc64abiv2Setup(program, estate, BinaryImage.Header.StartAddress);
+                    if (uAddr_r2 is null)
+                        return default;
+                    program.GlobalRegisterValue = uAddr_r2;
+                    addr = BinaryImage.Header.StartAddress;
+                    return (addr, estate);
+                }
+
                 // The entrypoint address actually points to a function descriptor.
                 // The first piece is a 64-bit pointer to the _actual_ executable
                 // code, the other is the initial value of r2.
                 if (program.TryCreateImageReader(BinaryImage.Header.StartAddress, out var rdr) &&
                     rdr.TryReadUInt64(out ulong uAddrCode) &&
-                    rdr.TryReadUInt64(out ulong uAddrR2))
+                    rdr.TryReadUInt64(out ulong uAddrR2))  // initial TOC value in r2
                 {
+                    program.GlobalRegisterValue = Constant.UInt64(uAddrR2);
                     addr = Address.Ptr64(uAddrCode);
                     estate = program.Architecture.CreateProcessorState();
                     estate.SetRegister(
@@ -314,6 +332,37 @@ namespace Reko.ImageLoaders.Elf
                 addr = BinaryImage.Header.StartAddress;
             }
             return (addr, estate);
+        }
+
+        private Constant? Ppc64abiv2Setup(Program program, ProcessorState state, Address startAddress)
+        {
+            if (!program.TryCreateImageReader(startAddress, out var rdr))
+                return null;
+            var r12 = program.Architecture.GetRegister("r12")!;
+            state.SetRegister(r12, startAddress.ToConstant());
+            var lifter = program.Architecture.CreateRewriter(rdr, state, new StorageBinder(), new NullRewriterHost());
+            var clusters = lifter.Take(2).ToArray();
+            if (clusters[0].Instructions[0] is RtlAssignment ass1 &&
+                clusters[1].Instructions[0] is RtlAssignment ass2 &&
+                ass1.Dst == ass2.Dst &&
+                ass1.Dst is Identifier idDst &&
+                idDst.Storage is RegisterStorage reg &&
+                reg.Number == 2 &&
+                ass1.Src is BinaryExpression bin1 &&
+                    bin1.Left is Identifier id1 &&
+                    id1.Storage is RegisterStorage reg1 &&
+                    reg1 == r12 &&
+                    bin1.Right is Constant c1 &&
+                    ass2.Src is BinaryExpression bin2 &&
+                 bin2.Left == ass1.Dst &&
+                 bin2.Right is Constant c2)
+            {
+                // Compute the TOC address from r12 value. The r2 register
+                // will be offset 0x8000 from the actual beginning of the TOC.
+                var uAddr_r2 = startAddress.ToLinear() + c1.ToUInt64() + c2.ToUInt64();
+                return Constant.Word64(uAddr_r2);
+            }
+            return null;
         }
 
         internal ElfSection? GetSectionInfoByAddr64(ulong r_offset)

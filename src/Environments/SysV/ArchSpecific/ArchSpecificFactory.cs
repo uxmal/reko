@@ -56,6 +56,9 @@ namespace Reko.Environments.SysV.ArchSpecific
                 return TrampolineFinder.AArch64;
             case "mips-be-32":
                 return TrampolineFinder.Mips32;
+            case "ppc-le-64":
+            case "ppc-be-64":
+                return TrampolineFinder.PowerPC64;
             case "risc-v":
                 return TrampolineFinder.RiscV;
             case "x86-protected-32":
@@ -75,6 +78,9 @@ namespace Reko.Environments.SysV.ArchSpecific
                 return TrampolineFinder.Arm32_Old;
             case "arm-64":
                 return TrampolineFinder.AArch64_Old;
+            case "ppc-le-64":
+            case "ppc-be-64":
+                return TrampolineFinder.PowerPC64_Old;
             case "risc-v":
                 return TrampolineFinder.RiscV_Old;
             case "x86-protected-32":

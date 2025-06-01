@@ -23,11 +23,8 @@ using Reko.Core.Expressions;
 using Reko.Core.Operators;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Linq;
-using System.Text;
 
 namespace Reko.Environments.SysV.ArchSpecific
 {
@@ -508,6 +505,111 @@ namespace Reko.Environments.SysV.ArchSpecific
             var sAddrGotSlot = imm.ToInt32() + immOffset.ToInt32();
             return Address.Ptr32((uint) sAddrGotSlot);
         }
+
+
+        private static bool IsRegister(Expression? e, int regNumber)
+        {
+            return (e is Identifier id &&
+                id.Storage is RegisterStorage reg &&
+                reg.Number == regNumber);
+        }
+
+        //Mem0[r1 + 24:word64] = r2
+        //r12 = r2 + ~0xFFFF
+        //r12 = Mem0[r12 + 32440:word64]
+        //ctr = r12
+        //goto ctr
+        private static readonly RtlInstructionMatcher[] ppcStub =
+            RtlInstructionMatcher.Build(
+                m => m.Assign(
+                    m.Mem64(m.IAdd(
+                        m.AnyId("base"),
+                        m.AnyConst())),
+                    m.AnyId("src")),
+                m => m.Assign(
+                    m.AnyId("dst"),
+                    m.IAdd(m.AnyId("src"), m.AnyConst("c"))),
+                m => m.Assign(
+                    m.AnyId("dst"),
+                    m.Mem64(m.IAdd(
+                        m.AnyId("base"),
+                        m.AnyConst("offset")))),
+                m => m.Assign(m.AnyId("dst"), m.AnyId("src")),
+                m => m.Goto(m.AnyId("target")));
+
+        /// <summary>
+        /// Find the destination of a PowerPC64 PLT stub.
+        /// </summary>
+        public static (Expression?, Address) PowerPC64(IProcessorArchitecture arch, Address addrInstr, List<RtlInstructionCluster> instrs, IRewriterHost host)
+        {
+            if (instrs.Count < 5)
+                return default;
+            return PowerPC64(arch, addrInstr, new[]
+            {
+                instrs[^5].Instructions[0],
+                instrs[^4].Instructions[0],
+                instrs[^3].Instructions[0],
+                instrs[^2].Instructions[0],
+                instrs[^1].Instructions[0],
+            }.ToList(), host);
+
+        }
+
+        public static (Expression?, Address) PowerPC64(
+            IProcessorArchitecture arch,
+            Address addrXferInstr,
+            List<RtlInstruction> instrs,
+            IRewriterHost host)
+        {
+            if (instrs.Count < 5)
+                return default;
+            var m0 = ppcStub[0].Match(instrs[0]);
+            var m1 = ppcStub[1].Match(instrs[1]);
+            var m2 = ppcStub[2].Match(instrs[2]);
+            var m3 = ppcStub[3].Match(instrs[3]);
+            var m4 = ppcStub[4].Match(instrs[4]);
+            if (!m0.Success || !m1.Success || !m2.Success || !m3.Success || !m4.Success)
+                return default;
+
+            if (!IsRegister(m0.CapturedExpression("base"), 1))
+                return default;
+            if (!IsRegister(m0.CapturedExpression("src"), 2))
+                return default;
+
+            if (!IsRegister(m1.CapturedExpression("src"), 2))
+                return default;
+            var hiword = (Constant?) m1.CapturedExpression("c");
+            if (hiword is null)
+                return default;
+
+            if (m2.CapturedExpression("base") != m1.CapturedExpression("dst"))
+                return default;
+            var loword = (Constant?) m2.CapturedExpression("offset");
+            if (loword is null)
+                return default;
+
+            if (m3.CapturedExpression("src") != m2.CapturedExpression("dst"))
+                return default;
+
+            if (m4.CapturedExpression("target") != m3.CapturedExpression("dst"))
+                return default;
+
+            if (host.GlobalRegisterValue is null)
+                return default;
+
+            var uAddr = host.GlobalRegisterValue.ToUInt64() + hiword.ToUInt64() + loword.ToUInt64();
+            var addr = Address.Ptr64(uAddr);
+
+            return (addr, addrXferInstr);
+        }
+
+        public static Expression? PowerPC64_Old(IProcessorArchitecture arch, Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
+        {
+            var stubInstrs = instrs.Take(5).ToList();
+            var (addr, _) = PowerPC64(arch, addrInstr, stubInstrs, host);
+            return addr;
+        }
+
 
         /// <summary>
         /// Find the destination of a Risc-V PLT stub.

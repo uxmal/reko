@@ -234,7 +234,6 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_X86_64: arch = "x86-protected-64"; break;
             case ElfMachine.EM_68K: arch = "m68k"; break;
             case ElfMachine.EM_PPC: arch = "ppc-be-32"; break;
-            case ElfMachine.EM_PPC64: arch = "ppc-be-64"; break;
             case ElfMachine.EM_ARM: arch = "arm"; break;
             case ElfMachine.EM_AARCH64: arch = "arm-64"; break;
             case ElfMachine.EM_XTENSA: arch = "xtensa"; break;

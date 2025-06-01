@@ -1234,7 +1234,8 @@ fn0001B2CC: warning: Structure analysis stopped making progress, quitting. Pleas
 004008DC: warning: Call target address 00000000 is invalid.
 finish: error: An error occurred while renaming variables.
     The given key 'l004028A8' was not present in the dictionary.
-       at Reko.Analysis.SsaLivenessAnalysis.LiveOutAtBlock(Block b, SsaIdentifier v) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 170
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.SsaLivenessAnalysis.LiveOutAtBlock(Block b, SsaIdentifier v) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 170
    at Reko.Analysis.SsaLivenessAnalysis.BuildInterferenceGraph(SsaIdentifierCollection ssaIds) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 100
    at Reko.Analysis.SsaLivenessAnalysis..ctor(SsaState ssa) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 62
    at Reko.Analysis.LiveCopyInserter..ctor(SsaState ssa) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 41
@@ -2273,4 +2274,4 @@ PE Debug type 14 not supported yet.
 === PE\x86\VCExeSample\VCExeSample
 Signature of 'Microsoft Visual C++ 8' detected.
 
-Decompiled 98 binaries in 68.67 seconds.
+Decompiled 98 binaries in 74.43 seconds.

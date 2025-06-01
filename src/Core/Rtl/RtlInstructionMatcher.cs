@@ -59,6 +59,25 @@ namespace Reko.Core.Rtl
         }
 
         /// <summary>
+        /// Builds an array of matchers from the provided builders.
+        /// </summary>
+        /// <param name="builders">Array of builder functions to build the matchers.
+        /// </param>
+        /// <returns>An array of <see cref="RtlInstructionMatcher"/>s.</returns>
+        public static RtlInstructionMatcher[] Build(params Action<RtlInstructionMatcherEmitter>[] builders)
+        {
+            var instrs = new List<RtlInstruction>();
+            var matchers = new List<RtlInstructionMatcher>();
+            foreach (var builder in builders)
+            {
+                var m = new RtlInstructionMatcherEmitter(instrs);
+                builder(m);
+                matchers.Add(new RtlInstructionMatcher(instrs.Last()));
+            }
+            return matchers.ToArray();
+        }
+
+        /// <summary>
         /// Match an RTL instruction against the pattern.
         /// </summary>
         /// <param name="instr">Instruction to match.</param>
