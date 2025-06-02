@@ -27,10 +27,6 @@ using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Net;
-using System.Text;
 
 #pragma warning disable IDE1006 // Naming Styles
 
@@ -244,10 +240,10 @@ namespace Reko.Arch.PowerPC
                 return true;
             };
         }
-        internal static readonly Mutator<PowerPcDisassembler> p1 = f(21);
-        internal static readonly Mutator<PowerPcDisassembler> p2 = f(16);
-        internal static readonly Mutator<PowerPcDisassembler> p3 = f(11);
-        internal static readonly Mutator<PowerPcDisassembler> p4 = f(6);
+        internal static readonly Mutator<PowerPcDisassembler> f1p = f(21);
+        internal static readonly Mutator<PowerPcDisassembler> f2p = f(16);
+        internal static readonly Mutator<PowerPcDisassembler> f3p = f(11);
+        internal static readonly Mutator<PowerPcDisassembler> f4p = f(6);
 
         internal static Mutator<PowerPcDisassembler> r(int offset)
         {
@@ -411,6 +407,7 @@ namespace Reko.Arch.PowerPC
         }
 
         internal static readonly Mutator<PowerPcDisassembler> u6_2 = u(6, 2);
+        internal static readonly Mutator<PowerPcDisassembler> u6_3 = u(6, 3);
         internal static readonly Mutator<PowerPcDisassembler> u6_4 = u(6, 4);
         internal static readonly Mutator<PowerPcDisassembler> u6_5 = u(6, 5);
         internal static readonly Mutator<PowerPcDisassembler> u9_1 = u(9, 1);
@@ -437,6 +434,7 @@ namespace Reko.Arch.PowerPC
         internal static readonly Mutator<PowerPcDisassembler> u21_1 = u(21, 1);
         internal static readonly Mutator<PowerPcDisassembler> u21_4 = u(21, 4);
         internal static readonly Mutator<PowerPcDisassembler> u21_5 = u(21, 5);
+        internal static readonly Mutator<PowerPcDisassembler> u22_2 = u(22, 2);
         internal static readonly Mutator<PowerPcDisassembler> u22_3 = u(22, 3);
         internal static readonly Mutator<PowerPcDisassembler> u22_5 = u(22, 5);
         internal static readonly Mutator<PowerPcDisassembler> u23_3 = u(23, 3);

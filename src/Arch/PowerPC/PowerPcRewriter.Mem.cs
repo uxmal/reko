@@ -308,7 +308,7 @@ namespace Reko.Arch.PowerPC
             m.Assign(op1, src);
         }
 
-        private void RewriteLwbrx()
+        private void RewriteLbyteReverse(PrimitiveType dt)
         {
             var op1 = RewriteOperand(0);
             var a = RewriteOperand(1, true);
@@ -319,8 +319,30 @@ namespace Reko.Arch.PowerPC
             m.Assign(
                 op1,
                 m.Fn(
-                    CommonOps.ReverseBytes.MakeInstance(PrimitiveType.Word32),
-                    m.Mem(PrimitiveType.Word32, ea)));
+                    CommonOps.ReverseBytes.MakeInstance(dt),
+                    m.Mem(dt, ea)));
+        }
+
+        private void RewriteLxsdx()
+        {
+            var a = RewriteOperand(1, true);
+            var b = RewriteOperand(2);
+            var ea = (a.IsZero)
+                ? b
+                : m.IAdd(a, b);
+            var dst = RewriteOperand(0);
+            m.Assign(dst, m.Dpb(dst, m.Mem64(ea), 64));
+        }
+
+        private void RewriteLxvd2x()
+        {
+            var a = RewriteOperand(1, true);
+            var b = RewriteOperand(2);
+            var ea = (a.IsZero)
+                ? b
+                : m.IAdd(a, b);
+            var dst = RewriteOperand(0);
+            m.Assign(dst, m.Mem(dst.DataType, ea));
         }
 
         private void RewriteLz(PrimitiveType dtSrc, PrimitiveType dtDst)
@@ -545,6 +567,19 @@ namespace Reko.Arch.PowerPC
                 ? b
                 : m.IAdd(a, b);
             m.Assign(m.Mem(dataType, ea), MaybeNarrow(dataType, s));
+        }
+
+        private void RewriteStxsdx()
+        {
+            var s = RewriteOperand(0);
+            var a = RewriteOperand(1, true);
+            var b = RewriteOperand(2);
+            var ea = (a.IsZero)
+                ? b
+                : m.IAdd(a, b);
+            m.Assign(
+                m.Mem64(ea),
+                m.Slice(s, PrimitiveType.Word64, 64));
         }
 
         private void RewriteSync()

@@ -23,12 +23,14 @@ using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
+using Reko.Core.Operators;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Reko.Arch.PowerPC
 {
@@ -152,6 +154,7 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.bsol: RewriteBranch(true, false, ConditionCode.OV); break;
                 case Mnemonic.bsolr: RewriteBranch(false, true, ConditionCode.OV); break;
                 case Mnemonic.cmp: RewriteCmp(); break;
+                case Mnemonic.cmpb: RewriteCmpb(); break;
                 case Mnemonic.cmpi: RewriteCmpi(); break;
                 case Mnemonic.cmpl: RewriteCmpl(); break;
                 case Mnemonic.cmpli: RewriteCmpli(); break;
@@ -177,6 +180,8 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.divdu: RewriteDivd(m.UDiv); break;
                 case Mnemonic.divw: RewriteDivw(); break;
                 case Mnemonic.divwu: RewriteDivwu(); break;
+                case Mnemonic.dmulq: RewriteQbin(PrimitiveType.Real128, Operator.FMul); break;
+                case Mnemonic.dsubq: RewriteQbin(PrimitiveType.Real128, Operator.FSub); break;
                 case Mnemonic.eieio: RewriteEieio(); break;
                 case Mnemonic.evmhesmfaaw: RewriteVectorPairOp(evmhesmfaaw, PrimitiveType.Word32); break;
                 case Mnemonic.evmhessfaaw: RewriteVectorPairOp(evmhessfaaw, PrimitiveType.Word32); break;
@@ -187,9 +192,11 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.fabs: RewriteFabs(); break;
                 case Mnemonic.fadd: RewriteFadd(); break;
                 case Mnemonic.fadds: RewriteFadd(); break;
-                case Mnemonic.fcfid: RewriteFcfid(); break;
+                case Mnemonic.fcfid: RewriteFcfid(PrimitiveType.Int64, PrimitiveType.Real64); break;
+                case Mnemonic.fcfidus: RewriteFcfid(PrimitiveType.Int64, PrimitiveType.Real32); break;
                 case Mnemonic.fctid: RewriteFctid(); break;
-                case Mnemonic.fctidz: RewriteFctidz(); break;
+                case Mnemonic.fctidz: RewriteFctidz(FpOps.trunc); break;
+                case Mnemonic.fctiduz: RewriteFctidz(fctiduz); break;
                 case Mnemonic.fctiw: RewriteFctiw(); break;
                 case Mnemonic.fctiwz: RewriteFctiwz(); break;
                 case Mnemonic.fcmpo: RewriteFcmpo(); break;
@@ -225,6 +232,7 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.lbzux: RewriteLzux(PrimitiveType.Byte, arch.WordWidth); break;
                 case Mnemonic.ld: RewriteLz(PrimitiveType.Word64, arch.WordWidth); break;
                 case Mnemonic.ldarx: RewriteLarx(PrimitiveType.Word64); break;
+                case Mnemonic.ldbrx: RewriteLbyteReverse(PrimitiveType.Word64); break;
                 case Mnemonic.ldu: RewriteLzu(PrimitiveType.Word64, arch.WordWidth); break;
                 case Mnemonic.ldux: RewriteLzux(PrimitiveType.Word64, arch.WordWidth); break;
                 case Mnemonic.ldx: RewriteLzx(PrimitiveType.Word64, arch.WordWidth); break;
@@ -265,11 +273,13 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.lwa: RewriteLwa(); break;
                 case Mnemonic.lwarx: RewriteLarx(PrimitiveType.Word32); break;
                 case Mnemonic.lwax: RewriteLax(PrimitiveType.Int32, arch.SignedWord); break;
-                case Mnemonic.lwbrx: RewriteLwbrx(); break;
+                case Mnemonic.lwbrx: RewriteLbyteReverse(PrimitiveType.Word32); break;
                 case Mnemonic.lwz: RewriteLz(PrimitiveType.Word32, arch.WordWidth); break;
                 case Mnemonic.lwzu: RewriteLzu(PrimitiveType.Word32, arch.WordWidth); break;
                 case Mnemonic.lwzux: RewriteLzux(PrimitiveType.Word32, arch.WordWidth); break;
                 case Mnemonic.lwzx: RewriteLzx(PrimitiveType.Word32, arch.WordWidth); break;
+                case Mnemonic.lxsdx: RewriteLxsdx(); break;
+                case Mnemonic.lxvd2x: RewriteLxvd2x(); break;
                 case Mnemonic.maddhd: RewriteMulAcc(m.SMul, PrimitiveType.Int64, PrimitiveType.Int128, 64); break;
                 case Mnemonic.maddhdu: RewriteMulAcc(m.UMul, PrimitiveType.UInt64, PrimitiveType.UInt128, 64); break;
                 case Mnemonic.maddld: RewriteMulAcc(m.SMul, PrimitiveType.Int64, PrimitiveType.Int128, 0); break;
@@ -278,19 +288,27 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.mfctr: RewriteMfctr(); break;
                 case Mnemonic.mftb: RewriteMftb(); break;
                 case Mnemonic.mffs: RewriteMffs(); break;
+                case Mnemonic.mffprd: RewriteMffprd(); break;
                 case Mnemonic.mflr: RewriteMflr(); break;
                 case Mnemonic.mfmsr: RewriteMfmsr(); break;
                 case Mnemonic.mfocrf: RewriteMfocrf(); break;
                 case Mnemonic.mfspr: RewriteMfspr(); break;
+                case Mnemonic.mfvrd: RewriteMfvrd(); break;
                 case Mnemonic.mtcrf: RewriteMtcrf(); break;
                 case Mnemonic.mtctr: RewriteMtctr(); break;
-                case Mnemonic.mtfsb1: RewriteMtfsb1(); break;
+                case Mnemonic.mtfsb0: RewriteMtfsb(false); break;
+                case Mnemonic.mtfsb1: RewriteMtfsb(true); break;
                 case Mnemonic.mtfsf: RewriteMtfsf(); break;
                 case Mnemonic.mtmsr: RewriteMtmsr(PrimitiveType.Word32); break;
                 case Mnemonic.mtmsrd: RewriteMtmsr(PrimitiveType.Word64); break;
+                case Mnemonic.mtocrf: RewriteMtocrf(); break;
                 case Mnemonic.mtspr: RewriteMtspr(); break;
                 case Mnemonic.mtlr: RewriteMtlr(); break;
+                case Mnemonic.mtvsrd: RewriteMtvsrd(); break;
                 case Mnemonic.mtvsrws: RewriteMtvsrws(); break;
+                case Mnemonic.mtvsrwa: RewriteMtvsrwa(); break;
+                case Mnemonic.mulhd: RewriteMulhd(PrimitiveType.Int128, Operator.SMul); break;
+                case Mnemonic.mulhdu: RewriteMulhd(PrimitiveType.UInt128, Operator.UMul); break;
                 case Mnemonic.mulhw: RewriteMulhw(); break;
                 case Mnemonic.mulhwu: RewriteMulhwu(); break;
                 case Mnemonic.mulhhwu: RewriteMulhhwu(); break;
@@ -305,6 +323,9 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.orc: RewriteOrc(); break;
                 case Mnemonic.ori: RewriteOr(false); break;
                 case Mnemonic.oris: RewriteOris(); break;
+                case Mnemonic.popcntb: RewritePopcnt(PrimitiveType.Byte); break;
+                case Mnemonic.popcntw: RewritePopcnt(PrimitiveType.Word32); break;
+                case Mnemonic.popcntd: RewritePopcnt(PrimitiveType.Word64); break;
                 case Mnemonic.ps_abs: RewritePairedInstruction_Src1(ps_abs); break;
                 case Mnemonic.ps_add: RewritePairedInstruction_Src2(ps_add); break;
                 case Mnemonic.ps_cmpo0: Rewrite_ps_cmpo(ps_cmpo); break;
@@ -365,6 +386,7 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.std: RewriteSt(PrimitiveType.Word64); break;
                 case Mnemonic.stdcx: RewriteStcx(PrimitiveType.Word64); break;
                 case Mnemonic.stdu: RewriteStu(PrimitiveType.Word64); break;
+                case Mnemonic.stdux: RewriteStux(PrimitiveType.Word64); break;
                 case Mnemonic.stdx: RewriteStx(PrimitiveType.Word64); break;
                 case Mnemonic.stfd: RewriteSt(PrimitiveType.Real64); break;
                 case Mnemonic.stfdp: RewriteStfdp(); break;
@@ -399,6 +421,8 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.stwu: RewriteStu(PrimitiveType.Word32); break;
                 case Mnemonic.stwux: RewriteStux(PrimitiveType.Word32); break;
                 case Mnemonic.stwx: RewriteStx(PrimitiveType.Word32); break;
+                case Mnemonic.stxsdx: RewriteStxsdx(); break;
+                case Mnemonic.stxvd2x: RewriteStx(PrimitiveType.Word128); break;
                 case Mnemonic.subf: RewriteSubf(); break;
                 case Mnemonic.subfc: RewriteSubfc(); break;
                 case Mnemonic.subfco: RewriteSubfc(); break;
@@ -424,6 +448,7 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.vaddsws: RewriteVectorBinOp(vadds, PrimitiveType.Int32); break;
                 case Mnemonic.vaddubm: RewriteVectorBinOp(vaddm, PrimitiveType.UInt8); break;
                 case Mnemonic.vaddubs: RewriteVectorBinOp(vadds, PrimitiveType.UInt8); break;
+                case Mnemonic.vaddudm: RewriteVectorBinOp(vaddm, PrimitiveType.UInt64); break;
                 case Mnemonic.vadduhm: RewriteVectorBinOp(vaddm, PrimitiveType.UInt8); break;
                 case Mnemonic.vadduwm: RewriteVectorBinOp(vaddm, PrimitiveType.UInt32); break;
                 case Mnemonic.vadduws: RewriteVectorBinOp(vadds, PrimitiveType.UInt32); break;
@@ -611,7 +636,20 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.xori: RewriteXor(false); break;
                 case Mnemonic.xoris: RewriteXoris(); break;
                 case Mnemonic.xsaddsp: RewriteXsaddsp(); break;
+                case Mnemonic.xscmpexpqp: RewriteXscmpexpqp(); break;
+                case Mnemonic.xscvdpsxws: RewriteXscvdpsxws(); break;
+                case Mnemonic.xscvuxddp: RewriteXscvuxddp(); break;
+                case Mnemonic.xsdivdp: RewriteXsbinDp(Operator.FDiv); break;
                 case Mnemonic.xvadddp: RewriteVectorBinOp(Simd.FAdd, PrimitiveType.Real64); break;
+                case Mnemonic.xxland: RewriteAnd(false); break;
+                case Mnemonic.xxlandc: RewriteAndc(); break;
+                case Mnemonic.xxleqv: RewriteXor(true); break;
+                case Mnemonic.xxlnand: RewriteAnd(true); break;
+                case Mnemonic.xxlnor: RewriteAnd(true); break;
+                case Mnemonic.xxlor: RewriteOr(false); break;
+                case Mnemonic.xxlorc: RewriteOrc(); break;
+                case Mnemonic.xxlxor: RewriteXor(false); break;
+                case Mnemonic.xxpermdi: RewriteXxpermdi(); break;
                 }
                 yield return m.MakeCluster(addr, 4, iclass);
             }
@@ -716,6 +754,18 @@ namespace Reko.Arch.PowerPC
             }
         }
 
+        private Identifier RewriteFPair(int iop)
+        {
+            var reg_hi = (RegisterStorage) instr.Operands[iop];
+            Debug.Assert((reg_hi.Number & 1) == 0);
+            var reg_lo = arch.Registers[reg_hi.Number + 1];
+            var regPair = binder.EnsureSequence(
+                PrimitiveType.CreateWord(reg_hi.DataType.BitSize * 2),
+                reg_hi,
+                reg_lo);
+            return regPair;
+        }
+
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
@@ -800,6 +850,7 @@ namespace Reko.Arch.PowerPC
         private static readonly IntrinsicProcedure bcds = IntrinsicBuilder.Binary("__bcd_shift", PrimitiveType.Word128);
         private static readonly IntrinsicProcedure bcdus = IntrinsicBuilder.Binary("__bcd_unsigned_shift", PrimitiveType.Word128);
         private static readonly IntrinsicProcedure bcdtrunc = IntrinsicBuilder.Binary("__bcd_truncate", PrimitiveType.Word128);
+        private static readonly IntrinsicProcedure cmpb = IntrinsicBuilder.GenericBinary("__compare_bytes");
         private static readonly IntrinsicProcedure crandc = new IntrinsicBuilder("__crandc", false)
             .Param(PrimitiveType.Byte)
             .Param(PrimitiveType.Byte)
@@ -865,6 +916,9 @@ namespace Reko.Arch.PowerPC
         private static readonly IntrinsicProcedure fctiw = IntrinsicBuilder.Pure("__fctiw")
             .Param(PrimitiveType.Real64)
             .Returns(PrimitiveType.Int32);
+        private static readonly IntrinsicProcedure fctiduz = IntrinsicBuilder.Pure("__convert_to_uint64")
+            .Param(PrimitiveType.Real64)
+            .Returns(PrimitiveType.UInt64);
         private static readonly IntrinsicProcedure fre = IntrinsicBuilder.GenericUnary("__fp_reciprocal_estimate");
         private static readonly IntrinsicProcedure frsqrte = IntrinsicBuilder.Unary("__frsqrte", PrimitiveType.Real64);
 
@@ -925,8 +979,9 @@ namespace Reko.Arch.PowerPC
             .GenericTypes("T")
             .Params("T", "T")
             .Void();
-        private static readonly IntrinsicProcedure mtfsb1 = new IntrinsicBuilder("__mtfsb1", true)
+        private static readonly IntrinsicProcedure mtfsb = new IntrinsicBuilder("__mtfsb", true)
             .Param(PrimitiveType.Byte)
+            .Param(PrimitiveType.Bool)
             .Void();
         private static readonly IntrinsicProcedure mtfsf = new IntrinsicBuilder("__mtfsf", true)
             .GenericTypes("T")
@@ -936,6 +991,11 @@ namespace Reko.Arch.PowerPC
         private static readonly IntrinsicProcedure mtmsr = new IntrinsicBuilder("__write_msr", true)
             .GenericTypes("T")
             .Param("T")
+            .Void();
+        private static readonly IntrinsicProcedure mtocrf = IntrinsicBuilder.SideEffect("__move_to_condition_field")
+            .GenericTypes("T")
+            .Param("T")
+            .Param(PrimitiveType.Byte)
             .Void();
         private static readonly IntrinsicProcedure mtspr = new IntrinsicBuilder("__write_spr", true)
             .GenericTypes("T")
@@ -1205,5 +1265,17 @@ namespace Reko.Arch.PowerPC
         private static readonly IntrinsicProcedure vupkd3d = IntrinsicBuilder.GenericBinary("__vupkd3d");
         private static readonly IntrinsicProcedure vupkhpx = IntrinsicBuilder.Unary("__vector_unpack_high_pixel", PrimitiveType.Word128);
         private static readonly IntrinsicProcedure vupklpx = IntrinsicBuilder.Unary("__vector_unpack_low_pixel", PrimitiveType.Word128);
+
+        private static readonly IntrinsicProcedure xscmpexpqp = IntrinsicBuilder.Pure("__xcompare_exponents128")
+            .Param(PrimitiveType.Byte)
+            .Param(PrimitiveType.Real128)
+            .Param(PrimitiveType.Real128)
+            .Returns(PrimitiveType.Byte);
+        private static readonly IntrinsicProcedure xxpermdi = IntrinsicBuilder.Pure("__xxpermdi")
+            .GenericTypes("T")
+            .Param("T")
+            .Param("T")
+            .Param(PrimitiveType.Byte)
+            .Returns("T");
     }
 }

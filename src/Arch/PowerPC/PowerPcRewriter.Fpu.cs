@@ -18,9 +18,11 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
+using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
 
@@ -34,6 +36,14 @@ namespace Reko.Arch.PowerPC
                 return;
             var cr1 = binder.EnsureFlagGroup(arch.cr1);
             m.Assign(cr1, m.Cond(e));
+        }
+
+        private void RewriteQbin(PrimitiveType dt, BinaryOperator op)
+        {
+            var opL = RewriteFPair(1);
+            var opR = RewriteFPair(2);
+            var opD = RewriteFPair(0);
+            m.Assign(opD, m.Bin(op, dt, opL, opR));
         }
 
         public void RewriteFabs()
@@ -52,12 +62,16 @@ namespace Reko.Arch.PowerPC
             MaybeEmitCr1(opD);
         }
 
-        public void RewriteFcfid()
+        public void RewriteFcfid(PrimitiveType dtSrc, PrimitiveType dtDst)
         {
             var dst = RewriteOperand(0);
             var src = RewriteOperand(1);
-            var dtSrc = PrimitiveType.Create(Domain.SignedInt, src.DataType.BitSize);
-            m.Assign(dst, m.Convert(src, dtSrc, PrimitiveType.Real64));
+            Expression result = m.Convert(src, dtSrc, dtDst);
+            if (result.DataType.BitSize < dst.DataType.BitSize)
+            {
+                result = m.Dpb(dst, result, 0);
+            }
+            m.Assign(dst, result);
         }
 
         public void RewriteFcmpo()
@@ -85,11 +99,11 @@ namespace Reko.Arch.PowerPC
             m.Assign(dst, m.Fn(FpOps.round, src));
         }
 
-        private void RewriteFctidz()
+        private void RewriteFctidz(IntrinsicProcedure cvt)
         {
             var src = RewriteOperand(1);
             var dst = RewriteOperand(0);
-            m.Assign(dst, m.Fn(FpOps.trunc, src));
+            m.Assign(dst, m.Fn(cvt, src));
         }
 
         private void RewriteFctiw()
@@ -253,10 +267,10 @@ namespace Reko.Arch.PowerPC
             MaybeEmitCr1(opD);
         }
 
-        private void RewriteMtfsb1()
+        private void RewriteMtfsb(bool value)
         {
             var op = RewriteOperand(0);
-            m.SideEffect(m.Fn(mtfsb1, op));
+            m.SideEffect(m.Fn(mtfsb, op, Constant.Bool(value)));
         }
 
         private void RewriteMtfsf()

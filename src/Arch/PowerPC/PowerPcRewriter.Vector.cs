@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
+using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -473,11 +474,36 @@ namespace Reko.Arch.PowerPC
             m.Assign(opD, m.Fn(lvrx.MakeInstance(arch.PointerType.BitSize, opD.DataType), opS, opI));
         }
 
+        private void RewriteMfvrd()
+        {
+            var src = RewriteOperand(1);
+            var dst = RewriteOperand(0);
+            m.Assign(dst, m.Slice(src, dst.DataType, 64));
+        }
+
+        private void RewriteMtvsrd()
+        {
+            var opS = RewriteOperand(1);
+            var opD = RewriteOperand(0);
+            m.Assign(opD, m.Dpb(opD, opS, 64));
+        }
+
         private void RewriteMtvsrws()
         {
             var opS = RewriteOperand(1);
             var opD = RewriteOperand(0);
             m.Assign(opD, m.Fn(mtvsrws.MakeInstance(opD.DataType), opS));
+        }
+
+        private void RewriteMtvsrwa()
+        {
+            var opS = RewriteOperand(1);
+            var tmp1 = binder.CreateTemporary(PrimitiveType.Word32);
+            var tmp2 = binder.CreateTemporary(PrimitiveType.Int64);
+            var opD = RewriteOperand(0);
+            m.Assign(tmp1, m.Slice(opS, PrimitiveType.Word32, 0));
+            m.Assign(tmp2, m.Convert(tmp1, PrimitiveType.Int32, PrimitiveType.Int64));
+            m.Assign(opD, m.Dpb(opD, tmp2, 0x40));
         }
 
         private void RewriteXsaddsp()
@@ -495,6 +521,59 @@ namespace Reko.Arch.PowerPC
                 PrimitiveType.Real64,
                 PrimitiveType.Real32));
             m.Assign(opT, m.Dpb(opT, tmpResult, 64));
+        }
+
+        private void RewriteXsbinDp(BinaryOperator bin)
+        {
+            var opA = RewriteOperand(1);
+            var opB = RewriteOperand(2);
+            var opT = RewriteOperand(0);
+            var tmpA = binder.CreateTemporary(PrimitiveType.Real64);
+            var tmpB = binder.CreateTemporary(PrimitiveType.Real64);
+            var tmpResult = binder.CreateTemporary(PrimitiveType.Real64);
+            m.Assign(tmpA, m.Slice(opA, PrimitiveType.Real64, 64));
+            m.Assign(tmpB, m.Slice(opB, PrimitiveType.Real64, 64));
+            m.Assign(tmpResult, m.Convert(
+                m.Bin(bin, tmpA, tmpB),
+                PrimitiveType.Real64,
+                PrimitiveType.Real32));
+            m.Assign(opT, m.Dpb(opT, tmpResult, 64));
+        }
+
+        private void RewriteXscmpexpqp()
+        {
+            var cmp = RewriteOperand(0);
+            var op1 = RewriteOperand(1);
+            var op2 = RewriteOperand(1);
+            var cr1 = binder.EnsureFlagGroup(arch.cr1);
+            m.Assign(cr1, m.Fn(xscmpexpqp, cmp, op1, op2));
+        }
+
+        private void RewriteXscvdpsxws()
+        {
+            var src = RewriteOperand(1);
+            var dst = RewriteOperand(0);
+            var tmp = binder.CreateTemporary(PrimitiveType.Real64);
+            m.Assign(tmp, m.Convert(m.Slice(src, PrimitiveType.Int64, 64),
+                PrimitiveType.Int64,
+                PrimitiveType.Real64));
+            m.Assign(tmp, m.Slice(src, tmp.DataType, 64));
+            m.Assign(dst, m.Dpb(
+                dst, 
+                m.Convert(tmp, tmp.DataType, PrimitiveType.Real32),
+                64));
+        }
+
+        private void RewriteXscvuxddp()
+        {
+            var src = RewriteOperand(1);
+            var dst = RewriteOperand(0);
+            var tmp = binder.CreateTemporary(PrimitiveType.Int64);
+            m.Assign(tmp, m.Slice(src, tmp.DataType, 64));
+            m.Assign(dst, m.Dpb(
+                dst, 
+                m.Convert(tmp, tmp.DataType, PrimitiveType.Real64),
+                64));
         }
 
         private void RewriteVsum4(IntrinsicProcedure intrinsic, PrimitiveType dtElemSrc, PrimitiveType dtElemDst)
@@ -531,6 +610,16 @@ namespace Reko.Arch.PowerPC
             var opA = RewriteOperand(1);
             var opB = RewriteOperand(instr.Operands[2]);
             m.Assign(opD, m.Fn(vupkd3d.MakeInstance(opD.DataType), opA, opB));
+        }
+
+        private void RewriteXxpermdi()
+        {
+            var opA = RewriteOperand(1);
+            var opB = RewriteOperand(2);
+            var opC = RewriteOperand(3);
+            var opD = RewriteOperand(0);
+            var at = new ArrayType(PrimitiveType.Word64, 2);
+            m.Assign(opD, m.Fn(xxpermdi.MakeInstance(at), opA, opB, opC));
         }
     }
 }

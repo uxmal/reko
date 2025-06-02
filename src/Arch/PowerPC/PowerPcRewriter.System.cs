@@ -99,6 +99,13 @@ namespace Reko.Arch.PowerPC
             m.SideEffect(m.Fn(mtmsr.MakeInstance(dt), src));
         }
 
+        private void RewriteMtocrf()
+        {
+            var src = RewriteOperand(1);
+            var dst = RewriteOperand(0);
+            m.SideEffect(m.Fn(mtocrf.MakeInstance(dst.DataType), src, dst));
+        }
+
         private void RewriteMtspr()
         {
             var reg = RewriteOperand(1);

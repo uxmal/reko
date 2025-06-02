@@ -369,6 +369,10 @@ complex) in f1:f4.
 
         public override bool IsOutArgument(Storage stg)
         {
+            if (stg is RegisterStorage reg)
+            {
+                return (3 <= reg.Number && reg.Number <= 4);
+            }
             throw new NotImplementedException();
         }
     }

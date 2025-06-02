@@ -23,6 +23,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -154,9 +155,9 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteAndc()
         {
-            var opL = RewriteOperand(instr.Operands[1]);
-            var opR = RewriteOperand(instr.Operands[2]);
-            var opD = RewriteOperand(instr.Operands[0]);
+            var opL = RewriteOperand(1);
+            var opR = RewriteOperand(2);
+            var opD = RewriteOperand(0);
             var s = m.And(opL, m.Comp(opR));
             m.Assign(opD, s);
             MaybeEmitCr0(opD);
@@ -190,6 +191,14 @@ namespace Reko.Arch.PowerPC
             var i = RewriteOperand(2);
             var cr = RewriteOperand(0);
             m.Assign(cr, m.Cond(m.ISub(r, i)));
+        }
+
+        private void RewriteCmpb()
+        {
+            var left = RewriteOperand(1);
+            var right = RewriteOperand(2);
+            var dst = RewriteOperand(0);
+            m.Assign(dst, m.Fn(cmpb.MakeInstance(dst.DataType), left, right));
         }
 
         private void RewriteCmpi()
@@ -338,6 +347,13 @@ namespace Reko.Arch.PowerPC
             m.Assign(dst, m.Fn(mftb.MakeInstance(dst.DataType)));
         }
 
+        private void RewriteMffprd()
+        {
+            var src = RewriteOperand(1);
+            var dst = RewriteOperand(0);
+            m.Assign(dst, m.Slice(src, dst.DataType, dst.DataType.BitSize));
+        }
+
         private void RewriteMflr()
         {
             var dst = RewriteOperand(instr.Operands[0]);
@@ -383,7 +399,16 @@ namespace Reko.Arch.PowerPC
                    m.Convert(opB, dtElem, dtProduct)),
                m.Convert(opC, dtElem, dtProduct)));
             m.Assign(opT, m.Slice(tmp, dtElem, slice));
-        } 
+        }
+
+        private void RewriteMulhd(PrimitiveType dtProduct, BinaryOperator mul)
+        {
+            var opL = RewriteOperand(instr.Operands[1]);
+            var opR = RewriteOperand(instr.Operands[2]);
+            var opD = RewriteOperand(instr.Operands[0]);
+            m.Assign(opD, m.Slice(m.Bin(mul, dtProduct, opL, opR), opD.DataType, opD.DataType.BitSize));
+            MaybeEmitCr0(opD);
+        }
 
         private void RewriteMulhhwu()
         {
@@ -486,6 +511,19 @@ namespace Reko.Arch.PowerPC
                 RewriteOperand(instr.Operands[1]),
                 Shift16(dasm.Current.Operands[2]),
                 false);
+        }
+
+        private void RewritePopcnt(PrimitiveType dt)
+        {
+            var src = RewriteOperand(1);
+            var dst = RewriteOperand(0);
+            if (dt.BitSize < arch.WordWidth.BitSize)
+            {
+                var tmp = binder.CreateTemporary(dt);
+                m.Assign(tmp, m.Slice(src, dt, 0));
+                src = m.Convert(src, src.DataType, dt);
+            }
+            m.Assign(dst, m.Fn(CommonOps.PopCount, src));
         }
 
         void RewriteRlwimi()

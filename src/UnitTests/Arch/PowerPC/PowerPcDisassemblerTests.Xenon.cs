@@ -88,7 +88,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         [Test]
         public void PPCDis_Xenon_mfvsrd()
         {
-            AssertCode(0x7C7C2066, "mffpsrd\tr28,f3");
+            AssertCode(0x7C7C2066, "mffprd\tr28,f3");
         }
 
         [Test]
