@@ -64,6 +64,7 @@ namespace Reko.ImageLoaders.Elf
             var rdr = new BeImageReader(this.RawImage, 0);
             var elfHeader = LoadElfIdentification(rdr);
             var binaryImage = new ElfBinaryImage(
+                this.ImageLocation,
                 elfHeader,
                 elfHeader.endianness == ELFDATA2MSB
                     ? EndianServices.Big

@@ -95,7 +95,7 @@ namespace Reko.ImageLoaders.MzExe
 			}
             ImageSymbols = new SortedList<Address, ImageSymbol>();
             var hdr = new PeHeader();
-            this.binaryImage = new PeBinaryImage(hdr);
+            this.binaryImage = new PeBinaryImage(imageLocation, hdr);
             short expectedMagic = ReadCoffHeader(rdr, hdr);
             binaryImage.AddSections(LoadSections(rvaSectionTable, sections));
             ReadOptionalHeader(rdr, expectedMagic, hdr);

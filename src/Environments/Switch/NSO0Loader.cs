@@ -109,7 +109,7 @@ namespace Reko.Environments.Switch
             {
                 Machine = ElfMachine.EM_ARM,
             };
-            var bin = new ElfBinaryImage(elfHdr, EndianServices.Little);
+            var bin = new ElfBinaryImage(ImageLocation, elfHdr, EndianServices.Little);
             var elfLoader = new ElfLoader32(Services, bin, RawImage);
             var (deps, entries) = elfLoader.LoadDynamicSegment(rdr);
 

@@ -9,6 +9,7 @@
     <ApplicationIcon />
     <OutputType>Exe</OutputType>
     <StartupObject />
+    <Nullable>enable</Nullable>
     <RootNamespace>Reko.CmdLine</RootNamespace>
     <AssemblyName>reko</AssemblyName>
     <Platforms>x86;x64;ARM64</Platforms>

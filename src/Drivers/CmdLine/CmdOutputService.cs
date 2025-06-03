@@ -18,7 +18,6 @@
  */
 #endregion
 
-using Reko.Core.Scripts;
 using Reko.Core.Services;
 using System;
 using System.IO;

@@ -22,20 +22,21 @@ using Reko.Core;
 using Reko.Core.Loading;
 using System;
 using System.Collections.Generic;
-using System.Reflection.Metadata;
 
 namespace Reko.ImageLoaders.MzExe.Pe;
 
 public class PeBinaryImage : IBinaryImage
 {
-    public PeBinaryImage(PeHeader header)
+    public PeBinaryImage(ImageLocation location, PeHeader header)
     {
+        this.Location = location;
         this.Header = header;
         this.sections = new();
         this.isections = new();
         this.Exports = new();
     }
 
+    public ImageLocation Location { get; }
     public PeHeader Header { get; }
     IBinaryHeader IBinaryImage.Header => Header;
 
@@ -61,6 +62,13 @@ public class PeBinaryImage : IBinaryImage
 
     public List<PeExport> Exports { get; }
     public int ExportBaseOrdinal { get; internal set; }
+
+    public T Accept<T, C>(ILoadedImageVisitor<T, C> visitor, C context)
+    {
+        return visitor.VisitBinaryImage(this, context);
+    }
+
+    public IBinaryDumper CreateImageDumper() => new PeBinaryDumper(this);
 
     Program IBinaryImage.Load(Address? addrBase)
     {

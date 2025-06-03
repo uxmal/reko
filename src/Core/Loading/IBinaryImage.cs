@@ -25,7 +25,7 @@ namespace Reko.Core.Loading;
 /// <summary>
 /// Represents the content of a binary object file.
 /// </summary>
-public interface IBinaryImage
+public interface IBinaryImage : ILoadedImage
 {
     /// <summary>
     /// Represents the header of a binary object file.
@@ -74,6 +74,12 @@ public interface IBinaryImage
     /// Relocations specific to dynamic linking.
     /// </summary>
     IReadOnlyList<IRelocation> DynamicRelocations { get; }
+
+    /// <summary>
+    /// Creates a class that can dump a textual representation of the binary image.
+    /// </summary>
+    /// <returns>Implementation of <see cref="IBinaryDumper"/> interface.</returns>
+    IBinaryDumper CreateImageDumper();
 
     /// <summary>
     /// Loads the binary image from the specified file.

@@ -59,7 +59,10 @@ namespace Reko.UnitTests.ImageLoaders.Elf.Relocators
         protected override ElfLoader CreateLoader()
         {
             var hdr = new ElfHeader();
-            var bin = new ElfBinaryImage(hdr, EndianServices.Big);
+            var bin = new ElfBinaryImage(
+                ImageLocation.FromUri("test.elf"),
+                hdr,
+                EndianServices.Big);
             return new ElfLoader32(
                 new ServiceContainer(),
                 bin,

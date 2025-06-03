@@ -45,7 +45,7 @@ namespace Reko.CmdLine
         private readonly IDecompilerService dcSvc;
         private readonly IConfigurationService config;
         private readonly CmdLineListener listener;
-        private Timer timer;
+        private Timer? timer;
 
         public static void Main(string[] args)
         {
@@ -107,6 +107,11 @@ namespace Reko.CmdLine
                 Assemble(pArgs);
                 return;
             }
+            if (pArgs.ContainsKey("dump"))
+            {
+                Dump(pArgs);
+                return;
+            }
             if (OverridesRequested(pArgs))
             {
                 DecompileRawImage(pArgs);
@@ -123,14 +128,14 @@ namespace Reko.CmdLine
 
         private void StartTimer(Dictionary<string, object> pArgs)
         {
-            if (pArgs.TryGetValue("time-limit", out object oLimit))
+            if (pArgs.TryGetValue("time-limit", out object? oLimit))
             {
                 int msecLimit = 1000 * (int)oLimit;
                 this.timer = new Timer(TimeLimitExpired, null, msecLimit, Timeout.Infinite);
             }
         }
 
-        private void TimeLimitExpired(object state)
+        private void TimeLimitExpired(object? state)
         {
             this.listener.CancelDecompilation("User-specified time limit has expired.");
         }
@@ -163,14 +168,14 @@ namespace Reko.CmdLine
 
         private void Decompile(Dictionary<string, object> pArgs)
         {
-            pArgs.TryGetValue("--loader", out object imgLoader);
+            pArgs.TryGetValue("--loader", out object? imgLoader);
             var addrLoad = ParseAddress(pArgs, "--base");
             try
             {
                 var fileName = (string) pArgs["filename"];
                 var filePath = Path.GetFullPath(fileName);
                 var imageLocation = ImageLocation.FromUri(filePath);
-                var loadedImage = ldr.Load(imageLocation, (string) imgLoader, addrLoad);
+                var loadedImage = ldr.Load(imageLocation, (string?) imgLoader, addrLoad);
                 Project project;
                 switch (loadedImage)
                 {
@@ -213,7 +218,7 @@ namespace Reko.CmdLine
                 {
                     decompiler.Project.Programs[0].User.ShowBytesInDisassembly = true;
                 }
-                if (pArgs.TryGetValue("aggressive-branch-removal", out object oAggressiveBranchRemoval))
+                if (pArgs.TryGetValue("aggressive-branch-removal", out object? oAggressiveBranchRemoval))
                 {
                     // Backwards compatibility hack.
                     if (oAggressiveBranchRemoval is bool flag && flag)
@@ -225,7 +230,7 @@ namespace Reko.CmdLine
                 {
                     decompiler.Project.Programs[0].DebugProcedureRange = ((int, int)) oProcRange;
                 }
-                if (pArgs.TryGetValue("debug-trace-proc", out object oTraceProcs))
+                if (pArgs.TryGetValue("debug-trace-proc", out object? oTraceProcs))
                 {
                     decompiler.Project.Programs[0].User.DebugTraceProcedures =
                         (HashSet<string>) oTraceProcs;
@@ -233,6 +238,70 @@ namespace Reko.CmdLine
                 decompiler.ExtractResources();
                 decompiler.ScanPrograms();
                 if ((string)pArgs["majorCommand"] != "disassemble")
+                {
+                    decompiler.AnalyzeDataFlow();
+                    decompiler.ReconstructTypes();
+                    decompiler.StructureProgram();
+                    decompiler.WriteDecompilerProducts();
+                }
+            }
+            catch (Exception ex)
+            {
+                listener.Error(ex, "An error occurred during decompilation.");
+            }
+        }
+
+        private void Dump(Dictionary<string, object> pArgs)
+        {
+            pArgs.TryGetValue("--loader", out object? imgLoader);
+            var addrLoad = ParseAddress(pArgs, "--base");
+            try
+            {
+                var fileName = (string) pArgs["filename"];
+                var filePath = Path.GetFullPath(fileName);
+                var imageLocation = ImageLocation.FromUri(filePath);
+                var bytes = ldr.LoadImageBytes(imageLocation);
+                var loadedImage = ldr.ParseBinaryImage(imageLocation, bytes, (string?) imgLoader, null, addrLoad);
+                Project project;
+                switch (loadedImage)
+                {
+                case Program loadedProgram:
+                    project = Project.FromSingleProgram(loadedProgram);
+                    break;
+                case Project loadedProject:
+                    project = loadedProject;
+                    break;
+                default:
+                    this.listener.Error("Cannot dump {0}.", fileName);
+                    return;
+                }
+                var decompiler = new Decompiler(project, services);
+                dcSvc.Decompiler = decompiler;
+
+                var program = decompiler.Project.Programs[0];
+
+                if (pArgs.TryGetValue("metadata", out var oMetadata))
+                {
+                    decompiler.Project.MetadataFiles.Add(new MetadataFile
+                    {
+                        Location = ImageLocation.FromUri((string) oMetadata)
+                    });
+                }
+                if (pArgs.ContainsKey("dasm-address"))
+                {
+                    decompiler.Project.Programs[0].User.ShowAddressesInDisassembly = true;
+                }
+                if (pArgs.ContainsKey("dasm-base-instrs"))
+                {
+                    decompiler.Project.Programs[0].User.RenderInstructionsCanonically = true;
+                }
+                if (pArgs.ContainsKey("dasm-bytes"))
+                {
+                    decompiler.Project.Programs[0].User.ShowBytesInDisassembly = true;
+                }
+                decompiler.ExtractResources();
+                decompiler.ScanPrograms();
+                if ((string) pArgs["majorCommand"] != "disassemble")
                 {
                     decompiler.AnalyzeDataFlow();
                     decompiler.ReconstructTypes();
@@ -262,7 +331,7 @@ namespace Reko.CmdLine
             }
             string sArch = (string) oArch;
 
-            string syntax = null;
+            string? syntax = null;
             if (pArgs.TryGetValue("--syntax", out var oSyntax) &&
                 oSyntax is string sSyntax)
             {
@@ -336,28 +405,28 @@ namespace Reko.CmdLine
                 {
                     archOptions = new Dictionary<string,object>(StringComparer.OrdinalIgnoreCase);
                 }
-                pArgs.TryGetValue("--env", out object sEnv);
+                pArgs.TryGetValue("--env", out object? sEnv);
 
                 if (!pArgs.TryGetValue("--base", out var oAddrBase))
                     oAddrBase = "0";
                 if (!arch.TryParseAddress(oAddrBase.ToString(), out Address addrBase))
                     throw new ApplicationException($"'{oAddrBase}' doesn't appear to be a valid address.");
 
-                if (!pArgs.TryGetValue("--entry", out object oAddrEntry))
+                if (!pArgs.TryGetValue("--entry", out object? oAddrEntry))
                     oAddrEntry = oAddrBase;
                 else if (!arch.TryParseAddress(oAddrEntry.ToString(), out _))
                     throw new ApplicationException($"'{oAddrEntry}' doesn't appear to be a valid address.");
 
-                pArgs.TryGetValue("--loader", out object sLoader);
+                pArgs.TryGetValue("--loader", out object? sLoader);
                 var loadDetails = new LoadDetails
                 {
                     Location = pArgs.ContainsKey("filename")
                         ? ImageLocation.FromUri((string) pArgs["filename"])
                         : null,
-                    LoaderName = (string) sLoader,
+                    LoaderName = (string?) sLoader,
                     ArchitectureName = (string) pArgs["--arch"],
                     ArchitectureOptions = archOptions,
-                    PlatformName = (string) sEnv,
+                    PlatformName = (string?) sEnv,
                     LoadAddress = oAddrBase.ToString(),
                     EntryPoint = new EntryPointDefinition { Address = (string) oAddrEntry }
                 };
@@ -367,11 +436,11 @@ namespace Reko.CmdLine
                 dcSvc.Decompiler = decompiler;
 
                 var state = CreateInitialState(arch, program.SegmentMap, pArgs);
-                if (pArgs.TryGetValue("heuristics", out object oHeur))
+                if (pArgs.TryGetValue("heuristics", out object? oHeur))
                 {
                     program.User.Heuristics = ((string[]) oHeur).ToSortedSet();
                 }
-                if (pArgs.TryGetValue("aggressive-branch-removal", out object oAggressiveBranchRemoval))
+                if (pArgs.TryGetValue("aggressive-branch-removal", out object? oAggressiveBranchRemoval))
                 {
                     if (oAggressiveBranchRemoval is bool flag && flag)
                     {
@@ -406,7 +475,7 @@ namespace Reko.CmdLine
             else
             {
                 program = ldr.LoadRawImage(loadDetails);
-                program.Location = loadDetails.Location;
+                program.Location = loadDetails.Location!;
             }
             listener.Progress.ShowStatus("Raw bytes loaded.");
             return program;
@@ -431,14 +500,14 @@ namespace Reko.CmdLine
             return state;
         }
 
-        private Dictionary<string,object> ProcessArguments(TextWriter w, string[] args)
+        private Dictionary<string,object>? ProcessArguments(TextWriter w, string[] args)
         {
             if (args.Length == 0)
             {
                 Usage(w);
                 return null;
             }
-            var parsedArgs = new Dictionary<string, object>();
+            Dictionary<string, object> parsedArgs = new();
 
             // Eat major commands. The default major command is
             // "decompile".
@@ -458,6 +527,10 @@ namespace Reko.CmdLine
             case "dasm":
             case "disassemble":
                 parsedArgs["majorCommand"] = "disassemble";
+                ++i;
+                break;
+            case "dump":
+                parsedArgs["majorCommand"] = "dump";
                 ++i;
                 break;
             }
@@ -528,9 +601,9 @@ namespace Reko.CmdLine
                     if (i < args.Length - 1)
                     {
                         List<string> regs;
-                        if (!parsedArgs.TryGetValue("--reg", out object oRegs))
+                        if (!parsedArgs.TryGetValue("--reg", out object? oRegs))
                         {
-                            regs = new List<string>();
+                            regs = [];
                             parsedArgs["--reg"] = regs;
                         }
                         else
@@ -670,7 +743,7 @@ namespace Reko.CmdLine
         private static void ParseArchitectureOption(string nameValue, Dictionary<string, object> parsedArgs)
         {
             Dictionary<string, object> archOptions;
-            if (parsedArgs.TryGetValue("--arch-options", out object oArchOptions))
+            if (parsedArgs.TryGetValue("--arch-options", out object? oArchOptions))
             {
                 archOptions = (Dictionary<string, object>)oArchOptions;
             }

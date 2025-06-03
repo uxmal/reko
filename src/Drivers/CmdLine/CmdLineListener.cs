@@ -145,12 +145,13 @@ namespace Reko.CmdLine
             Error(location, string.Format(message, args));
         }
 
-        public void Error(Exception ex, string message)
+        public void Error(Exception exception, string message)
         {
             EnsureNewLine();
             Console.Out.WriteLine("Error: {0}", message);
-            Console.Out.WriteLine("    {0}", ex.Message);
-            while (ex != null)
+            Console.Out.WriteLine("    {0}", exception.Message);
+            var ex = exception;
+            while (ex is not null)
             {
                 Console.Out.WriteLine("    {0}", ex.StackTrace);
                 ex = ex.InnerException;
@@ -162,12 +163,13 @@ namespace Reko.CmdLine
             Error(ex, string.Format(message, args));
         }
 
-        public void Error(ICodeLocation location, Exception ex, string message)
+        public void Error(ICodeLocation location, Exception exception, string message)
         {
             EnsureNewLine();
             Console.Out.WriteLine("{0}: error: {1}", location.Text, message);
-            Console.Out.WriteLine("    {0}", ex.Message);
-            while (ex != null)
+            Console.Out.WriteLine("    {0}", exception.Message);
+            var ex = exception;
+            while (ex is not null)
             {
                 Console.Out.WriteLine("    {0}", ex.StackTrace);
                 ex = ex.InnerException;
@@ -227,6 +229,7 @@ namespace Reko.CmdLine
             public ProgressIndicator(CmdLineListener outer)
             {
                 this.outer = outer;
+                this.currentCaption = "";
             }
 
             public void Advance(int count)

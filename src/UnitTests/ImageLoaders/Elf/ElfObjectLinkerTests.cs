@@ -51,7 +51,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             BuildObjectFile32(big_endian);
             var eil = new ElfImageLoader(sc, ImageLocation.FromUri("file:foo.o"), rawBytes);
             var ehdr = eil.LoadElfIdentification();
-            var bin = new ElfBinaryImage(ehdr, big_endian
+            var bin = new ElfBinaryImage(eil.ImageLocation, ehdr, big_endian
                 ? EndianServices.Big
                 : EndianServices.Little);
             var el = (ElfLoader32) eil.CreateLoader(bin);

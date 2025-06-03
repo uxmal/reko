@@ -392,7 +392,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         {
             var eil = new ElfImageLoader(sc, ImageLocation.FromUri("file:foo"), rawImg);
             var eh = eil.LoadElfIdentification();
-            var binaryImage = new ElfBinaryImage(eh, EndianServices.Little);
+            var binaryImage = new ElfBinaryImage(eil.ImageLocation, eh, EndianServices.Little);
             var el = (ElfLoader32)eil.CreateLoader(binaryImage);
             el.LoadFileHeader();
             el.BinaryImage.AddSections(el.LoadSectionHeaders());
@@ -403,7 +403,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         {
             var eil = new ElfImageLoader(sc, ImageLocation.FromUri("file:foo"), rawImg);
             var eh = eil.LoadElfIdentification();
-            var binaryImage = new ElfBinaryImage(eh, EndianServices.Little);
+            var binaryImage = new ElfBinaryImage(eil.ImageLocation, eh, EndianServices.Little);
             var el = (ElfLoader32) eil.CreateLoader(binaryImage);
             el.LoadFileHeader();
             var bin = el.BinaryImage;
@@ -444,7 +444,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         {
             var eil = new ElfImageLoader(sc, ImageLocation.FromUri("file:foo"), rawImg);
             var eh = eil.LoadElfIdentification();
-            var binaryImage = new ElfBinaryImage(eh, EndianServices.Little);
+            var binaryImage = new ElfBinaryImage(eil.ImageLocation, eh, EndianServices.Little);
             var el = (ElfLoader32)eil.CreateLoader(binaryImage);
             el.LoadFileHeader();
             el.LoadSegments();
@@ -466,7 +466,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             
             var eil = new ElfImageLoader(sc, ImageLocation.FromUri("file:foo"), rawImg);
             var eh = eil.LoadElfIdentification();
-            var binaryImage = new ElfBinaryImage(eh, EndianServices.Little);
+            var binaryImage = new ElfBinaryImage(eil.ImageLocation, eh, EndianServices.Little);
             var el = eil.CreateLoader(binaryImage);
             el.LoadFileHeader();
             el.LoadPlatform(0x66, arch.Object);        // ELFOSABI_CELL_LV2;

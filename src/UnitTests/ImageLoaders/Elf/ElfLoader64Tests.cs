@@ -119,7 +119,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         {
             this.eil = new ElfImageLoader(sc, ImageLocation.FromUri("file:foo"), this.bytes);
             var eh = new ElfHeader();
-            var bin = new ElfBinaryImage(eh, big_endian ? EndianServices.Big : EndianServices.Little);
+            var bin = new ElfBinaryImage(eil.ImageLocation, eh, big_endian ? EndianServices.Big : EndianServices.Little);
             this.el64 = new ElfLoader64(sc, bin, this.bytes);
             el64.BinaryImage.AddSegments(programHeaders);
             el64.BinaryImage.AddSections(sections);

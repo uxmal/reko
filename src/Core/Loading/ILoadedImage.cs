@@ -101,5 +101,13 @@ namespace Reko.Core.Loading
         /// <param name="context">Context passed by caller.</param>
         /// <returns>Visitor return value.</returns>
         T VisitBlob(Blob blob, C context);
+
+        /// <summary>
+        /// Called when visiting a <see cref="IBinaryImage"/>.
+        /// </summary>
+        /// <param name="image">Binary image being visited.</param>
+        /// <param name="context">Context passed by caller.</param>
+        /// <returns>Visitor return value.</returns>
+        T VisitBinaryImage(IBinaryImage image, C context);
     }
 }

@@ -41,7 +41,10 @@ namespace Reko.UnitTests.ImageLoaders.Elf.Relocators
                 BinaryFileType = BinaryFileType.Executable
             };
                 
-            var bin = new ElfBinaryImage(hdr, EndianServices.Little);
+            var bin = new ElfBinaryImage(
+                ImageLocation.FromUri("test.elf"),
+                hdr,
+                EndianServices.Little);
             return new ElfLoader32(
                 new ServiceContainer(),
                 bin,
