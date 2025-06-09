@@ -34,6 +34,7 @@ namespace Reko.Scanning
     /// Performs a shingle scan of a chunk of memory that wasn't reached by
     /// the <see cref="RecursiveScanner"/> to find any possible blocks.
     /// </summary>
+    [DebuggerDisplay("ChunkWorker {Address} ({Length} units)")]
     public class ChunkWorker : AbstractProcedureWorker
     {
         private readonly ShingleScanner shScanner;

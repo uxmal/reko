@@ -192,6 +192,15 @@ namespace Reko.Scanning
             edges.Add(edge.To);
         }
 
+        /// <summary>
+        /// Registers an invalid block starting at <paramref name="addrInvalidBlockStart"/>.
+        /// </summary>
+        /// <param name="addrInvalidBlockStart">Address at which the block starts.</param>
+        public void RegisterInvalidBlock(Address addrInvalidBlockStart)
+        {
+            sr.InvalidBlocks.TryAdd(addrInvalidBlockStart, addrInvalidBlockStart);
+        }
+
         public ScanResultsV2 RegisterPredecessors()
         {
             sr.Predecessors.Clear();
@@ -465,6 +474,8 @@ namespace Reko.Scanning
 
             static string RenderType(InstrClass t)
             {
+                if ((t & InstrClass.Invalid) != 0)
+                    return "???";
                 if ((t & InstrClass.Zero) != 0)
                     return "Zer";
                 if ((t & InstrClass.Padding) != 0)

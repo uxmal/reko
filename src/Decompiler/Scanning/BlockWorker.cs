@@ -93,7 +93,7 @@ namespace Reko.Scanning
         /// If parsing runs off the end of the trace, the returned block will be
         /// marked as invalid.
         /// </returns>
-        public (RtlBlock?, List<Address>?, ProcessorState) ParseBlock()
+        public (RtlBlock, List<Address>?, ProcessorState) ParseBlock()
         {
             var instrs = new List<RtlInstructionCluster>();
             var trace = this.Trace;
@@ -117,7 +117,8 @@ namespace Reko.Scanning
                         // Couldn't split a block; it means we're outside of our 
                         // scanning area, so this whole block is invalid.
                         log.Verbose("    Unable to find instruction at {0}, stopping", addrLast);
-                        return (null, null, state);
+                        var size = addrLast - this.Address + cluster.Length;
+                        return (MakeInvalidBlock(instrs, size), null, state);
                     }
                     log.Verbose("    Fell through to {0}, stopping", cluster.Address);
                     var block = MakeFallthroughBlock(this.Address, addrLast, instrs);
@@ -188,7 +189,7 @@ namespace Reko.Scanning
                     if (!scanner.TryRegisterBlockStart(cluster.Address, this.Address))
                         return (block, subinstrBranches, state);
                     this.Address = cluster.Address;
-                    instrs = new List<RtlInstructionCluster>();
+                    instrs = [];
                 }
                 if (subinstrBranches.Count > 0)
                 {
@@ -379,7 +380,7 @@ namespace Reko.Scanning
         /// A pair of a completed <see cref="Block"/> and an updated <see cref="ProcessorState"/>.
         /// If parsing runs off the end of the trace, the block reference will be null.
         /// </returns>
-        private RtlBlock? MakeBlock(
+        private RtlBlock MakeBlock(
             List<RtlInstructionCluster> instrs,
             RtlInstruction rtlLast)
         {
@@ -469,7 +470,7 @@ namespace Reko.Scanning
         /// <returns>Null if the size was zero, otherwise a block ending 
         /// with the invalid instruction.
         /// </returns>
-        private RtlBlock? MakeInvalidBlock(
+        private RtlBlock MakeInvalidBlock(
             List<RtlInstructionCluster> instrs,
             long size)
         {

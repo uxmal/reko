@@ -36,6 +36,7 @@ namespace Reko.Scanning
             this.Successors = new();
             this.Predecessors = new();
             this.Procedures = new();
+            this.InvalidBlocks = new();
             this.SpeculativeBlocks = new();
             this.SpeculativeProcedures = new();
             this.TrampolineStubStarts = new();
@@ -72,6 +73,12 @@ namespace Reko.Scanning
         /// recursive scanning, and are considered "reliable".
         /// </remarks>
         public ConcurrentDictionary<Address, Proc> Procedures { get; }
+
+        /// <summary>
+        /// Keeps track of all basic blocks that have been found to 
+        /// be invalid.
+        /// </summary>
+        public ConcurrentDictionary<Address, Address> InvalidBlocks { get; }
 
         /// <summary>
         /// Addresses of blocks that were discovered during speculative scanning.

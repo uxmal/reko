@@ -144,6 +144,7 @@ namespace Reko.Scanning
         protected void HandleBadBlock(Address addrBadBlock)
         {
             log.Verbose("    {0}: Bad block", addrBadBlock);
+            scanner.RegisterInvalidBlock(addrBadBlock);
             //$TODO: enqueue low-prio item for removing all unconditional predecessor blocks
             // that reach this block
         }

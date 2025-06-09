@@ -41,12 +41,19 @@ public class ChunkEnumerator
     /// </summary>
     /// <param name="sortedSegments">A sorted sequence of <see cref="ImageSegment"/>s.</param>
     /// <param name="sortedBlocks"></param>
-    /// <returns></returns>
-    public IEnumerable<Chunk> EnumerateFragments(IEnumerable<ImageSegment> sortedSegments, IEnumerable<RtlBlock> sortedBlocks)
+    /// <param name="dataBlocks">Data blocks that should be excluded from the result.
+    /// The routine assumes the data blocks are sorted by increasing addresses.
+    /// </param>
+    /// <returns>A sequence of </returns>
+    public IEnumerable<Chunk> EnumerateFragments(
+        IEnumerable<ImageSegment> sortedSegments,
+        IEnumerable<RtlBlock> sortedBlocks,
+        IEnumerable<ImageMapItem> dataBlocks)
     {
         var fragments = ResolveOverlaps(sortedBlocks);
         var gapFragments = GenerateGapFragments(sortedSegments, fragments);
-        return gapFragments;
+        var result = ExcludeDataBlocks(gapFragments, dataBlocks);
+        return result;
     }
 
     /// <summary>
@@ -56,7 +63,9 @@ public class ChunkEnumerator
     /// <param name="fragments">A sorted sequence of non-overlapping <see cref="Chunk"/>.
     /// </param>
     /// <returns></returns>
-    private static IEnumerable<Chunk> GenerateGapFragments(IEnumerable<ImageSegment> segments, IEnumerable<Chunk> fragments)
+    private static IEnumerable<Chunk> GenerateGapFragments(
+        IEnumerable<ImageSegment> segments,
+        IEnumerable<Chunk> fragments)
     {
         var eFragments = new LookaheadEnumerator<Chunk>(fragments);
         foreach (var segment in segments)
@@ -83,6 +92,12 @@ public class ChunkEnumerator
             if (cbRemaining > 0)
                 yield return new Chunk(null, addrLast, cbRemaining);
         }
+    }
+
+    private IEnumerable<Chunk> ExcludeDataBlocks(IEnumerable<Chunk> gapFragments, IEnumerable<ImageMapItem> dataBlocks)
+    {
+        //$TODO: remove data blocks from list of fragments.
+        return gapFragments;
     }
 
     private static Address Align(Address address, IProcessorArchitecture? arch)

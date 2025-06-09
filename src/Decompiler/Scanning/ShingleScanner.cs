@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Collections;
 using Reko.Core.Diagnostics;
+using Reko.Core.Types;
 using Reko.Services;
 using System;
 using System.Collections.Generic;
@@ -89,7 +90,12 @@ namespace Reko.Scanning
             var chunkEnumerator = new ChunkEnumerator();
             var execSegments = program.SegmentMap.Segments.Values
                 .Where(seg => seg.IsExecutable);
-            var fragments = chunkEnumerator.EnumerateFragments(execSegments, sortedBlocks);
+            var dataBlocks = program.ImageMap?.Items.Values
+                .Where(i => i.DataType is not CodeType) ?? [];
+            var fragments = chunkEnumerator.EnumerateFragments(
+                execSegments,
+                sortedBlocks,
+                dataBlocks);
             return MakeTriples(fragments).Select(CreateUnscannedArea)
                 .Where(f => f is not null)
                 .Select(f => f!.Value)
@@ -266,11 +272,14 @@ namespace Reko.Scanning
         public static ScanResultsV2 RemoveInvalidBlocks(ScanResultsV2 sr)
         {
             // Find transitive closure of bad blocks 
-
+            sr.Successors.TryGetValue(Address.Ptr32(0xA578), out var succes);
+            _ = sr; //$DEBUG
+            sr.Blocks.TryGetValue(Address.Ptr32(0xA578), out var xxx);    //$DEBUG
             var bad_blocks = new HashSet<Address>(
                 (from b in sr.Blocks.Values
                  where !b.IsValid || b.Instructions[^1].Class == InstrClass.Invalid
-                 select b.Address));
+                 select b.Address).Concat(
+                    sr.InvalidBlocks.Keys));
             var new_bad = bad_blocks;
             //Debug.Print("Bad {0}",
 
@@ -312,10 +321,15 @@ namespace Reko.Scanning
             // Remove edges to bad blocks and bad blocks.
             foreach (var bad in bad_blocks)
             {
+                if (bad.Offset == 0xA578)
+                    _ = bad; //$DEBUG
+
                 if (sr.Predecessors.TryGetValue(bad, out var preds))
                 {
                     foreach (var pred in preds)
                     {
+                        if (bad.Offset == 0xA578)
+                            _ = bad; //$DEBUG
                         if (sr.Successors.TryGetValue(pred, out var pss))
                         {
                             pss.Remove(bad);
