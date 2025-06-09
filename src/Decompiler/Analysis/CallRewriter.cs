@@ -333,7 +333,7 @@ namespace Reko.Analysis
             var sb = new SignatureBuilder(frame, arch);
 
             var seqs = uses.Select(u => u.Storage as SequenceStorage)
-                .Where(s => s != null)
+                .Where(s => s is not null)
                 .OrderBy(s => s!.Name);
             foreach (var seq in seqs)
             {
@@ -349,7 +349,7 @@ namespace Reko.Analysis
             }
 
             var stargs = uses.Select(u => u.Storage as StackStorage)
-                .Where(s => s != null)
+                .Where(s => s is not null)
                 .OrderBy(r => r!.StackOffset);
             foreach (var arg in stargs)
             {
@@ -380,7 +380,7 @@ namespace Reko.Analysis
         {
             return mayuse
                 .Select(kv => (stg: kv.Key as StackStorage, range: kv.Value))
-                .Where(item => item.stg != null)
+                .Where(item => item.stg is not null)
                 .OrderBy(item => item.stg!.StackOffset)
                 .Select(item =>
                 {
@@ -587,7 +587,7 @@ namespace Reko.Analysis
 
             var e = idStg?.Expression ?? InvalidConstant.Create(idRet.DataType);
 
-            if (idStg != null && idRet.DataType.BitSize < e.DataType.BitSize)
+            if (idStg is not null && idRet.DataType.BitSize < e.DataType.BitSize)
             {
                 int offset = idStg.Storage.OffsetOf(idRet.Storage);
                 e = m.Slice(e, idRet.DataType, offset);

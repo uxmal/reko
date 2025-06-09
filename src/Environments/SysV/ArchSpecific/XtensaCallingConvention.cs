@@ -85,7 +85,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             List<DataType> dtParams)
         {
             ccr.LowLevelDetails(4, 0);
-            if (dtRet != null)
+            if (dtRet is not null)
             {
                 var a2 = (StorageDomain) 2;
                 //$TODO: size > 4 bytes?

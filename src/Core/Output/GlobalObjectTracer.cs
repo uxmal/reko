@@ -67,7 +67,7 @@ namespace Reko.Core.Output
                 tvGlobals.DataType is Pointer ptr)
             {
                 var str = ptr.Pointee.ResolveAs<StructureType>();
-                if (str != null)
+                if (str is not null)
                 {
                     return str.Fields;
                 }

@@ -57,7 +57,7 @@ namespace Reko.Environments.Windows
 
         public override SystemService? FindService(int vector, ProcessorState? state, IMemory? memory)
         {
-            if (vector == 0x20 && state != null && memory != null)
+            if (vector == 0x20 && state is not null && memory is not null)
             {
                 // Dynamic VxD call.
                 //$TODO: look up the call to determine what parameters it uses.

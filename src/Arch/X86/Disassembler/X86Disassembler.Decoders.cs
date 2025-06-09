@@ -242,7 +242,7 @@ namespace Reko.Arch.X86
             {
                 if (!disasm.TryEnsureModRM(out byte modRm))
                     return disasm.CreateInvalidInstruction();
-                if (mutators != null)
+                if (mutators is not null)
                 {
                     foreach (var m in this.mutators)
                     {

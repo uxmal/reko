@@ -66,7 +66,7 @@ namespace Reko.Arch.Tms7000
             else
             {
                 renderer.WriteAddress("@" + Address, Address.Value);
-                if (Register != null)
+                if (Register is not null)
                 {
                     renderer.WriteChar('(');
                     renderer.WriteString(Register.Name);

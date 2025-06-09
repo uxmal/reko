@@ -75,7 +75,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         public void SetSite(IServiceProvider sp)
         {
             this.services = sp;
-            if (services != null)
+            if (services is not null)
             {
                 var uiUser = services.RequireService<IUiPreferencesService>();
                 uiUser.UiPreferencesChanged += delegate { uiUser.UpdateControlStyle(UiStyles.List, listView); };
@@ -91,7 +91,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
         void listView_HandleCreated(object sender, EventArgs e)
         {
-            if (pending != null)
+            if (pending is not null)
             {
                 foreach (var d in pending)
                     AddDiagnostic(d.Key, d.Value);

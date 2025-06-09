@@ -102,7 +102,7 @@ Options:
                 return 1;
             }
 
-            if (options.ContainsKey("<outputfile>") && options["<outputfile>"] != null)
+            if (options.ContainsKey("<outputfile>") && options["<outputfile>"] is not null)
             {
                 try
                 {
@@ -115,7 +115,7 @@ Options:
                 }
             }
             string dialect = null;
-            if (options.TryGetValue("-d", out var optDialect) && optDialect != null)
+            if (options.TryGetValue("-d", out var optDialect) && optDialect is not null)
             {
                 dialect = (string) optDialect.Value;
             }

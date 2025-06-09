@@ -114,7 +114,7 @@ namespace Reko.Gui.TextViewing
 
         private LineSpan[] EnsureLines()
         {
-            if (lines != null)
+            if (lines is not null)
                 return lines;
             var tsf = new TextSpanFormatter(factory);
             WriteCode(tsf);

@@ -139,7 +139,7 @@ namespace Reko.Typing
 				if (StructuresOverlap(strMerged, offset, strElem, s.Fields[i].Offset))
 				{
 					strMerged = MergeOffsetStructures(strMerged!, offset, strElem, s.Fields[i].Offset);
-                    if (eqMerged != null)
+                    if (eqMerged is not null)
                         eqMerged.DataType = strMerged;
                     else
                         arrMerged!.ElementType = strMerged;
@@ -242,7 +242,7 @@ namespace Reko.Typing
                     if (eventListener.IsCanceled())
                         return;
 					EquivalenceClass eq = tv.Class;
-                    if (eq.DataType != null)
+                    if (eq.DataType is not null)
                     {
                         DateTime start = DateTime.Now;
                         eq.DataType = eq.DataType.Accept(this);
@@ -252,7 +252,7 @@ namespace Reko.Typing
                             //trace.Verbose("= TT: took {2,4} msec to simplify {0} ({1})", tv.DataType, eq.DataType, (end - start).Milliseconds);
                         }
                     }
-                    if (tv.DataType != null)
+                    if (tv.DataType is not null)
                     {
                         tv.DataType = tv.DataType.Accept(this);
                     }
@@ -309,7 +309,7 @@ namespace Reko.Typing
             {
                 fn.Outputs[0].DataType = fn.Outputs[0].DataType.Accept(this);
             }
-            if (fn.Parameters != null)
+            if (fn.Parameters is not null)
             {
                 for (int i = 0; i < fn.Parameters.Length; ++i)
                 {

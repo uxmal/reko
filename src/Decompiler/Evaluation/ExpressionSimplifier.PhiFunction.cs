@@ -39,7 +39,7 @@ namespace Reko.Evaluation
 
             var cmp = new ExpressionValueComparer();
             var e = args.FirstOrDefault();
-            if (e != null && args.All(a => cmp.Equals(a, e)))
+            if (e is not null && args.All(a => cmp.Equals(a, e)))
             {
                 return (e, true);
             }

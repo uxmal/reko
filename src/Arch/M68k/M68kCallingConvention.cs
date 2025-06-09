@@ -44,7 +44,7 @@ namespace Reko.Arch.M68k
         {
             int stackOffset = 4;        // return address
             ccr.LowLevelDetails(4, stackOffset);
-            if (dtRet != null)
+            if (dtRet is not null)
             {
                 ccr.RegReturn(Registers.d0);
             }

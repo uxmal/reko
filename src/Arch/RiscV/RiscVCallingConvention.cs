@@ -107,7 +107,7 @@ namespace Reko.Arch.RiscV
             List<DataType> dtParams)
         {
             ccr.LowLevelDetails(arch.WordWidth.Size, 0);
-            if (dtRet != null)
+            if (dtRet is not null)
             {
                 var pt = dtRet.ResolveAs<PrimitiveType>();
                 if (pt is not null && pt.Domain == Domain.Real && this.floatAbi > 0)
@@ -135,7 +135,7 @@ namespace Reko.Arch.RiscV
             {
                 var dtParam = dtParams[i];
                 var pt = dtParam .ResolveAs<PrimitiveType>();
-                if (pt != null && pt.Domain == Domain.Real && floatAbi > 0)
+                if (pt is not null && pt.Domain == Domain.Real && floatAbi > 0)
                 {
                     if (ir >= fregs.Length)
                     {

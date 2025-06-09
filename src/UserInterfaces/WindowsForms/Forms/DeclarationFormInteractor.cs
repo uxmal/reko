@@ -198,7 +198,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             // Attempt to parse the signature.
             var usb = new UserSignatureBuilder(program);
             sProc = usb.ParseFunctionDeclaration(txtSignature);
-            return sProc != null;
+            return sProc is not null;
         }
 
         private bool TryParseGlobal(string txtGlobal, out GlobalDataItem_v2 global)
@@ -212,7 +212,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             // Attempt to parse the global declaration.
             var usb = new UserSignatureBuilder(program);
             global = usb.ParseGlobalDeclaration(txtGlobal);
-            return global != null;
+            return global is not null;
         }
 
         private async ValueTask ModifyDeclaration()

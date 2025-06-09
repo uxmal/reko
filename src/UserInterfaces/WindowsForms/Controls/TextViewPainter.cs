@@ -126,7 +126,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                     outer.ComparePositions(selStart, pos) <= 0 &&
                     outer.ComparePositions(pos, selEnd) < 0;
 
-                var hasTag = line.Tag != null;
+                var hasTag = line.Tag is not null;
                 this.fg = styleStack.GetForegroundColor(defaultFgColor);
                 this.bg = styleStack.GetBackground(defaultBgColor);
                 this.font = styleStack.GetFont(defaultFont);

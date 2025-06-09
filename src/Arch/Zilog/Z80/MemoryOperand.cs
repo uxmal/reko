@@ -52,9 +52,9 @@ namespace Reko.Arch.Zilog.Z80
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            if (Base != null)
+            if (Base is not null)
             {
-                if (Offset != null)
+                if (Offset is not null)
                 {
                     int offset = Offset.ToInt32();
                     string fmt;

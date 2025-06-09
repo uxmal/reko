@@ -128,7 +128,7 @@ namespace Reko.Scanning
                         break;
                     case InstrClass.Transfer | InstrClass.Call:
                         addrOp = DestinationAddress(instr);
-                        if (addrOp != null)
+                        if (addrOp is not null)
                         {
                             if (program.Memory.IsValidAddress(addrOp.Value))
                             {
@@ -156,7 +156,7 @@ namespace Reko.Scanning
                         return current;
                     case InstrClass.Transfer:
                         addrOp = DestinationAddress(instr);
-                        if (addrOp != null)
+                        if (addrOp is not null)
                         {
                             if (isAddrValid(addrOp.Value))
                             {
@@ -178,7 +178,7 @@ namespace Reko.Scanning
                     case InstrClass.Transfer | InstrClass.Conditional:
                         FallthroughToInvalid(instr);
                         addrOp = DestinationAddress(instr);
-                        if (addrOp != null && program.Memory.IsValidAddress(addrOp.Value))
+                        if (addrOp is not null && program.Memory.IsValidAddress(addrOp.Value))
                         {
                             block = Disassemble(addrOp.Value);
                             Debug.Assert(sr.ICFG.Nodes.Contains(block));

@@ -60,15 +60,15 @@ namespace Reko.Arch.Rl78
                 renderer.WriteString(sImm);
                 return;
             case MemoryOperand mem:
-                if (Prefix != null)
+                if (Prefix is not null)
                 {
                     renderer.WriteFormat("{0}:", Prefix.Name);
                 }
                 renderer.WriteChar('[');
-                if (mem.Base != null)
+                if (mem.Base is not null)
                 {
                     renderer.WriteString(mem.Base.Name);
-                    if (mem.Index != null)
+                    if (mem.Index is not null)
                     {
                         renderer.WriteFormat("+{0}", mem.Index.Name);
                     }
@@ -86,7 +86,7 @@ namespace Reko.Arch.Rl78
                         renderer.WriteFormat("0{0:X4}h", mem.Offset);
                     else
                         renderer.WriteFormat("{0:X4}h", mem.Offset);
-                    if (mem.Index != null)
+                    if (mem.Index is not null)
                     {
                         renderer.WriteFormat("+{0}", mem.Index.Name);
                     }

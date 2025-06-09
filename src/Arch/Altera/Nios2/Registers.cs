@@ -75,7 +75,7 @@ namespace Reko.Arch.Altera.Nios2
             if (iregS < ControlRegisters.Length)
             {
                 regS = ControlRegisters[iregS]!;
-                return regS != null;
+                return regS is not null;
             }
             regS = null!;
             return false;

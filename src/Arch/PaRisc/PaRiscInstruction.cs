@@ -73,7 +73,7 @@ namespace Reko.Arch.PaRisc
                 sb.Append(",z");
             if (Sign != SignExtension.None)
                 sb.AppendFormat(",{0}", Sign);
-            if (Condition != null && Condition.Display.Length > 0)
+            if (Condition is not null && Condition.Display.Length > 0)
                 sb.AppendFormat(",{0}", Condition.Display);
             if (BaseReg != AddrRegMod.None)
                 sb.AppendFormat(",{0}", BaseReg.ToString().Replace('_',','));

@@ -67,7 +67,7 @@ namespace Reko.Arch.X86.Design
 
         public void Close()
         {
-            if (Control != null)
+            if (Control is not null)
             {
                 Control.Dispose();
                 Control = null;

@@ -435,7 +435,7 @@ namespace Reko.ImageLoaders.LLVM
         private Token Tok(TokenType type, StringBuilder? sb = null)
         {
             return new Token(lineStart, type, 
-                sb != null ? sb.ToString() : null);
+                sb is not null ? sb.ToString() : null);
         }
 
         private bool EatWs()

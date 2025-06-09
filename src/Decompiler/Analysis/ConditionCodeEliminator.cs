@@ -498,7 +498,7 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
 
             var oldSid = ssaIds[(Identifier) u];
             u = UseGrfConditionally(sidGrf, ConditionCode.ULT, null, false);
-            if (slice != null)
+            if (slice is not null)
             {
                 addSub.Right = new Conversion(u, u.DataType, slice.DataType);
             }
@@ -759,7 +759,7 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
                 var dt = bin.Left.DataType;
                 var ptr = dt.ResolveAs<Pointer>();
                 Expression zero;
-                if (ptr != null)
+                if (ptr is not null)
                 {
                     //$REVIEW: assumes a null pointer has bit pattern 0000...00.
                     zero = Address.Create(ptr, 0);

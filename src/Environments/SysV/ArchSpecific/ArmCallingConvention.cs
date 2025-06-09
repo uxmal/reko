@@ -53,7 +53,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             int ncrn = 0;
             // mem arg forb ret val
 
-            if (dtRet != null)
+            if (dtRet is not null)
             {
                 SetReturnRegister(ccr, dtRet.BitSize);
             }

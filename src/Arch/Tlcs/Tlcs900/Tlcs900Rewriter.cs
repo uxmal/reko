@@ -174,14 +174,14 @@ namespace Reko.Arch.Tlcs.Tlcs900
         private Expression RewriteSrcEa(MemoryOperand mem)
         {
             Expression ea;
-            if (mem.Base != null)
+            if (mem.Base is not null)
             {
                 ea = binder.EnsureRegister(mem.Base);
                 if (mem.Increment < 0)
                 {
                     m.Assign(ea, m.AddSubSignedInt(ea, mem.Increment));
                 }
-                if (mem.Offset != null)
+                if (mem.Offset is not null)
                 {
                     ea = m.IAdd(ea, mem.Offset);
                 }
@@ -212,7 +212,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 return addr;
             case MemoryOperand mem:
                 Expression ea;
-                if (mem.Base != null)
+                if (mem.Base is not null)
                 {
                     ea = binder.EnsureRegister(mem.Base);
                 }

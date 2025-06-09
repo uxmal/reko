@@ -133,7 +133,7 @@ namespace Reko.Arch.Etrax
             {
             case RegisterStorage reg:
                 dst = binder.EnsureRegister(reg);
-                if (func != null)
+                if (func is not null)
                 {
                     src = func(dst, src);
                 }
@@ -142,7 +142,7 @@ namespace Reko.Arch.Etrax
             case MemoryOperand mem:
                 var ea = EffectiveAddress(mem);
                 dst = m.Mem(dt, ea);
-                if (func != null)
+                if (func is not null)
                 {
                     var tmp = binder.CreateTemporary(dt);
                     m.Assign(tmp, func(dst, src));

@@ -79,7 +79,7 @@ namespace Reko.Core.Hll.C
         public NamedDataType GetNameAndType(Declarator declarator)
         {
             var nt = new NamedDataType { DataType = dt, Size = byteSize };
-            if (declarator != null)
+            if (declarator is not null)
             {
                 nt = declarator.Accept(this)(nt);
             }
@@ -112,7 +112,7 @@ namespace Reko.Core.Hll.C
                     DataType = new ArrayType_v1
                     {
                         ElementType = nt.DataType,
-                        Length = array.Size != null
+                        Length = array.Size is not null
                             ? Convert.ToInt32(array.Size.Accept(eval))
                             : 0
                     }
@@ -140,7 +140,7 @@ namespace Reko.Core.Hll.C
         public Func<NamedDataType,NamedDataType> VisitPointer(PointerDeclarator pointer)
         {
             Func<NamedDataType, NamedDataType> fn;
-            if (pointer.Pointee != null)
+            if (pointer.Pointee is not null)
             {
                 fn = pointer.Pointee.Accept(this);
             }
@@ -165,7 +165,7 @@ namespace Reko.Core.Hll.C
         public Func<NamedDataType, NamedDataType> VisitReference(ReferenceDeclarator reference)
         {
             Func<NamedDataType, NamedDataType> fn;
-            if (reference.Referent!= null)
+            if (reference.Referent is not null)
             {
                 fn = reference.Referent.Accept(this);
             }
@@ -189,10 +189,10 @@ namespace Reko.Core.Hll.C
 
         private int PointerSize(List<TypeQualifier> typeQualifiers)
         {
-            if (typeQualifiers != null && 
+            if (typeQualifiers is not null && 
                 typeQualifiers.Any(t => t.Qualifier == CTokenType._Near))
                 return 2;
-            if (specs != null &&
+            if (specs is not null &&
                 specs.Any(s => s is TypeQualifier t && t.Qualifier == CTokenType._Near))
                 return 2;
             return this.pointerSize;
@@ -214,7 +214,7 @@ namespace Reko.Core.Hll.C
                     parameters = Array.Empty<Argument_v1>();
 
                 Argument_v1? ret = null;
-                if (nt.DataType != null)
+                if (nt.DataType is not null)
                 {
                     ret = new Argument_v1
                     {
@@ -548,7 +548,7 @@ namespace Reko.Core.Hll.C
                 if (complexType.Name is null || !symbolTable.UnionsSeen.TryGetValue(complexType.Name, out var un))
                 {
                     un = new UnionType_v1 { Name = complexType.Name };
-                    if (un.Name != null)
+                    if (un.Name is not null)
                     {
                         symbolTable.UnionsSeen.Add(un.Name, un);
                     }
@@ -557,7 +557,7 @@ namespace Reko.Core.Hll.C
                 {
                     un.Alternatives = ExpandUnionFields(complexType.DeclList).ToArray();
                     symbolTable.Sizer.SetSize(un, AlignmentOf(complexType));
-                    if (un.Name != null)
+                    if (un.Name is not null)
                     {
                         symbolTable.Types.Add(un);
                         un = new UnionType_v1 { Name = un.Name };
@@ -617,7 +617,7 @@ namespace Reko.Core.Hll.C
                 foreach (var declarator in decl.FieldDeclarators)
                 {
                     var nt = ntde.GetNameAndType(declarator);
-                    var (rawSize, alignment) = (nt.DataType != null)
+                    var (rawSize, alignment) = (nt.DataType is not null)
                         ? nt.DataType.Accept(symbolTable.Sizer)
                         : (0, 1);
                     offset = Align(offset, alignment, 8);     //$BUG: disregards temp. alignment changes. (__declspec(align))

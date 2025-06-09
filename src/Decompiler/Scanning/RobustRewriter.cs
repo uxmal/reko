@@ -63,7 +63,7 @@ namespace Reko.Scanning
                         new RtlInvalid());
                     rtl.Class = InstrClass.Invalid;
                 }
-                if (rtl != null)
+                if (rtl is not null)
                     yield return rtl;
             } while (cont);
         }

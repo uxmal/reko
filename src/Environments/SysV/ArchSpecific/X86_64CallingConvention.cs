@@ -76,7 +76,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             List<DataType> dtParams)
         {
             ccr.LowLevelDetails(arch.PointerType.Size, 0x0008);
-            if (dtRet != null)
+            if (dtRet is not null)
             {
                 SetReturnRegister(ccr, dtRet);
             }
@@ -89,7 +89,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             foreach (var dtParam in dtParams)
             {
                 var prim = dtParam as PrimitiveType;
-                if (prim != null && prim.Domain == Domain.Real)
+                if (prim is not null && prim.Domain == Domain.Real)
                 {
                     if (fr >= fregs.Length || prim.BitSize == LongDoubleBitsize)
                     {
@@ -131,7 +131,7 @@ namespace Reko.Environments.SysV.ArchSpecific
         {
             var pt = dtArg as PrimitiveType;
             int bitSize = dtArg.BitSize;
-            if (pt != null && pt.Domain == Domain.Real)
+            if (pt is not null && pt.Domain == Domain.Real)
             {
                 var xmm0 = fregs[0];
                 if (bitSize <= 64)

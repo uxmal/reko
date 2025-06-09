@@ -83,7 +83,7 @@ What the different instructions do is explained in the Atmel AVR 32-bit Architec
             {
                 ccr.StackParam(dt);
             }
-            if (dtRet != null)
+            if (dtRet is not null)
             {
                 ccr.RegReturn(arch.GetRegister("r12")!);
             }

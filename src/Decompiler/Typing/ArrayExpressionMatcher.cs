@@ -56,7 +56,7 @@ namespace Reko.Typing
                     c = (b.Right as Constant)!;
                     e = b.Left;
                 }
-                if (c != null)
+                if (c is not null)
 				{
 					ElementSize = c;
 					Index = e;
@@ -122,7 +122,7 @@ namespace Reko.Typing
                     {
                         // (+ x (+ a b)) 
                         var bbInner = bInner2.Left as BinaryExpression;
-                        if (bbInner != null && MatchMul(bbInner))
+                        if (bbInner is not null && MatchMul(bbInner))
                         {
                             // (+ x (+ (* i c) y)) rearranges to become
                             // (+ (* i c) (+ x y))
@@ -142,7 +142,7 @@ namespace Reko.Typing
 
 		public Expression Transform(Expression? baseptr, DataType dtAccess)
 		{
-            if (baseptr != null)
+            if (baseptr is not null)
             {
                 ArrayPointer = new SegmentedPointer(dtPointer, baseptr, ArrayPointer!);
             }

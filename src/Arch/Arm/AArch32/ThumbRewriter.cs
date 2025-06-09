@@ -39,7 +39,7 @@ namespace Reko.Arch.Arm.AArch32
         public override Address ComputePcRelativeOffset(MemoryOperand mop)
         {
             var dst = (int) instr.Address.ToLinear() + 2;
-            if (mop.Offset != null)
+            if (mop.Offset is not null)
             {
                 dst += mop.Offset.ToInt32();
             }

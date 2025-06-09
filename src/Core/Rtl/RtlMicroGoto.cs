@@ -88,7 +88,7 @@ namespace Reko.Core.Rtl
         /// <inheritdoc/>
         protected override void WriteInner(TextWriter writer)
         {
-            if (Condition != null)
+            if (Condition is not null)
             {
                 writer.Write("if ({0}) micro_goto {1}", Condition, Target);
             }

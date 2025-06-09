@@ -93,9 +93,9 @@ namespace Reko.Core
         private void LoadGlobals(SerializedLibrary sLib)
         {
             var mod = EnsureModule(this.moduleName, this.library);
-            if (sLib.Globals != null)
+            if (sLib.Globals is not null)
             {
-                foreach (var g in sLib.Globals.Where(gg => !string.IsNullOrEmpty(gg.Name) && gg.DataType != null))
+                foreach (var g in sLib.Globals.Where(gg => !string.IsNullOrEmpty(gg.Name) && gg.DataType is not null))
                 {
                     var globalType = g.DataType!;
                     var globalName = g.Name!;
@@ -276,7 +276,7 @@ namespace Reko.Core
 
         private void LoadTypes(SerializedLibrary serializedLibrary)
         {
-            if (serializedLibrary.Types != null)
+            if (serializedLibrary.Types is not null)
             {
                 foreach (var sType in serializedLibrary.Types)
                 {
@@ -452,11 +452,11 @@ namespace Reko.Core
             {
                 str = new StructureType(structure.Name, structure.ByteSize, true);
                 str.ForceStructure = structure.ForceStructure;
-                if (structure.Name != null)
+                if (structure.Name is not null)
                 {
                     structures.Add(structure.Name, str);
                 }
-                if (structure.Fields != null)
+                if (structure.Fields is not null)
                 {
                     var fields = structure.Fields.Select(f => new StructureField(f.Offset, f.Type!.Accept(this), f.Name));
                     str.Fields.AddRange(fields);
@@ -464,7 +464,7 @@ namespace Reko.Core
                 // str.Size = str.GetInferredSize();
                 return str;
             }
-            else if (str.Fields.Count == 0 && structure.Fields != null)
+            else if (str.Fields.Count == 0 && structure.Fields is not null)
             {
                 // Forward reference resolved.
                 var fields = structure.Fields.Select(
@@ -514,9 +514,9 @@ namespace Reko.Core
             if (sUnion.Name is null || !unions.TryGetValue(sUnion.Name, out var union))
             {
                 union = new UnionType (sUnion.Name, null, true);
-                if (sUnion.Name != null)
+                if (sUnion.Name is not null)
                     unions.Add(sUnion.Name, union);
-                if (sUnion.Alternatives != null)
+                if (sUnion.Alternatives is not null)
                 {
                     var alts = sUnion.Alternatives.Select((a, i) => new UnionAlternative(a.Name, a.Type!.Accept(this), i));
                     union.Alternatives.AddRange(alts);
@@ -539,7 +539,7 @@ namespace Reko.Core
         /// <inheritdoc/>
         public DataType VisitEnum(SerializedEnumType enumType)
         {
-            var members = enumType.Values != null
+            var members = enumType.Values is not null
                 ? enumType.Values.ToSortedList(k => k.Name!, v => (long)v.Value)
                 : new SortedList<string, long>();
             int size = enumType.Size;

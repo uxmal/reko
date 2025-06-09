@@ -69,11 +69,11 @@ namespace Reko.Core.Hll.C
             if (program.User.Procedures.TryGetValue(addr, out var userProc))
             {
                 var sProc = DeserializeSignature(userProc, proc);
-                if (sProc != null)
+                if (sProc is not null)
                 {
                     var ser = program.CreateProcedureSerializer();
                     var sig = ser.Deserialize(sProc.Signature, proc.Frame);
-                    if (sig != null)
+                    if (sig is not null)
                     {
                         proc.Name = sProc.Name ?? program.NamingPolicy.ProcedureName(proc.EntryAddress);
                         proc.Signature = sig;

@@ -120,7 +120,7 @@ namespace Reko.Structure
 
         public AbsynStatement VisitFor(AbsynFor forLoop)
         {
-            if (forLoop.Initialization != null)
+            if (forLoop.Initialization is not null)
             {
                 forLoop.Initialization = (AbsynAssignment)forLoop.Initialization.Accept(this);
             }

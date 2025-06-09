@@ -531,7 +531,7 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             if (args.Length == 2 && GetAddress(args[0], out Address addr) && GetUlong(args[1], out ulong size))
             {
-                if (membpaddr != null && membpsize != 0)
+                if (membpaddr is not null && membpsize != 0)
                     DoBPMC();
 
                 if (Debugger.SetMemoryBPXEx(addr, size, Ue.UE_MEMORY_WRITE, true, MemoryCallback))
@@ -580,7 +580,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 Findalldllcalls((t_dump *)Plugingetvalue(VAL_CPUDASM),0,"Intermodular calls");
                 reftable=(t_table *)Plugingetvalue(VAL_REFERENCES);
 
-                if(reftable==null || reftable.data.n==0)
+                if(reftable is null || reftable.data.n == 0)
                 {
                     errorstr = "No references";
                     return false;
@@ -1089,7 +1089,7 @@ ulong hwnd;
                 int memsize = (int)(ende - first + 1) * MAX_INSTR_SIZE;
 
                 pmemforexec = Host.AllocateMemory((uint)memsize);
-                if (pmemforexec != null)
+                if (pmemforexec is not null)
                 {
                     int len, totallen = 0;
 
@@ -1285,12 +1285,12 @@ ulong hwnd;
             //Get initial Ref Window State
             t_table* tt;
             tt=(t_table*) Plugingetvalue(VAL_REFERENCES);
-            if (tt!=null)
+            if (tt is not null)
                 bRefVisible=(tt.hw!=0);
 
             t_dump* td;
             td=(t_dump*) Plugingetvalue(VAL_CPUDASM);
-            if (td==null)
+            if (td is null)
                 return false;
 
             if(GetUlong(ops[0], addr))
@@ -1307,15 +1307,15 @@ ulong hwnd;
                 if(Findalldllcalls(td, addr, null) > 0)
                 {
 			
-                    if(tt==null)
-                        tt=(t_table*) Plugingetvalue(VAL_REFERENCES);
+                    if (tt is null)
+                        tt = (t_table*) Plugingetvalue(VAL_REFERENCES);
 
-                    if(tt!=null) 
+                    if (tt is not null) 
                     {
                         t_ref* tr;
 
-                        if(tt.data.n > 1) 
-                        { 
+                        if (tt.data.n > 1) 
+                        {
                             //Filter results
                             string filter;
                             if(GetString(ops[1], filter) && filter != "")
@@ -1325,7 +1325,7 @@ ulong hwnd;
                                 for(int nref = tt.data.n-1; nref > 0; nref--)
                                 {
                                     tr=(t_ref*) Getsortedbyselection(&tt.data, nref);
-                                    if(tr != null && tr.dest != 0)
+                                    if(tr is not null && tr.dest != 0)
                                     {
                                         //ZeroMemory(buffer,TEXTLEN+1);
                                         //Decodename(tr.dest,NM_LABEL,buffer);
@@ -1337,7 +1337,7 @@ ulong hwnd;
                             }
 
                             tr=(t_ref*) Getsortedbyselection(&tt.data, 1); //0 is CPU initial
-                            if (tr!=null)
+                            if (tr is not null)
                                 variables["$RESULT"] = tr.addr;
                         }
 
@@ -1384,12 +1384,12 @@ ulong hwnd;
             //Get initial Ref Window State
             t_table* tt;
             tt=(t_table*) Plugingetvalue(VAL_REFERENCES);
-            if (tt!=null)
+            if (tt is not null)
                 bRefVisible=(tt.hw!=0);
 
             t_dump* td;
             td=(t_dump*) Plugingetvalue(VAL_CPUDASM);
-            if (td==null)
+            if (td is null)
                 return false;
 
             ulong tmpaddr = TE_AllocMemory(0x100);
@@ -1453,16 +1453,16 @@ ulong hwnd;
                 variables["$RESULT"]=0;
                 if (Findallsequences(td,models,addr,null)>0) {
 			
-                    if (tt==null)
-                        tt=(t_table*) Plugingetvalue(VAL_REFERENCES);
+                    if (tt is null)
+                        tt = (t_table*) Plugingetvalue(VAL_REFERENCES);
 
-                    if (tt!=null) 
+                    if (tt is not null) 
                     {
                         t_ref* tr;
                         if (tt.data.n > 1)
                         {
                             tr=(t_ref*) Getsortedbyselection(&tt.data, 1); //0 is CPU initial
-                            if (tr!=null)
+                            if (tr is not null)
                                 variables["$RESULT"]=tr.addr;
                         }
 
@@ -1770,7 +1770,7 @@ ulong hwnd;
                 if (param == "COMMAND")
                 {
                     var instr = Host.Disassemble(addr);
-                    if (instr != null)
+                    if (instr is not null)
                         variables["$RESULT"] = Var.Create(instr.ToString());
                     else
                         variables["$RESULT"] = Var.Create(0);
@@ -1832,7 +1832,7 @@ ulong addr;
 				if(addr >= (ulong)Modules[i].modBaseAddr && addr < ((ulong)Modules[i].modBaseAddr + Modules[i].modBaseSize))
 				{
 					const Librarian::LIBRARY_ITEM_DATA* lib = Librarian.GetLibraryInfoEx(Modules[i].modBaseAddr);
-					if(lib!=null && lib.hFileMappingView!=null)
+					if(lib is not null && lib.hFileMappingView is not null)
 					{
 						ULONG_PTR filebase = Dumper.GetPE32DataFromMappedFile((ULONG_PTR)lib.hFileMappingView, null, UE_IMAGEBASE);
 						variables["$RESULT"] = Dumper.ConvertVAtoFileOffset((ULONG_PTR)lib.hFileMappingView, addr-(ULONG_PTR)Modules[i].modBaseAddr+filebase, false);
@@ -2302,7 +2302,7 @@ string str;
             {
                 string pAPI = Importer.GetAPIName(addr);
                 string pDLL = Importer.GetDLLName(addr);
-                if (pAPI != null && pDLL != null && pAPI[0] != 0 && pDLL[0] != 0)
+                if (pAPI is not null && pDLL is not null && pAPI[0] != 0 && pDLL[0] != 0)
                 {
                     string API = pAPI, DLL = pDLL;
 
@@ -3519,7 +3519,7 @@ string param;
             {
                 /*
                 bpt = ( t_table * ) Plugingetvalue ( VAL_BREAKPOINTS );
-                if ( bpt != null )
+                if ( bpt is not null )
                 {
                     bpoint = ( t_bpoint * ) bpt.data.data;
 
@@ -3832,10 +3832,10 @@ ulong dw1, dw2;
                 variables["$RESULT_1"] = 0;
 
                 bpt = ( t_table * ) Plugingetvalue ( VAL_BREAKPOINTS );
-                if ( bpt != null )
+                if ( bpt is not null )
                 {
                     bpoint = ( t_bpoint * ) ( bpt.data.data );
-                    if ( bpoint != null )
+                    if ( bpoint is not null )
                     {
                         n = bpt.data.n;
 
@@ -4077,7 +4077,7 @@ ulong dw1, dw2;
                     if(threadid == 0)
                         threadid = Plugingetvalue(VAL_MAINTHREADID);
                     t_thread* pthr = Findthread(threadid);
-                    if(pthr != null)
+                    if(pthr is not null)
                         Startruntrace(&(pthr.reg)); 
                 }
                 Settracecondition(buffer, 0, 0, 0, 0, 0);
@@ -4117,7 +4117,7 @@ ulong dw1, dw2;
                     if(threadid == 0)
                         threadid = Plugingetvalue(VAL_MAINTHREADID);
                     t_thread* pthr = Findthread(threadid);
-                    if(pthr != null)
+                    if(pthr is not null)
                         Startruntrace(&(pthr.reg));
                 }
                 Settracecondition(buffer, 0, 0, 0, 0, 0);

@@ -59,9 +59,9 @@ namespace Reko.Core.Hll.C
             if (obj is ArrayType_v1 arr)
                 return hash ^ GetHashCode(arr.ElementType);
             if (obj is StructType_v1 str)
-                return hash ^ (str.Name != null ? str.Name.GetHashCode() : 0);
+                return hash ^ (str.Name is not null ? str.Name.GetHashCode() : 0);
             if (obj is UnionType_v1 uni)
-                return hash ^ (uni.Name != null ? uni.Name.GetHashCode() : 0);
+                return hash ^ (uni.Name is not null ? uni.Name.GetHashCode() : 0);
 
             throw new NotImplementedException();
         }
@@ -83,7 +83,7 @@ namespace Reko.Core.Hll.C
         public bool VisitVoidType(VoidType_v1 vX)
         {
             var vY = (VoidType_v1) y!;
-            return vX == vY && vX != null;
+            return vX == vY && vX is not null;
         }
 
         /// <inheritdoc/>
@@ -138,7 +138,7 @@ namespace Reko.Core.Hll.C
         public bool VisitStructure(StructType_v1 sX)
         {
             var sY = (StructType_v1) y!;
-            return sX.Name == sY.Name && sX.Name != null;
+            return sX.Name == sY.Name && sX.Name is not null;
         }
 
         /// <inheritdoc/>
@@ -169,7 +169,7 @@ namespace Reko.Core.Hll.C
         public bool VisitUnion(UnionType_v1 uX)
         {
             var uY = (UnionType_v1) y!;
-            return uX.Name == uY.Name && uX.Name != null;
+            return uX.Name == uY.Name && uX.Name is not null;
         }
     }
 }

@@ -119,9 +119,9 @@ namespace Reko.Arch.Zilog.Z80
             }
             if (op is MemoryOperand memOp)
             {
-                if (!NormalizeRegisters && memOp.Base != null)
+                if (!NormalizeRegisters && memOp.Base is not null)
                     h = h * 23 ^ memOp.Base.GetHashCode();
-                if (!NormalizeConstants && memOp.Offset != null)
+                if (!NormalizeConstants && memOp.Offset is not null)
                     h = h * 17 ^ GetConstantHash(memOp.Offset);
                 return h;
             }

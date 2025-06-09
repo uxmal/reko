@@ -131,7 +131,7 @@ namespace Reko.Libraries.Microchip
                         using (ZipArchive picdbzipfile = ZipFile.OpenRead(CurrentDBPath))
                         {
                             var entry = picdbzipfile.GetEntry(PartsInfoFilename);
-                            if (entry != null)
+                            if (entry is not null)
                             {
                                 using (var eo = entry.Open())
                                 {
@@ -234,14 +234,14 @@ namespace Reko.Libraries.Microchip
             if (sPICName.StartsWith("PIC18", true, CultureInfo.InvariantCulture))
                 contentpath = ContentPIC18Path;
 
-            if (contentpath != null)
+            if (contentpath is not null)
             {
                 try
                 {
                     using (ZipArchive picdbzipfile = ZipFile.OpenRead(CurrentDBPath))
                     {
                         ZipArchiveEntry entry = picdbzipfile.GetEntry(contentpath + "/" + sPICName);
-                        if (entry != null)
+                        if (entry is not null)
                         {
                             using (var eo = entry.Open())
                                 xmlpic = XDocument.Load(eo)?.Root;

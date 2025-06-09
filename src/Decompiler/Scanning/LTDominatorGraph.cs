@@ -125,7 +125,7 @@ namespace Reko.Scanning
                 for (int i = 1; i < N; ++i)
                 {
                     var n = vertex[i];
-                    if (samedom[n] != null)
+                    if (samedom[n] is not null)
                     {
                         idom[n] = idom[samedom[n]!];
                     }
@@ -136,7 +136,7 @@ namespace Reko.Scanning
             TNode AncestorWithLowestSemi(TNode v)
             {
                 var a = ancestor[v]!;
-                if (ancestor[a] != null)
+                if (ancestor[a] is not null)
                 {
                     var b = AncestorWithLowestSemi(a);
                     ancestor[v] = ancestor[a];

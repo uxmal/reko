@@ -39,7 +39,7 @@ namespace Reko.Typing
 			foreach (EquivalenceClass e in store.UsedEquivalenceClasses)
 			{
 				eq = e;
-				if (eq.DataType != null)
+				if (eq.DataType is not null)
 					eq.DataType.Accept(this);
 			}
 
@@ -57,14 +57,14 @@ namespace Reko.Typing
 
         public DataType VisitStructure(StructureType str)
 		{
-			if (str.Name is null && eq != null)
+			if (str.Name is null && eq is not null)
 				str.Name = eq.Name;
             return str;
 		}
 
 		public DataType VisitUnion(UnionType ut)
 		{
-			if (ut.Name is null && eq != null)
+			if (ut.Name is null && eq is not null)
 				ut.Name = eq.Name;
             return ut;
 		}

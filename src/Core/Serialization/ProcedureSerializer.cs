@@ -115,7 +115,7 @@ namespace Reko.Core.Serialization
 
         private bool HasExplicitStorage(Argument_v1 sArg)
         {
-            return sArg.Kind != null;
+            return sArg.Kind is not null;
         }
 
         /// <summary>
@@ -156,14 +156,14 @@ namespace Reko.Core.Serialization
                     retAddrSize,
                     Architecture.WordWidth.Size);
 
-                if (ss.Arguments != null)
+                if (ss.Arguments is not null)
                 {
                     FpuStackGrowing = true;
                     for (int iArg = 0; iArg < ss.Arguments.Length; ++iArg)
                     {
                         var sArg = ss.Arguments[iArg];
                         var arg = DeserializeArgument(sArg, ss.Convention);
-                        if (arg != null)
+                        if (arg is not null)
                         {
                             if (sArg.OutParameter)
                                 outputs.Add(arg);
@@ -173,7 +173,7 @@ namespace Reko.Core.Serialization
                     }
                 }
                 Identifier? ret = null;
-                if (ss.ReturnValue != null)
+                if (ss.ReturnValue is not null)
                 {
                     FpuStackGrowing = false;
                     ret = DeserializeArgument(ss.ReturnValue, "");
@@ -191,13 +191,13 @@ namespace Reko.Core.Serialization
             }
             else
             {
-                var dtRet = ss.ReturnValue != null && ss.ReturnValue.Type != null
+                var dtRet = ss.ReturnValue is not null && ss.ReturnValue.Type is not null
                     ? ss.ReturnValue.Type.Accept(TypeLoader)
                     : null;
-                var dtThis = ss.EnclosingType != null
+                var dtThis = ss.EnclosingType is not null
                     ? new Pointer(ss.EnclosingType.Accept(TypeLoader), Architecture.PointerType.BitSize)
                     : null;
-                var dtParameters = ss.Arguments != null
+                var dtParameters = ss.Arguments is not null
                     ? ss.Arguments
                         .TakeWhile(p => p.Name != "...")
                         .Select(DeserializeParameter)
@@ -220,7 +220,7 @@ namespace Reko.Core.Serialization
                 }
                 var res = new CallingConventionBuilder();
                 cc.Generate(res, retAddrSize, dtRet, dtThis, dtParameters);
-                if (res.Return != null)
+                if (res.Return is not null)
                 {
                     var ret = new Identifier(
                         res.Return is RegisterStorage retReg ? retReg.Name : "",
@@ -228,13 +228,13 @@ namespace Reko.Core.Serialization
                         res.Return);
                     outputs.Add(ret);
                 }
-                if (res.ImplicitThis != null)
+                if (res.ImplicitThis is not null)
                 {
                     var param = new Identifier("this", dtThis!, res.ImplicitThis);
                     parameters.Add(param);
                 }
                 bool isVariadic = false;
-                if (ss.Arguments != null)
+                if (ss.Arguments is not null)
                 {
                     for (int i = 0; i < ss.Arguments.Length; ++i)
                     {
@@ -284,12 +284,12 @@ namespace Reko.Core.Serialization
         /// <returns></returns>
         private bool UseUserSpecifiedStorages(SerializedSignature ss)
         {
-            if (ss.Arguments != null && !ss.Arguments.All(HasExplicitStorage))
+            if (ss.Arguments is not null && !ss.Arguments.All(HasExplicitStorage))
                 return false;
-            if (ss.ReturnValue != null && ss.ReturnValue.Type != null &&
+            if (ss.ReturnValue is not null && ss.ReturnValue.Type is not null &&
                 !(ss.ReturnValue.Type is VoidType_v1) && !HasExplicitStorage(ss.ReturnValue))
                 return false;
-            if (ss.EnclosingType != null)
+            if (ss.EnclosingType is not null)
                 return false;
             return true;
         }

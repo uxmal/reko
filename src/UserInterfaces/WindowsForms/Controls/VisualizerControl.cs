@@ -69,7 +69,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing && selSvc != null)
+            if (disposing && selSvc is not null)
             {
                 selSvc.SelectionChanged -= SelSvc_SelectionChanged;
             }
@@ -81,15 +81,15 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             get { return services; }
             set
             {
-                if (selSvc != null)
+                if (selSvc is not null)
                 {
                     selSvc.SelectionChanged -= SelSvc_SelectionChanged;
                 }
                 services = value;
-                if (value != null)
+                if (value is not null)
                 {
                     selSvc = value.GetService<ISelectionService>();
-                    if (selSvc != null)
+                    if (selSvc is not null)
                     {
                         selSvc.SelectionChanged += SelSvc_SelectionChanged;
                     }
@@ -130,7 +130,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             var addr = AddressFromPosition(e.Location);
             if (addr is not null)
             {
-                if (selSvc != null)
+                if (selSvc is not null)
                 {
                     var ar = new AddressRange(addr.Value, addr.Value);
                     selSvc.SetSelectedComponents(new[] { ar });

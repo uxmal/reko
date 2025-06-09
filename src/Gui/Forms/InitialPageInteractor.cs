@@ -100,7 +100,7 @@ namespace Reko.Gui.Forms
 
         public override bool LeavePage()
         {
-            return (Decompiler != null);
+            return (Decompiler is not null);
         }
 
         public override IPhasePageInteractor NextPage(DecompilerPhases decompilerPhases)
@@ -296,8 +296,8 @@ namespace Reko.Gui.Forms
         private bool NeedsScanning()
         {
             return
-                Decompiler != null &&
-                Decompiler.Project != null &&
+                Decompiler is not null &&
+                Decompiler.Project is not null &&
                 Decompiler.Project.Programs.Any(p => p.NeedsScanning);
         }
     }

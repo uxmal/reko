@@ -77,7 +77,7 @@ namespace Reko.Core.IO
                 var itf = o.GetType().GetInterfaces().FirstOrDefault(x =>
                      x.IsGenericType &&
                      x.GetGenericTypeDefinition() == typeof(ICollection<>));
-                if (itf != null)
+                if (itf is not null)
                 {
                     var elementType = itf.GetGenericArguments()[0];
                     var elementMarker = GetMarker(elementType);

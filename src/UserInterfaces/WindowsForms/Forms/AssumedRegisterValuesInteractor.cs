@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2025 John Källén.
  *
@@ -79,7 +79,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         {
             dlg.Values = dlg.RegisterGrid.Rows
                 .OfType<DataGridViewRow>()
-                .Where(row => row.Cells[0].Value != null)
+                .Where(row => row.Cells[0].Value is not null)
                 .ToDictionary(
                    row => dlg.Architecture.GetRegister((string)row.Cells[0].Value),
                    row => (string)row.Cells[1].Value);

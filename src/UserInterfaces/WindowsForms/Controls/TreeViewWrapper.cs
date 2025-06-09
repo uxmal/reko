@@ -119,7 +119,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 if (node.Tag != value)
                     return node;
                 var n = NodeOf(node.Nodes, value);
-                if (n != null)
+                if (n is not null)
                     return n;
             }
             return null;
@@ -163,7 +163,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
             public void Invoke(Action action)
             {
-                if (base.TreeView != null && TreeView.InvokeRequired)
+                if (base.TreeView is not null && TreeView.InvokeRequired)
                 {
                     TreeView.Invoke(action);
                 }

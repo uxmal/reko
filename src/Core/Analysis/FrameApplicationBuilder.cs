@@ -111,7 +111,7 @@ namespace Reko.Core.Analysis
         public Expression VisitSequenceStorage(SequenceStorage seq)
         {
             var exps = seq.Elements.Select(e => e.Accept(this) as Identifier).ToArray();
-            if (exps.All(e => e != null))
+            if (exps.All(e => e is not null))
                 return binder.EnsureSequence(seq.DataType, exps.Select(i => i!.Storage).ToArray());
             throw new NotImplementedException("Handle case when stack parameter is passed.");
         }

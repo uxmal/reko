@@ -157,7 +157,7 @@ namespace Reko.Arch.Msp430
                 return id;
             case MemoryOperand mop:
                 Expression ea;
-                if (mop.Base != null)
+                if (mop.Base is not null)
                 {
                     ea = binder.EnsureRegister(mop.Base);
                     if (mop.PostIncrement)
@@ -240,7 +240,7 @@ namespace Reko.Arch.Msp430
                 return imm;
             case MemoryOperand mop:
                 Expression ea;
-                if (mop.Base != null)
+                if (mop.Base is not null)
                 {
                     if (mop.IsPcRelative)
                     {
@@ -292,7 +292,7 @@ namespace Reko.Arch.Msp430
                 return imm;
             case MemoryOperand mop:
                 Expression ea;
-                if (mop.Base != null)
+                if (mop.Base is not null)
                 {
                     if (mop.Base == arch.Registers.pc)
                     {
@@ -325,7 +325,7 @@ namespace Reko.Arch.Msp430
 
         private void EmitCc(Expression exp, FlagGroupStorage? grf)
         {
-            if (grf != null)
+            if (grf is not null)
             {
                 Assign(grf, m.Cond(exp));
             }

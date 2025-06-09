@@ -72,32 +72,32 @@ namespace Reko.Environments.MacOS.Classic
             {
                 ushort uInstr = uOpcodes[iOpcode];
                 var reg = PopRegister(uInstr);
-                if (reg != null)
+                if (reg is not null)
                 {
                     ssig.Arguments[iArg].Kind = new Register_v1(reg.Name);
                     --iArg;
                     continue;
                 }
                 var regValue = QuickConstant(uInstr);
-                if (regValue != null)
+                if (regValue is not null)
                 {
                     regValues.Add(regValue);
                     continue;
                 }
                 regValue = InlineConstant(uInstr, uOpcodes, ref iOpcode);
-                if (regValue != null)
+                if (regValue is not null)
                 {
                     regValues.Add(regValue);
                     continue;
                 }
                 var stackValue = PushConstant(uInstr, uOpcodes, ref iOpcode);
-                if (stackValue.sValue != null)
+                if (stackValue.sValue is not null)
                 {
                     stackValues.Push(stackValue);
                     continue;
                 }
                 reg = PushRegister(uInstr);
-                if (reg != null)
+                if (reg is not null)
                 {
                     var i = regValues.FindIndex(r => r.Register == reg.Name);
                     regValue = regValues[i];
@@ -127,7 +127,7 @@ namespace Reko.Environments.MacOS.Classic
                 {
                     ushort uInstr = uOpcodes[iOpcode];
                     var reg = PostCallRegisterStore(uInstr);
-                    if (reg != null)
+                    if (reg is not null)
                     {
                         if (ssig.ReturnValue is null)
                             throw new InvalidOperationException(

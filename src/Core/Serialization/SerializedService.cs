@@ -110,13 +110,13 @@ namespace Reko.Core.Serialization
         {
             var syscallinfo = new SyscallInfo();
             syscallinfo.Vector = Convert.ToInt32(this.Vector, 16);
-            if (this.RegisterValues != null)
+            if (this.RegisterValues is not null)
             {
                 syscallinfo.RegisterValues = new RegValue[this.RegisterValues.Length];
                 for (int i = 0; i < this.RegisterValues.Length; ++i)
                 {
                     var regName = this.RegisterValues[i].Register;
-                    if (regName != null)
+                    if (regName is not null)
                     {
                         syscallinfo.RegisterValues[i] = new RegValue
                         {
@@ -126,7 +126,7 @@ namespace Reko.Core.Serialization
                     }
                 }
             }
-            if (this.StackValues != null)
+            if (this.StackValues is not null)
             {
                 syscallinfo.StackValues = this.StackValues.Select(sv =>
                     new StackValue

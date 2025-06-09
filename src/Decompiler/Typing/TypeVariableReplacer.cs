@@ -51,7 +51,7 @@ namespace Reko.Typing
 				if (!visited.Contains(eq))
 				{
 					visited.Add(eq);
-					if (eq.DataType != null)
+					if (eq.DataType is not null)
 					{
 						eq.DataType = eq.DataType.Accept(this);
 					} 

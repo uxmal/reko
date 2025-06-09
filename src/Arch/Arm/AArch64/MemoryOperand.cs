@@ -43,7 +43,7 @@ namespace Reko.Arch.Arm.AArch64
         {
             renderer.WriteChar('[');
             renderer.WriteString(Base!.Name);
-            if (Offset != null && !Offset.IsIntegerZero)
+            if (Offset is not null && !Offset.IsIntegerZero)
             {
                 if (PostIndex)
                 {
@@ -60,7 +60,7 @@ namespace Reko.Arch.Arm.AArch64
                     renderer.WriteFormat("#&{0:X}", off);
                 }
             }
-            else if (Index != null)
+            else if (Index is not null)
             {
                 if (PostIndex)
                 {

@@ -315,7 +315,7 @@ namespace Reko.Arch.X86.Assembler
             MemoryOperand? mop = ops[0].Operand as MemoryOperand;
             if (mop is null && ops.Length > 1)
                 mop = ops[1].Operand as MemoryOperand;
-            if (mop != null)
+            if (mop is not null)
             {
                 EmitOpcode(opcodeMem | (mop.DataType == PrimitiveType.Word64 ? 4 : 0), null);
                 EmitModRM(fpuOperation, mop, null);
@@ -337,7 +337,7 @@ namespace Reko.Arch.X86.Assembler
                     EmitModRM(fpuOperation, new ParsedOperand(fop1, null));
                 return;
             }
-            if (fop1 != null)
+            if (fop1 is not null)
             {
                 fop2 = (FpuOperand) ops[1].Operand;
                 if (fop1.StNumber != 0)
@@ -548,12 +548,12 @@ namespace Reko.Arch.X86.Assembler
 
             RegisterStorage? regOpSrc = ops[1].Operand as RegisterStorage;
             RegisterStorage? regOpDst = ops[0].Operand as RegisterStorage;
-            if (regOpDst != null)	//$BUG: what about segment registers?
+            if (regOpDst is not null)	//$BUG: what about segment registers?
             {
                 byte reg = RegisterEncoding(regOpDst);
                 if (IsSegmentRegister(regOpDst))
                 {
-                    if (regOpSrc != null)
+                    if (regOpSrc is not null)
                     {
                         if (IsSegmentRegister(regOpSrc))
                             Error("Cannot assign between two segment registers");
@@ -571,7 +571,7 @@ namespace Reko.Arch.X86.Assembler
                     }
                 }
 
-                if (regOpSrc != null && IsSegmentRegister(regOpSrc))
+                if (regOpSrc is not null && IsSegmentRegister(regOpSrc))
                 {
                     if (IsSegmentRegister(regOpDst))
                         Error("Cannot assign between two segment registers");
@@ -583,7 +583,7 @@ namespace Reko.Arch.X86.Assembler
                 }
 
                 int isWord = IsWordWidth(regOpDst);
-                if (regOpSrc != null)
+                if (regOpSrc is not null)
                 {
                     if (regOpSrc.DataType.BitSize > regOpDst.DataType.BitSize)
                         this.Error(string.Format("size mismatch between {0} and {1}", regOpSrc, regOpDst));
@@ -607,7 +607,7 @@ namespace Reko.Arch.X86.Assembler
                     else
                         emitter.EmitByte(immOpSrc.ToInt32());
 
-                    if (ops[1].Symbol != null && isWord != 0)
+                    if (ops[1].Symbol is not null && isWord != 0)
                     {
                         ReferToSymbol(ops[1].Symbol!, emitter.Position - (int) immOpSrc.DataType.Size, immOpSrc.DataType);
                     }
@@ -618,7 +618,7 @@ namespace Reko.Arch.X86.Assembler
 
             MemoryOperand memOpDst = (MemoryOperand) ops[0].Operand;
             regOpSrc = ops[1].Operand as RegisterStorage;
-            if (regOpSrc != null)
+            if (regOpSrc is not null)
             {
                 if (IsSegmentRegister(regOpSrc))
                 {
@@ -827,7 +827,7 @@ namespace Reko.Arch.X86.Assembler
                         emitter.EmitByte(immOpSrc.ToInt32());
 
                     var sym = ops[1].Symbol;
-                    if (sym != null && isWord != 0)
+                    if (sym is not null && isWord != 0)
                     {
                         Debug.Assert(immOpSrc.ToUInt32() == 0);
                         ReferToSymbol(sym, emitter.Position - 2, PrimitiveType.Word16);
@@ -845,7 +845,7 @@ namespace Reko.Arch.X86.Assembler
             else
                 emitter.EmitByte(immOp.ToInt32());
 
-            if (ops[1].Symbol != null && isWord != 0)
+            if (ops[1].Symbol is not null && isWord != 0)
             {
                 ReferToSymbol(ops[1].Symbol!, emitter.Position - 2, PrimitiveType.Word16);
             }
@@ -914,7 +914,7 @@ namespace Reko.Arch.X86.Assembler
                 return;
             int offsetPosition = emitter.Position;
             EmitOffset(offset);
-            if (sym != null)
+            if (sym is not null)
                 ReferToSymbol(sym, offsetPosition, offset.DataType);
         }
 
@@ -926,7 +926,7 @@ namespace Reko.Arch.X86.Assembler
             emitter.EmitByte(b);
             int offsetPosition = emitter.Position;
             EmitOffset(offset);
-            if (sym != null)
+            if (sym is not null)
                 ReferToSymbol(sym, emitter.Position, offset.DataType);
         }
 
@@ -943,7 +943,7 @@ namespace Reko.Arch.X86.Assembler
 
         private bool IsDataWidthOverridden(DataType? dataWidth)
         {
-            return dataWidth != null &&
+            return dataWidth is not null &&
                 !dataWidth.IsReal &&
                 dataWidth.Size != 1 &&
                 dataWidth != SegmentDataWidth;
@@ -968,7 +968,7 @@ namespace Reko.Arch.X86.Assembler
 			{
 				emitter.EmitByte(0x66);
 			}
-			if (AddressWidth != null && AddressWidth != SegmentAddressWidth)
+			if (AddressWidth is not null && AddressWidth != SegmentAddressWidth)
 			{
 				emitter.EmitByte(0x67);
 			}
@@ -1392,7 +1392,7 @@ namespace Reko.Arch.X86.Assembler
         {
             DefineSymbol(procName);
             //$BUG: should be symbols. the ORG directive specifies the start symbol.
-            if (entryPoints != null && entryPoints.Count == 0)
+            if (entryPoints is not null && entryPoints.Count == 0)
             {
                 entryPoints.Add(
                     ImageSymbol.Procedure(arch, addrBase + emitter.Position));
@@ -1836,7 +1836,7 @@ namespace Reko.Arch.X86.Assembler
             EmitOpcode(0x0F, dataWidth);
             emitter.EmitByte(0xA4 | bits);
             EmitModRM(RegisterEncoding(regSrc), op0);
-            if (immShift != null)
+            if (immShift is not null)
                 emitter.EmitByte((byte) immShift.ToUInt32());
         }
 
@@ -2342,7 +2342,7 @@ namespace Reko.Arch.X86.Assembler
         {
             MemoryOperand mem;
             Symbol? sym = null;
-            if (offset != null)
+            if (offset is not null)
             {
                 if (symtab.Equates.TryGetValue(offset, out int val))
                 {
@@ -2354,7 +2354,7 @@ namespace Reko.Arch.X86.Assembler
                     sym = symtab.CreateSymbol(offset);
                     val = (int)this.addrBase.Offset;
                     Constant off = Constant.Create(@base is null
-                        ? seg != null ? PrimitiveType.Word16 : PrimitiveType.Word32
+                        ? seg is not null ? PrimitiveType.Word16 : PrimitiveType.Word32
                         : @base.DataType,
                         val);
                     mem = new MemoryOperand(width, @base ?? RegisterStorage.None, off);
@@ -2366,7 +2366,7 @@ namespace Reko.Arch.X86.Assembler
                 {
                 };
             }
-            if (seg != null)
+            if (seg is not null)
             {
                 mem.SegOverride = seg;
                 this.SegmentOverride = seg;

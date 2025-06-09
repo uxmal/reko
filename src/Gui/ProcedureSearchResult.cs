@@ -50,7 +50,7 @@ namespace Reko.Gui
 
         public void CreateColumns()
         {
-            if (View != null)
+            if (View is not null)
             {
                 View.AddColumn("Program", 10);
                 View.AddColumn("Address", 8);
@@ -75,7 +75,7 @@ namespace Reko.Gui
         {
             var codeSvc = sp.GetService<ICodeViewerService>();
             var hit = hits[i];
-            if (codeSvc != null)
+            if (codeSvc is not null)
                 codeSvc.DisplayProcedure(hit.Program, hit.Procedure, hit.Program.NeedsScanning);
 
             var mvs = sp.GetService<ILowLevelViewService>();

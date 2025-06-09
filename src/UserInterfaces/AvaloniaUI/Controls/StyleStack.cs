@@ -85,7 +85,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
             for (int i = stack.Count - 1; i >= 0; --i)
             {
                 var styles = GetStyles(stack[i]);
-                var ff = (IBrush?) styles.Select(s => s.Foreground).LastOrDefault(f => f != null);
+                var ff = (IBrush?) styles.Select(s => s.Foreground).LastOrDefault(f => f is not null);
                 if (ff is not null)
                     return ff;
             }
@@ -97,7 +97,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
             for (int i = stack.Count - 1; i>=0; --i)
             {
                 var styles = GetStyles(stack[i]);
-                var cu = styles.Select(s => s.Cursor).LastOrDefault(c => c != null);
+                var cu = styles.Select(s => s.Cursor).LastOrDefault(c => c is not null);
                 if (cu is StandardCursorType stdCursor)
                     return new Cursor(stdCursor);
             }
@@ -109,7 +109,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
            for(int i = stack.Count - 1; i >= 0; --i)
             {
                 var styles = GetStyles(stack[i]);
-                var fg = styles.Select(s => s.Foreground).LastOrDefault(f => f != null);
+                var fg = styles.Select(s => s.Foreground).LastOrDefault(f => f is not null);
                 if (fg is IBrush fgBrush)
                 {
                     return fgBrush;
@@ -127,7 +127,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
             for (int i = stack.Count - 1; i >= 0; --i)
             {
                 var styles = GetStyles(stack[i]);
-                var back = styles.Select(s => s.Background).LastOrDefault(b => b != null);
+                var back = styles.Select(s => s.Background).LastOrDefault(b => b is not null);
                 if (back is IBrush bgBrush)
                 {
                     return bgBrush;
@@ -145,7 +145,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
             for (int i = stack.Count - 1; i >= 0; --i)
             {
                 var styles = GetStyles(stack[i]);
-                var oFont = styles.Select(s => s.Font).LastOrDefault(f => f != null);
+                var oFont = styles.Select(s => s.Font).LastOrDefault(f => f is not null);
                 if (oFont is Typeface font)
                     return font;
             }
@@ -157,7 +157,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
             for (int i = stack.Count - 1; i >= 0; --i)
             {
                 var styles = GetStyles(stack[i]);
-                var oFont = styles.Select(s => s.FontSize).LastOrDefault(f => f != null);
+                var oFont = styles.Select(s => s.FontSize).LastOrDefault(f => f is not null);
                 if (oFont is double fontSize && fontSize > 0)
                     return fontSize;
             }

@@ -107,7 +107,7 @@ namespace Reko.UserInterfaces.WindowsForms
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat(format, args);
             Exception e = ex;
-            while (e != null)
+            while (e is not null)
             {
                 sb.Append(" ");
                 sb.Append(e.Message);

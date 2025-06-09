@@ -227,7 +227,7 @@ namespace Reko.ImageLoaders.Xex
 
         public IEnumerable<xex2_file_basic_compression_block> blocks(int num)
         {
-            if (_blocks != null) return _blocks;
+            if (_blocks is not null) return _blocks;
             
 
             var cursor = r.SliceHere();

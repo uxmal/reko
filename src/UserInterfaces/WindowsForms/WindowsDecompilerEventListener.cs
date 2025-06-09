@@ -65,7 +65,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         private IWorkerDialog CreateDialog(string caption)
         {
-            if (dlg != null)
+            if (dlg is not null)
                 throw new InvalidOperationException("Dialog is already running.");
             this.dlg = sp.RequireService<IDialogFactory>().CreateWorkerDialog();
             this.cancellationSvc = new CancellationTokenSource();
@@ -99,7 +99,7 @@ namespace Reko.UserInterfaces.WindowsForms
                 {
                     if (await uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
                         return true;
-                    if (lastException != null)
+                    if (lastException is not null)
                         await uiSvc.ShowError(lastException, "{0}", caption);
                     return false;
                 }
@@ -183,7 +183,7 @@ namespace Reko.UserInterfaces.WindowsForms
             {
                 dlg.DialogResult = DialogResult.Cancel;
             }
-            else if (e.Error != null)
+            else if (e.Error is not null)
             {
                 lastException = e.Error;
                 dlg.DialogResult = DialogResult.Cancel;

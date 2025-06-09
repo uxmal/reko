@@ -351,7 +351,7 @@ namespace Reko.Arch.Arm.AArch32
                     return;
                 }
                 Expression ea = baseReg;
-                if (mem.Offset != null)
+                if (mem.Offset is not null)
                 {
                     ea = m.IAdd(baseReg, mem.Offset);
                 }

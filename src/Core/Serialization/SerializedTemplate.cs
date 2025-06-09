@@ -65,7 +65,7 @@ namespace Reko.Core.Serialization
         public override string ToString()
         {
             var sb = new StringBuilder();
-            if (Scope != null)
+            if (Scope is not null)
             {
                 foreach (var seg in Scope)
                 {

@@ -64,7 +64,7 @@ namespace Reko.Environments.SysV.ArchSpecific
         {
             ccr.LowLevelDetails(arch.WordWidth.Size, 0x10);
 
-            if (dtRet != null)
+            if (dtRet is not null)
             {
                 SetReturnRegister(ccr, dtRet);
             }
@@ -75,7 +75,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             {
                 var dtParam = dtParams[i];
                 var prim = dtParam as PrimitiveType;
-                if (prim != null && prim.Domain == Domain.Real && !firstArgIntegral)
+                if (prim is not null && prim.Domain == Domain.Real && !firstArgIntegral)
                 {
                     if ((ir % 2) != 0)
                         ++ir;

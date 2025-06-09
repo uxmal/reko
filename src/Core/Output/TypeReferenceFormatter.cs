@@ -232,7 +232,7 @@ namespace Reko.Core.Output
                 //case tree_code.CHAR_TYPE:
                 //case tree_code.INTEGER_TYPE:
                 //case tree_code.REAL_TYPE:
-                //if (TYPE_NAME(t) != null)
+                //if (TYPE_NAME(t) is not null)
                 //    t = TYPE_NAME(t);
                 //else
                 //    t = c_common_type_for_mode(TYPE_MODE(t), TREE_UNSIGNED(t));
@@ -315,13 +315,13 @@ namespace Reko.Core.Output
             var pt = t as Pointer;
             var mp = t as MemberPointer;
             var rf = t as ReferenceTo;
-            if (pt != null || mp != null || rf != null)
+            if (pt is not null || mp is not null || rf is not null)
             {
                 // Get the types-specifier of this type.  
                 DataType pointee = StripPointerOperator(
-                    pt != null 
+                    pt is not null 
                         ? pt.Pointee
-                        : mp != null 
+                        : mp is not null 
                             ? mp.Pointee
                             : rf!.Referent);
                 SpecifierQualifierList(pointee);
@@ -330,17 +330,17 @@ namespace Reko.Core.Output
                     Formatter.Write(" (");
                     wantSpace = false;
                 }
-                if (pt != null)
+                if (pt is not null)
                     Pointer(pt);
-                else if (mp != null)
+                else if (mp is not null)
                     MemberPointer(mp);
-                else if (rf != null)
+                else if (rf is not null)
                     ReferenceTo(rf); 
                 --this.depth;
                 return;
             }
 
-            if (t is FunctionType ft && ft.ReturnValue != null)
+            if (t is FunctionType ft && ft.ReturnValue is not null)
             {
                 SpecifierQualifierList(ft.ReturnValue.DataType);
                 --this.depth;
@@ -361,16 +361,16 @@ namespace Reko.Core.Output
         {
             var pt = dt as Pointer;
             var mp = dt as MemberPointer;
-            while (pt != null || mp != null)
+            while (pt is not null || mp is not null)
             {
-                if (pt != null)
+                if (pt is not null)
                     dt = pt.Pointee;
                 else
                     dt = mp!.Pointee;
                 pt = dt as Pointer;
                 mp = dt as MemberPointer;
             }
-            if (dt is EquivalenceClass eq && eq.DataType != null)
+            if (dt is EquivalenceClass eq && eq.DataType is not null)
                 dt = eq.DataType;
             return dt;
         }
@@ -427,7 +427,7 @@ namespace Reko.Core.Output
             if (dt is Pointer pt)
             {
                 var pointee = pt.Pointee;
-                if (pointee is EquivalenceClass eq && eq.DataType != null)
+                if (pointee is EquivalenceClass eq && eq.DataType is not null)
                     pointee = eq.DataType;
                 if (pointee is ArrayType ||
                     pointee is FunctionType)
@@ -552,7 +552,7 @@ namespace Reko.Core.Output
             if (dt is FunctionType ft)
             {
                 ParameterTypeList(ft);
-                if (ft.ReturnValue != null)
+                if (ft.ReturnValue is not null)
                 {
                     AbstractDeclarator(ft.ReturnValue.DataType);
                 }

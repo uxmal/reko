@@ -513,7 +513,7 @@ namespace Reko.ImageLoaders.Ldm
         {
             for (int i = 0; i < this.mem.Length; ++i)
             {
-                Debug.Print("{0:X4}: mem: {0}", i, mem[i] != null);
+                Debug.Print("{0:X4}: mem: {0}", i, mem[i] is not null);
             }
         }
 

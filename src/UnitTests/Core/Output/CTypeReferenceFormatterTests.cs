@@ -53,8 +53,8 @@ namespace Reko.UnitTests.Core.Output
 
         private void Given_CTypeReferenceFormatter()
         {
-            Debug.Assert(platform != null);
-            Debug.Assert(formatter != null);
+            Debug.Assert(platform is not null);
+            Debug.Assert(formatter is not null);
             this.ctrf = new CTypeReferenceFormatter(platform.Object, formatter.Object);
         }
 

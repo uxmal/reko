@@ -68,7 +68,7 @@ namespace Reko.Arch.Etrax
             {
                 sb.Append(MnemonicAsString);
             }
-            if (this.DataWidth != null)
+            if (this.DataWidth is not null)
             {
                 sb.Append('.');
                 sb.Append(SizeFormat(this.DataWidth));

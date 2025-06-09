@@ -105,19 +105,19 @@ namespace Reko.Arch.Tlcs.Tlcs900
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             renderer.WriteChar('(');
-            if (Base != null)
+            if (Base is not null)
             {
                 if (Increment < 0)
                 {
                     renderer.WriteFormat("{0}:-", -Increment);
                 }
                 renderer.WriteString(Base.Name);
-                if (Index != null)
+                if (Index is not null)
                 {
                     renderer.WriteChar('+');
                     renderer.WriteString(Index.Name);
                 }
-                else if (Offset != null)
+                else if (Offset is not null)
                 {
                     int off = Offset.ToInt32();
                     int absOff;

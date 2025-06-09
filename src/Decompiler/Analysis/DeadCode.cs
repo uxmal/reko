@@ -96,7 +96,7 @@ namespace Reko.Analysis
                     foreach (var elem in seq.Expressions)
                     {
                         var a = ContainedApplication(elem);
-                        if (a != null)
+                        if (a is not null)
                         {
                             if (appl is null)
                                 appl = a;
@@ -161,7 +161,7 @@ namespace Reko.Analysis
 			while (liveIds.TryGetWorkItem(out SsaIdentifier? sid))
 			{
 				Statement? def = sid.DefStatement;
-				if (def != null)
+				if (def is not null)
 				{
 					if (!marks.Contains(def))
 					{
@@ -178,7 +178,7 @@ namespace Reko.Analysis
             foreach (var sid in ssa.Identifiers)
             {
                 sid.Uses.RemoveAll(u => !marks.Contains(u));
-                if (sid.DefStatement != null && !marks.Contains(sid.DefStatement))
+                if (sid.DefStatement is not null && !marks.Contains(sid.DefStatement))
                     sid.DefStatement = null!;
             }
 			foreach (Block b in ssa.Procedure.ControlGraph.Blocks)
@@ -224,7 +224,7 @@ namespace Reko.Analysis
         public override void VisitIdentifier(Identifier id)
 		{
 			SsaIdentifier sid = ssa.Identifiers[id];
-			if (sid.DefStatement != null)
+			if (sid.DefStatement is not null)
 				liveIds.Add(sid);
 		}
 

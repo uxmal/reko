@@ -611,7 +611,7 @@ HRESULT LoadRegTypeLib(
     {
         res= LoadTypeLib(bstr, out ppTLib);
 
-        if (ppTLib != null)
+        if (ppTLib is not null)
         {
             TLIBATTR attr;
 

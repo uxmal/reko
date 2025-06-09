@@ -177,7 +177,7 @@ public class ProjectionPropagator : IAnalysis<SsaState>
                     {
                         var sidLeft = ssa.Identifiers[idLeft];
                         e = FuseIdentifiers(MakeSegPtr(idLeft.DataType), sidSeg, sidLeft);
-                        if (e != null)
+                        if (e is not null)
                         {
                             var r = Extend(binEa.Right, e.DataType);
                             return new BinaryExpression(
@@ -191,7 +191,7 @@ public class ProjectionPropagator : IAnalysis<SsaState>
                     {
                         var sidRight = ssa.Identifiers[idRight];
                         e = FuseIdentifiers(MakeSegPtr(idRight.DataType), sidSeg, sidRight);
-                        if (e != null)
+                        if (e is not null)
                         {
                             var l = Extend(binEa.Left, e.DataType);
                             return new BinaryExpression(
@@ -266,11 +266,11 @@ public class ProjectionPropagator : IAnalysis<SsaState>
                 if (idWide is not null && idWide.DataType.BitSize != dtWide.BitSize)
                     return null;
                 var ass = sids.Select(s => s.DefStatement.Instruction as Assignment).ToArray();
-                if (ass.All(a => a != null))
+                if (ass.All(a => a is not null))
                 {
                     // All assignments. Are they all slices?
                     var slices = ass.Select(AsSlice).ToArray();
-                    if (slices.All(s => s != null))
+                    if (slices.All(s => s is not null))
                     {
                         if (AllSame(slices, (a, b) => cmp.Equals(a!.Expression, b!.Expression)) &&
                             AllAdjacent(slices!))
@@ -286,7 +286,7 @@ public class ProjectionPropagator : IAnalysis<SsaState>
                     return null;
                 }
 
-                if (idWide != null)
+                if (idWide is not null)
                 {
                     if (sids.All(s => s.DefStatement.Instruction is DefInstruction))
                     {
@@ -296,7 +296,7 @@ public class ProjectionPropagator : IAnalysis<SsaState>
                     }
 
                     var phis = sids.Select(s => s.DefStatement.Instruction as PhiAssignment).ToArray();
-                    if (phis.All(a => a != null))
+                    if (phis.All(a => a is not null))
                     {
                         // We have a sequence of phi functions
                         Changed = true;
@@ -325,7 +325,7 @@ public class ProjectionPropagator : IAnalysis<SsaState>
                         new BitRange(),
                         (br, sid) => br | sid.Identifier.Storage.GetBitRange());
                     var regWide = arch.GetRegister(sd, bits);
-                    idWide = (regWide != null)
+                    idWide = (regWide is not null)
                         ? ssa.Procedure.Frame.EnsureRegister(regWide)
                         : null;
                 }
@@ -519,7 +519,7 @@ public class ProjectionPropagator : IAnalysis<SsaState>
                 var sidPreds = phis.Select(p => ssa.Identifiers[(Identifier) p.Src.Arguments[iBlock].Value].DefStatement.Instruction as Assignment).ToArray();
                 var slices = sidPreds.Select(AsSlice).ToArray();
                 var aliases = sidPreds.Select(s => s as AliasAssignment).ToArray();
-                if (slices.All(s => s != null) &&
+                if (slices.All(s => s is not null) &&
                     AllSame(slices, (a, b) => this.cmp.Equals(a!.Expression, b!.Expression)) &&
                     AllAdjacent(slices!))
                 {

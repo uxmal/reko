@@ -66,12 +66,12 @@ namespace Reko.Gui
             get => decompiler;
             set
             {
-                if (decompiler != null)
+                if (decompiler is not null)
                 {
                     decompiler.ProjectChanged -= OnProjectChanged;
                 }
                 decompiler = value;
-                if (value != null)
+                if (value is not null)
                 {
                     value.ProjectChanged += OnProjectChanged;
                 }
@@ -84,13 +84,13 @@ namespace Reko.Gui
             get => project;
             set
             {
-                if (project != null)
+                if (project is not null)
                 {
                     RemoveScripts(project.ScriptFiles);
                     project.ScriptFiles.CollectionChanged -= OnScriptsChanged;
                 }
                 project = value;
-                if (value != null)
+                if (value is not null)
                 {
                     AddScripts(value.ScriptFiles);
                     value.ScriptFiles.CollectionChanged += OnScriptsChanged;

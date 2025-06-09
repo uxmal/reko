@@ -766,7 +766,7 @@ namespace Reko.CmdLine
             w.Write("Reko decompiler version {0}", attr.Version);
             var githashAttr = typeof(AssemblyMetadata).Assembly.GetCustomAttributes<AssemblyMetadataAttribute>()
                 .FirstOrDefault(a => a.Key == "GitHash");
-            if (githashAttr != null)
+            if (githashAttr is not null)
             {
                 w.Write(" (git:{0})", githashAttr.Value);
             }

@@ -107,7 +107,7 @@ namespace Reko.Typing
             var deser = program.CreateTypeLibraryDeserializer();
             foreach (var ud in program.User.Globals)
             {
-                if (ud.Value.DataType != null)
+                if (ud.Value.DataType is not null)
                 {
                     var dt = ud.Value.DataType.Accept(deser);
                     AddGlobalField(dt, ud.Key, ud.Value.Name);
@@ -173,7 +173,7 @@ namespace Reko.Typing
             {
                 desc.MeetDataType(sig.Outputs[0], sig.Outputs[0].DataType);
             }
-            if (sig.Parameters != null)
+            if (sig.Parameters is not null)
             {
                 foreach (var p in sig.Parameters)
                 {
@@ -241,7 +241,7 @@ namespace Reko.Typing
 
         public void VisitReturnInstruction(ReturnInstruction ret)
         {
-            if (ret.Expression != null)
+            if (ret.Expression is not null)
             {
                 var dt = ret.Expression.Accept(asc);
                 desc.MeetDataType(ret.Expression, dt);

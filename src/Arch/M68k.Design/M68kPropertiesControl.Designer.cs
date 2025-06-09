@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2025 John Källén.
  *
@@ -33,7 +33,7 @@ namespace Reko.Arch.M68k.Design
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing && (components is not null))
             {
                 components.Dispose();
             }

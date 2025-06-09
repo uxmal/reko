@@ -188,8 +188,8 @@ namespace Reko.ImageLoaders.Elf
                     sh.VirtualAddress,
                     sh.FileOffset,
                     sh.Size,
-                    sh.LinkedSection != null ? sh.LinkedSection.Name : "",
-                    sh.RelocatedSection != null ? sh.RelocatedSection.Name : "",
+                    sh.LinkedSection is not null ? sh.LinkedSection.Name : "",
+                    sh.RelocatedSection is not null ? sh.RelocatedSection.Name : "",
                     sh.Alignment,
                     sh.EntrySize);
             }

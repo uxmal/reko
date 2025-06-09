@@ -87,10 +87,10 @@ namespace Reko.UnitTests.Gui.Windows
                 var e = new XElement(
                     "node",
                     new XAttribute[] {
-                        n.Text != null ? new XAttribute("text", n.Text): null,
-                        n.ToolTipText != null ? new XAttribute("tip", n.ToolTipText) : null,
-                        n.Tag != null ? new XAttribute("tag", n.Tag.GetType().Name) : null
-                    }.Where(a => a != null),
+                        n.Text is not null ? new XAttribute("text", n.Text): null,
+                        n.ToolTipText is not null ? new XAttribute("tip", n.ToolTipText) : null,
+                        n.Tag is not null ? new XAttribute("tag", n.Tag.GetType().Name) : null
+                    }.Where(a => a is not null),
                     n.Nodes.Select(c => render(c)));
                     
                 return e;

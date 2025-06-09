@@ -49,7 +49,7 @@ namespace Reko.Structure
             this.loopNodes = new HashSet<T>();
             this.nodeColor = new Dictionary<T, NodeColor>();
             
-            Debug.Assert(entry != null);
+            Debug.Assert(entry is not null);
 
             // Find all nodes that can be reached from the back-edge
             // predecessors by reversed edges and paint them gray.

@@ -1098,7 +1098,7 @@ namespace Reko.Arch.X86
         {
             for (int i = 0; i < All.Length; ++i)
             {
-                if (All[i] != null && String.Compare(All[i].Name, name, true) == 0)
+                if (All[i] is not null && String.Compare(All[i].Name, name, true) == 0)
                     return All[i];
             }
             return RegisterStorage.None;

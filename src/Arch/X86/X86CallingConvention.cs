@@ -64,7 +64,7 @@ namespace Reko.Arch.X86
             ccr.LowLevelDetails(stackAlignment, retAddressOnStack);
             SetReturnStorage(ccr, dtRet, stackAlignment);
 
-            if (dtThis != null)
+            if (dtThis is not null)
             {
                 ccr.ImplicitThisStack(dtThis);
             }

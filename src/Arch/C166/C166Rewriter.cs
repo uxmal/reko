@@ -139,7 +139,7 @@ namespace Reko.Arch.C166
         private Expression Mem(MemoryOperand mem)
         {
             Expression ea;
-            if (mem.Base != null)
+            if (mem.Base is not null)
             {
                 var baseReg = binder.EnsureRegister(mem.Base);
                 ea = baseReg;

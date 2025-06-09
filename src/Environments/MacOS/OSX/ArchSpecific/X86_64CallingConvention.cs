@@ -65,7 +65,7 @@ namespace Reko.Environments.MacOS.OSX.ArchSpecific
             List<DataType> dtParams)
         {
             ccr.LowLevelDetails(arch.PointerType.Size, 0x0008);
-            if (dtRet != null)
+            if (dtRet is not null)
             {
                 SetReturnRegister(ccr, dtRet);
             }

@@ -42,7 +42,7 @@ namespace Reko.Environments.SysV.ArchSpecific
         public override void Generate(ICallingConventionBuilder ccr, int retAddressOnStack, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
         {
             ccr.LowLevelDetails(4, 24);
-            if (dtRet != null)
+            if (dtRet is not null)
             {
                 SetReturnRegister(dtRet, ccr);
             }

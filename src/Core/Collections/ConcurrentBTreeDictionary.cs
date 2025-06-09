@@ -348,7 +348,7 @@ namespace Reko.Core.Collections
                     iPos = (~idx) - 1;
                 }
                 var removed = nodes[iPos].Remove(key, tree);
-                if (removed != null)
+                if (removed is not null)
                 {
                     var nKeys = new TKey[tree.InternalNodeChildren];
                     var nNodes = new Node[tree.InternalNodeChildren];
@@ -471,7 +471,7 @@ namespace Reko.Core.Collections
             {
                 EnsureRoot();
                 var (left, right) = root!.Put(key, value, true, this);
-                if (right != null)
+                if (right is not null)
                     root = NewInternalRoot(left, right);
                 else
                     root = left;
@@ -496,7 +496,7 @@ namespace Reko.Core.Collections
         public ValueCollection Values => valueCollection;
 
         /// <inheritdoc/>
-        public int Count => root != null ? root.totalCount : 0;
+        public int Count => root is not null ? root.totalCount : 0;
 
         /// <inheritdoc/>
         public bool IsReadOnly => false;
@@ -507,7 +507,7 @@ namespace Reko.Core.Collections
             EnsureRoot();
             var (left, right) = root!.Put(key, value, false, this);
             Node newRoot;
-            if (right != null)
+            if (right is not null)
                 newRoot = NewInternalRoot(left, right);
             else
                 newRoot = left;
@@ -660,7 +660,7 @@ namespace Reko.Core.Collections
             if (root is null)
                 return false;
             var newRoot = root.Remove(key, this);
-            if (newRoot != null)
+            if (newRoot is not null)
             {
                 root = newRoot;
                 ++this.version;
@@ -956,7 +956,7 @@ namespace Reko.Core.Collections
 
         private void EnsureRoot()
         {
-            if (root != null)
+            if (root is not null)
                 return;
             root = new LeafNode(
                 new TKey[LeafNodeChildren],
@@ -966,7 +966,7 @@ namespace Reko.Core.Collections
 
         private static KeyValuePair<TKey, TValue> GetEntry(Node? root, int index)
         {
-            if (root != null && 0 <= index && index < root.totalCount)
+            if (root is not null && 0 <= index && index < root.totalCount)
             {
                 Node node = root;
                 int itemsLeft = index;

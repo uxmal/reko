@@ -90,7 +90,7 @@ namespace Reko.Core.Hll.Pascal
         /// <returns>A <see cref="Token"/> instance.</returns>
         public Token Read()
         {
-            if (this.token != null)
+            if (this.token is not null)
             {
                 var tok = this.token;
                 this.token = null;
@@ -105,7 +105,7 @@ namespace Reko.Core.Hll.Pascal
         /// <returns>A <see cref="Token"/> instance.</returns>
         public Token Peek()
         {
-            if (this.token != null)
+            if (this.token is not null)
             {
                 return token;
             }

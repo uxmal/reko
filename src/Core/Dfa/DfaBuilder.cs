@@ -321,9 +321,9 @@ namespace Reko.Core.Dfa
         private int MaxSignificant(TreeNode node)
         {
             int max = node.Number;
-            if (node.Left != null)
+            if (node.Left is not null)
                 max = Math.Max(max, MaxSignificant(node.Left));
-            if (node.Right != null)
+            if (node.Right is not null)
                 max = Math.Max(max, MaxSignificant(node.Right));
             return max;
         }

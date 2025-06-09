@@ -47,7 +47,7 @@ namespace Reko.Core.Hll.C
         /// <returns></returns>
         public int GetValue(CExpression? cExpression)
         {
-            if (cExpression != null)
+            if (cExpression is not null)
             {
                 value = Convert.ToInt32(cExpression.Accept(ceval));
             }

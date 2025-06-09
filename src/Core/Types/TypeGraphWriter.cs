@@ -77,7 +77,7 @@ namespace Reko.Core.Types
                 visited = new HashSet<DataType>();
 
             writer.Write("(class");
-            if (ct.Name != null)
+            if (ct.Name is not null)
             {
                 writer.Write(" \"{0}\"", ct.Name);
             }
@@ -139,14 +139,14 @@ namespace Reko.Core.Types
         public Formatter VisitFunctionType(FunctionType ft)
         {
             writer.Write("(fn ");
-            if (ft.ReturnValue!= null)
+            if (ft.ReturnValue is not null)
                 ft.ReturnValue.DataType.Accept(this);
             else
                 writer.Write("void");
             writer.Write(" (");
 
             string separator = "";
-            if (ft.Parameters != null)
+            if (ft.Parameters is not null)
             {
                 for (int i = 0; i < ft.Parameters.Length; ++i)
                 {
@@ -236,7 +236,7 @@ namespace Reko.Core.Types
         {
             writer.Write("(str");
             WriteQualifier(str.Qualifier);
-            if (str.LengthPrefixType != null)
+            if (str.LengthPrefixType is not null)
             {
                 writer.Write(" length-");
                 str.LengthPrefixType.Accept(this);
@@ -256,7 +256,7 @@ namespace Reko.Core.Types
                 visited = new HashSet<DataType>();
 
             writer.Write("({0}", str.IsSegment ? "segment" : "struct");
-            if (str.Name != null)
+            if (str.Name is not null)
             {
                 writer.Write(" \"{0}\"", str.Name);
             }
@@ -323,7 +323,7 @@ namespace Reko.Core.Types
                 visited = new HashSet<DataType>(); 
 
             writer.Write("(union");
-            if (ut.Name != null)
+            if (ut.Name is not null)
             {
                 writer.Write(" \"{0}\"", ut.Name);
             }

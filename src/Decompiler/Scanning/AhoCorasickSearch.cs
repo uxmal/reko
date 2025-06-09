@@ -193,7 +193,7 @@ namespace Reko.Scanning
                 /// <returns>True if transition exists</returns>
                 public bool ContainsTransition(TSymbol c)
                 {
-                    return GetTransition(c) != null;
+                    return GetTransition(c) is not null;
                 }
 
                 #endregion
@@ -333,7 +333,7 @@ namespace Reko.Scanning
                         var r = nd.Parent.Failure;
                         var c = nd.Char;
 
-                        while (r != null && !r.ContainsTransition(c)) r = r.Failure;
+                        while (r is not null && !r.ContainsTransition(c)) r = r.Failure;
                         if (r is null)
                             nd.Failure = _root;
                         else
@@ -397,7 +397,7 @@ namespace Reko.Scanning
                         if (trans is null)
                             ptr = ptr.Failure;
                     }
-                    if (trans != null) ptr = trans;
+                    if (trans is not null) ptr = trans;
 
                     foreach (var found in ptr.Results)
                         ret.Add(new StringSearchResult<TSymbol>(index - found.Length + 1, found));
@@ -426,7 +426,7 @@ namespace Reko.Scanning
                         if (ptr == _root) break;
                         if (trans is null) ptr = ptr.Failure;
                     }
-                    if (trans != null) ptr = trans;
+                    if (trans is not null) ptr = trans;
 
                     foreach (var found in ptr.Results)
                         return new StringSearchResult<TSymbol>(index - found.Length + 1, found);
@@ -455,7 +455,7 @@ namespace Reko.Scanning
                         if (ptr == _root) break;
                         if (trans is null) ptr = ptr.Failure;
                     }
-                    if (trans != null) ptr = trans;
+                    if (trans is not null) ptr = trans;
 
                     if (ptr.Results.Length > 0) return true;
                     index++;
@@ -520,7 +520,7 @@ namespace Reko.Scanning
                     TreeNode r = nd.Parent.Failure;
                     TSymbol c = nd.Char;
 
-                    while (r != null && !r.ContainsTransition(c)) 
+                    while (r is not null && !r.ContainsTransition(c)) 
                         r = r.Failure;
                     if (r is null)
                         nd.Failure = root;
@@ -597,7 +597,7 @@ namespace Reko.Scanning
                     if (trans is null)
                         ptr = ptr.Failure;
                 }
-                if (trans != null)
+                if (trans is not null)
                     ptr = trans;
                 foreach (TSymbol[] found in ptr.Results)
                 {
@@ -645,7 +645,7 @@ namespace Reko.Scanning
 
             public bool ContainsTransition(TSymbol c)
             {
-                return GetTransition(c) != null;
+                return GetTransition(c) is not null;
             }
 
             public ICollection<TreeNode> Transitions

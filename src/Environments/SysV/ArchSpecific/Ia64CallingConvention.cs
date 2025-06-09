@@ -46,7 +46,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             {
                 ccr.StackParam(dt);
             }
-            if (dtRet != null)
+            if (dtRet is not null)
             {
                 ccr.RegReturn(arch.GetRegister("r12")!);
             }

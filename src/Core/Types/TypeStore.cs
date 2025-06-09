@@ -184,10 +184,10 @@ namespace Reko.Core.Types
             if (this.TryGetTypeVariable(e, out var tv))
                 return tv;
 
-            tv = name != null ? factory.CreateTypeVariable(name) : factory.CreateTypeVariable();
+            tv = name is not null ? factory.CreateTypeVariable(name) : factory.CreateTypeVariable();
             AddDebugSource(tv, addr, e!);
             tv.Class = new EquivalenceClass(tv);
-            if (e != null)
+            if (e is not null)
                 this.SetTypeVariable(e, tv);
             this.TypeVariables.Add(tv);
             this.usedClasses.Add(tv.Class.Number, tv.Class);
@@ -207,7 +207,7 @@ namespace Reko.Core.Types
 
         private void AddDebugSource(TypeVariable tv, Address? uAddr, Expression e)
         {
-            if (e != null)
+            if (e is not null)
                 tvSources.Add(tv, (uAddr, e));
         }
 
@@ -221,11 +221,11 @@ namespace Reko.Core.Types
                 EquivalenceClass c = tv.Class;
                 DataType dtOld = c.DataType;
                 var dtNew = dt;
-                if (dtOld != null)
+                if (dtOld is not null)
                 {
                     dtNew = u.Unify(dt, dtOld)!;
                 }
-                else if (dt != null)
+                else if (dt is not null)
                 {
                     dtNew = dt.Clone();        // why clone???
                 }
@@ -329,7 +329,7 @@ namespace Reko.Core.Types
             writer.WriteLine("// Equivalence classes ////////////");
             foreach (TypeVariable tv in TypeVariables)
             {
-                if (tv.Class.Representative == tv && tv.Class.DataType != null)
+                if (tv.Class.Representative == tv && tv.Class.DataType is not null)
                 {
                     writer.WriteLine("{0}: {1}", tv.Class, tv.Class.DataType);
                     foreach (TypeVariable tvMember in tv.Class.ClassMembers)

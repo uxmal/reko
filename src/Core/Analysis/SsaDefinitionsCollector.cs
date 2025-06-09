@@ -69,7 +69,7 @@ namespace Reko.Core.Analysis
             base.VisitCallInstruction(ci);
             definitions.AddRange(ci.Definitions
                 .Select(d => d.Expression as Identifier)
-                .Where(i => i != null)!);
+                .Where(i => i is not null)!);
         }
 
         /// <inheritdoc/>

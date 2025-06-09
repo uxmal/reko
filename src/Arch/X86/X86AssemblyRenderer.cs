@@ -313,7 +313,7 @@ namespace Reko.Arch.X86
                     renderer.WriteUInt32(mem.Scale);
                 }
             }
-            if (mem.Base != RegisterStorage.None && mem.Offset != null && mem.Offset.IsValid)
+            if (mem.Base != RegisterStorage.None && mem.Offset is not null && mem.Offset.IsValid)
             {
                 if (mem.Offset.DataType == PrimitiveType.Byte || mem.Offset.DataType.Domain == Domain.SignedInt)
                 {

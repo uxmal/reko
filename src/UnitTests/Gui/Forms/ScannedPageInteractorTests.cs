@@ -100,7 +100,7 @@ namespace Reko.UnitTests.Gui.Forms
         private Mock<T> AddService<T>() where T : class
         {
             var oldSvc = sc.GetService(typeof(T));
-            if (oldSvc != null)
+            if (oldSvc is not null)
                 sc.RemoveService(typeof(T));
             var svc = new Mock<T>();
             sc.AddService(typeof(T), svc.Object);

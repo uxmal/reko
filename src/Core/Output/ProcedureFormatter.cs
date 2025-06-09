@@ -80,7 +80,7 @@ namespace Reko.Core.Output
                         var ret = block.Statements.Count > 0 && (block.Statements[^1].Instruction is ReturnInstruction);
                         if (!ret && (i == blocks.Length - 1 || succ[0] != blocks[i + 1]))
                         {
-                            WriteGoto(succ[0] != null ? succ[0].DisplayName : "(null)");
+                            WriteGoto(succ[0] is not null ? succ[0].DisplayName : "(null)");
                         }
                     }
                     else if (succ.Count == 2 && block.Statements.Count > 0)

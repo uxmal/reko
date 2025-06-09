@@ -105,18 +105,18 @@ namespace Reko.Core.Serialization
         {
             var sb = new StringBuilder();
             sb.Append("fn(");
-            if (this.EnclosingType != null)
+            if (this.EnclosingType is not null)
                 sb.AppendFormat("{0},", EnclosingType);
             if (!string.IsNullOrEmpty(Convention))
                 sb.AppendFormat("{0},", Convention);
-            if (ReturnValue != null)
+            if (ReturnValue is not null)
             {
                 sb.Append(ReturnValue.ToString());
             }
             else 
                 sb.Append("void");
             sb.Append(",(");
-            if (Arguments != null)
+            if (Arguments is not null)
             {
                 sb.Append(string.Join(",", Arguments.Select(a => a.ToString())));
             }

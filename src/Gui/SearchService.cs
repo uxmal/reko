@@ -36,7 +36,7 @@ namespace Reko.Gui
 
         public void StartSearch(IObservable<ICodeLocation> newSearcher, ISearchResult result)
         {
-            if (subscription != null)
+            if (subscription is not null)
             {
                 subscription.Dispose();
             }

@@ -367,7 +367,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 if (!dasm.rdr.TryReadByte(out byte b))
                     return dasm.CreateInvalidInstruction();
                 dasm.byteReg = regByte;
-                if (regWord != null)
+                if (regWord is not null)
                     dasm.wordReg = regWord;
                 return regEncodings[b].Decode(b, dasm);
             }
@@ -458,7 +458,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                         &&
                         operand.Base is null &&
                         operand.Index is null &&
-                        operand.Offset != null)
+                        operand.Offset is not null)
                     {
                         // JP cc,(XXXX) should be JP cc,XXXX
                         var op = Address.Ptr16(operand.Offset.ToUInt16());
@@ -564,7 +564,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 }
                 else if (dasm.backPatchOp == 1)
                 {
-                    if (operand != null)
+                    if (operand is not null)
                     {
                         instr.Operands = new MachineOperand[] { instr.Operands[0], operand };
                         operand.DataType = instr.Operands[0].DataType;

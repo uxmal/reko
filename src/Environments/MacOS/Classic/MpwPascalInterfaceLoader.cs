@@ -80,7 +80,7 @@ namespace Reko.Environments.MacOS.Classic
                     continue;
                 var ici = new InlineCodeInterpreter(constants);
                 var syscall =  ici.BuildSystemCallFromMachineCode(decl.Name, ft, inline.Opcodes);
-                if (syscall != null)
+                if (syscall is not null)
                 {
                     var svc = syscall.Build(platform, typelib);
                     PostProcessSignature(platform, svc);
@@ -101,7 +101,7 @@ namespace Reko.Environments.MacOS.Classic
             {
                 var p = parameters[i];
                 var at = p.DataType.ResolveAs<Reko.Core.Types.ArrayType>();
-                if (at != null && (at.IsUnbounded || at.Length <= 1))
+                if (at is not null && (at.IsUnbounded || at.Length <= 1))
                 {
                     // Size 1 arrays are commonly used as boundless arrays in signatures.
                     var dtNew = new Core.Types.Pointer(at.ElementType, platform.PointerType.BitSize);
@@ -110,7 +110,7 @@ namespace Reko.Environments.MacOS.Classic
                     parameters[i] = p;
                 }
                 var st = p.DataType.ResolveAs<Core.Types.StructureType>();
-                if (st != null)
+                if (st is not null)
                 {
                     st.Size = st.GetInferredSize(); 
                 }
@@ -167,7 +167,7 @@ namespace Reko.Environments.MacOS.Classic
             //    {
             //        var nt = ntde.GetNameAndType(declarator.Declarator);
             //        var ssig = (SerializedSignature)nt.DataType;
-            //        if (ssig.ReturnValue != null)
+            //        if (ssig.ReturnValue is not null)
             //        {
             //            ssig.ReturnValue.Kind = ntde.GetArgumentKindFromAttributes(
             //                "returns", declaration.attribute_list);

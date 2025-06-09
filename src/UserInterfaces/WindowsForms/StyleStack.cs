@@ -46,13 +46,13 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         public void Dispose()
         {
-            if (font != null)
+            if (font is not null)
                 font.Dispose();
             font = null;
-            if (bg != null)
+            if (bg is not null)
                 bg.Dispose();
             bg = null;
-            if (fg != null)
+            if (fg is not null)
                 fg.Dispose();
             fg = null;
         }
@@ -72,7 +72,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         private SolidBrush CacheBrush(ref SolidBrush brInstance, SolidBrush brNew)
         {
-            if (brInstance != null)
+            if (brInstance is not null)
                 brInstance.Dispose();
             brInstance = brNew;
             return brNew;
@@ -92,8 +92,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             for (int i = stack.Count - 1; i >= 0; --i)
             {
                 var styles = GetStyles(stack[i]);
-                var ff = (SolidBrush) styles.Select(s => s.Foreground).LastOrDefault(f => f != null);
-                if (ff != null)
+                var ff = (SolidBrush) styles.Select(s => s.Foreground).LastOrDefault(f => f is not null);
+                if (ff is not null)
                     return ff;
             }
             return CacheBrush(ref fg, new SolidBrush(ctrl.ForeColor));
@@ -105,8 +105,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             for (int i = stack.Count - 1; i>=0; --i)
             {
                 var styles = GetStyles(stack[i]);
-                cu = (Cursor)styles.Select(s => s.Cursor).LastOrDefault(c => c != null);
-                if (cu != null)
+                cu = (Cursor)styles.Select(s => s.Cursor).LastOrDefault(c => c is not null);
+                if (cu is not null)
                     return cu;
             }
             return Cursors.Default;
@@ -117,8 +117,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
            for(int i = stack.Count - 1; i >= 0; --i)
             {
                 var styles = GetStyles(stack[i]);
-                var fg = styles.Select(s => s.Foreground).LastOrDefault(f => f != null);
-                if (fg != null)
+                var fg = styles.Select(s => s.Foreground).LastOrDefault(f => f is not null);
+                if (fg is not null)
                     return ((SolidBrush) fg).Color;
             }
             return fgColor;
@@ -129,8 +129,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             for (int i = stack.Count - 1; i >= 0; --i)
             {
                 var styles = GetStyles(stack[i]);
-                var back = styles.Select(s => s.Background).LastOrDefault(b => b != null);
-                if (back != null)
+                var back = styles.Select(s => s.Background).LastOrDefault(b => b is not null);
+                if (back is not null)
                     return (SolidBrush) back;
             }
             return CacheBrush(ref bg, new SolidBrush(bgColor));
@@ -141,7 +141,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             for (int i = stack.Count - 1; i >= 0; --i)
             {
                 var styles = GetStyles(stack[i]);
-                var oFont = styles.Select(s => s.Font).LastOrDefault(f => f != null);
+                var oFont = styles.Select(s => s.Font).LastOrDefault(f => f is not null);
                 if (oFont is Font font)
                     return font;
             }

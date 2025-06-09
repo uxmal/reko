@@ -155,9 +155,9 @@ namespace Reko.Tools.C2Xml.UnitTests
             }
             finally
             {
-                if (writer != null)
+                if (writer is not null)
                     writer.Dispose();
-                if (reader != null)
+                if (reader is not null)
                     reader.Dispose();
             }
         }

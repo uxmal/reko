@@ -69,7 +69,7 @@ namespace Reko.Environments.AmigaOS.Design
 
         public void Close()
         {
-            if (Control != null)
+            if (Control is not null)
             {
                 Control.Dispose();
                 Control = null;

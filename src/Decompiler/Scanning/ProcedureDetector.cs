@@ -581,8 +581,8 @@ namespace Reko.Scanning
                 from n in nodes
                 join de in domGraph on n equals de.Value into des
                 from de in des.DefaultIfEmpty()
-                orderby n.Name, de.Key != null ? de.Key.Name : ""
-                select new { n.Name, Kid = de.Key != null ? de.Key.Name : "*" };
+                orderby n.Name, de.Key is not null ? de.Key.Name : ""
+                select new { n.Name, Kid = de.Key is not null ? de.Key.Name : "*" };
             foreach (var item in q)
             {
                 Debug.Print("{0}: {1}", item.Name, item.Kid);

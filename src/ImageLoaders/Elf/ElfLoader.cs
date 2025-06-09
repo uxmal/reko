@@ -300,7 +300,7 @@ namespace Reko.ImageLoaders.Elf
             var a = cfgSvc.GetArchitecture(arch, options);
             if (a is null)
                 throw new InvalidOperationException($"Unable to load architecture '{arch}'.");
-            if (stackRegName != null)
+            if (stackRegName is not null)
             {
                 var sp = a.GetRegister(stackRegName);
                 if (sp is null)
@@ -450,7 +450,7 @@ namespace Reko.ImageLoaders.Elf
 
         public Program LoadImage(IPlatform platform, byte[] rawImage)
         {
-            Debug.Assert(platform != null);
+            Debug.Assert(platform is not null);
             this.platform = platform;
             this.rawImage = rawImage;
             var addrPreferred = ComputeBaseAddress(platform);

@@ -98,7 +98,7 @@ namespace Reko.UserInterfaces.WindowsForms
             this.proc = stm.Block.Procedure;
             this.showProcedures = true;
             ProgramChanged();
-            if (program != null)
+            if (program is not null)
             {
                 SelectedAddress = stm.Address;
             }
@@ -162,7 +162,7 @@ namespace Reko.UserInterfaces.WindowsForms
                 Procedure proc = dataItemNode.Proc;
                 if (ShowItem(dataItemNode))
                 {
-                    if (proc != null)
+                    if (proc is not null)
                     {
                         var selSvc = services.RequireService<ISelectedAddressService>();
                         var model = new ProcedureCodeModel(proc, factory, selSvc);
@@ -172,7 +172,7 @@ namespace Reko.UserInterfaces.WindowsForms
                         nodeCreated = true;
                     }
                     else if (program.ImageMap.TryFindItem(curAddr, out ImageMapItem item) &&
-                              item.DataType != null &&
+                              item.DataType is not null &&
                             item.DataType is not UnknownType)
                     {
                         var dt = item.DataType;
@@ -296,7 +296,7 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             program = null;
             ProgramChanged();
-            if (combinedCodeView != null)
+            if (combinedCodeView is not null)
                 combinedCodeView.Dispose();
             combinedCodeView = null;
         }
@@ -360,7 +360,7 @@ namespace Reko.UserInterfaces.WindowsForms
                     return true;
                 case CmdIds.EditLabel:
                     Block block = GetSelectedBlock();
-                    status.Status = block != null
+                    status.Status = block is not null
                         ? MenuStatus.Enabled | MenuStatus.Visible
                         : 0;
                     return true;

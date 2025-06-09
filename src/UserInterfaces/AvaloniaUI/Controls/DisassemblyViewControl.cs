@@ -235,7 +235,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
 
         public bool RenderInstructionsCanonically
         {
-            get { return this.ViewModel != null && this.ViewModel.RenderInstructionsCanonically; }
+            get { return this.ViewModel is not null && this.ViewModel.RenderInstructionsCanonically; }
             set
             {
                 if (this.ViewModel is null)
@@ -247,7 +247,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
 
         public bool ShowPcRelative
         {
-            get { return this.ViewModel != null ? this.ViewModel.ShowPcRelative : false; }
+            get { return this.ViewModel is not null ? this.ViewModel.ShowPcRelative : false; }
             set
             {
                 if (this.ViewModel is null)

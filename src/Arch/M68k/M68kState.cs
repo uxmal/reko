@@ -62,7 +62,7 @@ namespace Reko.Arch.M68k
 
         public override void SetRegister(RegisterStorage r, Constant v)
         {
-            if (v != null && v.IsValid)
+            if (v is not null && v.IsValid)
             {
                 values[r.Number] = v;
                 isValid[r.Number] = true;

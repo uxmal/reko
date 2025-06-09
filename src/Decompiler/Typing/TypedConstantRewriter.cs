@@ -54,10 +54,10 @@ namespace Reko.Typing
             this.eventListener = eventListener;
             this.platform = program.Platform;
             this.globals = program.Globals;
-            if (program.SegmentMap != null)
+            if (program.SegmentMap is not null)
             {
                 this.mpSelectorToSegId = program.SegmentMap.Segments.Values
-                    .Where(s => s.Identifier != null && s.Address.Selector.HasValue)
+                    .Where(s => s.Identifier is not null && s.Address.Selector.HasValue)
                     .ToDictionary(s => s.Address.Selector!.Value, s => s.Identifier)!;
             }
             else
@@ -169,7 +169,7 @@ namespace Reko.Typing
 		{
             get
             {
-                if (globals != null && store.TryGetTypeVariable(globals, out var tvGlobals))
+                if (globals is not null && store.TryGetTypeVariable(globals, out var tvGlobals))
                 {
                     if (tvGlobals.DataType is Pointer pGlob)
                     {
@@ -213,7 +213,7 @@ namespace Reko.Typing
         public Expression VisitEnum(EnumType e)
         {
             var item = e.Members.FirstOrDefault(de => de.Value == c!.ToInt64());
-            if (item.Key != null)
+            if (item.Key is not null)
                 return new Identifier(item.Key, e, RegisterStorage.None);
             return new Cast(e, c!);
         }
@@ -235,7 +235,7 @@ namespace Reko.Typing
 			Pointer p = (Pointer) memptr.BasePointer;
 			EquivalenceClass eq = (EquivalenceClass) p.Pointee;
 			StructureType baseType = (StructureType) eq.DataType;
-			Expression baseExpr = this.basePtr != null
+			Expression baseExpr = this.basePtr is not null
 				? new Dereference(this.basePtr.DataType, this.basePtr)
                 : (Expression) new ScopeResolution(baseType);
 
@@ -269,7 +269,7 @@ namespace Reko.Typing
                     return segID;
                 return e;
             } 
-            else if (GlobalVars != null)
+            else if (GlobalVars is not null)
             {
                 // Null pointer.
                 if (c!.IsZero)
@@ -301,7 +301,7 @@ namespace Reko.Typing
 
                 var dt = ptr.Pointee.ResolveAs<DataType>()!;
                 var charType = MaybeCharType(dt);
-                if (charType != null && program.IsPtrToReadonlySection(addr.Value))
+                if (charType is not null && program.IsPtrToReadonlySection(addr.Value))
                 {
                     PromoteToCString(c, charType);
                     if (!program.TryCreateImageReader(program.Architecture, addr.Value, out var rdr))
@@ -350,7 +350,7 @@ namespace Reko.Typing
             // as a separate global character array.
             var dt = StringType.NullTerminated(charType);
             var field = GlobalVars!.Fields.AtOffset(c.ToInt32());
-            if (field != null)
+            if (field is not null)
             {
                 field.DataType = dt;
             }
@@ -448,7 +448,7 @@ namespace Reko.Typing
 #if TODO
             var f = GlobalVars.Fields.LowerBound(c.ToInt32());
             //StructureField f = str.Fields.AtOffset(offset);
-            if (f != null)
+            if (f is not null)
             {
                 Unifier u = new Unifier();
                 if (u.AreCompatible(f.DataType, dt))
@@ -459,7 +459,7 @@ namespace Reko.Typing
                 // Check for special case when an array ends at the offset.
                 f = GlobalVars.Fields.LowerBound(c.ToInt32() - 1);
                 var array = f.DataType.ResolveAs<ArrayType>();
-                if (array != null && u.AreCompatible(array.ElementType, dt))
+                if (array is not null && u.AreCompatible(array.ElementType, dt))
                 {
                     return f;
                 }

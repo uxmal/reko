@@ -155,7 +155,7 @@ namespace Reko.Arch.Blackfin
                 .Concat(Pointers)
                 .Concat(Indices)
                 .Concat(Enumerable.Range(0, 8).Select(i => (RegisterStorage) null!))
-                .Select(r => r != null
+                .Select(r => r is not null
                     ? RegisterStorage.Reg16(r.Name + ".H", r.Number, 16)
                     : null!)
                 .ToArray();

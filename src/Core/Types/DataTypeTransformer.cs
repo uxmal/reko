@@ -63,11 +63,11 @@ namespace Reko.Core.Types
         /// <inheritdoc/>
         public virtual DataType VisitFunctionType(FunctionType ft)
         {
-            if (ft.ReturnValue != null)
+            if (ft.ReturnValue is not null)
                 ft.ReturnValue.DataType = ft.ReturnValue.DataType.Accept(this);
 
             Identifier[]? p = ft.Parameters;
-            if (p != null)
+            if (p is not null)
             { 
                 for (int i = 0; i < p.Length; ++i)
                 {

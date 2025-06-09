@@ -100,7 +100,7 @@ public class UnreachableBlockRemover : IAnalysis<SsaState>
             if (block.Statements.Count < 1)
                 return false;
             var stmLast = block.Statements[^1];
-            if (stmLast != null && stmLast.Instruction is Branch branch)
+            if (stmLast is not null && stmLast.Instruction is Branch branch)
             {
                 return branch.Condition is Constant;
             }
@@ -208,7 +208,7 @@ public class UnreachableBlockRemover : IAnalysis<SsaState>
             var deadSids = new List<SsaIdentifier>();
             foreach (var sid in ssa.Identifiers)
             {
-                if (sid.DefStatement != null && deadStms.Contains(sid.DefStatement))
+                if (sid.DefStatement is not null && deadStms.Contains(sid.DefStatement))
                 {
                     deadSids.Add(sid);
                 }

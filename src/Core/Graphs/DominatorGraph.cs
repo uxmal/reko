@@ -126,7 +126,7 @@ namespace Reko.Core.Graphs
         /// otherwise false.</returns>
         public bool DominatesStrictly(T? dominator, T node)
         {
-            while (idoms.TryGetValue(node, out T? iDom) && iDom != null)
+            while (idoms.TryGetValue(node, out T? iDom) && iDom is not null)
             {
                 if (iDom == dominator)
                     return true;
@@ -183,7 +183,7 @@ namespace Reko.Core.Graphs
                         }
                     }
 
-                    if ((!idoms.TryGetValue(b, out T? oldIdom) || oldIdom != newIdom) && newIdom != null)
+                    if ((!idoms.TryGetValue(b, out T? oldIdom) || oldIdom != newIdom) && newIdom is not null)
                     {
                         idoms[b] = newIdom;
                         changed = true;
@@ -209,7 +209,7 @@ namespace Reko.Core.Graphs
                 foreach (T p in pred)
                 {
                     T? r = p;
-                    while (r != null && (!idoms.TryGetValue(bb, out var idom) || r != idom))
+                    while (r is not null && (!idoms.TryGetValue(bb, out var idom) || r != idom))
                     {
                         // Add b to the dominance frontier of r.
 

@@ -51,7 +51,7 @@ namespace Reko.Typing
         {
             var ivLeft = binExp.Left.Accept(this);
             var ivRight = binExp.Right.Accept(this);
-            if (ivLeft != null)
+            if (ivLeft is not null)
             {
                 switch (binExp.Operator.Type)
                 {
@@ -77,8 +77,8 @@ namespace Reko.Typing
             if (iv is null || c is null)
                 return null;
             Constant delta = op.ApplyConstants(iv.Delta!.DataType, iv.Delta!, c);
-            Constant? initial = (iv.Initial != null) ? op.ApplyConstants(iv.Initial.DataType, iv.Initial, c) : null;
-            Constant? final = (iv.Final != null) ? op.ApplyConstants(iv.Final.DataType, iv.Final, c) : null;
+            Constant? initial = (iv.Initial is not null) ? op.ApplyConstants(iv.Initial.DataType, iv.Initial, c) : null;
+            Constant? final = (iv.Final is not null) ? op.ApplyConstants(iv.Final.DataType, iv.Final, c) : null;
             return new LinearInductionVariable(initial, delta, final, false);
         }
     }

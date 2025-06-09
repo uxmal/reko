@@ -231,7 +231,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
                 bin.WriteUInt32(0);
 
                 bin.WriteUInt32(os.Offset);
-                bin.WriteUInt32(os.Content != null ? (uint)os.Content.Length : 0u);
+                bin.WriteUInt32(os.Content is not null ? (uint)os.Content.Length : 0u);
                 bin.WriteUInt32(os.Link);
                 bin.WriteUInt32(0);
 

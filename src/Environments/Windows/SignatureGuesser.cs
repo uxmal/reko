@@ -87,10 +87,10 @@ namespace Reko.Environments.Windows
                 // Borland-mangled signatures begin with '@'.
                 var bmnp = new BorlandMangledNamedParser(fnName);
                 var field = bmnp.Parse();
-                if (field.Item1 != null)
+                if (field.Item1 is not null)
                 {
                     var sproc = field.Item2 as SerializedSignature;
-                    if (sproc != null)
+                    if (sproc is not null)
                     {
                         return new Procedure_v1
                         {
@@ -125,7 +125,7 @@ namespace Reko.Environments.Windows
                     return null;
                 }
                 var sproc = field.Item2 as SerializedSignature;
-                if (sproc != null)
+                if (sproc is not null)
                 {
                     return new Procedure_v1 {
                         Name = field.Item1,

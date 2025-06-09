@@ -76,7 +76,7 @@ namespace Reko.Gui.Forms
 
         public virtual bool CanAdvance
         {
-            get { return decompilerSvc.Decompiler != null; }
+            get { return decompilerSvc.Decompiler is not null; }
         }
 
 

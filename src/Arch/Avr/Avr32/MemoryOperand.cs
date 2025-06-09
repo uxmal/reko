@@ -105,7 +105,7 @@ namespace Reko.Arch.Avr.Avr32
             }
             renderer.WriteString(Base!.Name);
             renderer.WriteString("[");
-            if (Index != null)
+            if (Index is not null)
             {
                 renderer.WriteString(Index.Name);
                 if (IndexPart != RegisterPart.All)

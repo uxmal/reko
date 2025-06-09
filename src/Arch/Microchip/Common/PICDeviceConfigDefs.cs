@@ -107,7 +107,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         {
             value &= (uint)dcr.Impl;
             var ilg = dcr.Illegals.FirstOrDefault(p => p.Match(value));
-            if (ilg != null)
+            if (ilg is not null)
                 return $"** Fuse=0x{value:X}: {ilg.Descr}**";
             var sems = dcr.Fields.Select(f => f.GetSemantic((uint)((value >> f.BitPos) & f.BitMask)));
             var flds = dcr.Fields.Zip(sems, (fl, se) => fl.Name + "=" + se.State);
@@ -125,7 +125,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         public string Render(Address addr, uint value)
         {
             var dcr = GetDCR(addr);
-            if (dcr != null)
+            if (dcr is not null)
                 return Render(dcr, value);
             return String.Empty;
         }

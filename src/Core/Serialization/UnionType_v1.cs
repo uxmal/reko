@@ -61,11 +61,11 @@ namespace Reko.Core.Serialization
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat("union({0}", ByteSize);
-            if (Alternatives != null)
+            if (Alternatives is not null)
             {
                 foreach (UnionAlternative_v1 alt in Alternatives)
                 {
-                    sb.AppendFormat(", ({0}, {1})", alt.Name != null ? alt.Name : "?", alt.Type);
+                    sb.AppendFormat(", ({0}, {1})", alt.Name is not null ? alt.Name : "?", alt.Type);
                 }
                 sb.Append(")");
             }

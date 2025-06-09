@@ -51,7 +51,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 			set 
 			{
 				isDirty = value; 
-				if (IsDirtyChanged != null)
+				if (IsDirtyChanged is not null)
 					IsDirtyChanged(this, EventArgs.Empty);
 			}
 		}

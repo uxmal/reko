@@ -221,7 +221,7 @@ namespace Reko.Core.Collections
         /// <param name="elems">The elems.</param>
         public IntervalTree(IEnumerable<KeyValuePair<Interval<T>, TypeValue>> elems) : this()
         {
-            if (elems != null)
+            if (elems is not null)
             {
                 foreach (var elem in elems)
                 {
@@ -277,7 +277,7 @@ namespace Reko.Core.Collections
             bool wasSuccessful = false;
 
             this.root = IntervalNode.Add(this.root, interval, value, ref wasAdded, ref wasSuccessful);
-            if (this.root != null)
+            if (this.root is not null)
             {
                 IntervalNode.ComputeMax(this.root);
             }
@@ -304,13 +304,13 @@ namespace Reko.Core.Collections
         /// <param name="arg">The arg.</param>
         public bool Delete(Interval<T> arg)
         {
-            if (this.root != null)
+            if (this.root is not null)
             {
                 bool wasDeleted = false;
                 bool wasSuccessful = false;
 
                 this.root = IntervalNode.Delete(this.root, arg, ref wasDeleted, ref wasSuccessful);
-                if (this.root != null)
+                if (this.root is not null)
                 {
                     IntervalNode.ComputeMax(this.root);
                 }
@@ -346,7 +346,7 @@ namespace Reko.Core.Collections
         /// <returns></returns>
         public IEnumerable<KeyValuePair<Interval<T>, TypeValue>> GetIntervalsOverlappingWith(Interval<T> toFind)
         {
-            if (this.root != null)
+            if (this.root is not null)
             {
                 return this.root.GetIntervalsOverlappingWith(toFind);
             }
@@ -384,7 +384,7 @@ namespace Reko.Core.Collections
                 }
 
                 var p = IntervalNode.FindMin(this.root);
-                while (p != null)
+                while (p is not null)
                 {
                     foreach (var rangeNode in p.GetRangeReverse())
                     {
@@ -413,7 +413,7 @@ namespace Reko.Core.Collections
                 }
 
                 var p = IntervalNode.FindMin(this.root);
-                while (p != null)
+                while (p is not null)
                 {
                     foreach (var rangeNode in p.GetRangeReverse())
                     {
@@ -440,7 +440,7 @@ namespace Reko.Core.Collections
                 }
 
                 var p = IntervalNode.FindMin(this.root);
-                while (p != null)
+                while (p is not null)
                 {
                     foreach (var rangeNode in p.GetRangeReverse())
                     {
@@ -496,7 +496,7 @@ namespace Reko.Core.Collections
                 w.Write(new string(' ', 2 * level));
                 w.Write(string.Format("{0}.{1}", node.Interval, node.Max));
 
-                if (node.Range != null)
+                if (node.Range is not null)
                 {
                     w.Write(" ... ");
                     foreach (var rangeNode in node.GetRange())
@@ -529,7 +529,7 @@ namespace Reko.Core.Collections
         /// <returns>True if a value was found; otherwise false.</returns>
         private bool TryGetIntervalImpl(IntervalNode? subtree, Interval<T> data, [MaybeNullWhen(false)] out TypeValue value)
         {
-            if (subtree != null)
+            if (subtree is not null)
             {
                 int compareResult = data.Start.CompareTo(subtree.Interval.Start);
 
@@ -548,7 +548,7 @@ namespace Reko.Core.Collections
                         value = subtree.Value;
                         return true;
                     }
-                    else if (subtree.Range != null)
+                    else if (subtree.Range is not null)
                     {
                         int kthIndex = subtree.Range.BinarySearch(new KeyValuePair<T, TypeValue>(data.End, default!), this.keyvalueComparer);
                         if (kthIndex >= 0)
@@ -780,7 +780,7 @@ namespace Reko.Core.Collections
             /// <returns></returns>
             public static IntervalNode? FindMin(IntervalNode? node)
             {
-                while (node != null && node.Left != null)
+                while (node is not null && node.Left is not null)
                 {
                     node = node.Left;
                 }
@@ -794,7 +794,7 @@ namespace Reko.Core.Collections
             /// <returns></returns>
             public static IntervalNode? FindMax(IntervalNode? node)
             {
-                while (node != null && node.Right != null)
+                while (node is not null && node.Right is not null)
                 {
                     node = node.Right;
                 }
@@ -808,7 +808,7 @@ namespace Reko.Core.Collections
             /// <returns></returns>
             public IEnumerable<KeyValuePair<Interval<T>, TypeValue>> GetRange()
             {
-                if (this.Range != null)
+                if (this.Range is not null)
                 {
                     foreach (var value in this.Range)
                     {
@@ -829,7 +829,7 @@ namespace Reko.Core.Collections
             /// <returns></returns>
             public IEnumerable<KeyValuePair<Interval<T>, TypeValue>> GetRangeReverse()
             {
-                if (this.Range != null && this.Range.Count > 0)
+                if (this.Range is not null && this.Range.Count > 0)
                 {
                     int rangeCount = this.Range.Count;
                     for (int k = rangeCount - 1; k >= 0; k--)
@@ -852,12 +852,12 @@ namespace Reko.Core.Collections
             /// <returns></returns>
             public IntervalNode? Successor()
             {
-                if (this.Right != null)
+                if (this.Right is not null)
                     return FindMin(this.Right);
                 else
                 {
                     var p = this;
-                    while (p.Parent != null && p.Parent.Right == p)
+                    while (p.Parent is not null && p.Parent.Right == p)
                     {
                         p = p.Parent;
                     }
@@ -871,14 +871,14 @@ namespace Reko.Core.Collections
             /// <returns></returns>
             public IntervalNode? Predecesor()
             {
-                if (this.Left != null)
+                if (this.Left is not null)
                 {
                     return FindMax(this.Left);
                 }
                 else
                 {
                     var p = this;
-                    while (p.Parent != null && p.Parent.Left == p)
+                    while (p.Parent is not null && p.Parent.Left == p)
                     {
                         p = p.Parent;
                     }
@@ -902,7 +902,7 @@ namespace Reko.Core.Collections
 
                 if (cmp < 0)
                 {
-                    if (node.Left != null)
+                    if (node.Left is not null)
                     {
                         newChild = Delete(node.Left, arg, ref wasDeleted, ref wasSuccessful);
                         if (node.Left != newChild)
@@ -920,7 +920,7 @@ namespace Reko.Core.Collections
                 {
                     if (arg.End.CompareTo(node.Interval.End) == 0 && node.Range is null)
                     {
-                        if (node.Left != null && node.Right != null)
+                        if (node.Left is not null && node.Right is not null)
                         {
                             var min = FindMin(node.Right);
 
@@ -946,7 +946,7 @@ namespace Reko.Core.Collections
                             wasSuccessful = true;
 
 #if TREE_WITH_PARENT_POINTERS
-                            if (node.Right != null)
+                            if (node.Right is not null)
                             {
                                 node.Right.Parent = node.Parent;
                             }
@@ -958,7 +958,7 @@ namespace Reko.Core.Collections
                             wasDeleted = true;
                             wasSuccessful = true;
 #if TREE_WITH_PARENT_POINTERS
-                            if (node.Left != null)
+                            if (node.Left is not null)
                             {
                                 node.Left.Parent = node.Parent;
                             }
@@ -973,7 +973,7 @@ namespace Reko.Core.Collections
                 }
                 else
                 {
-                    if (node.Right != null)
+                    if (node.Right is not null)
                     {
                         newChild = Delete(node.Right, arg, ref wasDeleted, ref wasSuccessful);
                         if (node.Right != newChild)
@@ -1066,7 +1066,7 @@ namespace Reko.Core.Collections
             /// <returns></returns>
             public static List<KeyValuePair<Interval<T>, TypeValue>>? GetIntervalsStartingAt(IntervalNode? subtree, T start)
             {
-                if (subtree != null)
+                if (subtree is not null)
                 {
                     int compareResult = start.CompareTo(subtree.Interval.Start);
                     if (compareResult < 0)
@@ -1080,7 +1080,7 @@ namespace Reko.Core.Collections
                     else
                     {
                         var result = new List<KeyValuePair<Interval<T>, TypeValue>>();
-                        if (subtree.Range != null)
+                        if (subtree.Range is not null)
                         {
                             foreach (var kvp in subtree.GetRangeReverse())
                             {
@@ -1127,7 +1127,7 @@ namespace Reko.Core.Collections
                         list.Add(new KeyValuePair<Interval<T>, TypeValue>(this.Interval, this.Value));
 
                         ////the max value is stored in the node, if the node doesn't overlap then neither are the nodes in its range 
-                        if (this.Range != null && this.Range.Count > 0)
+                        if (this.Range is not null && this.Range.Count > 0)
                         {
                             foreach (var kvp in this.GetRange())
                             {
@@ -1160,7 +1160,7 @@ namespace Reko.Core.Collections
                 if (toFind.End.CompareTo(this.Interval.Start) <= 0)
                 {
                     ////toFind ends before subtree.Data begins, prune the right subtree
-                    if (this.Left != null)
+                    if (this.Left is not null)
                     {
                         foreach (var value in this.Left.GetIntervalsOverlappingWith(toFind))
                         {
@@ -1171,7 +1171,7 @@ namespace Reko.Core.Collections
                 else if (toFind.Start.CompareTo(this.Max) >= 0)
                 {
                     ////toFind begins after the subtree.Max ends, prune the left subtree
-                    if (this.Right != null)
+                    if (this.Right is not null)
                     {
                         foreach (var value in this.Right.GetIntervalsOverlappingWith(toFind))
                         {
@@ -1181,7 +1181,7 @@ namespace Reko.Core.Collections
                 }
                 else
                 {
-                    if (this.Left != null)
+                    if (this.Left is not null)
                     {
                         foreach (var value in this.Left.GetIntervalsOverlappingWith(toFind))
                         {
@@ -1193,7 +1193,7 @@ namespace Reko.Core.Collections
                     {
                         yield return new KeyValuePair<Interval<T>, TypeValue>(this.Interval, this.Value);
 
-                        if (this.Range != null && this.Range.Count > 0)
+                        if (this.Range is not null && this.Range.Count > 0)
                         {
                             foreach (var kvp in this.GetRange())
                             {
@@ -1209,7 +1209,7 @@ namespace Reko.Core.Collections
                         }
                     }
 
-                    if (this.Right != null)
+                    if (this.Right is not null)
                     {
                         foreach (var value in this.Right.GetIntervalsOverlappingWith(toFind))
                         {
@@ -1230,13 +1230,13 @@ namespace Reko.Core.Collections
 
             /// <summary>
             /// Rotates lefts this instance.
-            /// Assumes that this.Right != null
+            /// Assumes that this.Right is not null
             /// </summary>
             /// <returns></returns>
             private static IntervalNode RotateLeft(IntervalNode node)
             {
                 var right = node.Right!;
-                Debug.Assert(node.Right != null);
+                Debug.Assert(node.Right is not null);
 
                 var rightLeft = right.Left;
 
@@ -1245,7 +1245,7 @@ namespace Reko.Core.Collections
 
 #if TREE_WITH_PARENT_POINTERS
                 var parent = node.Parent;
-                if (rightLeft != null)
+                if (rightLeft is not null)
                 {
                     rightLeft.Parent = node;
                 }
@@ -1255,7 +1255,7 @@ namespace Reko.Core.Collections
 
 #if TREE_WITH_PARENT_POINTERS
                 node.Parent = right;
-                if (parent != null)
+                if (parent is not null)
                 {
                     if (parent.Left == node)
                     {
@@ -1273,13 +1273,13 @@ namespace Reko.Core.Collections
 
             /// <summary>
             /// Rotates right this instance.
-            /// Assumes that (this.Left != null)
+            /// Assumes that (this.Left is not null)
             /// </summary>
             /// <returns></returns>
             private static IntervalNode RotateRight(IntervalNode node)
             {
                 var left = node.Left!;
-                Debug.Assert(node.Left != null);
+                Debug.Assert(node.Left is not null);
 
                 var leftRight = left.Right;
                 node.Left = leftRight;
@@ -1287,7 +1287,7 @@ namespace Reko.Core.Collections
 
 #if TREE_WITH_PARENT_POINTERS
                 var parent = node.Parent;
-                if (leftRight != null)
+                if (leftRight is not null)
                 {
                     leftRight.Parent = node;
                 }
@@ -1297,7 +1297,7 @@ namespace Reko.Core.Collections
 
 #if TREE_WITH_PARENT_POINTERS
                 node.Parent = left;
-                if (parent != null)
+                if (parent is not null)
                 {
                     if (parent.Left == node)
                     {
@@ -1323,7 +1323,7 @@ namespace Reko.Core.Collections
             /// <returns></returns>
             private bool DeleteIntervalFromNodeWithRange(Interval<T> interval)
             {
-                if (this.Range != null && this.Range.Count > 0)
+                if (this.Range is not null && this.Range.Count > 0)
                 {
                     int rangeCount = this.Range.Count;
                     int intervalPosition = -1;

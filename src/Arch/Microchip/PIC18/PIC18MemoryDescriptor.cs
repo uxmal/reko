@@ -193,11 +193,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
                 {
                     regn = GetDataRegionBySelector(bAddr.BankSelect);
                 }
-                if (regn != null)
+                if (regn is not null)
                 {
                     absAddr = bAddr.ToDataAddress(regn);
                 }
-                return absAddr != null;
+                return absAddr is not null;
             }
 
             #endregion

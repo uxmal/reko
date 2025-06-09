@@ -82,7 +82,7 @@ namespace Reko.Core.Output
             {
                 var seg = segmentEntry.Key;
                 formatter.WriteLine(";;; Segment {0} ({1})", seg.Name, seg.Address);
-                if (seg.Designer != null)
+                if (seg.Designer is not null)
                 {
                     seg.Designer.Render(seg, program, new AsmCommentFormatter("; ", formatter));
                 }
@@ -98,7 +98,7 @@ namespace Reko.Core.Output
 
         private void DumpItem(ImageSegment segment, ImageMapItem i, Formatter formatter)
         {
-            if (i is ImageMapBlock block && block.Block != null)
+            if (i is ImageMapBlock block && block.Block is not null)
             {
                 formatter.WriteLine();
                 if (program.Procedures.TryGetValue(block.Address, out var proc))

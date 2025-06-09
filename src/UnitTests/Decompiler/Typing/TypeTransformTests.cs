@@ -100,7 +100,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             }
             using (FileUnitTester fut = new FileUnitTester(outputFileName))
             {
-                if (theEx != null)
+                if (theEx is not null)
                 {
                     fut.TextWriter.WriteLine(theEx.Message);
                     fut.TextWriter.WriteLine(theEx.StackTrace);

@@ -120,7 +120,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
                     outer.ComparePositions(selStart, pos) <= 0 &&
                     outer.ComparePositions(pos, selEnd) < 0;
 
-                var hasTag = line.Tag != null;
+                var hasTag = line.Tag is not null;
                 this.fg = styleStack.GetForeground(defaultFgColor);
                 this.bg = styleStack.GetBackground(defaultBgColor);
                 this.font = styleStack.GetFont(defaultFont);

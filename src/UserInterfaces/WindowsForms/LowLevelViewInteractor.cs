@@ -298,14 +298,14 @@ namespace Reko.UserInterfaces.WindowsForms
                         return true;
                     case CmdIds.OpenLink:
                     case CmdIds.OpenLinkInNewWindow:
-                        status.Status = selAddress != null ? MenuStatus.Visible | MenuStatus.Enabled : 0;
+                        status.Status = selAddress is not null ? MenuStatus.Visible | MenuStatus.Enabled : 0;
                         return true;
                     case CmdIds.EditAnnotation:
                     case CmdIds.EditRegisterValues:
-                        status.Status = instr != null ? MenuStatus.Visible | MenuStatus.Enabled : 0;
+                        status.Status = instr is not null ? MenuStatus.Visible | MenuStatus.Enabled : 0;
                         return true;
                     case CmdIds.ActionCallTerminates:
-                        if (instr != null)
+                        if (instr is not null)
                         {
                             if ((instr.InstructionClass &  InstrClass.Call) != 0)
                             {

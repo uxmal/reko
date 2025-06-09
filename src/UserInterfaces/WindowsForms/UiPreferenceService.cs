@@ -347,11 +347,11 @@ namespace Reko.UserInterfaces.WindowsForms
             if (oCtrl is not Control ctrl) throw new ArgumentNullException(nameof(oCtrl));
             if (Styles.TryGetValue(UiStyles.List, out UiStyle style))
             {
-                if (style.Background != null)
+                if (style.Background is not null)
                 {
                     ctrl.BackColor = ((SolidBrush)style.Background).Color;
                 }
-                if (style.Foreground != null)
+                if (style.Foreground is not null)
                 {
                     ctrl.ForeColor = ((SolidBrush)style.Foreground).Color;
                 }
@@ -363,11 +363,11 @@ namespace Reko.UserInterfaces.WindowsForms
             if (ctrl is null) throw new ArgumentNullException(nameof(ctrl));
             if (Styles.TryGetValue(UiStyles.List, out UiStyle style))
             {
-                if (style.Background != null)
+                if (style.Background is not null)
                 {
                     ctrl.BackColor = ((SolidBrush) style.Background).Color;
                 }
-                if (style.Foreground != null)
+                if (style.Foreground is not null)
                 {
                     ctrl.ForeColor = ((SolidBrush) style.Foreground).Color;
                 }

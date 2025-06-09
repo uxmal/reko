@@ -234,7 +234,7 @@ namespace Reko.Arch.Etrax
         {
             return (uint uInstr, EtraxDisassembler dasm) =>
             {
-                if (dasm.prefix != null)
+                if (dasm.prefix is not null)
                 {
                     dasm.ops.Add(dasm.prefix);
                     return true;

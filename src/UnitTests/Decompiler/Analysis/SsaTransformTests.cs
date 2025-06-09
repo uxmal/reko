@@ -3328,7 +3328,7 @@ proc_exit:
 
             var ass = proc.Statements
                 .Select(stm => stm.Instruction as Assignment)
-                .Where(instr => instr != null)
+                .Where(instr => instr is not null)
                 .Single();
             Assert.AreEqual("r2_2 = r2", ass.ToString());
             // verify that data type of register was not overwritten

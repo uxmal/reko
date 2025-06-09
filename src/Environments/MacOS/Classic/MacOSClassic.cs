@@ -149,7 +149,7 @@ namespace Reko.Environments.MacOS.Classic
 
         private Identifier EnsureA5Pointer()
         {
-            if (this.ptrA5World != null)
+            if (this.ptrA5World is not null)
                 return this.ptrA5World;
 
             var a5world_t = new StructureType("A5World_t", 0, true);

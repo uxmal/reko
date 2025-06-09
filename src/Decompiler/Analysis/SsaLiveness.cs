@@ -74,7 +74,7 @@ namespace Reko.Analysis
 		{
 			foreach (SsaIdentifier ssa in ssaIds)
 			{
-				if (ssa.Uses.Count > 0 && ssa.DefStatement != null)
+				if (ssa.Uses.Count > 0 && ssa.DefStatement is not null)
 				{
                     if (!defined.TryGetValue(ssa.DefStatement, out List<Identifier>? al))
 					{
@@ -94,7 +94,7 @@ namespace Reko.Analysis
 				foreach (Statement s in v.Uses)
 				{
 					PhiFunction? phi = GetPhiFunction(s);
-					if (phi != null)
+					if (phi is not null)
 					{
                         var p = phi.Arguments.First(e => e.Value == v.Identifier).Block;
 						LiveOutAtBlock(p, v);
@@ -271,7 +271,7 @@ namespace Reko.Analysis
 				foreach (Statement use in sid.Uses)
 				{
 					Block? p = PrecedingPhiBlock(sid.Identifier, use);
-					if (p != null)
+					if (p is not null)
 					{
 						LiveOutAtBlock(p, sid);
 					}

@@ -110,10 +110,10 @@ namespace Reko.Evaluation
             if (neg is not null)
                 return (neg, true);
             var mem = FuseAdjacentMemoryAccesses(seq.DataType, newSeq);
-            if (mem != null)
+            if (mem is not null)
                 return (mem, true);
             var slices = FuseAdjacentSlices(seq.DataType, newSeq);
-            if (slices != null)
+            if (slices is not null)
                 return (slices, true);
             return (m.Seq(seq.DataType, newSeq), changed);
         }
@@ -223,7 +223,7 @@ namespace Reko.Evaluation
             for (int i = 1; i < elems.Length; ++i)
             {
                 Slice? slNext = AsSlice(elems[i]);
-                if (fused[^1] is Slice slPrev && slNext != null &&
+                if (fused[^1] is Slice slPrev && slNext is not null &&
                     cmp.Equals(slPrev.Expression, slNext.Expression) &&
                     slPrev.Offset == slNext.Offset + slNext.DataType.BitSize)
                 {

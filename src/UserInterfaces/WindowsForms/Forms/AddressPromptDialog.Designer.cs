@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2025 John Källén.
  *
@@ -101,7 +101,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         {
             if (disposing)
             {
-                if (components != null)
+                if (components is not null)
                 {
                     components.Dispose();
                 }

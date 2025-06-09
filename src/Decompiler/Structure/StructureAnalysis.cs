@@ -305,7 +305,7 @@ namespace Reko.Structure
             foreach (var s in regionGraph.Successors(n))
                 if (s.IsReturn)
                     returnEdge = new VirtualEdge(n, s, VirtualEdgeType.Goto);
-            if (returnEdge != null)
+            if (returnEdge is not null)
             {
                 VirtualizeEdge(returnEdge);
                 return true;
@@ -334,7 +334,7 @@ namespace Reko.Structure
                 // Collapse (If else) into n.
                 n.Statements.Add(new AbsynIf(cond.Invert(), el.Statements));
                 RemoveEdge(n, el);
-                if (elS != null)
+                if (elS is not null)
                     RemoveEdge(el, elS);
                 RemoveRegion(el);
                 n.Type = RegionType.Linear;
@@ -348,14 +348,14 @@ namespace Reko.Structure
                 // Collapse (if-then) into n
                 n.Statements.Add(new AbsynIf(cond, th.Statements));
                 RemoveEdge(n, th);
-                if (thS != null)
+                if (thS is not null)
                     RemoveEdge(th, thS);
                 RemoveRegion(th);
                 n.Type = RegionType.Linear;
                 n.Expression = null;
                 return true;
             }
-            else if (elS != null && elS == thS)
+            else if (elS is not null && elS == thS)
             {
                 if (RefinePredecessor(n, th) |
                     RefinePredecessor(n, el))
@@ -405,7 +405,7 @@ namespace Reko.Structure
         {
             var follow = GetSwitchFollow(n);
             bool irregularEntries = HasIrregularEntries(n, follow);
-            if (!irregularEntries && (follow != null || AllCasesAreTails(n)))
+            if (!irregularEntries && (follow is not null || AllCasesAreTails(n)))
             {
                 return ReduceIncSwitch(n, follow);
             }
@@ -674,7 +674,7 @@ all other cases, together they constitute a Switch[].
             var sw = MakeSwitchStatement(n, switchExp, follow, pt, offset, cases);
             n.Statements.Add(sw);
             n.Expression = null;
-            if (follow != null)
+            if (follow is not null)
             {
                 n.Type = RegionType.Linear;
                 regionGraph.AddEdge(n, follow);
@@ -708,7 +708,7 @@ all other cases, together they constitute a Switch[].
                     }
                 }
                 cases[succ].ForEach(c => RemoveEdge(n, succ));
-                if (follow != null)
+                if (follow is not null)
                 {
                     RemoveEdge(succ, follow);
                 }
@@ -842,7 +842,7 @@ all other cases, together they constitute a Switch[].
             var sb = new StringWriter();
             n.Write(sb);
             Debug.Write(sb.ToString());
-            if (n.Expression != null)
+            if (n.Expression is not null)
             {
                 Debug.Print("    Condition: {0}", n.Expression);
             }
@@ -1306,7 +1306,7 @@ refinement on the loop body, which we describe below.
                 {
                     follow = headSucc[1];
                 }
-                if (follow != null)
+                if (follow is not null)
                 {
                     foreach (var latch in regionGraph.Predecessors(head))
                     {
@@ -1501,7 +1501,7 @@ refinement on the loop body, which we describe below.
                     }
                 }
             }
-            if (vEdge != null)
+            if (vEdge is not null)
             {
                 VirtualizeEdge(vEdge);
                 return true;
@@ -1516,7 +1516,7 @@ refinement on the loop body, which we describe below.
         private bool LastResort(ISet<Region> regions)
         {
             var vEdge = FindLastResortEdge(regions);
-            if (vEdge != null)
+            if (vEdge is not null)
             {
                 VirtualizeEdge(vEdge);
                 return true;

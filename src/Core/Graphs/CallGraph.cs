@@ -160,7 +160,7 @@ namespace Reko.Core.Graphs
             if (!graphStms.Nodes.Contains(proc))
                 return Array.Empty<Statement>();
             return graphStms.Predecessors(proc).OfType<Statement>()
-                .Where(s => s.Block.Procedure != null);
+                .Where(s => s.Block.Procedure is not null);
         }
 
         /// <summary>

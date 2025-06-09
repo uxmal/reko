@@ -247,7 +247,7 @@ namespace Reko.Gui
         {
             Debug.Assert(listProcedures.SelectedItems.Count == 1, "QueryStatus should be ensuring this");
             var item = listProcedures.SelectedItems[0];
-            if (item.Tag != null)
+            if (item.Tag is not null)
             {
                 var pp = (ProgramProcedure) item.Tag;
                 services.RequireService<ICallGraphNavigatorService>().Show(pp.Program, pp.Procedure);

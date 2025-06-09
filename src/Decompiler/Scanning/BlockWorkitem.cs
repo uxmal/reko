@@ -126,13 +126,13 @@ namespace Reko.Scanning
                     break;
                 var addrInstrEnd = ric.Address + ric.Length;
                 var blNext = FallenThroughNextProcedure(ric.Address, addrInstrEnd);
-                if (blNext != null)
+                if (blNext is not null)
                 {
                     EnsureEdge(blockCur.Procedure, blockCur, blNext);
                     break;
                 }
                 blNext = FallenThroughNextBlock(addrInstrEnd);
-                if (blNext != null)
+                if (blNext is not null)
                 {
                     EnsureEdge(blockCur.Procedure, blockCur, blNext);
                     break;
@@ -170,7 +170,7 @@ namespace Reko.Scanning
                 return;
             foreach (var rv in regValues)
             {
-                if (rv.Register != null && rv.Value != null)
+                if (rv.Register is not null && rv.Value is not null)
                 {
                     var reg = frame!.EnsureIdentifier(rv.Register);
                     new RtlAssignment(reg, rv.Value).Accept(this);
@@ -437,7 +437,7 @@ namespace Reko.Scanning
             if (g.Target is Address addrTarget)
             {
                 var impProc = scanner.GetImportedProcedure(this.arch, addrTarget, this.ric.Address);
-                if (impProc != null)
+                if (impProc is not null)
                 {
                     // Since we are tail jumping to another procedure, if there is a return
                     // address (continuation) pushed on the stack, we reuse that 
@@ -473,7 +473,7 @@ namespace Reko.Scanning
                 if (program.Memory.IsExecutableAddress(addrTarget))
                 {
                     var trampoline = scanner.GetTrampoline(blockCur!.Procedure.Architecture, addrTarget);
-                    if (trampoline != null)
+                    if (trampoline is not null)
                     {
                         var jmpSite = state.OnBeforeCall(stackReg!, 0);
                         trampoline = ResolveDispatchProcedureCall(trampoline, state);
@@ -557,7 +557,7 @@ namespace Reko.Scanning
                 // Some image loaders generate import symbols at addresses
                 // outside of the program image. 
                 var impProc = scanner.GetImportedProcedure(this.arch, addr, this.ric!.Address);
-                if (impProc != null)
+                if (impProc is not null)
                 {
                     sig = impProc.Signature;
                     chr = impProc.Characteristics;
@@ -609,7 +609,7 @@ namespace Reko.Scanning
                 return OnAfterCall(sig, chr);
             }
             sig = GetCallSignatureAtAddress(ric!.Address);
-            if (sig != null)
+            if (sig is not null)
             {
                 EmitCall(call.Target, sig, chr, site);
                 return OnAfterCall(sig, chr);
@@ -621,7 +621,7 @@ namespace Reko.Scanning
                 // we could quickly determine if `id` is assigned
                 // to constant.
                 var intrinsic = SearchBackForProcedureConstant(id);
-                if (intrinsic != null)
+                if (intrinsic is not null)
                 {
                     var e = CreateProcedureConstant(intrinsic);
                     sig = intrinsic.Signature;
@@ -632,7 +632,7 @@ namespace Reko.Scanning
             }
 
             var imp = ImportedProcedureName(call.Target);
-            if (imp != null)
+            if (imp is not null)
             {
                 sig = imp.Signature;
                 chr = imp.Characteristics;
@@ -641,7 +641,7 @@ namespace Reko.Scanning
             }
 
             var syscall = program.Platform.FindService(call, state, program.Memory);
-            if (syscall != null)
+            if (syscall is not null)
             {
                 return EmitSystemServiceCall(syscall);
             }
@@ -719,7 +719,7 @@ namespace Reko.Scanning
                     Emit(new CallInstruction(callee, site));
                 }
             }
-            else if (sig != null && sig.ParametersValid)
+            else if (sig is not null && sig.ParametersValid)
             {
                 Emit(ab.CreateInstruction(callee, sig, chr));
             }
@@ -758,14 +758,14 @@ namespace Reko.Scanning
                 if (linStart > linUserCall || linUserCall >= linEnd)
                     userCall = null!;
             }
-            if ((characteristics != null && characteristics.Terminates) ||
-                (userCall != null && userCall.NoReturn))
+            if ((characteristics is not null && characteristics.Terminates) ||
+                (userCall is not null && userCall.NoReturn))
             {
                 scanner.TerminateBlock(blockCur!, ric.Address + ric.Length);
                 return false;
             }
 
-            if (sigCallee != null && sigCallee.StackDelta != 0)
+            if (sigCallee is not null && sigCallee.StackDelta != 0)
             {
                 // Generate explicit stack adjustment expression
                 // SP = SP + stackDelta
@@ -784,7 +784,7 @@ namespace Reko.Scanning
 
             // Adjust stack after call 
             //$REVIEW: looks like common code; consider refactoring this.
-            if (sigCallee != null)
+            if (sigCallee is not null)
             {
                 int delta = sigCallee.StackDelta - sigCallee.ReturnAddressOnStack;
                 if (delta != 0)
@@ -816,7 +816,7 @@ namespace Reko.Scanning
             }
 
             TrashRegistersAfterCall();
-            if (characteristics != null && characteristics.ReturnAddressAdjustment > 0)
+            if (characteristics is not null && characteristics.ReturnAddressAdjustment > 0)
             {
                 var addrNext = ric.Address + characteristics.ReturnAddressAdjustment;
                 scanner.TerminateBlock(blockCur!, addrNext);
@@ -913,7 +913,7 @@ namespace Reko.Scanning
                 var site = state.OnBeforeCall(stackReg!, svc.Signature.ReturnAddressOnStack);
                 var ab = arch.CreateFrameApplicationBuilder(frame!, site);
                 Emit(ab.CreateInstruction(fn, ep.Signature, ep.Characteristics));
-                if (svc.Characteristics != null && svc.Characteristics.Terminates)
+                if (svc.Characteristics is not null && svc.Characteristics.Terminates)
                 {
                     scanner.TerminateBlock(blockCur!, ric!.Address + ric.Length);
                     return false;
@@ -1201,7 +1201,7 @@ namespace Reko.Scanning
         {
             var visited = new HashSet<Block>();
             Block? block = blockCur;
-            while (block != null && !visited.Contains(block))
+            while (block is not null && !visited.Contains(block))
             {
                 visited.Add(block);
                 for (int i = block.Statements.Count - 1; i >= 0; --i)
@@ -1209,14 +1209,14 @@ namespace Reko.Scanning
                     if (block.Statements[i].Instruction is not Assignment ass)
                         continue;
                     var idAss = ass.Dst ;
-                    if (idAss != null && idAss == id)
+                    if (idAss is not null && idAss == id)
                     {
                         if (ass.Src is ProcedureConstant pc)
                         {
                             return pc.Procedure;
                         }
                         var imp = ImportedProcedureName(ass.Src);
-                        if (imp != null)
+                        if (imp is not null)
                             return new ExternalProcedure(imp.Name, imp.Signature, imp.Characteristics);
                         else
                             return null;
@@ -1260,7 +1260,7 @@ namespace Reko.Scanning
             if (!program.TryInterpretAsAddress(mem.EffectiveAddress, true, out Address addrTarget))
                 return null;
             var impEp = scanner.GetImportedProcedure(this.arch, addrTarget, ric!.Address);
-            //if (impEp != null)
+            //if (impEp is not null)
                 return impEp;
             //return scanner.GetInterceptedCall(addrTarget);
         }

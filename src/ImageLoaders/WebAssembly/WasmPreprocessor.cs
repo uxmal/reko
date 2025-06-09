@@ -136,7 +136,7 @@ namespace Reko.ImageLoaders.WebAssembly
             Debug.Assert(wasmFile.CodeSection is not null, "If there are functions there must be a code segment.");
             Debug.Assert(codeSegment is not null, "If there are functions there must be a code segment.");
             var result = new Dictionary<int, ProcedureBase>();
-            if (wasmFile.ImportSection != null)
+            if (wasmFile.ImportSection is not null)
             {
                 int iProc = 0;
                 foreach (var func in wasmFile.ImportSection.Imports)

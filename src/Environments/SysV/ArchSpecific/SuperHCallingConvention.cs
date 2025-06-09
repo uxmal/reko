@@ -68,7 +68,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             List<DataType> dtParams)
         {
             ccr.LowLevelDetails(4, 0x14);
-            if (dtRet != null && !(dtRet is VoidType))
+            if (dtRet is not null && !(dtRet is VoidType))
             {
                 RegisterStorage reg;
                 if (dtRet.Domain == Domain.Real)
@@ -97,7 +97,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             }
             int ir = 0;
             int fr = 0;
-            if (dtThis != null)
+            if (dtThis is not null)
             {
                 ccr.ImplicitThisRegister(iregs[ir]);
                 ++ir;
@@ -105,7 +105,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             foreach (var dtParam in dtParams)
             {
                 var pt = dtParam as PrimitiveType;
-                if (pt != null && pt.Domain == Domain.Real)
+                if (pt is not null && pt.Domain == Domain.Real)
                 {
                     if (pt.Size == 4)
                     {

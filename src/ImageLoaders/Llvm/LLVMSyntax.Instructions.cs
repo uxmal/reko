@@ -143,7 +143,7 @@ namespace Reko.ImageLoaders.LLVM
         {
             w.WriteKeyword("br");
             w.Write(' ');
-            if (Cond !=  null)
+            if (Cond is not null)
             {
                 Type.Write(w);
                 w.Write(' ');
@@ -243,7 +243,7 @@ namespace Reko.ImageLoaders.LLVM
             w.WriteKeyword("alloca");
             w.Write(' ');
             Type.Write(w);
-            if (ElCountType != null && ElementCount != null)
+            if (ElCountType is not null && ElementCount is not null)
             {
                 w.Write(", ");
                 Type.Write(w);
@@ -364,14 +364,14 @@ namespace Reko.ImageLoaders.LLVM
 
         public override void Write(Formatter w)
         {
-            if (Result != null)
+            if (Result is not null)
             {
                 Result.Write(w);
                 w.Write(" = ");
             }
             w.WriteKeyword("call");
             w.Write(" ");
-            if (res_attrs != null)
+            if (res_attrs is not null)
             {
                 res_attrs.Write(w);
                 w.Write(' ');
@@ -387,7 +387,7 @@ namespace Reko.ImageLoaders.LLVM
                 sep = ", ";
                 arg.Type.Write(w);
                 w.Write(" ");
-                if (arg.Attributes != null)
+                if (arg.Attributes is not null)
                 {
                     arg.Attributes.Write(w);
                     w.Write(" ");

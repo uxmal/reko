@@ -118,7 +118,7 @@ namespace Reko.Scanning
         public bool BackwalkInstruction(TInstr instr)
         {
             var ass = host.AsAssignment(instr);
-            if (ass.Item1 != null)
+            if (ass.Item1 is not null)
             {
                 var (assSrc, _) = ass.Item2!.Accept(eval);
                 var assDst = ass.Item1;
@@ -139,7 +139,7 @@ namespace Reko.Scanning
                             Index = HandleAddition(Index, regSrc, immSrc!, false);
                             return true;
                         case OperatorType.And:
-                            if (immSrc != null && Bits.IsEvenPowerOfTwo(immSrc.ToInt32() + 1))
+                            if (immSrc is not null && Bits.IsEvenPowerOfTwo(immSrc.ToInt32() + 1))
                             {
                                 Operations.Add(new BackwalkOperation(BackwalkOperator.cmp, immSrc.ToInt32() + 1));
                             }
@@ -151,7 +151,7 @@ namespace Reko.Scanning
                         case OperatorType.IMul:
                         case OperatorType.SMul:
                         case OperatorType.UMul:
-                            if (immSrc != null)
+                            if (immSrc is not null)
                             {
                                 var m = immSrc.ToInt32();
                                 Operations.Add(new BackwalkOperation(BackwalkOperator.mul, m));
@@ -160,7 +160,7 @@ namespace Reko.Scanning
                             }
                             break;
                         case OperatorType.Shl:
-                            if (immSrc != null)
+                            if (immSrc is not null)
                             {
                                 var m = 1 << immSrc.ToInt32();
                                 Operations.Add(new BackwalkOperation(BackwalkOperator.mul, m));
@@ -170,7 +170,7 @@ namespace Reko.Scanning
                             break;
                         }
                     }
-                    if (Index != null &&
+                    if (Index is not null &&
                         binSrc.Operator.Type == OperatorType.Xor &&
                         binSrc.Left == assDst &&
                         binSrc.Right == assDst &&
@@ -180,7 +180,7 @@ namespace Reko.Scanning
                         Index = host.GetSubregister(Index, new BitRange(0, 8));
                     }
                 }
-                if (Index != null &&
+                if (Index is not null &&
                     assSrc is Constant cSrc &&
                     cSrc.IsIntegerZero &&
                     RegisterOf(assDst) == host.GetSubregister(Index, new BitRange(8, 16)))
@@ -191,7 +191,7 @@ namespace Reko.Scanning
                     Index = host.GetSubregister(Index, new BitRange(0, 8));
                     return true;
                 }
-                if (assSrc is ConditionOf cof && UsedFlagIdentifier != null)
+                if (assSrc is ConditionOf cof && UsedFlagIdentifier is not null)
                 {
                     var grfDef = (((Identifier)assDst).Storage as FlagGroupStorage)!.FlagGroupBits;
                     var grfUse = (UsedFlagIdentifier.Storage as FlagGroupStorage)!.FlagGroupBits;
@@ -199,14 +199,14 @@ namespace Reko.Scanning
                         return true;
                     var binCmp = cof.Expression as BinaryExpression;
                     binCmp = NegateRight(binCmp);
-                    if (binCmp != null &&
+                    if (binCmp is not null &&
                         (binCmp.Operator is ISubOperator ||
                          binCmp.Operator is USubOperator))
                     {
                         var idLeft = RegisterOf(binCmp.Left  as Identifier);
-                        if (idLeft != null &&
+                        if (idLeft is not null &&
                             (idLeft == Index || idLeft == host.GetSubregister(Index!, new BitRange(0, 8))) ||
-                           (IndexExpression != null && IndexExpression.ToString() == idLeft!.ToString()))    //$HACK: sleazy, but we don't appear to have an expression comparer
+                           (IndexExpression is not null && IndexExpression.ToString() == idLeft!.ToString()))    //$HACK: sleazy, but we don't appear to have an expression comparer
                         {
                             if (binCmp.Right is Constant immSrc)
                             {
@@ -230,12 +230,12 @@ namespace Reko.Scanning
                 // perform simplification, no substitutions.
                 var src = assSrc is InvalidConstant ? ass.Item2 : assSrc;
                 var cvtSrc = src as Conversion;
-                if (cvtSrc != null)
+                if (cvtSrc is not null)
                     src = cvtSrc.Expression;
                 var regDst = RegisterOf(assDst);
                 if (src is MemoryAccess memSrc &&
                     (regDst == Index ||
-                     (Index != null && regDst != null && regDst.Name != "None" && regDst.IsSubRegisterOf(Index))))
+                     (Index is not null && regDst is not null && regDst.Name != "None" && regDst.IsSubRegisterOf(Index))))
                 {
                     // R = Mem[xxx]
                     var rIdx = Index;
@@ -281,7 +281,7 @@ namespace Reko.Scanning
                     return true;
                 }
 
-                if (regSrc != null && regDst == Index)
+                if (regSrc is not null && regDst == Index)
                 {
                     Index = regSrc;
                     return true;
@@ -291,7 +291,7 @@ namespace Reko.Scanning
             }
 
             var bra = host.AsBranch(instr);
-            if (bra != null)
+            if (bra is not null)
             {
                 bool fallthrough = host.IsFallthrough(instr, startBlock!);
                 return VisitBranch(bra, fallthrough);
@@ -334,7 +334,7 @@ namespace Reko.Scanning
 
         private static BinaryExpression? NegateRight(BinaryExpression? bin)
         {
-            if (bin != null &&
+            if (bin is not null &&
                 (bin.Operator.Type == OperatorType.IAdd) &&
                 bin.Right is Constant cRight)
             {
@@ -390,7 +390,7 @@ namespace Reko.Scanning
             if (ea is not BinaryExpression bin)
                 return RegisterStorage.None;
             var e = bin.Left;
-            while (e != null && e is Cast cast)
+            while (e is not null && e is Cast cast)
             {
                 e = cast.Expression;
             }
@@ -420,7 +420,7 @@ namespace Reko.Scanning
 
         public bool CanBackwalk()
         {
-            return Index != null;
+            return Index is not null;
         }
 
         [Conditional("DEBUG")]
@@ -454,12 +454,12 @@ namespace Reko.Scanning
 
             var idLeft = bin.Left as Identifier;
             var idRight = bin.Right as Identifier;
-            if (idRight != null && idLeft is null)
+            if (idRight is not null && idLeft is null)
             {
                 // Rearrange so that the effective address is [id + C]
                 (idRight, idLeft) = (idLeft, idRight);
             }
-            if (idLeft != null && idRight != null)
+            if (idLeft is not null && idRight is not null)
             {
                 // Can't handle [id1 + id2] yet.
                 return null;
@@ -493,7 +493,7 @@ namespace Reko.Scanning
 
         private static bool IsScaledIndex(BinaryExpression? bin)
         {
-            return bin != null && bin.Operator is IMulOperator && bin.Right is Constant;
+            return bin is not null && bin.Operator is IMulOperator && bin.Right is Constant;
         }
 
         private RegisterStorage DetermineVectorWithScaledIndex(MemoryAccess mem, Expression possibleVector, BinaryExpression scaledIndex)
@@ -543,7 +543,7 @@ namespace Reko.Scanning
 				}
 			} 
 			
-            if (immSrc != null)
+            if (immSrc is not null)
 			{
                 if (!add && UsedAsFlag == IndexExpression)
                 {

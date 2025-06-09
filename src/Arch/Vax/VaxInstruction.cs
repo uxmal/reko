@@ -52,7 +52,7 @@ namespace Reko.Arch.Vax
                 return;
             case MemoryOperand mop when mop.Base is RegisterStorage rmop && rmop == Registers.pc:
                 var addr = this.Address + this.Length;
-                if (mop.Offset != null)
+                if (mop.Offset is not null)
                 {
                     addr += mop.Offset.ToInt32();
                 }

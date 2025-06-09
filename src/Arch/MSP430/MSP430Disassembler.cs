@@ -446,7 +446,7 @@ namespace Reko.Arch.Msp430
             var delta = (rdr.Address - this.addr);
             if (!rdr.TryReadLeInt16(out short offset))
                 return null;
-            if (reg != null && reg.Number == 2)
+            if (reg is not null && reg.Number == 2)
             {
                 // Absolute address will not use a base register.
                 reg = null;

@@ -103,7 +103,7 @@ namespace Reko.Core.Types
 			PrimitiveType? pa = a as PrimitiveType;
 			PrimitiveType? pb = b as PrimitiveType;
 
-			if (pa != null && pb != null)
+			if (pa is not null && pb is not null)
 			{
                 //$REVIEW: shouldn't this be .BitSize?
                 // making the change gives massive regressions.
@@ -122,51 +122,51 @@ namespace Reko.Core.Types
 
             TypeReference? tra = a as TypeReference;
             TypeReference? trb = b as TypeReference;
-            if (tra != null && trb != null)
+            if (tra is not null && trb is not null)
                 return tra == trb;
-            if (tra != null)
+            if (tra is not null)
                 return AreCompatible(tra.Referent, b, ++depth);
-            if (trb != null)
+            if (trb is not null)
                 return AreCompatible(a, trb.Referent, ++depth);
 
 			TypeVariable? tva = a as TypeVariable;
 			TypeVariable? tvb = b as TypeVariable;
-			if (tva != null && tvb != null)
+			if (tva is not null && tvb is not null)
 			{
 				return tva.Number == tvb.Number;
 			}
 
 			EquivalenceClass? eqA = a as EquivalenceClass;
 			EquivalenceClass? eqB = b as EquivalenceClass;
-			if (eqA != null && eqB != null)
+			if (eqA is not null && eqB is not null)
 			{
 				return eqA.Number == eqB.Number;
 			}
 
 			Pointer? ptrA = a as Pointer;
 			Pointer? ptrB = b as Pointer;
-			if (ptrA != null)
+			if (ptrA is not null)
 				return IsCompatibleWithPointer(ptrA, b, ++depth);
-			if (ptrB != null)
+			if (ptrB is not null)
 				return IsCompatibleWithPointer(ptrB, a, ++depth);
 
 			MemberPointer? mpA = a as MemberPointer;
 			MemberPointer? mpB = b as MemberPointer;
-			if (mpA != null)
+			if (mpA is not null)
 				return IsCompatibleWithMemberPointer(mpA, b, ++depth);
-			if (mpB != null)
+			if (mpB is not null)
 				return IsCompatibleWithMemberPointer(mpB, a, ++depth);
 
 			StructureType? sa = a as StructureType;
 			StructureType? sb = b as StructureType;
-			if (sa != null && sb != null)
+			if (sa is not null && sb is not null)
 			{
 				return AreCompatible(sa, sb);
 			}
 
             ArrayType? aa = a as ArrayType;
 			ArrayType? ab = b as ArrayType;
-			if (aa != null && ab != null)
+			if (aa is not null && ab is not null)
 			{
 				return AreCompatible(aa.ElementType, ab.ElementType, ++depth);
 			}
@@ -182,12 +182,12 @@ namespace Reko.Core.Types
 
 			UnionType? ua = a as UnionType;
 			UnionType? ub = b as UnionType;
-			if (ua != null && ub != null)
+			if (ua is not null && ub is not null)
 				return true;
 
 			FunctionType? fa = a as FunctionType;
 			FunctionType? fb = b as FunctionType;
-			if (fa != null && fb != null)
+			if (fa is not null && fb is not null)
 			{
                 if (fa.ParametersValid != fb.ParametersValid)
                     return false;
@@ -196,7 +196,7 @@ namespace Reko.Core.Types
 
             CodeType? ca = a as CodeType;
             CodeType? cb = a as CodeType;
-            if (ca != null && cb != null)
+            if (ca is not null && cb is not null)
             {
                 return true;
             }
@@ -230,9 +230,9 @@ namespace Reko.Core.Types
                     return true;
                 var arrayA = ptrA.Pointee as ArrayType;
                 var arrayB = ptrB.Pointee as ArrayType;
-                if (arrayA != null)
+                if (arrayA is not null)
                     return AreCompatible(arrayA.ElementType, ptrB.Pointee, ++depth);
-                else if (arrayB != null)
+                else if (arrayB is not null)
                     return AreCompatible(ptrA.Pointee, arrayB.ElementType, ++depth);
                 else
                     return false;
@@ -344,17 +344,17 @@ namespace Reko.Core.Types
 
             UnionType? ua = a as UnionType;
 			UnionType? ub = b as UnionType;
-			if (ua != null && ub != null)
+			if (ua is not null && ub is not null)
 			{
 				UnionType u2 = UnifyUnions(ua, ub);
 				return u2.Simplify();
 			}
-			if (ua != null)
+			if (ua is not null)
 			{
 				UnifyIntoUnion(ua, b);
 				return ua.Simplify();
 			}
-			if (ub != null)
+			if (ub is not null)
 			{
 				UnifyIntoUnion(ub, a);
 				return ub.Simplify();
@@ -362,7 +362,7 @@ namespace Reko.Core.Types
 
 			PrimitiveType? pa = a as PrimitiveType;
 			PrimitiveType? pb = b as PrimitiveType;
-			if (pa != null && pb != null)
+			if (pa is not null && pb is not null)
 			{
 				if (pa == pb)
 					return pa;
@@ -372,28 +372,28 @@ namespace Reko.Core.Types
 
 			TypeVariable? tA = a as TypeVariable;
 			TypeVariable? tB = b as TypeVariable;
-            if (tA != null && tB != null)
+            if (tA is not null && tB is not null)
             {
                 return UnifyTypeVariables(tA, tB);
             }
 
             TypeReference? trA = a as TypeReference;
             TypeReference? trB = b as TypeReference;
-            if (trA != null && trB != null)
+            if (trA is not null && trB is not null)
             {
                 if (trA == trB)
                     return trA;
                 else 
                     return MakeUnion(a, b);
             }
-            if (trA != null)
+            if (trA is not null)
             {
                 if (CanBeMergedInto(b, trA.Referent))
                 {
                     return new TypeReference(trA.Name, UnifyInternal(trA.Referent, b)!);
                 }
             }
-            if (trB != null)
+            if (trB is not null)
             {
                 if (CanBeMergedInto(a, trB.Referent))
                 {
@@ -403,7 +403,7 @@ namespace Reko.Core.Types
 
 			EquivalenceClass? eqA = a as EquivalenceClass;
 			EquivalenceClass? eqB = b as EquivalenceClass;
-			if (eqA != null && eqB != null)
+			if (eqA is not null && eqB is not null)
 			{
 				if (eqA.Number == eqB.Number)
 					return eqA;
@@ -413,78 +413,78 @@ namespace Reko.Core.Types
 
 			Pointer? ptrA = a as Pointer;
 			Pointer? ptrB = b as Pointer;
-			if (ptrA != null && ptrB != null)
+			if (ptrA is not null && ptrB is not null)
 			{
 				DataType dt = UnifyInternal(ptrA.Pointee, ptrB.Pointee)!;
 				return new Pointer(dt, Math.Max(ptrA.BitSize, ptrB.BitSize));
 			}
-            if (ptrA != null)
+            if (ptrA is not null)
             {
                 var dt = UnifyPointer(ptrA, b);
-                if (dt != null)
+                if (dt is not null)
                     return dt;
             }
-            if (ptrB != null)
+            if (ptrB is not null)
             {
                 var dt = UnifyPointer(ptrB, a);
-                if (dt != null)
+                if (dt is not null)
                     return dt;
             }
 
 			MemberPointer? mpA = a as MemberPointer;
 			MemberPointer? mpB = b as MemberPointer;
-			if (mpA != null && mpB != null)
+			if (mpA is not null && mpB is not null)
 			{
 				DataType baseType = UnifyInternal(mpA.BasePointer, mpB.BasePointer)!;
 				DataType pointee = UnifyInternal(mpA.Pointee, mpB.Pointee)!;
 				return new MemberPointer(baseType, pointee, mpB.BitSize);
 			}
-			if (mpA != null)
+			if (mpA is not null)
 			{
 				var dt = UnifyMemberPointer(mpA, b);
-                if (dt != null)
+                if (dt is not null)
                     return dt;
 			}
-			if (mpB != null)
+			if (mpB is not null)
 			{
 				var dt = UnifyMemberPointer(mpB, a);
-                if (dt != null)
+                if (dt is not null)
                     return dt;
 			}
 
 			FunctionType? funA = a as FunctionType;
 			FunctionType? funB = b as FunctionType;
-			if (funA != null && funB != null)
+			if (funA is not null && funB is not null)
 			{
 				return UnifyFunctions(funA, funB);
 			}
-            if (funA != null && b is CodeType)
+            if (funA is not null && b is CodeType)
             {
                 return funA;
             }
-            if (funB != null && a is CodeType)
+            if (funB is not null && a is CodeType)
             {
                 return funB;
             }
 
 			ArrayType? arrA = a as ArrayType;
 			ArrayType? arrB = b.ResolveAs<ArrayType>();
-			if (arrA != null && arrB != null)
+			if (arrA is not null && arrB is not null)
 			{
 				return UnifyArrays(arrA, arrB);
 			}
             arrA = a.ResolveAs<ArrayType>();
             arrB = b as ArrayType;
-            if (arrA != null && arrB != null)
+            if (arrA is not null && arrB is not null)
             {
                 return UnifyArrays(arrA, arrB);
             }
-            if (arrA != null && arrA.ElementType.Size >= b.Size)
+            if (arrA is not null && arrA.ElementType.Size >= b.Size)
 			{
 				arrA.ElementType = Unify(arrA.ElementType, b)!;
 				return arrA;
 			}
-			if (arrB != null && arrB.ElementType.Size >= a.Size)
+			if (arrB is not null && arrB.ElementType.Size >= a.Size)
 			{
 				arrB.ElementType = Unify(arrB.ElementType, a)!;
 				return arrB;
@@ -500,35 +500,35 @@ namespace Reko.Core.Types
 
             StructureType? strA = a as StructureType;
 			StructureType? strB = b as StructureType;
-			if (strA != null && strB != null)
+			if (strA is not null && strB is not null)
 			{
 				return UnifyStructures(strA, strB);
 			}
-			if (strA != null && (strA.Size == 0 || strA.Size >= b.Size))
+			if (strA is not null && (strA.Size == 0 || strA.Size >= b.Size))
 			{
                 MergeIntoStructure(b, strA);
 				return strA;
 			}
-			if (strB != null && (strB.Size == 0 || strB.Size >= a.Size))
+			if (strB is not null && (strB.Size == 0 || strB.Size >= a.Size))
 			{
                 MergeIntoStructure(a, strB);
 				return strB;
 			}
-			if (strA != null || strB != null)
+			if (strA is not null || strB is not null)
 			{
 				return MakeUnion(a, b);
 			}
             CodeType? ca = a as CodeType;
             CodeType? cb = b as CodeType;
-            if (ca != null && cb != null)
+            if (ca is not null && cb is not null)
             {
                 return ca;
             }
-            if (tA != null)
+            if (tA is not null)
             {
                 return UnifyTypeVariable(tA, b);
             }
-            if (tB != null)
+            if (tB is not null)
             {
                 return UnifyTypeVariable(tB, a);
             }
@@ -563,7 +563,7 @@ namespace Reko.Core.Types
         private void MergeIntoStructure(DataType a, StructureType str)
         {
             StructureField? f = str.Fields.AtOffset(0);
-            if (f != null)
+            if (f is not null)
             {
                 f.DataType = UnifyFieldTypes(a, f.DataType)!;
             }
@@ -666,9 +666,9 @@ namespace Reko.Core.Types
 			}
 
             string? name;
-            if (a.Name != null)
+            if (a.Name is not null)
 			{
-				if (b.Name != null && a.Name != b.Name)
+				if (b.Name is not null && a.Name != b.Name)
                     return MakeUnion(a, b);
                 else
 					name = a.Name;
@@ -725,7 +725,7 @@ namespace Reko.Core.Types
 					fb = null;
 				}
 			}
-			if (fa != null)
+			if (fa is not null)
 			{
 				mem.Fields.Add(fa);
 				while (ea.MoveNext())
@@ -734,7 +734,7 @@ namespace Reko.Core.Types
 					mem.Fields.Add(f.Clone());
 				}
 			}
-			if (fb != null)
+			if (fb is not null)
 			{
 				mem.Fields.Add(fb);
 				while (eb.MoveNext())
@@ -807,13 +807,13 @@ namespace Reko.Core.Types
                 // only one field should be nested structure
                 if (
                     (strFa is null && strFb is null) ||
-                    (strFa != null && strFb != null))
+                    (strFa is not null && strFb is not null))
                     return false;
 
                 // check which of two fields is nested structure and store it
                 // and other field in corresponding variables.
                 int strSize;
-                if (strFa != null)
+                if (strFa is not null)
                 {
                     fNestedStruct = fa;
                     fOther = fb;

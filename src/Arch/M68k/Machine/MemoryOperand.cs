@@ -87,7 +87,7 @@ namespace Reko.Arch.M68k.Machine
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            if (Offset != null)
+            if (Offset is not null)
             {
                 renderer.WriteString(FormatValue(Offset, false, M68kDisassembler.HexStringFormat));
             }
@@ -163,7 +163,7 @@ namespace Reko.Arch.M68k.Machine
                 renderer.WriteFormat("${0:X2},", Imm8);
             }
             renderer.WriteString(ARegister.Name);
-            if (XRegister != null)
+            if (XRegister is not null)
             {
                 renderer.WriteString(",");
                 renderer.WriteString(XRegister.Name);

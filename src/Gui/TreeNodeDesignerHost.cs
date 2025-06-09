@@ -119,7 +119,7 @@ namespace Reko.Gui
                 return null;
             if (o is TreeNodeDesigner des)
             {
-                if (des.Component != null)
+                if (des.Component is not null)
                 {
                     o = des.Component;
                 }
@@ -134,7 +134,7 @@ namespace Reko.Gui
                     {
                         var desType = svc.GetType(
                             ((DesignerAttribute) attr[0]).DesignerTypeName);
-                        if (desType != null)
+                        if (desType is not null)
                             des = (TreeNodeDesigner) Activator.CreateInstance(desType)!;
                         else
                             des = new TreeNodeDesigner();
@@ -174,7 +174,7 @@ namespace Reko.Gui
         private void tree_AfterSelect(object? sender, EventArgs e)
         {
             var des = GetSelectedDesigner();
-            if (des != null)
+            if (des is not null)
             {
                 des.DoDefaultAction();
             }

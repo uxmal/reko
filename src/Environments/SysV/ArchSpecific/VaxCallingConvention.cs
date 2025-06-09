@@ -50,7 +50,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             {
                 ccr.StackParam(dtParam);
             }
-            if (dtRet != null)
+            if (dtRet is not null)
             {
                 ccr.RegReturn(regRet);
             }

@@ -98,7 +98,7 @@ namespace Reko.Libraries.Libc
                 if (!ignoreArgument)
                 {
                     DataType dt = MakeDataType(byteSize, domain);
-                    if (dt != null)
+                    if (dt is not null)
                         ArgumentTypes.Add(dt);
                 }
             }

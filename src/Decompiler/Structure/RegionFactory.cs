@@ -44,7 +44,7 @@ namespace Reko.Structure
             foreach (var stm in b.Statements)
             {
                 var s = stm.Instruction.Accept(this);
-                if (s != null)
+                if (s is not null)
                     stms.Add(s);
             }
             var region = new Region(b, stms)

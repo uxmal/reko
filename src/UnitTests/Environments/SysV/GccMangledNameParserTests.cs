@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2025 John Källén.
  *
@@ -66,9 +66,9 @@ namespace Reko.UnitTests.Environments.SysV
             {
                 this.modifier = modifier;
                 this.name = name;
-                if (scope != null)
+                if (scope is not null)
                     this.name = scope + "::" + name;
-                if (sp != null)
+                if (sp is not null)
                     sp.Accept(this);
                 else
                     sb.Append(this.name);
@@ -120,7 +120,7 @@ namespace Reko.UnitTests.Environments.SysV
                 default:
                     throw new NotSupportedException(string.Format("Domain {0} is not supported.", primitive.Domain));
                 }
-                if (name != null)
+                if (name is not null)
                     sb.AppendFormat(" {0}", name);
                 return sb;
             }
@@ -133,7 +133,7 @@ namespace Reko.UnitTests.Environments.SysV
                 sb.AppendFormat(" *");
                 WriteQualifier(pointer.Qualifier);
                 name = n;
-                if (name != null)
+                if (name is not null)
                     sb.AppendFormat(" {0}", name);
                 return sb;
             }
@@ -162,7 +162,7 @@ namespace Reko.UnitTests.Environments.SysV
                 reference.Referent.Accept(this);
                 sb.AppendFormat(" &");
                 name = n;
-                if (name != null)
+                if (name is not null)
                     sb.AppendFormat(" {0}", name);
                 return sb;
             }
@@ -192,7 +192,7 @@ namespace Reko.UnitTests.Environments.SysV
                     sb.AppendFormat("{0} ", signature.Convention);
                 if (!string.IsNullOrEmpty(modifier))
                     sb.AppendFormat("{0}: ", modifier);
-                if (signature.ReturnValue != null && signature.ReturnValue.Type != null)
+                if (signature.ReturnValue is not null && signature.ReturnValue.Type is not null)
                 {
                     signature.ReturnValue.Type.Accept(this);
                 }
@@ -230,15 +230,15 @@ namespace Reko.UnitTests.Environments.SysV
 
             public StringBuilder VisitTypeReference(TypeReference_v1 typeReference)
             {
-                if (typeReference.Scope != null)
+                if (typeReference.Scope is not null)
                 {
                     sb.Append(string.Join("::", typeReference.Scope));
                     sb.Append("::");
                 }
                 sb.Append(typeReference.TypeName);
-                if (name != null)
+                if (name is not null)
                     sb.AppendFormat(" {0}", name);
-                if (typeReference.TypeArguments != null && typeReference.TypeArguments.Length > 0)
+                if (typeReference.TypeArguments is not null && typeReference.TypeArguments.Length > 0)
                 {
                     sb.Append("<");
                     var sep = "";
@@ -279,14 +279,14 @@ namespace Reko.UnitTests.Environments.SysV
                 sb.Append(">");
 
                 name = n;
-                if (name != null)
+                if (name is not null)
                     sb.AppendFormat(" {0}", name);
                 return sb;
             }
             public StringBuilder VisitVoidType(VoidType_v1 serializedVoidType)
             {
                 sb.Append("void");
-                if (name != null)
+                if (name is not null)
                     sb.AppendFormat(" {0}", name);
                 return sb;
             }

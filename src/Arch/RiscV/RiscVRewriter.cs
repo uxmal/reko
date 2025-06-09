@@ -518,7 +518,7 @@ namespace Reko.Arch.RiscV
 
         private void MaybeSliceSignExtend(Expression dst, Expression src, DataType? dt = null)
         {
-            if (dt != null && dt.BitSize < dst.DataType.BitSize)
+            if (dt is not null && dt.BitSize < dst.DataType.BitSize)
             {
                 src = m.Convert(m.Slice(src, dt), dt, arch.NaturalSignedInteger);
             }

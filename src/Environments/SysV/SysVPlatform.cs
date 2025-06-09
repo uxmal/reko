@@ -171,7 +171,7 @@ namespace Reko.Environments.SysV
             {
                 var arch = this.Architecture;
                 ProcedureBase? proc = host.GetImportedProcedure(arch, addrTarget, addrInstr);
-                if (proc != null)
+                if (proc is not null)
                     return proc;
                 return host.GetInterceptedCall(arch, addrTarget);
             }
@@ -255,9 +255,9 @@ namespace Reko.Environments.SysV
                 return null;
             var proc = new ExternalProcedure(procName, sig);
             var characteristics = CharacteristicsLibs.Select(cl => cl.Lookup(procName))
-                .Where(c => c != null)
+                .Where(c => c is not null)
                 .FirstOrDefault();
-            if (characteristics != null)
+            if (characteristics is not null)
                 proc.Characteristics = characteristics;
             return proc;
         }
@@ -284,7 +284,7 @@ namespace Reko.Environments.SysV
                 Debug.Print("*** Error parsing {0}. {1}", fnName, ex.Message);
                 return null;
             }
-            if (field != null && field.Type is SerializedSignature sproc)
+            if (field is not null && field.Type is SerializedSignature sproc)
             {
                 return new Procedure_v1
                 {

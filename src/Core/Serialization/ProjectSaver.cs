@@ -99,7 +99,7 @@ namespace Reko.Core.Serialization
                     LoadAddress = program.User.LoadAddress?.ToString(),
                     Calls = program.User.Calls
                         .Select(uc => SerializeUserCall(program, uc.Value))
-                        .Where(uc => uc != null)
+                        .Where(uc => uc is not null)
                         .Select(uc => uc!)
                         .ToList(),
                     IndirectJumps = program.User.IndirectJumps.Select(SerializeIndirectJump).ToList(),
@@ -184,7 +184,7 @@ namespace Reko.Core.Serialization
                 return null;
             var procser = program.CreateProcedureSerializer();
             SerializedSignature? ssig = null;
-            if (uc.Signature != null)
+            if (uc.Signature is not null)
             {
                 ssig = procser.Serialize(uc.Signature);
             }
@@ -302,7 +302,7 @@ namespace Reko.Core.Serialization
         private XmlElement? SerializeOptionValue(string key, object value, XmlDocument doc)
         {
             var el = SerializeValue(value, doc);
-            if (el != null)
+            if (el is not null)
             {
                 el.SetAttribute("key", "", key);
             }
@@ -325,7 +325,7 @@ namespace Reko.Core.Serialization
                 foreach (DictionaryEntry de in dict)
                 {
                     var sub = SerializeValue(de.Value, doc);
-                    if (sub != null)
+                    if (sub is not null)
                     {
                         sub.SetAttribute("key", de.Key.ToString());
                         el.AppendChild(sub);

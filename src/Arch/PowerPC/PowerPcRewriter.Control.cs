@@ -75,7 +75,7 @@ namespace Reko.Arch.PowerPC
         {
             Expression cr;
             var ccrOp = instr.Operands[0] as RegisterStorage;
-            if (ccrOp != null)
+            if (ccrOp is not null)
             {
                 cr = RewriteOperand(instr.Operands[0]);
             }
@@ -101,7 +101,7 @@ namespace Reko.Arch.PowerPC
             }
             else
             {
-                var dst = RewriteOperand(ccrOp != null ? instr.Operands[1] : instr.Operands[0]);
+                var dst = RewriteOperand(ccrOp is not null ? instr.Operands[1] : instr.Operands[0]);
                 if (updateLinkregister)
                 {
                     m.BranchInMiddleOfInstruction(

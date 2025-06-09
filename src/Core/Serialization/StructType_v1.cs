@@ -71,7 +71,7 @@ namespace Reko.Core.Serialization
                 sb.AppendFormat("{0}, ", Name);
             if (ByteSize > 0)
                 sb.AppendFormat("{0}, ", ByteSize);
-            if (Fields != null)
+            if (Fields is not null)
             {
                 foreach (StructField_v1 f in Fields)
                 {

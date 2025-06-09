@@ -60,7 +60,7 @@ namespace Reko.Core.Expressions
                     foreach (Expression e in a.Arguments)
                     {
                         h *= 47;
-                        if (e != null)
+                        if (e is not null)
                             h ^= GetHashCodeImpl(e);
                     }
                     return h;

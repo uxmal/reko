@@ -166,11 +166,11 @@ namespace Reko.Arch.X86.Assembler
 			if (lexer.PeekToken() != Token.EOL)
 			{
                 var op = opp.ParseOperand();
-                if (op != null)
+                if (op is not null)
                     ops.Add(op);
 				if (opp.SegmentOverride != RegisterStorage.None)
 					asm.SegmentOverride = opp.SegmentOverride;
-				if (opp.AddressWidth != null)
+				if (opp.AddressWidth is not null)
 					asm.AddressWidth = (PrimitiveType)opp.AddressWidth;
 
 				while (lexer.PeekToken() == Token.COMMA)
@@ -178,7 +178,7 @@ namespace Reko.Arch.X86.Assembler
 					lexer.DiscardToken();
 					opp.DataWidth = ops[0].Operand.DataType;
                     op = opp.ParseOperand();
-                    if (op != null)
+                    if (op is not null)
                         ops.Add(op);
 					if (opp.SegmentOverride != RegisterStorage.None)
 					{
@@ -186,7 +186,7 @@ namespace Reko.Arch.X86.Assembler
 							Error("Can't have two segment overrides in one instruction");
 						asm.SegmentOverride = opp.SegmentOverride;
 					}
-					if (opp.AddressWidth != null)
+					if (opp.AddressWidth is not null)
 						asm.AddressWidth = (PrimitiveType)opp.AddressWidth;
 				}
 			}

@@ -101,7 +101,7 @@ namespace Reko.Core.Hll.Pascal
             writer.Write("const");
             writer.Write(' ');
             writer.Write(Name);
-            if (this.Type != null)
+            if (this.Type is not null)
             {
                 writer.Write(" : ");
                 Type.Write(writer);
@@ -159,7 +159,7 @@ namespace Reko.Core.Hll.Pascal
 
         public override void Write(TextWriter writer)
         {
-            if (ReturnType != null)
+            if (ReturnType is not null)
             {
                 writer.Write("function");
             }
@@ -175,16 +175,16 @@ namespace Reko.Core.Hll.Pascal
                 WriteList(writer, "; ", Parameters, ParameterDeclaration.Write);
                 writer.Write(")");
             }
-            if (ReturnType != null)
+            if (ReturnType is not null)
             {
                 writer.Write(" : ");
                 ReturnType.Write(writer);
             }
-            if (CallingConvention != null)
+            if (CallingConvention is not null)
             {
                 writer.Write("; {0}", CallingConvention);
             }
-            if (Body != null)
+            if (Body is not null)
             {
                 writer.Write("; ");
                 Body.Write(writer);
@@ -522,7 +522,7 @@ namespace Reko.Core.Hll.Pascal
         private void WriteDimension(TextWriter writer, ArrayDimension dim)
         {
             dim.Low.Write(writer);
-            if (dim.High != null)
+            if (dim.High is not null)
             {
                 writer.Write("..");
                 dim.High.Write(writer);
@@ -549,7 +549,7 @@ namespace Reko.Core.Hll.Pascal
             writer.Write(" ");
             writer.Write("of");
             writer.Write(" ");
-            if (EnumName != null)
+            if (EnumName is not null)
             {
                 writer.Write(EnumName);
             }
@@ -577,7 +577,7 @@ namespace Reko.Core.Hll.Pascal
         public override void Write(TextWriter writer)
         {
             writer.Write("string");
-            if (Size != null)
+            if (Size is not null)
             {
                 writer.Write("[");
                 Size.Write(writer);
@@ -600,7 +600,7 @@ namespace Reko.Core.Hll.Pascal
             writer.Write("record");
             writer.Write(" ");
             WriteList(writer, "; ", Fields, WriteField);
-            if (VariantPart != null)
+            if (VariantPart is not null)
             {
                 if (Fields.Count > 0)
                     writer.Write("; ");
@@ -660,7 +660,7 @@ namespace Reko.Core.Hll.Pascal
         public void Write(TextWriter writer)
         {
             writer.Write("case ");
-            if (VariantTag != null)
+            if (VariantTag is not null)
             {
                 writer.Write(VariantTag);
                 writer.Write(" :");
@@ -777,7 +777,7 @@ namespace Reko.Core.Hll.Pascal
         public override void Write(TextWriter writer)
         {
             Low.Write(writer);
-            if (High != null)
+            if (High is not null)
             {
                 writer.Write("..");
                 High.Write(writer);
@@ -820,12 +820,12 @@ namespace Reko.Core.Hll.Pascal
                 WriteList(writer, "; ", Parameters, ParameterDeclaration.Write);
                 writer.Write(")");
             }
-            if (ReturnType != null)
+            if (ReturnType is not null)
             {
                 writer.Write(" : ");
                 ReturnType.Write(writer);
             }
-            if (CallingConvention != null)
+            if (CallingConvention is not null)
             {
                 writer.Write("; {0}", CallingConvention);
             }
@@ -871,7 +871,7 @@ namespace Reko.Core.Hll.Pascal
         private void WriteOpcode(TextWriter w, Exp opcode)
         {
             var i = opcode as NumericLiteral;
-            if (i != null)
+            if (i is not null)
             {
                 w.Write("${0:X4}", i.Value);
             }

@@ -184,7 +184,7 @@ namespace Reko.Arch.Pdp.Pdp11
                 Invalid();
                 return;
             }
-            if (changed != null)
+            if (changed is not null)
             {
                 var grfChanged = binder.EnsureFlagGroup(changed);
                 m.Assign(grfChanged, m.Cond(e));
@@ -209,7 +209,7 @@ namespace Reko.Arch.Pdp.Pdp11
                 // for the destination of a transfer instruction.
                 return null;
             }
-            var r = memOp.Register != null
+            var r = memOp.Register is not null
                 ? binder.EnsureRegister(memOp.Register)
                 : null;
             var tmp = binder.CreateTemporary(op.DataType);
@@ -272,12 +272,12 @@ namespace Reko.Arch.Pdp.Pdp11
             return tmp;
         /*
             var immOp = op as ImmediateOperand;
-            if (immOp != null)
+            if (immOp is not null)
             {
                 return immOp.Value;
             }
             var addrOp = op as AddressOperand;
-            if (addrOp != null)
+            if (addrOp is not null)
             {
                 return addrOp.Address;
             }
@@ -310,7 +310,7 @@ namespace Reko.Arch.Pdp.Pdp11
             case Address addrOp:
                 return addrOp;
             case MemoryOperand memOp:
-                var r = memOp.Register != null
+                var r = memOp.Register is not null
                     ? binder.EnsureRegister(memOp.Register)
                     : null;
                 var tmp = binder.CreateTemporary(op.DataType);
@@ -392,7 +392,7 @@ namespace Reko.Arch.Pdp.Pdp11
                 m.Assign(dst, src);
                 return dst;
             case MemoryOperand memOp:
-                var r = memOp.Register != null
+                var r = memOp.Register is not null
                     ? binder.EnsureRegister(memOp.Register)
                     : null;
                 Expression tmp = MaybeAssignTmp(gen(src));
@@ -501,7 +501,7 @@ namespace Reko.Arch.Pdp.Pdp11
                 m.Assign(dst, gen(dst, src));
                 return dst;
             case MemoryOperand memOp:
-                var r = memOp.Register != null
+                var r = memOp.Register is not null
                     ? binder.EnsureRegister(memOp.Register)
                     : null;
                 var tmp = binder.CreateTemporary(dasm.Current.DataWidth!);

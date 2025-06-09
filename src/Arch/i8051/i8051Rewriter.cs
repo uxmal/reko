@@ -146,7 +146,7 @@ namespace Reko.Arch.i8051
             var dst = OpSrc(instr.Operands[0], arch.DataMemory);
             var src = OpSrc(instr.Operands[1], arch.DataMemory);
             m.Assign(dst, fn(dst, src));
-            if (grf != null)
+            if (grf is not null)
             {
                 m.Assign(binder.EnsureFlagGroup(grf), m.Cond(dst));
             }
@@ -464,7 +464,7 @@ namespace Reko.Arch.i8051
                 if (alias is not null)
                     return alias;
                 Debug.Assert(ea is not null);
-                if (dataMemory != null)
+                if (dataMemory is not null)
                 {
                     return m.SegMem(mem.DataType, binder.EnsureRegister(dataMemory), ea);
                 }
@@ -494,16 +494,16 @@ namespace Reko.Arch.i8051
         private (Expression?, Expression?) EffectiveAddress(MemoryOperand mem)
         {
             Expression ea;
-            if (mem.DirectAddress != null)
+            if (mem.DirectAddress is not null)
             {
-                if (mem.Index != null)
+                if (mem.Index is not null)
                 {
                     ea = m.IAdd(mem.DirectAddress, binder.EnsureRegister(mem.Index));
                 }
                 else if (mem.DirectAddress is Constant c)
                 {
                     var alias = AliasedSpecialFunctionRegister(c.ToUInt16());
-                    if (alias != null)
+                    if (alias is not null)
                         return (null, alias);
                     ea = c;
                 }
@@ -512,9 +512,9 @@ namespace Reko.Arch.i8051
                     ea = mem.DirectAddress;
                 }
             }
-            else if (mem.Register != null)
+            else if (mem.Register is not null)
             {
-                if (mem.Index != null)
+                if (mem.Index is not null)
                 {
                     var idx = binder.EnsureRegister(mem.Index);
                     if (mem.Register == Registers.PC)
@@ -572,9 +572,9 @@ namespace Reko.Arch.i8051
                 break;
             case MemoryOperand mem:
                 Expression ea;
-                if (mem.DirectAddress != null)
+                if (mem.DirectAddress is not null)
                 {
-                    if (mem.Index != null)
+                    if (mem.Index is not null)
                     {
                         ea = m.IAdd(mem.DirectAddress, binder.EnsureRegister(mem.Index));
                     }
@@ -583,9 +583,9 @@ namespace Reko.Arch.i8051
                         ea = mem.DirectAddress;
                     }
                 }
-                else if (mem.Register != null)
+                else if (mem.Register is not null)
                 {
-                    if (mem.Index != null)
+                    if (mem.Index is not null)
                     {
                         var idx = binder.EnsureRegister(mem.Index);
                         if (mem.Register == Registers.PC)

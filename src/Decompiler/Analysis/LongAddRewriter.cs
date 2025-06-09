@@ -152,7 +152,7 @@ public class LongAddRewriter : IAnalysis<SsaState>
             ssa.AddUses(stmLong);
 
             var sidDstLo = GetSsaIdentifierOf(loCandidate.Dst);
-            if (sidDstLo != null)
+            if (sidDstLo is not null)
             {
                 var cast = new Slice(loCandidate.Dst.DataType, dst, 0);
                 var stmCastLo = stmts.Insert(iStm++, addr, new AliasAssignment(
@@ -167,11 +167,11 @@ public class LongAddRewriter : IAnalysis<SsaState>
                 var stmDeadHi = sidDstHi.DefStatement;
                 sidDstHi.DefStatement = stmSliceHi;
 
-                if (sidDstLo != null)
+                if (sidDstLo is not null)
                 {
                     sidDst!.Uses.Add(stmCastLo);
                 }
-                if (sidDstHi != null)
+                if (sidDstHi is not null)
                 {
                     sidDst!.Uses.Add(stmSliceHi);
                 }
@@ -469,7 +469,7 @@ public class LongAddRewriter : IAnalysis<SsaState>
                     continue;
                 }
                 var asc = MatchAdcSbc(use);
-                if (asc != null && asc.Statement != null && asc.Statement.Block == block)
+                if (asc is not null && asc.Statement is not null && asc.Statement.Block == block)
                 {
                     if (asc.Op != loInstr.Op)
                         return null;
@@ -1024,7 +1024,7 @@ public class LongAddRewriter : IAnalysis<SsaState>
             ssa.AddUses(stmLong);
 
             var sidDstLo = GetSsaIdentifierOf(loCandidate.Dst);
-            if (sidDstLo != null)
+            if (sidDstLo is not null)
             {
                 var cast = new Slice(loCandidate.Dst.DataType, dst, 0);
                 var stmCastLo = stmts.Insert(iStm++, addr, new AliasAssignment(
@@ -1039,11 +1039,11 @@ public class LongAddRewriter : IAnalysis<SsaState>
                 var stmDeadHi = sidDstHi.DefStatement;
                 sidDstHi.DefStatement = stmSliceHi;
 
-                if (sidDstLo != null)
+                if (sidDstLo is not null)
                 {
                     sidDst!.Uses.Add(stmCastLo);
                 }
-                if (sidDstHi != null)
+                if (sidDstHi is not null)
                 {
                     sidDst!.Uses.Add(stmSliceHi);
                 }

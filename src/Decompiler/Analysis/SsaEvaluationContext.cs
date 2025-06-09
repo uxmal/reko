@@ -82,7 +82,7 @@ namespace Reko.Analysis
                 access.MemoryId.Storage == MemoryStorage.Instance)
             {
                 var pc = dynamicLinker.ResolveToImportedValue(this.Statement!, c);
-                if (pc != null)
+                if (pc is not null)
                     return pc;
             }
             return access;
@@ -144,9 +144,9 @@ namespace Reko.Analysis
                 return false;
             return ExpressionIdentifierUseFinder.Find(assSrc.Src)
                 .Select(c => ssaIds[c].DefStatement)
-                .Where(d => d != null)
+                .Where(d => d is not null)
                 .Select(ph => ph!.Instruction as PhiAssignment)
-                .Where(ph => ph != null)
+                .Where(ph => ph is not null)
                 .Any();
                 //.SelectMany(ph => ssaIds[ph.Ops].DefStatement)
                 //.Where(opDef => IsOverwriting(opDef) &&

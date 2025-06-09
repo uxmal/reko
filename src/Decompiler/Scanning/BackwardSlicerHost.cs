@@ -81,7 +81,7 @@ namespace Reko.Scanning
             if (block.Statements.Count < 1)
                 yield break;
             var last = block.Statements[^1];
-            if (last != null && last.Instruction is SwitchInstruction)
+            if (last is not null && last.Instruction is SwitchInstruction)
             {
                 //$TODO: this a workaround; when we run this class on 
                 // "raw" RTL, we won't need to special case the SwitchInstruction

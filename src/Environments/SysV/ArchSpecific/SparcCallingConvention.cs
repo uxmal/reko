@@ -62,7 +62,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             List<DataType> dtParams)
         {
             ccr.LowLevelDetails(wordSize, 0x0018);
-            if (dtRet != null)
+            if (dtRet is not null)
             {
                 SetReturnRegister(ccr, dtRet);
             }
@@ -110,7 +110,7 @@ namespace Reko.Environments.SysV.ArchSpecific
         public void SetReturnRegister(ICallingConventionBuilder ccr, DataType dtArg)
         {
             var ptArg = dtArg as PrimitiveType;
-            if (ptArg != null)
+            if (ptArg is not null)
             {
                 if (ptArg.Domain == Domain.Real)
                 {

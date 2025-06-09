@@ -140,7 +140,7 @@ namespace Reko.Environments.Cpm
                     if (sDisp.Services is null)
                         continue;
                     var svcs = sDisp.Services
-                        .Where(s => s.SyscallInfo != null)
+                        .Where(s => s.SyscallInfo is not null)
                         .Select(s => (
                             s.SyscallInfo!.Build(this),
                             new ExternalProcedure(

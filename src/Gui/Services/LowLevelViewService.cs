@@ -41,7 +41,7 @@ namespace Reko.Gui.Services
 
         public void ViewImage(Program program)
         {
-            Debug.Assert(program != null);
+            Debug.Assert(program is not null);
             var llvi = ShowWindowImpl(program);
             var addr = program.SegmentMap.Segments.Values
                 .Where(s => s.MemoryArea is not null)

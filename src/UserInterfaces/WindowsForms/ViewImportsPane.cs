@@ -52,7 +52,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public void Close()
         {
-            if (control != null)
+            if (control is not null)
                 control.Dispose();
             control = null;
         }
@@ -98,7 +98,7 @@ namespace Reko.UserInterfaces.WindowsForms
             case OrdinalImportReference ord:
                 var refText = new StringBuilder(ord.Ordinal.ToString());
                 string importName = TryGetImportName(ord);
-                if (importName != null)
+                if (importName is not null)
                 {
                     refText.AppendFormat(" ({0})", importName);
                 }
@@ -126,11 +126,11 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             var info = control.Imports.HitTest(e.Location);
             if (info.SubItem == mSelected) return;
-            if (mSelected != null)
+            if (mSelected is not null)
                 mSelected.Font = control.Imports.Font;
             mSelected = null;
             this.control.Imports.Cursor = Cursors.Default;
-            if (info.SubItem != null && info.Item.SubItems[0] == info.SubItem)
+            if (info.SubItem is not null && info.Item.SubItems[0] == info.SubItem)
             {
                 info.SubItem.Font = new Font(info.SubItem.Font, FontStyle.Underline);
                 this.control.Imports.Cursor = Cursors.Hand;
@@ -160,7 +160,7 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             var info = control.Imports.HitTest(e.X, e.Y);
             var row = info.Item.Index;
-            if (info.SubItem != null)
+            if (info.SubItem is not null)
             {
                 var addr = info.SubItem.Tag as Address?;
                 services.RequireService<ILowLevelViewService>()
@@ -214,7 +214,7 @@ namespace Reko.UserInterfaces.WindowsForms
                 }
                 else if (importY.ModuleName is null)
                 {
-                    Debug.Assert(importX.ModuleName != null);
+                    Debug.Assert(importX.ModuleName is not null);
                     return 1;
                 }
                 else

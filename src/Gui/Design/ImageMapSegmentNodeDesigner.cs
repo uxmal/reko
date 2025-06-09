@@ -131,7 +131,7 @@ namespace Reko.Gui.Design
 
         public override void DoDefaultAction()
         {
-            if (segment!.Designer != null)
+            if (segment!.Designer is not null)
             {
                 var segSvc = Services!.RequireService<ImageSegmentService>();
                 segSvc.DisplayImageSegment(segment, GetProgram());

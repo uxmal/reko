@@ -43,7 +43,7 @@ namespace Reko.Arch.Blackfin
             {
                 aaOpcode.prefix = Mnemonic.ToString();
             }
-            if (aaOpcode.infix != null)
+            if (aaOpcode.infix is not null)
             {
                 renderer.WriteString(aaOpcode.prefix!);
                 Operands[0].Render(renderer, options);
@@ -77,7 +77,7 @@ namespace Reko.Arch.Blackfin
                     op.Render(renderer, options);
                 }
             }
-            if (aaOpcode.suffix != null)
+            if (aaOpcode.suffix is not null)
             {
                 renderer.WriteString(aaOpcode.suffix);
             }

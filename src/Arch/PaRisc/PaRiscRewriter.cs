@@ -219,7 +219,7 @@ namespace Reko.Arch.PaRisc
             case MemoryOperand mem:
                 Identifier rb = binder.EnsureRegister(mem.Base);
                 Expression ea = rb;
-                if (mem.Index != null)
+                if (mem.Index is not null)
                 {
                     if (mem.Index != arch.Registers.GpRegs[0])
                     {

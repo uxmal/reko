@@ -120,7 +120,7 @@ namespace Reko.Core.Rtl
         {
             if (pattern is not RtlMicroGoto mgPat)
                 return false;
-            if (mgPat.Condition != null)
+            if (mgPat.Condition is not null)
             {
                 if (mgo.Condition is null)
                     return false;

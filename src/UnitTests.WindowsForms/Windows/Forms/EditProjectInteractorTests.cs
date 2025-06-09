@@ -42,7 +42,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         [TearDown]
         public void Teardown()
         {
-            if (dlg != null)
+            if (dlg is not null)
                 dlg.Dispose();
             dlg = null;
         }

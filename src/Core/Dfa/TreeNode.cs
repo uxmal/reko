@@ -100,7 +100,7 @@ namespace Reko.Core.Dfa
             }
             else if (Type == NodeType.CharClass)
             {
-                Debug.Assert(ValueClass != null);
+                Debug.Assert(ValueClass is not null);
                 int i = 0;
                 foreach (bool x in ValueClass!)
                 {

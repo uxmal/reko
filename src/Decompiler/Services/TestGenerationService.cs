@@ -247,7 +247,7 @@ namespace Reko.Services
 
         private string? GetOutputDirectory(IFileSystemService fsSvc)
         {
-            if (OutputDirectory != null)
+            if (OutputDirectory is not null)
                 return OutputDirectory;
             var dcSvc = this.services.GetService<IDecompilerService>();
             if (dcSvc is null)

@@ -163,10 +163,10 @@ namespace Reko.Arch.MicrochipPIC.Common
             PICExecMode pexec = architecture.Options.PICExecutionMode;
 
             var dcf = PICMemoryDescriptor.GetDCRField("XINST");
-            if (dcf != null)
+            if (dcf is not null)
             {
                 var dcr = PICMemoryDescriptor.GetDCR(dcf.RegAddress);
-                if (dcr != null && program.SegmentMap.TryFindSegment(dcr.Address, out ImageSegment? xinstsegt))
+                if (dcr is not null && program.SegmentMap.TryFindSegment(dcr.Address, out ImageSegment? xinstsegt))
                 {
                     var mem = (ByteMemoryArea) xinstsegt.MemoryArea;
                     uint xinstval;

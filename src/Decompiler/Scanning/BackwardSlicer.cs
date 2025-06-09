@@ -801,7 +801,7 @@ namespace Reko.Scanning
                 // XOR r,r (or SUB r,r) clears a register. Is it part of a live register?
                 var regDst = this.assignLhs as Identifier;
                 var regHi = binExp.Left as Identifier;
-                if (regHi != null && regDst != null &&
+                if (regHi is not null && regDst is not null &&
                     DomainOf(regDst) == regHi.Storage.Domain &&
                     regDst.Storage.OffsetOf(regHi.Storage) == 8)
                 {
@@ -928,7 +928,7 @@ namespace Reko.Scanning
                 break;
             }
             IEnumerable<KeyValuePair<Expression,BackwardSlicerContext>> liveExpr = seLeft!.LiveExprs;
-            if (seRight != null)
+            if (seRight is not null)
                 liveExpr = liveExpr.Concat(seRight.LiveExprs);
             var se = new SlicerResult
             {
@@ -1017,7 +1017,7 @@ namespace Reko.Scanning
         public SlicerResult? VisitConditionOf(ConditionOf cof, BackwardSlicerContext ctx)
         {
             var se = cof.Expression.Accept(this, BackwardSlicerContext.Cond(RangeOf(cof.Expression)));
-            if (se != null && !se.Stop)
+            if (se is not null && !se.Stop)
             {
                 se.SrcExpr = cof;
                 this.JumpTableIndex = cof.Expression;
@@ -1124,7 +1124,7 @@ namespace Reko.Scanning
             return new SlicerResult
             {
                 LiveExprs = srEa.LiveExprs,
-                SrcExpr = srEa.SrcExpr != null ? new MemoryAccess(srEa.SrcExpr, access.DataType) : null,
+                SrcExpr = srEa.SrcExpr is not null ? new MemoryAccess(srEa.SrcExpr, access.DataType) : null,
                 Stop = srEa.Stop
             };
         }

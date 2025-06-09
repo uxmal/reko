@@ -490,7 +490,7 @@ namespace Reko.Arch.X86.Rewriter
 
         public Expression MaybeConvert(DataType? type, Expression e)
         {
-            if (type != null)
+            if (type is not null)
                 return m.Convert(e, e.DataType, type);
             else
                 return e;

@@ -126,7 +126,7 @@ namespace Reko.Arch.Xtensa
             iclass = InstrClass.Transfer | InstrClass.Call;
             var dst = RewriteOp(instr.Operands[0]);
             var rDst = dst as Identifier;
-            if (rDst != null && rDst.Storage == Registers.a0)
+            if (rDst is not null && rDst.Storage == Registers.a0)
             {
                 var tmp = binder.CreateTemporary(rDst.DataType);
                 m.Assign(tmp, dst);
@@ -173,7 +173,7 @@ namespace Reko.Arch.Xtensa
             ShiftRegisters(iReg);
             var dst = RewriteOp(instr.Operands[0]);
             var rDst = dst as Identifier;
-            if (rDst != null && rDst.Storage == Registers.a0)
+            if (rDst is not null && rDst.Storage == Registers.a0)
             {
                 var tmp = binder.CreateTemporary(rDst.DataType);
                 m.Assign(tmp, dst);
@@ -194,7 +194,7 @@ namespace Reko.Arch.Xtensa
 
         private void RewriteLoop()
         {
-            if (this.lend != null)
+            if (this.lend is not null)
             {
                 // Nested LOOPxx instructions are not valid according to the
                 // Xtensa instruction manual.

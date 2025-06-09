@@ -49,7 +49,7 @@ namespace Reko.ImageLoaders.LLVM
         {
             var type = builder.TranslateType(alloca.Type);
             int count = 1;
-            if (alloca.ElementCount != null)
+            if (alloca.ElementCount is not null)
             {
                 throw new NotImplementedException();
             }
@@ -125,7 +125,7 @@ namespace Reko.ImageLoaders.LLVM
             var retType = builder.TranslateType(call.FnType);
             var fn = MakeValueExpression(call.FnPtr, null!);
             var app = m.Fn(fn, retType, args.ToArray());
-            if (call.Result != null)
+            if (call.Result is not null)
             {
                 var dst = m.CreateLocalId("loc", retType);
                 m.Assign(dst, app);

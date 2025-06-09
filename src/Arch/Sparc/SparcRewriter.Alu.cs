@@ -236,7 +236,7 @@ namespace Reko.Arch.Sparc
                 stackOffset += reg.DataType.Size;
             }
 
-            if (tmp != null)
+            if (tmp is not null)
             {
                 m.Assign(dst, tmp);
             }
@@ -282,7 +282,7 @@ namespace Reko.Arch.Sparc
             {
                 Copy(arch.Registers.OutRegisters[i], arch.Registers.InRegisters[i]);
             }
-            if (tmp != null)
+            if (tmp is not null)
             {
                 m.Assign(dst, tmp);
             }

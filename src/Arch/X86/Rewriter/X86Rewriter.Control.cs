@@ -214,7 +214,7 @@ namespace Reko.Arch.X86.Rewriter
 
             iclass = InstrClass.Transfer;
 			Address? addr = OperandAsCodeAddress(instrCur.Operands[0]);
-			if (addr != null)
+			if (addr is not null)
             {
                 m.Goto(addr);
 				return;
@@ -238,7 +238,7 @@ namespace Reko.Arch.X86.Rewriter
         {
             Identifier cx = orw.AluRegister(Registers.rcx, instrCur.DataWidth);
             m.Assign(cx, m.ISub(cx, 1));
-            if (useFlags != null)
+            if (useFlags is not null)
             {
                 m.Branch(
                     m.Cand(

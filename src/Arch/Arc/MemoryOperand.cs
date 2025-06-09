@@ -41,7 +41,7 @@ namespace Reko.Arch.Arc
         {
             renderer.WriteChar('[');
             var sep = "";
-            if (Base != null)
+            if (Base is not null)
             {
                 renderer.WriteString(Base.Name);
                 sep = ",";
@@ -50,7 +50,7 @@ namespace Reko.Arch.Arc
             {
                 renderer.WriteFormat("{0}{1}", sep, Offset);
             }
-            else if (Index != null)
+            else if (Index is not null)
             {
                 renderer.WriteFormat("{0}{1}", sep, Offset);
             }

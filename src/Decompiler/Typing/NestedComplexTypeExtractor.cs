@@ -69,7 +69,7 @@ namespace Reko.Typing
 			bool changed = false;
 			for (int i = 0; i < eqs.Length; ++i)
 			{
-				if (eqs[i].DataType != null)
+				if (eqs[i].DataType is not null)
 				{
 					var nctr = new NestedComplexTypeExtractor(factory, store);
 					eqs[i].DataType = eqs[i].DataType.Accept(nctr);

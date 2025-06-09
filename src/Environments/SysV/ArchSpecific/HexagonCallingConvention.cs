@@ -44,7 +44,7 @@ namespace Reko.Environments.SysV.ArchSpecific
         {
             //$BUG: this is all just to get the ELF loader up and running.
             ccr.LowLevelDetails(4, 0);
-            if (dtRet != null && !(dtRet is VoidType))
+            if (dtRet is not null && !(dtRet is VoidType))
             {
                 ccr.RegReturn(arch.GetRegister("r0")!);
             }

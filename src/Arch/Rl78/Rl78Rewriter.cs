@@ -194,7 +194,7 @@ namespace Reko.Arch.Rl78
                 return aop;
             case MemoryOperand mop:
                 Expression ea;
-                if (mop.Base != null)
+                if (mop.Base is not null)
                 {
                     ea = binder.EnsureRegister(mop.Base);
                     if (mop.Offset != 0)
@@ -206,7 +206,7 @@ namespace Reko.Arch.Rl78
                 {
                     ea = m.Ptr32((uint)mop.Offset);
                 }
-                if (mop.Index != null)
+                if (mop.Index is not null)
                 {
                     var idx = binder.EnsureRegister(mop.Index);
                     ea = m.IAdd(ea, idx);
@@ -239,7 +239,7 @@ namespace Reko.Arch.Rl78
                 return grfDst;
             case MemoryOperand mop:
                 Expression ea;
-                if (mop.Base != null)
+                if (mop.Base is not null)
                 {
                     ea = binder.EnsureRegister(mop.Base);
                     if (mop.Offset != 0)
@@ -251,7 +251,7 @@ namespace Reko.Arch.Rl78
                 {
                     ea = m.Ptr32((uint)mop.Offset);
                 }
-                if (mop.Index != null)
+                if (mop.Index is not null)
                 {
                     var idx = binder.EnsureRegister(mop.Index);
                     ea = m.IAdd(ea, idx);

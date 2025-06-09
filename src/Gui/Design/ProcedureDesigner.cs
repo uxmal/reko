@@ -50,11 +50,11 @@ namespace Reko.Gui.Design
             this.userProc = userProc;
             this.Address = address;
             this.isEntryPoint = isEntryPoint;
-            if (userProc != null && !string.IsNullOrEmpty(userProc.Name))
+            if (userProc is not null && !string.IsNullOrEmpty(userProc.Name))
                 this.name = userProc.Name!;
-            else if (procedure != null)
+            else if (procedure is not null)
                 this.name = procedure.Name;
-            if (procedure != null)
+            if (procedure is not null)
                 procedure.NameChanged += procedure_NameChanged;
         }
 
@@ -73,7 +73,7 @@ namespace Reko.Gui.Design
                 return;
             TreeNode.Text = name ?? "(None)";
             TreeNode.ToolTipText = Address.ToString();
-            TreeNode.ImageName = userProc != null
+            TreeNode.ImageName = userProc is not null
                 ? (isEntryPoint ? "UserEntryProcedure.ico" : "Userproc.ico")
                 : (isEntryPoint ? "EntryProcedure.ico" : "Procedure.ico");
         }
@@ -97,7 +97,7 @@ namespace Reko.Gui.Design
                 case CmdIds.ViewFindWhatPointsHere:
                 case CmdIds.ShowCallGraphNavigator:
                     status.Status = MenuStatus.Visible;
-                    if (procedure != null)
+                    if (procedure is not null)
                         status.Status |= MenuStatus.Enabled;
                     return true;
                 case CmdIds.ActionAssumeRegisterValues:
@@ -199,7 +199,7 @@ namespace Reko.Gui.Design
                     Register = program.Architecture.GetRegister(ass.Register!),
                     Value = ass.Value
                 })
-                .Where(ass => ass.Register != null)
+                .Where(ass => ass.Register is not null)
                 .ToDictionary(ass => ass.Register!, ass => ass.Value!);
         }
 
@@ -207,7 +207,7 @@ namespace Reko.Gui.Design
         {
             userProc = program.EnsureUserProcedure(
                 this.Address,
-                procedure != null
+                procedure is not null
                     ? procedure.Name
                     : userProc?.Name);
             userProc.Assume = dictionary
@@ -231,7 +231,7 @@ namespace Reko.Gui.Design
 
         void procedure_NameChanged(object? sender, EventArgs e)
         {
-            if (TreeNode != null)
+            if (TreeNode is not null)
             {
                 TreeNode.Invoke(OnNameChanged);
             }

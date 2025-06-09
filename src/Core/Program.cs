@@ -253,10 +253,10 @@ namespace Reko.Core
         {
             get
             {
-                if (this.encoding != null)
+                if (this.encoding is not null)
                     return this.encoding;
                 Encoding e;
-                if (User.TextEncoding != null)
+                if (User.TextEncoding is not null)
                     e = User.TextEncoding;
                 else
                     e = Platform.DefaultTextEncoding;
@@ -712,7 +712,7 @@ namespace Reko.Core
         private void SetDefaultArchitecture(IProcessorArchitecture arch)
         {
             this.archDefault = arch;
-            if (arch != null && !Architectures.ContainsKey(arch.Name))
+            if (arch is not null && !Architectures.ContainsKey(arch.Name))
             {
                 Architectures.Add(arch.Name, arch);
             }
@@ -770,7 +770,7 @@ namespace Reko.Core
                 return;
             this.ImageMap = SegmentMap.CreateImageMap();
             foreach (var sym in this.ImageSymbols.Values.Where(
-                s => s.Type == SymbolType.Data && s.DataType != null && s.DataType.BitSize != 0))
+                s => s.Type == SymbolType.Data && s.DataType is not null && s.DataType.BitSize != 0))
             {
                 this.ImageMap.AddItemWithSize(
                     sym.Address!,
@@ -855,11 +855,11 @@ namespace Reko.Core
                 if (generatedName.Length == 0)
                     generatedName = this.NamingPolicy.ProcedureName(addr);
                 proc = Procedure.Create(arch, generatedName, addr, arch.CreateFrame());
-                if (sym.Signature != null)
+                if (sym.Signature is not null)
                 {
                     var sser = this.CreateProcedureSerializer();
                     proc.Signature = sser.Deserialize(sym.Signature, proc.Frame)!;
-                    deduceSignatureFromName = proc.Signature != null;
+                    deduceSignatureFromName = proc.Signature is not null;
                 }
             }
             else
@@ -871,7 +871,7 @@ namespace Reko.Core
             if (deduceSignatureFromName)
             {
                 var sProc = this.Platform.SignatureFromName(procedureName!);
-                if (sProc != null)
+                if (sProc is not null)
                 {
                     var loader = this.CreateTypeLibraryDeserializer();
                     var exp = loader.LoadExternalProcedure(sProc);

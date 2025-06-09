@@ -48,7 +48,7 @@ namespace Reko.ImageLoaders.MzExe.CodeView
             this.arch = arch;
             this.dictionary = dictionary;
             this.dataTypesByTypeIndex = new Dictionary<int, SerializedType>();
-            if (dictionary != null)
+            if (dictionary is not null)
             {
                 BuildTypes();
             }

@@ -81,7 +81,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
 		protected override void OnClick(EventArgs e)
 		{
-			if (Click != null)
+			if (Click is not null)
 				Click(this, new CommandMenuEventArgs(this));
 		}
 	}

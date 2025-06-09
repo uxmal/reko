@@ -51,7 +51,7 @@ namespace Reko.Arch.Arm.AArch64
                     var right = RewriteOp(2, true);
                     intrinsic = intrinsic.MakeInstance(arrayLeft);
                     m.Assign(tmpLeft, left);
-                    if (tmpRight != null)
+                    if (tmpRight is not null)
                     {
                         m.Assign(tmpRight, right);
                     }
@@ -379,7 +379,7 @@ namespace Reko.Arch.Arm.AArch64
                     .Select(r => (Expression) m.Out(r.DataType, binder.EnsureRegister(r))));
                 m.SideEffect(m.Fn(intrinsic.MakeInstance(64, args[1].DataType), args.ToArray()));
             }
-            if (postIndex != null)
+            if (postIndex is not null)
             {
                 m.Assign(baseReg!, postIndex);
             }
@@ -458,7 +458,7 @@ namespace Reko.Arch.Arm.AArch64
                     offset += dtElem.Size;
                 }
             }
-            if (postIndex != null)
+            if (postIndex is not null)
             {
                 m.Assign(baseReg!, postIndex);
             }

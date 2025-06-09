@@ -169,7 +169,7 @@ namespace Reko.Core
 
         private string GenerateStackAccessName(DataType type, string prefix, int cbOffset, string? nameOverride)
         {
-            if (nameOverride != null)
+            if (nameOverride is not null)
                 return nameOverride;
             else
                 return FormatStackAccessName(type, prefix, cbOffset);

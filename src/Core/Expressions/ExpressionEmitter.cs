@@ -605,7 +605,7 @@ namespace Reko.Core.Expressions
         /// <returns>A function application</returns>
         public Application Fn(ExternalProcedure ep, params Expression[] args)
         {
-            var retType = ep.Signature.ReturnValue != null
+            var retType = ep.Signature.ReturnValue is not null
                 ? ep.Signature.ReturnValue.DataType
                 : VoidType.Instance;
             return new Application(

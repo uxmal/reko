@@ -81,7 +81,7 @@ namespace Reko.ImageLoaders.WebAssembly
         {
             return TypeLibraries
                 .Select(t => t.Lookup(procName))
-                .Where(sig => sig != null)
+                .Where(sig => sig is not null)
                 .Select(sig => new ExternalProcedure(procName, sig!))
                 .FirstOrDefault();
         }

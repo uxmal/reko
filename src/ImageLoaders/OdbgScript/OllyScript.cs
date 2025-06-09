@@ -45,12 +45,12 @@ namespace Reko.ImageLoaders.OdbgScript
                 var sb = new StringBuilder();
                 sb.AppendFormat("{0}", LineNumber + 1);
                 var sep = ": ";
-                if (Label != null)
+                if (Label is not null)
                 {
                     sb.AppendFormat("{0}{1}: ", sep, Label);
                     sep = "";
                 }
-                if (Command != null)
+                if (Command is not null)
                 {
                     sb.AppendFormat("{0}{1}", sep, Command);
                     sep = " ";
@@ -68,12 +68,12 @@ namespace Reko.ImageLoaders.OdbgScript
         public OllyScript()
         {
             this.Log = false;
-            this.Lines = new List<Line>();
-            this.Labels = new Dictionary<string, int>();
+            this.Lines = [];
+            this.Labels = [];
         }
 
-        public Dictionary<string, int> Labels { get; private set; }
-        public List<Line> Lines {get; private set; }
+        public Dictionary<string, int> Labels { get; }
+        public List<Line> Lines { get; }
         public bool Log { get; private set; }
 
         public int NextCommandIndex(int from)

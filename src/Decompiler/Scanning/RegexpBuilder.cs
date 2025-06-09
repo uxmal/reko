@@ -787,7 +787,7 @@ namespace Reko.Scanning
 					for (int j = 0; j != alphabetSize; ++j)
 					{
 						State n = states[i].NextState[j];
-						if (n != null)
+						if (n is not null)
 						{
 							Debug.Write(" " +  j + ":s" + n.Index);
 						}
@@ -904,7 +904,7 @@ namespace Reko.Scanning
 				State [] n = states[s].NextState;
 				for (int i = 0; i < alphabetSize; ++i)
 				{
-					if (n[i] != null && check[i + p] != -1)
+					if (n[i] is not null && check[i + p] != -1)
 						return false;	// position occupied by other state.
 				}
 				return true;
@@ -919,7 +919,7 @@ namespace Reko.Scanning
 				int m = check.Length;
 				for (int i = 0; i < alphabetSize; ++i)
 				{
-					if (n[i] != null)
+					if (n[i] is not null)
 					{
 						int z = (i + p) % m;
 						next[z] = n[i].Index;
@@ -986,7 +986,7 @@ namespace Reko.Scanning
 				sb.Append(" next:");
 				for (int i = 0; i != NextState.Length; ++i)
 				{
-					if (NextState[i] != null)
+					if (NextState[i] is not null)
 					{
 						sb.AppendFormat(" {0:X2}->s{1}", i, NextState[i].Index);
 					}

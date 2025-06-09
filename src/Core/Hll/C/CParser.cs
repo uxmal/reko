@@ -477,7 +477,7 @@ IGNORE tab + cr + lf
             List<CAttribute> totalList = null;
             foreach (var list in lists)
             {
-                if (list != null)
+                if (list is not null)
                 {
                     if (totalList is null)
                     {
@@ -497,7 +497,7 @@ IGNORE tab + cr + lf
             {
                 foreach (var declarator in declarators)
                 {
-                    if (declarator.Init != null)
+                    if (declarator.Init is not null)
                         throw new CParserException("typedefs can't be initialized.");
                     var name = NameExtractor.GetName(declspecs.Skip(1), declarator.Declarator, ParserState);
                     ParserState.Typedefs.Add(name);
@@ -1033,7 +1033,7 @@ IGNORE tab + cr + lf
             ExpectToken(CTokenType.Star);
             List<TypeQualifier>? tqs = null;
             var tq = Parse_TypeQualifier();
-            while (tq != null)
+            while (tq is not null)
             {
                 if (tqs is null)
                     tqs = new List<TypeQualifier>();
@@ -1049,7 +1049,7 @@ IGNORE tab + cr + lf
             ExpectToken(CTokenType.Ampersand);
             List<TypeQualifier>? tqs = null;
             var tq = Parse_TypeQualifier();
-            while (tq != null)
+            while (tq is not null)
             {
                 if (tqs is null)
                     tqs = new List<TypeQualifier>();
@@ -1065,7 +1065,7 @@ IGNORE tab + cr + lf
             ExpectToken(CTokenType.Star);
             List<TypeQualifier>? tqs = null;
             var tq = Parse_TypeQualifier();
-            while (tq != null)
+            while (tq is not null)
             {
                 if (tqs is null)
                     tqs = new List<TypeQualifier>();

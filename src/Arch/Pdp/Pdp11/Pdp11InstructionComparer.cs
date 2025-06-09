@@ -63,7 +63,7 @@ namespace Reko.Arch.Pdp.Pdp11
                 if (NormalizeConstants)
                     return true;
                 var addrB = opB as Address?;
-                return addrB != null && addrA.ToLinear() == addrB.Value.ToLinear();
+                return addrB is not null && addrA.ToLinear() == addrB.Value.ToLinear();
             case Constant immA:
                 var immB = (Constant) opB;
                 return CompareValues(immA, immB);

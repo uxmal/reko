@@ -484,10 +484,10 @@ namespace Reko.Arch.Qualcomm
         private Expression RewriteMemoryOperand(MemoryOperand mem)
         {
             Expression ea;
-            if (mem.Base != null)
+            if (mem.Base is not null)
             {
                 ea = UseReg(mem.Base);
-                if (mem.Index != null)
+                if (mem.Index is not null)
                 {
                     Expression index = UseReg(mem.Index);
                     if (mem.Shift > 0)
@@ -504,7 +504,7 @@ namespace Reko.Arch.Qualcomm
             else
             {
                 ea = Address.Ptr32((uint) mem.Offset);
-                if (mem.Index != null)
+                if (mem.Index is not null)
                 {
                     var idx = UseReg(mem.Index);
                     ea = m.IAdd(ea, idx);
@@ -602,7 +602,7 @@ namespace Reko.Arch.Qualcomm
 
         private void RewriteCall(HexagonInstruction instr)
         {
-            if (instr.ConditionPredicate != null)
+            if (instr.ConditionPredicate is not null)
             {
                 var pred = RewritePredicateExpression(instr.ConditionPredicate, !instr.ConditionInverted);
                 m.BranchInMiddleOfInstruction(pred, instr.Address + 4, InstrClass.ConditionalTransfer);
@@ -680,7 +680,7 @@ namespace Reko.Arch.Qualcomm
         private void RewriteJump(HexagonInstruction instr, MachineOperand opDst)
         {
             var addr = (Address) opDst;
-            if (instr.ConditionPredicate != null)
+            if (instr.ConditionPredicate is not null)
             {
                 //if (instr.ConditionPredicateNew)
                 //    throw new NotImplementedException(".NEW");

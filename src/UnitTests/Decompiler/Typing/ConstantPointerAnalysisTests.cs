@@ -170,7 +170,7 @@ namespace Reko.UnitTests.Decompiler.Typing
 		{
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{
-				if (program != null)
+				if (program is not null)
 				{
 					foreach (Procedure proc in program.Procedures.Values)
 					{

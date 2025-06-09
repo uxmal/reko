@@ -608,7 +608,7 @@ namespace Reko.Core.Output
 		public void VisitAssignment(Assignment a)
 		{
 			InnerFormatter.Indent();
-			if (a.Dst != null)
+			if (a.Dst is not null)
 			{
 				a.Dst.Accept(this);
 				InnerFormatter.Write(" = "); 
@@ -733,7 +733,7 @@ namespace Reko.Core.Output
         public void VisitGotoInstruction(GotoInstruction g)
         {
             InnerFormatter.Indent();
-            if (g.Condition != null)
+            if (g.Condition is not null)
             {
                 InnerFormatter.WriteKeyword("if");
                 InnerFormatter.Write(" (");
@@ -761,7 +761,7 @@ namespace Reko.Core.Output
 		{
 			InnerFormatter.Indent();
 			InnerFormatter.WriteKeyword("return");
-			if (ret.Expression != null)
+			if (ret.Expression is not null)
 			{
 				InnerFormatter.Write(" ");
 				WriteExpression(ret.Expression);
@@ -822,7 +822,7 @@ namespace Reko.Core.Output
 			InnerFormatter.WriteKeyword("use");
             InnerFormatter.Write(" ");
 			WriteExpression(u.Expression);
-			if (u.OutArgument != null)
+			if (u.OutArgument is not null)
 			{
 				InnerFormatter.Write(" (=> {0})", u.OutArgument);
 			}
@@ -905,7 +905,7 @@ namespace Reko.Core.Output
 		public void VisitDeclaration(AbsynDeclaration decl)
 		{
 			InnerFormatter.Indent();
-			if (decl.Identifier.DataType != null)
+			if (decl.Identifier.DataType is not null)
 			{
                 var tf = new TypeReferenceFormatter(InnerFormatter);
                 tf.WriteDeclaration(decl.Identifier.DataType, decl.Identifier.Name);
@@ -964,7 +964,7 @@ namespace Reko.Core.Output
 
         private void MaybeWriteAssignment(AbsynAssignment ass)
         {
-            if (ass != null)
+            if (ass is not null)
             {
                 if (ass is AbsynCompoundAssignment cass)
                 {
@@ -1010,7 +1010,7 @@ namespace Reko.Core.Output
 
 			WriteIndentedStatements(ifs.Then, false);
 
-			if (ifs.Else != null && ifs.Else.Count > 0)
+			if (ifs.Else is not null && ifs.Else.Count > 0)
 			{
 				InnerFormatter.Indent();
 				InnerFormatter.WriteKeyword("else");
@@ -1172,7 +1172,7 @@ namespace Reko.Core.Output
 		{
 			InnerFormatter.Indent();
 			InnerFormatter.WriteKeyword("return");
-			if (ret.Value != null)
+			if (ret.Value is not null)
 			{
 				InnerFormatter.Write(" ");
 				WriteExpression(ret.Value);
@@ -1232,7 +1232,7 @@ namespace Reko.Core.Output
 			InnerFormatter.WriteLine();
 			InnerFormatter.Write("{");
             InnerFormatter.WriteLine();
-			if (proc.Body != null)
+			if (proc.Body is not null)
 			{
 				for (int i = 0; i < proc.Body.Count; ++i)
 				{
@@ -1340,7 +1340,7 @@ namespace Reko.Core.Output
 		private void WriteIndentedStatement(AbsynStatement stm)
 		{
 			InnerFormatter.Indentation += InnerFormatter.TabSize;
-			if (stm != null)
+			if (stm is not null)
 				stm.Accept(this);
 			else
 			{

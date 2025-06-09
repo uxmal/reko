@@ -135,7 +135,7 @@ namespace Reko.Core.Code
         /// <returns>Transformed instruction.</returns>
         public virtual Instruction TransformReturnInstruction(ReturnInstruction ret)
 		{
-			if (ret.Expression != null)
+			if (ret.Expression is not null)
 				ret.Expression = ret.Expression.Accept(this);
 			return ret;
 		}

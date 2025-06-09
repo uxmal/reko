@@ -87,7 +87,7 @@ namespace Reko.Environments.Windows
             List<DataType> dtParams)
         {
             ccr.LowLevelDetails(arch.WordWidth.Size, 0x10);
-            if (dtRet != null)
+            if (dtRet is not null)
             {
                 SetReturnRegister(ccr, dtRet);
             }
@@ -98,7 +98,7 @@ namespace Reko.Environments.Windows
             {
                 var dtArg = dtParams[iArg];
                 var prim = dtArg as PrimitiveType;
-                if (prim != null && prim.Domain == Domain.Real)
+                if (prim is not null && prim.Domain == Domain.Real)
                 {
                     if (fr >= fregs.Length)
                     {
@@ -146,7 +146,7 @@ namespace Reko.Environments.Windows
         {
             int bitSize = dtArg.BitSize;
             var pt = dtArg as PrimitiveType;
-            if (pt != null && pt.Domain == Domain.Real)
+            if (pt is not null && pt.Domain == Domain.Real)
             {
                 if (bitSize > 64)
                     throw new NotImplementedException();

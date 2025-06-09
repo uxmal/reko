@@ -88,7 +88,7 @@ namespace Reko.ImageLoaders.OdbgScript
             {
                 this.lexer = lexerStack.Pop();
                 var line = Line();
-                while (line != null)
+                while (line is not null)
                 {
                     while (lastLineNumber < line.LineNumber)
                     {
@@ -474,7 +474,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
             public void Dispose()
             {
-                if (rdr != null)
+                if (rdr is not null)
                 {
                     rdr.Dispose();
                     rdr = null;

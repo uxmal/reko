@@ -46,7 +46,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             // fill in with details from 
             // https://blackfin.uclinux.org/doku.php?id=toolchain:application_binary_interface
             ccr.LowLevelDetails(4, 0);
-            if (dtRet != null && !(dtRet is VoidType))
+            if (dtRet is not null && !(dtRet is VoidType))
             {
                 ccr.RegReturn(arch.GetRegister("R0")!);
             }

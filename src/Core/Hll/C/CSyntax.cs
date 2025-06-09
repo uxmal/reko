@@ -65,7 +65,7 @@ namespace Reko.Core.Hll.C
         {
             var sb = new StringBuilder();
             sb.Append("(decl");
-            if (attribute_list != null)
+            if (attribute_list is not null)
             {
                 sb.Append(' ');
                 sb.Append(string.Join(' ', attribute_list));
@@ -75,7 +75,7 @@ namespace Reko.Core.Hll.C
                 sb.Append(' ');
                 sb.Append(ds);
             }
-            if (init_declarator_list != null && init_declarator_list.Count > 0)
+            if (init_declarator_list is not null && init_declarator_list.Count > 0)
             {
                 var sep = " (";
                 foreach (var init in init_declarator_list)
@@ -436,7 +436,7 @@ namespace Reko.Core.Hll.C
             var sb = new StringBuilder();
             sb.Append("(init-decl ");
             sb.Append(Declarator);
-            if (this.Init != null)
+            if (this.Init is not null)
             {
                 sb.AppendFormat(" {0}", Init);
             }
@@ -477,12 +477,12 @@ namespace Reko.Core.Hll.C
         {
             var sb = new StringBuilder();
             sb.Append('(');
-            if (Attributes != null)
+            if (Attributes is not null)
             {
                 sb.Append(string.Join(' ', Attributes));
                 sb.Append(' ');
             }
-            if (DeclSpecs != null)
+            if (DeclSpecs is not null)
             {
                 foreach (var declspec in DeclSpecs)
                 {
@@ -513,7 +513,7 @@ namespace Reko.Core.Hll.C
         {
             var sb = new StringBuilder();
             sb.Append("(ptr");
-            if (TypeQualifierList != null && TypeQualifierList.Count > 0)
+            if (TypeQualifierList is not null && TypeQualifierList.Count > 0)
             {
                 foreach (var tq in TypeQualifierList)
                 {
@@ -542,7 +542,7 @@ namespace Reko.Core.Hll.C
         {
             var sb = new StringBuilder();
             sb.Append("(ref");
-            if (TypeQualifierList != null && TypeQualifierList.Count > 0)
+            if (TypeQualifierList is not null && TypeQualifierList.Count > 0)
             {
                 foreach (var tq in TypeQualifierList)
                 {
@@ -704,7 +704,7 @@ namespace Reko.Core.Hll.C
                 sep = " ";
             }
             sb.Append(')');
-            if (AttributeList != null && AttributeList.Count > 0)
+            if (AttributeList is not null && AttributeList.Count > 0)
             {
                 sb.Append(" (");
                 sb.Append(string.Join(' ', AttributeList));
@@ -737,7 +737,7 @@ namespace Reko.Core.Hll.C
         {
             var sb = new StringBuilder();
             sb.AppendFormat("({0}", Declarator);
-            if (FieldSize != null)
+            if (FieldSize is not null)
                 sb.AppendFormat(" {0}", FieldSize);
             sb.Append(')');
             return sb.ToString();
@@ -796,7 +796,7 @@ namespace Reko.Core.Hll.C
         {
             var sb = new StringBuilder();
             sb.AppendFormat("(attr {0}", Name);
-            if (Tokens != null && Tokens.Count > 0)
+            if (Tokens is not null && Tokens.Count > 0)
             {
                 sb.Append(" (");
                 foreach (var token in Tokens)
@@ -836,7 +836,7 @@ namespace Reko.Core.Hll.C
             return visitor.VisitConstant(this);
         }
 
-        public override string ToString() { return Const != null ? Const.ToString()! : ""; }
+        public override string ToString() { return Const is not null ? Const.ToString()! : ""; }
 
     }
 
@@ -1060,7 +1060,7 @@ namespace Reko.Core.Hll.C
         public override string ToString()
         {
             return string.Format("(sizeof {0})",
-                Type != null ? (object) Type : (object) Expression!);
+                Type is not null ? (object) Type : (object) Expression!);
         }
     }
 

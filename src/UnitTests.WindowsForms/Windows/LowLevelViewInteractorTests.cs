@@ -71,7 +71,7 @@ namespace Reko.UnitTests.Gui.Windows
         [TearDown]
         public void TearDown()
         {
-            if (form != null) form.Dispose(); form = null;
+            if (form is not null) form.Dispose(); form = null;
         }
 
         private void Given_Interactor()

@@ -46,7 +46,7 @@ namespace Reko.Gui.Controls
 
         public void Close()
         {
-            if (editor != null)
+            if (editor is not null)
             {
                 this.editor.SaveButton.Click -= textEditor_Save;
                 this.editor.TextBox.TextChanged -= textEditor_Changed;
@@ -136,11 +136,11 @@ namespace Reko.Gui.Controls
         private void UpdateTitle()
         {
             var title = Path.GetFileName(this.fileName);
-            if (editor != null && editor.TextBox.Modified)
+            if (editor is not null && editor.TextBox.Modified)
             {
                 title += "*";
             }
-            if (Frame != null)
+            if (Frame is not null)
             {
                 Frame.Title = title;
             }

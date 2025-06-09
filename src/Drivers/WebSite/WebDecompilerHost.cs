@@ -54,7 +54,7 @@ namespace Reko.WebSite
 			using (StreamReader rdr = new StreamReader(filename))
 			{
 				string line = rdr.ReadLine();
-				while (line != null)
+				while (line is not null)
 				{
 					sw.WriteLine(line);
 					line = rdr.ReadLine();

@@ -347,7 +347,7 @@ namespace Reko.Core.Types
                     fmt.Write("(");
                 }
                 var sep = "";
-                if (Parameters != null)
+                if (Parameters is not null)
                 {
                     IEnumerable<Identifier> parms = this.IsInstanceMetod
                         ? Parameters.Skip(1)

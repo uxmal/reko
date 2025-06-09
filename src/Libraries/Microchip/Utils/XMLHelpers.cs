@@ -126,7 +126,7 @@ namespace Reko.Libraries.Microchip
         /// True if attribute exists, false if not.
         /// </returns>
         public static bool HasAttribute(this XElement xelem, string sLocalName, XNamespace ns)
-            => xelem.Attribute(ns + sLocalName) != null;
+            => xelem.Attribute(ns + sLocalName) is not null;
 
         /// <summary>
         /// An XElement extension method that query if <paramref name="xelem"/> has an attribute of given name in <paramref name="xelem"/> namespace.
@@ -137,7 +137,7 @@ namespace Reko.Libraries.Microchip
         /// True if attribute exists, false if not.
         /// </returns>
         public static bool HasAttribute(this XElement xelem, string sLocalName)
-            => xelem.Attribute(xelem.Name.Namespace + sLocalName) != null;
+            => xelem.Attribute(xelem.Name.Namespace + sLocalName) is not null;
 
         /// <summary>
         /// Gets the value of the attribute with specified local name within node's namespace URI.

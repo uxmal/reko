@@ -56,10 +56,10 @@ namespace Reko.Analysis
 			this.sid = sid;
 			negated = false;
 			stm = sid.DefStatement;
-			if (stm != null)
+			if (stm is not null)
 			{
 				defExpr = null;
-				while (stm != null && defExpr is null)
+				while (stm is not null && defExpr is null)
 				{
 					var stmOld = stm;
 					stm = null;
@@ -141,7 +141,7 @@ namespace Reko.Analysis
 
         public override void VisitUnaryExpression(UnaryExpression unary)
 		{
-            if (unary != null && unary.Operator.Type == OperatorType.Not)
+            if (unary is not null && unary.Operator.Type == OperatorType.Not)
             {
                 negated = !negated;
                 if (unary.Expression is Identifier id)

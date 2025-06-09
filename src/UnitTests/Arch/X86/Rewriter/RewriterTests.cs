@@ -117,7 +117,7 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
         private Project LoadProject()
         {
             Project project = null;
-            if (configFile != null)
+            if (configFile is not null)
             {
                 var absFile = FileUnitTester.MapTestPath(configFile);
                 var fsSvc = sc.RequireService<IFileSystemService>();

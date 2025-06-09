@@ -67,7 +67,7 @@ namespace Reko.Core.Output
             if (ShowEdges && block.Succ.Count > 0)
             {
                 StringBuilder sb = new StringBuilder("succ: ");
-                foreach (var s in block.Succ.Where(b => b != null))
+                foreach (var s in block.Succ.Where(b => b is not null))
                     sb.AppendFormat(" {0}", s.DisplayName);
                 lines.Add(sb.ToString());
             }

@@ -548,7 +548,7 @@ namespace Reko.Arch.Arc
                 }
                 offset = offset * mem.DataType.Size;
             }
-            if (mem.Base != null)
+            if (mem.Base is not null)
             {
                 if (mem.Base == Registers.Pcl)
                 {
@@ -591,7 +591,7 @@ namespace Reko.Arch.Arc
             var src = Operand(1);
             var dst = Operand(0);
             m.Assign(dst, fn(src));
-            if (instr.SetFlags && grf != null)
+            if (instr.SetFlags && grf is not null)
             {
                 var flagReg = binder.EnsureFlagGroup(grf);
                 m.Assign(flagReg, m.Cond(dst));
@@ -690,7 +690,7 @@ namespace Reko.Arch.Arc
             MaybeSkip(cond);
             if (instr.Operands[0] is MemoryOperand mop)
             {
-                if (mop.Base != null && mop.Offset == 0)
+                if (mop.Base is not null && mop.Offset == 0)
                 {
                     if (mop.Base == Registers.Blink)
                     {

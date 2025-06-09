@@ -414,7 +414,7 @@ namespace Reko.Arch.M6800.M6809
             Func<Expression, Expression, Expression> bin, 
             Action<Expression> genFlags)
         {
-            Expression dst = rDst != null ? binder.EnsureIdentifier(rDst) : null!;
+            Expression dst = rDst is not null ? binder.EnsureIdentifier(rDst) : null!;
             Expression tmp;
             switch (instr.Operands[0])
             {

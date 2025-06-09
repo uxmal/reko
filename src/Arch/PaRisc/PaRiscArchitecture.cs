@@ -129,7 +129,7 @@ namespace Reko.Arch.PaRisc
 
         public override void LoadUserOptions(Dictionary<string, object>? options)
         {
-            if (options != null)
+            if (options is not null)
             {
                 foreach (var option in options.ToList())
                 {

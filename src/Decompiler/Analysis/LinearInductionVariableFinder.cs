@@ -74,7 +74,7 @@ namespace Reko.Analysis
 			{
 				return new LinearInductionVariable(null, ctx.DeltaValue, null, false);
 			}
-			if (ctx.InitialValue != null)
+			if (ctx.InitialValue is not null)
 			{
 				if (IsIdUsedOnlyBy(ctx.PhiIdentifier, ctx.TestStatement, ctx.DeltaStatement))
 				{
@@ -283,7 +283,7 @@ namespace Reko.Analysis
         public IEnumerable<SsaIdentifier> GetSuccessors(SsaIdentifier sid)
         {
             this.operands = new List<SsaIdentifier>();
-            if (sid.DefStatement != null)
+            if (sid.DefStatement is not null)
             {
                 sid.DefStatement.Instruction.Accept(this);
             }
@@ -310,7 +310,7 @@ namespace Reko.Analysis
             public ICollection<SsaIdentifier> Successors(SsaIdentifier sid)
             {
                 this.operands = new List<SsaIdentifier>();
-                if (sid.DefStatement != null)
+                if (sid.DefStatement is not null)
                 {
                     sid.DefStatement.Instruction.Accept(this);
                 }
@@ -402,7 +402,7 @@ namespace Reko.Analysis
 			ctx.InitialValue = FindInitialValue(phi);
 			ctx.TestValue = FindFinalValue(scc);
 			LinearInductionVariable? iv = CreateInductionVariable();
-			if (iv != null)
+			if (iv is not null)
 			{
 				foreach (SsaIdentifier sid in scc)
 				{

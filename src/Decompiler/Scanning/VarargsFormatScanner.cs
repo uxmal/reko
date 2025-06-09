@@ -142,8 +142,8 @@ namespace Reko.Scanning
                 result = null;
                 return false;
             }
-            Debug.Assert(chr != null);
-            Debug.Assert(chr.VarargsParserClass != null);
+            Debug.Assert(chr is not null);
+            Debug.Assert(chr.VarargsParserClass is not null);
             var argTypes = ParseVarargsFormat(chr.VarargsParserClass, addrInstr, chr);
             var extendedSig = ReplaceVarargs(program.Platform, sig, argTypes);
             result = new VarargsResult(extendedSig, addrFormatString, formatString);

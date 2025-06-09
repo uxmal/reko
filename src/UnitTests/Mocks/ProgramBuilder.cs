@@ -77,11 +77,11 @@ namespace Reko.UnitTests.Mocks
             Program.Procedures[addr] = proc;
             Program.CallGraph.AddProcedure(proc);
             var name = GuessName(userProc, proc);
-            if (name != null)
+            if (name is not null)
             {
                 nameToProcedure[name] = proc;
             }
-            if (userProc != null)
+            if (userProc is not null)
             {
                 Program.User.Procedures[addr] = userProc;
             }
@@ -89,7 +89,7 @@ namespace Reko.UnitTests.Mocks
 
         private string? GuessName(UserProcedure? userProc, Procedure? proc = null)
         {
-            if (userProc != null)
+            if (userProc is not null)
             {
                 if (!string.IsNullOrEmpty(userProc.Name))
                     return userProc.Name;
@@ -107,7 +107,7 @@ namespace Reko.UnitTests.Mocks
                     }
                 }
             }
-            if (proc != null)
+            if (proc is not null)
             {
                 return proc.Name;
             }

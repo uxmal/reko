@@ -349,7 +349,7 @@ namespace Reko
                 string path = "";
                 try
                 {
-                    if (pr2.Bytes != null)
+                    if (pr2.Bytes is not null)
                     {
                         var filename = $"{pr2.Type}_{pr2.Name}{pr2.FileExtension}";
                         path = Path.Combine(outputDir, filename);
@@ -505,7 +505,7 @@ namespace Reko
             var fmt = new TypeFormatter(tf);
             foreach (EquivalenceClass eq in program.TypeStore.UsedEquivalenceClasses)
             {
-                if (eq.DataType != null)
+                if (eq.DataType is not null)
                 {
                     tf.WriteKeyword("typedef");     //$REVIEW: C/C++-specific
                     tf.Write(" ");
@@ -632,7 +632,7 @@ namespace Reko
         {
             return
                 userCalls
-                .Where(sc => sc != null && sc.Signature != null)
+                .Where(sc => sc is not null && sc.Signature is not null)
                 .Select(sc =>
                 {
                 //$BUG: need access to platform.Metadata.

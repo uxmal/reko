@@ -269,7 +269,7 @@ namespace Reko.Arch.Mips
                 } on i equals name.id into names
                 from name in names.DefaultIfEmpty()
                 select new RegisterStorage(
-                    name != null 
+                    name is not null 
                         ? name.n 
                         : string.Format("r{0}", i),
                     i,

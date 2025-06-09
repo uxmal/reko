@@ -205,14 +205,14 @@ Options:
                     show_debug: args["--show-debug"].IsTrue,
                     disassemble: args["--disassemble"].IsTrue,
                     disassemble_start:
-                        args["--disassemble-start"] != null
+                        args["--disassemble-start"] is not null
                             ? UInt32.Parse(
                                 (string)args["--disassemble-start"].Value,
                                 NumberStyles.HexNumber,
                                 CultureInfo.InvariantCulture)
                             : 0,
                     use_objdump: args["--use-objdump"].IsTrue,
-                    cpu: args["--cpu"] != null ? (string)args["--cpu"].Value : "",
+                    cpu: args["--cpu"] is not null ? (string)args["--cpu"].Value : "",
                     hexdump: args["--hexdump"].IsTrue,
                     brief: args["--brief"].IsTrue);
                 hs.show_segments();

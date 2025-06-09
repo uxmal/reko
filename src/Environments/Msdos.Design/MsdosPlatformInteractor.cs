@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2025 John Källén.
  *
@@ -58,7 +58,7 @@ namespace Reko.Environments.Msdos.Design
 
         public void Close()
         {
-            if (Control != null)
+            if (Control is not null)
             {
                 Control.Dispose();
                 Control = null;

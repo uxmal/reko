@@ -46,7 +46,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                 return null;
 
             Address addr;
-            if (arch != null)
+            if (arch is not null)
             {
                 if (!arch.TryParseAddress(dlg.Address.Text, out addr))
                     return null;

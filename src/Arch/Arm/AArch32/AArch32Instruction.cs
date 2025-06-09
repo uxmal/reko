@@ -159,7 +159,7 @@ namespace Reko.Arch.Arm.AArch32
                 mem.BaseRegister == Registers.sp &&
                 this.Writeback && 
                 !mem.PreIndex &&
-                mem.Offset != null &&
+                mem.Offset is not null &&
                 mem.Add &&
                 mem.Offset.ToInt32() == Operands[0].DataType.Size;
         }
@@ -170,7 +170,7 @@ namespace Reko.Arch.Arm.AArch32
                 mem.BaseRegister == Registers.sp &&
                 this.Writeback &&
                 mem.PreIndex &&
-                mem.Offset != null &&
+                mem.Offset is not null &&
                 !mem.Add &&
                 mem.Offset.ToInt32() == Operands[0].DataType.Size;
         }
@@ -279,7 +279,7 @@ namespace Reko.Arch.Arm.AArch32
                     renderer.WriteFormat(":{0}", mem.Alignment);
                 }
                 renderer.WriteString("]");
-                if (mem.Offset != null && !mem.Offset.IsIntegerZero)
+                if (mem.Offset is not null && !mem.Offset.IsIntegerZero)
                 {
                     renderer.WriteChar(',');
                     if (!mem.Add)
@@ -287,7 +287,7 @@ namespace Reko.Arch.Arm.AArch32
                     renderer.WriteString("#&");
                     renderer.WriteString(mem.Offset.ToUInt32().ToString("X"));
                 }
-                else if (mem.Index != null)
+                else if (mem.Index is not null)
                 {
                     renderer.WriteChar(',');
                     if (!mem.Add)
@@ -297,7 +297,7 @@ namespace Reko.Arch.Arm.AArch32
             }
             else
             {
-                if (mem.Offset != null && !mem.Offset.IsIntegerZero)
+                if (mem.Offset is not null && !mem.Offset.IsIntegerZero)
                 {
                     renderer.WriteString(",");
                     if (!mem.Add)
@@ -305,7 +305,7 @@ namespace Reko.Arch.Arm.AArch32
                     renderer.WriteString("#&");
                     renderer.WriteString(mem.Offset.ToUInt32().ToString("X"));
                 }
-                else if (mem.Index != null)
+                else if (mem.Index is not null)
                 {
                     renderer.WriteChar(',');
                     if (!mem.Add)
@@ -371,7 +371,7 @@ namespace Reko.Arch.Arm.AArch32
         public override Address ComputePcRelativeAddress(MemoryOperand mem)
         {
             int offset = 8;     // PC-relative addressing has a hidden 8-byte offset.
-            if (mem.Offset != null)
+            if (mem.Offset is not null)
                 offset += mem.Offset.ToInt32();
             var addr = this.Address + offset;
             return addr;
@@ -383,7 +383,7 @@ namespace Reko.Arch.Arm.AArch32
         public override Address ComputePcRelativeAddress(MemoryOperand mem)
         {
             int offset = 2;
-            if (mem.Offset != null)
+            if (mem.Offset is not null)
                 offset += mem.Offset.ToInt32();
             var addr = (this.Address + offset).Align(4);
             return addr;

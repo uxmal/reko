@@ -148,7 +148,7 @@ namespace Reko.Typing
             if (!classesVisited.Contains(eq))
             {
                 classesVisited.Add(eq);
-                if (eq.DataType != null)
+                if (eq.DataType is not null)
                 {
                     eq.DataType = eq.DataType.Accept(this);
                 }

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2025 John Källén.
  *
@@ -37,7 +37,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         public TextPointer(object line, int span, int ch)
         {
-            Debug.Assert(line != null);
+            Debug.Assert(line is not null);
             this.Line = line;
             this.Span = span;
             this.Character = ch;

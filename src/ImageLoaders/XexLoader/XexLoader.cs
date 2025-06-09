@@ -672,7 +672,7 @@ namespace Reko.ImageLoaders.Xex
                 arch,
                 platform );
 
-            if(ep != null)
+            if(ep is not null)
             {
                 var (epAddr, epSym) = ep.Value;
                 program.EntryPoints.Add(epAddr, epSym);

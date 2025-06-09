@@ -274,7 +274,7 @@ namespace Reko.Arch.Avr.Avr32
                 return tmp;
             }
             Expression ea = baseReg;
-            if (mem.Index != null)
+            if (mem.Index is not null)
             {
                 Expression idx = binder.EnsureRegister(mem.Index);
                 if (mem.Shift > 0)
@@ -354,7 +354,7 @@ namespace Reko.Arch.Avr.Avr32
                     m.Assign(m.Mem(mem.DataType, ea), src);
                     return src;
                 }
-                if (mem.Index != null)
+                if (mem.Index is not null)
                 {
                     ea = binder.EnsureRegister(mem.Index);
                     if (mem.Shift > 0)

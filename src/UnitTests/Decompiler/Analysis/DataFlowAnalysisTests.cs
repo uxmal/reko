@@ -89,7 +89,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
                         CSignature = this.CSignature
                     });
             }
-            if (this.CSignature != null)
+            if (this.CSignature is not null)
             {
                 var usb = new UserSignatureBuilder(program);
                 usb.BuildSignatures(new FakeDecompilerEventListener());

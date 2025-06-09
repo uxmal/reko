@@ -437,7 +437,7 @@ namespace Reko.Arch.Zilog.Z80
             {
                 RegisterStorage baseReg = Registers.hl;
                 sbyte offset = 0;
-                if (dasm.IndexRegister != null)
+                if (dasm.IndexRegister is not null)
                 {
                     baseReg = dasm.IndexRegister;
                     if (!dasm.rdr.TryReadByte(out byte bOff))

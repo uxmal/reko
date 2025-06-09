@@ -173,7 +173,7 @@ test_exit:
         {
             var frame = pb.Program.Architecture.CreateFrame();
             Identifier idRet = null;
-            if (ret != null)
+            if (ret is not null)
             {
                 idRet = frame.EnsureRegister(ret);
             }

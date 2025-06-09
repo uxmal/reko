@@ -40,7 +40,7 @@ namespace Reko.Arch.M6800.M6812
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            if (Base != null)
+            if (Base is not null)
             {
                 if (Indirect)
                     renderer.WriteChar('[');
@@ -58,7 +58,7 @@ namespace Reko.Arch.M6800.M6812
                         Base.Name,
                         Offset.Value > 0 ? "+" : "-");
                 }
-                else if (Offset != null)
+                else if (Offset is not null)
                 {
                     renderer.WriteFormat("${0:X4},{1}", Offset.Value, Base.Name);
                 } 
@@ -70,7 +70,7 @@ namespace Reko.Arch.M6800.M6812
                     renderer.WriteChar(']');
                 return;
             }
-            else if (Offset != null)
+            else if (Offset is not null)
             {
                 // Absolute address
                 renderer.WriteFormat("${0:X4}", (ushort)Offset.Value);

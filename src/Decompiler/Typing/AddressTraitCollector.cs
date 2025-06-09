@@ -123,7 +123,7 @@ namespace Reko.Typing
                     if (op == OperatorType.ISub)
                         offset = offset.Negate();
                     var iv = GetInductionVariable(left);
-                    if (iv != null)
+                    if (iv is not null)
                     {
                         VisitInductionVariable((Identifier) left, iv, offset);
                         return;
@@ -176,7 +176,7 @@ namespace Reko.Typing
 
         private void HandleConstantOffset(Expression c, int v)
         {
-            if (basePointer != null)
+            if (basePointer is not null)
                 handler.MemAccessTrait(null, basePointer, basePointerBitSize, eField!, v);
             else
                 handler.MemAccessTrait(null, program.Globals, program.Platform.PointerType.BitSize, eField!, v);
@@ -210,7 +210,7 @@ namespace Reko.Typing
 		public void VisitIdentifier(Identifier id)
 		{
 			var iv = GetInductionVariable(id);
-			if (iv != null)
+			if (iv is not null)
 			{
 				VisitInductionVariable(id, iv, null);
 			}
@@ -233,7 +233,7 @@ namespace Reko.Typing
             if (delta < 0)
             {
                 // induction variable is decremented, so the actual array begins at ivFinal - delta.
-                if (iv.Final != null)
+                if (iv.Final is not null)
                 {
                     init = iv.Final.ToInt32() - delta;
                     if (iv.IsSigned)
@@ -248,7 +248,7 @@ namespace Reko.Typing
             }
             else
             {
-                if (iv.Initial != null)
+                if (iv.Initial is not null)
                 {
                     init = iv.Initial.ToInt32();
                     if (iv.IsSigned)
@@ -263,7 +263,7 @@ namespace Reko.Typing
             }
             if (iv.IsSigned)
             {
-                if (cOffset != null)
+                if (cOffset is not null)
                 {
                     handler.MemSizeTrait(basePointer, cOffset, Math.Abs(delta));
                     EmitAccessTrait(basePointer, cOffset, cOffset.DataType.BitSize, 0);

@@ -79,7 +79,7 @@ namespace Reko.Arch.Arm
             while (cRegs > 0)
             {
                 nReg = (NativeRegister)Marshal.PtrToStructure(aRegs, typeof(NativeRegister));
-                if (nReg.Name != null)
+                if (nReg.Name is not null)
                 {
                     var n = nReg.Name;
                     var i = nReg.Number;
@@ -117,11 +117,11 @@ namespace Reko.Arch.Arm
             }
             finally
             {
-                if (ndasm != null)
+                if (ndasm is not null)
                 {
                     ndasm = null;
                 }
-                if (hBytes != null && hBytes.IsAllocated)
+                if (hBytes is not null && hBytes.IsAllocated)
                 {
                     hBytes.Free();
                 }

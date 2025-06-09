@@ -62,7 +62,7 @@ namespace Reko.Arch.MilStd1750
                 Instruction.WriteHex(Displacement, renderer);
                 sep = ",";
             }
-            if (Index != null)
+            if (Index is not null)
             {
                 renderer.WriteFormat("{0}{1}", sep, Index.Name);
             }

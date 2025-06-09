@@ -205,17 +205,17 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 return imm;
             case MemoryOperand mem:
                 Expression ea;
-                if (mem.Base != null)
+                if (mem.Base is not null)
                 {
                     ea = binder.EnsureRegister(mem.Base);
-                    if (mem.Index != null)
+                    if (mem.Index is not null)
                     {
                         var idx = binder.EnsureRegister(mem.Index);
                         ea = m.IAdd(
                             ea,
                             m.Convert(idx, idx.DataType, PrimitiveType.Int16));
                     }
-                    else if (mem.Offset != null)
+                    else if (mem.Offset is not null)
                     {
                         ea = m.IAdd(
                             ea,
@@ -245,17 +245,17 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 return addr;
             case MemoryOperand mem:
                 Expression ea;
-                if (mem.Base != null)
+                if (mem.Base is not null)
                 {
                     ea = binder.EnsureRegister(mem.Base);
-                    if (mem.Index != null)
+                    if (mem.Index is not null)
                     {
                         var idx = binder.EnsureRegister(mem.Index);
                         ea = m.IAdd(
                             ea,
                             m.Convert(idx, idx.DataType, PrimitiveType.Int16));
                     }
-                    else if (mem.Offset != null)
+                    else if (mem.Offset is not null)
                     {
                         ea = m.IAdd(
                             ea,

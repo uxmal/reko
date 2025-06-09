@@ -191,7 +191,7 @@ namespace Reko.Scanning
                 {
                     var loader = program.CreateTypeLibraryDeserializer();
                     var exp = loader.LoadExternalProcedure(sProc);
-                    if (exp != null)
+                    if (exp is not null)
                     {
                         proc.Name = exp!.Name;
                         proc.Signature = exp.Signature;

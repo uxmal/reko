@@ -151,7 +151,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
             {
                 var usb = new UserSignatureBuilder(program);
                 sProc = usb.ParseFunctionDeclaration(CSignature);
-                isValid = (sProc != null);
+                isValid = (sProc is not null);
             }
             else
             {
@@ -160,7 +160,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
             }
             if (isValid)
             {
-                if (sProc != null)
+                if (sProc is not null)
                     this.Name = sProc.Name;
             }
             EnableControls(isValid);

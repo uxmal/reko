@@ -240,7 +240,7 @@ namespace Reko.Evaluation
                 s = e as MkSequence;
             }
             sequence = s;
-            return s != null;
+            return s is not null;
         }
 
         public static Expression? SliceSequence(MkSequence seq, DataType dtSlice, int sliceOffset)

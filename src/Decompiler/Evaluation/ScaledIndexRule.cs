@@ -90,17 +90,17 @@ namespace Reko.Evaluation
         {
             //$REFACTOR: this can be reduced into the Match method
             Expression eaNew;
-            if (binEaLeft != null)
+            if (binEaLeft is not null)
             {
                 eaNew = new BinaryExpression(binEaLeft.Operator, binEaLeft.DataType, defIndex!, binEaLeft.Right);
             }
-            else if (binEaRight != null)
+            else if (binEaRight is not null)
             {
                 eaNew = new BinaryExpression(binEaRight.Operator, binEaRight.DataType, binEaRight.Left, defIndex!);
             }
             else 
             {
-                Debug.Assert(idEa != null);
+                Debug.Assert(idEa is not null);
                 eaNew = defIndex!;
             }
             return eaNew;

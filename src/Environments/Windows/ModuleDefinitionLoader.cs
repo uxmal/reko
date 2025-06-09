@@ -109,7 +109,7 @@ namespace Reko.Environments.Windows
                 var svc = new SystemService
                 {
                     ModuleName = moduleName,
-                    Name = ep != null ? ep.Name : entryName,
+                    Name = ep is not null ? ep.Name : entryName,
                     Signature = ep?.Signature,
                 };
                 trace.Verbose("Loaded {0} @ {1}", entryName!, ordinal);

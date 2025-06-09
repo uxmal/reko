@@ -281,7 +281,7 @@ namespace Reko.Core.Memory
         public new virtual EndianImageReader Clone()
         {
             EndianImageReader rdr;
-            if (mem != null)
+            if (mem is not null)
             {
                 rdr = CreateNew(mem, addrStart!.Value);
                 rdr.Offset = off;

@@ -231,7 +231,7 @@ namespace Reko.Evaluation
 
             // (rel? id1 c) should just pass.
 
-            if (binExp.Operator.Type.IsIntComparison() && cRight != null && idLeft != null)
+            if (binExp.Operator.Type.IsIntComparison() && cRight is not null && idLeft is not null)
                 return (binExp, changed);
 
             // Floating point expressions with "integer" constants 
@@ -248,14 +248,14 @@ namespace Reko.Evaluation
             }
 
             var binLeft = left as BinaryExpression;
-            var cLeftRight = (binLeft != null) ? binLeft.Right as Constant : null;
+            var cLeftRight = (binLeft is not null) ? binLeft.Right as Constant : null;
 
             // (+ (+ e c1) c2) ==> (+ e (+ c1 c2))
             // (+ (- e c1) c2) ==> (+ e (- c2 c1))
             // (- (+ e c1) c2) ==> (- e (- c2 c1))
             // (- (- e c1) c2) ==> (- e (+ c1 c2))
 
-            if (binLeft != null && cLeftRight != null && cRight != null)
+            if (binLeft is not null && cLeftRight is not null && cRight is not null)
             {
                 if (binExp.Operator.Type.IsAddOrSub() &&
                     binLeft.Operator.Type.IsAddOrSub() &&
@@ -314,7 +314,7 @@ namespace Reko.Evaluation
 
             // (rel (- c e) 0 => (rel -c e) => (rel.Negate e c)
 
-            if (binLeft != null && cRight != null && cRight.IsIntegerZero &&
+            if (binLeft is not null && cRight is not null && cRight.IsIntegerZero &&
                 binExp.Operator.Type.IsIntComparison() &&
                 binLeft.Left is Constant cBinLeft)
             {
@@ -335,7 +335,7 @@ namespace Reko.Evaluation
             // (rel (- e c1) c2) => (rel e c1+c2)
 
             if (binExp.Operator.Type.IsIntComparison() &&
-                binLeft != null && cLeftRight != null && cRight != null &&
+                binLeft is not null && cLeftRight is not null && cRight is not null &&
                 !cLeftRight.IsReal && !cRight.IsReal)
             {
                 if (binLeft.Operator.Type.IsAddOrSub())
@@ -411,7 +411,7 @@ namespace Reko.Evaluation
             }
 
             var eNew = ShiftLeftShiftRight(binExp, cRight);
-            if (eNew != null)
+            if (eNew is not null)
             {
                 return (eNew, true);
             }

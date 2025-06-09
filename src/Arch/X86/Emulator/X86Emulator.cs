@@ -273,11 +273,11 @@ namespace Reko.Arch.X86.Emulator
         protected TWord GetEffectiveOffset(MemoryOperand m)
         {
             TWord ea = 0;
-            if (m.Offset != null)
+            if (m.Offset is not null)
                 ea += m.Offset.ToUInt32();
             if (m.Index != RegisterStorage.None)
                 ea += (TWord) ReadRegister(m.Index) * m.Scale;
-            if (m.Base != null && m.Base != RegisterStorage.None)
+            if (m.Base is not null && m.Base != RegisterStorage.None)
             {
                 ea += (TWord) ReadRegister(m.Base);
             }

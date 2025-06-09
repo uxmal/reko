@@ -49,7 +49,7 @@ namespace Decompiler.Core.Serialization
 			string d = ssig.Convention;
 			if (d == null || d.Length == 0)
 				d = defaultConvention;
-			if (d != null && d == "stdapi")
+			if (d is not null && d == "stdapi")
 				sig.StackDelta = stackOffset;
 
 			sig.FpuStackDelta = fpuStackOffset;
@@ -64,12 +64,12 @@ namespace Decompiler.Core.Serialization
 		{
 			ArgumentSerializer argser = new ArgumentSerializer(this, arch, frame);
 			Identifier ret = null;
-			if (ss.ReturnValue != null)
+			if (ss.ReturnValue is not null)
 			{
 				ret = argser.Deserialize(ss.ReturnValue);
 			}
 			ArrayList args = new ArrayList();
-			if (ss.Arguments != null)
+			if (ss.Arguments is not null)
 			{
 				foreach (SerializedArgument arg in ss.Arguments)
 				{

@@ -723,7 +723,7 @@ namespace Reko.Environments.C64
                 {
                     intrinsic = printLine_intrinsic;
                 }
-                if (expr != null)
+                if (expr is not null)
                 {
                     m.SideEffect(m.Fn(intrinsic, expr));
                 }

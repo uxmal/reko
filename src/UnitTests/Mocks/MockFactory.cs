@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Mocks
 
         public Mock<IPlatform> CreateMockPlatform()
         {
-            if (this.mockPlatform != null)
+            if (this.mockPlatform is not null)
                 return this.mockPlatform;
 
             var mockPlatform = new Mock<IPlatform>();
@@ -100,7 +100,7 @@ namespace Reko.UnitTests.Mocks
 
         public ILoader CreateLoader()
         {
-            if (this.mockLoader != null)
+            if (this.mockLoader is not null)
                 return this.mockLoader.Object;
 
             this.mockLoader = new Mock<ILoader>();
@@ -188,7 +188,7 @@ namespace Reko.UnitTests.Mocks
                 signatures,
                 new Dictionary<string, ProcedureCharacteristics>(),
                 globals);
-            if (module != null)
+            if (module is not null)
                 loaderMetadata.Modules.Add(moduleName, module);
 
             var loader = CreateLoader();

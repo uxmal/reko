@@ -67,7 +67,7 @@ namespace Reko.Arch.Pdp.Pdp11.Assembler
         public void Equate(string id, object id2)
         {
             var sId2 = id2 as string;
-            if (sId2 != null && !Equates.TryGetValue(sId2, out object? value))
+            if (sId2 is not null && !Equates.TryGetValue(sId2, out object? value))
             {
                 value = id2;
             }
@@ -132,14 +132,14 @@ namespace Reko.Arch.Pdp.Pdp11.Assembler
                 break;
             case AddressMode.Immediate:
                 emitter.EmitLeUInt16((int) BaseAddress.ToLinear() + op.Offset);
-                if (op.Symbol != null)
+                if (op.Symbol is not null)
                 {
                     ReferToSymbol(op.Symbol, emitter.Position - 2, PrimitiveType.Word16);
                 }
                 break;
             case AddressMode.Absolute:
                 emitter.EmitLeUInt16((int) BaseAddress.ToLinear());
-                if (op.Symbol != null)
+                if (op.Symbol is not null)
                 {
                     ReferToSymbol(op.Symbol, emitter.Position - 2, PrimitiveType.Word16);
                 }

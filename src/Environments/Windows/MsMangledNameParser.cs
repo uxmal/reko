@@ -166,7 +166,7 @@ namespace Reko.Environments.Windows
                 else
                 {
                     var t = ParseDataTypeCode(this.compoundArgs);
-                    if (t != null)
+                    if (t is not null)
                         types.Add(t);
                 }
             }
@@ -284,7 +284,7 @@ namespace Reko.Environments.Windows
             return (
                 basicName,
                 sig,
-                sig != null 
+                sig is not null 
                     ? sig.EnclosingType
                     : CreateEnclosingType(Scope));
         }

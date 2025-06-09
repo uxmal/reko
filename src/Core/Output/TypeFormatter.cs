@@ -97,7 +97,7 @@ namespace Reko.Core.Output
         /// <param name="comment"></param>
 		public void LineEndComment(string? comment)
 		{
-			if (comment != null)
+			if (comment is not null)
 			{
                 writer.Write("\t");
 				writer.WriteComment("// " + comment);
@@ -334,7 +334,7 @@ namespace Reko.Core.Output
             {
                 writer.Write(")(");
             }
-			if (ft.ParametersValid && ft.Parameters != null && ft.Parameters.Length > 0)
+			if (ft.ParametersValid && ft.Parameters is not null && ft.Parameters.Length > 0)
 			{
                 name = ft.Parameters[0].Name;
 				ft.Parameters[0].DataType.Accept(this);
@@ -384,7 +384,7 @@ namespace Reko.Core.Output
                     writer.Write(" ");
                     writer.WriteHyperlink(str.Name, str);
                     OpenBrace(str.Size > 0 ? string.Format("size: {0} {0:X}", str.Size) : null);
-                    if (str.Fields != null)
+                    if (str.Fields is not null)
                     {
                         foreach (StructureField f in str.Fields)
                         {

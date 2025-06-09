@@ -80,7 +80,7 @@ namespace Reko.Core.Serialization
                 ret = SerializeArgument(null, false, ft.ReturnValue!.DataType);
             }
             List<Argument_v1> parms = [];
-            if (ft.Parameters != null)
+            if (ft.Parameters is not null)
             {
                 for (int i = 0; i < ft.Parameters.Length; ++i)
                 {

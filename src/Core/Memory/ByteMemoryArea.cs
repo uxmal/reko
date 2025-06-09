@@ -306,7 +306,7 @@ namespace Reko.Core.Memory
         {
             var rc = ReadRelocation(imageOffset);
             int size = type.Size;
-            if (rc != null && rc.DataType.Size == size)
+            if (rc is not null && rc.DataType.Size == size)
             {
                 c = rc;
                 return true;
@@ -318,7 +318,7 @@ namespace Reko.Core.Memory
         public override bool TryReadBe(long imageOffset, DataType type, out Constant c)
         {
             var rc = ReadRelocation(imageOffset);
-            if (rc != null && rc.DataType.Size == type.Size)
+            if (rc is not null && rc.DataType.Size == type.Size)
             {
                 c = rc;
                 return true;

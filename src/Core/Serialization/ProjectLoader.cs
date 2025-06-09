@@ -238,7 +238,7 @@ namespace Reko.Core.Serialization
             {
                 string? processorArchitecture = input.User?.Processor?.Name;
 
-                if (processorArchitecture != null)
+                if (processorArchitecture is not null)
                     return processorArchitecture;
             }
 
@@ -256,7 +256,7 @@ namespace Reko.Core.Serialization
             {
                 string? platform = input.User?.PlatformOptions?.Name;
 
-                if (platform != null)
+                if (platform is not null)
                     return platform;
             }
 
@@ -291,7 +291,7 @@ namespace Reko.Core.Serialization
                 ? new List<UserSegment>()
                 : sUser.Segments
                     .Select(s => LoadUserSegment(s))
-                    .Where(s => s != null)
+                    .Where(s => s is not null)
                     .ToList()!;
             Program program;
             if (!string.IsNullOrEmpty(sUser.Loader))
@@ -391,7 +391,7 @@ namespace Reko.Core.Serialization
             if (sUser is null)
                 return;
             user.OnLoadedScript = sUser.OnLoadedScript;
-            if (sUser.Processor != null)
+            if (sUser.Processor is not null)
             {
                 user.Processor = sUser.Processor.Name;
                 if (program.Architecture is null && !string.IsNullOrEmpty(user.Processor))
@@ -401,36 +401,36 @@ namespace Reko.Core.Serialization
                 //$BUG: what if architecture isn't supported? fail the whole thing?
                 program.Architecture!.LoadUserOptions(XmlOptions.LoadIntoDictionary(sUser.Processor.Options, StringComparer.OrdinalIgnoreCase));
             }
-            if (sUser.PlatformOptions != null)
+            if (sUser.PlatformOptions is not null)
             {
                 user.Environment = sUser.PlatformOptions.Name;
                 program.Platform.LoadUserOptions(XmlOptions.LoadIntoDictionary(sUser.PlatformOptions.Options, StringComparer.OrdinalIgnoreCase));
             }
-            if (sUser.Procedures != null)
+            if (sUser.Procedures is not null)
             {
                 user.Procedures = sUser.Procedures
                     .Select(sup => LoadUserProcedure(program, sup))
-                    .Where(sup => sup != null)
+                    .Where(sup => sup is not null)
                     .ToSortedList(k => k!.Address, v => v!);
                 user.ProcedureSourceFiles = user.Procedures
                     .Where(kv => !string.IsNullOrEmpty(kv.Value.OutputFile))
                     .ToDictionary(kv => kv.Key!, kv => ConvertToAbsolutePath(projectLocation.FilesystemPath, kv.Value.OutputFile)!);
             }
-            if (sUser.GlobalData != null)
+            if (sUser.GlobalData is not null)
             {
                 user.Globals = sUser.GlobalData
                     .Select(LoadUserGlobal)
-                    .Where(c => c != null)
+                    .Where(c => c is not null)
                     .ToSortedList(k => k!.Address!, v => v!);
             }
-            if (sUser.Annotations != null)
+            if (sUser.Annotations is not null)
             {
                 user.Annotations = new AnnotationList(sUser.Annotations
                     .Select(LoadAnnotation)
                     .Where(a => a is not null)
                     .ToList()!);
             }
-            if (sUser.Heuristics != null)
+            if (sUser.Heuristics is not null)
             {
                 user.Heuristics.UnionWith(sUser.Heuristics
                     .Where(h => !(h.Name is null))
@@ -441,7 +441,7 @@ namespace Reko.Core.Serialization
                 user.Heuristics.Add("aggressive-branch-removal");
             }
 
-            if (sUser.TextEncoding != null)
+            if (sUser.TextEncoding is not null)
             {
                 Encoding? enc = null;
                 try
@@ -457,35 +457,35 @@ namespace Reko.Core.Serialization
                 user.TextEncoding = enc;
             }
             program.EnvironmentMetadata = project.LoadedMetadata;
-            if (sUser.Calls != null)
+            if (sUser.Calls is not null)
             {
                 program.User.Calls = sUser.Calls
                     .Select(c => LoadUserCall(c, program))
-                    .Where(c => c != null)
+                    .Where(c => c is not null)
                     .ToSortedList(k => k!.Address!, v => v!);
             }
-            if (sUser.RegisterValues != null)
+            if (sUser.RegisterValues is not null)
             {
                 program.User.RegisterValues = LoadRegisterValues(sUser.RegisterValues);
             }
-            if (sUser.JumpTables != null)
+            if (sUser.JumpTables is not null)
             {
                 program.User.JumpTables = sUser.JumpTables.Select(LoadJumpTable_v4)
                     .Where(t => t is not null)
                     .ToSortedList(k => k!.Address, v => v)!;
             }
-            if (sUser.IndirectJumps != null)
+            if (sUser.IndirectJumps is not null)
             {
                 program.User.IndirectJumps = sUser.IndirectJumps
                     .Select(ij => LoadIndirectJump_v4(ij, program))
                     .Where(ij => ij.Item2 is not null)
                     .ToSortedList(k => k!.Item1!, v => v!.Item2)!;
             }
-            if (sUser.Segments != null)
+            if (sUser.Segments is not null)
             {
                 program.User.Segments = sUser.Segments
                     .Select(s => LoadUserSegment(s))
-                    .Where(s => s != null)
+                    .Where(s => s is not null)
                     .ToList()!;
             }
             if (sUser.DebugTraceProcedures is not null)
@@ -494,10 +494,10 @@ namespace Reko.Core.Serialization
                     .Where(s => s is not null)
                     .ToHashSet()!;
             }
-            if (sUser.BlockLabels != null)
+            if (sUser.BlockLabels is not null)
             {
                 program.User.BlockLabels = sUser.BlockLabels
-                    .Where(u => u.Location != null)
+                    .Where(u => u.Location is not null)
                     .ToDictionary(u => u.Location!, u => u.Name!);
             }
             program.User.ShowAddressesInDisassembly = sUser.ShowAddressesInDisassembly;
@@ -530,7 +530,7 @@ namespace Reko.Core.Serialization
             var allLists = new SortedList<Address, List<UserRegisterValue>>();
             foreach (var sRegValue in sRegValues)
             {
-                if (sRegValue != null && platform!.TryParseAddress(sRegValue.Address, out Address addr))
+                if (sRegValue is not null && platform!.TryParseAddress(sRegValue.Address, out Address addr))
                 {
                     if (!allLists.TryGetValue(addr, out var list))
                     {
@@ -538,7 +538,7 @@ namespace Reko.Core.Serialization
                         allLists.Add(addr, list);
                     }
                     var stg = GetStorage(sRegValue.Register);
-                    if (stg != null)
+                    if (stg is not null)
                     {
                         var c = sRegValue.Value != "*"
                             ? Constant.Create(stg.DataType, Convert.ToUInt64(sRegValue.Value, 16))
@@ -555,7 +555,7 @@ namespace Reko.Core.Serialization
             if (platform is null || !platform.TryParseAddress(sTable.TableAddress, out Address addr))
                 return null;
             var listAddrDst = new List<Address>();
-            if (sTable.Destinations != null)
+            if (sTable.Destinations is not null)
             {
                 foreach (var item in sTable.Destinations)
                 {
@@ -599,7 +599,7 @@ namespace Reko.Core.Serialization
 
             var procSer = program.CreateProcedureSerializer();
             FunctionType? sig = null;
-            if (call.Signature != null)
+            if (call.Signature is not null)
             {
                 sig = procSer.Deserialize(
                    call.Signature,
@@ -767,13 +767,13 @@ namespace Reko.Core.Serialization
         private IPlatform DeterminePlatform()
         {
             // If a platform was defined for the whole project use that.
-            if (this.platform != null)
+            if (this.platform is not null)
                 return this.platform;
 
             // Otherwise try to guess the platform or ask the user.
             // (this code will soon go away).
             var platformsInUse = project.Programs.Select(p => p.Platform).Distinct().ToArray();
-            if (platformsInUse.Length == 1 && platformsInUse[0] != null)
+            if (platformsInUse.Length == 1 && platformsInUse[0] is not null)
                 return platformsInUse[0];
             if (platformsInUse.Length == 0)
                 throw new NotImplementedException("Must specify platform for project.");

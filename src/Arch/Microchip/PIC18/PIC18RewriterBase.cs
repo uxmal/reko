@@ -534,14 +534,14 @@ namespace Reko.Arch.MicrochipPIC.PIC18
 
             Address retaddr = instrCurr.Address + instrCurr.Length;
             Identifier tos = binder.EnsureRegister(PIC18Registers.TOS);
-            Identifier? statuss = PIC18Registers.STATUS_CSHAD != null
+            Identifier? statuss = PIC18Registers.STATUS_CSHAD is not null
                 ? binder.EnsureRegister(PIC18Registers.STATUS_CSHAD)
                 : null;
 
             var dst = PushToHWStackAccess();
             m.Assign(dst, retaddr);
             m.Assign(tos, retaddr);
-            if (fast.IsFast && (statuss != null) && (statuss.Storage.Domain != StorageDomain.None))
+            if (fast.IsFast && (statuss is not null) && (statuss.Storage.Domain != StorageDomain.None))
             {
                 Identifier wregs = binder.EnsureRegister(PIC18Registers.WREG_CSHAD);
                 Identifier bsrs = binder.EnsureRegister(PIC18Registers.BSR_CSHAD);
@@ -606,18 +606,18 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             Identifier pdreg = binder.EnsureRegister(pd.FlagRegister);
             Identifier toreg = binder.EnsureRegister(to.FlagRegister);
 
-            if (ReferenceEquals(pdreg, toreg) && pdreg != null)
+            if (ReferenceEquals(pdreg, toreg) && pdreg is not null)
             {
                 mask = (byte)((1 << pd.BitPos) | (1 << to.BitPos));
                 m.Assign(pdreg, m.Or(pdreg, Constant.Byte(mask)));
                 return;
             }
-            if (pdreg != null)
+            if (pdreg is not null)
             {
                 mask = (byte)((1 << pd.BitPos));
                 m.Assign(pdreg, m.Or(pdreg, Constant.Byte(mask)));
             }
-            if (toreg != null)
+            if (toreg is not null)
             {
                 mask = (byte)((1 << to.BitPos));
                 m.Assign(pdreg!, m.Or(pdreg!, Constant.Byte(mask)));
@@ -982,12 +982,12 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             iclass = InstrClass.Transfer | InstrClass.Return;
 
             Identifier tos = binder.EnsureRegister(PIC18Registers.TOS);
-            Identifier? statuss = PIC18Registers.STATUS_CSHAD != null
+            Identifier? statuss = PIC18Registers.STATUS_CSHAD is not null
                 ? binder.EnsureRegister(PIC18Registers.STATUS_CSHAD)
                 : null;
             var src = PopFromHWStackAccess();
             m.Assign(tos, src);
-            if (fast.IsFast && (statuss != null) && (statuss.Storage.Domain != StorageDomain.None))
+            if (fast.IsFast && (statuss is not null) && (statuss.Storage.Domain != StorageDomain.None))
             {
                 Identifier wregs = binder.EnsureRegister(PIC18Registers.WREG_CSHAD);
                 Identifier bsrs = binder.EnsureRegister(PIC18Registers.BSR_CSHAD);
@@ -1039,7 +1039,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             Identifier pdreg = binder.EnsureRegister(pd.FlagRegister);
             Identifier toreg = binder.EnsureRegister(to.FlagRegister);
 
-            if (ReferenceEquals(pdreg, toreg) && pdreg != null)
+            if (ReferenceEquals(pdreg, toreg) && pdreg is not null)
             {
                 mask = (byte)(~(1 << pd.BitPos));
                 m.Assign(pdreg, m.And(pdreg, Constant.Byte(mask)));
@@ -1047,11 +1047,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
                 m.Assign(pdreg, m.Or(pdreg, Constant.Byte(mask)));
                 return;
             }
-            if (pd != null)
+            if (pd is not null)
             {
                 m.Assign(pdreg!, m.Dpb(pdreg!, Constant.False(), pd.BitPos));
             }
-            if (to != null)
+            if (to is not null)
             {
                 m.Assign(toreg, m.Dpb(toreg, Constant.True(), to.BitPos));
             }

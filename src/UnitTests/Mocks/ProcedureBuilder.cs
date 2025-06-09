@@ -247,7 +247,7 @@ namespace Reko.UnitTests.Mocks
 
         private Block EnsureBlock(string name)
         {
-            if (Block != null)
+            if (Block is not null)
                 return Block;
 
             if (name is null)
@@ -262,9 +262,9 @@ namespace Reko.UnitTests.Mocks
                 Procedure.ControlGraph.AddEdge(Procedure.EntryBlock, Block);
             }
 
-            if (lastBlock != null)
+            if (lastBlock is not null)
             {
-                if (branchBlock != null)
+                if (branchBlock is not null)
                 {
                     Procedure.ControlGraph.AddEdge(lastBlock, Block);
                     Procedure.ControlGraph.AddEdge(lastBlock, branchBlock);
@@ -351,7 +351,7 @@ namespace Reko.UnitTests.Mocks
 
         public void TerminateBlock()
         {
-            if (Block != null)
+            if (Block is not null)
             {
                 lastBlock = Block;
                 Block = null;

@@ -83,7 +83,7 @@ namespace Reko.UnitTests.Core.Serialization
         private void Given_TestOS_Platform()
         {
 
-            Debug.Assert(arch != null, "Must call Given_Architecture first.");
+            Debug.Assert(arch is not null, "Must call Given_Architecture first.");
             // A very simple dumb platform with no intelligent behaviour.
             this.platform = new Mock<IPlatform>();
             var oe = new Mock<PlatformDefinition>();

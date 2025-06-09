@@ -382,7 +382,7 @@ namespace Reko.Core.Serialization.Json
         public void VisitReturnInstruction(ReturnInstruction ret)
         {
             js.Write("ret");
-            if (ret.Expression != null)
+            if (ret.Expression is not null)
             {
                 w.Write(',');
                 ret.Expression.Accept(this);

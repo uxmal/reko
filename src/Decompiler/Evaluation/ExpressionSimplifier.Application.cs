@@ -79,7 +79,7 @@ namespace Reko.Evaluation
                 else if (intrinsic.Name == CommonOps.Rol.Name)
                 {
                     var rol = CombineRotations(intrinsic.Name, appl, args);
-                    if (rol != null)
+                    if (rol is not null)
                     {
                         return (rol, true);
                     }
@@ -87,7 +87,7 @@ namespace Reko.Evaluation
                 else if (intrinsic.Name == CommonOps.Ror.Name)
                 {
                     var ror = CombineRotations(intrinsic.Name, appl, args);
-                    if (ror != null)
+                    if (ror is not null)
                     {
                         return (ror, true);
                     }

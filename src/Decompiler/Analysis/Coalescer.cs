@@ -72,7 +72,7 @@ public class Coalescer : IAnalysis<SsaState>
             this.defsByStatement = new Dictionary<Statement, List<SsaIdentifier>>();
             foreach (SsaIdentifier sid in ssa.Identifiers)
             {
-                if (sid.DefStatement != null)
+                if (sid.DefStatement is not null)
                     SetDefStatement(sid.DefStatement, sid);
             }
 		}

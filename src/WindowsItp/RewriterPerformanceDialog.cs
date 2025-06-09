@@ -148,7 +148,7 @@ namespace Reko.WindowsItp
             var dasm = CreateA32Disassembler(mem);
             var ei = dasm.GetEnumerator();
             var mis = new List<MachineInstruction>();
-            while (ei.MoveNext() && ei.Current != null)
+            while (ei.MoveNext() && ei.Current is not null)
             {
                 mis.Add(ei.Current);
             }

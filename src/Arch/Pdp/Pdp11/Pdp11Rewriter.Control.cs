@@ -80,7 +80,7 @@ namespace Reko.Arch.Pdp.Pdp11
         private void RewriteJmp()
         {
             var jmpDst = RewriteJmpSrc(instr.Operands[0]);
-            if (jmpDst != null)
+            if (jmpDst is not null)
             {
                 this.iclass = InstrClass.Transfer;
                 m.Goto(jmpDst);
@@ -95,7 +95,7 @@ namespace Reko.Arch.Pdp.Pdp11
         {
             //$TODO: do something with regLink.
             var callDst = RewriteJmpSrc(instr.Operands[1]);
-            if (callDst != null)
+            if (callDst is not null)
             {
                 var regLink = binder.EnsureRegister((RegisterStorage)instr.Operands[0]);
                 if (regLink.Storage != Registers.pc)

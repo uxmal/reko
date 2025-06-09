@@ -94,7 +94,7 @@ namespace Reko.UnitTests.Arch.X86.Disassembler
                 mem.CreateLeReader(mem.BaseAddress),
                 PrimitiveType.Word16,
                 PrimitiveType.Word16);
-            if (options != null && options.ContainsKey("Emulate8087"))
+            if (options is not null && options.ContainsKey("Emulate8087"))
             {
                 dasm.Emulate8087 = true;
             }

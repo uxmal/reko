@@ -104,7 +104,7 @@ namespace Reko.Arch.M68k.Rewriter
                 m.Fn(FpOps.CosGeneric.MakeInstance(s.DataType), s));
             var dstSin = orw.RewriteDst(instr.Operands[1], instr.Address, src, (s, d) =>
                 m.Fn(FpOps.SinGeneric.MakeInstance(s.DataType), s));
-            if (dstSin != null)
+            if (dstSin is not null)
             {
                 m.Assign(FpuFlagGroup(), m.Cond(dstSin));
             }

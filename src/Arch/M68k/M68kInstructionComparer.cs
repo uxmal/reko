@@ -129,7 +129,7 @@ namespace Reko.Arch.M68k
                     return addrOp.GetHashCode();
             case MemoryOperand memOp:
                 int h = 0;
-                if (!NormalizeConstants && memOp.Offset != null)
+                if (!NormalizeConstants && memOp.Offset is not null)
                 {
                     h = memOp.Offset.GetHashCode();
                 }
@@ -177,11 +177,11 @@ namespace Reko.Arch.M68k
                 h = 53;
                 if (!NormalizeRegisters)
                 {
-                    if (indexOp.Base != null)
+                    if (indexOp.Base is not null)
                     {
                         h = h * 7 ^ GetRegisterHash(indexOp.Base);
                     }
-                    if (indexOp.Index != null)
+                    if (indexOp.Index is not null)
                     {
                         h = h * 11 ^ GetRegisterHash(indexOp.Index);
                         h = h * 13 ^ indexOp.index_reg_width!.GetHashCode();
@@ -189,7 +189,7 @@ namespace Reko.Arch.M68k
                 }
                 if (!NormalizeConstants)
                 {
-                    if (indexOp.BaseDisplacement != null)
+                    if (indexOp.BaseDisplacement is not null)
                     {
                         h = h * 17 ^ indexOp.BaseDisplacement.GetHashCode();
                     }

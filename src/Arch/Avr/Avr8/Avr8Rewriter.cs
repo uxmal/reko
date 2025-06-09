@@ -237,7 +237,7 @@ namespace Reko.Arch.Avr.Avr8
             var src = RewriteOp(1);
             m.Assign(dst, fn(dst, src));
             EmitFlags(dst, mod);
-            if (clr != null)
+            if (clr is not null)
             {
                 m.Assign(binder.EnsureFlagGroup(clr), 0);
             }

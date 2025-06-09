@@ -653,7 +653,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         public void Dispose()
         {
-            if (search_buffer != null)
+            if (search_buffer is not null)
                 DoENDSEARCH();
             FreeMemBlocks();
         }
@@ -1788,7 +1788,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 else if (run_till_return)
                 {
                     var instr = Host.Disassemble(Debugger.InstructionPointer);
-                    if (instr != null && (instr.InstructionClass.HasFlag(InstrClass.Return)))
+                    if (instr is not null && (instr.InstructionClass.HasFlag(InstrClass.Return)))
                     {
                         run_till_return = false;
                         stepcount = 0;
@@ -1804,7 +1804,7 @@ namespace Reko.ImageLoaders.OdbgScript
                     so we'll stepinto except for a few exceptions
                     */
                     var instr = (X86Instruction?) Host.Disassemble(Debugger.InstructionPointer);
-                    if (instr != null && (instr.Mnemonic == Mnemonic.call || instr.RepPrefix != 0))
+                    if (instr is not null && (instr.Mnemonic == Mnemonic.call || instr.RepPrefix != 0))
                         Debugger.StepOver(StepOverCallback);
                     else
                         Debugger.StepInto(StepIntoCallback);
@@ -1839,7 +1839,7 @@ namespace Reko.ImageLoaders.OdbgScript
             script_pos_next = pos;
 
             bool ret = Step();
-            if (ret && returns_value && result != null)
+            if (ret && returns_value && result is not null)
                 result = callback_return;
 
             return ret;
@@ -1869,7 +1869,7 @@ namespace Reko.ImageLoaders.OdbgScript
         void LBPC_TRAMPOLINE(LOAD_DLL_DEBUG_INFO SpecialDBG, eLibraryEvent bpxType)
         {
             Librarian.LIBRARY_ITEM_DATA Lib = Librarian.GetLibraryInfoEx(SpecialDBG.lpBaseOfDll!);
-            if (Lib != null)
+            if (Lib is not null)
             {
                 Dictionary<string, string> labels = LibraryBreakpointLabels[bpxType];
                 if (labels.TryGetValue(Lib.szLibraryPath!, out string? it))

@@ -52,7 +52,7 @@ namespace Reko.Arch.Arm.AArch32
             ccr.LowLevelDetails(4, 0);
 
             int ncrn = 0;
-            if (dtRet != null)
+            if (dtRet is not null)
             {
                 if (dtRet.BitSize <= 32)
                 {

@@ -80,7 +80,7 @@ namespace Reko.Environments.AmigaOS
 
         private Dictionary<string, object> EnsureMapKickstartToListOfLibraries()
         {
-            if (mapKickstartToListOfLibraries != null)
+            if (mapKickstartToListOfLibraries is not null)
                 return mapKickstartToListOfLibraries;
 
             var cfgSvc = Services.RequireService<IConfigurationService>();

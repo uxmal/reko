@@ -53,10 +53,10 @@ namespace Reko.UnitTests.Core.Machine
         private X86Instruction Create(Mnemonic op, object a = null, object b = null)
         {
             var ops = new List<MachineOperand>();
-            if (a != null)
+            if (a is not null)
             {
                 ops.Add(Op(a));
-                if (b != null)
+                if (b is not null)
                     ops.Add(Op(b));
             }
 

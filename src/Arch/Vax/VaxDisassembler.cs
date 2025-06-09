@@ -138,7 +138,7 @@ namespace Reko.Arch.Vax
                 if (reg.Number == 0x0F)
                 {
                     op = ImmediateOperand(width)!;
-                    return op != null;
+                    return op is not null;
 
                 }
                 else

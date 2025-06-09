@@ -61,7 +61,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                         stg = dlg.Architecture.GetFlagGroup(sRegister);
                     }
                 }
-                if (stg != null && row.Cells[1].Value is string sValue)
+                if (stg is not null && row.Cells[1].Value is string sValue)
                 {
                     var value = sValue != "*"
                         ? Constant.Create(stg.DataType, Convert.ToUInt64(sValue, 16))
@@ -92,7 +92,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                 .Select(r => r.Name)
                 .ToArray();
             dlg.RegisterColumn.Items.AddRange(registers);
-            if (dlg.RegisterValues != null)
+            if (dlg.RegisterValues is not null)
             {
                 foreach (var rv in dlg.RegisterValues)
                 {

@@ -198,7 +198,7 @@ namespace Reko.ImageLoaders.IntelHex
                     {
                         if (!rdr.TryReadRecord(out Address address, out byte[] data))
                             break;
-                        if (data != null)
+                        if (data is not null)
                         {
                             memChunks.AddData(address, data);
                             continue;
@@ -231,7 +231,7 @@ namespace Reko.ImageLoaders.IntelHex
             }
 
             var program = new Program(new ByteProgramMemory(segs), arch, platform);
-            if (addrEp != null)
+            if (addrEp is not null)
             {
                 program.EntryPoints.Add(addrEp.Value, ImageSymbol.Procedure(arch, addrEp.Value));
             }

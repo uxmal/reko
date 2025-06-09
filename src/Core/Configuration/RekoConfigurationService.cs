@@ -278,7 +278,7 @@ namespace Reko.Core.Configuration
             return new ModelDefinition
             {
                 Name = sModel.Name,
-                Options = sModel.Options != null
+                Options = sModel.Options is not null
                     ? sModel.Options.ToList()
                     : new List<ListOption_v1>()
             };
@@ -297,7 +297,7 @@ namespace Reko.Core.Configuration
                 TypeLibraries = LoadCollection(env.TypeLibraries, LoadTypeLibraryReference),
                 CharacteristicsLibraries = LoadCollection(env.Characteristics, LoadTypeLibraryReference),
                 Architectures = LoadCollection(env.Architectures, LoadPlatformArchitecture),
-                Options = env.Options != null
+                Options = env.Options is not null
                     ? XmlOptions.LoadIntoDictionary(env.Options
                         .SelectMany(o => o.ChildNodes.OfType<XmlElement>())
                         .ToArray(),
@@ -361,7 +361,7 @@ namespace Reko.Core.Configuration
             {
                 return patterns
                     .Select(p => MaskedPattern.Load(p.Bytes, p.Mask, p.Endianness)!)
-                    .Where(p => p != null && p.Bytes != null)
+                    .Where(p => p is not null && p.Bytes is not null)
                     .ToList();
             }
         }
@@ -584,11 +584,11 @@ namespace Reko.Core.Configuration
                     new NullEventListener();
                 listener.Warn($"Model '{modelName}' is not defined for architecture '{archLabel}'.");
             }
-            else if (model.Options != null)
+            else if (model.Options is not null)
             {
                 foreach (var opt in model.Options)
                 {
-                    if (opt.Text != null && opt.Value != null)
+                    if (opt.Text is not null && opt.Value is not null)
                     {
                         options[opt.Text] = opt.Value;
                     }
@@ -644,7 +644,7 @@ namespace Reko.Core.Configuration
         {
             var env = GetEnvironments()
                 .Where(e => e.Name == envName).SingleOrDefault();
-            if (env != null)
+            if (env is not null)
                 return env;
 
             return new PlatformDefinition

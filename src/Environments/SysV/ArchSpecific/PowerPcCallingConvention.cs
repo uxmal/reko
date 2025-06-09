@@ -54,7 +54,7 @@ namespace Reko.Environments.SysV.ArchSpecific
         {
             int stackOffset = 0x40; //$BUG: look this up!
             ccr.LowLevelDetails(arch.WordWidth.Size, stackOffset);
-            if (dtRet != null)
+            if (dtRet is not null)
             {
                 SetReturnRegister(ccr, dtRet);
             }
@@ -65,7 +65,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             {
                 var dtArg = dtParams[i];
                 var prim = dtArg as PrimitiveType;
-                if (prim != null && prim.Domain == Domain.Real)
+                if (prim is not null && prim.Domain == Domain.Real)
                 {
                     if (fr > 8)
                     {
@@ -111,7 +111,7 @@ namespace Reko.Environments.SysV.ArchSpecific
         public void SetReturnRegister(ICallingConventionBuilder ccr, DataType dt)
         {
             var prim = dt as PrimitiveType;
-            if (prim != null && prim.Domain == Domain.Real)
+            if (prim is not null && prim.Domain == Domain.Real)
             {
                 ccr.RegReturn(fregs[0]);
             }

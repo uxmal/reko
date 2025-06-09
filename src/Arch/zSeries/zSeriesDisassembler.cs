@@ -912,7 +912,7 @@ namespace Reko.Arch.zSeries
                 d.vecElemSize = size < vectorElementTypes.Length
                     ? vectorElementTypes[size]
                     : null;
-                return d.vecElemSize != null;
+                return d.vecElemSize is not null;
             };
         }
         private static readonly WideMutator<zSeriesDisassembler> Sbhf = vecelem(new[] {

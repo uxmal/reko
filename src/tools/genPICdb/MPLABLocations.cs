@@ -313,7 +313,7 @@ namespace Reko.Tools.genPICdb
             public MPLABLocationsWIN()
             {
                 // Starts trying to get post-4.10 version installation information (with DFP).
-                if (mplabXInstallationFolder != null)
+                if (mplabXInstallationFolder is not null)
                 {
                     Version = new DirectoryInfo(mplabXInstallationFolder).Name;
                     var fname = Path.GetDirectoryName(mplabXInstallationFolder); // remove trailing "/vX.YY/"
@@ -324,7 +324,7 @@ namespace Reko.Tools.genPICdb
                         IsValid = true;
                 }
                 // If not successful, trying to get information for older MPLAB X (version less then 4.10 - no DFP, but jar file).
-                if (!IsValid && mplabXInstallationFolder != null)
+                if (!IsValid && mplabXInstallationFolder is not null)
                 {
                     UsePacks = false;
                     SourceFolder = Path.Combine(mplabXInstallationFolder, jarFolderPath, jarFilename);

@@ -140,7 +140,7 @@ namespace Reko.ImageLoaders.LLVM
         {
             w.Write("@" + Name);
             w.Write(" = ");
-            if (Visibility != null)
+            if (Visibility is not null)
             {
                 w.WriteKeyword(Visibility);
                 w.Write(' ');
@@ -160,7 +160,7 @@ namespace Reko.ImageLoaders.LLVM
             }
             w.Write(' ');
             Type!.Write(w);
-            if (Initializer != null)
+            if (Initializer is not null)
             {
                 w.Write(' ');
                 Initializer.Write(w);
@@ -190,10 +190,10 @@ namespace Reko.ImageLoaders.LLVM
             {
                 w.Write(sep);
                 sep = ", ";
-                if (arg.Type != null)
+                if (arg.Type is not null)
                 {
                     arg.Type.Write(w);
-                    if (arg.name != null)
+                    if (arg.name is not null)
                     {
                         w.Write(" ");
                         w.Write(arg.name);
@@ -233,7 +233,7 @@ namespace Reko.ImageLoaders.LLVM
         {
             w.WriteKeyword("define");
             w.Write(' ');
-            if (ret_attrs != null)
+            if (ret_attrs is not null)
             {
                 ret_attrs.Write(w);
                 w.Write(' ');
@@ -248,12 +248,12 @@ namespace Reko.ImageLoaders.LLVM
                 w.Write(sep);
                 sep = ", ";
                 param.Type!.Write(w);
-                if (param.name != null)
+                if (param.name is not null)
                 {
                     w.Write(' ');
                     w.Write('%' + param.name);
                 }
-                if (param.attrs != null)
+                if (param.attrs is not null)
                 {
                     w.Write(' ');
                     param.attrs.Write(w);
@@ -305,7 +305,7 @@ namespace Reko.ImageLoaders.LLVM
                 return;
             }
             var bytes = Value as byte[];
-            if (bytes != null)
+            if (bytes is not null)
             {
                 w.Write("c\"");
                 foreach (var b in bytes)

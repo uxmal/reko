@@ -149,20 +149,20 @@ namespace Reko.Arch.X86
         private int GetMemoryOperandHash(MemoryOperand memOp)
         {
             int h = 0;
-            if (memOp.Base != null)
+            if (memOp.Base is not null)
             {
                 h = base.GetRegisterHash(memOp.Base);
             }
-            if (memOp.Index != null)
+            if (memOp.Index is not null)
             {
                 h = 13 * h ^ base.GetRegisterHash(memOp.Index);
                 h = 17 * h ^ memOp.Scale;
             }
-            if (memOp.Offset != null)
+            if (memOp.Offset is not null)
             {
                 h = 23 * h ^ GetConstantHash(memOp.Offset);
             }
-            if (memOp.SegOverride != null)
+            if (memOp.SegOverride is not null)
             {
                 h = 29 * h ^ GetRegisterHash(memOp.SegOverride);
             }

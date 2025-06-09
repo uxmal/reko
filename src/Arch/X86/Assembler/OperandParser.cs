@@ -179,9 +179,9 @@ namespace Reko.Arch.X86.Assembler
 					OnError("Unexpected token: " + token);
 					return null;
 				case Token.KET:
-					if (totalInt != 0 || sym != null)
+					if (totalInt != 0 || sym is not null)
 					{
-						if (addrWidth is null || sym != null)
+						if (addrWidth is null || sym is not null)
 							memOp.Offset = Constant.Create(defaultAddressWidth, totalInt);
 						else
 							memOp.Offset = X86Assembler.IntegralConstant(totalInt, addrWidth);

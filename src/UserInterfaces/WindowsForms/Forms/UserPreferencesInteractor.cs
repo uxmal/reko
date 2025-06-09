@@ -161,7 +161,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             public Color GetForeColor()
             {
                 var style = outer.localSettings.Styles[Style.Name];
-                return style.Foreground != null
+                return style.Foreground is not null
                     ? ((SolidBrush)style.Foreground).Color
                     : Color.Empty;
             }
@@ -169,7 +169,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             public Color GetBackColor()
             {
                 var style = outer.localSettings.Styles[Style.Name];
-                return style.Background != null
+                return style.Background is not null
                     ? ((SolidBrush) style.Background).Color
                     : Color.Empty;
             }
@@ -177,7 +177,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             public virtual void SetForeColor(Color color)
             {
                 var style = outer.localSettings.Styles[Style.Name];
-                if (style.Foreground != null)
+                if (style.Foreground is not null)
                 {
                     ((SolidBrush)style.Foreground).Dispose();
                 }
@@ -188,7 +188,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             public virtual void SetBackColor(Color color)
             {
                 var style = outer.localSettings.Styles[Style.Name];
-                if (style.Background != null)
+                if (style.Background is not null)
                 {
                     ((SolidBrush)style.Background).Dispose();
                 }
@@ -199,7 +199,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             public virtual void SetFont(Font font)
             {
                 var style = outer.localSettings.Styles[Style.Name];
-                if (style.Font != null)
+                if (style.Font is not null)
                 {
                     ((SolidBrush)style.Font).Dispose();
                 }
@@ -217,7 +217,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             public override void SetForeColor(Color color)
             {
                 var style = outer.localSettings.Styles[Style.Name];
-                if (style.Foreground != null)
+                if (style.Foreground is not null)
                 {
                     ((SolidBrush)style.Foreground).Dispose();
                 }
@@ -229,7 +229,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             public override void SetBackColor(Color color)
             {
                 var style = outer.localSettings.Styles[Style.Name];
-                if (style.Background != null)
+                if (style.Background is not null)
                 {
                     ((SolidBrush) style.Background).Dispose();
                 }
@@ -241,7 +241,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             public override void SetFont(Font font)
             {
                 var style = outer.localSettings.Styles[Style.Name];
-                if (style.Font != null)
+                if (style.Font is not null)
                 {
                     ((Font) style.Font).Dispose();
                 }
@@ -252,13 +252,13 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
             public virtual void ApplyStyleToControl()
             {
-                if (Style != null)
+                if (Style is not null)
                 {
-                    if (Style.Foreground != null)
+                    if (Style.Foreground is not null)
                     {
                         Control.ForeColor = ((SolidBrush)Style.Foreground).Color;
                     }
-                    if (Style.Background != null)
+                    if (Style.Background is not null)
                     {
                         Control.BackColor = ((SolidBrush)Style.Background).Color;
                     }
@@ -456,7 +456,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         {
             var node = dlg.WindowTree.SelectedNode;
             var nodeWnd = node;
-            if (node.Parent != null)
+            if (node.Parent is not null)
                 nodeWnd = node.Parent;
 
             var designer = (UiStyleDesigner)nodeWnd.Tag;

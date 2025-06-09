@@ -53,12 +53,12 @@ namespace Reko.Environments.AtariTOS
         {
             int stackOffset = 4 + 4;   // Skip the system call selector + return address.
             ccr.LowLevelDetails(4, stackOffset);
-            if (dtRet != null)
+            if (dtRet is not null)
             {
                 ccr.RegReturn(Registers.d0);
             }
 
-            if (dtThis != null)
+            if (dtThis is not null)
             {
                 //ImplicitThis = null, //$TODO
                 throw new NotImplementedException("C++ implicit `this` arguments are not implemented for Atari TOS.");

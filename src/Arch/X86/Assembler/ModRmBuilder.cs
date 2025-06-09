@@ -46,7 +46,7 @@ namespace Reko.Arch.X86.Assembler
 
 		private Constant EmitDirectAddress(int reg, MemoryOperand memOp)
 		{
-			Debug.Assert(memOp.Offset != null && memOp.Offset.IsValid);
+			Debug.Assert(memOp.Offset is not null && memOp.Offset.IsValid);
 			if (defaultWordSize == PrimitiveType.Word16)
 			{
 				reg |= 0x6;
@@ -100,7 +100,7 @@ namespace Reko.Arch.X86.Assembler
 
 				// Add the 'mod' bits
 
-				if (memOp.Offset != null)
+				if (memOp.Offset is not null)
 				{
 					Debug.Assert(memOp.Offset.IsValid);
 					if (memOp.Offset.DataType == PrimitiveType.SByte)

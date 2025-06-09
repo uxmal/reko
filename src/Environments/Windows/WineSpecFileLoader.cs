@@ -75,7 +75,7 @@ namespace Reko.Environments.Windows
                 if (PeekAndDiscard(TokenType.NL))
                     continue;
                 var (ordinal, svc) = ParseLine();
-                if (svc != null)
+                if (svc is not null)
                 {
                     if (ordinal.HasValue)
                     {

@@ -90,10 +90,10 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             get { return segmentMap; }
             set
             {
-                if (segmentMap != null)
+                if (segmentMap is not null)
                     segmentMap.MapChanged -= imageMap_MapChanged;
                 segmentMap = value;
-                if (segmentMap != null)
+                if (segmentMap is not null)
                     segmentMap.MapChanged += imageMap_MapChanged;
                 OnSegmentMapChanged();
             }
@@ -178,7 +178,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         private void BoundOffset(long value)
         {
             cxOffset = value;
-            if (painter != null)
+            if (painter is not null)
             {
                 cxOffset = Math.Min(cxOffset, painter.Extent);
             }

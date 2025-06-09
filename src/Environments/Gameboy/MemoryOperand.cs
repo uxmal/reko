@@ -44,7 +44,7 @@ namespace Reko.Environments.Gameboy
         {
             Debug.Assert(!PostDecrement || !PostIncrement);
             renderer.WriteChar('(');
-            if (Base != null)
+            if (Base is not null)
             {
                 renderer.WriteString(Base.Name);
             }

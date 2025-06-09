@@ -62,7 +62,7 @@ namespace Reko.Arch.Qualcomm
             else
                 throw new System.NotImplementedException($"Unimplemented size {DataType.Size}");
             writer.WriteChar('(');
-            if (Base != null)
+            if (Base is not null)
             {
                 writer.WriteString(Base.Name);
                 if (this.IsAbsoluteSet)
@@ -70,7 +70,7 @@ namespace Reko.Arch.Qualcomm
                     writer.WriteFormat("={0:X8})", (uint) this.Offset);
                     return;
                 }
-                if (AutoIncrement != null)
+                if (AutoIncrement is not null)
                 {
                     writer.WriteString("++");
                     if (AutoIncrement is int uIncr)
@@ -83,9 +83,9 @@ namespace Reko.Arch.Qualcomm
                     }
                 }
             }
-            if (Index != null)
+            if (Index is not null)
             {
-                if (Base != null)
+                if (Base is not null)
                 {
                     writer.WriteString("+");
                 }
@@ -95,7 +95,7 @@ namespace Reko.Arch.Qualcomm
                     writer.WriteFormat("<<#{0}", Shift);
                 }
             }
-            if (Base != null)
+            if (Base is not null)
             {
                 if (Offset < 0)
                 {
@@ -108,7 +108,7 @@ namespace Reko.Arch.Qualcomm
             }
             else
             {
-                if (Index != null)
+                if (Index is not null)
                 {
                     writer.WriteChar('+');
                 }

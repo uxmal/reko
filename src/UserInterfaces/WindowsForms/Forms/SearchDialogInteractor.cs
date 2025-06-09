@@ -191,7 +191,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         {
             this.settingsSvc = dlg.Services.RequireService<ISettingsService>();
             dlg.Patterns.DataSource = settingsSvc.GetList("SearchDialog/Patterns");
-            if (dlg.InitialPattern != null)
+            if (dlg.InitialPattern is not null)
                 dlg.Patterns.Text = dlg.InitialPattern;
             dlg.RegexCheckbox.Checked = (int)(settingsSvc.Get("SearchDialog/Regexp", 0) ?? 0)!= 0;
             dlg.Encodings.SelectedIndex = (int)(settingsSvc.Get("SearchDialog/Encoding", 0) ?? 0);

@@ -283,7 +283,7 @@ namespace Reko.Arch.MilStd1750
                 return addr;
             case MemoryOperand mem:
                 Expression ea;
-                if (mem.Index != null)
+                if (mem.Index is not null)
                 {
                     ea = binder.EnsureRegister(mem.Index);
                     if (mem.Displacement != 0)

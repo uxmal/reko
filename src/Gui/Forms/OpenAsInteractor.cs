@@ -81,7 +81,7 @@ namespace Reko.Gui.Forms
             dlg.Platforms.Enabled = platformRequired;
             dlg.Architectures.Enabled = archRequired;
             dlg.AddressTextBox.Enabled = addrRequired && dlg.SpecifyAddress.Checked;
-            dlg.PropertyGrid.Enabled = dlg.PropertyGrid.SelectedObject != null;
+            dlg.PropertyGrid.Enabled = dlg.PropertyGrid.SelectedObject is not null;
             dlg.OkButton.Enabled = dlg.FileName.Text.Length > 0 || !unknownRawFileFormat;
         }
 
@@ -208,7 +208,7 @@ namespace Reko.Gui.Forms
         {
             var arch = dlg.GetSelectedArchitecture();
             PopulateModels(arch);
-            if (arch != null && arch.Options?.Count > 0)
+            if (arch is not null && arch.Options?.Count > 0)
             {
                 dlg.SetPropertyGrid(dlg.ArchitectureOptions, arch.Options);
             }
@@ -224,7 +224,7 @@ namespace Reko.Gui.Forms
             if (arch.Models.Count > 0)
             {
                 var model = dlg.GetSelectedArchitectureModel();
-                if (model != null)
+                if (model is not null)
                 {
                     dlg.ArchitectureOptions = new Dictionary<string, object>();
                     foreach (var modelOption in model.Options)

@@ -33,7 +33,7 @@ namespace Reko.Evaluation
             {
                 var ptCvt = conversion.DataType;
                 var ptSrc = conversion.SourceDataType;
-                if (exp is Constant c && ptCvt != null)
+                if (exp is Constant c && ptCvt is not null)
                 {
                     if (ptCvt.Domain == Domain.Real)
                     {

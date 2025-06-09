@@ -128,7 +128,7 @@ using Reko.Core.Configuration;
 		private void CopyTextWriter(TextReader rdr, TextWriter writer)
 		{
 			string s = rdr.ReadLine();
-			while (s != null)
+			while (s is not null)
 			{
 				writer.WriteLine(s);
 				s = rdr.ReadLine();

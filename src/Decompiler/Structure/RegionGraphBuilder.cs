@@ -75,7 +75,7 @@ namespace Reko.Structure
                     var to = Destination(b, s);
                     graph.AddEdge(from!, to);
                 }
-                if (from != null)
+                if (from is not null)
                 {
                     if (graph.Successors(from).Count == 0)
                         from.Type = RegionType.Tail;

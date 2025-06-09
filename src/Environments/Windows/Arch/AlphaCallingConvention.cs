@@ -70,7 +70,7 @@ r31         zero        reads as zero       N/A         Writes are ignored.
             List<DataType> dtParams)
         {
             ccr.LowLevelDetails(8, 0);      //$BUGBUG: the '0' is incorrect, but we need a reliable spec for WinAlpha to determine exact value.
-            if (dtRet != null)
+            if (dtRet is not null)
             {
                 ccr.RegReturn(iRet);
             }

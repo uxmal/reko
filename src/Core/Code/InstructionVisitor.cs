@@ -385,7 +385,7 @@ namespace Reko.Core.Code
         /// <inheritdoc />
 		public virtual void VisitReturnInstruction(ReturnInstruction ret)
 		{
-			if (ret.Expression != null)
+			if (ret.Expression is not null)
 				ret.Expression.Accept(this);
 		}
 

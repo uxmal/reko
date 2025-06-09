@@ -117,7 +117,7 @@ namespace Reko.Analysis
         {
             var defs = proc.EntryBlock.Statements
                 .Select(s => s.Instruction as DefInstruction)
-                .Where(s => s != null)
+                .Where(s => s is not null)
                 .Select(s => s!.Identifier.Storage)
                 .ToHashSet();
             var deadStgs = flow.BitsUsed.Keys.Except(defs).ToHashSet();

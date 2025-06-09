@@ -107,7 +107,7 @@ namespace Reko.Tools.HunkTool
                 this.show_segment(segment, this.segments);
                 // overlay
             }
-            if (this.overlay != null)
+            if (this.overlay is not null)
             {
                 Console.WriteLine("Overlay");
                 int num_ov = this.overlay_headers.Count;
@@ -152,7 +152,7 @@ namespace Reko.Tools.HunkTool
                 alloc_size = null;
             }
             this.print_segment_header(main.hunk_no, type_name, size, name, data_file_offset, hunk_file_offset, alloc_size);
-            if (this.hexdump && main.Data != null)
+            if (this.hexdump && main.Data is not null)
             {
                 print_hex(main.Data, indent: 8);
             }
@@ -161,11 +161,11 @@ namespace Reko.Tools.HunkTool
                 this.show_extra_hunk(extra);
             }
             // index hunk info is embedded if its in a lib
-            if (main.index_hunk != null)
+            if (main.index_hunk is not null)
             {
                 this.show_index_info(main.index_hunk);
             }
-            if (main.HunkType == HunkType.HUNK_CODE && this.disassemble && main.Data != null && main.Data.Length > 0)
+            if (main.HunkType == HunkType.HUNK_CODE && this.disassemble && main.Data is not null && main.Data.Length > 0)
             {
                 var dasm = M68kDisassembler.Create68000(new ServiceContainer(), new BeImageReader(main.Data, 0));
                 Console.WriteLine();
@@ -181,7 +181,7 @@ namespace Reko.Tools.HunkTool
         public virtual void show_index_info(IHunk info)
         {
             // references from index
-            if (info.refs != null && info.refs.Count > 0)
+            if (info.refs is not null && info.refs.Count > 0)
             {
                 this.print_extra("refs", string.Format("#{0}", info.refs.Count));
                 if (!this.brief)
@@ -193,7 +193,7 @@ namespace Reko.Tools.HunkTool
                 }
             }
                         // defines from index
-            if (info.defs != null && info.defs.Count > 0)
+            if (info.defs is not null && info.defs.Count > 0)
             {
                 this.print_extra("defs", string.Format("#{0}", info.defs.Count));
                 if (!this.brief)
@@ -350,12 +350,12 @@ namespace Reko.Tools.HunkTool
         public virtual void print_segment_header(int hunk_no, string type_name, object size, object name, object data_file_offset, object hunk_file_offset, int? alloc_size)
         {
             var extra = new StringBuilder();
-            if (alloc_size != null)
+            if (alloc_size is not null)
             {
                 extra.AppendFormat("alloc size {0:X8}  ", alloc_size);
             }
             extra.AppendFormat("file header @{0:X8}", hunk_file_offset);
-            if (data_file_offset != null)
+            if (data_file_offset is not null)
             {
                 extra.AppendFormat("  data @{0:X8}", data_file_offset);
             }

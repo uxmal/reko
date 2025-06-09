@@ -83,7 +83,7 @@ STDMETHODIMP NativeInstruction::GetInfo(NativeInstructionInfo * info)
 STDMETHODIMP NativeInstruction::Render(INativeInstructionRenderer * r, MachineInstructionRendererFlags options)
 {
 	auto & renderer = *r;
-	if (this->instr is nullptr)
+	if (this->instr == nullptr)
 	{
 		renderer.WriteMnemonic("Invalid");
 		return S_OK;

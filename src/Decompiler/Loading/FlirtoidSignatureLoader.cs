@@ -35,7 +35,7 @@ namespace Reko.Loading
             {
                 var rdr = new StreamReader(stm, Encoding.UTF8);
                 string? line = rdr.ReadLine();
-                while (line!= null)
+                while (line is not null)
                 {
                     var m = re.Match(line);
                     if (m.Success && (m.Groups[1].Value.Length & 1) == 0)

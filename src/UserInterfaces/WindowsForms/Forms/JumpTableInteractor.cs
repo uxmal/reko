@@ -125,7 +125,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             dlg.CaptionLabel.Text = $"Jump table for {dlg.Instruction.Address}";
             dlg.JumpInstructionAddress.Text = dlg.Instruction.Address.ToString();
             dlg.InstructionLabel.Text = dlg.Instruction.ToString().Replace('\t', ' ');
-            if (dlg.VectorAddress != null)
+            if (dlg.VectorAddress is not null)
             {
                 dlg.JumpTableStartAddress.Text = dlg.VectorAddress.ToString();
             }

@@ -65,7 +65,7 @@ namespace Reko.Arch.M68k.Rewriter
             {
             case RegisterStorage reg:
                 r = binder.EnsureRegister(reg);
-                if (DataWidth != null && DataWidth.Size != reg.DataType.Size)
+                if (DataWidth is not null && DataWidth.Size != reg.DataType.Size)
                 {
                     if (DataWidth.Domain == Domain.Real)
                         r = m.Convert(r, r.DataType, DataWidth);
@@ -76,7 +76,7 @@ namespace Reko.Arch.M68k.Rewriter
             case Constant imm:
                 if (imm.DataType.IsReal)
                     return imm.CloneExpression();
-                if (DataWidth != null && DataWidth.BitSize > imm.DataType.BitSize)
+                if (DataWidth is not null && DataWidth.BitSize > imm.DataType.BitSize)
                     return Constant.Create(DataWidth, imm.ToInt64());
                 else
                     return Constant.Create(imm.DataType, imm.ToUInt32());
@@ -114,7 +114,7 @@ namespace Reko.Arch.M68k.Rewriter
                 {
                     ea = m.Mem32(ea);
                 }
-                if (indop.Index != null)
+                if (indop.Index is not null)
                 {
                     var idx = Combine(null, indop.Index, addrInstr);
                     if (indop.index_reg_width!.BitSize != 32)
@@ -203,7 +203,7 @@ namespace Reko.Arch.M68k.Rewriter
                 {
                     var r = binder.EnsureRegister(reg);
                     Expression tmpLo = r;
-                    if (dataWidth != null &&
+                    if (dataWidth is not null &&
                         reg.DataType.BitSize > dataWidth.BitSize &&
                         !reg.DataType.IsReal)
                     {
@@ -301,7 +301,7 @@ namespace Reko.Arch.M68k.Rewriter
             if (mem.Base == Registers.pc)
             {
                 var addr = addrInstr;
-                if (mem.Offset != null)
+                if (mem.Offset is not null)
                     addr += mem.Offset.ToInt32();
                 ea = addr;
             }
@@ -309,7 +309,7 @@ namespace Reko.Arch.M68k.Rewriter
             {
                 var bReg = binder.EnsureRegister(mem.Base);
                 ea = bReg;
-                if (mem.Offset != null)
+                if (mem.Offset is not null)
                 {
                     ea = m.IAddS(bReg, mem.Offset.ToInt32());
                 }
@@ -386,7 +386,7 @@ namespace Reko.Arch.M68k.Rewriter
                     {
                         ea = m.Mem32(ea);
                     }
-                    if (indop.Index != null)
+                    if (indop.Index is not null)
                     {
                         var idx = Combine(null, indop.Index, addrInstr);
                         if (indop.index_reg_width!.BitSize != 32)
@@ -461,7 +461,7 @@ namespace Reko.Arch.M68k.Rewriter
             case IndexedOperand idxop:
                 {
                     Expression? ea = null;
-                    if (idxop.Index != null)
+                    if (idxop.Index is not null)
                     {
                         var i = binder.EnsureRegister(idxop.Index);
                         var s = m.Const(i.DataType, idxop.IndexScale);
@@ -474,10 +474,10 @@ namespace Reko.Arch.M68k.Rewriter
                             ea = i;
                         }
                     }
-                    if (idxop.Base != null)
+                    if (idxop.Base is not null)
                     {
                         var b = binder.EnsureRegister(idxop.Base);
-                        if (ea != null)
+                        if (ea is not null)
                         {
                             ea = m.IAdd(b, ea);
                         }
@@ -486,9 +486,9 @@ namespace Reko.Arch.M68k.Rewriter
                             ea = b;
                         }
                     }
-                    if (idxop.BaseDisplacement != null)
+                    if (idxop.BaseDisplacement is not null)
                     {
-                        if (ea != null)
+                        if (ea is not null)
                         {
                             ea = m.IAdd(ea, idxop.BaseDisplacement);
                         }

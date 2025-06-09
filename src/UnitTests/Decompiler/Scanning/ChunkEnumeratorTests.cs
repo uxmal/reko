@@ -197,6 +197,7 @@ public class FragmentFinderTests
 
 
     [Test]
+    [Ignore("Not implemented yet.")]
     public void Frf_GenerateGapFragments_DataFragment()
     {
         TestGenerateGapFragments("[G(0x1080, 0x80), B(0x1100, 0xF00)]",

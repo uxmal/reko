@@ -110,7 +110,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         public bool RenderInstructionsCanonically
         {
-            get { return dasmModel != null && dasmModel.RenderInstructionsCanonically; }
+            get { return dasmModel is not null && dasmModel.RenderInstructionsCanonically; }
             set
             {
                 if (dasmModel is null)
@@ -122,7 +122,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         public bool ShowPcRelative
         {
-            get { return dasmModel != null ? dasmModel.ShowPcRelative : false; }
+            get { return dasmModel is not null ? dasmModel.ShowPcRelative : false; }
             set
             {
                 if (dasmModel is null)

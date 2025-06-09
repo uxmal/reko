@@ -46,7 +46,7 @@ namespace Reko.Arch.Etrax
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             renderer.WriteChar('[');
-            if (Base != null)
+            if (Base is not null)
             {
                 Base.Render(renderer, options);
                 if (PostIncrement)

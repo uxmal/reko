@@ -55,7 +55,7 @@ namespace Reko.Gui
         public ValueTask NavigateTo()
         {
             var codeSvc = sp.GetService<ICodeViewerService>();
-            if (codeSvc != null)
+            if (codeSvc is not null)
                 codeSvc.DisplayProcedure(program, Procedure, program.NeedsScanning);
             return ValueTask.CompletedTask;
         }

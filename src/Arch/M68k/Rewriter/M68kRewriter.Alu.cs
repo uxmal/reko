@@ -546,7 +546,7 @@ namespace Reko.Arch.M68k.Rewriter
                 {
                     ea = m.Mem32(ea);
                 }
-                if (indop.Index != null)
+                if (indop.Index is not null)
                 {
                     var idx = orw.Combine(null, indop.Index, instr.Address);
                     if (indop.index_reg_width!.BitSize != 32)

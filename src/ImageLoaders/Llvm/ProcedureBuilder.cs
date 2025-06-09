@@ -135,7 +135,7 @@ namespace Reko.ImageLoaders.LLVM
 
         public Block EnsureBlock(string? name)
         {
-            if (block != null)
+            if (block is not null)
                 return block;
 
             if (name is null)
@@ -172,7 +172,7 @@ namespace Reko.ImageLoaders.LLVM
 
         public void TerminateBlock()
         {
-            if (this.block != null)
+            if (this.block is not null)
             {
                 lastBlock = this.block;
                 this.block = null;

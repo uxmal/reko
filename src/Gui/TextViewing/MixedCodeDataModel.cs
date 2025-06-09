@@ -184,7 +184,7 @@ namespace Reko.Gui.TextViewing
                 .ToList())
             {
                 var instrs = new List<MachineInstruction>();
-                if (bi.Size > 0 && bi.Block!.Procedure != null)
+                if (bi.Size > 0 && bi.Block!.Procedure is not null)
                 {
                     var addrStart = bi.Address;
                     var addrEnd = bi.Address + bi.Size;
@@ -274,7 +274,7 @@ namespace Reko.Gui.TextViewing
                 int iItem = imageMap.Items.IndexOfKey(item.Address);
                 for (;;)
                 {
-                    Debug.Assert(item != null);
+                    Debug.Assert(item is not null);
                     if (item is ImageMapBlock bi)
                     {
                         var instrs = instructions[bi];

@@ -159,7 +159,7 @@ namespace Reko.Typing
         {
             if (function is ProcedureConstant pc &&
                 pc.Procedure is ExternalProcedure ep &&
-                ep.Characteristics != null &&
+                ep.Characteristics is not null &&
                 ep.Characteristics.Allocator)
             {
                 // Allocation sites mustn't be tied to other allocation sites. Don't mutate
@@ -289,7 +289,7 @@ namespace Reko.Typing
             var field = new StructureField(offset, dtField);
             s.Fields.Add(field);
 
-            var pointer = eBase != null && eBase != globals
+            var pointer = eBase is not null && eBase != globals
                 ? (DataType)factory.CreateMemberPointer(TypeVar(eBase), s, structPtrBitSize)
                 : (DataType)factory.CreatePointer(s, structPtrBitSize);
             return MeetDataType(eStructPtr, pointer);
@@ -325,10 +325,10 @@ namespace Reko.Typing
             {
                 PushArrayElement(binExp);
                 var dt = PushAddendDataType(tvBin.DataType, tvRight.DataType);
-                if (dt != null)
+                if (dt is not null)
                     MeetDataType(eLeft, dt);
                 dt = PushAddendDataType(tvBin.DataType, tvLeft.DataType);
-                if (dt != null)
+                if (dt is not null)
                     MeetDataType(eRight, dt);
                 break;
             }
@@ -699,7 +699,7 @@ namespace Reko.Typing
                 else
                 {
                     var iv = GetInductionVariable(p);
-                    if (iv != null)
+                    if (iv is not null)
                     {
                         VisitInductionVariable(globals, (Identifier) p, iv, offset, tvAccess);
                     }
@@ -803,7 +803,7 @@ namespace Reko.Typing
             if (delta < 0)
             {
                 // induction variable is decremented, so the actual array begins at ivFinal - delta.
-                if (iv.Final != null)
+                if (iv.Final is not null)
                 {
                     init = iv.Final.ToInt32() - delta;
                     if (iv.IsSigned)
@@ -818,7 +818,7 @@ namespace Reko.Typing
             }
             else
             {
-                if (iv.Initial != null)
+                if (iv.Initial is not null)
                 {
                     init = iv.Initial.ToInt32();
                     if (iv.IsSigned)
@@ -851,7 +851,7 @@ namespace Reko.Typing
             if (size <= 0)
                 throw new ArgumentOutOfRangeException("size must be positive");
             var s = factory.CreateStructureType(null, size);
-            var ptr = eBase != null && eBase != globals
+            var ptr = eBase is not null && eBase != globals
                 ? (DataType) factory.CreateMemberPointer(TypeVar(eBase), s, platform.FramePointerType.BitSize)
                 : (DataType) factory.CreatePointer(s, platform.PointerType.BitSize);
             return MeetDataType(tStruct, ptr);

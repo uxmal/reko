@@ -50,7 +50,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         private void dlg_Load(object sender, EventArgs e)
         {
             var loadedScript = dlg.Program.User.OnLoadedScript;
-            if (loadedScript != null)
+            if (loadedScript is not null)
             {
                 dlg.EnableScript.Checked = loadedScript.Enabled;
                 dlg.LoadScript.Text = loadedScript.Script;
@@ -119,7 +119,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                 dlg.Program.User.Heuristics.Add((string)sItem.Value);
             }
             var optPolicy = (ListOption) dlg.OutputPolicies.SelectedItem;
-            if (optPolicy != null)
+            if (optPolicy is not null)
             {
                 dlg.Program.User.OutputFilePolicy = (string) optPolicy.Value;
             }

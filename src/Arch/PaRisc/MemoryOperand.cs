@@ -55,7 +55,7 @@ namespace Reko.Arch.PaRisc
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             var sb = new StringBuilder();
-            if (Index != null)
+            if (Index is not null)
             {
                 sb.AppendFormat("{0}(", Index.Name, Base.Name);
             }
@@ -63,7 +63,7 @@ namespace Reko.Arch.PaRisc
             {
                 sb.AppendFormat("{0}(", Offset, Base.Name);
             }
-            if (Space != null && Space != Registers.SpaceRegs[0])
+            if (Space is not null && Space != Registers.SpaceRegs[0])
                 sb.AppendFormat("{0},", Space.Name);
             sb.AppendFormat("{0})", Base.Name);
             renderer.WriteString(sb.ToString());

@@ -214,7 +214,7 @@ namespace Reko.Environments.Windows
             //    addrTarget = MakeAddressFromConstant(wAddr, true);
             //}
             //ProcedureBase proc = host.GetImportedProcedure(this.Architecture, addrTarget, addrInstr);
-            //if (proc != null)
+            //if (proc is not null)
             //    return proc;
             //return host.GetInterceptedCall(this.Architecture, addrTarget);
             var cl = instrs.Take(3).ToArray();
@@ -254,7 +254,7 @@ namespace Reko.Environments.Windows
         public override ExternalProcedure? LookupProcedureByName(string? moduleName, string procName)
         {
             var metadata = EnsureTypeLibraries(PlatformIdentifier);
-            if (moduleName != null && metadata.Modules.TryGetValue(moduleName.ToUpper(), out ModuleDescriptor? mod))
+            if (moduleName is not null && metadata.Modules.TryGetValue(moduleName.ToUpper(), out ModuleDescriptor? mod))
             {
                 if (mod.ServicesByName.TryGetValue(procName, out SystemService? svc))
                 {

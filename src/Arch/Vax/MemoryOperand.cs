@@ -42,9 +42,9 @@ namespace Reko.Arch.Vax
             {
                 renderer.WriteString("@");
             }
-            if (Offset != null)
+            if (Offset is not null)
             {
-                if (Base != null)
+                if (Base is not null)
                     renderer.WriteString(FormatSignedValue(Offset));
                 else
                     renderer.WriteString(FormatUnsignedValue(Offset));
@@ -53,7 +53,7 @@ namespace Reko.Arch.Vax
             {
                 renderer.WriteString("-");
             }
-            if (Base != null)
+            if (Base is not null)
             {
                 renderer.WriteChar('(');
                 Base.Render(renderer, options);

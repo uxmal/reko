@@ -141,7 +141,7 @@ namespace Reko.Core.Analysis
 			{
 				writer.Write("{0}: orig: {1}", Identifier, OriginalIdentifier);
 			}
-			if (DefStatement != null)
+			if (DefStatement is not null)
 			{
                 writer.WriteLine();
 				writer.Write("    def:  {0}", DefStatement.Instruction);

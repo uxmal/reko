@@ -181,7 +181,7 @@ namespace Reko.ImageLoaders.MzExe.Ne
             resGrps.TryGetValue(Win16ResourceType.Icon, out ProgramResourceGroup? icons);
             if (icons is null)
             {
-                if (iconGroups != null)
+                if (iconGroups is not null)
                     resources.Remove(iconGroups);
                 return;
             }

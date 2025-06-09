@@ -42,7 +42,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         {
             get
             {
-                return ArchiveTree.SelectedNode != null
+                return ArchiveTree.SelectedNode is not null
                     ? (ArchiveDirectoryEntry) ArchiveTree.SelectedNode.Tag
                     : null;
             }

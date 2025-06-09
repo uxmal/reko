@@ -122,7 +122,7 @@ namespace Reko.Environments.MacOS.OSX
             {
                 var arch = this.Architecture;
                 ProcedureBase? proc = host.GetImportedProcedure(arch, addrTarget, addrInstr);
-                if (proc != null)
+                if (proc is not null)
                     return proc;
                 return host.GetInterceptedCall(arch, addrTarget);
             }

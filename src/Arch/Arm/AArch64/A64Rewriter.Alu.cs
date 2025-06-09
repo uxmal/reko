@@ -339,7 +339,7 @@ namespace Reko.Arch.Arm.AArch64
             if (load)
             {
                 Expression e = m.Mem(dtDst, ea);
-                if (dtCast != null)
+                if (dtCast is not null)
                     e = m.Convert(e, e.DataType, dtCast);
                 m.Assign(reg1, e);
             }
@@ -352,7 +352,7 @@ namespace Reko.Arch.Arm.AArch64
             if (load)
             {
                 Expression e = m.Mem(dtDst, ea);
-                if (dtCast != null)
+                if (dtCast is not null)
                     e = m.Convert(e, e.DataType, dtCast);
                 m.Assign(reg2, e);
             }
@@ -360,7 +360,7 @@ namespace Reko.Arch.Arm.AArch64
             {
                 m.Assign(m.Mem(dtDst, ea), reg2);
             }
-            if (mem.PostIndex && offset != null)
+            if (mem.PostIndex && offset is not null)
             {
                 m.Assign(regBase, m.IAdd(regBase, offset));
             }
@@ -402,7 +402,7 @@ namespace Reko.Arch.Arm.AArch64
                 m.Assign(tmp, m.Mem(dt, ea));
                 m.Assign(dst, m.Convert(tmp, tmp.DataType, dtDst));
             }
-            if (postIndex != null)
+            if (postIndex is not null)
             {
                 m.Assign(baseReg!, postIndex);
             }
@@ -544,7 +544,7 @@ namespace Reko.Arch.Arm.AArch64
             Identifier baseReg = binder.EnsureRegister(mem.Base!);
             Expression ea = baseReg;
             Expression? offset = RewriteEffectiveAddressOffset(mem);
-            if (offset != null)
+            if (offset is not null)
             {
                 ea = m.IAdd(ea, offset);
             }
@@ -720,7 +720,7 @@ namespace Reko.Arch.Arm.AArch64
             {
                 m.Assign(m.Mem(dt, ea), m.Slice(src, dt));
             }
-            if (postIndex != null)
+            if (postIndex is not null)
             {
                 m.Assign(baseReg, postIndex);
             }

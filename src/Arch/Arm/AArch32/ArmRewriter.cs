@@ -697,7 +697,7 @@ namespace Reko.Arch.Arm.AArch32
         {
             var baseReg = Reg(mem.BaseRegister!);
             Expression ea = baseReg;
-            if (mem.Offset != null)
+            if (mem.Offset is not null)
             {
                 if (mem.Add)
                 {
@@ -708,7 +708,7 @@ namespace Reko.Arch.Arm.AArch32
                     ea = m.ISub(ea, mem.Offset);
                 }
             }
-            else if (mem.Index != null)
+            else if (mem.Index is not null)
             {
                 ea = m.IAdd(ea, Reg(mem.Index));
             }
@@ -773,7 +773,7 @@ namespace Reko.Arch.Arm.AArch32
                         // PC-relative address
                         ea = ComputePcRelativeOffset(mop);
 
-                        if (mop.Index != null)
+                        if (mop.Index is not null)
                         {
                             var ireg = Reg(mop.Index);
                             //$REVIEW: does it even make sense 
@@ -810,14 +810,14 @@ namespace Reko.Arch.Arm.AArch32
                     }
                     if (mop.PreIndex || !instr.Writeback)
                     {
-                        if (mop.Offset != null && !mop.Offset.IsZero)
+                        if (mop.Offset is not null && !mop.Offset.IsZero)
                         {
                             var offset = mop.Offset;
                             ea = mop.Add
                                 ? m.IAdd(ea, offset)
                                 : m.ISub(ea, offset);
                         }
-                        else if (mop.Index != null)
+                        else if (mop.Index is not null)
                         {
                             Expression idx = Reg(mop.Index);
                             if (mop.ShiftType != Mnemonic.Invalid)
@@ -850,7 +850,7 @@ namespace Reko.Arch.Arm.AArch32
         public virtual Address ComputePcRelativeOffset(MemoryOperand mop)
         {
             var dst = instr.Address + 8u;
-            if (mop.Offset != null)
+            if (mop.Offset is not null)
             {
                 dst += mop.Offset.ToInt32();
             }
@@ -948,11 +948,11 @@ namespace Reko.Arch.Arm.AArch32
 
             Expression? idx = null;
             var offset = mop.Offset;
-            if (offset != null && !offset.IsIntegerZero)
+            if (offset is not null && !offset.IsIntegerZero)
             {
                 idx = offset;
             }
-            else if (mop.Index != null)
+            else if (mop.Index is not null)
             {
                 idx = binder.EnsureRegister(mop.Index);
                 if (mop.ShiftType != Mnemonic.Invalid)
@@ -961,7 +961,7 @@ namespace Reko.Arch.Arm.AArch32
                     idx = MaybeShiftExpression(idx, sh, mop.ShiftType);
                 }
             }
-            if (idx != null)
+            if (idx is not null)
             {
                 var ea = mop.Add
                     ? m.IAdd(baseReg, idx)
@@ -1722,25 +1722,25 @@ namespace Reko.Arch.Arm.AArch32
 
             public void Dispose()
             {
-                if (this.native != null)
+                if (this.native is not null)
                 {
                     int n = native.GetCount();
                     Marshal.ReleaseComObject(this.native);
                     this.native = null;
                 }
-                if (iHost != null)
+                if (iHost is not null)
                 {
                     Marshal.Release(iHost);
                 }
-                if (iNtf != null)
+                if (iNtf is not null)
                 {
                     Marshal.Release(iNtf);
                 }
-                if (iRtlEmitter != null)
+                if (iRtlEmitter is not null)
                 { 
                    Marshal.Release(iRtlEmitter);
                 }
-                if (this.hBytes != null && this.hBytes.IsAllocated)
+                if (this.hBytes is not null && this.hBytes.IsAllocated)
                 {
                     this.hBytes.Free();
                 }

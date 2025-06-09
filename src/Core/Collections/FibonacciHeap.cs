@@ -107,7 +107,7 @@ namespace Reko.Core.Collections
                 // Because x might be moved, save its sibling now.
                 Node nextW = w.right;
                 int d = x.degree;
-                while (A[d] != null)
+                while (A[d] is not null)
                 {
                     // Make one of the nodes a child of the other.
                     Node y = A[d]!;
@@ -147,7 +147,7 @@ namespace Reko.Core.Collections
             // Find the minimum key again.
             foreach (Node? a in A)
             {
-                if (a != null && a.getKey.CompareTo(min.getKey) < 0)
+                if (a is not null && a.getKey.CompareTo(min.getKey) < 0)
                 {
                     min = a;
                 }
@@ -198,7 +198,7 @@ namespace Reko.Core.Collections
             x.getKey = k;
             x.getData = newData;
             Node? y = x.parent;
-            if (y != null && (delete || k.CompareTo(y.getKey) < 0))
+            if (y is not null && (delete || k.CompareTo(y.getKey) < 0))
             {
                 y.Cut(x, min!);
                 y.CascadingCut(min!);
@@ -251,7 +251,7 @@ namespace Reko.Core.Collections
             Node node = new Node(x, key);
             nodes.Add(x, node);
             // concatenate node into min list
-            if (min != null)
+            if (min is not null)
             {
                 node.right = min;
                 node.left = min.left;
@@ -296,7 +296,7 @@ namespace Reko.Core.Collections
             Node? z = min;
             if (z is null)
                 throw new InvalidOperationException("Empty");
-            if (z.child != null)
+            if (z.child is not null)
             {
                 z.child.parent = null;
                 // for each child of z do...
@@ -343,12 +343,12 @@ namespace Reko.Core.Collections
         public static FibonacciHeap<TKey, TValue> Union(FibonacciHeap<TKey, TValue> H1, FibonacciHeap<TKey, TValue> H2)
         {
             var H = new FibonacciHeap<TKey, TValue>();
-            if (H1 != null && H2 != null)
+            if (H1 is not null && H2 is not null)
             {
                 H.min = H1.min;
-                if (H.min != null)
+                if (H.min is not null)
                 {
-                    if (H2.min != null)
+                    if (H2.min is not null)
                     {
                         H.min.right.left = H2.min.left;
                         H2.min.left.right = H.min.right;
@@ -437,7 +437,7 @@ namespace Reko.Core.Collections
             {
                 Node? z = parent;
                 // if there's a parent...
-                if (z != null)
+                if (z is not null)
                 {
                     if (mark)
                     {
@@ -535,7 +535,7 @@ namespace Reko.Core.Collections
                 do
                 {
                     l.Add(cur);
-                    if (cur.child != null) cur.child.AddToList(l);
+                    if (cur.child is not null) cur.child.AddToList(l);
                     cur = cur.right;
                 } while (cur != this);
             }

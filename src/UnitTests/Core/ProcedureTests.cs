@@ -40,8 +40,8 @@ namespace Reko.UnitTests.Core
 		public void CreateProcedure()
 		{
 			Procedure proc = Procedure.Create(arch.Object, Address.SegPtr(0xBAFE, 0x0123), null);
-			Assert.IsTrue(proc.EntryBlock != null);
-			Assert.IsTrue(proc.ExitBlock != null);
+			Assert.IsTrue(proc.EntryBlock is not null);
+			Assert.IsTrue(proc.ExitBlock is not null);
 		}
 
 		[Test]

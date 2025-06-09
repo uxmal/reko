@@ -93,7 +93,7 @@ namespace Reko.UnitTests.Arch.PowerPC
 
         protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
         {
-            if (ppcInstrs != null)
+            if (ppcInstrs is not null)
                 return new PowerPcRewriter(arch, ppcInstrs, binder, host);
             return base.GetRtlStream(mem, binder, host);
         }

@@ -59,7 +59,7 @@ namespace Reko.Gui.Commands
             var userProcs =
                 from hit in addresses
                 let uProc = DoScanProcedure(hit, sArch)
-                where uProc != null
+                where uProc is not null
                 select new
                 {
                     hit.Program,

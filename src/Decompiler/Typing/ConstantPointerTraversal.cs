@@ -82,7 +82,7 @@ namespace Reko.Typing
                 stack.Push(eCurrent);
                 this.gOffset = eCurrent.Current.GlobalOffset;
                 var children = eCurrent.Current.DataType.Accept(this);
-                if (children != null)
+                if (children is not null)
                 {
                     stack.Push(children.GetEnumerator());
                 }

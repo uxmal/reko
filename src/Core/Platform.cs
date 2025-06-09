@@ -700,7 +700,7 @@ namespace Reko.Core
                 return null;
             var listener = Services.RequireService<IEventListener>();
             var segs = MemoryMap.Segments.Select(s => MemoryMap_v1.LoadSegment(s, this, listener))
-                .Where(s => s != null)
+                .Where(s => s is not null)
                 .ToSortedList(s => s!.Address, s => s!);
             return new SegmentMap(
                 segs.Values.First().Address,
@@ -748,7 +748,7 @@ namespace Reko.Core
             }
             this.CharacteristicsLibs = envCfg.CharacteristicsLibraries
                 .Select(cl => tlSvc.LoadCharacteristics(cl.Name!))
-                .Where(cl => cl != null).ToArray();
+                .Where(cl => cl is not null).ToArray();
 
             ApplyCharacteristicsToServices(CharacteristicsLibs, Metadata);
             return Metadata;
@@ -1002,7 +1002,7 @@ namespace Reko.Core
         public virtual Expression? ResolveImportByName(string? moduleName, string globalName)
         {
             var ep = LookupProcedureByName(moduleName, globalName);
-            if (ep != null)
+            if (ep is not null)
                 return new ProcedureConstant(PointerType, ep);
             else
                 return null;
@@ -1012,7 +1012,7 @@ namespace Reko.Core
         public virtual Expression? ResolveImportByOrdinal(string moduleName, int ordinal)
         {
             var ep = LookupProcedureByOrdinal(moduleName, ordinal);
-            if (ep != null)
+            if (ep is not null)
                 return new ProcedureConstant(PointerType, ep);
             else
                 return null;
@@ -1036,7 +1036,7 @@ namespace Reko.Core
         {
             var metadata = EnsureTypeLibraries(PlatformIdentifier);
             return CharacteristicsLibs.Select(cl => cl.Lookup(procName))
-                .Where(c => c != null)
+                .Where(c => c is not null)
                 .FirstOrDefault();
         }
 
@@ -1128,7 +1128,7 @@ namespace Reko.Core
             //$Identical to Win32, move into base class?
             return TypeLibraries
                 .Select(t => t.Lookup(procName))
-                .Where(sig => sig != null)
+                .Where(sig => sig is not null)
                 .Select(sig => new ExternalProcedure(procName, sig!))
                 .FirstOrDefault();
         }

@@ -150,13 +150,13 @@ namespace Reko.Arch.Vax
         private bool RewriteAlu3(PrimitiveType width, Func<Expression, Expression, Expression> fn, Func<Expression, bool> genFlags)
         {
             var op1 = RewriteSrcOp(0, width);
-            if (op1 != null)
+            if (op1 is not null)
             {
                 var op2 = RewriteSrcOp(1, width);
-                if (op2 != null)
+                if (op2 is not null)
                 {
                     var dst = RewriteDstOp(2, width, e => fn(op2, op1));
-                    if (dst != null)
+                    if (dst is not null)
                     {
                         return genFlags(dst);
                     }

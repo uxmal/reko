@@ -278,7 +278,7 @@ namespace Reko.Arch.Tlcs
         public override bool TryGetRegister(string name, [MaybeNullWhen(false)] out RegisterStorage reg)
         {
             reg = Registers.allRegs.FirstOrDefault(r => string.Compare(r.Name ,name, StringComparison.OrdinalIgnoreCase) == 0);
-            return reg != null;
+            return reg is not null;
         }
 
         public override bool TryParseAddress(string? txtAddr, [MaybeNullWhen(false)] out Address addr)

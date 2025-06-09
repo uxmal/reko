@@ -51,10 +51,10 @@ namespace Reko.Arch.zSeries
             {
                 renderer.WriteFormat("{0},", Length);
             }
-            if (Index != null && Index.Number != 0)
+            if (Index is not null && Index.Number != 0)
             {
                 renderer.WriteString(Index.Name);
-                if (Base != null && Base.Number != 0)
+                if (Base is not null && Base.Number != 0)
                 {
                     renderer.WriteString(",");
                     renderer.WriteString(Base.Name);

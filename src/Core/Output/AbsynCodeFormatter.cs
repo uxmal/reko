@@ -65,7 +65,7 @@ namespace Reko.Core.Output
             if (c.IsValid)
             {
                 var pt = c.DataType.ResolveAs<PrimitiveType>();
-                if (pt != null)
+                if (pt is not null)
                 {
                     switch (pt.Domain)
                     {

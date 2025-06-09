@@ -66,7 +66,7 @@ namespace Reko.Core.Serialization
                     Field = f,
                     AttrCreator = GetAttributeCreator(f)
                 })
-                .Where(f => f.AttrCreator != null)
+                .Where(f => f.AttrCreator is not null)
                 .Aggregate(
                     new XmlAttributeOverrides(),
                     (ov, field) =>

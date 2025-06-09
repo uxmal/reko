@@ -50,7 +50,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public void Close()
         {
-            if (dlg != null)
+            if (dlg is not null)
                 dlg.Dispose();
         }
 

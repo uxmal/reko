@@ -56,7 +56,7 @@ namespace Reko.Arch.PowerPC
         {
             //$TODO: verify the stack offset
             ccr.LowLevelDetails(arch.WordWidth.Size, 0x40);
-            if (dtRet != null)
+            if (dtRet is not null)
             {
                 SetReturnRegister(ccr, dtRet);
             }

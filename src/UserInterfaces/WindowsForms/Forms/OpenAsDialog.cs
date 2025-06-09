@@ -100,7 +100,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
         public void SetPropertyGrid(Dictionary<string, object> architectureOptions, List<PropertyOption> options)
         {
-            if (architectureOptions != null && options != null)
+            if (architectureOptions is not null && options is not null)
             {
                 PropertyGrid.SelectedObject = new PropertyOptionsGridAdapter(architectureOptions, options);
             }
@@ -142,7 +142,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             string sAddr = null;
             string loader = null;
             EntryPointDefinition entry = null;
-            if (rawFileOption != null && rawFileOption.Value != null)
+            if (rawFileOption is not null && rawFileOption.Value is not null)
             {
                 var raw = (RawFileDefinition) rawFileOption.Value;
                 loader = raw.Loader;

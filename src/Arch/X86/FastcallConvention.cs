@@ -54,7 +54,7 @@ namespace Reko.Arch.X86
             ccr.LowLevelDetails(stackAlignment, retSizeOnStack);
             ccr.CallerCleanup(retSizeOnStack);
             int iReg = 0;
-            if (dtThis != null)
+            if (dtThis is not null)
             {
                 ccr.ImplicitThisRegister(iArgs[iReg++]);
             }
@@ -69,7 +69,7 @@ namespace Reko.Arch.X86
                     ccr.StackParam(dtParam);
                 }
             }
-            if (dtRet != null)
+            if (dtRet is not null)
             {
                 ccr.RegReturn(Registers.eax);
             }

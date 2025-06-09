@@ -101,16 +101,16 @@ namespace Reko.Libraries.Microchip.V1
         {
             get
             {
-                if (progspace.CodeSectors != null)
+                if (progspace.CodeSectors is not null)
                 {
                     foreach (var sect in progspace.CodeSectors)
                         yield return sect.V1_Interface;
                 }
-                if (progspace.FusesSector != null)
+                if (progspace.FusesSector is not null)
                 {
                     yield return progspace.FusesSector.V1_Interface;
                 }
-                if (progspace.InfoSectors != null)
+                if (progspace.InfoSectors is not null)
                 {
                     foreach (var sect in progspace.InfoSectors)
                         yield return sect.V1_Interface;
@@ -122,7 +122,7 @@ namespace Reko.Libraries.Microchip.V1
         {
             get
             {
-                if (progspace.InfoSectors != null)
+                if (progspace.InfoSectors is not null)
                 {
                     foreach (var r in progspace.InfoSectors.OfType<IDeviceInfoSector>().Select(p => p.Registers).Cast<IDeviceInfoRegister>())
                     {
@@ -137,7 +137,7 @@ namespace Reko.Libraries.Microchip.V1
         {
             get
             {
-                if (progspace.FusesSector != null)
+                if (progspace.FusesSector is not null)
                 {
                     foreach (var d in progspace.FusesSector.Defs)
                     {
@@ -161,19 +161,19 @@ namespace Reko.Libraries.Microchip.V1
         {
             get
             {
-                if (dataspace.RegardlessOfMode != null)
+                if (dataspace.RegardlessOfMode is not null)
                 {
                     foreach (var sect in dataspace.RegardlessOfMode.RegistersRegions)
                         yield return sect.V1_Interface;
                 }
-                if (dataspace.TraditionalModeOnly != null)
+                if (dataspace.TraditionalModeOnly is not null)
                 {
                     foreach (var gpr in dataspace.TraditionalModeOnly)
                     {
                         yield return gpr.V1_Interface;
                     }
                 }
-                if (dataspace.ExtendedModeOnly != null)
+                if (dataspace.ExtendedModeOnly is not null)
                 {
                     foreach (var gpr in dataspace.ExtendedModeOnly)
                     {
@@ -199,7 +199,7 @@ namespace Reko.Libraries.Microchip.V1
 
         IEnumerable<IPICMemoryRegion> IPICDescriptor.DataMemoryRegions(PICExecMode mode)
         {
-            if (dataspace.RegardlessOfMode != null)
+            if (dataspace.RegardlessOfMode is not null)
             {
                 foreach (var sect in dataspace.RegardlessOfMode.RegistersRegions)
                     yield return sect.V1_Interface;
@@ -207,14 +207,14 @@ namespace Reko.Libraries.Microchip.V1
             switch (mode)
             {
             case PICExecMode.Traditional:
-                if (dataspace.TraditionalModeOnly != null)
+                if (dataspace.TraditionalModeOnly is not null)
                 {
                     foreach (var gpr in dataspace.TraditionalModeOnly)
                         yield return gpr.V1_Interface;
                 }
                 break;
             case PICExecMode.Extended:
-                if (dataspace.ExtendedModeOnly != null)
+                if (dataspace.ExtendedModeOnly is not null)
                 {
                     foreach (var gpr in dataspace.ExtendedModeOnly)
                         yield return gpr.V1_Interface;
@@ -249,7 +249,7 @@ namespace Reko.Libraries.Microchip.V1
                         }
                     }
                 }
-                if (dataspace.RegardlessOfMode.NMMRPlace != null && !IsPIC18)
+                if (dataspace.RegardlessOfMode.NMMRPlace is not null && !IsPIC18)
                 {
                     foreach (var sfr in dataspace.RegardlessOfMode.NMMRPlace.SFRDefs)
                         yield return sfr.V1_Interface;
@@ -288,7 +288,7 @@ namespace Reko.Libraries.Microchip.V1
         {
             get
             {
-                if (pic.Interrupts != null)
+                if (pic.Interrupts is not null)
                 {
                     foreach (var it in pic.Interrupts)
                         yield return it.V1_Interface;
@@ -419,7 +419,7 @@ namespace Reko.Libraries.Microchip.V1
         {
             get
             {
-                if (dcrflddef.DCRFieldSemantics != null)
+                if (dcrflddef.DCRFieldSemantics is not null)
                 {
                     foreach (var fsem in dcrflddef.DCRFieldSemantics)
                         yield return fsem.V1_Interface;
@@ -536,7 +536,7 @@ namespace Reko.Libraries.Microchip.V1
         {
             get
             {
-                if (sfbitdef.SFRFieldSemantics != null)
+                if (sfbitdef.SFRFieldSemantics is not null)
                 {
                     foreach (var fsem in sfbitdef.SFRFieldSemantics)
                         yield return fsem.V1_Interface;
@@ -631,7 +631,7 @@ namespace Reko.Libraries.Microchip.V1
         {
             get
             {
-                if (diasect != null)
+                if (diasect is not null)
                 {
                     foreach (var ra in diasect.RegisterArrays)
                     {
@@ -650,7 +650,7 @@ namespace Reko.Libraries.Microchip.V1
                         }
                     }
                 }
-                else if (dcisect != null)
+                else if (dcisect is not null)
                 {
                     foreach (var r in dcisect.DCIRegisters)
                         yield return r.V1_Interface;

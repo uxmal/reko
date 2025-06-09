@@ -361,7 +361,7 @@ namespace Reko.Core.Collections
             {
                 EnsureRoot();
                 var (left, right) = root!.Put(key, value, true, this);
-                if (right != null)
+                if (right is not null)
                     root = NewInternalRoot(left, right);
                 ++version;
                 // Validate(root);
@@ -388,7 +388,7 @@ namespace Reko.Core.Collections
         public ValueCollection Values => valueCollection;
 
         /// <inheritdoc/>
-        public int Count => root != null ? root.totalCount : 0;
+        public int Count => root is not null ? root.totalCount : 0;
 
         /// <inheritdoc/>
         public bool IsReadOnly => false;
@@ -398,7 +398,7 @@ namespace Reko.Core.Collections
         {
             EnsureRoot();
             var (left, right) = root!.Put(key, value, false, this);
-            if (right != null)
+            if (right is not null)
                 root = NewInternalRoot(left, right);
             ++version;
             // Validate(root);
@@ -470,7 +470,7 @@ namespace Reko.Core.Collections
                 ;
             var leaf = (LeafNode?)node;
             int myVersion = this.version;
-            while (leaf != null)
+            while (leaf is not null)
             {
                 for (int i = 0; i < leaf.count; ++i)
                 {
@@ -572,14 +572,14 @@ namespace Reko.Core.Collections
 
         private void EnsureRoot()
         {
-            if (root != null)
+            if (root is not null)
                 return;
             root = new LeafNode(LeafNodeChildren);
         }
 
         private KeyValuePair<TKey,TValue> GetEntry(int index)
         {
-            if (root != null && 0 <= index && index < this.Count)
+            if (root is not null && 0 <= index && index < this.Count)
             {
                 Node node = root;
                 int itemsLeft = index;

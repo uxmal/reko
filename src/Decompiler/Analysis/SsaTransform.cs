@@ -264,11 +264,11 @@ namespace Reko.Analysis
             var reachingBlocks = FindPredecessorClosure(ssa.Procedure.ExitBlock);
             var existing = block.Statements
                 .Select(s => s.Instruction as UseInstruction)
-                .Where(u => u != null)
+                .Where(u => u is not null)
                 .Select(u => u!.Expression)
                 .ToHashSet();
             var reachingIds = ssa.Identifiers
-                .Where(sid => sid.DefStatement != null &&
+                .Where(sid => sid.DefStatement is not null &&
                               reachingBlocks.Contains(sid.DefStatement.Block) &&
                               sid.Identifier.Name != sid.OriginalIdentifier.Name &&
                               sid.Identifier.Storage is not MemoryStorage &&
@@ -320,7 +320,7 @@ namespace Reko.Analysis
         {
             phis ??= ssa.Procedure.Statements
                     .Select(stm => stm.Instruction as PhiAssignment)
-                    .Where(p => p != null)
+                    .Where(p => p is not null)
                     .ToArray()!;
 
             var sccs = SccFinder.FindAll(new PhiGraph(ssa, phis));
@@ -555,7 +555,7 @@ namespace Reko.Analysis
         {
             ci.Callee = ci.Callee.Accept(this);
             ProcedureBase? callee = GetCalleeProcedure(ci);
-            if (callee != null && callee.Signature.ParametersValid)
+            if (callee is not null && callee.Signature.ParametersValid)
             {
                 if (Scanning.VarargsFormatScanner.IsVariadicParserKnown(callee.Signature, callee.Characteristics))
                 {
@@ -1037,7 +1037,7 @@ namespace Reko.Analysis
 
         public override Instruction TransformUseInstruction(UseInstruction u)
         {
-            if (u.OutArgument != null && !RenameFrameAccesses)
+            if (u.OutArgument is not null && !RenameFrameAccesses)
             {
                 var sidOut = ssa.Identifiers.Add(u.OutArgument, null, false);
                 sidOut.DefStatement = stmCur;
@@ -1074,7 +1074,7 @@ namespace Reko.Analysis
 
         private bool ProcedureTerminates(ProcedureBase proc)
         {
-            if (proc.Characteristics != null && proc.Characteristics.Terminates)
+            if (proc.Characteristics is not null && proc.Characteristics.Terminates)
                 return true;
             return
                 proc is Procedure callee &&
@@ -1204,7 +1204,7 @@ namespace Reko.Analysis
                 access.MemoryId.Storage == MemoryStorage.Instance)
             {
                 var e = dynamicLinker.ResolveToImportedValue(stmCur, c);
-                if (e != null)
+                if (e is not null)
                     return e;
                 ea = c;
             }

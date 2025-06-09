@@ -63,7 +63,7 @@ namespace Reko.Typing
                 return tv.OriginalDataType;
 
             DataType dtCurrent = tv.OriginalDataType;
-            if (dtCurrent != null)
+            if (dtCurrent is not null)
             {
                 dtNew = unifier.Unify(dtCurrent, dtNew)!;
             }
@@ -135,7 +135,7 @@ namespace Reko.Typing
 		public DataType MemAccessArrayTrait(Expression? expBase, Expression expStruct, int structPtrBitSize, int offset, int elementSize, int length, Expression expField)
 		{
 			var element = factory.CreateStructureType(null, elementSize);
-			if (expField != null)
+			if (expField is not null)
 				element.Fields.Add(0, this.store.GetTypeVariable(expField));
             var tvElement = store.CreateTypeVariable(factory);
             tvElement.OriginalDataType = element;
@@ -163,7 +163,7 @@ namespace Reko.Typing
             var field = new StructureField(offset, tField);
             s.Fields.Add(field);
 
-            var pointer = tBase != null
+            var pointer = tBase is not null
                 ? (DataType)factory.CreateMemberPointer(store.GetTypeVariable(tBase), s, structPtrBitSize)
                 : (DataType)factory.CreatePointer(s, structPtrBitSize);
             return MergeIntoDataType(tStruct, pointer);
@@ -174,7 +174,7 @@ namespace Reko.Typing
 			if (size <= 0)
 				throw new ArgumentOutOfRangeException("size must be positive");
 			var s = factory.CreateStructureType(null, size);
-			var ptr = tBase != null
+			var ptr = tBase is not null
                 ? (DataType)factory.CreateMemberPointer(store.GetTypeVariable(tBase), s, platform.FramePointerType.Size)
 				: (DataType)factory.CreatePointer(s, platform.PointerType.BitSize);
 			return MergeIntoDataType(tStruct, ptr);

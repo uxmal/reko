@@ -522,7 +522,7 @@ T_4 (in SEQ(SLICE(a, word24, 8), b) : word32)
 		{
 			using (FileUnitTester fut = new FileUnitTester(outputFilename))
 			{
-				if (program != null)
+				if (program is not null)
 				{
 					foreach (Procedure proc in program.Procedures.Values)
 					{
@@ -590,7 +590,7 @@ T_4 (in SEQ(SLICE(a, word24, 8), b) : word32)
 
         public DataType EqualTrait(Expression t1, Expression t2)
         {
-            if (t1 != null && t2 != null)
+            if (t1 is not null && t2 is not null)
                 Traits.AddTrait(TypeVar(t1), new TraitEqual(TypeVar(t2)));
             return null;
         }
@@ -602,17 +602,17 @@ T_4 (in SEQ(SLICE(a, word24, 8), b) : word32)
 
         public DataType MemAccessArrayTrait(Expression tBase, Expression tStruct, int structPtrSize, int offset, int elementSize, int length, Expression tAccess)
         {
-            return Traits.AddTrait(TypeVar(tStruct), new TraitMemArray(tBase != null ? TypeVar(tBase) : null, structPtrSize, offset, elementSize, length, TypeVar(tAccess)));
+            return Traits.AddTrait(TypeVar(tStruct), new TraitMemArray(tBase is not null ? TypeVar(tBase) : null, structPtrSize, offset, elementSize, length, TypeVar(tAccess)));
         }
 
         public DataType MemAccessTrait(Expression tBase, Expression tStruct, int structPtrSize, Expression tField, int offset)
         {
-            return Traits.AddTrait(TypeVar(tStruct), new TraitMem(tBase != null ? TypeVar(tBase) : null, structPtrSize, TypeVar(tField), offset));
+            return Traits.AddTrait(TypeVar(tStruct), new TraitMem(tBase is not null ? TypeVar(tBase) : null, structPtrSize, TypeVar(tField), offset));
         }
 
         public DataType MemFieldTrait(Expression tBase, Expression tStruct, Expression tField, int offset)
         {
-            return Traits.AddTrait(TypeVar(tStruct), new TraitMem(tBase != null ? TypeVar(tBase) : null, 0, TypeVar(tField), offset));
+            return Traits.AddTrait(TypeVar(tStruct), new TraitMem(tBase is not null ? TypeVar(tBase) : null, 0, TypeVar(tField), offset));
         }
 
         public DataType MemSizeTrait(Expression tBase, Expression tStruct, int size)

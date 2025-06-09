@@ -71,7 +71,7 @@ namespace Reko.Core.Serialization
             if (regStorage is null)
                 return null;
             DataType dt;
-            if (this.argCur!.Type != null)
+            if (this.argCur!.Type is not null)
                 dt = this.argCur.Type.Accept(procSer.TypeLoader);
             else
                 dt = regStorage.DataType;
@@ -171,7 +171,7 @@ namespace Reko.Core.Serialization
             if (h is null || t is null)
                 return null;
             DataType dt;
-            if (this.argCur!.Type != null)
+            if (this.argCur!.Type is not null)
                 dt = this.argCur.Type.Accept(procSer.TypeLoader);
             else 
                 dt = PrimitiveType.CreateWord(h.DataType.BitSize + h.DataType.BitSize);

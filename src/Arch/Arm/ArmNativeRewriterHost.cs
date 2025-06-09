@@ -45,7 +45,7 @@ namespace Reko.Arch.Arm
 
         public ArmNativeRewriterHost(Dictionary<int, RegisterStorage> regs, IStorageBinder frame, IRewriterHost host, NativeTypeFactory ntf, NativeRtlEmitter m)
         {
-            Debug.Assert(regs != null);
+            Debug.Assert(regs is not null);
             this.regs = regs;
             this.coprocregs = new Dictionary<int, RegisterStorage>();
             this.frame = frame;

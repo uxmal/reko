@@ -283,7 +283,7 @@ public class StoreFuser : IAnalysis<SsaState>
             } else if (src is Identifier id)
             {
                 var sid = ssa.Identifiers[id];
-                if (sid.DefStatement != null && 
+                if (sid.DefStatement is not null && 
                     sid.DefStatement.Instruction is AliasAssignment ass &&
                     ass.Src is Slice sliced &&
                     sliced.Expression is Identifier idSliced)

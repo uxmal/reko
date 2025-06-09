@@ -149,10 +149,10 @@ namespace Reko.Core.Analysis
             Constant delta = Delta!;
             Constant? final = Final;
 
-            if (initial != null)
+            if (initial is not null)
                 initial = Operator.SMul.ApplyConstants(initial.DataType, initial, c);
             delta = Operator.SMul.ApplyConstants(delta.DataType, delta, c);
-            if (final != null)
+            if (final is not null)
                 final = Operator.SMul.ApplyConstants(final.DataType, final, c);
             return new LinearInductionVariable(initial, delta, final, IsSigned);
         }
@@ -162,7 +162,7 @@ namespace Reko.Core.Analysis
         {
             var sb = new StringBuilder();
             sb.Append('(');
-            if (Initial != null)
+            if (Initial is not null)
             {
                 sb.Append(Initial.ToString());
             }
@@ -173,7 +173,7 @@ namespace Reko.Core.Analysis
             sb.Append(' ');
             sb.Append(Delta!.ToString());
             sb.Append(' ');
-            if (Final != null)
+            if (Final is not null)
             {
                 sb.Append(Final.ToString());
             }

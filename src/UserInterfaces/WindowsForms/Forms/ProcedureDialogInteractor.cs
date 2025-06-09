@@ -115,7 +115,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             {
                 var usb = new UserSignatureBuilder(program);
                 sProc = usb.ParseFunctionDeclaration(CSignature);
-                isValid = (sProc != null);
+                isValid = (sProc is not null);
             } else
             {
                 CSignature = null;
@@ -124,7 +124,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             EnableControls(isValid);
             if (isValid)
             {
-                if (sProc != null)
+                if (sProc is not null)
                     dlg.ProcedureName.Text = sProc.Name;
                 EnableProcedureName();
             }

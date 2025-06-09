@@ -111,7 +111,7 @@ namespace Reko.Analysis
 
         private static void EmitRegistersCore(IEnumerable<Storage> regs, TextWriter sb)
 		{
-            foreach (var reg in regs.Where(r => r!= null).OrderBy(r => r.Name))
+            foreach (var reg in regs.Where(r => r is not null).OrderBy(r => r.Name))
             {
                 sb.Write(" ");
                 sb.Write(reg.Name);

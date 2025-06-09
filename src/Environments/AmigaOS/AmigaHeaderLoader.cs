@@ -71,7 +71,7 @@ namespace Reko.Environments.AmigaOS
                 {
                     var nt = ntde.GetNameAndType(declarator.Declarator);
                     var ssig = (SerializedSignature?)nt.DataType;
-                    if (ssig != null && ssig.ReturnValue != null)
+                    if (ssig is not null && ssig.ReturnValue is not null)
                     {
                         var (kind, _) = ntde.GetArgumentKindFromAttributes(
                             "returns", declaration.attribute_list);

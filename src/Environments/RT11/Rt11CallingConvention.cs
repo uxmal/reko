@@ -45,7 +45,7 @@ namespace Reko.Environments.RT11
             List<DataType> dtParams)
         {
             ccr.LowLevelDetails(2, 2);
-            if (dtRet != null)
+            if (dtRet is not null)
             {
                 SetReturnRegisters(ccr, dtRet);
             }

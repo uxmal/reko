@@ -52,7 +52,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         [TearDown]
         public void TearDown()
         {
-            if (dlg != null) dlg.Dispose();
+            if (dlg is not null) dlg.Dispose();
         }
 
         private void Given_Dialog_32Bit()

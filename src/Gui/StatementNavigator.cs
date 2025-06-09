@@ -49,7 +49,7 @@ namespace Reko.Gui
         public ValueTask NavigateTo()
         {
             var codeSvc = services.GetService<ICodeViewerService>();
-            if (codeSvc != null)
+            if (codeSvc is not null)
                 codeSvc.DisplayStatement(program, Statement);
             return ValueTask.CompletedTask;
         }

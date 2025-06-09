@@ -191,10 +191,10 @@ namespace Reko.Arch.Blackfin
         private Expression EffectiveAddress(MemoryOperand mem)
         {
             Expression ea;
-            if (mem.Base != null)
+            if (mem.Base is not null)
             {
                 ea = binder.EnsureRegister(mem.Base);
-                if (mem.Index != null)
+                if (mem.Index is not null)
                     throw new NotImplementedException();
                 if (mem.Offset != 0)
                 {

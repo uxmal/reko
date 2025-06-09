@@ -42,7 +42,7 @@ namespace Reko.Arch.Mos6502
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            int o = Offset != null ? (int)Offset.ToUInt32() : 0;
+            int o = Offset is not null ? (int)Offset.ToUInt32() : 0;
             string fmt;
             switch (Mode)
             {

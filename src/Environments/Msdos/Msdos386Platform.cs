@@ -95,13 +95,13 @@ namespace Reko.Environments.Msdos
         public override SystemService? FindService(int vector, ProcessorState? state, IMemory? memory)
         {
             EnsureTypeLibraries(PlatformIdentifier);
-            if (this.Metadata != null && this.Metadata.Modules.TryGetValue("", out var module))
+            if (this.Metadata is not null && this.Metadata.Modules.TryGetValue("", out var module))
             {
                 if (!module.ServicesByVector.TryGetValue(vector, out var services))
                     return null;
                 foreach (SystemService service in services)
                 {
-                    if (service.SyscallInfo != null && service.SyscallInfo.Matches(vector, state))
+                    if (service.SyscallInfo is not null && service.SyscallInfo.Matches(vector, state))
                         return service;
                 }
             }
@@ -177,16 +177,16 @@ namespace Reko.Environments.Msdos
         /// </summary>
         private SerializedService ExtendRegisters(SerializedService svc)
         {
-            if (svc.Signature != null && svc.Signature.Arguments != null)
+            if (svc.Signature is not null && svc.Signature.Arguments is not null)
             {
                 var args = new List<Argument_v1>();
                 foreach (var arg in svc.Signature.Arguments)
                 {
                     if (arg.Type is PointerType_v1 ptr &&
                         arg.Kind is SerializedSequence seq &&
-                        seq.Registers != null && 
+                        seq.Registers is not null && 
                         seq.Registers.Length == 2 &&
-                        seq.Registers[1].Name != null)
+                        seq.Registers[1].Name is not null)
                     {
                         var off = seq.Registers[1].Name;
                         var eoff = "e" + off;

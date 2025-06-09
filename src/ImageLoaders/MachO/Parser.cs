@@ -488,7 +488,7 @@ namespace Reko.ImageLoaders.MachO
                 for (uint i = 0; i < nsyms; ++i)
                 {
                     var (msym, a) = ReadSymbol(strBytes, syms, i);
-                    if (msym != null)
+                    if (msym is not null)
                     {
                         var addr = a!.Value;
                         ldr.machoSymbols.Add(msym);
@@ -587,7 +587,7 @@ namespace Reko.ImageLoaders.MachO
 
         void ParseDysymtabCommand(IProcessorArchitecture arch)
         {
-            if (dysymtab != null)
+            if (dysymtab is not null)
             {
                 var listener = ldr.Services.RequireService<Reko.Core.Services.IEventListener>();
                 listener.Warn("Multiple dysymtab commands found.");
@@ -620,12 +620,12 @@ namespace Reko.ImageLoaders.MachO
                     var rdrIndirect = rdr.CreateNew(ldr.RawImage, dysymtab.indirectsymoff);
                     var indirects = LoadIndirectSymbols(rdrIndirect, dysymtab.nindirectsyms);
                     var lazySection = FindSectionByType(S_LAZY_SYMBOL_POINTERS);
-                    if (lazySection != null)
+                    if (lazySection is not null)
                     {
                         LoadImports(lazySection, indirects, arch);
                     }
                     var nonLazySection = FindSectionByType(S_NON_LAZY_SYMBOL_POINTERS);
-                    if (nonLazySection != null)
+                    if (nonLazySection is not null)
                     {
                         LoadImports(nonLazySection, indirects, arch);
                     }

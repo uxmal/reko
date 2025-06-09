@@ -73,7 +73,7 @@ namespace Reko.Environments.C64
             for (int i = 0; i < cTotalEntries; ++i)
             {
                 var entry = ReadDirectoryEntry(rdr);
-                if (entry != null)
+                if (entry is not null)
                 {
                     entries.Add(entry);
                 }

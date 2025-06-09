@@ -39,7 +39,7 @@ namespace Reko.Core.Diagnostics
         [Conditional("DEBUG")]
         public static void Error(this TraceSwitch trace, string format, params object[] args)
         {
-            if (trace != null && trace.TraceError)
+            if (trace is not null && trace.TraceError)
             {
                 Debug.Print(format, args);
             }
@@ -56,7 +56,7 @@ namespace Reko.Core.Diagnostics
         [Conditional("DEBUG")]
         public static void Warn(this TraceSwitch trace, string format, params object[] args)
         {
-            if (trace != null && trace.TraceWarning)
+            if (trace is not null && trace.TraceWarning)
             {
                 Debug.Print(format, args);
             }
@@ -73,7 +73,7 @@ namespace Reko.Core.Diagnostics
         [Conditional("DEBUG")]
         public static void Inform(this TraceSwitch trace, string format, params object[] args)
         {
-            if (trace != null && trace.TraceInfo)
+            if (trace is not null && trace.TraceInfo)
             {
                 Debug.Print(format, args);
             }
@@ -88,7 +88,7 @@ namespace Reko.Core.Diagnostics
         [Conditional("DEBUG")]
         public static void Verbose(this TraceSwitch trace, string message)
         {
-            if (trace != null && trace.TraceVerbose)
+            if (trace is not null && trace.TraceVerbose)
             {
                 Debug.WriteLine(message);
             }
@@ -105,7 +105,7 @@ namespace Reko.Core.Diagnostics
         [Conditional("DEBUG")]
         public static void Verbose(this TraceSwitch trace, string format, params object[]args)
         {
-            if (trace != null && trace.TraceVerbose)
+            if (trace is not null && trace.TraceVerbose)
             {
                 Debug.Print(format, args);
             }

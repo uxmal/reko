@@ -70,7 +70,7 @@ namespace Reko.UserInterfaces.WindowsForms
             this.proc = stm.Block.Procedure;
             this.showProcedures = true;
             ProgramChanged();
-            if (program != null)
+            if (program is not null)
             {
                 //var addr = program.SegmentMap.MapLinearAddressToAddress(stm.LinearAddress);
                 //SelectedAddress = addr;
@@ -117,10 +117,10 @@ namespace Reko.UserInterfaces.WindowsForms
 
         private bool ShowItem(MixedCodeDataModel.DataItemNode item)
         {
-            if (!showProcedures && item.Proc != null)
+            if (!showProcedures && item.Proc is not null)
                 return false;
 
-            //if (segment != null && !segment.IsInRange(item.StartAddress))
+            //if (segment is not null && !segment.IsInRange(item.StartAddress))
             //    return false;
 
             return true;
@@ -181,7 +181,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public void Close()
         {
-            if (codeView != null)
+            if (codeView is not null)
                 codeView.Dispose();
             codeView = null;
         }
@@ -303,7 +303,7 @@ namespace Reko.UserInterfaces.WindowsForms
             var addr = tag as Address?;
             var proc = tag as Procedure;
 
-            if (proc != null)
+            if (proc is not null)
                 addr = proc.EntryAddress;
 
             return addr;
@@ -317,7 +317,7 @@ namespace Reko.UserInterfaces.WindowsForms
             if (program.ImageMap.TryFindItem(addr, out item))
             {
                 var blockItem = item as ImageMapBlock;
-                if (blockItem != null)
+                if (blockItem is not null)
                 {
                     addr = program.GetProcedureAddress(blockItem.Block.Procedure);
                 }
@@ -375,7 +375,7 @@ namespace Reko.UserInterfaces.WindowsForms
             var addr = e.Destination as Address?;
             var proc = e.Destination as Procedure;
 
-            if (proc != null)
+            if (proc is not null)
                 addr = proc.EntryAddress;
 
             if (addr is null)

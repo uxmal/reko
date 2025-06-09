@@ -220,7 +220,7 @@ namespace Reko.Arch.WE32100
         private Expression EffectiveAddress(MemoryOperand mem)
         {
             Expression ea;
-            if (mem.Base != null)
+            if (mem.Base is not null)
             {
                 ea = binder.EnsureRegister(mem.Base);
                 if (mem.Offset != 0)
@@ -237,7 +237,7 @@ namespace Reko.Arch.WE32100
 
         private void NZV0(Expression? e)
         {
-            if (e != null)
+            if (e is not null)
             {
                 m.Assign(binder.EnsureFlagGroup(Registers.NZV), m.Cond(e));
                 m.Assign(binder.EnsureFlagGroup(Registers.C), Constant.False());
@@ -246,7 +246,7 @@ namespace Reko.Arch.WE32100
 
         private void NZVC(Expression? e)
         {
-            if (e != null)
+            if (e is not null)
             {
                 m.Assign(binder.EnsureFlagGroup(Registers.NZVC), m.Cond(e));
             }

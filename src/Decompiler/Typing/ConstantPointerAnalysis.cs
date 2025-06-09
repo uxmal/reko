@@ -94,7 +94,7 @@ namespace Reko.Typing
 		{
 			get 
 			{
-				if (globals != null)
+				if (globals is not null)
 				{
 					return globals;
 				}
@@ -133,7 +133,7 @@ namespace Reko.Typing
 
                 var pointee = ptr.Pointee;
                 var segPointee = pointee.ResolveAs<StructureType>();
-                if (segPointee != null && segPointee.IsSegment)
+                if (segPointee is not null && segPointee.IsSegment)
                 {
                     //$TODO: these are getting merged earlier, perhaps this is the right place to do those merges?
                     return;

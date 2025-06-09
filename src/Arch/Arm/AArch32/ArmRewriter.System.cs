@@ -149,7 +149,7 @@ namespace Reko.Arch.Arm.AArch32
                 }
                 ++cArgs;
             }
-            Debug.Assert(dst != null);
+            Debug.Assert(dst is not null);
             var intrinsicCall = m.Fn(intrinsic, args.ToArray());
             m.Assign(dst, intrinsicCall);
         }

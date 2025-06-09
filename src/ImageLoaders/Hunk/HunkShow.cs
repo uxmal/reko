@@ -142,7 +142,7 @@ namespace Decompiler.ImageLoaders.Hunk
                 this.show_segment(segment, this.segments);
                 // overlay
             }
-            if (this.overlay != null)
+            if (this.overlay is not null)
             {
                 Console.WriteLine("Overlay");
                 int num_ov = this.overlay_headers.Count;
@@ -165,7 +165,7 @@ namespace Decompiler.ImageLoaders.Hunk
             var main = hunk[0];
             // unit hunks are named
             var name = "";
-            if (main.Name != null)
+            if (main.Name is not null)
             {
                 name = String.Format("'{0}'", main.Name);
             }
@@ -189,7 +189,7 @@ namespace Decompiler.ImageLoaders.Hunk
                 this.show_extra_hunk(extra);
             }
             // index hunk info is embedded if its in a lib
-            if (main.index_hunk != null)
+            if (main.index_hunk is not null)
             {
                 this.show_index_info(main.index_hunk);
             }
@@ -210,7 +210,7 @@ namespace Decompiler.ImageLoaders.Hunk
         public virtual void show_index_info(IHunk info)
         {
             // references from index
-            if (info.refs != null)
+            if (info.refs is not null)
             {
                 this.print_extra("refs", String.Format("#{0}", info.refs.Count));
                 if (!this.brief)
@@ -222,7 +222,7 @@ namespace Decompiler.ImageLoaders.Hunk
                     }
                 }
             }
-            if (info.defs != null)
+            if (info.defs is not null)
             {
                 this.print_extra("defs", String.Format("#{0}", info.defs.Count));
                 if (!this.brief)
@@ -377,12 +377,12 @@ namespace Decompiler.ImageLoaders.Hunk
         {
             string extra;
             extra = "";
-            if (alloc_size != null)
+            if (alloc_size is not null)
             {
                 extra += String.Format("alloc size %08x  ", alloc_size);
             }
             extra += String.Format("file header @%08x", hunk_file_offset);
-            if (data_file_offset != null)
+            if (data_file_offset is not null)
             {
                 extra += String.Format("  data @%08x", data_file_offset);
             }

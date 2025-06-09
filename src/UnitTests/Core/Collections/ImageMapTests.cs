@@ -81,7 +81,7 @@ namespace Reko.UnitTests.Core.Collections
             var size = (uint) dt.Size;
 
             var imageMapItem = new ImageMapItem(curAddr, size);
-            if (dt != null)
+            if (dt is not null)
                 imageMapItem.DataType = dt;
             map.AddItemWithSize(curAddr, imageMapItem);
             return imageMapItem.EndAddress;

@@ -119,7 +119,7 @@ namespace Reko.Scanning
                 location = new NullCodeLocation("");
                 error = ex;
             }
-            if (location != null)
+            if (location is not null)
             {
                 eventListener.Error(location, "An error occurred while scanning {0}.");
             }

@@ -181,7 +181,7 @@ namespace Reko.ImageLoaders.Hunk
                     catch (BadImageFormatException)
                     {
                         // auto fix v37 bug?
-                        if (hunkType != HunkType.HUNK_DREL32 || v37_compat != null)
+                        if (hunkType != HunkType.HUNK_DREL32 || v37_compat is not null)
                             throw;
                         f.Offset = 0;
                         v37_compat = true;

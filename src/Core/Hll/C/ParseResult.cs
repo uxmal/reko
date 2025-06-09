@@ -60,7 +60,7 @@ namespace Reko.Core.Hll.C
         {
             get
             {
-                if (error != null)
+                if (error is not null)
                     throw new InvalidOperationException("Mustn't access the result if an error was encountered.");
                 return result!;
             }

@@ -76,7 +76,7 @@ namespace Reko.Analysis
 				var output = new StringWriter();
                 ProcedureFlow pf = this.ProgramDataFlow[proc];
                 var f = new TextFormatter(output);
-				if (pf.Signature != null)
+				if (pf.Signature is not null)
 					pf.Signature.Emit(proc.Name, FunctionType.EmitFlags.None, f);
 				else
 					proc.Signature.Emit(proc.Name, FunctionType.EmitFlags.None, f);

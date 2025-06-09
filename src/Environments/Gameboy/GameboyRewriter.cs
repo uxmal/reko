@@ -119,7 +119,7 @@ namespace Reko.Environments.Gameboy
 
         private void Emit__00C(Expression e)
         {
-            Debug.Assert(e != null);
+            Debug.Assert(e is not null);
             m.Assign(binder.EnsureFlagGroup(Registers.C), e);
             m.Assign(binder.EnsureFlagGroup(Registers.N), 0);
             m.Assign(binder.EnsureFlagGroup(Registers.H), 0);
@@ -127,7 +127,7 @@ namespace Reko.Environments.Gameboy
 
         private void Emit__0HC(Expression e)
         {
-            Debug.Assert(e != null);
+            Debug.Assert(e is not null);
             m.Assign(binder.EnsureFlagGroup(Registers.HC), e);
             m.Assign(binder.EnsureFlagGroup(Registers.N), 0);
         }
@@ -161,7 +161,7 @@ namespace Reko.Environments.Gameboy
 
         private void Emit_000C(Expression e)
         {
-            Debug.Assert(e != null);
+            Debug.Assert(e is not null);
             m.Assign(binder.EnsureFlagGroup(Registers.C), e);
             Clear(Registers.Z);
             Clear(Registers.N);
@@ -170,7 +170,7 @@ namespace Reko.Environments.Gameboy
 
         private void Emit_00HC(Expression e)
         {
-            Debug.Assert(e != null);
+            Debug.Assert(e is not null);
             m.Assign(binder.EnsureFlagGroup(Registers.HC), e);
             Clear(Registers.Z);
             Clear(Registers.N);
@@ -178,14 +178,14 @@ namespace Reko.Environments.Gameboy
 
         private void Emit_Z_0C(Expression e)
         {
-            Debug.Assert(e != null);
+            Debug.Assert(e is not null);
             m.Assign(binder.EnsureFlagGroup(Registers.ZC), e);
             Clear(Registers.H);
         }
 
         private void Emit_Z000(Expression e)
         {
-            Debug.Assert(e != null);
+            Debug.Assert(e is not null);
             m.Assign(binder.EnsureFlagGroup(Registers.Z), e);
             Clear(Registers.N);
             Clear(Registers.H);
@@ -194,7 +194,7 @@ namespace Reko.Environments.Gameboy
 
         private void Emit_Z00C(Expression e)
         {
-            Debug.Assert(e != null);
+            Debug.Assert(e is not null);
             m.Assign(binder.EnsureFlagGroup(Registers.ZC), e);
             Clear(Registers.N);
             Clear(Registers.H);
@@ -202,7 +202,7 @@ namespace Reko.Environments.Gameboy
 
         private void Emit_Z01_(Expression e)
         {
-            Debug.Assert(e != null);
+            Debug.Assert(e is not null);
             m.Assign(binder.EnsureFlagGroup(Registers.Z), e);
             Clear(Registers.N);
             Set(Registers.H);
@@ -210,7 +210,7 @@ namespace Reko.Environments.Gameboy
 
         private void Emit_Z010(Expression e)
         {
-            Debug.Assert(e != null);
+            Debug.Assert(e is not null);
             m.Assign(binder.EnsureFlagGroup(Registers.Z), e);
             Clear(Registers.N);
             Set(Registers.H);
@@ -219,35 +219,35 @@ namespace Reko.Environments.Gameboy
 
         private void Emit_Z0H_(Expression e)
         {
-            Debug.Assert(e != null);
+            Debug.Assert(e is not null);
             m.Assign(binder.EnsureFlagGroup(Registers.ZH), e);
             Clear(Registers.N);
         }
 
         private void Emit_Z0HC(Expression e)
         {
-            Debug.Assert(e != null);
+            Debug.Assert(e is not null);
             m.Assign(binder.EnsureFlagGroup(Registers.ZHC), e);
             Clear(Registers.N);
         }
 
         private void Emit_Z1H_(Expression e)
         {
-            Debug.Assert(e != null);
+            Debug.Assert(e is not null);
             m.Assign(binder.EnsureFlagGroup(Registers.ZH), e);
             Set(Registers.N);
         }
 
         private void Emit_Z1HC(Expression e)
         {
-            Debug.Assert(e != null);
+            Debug.Assert(e is not null);
             m.Assign(binder.EnsureFlagGroup(Registers.ZHC), e);
             Set(Registers.N);
         }
 
         private void Emit_ZNHC(Expression e)
         {
-            Debug.Assert(e != null);
+            Debug.Assert(e is not null);
             m.Assign(binder.EnsureFlagGroup(Registers.ZNHC), e);
         }
 

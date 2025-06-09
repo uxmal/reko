@@ -103,7 +103,7 @@ namespace Reko.WindowsItp
                     dd = o.GetType()
                         .GetCustomAttributes(typeof(DesignerAttribute), true)
                 })
-                .Where(o => o.dd != null && o.dd.Length > 0)
+                .Where(o => o.dd is not null && o.dd.Length > 0)
                 .Select(o =>
                 {
                     var tyName = ((DesignerAttribute) o.dd.First()).DesignerTypeName;

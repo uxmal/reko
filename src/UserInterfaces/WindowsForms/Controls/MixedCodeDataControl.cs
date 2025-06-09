@@ -46,13 +46,13 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             get { return program; }
             set
             {
-                if (program != null)
+                if (program is not null)
                 {
                     program.User.Annotations
                         .AnnotationChanged -= AnnotationChanged;
                 }
                 program = value;
-                if (program != null)
+                if (program is not null)
                 {
                     program.User.Annotations
                         .AnnotationChanged += AnnotationChanged;
@@ -100,7 +100,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         private void OnTopAddressChanged()
         {
-            if (program != null)
+            if (program is not null)
             {
                 var addrTopPos = MixedCodeDataModel.Position(addrTop.Value, 0);
                 Model.MoveToLine(addrTopPos, 0);

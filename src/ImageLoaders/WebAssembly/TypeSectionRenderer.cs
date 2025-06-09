@@ -41,7 +41,7 @@ namespace Reko.ImageLoaders.WebAssembly
             {
                 ++i;
                 formatter.Write("  (type (; 0x{0:X} ;) (func", i);
-                if (func.Parameters != null && func.Parameters.Length > 0)
+                if (func.Parameters is not null && func.Parameters.Length > 0)
                 {
                     formatter.Write(" (param");
                     foreach (var param in func.Parameters)

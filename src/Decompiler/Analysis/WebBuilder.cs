@@ -113,7 +113,7 @@ public class WebBuilder
 
                 foreach (SsaIdentifier id in ssaIds)
                 {
-                    if (id.DefStatement != null && id.Identifier.Storage is not MemoryStorage)
+                    if (id.DefStatement is not null && id.Identifier.Storage is not MemoryStorage)
                         VisitStatement(id.DefStatement);
                 }
 
@@ -239,7 +239,7 @@ public class WebBuilder
             {
                 foreach (var sid in sids)
                 {
-                    if (sid.DefStatement != null)
+                    if (sid.DefStatement is not null)
                     {
                         var odf = new OutDefinitionFinder(sid.Identifier);
                         sid.DefStatement.Instruction.Accept(odf);

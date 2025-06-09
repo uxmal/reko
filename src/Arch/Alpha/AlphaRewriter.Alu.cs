@@ -143,7 +143,7 @@ namespace Reko.Arch.Alpha
         private void RewriteSt(PrimitiveType dtFrom, PrimitiveType? dtTo = null)
         {
             var src = Rewrite(instr.Operands[0]);
-            if (dtTo != null)
+            if (dtTo is not null)
             {
                 src = m.Convert(src, dtFrom, dtTo);
             }

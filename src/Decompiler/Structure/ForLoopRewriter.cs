@@ -60,7 +60,7 @@ namespace Reko.Structure
                 {
                 case AbsynWhile whi:
                     forLoop = TryRewriteWhileLoop(whi, stmts, i);
-                    if (forLoop != null)
+                    if (forLoop is not null)
                     {
                         stmts[i] = forLoop;
                     }
@@ -68,7 +68,7 @@ namespace Reko.Structure
                 case AbsynDoWhile dow:
                     RewriteForLoops(dow.Body);
                     candidate = TryMakeLoopCandidate(dow.Condition, dow.Body, stmts, i);
-                    if (candidate != null && LoopsAtLeastOnce(candidate))
+                    if (candidate is not null && LoopsAtLeastOnce(candidate))
                     {
                         stmts[i] = MakeForLoop(candidate, stmts);
                     }
@@ -77,7 +77,7 @@ namespace Reko.Structure
                     RewriteForLoops(ifStm.Then);
                     RewriteForLoops(ifStm.Else);
                     var whileLoop = TryRewriteGuardedDoWhile(ifStm);
-                    if (whileLoop != null)
+                    if (whileLoop is not null)
                     {
                         forLoop = TryRewriteWhileLoop(whileLoop, stmts, i);
                         stmts[i] = forLoop ?? (AbsynStatement) whileLoop;
@@ -97,7 +97,7 @@ namespace Reko.Structure
         {
             RewriteForLoops(whi.Body);
             var candidate = TryMakeLoopCandidate(whi.Condition, whi.Body, stmts, i);
-            if (candidate != null)
+            if (candidate is not null)
             {
                 return MakeForLoop(candidate, stmts);
             }
@@ -331,7 +331,7 @@ namespace Reko.Structure
                 // Putting in nulls is bad but we will remove them later.
                 stmts[iInit] = null!;
             }
-            if (candidate.DeadDeclaration != null)
+            if (candidate.DeadDeclaration is not null)
             {
                 candidate.DeadDeclaration.Expression = null;
             }

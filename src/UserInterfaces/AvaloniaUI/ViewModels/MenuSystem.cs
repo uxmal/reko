@@ -78,7 +78,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
                 separator = true;
                 foreach (CommandItem cmi in group.Values)
                 {
-                    CommandItem cmiNew = (cmi.CommandID != null)
+                    CommandItem cmiNew = (cmi.CommandID is not null)
                         ? new CommandItem 
                           {
                             Text = cmi.Text,
@@ -194,7 +194,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
         //private void item_Click(object sender, CommandMenuEventArgs e)
         //{
         //    MenuCommand cmd = e.Item.MenuCommand;
-        //    if (cmd != null)
+        //    if (cmd is not null)
         //    {
         //        target.Execute(cmd.CommandID);
         //    }
@@ -204,7 +204,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
         {
             if (this.KeyBindings.TryGetValue(controlType, out var bindings))
             {
-                if (ct != null)
+                if (ct is not null)
                 {
                     if (KeyBindings.TryGetValue(ct.GetType().FullName!, out bindings))
                     {

@@ -94,7 +94,7 @@ namespace Reko.Typing
         {
             if (!sig.HasVoidReturn)
                 sig.Outputs[0].DataType = store.GetTypeVariable(sig.Outputs[0]).DataType;
-            if (sig.Parameters != null)
+            if (sig.Parameters is not null)
             {
                 foreach (Identifier formalArg in sig.Parameters)
                 {
@@ -120,11 +120,11 @@ namespace Reko.Typing
             {
                 UnionType? uDst = dtDst.ResolveAs<UnionType>();
                 UnionType? uSrc = dtSrc.ResolveAs<UnionType>();
-                if (uDst != null)
+                if (uDst is not null)
                 {
                     dst = RewriteUnionLValue(dst, uDst, dtSrc);
                 }
-                else if (uSrc != null)
+                else if (uSrc is not null)
                 {
                     //var ceb = new ComplexExpressionBuilder(dtSrc, dtSrc, dtDst, null, src, null, 0);
                     //src = ceb.BuildComplex(false);

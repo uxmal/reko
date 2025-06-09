@@ -108,7 +108,7 @@ namespace Reko.ImageLoaders.Hunk
                     if (hunk_type == HunkType.HUNK_HEADER)
                     {
                         // we are in an overlay!
-                        if (this.hunkFile.overlay != null)
+                        if (this.hunkFile.overlay is not null)
                         {
                             segments = new List<List<Hunk>>();
                             this.hunkFile.overlay_segments!.Add(segments);
@@ -148,7 +148,7 @@ namespace Reko.ImageLoaders.Hunk
                     {
                         // add an extra overlay "hunk"
                         // assume hunk to be empty
-                        if (this.hunkFile.overlay != null)
+                        if (this.hunkFile.overlay is not null)
                             throw new BadImageFormatException(String.Format("Multiple overlay in loadseg: {0} {1}/{1:X}.", e.HunkType, (int) hunk_type));
                         this.hunkFile.overlay = e;
                         this.hunkFile.overlay_headers = new List<HeaderHunk>();
@@ -264,7 +264,7 @@ namespace Reko.ImageLoaders.Hunk
                         };
                         unit!.segments!.Add(segment);
                         // give main block the NAME
-                        if (name != null)
+                        if (name is not null)
                         {
                             e.Name = name;
                             name = null;
@@ -500,7 +500,7 @@ namespace Reko.ImageLoaders.Hunk
                                 var result = new List<object>();
                                 foreach (var a in obj) {
                                     v = this.get_struct_summary(a);
-                                    if (v != null) {
+                                    if (v is not null) {
                                         result.append(v);
                                     }
                                 }
@@ -514,7 +514,7 @@ namespace Reko.ImageLoaders.Hunk
                                 result = new List<object>();
                                 foreach (var k in obj.keys()) {
                                     v = this.get_struct_summary(obj[k]);
-                                    if (v != null) {
+                                    if (v is not null) {
                                         result.append(k + ":" + v);
                                     }
                                 }
@@ -534,7 +534,7 @@ namespace Reko.ImageLoaders.Hunk
 
         public virtual object? get_overlay_segment_summary()
         {
-            if (this.hunkFile.overlay_segments != null)
+            if (this.hunkFile.overlay_segments is not null)
             {
                 return this.get_struct_summary(this.hunkFile.overlay_segments);
             }
@@ -546,7 +546,7 @@ namespace Reko.ImageLoaders.Hunk
 
         public virtual object? get_libs_summary()
         {
-            if (this.hunkFile.libs != null)
+            if (this.hunkFile.libs is not null)
             {
                 return this.get_struct_summary(this.hunkFile.libs);
             }
@@ -558,7 +558,7 @@ namespace Reko.ImageLoaders.Hunk
 
         public virtual object? get_units_summary()
         {
-            if (this.hunkFile.units != null)
+            if (this.hunkFile.units is not null)
             {
                 return this.get_struct_summary(this.hunkFile.units);
             }

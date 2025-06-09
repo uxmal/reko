@@ -232,7 +232,7 @@ namespace Reko.Scanning
                 return [];
 
             byte[]? pattern = h.ProcedurePrologs[0].Bytes;
-            if (pattern != null)
+            if (pattern is not null)
             {
                 var search = new AhoCorasickSearch<byte>(new[] { pattern }, true, true);
                 return search.GetMatchPositions(mem.Bytes)

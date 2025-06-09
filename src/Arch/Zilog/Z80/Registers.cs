@@ -102,7 +102,7 @@ namespace Reko.Arch.Zilog.Z80
                 null,
             };
 
-            Registers.regsByName = All.Where(reg => reg != null).ToDictionary(reg => reg!.Name, reg => reg!);
+            Registers.regsByName = All.Where(reg => reg is not null).ToDictionary(reg => reg!.Name, reg => reg!);
             regsByStorage = new[]
             {
                 af, bc,  de, hl, sp, ix, iy, null,

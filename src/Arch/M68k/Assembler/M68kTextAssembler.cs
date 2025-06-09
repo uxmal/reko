@@ -443,7 +443,7 @@ namespace Reko.Arch.M68k.Assembler
             case TokenType.ID:
                 var id = Expect(TokenType.ID);
                 aReg = AReg(id);
-                if (aReg != null)
+                if (aReg is not null)
                 {
                     Expect(TokenType.RPAREN);
                     if (PeekAndDiscard(TokenType.PLUS))

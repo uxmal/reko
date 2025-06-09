@@ -95,7 +95,7 @@ namespace Reko.Scanning
             if (binExp.Right is Address aRight)
                 cRight = aRight.ToConstant();
 
-            if (cLeft != null && cRight != null)
+            if (cLeft is not null && cRight is not null)
             {
                 return new IntervalValueSet(
                     cLeft.DataType,
@@ -103,7 +103,7 @@ namespace Reko.Scanning
                         binExp.Operator.ApplyConstants(cLeft.DataType, cLeft, cRight)));
             }
 
-            if (cLeft is null && cRight != null)
+            if (cLeft is null && cRight is not null)
             {
                 var left = binExp.Left.Accept(this, bitRange);
                 switch (binExp.Operator.Type)
@@ -115,7 +115,7 @@ namespace Reko.Scanning
                 case OperatorType.ISub:return left.Sub(cRight);
                 }
             }
-            if (cRight is null && cLeft != null)
+            if (cRight is null && cLeft is not null)
             {
                 var right = binExp.Right.Accept(this, bitRange);
                 switch (binExp.Operator.Type)
@@ -211,7 +211,7 @@ namespace Reko.Scanning
         {
             if (context.TryGetValue(id, out ValueSet? vs))
                 return vs;
-            if (state != null && state.GetValue(id) is Constant c && c.IsValid)
+            if (state is not null && state.GetValue(id) is Constant c && c.IsValid)
                 return new ConcreteValueSet(c.DataType, c);
             return new IntervalValueSet(id.DataType, StridedInterval.Empty);
         }

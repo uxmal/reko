@@ -77,7 +77,7 @@ namespace Reko.Tools.HdrGen
                 }
                 finally
                 {
-                    if (w != null)
+                    if (w is not null)
                         w.Dispose();
                 }
             }
@@ -122,7 +122,7 @@ namespace Reko.Tools.HdrGen
         public void WriteInterfaceDefinition(Type type)
         {
             var guid = type.GetCustomAttribute<GuidAttribute>();
-            if (guid != null)
+            if (guid is not null)
             {
                 WriteGuidDefinition(type.Name, guid.Value);
             }

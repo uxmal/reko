@@ -57,7 +57,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
         void ArchiveTree_DoubleClick(object? sender, EventArgs e)
         {
-            if (dlg.SelectedArchiveEntry != null)
+            if (dlg.SelectedArchiveEntry is not null)
             {
                 dlg.DialogResult = (System.Windows.Forms.DialogResult) Gui.Services.DialogResult.OK;
                 dlg.Close();

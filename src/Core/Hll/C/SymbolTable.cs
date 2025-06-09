@@ -181,7 +181,7 @@ namespace Reko.Core.Hll.C
                 if (nt.DataType is SerializedSignature sSig)
                 {
                     sSig.Convention ??= GetCallingConventionFromAttributes(decl.attribute_list);
-                    if (sSig.ReturnValue != null)
+                    if (sSig.ReturnValue is not null)
                     {
                         var (kind, _) = ntde.GetArgumentKindFromAttributes(
                             "returns", decl.attribute_list);
@@ -338,7 +338,7 @@ namespace Reko.Core.Hll.C
                     c = new ProcedureCharacteristics();
                 c.Terminates = true;
             }
-            if (attrService != null)
+            if (attrService is not null)
             {
                 var sService = MakeService(name, sSig, attrService);
                 sService.Characteristics = c;
@@ -375,7 +375,7 @@ namespace Reko.Core.Hll.C
                 a.Name.Components.Length == 2 &&
                 a.Name.Components[0] == "reko" &&
                 a.Name.Components[1] == "address");
-            if (attrAddress != null && attrAddress.Tokens is { })
+            if (attrAddress is not null && attrAddress.Tokens is { })
             {
                 if (attrAddress.Tokens.Count != 1 ||
                     attrAddress.Tokens[0].Type != CTokenType.StringLiteral)

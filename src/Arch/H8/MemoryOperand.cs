@@ -84,7 +84,7 @@ namespace Reko.Arch.H8
             renderer.WriteChar('@');
             if (this.Deferred)
                 renderer.WriteChar('@');
-            if (Base != null)
+            if (Base is not null)
             {
                 if (this.PreDecrement)
                 {

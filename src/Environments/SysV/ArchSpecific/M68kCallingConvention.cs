@@ -51,7 +51,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             List<DataType> dtParams)
         {
             ccr.LowLevelDetails(4, 4);
-            if (dtRet != null)
+            if (dtRet is not null)
             {
                 if (dtRet.Domain == Domain.Real)
                     ccr.RegReturn(fp0);

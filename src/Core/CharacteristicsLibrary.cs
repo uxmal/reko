@@ -65,7 +65,7 @@ namespace Reko.Core
                     return new CharacteristicsLibrary
                     {
                         Entries = slib.Entries
-                            .Where(e => e.ProcedureName != null && e.Characteristics != null)
+                            .Where(e => e.ProcedureName is not null && e.Characteristics is not null)
                             .ToDictionary(e => e.ProcedureName!, e => e.Characteristics!)
                     };
                 }

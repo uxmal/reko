@@ -293,7 +293,7 @@ namespace Reko.ImageLoaders.Xbe
             var segments = LoadPrimarySections();
 
             ImageSegment? tlsSegment = LoadTlsSection();
-            if(tlsSegment != null)
+            if(tlsSegment is not null)
             {
                 segments.Add(tlsSegment);
             }

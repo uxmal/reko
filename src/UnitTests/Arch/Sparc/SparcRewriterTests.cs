@@ -53,7 +53,7 @@ namespace Reko.UnitTests.Arch.Sparc
 
         protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
         {
-            if (e != null)
+            if (e is not null)
                 return e;
             else
                 return base.GetRtlStream(mem, binder, host);

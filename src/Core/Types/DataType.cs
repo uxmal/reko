@@ -326,13 +326,13 @@ namespace Reko.Core.Types
             if ((dt is TypeReference) && (dt is T))
                 return dt as T;
             TypeReference? typeRef = dt as TypeReference;
-            while (typeRef != null)
+            while (typeRef is not null)
             {
                 dt = typeRef.Referent;
                 typeRef = dt as TypeReference;
             }
             TypeVariable? tv = dt as TypeVariable;
-            while (tv != null)
+            while (tv is not null)
             {
                 if (tv.Class is null)
                     return null;
@@ -340,7 +340,7 @@ namespace Reko.Core.Types
                 tv = dt as TypeVariable;
             }     
             EquivalenceClass? eq = dt as EquivalenceClass;
-            while (eq != null)
+            while (eq is not null)
             {
                 dt = eq.DataType;
                 eq = dt as EquivalenceClass;

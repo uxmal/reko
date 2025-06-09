@@ -72,7 +72,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         {
             IMemoryRegion? GetProgRegion()
             {
-                if (lastusedregion != null && lastusedregion.Contains(addrCur))
+                if (lastusedregion is not null && lastusedregion.Contains(addrCur))
                     return lastusedregion;
                 return lastusedregion = PICMemoryDescriptor.GetProgramRegion(addrCur);
             }

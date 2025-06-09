@@ -125,10 +125,10 @@ namespace Reko.Analysis
 
             var idSlice = idDst;
             Constant? rShift;
-            if (idSlice != null)
+            if (idSlice is not null)
             {
                 rShift = FindShiftUse(idSlice);
-                if (rShift != null)
+                if (rShift is not null)
                 {
                     best /= (1 << rShift.ToInt32());
                 }
@@ -167,7 +167,7 @@ namespace Reko.Analysis
                         return null;
                     }
                 })
-                .Where(x => x != null)
+                .Where(x => x is not null)
                 .FirstOrDefault();
         }
 

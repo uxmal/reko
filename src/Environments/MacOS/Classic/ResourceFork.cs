@@ -348,7 +348,7 @@ namespace Reko.Environments.MacOS.Classic
             }
 
             // We have found a jump table, so we allocate an A5World.
-            if (jt != null)
+            if (jt is not null)
             {
                 // Find an address beyond all known segments.
                 var addr = program.SegmentMap.Segments.Values.Max(s => s.Address + s.Size)!.Align(0x10);
@@ -637,7 +637,7 @@ namespace Reko.Environments.MacOS.Classic
             StringBuilder sb = new StringBuilder();
             sb.Append(type.Name);
             sb.Append(':');
-            if (rsrc.Name != null)
+            if (rsrc.Name is not null)
             {
                 sb.Append(rsrc.Name);
             }

@@ -149,7 +149,7 @@ namespace Reko.Core
             this.program = program;
             this.eventListener = eventListener;
             this.localProcs = program.ImageSymbols.Values
-                .Where(sym => sym.Name != null && sym.Type == SymbolType.Procedure)
+                .Where(sym => sym.Name is not null && sym.Type == SymbolType.Procedure)
                 .GroupBy(sym => sym.Name)
                 .ToDictionary(g => g.Key!, g => g.First());
         }
@@ -245,7 +245,7 @@ namespace Reko.Core
                 if (mod.ServicesByOrdinal.TryGetValue(ordinal, out var svc))
                 {
                     var signature = EnsureSignature(program, svc);
-                    if (signature != null)
+                    if (signature is not null)
                     {
                         return new ExternalProcedure(svc.Name!, signature, svc.Characteristics);
                     }
@@ -264,7 +264,7 @@ namespace Reko.Core
                 module.ServicesByOrdinal.TryGetValue(ordinal, out var service))
             {
                 var signature = EnsureSignature(program, service);
-                if (signature != null)
+                if (signature is not null)
                 {
                     return new ExternalProcedure(service.Name!, signature, service.Characteristics);
                 }
@@ -285,12 +285,12 @@ namespace Reko.Core
         public Expression? ResolveImport(string? moduleName, string name, IPlatform platform)
         {
             var global = LookupImport(moduleName, name, platform);
-            if (global != null)
+            if (global is not null)
                 return global;
             var t = platform.DataTypeFromImportName(name);
             //$REVIEW: the way imported symbols are resolved as 
             // globals or functions needs a revisit.
-            if (t != null && t.Value.Item2 is not SerializedSignature)
+            if (t is not null && t.Value.Item2 is not SerializedSignature)
             {
                 var dSer = program.CreateTypeLibraryDeserializer();
                 var dt = (t.Value.Item2 is null) ?

@@ -62,12 +62,12 @@ namespace Reko.Environments.Windows
             List<DataType> dtParams)
         {
             ccr.LowLevelDetails(8, 0x0028);
-            if (dtRet != null)
+            if (dtRet is not null)
             {
                 if (dtRet.Size > 8)
                     throw new NotImplementedException();
                 var pt = dtRet as PrimitiveType;
-                if (pt != null && pt.Domain == Domain.Real)
+                if (pt is not null && pt.Domain == Domain.Real)
                 {
                     ccr.RegReturn(Registers.xmm0);
                 }
@@ -94,7 +94,7 @@ namespace Reko.Environments.Windows
                 if (dt.Size > 8)
                     throw new NotImplementedException();
                 var pt = dt as PrimitiveType;
-                if (pt != null && pt.Domain == Domain.Real && i < fRegs.Length)
+                if (pt is not null && pt.Domain == Domain.Real && i < fRegs.Length)
                 {
                     ccr.RegParam(fRegs[i]);
                 }

@@ -69,7 +69,7 @@ namespace Reko.Arch.zSeries
             if (this.SingleElement)
                 sb.Append('w');
             sb.Append(this.Mnemonic.ToString());
-            if (this.ElementSize != null)
+            if (this.ElementSize is not null)
             {
                 if (this.ElementSize.Domain == Domain.Real)
                 {

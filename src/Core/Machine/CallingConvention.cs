@@ -373,7 +373,7 @@ namespace Reko.Core.Machine
             {
                 sb.AppendFormat("void ");
             }
-            if (ImplicitThis != null)
+            if (ImplicitThis is not null)
             {
                 sb.AppendFormat("[this {0}] ", ImplicitThis);
             }

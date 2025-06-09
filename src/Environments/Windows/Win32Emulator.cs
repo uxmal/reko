@@ -92,7 +92,7 @@ namespace Reko.Environments.Windows
                 {
                     Signature = extProc.Signature
                 };
-                if (chars != null)
+                if (chars is not null)
                     proc.Characteristics = chars;
                 proc.uFakedAddress = ++this.uPseudoFn;
                 InterceptedCalls[Address.Ptr32(proc.uFakedAddress)] = proc;
@@ -293,7 +293,7 @@ namespace Reko.Environments.Windows
 
         public void TearDownStack(ImageSegment? stackSeg)
         {
-            if (stackSeg != null)
+            if (stackSeg is not null)
             {
                 this.map.Segments.Remove(stackSeg.Address);
             }

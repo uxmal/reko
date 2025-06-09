@@ -110,15 +110,15 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             const float radiansToDegrees = (float)(180.0 / Math.PI);
             LineSegment line = seg as LineSegment;
-            if (line != null)
+            if (line is not null)
                 p.AddLine(PointF(line.Start), PointF(line.End));
             else {
                 CubicBezierSegment cb = seg as CubicBezierSegment;
-                if (cb != null)
+                if (cb is not null)
                     p.AddBezier(PointF(cb.B(0)), PointF(cb.B(1)), PointF(cb.B(2)), PointF(cb.B(3)));
                 else {
                     Ellipse ellipse = seg as Ellipse;
-                    if (ellipse != null)
+                    if (ellipse is not null)
                         p.AddArc((float)(ellipse.Center.X - ellipse.AxisA.Length), (float)(ellipse.Center.Y - ellipse.AxisB.Length),
                             (float)(2 * ellipse.AxisA.Length), (float)(2 * ellipse.AxisB.Length), (float)(ellipse.ParStart * radiansToDegrees),
                             (float)((ellipse.ParEnd - ellipse.ParStart) * radiansToDegrees));

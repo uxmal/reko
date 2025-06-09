@@ -84,7 +84,7 @@ namespace Reko.ImageLoaders.Coff
                 .ToSortedList(s => s.Address);
             entries ??= new List<ImageSymbol>();
             var ep = LoadProgramEntryPoint(program, symDict);
-            if (ep != null)
+            if (ep is not null)
                 entries.Add(ep);
             foreach (var e in entries)
             {
@@ -161,7 +161,7 @@ namespace Reko.ImageLoaders.Coff
         {
             if (section.s_flags.HasFlag(flag))
             {
-                if (segToSet != null)
+                if (segToSet is not null)
                 {
                     Services.RequireService<IEventListener>().Warn("Multiple XCoff {0} sections found, ignoring.", flag);
                     Debug.WriteLine("  ?Dup?");

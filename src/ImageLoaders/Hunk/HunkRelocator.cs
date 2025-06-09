@@ -91,7 +91,7 @@ namespace Reko.ImageLoaders.Hunk
                 // Fill in segment data
                 byte[] data;
                 var txt = mainHunk as TextHunk;
-                if (txt != null)
+                if (txt is not null)
                 {
                     Debug.Assert(txt.size <= alloc_size);
                     data = txt.Data!;

@@ -50,7 +50,7 @@ namespace Reko.Arch.Qualcomm
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            if (ConditionPredicate != null)
+            if (ConditionPredicate is not null)
             {
                 renderer.WriteMnemonic("if");
                 renderer.WriteString(" (");

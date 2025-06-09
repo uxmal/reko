@@ -36,7 +36,7 @@ namespace Reko.Evaluation
             if (slice.Expression is Constant c && c is not InvalidConstant)
             {
                 var ct = c.DataType.ResolveAs<PrimitiveType>();
-                if (ct != null && pt.BitSize <= ct.BitSize)
+                if (ct is not null && pt.BitSize <= ct.BitSize)
                 {
                     var cSliced = c.Slice(pt, slice.Offset);
                     cSliced.DataType = slice.DataType;

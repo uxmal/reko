@@ -62,7 +62,7 @@ namespace Reko.Evaluation
                 if (off is not BinaryExpression binOff)
                     return null;
                 var idOff2 = binOff.Left as Identifier;
-                if (idOff2 != null)
+                if (idOff2 is not null)
                 {
                     // [seg:idOff +/- C] => [seg_idOff + C]
                     basePtr = SlicedSegPointer(seg, idOff2, ctx);

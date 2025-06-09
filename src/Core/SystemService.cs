@@ -150,12 +150,12 @@ namespace Reko.Core
         public bool Matches(ProcessorState? state)
         {
             if (state is null &&
-                ((RegisterValues != null && RegisterValues.Length > 0) ||
-                 (StackValues != null && StackValues.Length > 0)))
+                ((RegisterValues is not null && RegisterValues.Length > 0) ||
+                 (StackValues is not null && StackValues.Length > 0)))
             {
                 return false;
             }
-            if (RegisterValues != null)
+            if (RegisterValues is not null)
             {
                 for (int i = 0; i < RegisterValues.Length; ++i)
                 {
@@ -166,7 +166,7 @@ namespace Reko.Core
                         return false;
                 }
             }
-            if (StackValues != null && StackValues.Length > 0)
+            if (StackValues is not null && StackValues.Length > 0)
             {
                 for (int i = 0; i < StackValues.Length; ++i)
                 {

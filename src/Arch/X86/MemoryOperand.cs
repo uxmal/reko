@@ -91,7 +91,7 @@ namespace Reko.Arch.X86
 
 		public bool IsAbsolute
 		{
-            get { return Offset != null && Offset.IsValid && Base == RegisterStorage.None && Index == RegisterStorage.None; }
+            get { return Offset is not null && Offset.IsValid && Base == RegisterStorage.None && Index == RegisterStorage.None; }
 		}
 
 		protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
@@ -148,7 +148,7 @@ namespace Reko.Arch.X86
 					renderer.WriteUInt32(Scale);
 				}
 			}
-			if (Base != RegisterStorage.None && Offset != null && Offset.IsValid)
+			if (Base != RegisterStorage.None && Offset is not null && Offset.IsValid)
 			{
 				if (Offset.DataType == PrimitiveType.Byte || Offset.DataType == PrimitiveType.SByte)
 				{

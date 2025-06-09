@@ -60,7 +60,7 @@ namespace Reko.Analysis
             var sid = ssa.Identifiers[ass.Dst];
             var stores = sid.Uses
                 .Select(u => ClassifyStore(u))
-                .Where(u => u != null);
+                .Where(u => u is not null);
             var grps = from u in stores
                        orderby u.Statement.Address
                        group u by u.Statement.Block;
@@ -79,19 +79,19 @@ namespace Reko.Analysis
                     continue;
                 var slice1a = GetSliceRhs(storeOffset[i].Store);
                 var slice1b = GetSliceRhs(storeOffset[i].Store);
-                if (slice1a != null || slice1b != null)
+                if (slice1a is not null || slice1b is not null)
                 {
                     for (int j = i + 1; j < storeOffset.Length; ++j)
                     {
                         var slice2a = GetSliceRhs(storeOffset[j].Store);
                         var slice2b = GetSliceRhs(storeOffset[j].Store);
-                        if (slice1a != null && slice2b != null)
+                        if (slice1a is not null && slice2b is not null)
                         {
                             ReplaceStores(sid, storeOffset[i], storeOffset[j]);
                             storeOffset[i] = null!;
                             storeOffset[j] = null!;
                         }
-                        else if (slice1b != null && slice2a != null)
+                        else if (slice1b is not null && slice2a is not null)
                         {
                             throw new NotImplementedException();
                         }

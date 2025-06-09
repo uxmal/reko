@@ -168,9 +168,9 @@ namespace Reko.Arch.Tms7000
                 return imm;
             case MemoryOperand mem:
                 Expression ea;
-                if (mem.Address != null)
+                if (mem.Address is not null)
                 {
-                    if (mem.Register != null)
+                    if (mem.Register is not null)
                     {
                         ea = m.IAdd(
                             mem.Address,

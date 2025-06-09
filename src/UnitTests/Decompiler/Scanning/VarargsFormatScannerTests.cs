@@ -165,7 +165,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             {
                 sb.Append("void ");
             }
-            else if (sig.ReturnValue != null)
+            else if (sig.ReturnValue is not null)
             {
                 sb.Append(sig.ReturnValue.Storage);
                 sb.AppendFormat("{0} {1} ", sig.ReturnValue.Storage, sig.ReturnValue.DataType);

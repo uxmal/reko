@@ -42,7 +42,7 @@ namespace Reko.Arch.M68k.Machine
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            if (Mnemonic == Mnemonic.illegal && Operands.Length > 0 && options.Platform != null)
+            if (Mnemonic == Mnemonic.illegal && Operands.Length > 0 && options.Platform is not null)
             {
                 var imm = (Constant) Operands[0];
                 // MacOS uses invalid opcodes to invoke Macintosh Toolbox services. 
@@ -50,13 +50,13 @@ namespace Reko.Arch.M68k.Machine
                 // the opcode of the invoking instruction, to disambiguate from 
                 // "legitimate" TRAP calls.
                 var svc = options.Platform.FindService((int) imm.ToUInt32(), null, null);
-                if (svc != null)
+                if (svc is not null)
                 {
                     renderer.WriteString(svc.Name!);
                     return;
                 }
             }
-            if (DataWidth != null)
+            if (DataWidth is not null)
             {
                 renderer.WriteMnemonic(string.Format("{0}{1}", Mnemonic, DataSizeSuffix(DataWidth)));
             }
@@ -88,7 +88,7 @@ namespace Reko.Arch.M68k.Machine
             else if (op is MemoryOperand memOp && memOp.Base == Registers.pc)
             {
                 var uAddr = Address.ToUInt32();
-                if (memOp.Offset != null)
+                if (memOp.Offset is not null)
                     uAddr = (uint) (uAddr + memOp.Offset.ToInt32());
                 addr = Address.Ptr32(uAddr);
                 if ((options.Flags & MachineInstructionRendererFlags.ResolvePcRelativeAddress) != 0)

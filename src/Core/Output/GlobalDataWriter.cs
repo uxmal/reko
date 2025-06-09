@@ -265,7 +265,7 @@ namespace Reko.Core.Output
             { codeFormatter.InnerFormatter.WriteComment("Recursion too deep"); return true; }
             else
             {
-                if (eq.DataType != null)
+                if (eq.DataType is not null)
                 {
                     //$TODO: this should go away once we figure out why type inference loops.
                     ++recursionGuard;

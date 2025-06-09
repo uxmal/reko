@@ -53,7 +53,7 @@ namespace Reko.Arch.i8051
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            if (Index != null)
+            if (Index is not null)
             {
                 renderer.WriteString("@");
                 renderer.WriteString(Register!.Name);
@@ -62,7 +62,7 @@ namespace Reko.Arch.i8051
             }
             else
             {
-                if (DirectAddress != null)
+                if (DirectAddress is not null)
                 {
                     renderer.WriteString("[");
                     if (DirectAddress is Constant c)

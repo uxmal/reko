@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -106,7 +106,7 @@ namespace Reko.UiPrototype.WinForms
     {
         public static void Raise(this EventHandler eh, object sender)
         {
-            if (eh != null)
+            if (eh is not null)
                 eh(sender, EventArgs.Empty);
         }
     }

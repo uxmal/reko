@@ -119,7 +119,7 @@ namespace Reko.Arch.OpenRISC
         public override void LoadUserOptions(Dictionary<string, object>? options)
         {
             this.Endianness = 
-                options != null &&
+                options is not null &&
                 options.TryGetValue(ProcessorOption.Endianness, out var oEnd) && 
                 (string) oEnd == "le"
                 ? EndianServices.Little

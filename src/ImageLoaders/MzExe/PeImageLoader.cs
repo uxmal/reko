@@ -621,7 +621,7 @@ namespace Reko.ImageLoaders.MzExe
             if (rvaBaseRelocationTable != 0 &&
                 (relocSection = binaryImage.FindSection(section => 
                     this.rvaBaseRelocationTable >= section.VirtualAddress &&
-                    this.rvaBaseRelocationTable < section.VirtualAddress + section.VirtualSize)) != null)
+                    this.rvaBaseRelocationTable < section.VirtualAddress + section.VirtualSize)) is not null)
 			{
                 ApplyRelocations(relocSection.OffsetRawData, relocSection.SizeRawData, addrLoad, relocations);
 			} 
@@ -648,7 +648,7 @@ namespace Reko.ImageLoaders.MzExe
         public ImageSymbol CreateMainEntryPoint(bool isDll, Address addrEp, IPlatform platform)
         {
             var s = platform.FindMainProcedure(this.program, addrEp);
-            if (s != null)
+            if (s is not null)
                 return s;
 
             string? name;
@@ -1098,7 +1098,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
             }
             else
             {
-                if (symOld.Name is null && symNew.Name != null)
+                if (symOld.Name is null && symNew.Name is not null)
                     symbols[addr] = symNew;
             }
         }

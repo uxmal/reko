@@ -201,7 +201,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
 
         protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
         {
-            //if (styleStack != null)
+            //if (styleStack is not null)
             //    styleStack.Dispose();
             base.OnDetachedFromVisualTree(e);
         }
@@ -299,7 +299,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
                         SpanLeave?.Invoke(this, new SpanEventArgs(spanHover));
                     }
                     spanHover = span;
-                    if (span != null)
+                    if (span is not null)
                     {
                         SpanEnter?.Invoke(this, new SpanEventArgs(span));
                     }
@@ -319,7 +319,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
                 {
                     cursorPos = anchorPos = pos;
                     var span = GetSpan(location);
-                    if (span != null && span.Tag != null)
+                    if (span is not null && span.Tag is not null)
                     {
                         Navigate?.Invoke(this, new EditorNavigationArgs(span.Tag));
                     }
@@ -330,7 +330,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
                     if (IsSelectionEmpty())
                     {
                         var span = GetSpan(location);
-                        if (span != null && span.Tag != null)
+                        if (span is not null && span.Tag is not null)
                         {
                             Navigate?.Invoke(this, new EditorNavigationArgs(span.Tag));
                         }
@@ -570,7 +570,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
             int visibleLines = GetFullyVisibleLines();
             
             //vScroll.Minimum = 0;
-            //if (model != null)
+            //if (model is not null)
             //{
             //    vScroll.Maximum = Math.Max(model.LineCount - 1, 0);
             //    vScroll.LargeChange = Math.Max(visibleLines - 1, 0);
@@ -694,7 +694,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
                 {
                     var span = (iSpan < spans[0].TextSpans.Length) ?
                         spans[0].TextSpans[iSpan] : null;
-                    if (span != null)
+                    if (span is not null)
                     {
                         if (model.ComparePositions(spans[0].Position, end.Line) == 0 &&
                             iSpan == end.Span)

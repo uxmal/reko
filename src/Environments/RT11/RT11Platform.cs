@@ -60,7 +60,7 @@ namespace Reko.Environments.RT11
             int uVec = vector & 0xFFFF;
             foreach (var svc in metadata.Modules.Values.SelectMany(m => m.ServicesByOrdinal.Values))
             {
-                if (svc.SyscallInfo != null && svc.SyscallInfo.Matches(uVec, state))
+                if (svc.SyscallInfo is not null && svc.SyscallInfo.Matches(uVec, state))
                 {
                     return svc;
                 }

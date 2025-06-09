@@ -96,12 +96,12 @@ namespace Reko.Arch.X86.Rewriter
                 {
                     return exg;
                 }
-                else if (exg != null)
+                else if (exg is not null)
                 {
                     return m.Unary(Operator.AddrOf, dt, exg);
                 }
                 var exp = host.GetImportedProcedure(arch, addrThunk, instr.Address);
-                if (exp != null)
+                if (exp is not null)
                 {
                     return new ProcedureConstant(arch.PointerType, exp);
                 }
@@ -172,13 +172,13 @@ namespace Reko.Arch.X86.Rewriter
                 }
             }
 
-            if (mem.Offset != null)
+            if (mem.Offset is not null)
             {
                 if (ripRelative)
                 {
                     expr = instr.Address + (instr.Length + mem.Offset.ToInt64());
                 }
-                else if (expr != null)
+                else if (expr is not null)
                 {
                     if (expr.DataType.BitSize > mem.Offset.DataType.BitSize)
                     {

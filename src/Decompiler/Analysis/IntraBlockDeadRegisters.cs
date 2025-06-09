@@ -306,7 +306,7 @@ namespace Reko.Analysis
 
         public bool VisitReturnInstruction(ReturnInstruction ret)
         {
-            if (ret.Expression != null)
+            if (ret.Expression is not null)
                 ret.Expression.Accept(expVisitor);
             return false;
         }

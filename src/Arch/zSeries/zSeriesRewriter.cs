@@ -447,7 +447,7 @@ namespace Reko.Arch.zSeries
                 return Address.Create(arch.PointerType, (uint) mem.Offset);
             }
             Expression ea = binder.EnsureRegister(mem.Base);
-            if (mem.Index != null && mem.Index.Number > 0)
+            if (mem.Index is not null && mem.Index.Number > 0)
             {
                 var idx = binder.EnsureRegister(mem.Index);
                 ea = m.IAdd(ea, idx);

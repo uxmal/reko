@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Decompiler.Structure
         {
             var cfgc = new ControlFlowGraphCleaner(proc);
             cfgc.Transform();
-            if (ccc != null)
+            if (ccc is not null)
             {
                 ccc.Transform();
             }

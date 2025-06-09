@@ -177,7 +177,7 @@ namespace Reko.Analysis
         {
             if (ssa.Identifiers.TryGetValue(id, out var sid))
             {
-                if (sid!.DefStatement != null &&
+                if (sid!.DefStatement is not null &&
                     sid.DefStatement.Instruction is Assignment ass &&
                     ass.Dst == id)
                 {

@@ -226,7 +226,7 @@ namespace Reko.Analysis
                 this.TryFindMemBeforeCall(this.uses.Values, out Identifier? memId))
             {
                 var sp_ssa = stackBinding.Expression;
-                if (sp_ssa != null)
+                if (sp_ssa is not null)
                 {
                     var dt = PrimitiveType.Create(Domain.SignedInt, sp_ssa.DataType.BitSize);
                     var ea = sp_ssa;

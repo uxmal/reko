@@ -55,7 +55,7 @@ namespace Reko.Environments.AmigaOS
                 if (line is null)
                     break;
                 AmigaSystemFunction? func = ParseLine(line);
-                if (func != null)
+                if (func is not null)
                     FunctionsByLibBaseOffset.Add(func.Offset, func);
             }
         }

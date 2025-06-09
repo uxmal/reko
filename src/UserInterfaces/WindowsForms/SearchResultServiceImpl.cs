@@ -74,7 +74,7 @@ namespace Reko.UserInterfaces.WindowsForms
         public void SetSite(IServiceProvider sp)
         {
             this.services = sp;
-            if (services != null)
+            if (services is not null)
             {
                 var uiUser = services.RequireService<IUiPreferencesService>();
                 uiUser.UiPreferencesChanged += delegate { uiUser.UpdateControlStyle(UiStyles.List, listView); };
@@ -95,7 +95,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         private void SetSearchResults(ISearchResult result)
         {
-            if (this.result != null)
+            if (this.result is not null)
                 this.result.View = null;
             this.result = result;
             if (!listView.VirtualMode)

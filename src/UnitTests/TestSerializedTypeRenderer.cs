@@ -43,9 +43,9 @@ namespace Reko.UnitTests
         {
             this.modifier = modifier;
             this.name = name;
-            if (scope != null)
+            if (scope is not null)
                 this.name = scope + "::" + name;
-            if (sp != null)
+            if (sp is not null)
                 sp.Accept(this);
             else
                 sb.Append(this.name);
@@ -98,7 +98,7 @@ namespace Reko.UnitTests
             default:
                 throw new NotSupportedException(string.Format("Domain {0} is not supported.", primitive.Domain));
             }
-            if (name != null)
+            if (name is not null)
                 sb.AppendFormat(" {0}", name);
             return sb;
         }
@@ -111,7 +111,7 @@ namespace Reko.UnitTests
             sb.AppendFormat(" *");
             WriteQualifier(pointer.Qualifier, false);
             name = n;
-            if (name != null)
+            if (name is not null)
                 sb.AppendFormat(" {0}", name);
             return sb;
         }
@@ -152,7 +152,7 @@ namespace Reko.UnitTests
             reference.Referent.Accept(this);
             sb.AppendFormat(" ^");
             name = n;
-            if (name != null)
+            if (name is not null)
                 sb.AppendFormat(" {0}", name);
             return sb;
         }
@@ -182,7 +182,7 @@ namespace Reko.UnitTests
                 sb.AppendFormat("{0} ", signature.Convention);
             if (!string.IsNullOrEmpty(modifier))
                 sb.AppendFormat("{0}: ", modifier);
-            if (signature.ReturnValue != null && signature.ReturnValue.Type != null)
+            if (signature.ReturnValue is not null && signature.ReturnValue.Type is not null)
             {
                 signature.ReturnValue.Type.Accept(this);
             }
@@ -223,9 +223,9 @@ namespace Reko.UnitTests
         {
             WriteQualifier(typeReference.Qualifier, true);
             sb.Append(typeReference.TypeName);
-            if (name != null)
+            if (name is not null)
                 sb.AppendFormat(" {0}", name);
-            if (typeReference.TypeArguments != null && typeReference.TypeArguments.Length > 0)
+            if (typeReference.TypeArguments is not null && typeReference.TypeArguments.Length > 0)
             {
                 sb.Append("<");
                 var sep = "";
@@ -265,14 +265,14 @@ namespace Reko.UnitTests
             sb.Append(">");
 
             name = n;
-            if (name != null)
+            if (name is not null)
                 sb.AppendFormat(" {0}", name);
             return sb;
         }
         public StringBuilder VisitVoidType(VoidType_v1 serializedVoidType)
         {
             sb.Append("void");
-            if (name != null)
+            if (name is not null)
                 sb.AppendFormat(" {0}", name);
             return sb;
         }

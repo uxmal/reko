@@ -131,7 +131,7 @@ namespace Reko.UserInterfaces.WindowsForms
                 {
                     attrs.Add(new DescriptionAttribute(option.Description));
                 }
-                if (option.Choices != null && option.Choices.Length > 0)
+                if (option.Choices is not null && option.Choices.Length > 0)
                 {
                     attrs.Add(new TypeConverterAttribute(typeof(ChoiceConverter)));
                 }
@@ -196,7 +196,7 @@ namespace Reko.UserInterfaces.WindowsForms
             public override bool GetStandardValuesSupported(ITypeDescriptorContext? context)
             {
                 var pd = GetPd(context);
-                return pd.Option.Choices != null &&
+                return pd.Option.Choices is not null &&
                     pd.Option.Choices.Length > 0;    // show combobox if there are choices
             }
 

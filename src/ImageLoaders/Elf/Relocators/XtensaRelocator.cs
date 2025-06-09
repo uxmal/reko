@@ -40,7 +40,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             {
             case XtensaRt.R_XTENSA_32:
                 //aspace.make_data(raddr, wordsz);
-                //if (value != null) {
+                //if (value is not null) {
                 //    data = aspace.get_data(raddr, wordsz);
                 //    if (is_exe) {
                 //        if (data != value) {
@@ -67,7 +67,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 //var opcode = aspace.get_byte(raddr);
                 //if ((opcode & 0xf) == 0x5) {
                 //    // call
-                //    if (value != null) {
+                //    if (value is not null) {
                 //        p = raddr
                 //        value -= ((p & ~0x3) + 4);
                 //        Debug.Assert((value & 0x3) == 0);

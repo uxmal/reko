@@ -43,9 +43,9 @@ namespace Reko.Gui.Design
                 "",
                 ArchitectureCollection(program));
             Host!.AddComponent(program, archesDes);
-            if (program.Platform != null)
+            if (program.Platform is not null)
                 Host.AddComponent(program, program.Platform);
-            if (program.ImageMap != null)
+            if (program.ImageMap is not null)
                 Host.AddComponents(program, program.SegmentMap.Segments.Values);
             else if (!program.NeedsScanning)
             {

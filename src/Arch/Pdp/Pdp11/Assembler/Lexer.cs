@@ -80,7 +80,7 @@ namespace Reko.Arch.Pdp.Pdp11.Assembler
 
         public Token Peek()
         {
-            if (tok != null)
+            if (tok is not null)
                 return tok;
             tok = Get();
             return tok;
@@ -101,7 +101,7 @@ namespace Reko.Arch.Pdp.Pdp11.Assembler
 
         public Token Get()
         {
-            if (tok != null)
+            if (tok is not null)
             {
                 var t = tok;
                 tok = null;
@@ -293,7 +293,7 @@ namespace Reko.Arch.Pdp.Pdp11.Assembler
         {
             var sb = new StringBuilder();
             sb.Append(Type);
-            if (Value != null)
+            if (Value is not null)
             {
                 sb.AppendFormat(" ({0})", Value);
             }

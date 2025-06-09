@@ -79,7 +79,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
             public void Dispose()
             {
-                if (key != null)
+                if (key is not null)
                     key.Dispose();
             }
         }

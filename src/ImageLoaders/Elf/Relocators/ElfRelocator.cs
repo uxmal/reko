@@ -225,20 +225,20 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
             var arch = program.Architecture;
             var imgSym = Loader.CreateImageSymbol(elfSym, arch, true);
-            if (imgSym != null && imgSym.Address!.ToLinear() != 0)
+            if (imgSym is not null && imgSym.Address!.ToLinear() != 0)
             {
                 imageSymbols[imgSym.Address] = imgSym;
             }
 
-            if (extraSym != null)
+            if (extraSym is not null)
             {
                 var extraImgSym = Loader.CreateImageSymbol(extraSym, arch, true);
-                if (extraImgSym != null)
+                if (extraImgSym is not null)
                 {
                     imageSymbols[extraImgSym.Address!] = extraImgSym;
                 }
             }
-            if (elfSym.SectionIndex == ElfSection.SHN_UNDEF && imgSym != null)
+            if (elfSym.SectionIndex == ElfSection.SHN_UNDEF && imgSym is not null)
             {
                 program.ImportReferences[addrImport] =
                     new NamedImportReference(
@@ -331,7 +331,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                         "  off:{0:X8} type:{1,-16} {3,3} {2}",
                         rel.r_offset,
                         RelocationTypeToString(rel.r_info & 0xFF) ?? "?",
-                        symbols!=null ? symbols[(int)(rel.r_info >> 8)].Name : "<nosym>",
+                        symbols is not null ? symbols[(int)(rel.r_info >> 8)].Name : "<nosym>",
                         (int)(rel.r_info >> 8));
                 }
             }
@@ -405,7 +405,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                         "  off:{0:X16} type:{1,-16} {3,3} {2}",
                         rel.r_offset,
                         RelocationTypeToString((uint)rel.r_info & 0xFF) ?? "?",
-                        symbols != null ? symbols[(int) (rel.r_info >> 32)].Name : "<nosym>",
+                        symbols is not null ? symbols[(int) (rel.r_info >> 32)].Name : "<nosym>",
                         (int) (rel.r_info >> 32));
                 }
             }
@@ -416,7 +416,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
             foreach (var section in loader.BinaryImage.Sections.Where(s => 
                 s.Type == SectionHeaderType.SHT_RELA &&
-                s.LinkedSection != null && 
+                s.LinkedSection is not null && 
                 s.LinkedSection.FileOffset != 0))
             {
                 Debug.Print("RELA: Offset {0:X} symbol section {1}, relocating in section {2}",

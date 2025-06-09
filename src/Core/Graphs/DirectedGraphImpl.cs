@@ -354,14 +354,14 @@ namespace Reko.Core.Graphs
                 {
                     if (fSuccessor)
                     {
-                        if (graph.nodes != null)
+                        if (graph.nodes is not null)
                             return graph.nodes[iNode].cSucc;
                         else
                             return 0;
                     }
                     else
                     {
-                        if (graph.nodes != null)
+                        if (graph.nodes is not null)
                             return graph.nodes[iNode].cPred;
                         else
                             return 0;

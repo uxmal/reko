@@ -62,7 +62,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 this.addrMax = Address.Max(b, e);
                 segLayouts = new List<SegmentLayout>();
                 long x = 0;
-                if (imageMap != null && granularity > 0)
+                if (imageMap is not null && granularity > 0)
                 {
                     foreach (var segment in segmentMap.Segments.Values)
                     {
@@ -135,7 +135,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                             brNew = GetColorForOffset(sl.Segment, cbOffset);
                             if (brNew != brOld)
                             {
-                                if (brOld != null)
+                                if (brOld is not null)
                                 {
                                     rcPaint.Width = x + CxScroll - rcPaint.X;
                                     g.FillRectangle(brOld, rcPaint);
@@ -144,7 +144,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                                 brOld = brNew;
                             }
                         }
-                        if (brNew != null)
+                        if (brNew is not null)
                         {
                             rcPaint.Width = xMax + CxScroll - rcPaint.X;
                             g.FillRectangle(brNew, rcPaint);
@@ -212,7 +212,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             private void RenderScrollControls(Graphics g, ImageMapView mapView)
             {
                 int cbTotal = 0;
-                var baseState = imageMap != null && cbTotal > granularity * rcClient.Width
+                var baseState = imageMap is not null && cbTotal > granularity * rcClient.Width
                     ? ButtonState.Flat
                     : ButtonState.Flat | ButtonState.Inactive;
                 ControlPaint.DrawScrollButton(g,

@@ -80,7 +80,7 @@ namespace Reko.UnitTests
 		
 		public void CloseTestStream()
 		{
-			if (stm != null)
+			if (stm is not null)
 			{
 				stm.Flush();
 				stm.Close();

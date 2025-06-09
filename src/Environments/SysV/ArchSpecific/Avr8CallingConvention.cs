@@ -134,7 +134,7 @@ Arguments of varargs functions are passed on the stack. This applies even to the
 */
             ccr.LowLevelDetails(1, 2);
 
-            if (dtRet != null && dtRet != VoidType.Instance)
+            if (dtRet is not null && dtRet != VoidType.Instance)
             {
                 GenerateReturnValue(dtRet, ccr);
             }
@@ -162,7 +162,7 @@ Arguments of varargs functions are passed on the stack. This applies even to the
                     for (int r = iReg + 1, i = 1; i < dtParam.Size; ++i, ++r)
                     {
                         var regNext = argRegs[r - 8];
-                        if (seq != null)
+                        if (seq is not null)
                         {
                             seq = new SequenceStorage(PrimitiveType.CreateWord(regNext.DataType.BitSize + seq.DataType.BitSize), regNext, seq);
                         }

@@ -686,7 +686,7 @@ namespace Reko.Gui.Forms
                             (ulong)
                              ((long)program.SegmentMap.BaseAddress.ToLinear() + o));
                         return program.ImageMap.TryFindItem(addr, out var item)
-                            && item.DataType != null &&
+                            && item.DataType is not null &&
                             item.DataType is not UnknownType;
                     };
             }
@@ -862,7 +862,7 @@ namespace Reko.Gui.Forms
             if (interactor == CurrentPhase)
                 return;
 
-            if (CurrentPhase != null)
+            if (CurrentPhase is not null)
             {
                 if (!CurrentPhase.LeavePage())
                     return;
@@ -1096,7 +1096,7 @@ namespace Reko.Gui.Forms
             {
                 if (decompilerSvc?.Decompiler is null)
                     return false;
-                return decompilerSvc.Decompiler.Project != null;
+                return decompilerSvc.Decompiler.Project is not null;
             }
         }
         #endregion

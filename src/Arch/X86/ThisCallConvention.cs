@@ -56,7 +56,7 @@ namespace Reko.Arch.X86
             X86CallingConvention.SetReturnStorage(ccr, dtRet, stackAlignment);
 
             int i = 0;
-            if (dtThis != null)
+            if (dtThis is not null)
             {
                 ccr.ImplicitThisRegister(this.ecxThis);
             }

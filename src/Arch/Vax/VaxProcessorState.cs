@@ -38,7 +38,7 @@ namespace Reko.Arch.Vax
 
         public VaxProcessorState(VaxArchitecture arch)
         {
-            Debug.Assert(arch != null);
+            Debug.Assert(arch is not null);
             this.arch = arch;
         }
 
@@ -58,7 +58,7 @@ namespace Reko.Arch.Vax
 
         public override Constant GetRegister(RegisterStorage reg)
         {
-            if (reg != null)
+            if (reg is not null)
             {
                 if (isValid[(int) reg.Domain])
                     return Constant.Create(reg.DataType, regs[(int) reg.Domain]);
@@ -90,9 +90,9 @@ namespace Reko.Arch.Vax
 
         public override void SetRegister(RegisterStorage reg, Constant v)
         {
-            if (reg != null)
+            if (reg is not null)
             {
-                if (v != null && v.IsValid)
+                if (v is not null && v.IsValid)
                 {
                     isValid[(int) reg.Domain] = true;
                     regs[(int) reg.Domain] = v.ToByte();

@@ -63,7 +63,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         private void MixedCodeDataControl_MouseDown(object sender, MouseEventArgs e)
         {
-            if (previewWindow != null)
+            if (previewWindow is not null)
             {
                 DestroyPreviewWindow();
             }
@@ -77,7 +77,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         private void MixedCodeDataControl_SpanEnter(object sender, SpanEventArgs e)
         {
-            if (previewWindow != null)
+            if (previewWindow is not null)
             {
                 // Preview window already visible.
                 return;

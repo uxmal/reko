@@ -272,7 +272,7 @@ namespace Reko.Arch.M68k.Disassembler
                 : base(mask, match, ea_mask)
             {
                 this.mutators = mutators;
-                Debug.Assert(mutators.All(m => m != null));
+                Debug.Assert(mutators.All(m => m is not null));
                 this.mnemonic = mnemonic;
                 this.iclass = iclass;
             }
@@ -3094,7 +3094,7 @@ namespace Reko.Arch.M68k.Disassembler
                 g_instruction_table[i] = illegal;     //default to illegal
                 uint opcode = i;
                 // search through opcode info for a match
-                for (ostruct = 0; opcode_info[ostruct].mutators != null; ostruct++)
+                for (ostruct = 0; opcode_info[ostruct].mutators is not null; ostruct++)
                 {
                     // match opcode mask and allowed ea modes
                     if ((opcode & opcode_info[ostruct].mask) == opcode_info[ostruct].match)

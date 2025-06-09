@@ -53,7 +53,7 @@ namespace Reko.Arch.Blackfin
                 renderer.WriteString("--");
             }
             renderer.WriteString(Base!.Name);
-            if (Index != null)
+            if (Index is not null)
             {
                 renderer.WriteString(" + ");
                 renderer.WriteString(Index.Name);

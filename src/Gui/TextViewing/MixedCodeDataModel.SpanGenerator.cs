@@ -61,7 +61,7 @@ namespace Reko.Gui.TextViewing
             program.ImageMap.TryFindItem(curPos.Address, out var item);
 
             SpanGenerator? sp = CreateSpanifier(item, seg?.MemoryArea, curPos);
-            while (count != 0 && seg != null && item != null)
+            while (count != 0 && seg is not null && item is not null)
             {
                 if (TryReadComment(out var commentLine))
                 {
@@ -83,7 +83,7 @@ namespace Reko.Gui.TextViewing
                 if (memValid)
                 {
                     var tuple = sp.GenerateSpan();
-                    if (tuple != null)
+                    if (tuple is not null)
                     {
                         curPos = tuple.Value.Item1;
                         spans.Add(tuple.Value.Item2);
@@ -128,7 +128,7 @@ namespace Reko.Gui.TextViewing
             ModelPosition pos)
         {
             SpanGenerator sp;
-            if (item is ImageMapBlock b && b.Block?.Procedure != null)
+            if (item is ImageMapBlock b && b.Block?.Procedure is not null)
             {
                 sp = new AsmSpanifyer(
                     this,

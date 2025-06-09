@@ -293,7 +293,7 @@ namespace Reko.Arch.M6800.M6812
 
         private MemoryAccess RewriteMemoryOperand(MemoryOperand memop)
         {
-            if (memop.Base != null)
+            if (memop.Base is not null)
             {
                 Expression baseReg;
                 if (memop.Base == Registers.pc)
@@ -301,7 +301,7 @@ namespace Reko.Arch.M6800.M6812
                 else
                     baseReg = binder.EnsureRegister(memop.Base);
                 Expression ea = baseReg;
-                if (memop.Index != null)
+                if (memop.Index is not null)
                 {
                     Expression idx = binder.EnsureRegister(memop.Index);
                     if (idx.DataType.BitSize < ea.DataType.BitSize)
@@ -333,7 +333,7 @@ namespace Reko.Arch.M6800.M6812
             }
             else
             {
-                Debug.Assert(memop.Offset != null);
+                Debug.Assert(memop.Offset is not null);
                 return m.Mem(memop.DataType, Address.Ptr16((ushort)memop.Offset!.Value));
             }
         }

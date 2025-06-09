@@ -59,7 +59,7 @@ namespace Reko.Environments.MacOS.Classic
             }
             ccr.ReverseParameters();
             ccr.CalleeCleanup();
-            if (dtRet != null && !(dtRet is VoidType))
+            if (dtRet is not null && !(dtRet is VoidType))
             {
                 ccr.StackReturn(dtRet);
             }

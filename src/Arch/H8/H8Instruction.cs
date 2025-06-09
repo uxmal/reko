@@ -44,7 +44,7 @@ namespace Reko.Arch.H8
         {
             var sb = new StringBuilder(MnemonicAsString);
             string suffix = "";
-            if (Size != null)
+            if (Size is not null)
             {
                 switch (Size.Size)
                 {

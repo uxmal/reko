@@ -66,8 +66,8 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                 var cmi = new CommandMenuItem(cmdDef.text, cmdDef.cmdSet, (int)cmdDef.id);
                 cmi.IsDynamic = cmdDef.dynamicItemId != 0;
                 cmi.ImageIndex = cmdDef.image;
-                if (cmdDef.imageKey != null) cmi.ImageKey = cmdDef.imageKey;
-                if (cmdDef.tip != null) cmi.ToolTipText = cmdDef.tip;
+                if (cmdDef.imageKey is not null) cmi.ImageKey = cmdDef.imageKey;
+                if (cmdDef.tip is not null) cmi.ToolTipText = cmdDef.tip;
                 cmdsById.Add((int)cmdDef.id, cmi);
                 if (cmdDef.container != 0)
                 {

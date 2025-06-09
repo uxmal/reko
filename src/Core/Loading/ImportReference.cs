@@ -245,7 +245,7 @@ namespace Reko.Core.Loading
             IEventListener listener)
         {
             var imp = dynamicLinker.ResolveImport(ModuleName!, Ordinal, platform);
-            if (imp != null)
+            if (imp is not null)
                 return imp;
             listener.Warn(addr, $"Unable to resolve imported reference {this}.");
             return null;

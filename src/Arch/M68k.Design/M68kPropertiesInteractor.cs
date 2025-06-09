@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2025 John Källén.
  *
@@ -51,7 +51,7 @@ namespace Reko.Arch.M68k.Design
 
         public void Close()
         {
-            if (control != null)
+            if (control is not null)
             {
                 control.Dispose();
                 control = null;

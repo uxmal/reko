@@ -232,7 +232,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
             EnvironmentsEnabled = platformRequired;
             ArchitecturesEnabled = archRequired;
             AddressEnabled = addrRequired && LoadAddressChecked;
-            //dlg.PropertyGrid.Enabled = dlg.PropertyGrid.SelectedObject != null;
+            //dlg.PropertyGrid.Enabled = dlg.PropertyGrid.SelectedObject is not null;
             OKButtonEnabled = 
                 fileExists &&
                 !unknownRawFileFormat;
@@ -246,7 +246,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
             string? sAddr = null;
             string? loader = null;
             EntryPointDefinition? entry = null;
-            if (rawFileOption != null && rawFileOption.Value != null)
+            if (rawFileOption is not null && rawFileOption.Value is not null)
             {
                 var raw = (RawFileDefinition) rawFileOption.Value;
                 loader = raw.Loader;

@@ -22,7 +22,7 @@ namespace Reko.Arch.C166
             {
                 renderer.WriteChar('-');
             }
-            if (Base != null)
+            if (Base is not null)
             {
                 renderer.WriteString(Base.Name);
             }
@@ -32,7 +32,7 @@ namespace Reko.Arch.C166
                 renderer.WriteChar('-');
                 offset = -offset;
             }
-            else if (offset != 0 && Base != null)
+            else if (offset != 0 && Base is not null)
             {
                 renderer.WriteChar('+');
             }

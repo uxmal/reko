@@ -117,7 +117,7 @@ namespace Reko.Arch.Pdp.Pdp11
             var src = RewriteSrc(instr.Operands[0]);
             var dst = RewriteDst(instr.Operands[1], src, m.Or);
             SetFlags(dst, Registers.NZ);
-            if (dst != null)
+            if (dst is not null)
             {
                 SetFalse(Registers.V);
             }

@@ -52,7 +52,7 @@ namespace Reko.UiPrototype.WinForms
         private void textBox1_Leave(object sender, EventArgs e)
         {
             var parent = this.ParentForm;
-            if (parent != null)
+            if (parent is not null)
                 parent.Controls.Remove(this);
             timer.Stop();
         }

@@ -37,7 +37,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
 
         public TextPointer(object line, int span, int ch)
         {
-            Debug.Assert(line != null);
+            Debug.Assert(line is not null);
             this.Line = line;
             this.Span = span;
             this.Character = ch;

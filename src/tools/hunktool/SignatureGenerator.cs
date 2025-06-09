@@ -44,7 +44,7 @@ namespace Reko.Tools.HunkTool
                     foreach (var segment in unit.segments)
                     {
                         var main = segment[0];
-                        if (main.HunkType == HunkType.HUNK_CODE && main.Data != null &&
+                        if (main.HunkType == HunkType.HUNK_CODE && main.Data is not null &&
                             main.Data.Length != 0)
                         {
                             GenerateSignature(segment);
@@ -61,7 +61,7 @@ namespace Reko.Tools.HunkTool
                         foreach (var segment in unit.segments)
                         {
                             var main = segment[0];
-                            if (main.HunkType == HunkType.HUNK_CODE && main.Data != null &&
+                            if (main.HunkType == HunkType.HUNK_CODE && main.Data is not null &&
                                 main.Data.Length != 0)
                             {
                                 GenerateSignature(segment);
@@ -82,13 +82,13 @@ namespace Reko.Tools.HunkTool
             Dictionary<int, int> extRefs =
                     segment.OfType<ExtHunk>()
                     .SelectMany(e => e.ext_ref)
-                    .Where(e => e.refs != null)
+                    .Where(e => e.refs is not null)
                     .SelectMany(e => e.refs.Select(r => new { e.type, offset = r }))
                     .ToDictionary(e => (int)e.offset, e => SizeOfRef(e.type));
             SortedList<int, string> defs;
-            if (main.index_hunk != null)
+            if (main.index_hunk is not null)
             {
-                if (main.index_hunk.defs != null)
+                if (main.index_hunk.defs is not null)
                 {
                     defs = main.index_hunk.defs
                         .GroupBy(e => e.value)

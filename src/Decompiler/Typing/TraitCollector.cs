@@ -168,8 +168,8 @@ namespace Reko.Typing
 			if (iv is null || c is null)
 				return null;
 			Constant delta   = op.ApplyConstants(iv.Delta!.DataType, iv.Delta!, c);
-			Constant? initial = (iv.Initial != null) ? op.ApplyConstants(iv.Initial.DataType, iv.Initial, c) : null; 
-			Constant? final =   (iv.Final != null) ?   op.ApplyConstants(iv.Final.DataType, iv.Final, c) : null;
+			Constant? initial = (iv.Initial is not null) ? op.ApplyConstants(iv.Initial.DataType, iv.Initial, c) : null; 
+			Constant? final =   (iv.Final is not null) ?   op.ApplyConstants(iv.Final.DataType, iv.Final, c) : null;
 			return new LinearInductionVariable(initial, delta, final, false);
 		}
 
@@ -325,7 +325,7 @@ namespace Reko.Typing
 			binExp.Right.Accept(this);
 
 			ivCur = null;
-			if (ivLeft != null)
+			if (ivLeft is not null)
 			{
 				if (binExp.Operator.Type.IsIntMultiplication() || binExp.Operator.Type == OperatorType.Shl)
 					ivCur = MergeInductionVariableConstant(ivLeft, binExp.Operator, binExp.Right as Constant);
@@ -587,7 +587,7 @@ namespace Reko.Typing
 		{
 			FunctionType sig = pc.Signature;
 			DataType []? argTypes = null;
-			if (sig != null && sig.Parameters != null)
+			if (sig is not null && sig.Parameters is not null)
 			{
 				argTypes = new DataType[sig.Parameters.Length];
 				for (int i = 0; i < argTypes.Length; ++i)
@@ -606,7 +606,7 @@ namespace Reko.Typing
                     }
                 }
             }
-            return sig != null && !sig.HasVoidReturn ? sig.Outputs[0].DataType : null;
+            return sig is not null && !sig.HasVoidReturn ? sig.Outputs[0].DataType : null;
 		}
 
         private void CollectProcedureCharacteristics()

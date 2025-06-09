@@ -484,7 +484,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
 
         private void SetSize(PrimitiveType? size)
         {
-            if (size != null)
+            if (size is not null)
                 this.opSize = size;
         }
 

@@ -128,7 +128,7 @@ namespace Reko.Typing
                 return expComplex!;
             var e = CreateAddressOf(expComplex!);
             DataType dt;
-            if (enclosingPtr != null)
+            if (enclosingPtr is not null)
             {
                 dt = new Pointer(PrimitiveType.Char, enclosingPtr.BitSize);
                 e = new Cast(dt, e);
@@ -203,13 +203,13 @@ namespace Reko.Typing
 
         public Expression VisitMemberPointer(MemberPointer memptr)
         {
-            if (enclosingPtr != null)
+            if (enclosingPtr is not null)
             {
                 return expComplex!;
             }
             var pointee = memptr.Pointee;
             var origMemptr = dtComplexOrig!.ResolveAs<MemberPointer>();
-            if (origMemptr != null)
+            if (origMemptr is not null)
             {
                 pointee = origMemptr.Pointee;
             }
@@ -218,13 +218,13 @@ namespace Reko.Typing
 
         public Expression VisitPointer(Pointer ptr)
         {
-            if (enclosingPtr != null)
+            if (enclosingPtr is not null)
             {
                 return FallbackExpression();
             }
             var pointee = ptr.Pointee;
             var origPtr = dtComplexOrig!.ResolveAs<Pointer>();
-            if (origPtr != null)
+            if (origPtr is not null)
             {
                 pointee = origPtr.Pointee;
             }
@@ -298,7 +298,7 @@ namespace Reko.Typing
                 Debug.Print("*** recursion too deep, quitting. Determine error then remove this"); //$DEBUG
                 return expComplex!;
             }
-            if (enclosingPtr != null)
+            if (enclosingPtr is not null)
             {
                 int strSize = str.GetInferredSize();
                 if (str.Size > 0 // We know the size of the struct, for sure.
@@ -310,7 +310,7 @@ namespace Reko.Typing
                     return exp;
                 }
                 else if (
-                    index != null && offset == 0 &&
+                    index is not null && offset == 0 &&
                     TryScaleDownIndex(index, strSize, out var idx))
                 {
                     index = null;
@@ -358,7 +358,7 @@ namespace Reko.Typing
 
             dtComplex = alt.DataType;
             dtComplexOrig = alt.DataType;
-            if (ut.PreferredType != null)
+            if (ut.PreferredType is not null)
             {
                 expComplex = new Cast(ut.PreferredType, expComplex!);
             }
@@ -414,11 +414,11 @@ namespace Reko.Typing
         private Expression CreateDereference(DataType dt, Expression e)
         {
             this.dereferenceGenerated = true;
-            if (basePtr != null)
+            if (basePtr is not null)
                 return new MemberPointerSelector(dt, new Dereference(dt, basePtr), e);
             if (e is UnaryExpression unary && unary.Operator.Type == OperatorType.AddrOf)
                 return unary.Expression;
-            else if (e != null)
+            else if (e is not null)
                 return new Dereference(dt, e);
             else
                 return new ScopeResolution(dt);
@@ -426,7 +426,7 @@ namespace Reko.Typing
 
         private Expression CreateUnreferenced(DataType dt, Expression e)
         {
-            if (basePtr != null)
+            if (basePtr is not null)
             {
                 var mps = new MemberPointerSelector(dt, new Dereference(dt, basePtr), e);
                 if (dt is ArrayType)
@@ -438,7 +438,7 @@ namespace Reko.Typing
                     new Pointer(dt, program.Platform.PointerType.BitSize),
                     mps);
             }
-            else if (e != null)
+            else if (e is not null)
             {
                 return e;
             }
@@ -460,11 +460,11 @@ namespace Reko.Typing
             }
             else
             {
-                if (enclosingPtr != null && !dereferenceGenerated)
+                if (enclosingPtr is not null && !dereferenceGenerated)
                 {
                     dereferenceGenerated = true;
                     exp = CreateDereference(dtStructure, exp);
-                    if (dtField.ResolveAs<ArrayType>() != null)
+                    if (dtField.ResolveAs<ArrayType>() is not null)
                     {
                         dereferenceGenerated = false;
                     }

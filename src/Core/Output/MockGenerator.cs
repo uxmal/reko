@@ -465,7 +465,7 @@ namespace Reko.Core.Output
         void InstructionVisitor.VisitReturnInstruction(ReturnInstruction ret)
         {
             Method("Return");
-            if (ret.Expression != null)
+            if (ret.Expression is not null)
             {
                 ret.Expression.Accept(this);
             }

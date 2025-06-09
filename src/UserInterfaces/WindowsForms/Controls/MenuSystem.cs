@@ -79,7 +79,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 separator = true;
                 foreach (CommandMenuItem cmi in group.Values)
                 {
-                    CommandMenuItem cmiNew = (cmi.MenuCommand != null)
+                    CommandMenuItem cmiNew = (cmi.MenuCommand is not null)
                         ? new CommandMenuItem(cmi.Text, cmi.MenuCommand.CommandID.Guid, cmi.MenuCommand.CommandID.ID)
                         : cmi;
                     cmiNew.IsDynamic = cmi.IsDynamic;
@@ -173,7 +173,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 		private async void item_Click(object sender, CommandMenuEventArgs e)
 		{
 			MenuCommand cmd = e.Item.MenuCommand;
-			if (cmd != null)
+			if (cmd is not null)
 			{
 				await target.ExecuteAsync(cmd.CommandID);
 			}
@@ -183,7 +183,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         {
             if (this.KeyBindings.TryGetValue(controlType, out var bindings))
             {
-                if (ct != null)
+                if (ct is not null)
                 {
                     if (KeyBindings.TryGetValue(ct.GetType().FullName, out bindings))
                     {

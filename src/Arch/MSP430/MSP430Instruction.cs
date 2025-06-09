@@ -47,7 +47,7 @@ namespace Reko.Arch.Msp430
 
         private void RenderMnemonic(MachineInstructionRenderer renderer)
         {
-            if (repeatReg != null)
+            if (repeatReg is not null)
             {
                 renderer.WriteMnemonic("rpt");
                 renderer.WriteString(" ");
@@ -62,7 +62,7 @@ namespace Reko.Arch.Msp430
                 renderer.WriteString(" ");
             }
             var sb = new StringBuilder(Mnemonic.ToString());
-            if (dataWidth != null)
+            if (dataWidth is not null)
             {
                 sb.AppendFormat(".{0}", dataWidth.BitSize == 8
                     ? "b"

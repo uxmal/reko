@@ -65,7 +65,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             if (mem is ByteMemoryArea bmem)
             {
                 this.Bytes = bmem.Bytes;
-                if (segment != null)
+                if (segment is not null)
                 {
                     this.SegmentName.Text = segment.Name;
                     this.Offset.Text = segment.Offset.ToString("X");

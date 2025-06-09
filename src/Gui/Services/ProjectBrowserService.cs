@@ -153,7 +153,7 @@ namespace Reko.Gui.Services
         public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
         {
             var des = GetSelectedDesigner();
-            if (des != null && des.QueryStatus(cmdId, status, text))
+            if (des is not null && des.QueryStatus(cmdId, status, text))
                 return true;
             if (cmdId.Guid == CmdSets.GuidReko)
             {
@@ -176,7 +176,7 @@ namespace Reko.Gui.Services
         public async ValueTask<bool> ExecuteAsync(CommandID cmdId)
         {
             var des = GetSelectedDesigner();
-            if (des != null)
+            if (des is not null)
             {
                 if (await des.ExecuteAsync(cmdId))
                     return true;

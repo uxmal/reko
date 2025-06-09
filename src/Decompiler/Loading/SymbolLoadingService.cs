@@ -51,7 +51,7 @@ namespace Reko.Loading
             foreach (var symSrcDef in cfgSvc.GetSymbolSources())
             {
                 var symSrc = LoadSymbolSource(symSrcDef, bytes, filename);
-                if (symSrc != null)
+                if (symSrc is not null)
                     return symSrc;
             }
             return null;

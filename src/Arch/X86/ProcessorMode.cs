@@ -128,7 +128,7 @@ namespace Reko.Arch.X86
         {
             if (byteSize == PrimitiveType.Word16.Size)
             {
-                if (state != null && rdr.TryReadLeUInt16(out ushort uOffset))
+                if (state is not null && rdr.TryReadLeUInt16(out ushort uOffset))
                 {
                     addr = CreateSegmentedAddress(state.GetRegister(Registers.cs).ToUInt16(), uOffset)!.Value;
                     return true;
@@ -150,7 +150,7 @@ namespace Reko.Arch.X86
 
         public bool TryParseSegmentedAddress(string? txtAddress, [MaybeNullWhen(false)] out Address addr)
         {
-            if (txtAddress != null)
+            if (txtAddress is not null)
             {
                 int c = txtAddress.IndexOf(':');
                 if (c > 0)
@@ -336,9 +336,9 @@ namespace Reko.Arch.X86
                     return null;
                 if (mop.Base != StackRegister)
                     return null;
-                if (mop.Offset != null && mop.Offset.IsValid && !mop.Offset.IsIntegerZero)
+                if (mop.Offset is not null && mop.Offset.IsValid && !mop.Offset.IsIntegerZero)
                     return null;
-                if (mop.Index != null && mop.Index != RegisterStorage.None)
+                if (mop.Index is not null && mop.Index != RegisterStorage.None)
                     return null;
 
                 if (instrs[1].Operands.Length > 0)

@@ -135,7 +135,7 @@ namespace Reko.Arch.PaRisc
                 iclass |= InstrClass.Annul;
             var dst = (MemoryOperand) instr.Operands[0];
             Expression idx;
-            if (dst.Index != null)
+            if (dst.Index is not null)
             {
                 if (dst.Index == arch.Registers.GpRegs[0])
                 {

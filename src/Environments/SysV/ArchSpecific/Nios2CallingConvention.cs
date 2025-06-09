@@ -55,7 +55,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             //greater than 8 bytes, the caller must allocate memory for the result and must pass
             //the address of the result memory as a hidden zero argument.
             int i = 0;
-            if (dtRet != null)
+            if (dtRet is not null)
             {
                 if (dtRet.Size <= 4)
                     ccr.RegReturn(retLo);

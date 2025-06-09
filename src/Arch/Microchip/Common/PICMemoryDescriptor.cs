@@ -42,7 +42,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         }
 
 
-        public static bool IsValid => ((deviceConfigDefinitions != null) && (memoryMap?.IsValid ?? false));
+        public static bool IsValid => ((deviceConfigDefinitions is not null) && (memoryMap?.IsValid ?? false));
 
         public static PICExecMode ExecMode
         {

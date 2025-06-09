@@ -75,7 +75,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe.CodeView
             {
                 var imgSym = imgSyms[i];
                 string sActual;
-                if (imgSym.Signature != null)
+                if (imgSym.Signature is not null)
                 {
                     sActual = $"{imgSym}: {imgSym.Signature}";
                 }

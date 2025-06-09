@@ -42,7 +42,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public void Close()
         {
-            if (Control != null)
+            if (Control is not null)
             {
                 Control.Dispose();
             }

@@ -194,7 +194,7 @@ namespace Reko.Arch.H8
                 return addr;
             case MemoryOperand mem:
                 Expression ea;
-                if (mem.Base != null)
+                if (mem.Base is not null)
                 {
                     var regBase = binder.EnsureRegister(mem.Base);
                     if (mem.PostIncrement)
@@ -237,7 +237,7 @@ namespace Reko.Arch.H8
                 return dst;
             case MemoryOperand mem:
                 Expression ea;
-                if (mem.Base != null)
+                if (mem.Base is not null)
                 {
                     var regBase = binder.EnsureRegister(mem.Base);
                     if (mem.PreDecrement)

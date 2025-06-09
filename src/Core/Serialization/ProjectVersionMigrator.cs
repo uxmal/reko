@@ -54,9 +54,9 @@ namespace Reko.Core.Serialization
             {
                 Filename = v4.Filename,
                 Comment = v4.Comment,
-                DisassemblyDirectory = v4.DisassemblyFilename != null ? Path.GetDirectoryName(v4.DisassemblyFilename) : null,
-                SourceDirectory = v4.OutputFilename != null ? Path.GetDirectoryName(v4.OutputFilename) : null,
-                IncludeDirectory = v4.TypesFilename != null ? Path.GetDirectoryName(v4.TypesFilename) : null,
+                DisassemblyDirectory = v4.DisassemblyFilename is not null ? Path.GetDirectoryName(v4.DisassemblyFilename) : null,
+                SourceDirectory = v4.OutputFilename is not null ? Path.GetDirectoryName(v4.OutputFilename) : null,
+                IncludeDirectory = v4.TypesFilename is not null ? Path.GetDirectoryName(v4.TypesFilename) : null,
                 ResourcesDirectory = v4.ResourcesDirectory,
                 User = v4.User ?? new UserData_v4
                 {

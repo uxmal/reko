@@ -461,13 +461,13 @@ namespace Reko.Analysis
                 {
                     total = value;
                 }
-                else if (value != null && !cmp.Equals(value, total))
+                else if (value is not null && !cmp.Equals(value, total))
                 {
                     total = InvalidConstant.Create(phiarg.DataType);
                     break;
                 }
             }
-            if (total != null)
+            if (total is not null)
             {
                 ctx.SetValue(phi.Dst, total);
             }
@@ -772,9 +772,9 @@ namespace Reko.Analysis
                     return false;
                 return ExpressionIdentifierUseFinder.Find(assSrc.Src)
                     .Select(c => ssa.Identifiers[c].DefStatement)
-                    .Where(d => d != null)
+                    .Where(d => d is not null)
                     .Select(ph => ph!.Instruction as PhiAssignment)
-                    .Where(ph => ph != null)
+                    .Where(ph => ph is not null)
                     .Any();
             }
 

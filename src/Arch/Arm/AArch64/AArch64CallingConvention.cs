@@ -119,7 +119,7 @@ namespace Reko.Arch.Arm.AArch64
                 }
             }
 
-            if (dtRet != null)
+            if (dtRet is not null)
             {
                 if (dtRet.Domain == Domain.Real)
                 {

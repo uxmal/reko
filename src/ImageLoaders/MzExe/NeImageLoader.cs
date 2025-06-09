@@ -288,7 +288,7 @@ namespace Reko.ImageLoaders.MzExe
             {
                 entryPoints.Add(ImageSymbol.Procedure(program.Architecture, addrEntry.Value));
             }
-            foreach (var ep in entryPoints.Where(e => e != null && e.Type != SymbolType.Data))
+            foreach (var ep in entryPoints.Where(e => e is not null && e.Type != SymbolType.Data))
             {
                 program.EntryPoints.TryAdd(ep!.Address, ep);
             }

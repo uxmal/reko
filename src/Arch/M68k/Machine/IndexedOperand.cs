@@ -86,13 +86,13 @@ namespace Reko.Arch.M68k.Machine
 
             renderer.WriteString("(");
             var sep = preindex || postindex ? "[" : "";
-            if (BaseDisplacement != null)
+            if (BaseDisplacement is not null)
             {
                 renderer.WriteString(sep);
                 renderer.WriteString(FormatValue(BaseDisplacement));
                 sep = ",";
             }
-            if (Base != null)
+            if (Base is not null)
             {
                 renderer.WriteString(sep);
                 renderer.WriteString(Base.ToString());
@@ -100,7 +100,7 @@ namespace Reko.Arch.M68k.Machine
             }
             if (postindex)
             {
-                if (BaseDisplacement != null || Base != null)
+                if (BaseDisplacement is not null || Base is not null)
                 {
                     renderer.WriteString("]");
                     sep = ",";
@@ -110,7 +110,7 @@ namespace Reko.Arch.M68k.Machine
                     sep = "";
                 }
             }
-            if (Index != null)
+            if (Index is not null)
             {
                 renderer.WriteString(sep);
                 renderer.WriteString(Index.Name);
@@ -125,7 +125,7 @@ namespace Reko.Arch.M68k.Machine
                 renderer.WriteString("]");
                 sep = ",";
             }
-            if (OuterDisplacement != null)
+            if (OuterDisplacement is not null)
             {
                 renderer.WriteString(sep);
                 renderer.WriteString(FormatSignedValue(OuterDisplacement));

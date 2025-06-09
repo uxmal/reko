@@ -36,7 +36,7 @@ namespace Reko.Evaluation
             Constant? cRight = binExp.Right as Constant;
             DataType dtResult = binExp.DataType;
 			var op = binExp.Operator;
-			if (binExp.Left is Constant cLeft && cRight != null)
+			if (binExp.Left is Constant cLeft && cRight is not null)
 			{
                 if (op is ConditionalOperator)
                 {
@@ -59,7 +59,7 @@ namespace Reko.Evaluation
                     return result;
                 }
             }
-            if (binExp.Left is Address a && cRight != null &&
+            if (binExp.Left is Address a && cRight is not null &&
                 op.Type.IsAddOrSub())
             {
                 var addend = cRight.ToInt64();

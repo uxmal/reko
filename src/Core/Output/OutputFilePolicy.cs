@@ -107,7 +107,7 @@ namespace Reko.Core.Output
             if (globals is Pointer pt)
             {
                 var strGlobals = pt.Pointee.ResolveAs<StructureType>();
-                if (strGlobals != null)
+                if (strGlobals is not null)
                 {
                     //$TODO: the cast to (uint) below needs to be changed to (ulong)
                     // once the StructureField.Offset property is widened to 64 bits.

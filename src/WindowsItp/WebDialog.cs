@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -42,7 +42,7 @@ namespace Reko.WindowsItp
         void webBrowser1_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             var spanner = webBrowser1.Document.GetElementById("spanner");
-            if (spanner != null)
+            if (spanner is not null)
                 spanner.Click += spanner_Click;
             Contents.InnerHtml = GenerateContent("fnFoo");
 
@@ -61,7 +61,7 @@ namespace Reko.WindowsItp
 
         void webBrowser1_Navigating(object sender, WebBrowserNavigatingEventArgs e)
         {
-            if (webBrowser1.Document != null)
+            if (webBrowser1.Document is not null)
             {
                 e.Cancel = true;
                 HtmlElement contents = Contents;

@@ -284,7 +284,7 @@ namespace Reko.Tools.regressionTests
                         WorkingDirectory = job.WorkingDirectory,
                         RedirectStandardOutput = true
                     });
-                    if (proc != null)
+                    if (proc is not null)
                     {
                         output = proc.StandardOutput.ReadToEnd();
                     }
@@ -444,7 +444,7 @@ namespace Reko.Tools.regressionTests
                 // capture stderr, as we're going to silence it
                 RedirectStandardError = true
             });
-            if (git != null) 
+            if (git is not null) 
             {
                 // pipe stdout to stderr (to show it on-screen, since stdout is going to regression.log)
                 git.StandardOutput.BaseStream.CopyTo(Console.OpenStandardError());
@@ -495,7 +495,7 @@ namespace Reko.Tools.regressionTests
                 from job in jobs
                 join weight in weights on job.Key equals weight.Key into ws
                 from weight in ws.DefaultIfEmpty()
-                orderby weight.Key != null ? weight.Value : 0 descending
+                orderby weight.Key is not null ? weight.Value : 0 descending
                 select job;
             return orderedJobs.ToList();
         }

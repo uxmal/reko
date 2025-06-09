@@ -38,7 +38,7 @@ namespace Reko.Evaluation
 //			c = mps.MemberPtr as Constant;
 			this.mps = mps;
 			return false;
-			//return (c != null); 				//$REVIEW: disabled. Perhaps we don't want to do this transformation before we detect registerpairs.
+			//return (c is not null); 				//$REVIEW: disabled. Perhaps we don't want to do this transformation before we detect registerpairs.
 		}
 
 		public Expression Transform()
