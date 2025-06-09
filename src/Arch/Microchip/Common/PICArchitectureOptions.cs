@@ -50,7 +50,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public PICArchitectureOptions(PICArchitectureOptionsPicker picker)
         {
-            if (picker == null)
+            if (picker is null)
                 throw new ArgumentNullException(nameof(picker));
             ProcessorModel = PICProcessorModel.GetModel(picker.PICName)!;
             PICExecutionMode = (picker.AllowExtended ? PICExecMode.Extended : PICExecMode.Traditional);
@@ -89,7 +89,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public PICArchitectureOptionsPicker(PICArchitectureOptions opts)
         {
-            if (opts == null)
+            if (opts is null)
                 throw new ArgumentNullException(nameof(opts));
             PICName = opts.ProcessorModel.PICName;
             AllowExtended = opts.PICExecutionMode == PICExecMode.Extended;

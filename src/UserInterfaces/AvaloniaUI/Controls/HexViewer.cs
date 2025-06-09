@@ -876,7 +876,7 @@ public class HexViewControl : Control, ILogicalScrollable
             this.cellSize = cellSize;
             GetColorPreferences();
 
-            if (ctrl.arch == null || ctrl.imageMap == null || ctrl.addrMin is null)
+            if (ctrl.arch is null || ctrl.imageMap is null || ctrl.addrMin is null)
                 return (null, ctrl.IsTextSideSelected);
             // Enumerate all segments visible on screen.
 

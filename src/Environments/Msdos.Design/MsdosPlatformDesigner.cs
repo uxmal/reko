@@ -39,7 +39,7 @@ namespace Reko.Environments.Msdos.Design
         {
             var shellUiSvc = Services.RequireService<IDecompilerShellUiService>();
             var windowFrame = shellUiSvc.FindDocumentWindow(GetType().FullName, Component);
-            if (windowFrame == null)
+            if (windowFrame is null)
             {
                 var platform = (MsdosPlatform)Component;
                 windowFrame = shellUiSvc.CreateDocumentWindow(

@@ -457,7 +457,7 @@ namespace Reko.Analysis
                 // use that value and hope all of the phi args have
                 // the same value.
                 var value = ctx.GetValue(phiarg);
-                if (total == null)
+                if (total is null)
                 {
                     total = value;
                 }
@@ -766,7 +766,7 @@ namespace Reko.Analysis
             public bool IsUsedInPhi(Identifier id)
             {
                 var src = ssa.Identifiers[id].DefStatement;
-                if (src == null)
+                if (src is null)
                     return false;
                 if (src.Instruction is not Assignment assSrc)
                     return false;

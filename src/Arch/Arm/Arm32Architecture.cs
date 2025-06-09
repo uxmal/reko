@@ -79,7 +79,7 @@ namespace Reko.Arch.Arm
         private void GetRegisterOfType(int registerKind)
         {
             native.GetAllRegisters(registerKind, out int cRegs, out IntPtr aRegs);
-            if (aRegs == null)
+            if (aRegs is null)
                 throw new OutOfMemoryException();
             NativeRegister nReg = new NativeRegister();
             int cb = Marshal.SizeOf(nReg);
@@ -117,7 +117,7 @@ namespace Reko.Arch.Arm
                 for (;;)
                 {
                     INativeInstruction nInstr = ndasm.NextInstruction();
-                    if (nInstr == null)
+                    if (nInstr is null)
                         yield break;
                     else 
                         yield return new Arm32Instruction(nInstr);

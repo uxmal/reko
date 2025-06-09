@@ -170,7 +170,7 @@ namespace Reko.Environments.MacOS.Classic
             var parameters = new List<Argument_v1>();
             foreach (var pc in pParameters)
             {
-                if (pc.Type == null)
+                if (pc.Type is null)
                 {
                     parameters.Add(new Argument_v1 { Name = "..." });
                 }

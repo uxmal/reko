@@ -359,12 +359,12 @@ namespace Reko.Environments.MacOS.Classic
 
                 // Find first (and only!) segment containing the name %A5Init.
                 var a5dataSegment = program.SegmentMap.Segments.Values.SingleOrDefault(SegmentNamedA5Init);
-                if (a5dataSegment == null)
+                if (a5dataSegment is null)
                     return;
 
                 // Get an image reader to the start of the data.
                 var a5dr = GetA5InitImageReader(a5dataSegment);
-                if (a5dr == null)
+                if (a5dr is null)
                     return;
 
                 var a5hdroffset = a5dr.Offset;

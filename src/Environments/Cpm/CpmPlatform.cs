@@ -137,7 +137,7 @@ namespace Reko.Environments.Cpm
                 }
                 if (callable is DispatchProcedure_v1 sDisp)
                 {
-                    if (sDisp.Services == null)
+                    if (sDisp.Services is null)
                         continue;
                     var svcs = sDisp.Services
                         .Where(s => s.SyscallInfo != null)

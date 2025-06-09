@@ -259,7 +259,7 @@ namespace Reko.WindowsItp
 
         private void procedureToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (this.procDlg == null)
+            if (this.procDlg is null)
             {
                 this.procDlg = new ProcedurePropertiesDialog();
                 this.procDlg.FormClosed += delegate { this.procDlg = null; };
@@ -283,7 +283,7 @@ namespace Reko.WindowsItp
 
         private void propertyOptionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (this.propOptionsDlg == null)
+            if (this.propOptionsDlg is null)
             {
                 this.propOptionsDlg = new ProcedureOptionsDialog();
                 this.propOptionsDlg.FormClosed += delegate { this.procDlg = null; };

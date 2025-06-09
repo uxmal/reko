@@ -208,11 +208,11 @@ namespace Reko.UserInterfaces.WindowsForms
 
             private static int CompareModuleNames(ImportReference importX, ImportReference importY)
             {
-                if (importX.ModuleName == null)
+                if (importX.ModuleName is null)
                 {
-                    return (importY.ModuleName == null) ? 0 : -1;
+                    return (importY.ModuleName is null) ? 0 : -1;
                 }
-                else if (importY.ModuleName == null)
+                else if (importY.ModuleName is null)
                 {
                     Debug.Assert(importX.ModuleName != null);
                     return 1;

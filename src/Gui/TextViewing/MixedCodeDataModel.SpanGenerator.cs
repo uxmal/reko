@@ -94,7 +94,7 @@ namespace Reko.Gui.TextViewing
                         sp = null;
                     }
                 }
-                if (sp == null || !memValid)
+                if (sp is null || !memValid)
                 {
                     if (!memValid)
                     {
@@ -154,7 +154,7 @@ namespace Reko.Gui.TextViewing
                 for (int i = 0; i < line.TextSpans.Length; ++i)
                 {
                     var span = line.TextSpans[i];
-                    if (span.Style == null)
+                    if (span.Style is null)
                         span.Style = "lastLine";
                     else
                         span.Style = span.Style + " lastLine";

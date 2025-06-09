@@ -66,11 +66,11 @@ namespace Reko.Analysis
 
 		public LinearInductionVariable? CreateInductionVariable()
 		{
-			if (ctx.PhiStatement == null) return null;
-			if (ctx.PhiIdentifier == null) return null;
-			if (ctx.DeltaValue == null) return null;
+			if (ctx.PhiStatement is null) return null;
+			if (ctx.PhiIdentifier is null) return null;
+			if (ctx.DeltaValue is null) return null;
 
-			if (ctx.TestStatement == null && ctx.InitialValue == null)
+			if (ctx.TestStatement is null && ctx.InitialValue is null)
 			{
 				return new LinearInductionVariable(null, ctx.DeltaValue, null, false);
 			}
@@ -90,7 +90,7 @@ namespace Reko.Analysis
 
         public Constant? AdjustTestValue(Constant? testValue)
         {
-            if (testValue == null)
+            if (testValue is null)
                 return null; 
 
             // <= or >= operators imply an extra spin around the loop.
@@ -189,7 +189,7 @@ namespace Reko.Analysis
 				return null;
             var sid0 = ssa.Identifiers[(Identifier)phi.Arguments[0].Value];
             var sid1 = ssa.Identifiers[(Identifier)phi.Arguments[1].Value];
-            if (sid0.DefStatement == null || sid1.DefStatement == null)
+            if (sid0.DefStatement is null || sid1.DefStatement is null)
                 return null;
             var sid = doms.DominatesStrictly(sid1.DefStatement, sid0.DefStatement)
                 ? sid1 : sid0;
@@ -208,7 +208,7 @@ namespace Reko.Analysis
 		{
             foreach (SsaIdentifier sid in sids)
             {
-                if (sid.DefStatement == null)
+                if (sid.DefStatement is null)
                     continue;
                 if (sid.DefStatement.Instruction is not Assignment ass)
                     continue;
@@ -235,7 +235,7 @@ namespace Reko.Analysis
 		{
             foreach (SsaIdentifier sid in sids)
             {
-                if (sid.DefStatement == null)
+                if (sid.DefStatement is null)
                     continue;
                 if (sid.DefStatement.Instruction is PhiAssignment phi)
                 {
@@ -394,10 +394,10 @@ namespace Reko.Analysis
 
             ctx = new LinearInductionVariableContext();
 			PhiFunction? phi = FindPhiFunction(scc);
-			if (phi == null)
+			if (phi is null)
 				return;
 			ctx.DeltaValue = FindLinearIncrement(scc);
-			if (ctx.DeltaValue == null)
+			if (ctx.DeltaValue is null)
 				return;
 			ctx.InitialValue = FindInitialValue(phi);
 			ctx.TestValue = FindFinalValue(scc);

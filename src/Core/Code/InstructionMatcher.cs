@@ -119,9 +119,9 @@ namespace Reko.Core.Code
         {
             if (pattern is not ReturnInstruction retPat)
                 return false;
-            if (retPat.Expression == null && ret.Expression == null)
+            if (retPat.Expression is null && ret.Expression is null)
                 return true;
-            if (retPat.Expression == null || ret.Expression == null)
+            if (retPat.Expression is null || ret.Expression is null)
                 return false;
             return matcher.Match(retPat.Expression, ret.Expression, m);
         }

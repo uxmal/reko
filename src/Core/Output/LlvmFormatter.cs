@@ -146,7 +146,7 @@ namespace Reko.Core.Output
         public void VisitReturnInstruction(ReturnInstruction ret)
         {
             w.Write("ret ");
-            if (ret.Expression == null)
+            if (ret.Expression is null)
             {
                 w.WriteLine("void");
             }

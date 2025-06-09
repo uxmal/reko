@@ -59,7 +59,7 @@ namespace Reko.Typing
 
         public DataType MergeIntoDataType(DataType dtNew, TypeVariable tv)
         {
-            if (dtNew == null)
+            if (dtNew is null)
                 return tv.OriginalDataType;
 
             DataType dtCurrent = tv.OriginalDataType;
@@ -73,7 +73,7 @@ namespace Reko.Typing
 
         public DataType MergeIntoDataType(Expression exp, DataType? dtNew)
         {
-            if (dtNew == null)
+            if (dtNew is null)
                 return exp.DataType;
 
             DataType? dtCurrent = store.GetDataTypeOf(exp);

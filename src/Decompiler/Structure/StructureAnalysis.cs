@@ -642,9 +642,9 @@ all other cases, together they constitute a Switch[].
                 var ss = LinearSuccessor(s);
                 if (s.Type != RegionType.Tail)
                 {
-                    if (ss == null)
+                    if (ss is null)
                         return null;
-                    if (follow == null)
+                    if (follow is null)
                         follow = ss;
                     else if (ss != follow)
                         return null;
@@ -1196,7 +1196,7 @@ refinement on the loop body, which we describe below.
         {
             head = EnsureSingleEntry(head, loopNodes);
             var (follow, latch) = DetermineFollowLatch(head, loopNodes);
-            if (follow == null && latch == null)
+            if (follow is null && latch is null)
                 return false;
             var lexicalNodes = GetLexicalNodes(head, follow!, loopNodes);
             var virtualized = VirtualizeIrregularExits(head, latch!, follow!, lexicalNodes);
@@ -1479,7 +1479,7 @@ refinement on the loop body, which we describe below.
                     break;
                 }
             }
-            if (vEdge == null)
+            if (vEdge is null)
             {
                 foreach (var s in regionGraph.Successors(n))
                 {
@@ -1490,7 +1490,7 @@ refinement on the loop body, which we describe below.
                     }
                 }
             }
-            if (vEdge == null)
+            if (vEdge is null)
             {
                 foreach (var p in regionGraph.Predecessors(n))
                 {

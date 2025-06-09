@@ -548,7 +548,7 @@ namespace Reko.Arch.Zilog.Z80
                     {
                         return m.Mem(memOp.DataType, bReg!);
                     }
-                    else if (bReg == null)
+                    else if (bReg is null)
                     {
                         return m.Mem(memOp.DataType, memOp.Offset);
                     }

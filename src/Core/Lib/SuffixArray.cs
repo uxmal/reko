@@ -37,7 +37,7 @@ namespace Reko.Core.Lib
         /// <returns>Resulting suffix array.</returns>
         public static SuffixArray<char> Create(string str)
         {
-            if (str == null)
+            if (str is null)
                 str = "";
             return new SuffixArray<char>(str.ToCharArray());
         }
@@ -91,7 +91,7 @@ namespace Reko.Core.Lib
         public SuffixArray(T[] str)
         {
             m_str = str;
-            if (m_str == null)
+            if (m_str is null)
             {
                 m_str = Array.Empty<T>();
             }
@@ -165,7 +165,7 @@ namespace Reko.Core.Lib
             int r = m_sa.Length;
             int m = -1;
 
-            if ((substr == null) || (substr.Length == 0))
+            if ((substr is null) || (substr.Length == 0))
             {
                 return -1;
             }

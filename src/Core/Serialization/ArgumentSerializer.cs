@@ -50,7 +50,7 @@ namespace Reko.Core.Serialization
         {
             if (arg is null)
                 return null;
-            if (arg.DataType == null)
+            if (arg.DataType is null)
                 throw new ArgumentNullException("arg.DataType");
             var sarg = new Argument_v1 
             {

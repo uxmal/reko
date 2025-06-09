@@ -1268,7 +1268,7 @@ namespace Reko.Core.Output
 		/// <param name="expr"></param>
 		public void WriteExpression(Expression expr)
 		{
-            if (expr == null)
+            if (expr is null)
             {
                 InnerFormatter.Write("<NULL>");
                 return;

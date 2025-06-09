@@ -51,7 +51,7 @@ namespace Reko.Arch.M6800.M6809
                 break;
             case Mode.ConstantOffset:
                 offset = Offset; 
-                if (Base == null)
+                if (Base is null)
                 {
                     fmt = "${0:X4}";
                 }

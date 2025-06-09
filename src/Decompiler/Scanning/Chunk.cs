@@ -22,13 +22,20 @@ namespace Reko.Scanning;
 
 using Reko.Core;
 
+/// <summary>
+/// A chunk represents a candidate area for scanning.
+/// </summary>
+/// <param name="arch"><see cref="IProcessorArchitecture"/> to use when disassembling
+/// this chunk.</param>
+/// <param name="address">The <see cref="Address"/> at which the chunk starts.
+/// </param>
+/// <param name="length">The length of the chunk in storage units.
+/// </param>
 public readonly struct Chunk(IProcessorArchitecture? arch, Address address, long length)
 {
     public IProcessorArchitecture? Architecture { get; } = arch;
     public Address Address { get; } = address;
     public long Length { get; } = length;
-
-    public bool IsGap => Architecture is null;
 
     public override string ToString()
     {

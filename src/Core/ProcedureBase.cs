@@ -255,7 +255,7 @@ namespace Reko.Core
         /// <returns>The fully qualified name.</returns>
         public string QualifiedName()
         {
-            if (EnclosingType == null)
+            if (EnclosingType is null)
                 return Name;
             if (EnclosingType is StructType_v1 str)
                 return $"{str.Name}::{Name}";

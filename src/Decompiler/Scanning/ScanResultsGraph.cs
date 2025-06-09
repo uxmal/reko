@@ -41,6 +41,8 @@ namespace Reko.Scanning
 
         public void AddEdge(Address nodeFrom, Address nodeTo)
         {
+            if (nodeTo.Offset == 0xA578)
+                _ = this; //$DEBUG
             List<Address>? succs;
             while (!cfg.Successors.TryGetValue(nodeFrom, out succs))
             {
@@ -90,6 +92,9 @@ namespace Reko.Scanning
         // Not thread-safe
         public void RemoveEdge(Address nodeFrom, Address nodeTo)
         {
+            if (nodeTo.Offset == 0xA578)
+                _ = this; //$DEBUG
+
             if (cfg.Successors.TryGetValue(nodeFrom, out var succs))
             {
                 var i = succs.FindIndex(e => e == nodeTo);

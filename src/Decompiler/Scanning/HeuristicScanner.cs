@@ -228,8 +228,8 @@ namespace Reko.Scanning
             Address addrEnd)
         {
             var h = program.Platform.Heuristics;
-            if (h.ProcedurePrologs == null || h.ProcedurePrologs.Length == 0)
-                return Array.Empty<Address>();
+            if (h.ProcedurePrologs is null || h.ProcedurePrologs.Length == 0)
+                return [];
 
             byte[]? pattern = h.ProcedurePrologs[0].Bytes;
             if (pattern != null)

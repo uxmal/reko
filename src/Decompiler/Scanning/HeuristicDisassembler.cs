@@ -223,7 +223,7 @@ namespace Reko.Scanning
                 if (last is not RtlIf cond)
                     return null;
                 xfer = cond.Instruction as RtlGoto;
-                if (xfer == null)
+                if (xfer is null)
                     return null;
             }
 

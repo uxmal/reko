@@ -242,21 +242,21 @@ namespace Reko.Core.Expressions
         private Pointer? GetPossibleFieldType(DataType dtLeft, int offset)
         {
             var ptrLeft = dtLeft.ResolveAs<Pointer>();
-            if (ptrLeft == null)
+            if (ptrLeft is null)
                 return null;
 
             var pointee = ptrLeft.Pointee;
             var strPointee = pointee.ResolveAs<StructureType>();
-            if (strPointee == null)
+            if (strPointee is null)
                 return null;
 
             var field = strPointee.Fields.LowerBound(offset);
-            if (field == null)
+            if (field is null)
                 return null;
             // We're collecting _DataTypes_, so if we encounter
             // a TypeReference, we need to drill past it.
             var dtField = field.DataType.ResolveAs<DataType>();
-            if (dtField == null)
+            if (dtField is null)
                 return null;
             // If we access beyond the start of the field, we can't have the
             // same type as the field.

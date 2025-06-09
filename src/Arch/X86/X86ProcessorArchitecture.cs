@@ -303,7 +303,7 @@ namespace Reko.Arch.X86
 
         public override Dictionary<string, object>? SaveUserOptions()
         {
-            if (Options == null)
+            if (Options is null)
                 return null;
             var dict = new Dictionary<string, object>(Options);
             return dict;

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2025 Christian Hostelet.
  *
@@ -49,7 +49,7 @@ namespace Reko.ImageLoaders.IntelHex
         /// <exception cref="ArgumentNullException">If the <paramref name="str" /> is null.</exception>
         public IntelHexWriter(Stream str)
         {
-            if (str == null)
+            if (str is null)
                 throw new ArgumentNullException(nameof(str));
 
             streamWriter = new StreamWriter(str);
@@ -91,7 +91,7 @@ namespace Reko.ImageLoaders.IntelHex
         /// <exception cref="ArgumentOutOfRangeException">If <paramref name="data"/> size is greater than 255..</exception>
         public void WriteData(ushort address, IList<byte> data)
         {
-            if (data == null)
+            if (data is null)
                 throw new ArgumentNullException(nameof(data));
 
             if (data.Count > maxRecordDataSize)

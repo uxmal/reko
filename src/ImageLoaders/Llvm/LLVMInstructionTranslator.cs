@@ -103,7 +103,7 @@ namespace Reko.ImageLoaders.LLVM
 
         public int VisitBr(BrInstr br)
         {
-            if (br.Cond == null)
+            if (br.Cond is null)
             {
                 m.Goto(br.IfTrue.Name);
                 return 0;
@@ -313,7 +313,7 @@ namespace Reko.ImageLoaders.LLVM
 
         public int VisitRet(RetInstr ret)
         {
-            if (ret.Value == null)
+            if (ret.Value is null)
             {
                 m.Return();
             }
@@ -369,7 +369,7 @@ namespace Reko.ImageLoaders.LLVM
             switch (value)
             {
             case Constant c:
-                if (c.Value == null)
+                if (c.Value is null)
                 {
                     var w = PrimitiveType.CreateWord(dt.BitSize);
                     var v = IrConstant.Create(w, 0);

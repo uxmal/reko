@@ -308,7 +308,7 @@ namespace Reko.Environments.SysV
             while (i < str.Length)
             {
                 var arg = Argument();
-                if (arg == null)
+                if (arg is null)
                     break;
                 args.Add(arg);
             }

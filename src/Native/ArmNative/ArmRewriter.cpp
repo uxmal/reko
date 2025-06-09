@@ -860,7 +860,7 @@ void ArmRewriter::MaybePostOperand(const cs_arm_op & op)
 		: m.IAdd(baseReg, offset);
 	m.Assign(baseReg, ea);
 #if NYI
-	if (memOp == null || memOp.Offset == null)
+	if (memOp is null || memOp.Offset is null)
 		return;
 	if (memOp.Preindexed)
 		return;

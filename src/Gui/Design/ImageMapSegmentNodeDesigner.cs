@@ -85,7 +85,7 @@ namespace Reko.Gui.Design
         {
             var segment = this.segment!;
             var program = GetProgram();
-            if (program == null)
+            if (program is null)
                 return;
             var eps = program.EntryPoints.Keys.ToHashSet();
             var globals = GetGlobalVariables(program.ImageMap, segment);
@@ -124,7 +124,7 @@ namespace Reko.Gui.Design
 
         private Program? GetProgram()
         {
-            if (this.Parent == null)
+            if (this.Parent is null)
                 return null;
             return this.Parent.Component as Program;
         }

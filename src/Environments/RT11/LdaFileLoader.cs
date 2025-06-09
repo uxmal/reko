@@ -139,7 +139,7 @@ namespace Reko.Environments.RT11
             if (count == 6)
                 return (uAddr, null);
             var data = rdr.ReadBytes(count - 6);
-            if (data == null || data.Length < count - 6)
+            if (data is null || data.Length < count - 6)
                 return (0, null);
             if (!rdr.TryReadByte(out b))  // read (and ignore) checksum
                 return (0, null);

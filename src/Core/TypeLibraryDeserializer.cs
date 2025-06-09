@@ -127,7 +127,7 @@ namespace Reko.Core
 
         private void LoadProcedures(SerializedLibrary serializedLibrary)
         {
-            if (serializedLibrary.Procedures == null)
+            if (serializedLibrary.Procedures is null)
                 return;
 
             foreach (object o in serializedLibrary.Procedures)
@@ -354,7 +354,7 @@ namespace Reko.Core
         public DataType VisitPointer(PointerType_v1 pointer)
         {
             DataType dt;
-            if (pointer.DataType == null)
+            if (pointer.DataType is null)
                 dt = new UnknownType();
             else
             {
@@ -391,12 +391,12 @@ namespace Reko.Core
         public DataType VisitMemberPointer(MemberPointer_v1 memptr)
         {
             DataType baseType;
-            if (memptr.DeclaringClass == null)
+            if (memptr.DeclaringClass is null)
                 baseType = new UnknownType();
             else 
                 baseType = memptr.DeclaringClass.Accept(this);
             DataType dt;
-            if (memptr.MemberType == null)
+            if (memptr.MemberType is null)
                 dt = new UnknownType();
             else
                 dt = memptr.MemberType.Accept(this);
@@ -407,7 +407,7 @@ namespace Reko.Core
         public DataType VisitReference(ReferenceType_v1 reference)
         {
             DataType dt;
-            if (reference.Referent == null)
+            if (reference.Referent is null)
                 dt = new UnknownType();
             else
                 dt = reference.Referent.Accept(this);
@@ -448,7 +448,7 @@ namespace Reko.Core
         /// <inheritdoc/>
         public DataType VisitStructure(StructType_v1 structure)
         {
-            if (structure.Name == null || !structures.TryGetValue(structure.Name, out var str))
+            if (structure.Name is null || !structures.TryGetValue(structure.Name, out var str))
             {
                 str = new StructureType(structure.Name, structure.ByteSize, true);
                 str.ForceStructure = structure.ForceStructure;
@@ -511,7 +511,7 @@ namespace Reko.Core
         /// <inheritdoc/>
         public DataType VisitUnion(UnionType_v1 sUnion)
         {
-            if (sUnion.Name == null || !unions.TryGetValue(sUnion.Name, out var union))
+            if (sUnion.Name is null || !unions.TryGetValue(sUnion.Name, out var union))
             {
                 union = new UnionType (sUnion.Name, null, true);
                 if (sUnion.Name != null)

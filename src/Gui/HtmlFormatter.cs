@@ -36,7 +36,7 @@ namespace Reko.Gui
 
         public override void Write(string text)
         {
-            if (text == null) 
+            if (text is null) 
                 return;
             WriteEntityEscaped(text);
         }
@@ -60,7 +60,7 @@ namespace Reko.Gui
 
         public override void Write(string format, params object[] arguments)
         {
-            if (format == null)
+            if (format is null)
                 throw new ArgumentNullException(nameof(format));
             Write(string.Format(format, arguments));
         }
@@ -76,7 +76,7 @@ namespace Reko.Gui
 
         public override void WriteKeyword(string keyword)
         {
-            if (keyword == null)
+            if (keyword is null)
                 return;
             TextWriter.Write("<span class=\"kw\">");
             Write(keyword);
@@ -90,7 +90,7 @@ namespace Reko.Gui
 
         public override void WriteHyperlink(string text, object href)
         {
-            if (text == null)
+            if (text is null)
                 return;
             var dest = href as string;
             TextWriter.Write("<a");

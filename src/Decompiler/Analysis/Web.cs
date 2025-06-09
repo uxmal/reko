@@ -51,7 +51,7 @@ namespace Reko.Analysis
                 return;
 
 			Members.Add(sid);
-			if (this.Identifier == null)
+			if (this.Identifier is null)
 			{
 				this.Identifier = sid.Identifier;
 			}
@@ -62,18 +62,18 @@ namespace Reko.Analysis
 					this.Identifier = sid.Identifier;
 				}
 
-				if (InductionVariable == null)
+				if (InductionVariable is null)
 				{
 					InductionVariable = sid.InductionVariable;
 				}
-				else if (sid.InductionVariable == null)
+				else if (sid.InductionVariable is null)
 				{
 					sid.InductionVariable = InductionVariable ;
 				}
 				else 
 				{
 					InductionVariable  = LinearInductionVariable.Merge(sid.InductionVariable, InductionVariable );
-					if (InductionVariable  == null)
+					if (InductionVariable  is null)
 					{
 						// Warning(string.Format("{0} and {1} are conflicting induction variables: {2} {3}", 
 					}

@@ -261,7 +261,7 @@ namespace Reko.Libraries.Microchip
         /// 
         public static bool ToBooleanEx(this string sNumber)
         {
-            if (sNumber == null)
+            if (sNumber is null)
                 return false; ;
             var s = sNumber.Trim();
             return (s.Equals("true", StringComparison.InvariantCultureIgnoreCase) ||

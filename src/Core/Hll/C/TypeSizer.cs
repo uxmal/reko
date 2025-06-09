@@ -121,7 +121,7 @@ namespace Reko.Core.Hll.C
         {
             var size = 0;
             var alignment = 1;
-            if (structure.Fields == null)
+            if (structure.Fields is null)
             {
                 this.tagSizes.TryGetValue(structure, out var sizeAlign);
                 return sizeAlign;
@@ -179,7 +179,7 @@ namespace Reko.Core.Hll.C
         /// <inheritdoc/>
         public (int, int) VisitUnion(UnionType_v1 union)
         {
-            if (union.Alternatives == null)
+            if (union.Alternatives is null)
                 return tagSizes[union];
             var size = 0;
             var alignment = 1;

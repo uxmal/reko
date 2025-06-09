@@ -225,7 +225,7 @@ namespace Reko.Environments.Trs80.Dmk
 
         private bool isEmpty()
         {
-            return this.m_data == null || this.m_data.Length == 0;
+            return this.m_data is null || this.m_data.Length == 0;
         }
 
         public void setHeader(byte[] data, int startPosition)
@@ -243,7 +243,7 @@ namespace Reko.Environments.Trs80.Dmk
         public void ParseSectors()
 		{
 			this.m_sectors.Clear();
-			if (this.m_data == null)
+			if (this.m_data is null)
 			{
 				return;
 			}

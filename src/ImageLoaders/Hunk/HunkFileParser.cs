@@ -139,7 +139,7 @@ namespace Reko.ImageLoaders.Hunk
                     if (hunkType == HunkType.HUNK_DREL32)
                     {
                         // try to fix automatically...
-                        if (v37_compat == null)
+                        if (v37_compat is null)
                         {
                             was_potential_v37_hunk = true;
                             // fix was forced
@@ -323,7 +323,7 @@ namespace Reko.ImageLoaders.Hunk
             while (true)
             {
                 var t = this.ReadString();
-                if (t == null)
+                if (t is null)
                     throw new BadImageFormatException("Error parsing header hunk names.");
                 else if (t.Length == 0)
                 {
@@ -494,7 +494,7 @@ namespace Reko.ImageLoaders.Hunk
             while (name_len > 0)
             {
                 var x = this.ReadString();
-                if (x == null)
+                if (x is null)
                     throw new BadImageFormatException(string.Format("{0} has invalid symbol name", hunk.HunkType));
                 else if (x.Length == 0)
                 {
@@ -582,7 +582,7 @@ namespace Reko.ImageLoaders.Hunk
             
             // first find the code segment of the overlay manager
             var overlayManagerHunk = this.FindFirstCodeHunk();
-            if (overlayManagerHunk == null)
+            if (overlayManagerHunk is null)
                 throw new BadImageFormatException(string.Format("{0} has no overlay manager hunk.", hunk.HunkType));
             
             // check overlay manager
@@ -746,7 +746,7 @@ namespace Reko.ImageLoaders.Hunk
                     throw new BadImageFormatException(string.Format("{0} has invalid size.", hunk.HunkType));
                 // ext name
                 string? ext_name = this.ReadSizedString(ext_size);
-                if (ext_name == null)
+                if (ext_name is null)
                     throw new BadImageFormatException(string.Format("{0} has invalid name.", hunk.HunkType));
                 else if (ext_name.Length == 0)
                     break;
@@ -794,7 +794,7 @@ namespace Reko.ImageLoaders.Hunk
             var hunk = new UnitHunk();
             h(hunk);
             var n = this.ReadString();
-            if (n == null)
+            if (n is null)
                 throw new BadImageFormatException(string.Format("{0} has invalid name.", hunk.HunkType));
             hunk.Name = n;
         }

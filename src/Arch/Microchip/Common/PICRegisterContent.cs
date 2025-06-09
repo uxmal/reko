@@ -66,7 +66,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         {
             get
             {
-                if (bits == null)
+                if (bits is null)
                 {
                     bits = PICRegisterAccessMasks.Create(traits);
                     actualValue = bits.ResetValue;

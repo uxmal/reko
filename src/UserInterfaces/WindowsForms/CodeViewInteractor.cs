@@ -92,7 +92,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         private void MixedCodeDataView_ModelChanged(object sender, EventArgs e)
         {
-            //if (combinedCodeView == null)
+            //if (combinedCodeView is null)
             //    return;
 
             //CreateNestedTextModel();
@@ -128,7 +128,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         private bool ShowAllItems()
         {
-            //return (segment == null && showProcedures);
+            //return (segment is null && showProcedures);
             return showProcedures;
         }
 
@@ -216,7 +216,7 @@ namespace Reko.UserInterfaces.WindowsForms
                     status.Status = MenuStatus.Enabled | MenuStatus.Visible;
                     return true;
                 case CmdIds.EditCopy:
-                    status.Status = FocusedTextView == null || FocusedTextView.Selection.IsEmpty
+                    status.Status = FocusedTextView is null || FocusedTextView.Selection.IsEmpty
                         ? MenuStatus.Visible
                         : MenuStatus.Visible | MenuStatus.Enabled;
                     return true;
@@ -231,7 +231,7 @@ namespace Reko.UserInterfaces.WindowsForms
                         : MenuStatus.Visible | MenuStatus.Enabled | MenuStatus.Checked;
                     return true;
                 case CmdIds.EditDeclaration:
-                    //status.Status = GetAnchorAddress() == null
+                    //status.Status = GetAnchorAddress() is null
                     //    ? MenuStatus.Visible
                     //    : MenuStatus.Enabled | MenuStatus.Visible;
                     return true;
@@ -267,10 +267,10 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public void Copy()
         {
-            if (this.proc == null)
+            if (this.proc is null)
                 return;
 
-            if (FocusedTextView == null)
+            if (FocusedTextView is null)
                 return;
 
             var ms = new MemoryStream();
@@ -341,7 +341,7 @@ namespace Reko.UserInterfaces.WindowsForms
         private void EditDeclaration()
         {
             var addr = GetAnchorAddress();
-            if (addr == null)
+            if (addr is null)
                 return;
             var anchorPt = FocusedTextView.GetAnchorTopPoint();
             var screenPoint = FocusedTextView.PointToScreen(anchorPt);
@@ -410,7 +410,7 @@ namespace Reko.UserInterfaces.WindowsForms
             if (gViewer.PanButtonPressed)
                 return;
             var userObj = gViewer.SelectedObject as Node;
-            if (userObj == null)
+            if (userObj is null)
                 return;
         }
 
@@ -420,7 +420,7 @@ namespace Reko.UserInterfaces.WindowsForms
             if (gViewer.PanButtonPressed)
                 return;
             var userObj = gViewer.SelectedObject as Node;
-            if (userObj == null)
+            if (userObj is null)
                 return;
             var blockData = userObj.UserData as CfgBlockNode;
             Debug.Print("Node: {0}", blockData.Block.DisplayName);

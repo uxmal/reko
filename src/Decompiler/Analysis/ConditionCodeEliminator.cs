@@ -233,7 +233,7 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
 
         private static bool IsLocallyDefinedFlagGroup(SsaIdentifier sid)
         {
-            if (sid.DefStatement == null)
+            if (sid.DefStatement is null)
                 return false;
             var stg = sid.OriginalIdentifier.Storage;
             if (stg is FlagGroupStorage)

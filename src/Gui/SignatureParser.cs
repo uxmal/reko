@@ -162,7 +162,7 @@ namespace Reko.Gui
                     ++idx;
                 }
                 var arg = ParseArg();
-                if (arg == null)
+                if (arg is null)
                     return null;
                 args.Add(arg);
             }
@@ -179,7 +179,7 @@ namespace Reko.Gui
             {
                 type = w;
                 w = GetNextWord();
-                if (w == null)
+                if (w is null)
                     return null;
                 if (w.Contains("_"))
                 {

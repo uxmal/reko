@@ -125,7 +125,7 @@ namespace Reko.UnitTests.Decompiler.Typing
 		public override string ToString()
 		{
 			return string.Format(
-				BasePointer == null
+				BasePointer is null
 				? "trait_mem({1}, {2:X})"
 				: "trait_mem({0}:{1}, {2:X})",
 				BasePointer, FieldType, Offset);
@@ -156,7 +156,7 @@ namespace Reko.UnitTests.Decompiler.Typing
 		public override string ToString()
 		{
 			return string.Format(
-				BasePointer == null ?
+				BasePointer is null ?
 				"trait_mem_array({1:X}, {2}, {3}, {4})"
 				: "trait_mem_array({0}:{1:X}, {2}, {3}, {4})",
 				BasePointer, Offset, ElementSize, Length, AccessType);

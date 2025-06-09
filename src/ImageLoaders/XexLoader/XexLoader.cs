@@ -152,7 +152,7 @@ namespace Reko.ImageLoaders.Xex
         private uint GetBaseAddress()
         {
             var opt_image_base = GetOptHeader(xex2_header_keys.IMAGE_BASE_ADDRESS);
-            if(opt_image_base == null) return security_info.load_address;
+            if(opt_image_base is null) return security_info.load_address;
 
             var view = mem.Slice((int)opt_image_base);
             return new SpanStream(view, Endianness.BigEndian).ReadUInt32();
@@ -169,7 +169,7 @@ namespace Reko.ImageLoaders.Xex
             Memory<byte> xex_implibs_data;
             {
                 var maybe_xex_implibs_data = GetOptHeader<xex2_opt_import_libraries>(xex2_header_keys.IMPORT_LIBRARIES);
-                if (maybe_xex_implibs_data == null)
+                if (maybe_xex_implibs_data is null)
                 {
                     return null;
                 }
@@ -381,7 +381,7 @@ namespace Reko.ImageLoaders.Xex
         private IEnumerable<(Address, ImportReference)> RewriteThunks(IMAGE_SECTION_HEADER[] sections)
         {
             var xex_implibs = GetImportLibraries();
-            if (xex_implibs == null)
+            if (xex_implibs is null)
             {
                 yield break;
             }
@@ -573,7 +573,7 @@ namespace Reko.ImageLoaders.Xex
         private xex2_opt_execution_info? GetExecutionInfo()
         {
             var exec_info = GetOptHeader<xex2_opt_execution_info>(xex2_header_keys.EXECUTION_INFO);
-            if (exec_info == null) return null;
+            if (exec_info is null) return null;
             return new xex2_opt_execution_info(exec_info.Value);
         }
 
@@ -583,7 +583,7 @@ namespace Reko.ImageLoaders.Xex
                     xex2_header_keys.FILE_FORMAT_INFO,
                     out opt_file_format_info_offset);
             
-            if (file_format_info == null) return null;
+            if (file_format_info is null) return null;
             return new xex2_opt_file_format_info(file_format_info.Value);
         }
 
@@ -604,7 +604,7 @@ namespace Reko.ImageLoaders.Xex
             // we instead use RexDex logic to look at the title_id
             byte[] keyToUse;
             if(header.magic.AsString(Encoding.ASCII) == kXEX1Signature
-                || exec_info == null
+                || exec_info is null
                 || exec_info.title_id == 0
             ){
                 keyToUse = xe_xex2_devkit_key;
@@ -616,7 +616,7 @@ namespace Reko.ImageLoaders.Xex
             session_key = AesDecryptECB(security_info.aes_key, keyToUse);
             {
                 var opt_file_format_info = GetFileFormatInfo(out var opt_file_format_info_offset);
-                if(opt_file_format_info == null)
+                if(opt_file_format_info is null)
                 {
                     throw new InvalidDataException("Missing FILE_FORMAT_INFO");
                 }
@@ -645,7 +645,7 @@ namespace Reko.ImageLoaders.Xex
         private (Address, ImageSymbol)? GetEntryPoint(IProcessorArchitecture arch)
         {
             var entry = GetEntryPointAddress();
-            if (entry == null) return null;
+            if (entry is null) return null;
             
             var addr = Address.Ptr32(entry.Value);
             return (addr, ImageSymbol.Procedure(arch, addr));

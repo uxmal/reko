@@ -74,7 +74,7 @@ Options:
             }
 
             var arch = rekoCfg.GetArchitecture(options["-a"].ToString());
-            if (arch == null)
+            if (arch is null)
             {
                 Console.WriteLine(
                     "c2xml: unknown architecture '{0}'. Check the c2xml config file for supported architectures.",
@@ -83,7 +83,7 @@ Options:
             }
             
             var envElem = rekoCfg.GetEnvironment(options["-e"].ToString());
-            if (envElem == null)
+            if (envElem is null)
             {
                 Console.WriteLine(
                    "c2xml: unknown environment '{0}'. Check the c2xml config file for supported architectures.",

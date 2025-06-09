@@ -123,7 +123,7 @@ namespace Reko.ImageLoaders.MzExe.Ne
             {
                 os2Resources.TryGetValue(entries[i].etype, out ProgramResourceGroup? resGrp);
                 var rt = Os2ResourceType.FromInt(entries[i].etype);
-                if (resGrp == null) resGrp = new ProgramResourceGroup { Name = rt.Name };
+                if (resGrp is null) resGrp = new ProgramResourceGroup { Name = rt.Name };
 
                 uint length = resourceSegments[i].DataLength;
                 var dataOffset = (uint) (resourceSegments[i].DataOffset << alignmentShift);
@@ -179,15 +179,15 @@ namespace Reko.ImageLoaders.MzExe.Ne
         {
             resGrps.TryGetValue(Win16ResourceType.GroupIcon, out ProgramResourceGroup? iconGroups);
             resGrps.TryGetValue(Win16ResourceType.Icon, out ProgramResourceGroup? icons);
-            if (icons == null)
+            if (icons is null)
             {
                 if (iconGroups != null)
                     resources.Remove(iconGroups);
                 return;
             }
-            if (iconGroups == null)
+            if (iconGroups is null)
             {
-                if (icons == null)
+                if (icons is null)
                     resources.Remove(icons!);
                 return;
             }

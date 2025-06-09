@@ -466,7 +466,7 @@ namespace Reko.Scanning
                 for (; ; )
                 {
                     var i = idoms[n];
-                    if (i == null)
+                    if (i is null)
                         break;
                     if (dominatedEntries.ContainsKey(i))
                     {
@@ -542,7 +542,7 @@ namespace Reko.Scanning
             var tree = new SortedList<Address, SortedSet<Address>>();
             foreach (var de in idoms)
             {
-                if (de.Value == null)
+                if (de.Value is null)
                     roots.Add(de.Key.Address);
                 else
                 {

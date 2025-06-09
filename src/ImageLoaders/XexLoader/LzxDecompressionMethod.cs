@@ -284,7 +284,7 @@ namespace Reko.ImageLoaders.Xex
             {
                 throw new InvalidOperationException($"reference length {length} is longer than the window");
             }
-            if (length > 0 && @in == null) {
+            if (length > 0 && @in is null) {
                 throw new InvalidOperationException("length > 0 but no system or input");
             }
 

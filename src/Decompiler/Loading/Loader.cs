@@ -414,7 +414,7 @@ namespace Reko.Loading
 
         private ImageLoader? CreateRawImageLoader(ImageLocation imageLocation, byte[] image, RawFileDefinition rawFile)
         {
-            if (rawFile.Architecture == null)
+            if (rawFile.Architecture is null)
                 return null;
             var arch = cfgSvc.GetArchitecture(rawFile.Architecture);
             if (arch is null)
@@ -639,7 +639,7 @@ namespace Reko.Loading
 
         protected static void CopyImportReferences(Dictionary<Address, ImportReference> importReference, Program program)
         {
-            if (importReference == null)
+            if (importReference is null)
                 return;
 
             foreach (var item in importReference)

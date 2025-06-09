@@ -30,7 +30,7 @@ namespace Reko.Evaluation
         public Expression? Match(BinaryExpression binExp, EvaluationContext ctx)
         {
             var id = binExp.Left as Identifier;
-            if (id == null || binExp.Left != binExp.Right)
+            if (id is null || binExp.Left != binExp.Right)
                 return null;
 
             switch (binExp.Operator.Type)

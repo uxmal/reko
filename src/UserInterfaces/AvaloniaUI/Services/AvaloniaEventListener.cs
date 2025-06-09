@@ -269,7 +269,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         //void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         //{
-        //    if (dlg == null)
+        //    if (dlg is null)
         //        return;
         //    if (e.ProgressPercentage != STATUS_UPDATE_ONLY)
         //    {

@@ -333,7 +333,7 @@ namespace Reko.ImageLoaders.Elf
         public string GetSymbolName(ElfSection symSection, uint symbolNo)
         {
             var strSection = symSection.LinkedSection;
-            if (strSection == null)
+            if (strSection is null)
                 return string.Format("null:{0:X8}", symbolNo);
             uint offset = (uint) (symSection.FileOffset + symbolNo * symSection.EntrySize);
             var rdr = CreateReader(offset);
@@ -509,7 +509,7 @@ namespace Reko.ImageLoaders.Elf
             for (int i = 0; i < BinaryImage.Header.e_shnum; ++i)
             {
                 var shdr = Elf32_SHdr.Load(rdr);
-                if (shdr == null)
+                if (shdr is null)
                     break;
                 var section = new ElfSection
                 {

@@ -140,7 +140,7 @@ namespace Reko.Core.Output
                 var size = segLast - i.Address;
                 size = Math.Min(i.Size, size);
 
-                if (i.DataType == null || (i.DataType is UnknownType && i.DataType.Size == 0) ||
+                if (i.DataType is null || (i.DataType is UnknownType && i.DataType.Size == 0) ||
                     i.DataType is CodeType)
                 {
                     if (segment.IsBss)
@@ -225,7 +225,7 @@ namespace Reko.Core.Output
         /// <param name="formatter">Output sink.</param>
         public void DumpData(SegmentMap map, IProcessorArchitecture arch, Address address, long cUnits, Formatter formatter)
         {
-            if (!map.TryFindSegment(address, out var segment) || segment.MemoryArea == null)
+            if (!map.TryFindSegment(address, out var segment) || segment.MemoryArea is null)
                 return;
             DumpData(arch, segment.MemoryArea, address, cUnits, formatter);
         }
@@ -343,7 +343,7 @@ namespace Reko.Core.Output
 
         private void DumpTypedData(SegmentMap map, IProcessorArchitecture arch, ImageMapItem item, Formatter w)
         {
-            if (!map.TryFindSegment(item.Address, out var segment) || segment.MemoryArea == null)
+            if (!map.TryFindSegment(item.Address, out var segment) || segment.MemoryArea is null)
                 return;
             WriteLabel(item.Address, w);
 

@@ -180,7 +180,7 @@ namespace Reko.Arch.PaRisc
             Expression left,
             Expression? right = null)
         {
-            if (instr.Condition == null ||
+            if (instr.Condition is null ||
                 instr.Condition.Type == ConditionType.Never ||
                 instr.Condition.Type == ConditionType.Never64)
                 return false;

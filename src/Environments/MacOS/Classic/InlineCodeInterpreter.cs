@@ -129,7 +129,7 @@ namespace Reko.Environments.MacOS.Classic
                     var reg = PostCallRegisterStore(uInstr);
                     if (reg != null)
                     {
-                        if (ssig.ReturnValue == null)
+                        if (ssig.ReturnValue is null)
                             throw new InvalidOperationException(
                                 $"Service {name} is specified as returning void, but returns value in {reg.Name}.");
                         ssig.ReturnValue.Kind = new Register_v1 { Name = reg.Name };

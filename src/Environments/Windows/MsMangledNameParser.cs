@@ -211,7 +211,7 @@ namespace Reko.Environments.Windows
                     name = name.Substring(2);
                     namesSeen.Add(name);
                     var oldNames = namesSeen;
-                    if (templateNamesSeen == null)
+                    if (templateNamesSeen is null)
                     {
                         templateNamesSeen = new List<string> { name };
                     }

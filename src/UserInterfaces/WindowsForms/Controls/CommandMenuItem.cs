@@ -49,7 +49,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
 		public CommandMenuItem(string text, Guid cmdSet, int cmdId)
 		{
-            if (text == null)
+            if (text is null)
             {
                 return;
             }

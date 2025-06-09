@@ -305,7 +305,7 @@ namespace Reko.Scanning
                                 break; 
                             }
                         }
-                        if (ndNew == null)
+                        if (ndNew is null)
                         {
                             ndNew = new TreeNode(nd, c);
                             nd.AddTransition(ndNew);
@@ -389,12 +389,12 @@ namespace Reko.Scanning
                 while (index < text.Length)
                 {
                     TreeNode trans = null;
-                    while (trans == null)
+                    while (trans is null)
                     {
                         trans = ptr.GetTransition(text[index]);
                         if (ptr == _root) 
                             break;
-                        if (trans == null)
+                        if (trans is null)
                             ptr = ptr.Failure;
                     }
                     if (trans != null) ptr = trans;
@@ -420,11 +420,11 @@ namespace Reko.Scanning
                 while (index < text.Length)
                 {
                     TreeNode trans = null;
-                    while (trans == null)
+                    while (trans is null)
                     {
                         trans = ptr.GetTransition(text[index]);
                         if (ptr == _root) break;
-                        if (trans == null) ptr = ptr.Failure;
+                        if (trans is null) ptr = ptr.Failure;
                     }
                     if (trans != null) ptr = trans;
 
@@ -449,11 +449,11 @@ namespace Reko.Scanning
                 while (index < text.Length)
                 {
                     TreeNode trans = null;
-                    while (trans == null)
+                    while (trans is null)
                     {
                         trans = ptr.GetTransition(text[index]);
                         if (ptr == _root) break;
-                        if (trans == null) ptr = ptr.Failure;
+                        if (trans is null) ptr = ptr.Failure;
                     }
                     if (trans != null) ptr = trans;
 
@@ -522,7 +522,7 @@ namespace Reko.Scanning
 
                     while (r != null && !r.ContainsTransition(c)) 
                         r = r.Failure;
-                    if (r == null)
+                    if (r is null)
                         nd.Failure = root;
                     else
                     {
@@ -554,7 +554,7 @@ namespace Reko.Scanning
                     }
                 }
 
-                if (ndNew == null)
+                if (ndNew is null)
                 {
                     ndNew = new TreeNode(nd, c);
                     nd.AddTransition(ndNew);
@@ -589,12 +589,12 @@ namespace Reko.Scanning
             for (var index = 0; index < text.Length; ++index)
             {
                 TreeNode trans = null;
-                while (trans == null)
+                while (trans is null)
                 {
                     trans = ptr.GetTransition(text[index]);
                     if (ptr == root)
                         break;
-                    if (trans == null)
+                    if (trans is null)
                         ptr = ptr.Failure;
                 }
                 if (trans != null)

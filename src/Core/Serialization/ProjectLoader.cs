@@ -700,7 +700,7 @@ namespace Reko.Core.Serialization
             if (!program.Architecture.TryParseAddress(sup.Address, out Address addr))
                 return null;
 
-            if (!sup.Decompile && sup.Signature == null && string.IsNullOrEmpty(sup.CSignature))
+            if (!sup.Decompile && sup.Signature is null && string.IsNullOrEmpty(sup.CSignature))
             {
                 listener.Warn(
                     listener.CreateAddressNavigator(program, addr),

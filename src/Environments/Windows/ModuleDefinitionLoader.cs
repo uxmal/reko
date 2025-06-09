@@ -138,7 +138,7 @@ namespace Reko.Environments.Windows
         private ExternalProcedure? ParseSignature(string entryName, TypeLibraryDeserializer loader)
         {
             var sProc = SignatureGuesser.SignatureFromName(entryName, platform!);
-            if (sProc == null)
+            if (sProc is null)
                 return null;
             return loader.LoadExternalProcedure(sProc);
         }
@@ -154,7 +154,7 @@ namespace Reko.Environments.Windows
 
         private Token Peek()
         {
-            if (bufferedTok == null)
+            if (bufferedTok is null)
                 bufferedTok = lexer.GetToken();
             return bufferedTok;
         }
@@ -162,7 +162,7 @@ namespace Reko.Environments.Windows
         private Token Get()
         {
             Token? t = bufferedTok;
-            if (t == null)
+            if (t is null)
                 t = lexer.GetToken();
             bufferedTok = null;
             return t;

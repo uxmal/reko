@@ -44,7 +44,7 @@ namespace Reko.UserInterfaces.WindowsForms
         public CommandID GetCommandID(int i)
         {
             if(menuItems[i] is CommandMenuItem item) {
-                if (item.MenuCommand == null)
+                if (item.MenuCommand is null)
                     return null;
                 return item.MenuCommand.CommandID;
             }

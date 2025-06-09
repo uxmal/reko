@@ -27,7 +27,7 @@
 STDMETHODIMP Arm64Instruction::Render(INativeInstructionRenderer * r, MachineInstructionRendererFlags options)
 {
 	auto & renderer = *r;
-	if (this->instr == nullptr)
+	if (this->instr is nullptr)
 	{
 		renderer.WriteMnemonic("Invalid");
 		return S_OK;

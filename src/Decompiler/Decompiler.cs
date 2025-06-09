@@ -564,7 +564,7 @@ namespace Reko
         {
             var program = paddr.Program;
                 //$TODO: it's unfortunate that we depend on the scanner of the Decompiler class.
-            if (scanner == null)       
+            if (scanner is null)       
                 scanner = CreateScanner(program);
             var procName = program.User.Procedures.TryGetValue(
                 paddr.Address, out var sProc) ? sProc.Name : null;

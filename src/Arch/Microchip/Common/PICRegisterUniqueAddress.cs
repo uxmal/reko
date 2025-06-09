@@ -65,7 +65,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public int CompareTo(PICRegisterUniqueAddress? other)
         {
-            if (other == null)
+            if (other is null)
                 return 1;
             if (ReferenceEquals(this, other))
                 return 0;

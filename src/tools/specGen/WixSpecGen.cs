@@ -89,7 +89,7 @@ namespace Reko.Tools.specGen
                 if(!componentNodes.TryGetValue(relaDir, out XmlElement component))
                 {
                     component = CreateComponent(dom, relaDir);
-                    if(component == null)
+                    if(component is null)
                     {
                         continue;
                     }

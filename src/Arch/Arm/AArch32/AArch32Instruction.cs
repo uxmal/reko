@@ -336,7 +336,7 @@ namespace Reko.Arch.Arm.AArch32
         private void RenderPcRelativeAddressAnnotation(MemoryOperand mem, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             var addr = ComputePcRelativeAddress(mem);
-            if (mem.Index == null &&
+            if (mem.Index is null &&
                 (options.Flags & MachineInstructionRendererFlags.ResolvePcRelativeAddress) != 0)
             {
                 renderer.WriteChar('[');

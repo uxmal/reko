@@ -54,7 +54,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         void DrawSpaceFillingCurve()
         {
-            if (segmentMap == null)
+            if (segmentMap is null)
                 return;
             x_old = 0;
             y_old = 0;

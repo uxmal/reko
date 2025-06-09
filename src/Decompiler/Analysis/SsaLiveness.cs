@@ -110,7 +110,7 @@ namespace Reko.Analysis
 
 		public List<Identifier> IdentifiersDefinedAtStatement(Statement stm)
 		{
-			if (stm == null) return new List<Identifier>();
+			if (stm is null) return new List<Identifier>();
 			return defined[stm];
 		}
 

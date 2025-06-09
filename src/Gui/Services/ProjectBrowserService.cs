@@ -113,7 +113,7 @@ namespace Reko.Gui.Services
                 if (obj is Program program)
                     return program;
                 var des = GetDesigner(obj);
-                if (des is null || des.Parent == null)
+                if (des is null || des.Parent is null)
                     return null;
                 obj = des.Parent.Component;
             }
@@ -195,7 +195,7 @@ namespace Reko.Gui.Services
         private bool IsSegmentSelected()
         {
             var des = GetSelectedDesigner();
-            if (des == null)
+            if (des is null)
                 return false;
             return des.Component is ImageSegment;
         }

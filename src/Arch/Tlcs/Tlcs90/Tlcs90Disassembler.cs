@@ -62,7 +62,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             this.ops.Clear();
 
             var instr = Decoders[b].Decode(b, this);
-            if (instr == null)
+            if (instr is null)
                 instr = CreateInvalidInstruction();
             var len = rdr.Address - addr;
             instr.Address = addr;
@@ -415,7 +415,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                     case 'H': baseReg = Registers.hl; idxReg = Registers.a;  break;
                     default: throw new NotImplementedException(string.Format("Tlcs-90: dst {0}", format));
                     }
-                    if (idxReg == null)
+                    if (idxReg is null)
                     {
                         if (!dasm.rdr.TryReadByte(out byte bOff))
                             return dasm.CreateInvalidInstruction();
@@ -427,7 +427,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 if (!dasm.rdr.TryReadByte(out byte b))
                     return dasm.CreateInvalidInstruction();
                 var instr = dstEncodings[b].Decode(b, dasm);
-                if (instr == null)
+                if (instr is null)
                     return dasm.CreateInvalidInstruction();
 
                 var operand = new MemoryOperand(dasm.dataWidth!)
@@ -456,8 +456,8 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 {
                     if ((instr.Mnemonic == Mnemonic.jp || instr.Mnemonic == Mnemonic.call)
                         &&
-                        operand.Base == null &&
-                        operand.Index == null &&
+                        operand.Base is null &&
+                        operand.Index is null &&
                         operand.Offset != null)
                     {
                         // JP cc,(XXXX) should be JP cc,XXXX
@@ -506,7 +506,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                     case 'H': baseReg = Registers.hl; idxReg = Registers.a;  break;
                     default: throw new NotImplementedException(string.Format("Tlcs-90: src {0}", format));
                     };
-                    if (idxReg == null)
+                    if (idxReg is null)
                     {
                         if (!dasm.rdr.TryReadByte(out byte bOff))
                             return dasm.CreateInvalidInstruction();
@@ -537,7 +537,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 if (!dasm.rdr.TryReadByte(out byte b))
                     return dasm.CreateInvalidInstruction();
                 instr = srcEncodings[b].Decode(b, dasm);
-                if (instr == null)
+                if (instr is null)
                     return dasm.CreateInvalidInstruction();
 
                 var operand = new MemoryOperand(dasm.dataWidth!)

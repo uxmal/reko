@@ -114,7 +114,7 @@ namespace Reko.Arch.zSeries
         {
             var src1 = FpRegPair(0, dt);
             var src2 = FpRegPair(1, dt);
-            if (src1 == null || src2 == null)
+            if (src1 is null || src2 is null)
             {
                 iclass = InstrClass.Invalid;
                 m.Invalid();
@@ -141,7 +141,7 @@ namespace Reko.Arch.zSeries
         {
             var src = FpRegPair(1, PrimitiveType.Word128);
             var dst = FpRegPair(0, PrimitiveType.Word128);
-            if (src == null || dst == null)
+            if (src is null || dst is null)
             {
                 iclass = InstrClass.Invalid;
                 m.Invalid();

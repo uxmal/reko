@@ -87,7 +87,7 @@ namespace Reko.Scanning
                 blockNew.Statements.Add(StatementNew);
             }
             procCalling.AddBlock(blockNew);
-            if (succ == null)
+            if (succ is null)
                 procCalling.ControlGraph.AddEdge(blockNew, procCalling.ExitBlock);
             else
                 procCalling.ControlGraph.AddEdge(blockNew, succ);

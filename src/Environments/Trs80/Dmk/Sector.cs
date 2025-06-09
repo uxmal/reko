@@ -177,7 +177,7 @@ namespace Reko.Environments.Trs80.Dmk
 
 		public bool isEmpty()
 		{
-			return this.m_data == null || this.m_data.Length == 0;
+			return this.m_data is null || this.m_data.Length == 0;
 		}
 	}
 }

@@ -49,7 +49,7 @@ namespace Reko.UnitTests.Mocks
         {
             get
             {
-                if (Test_CreateTrashedRegisters == null)
+                if (Test_CreateTrashedRegisters is null)
                     return new HashSet<RegisterStorage>();
                 return Test_CreateTrashedRegisters();
             }

@@ -57,7 +57,7 @@ namespace Reko.Gui.TextViewing
             this.program = program ?? throw new ArgumentNullException(nameof(program));
             if (segment is null)
                 throw new ArgumentNullException(nameof(segment));
-            if (segment.MemoryArea == null)
+            if (segment.MemoryArea is null)
                 throw new ArgumentException(nameof(segment), "ImageSegment must have a valid memory area.");
             this.arch = arch;
             this.mem = segment.MemoryArea;

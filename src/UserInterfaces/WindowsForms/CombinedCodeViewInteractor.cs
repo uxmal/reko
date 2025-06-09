@@ -128,7 +128,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         private void ProgramChanged()
         {
-            if (combinedCodeView == null)
+            if (combinedCodeView is null)
                 return;
 
             combinedCodeView.MixedCodeDataView.Program = program;
@@ -136,7 +136,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         private void MixedCodeDataView_ModelChanged(object sender, EventArgs e)
         {
-            if (combinedCodeView == null)
+            if (combinedCodeView is null)
                 return;
 
             CreateNestedTextModel();
@@ -212,7 +212,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         private bool ShowAllItems()
         {
-            return (segment == null && showProcedures);
+            return (segment is null && showProcedures);
         }
 
         public object CreateControl()
@@ -337,7 +337,7 @@ namespace Reko.UserInterfaces.WindowsForms
                     status.Status = MenuStatus.Enabled | MenuStatus.Visible;
                     return true;
                 case CmdIds.EditCopy:
-                    status.Status = FocusedTextView == null || FocusedTextView.Selection.IsEmpty
+                    status.Status = FocusedTextView is null || FocusedTextView.Selection.IsEmpty
                         ? MenuStatus.Visible
                         : MenuStatus.Visible | MenuStatus.Enabled;
                     return true;
@@ -354,7 +354,7 @@ namespace Reko.UserInterfaces.WindowsForms
                 case CmdIds.EditDeclaration:
                 case CmdIds.EditComment:
                 case CmdIds.OpenInNewTab:
-                    status.Status = GetAnchorAddress() == null
+                    status.Status = GetAnchorAddress() is null
                         ? MenuStatus.Visible
                         : MenuStatus.Enabled | MenuStatus.Visible;
                     return true;
@@ -415,10 +415,10 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public void Copy()
         {
-            if (this.proc == null)
+            if (this.proc is null)
                 return;
 
-            if (FocusedTextView == null)
+            if (FocusedTextView is null)
                 return;
 
             var ms = new MemoryStream();

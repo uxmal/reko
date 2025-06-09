@@ -64,7 +64,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public int CompareTo(PICRegisterBitFieldSortKey? other)
         {
-            if (other == null)
+            if (other is null)
                 return 1;
             if (ReferenceEquals(other, this))
                 return 0;

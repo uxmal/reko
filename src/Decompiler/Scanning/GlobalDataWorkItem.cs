@@ -128,7 +128,7 @@ namespace Reko.Scanning
         {
             var offsetStart = rdr.Offset;
             var addr = rdr.Address;
-            if (str.LengthPrefixType == null)
+            if (str.LengthPrefixType is null)
             {
                 // Null terminated string
                 if (str.ElementType.Size == 1)

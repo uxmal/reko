@@ -73,7 +73,7 @@ namespace Reko.Scanning
             //$BUG: all these nulls!
             bw = new Backwalker<Block,Instruction>(this, null!, null!);
             List<BackwalkOperation>? operations = bw.BackWalk(null!);
-            if (operations == null)
+            if (operations is null)
                 return PostError("Unable to determine limit", addrFrom, addrTable);
             return BuildAux(bw, addrFrom, state);
         }

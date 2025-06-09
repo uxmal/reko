@@ -51,7 +51,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             return;
             /*
             var rela_plt = loader.GetSectionInfoByName(".rela.plt");
-            if (rela_plt == null)
+            if (rela_plt is null)
                 return;
             var plt = loader.GetSectionInfoByName(".plt");
             var relaRdr = loader.CreateReader(rela_plt.FileOffset);

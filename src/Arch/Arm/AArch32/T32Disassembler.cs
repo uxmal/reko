@@ -830,7 +830,7 @@ namespace Reko.Arch.Arm.AArch32
             {
                 var iReg = field.Read(u);
                 var reg = simdSysRegisters[iReg];
-                if (reg == null)
+                if (reg is null)
                     return false;
                 d.state.ops.Add(reg);
                 return true;

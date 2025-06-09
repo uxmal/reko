@@ -293,7 +293,7 @@ namespace Reko.Core
             if (t != null && t.Value.Item2 is not SerializedSignature)
             {
                 var dSer = program.CreateTypeLibraryDeserializer();
-                var dt = (t.Value.Item2 == null) ?
+                var dt = (t.Value.Item2 is null) ?
                     new UnknownType() :
                     t.Value.Item2.Accept(dSer);
                 return Identifier.Global(t.Value.Item1, dt);

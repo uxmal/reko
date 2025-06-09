@@ -303,11 +303,11 @@ namespace Reko.Core.Types
             {
                 --recDepth;
                 trace.Error("Unifier: exceeded stack depth, giving up");
-                if (a == null && b == null)
+                if (a is null && b is null)
                     return null;
-                if (a == null)
+                if (a is null)
                     return b;
-                if (b == null)
+                if (b is null)
                     return a;
                 return factory.CreateUnionType(null, null, new[] { a, b });
             }
@@ -318,9 +318,9 @@ namespace Reko.Core.Types
 
 		private DataType? UnifyInternal(DataType? a, DataType? b)
 		{
-			if (a == null)
+			if (a is null)
 				return b;
-			if (b == null)
+			if (b is null)
 				return a;
 
 			if (a == b)
@@ -687,12 +687,12 @@ namespace Reko.Core.Types
 			StructureField? fb = null;
 			for (;;)
 			{
-				if (fa == null && ea.MoveNext())
+				if (fa is null && ea.MoveNext())
 					fa = ea.Current;
-				if (fb == null && eb.MoveNext())
+				if (fb is null && eb.MoveNext())
 					fb = eb.Current;
 			
-				if (fa == null || fb == null)
+				if (fa is null || fb is null)
 					break;
 
                 var nestedStructureUnifier = new NestedStructureUnifier(this);
@@ -806,7 +806,7 @@ namespace Reko.Core.Types
                 var strFb = fb.DataType.TypeReferenceAs<StructureType>();
                 // only one field should be nested structure
                 if (
-                    (strFa == null && strFb == null) ||
+                    (strFa is null && strFb is null) ||
                     (strFa != null && strFb != null))
                     return false;
 

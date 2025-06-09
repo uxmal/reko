@@ -40,7 +40,7 @@ namespace Reko.Typing
 			this.eqClasses = eqClasses;
 			foreach (EquivalenceClass eq in eqClasses)
 			{
-				if (eqMin == null)
+				if (eqMin is null)
 					eqMin = eq;
 				else if (eq.Number < eqMin.Number)
 					eqMin = eq;

@@ -60,7 +60,7 @@ namespace Reko.Core.Graphs
 
 		private int AddNodeInternal(T n)
 		{
-			if (nodes == null)
+			if (nodes is null)
 			{
 				nodes = new Node[8];
 				cNodes = 0;
@@ -91,7 +91,7 @@ namespace Reko.Core.Graphs
 			if (iTo < 0)
 				iTo = AddNodeInternal(to);
 
-			if (edges == null)
+			if (edges is null)
 			{
 				edges = new Edge[8];
 				cEdges = 0;
@@ -139,7 +139,7 @@ namespace Reko.Core.Graphs
         /// <inheritdoc/>
         public bool ContainsEdge(T from, T to)
         {
-            if (edges == null)
+            if (edges is null)
                 return false;
             int iFrom = NodeIndex(from);
             if (iFrom < 0)
@@ -193,7 +193,7 @@ namespace Reko.Core.Graphs
 		{
 			int iFrom = NodeIndex(from);
 			int iTo = NodeIndex(to);
-			if (nodes == null || edges == null || nodes[iFrom].firstSucc == -1 || nodes[iTo].firstPred == -1)
+			if (nodes is null || edges is null || nodes[iFrom].firstSucc == -1 || nodes[iTo].firstPred == -1)
 				throw new ArgumentException("No such edge.");
 
 			// Remove the edge in the from and to list.
@@ -253,7 +253,7 @@ namespace Reko.Core.Graphs
 
             public override string ToString()
             {
-                return "Node: " + Item == null ? "(null)" : Item.ToString()!;
+                return "Node: " + Item is null ? "(null)" : Item.ToString()!;
             }
 		}
 
@@ -296,7 +296,7 @@ namespace Reko.Core.Graphs
 
             private IEnumerator<T> GetSuccessorEnumerator()
             {
-                if (graph.nodes == null || graph.edges == null)
+                if (graph.nodes is null || graph.edges is null)
                     yield break;
                 int iEdge = graph.nodes[iNode].firstSucc;
                 while (iEdge >= 0)
@@ -308,7 +308,7 @@ namespace Reko.Core.Graphs
 
             private IEnumerator<T> GetPredecessorEnumerator()
             {
-                if (graph.nodes == null || graph.edges == null || iNode == -1)
+                if (graph.nodes is null || graph.edges is null || iNode == -1)
                     yield break;
                 int iEdge = graph.nodes[iNode].firstPred;
                 while (iEdge >= 0)
@@ -418,7 +418,7 @@ namespace Reko.Core.Graphs
 
 			public void CopyTo(T [] array, int index)
 			{
-                if (graph.nodes == null)
+                if (graph.nodes is null)
                     return;
                 for (int i = 0; i + index < array.Length; ++i)
                 {
@@ -479,7 +479,7 @@ namespace Reko.Core.Graphs
 			{
 				get 
 				{
-					if (iNode == -1 || iNode >= graph.cNodes || graph.nodes == null)
+					if (iNode == -1 || iNode >= graph.cNodes || graph.nodes is null)
 						throw new InvalidOperationException("Enumerator must be positioned at a valid location.");
 					return graph.nodes[iNode].Item;
 				}

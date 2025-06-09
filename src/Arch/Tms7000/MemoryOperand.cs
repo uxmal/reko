@@ -58,7 +58,7 @@ namespace Reko.Arch.Tms7000
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            if (Address == null)
+            if (Address is null)
             {
                 renderer.WriteChar('*');
                 renderer.WriteString(Register!.Name);

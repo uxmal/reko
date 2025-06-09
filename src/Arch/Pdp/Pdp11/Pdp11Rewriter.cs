@@ -179,7 +179,7 @@ namespace Reko.Arch.Pdp.Pdp11
 
         private void SetFlags(Expression? e, FlagGroupStorage changed)
         {
-            if (e == null)
+            if (e is null)
             {
                 Invalid();
                 return;

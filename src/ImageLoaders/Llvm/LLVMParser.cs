@@ -818,7 +818,7 @@ namespace Reko.ImageLoaders.LLVM
 
         private Token Peek()
         {
-            if (this.peekTok == null)
+            if (this.peekTok is null)
             {
                 this.peekTok = lex.GetToken();
             }

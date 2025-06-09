@@ -29,7 +29,7 @@ namespace Reko.WindowsItp
             try
             {
                 byte[] buf = ReadBytes();
-                if (buf == null)
+                if (buf is null)
                     return;
                 Func<long> test = SelectTest(buf);
                 long msec = await Task.Run(test);

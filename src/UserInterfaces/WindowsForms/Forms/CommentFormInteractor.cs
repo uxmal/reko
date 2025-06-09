@@ -54,7 +54,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
         private string LabelText()
         {
-            var addrStr = (address == null) ? "<null>" : address.ToString();
+            var addrStr = (address is null) ? "<null>" : address.ToString();
             return "Enter comment at the address " + addrStr;
         }
 

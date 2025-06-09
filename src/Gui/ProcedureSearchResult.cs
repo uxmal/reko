@@ -79,7 +79,7 @@ namespace Reko.Gui
                 codeSvc.DisplayProcedure(hit.Program, hit.Procedure, hit.Program.NeedsScanning);
 
             var mvs = sp.GetService<ILowLevelViewService>();
-            if (mvs == null)
+            if (mvs is null)
                 return;
             mvs.ShowMemoryAtAddress(hit.Program, hit.Address);
         }

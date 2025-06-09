@@ -46,7 +46,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         ///                                         null.</exception>
         protected void LoadRegistersInTable(IPICRegisterSymTable registersSymTable, IPICDescriptor pic)
         {
-            if (pic == null)
+            if (pic is null)
                 throw new ArgumentNullException(nameof(pic));
             symTable = registersSymTable ?? throw new ArgumentNullException(nameof(registersSymTable));
             regNumber = 0;

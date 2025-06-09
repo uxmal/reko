@@ -75,7 +75,7 @@ namespace Reko.Gui
         public void AddComponents(object? parent, IEnumerable components)
         {
             TreeNodeDesigner? parentDes = GetDesigner(parent);
-            if (parentDes == null)
+            if (parentDes is null)
             {
                 Debug.Print("No designer for parent object {0}", parent ?? "(null)");
                 AddComponents(components);
@@ -107,7 +107,7 @@ namespace Reko.Gui
         public void RemoveComponent(object component)
         {
             var des = GetDesigner(component);
-            if (des == null)
+            if (des is null)
                 return;
             mpitemToDesigner.Remove(des.Component!);
             des.TreeNode!.Remove();
@@ -202,14 +202,14 @@ namespace Reko.Gui
         private object? GetSelectedObject()
         {
             var des = GetSelectedDesigner();
-            if (des == null)
+            if (des is null)
                 return null;
             return des.Component;
         }
 
         private void SetSelectedObject(object? component)
         {
-            if (component == null)
+            if (component is null)
                 return;
             if (!mpitemToDesigner.TryGetValue(component, out TreeNodeDesigner? des))
                 return;

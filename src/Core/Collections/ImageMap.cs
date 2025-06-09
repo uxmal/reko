@@ -212,7 +212,7 @@ namespace Reko.Core.Collections
 
         private DataType ChopBefore(DataType type, int offset)
         {
-            if (type == null)
+            if (type is null)
                 throw new ArgumentNullException(nameof(type));
             if (type is UnknownType || type is CodeType)
                 return type;

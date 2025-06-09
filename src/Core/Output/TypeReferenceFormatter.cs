@@ -391,7 +391,7 @@ namespace Reko.Core.Output
         {
             var name = declaredName;
             Formatter.Write('(');
-            if (ft == null || ft.Parameters == null || ft.Parameters.Length == 0)
+            if (ft is null || ft.Parameters is null || ft.Parameters.Length == 0)
             {
                 // fmt.Write("void");      // In C, 0-parameter functions use 'void'
             }

@@ -303,7 +303,7 @@ namespace Reko.Core.Output
 		{
             if (mode == Mode.Writing)
             {
-                if (eq.DataType == null)
+                if (eq.DataType is null)
                 {
                     //$BUG: we should never have Eq.classes with null DataType properties.
                     writer.Write("ERROR: EQ_{0}.DataType is Null", eq.Number);

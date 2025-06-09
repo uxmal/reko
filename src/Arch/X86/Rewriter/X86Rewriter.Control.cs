@@ -47,10 +47,10 @@ namespace Reko.Arch.X86.Rewriter
             if (instrs[i-1].code != Mnemonic.test)
                 return tc;
             var ah = instrs[i-1].op1 as RegisterStorage;
-            if (ah == null || ah.Register != Registers.ah)
+            if (ah is null || ah.Register != Registers.ah)
                 return tc;
             var m = instrs[i-1].op2 as ImmediateOperand;
-            if (m == null)
+            if (m is null)
                 return tc;
 
             if (instrs[i-2].code != Mnemonic.fstsw)

@@ -95,7 +95,7 @@ namespace Reko.Structure
 
                 foreach (var block in new DfsIterator<Block>(proc.ControlGraph).PostOrder().ToList())
                 {
-                    if (block == null)
+                    if (block is null)
                         continue;
 
                     if (EndsInBranch(block))

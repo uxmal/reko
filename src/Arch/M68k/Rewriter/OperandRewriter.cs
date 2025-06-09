@@ -148,7 +148,7 @@ namespace Reko.Arch.M68k.Rewriter
 
         public Expression Combine(Expression? e, RegisterStorage? reg, Address addrInstr)
         {
-            if (reg == null)
+            if (reg is null)
                 return e!;
             Expression ea;
             if (reg == Registers.pc)
@@ -157,7 +157,7 @@ namespace Reko.Arch.M68k.Rewriter
                 // use the address of the instruction extension word
                 // as the PC address.
                 var addrPc = addrInstr + 2;
-                if (e == null)
+                if (e is null)
                     return addrPc;
                 if (e is Constant c)
                 {
@@ -169,7 +169,7 @@ namespace Reko.Arch.M68k.Rewriter
             {
                 ea = binder.EnsureRegister(reg);
             }
-            if (e == null)
+            if (e is null)
                 return ea;
             return m.IAdd(e, ea);
         }

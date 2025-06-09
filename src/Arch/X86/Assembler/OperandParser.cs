@@ -115,7 +115,7 @@ namespace Reko.Arch.X86.Assembler
 			{
 				reg = lexer.Register!;
  				DataType width = reg.DataType;
- 				if (addrWidth == null)
+ 				if (addrWidth is null)
  					addrWidth = width;
  				else if (addrWidth != width)
  					throw new ApplicationException("Conflicting address widths");

@@ -354,7 +354,7 @@ namespace Reko.Libraries.Microchip
         /// </exception>
         public static uint Extract(this byte[] val, int startbit, int bitcount)
         {
-            if (val == null) throw new ArgumentNullException(nameof(val), "Null byte array");
+            if (val is null) throw new ArgumentNullException(nameof(val), "Null byte array");
             switch (val.Length)
             {
             case 1:
@@ -381,7 +381,7 @@ namespace Reko.Libraries.Microchip
         /// <exception cref="ArgumentException">If the array is not 1, 2 or 4 bytes long.</exception>
         public static int ExtractSignExtend(this byte[] val, int startbit, int bitcount)
         {
-            if (val == null) throw new ArgumentNullException(nameof(val), "Null byte array");
+            if (val is null) throw new ArgumentNullException(nameof(val), "Null byte array");
             switch (val.Length)
             {
             case 1:

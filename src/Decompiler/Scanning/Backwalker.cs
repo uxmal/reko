@@ -97,7 +97,7 @@ namespace Reko.Scanning
                 Operations.Add(new BackwalkOperation(BackwalkOperator.mul, Stride));
 
             bool continueBackwalking = BackwalkInstructions(block);
-            if ((Index == null || Index == RegisterStorage.None) && IndexExpression == null)
+            if ((Index is null || Index == RegisterStorage.None) && IndexExpression is null)
                 return null;	// unable to find guard.
 
             if (continueBackwalking)
@@ -108,7 +108,7 @@ namespace Reko.Scanning
 
                 block = blockPrev;
                 BackwalkInstructions(block);
-                if (Index == null && IndexExpression == null)
+                if (Index is null && IndexExpression is null)
                     return null;
             }
             Operations.Reverse();
@@ -240,7 +240,7 @@ namespace Reko.Scanning
                     // R = Mem[xxx]
                     var rIdx = Index;
                     var rDst = RegisterOf(assDst);
-                    if ((rDst != host.GetSubregister(rIdx, new BitRange(0, 8)) && cvtSrc == null) &&
+                    if ((rDst != host.GetSubregister(rIdx, new BitRange(0, 8)) && cvtSrc is null) &&
                         rDst != rIdx)
                     {
                         Index = RegisterStorage.None;
@@ -454,7 +454,7 @@ namespace Reko.Scanning
 
             var idLeft = bin.Left as Identifier;
             var idRight = bin.Right as Identifier;
-            if (idRight != null && idLeft == null)
+            if (idRight != null && idLeft is null)
             {
                 // Rearrange so that the effective address is [id + C]
                 (idRight, idLeft) = (idLeft, idRight);
@@ -529,7 +529,7 @@ namespace Reko.Scanning
 			Constant immSrc, 
 			bool add)
 		{
-			if (ropSrc != null && immSrc == null)
+			if (ropSrc is not null && immSrc is null)
 			{
 				if (ropSrc == ropDst && add)
 				{

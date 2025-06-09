@@ -66,7 +66,7 @@ namespace Reko.ImageLoaders.Archives
             for (; ;)
             {
                 var header = ArFileHeader.Load(rdr);
-                if (header == null)
+                if (header is null)
                     return;
                 ReadFile(header, rdr, archive);
             }

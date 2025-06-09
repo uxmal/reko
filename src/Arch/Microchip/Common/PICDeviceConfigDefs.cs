@@ -63,7 +63,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public static IPICDeviceConfigDefs Create(IPICDescriptor pic)
         {
-            if (pic == null)
+            if (pic is null)
                 throw new ArgumentNullException(nameof(pic));
             var dcrconf = new PICDeviceConfigDefs(pic);
             if (dcrconf.dcregisters.Count <0)

@@ -256,11 +256,11 @@ namespace Reko.Core.Types
             int d = Compare(x.ElementType, y.ElementType, ++count);
             if (d != 0)
                 return d;
-            if (x.LengthPrefixType == null && y.LengthPrefixType == null)
+            if (x.LengthPrefixType is null && y.LengthPrefixType is null)
                 return 0;
-            if (x.LengthPrefixType == null)
+            if (x.LengthPrefixType is null)
                 return -1;
-            if (y.LengthPrefixType == null)
+            if (y.LengthPrefixType is null)
                 return 1;
             return Compare(x.LengthPrefixType, y.LengthPrefixType, ++count);
         }

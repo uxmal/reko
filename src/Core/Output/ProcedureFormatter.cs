@@ -68,7 +68,7 @@ namespace Reko.Core.Output
             for (var i = 0; i < blocks.Length; ++i)
             {
                 var block = blocks[i];
-                if (block == null)
+                if (block is null)
                     continue;
                 Comment(block, decorator.BeforeBlock);
                 WriteBlock(block, formatter);

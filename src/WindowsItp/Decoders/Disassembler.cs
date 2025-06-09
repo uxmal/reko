@@ -165,7 +165,7 @@ namespace Reko.WindowsItp.Decoders
             public bool MoveNext()
             {
                 var instr = dasm.Disassemble();
-                if (instr == null)
+                if (instr is null)
                     return false;
                 this.instr = instr;
                 return true;

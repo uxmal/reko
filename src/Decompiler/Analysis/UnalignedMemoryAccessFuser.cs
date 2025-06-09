@@ -133,7 +133,7 @@ public class UnalignedMemoryAccessFuser : IAnalysis<SsaState>
                 if (stmL is null)
                     return;
                 assL = stmL.Instruction as Assignment;
-                if (assL == null)
+                if (assL is null)
                     return;
 
                 appL = assL.Src as Application;

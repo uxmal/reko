@@ -50,7 +50,7 @@ namespace Reko.Evaluation
             {
                 shift = slice.Expression as BinaryExpression;
             }
-            if (shift == null)
+            if (shift is null)
                 return null;
             if (shift.Operator != BinaryOperator.Shl)
                 return null;

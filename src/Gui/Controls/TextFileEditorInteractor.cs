@@ -57,9 +57,9 @@ namespace Reko.Gui.Controls
 
         public object CreateControl()
         {
-            if (services == null)
+            if (services is null)
                 throw new InvalidOperationException("Services should be set.");
-            if (editor == null)
+            if (editor is null)
             {
                 var svcFactory = services.RequireService<IServiceFactory>();
                 editor = svcFactory.CreateTextFileEditor();
@@ -76,9 +76,9 @@ namespace Reko.Gui.Controls
 
         public void DisplayFile()
         {
-            if (services == null)
+            if (services is null)
                 return;
-            if (editor == null)
+            if (editor is null)
                 return;
             if (textLoaded)
                 return;
@@ -105,9 +105,9 @@ namespace Reko.Gui.Controls
 
         private void textEditor_Save(object? sender, EventArgs e)
         {
-            if (services == null)
+            if (services is null)
                 return;
-            if (editor == null)
+            if (editor is null)
                 return;
             var fsSvc = services.RequireService<IFileSystemService>();
             var uiSvc = services.RequireService<IDecompilerShellUiService>();

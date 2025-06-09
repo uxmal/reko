@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2025 John Källén.
  *
@@ -39,8 +39,8 @@ namespace Reko.Arch.Arm.AArch32
             return false;
             /*
             var b = (Arm32InstructionOld)y;
-            var aInvalid = a.instruction == null;
-            var bInvalid = b.instruction == null;
+            var aInvalid = a.instruction is null;
+            var bInvalid = b.instruction is null;
 
             // Follow the example of NaN.
             if (aInvalid != bInvalid)
@@ -108,7 +108,7 @@ namespace Reko.Arch.Arm.AArch32
             return 1;
             /*
             var arm = ((Arm32InstructionOld)instr).instruction;
-            if (arm == null)
+            if (arm is null)
                 return 0;
             var ops = arm.ArchitectureDetail.Operands;
             int hash = 0;

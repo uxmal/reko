@@ -222,7 +222,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public PICDataAddress ToDataAddress(IMemoryRegion region)
         {
-            if (region == null)
+            if (region is null)
                 throw new ArgumentNullException(nameof(region));
             var baseaddr = region.PhysicalByteAddrRange.Begin.ToUInt32() & ~((1 << BankWidth) - 1);
             return new PICDataAddress((uint)(baseaddr + BankOffset.ToUInt32()));

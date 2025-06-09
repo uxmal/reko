@@ -265,7 +265,7 @@ namespace Reko.Environments.Windows
 
         private Token Peek()
         {
-            if (bufferedToken == null)
+            if (bufferedToken is null)
                 bufferedToken = lexer.GetToken();
             return bufferedToken;
         }
@@ -280,7 +280,7 @@ namespace Reko.Environments.Windows
         private Token Get()
         {
             Token? t = bufferedToken;
-            if (t == null)
+            if (t is null)
                 t = lexer.GetToken();
             bufferedToken = null;
             return t;

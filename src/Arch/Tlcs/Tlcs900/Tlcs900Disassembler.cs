@@ -61,7 +61,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             this.opSize = null;
             this.ops.Clear();
             var instr = rootDecoders[b].Decode(b, this);
-            if (instr == null)
+            if (instr is null)
             {
                 instr = CreateInvalidInstruction();
             }
@@ -168,7 +168,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
 
         private static bool Iz(uint u, Tlcs900Disassembler dasm)
         {
-            if (dasm.opSize == null)
+            if (dasm.opSize is null)
                 return false;
             switch (dasm.opSize.Size)
             {
@@ -464,7 +464,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
         private RegisterStorage Reg(PrimitiveType? size, int regNum)
         {
             int r = regNum & 7;
-            if (size == null)
+            if (size is null)
             {
                 size = this.opSize!;
             }

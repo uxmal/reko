@@ -169,7 +169,7 @@ namespace Reko.Arch.Sparc
             return (u, d) =>
             {
                 var dreg = GetDoubleRegisterOperand(d.arch.Registers, u, bitpos);
-                if (dreg == null)
+                if (dreg is null)
                     return false;
                 d.ops.Add(dreg);
                 return true;
@@ -187,7 +187,7 @@ namespace Reko.Arch.Sparc
             return (u, d) =>
             {
                 var qreg = GetQuadRegisterOperand(d.arch.Registers, u, bitpos);
-                if (qreg == null)
+                if (qreg is null)
                     return false;
                 d.ops.Add(qreg);
                 return true;

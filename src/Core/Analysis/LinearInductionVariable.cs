@@ -107,7 +107,7 @@ namespace Reko.Core.Analysis
         /// </returns>
         public static LinearInductionVariable? Merge(LinearInductionVariable liv1, LinearInductionVariable liv2)
         {
-            if (liv1.Delta == null || liv2.Delta == null)
+            if (liv1.Delta is null || liv2.Delta is null)
                 return null;
             int delta1 = Convert.ToInt32(liv1.Delta.ToInt32());
             int delta2 = Convert.ToInt32(liv2.Delta.ToInt32());

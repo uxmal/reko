@@ -113,7 +113,7 @@ namespace Reko.Arch.Vax
                 break;
             case 4: // Index mode
                 op = IndexOperand(width, reg)!;
-                if (op == null)
+                if (op is null)
                     return false;
                 break;
             case 5: // Register mode

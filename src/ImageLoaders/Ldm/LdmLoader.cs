@@ -441,7 +441,7 @@ namespace Reko.ImageLoaders.Ldm
             for (; ; )
             {
                 string? lline = loadfile.ReadLine();
-                if (lline == null)
+                if (lline is null)
                     break;
                 ++linecnt;
                 if (lline.Length < 2)
@@ -584,7 +584,7 @@ namespace Reko.ImageLoaders.Ldm
 
             if (page > 0xFF)
                 throw new InvalidOperationException($"poke: absolute memory address {phys_address:X6} too large.");
-            if ((memptr = mem[page]) == null)
+            if ((memptr = mem[page]) is null)
             {
                 trace.Verbose("poke: dynamically allocating page {0:X2}", page);
                 memptr = mem[page] = new mem_t();

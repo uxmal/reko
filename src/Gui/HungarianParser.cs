@@ -134,7 +134,7 @@ Some examples:
 
         public static DataType? Parse(string hungarianString)
         {
-            if (hungarianString == null)
+            if (hungarianString is null)
                 return null;
             var parser = new HungarianParser(hungarianString);
             return parser.Parse(PrimitiveType.Char);

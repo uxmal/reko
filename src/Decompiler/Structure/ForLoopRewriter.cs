@@ -90,7 +90,7 @@ namespace Reko.Structure
                     break;
                 }
             }
-            stmts.RemoveAll(s => s == null);
+            stmts.RemoveAll(s => s is null);
         }
 
         private AbsynFor? TryRewriteWhileLoop(AbsynWhile whi, List<AbsynStatement> stmts, int i)
@@ -163,7 +163,7 @@ namespace Reko.Structure
                 return null;
 
             var (loopVariable, update) = IdentifyLoopVariable(loopBody, cmp);
-            if (loopVariable == null)
+            if (loopVariable is null)
                 return null;
 
             var (initializer, deadDecl) = FindInitializer(loopVariable, container, i);
@@ -245,7 +245,7 @@ namespace Reko.Structure
                 {
                     if (decl.Identifier == loopVariable)
                     {
-                        if (decl.Expression == null)
+                        if (decl.Expression is null)
                             return (null, null);
                         var init = new AbsynAssignment(decl.Identifier, decl.Expression);
                         return (init, decl);
@@ -265,7 +265,7 @@ namespace Reko.Structure
         private List<AbsynAssignment> FindUpdateAssignments(Identifier? id, List<AbsynStatement> stmts)
         {
             var updates = new List<AbsynAssignment>();
-            if (id == null)
+            if (id is null)
                 return updates;
             for (int i = stmts.Count - 1; i >= 0; --i)
             {
@@ -314,7 +314,7 @@ namespace Reko.Structure
                 return false;
             if (!(cond.Right is Constant cRight))
                 return false;
-            if (candidate.Initializer == null)
+            if (candidate.Initializer is null)
                 return false;
             if (!(candidate.Initializer.Src is Constant cInit))
                 return false;
@@ -351,7 +351,7 @@ namespace Reko.Structure
 
             public static bool Contains(Expression expr, Identifier id)
             {
-                if (expr == null)
+                if (expr is null)
                     return false;
                 var uif = new UsedIdentifierFinder { id = id };
                 expr.Accept(uif);

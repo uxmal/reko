@@ -59,7 +59,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
                 {
                     var cmdId = menu.GetCommandID(i);
                     cmdStatus.Status = 0;
-                    if (cmdId == null)
+                    if (cmdId is null)
                     {
                         cmdStatus.Status = MenuStatus.Enabled | MenuStatus.Visible;
                         ++visibleItemsInGroup;

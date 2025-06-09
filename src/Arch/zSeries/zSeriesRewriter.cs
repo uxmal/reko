@@ -441,7 +441,7 @@ namespace Reko.Arch.zSeries
 
         private Expression EffectiveAddress(MemoryOperand mem)
         {
-            if (mem.Base == null || mem.Base.Number == 0)
+            if (mem.Base is null || mem.Base.Number == 0)
             {
                 // Must be abs address.
                 return Address.Create(arch.PointerType, (uint) mem.Offset);

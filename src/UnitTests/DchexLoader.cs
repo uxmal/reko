@@ -64,7 +64,7 @@ namespace Reko.UnitTests
             for (; ; )
             {
                 var line = ReadLine(rdr);
-                if (line == null)
+                if (line is null)
                     break;
                 ProcessLine(line);
             }
@@ -140,7 +140,7 @@ namespace Reko.UnitTests
             for (; ; )
             {
                 var line = rdr.ReadLine();
-                if (line == null)
+                if (line is null)
                     return null;
                 var i = line.IndexOf(';');
                 if (i != 0)

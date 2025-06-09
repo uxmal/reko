@@ -150,7 +150,7 @@ namespace Reko.ImageLoaders.WebAssembly.Output
                     if (typeSection is null)
                         throw new BadImageFormatException("Missing type section.");
                     var ifuncCall = ((Constant) instr.Operands[0]).ToInt32();
-                    if (ifuncCall >= file.FunctionIndex.Count || this.funcSection == null)
+                    if (ifuncCall >= file.FunctionIndex.Count || this.funcSection is null)
                     {
                         Debug.Print("*** Unknown function {0:X}", ifuncCall);
                         break;

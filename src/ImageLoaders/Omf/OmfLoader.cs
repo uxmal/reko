@@ -110,10 +110,10 @@ namespace Reko.ImageLoaders.Omf
             if (!rdr.TryReadByte(out byte useOrdinal))
                 return null;
             var internalName = ReadString(rdr);
-            if (internalName == null)
+            if (internalName is null)
                 return null;
             var moduleName = ReadString(rdr);
-            if (moduleName == null)
+            if (moduleName is null)
                 return null;
             if (useOrdinal != 0)
             {

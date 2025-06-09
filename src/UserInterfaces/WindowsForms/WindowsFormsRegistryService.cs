@@ -57,7 +57,7 @@ namespace Reko.UserInterfaces.WindowsForms
             public IRegistryKey OpenSubKey(string keyName, bool writeable)
             {
                 var subkey = key.OpenSubKey(keyName, writeable);
-                if (subkey == null)
+                if (subkey is null)
                 {
                     subkey = key.CreateSubKey(keyName);
                 }
@@ -66,7 +66,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
             public void SetValue(string name, object value)
             {
-                if (value == null)
+                if (value is null)
                     key.DeleteValue(name, false);
                 else
                     key.SetValue(name, value);

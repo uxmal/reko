@@ -57,14 +57,14 @@ namespace Reko.Typing
 
         public DataType VisitStructure(StructureType str)
 		{
-			if (str.Name == null && eq != null)
+			if (str.Name is null && eq != null)
 				str.Name = eq.Name;
             return str;
 		}
 
 		public DataType VisitUnion(UnionType ut)
 		{
-			if (ut.Name == null && eq != null)
+			if (ut.Name is null && eq != null)
 				ut.Name = eq.Name;
             return ut;
 		}

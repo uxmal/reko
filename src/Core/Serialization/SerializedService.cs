@@ -65,7 +65,7 @@ namespace Reko.Core.Serialization
                     Vector = this.Ordinal
                 };
             }
-            if (svc.SyscallInfo.RegisterValues == null)
+            if (svc.SyscallInfo.RegisterValues is null)
 			{
 				svc.SyscallInfo.RegisterValues = Array.Empty<RegValue>();
 			}

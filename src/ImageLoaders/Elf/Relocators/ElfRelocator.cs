@@ -210,7 +210,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     var imgSym = Loader.CreateImageSymbol(elfSym, program.Architecture, true);
                     // Symbols need to refer to the loaded image, if their value is 0,
                     // they are imported symbols.
-                    if (imgSym == null || imgSym.Address!.ToLinear() == 0)
+                    if (imgSym is null || imgSym.Address!.ToLinear() == 0)
                         continue;
                     imageSymbols[imgSym.Address] = imgSym;
                 }

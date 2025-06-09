@@ -39,7 +39,7 @@ namespace Reko.Arch.WE32100
         {
             if (Deferred)
                 renderer.WriteChar('*');
-            if (Base == null)
+            if (Base is null)
             {
                 renderer.WriteChar('$');
                 renderer.WriteFormat("0x{0:X}", (uint) Offset);

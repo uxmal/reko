@@ -303,7 +303,7 @@ namespace Reko.Libraries.Microchip.V1
         {
             get
             {
-                if (pic.InstructionSet == null)
+                if (pic.InstructionSet is null)
                     return InstructionSetID.UNDEFINED;
                 if (!mapInstrID.TryGetValue(pic.InstructionSet.ID, out InstructionSetID id))
                 {

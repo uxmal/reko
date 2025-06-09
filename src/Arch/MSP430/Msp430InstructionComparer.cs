@@ -40,9 +40,9 @@ namespace Reko.Arch.Msp430
 
         private bool CompareOperands(MachineOperand op1, MachineOperand op2)
         {
-            if (op1 == null && op2 == null)
+            if (op1 is null && op2 is null)
                 return true;
-            if (op1 == null || op2 == null)
+            if (op1 is null || op2 is null)
                 return false;
             if (op1.GetType() != op2.GetType())
                 return false;

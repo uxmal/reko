@@ -1411,7 +1411,7 @@ namespace Reko.Arch.X86.Rewriter
         private Func<Expression,long,Expression> GetIncrementOperator()
         {
             Constant direction = state.GetFlagGroup((uint)FlagM.DF);
-            if (direction == null || !direction.IsValid)
+            if (direction is null || !direction.IsValid)
                 return m.IAddS;        // Better safe than sorry.
             if (direction.ToBoolean())
                 return m.ISubS;

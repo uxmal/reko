@@ -121,7 +121,7 @@ namespace Reko.Arch.Pdp.Pdp11
         private static bool e(uint wOpcode, Pdp11Disassembler dasm)
         {
             var op = dasm.DecodeOperand(wOpcode >> 6);
-            if (op == null)
+            if (op is null)
                 return false;
             dasm.ops.Add(op);
             return true;
@@ -175,7 +175,7 @@ namespace Reko.Arch.Pdp.Pdp11
         private static bool F(uint wOpcode, Pdp11Disassembler dasm)
         {
             var op = dasm.DecodeOperand(wOpcode, true);
-            if (op == null)
+            if (op is null)
                 return false;
             dasm.ops.Add(op);
             return true;
@@ -184,7 +184,7 @@ namespace Reko.Arch.Pdp.Pdp11
         private static bool f(uint wOpcode, Pdp11Disassembler dasm)
         {
             var op = dasm.FpuAccumulator(wOpcode);
-            if (op == null)
+            if (op is null)
                 return false;
             dasm.ops.Add(op);
             return true;
@@ -397,7 +397,7 @@ namespace Reko.Arch.Pdp.Pdp11
         private RegisterStorage? FpuAccumulator(uint opcode)
         {
             var freg= arch.GetFpuRegister((int)opcode & 0x7);
-            if (freg == null)
+            if (freg is null)
                 return null;
             return freg;
         }

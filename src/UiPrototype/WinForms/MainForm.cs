@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -23,7 +23,7 @@ namespace Reko.UiPrototype.WinForms
 
         private void treeView1_DoubleClick(object sender, EventArgs e)
         {
-            if (treeView1.SelectedNode == null)
+            if (treeView1.SelectedNode is null)
                 return;
 
             if (IsFnNode(treeView1.SelectedNode))
@@ -195,7 +195,7 @@ namespace Reko.UiPrototype.WinForms
 
         private void timerSearchResults_Tick(object sender, EventArgs e)
         {
-            if (currentSearch == null)
+            if (currentSearch is null)
             {
                 timerSearchResults.Stop();
                 return;

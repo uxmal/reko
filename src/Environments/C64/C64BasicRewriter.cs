@@ -196,7 +196,7 @@ namespace Reko.Environments.C64
         private Expression? ExpectExpr()
         {
             var expr = ParseExpr();
-            if (expr == null)
+            if (expr is null)
                 SyntaxError();
             return expr;
         }
@@ -281,7 +281,7 @@ namespace Reko.Environments.C64
             }
             ++i;
             var rhs = ParseOrExp();
-            if (rhs == null)
+            if (rhs is null)
             {
                 SyntaxError();
                 return null;
@@ -292,7 +292,7 @@ namespace Reko.Environments.C64
         private Expression? ParseOrExp()
         {
             var e = ParseTerm();
-            if (e == null)
+            if (e is null)
                 return null;
             while (EatSpaces())
             {
@@ -317,7 +317,7 @@ namespace Reko.Environments.C64
         private Expression? ParseTerm()
         {
             var e = ParseFactor();
-            if (e == null)
+            if (e is null)
                 return null;
             while (EatSpaces())
             {
@@ -339,7 +339,7 @@ namespace Reko.Environments.C64
             if (PeekAndDiscard((byte)Token.sub))
             {
                 var e = ParseFactor();
-                if (e == null)
+                if (e is null)
                     return null;
                 return m.Neg(e);
             }
@@ -526,7 +526,7 @@ namespace Reko.Environments.C64
         private void RewriteIf()
         {
             var expr = ParseExpr();
-            if (expr == null)
+            if (expr is null)
             {
                 SyntaxError();
                 return;
@@ -577,7 +577,7 @@ namespace Reko.Environments.C64
             if (PeekAndDiscard((byte)'"'))
             {
                 var str = ParseStringLiteral();
-                if (str == null)
+                if (str is null)
                 {
                     SyntaxError();
                     return;
@@ -620,7 +620,7 @@ namespace Reko.Environments.C64
         private void RewriteOpen()
         {
             var logicalFileNo = ParseExpr();
-            if (logicalFileNo == null)
+            if (logicalFileNo is null)
                 SyntaxError();
             Expression deviceNo = Constant.Int16(-1);
             Expression secondaryNo = Constant.Int16(-1);
@@ -634,7 +634,7 @@ namespace Reko.Environments.C64
                 else
                 {
                     deviceNo = ParseExpr()!;
-                    if (deviceNo == null)
+                    if (deviceNo is null)
                         SyntaxError();
                     if (EatSpaces() && PeekAndDiscard((byte)','))
                     {
@@ -645,7 +645,7 @@ namespace Reko.Environments.C64
                         else
                         {
                             secondaryNo = ParseExpr()!;
-                            if (secondaryNo == null)
+                            if (secondaryNo is null)
                                 SyntaxError();
                             if (EatSpaces() && PeekAndDiscard((byte)','))
                             {
@@ -702,7 +702,7 @@ namespace Reko.Environments.C64
                 if (PeekAndDiscard((byte)Token.TAB_lp))
                 {
                     expr = ParseExpr();
-                    if (expr == null)
+                    if (expr is null)
                     {
                         SyntaxError();
                         return;
@@ -719,7 +719,7 @@ namespace Reko.Environments.C64
                 {
                     intrinsic = print_intrinsic;
                 }
-                else if (expr == null)
+                else if (expr is null)
                 {
                     intrinsic = printLine_intrinsic;
                 }
@@ -744,7 +744,7 @@ namespace Reko.Environments.C64
                    PeekAndDiscard((byte)';'))
             {
                 var expr = ParseExpr();
-                if (expr == null)
+                if (expr is null)
                     break;
                 m.SideEffect(
                     m.Fn(printStm_intrinsic,

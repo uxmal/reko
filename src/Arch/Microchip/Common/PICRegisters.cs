@@ -510,7 +510,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// </returns>
         public static RegisterStorage? GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> regs)
         {
-            if (regs == null || regs.Count <= 0)
+            if (regs is null || regs.Count <= 0)
                 return reg;
             ulong mask = regs.Where(b => b != null && b.OverlapsWith(reg)).Aggregate(0ul, (a, r) => a | r.BitMask);
             if ((mask & reg.BitMask) == reg.BitMask)
@@ -524,7 +524,7 @@ namespace Reko.Arch.MicrochipPIC.Common
                 foreach (var subreg in subregs.Values)
                 {
                     if ((subreg.BitMask & mask) == subreg.BitMask &&
-                        (rMax == null || subreg.BitSize > rMax.BitSize))
+                        (rMax is null || subreg.BitSize > rMax.BitSize))
                     {
                         rMax = subreg;
                     }
@@ -605,7 +605,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="regAddr"/> is null.</exception>
         public static bool TryGetAlwaysAccessibleRegister(PICBankedAddress regAddr, [MaybeNullWhen(false)] out PICRegisterStorage reg)
         {
-            if (regAddr == null)
+            if (regAddr is null)
                 throw new ArgumentNullException(nameof(regAddr));
             return TryGetAlwaysAccessibleRegister(regAddr.BankOffset.ToUInt16(), out reg);
         }

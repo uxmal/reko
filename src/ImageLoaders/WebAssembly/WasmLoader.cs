@@ -184,7 +184,7 @@ namespace Reko.ImageLoaders.WebAssembly
                     break;
                 case 1:
                     var table = this.ReadTableType(rdr);
-                    if (table == null)
+                    if (table is null)
                         return null;
                     imps.Add(new Import
                     {
@@ -196,7 +196,7 @@ namespace Reko.ImageLoaders.WebAssembly
                     break;
                 case 2:
                     var memory_type = ReadResizableLimits(rdr);
-                    if (memory_type == null)
+                    if (memory_type is null)
                         return null;
                     imps.Add(new Import
                     {
@@ -208,7 +208,7 @@ namespace Reko.ImageLoaders.WebAssembly
                     break;
                 case 3:
                     var global_type = ReadGlobalType(rdr);
-                    if (global_type == null)
+                    if (global_type is null)
                         return null;
                     imps.Add(new Import
                     {
@@ -247,7 +247,7 @@ namespace Reko.ImageLoaders.WebAssembly
             for (int i = 0; i < count; ++i)
             {
                 TableType? tt = ReadTableType(rdr);
-                if (tt == null)
+                if (tt is null)
                     return null;
                 tables.Add(tt);
             }
@@ -257,11 +257,11 @@ namespace Reko.ImageLoaders.WebAssembly
         private TableType? ReadTableType(WasmImageReader rdr)
         {
             var dt = ReadValueType(rdr);
-            if (dt == null)
+            if (dt is null)
                 return null;
 
             var tpl = ReadResizableLimits(rdr);
-            if (tpl == null)
+            if (tpl is null)
                 return null;
 
             return new TableType
@@ -323,7 +323,7 @@ namespace Reko.ImageLoaders.WebAssembly
             for (int i = 0; i < count; ++i)
             {
                 var global_type = ReadGlobalType(rdr);
-                if (global_type == null)
+                if (global_type is null)
                     return null;
                 var expr = LoadInitExpr(rdr);
                 globals.Add(new GlobalEntry
@@ -428,7 +428,7 @@ namespace Reko.ImageLoaders.WebAssembly
                 if (!rdr.TryReadVarUInt32(out uint n))
                     return null;
                 var dt = ReadValueType(rdr);
-                if (dt == null)
+                if (dt is null)
                     return null;
                 locals.AddRange(Enumerable.Range(0, (int)n).Select(nn => new LocalVariable(dt)));
             }
@@ -460,7 +460,7 @@ namespace Reko.ImageLoaders.WebAssembly
                 if (!rdr.TryReadVarUInt32(out uint size))
                     return null;
                 var bytes = rdr.ReadBytes(size);
-                if (bytes == null)
+                if (bytes is null)
                     return null;
                 segments.Add(new DataSegment(index, offset, bytes));
             }
@@ -483,7 +483,7 @@ namespace Reko.ImageLoaders.WebAssembly
             for (int i = 0; i < param_count; ++i)
             {
                 var dt = ReadValueType(rdr);
-                if (dt == null)
+                if (dt is null)
                     return null;
                 args.Add(new Identifier(
                     "arg" + i,

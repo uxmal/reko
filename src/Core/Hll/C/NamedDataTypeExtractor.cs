@@ -125,7 +125,7 @@ namespace Reko.Core.Hll.C
         public Func<NamedDataType, NamedDataType> VisitField(FieldDeclarator field)
         {
             Func<NamedDataType, NamedDataType> fn;
-            if (field.Declarator == null)
+            if (field.Declarator is null)
             {
                 fn = (nt) => nt;
             }
@@ -521,7 +521,7 @@ namespace Reko.Core.Hll.C
             if (complexType.Type == CTokenType.Struct)
             {
                 StructType_v1 str;
-                if (complexType.Name == null || symbolTable.StructsSeen.ContainsKey(complexType.Name))
+                if (complexType.Name is null || symbolTable.StructsSeen.ContainsKey(complexType.Name))
                 {
                     // Generate a unique name.
                     str = new StructType_v1
@@ -545,7 +545,7 @@ namespace Reko.Core.Hll.C
             }
             else if (complexType.Type == CTokenType.Union)
             {
-                if (complexType.Name == null || !symbolTable.UnionsSeen.TryGetValue(complexType.Name, out var un))
+                if (complexType.Name is null || !symbolTable.UnionsSeen.TryGetValue(complexType.Name, out var un))
                 {
                     un = new UnionType_v1 { Name = complexType.Name };
                     if (un.Name != null)
@@ -553,7 +553,7 @@ namespace Reko.Core.Hll.C
                         symbolTable.UnionsSeen.Add(un.Name, un);
                     }
                 }
-                if (!complexType.IsForwardDeclaration() && un.Alternatives == null)
+                if (!complexType.IsForwardDeclaration() && un.Alternatives is null)
                 {
                     un.Alternatives = ExpandUnionFields(complexType.DeclList).ToArray();
                     symbolTable.Sizer.SetSize(un, AlignmentOf(complexType));
@@ -580,7 +580,7 @@ namespace Reko.Core.Hll.C
         /// <inheritdoc/>
         public SerializedType VisitEnum(EnumeratorTypeSpec e)
         {
-            if (e.Tag == null || !symbolTable.EnumsSeen.TryGetValue(e.Tag, out var _))
+            if (e.Tag is null || !symbolTable.EnumsSeen.TryGetValue(e.Tag, out var _))
             {
                 var en = new SerializedEnumType {
                     Name = e.Tag ?? string.Format("enum_{0}", symbolTable.EnumsSeen.Count)

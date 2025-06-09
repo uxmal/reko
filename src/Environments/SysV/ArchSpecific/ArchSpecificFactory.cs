@@ -120,7 +120,7 @@ namespace Reko.Environments.SysV.ArchSpecific
                     return cci386KernelAbi;
                 }
 
-                if (this.ccX86 == null)
+                if (this.ccX86 is null)
                 {
                     if (services is null)
                         return null;
@@ -152,7 +152,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             case "msp430":
                 return arch.GetCallingConvention("");
             case "risc-v":
-                if (this.ccRiscV == null)
+                if (this.ccRiscV is null)
                 {
                     var t = Type.GetType("Reko.Arch.RiscV.RiscVCallingConvention,Reko.Arch.RiscV", true)!;
                     this.ccRiscV = (ICallingConvention) Activator.CreateInstance(t, arch)!;

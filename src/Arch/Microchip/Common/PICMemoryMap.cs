@@ -98,7 +98,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             /// <exception cref="ArgumentNullException">Thrown if <paramref name="pic"/> is null.</exception>
             public MemTraits(IPICDescriptor pic)
             {
-                if (pic == null)
+                if (pic is null)
                     throw new ArgumentNullException(nameof(pic));
                 maptraits.Clear();
                 foreach (var trait in pic.PICMemoryTraits)
@@ -609,7 +609,7 @@ namespace Reko.Arch.MicrochipPIC.Common
                 var pic = map?.PIC ?? throw new ArgumentNullException(nameof(map));
                 if (mode == PICExecMode.Extended && !pic.HasExtendedMode)
                     throw new InvalidOperationException("Extended execution mode is not supported by this PIC");
-                if (traits == null)
+                if (traits is null)
                     throw new ArgumentNullException(nameof(traits));
 
                 if (pic.DataSpaceSize < MinDataMemorySize)
@@ -716,15 +716,15 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         protected static bool IsValidMap(PICMemoryMap map)
         {
-            if (map.traits == null)
+            if (map.traits is null)
                 return false;
-            if (map.progMap == null)
+            if (map.progMap is null)
                 return false;
             if (!map.HasSubDomain(PICMemorySubDomain.DeviceConfig))
                 return false;
             if (!map.HasSubDomain(PICMemorySubDomain.Code) && !map.HasSubDomain(PICMemorySubDomain.ExtCode))
                 return false;
-            if (map.dataMap == null)
+            if (map.dataMap is null)
                 return false;
             if (!map.HasSubDomain(PICMemorySubDomain.GPR))
                 return false;

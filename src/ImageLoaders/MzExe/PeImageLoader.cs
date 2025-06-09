@@ -417,7 +417,7 @@ namespace Reko.ImageLoaders.MzExe
 			{
 				PeSection section = ReadSection(i, rdr);
 				sectionMap.Add(section);
-				if (minSection == null || section.VirtualAddress < minSection.VirtualAddress)
+				if (minSection is null || section.VirtualAddress < minSection.VirtualAddress)
 					minSection = section;
                 trace.Inform("  Section: {0,-10} {1:X8} {2:X8} {3:X8} {4:X8} {5:X8}", section.Name ?? "(null)", section.OffsetRawData, section.SizeRawData, section.VirtualAddress, section.VirtualSize, section.Flags);
 			}
@@ -874,7 +874,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
             rdr.ReadLeUInt32();		                    // ...and forwarder chain
             var dllName = ReadUtf8String(imgLoaded, rdr.ReadLeUInt32(), 0);		// DLL name
             var rvaIAT = rdr.ReadLeUInt32();		    // Import address table 
-            if (rvaILT == 0 && dllName == null)
+            if (rvaILT == 0 && dllName is null)
                 return false;
 
             var iatOffset = rvaILT != 0 ? rvaILT : rvaIAT;
@@ -889,7 +889,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
                 var addrIat = rdrIat.Address;
                 var addrIlt = rdrIlt.Address;
                 var (impRef, bitSize) = innerLoader.ResolveImportDescriptorEntry(imgLoaded, dllName!, rdrIlt, rdrIat);
-                if (impRef == null)
+                if (impRef is null)
                     break;
                 ImageSymbols[addrIat] = ImageSymbol.DataObject(
                     arch,
@@ -915,7 +915,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
             if (rvaDllName == 0)
                 return false;
             var dllName = ReadUtf8String(imgLoaded, rvaDllName - offset, 0);    // DLL name.
-            if (dllName == null)
+            if (dllName is null)
                 return false;
             var rdrModule = rdr.ReadLeInt32();
             var rdrThunks = imgLoaded.CreateLeReader(rdr.ReadLeUInt32() - offset);
@@ -1098,7 +1098,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
             }
             else
             {
-                if (symOld.Name == null && symNew.Name != null)
+                if (symOld.Name is null && symNew.Name != null)
                     symbols[addr] = symNew;
             }
         }

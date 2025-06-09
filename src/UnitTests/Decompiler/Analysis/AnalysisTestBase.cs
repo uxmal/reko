@@ -202,7 +202,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             var asm = new X86TextAssembler(arch);
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
             {
-                if (this.platform == null)
+                if (this.platform is null)
                 {
                     this.platform = new Reko.Environments.Windows.Win32Platform(sc, arch);
                 }

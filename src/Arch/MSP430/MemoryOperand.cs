@@ -35,7 +35,7 @@ namespace Reko.Arch.Msp430
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            if (Base == null)
+            if (Base is null)
             {
                 renderer.WriteFormat("&{0:X4}", (ushort) this.Offset);
                 return;

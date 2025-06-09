@@ -60,7 +60,7 @@ namespace Reko.Environments.Windows
                 return (s, sig, null);
             }
             var qname = ParseName();
-            if (qname == null)
+            if (qname is null)
                 return (null, null, null);
             if (i >= s.Length)
             {
@@ -85,7 +85,7 @@ namespace Reko.Environments.Windows
                 ++i;
                 // Special function
                 var fnName = ParseSpecialFnName(qname.Last());
-                if (fnName == null)
+                if (fnName is null)
                     return (null, null, null);
                 qname.Add(fnName);
             }
@@ -114,7 +114,7 @@ namespace Reko.Environments.Windows
                 else
                 {
                     var argType = ParseArgumentType(domain);
-                    if (argType == null)
+                    if (argType is null)
                         return (null, null, null);
                     args.Add(new Argument_v1 { Type = argType, });
                 }
@@ -230,22 +230,22 @@ namespace Reko.Environments.Windows
                 case cLong: return new PrimitiveType_v1 { ByteSize = 4, Domain = domain };
                 case cNearPtr:
                     type = ParseArgumentType(domain);
-                    if (type == null)
+                    if (type is null)
                         return null;
                     return new PointerType_v1 { PointerSize = 2, DataType = type };
                 case cNearRef:
                     type = ParseArgumentType(domain);
-                    if (type == null)
+                    if (type is null)
                         return null;
                     return new ReferenceType_v1 { Size = 2, Referent = type };
                 case cFarPtr:
                     type = ParseArgumentType(domain);
-                    if (type == null)
+                    if (type is null)
                         return null;
                     return new PointerType_v1 { PointerSize = 4, DataType = type };
                 case cFarRef:
                     type = ParseArgumentType(domain);
-                    if (type == null)
+                    if (type is null)
                         return null;
                     return new ReferenceType_v1 { Size = 4, Referent = type };
                 case cUnsigned:

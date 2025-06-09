@@ -156,7 +156,7 @@ namespace Reko.Typing
             // We've successfully traversed a pointer to a valid destination!
             // The address must therefore be of type ptr.Pointee.
             visited.Add(offset);
-            if (globalStr.Fields.AtOffset((int)offset) == null)
+            if (globalStr.Fields.AtOffset((int)offset) is null)
             {
                 Debug.Print("       Discovery: {0:X} {1}", offset, ptr.Pointee);
                 Discoveries.Add(new StructureField((int)offset, ptr.Pointee));

@@ -40,7 +40,7 @@ namespace Reko.Arch.Arm.AArch64
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             int iOp = WriteMnemonic(renderer);
-            if (Operands == null || Operands.Length == 0)
+            if (Operands is null || Operands.Length == 0)
                 return;
             renderer.Tab();
             RenderOperand(Operands[iOp++], renderer, options);

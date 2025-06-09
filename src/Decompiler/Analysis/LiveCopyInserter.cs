@@ -101,7 +101,7 @@ namespace Reko.Analysis
 		{
 			foreach (var sid in ssaIds.ToArray())
 			{
-				if (sid.DefStatement == null || sid.Uses.Count == 0)
+				if (sid.DefStatement is null || sid.Uses.Count == 0)
 					continue;
                 if (sid.DefStatement.Instruction is PhiAssignment ass)
                 {

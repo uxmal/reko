@@ -128,7 +128,7 @@ Options:
                 sc.AddService<IConfigurationService>(new StubConfigurationService());
                 var loader = new HunkLoader(sc, ImageLocation.FromUri(scan_file), hunkBytes);
                 Address? addr = null;
-                if (args["--base-address"] == null ||
+                if (args["--base-address"] is null ||
                     !Address.TryParse32((string)args["--base-address"].Value, out var a))
                 {
                     addr = Address.Ptr32(0);
@@ -246,7 +246,7 @@ Options:
                 //    IEnumerable<uint> addrs = rel.get_seq_addrs(base_addr);
                 //    // relocate and return data of segments
                 //    datas = rel.relocate(addrs);
-                //    if (datas == null)
+                //    if (datas is null)
                 //    {
                 //        Console.WriteLine("ERROR: relocation failed:", path);
                 //        return false;
@@ -293,7 +293,7 @@ Options:
                 //{
                 //    reader = amitools.binfmt.elf.ELFReader();
                 //    elf = reader.load(open(f, "rb"));
-                //    if (elf == null)
+                //    if (elf is null)
                 //    {
                 //        Console.WriteLine("ERROR loading ELF:", elf.error_string);
                 //        return 1;

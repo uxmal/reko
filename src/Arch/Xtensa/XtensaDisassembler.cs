@@ -195,7 +195,7 @@ namespace Reko.Arch.Xtensa
         private static bool Mr(uint _, XtensaDisassembler dasm)
         {
             var mac16reg = dasm.arch.GetMac16Register(dasm.state.r & 3);
-            if (mac16reg == null)
+            if (mac16reg is null)
                 return false;
             dasm.ops.Add(mac16reg);
             return true;
@@ -205,7 +205,7 @@ namespace Reko.Arch.Xtensa
         private static bool Mr_01(uint _, XtensaDisassembler dasm)
         {
             var mac16reg = dasm.arch.GetMac16Register((dasm.state.r >> 2) & 1);
-            if (mac16reg == null)
+            if (mac16reg is null)
                 return false;
             dasm.ops.Add(mac16reg);
             return true;
@@ -214,7 +214,7 @@ namespace Reko.Arch.Xtensa
         private static bool Mt(uint wInstr, XtensaDisassembler dasm)
         {
             var mac16reg = dasm.arch.GetMac16Register(dasm.state.t);
-            if (mac16reg == null)
+            if (mac16reg is null)
                 return false;
             dasm.ops.Add(mac16reg);
             return true;
@@ -225,7 +225,7 @@ namespace Reko.Arch.Xtensa
         private static bool Mt_23(uint wInstr, XtensaDisassembler dasm)
         {
             var mac16reg = dasm.arch.GetMac16Register((dasm.state.t >> 2) | 0b10);
-            if (mac16reg == null)
+            if (mac16reg is null)
                 return false;
             dasm.ops.Add(mac16reg);
             return true;
@@ -236,7 +236,7 @@ namespace Reko.Arch.Xtensa
         {
             //$REVIEW: Is this correct in bigendian?
             var reg = dasm.arch.GetSpecialRegister((dasm.state.r << 4) | dasm.state.s);
-            if (reg == null)
+            if (reg is null)
                 return false;
             dasm.ops.Add(reg);
             return true;

@@ -112,7 +112,7 @@ namespace Reko.Core.Serialization
                 IsAlloca == false &&
                 Terminates == false &&
                 Allocator == false &&
-                ArraySize == null &&
+                ArraySize is null &&
                 string.IsNullOrEmpty(VarargsParserClass) &&
                 ReturnAddressAdjustment == 0;
         }

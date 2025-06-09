@@ -22,11 +22,13 @@ namespace Reko.UnitTests.Decompiler.Scanning;
 
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Collections;
 using Reko.Core.Expressions;
 using Reko.Core.Loading;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
+using Reko.Core.Types;
 using Reko.Scanning;
 using System;
 using System.Collections.Generic;
@@ -64,12 +66,40 @@ public class FragmentFinderTests
         return b;
     }
 
+    /// <summary>
+    /// Create an image segment at address <paramref name="uAddr"/> with 
+    /// length <paramref name="length"/>.
+    /// </summary>
+    /// <param name="uAddr">Address of image segment.</param>
+    /// <param name="length">Length of image segment.</param>
+    /// <returns>
+    /// An image segment.
+    /// </returns>
     private ImageSegment S(uint uAddr, uint length)
     {
         Address addr = Address.Ptr32(uAddr);
         var mem = new ByteMemoryArea(addr, new byte[length]);
         var s = new ImageSegment($"s{uAddr:X}", mem, AccessMode.ReadExecute);
         return s;
+    }
+
+    /// <summary>
+    /// Creaets an image map item at address <paramref name="uAddr"/> with
+    /// size <paramref name="length"/>.
+    /// </summary>
+    /// <param name="uAddr">Address of the image map item.</param>
+    /// <param name="length">Length of the image map item.</param>
+    /// <returns>
+    /// An image map item.
+    /// </returns>
+    private ImageMapItem I(uint uAddr, uint length)
+    {
+        Address addr = Address.Ptr32(uAddr);
+        var item = new ImageMapItem(addr) {
+            Size = length,
+            DataType = new UnknownType((int)length)
+        };
+        return item;
     }
 
     private void TestResolveOverlaps(string sExpected, RtlBlock[] blocks)
@@ -79,11 +109,15 @@ public class FragmentFinderTests
         AssertResult(sExpected, frf.ResolveOverlaps(blocks));
     }
 
-    private void TestGenerateGapFragments(string sExpected, ImageSegment[] segments, RtlBlock[] blocks)
+    private void TestGenerateGapFragments(
+        string sExpected, 
+        ImageSegment[] segments,
+        RtlBlock[] blocks,
+        ImageMapItem[] items)
     {
         var frf = new ChunkEnumerator();
 
-        AssertResult(sExpected, frf.EnumerateFragments(segments, blocks));
+        AssertResult(sExpected, frf.EnumerateFragments(segments, blocks, items));
     }
 
     private void AssertResult(string sExpected, IEnumerable<Chunk> actual)
@@ -127,27 +161,49 @@ public class FragmentFinderTests
     [Test]
     public void Frf_GenerateGapFragments_NoBlocks()
     {
-        TestGenerateGapFragments("[G(0x1000, 0x1000)]", [S(0x1000, 0x1000)], []);
+        TestGenerateGapFragments("[G(0x1000, 0x1000)]", 
+            [S(0x1000, 0x1000)],
+            [],
+            []);
     }
 
     [Test]
     public void Frf_GenerateGapFragments_BlockAtStartOfSegment()
     {
-        TestGenerateGapFragments("[B(0x1000, 0x100), G(0x1100, 0xF00)]", [S(0x1000, 0x1000)], [B(0x1000, 0x100)]);
+        TestGenerateGapFragments("[B(0x1000, 0x100), G(0x1100, 0xF00)]",
+            [S(0x1000, 0x1000)],
+            [B(0x1000, 0x100)],
+            []);
     }
 
     [Test]
     public void Frf_GenerateGapFragments_BlockInMiddleOfSegment()
     {
-        TestGenerateGapFragments("[G(0x1000, 0x100), B(0x1100, 0x100), G(0x1200, 0xE00)]", [S(0x1000, 0x1000)], [B(0x1100, 0x100)]);
+        TestGenerateGapFragments(
+            "[G(0x1000, 0x100), B(0x1100, 0x100), G(0x1200, 0xE00)]", 
+            [S(0x1000, 0x1000)],
+            [B(0x1100, 0x100)],
+            []);
     }
 
     [Test]
     public void Frf_GenerateGapFragments_BlockAtEndOfSegment()
     {
-        TestGenerateGapFragments("[G(0x1000, 0x100), B(0x1100, 0xF00)]", [S(0x1000, 0x1000)], [B(0x1100, 0xF00)]);
+        TestGenerateGapFragments("[G(0x1000, 0x100), B(0x1100, 0xF00)]",
+            [S(0x1000, 0x1000)],
+            [B(0x1100, 0xF00)],
+            []);
     }
 
+
+    [Test]
+    public void Frf_GenerateGapFragments_DataFragment()
+    {
+        TestGenerateGapFragments("[G(0x1080, 0x80), B(0x1100, 0xF00)]",
+            [S(0x1000, 0x1000)],
+            [B(0x1100, 0xF00)],
+            [I(0x1000, 0x80)]);
+    }
 
     public class FakeArchitecture : Reko.Core.ProcessorArchitecture
     {

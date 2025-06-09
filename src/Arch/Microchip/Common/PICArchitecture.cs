@@ -86,7 +86,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// </summary>
         public void CreatePICProcessorModel()
         {
-            if (Options == null || Options.ProcessorModel == null)
+            if (Options is null || Options.ProcessorModel is null)
                 throw new InvalidOperationException($"Needs to set architecture's {nameof(Options)} before calling {nameof(CreatePICProcessorModel)} method.");
             Description = Options.ProcessorModel.PICName;
             ProcessorModel.CreateMemoryDescriptor();
@@ -241,7 +241,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         public override void LoadUserOptions(Dictionary<string, object>? options)
         {
             //TODO: throw exception instead of tinkering the options, when dcproject loading will be effective.
-            if (options == null)
+            if (options is null)
             {
                 options = new Dictionary<string, object>()
                 {
@@ -276,7 +276,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public override Dictionary<string, object>? SaveUserOptions()
         {
-            if (Options == null)
+            if (Options is null)
                 return null;
             var dict = new Dictionary<string, object>
             {

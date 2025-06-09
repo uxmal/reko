@@ -85,7 +85,7 @@ namespace Reko.ImageLoaders.LLVM
                     break;
                 }
             }
-            if (platform == null)
+            if (platform is null)
                 platform = new DefaultPlatform(services, arch!);
             this.program = new Program
             {

@@ -57,7 +57,7 @@ namespace Reko.Arch.M68k.Rewriter
                     Constant.Byte(1), (s, d) =>
                         m.Fn(rotation, d, s));
             }
-            if (opDst == null)
+            if (opDst is null)
             {
                 EmitInvalid();
                 return;
@@ -125,7 +125,7 @@ namespace Reko.Arch.M68k.Rewriter
             var tmpMask = binder.CreateTemporary(PrimitiveType.UInt32);
             m.Assign(tmpMask, m.Shl(1, opSrc));
             var opDst = orw.RewriteDst(instr.Operands[1], instr.Address, tmpMask, (s, d) => m.Xor(d, s));
-            if (opDst == null)
+            if (opDst is null)
             {
                 EmitInvalid();
                 return;
@@ -228,7 +228,7 @@ namespace Reko.Arch.M68k.Rewriter
         {
             var opSrc = orw.RewriteSrc(instr.Operands[0], instr.Address);
             var opDst = orw.RewriteDst(instr.Operands[1], instr.Address, PrimitiveType.Int32, opSrc, binOpGen);
-            if (opDst == null)
+            if (opDst is null)
             {
                 EmitInvalid();
                 return;
@@ -256,7 +256,7 @@ namespace Reko.Arch.M68k.Rewriter
             else
             {
                 var opDst = orw.RewriteDst(instr.Operands[1], instr.Address, opSrc, opGen);
-                if (opDst == null)
+                if (opDst is null)
                 {
                     EmitInvalid();
                     return;
@@ -273,7 +273,7 @@ namespace Reko.Arch.M68k.Rewriter
             var src = orw.RewriteSrc(instr.Operands[0], instr.Address);
             var dst = orw.RewriteDst(instr.Operands[1], instr.Address, src, (d, s) => 
                     opr(opr(d, s), x));
-            if (dst == null)
+            if (dst is null)
             {
                 EmitInvalid();
                 return;
@@ -305,7 +305,7 @@ namespace Reko.Arch.M68k.Rewriter
         {
             var opSrc = orw.RewriteSrc(instr.Operands[0], instr.Address);
             var opDst = orw.RewriteDst(instr.Operands[1], instr.Address, opSrc, opGen);
-            if (opDst == null)
+            if (opDst is null)
             {
                 EmitInvalid();
                 return;
@@ -316,7 +316,7 @@ namespace Reko.Arch.M68k.Rewriter
         {
             var opSrc = orw.RewriteSrc(instr.Operands[0], instr.Address);
             var opDst = orw.RewriteDst(instr.Operands[1], instr.Address, opSrc, opGen);
-            if (opDst == null)
+            if (opDst is null)
             {
                 EmitInvalid();
                 return;
@@ -503,7 +503,7 @@ namespace Reko.Arch.M68k.Rewriter
         {
             if (op is MemoryOperand mem)
             {
-                if (mem.Base == null)
+                if (mem.Base is null)
                 {
                     return mem.Offset!;
                 }
@@ -515,7 +515,7 @@ namespace Reko.Arch.M68k.Rewriter
                     else 
                         return addr + mem.Offset.ToInt32();
                 }
-                else if (mem.Offset == null)
+                else if (mem.Offset is null)
                 {
                     return binder.EnsureRegister(mem.Base);
                 }
@@ -819,7 +819,7 @@ namespace Reko.Arch.M68k.Rewriter
             orw.DataWidth = PrimitiveType.Byte;
             var dst = orw.RewriteDst(instr.Operands[1], instr.Address, src, (s, d) =>
                     m.IAdd(m.IAdd(d, s), x));
-            if (dst == null)
+            if (dst is null)
             {
                 EmitInvalid();
                 return;
@@ -837,7 +837,7 @@ namespace Reko.Arch.M68k.Rewriter
             orw.DataWidth = PrimitiveType.Byte;
             var dst = orw.RewriteDst(instr.Operands[1], instr.Address, src, (d, s) =>
                     m.ISub(m.ISub(d, s), x));
-            if (dst == null)
+            if (dst is null)
             {
                 EmitInvalid();
                 return;
@@ -851,7 +851,7 @@ namespace Reko.Arch.M68k.Rewriter
             orw.DataWidth = PrimitiveType.Byte;
             var dst = orw.RewriteDst(instr.Operands[0], instr.Address, null!, (s, d) =>
                     m.ISub(m.ISub(Constant.Zero(d.DataType), d), x));
-            if (dst == null)
+            if (dst is null)
             {
                 EmitInvalid();
                 return;
@@ -884,7 +884,7 @@ namespace Reko.Arch.M68k.Rewriter
 
         private void AllConditions(Expression? expr)
         {
-            if (expr == null)
+            if (expr is null)
             {
                 EmitInvalid();
                 return;
@@ -895,7 +895,7 @@ namespace Reko.Arch.M68k.Rewriter
 
         private void LogicalConditions(Expression? expr)
         {
-            if (expr == null)
+            if (expr is null)
             {
                 EmitInvalid();
                 return;

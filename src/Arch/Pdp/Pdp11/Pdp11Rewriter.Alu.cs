@@ -37,7 +37,7 @@ namespace Reko.Arch.Pdp.Pdp11
         {
             var src = binder.EnsureFlagGroup(Registers.C);
             var dst = RewriteDst(instr.Operands[0], src, fn);
-            if (dst == null)
+            if (dst is null)
             {
                 iclass = InstrClass.Invalid;
                 m.Invalid();
@@ -66,7 +66,7 @@ namespace Reko.Arch.Pdp.Pdp11
             var r1 = arch.GetRegister(r.Number + 1)!;
             var dst = binder.EnsureSequence(PrimitiveType.Word32, r, r1);
             var sh = RewriteSrc(instr.Operands[0]);
-            if (sh == null)
+            if (sh is null)
             {
                 m.Invalid();
                 return;
@@ -206,7 +206,7 @@ namespace Reko.Arch.Pdp.Pdp11
         private void RewriteMfpd()
         {
             var src = RewriteSrc(instr.Operands[0]);
-            if (src == null)
+            if (src is null)
             {
                 iclass = InstrClass.Invalid;
                 m.Invalid();
@@ -224,7 +224,7 @@ namespace Reko.Arch.Pdp.Pdp11
         private void RewriteMfpi()
         {
             var src = RewriteSrc(instr.Operands[0]);
-            if (src == null)
+            if (src is null)
             {
                 iclass = InstrClass.Invalid;
                 m.Invalid();
@@ -248,7 +248,7 @@ namespace Reko.Arch.Pdp.Pdp11
         private void RewriteMtpi()
         {
             var src = RewriteSrc(instr.Operands[0]);
-            if (src == null)
+            if (src is null)
             {
                 iclass = InstrClass.Invalid;
                 m.Invalid();
@@ -376,7 +376,7 @@ namespace Reko.Arch.Pdp.Pdp11
         {
             var src = RewriteSrc(instr.Operands[0]);
             var dst = RewriteDst(instr.Operands[0], src, e => m.Fn(swab_intrinsic, e));
-            if (dst == null)
+            if (dst is null)
             {
                 m.Invalid();
             }

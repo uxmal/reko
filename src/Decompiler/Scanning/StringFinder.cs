@@ -61,7 +61,7 @@ namespace Reko.Scanning
                     }
                     else
                     {
-                        if (addrStartRun == null)
+                        if (addrStartRun is null)
                             addrStartRun = rdr.Address - charType.Size;
                         ++cValid;
                     }

@@ -352,7 +352,7 @@ namespace Reko.Arch.M6800.M6809
                 return false;
             var r0 = exgRegs[(uint) b >> 4];
             var r1 = exgRegs[b & 0xF];
-            if (r0 == null || r1 == null)
+            if (r0 is null || r1 is null)
                 return false;
             dasm.ops.Add(r0);
             dasm.ops.Add(r1);

@@ -118,7 +118,7 @@ namespace Reko.Gui.Forms
         private void PopulateCommandKeys()
         {
             dlg.CommandKeys.Items.Clear();
-            if (dlg.Commands.SelectedIndex < 0 || dlg.Commands.SelectedItem == null)
+            if (dlg.Commands.SelectedIndex < 0 || dlg.Commands.SelectedItem is null)
                 return;
             foreach (var cmd in dlg.KeyBindings.Values.SelectMany(e => e)
                 .Where(e => e.Value.ID == SelectedCommand.ID)

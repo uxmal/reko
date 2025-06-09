@@ -188,7 +188,7 @@ namespace Reko.Analysis
         {
             var trashedSids = call.Definitions.Select(d => (Identifier) d.Expression)
                 .Select(id => ssa.Identifiers[id])
-                .Where(sid => sid.DefStatement == null);
+                .Where(sid => sid.DefStatement is null);
             foreach (var sid in trashedSids)
             {
                 DefineUninitializedIdentifier(stm, sid);

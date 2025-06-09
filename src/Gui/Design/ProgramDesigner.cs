@@ -134,7 +134,7 @@ namespace Reko.Gui.Design
         {
             var uiSvc = Services!.RequireService<IDecompilerShellUiService>();
             var filename = await uiSvc.ShowOpenFileDialog("");
-            if (filename == null)
+            if (filename is null)
             {
                 // user canceled.
                 return true;

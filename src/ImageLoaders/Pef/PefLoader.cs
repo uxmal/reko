@@ -69,7 +69,7 @@ namespace Reko.ImageLoaders.Pef
 
         private Program MakeProgram(EndianByteImageReader rdr)
         {
-            if (container == null) throw new InvalidOperationException();
+            if (container is null) throw new InvalidOperationException();
 
             var cfgSvc = Services.RequireService<IConfigurationService>();
             var arch = GetArchitecture(cfgSvc);
@@ -98,7 +98,7 @@ namespace Reko.ImageLoaders.Pef
 
         private IProcessorArchitecture GetArchitecture(IConfigurationService cfgSvc)
         {
-            if (container == null) throw new InvalidOperationException();
+            if (container is null) throw new InvalidOperationException();
 
             string sArch;
             switch (this.container.ContainerHeader.architecture)
@@ -115,7 +115,7 @@ namespace Reko.ImageLoaders.Pef
 
         private IPlatform GetPlatform(IConfigurationService cfgSvc, IProcessorArchitecture arch)
         {
-            if (container == null) throw new InvalidOperationException();
+            if (container is null) throw new InvalidOperationException();
 
             string sPlatform;
             switch (this.container.ContainerHeader.architecture)

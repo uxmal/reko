@@ -191,7 +191,7 @@ namespace Reko.Core.Output
         /// <inheritdoc/>
         public void VisitString(StringType str)
         {
-            if (str.LengthPrefixType == null)
+            if (str.LengthPrefixType is null)
             {
                 if (str.ElementType.Size == 1)
                 {

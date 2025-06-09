@@ -152,7 +152,7 @@ namespace Reko.Core.Dfa
                 {
                     var U = CreateIntermediateState(p.Node.FollowPos!);
                     Dstates.TryGetValue(U, out IntermediateState? dstate);
-                    if (U.Nodes.Count() > 0 && dstate == null)
+                    if (U.Nodes.Count() > 0 && dstate is null)
                     {
                         Dstates.Add(U, U);
                         unmarked.Enqueue(U);
@@ -208,7 +208,7 @@ namespace Reko.Core.Dfa
         /// </summary>
         internal void BuildNodeSets(TreeNode node)
         {
-            if (node == null)
+            if (node is null)
                 return;
             node.FollowPos = new HashSet<TreeNode>();
             switch (node.Type)

@@ -51,7 +51,7 @@ namespace Reko.ImageLoaders.IntelHex
         /// <exception cref="ArgumentNullException">If the <paramref name="str" /> is null.</exception>
         public IntelHexReader(Stream str, Address addressBase)
         {
-            if (str == null)
+            if (str is null)
                 throw new ArgumentNullException(nameof(str));
             streamReader = new StreamReader(str);
             AddressBase = addressBase;

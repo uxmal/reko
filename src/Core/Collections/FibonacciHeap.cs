@@ -294,7 +294,7 @@ namespace Reko.Core.Collections
         public TValue removeMin()
         {
             Node? z = min;
-            if (z == null)
+            if (z is null)
                 throw new InvalidOperationException("Empty");
             if (z.child != null)
             {
@@ -506,7 +506,7 @@ namespace Reko.Core.Collections
                 right.left = left;
                 // make this a child of x
                 this.parent = parent;
-                if (parent.child == null)
+                if (parent.child is null)
                 {
                     parent.child = this;
                     right = this;

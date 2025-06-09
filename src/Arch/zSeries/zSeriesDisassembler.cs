@@ -101,8 +101,8 @@ namespace Reko.Arch.zSeries
             RegisterStorage idxReg,
             int offset)
         {
-            if ((baseReg == null || baseReg.Number == 0) &&
-                (idxReg == null || idxReg.Number == 0))
+            if ((baseReg is null || baseReg.Number == 0) &&
+                (idxReg is null || idxReg.Number == 0))
             {
                 return Address.Ptr32((uint) offset);
             }
@@ -118,7 +118,7 @@ namespace Reko.Arch.zSeries
             RegisterStorage baseReg,
             int offset)
         {
-            if (baseReg == null || baseReg.Number == 0)
+            if (baseReg is null || baseReg.Number == 0)
             {
                 return Address.Ptr32((uint) offset);
             }
@@ -1025,12 +1025,12 @@ namespace Reko.Arch.zSeries
                 this.decoders = new Decoder[1 << len];
                 foreach (var d in decoders)
                 {
-                    Debug.Assert(this.decoders[d.Item1] == null);
+                    Debug.Assert(this.decoders[d.Item1] is null);
                     this.decoders[d.Item1] = d.Item2;
                 }
                 for (int i = 0; i < this.decoders.Length; ++i)
                 {
-                    if (this.decoders[i] == null)
+                    if (this.decoders[i] is null)
                         this.decoders[i] = invalid;
                 }
             }
@@ -1059,12 +1059,12 @@ namespace Reko.Arch.zSeries
                 this.decoders = new Decoder[1 << len];
                 foreach (var d in decoders)
                 {
-                    Debug.Assert(this.decoders[d.Item1] == null);
+                    Debug.Assert(this.decoders[d.Item1] is null);
                     this.decoders[d.Item1] = d.Item2;
                 }
                 for (int i = 0; i < this.decoders.Length; ++i)
                 {
-                    if (this.decoders[i] == null)
+                    if (this.decoders[i] is null)
                         this.decoders[i] = invalid;
                 }
             }
@@ -1097,13 +1097,13 @@ namespace Reko.Arch.zSeries
                     }
                     else
                     {
-                        Debug.Assert(this.decoders[d.Item1] == null);
+                        Debug.Assert(this.decoders[d.Item1] is null);
                         this.decoders[d.Item1] = d.Item2;
                     }
                 }
                 for (int i = 0; i < this.decoders.Length; ++i)
                 {
-                    if (this.decoders[i] == null)
+                    if (this.decoders[i] is null)
                         this.decoders[i] = defaultDecoder;
                 }
             }

@@ -180,13 +180,13 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             var exps = new List<Expression>();
             var exp = Expression();
-            if (exp == null)
+            if (exp is null)
                 return Array.Empty<Expression>();
             exps.Add(exp);
             while (PeekAndDiscard(TokenType.Comma))
             {
                 exp = Expression();
-                if (exp == null)
+                if (exp is null)
                     break;
                 exps.Add(exp);
             }
@@ -200,13 +200,13 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             var sums = new List<Expression>();
             var sum = Sum();
-            if (sum == null)
+            if (sum is null)
                 return null;
             sums.Add(sum);
             while (PeekAndDiscard(TokenType.Colon))
             {
                 sum = Sum();
-                if (sum == null)
+                if (sum is null)
                     return null;
                 sums.Add(sum);
             }
@@ -219,12 +219,12 @@ namespace Reko.ImageLoaders.OdbgScript
         private Expression? OrExpr()
         {
             var left = XorExpr();
-            if (left == null)
+            if (left is null)
                 return null;
             while (PeekAndDiscard(TokenType.Or))
             {
                 var right = XorExpr();
-                if (right == null)
+                if (right is null)
                     return null;
                 left = new BinaryExpression(Operator.Or, unk, left, right);
             }
@@ -234,12 +234,12 @@ namespace Reko.ImageLoaders.OdbgScript
         private Expression? XorExpr()
         {
             var left = AndExpr();
-            if (left == null)
+            if (left is null)
                 return null;
             while (PeekAndDiscard(TokenType.Xor))
             {
                 var right = AndExpr();
-                if (right == null)
+                if (right is null)
                     return null;
                 left = new BinaryExpression(Operator.Xor, unk, left, right);
             }
@@ -249,12 +249,12 @@ namespace Reko.ImageLoaders.OdbgScript
         private Expression? AndExpr()
         {
             var left = ShiftExpr();
-            if (left == null)
+            if (left is null)
                 return null;
             while (PeekAndDiscard(TokenType.And))
             {
                 var right = ShiftExpr();
-                if (right == null)
+                if (right is null)
                     return null;
                 left = new BinaryExpression(Operator.And, unk, left, right);
             }
@@ -264,7 +264,7 @@ namespace Reko.ImageLoaders.OdbgScript
         private Expression? ShiftExpr()
         {
             var left = Sum();
-            if (left == null)
+            if (left is null)
                 return null;
             for (; ; )
             {
@@ -283,7 +283,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 }
                 GetToken();
                 var right = Sum();
-                if (right == null)
+                if (right is null)
                     return null;
                 left = new BinaryExpression(op, unk, left, right);
             }
@@ -295,7 +295,7 @@ namespace Reko.ImageLoaders.OdbgScript
         private Expression? Sum()
         {
             var left = Term();
-            if (left == null)
+            if (left is null)
                 return null;
             for (; ; )
             {
@@ -314,7 +314,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 }
                 GetToken();
                 var right = Term();
-                if (right == null)
+                if (right is null)
                     return null;
                 left = new BinaryExpression(op, unk, left, right);
             }
@@ -323,7 +323,7 @@ namespace Reko.ImageLoaders.OdbgScript
         private Expression? Term()
         {
             var left = Atom();
-            if (left == null)
+            if (left is null)
                 return null;
             for (; ; )
             {
@@ -342,7 +342,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 }
                 GetToken();
                 var right = Atom();
-                if (right == null)
+                if (right is null)
                     return null;
                 left = new BinaryExpression(op, unk, left, right);
             }
@@ -390,7 +390,7 @@ namespace Reko.ImageLoaders.OdbgScript
             case TokenType.LParen:
                 GetToken();
                 var exp = Expression();
-                if (exp == null)
+                if (exp is null)
                     return null;    //$TODO: sync.
                 if (!PeekAndDiscard(TokenType.RParen))
                     return null;

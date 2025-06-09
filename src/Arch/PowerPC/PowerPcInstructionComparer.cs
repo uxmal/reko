@@ -52,9 +52,9 @@ namespace Reko.Arch.PowerPC
 
         private bool Compare(MachineOperand opA, MachineOperand opB)
         {
-            if (opA == null && opB == null)
+            if (opA is null && opB is null)
                 return true;
-            if (opA == null || opB == null)
+            if (opA is null || opB is null)
                 return false;
 
             if (opA.GetType() != opB.GetType())
@@ -94,7 +94,7 @@ namespace Reko.Arch.PowerPC
 
         private int OperandHash(MachineOperand op)
         {
-            if (op == null)
+            if (op is null)
                 return 0;
             int h = op.GetType().GetHashCode();
             switch (op)

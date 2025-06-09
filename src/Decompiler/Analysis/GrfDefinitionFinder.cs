@@ -59,7 +59,7 @@ namespace Reko.Analysis
 			if (stm != null)
 			{
 				defExpr = null;
-				while (stm != null && defExpr == null)
+				while (stm != null && defExpr is null)
 				{
 					var stmOld = stm;
 					stm = null;

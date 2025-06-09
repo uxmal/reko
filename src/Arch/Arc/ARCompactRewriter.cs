@@ -722,7 +722,7 @@ namespace Reko.Arch.Arc
             }
             var dst = Operand(0);
             var (baseReg, ea) = RewriteEa((MemoryOperand) instr.Operands[1], instr.Writeback == AddressWritebackMode.@as);
-            if (ea == null)
+            if (ea is null)
             {
                 iclass = InstrClass.Invalid;
                 m.Invalid();
@@ -840,7 +840,7 @@ namespace Reko.Arch.Arc
         {
             var src = Operand(0);
             var (baseReg, ea) = RewriteEa((MemoryOperand) instr.Operands[1], instr.Writeback == AddressWritebackMode.@as);
-            if (ea == null)
+            if (ea is null)
             {
                 iclass = InstrClass.Invalid;
                 m.Invalid();

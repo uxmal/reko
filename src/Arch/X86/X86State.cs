@@ -117,7 +117,7 @@ namespace Reko.Arch.X86
 
 		public override void SetRegister(RegisterStorage reg, Constant c)
 		{
-			if (c == null || !c.IsValid)
+			if (c is null || !c.IsValid)
 			{
                 valid[reg.Number] &= ~reg.BitMask;
 			}

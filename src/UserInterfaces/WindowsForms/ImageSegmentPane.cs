@@ -84,9 +84,9 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             try
             {
-                if (segmentView == null ||
-                    segment == null ||
-                    segment.Designer == null)
+                if (segmentView is null ||
+                    segment is null ||
+                    segment.Designer is null)
                     return;
                 this.program = program;
                 var tsf = new TextSpanFormatter(factory);

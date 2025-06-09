@@ -397,7 +397,7 @@ namespace Reko.Typing
             int offset)
         {
             var f = GlobalVars!.Fields.LowerBound(offset);
-            if (f == null || !IsInsideField(offset, f))
+            if (f is null || !IsInsideField(offset, f))
             {
                 f = new StructureField(offset, dt);
                 GlobalVars.Fields.Add(f);
@@ -437,7 +437,7 @@ namespace Reko.Typing
         private StructureField EnsureFieldAtOffset(StructureType str, DataType dt, int offset)
         {
             StructureField? f = str.Fields.AtOffset(offset);
-            if (f == null)
+            if (f is null)
             {
                 //$TODO: overlaps and conflicts.
                 //$TODO: strings.
@@ -504,7 +504,7 @@ namespace Reko.Typing
 		{
 			// A constant can't have a union value, so we coerce it to the appropriate type.
 			UnionAlternative? a = ut.FindAlternative(pOrig!);
-            if (a == null)
+            if (a is null)
             {
                 // This is encountered when the original type is a [[word]] but
                 // the alternatives are, say, [[int32]] and [[uint32]]. In this case

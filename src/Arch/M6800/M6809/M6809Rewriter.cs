@@ -443,7 +443,7 @@ namespace Reko.Arch.M6800.M6809
                     tmp = memFn(bin, dst, ea, mem);
                     break;
                 case MemoryOperand.Mode.ConstantOffset:
-                    if (mem.Base == null)
+                    if (mem.Base is null)
                     {
                         ea = Address.Ptr16((ushort) mem.Offset);
                     }

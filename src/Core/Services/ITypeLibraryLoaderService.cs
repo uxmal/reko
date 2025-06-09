@@ -80,7 +80,7 @@ namespace Reko.Core.Services
             var listener = services.RequireService<IEventListener>();
             try
             {
-                if (tlElement.Name == null)
+                if (tlElement.Name is null)
                     return libDst;
                 string libFileName = cfgSvc.GetInstallationRelativePath(tlElement.Name);
                 if (!fsSvc.FileExists(libFileName)) 

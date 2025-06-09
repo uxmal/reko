@@ -330,7 +330,7 @@ namespace Reko.Core.Hll.C
 
         public bool IsForwardDeclaration()
         {
-            return DeclList == null;
+            return DeclList is null;
         }
     }
 
@@ -391,7 +391,7 @@ namespace Reko.Core.Hll.C
 
         public override string ToString()
         {
-            return (Value == null)
+            return (Value is null)
                 ? string.Format("({0})", Name)
                 : string.Format("({0} {1})", Name, Value);
         }
@@ -1165,7 +1165,7 @@ namespace Reko.Core.Hll.C
 
         public override string ToString()
         {
-            if (Value == null)
+            if (Value is null)
                 return "(default)";
             else
                 return string.Format("(case {0})", Value);
@@ -1290,7 +1290,7 @@ namespace Reko.Core.Hll.C
 
         public override string ToString()
         {
-            if (Expression == null)
+            if (Expression is null)
                 return " ";
             return string.Format("({0})", Expression.ToString());
         }

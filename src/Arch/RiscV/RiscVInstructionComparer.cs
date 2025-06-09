@@ -44,9 +44,9 @@ namespace Reko.Arch.RiscV
 
         private bool CompareOperands(MachineOperand opA, MachineOperand opB)
         {
-            if (opA == null && opB == null)
+            if (opA is null && opB is null)
                 return true;
-            if (opA == null || opB == null)
+            if (opA is null || opB is null)
                 return false;
             if (opA.GetType() != opB.GetType())
                 return false;

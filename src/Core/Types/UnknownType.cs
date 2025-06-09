@@ -26,7 +26,7 @@ namespace Reko.Core.Types
 {
     /// <summary>
     /// Models an unknown type. If <see cref="Size"/> is non-zero,
-    /// only the size of the type is known. If the Size is zero, we
+    /// only the size of the type is known. If the <see cref="Size" /> is zero, we
     /// don't even known what size the type is.
     /// </summary>
 	public class UnknownType : DataType

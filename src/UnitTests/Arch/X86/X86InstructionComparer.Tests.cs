@@ -34,7 +34,7 @@ namespace Reko.UnitTests.Core.Machine
     {
         private MachineOperand Op(object o)
         {
-            if (o == null)
+            if (o is null)
                 return null;
             if (o is MachineOperand mop)
                 return mop;

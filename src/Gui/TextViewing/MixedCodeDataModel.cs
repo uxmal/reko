@@ -561,7 +561,7 @@ namespace Reko.Gui.TextViewing
                     curProc = null;
                 }
 
-                if (curNode == null || curNode.Proc != curProc || curProc == null)
+                if (curNode is null || curNode.Proc != curProc || curProc is null)
                 {
                     curNode = new DataItemNode(curProc, numLines, startAddr, endAddr);
                     nodes.Add(curNode);

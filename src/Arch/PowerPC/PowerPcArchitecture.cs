@@ -261,7 +261,7 @@ namespace Reko.Arch.PowerPC
 
         private Decoder[] EnsureDecoders()
         {
-            if (this.primaryDecoders == null)
+            if (this.primaryDecoders is null)
             {
                 this.Options.TryGetValue(ProcessorOption.Model, out var model);
                 var iset = InstructionSet.Create((string?)model);
@@ -365,7 +365,7 @@ namespace Reko.Arch.PowerPC
 
         public override void LoadUserOptions(Dictionary<string, object>? options)
         {
-            if (options == null)
+            if (options is null)
                 return;
             foreach (var option in options.ToList())
             {

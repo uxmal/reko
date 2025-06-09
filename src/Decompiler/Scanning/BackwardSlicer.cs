@@ -285,7 +285,7 @@ namespace Reko.Scanning
                         // Code instructions don't exist in "raw" RTL. We are 
                         // checking for a magic 1-length array of nulls as a 
                         // sentinel.
-                        if (stms.Length == 1 && stms[0].Item2 == null)
+                        if (stms.Length == 1 && stms[0].Item2 is null)
                             break;
                         SliceState pstate = state.CreateNew(pred,  state.block.Address);
                         worklist.Add(pstate);
@@ -1060,7 +1060,7 @@ namespace Reko.Scanning
         public SlicerResult? VisitGoto(RtlGoto go)
         {
             var sr = go.Target.Accept(this, BackwardSlicerContext.Jump(RangeOf(go.Target)));
-            if (JumpTableFormat == null)
+            if (JumpTableFormat is null)
             {
                 JumpTableFormat = go.Target;
             }

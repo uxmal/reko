@@ -125,7 +125,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             get { return dasmModel != null ? dasmModel.ShowPcRelative : false; }
             set
             {
-                if (dasmModel == null)
+                if (dasmModel is null)
                     return;
                 dasmModel.ShowPcRelative = value;
                 Invalidate();

@@ -103,7 +103,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
                 if (uAddr >= dataMap.remapTable.Length)
                     return lAddr;
                 var mAddr = dataMap.remapTable[uAddr];
-                return (mAddr == null ? lAddr : PICDataAddress.Ptr(mAddr.Value));
+                return (mAddr is null ? lAddr : PICDataAddress.Ptr(mAddr.Value));
             }
 
             /// <summary>
@@ -126,7 +126,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
 
             public override bool TryGetAbsDataAddress(PICBankedAddress bAddr, out PICDataAddress absAddr)
             {
-                if (bAddr == null)
+                if (bAddr is null)
                     throw new ArgumentNullException(nameof(bAddr));
                 absAddr = null!;
                 IMemoryRegion? regn = null;
@@ -159,7 +159,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
 
         public static void Create(IPICDescriptor pic)
         {
-            if (pic == null)
+            if (pic is null)
                 throw new ArgumentNullException(nameof(pic));
             var memdesc = new PIC16MemoryDescriptor();
             memdesc.Reset();

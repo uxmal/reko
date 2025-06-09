@@ -57,7 +57,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 return sym;
             if ((sym.Address!.ToLinear() & 1) == 0)
                 return sym;
-            if (archMips16e == null)
+            if (archMips16e is null)
             {
                 var cfgSvc = loader.Services.RequireService<IConfigurationService>();
                 this.archMips16e = cfgSvc.GetArchitecture(

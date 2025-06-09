@@ -97,7 +97,7 @@ namespace Reko.ImageLoaders.Elf
         {
             // Get the entry that has the segment# for the string table.
             var dynStrtab = loader.GetDynamicEntries(fileOffset).Where(d => d.Tag == DT_STRTAB).FirstOrDefault();
-            if (dynStrtab == null)
+            if (dynStrtab is null)
                 return;
             var offStrtab = loader.AddressToFileOffset(dynStrtab.UValue);
             foreach (var entry in loader.GetDynamicEntries(fileOffset))
@@ -197,7 +197,7 @@ namespace Reko.ImageLoaders.Elf
         { 
             // Get the entry that has the segment# for the string table.
             var dynStrtab = loader.GetDynamicEntries(fileOffset).Where(d => d.Tag == DT_STRTAB).FirstOrDefault();
-            if (dynStrtab == null)
+            if (dynStrtab is null)
                 return;
             var offStrtab = loader.AddressToFileOffset(dynStrtab.UValue);
 

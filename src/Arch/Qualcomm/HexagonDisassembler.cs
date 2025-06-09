@@ -1451,7 +1451,7 @@ namespace Reko.Arch.Qualcomm
             var decs = new Decoder[1 << bitlength];
             foreach (var (code, decoder) in decoders)
             {
-                Debug.Assert(decs[code] == null);
+                Debug.Assert(decs[code] is null);
                 decs[code] = decoder;
             }
             for (int i = 0; i < decs.Length;++i)

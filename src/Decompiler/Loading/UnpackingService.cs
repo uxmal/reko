@@ -119,7 +119,7 @@ namespace Reko.Loading
                 return loader;
             }
             var unpacker = Loader.CreateOuterImageLoader<ProgramImageLoader>(Services, le.Type, le.TypeName, loader);
-            if (unpacker == null)
+            if (unpacker is null)
             {
                 listener.Warn("Unable to create loader for '{0}'.", signature.Name);
                 return loader;

@@ -50,7 +50,7 @@ namespace Reko.Gui
 
         public bool GetComponentSelected(object component)
         {
-            if (component == null)
+            if (component is null)
                 return false;
             return selection.Cast<object>().Any(s => component.Equals(s));
         }

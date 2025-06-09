@@ -440,7 +440,7 @@ namespace Reko.ImageLoaders.LLVM
 
         private bool EatWs()
         {
-            if (rdr == null)
+            if (rdr is null)
                 return false;
             int ch = rdr.Peek();
             while (ch >= 0 && Char.IsWhiteSpace((char)ch))

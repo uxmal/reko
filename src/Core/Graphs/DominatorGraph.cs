@@ -75,15 +75,15 @@ namespace Reko.Core.Graphs
         /// <returns></returns>
         public T? CommonDominator(IEnumerable<T> blocks)
         {
-            if (blocks == null)
+            if (blocks is null)
                 return null;
 
             T? dominator = null;
             foreach (T b in blocks)
             {
-                if (b == null)
+                if (b is null)
                     return null;
-                if (dominator == null)
+                if (dominator is null)
                 {
                     dominator = b;
                 }
@@ -174,7 +174,7 @@ namespace Reko.Core.Graphs
                     {
                         if (idoms.ContainsKey(p))
                         {
-                            if (newIdom == null)
+                            if (newIdom is null)
                                 newIdom = p;
                             else if (idoms.ContainsKey(p))
                             {

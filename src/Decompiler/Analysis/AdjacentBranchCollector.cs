@@ -110,7 +110,7 @@ namespace Reko.Analysis
                 if (listener.IsCanceled())
                     return;
                 var c = DetermineCandidate(block);
-                if (c == null)
+                if (c is null)
                     continue;
                 FuseIntoPredecessor(c);
 
@@ -161,14 +161,14 @@ namespace Reko.Analysis
             if (predCond.Pred.Count != 1)
                 return null;
             var predTest = BlockTest(pred, false);
-            if (predTest == null)
+            if (predTest is null)
                 return null;
 
             if (!cmp.Equals(predTest.Condition, blockTest.Condition))
                 return null;
 
             var v = DetermineConditionalIdentifier(predTest.Condition);
-            if (v == null)
+            if (v is null)
                 return null;
             if (BlockTrashesIdentifier(predCond, v))
                 return null;

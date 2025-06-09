@@ -171,7 +171,7 @@ namespace Reko.Core.IO
 		}
 
 		public string ReadString(int length, Encoding? encoding = null) {
-			if(encoding == null) {
+			if(encoding is null) {
 				encoding = Encoding.ASCII;
 			}
 			byte[] bytes = ReadBytes(length);
@@ -296,7 +296,7 @@ namespace Reko.Core.IO
 			bool nullTerminator = false,
 			Encoding? encoding = null
 		) {
-			if(encoding == null) {
+			if(encoding is null) {
 				encoding = Encoding.ASCII;
 			}
 

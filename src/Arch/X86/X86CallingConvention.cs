@@ -95,7 +95,7 @@ namespace Reko.Arch.X86
 
         public static void SetReturnStorage(ICallingConventionBuilder ccr, DataType? dtRet, int stackAlignment)
         {
-            if (dtRet == null)
+            if (dtRet is null)
                 return;
 
             int retSize = dtRet.Size;

@@ -129,11 +129,11 @@ namespace Reko.Typing
                     continue;
                 EquivalenceClass? eqElem = a.ElementType as EquivalenceClass;
                 StructureType? strElem;
-                if (eqElem == null)
+                if (eqElem is null)
                     strElem = a.ElementType as StructureType;
                 else
                     strElem = eqElem.DataType as StructureType;
-				if (strElem == null)
+				if (strElem is null)
 					continue;
 
 				if (StructuresOverlap(strMerged, offset, strElem, s.Fields[i].Offset))
@@ -210,7 +210,7 @@ namespace Reko.Typing
 
 		public bool StructuresOverlap(StructureType? a, int aOffset, StructureType? b, int bOffset)
 		{
-			if (a == null || b == null)
+			if (a is null || b is null)
 				return false;
 			if (a.Size != b.Size)
 				return false;
@@ -267,7 +267,7 @@ namespace Reko.Typing
 
 		private void DumpStore(int iteration, System.IO.TextWriter writer)
 		{
-			if (writer == null)
+			if (writer is null)
 				return;
 			writer.WriteLine("// Store dump: iteration {0} ///////////////////////");
 			store.Write(false, writer);

@@ -124,7 +124,7 @@ namespace Reko.Typing
         /// </summary>
         private Expression FallbackExpression()
         {
-            if (offset == 0 && index == null)
+            if (offset == 0 && index is null)
                 return expComplex!;
             var e = CreateAddressOf(expComplex!);
             DataType dt;
@@ -246,7 +246,7 @@ namespace Reko.Typing
 
         public Expression VisitPrimitive(PrimitiveType pt)
         {
-            if (enclosingPtr == null)
+            if (enclosingPtr is null)
             {
                 // We're not in a pointer context.
                 expComplex!.DataType = dtComplex!;
@@ -254,7 +254,7 @@ namespace Reko.Typing
             }
             if (offset == 0 || pt.Size > 0 && offset % pt.Size == 0)
             {
-                if (offset == 0 && index == null)
+                if (offset == 0 && index is null)
                 {
                     if (Dereferenced)
                     {
@@ -302,7 +302,7 @@ namespace Reko.Typing
             {
                 int strSize = str.GetInferredSize();
                 if (str.Size > 0 // We know the size of the struct, for sure.
-                    && (offset >= strSize && offset % strSize == 0 && index == null))
+                    && (offset >= strSize && offset % strSize == 0 && index is null))
                 {
                     var exp = CreateArrayAccess(str, enclosingPtr, offset / strSize, index);
                     index = null;
@@ -320,7 +320,7 @@ namespace Reko.Typing
                 }
             }
             StructureField? field = str.Fields.LowerBound(this.offset);
-            if (field == null)
+            if (field is null)
                 return FallbackExpression();
 
             dtComplex = field.DataType;
@@ -381,7 +381,7 @@ namespace Reko.Typing
 
         private Expression CreateArrayAccess(DataType dtPointee, DataType dtPointer, int offset, Expression? arrayIndex)
         {
-            if (offset == 0 && arrayIndex == null && !Dereferenced)
+            if (offset == 0 && arrayIndex is null && !Dereferenced)
                 return expComplex!;
             var e = CreateAddressOf(expComplex!);
             arrayIndex = CreateOffsetExpression(offset, arrayIndex);
@@ -485,7 +485,7 @@ namespace Reko.Typing
         private bool TryScaleDownIndex(
             Expression? exp, int elementSize, out Expression? index)
         {
-            if (exp == null || elementSize <= 1)
+            if (exp is null || elementSize <= 1)
             {
                 index = exp;
                 return true;

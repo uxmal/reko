@@ -340,7 +340,7 @@ namespace Reko.Tools.genPICdb
             {
                 get
                 {
-                    if (mplabxInstallationFolder == null)
+                    if (mplabxInstallationFolder is null)
                     {
                         var MicrochipKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Wow6432Node\Microchip");
                         if (MicrochipKey is null || MicrochipKey.SubKeyCount <= 0)

@@ -213,12 +213,12 @@ namespace Reko.Arch.PowerPC
             foreach (var (code, decoder) in sparseDecoders)
             {
                 Debug.Assert(0 <= code && code < decoders.Length);
-                Debug.Assert(decoders[code] == null, $"Duplicate decoder for {tag} at index 0x{code:X}.");
+                Debug.Assert(decoders[code] is null, $"Duplicate decoder for {tag} at index 0x{code:X}.");
                 decoders[code] = decoder;
             }
             for (int i = 0; i < decoders.Length; ++i)
             {
-                if (decoders[i] == null)
+                if (decoders[i] is null)
                     decoders[i] = defaultDecoder;
             }
             var leBitPosition = 32 - (ppcBitPosition + bits);

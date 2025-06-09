@@ -168,7 +168,7 @@ namespace Reko.Scanning
 					else
 					{
 						State uu = FindState(dStates, u.Positions);
-						if (uu == null)
+						if (uu is null)
 						{
 							AddState(dStates, u);
 							worklist.Add(u);

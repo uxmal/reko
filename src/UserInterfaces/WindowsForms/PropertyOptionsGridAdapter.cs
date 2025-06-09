@@ -239,12 +239,12 @@ namespace Reko.UserInterfaces.WindowsForms
                 if (pd.Option.TypeName is null)
                     return value;
                 var dlgType = pluginSvc.GetType(pd.Option.TypeName);
-                if (dlgType == null)
+                if (dlgType is null)
                     return value;
                 if (!(Activator.CreateInstance(dlgType) is Form form))
                     return value;
                 var valueProperty = dlgType.GetProperty("Value");
-                if (valueProperty == null)
+                if (valueProperty is null)
                     return value;
 
                 valueProperty.SetValue(form, value);

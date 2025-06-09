@@ -237,7 +237,7 @@ namespace Reko.Arch.Blackfin
                 if (iReg >= regs.Length)
                     return false;
                 var reg = regs[iReg];
-                if (reg == null)
+                if (reg is null)
                     return false;
                 d.ops.Add(reg);
                 return true;
@@ -254,7 +254,7 @@ namespace Reko.Arch.Blackfin
             {
                 var iReg = Bitfield.ReadFields(bitfields, u);
                 var reg = regs[iReg];
-                if (reg == null)
+                if (reg is null)
                     return false;
                 d.ops.Add(reg);
                 return true;

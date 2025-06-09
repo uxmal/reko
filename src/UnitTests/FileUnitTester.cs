@@ -97,7 +97,7 @@ namespace Reko.UnitTests
 				string tstLine =  test.ReadLine();
 				string expLine =  expected.ReadLine();
 
-				if (tstLine == null && expLine == null)
+				if (tstLine is null && expLine is null)
 					return;
 				Assert.IsNotNull(expLine, string.Format("File should have ended before line {0}", line));
 				Assert.IsNotNull(tstLine, string.Format("File ended unexpectedly at line {0}", line));

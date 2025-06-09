@@ -141,7 +141,7 @@ namespace Reko.Core.Configuration
 
         private PlatformHeuristics LoadHeuristics(PlatformHeuristics_v1? heuristics)
         {
-            if (heuristics == null)
+            if (heuristics is null)
             {
                 return new PlatformHeuristics
                 {
@@ -149,7 +149,7 @@ namespace Reko.Core.Configuration
                 };
             }
             MaskedPattern[] prologs;
-            if (heuristics.ProcedurePrologs == null)
+            if (heuristics.ProcedurePrologs is null)
             {
                 prologs = Array.Empty<MaskedPattern>();
             }

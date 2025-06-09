@@ -59,7 +59,7 @@ namespace Reko.Scanning
                 for (int i = 0; i < block.Statements.Count; ++i)
                 {
                     var stm = block.Statements[i];
-                    if (stmPrev == null || stm.Address != stmPrev.Address)
+                    if (stmPrev is null || stm.Address != stmPrev.Address)
                     {
                         if (this.annotations.TryGetValue(stm.Address, out var ann))
                         {

@@ -137,7 +137,7 @@ namespace Reko.Environments.Trs80
 
         private bool ParseDMKHeader()
         {
-            if (this.RawImage == null)
+            if (this.RawImage is null)
             {
                 Debug.Print("Empty file!");
                 return false;

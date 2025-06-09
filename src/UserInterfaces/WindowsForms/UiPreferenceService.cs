@@ -251,7 +251,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         private string SaveBrush(object brush)
         {
-            if (brush == null)
+            if (brush is null)
                 return null;
             return string.Format(CultureInfo.InvariantCulture, "#{0:X6}", ((SolidBrush)brush).Color.ToArgb() & 0xFFFFFF);
         }
@@ -330,7 +330,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         private T ConvertFrom<T>(TypeConverter conv, string value)
         {
-            if (value == null)
+            if (value is null)
                 return default(T);
             try
             {
@@ -360,7 +360,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public void UpdateControlStyle(string list, IControl ctrl)
         {
-            if (ctrl == null) throw new ArgumentNullException(nameof(ctrl));
+            if (ctrl is null) throw new ArgumentNullException(nameof(ctrl));
             if (Styles.TryGetValue(UiStyles.List, out UiStyle style))
             {
                 if (style.Background != null)

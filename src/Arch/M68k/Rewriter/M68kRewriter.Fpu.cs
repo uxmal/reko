@@ -77,7 +77,7 @@ namespace Reko.Arch.M68k.Rewriter
             var opSrc = orw.RewriteSrc(instr.Operands[0], instr.Address);
             var opDst = orw.RewriteDst(instr.Operands[1], instr.Address, opSrc, (s, d) =>
                 m.Fn(intrinsic.MakeInstance(s.DataType), s, d));
-            if (opDst == null)
+            if (opDst is null)
             {
                 EmitInvalid();
                 return;
@@ -89,7 +89,7 @@ namespace Reko.Arch.M68k.Rewriter
         {
             var opSrc = orw.RewriteSrc(instr.Operands[0], instr.Address);
             var opDst = orw.RewriteDst(instr.Operands[1], instr.Address, opSrc, binOpGen);
-            if (opDst == null)
+            if (opDst is null)
             {
                 EmitInvalid();
                 return;
@@ -157,7 +157,7 @@ namespace Reko.Arch.M68k.Rewriter
         {
             var opSrc = orw.RewriteSrc(instr.Operands[0], instr.Address);
             var opDst = orw.RewriteDst(instr.Operands[1], instr.Address, opSrc, MaybeCastFpuArgs);
-            if (opDst == null)
+            if (opDst is null)
             {
                 EmitInvalid();
                 return;

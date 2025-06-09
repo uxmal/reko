@@ -39,7 +39,6 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             this.arch = new PowerPcBe32Architecture(new ServiceContainer(), "ppc-be-32", new Dictionary<string, object>());
             this.addrLoad = Address.Ptr32(0x00100000);
-            Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
         }
 
         public override IProcessorArchitecture Architecture => arch;

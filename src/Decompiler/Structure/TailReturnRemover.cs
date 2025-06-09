@@ -120,7 +120,7 @@ namespace Reko.Structure
         public bool VisitReturn(AbsynReturn ret)
         {
             // Only remove returns that don't return anything.
-            return ret.Value == null;
+            return ret.Value is null;
         }
 
         public bool VisitSideEffect(AbsynSideEffect side)

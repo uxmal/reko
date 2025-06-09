@@ -122,7 +122,7 @@ namespace Reko.Core.Rtl
                 return false;
             if (mgPat.Condition != null)
             {
-                if (mgo.Condition == null)
+                if (mgo.Condition is null)
                     return false;
                 if (!matcher.Match(mgPat.Condition, mgo.Condition, m))
                     return false;

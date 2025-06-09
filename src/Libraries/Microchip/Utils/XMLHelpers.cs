@@ -83,12 +83,12 @@ namespace Reko.Libraries.Microchip
 
         private static XmlSerializer getSerializer<T>(ref XElement xelem, string sdescendantName = null)
         {
-            if (sdescendantName == null)
+            if (sdescendantName is null)
                 return new XmlSerializer(typeof(T), xelem.Name.NamespaceName);
 
             // Look for a descendant of this element making it the root element.
             xelem = xelem.Descendants().Where((x) => x.Name.LocalName == sdescendantName).FirstOrDefault();
-            if (xelem == null)
+            if (xelem is null)
                 return null;
 
             var snamespace = xelem.GetDefaultNamespace().NamespaceName;
@@ -417,7 +417,7 @@ namespace Reko.Libraries.Microchip
         /// <exception cref="ArgumentNullException">Thrown when one or more required arguments are null.</exception>
         public static T Get<T>(this XElement xelem, string attrLocalName, IAttributeValueTransformer<T> transformer)
         {
-            if (transformer == null)
+            if (transformer is null)
                 throw new ArgumentNullException(nameof(transformer));
             return transformer.ConvertFrom(xelem.Get(attrLocalName));
         }
@@ -436,7 +436,7 @@ namespace Reko.Libraries.Microchip
         /// <exception cref="ArgumentNullException">Thrown when one or more required arguments are null.</exception>
         public static T Get<T>(this XElement xelem, string attrLocalName, XNamespace ns, IAttributeValueTransformer<T> transformer)
         {
-            if (transformer == null)
+            if (transformer is null)
                 throw new ArgumentNullException(nameof(transformer));
             return transformer.ConvertFrom(xelem.Get(attrLocalName, ns));
         }
@@ -455,7 +455,7 @@ namespace Reko.Libraries.Microchip
         /// <exception cref="ArgumentNullException">Thrown when one or more required arguments are null.</exception>
         public static T Get<T>(this XElement xelem, string attrLocalName, IAttributeValueTransformer<T> transformer, T defaultValue)
         {
-            if (transformer == null)
+            if (transformer is null)
                 throw new ArgumentNullException(nameof(transformer));
             return (xelem.HasAttribute(attrLocalName) ? transformer.ConvertFrom(xelem.Get(attrLocalName)) : defaultValue);
         }
@@ -475,7 +475,7 @@ namespace Reko.Libraries.Microchip
         /// <exception cref="ArgumentNullException">Thrown when one or more required arguments are null.</exception>
         public static T Get<T>(this XElement xelem, string attrLocalName, XNamespace ns, IAttributeValueTransformer<T> transformer, T defaultValue)
         {
-            if (transformer == null)
+            if (transformer is null)
                 throw new ArgumentNullException(nameof(transformer));
             return (xelem.HasAttribute(attrLocalName, ns) ? transformer.ConvertFrom(xelem.Get(attrLocalName, ns)) : defaultValue);
         }
@@ -550,7 +550,7 @@ namespace Reko.Libraries.Microchip
         /// <exception cref="ArgumentNullException">Thrown when one or more required arguments are null.</exception>
         public static void PutAttribute<T>(this XElement xelem, string localName, T value, IAttributeValueTransformer<T> transformer)
         {
-            if (transformer == null)
+            if (transformer is null)
                 throw new ArgumentNullException(nameof(transformer));
             xelem.SetAttributeValue(xelem.Name.Namespace + localName, transformer.ToString(value));
         }
@@ -567,7 +567,7 @@ namespace Reko.Libraries.Microchip
         /// <exception cref="ArgumentNullException">Thrown when one or more required arguments are null.</exception>
         public static void PutAttribute<T>(this XElement xelem, string localName, XNamespace ns, T value, IAttributeValueTransformer<T> transformer)
         {
-            if (transformer == null)
+            if (transformer is null)
                 throw new ArgumentNullException(nameof(transformer));
             xelem.SetAttributeValue(ns + localName, transformer.ToString(value));
         }
@@ -585,7 +585,7 @@ namespace Reko.Libraries.Microchip
         public static XElement AttachNewElement<T>(this XDocument xdoc, XNode parent = null)
         {
             var xelem = new XElement(typeof(T).Name);
-            if (parent == null)
+            if (parent is null)
                 xdoc.Add(xelem);
             else
                 parent.AddAfterSelf(xelem);
@@ -627,12 +627,12 @@ namespace Reko.Libraries.Microchip
         /// </returns>
         public static T ToObject<T>(this XElement xelem, string sDescendantLocalName = null)
         {
-            if (xelem == null)
+            if (xelem is null)
                 return default(T);
             try
             {
                 XmlSerializer xmlsr = getSerializer<T>(ref xelem, sDescendantLocalName);
-                if (xmlsr == null)
+                if (xmlsr is null)
                     return default(T);
                 return (T) xmlsr.Deserialize(xelem.CreateReader());
             }

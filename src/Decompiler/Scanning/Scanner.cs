@@ -92,7 +92,7 @@ namespace Reko.Scanning
             this.Services = services;
             this.eventListener = services.RequireService<IDecompilerEventListener>();
             this.cancelSvc = services.GetService<CancellationTokenSource>();
-            if (segmentMap == null)
+            if (segmentMap is null)
                 throw new InvalidOperationException("Program must have an segment map.");
             if (program.ImageMap is null)
             {
@@ -272,7 +272,7 @@ namespace Reko.Scanning
 
         public void EnqueueImageSymbol(ImageSymbol sym, bool isEntryPoint)
         {
-            if (sym.ProcessorState == null)
+            if (sym.ProcessorState is null)
                 sym.ProcessorState = Program.Architecture.CreateProcessorState();
             procQueue.Enqueue(PriorityEntryPoint, new ImageSymbolWorkItem(this, Program, sym, isEntryPoint));
         }
@@ -384,7 +384,7 @@ namespace Reko.Scanning
         public Address? EnqueueUserProcedure(IProcessorArchitecture arch, UserProcedure sp)
         {
             var de = EnsureUserProcedure(arch, sp);
-            if (de == null)
+            if (de is null)
                 return null;
             procQueue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, arch, de.Value.Key, sp.Name));
             return de.Value.Key;
@@ -916,7 +916,7 @@ namespace Reko.Scanning
         public void SetAssumedRegisterValues(Address addr, ProcessorState st)
         {
             if (!Program.User.Procedures.TryGetValue(addr, out var userProc) ||
-                userProc.Assume == null)
+                userProc.Assume is null)
                 return;
             foreach (var rv in userProc.Assume)
             {

@@ -112,9 +112,9 @@ namespace Reko.ImageLoaders.MachO
             SortedList<Address, ImageSymbol> imageSymbols)
         {
             var msec = this.sections.FirstOrDefault(s => (s.Flags & SectionFlags.SECTION_TYPE) == SectionFlags.S_SYMBOL_STUBS);
-            if (msec == null)
+            if (msec is null)
                 return;
-            if (parser.dysymtab == null)
+            if (parser.dysymtab is null)
                 return;
             var indirectSymRdr = program!.Architecture.Endianness.CreateImageReader(RawImage, parser.dysymtab.indirectsymoff);
             var sec = this.imageSections[msec];

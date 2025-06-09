@@ -289,9 +289,6 @@ namespace Reko.Scanning
         {
             sr.FlatInstructions.Add(i.Address.ToLinear(), new ScanResults.Instr
             {
-                addr = i.Address,
-                size = i.Length,
-                type = (ushort)i.Class,
                 block_id = i.Address,
                 rtl = i,
                 pred = 0,
@@ -304,12 +301,8 @@ namespace Reko.Scanning
         {
             if (from == Bad)
                 return;
-            sr.FlatEdges.Add(new ScanResults.Link
-            {
-                first = to,
-                second = from,
-            });
-    }
+            sr.FlatEdges.Add(new ScanResults.Link(to, from));
+        }
 
         // Remove blocks that fall off the end of the segment
         // or into data.

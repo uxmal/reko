@@ -289,7 +289,7 @@ namespace Reko.ImageLoaders.LLVM
 
         public override void Write(Formatter w)
         {
-            if (Value == null)
+            if (Value is null)
             {
                 w.WriteKeyword("null");
                 return;

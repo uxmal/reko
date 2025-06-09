@@ -168,7 +168,7 @@ namespace Reko.UnitTests.Mocks
             Program.Architecture = arch;
             ResolveUnresolved();
 			BuildCallgraph();
-            if (Program.SegmentMap == null)
+            if (Program.SegmentMap is null)
                 Program.SegmentMap = new SegmentMap(Address.Ptr16(0x1000));
             Program.SegmentMap.AddSegment(
                 new ByteMemoryArea(Address.Ptr32(0x1000), new byte[Program.Procedures.Count * 0x1000]),

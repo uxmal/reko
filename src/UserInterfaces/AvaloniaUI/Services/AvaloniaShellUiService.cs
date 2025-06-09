@@ -121,7 +121,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
         {
             //$TODO: dispatch the command to the currently active dock window.
             //ICommandTarget ct = ActiveCommandTarget();
-            //if (ct == null)
+            //if (ct is null)
                 return false;
             //return ct.QueryStatus(cmdId, status, text);
         }

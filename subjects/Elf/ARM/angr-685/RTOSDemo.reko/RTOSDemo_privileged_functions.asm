@@ -4,3717 +4,420 @@
 00000020 00 00 00 00 00 00 00 00 00 00 00 00 15 17 00 00 ................
 00000030 00 00 00 00 00 00 00 00 89 16 00 00 E5 16 00 00 ................
 00000040 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
-00000050 00 00 00 00 09 81 00 00                         ........        
-
-;; prvUnlockQueue: 00000058
-;;   Called from:
-;;     000001EE (in xQueueGenericSend)
-;;     00000228 (in xQueueGenericSend)
-;;     00000280 (in xQueueGenericSend)
-;;     00000300 (in xQueueGenericReceive)
-;;     00000354 (in xQueueGenericReceive)
-;;     0000037E (in xQueueGenericReceive)
-prvUnlockQueue proc
-B570           	push	{r4-r6,lr}
-4605           	mov	r5,r0
-F008 FA8C     	bl	vPortEnterCritical
-F895 4045     	ldrb	r4,[r5,#&45]
-B264           	sxtb	r4,r4
-2C00           	cmps	r4,#0
-DD16           	ble	$00000098
-
-l0000006A:
-6A6B           	ldr	r3,[r5,#&24]
-B1A3           	cbz	r3,$00000098
-
-l0000006E:
-F105 0624     	add	r6,r5,#&24
-E005           	b	$00000080
-
-l00000074:
-3C01           	subs	r4,#1
-B2E3           	uxtb	r3,r4
-B25C           	sxtb	r4,r3
-B16B           	cbz	r3,$00000098
-
-l0000007C:
-6A6B           	ldr	r3,[r5,#&24]
-B15B           	cbz	r3,$00000098
-
-l00000080:
-4630           	mov	r0,r6
-F000 FFCB     	bl	xTaskRemoveFromEventList
-2800           	cmps	r0,#0
-D0F4           	beq	$00000074
-
-l0000008A:
-3C01           	subs	r4,#1
-F001 F88E     	bl	vTaskMissedYield
-B2E3           	uxtb	r3,r4
-B25C           	sxtb	r4,r3
-2B00           	cmps	r3,#0
-D1F1           	bne	$0000007C
-
-l00000098:
-23FF           	mov	r3,#&FF
-F885 3045     	strb	r3,[r5,#&45]
-F008 FA87     	bl	vPortExitCritical
-F008 FA69     	bl	vPortEnterCritical
-F895 4044     	ldrb	r4,[r5,#&44]
-B264           	sxtb	r4,r4
-2C00           	cmps	r4,#0
-DD16           	ble	$000000DE
-
-l000000B0:
-692B           	ldr	r3,[r5,#&10]
-B1A3           	cbz	r3,$000000DE
-
-l000000B4:
-F105 0610     	add	r6,r5,#&10
-E005           	b	$000000C6
-
-l000000BA:
-3C01           	subs	r4,#1
-B2E3           	uxtb	r3,r4
-B25C           	sxtb	r4,r3
-B16B           	cbz	r3,$000000DE
-
-l000000C2:
-692B           	ldr	r3,[r5,#&10]
-B15B           	cbz	r3,$000000DE
-
-l000000C6:
-4630           	mov	r0,r6
-F000 FFA8     	bl	xTaskRemoveFromEventList
-2800           	cmps	r0,#0
-D0F4           	beq	$000000BA
-
-l000000D0:
-3C01           	subs	r4,#1
-F001 F86B     	bl	vTaskMissedYield
-B2E3           	uxtb	r3,r4
-B25C           	sxtb	r4,r3
-2B00           	cmps	r3,#0
-D1F1           	bne	$000000C2
-
-l000000DE:
-23FF           	mov	r3,#&FF
-F885 3044     	strb	r3,[r5,#&44]
-E8BD 4070     	pop.w	{r4-r6,lr}
-F008 BA62     	b	vPortExitCritical
-
-;; prvCopyDataToQueue: 000000EC
-;;   Called from:
-;;     0000024C (in xQueueGenericSend)
-;;     0000048E (in xQueueGenericSendFromISR)
-;;     000083C6 (in xQueueCRSend)
-;;     000084B4 (in xQueueCRSendFromISR)
-prvCopyDataToQueue proc
-B570           	push	{r4-r6,lr}
-4604           	mov	r4,r0
-6C00           	ldr	r0,[r0,#&40]
-6BA5           	ldr	r5,[r4,#&38]
-B928           	cbnz	r0,$00000102
-
-l000000F6:
-6826           	ldr	r6,[r4]
-2E00           	cmps	r6,#0
-D031           	beq	$00000160
-
-l000000FC:
-3501           	adds	r5,#1
-
-l000000FE:
-63A5           	str	r5,[r4,#&38]
-BD70           	pop	{r4-r6,pc}
-
-l00000102:
-4616           	mov	r6,r2
-4602           	mov	r2,r0
-B97E           	cbnz	r6,$00000128
-
-l00000108:
-68A0           	ldr	r0,[r4,#&8]
-F00A FA5B     	bl	memcpy
-68A3           	ldr	r3,[r4,#&8]
-6C21           	ldr	r1,[r4,#&40]
-6862           	ldr	r2,[r4,#&4]
-440B           	adds	r3,r1
-4293           	cmps	r3,r2
-60A3           	str	r3,[r4,#&8]
-D319           	blo	$00000150
-
-l0000011C:
-6823           	ldr	r3,[r4]
-3501           	adds	r5,#1
-4630           	mov	r0,r6
-60A3           	str	r3,[r4,#&8]
-63A5           	str	r5,[r4,#&38]
-BD70           	pop	{r4-r6,pc}
-
-l00000128:
-68E0           	ldr	r0,[r4,#&C]
-F00A FA4B     	bl	memcpy
-6C22           	ldr	r2,[r4,#&40]
-68E3           	ldr	r3,[r4,#&C]
-4252           	rsbs	r2,r2
-6821           	ldr	r1,[r4]
-4413           	adds	r3,r2
-428B           	cmps	r3,r1
-60E3           	str	r3,[r4,#&C]
-D202           	bhs	$00000144
-
-l0000013E:
-6863           	ldr	r3,[r4,#&4]
-441A           	adds	r2,r3
-60E2           	str	r2,[r4,#&C]
-
-l00000144:
-2E02           	cmps	r6,#2
-D007           	beq	$00000158
-
-l00000148:
-3501           	adds	r5,#1
-2000           	mov	r0,#0
-63A5           	str	r5,[r4,#&38]
-BD70           	pop	{r4-r6,pc}
-
-l00000150:
-3501           	adds	r5,#1
-4630           	mov	r0,r6
-63A5           	str	r5,[r4,#&38]
-BD70           	pop	{r4-r6,pc}
-
-l00000158:
-B905           	cbnz	r5,$0000015C
-
-l0000015A:
-2501           	mov	r5,#1
-
-l0000015C:
-2000           	mov	r0,#0
-E7CE           	b	$000000FE
-
-l00000160:
-6860           	ldr	r0,[r4,#&4]
-F001 F875     	bl	xTaskPriorityDisinherit
-3501           	adds	r5,#1
-6066           	str	r6,[r4,#&4]
-E7C8           	b	$000000FE
-
-;; prvCopyDataFromQueue: 0000016C
-;;   Called from:
-;;     000002CA (in xQueuePeekFromISR)
-;;     000003B6 (in xQueueGenericReceive)
-;;     00000554 (in xQueueReceiveFromISR)
-prvCopyDataFromQueue proc
-6C02           	ldr	r2,[r0,#&40]
-B16A           	cbz	r2,$0000018C
-
-l00000170:
-460B           	mov	r3,r1
-B410           	push	{r4}
-68C1           	ldr	r1,[r0,#&C]
-6844           	ldr	r4,[r0,#&4]
-4411           	adds	r1,r2
-42A1           	cmps	r1,r4
-60C1           	str	r1,[r0,#&C]
-BF24           	itt	hs
-6801           	ldrhs	r1,[r0]
-
-l00000182:
-60C1           	str	r1,[r0,#&C]
-BC10           	pop	{r4}
-4618           	mov	r0,r3
-F00A BA1C     	b	memcpy
-
-l0000018C:
-4770           	bx	lr
-0000018E                                           00 BF               ..
-
-;; xQueueGenericSend: 00000190
-;;   Called from:
-;;     00000628 (in xQueueGiveMutexRecursive)
-;;     000006F8 (in xQueueCreateMutex)
-;;     00008AFE (in MPU_xQueueGenericSend)
-xQueueGenericSend proc
-E92D 47F0     	push.w	{r4-r10,lr}
-2500           	mov	r5,#0
-B084           	sub	sp,#&10
-4604           	mov	r4,r0
-468A           	mov	r10,r1
-9201           	str	r2,[sp,#&4]
-461F           	mov	r7,r3
-46A8           	mov	r8,r5
-F8DF 90FC     	ldr	r9,[000002A0]                            ; [pc,#&FC]
-E027           	b	$000001F8
-
-l000001A8:
-F008 FA02     	bl	vPortExitCritical
-F000 FC2E     	bl	vTaskSuspendAll
-F008 F9E2     	bl	vPortEnterCritical
-F894 3044     	ldrb	r3,[r4,#&44]
-2BFF           	cmps	r3,#&FF
-BF08           	it	eq
-F884 8044     	strbeq	r8,[r4,#&44]
-
-l000001C0:
-F894 3045     	ldrb	r3,[r4,#&45]
-2BFF           	cmps	r3,#&FF
-BF08           	it	eq
-F884 8045     	strbeq	r8,[r4,#&45]
-
-l000001CC:
-F008 F9F0     	bl	vPortExitCritical
-A901           	add	r1,sp,#4
-A802           	add	r0,sp,#8
-F000 FFC0     	bl	xTaskCheckForTimeOut
-2800           	cmps	r0,#0
-D150           	bne	$0000027E
-
-l000001DC:
-F008 F9CC     	bl	vPortEnterCritical
-6BA2           	ldr	r2,[r4,#&38]
-6BE3           	ldr	r3,[r4,#&3C]
-429A           	cmps	r2,r3
-D017           	beq	$00000218
-
-l000001E8:
-F008 F9E2     	bl	vPortExitCritical
-4620           	mov	r0,r4
-F7FF FF33     	bl	prvUnlockQueue
-F000 FE3B     	bl	xTaskResumeAll
-
-l000001F6:
-2501           	mov	r5,#1
-
-l000001F8:
-F008 F9BE     	bl	vPortEnterCritical
-6BA2           	ldr	r2,[r4,#&38]
-6BE3           	ldr	r3,[r4,#&3C]
-429A           	cmps	r2,r3
-D320           	blo	$00000246
-
-l00000204:
-2F02           	cmps	r7,#2
-D01E           	beq	$00000246
-
-l00000208:
-9E01           	ldr	r6,[sp,#&4]
-B396           	cbz	r6,$00000272
-
-l0000020C:
-2D00           	cmps	r5,#0
-D1CB           	bne	$000001A8
-
-l00000210:
-A802           	add	r0,sp,#8
-F000 FF97     	bl	vTaskSetTimeOutState
-E7C7           	b	$000001A8
-
-l00000218:
-F008 F9CA     	bl	vPortExitCritical
-9901           	ldr	r1,[sp,#&4]
-F104 0010     	add	r0,r4,#&10
-F000 FEDB     	bl	vTaskPlaceOnEventList
-4620           	mov	r0,r4
-F7FF FF16     	bl	prvUnlockQueue
-F000 FE1E     	bl	xTaskResumeAll
-2800           	cmps	r0,#0
-D1E0           	bne	$000001F6
-
-l00000234:
-F04F 5380     	mov	r3,#&10000000
-F8C9 3000     	str	r3,[r9]
-F3BF 8F4F     	dsb	sy
-F3BF 8F6F     	isb	sy
-E7D7           	b	$000001F6
-
-l00000246:
-463A           	mov	r2,r7
-4651           	mov	r1,r10
-4620           	mov	r0,r4
-F7FF FF4E     	bl	prvCopyDataToQueue
-6A63           	ldr	r3,[r4,#&24]
-B9EB           	cbnz	r3,$00000290
-
-l00000254:
-B138           	cbz	r0,$00000266
-
-l00000256:
-F04F 5280     	mov	r2,#&10000000
-4B11           	ldr	r3,[000002A0]                           ; [pc,#&44]
-601A           	str	r2,[r3]
-F3BF 8F4F     	dsb	sy
-F3BF 8F6F     	isb	sy
-
-l00000266:
-F008 F9A3     	bl	vPortExitCritical
-2001           	mov	r0,#1
-B004           	add	sp,#&10
-E8BD 87F0     	pop.w	{r4-r10,pc}
-
-l00000272:
-F008 F99D     	bl	vPortExitCritical
-4630           	mov	r0,r6
-B004           	add	sp,#&10
-E8BD 87F0     	pop.w	{r4-r10,pc}
-
-l0000027E:
-4620           	mov	r0,r4
-F7FF FEEA     	bl	prvUnlockQueue
-F000 FDF2     	bl	xTaskResumeAll
-2000           	mov	r0,#0
-B004           	add	sp,#&10
-E8BD 87F0     	pop.w	{r4-r10,pc}
-
-l00000290:
-F104 0024     	add	r0,r4,#&24
-F000 FEC2     	bl	xTaskRemoveFromEventList
-2800           	cmps	r0,#0
-D1DC           	bne	$00000256
-
-l0000029C:
-E7E3           	b	$00000266
-0000029E                                           00 BF               ..
-000002A0 04 ED 00 E0                                     ....            
-
-;; xQueuePeekFromISR: 000002A4
-;;   Called from:
-;;     00008BB4 (in MPU_xQueuePeekFromISR)
-xQueuePeekFromISR proc
-B570           	push	{r4-r6,lr}
-F3EF 8511     	mrs	r5,cpsr
-F04F 03BF     	mov	r3,#&BF
-F383 8811     	msr	cpsr,r3
-F3BF 8F6F     	isb	sy
-F3BF 8F4F     	dsb	sy
-6B83           	ldr	r3,[r0,#&38]
-B91B           	cbnz	r3,$000002C6
-
-l000002BE:
-4618           	mov	r0,r3
-F385 8811     	msr	cpsr,r5
-BD70           	pop	{r4-r6,pc}
-
-l000002C6:
-4604           	mov	r4,r0
-68C6           	ldr	r6,[r0,#&C]
-F7FF FF4F     	bl	prvCopyDataFromQueue
-60E6           	str	r6,[r4,#&C]
-2001           	mov	r0,#1
-F385 8811     	msr	cpsr,r5
-BD70           	pop	{r4-r6,pc}
-
-;; xQueueGenericReceive: 000002D8
-;;   Called from:
-;;     000005EC (in xQueueTakeMutexRecursive)
-;;     00008B86 (in MPU_xQueueGenericReceive)
-xQueueGenericReceive proc
-E92D 47F0     	push.w	{r4-r10,lr}
-2500           	mov	r5,#0
-B084           	sub	sp,#&10
-4604           	mov	r4,r0
-468A           	mov	r10,r1
-9201           	str	r2,[sp,#&4]
-4699           	mov	r9,r3
-462F           	mov	r7,r5
-F8DF 8138     	ldr	r8,[00000424]                            ; [pc,#&138]
-E00C           	b	$0000030A
-
-l000002F0:
-F008 F942     	bl	vPortEnterCritical
-6BA3           	ldr	r3,[r4,#&38]
-2B00           	cmps	r3,#0
-D037           	beq	$0000036A
-
-l000002FA:
-F008 F959     	bl	vPortExitCritical
-4620           	mov	r0,r4
-F7FF FEAA     	bl	prvUnlockQueue
-F000 FDB2     	bl	xTaskResumeAll
-
-l00000308:
-2501           	mov	r5,#1
-
-l0000030A:
-F008 F935     	bl	vPortEnterCritical
-6BA6           	ldr	r6,[r4,#&38]
-2E00           	cmps	r6,#0
-D14D           	bne	$000003B0
-
-l00000314:
-9B01           	ldr	r3,[sp,#&4]
-2B00           	cmps	r3,#0
-D044           	beq	$000003A4
-
-l0000031A:
-2D00           	cmps	r5,#0
-D03E           	beq	$0000039C
-
-l0000031E:
-F008 F947     	bl	vPortExitCritical
-F000 FB73     	bl	vTaskSuspendAll
-F008 F927     	bl	vPortEnterCritical
-F894 3044     	ldrb	r3,[r4,#&44]
-2BFF           	cmps	r3,#&FF
-BF08           	it	eq
-F884 7044     	strbeq	r7,[r4,#&44]
-
-l00000336:
-F894 3045     	ldrb	r3,[r4,#&45]
-2BFF           	cmps	r3,#&FF
-BF08           	it	eq
-F884 7045     	strbeq	r7,[r4,#&45]
-
-l00000342:
-F008 F935     	bl	vPortExitCritical
-A901           	add	r1,sp,#4
-A802           	add	r0,sp,#8
-F000 FF05     	bl	xTaskCheckForTimeOut
-2800           	cmps	r0,#0
-D0CE           	beq	$000002F0
-
-l00000352:
-4620           	mov	r0,r4
-F7FF FE80     	bl	prvUnlockQueue
-F000 FD88     	bl	xTaskResumeAll
-F008 F90C     	bl	vPortEnterCritical
-6BA3           	ldr	r3,[r4,#&38]
-B1FB           	cbz	r3,$000003A4
-
-l00000364:
-F008 F924     	bl	vPortExitCritical
-E7CE           	b	$00000308
-
-l0000036A:
-F008 F921     	bl	vPortExitCritical
-6823           	ldr	r3,[r4]
-B393           	cbz	r3,$000003D8
-
-l00000372:
-9901           	ldr	r1,[sp,#&4]
-F104 0024     	add	r0,r4,#&24
-F000 FE30     	bl	vTaskPlaceOnEventList
-4620           	mov	r0,r4
-F7FF FE6B     	bl	prvUnlockQueue
-F000 FD73     	bl	xTaskResumeAll
-2800           	cmps	r0,#0
-D1BE           	bne	$00000308
-
-l0000038A:
-F04F 5380     	mov	r3,#&10000000
-F8C8 3000     	str	r3,[r8]
-F3BF 8F4F     	dsb	sy
-F3BF 8F6F     	isb	sy
-E7B5           	b	$00000308
-
-l0000039C:
-A802           	add	r0,sp,#8
-F000 FED1     	bl	vTaskSetTimeOutState
-E7BC           	b	$0000031E
-
-l000003A4:
-F008 F904     	bl	vPortExitCritical
-2000           	mov	r0,#0
-B004           	add	sp,#&10
-E8BD 87F0     	pop.w	{r4-r10,pc}
-
-l000003B0:
-4651           	mov	r1,r10
-4620           	mov	r0,r4
-68E5           	ldr	r5,[r4,#&C]
-F7FF FED9     	bl	prvCopyDataFromQueue
-F1B9 0F00     	cmp	r9,#0
-D113           	bne	$000003E8
-
-l000003C0:
-6823           	ldr	r3,[r4]
-3E01           	subs	r6,#1
-63A6           	str	r6,[r4,#&38]
-B34B           	cbz	r3,$0000041C
-
-l000003C8:
-6923           	ldr	r3,[r4,#&10]
-BB03           	cbnz	r3,$0000040E
-
-l000003CC:
-F008 F8F0     	bl	vPortExitCritical
-2001           	mov	r0,#1
-B004           	add	sp,#&10
-E8BD 87F0     	pop.w	{r4-r10,pc}
-
-l000003D8:
-F008 F8CE     	bl	vPortEnterCritical
-6860           	ldr	r0,[r4,#&4]
-F000 FEED     	bl	vTaskPriorityInherit
-F008 F8E5     	bl	vPortExitCritical
-E7C4           	b	$00000372
-
-l000003E8:
-6A63           	ldr	r3,[r4,#&24]
-60E5           	str	r5,[r4,#&C]
-2B00           	cmps	r3,#0
-D0ED           	beq	$000003CC
-
-l000003F0:
-F104 0024     	add	r0,r4,#&24
-F000 FE12     	bl	xTaskRemoveFromEventList
-2800           	cmps	r0,#0
-D0E7           	beq	$000003CC
-
-l000003FC:
-F04F 5280     	mov	r2,#&10000000
-4B08           	ldr	r3,[00000424]                           ; [pc,#&20]
-601A           	str	r2,[r3]
-F3BF 8F4F     	dsb	sy
-F3BF 8F6F     	isb	sy
-E7DE           	b	$000003CC
-
-l0000040E:
-F104 0010     	add	r0,r4,#&10
-F000 FE03     	bl	xTaskRemoveFromEventList
-2800           	cmps	r0,#0
-D1F0           	bne	$000003FC
-
-l0000041A:
-E7D7           	b	$000003CC
-
-l0000041C:
-F000 FF5A     	bl	pvTaskIncrementMutexHeldCount
-6060           	str	r0,[r4,#&4]
-E7D1           	b	$000003C8
-00000424             04 ED 00 E0                             ....        
-
-;; uxQueueMessagesWaiting: 00000428
-;;   Called from:
-;;     00008B28 (in MPU_uxQueueMessagesWaiting)
-uxQueueMessagesWaiting proc
-B510           	push	{r4,lr}
-4604           	mov	r4,r0
-F008 F8A4     	bl	vPortEnterCritical
-6BA4           	ldr	r4,[r4,#&38]
-F008 F8BD     	bl	vPortExitCritical
-4620           	mov	r0,r4
-BD10           	pop	{r4,pc}
-0000043A                               00 BF                       ..    
-
-;; uxQueueSpacesAvailable: 0000043C
-;;   Called from:
-;;     00008B50 (in MPU_uxQueueSpacesAvailable)
-uxQueueSpacesAvailable proc
-B538           	push	{r3-r5,lr}
-4605           	mov	r5,r0
-F008 F89A     	bl	vPortEnterCritical
-6BA8           	ldr	r0,[r5,#&38]
-6BEC           	ldr	r4,[r5,#&3C]
-1A24           	sub	r4,r4,r0
-F008 F8B1     	bl	vPortExitCritical
-4620           	mov	r0,r4
-BD38           	pop	{r3-r5,pc}
-00000452       00 BF                                       ..            
-
-;; vQueueDelete: 00000454
-;;   Called from:
-;;     00008C80 (in MPU_vQueueDelete)
-vQueueDelete proc
-F001 B994     	b	vPortFree
-
-;; xQueueGenericSendFromISR: 00000458
-;;   Called from:
-;;     0000816E (in vUART_ISR)
-xQueueGenericSendFromISR proc
-B5F8           	push	{r3-r7,lr}
-F3EF 8611     	mrs	r6,cpsr
-F04F 04BF     	mov	r4,#&BF
-F384 8811     	msr	cpsr,r4
-F3BF 8F6F     	isb	sy
-F3BF 8F4F     	dsb	sy
-6B85           	ldr	r5,[r0,#&38]
-6BC4           	ldr	r4,[r0,#&3C]
-42A5           	cmps	r5,r4
-D305           	blo	$00000482
-
-l00000476:
-2B02           	cmps	r3,#2
-D003           	beq	$00000482
-
-l0000047A:
-2000           	mov	r0,#0
-
-l0000047C:
-F386 8811     	msr	cpsr,r6
-BDF8           	pop	{r3-r7,pc}
-
-l00000482:
-F890 4045     	ldrb	r4,[r0,#&45]
-4617           	mov	r7,r2
-B264           	sxtb	r4,r4
-461A           	mov	r2,r3
-4605           	mov	r5,r0
-F7FF FE2D     	bl	prvCopyDataToQueue
-1C63           	add	r3,r4,#1
-D007           	beq	$000004A6
-
-l00000496:
-3401           	adds	r4,#1
-B264           	sxtb	r4,r4
-F885 4045     	strb	r4,[r5,#&45]
-
-l0000049E:
-2001           	mov	r0,#1
-F386 8811     	msr	cpsr,r6
-BDF8           	pop	{r3-r7,pc}
-
-l000004A6:
-6A6B           	ldr	r3,[r5,#&24]
-2B00           	cmps	r3,#0
-D0F8           	beq	$0000049E
-
-l000004AC:
-F105 0024     	add	r0,r5,#&24
-F000 FDB4     	bl	xTaskRemoveFromEventList
-2800           	cmps	r0,#0
-D0F2           	beq	$0000049E
-
-l000004B8:
-2F00           	cmps	r7,#0
-D0F0           	beq	$0000049E
-
-l000004BC:
-2001           	mov	r0,#1
-6038           	str	r0,[r7]
-E7DC           	b	$0000047C
-000004C2       00 BF                                       ..            
-
-;; xQueueGiveFromISR: 000004C4
-xQueueGiveFromISR proc
-B538           	push	{r3-r5,lr}
-F3EF 8411     	mrs	r4,cpsr
-F04F 03BF     	mov	r3,#&BF
-F383 8811     	msr	cpsr,r3
-F3BF 8F6F     	isb	sy
-F3BF 8F4F     	dsb	sy
-6B82           	ldr	r2,[r0,#&38]
-6BC3           	ldr	r3,[r0,#&3C]
-429A           	cmps	r2,r3
-D20E           	bhs	$00000500
-
-l000004E2:
-F890 3045     	ldrb	r3,[r0,#&45]
-3201           	adds	r2,#1
-B25B           	sxtb	r3,r3
-6382           	str	r2,[r0,#&38]
-1C5A           	add	r2,r3,#1
-D00B           	beq	$00000508
-
-l000004F0:
-3301           	adds	r3,#1
-B25B           	sxtb	r3,r3
-F880 3045     	strb	r3,[r0,#&45]
-
-l000004F8:
-2001           	mov	r0,#1
-
-l000004FA:
-F384 8811     	msr	cpsr,r4
-BD38           	pop	{r3-r5,pc}
-
-l00000500:
-2000           	mov	r0,#0
-F384 8811     	msr	cpsr,r4
-BD38           	pop	{r3-r5,pc}
-
-l00000508:
-6A43           	ldr	r3,[r0,#&24]
-2B00           	cmps	r3,#0
-D0F4           	beq	$000004F8
-
-l0000050E:
-3024           	adds	r0,#&24
-460D           	mov	r5,r1
-F000 FD83     	bl	xTaskRemoveFromEventList
-2800           	cmps	r0,#0
-D0EE           	beq	$000004F8
-
-l0000051A:
-2D00           	cmps	r5,#0
-D0EC           	beq	$000004F8
-
-l0000051E:
-2001           	mov	r0,#1
-6028           	str	r0,[r5]
-E7EA           	b	$000004FA
-
-;; xQueueReceiveFromISR: 00000524
-xQueueReceiveFromISR proc
-E92D 41F0     	push.w	{r4-r8,lr}
-F3EF 8611     	mrs	r6,cpsr
-F04F 04BF     	mov	r4,#&BF
-F384 8811     	msr	cpsr,r4
-F3BF 8F6F     	isb	sy
-F3BF 8F4F     	dsb	sy
-6B84           	ldr	r4,[r0,#&38]
-B924           	cbnz	r4,$0000054A
-
-l00000540:
-4620           	mov	r0,r4
-
-l00000542:
-F386 8811     	msr	cpsr,r6
-E8BD 81F0     	pop.w	{r4-r8,pc}
-
-l0000054A:
-4607           	mov	r7,r0
-F890 5044     	ldrb	r5,[r0,#&44]
-4690           	mov	r8,r2
-B26D           	sxtb	r5,r5
-F7FF FE0A     	bl	prvCopyDataFromQueue
-3C01           	subs	r4,#1
-1C6B           	add	r3,r5,#1
-63BC           	str	r4,[r7,#&38]
-D008           	beq	$00000572
-
-l00000560:
-3501           	adds	r5,#1
-B26D           	sxtb	r5,r5
-F887 5044     	strb	r5,[r7,#&44]
-
-l00000568:
-2001           	mov	r0,#1
-F386 8811     	msr	cpsr,r6
-E8BD 81F0     	pop.w	{r4-r8,pc}
-
-l00000572:
-693B           	ldr	r3,[r7,#&10]
-2B00           	cmps	r3,#0
-D0F7           	beq	$00000568
-
-l00000578:
-F107 0010     	add	r0,r7,#&10
-F000 FD4E     	bl	xTaskRemoveFromEventList
-2800           	cmps	r0,#0
-D0F1           	beq	$00000568
-
-l00000584:
-F1B8 0F00     	cmp	r8,#0
-D0EE           	beq	$00000568
-
-l0000058A:
-2001           	mov	r0,#1
-F8C8 0000     	str	r0,[r8]
-E7D7           	b	$00000542
-00000592       00 BF                                       ..            
-
-;; xQueueIsQueueEmptyFromISR: 00000594
-xQueueIsQueueEmptyFromISR proc
-6B80           	ldr	r0,[r0,#&38]
-FAB0 F080     	clz	r0,r0
-0940           	lsrs	r0,r0,#5
-4770           	bx	lr
-0000059E                                           00 BF               ..
-
-;; xQueueIsQueueFullFromISR: 000005A0
-xQueueIsQueueFullFromISR proc
-6B83           	ldr	r3,[r0,#&38]
-6BC0           	ldr	r0,[r0,#&3C]
-1AC0           	sub	r0,r0,r3
-FAB0 F080     	clz	r0,r0
-0940           	lsrs	r0,r0,#5
-4770           	bx	lr
-000005AE                                           00 BF               ..
-
-;; uxQueueMessagesWaitingFromISR: 000005B0
-uxQueueMessagesWaitingFromISR proc
-6B80           	ldr	r0,[r0,#&38]
-4770           	bx	lr
-
-;; xQueueGetMutexHolder: 000005B4
-;;   Called from:
-;;     00008BDC (in MPU_xQueueGetMutexHolder)
-xQueueGetMutexHolder proc
-B510           	push	{r4,lr}
-4604           	mov	r4,r0
-F007 FFDE     	bl	vPortEnterCritical
-6823           	ldr	r3,[r4]
-B923           	cbnz	r3,$000005CA
-
-l000005C0:
-6864           	ldr	r4,[r4,#&4]
-F007 FFF5     	bl	vPortExitCritical
-4620           	mov	r0,r4
-BD10           	pop	{r4,pc}
-
-l000005CA:
-2400           	mov	r4,#0
-F007 FFF0     	bl	vPortExitCritical
-4620           	mov	r0,r4
-BD10           	pop	{r4,pc}
-
-;; xQueueTakeMutexRecursive: 000005D4
-;;   Called from:
-;;     00008C30 (in MPU_xQueueTakeMutexRecursive)
-xQueueTakeMutexRecursive proc
-B570           	push	{r4-r6,lr}
-6845           	ldr	r5,[r0,#&4]
-4604           	mov	r4,r0
-460E           	mov	r6,r1
-F000 FDAC     	bl	xTaskGetCurrentTaskHandle
-4285           	cmps	r5,r0
-D00A           	beq	$000005FA
-
-l000005E4:
-2300           	mov	r3,#0
-4632           	mov	r2,r6
-4619           	mov	r1,r3
-4620           	mov	r0,r4
-F7FF FE74     	bl	xQueueGenericReceive
-B110           	cbz	r0,$000005F8
-
-l000005F2:
-68E3           	ldr	r3,[r4,#&C]
-3301           	adds	r3,#1
-60E3           	str	r3,[r4,#&C]
-
-l000005F8:
-BD70           	pop	{r4-r6,pc}
-
-l000005FA:
-2001           	mov	r0,#1
-68E3           	ldr	r3,[r4,#&C]
-4403           	adds	r3,r0
-60E3           	str	r3,[r4,#&C]
-BD70           	pop	{r4-r6,pc}
-
-;; xQueueGiveMutexRecursive: 00000604
-;;   Called from:
-;;     00008C58 (in MPU_xQueueGiveMutexRecursive)
-xQueueGiveMutexRecursive proc
-B538           	push	{r3-r5,lr}
-6845           	ldr	r5,[r0,#&4]
-4604           	mov	r4,r0
-F000 FD95     	bl	xTaskGetCurrentTaskHandle
-4285           	cmps	r5,r0
-D001           	beq	$00000616
-
-l00000612:
-2000           	mov	r0,#0
-BD38           	pop	{r3-r5,pc}
-
-l00000616:
-68E3           	ldr	r3,[r4,#&C]
-3B01           	subs	r3,#1
-60E3           	str	r3,[r4,#&C]
-B10B           	cbz	r3,$00000622
-
-l0000061E:
-2001           	mov	r0,#1
-BD38           	pop	{r3-r5,pc}
-
-l00000622:
-4620           	mov	r0,r4
-461A           	mov	r2,r3
-4619           	mov	r1,r3
-F7FF FDB2     	bl	xQueueGenericSend
-2001           	mov	r0,#1
-BD38           	pop	{r3-r5,pc}
-
-;; xQueueGenericReset: 00000630
-;;   Called from:
-;;     000006D0 (in xQueueGenericCreate)
-;;     00008AC8 (in MPU_xQueueGenericReset)
-xQueueGenericReset proc
-B570           	push	{r4-r6,lr}
-4604           	mov	r4,r0
-460E           	mov	r6,r1
-25FF           	mov	r5,#&FF
-F007 FF9E     	bl	vPortEnterCritical
-2100           	mov	r1,#0
-6C23           	ldr	r3,[r4,#&40]
-6BE2           	ldr	r2,[r4,#&3C]
-6820           	ldr	r0,[r4]
-FB02 F203     	mul	r2,r2,r3
-1AD3           	sub	r3,r2,r3
-4403           	adds	r3,r0
-4402           	adds	r2,r0
-63A1           	str	r1,[r4,#&38]
-6062           	str	r2,[r4,#&4]
-F884 5044     	strb	r5,[r4,#&44]
-60E3           	str	r3,[r4,#&C]
-60A0           	str	r0,[r4,#&8]
-F884 5045     	strb	r5,[r4,#&45]
-B9BE           	cbnz	r6,$00000690
-
-l00000660:
-6923           	ldr	r3,[r4,#&10]
-B91B           	cbnz	r3,$0000066C
-
-l00000664:
-F007 FFA4     	bl	vPortExitCritical
-2001           	mov	r0,#1
-BD70           	pop	{r4-r6,pc}
-
-l0000066C:
-F104 0010     	add	r0,r4,#&10
-F000 FCD4     	bl	xTaskRemoveFromEventList
-2800           	cmps	r0,#0
-D0F5           	beq	$00000664
-
-l00000678:
-F04F 5280     	mov	r2,#&10000000
-4B0A           	ldr	r3,[000006A8]                           ; [pc,#&28]
-601A           	str	r2,[r3]
-F3BF 8F4F     	dsb	sy
-F3BF 8F6F     	isb	sy
-F007 FF92     	bl	vPortExitCritical
-2001           	mov	r0,#1
-BD70           	pop	{r4-r6,pc}
-
-l00000690:
-F104 0010     	add	r0,r4,#&10
-F007 FE1C     	bl	vListInitialise
-F104 0024     	add	r0,r4,#&24
-F007 FE18     	bl	vListInitialise
-F007 FF86     	bl	vPortExitCritical
-2001           	mov	r0,#1
-BD70           	pop	{r4-r6,pc}
-000006A8                         04 ED 00 E0                     ....    
-
-;; xQueueGenericCreate: 000006AC
-;;   Called from:
-;;     000006E4 (in xQueueCreateMutex)
-;;     00008A9C (in MPU_xQueueGenericCreate)
-xQueueGenericCreate proc
-B570           	push	{r4-r6,lr}
-4606           	mov	r6,r0
-FB00 F001     	mul	r0,r0,r1
-3048           	adds	r0,#&48
-460D           	mov	r5,r1
-F001 F838     	bl	pvPortMalloc
-4604           	mov	r4,r0
-B148           	cbz	r0,$000006D4
-
-l000006C0:
-B155           	cbz	r5,$000006D8
-
-l000006C2:
-F100 0348     	add	r3,r0,#&48
-6003           	str	r3,[r0]
-
-l000006C8:
-63E6           	str	r6,[r4,#&3C]
-6425           	str	r5,[r4,#&40]
-2101           	mov	r1,#1
-4620           	mov	r0,r4
-F7FF FFAE     	bl	xQueueGenericReset
-
-l000006D4:
-4620           	mov	r0,r4
-BD70           	pop	{r4-r6,pc}
-
-l000006D8:
-6020           	str	r0,[r4]
-E7F5           	b	$000006C8
-
-;; xQueueCreateMutex: 000006DC
-;;   Called from:
-;;     00008C04 (in MPU_xQueueCreateMutex)
-xQueueCreateMutex proc
-B510           	push	{r4,lr}
-4602           	mov	r2,r0
-2100           	mov	r1,#0
-2001           	mov	r0,#1
-F7FF FFE2     	bl	xQueueGenericCreate
-4604           	mov	r4,r0
-B138           	cbz	r0,$000006FC
-
-l000006EC:
-2300           	mov	r3,#0
-6043           	str	r3,[r0,#&4]
-6003           	str	r3,[r0]
-60C3           	str	r3,[r0,#&C]
-461A           	mov	r2,r3
-4619           	mov	r1,r3
-F7FF FD4A     	bl	xQueueGenericSend
-
-l000006FC:
-4620           	mov	r0,r4
-BD10           	pop	{r4,pc}
-
-;; prvInitialiseNewTask: 00000700
-;;   Called from:
-;;     000008F2 (in xTaskCreate)
-;;     00000954 (in xTaskCreateRestricted)
-prvInitialiseNewTask proc
-E92D 4FF8     	push.w	{r3-fp,lr}
-9C0C           	ldr	r4,[sp,#&30]
-4699           	mov	r9,r3
-6D25           	ldr	r5,[r4,#&50]
-F102 4380     	add	r3,r2,#&40000000
-3B01           	subs	r3,#1
-4693           	mov	fp,r2
-9A0A           	ldr	r2,[sp,#&28]
-EB05 0583     	add.w	r5,r5,r3,lsl #2
-4680           	mov	r8,r0
-1E4B           	sub	r3,r1,#1
-EA4F 7AD2     	mov.w	r10,r2,lsr #&1F
-F025 0507     	bic	r5,r5,#7
-3102           	adds	r1,#2
-F104 0054     	add	r0,r4,#&54
-F022 4200     	bic	r2,r2,#&80000000
-
-l0000072E:
-785E           	ldrb	r6,[r3,#&1]
-F800 6B01     	strb	r6,[r0],#&1
-F813 6F01     	ldrb	r6,[r3,#&1]!
-B10E           	cbz	r6,$0000073E
-
-l0000073A:
-428B           	cmps	r3,r1
-D1F7           	bne	$0000072E
-
-l0000073E:
-2A01           	cmps	r2,#1
-BF28           	it	hs
-2201           	movhs	r2,#1
-
-l00000744:
-2600           	mov	r6,#0
-4617           	mov	r7,r2
-64E2           	str	r2,[r4,#&4C]
-65A2           	str	r2,[r4,#&58]
-F104 0024     	add	r0,r4,#&24
-F884 6056     	strb	r6,[r4,#&56]
-65E6           	str	r6,[r4,#&5C]
-F007 FDC7     	bl	vListInitialiseItem
-F104 0038     	add	r0,r4,#&38
-F007 FDC3     	bl	vListInitialiseItem
-F1C7 0302     	rsb	r3,r7,#2
-63A3           	str	r3,[r4,#&38]
-6D22           	ldr	r2,[r4,#&50]
-465B           	mov	r3,fp
-990D           	ldr	r1,[sp,#&34]
-1D20           	add	r0,r4,#4
-6324           	str	r4,[r4,#&30]
-6464           	str	r4,[r4,#&44]
-F000 FEEE     	bl	vPortStoreTaskMPUSettings
-6626           	str	r6,[r4,#&60]
-4653           	mov	r3,r10
-F884 6064     	strb	r6,[r4,#&64]
-464A           	mov	r2,r9
-4641           	mov	r1,r8
-4628           	mov	r0,r5
-F000 FDF9     	bl	pxPortInitialiseStack
-9B0B           	ldr	r3,[sp,#&2C]
-6020           	str	r0,[r4]
-B103           	cbz	r3,$00000792
-
-l00000790:
-601C           	str	r4,[r3]
-
-l00000792:
-E8BD 8FF8     	pop.w	{r3-fp,pc}
-00000796                   00 BF                               ..        
-
-;; prvAddNewTaskToReadyList: 00000798
-;;   Called from:
-;;     000008F8 (in xTaskCreate)
-;;     0000095A (in xTaskCreateRestricted)
-prvAddNewTaskToReadyList proc
-E92D 41F0     	push.w	{r4-r8,lr}
-4C2D           	ldr	r4,[00000854]                           ; [pc,#&B4]
-4605           	mov	r5,r0
-F007 FEEA     	bl	vPortEnterCritical
-6823           	ldr	r3,[r4]
-3301           	adds	r3,#1
-6023           	str	r3,[r4]
-6863           	ldr	r3,[r4,#&4]
-2B00           	cmps	r3,#0
-D030           	beq	$00000812
-
-l000007B0:
-6F63           	ldr	r3,[r4,#&74]
-B32B           	cbz	r3,$00000800
-
-l000007B4:
-6CE8           	ldr	r0,[r5,#&4C]
-F104 0608     	add	r6,r4,#8
-
-l000007BA:
-2301           	mov	r3,#1
-6FE1           	ldr	r1,[r4,#&7C]
-6FA2           	ldr	r2,[r4,#&78]
-4083           	lsls	r3,r0
-EB00 0080     	add.w	r0,r0,r0,lsl #2
-430B           	orrs	r3,r1
-3201           	adds	r2,#1
-EB06 0080     	add.w	r0,r6,r0,lsl #2
-F105 0124     	add	r1,r5,#&24
-67E3           	str	r3,[r4,#&7C]
-67A2           	str	r2,[r4,#&78]
-F007 FD8B     	bl	vListInsertEnd
-F007 FEE9     	bl	vPortExitCritical
-6F63           	ldr	r3,[r4,#&74]
-B163           	cbz	r3,$000007FC
-
-l000007E2:
-6862           	ldr	r2,[r4,#&4]
-6CEB           	ldr	r3,[r5,#&4C]
-6CD2           	ldr	r2,[r2,#&4C]
-429A           	cmps	r2,r3
-D207           	bhs	$000007FC
-
-l000007EC:
-F04F 5280     	mov	r2,#&10000000
-4B19           	ldr	r3,[00000858]                           ; [pc,#&64]
-601A           	str	r2,[r3]
-F3BF 8F4F     	dsb	sy
-F3BF 8F6F     	isb	sy
-
-l000007FC:
-E8BD 81F0     	pop.w	{r4-r8,pc}
-
-l00000800:
-6863           	ldr	r3,[r4,#&4]
-6CE8           	ldr	r0,[r5,#&4C]
-6CDB           	ldr	r3,[r3,#&4C]
-F104 0608     	add	r6,r4,#8
-4283           	cmps	r3,r0
-BF98           	it	ls
-6065           	strls	r5,[r4,#&4]
-
-l00000810:
-E7D3           	b	$000007BA
-
-l00000812:
-6065           	str	r5,[r4,#&4]
-6823           	ldr	r3,[r4]
-2B01           	cmps	r3,#1
-D1CC           	bne	$000007B4
-
-l0000081A:
-F104 0608     	add	r6,r4,#8
-4630           	mov	r0,r6
-F007 FD56     	bl	vListInitialise
-F104 0830     	add	r8,r4,#&30
-F104 001C     	add	r0,r4,#&1C
-F007 FD50     	bl	vListInitialise
-F104 0744     	add	r7,r4,#&44
-4640           	mov	r0,r8
-F007 FD4B     	bl	vListInitialise
-4638           	mov	r0,r7
-F007 FD48     	bl	vListInitialise
-F104 0058     	add	r0,r4,#&58
-F007 FD44     	bl	vListInitialise
-F8C4 806C     	str	r8,[r4,#&6C]
-6CE8           	ldr	r0,[r5,#&4C]
-6727           	str	r7,[r4,#&70]
-E7B3           	b	$000007BA
-00000852       00 BF C4 00 00 20 04 ED 00 E0               ..... ....    
-
-;; prvAddCurrentTaskToDelayedList.isra.0: 0000085C
-;;   Called from:
-;;     00000C3E (in xTaskNotifyWait)
-;;     00000D4C (in ulTaskNotifyTake)
-;;     00000F6A (in vTaskDelay)
-;;     00000FC4 (in vTaskDelayUntil)
-;;     00000FF0 (in vTaskPlaceOnEventList)
-;;     00001016 (in vTaskPlaceOnUnorderedEventList)
-prvAddCurrentTaskToDelayedList.isra.0 proc
-B570           	push	{r4-r6,lr}
-4C14           	ldr	r4,[000008B0]                           ; [pc,#&50]
-4605           	mov	r5,r0
-F8D4 6080     	ldr	r6,[r4,#&80]
-6860           	ldr	r0,[r4,#&4]
-3024           	adds	r0,#&24
-F007 FD69     	bl	uxListRemove
-B938           	cbnz	r0,$00000880
-
-l00000870:
-2201           	mov	r2,#1
-6861           	ldr	r1,[r4,#&4]
-6FE3           	ldr	r3,[r4,#&7C]
-6CC9           	ldr	r1,[r1,#&4C]
-408A           	lsls	r2,r1
-EA23 0302     	bic.w	r3,r3,r2
-67E3           	str	r3,[r4,#&7C]
-
-l00000880:
-4435           	adds	r5,r6
-6863           	ldr	r3,[r4,#&4]
-42AE           	cmps	r6,r5
-625D           	str	r5,[r3,#&24]
-D80B           	bhi	$000008A2
-
-l0000088A:
-6EE0           	ldr	r0,[r4,#&6C]
-6861           	ldr	r1,[r4,#&4]
-3124           	adds	r1,#&24
-F007 FD3C     	bl	vListInsert
-F8D4 3084     	ldr	r3,[r4,#&84]
-429D           	cmps	r5,r3
-BF38           	it	lo
-F8C4 5084     	strlo	r5,[r4,#&84]
-
-l000008A0:
-BD70           	pop	{r4-r6,pc}
-
-l000008A2:
-6F20           	ldr	r0,[r4,#&70]
-6861           	ldr	r1,[r4,#&4]
-E8BD 4070     	pop.w	{r4-r6,lr}
-3124           	adds	r1,#&24
-F007 BD2E     	b	vListInsert
-000008B0 C4 00 00 20                                     ...             
-
-;; xTaskCreate: 000008B4
-;;   Called from:
-;;     000009AA (in vTaskStartScheduler)
-;;     0000882C (in MPU_xTaskCreate)
-xTaskCreate proc
-E92D 47F0     	push.w	{r4-r10,lr}
-4680           	mov	r8,r0
-B084           	sub	sp,#&10
-0090           	lsls	r0,r2,#2
-4616           	mov	r6,r2
-4689           	mov	r9,r1
-469A           	mov	r10,r3
-F000 FF32     	bl	pvPortMalloc
-B1E0           	cbz	r0,$00000904
-
-l000008CA:
-4605           	mov	r5,r0
-2068           	mov	r0,#&68
-F000 FF2D     	bl	pvPortMalloc
-4604           	mov	r4,r0
-B1D8           	cbz	r0,$0000090E
-
-l000008D6:
-2700           	mov	r7,#0
-6505           	str	r5,[r0,#&50]
-9D0D           	ldr	r5,[sp,#&34]
-F884 7065     	strb	r7,[r4,#&65]
-9501           	str	r5,[sp,#&4]
-9D0C           	ldr	r5,[sp,#&30]
-4653           	mov	r3,r10
-4632           	mov	r2,r6
-4649           	mov	r1,r9
-4640           	mov	r0,r8
-9703           	str	r7,[sp,#&C]
-9402           	str	r4,[sp,#&8]
-9500           	str	r5,[sp]
-F7FF FF05     	bl	prvInitialiseNewTask
-4620           	mov	r0,r4
-F7FF FF4E     	bl	prvAddNewTaskToReadyList
-2001           	mov	r0,#1
-
-l000008FE:
-B004           	add	sp,#&10
-E8BD 87F0     	pop.w	{r4-r10,pc}
-
-l00000904:
-F04F 30FF     	mov	r0,#&FFFFFFFF
-B004           	add	sp,#&10
-E8BD 87F0     	pop.w	{r4-r10,pc}
-
-l0000090E:
-4628           	mov	r0,r5
-F000 FF36     	bl	vPortFree
-F04F 30FF     	mov	r0,#&FFFFFFFF
-E7F1           	b	$000008FE
-0000091A                               00 BF                       ..    
-
-;; xTaskCreateRestricted: 0000091C
-;;   Called from:
-;;     000087EC (in MPU_xTaskCreateRestricted)
-xTaskCreateRestricted proc
-6943           	ldr	r3,[r0,#&14]
-B323           	cbz	r3,$0000096A
-
-l00000920:
-B5F0           	push	{r4-r7,lr}
-4604           	mov	r4,r0
-B085           	sub	sp,#&14
-2068           	mov	r0,#&68
-460F           	mov	r7,r1
-F000 FEFF     	bl	pvPortMalloc
-4605           	mov	r5,r0
-B1C0           	cbz	r0,$00000964
-
-l00000932:
-2601           	mov	r6,#1
-6961           	ldr	r1,[r4,#&14]
-F880 6065     	strb	r6,[r0,#&65]
-68E3           	ldr	r3,[r4,#&C]
-8922           	ldrh	r2,[r4,#&8]
-F8D4 E010     	ldr	lr,[r4,#&10]
-6501           	str	r1,[r0,#&50]
-6861           	ldr	r1,[r4,#&4]
-9002           	str	r0,[sp,#&8]
-9701           	str	r7,[sp,#&4]
-F854 0B18     	ldr	r0,[r4],#&18
-F8CD E000     	str	lr,[sp]
-9403           	str	r4,[sp,#&C]
-F7FF FED4     	bl	prvInitialiseNewTask
-4628           	mov	r0,r5
-F7FF FF1D     	bl	prvAddNewTaskToReadyList
-4630           	mov	r0,r6
-
-l00000960:
-B005           	add	sp,#&14
-BDF0           	pop	{r4-r7,pc}
-
-l00000964:
-F04F 30FF     	mov	r0,#&FFFFFFFF
-E7FA           	b	$00000960
-
-l0000096A:
-F04F 30FF     	mov	r0,#&FFFFFFFF
-4770           	bx	lr
-
-;; vTaskAllocateMPURegions: 00000970
-;;   Called from:
-;;     0000885C (in MPU_vTaskAllocateMPURegions)
-vTaskAllocateMPURegions proc
-B120           	cbz	r0,$0000097C
-
-l00000972:
-2300           	mov	r3,#0
-3004           	adds	r0,#4
-461A           	mov	r2,r3
-F000 BDEC     	b	vPortStoreTaskMPUSettings
-
-l0000097C:
-4B03           	ldr	r3,[0000098C]                           ; [pc,#&C]
-6858           	ldr	r0,[r3,#&4]
-2300           	mov	r3,#0
-3004           	adds	r0,#4
-461A           	mov	r2,r3
-F000 BDE5     	b	vPortStoreTaskMPUSettings
-0000098A                               00 BF C4 00 00 20           ..... 
-
-;; vTaskStartScheduler: 00000990
-;;   Called from:
-;;     000080DE (in Main)
-vTaskStartScheduler proc
-F04F 4300     	mov	r3,#&80000000
-B510           	push	{r4,lr}
-4C12           	ldr	r4,[000009E0]                           ; [pc,#&48]
-B082           	sub	sp,#8
-9300           	str	r3,[sp]
-F104 0388     	add	r3,r4,#&88
-9301           	str	r3,[sp,#&4]
-223B           	mov	r2,#&3B
-2300           	mov	r3,#0
-490F           	ldr	r1,[000009E4]                           ; [pc,#&3C]
-480F           	ldr	r0,[000009E8]                           ; [pc,#&3C]
-F7FF FF83     	bl	xTaskCreate
-2801           	cmps	r0,#1
-D001           	beq	$000009B6
-
-l000009B2:
-B002           	add	sp,#8
-BD10           	pop	{r4,pc}
-
-l000009B6:
-F04F 03BF     	mov	r3,#&BF
-F383 8811     	msr	cpsr,r3
-F3BF 8F6F     	isb	sy
-F3BF 8F4F     	dsb	sy
-F04F 32FF     	mov	r2,#&FFFFFFFF
-2300           	mov	r3,#0
-F8C4 2084     	str	r2,[r4,#&84]
-6760           	str	r0,[r4,#&74]
-F8C4 3080     	str	r3,[r4,#&80]
-B002           	add	sp,#8
-E8BD 4010     	pop.w	{r4,lr}
-F000 BCE8     	b	xPortStartScheduler
-000009E0 C4 00 00 20 7C A2 00 00 2D 85 00 00             ... |...-...    
-
-;; vTaskEndScheduler: 000009EC
-vTaskEndScheduler proc
-F04F 03BF     	mov	r3,#&BF
-F383 8811     	msr	cpsr,r3
-F3BF 8F6F     	isb	sy
-F3BF 8F4F     	dsb	sy
-2200           	mov	r2,#0
-4B02           	ldr	r3,[00000A08]                           ; [pc,#&8]
-675A           	str	r2,[r3,#&74]
-F000 BDA5     	b	vPortEndScheduler
-00000A06                   00 BF C4 00 00 20                   .....     
-
-;; vTaskSuspendAll: 00000A0C
-;;   Called from:
-;;     000001AC (in xQueueGenericSend)
-;;     00000322 (in xQueueGenericReceive)
-;;     0000173A (in pvPortMalloc)
-;;     000017D0 (in xEventGroupWaitBits)
-;;     00001896 (in xEventGroupSetBits)
-;;     00001904 (in xEventGroupSync)
-;;     000019A8 (in vEventGroupDelete)
-;;     000088C8 (in MPU_vTaskSuspendAll)
-vTaskSuspendAll proc
-4A03           	ldr	r2,[00000A1C]                           ; [pc,#&C]
-F8D2 308C     	ldr	r3,[r2,#&8C]
-3301           	adds	r3,#1
-F8C2 308C     	str	r3,[r2,#&8C]
-4770           	bx	lr
-00000A1A                               00 BF C4 00 00 20           ..... 
-
-;; xTaskGetTickCount: 00000A20
-;;   Called from:
-;;     0000890C (in MPU_xTaskGetTickCount)
-xTaskGetTickCount proc
-4B01           	ldr	r3,[00000A28]                           ; [pc,#&4]
-F8D3 0080     	ldr	r0,[r3,#&80]
-4770           	bx	lr
-00000A28                         C4 00 00 20                     ...     
-
-;; xTaskGetTickCountFromISR: 00000A2C
-xTaskGetTickCountFromISR proc
-4B01           	ldr	r3,[00000A34]                           ; [pc,#&4]
-F8D3 0080     	ldr	r0,[r3,#&80]
-4770           	bx	lr
-00000A34             C4 00 00 20                             ...         
-
-;; uxTaskGetNumberOfTasks: 00000A38
-;;   Called from:
-;;     00008930 (in MPU_uxTaskGetNumberOfTasks)
-uxTaskGetNumberOfTasks proc
-4B01           	ldr	r3,[00000A40]                           ; [pc,#&4]
-6818           	ldr	r0,[r3]
-4770           	bx	lr
-00000A3E                                           00 BF               ..
-00000A40 C4 00 00 20                                     ...             
-
-;; pcTaskGetName: 00000A44
-;;   Called from:
-;;     00008958 (in MPU_pcTaskGetName)
-pcTaskGetName proc
-B108           	cbz	r0,$00000A4A
-
-l00000A46:
-3054           	adds	r0,#&54
-4770           	bx	lr
-
-l00000A4A:
-4B02           	ldr	r3,[00000A54]                           ; [pc,#&8]
-6858           	ldr	r0,[r3,#&4]
-3054           	adds	r0,#&54
-4770           	bx	lr
-00000A52       00 BF C4 00 00 20                           .....         
-
-;; xTaskGenericNotify: 00000A58
-;;   Called from:
-;;     000089DE (in MPU_xTaskGenericNotify)
-xTaskGenericNotify proc
-B5F8           	push	{r3-r7,lr}
-461C           	mov	r4,r3
-4606           	mov	r6,r0
-460F           	mov	r7,r1
-4615           	mov	r5,r2
-F007 FD89     	bl	vPortEnterCritical
-B10C           	cbz	r4,$00000A6C
-
-l00000A68:
-6E33           	ldr	r3,[r6,#&60]
-6023           	str	r3,[r4]
-
-l00000A6C:
-2302           	mov	r3,#2
-F896 4064     	ldrb	r4,[r6,#&64]
-1E6A           	sub	r2,r5,#1
-F886 3064     	strb	r3,[r6,#&64]
-B2E4           	uxtb	r4,r4
-2A03           	cmps	r2,#3
-D806           	bhi	$00000A8C
-
-l00000A7E:
-E8DF F002     	tbb	[pc,r2]                                  ; 00000A80
+00000050 00 00 00 00 09 81 00 00 70 B5 05 46 08 F0 8C FA ........p..F....
+00000060 95 F8 45 40 64 B2 00 2C 16 DD 6B 6A A3 B1 05 F1 ..E@d..,..kj....
+00000070 24 06 05 E0 01 3C E3 B2 5C B2 6B B1 6B 6A 5B B1 $....<..\.k.kj[.
+00000080 30 46 00 F0 CB FF 00 28 F4 D0 01 3C 01 F0 8E F8 0F.....(...<....
+00000090 E3 B2 5C B2 00 2B F1 D1 FF 23 85 F8 45 30 08 F0 ..\..+...#..E0..
+000000A0 87 FA 08 F0 69 FA 95 F8 44 40 64 B2 00 2C 16 DD ....i...D@d..,..
+000000B0 2B 69 A3 B1 05 F1 10 06 05 E0 01 3C E3 B2 5C B2 +i.........<..\.
+000000C0 6B B1 2B 69 5B B1 30 46 00 F0 A8 FF 00 28 F4 D0 k.+i[.0F.....(..
+000000D0 01 3C 01 F0 6B F8 E3 B2 5C B2 00 2B F1 D1 FF 23 .<..k...\..+...#
+000000E0 85 F8 44 30 BD E8 70 40 08 F0 62 BA 70 B5 04 46 ..D0..p@..b.p..F
+000000F0 00 6C A5 6B 28 B9 26 68 00 2E 31 D0 01 35 A5 63 .l.k(.&h..1..5.c
+00000100 70 BD 16 46 02 46 7E B9 A0 68 0A F0 5B FA A3 68 p..F.F~..h..[..h
+00000110 21 6C 62 68 0B 44 93 42 A3 60 19 D3 23 68 01 35 !lbh.D.B.`..#h.5
+00000120 30 46 A3 60 A5 63 70 BD E0 68 0A F0 4B FA 22 6C 0F.`.cp..h..K."l
+00000130 E3 68 52 42 21 68 13 44 8B 42 E3 60 02 D2 63 68 .hRB!h.D.B.`..ch
+00000140 1A 44 E2 60 02 2E 07 D0 01 35 00 20 A5 63 70 BD .D.`.....5. .cp.
+00000150 01 35 30 46 A5 63 70 BD 05 B9 01 25 00 20 CE E7 .50F.cp....%. ..
+00000160 60 68 01 F0 75 F8 01 35 66 60 C8 E7 02 6C 6A B1 `h..u..5f`...lj.
+00000170 0B 46 10 B4 C1 68 44 68 11 44 A1 42 C1 60 24 BF .F...hDh.D.B.`$.
+00000180 01 68 C1 60 10 BC 18 46 0A F0 1C BA 70 47 00 BF .h.`...F....pG..
+00000190 2D E9 F0 47 00 25 84 B0 04 46 8A 46 01 92 1F 46 -..G.%...F.F...F
+000001A0 A8 46 DF F8 FC 90 27 E0 08 F0 02 FA 00 F0 2E FC .F....'.........
+000001B0 08 F0 E2 F9 94 F8 44 30 FF 2B 08 BF 84 F8 44 80 ......D0.+....D.
+000001C0 94 F8 45 30 FF 2B 08 BF 84 F8 45 80 08 F0 F0 F9 ..E0.+....E.....
+000001D0 01 A9 02 A8 00 F0 C0 FF 00 28 50 D1 08 F0 CC F9 .........(P.....
+000001E0 A2 6B E3 6B 9A 42 17 D0 08 F0 E2 F9 20 46 FF F7 .k.k.B...... F..
+000001F0 33 FF 00 F0 3B FE 01 25 08 F0 BE F9 A2 6B E3 6B 3...;..%.....k.k
+00000200 9A 42 20 D3 02 2F 1E D0 01 9E 96 B3 00 2D CB D1 .B ../.......-..
+00000210 02 A8 00 F0 97 FF C7 E7 08 F0 CA F9 01 99 04 F1 ................
+00000220 10 00 00 F0 DB FE 20 46 FF F7 16 FF 00 F0 1E FE ...... F........
+00000230 00 28 E0 D1 4F F0 80 53 C9 F8 00 30 BF F3 4F 8F .(..O..S...0..O.
+00000240 BF F3 6F 8F D7 E7 3A 46 51 46 20 46 FF F7 4E FF ..o...:FQF F..N.
+00000250 63 6A EB B9 38 B1 4F F0 80 52 11 4B 1A 60 BF F3 cj..8.O..R.K.`..
+00000260 4F 8F BF F3 6F 8F 08 F0 A3 F9 01 20 04 B0 BD E8 O...o...... ....
+00000270 F0 87 08 F0 9D F9 30 46 04 B0 BD E8 F0 87 20 46 ......0F...... F
+00000280 FF F7 EA FE 00 F0 F2 FD 00 20 04 B0 BD E8 F0 87 ......... ......
+00000290 04 F1 24 00 00 F0 C2 FE 00 28 DC D1 E3 E7 00 BF ..$......(......
+000002A0 04 ED 00 E0 70 B5 EF F3 11 85 4F F0 BF 03 83 F3 ....p.....O.....
+000002B0 11 88 BF F3 6F 8F BF F3 4F 8F 83 6B 1B B9 18 46 ....o...O..k...F
+000002C0 85 F3 11 88 70 BD 04 46 C6 68 FF F7 4F FF E6 60 ....p..F.h..O..`
+000002D0 01 20 85 F3 11 88 70 BD 2D E9 F0 47 00 25 84 B0 . ....p.-..G.%..
+000002E0 04 46 8A 46 01 92 99 46 2F 46 DF F8 38 81 0C E0 .F.F...F/F..8...
+000002F0 08 F0 42 F9 A3 6B 00 2B 37 D0 08 F0 59 F9 20 46 ..B..k.+7...Y. F
+00000300 FF F7 AA FE 00 F0 B2 FD 01 25 08 F0 35 F9 A6 6B .........%..5..k
+00000310 00 2E 4D D1 01 9B 00 2B 44 D0 00 2D 3E D0 08 F0 ..M....+D..->...
+00000320 47 F9 00 F0 73 FB 08 F0 27 F9 94 F8 44 30 FF 2B G...s...'...D0.+
+00000330 08 BF 84 F8 44 70 94 F8 45 30 FF 2B 08 BF 84 F8 ....Dp..E0.+....
+00000340 45 70 08 F0 35 F9 01 A9 02 A8 00 F0 05 FF 00 28 Ep..5..........(
+00000350 CE D0 20 46 FF F7 80 FE 00 F0 88 FD 08 F0 0C F9 .. F............
+00000360 A3 6B FB B1 08 F0 24 F9 CE E7 08 F0 21 F9 23 68 .k....$.....!.#h
+00000370 93 B3 01 99 04 F1 24 00 00 F0 30 FE 20 46 FF F7 ......$...0. F..
+00000380 6B FE 00 F0 73 FD 00 28 BE D1 4F F0 80 53 C8 F8 k...s..(..O..S..
+00000390 00 30 BF F3 4F 8F BF F3 6F 8F B5 E7 02 A8 00 F0 .0..O...o.......
+000003A0 D1 FE BC E7 08 F0 04 F9 00 20 04 B0 BD E8 F0 87 ......... ......
+000003B0 51 46 20 46 E5 68 FF F7 D9 FE B9 F1 00 0F 13 D1 QF F.h..........
+000003C0 23 68 01 3E A6 63 4B B3 23 69 03 BB 08 F0 F0 F8 #h.>.cK.#i......
+000003D0 01 20 04 B0 BD E8 F0 87 08 F0 CE F8 60 68 00 F0 . ..........`h..
+000003E0 ED FE 08 F0 E5 F8 C4 E7 63 6A E5 60 00 2B ED D0 ........cj.`.+..
+000003F0 04 F1 24 00 00 F0 12 FE 00 28 E7 D0 4F F0 80 52 ..$......(..O..R
+00000400 08 4B 1A 60 BF F3 4F 8F BF F3 6F 8F DE E7 04 F1 .K.`..O...o.....
+00000410 10 00 00 F0 03 FE 00 28 F0 D1 D7 E7 00 F0 5A FF .......(......Z.
+00000420 60 60 D1 E7 04 ED 00 E0 10 B5 04 46 08 F0 A4 F8 ``.........F....
+00000430 A4 6B 08 F0 BD F8 20 46 10 BD 00 BF 38 B5 05 46 .k.... F....8..F
+00000440 08 F0 9A F8 A8 6B EC 6B 24 1A 08 F0 B1 F8 20 46 .....k.k$..... F
+00000450 38 BD 00 BF 01 F0 94 B9 F8 B5 EF F3 11 86 4F F0 8.............O.
+00000460 BF 04 84 F3 11 88 BF F3 6F 8F BF F3 4F 8F 85 6B ........o...O..k
+00000470 C4 6B A5 42 05 D3 02 2B 03 D0 00 20 86 F3 11 88 .k.B...+... ....
+00000480 F8 BD 90 F8 45 40 17 46 64 B2 1A 46 05 46 FF F7 ....E@.Fd..F.F..
+00000490 2D FE 63 1C 07 D0 01 34 64 B2 85 F8 45 40 01 20 -.c....4d...E@. 
+000004A0 86 F3 11 88 F8 BD 6B 6A 00 2B F8 D0 05 F1 24 00 ......kj.+....$.
+000004B0 00 F0 B4 FD 00 28 F2 D0 00 2F F0 D0 01 20 38 60 .....(.../... 8`
+000004C0 DC E7 00 BF 38 B5 EF F3 11 84 4F F0 BF 03 83 F3 ....8.....O.....
+000004D0 11 88 BF F3 6F 8F BF F3 4F 8F 82 6B C3 6B 9A 42 ....o...O..k.k.B
+000004E0 0E D2 90 F8 45 30 01 32 5B B2 82 63 5A 1C 0B D0 ....E0.2[..cZ...
+000004F0 01 33 5B B2 80 F8 45 30 01 20 84 F3 11 88 38 BD .3[...E0. ....8.
+00000500 00 20 84 F3 11 88 38 BD 43 6A 00 2B F4 D0 24 30 . ....8.Cj.+..$0
+00000510 0D 46 00 F0 83 FD 00 28 EE D0 00 2D EC D0 01 20 .F.....(...-... 
+00000520 28 60 EA E7 2D E9 F0 41 EF F3 11 86 4F F0 BF 04 (`..-..A....O...
+00000530 84 F3 11 88 BF F3 6F 8F BF F3 4F 8F 84 6B 24 B9 ......o...O..k$.
+00000540 20 46 86 F3 11 88 BD E8 F0 81 07 46 90 F8 44 50  F.........F..DP
+00000550 90 46 6D B2 FF F7 0A FE 01 3C 6B 1C BC 63 08 D0 .Fm......<k..c..
+00000560 01 35 6D B2 87 F8 44 50 01 20 86 F3 11 88 BD E8 .5m...DP. ......
+00000570 F0 81 3B 69 00 2B F7 D0 07 F1 10 00 00 F0 4E FD ..;i.+........N.
+00000580 00 28 F1 D0 B8 F1 00 0F EE D0 01 20 C8 F8 00 00 .(......... ....
+00000590 D7 E7 00 BF 80 6B B0 FA 80 F0 40 09 70 47 00 BF .....k....@.pG..
+000005A0 83 6B C0 6B C0 1A B0 FA 80 F0 40 09 70 47 00 BF .k.k......@.pG..
+000005B0 80 6B 70 47 10 B5 04 46 07 F0 DE FF 23 68 23 B9 .kpG...F....#h#.
+000005C0 64 68 07 F0 F5 FF 20 46 10 BD 00 24 07 F0 F0 FF dh.... F...$....
+000005D0 20 46 10 BD 70 B5 45 68 04 46 0E 46 00 F0 AC FD  F..p.Eh.F.F....
+000005E0 85 42 0A D0 00 23 32 46 19 46 20 46 FF F7 74 FE .B...#2F.F F..t.
+000005F0 10 B1 E3 68 01 33 E3 60 70 BD 01 20 E3 68 03 44 ...h.3.`p.. .h.D
+00000600 E3 60 70 BD 38 B5 45 68 04 46 00 F0 95 FD 85 42 .`p.8.Eh.F.....B
+00000610 01 D0 00 20 38 BD E3 68 01 3B E3 60 0B B1 01 20 ... 8..h.;.`... 
+00000620 38 BD 20 46 1A 46 19 46 FF F7 B2 FD 01 20 38 BD 8. F.F.F..... 8.
+00000630 70 B5 04 46 0E 46 FF 25 07 F0 9E FF 00 21 23 6C p..F.F.%.....!#l
+00000640 E2 6B 20 68 02 FB 03 F2 D3 1A 03 44 02 44 A1 63 .k h.......D.D.c
+00000650 62 60 84 F8 44 50 E3 60 A0 60 84 F8 45 50 BE B9 b`..DP.`.`..EP..
+00000660 23 69 1B B9 07 F0 A4 FF 01 20 70 BD 04 F1 10 00 #i....... p.....
+00000670 00 F0 D4 FC 00 28 F5 D0 4F F0 80 52 0A 4B 1A 60 .....(..O..R.K.`
+00000680 BF F3 4F 8F BF F3 6F 8F 07 F0 92 FF 01 20 70 BD ..O...o...... p.
+00000690 04 F1 10 00 07 F0 1C FE 04 F1 24 00 07 F0 18 FE ..........$.....
+000006A0 07 F0 86 FF 01 20 70 BD 04 ED 00 E0 70 B5 06 46 ..... p.....p..F
+000006B0 00 FB 01 F0 48 30 0D 46 01 F0 38 F8 04 46 48 B1 ....H0.F..8..FH.
+000006C0 55 B1 00 F1 48 03 03 60 E6 63 25 64 01 21 20 46 U...H..`.c%d.! F
+000006D0 FF F7 AE FF 20 46 70 BD 20 60 F5 E7 10 B5 02 46 .... Fp. `.....F
+000006E0 00 21 01 20 FF F7 E2 FF 04 46 38 B1 00 23 43 60 .!. .....F8..#C`
+000006F0 03 60 C3 60 1A 46 19 46 FF F7 4A FD 20 46 10 BD .`.`.F.F..J. F..
+00000700 2D E9 F8 4F 0C 9C 99 46 25 6D 02 F1 80 43 01 3B -..O...F%m...C.;
+00000710 93 46 0A 9A 05 EB 83 05 80 46 4B 1E 4F EA D2 7A .F.......FK.O..z
+00000720 25 F0 07 05 02 31 04 F1 54 00 22 F0 00 42 5E 78 %....1..T."..B^x
+00000730 00 F8 01 6B 13 F8 01 6F 0E B1 8B 42 F7 D1 01 2A ...k...o...B...*
+00000740 28 BF 01 22 00 26 17 46 E2 64 A2 65 04 F1 24 00 (..".&.F.d.e..$.
+00000750 84 F8 56 60 E6 65 07 F0 C7 FD 04 F1 38 00 07 F0 ..V`.e......8...
+00000760 C3 FD C7 F1 02 03 A3 63 22 6D 5B 46 0D 99 20 1D .......c"m[F.. .
+00000770 24 63 64 64 00 F0 EE FE 26 66 53 46 84 F8 64 60 $cdd....&fSF..d`
+00000780 4A 46 41 46 28 46 00 F0 F9 FD 0B 9B 20 60 03 B1 JFAF(F...... `..
+00000790 1C 60 BD E8 F8 8F 00 BF 2D E9 F0 41 2D 4C 05 46 .`......-..A-L.F
+000007A0 07 F0 EA FE 23 68 01 33 23 60 63 68 00 2B 30 D0 ....#h.3#`ch.+0.
+000007B0 63 6F 2B B3 E8 6C 04 F1 08 06 01 23 E1 6F A2 6F co+..l.....#.o.o
+000007C0 83 40 00 EB 80 00 0B 43 01 32 06 EB 80 00 05 F1 .@.....C.2......
+000007D0 24 01 E3 67 A2 67 07 F0 8B FD 07 F0 E9 FE 63 6F $..g.g........co
+000007E0 63 B1 62 68 EB 6C D2 6C 9A 42 07 D2 4F F0 80 52 c.bh.l.l.B..O..R
+000007F0 19 4B 1A 60 BF F3 4F 8F BF F3 6F 8F BD E8 F0 81 .K.`..O...o.....
+00000800 63 68 E8 6C DB 6C 04 F1 08 06 83 42 98 BF 65 60 ch.l.l.....B..e`
+00000810 D3 E7 65 60 23 68 01 2B CC D1 04 F1 08 06 30 46 ..e`#h.+......0F
+00000820 07 F0 56 FD 04 F1 30 08 04 F1 1C 00 07 F0 50 FD ..V...0.......P.
+00000830 04 F1 44 07 40 46 07 F0 4B FD 38 46 07 F0 48 FD ..D.@F..K.8F..H.
+00000840 04 F1 58 00 07 F0 44 FD C4 F8 6C 80 E8 6C 27 67 ..X...D...l..l'g
+00000850 B3 E7 00 BF C4 00 00 20 04 ED 00 E0 70 B5 14 4C ....... ....p..L
+00000860 05 46 D4 F8 80 60 60 68 24 30 07 F0 69 FD 38 B9 .F...``h$0..i.8.
+00000870 01 22 61 68 E3 6F C9 6C 8A 40 23 EA 02 03 E3 67 ."ah.o.l.@#....g
+00000880 35 44 63 68 AE 42 5D 62 0B D8 E0 6E 61 68 24 31 5Dch.B]b...nah$1
+00000890 07 F0 3C FD D4 F8 84 30 9D 42 38 BF C4 F8 84 50 ..<....0.B8....P
+000008A0 70 BD 20 6F 61 68 BD E8 70 40 24 31 07 F0 2E BD p. oah..p@$1....
+000008B0 C4 00 00 20 2D E9 F0 47 80 46 84 B0 90 00 16 46 ... -..G.F.....F
+000008C0 89 46 9A 46 00 F0 32 FF E0 B1 05 46 68 20 00 F0 .F.F..2....Fh ..
+000008D0 2D FF 04 46 D8 B1 00 27 05 65 0D 9D 84 F8 65 70 -..F...'.e....ep
+000008E0 01 95 0C 9D 53 46 32 46 49 46 40 46 03 97 02 94 ....SF2FIF@F....
+000008F0 00 95 FF F7 05 FF 20 46 FF F7 4E FF 01 20 04 B0 ...... F..N.. ..
+00000900 BD E8 F0 87 4F F0 FF 30 04 B0 BD E8 F0 87 28 46 ....O..0......(F
+00000910 00 F0 36 FF 4F F0 FF 30 F1 E7 00 BF 43 69 23 B3 ..6.O..0....Ci#.
+00000920 F0 B5 04 46 85 B0 68 20 0F 46 00 F0 FF FE 05 46 ...F..h .F.....F
+00000930 C0 B1 01 26 61 69 80 F8 65 60 E3 68 22 89 D4 F8 ...&ai..e`.h"...
+00000940 10 E0 01 65 61 68 02 90 01 97 54 F8 18 0B CD F8 ...eah....T.....
+00000950 00 E0 03 94 FF F7 D4 FE 28 46 FF F7 1D FF 30 46 ........(F....0F
+00000960 05 B0 F0 BD 4F F0 FF 30 FA E7 4F F0 FF 30 70 47 ....O..0..O..0pG
+00000970 20 B1 00 23 04 30 1A 46 00 F0 EC BD 03 4B 58 68  ..#.0.F.....KXh
+00000980 00 23 04 30 1A 46 00 F0 E5 BD 00 BF C4 00 00 20 .#.0.F......... 
+00000990 4F F0 00 43 10 B5 12 4C 82 B0 00 93 04 F1 88 03 O..C...L........
+000009A0 01 93 3B 22 00 23 0F 49 0F 48 FF F7 83 FF 01 28 ..;".#.I.H.....(
+000009B0 01 D0 02 B0 10 BD 4F F0 BF 03 83 F3 11 88 BF F3 ......O.........
+000009C0 6F 8F BF F3 4F 8F 4F F0 FF 32 00 23 C4 F8 84 20 o...O.O..2.#... 
+000009D0 60 67 C4 F8 80 30 02 B0 BD E8 10 40 00 F0 E8 BC `g...0.....@....
+000009E0 C4 00 00 20 7C A2 00 00 2D 85 00 00 4F F0 BF 03 ... |...-...O...
+000009F0 83 F3 11 88 BF F3 6F 8F BF F3 4F 8F 00 22 02 4B ......o...O..".K
+00000A00 5A 67 00 F0 A5 BD 00 BF C4 00 00 20 03 4A D2 F8 Zg......... .J..
+00000A10 8C 30 01 33 C2 F8 8C 30 70 47 00 BF C4 00 00 20 .0.3...0pG..... 
+00000A20 01 4B D3 F8 80 00 70 47 C4 00 00 20 01 4B D3 F8 .K....pG... .K..
+00000A30 80 00 70 47 C4 00 00 20 01 4B 18 68 70 47 00 BF ..pG... .K.hpG..
+00000A40 C4 00 00 20 08 B1 54 30 70 47 02 4B 58 68 54 30 ... ..T0pG.KXhT0
+00000A50 70 47 00 BF C4 00 00 20 F8 B5 1C 46 06 46 0F 46 pG..... ...F.F.F
+00000A60 15 46 07 F0 89 FD 0C B1 33 6E 23 60 02 23 96 F8 .F......3n#`.#..
+00000A70 64 40 6A 1E 86 F8 64 30 E4 B2 03 2A 06 D8 DF E8 d@j...d0...*....
+00000A80 02 F0                                           ..              
 l00000A82	db	0x3A
 l00000A83	db	0x0C
 l00000A84	db	0x04
 l00000A85	db	0x02
-
-l00000A86:
-2C02           	cmps	r4,#2
-D039           	beq	$00000AFE
-
-l00000A8A:
-6637           	str	r7,[r6,#&60]
-
-l00000A8C:
-2C01           	cmps	r4,#1
-D00A           	beq	$00000AA6
-
-l00000A90:
-2401           	mov	r4,#1
-
-l00000A92:
-F007 FD8D     	bl	vPortExitCritical
-4620           	mov	r0,r4
-BDF8           	pop	{r3-r7,pc}
-
-l00000A9A:
-6E33           	ldr	r3,[r6,#&60]
-2C01           	cmps	r4,#1
-F103 0301     	add	r3,r3,#1
-6633           	str	r3,[r6,#&60]
-D1F4           	bne	$00000A90
-
-l00000AA6:
-F106 0724     	add	r7,r6,#&24
-4D16           	ldr	r5,[00000B04]                           ; [pc,#&58]
-4638           	mov	r0,r7
-F007 FC47     	bl	uxListRemove
-6CF0           	ldr	r0,[r6,#&4C]
-F8D5 E07C     	ldr	lr,[r5,#&7C]
-F105 0208     	add	r2,r5,#8
-FA04 F300     	lsl	r3,r4,r0
-EB00 0080     	add.w	r0,r0,r0,lsl #2
-EA43 030E     	orr	r3,r3,lr
-EB02 0080     	add.w	r0,r2,r0,lsl #2
-4639           	mov	r1,r7
-67EB           	str	r3,[r5,#&7C]
-F007 FC0E     	bl	vListInsertEnd
-686B           	ldr	r3,[r5,#&4]
-6CF2           	ldr	r2,[r6,#&4C]
-6CDB           	ldr	r3,[r3,#&4C]
-429A           	cmps	r2,r3
-D9D8           	bls	$00000A90
-
-l00000ADE:
-F04F 5280     	mov	r2,#&10000000
-4B09           	ldr	r3,[00000B08]                           ; [pc,#&24]
-601A           	str	r2,[r3]
-F3BF 8F4F     	dsb	sy
-F3BF 8F6F     	isb	sy
-F007 FD5F     	bl	vPortExitCritical
-4620           	mov	r0,r4
-BDF8           	pop	{r3-r7,pc}
-
-l00000AF6:
-6E33           	ldr	r3,[r6,#&60]
-431F           	orrs	r7,r3
-6637           	str	r7,[r6,#&60]
-E7C6           	b	$00000A8C
-
-l00000AFE:
-2400           	mov	r4,#0
-E7C7           	b	$00000A92
-00000B02       00 BF C4 00 00 20 04 ED 00 E0               ..... ....    
-
-;; xTaskGenericNotifyFromISR: 00000B0C
-xTaskGenericNotifyFromISR proc
-E92D 41F0     	push.w	{r4-r8,lr}
-F3EF 8511     	mrs	r5,cpsr
-F04F 04BF     	mov	r4,#&BF
-F384 8811     	msr	cpsr,r4
-F3BF 8F6F     	isb	sy
-F3BF 8F4F     	dsb	sy
-B10B           	cbz	r3,$00000B2A
-
-l00000B26:
-6E04           	ldr	r4,[r0,#&60]
-601C           	str	r4,[r3]
-
-l00000B2A:
-2302           	mov	r3,#2
-F890 4064     	ldrb	r4,[r0,#&64]
-3A01           	subs	r2,#1
-F880 3064     	strb	r3,[r0,#&64]
-B2E4           	uxtb	r4,r4
-2A03           	cmps	r2,#3
-D806           	bhi	$00000B4A
-
-l00000B3C:
-E8DF F002     	tbb	[pc,r2]                                  ; 00000B40
-l00000B40	db	0x2A
-l00000B41	db	0x0C
-l00000B42	db	0x04
-l00000B43	db	0x02
-
-l00000B44:
-2C02           	cmps	r4,#2
-D03D           	beq	$00000BC4
-
-l00000B48:
-6601           	str	r1,[r0,#&60]
-
-l00000B4A:
-2C01           	cmps	r4,#1
-D00A           	beq	$00000B64
-
-l00000B4E:
-2001           	mov	r0,#1
-
-l00000B50:
-F385 8811     	msr	cpsr,r5
-E8BD 81F0     	pop.w	{r4-r8,pc}
-
-l00000B58:
-6E03           	ldr	r3,[r0,#&60]
-2C01           	cmps	r4,#1
-F103 0301     	add	r3,r3,#1
-6603           	str	r3,[r0,#&60]
-D1F4           	bne	$00000B4E
-
-l00000B64:
-4E1A           	ldr	r6,[00000BD0]                           ; [pc,#&68]
-4607           	mov	r7,r0
-F8D6 308C     	ldr	r3,[r6,#&8C]
-B1B3           	cbz	r3,$00000B9C
-
-l00000B6E:
-F100 0138     	add	r1,r0,#&38
-F106 0058     	add	r0,r6,#&58
-F007 FBBB     	bl	vListInsertEnd
-
-l00000B7A:
-6873           	ldr	r3,[r6,#&4]
-6CFA           	ldr	r2,[r7,#&4C]
-6CDB           	ldr	r3,[r3,#&4C]
-429A           	cmps	r2,r3
-D9E4           	bls	$00000B4E
-
-l00000B84:
-9B06           	ldr	r3,[sp,#&18]
-2001           	mov	r0,#1
-B1F3           	cbz	r3,$00000BC8
-
-l00000B8A:
-6018           	str	r0,[r3]
-F385 8811     	msr	cpsr,r5
-E8BD 81F0     	pop.w	{r4-r8,pc}
-
-l00000B94:
-6E03           	ldr	r3,[r0,#&60]
-4319           	orrs	r1,r3
-6601           	str	r1,[r0,#&60]
-E7D6           	b	$00000B4A
-
-l00000B9C:
-F100 0824     	add	r8,r0,#&24
-4640           	mov	r0,r8
-F007 FBCD     	bl	uxListRemove
-6CF8           	ldr	r0,[r7,#&4C]
-6FF2           	ldr	r2,[r6,#&7C]
-4084           	lsls	r4,r0
-F106 0308     	add	r3,r6,#8
-EB00 0080     	add.w	r0,r0,r0,lsl #2
-4314           	orrs	r4,r2
-4641           	mov	r1,r8
-EB03 0080     	add.w	r0,r3,r0,lsl #2
-67F4           	str	r4,[r6,#&7C]
-F007 FB97     	bl	vListInsertEnd
-E7DA           	b	$00000B7A
-
-l00000BC4:
-2000           	mov	r0,#0
-E7C3           	b	$00000B50
-
-l00000BC8:
-F8C6 0090     	str	r0,[r6,#&90]
-E7C0           	b	$00000B50
-00000BCE                                           00 BF               ..
-00000BD0 C4 00 00 20                                     ...             
-
-;; xTaskNotifyWait: 00000BD4
-;;   Called from:
-;;     00008A16 (in MPU_xTaskNotifyWait)
-xTaskNotifyWait proc
-E92D 41F0     	push.w	{r4-r8,lr}
-4C1F           	ldr	r4,[00000C58]                           ; [pc,#&7C]
-4615           	mov	r5,r2
-4680           	mov	r8,r0
-460E           	mov	r6,r1
-461F           	mov	r7,r3
-F007 FCC9     	bl	vPortEnterCritical
-6862           	ldr	r2,[r4,#&4]
-F892 2064     	ldrb	r2,[r2,#&64]
-2A02           	cmps	r2,#2
-D009           	beq	$00000C04
-
-l00000BF0:
-2001           	mov	r0,#1
-6861           	ldr	r1,[r4,#&4]
-6E0A           	ldr	r2,[r1,#&60]
-EA22 0208     	bic.w	r2,r2,r8
-660A           	str	r2,[r1,#&60]
-6863           	ldr	r3,[r4,#&4]
-F883 0064     	strb	r0,[r3,#&64]
-B9DF           	cbnz	r7,$00000C3C
-
-l00000C04:
-F007 FCD4     	bl	vPortExitCritical
-F007 FCB6     	bl	vPortEnterCritical
-B115           	cbz	r5,$00000C14
-
-l00000C0E:
-6863           	ldr	r3,[r4,#&4]
-6E1B           	ldr	r3,[r3,#&60]
-602B           	str	r3,[r5]
-
-l00000C14:
-6863           	ldr	r3,[r4,#&4]
-F893 3064     	ldrb	r3,[r3,#&64]
-2B01           	cmps	r3,#1
-D01A           	beq	$00000C54
-
-l00000C1E:
-2501           	mov	r5,#1
-6863           	ldr	r3,[r4,#&4]
-6E19           	ldr	r1,[r3,#&60]
-EA21 0106     	bic.w	r1,r1,r6
-6619           	str	r1,[r3,#&60]
-
-l00000C2A:
-2200           	mov	r2,#0
-6863           	ldr	r3,[r4,#&4]
-F883 2064     	strb	r2,[r3,#&64]
-F007 FCBD     	bl	vPortExitCritical
-4628           	mov	r0,r5
-E8BD 81F0     	pop.w	{r4-r8,pc}
-
-l00000C3C:
-4638           	mov	r0,r7
-F7FF FE0D     	bl	prvAddCurrentTaskToDelayedList.isra.0
-F04F 5280     	mov	r2,#&10000000
-4B05           	ldr	r3,[00000C5C]                           ; [pc,#&14]
-601A           	str	r2,[r3]
-F3BF 8F4F     	dsb	sy
-F3BF 8F6F     	isb	sy
-E7D7           	b	$00000C04
-
-l00000C54:
-2500           	mov	r5,#0
-E7E8           	b	$00000C2A
-00000C58                         C4 00 00 20 04 ED 00 E0         ... ....
-
-;; vTaskNotifyGiveFromISR: 00000C60
-vTaskNotifyGiveFromISR proc
-E92D 43F8     	push.w	{r3-r9,lr}
-F3EF 8611     	mrs	r6,cpsr
-F04F 03BF     	mov	r3,#&BF
-F383 8811     	msr	cpsr,r3
-F3BF 8F6F     	isb	sy
-F3BF 8F4F     	dsb	sy
-2302           	mov	r3,#2
-F890 5064     	ldrb	r5,[r0,#&64]
-F880 3064     	strb	r3,[r0,#&64]
-6E03           	ldr	r3,[r0,#&60]
-B2ED           	uxtb	r5,r5
-3301           	adds	r3,#1
-2D01           	cmps	r5,#1
-6603           	str	r3,[r0,#&60]
-D003           	beq	$00000C96
-
-l00000C8E:
-F386 8811     	msr	cpsr,r6
-E8BD 83F8     	pop.w	{r3-r9,pc}
-
-l00000C96:
-4F19           	ldr	r7,[00000CFC]                           ; [pc,#&64]
-4688           	mov	r8,r1
-F8D7 308C     	ldr	r3,[r7,#&8C]
-4604           	mov	r4,r0
-B1A3           	cbz	r3,$00000CCC
-
-l00000CA2:
-F100 0138     	add	r1,r0,#&38
-F107 0058     	add	r0,r7,#&58
-F007 FB21     	bl	vListInsertEnd
-
-l00000CAE:
-687B           	ldr	r3,[r7,#&4]
-6CE2           	ldr	r2,[r4,#&4C]
-6CDB           	ldr	r3,[r3,#&4C]
-429A           	cmps	r2,r3
-D9EA           	bls	$00000C8E
-
-l00000CB8:
-2301           	mov	r3,#1
-F1B8 0F00     	cmp	r8,#0
-D019           	beq	$00000CF4
-
-l00000CC0:
-F8C8 3000     	str	r3,[r8]
-F386 8811     	msr	cpsr,r6
-E8BD 83F8     	pop.w	{r3-r9,pc}
-
-l00000CCC:
-F100 0924     	add	r9,r0,#&24
-4648           	mov	r0,r9
-F007 FB35     	bl	uxListRemove
-6CE0           	ldr	r0,[r4,#&4C]
-6FFA           	ldr	r2,[r7,#&7C]
-4085           	lsls	r5,r0
-F107 0308     	add	r3,r7,#8
-EB00 0080     	add.w	r0,r0,r0,lsl #2
-4315           	orrs	r5,r2
-4649           	mov	r1,r9
-EB03 0080     	add.w	r0,r3,r0,lsl #2
-67FD           	str	r5,[r7,#&7C]
-F007 FAFF     	bl	vListInsertEnd
-E7DC           	b	$00000CAE
-
-l00000CF4:
-F8C7 3090     	str	r3,[r7,#&90]
-E7C9           	b	$00000C8E
-00000CFA                               00 BF C4 00 00 20           ..... 
-
-;; ulTaskNotifyTake: 00000D00
-;;   Called from:
-;;     00008A44 (in MPU_ulTaskNotifyTake)
-ulTaskNotifyTake proc
-B570           	push	{r4-r6,lr}
-4C18           	ldr	r4,[00000D64]                           ; [pc,#&60]
-4606           	mov	r6,r0
-460D           	mov	r5,r1
-F007 FC36     	bl	vPortEnterCritical
-6863           	ldr	r3,[r4,#&4]
-6E1B           	ldr	r3,[r3,#&60]
-B923           	cbnz	r3,$00000D1C
-
-l00000D12:
-2201           	mov	r2,#1
-6863           	ldr	r3,[r4,#&4]
-F883 2064     	strb	r2,[r3,#&64]
-B9B5           	cbnz	r5,$00000D4A
-
-l00000D1C:
-F007 FC48     	bl	vPortExitCritical
-F007 FC2A     	bl	vPortEnterCritical
-6863           	ldr	r3,[r4,#&4]
-6E1D           	ldr	r5,[r3,#&60]
-B11D           	cbz	r5,$00000D32
-
-l00000D2A:
-B956           	cbnz	r6,$00000D42
-
-l00000D2C:
-6863           	ldr	r3,[r4,#&4]
-1E6A           	sub	r2,r5,#1
-661A           	str	r2,[r3,#&60]
-
-l00000D32:
-2200           	mov	r2,#0
-6863           	ldr	r3,[r4,#&4]
-F883 2064     	strb	r2,[r3,#&64]
-F007 FC39     	bl	vPortExitCritical
-4628           	mov	r0,r5
-BD70           	pop	{r4-r6,pc}
-
-l00000D42:
-2200           	mov	r2,#0
-6863           	ldr	r3,[r4,#&4]
-661A           	str	r2,[r3,#&60]
-E7F3           	b	$00000D32
-
-l00000D4A:
-4628           	mov	r0,r5
-F7FF FD86     	bl	prvAddCurrentTaskToDelayedList.isra.0
-F04F 5280     	mov	r2,#&10000000
-4B04           	ldr	r3,[00000D68]                           ; [pc,#&10]
-601A           	str	r2,[r3]
-F3BF 8F4F     	dsb	sy
-F3BF 8F6F     	isb	sy
-E7DC           	b	$00000D1C
-00000D62       00 BF C4 00 00 20 04 ED 00 E0               ..... ....    
-
-;; xTaskIncrementTick: 00000D6C
-;;   Called from:
-;;     00000EF2 (in xTaskResumeAll)
-;;     000016FA (in xPortSysTickHandler)
-xTaskIncrementTick proc
-E92D 47F0     	push.w	{r4-r10,lr}
-4C3C           	ldr	r4,[00000E64]                           ; [pc,#&F0]
-F8D4 308C     	ldr	r3,[r4,#&8C]
-2B00           	cmps	r3,#0
-D15E           	bne	$00000E38
-
-l00000D7A:
-F8D4 7080     	ldr	r7,[r4,#&80]
-3701           	adds	r7,#1
-F8C4 7080     	str	r7,[r4,#&80]
-B987           	cbnz	r7,$00000DA8
-
-l00000D86:
-6EE3           	ldr	r3,[r4,#&6C]
-6F22           	ldr	r2,[r4,#&70]
-66E2           	str	r2,[r4,#&6C]
-6723           	str	r3,[r4,#&70]
-F8D4 3094     	ldr	r3,[r4,#&94]
-3301           	adds	r3,#1
-F8C4 3094     	str	r3,[r4,#&94]
-6EE3           	ldr	r3,[r4,#&6C]
-681B           	ldr	r3,[r3]
-2B00           	cmps	r3,#0
-D152           	bne	$00000E46
-
-l00000DA0:
-F04F 33FF     	mov	r3,#&FFFFFFFF
-F8C4 3084     	str	r3,[r4,#&84]
-
-l00000DA8:
-F8D4 3084     	ldr	r3,[r4,#&84]
-2600           	mov	r6,#0
-429F           	cmps	r7,r3
-D330           	blo	$00000E14
-
-l00000DB2:
-F04F 0901     	mov	r9,#1
-F8DF 80B0     	ldr	r8,[00000E68]                            ; [pc,#&B0]
-E023           	b	$00000E04
-
-l00000DBC:
-6EE3           	ldr	r3,[r4,#&6C]
-68DB           	ldr	r3,[r3,#&C]
-68DD           	ldr	r5,[r3,#&C]
-6A6B           	ldr	r3,[r5,#&24]
-F105 0A24     	add	r10,r5,#&24
-429F           	cmps	r7,r3
-D348           	blo	$00000E5E
-
-l00000DCC:
-4650           	mov	r0,r10
-F007 FAB7     	bl	uxListRemove
-6CAB           	ldr	r3,[r5,#&48]
-F105 0038     	add	r0,r5,#&38
-B10B           	cbz	r3,$00000DDE
-
-l00000DDA:
-F007 FAB1     	bl	uxListRemove
-
-l00000DDE:
-6CE8           	ldr	r0,[r5,#&4C]
-6FE2           	ldr	r2,[r4,#&7C]
-FA09 F300     	lsl	r3,r9,r0
-EB00 0080     	add.w	r0,r0,r0,lsl #2
-4313           	orrs	r3,r2
-4651           	mov	r1,r10
-EB08 0080     	add.w	r0,r8,r0,lsl #2
-67E3           	str	r3,[r4,#&7C]
-F007 FA7C     	bl	vListInsertEnd
-6863           	ldr	r3,[r4,#&4]
-6CEA           	ldr	r2,[r5,#&4C]
-6CDB           	ldr	r3,[r3,#&4C]
-429A           	cmps	r2,r3
-BF28           	it	hs
-2601           	movhs	r6,#1
-
-l00000E04:
-6EE3           	ldr	r3,[r4,#&6C]
-681B           	ldr	r3,[r3]
-2B00           	cmps	r3,#0
-D1D7           	bne	$00000DBC
-
-l00000E0C:
-F04F 33FF     	mov	r3,#&FFFFFFFF
-F8C4 3084     	str	r3,[r4,#&84]
-
-l00000E14:
-6863           	ldr	r3,[r4,#&4]
-6CDB           	ldr	r3,[r3,#&4C]
-EB03 0383     	add.w	r3,r3,r3,lsl #2
-EB04 0383     	add.w	r3,r4,r3,lsl #2
-689B           	ldr	r3,[r3,#&8]
-2B02           	cmps	r3,#2
-BF28           	it	hs
-2601           	movhs	r6,#1
-
-l00000E28:
-F8D4 3090     	ldr	r3,[r4,#&90]
-2B00           	cmps	r3,#0
-BF18           	it	ne
-2601           	movne	r6,#1
-
-l00000E32:
-4630           	mov	r0,r6
-E8BD 87F0     	pop.w	{r4-r10,pc}
-
-l00000E38:
-F8D4 3098     	ldr	r3,[r4,#&98]
-2600           	mov	r6,#0
-3301           	adds	r3,#1
-F8C4 3098     	str	r3,[r4,#&98]
-E7F0           	b	$00000E28
-
-l00000E46:
-6EE3           	ldr	r3,[r4,#&6C]
-2600           	mov	r6,#0
-68DB           	ldr	r3,[r3,#&C]
-68DB           	ldr	r3,[r3,#&C]
-6A5B           	ldr	r3,[r3,#&24]
-F8C4 3084     	str	r3,[r4,#&84]
-F8D4 3084     	ldr	r3,[r4,#&84]
-429F           	cmps	r7,r3
-D3DB           	blo	$00000E14
-
-l00000E5C:
-E7A9           	b	$00000DB2
-
-l00000E5E:
-F8C4 3084     	str	r3,[r4,#&84]
-E7D7           	b	$00000E14
-00000E64             C4 00 00 20 CC 00 00 20                 ... ...     
-
-;; xTaskResumeAll: 00000E6C
-;;   Called from:
-;;     000001F2 (in xQueueGenericSend)
-;;     0000022C (in xQueueGenericSend)
-;;     00000284 (in xQueueGenericSend)
-;;     00000304 (in xQueueGenericReceive)
-;;     00000358 (in xQueueGenericReceive)
-;;     00000382 (in xQueueGenericReceive)
-;;     00000F6E (in vTaskDelay)
-;;     00000FA0 (in vTaskDelayUntil)
-;;     00000FC8 (in vTaskDelayUntil)
-;;     0000175E (in pvPortMalloc)
-;;     00001768 (in pvPortMalloc)
-;;     000017E8 (in xEventGroupWaitBits)
-;;     00001816 (in xEventGroupWaitBits)
-;;     000018E8 (in xEventGroupSetBits)
-;;     0000191E (in xEventGroupSync)
-;;     00001934 (in xEventGroupSync)
-;;     000019CA (in vEventGroupDelete)
-;;     000088E8 (in MPU_xTaskResumeAll)
-xTaskResumeAll proc
-E92D 41F0     	push.w	{r4-r8,lr}
-4C33           	ldr	r4,[00000F40]                           ; [pc,#&CC]
-F007 FB81     	bl	vPortEnterCritical
-F8D4 308C     	ldr	r3,[r4,#&8C]
-3B01           	subs	r3,#1
-F8C4 308C     	str	r3,[r4,#&8C]
-F8D4 508C     	ldr	r5,[r4,#&8C]
-2D00           	cmps	r5,#0
-D14E           	bne	$00000F26
-
-l00000E88:
-6823           	ldr	r3,[r4]
-2B00           	cmps	r3,#0
-D04B           	beq	$00000F26
-
-l00000E8E:
-2601           	mov	r6,#1
-F104 0708     	add	r7,r4,#8
-E01E           	b	$00000ED4
-
-l00000E96:
-6E63           	ldr	r3,[r4,#&64]
-68DD           	ldr	r5,[r3,#&C]
-F105 0824     	add	r8,r5,#&24
-F105 0038     	add	r0,r5,#&38
-F007 FA4D     	bl	uxListRemove
-4640           	mov	r0,r8
-F007 FA4A     	bl	uxListRemove
-6CE8           	ldr	r0,[r5,#&4C]
-6FE2           	ldr	r2,[r4,#&7C]
-FA06 F300     	lsl	r3,r6,r0
-EB00 0080     	add.w	r0,r0,r0,lsl #2
-4313           	orrs	r3,r2
-4641           	mov	r1,r8
-EB07 0080     	add.w	r0,r7,r0,lsl #2
-67E3           	str	r3,[r4,#&7C]
-F007 FA15     	bl	vListInsertEnd
-6863           	ldr	r3,[r4,#&4]
-6CEA           	ldr	r2,[r5,#&4C]
-6CDB           	ldr	r3,[r3,#&4C]
-429A           	cmps	r2,r3
-BF28           	it	hs
-F8C4 6090     	strhs	r6,[r4,#&90]
-
-l00000ED4:
-6DA3           	ldr	r3,[r4,#&58]
-2B00           	cmps	r3,#0
-D1DD           	bne	$00000E96
-
-l00000EDA:
-B135           	cbz	r5,$00000EEA
-
-l00000EDC:
-6EE3           	ldr	r3,[r4,#&6C]
-681B           	ldr	r3,[r3]
-BB3B           	cbnz	r3,$00000F32
-
-l00000EE2:
-F04F 33FF     	mov	r3,#&FFFFFFFF
-F8C4 3084     	str	r3,[r4,#&84]
-
-l00000EEA:
-F8D4 5098     	ldr	r5,[r4,#&98]
-B14D           	cbz	r5,$00000F04
-
-l00000EF0:
-2601           	mov	r6,#1
-
-l00000EF2:
-F7FF FF3B     	bl	xTaskIncrementTick
-B108           	cbz	r0,$00000EFC
-
-l00000EF8:
-F8C4 6090     	str	r6,[r4,#&90]
-
-l00000EFC:
-3D01           	subs	r5,#1
-D1F8           	bne	$00000EF2
-
-l00000F00:
-F8C4 5098     	str	r5,[r4,#&98]
-
-l00000F04:
-F8D4 3090     	ldr	r3,[r4,#&90]
-B16B           	cbz	r3,$00000F26
-
-l00000F0A:
-F04F 5280     	mov	r2,#&10000000
-4B0D           	ldr	r3,[00000F44]                           ; [pc,#&34]
-601A           	str	r2,[r3]
-F3BF 8F4F     	dsb	sy
-F3BF 8F6F     	isb	sy
-2401           	mov	r4,#1
-F007 FB48     	bl	vPortExitCritical
-4620           	mov	r0,r4
-E8BD 81F0     	pop.w	{r4-r8,pc}
-
-l00000F26:
-2400           	mov	r4,#0
-F007 FB42     	bl	vPortExitCritical
-4620           	mov	r0,r4
-E8BD 81F0     	pop.w	{r4-r8,pc}
-
-l00000F32:
-6EE3           	ldr	r3,[r4,#&6C]
-68DB           	ldr	r3,[r3,#&C]
-68DB           	ldr	r3,[r3,#&C]
-6A5B           	ldr	r3,[r3,#&24]
-F8C4 3084     	str	r3,[r4,#&84]
-E7D4           	b	$00000EEA
-00000F40 C4 00 00 20 04 ED 00 E0                         ... ....        
-
-;; vTaskDelay: 00000F48
-;;   Called from:
-;;     000088A8 (in MPU_vTaskDelay)
-vTaskDelay proc
-B508           	push	{r3,lr}
-B940           	cbnz	r0,$00000F5E
-
-l00000F4C:
-F04F 5280     	mov	r2,#&10000000
-4B09           	ldr	r3,[00000F78]                           ; [pc,#&24]
-601A           	str	r2,[r3]
-F3BF 8F4F     	dsb	sy
-F3BF 8F6F     	isb	sy
-BD08           	pop	{r3,pc}
-
-l00000F5E:
-4A07           	ldr	r2,[00000F7C]                           ; [pc,#&1C]
-F8D2 308C     	ldr	r3,[r2,#&8C]
-3301           	adds	r3,#1
-F8C2 308C     	str	r3,[r2,#&8C]
-F7FF FC77     	bl	prvAddCurrentTaskToDelayedList.isra.0
-F7FF FF7D     	bl	xTaskResumeAll
-2800           	cmps	r0,#0
-D0EA           	beq	$00000F4C
-
-l00000F76:
-BD08           	pop	{r3,pc}
-00000F78                         04 ED 00 E0 C4 00 00 20         ....... 
-
-;; vTaskDelayUntil: 00000F80
-;;   Called from:
-;;     00008884 (in MPU_vTaskDelayUntil)
-vTaskDelayUntil proc
-4A14           	ldr	r2,[00000FD4]                           ; [pc,#&50]
-B510           	push	{r4,lr}
-F8D2 408C     	ldr	r4,[r2,#&8C]
-6803           	ldr	r3,[r0]
-3401           	adds	r4,#1
-F8C2 408C     	str	r4,[r2,#&8C]
-F8D2 2080     	ldr	r2,[r2,#&80]
-4419           	adds	r1,r3
-429A           	cmps	r2,r3
-D20E           	bhs	$00000FB8
-
-l00000F9A:
-428B           	cmps	r3,r1
-D80E           	bhi	$00000FBC
-
-l00000F9E:
-6001           	str	r1,[r0]
-F7FF FF64     	bl	xTaskResumeAll
-B9A0           	cbnz	r0,$00000FD0
-
-l00000FA6:
-F04F 5280     	mov	r2,#&10000000
-4B0B           	ldr	r3,[00000FD8]                           ; [pc,#&2C]
-601A           	str	r2,[r3]
-F3BF 8F4F     	dsb	sy
-F3BF 8F6F     	isb	sy
-BD10           	pop	{r4,pc}
-
-l00000FB8:
-428B           	cmps	r3,r1
-D801           	bhi	$00000FC0
-
-l00000FBC:
-428A           	cmps	r2,r1
-D2EE           	bhs	$00000F9E
-
-l00000FC0:
-6001           	str	r1,[r0]
-1A88           	sub	r0,r1,r2
-F7FF FC4A     	bl	prvAddCurrentTaskToDelayedList.isra.0
-F7FF FF50     	bl	xTaskResumeAll
-2800           	cmps	r0,#0
-D0EA           	beq	$00000FA6
-
-l00000FD0:
-BD10           	pop	{r4,pc}
-00000FD2       00 BF C4 00 00 20 04 ED 00 E0               ..... ....    
-
-;; vTaskPlaceOnEventList: 00000FDC
-;;   Called from:
-;;     00000222 (in xQueueGenericSend)
-;;     00000378 (in xQueueGenericReceive)
-vTaskPlaceOnEventList proc
-B510           	push	{r4,lr}
-460C           	mov	r4,r1
-4B04           	ldr	r3,[00000FF4]                           ; [pc,#&10]
-6859           	ldr	r1,[r3,#&4]
-3138           	adds	r1,#&38
-F007 F991     	bl	vListInsert
-4620           	mov	r0,r4
-E8BD 4010     	pop.w	{r4,lr}
-E434           	b	prvAddCurrentTaskToDelayedList.isra.0
-00000FF2       00 BF C4 00 00 20                           .....         
-
-;; vTaskPlaceOnUnorderedEventList: 00000FF8
-;;   Called from:
-;;     00001812 (in xEventGroupWaitBits)
-;;     00001930 (in xEventGroupSync)
-vTaskPlaceOnUnorderedEventList proc
-B538           	push	{r3-r5,lr}
-4614           	mov	r4,r2
-4B06           	ldr	r3,[00001018]                           ; [pc,#&18]
-F041 4100     	orr	r1,r1,#&80000000
-685D           	ldr	r5,[r3,#&4]
-685B           	ldr	r3,[r3,#&4]
-63A9           	str	r1,[r5,#&38]
-F103 0138     	add	r1,r3,#&38
-F007 F970     	bl	vListInsertEnd
-4620           	mov	r0,r4
-E8BD 4038     	pop.w	{r3-r5,lr}
-E421           	b	prvAddCurrentTaskToDelayedList.isra.0
-00001018                         C4 00 00 20                     ...     
-
-;; xTaskRemoveFromEventList: 0000101C
-;;   Called from:
-;;     00000082 (in prvUnlockQueue)
-;;     000000C8 (in prvUnlockQueue)
-;;     00000294 (in xQueueGenericSend)
-;;     000003F4 (in xQueueGenericReceive)
-;;     00000412 (in xQueueGenericReceive)
-;;     000004B0 (in xQueueGenericSendFromISR)
-;;     00000512 (in xQueueGiveFromISR)
-;;     0000057C (in xQueueReceiveFromISR)
-;;     00000670 (in xQueueGenericReset)
-xTaskRemoveFromEventList proc
-B5F8           	push	{r3-r7,lr}
-68C3           	ldr	r3,[r0,#&C]
-4C16           	ldr	r4,[0000107C]                           ; [pc,#&58]
-68DD           	ldr	r5,[r3,#&C]
-F105 0638     	add	r6,r5,#&38
-4630           	mov	r0,r6
-F007 F989     	bl	uxListRemove
-F8D4 308C     	ldr	r3,[r4,#&8C]
-B9EB           	cbnz	r3,$00001070
-
-l00001034:
-F105 0624     	add	r6,r5,#&24
-4630           	mov	r0,r6
-F007 F981     	bl	uxListRemove
-2301           	mov	r3,#1
-6CE8           	ldr	r0,[r5,#&4C]
-6FE7           	ldr	r7,[r4,#&7C]
-4083           	lsls	r3,r0
-F104 0208     	add	r2,r4,#8
-EB00 0080     	add.w	r0,r0,r0,lsl #2
-433B           	orrs	r3,r7
-4631           	mov	r1,r6
-EB02 0080     	add.w	r0,r2,r0,lsl #2
-67E3           	str	r3,[r4,#&7C]
-F007 F94A     	bl	vListInsertEnd
-
-l0000105C:
-6863           	ldr	r3,[r4,#&4]
-6CEA           	ldr	r2,[r5,#&4C]
-6CDB           	ldr	r3,[r3,#&4C]
-429A           	cmps	r2,r3
-BF86           	itte	hi
-2001           	movhi	r0,#1
-
-l00001068:
-F8C4 0090     	str	r0,[r4,#&90]
-2000           	mov	r0,#0
-BDF8           	pop	{r3-r7,pc}
-
-l00001070:
-4631           	mov	r1,r6
-F104 0058     	add	r0,r4,#&58
-F007 F93B     	bl	vListInsertEnd
-E7EF           	b	$0000105C
-0000107C                                     C4 00 00 20             ... 
-
-;; xTaskRemoveFromUnorderedEventList: 00001080
-;;   Called from:
-;;     000018BC (in xEventGroupSetBits)
-;;     000019B6 (in vEventGroupDelete)
-xTaskRemoveFromUnorderedEventList proc
-B5F8           	push	{r3-r7,lr}
-2501           	mov	r5,#1
-68C6           	ldr	r6,[r0,#&C]
-F041 4100     	orr	r1,r1,#&80000000
-6001           	str	r1,[r0]
-F106 0724     	add	r7,r6,#&24
-F007 F956     	bl	uxListRemove
-4C0F           	ldr	r4,[000010D4]                           ; [pc,#&3C]
-4638           	mov	r0,r7
-F007 F952     	bl	uxListRemove
-6CF3           	ldr	r3,[r6,#&4C]
-F8D4 E07C     	ldr	lr,[r4,#&7C]
-FA05 F203     	lsl	r2,r5,r3
-F104 0008     	add	r0,r4,#8
-EB03 0383     	add.w	r3,r3,r3,lsl #2
-EB00 0083     	add.w	r0,r0,r3,lsl #2
-EA42 020E     	orr	r2,r2,lr
-4639           	mov	r1,r7
-67E2           	str	r2,[r4,#&7C]
-F007 F919     	bl	vListInsertEnd
-6863           	ldr	r3,[r4,#&4]
-6CF2           	ldr	r2,[r6,#&4C]
-6CDB           	ldr	r3,[r3,#&4C]
-429A           	cmps	r2,r3
-BF86           	itte	hi
-4628           	movhi	r0,r5
-
-l000010CA:
-F8C4 5090     	str	r5,[r4,#&90]
-2000           	mov	r0,#0
-BDF8           	pop	{r3-r7,pc}
-000010D2       00 BF C4 00 00 20                           .....         
-
-;; vTaskSwitchContext: 000010D8
-;;   Called from:
-;;     000016A6 (in xPortPendSVHandler)
-vTaskSwitchContext proc
-4A10           	ldr	r2,[0000111C]                           ; [pc,#&40]
-F8D2 308C     	ldr	r3,[r2,#&8C]
-B9C3           	cbnz	r3,$00001112
-
-l000010E0:
-F8C2 3090     	str	r3,[r2,#&90]
-6FD3           	ldr	r3,[r2,#&7C]
-FAB3 F383     	clz	r3,r3
-B2DB           	uxtb	r3,r3
-F1C3 031F     	rsb	r3,r3,#&1F
-EB03 0383     	add.w	r3,r3,r3,lsl #2
-009B           	lsls	r3,r3,#2
-18D0           	add	r0,r2,r3
-4603           	mov	r3,r0
-68C1           	ldr	r1,[r0,#&C]
-3310           	adds	r3,#&10
-6849           	ldr	r1,[r1,#&4]
-4299           	cmps	r1,r3
-60C1           	str	r1,[r0,#&C]
-BF08           	it	eq
-6849           	ldreq	r1,[r1,#&4]
-
-l00001108:
-68CB           	ldr	r3,[r1,#&C]
-BF08           	it	eq
-60C1           	streq	r1,[r0,#&C]
-
-l0000110E:
-6053           	str	r3,[r2,#&4]
-4770           	bx	lr
-
-l00001112:
-2301           	mov	r3,#1
-F8C2 3090     	str	r3,[r2,#&90]
-4770           	bx	lr
-0000111A                               00 BF C4 00 00 20           ..... 
-
-;; uxTaskResetEventItemValue: 00001120
-;;   Called from:
-;;     0000182C (in xEventGroupWaitBits)
-;;     0000194A (in xEventGroupSync)
-uxTaskResetEventItemValue proc
-4B04           	ldr	r3,[00001134]                           ; [pc,#&10]
-6859           	ldr	r1,[r3,#&4]
-685A           	ldr	r2,[r3,#&4]
-685B           	ldr	r3,[r3,#&4]
-6B88           	ldr	r0,[r1,#&38]
-6CDB           	ldr	r3,[r3,#&4C]
-F1C3 0302     	rsb	r3,r3,#2
-6393           	str	r3,[r2,#&38]
-4770           	bx	lr
-00001134             C4 00 00 20                             ...         
-
-;; xTaskGetCurrentTaskHandle: 00001138
-;;   Called from:
-;;     000005DC (in xQueueTakeMutexRecursive)
-;;     0000060A (in xQueueGiveMutexRecursive)
-xTaskGetCurrentTaskHandle proc
-4B01           	ldr	r3,[00001140]                           ; [pc,#&4]
-6858           	ldr	r0,[r3,#&4]
-4770           	bx	lr
-0000113E                                           00 BF               ..
-00001140 C4 00 00 20                                     ...             
-
-;; vTaskSetTimeOutState: 00001144
-;;   Called from:
-;;     00000212 (in xQueueGenericSend)
-;;     0000039E (in xQueueGenericReceive)
-;;     00008980 (in MPU_vTaskSetTimeOutState)
-vTaskSetTimeOutState proc
-4B03           	ldr	r3,[00001154]                           ; [pc,#&C]
-F8D3 2094     	ldr	r2,[r3,#&94]
-F8D3 3080     	ldr	r3,[r3,#&80]
-E880 000C     	stm	r0,{r2-r3}
-4770           	bx	lr
-00001154             C4 00 00 20                             ...         
-
-;; xTaskCheckForTimeOut: 00001158
-;;   Called from:
-;;     000001D4 (in xQueueGenericSend)
-;;     0000034A (in xQueueGenericReceive)
-;;     000089A8 (in MPU_xTaskCheckForTimeOut)
-xTaskCheckForTimeOut proc
-B570           	push	{r4-r6,lr}
-4604           	mov	r4,r0
-460E           	mov	r6,r1
-F007 FA0B     	bl	vPortEnterCritical
-4B11           	ldr	r3,[000011A8]                           ; [pc,#&44]
-6821           	ldr	r1,[r4]
-F8D3 5080     	ldr	r5,[r3,#&80]
-F8D3 2094     	ldr	r2,[r3,#&94]
-6860           	ldr	r0,[r4,#&4]
-4291           	cmps	r1,r2
-D001           	beq	$00001178
-
-l00001174:
-4285           	cmps	r5,r0
-D211           	bhs	$0000119C
-
-l00001178:
-6832           	ldr	r2,[r6]
-1A29           	sub	r1,r5,r0
-4291           	cmps	r1,r2
-D20D           	bhs	$0000119C
-
-l00001180:
-1B52           	sub	r2,r2,r5
-2500           	mov	r5,#0
-F8D3 1094     	ldr	r1,[r3,#&94]
-F8D3 3080     	ldr	r3,[r3,#&80]
-4402           	adds	r2,r0
-6032           	str	r2,[r6]
-E884 000A     	stm	r4,{r1,r3}
-F007 FA0C     	bl	vPortExitCritical
-4628           	mov	r0,r5
-BD70           	pop	{r4-r6,pc}
-
-l0000119C:
-2501           	mov	r5,#1
-F007 FA07     	bl	vPortExitCritical
-4628           	mov	r0,r5
-BD70           	pop	{r4-r6,pc}
-000011A6                   00 BF C4 00 00 20                   .....     
-
-;; vTaskMissedYield: 000011AC
-;;   Called from:
-;;     0000008C (in prvUnlockQueue)
-;;     000000D2 (in prvUnlockQueue)
-vTaskMissedYield proc
-2201           	mov	r2,#1
-4B02           	ldr	r3,[000011B8]                           ; [pc,#&8]
-F8C3 2090     	str	r2,[r3,#&90]
-4770           	bx	lr
-000011B6                   00 BF C4 00 00 20                   .....     
-
-;; vTaskPriorityInherit: 000011BC
-;;   Called from:
-;;     000003DE (in xQueueGenericReceive)
-vTaskPriorityInherit proc
-2800           	cmps	r0,#0
-D042           	beq	$00001246
-
-l000011C0:
-B5F8           	push	{r3-r7,lr}
-4C21           	ldr	r4,[00001248]                           ; [pc,#&84]
-6CC3           	ldr	r3,[r0,#&4C]
-6862           	ldr	r2,[r4,#&4]
-6CD2           	ldr	r2,[r2,#&4C]
-4293           	cmps	r3,r2
-D212           	bhs	$000011F4
-
-l000011CE:
-6B82           	ldr	r2,[r0,#&38]
-2A00           	cmps	r2,#0
-DB04           	blt	$000011DE
-
-l000011D4:
-6862           	ldr	r2,[r4,#&4]
-6CD2           	ldr	r2,[r2,#&4C]
-F1C2 0202     	rsb	r2,r2,#2
-6382           	str	r2,[r0,#&38]
-
-l000011DE:
-4D1B           	ldr	r5,[0000124C]                           ; [pc,#&6C]
-EB03 0383     	add.w	r3,r3,r3,lsl #2
-6B42           	ldr	r2,[r0,#&34]
-EB05 0383     	add.w	r3,r5,r3,lsl #2
-429A           	cmps	r2,r3
-D003           	beq	$000011F6
-
-l000011EE:
-6863           	ldr	r3,[r4,#&4]
-6CDB           	ldr	r3,[r3,#&4C]
-64C3           	str	r3,[r0,#&4C]
-
-l000011F4:
-BDF8           	pop	{r3-r7,pc}
-
-l000011F6:
-F100 0724     	add	r7,r0,#&24
-4606           	mov	r6,r0
-4638           	mov	r0,r7
-F007 F89F     	bl	uxListRemove
-B968           	cbnz	r0,$00001220
-
-l00001204:
-6CF2           	ldr	r2,[r6,#&4C]
-EB02 0382     	add.w	r3,r2,r2,lsl #2
-EB04 0383     	add.w	r3,r4,r3,lsl #2
-689B           	ldr	r3,[r3,#&8]
-B933           	cbnz	r3,$00001220
-
-l00001212:
-2101           	mov	r1,#1
-6FE3           	ldr	r3,[r4,#&7C]
-FA01 F202     	lsl	r2,r1,r2
-EA23 0202     	bic.w	r2,r3,r2
-67E2           	str	r2,[r4,#&7C]
-
-l00001220:
-2301           	mov	r3,#1
-6862           	ldr	r2,[r4,#&4]
-F8D4 E07C     	ldr	lr,[r4,#&7C]
-6CD2           	ldr	r2,[r2,#&4C]
-4639           	mov	r1,r7
-4093           	lsls	r3,r2
-EA43 030E     	orr	r3,r3,lr
-EB02 0082     	add.w	r0,r2,r2,lsl #2
-64F2           	str	r2,[r6,#&4C]
-EB05 0080     	add.w	r0,r5,r0,lsl #2
-67E3           	str	r3,[r4,#&7C]
-E8BD 40F8     	pop.w	{r3-r7,lr}
-F007 B855     	b	vListInsertEnd
-
-l00001246:
-4770           	bx	lr
-00001248                         C4 00 00 20 CC 00 00 20         ... ... 
-
-;; xTaskPriorityDisinherit: 00001250
-;;   Called from:
-;;     00000162 (in prvCopyDataToQueue)
-xTaskPriorityDisinherit proc
-2800           	cmps	r0,#0
-D039           	beq	$000012C8
-
-l00001254:
-B5F8           	push	{r3-r7,lr}
-6CC1           	ldr	r1,[r0,#&4C]
-6DC3           	ldr	r3,[r0,#&5C]
-6D82           	ldr	r2,[r0,#&58]
-3B01           	subs	r3,#1
-4291           	cmps	r1,r2
-65C3           	str	r3,[r0,#&5C]
-D000           	beq	$00001266
-
-l00001264:
-B10B           	cbz	r3,$0000126A
-
-l00001266:
-2000           	mov	r0,#0
-BDF8           	pop	{r3-r7,pc}
-
-l0000126A:
-F100 0724     	add	r7,r0,#&24
-4604           	mov	r4,r0
-4638           	mov	r0,r7
-F007 F865     	bl	uxListRemove
-B978           	cbnz	r0,$00001298
-
-l00001278:
-6CE1           	ldr	r1,[r4,#&4C]
-4A14           	ldr	r2,[000012CC]                           ; [pc,#&50]
-EB01 0381     	add.w	r3,r1,r1,lsl #2
-EB02 0383     	add.w	r3,r2,r3,lsl #2
-689B           	ldr	r3,[r3,#&8]
-B943           	cbnz	r3,$0000129A
-
-l00001288:
-2001           	mov	r0,#1
-6FD3           	ldr	r3,[r2,#&7C]
-FA00 F101     	lsl	r1,r0,r1
-EA23 0101     	bic.w	r1,r3,r1
-67D1           	str	r1,[r2,#&7C]
-E000           	b	$0000129A
-
-l00001298:
-4A0C           	ldr	r2,[000012CC]                           ; [pc,#&30]
-
-l0000129A:
-2501           	mov	r5,#1
-6DA3           	ldr	r3,[r4,#&58]
-F8D2 E07C     	ldr	lr,[r2,#&7C]
-480B           	ldr	r0,[000012D0]                           ; [pc,#&2C]
-FA05 F603     	lsl	r6,r5,r3
-4639           	mov	r1,r7
-64E3           	str	r3,[r4,#&4C]
-F1C3 0702     	rsb	r7,r3,#2
-EB03 0383     	add.w	r3,r3,r3,lsl #2
-EA46 060E     	orr	r6,r6,lr
-EB00 0083     	add.w	r0,r0,r3,lsl #2
-63A7           	str	r7,[r4,#&38]
-67D6           	str	r6,[r2,#&7C]
-F007 F816     	bl	vListInsertEnd
-4628           	mov	r0,r5
-BDF8           	pop	{r3-r7,pc}
-
-l000012C8:
-2000           	mov	r0,#0
-4770           	bx	lr
-000012CC                                     C4 00 00 20             ... 
-000012D0 CC 00 00 20                                     ...             
-
-;; pvTaskIncrementMutexHeldCount: 000012D4
-;;   Called from:
-;;     0000041C (in xQueueGenericReceive)
-pvTaskIncrementMutexHeldCount proc
-4B04           	ldr	r3,[000012E8]                           ; [pc,#&10]
-685A           	ldr	r2,[r3,#&4]
-B11A           	cbz	r2,$000012E2
-
-l000012DA:
-6859           	ldr	r1,[r3,#&4]
-6DCA           	ldr	r2,[r1,#&5C]
-3201           	adds	r2,#1
-65CA           	str	r2,[r1,#&5C]
-
-l000012E2:
-6858           	ldr	r0,[r3,#&4]
-4770           	bx	lr
-000012E6                   00 BF C4 00 00 20 00 00 00 00       ..... ....
-
-;; prvRestoreContextOfFirstTask: 000012F0
-;;   Called from:
-;;     0000135E (in prvSVCHandler)
-prvRestoreContextOfFirstTask proc
-F8DF 0430     	ldr	r0,[00001724]                            ; [pc,#&430]
-6800           	ldr	r0,[r0]
-6800           	ldr	r0,[r0]
-F380 8808     	msr	cpsr,r0
-4B0C           	ldr	r3,[00001330]                           ; [pc,#&30]
-6819           	ldr	r1,[r3]
-6808           	ldr	r0,[r1]
-F101 0104     	add	r1,r1,#4
-F8DF 2420     	ldr	r2,[00001728]                            ; [pc,#&420]
-E8B1 0FF0     	ldm	r1!,{r4-fp}
-E8A2 0FF0     	stm	r2!,{r4-fp}
-E8B0 0FF8     	ldm	r0!,{r3-fp}
-F383 8814     	msr	cpsr,r3
-F380 8809     	msr	cpsr,r0
-F04F 0000     	mov	r0,#0
-F380 8811     	msr	cpsr,r0
-F06F 0E02     	mvn	lr,#2
-4770           	bx	lr
-0000132C                                     AF F3 00 80             ....
-00001330 C8 00 00 20                                     ...             
-
-;; prvSVCHandler: 00001334
-;;   Called from:
-;;     00001722 (in vPortSVCHandler)
-prvSVCHandler proc
-6983           	ldr	r3,[r0,#&18]
-F813 3C02     	ldrb.w	r3,[r3,-#&2]
-2B01           	cmps	r3,#1
-D010           	beq	$00001360
-
-l0000133E:
-D309           	blo	$00001354
-
-l00001340:
-2B02           	cmps	r3,#2
-D106           	bne	$00001352
-
-l00001344:
-F3EF 8114     	mrs	r1,cpsr
-F021 0101     	bic	r1,r1,#1
-F381 8814     	msr	cpsr,r1
-4770           	bx	lr
-
-l00001352:
-4770           	bx	lr
-
-l00001354:
-4A07           	ldr	r2,[00001374]                           ; [pc,#&1C]
-6813           	ldr	r3,[r2]
-F043 433E     	orr	r3,r3,#&BE000000
-6013           	str	r3,[r2]
-E7C7           	b	prvRestoreContextOfFirstTask
-
-l00001360:
-F04F 5280     	mov	r2,#&10000000
-4B04           	ldr	r3,[00001378]                           ; [pc,#&10]
-601A           	str	r2,[r3]
-F3BF 8F4F     	dsb	sy
-F3BF 8F6F     	isb	sy
-4770           	bx	lr
-00001372       00 BF 1C ED 00 E0 04 ED 00 E0               ..........    
-
-;; pxPortInitialiseStack: 0000137C
-;;   Called from:
-;;     00000786 (in prvInitialiseNewTask)
-pxPortInitialiseStack proc
-2B01           	cmps	r3,#1
-B430           	push	{r4-r5}
-BF08           	it	eq
-2302           	moveq	r3,#2
-
-l00001384:
-F04F 7580     	mov	r5,#&1000000
-F04F 0400     	mov	r4,#0
-BF18           	it	ne
-2303           	movne	r3,#3
-
-l00001390:
-F840 2C20     	str.w	r2,[r0,-#&20]
-F021 0101     	bic	r1,r1,#1
-F1A0 0244     	sub	r2,r0,#&44
-E900 0022     	stmdb	r0,{r1,r5}
-F840 4C0C     	str.w	r4,[r0,-#&C]
-F840 3C44     	str.w	r3,[r0,-#&44]
-BC30           	pop	{r4-r5}
-4610           	mov	r0,r2
-4770           	bx	lr
-000013AE                                           00 BF               ..
-
-;; xPortStartScheduler: 000013B0
-;;   Called from:
-;;     000009DC (in vTaskStartScheduler)
-xPortStartScheduler proc
-4B4D           	ldr	r3,[000014E8]                           ; [pc,#&134]
-B470           	push	{r4-r6}
-681A           	ldr	r2,[r3]
-494D           	ldr	r1,[000014EC]                           ; [pc,#&134]
-F442 027F     	orr	r2,r2,#&FF0000
-601A           	str	r2,[r3]
-681A           	ldr	r2,[r3]
-F042 427F     	orr	r2,r2,#&FF000000
-601A           	str	r2,[r3]
-680B           	ldr	r3,[r1]
-F5B3 6F00     	cmp	r3,#&800
-D018           	beq	$00001400
-
-l000013CE:
-F644 651F     	mov	r5,#&4E1F
-2107           	mov	r1,#7
-2000           	mov	r0,#0
-4C46           	ldr	r4,[000014F0]                           ; [pc,#&118]
-4A46           	ldr	r2,[000014F4]                           ; [pc,#&118]
-4B47           	ldr	r3,[000014F8]                           ; [pc,#&11C]
-6025           	str	r5,[r4]
-6011           	str	r1,[r2]
-6018           	str	r0,[r3]
-48D0           	ldr	r0,[00001724]                           ; [pc,#&340]
-6800           	ldr	r0,[r0]
-6800           	ldr	r0,[r0]
-F380 8808     	msr	cpsr,r0
-B662           	cps	#0
-B661           	cps	#0
-F3BF 8F4F     	dsb	sy
-F3BF 8F6F     	isb	sy
-DF00           	svc	#0
-BF00           	nop
-BC70           	pop	{r4-r6}
-4770           	bx	lr
-
-l00001400:
-483E           	ldr	r0,[000014FC]                           ; [pc,#&F8]
-493F           	ldr	r1,[00001500]                           ; [pc,#&FC]
-4B3F           	ldr	r3,[00001504]                           ; [pc,#&FC]
-1A09           	sub	r1,r1,r0
-F040 0210     	orr	r2,r0,#&10
-2920           	cmps	r1,#&20
-601A           	str	r2,[r3]
-D965           	bls	$000014DE
-
-l00001412:
-2340           	mov	r3,#&40
-2205           	mov	r2,#5
-E002           	b	$0000141E
-
-l00001418:
-3201           	adds	r2,#1
-2A1F           	cmps	r2,#&1F
-D057           	beq	$000014CE
-
-l0000141E:
-4299           	cmps	r1,r3
-EA4F 0343     	mov.w	r3,r3,lsl #1
-D8F8           	bhi	$00001418
-
-l00001426:
-4B38           	ldr	r3,[00001508]                           ; [pc,#&E0]
-EA43 0242     	orr	r2,r3,r2,lsl #1
-
-l0000142C:
-4937           	ldr	r1,[0000150C]                           ; [pc,#&DC]
-4C38           	ldr	r4,[00001510]                           ; [pc,#&E0]
-1A09           	sub	r1,r1,r0
-4B34           	ldr	r3,[00001504]                           ; [pc,#&D0]
-F040 0011     	orr	r0,r0,#&11
-2920           	cmps	r1,#&20
-6022           	str	r2,[r4]
-6018           	str	r0,[r3]
-D94C           	bls	$000014DA
-
-l00001440:
-2340           	mov	r3,#&40
-2205           	mov	r2,#5
-E002           	b	$0000144C
-
-l00001446:
-3201           	adds	r2,#1
-2A1F           	cmps	r2,#&1F
-D042           	beq	$000014D2
-
-l0000144C:
-4299           	cmps	r1,r3
-EA4F 0343     	mov.w	r3,r3,lsl #1
-D8F8           	bhi	$00001446
-
-l00001454:
-4B2F           	ldr	r3,[00001514]                           ; [pc,#&BC]
-EA43 0242     	orr	r2,r3,r2,lsl #1
-
-l0000145A:
-4B2F           	ldr	r3,[00001518]                           ; [pc,#&BC]
-492F           	ldr	r1,[0000151C]                           ; [pc,#&BC]
-4D2C           	ldr	r5,[00001510]                           ; [pc,#&B0]
-4828           	ldr	r0,[00001504]                           ; [pc,#&A0]
-1AC9           	sub	r1,r1,r3
-F043 0412     	orr	r4,r3,#&12
-2920           	cmps	r1,#&20
-602A           	str	r2,[r5]
-6004           	str	r4,[r0]
-D938           	bls	$000014E2
-
-l00001470:
-2340           	mov	r3,#&40
-2205           	mov	r2,#5
-E002           	b	$0000147C
-
-l00001476:
-3201           	adds	r2,#1
-2A1F           	cmps	r2,#&1F
-D02C           	beq	$000014D6
-
-l0000147C:
-4299           	cmps	r1,r3
-EA4F 0343     	mov.w	r3,r3,lsl #1
-D8F8           	bhi	$00001476
-
-l00001484:
-4826           	ldr	r0,[00001520]                           ; [pc,#&98]
-EA40 0042     	orr	r0,r0,r2,lsl #1
-
-l0000148A:
-2305           	mov	r3,#5
-2240           	mov	r2,#&40
-4E20           	ldr	r6,[00001510]                           ; [pc,#&80]
-4C1C           	ldr	r4,[00001504]                           ; [pc,#&70]
-4D24           	ldr	r5,[00001524]                           ; [pc,#&90]
-4924           	ldr	r1,[00001528]                           ; [pc,#&90]
-6030           	str	r0,[r6]
-6025           	str	r5,[r4]
-
-l0000149A:
-3301           	adds	r3,#1
-2B1F           	cmps	r3,#&1F
-EA4F 0242     	mov.w	r2,r2,lsl #1
-D012           	beq	$000014CA
-
-l000014A4:
-428A           	cmps	r2,r1
-D9F8           	bls	$0000149A
-
-l000014A8:
-4A20           	ldr	r2,[0000152C]                           ; [pc,#&80]
-EA42 0343     	orr	r3,r2,r3,lsl #1
-
-l000014AE:
-4A18           	ldr	r2,[00001510]                           ; [pc,#&60]
-491F           	ldr	r1,[00001530]                           ; [pc,#&7C]
-6013           	str	r3,[r2]
-680B           	ldr	r3,[r1]
-F443 3380     	orr	r3,r3,#&10000
-600B           	str	r3,[r1]
-F852 3C0C     	ldr.w	r3,[r2,-#&C]
-F043 0305     	orr	r3,r3,#5
-F842 3C0C     	str.w	r3,[r2,-#&C]
-E781           	b	$000013CE
-
-l000014CA:
-4B1A           	ldr	r3,[00001534]                           ; [pc,#&68]
-E7EF           	b	$000014AE
-
-l000014CE:
-4A1A           	ldr	r2,[00001538]                           ; [pc,#&68]
-E7AC           	b	$0000142C
-
-l000014D2:
-4A1A           	ldr	r2,[0000153C]                           ; [pc,#&68]
-E7C1           	b	$0000145A
-
-l000014D6:
-481A           	ldr	r0,[00001540]                           ; [pc,#&68]
-E7D7           	b	$0000148A
-
-l000014DA:
-4A1A           	ldr	r2,[00001544]                           ; [pc,#&68]
-E7BD           	b	$0000145A
-
-l000014DE:
-4A1A           	ldr	r2,[00001548]                           ; [pc,#&68]
-E7A4           	b	$0000142C
-
-l000014E2:
-481A           	ldr	r0,[0000154C]                           ; [pc,#&68]
-E7D1           	b	$0000148A
-000014E6                   00 BF 20 ED 00 E0 90 ED 00 E0       .. .......
+00000A86                   02 2C 39 D0 37 66 01 2C 0A D0       .,9.7f.,..
+00000A90 01 24 07 F0 8D FD 20 46 F8 BD 33 6E 01 2C 03 F1 .$.... F..3n.,..
+00000AA0 01 03 33 66 F4 D1 06 F1 24 07 16 4D 38 46 07 F0 ..3f....$..M8F..
+00000AB0 47 FC F0 6C D5 F8 7C E0 05 F1 08 02 04 FA 00 F3 G..l..|.........
+00000AC0 00 EB 80 00 43 EA 0E 03 02 EB 80 00 39 46 EB 67 ....C.......9F.g
+00000AD0 07 F0 0E FC 6B 68 F2 6C DB 6C 9A 42 D8 D9 4F F0 ....kh.l.l.B..O.
+00000AE0 80 52 09 4B 1A 60 BF F3 4F 8F BF F3 6F 8F 07 F0 .R.K.`..O...o...
+00000AF0 5F FD 20 46 F8 BD 33 6E 1F 43 37 66 C6 E7 00 24 _. F..3n.C7f...$
+00000B00 C7 E7 00 BF C4 00 00 20 04 ED 00 E0 2D E9 F0 41 ....... ....-..A
+00000B10 EF F3 11 85 4F F0 BF 04 84 F3 11 88 BF F3 6F 8F ....O.........o.
+00000B20 BF F3 4F 8F 0B B1 04 6E 1C 60 02 23 90 F8 64 40 ..O....n.`.#..d@
+00000B30 01 3A 80 F8 64 30 E4 B2 03 2A 06 D8 DF E8 02 F0 .:..d0...*......
+00000B40 2A 0C 04 02 02 2C 3D D0 01 66 01 2C 0A D0 01 20 *....,=..f.,... 
+00000B50 85 F3 11 88 BD E8 F0 81 03 6E 01 2C 03 F1 01 03 .........n.,....
+00000B60 03 66 F4 D1 1A 4E 07 46 D6 F8 8C 30 B3 B1 00 F1 .f...N.F...0....
+00000B70 38 01 06 F1 58 00 07 F0 BB FB 73 68 FA 6C DB 6C 8...X.....sh.l.l
+00000B80 9A 42 E4 D9 06 9B 01 20 F3 B1 18 60 85 F3 11 88 .B..... ...`....
+00000B90 BD E8 F0 81 03 6E 19 43 01 66 D6 E7 00 F1 24 08 .....n.C.f....$.
+00000BA0 40 46 07 F0 CD FB F8 6C F2 6F 84 40 06 F1 08 03 @F.....l.o.@....
+00000BB0 00 EB 80 00 14 43 41 46 03 EB 80 00 F4 67 07 F0 .....CAF.....g..
+00000BC0 97 FB DA E7 00 20 C3 E7 C6 F8 90 00 C0 E7 00 BF ..... ..........
+00000BD0 C4 00 00 20 2D E9 F0 41 1F 4C 15 46 80 46 0E 46 ... -..A.L.F.F.F
+00000BE0 1F 46 07 F0 C9 FC 62 68 92 F8 64 20 02 2A 09 D0 .F....bh..d .*..
+00000BF0 01 20 61 68 0A 6E 22 EA 08 02 0A 66 63 68 83 F8 . ah.n"....fch..
+00000C00 64 00 DF B9 07 F0 D4 FC 07 F0 B6 FC 15 B1 63 68 d.............ch
+00000C10 1B 6E 2B 60 63 68 93 F8 64 30 01 2B 1A D0 01 25 .n+`ch..d0.+...%
+00000C20 63 68 19 6E 21 EA 06 01 19 66 00 22 63 68 83 F8 ch.n!....f."ch..
+00000C30 64 20 07 F0 BD FC 28 46 BD E8 F0 81 38 46 FF F7 d ....(F....8F..
+00000C40 0D FE 4F F0 80 52 05 4B 1A 60 BF F3 4F 8F BF F3 ..O..R.K.`..O...
+00000C50 6F 8F D7 E7 00 25 E8 E7 C4 00 00 20 04 ED 00 E0 o....%..... ....
+00000C60 2D E9 F8 43 EF F3 11 86 4F F0 BF 03 83 F3 11 88 -..C....O.......
+00000C70 BF F3 6F 8F BF F3 4F 8F 02 23 90 F8 64 50 80 F8 ..o...O..#..dP..
+00000C80 64 30 03 6E ED B2 01 33 01 2D 03 66 03 D0 86 F3 d0.n...3.-.f....
+00000C90 11 88 BD E8 F8 83 19 4F 88 46 D7 F8 8C 30 04 46 .......O.F...0.F
+00000CA0 A3 B1 00 F1 38 01 07 F1 58 00 07 F0 21 FB 7B 68 ....8...X...!.{h
+00000CB0 E2 6C DB 6C 9A 42 EA D9 01 23 B8 F1 00 0F 19 D0 .l.l.B...#......
+00000CC0 C8 F8 00 30 86 F3 11 88 BD E8 F8 83 00 F1 24 09 ...0..........$.
+00000CD0 48 46 07 F0 35 FB E0 6C FA 6F 85 40 07 F1 08 03 HF..5..l.o.@....
+00000CE0 00 EB 80 00 15 43 49 46 03 EB 80 00 FD 67 07 F0 .....CIF.....g..
+00000CF0 FF FA DC E7 C7 F8 90 30 C9 E7 00 BF C4 00 00 20 .......0....... 
+00000D00 70 B5 18 4C 06 46 0D 46 07 F0 36 FC 63 68 1B 6E p..L.F.F..6.ch.n
+00000D10 23 B9 01 22 63 68 83 F8 64 20 B5 B9 07 F0 48 FC #.."ch..d ....H.
+00000D20 07 F0 2A FC 63 68 1D 6E 1D B1 56 B9 63 68 6A 1E ..*.ch.n..V.chj.
+00000D30 1A 66 00 22 63 68 83 F8 64 20 07 F0 39 FC 28 46 .f."ch..d ..9.(F
+00000D40 70 BD 00 22 63 68 1A 66 F3 E7 28 46 FF F7 86 FD p.."ch.f..(F....
+00000D50 4F F0 80 52 04 4B 1A 60 BF F3 4F 8F BF F3 6F 8F O..R.K.`..O...o.
+00000D60 DC E7 00 BF C4 00 00 20 04 ED 00 E0 2D E9 F0 47 ....... ....-..G
+00000D70 3C 4C D4 F8 8C 30 00 2B 5E D1 D4 F8 80 70 01 37 <L...0.+^....p.7
+00000D80 C4 F8 80 70 87 B9 E3 6E 22 6F E2 66 23 67 D4 F8 ...p...n"o.f#g..
+00000D90 94 30 01 33 C4 F8 94 30 E3 6E 1B 68 00 2B 52 D1 .0.3...0.n.h.+R.
+00000DA0 4F F0 FF 33 C4 F8 84 30 D4 F8 84 30 00 26 9F 42 O..3...0...0.&.B
+00000DB0 30 D3 4F F0 01 09 DF F8 B0 80 23 E0 E3 6E DB 68 0.O.......#..n.h
+00000DC0 DD 68 6B 6A 05 F1 24 0A 9F 42 48 D3 50 46 07 F0 .hkj..$..BH.PF..
+00000DD0 B7 FA AB 6C 05 F1 38 00 0B B1 07 F0 B1 FA E8 6C ...l..8........l
+00000DE0 E2 6F 09 FA 00 F3 00 EB 80 00 13 43 51 46 08 EB .o.........CQF..
+00000DF0 80 00 E3 67 07 F0 7C FA 63 68 EA 6C DB 6C 9A 42 ...g..|.ch.l.l.B
+00000E00 28 BF 01 26 E3 6E 1B 68 00 2B D7 D1 4F F0 FF 33 (..&.n.h.+..O..3
+00000E10 C4 F8 84 30 63 68 DB 6C 03 EB 83 03 04 EB 83 03 ...0ch.l........
+00000E20 9B 68 02 2B 28 BF 01 26 D4 F8 90 30 00 2B 18 BF .h.+(..&...0.+..
+00000E30 01 26 30 46 BD E8 F0 87 D4 F8 98 30 00 26 01 33 .&0F.......0.&.3
+00000E40 C4 F8 98 30 F0 E7 E3 6E 00 26 DB 68 DB 68 5B 6A ...0...n.&.h.h[j
+00000E50 C4 F8 84 30 D4 F8 84 30 9F 42 DB D3 A9 E7 C4 F8 ...0...0.B......
+00000E60 84 30 D7 E7 C4 00 00 20 CC 00 00 20 2D E9 F0 41 .0..... ... -..A
+00000E70 33 4C 07 F0 81 FB D4 F8 8C 30 01 3B C4 F8 8C 30 3L.......0.;...0
+00000E80 D4 F8 8C 50 00 2D 4E D1 23 68 00 2B 4B D0 01 26 ...P.-N.#h.+K..&
+00000E90 04 F1 08 07 1E E0 63 6E DD 68 05 F1 24 08 05 F1 ......cn.h..$...
+00000EA0 38 00 07 F0 4D FA 40 46 07 F0 4A FA E8 6C E2 6F 8...M.@F..J..l.o
+00000EB0 06 FA 00 F3 00 EB 80 00 13 43 41 46 07 EB 80 00 .........CAF....
+00000EC0 E3 67 07 F0 15 FA 63 68 EA 6C DB 6C 9A 42 28 BF .g....ch.l.l.B(.
+00000ED0 C4 F8 90 60 A3 6D 00 2B DD D1 35 B1 E3 6E 1B 68 ...`.m.+..5..n.h
+00000EE0 3B BB 4F F0 FF 33 C4 F8 84 30 D4 F8 98 50 4D B1 ;.O..3...0...PM.
+00000EF0 01 26 FF F7 3B FF 08 B1 C4 F8 90 60 01 3D F8 D1 .&..;......`.=..
+00000F00 C4 F8 98 50 D4 F8 90 30 6B B1 4F F0 80 52 0D 4B ...P...0k.O..R.K
+00000F10 1A 60 BF F3 4F 8F BF F3 6F 8F 01 24 07 F0 48 FB .`..O...o..$..H.
+00000F20 20 46 BD E8 F0 81 00 24 07 F0 42 FB 20 46 BD E8  F.....$..B. F..
+00000F30 F0 81 E3 6E DB 68 DB 68 5B 6A C4 F8 84 30 D4 E7 ...n.h.h[j...0..
+00000F40 C4 00 00 20 04 ED 00 E0 08 B5 40 B9 4F F0 80 52 ... ......@.O..R
+00000F50 09 4B 1A 60 BF F3 4F 8F BF F3 6F 8F 08 BD 07 4A .K.`..O...o....J
+00000F60 D2 F8 8C 30 01 33 C2 F8 8C 30 FF F7 77 FC FF F7 ...0.3...0..w...
+00000F70 7D FF 00 28 EA D0 08 BD 04 ED 00 E0 C4 00 00 20 }..(........... 
+00000F80 14 4A 10 B5 D2 F8 8C 40 03 68 01 34 C2 F8 8C 40 .J.....@.h.4...@
+00000F90 D2 F8 80 20 19 44 9A 42 0E D2 8B 42 0E D8 01 60 ... .D.B...B...`
+00000FA0 FF F7 64 FF A0 B9 4F F0 80 52 0B 4B 1A 60 BF F3 ..d...O..R.K.`..
+00000FB0 4F 8F BF F3 6F 8F 10 BD 8B 42 01 D8 8A 42 EE D2 O...o....B...B..
+00000FC0 01 60 88 1A FF F7 4A FC FF F7 50 FF 00 28 EA D0 .`....J...P..(..
+00000FD0 10 BD 00 BF C4 00 00 20 04 ED 00 E0 10 B5 0C 46 ....... .......F
+00000FE0 04 4B 59 68 38 31 07 F0 91 F9 20 46 BD E8 10 40 .KYh81.... F...@
+00000FF0 34 E4 00 BF C4 00 00 20 38 B5 14 46 06 4B 41 F0 4...... 8..F.KA.
+00001000 00 41 5D 68 5B 68 A9 63 03 F1 38 01 07 F0 70 F9 .A]h[h.c..8...p.
+00001010 20 46 BD E8 38 40 21 E4 C4 00 00 20 F8 B5 C3 68  F..8@!.... ...h
+00001020 16 4C DD 68 05 F1 38 06 30 46 07 F0 89 F9 D4 F8 .L.h..8.0F......
+00001030 8C 30 EB B9 05 F1 24 06 30 46 07 F0 81 F9 01 23 .0....$.0F.....#
+00001040 E8 6C E7 6F 83 40 04 F1 08 02 00 EB 80 00 3B 43 .l.o.@........;C
+00001050 31 46 02 EB 80 00 E3 67 07 F0 4A F9 63 68 EA 6C 1F.....g..J.ch.l
+00001060 DB 6C 9A 42 86 BF 01 20 C4 F8 90 00 00 20 F8 BD .l.B... ..... ..
+00001070 31 46 04 F1 58 00 07 F0 3B F9 EF E7 C4 00 00 20 1F..X...;...... 
+00001080 F8 B5 01 25 C6 68 41 F0 00 41 01 60 06 F1 24 07 ...%.hA..A.`..$.
+00001090 07 F0 56 F9 0F 4C 38 46 07 F0 52 F9 F3 6C D4 F8 ..V..L8F..R..l..
+000010A0 7C E0 05 FA 03 F2 04 F1 08 00 03 EB 83 03 00 EB |...............
+000010B0 83 00 42 EA 0E 02 39 46 E2 67 07 F0 19 F9 63 68 ..B...9F.g....ch
+000010C0 F2 6C DB 6C 9A 42 86 BF 28 46 C4 F8 90 50 00 20 .l.l.B..(F...P. 
+000010D0 F8 BD 00 BF C4 00 00 20 10 4A D2 F8 8C 30 C3 B9 ....... .J...0..
+000010E0 C2 F8 90 30 D3 6F B3 FA 83 F3 DB B2 C3 F1 1F 03 ...0.o..........
+000010F0 03 EB 83 03 9B 00 D0 18 03 46 C1 68 10 33 49 68 .........F.h.3Ih
+00001100 99 42 C1 60 08 BF 49 68 CB 68 08 BF C1 60 53 60 .B.`..Ih.h...`S`
+00001110 70 47 01 23 C2 F8 90 30 70 47 00 BF C4 00 00 20 pG.#...0pG..... 
+00001120 04 4B 59 68 5A 68 5B 68 88 6B DB 6C C3 F1 02 03 .KYhZh[h.k.l....
+00001130 93 63 70 47 C4 00 00 20 01 4B 58 68 70 47 00 BF .cpG... .KXhpG..
+00001140 C4 00 00 20 03 4B D3 F8 94 20 D3 F8 80 30 80 E8 ... .K... ...0..
+00001150 0C 00 70 47 C4 00 00 20 70 B5 04 46 0E 46 07 F0 ..pG... p..F.F..
+00001160 0B FA 11 4B 21 68 D3 F8 80 50 D3 F8 94 20 60 68 ...K!h...P... `h
+00001170 91 42 01 D0 85 42 11 D2 32 68 29 1A 91 42 0D D2 .B...B..2h)..B..
+00001180 52 1B 00 25 D3 F8 94 10 D3 F8 80 30 02 44 32 60 R..%.......0.D2`
+00001190 84 E8 0A 00 07 F0 0C FA 28 46 70 BD 01 25 07 F0 ........(Fp..%..
+000011A0 07 FA 28 46 70 BD 00 BF C4 00 00 20 01 22 02 4B ..(Fp...... .".K
+000011B0 C3 F8 90 20 70 47 00 BF C4 00 00 20 00 28 42 D0 ... pG..... .(B.
+000011C0 F8 B5 21 4C C3 6C 62 68 D2 6C 93 42 12 D2 82 6B ..!L.lbh.l.B...k
+000011D0 00 2A 04 DB 62 68 D2 6C C2 F1 02 02 82 63 1B 4D .*..bh.l.....c.M
+000011E0 03 EB 83 03 42 6B 05 EB 83 03 9A 42 03 D0 63 68 ....Bk.....B..ch
+000011F0 DB 6C C3 64 F8 BD 00 F1 24 07 06 46 38 46 07 F0 .l.d....$..F8F..
+00001200 9F F8 68 B9 F2 6C 02 EB 82 03 04 EB 83 03 9B 68 ..h..l.........h
+00001210 33 B9 01 21 E3 6F 01 FA 02 F2 23 EA 02 02 E2 67 3..!.o....#....g
+00001220 01 23 62 68 D4 F8 7C E0 D2 6C 39 46 93 40 43 EA .#bh..|..l9F.@C.
+00001230 0E 03 02 EB 82 00 F2 64 05 EB 80 00 E3 67 BD E8 .......d.....g..
+00001240 F8 40 07 F0 55 B8 70 47 C4 00 00 20 CC 00 00 20 .@..U.pG... ... 
+00001250 00 28 39 D0 F8 B5 C1 6C C3 6D 82 6D 01 3B 91 42 .(9....l.m.m.;.B
+00001260 C3 65 00 D0 0B B1 00 20 F8 BD 00 F1 24 07 04 46 .e..... ....$..F
+00001270 38 46 07 F0 65 F8 78 B9 E1 6C 14 4A 01 EB 81 03 8F..e.x..l.J....
+00001280 02 EB 83 03 9B 68 43 B9 01 20 D3 6F 00 FA 01 F1 .....hC.. .o....
+00001290 23 EA 01 01 D1 67 00 E0 0C 4A 01 25 A3 6D D2 F8 #....g...J.%.m..
+000012A0 7C E0 0B 48 05 FA 03 F6 39 46 E3 64 C3 F1 02 07 |..H....9F.d....
+000012B0 03 EB 83 03 46 EA 0E 06 00 EB 83 00 A7 63 D6 67 ....F........c.g
+000012C0 07 F0 16 F8 28 46 F8 BD 00 20 70 47 C4 00 00 20 ....(F... pG... 
+000012D0 CC 00 00 20 04 4B 5A 68 1A B1 59 68 CA 6D 01 32 ... .KZh..Yh.m.2
+000012E0 CA 65 58 68 70 47 00 BF C4 00 00 20 00 00 00 00 .eXhpG..... ....
+000012F0 DF F8 30 04 00 68 00 68 80 F3 08 88 0C 4B 19 68 ..0..h.h.....K.h
+00001300 08 68 01 F1 04 01 DF F8 20 24 B1 E8 F0 0F A2 E8 .h...... $......
+00001310 F0 0F B0 E8 F8 0F 83 F3 14 88 80 F3 09 88 4F F0 ..............O.
+00001320 00 00 80 F3 11 88 6F F0 02 0E 70 47 AF F3 00 80 ......o...pG....
+00001330 C8 00 00 20 83 69 13 F8 02 3C 01 2B 10 D0 09 D3 ... .i...<.+....
+00001340 02 2B 06 D1 EF F3 14 81 21 F0 01 01 81 F3 14 88 .+......!.......
+00001350 70 47 70 47 07 4A 13 68 43 F0 3E 43 13 60 C7 E7 pGpG.J.hC.>C.`..
+00001360 4F F0 80 52 04 4B 1A 60 BF F3 4F 8F BF F3 6F 8F O..R.K.`..O...o.
+00001370 70 47 00 BF 1C ED 00 E0 04 ED 00 E0 01 2B 30 B4 pG...........+0.
+00001380 08 BF 02 23 4F F0 80 75 4F F0 00 04 18 BF 03 23 ...#O..uO......#
+00001390 40 F8 20 2C 21 F0 01 01 A0 F1 44 02 00 E9 22 00 @. ,!.....D...".
+000013A0 40 F8 0C 4C 40 F8 44 3C 30 BC 10 46 70 47 00 BF @..L@.D<0..FpG..
+000013B0 4D 4B 70 B4 1A 68 4D 49 42 F4 7F 02 1A 60 1A 68 MKp..hMIB....`.h
+000013C0 42 F0 7F 42 1A 60 0B 68 B3 F5 00 6F 18 D0 44 F6 B..B.`.h...o..D.
+000013D0 1F 65 07 21 00 20 46 4C 46 4A 47 4B 25 60 11 60 .e.!. FLFJGK%`.`
+000013E0 18 60 D0 48 00 68 00 68 80 F3 08 88 62 B6 61 B6 .`.H.h.h....b.a.
+000013F0 BF F3 4F 8F BF F3 6F 8F 00 DF 00 BF 70 BC 70 47 ..O...o.....p.pG
+00001400 3E 48 3F 49 3F 4B 09 1A 40 F0 10 02 20 29 1A 60 >H?I?K..@... ).`
+00001410 65 D9 40 23 05 22 02 E0 01 32 1F 2A 57 D0 99 42 e.@#."...2.*W..B
+00001420 4F EA 43 03 F8 D8 38 4B 43 EA 42 02 37 49 38 4C O.C...8KC.B.7I8L
+00001430 09 1A 34 4B 40 F0 11 00 20 29 22 60 18 60 4C D9 ..4K@... )"`.`L.
+00001440 40 23 05 22 02 E0 01 32 1F 2A 42 D0 99 42 4F EA @#."...2.*B..BO.
+00001450 43 03 F8 D8 2F 4B 43 EA 42 02 2F 4B 2F 49 2C 4D C.../KC.B./K/I,M
+00001460 28 48 C9 1A 43 F0 12 04 20 29 2A 60 04 60 38 D9 (H..C... )*`.`8.
+00001470 40 23 05 22 02 E0 01 32 1F 2A 2C D0 99 42 4F EA @#."...2.*,..BO.
+00001480 43 03 F8 D8 26 48 40 EA 42 00 05 23 40 22 20 4E C...&H@.B..#@" N
+00001490 1C 4C 24 4D 24 49 30 60 25 60 01 33 1F 2B 4F EA .L$M$I0`%`.3.+O.
+000014A0 42 02 12 D0 8A 42 F8 D9 20 4A 42 EA 43 03 18 4A B....B.. JB.C..J
+000014B0 1F 49 13 60 0B 68 43 F4 80 33 0B 60 52 F8 0C 3C .I.`.hC..3.`R..<
+000014C0 43 F0 05 03 42 F8 0C 3C 81 E7 1A 4B EF E7 1A 4A C...B..<...K...J
+000014D0 AC E7 1A 4A C1 E7 1A 48 D7 E7 1A 4A BD E7 1A 4A ...J...H...J...J
+000014E0 A4 E7 1A 48 D1 E7 00 BF 20 ED 00 E0 90 ED 00 E0 ...H.... .......
 000014F0 14 E0 00 E0 10 E0 00 E0 BC 00 00 20 00 00 00 00 ........... ....
 00001500 00 00 02 00 9C ED 00 E0 01 00 07 06 00 80 00 00 ................
 00001510 A0 ED 00 E0 01 00 07 05 00 00 00 20 00 02 00 20 ........... ... 
 00001520 01 00 07 01 13 00 00 40 FE FF FF 1F 01 00 00 13 .......@........
 00001530 24 ED 00 E0 3F 00 00 13 3F 00 07 06 3F 00 07 05 $...?...?...?...
 00001540 3F 00 07 01 09 00 07 05 09 00 07 06 09 00 07 01 ?...............
-
-;; vPortEndScheduler: 00001550
-;;   Called from:
-;;     00000A02 (in vTaskEndScheduler)
-vPortEndScheduler proc
-4770           	bx	lr
-00001552       00 BF                                       ..            
-
-;; vPortStoreTaskMPUSettings: 00001554
-;;   Called from:
-;;     00000774 (in prvInitialiseNewTask)
-;;     00000978 (in vTaskAllocateMPURegions)
-;;     00000986 (in vTaskAllocateMPURegions)
-vPortStoreTaskMPUSettings proc
-B430           	push	{r4-r5}
-2900           	cmps	r1,#0
-D041           	beq	$000015DE
-
-l0000155A:
-BB4B           	cbnz	r3,$000015B0
-
-l0000155C:
-2505           	mov	r5,#5
-
-l0000155E:
-684C           	ldr	r4,[r1,#&4]
-B1FC           	cbz	r4,$000015A2
-
-l00001562:
-680B           	ldr	r3,[r1]
-F045 0210     	orr	r2,r5,#&10
-4313           	orrs	r3,r2
-2C20           	cmps	r4,#&20
-6083           	str	r3,[r0,#&8]
-D96F           	bls	$00001650
-
-l00001570:
-2240           	mov	r2,#&40
-2305           	mov	r3,#5
-E002           	b	$0000157C
-
-l00001576:
-3301           	adds	r3,#1
-2B1F           	cmps	r3,#&1F
-D017           	beq	$000015AC
-
-l0000157C:
-4294           	cmps	r4,r2
-EA4F 0242     	mov.w	r2,r2,lsl #1
-D8F8           	bhi	$00001576
-
-l00001584:
-005B           	lsls	r3,r3,#1
-
-l00001586:
-688A           	ldr	r2,[r1,#&8]
-F042 0201     	orr	r2,r2,#1
-4313           	orrs	r3,r2
-60C3           	str	r3,[r0,#&C]
-
-l00001590:
-3501           	adds	r5,#1
-2D08           	cmps	r5,#8
-F101 010C     	add	r1,r1,#&C
-F100 0008     	add	r0,r0,#8
-D1DF           	bne	$0000155E
-
-l0000159E:
-BC30           	pop	{r4-r5}
-4770           	bx	lr
-
-l000015A2:
-F045 0310     	orr	r3,r5,#&10
-60C4           	str	r4,[r0,#&C]
-6083           	str	r3,[r0,#&8]
-E7F1           	b	$00001590
-
-l000015AC:
-233E           	mov	r3,#&3E
-E7EA           	b	$00001586
-
-l000015B0:
-009B           	lsls	r3,r3,#2
-F042 0214     	orr	r2,r2,#&14
-2B20           	cmps	r3,#&20
-6002           	str	r2,[r0]
-D94B           	bls	$00001654
-
-l000015BC:
-2240           	mov	r2,#&40
-2405           	mov	r4,#5
-E002           	b	$000015C8
-
-l000015C2:
-3401           	adds	r4,#1
-2C1F           	cmps	r4,#&1F
-D008           	beq	$000015DA
-
-l000015C8:
-4293           	cmps	r3,r2
-EA4F 0242     	mov.w	r2,r2,lsl #1
-D8F8           	bhi	$000015C2
-
-l000015D0:
-4B23           	ldr	r3,[00001660]                           ; [pc,#&8C]
-EA43 0444     	orr	r4,r3,r4,lsl #1
-
-l000015D6:
-6044           	str	r4,[r0,#&4]
-E7C0           	b	$0000155C
-
-l000015DA:
-4C22           	ldr	r4,[00001664]                           ; [pc,#&88]
-E7FB           	b	$000015D6
-
-l000015DE:
-4B22           	ldr	r3,[00001668]                           ; [pc,#&88]
-4922           	ldr	r1,[0000166C]                           ; [pc,#&88]
-F043 0214     	orr	r2,r3,#&14
-1AC9           	sub	r1,r1,r3
-2920           	cmps	r1,#&20
-6002           	str	r2,[r0]
-D936           	bls	$0000165C
-
-l000015EE:
-2340           	mov	r3,#&40
-2205           	mov	r2,#5
-E002           	b	$000015FA
-
-l000015F4:
-3201           	adds	r2,#1
-2A1F           	cmps	r2,#&1F
-D026           	beq	$00001648
-
-l000015FA:
-428B           	cmps	r3,r1
-EA4F 0343     	mov.w	r3,r3,lsl #1
-D3F8           	blo	$000015F4
-
-l00001602:
-4B17           	ldr	r3,[00001660]                           ; [pc,#&5C]
-EA43 0242     	orr	r2,r3,r2,lsl #1
-
-l00001608:
-4B19           	ldr	r3,[00001670]                           ; [pc,#&64]
-491A           	ldr	r1,[00001674]                           ; [pc,#&68]
-F043 0415     	orr	r4,r3,#&15
-1AC9           	sub	r1,r1,r3
-2920           	cmps	r1,#&20
-6042           	str	r2,[r0,#&4]
-6084           	str	r4,[r0,#&8]
-D91E           	bls	$00001658
-
-l0000161A:
-2205           	mov	r2,#5
-2340           	mov	r3,#&40
-E002           	b	$00001626
-
-l00001620:
-3201           	adds	r2,#1
-2A1F           	cmps	r2,#&1F
-D012           	beq	$0000164C
-
-l00001626:
-4299           	cmps	r1,r3
-EA4F 0343     	mov.w	r3,r3,lsl #1
-D8F8           	bhi	$00001620
-
-l0000162E:
-4B12           	ldr	r3,[00001678]                           ; [pc,#&48]
-EA43 0242     	orr	r2,r3,r2,lsl #1
-
-l00001634:
-2416           	mov	r4,#&16
-2300           	mov	r3,#0
-2117           	mov	r1,#&17
-6104           	str	r4,[r0,#&10]
-60C2           	str	r2,[r0,#&C]
-6143           	str	r3,[r0,#&14]
-61C3           	str	r3,[r0,#&1C]
-6181           	str	r1,[r0,#&18]
-BC30           	pop	{r4-r5}
-4770           	bx	lr
-
-l00001648:
-4A06           	ldr	r2,[00001664]                           ; [pc,#&18]
-E7DD           	b	$00001608
-
-l0000164C:
-4A0B           	ldr	r2,[0000167C]                           ; [pc,#&2C]
-E7F1           	b	$00001634
-
-l00001650:
-2308           	mov	r3,#8
-E798           	b	$00001586
-
-l00001654:
-4C0A           	ldr	r4,[00001680]                           ; [pc,#&28]
-E7BE           	b	$000015D6
-
-l00001658:
-4A0A           	ldr	r2,[00001684]                           ; [pc,#&28]
-E7EB           	b	$00001634
-
-l0000165C:
-4A08           	ldr	r2,[00001680]                           ; [pc,#&20]
-E7D3           	b	$00001608
+00001550 70 47 00 BF 30 B4 00 29 41 D0 4B BB 05 25 4C 68 pG..0..)A.K..%Lh
+00001560 FC B1 0B 68 45 F0 10 02 13 43 20 2C 83 60 6F D9 ...hE....C ,.`o.
+00001570 40 22 05 23 02 E0 01 33 1F 2B 17 D0 94 42 4F EA @".#...3.+...BO.
+00001580 42 02 F8 D8 5B 00 8A 68 42 F0 01 02 13 43 C3 60 B...[..hB....C.`
+00001590 01 35 08 2D 01 F1 0C 01 00 F1 08 00 DF D1 30 BC .5.-..........0.
+000015A0 70 47 45 F0 10 03 C4 60 83 60 F1 E7 3E 23 EA E7 pGE....`.`..>#..
+000015B0 9B 00 42 F0 14 02 20 2B 02 60 4B D9 40 22 05 24 ..B... +.`K.@".$
+000015C0 02 E0 01 34 1F 2C 08 D0 93 42 4F EA 42 02 F8 D8 ...4.,...BO.B...
+000015D0 23 4B 43 EA 44 04 44 60 C0 E7 22 4C FB E7 22 4B #KC.D.D`.."L.."K
+000015E0 22 49 43 F0 14 02 C9 1A 20 29 02 60 36 D9 40 23 "IC..... ).`6.@#
+000015F0 05 22 02 E0 01 32 1F 2A 26 D0 8B 42 4F EA 43 03 ."...2.*&..BO.C.
+00001600 F8 D3 17 4B 43 EA 42 02 19 4B 1A 49 43 F0 15 04 ...KC.B..K.IC...
+00001610 C9 1A 20 29 42 60 84 60 1E D9 05 22 40 23 02 E0 .. )B`.`..."@#..
+00001620 01 32 1F 2A 12 D0 99 42 4F EA 43 03 F8 D8 12 4B .2.*...BO.C....K
+00001630 43 EA 42 02 16 24 00 23 17 21 04 61 C2 60 43 61 C.B..$.#.!.a.`Ca
+00001640 C3 61 81 61 30 BC 70 47 06 4A DD E7 0B 4A F1 E7 .a.a0.pG.J...J..
+00001650 08 23 98 E7 0A 4C BE E7 0A 4A EB E7 08 4A D3 E7 .#...L...J...J..
 00001660 01 00 07 03 3F 00 07 03 00 00 00 20 00 20 00 20 ....?...... . . 
 00001670 00 00 00 20 00 02 00 20 01 00 07 01 3F 00 07 01 ... ... ....?...
-00001680 09 00 07 03 09 00 07 01                         ........        
-
-;; xPortPendSVHandler: 00001688
-xPortPendSVHandler proc
-F3EF 8009     	mrs	r0,cpsr
-4B14           	ldr	r3,[000016E0]                           ; [pc,#&50]
-681A           	ldr	r2,[r3]
-F3EF 8114     	mrs	r1,cpsr
-E920 0FF2     	stmdb	r0!,{r1,r4-fp}
-6010           	str	r0,[r2]
-E92D 4008     	push.w	{r3,lr}
-F04F 00BF     	mov	r0,#&BF
-F380 8811     	msr	cpsr,r0
-F7FF FD17     	bl	vTaskSwitchContext
-F04F 0000     	mov	r0,#0
-F380 8811     	msr	cpsr,r0
-E8BD 4008     	pop.w	{r3,lr}
-6819           	ldr	r1,[r3]
-6808           	ldr	r0,[r1]
-F101 0104     	add	r1,r1,#4
-4A1A           	ldr	r2,[00001728]                           ; [pc,#&68]
-E8B1 0FF0     	ldm	r1!,{r4-fp}
-E8A2 0FF0     	stm	r2!,{r4-fp}
-E8B0 0FF8     	ldm	r0!,{r3-fp}
-F383 8814     	msr	cpsr,r3
-F380 8809     	msr	cpsr,r0
-4770           	bx	lr
-000016D6                   00 BF AF F3 00 80 AF F3 00 80       ..........
-000016E0 C8 00 00 20                                     ...             
-
-;; xPortSysTickHandler: 000016E4
-xPortSysTickHandler proc
-B510           	push	{r4,lr}
-F3EF 8411     	mrs	r4,cpsr
-F04F 03BF     	mov	r3,#&BF
-F383 8811     	msr	cpsr,r3
-F3BF 8F6F     	isb	sy
-F3BF 8F4F     	dsb	sy
-F7FF FB37     	bl	xTaskIncrementTick
-B118           	cbz	r0,$00001708
-
-l00001700:
-F04F 5280     	mov	r2,#&10000000
-4B02           	ldr	r3,[00001710]                           ; [pc,#&8]
-601A           	str	r2,[r3]
-
-l00001708:
-F384 8811     	msr	cpsr,r4
-BD10           	pop	{r4,pc}
-0000170E                                           00 BF               ..
-00001710 04 ED 00 E0                                     ....            
-
-;; vPortSVCHandler: 00001714
-vPortSVCHandler proc
-F01E 0F04     	tst	lr,#4
-BF0C           	ite	eq
-F3EF 8008     	mrseq	r0,cpsr
-
-l0000171E:
-F3EF 8009     	mrs	r0,cpsr
-E607           	b	prvSVCHandler
-00001724             08 ED 00 E0 9C ED 00 E0                 ........    
-
-;; pvPortMalloc: 0000172C
-;;   Called from:
-;;     000006B8 (in xQueueGenericCreate)
-;;     000008C4 (in xTaskCreate)
-;;     000008CE (in xTaskCreate)
-;;     0000092A (in xTaskCreateRestricted)
-;;     000017AC (in xEventGroupCreate)
-;;     00008CA4 (in MPU_pvPortMalloc)
-;;     00008E4C (in xCoRoutineCreate)
-pvPortMalloc proc
-B510           	push	{r4,lr}
-4604           	mov	r4,r0
-0743           	lsls	r3,r0,#&1D
-BF1C           	itt	ne
-F020 0407     	bicne	r4,r0,#7
-
-l00001738:
-3408           	adds	r4,#8
-F7FF F967     	bl	vTaskSuspendAll
-4B0F           	ldr	r3,[0000177C]                           ; [pc,#&3C]
-681A           	ldr	r2,[r3]
-B1AA           	cbz	r2,$00001770
-
-l00001744:
-F240 51B3     	mov	r1,#&5B3
-F8D3 25C0     	ldr	r2,[r3,#&5C0]
-4414           	adds	r4,r2
-428C           	cmps	r4,r1
-D809           	bhi	$00001766
-
-l00001752:
-42A2           	cmps	r2,r4
-D207           	bhs	$00001766
-
-l00001756:
-6819           	ldr	r1,[r3]
-F8C3 45C0     	str	r4,[r3,#&5C0]
-188C           	add	r4,r1,r2
-F7FF FB85     	bl	xTaskResumeAll
-4620           	mov	r0,r4
-BD10           	pop	{r4,pc}
-
-l00001766:
-2400           	mov	r4,#0
-F7FF FB80     	bl	xTaskResumeAll
-4620           	mov	r0,r4
-BD10           	pop	{r4,pc}
-
-l00001770:
-F103 020C     	add	r2,r3,#&C
-F022 0207     	bic	r2,r2,#7
-601A           	str	r2,[r3]
-E7E3           	b	$00001744
-0000177C                                     30 02 00 20             0.. 
-
-;; vPortFree: 00001780
-;;   Called from:
-;;     00000454 (in vQueueDelete)
-;;     00000910 (in xTaskCreate)
-;;     000019C2 (in vEventGroupDelete)
-;;     00008CCC (in MPU_vPortFree)
-vPortFree proc
-4770           	bx	lr
-00001782       00 BF                                       ..            
-
-;; vPortInitialiseBlocks: 00001784
-;;   Called from:
-;;     00008CEC (in MPU_vPortInitialiseBlocks)
-vPortInitialiseBlocks proc
-2200           	mov	r2,#0
-4B02           	ldr	r3,[00001790]                           ; [pc,#&8]
-F8C3 25C0     	str	r2,[r3,#&5C0]
-4770           	bx	lr
-0000178E                                           00 BF               ..
-00001790 30 02 00 20                                     0..             
-
-;; xPortGetFreeHeapSize: 00001794
-;;   Called from:
-;;     00008D0C (in MPU_xPortGetFreeHeapSize)
-xPortGetFreeHeapSize proc
-4B03           	ldr	r3,[000017A4]                           ; [pc,#&C]
-F8D3 05C0     	ldr	r0,[r3,#&5C0]
-F5C0 60B6     	rsb	r0,r0,#&5B0
-3004           	adds	r0,#4
-4770           	bx	lr
-000017A2       00 BF 30 02 00 20                           ..0..         
-
-;; xEventGroupCreate: 000017A8
-;;   Called from:
-;;     00008D30 (in MPU_xEventGroupCreate)
-xEventGroupCreate proc
-B510           	push	{r4,lr}
-2018           	mov	r0,#&18
-F7FF FFBE     	bl	pvPortMalloc
-4604           	mov	r4,r0
-B120           	cbz	r0,$000017BE
-
-l000017B4:
-2300           	mov	r3,#0
-F840 3B04     	str	r3,[r0],#&4
-F006 FD89     	bl	vListInitialise
-
-l000017BE:
-4620           	mov	r0,r4
-BD10           	pop	{r4,pc}
-000017C2       00 BF                                       ..            
-
-;; xEventGroupWaitBits: 000017C4
-;;   Called from:
-;;     00008D6C (in MPU_xEventGroupWaitBits)
-xEventGroupWaitBits proc
-E92D 41F0     	push.w	{r4-r8,lr}
-4606           	mov	r6,r0
-461F           	mov	r7,r3
-460D           	mov	r5,r1
-4690           	mov	r8,r2
-F7FF F91C     	bl	vTaskSuspendAll
-6834           	ldr	r4,[r6]
-B967           	cbnz	r7,$000017F2
-
-l000017D8:
-422C           	tst	r4,r5
-D00D           	beq	$000017F8
-
-l000017DC:
-F1B8 0F00     	cmp	r8,#0
-D002           	beq	$000017E8
-
-l000017E2:
-EA24 0505     	bic.w	r5,r4,r5
-6035           	str	r5,[r6]
-
-l000017E8:
-F7FF FB40     	bl	xTaskResumeAll
-4620           	mov	r0,r4
-E8BD 81F0     	pop.w	{r4-r8,pc}
-
-l000017F2:
-EA35 0304     	bics.w	r3,r5,r4
-D0F1           	beq	$000017DC
-
-l000017F8:
-9B06           	ldr	r3,[sp,#&18]
-2B00           	cmps	r3,#0
-D0F4           	beq	$000017E8
-
-l000017FE:
-F1B8 0F00     	cmp	r8,#0
-BF0C           	ite	eq
-2100           	moveq	r1,#0
-
-l00001806:
-F04F 7180     	mov	r1,#&1000000
-B9C7           	cbnz	r7,$0000183E
-
-l0000180C:
-4329           	orrs	r1,r5
-9A06           	ldr	r2,[sp,#&18]
-1D30           	add	r0,r6,#4
-F7FF FBF1     	bl	vTaskPlaceOnUnorderedEventList
-F7FF FB29     	bl	xTaskResumeAll
-B938           	cbnz	r0,$0000182C
-
-l0000181C:
-F04F 5280     	mov	r2,#&10000000
-4B13           	ldr	r3,[00001870]                           ; [pc,#&4C]
-601A           	str	r2,[r3]
-F3BF 8F4F     	dsb	sy
-F3BF 8F6F     	isb	sy
-
-l0000182C:
-F7FF FC78     	bl	uxTaskResetEventItemValue
-0183           	lsls	r3,r0,#6
-4604           	mov	r4,r0
-D506           	bpl	$00001844
-
-l00001836:
-F024 407F     	bic	r0,r4,#&FF000000
-E8BD 81F0     	pop.w	{r4-r8,pc}
-
-l0000183E:
-F041 6180     	orr	r1,r1,#&4000000
-E7E3           	b	$0000180C
-
-l00001844:
-F006 FE98     	bl	vPortEnterCritical
-6834           	ldr	r4,[r6]
-B96F           	cbnz	r7,$00001868
-
-l0000184C:
-4225           	tst	r5,r4
-D005           	beq	$0000185C
-
-l00001850:
-F1B8 0F00     	cmp	r8,#0
-D002           	beq	$0000185C
-
-l00001856:
-EA24 0505     	bic.w	r5,r4,r5
-6035           	str	r5,[r6]
-
-l0000185C:
-F006 FEA8     	bl	vPortExitCritical
-F024 407F     	bic	r0,r4,#&FF000000
-E8BD 81F0     	pop.w	{r4-r8,pc}
-
-l00001868:
-EA35 0304     	bics.w	r3,r5,r4
-D1F6           	bne	$0000185C
-
-l0000186E:
-E7EF           	b	$00001850
-00001870 04 ED 00 E0                                     ....            
-
-;; xEventGroupClearBits: 00001874
-;;   Called from:
-;;     00008D9C (in MPU_xEventGroupClearBits)
-xEventGroupClearBits proc
-B570           	push	{r4-r6,lr}
-4606           	mov	r6,r0
-460C           	mov	r4,r1
-F006 FE7D     	bl	vPortEnterCritical
-6835           	ldr	r5,[r6]
-EA25 0404     	bic.w	r4,r5,r4
-6034           	str	r4,[r6]
-F006 FE93     	bl	vPortExitCritical
-4628           	mov	r0,r5
-BD70           	pop	{r4-r6,pc}
-0000188E                                           00 BF               ..
-
-;; xEventGroupSetBits: 00001890
-;;   Called from:
-;;     00001910 (in xEventGroupSync)
-;;     000019D0 (in vEventGroupSetBitsCallback)
-;;     00008DC8 (in MPU_xEventGroupSetBits)
-xEventGroupSetBits proc
-B5F8           	push	{r3-r7,lr}
-4605           	mov	r5,r0
-460C           	mov	r4,r1
-F7FF F8B9     	bl	vTaskSuspendAll
-6829           	ldr	r1,[r5]
-6928           	ldr	r0,[r5,#&10]
-F105 060C     	add	r6,r5,#&C
-4321           	orrs	r1,r4
-4286           	cmps	r6,r0
-6029           	str	r1,[r5]
-D022           	beq	$000018F0
-
-l000018AA:
-2700           	mov	r7,#0
-E00C           	b	$000018C8
-
-l000018AE:
-420A           	tst	r2,r1
-D007           	beq	$000018C2
-
-l000018B2:
-01DB           	lsls	r3,r3,#7
-D500           	bpl	$000018B8
-
-l000018B6:
-4317           	orrs	r7,r2
-
-l000018B8:
-F041 7100     	orr	r1,r1,#&2000000
-F7FF FBE0     	bl	xTaskRemoveFromUnorderedEventList
-6829           	ldr	r1,[r5]
-
-l000018C2:
-42A6           	cmps	r6,r4
-4620           	mov	r0,r4
-D00C           	beq	$000018E2
-
-l000018C8:
-E890 0018     	ldm	r0,{r3-r4}
-F013 6F80     	tst	r3,#&4000000
-F023 427F     	bic	r2,r3,#&FF000000
-D0EB           	beq	$000018AE
-
-l000018D6:
-EA32 0E01     	bics.w	lr,r2,r1
-D0EA           	beq	$000018B2
-
-l000018DC:
-42A6           	cmps	r6,r4
-4620           	mov	r0,r4
-D1F2           	bne	$000018C8
-
-l000018E2:
-43FF           	mvns	r7,r7
-
-l000018E4:
-4039           	ands	r1,r7
-6029           	str	r1,[r5]
-F7FF FAC0     	bl	xTaskResumeAll
-6828           	ldr	r0,[r5]
-BDF8           	pop	{r3-r7,pc}
-
-l000018F0:
-F04F 37FF     	mov	r7,#&FFFFFFFF
-E7F6           	b	$000018E4
-000018F6                   00 BF                               ..        
-
-;; xEventGroupSync: 000018F8
-;;   Called from:
-;;     00008DFE (in MPU_xEventGroupSync)
-xEventGroupSync proc
-E92D 41F0     	push.w	{r4-r8,lr}
-4688           	mov	r8,r1
-4605           	mov	r5,r0
-4616           	mov	r6,r2
-461F           	mov	r7,r3
-F7FF F882     	bl	vTaskSuspendAll
-4641           	mov	r1,r8
-682C           	ldr	r4,[r5]
-4628           	mov	r0,r5
-430C           	orrs	r4,r1
-F7FF FFBE     	bl	xEventGroupSetBits
-EA36 0304     	bics.w	r3,r6,r4
-D021           	beq	$0000195E
-
-l0000191A:
-B92F           	cbnz	r7,$00001928
-
-l0000191C:
-682C           	ldr	r4,[r5]
-
-l0000191E:
-F7FF FAA5     	bl	xTaskResumeAll
-4620           	mov	r0,r4
-E8BD 81F0     	pop.w	{r4-r8,pc}
-
-l00001928:
-463A           	mov	r2,r7
-F046 61A0     	orr	r1,r6,#&5000000
-1D28           	add	r0,r5,#4
-F7FF FB62     	bl	vTaskPlaceOnUnorderedEventList
-F7FF FA9A     	bl	xTaskResumeAll
-B938           	cbnz	r0,$0000194A
-
-l0000193A:
-F04F 5280     	mov	r2,#&10000000
-4B11           	ldr	r3,[00001984]                           ; [pc,#&44]
-601A           	str	r2,[r3]
-F3BF 8F4F     	dsb	sy
-F3BF 8F6F     	isb	sy
-
-l0000194A:
-F7FF FBE9     	bl	uxTaskResetEventItemValue
-0183           	lsls	r3,r0,#6
-4604           	mov	r4,r0
-D509           	bpl	$00001968
-
-l00001954:
-F024 447F     	bic	r4,r4,#&FF000000
-
-l00001958:
-4620           	mov	r0,r4
-E8BD 81F0     	pop.w	{r4-r8,pc}
-
-l0000195E:
-682B           	ldr	r3,[r5]
-EA23 0606     	bic.w	r6,r3,r6
-602E           	str	r6,[r5]
-E7DA           	b	$0000191E
-
-l00001968:
-F006 FE06     	bl	vPortEnterCritical
-682C           	ldr	r4,[r5]
-EA36 0304     	bics.w	r3,r6,r4
-BF04           	itt	eq
-EA24 0606     	biceq.w	r6,r4,r6
-
-l00001978:
-602E           	str	r6,[r5]
-F006 FE19     	bl	vPortExitCritical
-F024 447F     	bic	r4,r4,#&FF000000
-E7E9           	b	$00001958
-00001984             04 ED 00 E0                             ....        
-
-;; xEventGroupGetBitsFromISR: 00001988
-xEventGroupGetBitsFromISR proc
-F3EF 8311     	mrs	r3,cpsr
-F04F 02BF     	mov	r2,#&BF
-F382 8811     	msr	cpsr,r2
-F3BF 8F6F     	isb	sy
-F3BF 8F4F     	dsb	sy
-F383 8811     	msr	cpsr,r3
-6800           	ldr	r0,[r0]
-4770           	bx	lr
-
-;; vEventGroupDelete: 000019A4
-;;   Called from:
-;;     00008E28 (in MPU_vEventGroupDelete)
-vEventGroupDelete proc
-B510           	push	{r4,lr}
-4604           	mov	r4,r0
-F7FF F830     	bl	vTaskSuspendAll
-6863           	ldr	r3,[r4,#&4]
-B13B           	cbz	r3,$000019C0
-
-l000019B0:
-F04F 7100     	mov	r1,#&2000000
-6920           	ldr	r0,[r4,#&10]
-F7FF FB63     	bl	xTaskRemoveFromUnorderedEventList
-6863           	ldr	r3,[r4,#&4]
-2B00           	cmps	r3,#0
-D1F7           	bne	$000019B0
-
-l000019C0:
-4620           	mov	r0,r4
-F7FF FEDD     	bl	vPortFree
-E8BD 4010     	pop.w	{r4,lr}
-F7FF BA4F     	b	xTaskResumeAll
-000019CE                                           00 BF               ..
-
-;; vEventGroupSetBitsCallback: 000019D0
-vEventGroupSetBitsCallback proc
-F7FF BF5E     	b	xEventGroupSetBits
-
-;; vEventGroupClearBitsCallback: 000019D4
-vEventGroupClearBitsCallback proc
-B538           	push	{r3-r5,lr}
-4604           	mov	r4,r0
-460D           	mov	r5,r1
-F006 FDCD     	bl	vPortEnterCritical
-6823           	ldr	r3,[r4]
-EA23 0305     	bic.w	r3,r3,r5
-6023           	str	r3,[r4]
-E8BD 4038     	pop.w	{r3-r5,lr}
-F006 BDE1     	b	vPortExitCritical
-000019EE                                           00 BF               ..
+00001680 09 00 07 03 09 00 07 01 EF F3 09 80 14 4B 1A 68 .............K.h
+00001690 EF F3 14 81 20 E9 F2 0F 10 60 2D E9 08 40 4F F0 .... ....`-..@O.
+000016A0 BF 00 80 F3 11 88 FF F7 17 FD 4F F0 00 00 80 F3 ..........O.....
+000016B0 11 88 BD E8 08 40 19 68 08 68 01 F1 04 01 1A 4A .....@.h.h.....J
+000016C0 B1 E8 F0 0F A2 E8 F0 0F B0 E8 F8 0F 83 F3 14 88 ................
+000016D0 80 F3 09 88 70 47 00 BF AF F3 00 80 AF F3 00 80 ....pG..........
+000016E0 C8 00 00 20 10 B5 EF F3 11 84 4F F0 BF 03 83 F3 ... ......O.....
+000016F0 11 88 BF F3 6F 8F BF F3 4F 8F FF F7 37 FB 18 B1 ....o...O...7...
+00001700 4F F0 80 52 02 4B 1A 60 84 F3 11 88 10 BD 00 BF O..R.K.`........
+00001710 04 ED 00 E0 1E F0 04 0F 0C BF EF F3 08 80 EF F3 ................
+00001720 09 80 07 E6 08 ED 00 E0 9C ED 00 E0 10 B5 04 46 ...............F
+00001730 43 07 1C BF 20 F0 07 04 08 34 FF F7 67 F9 0F 4B C... ....4..g..K
+00001740 1A 68 AA B1 40 F2 B3 51 D3 F8 C0 25 14 44 8C 42 .h..@..Q...%.D.B
+00001750 09 D8 A2 42 07 D2 19 68 C3 F8 C0 45 8C 18 FF F7 ...B...h...E....
+00001760 85 FB 20 46 10 BD 00 24 FF F7 80 FB 20 46 10 BD .. F...$.... F..
+00001770 03 F1 0C 02 22 F0 07 02 1A 60 E3 E7 30 02 00 20 ...."....`..0.. 
+00001780 70 47 00 BF 00 22 02 4B C3 F8 C0 25 70 47 00 BF pG...".K...%pG..
+00001790 30 02 00 20 03 4B D3 F8 C0 05 C0 F5 B6 60 04 30 0.. .K.......`.0
+000017A0 70 47 00 BF 30 02 00 20 10 B5 18 20 FF F7 BE FF pG..0.. ... ....
+000017B0 04 46 20 B1 00 23 40 F8 04 3B 06 F0 89 FD 20 46 .F ..#@..;.... F
+000017C0 10 BD 00 BF 2D E9 F0 41 06 46 1F 46 0D 46 90 46 ....-..A.F.F.F.F
+000017D0 FF F7 1C F9 34 68 67 B9 2C 42 0D D0 B8 F1 00 0F ....4hg.,B......
+000017E0 02 D0 24 EA 05 05 35 60 FF F7 40 FB 20 46 BD E8 ..$...5`..@. F..
+000017F0 F0 81 35 EA 04 03 F1 D0 06 9B 00 2B F4 D0 B8 F1 ..5........+....
+00001800 00 0F 0C BF 00 21 4F F0 80 71 C7 B9 29 43 06 9A .....!O..q..)C..
+00001810 30 1D FF F7 F1 FB FF F7 29 FB 38 B9 4F F0 80 52 0.......).8.O..R
+00001820 13 4B 1A 60 BF F3 4F 8F BF F3 6F 8F FF F7 78 FC .K.`..O...o...x.
+00001830 83 01 04 46 06 D5 24 F0 7F 40 BD E8 F0 81 41 F0 ...F..$..@....A.
+00001840 80 61 E3 E7 06 F0 98 FE 34 68 6F B9 25 42 05 D0 .a......4ho.%B..
+00001850 B8 F1 00 0F 02 D0 24 EA 05 05 35 60 06 F0 A8 FE ......$...5`....
+00001860 24 F0 7F 40 BD E8 F0 81 35 EA 04 03 F6 D1 EF E7 $..@....5.......
+00001870 04 ED 00 E0 70 B5 06 46 0C 46 06 F0 7D FE 35 68 ....p..F.F..}.5h
+00001880 25 EA 04 04 34 60 06 F0 93 FE 28 46 70 BD 00 BF %...4`....(Fp...
+00001890 F8 B5 05 46 0C 46 FF F7 B9 F8 29 68 28 69 05 F1 ...F.F....)h(i..
+000018A0 0C 06 21 43 86 42 29 60 22 D0 00 27 0C E0 0A 42 ..!C.B)`"..'...B
+000018B0 07 D0 DB 01 00 D5 17 43 41 F0 00 71 FF F7 E0 FB .......CA..q....
+000018C0 29 68 A6 42 20 46 0C D0 90 E8 18 00 13 F0 80 6F )h.B F.........o
+000018D0 23 F0 7F 42 EB D0 32 EA 01 0E EA D0 A6 42 20 46 #..B..2......B F
+000018E0 F2 D1 FF 43 39 40 29 60 FF F7 C0 FA 28 68 F8 BD ...C9@)`....(h..
+000018F0 4F F0 FF 37 F6 E7 00 BF 2D E9 F0 41 88 46 05 46 O..7....-..A.F.F
+00001900 16 46 1F 46 FF F7 82 F8 41 46 2C 68 28 46 0C 43 .F.F....AF,h(F.C
+00001910 FF F7 BE FF 36 EA 04 03 21 D0 2F B9 2C 68 FF F7 ....6...!./.,h..
+00001920 A5 FA 20 46 BD E8 F0 81 3A 46 46 F0 A0 61 28 1D .. F....:FF..a(.
+00001930 FF F7 62 FB FF F7 9A FA 38 B9 4F F0 80 52 11 4B ..b.....8.O..R.K
+00001940 1A 60 BF F3 4F 8F BF F3 6F 8F FF F7 E9 FB 83 01 .`..O...o.......
+00001950 04 46 09 D5 24 F0 7F 44 20 46 BD E8 F0 81 2B 68 .F..$..D F....+h
+00001960 23 EA 06 06 2E 60 DA E7 06 F0 06 FE 2C 68 36 EA #....`......,h6.
+00001970 04 03 04 BF 24 EA 06 06 2E 60 06 F0 19 FE 24 F0 ....$....`....$.
+00001980 7F 44 E9 E7 04 ED 00 E0 EF F3 11 83 4F F0 BF 02 .D..........O...
+00001990 82 F3 11 88 BF F3 6F 8F BF F3 4F 8F 83 F3 11 88 ......o...O.....
+000019A0 00 68 70 47 10 B5 04 46 FF F7 30 F8 63 68 3B B1 .hpG...F..0.ch;.
+000019B0 4F F0 00 71 20 69 FF F7 63 FB 63 68 00 2B F7 D1 O..q i..c.ch.+..
+000019C0 20 46 FF F7 DD FE BD E8 10 40 FF F7 4F BA 00 BF  F.......@..O...
+000019D0 FF F7 5E BF 38 B5 04 46 0D 46 06 F0 CD FD 23 68 ..^.8..F.F....#h
+000019E0 23 EA 05 03 23 60 BD E8 38 40 06 F0 E1 BD 00 BF #...#`..8@......
 000019F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
 ; ...

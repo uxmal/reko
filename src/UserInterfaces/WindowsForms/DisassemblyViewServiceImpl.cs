@@ -55,7 +55,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public void ShowWindow(Program program)
         {
-            if (dvi == null)
+            if (dvi is null)
             {
                 dvi = new DisassemblyViewInteractor();
             }

@@ -718,7 +718,7 @@ namespace Reko.Environments.SysV.ArchSpecific
         public static Expression? X86_Old(IProcessorArchitecture arch, Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
         {
             var instr = instrs.FirstOrDefault();
-            if (instr == null)
+            if (instr is null)
                 return null;
             // Match x86 pattern.
             // jmp [destination]
@@ -778,7 +778,7 @@ namespace Reko.Environments.SysV.ArchSpecific
         public static Expression? X86_64_Old(IProcessorArchitecture arch, Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
         {
             var instr = instrs.FirstOrDefault();
-            if (instr == null)
+            if (instr is null)
                 return null;
             // Eat leading nops; these are caused by endbr64 instructions.
             if (instr is RtlNop)

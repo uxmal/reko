@@ -313,7 +313,7 @@ namespace Reko.Arch.X86.Assembler
             FpuOperand? fop1 = ops[0].Operand as FpuOperand;
             FpuOperand? fop2 = ops.Length > 1 ? ops[1].Operand as FpuOperand : null;
             MemoryOperand? mop = ops[0].Operand as MemoryOperand;
-            if (mop == null && ops.Length > 1)
+            if (mop is null && ops.Length > 1)
                 mop = ops[1].Operand as MemoryOperand;
             if (mop != null)
             {
@@ -1108,7 +1108,7 @@ namespace Reko.Arch.X86.Assembler
         {
             if (-0x80 <= i && i < 0x80)
                 width = PrimitiveType.SByte;
-            else if (width == null)
+            else if (width is null)
             {
                 if (-0x8000 <= i && i < 0x8000)
                     width = PrimitiveType.Word16;
@@ -2353,7 +2353,7 @@ namespace Reko.Arch.X86.Assembler
                 {
                     sym = symtab.CreateSymbol(offset);
                     val = (int)this.addrBase.Offset;
-                    Constant off = Constant.Create(@base == null
+                    Constant off = Constant.Create(@base is null
                         ? seg != null ? PrimitiveType.Word16 : PrimitiveType.Word32
                         : @base.DataType,
                         val);

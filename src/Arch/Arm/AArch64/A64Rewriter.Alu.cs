@@ -326,7 +326,7 @@ namespace Reko.Arch.Arm.AArch64
             else
             {
                 var tmp = binder.CreateTemporary(ea.DataType);
-                if (offset == null || mem.PostIndex)
+                if (offset is null || mem.PostIndex)
                 {
                     m.Assign(tmp, ea);
                 }
@@ -712,7 +712,7 @@ namespace Reko.Arch.Arm.AArch64
                 postIndex = ea;
                 ea = baseReg;
             }
-            if (dt == null || src is Constant)
+            if (dt is null || src is Constant)
             {
                 m.Assign(m.Mem(src.DataType, ea), src);
             }

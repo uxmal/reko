@@ -146,7 +146,7 @@ namespace Reko.Core.Serialization
 
         private ProcedureCharacteristics? SerializeProcedureCharacteristics(ProcedureCharacteristics? pc)
         {
-            if (pc == null || pc.IsDefaultCharactaristics)
+            if (pc is null || pc.IsDefaultCharactaristics)
                 return null;
 
             return pc;

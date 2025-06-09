@@ -98,7 +98,7 @@ SP	top of stack
 
         public override ICallingConvention GetCallingConvention(string? ccName)
         {
-            if (ccName == null)
+            if (ccName is null)
                 ccName = "";
 
             switch (ccName)

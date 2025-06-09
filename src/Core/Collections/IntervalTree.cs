@@ -378,7 +378,7 @@ namespace Reko.Core.Collections
         {
             get
             {
-                if (this.root == null)
+                if (this.root is null)
                 {
                     yield break;
                 }
@@ -407,7 +407,7 @@ namespace Reko.Core.Collections
         {
             get
             {
-                if (this.root == null)
+                if (this.root is null)
                 {
                     yield break;
                 }
@@ -434,7 +434,7 @@ namespace Reko.Core.Collections
         {
             get
             {
-                if (this.root == null)
+                if (this.root is null)
                 {
                     yield break;
                 }
@@ -627,7 +627,7 @@ namespace Reko.Core.Collections
             /// <returns>A new interval node.</returns>
             public static IntervalNode Add(IntervalNode? elem, Interval<T> interval, TypeValue value, ref bool wasAdded, ref bool wasSuccessful)
             {
-                if (elem == null)
+                if (elem is null)
                 {
                     elem = new IntervalNode(interval, value);
                     wasAdded = true;
@@ -745,15 +745,15 @@ namespace Reko.Core.Collections
             {
                 T maxRange = node.Interval.End;
 
-                if (node.Left == null && node.Right == null)
+                if (node.Left is null && node.Right is null)
                 {
                     node.Max = maxRange;
                 }
-                else if (node.Left == null)
+                else if (node.Left is null)
                 {
                     node.Max = (maxRange.CompareTo(node.Right!.Max) >= 0) ? maxRange : node.Right.Max;
                 }
-                else if (node.Right == null)
+                else if (node.Right is null)
                 {
                     node.Max = (maxRange.CompareTo(node.Left.Max) >= 0) ? maxRange : node.Left.Max;
                 }
@@ -918,7 +918,7 @@ namespace Reko.Core.Collections
                 }
                 else if (cmp == 0)
                 {
-                    if (arg.End.CompareTo(node.Interval.End) == 0 && node.Range == null)
+                    if (arg.End.CompareTo(node.Interval.End) == 0 && node.Range is null)
                     {
                         if (node.Left != null && node.Right != null)
                         {
@@ -940,7 +940,7 @@ namespace Reko.Core.Collections
                                 node.Balance--;
                             }
                         }
-                        else if (node.Left == null)
+                        else if (node.Left is null)
                         {
                             wasDeleted = true;
                             wasSuccessful = true;

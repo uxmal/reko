@@ -82,7 +82,7 @@ namespace Reko.Arch.PowerPC.Design
 
         private void ProcessorModel_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (control.ProcessorModel.SelectedItem == null)
+            if (control.ProcessorModel.SelectedItem is null)
                 return;
             arch.LoadUserOptions(new Dictionary<string, object>
             {

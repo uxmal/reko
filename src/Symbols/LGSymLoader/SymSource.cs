@@ -170,7 +170,7 @@ namespace Reko.Symbols.LGSymLoader
             {
                 rdr.BaseStream.Seek(syms_offset + Marshal.SizeOf(typeof(SymEntry)) * i, SeekOrigin.Begin);
                 SymEntry? s = rdr.ReadStruct<SymEntry>();
-                if (s == null)
+                if (s is null)
                     break;
 
                 var sym = s.Value;

@@ -196,7 +196,7 @@ namespace Reko.Environments.Windows
             //00011648 E59CF000 ldr pc,[ip]
             //0001164C AC 50 01 00.P..
             //var instr = rdr.FirstOrDefault();
-            //if (instr == null)
+            //if (instr is null)
             //    return null;
             //if (!(instr is RtlGoto jump))
             //    return null;
@@ -205,7 +205,7 @@ namespace Reko.Environments.Windows
             //if (!(jump.Target is MemoryAccess access))
             //    return null;
             //var addrTarget = access.EffectiveAddress as Address;
-            //if (addrTarget == null)
+            //if (addrTarget is null)
             //{
             //    if (!(access.EffectiveAddress is Constant wAddr))
             //    {

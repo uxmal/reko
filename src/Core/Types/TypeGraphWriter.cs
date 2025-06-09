@@ -73,7 +73,7 @@ namespace Reko.Core.Types
         /// <inheritdoc/>
         public Formatter VisitClass(ClassType ct)
         {
-            if (this.visited == null)
+            if (this.visited is null)
                 visited = new HashSet<DataType>();
 
             writer.Write("(class");
@@ -86,7 +86,7 @@ namespace Reko.Core.Types
                 writer.Write(" {0:X4}", ct.Size);
             }
 
-            if (!visited.Contains(ct) && (!reference || ct.Name == null))
+            if (!visited.Contains(ct) && (!reference || ct.Name is null))
             {
                 visited.Add(ct);
                 foreach (ClassField f in ct.Fields)
@@ -252,7 +252,7 @@ namespace Reko.Core.Types
         /// <inheritdoc/>
         public Formatter VisitStructure(StructureType str)
         {
-            if (this.visited == null)
+            if (this.visited is null)
                 visited = new HashSet<DataType>();
 
             writer.Write("({0}", str.IsSegment ? "segment" : "struct");
@@ -265,7 +265,7 @@ namespace Reko.Core.Types
                 writer.Write(" {0:X4}", str.Size);
             }
 
-            if (!visited.Contains(str) && (!reference || str.Name == null))
+            if (!visited.Contains(str) && (!reference || str.Name is null))
             {
                 visited.Add(str);
                 if (str.Fields.Count > SmallCompositeType)
@@ -319,7 +319,7 @@ namespace Reko.Core.Types
         /// <inheritdoc/>
         public Formatter VisitUnion(UnionType ut)
         {
-            if (visited == null)
+            if (visited is null)
                 visited = new HashSet<DataType>(); 
 
             writer.Write("(union");
@@ -327,7 +327,7 @@ namespace Reko.Core.Types
             {
                 writer.Write(" \"{0}\"", ut.Name);
             }
-            if (!visited.Contains(ut) && (!reference || ut.Name == null))
+            if (!visited.Contains(ut) && (!reference || ut.Name is null))
             {
                 visited.Add(ut);
                 if (ut.Alternatives.Count > SmallCompositeType)

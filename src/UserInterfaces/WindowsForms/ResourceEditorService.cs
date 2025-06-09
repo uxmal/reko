@@ -44,7 +44,7 @@ namespace Reko.UserInterfaces.WindowsForms
             var uiSvc = services.RequireService<IDecompilerShellUiService>();
             var rsrcToString = ResourceToString(resource);
             var wnd = uiSvc.FindDocumentWindow("resEdit", resource);
-            if (wnd == null)
+            if (wnd is null)
             {
                 wnd = uiSvc.CreateDocumentWindow(
                     "resEdit",

@@ -126,7 +126,7 @@ public class WebBuilder
                     {
                         Statement stm = bl.Statements[i];
                         stm.Instruction = stm.Instruction.Accept(replacer);
-                        if (stm.Instruction == null)
+                        if (stm.Instruction is null)
                         {
                             bl.Statements.RemoveAt(i);
                         }

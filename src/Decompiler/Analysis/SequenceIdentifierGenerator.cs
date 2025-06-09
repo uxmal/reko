@@ -75,7 +75,7 @@ namespace Reko.Analysis
         {
             for (int i = 0; i < storeOffset.Length; ++i)
             {
-                if (storeOffset[i] == null)
+                if (storeOffset[i] is null)
                     continue;
                 var slice1a = GetSliceRhs(storeOffset[i].Store);
                 var slice1b = GetSliceRhs(storeOffset[i].Store);
@@ -163,7 +163,7 @@ namespace Reko.Analysis
                     }
                 }
             }
-            if (offset == null)
+            if (offset is null)
                 return null;
             return new StoreOffset(stm, store, offset);
         }

@@ -193,7 +193,7 @@ namespace Reko.Arch.Msp430
         private static bool r(uint uInstr, Msp430Disassembler dasm)
         {
             var op = dasm.SourceOperand(0, (uInstr >> 8) & 0x0F, false, dasm.dataWidth!);
-            if (op == null)
+            if (op is null)
                 return false;
             dasm.ops.Add(op);
             return true;
@@ -207,7 +207,7 @@ namespace Reko.Arch.Msp430
         {
             var n = uInstr & 0x0F;
             var op2 = dasm.SourceOperand(0, n, true, dasm.dataWidth!);
-            if (op2 == null)
+            if (op2 is null)
                 return false;
             dasm.ops.Add(op2);
             return true;
@@ -254,7 +254,7 @@ namespace Reko.Arch.Msp430
             var aS = (uInstr >> 4) & 0x03;
             var iReg = uInstr & 0x0F;
             var op1 = dasm.SourceOperand(aS, iReg, true, dasm.dataWidth!);
-            if (op1 == null || op1 is Constant || op1 is Address)
+            if (op1 is null || op1 is Constant || op1 is Address)
                 return false;
             dasm.ops.Add(op1);
             return true;
@@ -355,7 +355,7 @@ namespace Reko.Arch.Msp430
             else
             {
                 op2 = dasm.Indexed(reg, dasm.dataWidth!);
-                if (op2 == null)
+                if (op2 is null)
                     return false;
             }
             dasm.ops.Add(op2);
@@ -390,13 +390,13 @@ namespace Reko.Arch.Msp430
             case 2:
                 if (iReg == 2)
                 {
-                    return isDestination || dataWidth == null
+                    return isDestination || dataWidth is null
                         ? null
                         : Constant.Create(dataWidth, 4);
                 }
                 if (iReg == 3)
                 {
-                    return isDestination || dataWidth == null
+                    return isDestination || dataWidth is null
                         ? null
                         : Constant.Create(dataWidth, 2);
                 }
@@ -404,13 +404,13 @@ namespace Reko.Arch.Msp430
             case 3:
                 if (iReg == 2)
                 {
-                    return isDestination || dataWidth == null
+                    return isDestination || dataWidth is null
                         ? null
                         : Constant.Create(dataWidth, 8);
                 }
                 else if (iReg == 3)
                 {
-                    return isDestination || dataWidth == null
+                    return isDestination || dataWidth is null
                         ? null
                         : Constant.Create(dataWidth, -1);
                 }

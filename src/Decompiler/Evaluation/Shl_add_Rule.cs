@@ -49,7 +49,7 @@ namespace Reko.Evaluation
                 return null;
             var bin = b.Left as BinaryExpression;
             var id = b.Right as Identifier;
-            if (bin == null || id == null)
+            if (bin is null || id is null)
             {
                 bin = b.Right as BinaryExpression;
                 id = b.Left as Identifier;

@@ -137,11 +137,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
                         switch (execMode)
                         {
                             case PICExecMode.Traditional:
-                                if (AccessRAM == null)
+                                if (AccessRAM is null)
                                     throw new InvalidOperationException($"Missing '{accessRAMRegionID}' data memory region.");
                                 break;
                             case PICExecMode.Extended:
-                                if (ExtendedGPRE == null)
+                                if (ExtendedGPRE is null)
                                     throw new InvalidOperationException($"Missing '{extendGPRERegionID}' data memory region.");
                                 break;
                         }
@@ -174,7 +174,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
 
             public override bool TryGetAbsDataAddress(PICBankedAddress bAddr, out PICDataAddress absAddr)
             {
-                if (bAddr == null)
+                if (bAddr is null)
                     throw new ArgumentNullException(nameof(bAddr));
                 absAddr = null!;
                 IMemoryRegion? regn = null;
@@ -221,7 +221,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
 
         public static void Create(IPICDescriptor pic)
         {
-            if (pic == null)
+            if (pic is null)
                 throw new ArgumentNullException(nameof(pic));
             var memdesc = new PIC18MemoryDescriptor();
             memdesc.Reset();

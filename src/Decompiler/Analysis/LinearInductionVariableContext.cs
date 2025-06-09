@@ -59,7 +59,7 @@ namespace Reko.Analysis
 
         private static bool IsSignedOperator(Operator? op)
         {
-            if (op == null)
+            if (op is null)
                 return false;
             var opType = op.Type;
             return

@@ -169,7 +169,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         public Point AddressToPoint(Address addr)
         {
-            if (TopAddress == null)
+            if (TopAddress is null)
                 return Point.Empty;
             int cbOffset = (int)(addr - TopAddress);
             int yRow = cbOffset / (int)cbRow;
@@ -618,7 +618,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 this.cellSize = cellSize;
                 GetColorPreferences();
 
-                if (ctrl.arch is null || ctrl.imageMap == null)
+                if (ctrl.arch is null || ctrl.imageMap is null)
                     return (null, ctrl.IsTextSideSelected);
                 // Enumerate all segments visible on screen.
 

@@ -68,7 +68,7 @@ namespace Reko.Arch.Blackfin
             {
                 renderer.WriteMnemonic(aaOpcode.prefix!);
                 var sep = " ";
-                if (Operands == null)
+                if (Operands is null)
                     return;
                 foreach (var op in Operands)
                 {

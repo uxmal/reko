@@ -50,7 +50,7 @@ namespace Reko.UnitTests.Core.Hll.Pascal
             {
                 var token = lex.Read();
                 Assert.AreEqual(exp.Type, token.Type);
-                if (exp.Value == null)
+                if (exp.Value is null)
                 {
                     Assert.IsNull(token.Value);
                 }

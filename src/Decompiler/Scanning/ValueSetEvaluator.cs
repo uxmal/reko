@@ -103,7 +103,7 @@ namespace Reko.Scanning
                         binExp.Operator.ApplyConstants(cLeft.DataType, cLeft, cRight)));
             }
 
-            if (cLeft == null && cRight != null)
+            if (cLeft is null && cRight != null)
             {
                 var left = binExp.Left.Accept(this, bitRange);
                 switch (binExp.Operator.Type)
@@ -115,7 +115,7 @@ namespace Reko.Scanning
                 case OperatorType.ISub:return left.Sub(cRight);
                 }
             }
-            if (cRight == null && cLeft != null)
+            if (cRight is null && cLeft != null)
             {
                 var right = binExp.Right.Accept(this, bitRange);
                 switch (binExp.Operator.Type)

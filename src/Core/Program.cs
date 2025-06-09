@@ -212,7 +212,7 @@ namespace Reko.Core
         {
             get
             {
-                if (globals == null)
+                if (globals is null)
                 {
                     EnsureGlobals();
                 }
@@ -300,7 +300,7 @@ namespace Reko.Core
 
         private void EnsureGlobals()
         {
-            if (Platform == null)
+            if (Platform is null)
                 throw new InvalidOperationException("The program's Platform property must be set before accessing the Globals property.");
             var ptrGlobals = TypeFactory.CreatePointer(GlobalFields, Platform.PointerType.BitSize);
             globals = Identifier.Global("globals", ptrGlobals);
@@ -814,7 +814,7 @@ namespace Reko.Core
         {
             if (dt is not StringType strDt)
                 return (uint) dt.Size;
-            if (strDt.LengthPrefixType == null)
+            if (strDt.LengthPrefixType is null)
             {
                 // Zero-terminated string.
                 if (!this.TryCreateImageReader(arch, addr, out var rdr))

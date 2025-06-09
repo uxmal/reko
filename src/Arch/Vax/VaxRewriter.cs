@@ -501,7 +501,7 @@ namespace Reko.Arch.Vax
                 else if (width.Size == 8)
                 {
                     var rHi = arch.GetRegister(1 + (int) reg.Storage.Domain);
-                    if (rHi == null)
+                    if (rHi is null)
                         return null!;
                     var regHi = binder.EnsureRegister(rHi);
                     return binder.EnsureSequence(width, regHi.Storage, reg.Storage);
@@ -638,7 +638,7 @@ namespace Reko.Arch.Vax
                 else if (width.BitSize == 64)
                 {
                     var rHi = arch.GetRegister(1 + (int)reg.Storage.Domain);
-                    if (rHi == null)
+                    if (rHi is null)
                         return null!;
                     var regHi = binder.EnsureRegister(rHi);
                     reg = binder.EnsureSequence(width, regHi.Storage, reg.Storage);
@@ -717,7 +717,7 @@ namespace Reko.Arch.Vax
 
         private bool AllFlags(Expression dst)
         {
-            if (dst == null)
+            if (dst is null)
             {
                 EmitInvalid();
                 return false;
@@ -729,7 +729,7 @@ namespace Reko.Arch.Vax
 
         private bool NZ0(Expression dst)
         {
-            if (dst == null)
+            if (dst is null)
             {
                 EmitInvalid();
                 return false;
@@ -744,7 +744,7 @@ namespace Reko.Arch.Vax
 
         private bool NZ00(Expression dst)
         {
-            if (dst == null)
+            if (dst is null)
             {
                 EmitInvalid();
                 return false;
@@ -760,7 +760,7 @@ namespace Reko.Arch.Vax
 
         private bool VZN(Expression dst)
         {
-            if (dst == null)
+            if (dst is null)
             {
                 EmitInvalid();
                 return false;
@@ -772,7 +772,7 @@ namespace Reko.Arch.Vax
 
         private bool NZV0(Expression dst)
         {
-            if (dst == null)
+            if (dst is null)
             {
                 EmitInvalid();
                 return false;

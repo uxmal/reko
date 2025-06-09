@@ -47,7 +47,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             foreach (SsaIdentifier sid in ssa.Identifiers)
             {
                 var id = sid.OriginalIdentifier;
-                if (id == null || !(id.Storage is FlagGroupStorage) || sid.Uses.Count == 0)
+                if (id is null || !(id.Storage is FlagGroupStorage) || sid.Uses.Count == 0)
                     continue;
                 writer.Write("{0}: ", sid.DefStatement.Instruction);
                 grfd.FindDefiningExpression(sid);

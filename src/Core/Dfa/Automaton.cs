@@ -44,7 +44,7 @@ namespace Reko.Core.Dfa
             {
                 var parser = new PatternParser(pattern);
                 var tree = parser.Parse();
-                if (tree == null)
+                if (tree is null)
                     return null;
                 var builder = new DfaBuilder(tree);
                 builder.ExtendWithEos();

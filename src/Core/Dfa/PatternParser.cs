@@ -88,7 +88,7 @@ namespace Reko.Core.Dfa
             for (; ; )
             {
                 var tail = ParseFactor();
-                if (tail == null)
+                if (tail is null)
                     break;
                 var node = new TreeNode
                 {
@@ -104,7 +104,7 @@ namespace Reko.Core.Dfa
         private TreeNode? ParseFactor()
         {
             var atom = ParseAtom();
-            if (atom == null)
+            if (atom is null)
                 return null;
             if (PeekAndDiscard('+'))
             {

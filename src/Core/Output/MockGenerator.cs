@@ -860,7 +860,7 @@ namespace Reko.Core.Output
             }
 
             writer.Write("new FunctionType(");
-            if (ft.ReturnValue == null)
+            if (ft.ReturnValue is null)
             {
                 writer.Write("null");
             }

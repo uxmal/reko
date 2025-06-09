@@ -105,7 +105,7 @@ namespace Reko.Typing
 
         public void EnsureSignatureTypeVariables(FunctionType signature)
         {
-            if (signature == null || !signature.ParametersValid)
+            if (signature is null || !signature.ParametersValid)
                 return;
             if (!signature.HasVoidReturn)
             {
@@ -366,7 +366,7 @@ namespace Reko.Typing
 
 		public void VisitProcedure(ProcedureBase proc, FunctionType sig)
 		{
-            if (sig.TypeVariable == null)
+            if (sig.TypeVariable is null)
 			{
                 Address? addr = (proc is Procedure userProc)
                     ? userProc.EntryAddress

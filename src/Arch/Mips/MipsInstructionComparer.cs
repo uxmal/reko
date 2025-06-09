@@ -44,9 +44,9 @@ namespace Reko.Arch.Mips
 
         private bool Compare(MachineOperand a, MachineOperand b)
         {
-            if (a == null && b == null)
+            if (a is null && b is null)
                 return true;
-            if (a == null || b == null)
+            if (a is null || b is null)
                 return false;
             if (a.GetType() != b.GetType())
                 return false;
@@ -100,7 +100,7 @@ namespace Reko.Arch.Mips
 
         private int GetHashCode(MachineOperand op)
         {
-            if (op == null)
+            if (op is null)
                 return 0;
             switch (op)
             {

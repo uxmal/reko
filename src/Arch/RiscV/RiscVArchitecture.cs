@@ -168,7 +168,7 @@ namespace Reko.Arch.RiscV
 
         public override void LoadUserOptions(Dictionary<string, object>? options)
         {
-            if (options == null)
+            if (options is null)
                 return;
             foreach (var option in options)
             {

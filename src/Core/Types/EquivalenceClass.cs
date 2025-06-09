@@ -142,7 +142,7 @@ namespace Reko.Core.Types
         {
             get
             {
-                if (DataType == null)
+                if (DataType is null)
                 {
                     Debug.Print("DataType of {0} is NULL!", Name); return 4;
                 }

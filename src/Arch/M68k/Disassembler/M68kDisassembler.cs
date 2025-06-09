@@ -776,7 +776,7 @@ namespace Reko.Arch.M68k.Disassembler
                     RegisterStorage? base_reg = EXT_BASE_REGISTER_PRESENT(extension)
                         ? Registers.pc
                         : null;
-                    if (@base == null && base_reg == null)
+                    if (@base is null && base_reg is null)
                         return null;
                     RegisterStorage? index_reg = null;
                     PrimitiveType? index_width = null;
@@ -2433,7 +2433,7 @@ namespace Reko.Arch.M68k.Disassembler
             {
                 var opcode = u >> bitOffset;
                 var op = d.DecodeEffectiveAddress(opcode, d.dataWidth!);
-                if (op == null)
+                if (op is null)
                     return false;
                 d.ops.Add(op);
                 return true;
@@ -2450,7 +2450,7 @@ namespace Reko.Arch.M68k.Disassembler
                 var o = u >> bitOffset;
                 var opcode = o >> 3 & 0x07u | (o & 0x7u) << 3;
                 var op = d.DecodeEffectiveAddress(opcode, d.dataWidth!);
-                if (op == null)
+                if (op is null)
                     return false;
                 d.ops.Add(op);
                 return true;

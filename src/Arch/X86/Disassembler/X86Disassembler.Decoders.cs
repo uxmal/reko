@@ -875,12 +875,12 @@ namespace Reko.Arch.X86
                 this.decoders = new Decoder[256];
                 foreach (var (b, decoder) in decoders)
                 {
-                    Debug.Assert(this.decoders[b] == null, $"Decoder {b:X2} has already a value!");
+                    Debug.Assert(this.decoders[b] is null, $"Decoder {b:X2} has already a value!");
                     this.decoders[b] = decoder;
                 }
                 for (int i = 0; i < this.decoders.Length; ++i)
                 {
-                    if (this.decoders[i] == null)
+                    if (this.decoders[i] is null)
                     {
                         this.decoders[i] = defaultDecoder;
                     }

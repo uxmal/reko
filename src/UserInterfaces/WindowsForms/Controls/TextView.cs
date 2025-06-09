@@ -132,7 +132,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         private StyleStack GetStyleStack()
         {
-            if (styleStack == null)
+            if (styleStack is null)
                 styleStack = new StyleStack(Services.RequireService<IUiPreferencesService>());
             return styleStack;
         }
@@ -288,7 +288,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            if (Services == null)
+            if (Services is null)
             {
                 Debug.Print("TextView.OnPaint: Services property must be set");
                 return;
@@ -463,7 +463,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         /// </summary>
         protected void ChangeLayout()
         {
-            if (Services == null)
+            if (Services is null)
                 return;
 
             // Need to recompute the layout first so we can count

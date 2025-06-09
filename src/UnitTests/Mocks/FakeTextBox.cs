@@ -32,7 +32,7 @@ namespace Reko.UnitTests.Mocks
         public bool Enabled { get; set; }
         public string Text
         {
-            get { return text == null ? "" : text; }
+            get { return text is null ? "" : text; }
             set { text = value; TextChanged?.Invoke(this, EventArgs.Empty); }
         }
         public Color BackColor { get; set; }

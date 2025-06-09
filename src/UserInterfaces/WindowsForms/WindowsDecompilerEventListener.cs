@@ -168,7 +168,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            if (dlg == null)
+            if (dlg is null)
                 return;
             if (e.ProgressPercentage != STATUS_UPDATE_ONLY)
             {
@@ -329,7 +329,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         private void ShowStatus(string newStatus)
         {
-            if (dlg == null)
+            if (dlg is null)
                 return;
             System.Threading.Interlocked.Exchange<string>(ref status, newStatus);
             dlg.Worker.ReportProgress(STATUS_UPDATE_ONLY);

@@ -248,7 +248,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
          
         private Bitmap? RenderVisualization()
         {
-            if (Visualizer is null || bmem is null || program == null)
+            if (Visualizer is null || bmem is null || program is null)
                 return null;
                 
             var bmp = new WriteableBitmap(

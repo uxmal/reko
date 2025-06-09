@@ -75,11 +75,11 @@ namespace Reko.Libraries.Microchip
 
         private void checkDBExist()
         {
-            if (CurrentDBPath == null || !File.Exists(CurrentDBPath))
+            if (CurrentDBPath is null || !File.Exists(CurrentDBPath))
             {
                 setError(DBErrorCode.NoDBFile,
                          DBStatus.NoDB,
-                         nameof(checkDBExist) + ": " + (CurrentDBPath == null
+                         nameof(checkDBExist) + ": " + (CurrentDBPath is null
                                                             ? "Unable to get PIC DB file pathname"
                                                             : $"PIC DB file '{CurrentDBPath}' not found"));
                 throw raiseError(DBErrorCode.NoDBFile, "No Microchip XML PIC definitions available on this system");
@@ -106,11 +106,11 @@ namespace Reko.Libraries.Microchip
             CurrentDBPath = getPICLocalDBFilePath();
 
             // No local database, check presence of IDE X database
-            if (CurrentDBPath == null || !File.Exists(CurrentDBPath))
+            if (CurrentDBPath is null || !File.Exists(CurrentDBPath))
             {
                 setError(DBErrorCode.NoDBFile,
                          DBStatus.NoDB,
-                         nameof(openDB) + ": " + (CurrentDBPath == null
+                         nameof(openDB) + ": " + (CurrentDBPath is null
                                                     ? "Unable to get PIC DB file pathname"
                                                     : $"PIC DB file '{CurrentDBPath}' not found"));
             }
@@ -121,9 +121,9 @@ namespace Reko.Libraries.Microchip
             get
             {
                 checkDBExist();
-                if (partslist == null)
+                if (partslist is null)
                 {
-                    if (CurrentDBPath == null || !File.Exists(CurrentDBPath))
+                    if (CurrentDBPath is null || !File.Exists(CurrentDBPath))
                         return null;
 
                     try
@@ -197,7 +197,7 @@ namespace Reko.Libraries.Microchip
         /// </returns>
         public static PICCrownking GetDB()
         {
-            if (currentDB == null)
+            if (currentDB is null)
             {
                 currentDB = new PICCrownking();
                 if (LastError != DBErrorCode.NoError)
@@ -245,7 +245,7 @@ namespace Reko.Libraries.Microchip
                         {
                             using (var eo = entry.Open())
                                 xmlpic = XDocument.Load(eo)?.Root;
-                            if (xmlpic == null)
+                            if (xmlpic is null)
                                 setError(DBErrorCode.WrongDB, DBStatus.DBOK, "Invalid PIC database format");
                             else
                                 setError(DBErrorCode.NoError, DBStatus.DBOK, string.Empty);

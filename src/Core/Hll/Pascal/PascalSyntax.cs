@@ -734,7 +734,7 @@ namespace Reko.Core.Hll.Pascal
             }
             PascalSyntax.WriteList(writer, ", ", decl.ParameterNames, (w, s) => w.Write(s));
             writer.Write(" : ");
-            if (decl.Type == null)
+            if (decl.Type is null)
                 writer.Write("(NULL)");
             else 
                 decl.Type.Write(writer);

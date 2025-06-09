@@ -27,6 +27,7 @@ using Reko.Core.Collections;
 using Reko.Core.Expressions;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
+using Reko.Core.Rtl;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.Scanning;
@@ -159,27 +160,17 @@ namespace Reko.UnitTests.Decompiler.Scanning
             }
         }
 
-        private void Inst(int uAddr, int len, InstrClass rtlc)
-        {
-            var addr = Address.Ptr32((uint)uAddr);
-            sr.FlatInstructions.Add(addr.ToLinear(), new ScanResults.Instr
-            {
-                addr = addr,
-                size = len,
-                block_id = addr,
-                type = (ushort)rtlc
-            });
-        }
-
         private void Lin(int uAddr, int len, int next)
         {
             var addr = Address.Ptr32((uint)uAddr);
+            var cluster = new RtlInstructionCluster(addr, len, [])
+            {
+                Class = InstrClass.Linear
+            };
             sr.FlatInstructions.Add(addr.ToLinear(), new ScanResults.Instr
             {
-                addr = addr,
-                size = len,
                 block_id = addr,
-                type = (ushort)InstrClass.Linear
+                rtl = cluster,
             });
             Link(addr, next);
         }
@@ -187,12 +178,14 @@ namespace Reko.UnitTests.Decompiler.Scanning
         private void Call(int uAddr, int len, int next, int uAddrDst)
         {
             var addr = Address.Ptr32((uint)uAddr);
+            var cluster = new RtlInstructionCluster(addr, len, [])
+            {
+                Class = InstrClass.Call|InstrClass.Transfer
+            };
             sr.FlatInstructions.Add(addr.ToLinear(), new ScanResults.Instr
             {
-                addr = addr,
-                size = len,
                 block_id = addr,
-                type = (ushort)(InstrClass.Transfer|InstrClass.Call)
+                rtl = cluster,
             });
             Link(addr, next);
         }
@@ -200,12 +193,14 @@ namespace Reko.UnitTests.Decompiler.Scanning
         private void Bra(int uAddr, int len, int a, int b)
         {
             var addr = Address.Ptr32((uint)uAddr);
+            var cluster = new RtlInstructionCluster(addr, len, [])
+            {
+                Class = InstrClass.ConditionalTransfer,
+            };
             sr.FlatInstructions.Add(addr.ToLinear(), new ScanResults.Instr
             {
-                addr = addr,
-                size = len,
                 block_id = addr,
-                type = (ushort)InstrClass.ConditionalTransfer
+                rtl = cluster
             });
             Link(addr, a);
             Link(addr, b);
@@ -214,44 +209,50 @@ namespace Reko.UnitTests.Decompiler.Scanning
         private void Bad(int uAddr, int len)
         {
             var addr = Address.Ptr32((uint)uAddr);
+            var cluster = new RtlInstructionCluster(addr, len, [])
+            {
+                Class = InstrClass.Invalid
+            };
             sr.FlatInstructions.Add(addr.ToLinear(), new ScanResults.Instr
             {
-                addr = addr,
-                size = len,
                 block_id = addr,
-                type = (ushort)InstrClass.Invalid,
+                rtl = cluster,
             });
         }
 
         private void End(int uAddr, int len)
         {
             var addr = Address.Ptr32((uint)uAddr);
+            var cluster = new RtlInstructionCluster(addr, len, [])
+            {
+                Class = InstrClass.Transfer
+            };
             sr.FlatInstructions.Add(addr.ToLinear(), new ScanResults.Instr
             {
-                addr = addr,
-                size = len,
                 block_id = addr,
-                type = (ushort)InstrClass.Transfer,
+                rtl = cluster,
             });
         }
 
         private void Pad(uint uAddr, int len, int next)
         {
             var addr = Address.Ptr32((uint)uAddr);
+            var cluster = new RtlInstructionCluster(addr, len, [])
+            {
+                Class = InstrClass.Linear | InstrClass.Padding
+            };
             sr.FlatInstructions.Add(addr.ToLinear(), new ScanResults.Instr
             {
-                addr = addr,
-                size = len,
                 block_id = addr,
-                type = (ushort)(InstrClass.Linear | InstrClass.Padding),
+                rtl = cluster,
             });
             Link(addr, next);
         }
 
-        private void Link(Address addrFrom ,int uAddrTo)
+        private void Link(Address addrFrom, int uAddrTo)
         {
             var addrTo = Address.Ptr32((uint)uAddrTo);
-            sr.FlatEdges.Add(new ScanResults.Link { first = addrFrom, second = addrTo });
+            sr.FlatEdges.Add(new ScanResults.Link(addrFrom, addrTo));
         }
 
         private void Given_OverlappingLinearTraces()
@@ -404,7 +405,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
 
             var from = blocks.Values.Single(n => n.id == Address.Ptr32(0x00100000));
             var to = blocks.Values.Single(n => n.id == Address.Ptr32(0x00100001));
-            Assert.IsFalse(sr.FlatEdges.Any(e => e.first == from.id && e.second ==to.id));
+            Assert.IsFalse(sr.FlatEdges.Any(e => e.From == from.id && e.To ==to.id));
         }
 
         [Test(Description = "Stop tracing invalid blocks at call boundaries")]

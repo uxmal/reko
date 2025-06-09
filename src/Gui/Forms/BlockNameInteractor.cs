@@ -65,7 +65,7 @@ namespace Reko.Gui.Forms
             return proc.ControlGraph.Blocks.Any(b =>
                 b != block &&
                 b.Id != newName &&
-                (b.UserLabel == null || b.UserLabel != newName));
+                (b.UserLabel is null || b.UserLabel != newName));
         }
     }
 }

@@ -365,7 +365,7 @@ namespace Reko.Arch.Xtensa
 
         void CheckForLoopExit()
         {
-            if (lend == null)
+            if (lend is null)
                 return;
             if (instr.Address.ToLinear() + (uint)instr.Length == lend.Value.ToLinear())
             {

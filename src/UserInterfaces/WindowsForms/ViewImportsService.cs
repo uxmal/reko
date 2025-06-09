@@ -42,7 +42,7 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             var uiSvc = services.RequireService<IDecompilerShellUiService>();
             var w = uiSvc.FindDocumentWindow(typeof(ViewImportsService).ToString(), program);
-            if (w == null)
+            if (w is null)
             {
                 var pane = new ViewImportsPane(program);
                 w = uiSvc.CreateDocumentWindow(typeof(ViewImportsService).ToString(), program, "Imports - " + program.Name, pane);

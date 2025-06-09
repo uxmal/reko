@@ -249,7 +249,7 @@ namespace Reko.Analysis
                 else
                 {
                     sid = SamePhiArgument(phi)!;
-                    if (sid == null)
+                    if (sid is null)
                         return false;
                 }
 
@@ -370,7 +370,7 @@ namespace Reko.Analysis
                     return null;
                 var param = sig.Parameters!
                     .FirstOrDefault(p => p.Storage.OverlapsWith(stg));
-                if (param == null)
+                if (param is null)
                     return null;
                 var sidParam = outer.SsaState.EnsureDefInstruction(param, b);
                 var idParam = sidParam.Identifier;
@@ -560,7 +560,7 @@ namespace Reko.Analysis
                     {
                         // Found a gap in the register that wasn't defined in
                         // this basic block. Seek backwards
-                        var bitrangeR = sidElem == null
+                        var bitrangeR = sidElem is null
                             ? useRange
                             : new BitRange(offsetLo, usedRange.Lsb);
                         var idR = MakeTmpIdentifier(id.Storage, bitrangeR);
@@ -618,7 +618,7 @@ namespace Reko.Analysis
                 {
                     var (sid, defRange, offset) = definitions[i];
                     var intersection = defRange.Intersect(useRange);
-                    if (!intersection.IsEmpty && (result.Item1 == null || result.useRange.Lsb > intersection.Lsb))
+                    if (!intersection.IsEmpty && (result.Item1 is null || result.useRange.Lsb > intersection.Lsb))
                     {
                         defRange = new BitRange(intersection.Lsb + offset, intersection.Msb + offset);
                         result = (sid, intersection, defRange);

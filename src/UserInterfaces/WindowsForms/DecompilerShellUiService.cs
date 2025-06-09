@@ -268,7 +268,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
             public void Show()
             {
-                if (ctrl == null)
+                if (ctrl is null)
                 {
                     ctrl = (Control) pane.CreateControl();
                     ctrl.Dock = DockStyle.Fill;

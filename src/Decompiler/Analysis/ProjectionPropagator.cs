@@ -230,7 +230,7 @@ public class ProjectionPropagator : IAnalysis<SsaState>
             {
                 Debug.Assert(seq.Expressions.Length > 0);
                 var ids = seq.Expressions.Select(e => e as Identifier).ToArray();
-                if (ids.Any(i => i == null))
+                if (ids.Any(i => i is null))
                     return seq;
                 var sids = ids.Select(i => ssa.Identifiers[i!]).ToArray();
 

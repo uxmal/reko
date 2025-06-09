@@ -153,7 +153,7 @@ namespace Reko.Gui.Design
         private void ViewWhatPointsHere()
         {
             var resultSvc = Services!.GetService<ISearchResultService>();
-            if (resultSvc == null)
+            if (resultSvc is null)
                 return;
             var arch = procedure.Architecture;
             if (!program.TryCreateImageReader(arch, program.ImageMap.BaseAddress, out var rdr))

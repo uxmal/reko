@@ -96,7 +96,7 @@ namespace Reko.Environments.AmigaOS
 
         private int? GetVectorOffset(Decl declaration)
         {
-            if (declaration.attribute_list == null)
+            if (declaration.attribute_list is null)
                 return null;
             return declaration.attribute_list
                 .Where(a =>

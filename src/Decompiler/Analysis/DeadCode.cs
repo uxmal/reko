@@ -98,7 +98,7 @@ namespace Reko.Analysis
                         var a = ContainedApplication(elem);
                         if (a != null)
                         {
-                            if (appl == null)
+                            if (appl is null)
                                 appl = a;
                             else
                                 return null;

@@ -36,7 +36,7 @@ namespace Reko.Arch.C166
             {
                 renderer.WriteChar('+');
             }
-            if (offset != 0 || Base == null)
+            if (offset != 0 || Base is null)
             {
                 renderer.WriteFormat("0x{0:X}", offset);
             }

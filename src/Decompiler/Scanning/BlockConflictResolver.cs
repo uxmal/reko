@@ -82,7 +82,6 @@ namespace Reko.Scanning
             Dump("After conflicting block removal");
             RemoveParentsOfConflictingBlocks();
             this.sr.Dump("After parents of conflicting blocks removed");
-            // RemoveBlocksWithFewPredecessors();
             //DumpGraph();
             RemoveBlocksWithFewSuccessors();
             Dump("After few successor removal");
@@ -125,10 +124,10 @@ namespace Reko.Scanning
         /// <param name="valid"></param>
         private void ComputeStatistics(ISet<RtlBlock> valid)
         {
-            if (program == null || program.Architecture == null)
+            if (program is null || program.Architecture is null)
                 return;
             var cmp = program.Architecture.CreateInstructionComparer(Normalize.Constants);
-            if (cmp == null)
+            if (cmp is null)
                 return;
             //$REVIEW: to what use can we put this?
             var trie = new Trie<MachineInstruction>(cmp);
@@ -202,6 +201,9 @@ namespace Reko.Scanning
 
         private void RemoveBlockFromGraph(RtlBlock n)
         {
+            if (n.Address.Offset == 0x56)
+                _ = n; //$DEBUG
+
             trace.Verbose("Removing block: {0}", n);
             foreach (var i in n.Instructions)
             {

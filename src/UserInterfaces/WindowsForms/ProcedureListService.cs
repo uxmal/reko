@@ -237,7 +237,7 @@ namespace Reko.Gui
         private void ShowProcedureControlGraph()
         {
             var item = listProcedures.FocusedItem;
-            if (item == null || !item.Selected || item.Tag is not ProgramProcedure pp)
+            if (item is null || !item.Selected || item.Tag is not ProgramProcedure pp)
                 return;
             services.RequireService<ISelectedAddressService>().SelectedProcedure = pp.Procedure;
             services.RequireService<ICodeViewerService>().DisplayProcedureControlGraph(pp.Program, pp.Procedure);
@@ -282,7 +282,7 @@ namespace Reko.Gui
 
         private void UpdateItem(ListViewItem item)
         {
-            if (item.Tag == null)
+            if (item.Tag is null)
                 return;
 
             var subItems = CreateListItemTexts((ProgramProcedure) item.Tag);
@@ -361,7 +361,7 @@ namespace Reko.Gui
         private void ListProcedures_DoubleClick(object sender, EventArgs e)
         {
             var item = listProcedures.FocusedItem;
-            if (item == null || !item.Selected || item.Tag is not ProgramProcedure pp)
+            if (item is null || !item.Selected || item.Tag is not ProgramProcedure pp)
                 return;
             services.RequireService<ISelectedAddressService>().SelectedProcedure = pp.Procedure;
             services.RequireService<ICodeViewerService>().DisplayProcedure(pp.Program, pp.Procedure, pp.Program.NeedsScanning);

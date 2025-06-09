@@ -159,7 +159,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         private void BoundGranularity(long value)
         {
             granularity = Math.Max(1L, value);
-            if (ImageMap == null || SegmentMap == null)
+            if (ImageMap is null || SegmentMap is null)
             {
                 return;
             }
@@ -203,7 +203,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             // We want addr to appear in the same position as it did last time, if possible.
             this.painter = CalculateLayout();
             var iSeg = painter.GetSegment(addr.Value);
-            if (iSeg == null)
+            if (iSeg is null)
                 return;
 
             long cxInsideSeg = (addr.Value - iSeg.Segment.Address) / granularity;
@@ -277,7 +277,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         private Address? MapClientPositionToAddress(int x)
         {
-            if (imageMap == null || painter == null)
+            if (imageMap is null || painter is null)
                 return null;
 
             x -= (CxScroll - (int) cxOffset);          // bias past the scroller button.

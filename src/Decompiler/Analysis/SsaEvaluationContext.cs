@@ -52,10 +52,10 @@ namespace Reko.Analysis
 
         public Expression? GetValue(Identifier id)
         {
-            if (id == null)
+            if (id is null)
                 return null;
             var sid = ssaIds[id];
-            if (sid.DefStatement == null)
+            if (sid.DefStatement is null)
                 return null;
             if (sid.DefStatement.Instruction is Assignment ass &&
                 ass.Dst == sid.Identifier)
@@ -106,7 +106,7 @@ namespace Reko.Analysis
 
         public void RemoveExpressionUse(Expression exp)
         {
-            if (Statement == null)
+            if (Statement is null)
                 return;
             var xu = new ExpressionUseRemover(Statement, ssaIds);
             exp.Accept(xu);
@@ -129,7 +129,7 @@ namespace Reko.Analysis
 
         public void UseExpression(Expression exp)
         {
-            if (Statement == null)
+            if (Statement is null)
                 return;
             var xu = new InstructionUseAdder(Statement, ssaIds);
             exp.Accept(xu);
@@ -138,7 +138,7 @@ namespace Reko.Analysis
         public bool IsUsedInPhi(Identifier id)
         {
             var src = ssaIds[id].DefStatement;
-            if (src == null)
+            if (src is null)
                 return false;
             if (src.Instruction is not Assignment assSrc)
                 return false;

@@ -252,11 +252,11 @@ static bool find_typelib_key( Guid guid, ref WORD wMaj, ref WORD wMin )
     string buffer = string.Format("Typelib\\{0:N}", guid);
 
     var hkey = Registry.ClassesRoot.OpenSubKey(buffer);
-    if (hkey == null)
+    if (hkey is null)
         return false;
     int i = 0;
     var subKeys = hkey.GetSubKeyNames();
-    if (subKeys == null)
+    if (subKeys is null)
         return false;
     foreach (var key_name in subKeys)
     {
@@ -722,7 +722,7 @@ HRESULT WINAPI RegisterTypeLib(
     TYPEKIND kind;
     DWORD disposition;
 
-    if (ptlib == NULL || szFullPath == NULL)
+    if (ptlib is null || szFullPath is null)
         return E_INVALIDARG;
 
     if (FAILED(ITypeLib_GetLibAttr(ptlib, &attr)))
@@ -795,7 +795,7 @@ HRESULT WINAPI RegisterTypeLib(
             /* if we created a new key, and helpDir was null, set the helpdir
                to the directory which contains the typelib. However,
                if we just opened an existing key, we leave the helpdir alone */
-            if ((disposition == REG_CREATED_NEW_KEY) && (szHelpDir == NULL)) {
+            if ((disposition == REG_CREATED_NEW_KEY) && (szHelpDir is null)) {
                 szHelpDir = SysAllocString(szFullPath);
                 pIndexStr = strrchrW(szHelpDir, '\\');
                 if (pIndexStr) {
@@ -1556,7 +1556,7 @@ static void dump_TLBFuncDescOne( TLBFuncDesc  pfd)
   dump_FUNCDESC(&(pfd->funcdesc));
 
   MESSAGE("\thelpstring: %s\n", debugstr_w(TLB_get_bstr(pfd->HelpString)));
-  if(pfd->Entry == NULL)
+  if(pfd->Entry is null)
       MESSAGE("\tentry: (null)\n");
   else if(pfd->Entry == (void*)-1)
       MESSAGE("\tentry: invalid\n");

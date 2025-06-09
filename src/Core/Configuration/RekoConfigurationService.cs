@@ -440,7 +440,7 @@ namespace Reko.Core.Configuration
             Func<TSrc, string> fnKey,
             Func<TSrc, TValue> fnValue)
         {
-            if (sItems == null)
+            if (sItems is null)
                 return new Dictionary<string, TValue>();
             else
                 return sItems.ToDictionary(fnKey, fnValue);

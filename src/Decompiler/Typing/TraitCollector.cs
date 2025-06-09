@@ -165,7 +165,7 @@ namespace Reko.Typing
 
 		public LinearInductionVariable? MergeInductionVariableConstant(LinearInductionVariable iv, Operator op, Constant? c)
 		{
-			if (iv == null || c == null)
+			if (iv is null || c is null)
 				return null;
 			Constant delta   = op.ApplyConstants(iv.Delta!.DataType, iv.Delta!, c);
 			Constant? initial = (iv.Initial != null) ? op.ApplyConstants(iv.Initial.DataType, iv.Initial, c) : null; 
@@ -224,7 +224,7 @@ namespace Reko.Typing
 
         public DataType? VisitReturnInstruction(ReturnInstruction ret)
         {
-            if (ret.Expression == null)
+            if (ret.Expression is null)
                 return VoidType.Instance;
 
             var dt = ret.Expression.Accept(this);

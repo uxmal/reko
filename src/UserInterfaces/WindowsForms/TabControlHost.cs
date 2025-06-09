@@ -73,10 +73,10 @@ namespace Reko.UserInterfaces.WindowsForms
         public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
         {
             var frame = ActiveFrame;
-            if (frame == null)
+            if (frame is null)
                 return false;
             var ct = frame.Pane as ICommandTarget;
-            if (ct == null)
+            if (ct is null)
                 return false;
             return ct.QueryStatus(cmdId, status, text);
         }

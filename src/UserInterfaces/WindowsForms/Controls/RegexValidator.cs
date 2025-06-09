@@ -92,7 +92,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
 		protected override bool EvaluateIsValid()
 		{
-			if (ControlToValidate == null)
+			if (ControlToValidate is null)
 				return true;
 			string text = ControlToValidate.Text.Trim();
 			if (text.Length == 0)

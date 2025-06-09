@@ -59,7 +59,7 @@ namespace Reko.ImageLoaders.IntelHex
                 }
             }
 
-            if (hexRecord == null)
+            if (hexRecord is null)
                 throw new IntelHexException("Intel Hex line can not be null.", lineNum);
             if (hexRecord.Length < MinHexRecordSize)
                 throw new IntelHexException($"Intel Hex line [{hexRecord}] is less than {MinHexRecordSize} characters long.", lineNum);

@@ -58,32 +58,32 @@ namespace Reko.Scanning
         /// All the discovered machine instructions, rewritten into RTL
         /// instruction clusters.
         /// </summary>
-        public Dictionary<Address, RtlInstructionCluster> Instructions;
+        public Dictionary<Address, RtlInstructionCluster> Instructions { get; set; }
 
         /// <summary>
         /// Interprocedural control flow graph, consisting of all
         /// direct calls and jumps. Each edge goes from a jump or a call
         /// to its destination. Branches have two destinations.
         /// </summary>
-        public DiGraph<RtlBlock> ICFG;
+        public DiGraph<RtlBlock> ICFG { get; set; }
 
         /// <summary>
         /// Tally of how many times each address is called by a direct call
         /// instruction.
         /// </summary>
-        public Dictionary<Address, int> DirectlyCalledAddresses;
+        public Dictionary<Address, int> DirectlyCalledAddresses { get; set; }
 
         /// <summary>
         /// Addresses that are targets (destinations) of jumps or calls.
         /// </summary>
-        public HashSet<Address> TransferTargets;
+        public HashSet<Address> TransferTargets { get; set; }
 
         /// <summary>
         /// These are addresses that are known, because metadata in the
         /// executable image describes them as such, or because the user
         /// specified the address.
         /// </summary>
-        public Dictionary<Address, ImageSymbol> KnownAddresses;
+        public Dictionary<Address, ImageSymbol> KnownAddresses { get; set; }
 
         /// <summary>
         /// More specifically, these are addresses that are known to be
@@ -98,7 +98,7 @@ namespace Reko.Scanning
         /// This is a key end result of the scanning stage.
         /// </summary>
         public List<RtlProcedure> Procedures { get; set; }
-        public Dictionary<ulong, Instr> FlatInstructions { get;  set; }
+        public Dictionary<ulong, Instr> FlatInstructions { get; set; }
         public List<Link> FlatEdges { get; set; }
 
         /// <summary>
@@ -115,22 +115,23 @@ namespace Reko.Scanning
         /// becomes as the probability that a random bit pattern coincides
         /// with a real address increases the shorter the bit pattern is.
         /// </remarks>
-        public Dictionary<Address, int> PossibleAddresses;
+        public Dictionary<Address, int> PossibleAddresses { get; set; }
 
         /// <summary>
         /// Addresses at which indirect jumps happen.
         /// </summary>
-        public HashSet<Address> IndirectJumps;
+        public HashSet<Address> IndirectJumps { get; set; }
 
         /// <summary>
         /// Addresses at which indirect calls happen
         /// </summary>
-        public HashSet<Address> IndirectCalls;
+        public HashSet<Address> IndirectCalls { get; set; }
 
         /// <summary>
         /// Addresses which cannot possibly be valid instructions.
         /// </summary>
-        public HashSet<Address> Invalid;
+        public HashSet<Address> Invalid { get; set; }
+
         /// <summary>
         /// Useful for debugging.
         /// </summary>
@@ -182,9 +183,10 @@ namespace Reko.Scanning
 
         public class Instr
         {
-            public Address addr;
-            public int size;
-            public ushort type;
+            public Address Address => rtl.Address;
+            public int Length => rtl.Length;
+            public InstrClass Class => rtl.Class;
+
             public Address block_id;
             public int pred;
             public int succ;
@@ -193,24 +195,30 @@ namespace Reko.Scanning
 
         public class Link
         {
-            public Address first;
-            public Address second;
+            public readonly Address From;
+            public readonly Address To;
+
+            public Link(Address first, Address second)
+            {
+                this.From = first;
+                this.To = second;
+            }
 
             public override bool Equals(object obj)
             {
-                if (!(obj is Link that))
+                if (obj is not Link that)
                     return false;
-                return that.first == this.first && that.second == this.second;
+                return that.From == this.From && that.To == this.To;
             }
 
             public override int GetHashCode()
             {
-                return first.GetHashCode() ^ 13 * second.GetHashCode();
+                return From.GetHashCode() ^ 13 * To.GetHashCode();
             }
 
             public override string ToString()
             {
-                return string.Format("[{0:X8} -> {1:X8}]", first, second);
+                return string.Format("[{0:X8} -> {1:X8}]", From, To);
             }
         }
 

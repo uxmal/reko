@@ -118,7 +118,7 @@ namespace Reko.Arch.M68k.Assembler
             case MemoryOperand mop:
                 {
                     var aReg = mop.Base;
-                    if (mop.Offset == null || mop.Offset.ToInt32() == 0)
+                    if (mop.Offset is null || mop.Offset.ToInt32() == 0)
                         return (aReg.Number & 7 | 0x10);
                     constants.Add((ushort) mop.Offset.ToInt32());
                     return (aReg.Number & 7 | 0x28);

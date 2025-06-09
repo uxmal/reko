@@ -200,7 +200,7 @@ namespace Reko.Analysis
         public int GetFpuStackDelta(IProcessorArchitecture arch)
         {
             var fpuStackReg = arch.FpuStackRegister;
-            if (fpuStackReg == null ||
+            if (fpuStackReg is null ||
                 !Constants.TryGetValue(fpuStackReg, out var c))
             {
                 return 0;

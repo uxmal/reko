@@ -153,7 +153,7 @@ namespace Reko.Environments.MacOS.Classic
         private void ProcessDeclaration(Declaration decl, IPlatform platform, TypeLibraryDeserializer tldser, SymbolTable symbolTable)
         {
             var declaration = decl as CallableDeclaration;
-            if (declaration == null)
+            if (declaration is null)
                 return;
 
             //int? 

@@ -38,7 +38,7 @@ namespace Reko.Core.Collections
         /// </summary> 
         public void AddRange(IEnumerable<T> collection)
         {
-            if (collection == null) 
+            if (collection is null) 
                 throw new ArgumentNullException(nameof(collection));
             var items = collection.ToList();        // Avoid iterating the collection twice.
             foreach (var i in items)

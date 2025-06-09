@@ -142,7 +142,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         public bool CheckIf(string fieldName, string fieldState, uint valueToCheck)
         {
             var dcf = GetField(fieldName);
-            if (dcf == null)
+            if (dcf is null)
                 return false;
             uint val = (uint)(((valueToCheck & Impl) >> dcf.BitPos) & dcf.BitMask);
             var sem = dcf.GetSemantic(val);

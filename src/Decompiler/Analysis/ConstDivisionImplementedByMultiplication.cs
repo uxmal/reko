@@ -115,7 +115,7 @@ namespace Reko.Analysis
 
             this.idOrig = ass.Dst;
             this.idDst = FindAlias(ass.Dst, dst.Elements[0]);
-            if (idDst == null)
+            if (idDst is null)
                 return false;
 
             var best = FindBestRational(cRight.ToUInt32());

@@ -439,9 +439,9 @@ namespace Reko.Core.Expressions
         /// <inheritdoc/>
         public bool Equals(Expression? x, Expression? y)
         {
-            if (x == null && y == null)
+            if (x is null && y is null)
                 return true;
-            if (x == null || y == null)
+            if (x is null || y is null)
                 return false;
             return EqualsImpl(x, y);
         }

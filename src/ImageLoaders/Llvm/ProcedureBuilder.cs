@@ -138,7 +138,7 @@ namespace Reko.ImageLoaders.LLVM
             if (block != null)
                 return block;
 
-            if (name == null)
+            if (name is null)
             {
                 name = NextTemp();
             }

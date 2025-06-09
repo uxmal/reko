@@ -645,7 +645,7 @@ print arg_mem
             var addrs = rel.GetSegmentRelocationAddresses(base_addr);
             //  Relocate and return data of segments
             var datas = rel.Relocate(addrs);
-            if (datas == null)
+            if (datas is null)
                 throw new BadImageFormatException("Relocation failed.");
             return datas;
             //print "Relocate to base address",base_addr
