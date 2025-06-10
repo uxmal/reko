@@ -90,11 +90,11 @@ namespace Reko.Scanning
                 unscanned = true;
                 try
                 {
-                    shsc.ScanRange(
+                    shsc.ScanRange(new(
                         program.Architecture,
                         range.Item1,
                         range.Item2,
-                        range.Item3,
+                        range.Item3),
                         range.Item3);
                 }
                 catch (AddressCorrelatedException aex)

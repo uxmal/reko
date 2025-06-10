@@ -183,6 +183,7 @@ namespace Reko.Scanning
 
             return new Chunk(
                 arch,
+                null!,
                 item.Address,
                 item.Length);
         }

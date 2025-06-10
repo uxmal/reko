@@ -196,10 +196,10 @@ c:\dev\uxmal\reko\master\subjects\Elf\IA64\bash\elf-Linux-ia64-bash: error: An i
     An item with the same key has already been added. Key: 4611686018427490960
        at System.Collections.Generic.Dictionary`2.TryInsert(TKey key, TValue value, InsertionBehavior behavior)
    at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
-   at Reko.Scanning.ShingledScanner.AddInstruction(RtlInstructionCluster i) in c:\dev\uxmal\reko\master\src\Decompiler\Scanning\ShingledScanner.cs:line 290
-   at Reko.Scanning.ShingledScanner.ScanRange(IProcessorArchitecture arch, MemoryArea mem, Address addrStart, UInt32 cbAlloc, UInt64 workToDo) in c:\dev\uxmal\reko\master\src\Decompiler\Scanning\ShingledScanner.cs:line 202
-   at Reko.Scanning.ScannerInLinq.ScanInstructions(ScanResults sr) in c:\dev\uxmal\reko\master\src\Decompiler\Scanning\ScannerInLinq.cs:line 158
-   at Reko.Scanning.ScannerInLinq.ScanImage(ScanResults sr) in c:\dev\uxmal\reko\master\src\Decompiler\Scanning\ScannerInLinq.cs:line 65
+   at Reko.Scanning.ShingledScanner.AddInstruction(IProcessorArchitecture arch, RtlInstructionCluster i) in c:\dev\uxmal\reko\master\src\Decompiler\Scanning\ShingledScanner.cs:line 292
+   at Reko.Scanning.ShingledScanner.ScanRange(Chunk& chunk, UInt64 workToDo) in c:\dev\uxmal\reko\master\src\Decompiler\Scanning\ShingledScanner.cs:line 204
+   at Reko.Scanning.ScannerInLinq.ScanInstructions(ScanResults sr) in c:\dev\uxmal\reko\master\src\Decompiler\Scanning\ScannerInLinq.cs:line 168
+   at Reko.Scanning.ScannerInLinq.ScanImage(ScanResults sr) in c:\dev\uxmal\reko\master\src\Decompiler\Scanning\ScannerInLinq.cs:line 64
    at Reko.Scanning.Scanner.ShingleScanProcedures() in c:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 1158
    at Reko.Scanning.Scanner.Time(Action fn) in c:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 876
    at Reko.Scanning.Scanner.ScanImage() in c:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 863
@@ -1154,7 +1154,9 @@ fn0001B1D0: warning: Structure analysis stopped making progress, quitting. Pleas
 fn0001B1F8: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 fn0001B2AC: error: An error occurred while rewriting procedure to high-level language.
     Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
-       at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in c:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 131
+       at System.Collections.Generic.List`1.get_Item(Int32 index)
+   at Reko.Core.Block.get_ThenBlock() in c:\dev\uxmal\reko\master\src\Core\Block.cs:line 106
+   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in c:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
    at Reko.Structure.CompoundConditionCoalescer.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
    at Reko.Structure.StructureAnalysis.Structure() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 78
    at Reko.Decompiler.StructureProgram() in c:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 691
@@ -2271,4 +2273,4 @@ PE Debug type 14 not supported yet.
 === PE\x86\VCExeSample\VCExeSample
 Signature of 'Microsoft Visual C++ 8' detected.
 
-Decompiled 98 binaries in 64.73 seconds.
+Decompiled 98 binaries in 57.69 seconds.

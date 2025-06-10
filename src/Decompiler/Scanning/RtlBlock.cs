@@ -72,7 +72,7 @@ namespace Reko.Scanning
                 0,
                 default!,
                 ProvenanceType.None,
-                new List<RtlInstructionCluster>());
+                []);
         }
 
         public static RtlBlock CreatePartial(
@@ -114,7 +114,7 @@ namespace Reko.Scanning
         public bool IsValid { get; set; }
 
         /// <summary>
-        /// <param name="Length">The size of the basic block starting 
+        /// The size of the basic block starting 
         /// at <see cref="Address"/> and including the length of the final
         /// instruction, but not including any "stolen" delay slots.
         /// </summary>

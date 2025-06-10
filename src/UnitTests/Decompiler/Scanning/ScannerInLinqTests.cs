@@ -147,7 +147,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             program.ImageMap.AddItem(addr, item);
         }
 
-        private void AssertBlocks(string sExp, Dictionary<Address, ScanResults.Block> blocks)
+        private void AssertBlocks(string sExp, Dictionary<Address, RtlBlock> blocks)
         {
             var sw = new StringWriter();
             this.siq.DumpBlocks(sr, blocks, sw.WriteLine);
@@ -403,9 +403,9 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var blocks = ScannerInLinq.BuildBasicBlocks(sr);
             blocks = ScannerInLinq.RemoveInvalidBlocks(sr, blocks);
 
-            var from = blocks.Values.Single(n => n.id == Address.Ptr32(0x00100000));
-            var to = blocks.Values.Single(n => n.id == Address.Ptr32(0x00100001));
-            Assert.IsFalse(sr.FlatEdges.Any(e => e.From == from.id && e.To ==to.id));
+            var from = blocks.Values.Single(n => n.Address.Offset == 0x00100000);
+            var to = blocks.Values.Single(n => n.Address.Offset == 0x00100001);
+            Assert.IsFalse(sr.FlatEdges.Any(e => e.From == from.Address && e.To == to.Address));
         }
 
         [Test(Description = "Stop tracing invalid blocks at call boundaries")]
@@ -504,7 +504,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var ranges = siq.FindUnscannedRanges().ToArray();
 
             Assert.AreEqual(1, ranges.Length);
-            Assert.AreSame(A.Object, ranges[0].Item1);
+            Assert.AreSame(A.Object, ranges[0].Architecture);
         }
 
         [Test]
@@ -520,7 +520,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var ranges = siq.FindUnscannedRanges().ToArray();
 
             Assert.AreEqual(1, ranges.Length);
-            Assert.AreSame(A.Object, ranges[0].Item1);
+            Assert.AreSame(A.Object, ranges[0].Architecture);
         }
 
         [Test]
@@ -540,7 +540,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var ranges = siq.FindUnscannedRanges().ToArray();
 
             Assert.AreEqual(1, ranges.Length);
-            Assert.AreSame(B.Object, ranges[0].Item1);
+            Assert.AreSame(B.Object, ranges[0].Architecture);
         }
 
         [Test]
@@ -560,7 +560,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var ranges = siq.FindUnscannedRanges().ToArray();
 
             Assert.AreEqual(1, ranges.Length);
-            Assert.AreSame(B.Object, ranges[0].Item1);
+            Assert.AreSame(B.Object, ranges[0].Architecture);
         }
 
         [Test(Description = "Stop tracing invalid blocks at call boundaries")]

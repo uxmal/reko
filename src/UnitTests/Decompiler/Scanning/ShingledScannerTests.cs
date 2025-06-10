@@ -201,7 +201,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             Given_Mips_Image(0x00001403);
             Given_Scanner();
             var seg = program.SegmentMap.Segments.Values.First();
-            var scseg = sh.ScanRange(program.Architecture, seg.MemoryArea, seg.Address, seg.Size, 0);
+            var scseg = sh.ScanRange(new(program.Architecture, seg.MemoryArea, seg.Address, seg.Size), 0);
             Assert.AreEqual(new byte[] { 0 }, TakeEach(scseg, 4));
         }
 
@@ -214,7 +214,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 0);             // this nop falls off the end of the segment, it's unsafe.
             Given_Scanner();
             var seg = program.SegmentMap.Segments.Values.First();
-            var scseg = sh.ScanRange(program.Architecture, seg.MemoryArea, seg.Address, seg.Size, 0);
+            var scseg = sh.ScanRange(new(program.Architecture, seg.MemoryArea, seg.Address, seg.Size), 0);
             Assert.AreEqual(new byte[] { 1, 1, 0 }, TakeEach(scseg, 4));
         }
 
@@ -228,7 +228,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 0);             // nop is in delay slot, so it's safe.
             Given_Scanner();
             var seg = program.SegmentMap.Segments.Values.First();
-            var scseg = sh.ScanRange(program.Architecture, seg.MemoryArea, seg.Address, seg.Size, 0);
+            var scseg = sh.ScanRange(new(program.Architecture, seg.MemoryArea, seg.Address, seg.Size), 0);
             Assert.AreEqual(new byte[] { 1, 1, 1, 1, }, TakeEach(scseg, 4));
         }
 
@@ -318,7 +318,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             Given_Scanner();
 
             var seg = program.SegmentMap.Segments.Values.First();
-            var scseg = this.sh.ScanRange(program.Architecture, seg.MemoryArea, seg.Address, seg.Size, 0);
+            var scseg = this.sh.ScanRange(new(program.Architecture, seg.MemoryArea, seg.Address, seg.Size), 0);
             Assert.AreEqual(new byte[]
                 {
                     0, 0, 0, 0, 0

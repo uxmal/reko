@@ -21,6 +21,7 @@
 namespace Reko.Scanning;
 
 using Reko.Core;
+using Reko.Core.Memory;
 
 /// <summary>
 /// A chunk represents a candidate area for scanning.
@@ -31,14 +32,23 @@ using Reko.Core;
 /// </param>
 /// <param name="length">The length of the chunk in storage units.
 /// </param>
-public readonly struct Chunk(IProcessorArchitecture? arch, Address address, long length)
+public readonly struct Chunk(IProcessorArchitecture? arch, MemoryArea mem, Address address, long length)
 {
     public IProcessorArchitecture? Architecture { get; } = arch;
+    public MemoryArea MemoryArea { get; } = mem;
     public Address Address { get; } = address;
     public long Length { get; } = length;
 
     public override string ToString()
     {
         return $"(0x{Address.Offset:X}, 0x{Length:X})";
+    }
+
+    public void Deconstruct(out IProcessorArchitecture? arch, out MemoryArea mem, out Address address, out long length)
+    {
+        arch = Architecture;
+        mem = MemoryArea;
+        address = Address;
+        length = Length;
     }
 }

@@ -23,6 +23,7 @@ namespace Reko.Scanning;
 using Reko.Core;
 using Reko.Core.Collections;
 using Reko.Core.Loading;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -81,7 +82,7 @@ public class ChunkEnumerator
 
                 if (addrLast < fragment.Address)
                 {
-                    yield return new Chunk(null, addrLast, fragment.Address - addrLast);
+                    yield return new Chunk(null, segment.MemoryArea, addrLast, fragment.Address - addrLast);
                 }
                 yield return fragment;
                 addrLast = Align(fragment.Address + fragment.Length, fragment.Architecture);
@@ -90,7 +91,7 @@ public class ChunkEnumerator
             // Rest of segment.
             long cbRemaining = segment.Size - (addrLast - segment.Address);
             if (cbRemaining > 0)
-                yield return new Chunk(null, addrLast, cbRemaining);
+                yield return new Chunk(null, segment.MemoryArea, addrLast, cbRemaining);
         }
     }
 
@@ -120,10 +121,10 @@ public class ChunkEnumerator
         var e = sortedBlocks.GetEnumerator();
         if (!e.MoveNext())
             yield break;
-        var fragmentPrev = MakeFragment(e.Current);
+        var fragmentPrev = MakeFragment(e.Current, null!);
         while (e.MoveNext())
         {
-            var fragment = MakeFragment(e.Current);
+            var fragment = MakeFragment(e.Current, null!);
             Debug.Assert(fragmentPrev.Address < fragment.Address);
             var cbSeparation = fragment.Address - fragmentPrev.Address;
             var cbGap = cbSeparation - fragmentPrev.Length;
@@ -138,15 +139,15 @@ public class ChunkEnumerator
             if (cbOverlap >= 0)
             {
                 // Truncate the previous fragment.
-                yield return new(fragmentPrev.Architecture, fragmentPrev.Address, cbSeparation);
+                yield return new(fragmentPrev.Architecture, fragmentPrev.MemoryArea, fragmentPrev.Address, cbSeparation);
                 fragmentPrev = fragment;
             }
         }
         yield return fragmentPrev;
     }
 
-    private static Chunk MakeFragment(RtlBlock block)
+    private static Chunk MakeFragment(RtlBlock block, MemoryArea mem)
     {
-        return new Chunk(block.Architecture, block.Address, block.Length);
+        return new Chunk(block.Architecture, mem, block.Address, block.Length);
     }
 }

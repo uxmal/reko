@@ -183,14 +183,16 @@ namespace Reko.Scanning
 
         public class Instr
         {
+            public IProcessorArchitecture Architecture { get; set; }
             public Address Address => rtl.Address;
             public int Length => rtl.Length;
             public InstrClass Class => rtl.Class;
 
             public Address block_id;
+
             public int pred;
             public int succ;
-            public RtlInstructionCluster rtl;
+            public RtlInstructionCluster rtl { get; set; }
         }
 
         public class Link
@@ -220,13 +222,6 @@ namespace Reko.Scanning
             {
                 return string.Format("[{0:X8} -> {1:X8}]", From, To);
             }
-        }
-
-        public class Block
-        {
-            public Address id;                  // Address of block
-            public Address component_id;        // Component we're part of.
-            public Instr[] instrs;              // The instructions of the block.
         }
 
         [Conditional("DEBUG")]
