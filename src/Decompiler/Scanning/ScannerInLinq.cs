@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Collections;
+using Reko.Core.Diagnostics;
 using Reko.Core.Graphs;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
@@ -38,6 +39,8 @@ namespace Reko.Scanning
 
     public class ScannerInLinq
     {
+        private static readonly TraceSwitch trace = new(nameof(ScannerInLinq), "");
+
         private readonly IServiceProvider services;
         private readonly Program program;
         private readonly IRewriterHost host;
@@ -55,16 +58,18 @@ namespace Reko.Scanning
         {
             sr.WatchedAddresses.Add(Address.Ptr32(0x001126FC));
             sr.WatchedAddresses.Add(Address.Ptr32(0x00112762));
-            
+
+            var binder = new StorageBinder();
+
             // At this point, we have some entries in the image map
             // that are data, and unscanned ranges in betweeen. We
             // have hopefully a bunch of procedure addresses to
             // break up the unscanned ranges.
 
-            if (ScanInstructions(sr) is null)
+            if (ScanInstructions(sr, binder) is null)
                 return sr;
 
-            var the_blocks = BuildBasicBlocks(sr);
+            var the_blocks = BuildBasicBlocks(sr, binder);
             sr.BreakOnWatchedAddress(the_blocks.Select(q => q.Key));
             the_blocks = ProcessIndirectTransfers(sr, the_blocks);
             the_blocks = RemoveInvalidBlocks(sr, the_blocks);
@@ -152,12 +157,11 @@ namespace Reko.Scanning
         /// <returns>The <paramref name="sr"/> object, mutated to contain all the
         /// new instructions.
         /// </returns>
-        public ScanResults? ScanInstructions(ScanResults sr)
+        public ScanResults? ScanInstructions(ScanResults sr, StorageBinder binder)
         {
             var ranges = FindUnscannedRanges().ToList();
             DumpRanges(ranges);
             var workToDo = (ulong)ranges.Sum(r => r.Length);
-            var binder = new StorageBinder();
             var shsc = new ShingledScanner(this.program, this.host, binder, sr, this.eventListener);
             bool unscanned = false;
             foreach (var range in ranges)
@@ -313,7 +317,9 @@ namespace Reko.Scanning
         /// 1 predecessor or successors. These instructions delimit the start and 
         /// end of the basic blocks.
         /// </summary>
-        public static Dictionary<Address, RtlBlock> BuildBasicBlocks(ScanResults sr)
+        public static Dictionary<Address, RtlBlock> BuildBasicBlocks(
+            ScanResults sr,
+            StorageBinder binder)
         {
             // Count and save the # of successors for each instruction.
             foreach (var cSucc in
@@ -371,7 +377,7 @@ namespace Reko.Scanning
             var the_blocks =
                 (from i in sr.FlatInstructions.Values
                  group i by i.block_id into g
-                 select MakeBlock(g))
+                 select MakeBlock(sr, g, binder))
                 .ToDictionary(b => b.Address);
 
             // Exclude the now useless edges.
@@ -385,7 +391,10 @@ namespace Reko.Scanning
             return the_blocks;
         }
 
-        private static RtlBlock MakeBlock(IGrouping<Address, Instr> g)
+        private static RtlBlock MakeBlock(
+            ScanResults sr, 
+            IGrouping<Address, Instr> g,
+            StorageBinder binder)
         {
             var instrs = g.OrderBy(i => i.Address)
                 .Select(i => i.rtl)
@@ -393,13 +402,37 @@ namespace Reko.Scanning
             var id = NamingPolicy.Instance.BlockName(g.Key);
             var instrLast = instrs[^1];
             var length = instrLast.Address.ToLinear() + (uint)instrLast.Length - g.Key.ToLinear();
+            var addrFallThrough = instrLast.Address + instrLast.Length;
+            if (instrLast.Class.HasFlag(InstrClass.Delay))
+            {
+                if (!sr.FlatInstructions.TryGetValue(addrFallThrough.ToLinear(), out var instrDelayed))
+                {
+                    trace.Warn("Fell through to an instruction that does not exist: {0}", addrFallThrough);
+                    instrLast.Class = InstrClass.Invalid;
+                }
+                else
+                {
+                    instrs.RemoveAt(instrs.Count - 1);
+                    BlockWorker.StealDelaySlotInstruction(
+                        instrLast,
+                        instrs,
+                        instrDelayed.rtl,
+                        (cluster, e) =>
+                        {
+                            var tmp = binder.CreateTemporary(e.DataType);
+                            var ass = new RtlAssignment(tmp, e);
+                            return (tmp, new RtlInstructionCluster(cluster.Address, cluster.Length, ass));
+                        });
+                    addrFallThrough += instrs[^1].Length;
+                }
+            }
 
             return RtlBlock.Create(
                 g.First().Architecture,
                 g.Key,
                 id,
                 (int) length,
-                instrLast.Address + instrLast.Length,
+                addrFallThrough,
                 ProvenanceType.Heuristic,
                 instrs);
         }
@@ -432,13 +465,14 @@ namespace Reko.Scanning
                 // that already are known to be "bad", but that don't
                 // end in a call.
                 //$TODO: delay slots. @#$#@
-                new_bad = new HashSet<Address>(new_bad
+                new_bad = new_bad
                     .SelectMany(bad => preds[bad])
                     .Where(l =>
                         !bad_blocks.Contains(l.From)
                         &&
                         !BlockEndsWithCall(blocks[l.From]))
-                    .Select(l => l.From));
+                    .Select(l => l.From)
+                    .ToHashSet();
 
                 if (new_bad.Count == 0)
                     break;
@@ -559,12 +593,24 @@ namespace Reko.Scanning
                     return "Zer ";
                 if ((t & InstrClass.Padding) != 0)
                     return "Pad ";
-                if ((t & InstrClass.Call) != 0)
-                    return "Cal ";
-                if ((t & InstrClass.ConditionalTransfer) == InstrClass.ConditionalTransfer)
-                    return "Bra ";
-                if ((t & InstrClass.Transfer) != 0)
-                    return "End";
+                if ((t & InstrClass.Delay) != 0)
+                {
+                    if ((t & InstrClass.Call) != 0)
+                        return "CalD ";
+                    if ((t & InstrClass.ConditionalTransfer) == InstrClass.ConditionalTransfer)
+                        return "BraD ";
+                    if ((t & InstrClass.Transfer) != 0)
+                        return "EndD";
+                }
+                else
+                {
+                    if ((t & InstrClass.Call) != 0)
+                        return "Cal ";
+                    if ((t & InstrClass.ConditionalTransfer) == InstrClass.ConditionalTransfer)
+                        return "Bra ";
+                    if ((t & InstrClass.Transfer) != 0)
+                        return "End";
+                }
                 return "Lin ";
             }
         }

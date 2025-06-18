@@ -310,6 +310,16 @@ namespace Reko.Scanning
                 // Can't deal with transfer functions in delay slots yet.
                 return false;
             }
+            StealDelaySlotInstruction(rtlTransfer, instrs, rtlDelayed, worker.MkTmp);
+            return true;
+        }
+
+        public static void StealDelaySlotInstruction(
+            RtlInstructionCluster rtlTransfer,
+            List<RtlInstructionCluster> instrs, 
+            RtlInstructionCluster rtlDelayed,
+            Func<RtlInstructionCluster, Expression, (Identifier, RtlInstructionCluster)> mkTmp)
+        {
             // If the delay slot instruction is a nop (padding), we 
             // can ignore it.
             if (!rtlDelayed.Class.HasFlag(InstrClass.Padding))
@@ -321,19 +331,19 @@ namespace Reko.Scanning
                 case RtlBranch branch:
                     if (branch.Condition is not Constant)
                     {
-                        var (tmp, copy) = worker.MkTmp(rtlTransfer, branch.Condition);
+                        var (tmp, copy) = mkTmp(rtlTransfer, branch.Condition);
                         instrs.Add(copy);
 
                         rtlTransfer = new RtlInstructionCluster(
                             rtlTransfer.Address,
                             rtlTransfer.Length,
-                            new RtlBranch(tmp, (Address)branch.Target, InstrClass.ConditionalTransfer));
+                            new RtlBranch(tmp, (Address) branch.Target, InstrClass.ConditionalTransfer));
                     }
                     break;
                 case RtlGoto g:
                     if (g.Target is not Core.Address)
                     {
-                        var (tmp, copy) = worker.MkTmp(rtlTransfer, g.Target);
+                        var (tmp, copy) = mkTmp(rtlTransfer, g.Target);
                         instrs.Add(copy);
                         rtlTransfer = new RtlInstructionCluster(
                             rtlTransfer.Address,
@@ -344,12 +354,12 @@ namespace Reko.Scanning
                 case RtlCall call:
                     if (call.Target is not Core.Address)
                     {
-                        var (tmp, copy) = worker.MkTmp(rtlTransfer, call.Target);
+                        var (tmp, copy) = mkTmp(rtlTransfer, call.Target);
                         instrs.Add(copy);
                         rtlTransfer = new RtlInstructionCluster(
                             rtlTransfer.Address,
                             rtlTransfer.Length,
-                            new RtlCall(tmp, (byte)call.ReturnAddressSize, InstrClass.Transfer | InstrClass.Call));
+                            new RtlCall(tmp, (byte) call.ReturnAddressSize, InstrClass.Transfer | InstrClass.Call));
                     }
                     break;
                 case RtlReturn:
@@ -366,7 +376,6 @@ namespace Reko.Scanning
                     rtlDelayed.Instructions));
             }
             instrs.Add(rtlTransfer);
-            return true;
         }
 
         /// <summary>
