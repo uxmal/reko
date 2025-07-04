@@ -198,8 +198,8 @@ c:\dev\uxmal\reko\master\subjects\Elf\IA64\bash\elf-Linux-ia64-bash: error: An i
    at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
    at Reko.Scanning.ShingledScanner.AddInstruction(IProcessorArchitecture arch, RtlInstructionCluster i) in c:\dev\uxmal\reko\master\src\Decompiler\Scanning\ShingledScanner.cs:line 292
    at Reko.Scanning.ShingledScanner.ScanRange(Chunk& chunk, UInt64 workToDo) in c:\dev\uxmal\reko\master\src\Decompiler\Scanning\ShingledScanner.cs:line 204
-   at Reko.Scanning.ScannerInLinq.ScanInstructions(ScanResults sr) in c:\dev\uxmal\reko\master\src\Decompiler\Scanning\ScannerInLinq.cs:line 168
-   at Reko.Scanning.ScannerInLinq.ScanImage(ScanResults sr) in c:\dev\uxmal\reko\master\src\Decompiler\Scanning\ScannerInLinq.cs:line 64
+   at Reko.Scanning.ScannerInLinq.ScanInstructions(ScanResults sr, StorageBinder binder) in c:\dev\uxmal\reko\master\src\Decompiler\Scanning\ScannerInLinq.cs:line 172
+   at Reko.Scanning.ScannerInLinq.ScanImage(ScanResults sr) in c:\dev\uxmal\reko\master\src\Decompiler\Scanning\ScannerInLinq.cs:line 69
    at Reko.Scanning.Scanner.ShingleScanProcedures() in c:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 1158
    at Reko.Scanning.Scanner.Time(Action fn) in c:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 876
    at Reko.Scanning.Scanner.ScanImage() in c:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 863
@@ -2273,4 +2273,4 @@ PE Debug type 14 not supported yet.
 === PE\x86\VCExeSample\VCExeSample
 Signature of 'Microsoft Visual C++ 8' detected.
 
-Decompiled 98 binaries in 57.69 seconds.
+Decompiled 98 binaries in 75.82 seconds.

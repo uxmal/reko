@@ -4,6 +4,11 @@
       "commandName": "Project",
       "commandLineArgs": "decompile --heuristic shingle --arch pic --arch-option model=\"PIC18F1220\" --loader IntelHex --base 0000 --entry 0000 PIC18Legacy.hex",
       "workingDirectory": "c:\\dev\\uxmal\\reko\\master\\subjects\\Microchip\\C18\\PIC18"
+    },
+    "dasm": {
+      "commandName": "Project",
+      "commandLineArgs": "dasm --arch riscv --dasm-bytes a.out",
+      "workingDirectory": "C:\\dev\\uxmal\\rvfun\\repo\\ep18\\rvfun"
     }
   },
   "iisSettings": {

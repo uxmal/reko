@@ -440,6 +440,19 @@ namespace Reko.CmdLine
                 {
                     program.User.Heuristics = ((string[]) oHeur).ToSortedSet();
                 }
+                if (pArgs.ContainsKey("dasm-address"))
+                {
+                    program.User.ShowAddressesInDisassembly = true;
+                }
+                if (pArgs.ContainsKey("dasm-base-instrs"))
+                {
+                    program.User.RenderInstructionsCanonically = true;
+                }
+                if (pArgs.ContainsKey("dasm-bytes"))
+                {
+                    program.User.ShowBytesInDisassembly = true;
+                }
+
                 if (pArgs.TryGetValue("aggressive-branch-removal", out object? oAggressiveBranchRemoval))
                 {
                     if (oAggressiveBranchRemoval is bool flag && flag)
