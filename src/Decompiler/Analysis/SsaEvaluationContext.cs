@@ -28,12 +28,22 @@ using System.Linq;
 
 namespace Reko.Analysis
 {
+    /// <summary>
+    /// Implementation of the <see cref="EvaluationContext"/> interface
+    /// for use with the <see cref="SsaState">SSA state</see> of a procedure.
+    /// </summary>
     public class SsaEvaluationContext : EvaluationContext
     {
         private readonly IProcessorArchitecture arch;
         private readonly SsaIdentifierCollection ssaIds;
         private readonly IDynamicLinker dynamicLinker;
 
+        /// <summary>
+        /// Constructs an instance of <see cref="SsaEvaluationContext"/>.
+        /// </summary>
+        /// <param name="arch">Current <see cref="IProcessorArchitecture"/>.</param>
+        /// <param name="ssaIds">The <see cref="SsaIdentifier"/></param>
+        /// <param name="dynamicLinker"></param>
         public SsaEvaluationContext(
             IProcessorArchitecture arch, 
             SsaIdentifierCollection ssaIds, 
@@ -44,12 +54,16 @@ namespace Reko.Analysis
             this.dynamicLinker = dynamicLinker;
         }
 
+        /// <inheritdoc/>
         public EndianServices Endianness => arch.Endianness;
 
+        /// <inheritdoc/>
         public int MemoryGranularity => arch.MemoryGranularity;
 
+        /// <inheritdoc/>
         public Statement? Statement { get; set; }
 
+        /// <inheritdoc/>
         public Expression? GetValue(Identifier id)
         {
             if (id is null)
@@ -70,11 +84,13 @@ namespace Reko.Analysis
             return null;
         }
 
+        /// <inheritdoc/>
         public Expression GetValue(Application appl)
         {
             return appl;
         }
 
+        /// <inheritdoc/>
         public Expression GetValue(MemoryAccess access, IMemory memory)
         {
             if (access.EffectiveAddress is Constant c &&
@@ -88,22 +104,26 @@ namespace Reko.Analysis
             return access;
         }
 
+        /// <inheritdoc/>
         public Expression? GetDefiningExpression(Identifier id)
         {
             return ssaIds[id].GetDefiningExpression();
         }
 
+        /// <inheritdoc/>
         public Expression MakeSegmentedAddress(Constant seg, Constant off)
         {
             return arch.MakeSegmentedAddress(seg, off);
         }
 
 
+        /// <inheritdoc/>
         public Constant ReinterpretAsFloat(Constant rawBits)
         {
             return arch.ReinterpretAsFloat(rawBits);
         }
 
+        /// <inheritdoc/>
         public void RemoveExpressionUse(Expression exp)
         {
             if (Statement is null)
@@ -112,21 +132,25 @@ namespace Reko.Analysis
             exp.Accept(xu);
         }
 
+        /// <inheritdoc/>
         public void SetValue(Identifier id, Expression value)
         {
             throw new NotSupportedException();
         }
 
+        /// <inheritdoc/>
         public void SetValueEa(Expression ea, Expression value)
         {
             throw new NotSupportedException();
         }
 
+        /// <inheritdoc/>
         public void SetValueEa(Expression basePtr, Expression ea, Expression value)
         {
             throw new NotSupportedException();
         }
 
+        /// <inheritdoc/>
         public void UseExpression(Expression exp)
         {
             if (Statement is null)
@@ -135,6 +159,7 @@ namespace Reko.Analysis
             exp.Accept(xu);
         }
 
+        /// <inheritdoc/>
         public bool IsUsedInPhi(Identifier id)
         {
             var src = ssaIds[id].DefStatement;

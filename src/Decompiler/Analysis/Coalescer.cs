@@ -43,20 +43,35 @@ public class Coalescer : IAnalysis<SsaState>
 {
     private static readonly TraceSwitch trace = new(nameof(Coalescer), "Traces the progress of identifier coalescing");
 
+    /// <summary>
+    /// Constructs a new instance of the <see cref="Coalescer"/> class.
+    /// </summary>
+    /// <param name="context"></param>
     public Coalescer(AnalysisContext context)
     {
     }
 
+    /// <inheritdoc/>
     public string Id => "coa";
 
+    /// <inheritdoc/>
     public string Description => "Builds expression trees by joining using expressions with definitions";
 
+    /// <summary>
+    /// Builds expression trees by joining using expressions with definitions,
+    /// where the definition is the single use of the identifier.
+    /// </summary>
+    /// <param name="ssa">The SSA state of the procedure being transformed.</param>
+    /// <returns>A tuple of the possible modified SSA state, and a flag which is 
+    /// set true if changes were made.
+    /// </returns>
     public (SsaState, bool) Transform(SsaState ssa)
     {
         var worker = new Worker(ssa);
         bool changed = worker.Transform();
         return (ssa, changed);
     }
+
     private class Worker: InstructionTransformer
 	{
 		private readonly SsaState ssa;
@@ -235,14 +250,23 @@ public class Coalescer : IAnalysis<SsaState>
             return changed;
 		}
 
-		/// <summary>
-		/// Tries to move the assigment as far down the block as is possible.
-		/// </summary>
-		/// <param name="ass"></param>
-		/// <param name="block"></param>
-		/// <param name="i"></param>
-		/// <returns>true if a change was made</returns>
-		public bool TryMoveAssignment(Statement stmDef, SsaIdentifier sidDef, Expression defExpr, Block block, int initialPosition)
+        /// <summary>
+        /// Tries to move the assigment as far down the block as is possible.
+        /// </summary>
+        /// <param name="stmDef">Defining statement.</param>
+        /// <param name="sidDef">The identifier set by the defining statement <paramref name="stmDef"/>.</param>
+        /// <param name="defExpr">The expression given to <paramref name="sidDef"/>.</param>
+        /// <param name="block">The <see cref="Block">basic block</see> in which the
+        /// statements are located.</param>
+        /// <param name="initialPosition">Initial position of the defining statement <paramref name="stmDef"/>
+        /// in the <paramref name="block"/>.</param>
+        /// <returns>true if a change was made</returns>
+        public bool TryMoveAssignment(
+            Statement stmDef,
+            SsaIdentifier sidDef,
+            Expression defExpr,
+            Block block,
+            int initialPosition)
 		{
 			SideEffectFlags flagsDef = sef.FindSideEffect(stmDef.Instruction);
 			for (int i = initialPosition + 1; i < block.Statements.Count; ++i)

@@ -73,6 +73,14 @@ namespace Reko.Analysis
         private Block? block;
         private Statement stmCur;
 
+        /// <summary>
+        /// Constructs an instance of <see cref="SsaTransform"/>.
+        /// </summary>
+        /// <param name="program"></param>
+        /// <param name="proc"></param>
+        /// <param name="sccProcs"></param>
+        /// <param name="dynamicLinker"></param>
+        /// <param name="programFlow"></param>
         public SsaTransform(
             IReadOnlyProgram program,
             Procedure proc,
@@ -108,17 +116,16 @@ namespace Reko.Analysis
         /// <summary>
         /// The SSA graph of the procedure being transformed.
         /// </summary>
-        public SsaState SsaState { get { return ssa; } }
+        public SsaState SsaState => ssa;
 
         /// <summary>
-        /// Transforms <paramref name="proc"/> into Static Single
+        /// Transforms a procedure into Static Single
         /// Assignment form.
         /// </summary>
         /// <remarks>
         /// The resulting SSA identifiers are conveniently kept in the
-        /// SsaState property.
+        /// <see cref="SsaState"/> property.
         /// </remarks>
-        /// <param name="proc"></param>
         public SsaState Transform()
         {
             trace.Inform("SsaTransform: {0}, rename frame accesses {1}", ssa.Procedure.Name, this.RenameFrameAccesses);
@@ -174,6 +181,10 @@ namespace Reko.Analysis
             }
         }
 
+        /// <summary>
+        /// Removes orphaned basic blocks from the SSA graph,
+        /// and any other data structures that reference them.
+        /// </summary>
         public void RemoveOrphanedBasicBlocks()
         {
             var orphans = ssa.Procedure.ControlGraph.Blocks
@@ -450,8 +461,18 @@ namespace Reko.Analysis
         /// <summary>
         /// Given a sequence of identifiers, collects all the processor flags as a summary.
         /// </summary>
-        /// <param name="ids"></param>
-        /// <returns></returns>
+        /// <param name="ids">Identifiers from which flag groups are 
+        /// aggregated.</param>
+        /// <param name="binder"><see cref="IStorageBinder"/> used to 
+        /// inject newly created flag group identifiers into the procedure's
+        /// frame.
+        /// </param>
+        /// <param name="arch"/>"/>
+        /// <see cref="IProcessorArchitecture"/> used to generate new
+        /// flag groups.
+        /// <returns>A sequence of <see cref="Identifier"/>s corresponding
+        /// to the aggregated flag groups.
+        /// </returns>
         public static IEnumerable<Identifier> CollectFlagGroups(
             IEnumerable<Identifier> ids, 
             IStorageBinder binder,
@@ -528,6 +549,7 @@ namespace Reko.Analysis
             }
         }
 
+        /// <inheritdoc/>
         public override Instruction TransformAssignment(Assignment a)
         {
             if (a is AliasAssignment)
@@ -854,8 +876,8 @@ namespace Reko.Analysis
         /// <remarks>
         /// This is just a guess; we can't do much better without more information from the user.
         /// </remarks>
-        /// <param name="procedure"></param>
-        /// <param name="stmCall"></param>
+        /// <param name="call">The indirect call whose parameters are being guessed.</param>
+        /// <param name="stmCall">The statement where the call is located.</param>
         /// <returns></returns>
         public IEnumerable<Identifier> GuessParameterIdentifiers(CallInstruction call, Statement stmCall)
         {
@@ -879,11 +901,7 @@ namespace Reko.Analysis
                     switch (ass.Dst.Storage)
                     {
                     case RegisterStorage _:
-                        ids.Add(ass.Dst);
-                        break;
                     case SequenceStorage _:
-                        ids.Add(ass.Dst);
-                        break;
                     case StackStorage _:
                         ids.Add(ass.Dst);
                         break;
@@ -971,11 +989,13 @@ namespace Reko.Analysis
             return null;
         }
 
+        /// <inheritdoc/>
         public override Instruction TransformDefInstruction(DefInstruction def)
         {
             return def;
         }
 
+        /// <inheritdoc/>
         public override Instruction TransformStore(Store store)
         {
             store.Src = store.Src.Accept(this);
@@ -1035,6 +1055,7 @@ namespace Reko.Analysis
             }
         }
 
+        /// <inheritdoc/>
         public override Instruction TransformUseInstruction(UseInstruction u)
         {
             if (u.OutArgument is not null && !RenameFrameAccesses)
@@ -1046,6 +1067,7 @@ namespace Reko.Analysis
             return base.TransformUseInstruction(u);
         }
 
+        /// <inheritdoc/>
         public override Expression VisitApplication(Application appl)
         {
             var args = new Expression[appl.Arguments.Length];
@@ -1082,6 +1104,7 @@ namespace Reko.Analysis
                 pflow.TerminatesProcess;
         }
 
+        /// <inheritdoc/>
         public override Expression VisitBinaryExpression(BinaryExpression binExp)
         {
             // Handling sub(R,R) and xor(R,R) specially, since they otherwise
@@ -1097,11 +1120,13 @@ namespace Reko.Analysis
             return base.VisitBinaryExpression(binExp);
         }
 
+        /// <inheritdoc/>
         public override Expression VisitIdentifier(Identifier id)
         {
             return NewUse(id, stmCur, false);
         }
 
+        /// <inheritdoc/>
         public override Expression VisitOutArgument(OutArgument outArg)
         {
             Expression exp;
@@ -1123,6 +1148,7 @@ namespace Reko.Analysis
             return new OutArgument(outArg.DataType, exp);
         }
 
+        /// <inheritdoc/>
         public Identifier NewDef(Identifier idOld, bool isSideEffect)
         {
             if (ssa.Identifiers.TryGetValue(idOld, out var sidOld))
@@ -1150,6 +1176,7 @@ namespace Reko.Analysis
             return sid.Identifier;
         }
 
+        /// <inheritdoc/>
         public override Expression VisitMemoryAccess(MemoryAccess access)
         {
             if (this.RenameFrameAccesses)
@@ -1212,6 +1239,7 @@ namespace Reko.Analysis
             return new MemoryAccess(memId, ea, access.DataType);
         }
 
+        /// <inheritdoc/>
         public override Expression VisitSegmentedAddress(SegmentedPointer segptr)
         {
             var basePtr = segptr.BasePointer.Accept(this);
@@ -1294,6 +1322,13 @@ namespace Reko.Analysis
             }
         }
 
+        /// <summary>
+        /// Bookkeeping state used when building SSA identifiers.
+        /// </summary>
+        /// <remarks>
+        /// Each <see cref="Reko.Core.Block"/> of the procedure is associated with exactly
+        /// one <see cref="SsaBlockState"/>.
+        /// </remarks>
         public class SsaBlockState
         {
             public readonly Block Block;
@@ -1314,6 +1349,7 @@ namespace Reko.Analysis
                 this.currentSimpleDef = new Dictionary<Storage, SsaIdentifier>();
             }
 
+            /// <inheritdoc/>
             public override string ToString()
             {
                 var sb = new StringBuilder();
@@ -1341,6 +1377,9 @@ namespace Reko.Analysis
             /// </summary>
             public Dictionary<Storage, SsaIdentifier> ExactAliases;
 
+            /// <summary>
+            /// Constructs an instance of <see cref="AliasState"/>.
+            /// </summary>
             public AliasState()
             {
                 this.Definitions = new List<(SsaIdentifier, BitRange, int)>();
@@ -1348,18 +1387,34 @@ namespace Reko.Analysis
             }
         }
 
+        /// <summary>
+        /// Describes a set of flag group identifiers that alias each other in a particular block.
+        /// </summary>
         public class FlagAliasState
         {
+            /// <summary>
+            /// List of defined flag group identifiers, in chronological order (i.e. the
+            /// the most recently defined flag group is last in the list).
+            /// </summary>
             public List<(SsaIdentifier, uint)> Definitions;
+
+
+            /// <summary>
+            /// Exact aliases are used to speed up lookups.
+            /// </summary>
             public Dictionary<Identifier, SsaIdentifier> ExactAliases;
 
+
+            /// <summary>
+            /// Constructs an instance of <see cref="FlagAliasState"/>.
+            /// </summary>
             public FlagAliasState()
             {
                 this.Definitions = new List<(SsaIdentifier, uint)>();
                 this.ExactAliases = new Dictionary<Identifier, SsaIdentifier>();
             }
         }
-
+        
         public class Alias
         {
             public Alias(SsaIdentifier sid)
@@ -1370,17 +1425,40 @@ namespace Reko.Analysis
             public SsaIdentifier SsaId { get; set; }
         }
 
+        /// <summary>
+        /// Implements a factory for creating <see cref="IdentifierTransformer"/> instances.
+        /// </summary>
         public class TransformerFactory : StorageVisitor<IdentifierTransformer>
         {
             private readonly SsaTransform transform;
             private Identifier? id;
             private Statement? stm;
 
+            /// <summary>
+            /// Constructs a new <see cref="TransformerFactory"/> for the given
+            /// SSA transform <paramref name="transform"/>.
+            /// </summary>
+            /// <param name="transform"><see cref="SsaTransform"/> that will be provided
+            /// to the constructed <see cref="IdentifierTransformer"/>s.
+            /// </param>
             public TransformerFactory(SsaTransform transform)
             {
                 this.transform = transform;
             }
 
+            /// <summary>
+            /// Creates a new <see cref="IdentifierTransformer"/> appropriate
+            /// for the storage class of the identifier <paramref name="id"/>.
+            /// </summary>
+            /// <param name="id">Identifier whose <see cref="Storage"/> determines
+            /// the kind of <see cref="IdentifierTransformer"/> to create.
+            /// </param>
+            /// <param name="stm"><see cref="Statement"/> where the <paramref name="id"/>
+            /// is being defined or used.
+            /// </param>
+            /// <returns>A derived class of <see cref="IdentifierTransformer"/>
+            /// appropriate for the storage of <paramref name="id"/>.
+            /// </returns>
             public IdentifierTransformer Create(Identifier id, Statement stm)
             {
                 this.id = id;
@@ -1388,36 +1466,43 @@ namespace Reko.Analysis
                 return id.Storage.Accept(this);
             }
 
+            /// <inheritdoc/>
             public IdentifierTransformer VisitFlagGroupStorage(FlagGroupStorage grf)
             {
                 return new FlagGroupTransformer(id!, grf, stm!, transform);
             }
 
+            /// <inheritdoc/>
             public IdentifierTransformer VisitFpuStackStorage(FpuStackStorage fpu)
             {
                 return new SimpleTransformer(id!, fpu, stm!, transform);
             }
 
+            /// <inheritdoc/>
             public IdentifierTransformer VisitMemoryStorage(MemoryStorage global)
             {
                 return new RegisterTransformer(id!, stm!, transform);
             }
 
+            /// <inheritdoc/>
             public IdentifierTransformer VisitRegisterStorage(RegisterStorage reg)
             {
                 return new RegisterTransformer(id!, stm!, transform);
             }
 
+            /// <inheritdoc/>
             public IdentifierTransformer VisitSequenceStorage(SequenceStorage seq)
             {
                 return new SequenceTransformer(id!, seq, stm!, transform);
             }
 
+            /// <inheritdoc/>
             public IdentifierTransformer VisitStackStorage(StackStorage local)
             {
                 return new StackTransformer(id!, local.StackOffset, stm!, transform);
             }
 
+            /// <inheritdoc/>
             public IdentifierTransformer VisitTemporaryStorage(TemporaryStorage temp)
             {
                 return new SimpleTransformer(id!, temp, stm!, transform);

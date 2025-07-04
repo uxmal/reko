@@ -30,11 +30,20 @@ namespace Reko.Analysis
     {
         private readonly List<Identifier> identifiers;
 
+        /// <summary>
+        /// Constructs a new instance of <see cref="ExpressionIdentifierUseFinder"/>.
+        /// </summary>
         public ExpressionIdentifierUseFinder()
         {
-            this.identifiers = new List<Identifier>();
+            this.identifiers = [];
         }
 
+        /// <summary>
+        /// Given an expression, <paramref name="exp"/>, finds all identifiers used in it.
+        /// </summary>
+        /// <param name="exp">Expression to analyze.</param>
+        /// <returns>A list of the <see cref="Identifier"/>s found in <paramref name="exp"/>.
+        /// </returns>
         public static List<Identifier> Find(Expression exp)
         {
             var inst = new ExpressionIdentifierUseFinder();
@@ -42,11 +51,13 @@ namespace Reko.Analysis
             return inst.identifiers;
         }
 
+        /// <inheritdoc/>
         public override void VisitIdentifier(Identifier id)
         {
             identifiers.Add(id);
         }
 
+        /// <inheritdoc/>
         public override void VisitOutArgument(OutArgument outArg)
         {
             if (outArg.Expression is Identifier)

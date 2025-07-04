@@ -53,6 +53,15 @@ namespace Reko.Analysis
         private readonly IDecompilerEventListener eventListener;
         private readonly Dictionary<string, int> phaseNumbering;
 
+        /// <summary>
+        /// Constructs a new instance of <see cref="DataFlowAnalysis"/>.
+        /// </summary>
+        /// <param name="program">The <see cref="Program"/> being analyzed.</param>
+        /// <param name="dynamicLinker"><see cref="IDynamicLinker"/> instance
+        /// used to resolve calls to external dynamically linked procedures.
+        /// </param>
+        /// <param name="services"><see cref="IServiceProvider"/> that provides
+        /// service classes.</param>
         public DataFlowAnalysis(
             Program program,
             IDynamicLinker dynamicLinker,
@@ -66,10 +75,17 @@ namespace Reko.Analysis
             this.phaseNumbering = [];
 		}
 
+        /// <summary>
+        /// The program being analyzed.
+        /// </summary>
         public Program Program { get; }
+
+        /// <summary>
+        /// The data flow analysis for each procedure in the program.
+        /// </summary>
         public ProgramDataFlow ProgramDataFlow { get; }
 
-        public void DumpProgram()
+        private void DumpProgram()
 		{
 			foreach (Procedure proc in Program.Procedures.Values)
 			{
@@ -163,7 +179,9 @@ namespace Reko.Analysis
         /// component (SCC) performs SSA transformation and detection of 
         /// trashed and preserved registers.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A list of procedures, sorted topologically with the
+        /// leaf nodes first.
+        /// </returns>
         public List<SsaTransform> RewriteProceduresToSsa()
         {
             var ssts = new List<SsaTransform>();
@@ -179,6 +197,14 @@ namespace Reko.Analysis
             return ssts;
         }
 
+        /// <summary>
+        /// Traverses the call graph, and for each strongly connected
+        /// component (SCC) performs SSA transformation and detection of 
+        /// trashed and preserved registers.
+        /// </summary>
+        /// <returns>A list of procedures, sorted topologically with the
+        /// leaf nodes first.
+        /// </returns>
         public IReadOnlyCollection<SsaTransform> RewriteProceduresToSsa_Concurrent()
         {
             var ssts = new ConcurrentQueue<SsaTransform>();
@@ -252,7 +278,7 @@ namespace Reko.Analysis
 
                     DumpWatchedProcedure("postcoa", "After expression coalescing", ssa);
 
-                    ssa = RunAnalyses(analysisFactory, context, AnalysisStage.AfterExpressionCoalescing, ssa);
+                    (ssa, _) = RunAnalyses(analysisFactory, context, AnalysisStage.AfterExpressionCoalescing, ssa);
 
                     var liv = new LinearInductionVariableFinder(
                         ssa,
@@ -291,22 +317,40 @@ namespace Reko.Analysis
             }
         }
 
-        public SsaState RunAnalyses(IAnalysisFactory? analysisFactory, AnalysisContext context, AnalysisStage stage, SsaState ssa)
+        /// <summary>
+        /// Runs the analyses that are specific to the current architecture.
+        /// </summary>
+        /// <param name="analysisFactory">Factory class that creates analyses for the current
+        /// <see cref="AnalysisStage"/>.</param>
+        /// <param name="context">Whole-program analysis context.</param>
+        /// <param name="stage">The current <see cref="AnalysisStage"/>.</param>
+        /// <param name="ssa">The <see cref="SsaState"/> of the procedure which is being analyzed.
+        /// </param>
+        /// <returns>A tuple consisting of a (possibly modified) <see cref="SsaState"/>,
+        /// and a flag indicating whether the SSA state was indeed modified.
+        /// </returns>
+
+        public (SsaState, bool) RunAnalyses(IAnalysisFactory? analysisFactory, AnalysisContext context, AnalysisStage stage, SsaState ssa)
         {
             if (analysisFactory is null)
-                return ssa;
-            var procSpecificAnalyses = analysisFactory.CreateSsaAnalyses(stage, ssa, context);
-            if (procSpecificAnalyses is null)
-                return ssa;
-            foreach (var analysis in procSpecificAnalyses)
+                return (ssa, false);
+            var cpuSpecificAnalyses = analysisFactory.CreateSsaAnalyses(stage, ssa, context);
+            if (cpuSpecificAnalyses is null)
+                return (ssa, false);
+            bool modified = false;
+            foreach (var analysis in cpuSpecificAnalyses)
             {
-                var (ssaNew, _) = analysis.Transform(ssa);
+                var (ssaNew, m) = analysis.Transform(ssa);
+                modified |= m;
                 DumpWatchedProcedure(analysis.Id, analysis.Description, ssa);
                 ssa = ssaNew;
             }
-            return ssa;
+            return (ssa, modified);
         }
 
+        /// <summary>
+        /// Removes any test files generated by previous runs of the analysis.
+        /// </summary>
         [Conditional("DEBUG")]
         public void ClearTestFiles()
         {
@@ -314,8 +358,14 @@ namespace Reko.Analysis
             testSvc?.RemoveFiles("analysis_");
         }
 
+        /// <summary>
+        /// Dumps the given procedures to the debug output.
+        /// </summary>
+        /// <param name="phase">Short identifier used for the debug output describing the analysis phase.</param>
+        /// <param name="caption">Description of the output.</param>
+        /// <param name="procs">Procedures to output.</param>
         [Conditional("DEBUG")]
-        public void DumpWatchedProcedure(string phase, string caption, IEnumerable<Procedure> procs)
+        public void DumpWatchedProcedures(string phase, string caption, IEnumerable<Procedure> procs)
         {
             foreach(var proc in procs)
             {
@@ -323,8 +373,14 @@ namespace Reko.Analysis
             }
         }
 
+        /// <summary>
+        /// Dumps the given SSA procedures to the debug output.
+        /// </summary>
+        /// <param name="phase">Short identifier used for the debug output describing the analysis phase.</param>
+        /// <param name="caption">Description of the output.</param>
+        /// <param name="ssts"><see cref="SsaTransform"/>s to output.</param>
         [Conditional("DEBUG")]
-        public void DumpWatchedProcedure(string phase, string caption, IEnumerable<SsaTransform> ssts)
+        public void DumpWatchedProcedures(string phase, string caption, IEnumerable<SsaTransform> ssts)
         {
             foreach (var sst in ssts)
             {
@@ -332,6 +388,14 @@ namespace Reko.Analysis
             }
         }
 
+        /// <summary>
+        /// Dumps the given procedure to the debug output, but only
+        /// if it is marked as "watched" in the user settings in 
+        /// <see cref="Program.User"/>.
+        /// </summary>
+        /// <param name="phase">Short identifier used for the debug output describing the analysis phase.</param>
+        /// <param name="caption">Description of the output.</param>
+        /// <param name="ssa"><see cref="SsaState"/> to output.</param>
         [Conditional("DEBUG")]
         public void DumpWatchedProcedure(string phase, string caption, SsaState ssa)
         {
@@ -357,6 +421,14 @@ namespace Reko.Analysis
             });
         }
 
+        /// <summary>
+        /// Dumps the given procedure to the debug output, but only
+        /// if it is marked as "watched" in the user settings in 
+        /// <see cref="Program.User"/>.
+        /// </summary>
+        /// <param name="phase">Short identifier used for the debug output describing the analysis phase.</param>
+        /// <param name="caption">Description of the output.</param>
+        /// <param name="proc"><see cref="Procedure"/> to output.</param>
         [Conditional("DEBUG")]
         public void DumpWatchedProcedure(string phase, string caption, Procedure proc)
         {

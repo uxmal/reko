@@ -69,10 +69,17 @@ namespace Reko.Analysis
         private static readonly TraceSwitch trace = new (nameof(AdjacentBranchCollector), nameof(AdjacentBranchCollector)) { Level = TraceLevel.Error };
 
         private readonly Procedure proc;
-        private readonly IDecompilerEventListener listener;
+        private readonly IEventListener listener;
         private readonly ExpressionValueComparer cmp;
 
-        public static void Transform(Program program, IDecompilerEventListener eventListener)
+        /// <summary>
+        /// Collects adjacent branches in the control flow graph of the procedures in the
+        /// given <see cref="Program"/> <paramref name="program"/>.
+        /// </summary>
+        /// <param name="program"><see cref="Program"/> to transform.</param>
+        /// <param name="eventListener"><see cref="IEventListener"/> to which errors are
+        /// reported.</param>
+        public static void Transform(Program program, IEventListener eventListener)
         {
             foreach (var proc in program.Procedures.Values)
             {
@@ -83,7 +90,14 @@ namespace Reko.Analysis
             }
         }
 
-        public AdjacentBranchCollector(Procedure proc, IDecompilerEventListener listener)
+        /// <summary>
+        /// Creates an instance of the <see cref="AdjacentBranchCollector"/> class
+        /// for a specific procedure <paramref name="proc"/>.
+        /// </summary>
+        /// <param name="proc"><see cref="Procedure"/> to transform.</param>
+        /// <param name="listener"><see cref="IEventListener"/> to which errors are
+        /// reported.</param>
+        public AdjacentBranchCollector(Procedure proc, IEventListener listener)
         {
             this.proc = proc;
             this.listener = listener;
@@ -102,6 +116,9 @@ namespace Reko.Analysis
             public Block? Final2;
         }
 
+        /// <summary>
+        /// Transforms the control flow graph of the procedure by collecting adjacent branches.
+        /// </summary>
         public void Transform()
         {
             var wl = WorkList.Create(proc.ControlGraph.Blocks);
@@ -261,7 +278,7 @@ namespace Reko.Analysis
 
         /// <summary>
         /// Given blocks whose test conditions are the same,
-        /// mutate the control graph so that the <paramref name="pred"/> block
+        /// mutate the control graph so that the candidate block
         /// contains the conditional blocks of both test blocks.
         /// </summary>
         private void FuseIntoPredecessor(Candidate c)

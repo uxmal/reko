@@ -41,6 +41,14 @@ namespace Reko.Analysis
 		/// <param name="sb">stream into which the data is written</param>
 		public abstract void Emit(IProcessorArchitecture arch, TextWriter sb);
 
+        /// <summary>
+        /// Renders a textual representation of the given registers <paramref name="regs"/>.
+        /// </summary>
+        /// <param name="arch">Current <see cref="IProcessorArchitecture">processor architecture</see>.</param>
+        /// <param name="caption">Caption to emit before the register themselves.</param>
+        /// <param name="grfFlags">Flag group variables to render.</param>
+        /// <param name="regs">Register variables to render.</param>
+        /// <param name="sb"><see cref="TextWriter"/> to which the output is written.</param>
 		public static void EmitRegisters(IProcessorArchitecture arch, string caption, Dictionary<RegisterStorage, uint> grfFlags, IEnumerable<Storage> regs, TextWriter sb)
 		{
 			sb.Write(caption);
@@ -55,23 +63,15 @@ namespace Reko.Analysis
 			EmitRegistersCore(regs, sb);
 		}
 
-        public static void EmitRegisters(IProcessorArchitecture arch, string caption, Dictionary<RegisterStorage, uint> grfFlags, IDictionary<Storage, BitRange> regRanges, TextWriter sb)
-        {
-            sb.Write(caption);
-            var sGrf = string.Join(" ", grfFlags
-                .Where(f => f.Value != 0)
-                .Select(f => arch.GetFlagGroup(f.Key, f.Value)!)
-                .OrderBy(f => f.Name));
-            if (sGrf.Length > 0)
-            {
-                sb.Write(" {0}", sGrf);
-            }
-            foreach (var de in regRanges.OrderBy(de => de.Key.Name))
-            {
-                sb.Write(" {0}:{1}", de.Key, de.Value);
-            }
-        }
-
+        /// <summary>
+        /// Renders a textual representation of the given registers and their live bit 
+        /// ranges, specified in <paramref name="regRanges"/>, to the output <paramref name="writer"/>.
+        /// </summary>
+        /// <param name="arch">Current <see cref="IProcessorArchitecture">processor architecture</see>.</param>
+        /// <param name="caption">Caption to emit before the register themselves.</param>
+        /// <param name="grfFlags">Flag group variables to render.</param>
+        /// <param name="regRanges">Register variables to render.</param>
+        /// <param name="writer"><see cref="StringWriter"/> to which the output is written.</param>
         public static void EmitRegisters(
             IProcessorArchitecture arch,
             string caption,
@@ -94,18 +94,31 @@ namespace Reko.Analysis
             }
         }
 
-        public static void EmitRegisters(string caption, HashSet<Storage> regs, TextWriter sb)
+        /// <summary>
+        /// Renders a textual representation of the given registers,
+        /// specified in <paramref name="regs"/>, to the output <paramref name="writer"/>.
+        /// </summary>
+        /// <param name="caption">Caption to write before the registers.</param>
+        /// <param name="regs">Registers to write.</param>
+        /// <param name="writer"><see cref="TextWriter"/> to which the output is written.
+        /// </param>
+        public static void EmitRegisters(string caption, HashSet<Storage> regs, TextWriter writer)
 		{
-			sb.Write(caption);
-			EmitRegistersCore(regs, sb);
+			writer.Write(caption);
+			EmitRegistersCore(regs, writer);
 		}
 
-        public static void EmitRegisterValues<TValue>(string caption, Dictionary<Storage, TValue> symbols, TextWriter sb)
+        /// <summary>
+        /// Renders a textual representation of the given registers in a 
+        /// dictionary,
+        /// specified in <paramref name="symbols"/>, to the output <paramref name="writer"/>.
+        /// </summary>
+        public static void EmitRegisterValues<TValue>(string caption, Dictionary<Storage, TValue> symbols, TextWriter writer)
         {
-            sb.Write(caption);
+            writer.Write(caption);
             foreach (var de in symbols.OrderBy(de => de.Key.ToString()))
             {
-                sb.Write(" {0}:{1}", de.Key, de.Value);
+                writer.Write(" {0}:{1}", de.Key, de.Value);
             }
         }
 
@@ -118,7 +131,7 @@ namespace Reko.Analysis
             }
 		}
 
-        public void EmitFlagGroup(IProcessorArchitecture arch, string caption, Dictionary<RegisterStorage,uint> flagRegs, TextWriter sb)
+        private void EmitFlagGroup(IProcessorArchitecture arch, string caption, Dictionary<RegisterStorage,uint> flagRegs, TextWriter sb)
         {
             sb.Write(caption);
             foreach (var freg in flagRegs
@@ -129,20 +142,6 @@ namespace Reko.Analysis
             }
         }
 
-		public string EmitRegisters(string caption, HashSet<Storage> regs)
-		{
-			var sw = new StringWriter();
-			EmitRegisters(caption, regs, sw);
-			return sw.ToString();
-		}
-
-		public string EmitFlagGroup(IProcessorArchitecture arch, string caption, Dictionary<RegisterStorage, uint> grfFlags)
-		{
-			var sw = new StringWriter();
-			EmitFlagGroup(arch, caption, grfFlags, sw);
-			return sw.ToString();
-		}
-
         /// <summary>
         /// This structure is used to track, for a particular storage 
         /// that is live-out from a procedure, which bit range of that
@@ -152,25 +151,72 @@ namespace Reko.Analysis
         /// </summary>
         public readonly struct LiveOutUse
         {
+            /// <summary>
+            /// Constructs a <see cref="LiveOutUse"/> instance.
+            /// </summary>
+            /// <param name="range">Live bit range.</param>
+            /// <param name="proc">First procedure to use this bit range. This 
+            /// value is used solely for diagnostic and debugging 
+            /// purposes.
+            /// </param>
             public LiveOutUse(in BitRange range, Procedure proc)
             {
                 this.Range = range;
                 this.Procedure = proc;
             }
 
+            /// <summary>
+            /// The bits which are live.
+            /// </summary>
             public BitRange Range { get; }
+
+            /// <summary>
+            /// The first procedure that made the bits in <see cref="Range"/> live.
+            /// </summary>
+            /// <remarks>
+            /// This property is used for diagnostic purposes only.
+            /// </remarks>
             public Procedure Procedure { get; }
         }
 
+        /// <summary>
+        /// This structure is used to track, for a particular flag group storage 
+        /// that is live-out from a procedure, which bits of that
+        /// storage are used by an calling procedure, and the first 
+        /// external caller found by Reko. The latter property is 
+        /// used for diagnostic purposes.
+        /// </summary>
+
         public readonly struct LiveOutFlagsUse
         {
-            public LiveOutFlagsUse(uint flags, Procedure proc)
+            /// <summary>
+            /// Constructs a <see cref="LiveOutFlagsUse"/> instance.
+            /// </summary>
+            /// <param name="liveBits">A mask representing the live bits of a flag
+            /// register.</param>
+            /// <param name="proc">First procedure to use this bit range. This 
+            /// value is used solely for diagnostic and debugging 
+            /// purposes.
+            /// </param>
+            public LiveOutFlagsUse(uint liveBits, Procedure proc)
             {
                 this.Procedure = proc;
-                this.Flags = flags;
+                this.Flags = liveBits;
             }
 
+
+            /// <summary>
+            /// The first procedure that made the bits in <see cref="Flags"/> live.
+            /// </summary>
+            /// <remarks>
+            /// This property is used for diagnostic purposes only.
+            /// </remarks>
             public Procedure Procedure { get; }
+
+
+            /// <summary>
+            /// A mask representing the live bits of a flag register.
+            /// </summary>
             public uint Flags { get; }
         }
     }

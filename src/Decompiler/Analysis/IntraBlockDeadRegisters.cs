@@ -21,7 +21,7 @@
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
-using Reko.Services;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,7 +46,15 @@ namespace Reko.Analysis
         private readonly HashSet<RegisterStorage> deadRegs;
         private uint deadFlags;
 
-        public static void Apply(Program program, IDecompilerEventListener eventListener)
+        /// <summary>
+        /// Removes intra block dead registers in all procedures in 
+        /// the given <paramref name="program"/>.
+        /// </summary>
+        /// <param name="program">Program to transform.</param>
+        /// <param name="eventListener"><see cref="IEventListener"/> instance to
+        /// report errors to.
+        /// </param>
+        public static void Apply(Program program, IEventListener eventListener)
         {
             foreach (var block in program.Procedures.Values.SelectMany(p => p.ControlGraph.Blocks))
             {
@@ -57,12 +65,20 @@ namespace Reko.Analysis
             }
         }
 
+        /// <summary>
+        /// Constructs an instance of <see cref="IntraBlockDeadRegisters"/>.
+        /// </summary>
         public IntraBlockDeadRegisters()
         {
             this.expVisitor = new ExpVisitor(this);
-            this.deadRegs = new HashSet<RegisterStorage>();
+            this.deadRegs = [];
         }
 
+        /// <summary>
+        /// Applies this transformation to a basic block, removing any
+        /// statements with no side effects.
+        /// </summary>
+        /// <param name="block"><see cref="Block">Basic block</see> to transform.</param>
         public void Apply(Block block)
         {
             var dead = new HashSet<int>();
@@ -261,6 +277,7 @@ namespace Reko.Analysis
             };
         }
 
+        /// <inheritdoc/>
         public bool VisitAssignment(Assignment ass)
         {
             bool isDead = IsDead(ass.Dst);
@@ -269,12 +286,14 @@ namespace Reko.Analysis
             return isDead;
         }
 
+        /// <inheritdoc/>
         public bool VisitBranch(Branch branch)
         {
             branch.Condition.Accept(expVisitor);
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitCallInstruction(CallInstruction ci)
         {
             ci.Callee.Accept(expVisitor);
@@ -283,27 +302,32 @@ namespace Reko.Analysis
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitComment(CodeComment comment)
         {
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitDefInstruction(DefInstruction def)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public bool VisitGotoInstruction(GotoInstruction gotoInstruction)
         {
             gotoInstruction.Target.Accept(expVisitor);
             return true;
         }
 
+        /// <inheritdoc/>
         public bool VisitPhiAssignment(PhiAssignment phi)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public bool VisitReturnInstruction(ReturnInstruction ret)
         {
             if (ret.Expression is not null)
@@ -311,12 +335,14 @@ namespace Reko.Analysis
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitSideEffect(SideEffect side)
         {
             side.Expression.Accept(expVisitor);
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitStore(Store store)
         {
             store.Dst.Accept(expVisitor);
@@ -324,17 +350,20 @@ namespace Reko.Analysis
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitSwitchInstruction(SwitchInstruction si)
         {
             si.Expression.Accept(expVisitor);
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitUseInstruction(UseInstruction use)
         {
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitFlagGroupStorage(FlagGroupStorage grf, bool defining)
         {
             if (defining)
@@ -348,16 +377,19 @@ namespace Reko.Analysis
             return true;
         }
 
+        /// <inheritdoc/>
         public bool VisitFpuStackStorage(FpuStackStorage fpu, bool defining)
         {
             return true;
         }
 
+        /// <inheritdoc/>
         public bool VisitMemoryStorage(MemoryStorage global, bool defining)
         {
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitRegisterStorage(RegisterStorage reg, bool defining)
         {
             if (defining)
@@ -371,6 +403,7 @@ namespace Reko.Analysis
             return true;
         }
 
+        /// <inheritdoc/>
         public bool VisitSequenceStorage(SequenceStorage seq, bool defining)
         {
             foreach (var e in seq.Elements)
@@ -380,11 +413,13 @@ namespace Reko.Analysis
             return true;
         }
 
+        /// <inheritdoc/>
         public bool VisitStackStorage(StackStorage stack, bool defining)
         {
             return true;
         }
 
+        /// <inheritdoc/>
         public bool VisitTemporaryStorage(TemporaryStorage temp, bool defining)
         {
             return true;

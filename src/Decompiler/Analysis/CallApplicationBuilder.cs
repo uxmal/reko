@@ -57,6 +57,16 @@ namespace Reko.Analysis
         private readonly BindingDictionary uses;
         private readonly bool guessStackArgs;
 
+        /// <summary>
+        /// Creates a new <see cref="CallApplicationBuilder"/> instance.
+        /// </summary>
+        /// <param name="ssaCaller">The <see cref="SsaState"/> of the calling procedure.</param>
+        /// <param name="stmCall">The statement at which the call was made.</param>
+        /// <param name="call">The <see cref="CallInstruction"/> being converted
+        /// to an <see cref="Application"/>.</param>
+        /// <param name="guessStackArgs">If true, attempts to guess the arguments
+        /// to the application, if none were discovered by strict analyses.
+        /// </param>
         public CallApplicationBuilder(SsaState ssaCaller, Statement stmCall, CallInstruction call, bool guessStackArgs)
             : base(call.CallSite)
         {
@@ -69,17 +79,20 @@ namespace Reko.Analysis
             this.guessStackArgs = guessStackArgs;
         }
 
+        /// <inheritdoc/>
         public override Expression? BindInArg(Storage stg)
         {
             return stg.Accept(this, (uses, ApplicationBindingType.In));
         }
 
+        /// <inheritdoc/>
         public override OutArgument BindOutArg(Storage stg)
         {
             var exp = stg.Accept(this, (defs, ApplicationBindingType.Out));
             return new OutArgument(stg.DataType, exp!);
         }
 
+        /// <inheritdoc/>
         public override Expression? BindReturnValue(Storage? stg)
         {
             if (stg is null)
@@ -87,6 +100,7 @@ namespace Reko.Analysis
             return stg.Accept(this, (defs, ApplicationBindingType.Return));
         }
 
+        /// <inheritdoc/>
         public Expression? VisitFlagGroupStorage(FlagGroupStorage grf, (BindingDictionary map, ApplicationBindingType bindUses) ctx)
         {
             if (!ctx.map.TryGetValue(grf, out var cb))
@@ -95,6 +109,7 @@ namespace Reko.Analysis
                 return cb.Expression;
         }
 
+        /// <inheritdoc/>
         public Expression? VisitFpuStackStorage(FpuStackStorage fpu, (BindingDictionary map, ApplicationBindingType bindUses) ctx)
         {
             foreach (var de in ctx.map.Values)
@@ -110,6 +125,7 @@ namespace Reko.Analysis
             throw new NotImplementedException($"Offsets not matching? SP({fpu.FpuStackOffset}).");
         }
 
+        /// <inheritdoc/>
         public Expression VisitMemoryStorage(MemoryStorage global, (BindingDictionary map, ApplicationBindingType bindUses) ctx)
         {
             throw new NotImplementedException();
@@ -130,6 +146,7 @@ namespace Reko.Analysis
             }
         }
 
+        /// <inheritdoc/>
         public Expression? VisitRegisterStorage(RegisterStorage reg, (BindingDictionary map, ApplicationBindingType bindUses) ctx)
         {
             if (ctx.bindUses != ApplicationBindingType.Out)
@@ -160,6 +177,7 @@ namespace Reko.Analysis
             }
         }
 
+        /// <inheritdoc/>
         public Expression VisitSequenceStorage(SequenceStorage seq, (BindingDictionary map, ApplicationBindingType bindUses) ctx)
         {
             if (ctx.map.TryGetValue(seq, out var binding))
@@ -197,11 +215,13 @@ namespace Reko.Analysis
             }
         }
 
+        /// <inheritdoc/>
         public Expression VisitStackStorage(StackStorage stack, (BindingDictionary map, ApplicationBindingType bindUses) ctx)
         {
             return BindInStackArg(stack, sigCallee?.ReturnAddressOnStack ?? 0, uses);
         }
 
+        /// <inheritdoc/>
         public override Expression BindInStackArg(StackStorage stack, int returnAdjustment)
         {
             return BindInStackArg(stack, returnAdjustment, uses);
@@ -267,6 +287,7 @@ namespace Reko.Analysis
             return false;
         }
 
+        /// <inheritdoc/>
         public Expression VisitTemporaryStorage(TemporaryStorage temp, (BindingDictionary map, ApplicationBindingType bindUses) ctx)
         {
             throw new NotImplementedException();
@@ -328,10 +349,22 @@ Please report this issue at https://github.com/uxmal/reko";
         }
     }
 
+    /// <summary>
+    /// Indicates the type of binding for an application argument.
+    /// </summary>
     public enum ApplicationBindingType
     {
-        In,         // Binding is an input parameter
-        Return,     // Binding is a returned value
-        Out,        // Binding is an out parameter
+        /// <summary>
+        /// Binding is an input parameter
+        /// </summary>
+        In,
+        /// <summary>
+        /// Binding is a returned value
+        /// </summary>
+        Return,
+        /// <summary>
+        /// Binding is an out parameter
+        /// </summary>
+        Out,
     }
 }

@@ -71,6 +71,13 @@ namespace Reko.Typing
             this.aem = new ArrayExpressionMatcher(program.Platform.PointerType);
         }
 
+        /// <summary>
+        /// Gets the <see cref="TypeVariable"/> associated with the 
+        /// expression <paramref name="exp"/>.
+        /// </summary>
+        /// <param name="exp">Expression whose type variable is being requested.
+        /// </param>
+        /// <returns>The <see cref="TypeVariable"/> of the expression.</returns>
         protected virtual TypeVariable TypeVar(Expression exp)
             => store.GetTypeVariable(exp);
         

@@ -55,6 +55,15 @@ namespace Reko.Analysis
         private readonly IEventListener eventListener;
         private readonly AnalysisContext context;
 
+        /// <summary>
+        /// Creates an instance of the <see cref="SccWorker"/> class.
+        /// </summary>
+        /// <param name="dfa">The main instance of the <see cref="DataFlowAnalysis"/> class.</param>
+        /// <param name="sccProcs">A strongly connected component of <see cref="Procedure"/>s to
+        /// analyze together.</param>
+        /// <param name="dynamicLinker"><see cref="IDynamicLinker"/> instance.</param>
+        /// <param name="services"><see cref="IServiceProvider"/> providing run-time services.
+        /// </param>
         public SccWorker(
             DataFlowAnalysis dfa,
             Procedure[] sccProcs, 
@@ -87,9 +96,9 @@ namespace Reko.Analysis
 
             // Convert all procedures in the SCC to SSA form and perform
             // value propagation.
-            dfa.DumpWatchedProcedure("worker", "Before SSA", procs);
+            dfa.DumpWatchedProcedures("worker", "Before SSA", procs);
             var ssts = procs.Select(ConvertToSsa).ToArray();
-            dfa.DumpWatchedProcedure("esv", "After extra stack vars", ssts);
+            dfa.DumpWatchedProcedures("esv", "After extra stack vars", ssts);
             if (eventListener.IsCanceled()) return ssts;
 
             // At this point, the computation of ProcedureFlow is possible.
@@ -171,7 +180,7 @@ namespace Reko.Analysis
                 var ssa = sst.Transform();
                 dfa.DumpWatchedProcedure("ssa", "After SSA", ssa);
 
-                ssa = dfa.RunAnalyses(analysisFactory, context, AnalysisStage.AfterRegisterSsa, ssa);
+                (ssa, _) = dfa.RunAnalyses(analysisFactory, context, AnalysisStage.AfterRegisterSsa, ssa);
 
                 // Merge unaligned memory accesses.
                 var fuser = new UnalignedMemoryAccessFuser(context);
@@ -347,7 +356,9 @@ namespace Reko.Analysis
         /// exclude some parameters. Functions in the current SCC need to be
         /// adjusted to no longer refer to those parameters.
         /// </summary>
-        /// <param name="proc"></param>
+        /// <param name="proc">Procedure whose callers need adjustment.</param>
+        /// <param name="flow">The <see cref="ProcedureFlow"/> of the procedure.</param>
+        /// <param name="ssts">The functions in the SCC currently being analyzed.</param>
         private void RemoveDeadArgumentsFromCalls(
             Procedure proc,
             ProcedureFlow flow,

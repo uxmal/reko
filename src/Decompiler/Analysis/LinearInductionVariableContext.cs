@@ -22,49 +22,80 @@ using Reko.Core;
 using Reko.Core.Analysis;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Reko.Analysis
+namespace Reko.Analysis;
+
+/// <summary>
+/// The analysis context for a linear induction variable.
+/// </summary>
+public class LinearInductionVariableContext
 {
-    public class LinearInductionVariableContext
-    {
-        public Constant? InitialValue { get; set; }
+    /// <summary>
+    /// The initial value of the induction variable, if known.
+    /// </summary>
+    public Constant? InitialValue { get; set; }
 
-        public Statement? InitialStatement { get; set; }
+    /// <summary>
+    /// The statement that initializes the induction variable, if known.
+    /// </summary>
+    public Statement? InitialStatement { get; set; }
 
-        public Constant? DeltaValue { get; set; }
+    /// <summary>
+    /// The increment or decrement applied to the induction variable, if known.
+    /// </summary>
+    public Constant? DeltaValue { get; set; }
 
-        public Statement? DeltaStatement { get; set; }
+    /// <summary>
+    /// The statement that applies the increment or decrement to the induction variable, if known.
+    /// </summary>
+    public Statement? DeltaStatement { get; set; }
 
-        public Statement? PhiStatement { get; set; }
+    /// <summary>
+    /// A phi statement that merges the induction variable from multiple predecessors, if known.
+    /// </summary>
+    public Statement? PhiStatement { get; set; }
 
-        public Identifier? PhiIdentifier { get; set; }
+    /// <summary>
+    /// The identifier that receives the result of the phi statement, if known.
+    /// </summary>
+    public Identifier? PhiIdentifier { get; set; }
 
-        public Operator? TestOperator { get; set; }
+    /// <summary>
+    /// Operator that tests the induction variable against a final value, if known.
+    /// </summary>
+    public Operator? TestOperator { get; set; }
 
-        public Statement? TestStatement { get; set; }
+    /// <summary>
+    /// Statements that contain the test of the induction variable against a final value, if known.
+    /// </summary>
+    public Statement? TestStatement { get; set; }
 
-        public Constant? TestValue {get; set;}
+    /// <summary>
+    /// A constant value that the induction variable is tested against, if known.
+    /// </summary>
+    public Constant? TestValue {get; set;}
 
 #if OSCAR_CAN_CODE
 3333333333333333385uk
 #endif
 
-        public LinearInductionVariable CreateInductionVariable()
-        {
-            return new LinearInductionVariable(InitialValue, DeltaValue, TestValue, IsSignedOperator(TestOperator));
-        }
+    /// <summary>
+    /// Creates a <see cref="LinearInductionVariable"/> given the current context.
+    /// </summary>
+    /// <returns></returns>
+    public LinearInductionVariable CreateInductionVariable()
+    {
+        return new LinearInductionVariable(InitialValue, DeltaValue, TestValue, IsSignedOperator(TestOperator));
+    }
 
-        private static bool IsSignedOperator(Operator? op)
-        {
-            if (op is null)
-                return false;
-            var opType = op.Type;
-            return
-                opType == OperatorType.Lt || opType == OperatorType.Le ||
-                opType == OperatorType.Gt || opType == OperatorType.Ge;
-        }
+    //$REFACTOR: move this to the extension methods of OperatorType.
+    private static bool IsSignedOperator(Operator? op)
+    {
+        if (op is null)
+            return false;
+        var opType = op.Type;
+        return
+            opType == OperatorType.Lt || opType == OperatorType.Le ||
+            opType == OperatorType.Gt || opType == OperatorType.Ge;
     }
 }

@@ -38,7 +38,6 @@ namespace Reko.Analysis;
 /// to be the arguments of the call. This is a best effort transformation
 /// and may introduce errors, so use with caution.
 /// </summary>
-
 public class ArgumentGuesser : IAnalysis<SsaState>
 {
     private static readonly TraceSwitch trace = new(nameof(ArgumentGuesser), "Trace ArgumentGuesser")
@@ -48,15 +47,25 @@ public class ArgumentGuesser : IAnalysis<SsaState>
 
     private readonly AnalysisContext context;
 
+    /// <summary>
+    /// Constructs an instance of the argument guesser.
+    /// </summary>
+    /// <param name="context"></param>
     public ArgumentGuesser(AnalysisContext context)
     {
         this.context = context;
     }
 
+    /// <inheritdoc/>
     public string Id => "argg";
 
+    /// <inheritdoc/>
     public string Description => "Guess arguments to unknown called procedures";
 
+    /// <summary>
+    /// Guesses what assignments prior to procedure calls are actually
+    /// arguments to the procedure.
+    /// </summary>
     public (SsaState, bool) Transform(SsaState ssa)
     {
         var platform = context.Program.Platform;

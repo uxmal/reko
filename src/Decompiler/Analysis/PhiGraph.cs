@@ -37,34 +37,49 @@ namespace Reko.Analysis
         private readonly PhiAssignment[] phis;
         private readonly SsaState ssa;
 
+        /// <summary>
+        /// Constructs an instance of <see cref="PhiGraph"/>.
+        /// </summary>
+        /// <param name="ssa"><see cref="SsaState"/> on which the resulting
+        /// graph is based.</param>
+        /// <param name="phis">The <see cref="PhiAssignment"/>s that constitute
+        /// the nodes of the <see cref="PhiGraph"/>.</param>
         public PhiGraph(SsaState ssa, IEnumerable<PhiAssignment> phis)
         {
             this.ssa = ssa;
             this.phis = phis.ToArray();
         }
 
+        /// <summary>
+        /// The nodes of the phi graph.
+        /// </summary>
         public ICollection<PhiAssignment> Nodes => phis;
 
+        /// <inheritdoc/>
         public void AddEdge(PhiAssignment nodeFrom, PhiAssignment nodeTo)
         {
             throw new NotSupportedException();
         }
 
+        /// <inheritdoc/>
         public bool ContainsEdge(PhiAssignment nodeFrom, PhiAssignment nodeTo)
         {
             throw new NotSupportedException();
         }
 
+        /// <inheritdoc/>
         public ICollection<PhiAssignment> Predecessors(PhiAssignment node)
         {
             throw new NotSupportedException();
         }
 
+        /// <inheritdoc/>
         public void RemoveEdge(PhiAssignment nodeFrom, PhiAssignment nodeTo)
         {
             throw new NotSupportedException();
         }
 
+        /// <inheritdoc/>
         public ICollection<PhiAssignment> Successors(PhiAssignment node)
         {
             return node.Src.Arguments

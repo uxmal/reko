@@ -29,6 +29,11 @@ namespace Reko.Analysis
 	/// </summary>
 	public readonly struct Interference : IComparable<Interference>
 	{
+        /// <summary>
+        /// Constructs an interfrence edge between two identifiers.
+        /// </summary>
+        /// <param name="id1">The first identifier.</param>
+        /// <param name="id2">The second identifier.</param>
 		public Interference(Identifier id1, Identifier id2)
 		{
 			if (string.Compare(id1.Name, id2.Name) < 0)
@@ -43,9 +48,17 @@ namespace Reko.Analysis
 			}
 		}
 
+        /// <summary>
+        /// First identifier in the interference edge.
+        /// </summary>
         public Identifier Identifier1 { get; }
+
+        /// <summary>
+        /// Second identifier in the interference edge.
+        /// </summary>
         public Identifier Identifier2 { get; }
 
+        /// <inheritdoc/>
 		public override bool Equals(object? obj)
 		{
             return
@@ -53,6 +66,7 @@ namespace Reko.Analysis
                 i.Identifier1 == Identifier1 && i.Identifier2 == Identifier2;
 		}
 
+        /// <inheritdoc/>
 		public override int GetHashCode()
 		{
 			return HashCode.Combine(Identifier1.Name, Identifier2.Name);
@@ -60,6 +74,7 @@ namespace Reko.Analysis
 
 		#region IComparable Members
 
+        /// <inheritdoc/>
 		public int CompareTo(Interference that)
 		{
             int d = string.Compare(Identifier1.Name, that.Identifier1.Name);

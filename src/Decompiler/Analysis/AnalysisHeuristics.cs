@@ -20,9 +20,20 @@
 
 namespace Reko.Analysis
 {
+    /// <summary>
+    /// Names of heuristics that the decompiler can use during analysis.
+    /// </summary>
     public class AnalysisHeuristics
     {
+        /// <summary>
+        /// Configuration key for the aggressive branch removal heuristic.
+        /// </summary>
         public const string AggressiveBranchRemoval = "aggressive-branch-removal";
+
+        /// <summary>
+        /// Configuration key for the heuristic that assumes 
+        /// procedure calls respect the ABI of the <see cref="Core.IPlatform"/>.
+        /// </summary>
         public const string CallsRespectABI = "calls-respect-abi";
     }
 }

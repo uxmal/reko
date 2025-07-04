@@ -36,27 +36,38 @@ namespace Reko.Analysis;
 /// </summary>
 /// <remarks>
 /// This class recognizes patterns like:
-///     if (c1 < 0) branch Label1
+/// <code>
+///     if (c1 &lt; 0) branch Label1
 ///     if (c2 != 0) branch Label2
-///     if (c2 < n) branch Label1
+///     if (c2 &lt; n) branch Label1
 ///    label2:
+/// </code>
 /// And replaces them with:
-///     if (c1:c2 <= 0:n) branch Label1
+/// <code>
+///     if (c1:c2 &lt;= 0:n) branch Label1
 ///    label2:
+/// </code>
 /// </remarks>
 public class LongComparisonFuser : IAnalysis<SsaState>
 {
     private readonly AnalysisContext context;
 
+    /// <summary>
+    /// Constructs an instance of <see cref="LongComparisonFuser"/>.
+    /// </summary>
+    /// <param name="context"></param>
     public LongComparisonFuser(AnalysisContext context)
     {
         this.context = context;
     }
 
+    /// <inheritdoc/>
     public string Id => "lcf";
 
+    /// <inheritdoc/>
     public string Description => "Fuses partial comparisons into long comparisons";
 
+    /// <inheritdoc/>
     public (SsaState, bool) Transform(SsaState ssa)
     {
         var worker = new Worker(ssa, context.EventListener);
@@ -77,27 +88,27 @@ public class LongComparisonFuser : IAnalysis<SsaState>
             this.m = new ExpressionEmitter();
         }
 
-        public void Transform()
+        public bool Transform()
         {
+            bool changed = false;
             var deadBlocks = new HashSet<Block>();
             foreach (var block in ssa.Procedure.ControlGraph.Blocks)
             {
                 if (listener.IsCanceled())
-                    return;
+                    return changed;
                 var candidate = ProbeCandidate(block);
                 if (candidate is not null)
                 {
-                    ApplyCandidate(candidate, deadBlocks);
+                    changed |= ApplyCandidate(candidate, deadBlocks);
                 }
             }
             DestroyBlocks(deadBlocks);
+            return changed;
         }
-
-
 
         private Candidate? ProbeCandidate(Block block)
         {
-            /// Find the three chained blocks with comparisons.
+            // Find the three chained blocks with comparisons.
             if (block.Statements.Count == 0)
                 return null;
             if (block.Statements[^1].Instruction is not Branch branch1)
@@ -227,7 +238,7 @@ public class LongComparisonFuser : IAnalysis<SsaState>
             }
         }
 
-        private void ApplyCandidate(Candidate candidate, ICollection<Block> deadBlocks)
+        private bool ApplyCandidate(Candidate candidate, ICollection<Block> deadBlocks)
         {
             var longLeft = Join(candidate.left1, candidate.left2);
             var longRight = Join(candidate.right1, candidate.right2);
@@ -248,6 +259,7 @@ public class LongComparisonFuser : IAnalysis<SsaState>
             // Destroy the unused blocks.
             deadBlocks.Add(candidate.block2);
             deadBlocks.Add(candidate.block3);
+            return true;
         }
 
         private void DestroyBlocks(IEnumerable<Block> blocks)

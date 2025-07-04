@@ -59,15 +59,22 @@ public class ProjectionPropagator : IAnalysis<SsaState>
 
     private readonly AnalysisContext context;
 
+    /// <summary>
+    /// Constructs an instance of <see cref="ProjectionPropagator"/>.
+    /// </summary>
+    /// <param name="context"><see cref="AnalysisContext"/> to use.</param>
     public ProjectionPropagator(AnalysisContext context)
     {
         this.context = context;
     }
 
+    /// <inheritdoc/>
     public string Id => "prpr";
 
+    /// <inheritdoc/>
     public string Description => "Propagates slices and sequences, trying to build larger values";
 
+    /// <inheritdoc/>
     public (SsaState, bool) Transform(SsaState ssa)
     {
         var sac = new SegmentedAccessClassifier(ssa);
@@ -363,20 +370,35 @@ public class ProjectionPropagator : IAnalysis<SsaState>
             /// Given an sequence of adjacent slices, rewrite the sequence a single
             /// slice. If the slice is a no-op, just return the underlying storage.
             /// </summary>
-            /// <param name="sids"></param>
-            /// <param name="slices"></param>
-            /// <returns></returns>
+            /// <param name="dtSequence">The <see cref="DataType"/> of the resulting
+            /// expression.</param>
+            /// <param name="sids">The <see cref="SsaIdentifier"/>s comprising 
+            /// the sequenced, arranged in big-endian order.</param>
+            /// <param name="slices">The corresponding <see cref="Slice"/> expressions
+            /// arrangend in the same order as <paramref name="sids"/>.
+            /// </param>
+            /// <returns>A simplified expression.
+            /// </returns>
+            /// <remarks>
+            /// We have:
+            /// <code>
+            ///  sid_1 = SLICE(sid_0,...)
+            ///  sid_2 = SLICE(sid_0,...)
+            ///  ...
+            ///  ...SEQ(sid_1, sid_2)
+            /// </code>
+            /// We want:
+            /// <code>
+            /// ...SLICE(sid_0, ...)
+            /// </code>
+            /// and ideally
+            /// <code>
+            ///...sid_0
+            /// </code>
+            /// </remarks>
+
             private Expression RewriteSeqOfSlices(DataType dtSequence, SsaIdentifier[] sids, Slice[] slices)
             {
-                // We have:
-                //  sid_1 = SLICE(sid_0,...)
-                //  sid_2 = SLICE(sid_0,...)
-                //  ...
-                //  ...SEQ(sid_1, sid_2)
-                // We want:
-                // ...SLICE(sid_0, ...)
-                // and ideally
-                // ...sid_0
                 foreach (var sid in sids)
                 {
                     sid.Uses.Remove(this.Statement);

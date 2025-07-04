@@ -57,15 +57,24 @@ public class StackPointerBackpropagator : IAnalysis<SsaState>
 {
     private readonly AnalysisContext context;
 
+    /// <summary>
+    /// Constructs a new instance of the <see cref="StackPointerBackpropagator"/> class.
+    /// </summary>
+    /// <param name="context"><see cref="AnalysisContext"/> for this analysis.
+    /// </param>
     public StackPointerBackpropagator(AnalysisContext context)
     {
         this.context = context;
     }
 
+
+    /// <inheritdoc/>
     public string Id => "spbp";
 
+    /// <inheritdoc/>
     public string Description => "Propagates the stack pointer backwards from the exit block";
 
+    /// <inheritdoc/>
     public (SsaState, bool) Transform(SsaState ssa)
     {
         var w = new Worker(ssa, context.EventListener);
@@ -159,8 +168,8 @@ public class StackPointerBackpropagator : IAnalysis<SsaState>
         }
 
         /// <summary>
-        /// Replace definition of '<paramref name="sp"/>' with
-        /// 'fp - <paramref name="frameOffset"/>'
+        /// Replace definition of <c><paramref name="sp"/></c> with
+        /// <c>fp - <paramref name="frameOffset"/></c>.
         /// </summary>
         /// <param name="sp"></param>
         /// <param name="frameOffset"></param>

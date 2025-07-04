@@ -36,25 +36,25 @@ namespace Reko.Analysis
     /// An algorithm derived from the sparse constant propagation algorithm.
     /// </summary>
     /// <remarks>
-    /// The algorithm works as follows:
+    /// The algorithm works as follows:<br/>
     /// Evaluate expressions involving constants only and assign
-    ///   the value(c) to variable on LHS
+    ///   the value(c) to variable on LHS<br/>
     ///  If an expression can not be evaluated at compile time, assign
-    ///     it the BOTTOM value.
+    ///     it the BOTTOM value.<br/>
     ///  Else(for expression contains variables)
-    ///     assign TOP
-    ///  Initialize worklist WL with SSA edges whose def is not TOP
+    ///     assign TOP<br/>
+    ///  Initialize worklist WL with SSA edges whose def is not TOP<br/>
     /// 
-    /// Iterate until WL is empty:
-    ///     Take an SSA edge E out of WL
+    /// Iterate until WL is empty:<br/>
+    ///     Take an SSA edge E out of WL<br/>
     ///     Take meet of the value at def end and the use end of E for
-    ///        the variable defined at def end
+    ///        the variable defined at def end<br/>
     ///     If the meet value is different from use value, replace the
-    ///        use by the meet
-    ///     Take special care of phi functions.
-    ///     Recompute the def d at the use end of E
+    ///        use by the meet<br/>
+    ///     Take special care of phi functions.<br/>
+    ///     Recompute the def d at the use end of E<br/>
     ///     If the recomputed value is lower than the stored value, add
-    ///         all SSA edges originating at d to the WL
+    ///         all SSA edges originating at d to the WL<br/>
     ///         
     /// This is a linear algorithm for most sane graphs.
     /// </remarks>
@@ -66,6 +66,12 @@ namespace Reko.Analysis
         private readonly SparseEvaluationContext ctx;
         private readonly Evaluation.ExpressionSimplifier eval;
 
+        /// <summary>
+        /// Constructs an instance of <see cref="SparseValuePropagation"/>.
+        /// </summary>
+        /// <param name="ssa"><see cref="SsaState"/> of the procedure being transformed.</param>
+        /// <param name="program">Program in which the procedure exists.</param>
+        /// <param name="listener">Event listener</param>
         public SparseValuePropagation(
             SsaState ssa,
             Program program,
@@ -78,6 +84,9 @@ namespace Reko.Analysis
             this.eval = new Evaluation.ExpressionSimplifier(program.Memory, ctx, listener);
         }
 
+        /// <summary>
+        /// Performs sparse value propagation on the SSA state.
+        /// </summary>
         public void Transform()
         {
             SetInitialValues();
@@ -186,6 +195,10 @@ namespace Reko.Analysis
             return p;
         }
 
+        /// <summary>
+        /// Writes the current state of the sparse evaluation context to the specified <see cref="TextWriter"/>.
+        /// </summary>
+        /// <param name="writer"></param>
         public void Write(TextWriter writer)
         {
             ctx.Write(writer);

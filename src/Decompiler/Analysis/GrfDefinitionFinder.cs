@@ -32,6 +32,7 @@ namespace Reko.Analysis
 	/// Chases a chain of statements to locate the expression that
 	/// defines the value of a condition code.
 	/// </summary>
+    //$REVIEW: appears unused / folded into ConditionCodeEliminator?
 	public class GrfDefinitionFinder : InstructionVisitorBase
 	{
 		private readonly SsaIdentifierCollection ssaIds;
@@ -40,6 +41,10 @@ namespace Reko.Analysis
 		private Statement? stm;
 		private Expression? defExpr;
 
+        /// <summary>
+        /// Constructs an instance of <see cref="GrfDefinitionFinder"/>.
+        /// </summary>
+        /// <param name="ssaIds"></param>
 		public GrfDefinitionFinder(SsaIdentifierCollection ssaIds)
 		{
 			this.ssaIds = ssaIds;
@@ -49,8 +54,8 @@ namespace Reko.Analysis
 		/// Chases a chain statements to locate the expression that
 		/// defines the value of a condition code.
 		/// </summary>
-		/// <param name="sid"></param>
-		/// <returns></returns>
+		/// <param name="sid">SSA identifier whose original definition
+        /// is sought.</param>
 		public void FindDefiningExpression(SsaIdentifier sid)
 		{
 			this.sid = sid;
@@ -68,26 +73,35 @@ namespace Reko.Analysis
 			}
 		}
 
+        /// <summary>
+        /// The statement that defines <see cref="GrfDefinitionFinder.sid"/>.
+        /// </summary>
 		public Expression? DefiningExpression
 		{
 			get { return defExpr; }
 		}
 
+        /// <summary>
+        /// True if the expression should be negated, false if not.
+        /// </summary>
 		public bool IsNegated
 		{
 			get { return negated; }
 		}
 
+        /// <inheritdoc/>
 		public override void VisitApplication(Application appl)
 		{
 			defExpr = appl;
 		}
 
+        /// <inheritdoc/>
 		public override void VisitAssignment(Assignment a)
 		{
 			a.Src.Accept(this);
 		}
 
+        /// <inheritdoc/>
         public override void VisitCallInstruction(CallInstruction ci)
         {
             foreach (var di in ci.Definitions)
@@ -100,12 +114,14 @@ namespace Reko.Analysis
             }
         }
 
+        /// <inheritdoc/>
 		public override void VisitIdentifier(Identifier id)
 		{
 			sid = ssaIds[id];
 			stm = sid.DefStatement;
 		}
 
+        /// <inheritdoc/>
 		public override void VisitBinaryExpression(BinaryExpression binExp)
 		{
             Identifier? id = ConditionCodeEliminator.FindSlicedFlagRegister(binExp);
@@ -119,26 +135,31 @@ namespace Reko.Analysis
             }
 		}
 
+        /// <inheritdoc/>
 		public override void VisitConditionOf(ConditionOf cof)
 		{
 			defExpr = cof;
 		}
 
+        /// <inheritdoc/>
 		public override void VisitDefInstruction(DefInstruction def)
 		{
             defExpr = def.Identifier;
         }
 
+        /// <inheritdoc/>
         public override void VisitMemoryAccess(MemoryAccess access)
         {
             defExpr = access;
         }
 
+        /// <inheritdoc/>
         public override void VisitPhiFunction(PhiFunction phi)
 		{
 			defExpr = phi;
 		}
 
+        /// <inheritdoc/>
         public override void VisitUnaryExpression(UnaryExpression unary)
 		{
             if (unary is not null && unary.Operator.Type == OperatorType.Not)

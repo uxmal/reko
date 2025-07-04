@@ -29,6 +29,14 @@ using Reko.Core.Analysis;
 
 namespace Reko.Analysis
 {
+    /// <summary>
+    /// Performs liveness analysis on SSA identifiers in a procedure.
+    /// </summary>
+    /// <remarks>
+    /// This class is used to determine which SSA identifiers are live at
+    /// each statement in the procedure, and which identifiers are live at
+    /// the end of each block.
+    /// </remarks>
 	public class SsaLivenessAnalysis : InstructionVisitorBase
 	{
         private class Record
@@ -49,6 +57,12 @@ namespace Reko.Analysis
 		private readonly InterferenceGraph interference;
         private readonly Dictionary<Block, Record> records;
 
+        /// <summary>
+        /// Constructs an instance of <see cref="SsaLivenessAnalysis"/>
+        /// </summary>
+        /// <param name="ssa"><see cref="SsaState"/> of the procedure being 
+        /// analyzed.
+        /// </param>
 		public SsaLivenessAnalysis(SsaState ssa)
 		{
 			this.ssaIds = ssa.Identifiers;
@@ -70,7 +84,7 @@ namespace Reko.Analysis
 			}
 		}
 
-		public void BuildDefinedMap(SsaIdentifierCollection ssaIds)
+		private void BuildDefinedMap(SsaIdentifierCollection ssaIds)
 		{
 			foreach (SsaIdentifier ssa in ssaIds)
 			{
@@ -86,7 +100,7 @@ namespace Reko.Analysis
 			}
 		}
 
-		public void BuildInterferenceGraph(SsaIdentifierCollection ssaIds)
+		private void BuildInterferenceGraph(SsaIdentifierCollection ssaIds)
 		{
 			foreach (SsaIdentifier v in ssaIds)
 			{
@@ -108,22 +122,36 @@ namespace Reko.Analysis
 			}
 		}
 
-		public List<Identifier> IdentifiersDefinedAtStatement(Statement stm)
+		private List<Identifier> IdentifiersDefinedAtStatement(Statement stm)
 		{
-			if (stm is null) return new List<Identifier>();
+            if (stm is null) return [];
 			return defined[stm];
 		}
 
-		public bool IsDefinedAtStatement(SsaIdentifier v, Statement? stm)
+        /// <summary>
+        /// Determines whether <paramref name="sid"/> is defined at statement
+        /// <paramref name="stm"/>.
+        /// </summary>
+        /// <param name="sid"><see cref="SsaIdentifier"/> to test.</param>
+        /// <param name="stm"><see cref="Statement"/> to test.</param>
+        /// <returns>
+        /// True if the SSA identifier is defined at the given statement;
+        /// otherwise false.
+        /// </returns>
+		public bool IsDefinedAtStatement(SsaIdentifier sid, Statement? stm)
 		{
-			return (v.DefStatement == stm);
+			return (sid.DefStatement == stm);
 		}
 
-		public bool IsFirstStatementInBlock(Statement stm, Block block)
-		{
-			return block.Statements.IndexOf(stm) == 0;
-		}
-
+        /// <summary>
+        /// Determine whether the identifier <paramref name="id"/> is live-in
+        /// right before the execution of the statement <paramref name="stm"/>.
+        /// </summary>
+        /// <param name="id">Identifier to test for liveness.</param>
+        /// <param name="stm">Statement in reference to which the liveness test is made.</param>
+        /// <returns>True if <paramref name="id"/> is live-in to <paramref name="stm"/>;
+        /// otherwise false.
+        /// </returns>
 		public bool IsLiveIn(Identifier id, Statement stm)
 		{
 			bool live = records[stm.Block].LiveOut.Contains(ssaIds[id]);
@@ -142,11 +170,27 @@ namespace Reko.Analysis
 			return live;
 		}
 
-		public bool IsLiveOut(Identifier id, Block b)
+        /// <summary>
+        /// Determines whether <paramref name="id"/> is live-out of the
+        /// basic block <paramref name="block"/>.
+        /// </summary>
+        /// <param name="id">Identifier whose liveness is tested.</param>
+        /// <param name="block"><see cref="Block">Basic block</see> being tested.</param>
+        /// <returns>Returns true if <paramref name="id"/> is live-out of the 
+        /// block <paramref name="block"/>; otherwise false.</returns>
+		public bool IsLiveOut(Identifier id, Block block)
 		{
-			return records[b].LiveOut.Contains(ssaIds[id]);
+			return records[block].LiveOut.Contains(ssaIds[id]);
 		}
 
+        /// <summary>
+        /// Determines whether <paramref name="id"/> is live-out of the
+        /// statement <paramref name="stm"/>.
+        /// </summary>
+        /// <param name="id">Identifier whose liveness is tested.</param>
+        /// <param name="stm"><see cref="Statement"/> being tested.</param>
+        /// <returns>Returns true if <paramref name="id"/> is live-out of the 
+        /// statement <paramref name="stm"/>; otherwise false.</returns>
 		public bool IsLiveOut(Identifier id, Statement stm)
 		{
 			bool live = records[stm.Block].LiveOut.Contains(ssaIds[id]);
@@ -165,19 +209,19 @@ namespace Reko.Analysis
 			return live;
 		}
 
-		public void LiveOutAtBlock(Block b, SsaIdentifier v)
+		private void LiveOutAtBlock(Block block, SsaIdentifier sid)
 		{
-			Set(records[b].LiveOut, v);
-			if (!visited.Contains(b))
+			Set(records[block].LiveOut, sid);
+			if (!visited.Contains(block))
 			{
-				visited.Add(b);
-                var s = (b.Statements.Count > 0) ? b.Statements[^1] : null;
-				if (!IsDefinedAtStatement(v, s))
-					LiveInAtStatement(b, b.Statements.Count - 1, v);
+				visited.Add(block);
+                var s = (block.Statements.Count > 0) ? block.Statements[^1] : null;
+				if (!IsDefinedAtStatement(sid, s))
+					LiveInAtStatement(block, block.Statements.Count - 1, sid);
 			}
 		}
 
-		public void LiveInAtStatement(Block b, int i, SsaIdentifier v)
+		private void LiveInAtStatement(Block b, int i, SsaIdentifier v)
 		{
 			// v is live-in at s.
 
@@ -197,6 +241,13 @@ namespace Reko.Analysis
 			}
 		}
 
+        /// <summary>
+        /// Writes a textual representation of the procedure <paramref name="proc"/>,
+        /// decorated with the liveness of SSA identifiers,
+        /// to the given <see cref="TextWriter"/> <paramref name="writer"/>.
+        /// </summary>
+        /// <param name="proc">The procedure to write.</param>
+        /// <param name="writer"><see cref="TextWriter"/> to write to.</param>
 		public void Write(Procedure proc, TextWriter writer)
 		{
             proc.Write(false, new SsaBlockDecorator(records), writer);
@@ -222,19 +273,25 @@ namespace Reko.Analysis
             }
 		}
 
-        // Returns true if v is also live in before executing s.
+        /// <summary>
+        /// Returns true if <paramref name="sid"/> is also live in before 
+        /// executing s.
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="sid"></param>
+        /// <returns></returns>
 
-        public bool LiveOutAtStatement(Statement s, SsaIdentifier v)
+        public bool LiveOutAtStatement(Statement s, SsaIdentifier sid)
         {
             // v is live-out at s.
 
             List<Identifier> ids = this.IdentifiersDefinedAtStatement(s);
             foreach (Identifier id in ids)
             {
-                if (id != v.Identifier)
-                    interference.Add(id, v.Identifier);
+                if (id != sid.Identifier)
+                    interference.Add(id, sid.Identifier);
             }
-            return (v.DefStatement != s);
+            return (sid.DefStatement != s);
         }
 
 		private static PhiFunction? GetPhiFunction(Statement stm)
@@ -251,7 +308,7 @@ namespace Reko.Analysis
 		}
 	}
 
-	public class SsaLivenessAnalysis2 : InstructionVisitorBase
+    public class SsaLivenessAnalysis2 : InstructionVisitorBase
 	{
 		private readonly SsaIdentifierCollection ssa;
 		private readonly Dictionary<Block,Block> visitedBlocks;

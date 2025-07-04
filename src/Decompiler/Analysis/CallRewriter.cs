@@ -52,6 +52,16 @@ namespace Reko.Analysis
         private readonly IEventListener listener;
         private readonly ExpressionEmitter m;
 
+        /// <summary>
+        /// Creates a new <see cref="CallRewriter"/> instance.
+        /// </summary>
+        /// <param name="platform">The platform whose calling conventions and ABIs need to
+        /// be respected.</param>
+        /// <param name="mpprocflow">A collection of all the <see cref="ProcedureFlow"/>s
+        /// of the <see cref="Program"/> being analyzed.</param>
+        /// <param name="listener"><see cref="IEventListener"/> instance where errors
+        /// are reported to.
+        /// </param>
         public CallRewriter(IPlatform platform, ProgramDataFlow mpprocflow, IEventListener listener) 
 		{
             this.platform = platform;
@@ -61,11 +71,24 @@ namespace Reko.Analysis
             this.m = new ExpressionEmitter();
         }
 
+        /// <summary>
+        /// Rewrites all calls in the given collection of <see cref="SsaTransform"/>s.
+        /// </summary>
+        /// <param name="platform">The platform whose calling conventions and ABIs need to
+        /// be respected.</param>
+        /// <param name="ssts">The <see cref="SsaState">SSA states</see> 
+        /// of the procedures whose calls are being rewritten.</param>
+        /// <param name="summaries">A collection of <see cref="ProcedureFlow"/>s
+        /// for the program being analyzed.
+        /// </param>
+        /// <param name="eventListener"><see cref="IEventListener"/> instance where errors
+        /// are reported to.
+        /// </param>
 		public static void Rewrite(
             IPlatform platform, 
             IReadOnlyCollection<SsaTransform> ssts,
             ProgramDataFlow summaries,
-            IDecompilerEventListener eventListener)
+            IEventListener eventListener)
 		{
 			var crw = new CallRewriter(platform, summaries, eventListener);
 			foreach (SsaTransform sst in ssts)
@@ -372,8 +395,12 @@ namespace Reko.Analysis
 
         /// <summary>
         /// Returns a list of all stack arguments accessed, indexed by their offsets
-        /// as seen by a caller. I.e. the first argument is at offset 0, &c.
+        /// as seen by a caller. I.e. the first argument is at offset 0, &amp;c.
         /// </summary>
+        /// <returns>A list of tuples, where the first item is the stack offset
+        /// of the argument,
+        /// and the second item is the identifier of the stack argument.
+        /// </returns>
         public IEnumerable<(int, Identifier)> GetSortedStackArguments(
             Frame frame,
             IEnumerable<KeyValuePair<Storage, BitRange>> mayuse)
@@ -397,9 +424,10 @@ namespace Reko.Analysis
 		/// <summary>
 		/// Returns true if the register is a strict subregister of one of the registers in the bitset.
 		/// </summary>
-		/// <param name="r"></param>
-		/// <param name="regs"></param>
-		/// <returns></returns>
+		/// <param name="rr">Register being tested.</param>
+		/// <param name="regs">Registers being tested against.</param>
+		/// <returns>True if <paramref name="rr"/> is a subregister of any of the registers
+        /// <paramref names="regs"/></returns>
 		private static bool IsSubRegisterOfRegisters(RegisterStorage rr, Dictionary<RegisterStorage, BitRange> regs)
 		{
             //$TODO: move to sanitizer method RemoveSequenceOverlaps,
@@ -413,6 +441,14 @@ namespace Reko.Analysis
 			return false;
 		}
 
+        /// <summary>
+        /// Removes all statements from the exit block of the procedure.
+        /// This also removes any definitions and uses from the SSA state
+        /// of the procedure.
+        /// </summary>
+        /// <param name="ssa">SSA state of the procedure whose exit block is 
+        /// to be cleared.
+        /// </param>
         public void RemoveStatementsFromExitBlock(SsaState ssa)
         {
             foreach (var stm in ssa.Procedure.ExitBlock.Statements.ToList())

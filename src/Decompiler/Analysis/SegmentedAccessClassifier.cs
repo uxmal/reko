@@ -92,7 +92,14 @@ namespace Reko.Analysis
 			consts[basePtr] = memberPtr;
 		}
 
-		public Identifier? AssociatedIdentifier(Identifier pointer)
+        /// <summary>
+        /// Given an identifier <paramref name="pointer"/>, returns the associated
+        /// identifier.
+        /// </summary>
+        /// <param name="pointer"></param>
+        /// <returns></returns>
+
+        public Identifier? AssociatedIdentifier(Identifier pointer)
 		{
             if (assocs.TryGetValue(pointer, out Identifier? id))
             {
@@ -104,6 +111,9 @@ namespace Reko.Analysis
             }
 		}
 
+        /// <summary>
+        /// Classifies all segmented pointer accesses in the procedure.
+        /// </summary>
         public void Classify()
         {
             foreach (Statement stm in ssa.Procedure.Statements)
@@ -112,6 +122,13 @@ namespace Reko.Analysis
             }
         }
 
+        /// <summary>
+        /// Returns true if the given identifier <paramref name="pointer"/> is
+        /// only associated with constants, i.e. it is not associated with another
+        /// identifier.
+        /// </summary>
+        /// <param name="pointer"></param>
+        /// <returns></returns>
 		public bool IsOnlyAssociatedWithConstants(Identifier pointer)
 		{
             return (consts.TryGetValue(pointer, out Constant? c) && 
@@ -121,6 +138,7 @@ namespace Reko.Analysis
 
 		#region InstructionVisitorMembers
 
+        /// <inheritdoc/>
 		public override void VisitSegmentedAddress(SegmentedPointer segptr)
 		{
             if (segptr.BasePointer is not Identifier pointer)

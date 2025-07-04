@@ -29,12 +29,21 @@ using System.Linq;
 
 namespace Reko.Analysis
 {
+    /// <summary>
+    /// Transformation that inserts copies of SSA identifiers where needed
+    /// when destroying the SSA representation of a procedure.
+    /// </summary>
 	public class LiveCopyInserter
 	{
 		private readonly SsaIdentifierCollection ssaIds;
 		private readonly SsaLivenessAnalysis sla;
 		private readonly BlockDominatorGraph doms;
 
+        /// <summary>
+        /// Constructs an instance of <see cref="LiveCopyInserter"/>.
+        /// </summary>
+        /// <param name="ssa"><see cref="SsaState"/> being destroyed.
+        /// </param>
 		public LiveCopyInserter(SsaState ssa)
 		{
 			this.ssaIds = ssa.Identifiers;
@@ -42,6 +51,14 @@ namespace Reko.Analysis
 			this.doms = ssa.Procedure.CreateBlockDominatorGraph();
 		}
 
+        /// <summary>
+        /// Starting at the end of a <see cref="Block"/>, find the position
+        /// where a copy instruction could be added, skipping over the final control 
+        /// flow instruction if any.
+        /// </summary>
+        /// <param name="b">Block into which a copy statement is to be inserted.</param>
+        /// <returns>Index at which the copy statement is to be added.
+        /// </returns>
 		public static int IndexOfInsertedCopy(Block b)
 		{
 			int i = b.Statements.Count;
@@ -53,8 +70,18 @@ namespace Reko.Analysis
 			return i;
 		}
 
+        /// <summary>
+        /// Inserts a new assignment statement into the specified block, using a new SSA identifier.
+        /// </summary>
+        /// <param name="idOld">The <see cref="SsaIdentifier"/> being copied.</param>
+        /// <param name="b">The block in which the copy assignment is to be inserted.</param>
+        /// <param name="i">The position in the block's statement list into which the new copy
+        /// statement is to be assigned.
+        /// </param>
+        /// <returns>The identifier of the destination of the copy statement.
+        /// </returns>
         //$REFACTOR: this should go to SsaState.
-		public Identifier InsertAssignmentNewId(Identifier idOld, Block b, int i)
+        public Identifier InsertAssignmentNewId(Identifier idOld, Block b, int i)
 		{
             var stm = new Statement(
                 b.Address,
@@ -66,7 +93,7 @@ namespace Reko.Analysis
 			return sidNew.Identifier;
 		}
 
-		public static Identifier InsertAssignment(Identifier idDst, Identifier idSrc, Block b, int i)
+		private static Identifier InsertAssignment(Identifier idDst, Identifier idSrc, Block b, int i)
 		{
             b.Statements.Insert(
                 i,
@@ -75,11 +102,27 @@ namespace Reko.Analysis
 			return idDst;
 		}
 
+        /// <summary>
+        /// Determines whether the specified identifier <paramref name="id"/>
+        /// is live after leaving the given statement <paramref name="stm"/>.
+        /// </summary>
+        /// <param name="id">Identifier whose liveness is being tested.</param>
+        /// <param name="stm">Statement being used.</param>
+        /// <returns>True if <paramref name="id"/> is live-out from the statement
+        /// <paramref name="stm"/>; otherwise false.
+        /// </returns>
 		public bool IsLiveOut(Identifier id, Statement stm)
 		{
 			return sla.IsLiveOut(id, stm);
 		}
 
+        /// <summary>
+        /// Determine if the specified identifier <paramref name="id"/> is
+        /// love at the point where it might be inserted as a copy.
+        /// </summary>
+        /// <param name="id">Identifier being tested.</param>
+        /// <param name="b">Block into which a copy might be added.</param>
+        /// <returns>True if the copy statement would be live.</returns>
 		public bool IsLiveAtCopyPoint(Identifier id, Block b)
 		{
 			if (b.Statements.Count == 0)
@@ -91,6 +134,11 @@ namespace Reko.Analysis
 				return sla.IsLiveIn(id, b.Statements[i]);
 		}
 
+        /// <summary>
+        /// Renames all uses of the specified SSA identifier <paramref name="sidOld"/>
+        /// </summary>
+        /// <param name="sidOld"></param>
+        /// <param name="sidNew"></param>
 		public void RenameDominatedIdentifiers(SsaIdentifier sidOld, SsaIdentifier sidNew)
 		{
 			var dur = new DominatedUseRenamer(doms);

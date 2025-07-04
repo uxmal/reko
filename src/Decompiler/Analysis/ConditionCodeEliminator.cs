@@ -61,17 +61,27 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
 
     private readonly AnalysisContext context;
 
+    /// <summary>
+    /// Creates a new instance of <see cref="ConditionCodeEliminator"/>.
+    /// </summary>
+    /// <param name="context"><see cref="AnalysisContext"/> to use.</param>
     public ConditionCodeEliminator(AnalysisContext context)
     {
         this.context = context;
     }
 
+    /// <inheritdoc/>
     public string Id => "cce";
 
+    /// <inheritdoc/>
     public string Description => "Elimination of condition codes";
 
 
-
+    /// <summary>
+    /// Eliminates condition codes in the given SSA state.
+    /// </summary>
+    /// <param name="ssa">SSA stae of the procedure to transform.</param>
+    /// <returns><inheritdoc/></returns>
     public (SsaState, bool) Transform(SsaState ssa)
     {
         var w = CreateWorker(ssa);
@@ -79,11 +89,22 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
         return (ssa, w.Changed);
     }
 
+    /// <summary>
+    /// Creates an instance of the <see cref="ConditionCodeEliminator.Worker"/>
+    /// class.
+    /// </summary>
+    /// <param name="ssa"><see cref="SsaState"/> of the procedure being transformed.
+    /// </param>
+    /// <returns>A <see cref="Worker"/> instance.
+    /// </returns>
     public Worker CreateWorker(SsaState ssa)
     {
         return new Worker(context.Program, ssa, context.EventListener);
     }
 
+    /// <summary>
+    /// Worker class that performs condition code elimination.
+    /// </summary>
     public class Worker : InstructionTransformer
     {
         private readonly SsaState ssa;
@@ -97,6 +118,12 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
         private SsaIdentifier sidGrf = default!;
         private Statement useStm = default!;
 
+        /// <summary>
+        /// Constructs an instance of the <see cref="Worker"/> class.
+        /// </summary>
+        /// <param name="program">Program in which the current SSA state is located.</param>
+        /// <param name="ssa">The <see cref="SsaState"/> of the procedure being transformed.</param>
+        /// <param name="listener"><see cref="IEventListener"/> to report errors to.</param>
         public Worker(IReadOnlyProgram program, SsaState ssa, IEventListener listener)
         {
             this.ssa = ssa;
@@ -109,8 +136,12 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
             this.generatedIds = new Dictionary<(Identifier, ConditionCode), SsaIdentifier>();
         }
 
-        public bool Changed { get; private set; }
+        internal bool Changed { get; set; }
 
+        /// <summary>
+        /// Performs condition code elimination on all <see cref="Identifier"/>s
+        /// with a <see cref="FlagGroupStorage"/>.
+        /// </summary>
         public void Transform()
         {
             foreach (var s in ssaIds.ToList())
@@ -142,7 +173,7 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
             }
         }
 
-        public HashSet<SsaIdentifier> ClosureOfReachingDefinitions(SsaIdentifier sidUse)
+        private HashSet<SsaIdentifier> ClosureOfReachingDefinitions(SsaIdentifier sidUse)
         {
             var defs = new HashSet<SsaIdentifier>();
             var wl = new WorkList<SsaIdentifier>();
@@ -200,7 +231,7 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
         /// <param name="aliases">Aliases of sid we've seen so far.</param>
         /// <returns>
         /// A set of all statements which directly or indirectly use the variable <paramref name="sid"/>.
-        /// /returns>
+        /// </returns>
         public HashSet<Statement> ClosureOfUsingStatements(
             SsaIdentifier sid,
             HashSet<Statement> uses,
@@ -273,7 +304,7 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
             return m.ISub(e, 0);
         }
 
-        public Expression UseGrfConditionally(
+        private Expression UseGrfConditionally(
             SsaIdentifier sid,
             ConditionCode cc,
             FlagGroupStorage? testedFlags,
@@ -426,6 +457,7 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
             return sidNew.Identifier;
         }
 
+        /// <inheritdoc/>
         public override Instruction TransformAssignment(Assignment a)
         {
             a.Src = a.Src.Accept(this);
@@ -681,6 +713,7 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
             return sidOrigLo.DefStatement.Instruction;
         }
 
+        /// <inheritdoc/>
         public override Expression VisitConversion(Conversion conversion)
         {
             var c = conversion.Expression.Accept(this);
@@ -695,6 +728,7 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
             return m.Convert(c, conversion.SourceDataType, conversion.DataType);
         }
 
+        /// <inheritdoc/>
         public override Expression VisitTestCondition(TestCondition tc)
         {
             var id = (Identifier) tc.Expression;
@@ -711,6 +745,18 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
             return c;
         }
 
+        /// <summary>
+        /// Given a <see cref="ConditionCode"/> and a <see cref="BinaryExpression"/>
+        /// computing an expression being tested with the <paramref name="cc"/>,
+        /// returns an equivalent RTL comparison expression.
+        /// </summary>
+        /// <param name="cc">Condition code used when testing the binary expression.</param>
+        /// <param name="bin">The binary expression producing a flag group result.
+        /// </param>
+        /// <param name="isNegated">True if the condition code is being used in 
+        /// a contexted where it should be negated; otherwise false.
+        /// </param>
+        /// <returns>A higher level RTL comparison expression.</returns>
 		public Expression ComparisonFromConditionCode(ConditionCode cc, BinaryExpression bin, bool isNegated)
 		{
             BinaryOperator? cmpOp;
@@ -774,7 +820,7 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
 			return e;
 		}
 
-		public Expression ComparisonFromOverflow(BinaryExpression bin, bool isNegated)
+		private Expression ComparisonFromOverflow(BinaryExpression bin, bool isNegated)
 		{
             var intrinsic = CommonOps.Overflow.MakeInstance(bin.DataType);
             Expression e = new Application(
@@ -788,7 +834,7 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
 			return e;
 		}
 
-        public Expression ComparisonFromParity(BinaryExpression bin, bool isNegated)
+        private Expression ComparisonFromParity(BinaryExpression bin, bool isNegated)
         {
             var sig = new FunctionType(
                 [ new Identifier("", bin.DataType, null!) ],
@@ -843,12 +889,15 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
     /// <summary>
     /// Find a "sliced" flag group register in the given expression.
     /// </summary>
-    /// <param name="e"></param>
-    /// <returns></returns>
+    /// <param name="bin">Determines the <see cref="Identifier"/> of an 
+    /// expression that is masking a flag register.
+    /// </param>
+    /// <returns>The masked register, if present.
+    /// </returns>
     /// <remarks>
     /// After SSA analysis, accesses to the flag registers are often
     /// aliased by instructions of the type:<code>
-    /// single_bit = flag_group & constant_mask.
+    /// single_bit = flag_group &amp; constant_mask.
     /// </code>
     /// This method detects such "slices".
     /// </remarks>
@@ -871,7 +920,7 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
     /// <remarks>
     /// After SSA analysis, accesses to the flag registers are often
     /// aliased by instructions of the type:<code>
-    /// single_bit = flag_group & constant_mask.
+    /// single_bit = flag_group &amp; constant_mask.
     /// </code>
     /// This method detects such "slices".
     /// </remarks>

@@ -36,7 +36,14 @@ namespace Reko.Analysis
     /// </summary>
     public class ProcedureFlow : DataFlow
 	{
+        /// <summary>
+        /// The <see cref="Procedure"/> for which the data flow applies.
+        /// </summary>
         public Procedure Procedure { get; }
+
+        /// <summary>
+        /// The <see cref="FunctionType"/> of the <see cref="Procedure"/>.
+        /// </summary>
         public FunctionType? Signature { get; set; }
 
         /// <summary>
@@ -118,6 +125,13 @@ namespace Reko.Analysis
         /// </summary>
         public bool TerminatesProcess { get; set; }
 
+        /// <summary>
+        /// Constructs a <see cref="ProcedureFlow"/> instance for the
+        /// given procedure <paramref name="proc"/>.
+        /// </summary>
+        /// <param name="proc"><see cref="Procedure"/> for which this
+        /// instance applies.
+        /// </param>
         public ProcedureFlow(Procedure proc)
         {
             this.Procedure = proc;
@@ -136,6 +150,12 @@ namespace Reko.Analysis
             this.LiveInDataTypes = [];
         }
 
+        /// <summary>
+        /// Dump a textual representation of this object to the 
+        /// debugger output.
+        /// </summary>
+        /// <param name="arch"><see cref="IProcessorArchitecture"/> used for rendering
+        /// the data flow.</param>
         [Conditional("DEBUG")]
         public void Dump(IProcessorArchitecture arch)
         {
@@ -144,6 +164,7 @@ namespace Reko.Analysis
             Debug.WriteLine(sb.ToString());
         }
 
+        /// <inheritdoc/>
 		public override void Emit(IProcessorArchitecture arch, TextWriter writer)
 		{
 			EmitRegisterValues("// MayUse: ", BitsUsed, writer);
@@ -175,28 +196,14 @@ namespace Reko.Analysis
             }
         }
 
-		public bool IsLiveOut(Identifier id)
-		{
-            if (id.Storage is FlagGroupStorage flags)
-			{
-                if (!this.LiveOutFlags.TryGetValue(flags.FlagRegister, out var grf))
-                    return false;
-                return ((grf.Flags & flags.FlagGroupBits) != 0);
-			}
-			if (id.Storage is RegisterStorage reg)
-			{
-                return BitsLiveOut.ContainsKey(reg);
-			}
-			return false;
-		}
-
         /// <summary>
         /// Returns the number of slots the FPU stack grew.
         /// If the architecture doesn't support FPU stacks, 
         /// returns 0.
         /// </summary>
-        /// <param name="arch"></param>
-        /// <returns></returns>
+        /// <param name="arch"><see cref="IProcessorArchitecture"/> to use.</param>
+        /// <returns>The number of slots that were consumed by calling
+        /// this procedure.</returns>
         public int GetFpuStackDelta(IProcessorArchitecture arch)
         {
             var fpuStackReg = arch.FpuStackRegister;
@@ -208,6 +215,19 @@ namespace Reko.Analysis
             return c.ToInt32();
         }
 
+        /// <summary>
+        /// Given a collection of <see cref="CallBinding"/>, intersects them
+        /// with the given <paramref name="uses"/> bit ranges, potentially
+        /// emitting <see cref="Slice"/> expressions representing 
+        /// bit ranges smaller than the underlying register.
+        /// </summary>
+        /// <param name="callBindings">List of <see cref="CallBinding"/> 
+        /// to potentially slice.</param>
+        /// <param name="uses">The liveness information used to perform
+        /// the intersection/slicing.
+        /// </param>
+        /// <returns>A list of potentially sliced instructions.
+        /// </returns>
         public static IEnumerable<CallBinding> IntersectCallBindingsWithUses(
             IEnumerable<CallBinding> callBindings,
             IDictionary<Storage, BitRange> uses)

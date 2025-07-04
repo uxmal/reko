@@ -38,12 +38,19 @@ namespace Reko.Analysis
         private readonly SsaState ssa;
         private Statement? stmCur;      //$REFACTOR: context var.
 
+        /// <summary>
+        /// Constructs an instance of <see cref="SequenceIdentifierGenerator"/>.
+        /// </summary>
+        /// <param name="sst"><see cref="SsaTransform"/> for the procedure.</param>
         public SequenceIdentifierGenerator(SsaTransform sst)
         {
             this.sst = sst;
             this.ssa = sst.SsaState;
         }
 
+        /// <summary>
+        /// Transforms the SSA state by propagating sequence identifiers.
+        /// </summary>
         public void Transform()
         {
             foreach (var stm in sst.SsaState.Procedure.Statements.ToList())
@@ -53,6 +60,7 @@ namespace Reko.Analysis
             }
         }
 
+        /// <inheritdoc/>
         public override Instruction TransformAssignment(Assignment ass)
         {
             if (ass.Dst.Storage is not SequenceStorage seq)
@@ -168,6 +176,7 @@ namespace Reko.Analysis
             return new StoreOffset(stm, store, offset);
         }
 
+        /// <inheritdoc/>
         public override Expression VisitMkSequence(MkSequence seq)
         {
             if (seq.Expressions.Length != 2)

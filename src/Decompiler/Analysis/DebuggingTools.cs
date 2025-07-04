@@ -27,43 +27,60 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.Analysis
+namespace Reko.Analysis;
+
+/// <summary>
+/// Debugging tools for decompiler development.
+/// This class contains methods that are only compiled in DEBUG builds.
+/// </summary>
+public class DebuggingTools
 {
-    public class DebuggingTools
+    private readonly Program program;
+    private readonly IServiceProvider services;
+    private readonly Dictionary<string, int> phaseNumbering;
+
+    /// <summary>
+    /// Creates a new instance of <see cref="DebuggingTools"/>.
+    /// </summary>
+    /// <param name="program"></param>
+    /// <param name="services"></param>
+    public DebuggingTools(Program program, IServiceProvider services)
+    { 
+        this.program = program;
+        this.services = services;
+        this.phaseNumbering = new Dictionary<string, int>();
+    }
+
+    /// <summary>
+    /// Dumps a procedure to the debug output if it is being "watched",
+    /// i.e. is in the <see cref="UserData.DebugTraceProcedures"/>
+    /// collection of program being analyzed.
+    /// </summary>
+    /// <param name="phase">Short identifer of the current analysis phase.</param>
+    /// <param name="caption"></param>
+    /// <param name="proc"></param>
+
+    [Conditional("DEBUG")]
+    public void DumpWatchedProcedure(string phase, string caption, Procedure proc)
     {
-        private readonly Program program;
-        private readonly IServiceProvider services;
-        private readonly Dictionary<string, int> phaseNumbering;
-
-        public DebuggingTools(Program program, IServiceProvider services)
-        { 
-            this.program = program;
-            this.services = services;
-            this.phaseNumbering = new Dictionary<string, int>();
-        }
-
-        [Conditional("DEBUG")]
-        public void DumpWatchedProcedure(string phase, string caption, Procedure proc)
+        if (program.User.DebugTraceProcedures.Contains(proc.Name) ||
+            proc.Name == "usb_device_info" ||
+            proc.Name == "fn0002466C" ||
+            proc.Name == "PM_CUSOR_DRAW_CreateSurfaceAndImgDecoding" ||
+            false)
         {
-            if (program.User.DebugTraceProcedures.Contains(proc.Name) ||
-                proc.Name == "usb_device_info" ||
-                proc.Name == "fn0002466C" ||
-                proc.Name == "PM_CUSOR_DRAW_CreateSurfaceAndImgDecoding" ||
-                false)
+            Debug.Print("// {0}: {1} ==================", proc.Name, caption);
+            //MockGenerator.DumpMethod(proc);
+            proc.Dump(true);
+            var testSvc = services.GetService<ITestGenerationService>();
+            if (testSvc is { })
             {
-                Debug.Print("// {0}: {1} ==================", proc.Name, caption);
-                //MockGenerator.DumpMethod(proc);
-                proc.Dump(true);
-                var testSvc = services.GetService<ITestGenerationService>();
-                if (testSvc is { })
+                if (!this.phaseNumbering.TryGetValue(phase, out int n))
                 {
-                    if (!this.phaseNumbering.TryGetValue(phase, out int n))
-                    {
-                        n = phaseNumbering.Count + 1;
-                        phaseNumbering.Add(phase, n);
-                    }
-                    testSvc.ReportProcedure($"analysis_{n:00}_{phase}.txt", $"// {proc.Name} ===========", proc);
+                    n = phaseNumbering.Count + 1;
+                    phaseNumbering.Add(phase, n);
                 }
+                testSvc.ReportProcedure($"analysis_{n:00}_{phase}.txt", $"// {proc.Name} ===========", proc);
             }
         }
     }

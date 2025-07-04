@@ -66,15 +66,27 @@ public class LongAddRewriter : IAnalysis<SsaState>
 
     private readonly AnalysisContext context;
 
+    /// <summary>
+    /// Constrts a new instance of <see cref="LongAddRewriter"/>."
+    /// </summary>
+    /// <param name="context"></param>
     public LongAddRewriter(AnalysisContext context)
     {
         this.context = context;
     }
 
+    /// <inheritdoc/>
     public string Id => "larw";
 
+    /// <inheritdoc/>
     public string Description => "Rewrites ADD/ADC and SUB/SUBC sequences to long adds/subs";
 
+    /// <summary>
+    /// Replaces add/sub pairs with long add/sub instructions.
+    /// </summary>
+    /// <param name="ssa"><see cref="SsaState"/> of the procedure to be 
+    /// transformed.</param>
+    /// <returns></returns>
     public (SsaState, bool) Transform(SsaState ssa)
     {
         var w = CreateWorker(ssa);
@@ -82,11 +94,20 @@ public class LongAddRewriter : IAnalysis<SsaState>
         return (ssa, w.Changed);
     }
 
+    /// <summary>
+    /// Creates an instance of the <see cref="Worker"/> class.
+    /// </summary>
+    /// <param name="ssa"><see cref="SsaState"/> to use in the <see cref="Worker"/>.</param>
+    /// <returns>A new <see cref="Worker"/> instance.
+    /// </returns>
     public Worker CreateWorker(SsaState ssa)
     {
         return new Worker(ssa, context);
     }
 
+    /// <summary>
+    /// Internal class that performs long add fusions.
+    /// </summary>
     public class Worker
     {
         private readonly SsaState ssa;
@@ -95,6 +116,13 @@ public class LongAddRewriter : IAnalysis<SsaState>
         private readonly IEventListener listener;
         private Expression? dst;
 
+        /// <summary>
+        /// Constructs an instance of <see cref="Worker"/>.
+        /// </summary>
+        /// <param name="ssa"><see cref="SsaState"/> of the procedure being transformed.
+        /// </param>
+        /// <param name="context"><see cref="AnalysisContext"/> needed for this transform.
+        /// </param>
         public Worker(SsaState ssa, AnalysisContext context)
         {
             this.ssa = ssa;
@@ -103,10 +131,12 @@ public class LongAddRewriter : IAnalysis<SsaState>
             this.listener = context.EventListener;
         }
 
-
+        /// <summary>
+        /// True if the code was changed by this transformation.
+        /// </summary>
         public bool Changed { get; private set; }
 
-        public void CreateLongBinaryInstruction(Candidate loCandidate, Candidate hiCandidate)
+        private void CreateLongBinaryInstruction(Candidate loCandidate, Candidate hiCandidate)
         {
             var totalSize = PrimitiveType.Create(
                 Domain.SignedInt | Domain.UnsignedInt,
@@ -309,6 +339,10 @@ public class LongAddRewriter : IAnalysis<SsaState>
             return null;
         }
 
+        /// <summary>
+        /// Replaces all <c>add</c>/<c>adc</c> and <c>sub</c>/<c>sbc</c>
+        /// pairs with their long, fused equivalents.
+        /// </summary>
         public void Transform()
         {
             foreach (var block in ssa.Procedure.ControlGraph.Blocks)
@@ -377,7 +411,7 @@ public class LongAddRewriter : IAnalysis<SsaState>
                        FindConditionOfNeg(loInstr.Left);
             if (cond is not null)
             {
-                var hiInstr = FindUsingNegation(block, cond.FlagGroup, loInstr);
+                var hiInstr = FindUsingNegation(cond.FlagGroup);
                 return hiInstr;
             }
             var hiNegsub = FindUsingNegSub(stmtsOrig, loInstr.Dst);
@@ -484,19 +518,23 @@ public class LongAddRewriter : IAnalysis<SsaState>
             return null;
         }
 
-        public bool IsCarryFlag(Expression? exp)
+        private bool IsCarryFlag(Expression? exp)
         {
             return
                 exp is Identifier cf &&
                 cf.Storage.Equals(arch.CarryFlag);
         }
 
-        public Candidate? FindUsingNegation(
-            Block block,
-            Identifier cy,
-            Candidate loInstr)
+        /// <summary>
+        /// Finds a use of <paramref name="id"/> that negates it.
+        /// </summary>
+        /// <param name="id"><see cref="Identifier"/> being tested.
+        /// </param>
+        /// <returns>A <see cref="Candidate"/> instance if a negating
+        /// use was found, otherwise <c>null</c>.</returns>
+        public Candidate? FindUsingNegation(Identifier id)
         {
-            var queue = new Queue<Statement>(ssa.Identifiers[cy].Uses);
+            var queue = new Queue<Statement>(ssa.Identifiers[id].Uses);
             while (queue.TryDequeue(out var use))
             {
                 if (use.Instruction is not Assignment ass)
@@ -546,8 +584,9 @@ public class LongAddRewriter : IAnalysis<SsaState>
         /// Finds the subsequent statement in this block that defines a condition code based on the
         /// result in expression <paramref name="exp"/>.
         /// </summary>
-        /// <param name="p"></param>
-        /// <param name="ax"></param>
+        /// <param name="stms">List of <see cref="Statement"/>s to search.</param>
+        /// <param name="iStm">Start index of the search.</param>
+        /// <param name="exp"></param>
         /// <returns></returns>
         public CondMatch? FindConditionOf(List<Statement> stms, int iStm, Expression exp)
         {
@@ -654,8 +693,18 @@ public class LongAddRewriter : IAnalysis<SsaState>
             return new MemoryAccess(mem.MemoryId, mem.EffectiveAddress, totalSize);
         }
 
+        /// <summary>
+        /// Summary of a conditional match.
+        /// </summary>
         public class CondMatch
         {
+            /// <summary>
+            /// Constructs a new instance of <see cref="CondMatch"/>.
+            /// </summary>
+            /// <param name="grf">Flag group identifier.</param>
+            /// <param name="src">Expression that initializes the identifier.</param>
+            /// <param name="stm">The statement where the identifier is initialized.</param>
+            /// <param name="index">The index of the statement within its basic block.</param>
             public CondMatch(
                 Identifier grf,
                 Expression src,
@@ -668,13 +717,29 @@ public class LongAddRewriter : IAnalysis<SsaState>
                 this.StatementIndex = index;
             }
 
-            public readonly Identifier FlagGroup;
-            public readonly Expression src;
-            public readonly Statement Statement;
-            public readonly int StatementIndex;
+            /// <summary>
+            /// Gets the identifier representing the group of flags associated with this instance.
+            /// </summary>
+            public Identifier FlagGroup { get; }
+
+            /// <summary>
+            /// Gets the source expression associated with this instance.
+            /// </summary>
+            public Expression src { get; }
+
+            /// <summary>
+            /// Gets the statement associated with the current operation.
+            /// </summary>
+            public Statement Statement { get; }
+
+            /// <summary>
+            /// Gets the index of the current statement within its
+            /// continaining <see cref="Block"/>
+            /// </summary>
+            public int StatementIndex { get; }
         }
 
-        public static bool MemoryOperandsAdjacent(IProcessorArchitecture arch, MemoryAccess m1, MemoryAccess m2)
+        private static bool MemoryOperandsAdjacent(IProcessorArchitecture arch, MemoryAccess m1, MemoryAccess m2)
         {
             var off1 = GetOffset(m1);
             var off2 = GetOffset(m2);
@@ -703,9 +768,9 @@ public class LongAddRewriter : IAnalysis<SsaState>
         /// <summary>
         /// Matches an "ADC" or "SBB/SBC" pattern.
         /// </summary>
-        /// <param name="instr"></param>
-        /// <returns>If the match succeeded, returns a partial BinaryExpression
-        /// with the left and right side of the ADC/SBC instruction.</returns>
+        /// <param name="stm">Statement to test for <c>adc</c> or <c>sbc</c>.</param>
+        /// <returns>If the match succeeded, returns a partial <see cref="BinaryExpression" />
+        /// with the left and right side of the <c>adc</c> / <c>sbc</c> instruction.</returns>
         public Candidate? MatchAdcSbc(Statement stm)
         {
             var m = adcPattern.Match(stm.Instruction);
@@ -793,6 +858,13 @@ public class LongAddRewriter : IAnalysis<SsaState>
             return null;
         }
 
+        /// <summary>
+        /// Matches an <c>add</c> or <c>sub</c> statement.
+        /// </summary>
+        /// <param name="stm">Statement being tested.</param>
+        /// <returns>A <see cref="Candidate"/> if the statment is an <c>add</c>
+        /// or <c>sub</c> instruction.
+        /// </returns>
         public Candidate? MatchAddSub(Statement stm)
         {
             var m = addPattern.Match(stm.Instruction);
@@ -1061,8 +1133,18 @@ public class LongAddRewriter : IAnalysis<SsaState>
         }
     }
 
+    /// <summary>
+    /// Represents a candididate for an <c>add</c> / <c>adc</c> or
+    /// <c>sub</c> / <c>sbc</c> pair.
+    /// </summary>
     public class Candidate
     {
+        /// <summary>
+        /// Constructs an instance of <see cref="Candidate"/>.
+        /// </summary>
+        /// <param name="op">Operator</param>
+        /// <param name="left">Left operand.</param>
+        /// <param name="right">Right operand.</param>
         public Candidate(BinaryOperator op, Expression left, Expression? right)
         {
             this.Op = op;
@@ -1070,11 +1152,30 @@ public class LongAddRewriter : IAnalysis<SsaState>
             this.Right = right;
         }
 
-        public Statement? Statement;
-        public Expression? Dst;
-        public readonly BinaryOperator Op;
-        public readonly Expression Left;
-        public readonly Expression? Right;
+        /// <summary>
+        /// Statement at which the operation is located.
+        /// </summary>
+        public Statement? Statement { get; set; }
+
+        /// <summary>
+        /// Destination of the operation.
+        /// </summary>
+        public Expression? Dst { get; set; }
+
+        /// <summary>
+        /// The binary operation of the statement.
+        /// </summary>
+        public BinaryOperator Op { get; }
+
+        /// <summary>
+        /// Represents the left operand of a binary expression.
+        /// </summary>
+        public Expression Left { get; }
+
+        /// <summary>
+        /// Represents the right operand of a binary expression.
+        /// </summary>
+        public Expression? Right { get; }
     }
 
     static LongAddRewriter()

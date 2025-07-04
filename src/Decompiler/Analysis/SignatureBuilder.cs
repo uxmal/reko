@@ -42,6 +42,13 @@ namespace Reko.Analysis
 		private readonly IStorageBinder binder;
 		private readonly IProcessorArchitecture arch;
 
+        /// <summary>
+        /// Constructs an instance of <see cref="SignatureBuilder"/>.
+        /// </summary>
+        /// <param name="binder"><see cref="IStorageBinder"/> to use for introducing
+        /// new identifiers in the caller's scope.</param>
+        /// <param name="arch"><see cref="IProcessorArchitecture"/> being used in the call.
+        /// </param>
         public SignatureBuilder(IStorageBinder binder, IProcessorArchitecture arch)
 		{
 			this.binder = binder;
@@ -50,6 +57,8 @@ namespace Reko.Analysis
             outputs = [];
         }
 
+        /// <summary>
+        /// </summary>
 		public void AddFlagGroupReturnValue(KeyValuePair<RegisterStorage, uint> bits, IStorageBinder binder)
 		{
             var grf = arch.GetFlagGroup(bits.Key, bits.Value)!;
@@ -60,20 +69,39 @@ namespace Reko.Analysis
             outputs.Add(ret);
         }
 
+        /// <summary>
+        /// Adds an FPU stack parameter to the signature being built.
+        /// </summary>
+        /// <param name="x">FPU stack offset.</param>
+        /// <param name="id">Identifier of the stack variable.
+        /// </param>
         public void AddFpuStackArgument(int x, Identifier id)
 		{
 			AddInParam(binder.EnsureFpuStackVariable(x, id.DataType));
 		}
 
+        /// <summary>
+        /// Adds a register parameter to the signature being built.
+        /// </summary>
+        /// <param name="reg">Register storage.</param>
 		public void AddRegisterArgument(RegisterStorage reg)
 		{
 			AddInParam(binder.EnsureRegister(reg));
 		}
 
+        /// <summary>
+        /// Adds a sequence parameter to the signature being built.
+        /// </summary>
+        /// <param name="seq">Sequence argument.</param>
         public void AddSequenceArgument(SequenceStorage seq)
         {
 			AddInParam(binder.EnsureSequence(seq.DataType, seq.Elements));
         }
+
+        /// <summary>
+        /// Adds an output parameter to the signature being built.
+        /// </summary>
+        /// <param name="idOrig">Identifier of the output parameter.</param>
 
         public Identifier AddOutParam(Identifier idOrig)
         {
@@ -86,11 +114,22 @@ namespace Reko.Analysis
             return idOut;
         }
 
-        public void AddInParam(Identifier arg)
+        /// <summary>
+        /// Adds the identifier as an input parameter to the signature being built.
+        /// </summary>
+        /// <param name="p">Parameter to add.</param>
+        public void AddInParam(Identifier p)
         {
-            parameters.Add(arg);
+            parameters.Add(p);
         }
 
+        /// <summary>
+        /// After all parameters have been added, this method builds the
+        /// <see cref="FunctionType"/> for the procedure.
+        /// </summary>
+        /// <returns><see cref="FunctionType"/> constructed from the parameters
+        /// added previously.
+        /// </returns>
 		public FunctionType BuildSignature()
 		{
 			return new FunctionType(
@@ -98,6 +137,15 @@ namespace Reko.Analysis
                 outputs.ToArray());
 		}
 
+        /// <summary>
+        /// After all parameters have been added, this method builds the
+        /// <see cref="FunctionType"/> for the procedure, optionally 
+        /// ordering the input parameters according to the calling convention.
+        /// </summary>
+        /// <param name="cconv">Optional <see  cref="ICallingConvention">
+        /// calling convention</see> to use for ordering the parameters.
+        /// </param>
+        /// <returns></returns>
         public FunctionType BuildSignature(ICallingConvention? cconv)
         {
             var rawArgs = this.parameters.ToArray();

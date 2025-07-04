@@ -34,11 +34,19 @@ namespace Reko.Analysis
 	{
         private readonly Dictionary<Interference, Interference> intf;
 
+        /// <summary>
+        /// Creates an empty interference graph.
+        /// </summary>
 		public InterferenceGraph()
 		{
-            intf = new Dictionary<Interference, Interference>();
+            intf = [];
 		}
 
+        /// <summary>
+        /// Adds an interference edge between two identifiers.
+        /// </summary>
+        /// <param name="id1">The first identifier.</param>
+        /// <param name="id2">The second identifier.</param>
 		public void Add(Identifier id1, Identifier id2)
 		{
 			if (id1 != id2)
@@ -58,12 +66,16 @@ namespace Reko.Analysis
 			return intf.ContainsKey(i);
 		}
 
-		public void Write(TextWriter sb)
+        /// <summary>
+        /// Writes a human-readable representation of the interference graph.
+        /// </summary>
+        /// <param name="writer"></param>
+        public void Write(TextWriter writer)
 		{
 			var sl = new SortedList<Interference,Interference>(intf);
 			foreach (Interference i in sl.Values)
 			{
-				sb.WriteLine("{0} interferes with {1}", i.Identifier1, i.Identifier2);
+				writer.WriteLine("{0} interferes with {1}", i.Identifier1, i.Identifier2);
 			}
 		}
 	}

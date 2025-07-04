@@ -24,7 +24,6 @@ using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Services;
 using Reko.Core.Types;
-using Reko.Services;
 using System;
 using System.Linq;
 
@@ -34,12 +33,6 @@ namespace Reko.Analysis
     /// Try to rewrite indirect call statements to applications using
     /// user-defined data (e.g. global variables, parameters of procedures).
     /// </summary>
-    /// <remarks>
-    /// //$REVIEW: Once analysis-development branch is complete it will make
-    /// dealing with MIPS ELF binaries a lot nicer. Currently, almost all
-    /// calls in a MIPS ELF binary are decompiled into messy indirect 
-    /// calls.
-    /// </remarks>
     public class IndirectCallRewriter
     {
         private readonly SsaState ssa;
@@ -51,6 +44,14 @@ namespace Reko.Analysis
         private readonly IEventListener eventListener;
         private readonly SsaMutator ssam;
 
+        /// <summary>
+        /// Constructs a new instance of the <see cref="IndirectCallRewriter"/> class.
+        /// </summary>
+        /// <param name="program">Program being decompiled.</param>
+        /// <param name="ssa"><see cref="SsaState"/> of the procedure being transformed.</param>
+        /// <param name="eventListener"><see cref="IEventListener"/> to which errors 
+        /// are reported.
+        /// </param>
         public IndirectCallRewriter(
             IReadOnlyProgram program,
             SsaState ssa,
@@ -108,13 +109,19 @@ namespace Reko.Analysis
             return true;
         }
 
-        public void RewriteCall(Statement stm, CallInstruction call, FunctionType ft)
+        /// <summary>
+        /// Rewrites a <code>call</code> instruction to an <see cref="Application"/>.
+        /// </summary>
+        /// <param name="stm">Statement in which the call is located.</param>
+        /// <param name="call">The <see cref="CallInstruction"/> to rewrite.</param>
+        /// <param name="ftCallee">The data type of the called function.</param>
+        public void RewriteCall(Statement stm, CallInstruction call, FunctionType ftCallee)
         {
             ssam.AdjustRegisterAfterCall(
                 stm,
                 call,
                 ssa.Procedure.Architecture.StackRegister,
-                ft.StackDelta - call.CallSite.SizeOfReturnAddressOnStack);
+                ftCallee.StackDelta - call.CallSite.SizeOfReturnAddressOnStack);
             var fpuStackReg = proc.Architecture.FpuStackRegister;
             if (fpuStackReg is not null)
             {
@@ -122,12 +129,12 @@ namespace Reko.Analysis
                     stm,
                     call,
                     fpuStackReg,
-                    -ft.FpuStackDelta);
+                    -ftCallee.FpuStackDelta);
             }
             var ab = program.Architecture.CreateFrameApplicationBuilder(
                  proc.Frame, call.CallSite);
             ssa.RemoveUses(stm);
-            stm.Instruction = ab.CreateInstruction(call.Callee, ft, null);
+            stm.Instruction = ab.CreateInstruction(call.Callee, ftCallee, null);
             ssaIdTransformer.Transform(stm, call);
             ssam.DefineUninitializedIdentifiers(stm, call);
         }

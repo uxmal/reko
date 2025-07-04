@@ -31,7 +31,7 @@ using System.Linq;
 namespace Reko.Analysis;
 
 /// <summary>
-/// Try to guess FPU stack delta of call instructions.
+/// Try to guess FPU stack delta of <code>call</code> instructions.
 /// </summary>
 /// <remarks>
 /// FPU stack delta of hell nodes is unknown. But we can guess it based on
@@ -53,15 +53,31 @@ public class FpuStackReturnGuesser : IAnalysis<SsaState>
 {
     private readonly AnalysisContext context;
 
+    /// <summary>
+    /// Creates an instance of the <see cref="FpuStackReturnGuesser"/> class.
+    /// </summary>
+    /// <param name="context">Whole program context for this analysis.
+    /// </param>
     public FpuStackReturnGuesser(AnalysisContext context)
     {
         this.context = context;
     }
 
+    /// <inheritdoc/>
     public string Id => "fpug";
 
+    /// <inheritdoc/>
     public string Description => "Guesses the effect on the FPU stack around a call";
 
+    /// <summary>
+    /// Transforms the given SSA state by applying FPU stack-specific transformations.
+    /// </summary>
+    /// <remarks>If the procedure's architecture does not define an FPU stack register, no transformation is
+    /// performed, and the method returns the input SSA state unchanged with a <see langword="false"/> flag.</remarks>
+    /// <param name="ssa">The SSA state to transform. This must represent a procedure with an associated architecture.</param>
+    /// <returns>A tuple containing the transformed <see cref="SsaState"/> and a <see langword="bool"/> indicating whether any
+    /// changes were made. The boolean value is <see langword="true"/> if the transformation modified the SSA state;
+    /// otherwise, <see langword="false"/>.</returns>
     public (SsaState, bool) Transform(SsaState ssa)
     {
         var fpuStack = ssa.Procedure.Architecture.FpuStackRegister;

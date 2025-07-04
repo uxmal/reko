@@ -35,12 +35,24 @@ namespace Reko.Analysis
     /// </summary>
     public class LocalTypeDescender : ExpressionTypeDescender
     {
+        /// <summary>
+        /// Creates an instance of <see cref="LocalTypeDescender"/>.
+        /// </summary>
+        /// <param name="program">Program being analyzed.</param>
+        /// <param name="store"><see cref="TypeStore"/> in which to collect deduced type
+        /// information.
+        /// </param>
+        /// <param name="factory"><see cref="TypeFactory"/> used to create type instances.
+        /// </param>
         public LocalTypeDescender(IReadOnlyProgram program, TypeStore store, TypeFactory factory)
             : base(program, store, factory)
         {
-            this.TypeVariables = new Dictionary<Expression, TypeVariable>();
+            this.TypeVariables = [];
         }
 
+        /// <summary>
+        /// Type variables for expressions in the procedure being analyzed.
+        /// </summary>
         public Dictionary<Expression, TypeVariable> TypeVariables { get; }
 
         public void BuildEquivalenceClasses(SsaState ssa)
@@ -58,6 +70,10 @@ namespace Reko.Analysis
             }
         }
 
+        /// <summary>
+        /// Unifies all data types assigned to a type variables in
+        /// the same equivalence class.
+        /// </summary>
         public void MergeDataTypes()
         {
             var eqTypes = new Dictionary<EquivalenceClass, DataType>();
@@ -82,6 +98,7 @@ namespace Reko.Analysis
             }
         }
 
+        /// <inheritdoc/>
         protected override TypeVariable TypeVar(Expression exp)
         {
             if (TypeVariables.TryGetValue(exp, out var tv))
@@ -98,6 +115,12 @@ namespace Reko.Analysis
             exp.Accept(this, tv);
         }
 
+        /// <summary>
+        /// Retrieves the inferred data type for a given expression.
+        /// </summary>
+        /// <param name="e">Expression whose data type is being retrieved.
+        /// </param>
+        /// <returns>The retrieved data type.</returns>
         public DataType GetType(Expression e)
         {
             return TypeVariables[e].DataType.Accept(new TypeVariableReplacer());

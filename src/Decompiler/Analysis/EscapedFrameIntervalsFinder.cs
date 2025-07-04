@@ -51,6 +51,18 @@ namespace Reko.Analysis
         private ExpressionSimplifier eval;
         private IntervalTree<int, DataType> intervals;
 
+        /// <summary>
+        /// Constructs a new instance of <see cref="EscapedFrameIntervalsFinder"/>.
+        /// </summary>
+        /// <param name="program">The program being analyzed.</param>
+        /// <param name="flow">The results of the data flow analysis for procedures
+        /// in this program.</param>
+        /// <param name="ssa">The <see cref="SsaState"/> of the procedure being 
+        /// analyzed.
+        /// </param>
+        /// <param name="eventListener"><see cref="IEventListener"/> instance used
+        /// to report errors.
+        /// </param>
         public EscapedFrameIntervalsFinder(
             IReadOnlyProgram program,
             ProgramDataFlow flow,
@@ -73,6 +85,13 @@ namespace Reko.Analysis
                 program.Memory, ctx, eventListener);
         }
 
+        /// <summary>
+        /// Finds all intervals in the stack frame whose
+        /// data types have been discovered by the data flow analysis.
+        /// </summary>
+        /// <returns>An <see cref="IntervalTree{T, TypeValue}"/> mapping
+        /// stack offsets to the corresponding data type.
+        /// </returns>
         public IntervalTree<int, DataType> Find()
         {
             this.intervals = new IntervalTree<int, DataType>();
@@ -91,18 +110,21 @@ namespace Reko.Analysis
 
         #region InstructionVisitor Members
 
+        /// <inheritdoc/>
         public void VisitAssignment(Assignment ass)
         {
             var (e, _) = ass.Src.Accept(eval);
             e.Accept(this);
         }
 
+        /// <inheritdoc/>
         public void VisitBranch(Branch branch)
         {
             var (e, _) = branch.Condition.Accept(eval);
             e.Accept(this);
         }
 
+        /// <inheritdoc/>
         public void VisitCallInstruction(CallInstruction ci)
         {
             if (ci.Callee is not ProcedureConstant pc ||
@@ -148,14 +170,17 @@ namespace Reko.Analysis
             return dtPointee;
         }
 
+        /// <inheritdoc/>
         public void VisitComment(CodeComment code)
         {
         }
 
+        /// <inheritdoc/>
         public void VisitDefInstruction(DefInstruction def)
         {
         }
 
+        /// <inheritdoc/>
         public void VisitGotoInstruction(GotoInstruction gotoInstruction)
         {
             if (gotoInstruction.Condition is not null)
@@ -165,10 +190,12 @@ namespace Reko.Analysis
             }
         }
 
+        /// <inheritdoc/>
         public void VisitPhiAssignment(PhiAssignment phi)
         {
         }
 
+        /// <inheritdoc/>
         public void VisitReturnInstruction(ReturnInstruction ret)
         {
             if (ret.Expression is not null)
@@ -178,12 +205,14 @@ namespace Reko.Analysis
             }
         }
 
+        /// <inheritdoc/>
         public void VisitSideEffect(SideEffect side)
         {
             var (e, _) = side.Expression.Accept(eval);
             e.Accept(this);
         }
 
+        /// <inheritdoc/>
         public void VisitStore(Store store)
         {
             var (value, _) = store.Src.Accept(eval);
@@ -194,12 +223,14 @@ namespace Reko.Analysis
             }
         }
 
+        /// <inheritdoc/>
         public void VisitSwitchInstruction(SwitchInstruction si)
         {
             var (e, _) = si.Expression.Accept(eval);
             e.Accept(this);
         }
 
+        /// <inheritdoc/>
         public void VisitUseInstruction(UseInstruction use)
         {
         }
@@ -208,6 +239,7 @@ namespace Reko.Analysis
 
         #region IExpressionVisitor Members
 
+        /// <inheritdoc/>
         public override void VisitApplication(Application appl)
         {
             appl.Procedure.Accept(this);
@@ -228,6 +260,7 @@ namespace Reko.Analysis
         /// Get the data type of the i'th parameter, preferring the data type
         /// from the signature parameters. If the procedure is varargs or has
         /// no signature, fall back on the argument types.
+        /// </summary>
         private static DataType GetArgumentDataType(Expression[] arguments, FunctionType? sig, int i)
         {
             if (sig is not null && sig.ParametersValid && i < sig.Parameters!.Length)

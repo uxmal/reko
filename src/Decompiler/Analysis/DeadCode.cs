@@ -133,6 +133,12 @@ namespace Reko.Analysis
             });
         }
 
+        /// <summary>
+        /// Deletes dead code from the procedure of the given SSA state.
+        /// </summary>
+        /// <param name="ssa"><see cref="SsaState"/> of the procedure on which
+        /// to perform the dead code transformation.
+        /// </param>
         public static void Eliminate(SsaState ssa)
 		{
 			new DeadCode(ssa).Eliminate();
@@ -207,11 +213,13 @@ namespace Reko.Analysis
 			AdjustApplicationsWithDeadReturnValues();
 		}
 
+        /// <inheritdoc/>
 		public override void VisitAssignment(Assignment a)
 		{
 			a.Src.Accept(this);
 		}
 
+        /// <inheritdoc/>
         public override void VisitCallInstruction(CallInstruction ci)
         {
             base.VisitCallInstruction(ci);
@@ -221,6 +229,7 @@ namespace Reko.Analysis
             }
         }
 
+        /// <inheritdoc/>
         public override void VisitIdentifier(Identifier id)
 		{
 			SsaIdentifier sid = ssa.Identifiers[id];
@@ -228,6 +237,7 @@ namespace Reko.Analysis
 				liveIds.Add(sid);
 		}
 
+        /// <inheritdoc/>
 		public override void VisitStore(Store store)
 		{
             if (store.Dst is not Identifier idDst)

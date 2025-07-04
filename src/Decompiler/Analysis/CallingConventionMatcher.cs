@@ -35,18 +35,24 @@ namespace Reko.Analysis
     {
         private readonly IPlatform platform;
 
+        /// <summary>
+        /// Constructs a new <see cref="CallingConventionMatcher"/> instance for the given platform.
+        /// </summary>
+        /// <param name="platform"><see cref="IPlatform"/> that will be consulted for
+        /// any available calling conventions.
+        /// </param>
         public CallingConventionMatcher(IPlatform platform)
         {
             this.platform = platform;
         }
 
         /// <summary>
-        /// Given a function <paramref name="signature"> and an <see cref="IProcessorArchitecture"/>,
+        /// Given a function <paramref name="signature"/> and an <see cref="IProcessorArchitecture"/>,
         /// discover if the parameters respect a particular calling convention.
         /// </summary>
         /// <param name="signature">The signature whose calling convention is to be determined.</param>
         /// <param name="arch">The processor architecture for the procedure being tested.</param>
-        /// <returns>An class instance implementing <see cref="ICallingConvention"/> if <paramref name="signature">
+        /// <returns>An class instance implementing <see cref="ICallingConvention"/> if <paramref name="signature"/>
         /// conforms to a known calling convention, null otherwise.
         /// </returns>
         public ICallingConvention? DetermineCallingConvention(FunctionType signature, IProcessorArchitecture arch)

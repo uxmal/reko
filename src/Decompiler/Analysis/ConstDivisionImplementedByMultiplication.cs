@@ -56,12 +56,20 @@ namespace Reko.Analysis
         private Rational bestRational;
         private Identifier? idOrig;
 
+        /// <summary>
+        /// Creates an instance of the <see cref="ConstDivisionImplementedByMultiplication"/> class.
+        /// </summary>
+        /// <param name="ssa"><see cref="SsaState"/> of the procedure to be transformed.</param>
         public ConstDivisionImplementedByMultiplication(SsaState ssa)
         {
             this.ssa = ssa;
             this.m = new ExpressionEmitter();
         }
 
+        /// <summary>
+        /// Replaces occurrences of multiplications with constants with
+        /// their corresponding division equivalents.
+        /// </summary>
         public void Transform()
         {
             foreach (var stm in ssa.Procedure.Statements)
@@ -171,6 +179,15 @@ namespace Reko.Analysis
                 .FirstOrDefault();
         }
 
+        /// <summary>
+        /// Transforms the current instruction into an assignment operation that divides the dividend by the best
+        /// rational denominator, applying the numerator as a multiplier if necessary.
+        /// </summary>
+        /// <remarks>This method modifies the SSA (Static Single Assignment) identifiers by updating the
+        /// use and definition relationships between the source and destination identifiers. The resulting assignment
+        /// operation is returned for further processing or analysis.</remarks>
+        /// <returns>An <see cref="Assignment"/> object representing the transformed instruction, where the dividend is divided
+        /// by the best rational denominator.</returns>
         public Assignment TransformInstruction()
         {
             var eNum = dividend!;

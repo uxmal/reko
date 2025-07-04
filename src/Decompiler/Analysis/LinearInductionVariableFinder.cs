@@ -42,6 +42,14 @@ namespace Reko.Analysis
         private LinearInductionVariableContext ctx;
         private ICollection<SsaIdentifier>? operands;
 
+        /// <summary>
+        /// Constructs a new instance of <see cref="LinearInductionVariableFinder"/>.
+        /// </summary>
+        /// <param name="ssa">The <see cref="SsaState"/> of the procedure being analyzed.
+        /// </param>
+        /// <param name="doms">The <see cref="BlockDominatorGraph">block dominator graph</see>
+        /// for the procedure being analyzed.
+        /// </param>
         public LinearInductionVariableFinder(SsaState ssa, BlockDominatorGraph doms)
 		{
 			this.ssa = ssa;
@@ -54,16 +62,29 @@ namespace Reko.Analysis
 #if OSCAR_CAN_CODE
         tf6556i yjmuki7        
 #endif
+
+        /// <summary>
+        /// A mapping from linear induction variables to their contexts.
+        /// </summary>
         public Dictionary<LinearInductionVariable, LinearInductionVariableContext> Contexts
         {
             get { return contexts; }
         }
 
+        /// <summary>
+        /// The current linear induction variable context being analyzed.
+        /// </summary>
         public LinearInductionVariableContext Context
         {
             get { return ctx; }
         }
 
+        /// <summary>
+        /// If a linear induction variable has been found, create 
+        /// a <see cref="LinearInductionVariable"/>.
+        /// </summary>
+        /// <returns>A new linear indiction variable if one has been found.
+        /// </returns>
 		public LinearInductionVariable? CreateInductionVariable()
 		{
 			if (ctx.PhiStatement is null) return null;
@@ -88,7 +109,7 @@ namespace Reko.Analysis
             return ctx.CreateInductionVariable();
 		}
 
-        public Constant? AdjustTestValue(Constant? testValue)
+        private Constant? AdjustTestValue(Constant? testValue)
         {
             if (testValue is null)
                 return null; 
@@ -135,7 +156,7 @@ namespace Reko.Analysis
                    opType == OperatorType.Ule || opType == OperatorType.Uge;
         }
 
-		public bool DominatesAllUses(Statement? stm, Identifier id)
+		private bool DominatesAllUses(Statement? stm, Identifier id)
 		{
 			SsaIdentifier sid = ssa.Identifiers[id];
 			foreach (Statement u in sid.Uses)
@@ -161,6 +182,14 @@ namespace Reko.Analysis
             }
         }
 
+        /// <summary>
+        /// Attempts to determine the final value of a linear induction variable.
+        /// </summary>
+        /// <param name="scc"><see cref="SsaIdentifier"/>s that form part of the loop 
+        /// of the induction variable.</param>
+        /// <returns>A <see cref="Constant"/> if a final value can be determined, otherwise 
+        /// null.
+        /// </returns>
 		public Constant? FindFinalValue(ICollection<SsaIdentifier> scc)
 		{
 			foreach (SsaIdentifier sid in scc)
@@ -183,6 +212,14 @@ namespace Reko.Analysis
 			return null;
 		}
 
+        /// <summary>
+        /// Attempts to determine the initial value of a linear induction variable.
+        /// </summary>
+        /// <param name="phi"><see cref="PhiFunction"/>s that dominates the induction
+        /// variable assignments.</param>
+        /// <returns>A <see cref="Constant"/> if an initial value can be determined, otherwise 
+        /// null.
+        /// </returns>
 		public Constant? FindInitialValue(PhiFunction phi)
 		{
 			if (phi.Arguments.Length != 2)
@@ -204,7 +241,16 @@ namespace Reko.Analysis
 			return ctx.InitialValue;
 		}
 
-		public Constant? FindLinearIncrement(ICollection<SsaIdentifier> sids)
+        /// <summary>
+        /// Attempts to determine the increment or decrement value of a linear induction variable.
+        /// </summary>
+        /// <param name="sids"><see cref="SsaIdentifier"/>s 
+        /// involved in the linear induction variable.</param>
+        /// <returns>A <see cref="Constant"/> if an initial value can be determined, otherwise 
+        /// null.
+        /// </returns>
+
+        public Constant? FindLinearIncrement(ICollection<SsaIdentifier> sids)
 		{
             foreach (SsaIdentifier sid in sids)
             {
@@ -231,6 +277,14 @@ namespace Reko.Analysis
 			return null;
 		}
 
+        /// <summary>
+        /// Find a <see cref="PhiFunction"/> that either references or 
+        /// dominates the provided SSA identifiers.
+        /// </summary>
+        /// <param name="sids"><see cref="SsaIdentifier"/>s that should be referenced
+        /// or dominated.</param>
+        /// <returns>A <see cref="PhiFunction"/> if one could be found.
+        /// </returns>
 		public PhiFunction? FindPhiFunction(ICollection<SsaIdentifier> sids)
 		{
             foreach (SsaIdentifier sid in sids)
@@ -247,19 +301,22 @@ namespace Reko.Analysis
             return null;
 		}
 
+        /// <summary>
+        /// The list of identified induction variables.
+        /// </summary>
         public List<LinearInductionVariable> InductionVariables
 		{
 			get { return ivs; }
 		}
 
-		public bool IsSingleUsingStatement(Statement stm, Identifier id)
+		private bool IsSingleUsingStatement(Statement stm, Identifier id)
 		{
 			SsaIdentifier sid = ssa.Identifiers[id];
 			return sid.Uses.Count == 1 && sid.Uses[0] == stm;
 		}
 
 
-		public bool IsIdUsedOnlyBy(Identifier id, Statement? stm1, Statement? stm2)
+		private bool IsIdUsedOnlyBy(Identifier id, Statement? stm1, Statement? stm2)
 		{
 			SsaIdentifier sid = ssa.Identifiers[id];
 			foreach (Statement u in sid.Uses)
@@ -270,7 +327,7 @@ namespace Reko.Analysis
 			return true;
 		}
 
-		public static bool IsSccMember(Identifier id, ICollection<SsaIdentifier> sids)
+		private static bool IsSccMember(Identifier id, ICollection<SsaIdentifier> sids)
 		{
 			foreach (SsaIdentifier sid in sids)
 			{
@@ -280,21 +337,19 @@ namespace Reko.Analysis
 			return false;
 		}
 
-        public IEnumerable<SsaIdentifier> GetSuccessors(SsaIdentifier sid)
-        {
-            this.operands = new List<SsaIdentifier>();
-            if (sid.DefStatement is not null)
-            {
-                sid.DefStatement.Instruction.Accept(this);
-            }
-            return operands;
-        }
-
+        /// <summary>
+        /// A <see cref="DirectedGraph{T}"/> implementation over the 
+        /// SSA identifiers def and use edges.
+        /// </summary>
         public class SsaGraph : InstructionVisitorBase, DirectedGraph<SsaIdentifier>
         {
             private readonly SsaIdentifierCollection ssaIds;
             private ICollection<SsaIdentifier>? operands;
 
+            /// <summary>
+            /// Constructs an instance of <see cref="SsaGraph"/>.
+            /// </summary>
+            /// <param name="ssaIds"></param>
             public SsaGraph(SsaIdentifierCollection ssaIds)
             {
                 this.ssaIds = ssaIds;
@@ -302,11 +357,13 @@ namespace Reko.Analysis
 
             #region DirectedGraph<SsaIdentifier> Members
 
+            /// <inheritdoc/>
             public ICollection<SsaIdentifier> Predecessors(SsaIdentifier node)
             {
                 throw new NotImplementedException();
             }
 
+            /// <inheritdoc/>
             public ICollection<SsaIdentifier> Successors(SsaIdentifier sid)
             {
                 this.operands = new List<SsaIdentifier>();
@@ -317,18 +374,22 @@ namespace Reko.Analysis
                 return operands;
             }
 
+            /// <inheritdoc/>
             public ICollection<SsaIdentifier> Nodes => ssaIds;
 
+            /// <inheritdoc/>
             public void AddEdge(SsaIdentifier nodeFrom, SsaIdentifier nodeTo)
             {
                 throw new NotImplementedException();
             }
 
+            /// <inheritdoc/>
             public void RemoveEdge(SsaIdentifier nodeFrom, SsaIdentifier nodeTo)
             {
                 throw new NotImplementedException();
             }
 
+            /// <inheritdoc/>
             public bool ContainsEdge(SsaIdentifier nodeFrom, SsaIdentifier nodeTo)
             {
                 throw new NotImplementedException();
@@ -338,21 +399,25 @@ namespace Reko.Analysis
 
             #region InstructionVisitor members //////////////////////
 
+            /// <inheritdoc/>
             public override void VisitAssignment(Assignment a)
             {
                 a.Src.Accept(this);
             }
 
+            /// <inheritdoc/>
             public override void VisitIdentifier(Identifier id)
             {
                 operands!.Add(ssaIds[id]);
             }
 
+            /// <inheritdoc/>
             public override void VisitSideEffect(SideEffect side)
             {
                 side.Expression.Accept(this);
             }
 
+            /// <inheritdoc/>
             public override void VisitMemoryAccess(MemoryAccess access)
             {
                 access.EffectiveAddress.Accept(this);
@@ -365,21 +430,25 @@ namespace Reko.Analysis
 
 		#region InstructionVisitor members //////////////////////
 
+        /// <inheritdoc/>
 		public override void VisitAssignment(Assignment a)
 		{
 			a.Src.Accept(this);
 		}
 
+        /// <inheritdoc/>
 		public override void VisitIdentifier(Identifier id)
 		{
 			operands!.Add(ssa.Identifiers[id]);
 		}
 
+        /// <inheritdoc/>
 		public override void VisitSideEffect(SideEffect side)
 		{
 			side.Expression.Accept(this);
 		}
 
+        /// <inheritdoc/>
 		public override void VisitMemoryAccess(MemoryAccess access)
 		{
 			access.EffectiveAddress.Accept(this);
@@ -387,6 +456,12 @@ namespace Reko.Analysis
 
 		#endregion 
 
+        /// <summary>
+        /// Process a strongly connected component of the <see cref="SsaGraph"/>
+        /// of this procedure, to find any linear induction variables.
+        /// </summary>
+        /// <param name="scc">Strongly connect component of identifiers in 
+        /// the SSA graph.</param>
 		public virtual void ProcessScc(IList<SsaIdentifier> scc)
 		{
 			if (scc.Count <= 1)

@@ -36,6 +36,17 @@ namespace Reko.Analysis
         private readonly Expression exprNew;
         private readonly bool replaceDefinitions;
 
+        /// <summary>
+        /// Constructs an instance of <see cref="IdentifierReplacer"/>
+        /// </summary>
+        /// <param name="ssaIds">Current SSA state</param>
+        /// <param name="use">The statement where the replacement is being made.</param>
+        /// <param name="idOld">The <see cref="Identifier"/> to replace.</param>
+        /// <param name="exprNew">The <see cref="Expression"/> that replaces all occurrences <paramref name="idOld"/>.</param>
+        /// <param name="replaceDefinitions">If true, identifiers will be replaced even
+        /// in expression contexts when the identifier is being defined; otherwise such 
+        /// identifers will not be resplaced.
+        /// </param>
         public IdentifierReplacer(SsaIdentifierCollection ssaIds, Statement use, Identifier idOld, Expression exprNew, bool replaceDefinitions)
         {
             this.ssaIds = ssaIds;
@@ -45,6 +56,7 @@ namespace Reko.Analysis
             this.replaceDefinitions = replaceDefinitions;
         }
 
+        /// <inheritdoc/>
         public override Instruction TransformAssignment(Assignment a)
         {
             a.Src = a.Src.Accept(this);
@@ -55,6 +67,7 @@ namespace Reko.Analysis
             return a;
         }
 
+        /// <inheritdoc/>
         public override Instruction TransformPhiAssignment(PhiAssignment phi)
         {
             var args = phi.Src.Arguments;
@@ -70,6 +83,7 @@ namespace Reko.Analysis
             return phi;
         }
 
+        /// <inheritdoc/>
         public override Expression VisitIdentifier(Identifier id)
         {
             if (idOld == id)
@@ -86,6 +100,7 @@ namespace Reko.Analysis
                 return id;
         }
 
+        /// <inheritdoc/>
         public override Instruction TransformCallInstruction(CallInstruction ci)
         {
             foreach (var use in ci.Uses)
@@ -93,6 +108,15 @@ namespace Reko.Analysis
                 use.Expression = use.Expression.Accept(this);
             }
             return base.TransformCallInstruction(ci);
+        }
+
+        /// <inheritdoc/>
+        public override Expression VisitOutArgument(OutArgument outArg)
+        {
+            if (!this.replaceDefinitions && outArg.Expression is Identifier)
+                return outArg;
+            var eNew = outArg.Expression.Accept(this);
+            return new OutArgument(outArg.DataType, eNew); 
         }
     }
 }

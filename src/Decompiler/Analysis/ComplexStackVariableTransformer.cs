@@ -34,7 +34,7 @@ using System.Linq;
 namespace Reko.Analysis;
 
 /// <summary>
-/// Rewrites expressions like <code>fp +/-offset</code> if offset is
+/// Rewrites expressions like <code>fp +/-offset</code> if the offset is
 /// inside of one of the specified intervals. In particular it rewrites
 /// <code>fp - offset</code> to <code>&amp;tLoc_offset1 + offset2</code>
 /// where <code>offset1 - offset2 = offset</code>
@@ -44,16 +44,29 @@ public class ComplexStackVariableTransformer : IAnalysis<SsaState>
     private readonly AnalysisContext context;
     private readonly ProgramDataFlow programFlow;
 
+    /// <summary>
+    /// Constructs a new instance of <see cref="ComplexStackVariableTransformer"/>.
+    /// </summary>
+    /// <param name="context"><see cref="AnalysisContext"/> to use for this analysis.</param>
+    /// <param name="programFlow">A collection of all the program's procedures' data flow </param>
     public ComplexStackVariableTransformer(AnalysisContext context, ProgramDataFlow programFlow)
     {
         this.context = context;
         this.programFlow = programFlow;
     }
 
+    /// <inheritdoc/>
     public string Id => "csvt";
 
+    /// <inheritdoc/>
     public string Description => "Converts escaped accesses to memory";
 
+    /// <summary>
+    /// Converts escaped accesses to the stack frame to C-style "address-of"
+    /// expressions.
+    /// </summary>
+    /// <param name="ssa">SSA state to transform.</param>
+    /// <returns><inheritdoc /></returns>
     public (SsaState, bool) Transform(SsaState ssa)
     {
         var efif = new EscapedFrameIntervalsFinder(
@@ -62,6 +75,17 @@ public class ComplexStackVariableTransformer : IAnalysis<SsaState>
         return Transform(ssa, escapedFrameIntervals);
     }
 
+    /// <summary>
+    /// Converts escaped accesses to the stack frame to C-style "address-of"
+    /// expressions.
+    /// </summary>
+    /// <param name="ssa">SSA state to transform.</param>
+    /// <param name="frameIntervals">Intervals in the stack frame 
+    /// associated with variables.
+    /// </param>
+    /// <returns>The possibly modified SSA state and a flag specifying
+    /// whether the state was indeed modified.
+    /// </returns>
     public (SsaState, bool) Transform(SsaState ssa, IntervalTree<int, DataType> frameIntervals)
     { 
         bool changed = false;
@@ -74,7 +98,7 @@ public class ComplexStackVariableTransformer : IAnalysis<SsaState>
         return (ssa, changed);
     }
 
-    public class Worker : InstructionTransformer
+    private class Worker : InstructionTransformer
     {
         private readonly SsaState ssa;
         private readonly IntervalTree<int, DataType> escapedFrameIntervals;

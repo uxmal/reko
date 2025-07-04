@@ -42,13 +42,46 @@ namespace Reko.Analysis
         /// </summary>
         public abstract class IdentifierTransformer
         {
+            /// <summary>
+            /// Current identifier being transformed.
+            /// </summary>
             protected Identifier id;
+            /// <summary>
+            /// Statement in which the identifier is being referenced.
+            /// </summary>
             protected readonly Statement stm;
+            /// <summary>
+            /// The <see cref="SsaTransform"/> instance that will be
+            /// updated by this transformer.
+            /// </summary>
             protected readonly SsaTransform outer;
-            protected readonly SsaIdentifierCollection ssaIds;
-            protected readonly IDictionary<Block, SsaBlockState> blockstates;
-            private Stack<Block> bloxx = new Stack<Block>();
 
+            /// <summary>
+            /// The current collection of <see cref="SsaIdentifier"/>s.
+            /// </summary>
+            protected readonly SsaIdentifierCollection ssaIds;
+
+            /// <summary>
+            /// The current <see cref="SsaBlockState"/>s indexed by 
+            /// <see cref="Block">basic block</see>.
+            /// </summary>
+            internal readonly IDictionary<Block, SsaBlockState> blockstates;
+
+            /// <summary>
+            /// Stack of blocks that are being processed. This is used to detect
+            /// stack overflows in the CFG, which are caused by malformed CFGs.
+            /// </summary>
+            private Stack<Block> blockStack = new Stack<Block>();
+
+            /// <summary>
+            /// Constructs an instance of the <see cref="IdentifierTransformer"/> class.
+            /// </summary>
+            /// <param name="id">Identifier whose SSA identifier is to be generated.</param>
+            /// <param name="stm"><see cref="Statement"/> in which <paramref name="id"/> is referenced.
+            /// </param>
+            /// <param name="outer"><see cref="SsaTransform"/> instance which will be 
+            /// modified by this <see cref="IdentifierTransformer"/>.
+            /// </param>
             public IdentifierTransformer(Identifier id, Statement stm, SsaTransform outer)
             {
                 this.id = id;
@@ -58,18 +91,35 @@ namespace Reko.Analysis
                 this.outer = outer;
             }
 
+            /// <summary>
+            /// Bit- or byte offset of the variable with respect to the start of the 
+            /// storage of the underlying identifier.
+            /// </summary>
             public int Offset { get; internal set; }
 
+
+            /// <summary>
+            /// Records the <paramref name="sid"/> as the most recent definition of 
+            /// a particular identifier <see cref="id"/> in the block <paramref name="bs"/>.
+            /// </summary>
+            /// <param name="bs"><see cref="SsaBlockState"/> maintaining the most recent 
+            /// identifiers.</param>
+            /// <param name="sid"><see cref="SsaIdentifier"/> to record.</param>
+            /// <returns>The <see cref="Identifier"/> of the <see cref="SsaIdentifier"/>.
+            /// </returns>
             public abstract Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid);
 
             /// <summary>
             /// Reaches "backwards" to locate the SSA identifier that defines
-            /// the identifier <paramref name="id"/>, starting in block <paramref name="b"/>.
+            /// the identifier <see cref="id"/>, starting in block whose 
+            /// <see cref="SsaBlockState"/> is <paramref name="bs"/>.
+            /// If no definition of <see cref="id"/> is found anywhere in the 
+            /// procedure, a new 
+            /// <see cref="DefInstruction"/> is created in the entry block of the procedure.
             /// </summary>
-            /// If no definition of <paramref name="id"/> is found, a new 
-            /// DefStatement is created in the entry block of the procedure.
-            /// </summary>
-            /// <param name="bs"></param>
+            /// <param name="bs">The <see cref="SsaBlockState"/> of the current
+            /// block being processed.
+            /// </param>
             /// <returns>The SSA name of the identifier that was read.</returns>
             public virtual SsaIdentifier ReadVariable(SsaBlockState bs)
             {
@@ -90,20 +140,20 @@ namespace Reko.Analysis
                 // CFG of the Procedure being malformed due to errors in the Scanning
                 // phase. Once #726 is addressed, there should be no need for this
                 // code.
-                bloxx.Push(bs.Block);
-                if (this.bloxx.Count > 1000)
+                blockStack.Push(bs.Block);
+                if (this.blockStack.Count > 1000)
                 {
                     var proc = bs.Block.Procedure;
                     proc.Dump(true);
                     Debug.Print("SSATransform: Blocks in the call stack:");
-                    foreach (var block in bloxx)
+                    foreach (var block in blockStack)
                     {
                         Debug.Print("  {0}", block.DisplayName);
                     }
                     throw new StackOverflowException($"Boundless recursion in {proc.Name} while finding definitions of {this.id}.");
                 }
                 sid = ReadVariableRecursive(bs);
-                bloxx.Pop();
+                blockStack.Pop();
                 return sid!;
             }
 
@@ -191,7 +241,7 @@ namespace Reko.Analysis
             /// inserts the phi statement as the first statement of the block.
             /// </summary>
             /// <param name="b">Block into which the phi statement is inserted</param>
-            /// <param name="v">Destination variable for the phi assignment</param>
+            /// <param name="id">Destination variable for the phi assignment</param>
             /// <returns>The inserted phi Assignment</returns>
             private SsaIdentifier NewPhi(Identifier id, Block b)
             {
@@ -203,7 +253,7 @@ namespace Reko.Analysis
                 return sid;
             }
 
-            public SsaIdentifier AddPhiOperands(SsaIdentifier phi)
+            internal SsaIdentifier AddPhiOperands(SsaIdentifier phi)
             {
                 var preds = phi.DefStatement.Block.Pred;
                 var args = preds.Select(p => new PhiArgument(p, ReadVariable(blockstates[p]).Identifier))
@@ -329,7 +379,7 @@ namespace Reko.Analysis
                 }
             }
 
-            protected int MeasureBitSize(DataType dt)
+            internal int MeasureBitSize(DataType dt)
             {
                 return dt.MeasureBitSize(outer.arch.MemoryGranularity);
             }
@@ -464,7 +514,7 @@ namespace Reko.Analysis
                 }
             }
 
-            protected Interval<int> CreateBitInterval(int unitStackOffset, DataType dt)
+            internal Interval<int> CreateBitInterval(int unitStackOffset, DataType dt)
             {
                 var bitsPerUnit = outer.arch.MemoryGranularity;
                 var bitOffset = unitStackOffset * bitsPerUnit;
@@ -474,10 +524,19 @@ namespace Reko.Analysis
             }
         }
 
+        /// <summary>
+        /// <see cref="IdentifierTransformer"/> implementation for registers.
+        /// </summary>
         public class RegisterTransformer : IdentifierTransformer
         {
-            protected BitRange liveBits;
+            private BitRange liveBits;
 
+            /// <summary>
+            /// Constructs an instance of the <see cref="RegisterTransformer"/> class.
+            /// </summary>
+            /// <param name="id">Identifier to transform.</param>
+            /// <param name="stm">Statement in which the register is referenced.</param>
+            /// <param name="outer"><see cref="SsaTransform"/> instance.</param>
             public RegisterTransformer(Identifier id, Statement stm, SsaTransform outer)
                 : base(id, stm, outer)
             {
@@ -485,8 +544,8 @@ namespace Reko.Analysis
             }
 
             /// <summary>
-            /// Registers the fact that identifier <paramref name="id"/> is
-            /// modified in the block <paramref name="b" /> and generates a 
+            /// Registers the fact that identifier <paramref name="sid"/> is
+            /// modified in the block <paramref name="bs" /> and generates a 
             /// fresh SSA identifier. 
             /// </summary>
             /// <param name="bs">The block in which the identifier was changed</param>
@@ -606,9 +665,11 @@ namespace Reko.Analysis
 
             /// <summary>
             /// Sweep from the most recently written register to the least, and locate
-            /// the first intersection of the read interval in <paramref name="bitLo"/> and 
-            /// <paramref name="bitHi"> intersects the written register.
+            /// the first intersection of the read interval in <paramref name="useRange"/>
+            /// intersects the written register.
             /// </summary>
+            /// <param name="definitions">Existing definitions.</param>
+            /// <param name="useRange">Bitrange being probed.</param>
             public static (SsaIdentifier?, BitRange, BitRange) FindIntersectingRegister(
                 List<(SsaIdentifier,BitRange,int)> definitions,
                 BitRange useRange)
@@ -673,6 +734,9 @@ namespace Reko.Analysis
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public class FlagGroupTransformer : IdentifierTransformer
         {
             private readonly uint flagMask;

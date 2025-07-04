@@ -33,35 +33,45 @@ namespace Reko.Analysis
     {
         private readonly CallGraph cg;
 
+        /// <summary>
+        /// Constructs an instance of <see cref="ProcedureGraph"/>.
+        /// </summary>
+        /// <param name="program">The program supplying the call graph.</param>
         public ProcedureGraph(Program program)
         {
             this.cg = program.CallGraph;
             this.Nodes = program.Procedures.Values;
         }
 
+        /// <inheritdoc/>
         public ICollection<Procedure> Nodes { get; }
 
+        /// <inheritdoc/>
         public ICollection<Procedure> Predecessors(Procedure node)
         {
             throw new NotSupportedException();
         }
 
+        /// <inheritdoc/>
         public ICollection<Procedure> Successors(Procedure node)
         {
             var succs = new List<Procedure>(cg.Callees(node));
             return succs;
         }
 
+        /// <inheritdoc/>
         public void AddEdge(Procedure nodeFrom, Procedure nodeTo)
         {
             throw new NotSupportedException();
         }
 
+        /// <inheritdoc/>
         public void RemoveEdge(Procedure nodeFrom, Procedure nodeTo)
         {
             throw new NotSupportedException();
         }
 
+        /// <inheritdoc/>
         public bool ContainsEdge(Procedure nodeFrom, Procedure nodeTo)
         {
             throw new NotSupportedException();
