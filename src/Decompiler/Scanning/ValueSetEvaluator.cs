@@ -50,7 +50,18 @@ namespace Reko.Scanning
         private readonly ExpressionValueComparer cmp;
         private readonly Dictionary<Address, DataType> memAccesses;
 
-        public ValueSetEvaluator(IProcessorArchitecture arch, IMemory memory, Dictionary<Expression, ValueSet> context, ProcessorState? state = null)
+        /// <summary>
+        /// Constructs a new <see cref="ValueSetEvaluator"/> instance.
+        /// </summary>
+        /// <param name="arch"><see cref="IProcessorArchitecture" /> to use.</param>
+        /// <param name="memory"><see cref="IMemory"/> instance.</param>
+        /// <param name="context">Previously evaluated value sets.</param>
+        /// <param name="state">Processor state used for evaluation.</param>
+        public ValueSetEvaluator(
+            IProcessorArchitecture arch,
+            IMemory memory,
+            Dictionary<Expression, ValueSet> context,
+            ProcessorState? state = null)
         {
             Debug.Assert(memory is not null);
             this.arch = arch;
@@ -58,9 +69,17 @@ namespace Reko.Scanning
             this.context = context;
             this.state = state;
             this.cmp = new ExpressionValueComparer();
-            this.memAccesses = new Dictionary<Address, DataType>();
+            this.memAccesses = [];
         }
 
+        /// <summary>
+        /// Evaluates the given expression and returns a value set.
+        /// </summary>
+        /// <param name="expr">Expression to evaluate.</param>
+        /// <returns>A tuple consisting of the resulting value set
+        /// and a dictionary of all the memory accesses done during
+        /// the evaluation.
+        /// </returns>
         public (ValueSet, Dictionary<Address,DataType>) Evaluate(Expression expr)
         {
             var bitrange = new BitRange(0, (short)expr.DataType.BitSize);
@@ -68,21 +87,25 @@ namespace Reko.Scanning
             return (values, this.memAccesses);
         }
 
+        /// <inheritdoc/>
         public ValueSet VisitAddress(Address addr, BitRange bitRange)
         {
             return new ConcreteValueSet(addr.DataType, addr.ToConstant());
         }
 
+        /// <inheritdoc/>
         public ValueSet VisitApplication(Application appl, BitRange bitRange)
         {
             return IntervalValueSet.Any;
         }
 
+        /// <inheritdoc/>
         public ValueSet VisitArrayAccess(ArrayAccess acc, BitRange bitRange)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public ValueSet VisitBinaryExpression(BinaryExpression binExp, BitRange bitRange)
         {
             var cLeft = binExp.Left as Constant;
@@ -137,6 +160,7 @@ namespace Reko.Scanning
             return IntervalValueSet.Any;
         }
 
+        /// <inheritdoc/>
         public ValueSet VisitCast(Cast cast, BitRange bitRange)
         {
             if (this.context.TryGetValue(cast, out ValueSet? vs))
@@ -159,21 +183,25 @@ namespace Reko.Scanning
             return vs.ZeroExtend(cast.DataType);
         }
 
+        /// <inheritdoc/>
         public ValueSet VisitConditionalExpression(ConditionalExpression cond, BitRange bitRange)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public ValueSet VisitConditionOf(ConditionOf cof, BitRange bitRange)
         {
             return ValueSet.Any;
         }
 
+        /// <inheritdoc/>
         public ValueSet VisitConstant(Constant c, BitRange bitRange)
         {
             return new ConcreteValueSet(c.DataType, c);
         }
 
+        /// <inheritdoc/>
         public ValueSet VisitConversion(Conversion conversion, BitRange bitRange)
         {
             if (this.context.TryGetValue(conversion, out ValueSet? vs))
@@ -196,17 +224,19 @@ namespace Reko.Scanning
             return vs.ZeroExtend(conversion.DataType);
         }
 
-
+        /// <inheritdoc/>
         public ValueSet VisitDereference(Dereference deref, BitRange bitRange)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public ValueSet VisitFieldAccess(FieldAccess acc, BitRange bitRange)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public ValueSet VisitIdentifier(Identifier id, BitRange bitRange)
         {
             if (context.TryGetValue(id, out ValueSet? vs))
@@ -216,6 +246,7 @@ namespace Reko.Scanning
             return new IntervalValueSet(id.DataType, StridedInterval.Empty);
         }
 
+        /// <inheritdoc/>
         public ValueSet VisitMemberPointerSelector(MemberPointerSelector mps, BitRange bitRange)
         {
             throw new NotImplementedException();
@@ -225,7 +256,8 @@ namespace Reko.Scanning
         /// Evaluating a memory access forces the creation of a 
         /// Concrete value set.
         /// </summary>
-        /// <param name="access"></param>
+        /// <param name="access">Memory access.</param>
+        /// <param name="bitRange">Bit range of the effective address of the memory access.</param>
         /// <returns></returns>
         public ValueSet VisitMemoryAccess(MemoryAccess access, BitRange bitRange)
         {
@@ -273,6 +305,7 @@ namespace Reko.Scanning
             }
         }
 
+        /// <inheritdoc/>
         public ValueSet VisitMkSequence(MkSequence seq, BitRange bitRange)
         {
             if (bitRange.Lsb > 0)
@@ -331,21 +364,25 @@ namespace Reko.Scanning
             return new MkSequence(dataType, exps);
         }
 
+        /// <inheritdoc/>
         public ValueSet VisitOutArgument(OutArgument outArgument, BitRange bitRange)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public ValueSet VisitPhiFunction(PhiFunction phi, BitRange bitRange)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public ValueSet VisitPointerAddition(PointerAddition pa, BitRange bitRange)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public ValueSet VisitProcedureConstant(ProcedureConstant pc, BitRange bitRange)
         {
             Address addr;
@@ -360,11 +397,13 @@ namespace Reko.Scanning
             }
         }
 
+        /// <inheritdoc/>
         public ValueSet VisitScopeResolution(ScopeResolution scopeResolution, BitRange bitRange)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public ValueSet VisitSegmentedAddress(SegmentedPointer address, BitRange bitRange)
         {
             Expression MakeAddress(DataType dataType, Constant selector, Expression offset)
@@ -396,6 +435,7 @@ namespace Reko.Scanning
                     .ToArray());
         }
 
+        /// <inheritdoc/>
         public ValueSet VisitSlice(Slice slice, BitRange bitRange)
         {
             if (slice.Offset != 0)
@@ -423,16 +463,19 @@ namespace Reko.Scanning
             return vs.ZeroExtend(slice.DataType);
         }
 
+        /// <inheritdoc/>
         public ValueSet VisitStringConstant(StringConstant str, BitRange bitRange)
         {
             return new ConcreteValueSet(str.DataType, str);
         }
 
+        /// <inheritdoc/>
         public ValueSet VisitTestCondition(TestCondition tc, BitRange bitRange)
         {
             return ValueSet.Any;
         }
 
+        /// <inheritdoc/>
         public ValueSet VisitUnaryExpression(UnaryExpression unary, BitRange bitRange)
         {
             throw new NotImplementedException();

@@ -21,90 +21,82 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 
-namespace Reko.Evaluation
+namespace Reko.Evaluation;
+
+internal class ScaledIndexRule
 {
-    public class ScaledIndexRule
+    public Expression? Match(Expression ea, EvaluationContext ctx)
     {
-        public ScaledIndexRule()
-        {
-        }
+        BinaryExpression? binEaLeft = null;
+        BinaryExpression? binEaRight = null;
+        Identifier? idEa = null;
+        Expression? defIndex;
 
-        public Expression? Match(Expression ea, EvaluationContext ctx)
+        if (ea is BinaryExpression bin)
         {
-            BinaryExpression? binEaLeft = null;
-            BinaryExpression? binEaRight = null;
-            Identifier? idEa = null;
-            Expression? defIndex;
-
-            if (ea is BinaryExpression bin)
+            if (bin.Operator.Type.IsAddOrSub())
             {
-                if (bin.Operator.Type.IsAddOrSub())
+                if (bin.Left is Identifier idLeft)
                 {
-                    if (bin.Left is Identifier idLeft)
+                    defIndex = ctx.GetDefiningExpression(idLeft);
+                    if (IsScaled(defIndex))
                     {
-                        defIndex = ctx.GetDefiningExpression(idLeft);
-                        if (IsScaled(defIndex))
-                        {
-                            binEaLeft = bin;
-                            return Transform(binEaLeft, binEaRight, idEa, defIndex, ctx);
-                        }
-                    }
-                    if (bin.Right is Identifier idRight)
-                    {
-                        defIndex = ctx.GetDefiningExpression(idRight);
-                        if (IsScaled(defIndex))
-                        {
-                            return Transform(binEaLeft, bin, idEa, defIndex, ctx);
-                        }
+                        binEaLeft = bin;
+                        return Transform(binEaLeft, binEaRight, idEa, defIndex, ctx);
                     }
                 }
-            } else if (ea is Identifier id)
-            {
-                defIndex = ctx.GetDefiningExpression(id);
-                if (IsScaled(defIndex))
+                if (bin.Right is Identifier idRight)
                 {
-                    return Transform(binEaLeft, binEaRight, id, defIndex, ctx);
+                    defIndex = ctx.GetDefiningExpression(idRight);
+                    if (IsScaled(defIndex))
+                    {
+                        return Transform(binEaLeft, bin, idEa, defIndex, ctx);
+                    }
                 }
             }
-            return null;
-        }
-
-        private bool IsScaled(Expression? defIndex)
+        } else if (ea is Identifier id)
         {
-            return
-                (defIndex is BinaryExpression bin &&
-                 (bin.Operator is IMulOperator || bin.Operator is ShlOperator));
+            defIndex = ctx.GetDefiningExpression(id);
+            if (IsScaled(defIndex))
+            {
+                return Transform(binEaLeft, binEaRight, id, defIndex, ctx);
+            }
         }
-
-        public Expression Transform(
-            BinaryExpression? binEaLeft,
-            BinaryExpression? binEaRight,
-            Identifier? idEa,
-            Expression? defIndex,
-            EvaluationContext ctx)
-        {
-            //$REFACTOR: this can be reduced into the Match method
-            Expression eaNew;
-            if (binEaLeft is not null)
-            {
-                eaNew = new BinaryExpression(binEaLeft.Operator, binEaLeft.DataType, defIndex!, binEaLeft.Right);
-            }
-            else if (binEaRight is not null)
-            {
-                eaNew = new BinaryExpression(binEaRight.Operator, binEaRight.DataType, binEaRight.Left, defIndex!);
-            }
-            else 
-            {
-                Debug.Assert(idEa is not null);
-                eaNew = defIndex!;
-            }
-            return eaNew;
-        }
-
+        return null;
     }
+
+    private bool IsScaled(Expression? defIndex)
+    {
+        return
+            (defIndex is BinaryExpression bin &&
+             (bin.Operator is IMulOperator || bin.Operator is ShlOperator));
+    }
+
+    public Expression Transform(
+        BinaryExpression? binEaLeft,
+        BinaryExpression? binEaRight,
+        Identifier? idEa,
+        Expression? defIndex,
+        EvaluationContext ctx)
+    {
+        //$REFACTOR: this can be reduced into the Match method
+        Expression eaNew;
+        if (binEaLeft is not null)
+        {
+            eaNew = new BinaryExpression(binEaLeft.Operator, binEaLeft.DataType, defIndex!, binEaLeft.Right);
+        }
+        else if (binEaRight is not null)
+        {
+            eaNew = new BinaryExpression(binEaRight.Operator, binEaRight.DataType, binEaRight.Left, defIndex!);
+        }
+        else 
+        {
+            Debug.Assert(idEa is not null);
+            eaNew = defIndex!;
+        }
+        return eaNew;
+    }
+
 }

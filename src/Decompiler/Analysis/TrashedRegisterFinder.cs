@@ -38,6 +38,10 @@ using System.Linq;
 
 namespace Reko.Analysis
 {
+    /// <summary>
+    /// Analysis pass that finds which registers are trashed when calling
+    /// each of the procedures in a strongly connected component (SCC).
+    /// </summary>
     public class TrashedRegisterFinder : InstructionVisitor<bool>
     {
         private static readonly TraceSwitch trace = new(nameof(TrashedRegisterFinder), "Trashed value propagation") { Level = TraceLevel.Error };
@@ -61,6 +65,17 @@ namespace Reko.Analysis
         private bool propagateToCallers;
         private bool selfRecursiveCalls;
 
+        /// <summary>
+        /// Constructs an instance of <see cref="TrashedRegisterFinder"/>.
+        /// </summary>
+        /// <param name="program">The <see cref="Program"/> being analyzed.</param>
+        /// <param name="flow">The data flow describing the values flowing in
+        /// and out of each procedure in the program.</param>
+        /// <param name="sccGroup">A strongly connected component (SCC) of procedures
+        /// being analyzed.</param>
+        /// <param name="listener"><see cref="IEventListener"/> instance which receives
+        /// diagnostic information.
+        /// </param>
         public TrashedRegisterFinder(
             IReadOnlyProgram program,
             ProgramDataFlow flow,
@@ -342,6 +357,7 @@ namespace Reko.Analysis
             }
         }
 
+        /// <inheritdoc/>
         public bool VisitAssignment(Assignment ass)
         {
             var (value, _) = ass.Src.Accept(eval);
@@ -351,12 +367,14 @@ namespace Reko.Analysis
             return true;
         }
 
+        /// <inheritdoc/>
         public bool VisitBranch(Branch branch)
         {
             branch.Condition.Accept(eval);
             return true;
         }
 
+        /// <inheritdoc/>
         public bool VisitCallInstruction(CallInstruction ci)
         {
             var ctx = this.ctx!;
@@ -422,11 +440,13 @@ namespace Reko.Analysis
             return true;
         }
 
+        /// <inheritdoc/>
         public bool VisitComment(CodeComment comment)
         {
             return true;
         }
 
+        /// <inheritdoc/>
         public bool VisitDefInstruction(DefInstruction def)
         {
             var id = def.Identifier;
@@ -434,6 +454,7 @@ namespace Reko.Analysis
             return true;
         }
 
+        /// <inheritdoc/>
         public bool VisitGotoInstruction(GotoInstruction g)
         {
             if (g.Condition is not null)
@@ -444,6 +465,7 @@ namespace Reko.Analysis
             return true;
         }
 
+        /// <inheritdoc/>
         public bool VisitPhiAssignment(PhiAssignment phi)
         {
             Expression? total = null;
@@ -475,6 +497,7 @@ namespace Reko.Analysis
             return true;
         }
 
+        /// <inheritdoc/>
         public bool VisitReturnInstruction(ReturnInstruction ret)
         {
             if (ret.Expression is not null)
@@ -484,12 +507,14 @@ namespace Reko.Analysis
             return true;
         }
 
+        /// <inheritdoc/>
         public bool VisitSideEffect(SideEffect side)
         {
             side.Expression.Accept(eval);
             return true;
         }
 
+        /// <inheritdoc/>
         public bool VisitStore(Store store)
         {
             var (value, _) = store.Src.Accept(eval);
@@ -500,6 +525,7 @@ namespace Reko.Analysis
             return true;
         }
 
+        /// <inheritdoc/>
         public bool VisitSwitchInstruction(SwitchInstruction si)
         {
             si.Expression.Accept(eval);
@@ -603,6 +629,10 @@ namespace Reko.Analysis
             return true;
         }
 
+        /// <summary>
+        /// Debug-only method to dump the state of the trashed register finder.
+        /// </summary>
+        /// <param name="block"></param>
         [Conditional("DEBUG")]
         public void Dump(Block block)
         {
@@ -617,15 +647,28 @@ namespace Reko.Analysis
             }
         }
 
+        /// <summary>
+        /// Evaluation context for the trashed register finder.
+        /// </summary>
         public class Context : EvaluationContext
         {
-            public readonly Identifier FramePointer;
-            public readonly Dictionary<Identifier, (Expression, BitRange)> IdState;
-            public readonly Dictionary<int, Expression> StackState;
-            public ProcedureFlow ProcFlow;
+            internal readonly Identifier FramePointer;
+            internal Dictionary<Identifier, (Expression, BitRange)> IdState;
+            /// <summary>
+            /// Variables that have been defined in the stack.
+            /// </summary>
+            public Dictionary<int, Expression> StackState { get; }
+            internal ProcedureFlow ProcFlow;
             private readonly SsaState ssa;
             private readonly ExpressionValueComparer cmp;
 
+            /// <summary>
+            /// Constructs an instance of <see cref="Context"/>.
+            /// </summary>
+            /// <param name="ssa"></param>
+            /// <param name="fp">Frame pointer for this </param>
+            /// <param name="idState"></param>
+            /// <param name="procFlow"></param>
             public Context(
                 SsaState ssa,
                 Identifier fp,
@@ -636,7 +679,7 @@ namespace Reko.Analysis
                       fp,
                       idState,
                       procFlow, 
-                      new Dictionary<int,Expression>(),
+                      [],
                       new ExpressionValueComparer())
             {
             }
@@ -660,11 +703,21 @@ namespace Reko.Analysis
                 this.cmp = cmp;
             }
 
+            /// <inheritdoc/>
             public EndianServices Endianness { get; }
+
+            /// <inheritdoc/>
             public int MemoryGranularity { get; }
 
+            /// <summary>
+            /// True if this context has been modified; false if not.
+            /// </summary>
             public bool IsDirty { get; set; }
 
+            /// <summary>
+            /// Creates a deep copy of this context instance.
+            /// </summary>
+            /// <returns></returns>
             public Context Clone()
             {
                 return new Context(ssa, this.FramePointer, this.IdState, this.ProcFlow, new Dictionary<int, Expression>(StackState), cmp);
@@ -694,11 +747,13 @@ namespace Reko.Analysis
                 return changed;
             }
 
+            /// <inheritdoc/>
             public Expression? GetDefiningExpression(Identifier id)
             {
                 return null;
             }
 
+            /// <inheritdoc/>
             public Expression GetValue(Application appl)
             {
                 var args = appl.Arguments;
@@ -714,6 +769,7 @@ namespace Reko.Analysis
                 return InvalidConstant.Create(appl.DataType);
             }
 
+            /// <inheritdoc/>
             public Expression GetValue(MemoryAccess access, IMemory memory)
             {
                 var offset = this.GetFrameOffset(access.EffectiveAddress);
@@ -732,6 +788,7 @@ namespace Reko.Analysis
                 return InvalidConstant.Create(access.DataType);
             }
 
+            /// <inheritdoc/>
             public Expression? GetValue(Identifier id)
             {
                 if (id.Storage is StackStorage stack)
@@ -754,7 +811,7 @@ namespace Reko.Analysis
                 return exp;
             }
 
-            public BitRange GetBitRange(Identifier id)
+            internal BitRange GetBitRange(Identifier id)
             {
                 if (!IdState.TryGetValue(id, out (Expression, BitRange) value))
                     return BitRange.Empty;
@@ -762,7 +819,7 @@ namespace Reko.Analysis
                     return value.Item2;
             }
 
-
+            /// <inheritdoc/>
             public bool IsUsedInPhi(Identifier id)
             {
                 var src = ssa.Identifiers[id].DefStatement;
@@ -778,25 +835,30 @@ namespace Reko.Analysis
                     .Any();
             }
 
+            /// <inheritdoc/>
             public Expression MakeSegmentedAddress(Constant c1, Constant c2)
             {
                 return ssa.Procedure.Architecture.MakeSegmentedAddress(c1, c2);
             }
 
+            /// <inheritdoc/>
             public Constant ReinterpretAsFloat(Constant rawBits)
             {
                 return ssa.Procedure.Architecture.ReinterpretAsFloat(rawBits);
             }
-            
+
+            /// <inheritdoc/>
             public void RemoveExpressionUse(Expression expr)
             {
             }
 
+            /// <inheritdoc/>
             public void SetValue(Identifier id, Expression value)
             {
                 SetValue(id, value, id.Storage.GetBitRange());
             }
 
+            /// <inheritdoc/>
             public void SetValue(Identifier id, Expression value, BitRange range)
             {
                 if (id.Storage is StackStorage stack)
@@ -832,6 +894,7 @@ namespace Reko.Analysis
                 }
             }
 
+            /// <inheritdoc/>
             public void SetValueEa(Expression effectiveAddress, Expression value)
             {
                 var offset = GetFrameOffset(effectiveAddress);
@@ -872,11 +935,13 @@ namespace Reko.Analysis
                 return null;
             }
 
+            /// <inheritdoc/>
             public void SetValueEa(Expression basePointer, Expression ea, Expression value)
             {
                 throw new NotImplementedException();
             }
 
+            /// <inheritdoc/>
             public void UseExpression(Expression expr)
             {
             }

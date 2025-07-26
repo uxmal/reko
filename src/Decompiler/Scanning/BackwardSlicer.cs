@@ -56,7 +56,7 @@ namespace Reko.Scanning
     /// </remarks>
     public class BackwardSlicer
     {
-        public static readonly TraceSwitch trace = new TraceSwitch(nameof(BackwardSlicer), "Traces the backward slicer") { Level = TraceLevel.Warning };
+        internal static readonly TraceSwitch trace = new TraceSwitch(nameof(BackwardSlicer), "Traces the backward slicer") { Level = TraceLevel.Warning };
 
         internal IBackWalkHost<RtlBlock, RtlInstruction> host;
         private readonly RtlBlock rtlBlock;
@@ -67,7 +67,16 @@ namespace Reko.Scanning
         private readonly ExpressionSimplifier simp;
         private SliceState? state;
 
-        public BackwardSlicer(IBackWalkHost<RtlBlock, RtlInstruction> host, RtlBlock rtlBlock, ProcessorState state)
+        /// <summary>
+        /// Constructs an instance of <see cref="BackwardSlicer"/>.
+        /// </summary>
+        /// <param name="host"><see cref="IBackWalkHost{TBlock, TInstr}"/> </param>
+        /// <param name="rtlBlock"></param>
+        /// <param name="state"></param>
+        public BackwardSlicer(
+            IBackWalkHost<RtlBlock, RtlInstruction> host,
+            RtlBlock rtlBlock,
+            ProcessorState state)
         {
             this.host = host;
             this.rtlBlock = rtlBlock;
@@ -98,11 +107,28 @@ namespace Reko.Scanning
         /// </summary>
         public StridedInterval JumpTableIndexInterval => state!.JumpTableIndexInterval;
 
-        public Expression? JumpTableIndexToUse { get { return state!.JumpTableIndexToUse; } }
+        /// <summary>
+        /// Gets the expression representing the index of the jump table to use.
+        /// </summary>
+        /// <remarks>
+        /// This may be different to <see cref="JumpTableIndex"/>.</remarks>
+        public Expression? JumpTableIndexToUse => state!.JumpTableIndexToUse;
 
-        public Address? GuardInstrAddress => state?.GuardInstrAddress; 
+        /// <summary>
+        /// The address of the instruction at which the range check happens, if 
+        /// the guard instruction was found; otherwise null.
+        /// </summary>
+        public Address? GuardInstrAddress => state?.GuardInstrAddress;
 
 
+        /// <summary>
+        /// Computes the entries of a jump or call table by tracing backwards
+        /// in the execution stream.
+        /// </summary>
+        /// <param name="addrSwitch">Address of the indirect Control Transfer instruction.</param>
+        /// <param name="xfer">The indirect CTI.</param>
+        /// <param name="listener"></param>
+        /// <returns></returns>
         public TableExtent? DiscoverTableExtent(Address addrSwitch, RtlTransfer xfer, IEventListener listener)
         {
             if (!Start(rtlBlock, host.BlockInstructionCount(rtlBlock) - 1, xfer.Target))
@@ -322,12 +348,16 @@ namespace Reko.Scanning
         /// </summary>
         /// <remarks>
         /// If the jump table format expression is like:
+        /// <code>
         /// Mem[{index} * scale + {table_base}]
+        /// </code>
         /// or 
-        /// Mem[index << scale + table_base]
-        /// we assume `index` is an index into the jump table. 
+        /// <code>
+        /// Mem[index &lt;&lt; scale + table_base]
+        /// </code>
+        /// we assume <c>index</c> is an index into the jump table. 
         /// </remarks>
-        /// <returns>The `index` expression if detected, otherwise null.</returns>
+        /// <returns>The <c>index</c> expression if detected, otherwise null.</returns>
         public static Expression? FindIndexWithPatternMatch(Expression? jumpTableFormat)
         {
             if (jumpTableFormat is not MemoryAccess mem)
@@ -428,25 +458,62 @@ namespace Reko.Scanning
             }
         }
 
+        /// <summary>
+        /// Creates a new instance of the block constant propagator.
+        /// </summary>
+        /// <returns>The new instance.</returns>
         public RtlInstructionVisitor<RtlInstruction> CreateBlockConstantPropagator()
         {
-            return new BlockConstantPropagator(host.Program.SegmentMap, NullDecompilerEventListener.Instance);
+            return new BlockConstantPropagator();
         }
     }
 
+    /// <summary>
+    /// Keeps track of the context in which an expression is used.
+    /// </summary>
     [Flags]
     public enum ContextType
     {
+        /// <summary>
+        /// Expression whose use is not linked to either the jump table address
+        /// computation or the guard instruction.
+        /// </summary>
         None = 0,
+
+        /// <summary>
+        /// The expression is used to compute the jump table address.
+        /// </summary>
         Jumptable = 1,
+
+        /// <summary>
+        /// The expression is used in a conditional context, such as
+        /// the guard instruction that checks whether the index is within 
+        /// the correct range of indices for the jump table.
+        /// </summary>
         Condition = 2,
     }
 
+    /// <summary>
+    /// Tracks the context in which an expression is used during the backward slicing
+    /// process.
+    /// </summary>
     public class BackwardSlicerContext : IComparable<BackwardSlicerContext>
     {
+        /// <summary>
+        /// Specifies the type of context in which an expression is used.
+        /// </summary>
         public ContextType Type;
-        public BitRange BitRange;   // Indicates the range of bits which are live.
 
+        /// <summary>
+        /// Indicates the range of bits which are live.
+        /// </summary>
+        public BitRange BitRange;
+
+        /// <summary>
+        /// Constructs a new instance of <see cref="BackwardSlicerContext"/>.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="range"></param>
         public BackwardSlicerContext(ContextType type, BitRange range)
         {
             Type = type;
@@ -473,6 +540,7 @@ namespace Reko.Scanning
             return new BackwardSlicerContext(ContextType.Condition, bitRange);
         }
 
+        /// <inheritdoc/>
         public int CompareTo(BackwardSlicerContext? that)
         {
             if (that is null)
@@ -480,6 +548,12 @@ namespace Reko.Scanning
             return this.BitRange.CompareTo(that.BitRange);
         }
 
+        /// <summary>
+        /// Merges two <see cref="BackwardSlicerContext"/>s.
+        /// </summary>
+        /// <param name="that">The other context to merge.</param>
+        /// <returns>A new contect that contstitutes the merged
+        /// state of the two original contexts.</returns>
         public BackwardSlicerContext Merge(BackwardSlicerContext that)
         {
             var type = this.Type | that.Type;
@@ -487,6 +561,7 @@ namespace Reko.Scanning
             return new BackwardSlicerContext(type, range);
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             return $"({this.Type},{this.BitRange})";
@@ -509,16 +584,53 @@ namespace Reko.Scanning
         ExpressionVisitor<SlicerResult?, BackwardSlicerContext>
     {
         private readonly BackwardSlicer slicer;
+        /// <summary>
+        /// Current block.
+        /// </summary>
         public RtlBlock block;
-        public int iInstr;              // The current instruction
-        public (Address, RtlInstruction)[] instrs; // The instructions of this block
-        public Address? addrSucc;        // the block from which we traced.
-        public ConditionCode ccNext;    // The condition code that is used in a branch.
-        public Expression? assignLhs;    // current LHS
+
+        /// <summary>
+        /// Index of the current instruction.
+        /// </summary>
+        public int iInstr;
+
+        /// <summary>
+        /// The instructions of this block
+        /// </summary>
+        public (Address, RtlInstruction)[] instrs;
+
+        /// <summary>
+        /// the block from which we traced.
+        /// </summary>
+        public Address? addrSucc;
+
+        /// <summary>
+        /// The condition code that is used in a branch.
+        /// </summary>
+        public ConditionCode ccNext;
+
+        /// <summary>
+        /// Current left-hand side of an assignment.
+        /// </summary>
+        public Expression? assignLhs;
+
+        /// <summary>
+        /// True if the condition of the branch is inverted.
+        /// </summary>
         public bool invertCondition;
+
+        /// <summary>
+        /// Live expressions at the current point in the slice.
+        /// </summary>
         public Dictionary<Expression, BackwardSlicerContext> Live;
         private int blockCount;
 
+        /// <summary>
+        /// Constructs a new instance of <see cref="SliceState"/>.
+        /// </summary>
+        /// <param name="slicer">Controlling <see cref="BackwardSlicer"/>.</param>
+        /// <param name="block">Block to backward slice.</param>
+        /// <param name="iInstr">Index of instruction to start at.</param>
         public SliceState(BackwardSlicer slicer, RtlBlock block, int iInstr)
         {
             this.slicer = slicer;
@@ -538,20 +650,33 @@ namespace Reko.Scanning
                 .ToArray();
 
             this.iInstr = iInstr;
-            this.Live = new Dictionary<Expression, BackwardSlicerContext>();
+            this.Live = [];
             DumpBlock(BackwardSlicer.trace.TraceVerbose);
         }
 
-        // The RTL expression in the executable that computes the destination addresses.
+        /// <summary>
+        /// The RTL expression in the executable that computes the destination addresses.
+        /// </summary>
         public Expression? JumpTableFormat { get; private set; }
 
-        // An expression that tests the index 
+        /// <summary>
+        /// An expression that tests the index.
+        /// </summary>
         public Expression? JumpTableIndex { get; private set; }
-        // An expression that tests the index that should be used in the resulting source code.
+
+        /// <summary>
+        /// An expression that tests the index that should be used in the resulting source code.
+        /// </summary>
         public Expression? JumpTableIndexToUse { get; private set; }
-        // the 'stride' of the jump/call table.
+
+        /// <summary>
+        /// The 'stride' of the jump/call table.
+        /// </summary>
         public StridedInterval JumpTableIndexInterval { get; private set; }
-        // the address of the instruction at which the range check happens.
+
+        /// <summary>
+        /// The address of the instruction at which the range check happens.
+        /// </summary>
         public Address? GuardInstrAddress { get; private set; }
 
         /// <summary>
@@ -577,6 +702,11 @@ namespace Reko.Scanning
             BackwardSlicer.trace.Verbose("  live: {0}", DumpLive(this.Live));
             return true;
         }
+
+        /// <summary>
+        /// Advances the slicer to the previous instruction in the block.
+        /// </summary>
+        /// <returns>True of </returns>
 
         public bool Step()
         {
@@ -621,7 +751,7 @@ namespace Reko.Scanning
             return true;
         }
 
-        public bool IsInBeginningOfBlock()
+        internal bool IsInBeginningOfBlock()
         {
             return iInstr < 0;
         }
@@ -707,6 +837,7 @@ namespace Reko.Scanning
             }
         }
 
+        /// <inheritdoc/>
         public SlicerResult VisitAddress(Address addr, BackwardSlicerContext ctx)
         {
             return new SlicerResult
@@ -715,6 +846,7 @@ namespace Reko.Scanning
             };
         }
 
+        /// <inheritdoc/>
         public SlicerResult VisitApplication(Application appl, BackwardSlicerContext ctx)
         {
             return new SlicerResult
@@ -723,11 +855,13 @@ namespace Reko.Scanning
             };
         }
 
+        /// <inheritdoc/>
         public SlicerResult VisitArrayAccess(ArrayAccess acc, BackwardSlicerContext ctx)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public SlicerResult? VisitAssignment(RtlAssignment ass)
         {
             if (ass.Dst is not Identifier id)
@@ -785,6 +919,7 @@ namespace Reko.Scanning
             return se;
         }
 
+        /// <inheritdoc/>
         public SlicerResult? VisitBinaryExpression(BinaryExpression binExp, BackwardSlicerContext ctx)
         {
             var opType = binExp.Operator.Type;
@@ -982,6 +1117,7 @@ namespace Reko.Scanning
             };
         }
 
+        /// <inheritdoc/>
         public SlicerResult? VisitBranch(RtlBranch branch)
         {
             if (branch.Target is not Address addrTarget)
@@ -994,6 +1130,7 @@ namespace Reko.Scanning
             return se;
         }
 
+        /// <inheritdoc/>
         public SlicerResult VisitCall(RtlCall call)
         {
             return new SlicerResult
@@ -1003,17 +1140,20 @@ namespace Reko.Scanning
             };
         }
 
+        /// <inheritdoc/>
         public SlicerResult? VisitCast(Cast cast, BackwardSlicerContext ctx)
         {
             var range = new BitRange(0, (short)cast.DataType.BitSize);
             return cast.Expression.Accept(this, new BackwardSlicerContext(ctx.Type, range));
         }
 
+        /// <inheritdoc/>
         public SlicerResult? VisitConditionalExpression(ConditionalExpression c, BackwardSlicerContext ctx)
         {
             return null;
         }
 
+        /// <inheritdoc/>
         public SlicerResult? VisitConditionOf(ConditionOf cof, BackwardSlicerContext ctx)
         {
             var se = cof.Expression.Accept(this, BackwardSlicerContext.Cond(RangeOf(cof.Expression)));
@@ -1026,15 +1166,17 @@ namespace Reko.Scanning
             return se;
         }
 
+        /// <inheritdoc/>
         public SlicerResult VisitConstant(Constant c, BackwardSlicerContext ctx)
         {
             return new SlicerResult
             {
-                LiveExprs = new Dictionary<Expression, BackwardSlicerContext>(),
+                LiveExprs = [],
                 SrcExpr = c,
             };
         }
 
+        /// <inheritdoc/>
         public SlicerResult? VisitConversion(Conversion conversion, BackwardSlicerContext ctx)
         {
             var range = new BitRange(0, (short) conversion.DataType.BitSize);
@@ -1046,17 +1188,20 @@ namespace Reko.Scanning
             return se;
         }
 
+        /// <inheritdoc/>
         public SlicerResult VisitDereference(Dereference deref, BackwardSlicerContext ctx)
         {
             throw new NotImplementedException();
         }
 
 
+        /// <inheritdoc/>
         public SlicerResult VisitFieldAccess(FieldAccess acc, BackwardSlicerContext ctx)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public SlicerResult? VisitGoto(RtlGoto go)
         {
             var sr = go.Target.Accept(this, BackwardSlicerContext.Jump(RangeOf(go.Target)));
@@ -1091,6 +1236,7 @@ namespace Reko.Scanning
             return expr;
         }
 
+        /// <inheritdoc/>
         public SlicerResult VisitIdentifier(Identifier id, BackwardSlicerContext ctx)
         {
             var sr = new SlicerResult
@@ -1101,21 +1247,25 @@ namespace Reko.Scanning
             return sr;
         }
 
+        /// <inheritdoc/>
         public SlicerResult VisitIf(RtlIf rtlIf)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public SlicerResult VisitInvalid(RtlInvalid invalid)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public SlicerResult VisitMemberPointerSelector(MemberPointerSelector mps, BackwardSlicerContext ctx)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public SlicerResult VisitMemoryAccess(MemoryAccess access, BackwardSlicerContext ctx)
         {
             var rangeEa = new BitRange(0, (short)access.EffectiveAddress.DataType.BitSize);
@@ -1129,6 +1279,7 @@ namespace Reko.Scanning
             };
         }
 
+        /// <inheritdoc/>
         public SlicerResult VisitMkSequence(MkSequence seq, BackwardSlicerContext ctx)
         {
             var srExprs = seq.Expressions
@@ -1169,26 +1320,31 @@ namespace Reko.Scanning
             return result;
         }
 
+        /// <inheritdoc/>
         public SlicerResult? VisitNop(RtlNop rtlNop)
         {
             return null;
         }
 
+        /// <inheritdoc/>
         public SlicerResult VisitOutArgument(OutArgument outArgument, BackwardSlicerContext ctx)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public SlicerResult VisitPhiFunction(PhiFunction phi, BackwardSlicerContext ctx)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public SlicerResult VisitPointerAddition(PointerAddition pa, BackwardSlicerContext ctx)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public SlicerResult VisitProcedureConstant(ProcedureConstant pc, BackwardSlicerContext ctx)
         {
             return new SlicerResult
@@ -1198,6 +1354,7 @@ namespace Reko.Scanning
             };
         }
 
+        /// <inheritdoc/>
         public SlicerResult VisitReturn(RtlReturn ret)
         {
             return new SlicerResult
@@ -1206,16 +1363,19 @@ namespace Reko.Scanning
             };
         }
 
+        /// <inheritdoc/>
         public SlicerResult VisitScopeResolution(ScopeResolution scopeResolution, BackwardSlicerContext ctx)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public SlicerResult? VisitSegmentedAddress(SegmentedPointer address, BackwardSlicerContext ctx)
         {
             return address.Offset.Accept(this, ctx);
         }
 
+        /// <inheritdoc/>
         public SlicerResult VisitSideEffect(RtlSideEffect side)
         {
             return new SlicerResult
@@ -1224,6 +1384,7 @@ namespace Reko.Scanning
             };
         }
 
+        /// <inheritdoc/>
         public SlicerResult? VisitSlice(Slice slice, BackwardSlicerContext ctx)
         {
             var range = new BitRange(
@@ -1232,6 +1393,7 @@ namespace Reko.Scanning
             return slice.Expression.Accept(this, new BackwardSlicerContext(ctx.Type, range));
         }
 
+        /// <inheritdoc/>
         public SlicerResult VisitStringConstant(StringConstant str, BackwardSlicerContext ctx)
         {
             return new SlicerResult
@@ -1241,11 +1403,13 @@ namespace Reko.Scanning
             };
         }
 
+        /// <inheritdoc/>
         public SlicerResult? VisitSwitch(RtlSwitch rtlSwitch)
         {
             return null;
         }
 
+        /// <inheritdoc/>
         public SlicerResult? VisitTestCondition(TestCondition tc, BackwardSlicerContext ctx)
         {
             var se = tc.Expression.Accept(this, BackwardSlicerContext.Cond(RangeOf(tc.Expression)));
@@ -1253,6 +1417,7 @@ namespace Reko.Scanning
             return se;
         }
 
+        /// <inheritdoc/>
         public SlicerResult? VisitUnaryExpression(UnaryExpression unary, BackwardSlicerContext ctx)
         {
             if (unary.Operator.Type == OperatorType.Not)
@@ -1265,6 +1430,7 @@ namespace Reko.Scanning
             return sr;
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             var sb = new StringBuilder();
@@ -1306,6 +1472,12 @@ namespace Reko.Scanning
             Debug.Write(sw.ToString());
         }
 
+        /// <summary>
+        /// Creates a new <see cref="SliceState"/> for the given block.
+        /// </summary>
+        /// <param name="block">Block to slice.</param>
+        /// <param name="addrSucc">The block from which we came.</param>
+        /// <returns>A new <see cref="SliceState"/> instance.</returns>
         public SliceState CreateNew(RtlBlock block, Address addrSucc)
         {
             var state = new SliceState(this.slicer, block, 0)
@@ -1323,25 +1495,60 @@ namespace Reko.Scanning
             return state;
         }
 
+        /// <inheritdoc/>
         public SlicerResult VisitMicroGoto(RtlMicroGoto uGoto)
         {
             throw new NotImplementedException();
         }
     }
 
+    /// <summary>
+    /// The result of a backward slicing operation.
+    /// </summary>
     public class SlicerResult
     {
-        // Live storages are involved in the computation of the jump destinations.
-        public Dictionary<Expression, BackwardSlicerContext> LiveExprs = new();
+        /// <summary>
+        /// Live storages are involved in the computation of the jump destinations.
+        /// </summary>
+        public Dictionary<Expression, BackwardSlicerContext> LiveExprs = [];
+
+        /// <summary>
+        /// Expression being built up by the expression slicer.
+        /// </summary>
+
         public Expression? SrcExpr;
-        public bool Stop;       // Set to true if the analysis should stop.
+
+        /// <summary>
+        /// Set to true if the analysis should stop.
+        /// </summary>
+        public bool Stop;
     }
+
+    /// <summary>
+    /// Describes the extent of a discovered jump table.
+    /// </summary>
 
     public class TableExtent
     {
+        /// <summary>
+        /// Ordered list of the target addresses of the jump table.
+        /// </summary>
         public List<Address>? Targets;
+
+        /// <summary>
+        /// All memory accesses that were used to compute the jump table.
+        /// </summary>
         public Dictionary<Address, DataType>? Accesses;
+
+        /// <summary>
+        /// Expression used to compute the jump table index.
+        /// </summary>
         public Expression? Index;
+
+        /// <summary>
+        /// The address of the branch instructions that prevents out of bounds
+        /// accesses to the jump table.
+        /// </summary>
         public Address? GuardInstrAddress;
     }
 }

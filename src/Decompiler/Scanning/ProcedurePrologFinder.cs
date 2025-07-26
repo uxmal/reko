@@ -23,15 +23,18 @@ using Reko.Core.Collections;
 using Reko.Core.Diagnostics;
 using Reko.Core.Lib;
 using Reko.Core.Memory;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Numerics;
 using System.Threading;
 
 namespace Reko.Scanning
 {
+    /// <summary>
+    /// Attempts to finf the base address of a binary image by looking
+    /// for procedure prologs in the memory image and associating them
+    /// with pointers in the memory image.
+    /// </summary>
     public class ProcedurePrologFinder : AbstractBaseAddressFinder
     {
         private static readonly TraceSwitch trace = new TraceSwitch(nameof(ProcedurePrologFinder), nameof(ProcedurePrologFinder));
@@ -40,6 +43,13 @@ namespace Reko.Scanning
         private readonly IProcessorArchitecture arch;
         private readonly ByteTrie<object> trie;
 
+        /// <summary>
+        /// Constructs an instance of <see cref="ProcedurePrologFinder"/>.
+        /// </summary>
+        /// <param name="arch"><see cref="IProcessorArchitecture"/> </param>
+        /// <param name="patterns">Procedure prolog patterns.</param>
+        /// <param name="mem">Raw memory image to search.
+        /// </param>
         public ProcedurePrologFinder(
             IProcessorArchitecture arch,
             IEnumerable<MaskedPattern> patterns,
@@ -52,13 +62,13 @@ namespace Reko.Scanning
             Stride = 0x1000;
         }
 
+        /// <inheritdoc/>
         public override BaseAddressCandidate[] Run(CancellationToken ct)
         {
             int threadIndex = 0;
             var prologsOffsets = PatternFinder.FindProcedurePrologs(Memory, trie);
             trace.Inform($"Found {prologsOffsets.Count} possible prolog offsets");
-            var sw = new Stopwatch();
-            sw.Start();
+            var sw = Stopwatch.StartNew();
             var alignment = arch.InstructionBitSize / arch.MemoryGranularity;
             var pointers = ReadPointers(Memory, alignment);
             var heap = new List<BaseAddressCandidate>();

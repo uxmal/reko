@@ -44,6 +44,12 @@ namespace Reko.Scanning
         private readonly Program program;
         private readonly Dictionary<Address, Block> blocksByAddress;
 
+        /// <summary>
+        /// Constructs an instance of <see cref="ProcedureGraphBuilder"/>.
+        /// </summary>
+        /// <param name="sr"><see cref="ScanResultsV2"/> instance.</param>
+        /// <param name="program">Program being analyzed.
+        /// </param>
         public ProcedureGraphBuilder(ScanResultsV2 sr, Program program)
         {
             this.sr = sr;
@@ -51,6 +57,11 @@ namespace Reko.Scanning
             this.blocksByAddress = new Dictionary<Address, Block>();
         }
 
+        /// <summary>
+        /// Constructs <see cref="Procedure"/>s from <see cref="RtlProcedure"/>s.
+        /// </summary>
+        /// <param name="rtlProcedures"><see cref="RtlProcedure"/>s to convert.
+        /// </param>
         public void Build(IEnumerable<RtlProcedure> rtlProcedures)
         {
             var rtlProcDict = rtlProcedures.ToDictionary(e => e.Address);
@@ -207,6 +218,7 @@ namespace Reko.Scanning
         }
 
  
+        /// <inheritdoc/>
         public Instruction VisitAssignment(RtlAssignment ass, Context ctx)
         {
             var src = ass.Src.Accept(this, ctx.Procedure);
@@ -217,6 +229,7 @@ namespace Reko.Scanning
                 return new Store(dst, src);
         }
 
+        /// <inheritdoc/>
         public Instruction VisitBranch(RtlBranch branch, Context ctx)
         {
             var condition = branch.Condition.Accept(this, ctx.Procedure);
@@ -225,6 +238,7 @@ namespace Reko.Scanning
             return new Branch(condition, thenBlock);
         }
 
+        /// <inheritdoc/>
         public Instruction VisitCall(RtlCall call, Context ctx)
         {
             var target = call.Target.Accept(this, ctx.Procedure);
@@ -240,14 +254,14 @@ namespace Reko.Scanning
             return new CallInstruction(target, site);
         }
 
+        /// <inheritdoc/>
         public Instruction VisitGoto(RtlGoto go, Context ctx)
         {
             if (go.Target is Address addr)
             {
                 if (program.Procedures.TryGetValue(addr, out var procCallee))
                 {
-                    var state = ctx.Procedure.Architecture.CreateProcessorState();
-                    var thunk = CreateCallRetThunk(ctx.Cluster.Address, ctx.Procedure, state, procCallee);
+                    var thunk = CreateCallRetThunk(ctx.Cluster.Address, ctx.Procedure, procCallee);
                     ctx.Procedure.ControlGraph.AddEdge(ctx.Block, thunk);
                     return null!;
                 }
@@ -267,7 +281,7 @@ namespace Reko.Scanning
         /// <param name="procOld"></param>
         /// <param name="procNew"></param>
         /// <returns></returns>
-        public Block CreateCallRetThunk(Address addrFrom, Procedure procOld, ProcessorState state, Procedure procNew)
+        public Block CreateCallRetThunk(Address addrFrom, Procedure procOld, Procedure procNew)
         {
             //$BUG: ReturnAddressOnStack property needs to be properly set, the
             // EvenOdd sample shows how this doesn't work currently. 
@@ -302,26 +316,31 @@ namespace Reko.Scanning
         }
 
 
+        /// <inheritdoc/>
         public Instruction VisitIf(RtlIf rtlIf, Context ctx)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public Instruction VisitInvalid(RtlInvalid invalid, Context ctx)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public Instruction VisitMicroGoto(RtlMicroGoto uGoto, Context ctx)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public Instruction VisitNop(RtlNop rtlNop, Context ctx)
         {
             return null!;
         }
 
+        /// <inheritdoc/>
         public Instruction VisitReturn(RtlReturn ret, Context ctx)
         {
             var proc = ctx.Procedure;
@@ -329,12 +348,14 @@ namespace Reko.Scanning
             return new ReturnInstruction();
         }
 
+        /// <inheritdoc/>
         public Instruction VisitSideEffect(RtlSideEffect side, Context ctx)
         {
             var exp = side.Expression.Accept(this, ctx.Procedure);
             return new SideEffect(exp);
         }
 
+        /// <inheritdoc/>
         public Instruction VisitSwitch(RtlSwitch sw, Context ctx)
         {
             throw new NotImplementedException();
@@ -521,20 +542,38 @@ namespace Reko.Scanning
             }
         }
 
+        /// <summary>
+        /// Context for the <see cref="ProcedureGraphBuilder"/> visitor methods.
+        /// </summary>
         public struct Context
         {
+            /// <summary>
+            /// Construct a new <see cref="Context"/> instance.
+            /// </summary>
+            /// <param name="block">Basic block being built.</param>
+            /// <param name="cluster"><see cref="RtlInstructionCluster"/> being 
+            /// processed.</param>
             public Context(Block block, RtlInstructionCluster cluster)
             {
                 Block = block;
                 Cluster = cluster;
             }
 
+            /// <summary>
+            /// Basic block being built.
+            /// </summary>
             public Block Block { get; }
 
+            /// <summary>
+            /// <see cref="RtlInstructionCluster"/> being processed.
+            /// </summary>
             public RtlInstructionCluster Cluster { get; }
 
+
+            /// <summary>
+            /// Current procedure being built.
+            /// </summary>
             public Procedure Procedure => Block.Procedure;
         }
-
     }
 }

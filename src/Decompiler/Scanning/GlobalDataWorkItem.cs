@@ -38,6 +38,15 @@ namespace Reko.Scanning
         private readonly DataType dt;
         private readonly EndianImageReader rdr;
 
+        /// <summary>
+        /// Constructs a new instance of the <see cref="GlobalDataWorkItem"/> class.
+        /// </summary>
+        /// <param name="scanner">Scanner instance that created this work item.</param>
+        /// <param name="program">Program being analyzed.</param>
+        /// <param name="addr">The address at which this global data object is located.</param>
+        /// <param name="rdr"><see cref="EndianImageReader"/> positioned at the global data object.</param>
+        /// <param name="dt"><see cref="DataType"/> of the data object.</param>
+        /// <param name="name">Optional name of the data object.</param>
         public GlobalDataWorkItem(
             IScannerServices scanner,
             Program program,
@@ -52,11 +61,13 @@ namespace Reko.Scanning
             this.rdr = rdr;
         }
 
+        /// <inheritdoc/>
         public override void Process()
         {
             dt.Accept(this);
         }
 
+        /// <inheritdoc/>
         public void VisitArray(ArrayType at)
         {
             if (at.Length <= 0)
@@ -70,26 +81,31 @@ namespace Reko.Scanning
             }
         }
 
+        /// <inheritdoc/>
         public void VisitClass(ClassType ct)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitCode(CodeType c)
         {
             program.ImageMap.TerminateItem(rdr.Address);
         }
 
+        /// <inheritdoc/>
         public void VisitEnum(EnumType e)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitEquivalenceClass(EquivalenceClass eq)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitFunctionType(FunctionType ft)
         {
             var addr = rdr.Address;
@@ -98,16 +114,19 @@ namespace Reko.Scanning
             scanner.EnqueueUserProcedure(program.Architecture, addr, ft, null);
         }
 
+        /// <inheritdoc/>
         public void VisitPrimitive(PrimitiveType pt)
         {
             rdr.Offset += pt.Size;
         }
 
+        /// <inheritdoc/>
         public void VisitMemberPointer(MemberPointer memptr)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitPointer(Pointer ptr)
         {
             if (!rdr.TryRead(PrimitiveType.Create(Domain.Pointer, ptr.BitSize), out var c))
@@ -119,11 +138,13 @@ namespace Reko.Scanning
             scanner.EnqueueUserGlobalData(addr, ptr.Pointee, null);
         }
 
+        /// <inheritdoc/>
         public void VisitReference(ReferenceTo refTo)
         {
             throw new NotSupportedException("Global variables cannot be references.");
         }
 
+        /// <inheritdoc/>
         public void VisitString(StringType str)
         {
             var offsetStart = rdr.Offset;
@@ -152,6 +173,7 @@ namespace Reko.Scanning
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitStructure(StructureType str)
         {
             var structOffset = rdr.Offset;
@@ -163,25 +185,30 @@ namespace Reko.Scanning
             rdr.Offset = structOffset + str.GetInferredSize();
         }
 
+        /// <inheritdoc/>
         public void VisitTypeReference(TypeReference typeref)
         {
             typeref.Referent.Accept(this);
         }
 
+        /// <inheritdoc/>
         public void VisitTypeVariable(TypeVariable tv)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitUnion(UnionType ut)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitUnknownType(UnknownType ut)
         {
         }
 
+        /// <inheritdoc/>
         public void VisitVoidType(VoidType voidType)
         {
         }

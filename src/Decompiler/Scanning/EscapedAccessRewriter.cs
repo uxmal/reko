@@ -35,6 +35,10 @@ namespace Reko.Scanning
 	{
 		private readonly Procedure proc;
 
+        /// <summary>
+        /// Constructs a new instance of the <see cref="EscapedAccessRewriter"/> class.
+        /// </summary>
+        /// <param name="proc"></param>
 		public EscapedAccessRewriter(Procedure proc)
 		{
 			this.proc = proc;
@@ -74,7 +78,7 @@ namespace Reko.Scanning
 		/// </summary>
 		/// <remarks>
 		/// The frame pointer assignment needs a block of its own, as placing it in the 
-		/// "entryBlock" wreaks havoc with SSA assignments &c.
+		/// "entryBlock" wreaks havoc with SSA assignments &amp;c.
 		/// </remarks>
 		public void InsertFramePointerAssignment(IProcessorArchitecture arch)
 		{
@@ -98,6 +102,9 @@ namespace Reko.Scanning
                 !proc.Architecture.IsStackArgumentOffset(stack.StackOffset);
 		}
 
+        /// <summary>
+        /// Performs the escped access transformation on the procedure.
+        /// </summary>
 		public void Transform()
 		{
             foreach (Statement stm in proc.Statements)
@@ -106,11 +113,13 @@ namespace Reko.Scanning
             }
 		}
 
+        /// <inheritdoc/>
 		public override Instruction TransformAssignment(Assignment a)
 		{
 			return Def(a.Dst, a.Src.Accept(this));
 		}
 
+        /// <inheritdoc/>
 		public override Instruction TransformStore(Store store)
 		{
 			store.Src = store.Src.Accept(this);
@@ -119,6 +128,7 @@ namespace Reko.Scanning
 		}
 
 
+        /// <inheritdoc/>
 		public override Expression VisitIdentifier(Identifier id)
 		{
 			if (IsLocal(id))

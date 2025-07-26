@@ -78,7 +78,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
 
         private void When_DisassembleProcedure()
         {
-            var hsc = new Reko.Scanning.HeuristicScanner(default!, program, host.Object, eventListener.Object);
+            var hsc = new Reko.Scanning.HeuristicScanner(program, host.Object, eventListener.Object);
             var mem = program.SegmentMap.Segments.Values.First().MemoryArea;
             //$BUG: danger of overflow
             this.proc = hsc.DisassembleProcedure(

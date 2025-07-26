@@ -22,7 +22,7 @@ using Reko.Core;
 using Reko.Core.Collections;
 using Reko.Core.Diagnostics;
 using Reko.Core.Rtl;
-using Reko.Services;
+using Reko.Core.Services;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -42,13 +42,26 @@ namespace Reko.Scanning
         private readonly BTreeDictionary<Address, RtlBlock> blockStarts;
         private BlockWorker? fallThroughJob;
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="ChunkWorker"/> class.
+        /// </summary>
+        /// <param name="scanner">The <see cref="ShingleScanner"/> instance
+        /// that orchestrates the <see cref="ChunkWorker"/> instance being crated.</param>
+        /// <param name="arch"><see cref="IProcessorArchitecture"/> architecture to use
+        /// when scanning.</param>
+        /// <param name="addrStart">Address at which to start.</param>
+        /// <param name="chunkUnits">Size of the chunk in addressale units.</param>
+        /// <param name="rejectMask"><see cref="InstrClass"/> that determine
+        /// instructions deemed to be invalid.</param>
+        /// <param name="listener"><see cref="IEventListener"/> instance to which to publish
+        /// diagnostic messages.</param>
         public ChunkWorker(
             ShingleScanner scanner,
             IProcessorArchitecture arch,
             Address addrStart,
             int chunkUnits,
             InstrClass rejectMask,
-            IDecompilerEventListener listener)
+            IEventListener listener)
             : base(scanner, addrStart, rejectMask, listener)
         {
             this.shScanner = scanner;
@@ -58,10 +71,19 @@ namespace Reko.Scanning
             this.blockStarts = new();
         }
 
+        /// <summary>
+        /// Processor architecture used to disassemble this chunk.
+        /// </summary>
         public IProcessorArchitecture Architecture { get; }
 
+        /// <summary>
+        /// Length of the chunk in addressable units.
+        /// </summary>
         public int Length { get; }
 
+        /// <summary>
+        /// Performs the shingle scan of the chunk.
+        /// </summary>
         public void Run()
         {
             var stepsize = Architecture.InstructionBitSize / Architecture.MemoryGranularity;
@@ -109,6 +131,7 @@ namespace Reko.Scanning
                 blockNos[offset] == 0;
         }
 
+        /// <inheritdoc/>
         public override BlockWorker AddJob(Address addr, IEnumerator<RtlInstructionCluster> trace, ProcessorState state)
         {
             if (fallThroughJob is not null && fallThroughJob.Address == addr)
@@ -120,12 +143,14 @@ namespace Reko.Scanning
             return base.CreateBlockWorker(shScanner, this, addr, trace, state);
         }
 
+        /// <inheritdoc/>
         public override BlockWorker AddFallthroughJob(Address addr, IEnumerator<RtlInstructionCluster> trace, ProcessorState state)
         {
             this.fallThroughJob = base.CreateBlockWorker(shScanner, this, addr, trace, state);
             return fallThroughJob;
         }
 
+        /// <inheritdoc/>
         public override RtlBlock? SplitExistingBlock(Address addr)
         {
             if (!this.blockStarts.TryGetLowerBoundIndex(addr, out int iMin))
@@ -149,6 +174,7 @@ namespace Reko.Scanning
             return null;
         }
 
+        /// <inheritdoc/>
         public override bool TryMarkVisited(Address addr)
         {
             log.Verbose("        Marking {0} visited.", addr);
@@ -159,6 +185,7 @@ namespace Reko.Scanning
             return oldValue == 0;
         }
 
+        /// <inheritdoc/>
         protected override void ProcessCall(RtlBlock blockCaller, Edge edge, ProcessorState state)
         {
             if (IsBadCallTarget(edge.To))
@@ -186,10 +213,12 @@ namespace Reko.Scanning
             return false;
         }
 
+        /// <inheritdoc/>
         protected override void ProcessReturn()
         {
         }
 
+        /// <inheritdoc/>
         protected override bool TryRegisterTrampoline(
             Address addrFinalInstr,
             List<RtlInstructionCluster> trampolineStub,

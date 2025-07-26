@@ -43,12 +43,23 @@ namespace Reko.Typing
 		private readonly TypeStore store; 
         private readonly Program program;
         private readonly HashSet<EquivalenceClass> classesVisited;
-        private readonly IDecompilerEventListener eventListener;
+        private readonly IEventListener eventListener;
         private int recursionGuard;
         private int nestCount;
         private bool changed;
 
-        public PtrPrimitiveReplacer(TypeFactory factory, TypeStore store, Program program, IDecompilerEventListener eventListener)
+        /// <summary>
+        /// Create an instance of the <see cref="PtrPrimitiveReplacer"/> class.
+        /// </summary>
+        /// <param name="factory">Type factory to use for building data types.</param>
+        /// <param name="store">Type store maintaining the known type variables 
+        /// and equivalence classes.</param>
+        /// <param name="program">Program being analyzed.</param>
+        /// <param name="eventListener"><see cref="IEventListener"/> to which 
+        /// diagnostic messages are reported.
+        /// </param>
+
+        public PtrPrimitiveReplacer(TypeFactory factory, TypeStore store, Program program, IEventListener eventListener)
 		{
 			this.factory = factory;
 			this.store = store;
@@ -57,11 +68,21 @@ namespace Reko.Typing
             this.classesVisited = new HashSet<EquivalenceClass>();
         }
 
+        /// <summary>
+        /// Performs a substitution.
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <returns></returns>
 		public DataType? Replace(DataType? dt)
 		{
 			return dt?.Accept(this);
 		}
 
+        /// <summary>
+        /// Performs the transformation on all type variables and equivalence
+        /// classes in the type store.
+        /// </summary>
+        /// <returns></returns>
 		public bool ReplaceAll()
 		{
 			changed = false;
@@ -73,9 +94,8 @@ namespace Reko.Typing
                 if (eventListener.IsCanceled())
                     return false;
 				EquivalenceClass eq = tv.Class;
-				if (!classesVisited.Contains(eq))
+				if (classesVisited.Add(eq))
 				{
-					classesVisited.Add(eq);
                     var dt = Replace(eq.DataType);
                     eq.DataType = dt!;
 				}
@@ -128,6 +148,7 @@ namespace Reko.Typing
 
         #region DataTypeTransformer methods //////////////////////////
 
+        /// <inheritdoc/>
         public override DataType VisitArray(ArrayType at)
         {
             if (nestCount > 90)
@@ -143,11 +164,11 @@ namespace Reko.Typing
             return dt;
         }
 
+        /// <inheritdoc/>
         public override DataType VisitEquivalenceClass(EquivalenceClass eq)
         {
-            if (!classesVisited.Contains(eq))
+            if (classesVisited.Add(eq))
             {
-                classesVisited.Add(eq);
                 if (eq.DataType is not null)
                 {
                     eq.DataType = eq.DataType.Accept(this);
@@ -194,6 +215,7 @@ namespace Reko.Typing
             return eq;
         }
 
+        /// <inheritdoc/>
         public override DataType VisitStructure(StructureType str)
         {
             ++recursionGuard;
@@ -215,6 +237,7 @@ namespace Reko.Typing
             return dt;
         }
 
+        /// <inheritdoc/>
 		public override DataType VisitTypeVariable(TypeVariable tv)
 		{
 			throw new TypeInferenceException("Type variables mustn't occur at this stage.");

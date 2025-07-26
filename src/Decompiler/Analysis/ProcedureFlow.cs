@@ -32,7 +32,7 @@ namespace Reko.Analysis
 {
     /// <summary>
     /// Describes the flow of registers in and out of a procedure. 
-    /// We are usually interested in registers modified, live in, &c.
+    /// We are usually interested in registers modified, live in, &amp;c.
     /// </summary>
     public class ProcedureFlow : DataFlow
 	{

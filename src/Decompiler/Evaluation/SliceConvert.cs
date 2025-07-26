@@ -24,110 +24,117 @@ using Reko.Core.Types;
 using System;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Reko.Evaluation
-{
-    public class SliceConvert
-    {
-        public SliceConvert()
-        {
-        }
+namespace Reko.Evaluation;
 
-        public Expression? Match(Slice slice, EvaluationContext ctx)
+/// <summary>
+/// Converts a <see cref="Slice"/> expression into <see cref="Conversion"/>
+/// expression.
+/// </summary>
+public class SliceConvert
+{
+    /// <summary>
+    /// Attempts to match a given slice with a specific expression pattern within the provided evaluation context.
+    /// </summary>
+    /// <param name="slice">The slice to be evaluated, which includes the expression and its offset.</param>
+    /// <param name="ctx">The evaluation context used to resolve identifiers and evaluate expressions.</param>
+    /// <returns>An <see cref="Expression"/> that represents the matched pattern if successful; otherwise, <see
+    /// langword="null"/>.</returns>
+    public Expression? Match(Slice slice, EvaluationContext ctx)
+    {
+        if (slice.Offset != 0)
         {
-            if (slice.Offset != 0)
+            var slicedExp = slice.Expression;
+            if (slicedExp is Identifier id)
             {
-                var slicedExp = slice.Expression;
-                if (slicedExp is Identifier id)
-                {
-                    slicedExp = ctx.GetDefiningExpression(id);
-                }
-                // We might be slicing a5 zero extension.
-                if (slicedExp is Conversion slConv &&
-                    slice.Offset >= slConv.SourceDataType.BitSize &&
-                        IsUselessIntegralExtension(slice, slConv))
-                {
-                    return Constant.Zero(slice.DataType);
-                }
-                return null;
+                slicedExp = ctx.GetDefiningExpression(id);
             }
-            Expression result;
-            if (IsApplicableConversion(ctx, slice.Expression, out Conversion? conv))
+            // We might be slicing a5 zero extension.
+            if (slicedExp is Conversion slConv &&
+                slice.Offset >= slConv.SourceDataType.BitSize &&
+                    IsUselessIntegralExtension(slice, slConv))
             {
-                if (IsUselessIntegralExtension(slice, conv))
-                {
-                    result = slice.DataType.BitSize == conv.SourceDataType.BitSize
-                        ? conv.Expression
-                        : new Slice(slice.DataType, conv.Expression, 0);
-                    return result;
-                }
-                if (CanSliceConversion(slice, conv))
-                {
-                    result = new Conversion(
-                        conv.Expression, conv.SourceDataType, slice.DataType);
-                    return result;
-                }
+                return Constant.Zero(slice.DataType);
             }
             return null;
         }
-
-        /// <summary>
-        /// Check if the sliced expression is a conversion,
-        /// or an identifier that is the result of a conversion.
-        /// </summary>
-        /// <param name="conv"></param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        private bool IsApplicableConversion(
-            EvaluationContext ctx,
-            Expression sliceExp,
-            [MaybeNullWhen(false)] out Conversion conv)
+        Expression result;
+        if (IsApplicableConversion(ctx, slice.Expression, out Conversion? conv))
         {
-            if (sliceExp is Identifier id)
+            if (IsUselessIntegralExtension(slice, conv))
             {
-                var def = ctx.GetDefiningExpression(id);
-                if (def is Conversion c2 &&
-                    c2.Expression is Identifier)
-                {
-                    conv = c2;
-                    return true;
-                }
+                result = slice.DataType.BitSize == conv.SourceDataType.BitSize
+                    ? conv.Expression
+                    : new Slice(slice.DataType, conv.Expression, 0);
+                return result;
             }
-            else if (sliceExp is Conversion c)
+            if (CanSliceConversion(slice, conv))
             {
-                conv = c;
+                result = new Conversion(
+                    conv.Expression, conv.SourceDataType, slice.DataType);
+                return result;
+            }
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// Check if the sliced expression is a conversion,
+    /// or an identifier that is the result of a conversion.
+    /// </summary>
+    /// <param name="ctx">Evaluation context to use for looking up definitions.</param>
+    /// <param name="sliceExp">Expression to check for conversion</param>
+    /// <param name="conv">Resulting conversion</param>
+    /// <returns></returns>
+    private bool IsApplicableConversion(
+        EvaluationContext ctx,
+        Expression sliceExp,
+        [MaybeNullWhen(false)] out Conversion conv)
+    {
+        if (sliceExp is Identifier id)
+        {
+            var def = ctx.GetDefiningExpression(id);
+            if (def is Conversion c2 &&
+                c2.Expression is Identifier)
+            {
+                conv = c2;
                 return true;
             }
-            conv = null;
-            return false;
         }
-
-        private static bool CanSliceConversion(Slice slice, Conversion conv)
+        else if (sliceExp is Conversion c)
         {
-            if (IsSliceable(slice.DataType) &&
-                IsSliceable(conv.DataType))
-            {
-                return true;
-            }
-            return false;
+            conv = c;
+            return true;
         }
+        conv = null;
+        return false;
+    }
 
-        private static bool IsUselessIntegralExtension(Slice slice, Conversion conv)
+    private static bool CanSliceConversion(Slice slice, Conversion conv)
+    {
+        if (IsSliceable(slice.DataType) &&
+            IsSliceable(conv.DataType))
         {
-            if (
-                IsSliceable(conv.DataType) &&
-                IsSliceable(conv.SourceDataType))
-            {
-                return
-                    slice.DataType.BitSize <= conv.SourceDataType.BitSize;
-            }
-            else return false;
+            return true;
         }
+        return false;
+    }
 
-        private static bool IsSliceable(DataType dataType)
+    private static bool IsUselessIntegralExtension(Slice slice, Conversion conv)
+    {
+        if (
+            IsSliceable(conv.DataType) &&
+            IsSliceable(conv.SourceDataType))
         {
-            if (dataType.IsWord || dataType.IsIntegral)
-                return true;
-            return (dataType.Domain.HasFlag(Domain.Character));
+            return
+                slice.DataType.BitSize <= conv.SourceDataType.BitSize;
         }
+        else return false;
+    }
+
+    private static bool IsSliceable(DataType dataType)
+    {
+        if (dataType.IsWord || dataType.IsIntegral)
+            return true;
+        return (dataType.Domain.HasFlag(Domain.Character));
     }
 }

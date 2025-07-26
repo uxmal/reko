@@ -18,9 +18,7 @@
  */
 #endregion
 
-using Reko.Core.Expressions;
 using Reko.Core.Types;
-using System;
 using System.Collections.Generic;
 
 namespace Reko.Typing
@@ -36,8 +34,15 @@ namespace Reko.Typing
 		private bool insideComplexType;
 		private bool changed;
         private int stackDepth; //$HACK until overly deep recursion is fixed.
- 
-		public NestedComplexTypeExtractor(
+
+        /// <summary>
+        /// Constructs an instance of the <see cref="NestedComplexTypeExtractor"/> class.
+        /// </summary>
+        /// <param name="factory">Type factory used to create new instances.</param>
+        /// <param name="store"></param>
+        /// <param name="stackDepth"></param>
+        /// <param name="visitedTypes"></param>
+        public NestedComplexTypeExtractor(
             TypeFactory factory,
             TypeStore store,
             int stackDepth = 0,
@@ -49,11 +54,21 @@ namespace Reko.Typing
             this.visitedTypes = visitedTypes ?? new HashSet<DataType>();
 		}
 
+        /// <summary>
+        /// Returns true if the transformation changed any data types.
+        /// </summary>
 		public bool Changed
 		{
 			get { return changed; }
 		}
 
+        /// <summary>
+        /// Creates a new type variable and equivalence class for the type 
+        /// <paramref name="dt"/>.
+        /// </summary>
+        /// <param name="dt">Data type for which a new equivalence class is needed.
+        /// </param>
+        /// <returns>The newly created <see cref="EquivalenceClass"/>.</returns>
 		public EquivalenceClass CreateEquivalenceClass(DataType dt)
 		{
 			TypeVariable tv = store.CreateTypeVariable(factory);
@@ -62,6 +77,13 @@ namespace Reko.Typing
 			return tv.Class;
 		}
 
+        /// <summary>
+        /// Extract nested complex types from the types collected in the
+        /// <see cref="TypeStore"/>.
+        /// </summary>
+        /// <param name="factory"></param>
+        /// <param name="store"></param>
+        /// <returns></returns>
 		public static bool ReplaceAll(TypeFactory factory, TypeStore store)
 		{
 			EquivalenceClass [] eqs = new EquivalenceClass[store.UsedEquivalenceClasses.Count];
@@ -79,6 +101,7 @@ namespace Reko.Typing
 			return changed;
 		}
 
+        /// <inheritdoc/>
         public override DataType VisitArray(ArrayType at)
         {
             if (insideComplexType)
@@ -94,6 +117,7 @@ namespace Reko.Typing
             }
         }
 
+        /// <inheritdoc/>
 		public override DataType VisitStructure(StructureType str)
 		{
             // Do not transform user-defined types
@@ -125,6 +149,7 @@ namespace Reko.Typing
             }
 		}
 
+        /// <inheritdoc/>
 		public override DataType VisitUnion(UnionType ut)
 		{
             // Do not transform user-defined types

@@ -23,59 +23,79 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace Reko.Scanning
+namespace Reko.Scanning;
+
+/// <summary>
+/// A preliminary form of a procedure consisting of RTL instructions.
+/// </summary>
+public class RtlProcedure : IAddressable
 {
-    public class RtlProcedure : IAddressable
+    /// <summary>
+    /// Constructs an RTL procedure.
+    /// </summary>
+    /// <param name="arch"><see cref="IProcessorArchitecture"/> used by the procedure.</param>
+    /// <param name="addr">Address of the procedure.</param>
+    /// <param name="name">Name of the procedure.</param>
+    /// <param name="provenance">The <see cref="ProvenanceType">procenance</see> of the
+    /// procedure.</param>
+    /// <param name="blocks">The basic blocks that constitute the code of the procedure.
+    /// </param>
+    public RtlProcedure(
+        IProcessorArchitecture arch,
+        Address addr,
+        string name,
+        ProvenanceType provenance,
+        ISet<RtlBlock> blocks)
     {
-        public RtlProcedure(
-            IProcessorArchitecture arch,
-            Address addr,
-            string name,
-            ProvenanceType provenance,
-            ISet<RtlBlock> blocks)
-        {
-            this.Architecture = arch;
-            this.Address = addr;
-            this.Name = name;
-            this.Provenance = provenance;
-            this.Blocks = blocks;
-        }
+        this.Architecture = arch;
+        this.Address = addr;
+        this.Name = name;
+        this.Provenance = provenance;
+        this.Blocks = blocks;
+    }
 
-        public IProcessorArchitecture Architecture { get; }
+    /// <summary>
+    /// <see cref="IProcessorArchitecture"/> used by this procedure.
+    /// </summary>
+    public IProcessorArchitecture Architecture { get; }
 
-        /// <summary>
-        /// Entry address of the procedure.
-        /// </summary>
-        public Address Address { get; }
-        
-        /// <summary>
-        /// The name of the procedure.
-        /// </summary>
-        public string Name { get; }
+    /// <summary>
+    /// Entry address of the procedure.
+    /// </summary>
+    public Address Address { get; }
+    
+    /// <summary>
+    /// The name of the procedure.
+    /// </summary>
+    public string Name { get; }
 
-        /// <summary>
-        /// How this procedure was discovered.
-        /// </summary>
-        public ProvenanceType Provenance { get; }
+    /// <summary>
+    /// How this procedure was discovered.
+    /// </summary>
+    public ProvenanceType Provenance { get; }
 
-        /// <summary>
-        /// The blocks the procedure consists of.
-        /// </summary>
-        public ISet<RtlBlock> Blocks { get; }
+    /// <summary>
+    /// The blocks the procedure consists of.
+    /// </summary>
+    public ISet<RtlBlock> Blocks { get; }
 
 
-        public override string ToString()
-        {
-            return $"RtlProcedure(entry: {Address}, blocks: {Blocks.Count})";
-        }
+    /// <inheritdoc/>
+    public override string ToString()
+    {
+        return $"RtlProcedure(entry: {Address}, blocks: {Blocks.Count})";
+    }
 
-        [Conditional("DEBUG")]
-        public void Dump()
-        {
-            Debug.Print("    {0}",
-                string.Join(",\r\n    ", this.Blocks
-                    .OrderBy(b => b.Address.ToLinear())
-                    .Select(b => b.Address)));
-        }
+    /// <summary>
+    /// Dumps a textual representation to the debugging console.
+    /// </summary>
+
+    [Conditional("DEBUG")]
+    public void Dump()
+    {
+        Debug.Print("    {0}",
+            string.Join(",\r\n    ", this.Blocks
+                .OrderBy(b => b.Address.ToLinear())
+                .Select(b => b.Address)));
     }
 }

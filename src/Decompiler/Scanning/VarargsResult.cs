@@ -22,10 +22,15 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 
-namespace Reko.Scanning
-{
-    public record VarargsResult(
-            FunctionType Signature,
-            Address FormatStringAddress,
-            StringConstant FormatString);
-}
+namespace Reko.Scanning;
+
+/// <summary>
+/// Results of a successfull varargs analysis.
+/// </summary>
+/// <param name="Signature">Function signature.</param>
+/// <param name="FormatStringAddress">The address of the format string</param>
+/// <param name="FormatString">The format string itself.</param>
+public record VarargsResult(
+        FunctionType Signature,
+        Address FormatStringAddress,
+        StringConstant FormatString);

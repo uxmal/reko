@@ -32,9 +32,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
-/// https://sourceforge.net/p/odbgscript/code/HEAD/tree/OllyLangCommands.cpp Olly
-/// https://plusvic.github.io/yara/
-/// 
+// https://sourceforge.net/p/odbgscript/code/HEAD/tree/OllyLangCommands.cpp Olly
+// https://plusvic.github.io/yara/
+// 
 namespace Reko.Loading
 {
     /// <summary>
@@ -43,13 +43,26 @@ namespace Reko.Loading
     /// </summary>
     public class UnpackingService : IUnpackerService
     {
+        /// <summary>
+        /// Constructs an instance of <see cref="UnpackingService"/>.
+        /// </summary>
+        /// <param name="services"><see cref="IServiceProvider"/> providing
+        /// contextual services.
+        /// </param>
         public UnpackingService(IServiceProvider services)
         {
             this.Signatures = new List<ImageSignature>();
             this.Services = services;
         }
 
+        /// <summary>
+        /// <see cref="IServiceProvider"/> instance providing contextual services.
+        /// </summary>
         public IServiceProvider Services { get; }
+
+        /// <summary>
+        /// List of known signatures.
+        /// </summary>
         public List<ImageSignature> Signatures { get; }
 
         /// <summary>
@@ -81,8 +94,8 @@ namespace Reko.Loading
             }
         }
 
-        // This method is virtual so that it can be overload in unit tests.
-        public virtual SignatureLoader CreateSignatureLoader(string typeName)
+
+        private SignatureLoader CreateSignatureLoader(string typeName)
         {
             var svc = Services.RequireService<IPluginLoaderService>();
             Type t = svc.GetType(typeName);
@@ -129,6 +142,21 @@ namespace Reko.Loading
             return unpacker;
         }
 
+        /// <summary>
+        /// Given a raw byte image <paramref name="image"/> determines whether the
+        /// image signature <paramref name="sig"/> is a match. If the signature 
+        /// has its <see cref="ImageSignature.EntryPointPattern"/> set, that signature
+        /// is searched for starting at <paramref name="entryPointOffset"/>, otherwise
+        /// the entire binary is searched.
+        /// </summary>
+        /// <param name="sig"><see cref="ImageSignature"/> to match.</param>
+        /// <param name="image">Raw bytes of the loaded image.</param>
+        /// <param name="entryPointOffset">Offset at which the program's 
+        /// entry point is located.
+        /// </param>
+        /// <returns>True if the image signature <paramref name="sig"/> is a match;
+        /// otherwise false.
+        /// </returns>
         //$PERF: of course we should compile pattern files into a trie for super performance.
         //$REVIEW: move to ImageSignature class?
         // See https://www.hex-rays.com/products/ida/tech/flirt/in_depth.shtml for implementation

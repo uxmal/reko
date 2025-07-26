@@ -42,7 +42,7 @@ namespace Reko.Analysis;
 /// <remarks>
 /// This is a useful transform that doesn't cause too many problems for
 /// later transforms. Calling it will flush out lots of dead expressions
-/// that can be removed with DeadCode.Eliminate()
+/// that can be removed with <see cref="DeadCode.Eliminate()"/>
 /// </remarks>
 public class ValuePropagator : IAnalysis<SsaState>
 {
@@ -50,15 +50,23 @@ public class ValuePropagator : IAnalysis<SsaState>
 
     private readonly AnalysisContext context;
 
+    /// <summary>
+    /// Creates an instance of <see cref="ValuePropagator"/> using the given analysis context.
+    /// </summary>
+    /// <param name="context"><see cref="AnalysisContext"/> to use.
+    /// </param>
     public ValuePropagator(AnalysisContext context)
     {
         this.context = context;
     }
 
+    /// <inheritdoc/>
     public string Id => "vp";
 
+    /// <inheritdoc/>
     public string Description => "Propagates values from definitions to uses";
 
+    /// <inheritdoc/>
     public (SsaState, bool) Transform(SsaState ssa)
     {
         var worker = new Worker(context, ssa);

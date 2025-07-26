@@ -20,13 +20,6 @@
 
 using Reko.Core;
 using Reko.Core.Loading;
-using Reko.Core.Rtl;
-using Reko.Core.Serialization;
-using Reko.Core.Types;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Scanning
 {

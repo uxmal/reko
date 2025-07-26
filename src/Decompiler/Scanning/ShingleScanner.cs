@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Collections;
 using Reko.Core.Diagnostics;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Services;
 using System;
@@ -42,11 +43,22 @@ namespace Reko.Scanning
     /// </remarks>
     public class ShingleScanner : AbstractScanner
 	{
+        /// <summary>
+        /// Constructs a new <see cref="ShingleScanner"/> instance.
+        /// </summary>
+        /// <param name="program">Program being analyzed.</param>
+        /// <param name="sr">Search results to augment.</param>
+        /// <param name="dynamicLinker"><see cref="IDynamicLinker"/> used to
+        /// import dynamically linked procedures.</param>
+        /// <param name="listener"><see cref="IEventListener"/> to which diagnostic
+        /// messages are reported.</param>
+        /// <param name="services"><see cref="IServiceProvider"/> providing runtime
+        /// services.</param>
         public ShingleScanner(
             Program program,
             ScanResultsV2 sr,
             IDynamicLinker dynamicLinker,
-            IDecompilerEventListener listener,
+            IEventListener listener,
             IServiceProvider services)
             : base(program, sr, ProvenanceType.Heuristic, dynamicLinker, listener, services)
         {
@@ -58,12 +70,22 @@ namespace Reko.Scanning
         /// </summary>
         public override bool AllowSpeculativeTransfers => false;
 
+        /// <summary>
+        /// Performs a shingle scan of the program.
+        /// </summary>
+        /// <returns>A updated version of the <see cref="ScanResultsV2"/> object
+        /// passed into the constructor.</returns>
         public ScanResultsV2 ScanProgram()
         {
             var gaps = FindUnscannedExecutableGaps();
             return ScanProgram(gaps);
         }
 
+        /// <summary>
+        /// Scans a sequence of <see cref="Chunk"/>s.
+        /// </summary>
+        /// <param name="gaps">Chunks to process.</param>
+        /// <returns></returns>
         public ScanResultsV2 ScanProgram(IEnumerable<Chunk> gaps)
         {
             var chunks = MakeScanChunks();
@@ -74,6 +96,11 @@ namespace Reko.Scanning
             return sr3;
         }
 
+        /// <summary>
+        /// Creates a list of <see cref="ChunkWorker"/>s from
+        /// the unscanned executable gaps in the program.
+        /// </summary>
+        /// <returns>A list of <see cref="ChunkWorker"/>s.</returns>
         public List<ChunkWorker> MakeScanChunks()
         {
             var gaps = FindUnscannedExecutableGaps();
@@ -84,6 +111,10 @@ namespace Reko.Scanning
             }).ToList();
         }
 
+        /// <summary>
+        /// Locates all unscanned executable gaps in the program.
+        /// </summary>
+        /// <returns>A list of <see cref="Chunk"/>s to process.</returns>
         public List<Chunk> FindUnscannedExecutableGaps()
         {
             var sortedBlocks = sr.Blocks.Values.OrderBy(b => b.Address);
@@ -189,6 +220,14 @@ namespace Reko.Scanning
         }
 
 
+        /// <summary>
+        /// Creates a <see cref="ChunkWorker"/> for the given architecture, address, and length.
+        /// </summary>
+        /// <param name="arch"><see cref="IProcessorArchitecture"/> to use when lifting machine code 
+        /// to RTL instructions.</param>
+        /// <param name="addr">Address at which to start.</param>
+        /// <param name="length">Size of the chunk.</param>
+        /// <returns></returns>
         public ChunkWorker MakeChunkWorker(IProcessorArchitecture arch, Address addr, long length)
         {
             return new ChunkWorker(
@@ -266,7 +305,7 @@ namespace Reko.Scanning
         }
 
         /// <summary>
-        /// From the candidate set of <paramref name="blocks"/>, remove blocks that 
+        /// From the the scan results <paramref name="sr"/>, remove blocks that 
         /// are invalid.
         /// </summary>
         /// <returns>A (hopefully smaller) set of blocks.</returns>

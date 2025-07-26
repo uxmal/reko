@@ -29,13 +29,28 @@ namespace Reko.Services
     /// </summary>
     public interface IDecompilerEventListener : IEventListener
     {
+        /// <summary>
+        /// This method is called when a procedure is found in the program.
+        /// </summary>
+        /// <param name="program">Program in which the procedure was found.</param>
+        /// <param name="addrProc">Address of the procedure.
+        /// </param>
         void OnProcedureFound(Program program, Address addrProc);
     }
 
+    /// <summary>
+    /// Dummy implementation of <see cref="IDecompilerEventListener"/>.
+    /// </summary>
     public class NullDecompilerEventListener : NullEventListener, IDecompilerEventListener
     {
+        /// <summary>
+        /// Global instance of the non-mutable null listener.
+        /// </summary>
         public static new IDecompilerEventListener Instance { get; } = new NullDecompilerEventListener();
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         public void OnProcedureFound(Program program, Address addrProc) { }
     }
 }

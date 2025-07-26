@@ -21,6 +21,7 @@
 using Reko.Core.Analysis;
 using Reko.Core.Expressions;
 using Reko.Core.Graphs;
+using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Types;
 using System.Collections.Generic;
@@ -104,6 +105,16 @@ namespace Reko.Core
         /// Read-only view of the program's user annotations.
         /// </summary>
         IReadOnlyUserData User { get; }
+
+        /// <summary>
+        /// Creates a disassembler for the given <see cref="IProcessorArchitecture"/>, 
+        /// starting at the given address <paramref name="address"/>.
+        /// </summary>
+        /// <param name="architecture">Processor architecture to use for the disassembler.</param>
+        /// <param name="address">Address at which to start.</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> of disassembled instructions.
+        /// </returns>
+        IEnumerable<MachineInstruction> CreateDisassembler(IProcessorArchitecture architecture, Address address);
 
         /// <summary>
         /// Creates an <see cref="EndianImageReader"/> for the given address.

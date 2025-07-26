@@ -31,11 +31,13 @@ namespace Reko.Typing
     /// Given an expression whose type is "complex" (e.g. pointer
     /// or structure types), and optional index expresssion and/or 
     /// integer offset, creates a C-like expression of the type:
-    ///     - array index reference (e.g. a[i])
-    ///     - structure field reference (e.g. ptr->x)
-    ///     - union alternative reference (e.g. u->r)
-    ///     - member pointer dereference (e.g. ptr->*foo)
-    ///     - simple pointer dereference (e.g. *ptr)
+    /// <list type="bullet">
+    ///     <item>array index reference (e.g. a[i])</item>
+    ///     <item>structure field reference (e.g. ptr->x)</item>
+    ///     <item>union alternative reference (e.g. u->r)</item>
+    ///     <item>member pointer dereference (e.g. ptr->*foo)</item>
+    ///     <item>simple pointer dereference (e.g. *ptr)</item>
+    /// </list>
     /// </summary>
     /// <remarks>
     /// It is assumed that the constituent expressions have already
@@ -58,6 +60,15 @@ namespace Reko.Typing
         private bool dereferenceGenerated;  // True if a dereferencing expression has been emitted (field access or the like.
         private int depth;
 
+        /// <summary>
+        /// Constructs a complex expression builder.
+        /// </summary>
+        /// <param name="program">Program being analyzed.</param>
+        /// <param name="store">Type store of the program being analyzed.</param>
+        /// <param name="basePtr">Optional base pointer or segment handle</param>
+        /// <param name="complex">Expression with complex type.</param>
+        /// <param name="index">Optional index expression.</param>
+        /// <param name="offset">Signed offset from the expression.</param>
         public ComplexExpressionBuilder(
             IReadOnlyProgram program,
             ITypeStore store,
@@ -157,6 +168,7 @@ namespace Reko.Typing
             return new UnaryExpression(Operator.AddrOf, dtComplex!, e);
         }
 
+        /// <inheritdoc/>
         public Expression VisitArray(ArrayType at)
         {
             if (offset == 0 && index is null && !Dereferenced)
@@ -175,32 +187,38 @@ namespace Reko.Typing
             return dtComplex.Accept(this);
         }
 
+        /// <inheritdoc/>
         public Expression VisitClass(ClassType ct)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public Expression VisitCode(CodeType c)
         {
             return FallbackExpression();
         }
 
+        /// <inheritdoc/>
         public Expression VisitEnum(EnumType e)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public Expression VisitEquivalenceClass(EquivalenceClass eq)
         {
             this.dtComplex = eq.DataType;
             return this.dtComplex.Accept(this);
         }
 
+        /// <inheritdoc/>
         public Expression VisitFunctionType(FunctionType ft)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public Expression VisitMemberPointer(MemberPointer memptr)
         {
             if (enclosingPtr is not null)
@@ -216,6 +234,7 @@ namespace Reko.Typing
             return RewritePointer(memptr, memptr.Pointee, pointee);
         }
 
+        /// <inheritdoc/>
         public Expression VisitPointer(Pointer ptr)
         {
             if (enclosingPtr is not null)
@@ -244,6 +263,7 @@ namespace Reko.Typing
             return dtComplex.Accept(this);
         }
 
+        /// <inheritdoc/>
         public Expression VisitPrimitive(PrimitiveType pt)
         {
             if (enclosingPtr is null)
@@ -281,16 +301,19 @@ namespace Reko.Typing
             return FallbackExpression();
         }
 
+        /// <inheritdoc/>
         public Expression VisitReference(ReferenceTo refTo)
         {
             return refTo.Referent.Accept(this);
         }
 
+        /// <inheritdoc/>
         public Expression VisitString(StringType str)
         {
             return expComplex!;
         }
 
+        /// <inheritdoc/>
         public Expression VisitStructure(StructureType str)
         {
             if (++depth > 20)
@@ -332,16 +355,19 @@ namespace Reko.Typing
             return e;
         }
 
+        /// <inheritdoc/>
         public Expression VisitTypeReference(TypeReference typeref)
         {
             return typeref.Referent.Accept(this);
         }
 
+        /// <inheritdoc/>
         public Expression VisitTypeVariable(TypeVariable tv)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public Expression VisitUnion(UnionType ut)
         {
             UnionAlternative? alt = ut.FindAlternative(dtComplexOrig!);
@@ -369,11 +395,13 @@ namespace Reko.Typing
             return dtComplex.Accept(this);
         }
 
+        /// <inheritdoc/>
         public Expression VisitUnknownType(UnknownType ut)
         {
             return FallbackExpression();
         }
 
+        /// <inheritdoc/>
         public Expression VisitVoidType(VoidType voidType)
         {
             return FallbackExpression();

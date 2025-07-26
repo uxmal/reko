@@ -1331,22 +1331,56 @@ namespace Reko.Analysis
         /// </remarks>
         public class SsaBlockState
         {
+            /// <summary>
+            /// The <see cref="Block">basic block</see> for which this state is being maintained.
+            /// </summary>
             public readonly Block Block;
+
+            /// <summary>
+            /// Current state of non-stack identifiers accessed in this block.
+            /// Identifiers that might alias super- or sub-registers are maintained
+            /// in this collection.
+            /// </summary>
             public readonly Dictionary<StorageDomain, AliasState> currentDef;       // Identifiers defined in this block
+
+            /// <summary>
+            /// Current state of stack-based identifiers accessed in this block.
+            /// </summary>
             public readonly IntervalTree<int, Alias> currentStackDef;               // currently visible stack-based aliases by _bit_ offset.
+
+            /// <summary>
+            /// Current state of flag group identifiers accessed in this block.
+            /// </summary>
             public readonly Dictionary<StorageDomain, FlagAliasState> currentFlagDef;
+
+            /// <summary>
+            /// Current state of non-aliasable identifiers accessed in this block.
+            /// </summary>
             public readonly Dictionary<Storage, SsaIdentifier> currentSimpleDef;
+
+            /// <summary>
+            /// True if the block has been visited during the SSA construction.
+            /// </summary>
             public bool Visited;
+
+            /// <summary>
+            /// True if the block contains a statement that terminates the program.
+            /// </summary>
             public bool Terminates;
 
+            /// <summary>
+            /// Creates an instance of <see cref="SsaBlockState"/> for the given
+            /// <see cref="Block"/> <paramref name="block"/>.
+            /// </summary>
+            /// <param name="block"></param>
             public SsaBlockState(Block block)
             {
                 this.Block = block;
                 this.Visited = false;
-                this.currentDef = new Dictionary<StorageDomain, AliasState>();
-                this.currentStackDef = new IntervalTree<int, Alias>();
-                this.currentFlagDef = new Dictionary<StorageDomain, FlagAliasState>();
-                this.currentSimpleDef = new Dictionary<Storage, SsaIdentifier>();
+                this.currentDef = [];
+                this.currentStackDef = [];
+                this.currentFlagDef = [];
+                this.currentSimpleDef = [];
             }
 
             /// <inheritdoc/>
@@ -1414,14 +1448,24 @@ namespace Reko.Analysis
                 this.ExactAliases = new Dictionary<Identifier, SsaIdentifier>();
             }
         }
-        
+
+        /// <summary>
+        /// Represents an alias of an SSA identifier.
+        /// </summary>
         public class Alias
         {
+            /// <summary>
+            /// Constructs an alias for the given SSA identifier <paramref name="sid"/>.
+            /// </summary>
+            /// <param name="sid">Ssa identifier.</param>
             public Alias(SsaIdentifier sid)
             {
                 this.SsaId = sid;
             }
 
+            /// <summary>
+            /// SSA identifier that this alias refers to.
+            /// </summary>
             public SsaIdentifier SsaId { get; set; }
         }
 
@@ -1469,7 +1513,7 @@ namespace Reko.Analysis
             /// <inheritdoc/>
             public IdentifierTransformer VisitFlagGroupStorage(FlagGroupStorage grf)
             {
-                return new FlagGroupTransformer(id!, grf, stm!, transform);
+                return new FlagGroupTransformer(id!, grf, stm!, transform, grf.FlagGroupBits);
             }
 
             /// <inheritdoc/>

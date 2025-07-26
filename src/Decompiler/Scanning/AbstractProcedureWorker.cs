@@ -23,7 +23,7 @@ using Reko.Core.Collections;
 using Reko.Core.Diagnostics;
 using Reko.Core.Expressions;
 using Reko.Core.Rtl;
-using Reko.Services;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -39,6 +39,9 @@ namespace Reko.Scanning
     /// </summary>
     public abstract class AbstractProcedureWorker
     {
+        /// <summary>
+        /// <see cref="TraceSwitch"/> controlling the tracing of this worker.
+        /// </summary>
         protected static readonly TraceSwitch log = new TraceSwitch(nameof(AbstractProcedureWorker), "AbstractProcedureWorker tracing")
         {
             Level = TraceLevel.Warning,
@@ -46,24 +49,36 @@ namespace Reko.Scanning
 
         private readonly AbstractScanner scanner;
         private readonly InstrClass rejectMask;
-        private readonly IDecompilerEventListener listener;
+        private readonly IEventListener listener;
         private readonly IStorageBinder binder;
         private readonly Dictionary<Address, List<Address>> miniCfg;
 
+        /// <summary>
+        /// Initializes part of the state of this worker.
+        /// </summary>
+        /// <param name="scanner">Controlling top-level scanner.</param>
+        /// <param name="address">Address at which to start.</param>
+        /// <param name="rejectMask">Bit mask of <see cref="InstrClass"/>es to reject.
+        /// RTL instruction with these instruction classes will be rejected.
+        /// </param>
+        /// <param name="listener"></param>
         protected AbstractProcedureWorker(
             AbstractScanner scanner, 
             Address address, 
             InstrClass rejectMask, 
-            IDecompilerEventListener listener)
+            IEventListener listener)
         {
             this.scanner = scanner;
             this.Address = address;
             this.rejectMask = rejectMask;
             this.listener = listener;
             this.binder = new StorageBinder();
-            this.miniCfg = new Dictionary<Address, List<Address>>();
+            this.miniCfg = [];
         }
 
+        /// <summary>
+        /// Starting address of the procedure being scanned.
+        /// </summary>
         public Address Address { get; }
 
         /// <summary>
@@ -141,6 +156,10 @@ namespace Reko.Scanning
             return block;
         }
 
+        /// <summary>
+        /// Called when a bad block (containing invalid instructions) is encountered.
+        /// </summary>
+        /// <param name="addrBadBlock"></param>
         protected void HandleBadBlock(Address addrBadBlock)
         {
             log.Verbose("    {0}: Bad block", addrBadBlock);
@@ -230,6 +249,16 @@ namespace Reko.Scanning
             return result;
         }
 
+        /// <summary>
+        /// Creates an instance of <see cref="BlockWorker"/>.
+        /// </summary>
+        /// <param name="scanner">Top-level class coordinating the scanning process.</param>
+        /// <param name="worker">Mid-level class coordinating the scanning process.</param>
+        /// <param name="addr">Address at which to start the basic block.</param>
+        /// <param name="trace">Sequence of <see cref="RtlInstructionCluster"/>s to 
+        /// incorporate into the resulting basic block.</param>
+        /// <param name="state"></param>
+        /// <returns></returns>
         protected BlockWorker CreateBlockWorker(
             AbstractScanner scanner,
             AbstractProcedureWorker worker,
@@ -242,9 +271,12 @@ namespace Reko.Scanning
 
         /// <summary>
         /// Discovers the extent of a jump/call table by walking backwards from the 
-        /// jump/call until some gating condition (index < value, index & bitmask etc)
-        /// can be found.
+        /// jump/call until some gating condition (e.g. <c>index &lt; value</c>,
+        /// <c>index &amp; bitmask</c>) can be found.
         /// </summary>
+        /// <param name="arch">Current <see cref="IProcessorArchitecture"/> to use.</param>
+        /// <param name="rtlBlock">RTL in which we are located.</param>
+        /// <param name="state">Simulated symbolic processor state.</param>
         /// <param name="addrSwitch">Address of the indirect transfer instruction</param>
         /// <param name="xfer">Expression that computes the transfer destination.
         /// It is never a constant value</param>
@@ -269,7 +301,7 @@ namespace Reko.Scanning
             switchExp = null;
 
             // We need the `miniCfg` dictionary to support backtracking; it contains
-            // back edges that the BacwardSlicer uses.
+            // back edges that the BackwardSlicer uses.
             var bwsHost = scanner.MakeBackwardSlicerHost(arch, miniCfg);
             var bws = new BackwardSlicer(bwsHost, rtlBlock, state);
             var te = bws.DiscoverTableExtent(addrSwitch, xfer, listener);
@@ -288,6 +320,10 @@ namespace Reko.Scanning
             return true;
         }
 
+        /// <summary>
+        /// Registers an control flow edge edge.
+        /// </summary>
+        /// <param name="edge">Edge to register.</param>
         protected void RegisterEdge(Edge edge)
         {
             RegisterEdgeInMiniCfg(edge);
@@ -304,6 +340,13 @@ namespace Reko.Scanning
             edges.Add(edge.From);
         }
 
+        /// <summary>
+        /// Crerates an assignment to a new temporary identifier. Used for "stealing"
+        /// assignments during the scanning of delay slots.
+        /// </summary>
+        /// <param name="cluster"></param>
+        /// <param name="e"></param>
+        /// <returns></returns>
         public (Identifier tmp, RtlInstructionCluster) MkTmp(RtlInstructionCluster cluster, Expression e)
         {
             var tmp = binder.CreateTemporary(e.DataType);
@@ -311,6 +354,12 @@ namespace Reko.Scanning
             return (tmp, new RtlInstructionCluster(cluster.Address, cluster.Length, ass));
         }
 
+        /// <summary>
+        /// Creates a trace of lifted RTL instructions, starting at <paramref name="addr"/>.
+        /// </summary>
+        /// <param name="addr">Address at which to start disassembling and lifting instructions.</param>
+        /// <param name="state">Simulated processor state.</param>
+        /// <returns></returns>
         public IEnumerator<RtlInstructionCluster> MakeTrace(Address addr, ProcessorState state)
         {
             return scanner.MakeTrace(addr, state, binder).GetEnumerator();
@@ -335,6 +384,12 @@ namespace Reko.Scanning
             IEnumerator<RtlInstructionCluster> trace,
             ProcessorState state);
 
+        /// <summary>
+        /// Add a job, resuming processing after a call that returned.
+        /// </summary>
+        /// <param name="addrCaller">Address of the calling instruction.</param>
+        /// <param name="addrFallthrough">Address directly following the calling instruction.</param>
+        /// <param name="state">Simulated processor state.</param>
         public void AddCallFallthroughJob(Address addrCaller, Address addrFallthrough, ProcessorState state)
         {
             var blockWorker = AddJob(addrFallthrough, state);
@@ -356,10 +411,30 @@ namespace Reko.Scanning
             ProcessorState state);
 
 
+        /// <summary>
+        /// Called when a <see cref="RtlCall"/> instruction is encountered.
+        /// </summary>
+        /// <param name="blockCaller">The basic block of the caller.</param>
+        /// <param name="edge"></param>
+        /// <param name="state"></param>
         protected abstract void ProcessCall(RtlBlock blockCaller, Edge edge, ProcessorState state);
 
+        /// <summary>
+        /// Called when a <see cref="RtlReturn"/> instruction is encountered.
+        /// </summary>
         protected abstract void ProcessReturn();
 
+        /// <summary>
+        /// Determines whether the sequence of RTL instructions in 
+        /// <paramref name="trampolineStub"/> is a trampoline, and if so
+        /// register it.
+        /// </summary>
+        /// <param name="addrFinalInstr">The address of the final instruction in the trampoline.</param>
+        /// <param name="trampolineStub">The instructions of the trampoline.</param>
+        /// <param name="trampoline"></param>
+        /// <returns>True if <paramref name="trampolineStub"/> looks like a trampoline;
+        /// otherwise false.
+        /// </returns>
         protected abstract bool TryRegisterTrampoline(
             Address addrFinalInstr,
             List<RtlInstructionCluster> trampolineStub,

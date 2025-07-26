@@ -19,16 +19,11 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Expressions;
 using Reko.Core.NativeInterface;
-using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Arch.Arm
 {

@@ -34,19 +34,16 @@ namespace Reko.Loading
     /// </summary>
     public class UnpackerSignatureLoader : SignatureLoader
     {
+        /// <inheritdoc/>
         public override IEnumerable<ImageSignature> Load(string filename)
         {
-            using (TextReader txtRdr = CreateFileReader(filename))
-            {
-                var serializer = new XmlSerializer(typeof(UnpackerSignatureFile_v1));
-                var sigs = (UnpackerSignatureFile_v1) serializer.Deserialize(txtRdr)!;
-                if (sigs?.Signatures is not null)
-                {
-                    return sigs.Signatures.Select(s => CreateSignature(s));
-                }
-                else
-                    return Array.Empty<ImageSignature>();
-            }
+            using TextReader txtRdr = CreateFileReader(filename);
+            var serializer = new XmlSerializer(typeof(UnpackerSignatureFile_v1));
+            var sigFile = (UnpackerSignatureFile_v1) serializer.Deserialize(txtRdr)!;
+            var sigs = sigFile?.Signatures;
+            if (sigs is null)
+                return [];
+            return sigs.Select(s => CreateSignature(s));
         }
 
         private static ImageSignature CreateSignature(UnpackerSignature_v1 sig)
@@ -60,6 +57,13 @@ namespace Reko.Loading
             };
         }
 
+        /// <summary>
+        /// Creates a text reader for the specified file.
+        /// </summary>
+        /// <param name="filename">File name.</param>
+        /// <returns>A <see cref="TextReader"/> positioned at the beginning of 
+        /// the file.
+        /// </returns>
         public virtual TextReader CreateFileReader(string filename)
         {
             return new StreamReader(filename, Encoding.UTF8);

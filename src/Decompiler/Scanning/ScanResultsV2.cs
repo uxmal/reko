@@ -30,6 +30,9 @@ namespace Reko.Scanning
     /// </summary>
     public class ScanResultsV2
     {
+        /// <summary>
+        /// Constructs a new instance of <see cref="ScanResultsV2"/>.
+        /// </summary>
         public ScanResultsV2()
         {
             this.Blocks = new();
@@ -43,7 +46,7 @@ namespace Reko.Scanning
             this.TrampolineStubEnds = new();
             this.NoDecompiles = new();
             this.ICFG = new ScanResultsGraph(this);
-            this.WatchedAddresses = new HashSet<Address>();
+            this.WatchedAddresses = [];
 
             this.ProcReturnStatus = new();
         }
@@ -112,9 +115,15 @@ namespace Reko.Scanning
         /// </summary>
         public ConcurrentDictionary<Address, Trampoline> TrampolineStubEnds { get; }
 
+        /// <summary>
+        /// Procedures marked by the user as "no-decompile".
+        /// </summary>
         public ConcurrentDictionary<Address, ExternalProcedure> NoDecompiles { get; }
 
-        public ConcurrentDictionary<Address, Reko.Scanning.ReturnStatus> ProcReturnStatus { get; }
+        /// <summary>
+        /// The return statuses of procedures, indexed by their entry point address.
+        /// </summary>
+        public ConcurrentDictionary<Address, ReturnStatus> ProcReturnStatus { get; }
 
         /// <summary>
         /// The interprocedural control graph formed by <see cref="Successors"/> and
@@ -122,8 +131,17 @@ namespace Reko.Scanning
         /// </summary>
         public ScanResultsGraph ICFG { get; }
 
+        /// <summary>
+        /// Addresses being watched for changes. This is primarily intended
+        /// for debugging purposes, to allow the user to break when a watched address
+        /// is reached during scanning.
+        /// </summary>
         public HashSet<Address> WatchedAddresses { get; }
 
+        /// <summary>
+        /// Dumps the contents of the scan results to the debug output.
+        /// </summary>
+        /// <param name="caption">Optional caption.</param>
         [Conditional("DEBUG")]
         public void Dump(string caption = "Dump")
         {
@@ -168,13 +186,16 @@ namespace Reko.Scanning
         }
     }
 
-    public enum BlockFlags
-    {
-        Valid = 1,      // Contains valid instructions.
-        Invalid = 2,    // Contains invalid instructions.
-        Privileged = 3, // Contains privileged instructions.
-        Padding = 4,    // Consists only of padding instructions.
-    }
+    /// <summary>
+    /// A tentative procedure found during scanning.
+    /// </summary>
+    /// <param name="Address">Address at which the procedure starts.</param>
+    /// <param name="Provenance">The <see cref="ProvenanceType"/> provenance of the procedure.</param>
+    /// <param name="Architecture">The <see cref="IProcessorArchitecture"/> used to 
+    /// lift the procedure from machine code.</param>
+    /// <param name="Name">The name of the procedure.</param>
+
+    //$REVIEW: use RtlProcedure instead.
 
     public record Proc(
         Address Address,
@@ -182,11 +203,31 @@ namespace Reko.Scanning
         IProcessorArchitecture Architecture,
         string Name);
 
+    /// <summary>
+    /// Classification of edges in the interprocedural control flow graph.
+    /// </summary>
     public enum EdgeType
     {
+        /// <summary>
+        /// An edge resulting from a control flow instruction.
+        /// </summary>
         Jump,
+
+        /// <summary>
+        /// An edge that is the fall-through destination of a 
+        /// branch instruction or a the next instruction after a
+        /// call instruction.
+        /// </summary>
         Fallthrough,
+
+        /// <summary>
+        /// An edge that results from a call instruction.
+        /// </summary>
         Call,
+
+        /// <summary>
+        /// An edge that results from a return instruction.
+        /// </summary>
         Return,
     }
 
@@ -201,6 +242,7 @@ namespace Reko.Scanning
         Address To,
         EdgeType Type)
     {
+        /// <inheritdoc/>
         public override string ToString()
         {
             return $"{From} -> {To} ({Type})";

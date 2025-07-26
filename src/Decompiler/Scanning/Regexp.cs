@@ -24,9 +24,10 @@ using System;
 
 namespace Reko.Scanning
 {
-	/// <summary>
-	/// </summary>
-	public class Regexp
+    /// <summary>
+    /// Represents a compiled regular expression scanner.
+    /// </summary>
+    public class Regexp
 	{
 		private readonly int [] mpbytecls;
 		private readonly State [] states;
@@ -35,6 +36,13 @@ namespace Reko.Scanning
 
 		private int pos;		// where the scanner is right now.
 
+        /// <summary>
+        /// Constructs a new Regexp instance.
+        /// </summary>
+        /// <param name="m">Maps bytes to byte classes.</param>
+        /// <param name="s">The states of the regexp.</param>
+        /// <param name="n">The transitions of the regexp.</param>
+        /// <param name="c">Check values (for overlapping states).</param>
 		internal Regexp(int [] m, State [] s, int [] n, int [] c)
 		{
 			mpbytecls = m;
@@ -54,11 +62,14 @@ namespace Reko.Scanning
 			return b.Build();
 		}
 
-		public int Position
-		{
-			get { return pos; }
-		}
-
+        /// <summary>
+        /// Determines whether the regexp matches the byte array <paramref name="arr"/>
+        /// at position <paramref name="position"/>.
+        /// </summary>
+        /// <param name="arr">Array to match.</param>
+        /// <param name="position">Position at which to match.</param>
+        /// <returns>True if there is a match at the given position; false if not.
+        /// </returns>
 		public bool Match(byte [] arr, int position)
 		{
             int p = position;
@@ -91,6 +102,7 @@ namespace Reko.Scanning
 			return states[s].Accepts || posAcc != -1;
 		}
 
+        /// <inheritdoc />
 		public override string ToString()
 		{
 			var sb = new System.Text.StringBuilder();

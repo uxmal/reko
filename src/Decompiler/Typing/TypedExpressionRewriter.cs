@@ -22,8 +22,8 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
+using Reko.Core.Services;
 using Reko.Core.Types;
-using Reko.Services;
 using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -36,7 +36,7 @@ namespace Reko.Typing
     /// </summary>
     /// <remarks>
     /// It's important that all Visit*(subclass-of-expression) methods preserve the 
-    /// <see cref="Expression.TypeVariable"/> property when new expressions are created.
+    /// <see cref="TypeVariable"/> when new expressions are created.
     /// </remarks>
     public class TypedExpressionRewriter : InstructionTransformer
     {
@@ -45,12 +45,21 @@ namespace Reko.Typing
         private readonly DataTypeComparer compTypes;
         private readonly TypedConstantRewriter tcr;
         private readonly Unifier unifier;
-        private readonly IDecompilerEventListener eventListener;
+        private readonly IEventListener eventListener;
         private DataType? dereferencedType;
         private Expression? basePtr;
         private Statement stmCur;
 
-        public TypedExpressionRewriter(Program program, TypeStore store, IDecompilerEventListener eventListener)
+        /// <summary>
+        /// Constructs an instance of the <see cref="TypedExpressionRewriter"/> class.
+        /// </summary>
+        /// <param name="program">Program to be analyzed.</param>
+        /// <param name="store">Type store containing all type variables and equivalence
+        /// classes.</param>
+        /// <param name="eventListener"><see cref="IEventListener"/> to which diagnostic 
+        /// messages are reported.
+        /// </param>
+        public TypedExpressionRewriter(Program program, TypeStore store, IEventListener eventListener)
         {
             this.program = program;
             this.store = store;
@@ -61,6 +70,11 @@ namespace Reko.Typing
             this.stmCur = default!;
         }
 
+        /// <summary>
+        /// Rewrites the code of the entire program using the type information
+        /// in the type store.
+        /// </summary>
+        /// <param name="program">Program to rewrite.</param>
         public void RewriteProgram(Program program)
         {
             int cProc = program.Procedures.Count;
@@ -104,6 +118,7 @@ namespace Reko.Typing
             }
         }
 
+        /// <inheritdoc />
         public override Instruction TransformAssignment(Assignment a)
         {
             return MakeAssignment(a.Dst, a.Src);
@@ -152,23 +167,32 @@ namespace Reko.Typing
             return new FieldAccess(alt.DataType, dst, alt);
         }
 
+        /// <inheritdoc />
         public override Instruction TransformCallInstruction(CallInstruction ci)
         {
             var exp = Rewrite(ci.Callee, VoidType.Instance);
             return new SideEffect(new Application(exp, VoidType.Instance));
         }
 
+        /// <inheritdoc />
         public override Instruction TransformStore(Store store)
         {
             return MakeAssignment(store.Dst, store.Src);
         }
 
+        /// <inheritdoc />
         public override Instruction TransformSideEffect(SideEffect side)
         {
             var instr = base.TransformSideEffect(side);
             return instr;
         }
 
+        /// <summary>
+        /// Rewrites an expression.
+        /// </summary>
+        /// <param name="expression">Expression to rewrite.</param>
+        /// <param name="dereferencedType"></param>
+        /// <returns>The rewritten expression.</returns>
         public Expression Rewrite(Expression expression, DataType? dereferencedType)
         {
             var oldDereferenced = this.dereferencedType;
@@ -178,7 +202,7 @@ namespace Reko.Typing
             return exp;
         }
 
-        public Expression RewriteComplexExpression(Expression complex, Expression? index, int offset, DataType? dereferencedType)
+        private Expression RewriteComplexExpression(Expression complex, Expression? index, int offset, DataType? dereferencedType)
         {
             if (index is Constant cOther)
             {
@@ -192,11 +216,13 @@ namespace Reko.Typing
             return ceb.BuildComplex(dereferencedType);
         }
 
+        /// <inheritdoc />
         public override Expression VisitApplication(Application appl)
         {
             return base.VisitApplication(appl);
         }
 
+        /// <inheritdoc />
         public override Expression VisitArrayAccess(ArrayAccess acc)
         {
             if (acc.Array is BinaryExpression bin &&
@@ -219,6 +245,7 @@ namespace Reko.Typing
             }
         }
 
+        /// <inheritdoc />
         public override Expression VisitBinaryExpression(BinaryExpression binExp)
         {
             var left = Rewrite(binExp.Left, null);
@@ -290,22 +317,26 @@ namespace Reko.Typing
                 : exp.DataType;
         }
 
+        /// <inheritdoc />
         public override Expression VisitAddress(Address addr)
         {
             return tcr.Rewrite(addr, basePtr, dereferencedType);
         }
 
+        /// <inheritdoc />
         public override Expression VisitConstant(Constant c)
         {
             return tcr.Rewrite(c, basePtr, dereferencedType);
         }
 
+        /// <inheritdoc />
         public override Expression VisitIdentifier(Identifier id)
         {
             id.DataType = store.GetTypeVariable(id).DataType;
             return id;
         }
 
+        /// <inheritdoc />
         public override Expression VisitMemoryAccess(MemoryAccess access)
         {
             var oldBase = this.basePtr;
@@ -380,6 +411,7 @@ namespace Reko.Typing
             return true;
         }
 
+        /// <inheritdoc />
         public override Expression VisitMkSequence(MkSequence seq)
         {
             var newSeq = seq.Expressions.Select(e => Rewrite(e, null)).ToArray();
@@ -417,6 +449,7 @@ namespace Reko.Typing
             return newSeq2;
         }
 
+        /// <inheritdoc />
         public override Expression VisitSegmentedAddress(SegmentedPointer address)
         {
             var oldBase = this.basePtr;
@@ -444,6 +477,7 @@ namespace Reko.Typing
             return result;
         }
 
+        /// <inheritdoc />
         public override Expression VisitSlice(Slice slice)
         {
             var exp = base.VisitSlice(slice);
@@ -458,6 +492,7 @@ namespace Reko.Typing
             return exp;
         }
 
+        /// <inheritdoc />
         public override Expression VisitConversion(Conversion conversion)
         {
             var exp = conversion.Expression.Accept(this);
@@ -471,6 +506,7 @@ namespace Reko.Typing
             return unifier.AreCompatible(dtSrc, dtDst);
         }
 
+        /// <inheritdoc />
         public override Expression VisitUnaryExpression(UnaryExpression unary)
         {
             var uNew = base.VisitUnaryExpression(unary);

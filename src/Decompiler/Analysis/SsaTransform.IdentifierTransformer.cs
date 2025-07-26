@@ -158,7 +158,7 @@ namespace Reko.Analysis
             }
 
             /// <summary>
-            /// If the `id` has an SsaIdentifier available (not necessarily
+            /// If the <see cref="id"/> has an <see cref="SsaIdentifier"/> available (not necessarily
             /// defined) in this block, return that SsaIdentifier.
             /// </summary>
             /// <param name="bs">SsaBlockState we look in.</param>
@@ -167,7 +167,13 @@ namespace Reko.Analysis
             /// </returns>
             public abstract SsaIdentifier? ReadBlockLocalVariable(SsaBlockState bs);
 
-            public SsaIdentifier? ReadVariableRecursive(SsaBlockState bs)
+            /// <summary>
+            /// Obtains the SSA identifier for the variable <see cref="id"/> by
+            /// visiting the predecessor blocks of the block <paramref name="bs"/>.
+            /// </summary>
+            /// <param name="bs">Current Block state.</param>
+            /// <returns>The resulting SSA variable.</returns>
+            public SsaIdentifier ReadVariableRecursive(SsaBlockState bs)
             {
                 SsaIdentifier val;
                 if (bs.Block.Pred.Any(p => !blockstates[p].Visited))
@@ -193,8 +199,7 @@ namespace Reko.Analysis
                     WriteVariable(bs, val);
                     val = AddPhiOperands(val);
                 }
-                if (val is not null)
-                    WriteVariable(bs, val);
+                WriteVariable(bs, val);
                 return val;
             }
 
@@ -591,6 +596,7 @@ namespace Reko.Analysis
                 return sid.Identifier;
             }
 
+            /// <inheritdoc/>
             public override SsaIdentifier? ReadBlockLocalVariable(SsaBlockState bs)
             {
                 trace.Verbose("  ReadBlockLocalVariable: ({0}, {1}, ({2})", bs.Block.DisplayName, id, this.liveBits);
@@ -735,18 +741,21 @@ namespace Reko.Analysis
         }
 
         /// <summary>
-        /// 
+        /// <see cref="IdentifierTransformer"/> implementation for flag groups.
         /// </summary>
         public class FlagGroupTransformer : IdentifierTransformer
         {
             private readonly uint flagMask;
             private FlagGroupStorage flagGroup;
 
-            public FlagGroupTransformer(Identifier id, FlagGroupStorage flagGroup, Statement stm, SsaTransform outer)
-                : this(id, flagGroup, stm, outer, flagGroup.FlagGroupBits)
-            {
-            }
-
+            /// <summary>
+            /// Constricts an instance of the <see cref="FlagGroupTransformer"/> class.
+            /// </summary>
+            /// <param name="id">Identifier being transformed to SSA identifier.</param>
+            /// <param name="flagGroup">Flag group storage.</param>
+            /// <param name="stm"><see cref="Statement"/> where the flag group is accessed.</param>
+            /// <param name="outer">Reference to the current <see cref="SsaTransform"/>.</param>
+            /// <param name="flagMask">Flag mask of the flag group.</param>
             public FlagGroupTransformer(Identifier id, FlagGroupStorage flagGroup, Statement stm, SsaTransform outer, uint flagMask)
                 : base(id, stm, outer)
             {
@@ -755,13 +764,13 @@ namespace Reko.Analysis
             }
 
             /// <summary>
-            /// Registers the fact that identifier <paramref name="id"/> is
-            /// modified in the block <paramref name="b" /> and generates a 
+            /// Registers the fact that identifier of <paramref name="bs"/> is
+            /// modified in the block <see cref="SsaBlockState.Block" /> and generates a 
             /// fresh SSA identifier. 
             /// </summary>
             /// <param name="bs">The block in which the identifier was changed</param>
             /// <param name="sid">The identifier after being SSA transformed.</param>
-            /// <returns>The new SSA identifier</returns>
+            /// <returns>The new SSA identifier.</returns>
             public override Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid)
             {
                 trace.Verbose("  WriteBlockLocalVariable: ({0}, {1}, ({2:X8})", bs.Block.DisplayName, id, this.flagMask);
@@ -792,6 +801,7 @@ namespace Reko.Analysis
                 return sid.Identifier;
             }
 
+            /// <inheritdoc/>
             public override SsaIdentifier? ReadBlockLocalVariable(SsaBlockState bs)
             {
                 if (!bs.currentFlagDef.TryGetValue(flagGroup.FlagRegister.Domain, out var alias))
@@ -876,11 +886,23 @@ namespace Reko.Analysis
             }
         }
 
+        /// <summary>
+        /// <see cref="IdentifierTransformer"/> for stack-based variables.
+        /// </summary>
         public class StackTransformer : IdentifierTransformer
         {
             private Interval<int> bitOffsetInterval;
             private int stackOffset;            // measured in units (not bits or bytes)
 
+            /// <summary>
+            /// Constructs an instance of the <see cref="StackTransformer"/> class.
+            /// </summary>
+            /// <param name="id">Original identifier.</param>
+            /// <param name="stackOffset">Offset from the stack pointer on procedure
+            /// entry.</param>
+            /// <param name="stm"><see cref="Statement"/> in which the identifier is accessed.
+            /// </param>
+            /// <param name="outer"><see cref="SsaTransform"/> instance.</param>
             public StackTransformer(
                 Identifier id,
                 int stackOffset,
@@ -892,6 +914,7 @@ namespace Reko.Analysis
                 this.bitOffsetInterval = CreateBitInterval(stackOffset, id.DataType);
             }
 
+            /// <inheritdoc/>
             public override SsaIdentifier? ReadBlockLocalVariable(SsaBlockState bs)
             {
                 var ints = bs.currentStackDef.GetIntervalsOverlappingWith(bitOffsetInterval)
@@ -1009,7 +1032,7 @@ namespace Reko.Analysis
             /// <paramref name="sidFrom"/>.
             /// </summary>
             /// <remarks>
-            /// The source, or defined identifier <paramRef name=sidFrom" /> is "wider"
+            /// The source, or defined identifier <paramRef name="sidFrom" /> is "wider"
             /// than the destination or used storage. We must provide a slice of the
             /// defined identifier.
             /// </remarks>
@@ -1048,6 +1071,7 @@ namespace Reko.Analysis
                     arg.Key.Intersect(this.bitOffsetInterval));
             }
 
+            /// <inheritdoc/>
             public override Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid)
             {
                 var ints = bs.currentStackDef
@@ -1076,10 +1100,20 @@ namespace Reko.Analysis
             }
         }
 
+        /// <summary>
+        /// <see cref="IdentifierTransformer"/> implementation for storage sequences.
+        /// </summary>
         public class SequenceTransformer : IdentifierTransformer
         {
             private readonly SequenceStorage seq;
 
+            /// <summary>
+            /// Constructs an instance of the <see cref="SequenceTransformer"/> class.
+            /// </summary>
+            /// <param name="id">Original identifier.</param>
+            /// <param name="seq">The <see cref="SequenceStorage"/> of the identifier.</param>
+            /// <param name="stm">The <see cref="Statement"/> in which the identifier is accessed.</param>
+            /// <param name="outer"><see cref="SsaTransform"/> instance.</param>
             public SequenceTransformer(
                 Identifier id,
                 SequenceStorage seq,
@@ -1090,6 +1124,7 @@ namespace Reko.Analysis
                 this.seq = seq;
             }
 
+            /// <inheritdoc/>
             public override SsaIdentifier ReadVariable(SsaBlockState bs)
             {
                 var sids = new SsaIdentifier[seq.Elements.Length];
@@ -1106,6 +1141,7 @@ namespace Reko.Analysis
                 return Fuse(sids);
             }
 
+            /// <inheritdoc/>
             public override Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid)
             {
                 var offset = seq.BitSize;
@@ -1119,6 +1155,7 @@ namespace Reko.Analysis
                 return sid.Identifier;
             }
 
+            /// <inheritdoc/>
             public override SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs)
             {
                 // We shouldn't reach this, as ReadVariable above should have 
@@ -1126,7 +1163,7 @@ namespace Reko.Analysis
                 throw new InvalidOperationException();
             }
 
-            public SsaIdentifier Fuse(SsaIdentifier [] sids)
+            private SsaIdentifier Fuse(SsaIdentifier [] sids)
             {
                 if (sids.Length == 2 && 
                     sids[0].DefStatement.Instruction is AliasAssignment aassHead &&
@@ -1190,21 +1227,34 @@ namespace Reko.Analysis
             }
         }
 
+        /// <summary>
+        /// Derived class of <see cref="IdentifierTransformer"/> that 
+        /// transforms identifiers whose <see cref="Storage"/>s cannot alias each other.
+        /// </summary>
         public class SimpleTransformer : IdentifierTransformer
         {
             private readonly Storage stg;
 
+            /// <summary>
+            /// Constructs an instance of <see cref="SimpleTransformer"/>.
+            /// </summary>
+            /// <param name="id">Identifier being transformed to a SSA identifier.</param>
+            /// <param name="stg"><see cref="Storage"/> of the identifier.</param>
+            /// <param name="stm">Statement where this identifier is accessed.</param>
+            /// <param name="outer">Reference to an instance of <see cref="SsaTransform"/>.</param>
             public SimpleTransformer(Identifier id, Storage stg, Statement stm, SsaTransform outer) : base(id, stm, outer)
             {
                 this.stg = stg;
             }
 
+            /// <inheritdoc/>
             public override SsaIdentifier? ReadBlockLocalVariable(SsaBlockState bs)
             {
                 bs.currentSimpleDef.TryGetValue(stg, out SsaIdentifier? sid);
                 return sid;
             }
 
+            /// <inheritdoc/>
             public override Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid)
             {
                 bs.currentSimpleDef[stg] = sid;

@@ -58,12 +58,17 @@ namespace Reko.Structure
         private readonly Procedure proc;
         private readonly ExpressionValueComparer cmp;
 
+        /// <summary>
+        /// Constructs a new instance of the <see cref="ProcedurePrettifier"/> class.
+        /// </summary>
+        /// <param name="proc">Procedure to prettify.</param>
         public ProcedurePrettifier(Procedure proc)
         {
             this.proc = proc;
             this.cmp = new ExpressionValueComparer();
         }
 
+        /// <inheritdoc/>
         public AbsynStatement VisitAssignment(AbsynAssignment ass)
         {
             //$TODO: this only makes sense for C/C++; if the output
@@ -79,36 +84,43 @@ namespace Reko.Structure
             return ass;
         }
 
+        /// <inheritdoc/>
         public AbsynStatement VisitBreak(AbsynBreak brk)
         {
             return brk;
         }
 
+        /// <inheritdoc/>
         public AbsynStatement VisitCase(AbsynCase absynCase)
         {
             return absynCase;
         }
 
+        /// <inheritdoc/>
         public AbsynStatement VisitCompoundAssignment(AbsynCompoundAssignment compound)
         {
             return compound;
         }
 
+        /// <inheritdoc/>
         public AbsynStatement VisitContinue(AbsynContinue cont)
         {
             return cont;
         }
 
+        /// <inheritdoc/>
         public AbsynStatement VisitDeclaration(AbsynDeclaration decl)
         {
             return decl;
         }
 
+        /// <inheritdoc/>
         public AbsynStatement VisitDefault(AbsynDefault def)
         {
             return def;
         }
 
+        /// <inheritdoc/>
         public AbsynStatement VisitDoWhile(AbsynDoWhile loop)
         {
             for (int i = 0; i < loop.Body.Count; ++i)
@@ -118,6 +130,7 @@ namespace Reko.Structure
             return loop;
         }
 
+        /// <inheritdoc/>
         public AbsynStatement VisitFor(AbsynFor forLoop)
         {
             if (forLoop.Initialization is not null)
@@ -132,11 +145,13 @@ namespace Reko.Structure
             return forLoop;
         }
 
+        /// <inheritdoc/>
         public AbsynStatement VisitGoto(AbsynGoto gotoStm)
         {
             return gotoStm;
         }
 
+        /// <inheritdoc/>
         public AbsynStatement VisitIf(AbsynIf ifStm)
         {
             for (int i = 0; i < ifStm.Then.Count; ++i)
@@ -158,26 +173,31 @@ namespace Reko.Structure
             return ifStm;
         }
 
+        /// <inheritdoc/>
         public AbsynStatement VisitLabel(AbsynLabel lbl)
         {
             return lbl;
         }
 
+        /// <inheritdoc/>
         public AbsynStatement VisitLineComment(AbsynLineComment comment)
         {
             return comment;
         }
 
+        /// <inheritdoc/>
         public AbsynStatement VisitReturn(AbsynReturn ret)
         {
             return ret;
         }
 
+        /// <inheritdoc/>
         public AbsynStatement VisitSideEffect(AbsynSideEffect side)
         {
             return side;
         }
 
+        /// <inheritdoc/>
         public AbsynStatement VisitSwitch(AbsynSwitch absynSwitch)
         {
             for (int i = 0; i < absynSwitch.Statements.Count; ++i)
@@ -187,6 +207,7 @@ namespace Reko.Structure
             return absynSwitch;
         }
 
+        /// <inheritdoc/>
         public AbsynStatement VisitWhile(AbsynWhile loop)
         {
             for (int i = 0; i < loop.Body.Count; ++i)
@@ -196,6 +217,7 @@ namespace Reko.Structure
             return loop;
         }
 
+        /// <inheritdoc/>
         public void Transform()
         {
             for (int i = 0; i < proc.Body!.Count; ++i)

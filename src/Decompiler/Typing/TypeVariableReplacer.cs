@@ -19,7 +19,6 @@
 #endregion
 
 using Reko.Core.Types;
-using System;
 using System.Collections.Generic;
 
 namespace Reko.Typing
@@ -33,10 +32,15 @@ namespace Reko.Typing
 		private readonly TypeStore store;
         private readonly HashSet<DataType> visitedTypes;
 
+        /// <summary>
+        /// Constructs an instance of the <see cref="TypeVariableReplacer"/> class.
+        /// </summary>
+        /// <param name="store">Type store containing the type variables.
+        /// </param>
 		public TypeVariableReplacer(TypeStore store)
 		{
 			this.store = store;
-            this.visitedTypes = new HashSet<DataType>();
+            this.visitedTypes = [];
 		}
 
 		/// <summary>
@@ -48,9 +52,8 @@ namespace Reko.Typing
 			foreach (TypeVariable tv in store.TypeVariables)
 			{
 				EquivalenceClass eq = tv.Class;
-				if (!visited.Contains(eq))
+				if (visited.Add(eq))
 				{
-					visited.Add(eq);
 					if (eq.DataType is not null)
 					{
 						eq.DataType = eq.DataType.Accept(this);
@@ -64,24 +67,25 @@ namespace Reko.Typing
 			}
 		}
 
+        /// <inheritdoc/>
 		public override DataType VisitTypeVariable(TypeVariable tv)
 		{
 			return tv.Class;
 		}
 
+        /// <inheritdoc/>
         public override DataType VisitStructure(StructureType str)
         {
-            if (visitedTypes.Contains(str))
+            if (!visitedTypes.Add(str))
                 return str;
-            visitedTypes.Add(str);
             return base.VisitStructure(str);
         }
 
+        /// <inheritdoc/>
         public override DataType VisitUnion(UnionType ut)
         {
-            if (visitedTypes.Contains(ut))
+            if (!visitedTypes.Add(ut))
                 return ut;
-            visitedTypes.Add(ut);
             return base.VisitUnion(ut);
         }
     }

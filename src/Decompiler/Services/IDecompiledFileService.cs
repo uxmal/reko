@@ -45,10 +45,40 @@ namespace Reko.Services
         /// <returns>A <see cref="TextWriter"/> to the created file.
         /// </returns>
         TextWriter CreateTextWriter(string filename);
+
+        /// <summary>
+        /// Writes the disassembly of the given <paramref name="program"/> to a file.
+        /// </summary>
+        /// <param name="program">Program being analyzed.</param>
+        /// <param name="writer">Function that selects where text output should go.</param>
         void WriteDisassembly(Program program, Action<string, Dictionary<ImageSegment, List<ImageMapItem>>, Formatter> writer);
+
+        /// <summary>
+        /// Writes the intermediate code of the given <paramref name="program"/> to a file.
+        /// </summary>
+        /// <param name="program">Program being analyzed.</param>
+        /// <param name="writer">Function that selects where text output should go.</param>
         void WriteIntermediateCode(Program program, Action<string, IEnumerable<IAddressable>, TextWriter> writer);
+
+        /// <summary>
+        /// Writes the declarations of recovered data types from in the <paramref name="program"/> to a file.
+        /// </summary>
+        /// <param name="program">Program being analyzed.</param>
+        /// <param name="writer">Function that selects where text output should go.</param>
         void WriteDeclarations(Program program, Action<string, TextWriter> writer);
+
+        /// <summary>
+        /// Writes the high-level code of the given <paramref name="program"/> to a file.
+        /// </summary>
+        /// <param name="program">Program being analyzed.</param>
+        /// <param name="writer">Function that selects where text output should go.</param>
         void WriteDecompiledCode(Program program, Action<string, IEnumerable<IAddressable>, TextWriter> writer);
+
+        /// <summary>
+        /// Writes the globals variables detected in the given <paramref name="program"/> to a file.
+        /// </summary>
+        /// <param name="program">Program being analyzed.</param>
+        /// <param name="writer">Function that selects where text output should go.</param>
         void WriteGlobals(Program program, Action<string, TextWriter> writer);
     }
 
@@ -57,39 +87,44 @@ namespace Reko.Services
 	/// </summary>
 	public class NullDecompiledFileService : IDecompiledFileService
 	{
+        /// <summary>
+        /// Immutable global instance of the <see cref="NullDecompiledFileService"/>.
+        /// </summary>
         public static readonly IDecompiledFileService Instance = new NullDecompiledFileService();
-
-        public NullDecompiledFileService()
-        {
-        }
 
 		#region DecompilerHost Members
 
+        /// <inheritdoc/>
         public TextWriter CreateTextWriter(string path)
         {
             return TextWriter.Null;
         }
 
+        /// <inheritdoc/>
         public void WriteDisassembly(Program program, Action<string, Dictionary<ImageSegment, List<ImageMapItem>>, Formatter> writer)
         {
             writer("", new Dictionary<ImageSegment, List<ImageMapItem>>(), new NullFormatter());
         }
 
+        /// <inheritdoc/>
         public void WriteIntermediateCode(Program program, Action<string, IEnumerable<IAddressable>, TextWriter> writer)
         {
             writer("", program.Procedures.Values, TextWriter.Null);
         }
 
+        /// <inheritdoc/>
         public void WriteDeclarations(Program program, Action<string,TextWriter> writer)
         {
             writer("", TextWriter.Null);
         }
 
+        /// <inheritdoc/>
         public void WriteDecompiledCode(Program program, Action<string, IEnumerable<IAddressable>, TextWriter> writer)
         {
             writer("", program.Procedures.Values, TextWriter.Null);
         }
 
+        /// <inheritdoc/>
         public void WriteGlobals(Program program, Action<string, TextWriter> writer)
         {
             writer("", TextWriter.Null);
@@ -98,19 +133,30 @@ namespace Reko.Services
         #endregion
     }
 
+    /// <summary>
+    /// Standard implementation of <see cref="IDecompiledFileService"/>.
+    /// </summary>
     public class DecompiledFileService : IDecompiledFileService
     {
         private readonly IServiceProvider services;
         private readonly IFileSystemService fsSvc;
-        private readonly IDecompilerEventListener listener;
+        private readonly IEventListener listener;
 
-        public DecompiledFileService(IServiceProvider services, IFileSystemService fsSvc, IDecompilerEventListener listener)
+        /// <summary>
+        /// Constructs an instance of the <see cref="DecompiledFileService"/> class.
+        /// </summary>
+        /// <param name="services"><see cref="IServiceProvider"/> providing runtime services.</param>
+        /// <param name="fsSvc"><see cref="IFileSystemService"/> instance.</param>
+        /// <param name="listener"><see cref="IEventListener"/> to which diagnostic messages
+        /// are reported.</param>
+        public DecompiledFileService(IServiceProvider services, IFileSystemService fsSvc, IEventListener listener)
         {
             this.services = services;
             this.fsSvc = fsSvc;
             this.listener = listener;
         }
 
+        /// <inheritdoc/>
         public TextWriter CreateTextWriter(string filename)
         {
             if (string.IsNullOrEmpty(filename))
@@ -121,6 +167,7 @@ namespace Reko.Services
             return new StreamWriter(fsSvc.CreateFileStream(filename, FileMode.Create, FileAccess.Write), new UTF8Encoding(false));
         }
 
+        /// <inheritdoc/>
         public void WriteDisassembly(Program program, Action<string, Dictionary<ImageSegment, List<ImageMapItem>>, Formatter> writer)
         {
             var outputPolicy = OutputFilePolicy.CreateOutputPolicy(this.services, program, program.User.OutputFilePolicy);
@@ -135,6 +182,7 @@ namespace Reko.Services
             }
         }
 
+        /// <inheritdoc/>
         public void WriteIntermediateCode(Program program, Action<string, IEnumerable<IAddressable>, TextWriter> writer)
         {
             var outputPolicy = OutputFilePolicy.CreateOutputPolicy(this.services, program, program.User.OutputFilePolicy);
@@ -151,6 +199,7 @@ namespace Reko.Services
             }
         }
 
+        /// <inheritdoc/>
         public void WriteDeclarations(Program program, Action<string, TextWriter> writer)
         {
             var incFilename = GenerateDerivedFilename(program, ".h");
@@ -161,6 +210,7 @@ namespace Reko.Services
             }
         }
 
+        /// <inheritdoc/>
         public void WriteDecompiledCode(Program program, Action<string, IEnumerable<IAddressable>, TextWriter> writer)
         {
             var outputPolicy = OutputFilePolicy.CreateOutputPolicy(this.services, program, program.User.OutputFilePolicy);
@@ -173,6 +223,7 @@ namespace Reko.Services
             }
         }
 
+        /// <inheritdoc/>
         public void WriteGlobals(Program program, Action<string, TextWriter> writer)
         {
             var globalsFilename = GenerateDerivedFilename(program, "globals.c");
@@ -183,6 +234,13 @@ namespace Reko.Services
             }
         }
 
+        /// <summary>
+        /// Generates a derived filename based on the program's location.
+        /// </summary>
+        /// <param name="program">Program being analyzed.</param>
+        /// <param name="newExtension">New extension to use.</param>
+        /// <returns>New file name with th enew extension.
+        /// </returns>
         public static string GenerateDerivedFilename(Program program, string newExtension)
         {
             return Path.ChangeExtension(program.Location.GetFilename(), newExtension);

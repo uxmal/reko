@@ -115,9 +115,16 @@ namespace Reko
         /// <summary>
         /// The Reko project being analyzed.
         /// </summary>
-        public Project Project { get { return project; } set { project = value; ProjectChanged?.Invoke(this, EventArgs.Empty); } }
-        public event EventHandler? ProjectChanged;
+        public Project Project {
+            get { return project; }
+            set { project = value; ProjectChanged?.Invoke(this, EventArgs.Empty); }
+        }
         private Project project;
+
+        /// <summary>
+        /// Event fired when the <see cref="Project"/> property is changed.
+        /// </summary>
+        public event EventHandler? ProjectChanged;
 
         /// <summary>
         /// Main entry point of the decompiler. Decompiles, and outputs the results.
@@ -242,7 +249,7 @@ namespace Reko
                         flow.Emit(proc.Architecture, output);
                         new ProcedureFormatter(proc, new BlockDecorator(), cf).WriteProcedureBlocks();
 
-                        /// For debugging
+                        // For debugging
                         //output.WriteLine();
                         //output.WriteLine("/*");
                         //var mockWriter = new MockGenerator(output, "m.");
@@ -494,6 +501,13 @@ namespace Reko
             w.WriteLine();
         }
     
+        /// <summary>
+        /// Writes a list of declarations to a file with the name <paramref name="headerFilename"/>.
+        /// </summary>
+        /// <param name="program">Program whose type declarations are to be written.</param>
+        /// <param name="headerFilename">The name of the file to be injected into the header of 
+        /// the generated file.</param>
+        /// <param name="w">A <see cref="TextWriter"/> receiving the output.</param>
         public void WriteDecompiledDeclarations(Program program, string headerFilename, TextWriter w)
         {
             WriteHeaderComment(headerFilename, program, w);
@@ -517,8 +531,17 @@ namespace Reko
             WriteExternalProcedures(program, w);
         }
 
+        /// <summary>
+        /// Writes declarations for external procedures to the given <paramref name="w"/> writer.
+        /// </summary>
+        /// <param name="program"><see cref="Program"/> instance whose external procedures
+        /// are to be written.
+        /// </param>
+        /// <param name="w"><see cref="TextWriter"/> to which output is written.
+        /// </param>
         public static void WriteExternalProcedures(
-            Program program, TextWriter w)
+            Program program,
+            TextWriter w)
         {
             var externalProcedures = program.ExternalProcedures.OrderBy(
                 p => (
@@ -557,7 +580,8 @@ namespace Reko
         /// <summary>
         /// Starts a scan at address <paramref name="paddr"/> on the user's request.
         /// </summary>
-        /// <param name="paddr"></param>
+        /// <param name="paddr">Address at which to start.</param>
+        /// <param name="arch">The architecture of the program.</param>
         /// <returns>a ProcedureBase, because the target procedure may have been a thunk or 
         /// an linked procedure the user has decreed not decompileable.</returns>
         public ProcedureBase ScanProcedure(ProgramAddress paddr, IProcessorArchitecture arch)
@@ -578,8 +602,6 @@ namespace Reko
 		/// <summary>
 		/// Generates the control flow graph and finds executable code in each program.
 		/// </summary>
-		/// <param name="program">the program whose flow graph we seek</param>
-		/// <param name="cfg">configuration information</param>
 		public void ScanPrograms()
 		{
 			if (Project is null || Project.Programs.Count == 0)
@@ -625,6 +647,14 @@ namespace Reko
             }
         }
 
+        /// <summary>
+        /// Loads all call signatures from each user call in the given program.
+        /// </summary>
+        /// <param name="program">Program being analyzed.</param>
+        /// <param name="userCalls">User-defined call sites.</param>
+        /// <returns>Dictionary mapping addresses to function types of 
+        /// the called procedures.
+        /// </returns>
         //$REVIEW: doesn't seem to be used anywhere?
         public IDictionary<Address, FunctionType> LoadCallSignatures(
             Program program,
@@ -687,7 +717,7 @@ namespace Reko
                     {
                         eventListener.Progress.ShowProgress("Rewriting procedures to high-level language.", i, program.Procedures.Values.Count);
                         ++i;
-                        IStructureAnalysis sa = new StructureAnalysis(eventListener, program, proc);
+                        StructureAnalysis sa = new StructureAnalysis(eventListener, program, proc);
                         sa.Structure();
                     }
                     catch (Exception e)
@@ -704,6 +734,9 @@ namespace Reko
             eventListener.Progress.ShowStatus("Rewriting complete.");
 		}
 
+        /// <summary>
+        /// Writes the decompiled products for each program in the current project.
+        /// </summary>
 		public void WriteDecompilerProducts()
 		{
             if (Project is null)
@@ -733,7 +766,7 @@ namespace Reko
             program.Platform.WriteMetadata(program, irPath);
         }
 
-		public void WriteHeaderComment(string filename, Program program, TextWriter w)
+		private void WriteHeaderComment(string filename, Program program, TextWriter w)
 		{
 			w.WriteLine("// {0}", filename);
 			w.WriteLine("// Generated by decompiling {0}", program.Location.GetFilename());
@@ -772,6 +805,11 @@ namespace Reko
             }
         }
 
+        /// <summary>
+        /// Replaces a program in the project with a new program.
+        /// </summary>
+        /// <param name="oldProgram">Program object to replace.</param>
+        /// <param name="newProgram">Replacement program object.</param>
         public void ReplaceProgram(Program oldProgram, Program newProgram)
         {
             var programs = Project.Programs;

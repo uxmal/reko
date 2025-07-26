@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -30,7 +31,7 @@ namespace Reko.Tools.specGen
 
         private const string NAMESPACE = "http://schemas.microsoft.com/wix/2006/wi";
 
-        private static XmlElement CreateComponent(XmlDocument dom, string dirName)
+        private static XmlElement? CreateComponent(XmlDocument dom, string dirName)
         {
             if (!componentGuids.ContainsKey(dirName))
             {
@@ -73,6 +74,7 @@ namespace Reko.Tools.specGen
                 dom.Load(sr);
             }
             var root = dom.DocumentElement;
+            Debug.Assert(root is not null, "Root element should not be null");
 
             Console.Error.WriteLine($"Scanning files in '{outDir}'");
 
@@ -82,14 +84,14 @@ namespace Reko.Tools.specGen
             foreach (var f in files)
             {
                 var relaPath = f.Replace(pathPrefix, "");
-                var relaDir = Path.GetDirectoryName(f)
+                var relaDir = Path.GetDirectoryName(f)!
                                   .Replace(outDir, "")
                                   .TrimSlashes();
 
-                if(!componentNodes.TryGetValue(relaDir, out XmlElement component))
+                if (!componentNodes.TryGetValue(relaDir, out XmlElement? component))
                 {
                     component = CreateComponent(dom, relaDir);
-                    if(component is null)
+                    if (component is null)
                     {
                         continue;
                     }
@@ -110,7 +112,7 @@ namespace Reko.Tools.specGen
             }
 
             var outputPath = Path.Combine(
-                Path.GetDirectoryName(inputFilePath),
+                Path.GetDirectoryName(inputFilePath)!,
                 Path.GetFileNameWithoutExtension(inputFilePath)
             );
             Console.WriteLine($"Writing to '{outputPath}'");

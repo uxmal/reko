@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -33,8 +34,11 @@ namespace Reko.Tools.specGen
                 dom.Load(sr);
             }
 
-            var filesNode = dom.DocumentElement.GetElementsByTagName("files").Item(0);
-            dom.DocumentElement.RemoveChild(filesNode);
+            var root = dom.DocumentElement;
+            Debug.Assert(root is not null);
+            var filesNode = root.GetElementsByTagName("files").Item(0);
+            if (filesNode is not null)
+                root.RemoveChild(filesNode);
 
             filesNode = dom.CreateElement("files");
             filesNode.AppendChild(dom.CreateTextNode(Environment.NewLine));
@@ -45,7 +49,7 @@ namespace Reko.Tools.specGen
             foreach (var f in files)
             {
                 var relaPath = f.Replace(pathPrefix, "");
-                var relaDir = Path.GetDirectoryName(f)
+                var relaDir = Path.GetDirectoryName(f)!
                                   .Replace(outDir, "")
                                   .TrimSlashes();
 
@@ -69,10 +73,10 @@ namespace Reko.Tools.specGen
                 filesNode.AppendChild(dom.CreateTextNode(Environment.NewLine));
             }
 
-            dom.DocumentElement.AppendChild(filesNode);
+            root.AppendChild(filesNode);
 
             var nuspecOutputPath = Path.Combine(
-                Path.GetDirectoryName(nuspecTemplatePath),
+                Path.GetDirectoryName(nuspecTemplatePath)!,
                 Path.GetFileNameWithoutExtension(nuspecTemplatePath)
             );
             Console.WriteLine($"Writing to '{nuspecOutputPath}'");

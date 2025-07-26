@@ -26,23 +26,38 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.Evaluation
+namespace Reko.Evaluation;
+
+/// <summary>
+/// Evaluation rule for a comparison operation where the left operand is a constant.
+/// </summary>
+public class ComparisonConstOnLeft
 {
-    public class ComparisonConstOnLeft
+    /// <summary>
+    /// Transforms a binary comparsion like
+    /// <code>
+    /// 3 == x
+    /// </code>
+    /// to
+    /// <code>
+    /// x == 3
+    /// </code>
+    /// </summary>
+    /// <param name="bin">Binary expression to test.</param>
+    /// <returns>A mirrored binary expression or null if this wasn't a comparison.
+    /// </returns>
+    public Expression? Match(BinaryExpression bin)
     {
-        public Expression? Match(BinaryExpression bin)
-        {
-            if (bin.Operator is not ConditionalOperator cond)
-                return null;
-            if (bin.Left is not Constant cLeft)
-                return null;
-            if (bin.Right is Constant)
-                return null;
-            return new BinaryExpression(
-                (BinaryOperator) cond.Mirror(),
-                bin.DataType,
-                bin.Right,
-                cLeft);
-        }
+        if (bin.Operator is not ConditionalOperator cond)
+            return null;
+        if (bin.Left is not Constant cLeft)
+            return null;
+        if (bin.Right is Constant)
+            return null;
+        return new BinaryExpression(
+            cond.Mirror(),
+            bin.DataType,
+            bin.Right,
+            cLeft);
     }
 }

@@ -29,19 +29,29 @@ using System.Linq;
 
 namespace Reko.Analysis;
 
+/// <summary>
+/// Transforms unaligned pairs of memory accesses into a single memory access.
+/// </summary>
 public class UnalignedMemoryAccessFuser : IAnalysis<SsaState>
 {
     private readonly AnalysisContext context;
 
+    /// <summary>
+    /// Creates an instance of <see cref="UnalignedMemoryAccessFuser"/>.
+    /// </summary>
+    /// <param name="context"></param>
     public UnalignedMemoryAccessFuser(AnalysisContext context)
     {
         this.context = context;
     }
 
+    /// <inheritdoc/>
     public string Id => "uma";
 
+    /// <inheritdoc/>
     public string Description => "Fuses unaligned memory accesses";
 
+    /// <inheritdoc/>
     public (SsaState, bool) Transform(SsaState ssa)
     {
         var worker = new Worker(ssa);

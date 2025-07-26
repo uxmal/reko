@@ -23,34 +23,40 @@ using Reko.Core.Expressions;
 using Reko.Core.Operators;
 using System;
 
-namespace Reko.Evaluation
-{
-	public class ShiftShift_c_c_Rule
-	{
-		public ShiftShift_c_c_Rule()
-		{
-			
-		}
+namespace Reko.Evaluation;
 
-		public Expression? Match(BinaryExpression b)
-		{
-			var op = b.Operator;
-			if (!op.Type.IsShift())
-				return null;
-            if (b.Right is not Constant c1)
-                return null;
-            if (b.Left is not BinaryExpression b2)
-                return null;
-            if (op != b2.Operator)
-				return null;
-            if (b2.Right is not Constant c2)
-                return null;
-            var e = b2.Left;
-			return new BinaryExpression(
-				op,
-				e.DataType,
-				e,
-				Operator.IAdd.ApplyConstants(b.DataType, c1, c2));
-		}
+/// <summary>
+/// Replaces expressions of the form <code>
+/// a &lt;&lt; c1 &lt;&lt; c2
+/// </code>
+/// with
+/// a &lt;&lt; (c1 + c2)
+/// </summary>
+public class ShiftShift_c_c_Rule
+{
+    /// <summary>
+    /// Perform the match and possible replacement.
+    /// </summary>
+    /// <param name="b">Binary expression to match.</param>
+    /// <returns></returns>
+	public Expression? Match(BinaryExpression b)
+	{
+		var op = b.Operator;
+		if (!op.Type.IsShift())
+			return null;
+    if (b.Right is not Constant c1)
+        return null;
+    if (b.Left is not BinaryExpression b2)
+        return null;
+    if (op != b2.Operator)
+			return null;
+    if (b2.Right is not Constant c2)
+        return null;
+    var e = b2.Left;
+		return new BinaryExpression(
+			op,
+			e.DataType,
+			e,
+			Operator.IAdd.ApplyConstants(b.DataType, c1, c2));
 	}
 }

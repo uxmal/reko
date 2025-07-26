@@ -26,19 +26,27 @@ using System.Collections.Generic;
 namespace Reko.Scanning
 {
     /// <summary>
-    /// Directed graph wrapper around a <see cref="ScannerV2" /> object
+    /// Directed graph wrapper around a <see cref="ScanResultsV2" /> object
     /// </summary>
     public class ScanResultsGraph : DirectedGraph<Address>
     {
         private readonly ScanResultsV2 cfg;
 
+        /// <summary>
+        /// Constructs a new <see cref="ScanResultsGraph"/> instance.
+        /// </summary>
+        /// <param name="cfg"><see cref="ScanResultsV2"/> instance containing
+        /// the interprocedural control graph of a scanned program.
+        /// </param>
         public ScanResultsGraph(ScanResultsV2 cfg)
         {
             this.cfg = cfg;
         }
 
+        /// <inheritdoc/>
         public ICollection<Address> Nodes => cfg.Blocks.Keys;
 
+        /// <inheritdoc/>
         public void AddEdge(Address nodeFrom, Address nodeTo)
         {
             if (nodeTo.Offset == 0xA578)
@@ -68,6 +76,7 @@ namespace Reko.Scanning
             }
         }
 
+        /// <inheritdoc/>
         public bool ContainsEdge(Address nodeFrom, Address nodeTo)
         {
             if (cfg.Successors.TryGetValue(nodeFrom, out var succs))
@@ -81,6 +90,7 @@ namespace Reko.Scanning
             return false;
         }
 
+        /// <inheritdoc/>
         public ICollection<Address> Predecessors(Address node)
         {
             if (cfg.Predecessors.TryGetValue(node, out var preds))
@@ -90,11 +100,9 @@ namespace Reko.Scanning
         }
 
         // Not thread-safe
+        /// <inheritdoc/>
         public void RemoveEdge(Address nodeFrom, Address nodeTo)
         {
-            if (nodeTo.Offset == 0xA578)
-                _ = this; //$DEBUG
-
             if (cfg.Successors.TryGetValue(nodeFrom, out var succs))
             {
                 var i = succs.FindIndex(e => e == nodeTo);
@@ -113,6 +121,7 @@ namespace Reko.Scanning
             }
         }
 
+        /// <inheritdoc/>
         public ICollection<Address> Successors(Address node)
         {
             if (cfg.Successors.TryGetValue(node, out var succs))

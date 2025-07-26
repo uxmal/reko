@@ -35,12 +35,19 @@ namespace Reko.Structure
         private readonly Procedure proc;
         private readonly ExpressionValueComparer cmp;
 
+        /// <summary>
+        /// Constructs a new <see cref="ForLoopRewriter"/> instance.
+        /// </summary>
+        /// <param name="proc"></param>
         public ForLoopRewriter(Procedure proc)
         {
             this.proc = proc;
             this.cmp = new ExpressionValueComparer();
         }
 
+        /// <summary>
+        /// Performs the transformation of the procedure body.
+        /// </summary>
         public void Transform()
         {
             RewriteForLoops(proc.Body!);
@@ -365,14 +372,44 @@ namespace Reko.Structure
         }
     }
 
+    /// <summary>
+    /// Information about a candidate for a for-loop.
+    /// </summary>
     public class ForLoopCandidate
     {
+        /// <summary>
+        /// Statement list containing the loop.
+        /// </summary>
         public List<AbsynStatement>? Container;
+
+        /// <summary>
+        /// Body of the for-loop.
+        /// </summary>
         public List<AbsynStatement>? LoopBody;
+
+        /// <summary>
+        /// Variable controlling the loop.
+        /// </summary>
         public Identifier? LoopVariable;
+
+        /// <summary>
+        /// Declaration that is no longer needed and needs to be removed.
+        /// </summary>
         public AbsynDeclaration? DeadDeclaration;
+
+        /// <summary>
+        /// Initialization statement for the loop variable.
+        /// </summary>
         public AbsynAssignment? Initializer;
+
+        /// <summary>
+        /// Condition that controls the loop.
+        /// </summary>
         public Expression? Condition;
+
+        /// <summary>
+        /// Statement that updates the loop variable.
+        /// </summary>
         public AbsynAssignment? Update;
     }
 }

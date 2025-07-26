@@ -18,31 +18,27 @@
  */
 #endregion
 
-using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
-using Reko.Core.Types;
-using System;
 
-namespace Reko.Evaluation
+namespace Reko.Evaluation;
+
+/// <summary>
+/// Rule that reduces (!-Foo) into (!Foo).
+/// </summary>
+class LogicalNotFollowedByNegRule
 {
-    /// <summary>
-    /// Rule that reduces (!-Foo) into (!Foo).
-    /// </summary>
-    class LogicalNotFollowedByNegRule
+    public Expression? Match(UnaryExpression unary)
     {
-        public Expression? Match(UnaryExpression unary)
-        {
-            if (unary.Operator.Type != OperatorType.Not)
-                return null;
+        if (unary.Operator.Type != OperatorType.Not)
+            return null;
 
-            if (unary.Expression is not UnaryExpression subExpression || subExpression.Operator.Type != OperatorType.Neg)
-                return null;
+        if (unary.Expression is not UnaryExpression subExpression || subExpression.Operator.Type != OperatorType.Neg)
+            return null;
 
-            return new UnaryExpression(
-                Operator.Not,
-                unary.DataType,
-                subExpression.Expression);
-        }
+        return new UnaryExpression(
+            Operator.Not,
+            unary.DataType,
+            subExpression.Expression);
     }
 }

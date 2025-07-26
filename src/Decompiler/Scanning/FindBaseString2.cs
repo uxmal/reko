@@ -40,6 +40,13 @@ namespace Reko.Scanning
 
         private Func<ulong, ulong> read_dword;
 
+        /// <summary>
+        /// Constructs a new instance of the <see cref="FindBaseString2"/> class. 
+        /// </summary>
+        /// <param name="arch"><see cref="IProcessorArchitecture"/> to use for 
+        /// this analysis.</param>
+        /// <param name="mem">Raw image to be analyzed.
+        /// </param>
         public FindBaseString2(IProcessorArchitecture arch, ByteMemoryArea mem)
             : base(arch.Endianness, mem)
         {
@@ -47,6 +54,7 @@ namespace Reko.Scanning
             this.Endianness = EndianServices.Little;
         }
 
+        /// <inheritdoc/>
         public override BaseAddressCandidate[] Run(CancellationToken ct)
         {
             this.read_dword = Endianness == EndianServices.Big
@@ -78,6 +86,13 @@ namespace Reko.Scanning
                 return 0;
         }
 
+        /// <summary>
+        /// Reads all 32-bit words in memory between <paramref name="start"/> and <paramref name="end"/>,
+        /// and considers them as pointers.
+        /// </summary>
+        /// <param name="start">Start offset in memory.</param>
+        /// <param name="end">End offset in memory.</param>
+        /// <returns></returns>
         public ulong[] MemoryWordsAsSortedList(uint start, uint end)
         {
             Console.WriteLine("Gathering dwords in memory. This may take a while...");
@@ -94,7 +109,7 @@ namespace Reko.Scanning
             return sortedValues;
         }
 
-        public long[] ComputeDifferences(ulong[] values)
+        private long[] ComputeDifferences(ulong[] values)
         {
             long[] differences = new long[values.Length];
             for (int i = 0; i < values.Length - 1; ++i)
@@ -106,7 +121,7 @@ namespace Reko.Scanning
 
         // Knuth Morris Pratt algorithm to find all subsequences
         // https://www.safaribooksonline.com/library/view/python-cookbook-2nd/0596007973/ch05s14.html
-        public IEnumerable<int> KMP(long[] text, long[] pattern) {
+        private IEnumerable<int> KMP(long[] text, long[] pattern) {
             // ensure we can index into pattern, and also make a copy to protect
             // against changes to 'pattern' while we're suspended by `yield'
             //pattern = list(pattern)
@@ -135,7 +150,7 @@ namespace Reko.Scanning
             }
         }
 
-        public List<ulong> IdentifyBaseAddresses(ulong[] values, ulong[] strs)
+        private List<ulong> IdentifyBaseAddresses(ulong[] values, ulong[] strs)
         {
             var string_differences = ComputeDifferences(strs);
             var differences = ComputeDifferences(values);
@@ -145,7 +160,7 @@ namespace Reko.Scanning
                 if (v <= 0)
                 {
                     Console.Write("Invalid sequence of strings. Memory addresses have to be in strictly increasing order.");
-                    return new List<ulong>();
+                    return [];
                 }
             }
 
@@ -159,7 +174,7 @@ namespace Reko.Scanning
             return baseaddrs;
         }
 
-        public ulong[] FindAdjacentStrings(List<(ulong uAddress, uint length)> strs) {
+        private ulong[] FindAdjacentStrings(List<(ulong uAddress, uint length)> strs) {
             const int nSamples = 6;
 
             var rng = new Random();
@@ -181,7 +196,9 @@ namespace Reko.Scanning
             Console.Write("No adjacent strings found...");
             return Array.Empty<ulong>();
         }
-        public List<ulong> FindBaseAddresses()
+
+
+        private List<ulong> FindBaseAddresses()
         {
             var strings = PatternFinder.FindAsciiStrings(Memory, min_str_length);
             var values = MemoryWordsAsSortedList(0, (uint)Memory.Length);

@@ -50,6 +50,12 @@ public class DeclarationInserter : IAbsynVisitor<int, Path>
     private readonly HashSet<string> parameters;
     private readonly List<AbsynStatement> statements;
 
+    /// <summary>
+    /// Constructs a new <see cref="DeclarationInserter"/> for the given procedure.
+    /// </summary>
+    /// <param name="proc"><see cref="Procedure"/> into which declarations are to
+    /// be added.
+    /// </param>
     public DeclarationInserter(Procedure proc)
     {
         this.proc = proc;
@@ -64,6 +70,12 @@ public class DeclarationInserter : IAbsynVisitor<int, Path>
         this.paths = new Dictionary<Identifier, List<Path>>();
     }
 
+    /// <summary>
+    /// Performs the transformation of the procedure by inserting 
+    /// declarations.
+    /// </summary>
+    /// <returns>The modified procedure.
+    /// </returns>
     public Procedure Transform()
     {
         Analyze(Path.Empty, proc.Body!);
@@ -162,6 +174,7 @@ public class DeclarationInserter : IAbsynVisitor<int, Path>
         paths.Add(path);
     }
 
+    /// <inheritdoc/>
     public int VisitAssignment(AbsynAssignment ass, Path path)
     {
         AnalyzeExp(path, ass.Dst);
@@ -179,16 +192,19 @@ public class DeclarationInserter : IAbsynVisitor<int, Path>
         return !parameters.Contains(id.Name);
     }
 
+    /// <inheritdoc/>
     public int VisitBreak(AbsynBreak b, Path _)
     {
         return 0;
     }
 
+    /// <inheritdoc/>
     public int VisitCase(AbsynCase c, Path _)
     {
         return 0;
     }
 
+    /// <inheritdoc/>
     public int VisitCompoundAssignment(AbsynCompoundAssignment ca, Path path)
     {
         AnalyzeExp(path, ca.Src);
@@ -196,22 +212,26 @@ public class DeclarationInserter : IAbsynVisitor<int, Path>
         return 0;
     }
 
+    /// <inheritdoc/>
     public int VisitContinue(AbsynContinue c, Path _)
     {
         return 0;
     }
 
+    /// <inheritdoc/>
     public int VisitDeclaration(AbsynDeclaration decl, Path path)
     {
         Debug.Fail("Impossiburu: we haven't created AbsynDeclarations yet!");
         return 0;
     }
 
+    /// <inheritdoc/>
     public int VisitDefault(AbsynDefault d, Path _)
     {
         return 0;
     }
 
+    /// <inheritdoc/>
     public int VisitDoWhile(AbsynDoWhile d, Path path)
     {
         Analyze(path, d.Body);
@@ -219,6 +239,7 @@ public class DeclarationInserter : IAbsynVisitor<int, Path>
         return 0;
     }
 
+    /// <inheritdoc/>
     public int VisitFor(AbsynFor f, Path path)
     {
         var forPath = path.Add(f);
@@ -229,11 +250,13 @@ public class DeclarationInserter : IAbsynVisitor<int, Path>
         return 0;
     }
 
+    /// <inheritdoc/>
     public int VisitGoto(AbsynGoto g, Path path)
     {
         return 0;
     }
 
+    /// <inheritdoc/>
     public int VisitIf(AbsynIf i, Path path)
     {
         AnalyzeExp(path, i.Condition);
@@ -242,28 +265,33 @@ public class DeclarationInserter : IAbsynVisitor<int, Path>
         return 0;
     }
 
+    /// <inheritdoc/>
     public int VisitLabel(AbsynLabel l, Path path)
     {
         return 0;
     }
 
+    /// <inheritdoc/>
     public int VisitLineComment(AbsynLineComment l, Path _)
     {
         return 0;
     }
 
+    /// <inheritdoc/>
     public int VisitReturn(AbsynReturn ret, Path path)
     {
         AnalyzeExp(path, ret.Value);
         return 0;
     }
 
+    /// <inheritdoc/>
     public int VisitSideEffect(AbsynSideEffect side, Path path)
     {
         AnalyzeExp(path, side.Expression);
         return 0;
     }
 
+    /// <inheritdoc/>
     public int VisitSwitch(AbsynSwitch sw, Path path)
     {
         this.AnalyzeExp(path, sw.Expression);
@@ -272,6 +300,7 @@ public class DeclarationInserter : IAbsynVisitor<int, Path>
     }
 
 
+    /// <inheritdoc/>
     public int VisitWhile(AbsynWhile w, Path path)
     {
         AnalyzeExp(path, w.Condition);

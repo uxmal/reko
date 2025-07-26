@@ -27,8 +27,19 @@ using System.Text;
 
 namespace Reko.Scanning
 {
+    /// <summary>
+    /// A heuristic procedure is a procedure that has been tentatively identified.
+    /// </summary>
     public class HeuristicProcedure
     {
+        /// <summary>
+        /// Constructs a heuristic procedure with the given address range and frame.
+        /// </summary>
+        /// <param name="addrBegin">Start address of the procedure.</param>
+        /// <param name="addrEnd">End address of the procedure.</param>
+        /// <param name="frame"><see cref="Frame"/> used for the identifiers
+        /// of the procedure.
+        /// </param>
         public HeuristicProcedure(
             Address addrBegin,
             Address addrEnd,
@@ -38,13 +49,35 @@ namespace Reko.Scanning
             this.EndAddress = addrEnd;
             this.Frame = frame;
         }
-        
+
+        /// <summary>
+        /// Control flow graph of the procedure.
+        /// </summary>
         public DiGraph<RtlBlock> Cfg = new();
+
+        /// <summary>
+        /// <see cref="Core.Frame"/> of the procedure.
+        /// </summary>
         public Frame Frame;
 
+        /// <summary>
+        /// Beginning address of the procedure.
+        /// </summary>
         public Address BeginAddress;
+
+        /// <summary>
+        /// End address of the procedure.
+        /// </summary>
         public Address EndAddress;
 
+        /// <summary>
+        /// Determines whether the given address is within the heurstic procedure's
+        /// address range.
+        /// </summary>
+        /// <param name="addr">Address to test.</param>
+        /// <returns>True if the address is contained withi the procedure's address
+        /// range; false if not.
+        /// </returns>
         public bool IsValidAddress(Address addr)
         {
             return this.BeginAddress <= addr && addr < this.EndAddress;

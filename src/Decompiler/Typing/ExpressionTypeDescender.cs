@@ -33,9 +33,11 @@ namespace Reko.Typing
     /// Pushes type information down from the root of an expression to its leaves.
     /// </summary>
     /// <remarks>
+    /// <code>
     ///    root
     ///  ↓ /  \ ↓
     /// leaf  leaf
+    /// </code>
     /// </remarks>
     public class ExpressionTypeDescender : ExpressionVisitor<bool, TypeVariable>
     {
@@ -52,14 +54,48 @@ namespace Reko.Typing
                 ExpressionMatcher.AnyExpression("p"),
                 ExpressionMatcher.AnyConstant("c")));
 
+        /// <summary>
+        /// <see cref="IPlatform"/> of the program being analyzed.
+        /// </summary>
         protected readonly IPlatform platform;
+
+        /// <summary>
+        /// The <see cref="TypeStore"/> containing all <see cref="TypeVariable"/>s
+        /// and <see cref="EquivalenceClass"/>es.
+        /// </summary>
         protected readonly TypeStore store;
+
+        /// <summary>
+        /// <see cref="TypeFactory"/> to use when creating data types.
+        /// </summary>
         protected readonly TypeFactory factory;
+
+        /// <summary>
+        /// <see cref="Unifier"/> to use when unifying data types.
+        /// </summary>
         protected readonly Unifier unifier;
+
+        /// <summary>
+        /// Array expression matcher used to match array access expressions.
+        /// </summary>
         protected readonly ArrayExpressionMatcher aem;
+
+        /// <summary>
+        /// The identifier representing all the detected global variables.
+        /// </summary>
         protected readonly Identifier globals;
+
+        /// <summary>
+        /// All known induction variables.
+        /// </summary>
         protected readonly IReadOnlyDictionary<Identifier,LinearInductionVariable> ivs;
 
+        /// <summary>
+        /// Constructs an instance of the <see cref="ExpressionTypeDescender"/> class.
+        /// </summary>
+        /// <param name="program">Program being analyzed.</param>
+        /// <param name="store">Type store.</param>
+        /// <param name="factory">Type factory.</param>
         public ExpressionTypeDescender(IReadOnlyProgram program, TypeStore store, TypeFactory factory)
         {
             this.platform = program.Platform;
@@ -81,12 +117,14 @@ namespace Reko.Typing
         protected virtual TypeVariable TypeVar(Expression exp)
             => store.GetTypeVariable(exp);
         
+        /// <inheritdoc/>
         public bool VisitAddress(Address addr, TypeVariable tv)
         {
             MeetDataType(addr, tv.DataType);
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitApplication(Application appl, TypeVariable tv)
         {
             MeetDataType(appl, TypeVar(appl).DataType);
@@ -162,6 +200,7 @@ namespace Reko.Typing
                     appl.Procedure, appl.Arguments.Length, cParameters));
         }
 
+        /// <inheritdoc/>
         public void FunctionTrait(Expression function, int funcPtrBitSize, TypeVariable ret, params TypeVariable[] actuals)
         {
             if (function is ProcedureConstant pc &&
@@ -187,6 +226,7 @@ namespace Reko.Typing
             MeetDataType(function, pfn);
         }
 
+        /// <inheritdoc/>
         public bool VisitArrayAccess(ArrayAccess acc, TypeVariable tv)
         {
             MeetDataType(acc, acc.DataType);
@@ -234,7 +274,7 @@ namespace Reko.Typing
         /// </summary>
         /// <param name="expBase"></param>
         /// <param name="expStruct"></param>
-        /// <param name="structPtrSize"></param>
+        /// <param name="structPtrBitSize"></param>
         /// <param name="offset"></param>
         /// <param name="elementSize"></param>
         /// <param name="length"></param>
@@ -319,6 +359,7 @@ namespace Reko.Typing
             return field is not null;
         }
 
+        /// <inheritdoc/>
         public bool VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv)
         {
             var eLeft = binExp.Left;
@@ -560,6 +601,16 @@ namespace Reko.Typing
             return dtMin;
         }
 
+        /// <summary>
+        /// The data type <paramref name="dt"/> is merged with the data type
+        /// of the type variable of <paramref name="exp"/>.
+        /// </summary>
+        /// <param name="exp">Expression whose type variable's data type is to be
+        /// merged.</param>
+        /// <param name="dt"><see cref="DataType"/> to merge into the data type of 
+        /// <paramref name="exp"/>.</param>
+        /// <returns>The resulting merged data type.
+        /// </returns>
         public DataType MeetDataType(Expression exp, DataType dt)
         {
             var tv = TypeVar(exp);
@@ -568,6 +619,15 @@ namespace Reko.Typing
             return MeetDataType(tv, dt);
         }
 
+        /// <summary>
+        /// The data type <paramref name="dt"/> is merged into the data type
+        /// of the <see cref="TypeVariable"/> <paramref name="dt"/>.
+        /// </summary>
+        /// <param name="tvExp"><see cref="TypeVariable"/> whose type is to be augmented.
+        /// </param>
+        /// <param name="dt"><see cref="DataType"/> to merge into the type varaible's data type.</param>
+        /// <returns>The merged data type.
+        /// </returns>
         public DataType MeetDataType(TypeVariable tvExp, DataType dt)
         { 
             if (dt == PrimitiveType.SegmentSelector)
@@ -583,6 +643,7 @@ namespace Reko.Typing
             return tvExp.DataType;
         }
 
+        /// <inheritdoc/>
         public bool VisitCast(Cast cast, TypeVariable? tv)
         {
             MeetDataType(cast, cast.DataType);
@@ -590,6 +651,7 @@ namespace Reko.Typing
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitConditionalExpression(ConditionalExpression c, TypeVariable tv)
         {
             MeetDataType(c.Condition, PrimitiveType.Bool);
@@ -599,6 +661,7 @@ namespace Reko.Typing
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitConditionOf(ConditionOf cof, TypeVariable tv)
         {
             MeetDataType(cof, cof.DataType);
@@ -606,6 +669,7 @@ namespace Reko.Typing
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitConstant(Constant c, TypeVariable tv)
         {
             MeetDataType(c, tv.DataType);
@@ -624,6 +688,7 @@ namespace Reko.Typing
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitConversion(Conversion conversion, TypeVariable tv)
         {
      //       MeetDataType(conversion, conversion.DataType);
@@ -632,6 +697,7 @@ namespace Reko.Typing
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitDereference(Dereference deref, TypeVariable tv)
         {
             //$BUG: push (ptr (typeof(deref)
@@ -639,21 +705,25 @@ namespace Reko.Typing
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitFieldAccess(FieldAccess acc, TypeVariable tv)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public bool VisitIdentifier(Identifier id, TypeVariable tv)
         {
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitMemberPointerSelector(MemberPointerSelector mps, TypeVariable tv)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public bool VisitMemoryAccess(MemoryAccess access, TypeVariable tv)
         {
             if (access.EffectiveAddress is SegmentedPointer segptr)
@@ -787,7 +857,7 @@ namespace Reko.Typing
             return TypeVar(binEa.Right).DataType.IsIntegral;
         }
 
-        public LinearInductionVariable? GetInductionVariable(Expression e)
+        private LinearInductionVariable? GetInductionVariable(Expression e)
 		{
 			if (e is Identifier id &&
                 ivs.TryGetValue(id, out var iv))
@@ -799,9 +869,11 @@ namespace Reko.Typing
         /// <summary>
         /// Handle an expression of type 'id + offset', where id is a LinearInductionVariable.
         /// </summary>
+        /// <param name="eBase"></param>
         /// <param name="id"></param>
         /// <param name="iv"></param>
         /// <param name="offset"></param>
+        /// <param name="tvField"></param>
         public void VisitInductionVariable(Expression eBase, Identifier id, LinearInductionVariable iv, int offset, TypeVariable tvField)
         {
             int delta = iv.Delta!.ToInt32();
@@ -853,7 +925,7 @@ namespace Reko.Typing
             }
         }
 
-        public DataType SetSize(Expression eBase, Expression tStruct, int size)
+        private DataType SetSize(Expression eBase, Expression tStruct, int size)
         {
             if (size <= 0)
                 throw new ArgumentOutOfRangeException("size must be positive");
@@ -887,6 +959,7 @@ namespace Reko.Typing
             return DataTypeOf(e).Domain == Domain.Selector;
         }
 
+        /// <inheritdoc/>
         public bool VisitMkSequence(MkSequence seq, TypeVariable tv)
         {
             if (seq.Expressions.Length == 2 && tv.DataType.IsPointer)
@@ -929,33 +1002,39 @@ namespace Reko.Typing
             throw new NotImplementedException(string.Format("Haven't implemented pushing {0} ({1}) into {2} yet.", tv, tv.DataType, e));
         }
 
+        /// <inheritdoc/>
         public bool VisitOutArgument(OutArgument outArgument, TypeVariable tv)
         {
             outArgument.Expression.Accept(this, TypeVar(outArgument.Expression));
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitPhiFunction(PhiFunction phi, TypeVariable tv)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public bool VisitPointerAddition(PointerAddition pa, TypeVariable tv)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public bool VisitProcedureConstant(ProcedureConstant pc, TypeVariable tv)
         {
             //throw new NotImplementedException();
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitScopeResolution(ScopeResolution scopeResolution, TypeVariable tv)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public bool VisitSegmentedAddress(SegmentedPointer address, TypeVariable tv)
         {
             var basePtr = address.BasePointer;
@@ -978,18 +1057,21 @@ namespace Reko.Typing
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitSlice(Slice slice, TypeVariable tv)
         {
             slice.Expression.Accept(this, TypeVar(slice.Expression));
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitStringConstant(StringConstant str, TypeVariable tv)
         {
             MeetDataType(str, tv.DataType);
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitTestCondition(TestCondition tc, TypeVariable tv)
         {
             MeetDataType(tc, tc.DataType);
@@ -997,6 +1079,7 @@ namespace Reko.Typing
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitUnaryExpression(UnaryExpression unary, TypeVariable tv)
         {
             unary.Expression.Accept(this, TypeVar(unary.Expression));

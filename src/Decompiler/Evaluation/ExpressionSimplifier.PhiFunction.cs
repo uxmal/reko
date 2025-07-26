@@ -21,60 +21,60 @@
 using Reko.Core.Expressions;
 using System.Linq;
 
-namespace Reko.Evaluation
+namespace Reko.Evaluation;
+
+public partial class ExpressionSimplifier
 {
-    public partial class ExpressionSimplifier
+    /// <inheritdoc/>
+    public virtual (Expression, bool) VisitPhiFunction(PhiFunction pc)
     {
-        public virtual (Expression, bool) VisitPhiFunction(PhiFunction pc)
-        {
-            var args = pc.Arguments
-                .Select(a =>
-                {
-                    var (e, _) = a.Value.Accept(this);
-                    var (arg, _) = SimplifyPhiArg(e);
-                    return arg;
-                })
-                .Where(a => ctx.GetValue((a as Identifier)!) != pc)
-                .ToArray();
-
-            var cmp = new ExpressionValueComparer();
-            var e = args.FirstOrDefault();
-            if (e is not null && args.All(a => cmp.Equals(a, e)))
+        var args = pc.Arguments
+            .Select(a =>
             {
-                return (e, true);
-            }
-            else
-            {
-                return (pc, false);
-            }
-        }
+                var (e, _) = a.Value.Accept(this);
+                var (arg, _) = SimplifyPhiArg(e);
+                return arg;
+            })
+            .Where(a => ctx.GetValue((a as Identifier)!) != pc)
+            .ToArray();
 
-        /// <summary>
-        /// VisitBinaryExpression method could not simplify following statements:
-        ///    y = x - const
-        ///    a = y + const
-        ///    x = phi(a, b)
-        /// to
-        ///    y = x - const
-        ///    a = x
-        ///    x = phi(a, b)
-        /// IdBinIdc rule class processes y as 'used in phi' and prevents propagation.
-        /// This method could be used to do such simplification (y + const ==> x)
-        /// </summary>
-        private (Expression, bool) SimplifyPhiArg(Expression arg)
+        var cmp = new ExpressionValueComparer();
+        var e = args.FirstOrDefault();
+        if (e is not null && args.All(a => cmp.Equals(a, e)))
         {
-            if (!(arg is BinaryExpression bin &&
-                  bin.Left is Identifier idLeft &&
-                  ctx.GetValue(idLeft) is BinaryExpression binLeft))
-                return (arg, false);
-
-            bin = m.Bin(
-                bin.Operator,
-                bin.DataType,
-                binLeft,
-                bin.Right);
-            return bin.Accept(this);
+            return (e, true);
         }
-
+        else
+        {
+            return (pc, false);
+        }
     }
+
+    /// <summary>
+    /// VisitBinaryExpression method could not simplify following statements:
+    ///    y = x - const
+    ///    a = y + const
+    ///    x = phi(a, b)
+    /// to
+    ///    y = x - const
+    ///    a = x
+    ///    x = phi(a, b)
+    /// IdBinIdc rule class processes y as 'used in phi' and prevents propagation.
+    /// This method could be used to do such simplification (y + const ==> x)
+    /// </summary>
+    private (Expression, bool) SimplifyPhiArg(Expression arg)
+    {
+        if (!(arg is BinaryExpression bin &&
+              bin.Left is Identifier idLeft &&
+              ctx.GetValue(idLeft) is BinaryExpression binLeft))
+            return (arg, false);
+
+        bin = m.Bin(
+            bin.Operator,
+            bin.DataType,
+            binLeft,
+            bin.Right);
+        return bin.Accept(this);
+    }
+
 }

@@ -32,11 +32,13 @@ namespace Reko.Evaluation
 	/// </summary>
 	public class Add_e_c_cRule
 	{
-
-        public Add_e_c_cRule()
-		{
-		}
-
+        /// <summary>
+        /// Applies the rule to a binary expression.
+        /// </summary>
+        /// <param name="binExp"></param>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns></returns>
 		public Expression? Match(BinaryExpression binExp, Expression left, Expression right)
 		{
 			var bin = binExp;

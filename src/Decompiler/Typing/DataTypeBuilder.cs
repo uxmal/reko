@@ -44,6 +44,12 @@ namespace Reko.Typing
 		private readonly DataTypeBuilderUnifier unifier;
         private readonly IPlatform platform;
 
+        /// <summary>
+        /// Constructs an instance of the <see cref="DataTypeBuilder"/> class.
+        /// </summary>
+        /// <param name="factory">Type factory used to build data types.</param>
+        /// <param name="store">Type store used to store data type.</param>
+        /// <param name="platform"></param>
 		public DataTypeBuilder(TypeFactory factory, ITypeStore store, IPlatform platform)
 		{
 			this.store = store;
@@ -52,11 +58,26 @@ namespace Reko.Typing
             this.platform = platform;
 		}
 
+        /// <summary>
+        /// Builds the equivalence class data types.
+        /// </summary>
+        /// <remarks>
+        /// This method is called after all traits have been processed.
+        /// </remarks>
 		public void BuildEquivalenceClassDataTypes()
 		{
             store.BuildEquivalenceClassDataTypes(factory);
 		}
 
+        /// <summary>
+        /// Merges the data type <paramref name="dtNew"/> into the data type 
+        /// of <paramref name="tv"/>.
+        /// </summary>
+        /// <param name="dtNew">Data type to merge into <paramref name="tv"/>.</param>
+        /// <param name="tv">The type variable whose <see cref="TypeVariable.DataType" />
+        /// property is unified with <paramref name="dtNew"/>.</param>
+        /// <returns>The new unified data type.
+        /// </returns>
         public DataType MergeIntoDataType(DataType dtNew, TypeVariable tv)
         {
             if (dtNew is null)
@@ -71,6 +92,13 @@ namespace Reko.Typing
             return dtNew;
         }
 
+        /// <summary>
+        /// Merges the data type <paramref name="dtNew"/> into the data type
+        /// currently held by the type variable of <paramref name="exp"/>.
+        /// </summary>
+        /// <param name="exp"></param>
+        /// <param name="dtNew"></param>
+        /// <returns></returns>
         public DataType MergeIntoDataType(Expression exp, DataType? dtNew)
         {
             if (dtNew is null)
@@ -88,6 +116,7 @@ namespace Reko.Typing
 
         #region ITraitHandler Members
 
+        /// <inheritdoc/>
         public void ArrayTrait(TypeVariable tArray, int elementSize, int length)
 		{
 			DataType elem = factory.CreateStructureType(null, elementSize);
@@ -95,6 +124,7 @@ namespace Reko.Typing
 			MergeIntoDataType(ptr, tArray);
 		}
 
+        /// <inheritdoc/>
 		public void DataTypeTrait(TypeVariable type, DataType dt)
 		{
 			if (dt == PrimitiveType.SegmentSelector)
@@ -107,6 +137,7 @@ namespace Reko.Typing
 			MergeIntoDataType(dt, type);
 		}
 
+        /// <inheritdoc/>
         public DataType DataTypeTrait(Expression exp, DataType? dt)
         {
             if (dt == PrimitiveType.SegmentSelector)
@@ -119,11 +150,13 @@ namespace Reko.Typing
             return MergeIntoDataType(exp, dt);
         }
 
+        /// <inheritdoc/>
 		public DataType EqualTrait(Expression tv1, Expression tv2)
 		{
             return null!;
 		}
 
+        /// <inheritdoc/>
 		public DataType FunctionTrait(Expression function, int funcPtrSize, TypeVariable ret, params TypeVariable [] actuals)
 		{
             Identifier[] adt = actuals.Select(a => new Identifier("", a, null!)).ToArray();
@@ -132,6 +165,7 @@ namespace Reko.Typing
 			return MergeIntoDataType(function, pfn);
 		}
 
+        /// <inheritdoc/>
 		public DataType MemAccessArrayTrait(Expression? expBase, Expression expStruct, int structPtrBitSize, int offset, int elementSize, int length, Expression expField)
 		{
 			var element = factory.CreateStructureType(null, elementSize);
@@ -144,11 +178,13 @@ namespace Reko.Typing
 		    return MemoryAccessCommon(expBase, expStruct, offset, dtArray, structPtrBitSize);
 		}
 		
+        /// <inheritdoc/>
 		public DataType MemAccessTrait(Expression? tBase, Expression tStruct, int structPtrBitSize, Expression tField, int offset)
 		{
 			return MemoryAccessCommon(tBase, tStruct, offset, store.GetTypeVariable(tField), structPtrBitSize);
 		}
 
+        /// <inheritdoc/>
 		public DataType MemFieldTrait(Expression? tBase, Expression tStruct, Expression tField, int offset)
         {
             var s = factory.CreateStructureType(null, 0);
@@ -157,6 +193,7 @@ namespace Reko.Typing
             return MergeIntoDataType(tStruct, s);
         }
 
+        /// <inheritdoc/>
         public DataType MemoryAccessCommon(Expression? tBase, Expression tStruct, int offset, DataType tField, int structPtrBitSize)
         {
             var s = factory.CreateStructureType(null, 0);
@@ -169,6 +206,7 @@ namespace Reko.Typing
             return MergeIntoDataType(tStruct, pointer);
         }
 
+        /// <inheritdoc/>
 		public DataType MemSizeTrait(Expression? tBase, Expression tStruct, int size)
 		{
 			if (size <= 0)
@@ -180,6 +218,7 @@ namespace Reko.Typing
 			return MergeIntoDataType(tStruct, ptr);
 		}
 
+        /// <inheritdoc/>
 		public DataType PointerTrait(Expression ptrExp, int ptrSize, Expression tPointee)
 		{
 			var ptr = factory.CreatePointer(store.GetDataTypeOf(tPointee)!, ptrSize * DataType.BitsPerByte);

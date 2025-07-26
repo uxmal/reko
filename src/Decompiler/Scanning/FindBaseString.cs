@@ -36,7 +36,7 @@ namespace Reko.Scanning
 {
     /// <summary>
     /// Finds the base address of a memory area by correlating 
-    /// the starts of strings with the 
+    /// the starts of strings with possible pointers to those strings.
     /// </summary>
     public class FindBaseString : AbstractBaseAddressFinder
     {
@@ -48,6 +48,14 @@ namespace Reko.Scanning
         private readonly IProcessorArchitecture arch;
         private readonly IProgressIndicator progressIndicator;
 
+        /// <summary>
+        /// Constructs a new instance of the <see cref="FindBaseString"/> class.
+        /// </summary>
+        /// <param name="arch"><see cref="IProcessorArchitecture"/> to use for the binary image.</param>
+        /// <param name="mem">Raw binary image.</param>
+        /// <param name="progress"><see cref="IProgressIndicator"/> to show the progress
+        /// of this slow analysis.
+        /// </param>
         public FindBaseString(
             IProcessorArchitecture arch,
             ByteMemoryArea mem,
@@ -60,8 +68,15 @@ namespace Reko.Scanning
             this.progressIndicator = progress;
         }
 
-        public int min_str_len = 10;           // Minimum string search length (default is 10)'
-        public int max_matches = 10;           // Maximum matches to display (default is 10)'
+        /// <summary>
+        /// Minimum string search length (default is 10)
+        /// </summary>
+        public int MinimumStringLength = 10;
+
+        /// <summary>
+        /// Maximum matches to generate (default is 10)
+        /// </summary>
+        public int MaximumMatches = 10;
 
 
 
@@ -69,13 +84,18 @@ namespace Reko.Scanning
         /// Number of threads to spawn; the default is # of CPU cores.
         /// </summary>
         public int Threads { get; set; }
+
+        /// <summary>
+        /// Default minimum address to start searching for base addresses.
+        /// </summary>
         public ulong MinAddress { get; set; }
 
+        /// <inheritdoc/>
         public override BaseAddressCandidate[] Run(CancellationToken ct)
         {
             // Find indices of strings and locations of pointers in parallel.
             var sw = new Stopwatch();
-            var stringsTask = Task.Run(() => PatternFinder.FindAsciiStrings(Memory, min_str_len)
+            var stringsTask = Task.Run(() => PatternFinder.FindAsciiStrings(Memory, MinimumStringLength)
                 .Select(s => s.uAddress)
                 .ToHashSet());
             var pointersTask = Task.Run(() => ReadPointers(Memory, 4));
@@ -84,7 +104,8 @@ namespace Reko.Scanning
 
             if (strings.Count == 0)
             {
-                return Array.Empty<BaseAddressCandidate>();
+                trace.Inform("No strings found in memory area.");
+                return [];
             }
             trace.Inform("    Located {0} strings", strings.Count);
             trace.Inform("    Located {0} pointers", pointers.Count);
@@ -118,21 +139,47 @@ namespace Reko.Scanning
                 .SelectMany(c => c)
                 .OrderByDescending(c => c.Confidence)
                 .ThenBy(c => c.Address)
-                .Take(max_matches)
+                .Take(MaximumMatches)
                 .ToArray();
         }
 
+        /// <summary>
+        /// Models an Address interval.
+        /// </summary>
         public struct Interval
         {
-            public ulong BeginAddress;
-            public ulong EndAddress;
+            //$REVIEW: this class may be redundant, as it is similar to other
+            // interval classes in the Reko codebase.
+            /// <summary>
+            /// Address of the beginning of the interval.
+            /// </summary>
+            public ulong BeginAddress { get; }
 
+            /// <summary>
+            /// Address of the end of the interval.
+            /// </summary>
+            public ulong EndAddress { get; }
+
+            /// <summary>
+            /// Constructs a new instance of the <see cref="Interval"/> structure.
+            /// </summary>
+            /// <param name="start_addr"></param>
+            /// <param name="end_addr"></param>
             public Interval(uint start_addr, uint end_addr)
             {
                 this.BeginAddress = start_addr;
                 this.EndAddress = end_addr;
             }
 
+            /// <summary>
+            /// Computes a range of addresses to scan for a given thread index.
+            /// </summary>
+            /// <param name="uAddrMin">Starting address</param>
+            /// <param name="index">Index of work item (bounded above by <paramref name="max_threads"/>).
+            /// </param>
+            /// <param name="max_threads">Number of concurrent work items.</param>
+            /// <param name="offset">Offset </param>
+            /// <returns>Stride/chunk size.</returns>
             public static Interval GetRange(
                 ulong uAddrMin,
                 nint index,
@@ -169,7 +216,7 @@ namespace Reko.Scanning
             }
         }
 
-        public List<BaseAddressCandidate> FindMatches(
+        private List<BaseAddressCandidate> FindMatches(
             IReadOnlySet<ulong> strOffsets,
             IReadOnlySet<ulong> pointers,
             int threadIndex,

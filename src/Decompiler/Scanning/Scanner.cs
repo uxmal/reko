@@ -63,6 +63,9 @@ namespace Reko.Scanning
 
         private static readonly TraceSwitch trace = new TraceSwitch("Scanner", "Traces the progress of the Scanner") { Level = TraceLevel.Info };
 
+        /// <summary>
+        /// <see cref="IEventListener"/> to which diagnostic messages are reported.
+        /// </summary>
         protected IDecompilerEventListener eventListener;
 
         private readonly TypeLibrary metadata;
@@ -78,7 +81,16 @@ namespace Reko.Scanning
         private readonly CommentInjector cinj;
         private PriorityQueue<WorkItem> procQueue;
         private ScanResults sr;
-        
+
+        /// <summary>
+        /// Constructs a new <see cref="Scanner"/> instance.
+        /// </summary>
+        /// <param name="program">Program to be analyzed.</param>
+        /// <param name="metadata">Metada provided by the <see cref="IPlatform"/>.</param>
+        /// <param name="dynamicLinker"><see cref="IDynamicLinker"/> used to resolve
+        /// references to dynamically linked external procedures.</param>
+        /// <param name="services"><see cref="IServiceProvider"/> providing runtime services.
+        /// </param>
         public Scanner(
             Program program,
             TypeLibrary metadata,
@@ -120,15 +132,21 @@ namespace Reko.Scanning
             return program.User.Procedures.Keys.ToHashSet();
         }
 
+        /// <summary>
+        /// <see cref="IServiceProvider"/> providing runtime services.
+        /// </summary>
         public IServiceProvider Services { get; }
 
+        /// <summary>
+        /// The value held in the global register, if any.
+        /// </summary>
         public Constant? GlobalRegisterValue => this.Program.GlobalRegisterValue;
 
         private class BlockRange
         {
             /// <summary>
             /// Creates a block range. A (linear) address addr is considered part of the block if it
-            /// satisifies the conditions Start <= addr < End.
+            /// satisifies the conditions <c>Start &lt;= addr &lt; End</c>.
             /// </summary>
             /// <param name="block"></param>
             /// <param name="start">Start address of the block</param>
@@ -208,6 +226,7 @@ namespace Reko.Scanning
             imageMap.TerminateItem(addr);
         }
 
+        /// <inheritdoc/>
         public void TerminateAnyBlockAt(Address addr)
         {
             var block = FindContainingBlock(addr);
@@ -217,6 +236,15 @@ namespace Reko.Scanning
             }
         }
 
+        /// <summary>
+        /// Attempt to read a value of type <paramref name="dt"/> at the address <paramref name="addr"/>.
+        /// </summary>
+        /// <param name="arch"><see cref="IProcessorArchitecture"/> used to determine endianness.</param>
+        /// <param name="addr">Address at which to read.</param>
+        /// <param name="dt">Datatype of value to read.</param>
+        /// <param name="value">If successful, the resulting value.</param>
+        /// <returns>True if the value was successfully read; otherwise false.
+        /// </returns>
         public bool TryRead(IProcessorArchitecture arch, Address addr, PrimitiveType dt, [MaybeNullWhen(false)] out Constant value)
         {
             return arch.Endianness.TryRead(this.Program.Memory, addr, dt, out value);
@@ -244,12 +272,18 @@ namespace Reko.Scanning
                 addrStart);
         }
 
+        /// <summary>
+        /// Looks up the architecture by its moniker.
+        /// </summary>
+        /// <param name="archMoniker">Moniker of the architecture.</param>
+        /// <returns>An instance of the architecture.</returns>
         public IProcessorArchitecture GetArchitecture(string archMoniker)
         {
             var cfgSvc = Services.RequireService<IConfigurationService>();
             return Program.EnsureArchitecture(archMoniker, cfgSvc.GetArchitecture!);
         }
 
+        /// <inheritdoc/>
         public IEnumerable<RtlInstructionCluster> GetTrace(IProcessorArchitecture arch, Address addrStart, ProcessorState state, IStorageBinder binder)
         {
             if (!Program.TryCreateImageReader(arch, addrStart, out var rdr))
@@ -261,6 +295,7 @@ namespace Reko.Scanning
                 this);
         }
 
+        /// <inheritdoc/>
         public PromoteBlockWorkItem CreatePromoteWorkItem(Address addrStart, Block block, Procedure procNew)
         {
             return new PromoteBlockWorkItem(addrStart,
@@ -270,13 +305,15 @@ namespace Reko.Scanning
                 procNew);
         }
 
+        /// <inheritdoc/>
         public void EnqueueImageSymbol(ImageSymbol sym, bool isEntryPoint)
         {
             if (sym.ProcessorState is null)
                 sym.ProcessorState = Program.Architecture.CreateProcessorState();
-            procQueue.Enqueue(PriorityEntryPoint, new ImageSymbolWorkItem(this, Program, sym, isEntryPoint));
+            procQueue.Enqueue(PriorityEntryPoint, new ImageSymbolWorkItem(this, sym, isEntryPoint));
         }
 
+        /// <inheritdoc/>
         public void EnqueueUserProcedure(IProcessorArchitecture arch, Address addr, FunctionType sig, string? name)
         {
             if (Program.Procedures.ContainsKey(addr))
@@ -288,6 +325,7 @@ namespace Reko.Scanning
             procQueue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, arch, addr, proc.Name));
         }
 
+        /// <inheritdoc/>
         public Block? EnqueueJumpTarget(Address addrSrc, Address addrDest, Procedure proc, ProcessorState state)
         {
             Procedure procDest;
@@ -376,11 +414,13 @@ namespace Reko.Scanning
             return block;
         }
 
+        /// <inheritdoc/>
         public void EnqueueProcedure(IProcessorArchitecture arch, Address addr)
         {
             procQueue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, arch, addr, null));
         }
 
+        /// <inheritdoc/>
         public Address? EnqueueUserProcedure(IProcessorArchitecture arch, UserProcedure sp)
         {
             var de = EnsureUserProcedure(arch, sp);
@@ -390,6 +430,7 @@ namespace Reko.Scanning
             return de.Value.Key;
         }
 
+        /// <inheritdoc/>
         public void EnsureEntryPoint(ImageSymbol sym)
         {
             var proc = Program.EnsureProcedure(sym.Architecture, sym.Address!, sym.Name);
@@ -402,7 +443,7 @@ namespace Reko.Scanning
             Program.CallGraph.EntryPoints.Add(proc);
         }
 
-        protected Procedure? EnsureProcedure(IProcessorArchitecture arch, Address addr, string name, FunctionType signature)
+        private Procedure? EnsureProcedure(IProcessorArchitecture arch, Address addr, string name, FunctionType signature)
         {
             if (Program.Procedures.ContainsKey(addr))
                 return null; // Already scanned. Do nothing.
@@ -411,7 +452,7 @@ namespace Reko.Scanning
             return proc;
         }
 
-        protected KeyValuePair<Address, Procedure>? EnsureUserProcedure(IProcessorArchitecture arch, UserProcedure sp)
+        private KeyValuePair<Address, Procedure>? EnsureUserProcedure(IProcessorArchitecture arch, UserProcedure sp)
         {
             if (Program.Procedures.ContainsKey(sp.Address))
                 return null; // Already scanned. Do nothing.
@@ -430,7 +471,7 @@ namespace Reko.Scanning
             return new KeyValuePair<Address, Procedure>(sp.Address, proc);
         }
 
-        public static bool IsBlockLinearProcedureExit(Block block)
+        private static bool IsBlockLinearProcedureExit(Block block)
         {
             if (block.Statements.Count == 0)
                 return false;
@@ -454,6 +495,7 @@ namespace Reko.Scanning
         /// </remarks>
         /// <param name="addrFrom"></param>
         /// <param name="procOld"></param>
+        /// <param name="state"></param>
         /// <param name="procNew"></param>
         /// <returns></returns>
         public Block CreateCallRetThunk(Address addrFrom, Procedure procOld, ProcessorState state, Procedure procNew)
@@ -549,6 +591,7 @@ namespace Reko.Scanning
             }
         }
 
+        /// <inheritdoc/>
         public void ScanImageSymbol(ImageSymbol sym, bool isEntryPoint)
         {
             try
@@ -599,7 +642,7 @@ namespace Reko.Scanning
             }
         }
 
-
+        /// <inheritdoc/>
         public ProcedureBase ScanProcedure(IProcessorArchitecture arch, Address addr, string? procedureName, ProcessorState state)
         {
             TerminateAnyBlockAt(addr);
@@ -650,7 +693,7 @@ namespace Reko.Scanning
         /// Before processing the body of a procedure, perform housekeeping tasks.
         /// </summary>
         /// <param name="addr"></param>
-        /// <param name="state"></param>
+        /// <param name="st"></param>
         /// <param name="proc"></param>
         /// <returns></returns>
         private void EstablishInitialState(Address addr, ProcessorState st, Procedure proc)
@@ -677,6 +720,7 @@ namespace Reko.Scanning
             Program.Platform.InjectProcedureEntryStatements(proc, addr, bb);
         }
 
+        /// <inheritdoc/>
         public void EnqueueUserGlobalData(Address addr, DataType dt, string? name)
         {
             if (scannedGlobalData.Contains(addr))
@@ -687,6 +731,7 @@ namespace Reko.Scanning
             procQueue.Enqueue(PriorityGlobalData, new GlobalDataWorkItem(this, Program, addr, rdr, dt, name));
         }
 
+        /// <inheritdoc/>
         public Block? FindContainingBlock(Address address)
         {
             if (blocks.TryGetLowerBound(address, out var b) && address < b.End)
@@ -703,6 +748,7 @@ namespace Reko.Scanning
                 return null;
         }
 
+        /// <inheritdoc/>
         public Block? FindExactBlock(Address address)
         {
             if (blocks.TryGetValue(address, out var b))
@@ -711,21 +757,7 @@ namespace Reko.Scanning
                 return null;
         }
 
-        /// <summary>
-        /// Tries to determine if the instruction at <paramref name="addr"/> is 
-        /// a trampoline instruction. If so, we return a call to the imported 
-        /// function directly.
-        /// procedure.
-        /// </summary>
-        /// <remarks>
-        /// A trampoline is a procedure whose only contents is an indirect
-        /// JUMP to a location that contains the address of an imported
-        /// function. Because these trampolines may take on different
-        /// appearances depending on the processor architecture, we have to 
-        /// call out to the architecture to assist in matching them.
-        /// </remarks>
-        /// <param name="addr"></param>
-        /// <returns>Null if there was no trampoline.</returns>
+        /// <inheritdoc/>
         public ProcedureBase? GetTrampoline(IProcessorArchitecture arch, Address addr)
         {
             if (!Program.TryCreateImageReader(arch, addr, out var rdr))
@@ -735,6 +767,7 @@ namespace Reko.Scanning
             return target;
         }
 
+        /// <inheritdoc/>
         public Expression? GetImport(Address addrImportThunk, Address addrInstruction)
         {
             if (importReferences.TryGetValue(addrImportThunk, out var impref))
@@ -755,6 +788,7 @@ namespace Reko.Scanning
         /// ExternaProcedure. Otherwise, check to see if the call is an
         /// intercepted call.
         /// </summary>
+        /// <param name="arch">Processor architecture.</param>
         /// <param name="addrImportThunk"></param>
         /// <param name="addrInstruction">Used to display diagnostics.</param>
         /// <returns></returns>
@@ -780,8 +814,10 @@ namespace Reko.Scanning
         /// is jumping into the body of a procedure that was loaded with GetProcAddress or 
         /// the like.
         /// </summary>
+        /// <param name="arch">Processor architecture.</param>
         /// <param name="addrImportThunk"></param>
-        /// <returns></returns>
+        /// <returns>An <see cref="ExternalProcedure"/> representing an imported
+        /// dynamically linked procedure if one was found.</returns>
         public ExternalProcedure? GetInterceptedCall(IProcessorArchitecture arch, Address addrImportThunk)
         {
             if (!Program.TryCreateImageReader(arch, addrImportThunk, out var rdr))
@@ -800,7 +836,7 @@ namespace Reko.Scanning
         /// truncated, with a single out edge to the new block. The second 
         /// block receives the out edges of the first block.
         /// </summary>
-        /// <param name="block">The block to split</param>
+        /// <param name="blockToSplit">The block to split</param>
         /// <param name="addr">The address at which to split it.</param>
         /// <returns>The newly created, empty second block.</returns>
         public Block SplitBlock(Block blockToSplit, Address addr)
@@ -837,6 +873,7 @@ namespace Reko.Scanning
             return blockNew;
         }
 
+        /// <inheritdoc />
         public virtual void ScanImage()
         {
             trace.Inform("= Loaded file ======");
@@ -888,7 +925,7 @@ namespace Reko.Scanning
             }
         }
 
-        protected void ProcessQueue()
+        private void ProcessQueue()
         {
             while (procQueue.TryDequeue(out var workitem))
             {
@@ -913,7 +950,7 @@ namespace Reko.Scanning
             }
         }
 
-        public void SetAssumedRegisterValues(Address addr, ProcessorState st)
+        private void SetAssumedRegisterValues(Address addr, ProcessorState st)
         {
             if (!Program.User.Procedures.TryGetValue(addr, out var userProc) ||
                 userProc.Assume is null)
@@ -931,6 +968,7 @@ namespace Reko.Scanning
             }
         }
 
+        /// <inheritdoc/>
         public void SetProcedureStackDelta(
             Procedure proc, int stackDelta, Address address)
         {
@@ -950,6 +988,7 @@ namespace Reko.Scanning
             }
         }
 
+        /// <inheritdoc/>
         public void SetProcedureReturnAddressBytes(Procedure proc, int returnAddressBytes, Address address)
         {
             if (proc.Frame.ReturnAddressSize.HasValue)
@@ -1220,6 +1259,10 @@ namespace Reko.Scanning
             return true;
         }
 
+        /// <summary>
+        /// Dumps the call graph and control flow graph of the given program.
+        /// </summary>
+        /// <param name="program">Program being analyzed.</param>
         public static void DumpGraph(Program program)
         {
             if (program.DisassemblyDirectory is null)
@@ -1260,6 +1303,15 @@ namespace Reko.Scanning
             output.WriteLine();
         }
 
+        /// <summary>
+        /// Writes a detailed representation of the control flow graph to a file in the specified disassembly directory.
+        /// </summary>
+        /// <remarks>The method generates a file named "scannerv2.txt" in the disassembly directory of the
+        /// specified program. It includes information about procedure return statuses and block successors, ordered by
+        /// address.</remarks>
+        /// <param name="program">The program containing the disassembly directory where the output file will be created. The directory must
+        /// not be null.</param>
+        /// <param name="cfg">The control flow graph results to be dumped, including procedure return statuses and block information.</param>
         public static void DumpGraph(Program program, ScanResultsV2 cfg)
         {
             if (program.DisassemblyDirectory is null)

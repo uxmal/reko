@@ -23,17 +23,30 @@ using Reko.Core.Types;
 using System;
 using System.IO;
 
-namespace Reko.Scanning
+namespace Reko.Scanning;
+
+/// <summary>
+/// Abstract base class for work items that can be processed by the <see cref="Scanner"/>
+/// class.
+/// </summary>
+public abstract class WorkItem
 {
-    public abstract class WorkItem
+    /// <summary>
+    /// Initializes a new instance of the <see cref="WorkItem"/> class with the specified address.
+    /// </summary>
+    /// <param name="addr">Address associated with the work item.</param>
+    protected WorkItem(Address addr)
     {
-        protected WorkItem(Address addr)
-        {
-            this.Address = addr;
-        }
-
-        public Address Address { get; private set; }
-
-        public abstract void Process();
+        this.Address = addr;
     }
+
+    /// <summary>
+    /// The address associated with this work item.
+    /// </summary>
+    public Address Address { get; }
+
+    /// <summary>
+    /// Processes the work item.
+    /// </summary>
+    public abstract void Process();
 }

@@ -33,9 +33,14 @@ using System.Threading.Tasks;
 
 namespace Reko.Scanning
 {
-    // Based on: "Determining Image Base of Firmware Files for ARM Devices"
-    // Ruijin ZHU, Yu-an TAN, Quanxin ZHANG, Fei WU, Jun ZHENG
-    // Yuan XUE
+    /// <summary>
+    /// Function Entry Table (FET) finder.
+    /// </summary>
+    /// <remarks>
+    /// Based on: "Determining Image Base of Firmware Files for ARM Devices"
+    /// Ruijin ZHU, Yu-an TAN, Quanxin ZHANG, Fei WU, Jun ZHENG
+    /// Yuan XUE.
+    /// </remarks>
     public class FetFinder : AbstractBaseAddressFinder
     {
         private const int MaxGap = 3;
@@ -50,6 +55,14 @@ namespace Reko.Scanning
 
         private uint word_size;
 
+        /// <summary>
+        /// Constructs a new instance of the <see cref="FetFinder"/> class.
+        /// </summary>
+        /// <param name="arch"><see cref="IProcessorArchitecture"/> to use for analysis.
+        /// </param>
+        /// <param name="mem"></param>
+        /// <param name="alignMask"></param>
+        /// <param name="maskedValue"></param>
         public FetFinder(
             IProcessorArchitecture arch, 
             ByteMemoryArea mem,
@@ -66,6 +79,7 @@ namespace Reko.Scanning
             this.word_size = (uint)(arch.WordWidth.BitSize / arch.MemoryGranularity);
         }
 
+        /// <inheritdoc/>
         public override BaseAddressCandidate[] Run(CancellationToken ct)
         {
             throw new NotImplementedException();
@@ -98,6 +112,12 @@ namespace Reko.Scanning
             return false;
         }
 
+        /// <summary>
+        /// Returns true if <paramref name="addr"/>is aligned to the
+        /// <see cref="maskedValue"/>
+        /// </summary>
+        /// <param name="addr">Address to test.</param>
+        /// <returns></returns>
         public bool IsAligned(Constant addr)
         {
             var uAddr = addr.ToUInt64();
@@ -105,6 +125,13 @@ namespace Reko.Scanning
         }
 
 
+        /// <summary>
+        /// Locates all function entry tables (FETs) in the given memory area.
+        /// </summary>
+        /// <param name="start">Starting address.</param>
+        /// <param name="wnd">Ending address.</param>
+        /// <returns>A list of function entry tables.
+        /// </returns>
         public List<FET> FindFETs(uint start, uint wnd)
         {
             var result = new List<FET>();
@@ -157,6 +184,17 @@ namespace Reko.Scanning
             rdr.Offset = (pos + gapWords) * word_size;
         }
 
+        /// <summary>
+        /// Computs a list of base address candidates based on the presence of 
+        /// function entry tables (FETs) in the given binary image.
+        /// </summary>
+        /// <param name="bin">Raw binary image.</param>
+        /// <param name="function_entry_table">List of discovered FET candidates.</param>
+        /// <param name="threshold">Confidence threshold to use. Candidates with lower
+        /// confidence levels are discarded.</param>
+        /// <returns>A list of (address, confidence level) tuples for possible 
+        /// base addresses.
+        /// </returns>
         public List<(uint, double)> FindBaseCandidates(byte[] bin, List<FET> function_entry_table, double threshold)
         {
             uint fileSize = (uint)bin.Length;

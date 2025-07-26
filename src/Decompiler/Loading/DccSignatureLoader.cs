@@ -39,6 +39,9 @@ using System.Text;
 
 namespace Reko.Loading
 {
+    /// <summary>
+    /// Loads a signature file produced by the DCC decompiler.
+    /// </summary>
     public class DccSignatureLoader
     {
         PerfectHash g_pattern_hasher = new PerfectHash();
@@ -51,12 +54,16 @@ namespace Reko.Loading
 
         private Program program;
 
+        /// <summary>
+        /// Constructs a <see cref="DccSignatureLoader"/>.
+        /// </summary>
+        /// <param name="program"></param>
         public DccSignatureLoader(Program program)
         {
             this.program = program;
         }
         /* Hash table structure */
-        public class HT
+        internal class HT
         {
             public string? htSym;
             public byte[]? htPat;
@@ -69,34 +76,57 @@ namespace Reko.Loading
         //}
         //HT;
 
+        /// <summary>
+        /// DCC types.
+        /// </summary>
         public enum hlType : ushort
         {
-            TYPE_UNKNOWN = 0,   /* unknown so far      		*/
-            TYPE_BYTE_SIGN,     /* signed byte (8 bits) 	*/
-            TYPE_BYTE_UNSIGN,   /* unsigned byte 			*/
-            TYPE_WORD_SIGN,     /* signed word (16 bits) 	*/
-            TYPE_WORD_UNSIGN,   /* unsigned word (16 bits)	*/
-            TYPE_LONG_SIGN,     /* signed long (32 bits)	*/
-            TYPE_LONG_UNSIGN,   /* unsigned long (32 bits)	*/
-            TYPE_RECORD,        /* record structure			*/
-            TYPE_PTR,           /* pointer (32 bit ptr) 	*/
-            TYPE_STR,           /* string               	*/
-            TYPE_CONST,         /* constant (any type)		*/
-            TYPE_FLOAT,         /* floating point			*/
-            TYPE_DOUBLE,        /* double precision float	*/
+            /// <summary> unknown so far      		</summary>
+            TYPE_UNKNOWN,
+            /// <summary> signed byte (8 bits) 	</summary>
+            TYPE_BYTE_SIGN,
+            /// <summary> unsigned byte 			</summary>
+            TYPE_BYTE_UNSIGN,
+            /// <summary> signed word (16 bits) 	</summary>
+            TYPE_WORD_SIGN,
+            /// <summary> unsigned word (16 bits)	</summary>
+            TYPE_WORD_UNSIGN,
+            /// <summary> signed long (32 bits)	</summary>
+            TYPE_LONG_SIGN,
+            /// <summary> unsigned long (32 bits)	</summary>
+            TYPE_LONG_UNSIGN,
+            /// <summary> record structure			</summary>
+            TYPE_RECORD,
+            /// <summary> pointer (32 bit ptr) 	</summary>
+            TYPE_PTR,
+            /// <summary> string               	</summary>
+            TYPE_STR,
+            /// <summary> constant (any type)		</summary>
+            TYPE_CONST,
+            /// <summary> floating point			</summary>
+            TYPE_FLOAT,
+            /// <summary> double precision float	</summary>
+            TYPE_DOUBLE,
         }
 
-/* Structure of the prototypes table. Same as the struct in parsehdr.h,
-    except here we don't need the "next" index (the elements are already
-    sorted by function name) */
+        /// <summary>
+        /// Structure of the prototypes table. Same as the struct in parsehdr.h,
+        /// except here we don't need the "next" index (the elements are already
+        ///  orted by function name)
+        /// </summary>
         public class PH_FUNC_STRUCT
         {
-            public string? name; // [SYMLEN]  /* Name of function or arg */
-            public hlType typ;               /* Return type */
-            public int numArg;               /* Number of args */
-            public int firstArg;             /* Index of first arg in chain */
+            /// <summary> Name of function or arg</summary>
+            public string? name; // [SYMLEN]
+            /// <summary>Return type</summary>
+            public hlType typ;
+            /// <summary>Number of args.</summary>
+            public int numArg;
+            /// <summary>Index of first arg in chain.</summary>
+            public int firstArg;
             //  int     next;                /* Index of next function in chain */
-            public bool bVararg;             /* True if variable arguements */
+            /// <summary>True if variable arguements.</summary>
+            public bool bVararg;
         }
 
 
@@ -343,7 +373,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
         };
 
         // This procedure is called to initialise the library check code 
-        public bool SetupLibCheck(IServiceProvider services)
+        private bool SetupLibCheck(IServiceProvider services)
         {
             var listener = services.RequireService<IEventListener>();
             var cfgSvc = services.RequireService<IConfigurationService>();
@@ -358,7 +388,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
             return SetupLibCheck(services, fpath, bytes);
         }
 
-        public bool SetupLibCheck(IServiceProvider services, string fpath, byte[] bytes)
+        private bool SetupLibCheck(IServiceProvider services, string fpath, byte[] bytes)
         {
             var listener = services.RequireService<IEventListener>();
             var rdr = new ByteImageReader(bytes);

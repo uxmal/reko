@@ -40,6 +40,9 @@ namespace Reko.Scanning
     /// </summary>
     public class ScanResults
     {
+        /// <summary>
+        /// Constructs a new instance of the <see cref="ScanResults"/> class.
+        /// </summary>
         public ScanResults()
         {
             this.TransferTargets = new HashSet<Address>();
@@ -98,7 +101,16 @@ namespace Reko.Scanning
         /// This is a key end result of the scanning stage.
         /// </summary>
         public List<RtlProcedure> Procedures { get; set; }
+
+        /// <summary>
+        /// All the instructions in the program, addressed by their
+        /// linear address.
+        /// </summary>
         public Dictionary<ulong, Instr> FlatInstructions { get; set; }
+
+        /// <summary>
+        /// All the edges in the interprocedural control flow graph,
+        /// </summary>
         public List<Link> FlatEdges { get; set; }
 
         /// <summary>
@@ -136,6 +148,12 @@ namespace Reko.Scanning
         /// Useful for debugging.
         /// </summary>
         public HashSet<Address> WatchedAddresses;
+
+        /// <summary>
+        /// Dumps the contents of this <see cref="ScanResults"/> instance to
+        /// the debuggers diagnostic console.
+        /// </summary>
+        /// <param name="caption"></param>
 
         [Conditional("DEBUG")]
         public void Dump(string caption = "Dump")
@@ -181,31 +199,81 @@ namespace Reko.Scanning
 #endif
         }
 
+        /// <summary>
+        /// Represents a single RTL cluster in the program, augmented with
+        /// a block identifier, predecessor and successor counts.
+        /// </summary>
         public class Instr
         {
+            /// <summary>
+            /// Processor architecture of the instruction.
+            /// </summary>
             public IProcessorArchitecture Architecture { get; set; }
+
+            /// <summary>
+            /// Address of the instruction.
+            /// </summary>
             public Address Address => rtl.Address;
+
+            /// <summary>
+            /// Length of the instruction in storage units.
+            /// </summary>
             public int Length => rtl.Length;
+
+            /// <summary>
+            /// Instruction class of the instruction.
+            /// </summary>
             public InstrClass Class => rtl.Class;
 
+            /// <summary>
+            /// Block identifier of the instruction.
+            /// </summary>
             public Address block_id;
 
+            /// <summary>
+            /// Number of predecessors of this instruction.
+            /// </summary>
             public int pred;
+
+            /// <summary>
+            /// Number of successors of this instruction.
+            /// </summary>
             public int succ;
+
+            /// <summary>
+            /// The RTL instruction cluster.
+            /// </summary>
             public RtlInstructionCluster rtl { get; set; }
         }
 
+        /// <summary>
+        /// Represents an edge between two addresses in the
+        /// interprocedural control flow graph.
+        /// </summary>
         public class Link
         {
-            public readonly Address From;
-            public readonly Address To;
+            /// <summary>
+            /// Source of the edge.
+            /// </summary>
+            public Address From { get; }
 
+            /// <summary>
+            /// Destination of the edge.
+            /// </summary>
+            public Address To { get; }
+
+            /// <summary>
+            /// Constructs a new link between two addresses.
+            /// </summary>
+            /// <param name="first">Source of the edge.</param>
+            /// <param name="second">Destination of the edge.</param>
             public Link(Address first, Address second)
             {
                 this.From = first;
                 this.To = second;
             }
 
+            /// <inheritdoc/>
             public override bool Equals(object obj)
             {
                 if (obj is not Link that)
@@ -213,23 +281,31 @@ namespace Reko.Scanning
                 return that.From == this.From && that.To == this.To;
             }
 
+            /// <inheritdoc/>
             public override int GetHashCode()
             {
                 return From.GetHashCode() ^ 13 * To.GetHashCode();
             }
 
+            /// <inheritdoc/>
             public override string ToString()
             {
                 return string.Format("[{0:X8} -> {1:X8}]", From, To);
             }
         }
 
+        /// <summary>
+        /// Breaks into the debugger if any of the addresses in the provided
+        /// collection <paramref name="enumerable"/> matches any of the
+        /// watched addresses.
+        /// </summary>
+        /// <param name="enumerable">Addresses to test.</param>
         [Conditional("DEBUG")]
         public void BreakOnWatchedAddress(IEnumerable<Address> enumerable)
         {
             var hits = enumerable.Intersect(this.WatchedAddresses).ToArray();
             if (hits.Length > 0)
-                hits.ToString();
+                Debugger.Break();
         }
     }
 }

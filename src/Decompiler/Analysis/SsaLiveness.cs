@@ -308,12 +308,19 @@ namespace Reko.Analysis
 		}
 	}
 
+    /// <summary>
+    /// Alternate implementation of SSA liveness analysis.
+    /// </summary>
     public class SsaLivenessAnalysis2 : InstructionVisitorBase
 	{
 		private readonly SsaIdentifierCollection ssa;
 		private readonly Dictionary<Block,Block> visitedBlocks;
 		private readonly InterferenceGraph interference;
 
+        /// <summary>
+        /// Constructs an instance of <see cref="SsaLivenessAnalysis2"/>.
+        /// </summary>
+        /// <param name="ssa"><see cref="SsaState"/> whose liveness is being analyzed.</param>
 		public SsaLivenessAnalysis2(SsaState ssa)
 		{
 			this.ssa = ssa.Identifiers;
@@ -321,6 +328,9 @@ namespace Reko.Analysis
 			interference = new InterferenceGraph();
 		}
 
+        /// <summary>
+        /// Performs liveness analysis on the SSA identifiers in the SSA state.
+        /// </summary>
 		public void Analyze()
 		{
 			foreach (SsaIdentifier sid in ssa)
@@ -340,6 +350,9 @@ namespace Reko.Analysis
 			}
 		}
 
+        /// <summary>
+        /// The interference graph that was built during the liveness analysis.
+        /// </summary>
 		public InterferenceGraph InterferenceGraph
 		{
 			get { return interference; }
@@ -369,7 +382,7 @@ namespace Reko.Analysis
 			}
 		}
 
-		public void LiveOutAtStatement(Block block, int iStm, SsaIdentifier sid)
+		private void LiveOutAtStatement(Block block, int iStm, SsaIdentifier sid)
 		{
             Dictionary<SsaIdentifier, SsaIdentifier> W = iStm >= 0 
 				? VariablesDefinedByStatement(block.Statements[iStm])

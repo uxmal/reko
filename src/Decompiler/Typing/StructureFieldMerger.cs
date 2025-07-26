@@ -32,11 +32,20 @@ namespace Reko.Typing
     {
         private readonly StructureType str;
 
+        /// <summary>
+        /// Constructs an instance of <see cref="StructureFieldMerger"/>.
+        /// </summary>
+        /// <param name="str">Structure whose fields are to be merged.</param>
         public StructureFieldMerger(StructureType str)
         {
             this.str = str;
         }
 
+        /// <summary>
+        /// Merge overlapping structure fields.
+        /// </summary>
+        /// <returns>New structure with no overlapping fields.
+        /// </returns>
         public StructureType Merge()
         {
             var strNew = new StructureType(str.Name, str.Size);
@@ -56,6 +65,12 @@ namespace Reko.Typing
             return strNew;
         }
 
+        /// <summary>
+        /// Given a list of <see cref="StructureField"/>s, builds a structure
+        /// with no overlapping fields.
+        /// </summary>
+        /// <param name="fields">Fields to process.</param>
+        /// <returns>Resulting <see cref="DataType"/>.</returns>
         public DataType BuildOverlappedStructure(List<StructureField> fields)
         {
             List<StructureType> types = new List<StructureType>();
@@ -119,6 +134,12 @@ namespace Reko.Typing
             return null;
         }
 
+        /// <summary>
+        /// Collect fields into clusters where all members in each cluster overlap.
+        /// </summary>
+        /// <param name="fields"></param>
+        /// <returns>A sequence of clusters of overlapping fields.
+        /// </returns>
         public IEnumerable<List<StructureField>> GetOverlappingClusters(StructureFieldCollection fields)
         {
             int clusterEndOffset = 0;

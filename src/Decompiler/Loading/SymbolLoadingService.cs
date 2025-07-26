@@ -23,6 +23,7 @@ using Reko.Core.Loading;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Reko.Loading
 {
@@ -57,6 +58,15 @@ namespace Reko.Loading
             return null;
         }
 
+        /// <summary>
+        /// Loads a symbol source from the given <paramref name="symSrcDef"/> definition.
+        /// </summary>
+        /// <param name="symSrcDef">Symbol source definition.</param>
+        /// <param name="bytes">Raw bytes of the symbol source.</param>
+        /// <param name="filename">File name of the symbol source</param>
+        /// <returns>An object implementing <see cref="ISymbolSource"/> if 
+        /// one could be loaded; null otherwise.
+        /// </returns>
         public ISymbolSource? LoadSymbolSource(SymbolSourceDefinition symSrcDef, byte [] bytes, string filename)
         {
             if (symSrcDef.TypeName is null)
@@ -82,9 +92,14 @@ namespace Reko.Loading
             return null;
         }
 
+        /// <summary>
+        /// Loads all symbol sources defined in the configuration.
+        /// </summary>
+        /// <returns></returns>
         public List<SymbolSourceDefinition> GetSymbolSources()
         {
-            throw new NotImplementedException();
+            var cfgSvc = services.RequireService<IConfigurationService>();
+            return cfgSvc.GetSymbolSources().ToList();
         }
     }
 }

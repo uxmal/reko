@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Diagnostics;
 using Reko.Core.Loading;
+using Reko.Core.Services;
 using Reko.Services;
 using System;
 using System.Collections.Concurrent;
@@ -33,7 +34,7 @@ namespace Reko.Scanning
 {
     /// <summary>
     /// This class implements a recursive traversal strategy to discover code
-    /// in a binary. The algorithm creates a <see cref="ProcedureWorkder"/>
+    /// in a binary. The algorithm creates a <see cref="ProcedureWorker"/>
     /// for each known "seed". Seeds are obtained from the binary itself (such
     /// as entry points and exported functions) and from the user (such as
     /// user-specified functions). 
@@ -42,23 +43,44 @@ namespace Reko.Scanning
     {
         private readonly ConcurrentQueue<ProcedureWorker> wl;
         private readonly ConcurrentDictionary<Address, ProcedureWorker> activeWorkers;
-        private readonly ConcurrentDictionary<Address, ProcedureWorker> suspendedWorkers; 
+        private readonly ConcurrentDictionary<Address, ProcedureWorker> suspendedWorkers;
 
+        /// <summary>
+        /// Constructs a new <see cref="RecursiveScanner"/> instance.
+        /// </summary>
+        /// <param name="program">Program being analyzed.</param>
+        /// <param name="provenance"><see cref="ProvenanceType">Provenance</see> of
+        /// the procedures discovered by this scanner.</param>
+        /// <param name="dynamicLinker"><see cref="IDynamicLinker"/> instance used
+        /// to resolve calls to imported procedures.</param>
+        /// <param name="listener"><see cref="IEventListener"/></param>
+        /// <param name="services"></param>
         public RecursiveScanner(
             Program program,
             ProvenanceType provenance,
             IDynamicLinker dynamicLinker,
-            IDecompilerEventListener listener,
+            IEventListener listener,
             IServiceProvider services)
             : this(program, new ScanResultsV2(), provenance, dynamicLinker, listener, services)
         { }
 
+        /// <summary>
+        /// Constructs a new <see cref="RecursiveScanner"/> instance.
+        /// </summary>
+        /// <param name="program">Program being analyzed.</param>
+        /// <param name="sr">Collected scanning results.</param>
+        /// <param name="provenance"><see cref="ProvenanceType">Provenance</see> of
+        /// the procedures discovered by this scanner.</param>
+        /// <param name="dynamicLinker"><see cref="IDynamicLinker"/> instance used
+        /// to resolve calls to imported procedures.</param>
+        /// <param name="listener"><see cref="IEventListener"/></param>
+        /// <param name="services"></param>
         public RecursiveScanner(
             Program program, 
             ScanResultsV2 sr,
             ProvenanceType provenance,
             IDynamicLinker dynamicLinker,
-            IDecompilerEventListener listener,
+            IEventListener listener,
             IServiceProvider services)
             : base(program, sr, provenance, dynamicLinker, listener, services)
         {
@@ -67,8 +89,10 @@ namespace Reko.Scanning
             this.suspendedWorkers = new();
         }
 
+        /// <inheritdoc/>
         public override bool AllowSpeculativeTransfers => true;
 
+        /// <inheritdoc/>
         public ScanResultsV2 ScanProgram()
         {
             var seeds = CollectSeeds();
@@ -76,6 +100,17 @@ namespace Reko.Scanning
             return sr;
         }
 
+        /// <summary>
+        /// Starts scanning a procedure at the given address.
+        /// </summary>
+        /// <param name="arch"><see cref="IProcessorArchitecture"/> used to
+        /// lift the procedure's machine code to RTL instructions.</param>
+        /// <param name="addr">Address at which the procedure starts.</param>
+        /// <param name="procedureName">Optional name for the procedure.</param>
+        /// <param name="state"><see cref="ProcessorState"/> to use while processing
+        /// the procedure.</param>
+        /// <returns>An modified <see cref="ScanResultsV2"/> instance.
+        /// </returns>
         public ScanResultsV2 ScanProcedure(IProcessorArchitecture arch, Address addr, string? procedureName, ProcessorState state)
         {
             var symbol = ImageSymbol.Create(SymbolType.Code, arch, addr, procedureName);
@@ -140,7 +175,7 @@ namespace Reko.Scanning
             }
         }
 
-        public ProcedureWorker? MakeHeuristicWorker(IProcessorArchitecture arch, Address address)
+        private ProcedureWorker? MakeHeuristicWorker(IProcessorArchitecture arch, Address address)
         {
             var name = program.NamingPolicy.ProcedureName(address);
             var proc = new Proc(address, ProvenanceType.Heuristic, arch, name);
@@ -156,7 +191,7 @@ namespace Reko.Scanning
             }
         }
 
-        public void ProcessWorkers(IEnumerable<ProcedureWorker?> seeds)
+        private void ProcessWorkers(IEnumerable<ProcedureWorker?> seeds)
         {
             foreach (var worker in seeds)
             {
@@ -172,6 +207,18 @@ namespace Reko.Scanning
             }
         }
 
+        /// <summary>
+        /// Attempts to start a <see cref="ProcedureWorker"/> for a 
+        /// procedure at the given address. If a worker is already
+        /// working on the procedure, it is returned in the output parameter.
+        /// </summary>
+        /// <param name="addrProc">Address of the new procedure.</param>
+        /// <param name="state">ProcessorState to use with the new procedure.</param>
+        /// <param name="worker">Resulting <see cref="ProcedureWorker"/> if 
+        /// that procedure isn't finished processing.</param>
+        /// <returns>True if a new or existing <see cref="ProcedureWorker"/> is
+        /// returned to caller; false otherwise.
+        /// </returns>
         public bool TryStartProcedureWorker(
             Address addrProc,
             ProcessorState state,
@@ -202,6 +249,11 @@ namespace Reko.Scanning
             return true;
         }
 
+        /// <summary>
+        /// Attempt to suspend a worker.
+        /// </summary>
+        /// <param name="worker"></param>
+        /// <returns></returns>
         public bool TrySuspendWorker(ProcedureWorker worker)
         {
             trace.Verbose("    {0}: Suspending...", worker.Procedure.Address);
@@ -241,6 +293,7 @@ namespace Reko.Scanning
         /// known yet, the provided value is accepted. If the return status 
         /// already has a value, change it only if the old status was not 
         /// "Returns".
+        /// </summary>
         /// <param name="address">The address of a procedure.</param>
         /// <param name="returns">The new return status. </param>
         public void SetProcedureReturnStatus(Address address, ReturnStatus returns)
@@ -257,6 +310,16 @@ namespace Reko.Scanning
             }
         }
 
+        /// <summary>
+        /// Called to resume a <see cref="ProcedureWorker"/> that was previously
+        /// suspended waiting for a callee procedure to return.
+        /// </summary>
+        /// <param name="worker">Caller worker to resume.</param>
+        /// <param name="addrCaller">Address of the call instruction.</param>
+        /// <param name="addrFallthrough">Address of the instruction after
+        /// the call instruction.</param>
+        /// <param name="state">ProcessorState to use when resuming execution.
+        /// </param>
         public void ResumeWorker(
             ProcedureWorker worker,
             Address addrCaller,
@@ -279,6 +342,13 @@ namespace Reko.Scanning
             wl.Enqueue(worker);
         }
 
+        /// <summary>
+        /// Called when a <see cref="ProcedureWorker"/> has completed processing
+        /// a procedure.
+        /// </summary>
+        /// <param name="worker">Worker that completed.</param>
+        /// <param name="waitingCalls">Number of remaining waiting calls.
+        /// </param>
         public void OnWorkerCompleted(ProcedureWorker worker, int waitingCalls)
         {
             var removed = activeWorkers.TryRemove(worker.Procedure.Address, out _);
@@ -312,10 +382,25 @@ namespace Reko.Scanning
         Address FallthroughAddress,
         ProcessorState State);
 
+    /// <summary>
+    /// Classiation of the return status of a procedure.
+    /// </summary>
     public enum ReturnStatus
     {
+        /// <summary>
+        /// Used when it is not known whether the procedure returns.
+        /// </summary>
         Unknown,
+
+        /// <summary>
+        /// Used when at least one return instruction in the procedure
+        /// was reached.
+        /// </summary>
         Returns,
+
+        /// <summary>
+        /// Used when it was impossible to prove that the procedure returns.
+        /// </summary>
         Diverges,
     }
 }

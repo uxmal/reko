@@ -27,7 +27,6 @@ using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Evaluation;
-using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -50,6 +49,16 @@ namespace Reko.Scanning
         private readonly IEventListener listener;
         private StringConstant? formatString;
 
+        /// <summary>
+        /// Creates an instance of the <see cref="VarargsFormatScanner"/> class.
+        /// </summary>
+        /// <param name="program">Program being analyzed</param>
+        /// <param name="arch"><see cref="IProcessorArchitecture"/> to use.</param>
+        /// <param name="ctx"><see cref="EvaluationContext"/> to use when evaluating 
+        /// expressions.</param>
+        /// <param name="services"><see cref="IServiceProvider"/> providing runtime services.</param>
+        /// <param name="listener"><see cref="IEventListener"/> to which diagnostic messages
+        /// are reported.</param>
         public VarargsFormatScanner(
             IReadOnlyProgram program,
             IProcessorArchitecture arch,
@@ -68,6 +77,17 @@ namespace Reko.Scanning
                 listener);
         }
 
+        /// <summary>
+        /// Builds either a <see cref="Assignment"/> or a <see cref="SideEffect"/> instruction
+        /// that invokes the variadic function with the given <paramref name="callee"/>.
+        /// </summary>
+        /// <param name="callee">Reference to a variadic function.</param>
+        /// <param name="originalSig">Function signature before expansion of variadic extra argue</param>
+        /// <param name="expandedSig">Function signature after expansion of variadic extra arguments.</param>
+        /// <param name="chr">Optional procedure characteristics of variadic function.</param>
+        /// <param name="ab"><see cref="ApplicationBuilder"/> used to build the variadic <see cref="Application"/> 
+        /// expression.</param>
+        /// <returns>Resulting instruction calling the <paramref name="callee"/>.</returns>
         public Instruction BuildInstruction(
             Expression callee,
             FunctionType originalSig,
@@ -110,6 +130,15 @@ namespace Reko.Scanning
             }
         }
 
+        /// <summary>
+        /// Determines whether there is a known parser for the variadic argument list
+        /// format indicator.
+        /// </summary>
+        /// <param name="sig">Unexpanded function type of the variadic function.</param>
+        /// <param name="chr"><see cref="ProcedureCharacteristics"/> of the variadic procedure.
+        /// </param>
+        /// <returns>True if there is a known parser for the format string/indicator.
+        /// </returns>
         public static bool IsVariadicParserKnown(FunctionType? sig, ProcedureCharacteristics? chr)
         {
             return sig is not null &&
@@ -118,6 +147,20 @@ namespace Reko.Scanning
                    VarargsParserSet(chr);
         }
 
+        /// <summary>
+        /// Attempts to determine the format string of a variadic function
+        /// </summary>
+        /// <param name="addrInstr">Address of the call to a variadic function.</param>
+        /// <param name="callee">The variadic function.</param>
+        /// <param name="sig">The signature of the variadic function.</param>
+        /// <param name="chr"><see cref="ProcedureCharacteristics"/> of the called function.</param>
+        /// <param name="ab"><see cref="ApplicationBuilder"/> used to make the call to the variadic
+        /// function.</param>
+        /// <param name="result">The resulting <see cref="VarargsResult"/> if the varargs function's 
+        /// format string was successfully parsed.
+        /// </param>
+        /// <returns>True if the varargs function could be resolved; otherwise false.
+        /// </returns>
         public bool TryScan(
             Address addrInstr,
             Expression callee,
@@ -247,6 +290,14 @@ namespace Reko.Scanning
             return varargsParser.ArgumentTypes;
         }
 
+        /// <summary>
+        /// Expands the variadic function signature by replacing the
+        /// variadic argument list with the given <paramref name="argumentTypes"/>.
+        /// </summary>
+        /// <param name="platform"><see cref="IPlatform"/> </param>
+        /// <param name="sig">"Unexpanded" arguments of the variadic funcition.</param>
+        /// <param name="argumentTypes">Data types of the expanded variadic function.</param>
+        /// <returns></returns>
         public static FunctionType ReplaceVarargs(
             IPlatform platform,
             FunctionType sig,

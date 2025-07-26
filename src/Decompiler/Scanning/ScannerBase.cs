@@ -28,11 +28,19 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Reko.Scanning
 {
+    /// <summary>
+    /// Abstract base class for scanners that scan a binary image.
+    /// </summary>
     public abstract class ScannerBase
     {
         private readonly IEventListener eventListener;
         private readonly Dictionary<Address, UserProcedure> noDecompiledProcs;
- 
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ScannerBase"/> class.
+        /// </summary>
+        /// <param name="program"></param>
+        /// <param name="eventListener"></param>
         public ScannerBase(Program program, IEventListener eventListener)
         {
             this.Program = program;
@@ -40,7 +48,10 @@ namespace Reko.Scanning
             this.noDecompiledProcs = new Dictionary<Address, UserProcedure>();
         }
 
-        public Program Program { get; private set; }
+        /// <summary>
+        /// Program currently being analyzed by the scanner.
+        /// </summary>
+        public Program Program { get; }
 
         private bool TryGetNoDecompiledProcedure(Address addr, [MaybeNullWhen(false)] out UserProcedure proc)
         {
@@ -53,6 +64,14 @@ namespace Reko.Scanning
             return true;
         }
 
+        /// <summary>
+        /// Returns true if the user has specified that the procedure
+        /// should not be decompiled.
+        /// </summary>
+        /// <param name="addr">Address being probed.</param>
+        /// <returns>True if the procedure at that address is not to be 
+        /// decompiled.
+        /// </returns>
         protected bool IsNoDecompiledProcedure(Address addr)
         {
             return TryGetNoDecompiledProcedure(addr, out UserProcedure? _);
@@ -92,6 +111,15 @@ namespace Reko.Scanning
             return true;
         }
 
+        /// <summary>
+        /// Attempts to get the user-defined procedure at the given address, if it
+        /// is marked as "no-decompile".
+        /// </summary>
+        /// <param name="addr">Address to probe.</param>
+        /// <param name="ep"><see cref="ExternalProcedure"/> representing the 
+        /// no-decompile procedure.</param>
+        /// <returns>True if a no-decompile procedure was found; false otherwise.
+        /// </returns>
         protected bool TryGetNoDecompiledProcedure(Address addr, [MaybeNullWhen(false)] out ExternalProcedure ep)
         {
             if (!TryGetNoDecompiledParsedProcedure(addr, out UserProcedure? sProc))
@@ -107,16 +135,25 @@ namespace Reko.Scanning
             return true;
         }
 
+        /// <summary>
+        /// Obsolete. Use <see cref="Warn(Address, string)"/> instead.
+        /// </summary>
         public void Warn(Address addr, string message)
         {
             eventListener.Warn(eventListener.CreateAddressNavigator(Program, addr), message);
         }
 
+        /// <summary>
+        /// Obsolete. Use <see cref="Warn(Address, string, object[])"/> instead.
+        /// </summary>
         public void Warn(Address addr, string message, params object[] args)
         {
             eventListener.Warn(eventListener.CreateAddressNavigator(Program, addr), message, args);
         }
 
+        /// <summary>
+        /// Obsolete. Use <see cref="Error(Address, string, object[])"/> instead.
+        /// </summary>
         public void Error(Address addr, string message, params object[] args)
         {
             eventListener.Error(eventListener.CreateAddressNavigator(Program, addr), message, args);

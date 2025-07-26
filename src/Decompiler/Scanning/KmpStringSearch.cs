@@ -33,6 +33,14 @@ namespace Reko.Scanning
         private readonly int[] failureTable;
         private readonly C[] keyword;
 
+        /// <summary>
+        /// Constructs an instance of <see cref="KmpStringSearch{C}"/>.
+        /// </summary>
+        /// <param name="W">String to be search for.</param>
+        /// <param name="scannedMemory">True if already scanned memory is to be 
+        /// searched.</param>
+        /// <param name="unscannedMemory">True if not scanned memory is to be 
+        /// searched.</param>
         public KmpStringSearch(C[] W, bool scannedMemory, bool unscannedMemory)
             : base(W,  scannedMemory,  unscannedMemory)
         {
@@ -40,6 +48,12 @@ namespace Reko.Scanning
             failureTable = BuildFailureTable(W);
         }
 
+        /// <summary>
+        /// Returns the indices of all matching positions.
+        /// </summary>
+        /// <param name="text">String to search.</param>
+        /// <returns>The indices of all the matching positions in <paramref name="text"/>.
+        /// </returns>
         public override IEnumerable<int> GetMatchPositions(C [] text)
         {
             int m = 0; // the beginning of the current match in S

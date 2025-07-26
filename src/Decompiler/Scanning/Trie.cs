@@ -24,7 +24,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace Reko.Scanning
 {
 	/// <summary>
-	/// An InstructionTrie tallies instruction frequencies and instruction
+	/// A <see cref="Trie{T}"/> tallies instruction frequencies and instruction
     /// sequence lengths.
 	/// </summary>
 	public class Trie<T>
@@ -32,13 +32,26 @@ namespace Reko.Scanning
 	{
 		private readonly TrieNode root;
 
+        /// <summary>
+        /// Constructs an instance of a <see cref="Trie{T}"/>.
+        /// </summary>
+        /// <param name="hasher"><see cref="IEqualityComparer{T}"/> used to hash entries in the
+        /// trie.
+        /// </param>
 		public Trie(IEqualityComparer<T> hasher)
 		{
 			this.root = new TrieNode(hasher);
 		}
 
+        /// <summary>
+        /// The count of items in the trie.
+        /// </summary>
 		public int Count { get; private set; }
 
+        /// <summary>
+        /// Adds several objects to the trie.
+        /// </summary>
+        /// <param name="instrs">Objects to add to the trie.</param>
 		public void Add(T [] instrs)
 		{
 			TrieNode node = root;
@@ -50,6 +63,11 @@ namespace Reko.Scanning
 			}
 		}
 
+        /// <summary>
+        /// Compute a likelihood count for the instructions.
+        /// </summary>
+        /// <param name="instrs">Sequence of instructions.</param>
+        /// <returns></returns>
 		public long ScoreInstructions(T [] instrs)
 		{
 			TrieNode node = root;
@@ -98,6 +116,9 @@ namespace Reko.Scanning
 			}
 		}
 
+        /// <summary>
+        /// Displays the contents of the trie.
+        /// </summary>
         public void Dump()
         {
             Dump(this.root, 0);

@@ -28,15 +28,26 @@ using System.Linq;
 
 namespace Reko.Scanning
 {
+    /// <summary>
+    /// Work item that promotes a block from one procedure to another.
+    /// </summary>
     public class PromoteBlockWorkItem : WorkItem
     {
         private static readonly TraceSwitch trace = new TraceSwitch(nameof(PromoteBlockWorkItem), "Trace the workings of PromoteBlockWorkItem") { Level = TraceLevel.Info };
 
-        public Block Block;
-        public Procedure ProcNew;
-        public IScannerServices  Scanner;
-        public Program Program;
+        private Block Block;
+        private Procedure ProcNew;
+        private IScannerServices  Scanner;
+        private Program Program;
 
+        /// <summary>
+        /// Constructs an instance of <see cref="PromoteBlockWorkItem"/>.
+        /// </summary>
+        /// <param name="addr">Address at which to start promoting basic blocks.</param>
+        /// <param name="scanner"><see cref="IScanner"/> orchestrating this work item.</param>
+        /// <param name="program">The program being analyzed.</param>
+        /// <param name="block">Block being promoted to a procedure.</param>
+        /// <param name="procNew">The new procedure to which basic blocks will be moved.</param>
         public PromoteBlockWorkItem(
             Address addr,
             IScannerServices scanner,
@@ -50,6 +61,7 @@ namespace Reko.Scanning
             ProcNew = procNew;
         }
 
+        /// <inheritdoc/>
         public override void Process()
         {
             var movedBlocks = new HashSet<Block>();
@@ -95,11 +107,6 @@ namespace Reko.Scanning
             }
         }
 
-        [Conditional("DEBUG")]
-        public static void SanityCheck(Block block)
-        {
-         //   Debug.Assert(block.Pred.Count == 0 && block != block.Procedure.EntryBlock);
-        }
 
         [Conditional("DEBUG")]
         private void DumpBlocks(Procedure procedure)
@@ -111,7 +118,7 @@ namespace Reko.Scanning
             }
         }
 
-        public void FixInboundEdges(Block blockToPromote)
+        private void FixInboundEdges(Block blockToPromote)
         {
             trace.Verbose("PBW: Fixing inbound edges of {0}", blockToPromote.DisplayName);
 
@@ -153,7 +160,7 @@ namespace Reko.Scanning
             return inboundBlock.Address + (stmLast.Address - inboundBlock.Statements[0].Address);
         }
 
-        public void FixOutboundEdges(Block block)
+        private void FixOutboundEdges(Block block)
         {
             trace.Verbose("PBW: Fixing outbound edges of {0}", block.DisplayName);
             for (int i = 0; i < block.Succ.Count; ++i)

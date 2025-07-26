@@ -55,7 +55,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             ctx.Statement = stm;
             Assert.AreEqual(2, ssaIds[id].Uses.Count);
             Add_mul_id_c_id_Rule rule = new Add_mul_id_c_id_Rule();
-            var e = rule.Match(b, ctx);
+            var e = rule.Match(b);
             Assert.IsNotNull(e);
             ass.Src = e;
             Assert.AreEqual("x = id *s 5<32>", ass.ToString());
@@ -71,7 +71,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             Assignment ass = new Assignment(x, b);
             var rule = new Add_mul_id_c_id_Rule();
             
-            var e = rule.Match(b, new SsaEvaluationContext(null, ssaIds, null));
+            var e = rule.Match(b);
 
             Assert.IsNotNull(e);
             ass.Src = e;

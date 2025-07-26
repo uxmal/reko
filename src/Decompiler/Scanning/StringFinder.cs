@@ -29,17 +29,26 @@ namespace Reko.Scanning
 {
     /// <summary>
     /// Given a program, returns all addresses within the program that
-    /// _appear_ to be strings.
+    /// <i>appear</i> to be strings.
     /// </summary>
     public class StringFinder
     {
         private readonly Program program;
 
+        /// <summary>
+        /// Creates an instance of the <see cref="StringFinder"/> class.
+        /// </summary>
+        /// <param name="program">Program being searched.</param>
         public StringFinder(Program program)
         {
             this.program = program;
         }
 
+        /// <summary>
+        /// Find all strings matching the provided <see cref="StringFinderCriteria"/>.
+        /// </summary>
+        /// <param name="criteria">Criteria the strings have to match.</param>
+        /// <returns>A sequence of <see cref="AddressSearchHit"/>s.</returns>
         public IEnumerable<AddressSearchHit> FindStrings(StringFinderCriteria criteria)
         {
             foreach (var rdr in GenerateReaders(program, criteria))
@@ -98,7 +107,12 @@ namespace Reko.Scanning
             }
         }
 
-
+        /// <summary>
+        /// Determines whether a byte is a likely ASCII string character.
+        /// </summary>
+        /// <param name="ch">Character to test.</param>
+        /// <returns>True if the string character is likely ASCII; false otherwise.
+        /// </returns>
         //$TODO: This assumes only ASCII values are valid.
         // How to deal with Swedish? Cyrillic? Chinese?
         // Added common escaped characters for C strings.
@@ -108,6 +122,15 @@ namespace Reko.Scanning
         }
     }
 
+    /// <summary>
+    /// Criteria used to find strings.
+    /// </summary>
+    /// <param name="StringType">String type.</param>
+    /// <param name="Encoding">Text encoding to use.</param>
+    /// <param name="MinimumLength">Minimum string length.</param>
+    /// <param name="Areas">Places to search in.</param>
+    /// <param name="CreateReader">Function that creates an appropriate
+    /// <see cref="EndianImageReader"/>.</param>
     public record StringFinderCriteria(
         StringType StringType,
         Encoding Encoding,

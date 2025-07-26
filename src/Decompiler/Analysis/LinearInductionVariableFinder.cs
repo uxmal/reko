@@ -337,6 +337,23 @@ namespace Reko.Analysis
 			return false;
 		}
 
+
+        /// <summary>
+        /// Collects the successors of the given SSA identifier
+        /// in the SSA graph.
+        /// </summary>
+        /// <param name="sid"></param>
+        /// <returns></returns>
+        public IEnumerable<SsaIdentifier> GetSuccessors(SsaIdentifier sid)
+        {
+            this.operands = new List<SsaIdentifier>();
+            if (sid.DefStatement is not null)
+            {
+                sid.DefStatement.Instruction.Accept(this);
+            }
+            return operands;
+        }
+
         /// <summary>
         /// A <see cref="DirectedGraph{T}"/> implementation over the 
         /// SSA identifiers def and use edges.

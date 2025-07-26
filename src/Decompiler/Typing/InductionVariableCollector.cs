@@ -32,13 +32,19 @@ namespace Reko.Typing
     {
         private readonly Program program;
 
+        /// <summary>
+        /// Constructs an instance of the <see cref="InductionVariableCollector"/> class.
+        /// </summary>
+        /// <param name="program"></param>
         public InductionVariableCollector(Program program)
         {
             this.program = program;
         }
 
+        /// <inheritdoc/>
         public override LinearInductionVariable? DefaultValue => null;
         
+        /// <inheritdoc/>
         public override LinearInductionVariable? VisitIdentifier(Identifier id)
         {
             if (!program.InductionVariables.TryGetValue(id, out var iv))
@@ -47,6 +53,7 @@ namespace Reko.Typing
                 return iv;
         }
 
+        /// <inheritdoc/>
         public override LinearInductionVariable? VisitBinaryExpression(BinaryExpression binExp)
         {
             var ivLeft = binExp.Left.Accept(this);
@@ -67,12 +74,13 @@ namespace Reko.Typing
             return null;
         }
 
+        /// <inheritdoc/>
         public override LinearInductionVariable? VisitMemoryAccess(MemoryAccess access)
         {
             return null;
         }
 
-        public LinearInductionVariable? MergeInductionVariableConstant(LinearInductionVariable? iv, Operator op, Constant? c)
+        private LinearInductionVariable? MergeInductionVariableConstant(LinearInductionVariable? iv, Operator op, Constant? c)
         {
             if (iv is null || c is null)
                 return null;

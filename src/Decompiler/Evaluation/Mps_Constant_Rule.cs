@@ -18,36 +18,30 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
-using Reko.Core;
-using System;
 
-namespace Reko.Evaluation
+namespace Reko.Evaluation;
+
+internal class Mps_Constant_Rule
 {
-	public class Mps_Constant_Rule
-	{
-		private MemberPointerSelector? mps;
+    private MemberPointerSelector? mps;
 
-		public Mps_Constant_Rule()
-		{
-		}
+    public bool Match(MemberPointerSelector mps, EvaluationContext ctx)
+    {
+        //			c = mps.MemberPtr as Constant;
+        this.mps = mps;
+        return false;
+        //return (c is not null); 				//$REVIEW: disabled. Perhaps we don't want to do this transformation before we detect registerpairs.
+    }
 
-		public bool Match(MemberPointerSelector mps, EvaluationContext ctx)
-		{
-//			c = mps.MemberPtr as Constant;
-			this.mps = mps;
-			return false;
-			//return (c is not null); 				//$REVIEW: disabled. Perhaps we don't want to do this transformation before we detect registerpairs.
-		}
-
-		public Expression Transform()
-		{
-			return new BinaryExpression(
-				BinaryOperator.IAdd,
-				mps!.DataType,
-				null!, // mps.Ptr,
-				null!); // c
-		}
-	}
+    public Expression Transform()
+    {
+        return new BinaryExpression(
+            BinaryOperator.IAdd,
+            mps!.DataType,
+            null!, // mps.Ptr,
+            null!); // c
+    }
 }

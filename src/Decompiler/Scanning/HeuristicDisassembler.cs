@@ -43,6 +43,18 @@ namespace Reko.Scanning
         private readonly Func<Address, bool> isAddrValid;
         private readonly bool assumeCallsDiverge;
 
+        /// <summary>
+        /// Constructs a new instance of the <see cref="HeuristicDisassembler"/> class.
+        /// </summary>
+        /// <param name="program">Program being analyzed.</param>
+        /// <param name="binder"><see cref="IStorageBinder"/> used to bind <see cref="Storage"/>s
+        /// to <see cref="Core.Expressions.Identifier"/>s.</param>
+        /// <param name="sr">Scanner results so far.</param>
+        /// <param name="isAddrValid">Function used to determine whether an address
+        /// is valid or not.</param>
+        /// <param name="assumeCallsDiverge">If true, assume that calls may diverge; otherwise false.</param>
+        /// <param name="host"><see cref="IRewriterHost"/> used for any RTL instruction lifting.
+        /// </param>
         public HeuristicDisassembler(
             Program program,
             IStorageBinder binder,
@@ -62,15 +74,13 @@ namespace Reko.Scanning
 
         /// <summary>
         /// Recursively disassembles the range of addresses.
-        /// <paramref name="proc"/>.
         /// </summary>
-        /// <param name="addr"></param>
-        /// <param name="proc"></param>
-        /// <returns></returns>
+        /// <param name="addr">Address at which to start disassembling</param>
+        /// <returns>An <see cref="RtlBlock"/>.</returns>
         public RtlBlock Disassemble(Address addr)
         {
             var arch = program.Architecture;
-            var current = RtlBlock.CreateEmpty(arch, addr, string.Format("l{0:X}", addr));
+            var current = RtlBlock.CreateEmpty(arch, addr, program.NamingPolicy.BlockName(addr));
             program.TryCreateImageReader(arch, addr, out var rdr);
             
             var dasm = arch.CreateRewriter(

@@ -24,52 +24,57 @@ using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
 
-namespace Reko.Evaluation
+namespace Reko.Evaluation;
+
+/// <summary>
+/// Matches a <see cref="BinaryExpression"/> with two constant parameters, which usually is easily simplified.
+/// </summary>
+public class ConstConstBin_Rule
 {
-	/// <summary>
-	/// Matches a binOp with two constant parameters, which usually is easily simplified.
-	/// </summary>
-	public class ConstConstBin_Rule
+    /// <summary>
+    /// Checks whether the given binary expression is a binary operation,
+    /// then simplifies it.
+    /// </summary>
+    /// <param name="binExp"></param>
+    /// <returns>Simplified </returns>
+	public Expression? Match(BinaryExpression binExp)
 	{
-		public Expression? Match(BinaryExpression binExp)
-		{
-            Constant? cRight = binExp.Right as Constant;
-            DataType dtResult = binExp.DataType;
+        Constant? cRight = binExp.Right as Constant;
+        DataType dtResult = binExp.DataType;
 			var op = binExp.Operator;
 			if (binExp.Left is Constant cLeft && cRight is not null)
 			{
-                if (op is ConditionalOperator)
-                {
-                    var result = op.ApplyConstants(binExp.DataType, cLeft!, cRight);
-                    result.DataType = dtResult;
-                    return result;
-                }
+            if (op is ConditionalOperator)
+            {
+                var result = op.ApplyConstants(binExp.DataType, cLeft!, cRight);
+                result.DataType = dtResult;
+                return result;
+            }
 				if (!cLeft.IsReal && !cRight.IsReal)
 				{
-                    if (cLeft.DataType.IsPointer)
-                    {
-                        dtResult = cLeft.DataType;
-                    }
-                    else if (cRight.DataType.IsPointer)
-                    {
-                        dtResult = cRight.DataType;
-                    }
-                    var result = op.ApplyConstants(binExp.DataType, cLeft, cRight);
-                    result.DataType = dtResult!;
-                    return result;
+                if (cLeft.DataType.IsPointer)
+                {
+                    dtResult = cLeft.DataType;
                 }
+                else if (cRight.DataType.IsPointer)
+                {
+                    dtResult = cRight.DataType;
+                }
+                var result = op.ApplyConstants(binExp.DataType, cLeft, cRight);
+                result.DataType = dtResult!;
+                return result;
             }
-            if (binExp.Left is Address a && cRight is not null &&
-                op.Type.IsAddOrSub())
-            {
-                var addend = cRight.ToInt64();
-                if (op.Type != OperatorType.IAdd)
-                    addend = -addend;
-                var addr = a + addend;
-                addr.DataType = a.DataType;
-                return addr;
-            }
-            return null;
+        }
+        if (binExp.Left is Address a && cRight is not null &&
+            op.Type.IsAddOrSub())
+        {
+            var addend = cRight.ToInt64();
+            if (op.Type != OperatorType.IAdd)
+                addend = -addend;
+            var addr = a + addend;
+            addr.DataType = a.DataType;
+            return addr;
+        }
+        return null;
 		}
 	}
-}

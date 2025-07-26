@@ -21,45 +21,48 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 
-namespace Reko.Evaluation
+namespace Reko.Evaluation;
+
+public partial class ExpressionSimplifier
 {
-    public partial class ExpressionSimplifier
+    /// <inheritdoc/>
+    public virtual (Expression, bool) VisitIdentifier(Identifier id)
     {
-        public virtual (Expression, bool) VisitIdentifier(Identifier id)
+        var e = idConst.Match(id, this.ctx, unifier, listener);
+        if (e is not null)
         {
-            var e = idConst.Match(id, this.ctx, unifier, listener);
-            if (e is not null)
-            {
-                return (e, true);
-            }
-            e = idProcConstRule.Match(id, ctx);
-            if (e is not null)
-            {
-                return (e, true);
-            }
-            // jkl: Copy propagation causes real problems when used during trashed register analysis.
-            // If needed in other passes, it should be an option for expression e
-            e = IdCopyPropagation(id, ctx);
-            if (e is not null)
-            {
-                return (e, true);
-            }
-            e = idBinIdc.Match(id, ctx);
-            if (e is not null)
-            {
-                return (e, true);
-            }
-            return (id, false);
+            return (e, true);
         }
-
-        private static Expression? IdCopyPropagation(Identifier id, EvaluationContext ctx)
+        if (ctx.GetValue(id) is ProcedureConstant pc)
         {
-            var idOld = id;
-            if (ctx.GetValue(id) is not Identifier idNew || idNew == idOld)
-                return null;
-
-            return idNew;
+            return (pc, true);
         }
-
+        if (e is not null)
+        {
+            return (e, true);
+        }
+        // jkl: Copy propagation causes real problems when used during trashed register analysis.
+        // If needed in other passes, it should be an option for expression e
+        e = IdCopyPropagation(id, ctx);
+        if (e is not null)
+        {
+            return (e, true);
+        }
+        e = idBinIdc.Match(id, ctx);
+        if (e is not null)
+        {
+            return (e, true);
+        }
+        return (id, false);
     }
+
+    private static Expression? IdCopyPropagation(Identifier id, EvaluationContext ctx)
+    {
+        var idOld = id;
+        if (ctx.GetValue(id) is not Identifier idNew || idNew == idOld)
+            return null;
+
+        return idNew;
+    }
+
 }

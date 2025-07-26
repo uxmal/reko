@@ -26,19 +26,27 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Reko.Structure
 {
+    /// <summary>
+    /// A factory for creating <see cref="Region"/> objects from a <see cref="Block"/>.
+    /// </summary>
     public class RegionFactory : InstructionVisitor<AbsynStatement?>
     {
         private List<AbsynStatement>? stms;
         private RegionType regType;
         private Expression? exp;
-        
+
+        /// <summary>
+        /// Creates a region from the given block.
+        /// </summary>
+        /// <param name="b">Basic block.</param>
+        /// <returns>A region for the basic block.
+        /// </returns>
         public Region Create(Block b)
         {
-            this.stms = new List<AbsynStatement>();
+            this.stms = [];
             this.regType = b.Succ.Count != 0 ? RegionType.Linear : RegionType.Tail;
             this.exp = null;
             foreach (var stm in b.Statements)
@@ -55,11 +63,13 @@ namespace Reko.Structure
             return region;
         }
 
+        /// <inheritdoc/>
         public AbsynStatement VisitAssignment(Assignment ass)
         {
             return new AbsynAssignment(ass.Dst, ass.Src);
         }
 
+        /// <inheritdoc/>
         public AbsynStatement? VisitBranch(Branch branch)
         {
             regType = RegionType.Condition;
@@ -67,17 +77,20 @@ namespace Reko.Structure
             return null;
         }
 
+        /// <inheritdoc/>
         public AbsynStatement VisitCallInstruction(CallInstruction ci)
         {
             return new AbsynSideEffect(
                 new Application(ci.Callee, VoidType.Instance));
         }
 
+        /// <inheritdoc/>
         public AbsynStatement VisitComment(CodeComment comment)
         {
             return new AbsynLineComment(comment.Text);
         }
 
+        /// <inheritdoc/>
         public AbsynStatement VisitDefInstruction(DefInstruction def)
         {
             //$TODO: should there be a warning? DefInstructions should have been
@@ -85,11 +98,13 @@ namespace Reko.Structure
             return new AbsynDeclaration(def.Identifier, null);
         }
 
+        /// <inheritdoc/>
         public AbsynStatement VisitGotoInstruction(GotoInstruction gotoInstruction)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public AbsynStatement VisitPhiAssignment(PhiAssignment phi)
         {
             //$TODO: should there be a warning? Phi functions should have been
@@ -106,22 +121,26 @@ namespace Reko.Structure
                     args));
         }
 
+        /// <inheritdoc/>
         public AbsynStatement VisitReturnInstruction(ReturnInstruction ret)
         {
             regType = RegionType.Tail;
             return new AbsynReturn(ret.Expression);
         }
 
+        /// <inheritdoc/>
         public AbsynStatement VisitSideEffect(SideEffect side)
         {
             return new AbsynSideEffect(side.Expression);
         }
 
+        /// <inheritdoc/>
         public AbsynStatement VisitStore(Store store)
         {
             return new AbsynAssignment(store.Dst, store.Src);
         }
 
+        /// <inheritdoc/>
         public AbsynStatement? VisitSwitchInstruction(SwitchInstruction si)
         {
             regType = RegionType.IncSwitch; 
@@ -129,6 +148,7 @@ namespace Reko.Structure
             return null;
         }
 
+        /// <inheritdoc/>
         public AbsynStatement VisitUseInstruction(UseInstruction use)
         {
             throw new NotImplementedException();

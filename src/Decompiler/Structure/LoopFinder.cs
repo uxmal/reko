@@ -24,9 +24,19 @@ using System.Diagnostics;
 
 namespace Reko.Structure
 {
+    /// <summary>
+    /// Abstract colors used to mark nodes during the loop finding process.
+    /// </summary>
     public enum NodeColor
     {
+        /// <summary>
+        /// Visited node.
+        /// </summary>
         Gray,
+
+        /// <summary>
+        /// Block is part of the loop.
+        /// </summary>
         Black
     }
 
@@ -42,6 +52,12 @@ namespace Reko.Structure
         private Dictionary<T, NodeColor> nodeColor;
         private ISet<T> loopNodes;
 
+        /// <summary>
+        /// Constructs a loop finder for the given directed graph.
+        /// </summary>
+        /// <param name="graph">Directed graph to analyze.</param>
+        /// <param name="entry">Entry node of the loop.</param>
+        /// <param name="doms">Dominator graph of the <paramref name="graph"/>.</param>
         public LoopFinder(DirectedGraph<T> graph, T entry, DominatorGraph<T> doms)
         {
             this.graph = graph;
@@ -81,6 +97,9 @@ namespace Reko.Structure
             }
         }
 
+        /// <summary>
+        /// Set of nodes that are part of the loop.
+        /// </summary>
         public ISet<T> LoopNodes { get { return loopNodes; } }
 
         /// <summary>

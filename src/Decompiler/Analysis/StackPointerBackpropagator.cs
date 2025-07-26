@@ -172,6 +172,7 @@ public class StackPointerBackpropagator : IAnalysis<SsaState>
         /// <c>fp - <paramref name="frameOffset"/></c>.
         /// </summary>
         /// <param name="sp"></param>
+        /// <param name="spPrev"></param>
         /// <param name="frameOffset"></param>
         private void ReplaceStackDefinition(Identifier sp, Identifier spPrev, int frameOffset)
         {

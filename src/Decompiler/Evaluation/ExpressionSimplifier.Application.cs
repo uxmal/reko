@@ -28,6 +28,7 @@ namespace Reko.Evaluation
 {
     public partial class ExpressionSimplifier
     {
+        /// <inheritdoc/>
         public virtual (Expression, bool) VisitApplication(Application appl)
         {
             bool changed = false;

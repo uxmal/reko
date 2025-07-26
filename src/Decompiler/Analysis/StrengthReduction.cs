@@ -29,10 +29,10 @@ namespace Reko.Analysis
 {
     /// <summary>
     /// If an induction variable i is being used in an addition with a
-    /// constant (i + c) and it initially is assigned a constant value
-    /// i = Q, this class simplifies the variable so that the initial
-    /// assigment becomes i = (Q + c) and the induction variable is
-    /// simply used as i. This overcomes problems in hand-coded assembly
+    /// constant <c>(i + c)</c> and it initially is assigned a constant value
+    /// <c>i = Q</c>, this class simplifies the variable so that the initial
+    /// assigment becomes <c>i = (Q + c)</c> and the induction variable is
+    /// simply used as <c>i</c>. This overcomes problems in hand-coded assembly
     /// programs where the programmer has been thinking in offsets rather
     /// than straightforward pointers.
     /// </summary>
@@ -43,6 +43,12 @@ namespace Reko.Analysis
         private readonly LinearInductionVariableContext ctx;
         private readonly List<IncrementedUse> incrUses;
 
+        /// <summary>
+        /// Constructs an instance of <see cref="StrengthReduction"/>.
+        /// </summary>
+        /// <param name="ssa"><see cref="SsaState"/> being transformed.</param>
+        /// <param name="liv"><see cref="LinearInductionVariable">Induction variable</see> being analyzed.</param>
+        /// <param name="ctx"><see cref="LinearInductionVariableContext"/> used for analysis.</param>
         public StrengthReduction(SsaState ssa, LinearInductionVariable liv, LinearInductionVariableContext ctx)
         {
             this.ssa = ssa;
@@ -68,12 +74,17 @@ namespace Reko.Analysis
             }
         }
 
-
+        /// <summary>
+        /// Incremented uses of the induction variable.
+        /// </summary>
         public List<IncrementedUse> IncrementedUses
         {
             get { return incrUses; }
         }
 
+        /// <summary>
+        /// Transform any incremented uses of the induction variable.
+        /// </summary>
         public void ModifyUses()
         {
             if (incrUses.Count != 1)
@@ -124,8 +135,17 @@ namespace Reko.Analysis
             
         }
 
+        /// <summary>
+        /// Keeps track identifiers and any incremented uses of those identifiers.
+        /// </summary>
         public class IncrementedUse
         {
+            /// <summary>
+            /// Constructs an instance of <see cref="IncrementedUses"/>.
+            /// </summary>
+            /// <param name="stm">Statement in which the use occurs.</param>
+            /// <param name="exp"></param>
+            /// <param name="inc"></param>
             public IncrementedUse(Statement stm, BinaryExpression? exp, Constant? inc)
             {
                 this.Statement = stm;
@@ -133,12 +153,24 @@ namespace Reko.Analysis
                 this.Increment = inc;
             }
 
+            /// <summary>
+            /// Statement where the use takes place.
+            /// </summary>
             public Statement Statement { get; }
+
+            /// <summary>
+            /// Expression that inrements or decrements the identifier.
+            /// </summary>
             public BinaryExpression? Expression { get; }
+
+            /// <summary>
+            /// The constant that is added to or subtracted from the identifier,
+            /// or 
+            /// </summary>
             public Constant? Increment { get; }
         }
 
-        public class IncrementedUseFinder : InstructionVisitorBase
+        private class IncrementedUseFinder : InstructionVisitorBase
         {
             private readonly List<IncrementedUse> uses;
             private Identifier? id;

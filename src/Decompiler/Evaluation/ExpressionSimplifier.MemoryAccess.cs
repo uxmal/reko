@@ -20,29 +20,29 @@
 
 using Reko.Core.Expressions;
 
-namespace Reko.Evaluation
+namespace Reko.Evaluation;
+
+public partial class ExpressionSimplifier
 {
-    public partial class ExpressionSimplifier
+    /// <inheritdoc/>
+    public virtual (Expression, bool) VisitMemoryAccess(MemoryAccess access)
     {
-        public virtual (Expression, bool) VisitMemoryAccess(MemoryAccess access)
+        var (offset, changed) = access.EffectiveAddress.Accept(this);
+        var e = scaledIndexRule.Match(offset, ctx);
+        if (e is not null)
         {
-            var (offset, changed) = access.EffectiveAddress.Accept(this);
-            var e = scaledIndexRule.Match(offset, ctx);
-            if (e is not null)
-            {
-                changed = true;
-                (offset, _) = e.Accept(this);
-            }
-            var value = new MemoryAccess(
-                access.MemoryId,
-                offset,
-                access.DataType);
-            var newValue = ctx.GetValue(value, memory);
-            if (newValue != value || newValue.DataType.BitSize != value.DataType.BitSize)
-            {
-                changed = true;
-            }
-            return (newValue, changed);
+            changed = true;
+            (offset, _) = e.Accept(this);
         }
+        var value = new MemoryAccess(
+            access.MemoryId,
+            offset,
+            access.DataType);
+        var newValue = ctx.GetValue(value, memory);
+        if (newValue != value || newValue.DataType.BitSize != value.DataType.BitSize)
+        {
+            changed = true;
+        }
+        return (newValue, changed);
     }
 }

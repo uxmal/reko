@@ -22,7 +22,7 @@ using Reko.Core;
 using Reko.Core.Collections;
 using Reko.Core.Diagnostics;
 using Reko.Core.Rtl;
-using Reko.Services;
+using Reko.Core.Services;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -46,12 +46,21 @@ namespace Reko.Scanning
         private readonly ConcurrentDictionary<Address, Address> suspendedCalls;
         private readonly ConcurrentQueue<WaitingCaller> callersWaitingForReturn;
 
+        /// <summary>
+        /// Constructs an instance of <see cref="ProcedureWorker"/>.
+        /// </summary>
+        /// <param name="scanner">Recursive scanner orchestrating this procedure
+        /// worker.</param>
+        /// <param name="proc"></param>
+        /// <param name="state"></param>
+        /// <param name="rejectMask"></param>
+        /// <param name="listener"></param>
         public ProcedureWorker(
             RecursiveScanner scanner,
             Proc proc,
             ProcessorState state,
             InstrClass rejectMask,
-            IDecompilerEventListener listener)
+            IEventListener listener)
             : base(scanner, proc.Address, rejectMask, listener)
         {
             this.recScanner = scanner;
@@ -140,6 +149,7 @@ namespace Reko.Scanning
             this.ProcessReturn();
         }
 
+        /// <inheritdoc />
         public override BlockWorker AddJob(Address addr, IEnumerator<RtlInstructionCluster> trace, ProcessorState state)
         {
             var worker = base.CreateBlockWorker(recScanner, this, addr, trace, state);
@@ -147,13 +157,19 @@ namespace Reko.Scanning
             return worker;
         }
 
+        /// <inheritdoc />
         public override BlockWorker AddFallthroughJob(Address addr, IEnumerator<RtlInstructionCluster> trace, ProcessorState state)
         {
             return AddJob(addr, trace, state);
         }
 
+        /// <inheritdoc />
         public override bool TryMarkVisited(Address addr) => true;
 
+        /// <summary>
+        /// Called when a call has been proven to return.
+        /// </summary>
+        /// <param name="addrCall"></param>
         public void UnsuspendCall(Address addrCall)
         {
             var removed = this.suspendedCalls.TryRemove(addrCall, out var addrDest);
@@ -164,6 +180,7 @@ namespace Reko.Scanning
                 removed ? "succeeded" : "failed");
         }
 
+        /// <inheritdoc/>
         protected override void ProcessCall(RtlBlock block, Edge edge, ProcessorState state)
         {
             switch (recScanner.GetProcedureReturnStatus(edge.To))
@@ -219,6 +236,7 @@ namespace Reko.Scanning
             }
         }
 
+        /// <inheritdoc />
         public override RtlBlock? SplitExistingBlock(Address addr)
         {
             // This overridden method is not expected to be called since
@@ -226,12 +244,14 @@ namespace Reko.Scanning
             throw new NotSupportedException();
         }
 
-        public bool TryEnqueueCaller(WaitingCaller waitingCaller)
+        
+        private bool TryEnqueueCaller(WaitingCaller waitingCaller)
         {
             this.callersWaitingForReturn.Enqueue(waitingCaller);
             return true;
         }
 
+        /// <inheritdoc/>
         protected override bool TryRegisterTrampoline(
             Address addrFinalInstr, 
             List<RtlInstructionCluster> trampolineStub, 

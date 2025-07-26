@@ -36,6 +36,14 @@ namespace Reko.Scanning
         private readonly ScanResultsV2 cfg;
         private readonly Dictionary<Address,List<Address>> backEdges;
 
+        /// <summary>
+        /// Constructs an instance of the <see cref="CfgBackWalkHost"/> class.
+        /// </summary>
+        /// <param name="program">Program being analyzed.</param>
+        /// <param name="arch"><see cref="IProcessorArchitecture"/> of the program.
+        /// </param>
+        /// <param name="cfg">Whole-program control flow graph.</param>
+        /// <param name="backEdges">Known precedessor edges.</param>
         public CfgBackWalkHost(
             Program program,
             IProcessorArchitecture arch,
@@ -48,10 +56,13 @@ namespace Reko.Scanning
             this.backEdges = backEdges;
         }
 
+        /// <inheritdoc/>
         public IProcessorArchitecture Architecture { get; }
 
-        public Core.Program Program { get; }
+        /// <inheritdoc/>
+        public Program Program { get; }
 
+        /// <inheritdoc/>
         public (Expression?, Expression?) AsAssignment(RtlInstruction instr)
         {
             if (instr is RtlAssignment ass)
@@ -59,6 +70,7 @@ namespace Reko.Scanning
             return (null, null);
         }
 
+        /// <inheritdoc/>
         public Expression? AsBranch(RtlInstruction instr)
         {
             if (instr is RtlBranch bra)
@@ -66,54 +78,64 @@ namespace Reko.Scanning
             return null;
         }
 
+        /// <inheritdoc/>
         public int BlockInstructionCount(RtlBlock rtlBlock)
         {
             return rtlBlock.Instructions.Sum(i => i.Instructions.Length);
         }
 
+        /// <inheritdoc/>
         public IEnumerable<(Address, RtlInstruction?)> GetBlockInstructions(RtlBlock block)
         {
             return block.Instructions.SelectMany(c => c.Instructions.Select(i => (c.Address, i)))!;
         }
 
+        /// <inheritdoc/>
         public List<RtlBlock> GetPredecessors(RtlBlock block)
         {
             if (!backEdges.TryGetValue(block.Address, out var preds))
-                return new List<RtlBlock>();
+                return [];
             var pp = preds.Select(p => cfg.Blocks[p]).ToList();
             return pp;
         }
 
+        /// <inheritdoc/>
         public RtlBlock? GetSinglePredecessor(RtlBlock block)
         {
             throw new System.NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public RegisterStorage GetSubregister(RegisterStorage rIdx, BitRange range)
         {
             throw new System.NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public bool IsFallthrough(RtlInstruction instr, RtlBlock block)
         {
             throw new System.NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public bool IsStackRegister(Storage storage)
         {
             throw new System.NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public bool IsValidAddress(Address addr)
         {
             throw new System.NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public Address? MakeAddressFromConstant(Constant c)
         {
             throw new System.NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public Address MakeSegmentedAddress(Constant selector, Constant offset)
         {
             throw new System.NotImplementedException();

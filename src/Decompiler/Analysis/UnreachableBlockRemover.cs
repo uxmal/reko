@@ -38,15 +38,23 @@ public class UnreachableBlockRemover : IAnalysis<SsaState>
 {
     private readonly AnalysisContext context;
 
+    /// <summary>
+    /// Creates an instance of <see cref="UnreachableBlockRemover"/> for the given analysis context.
+    /// </summary>
+    /// <param name="context"><see cref="AnalysisContext"/> to be use for the analysis.
+    /// </param>
     public UnreachableBlockRemover(AnalysisContext context)
     {
         this.context = context;
     }
 
+    /// <inheritdoc/>
     public string Id => "urb";
 
+    /// <inheritdoc/>
     public string Description => "Removes unreachable basic blocks";
 
+    /// <inheritdoc/>
     public (SsaState, bool) Transform(SsaState ssa)
     {
         var worker = new Worker(ssa, context.EventListener);

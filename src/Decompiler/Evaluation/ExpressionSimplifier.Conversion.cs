@@ -26,6 +26,7 @@ namespace Reko.Evaluation
 {
     public partial class ExpressionSimplifier
     {
+        /// <inheritdoc/>
         public virtual (Expression, bool) VisitConversion(Conversion conversion)
         {
             var (exp, changed) = conversion.Expression.Accept(this);

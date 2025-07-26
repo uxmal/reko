@@ -28,25 +28,43 @@ using System.Collections.Generic;
 
 namespace Reko.Scanning
 {
+    /// <summary>
+    /// Processes data in a program, attempting to identify pointers to
+    /// executable code.
+    /// </summary>
     public class DataScanner : ScannerBase, IScannerServices
     {
         private readonly IEventListener listener;
         private readonly Queue<WorkItem> queue;
         private readonly ScanResults sr;
 
+        /// <summary>
+        /// Constructs a new instance of the <see cref="DataScanner"/> class.
+        /// </summary>
+        /// <param name="program">Program being scanned.</param>
+        /// <param name="sr">Results of the scan so far.</param>
+        /// <param name="listener"><see cref="IEventListener"/> instance to which diagnostic
+        /// messages are published.
+        /// </param>
         public DataScanner(Program program, ScanResults sr, IEventListener listener)
             : base(program, listener)
         {
             this.sr = sr;
             this.listener = listener;
             this.queue = new Queue<WorkItem>();
-            this.Procedures = new Dictionary<Address, ImageSymbol>();
+            this.Procedures = [];
         }
 
+        /// <summary>
+        /// Procedure address known from the image metadata.
+        /// </summary>
         public Dictionary<Address, ImageSymbol> Procedures { get; private set; }
 
         IServiceProvider IScannerServices.Services => throw new NotImplementedException();
 
+        /// <summary>
+        /// Processes the work queue, executing each <see cref="WorkItem"/> in turn.
+        /// </summary>
         public void ProcessQueue()
         {
             while (queue.TryDequeue(out var wi))
@@ -57,16 +75,19 @@ namespace Reko.Scanning
             }
         }
 
+        /// <inheritdoc/>
         public void EnqueueImageSymbol(ImageSymbol sym, bool isEntryPoint)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void EnqueueProcedure(IProcessorArchitecture arch, Address addr)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void EnqueueUserGlobalData(Address addr, DataType dt, string? name)
         {
             if (Program.TryCreateImageReader(addr, out var rdr))
@@ -76,6 +97,7 @@ namespace Reko.Scanning
             }
         }
 
+        /// <inheritdoc/>
         public void EnqueueUserProcedure(IProcessorArchitecture arch, Address addr, FunctionType sig, string? name)
         {
             if (Procedures.ContainsKey(addr))

@@ -23,13 +23,22 @@ using Reko.Core.Operators;
 
 namespace Reko.Evaluation
 {
+    /// <summary>
+    /// Simplifies a distributed <see cref="Conversion"/> over an addition or subtraction
+    /// </summary>
     public class DistributedConversionRule
     {
-
-        public DistributedConversionRule()
-        {
-        }
-
+        /// <summary>
+        /// Simplifies
+        /// <code>
+        /// CONVERT(...a) + CONVERT(...b) 
+        /// </code>
+        /// to
+        /// <code>
+        /// CONVERT(... a + b)</code>
+        /// </summary>
+        /// <param name="binExp"></param>
+        /// <returns></returns>
         public Expression? Match(BinaryExpression binExp)
         {
             if (binExp.Operator.Type.IsAddOrSub())

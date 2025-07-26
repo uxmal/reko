@@ -44,7 +44,7 @@ namespace Reko.Structure
     ///  Native x86 Decompilation using Semantics-Preserving Structural Analysis
     ///  and Iterative Control-Flow Structuring.
     /// </remarks>
-    public class StructureAnalysis : IStructureAnalysis
+    public class StructureAnalysis
     {
         private static readonly TraceSwitch trace = new TraceSwitch(nameof(StructureAnalysis), "Control ProgramFlow structuring")
         {
@@ -62,6 +62,14 @@ namespace Reko.Structure
         private readonly IDecompilerEventListener eventListener;
 
 #nullable disable
+        /// <summary>
+        /// Constructs an instance of <see cref="StructureAnalysis"/>.
+        /// </summary>
+        /// <param name="listener"><see cref="IDecompilerEventListener"/> that 
+        /// receives any diagnostic messages.</param>
+        /// <param name="program">Program in which the procedure <paramref name="proc"/> lives.</param>
+        /// <param name="proc"><see cref="Procedure"/> whose CFG is to be structured.
+        /// </param>
         public StructureAnalysis(IDecompilerEventListener listener, Program program, Procedure proc)
         {
             this.eventListener = listener;
@@ -70,6 +78,9 @@ namespace Reko.Structure
         }
 #nullable enable
 
+        /// <summary>
+        /// Performs the structuring of the procedure.
+        /// </summary>
         public void Structure()
         {
             var cfgc = new ControlFlowGraphCleaner(proc);
@@ -265,7 +276,7 @@ namespace Reko.Structure
                 this.unresolvedCycles.Enqueue((head, loop));
         }
 
-        public bool ProcessUnresolvedRegions()
+        private bool ProcessUnresolvedRegions()
         {
             if (unresolvedCycles.TryDequeue(out var cycle))
             {
@@ -480,7 +491,7 @@ all other cases, together they constitute a Switch[].
         /// implementation strategy for switches is to redirect inputs
         /// handled by the default case (e.g., x > 20) to a default
         /// node, and use a jump table for the remaining cases (e.g.,
-        /// x in [0,20]). This relationship is depicted in Figure 4,
+        /// x in [0,20]). This relationship is depicted in Figure 4,
         /// along with the corresponding region types. Because the
         /// jump table only handles a few cases, it is recognized as an
         /// IncSwitch[·]. However, because the default node handles
@@ -896,8 +907,7 @@ doing future pattern matches.
         /// graph, then adding a label in the destination block
         /// and collapse the source region to a tail.
         /// </summary>
-        /// <param name="from"></param>
-        /// <param name="to"></param>
+        /// <param name="vEdge">Edge to virtualize.</param>
         public void VirtualizeEdge(VirtualEdge vEdge)
         {
             AbsynStatement stm;
@@ -1032,7 +1042,7 @@ are added during loop refinement, which we discuss next.
 
 #endif
 
-        public bool ReduceCyclic(Region n)
+        private bool ReduceCyclic(Region n)
         {
             bool didReduce = false;
             var loopNodes = new LoopFinder<Region>(regionGraph, n, doms).LoopNodes;
@@ -1375,14 +1385,28 @@ refinement on the loop body, which we describe below.
             }
         }
 
+        /// <summary>
+        /// The different types of virtual edges.
+        /// </summary>
         public enum VirtualEdgeType
         {
+            /// <summary>
+            /// A <c>goto</c> edge.
+            /// </summary>
             Goto,
+
+            /// <summary>
+            /// A <c>break</c> edge.
+            /// </summary>
             Break,
+
+            /// <summary>
+            /// A <c>continue</c> edge.
+            /// </summary>
             Continue,
         }
 
-        public enum LoopType
+        private enum LoopType
         {
             While,
             DoWhile,
@@ -1547,12 +1571,34 @@ refinement on the loop body, which we describe below.
             return edges.FirstOrDefault();
         }
 
+        /// <summary>
+        /// A virtual edge is an edge that has been removed from the
+        /// control flow graph. It records the source and destination
+        /// of the original edge, and the type of virtual edge it is.
+        /// </summary>
         public class VirtualEdge
         {
+            /// <summary>
+            /// Original source of the edge.
+            /// </summary>
             public Region From;
+
+            /// <summary>
+            /// Original destination of the edge.
+            /// </summary>
             public Region To;
+
+            /// <summary>
+            /// Type of the virtual edge.
+            /// </summary>
             public VirtualEdgeType Type;
 
+            /// <summary>
+            /// Constructs a virtual edge.
+            /// </summary>
+            /// <param name="from">Source of the edge.</param>
+            /// <param name="to">Destination of the edge.</param>
+            /// <param name="type">Type of virtual edge.</param>
             public VirtualEdge(Region from, Region to, VirtualEdgeType type)
             {
                 this.From = from;
@@ -1560,6 +1606,7 @@ refinement on the loop body, which we describe below.
                 this.Type = type;
             }
 
+            /// <inheritdoc/>
             public override string ToString()
             {
                 return $"{{{From.Block.DisplayName} {Type} {To.Block.DisplayName}}}";

@@ -66,7 +66,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
 
         private void When_ConstantsPropagated()
         {
-            var bcp = new BlockConstantPropagator(segmentMap, new FakeDecompilerEventListener());
+            var bcp = new BlockConstantPropagator();
             result = instrs.Select(i => i.Accept(bcp)).ToList();
         }
 

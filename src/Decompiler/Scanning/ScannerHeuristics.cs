@@ -26,10 +26,26 @@ using System.Threading.Tasks;
 
 namespace Reko.Scanning
 {
+    /// <summary>
+    /// Scanner heuristics are used to guide the scanning process.
+    /// </summary>
     public static class ScannerHeuristics
     {
+        /// <summary>
+        /// Use the shingle scanner to heuristically identify procedures 
+        /// that couldn't be reached using the recursive scanner.
+        /// </summary>
         public const string Shingle = "shingle";
+
+        /// <summary>
+        /// Accept instructions that the processor architecture considers
+        /// "unlinkely" as valid.
+        /// </summary>
         public const string Unlikely = "unlikely";
+
+        /// <summary>
+        /// Accept only unpriviliged instructions.
+        /// </summary>
         public const string UserMode = "userMode";
     }
 }

@@ -32,19 +32,32 @@ namespace Reko.Services
         /// </summary>
         event EventHandler DecompilerChanged;
 
+        /// <summary>
+        /// Current decompiler instance.
+        /// </summary>
         IDecompiler? Decompiler { get; set; }
 
+        /// <summary>
+        /// The name of the project being decompiled.
+        /// </summary>
         string ProjectName { get; }
     }
 
+    /// <summary>
+    /// Implementation of <see cref="IDecompilerService"/> that provides access to the
+    /// current decompiler instance.
+    /// </summary>
     public class DecompilerService : IDecompilerService
     {
         private IDecompiler? decompiler;
+
+        /// <inheritdoc/>
 
         public event EventHandler? DecompilerChanged;
 
         #region IDecompilerService Members
 
+        /// <inheritdoc/>
         public IDecompiler? Decompiler
         {
             get { return decompiler; }
@@ -56,6 +69,7 @@ namespace Reko.Services
         }
 
         //$REVIEW" huh?
+        /// <inheritdoc/>
         public string ProjectName
         {
             get

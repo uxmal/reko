@@ -146,7 +146,8 @@ namespace Reko.Core.Types
 
         //$TODO: pass dt and dtOriginal
         /// <summary>
-        /// Creates a type variable.
+        /// Creates a type variable. The new type variable will have a new
+        /// <see cref="EquivalenceClass"/>.
         /// </summary>
         /// <param name="factory">Type factory to use.</param>
         /// <returns>A new type variable.</returns>

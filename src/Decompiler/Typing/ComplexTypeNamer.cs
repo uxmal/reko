@@ -30,10 +30,10 @@ namespace Reko.Typing
 	{
 		private EquivalenceClass? eq;
 
-		public ComplexTypeNamer()
-		{
-		}
-
+        /// <summary>
+        /// Renames all types in the given type store.
+        /// </summary>
+        /// <param name="store">Type store to use.</param>
 		public void RenameAllTypes(TypeStore store)
 		{
 			foreach (EquivalenceClass e in store.UsedEquivalenceClasses)
@@ -50,11 +50,13 @@ namespace Reko.Typing
 			}
 		}
 
+        /// <inheritdoc/>
         public DataType VisitClass(ClassType ct)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public DataType VisitStructure(StructureType str)
 		{
 			if (str.Name is null && eq is not null)
@@ -62,6 +64,7 @@ namespace Reko.Typing
             return str;
 		}
 
+        /// <inheritdoc/>
 		public DataType VisitUnion(UnionType ut)
 		{
 			if (ut.Name is null && eq is not null)
@@ -69,27 +72,32 @@ namespace Reko.Typing
             return ut;
 		}
 
+        /// <inheritdoc/>
         public DataType VisitArray(ArrayType at)
         {
             at.ElementType = at.ElementType.Accept(this);
             return at;
         }
 
+        /// <inheritdoc/>
         public DataType VisitCode(CodeType c)
         {
             return c;
         }
 
+        /// <inheritdoc/>
         public DataType VisitEnum(EnumType e)
         {
             return e;
         }
 
+        /// <inheritdoc/>
         public DataType VisitEquivalenceClass(EquivalenceClass eq)
         {
             return eq;
         }
 
+        /// <inheritdoc/>
         public DataType VisitFunctionType(FunctionType ft)
         {
             foreach (var param in ft.Parameters!)
@@ -101,11 +109,13 @@ namespace Reko.Typing
             return ft;
         }
 
+        /// <inheritdoc/>
         public DataType VisitPrimitive(PrimitiveType pt)
         {
             return pt;
         }
 
+        /// <inheritdoc/>
         public DataType VisitMemberPointer(MemberPointer memptr)
         {
             memptr.BasePointer = memptr.BasePointer.Accept(this);
@@ -113,38 +123,45 @@ namespace Reko.Typing
             return memptr;
         }
 
+        /// <inheritdoc/>
         public DataType VisitPointer(Pointer ptr)
         {
             ptr.Pointee = ptr.Pointee.Accept(this);
             return ptr;
         }
 
+        /// <inheritdoc/>
         public DataType VisitReference(ReferenceTo refTo)
         {
             refTo.Referent = refTo.Referent.Accept(this);
             return refTo;
         }
 
+        /// <inheritdoc/>
         public DataType VisitString(StringType str)
         {
             return str;
         }
 
+        /// <inheritdoc/>
         public DataType VisitTypeReference(TypeReference typeref)
         {
             return typeref;
         }
 
+        /// <inheritdoc/>
         public DataType VisitTypeVariable(TypeVariable tv)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public DataType VisitUnknownType(UnknownType ut)
         {
             return ut;
         }
 
+        /// <inheritdoc/>
         public DataType VisitVoidType(VoidType vt)
         {
             return vt;

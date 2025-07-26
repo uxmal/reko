@@ -25,6 +25,7 @@ using Reko.Core.Graphs;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Services;
 using System;
@@ -37,6 +38,9 @@ namespace Reko.Scanning
     using Instr = ScanResults.Instr;
     using Link = ScanResults.Link;
 
+    /// <summary>
+    /// Uses a LINQ-based approach to scan a binary image.
+    /// </summary>
     public class ScannerInLinq
     {
         private static readonly TraceSwitch trace = new(nameof(ScannerInLinq), "");
@@ -44,8 +48,17 @@ namespace Reko.Scanning
         private readonly IServiceProvider services;
         private readonly Program program;
         private readonly IRewriterHost host;
-        private readonly IDecompilerEventListener eventListener;
+        private readonly IEventListener eventListener;
 
+        /// <summary>
+        /// Constructs a new instance of the <see cref="ScannerInLinq"/> class.
+        /// </summary>
+        /// <param name="services"><see cref="IServiceProvider"/> providing runtime services.</param>
+        /// <param name="program">Program being analyzed.</param>
+        /// <param name="host"><see cref="IRewriterHost"/> used when lifting machine code to
+        /// RTL instructions.</param>
+        /// <param name="eventListener"><see cref="IEventListener"/> to which diagnostic
+        /// messages are reported.</param>
         public ScannerInLinq(IServiceProvider services, Program program, IRewriterHost host, IDecompilerEventListener eventListener)
         {
             this.services = services;
@@ -54,6 +67,12 @@ namespace Reko.Scanning
             this.eventListener = eventListener;
         }
 
+        /// <summary>
+        /// Scans the image of the program, looking for procedures in the "gaps"
+        /// between previously identified procedures and data.
+        /// </summary>
+        /// <param name="sr"></param>
+        /// <returns></returns>
         public ScanResults ScanImage(ScanResults sr)
         {
             sr.WatchedAddresses.Add(Address.Ptr32(0x001126FC));
@@ -154,6 +173,8 @@ namespace Reko.Scanning
         /// </summary>
         /// <param name="sr">Initial scan results, with known entry points,
         /// procedures, etc.</param>
+        /// <param name="binder"><see cref="StorageBinder"/> binding <see cref="Storage"/>
+        /// locations to <see cref="Core.Expressions.Identifier"/>s.</param>
         /// <returns>The <paramref name="sr"/> object, mutated to contain all the
         /// new instructions.
         /// </returns>
@@ -194,6 +215,12 @@ namespace Reko.Scanning
                 Debug.Print("{0}: {1} - {2}", range.Architecture?.Name ?? "???", range.Address, range.Length);
             }
         }
+
+        /// <summary>
+        /// Debugging method that provides the capability to break on 
+        /// one of the watched addresses in the <see cref="ScanResults"/>.
+        /// </summary>
+        /// <param name="sr">ScanResults instance.</param>
 
         [Conditional("DEBUG")]
         public static void Probe(ScanResults sr)
@@ -511,6 +538,17 @@ namespace Reko.Scanning
         }
 
 
+        /// <summary>
+        /// Builds the interprocedural control flow graph (ICFG) from the
+        /// scan results.
+        /// </summary>
+        /// <param name="sr">Scan results to use.</param>
+        /// <param name="namingPolicy">Naming policy to name basic blocks and procedures.</param>
+        /// <param name="blocks">Mapping from address to <see cref="RtlBlock"/>s starting
+        /// at those addresses.
+        /// </param>
+        /// <returns>A directed graph of all the identified basic blocks.
+        /// </returns>
         public static DiGraph<RtlBlock> BuildIcfg(
             ScanResults sr,
             NamingPolicy namingPolicy,
@@ -564,7 +602,13 @@ namespace Reko.Scanning
             DumpBlocks(sr, blocks, s => Debug.WriteLine(s));
         }
 
-        // Writes the start and end addresses, size, and successor edges of each block, 
+        /// <summary>
+        /// Writes the start and end addresses, size, and successor edges of each block, 
+        /// </summary>
+        /// <param name="sr"><see cref="ScanResults"/> containing scan data.</param>
+        /// <param name="blocks">Basic blocks to dump.</param>
+        /// <param name="writeLine">Action to perform at the end of each line.
+        /// </param>
         public void DumpBlocks(ScanResults sr, Dictionary<Address, RtlBlock> blocks, Action<string> writeLine)
         {
             writeLine(

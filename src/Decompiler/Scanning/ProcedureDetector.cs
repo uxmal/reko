@@ -45,11 +45,18 @@ namespace Reko.Scanning
 
         private readonly ScanResultsV2 sr;
         private readonly ScanResultsGraph srGraph;
-        private readonly IDecompilerEventListener listener;
+        private readonly IEventListener listener;
         private readonly HashSet<Address> procedures;
         private readonly IDictionary<Address, RtlBlock> mpAddrToBlock;
 
-        public ProcedureDetector(ScanResultsV2 sr, IDecompilerEventListener listener)
+        /// <summary>
+        /// Constructs an instance of the <see cref="ProcedureDetector"/> class.
+        /// </summary>
+        /// <param name="sr">Scanning results containing the interprocedural control
+        /// flow graph (ICFG).</param>
+        /// <param name="listener"><see cref="IEventListener"/> interface to which
+        /// diagnostic messages are sent.</param>
+        public ProcedureDetector(ScanResultsV2 sr, IEventListener listener)
         {
             this.sr = sr;
             this.srGraph = sr.ICFG;
@@ -59,6 +66,10 @@ namespace Reko.Scanning
             this.mpAddrToBlock = sr.Blocks;
         }
 
+        /// <summary>
+        /// Debugging method that dumps any blocks that have the same start address.
+        /// </summary>
+        /// <param name="blocks">Blocks to dump.</param>
         [Conditional("DEBUG")]
         public static void DumpDuplicates(IEnumerable<RtlBlock> blocks)
         {
@@ -118,10 +129,24 @@ namespace Reko.Scanning
         /// </summary>
         public class Cluster
         {
+            /// <summary>
+            /// The basic block constituting this cluster.
+            /// </summary>
             public readonly SortedSet<RtlBlock> Blocks;
+
+            /// <summary>
+            /// All the identified entry points of this cluster.
+            /// </summary>
             public readonly SortedSet<RtlBlock> Entries;
+
+            /// <summary>
+            /// Fragment of the CFG for the blocks of the cluster.
+            /// </summary>
             public readonly Dictionary<RtlBlock, List<RtlBlock>> Successors;
 
+            /// <summary>
+            /// Constructs an empty <see cref="Cluster"/>.
+            /// </summary>
             public Cluster()
             {
                 this.Entries = new SortedSet<RtlBlock>(Cmp.Instance);
@@ -129,15 +154,12 @@ namespace Reko.Scanning
                 this.Successors = new Dictionary<RtlBlock, List<RtlBlock>>();
             }
 
-            public Cluster(IEnumerable<RtlBlock> entries, IEnumerable<RtlBlock> blocks)
-            {
-                this.Entries = new SortedSet<RtlBlock>(entries, Cmp.Instance);
-                this.Blocks = new SortedSet<RtlBlock>(blocks, Cmp.Instance);
-                this.Successors = new Dictionary<RtlBlock, List<RtlBlock>>();
-            }
-
+            /// <summary>
+            /// Compares <see cref="RtlBlock"/>s based on their start addresses.
+            /// </summary>
             private class Cmp : Comparer<RtlBlock>
             {
+                /// <inheritdoc/>
                 public override int Compare(RtlBlock? x, RtlBlock? y)
                 {
                     if (x is null)
@@ -149,6 +171,10 @@ namespace Reko.Scanning
 
                 public static readonly Cmp Instance = new();
             }
+            /// <summary>
+            /// Dumps the blocks of the cluster to the debugger's diagnostic output.
+            /// </summary>
+            /// <param name="icfg">ICFG to use.</param>
 
             [Conditional("DEBUG")]
             public void Dump(DirectedGraph<RtlBlock> icfg)
@@ -184,6 +210,7 @@ namespace Reko.Scanning
                 Debug.WriteLine("");
             }
 
+            /// <inheritdoc/>
             public override string ToString()
             {
                 return $"{Blocks.OrderBy(b => b.Address.ToLinear()).FirstOrDefault()}: {Blocks.Count} blocks";
@@ -332,7 +359,6 @@ namespace Reko.Scanning
         /// <summary>
         /// For a given cluster, find the probable entries.
         /// </summary>
-        /// <param name="sr"></param>
         /// <param name="cluster"></param>
         public bool FindClusterEntries(Cluster cluster)
         {
@@ -389,7 +415,6 @@ namespace Reko.Scanning
         /// Processes a cluster into 1..n procedures.
         /// </summary>
         /// <param name="cluster"></param>
-        /// <param name="entries"></param>
         /// <returns></returns>
         public List<RtlProcedure> PostProcessCluster(Cluster cluster)
         {

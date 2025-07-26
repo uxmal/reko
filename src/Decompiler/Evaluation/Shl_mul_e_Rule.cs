@@ -27,12 +27,24 @@ using System;
 
 namespace Reko.Evaluation
 {
+    /// <summary>
+    /// Matches expressions of the form
+    /// <code>
+    /// (shl (* id c) s)
+    /// </code>
+    /// where <c>c</c> is a constant and <c>s</c> is a constant shift
+    /// and replaced them with
+    /// <code>
+    /// (* id (* c (shl 1 s)))
+    /// </code>
+    /// </summary>
 	public class Shl_mul_e_Rule
     {
-		public Shl_mul_e_Rule()
-		{
-		}
-
+        /// <summary>
+        /// Perform a match and possible replace.
+        /// </summary>
+        /// <param name="b">Expression to test.</param>
+        /// <returns></returns>
 		public Expression? Match(BinaryExpression b)
         {
 			if (b.Operator.Type != OperatorType.Shl)

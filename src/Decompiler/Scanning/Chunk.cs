@@ -28,22 +28,40 @@ using Reko.Core.Memory;
 /// </summary>
 /// <param name="arch"><see cref="IProcessorArchitecture"/> to use when disassembling
 /// this chunk.</param>
+/// <param name="mem">The <see cref="MemoryArea"/> in which the chunk resides.</param>
 /// <param name="address">The <see cref="Address"/> at which the chunk starts.
 /// </param>
 /// <param name="length">The length of the chunk in storage units.
 /// </param>
 public readonly struct Chunk(IProcessorArchitecture? arch, MemoryArea mem, Address address, long length)
 {
+    /// <summary>
+    /// <see cref="IProcessorArchitecture"/> to use when disassembling.
+    /// </summary>
     public IProcessorArchitecture? Architecture { get; } = arch;
+
+    /// <summary>
+    /// <see cref="MemoryArea"/> in which the chunk resides.
+    /// </summary>
     public MemoryArea MemoryArea { get; } = mem;
+
+    /// <summary>
+    /// Address at which the chunk starts.
+    /// </summary>
     public Address Address { get; } = address;
+
+    /// <summary>
+    /// The length of the chunk in storage units.
+    /// </summary>
     public long Length { get; } = length;
 
+    /// <inheritdoc/>
     public override string ToString()
     {
         return $"(0x{Address.Offset:X}, 0x{Length:X})";
     }
 
+    /// <inheritdoc/>
     public void Deconstruct(out IProcessorArchitecture? arch, out MemoryArea mem, out Address address, out long length)
     {
         arch = Architecture;

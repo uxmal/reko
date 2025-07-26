@@ -45,6 +45,16 @@ namespace Reko.Typing
 		private int arrayElementSize;
 		private int arrayLength;
 
+        /// <summary>
+        /// Constructs an instance of <see cref="AddressTraitCollector"/>.
+        /// </summary>
+        /// <param name="factory">Type factory to use when creating types.</param>
+        /// <param name="store">Type store to maintain type variables and equivalence classes.
+        /// </param>
+        /// <param name="handler"><see cref="ITraitHandler"/> instance that will be called
+        /// when addresses are encountered.</param>
+        /// <param name="program">Program being analyzed.
+        /// </param>
 		public AddressTraitCollector(TypeFactory factory, ITypeStore store, ITraitHandler handler, Program program)
 		{
 			this.factory = factory;
@@ -54,6 +64,13 @@ namespace Reko.Typing
 			this.arrayContext = false;
 		}
 
+        /// <summary>
+        /// Collect an address trait.
+        /// </summary>
+        /// <param name="tvBasePointer">Optional base pointer or segment selector.</param>
+        /// <param name="basePointerBitSize">Bitsize of the base pointer.</param>
+        /// <param name="eField">Expression accesssing a field.</param>
+        /// <param name="effectiveAddress">Effective address of the access.</param>
 		public void Collect(Expression? tvBasePointer, int basePointerBitSize, Expression eField, Expression effectiveAddress)
 		{
 			this.basePointer = tvBasePointer;
@@ -62,6 +79,14 @@ namespace Reko.Typing
 			effectiveAddress.Accept(this);
 		}
 
+        /// <summary>
+        /// Collect an array access trait.
+        /// </summary>
+        /// <param name="tvBasePointer">Optional base pointer or segment selector.</param>
+        /// <param name="tvField">Expression accesssing a field.</param>
+        /// <param name="arrayBase">Array base expression.</param>
+        /// <param name="elementSize">Size of each element in storage units.</param>
+        /// <param name="length">Count of elements.</param>
 		public void CollectArray(Expression? tvBasePointer, Expression tvField, Expression arrayBase, int elementSize, int length)
 		{
 			this.basePointer = tvBasePointer;
@@ -74,7 +99,7 @@ namespace Reko.Typing
 			arrayContext = c;
 		}
 
-		public void EmitAccessTrait(Expression? baseExpr, Expression memPtr, int ptrBitSize, int offset)
+		private void EmitAccessTrait(Expression? baseExpr, Expression memPtr, int ptrBitSize, int offset)
 		{
 			if (arrayContext)
 				handler.MemAccessArrayTrait(baseExpr, memPtr, ptrBitSize, offset, arrayElementSize, arrayLength, eField!);
@@ -82,7 +107,7 @@ namespace Reko.Typing
 				handler.MemAccessTrait(baseExpr, memPtr, ptrBitSize, eField!, offset);
 		}
 
-		public LinearInductionVariable? GetInductionVariable(Expression e)
+		private LinearInductionVariable? GetInductionVariable(Expression e)
 		{
             if (!(e is Identifier id)) return null;
             if (!program.InductionVariables.TryGetValue(id, out LinearInductionVariable? iv))
@@ -92,25 +117,29 @@ namespace Reko.Typing
 
 		#region IExpressionVisitor members
 
+        /// <inheritdoc/>
         public void VisitAddress(Address addr)
         {
             var offset = (int) addr.ToLinear();
             HandleConstantOffset(addr, offset);
         }
 
+        /// <inheritdoc/>
 		public void VisitApplication(Application appl)
 		{
 			handler.MemAccessTrait(basePointer, appl, appl.DataType.BitSize, eField!, 0);
 		}
 
+        /// <inheritdoc/>
 		public void VisitArrayAccess(ArrayAccess access)
 		{
 			handler.MemAccessTrait(basePointer, access, access.DataType.BitSize, eField!, 0);
 		}
 
+        /// <inheritdoc/>
         public void VisitBinaryExpression(BinaryExpression bin) { VisitBinaryExpression(bin.Operator.Type, bin.DataType, bin.Left, bin.Right); }
 
-		public void VisitBinaryExpression(OperatorType op, DataType dataType, Expression left, Expression right)
+		private void VisitBinaryExpression(OperatorType op, DataType dataType, Expression left, Expression right)
 		{
 			if (op == OperatorType.IAdd || op == OperatorType.ISub)
 			{
@@ -152,21 +181,25 @@ namespace Reko.Typing
             throw new TypeInferenceException($"Couldn't generate address traits for binary operator {op}.");
 		}
 
+        /// <inheritdoc/>
 		public void VisitCast(Cast cast)
 		{
 			cast.Expression.Accept(this);
 		}
 
+        /// <inheritdoc/>
         public void VisitConditionalExpression(ConditionalExpression c)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public void VisitConditionOf(ConditionOf cond)
 		{
 			throw new NotImplementedException();
 		}
 
+        /// <inheritdoc/>
         public void VisitConstant(Constant c)
         {
             // Globals has a field at offset C that is a tvField: [[g->c]] = ptr(tvField)
@@ -184,16 +217,19 @@ namespace Reko.Typing
             handler.MemAccessTrait(basePointer, c, c.DataType.BitSize, eField!, 0);
         }
 
+        /// <inheritdoc/>
         public void VisitConversion(Conversion conversion)
         {
             conversion.Expression.Accept(this);
         }
 
+        /// <inheritdoc/>
 		public void VisitDereference(Dereference deref)
 		{
 			throw new NotImplementedException();
 		}
 
+        /// <inheritdoc/>
 		public void VisitFieldAccess(FieldAccess access)
 		{
 			throw new NotImplementedException();
@@ -222,7 +258,7 @@ namespace Reko.Typing
         /// </summary>
         /// <param name="id"></param>
         /// <param name="iv"></param>
-        /// <param name="offset"></param>
+        /// <param name="cOffset"></param>
 		public void VisitInductionVariable(Identifier id, LinearInductionVariable iv, Constant? cOffset)
 		{
             int delta = iv.Delta!.ToInt32();
@@ -276,11 +312,13 @@ namespace Reko.Typing
             }
 		}
 
+        /// <inheritdoc/>
 		public void VisitMemberPointerSelector(MemberPointerSelector mps)
 		{
 			handler.MemAccessTrait(basePointer, mps, mps.DataType.BitSize, eField!, 0);
 		}
 
+        /// <inheritdoc/>
 		public void VisitMkSequence(MkSequence seq)
 		{
             if (seq.Expressions.Length == 2)
@@ -293,55 +331,66 @@ namespace Reko.Typing
             }
 		}
 
+        /// <inheritdoc/>
 		public void VisitMemoryAccess(MemoryAccess access)
 		{
 			handler.MemAccessTrait(basePointer, access, access.DataType.BitSize, eField!, 0);
 		}
 
+        /// <inheritdoc/>
 		public void VisitSegmentedAddress(SegmentedPointer access)
 		{
             access.Offset.Accept(this);
 		}
 
+        /// <inheritdoc/>
         public void VisitOutArgument(OutArgument outArg)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
 		public void VisitPhiFunction(PhiFunction phi)
 		{
 			throw new NotImplementedException();
 		}
 
+        /// <inheritdoc/>
 		public void VisitPointerAddition(PointerAddition padd)
 		{
 			throw new NotImplementedException();
 		}
 
+        /// <inheritdoc/>
 		public void VisitProcedureConstant(ProcedureConstant pc)
 		{
 			handler.DataTypeTrait(pc, program.Platform.PointerType);
 		}
 
+        /// <inheritdoc/>
         public void VisitScopeResolution(ScopeResolution scope)
         {
         }
 
+        /// <inheritdoc/>
         public void VisitSlice(Slice slice)
 		{
 			throw new NotImplementedException();
 		}
 
+        /// <inheritdoc/>
         public void VisitStringConstant(StringConstant str)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
 		public void VisitTestCondition(TestCondition test)
 		{
 			throw new NotImplementedException();
 		}
 
+        /// <inheritdoc/>
 		public void VisitUnaryExpression(UnaryExpression unary)
 		{
 			throw new NotImplementedException();

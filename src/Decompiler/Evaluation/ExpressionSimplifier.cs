@@ -54,7 +54,6 @@ namespace Reko.Evaluation
         private static readonly Mps_Constant_Rule mpsRule;
         private static readonly BinOpWithSelf_Rule binopWithSelf;
         private static readonly ConstDivisionImplementedByMultiplication constDiv;
-        private static readonly IdProcConstRule idProcConstRule;
         private static readonly ConvertConvertRule convertConvertRule;
         private static readonly DistributedCastRule distributedCast;
         private static readonly DistributedConversionRule distributedConvert;
@@ -73,7 +72,13 @@ namespace Reko.Evaluation
         private readonly Unifier unifier;
         private readonly IEventListener listener;
 
-
+        /// <summary>
+        /// Creates an <see cref="ExpressionSimplifier"/> that uses the given
+        /// <paramref name="memory"/> and <paramref name="ctx"/> to evaluate expressions.
+        /// </summary>
+        /// <param name="memory"><see cref="IMemory"/> instance modeling program memory.</param>
+        /// <param name="ctx"><see cref="EvaluationContext"/> providing whole-program context.</param>
+        /// <param name="listener"><see cref="IEventListener"/> used to report diagnostic messages.</param>
         public ExpressionSimplifier(IMemory memory, EvaluationContext ctx, IEventListener listener)
             : this(memory, ctx, new Unifier(), listener)
         {
@@ -81,6 +86,15 @@ namespace Reko.Evaluation
             // where the unifier is passed in.
         }
 
+        /// <summary>
+        /// Creates an <see cref="ExpressionSimplifier"/> that uses the given
+        /// <paramref name="memory"/> and <paramref name="ctx"/> to evaluate expressions.
+        /// </summary>
+        /// <param name="memory"><see cref="IMemory"/> instance modeling program memory.</param>
+        /// <param name="ctx"><see cref="EvaluationContext"/> providing whole-program context.</param>
+        /// <param name="unifier"><see cref="Unifier"/> to be used when coalescing an identifier with its 
+        /// defining expression.</param>
+        /// <param name="listener"><see cref="IEventListener"/> used to report diagnostic messages.</param>
         public ExpressionSimplifier(
             IMemory memory,
             EvaluationContext ctx,
@@ -95,11 +109,13 @@ namespace Reko.Evaluation
             this.m = new ExpressionEmitter();
         }
 
+        /// <inheritdoc/>
         public virtual (Expression, bool) VisitAddress(Address addr)
         {
             return (addr, false);
         }
 
+        /// <inheritdoc/>
         public virtual (Expression, bool) VisitCast(Cast cast)
         {
             var (e, changed) = cast.Expression.Accept(this);
@@ -108,6 +124,7 @@ namespace Reko.Evaluation
             return (cast, changed);
         }
 
+        /// <inheritdoc/>
         public virtual (Expression, bool) VisitConditionOf(ConditionOf c)
         {
             Expression e;
@@ -138,11 +155,13 @@ namespace Reko.Evaluation
             return (c, changed);
         }
 
+        /// <inheritdoc/>
         public virtual (Expression, bool) VisitConstant(Constant c)
         {
             return (c, false);
         }
 
+        /// <inheritdoc/>
         public virtual (Expression, bool) VisitDereference(Dereference deref)
         {
             var (e, changed) = deref.Expression.Accept(this);
@@ -151,6 +170,7 @@ namespace Reko.Evaluation
             return (deref, changed);
         }
 
+        /// <inheritdoc/>
         public virtual (Expression, bool) VisitFieldAccess(FieldAccess acc)
         {
             var (e, changed) = acc.Structure.Accept(this);
@@ -159,6 +179,7 @@ namespace Reko.Evaluation
             return (acc, changed);
         }
 
+        /// <inheritdoc/>
         public virtual (Expression, bool) VisitMemberPointerSelector(MemberPointerSelector mps)
         {
             //$TODO: this has been disabled.
@@ -175,6 +196,7 @@ namespace Reko.Evaluation
             return (mps, changed);
         }
 
+        /// <inheritdoc/>
         public virtual (Expression, bool) VisitOutArgument(OutArgument outArg)
         {
             if (outArg.Expression is not Identifier)
@@ -188,26 +210,31 @@ namespace Reko.Evaluation
             return (outArg, false);
         }
 
+        /// <inheritdoc/>
         public virtual (Expression, bool) VisitPointerAddition(PointerAddition pa)
         {
             return (pa, false);
         }
 
+        /// <inheritdoc/>
         public virtual (Expression, bool) VisitProcedureConstant(ProcedureConstant pc)
         {
             return (pc, false);
         }
 
+        /// <inheritdoc/>
         public virtual (Expression, bool) VisitScopeResolution(ScopeResolution sc)
         {
             return (sc, false);
         }
 
+        /// <inheritdoc/>
         public virtual (Expression, bool) VisitStringConstant(StringConstant str)
         {
             return (str, false);
         }
 
+        /// <inheritdoc/>
         public virtual (Expression, bool) VisitTestCondition(TestCondition tc)
         {
             return (tc, false);
@@ -225,6 +252,7 @@ namespace Reko.Evaluation
             return (tc, changed);
         }
 
+        /// <inheritdoc/>
         public static bool IsSequence(
             EvaluationContext ctx, 
             Expression e, 
@@ -243,6 +271,7 @@ namespace Reko.Evaluation
             return s is not null;
         }
 
+        /// <inheritdoc/>
         public static Expression? SliceSequence(MkSequence seq, DataType dtSlice, int sliceOffset)
         {
             var bitsUsed = dtSlice.BitSize;
@@ -285,7 +314,6 @@ namespace Reko.Evaluation
             sliceShift = new SliceShift();
             binopWithSelf = new BinOpWithSelf_Rule();
             constDiv = new ConstDivisionImplementedByMultiplication();
-            idProcConstRule = new IdProcConstRule();
             convertConvertRule = new ConvertConvertRule();
             distributedConvert = new DistributedConversionRule();
             distributedCast = new DistributedCastRule();

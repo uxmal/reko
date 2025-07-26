@@ -38,11 +38,25 @@ namespace Reko.Scanning
         private ImageSegment? segment;
         private AddressRange? addressRange;
 
+        /// <summary>
+        /// Constructs a new <see cref="SearchArea"/> from a continuous address range.
+        /// </summary>
+        /// <param name="program">Program being searched.</param>
+        /// <param name="address">Start address.</param>
+        /// <param name="length">Length of the search area.</param>
+        /// <returns>A <see cref="SearchArea"/> instance.</returns>
         public static SearchArea FromAddressRange(Program program, Address address, long length)
         {
             return new SearchArea(program, null, new AddressRange(address, address + length));
         }
 
+        /// <summary>
+        /// Constructs a new <see cref="SearchArea"/> from the segment whose name
+        /// is given by <paramref name="segmentName"/>.
+        /// </summary>
+        /// <param name="program">Program being searched.</param>
+        /// <param name="segmentName">Name of the segment to search.</param>
+        /// <returns>A <see cref="SearchArea"/> instance.</returns>
         public static SearchArea? FromSegment(Program program, string segmentName)
         {
             if (!program.SegmentMap.TryFindSegment(segmentName, out var segment))
@@ -50,6 +64,12 @@ namespace Reko.Scanning
             return new SearchArea(program, segment, null);
         }
 
+        /// <summary>
+        /// Constructs a new <see cref="SearchArea"/> from an <see cref="ImageSegment"/>.
+        /// </summary>
+        /// <param name="program">Program being searched.</param>
+        /// <param name="segment">Segment to search.</param>
+        /// <returns>A <see cref="SearchArea"/> instance.</returns>
         public static SearchArea FromSegment(Program program, ImageSegment segment)
         {
             return new SearchArea(program, segment, null);
@@ -70,10 +90,19 @@ namespace Reko.Scanning
             this.addressRange = addressRange;
         }
 
+        /// <summary>
+        /// Program being searched.
+        /// </summary>
         public Program Program { get; }
 
+        /// <summary>
+        /// Start address of the search area.
+        /// </summary>
         public Address Address => segment is not null ? segment.Address : addressRange!.Begin;
 
+        /// <summary>
+        /// Length of the search area in storage units.
+        /// </summary>
         public long Length => segment is not null ? segment.Size : addressRange!.Length;
 
 
@@ -85,6 +114,18 @@ namespace Reko.Scanning
             SegmentName,
         }
 
+        /// <summary>
+        /// Parse a string containing free-form search areas expressed as either
+        /// address ranges or segment names.
+        /// </summary>
+        /// <param name="program">Program to search.</param>
+        /// <param name="freeFormAreas">Search areas expressed as a string.</param>
+        /// <param name="result">Resulting list of <see cref="SearchArea"/>s if the
+        /// <paramref name="freeFormAreas"/> were syntactically correct; otherwise nothing.
+        /// </param>
+        /// <returns>True if the <paramref name="freeFormAreas"/> were provided syntactially corretly;
+        /// otherwise false.
+        /// </returns>
         public static bool TryParse(Program program, string freeFormAreas, [MaybeNullWhen(false)] out List<SearchArea> result)
         {
             var arch = program.Architecture;
@@ -198,6 +239,7 @@ namespace Reko.Scanning
             return false;
         }
 
+        /// <inheritdoc/>
         public override bool Equals(object? obj)
         {
             if (obj is not SearchArea that)
@@ -208,6 +250,7 @@ namespace Reko.Scanning
                 this.Length == that.Length;
         }
 
+        /// <inheritdoc/>
         public override int GetHashCode()
         {
             return HashCode.Combine(this.Address, this.Length);
@@ -224,6 +267,7 @@ namespace Reko.Scanning
             return i;
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             var sb = new StringBuilder();
@@ -243,6 +287,12 @@ namespace Reko.Scanning
                 out addr);
         }
 
+        /// <summary>
+        /// Formats a list of search areas as a string. The string can be parsed 
+        /// in <see cref="TryParse(Program, string, out List{SearchArea})"/>.
+        /// </summary>
+        /// <param name="searchAreas">List of <see cref="SearchArea"/>s to format.</param>
+        /// <returns>A parseable string.</returns>
         public static string Format(List<SearchArea>? searchAreas)
         {
             if (searchAreas is null || searchAreas.Count == 0)

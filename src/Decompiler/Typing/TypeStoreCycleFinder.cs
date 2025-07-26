@@ -25,6 +25,10 @@ using System.Linq;
 
 namespace Reko.Typing
 {
+    /// <summary>
+    /// Finds data types that are involved in self-referential cycles that are not
+    /// broken by pointers or references.
+    /// </summary>
     public class TypeStoreCycleFinder : IDataTypeVisitor<bool>
     {
         private readonly DataType dtCandidate;
@@ -35,9 +39,14 @@ namespace Reko.Typing
         {
             this.store = store;
             this.dtCandidate = dtCandidate;
-            this.visited = new HashSet<DataType>();
+            this.visited = [];
         }
 
+        /// <summary>
+        /// Determine if <paramref name="dt"/> is in a type cycle.
+        /// </summary>
+        /// <param name="dt">Data type to test.</param>
+        /// <returns>True if <paramref name="dt"/> is in a type cycle.</returns>
         public bool Find(DataType dt)
         {
             if (dt is null) 
@@ -47,17 +56,27 @@ namespace Reko.Typing
             return dt.Accept(this);
         }
 
+        /// <summary>
+        /// Determines whether the data type <paramref name="dtCandidate"/> is involved
+        /// in a type cycle.
+        /// </summary>
+        /// <param name="store">Type store to analyze.</param>
+        /// <param name="dtCandidate">Type to analyze.</param>
+        /// <returns>True if the data type is in a type cycle; otherwise false.
+        /// </returns>
         public static bool IsInCycle(TypeStore store, DataType dtCandidate)
         {
             var finder = new TypeStoreCycleFinder(store, dtCandidate);
             return dtCandidate.Accept(finder);
         }
 
+        /// <inheritdoc/>
         public bool VisitArray(ArrayType at)
         {
             return Find(at.ElementType);
         }
 
+        /// <inheritdoc/>
         public bool VisitClass(ClassType ct)
         {
             foreach (var field in ct.Fields)
@@ -73,16 +92,19 @@ namespace Reko.Typing
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitCode(CodeType c)
         {
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitEnum(EnumType e)
         {
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitEquivalenceClass(EquivalenceClass eq)
         {
             if (!visited.Contains(eq))
@@ -93,6 +115,7 @@ namespace Reko.Typing
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitFunctionType(FunctionType ft)
         {
             return ft.ParametersValid &&
@@ -100,6 +123,7 @@ namespace Reko.Typing
                  ft.Parameters!.Any(p => Find(p.DataType)));
         }
 
+        /// <inheritdoc/>
         public bool VisitMemberPointer(MemberPointer memptr)
         {
             return 
@@ -107,26 +131,31 @@ namespace Reko.Typing
                 Find(memptr.Pointee);
         }
 
+        /// <inheritdoc/>
         public bool VisitPointer(Pointer ptr)
         {
             return Find(ptr.Pointee);
         }
 
+        /// <inheritdoc/>
         public bool VisitPrimitive(PrimitiveType pt)
         {
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitReference(ReferenceTo refTo)
         {
             return Find(refTo.Referent);
         }
 
+        /// <inheritdoc/>
         public bool VisitString(StringType str)
         {
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitStructure(StructureType str)
         {
             if (!visited.Contains(str))
@@ -141,26 +170,31 @@ namespace Reko.Typing
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitTypeReference(TypeReference typeref)
         {
             return Find(typeref.Referent);
         }
 
+        /// <inheritdoc/>
         public bool VisitTypeVariable(TypeVariable tv)
         {
             return Find(tv.DataType);
         }
 
+        /// <inheritdoc/>
         public bool VisitUnion(UnionType ut)
         {
             return ut.Alternatives.Values.Any(a => Find(a.DataType));
         }
 
+        /// <inheritdoc/>
         public bool VisitUnknownType(UnknownType ut)
         {
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitVoidType(VoidType voidType)
         {
             return false;

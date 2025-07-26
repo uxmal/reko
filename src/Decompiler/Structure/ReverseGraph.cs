@@ -30,6 +30,7 @@ namespace Reko.Structure
     /// This class is used for the computation of post-dominators
     /// in the StructureAnalyis class.
     /// </summary>
+    //$REVIEW: move to Reko.Core.Graphs?
     public class ReverseGraph : DirectedGraph<Region>
     {
         private DirectedGraph<Region> graph;
@@ -42,6 +43,10 @@ namespace Reko.Structure
             public Region To;
         }
 
+        /// <summary>
+        /// Constructs a reverse graph from the given directed graph.
+        /// </summary>
+        /// <param name="graph"></param>
         public ReverseGraph(DirectedGraph<Region> graph)
         {
             this.graph = new DiGraph<Region>();
@@ -58,31 +63,37 @@ namespace Reko.Structure
             }
         }
 
+        /// <inheritdoc/>
         public ICollection<Region> Predecessors(Region node)
         {
             return graph.Successors(node);
         }
 
+        /// <inheritdoc/>
         public ICollection<Region> Successors(Region node)
         {
             return graph.Predecessors(node);
         }
 
+        /// <inheritdoc/>
         public ICollection<Region> Nodes
         {
             get { return graph.Nodes; }
         }
 
+        /// <inheritdoc/>
         public void AddEdge(Region nodeFrom, Region nodeTo)
         {
             graph.AddEdge(nodeTo, nodeFrom);
         }
 
+        /// <inheritdoc/>
         public void RemoveEdge(Region nodeFrom, Region nodeTo)
         {
             graph.RemoveEdge(nodeTo, nodeFrom);
         }
 
+        /// <inheritdoc/>
         public bool ContainsEdge(Region nodeFrom, Region nodeTo)
         {
             return graph.ContainsEdge(nodeTo, nodeFrom);

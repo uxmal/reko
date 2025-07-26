@@ -32,7 +32,12 @@ namespace Reko.Evaluation
     /// </summary>
     public class Add_mul_id_c_id_Rule
 	{
-		public Expression? Match(BinaryExpression exp, EvaluationContext ctx)
+        /// <summary>
+        /// Matches and transforms a binary expression.
+        /// </summary>
+        /// <param name="exp"></param>
+        /// <returns></returns>
+		public Expression? Match(BinaryExpression exp)
 		{
             var dt = exp.DataType.ResolveAs<PrimitiveType>();
             if (dt is null)

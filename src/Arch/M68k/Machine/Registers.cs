@@ -220,7 +220,7 @@ namespace Reko.Arch.M68k.Machine
                 {
                 TC,
                 sregFactory.Reg32("drp"),
-            SRP,
+                SRP,
                 sregFactory.Reg32("crp"),
                sregFactory.Reg32("cal"),
                VAL,

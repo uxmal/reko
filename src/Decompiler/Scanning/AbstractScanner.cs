@@ -43,26 +43,71 @@ namespace Reko.Scanning
     /// </summary>
     public abstract class AbstractScanner
     {
+        /// <summary>
+        /// <see cref="TraceSwitch"/> controlling the tracing of this worker.
+        /// </summary>
         protected static readonly TraceSwitch trace = new(nameof(AbstractScanner), "")
         {
             Level = TraceLevel.Warning
         };
 
+        /// <summary>
+        /// <see cref="IServiceProvider"/> instance used to obtain runtime services.
+        /// </summary>
         protected readonly IServiceProvider services;
+
+        /// <summary>
+        /// <see cref="Program"/> being analyzed.
+        /// </summary>
         protected readonly Program program;
+
+        /// <summary>
+        /// Scanner-specific results.
+        /// </summary>
         protected readonly ScanResultsV2 sr;
-        protected readonly IDecompilerEventListener listener;
+
+        /// <summary>
+        /// <see cref="IEventListener"/> to report diagnostics to.
+        /// </summary>
+        protected readonly IEventListener listener;
+
+        /// <summary>
+        /// Basic block start addresses.
+        /// </summary>
         protected readonly ConcurrentDictionary<Address, Address> blockStarts;
+
+        /// <summary>
+        /// The addresses of the last instructions in basic blocks.
+        /// </summary>
         protected readonly ConcurrentDictionary<Address, Address> blockEnds;
+
+        /// <summary>
+        /// Represents the mask used to reject certain instructions.
+        /// </summary>
         protected readonly InstrClass rejectMask;
+
+        /// <summary>
+        /// <see cref="IRewriterHost"/> used when lifting machine instructions to 
+        /// RTL.
+        /// </summary>
         private readonly IRewriterHost host;
 
+        /// <summary>
+        /// Initializes an instance of the <see cref="AbstractScanner"/> class.
+        /// </summary>
+        /// <param name="program"><see cref="Program"/> being scanned.</param>
+        /// <param name="sr">Scan results collected so far.</param>
+        /// <param name="provenance">The provenance to assign to discovered results</param>
+        /// <param name="dynamicLinker"><see cref="IDynamicLinker"/> instance
+        /// used to resolve external references.</param>
+        /// <param name="listener"><see cref="IEventListener"/> instance to report diagnostics to.</param>
+        /// <param name="services"><see cref="IServiceProvider"/> instance providing runtime services.</param>
         protected AbstractScanner(
             Program program,
             ScanResultsV2 sr,
             ProvenanceType provenance,
             IDynamicLinker dynamicLinker,
-            IDecompilerEventListener listener,
+            IEventListener listener,
             IServiceProvider services)
         {
             this.services = services;
@@ -82,6 +127,9 @@ namespace Reko.Scanning
                 : 0;
         }
 
+        /// <summary>
+        /// The provenance of the results produced by this scanner.
+        /// </summary>
         protected ProvenanceType Provenance { get; }
 
 
@@ -107,10 +155,16 @@ namespace Reko.Scanning
         /// </summary>
         /// <param name="addr">Address to test.</param>
         /// <returns>Whether or not the address is executable.</returns>
-        /// <remarks>
         public bool IsValidAddress(Address addr) =>
             program.Memory.IsValidAddress(addr);
 
+        /// <summary>
+        /// Creates an instance of a <see cref="IBackWalkHost{RtlBlock, RtlInstruction}"/>
+        /// to process indirect jumps.
+        /// </summary>
+        /// <param name="arch"></param>
+        /// <param name="backEdges"></param>
+        /// <returns></returns>
         public IBackWalkHost<RtlBlock, RtlInstruction> MakeBackwardSlicerHost(
             IProcessorArchitecture arch,
             Dictionary<Address, List<Address>> backEdges)
@@ -118,6 +172,17 @@ namespace Reko.Scanning
             return new CfgBackWalkHost(program, arch, sr, backEdges);
         }
 
+        /// <summary>
+        /// Creates an instruction trace starting at <paramref name="addr"/>.
+        /// </summary>
+        /// <param name="addr">Starting address.</param>
+        /// <param name="state"><see cref="ProcessorState"/> maintained
+        /// while following the trace.</param>
+        /// <param name="binder"><see cref="IStorageBinder"/> used to record
+        /// registers.</param>
+        /// <returns>An <see cref="IEnumerable{RtlInstructionCluster}"/>, which
+        /// is a trace of RTL instruction clusters.
+        /// </returns>
         public IEnumerable<RtlInstructionCluster> MakeTrace(
             Address addr,
             ProcessorState state,
@@ -175,6 +240,10 @@ namespace Reko.Scanning
             return block;
         }
 
+        /// <summary>
+        /// Registers an edge in the control flow graph.
+        /// </summary>
+        /// <param name="edge"></param>
         public void RegisterEdge(Edge edge)
         {
             List<Address>? edges;
@@ -201,6 +270,12 @@ namespace Reko.Scanning
             sr.InvalidBlocks.TryAdd(addrInvalidBlockStart, addrInvalidBlockStart);
         }
 
+        /// <summary>
+        /// Builds the predecessor edges in the control flow graph, based
+        /// on the existing successor edges.
+        /// </summary>
+        /// <returns>The updated <see cref="ScanResultsV2"/> instance.
+        /// </returns>
         public ScanResultsV2 RegisterPredecessors()
         {
             sr.Predecessors.Clear();
@@ -219,11 +294,26 @@ namespace Reko.Scanning
             return sr;
         }
 
+
+        /// <summary>
+        /// Register a possible, speculative procedure at address 
+        /// <paramref name="addrProc"/>.
+        /// </summary>
+        /// <param name="addrProc">Address at which the speculative procedure starts.
+        /// </param>
         public void RegisterSpeculativeProcedure(Address addrProc)
         {
             sr.SpeculativeProcedures.AddOrUpdate(addrProc, 1, (a, v) => v+1);
         }
 
+        /// <summary>
+        /// Take any successors of the basic block beginning at address 
+        /// <paramref name="from"/>, and move them to <paramref name="to"/>.
+        /// </summary>
+        /// <param name="from">Address of the basic block from which the
+        /// edges are to be moved.</param>
+        /// <param name="to">Address of the basic block to which the edges
+        /// are to be moved.</param>
         protected void StealEdges(Address from, Address to)
         {
             if (sr.Successors.TryGetValue(from, out var succs))
@@ -234,16 +324,47 @@ namespace Reko.Scanning
             }
         }
 
+        /// <summary>
+        /// Attempts to register a block starting at <paramref name="addrBlock"/>.
+        /// </summary>
+        /// <param name="addrBlock">Address at which the block starts.</param>
+        /// <param name="addrProc">Address of procedure worker that found
+        /// the block.</param>
+        /// <returns>True if the block was registered; false if there already
+        /// was a basic block registered at that address.
+        /// </returns>
         public bool TryRegisterBlockStart(Address addrBlock, Address addrProc)
         {
             return this.blockStarts.TryAdd(addrBlock, addrProc);
         }
 
+        /// <summary>
+        /// Attempts to register a block ending at <paramref name="addrBlockLast"/>.
+        /// </summary>
+        /// <param name="addrBlockStart">Address at which the block starts.</param>
+        /// <param name="addrBlockLast">Address of the last instruction in 
+        /// the block.</param>
+        /// <returns>True if the end of the block was registered; false if 
+        /// there already was a block marked as ending at the <paramref name="addrBlockLast"/>.
+        /// </returns>
         public virtual bool TryRegisterBlockEnd(Address addrBlockStart, Address addrBlockLast)
         {
             return this.blockEnds.TryAdd(addrBlockLast, addrBlockStart);
         }
 
+        /// <summary>
+        /// Attempts to register a <see cref="Trampoline">trampoline</see> ending at <paramref name="addrFinalGoto"/>.
+        /// </summary>
+        /// <param name="addrFinalGoto">The address of the indirect JMP/goto statement
+        /// at the end of the trampoline code.
+        /// </param>
+        /// <param name="trampolineStub">The RTL instructions constituting the 
+        /// trampoline stub.</param>
+        /// <param name="trampoline">A valid <see cref="Trampoline"/> if the method
+        /// returns true; otherwise null.
+        /// </param>
+        /// <returns>True if no trampoline was found at <paramref name="addrFinalGoto"/>;
+        /// otherwise false.</returns>
         public bool TryRegisterTrampoline(
             Address addrFinalGoto,
             List<RtlInstructionCluster> trampolineStub,
@@ -295,6 +416,13 @@ namespace Reko.Scanning
             return RtlBlock.Create(block.Architecture, addr, id, (int)blockSize, addrFallthrough, Provenance, instrs);
         }
 
+        /// <summary>
+        /// Creates an <see cref="ExpressionSimplifier"/> that can be used to evaluate
+        /// expressions in the context of the given <paramref name="state"/>.
+        /// </summary>
+        /// <param name="state"><see cref="ProcessorState"/> used to evaluate
+        /// expressions.</param>
+        /// <returns>An <see cref="ExpressionSimplifier"/>.</returns>
         public ExpressionSimplifier CreateEvaluator(ProcessorState state)
         {
             return new ExpressionSimplifier(
@@ -303,6 +431,12 @@ namespace Reko.Scanning
                 listener);
         }
 
+        /// <summary>
+        /// Splits the given block at the end address <paramref name="addrEnd"/>.
+        /// </summary>
+        /// <param name="block">Basic block to split.</param>
+        /// <param name="addrEnd">Address at which to split the basic block.
+        /// </param>
         public void SplitBlockEndingAt(RtlBlock block, Address addrEnd)
         {
             var wl = new Queue<(RtlBlock block, Address addrEnd)>();
@@ -448,7 +582,12 @@ namespace Reko.Scanning
             DumpBlocks(sr, blocks, s => Debug.WriteLine(s));
         }
 
-        // Writes the start and end addresses, size, and successor edges of each block, 
+        /// <summary>
+        /// Writes the start and end addresses, size, and successor edges of each block, 
+        /// </summary>
+        /// <param name="sr"><see cref="ScanResultsV2"/> instance.</param>
+        /// <param name="blocks">Basic blocks to dump.</param>
+        /// <param name="writeLine">Called to generate a new line in the output.</param>
         public void DumpBlocks(ScanResultsV2 sr, IDictionary<Address, RtlBlock> blocks, Action<string> writeLine)
         {
             writeLine(
@@ -497,13 +636,13 @@ namespace Reko.Scanning
             private readonly IServiceProvider services;
             private readonly Program program;
             private readonly IDynamicLinker dynamicLinker;
-            private readonly IDecompilerEventListener listener;
+            private readonly IEventListener listener;
 
             public RewriterHost(
                 IServiceProvider services,
                 Program program,
                 IDynamicLinker dynamicLinker,
-                IDecompilerEventListener listener)
+                IEventListener listener)
             {
                 this.services = services;
                 this.program = program;
@@ -539,6 +678,7 @@ namespace Reko.Scanning
             /// an <see cref="ExternalProcedure"/>. Otherwise, check to see if
             /// the call is an intercepted call.
             /// </summary>
+            /// <param name="arch">Current architecture.</param>
             /// <param name="addrImportThunk"></param>
             /// <param name="addrInstruction">Used to display diagnostics.</param>
             /// <returns></returns>

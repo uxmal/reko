@@ -39,18 +39,33 @@ namespace Reko.Scanning
         private readonly Dictionary<Identifier, Identifier> mapIds;
         private Identifier? id; //$TODO: use 'id' as context?
 
+        /// <summary>
+        /// Constructs an instance of <see cref="IdentifierRelocator"/>.
+        /// </summary>
+        /// <param name="frameOld">Old <see cref="Frame"/> from which to obtain the identifiers.
+        /// </param>
+        /// <param name="frameNew">New <see cref="Frame"/> to which the relocated identifiers are
+        /// placed.
+        /// </param>
         public IdentifierRelocator(Frame frameOld, Frame frameNew)
         {
             this.frameOld  = frameOld;
             this.frameNew = frameNew;
-            this.mapIds = new Dictionary<Identifier, Identifier>();
+            this.mapIds = [];
         }
 
+        /// <summary>
+        /// Performs the identifier relocation on the given instruction.
+        /// </summary>
+        /// <param name="instr">Instruction whose identifiers are to be relocated.
+        /// </param>
+        /// <returns></returns>
         public Instruction ReplaceIdentifiers(Instruction instr)
         {
             return instr.Accept(this);
         }
 
+        /// <inheritdoc/>
         public override Expression VisitIdentifier(Identifier id)
         {
             this.id = id;
@@ -62,21 +77,25 @@ namespace Reko.Scanning
             return idNew;
         }
 
+        /// <inheritdoc/>
         public Identifier VisitFlagGroupStorage(FlagGroupStorage flags)
         {
             return frameNew.EnsureFlagGroup(flags);
         }
 
+        /// <inheritdoc/>
         public Identifier VisitFpuStackStorage(FpuStackStorage fpu)
         {
             return frameNew.EnsureFpuStackVariable(fpu.FpuStackOffset, id!.DataType);
         }
 
+        /// <inheritdoc/>
         public Identifier VisitRegisterStorage(RegisterStorage reg)
         {
             return frameNew.EnsureRegister(reg);
         }
 
+        /// <inheritdoc/>
         public Identifier VisitMemoryStorage(MemoryStorage mem)
         {
             if (id! == frameOld.Memory)
@@ -85,11 +104,13 @@ namespace Reko.Scanning
                 return id!;
         }
 
+        /// <inheritdoc/>
         public Identifier VisitStackStorage(StackStorage arg)
         {
             return frameNew.EnsureStackVariable(arg.StackOffset, arg.DataType);
         }
 
+        /// <inheritdoc/>
         public Identifier VisitTemporaryStorage(TemporaryStorage tmp)
         {
             if (tmp is GlobalStorage)
@@ -97,6 +118,7 @@ namespace Reko.Scanning
             return frameNew.CreateTemporary(id!.DataType);
         }
 
+        /// <inheritdoc/>
         public Identifier VisitSequenceStorage(SequenceStorage seq)
         {
             return frameNew.EnsureSequence(id!.DataType, seq.Elements);

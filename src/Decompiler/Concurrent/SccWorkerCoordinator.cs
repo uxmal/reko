@@ -42,6 +42,15 @@ namespace Reko.Concurrent
         private readonly Action<TItem[]> workAction;
         private readonly IEventListener listener;
 
+        /// <summary>
+        /// Constructs an instance of <see cref="SccWorkerCoordinator{TItem}"/>.
+        /// </summary>
+        /// <param name="condensation">A <see cref="Condensation{TNode}"/> of graph items.
+        /// </param>
+        /// <param name="listener"><see cref="IEventListener"/> to which diagnostic
+        /// events are sent.</param>
+        /// <param name="workAction">Action to carry out on each Strongly Connected Component
+        /// (SCC).</param>
         public SccWorkerCoordinator(
             Condensation<TItem> condensation,
             IEventListener listener,

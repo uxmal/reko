@@ -20,7 +20,6 @@
 
 using Reko.Core;
 using Reko.Core.Diagnostics;
-using Reko.Core.Expressions;
 using Reko.Core.Graphs;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
@@ -28,7 +27,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
 namespace Reko.Scanning
 {
@@ -52,6 +50,13 @@ namespace Reko.Scanning
         private readonly Func<Address, bool> isAddressValid;
         private HashSet<(RtlBlock, RtlBlock)> conflicts;
 
+        /// <summary>
+        /// Constructs a new instance of the <see cref="BlockConflictResolver"/> class.
+        /// </summary>
+        /// <param name="program">Program being analyzed.</param>
+        /// <param name="sr"></param>
+        /// <param name="isAddressValid"></param>
+        /// <param name="host"></param>
         public BlockConflictResolver(
             Program program,
             ScanResultsV2 sr,

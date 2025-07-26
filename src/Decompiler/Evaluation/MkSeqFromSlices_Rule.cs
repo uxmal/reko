@@ -18,42 +18,41 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Reko.Analysis;
-using Reko.Core.Code;
-using Reko.Core.Expressions;
 using Reko.Core;
+using Reko.Core.Expressions;
 
-namespace Reko.Evaluation
+namespace Reko.Evaluation;
+
+/// <summary>
+/// Replaces a sequence of slices with the original identifier.
+/// </summary>
+public class MkSeqFromSlices_Rule
 {
-    public class MkSeqFromSlices_Rule
+    /// <summary>
+    /// Performs a match on a sequence of slices and returns the original identifier.
+    /// </summary>
+    /// <param name="seq">Sequence to be tested.</param>
+    /// <param name="ctx"></param>
+    /// <returns>Evaluation context to be used.
+    /// </returns>
+    public Expression? Match(MkSequence seq, EvaluationContext ctx)
     {
-        public MkSeqFromSlices_Rule()
-        {
-        }
+        if (seq.Expressions.Length != 2)
+            return null;   //$TODO: handle sequences of any length?
+        if (seq.Expressions[0] is not Identifier idHi ||
+            seq.Expressions[1] is not Identifier idLo)
+            return null;
+        if (ctx.GetDefiningExpression(idHi) is not Slice defHi ||
+            ctx.GetDefiningExpression(idLo) is not Slice defLo)
+            return null;
 
-        public Expression? Match(MkSequence seq, EvaluationContext ctx)
-        {
-            if (seq.Expressions.Length != 2)
-                return null;   //$TODO: handle sequences of any length?
-            if (seq.Expressions[0] is not Identifier idHi ||
-                seq.Expressions[1] is not Identifier idLo)
-                return null;
-            if (ctx.GetDefiningExpression(idHi) is not Slice defHi ||
-                ctx.GetDefiningExpression(idLo) is not Slice defLo)
-                return null;
+        if (defHi.Expression != defLo.Expression)
+            return null;
 
-            if (defHi.Expression != defLo.Expression)
-                return null;
+        var idOrig = defHi.Expression as Identifier;
+        if (idOrig is null)
+            return null;
 
-            var idOrig = defHi.Expression as Identifier;
-            if (idOrig is null)
-                return null;
-
-            return idOrig;
-        }
+        return idOrig;
     }
 }

@@ -32,7 +32,7 @@ using System.Text;
 namespace Reko.Structure
 {
     /// <summary>
-    /// This class is used by the StructureAnalysis class to keep track
+    /// This class is used by the <see cref="StructureAnalysis"/> class to keep track
     /// of information known about a region of statements. Initially
     /// there will be a region for each non-trivial or non-reachable
     /// basic block. These regions are subsequently coalesced into fewer
@@ -42,10 +42,30 @@ namespace Reko.Structure
     /// </summary>
     public class Region
     {
+        /// <summary>
+        /// The basic block that this region represents.
+        /// </summary>
         public Block Block { get; private set; }
+
+        /// <summary>
+        /// The type of the region.
+        /// </summary>
         public RegionType Type { get; set; }
+
+        /// <summary>
+        /// The ordered list of statements in this region.
+        /// </summary>
         public List<AbsynStatement> Statements { get; set; }
+
+        /// <summary>
+        /// Optional predicate expression, used in conditional constructs
+        /// like if-then-else, while, etc.
+        /// </summary>
         public Expression? Expression { get; set; }
+
+        /// <summary>
+        /// True if this region is a switch pad.
+        /// </summary>
         public bool IsSwitchPad { get; set; }
 
         /// <summary>
@@ -59,26 +79,39 @@ namespace Reko.Structure
             }
         }
 
-        public string SwitchPredecessor { get; set; } = "";
-
+        /// <summary>
+        /// Constructs an empty region for the given block.
+        /// </summary>
+        /// <param name="block">Basic block for the region.</param>
         public Region(Block block) : this(block, new List<AbsynStatement>())
         {
         }
 
+        /// <summary>
+        /// Constructs a region for the given block and statements.
+        /// </summary>
+        /// <param name="block">Basic block for the region.</param>
+        /// <param name="stmts"><see cref="AbsynStatement"/> for the region.</param>
         public Region(Block block, IEnumerable<AbsynStatement> stmts)
         {
             this.Block = block;
             this.Statements = new List<AbsynStatement>(stmts);
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             return Block.DisplayName + (IsSwitchPad ? "_$sw" : "");
         }
 
-        public virtual void Write(StringWriter sb)
+        /// <summary>
+        /// Renders the txtual representation of the region to the given
+        /// <see cref="TextWriter"/>.
+        /// </summary>
+        /// <param name="writer">Text writer to write to.</param>
+        public void Write(TextWriter writer)
         {
-            var f = new AbsynCodeFormatter(new TextFormatter(sb));
+            var f = new AbsynCodeFormatter(new TextFormatter(writer));
             foreach (var stm in Statements)
             {
                 stm.Accept(f);
@@ -86,11 +119,29 @@ namespace Reko.Structure
         }
     }
 
+    /// <summary>
+    /// Classification of regions.
+    /// </summary>
     public enum RegionType
     {
+        /// <summary>
+        /// A linear sequence of statements.
+        /// </summary>
         Linear,
+
+        /// <summary>
+        /// A conditional region, such as an if-then-else or a while loop.
+        /// </summary>
         Condition,
+
+        /// <summary>
+        /// An incomplete switch statement (having no guard statement).
+        /// </summary>
         IncSwitch,
+
+        /// <summary>
+        /// A tail region, which is a region that is terminated by a return statement.
+        /// </summary>
         Tail,
     }
 }

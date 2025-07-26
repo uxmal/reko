@@ -32,17 +32,35 @@ namespace Reko.Typing
 	{
         private readonly PrimitiveType dtPointer;
 
+        /// <summary>
+        /// Constructs a new <see cref="ArrayExpressionMatcher"/>.
+        /// </summary>
+        /// <param name="dtPointer">Size of a pointer.</param>
 		public ArrayExpressionMatcher(PrimitiveType dtPointer)
 		{
             this.dtPointer = dtPointer;
 		}
 
+        /// <summary>
+        /// Matches the array part of an array access.
+        /// </summary>
 		public Expression? ArrayPointer { get; set; }
 
+        /// <summary>
+        /// Matches the index part of an array access.
+        /// </summary>
         public Expression? Index { get; set; }
 
+        /// <summary>
+        /// Discovered element size of the array.
+        /// </summary>
 		public Constant? ElementSize { get; private set; }
 
+        /// <summary>
+        /// Matches the multiplication part of an array access.
+        /// </summary>
+        /// <param name="b">Binary expression to match.</param>
+        /// <returns>True if the expression matches.</returns>
 		public bool MatchMul(BinaryExpression b)
 		{
 			switch (b.Operator.Type)
@@ -75,6 +93,11 @@ namespace Reko.Typing
 			return false;
 		}
 
+        /// <summary>
+        /// Check if an expression is an array access expression.
+        /// </summary>
+        /// <param name="e">Expression to test.</param>
+        /// <returns>True if <paramref name="e"/> looks like an array access expression.</returns>
 		public bool Match(Expression e)
 		{
 			ElementSize = null;
@@ -140,6 +163,12 @@ namespace Reko.Typing
 			return false;
 		}
 
+        /// <summary>
+        /// Transform the array access expression into an <see cref="ArrayAccess"/> expression.
+        /// </summary>
+        /// <param name="baseptr">Optional </param>
+        /// <param name="dtAccess"></param>
+        /// <returns></returns>
 		public Expression Transform(Expression? baseptr, DataType dtAccess)
 		{
             if (baseptr is not null)

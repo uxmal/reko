@@ -22,8 +22,17 @@ using System.Collections.Generic;
 
 namespace Reko.Loading
 {
+    /// <summary>
+    /// Abstract base class for signature loaders.
+    /// </summary>
     public abstract class SignatureLoader
     {
+        /// <summary>
+        /// Loads a set of signatures from a file.
+        /// </summary>
+        /// <param name="filename">Name of the file to load signatures from.</param>
+        /// <returns>A collection of signatures.
+        /// </returns>
         public abstract IEnumerable<ImageSignature> Load(string filename);
     }
 }

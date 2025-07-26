@@ -19,31 +19,31 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Code;
 using Reko.Core.Expressions;
-using System;
 
-namespace Reko.Evaluation
+namespace Reko.Evaluation;
+
+/// <summary>
+/// If we find <c>a = x OP CONST</c> followed by <c>b = a</c>, then 
+/// replace so that <c>b = x OP CONST</c>.
+/// </summary>
+public class IdBinIdc_Rule
 {
-	/// <summary>
-	/// If we find a = x OP CONST followed by b = a, then replace so that b = x OP CONST.
-	/// </summary>
-	public class IdBinIdc_Rule
+    /// <summary>
+    /// Evaluates the rule for a given identifier.
+    /// </summary>
+    /// <param name="id">Identifier being evaluated.</param>
+    /// <param name="ctx">Evaluation context</param>
+    /// <returns>An expression if the </returns>
+	public Expression? Match(Identifier id, EvaluationContext ctx)
 	{
-		public IdBinIdc_Rule()
-		{
-		}
+        if (ctx.GetValue(id) is not BinaryExpression bin)
+            return null;
+        if (ctx.IsUsedInPhi(id))
+            return null;
+        if (bin.Left is not Identifier || bin.Right is not Constant)
+            return null;
 
-		public Expression? Match(Identifier id, EvaluationContext ctx)
-		{
-            if (ctx.GetValue(id) is not BinaryExpression bin)
-                return null;
-            if (ctx.IsUsedInPhi(id))
-                return null;
-            if (bin.Left is not Identifier || bin.Right is not Constant)
-                return null;
-
-            return bin!;
-		}
-	}
+        return bin;
+    }
 }

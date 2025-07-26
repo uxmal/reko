@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Loading;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Services;
 using System;
@@ -37,15 +38,23 @@ namespace Reko.Typing
         private readonly Program program;
         private readonly ExpressionTypeAscender asc;
         private readonly ExpressionTypeDescender desc;
-        private readonly IDecompilerEventListener eventListener;
+        private readonly IEventListener eventListener;
         private Statement? stmCur;
         private bool seenPhi;
 
+        /// <summary>
+        /// Constructs an instance of the <see cref="TypeCollector"/> class.
+        /// </summary>
+        /// <param name="factory">Type factory to use.</param>
+        /// <param name="store">Type store to use.</param>
+        /// <param name="program">Program being analyzed.</param>
+        /// <param name="eventListener"><see cref="IEventListener"/> to which diagnostic
+        /// messags are reported.</param>
         public TypeCollector(
             TypeFactory factory, 
             TypeStore store,
             Program program,
-            IDecompilerEventListener eventListener)
+            IEventListener eventListener)
         {
             this.factory = factory;
             this.store = store;
@@ -55,6 +64,9 @@ namespace Reko.Typing
             this.desc = new ExpressionTypeDescender(program, store, factory);
         }
 
+        /// <summary>
+        /// Collects the <see cref="DataType"/>s of all expressions in a program.
+        /// </summary>
         public void CollectTypes()
         {
             CollectGlobalType();
@@ -101,7 +113,6 @@ namespace Reko.Typing
         /// Given a list of user-specified globals, make sure fields are present in
         /// the program
         /// </summary>
-        /// <param name="segmentTypes"></param>
         public void CollectUserGlobalVariableTypes()
         {
             var deser = program.CreateTypeLibraryDeserializer();
@@ -182,6 +193,7 @@ namespace Reko.Typing
             }
         }
 
+        /// <inheritdoc/>
         public void VisitAssignment(Assignment ass)
         {
             var dtSrc = ass.Src.Accept(asc);
@@ -194,6 +206,7 @@ namespace Reko.Typing
             ass.Dst.Accept(desc, store.GetTypeVariable(ass.Dst));
         }
 
+        /// <inheritdoc/>
         public void VisitBranch(Branch branch)
         {
             branch.Condition.Accept(asc);
@@ -201,6 +214,7 @@ namespace Reko.Typing
             branch.Condition.Accept(desc, store.GetTypeVariable(branch.Condition));
         }
 
+        /// <inheritdoc/>
         public void VisitCallInstruction(CallInstruction call)
         {
             call.Callee.Accept(asc);
@@ -212,14 +226,17 @@ namespace Reko.Typing
             call.Callee.Accept(desc, store.GetTypeVariable(call.Callee));
         }
 
+        /// <inheritdoc/>
         public void VisitComment(CodeComment comment)
         {
         }
 
+        /// <inheritdoc/>
         public void VisitDefInstruction(DefInstruction def)
         {
         }
 
+        /// <inheritdoc/>
         public void VisitGotoInstruction(GotoInstruction g)
         {
             var dt = g.Target.Accept(asc);
@@ -227,6 +244,7 @@ namespace Reko.Typing
             g.Target.Accept(desc, store.GetTypeVariable(g.Target));
         }
 
+        /// <inheritdoc/>
         public void VisitPhiAssignment(PhiAssignment phi)
         {
             if (!seenPhi)
@@ -239,6 +257,7 @@ namespace Reko.Typing
             }
         }
 
+        /// <inheritdoc/>
         public void VisitReturnInstruction(ReturnInstruction ret)
         {
             if (ret.Expression is not null)
@@ -249,6 +268,7 @@ namespace Reko.Typing
             }
         }
 
+        /// <inheritdoc/>
         public void VisitSideEffect(SideEffect side)
         {
             var dt = side.Expression.Accept(asc);
@@ -256,6 +276,7 @@ namespace Reko.Typing
             side.Expression.Accept(desc, store.GetTypeVariable(side.Expression));
         }
 
+        /// <inheritdoc/>
         public void VisitStore(Store store)
         {
             var dt = store.Src.Accept(asc);
@@ -267,6 +288,7 @@ namespace Reko.Typing
             store.Dst.Accept(desc, this.store.GetTypeVariable(store.Dst));
         }
 
+        /// <inheritdoc/>
         public void VisitSwitchInstruction(SwitchInstruction si)
         {
             var dt = si.Expression.Accept(asc);
@@ -274,6 +296,7 @@ namespace Reko.Typing
             si.Expression.Accept(desc, store.GetTypeVariable(si.Expression));
         }
 
+        /// <inheritdoc/>
         public void VisitUseInstruction(UseInstruction use)
         {
             var dt = use.Expression.Accept(asc);

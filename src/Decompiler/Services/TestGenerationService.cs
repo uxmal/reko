@@ -31,6 +31,9 @@ using System.Text;
 
 namespace Reko.Services
 {
+    /// <summary>
+    /// Implements the <see cref="ITestGenerationService"/> interface.
+    /// </summary>
     public class TestGenerationService : ITestGenerationService
     {
         private readonly IServiceProvider services;
@@ -39,15 +42,22 @@ namespace Reko.Services
         private readonly Dictionary<string, HashSet<byte[]>> emittedDecoderTests;
         private readonly Dictionary<string, HashSet<string>> emittedRewriterTests;
 
+        /// <summary>
+        /// Constructs an instance of the <see cref="TestGenerationService"/> class.
+        /// </summary>
+        /// <param name="services"><see cref="IServiceProvider"/> instance
+        /// used to retreive services at runtime.</param>
         public TestGenerationService(IServiceProvider services)
         {
             this.services = services;
-            this.emittedRewriterTests = new Dictionary<string, HashSet<string>>();
-            this.emittedDecoderTests = new Dictionary<string, HashSet<byte[]>>();
+            this.emittedRewriterTests = [];
+            this.emittedDecoderTests = [];
         }
 
+        /// <inheritdoc/>
         public string? OutputDirectory { get; set; }
 
+        /// <inheritdoc/>
         public void ReportMissingDecoder(string testPrefix, Address addrStart, EndianImageReader rdr, string message, Func<byte[], string>? hexizer)
         {
             var fsSvc = services.RequireService<IFileSystemService>();
@@ -68,6 +78,7 @@ namespace Reko.Services
             AttemptToAppendText(fsSvc, decoderLock, filename, test);
         }
 
+        /// <inheritdoc/>
         public void ReportMissingDecoder(string testPrefix, Address addrStart, string message, string opcodeAsText)
         {
             var fsSvc = services.RequireService<IFileSystemService>();
@@ -99,6 +110,7 @@ namespace Reko.Services
 
         private static string Hexizer(byte[] bytes) => string.Join("", bytes.Select(b => b.ToString("X2")));
 
+        /// <inheritdoc/>
         public void ReportMissingRewriter(
             string testPrefix,
             MachineInstruction instr,
@@ -121,6 +133,7 @@ namespace Reko.Services
             AttemptToAppendText(fsSvc, rewriterLock, filename, test);
         }
 
+        /// <inheritdoc/>
         public void ReportMissingRewriter(
             string testPrefix,
             MachineInstruction instr,
@@ -138,7 +151,7 @@ namespace Reko.Services
             if (this.emittedRewriterTests[filename].Contains(mnemonic))
                 return;
             emittedRewriterTests[filename].Add(mnemonic);
-            var test = GenerateRewriterUnitTest(testPrefix, instr, mnemonic, rdr, message, opcodeAsText);
+            var test = GenerateRewriterUnitTest(testPrefix, instr, mnemonic, message, opcodeAsText);
             AttemptToAppendText(fsSvc, rewriterLock, filename, test);
         }
 
@@ -152,6 +165,19 @@ namespace Reko.Services
             return GenerateDecoderUnitTest(testPrefix, addrInstr, hexizer(bytes), message);
         }
 
+        /// <summary>
+        /// Emits the text of a unit test that can be pasted into the unit tests
+        /// for a disassembler.
+        /// </summary>
+        /// <param name="testPrefix">Prefix to use when generating the unit test's 
+        /// name.</param>
+        /// <param name="addrInstr">Address of the instruction.</param>
+        /// <param name="instrHexBytes">The text representation of the bytes
+        /// constituting the instruction.</param>
+        /// <param name="message">An error message describing why the instruction
+        /// couldn'r be disassembled.</param>
+        /// <returns>A string whose contents are a C# unit test.
+        /// </returns>
         public static string GenerateDecoderUnitTest(string testPrefix, Address addrInstr, string instrHexBytes, string message)
         {
             var writer = new StringWriter();
@@ -179,15 +205,36 @@ namespace Reko.Services
             return bytes;
         }
 
+        /// <summary>
+        /// Emits the text of a unit test that can be pasted into the unit tests
+        /// for a rewriter.
+        /// </summary>
+        /// <param name="testPrefix"></param>
+        /// <param name="instr"></param>
+        /// <param name="mnemonic"></param>
+        /// <param name="rdr"></param>
+        /// <param name="message"></param>
+        /// <param name="hexizer"></param>
+        /// <returns></returns>
         public static string GenerateRewriterUnitTest(string testPrefix, MachineInstruction instr, string mnemonic, EndianImageReader rdr, string message, Func<byte[], string> hexizer)
         {
             hexizer ??= Hexizer;
             byte[] bytes = ReadInstructionBytes(instr.Address!, rdr);
             var hexbytes = hexizer(bytes);
-            return GenerateRewriterUnitTest(testPrefix, instr, mnemonic, rdr, message, hexbytes);
+            return GenerateRewriterUnitTest(testPrefix, instr, mnemonic, message, hexbytes);
         }
 
-        public static string GenerateRewriterUnitTest(string testPrefix, MachineInstruction instr, string mnemonic, EndianImageReader rdr, string message, string hexbytes)
+
+        /// <summary>
+        /// Emits the text of a unit test that can be pasted into the unit tests
+        /// for a rewriter.
+        /// </summary>
+        public static string GenerateRewriterUnitTest(
+            string testPrefix,
+            MachineInstruction instr,
+            string mnemonic,
+            string message,
+            string hexbytes)
         {
             var sb = new StringWriter();
 
@@ -272,6 +319,10 @@ namespace Reko.Services
             }
         }
 
+        /// <summary>
+        /// Remove all test files in the output directory.
+        /// </summary>
+        /// <param name="filePrefix">Prefix of files to remove.</param>
         public void RemoveFiles(string filePrefix)
         {
             var fsSvc = services.RequireService<IFileSystemService>();
@@ -282,6 +333,7 @@ namespace Reko.Services
             }
         }
 
+        /// <inheritdoc/>
         public void ReportProcedure(string fileName, string testCaption, Procedure proc)
         {
             var fsSvc = services.RequireService<IFileSystemService>();
@@ -291,6 +343,12 @@ namespace Reko.Services
             ReportProcedure(testCaption, proc, w);
         }
 
+        /// <summary>
+        /// Writes the contents of a procedure to a file.
+        /// </summary>
+        /// <param name="testCaption"></param>
+        /// <param name="proc"></param>
+        /// <param name="writer"></param>
         public static void ReportProcedure(string testCaption, Procedure proc, TextWriter writer)
         {
             writer.WriteLine(testCaption);
@@ -298,6 +356,7 @@ namespace Reko.Services
             writer.WriteLine();
         }
 
+        /// <inheritdoc />
         public void GenerateUnitTestFromProcedure(string fileName, string testCaption, Procedure proc)
         {
             var fsSvc = services.RequireService<IFileSystemService>();
@@ -307,6 +366,12 @@ namespace Reko.Services
             GenerateUnitTestFromProcedure(testCaption, proc, w);
         }
 
+        /// <summary>
+        /// Generates a unit test from the given procedure and writes it to the provided writer.
+        /// </summary>
+        /// <param name="testCaption">Caption to use in generated test code.</param>
+        /// <param name="proc">Procedure to render.</param>
+        /// <param name="writer">Output writer.</param>
         public static void GenerateUnitTestFromProcedure(string testCaption, Procedure proc, TextWriter writer)
         {
             writer.WriteLine(testCaption);

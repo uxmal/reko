@@ -18,41 +18,75 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Assemblers;
-using Reko.Core.Loading;
 using System;
 
-namespace Reko
+namespace Reko;
+
+/// <summary>
+/// Interface to a running instance of the Reko decompiler.
+/// </summary>
+public interface IDecompiler
 {
     /// <summary>
-    /// Interface to a running instance of the Reko decompiler.
+    /// Event is fired when the current <see cref="Project"/> used by
+    /// the decompiler is changed.
     /// </summary>
-    public interface IDecompiler
-    {
-        /// <summary>
-        /// Event is fired when the current <see cref="Project"/> used by
-        /// the decompiler is changed.
-        /// </summary>
-        public event EventHandler? ProjectChanged;
+    public event EventHandler? ProjectChanged;
 
-        /// <summary>
-        /// The current <see cref="Project"/> used by the decompiler, or
-        /// null if no project has been loaded.
-        /// </summary>
-        Project Project { get; }
+    /// <summary>
+    /// The current <see cref="Project"/> used by the decompiler, or
+    /// null if no project has been loaded.
+    /// </summary>
+    Project Project { get; }
 
-        void ScanPrograms();
-        ProcedureBase ScanProcedure(ProgramAddress paddr, IProcessorArchitecture arch);
-        void AnalyzeDataFlow();
-        void ReconstructTypes();
-        void StructureProgram();
-        void WriteDecompilerProducts();
-        void ExtractResources();
+    /// <summary>
+    /// Scans all programs in the <see cref="Project"/>.
+    /// </summary>
+    void ScanPrograms();
 
-        /// <summary>
-        /// Replaces any occurrence of <paramref name="oldProgram"/> in the
-        /// <see cref="Project"/> with <paramref name="newProgram"/>.
-        /// </summary>
-        void ReplaceProgram(Program oldProgram, Program newProgram);
-    }
+    /// <summary>
+    /// Scans a procedure at the given program address <paramref name="paddr"/>.
+    /// </summary>
+    /// <param name="paddr"><see cref="ProgramAddress"/> to start scanning at.
+    /// </param>
+    /// <param name="arch"><see cref="IProcessorArchitecture"/> to use when 
+    /// scanning.
+    /// </param>
+    /// <returns>The scanned procedure.
+    /// </returns>
+    ProcedureBase ScanProcedure(ProgramAddress paddr, IProcessorArchitecture arch);
+
+    /// <summary>
+    /// Analyzes the data flow of all procedures in the <see cref="Project"/>.
+    /// </summary>
+    void AnalyzeDataFlow();
+
+    /// <summary>
+    /// Performs data type inference and reconstructs types in the 
+    /// <see cref="Project"/>. This is
+    /// </summary>
+    void ReconstructTypes();
+
+    /// <summary>
+    /// Rewrites the mid-level RTL of all procedures in the <see cref="Project"/>
+    /// to high-level language, using structured programming constructs.
+    /// </summary>
+    void StructureProgram();
+
+
+    /// <summary>
+    /// Writes the decompiled products for each program in the current project.
+    /// </summary>
+    void WriteDecompilerProducts();
+
+    /// <summary>
+    /// Extracts any resources that are embedded in the programs of the current <see cref="Project"/>.
+    /// </summary>
+    void ExtractResources();
+
+    /// <summary>
+    /// Replaces any occurrence of <paramref name="oldProgram"/> in the
+    /// <see cref="Project"/> with <paramref name="newProgram"/>.
+    /// </summary>
+    void ReplaceProgram(Program oldProgram, Program newProgram);
 }

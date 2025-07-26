@@ -26,14 +26,13 @@ using Reko.Core.Diagnostics;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Services;
-using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using LiveOutUse = Reko.Analysis.DataFlow.LiveOutUse;
 using LiveOutFlagsUse = Reko.Analysis.DataFlow.LiveOutFlagsUse;
+using LiveOutUse = Reko.Analysis.DataFlow.LiveOutUse;
 
 namespace Reko.Analysis
 {
@@ -44,7 +43,7 @@ namespace Reko.Analysis
     /// </summary>
     public class UnusedOutValuesRemover
     {
-        public static readonly TraceSwitch trace = new (nameof(UnusedOutValuesRemover) , "Trace removal of unused out values")
+        private static readonly TraceSwitch trace = new (nameof(UnusedOutValuesRemover) , "Trace removal of unused out values")
         {
             Level = TraceLevel.Warning,
         };
@@ -58,6 +57,15 @@ namespace Reko.Analysis
         private readonly IServiceProvider services;
         private readonly IEventListener eventListener;
 
+        /// <summary>
+        /// Constructs an instance of <see cref="UnusedOutValuesRemover"/>.
+        /// </summary>
+        /// <param name="program"><see cref="Program"/> being analyzed.</param>
+        /// <param name="ssaStates"><see cref="SsaState"/>s of the procedures in the program.
+        /// </param>
+        /// <param name="dataFlow"></param>
+        /// <param name="dynamicLinker"></param>
+        /// <param name="services"></param>
         public UnusedOutValuesRemover(
             Program program,
             IEnumerable<SsaState> ssaStates,
@@ -76,6 +84,9 @@ namespace Reko.Analysis
                 .ToDictionary(s => s.Procedure);
         }
 
+        /// <summary>
+        /// Performs the analysis to remove unused out values.
+        /// </summary>
         public void Transform()
         {
             CollectLiveOutStorages();
@@ -161,6 +172,10 @@ namespace Reko.Analysis
                 }
             }
         }
+
+        /// <summary>
+        /// Debug-only method that dumps the live-out register values.
+        /// </summary>
 
         [Conditional("DEBUG")]
         public void DumpLiveOut()

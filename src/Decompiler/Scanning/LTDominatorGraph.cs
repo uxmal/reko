@@ -31,12 +31,19 @@ namespace Reko.Scanning
     /// <typeparam name="TNode"></typeparam>
     public class LTDominatorGraph<TNode> where TNode: class
     {
+        /// <summary>
+        /// Constructs a dominator graph using the Lengauer-Tarjan algorithm.
+        /// </summary>
+        /// <param name="graph">Digraph from which the dominator graph is computed.
+        /// </param>
+        /// <param name="root">Root node of the graph.</param>
+        /// <returns></returns>
         public static Dictionary<TNode,TNode?> Create(DirectedGraph<TNode> graph, TNode root)
         {
             return new Builder(graph, root).Dominators();
         }
 
-        public class Builder
+        private class Builder
         {
             private DirectedGraph<TNode> graph;
             private TNode root;

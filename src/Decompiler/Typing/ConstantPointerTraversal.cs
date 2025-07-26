@@ -42,12 +42,27 @@ namespace Reko.Typing
         private IEnumerator<WorkItem>? eCurrent;
         private int gOffset;
 
+        /// <summary>
+        /// Work item for the constant pointer traversal.
+        /// </summary>
         public struct WorkItem
         {
+            /// <summary>
+            /// Offset from the start of the global structure.
+            /// </summary>
             public int GlobalOffset;
+            /// <summary>
+            /// Data type of the item at the offset.
+            /// </summary>
             public DataType DataType;
         }
 
+        /// <summary>
+        /// Constructs a new <see cref="ConstantPointerTraversal"/> instance.
+        /// </summary>
+        /// <param name="arch"><see cref="IProcessorArchitecture"/> architecture.</param>
+        /// <param name="globalStr">The known globals.</param>
+        /// <param name="segmentMap">The segment map.</param>
         public ConstantPointerTraversal(IProcessorArchitecture arch, StructureType globalStr, SegmentMap segmentMap)
         {
             this.arch = arch;
@@ -58,6 +73,10 @@ namespace Reko.Typing
             this.stack = new Stack<IEnumerator<WorkItem>>();
         }
 
+        /// <summary>
+        /// Constructs a new <see cref="ConstantPointerTraversal"/> instance.
+        /// </summary>
+        /// <param name="program">Program being analyzed.</param>
         public ConstantPointerTraversal(Program program) 
         {
             this.arch = program.Architecture;
@@ -69,8 +88,14 @@ namespace Reko.Typing
             this.stack = new Stack<IEnumerator<WorkItem>>();
         }
 
-        public List<StructureField> Discoveries { get; private set; }
+        /// <summary>
+        /// Fields that have been discovered during the traversal.
+        /// </summary>
+        public List<StructureField> Discoveries { get; }
 
+        /// <summary>
+        /// Traverses all the global variables and their pointers.
+        /// </summary>
         public void Traverse()
         {
             stack.Push(Single(new WorkItem { GlobalOffset = 0, DataType = globalStr }).GetEnumerator());
@@ -94,6 +119,7 @@ namespace Reko.Typing
             yield return dt;
         }
 
+        /// <inheritdoc/>
         public IEnumerable<WorkItem> VisitArray(ArrayType at)
         {
             int offset = gOffset;
@@ -105,41 +131,49 @@ namespace Reko.Typing
             }
         }
 
+        /// <inheritdoc/>
         public IEnumerable<WorkItem> VisitClass(ClassType ct)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public IEnumerable<WorkItem> VisitCode(CodeType c)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public IEnumerable<WorkItem>? VisitEnum(EnumType e)
         {
             return null;
         }
 
+        /// <inheritdoc/>
         public IEnumerable<WorkItem>? VisitEquivalenceClass(EquivalenceClass eq)
         {
             return eq.DataType!.Accept(this);
         }
 
+        /// <inheritdoc/>
         public IEnumerable<WorkItem> VisitFunctionType(FunctionType ft)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public IEnumerable<WorkItem>? VisitPrimitive(PrimitiveType pt)
         {
             return null;
         }
 
+        /// <inheritdoc/>
         public IEnumerable<WorkItem> VisitMemberPointer(MemberPointer memptr)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public IEnumerable<WorkItem>? VisitPointer(Pointer ptr)
         {
             Debug.Print("Iterating pointer at {0:X}", gOffset);
@@ -164,16 +198,19 @@ namespace Reko.Typing
             return Single(new WorkItem { DataType = ptr.Pointee, GlobalOffset = c.ToInt32() });
         }
 
+        /// <inheritdoc/>
         public IEnumerable<WorkItem> VisitReference(ReferenceTo refTo)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public IEnumerable<WorkItem> VisitString(StringType str)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public IEnumerable<WorkItem> VisitStructure(StructureType str)
         {
             int offset = gOffset;
@@ -186,26 +223,31 @@ namespace Reko.Typing
             }
         }
 
+        /// <inheritdoc/>
         public IEnumerable<WorkItem> VisitTypeReference(TypeReference typeref)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public IEnumerable<WorkItem> VisitTypeVariable(TypeVariable tv)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public IEnumerable<WorkItem> VisitUnion(UnionType ut)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public IEnumerable<WorkItem> VisitUnknownType(UnknownType ut)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public IEnumerable<WorkItem> VisitVoidType(VoidType voidType)
         {
             throw new NotImplementedException();

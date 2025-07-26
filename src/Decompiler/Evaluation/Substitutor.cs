@@ -25,20 +25,31 @@ using System.Linq;
 
 namespace Reko.Evaluation
 {
+    /// <summary>
+    /// Replaces identifiers in expresions with their values from the evaluation context.
+    /// </summary>
     public class Substitutor : ExpressionVisitor<Expression>
     {
         private EvaluationContext ctx;
 
+        /// <summary>
+        /// Constructs a new substitutor that will use the given evaluation context.
+        /// </summary>
+        /// <param name="ctx"><see cref="EvaluationContext"/> to use when 
+        /// visiting identifiers.
+        /// </param>
         public Substitutor(EvaluationContext ctx)
         {
             this.ctx = ctx;
         }
 
+        /// <inheritdoc />
         public Expression VisitAddress(Address addr)
         {
             return addr;
         }
 
+        /// <inheritdoc />
         public Expression VisitApplication(Application appl)
         {
             var fn = appl.Procedure.Accept(this);
@@ -55,6 +66,7 @@ namespace Reko.Evaluation
             return new Application(fn, appl.DataType, exprs);
         }
 
+        /// <inheritdoc />
         public Expression VisitArrayAccess(ArrayAccess acc)
         {
             var arr = acc.Array.Accept(this);
@@ -64,6 +76,7 @@ namespace Reko.Evaluation
             return new ArrayAccess(acc.DataType, arr, idx);
         }
 
+        /// <inheritdoc />
         public Expression VisitBinaryExpression(BinaryExpression binExp)
         {
             var left = binExp.Left.Accept(this);
@@ -77,6 +90,7 @@ namespace Reko.Evaluation
                 right);
         }
 
+        /// <inheritdoc />
         public Expression VisitCast(Cast cast)
         {
             var exp = cast.Expression.Accept(this);
@@ -88,6 +102,7 @@ namespace Reko.Evaluation
             return InvalidConstant.Create(cast.DataType);
         }
 
+        /// <inheritdoc />
         public Expression VisitConditionalExpression(ConditionalExpression c)
         {
             var cond = c.Condition.Accept(this);
@@ -102,6 +117,7 @@ namespace Reko.Evaluation
             return new ConditionalExpression(c.DataType, cond, then, fals);
         }
 
+        /// <inheritdoc />
         public Expression VisitConditionOf(ConditionOf cof)
         {
             var exp = cof.Expression.Accept(this);
@@ -110,11 +126,13 @@ namespace Reko.Evaluation
             return new ConditionOf(exp);
         }
 
+        /// <inheritdoc />
         public Expression VisitConstant(Constant c)
         {
             return c;
         }
 
+        /// <inheritdoc />
         public Expression VisitConversion(Conversion conversion)
         {
             var exp = conversion.Expression.Accept(this);
@@ -127,26 +145,31 @@ namespace Reko.Evaluation
         }
 
 
+        /// <inheritdoc />
         public Expression VisitDereference(Dereference deref)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc />
         public Expression VisitFieldAccess(FieldAccess acc)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc />
         public Expression VisitIdentifier(Identifier id)
         {
             return ctx.GetValue(id)!;
         }
 
+        /// <inheritdoc />
         public Expression VisitMemberPointerSelector(MemberPointerSelector mps)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc />
         public Expression VisitMemoryAccess(MemoryAccess access)
         {
             var ea = access.EffectiveAddress.Accept(this);
@@ -155,6 +178,7 @@ namespace Reko.Evaluation
             return new MemoryAccess(access.MemoryId, ea, access.DataType);
         }
 
+        /// <inheritdoc />
         public Expression VisitMkSequence(MkSequence seq)
         {
             var newSeq = seq.Expressions.Select(e => e.Accept(this)).ToArray();
@@ -164,11 +188,13 @@ namespace Reko.Evaluation
                 return new MkSequence(seq.DataType, newSeq);
         }
 
+        /// <inheritdoc />
         public Expression VisitOutArgument(OutArgument outArg)
         {
             return InvalidConstant.Create(outArg.DataType);
         }
 
+        /// <inheritdoc />
         public Expression VisitPhiFunction(PhiFunction phi)
         {
             var args = new PhiArgument[phi.Arguments.Length];
@@ -182,21 +208,25 @@ namespace Reko.Evaluation
             return new PhiFunction(phi.DataType, args);
         }
 
+        /// <inheritdoc />
         public Expression VisitPointerAddition(PointerAddition pa)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc />
         public Expression VisitProcedureConstant(ProcedureConstant pc)
         {
             return pc;
         }
 
+        /// <inheritdoc />
         public Expression VisitScopeResolution(ScopeResolution scopeResolution)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc />
         public Expression VisitSegmentedAddress(SegmentedPointer addr)
         {
             var seg = addr.BasePointer.Accept(this);
@@ -208,6 +238,7 @@ namespace Reko.Evaluation
             return new SegmentedPointer(addr.DataType, seg, off);
         }
 
+        /// <inheritdoc />
         public Expression VisitSlice(Slice slice)
         {
             var exp = slice.Expression.Accept(this);
@@ -216,11 +247,13 @@ namespace Reko.Evaluation
             return new Slice(slice.DataType, exp, slice.Offset);
         }
 
+        /// <inheritdoc />
         public Expression VisitStringConstant(StringConstant str)
         {
             return str;
         }
 
+        /// <inheritdoc />
         public Expression VisitTestCondition(TestCondition tc)
         {
             var cond = tc.Expression.Accept(this);
@@ -229,6 +262,7 @@ namespace Reko.Evaluation
             return new TestCondition(tc.ConditionCode, cond);
         }
 
+        /// <inheritdoc />
         public Expression VisitUnaryExpression(UnaryExpression unary)
         {
             var e = unary.Expression.Accept(this);

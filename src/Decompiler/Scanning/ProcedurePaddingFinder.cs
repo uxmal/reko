@@ -36,11 +36,22 @@ namespace Reko.Scanning
     {
         private readonly ScanResults sr;
 
+        /// <summary>
+        /// Constructs an instance of <see cref="ProcedurePaddingFinder"/>.
+        /// </summary>
+        /// <param name="sr">Scanned instructions.</param>
         public ProcedurePaddingFinder(ScanResults sr)
         {
             this.sr = sr;
         }
 
+        /// <summary>
+        /// Finds and returns a list of padding blocks within the control flow graph.
+        /// </summary>
+        /// <remarks>A padding block is identified as a block whose first instruction is classified as
+        /// padding and has no predecessors in the control flow graph.</remarks>
+        /// <returns>A list of <see cref="RtlBlock"/> objects representing the padding blocks found.  The list will be empty if
+        /// no such blocks are present.</returns>
         public List<RtlBlock> FindPaddingBlocks()
         {
             return sr.ICFG.Nodes
@@ -54,6 +65,10 @@ namespace Reko.Scanning
                 .ToList();
         }
 
+        /// <summary>
+        /// Removes the specified padding blocks from the interprocedural control flow graph (ICFG).
+        /// </summary>
+        /// <param name="paddingBlocks">Blocks identified as padding blocks.</param>
         public void Remove(List<RtlBlock> paddingBlocks)
         {
             foreach (var padding in paddingBlocks)

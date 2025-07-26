@@ -4,7 +4,7 @@
 	<!-- Public API tracking slows down the build by a lot. 
   <Import Project="$(ProjectDir)../Drivers/ApiTracking.items "/>
   -->
-	<PropertyGroup>
+  <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <AssemblyName>Reko.Decompiler</AssemblyName>
     <RootNamespace>Reko</RootNamespace>
@@ -12,10 +12,8 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
     <Configurations>Debug;Release</Configurations>
-    <!--
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <WarningsAsErrors>CS1591;CS1572;CS1573;CS1734</WarningsAsErrors>
-	-->
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Scanning\BapScanner.cs" />
@@ -24,5 +22,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Scanning\Vsa\" />
   </ItemGroup>
 </Project>

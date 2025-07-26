@@ -18,78 +18,76 @@
  */
 #endregion
 
-using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
-using Reko.Core.Types;
-using System;
 using System.Numerics;
 
-namespace Reko.Evaluation
+namespace Reko.Evaluation;
+
+/// <summary>
+/// Rule that matches (0 - (EXPRESSION != 0) + 1) and generates (!EXPRESSION).
+/// This is a solution for a very specific sequence of instructions.
+/// 
+/// Example x86 assembler:
+/// <code>
+/// neg ax
+/// sbb ax, ax
+/// inc ax
+/// </code>
+///
+/// Example result:
+/// turn <c>func(0x00 - (-MyVariable != 0x00) + 0x01)</c> into <c>func(!MyVariable)</c>
+/// (With the help of UnaryNegEqZeroRule)
+/// </summary>
+internal class LogicalNotFromArithmeticSequenceRule
 {
-    /// <summary>
-    /// Rule that matches (0 - (EXPRESSION != 0) + 1) and generates (!EXPRESSION).
-    /// This is a solution for a very specific sequence of instructions.
-    /// 
-    /// Example x86 assembler:
-    /// neg ax
-    /// sbb ax, ax
-    /// inc ax
-    ///
-    /// Example result:
-    /// turn func(0x00 - (-MyVariable != 0x00) + 0x01) into func(!MyVariable)
-    /// (With the help of UnaryNegEqZeroRule)
-    /// </summary>
-    public class LogicalNotFromArithmeticSequenceRule
+    public Expression? Match(BinaryExpression binExp)
     {
-        public Expression? Match(BinaryExpression binExp)
+        if (binExp.Operator.Type != OperatorType.IAdd)
+            return null;
+
+        //$TODO: use Integer.IsIntegerOne
+        if (binExp.Right is BigConstant bigR && bigR.Value != BigInteger.One)
+            return null;
+        if (binExp.Right is not Constant rightConstant || rightConstant.ToInt64() != 1)
+            return null;
+
+        if (binExp.Left is not BinaryExpression leftExpression || 
+            leftExpression.Operator.Type != OperatorType.ISub)
+            return null;
+
+        if (!leftExpression.Left.IsZero)
+            return null;
+        var middleExpression = ExtractComparison(leftExpression.Right);
+        if (middleExpression is null)
+            return null;
+        if (!middleExpression.Right.IsZero)
+            return null;
+
+        var expression = middleExpression.Left;
+        if (expression is UnaryExpression un && un.Operator.Type == OperatorType.Neg)
+            expression = un.Expression;
+
+        var dataType = binExp.DataType;
+        return new UnaryExpression(Operator.Not, dataType, expression);
+    }
+
+    private static BinaryExpression? ExtractComparison(Expression e)
+    {
+        var bin = e as BinaryExpression;
+        if (bin is null)
         {
-            if (binExp.Operator.Type != OperatorType.IAdd)
+            if (e is not Conversion conv)
                 return null;
-
-            //$TODO: use Integer.IsIntegerOne
-            if (binExp.Right is BigConstant bigR && bigR.Value != BigInteger.One)
+            // Accept only conversion to word or integer
+            if (!conv.DataType.IsIntegral && !conv.DataType.IsWord)
                 return null;
-            if (binExp.Right is not Constant rightConstant || rightConstant.ToInt64() != 1)
-                return null;
-
-            if (binExp.Left is not BinaryExpression leftExpression || 
-                leftExpression.Operator.Type != OperatorType.ISub)
-                return null;
-
-            if (!leftExpression.Left.IsZero)
-                return null;
-            var middleExpression = ExtractComparison(leftExpression.Right);
-            if (middleExpression is null)
-                return null;
-            if (!middleExpression.Right.IsZero)
-                return null;
-
-            var expression = middleExpression.Left;
-            if (expression is UnaryExpression un && un.Operator.Type == OperatorType.Neg)
-                expression = un.Expression;
-
-            var dataType = binExp.DataType;
-            return new UnaryExpression(Operator.Not, dataType, expression);
-        }
-
-        private static BinaryExpression? ExtractComparison(Expression e)
-        {
-            var bin = e as BinaryExpression;
+            bin = conv.Expression as BinaryExpression;
             if (bin is null)
-            {
-                if (e is not Conversion conv)
-                    return null;
-                // Accept only conversion to word or integer
-                if (!conv.DataType.IsIntegral && !conv.DataType.IsWord)
-                    return null;
-                bin = conv.Expression as BinaryExpression;
-                if (bin is null)
-                    return null;
-            }
-            if (bin.Operator.Type != OperatorType.Ne)
                 return null;
-            return bin;
         }
+        if (bin.Operator.Type != OperatorType.Ne)
+            return null;
+        return bin;
     }
 }

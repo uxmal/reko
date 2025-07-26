@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Loading;
 using Reko.Core.Operators;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Services;
 using System;
@@ -41,13 +42,19 @@ namespace Reko.Typing
         private readonly IPlatform platform;
 		private readonly Identifier globals;
         private readonly Dictionary<ushort, Identifier> mpSelectorToSegId;
-        private readonly IDecompilerEventListener eventListener;
+        private readonly IEventListener eventListener;
         private Constant? c;
         private Expression? basePtr;
 		private PrimitiveType? pOrig;
         private DataType? dtResult;
 
-        public TypedConstantRewriter(Program program, ITypeStore store, IDecompilerEventListener eventListener)
+        /// <summary>
+        /// Constructs an instance of the <see cref="TypedConstantRewriter"/> class.
+        /// </summary>
+        /// <param name="program"></param>
+        /// <param name="store"></param>
+        /// <param name="eventListener"></param>
+        public TypedConstantRewriter(Program program, ITypeStore store, IEventListener eventListener)
 		{
             this.program = program;
             this.store = store;
@@ -71,8 +78,9 @@ namespace Reko.Typing
         /// <summary>
         /// Rewrites a machine word constant depending on its data type.
         /// </summary>
-        /// <param name="c"></param>
-        /// <param name="dereferenced"></param>
+        /// <param name="c">Constant to rewrite.</param>
+        /// <param name="basePtr">Optional segment selector.</param>
+        /// <param name="dtResult"></param>
         /// <returns></returns>
         public Expression Rewrite(Constant c, Expression? basePtr, DataType? dtResult)
         {
@@ -99,6 +107,14 @@ namespace Reko.Typing
             return dt.Accept(this);
         }
 
+        /// <summary>
+        /// Given an address, rewrites it to a field access, possibly
+        /// with a dereference or address-of operation.
+        /// </summary>
+        /// <param name="addr"></param>
+        /// <param name="basePtr"></param>
+        /// <param name="dtResult"></param>
+        /// <returns></returns>
         public Expression Rewrite(Address addr, Expression? basePtr, DataType? dtResult)
         {
             this.dtResult = dtResult;
@@ -195,21 +211,25 @@ namespace Reko.Typing
                 return false;
         }
         
+        /// <inheritdoc/>
         public Expression VisitArray(ArrayType at)
 		{
 			throw new ArgumentException("Constants cannot have array values yet.");
 		}
 
+        /// <inheritdoc/>
         public Expression VisitClass(ClassType ct)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public Expression VisitCode(CodeType c)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public Expression VisitEnum(EnumType e)
         {
             var item = e.Members.FirstOrDefault(de => de.Value == c!.ToInt64());
@@ -218,16 +238,19 @@ namespace Reko.Typing
             return new Cast(e, c!);
         }
 
+        /// <inheritdoc/>
         public Expression VisitEquivalenceClass(EquivalenceClass eq)
 		{
 			throw new NotImplementedException();
 		}
 
+        /// <inheritdoc/>
 		public Expression VisitFunctionType(FunctionType ft)
 		{
 			throw new NotImplementedException();
 		}
 
+        /// <inheritdoc/>
 		public Expression VisitMemberPointer(MemberPointer memptr)
 		{
 			// The constant is a member pointer.
@@ -260,6 +283,7 @@ namespace Reko.Typing
             return ex;
 		}
 
+        /// <inheritdoc/>
 		public Expression VisitPointer(Pointer ptr)
 		{
 			Expression e = c!;
@@ -338,11 +362,18 @@ namespace Reko.Typing
             return pr;
         }
 
+        /// <inheritdoc/>
         public Expression VisitReference(ReferenceTo refTo)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Promotes a constant pointer to a C string.
+        /// </summary>
+        /// <param name="c">Constant string pointer.</param>
+        /// <param name="charType">Character type.</param>
+        /// <returns>String type.</returns>
         public DataType PromoteToCString(Constant c, DataType charType)
         {
             // Note that it's OK if there is no global field corresponding to a string constant.
@@ -472,6 +503,7 @@ namespace Reko.Typing
 #endif
         }
 
+        /// <inheritdoc/>
 		public Expression VisitPrimitive(PrimitiveType pt)
 		{
 			if (pt.Domain == Domain.Real && (pOrig!.Domain & Domain.Integer) != 0)
@@ -489,17 +521,20 @@ namespace Reko.Typing
 			}
 		}
 
+        /// <inheritdoc/>
         public Expression VisitString(StringType str)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
 		public Expression VisitStructure(StructureType str)
 		{
             store.GetTypeVariable(c!).DataType = str;
             return c!;
 		}
 
+        /// <inheritdoc/>
 		public Expression VisitUnion(UnionType ut)
 		{
 			// A constant can't have a union value, so we coerce it to the appropriate type.
@@ -516,21 +551,25 @@ namespace Reko.Typing
             return c!;
 		}
 
+        /// <inheritdoc/>
         public Expression VisitTypeReference(TypeReference typeref)
         {
             return typeref.Referent.Accept(this);
         }
 
+        /// <inheritdoc/>
 		public Expression VisitTypeVariable(TypeVariable tv)
 		{
 			throw new NotImplementedException();
 		}
 
+        /// <inheritdoc/>
         public Expression VisitUnknownType(UnknownType ut)
 		{
             return c!;
 		}
 
+        /// <inheritdoc/>
         public Expression VisitVoidType(VoidType vt)
         {
             throw new NotImplementedException();

@@ -18,49 +18,37 @@
  */
 #endregion
 
-using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
-using Reko.Core.Types;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Reko.Evaluation
+namespace Reko.Evaluation;
+
+internal class DistributedSliceRule
 {
-    public class DistributedSliceRule
+    public Expression? Match(BinaryExpression binExp, ExpressionEmitter m)
     {
-        public DistributedSliceRule()
+        if (binExp.Operator.Type.IsAddOrSub())
         {
-        }
-
-        public Expression? Match(BinaryExpression binExp)
-        {
-            if (binExp.Operator.Type.IsAddOrSub())
+            if (binExp.Left is Slice slLeft && binExp.Right is Slice slRight)
             {
-                if (binExp.Left is Slice slLeft && binExp.Right is Slice slRight)
+                if (slLeft.DataType == slRight.DataType && 
+                    slLeft.Offset == slRight.Offset)
                 {
-                    if (slLeft.DataType == slRight.DataType && 
-                        slLeft.Offset == slRight.Offset)
-                    {
-                        var dt = slLeft.DataType;
-                        var eLeft = slLeft.Expression;
-                        var eRight = slRight.Expression;
-                        var op = binExp.Operator;
-                        return new Slice(
-                            dt,
-                            new BinaryExpression(
-                                op,
-                                eLeft.DataType,
-                                eLeft,
-                                eRight),
-                            slLeft.Offset);
-                    }
+                    var dt = slLeft.DataType;
+                    var eLeft = slLeft.Expression;
+                    var eRight = slRight.Expression;
+                    var op = binExp.Operator;
+                    return m.Slice(
+                        m.Bin(
+                            op,
+                            eLeft.DataType,
+                            eLeft,
+                            eRight),
+                        dt,
+                        slLeft.Offset);
                 }
             }
-            return null;
         }
+        return null;
     }
 }

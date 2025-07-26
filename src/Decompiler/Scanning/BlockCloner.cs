@@ -25,9 +25,7 @@ using Reko.Core.Graphs;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
 namespace Reko.Scanning
 {
@@ -46,6 +44,12 @@ namespace Reko.Scanning
         private readonly Dictionary<TemporaryStorage, Identifier> tmps;
         private DataType? dt;
 
+        /// <summary>
+        /// Construct an instance of <see cref="BlockCloner"/> class.
+        /// </summary>
+        /// <param name="blockToClone"><see cref="Block">Basic block</see> to clone.</param>
+        /// <param name="procCalling"></param>
+        /// <param name="callGraph"></param>
         public BlockCloner(Block blockToClone, Procedure procCalling, CallGraph callGraph)
         {
             this.blockToClone = blockToClone;
@@ -55,15 +59,37 @@ namespace Reko.Scanning
             this.tmps = new Dictionary<TemporaryStorage, Identifier>();
         }
 
+        /// <summary>
+        /// Current statement being cloned.
+        /// </summary>
         public Statement? Statement { get; set; }
+
+        /// <summary>
+        /// The new, cloned statement.
+        /// </summary>
         public Statement? StatementNew { get; set; }
+
+        /// <summary>
+        /// Current identifier being cloned.
+        /// </summary>
         public Identifier? Identifier { get; set; }
 
+        /// <summary>
+        /// Clones the current <see cref="Block">basic block</see> and returns the new block.
+        /// </summary>
+        /// <returns>A cloned basic block.</returns>
         public Block? Execute()
         {
             return CloneBlock(blockToClone);
         }
 
+        /// <summary>
+        /// Clones the specified <see cref="Block">basic block</see>.
+        /// </summary>
+        /// <param name="blockOrig">Basic block to clone.</param>
+        /// <returns>A new basic block, unless the block is the <see cref="Procedure.ExitBlock"/>
+        /// pseudo-block.
+        /// </returns>
         public Block? CloneBlock(Block blockOrig)
         {
             if (blockOrig == blockOrig.Procedure.ExitBlock)
@@ -94,6 +120,7 @@ namespace Reko.Scanning
             return blockNew;
         }
 
+        /// <inheritdoc/>
         public Instruction VisitAssignment(Assignment ass)
         {
             var id = (Identifier) ass.Dst.Accept(this);
@@ -101,12 +128,14 @@ namespace Reko.Scanning
             return new Assignment(id, src);
         }
 
+        /// <inheritdoc/>
         public Instruction VisitBranch(Branch branch)
         {
             //$TODO: this may not be necessary once scanner-development is done.
             return new SideEffect(Constant.String(string.Format("cloned {0}", branch), StringType.NullTerminated(PrimitiveType.Char)));
         }
 
+        /// <inheritdoc/>
         public Instruction VisitCallInstruction(CallInstruction ci)
         {
             var callee = ci.Callee.Accept(this);
@@ -118,37 +147,44 @@ namespace Reko.Scanning
             return ciNew;  
         }
 
+        /// <inheritdoc/>
         public Instruction VisitComment(CodeComment comment)
         {
             return new CodeComment(comment.Text);
         }
 
+        /// <inheritdoc/>
         public Instruction VisitDefInstruction(DefInstruction def)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public Instruction VisitGotoInstruction(GotoInstruction gotoInstruction)
         {
             return new GotoInstruction(gotoInstruction.Target.Accept(this));
         }
 
+        /// <inheritdoc/>
         public Instruction VisitPhiAssignment(PhiAssignment phi)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public Instruction VisitReturnInstruction(ReturnInstruction ret)
         {
             var exp = ret.Expression?.Accept(this);
             return new ReturnInstruction(exp);
         }
 
+        /// <inheritdoc/>
         public Instruction VisitSideEffect(SideEffect side)
         {
             return new SideEffect(side.Expression.Accept(this));
         }
 
+        /// <inheritdoc/>
         public Instruction VisitStore(Store store)
         {
             var dst = store.Dst.Accept(this);
@@ -156,21 +192,25 @@ namespace Reko.Scanning
             return new Store(dst, src);
         }
 
+        /// <inheritdoc/>
         public Instruction VisitSwitchInstruction(SwitchInstruction si)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public Instruction VisitUseInstruction(UseInstruction use)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public Expression VisitAddress(Address addr)
         {
             return addr.CloneExpression();
         }
 
+        /// <inheritdoc/>
         public Expression VisitApplication(Application appl)
         {
             var proc = appl.Procedure.Accept(this);
@@ -178,11 +218,13 @@ namespace Reko.Scanning
             return new Application(proc, appl.DataType, args);
         }
 
+        /// <inheritdoc/>
         public Expression VisitArrayAccess(ArrayAccess acc)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public Expression VisitBinaryExpression(BinaryExpression binExp)
         {
             var left = binExp.Left.Accept(this);
@@ -193,11 +235,13 @@ namespace Reko.Scanning
                 left, right);
         }
 
+        /// <inheritdoc/>
         public Expression VisitCast(Cast cast)
         {
             return new Cast(cast.DataType, cast.Expression.Accept(this));
         }
 
+        /// <inheritdoc/>
         public Expression VisitConditionalExpression(ConditionalExpression c)
         {
             return new ConditionalExpression(
@@ -207,16 +251,19 @@ namespace Reko.Scanning
                 c.FalseExp.Accept(this));
         }
 
+        /// <inheritdoc/>
         public Expression VisitConditionOf(ConditionOf cof)
         {
             return new ConditionOf(cof.Expression.Accept(this));
         }
 
+        /// <inheritdoc/>
         public Expression VisitConstant(Constant c)
         {
             return c.CloneExpression();
         }
 
+        /// <inheritdoc/>
         public Expression VisitConversion(Conversion conversion)
         {
             return new Conversion(
@@ -225,16 +272,19 @@ namespace Reko.Scanning
                 conversion.DataType);
         }
 
+        /// <inheritdoc/>
         public Expression VisitDereference(Dereference deref)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public Expression VisitFieldAccess(FieldAccess acc)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public Expression VisitIdentifier(Identifier id)
         {
             this.Identifier = id;
@@ -242,17 +292,20 @@ namespace Reko.Scanning
             return id.Storage.Accept(this);
         }
 
+        /// <inheritdoc/>
         public Expression VisitOutArgument(OutArgument outArg)
         {
             var exp = outArg.Expression.Accept(this);
             return new OutArgument(outArg.DataType, exp);
         }
 
+        /// <inheritdoc/>
         public Expression VisitMemberPointerSelector(MemberPointerSelector mps)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public Expression VisitMemoryAccess(MemoryAccess access)
         {
             var mem = (Identifier) access.MemoryId.Accept(this);
@@ -260,32 +313,38 @@ namespace Reko.Scanning
             return new MemoryAccess(mem, ea, access.DataType);
         }
 
+        /// <inheritdoc/>
         public Expression VisitMkSequence(MkSequence seq)
         {
             var newSeq = seq.Expressions.Select(e => e.Accept(this)).ToArray();
             return new MkSequence(seq.DataType, newSeq);
         }
 
+        /// <inheritdoc/>
         public Expression VisitPhiFunction(PhiFunction phi)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public Expression VisitPointerAddition(PointerAddition pa)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public Expression VisitProcedureConstant(ProcedureConstant pc)
         {
             return new ProcedureConstant(pc.DataType, pc.Procedure);
         }
 
+        /// <inheritdoc/>
         public Expression VisitScopeResolution(ScopeResolution scopeResolution)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public Expression VisitSegmentedAddress(SegmentedPointer address)
         {
             return new SegmentedPointer(
@@ -294,6 +353,7 @@ namespace Reko.Scanning
                 address.Offset.Accept(this));
         }
 
+        /// <inheritdoc/>
         public Expression VisitSlice(Slice slice)
         {
             return new Slice(
@@ -302,11 +362,13 @@ namespace Reko.Scanning
                 slice.Offset);
         }
 
+        /// <inheritdoc/>
         public Expression VisitStringConstant(StringConstant str)
         {
             return str.CloneExpression();
         }
 
+        /// <inheritdoc/>
         public Expression VisitTestCondition(TestCondition tc)
         {
             return new TestCondition(
@@ -314,6 +376,7 @@ namespace Reko.Scanning
                 tc.Expression.Accept(this));
         }
 
+        /// <inheritdoc/>
         public Expression VisitUnaryExpression(UnaryExpression unary)
         {
             return new UnaryExpression(
@@ -322,26 +385,31 @@ namespace Reko.Scanning
                 unary.Expression.Accept(this));
         }
 
+        /// <inheritdoc/>
         public Identifier VisitFlagGroupStorage(FlagGroupStorage grf)
         {
             return procCalling.Frame.EnsureFlagGroup(grf);
         }
 
+        /// <inheritdoc/>
         public Identifier VisitFpuStackStorage(FpuStackStorage fpu)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public Identifier VisitMemoryStorage(MemoryStorage global)
         {
             return procCalling.Frame.Memory;
         }
 
+        /// <inheritdoc/>
         public Identifier VisitRegisterStorage(RegisterStorage reg)
         {
             return procCalling.Frame.EnsureRegister(reg);
         }
 
+        /// <inheritdoc/>
         public Identifier VisitSequenceStorage(SequenceStorage seq)
         {
             var dt = this.dt!;
@@ -349,11 +417,13 @@ namespace Reko.Scanning
             return procCalling.Frame.EnsureSequence(dt, clones.ToArray());
         }
 
+        /// <inheritdoc/>
         public Identifier VisitStackStorage(StackStorage stack)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public Identifier VisitTemporaryStorage(TemporaryStorage temp)
         {
             if (!tmps.TryGetValue(temp, out var id))

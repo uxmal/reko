@@ -18,28 +18,25 @@
  */
 #endregion
 
-using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
-using System;
 
-namespace Reko.Evaluation
+namespace Reko.Evaluation;
+
+internal class NegSub_Rule
 {
-	public class NegSub_Rule
+	public Expression? Match(UnaryExpression unary)
 	{
-		public Expression? Match(UnaryExpression unary)
-		{
-            if (unary.Operator.Type == OperatorType.Neg &&
-                unary.Expression is BinaryExpression bin &&
-                bin.Operator.Type == OperatorType.ISub)
-            {
-                return new BinaryExpression(
-                    bin.Operator,
-                    bin.DataType,
-                    bin.Right,
-                    bin.Left);
-            }
-			return null;
-		}
+    if (unary.Operator.Type == OperatorType.Neg &&
+        unary.Expression is BinaryExpression bin &&
+        bin.Operator.Type == OperatorType.ISub)
+    {
+        return new BinaryExpression(
+            bin.Operator,
+            bin.DataType,
+            bin.Right,
+            bin.Left);
+    }
+		return null;
 	}
 }

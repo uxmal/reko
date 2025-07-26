@@ -39,6 +39,10 @@ namespace Reko.Scanning
     {
         private SortedList<Address, Annotation> annotations;
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="CommentInjector"/> class.
+        /// </summary>
+        /// <param name="annotations">Existing annotations.</param>
         public CommentInjector(IEnumerable<Annotation> annotations)
         {
             this.annotations = annotations.ToSortedList(a => a.Address);

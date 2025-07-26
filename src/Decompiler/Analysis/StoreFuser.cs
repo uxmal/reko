@@ -61,15 +61,22 @@ public class StoreFuser : IAnalysis<SsaState>
 
     private readonly AnalysisContext context;
 
+    /// <summary>
+    /// Creates an instance of <see cref="StoreFuser"/>.
+    /// </summary>
+    /// <param name="context"><see cref="AnalysisContext"/> to use.</param>
     public StoreFuser(AnalysisContext context)
     {
         this.context = context;
     }
 
+    /// <inheritdoc/>
     public string Id => "stfu";
 
+    /// <inheritdoc/>
     public string Description => "Fuses stores to adjacent memory locations";
 
+    /// <inheritdoc/>
     public (SsaState, bool) Transform(SsaState ssa)
     {
         var worker = new Worker(ssa, context.EventListener);

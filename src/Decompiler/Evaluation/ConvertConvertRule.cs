@@ -25,12 +25,14 @@ using System;
 
 namespace Reko.Evaluation
 {
+    /// <summary>
+    /// Evaluation rule that nested conversions.
+    /// </summary>
     public class ConvertConvertRule
     {
-        public ConvertConvertRule()
-        {
-        }
-
+        /// <summary>
+        /// Match a pair of nested conversions and simplifies it.
+        /// </summary>
         public Expression? Match(Conversion c)
         {
             if (c.Expression is not Conversion innerC)

@@ -50,6 +50,22 @@ namespace Reko.Scanning
             this.IsValid = true;
         }
 
+        /// <summary>
+        /// Constructs a new <see cref="RtlBlock"/> instance.
+        /// </summary>
+        /// <param name="arch"><see cref="IProcessorArchitecture"/> of the basic block.</param>
+        /// <param name="addr">Address at which the basic block starts.</param>
+        /// <param name="id">Internal name of the basic block.</param>
+        /// <param name="length">The length of the basic block, excluding any stolen delay
+        /// slot instructions.</param>
+        /// <param name="addrFallThrough">Address of the next instruction after this one.
+        /// It may skip any delay slot instructions.</param>
+        /// <param name="provenance">The <see cref="ProvenanceType">provenance</see> of this
+        /// basic block.</param>
+        /// <param name="instructions">The ordered sequence of <see cref="RtlInstructionCluster"/>s making up
+        /// this basic block.
+        /// </param>
+        /// <returns></returns>
         public static RtlBlock Create(
             IProcessorArchitecture arch,
             Address addr,
@@ -63,6 +79,13 @@ namespace Reko.Scanning
         }
 
 
+        /// <summary>
+        /// Creates an empty <see cref="RtlBlock"/> instance.
+        /// </summary>
+        /// <param name="arch"><see cref="IProcessorArchitecture"/> of the basic block.</param>
+        /// <param name="addr">The address of the basic block.</param>
+        /// <param name="id">Internal name of the basic block.</param>
+        /// <returns>An empty <see cref="RtlBlock"/>.</returns>
         public static RtlBlock CreateEmpty(IProcessorArchitecture arch, Address addr, string id)
         {
             return new RtlBlock(
@@ -75,6 +98,15 @@ namespace Reko.Scanning
                 []);
         }
 
+        /// <summary>
+        /// Creates a partial <see cref="RtlBlock"/> instance.
+        /// </summary>
+        /// <param name="arch"><see cref="IProcessorArchitecture"/> of the basic block.</param>
+        /// <param name="addr">The address of the basic block.</param>
+        /// <param name="id">Internal name of the basic block.</param>
+        /// <param name="clusters">The ordered sequence of <see cref="RtlInstructionCluster"/>s making up
+        /// this basic block.</param>
+        /// <returns></returns>
         public static RtlBlock CreatePartial(
             IProcessorArchitecture arch,
             Address addr,
@@ -131,8 +163,8 @@ namespace Reko.Scanning
         public ProvenanceType Provenance { get; set; }
 
         /// <summary>
-        /// The instructions this block consists of.</param>
-        /// <summary>
+        /// The instructions this block consists of.
+        /// </summary>
         public List<RtlInstructionCluster> Instructions { get; init; }
 
         /// <summary>
@@ -159,11 +191,15 @@ namespace Reko.Scanning
             return instr.Address + instr.Length;
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             return string.Format("block({0})", Address);
         }
 
+        /// <summary>
+        /// Marks the last instruction in this block as invalid.
+        /// </summary>
         public void MarkLastInstructionInvalid()
         {
             Debug.Assert(this.Instructions.Count > 0);

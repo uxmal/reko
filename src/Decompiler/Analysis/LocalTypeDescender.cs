@@ -55,6 +55,13 @@ namespace Reko.Analysis
         /// </summary>
         public Dictionary<Expression, TypeVariable> TypeVariables { get; }
 
+        /// <summary>
+        /// Builds <see cref="EquivalenceClass">equivalence classes</see> for all
+        /// expressions in the SSA state.
+        /// </summary>
+        /// <param name="ssa"><see cref="SsaState"/> of the procedure being 
+        /// analyzed.
+        /// </param>
         public void BuildEquivalenceClasses(SsaState ssa)
         {
             foreach (var sid in ssa.Identifiers)
@@ -109,6 +116,10 @@ namespace Reko.Analysis
             return tv;
         }
 
+        /// <summary>
+        /// Apply this visitor to a given expression, inferring its data type.
+        /// </summary>
+        /// <param name="exp">Expression to visit.</param>
         public void Visit(Expression exp)
         {
             var tv = TypeVar(exp);

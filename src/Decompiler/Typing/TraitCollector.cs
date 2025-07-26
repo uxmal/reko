@@ -53,6 +53,14 @@ namespace Reko.Typing
         private Procedure? proc;
         private LinearInductionVariable? ivCur;
 
+        /// <summary>
+        /// Constructs an instance of the <see cref="TraitCollector"/> classs.
+        /// </summary>
+        /// <param name="factory">The type factory to use.</param>
+        /// <param name="store">The type store</param>
+        /// <param name="handler">A class that is called when a type trait is deduced.
+        /// </param>
+        /// <param name="program">Program being analyzed.</param>
         public TraitCollector(TypeFactory factory, ITypeStore store, ITraitHandler handler, Program program)
 		{
 			this.factory = factory;
@@ -96,16 +104,20 @@ namespace Reko.Typing
                 handler.EqualTrait(appl, sig.Outputs[0]);
         }
 
-		public void CollectEffectiveAddress(Expression field, Expression effectiveAddress)
+		private void CollectEffectiveAddress(Expression field, Expression effectiveAddress)
 		{
 			atrco.Collect(null, 0, field, effectiveAddress);
 		}
 
-		public void CollectEffectiveAddress(Expression basePtr, int basePtrBitSize, Expression field, Expression effectiveAddress)
+		private void CollectEffectiveAddress(Expression basePtr, int basePtrBitSize, Expression field, Expression effectiveAddress)
 		{
 			atrco.Collect(basePtr, basePtrBitSize, field, effectiveAddress);
 		}
 
+        /// <summary>
+        /// Collects the type traits of the entire program.
+        /// </summary>
+        /// <param name="program">Program to analyze.</param>
 		public void CollectProgramTraits(Program program)
 		{
 			this.program = program;
@@ -122,7 +134,7 @@ namespace Reko.Typing
             }
 		}
 		
-		public Domain DomainOf(DataType t)
+		private Domain DomainOf(DataType t)
 		{
 			return t.Domain;
 		}
@@ -141,21 +153,21 @@ namespace Reko.Typing
             return p.MaskDomain(Domain.Integer);
         }
 
-		public PrimitiveType? MakeNotSigned(DataType t)
+		private PrimitiveType? MakeNotSigned(DataType t)
 		{
             if (!(t is PrimitiveType p))
                 return null;
             return p.MaskDomain(~(Domain.SignedInt | Domain.Real));
 		}
 
-		public PrimitiveType? MakeSigned(DataType t)
+		private PrimitiveType? MakeSigned(DataType t)
 		{
             if (!(t is PrimitiveType p))
                 return null;
             return p.MaskDomain(Domain.SignedInt);
 		}
 
-		public PrimitiveType? MakeUnsigned(DataType t)
+		private PrimitiveType? MakeUnsigned(DataType t)
 		{
             if (t is PrimitiveType p)
                 return PrimitiveType.Create(Domain.UnsignedInt, p.BitSize);
@@ -163,7 +175,7 @@ namespace Reko.Typing
                 return null;
         }
 
-		public LinearInductionVariable? MergeInductionVariableConstant(LinearInductionVariable iv, Operator op, Constant? c)
+		private LinearInductionVariable? MergeInductionVariableConstant(LinearInductionVariable iv, Operator op, Constant? c)
 		{
 			if (iv is null || c is null)
 				return null;
@@ -175,6 +187,7 @@ namespace Reko.Typing
 
 		#region InstructionVisitor methods ///////////////////////////
 
+        /// <inheritdoc/>
 		public DataType VisitAssignment(Assignment a)
 		{
 			var dtSrc = a.Src.Accept(this);
@@ -183,6 +196,7 @@ namespace Reko.Typing
 			return handler.EqualTrait(a.Dst, a.Src);
 		}
 
+        /// <inheritdoc/>
 		public DataType VisitStore(Store store)
 		{
 			store.Src.Accept(this);
@@ -190,6 +204,7 @@ namespace Reko.Typing
 			return handler.EqualTrait(store.Dst, store.Src);
 		}
 
+        /// <inheritdoc/>
 		public DataType? VisitCallInstruction(CallInstruction call)
 		{
             handler.DataTypeTrait(
@@ -200,21 +215,25 @@ namespace Reko.Typing
             return call.Callee.Accept(this);
         }
 
+        /// <inheritdoc/>
         public DataType VisitGotoInstruction(GotoInstruction g)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public DataType VisitComment(CodeComment comment)
         {
             return VoidType.Instance;
         }
 
+        /// <inheritdoc/>
 		public DataType? VisitDefInstruction(DefInstruction def)
 		{
 			return def.Identifier.Accept(this);
 		}
 
+        /// <inheritdoc/>
 		public DataType VisitPhiAssignment(PhiAssignment phi)
 		{
 			phi.Src.Accept(this);
@@ -222,6 +241,7 @@ namespace Reko.Typing
 			return handler.EqualTrait(phi.Dst, phi.Src);
 		}
 
+        /// <inheritdoc/>
         public DataType? VisitReturnInstruction(ReturnInstruction ret)
         {
             if (ret.Expression is null)
@@ -235,18 +255,21 @@ namespace Reko.Typing
             return dt;
         }
 
+        /// <inheritdoc/>
         public DataType VisitSideEffect(SideEffect sideEffect)
         {
             sideEffect.Expression.Accept(this);
             return VoidType.Instance;
         }
 
+        /// <inheritdoc/>
         public DataType VisitSwitchInstruction(SwitchInstruction si)
 		{
 			si.Expression.Accept(this);
             return VoidType.Instance;
 		}
 
+        /// <inheritdoc/>
 		public DataType VisitUseInstruction(UseInstruction u)
 		{
             u.Expression.Accept(this);
@@ -257,6 +280,7 @@ namespace Reko.Typing
 
 		#region IExpressionVisitor methods
 
+        /// <inheritdoc />
 		public DataType VisitApplication(Application appl)
 		{
 			appl.Procedure.Accept(this);
@@ -276,6 +300,7 @@ namespace Reko.Typing
             return dt;
 		}
 
+        /// <inheritdoc />
 		public DataType VisitArrayAccess(ArrayAccess acc)
 		{
 			acc.Array.Accept(this);
@@ -293,6 +318,7 @@ namespace Reko.Typing
             return handler.DataTypeTrait(acc, acc.DataType);
 		}
 
+        /// <inheritdoc />
 		public DataType VisitIdentifier(Identifier id)
 		{
 			if (id.Storage is MemoryStorage)
@@ -318,6 +344,7 @@ namespace Reko.Typing
 		 * 
 		 * This analysis is probably best done after TraitCollection, since by then we have discovered max sizes of mems.
 		 */
+        /// <inheritdoc />
 		public DataType VisitBinaryExpression(BinaryExpression binExp)
 		{
 			binExp.Left.Accept(this);
@@ -455,22 +482,26 @@ namespace Reko.Typing
             }
 		}
 
+        /// <inheritdoc />
 		public DataType? VisitBranch(Branch b)
 		{
 			return b.Condition.Accept(this);
 		}
 
+        /// <inheritdoc />
 		public DataType VisitCast(Cast cast)
-		{
+        {
 			cast.Expression.Accept(this);
 			return handler.DataTypeTrait(cast, cast.DataType);
 		}
 
+        /// <inheritdoc />
         public DataType VisitConditionalExpression(ConditionalExpression c)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc />
         public DataType VisitConditionOf(ConditionOf cof)
 		{
 			cof.Expression.Accept(this);
@@ -481,6 +512,7 @@ namespace Reko.Typing
             return null!;
 		}
 
+        /// <inheritdoc />
         public DataType VisitConversion(Conversion conversion)
         {
             conversion.Expression.Accept(this);
@@ -488,11 +520,13 @@ namespace Reko.Typing
             return handler.DataTypeTrait(conversion, conversion.DataType);
         }
 
+        /// <inheritdoc />
         public DataType VisitAddress(Address addr)
         {
             return handler.DataTypeTrait(addr, addr.DataType);
         }
 
+        /// <inheritdoc />
 		public DataType VisitConstant(Constant c)
 		{
 			var dt = handler.DataTypeTrait(c, c.DataType);
@@ -509,17 +543,20 @@ namespace Reko.Typing
             return dt;
 		}
 
+        /// <inheritdoc />
 		public DataType VisitDereference(Dereference deref)
 		{
 			deref.Expression.Accept(this);
             return handler.MemAccessTrait(null, deref.Expression, deref.Expression.DataType.BitSize, deref, 0);
 		}
 
+        /// <inheritdoc />
 		public DataType VisitFieldAccess(FieldAccess acc)
 		{
 			throw new NotImplementedException();
 		}
 
+        /// <inheritdoc />
         public DataType? VisitMkSequence(MkSequence seq)
         {
             foreach (var e in seq.Expressions)
@@ -529,6 +566,7 @@ namespace Reko.Typing
             return handler.DataTypeTrait(seq, seq.DataType);
         }
 
+        /// <inheritdoc />
         public DataType VisitMemberPointerSelector(MemberPointerSelector mps)
 		{
 			mps.BasePointer.Accept(this);
@@ -536,6 +574,7 @@ namespace Reko.Typing
 			return handler.DataTypeTrait(mps, program!.Platform.PointerType);
 		}
 
+        /// <inheritdoc />
 		public DataType VisitMemoryAccess(MemoryAccess access)
 		{
             access.EffectiveAddress.Accept(this);
@@ -551,6 +590,7 @@ namespace Reko.Typing
             return dt;
 		}
 
+        /// <inheritdoc />
 		public DataType VisitSegmentedAddress(SegmentedPointer addr)
 		{
             addr.BasePointer.Accept(this);
@@ -559,6 +599,7 @@ namespace Reko.Typing
             return dt;
 		}
 
+        /// <inheritdoc />
         public DataType VisitOutArgument(OutArgument outArg)
         {
             outArg.Expression.Accept(this);
@@ -568,6 +609,7 @@ namespace Reko.Typing
                 outArg.Expression);
         }
 
+        /// <inheritdoc />
 		public DataType VisitPhiFunction(PhiFunction phi)
 		{
 			TypeVariable tPhi = store.GetTypeVariable(phi);
@@ -578,11 +620,13 @@ namespace Reko.Typing
             return handler.DataTypeTrait(phi, phi.DataType);
         }
 
+        /// <inheritdoc />
 		public DataType VisitPointerAddition(PointerAddition pa)
 		{
 			throw new NotImplementedException();
 		}
 
+        /// <inheritdoc />
 		public DataType? VisitProcedureConstant(ProcedureConstant pc)
 		{
 			FunctionType sig = pc.Signature;
@@ -614,29 +658,34 @@ namespace Reko.Typing
 
         }
 
+        /// <inheritdoc />
         public DataType VisitScopeResolution(ScopeResolution sr)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc />
 		public DataType VisitSlice(Slice slice)
 		{
 			slice.Expression.Accept(this);
 			return handler.DataTypeTrait(slice, slice.DataType);
 		}
 
+        /// <inheritdoc />
         public DataType VisitStringConstant(StringConstant str)
         {
             var dt = handler.DataTypeTrait(str, str.DataType);
             return dt;
         }
 
+        /// <inheritdoc />
         public DataType VisitTestCondition(TestCondition tc)
 		{
 			tc.Expression.Accept(this);
             return handler.DataTypeTrait(tc, tc.DataType);
 		}
 
+        /// <inheritdoc />
 		public DataType VisitUnaryExpression(UnaryExpression unary)
 		{
 			unary.Expression.Accept(this);

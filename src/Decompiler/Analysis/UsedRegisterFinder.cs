@@ -57,6 +57,15 @@ namespace Reko.Analysis
         private SsaState? ssa;
         private bool useLiveness;
 
+        /// <summary>
+        /// Constructs an instance of <see cref="UsedRegisterFinder"/>.
+        /// </summary>
+        /// <param name="program">The program in which the analysis takes place.</param>
+        /// <param name="flow">The data flow of all procedures in the program.</param>
+        /// <param name="scc">A stongly connected component in the call graph.</param>
+        /// <param name="eventListener"><see cref="IEventListener"/> instance
+        /// for reporting diagnostics.
+        /// </param>
         public UsedRegisterFinder(
             IReadOnlyProgram program,
             ProgramDataFlow flow,
@@ -78,6 +87,9 @@ namespace Reko.Analysis
         /// Assmumes that any live-in parameters are located in the
         /// entry block of the procedure.</remarks>
         /// <param name="ssaState"></param>
+        /// <param name="ignoreUse">If true, disregards <see cref="UseInstruction"/>s
+        /// in its analysis.
+        /// </param>
         public ProcedureFlow ComputeLiveIn(SsaState ssaState, bool ignoreUse)
         {
             var proc = ssaState.Procedure;
@@ -124,6 +136,17 @@ namespace Reko.Analysis
             };
         }
 
+        /// <summary>
+        /// Compute the bit range used by the SSA identifier <paramref name="sid"/>
+        /// </summary>
+        /// <param name="ssa"><see cref="SsaState"/> of the procedure being analyzed.</param>
+        /// <param name="sid"><see cref="SsaIdentifier"/> being analyzed.</param>
+        /// <param name="storage"><see cref="Storage"/> of the identifier being analyzed.</param>
+        /// <param name="ignoreUseInstructions">If true, <see cref="UseInstruction"/>s 
+        /// are not considered for liveness; otherwise false.
+        /// </param>
+        /// <returns>A <see cref="BitRange"/> describing the live bits of the 
+        /// SSA identifier <paramref name="sid"/>.</returns>
         public BitRange Classify(
             SsaState ssa, 
             SsaIdentifier sid,
@@ -153,8 +176,8 @@ namespace Reko.Analysis
         /// discounting any uses in the exit block; uses in the exit block 
         /// model calling procedures uses of return values.
         /// </summary>
-        /// <param name="sid"></param>
-        /// <returns>The bit range used by sid</returns>
+        /// <param name="sid"><see cref="SsaIdentifier"/> to classify.</param>
+        /// <returns>The bit range used by <paramref name="sid"/>.</returns>
         public BitRange Classify(SsaIdentifier sid)
         {
             var idPrev = idCur;
@@ -225,6 +248,7 @@ namespace Reko.Analysis
             return typeDescender.GetType(sidParam.Identifier);
         }
 
+        /// <inheritdoc/>
         public BitRange VisitAssignment(Assignment ass)
         {
             var ssa = this.ssa!;
@@ -281,11 +305,13 @@ namespace Reko.Analysis
             return ass.Src.Accept(this);
         }
 
+        /// <inheritdoc/>
         public BitRange VisitBranch(Branch branch)
         {
             return branch.Condition.Accept(this);
         }
 
+        /// <inheritdoc/>
         public BitRange VisitCallInstruction(CallInstruction ci)
         {
             if (ci.Callee is ProcedureConstant pc &&
@@ -303,16 +329,19 @@ namespace Reko.Analysis
             return brFn | brArgs;
         }
 
+        /// <inheritdoc/>
         public BitRange VisitDefInstruction(DefInstruction def)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public BitRange VisitGotoInstruction(GotoInstruction gotoInstruction)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public BitRange VisitPhiAssignment(PhiAssignment phi)
         {
             // One of the phi arguments was used, but that's a trivial copy. 
@@ -327,6 +356,7 @@ namespace Reko.Analysis
             return value;
         }
 
+        /// <inheritdoc/>
         public BitRange VisitReturnInstruction(ReturnInstruction ret)
         {
             if (ret.Expression is null)
@@ -334,21 +364,25 @@ namespace Reko.Analysis
             return ret.Expression.Accept(this);
         }
 
+        /// <inheritdoc/>
         public BitRange VisitSideEffect(SideEffect side)
         {
             return side.Expression.Accept(this);
         }
 
+        /// <inheritdoc/>
         public BitRange VisitStore(Store store)
         {
             return store.Dst.Accept(this) | store.Src.Accept(this);
         }
 
+        /// <inheritdoc/>
         public BitRange VisitSwitchInstruction(SwitchInstruction si)
         {
             return si.Expression.Accept(this);
         }
 
+        /// <inheritdoc/>
         public BitRange VisitUseInstruction(UseInstruction use)
         {
             if (useLiveness)
@@ -372,11 +406,13 @@ namespace Reko.Analysis
             }
         }
 
+        /// <inheritdoc/>
         public BitRange VisitAddress(Address addr)
         {
             return BitRange.Empty;
         }
 
+        /// <inheritdoc/>
         public BitRange VisitApplication(Application appl)
         {
             var brFn = appl.Procedure.Accept(this);
@@ -387,6 +423,7 @@ namespace Reko.Analysis
             return brFn | brArgs;
         }
 
+        /// <inheritdoc/>
         public BitRange VisitArrayAccess(ArrayAccess acc)
         {
             var arr = acc.Array.Accept(this);
@@ -394,53 +431,62 @@ namespace Reko.Analysis
             return arr | idx;
         }
 
+        /// <inheritdoc/>
         public BitRange VisitBinaryExpression(BinaryExpression binExp)
         {
             return binExp.Left.Accept(this) | binExp.Right.Accept(this);
         }
 
+        /// <inheritdoc/>
         public BitRange VisitCast(Cast cast)
         {
             var n = cast.Expression.Accept(this);
             return new BitRange(n.Lsb, Math.Min(n.Msb, cast.DataType.BitSize));
         }
 
+        /// <inheritdoc/>
         public BitRange VisitComment(CodeComment comment)
         {
             return BitRange.Empty;
         }
 
+        /// <inheritdoc/>
         public BitRange VisitConditionalExpression(ConditionalExpression c)
         {
             return c.Condition.Accept(this);
         }
 
+        /// <inheritdoc/>
         public BitRange VisitConditionOf(ConditionOf cof)
         {
             return cof.Expression.Accept(this);
         }
 
+        /// <inheritdoc/>
         public BitRange VisitConstant(Constant c)
         {
             return BitRange.Empty;
         }
 
+        /// <inheritdoc/>
         public BitRange VisitConversion(Conversion conversion)
         {
             return conversion.Expression.Accept(this);
         }
 
-
+        /// <inheritdoc/>
         public BitRange VisitDereference(Dereference deref)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public BitRange VisitFieldAccess(FieldAccess acc)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public BitRange VisitIdentifier(Identifier id)
         {
             if (id == idCur)
@@ -449,22 +495,26 @@ namespace Reko.Analysis
                 return BitRange.Empty;
         }
 
+        /// <inheritdoc/>
         public BitRange VisitMemberPointerSelector(MemberPointerSelector mps)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public BitRange VisitMemoryAccess(MemoryAccess access)
         {
             return access.EffectiveAddress.Accept(this);
         }
 
+        /// <inheritdoc/>
         public BitRange VisitMkSequence(MkSequence seq)
         {
             return seq.Expressions.Aggregate(
                 BitRange.Empty, (range, e) => range | e.Accept(this));
         }
 
+        /// <inheritdoc/>
         public BitRange VisitOutArgument(OutArgument outArgument)
         {
             if (outArgument.Expression is Identifier)
@@ -477,26 +527,31 @@ namespace Reko.Analysis
             }
         }
 
+        /// <inheritdoc/>
         public BitRange VisitPhiFunction(PhiFunction phi)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public BitRange VisitPointerAddition(PointerAddition pa)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public BitRange VisitProcedureConstant(ProcedureConstant pc)
         {
             return BitRange.Empty;
         }
 
+        /// <inheritdoc/>
         public BitRange VisitScopeResolution(ScopeResolution scopeResolution)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public BitRange VisitSegmentedAddress(SegmentedPointer access)
         {
             var useBase = access.BasePointer.Accept(this);
@@ -504,6 +559,7 @@ namespace Reko.Analysis
             return useBase | useEa;
         }
 
+        /// <inheritdoc/>
         public BitRange VisitSlice(Slice slice)
         {
             var use = slice.Expression.Accept(this);
@@ -513,17 +569,20 @@ namespace Reko.Analysis
             return useSlice;
         }
 
+        /// <inheritdoc/>
         public BitRange VisitStringConstant(StringConstant str)
         {
             return BitRange.Empty;
         }
 
+        /// <inheritdoc/>
         public BitRange VisitTestCondition(TestCondition tc)
         {
             var use = tc.Expression.Accept(this);
             return use;
         }
 
+        /// <inheritdoc/>
         public BitRange VisitUnaryExpression(UnaryExpression unary)
         {
             return unary.Expression.Accept(this);

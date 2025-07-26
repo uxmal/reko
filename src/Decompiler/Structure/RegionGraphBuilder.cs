@@ -23,111 +23,122 @@ using Reko.Core.Graphs;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Reko.Structure
+namespace Reko.Structure;
+
+/// <summary>
+/// Builds a directed graph of <see cref="Region"/>s from a <see cref="Procedure"/>'s control flow graph.
+/// </summary>
+public class RegionGraphBuilder
 {
-    public class RegionGraphBuilder
+    private readonly Procedure proc;
+    private readonly Dictionary<Block, Region> btor;
+    private readonly DiGraph<Region> graph;
+    private readonly RegionFactory regionFactory;
+    private readonly Dictionary<Block, Dictionary<Block, Region>> switchPads;
+
+    /// <summary>
+    /// Constructs a new <see cref="RegionGraphBuilder"/> for the given procedure.
+    /// </summary>
+    /// <param name="proc">Procedure whose region graph is to be built.</param>
+    public RegionGraphBuilder(Procedure proc)
     {
-        private readonly Procedure proc;
-        private readonly Dictionary<Block, Region> btor;
-        private readonly DiGraph<Region> graph;
-        private readonly RegionFactory regionFactory;
-        private readonly Dictionary<Block, Dictionary<Block, Region>> switchPads;
+        this.proc = proc;
+        this.btor = new Dictionary<Block, Region>();
+        this.graph = new DiGraph<Region>();
+        this.regionFactory = new RegionFactory();
+        this.switchPads = new Dictionary<Block, Dictionary<Block, Region>>();
+    }
 
-        public RegionGraphBuilder(Procedure proc)
+    /// <summary>
+    /// Builds the region graph for the procedure.
+    /// </summary>
+    /// <returns>A tuple consisting of the directed graph of regions and the 
+    /// entry region.</returns>
+    public (DirectedGraph<Region>, Region) Build()
+    {
+        foreach (var b in proc.ControlGraph.Blocks)
         {
-            this.proc = proc;
-            this.btor = new Dictionary<Block, Region>();
-            this.graph = new DiGraph<Region>();
-            this.regionFactory = new RegionFactory();
-            this.switchPads = new Dictionary<Block, Dictionary<Block, Region>>();
+            if (b.Pred.Count == 0 && b != proc.EntryBlock ||
+                b == proc.ExitBlock)
+                continue;
+            var reg = regionFactory.Create(b);
+            btor.Add(b, reg);
+            graph.AddNode(reg);
         }
 
-        public (DirectedGraph<Region>, Region) Build()
+        foreach (var b in proc.ControlGraph.Blocks)
         {
-            foreach (var b in proc.ControlGraph.Blocks)
+            if (btor.TryGetValue(b, out var reg) &&
+                reg.Type == RegionType.IncSwitch)
             {
-                if (b.Pred.Count == 0 && b != proc.EntryBlock ||
-                    b == proc.ExitBlock)
+                MakeSwitchPads(b);
+            }
+        }
+
+        foreach (var b in proc.ControlGraph.Blocks)
+        {
+            if (b.Pred.Count == 0 && b != proc.EntryBlock)
+                continue;
+            btor.TryGetValue(b, out var from);
+            foreach (var s in b.Succ)
+            {
+                if (s == proc.ExitBlock)
                     continue;
-                var reg = regionFactory.Create(b);
-                btor.Add(b, reg);
-                graph.AddNode(reg);
+                var to = Destination(b, s);
+                graph.AddEdge(from!, to);
             }
-
-            foreach (var b in proc.ControlGraph.Blocks)
+            if (from is not null)
             {
-                if (btor.TryGetValue(b, out var reg) &&
-                    reg.Type == RegionType.IncSwitch)
-                {
-                    MakeSwitchPads(b);
-                }
+                if (graph.Successors(from).Count == 0)
+                    from.Type = RegionType.Tail;
             }
-
-            foreach (var b in proc.ControlGraph.Blocks)
-            {
-                if (b.Pred.Count == 0 && b != proc.EntryBlock)
-                    continue;
-                btor.TryGetValue(b, out var from);
-                foreach (var s in b.Succ)
-                {
-                    if (s == proc.ExitBlock)
-                        continue;
-                    var to = Destination(b, s);
-                    graph.AddEdge(from!, to);
-                }
-                if (from is not null)
-                {
-                    if (graph.Successors(from).Count == 0)
-                        from.Type = RegionType.Tail;
-                }
-            }
-
-            foreach (var reg in graph.Nodes.ToList())
-            {
-                if (graph.Predecessors(reg).Count == 0 && reg != btor[proc.EntryBlock])
-                {
-                    graph.Nodes.Remove(reg);
-                }
-            }
-            return (graph, btor[proc.EntryBlock]);
         }
 
-        private Region Destination(Block b, Block s)
+        foreach (var reg in graph.Nodes.ToList())
         {
-            if (switchPads.TryGetValue(b, out var swp))
+            if (graph.Predecessors(reg).Count == 0 && reg != btor[proc.EntryBlock])
             {
-                if (swp.TryGetValue(s, out var pad))
-                    return pad;
+                graph.Nodes.Remove(reg);
             }
-            return btor[s];
         }
+        return (graph, btor[proc.EntryBlock]);
+    }
 
-        /// <summary>
-        /// Introduce switch pads for all case regions that have predecessors
-        /// which are switch blocks different from the current switch block.
-        /// </summary>
-        private void MakeSwitchPads(Block switchBlock)
+    private Region Destination(Block b, Block s)
+    {
+        if (switchPads.TryGetValue(b, out var swp))
         {
-            foreach (var caseBlock in switchBlock.Succ.Distinct())
+            if (swp.TryGetValue(s, out var pad))
+                return pad;
+        }
+        return btor[s];
+    }
+
+    /// <summary>
+    /// Introduce switch pads for all case regions that have predecessors
+    /// which are switch blocks different from the current switch block.
+    /// </summary>
+    private void MakeSwitchPads(Block switchBlock)
+    {
+        foreach (var caseBlock in switchBlock.Succ.Distinct())
+        {
+            var caseReg = btor[caseBlock];
+            var switchPredecessors = caseBlock.Pred
+                .Where(p => p != switchBlock)
+                .ToArray();
+            if (switchPredecessors.Length > 0)
             {
-                var caseReg = btor[caseBlock];
-                var switchPredecessors = caseBlock.Pred
-                    .Where(p => p != switchBlock)
-                    .ToArray();
-                if (switchPredecessors.Length > 0)
+                if (!switchPads.TryGetValue(switchBlock, out var sws))
                 {
-                    if (!switchPads.TryGetValue(switchBlock, out var sws))
-                    {
-                        sws = new Dictionary<Block, Region>();
-                        switchPads.Add(switchBlock, sws);
-                    }
-                    if (!sws.TryGetValue(caseBlock, out var pad))
-                    {
-                        pad = new Region(caseBlock) { IsSwitchPad = true };
-                        sws.Add(caseBlock, pad);
-                        graph.AddNode(pad);
-                        graph.AddEdge(pad, caseReg);
-                    }
+                    sws = new Dictionary<Block, Region>();
+                    switchPads.Add(switchBlock, sws);
+                }
+                if (!sws.TryGetValue(caseBlock, out var pad))
+                {
+                    pad = new Region(caseBlock) { IsSwitchPad = true };
+                    sws.Add(caseBlock, pad);
+                    graph.AddNode(pad);
+                    graph.AddEdge(pad, caseReg);
                 }
             }
         }

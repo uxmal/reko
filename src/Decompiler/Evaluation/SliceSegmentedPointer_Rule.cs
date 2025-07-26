@@ -41,10 +41,13 @@ namespace Reko.Evaluation
     /// </summary>
     public class SliceSegmentedPointer_Rule
     {
-        public SliceSegmentedPointer_Rule()
-        {
-        }
-
+        /// <summary>
+        /// Match a segmented pointer that has been sliced to a segment and offset register.
+        /// </summary>
+        /// <param name="segptr"></param>
+        /// <param name="ctx"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
         public Expression? Match(SegmentedPointer segptr, EvaluationContext ctx)
         {
             if (segptr.BasePointer is not Identifier seg)
@@ -94,8 +97,9 @@ namespace Reko.Evaluation
         /// Try to find an original 32-bit segmented pointer that may have 
         /// been SLICE'd to a segment and offset register.
         /// </summary>
-        /// <param name="seg"></param>
-        /// <param name="off"></param>
+        /// <param name="seg">Segment selector to recombine.</param>
+        /// <param name="off">Offset to recombine.</param>
+        /// <param name="ctx">Evaluation context into whih</param>
         /// <returns></returns>
         private Identifier? SlicedSegPointer(Identifier seg, Identifier off, EvaluationContext ctx)
         {

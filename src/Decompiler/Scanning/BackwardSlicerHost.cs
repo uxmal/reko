@@ -26,16 +26,23 @@ using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Scanning
 {
+    /// <summary>
+    /// Implements the <see cref="IBackWalkHost{TBlock, TInstr}"/> interface
+    /// for <see cref="RtlBlock"/>s.
+    /// </summary>
     public class BackwardSlicerHost : IBackWalkHost<RtlBlock, RtlInstruction>
     {
         private readonly Dictionary<Block, RtlBlock> cache;
         private readonly Dictionary<RtlBlock, Block> invCache;
 
+        /// <summary>
+        /// Constructs a new instance of <see cref="BackwardSlicerHost"/>.
+        /// </summary>
+        /// <param name="program">Program being analyzed.</param>
+        /// <param name="arch"><see cref="IProcessorArchitecture"/> to use.</param>
         public BackwardSlicerHost(Program program, IProcessorArchitecture arch)
         {
             this.Program = program;
@@ -44,10 +51,17 @@ namespace Reko.Scanning
             this.invCache = new Dictionary<RtlBlock, Block>();
         }
 
+        /// <summary>
+        /// <see cref="IProcessorArchitecture"/> to use when slicing.
+        /// </summary>
         public IProcessorArchitecture Architecture { get; }
 
+        /// <summary>
+        /// The program being analyzed.
+        /// </summary>
         public Program Program { get; }
 
+        /// <inheritdoc />
         public (Expression?, Expression?) AsAssignment(RtlInstruction instr)
         {
             if (instr is RtlAssignment ass)
@@ -55,6 +69,7 @@ namespace Reko.Scanning
             return (null, null);
         }
 
+        /// <inheritdoc />
         public Expression? AsBranch(RtlInstruction instr)
         {
             if (instr is RtlBranch bra)
@@ -62,6 +77,7 @@ namespace Reko.Scanning
             return null;
         }
 
+        /// <inheritdoc />
         public List<RtlBlock> GetPredecessors(RtlBlock block)
         {
             return invCache[block].Pred
@@ -69,12 +85,14 @@ namespace Reko.Scanning
                 .ToList();
         }
 
+        /// <inheritdoc />
         public int BlockInstructionCount(RtlBlock rtlBlock)
         {
             var block = invCache[rtlBlock];
             return block.Statements.Count;
         }
 
+        /// <inheritdoc />
         public IEnumerable<(Address, RtlInstruction?)> GetBlockInstructions(RtlBlock rtlBlock)
         {
             var block = invCache[rtlBlock];
@@ -128,41 +146,49 @@ namespace Reko.Scanning
         }
 
 
+        /// <inheritdoc />
         public RtlBlock GetSinglePredecessor(RtlBlock block)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc />
         public RegisterStorage GetSubregister(RegisterStorage reg, BitRange range)
         {
             return Architecture.GetRegister(reg.Domain, range)!;
         }
 
+        /// <inheritdoc />
         public bool IsFallthrough(RtlInstruction instr, RtlBlock block)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc />
         public bool IsStackRegister(Storage storage)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc />
         public bool IsValidAddress(Address addr)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc />
         public Address? MakeAddressFromConstant(Constant c)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc />
         public Address MakeSegmentedAddress(Constant selector, Constant offset)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc />
         public RtlBlock GetRtlBlock(Block block)
         {
             if (!cache.TryGetValue(block, out var rtlBlock))

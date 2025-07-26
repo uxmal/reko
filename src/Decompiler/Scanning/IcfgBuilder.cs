@@ -24,12 +24,32 @@ using System.Collections.Generic;
 
 namespace Reko.Scanning
 {
+    /// <summary>
+    /// Builds the interpretation control flow graph (ICFG) for a program.
+    /// </summary>
     public class IcfgBuilder
     {
+        /// <summary>
+        /// The graph of all known basic blocks.
+        /// </summary>
         public DiGraph<RtlBlock> Blocks;
+
+        /// <summary>
+        /// Edges between basic blocks.
+        /// </summary>
         public List<(RtlBlock, Address)> Edges;
+
+        /// <summary>
+        /// Mapping from addresses to basic blocks.
+        /// </summary>
         public Dictionary<Address, RtlBlock> AddrToBlock;
 
+        /// <summary>
+        /// Constructs an <see cref="IcfgBuilder"/> instance.
+        /// </summary>
+        /// <param name="edges">Edges between basic blocks.</param>
+        /// <param name="mpBlocks">Mapping from addresses to basic blocks,</param>
+        /// <param name="allBlocks">The graph of all known basic blocks.</param>
         public IcfgBuilder(List<(RtlBlock, Address)> edges, Dictionary<Address, RtlBlock> mpBlocks, DiGraph<RtlBlock> allBlocks)
         {
             Edges = edges;

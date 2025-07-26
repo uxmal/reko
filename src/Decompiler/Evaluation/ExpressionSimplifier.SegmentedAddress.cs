@@ -19,41 +19,36 @@
 #endregion
 
 using Reko.Core.Expressions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Reko.Evaluation
+namespace Reko.Evaluation;
+
+public partial class ExpressionSimplifier
 {
-    public partial class ExpressionSimplifier
+    /// <inheritdoc/>
+    public virtual (Expression, bool) VisitSegmentedAddress(SegmentedPointer segptr)
     {
-        public virtual (Expression, bool) VisitSegmentedAddress(SegmentedPointer segptr)
+        var (basePtr, bChanged) = segptr.BasePointer.Accept(this);
+        var (offset, oChanged) = segptr.Offset.Accept(this);
+        bool changed = bChanged | oChanged;
+        var e = scaledIndexRule.Match(offset, ctx);
+        if (e is not null)
         {
-            var (basePtr, bChanged) = segptr.BasePointer.Accept(this);
-            var (offset, oChanged) = segptr.Offset.Accept(this);
-            bool changed = bChanged | oChanged;
-            var e = scaledIndexRule.Match(offset, ctx);
-            if (e is not null)
-            {
-                changed = true;
-                (offset, _) = e.Accept(this);
-            }
-            if (basePtr is Constant cBase && offset is Constant cOffset)
-            {
-                var addr = ctx.MakeSegmentedAddress(cBase, cOffset);
-                addr.DataType = segptr.DataType;
-                return (addr, true);
-            }
-            var value = new SegmentedPointer(segptr.DataType, basePtr, offset);
-            e = sliceSegPtr.Match(value, ctx);
-            if (e is not null)
-            {
-                return (e, true);
-            }
-            return (value, changed);
+            changed = true;
+            (offset, _) = e.Accept(this);
         }
-
+        if (basePtr is Constant cBase && offset is Constant cOffset)
+        {
+            var addr = ctx.MakeSegmentedAddress(cBase, cOffset);
+            addr.DataType = segptr.DataType;
+            return (addr, true);
+        }
+        var value = new SegmentedPointer(segptr.DataType, basePtr, offset);
+        e = sliceSegPtr.Match(value, ctx);
+        if (e is not null)
+        {
+            return (e, true);
+        }
+        return (value, changed);
     }
+
 }

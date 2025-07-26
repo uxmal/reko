@@ -22,21 +22,46 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Reko.Scanning
+namespace Reko.Scanning;
+
+/// <summary>
+/// Abstract base class for string searches in loaded Reko programs.
+/// </summary>
+/// <typeparam name="TSymbol"></typeparam>
+public abstract class StringSearch<TSymbol>
 {
-    public abstract class StringSearch<TSymbol>
+    /// <summary>
+    /// Initializes a <see cref="StringSearchResult{TSymbol}"/> instance.
+    /// </summary>
+    /// <param name="pattern">String search.</param>
+    /// <param name="scannedMemory">If true, searches in scanned memory.</param>
+    /// <param name="unscannedMemory">If true, searchs in unscanned memory.</param>
+    public StringSearch(TSymbol[] pattern, bool scannedMemory, bool unscannedMemory)
     {
-        public StringSearch(TSymbol[] pattern, bool scannedMemory, bool unscannedMemory)
-        {
-            this.Pattern = pattern;
-            this.ScannedMemory = scannedMemory;
-            this.UnscannedMemory = unscannedMemory;
-        }
-
-        public abstract IEnumerable<int> GetMatchPositions(TSymbol[] stringToSearch);
-
-        public TSymbol[] Pattern { get; private set; }
-        public bool ScannedMemory { get; private set; }
-        public bool UnscannedMemory { get; private set; }
+        this.Pattern = pattern;
+        this.ScannedMemory = scannedMemory;
+        this.UnscannedMemory = unscannedMemory;
     }
+
+    /// <summary>
+    /// Find all offsets where the string matches.
+    /// </summary>
+    /// <param name="stringToSearch">String in which to search.</param>
+    /// <returns>A sequence of offsets within the string.</returns>
+    public abstract IEnumerable<int> GetMatchPositions(TSymbol[] stringToSearch);
+
+    /// <summary>
+    /// Search pattern.
+    /// </summary>
+    public TSymbol[] Pattern { get; private set; }
+
+    /// <summary>
+    /// If true, searches in scanned memory.
+    /// </summary>
+    public bool ScannedMemory { get; private set; }
+
+    /// <summary>
+    /// If true, searches in unscanned memory.
+    /// </summary>
+    public bool UnscannedMemory { get; private set; }
 }

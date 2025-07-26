@@ -36,22 +36,43 @@ namespace Reko.Loading
         private Address baseAddr;
         private readonly byte[] imageBytes;
 
+        /// <summary>
+        /// Creates an instance of the <see cref="NullImageLoader"/> class.
+        /// </summary>
+        /// <param name="services"><see cref="IServiceProvider"/> used to access contextual services.
+        /// </param>
+        /// <param name="imageLocation">Location from which the <paramref name="image"/> was read.</param>
+        /// <param name="image">Raw image bytes.</param>
         public NullImageLoader(IServiceProvider services, ImageLocation imageLocation, byte[] image) : base(services, imageLocation, image)
         {
             this.imageBytes = image;
             this.baseAddr = Address.Ptr32(0);
-            this.EntryPoints = new List<ImageSymbol>();
+            this.EntryPoints = [];
         }
 
+        /// <summary>
+        /// Architecture of the processor for which this image loader is intended.
+        /// </summary>
         public IProcessorArchitecture? Architecture { get; set; }
-        public List<ImageSymbol> EntryPoints { get; private set; }
+
+        /// <summary>
+        /// Entry points of the program.
+        /// </summary>
+        public List<ImageSymbol> EntryPoints { get; }
+
+        /// <summary>
+        /// <see cref="IPlatform"/> for the loaded image
+        /// </summary>
         public IPlatform? Platform { get; set; }
+
+        /// <inheritdoc/>
         public override Address PreferredBaseAddress
         {
             get { return this.baseAddr; }
             set { this.baseAddr = value; }
         }
 
+        /// <inheritdoc/>
         public override Program LoadProgram(Address? addrLoad)
         {
             if (Architecture is null)
@@ -59,6 +80,7 @@ namespace Reko.Loading
             return Load(addrLoad, Architecture);
         }
 
+        /// <inheritdoc/>
         public override Program Load(Address? addrLoad, IProcessorArchitecture? arch)
         {
             if (arch is null)
@@ -69,6 +91,7 @@ namespace Reko.Loading
             return LoadProgram(addrLoad.Value, arch, platform, new());
         }
 
+        /// <inheritdoc/>
         public override Program LoadProgram(
             Address addrLoad,
             IProcessorArchitecture arch,
@@ -87,6 +110,14 @@ namespace Reko.Loading
             return program;
         }
 
+        /// <summary>
+        /// Creates a <see cref="SegmentMap"/> based on the specified platform,
+        /// </summary>
+        /// <param name="platform"><see cref="IPlatform"/> </param>
+        /// <param name="loadAddr">Base address of the loaded program.</param>
+        /// <param name="userSegments">User-supplied segment information.</param>
+        /// <param name="rawBytes">The raw bytes of the image.</param>
+        /// <returns></returns>
         public SegmentMap CreatePlatformSegmentMap(
             IPlatform platform,
             Address loadAddr,

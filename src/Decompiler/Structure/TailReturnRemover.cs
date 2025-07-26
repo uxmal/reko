@@ -20,12 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Absyn;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Structure
 {
@@ -37,11 +32,18 @@ namespace Reko.Structure
     {
         private Procedure proc;
 
+        /// <summary>
+        /// Constructs a new instance of the <see cref="TailReturnRemover"/> class.
+        /// </summary>
+        /// <param name="proc">Procedore to be transformed.</param>
         public TailReturnRemover(Procedure proc)
         {
             this.proc = proc;
         }
 
+        /// <summary>
+        /// Transforms the procedure by removing redundant 'return' statements
+        /// </summary>
         public void Transform()
         {
             if (!proc.Signature.HasVoidReturn)
@@ -50,56 +52,67 @@ namespace Reko.Structure
             RemoveRedundantReturn(stmts!);
         }
 
+        /// <inheritdoc/>
         public bool VisitAssignment(AbsynAssignment ass)
         {
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitBreak(AbsynBreak brk)
         {
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitCase(AbsynCase absynCase)
         {
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitCompoundAssignment(AbsynCompoundAssignment compound)
         {
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitContinue(AbsynContinue cont)
         {
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitDeclaration(AbsynDeclaration decl)
         {
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitDefault(AbsynDefault decl)
         {
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitDoWhile(AbsynDoWhile loop)
         {
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitFor(AbsynFor forLoop)
         {
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitGoto(AbsynGoto gotoStm)
         {
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitIf(AbsynIf ifStm)
         {
             RemoveRedundantReturn(ifStm.Then);
@@ -107,32 +120,38 @@ namespace Reko.Structure
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitLabel(AbsynLabel lbl)
         {
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitLineComment(AbsynLineComment comment)
         {
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitReturn(AbsynReturn ret)
         {
             // Only remove returns that don't return anything.
             return ret.Value is null;
         }
 
+        /// <inheritdoc/>
         public bool VisitSideEffect(AbsynSideEffect side)
         {
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitSwitch(AbsynSwitch absynSwitch)
         {
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitWhile(AbsynWhile loop)
         {
             return false;

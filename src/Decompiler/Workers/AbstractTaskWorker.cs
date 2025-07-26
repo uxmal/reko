@@ -41,6 +41,9 @@ namespace Reko.Workers
         private ConcurrentQueue<TMessage> queue;
         private volatile int isTaskRunning;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AbstractTaskWorker{TMessage}"/> class.
+        /// </summary>
         protected AbstractTaskWorker()
         {
             this.queue = new ConcurrentQueue<TMessage>();
@@ -74,9 +77,9 @@ namespace Reko.Workers
         }
 
         /// <summary>
-        /// After enqueuing a <see cref="TMessage"/> we ensure that someone is working on it.
+        /// After enqueuing a <typeparamref name="TMessage"/> we ensure that someone is working on it.
         /// </summary>
-        /// <returns>True if there is no need to start a task.</returns></remarks>
+        /// <returns>True if there is no need to start a task.</returns>
         private bool IsTaskNeeded()
         {
             for (; ; )
@@ -116,6 +119,10 @@ namespace Reko.Workers
             }
         }
 
+        /// <summary>
+        /// Handles a message that has been sent to this worker.
+        /// </summary>
+        /// <param name="message">Message to process.</param>
         protected abstract void ProcessMessage(TMessage message);
     }
 }

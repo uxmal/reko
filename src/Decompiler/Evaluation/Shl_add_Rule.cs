@@ -21,46 +21,36 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
-using Reko.Core.Types;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace Reko.Evaluation
+namespace Reko.Evaluation;
+
+internal class Shl_add_Rule
 {
-    public class Shl_add_Rule
+    // (x << c) + x ==> x * ((1<<c) + 1)
+    // (x << c) - x ==> x * ((1<<c) - 1)
+    public Expression? Match(BinaryExpression b, EvaluationContext ctx)
     {
-        public Shl_add_Rule()
+        var op = b.Operator;
+        int factor;
+        if (op.Type == OperatorType.IAdd)
+            factor = 1;
+        else if (op.Type == OperatorType.ISub)
+            factor = -1;
+        else
+            return null;
+        var bin = b.Left as BinaryExpression;
+        var id = b.Right as Identifier;
+        if (bin is null || id is null)
         {
+            bin = b.Right as BinaryExpression;
+            id = b.Left as Identifier;
         }
-
-        // (x << c) + x ==> x * ((1<<c) + 1)
-        // (x << c) - x ==> x * ((1<<c) - 1)
-        public Expression? Match(BinaryExpression b, EvaluationContext ctx)
-        {
-            var op = b.Operator;
-            int factor;
-            if (op.Type == OperatorType.IAdd)
-                factor = 1;
-            else if (op.Type == OperatorType.ISub)
-                factor = -1;
-            else
-                return null;
-            var bin = b.Left as BinaryExpression;
-            var id = b.Right as Identifier;
-            if (bin is null || id is null)
-            {
-                bin = b.Right as BinaryExpression;
-                id = b.Left as Identifier;
-            }
-            if (bin is null || bin.Left != id || bin.Operator.Type != OperatorType.Shl)
-                return null;
-            if (bin.Right is not Constant c)
-                return null;
-            var dt = b.DataType;
-            var cc = Constant.Create(id.DataType, (1 << c.ToInt32()) + factor);
-            return new BinaryExpression(Operator.IMul, dt, id, cc);
-        }
+        if (bin is null || bin.Left != id || bin.Operator.Type != OperatorType.Shl)
+            return null;
+        if (bin.Right is not Constant c)
+            return null;
+        var dt = b.DataType;
+        var cc = Constant.Create(id.DataType, (1 << c.ToInt32()) + factor);
+        return new BinaryExpression(Operator.IMul, dt, id, cc);
     }
 }

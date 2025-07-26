@@ -31,6 +31,14 @@ namespace Reko.Evaluation
     /// </summary>
     public class UnaryNegEqZeroRule
     {
+        /// <summary>
+        /// Matches a binary expression that has the form (-Foo == 0) and
+        /// replaces it with (Foo == 0).
+        /// </summary>
+        /// <param name="binExp">Expression to test.</param>
+        /// <returns>The simplified instruction if simplification occurred;
+        /// otherwise null.
+        /// </returns>
         public Expression? Match(BinaryExpression binExp)
         {
             if (binExp.Operator.Type != OperatorType.Eq)

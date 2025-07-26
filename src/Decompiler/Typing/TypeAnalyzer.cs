@@ -41,7 +41,7 @@ namespace Reko.Typing
 	{
         private static readonly TraceSwitch trace = new TraceSwitch(nameof(TypeAnalyzer), "Traces the progress of the type analysis") { Level = TraceLevel.Verbose };
 
-        private readonly IDecompilerEventListener eventListener;
+        private readonly IEventListener eventListener;
 
 		private TypeFactory? factory;
 		private TypeStore? store;
@@ -54,7 +54,13 @@ namespace Reko.Typing
 		private ComplexTypeNamer? ctn;
 		private TypedExpressionRewriter? ter;
 
-		public TypeAnalyzer(IDecompilerEventListener eventListener)
+        /// <summary>
+        /// Constucts an instance of the <see cref="TypeAnalyzer"/> class.
+        /// </summary>
+        /// <param name="eventListener"><see cref="IEventListener"/> to which 
+        /// diagnostic messages are reported.
+        /// </param>
+		public TypeAnalyzer(IEventListener eventListener)
 		{
 			this.eventListener = eventListener;
 		}
@@ -160,6 +166,7 @@ namespace Reko.Typing
             }
         }
 
+        /// <inheritdoc/>
 		public void WriteTypes(string filename, TextWriter output)
 		{
 		}

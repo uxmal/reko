@@ -23,28 +23,36 @@ using Reko.Core.Expressions;
 using Reko.Core.Operators;
 using System;
 
-namespace Reko.Evaluation
+namespace Reko.Evaluation;
+
+/// <summary>
+/// Evaluation rule for complemented subtractions.
+/// <code>
+/// ~(a - b) -> ((b - a) - 1).
+/// </code>
+/// </summary>
+public class CompSub_Rule
 {
     /// <summary>
-    /// ~(a - b) -> ((b - a) - 1).
+    /// Match a complemented subtraction operation and simplifies it.
     /// </summary>
-    public class CompSub_Rule
+    /// <param name="unary">Unary expression to simplify.
+    /// </param>
+    /// <returns></returns>
+    public Expression? Match(UnaryExpression unary)
     {
-        public Expression? Match(UnaryExpression unary)
+        if (unary.Operator == Operator.Comp &&
+            unary.Expression is BinaryExpression bin &&
+            bin.Operator == Operator.ISub)
         {
-            if (unary.Operator == Operator.Comp &&
-                unary.Expression is BinaryExpression bin &&
-                bin.Operator == Operator.ISub)
-            {
-                var one = Constant.Int(bin.DataType, 1);
-                return new BinaryExpression(
-                    Operator.ISub,
-                    bin.DataType,
-                    new BinaryExpression(
-                        Operator.ISub, bin.DataType, bin.Right, bin.Left),
-                    one);
-            }
-            return null;
+            var one = Constant.Int(bin.DataType, 1);
+            return new BinaryExpression(
+                Operator.ISub,
+                bin.DataType,
+                new BinaryExpression(
+                    Operator.ISub, bin.DataType, bin.Right, bin.Left),
+                one);
         }
+        return null;
     }
 }

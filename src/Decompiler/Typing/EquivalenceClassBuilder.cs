@@ -24,8 +24,8 @@ using Reko.Core.Diagnostics;
 using Reko.Core.Expressions;
 using Reko.Core.Loading;
 using Reko.Core.Operators;
+using Reko.Core.Services;
 using Reko.Core.Types;
-using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -42,13 +42,19 @@ namespace Reko.Typing
 
 		private readonly TypeFactory factory;
 		private readonly TypeStore store;
-        private readonly IDecompilerEventListener listener;
+        private readonly IEventListener listener;
         private readonly Dictionary<ushort, TypeVariable> segTypevars;
         private readonly Dictionary<string, EquivalenceClass> typeReferenceClasses;
 		private FunctionType? signature;
         private Statement? stmCur;
 
-		public EquivalenceClassBuilder(TypeFactory factory, TypeStore store, IDecompilerEventListener listener)
+        /// <summary>
+        /// Constructs an instance of the <see cref="EquivalenceClassBuilder"/> class.
+        /// </summary>
+        /// <param name="factory"></param>
+        /// <param name="store"></param>
+        /// <param name="listener"></param>
+		public EquivalenceClassBuilder(TypeFactory factory, TypeStore store, IEventListener listener)
         {
 			this.factory = factory;
 			this.store = store;
@@ -58,6 +64,13 @@ namespace Reko.Typing
             this.typeReferenceClasses = new Dictionary<string, EquivalenceClass>();
 		}
 
+        /// <summary>
+        /// Builds the type variables for the program.
+        /// </summary>
+        /// <remarks>
+        /// This method is called after all traits have been processed.
+        /// </remarks>
+        /// <param name="program">Program being analyzed.</param>
 		public void Build(Program program)
         {
             // Special case for the global variables. In essence,
@@ -85,6 +98,10 @@ namespace Reko.Typing
             }
 		}
 
+        /// <summary>
+        /// Ensures that each <see cref="ImageSegment"/> has a type variable.
+        /// </summary>
+        /// <param name="segments">Sequence of <see cref="ImageSegment"/>s.</param>
         public void EnsureSegmentTypeVariables(IEnumerable<ImageSegment> segments)
         {
             foreach (var segment in segments.Where(s => s.Identifier is not null))
@@ -103,6 +120,11 @@ namespace Reko.Typing
             }
         }
 
+        /// <summary>
+        /// Ensure that type variables for the signature of a procedure
+        /// exist.
+        /// </summary>
+        /// <param name="signature"></param>
         public void EnsureSignatureTypeVariables(FunctionType signature)
         {
             if (signature is null || !signature.ParametersValid)
@@ -117,6 +139,11 @@ namespace Reko.Typing
             }
         }
 
+        /// <summary>
+        /// Ensures that an expression <paramref name="e"/> has a type variable.
+        /// </summary>
+        /// <param name="e">Expression </param>
+        /// <returns></returns>
         public TypeVariable EnsureTypeVariable(Expression e)
 		{
             var tv = store.EnsureExpressionTypeVariable(factory, stmCur?.Address, e);
@@ -135,6 +162,7 @@ namespace Reko.Typing
             return tv;
 		}
 
+        /// <inheritdoc/>
 		public override void VisitApplication(Application appl)
 		{
             var oldSig = signature;
@@ -181,6 +209,7 @@ namespace Reko.Typing
             signature = oldSig;
 		}
 
+        /// <inheritdoc/>
 		public override void VisitArrayAccess(ArrayAccess acc)
 		{
 			acc.Array.Accept(this);
@@ -188,6 +217,7 @@ namespace Reko.Typing
 			EnsureTypeVariable(acc);
 		}
 
+        /// <inheritdoc/>
 		public override void VisitAssignment(Assignment a)
 		{
 			a.Src.Accept(this);
@@ -195,6 +225,7 @@ namespace Reko.Typing
 			store.MergeClasses(store.GetTypeVariable(a.Dst), store.GetTypeVariable(a.Src));
 		}
 
+        /// <inheritdoc/>
 		public override void VisitStore(Store s)
 		{
 			s.Src.Accept(this);
@@ -202,11 +233,13 @@ namespace Reko.Typing
 			store.MergeClasses(store.GetTypeVariable(s.Dst), store.GetTypeVariable(s.Src));
 		}
 
+        /// <inheritdoc/>
         public override void VisitAddress(Address addr)
         {
             EnsureTypeVariable(addr);
         }
 
+        /// <inheritdoc/>
 		public override void VisitBinaryExpression(BinaryExpression binExp)
 		{
 			binExp.Left.Accept(this);
@@ -218,12 +251,14 @@ namespace Reko.Typing
 			EnsureTypeVariable(binExp);
 		}
 
+        /// <inheritdoc/>
 		public override void VisitCast(Cast cast)
 		{
 			cast.Expression.Accept(this);
 			EnsureTypeVariable(cast);
 		}
 
+        /// <inheritdoc/>
 		public override void VisitConstant(Constant c)
 		{
             if (c.DataType == PrimitiveType.SegmentSelector)
@@ -242,49 +277,58 @@ namespace Reko.Typing
 			EnsureTypeVariable(c);
 		}
 
+        /// <inheritdoc/>
         public override void VisitConditionalExpression(ConditionalExpression cond)
         {
             base.VisitConditionalExpression(cond);
             EnsureTypeVariable(cond);
         }
 
+        /// <inheritdoc/>
         public override void VisitConditionOf(ConditionOf cof)
 		{
 			cof.Expression.Accept(this);
 			EnsureTypeVariable(cof);
 		}
 
+        /// <inheritdoc/>
         public override void VisitConversion(Conversion conversion)
         {
             conversion.Expression.Accept(this);
             EnsureTypeVariable(conversion);
         }
 
+        /// <inheritdoc/>
 		public override void VisitDefInstruction(DefInstruction def)
 		{
 		}
 
+        /// <inheritdoc/>
 		public override void VisitDereference(Dereference deref)
 		{
 			deref.Expression.Accept(this);
 			EnsureTypeVariable(deref);
 		}
 
+        /// <inheritdoc/>
 		public override void VisitFieldAccess(FieldAccess acc)
 		{
 			throw new NotImplementedException();
 		}
 
+        /// <inheritdoc/>
 		public override void VisitIdentifier(Identifier id)
 		{
 			EnsureTypeVariable(id);
 		}
 
+        /// <inheritdoc/>
 		public override void VisitPointerAddition(PointerAddition pa)
 		{
 			throw new NotImplementedException();
 		}
 
+        /// <inheritdoc/>
 		public override void VisitMemberPointerSelector(MemberPointerSelector mps)
 		{
 			mps.BasePointer.Accept(this);
@@ -292,12 +336,14 @@ namespace Reko.Typing
 			EnsureTypeVariable(mps);
 		}
 
+        /// <inheritdoc/>
 		public override void VisitMemoryAccess(MemoryAccess access)
 		{
 			access.EffectiveAddress.Accept(this);
 			EnsureTypeVariable(access);
 		}
 
+        /// <inheritdoc/>
 		public override void VisitMkSequence(MkSequence seq)
 		{
             foreach (var e in seq.Expressions)
@@ -307,12 +353,14 @@ namespace Reko.Typing
 			EnsureTypeVariable(seq);
 		}
 
+        /// <inheritdoc/>
         public override void VisitOutArgument(OutArgument outArg)
         {
             outArg.Expression.Accept(this);
             EnsureTypeVariable(outArg);
         }
 
+        /// <inheritdoc/>
         public override void VisitReturnInstruction(ReturnInstruction ret)
         {
             if (ret.Expression is null)
@@ -329,6 +377,7 @@ namespace Reko.Typing
             }
         }
 
+        /// <inheritdoc/>
 		public override void VisitSegmentedAddress(SegmentedPointer address)
 		{
 			address.BasePointer.Accept(this);
@@ -336,6 +385,7 @@ namespace Reko.Typing
 			EnsureTypeVariable(address);
 		}
 
+        /// <inheritdoc/>
 		public override void VisitPhiAssignment(PhiAssignment phi)
 		{
 			phi.Src.Accept(this);
@@ -343,6 +393,7 @@ namespace Reko.Typing
 			store.MergeClasses(store.GetTypeVariable(phi.Src), store.GetTypeVariable(phi.Dst));
 		}
 
+        /// <inheritdoc/>
 		public override void VisitPhiFunction(PhiFunction phi)
 		{
 			TypeVariable tPhi = EnsureTypeVariable(phi);
@@ -353,6 +404,7 @@ namespace Reko.Typing
 			}
 		}
 
+        /// <inheritdoc/>
 		public override void VisitProcedureConstant(ProcedureConstant pc)
 		{
 			EnsureTypeVariable(pc);
@@ -364,6 +416,7 @@ namespace Reko.Typing
 			}
 		}
 
+        /// <inheritdoc/>
 		public void VisitProcedure(ProcedureBase proc, FunctionType sig)
 		{
             if (sig.TypeVariable is null)
@@ -388,23 +441,27 @@ namespace Reko.Typing
 			//$REVIEW: return type?
 		}
 
+        /// <inheritdoc/>
 		public override void VisitSlice(Slice slice)
 		{
 			slice.Expression.Accept(this);
 			EnsureTypeVariable(slice);
 		}
 
+        /// <inheritdoc/>
         public override void VisitStringConstant(StringConstant str)
         {
             EnsureTypeVariable(str);
         }
 
+        /// <inheritdoc/>
         public override void VisitTestCondition(TestCondition tc)
 		{
 			tc.Expression.Accept(this);
 			EnsureTypeVariable(tc);
 		}
 
+        /// <inheritdoc/>
 		public override void VisitUnaryExpression(UnaryExpression unary)
 		{
 			unary.Expression.Accept(this);

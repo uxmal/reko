@@ -34,10 +34,14 @@ namespace Reko.Evaluation
     /// </summary>
     public class SliceShift
     {
-        public SliceShift()
-        {
-        }
-
+        /// <summary>
+        /// Attempts to match a given <see cref="Slice"/> against specific criteria and returns an expression if
+        /// successful.
+        /// </summary>
+        /// <param name="slice">The <see cref="Slice"/> to be evaluated, containing the expression and offset to match.</param>
+        /// <param name="ctx">The <see cref="EvaluationContext"/> used to retrieve values and evaluate expressions.</param>
+        /// <returns>An <see cref="Expression"/> representing the left operand of a binary shift-left operation if the match is
+        /// successful; otherwise, <see langword="null"/>.</returns>
         public Expression? Match(Slice slice, EvaluationContext ctx)
         {
             BinaryExpression? shift;

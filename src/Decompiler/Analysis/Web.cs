@@ -33,24 +33,44 @@ namespace Reko.Analysis
     /// </summary>
     public class Web
 	{
+        /// <summary>
+        /// Constructs an empty web.
+        /// </summary>
 		public Web()
 		{
-			this.Members = new HashSet<SsaIdentifier>();
-			this.Definitions = new HashSet<Statement>();
-			this.Uses = new HashSet<Statement>();
+			this.Members = [];
+			this.Definitions = [];
+			this.Uses = [];
 		}
 
+        /// <summary>
+        /// Identifier of the web.
+        /// </summary>
         public Identifier? Identifier { get; private set; }
+
+        /// <summary>
+        /// <see cref="SsaIdentifier"/>s that are members of this web.
+        /// </summary>
         public HashSet<SsaIdentifier> Members { get; }
+
+        /// <summary>
+        /// All statements that use one or more identifiers in this web.
+        /// </summary>
         public HashSet<Statement> Uses { get; }
+
+        /// <summary>
+        /// All statements that define one or more identifiers in this web.
+        /// </summary>
         public HashSet<Statement> Definitions { get; }
 
+        /// <summary>
+        /// Adds a <see cref="SsaIdentifier"/> to the web.
+        /// </summary>
+        /// <param name="sid"></param>
         public void Add(SsaIdentifier sid)
 		{
-            if (Members.Contains(sid))		// should be a set!
+            if (!Members.Add(sid))
                 return;
-
-			Members.Add(sid);
 			if (this.Identifier is null)
 			{
 				this.Identifier = sid.Identifier;
@@ -85,8 +105,16 @@ namespace Reko.Analysis
 				Uses.Add(u);
 		}
 
+        /// <summary>
+        /// The induction variable associated with this web, or null
+        /// of no such association exists.
+        /// </summary>
 		public LinearInductionVariable? InductionVariable { get; private set; }
 
+        /// <summary>
+        /// Writes a human-readable representation of the web to the <paramref name="writer"/>.
+        /// </summary>
+        /// <param name="writer"><see cref="TextWriter"/> instance to write to.</param>
 		public void Write(TextWriter writer)
 		{
 			writer.Write("{0}: {{ ", Identifier!.Name);

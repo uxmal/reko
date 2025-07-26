@@ -21,7 +21,6 @@
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
-using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
 
@@ -44,6 +43,12 @@ namespace Reko.Typing
 		private Identifier? globals;
 		private readonly Unifier unifier;
 
+        /// <summary>
+        /// Creates an instance of the <see cref="ConstantPointerAnalysis"/> class.
+        /// </summary>
+        /// <param name="factory">Type factory to use when creating types.</param>
+        /// <param name="store">Type store instance.</param>
+        /// <param name="program">Program being analyzed.</param>
 		public ConstantPointerAnalysis(TypeFactory factory, TypeStore store, Program program)
 		{
 			this.factory = factory;
@@ -52,13 +57,16 @@ namespace Reko.Typing
             this.program = program;
 		}
 
-		public Pointer CreatePointerToField(int offset, DataType tvField)
+		private Pointer CreatePointerToField(int offset, DataType tvField)
 		{
 			return factory.CreatePointer(
 				factory.CreateStructureType(null, 0, new StructureField(offset, tvField)),
 				program.Platform.PointerType.BitSize);
 		}
 
+        /// <summary>
+        /// Processs all instructions that have constant pointers.
+        /// </summary>
 		public void FollowConstantPointers()
 		{
 			foreach (Procedure proc in program.Procedures.Values)
@@ -90,6 +98,10 @@ namespace Reko.Typing
             throw new NotImplementedException($"Don't know how to handle pointers to {fieldType}.");
 		}
 
+        /// <summary>
+        /// An identifier serving as a placeholder for the global
+        /// variables structure.
+        /// </summary>
 		public Identifier Globals
 		{
 			get 
@@ -104,18 +116,7 @@ namespace Reko.Typing
 			set { globals = value; }
 		}
 
-        public static T? ResolveAs<T>(DataType dt) where T : DataType
-        {
-            for (; ; )
-            {
-                if (dt is T t)
-                    return t;
-                if (!(dt is EquivalenceClass eq))
-                    return null;
-                dt = eq.DataType;   
-            }
-        }
-
+        /// <inheritdoc/>
 		public override void VisitConstant(Constant c)
 		{
             if (!c.IsValid || c is BigConstant)
@@ -161,6 +162,15 @@ namespace Reko.Typing
 			}
 		}
 
+        /// <summary>
+        /// Returns true if the given offset is inside a global array.
+        /// </summary>
+        /// <param name="strGlobals">The structuretype representing the
+        /// program's globals.</param>
+        /// <param name="offset">The offset to test.</param>
+        /// <param name="dt">Data type of the element to test.</param>
+        /// <returns>True if the given offset is inside a global array;
+        /// otherwise false.</returns>
         public bool IsInsideArray(StructureType strGlobals, int offset, DataType dt)
         {
             var field = strGlobals.Fields.LowerBound(offset - 1);
@@ -172,6 +182,14 @@ namespace Reko.Typing
             return unifier.AreCompatible(array.ElementType, dt);
         }
 
+        /// <summary>
+        /// Returns true if the given offset is inside a global structure.
+        /// </summary>
+        /// <param name="strGlobals">The structuretype representing the
+        /// program's globals.</param>
+        /// <param name="offset">The offset to test.</param>
+        /// <returns>True if the given offset is inside a global structure;
+        /// otherwise false.</returns>
         public bool IsInsideStruct(StructureType strGlobals, int offset)
         {
             //$PERF: LowerBound have a complexity of O(n^2)

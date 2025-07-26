@@ -23,12 +23,22 @@ using Reko.Core.Operators;
 
 namespace Reko.Evaluation
 {
+    /// <summary>
+    /// Simplifies a distributed cast over an addition or subtraction
+    /// </summary>
     public class DistributedCastRule
     {
-        public DistributedCastRule()
-        {
-        }
-
+        /// <summary>
+        /// Simplifies
+        /// <code>
+        /// ((int) a) + (int) b) 
+        /// </code>
+        /// to
+        /// <code>
+        /// ((int) a + b)</code>
+        /// </summary>
+        /// <param name="binExp"></param>
+        /// <returns></returns>
         public Expression? Match(BinaryExpression binExp)
         {
             if (binExp.Operator.Type.IsAddOrSub())

@@ -30,6 +30,11 @@ using System.Linq;
 
 namespace Reko.Scanning
 {
+    /// <summary>
+    /// This class uses clues from image metadata and the user to scan a 
+    /// binary image and discover the 
+    /// <see cref="Procedure"/>s in it.
+    /// </summary>
     public class Scanner2 : IScanner
     {
         private static readonly TraceSwitch trace = new(nameof(Scanner2), "") { Level = TraceLevel.Info };
@@ -40,6 +45,17 @@ namespace Reko.Scanning
         private readonly TypeLibrary metadata;
         private readonly IDynamicLinker dynamicLinker;
 
+        /// <summary>
+        /// Constructs a new instance of the <see cref="Scanner2"/> class.
+        /// </summary>
+        /// <param name="program">The program being analyzed.</param>
+        /// <param name="metadata"><see cref="TypeLibrary"/> containing metadata
+        /// about the environment provided by the <see cref="IPlatform"/>.
+        /// </param>
+        /// <param name="dynamicLinker"><see cref="IDynamicLinker"/> used to resolve
+        /// reference to external dynamically linked procedure</param>
+        /// <param name="services"><see cref="IServiceProvider"/> providing runtime
+        /// services.</param>
         public Scanner2(
             Program program,
             TypeLibrary metadata,
@@ -53,6 +69,9 @@ namespace Reko.Scanning
             this.listener = services.RequireService<IDecompilerEventListener>();
         }
 
+        /// <summary>
+        /// Scans the image for procedures and builds a procedure graph.
+        /// </summary>
         public void ScanImage()
         {
             trace.Inform("= Loaded file ======");
@@ -119,11 +138,13 @@ namespace Reko.Scanning
             return (result, stopwatch.Elapsed);
         }
 
+        /// <summary>Obsolete code; //$TODO: remove when Scanner2 is fully implemented.</summary>
         public void ScanImageSymbol(ImageSymbol sym, bool isEntryPoint)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public ProcedureBase ScanProcedure(IProcessorArchitecture arch, Address addr, string? procedureName, ProcessorState state)
         {
             var scanner = new RecursiveScanner(program, ProvenanceType.Scanning, dynamicLinker, listener, services);

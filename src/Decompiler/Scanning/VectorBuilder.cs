@@ -43,6 +43,12 @@ namespace Reko.Scanning
         private readonly DirectedGraphImpl<object> jumpGraph;        //$TODO:
         private Backwalker<Block, Instruction>? bw;
 
+        /// <summary>
+        /// Constructs an instance of the <see cref="VectorBuilder"/> class.
+        /// </summary>
+        /// <param name="services"><see cref="IServiceProvider"/> providing runtime services.</param>
+        /// <param name="program">Program beigng analyzed.</param>
+        /// <param name="jumpGraph">Jump graph(?)</param>
         public VectorBuilder(IServiceProvider services, Program program, DirectedGraphImpl<object> jumpGraph)
         {
             this.services = services;
@@ -50,10 +56,22 @@ namespace Reko.Scanning
             this.jumpGraph = jumpGraph;
         }
 
+        /// <summary>
+        /// <see cref="IProcessorArchitecture"/> to use during analysis.
+        /// </summary>
         public IProcessorArchitecture Architecture => program.Architecture;
+
+        /// <summary>
+        /// Size of the table in bytes.
+        /// </summary>
         public int TableByteSize { get; private set; }
+
+        /// <summary>
+        /// Program being analyzed.
+        /// </summary>
         public Program Program => program;
 
+        /// <inheritdoc/>
         public (Expression?,Expression?) AsAssignment(Instruction instr)
         {
             if (instr is Assignment ass)
@@ -61,6 +79,7 @@ namespace Reko.Scanning
             return (null,null);
         }
 
+        /// <inheritdoc/>
         public Expression? AsBranch(Instruction instr)
         {
             if (instr is Branch bra)
@@ -68,6 +87,14 @@ namespace Reko.Scanning
             return null;
         }
 
+        /// <summary>
+        /// Builds a list of jump targets.
+        /// </summary>
+        /// <param name="addrTable">Address of the jump table.</param>
+        /// <param name="addrFrom">Address of the control transfer instruction.
+        /// </param>
+        /// <param name="state">The current <see cref="ProcessorState"/>.</param>
+        /// <returns>A list of jump targets.</returns>
         public List<Address> Build(Address addrTable, Address addrFrom, ProcessorState state)
         {
             //$BUG: all these nulls!
@@ -78,7 +105,7 @@ namespace Reko.Scanning
             return BuildAux(bw, addrFrom, state);
         }
 
-        public List<Address> BuildAux(Backwalker<Block, Instruction> bw, Address addrFrom, ProcessorState state)
+        private List<Address> BuildAux(Backwalker<Block, Instruction> bw, Address addrFrom, ProcessorState state)
         {
             int limit = 0;
             int[]? permutation = null;
@@ -185,31 +212,37 @@ namespace Reko.Scanning
             return vector;
         }
 
+        /// <inheritdoc/>
         public RegisterStorage GetSubregister(RegisterStorage reg, BitRange range)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public Block? GetSinglePredecessor(Block block)
         {
             return block.Procedure.ControlGraph.Predecessors(block).FirstOrDefault();
         }
 
+        /// <inheritdoc/>
         public List<Block> GetPredecessors(Block block)
         {
             return block.Pred.ToList();
         }
 
+        /// <inheritdoc/>
         public Address? MakeAddressFromConstant(Constant c)
         {
             return program.Platform.MakeAddressFromConstant(c, true);
         }
 
+        /// <inheritdoc/>
         public Address MakeSegmentedAddress(Constant seg, Constant off)
         {
             return program.Architecture.MakeSegmentedAddress(seg, off);
         }
 
+        /// <inheritdoc/>
         public bool IsFallthrough(Instruction instr, Block block)
         {
             if (instr is Branch bra)
@@ -217,11 +250,13 @@ namespace Reko.Scanning
             return false;
         }
 
+        /// <inheritdoc/>
         public RegisterStorage IndexRegister
         {
             get { return bw is not null ? bw.Index! : RegisterStorage.None; }
         }
 
+        /// <inheritdoc/>
         public bool IsStackRegister(Storage stg)
         {
             return stg == program.Architecture.StackRegister;
@@ -233,16 +268,19 @@ namespace Reko.Scanning
             return new List<Address>();
         }
 
+        /// <inheritdoc/>
         public bool IsValidAddress(Address addr)
         {
             return program.Memory.IsValidAddress(addr);
         }
 
+        /// <inheritdoc/>
         public IEnumerable<(Address, Instruction?)> GetBlockInstructions(Block block)
         {
             return block.Statements.Select(s => (s.Address, s.Instruction))!;
         }
 
+        /// <inheritdoc/>
         public int BlockInstructionCount(Block block)
         {
             return block.Statements.Count;

@@ -35,14 +35,21 @@ namespace Reko.Scanning
     public class RobustRewriter : IEnumerable<RtlInstructionCluster>
     {
         private IEnumerable<RtlInstructionCluster> inner;
-        private int granularity;
+        private int instructionGranularity;
 
+        /// <summary>
+        /// Constructs a new <see cref="RobustRewriter"/> instance.
+        /// </summary>
+        /// <param name="inner">Inner "unsafe" rewriter.</param>
+        /// <param name="granularity">Minimum instruction size in bits.
+        /// </param>
         public RobustRewriter(IEnumerable<RtlInstructionCluster> inner, int granularity)
         {
             this.inner = inner;
-            this.granularity = granularity;
+            this.instructionGranularity = granularity;
         }
 
+        /// <inheritdoc/>
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
             var e = inner.GetEnumerator();
@@ -59,7 +66,7 @@ namespace Reko.Scanning
                 }
                 catch (AddressCorrelatedException aex)
                 {
-                    rtl = new RtlInstructionCluster(aex.Address, granularity,
+                    rtl = new RtlInstructionCluster(aex.Address, instructionGranularity,
                         new RtlInvalid());
                     rtl.Class = InstrClass.Invalid;
                 }

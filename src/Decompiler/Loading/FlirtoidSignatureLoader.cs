@@ -25,8 +25,16 @@ using System.Text.RegularExpressions;
 
 namespace Reko.Loading
 {
+    /// <summary>
+    /// Flirtoid signature loader.
+    /// </summary>
     public class FlirtoidSignatureLoader : SignatureLoader
     {
+        /// <summary>
+        /// Loads Flirtoid signatures from a file.
+        /// </summary>
+        /// <param name="filename">File name.</param>
+        /// <returns>A collection of <see cref="ImageSignature"/>s.</returns>
         public override IEnumerable<ImageSignature> Load(string filename)
         {
             // Expect rows of the format "<even number of hex digits or dots><spaces><name>
@@ -51,6 +59,11 @@ namespace Reko.Loading
             }
         }
 
+        /// <summary>
+        /// Creates a reader for the specified file.
+        /// </summary>
+        /// <param name="filename">File name of the file to be opened for reading.</param>
+        /// <returns>A <see cref="Stream"/> instance.</returns>
         public virtual Stream CreateReader(string filename)
         {
             return File.Open(filename, FileMode.Open, FileAccess.Read, FileShare.Read);

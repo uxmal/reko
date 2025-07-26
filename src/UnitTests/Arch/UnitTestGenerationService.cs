@@ -63,7 +63,7 @@ namespace Reko.UnitTests.Arch
 
         public void ReportMissingRewriter(string testPrefix, MachineInstruction instr, string mnemonic, EndianImageReader rdr, string message, string opcodeAsText)
         {
-            var test = TestGenerationService.GenerateRewriterUnitTest(testPrefix, instr, mnemonic, rdr, message, opcodeAsText);
+            var test = TestGenerationService.GenerateRewriterUnitTest(testPrefix, instr, mnemonic, message, opcodeAsText);
             Console.WriteLine(test);
         }
 

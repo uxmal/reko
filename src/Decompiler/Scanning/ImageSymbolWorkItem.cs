@@ -20,33 +20,42 @@
 
 using Reko.Core;
 using Reko.Core.Loading;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Reko.Scanning
 {
+    /// <summary>
+    /// Work item to process an <see cref="ImageSymbol"/>.
+    /// </summary>
     public class ImageSymbolWorkItem : WorkItem
     {
         private readonly IScanner scanner;
-        private readonly Program program;
         private readonly ImageSymbol sym;
         private readonly bool isEntryPoint;
 
-        public ImageSymbolWorkItem(IScanner scanner, Program program, ImageSymbol sym, bool isEntryPoint) 
+        /// <summary>
+        /// Constructs an instance of <see cref="ImageSymbolWorkItem"/>.
+        /// </summary>
+        /// <param name="scanner"><see cref="IScanner"/> that is orchestrating this
+        /// workitem.</param>
+        /// <param name="sym">Image symbol to process.</param>
+        /// <param name="isEntryPoint">True if the symbol is the entry point of the
+        /// program image; otherwise false.
+        /// </param>
+        public ImageSymbolWorkItem(IScanner scanner, ImageSymbol sym, bool isEntryPoint) 
             : base(sym.Address!)
         {
             this.scanner = scanner;
-            this.program = program;
             this.sym = sym;
             this.isEntryPoint = isEntryPoint;
         }
 
+        /// <inheritdoc/>
         public override void Process()
         {
             scanner.ScanImageSymbol(sym, isEntryPoint);
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             return string.Format("Symbol: {0}{1}",

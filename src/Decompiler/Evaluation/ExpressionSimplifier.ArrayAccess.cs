@@ -25,6 +25,7 @@ namespace Reko.Evaluation
 {
     public partial class ExpressionSimplifier
     {
+        /// <inheritdoc/>
         public virtual (Expression, bool) VisitArrayAccess(ArrayAccess acc)
         {
             Expression result = acc;

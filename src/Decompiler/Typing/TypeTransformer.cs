@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Services;
 using System;
@@ -40,17 +41,35 @@ namespace Reko.Typing
 		private TypeStore store;
         private Program program;
 		private Unifier unifier;
-        private IDecompilerEventListener eventListener;
+        private IEventListener eventListener;
 
 		private static TraceSwitch trace = new TraceSwitch("TypeTransformer", "Traces the transformation of types") { Level = TraceLevel.Verbose };
         private readonly Dictionary<DataType, DataType> visitedTypes;
 
+        /// <summary>
+        /// Constructs an instance of the <see cref="TypeTransformer"/> class
+        /// where all diagnostic input is discarded.
+        /// </summary>
+        /// <param name="factory"><see cref="TypeFactory"/> to use when creating 
+        /// types.</param>
+        /// <param name="store"><see cref="TypeStore"/> in which to store data types.</param>
+        /// <param name="program">The program being analyzed.</param>
         public TypeTransformer(TypeFactory factory, TypeStore store, Program program)
             : this(factory, store, program, NullDecompilerEventListener.Instance)
         {
         }
 
-		public TypeTransformer(TypeFactory factory, TypeStore store, Program program, IDecompilerEventListener eventListener)
+        /// <summary>
+        /// Constructs an instance of the <see cref="TypeTransformer"/> class.
+        /// </summary>
+        /// <param name="factory"><see cref="TypeFactory"/> to use when creating 
+        /// types.</param>
+        /// <param name="store"><see cref="TypeStore"/> in which to store data types.</param>
+        /// <param name="program">The program being analyzed.</param>
+        /// <param name="eventListener"><see cref="IEventListener"/> to which diagnostic
+        /// messages are reported.
+        /// </param>
+		public TypeTransformer(TypeFactory factory, TypeStore store, Program program, IEventListener eventListener)
 		{
 			this.factory = factory;
 			this.store = store;
@@ -60,6 +79,10 @@ namespace Reko.Typing
             this.visitedTypes = new Dictionary<DataType, DataType>();
         }
 
+
+        /// <summary>
+        /// True if any data types have changed.
+        /// </summary>
 		public bool Changed
 		{
 			get { return changed; }
@@ -103,6 +126,16 @@ namespace Reko.Typing
 			return false;
 		}
 
+        /// <summary>
+        /// Merges two structures that are offset by different offsets in their parent
+        /// structure.
+        /// </summary>
+        /// <param name="a">First structure.</param>
+        /// <param name="aOffset">First structure's offset in parent structure.</param>
+        /// <param name="b">Second structure.</param>
+        /// <param name="bOffset">Second structure's offset in parent structure.</param>
+        /// <returns>A merged structure.
+        /// </returns>
 		public StructureType MergeOffsetStructures(StructureType a, int aOffset, StructureType b, int bOffset)
 		{
 			int delta = bOffset - aOffset;
@@ -125,7 +158,7 @@ namespace Reko.Typing
 			int offset = 0;
 			for (int i = 0; i < s.Fields.Count; ++i)
 			{
-                if (!(s.Fields[i].DataType is ArrayType a))
+                if (s.Fields[i].DataType is not ArrayType a)
                     continue;
                 EquivalenceClass? eqElem = a.ElementType as EquivalenceClass;
                 StructureType? strElem;
@@ -157,7 +190,13 @@ namespace Reko.Typing
 			}
 		}
 
-		public StructureType MergeStructureFields(StructureType str)
+        /// <summary>
+        /// Merges structure fields that have the same offset.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+
+        public StructureType MergeStructureFields(StructureType str)
 		{
 			if (!HasCoincidentFields(str))
 				return str;
@@ -208,7 +247,7 @@ namespace Reko.Typing
 			return strNew;
 		}
 
-		public bool StructuresOverlap(StructureType? a, int aOffset, StructureType? b, int bOffset)
+		private static bool StructuresOverlap(StructureType? a, int aOffset, StructureType? b, int bOffset)
 		{
 			if (a is null || b is null)
 				return false;
@@ -217,6 +256,9 @@ namespace Reko.Typing
 			return (aOffset + a.Size > bOffset);
 		}
 
+        /// <summary>
+        /// Performs the type transformation on all types in the type store.
+        /// </summary>
 		public void Transform()
 		{
 			var ppr = new PtrPrimitiveReplacer(factory, store, program, eventListener);
@@ -277,32 +319,38 @@ namespace Reko.Typing
 
 		#region DataTypeTransformer methods  //////////////////////////////////////////
 
+        /// <inheritdoc/>
         public DataType VisitArray(ArrayType arr)
         {
             arr.ElementType = arr.ElementType.Accept(this);
             return arr;
         }
 
+        /// <inheritdoc/>
         public DataType VisitClass(ClassType ct)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public DataType VisitCode(CodeType c)
         {
             return c;
         }
 
+        /// <inheritdoc/>
         public DataType VisitEnum(EnumType e)
         {
             return e;
         }
 
+        /// <inheritdoc/>
         public DataType VisitEquivalenceClass(EquivalenceClass eq)
         {
             return eq;
         }
 
+        /// <inheritdoc/>
         public DataType VisitFunctionType(FunctionType fn)
         {
             if (!fn.HasVoidReturn)
@@ -319,6 +367,7 @@ namespace Reko.Typing
             return fn;
         }
 
+        /// <inheritdoc/>
         public DataType VisitMemberPointer(MemberPointer mptr)
         {
             mptr.BasePointer = mptr.BasePointer.Accept(this);
@@ -334,28 +383,33 @@ namespace Reko.Typing
             return mptr;
         }
 
+        /// <inheritdoc/>
         public DataType VisitPointer(Pointer ptr)
         {
             ptr.Pointee = ptr.Pointee.Accept(this);
             return ptr;
         }
 
+        /// <inheritdoc/>
         public DataType VisitReference(ReferenceTo refTo)
         {
             refTo.Referent = refTo.Referent.Accept(this);
             return refTo;
         }
 
+        /// <inheritdoc/>
         public DataType VisitPrimitive(PrimitiveType pt)
         {
             return pt;
         }
 
+        /// <inheritdoc/>
         public DataType VisitString(StringType str)
         {
             return str;
         }
 
+        /// <inheritdoc/>
         public DataType VisitStructure(StructureType str)
 		{
             // Do not transform user-defined types
@@ -397,17 +451,19 @@ namespace Reko.Typing
             return true;
         }
 
-
+        /// <inheritdoc/>
         public DataType VisitTypeReference(TypeReference typeref)
         {
             return typeref;
         }
 
+        /// <inheritdoc/>
         public DataType VisitTypeVariable(TypeVariable tv)
         {
             return tv;
         }
 
+        /// <inheritdoc/>
 		public DataType VisitUnion(UnionType ut)
 		{
             // Do not transform user-defined types
@@ -440,11 +496,13 @@ namespace Reko.Typing
             return dt;
 		}
 
+        /// <inheritdoc/>
         public DataType VisitUnknownType(UnknownType unk)
         {
             return unk;
         }
 
+        /// <inheritdoc/>
         public DataType VisitVoidType(VoidType vt)
         {
             return vt;

@@ -30,6 +30,7 @@ namespace Reko.Evaluation
 {
     public partial class ExpressionSimplifier
     {
+        /// <inheritdoc/>
         public virtual (Expression, bool) VisitBinaryExpression(BinaryExpression binExp)
         {
             // BinaryExpressions are the most common and occur in clusters that sometimes
@@ -387,7 +388,7 @@ namespace Reko.Evaluation
                     binLeft.Left, binLeft.Right);
                 return (e, true);
             }
-            e = addMici.Match(binExp, ctx);
+            e = addMici.Match(binExp);
             if (e is not null)
             {
                 return (e, true);
@@ -542,7 +543,7 @@ namespace Reko.Evaluation
                 }
             }
             // (+ id1 id1) ==> (* id1 2)
-            var e = add2ids.Match(binExp, ctx);
+            var e = add2ids.Match(binExp);
             if (e is not null)
             {
                 (e, _) = e.Accept(this);
@@ -560,7 +561,7 @@ namespace Reko.Evaluation
                 (e, _) = e.Accept(this);
                 return (e, true);
             }
-            e = distributedSlice.Match(binExp);
+            e = distributedSlice.Match(binExp, m);
             if (e is not null)
             {
                 (e, _) = e.Accept(this);

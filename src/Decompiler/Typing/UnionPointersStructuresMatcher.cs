@@ -24,28 +24,35 @@ using System.Collections.Generic;
 
 namespace Reko.Typing
 {
-	/// <summary>
-	/// Matches the pattern: (union (ptr T_1) (ptr T_2) ... (ptr T_n)) where T_1.class .. T_n.class are all structures.
-	/// </summary>
-	public class UnionPointersStructuresMatcher
+    /// <summary>
+    /// Matches the pattern: <c>(union (ptr T_1) (ptr T_2) ... (ptr T_n))</c> where <c>T_1.class .. T_n.class</c> are all structures.
+    /// </summary>
+    public class UnionPointersStructuresMatcher
 	{
 		private readonly List<EquivalenceClass> eqClasses;
 		private readonly List<StructureType> strs;
         private int pointerBitSize;
 
-
-		public UnionPointersStructuresMatcher()
+        /// <summary>
+        /// Constructs an instance of the <see cref="UnionPointersStructuresMatcher"/> class.
+        /// </summary>
+        public UnionPointersStructuresMatcher()
 		{
-			this.eqClasses = new List<EquivalenceClass>();
-			this.strs = new List<StructureType>();
+			this.eqClasses = [];
+			this.strs = [];
 		}
 
+        /// <summary>
+        /// Tests whether the given <see cref="UnionType"/> matches the pattern of a union of pointers to structures.
+        /// </summary>
+        /// <param name="ut"></param>
+        /// <returns></returns>
 		public bool Match(UnionType ut)
 		{
             int structureSize = 0;
 			foreach (UnionAlternative a in ut.Alternatives.Values)
 			{
-                if (!(a.DataType is Pointer p))
+                if (a.DataType is not Pointer p)
                     return false;
 
                 if (pointerBitSize == 0)
@@ -53,10 +60,10 @@ namespace Reko.Typing
                 else if (pointerBitSize != p.BitSize)
                     return false;
 
-                if (!(p.Pointee is EquivalenceClass eq))
+                if (p.Pointee is not EquivalenceClass eq)
                     return false;
 
-                if (!(eq.DataType is StructureType s))
+                if (eq.DataType is not StructureType s)
                     return false;
 
                 if (structureSize == 0)
@@ -70,16 +77,25 @@ namespace Reko.Typing
 			return true;
 		}
 
+        /// <summary>
+        /// The bit size of the pointers in the union.
+        /// </summary>
         public int PointerBitSize
         {
             get { return pointerBitSize; }
         }
 
+        /// <summary>
+        /// The various structures that were matched in the union.
+        /// </summary>
 		public ICollection<StructureType> Structures 
 		{
 			get { return strs; }
 		}
 
+        /// <summary>
+        /// The equivalence classes that were matched in the union.
+        /// </summary>
 		public ICollection<EquivalenceClass> EquivalenceClasses
 		{
 			get { return eqClasses; }

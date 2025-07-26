@@ -30,7 +30,12 @@ namespace Reko.Evaluation
 	/// </summary>
 	public class AddTwoIdsRule
 	{
-		public Expression? Match(BinaryExpression binExp, EvaluationContext ctx)
+        /// <summary>
+        /// Match a binary expression that adds two identifiers together.
+        /// </summary>
+        /// <param name="binExp">Binary expression to match.</param>
+        /// <returns></returns>
+		public Expression? Match(BinaryExpression binExp)
 		{
             if (binExp.Left is not Identifier idLeft)
                 return null;

@@ -32,10 +32,17 @@ namespace Reko.Evaluation
     /// </summary>
     public class IdConstant
     {
-        public IdConstant()
-        {
-        }
-
+        /// <summary>
+        /// Perform constant propagation on an identifier, unifying the
+        /// data type of the identifier with the data type of the source.
+        /// </summary>
+        /// <param name="id">Identtifier to constant propagate.</param>
+        /// <param name="ctx">Evaluation context to use.</param>
+        /// <param name="unifier">Unifier used to unify constant value with identifier use.</param>
+        /// <param name="listener">Used for diagnostic output.</param>
+        /// <returns>Either a constant or a null expression if no
+        /// matching constant was found.
+        /// </returns>
         public Expression? Match(Identifier id, EvaluationContext ctx, Unifier unifier, IEventListener listener)
         {
             var src = ctx.GetValue(id);

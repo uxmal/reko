@@ -21,56 +21,56 @@
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
 
-namespace Reko.Evaluation
+namespace Reko.Evaluation;
+
+public partial class ExpressionSimplifier
 {
-    public partial class ExpressionSimplifier
+    /// <inheritdoc/>
+    public virtual (Expression, bool) VisitUnaryExpression(UnaryExpression unary)
     {
-        public virtual (Expression, bool) VisitUnaryExpression(UnaryExpression unary)
+        var (e, changed) = unary.Expression.Accept(this);
+        if (changed)
+            unary = m.Unary(unary.Operator, unary.DataType, e);
+        e = negSub.Match(unary);
+        if (e is not null)
         {
-            var (e, changed) = unary.Expression.Accept(this);
-            if (changed)
-                unary = m.Unary(unary.Operator, unary.DataType, e);
-            e = negSub.Match(unary);
-            if (e is not null)
-            {
-                return (e, true);
-            }
-
-            e = LogicalNotComparison(unary);
-            if (e is not null)
-            {
-                return (e, true);
-            }
-            e = compSub.Match(unary);
-            if (e is not null)
-            {
-                return (e, true);
-            }
-
-            // (!-exp) >= (!exp)
-            e = logicalNotFollowedByNeg.Match(unary);
-            if (e is not null)
-            {
-                return (e, true);
-            }
-
-            if (unary.Expression is Constant c && c.IsValid && unary.Operator.Type != OperatorType.AddrOf)
-            {
-                var c2 = unary.Operator.ApplyConstant(c);
-                return (c2, true);
-            }
-            return (unary, changed);
+            return (e, true);
         }
 
-        private static Expression? LogicalNotComparison(UnaryExpression unary)
+        e = LogicalNotComparison(unary);
+        if (e is not null)
         {
-            if (unary.Operator.Type == OperatorType.Not &&
-                unary.Expression is BinaryExpression bin &&
-                bin.Operator is ConditionalOperator cond)
-            {
-                return new BinaryExpression((BinaryOperator)cond.Invert(), bin.DataType, bin.Left, bin.Right);
-            }
-            return null;
+            return (e, true);
         }
+        e = compSub.Match(unary);
+        if (e is not null)
+        {
+            return (e, true);
+        }
+
+        // (!-exp) >= (!exp)
+        e = logicalNotFollowedByNeg.Match(unary);
+        if (e is not null)
+        {
+            return (e, true);
+        }
+
+        if (unary.Expression is Constant c && c.IsValid && unary.Operator.Type != OperatorType.AddrOf)
+        {
+            var c2 = unary.Operator.ApplyConstant(c);
+            return (c2, true);
+        }
+        return (unary, changed);
+    }
+
+    private static Expression? LogicalNotComparison(UnaryExpression unary)
+    {
+        if (unary.Operator.Type == OperatorType.Not &&
+            unary.Expression is BinaryExpression bin &&
+            bin.Operator is ConditionalOperator cond)
+        {
+            return new BinaryExpression((BinaryOperator)cond.Invert(), bin.DataType, bin.Left, bin.Right);
+        }
+        return null;
     }
 }

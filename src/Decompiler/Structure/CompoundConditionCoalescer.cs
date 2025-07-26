@@ -20,13 +20,10 @@
 
 using Reko.Core;
 using Reko.Core.Code;
-using Reko.Core.Graphs;
 using Reko.Core.Expressions;
-using Reko.Core.Operators;
-using Reko.Core.Types;
+using Reko.Core.Graphs;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace Reko.Structure
 {
@@ -35,19 +32,26 @@ namespace Reko.Structure
 	/// </summary>
 	/// <remarks>
 	/// A compound condition is expressed in C as
-	/// <code>a && b</code> or <code>a || b</code>
+	/// <code>a &amp;&amp; b</code> or <code>a || b</code>
 	/// </remarks>
 	public class CompoundConditionCoalescer
 	{
-		private Procedure proc;
-        private ExpressionEmitter m;
+		private readonly Procedure proc;
+        private readonly ExpressionEmitter m;
 
+        /// <summary>
+        /// Constructs an instance of the <see cref="CompoundConditionCoalescer"/> class.
+        /// </summary>
+        /// <param name="proc">Procedure to transform.</param>
 		public CompoundConditionCoalescer(Procedure proc)
 		{
 			this.proc = proc;
             this.m = new ExpressionEmitter();
 		}
 
+        /// <summary>
+        /// Performs the transformation of the procedure.
+        /// </summary>
 		public void Transform()
 		{
 			bool fChanged;
@@ -177,9 +181,9 @@ namespace Reko.Structure
 		/// Removes the now redundant block from the procedure graph.
 		/// </summary>
 		/// <param name="block"></param>
-		/// <param name="blockOld"></param>
-		/// <param name="blockNew"></param>
-		/// <param name="fTrueBranch"></param>
+		/// <param name="blockRedundant"></param>
+		/// <param name="blockChain"></param>
+		/// <param name="blockCommon"></param>
 		private void RebuildCompoundGraph(
 			Block block, 
 			Block blockRedundant, 
@@ -198,7 +202,7 @@ namespace Reko.Structure
 		}
 
 
-		private void ReplaceBlock(List<Block> blocks, Block old, Block gnu)
+		private static void ReplaceBlock(List<Block> blocks, Block old, Block gnu)
 		{
 			for (int i = 0; i < blocks.Count; ++i)
 				if (blocks[i] == old)

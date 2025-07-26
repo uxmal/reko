@@ -38,11 +38,16 @@ namespace Reko.Typing
 	{
         private readonly ArrayExpressionMatcher aem;
 
+        /// <summary>
+        /// Constructs an instance of the <see cref="ExpressionNormalizer"/> class.
+        /// </summary>
+        /// <param name="pointerType">Data type of a generic pointer.</param>
         public ExpressionNormalizer(PrimitiveType pointerType)
         {
 		    this.aem = new ArrayExpressionMatcher(pointerType);
         }
 
+        /// <inheritdoc/>
 		public override Expression VisitMemoryAccess(MemoryAccess access)
         {
             var ea = access.EffectiveAddress.Accept(this);
@@ -111,6 +116,7 @@ namespace Reko.Typing
             return newEa;
         }
 
+        /// <inheritdoc/>
         public override Expression VisitSegmentedAddress(SegmentedPointer address)
         {
             var ea = address.Offset.Accept(this);
@@ -118,6 +124,10 @@ namespace Reko.Typing
             return new SegmentedPointer(address.DataType, basePtr, ea);
         }
 
+        /// <summary>
+        /// Transforms all expressions in the given program to canonical form.
+        /// </summary>
+        /// <param name="program">Program being analyzed.</param>
 		public void Transform(Program program)
 		{
 			foreach (Procedure proc in program.Procedures.Values)

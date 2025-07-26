@@ -51,6 +51,16 @@ namespace Reko.Scanning
         private Identifier? UsedAsFlag;
         private TBlock? startBlock;
 
+        /// <summary>
+        /// Constructs an instance of <see cref="Backwalker{TBlock, TInstr}"/>.
+        /// </summary>
+        /// <param name="host">Hosting context providing abstract services for the 
+        /// backwalker.</param>
+        /// <param name="xfer">The indirect transfer instruction that will be
+        /// backwalked from.</param>
+        /// <param name="eval"><see cref="ExpressionSimplifier"/> to use when
+        /// evaluating expressions.
+        /// </param>
         public Backwalker(IBackWalkHost<TBlock, TInstr> host, RtlTransfer xfer, ExpressionSimplifier eval)
 		{
             this.host = host;
@@ -76,11 +86,38 @@ namespace Reko.Scanning
         /// The register used to perform a table-dispatch switch.
         /// </summary>
         public RegisterStorage? Index { get; private set; }
+
+        /// <summary>
+        /// The expression used to perform a table-dispatch switch.
+        /// </summary>
         public Expression? IndexExpression { get; set; }
+
+        /// <summary>
+        /// The <see cref="Identifier"/> of any flags used to guard the 
+        /// table-dispatch instruction.
+        /// </summary>
         public Identifier? UsedFlagIdentifier { get; set; }
+
+        /// <summary>
+        /// The stride of the table, i.e. the number of bytes between each
+        /// entry.
+        /// </summary>
         public int Stride { get; private set; }
+
+        /// <summary>
+        /// The address of the vector table, if it can be determined.
+        /// </summary>
         public Address? VectorAddress { get; private set; }
+
+        /// <summary>
+        /// The operations that were performed on the index register
+        /// to produce the indexing expression.
+        /// </summary>
         public List<BackwalkOperation> Operations { get; private set; }
+
+        /// <summary>
+        /// Size of the jump in addressable units.
+        /// </summary>
         public int JumpSize { get; set; }
 
         /// <summary>
@@ -115,6 +152,16 @@ namespace Reko.Scanning
             return Operations;
         }
 
+        /// <summary>
+        /// Backwalks a single instruction, recording the operations
+        /// that might affect the index expression.
+        /// </summary>
+        /// <param name="instr">Instruction to analyze.</param>
+        /// <returns>True if backwalking should continuel;
+        /// false if either enough information has been obtained to 
+        /// reconstruct the index call, or if no information was
+        /// gathered.
+        /// </returns>
         public bool BackwalkInstruction(TInstr instr)
         {
             var ass = host.AsAssignment(instr);
@@ -356,6 +403,14 @@ namespace Reko.Scanning
                 return RegisterStorage.None;
         }
 
+        /// <summary>
+        /// Performs a backwalk of the instructions in the
+        /// in the sequence <paramref name="backwardStatementSequence"/>,
+        /// </summary>
+        /// <param name="backwardStatementSequence">Statements to backwalk,
+        /// in reverse address order.</param>
+        /// <returns>True if backwalking should continue; otherwise false.
+        /// </returns>
         public bool BackwalkInstructions(
             IEnumerable<TInstr> backwardStatementSequence)
         {
@@ -367,17 +422,32 @@ namespace Reko.Scanning
             return true;
         }
 
+        /// <summary>
+        /// Performs a backwalk of the instructions in the
+        /// in the basic block <paramref name="block"/>,
+        /// in reverse address order.
+        /// </summary>
+        /// <param name="block">Basic block containing the statements
+        /// to backwalk, in reverse address order.</param>
+        /// <returns>True if backwalking should continue; otherwise false.
+        /// </returns>
         public bool BackwalkInstructions(TBlock block)
         {
             return BackwalkInstructions(host.GetBlockInstructions(block)
                 .Select(p => p.Item2).Reverse()!);
         }
 
+        /// <summary>
+        /// Dumps the contents of the <paramref name="block"/> to the
+        /// debug output, for debugging purposes.
+        /// </summary>
+        /// <param name="regIdx">Index register.</param>
+        /// <param name="block">Basic block to dump</param>
         [Conditional("DEBUG")]
         public void DumpBlock(RegisterStorage regIdx, Block block)
         {
             Debug.Print("Backwalking register {0} through block: {1}", regIdx, block.DisplayName);
-            foreach (var stm in block.Statements  )
+            foreach (var stm in block.Statements)
             {
                 Debug.Print("    {0}", stm.Instruction);
             }
@@ -418,6 +488,10 @@ namespace Reko.Scanning
                 return 1;
         }
 
+        /// <summary>
+        /// True if backwalking can continue.
+        /// </summary>
+        /// <returns>True if the index register is known; false otherwise.</returns>
         public bool CanBackwalk()
         {
             return Index is not null;

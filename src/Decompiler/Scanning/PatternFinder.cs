@@ -24,12 +24,15 @@ using System.Collections.Generic;
 
 namespace Reko.Scanning
 {
+    /// <summary>
+    /// Searches for patterns inside of a memory area.
+    /// </summary>
     public class PatternFinder
     {
         /// <summary>
         /// Given a <see cref="ByteMemoryArea"/> finds sequences of consecutive
         /// bytes corresponding to ASCII characters. The sequences must be at
-        /// least <see cref="minStringLength"/> bytes long.
+        /// least <paramref name="minStringLength"/> bytes long.
         /// </summary>
         /// <param name="buffer"></param>
         /// <param name="minStringLength"></param>
@@ -73,6 +76,14 @@ namespace Reko.Scanning
             return strings;
         }
 
+        /// <summary>
+        /// Finds procedure prologs within the memory area.
+        /// </summary>
+        /// <param name="buffer">Memory area being searched.</param>
+        /// <param name="prologs">Procedure prologs, organized into a trie.
+        /// </param>
+        /// <returns>A list of the offsets at which prlogs were found.
+        /// </returns>
         public static List<ulong> FindProcedurePrologs(ByteMemoryArea buffer, ByteTrie<object> prologs)
         {
             var match = prologs.Match(buffer.Bytes, 0);

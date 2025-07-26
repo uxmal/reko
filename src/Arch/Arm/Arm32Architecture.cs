@@ -208,8 +208,7 @@ namespace Reko.Arch.Arm
             FlagGroupStorage? f;
             while (!flagGroups.TryGetValue(grf, out f))
             {
-                var flagregister =
-                    Registers.cpsr;
+                var flagregister = Registers.cpsr;
                 f = new FlagGroupStorage(flagregister, grf, GrfToString(flagRegister, "", grf));
                 if (flagGroups.TryAdd(grf, f))
                     return f;

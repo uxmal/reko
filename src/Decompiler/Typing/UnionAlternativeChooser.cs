@@ -47,48 +47,68 @@ namespace Reko.Typing
             this.unifier = new Unifier();
         }
 
+        /// <summary>
+        /// Given a union type, a result data type and an offset,
+        /// choose an alternative from the union that matches the result data type
+        /// </summary>
+        /// <param name="ut"></param>
+        /// <param name="dtResult"></param>
+        /// <param name="isEnclosingPtr"></param>
+        /// <param name="offset"></param>
+        /// <returns></returns>
         public static UnionAlternative? Choose(
-            UnionType ut, DataType? dtResult, bool isEnclosingPtr, int offset)
+            UnionType ut,
+            DataType? dtResult,
+            bool isEnclosingPtr,
+            int offset)
         {
             return Choose(
                 ut, dtResult, isEnclosingPtr, offset, new HashSet<DataType>());
         }
 
+        /// <inheritdoc/>
         public bool VisitArray(ArrayType at)
         {
             return IsValidState(at);
         }
 
+        /// <inheritdoc/>
         public bool VisitClass(ClassType ct)
         {
             return IsValidState(ct);
         }
 
+        /// <inheritdoc/>
         public bool VisitCode(CodeType c)
         {
             return IsValidState(c);
         }
 
+        /// <inheritdoc/>
         public bool VisitEnum(EnumType e)
         {
             return IsValidState(e);
         }
 
+        /// <inheritdoc/>
         public bool VisitEquivalenceClass(EquivalenceClass eq)
         {
             return eq.DataType.Accept(this);
         }
 
+        /// <inheritdoc/>
         public bool VisitFunctionType(FunctionType ft)
         {
             return IsValidState(ft);
         }
 
+        /// <inheritdoc/>
         public bool VisitMemberPointer(MemberPointer memptr)
         {
             return IsValidState(memptr);
         }
 
+        /// <inheritdoc/>
         public bool VisitPointer(Pointer ptr)
         {
             if (this.isEnclosingPtr)
@@ -97,21 +117,25 @@ namespace Reko.Typing
             return ptr.Pointee.Accept(this);
         }
 
+        /// <inheritdoc/>
         public bool VisitPrimitive(PrimitiveType ptr)
         {
             return IsValidState(ptr);
         }
 
+        /// <inheritdoc/>
         public bool VisitReference(ReferenceTo refTo)
         {
             return IsValidState(refTo);
         }
 
+        /// <inheritdoc/>
         public bool VisitString(StringType str)
         {
             return IsValidState(str);
         }
 
+        /// <inheritdoc/>
         public bool VisitStructure(StructureType str)
         {
             if (visitedTypes.Contains(str))
@@ -126,29 +150,33 @@ namespace Reko.Typing
             return field.DataType.Accept(this);
         }
 
+        /// <inheritdoc/>
         public bool VisitTypeReference(TypeReference typeref)
         {
             return typeref.Referent.Accept(this);
         }
 
+        /// <inheritdoc/>
         public bool VisitTypeVariable(TypeVariable tv)
         {
             return IsValidState(tv);
         }
 
+        /// <inheritdoc/>
         public bool VisitUnion(UnionType ut)
         {
-            if (visitedTypes.Contains(ut))
+            if (!visitedTypes.Add(ut))
                 return false;
-            visitedTypes.Add(ut);
             return Choose(ut) is not null;
         }
 
+        /// <inheritdoc/>
         public bool VisitUnknownType(UnknownType ut)
         {
             return IsValidState(ut);
         }
 
+        /// <inheritdoc/>
         public bool VisitVoidType(VoidType voidType)
         {
             return IsValidState(voidType);

@@ -29,10 +29,12 @@ namespace Reko.Evaluation
 	/// </summary>
 	public class SliceMem_Rule
 	{
-		public SliceMem_Rule()
-		{
-        }
-
+        /// <summary>
+        /// Matches slices of memory accesses and returns smaller memory accesses.
+        /// </summary>
+        /// <param name="slice"></param>
+        /// <param name="ctx"></param>
+        /// <returns></returns>
 		public Expression? Match(Slice slice, EvaluationContext ctx)
 		{
             if (slice.Expression is not MemoryAccess acc)
@@ -46,13 +48,11 @@ namespace Reko.Evaluation
                 ea = segptr.Offset;
 			Constant offset = Constant.Create(ea.DataType, 0);
 			BinaryOperator op = Operator.IAdd;
-            if (ea is BinaryExpression bin)
+            if (ea is BinaryExpression bin &&
+                bin.Right is Constant c)
             {
-                if (bin.Right is Constant c)
-                {
-                    offset = c;
-                    ea = bin.Left;
-                }
+                offset = c;
+                ea = bin.Left;
             }
             int bitBegin = slice.Offset;
 			int bitEnd = bitBegin + slice.DataType.BitSize;

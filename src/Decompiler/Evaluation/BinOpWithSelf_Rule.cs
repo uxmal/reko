@@ -25,8 +25,19 @@ using System;
 
 namespace Reko.Evaluation
 {
+    /// <summary>
+    /// Many binary operations can be simplified when the left and right 
+    /// operands are the same.
+    /// </summary>
     public class BinOpWithSelf_Rule
     {
+        /// <summary>
+        /// Tests whether the given binary expression is a binary operation with identical
+        /// left and right operands, and if so, returns a simplified expression.
+        /// </summary>
+        /// <param name="binExp">Binary expression to test.</param>
+        /// <param name="ctx">(Unused) <see cref="EvaluationContext"/>.</param>
+        /// <returns></returns>
         public Expression? Match(BinaryExpression binExp, EvaluationContext ctx)
         {
             var id = binExp.Left as Identifier;

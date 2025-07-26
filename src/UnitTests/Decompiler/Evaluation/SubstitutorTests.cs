@@ -19,16 +19,12 @@
 #endregion
 
 using Moq;
+using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
-using Reko.UnitTests.Mocks;
 using Reko.Evaluation;
-using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Reko.UnitTests.Mocks;
 
 namespace Reko.UnitTests.Decompiler.Evaluation
 {

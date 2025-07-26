@@ -46,6 +46,11 @@ public class WebBuilder
     private readonly AnalysisContext context;
     private readonly Dictionary<Identifier, LinearInductionVariable> ivs;
 
+    /// <summary>
+    /// Constructs an instance of <see cref="WebBuilder"/> for the given analysis context
+    /// </summary>
+    /// <param name="context"><see cref="AnalysisContext"/> to use.</param>
+    /// <param name="ivs">Mapping from identifiers to induction variables.</param>
     public WebBuilder(
         AnalysisContext context,
         Dictionary<Identifier, LinearInductionVariable> ivs)
@@ -54,10 +59,13 @@ public class WebBuilder
         this.ivs = ivs;
     }
 
+    /// <inheritdoc />
     public string Id => "webb";
 
+    /// <inheritdoc />
     public string Description => "Joins connected SSA 'net', forming webs";
 
+    /// <inheritdoc />
     public (SsaState, bool) Transform(SsaState ssa)
     {
         var program = context.Program;
@@ -66,7 +74,7 @@ public class WebBuilder
         return (ssa, true);
     }
 
-    public class Worker
+    private class Worker
 	{
         private readonly IReadOnlyProgram program;
 		private readonly SsaState ssa;

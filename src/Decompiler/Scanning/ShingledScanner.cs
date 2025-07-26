@@ -58,15 +58,30 @@ namespace Reko.Scanning
         private const InstrClass DT = InstrClass.Transfer | InstrClass.Delay;
         private const InstrClass DCT = InstrClass.Transfer | InstrClass.Conditional | InstrClass.Delay;
 
+        /// <summary>
+        /// A unique address that is used to represent invalid instructions.
+        /// </summary>
         public readonly Address Bad;
 
         private readonly Program program;
         private readonly ScanResults sr;
         private readonly IRewriterHost host;
         private readonly IStorageBinder storageBinder;
-        private readonly IDecompilerEventListener eventListener;
+        private readonly IEventListener eventListener;
 
-        public ShingledScanner(Program program, IRewriterHost host, IStorageBinder storageBinder, ScanResults sr, IDecompilerEventListener eventListener)
+        /// <summary>
+        /// Creates an instance of the <see cref="ShingledScanner"/> class.
+        /// </summary>
+        /// <param name="program">Program being analyzed.</param>
+        /// <param name="host"><see cref="IRewriterHost"/> instance used when
+        /// lifting instructions.</param>
+        /// <param name="storageBinder"><see cref="IStorageBinder"/> instance that
+        /// maps <see cref="Storage"/>s to <see cref="Identifier"/>s.</param>
+        /// <param name="sr">Scan results collected so far.</param>
+        /// <param name="eventListener"><see cref="IEventListener"/> instance to which
+        /// diagnostic messages are sent.
+        /// </param>
+        public ShingledScanner(Program program, IRewriterHost host, IStorageBinder storageBinder, ScanResults sr, IEventListener eventListener)
         {
             this.program = program;
             this.host = host;
@@ -131,6 +146,10 @@ namespace Reko.Scanning
             };
         }
 
+        /// <summary>
+        /// Scanns all executable segments of the given program.
+        /// </summary>
+        /// <returns></returns>
         public Dictionary<ImageSegment, byte[]> ScanExecutableSegments()
         {
             var map = new Dictionary<ImageSegment, byte[]>();
@@ -161,7 +180,8 @@ namespace Reko.Scanning
         /// invalid instruction will result in an edge from "bad" to that 
         /// instruction.
         /// </remarks>
-        /// <param name="segment"></param>
+        /// <param name="chunk">Range of addresses to disassemble.</param>
+        /// <param name="workToDo">The total amount of work to do, used for progress reporting.</param>
         /// <returns>An array of bytes classifying each byte as code or data.
         /// </returns>
         public byte[] ScanRange(in Chunk chunk, ulong workToDo)
@@ -300,15 +320,19 @@ namespace Reko.Scanning
         }
 
 
-        public void AddEdge(Address from, Address to)
+        private void AddEdge(Address from, Address to)
         {
             if (from == Bad)
                 return;
             sr.FlatEdges.Add(new ScanResults.Link(to, from));
         }
 
-        // Remove blocks that fall off the end of the segment
-        // or into data.
+        /// <summary>
+        /// Removes blocks that fall off the end of the segment
+        /// or into data.
+        /// </summary>
+        /// <returns>Addresses of dead instructions that should no longer be
+        /// reachable.</returns>
         public HashSet<Address> RemoveBadInstructionsFromGraph()
         {
             // Use only for debugging the bad paths.
@@ -355,8 +379,11 @@ namespace Reko.Scanning
         /// available from the rewriter pool, remove it from the pool and use it,
         /// otherwise create a new one.
         /// </summary>
-        /// <param name="addr"></param>
-        /// <returns></returns>
+        /// <param name="arch">The processor architecture.</param>
+        /// <param name="addr">Address at which to start.</param>
+        /// <param name="pool">Collection of "active" instructio rewriters.
+        /// </param>
+        /// <returns>A possibly reused RTL instruction rewriter.</returns>
         private IEnumerator<RtlInstructionCluster> GetRewriter(
             IProcessorArchitecture arch,
             Address addr, 
@@ -390,6 +417,11 @@ namespace Reko.Scanning
             }
         }
 
+        /// <summary>
+        /// Unused, soon to be discarded.
+        /// </summary>
+        /// <param name="deadNodes"></param>
+        /// <returns></returns>
         public DiGraph<RtlBlock> BuildIcfg(HashSet<Address> deadNodes)
         {
             throw new NotImplementedException();
@@ -404,7 +436,7 @@ namespace Reko.Scanning
         /// in one block at a time, so at each point in the graph where the 
         /// successors > 1 or the predecessors > 1, we create a new node.
         /// </summary>
-        /// <param name="instructions"></param>
+        /// <param name="graph">Graph of instruction addresses.</param>
         /// <returns></returns>
         public IcfgBuilder BuildBlocks(DiGraph<Address> graph)
         {
@@ -633,7 +665,7 @@ namespace Reko.Scanning
             return null;
         }
 
-        public IEnumerable<KeyValuePair<Address, int>> SpeculateCallDests(IDictionary<ImageSegment, byte[]> map)
+        private IEnumerable<KeyValuePair<Address, int>> SpeculateCallDests(IDictionary<ImageSegment, byte[]> map)
         {
             var addrs = 
                 from addr in this.sr.DirectlyCalledAddresses
@@ -651,6 +683,11 @@ namespace Reko.Scanning
                 throw new InvalidOperationException(string.Format("Address {0} doesn't belong to any segment.", addr));
             return map[seg][addr - seg.Address] == MaybeCode;
         }
+
+        /// <summary>
+        /// Dumps the current state of the scanner to the debug output.
+        /// </summary>
+        /// <param name="caption"></param>
 
         [Conditional("DEBUG")]
         public void Dump(string caption)

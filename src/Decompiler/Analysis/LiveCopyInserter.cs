@@ -145,6 +145,10 @@ namespace Reko.Analysis
 			dur.Transform(sidOld, sidNew);
 		}
 
+        /// <summary>
+        /// Inserts copies of SSA identifiers where needed, so that SSA identifiers
+        /// that interfere with each other have different names.
+        /// </summary>
 		public void Transform()
 		{
 			foreach (var sid in ssaIds.ToArray())
@@ -158,7 +162,7 @@ namespace Reko.Analysis
             }
 		}
 
-		public void Transform(Statement stm, PhiAssignment phi)
+		private void Transform(Statement stm, PhiAssignment phi)
 		{
 			Identifier idDst = phi.Dst;
 			for (int i = 0; i < phi.Src.Arguments.Length; ++i)
@@ -185,7 +189,7 @@ namespace Reko.Analysis
 		}
 
 
-		public class DominatedUseRenamer : InstructionTransformer
+		private class DominatedUseRenamer : InstructionTransformer
 		{
 			private readonly BlockDominatorGraph domGraph;
 			private SsaIdentifier? sidOld; 

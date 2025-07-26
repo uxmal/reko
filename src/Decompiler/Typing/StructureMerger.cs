@@ -34,6 +34,11 @@ namespace Reko.Typing
         private readonly ICollection<EquivalenceClass> eqClasses;
 		private readonly EquivalenceClass? eqMin;
 
+        /// <summary>
+        /// Constructs an instance of the <see cref="StructureMerger"/> class.
+        /// </summary>
+        /// <param name="structures">Structures to merge.</param>
+        /// <param name="eqClasses">Equivalence classes to merge.</param>
         public StructureMerger(ICollection<StructureType> structures, ICollection<EquivalenceClass> eqClasses)
 		{
 			this.structures = structures;
@@ -47,18 +52,30 @@ namespace Reko.Typing
 			}
 		}
 
+        /// <summary>
+        /// The resulting mergged classes.
+        /// </summary>
         public EquivalenceClass MergedClass
         {
             get { return eqMin!; }
         }
 
-		// T_1 --> C_1 --> S_1
-		// T_2 --> C_2 --> S_2
-		// T_3 --> C_3 --> S_3
-
-		// T_1 --> C_1 --> S_New
-		// T_2 --> C_1
-		// T_3 --> C_1
+        /// <summary>
+        /// Perform the merge of the structures.
+        /// </summary>
+        /// <remarks>
+        /// <code>
+        /// T_1 --> C_1 --> S_1
+        /// T_2 --> C_2 --> S_2
+        /// T_3 --> C_3 --> S_3
+        /// </code>
+        /// becomes:
+        /// <code>
+        /// T_1 --> C_1 --> S_New
+        /// T_2 --> C_1
+        /// T_3 --> C_1
+        /// </code>
+        /// </remarks>
         public void Merge()
         {
             Unifier un = new Unifier(new TypeFactory());

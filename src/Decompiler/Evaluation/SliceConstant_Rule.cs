@@ -24,26 +24,34 @@ using Reko.Core.Lib;
 using Reko.Core.Types;
 using System;
 
-namespace Reko.Evaluation
+namespace Reko.Evaluation;
+
+/// <summary>
+/// Replaces sliced constants with a constant.
+/// </summary>
+public class SliceConstant_Rule
 {
-	public class SliceConstant_Rule
+    /// <summary>
+    /// Performs a match and possible replacement of a sliced constant.
+    /// </summary>
+    /// <param name="slice">Slice to match.</param>
+    /// <returns>Sliced constant, or null if no match.
+    /// </returns>
+	public Expression? Match(Slice slice)
 	{
-		public Expression? Match(Slice slice)
-		{
-            var pt = slice.DataType.ResolveAs<PrimitiveType>();
-            if (pt is null)
-                return null;
-            if (slice.Expression is Constant c && c is not InvalidConstant)
+        var pt = slice.DataType.ResolveAs<PrimitiveType>();
+        if (pt is null)
+            return null;
+        if (slice.Expression is Constant c && c is not InvalidConstant)
+        {
+            var ct = c.DataType.ResolveAs<PrimitiveType>();
+            if (ct is not null && pt.BitSize <= ct.BitSize)
             {
-                var ct = c.DataType.ResolveAs<PrimitiveType>();
-                if (ct is not null && pt.BitSize <= ct.BitSize)
-                {
-                    var cSliced = c.Slice(pt, slice.Offset);
-                    cSliced.DataType = slice.DataType;
-                    return cSliced;
-                }
+                var cSliced = c.Slice(pt, slice.Offset);
+                cSliced.DataType = slice.DataType;
+                return cSliced;
             }
-             return null;
         }
-	}
+        return null;
+    }
 }

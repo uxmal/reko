@@ -56,13 +56,19 @@ namespace Reko.Scanning
         private readonly RtlBlock invalidBlock;
         private readonly IStorageBinder binder;
 
+        /// <summary>
+        /// Constructs a new instance of the <see cref="HeuristicScanner"/> class.
+        /// </summary>
+        /// <param name="program"><see cref="Program"/> being analyzed.</param>
+        /// <param name="host"><see cref="IRewriterHost"/> used for lifting instructions.</param>
+        /// <param name="eventListener"><see cref="IEventListener"/> instance to which
+        /// diagnostic messages are sent.
+        /// </param>
         public HeuristicScanner(
-            IServiceProvider services,
             Program program, 
             IRewriterHost host, 
             IDecompilerEventListener eventListener)
         {
-            this.Services = services;
             this.program = program;
             this.host = host;
             this.storageBinder = program.Architecture.CreateFrame();
@@ -71,8 +77,13 @@ namespace Reko.Scanning
             this.binder = program.Architecture.CreateFrame();
         }
 
-        public IServiceProvider Services { get; }
 
+        /// <summary>
+        /// Scans the image for code sequences that look like procedures.
+        /// </summary>
+        /// <param name="sr">Scan results so far.</param>
+        /// <returns>The updated <see cref="ScanResults"/>, or null if no
+        /// new blocks were found.</returns>
         public ScanResults? ScanImage(ScanResults sr)
         {
             // At this point, we have some entries in the image map
@@ -219,8 +230,9 @@ namespace Reko.Scanning
         /// <summary>
         /// Looks for byte patterns that look like procedure entries.
         /// </summary>
-        /// <param name="addrBegin"></param>
-        /// <param name="addrEnd"></param>
+        /// <param name="mem">Memory area to search.</param>
+        /// <param name="addrBegin">Start address of range to search.</param>
+        /// <param name="addrEnd">End address of range to search.</param>
         /// <returns></returns>
         public IEnumerable<Address> FindPossibleProcedureEntries(
             ByteMemoryArea mem,
@@ -232,16 +244,13 @@ namespace Reko.Scanning
                 return [];
 
             byte[]? pattern = h.ProcedurePrologs[0].Bytes;
-            if (pattern is not null)
+            if (pattern is null)
             {
-                var search = new AhoCorasickSearch<byte>(new[] { pattern }, true, true);
-                return search.GetMatchPositions(mem.Bytes)
-                    .Select(i => mem.BaseAddress + i);
+                return [];
             }
-            else
-            {
-                return Array.Empty<Address>();
-            }
+            var search = new AhoCorasickSearch<byte>(new[] { pattern }, true, true);
+            return search.GetMatchPositions(mem.Bytes)
+                .Select(i => mem.BaseAddress + i);
         }
 
         /// <summary>
@@ -249,6 +258,7 @@ namespace Reko.Scanning
         /// that perform a  CALL / JSR / BL to a _known_ procedure 
         /// address.
         /// </summary>
+        /// <param name="mem">Memory area to search.</param>
         /// <param name="knownProcedureAddresses">A sequence of addresses
         /// that are known to be procedures.</param>
         /// <returns>A sequence of linear addresses where those call 

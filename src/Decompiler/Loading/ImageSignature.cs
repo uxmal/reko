@@ -28,15 +28,38 @@ namespace Reko.Loading
     /// </summary>
     public class ImageSignature
     {
+        /// <summary>
+        /// The name of the image signature.
+        /// </summary>
         public string? Name { get; set; }
+
+        /// <summary>
+        /// Optional comments about the image signature.
+        /// </summary>
         public string? Comments { get; set; }
+
+        /// <summary>
+        /// The pattern used to identify the entry point in a collection of items.
+        /// </summary>
         public string? EntryPointPattern { get; set; }
+
+
+        /// <summary>
+        /// The pattern used to identify the image.
+        /// </summary>
         public string? ImagePattern { get; set; }
 
         //$PERF: of course we should compile pattern files into a trie for super performance.
         //$REVIEW: move to ImageSignature class?
         // See https://www.hex-rays.com/products/ida/tech/flirt/in_depth.shtml for implementation
         // ideas.
+        /// <summary>
+        /// Returns true if the image matches the signature.
+        /// </summary>
+        /// <param name="image">Binary image.</param>
+        /// <param name="entryPointOffset">Offset of the entry point from
+        /// the start of the image.</param>
+        /// <returns></returns>
         public bool Matches(byte[] image, uint entryPointOffset)
         {
             try

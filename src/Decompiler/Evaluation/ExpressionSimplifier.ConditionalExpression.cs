@@ -30,6 +30,7 @@ namespace Reko.Evaluation
 {
     public partial class ExpressionSimplifier
     {
+        /// <inheritdoc/>
         public virtual (Expression, bool) VisitConditionalExpression(ConditionalExpression c)
         {
             var (cond, cChanged) = c.Condition.Accept(this);

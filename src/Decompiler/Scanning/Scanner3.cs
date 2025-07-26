@@ -30,7 +30,7 @@ using System.Linq;
 
 namespace Reko.Scanning
 {
-    public class Scanner3 : IScanner
+    internal class Scanner3 : IScanner
     {
         private static readonly TraceSwitch trace = new(nameof(Scanner3), "");
 

@@ -29,15 +29,23 @@ namespace Reko.Typing
     /// the leaves of expression trees to their roots.
     /// </summary>
     /// <remarks>
+    /// <code>
     ///    root
     ///  ↑ /  \ ↑
     /// leaf  leaf
+    /// </code>
     /// </remarks>
     public class ExpressionTypeAscender : ExpressionTypeAscenderBase
     {
         private readonly ITypeStore store;
         private readonly Unifier unifier;
 
+        /// <summary>
+        /// Constructs an instance of the <see cref="ExpressionTypeAscender"/> class.
+        /// </summary>
+        /// <param name="program">Program being analyzed.</param>
+        /// <param name="store">Type store containing all types.</param>
+        /// <param name="factory">Type factory used to create data types.</param>
         public ExpressionTypeAscender(
             Program program,
             TypeStore store,
@@ -48,6 +56,7 @@ namespace Reko.Typing
             this.unifier = new DataTypeBuilderUnifier(factory, store);
         }
 
+        /// <inheritdoc/>
         protected override DataType RecordDataType(DataType dt, Expression exp)
         {
             var tv = store.GetTypeVariable(exp);
@@ -56,6 +65,7 @@ namespace Reko.Typing
             return tv.DataType;
         }
 
+        /// <inheritdoc/>
         protected override DataType EnsureDataType(DataType dt, Expression exp)
         {
             var tv = store.GetTypeVariable(exp);

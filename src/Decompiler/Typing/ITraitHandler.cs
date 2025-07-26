@@ -38,6 +38,9 @@ namespace Reko.Typing
 		/// </summary>
 		void ArrayTrait(TypeVariable tArray, int elementSize, int length);
 
+        /// <summary>
+        /// Builds the data types for all equivalence classes.
+        /// </summary>
 		void BuildEquivalenceClassDataTypes();
 
 		/// <summary>
@@ -66,6 +69,15 @@ namespace Reko.Typing
 		/// <param name="eField">Type variable for the field.</param>
 		/// <param name="offset">Field offset within the structure (in bytes).</param>
         DataType MemAccessTrait(Expression? eBase, Expression eStruct, int structPtrBitSize, Expression eField, int offset);
+
+        /// <summary>
+        /// <paramref name="eStruct"/> has a field of type <paramref name="eField"/> at offset <paramref name="offset"/>,
+        /// the memory access is a member pointer based on <paramref name="eBase"/>.
+        /// </summary>
+        /// <param name="eBase">Base pointer for member pointer accesses, or null for simple pointer accesses.</param>
+        /// <param name="eStruct">Type variable of the structure whose field is being accessed.</param>
+        /// <param name="eField">Type variable for the field.</param>
+        /// <param name="offset">Field offset within the structure (in bytes).</param>
         DataType MemFieldTrait(Expression? eBase, Expression eStruct, Expression eField, int offset);
 
 		/// <summary>
@@ -74,7 +86,22 @@ namespace Reko.Typing
 		/// </summary>
 		DataType MemAccessArrayTrait(Expression? tBase, Expression tStruct, int structPtrSize, int offset, int elementSize, int length, Expression tField);
 
+        /// <summary>
+        /// <paramref name="tStruct"/> has the size <paramref name="size"/>.
+        /// </summary>
+        /// <param name="tBase">Optional base pointer.</param>
+        /// <param name="tStruct">Structure pointer.</param>
+        /// <param name="size">Size of the structire pointed to by <paramref name="tStruct"/>.
+        /// </param>
 		DataType MemSizeTrait(Expression? tBase, Expression tStruct, int size);
+
+        /// <summary>
+        /// Assert that the expression <paramref name="tPointer"/> is a pointer.
+        /// </summary>
+        /// <param name="tPointer">Expression being asserted as a pointer.</param>
+        /// <param name="ptrSize">Bit size of a pointer.</param>
+        /// <param name="tPointee">Expression of the pointee.</param>
+        /// <returns></returns>
 		DataType PointerTrait(Expression tPointer, int ptrSize, Expression tPointee);
 	}
 }

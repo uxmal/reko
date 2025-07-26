@@ -27,33 +27,64 @@ using System.Linq;
 
 namespace Reko.Structure
 {
+    /// <summary>
+    /// Transforms a cascade of <see cref="AbsynIf"/> statements into a single
+    /// <see cref="AbsynSwitch"/> statement.
+    /// </summary>
     public class IfCascadeToSwitchRewriter : IAbsynVisitor<IfCascadeToSwitchRewriter.Cascade>
     {
         private readonly List<AbsynStatement> body;
         private readonly ExpressionValueComparer cmp;
 
+        /// <summary>
+        /// Constructs an instance of the <see cref="IfCascadeToSwitchRewriter"/> class.
+        /// </summary>
+        /// <param name="proc">Procedure being rewritten.</param>
         public IfCascadeToSwitchRewriter(Procedure proc)
         {
             this.body = proc.Body!;
             this.cmp = new ExpressionValueComparer();
         }
 
+        /// <summary>
+        /// Models a cascade of <see cref="AbsynIf"/> statements.
+        /// </summary>
         public class Cascade
         {
+            /// <summary>
+            /// Initial statement.
+            /// </summary>
             public AbsynStatement stm;
+
+            /// <summary>
+            /// Cascade nodes.
+            /// </summary>
             public List<CascadeNode>? nodes;
 
+            /// <summary>
+            /// Constructs a new instance of the <see cref="Cascade"/> class.
+            /// </summary>
+            /// <param name="stm">Initial statement.</param>
             public Cascade(AbsynStatement stm)
             {
                 this.stm = stm;
             }
 
+            /// <summary>
+            /// Constructs a new instance of the <see cref="Cascade"/> class.
+            /// </summary>
+            /// <param name="stm">Initial statement.</param>
+            /// <param name="nodes">List of cascade nodes.</param>
             public Cascade(AbsynStatement stm, List<CascadeNode>? nodes) : this(stm)
             {
                 this.nodes = nodes;
             }
         }
 
+        /// <summary>
+        /// Transforms the procedure body by replacing cascades of if statements
+        /// with a switch statement.
+        /// </summary>
         public void Transform()
         {
             Transform(body);
@@ -67,13 +98,38 @@ namespace Reko.Structure
             }
         }
 
+        /// <summary>
+        /// Represends a node in a cascade of <see cref="AbsynIf"/> statements.
+        /// </summary>
         public class CascadeNode
         {
+            /// <summary>
+            /// Predicate expression of the cascade node.
+            /// </summary>
             public Expression e;
-            public List<Constant> constants; // An empty list denotes the the default case.
+            /// <summary>
+            /// Represents a collection of constants.
+            /// </summary>
+            /// <remarks>An empty list denotes the default case.</remarks>
+            public List<Constant> constants;
+
+            /// <summary>
+            /// Collected case statements for this cascade node.
+            /// </summary>
             public List<AbsynStatement> caseStatements;
+
+            /// <summary>
+            /// Collected next statements for this cascade node.
+            /// </summary>
             public List<AbsynStatement> nextStatements;
 
+            /// <summary>
+            /// Constructs a new instance of the <see cref="CascadeNode"/> class.
+            /// </summary>
+            /// <param name="e">Predicate expression.</param>
+            /// <param name="c">List of constants.</param>
+            /// <param name="cs">List of cases.</param>
+            /// <param name="ns">List of successor statements.</param>
             public CascadeNode(Expression e, List<Constant> c, List<AbsynStatement> cs, List<AbsynStatement> ns)
             {
                 this.e = e;
@@ -82,14 +138,27 @@ namespace Reko.Structure
                 this.nextStatements = ns;
             }
 
+            /// <summary>
+            /// Constructs a new instance of the <see cref="CascadeNode"/> class.
+            /// </summary>
+            /// <param name="e">Predicate expression.</param>
+            /// <param name="c">Single constant value.</param>
+            /// <param name="cs">List of cases.</param>
+            /// <param name="ns">List of successor statements.</param>
             public CascadeNode(Expression e, Constant c, List<AbsynStatement> cs, List<AbsynStatement> ns)
             {
                 this.e = e;
-                this.constants = new List<Constant> { c };
+                this.constants = [c];
                 this.caseStatements = cs;
                 this.nextStatements = ns;
             }
 
+            /// <summary>
+            /// Constructs a new instance of the <see cref="CascadeNode"/> class.
+            /// </summary>
+            /// <param name="e">Predicate expression.</param>
+            /// <param name="cs">Case statements.
+            /// </param>
             public CascadeNode(Expression e, List<AbsynStatement> cs)
                 : this(e, new List<Constant>(), cs, new())
             {
@@ -245,58 +314,69 @@ namespace Reko.Structure
             return items;
         }
 
+        /// <inheritdoc/>
         public Cascade VisitAssignment(AbsynAssignment ass)
         {
             return new(ass);
         }
 
+        /// <inheritdoc/>
         public Cascade VisitBreak(AbsynBreak brk)
         {
             return new(brk);
         }
 
+        /// <inheritdoc/>
         public Cascade VisitCase(AbsynCase absynCase)
         {
             return new(absynCase);
         }
 
+        /// <inheritdoc/>
         public Cascade VisitCompoundAssignment(AbsynCompoundAssignment compound)
         {
             return new(compound);
         }
 
+        /// <inheritdoc/>
         public Cascade VisitContinue(AbsynContinue cont)
         {
             return new(cont);
         }
 
+        /// <inheritdoc/>
         public Cascade VisitDeclaration(AbsynDeclaration decl)
         {
             return new(decl);
         }
 
+        /// <inheritdoc/>
         public Cascade VisitDefault(AbsynDefault decl)
         {
             return new(decl);
         }
 
+        /// <inheritdoc/>
         public Cascade VisitDoWhile(AbsynDoWhile loop)
         {
             Transform(loop.Body);
             return new(loop);
         }
 
+        /// <inheritdoc/>
         public Cascade VisitFor(AbsynFor forLoop)
         {
             Transform(forLoop.Body);
             return new(forLoop);
         }
 
+        /// <inheritdoc/>
         public Cascade VisitGoto(AbsynGoto gotoStm)
         {
             return new(gotoStm);
         }
 
+        /// <inheritdoc/>
         public Cascade VisitIf(AbsynIf absynIf)
         {
             var cascade = IdentifyCascade(absynIf);
@@ -308,32 +388,38 @@ namespace Reko.Structure
                 return new(ReplaceCascadeWithSwitch(absynIf, cascade));
         }
 
+        /// <inheritdoc/>
         public Cascade VisitLabel(AbsynLabel lbl)
         {
             return new(lbl);
         }
 
+        /// <inheritdoc/>
         public Cascade VisitLineComment(AbsynLineComment comment)
         {
             return new(comment);
         }
 
+        /// <inheritdoc/>
         public Cascade VisitReturn(AbsynReturn ret)
         {
             return new(ret);
         }
 
+        /// <inheritdoc/>
         public Cascade VisitSideEffect(AbsynSideEffect side)
         {
             return new(side);
         }
 
+        /// <inheritdoc/>
         public Cascade VisitSwitch(AbsynSwitch absynSwitch)
         {
             Transform(absynSwitch.Statements);
             return new(absynSwitch);
         }
 
+        /// <inheritdoc/>
         public Cascade VisitWhile(AbsynWhile loop)
         {
             Transform(loop.Body);

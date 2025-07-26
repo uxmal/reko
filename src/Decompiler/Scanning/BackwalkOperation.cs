@@ -23,16 +23,34 @@ using System;
 
 namespace Reko.Scanning
 {
+    /// <summary>
+    /// Abstraction of the operations that can be performed by the
+    /// <see cref="Backwalker{TBlock, TInstr}"/> class.
+    /// </summary>
 	public class BackwalkOperation
 	{
-		private BackwalkOperator op; 
+		private BackwalkOperator op;
+        /// <summary>
+        /// Operand value.
+        /// </summary>
 		protected int operand;
 
+        /// <summary>
+        /// Constructs a backwalk operation with the given operator and operand.
+        /// </summary>
+        /// <param name="op"></param>
+        /// <param name="operand"></param>
 		public BackwalkOperation(BackwalkOperator op, int operand)
 		{
 			this.op = op; this.operand = operand;
 		}
 
+        /// <summary>
+        /// Applies the operation to the given value.
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
 		public virtual int Apply(int n)
 		{
 			switch (op)
@@ -62,41 +80,64 @@ namespace Reko.Scanning
 			
 		}
 
+        /// <inheritdoc/>
 		public override string ToString()
 		{
 			return string.Format("{0} {1}", OperatorToString(op), operand);
 		}
 	}
 
+    /// <summary>
+    /// Models backwalking over a memory dereference.
+    /// </summary>
 	public class BackwalkDereference : BackwalkOperation
 	{
 		private readonly int entrySize;
 
+        /// <summary>
+        /// Constructs an instance of <see cref="BackwalkDereference"/>.
+        /// </summary>
+        /// <param name="tableOffset">Offset of the table.</param>
+        /// <param name="tableEntrySize">Size of a table entry in addressable units.</param>
 		public BackwalkDereference(int tableOffset, int tableEntrySize) : base(BackwalkOperator.deref, tableOffset)
 		{
 			this.entrySize = tableEntrySize;
 		}
 
-		public int TableOffset
+        /// <summary>
+        /// Offset of the table in the memory.
+        /// </summary>
+        public int TableOffset
 		{
 			get { return operand; }
 		}
 
+        /// <inheritdoc />
 		public override string ToString()
 		{
 			return string.Format("deref {0:X8} {1}", operand, entrySize);
 		}
 	}
 
+    /// <summary>
+    /// Models backwalking over a branch instruction.
+    /// </summary>
 	public class BackwalkBranch : BackwalkOperation
 	{
 		private readonly ConditionCode cc;
 
+        /// <summary>
+        /// Constructs an instance of <see cref="BackwalkBranch"/>.
+        /// </summary>
+        /// <param name="cc">Condition code for the branch.</param>
 		public BackwalkBranch(ConditionCode cc) : base(BackwalkOperator.branch, 0)
 		{
 			this.cc = cc;
 		}
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
 		public override int Apply(int limit)
 		{
 			switch (cc)
@@ -111,34 +152,87 @@ namespace Reko.Scanning
 			}
 		}
 
+        /// <inheritdoc/>
 		public override string ToString()
 		{
 			return string.Format("branch {0}", cc);
 		}
 	}
 
+    /// <summary>
+    /// Models an error condition during backwalking.
+    /// </summary>
 	public class BackwalkError : BackwalkOperation
 	{
 		private readonly string errorMsg;
 
+        /// <summary>
+        /// Constructs an instance of <see cref="BackwalkError"/>.
+        /// </summary>
+        /// <param name="errorMsg">Error message describing the error.</param>
 		public BackwalkError(string errorMsg) : base(BackwalkOperator.err, 0)
 		{
 			this.errorMsg = errorMsg;
 		}
 
+        /// <summary>
+        /// The error message describing the error condition.
+        /// </summary>
 		public string ErrorMessage
 		{
 			get { return errorMsg; }
 		}
 
+        /// <inheritdoc/>
 		public override string ToString()
 		{
 			return string.Format("err {0}", errorMsg);
 		}
 	}
 
+    /// <summary>
+    /// The operators that can be used in backwalking operations.
+    /// </summary>
 	public enum BackwalkOperator
 	{
-		add, mul, sub, and, cmp, deref, err, branch
-	}
+        /// <summary>
+        /// Addition operation.
+        /// </summary>
+		add,
+
+        /// <summary>
+        /// Multiplication operation.
+        /// </summary>
+        mul,
+
+        /// <summary>
+        /// Subtraction operation.
+        /// </summary>
+        sub,
+
+        /// <summary>
+        /// Bitwise AND operation.
+        /// </summary>
+        and,
+
+        /// <summary>
+        /// Comparison operation.
+        /// </summary>
+        cmp,
+
+        /// <summary>
+        /// Memory dereference operation.
+        /// </summary>
+        deref,
+
+        /// <summary>
+        /// Error operation.
+        /// </summary>
+        err,
+
+        /// <summary>
+        /// Branch operation.
+        /// </summary>
+        branch
+    }
 }

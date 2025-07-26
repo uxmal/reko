@@ -45,12 +45,16 @@ namespace Reko.Scanning
         private readonly Dictionary<Identifier, Constant> constants;
         private readonly ExpressionEmitter m;
 
-        public BlockConstantPropagator(IReadOnlySegmentMap memory, IDecompilerEventListener listener)
+        /// <summary>
+        /// Constructs a new instance of the <see cref="BlockConstantPropagator"/> class.
+        /// </summary>
+        public BlockConstantPropagator()
         {
             this.constants = new();
             this.m = new ExpressionEmitter();
         }
 
+        /// <inheritdoc/>
         public RtlInstruction VisitAssignment(RtlAssignment ass)
         {
             var newSrc = VisitExpression(ass.Src);
@@ -75,54 +79,64 @@ namespace Reko.Scanning
             }
         }
 
+        /// <inheritdoc/>
         public RtlInstruction VisitBranch(RtlBranch branch)
         {
             var newCond = VisitExpression(branch.Condition);
             return new RtlBranch(newCond, (Address)branch.Target, branch.Class);
         }
 
+        /// <inheritdoc/>
         public RtlInstruction VisitCall(RtlCall call)
         {
             var target = VisitExpression(call.Target);
             return new RtlCall(target, call.ReturnAddressSize, call.Class, call.Architecture);
         }
 
+        /// <inheritdoc/>
         public RtlInstruction VisitGoto(RtlGoto go)
         {
             var target = VisitExpression(go.Target);
             return new RtlGoto(target, go.Class);
         }
 
+        /// <inheritdoc/>
         public RtlInstruction VisitIf(RtlIf rtlIf)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public RtlInstruction VisitInvalid(RtlInvalid invalid)
         {
             return invalid;
         }
 
+        /// <inheritdoc/>
         public RtlInstruction VisitMicroGoto(RtlMicroGoto uGoto)
         {
             return uGoto;
         }
 
+        /// <inheritdoc/>
         public RtlInstruction VisitNop(RtlNop rtlNop)
         {
             return rtlNop;
         }
 
+        /// <inheritdoc/>
         public RtlInstruction VisitReturn(RtlReturn ret)
         {
             return ret;
         }
 
+        /// <inheritdoc/>
         public RtlInstruction VisitSideEffect(RtlSideEffect side)
         {
             return new RtlSideEffect(VisitExpression(side.Expression), side.Class);
         }
 
+        /// <inheritdoc/>
         public RtlInstruction VisitSwitch(RtlSwitch sw)
         {
             return sw;

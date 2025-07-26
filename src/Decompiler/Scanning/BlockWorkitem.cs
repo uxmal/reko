@@ -64,6 +64,17 @@ namespace Reko.Scanning
         private VarargsFormatScanner? vaScanner;
         private readonly InstrClass rejectMask;
 
+        /// <summary>
+        /// Constructs a new instance of the <see cref="BlockWorkitem"/> class.
+        /// </summary>
+        /// <param name="scanner">The <see cref="IScannerServices"/> instance 
+        /// orchestrating the scanning process.</param>
+        /// <param name="program"><see cref="Program"/> being scanned.</param>
+        /// <param name="arch"><see cref="IProcessorArchitecture"/> to use
+        /// for the basic block being scanned.</param>
+        /// <param name="state"><see cref="ProcessorState"/> to update during
+        /// the scan.</param>
+        /// <param name="addr">Address at which to start.</param>
         public BlockWorkitem(
             IScannerServices scanner,
             Program program,
@@ -210,12 +221,22 @@ namespace Reko.Scanning
             return block.Statements.Count > 0;
         }
 
+        /// <summary>
+        /// Evaluate the given expression and return its value.
+        /// </summary>
+        /// <param name="op">Expression to evaluate.</param>
+        /// <returns>A simplified expression; or null.</returns>
         public Expression GetValue(Expression op)
         {
             var (e, _) = op.Accept(eval);
             return e;
         }
 
+        /// <summary>
+        /// Sets the value of a variable or memory location to the given value.
+        /// </summary>
+        /// <param name="dst">LValue to update.</param>
+        /// <param name="value">New value to assignthe LValue.</param>
         public void SetValue(Expression dst, Expression value)
         {
             switch (dst)
@@ -399,6 +420,7 @@ namespace Reko.Scanning
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitNop(RtlNop nop)
         {
             return true;
@@ -539,6 +561,7 @@ namespace Reko.Scanning
             return new ProcedureConstant(program.Platform.PointerType, callee);
         }
 
+        /// <inheritdoc/>
         public bool VisitCall(RtlCall call)
         {
             if ((call.Class & InstrClass.Delay) != 0)
@@ -846,11 +869,13 @@ namespace Reko.Scanning
             return call.Signature;
         }
 
+        /// <inheritdoc/>
         public bool VisitMicroGoto(RtlMicroGoto uGoto)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public bool VisitReturn(RtlReturn ret)
         {
             if ((ret.Class & InstrClass.Delay) != 0)
@@ -873,6 +898,7 @@ namespace Reko.Scanning
             return false;
         }
 
+        /// <inheritdoc/>
         public bool VisitSideEffect(RtlSideEffect side)
         {
             var svc = MatchSyscallToService(side);
@@ -894,10 +920,12 @@ namespace Reko.Scanning
             return true;
         }
 
+        /// <inheritdoc/>
         public bool VisitSwitch(RtlSwitch rtlSwitch)
         {
             return false;
         }
+
         /// <summary>
         /// Takes a system service description and generates a system call from it.
         /// </summary>
@@ -937,7 +965,7 @@ namespace Reko.Scanning
             // ("thiscall" in x86 µsoft world).
         }
 
-        public bool ProcessAlloca(CallSite site, ProcedureBase impProc, ProcedureCharacteristics chr)
+        private bool ProcessAlloca(CallSite site, ProcedureBase impProc, ProcedureCharacteristics chr)
         {
             if (chr is null || !chr.IsAlloca)
                 return false;
@@ -989,7 +1017,7 @@ namespace Reko.Scanning
             List<Address> vector;
             ImageMapVectorTable? imgVector;
             Expression switchExp;
-            var eventListener = this.scanner.Services.RequireService<IDecompilerEventListener>();
+            var eventListener = this.scanner.Services.RequireService<IEventListener>();
             if (program.User.IndirectJumps.TryGetValue(addrSwitch, out var indJump))
             {
                 // Trust the user knows what they're doing.
@@ -1094,23 +1122,20 @@ namespace Reko.Scanning
 
         /// <summary>
         /// Discovers the extent of a jump/call table by walking backwards from the 
-        /// jump/call until some gating condition (index < value, index & bitmask etc)
+        /// jump/call until some gating condition (index &lt; value, index &amp; bitmask etc)
         /// can be found.
         /// </summary>
         /// <param name="addrSwitch">Address of the indirect transfer instruction</param>
         /// <param name="xfer">Expression that computes the transfer destination.
         /// It is never a constant value</param>
-        /// <param name="vector">If successful, returns the list of addresses
-        /// jumped/called to</param>
-        /// <param name="imgVector"></param>
-        /// <param name="switchExp">The expression to use in the resulting switch / call.</param>
-        /// <returns></returns>
+        /// <returns>The discovered extent of a jump/call table if it could
+        /// be determined; otherwise null.</returns>
         private TableExtent? DiscoverTableExtent(
             Address addrSwitch,
             RtlTransfer xfer)
         {
             Debug.Assert(!(xfer.Target is Address || xfer.Target is Constant), $"This should not be a constant {xfer}.");
-            var listener = scanner.Services.RequireService<IDecompilerEventListener>();
+            var listener = scanner.Services.RequireService<IEventListener>();
 
             var bwsHost = new BackwardSlicerHost(program, this.arch);
             var rtlBlock = bwsHost.GetRtlBlock(blockCur!);
@@ -1187,7 +1212,7 @@ namespace Reko.Scanning
         /// Searches backwards to find a ProcedureConstant that is assigned to the identifier id.
         /// </summary>
         /// <remarks>
-        /// This is a sleazy hack since we pay absolutely no attention to register liveness &c. However,
+        /// This is a sleazy hack since we pay absolutely no attention to register liveness &amp;c. However,
         /// the code is written in the spirit of "innocent until proven guilty". If this turns out to be buggy,
         /// and false positives occur, it will have to be canned and a better solution will have to be invented.
         /// </remarks>
@@ -1251,7 +1276,7 @@ namespace Reko.Scanning
             }
         }
 
-        public ExternalProcedure? ImportedProcedureName(Expression callTarget)
+        private ExternalProcedure? ImportedProcedureName(Expression callTarget)
         {
             if (callTarget is not MemoryAccess mem)
                 return null;
@@ -1279,7 +1304,7 @@ namespace Reko.Scanning
             }
         }
 
-        public void TrashVariable(Storage stg)
+        private void TrashVariable(Storage stg)
         {
             if (stg is null)
                 return;
@@ -1337,6 +1362,7 @@ namespace Reko.Scanning
             return svc;
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             return $"{nameof(BlockWorkitem)}: {base.Address}";

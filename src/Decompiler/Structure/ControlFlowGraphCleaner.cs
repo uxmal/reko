@@ -36,6 +36,10 @@ namespace Reko.Structure
 		private readonly Procedure proc;
 		private bool dirty;
 
+        /// <summary>
+        /// Constructs an instance of the <see cref="ControlFlowGraphCleaner"/> class.
+        /// </summary>
+        /// <param name="proc">Procedure to transform.</param>
 		public ControlFlowGraphCleaner(Procedure proc)
 		{
 			this.proc = proc;
@@ -46,6 +50,14 @@ namespace Reko.Structure
 			return (block.ElseBlock == block.ThenBlock);
 		}
 
+        /// <summary>
+        /// Coalesces two blocks into one.
+        /// </summary>
+        /// <param name="block">First block, accepting the statements of <paramref name="next"/>.
+        /// </param>
+        /// <param name="next">Second block whose statements will be moved to the end of <paramref name="block"/>.
+        /// </param>
+        /// <returns>The coalesced block.</returns>
 		public Block Coalesce(Block block, Block next)
 		{
 			Block.Coalesce(block, next);
@@ -62,7 +74,7 @@ namespace Reko.Structure
 			return block.Statements[^1].Instruction is Branch;
 		}
 
-		public bool EndsInJump(Block block)
+		private bool EndsInJump(Block block)
 		{
             if (block.Succ.Count != 1)
                 return false;
@@ -87,6 +99,9 @@ namespace Reko.Structure
 			dirty = true;
 		}
 
+        /// <summary>
+        /// Cleans up the control flow graph of the procedure.
+        /// </summary>
 		public void Transform()
 		{
 			do

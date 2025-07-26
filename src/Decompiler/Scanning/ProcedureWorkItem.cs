@@ -22,6 +22,9 @@ using Reko.Core;
 
 namespace Reko.Scanning
 {
+    /// <summary>
+    /// Work item representing a procedure to be scanned.
+    /// </summary>
     public class ProcedureWorkItem : WorkItem
     {
         private readonly IScanner scanner;
@@ -29,6 +32,16 @@ namespace Reko.Scanning
         private readonly Address addr;
         private readonly string? name;
 
+        /// <summary>
+        /// Constructs an instance of <see cref="ProcedureWorkItem"/>.
+        /// </summary>
+        /// <param name="scanner"><see cref="IScanner"/> orchestrating 
+        /// this procedure work item.</param>
+        /// <param name="arch"><see cref="IProcessorArchitecture"/> used to 
+        /// scan this procedure's machine code.
+        /// </param>
+        /// <param name="addr">Address at which the procedure's execution starts.</param>
+        /// <param name="name"></param>
         public ProcedureWorkItem(
             IScanner scanner,
             IProcessorArchitecture arch,
@@ -41,6 +54,7 @@ namespace Reko.Scanning
             this.name = name;
         }
 
+        /// <inheritdoc/>
         public override void Process()
         {
             scanner.ScanProcedure(arch, addr, name, arch.CreateProcessorState());

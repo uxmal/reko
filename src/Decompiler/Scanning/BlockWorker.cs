@@ -48,8 +48,21 @@ namespace Reko.Scanning
         private readonly ProcessorState state;
         private readonly ExpressionSimplifier eval;
         private readonly InstrClass rejectMask; // Instruction class bits, which when present cause 
-            // an exception to happen.
+                                                // an exception to happen.
 
+        /// <summary>
+        /// Creates a new <see cref="BlockWorker"/> instance.
+        /// </summary>
+        /// <param name="scanner"><see cref="AbstractScanner"/> orchestrating the 
+        /// scanning process.</param>
+        /// <param name="worker">Current <see cref="AbstractProcedureWorker"/> on
+        /// whose behalf this <see cref="BlockWorker"/> is created.</param>
+        /// <param name="address">Address at which the block starts.</param>
+        /// <param name="trace">RTL instruction trace starting at <paramref name="address"/>.</param>
+        /// <param name="state"><see cref="ProcessorState"/> that is updated as
+        /// the trace is processed.</param>
+        /// <param name="rejectMask"><see cref="InstrClass"/> mask used to reject instructions. 
+        /// Instructions with any of these bits sets are rejected as invalid.</param>
         public BlockWorker(
             AbstractScanner scanner,
             AbstractProcedureWorker worker,
@@ -236,7 +249,8 @@ namespace Reko.Scanning
         /// Creates an <see cref="RtlBlock"/> that falls through to whatever
         /// instruction is at <paramref name="addrFallthrough"/>.
         /// </summary>
-        /// <param name="addrFallthrough">The address at which the block ends.
+        /// <param name="addrBegin">The address at which the block begins.</param>
+        /// <param name="addrFallthrough">The address at which the block ends.</param>
         /// <param name="instrs"></param>
         /// <returns>A block to fall through to.</returns>
         private RtlBlock MakeFallthroughBlock(Address addrBegin, Address addrFallthrough, List<RtlInstructionCluster> instrs)
@@ -314,6 +328,18 @@ namespace Reko.Scanning
             return true;
         }
 
+        /// <summary>
+        /// Copies a delay slot instruction before the control transfer
+        /// instruction that induces the delay slot, in effect "undoing"
+        /// the delay slot.
+        /// </summary>
+        /// <param name="rtlTransfer">Transfer instruction whose 
+        /// delay slot instruction is being "stolen".</param>
+        /// <param name="instrs">The RTL clusters of the block terminated by 
+        /// the transfer instruction.</param>
+        /// <param name="rtlDelayed">The RTL instruction in the delay slot.</param>
+        /// <param name="mkTmp">A function that creates an assignment to a 
+        /// temporary variable.</param>
         public static void StealDelaySlotInstruction(
             RtlInstructionCluster rtlTransfer,
             List<RtlInstructionCluster> instrs, 
@@ -382,7 +408,6 @@ namespace Reko.Scanning
         /// After reaching a CTI, make an <see cref="RtlBlock"/>.
         /// </summary>
         /// <param name="instrs">The instructions of the resulting <see cref="RtlBlock"/>.</param>
-        /// <param name="state">The current <see cref="ProcessorState"/>.</param>
         /// <param name="rtlLast">The instruction that triggered
         /// the creation of the block.</param>
         /// <returns>

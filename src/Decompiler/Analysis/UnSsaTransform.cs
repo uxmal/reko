@@ -35,12 +35,27 @@ namespace Reko.Analysis
         private SsaState ssa;
         private readonly bool renameVariables;
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="UnSsaTransform"/> class.
+        /// </summary>
+        /// <param name="renameVariables">If true, renames identifiers
+        /// back to their original names before SSA analysis; otherwise
+        /// the identifiers are left with their SSA names.
+        /// </param>
         public UnSsaTransform(bool renameVariables)
         {
             this.ssa = default!;
             this.renameVariables = renameVariables;
         }
 
+        /// <summary>
+        /// Performs the transformation of the SSA state by removing
+        /// <see cref="DefInstruction">'def' instructions</see> and
+        /// <see cref="PhiAssignment">'phi' instructions</see>.
+        /// </summary>
+        /// <param name="ssa"><see cref="SsaState"/> to transform.</param>
+        /// <returns>A <see cref="Procedure"/> with its SSA state elmininated.
+        /// </returns>
         public Procedure Transform(SsaState ssa)
         {
             this.ssa = ssa;
@@ -69,6 +84,7 @@ namespace Reko.Analysis
             return proc;
         }
 
+        /// <inheritdoc/>
         public override Expression VisitIdentifier(Identifier id)
         {
             return ssa.Identifiers[id].OriginalIdentifier;

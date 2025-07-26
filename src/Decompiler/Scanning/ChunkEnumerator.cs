@@ -37,7 +37,7 @@ public class ChunkEnumerator
 
     /// <summary>
     /// Given a sorted sequence of <see cref="ImageSegment"/>s and a sorted
-    /// set of <see cref="RtlBlock"/>s, returns a sequence of <see cref="Fragments"/>,
+    /// set of <see cref="RtlBlock"/>s, returns a sequence of <see cref="Chunk"/>s,
     /// some of which are gaps between blocks.
     /// </summary>
     /// <param name="sortedSegments">A sorted sequence of <see cref="ImageSegment"/>s.</param>
@@ -58,9 +58,9 @@ public class ChunkEnumerator
     }
 
     /// <summary>
-    /// Given a sequence of <see cref="Fragments"/>, generate "gap" fragments. 
+    /// Given a sequence of <see cref="Chunk"/>s, generate "gap" fragments. 
     /// </summary>
-    /// <param name="segments">A sorted sequence of <see cref="ImageSegment">s.</param>
+    /// <param name="segments">A sorted sequence of <see cref="ImageSegment"/>s.</param>
     /// <param name="fragments">A sorted sequence of non-overlapping <see cref="Chunk"/>.
     /// </param>
     /// <returns></returns>
@@ -115,7 +115,7 @@ public class ChunkEnumerator
     /// whose ending addresses increases monotonically.
     /// </summary>
     /// <param name="sortedBlocks"></param>
-    /// <returns>A sequence of <see cref="Fragments"/> where no fragments overlap.</returns>
+    /// <returns>A sequence of <see cref="Chunk"/>s where no fragments overlap.</returns>
     public IEnumerable<Chunk> ResolveOverlaps(IEnumerable<RtlBlock> sortedBlocks)
     {
         var e = sortedBlocks.GetEnumerator();

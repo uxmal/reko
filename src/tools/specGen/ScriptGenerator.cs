@@ -281,7 +281,7 @@ namespace Reko.Tools.specGen
         }
 
         // Renders a WiX <File... element if there is a 'Source' attribute present.
-        public static string RenderWixLine(Dictionary<string, string> attrs, Dictionary<string,string> vars)
+        public static string? RenderWixLine(Dictionary<string, string> attrs, Dictionary<string,string> vars)
         {
             if (attrs.ContainsKey("Source"))
             {
@@ -364,7 +364,7 @@ namespace Reko.Tools.specGen
 
         // Renders a NuGet <file... element as a single line if the 'nuget_target' attribute
         // is present.
-        public static string RenderNuspecLine(
+        public static string? RenderNuspecLine(
             Dictionary<string, string> attrs,
             Dictionary<string, string> vars)
         {
