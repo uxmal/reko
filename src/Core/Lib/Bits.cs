@@ -18,6 +18,7 @@
  */
 #endregion
 
+using System;
 using System.Numerics;
 
 namespace Reko.Core.Lib
@@ -263,6 +264,25 @@ namespace Reko.Core.Lib
                 value = (value << length) | maskedPattern;
             }
             return value;
+        }
+
+        /// <summary>
+        /// Reverses the bits in a byte.
+        /// </summary>
+        /// <param name="byteValue">Byte value to reverse.</param>
+        /// <returns>The reversed byte.</returns>
+        public static byte ReverseBits(byte byteValue)
+        {
+            int result = 0;
+            byte m = 0x80;
+            for (int i = 0; i < 8; ++i, m >>= 1)
+            {
+                if ((byteValue & m) != 0)
+                {
+                    result |= 1 << i;
+                }
+            }
+            return (byte) result;
         }
     }
 }

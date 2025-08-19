@@ -45,6 +45,20 @@ namespace Reko.ImageLoaders.Coff
         public CoffSectionCharacteristics Characteristics;
     }
 
+    /// <summary>
+    /// Extra data found after a regular section header in NS32k object files.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    [Endian(Endianness.LittleEndian)]
+    public unsafe struct Ns32kSectionHeader 
+    {
+        public int s_symptr;  /* file pointer to symbol table entries */
+        public ushort s_modno; /* module number of module associated
+					   with this section */
+        public short s_pad;        /* padding to 4 byte multiple */
+    }
+
+
 
     /// <summary>
     /// Symbol storage classes

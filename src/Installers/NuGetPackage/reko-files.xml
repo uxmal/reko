@@ -49,6 +49,7 @@
         <var id="var.MN103.TargetPath">$SolutionDir$/Arch/MN103/$TargetDir$/Reko.Arch.MN103.dll</var>
         <var id="var.Mos6502.TargetPath">$SolutionDir$/Arch/Mos6502/$TargetDir$/Reko.Arch.Mos6502.dll</var>
         <var id="var.Msp430.TargetPath">$SolutionDir$/Arch/MSP430/$TargetDir$/Reko.Arch.Msp430.dll</var>
+        <var id="var.NatSemi.TargetPath">$SolutionDir$/Arch/NatSemi/$TargetDir$/Reko.Arch.NatSemi.dll</var>
         <var id="var.Nec.TargetPath">$SolutionDir$/Arch/Nec/$TargetDir$/Reko.Arch.Nec.dll</var>
         <var id="var.Oki.ProjectDir">$SolutionDir$/Arch/Oki/</var>
         <var id="var.Oki.TargetPath">$SolutionDir$/Arch/Oki/$TargetDir$/Reko.Arch.Oki.dll</var>
@@ -324,6 +325,7 @@
         <File Source="$(var.MN103.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Mos6502.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Msp430.TargetPath)" nuget_target="f:" />
+        <File Source="$(var.NatSemi.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Nec.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Oki.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Oki.ProjectDir)NX8_200/nx8_200_memory_map.xml" nuget_target="c:" />

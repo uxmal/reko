@@ -18,9 +18,7 @@
  */
 #endregion
 
-using Reko.Core.Code;
 using Reko.Core.Output;
-using System;
 using System.IO;
 
 namespace Reko.Core.Absyn

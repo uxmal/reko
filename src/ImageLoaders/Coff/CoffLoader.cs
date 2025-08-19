@@ -29,7 +29,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text;
-using System.Xml.Linq;
 
 namespace Reko.ImageLoaders.Coff
 {
@@ -89,7 +88,9 @@ namespace Reko.ImageLoaders.Coff
                 program  = LinkObjectFile();
             }
             else
-                throw new NotImplementedException();
+            {
+                program = LoadExecutable();
+            }
             var syms = ReadSymbols();   //$TODO: do something with the symbols?
             return program;
         }
@@ -102,6 +103,22 @@ namespace Reko.ImageLoaders.Coff
                 new ByteProgramMemory(segmentMap),
                 arch,
                 new DefaultPlatform(Services, arch));
+        }
+
+        private Program LoadExecutable()
+        {
+            var segs = ComputeSegmentLayout(this.coffSections);
+            var program = new Program(
+                new ByteProgramMemory(new SegmentMap(segs.ToArray())),
+                arch,
+                new DefaultPlatform(Services, arch));
+            var textSegment = segs.Find(s => s.Name == ".text");
+            if (textSegment is not null)
+            {
+                var ep = ImageSymbol.Procedure(arch, textSegment.Address, "_entry");
+                program.EntryPoints.Add(ep.Address, ep);
+            }
+            return program;
         }
 
         private SegmentMap LinkSegments(List<ImageSegment> segs, List<(string, CoffSectionHeader)> coffSections)
@@ -135,7 +152,8 @@ namespace Reko.ImageLoaders.Coff
             int alignment;
             switch (characteristics & CoffSectionCharacteristics.IMAGE_SCN_ALIGN_MASK)
             {
-            default: throw new BadImageFormatException();
+            default:
+                return address;
             case CoffSectionCharacteristics.IMAGE_SCN_ALIGN_1BYTES: return address;
 
             case CoffSectionCharacteristics.IMAGE_SCN_ALIGN_2BYTES: alignment = 2; break;
@@ -177,6 +195,7 @@ namespace Reko.ImageLoaders.Coff
             {
             case 0x014C: arch = cfgSvc.GetArchitecture("x86-protected-32"); break;
             case 0x8664: arch = cfgSvc.GetArchitecture("x86-protected-64"); break;
+            case MagicNumbers.NS32ROMAGIC: arch = cfgSvc.GetArchitecture("ns32k"); break;
             case 0xAA64: arch = cfgSvc.GetArchitecture("arm64"); break;
             }
             if (arch is null)
@@ -192,12 +211,39 @@ namespace Reko.ImageLoaders.Coff
                 f_opthdr = rdr.ReadUInt16(),
                 f_flags = rdr.ReadUInt16(),
             };
-            // Section header follow immediately after the file header.
+            // Section header follow immediately after the optional file header.
+            if (fileHeader.f_opthdr > 0)
+            {
+                if (magic == MagicNumbers.NS32ROMAGIC)
+                {
+                    Ns32kOptionalHeader ns32kopt = new();
+                    ns32kopt.magic = rdr.ReadInt16();
+                    ns32kopt.vstamp = rdr.ReadInt16();
+                    ns32kopt.tsize = rdr.ReadInt32();
+                    ns32kopt.dsize = rdr.ReadInt32();
+                    ns32kopt.bsize = rdr.ReadInt32();
+                    ns32kopt.msize = rdr.ReadInt32();
+                    ns32kopt.mod_start = rdr.ReadInt32();
+                    ns32kopt.entry = rdr.ReadUInt32();
+                    ns32kopt.text_start = rdr.ReadUInt32();
+                    ns32kopt.data_start = rdr.ReadUInt32();
+                    ns32kopt.entry_mod = rdr.ReadInt16();
+                    ns32kopt.flags = rdr.ReadUInt16();
+                }
+                else
+                {
+                    rdr.Offset += fileHeader.f_opthdr;
+                }
+            }
             var coffSections = new List<(string,CoffSectionHeader)>();
             trace.Verbose("## COFF Sections");
             for (int i = 0; i < fileHeader.f_nscns; ++i)
             {
                 var hdr = rdr.ReadStruct<CoffSectionHeader>();
+                if (fileHeader.f_magic == MagicNumbers.NS32ROMAGIC) // ns32k
+                {
+                    rdr.ReadStruct<Ns32kSectionHeader>();
+                }
                 string name;
                 unsafe
                 {

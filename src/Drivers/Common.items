@@ -49,6 +49,7 @@ by the PreBuild.targets file.
     <ProjectReference Include="$(SolutionDir)Arch\MN103\MN103.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\Mos6502\Mos6502.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\MSP430\MSP430.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\NatSemi\NatSemi.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\Nec\Nec.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\Oki\Oki.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\OpenRISC\OpenRISC.csproj" />
