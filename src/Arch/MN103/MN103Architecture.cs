@@ -27,6 +27,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Text;
 
 namespace Reko.Arch.MN103
@@ -101,7 +102,7 @@ namespace Reko.Arch.MN103
 
         public override RegisterStorage[] GetRegisters()
         {
-            throw new System.NotImplementedException();
+            return Registers.RegistersByDomain.Values.ToArray();
         }
 
         public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)

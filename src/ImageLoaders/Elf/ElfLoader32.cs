@@ -134,6 +134,9 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_CSKY:
                 arch = "csky";
                 break;
+            case ElfMachine.EM_MN10300:
+                arch = "mn103";
+                break;
             default:
                return base.CreateArchitecture(elfMachine, endianness);
             }
@@ -192,6 +195,7 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_ALTERA_NIOS2: return new Nios2Relocator(this, imageSymbols);
             case ElfMachine.EM_TC32: return new TC32Relocator(this, imageSymbols);
             case ElfMachine.EM_BA: return new BeyondRelocator(this, imageSymbols);
+            case ElfMachine.EM_MN10300: return new MN103Relocator(this, imageSymbols);
             }
             return base.CreateRelocator(machine, arch, imageSymbols, plt);
         }

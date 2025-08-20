@@ -180,6 +180,8 @@ namespace Reko.Environments.SysV.ArchSpecific
                 return new CSkyCallingConvention(arch);
             case "beyond":
                 return new BeyondCallingConvention(arch);
+            case "mn103":
+                return new MN103CallingConvention(arch);
             default:
                 return null;
             }

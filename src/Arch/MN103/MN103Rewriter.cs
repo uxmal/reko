@@ -18,6 +18,10 @@
  */
 #endregion
 
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
@@ -26,10 +30,6 @@ using Reko.Core.Operators;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
 using Reko.Core.Types;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Reko.Arch.MN103
 {
@@ -142,8 +142,75 @@ namespace Reko.Arch.MN103
                 case Mnemonic.setlb: RewriteSetlb(); break;
                 case Mnemonic.sub: RewriteSub(); break;
                 case Mnemonic.subc: RewriteSubc(); break;
+                case Mnemonic.syscall: RewriteSyscall(); break;
                 case Mnemonic.trap: RewriteTrap(); break;
                 case Mnemonic.xor: RewriteXor(); break;
+
+                case Mnemonic.udf00: RewriteUdf(udf00_intrinsic); break;
+                case Mnemonic.udf01: RewriteUdf(udf01_intrinsic); break;
+                case Mnemonic.udf02: RewriteUdf(udf02_intrinsic); break;
+                case Mnemonic.udf03: RewriteUdf(udf03_intrinsic); break;
+                case Mnemonic.udf04: RewriteUdf(udf04_intrinsic); break;
+                case Mnemonic.udf05: RewriteUdf(udf05_intrinsic); break;
+                case Mnemonic.udf06: RewriteUdf(udf06_intrinsic); break;
+                case Mnemonic.udf07: RewriteUdf(udf07_intrinsic); break;
+                case Mnemonic.udf08: RewriteUdf(udf08_intrinsic); break;
+                case Mnemonic.udf09: RewriteUdf(udf09_intrinsic); break;
+                case Mnemonic.udf10: RewriteUdf(udf10_intrinsic); break;
+                case Mnemonic.udf11: RewriteUdf(udf11_intrinsic); break;
+                case Mnemonic.udf12: RewriteUdf(udf12_intrinsic); break;
+                case Mnemonic.udf13: RewriteUdf(udf13_intrinsic); break;
+                case Mnemonic.udf14: RewriteUdf(udf14_intrinsic); break;
+                case Mnemonic.udf15: RewriteUdf(udf15_intrinsic); break;
+                case Mnemonic.udf20: RewriteUdf(udf20_intrinsic); break;
+                case Mnemonic.udf21: RewriteUdf(udf21_intrinsic); break;
+                case Mnemonic.udf22: RewriteUdf(udf22_intrinsic); break;
+                case Mnemonic.udf23: RewriteUdf(udf23_intrinsic); break;
+                case Mnemonic.udf24: RewriteUdf(udf24_intrinsic); break;
+                case Mnemonic.udf25: RewriteUdf(udf25_intrinsic); break;
+                case Mnemonic.udf26: RewriteUdf(udf26_intrinsic); break;
+                case Mnemonic.udf27: RewriteUdf(udf27_intrinsic); break;
+                case Mnemonic.udf28: RewriteUdf(udf28_intrinsic); break;
+                case Mnemonic.udf29: RewriteUdf(udf29_intrinsic); break;
+                case Mnemonic.udf30: RewriteUdf(udf30_intrinsic); break;
+                case Mnemonic.udf31: RewriteUdf(udf31_intrinsic); break;
+                case Mnemonic.udf32: RewriteUdf(udf32_intrinsic); break;
+                case Mnemonic.udf33: RewriteUdf(udf33_intrinsic); break;
+                case Mnemonic.udf34: RewriteUdf(udf34_intrinsic); break;
+                case Mnemonic.udf35: RewriteUdf(udf35_intrinsic); break;
+
+                case Mnemonic.udfu00: RewriteUdf(udfu00_intrinsic); break;
+                case Mnemonic.udfu01: RewriteUdf(udfu01_intrinsic); break;
+                case Mnemonic.udfu02: RewriteUdf(udfu02_intrinsic); break;
+                case Mnemonic.udfu03: RewriteUdf(udfu03_intrinsic); break;
+                case Mnemonic.udfu04: RewriteUdf(udfu04_intrinsic); break;
+                case Mnemonic.udfu05: RewriteUdf(udfu05_intrinsic); break;
+                case Mnemonic.udfu06: RewriteUdf(udfu06_intrinsic); break;
+                case Mnemonic.udfu07: RewriteUdf(udfu07_intrinsic); break;
+                case Mnemonic.udfu08: RewriteUdf(udfu08_intrinsic); break;
+                case Mnemonic.udfu09: RewriteUdf(udfu09_intrinsic); break;
+                case Mnemonic.udfu10: RewriteUdf(udfu10_intrinsic); break;
+                case Mnemonic.udfu11: RewriteUdf(udfu11_intrinsic); break;
+                case Mnemonic.udfu12: RewriteUdf(udfu12_intrinsic); break;
+                case Mnemonic.udfu13: RewriteUdf(udfu13_intrinsic); break;
+                case Mnemonic.udfu14: RewriteUdf(udfu14_intrinsic); break;
+                case Mnemonic.udfu15: RewriteUdf(udfu15_intrinsic); break;
+                case Mnemonic.udfu20: RewriteUdf(udfu20_intrinsic); break;
+                case Mnemonic.udfu21: RewriteUdf(udfu21_intrinsic); break;
+                case Mnemonic.udfu22: RewriteUdf(udfu22_intrinsic); break;
+                case Mnemonic.udfu23: RewriteUdf(udfu23_intrinsic); break;
+                case Mnemonic.udfu24: RewriteUdf(udfu24_intrinsic); break;
+                case Mnemonic.udfu25: RewriteUdf(udfu25_intrinsic); break;
+                case Mnemonic.udfu26: RewriteUdf(udfu26_intrinsic); break;
+                case Mnemonic.udfu27: RewriteUdf(udfu27_intrinsic); break;
+                case Mnemonic.udfu28: RewriteUdf(udfu28_intrinsic); break;
+                case Mnemonic.udfu29: RewriteUdf(udfu29_intrinsic); break;
+                case Mnemonic.udfu30: RewriteUdf(udfu30_intrinsic); break;
+                case Mnemonic.udfu31: RewriteUdf(udfu31_intrinsic); break;
+                case Mnemonic.udfu32: RewriteUdf(udfu32_intrinsic); break;
+                case Mnemonic.udfu33: RewriteUdf(udfu33_intrinsic); break;
+                case Mnemonic.udfu34: RewriteUdf(udfu34_intrinsic); break;
+                case Mnemonic.udfu35: RewriteUdf(udfu35_intrinsic); break;
                 }
                 yield return m.MakeCluster(instr.Address, instr.Length, iclass);
                 rtls.Clear();
@@ -487,15 +554,14 @@ namespace Reko.Arch.MN103
 
         private void RewriteMovm()
         {
-            m.SideEffect(m.Fn(movm_intrinsic));
             if (instr.Operands[0] is MultipleRegistersOperand regs)
             {
-                RestoreRegisters(regs, 0);
+                SaveRegisters(regs, 0);
             }
             else
             {
                 regs = (MultipleRegistersOperand) instr.Operands[1];
-                SaveRegisters(regs, 0);
+                RestoreRegisters(regs, 0);
             }
         }
 
@@ -589,9 +655,28 @@ namespace Reko.Arch.MN103
             Emit_VCNZ(m.Cond(left));
         }
 
+        private void RewriteSyscall()
+        {
+            if (instr.Operands.Length != 0)
+            {
+                m.SideEffect(m.Fn(CommonOps.Syscall_1));
+            }
+            else
+            {
+                m.SideEffect(m.Fn(CommonOps.Syscall_0));
+            }
+        }
+
         private void RewriteTrap()
         {
             m.SideEffect(m.Fn(CommonOps.Syscall));
+        }
+
+        private void RewriteUdf(IntrinsicProcedure intrinsic)
+        {
+            var src = Op(0, PrimitiveType.Word32);
+            var dst = Op(1, PrimitiveType.Word32);
+            m.Assign(dst, m.Fn(intrinsic, dst, src));
         }
 
         private void RewriteXor()
@@ -607,5 +692,72 @@ namespace Reko.Arch.MN103
 
         private static readonly IntrinsicProcedure rti_intrinsic = IntrinsicBuilder.SideEffect("__return_from_interrupt")
             .Void();
+
+        private static readonly IntrinsicProcedure udf00_intrinsic = new IntrinsicBuilder("udf00", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udf01_intrinsic = new IntrinsicBuilder("udf01", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udf02_intrinsic = new IntrinsicBuilder("udf02", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udf03_intrinsic = new IntrinsicBuilder("udf03", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udf04_intrinsic = new IntrinsicBuilder("udf04", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udf05_intrinsic = new IntrinsicBuilder("udf05", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udf06_intrinsic = new IntrinsicBuilder("udf06", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udf07_intrinsic = new IntrinsicBuilder("udf07", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udf08_intrinsic = new IntrinsicBuilder("udf08", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udf09_intrinsic = new IntrinsicBuilder("udf09", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udf10_intrinsic = new IntrinsicBuilder("udf10", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udf11_intrinsic = new IntrinsicBuilder("udf11", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udf12_intrinsic = new IntrinsicBuilder("udf12", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udf13_intrinsic = new IntrinsicBuilder("udf13", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udf14_intrinsic = new IntrinsicBuilder("udf14", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udf15_intrinsic = new IntrinsicBuilder("udf15", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udf20_intrinsic = new IntrinsicBuilder("udf20", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udf21_intrinsic = new IntrinsicBuilder("udf21", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udf22_intrinsic = new IntrinsicBuilder("udf22", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udf23_intrinsic = new IntrinsicBuilder("udf23", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udf24_intrinsic = new IntrinsicBuilder("udf24", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udf25_intrinsic = new IntrinsicBuilder("udf25", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udf26_intrinsic = new IntrinsicBuilder("udf26", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udf27_intrinsic = new IntrinsicBuilder("udf27", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udf28_intrinsic = new IntrinsicBuilder("udf28", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udf29_intrinsic = new IntrinsicBuilder("udf29", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udf30_intrinsic = new IntrinsicBuilder("udf30", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udf31_intrinsic = new IntrinsicBuilder("udf31", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udf32_intrinsic = new IntrinsicBuilder("udf32", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udf33_intrinsic = new IntrinsicBuilder("udf33", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udf34_intrinsic = new IntrinsicBuilder("udf34", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udf35_intrinsic = new IntrinsicBuilder("udf35", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+
+        private static readonly IntrinsicProcedure udfu00_intrinsic = new IntrinsicBuilder("udfu00", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udfu01_intrinsic = new IntrinsicBuilder("udfu01", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udfu02_intrinsic = new IntrinsicBuilder("udfu02", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udfu03_intrinsic = new IntrinsicBuilder("udfu03", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udfu04_intrinsic = new IntrinsicBuilder("udfu04", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udfu05_intrinsic = new IntrinsicBuilder("udfu05", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udfu06_intrinsic = new IntrinsicBuilder("udfu06", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udfu07_intrinsic = new IntrinsicBuilder("udfu07", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udfu08_intrinsic = new IntrinsicBuilder("udfu08", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udfu09_intrinsic = new IntrinsicBuilder("udfu09", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udfu10_intrinsic = new IntrinsicBuilder("udfu10", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udfu11_intrinsic = new IntrinsicBuilder("udfu11", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udfu12_intrinsic = new IntrinsicBuilder("udfu12", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udfu13_intrinsic = new IntrinsicBuilder("udfu13", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udfu14_intrinsic = new IntrinsicBuilder("udfu14", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udfu15_intrinsic = new IntrinsicBuilder("udfu15", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udfu20_intrinsic = new IntrinsicBuilder("udfu20", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udfu21_intrinsic = new IntrinsicBuilder("udfu21", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udfu22_intrinsic = new IntrinsicBuilder("udfu22", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udfu23_intrinsic = new IntrinsicBuilder("udfu23", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udfu24_intrinsic = new IntrinsicBuilder("udfu24", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udfu25_intrinsic = new IntrinsicBuilder("udfu25", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udfu26_intrinsic = new IntrinsicBuilder("udfu26", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udfu27_intrinsic = new IntrinsicBuilder("udfu27", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udfu28_intrinsic = new IntrinsicBuilder("udfu28", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udfu29_intrinsic = new IntrinsicBuilder("udfu29", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udfu30_intrinsic = new IntrinsicBuilder("udfu30", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udfu31_intrinsic = new IntrinsicBuilder("udfu31", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udfu32_intrinsic = new IntrinsicBuilder("udfu32", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udfu33_intrinsic = new IntrinsicBuilder("udfu33", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udfu34_intrinsic = new IntrinsicBuilder("udfu34", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure udfu35_intrinsic = new IntrinsicBuilder("udfu35", true).Param(PrimitiveType.Word32).Param(PrimitiveType.Word32).Returns(PrimitiveType.Word32);
+
     }
 }

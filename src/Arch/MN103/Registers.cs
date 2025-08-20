@@ -34,6 +34,9 @@ namespace Reko.Arch.MN103
         public static RegisterStorage psw { get; }
         public static RegisterStorage lir { get; }
         public static RegisterStorage lar { get; }
+        public static RegisterStorage usp { get; }
+        public static RegisterStorage ssp { get; }
+        public static RegisterStorage msp { get; }
 
         public static FlagGroupStorage C { get; }
         public static FlagGroupStorage CNZ { get; }
@@ -62,6 +65,9 @@ namespace Reko.Arch.MN103
             psw = factory.Reg16("psw");
             lir = factory.Reg32("lir");
             lar = factory.Reg32("lar");
+            usp = factory.Reg32("usp");
+            ssp = factory.Reg32("ssp");
+            msp = factory.Reg32("msp");
 
             C = new FlagGroupStorage(psw, (uint) FlagM.CF, "C");
             CNZ = new FlagGroupStorage(psw, (uint) (FlagM.CF | FlagM.NF | FlagM.ZF), "CNZ");

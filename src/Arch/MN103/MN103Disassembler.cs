@@ -116,6 +116,10 @@ namespace Reko.Arch.MN103
         private static readonly Mutator<MN103Disassembler> mdr = Reg(Registers.mdr);
         private static readonly Mutator<MN103Disassembler> psw = Reg(Registers.psw);
         private static readonly Mutator<MN103Disassembler> sp = Reg(Registers.sp);
+        private static readonly Mutator<MN103Disassembler> usp = Reg(Registers.usp);
+        private static readonly Mutator<MN103Disassembler> ssp = Reg(Registers.ssp);
+        private static readonly Mutator<MN103Disassembler> msp = Reg(Registers.msp);
+        private static readonly Mutator<MN103Disassembler> pc = Reg(Registers.pc);
 
         private static bool regs(uint uInstr, MN103Disassembler dasm)
         {
@@ -125,6 +129,15 @@ namespace Reko.Arch.MN103
             dasm.ops.Add(regs);
             return true;
         }
+
+        private static bool imm4(uint uInstr, MN103Disassembler dasm)
+        {
+            var b = (byte) (uInstr & 0x0F);
+            var imm = Constant.Byte(b);
+            dasm.ops.Add(imm);
+            return true;
+        }
+
         private static bool imm8(uint uInstr, MN103Disassembler dasm)
         {
             if (!dasm.rdr.TryReadByte(out byte b))
@@ -376,8 +389,16 @@ namespace Reko.Arch.MN103
             var f0decoders = Mask(4, 4, "  F0",
                 Instr(Mnemonic.mov, indam, an),
                 Instr(Mnemonic.mov, am, indan),
-                invalid,
-                invalid,
+                Mask(2, 2, "  F02",
+                    Instr(Mnemonic.mov, usp, an),
+                    Instr(Mnemonic.mov, ssp, an),
+                    Instr(Mnemonic.mov, msp, an),
+                    Instr(Mnemonic.mov, pc, an)),
+                Mask(2, 2, "  F03",
+                    Instr(Mnemonic.mov, an, usp),
+                    Instr(Mnemonic.mov, an, ssp),
+                    Instr(Mnemonic.mov, an, msp),
+                    Instr(Mnemonic.mov, an, pc)),
 
                 Instr(Mnemonic.movbu, indam, dn),
                 Instr(Mnemonic.movbu, dm, indan),
@@ -388,10 +409,10 @@ namespace Reko.Arch.MN103
                 Instr(Mnemonic.bclr, dm, indan),
                 invalid,
                 invalid,
-
+                // https://sourceware.org/git/?p=binutils-gdb.git;a=blob;f=sim/mn10300/am33-2.igen;h=40761b2a19d9c9bdaf06cf45fbb3b92a3dc1d035;hb=HEAD
+                Instr(Mnemonic.syscall),
                 invalid,
-                invalid,
-                invalid,
+                Instr(Mnemonic.syscall, imm4),
                 Mask(0, 4, "  F0 F?",
                     calls_indan,
                     calls_indan,
@@ -488,9 +509,122 @@ namespace Reko.Arch.MN103
                 Instr(Mnemonic.movhu, idx_di_am, dn),
                 Instr(Mnemonic.movhu, dm, idx_di_an));
 
-            var f5decoders = invalid;
-            var f6decoders = invalid;
-            var f7decoders = invalid;
+            var f5decoders = Mask(4, 4, "  F5",
+                Instr(Mnemonic.udf20, dm, dn),
+                Instr(Mnemonic.udf21, dm, dn),
+                Instr(Mnemonic.udf22, dm, dn),
+                Instr(Mnemonic.udf23, dm, dn),
+                Instr(Mnemonic.udf24, dm, dn),
+                Instr(Mnemonic.udf25, dm, dn),
+                Instr(Mnemonic.udf26, dm, dn),
+                Instr(Mnemonic.udf27, dm, dn),
+                Instr(Mnemonic.udf28, dm, dn),
+                Instr(Mnemonic.udf29, dm, dn),
+                Instr(Mnemonic.udf30, dm, dn),
+                Instr(Mnemonic.udf31, dm, dn),
+                Instr(Mnemonic.udf32, dm, dn),
+                Instr(Mnemonic.udf33, dm, dn),
+                Instr(Mnemonic.udf34, dm, dn),
+                Instr(Mnemonic.udf35, dm, dn));
+
+            var f6decoders = Mask(4, 4, "  F6",
+                Instr(Mnemonic.udf00, dm, dn),
+                Instr(Mnemonic.udf01, dm, dn),
+                Instr(Mnemonic.udf02, dm, dn),
+                Instr(Mnemonic.udf03, dm, dn),
+                Instr(Mnemonic.udf04, dm, dn),
+                Instr(Mnemonic.udf05, dm, dn),
+                Instr(Mnemonic.udf06, dm, dn),
+                Instr(Mnemonic.udf07, dm, dn),
+                Instr(Mnemonic.udf08, dm, dn),
+                Instr(Mnemonic.udf09, dm, dn),
+                Instr(Mnemonic.udf10, dm, dn),
+                Instr(Mnemonic.udf11, dm, dn),
+                Instr(Mnemonic.udf12, dm, dn),
+                Instr(Mnemonic.udf13, dm, dn),
+                Instr(Mnemonic.udf14, dm, dn),
+                Instr(Mnemonic.udf15, dm, dn));
+
+            var f7decoders = Mask(2, 6, "  F7",
+                Instr(Mnemonic.udf00, imm8, dn),
+                Instr(Mnemonic.udfu00, imm8, dn),
+                Instr(Mnemonic.udf20, imm8, dn),
+                Instr(Mnemonic.udfu20, imm8, dn),
+
+                Instr(Mnemonic.udf01, imm8, dn),
+                Instr(Mnemonic.udfu01, imm8, dn),
+                Instr(Mnemonic.udf21, imm8, dn),
+                Instr(Mnemonic.udfu21, imm8, dn),
+
+                Instr(Mnemonic.udf02, imm8, dn),
+                Instr(Mnemonic.udfu02, imm8, dn),
+                Instr(Mnemonic.udf22, imm8, dn),
+                Instr(Mnemonic.udfu22, imm8, dn),
+
+                Instr(Mnemonic.udf03, imm8, dn),
+                Instr(Mnemonic.udfu03, imm8, dn),
+                Instr(Mnemonic.udf23, imm8, dn),
+                Instr(Mnemonic.udfu23, imm8, dn),
+
+                Instr(Mnemonic.udf04, imm8, dn),
+                Instr(Mnemonic.udfu04, imm8, dn),
+                Instr(Mnemonic.udf24, imm8, dn),
+                Instr(Mnemonic.udfu24, imm8, dn),
+
+                Instr(Mnemonic.udf05, imm8, dn),
+                Instr(Mnemonic.udfu05, imm8, dn),
+                Instr(Mnemonic.udf25, imm8, dn),
+                Instr(Mnemonic.udfu25, imm8, dn),
+
+                Instr(Mnemonic.udf06, imm8, dn),
+                Instr(Mnemonic.udfu06, imm8, dn),
+                Instr(Mnemonic.udf26, imm8, dn),
+                Instr(Mnemonic.udfu26, imm8, dn),
+
+                Instr(Mnemonic.udf07, imm8, dn),
+                Instr(Mnemonic.udfu07, imm8, dn),
+                Instr(Mnemonic.udf27, imm8, dn),
+                Instr(Mnemonic.udfu27, imm8, dn),
+
+                Instr(Mnemonic.udf08, imm8, dn),
+                Instr(Mnemonic.udfu08, imm8, dn),
+                Instr(Mnemonic.udf28, imm8, dn),
+                Instr(Mnemonic.udfu28, imm8, dn),
+
+                Instr(Mnemonic.udf09, imm8, dn),
+                Instr(Mnemonic.udfu09, imm8, dn),
+                Instr(Mnemonic.udf29, imm8, dn),
+                Instr(Mnemonic.udfu29, imm8, dn),
+
+                Instr(Mnemonic.udf10, imm8, dn),
+                Instr(Mnemonic.udfu10, imm8, dn),
+                Instr(Mnemonic.udf30, imm8, dn),
+                Instr(Mnemonic.udfu30, imm8, dn),
+
+                Instr(Mnemonic.udf11, imm8, dn),
+                Instr(Mnemonic.udfu11, imm8, dn),
+                Instr(Mnemonic.udf31, imm8, dn),
+                Instr(Mnemonic.udfu31, imm8, dn),
+
+                Instr(Mnemonic.udf12, imm8, dn),
+                Instr(Mnemonic.udfu12, imm8, dn),
+                Instr(Mnemonic.udf32, imm8, dn),
+                Instr(Mnemonic.udfu32, imm8, dn),
+
+                Instr(Mnemonic.udf13, imm8, dn),
+                Instr(Mnemonic.udfu13, imm8, dn),
+                Instr(Mnemonic.udf33, imm8, dn),
+                Instr(Mnemonic.udfu33, imm8, dn),
+
+                Instr(Mnemonic.udf14, imm8, dn),
+                Instr(Mnemonic.udfu14, imm8, dn),
+                Instr(Mnemonic.udf34, imm8, dn),
+                Instr(Mnemonic.udfu34, imm8, dn),
+
+                Instr(Mnemonic.udf15, imm8, dn),
+                Instr(Mnemonic.udfu15, imm8, dn),
+                Instr(Mnemonic.udf35, imm8, dn),
+                Instr(Mnemonic.udfu35, imm8, dn));
 
             var and_imm8_dn = Instr(Mnemonic.and, imm8, dn);
             var btst_imm8_dn = Instr(Mnemonic.btst, imm8, dn);
@@ -625,7 +759,87 @@ namespace Reko.Arch.MN103
                         Instr(Mnemonic.or, imm16, psw),
                         Instr(Mnemonic.add, imm16, sp),
                         Instr(Mnemonic.calls, d16_pc))));
-            var fbdecoders = invalid;
+            var fbdecoders = Mask(2, 6, "  FB",
+                Instr(Mnemonic.udf00, imm16, dn),
+                Instr(Mnemonic.udfu00, imm16, dn),
+                Instr(Mnemonic.udf20, imm16, dn),
+                Instr(Mnemonic.udfu20, imm16, dn),
+
+                Instr(Mnemonic.udf01, imm16, dn),
+                Instr(Mnemonic.udfu01, imm16, dn),
+                Instr(Mnemonic.udf21, imm16, dn),
+                Instr(Mnemonic.udfu21, imm16, dn),
+
+                Instr(Mnemonic.udf02, imm16, dn),
+                Instr(Mnemonic.udfu02, imm16, dn),
+                Instr(Mnemonic.udf22, imm16, dn),
+                Instr(Mnemonic.udfu22, imm16, dn),
+
+                Instr(Mnemonic.udf03, imm16, dn),
+                Instr(Mnemonic.udfu03, imm16, dn),
+                Instr(Mnemonic.udf23, imm16, dn),
+                Instr(Mnemonic.udfu23, imm16, dn),
+
+                Instr(Mnemonic.udf04, imm16, dn),
+                Instr(Mnemonic.udfu04, imm16, dn),
+                Instr(Mnemonic.udf24, imm16, dn),
+                Instr(Mnemonic.udfu24, imm16, dn),
+
+                Instr(Mnemonic.udf05, imm16, dn),
+                Instr(Mnemonic.udfu05, imm16, dn),
+                Instr(Mnemonic.udf25, imm16, dn),
+                Instr(Mnemonic.udfu25, imm16, dn),
+
+                Instr(Mnemonic.udf06, imm16, dn),
+                Instr(Mnemonic.udfu06, imm16, dn),
+                Instr(Mnemonic.udf26, imm16, dn),
+                Instr(Mnemonic.udfu26, imm16, dn),
+
+                Instr(Mnemonic.udf07, imm16, dn),
+                Instr(Mnemonic.udfu07, imm16, dn),
+                Instr(Mnemonic.udf27, imm16, dn),
+                Instr(Mnemonic.udfu27, imm16, dn),
+
+                Instr(Mnemonic.udf08, imm16, dn),
+                Instr(Mnemonic.udfu08, imm16, dn),
+                Instr(Mnemonic.udf28, imm16, dn),
+                Instr(Mnemonic.udfu28, imm16, dn),
+
+                Instr(Mnemonic.udf09, imm16, dn),
+                Instr(Mnemonic.udfu09, imm16, dn),
+                Instr(Mnemonic.udf29, imm16, dn),
+                Instr(Mnemonic.udfu29, imm16, dn),
+
+                Instr(Mnemonic.udf10, imm16, dn),
+                Instr(Mnemonic.udfu10, imm16, dn),
+                Instr(Mnemonic.udf30, imm16, dn),
+                Instr(Mnemonic.udfu30, imm16, dn),
+
+                Instr(Mnemonic.udf11, imm16, dn),
+                Instr(Mnemonic.udfu11, imm16, dn),
+                Instr(Mnemonic.udf31, imm16, dn),
+                Instr(Mnemonic.udfu31, imm16, dn),
+
+                Instr(Mnemonic.udf12, imm16, dn),
+                Instr(Mnemonic.udfu12, imm16, dn),
+                Instr(Mnemonic.udf32, imm16, dn),
+                Instr(Mnemonic.udfu32, imm16, dn),
+
+                Instr(Mnemonic.udf13, imm16, dn),
+                Instr(Mnemonic.udfu13, imm16, dn),
+                Instr(Mnemonic.udf33, imm16, dn),
+                Instr(Mnemonic.udfu33, imm16, dn),
+
+                Instr(Mnemonic.udf14, imm16, dn),
+                Instr(Mnemonic.udfu14, imm16, dn),
+                Instr(Mnemonic.udf34, imm16, dn),
+                Instr(Mnemonic.udfu34, imm16, dn),
+
+                Instr(Mnemonic.udf15, imm16, dn),
+                Instr(Mnemonic.udfu15, imm16, dn),
+                Instr(Mnemonic.udf35, imm16, dn),
+                Instr(Mnemonic.udfu35, imm16, dn));
+
             var fcdecoders = Mask(4, 4, "  FC",
                 Instr(Mnemonic.mov, d32_am, dn),
                 Instr(Mnemonic.mov, dm, d32_an),
@@ -692,7 +906,88 @@ namespace Reko.Arch.MN103
                     invalid,
                     Instr(Mnemonic.add, imm32, sp),
                     Instr(Mnemonic.calls, d32_sp)));
-            var fddecoders = invalid;
+            var fddecoders = Mask(2, 6, "  FD",
+                Instr(Mnemonic.udf00, imm32, dn),
+                Instr(Mnemonic.udfu00, imm32, dn),
+                Instr(Mnemonic.udf20, imm32, dn),
+                Instr(Mnemonic.udfu20, imm32, dn),
+
+                Instr(Mnemonic.udf01, imm32, dn),
+                Instr(Mnemonic.udfu01, imm32, dn),
+                Instr(Mnemonic.udf21, imm32, dn),
+                Instr(Mnemonic.udfu21, imm32, dn),
+
+                Instr(Mnemonic.udf02, imm32, dn),
+                Instr(Mnemonic.udfu02, imm32, dn),
+                Instr(Mnemonic.udf22, imm32, dn),
+                Instr(Mnemonic.udfu22, imm32, dn),
+
+                Instr(Mnemonic.udf03, imm32, dn),
+                Instr(Mnemonic.udfu03, imm32, dn),
+                Instr(Mnemonic.udf23, imm32, dn),
+                Instr(Mnemonic.udfu23, imm32, dn),
+
+                Instr(Mnemonic.udf04, imm32, dn),
+                Instr(Mnemonic.udfu04, imm32, dn),
+                Instr(Mnemonic.udf24, imm32, dn),
+                Instr(Mnemonic.udfu24, imm32, dn),
+
+                Instr(Mnemonic.udf05, imm32, dn),
+                Instr(Mnemonic.udfu05, imm32, dn),
+                Instr(Mnemonic.udf25, imm32, dn),
+                Instr(Mnemonic.udfu25, imm32, dn),
+
+                Instr(Mnemonic.udf06, imm32, dn),
+                Instr(Mnemonic.udfu06, imm32, dn),
+                Instr(Mnemonic.udf26, imm32, dn),
+                Instr(Mnemonic.udfu26, imm32, dn),
+
+                Instr(Mnemonic.udf07, imm32, dn),
+                Instr(Mnemonic.udfu07, imm32, dn),
+                Instr(Mnemonic.udf27, imm32, dn),
+                Instr(Mnemonic.udfu27, imm32, dn),
+
+                Instr(Mnemonic.udf08, imm32, dn),
+                Instr(Mnemonic.udfu08, imm32, dn),
+                Instr(Mnemonic.udf28, imm32, dn),
+                Instr(Mnemonic.udfu28, imm32, dn),
+
+                Instr(Mnemonic.udf09, imm32, dn),
+                Instr(Mnemonic.udfu09, imm32, dn),
+                Instr(Mnemonic.udf29, imm32, dn),
+                Instr(Mnemonic.udfu29, imm32, dn),
+
+                Instr(Mnemonic.udf10, imm32, dn),
+                Instr(Mnemonic.udfu10, imm32, dn),
+                Instr(Mnemonic.udf30, imm32, dn),
+                Instr(Mnemonic.udfu30, imm32, dn),
+
+                Instr(Mnemonic.udf11, imm32, dn),
+                Instr(Mnemonic.udfu11, imm32, dn),
+                Instr(Mnemonic.udf31, imm32, dn),
+                Instr(Mnemonic.udfu31, imm32, dn),
+
+                Instr(Mnemonic.udf12, imm32, dn),
+                Instr(Mnemonic.udfu12, imm32, dn),
+                Instr(Mnemonic.udf32, imm32, dn),
+                Instr(Mnemonic.udfu32, imm32, dn),
+
+                Instr(Mnemonic.udf13, imm32, dn),
+                Instr(Mnemonic.udfu13, imm32, dn),
+                Instr(Mnemonic.udf33, imm32, dn),
+                Instr(Mnemonic.udfu33, imm32, dn),
+
+                Instr(Mnemonic.udf14, imm32, dn),
+                Instr(Mnemonic.udfu14, imm32, dn),
+                Instr(Mnemonic.udf34, imm32, dn),
+                Instr(Mnemonic.udfu34, imm32, dn),
+
+                Instr(Mnemonic.udf15, imm32, dn),
+                Instr(Mnemonic.udfu15, imm32, dn),
+                Instr(Mnemonic.udf35, imm32, dn),
+                Instr(Mnemonic.udfu35, imm32, dn));
+
+
             var fedecoders = Sparse(0, 8, "  FE", invalid,
                 (0x00, Instr(Mnemonic.bset, imm8, abs32)),
                 (0x01, Instr(Mnemonic.bclr, imm8, abs32)),

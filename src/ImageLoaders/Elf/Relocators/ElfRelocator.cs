@@ -163,7 +163,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
         /// found in the GOT for that PLT stub.
         /// </summary>
         /// <remarks>
-        /// Some versions of GCC emit a R_386_JUMP_SLOT relocation where the symbol being referred to
+        /// Some versions of GCC emit a <c>R_386_JUMP_SLOT</c> relocation where the symbol being referred to
         /// has a value of 0, where it normally would have been the virtual address of a PLT stub. Those
         /// versions of GCC put, in the GOT entry for the relocation, a pointer to the PLT stub + 6 bytes.
         /// We subtract those 6 bytes to obtain a pointer to the PLT stub.
@@ -181,14 +181,15 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
         public virtual StartPattern[] GetStartPatterns()
         {
-            return Array.Empty<StartPattern>();
+            return [];
         }
 
         /// <summary>
         /// Relocates all relocations found in the DT_DYNAMIC segment.
         /// </summary>
         /// <param name="program"></param>
-        /// <returns></returns>
+        /// <returns>The list of ELF symbols that were successfully relocatd.
+        /// </returns>
         public List<ElfSymbol> RelocateDynamicSymbols(Program program)
         {
             var result = new List<ElfSymbol>();
