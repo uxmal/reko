@@ -54,7 +54,21 @@ Options:
             return new Program().Execute(args);
         }
 
-        public int Execute(string [] args)
+        public int Execute(string[] args)
+        {
+            try
+            {
+                return DoExecute(args);
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine("c2xml: {0}", ex.Message);
+                Console.Error.WriteLine(ex.StackTrace);
+                return 1;
+            }
+        }
+
+        public int DoExecute(string [] args)
         {
             TextReader input;
             Stream output = Console.OpenStandardOutput();
