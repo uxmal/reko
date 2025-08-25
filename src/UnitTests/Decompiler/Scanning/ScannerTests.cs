@@ -179,7 +179,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
 
             Assert.AreEqual(1, program.Procedures.Count);
             Assert.AreEqual(0x12314, program.Procedures.Keys[0].Offset);
-            Assert.IsTrue(program.CallGraph.EntryPoints.Contains(program.Procedures.Values[0]));
+            Assert.IsTrue(program.CallGraph.EntryPoints.Contains(program.Procedures.Values[0]), "Should have added entry point");
         }
 
         private void Given_Program(Address address, byte[] bytes)

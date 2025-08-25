@@ -757,7 +757,7 @@ namespace Reko.Core.Memory
         /// <returns>True if a value was successfully read; otherwise false.</returns>
         public static bool TryReadLeUInt32(byte[] abImage, long offset, long offsetEnd, out uint value)
         {
-            if (offset <= offsetEnd - 4)
+            if ((ulong)offset <= (ulong)offsetEnd - 4)
             {
                 var span = abImage.AsSpan((int) offset, 4);
                 value = BinaryPrimitives.ReadUInt32LittleEndian(span);

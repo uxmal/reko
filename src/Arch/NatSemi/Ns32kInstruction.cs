@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
@@ -47,6 +48,11 @@ public class Ns32kInstruction : MachineInstruction
     {
         if (operand is Constant c)
         {
+            if (c.DataType.Domain == Domain.Real)
+            {
+                base.RenderOperand(operand, renderer, options);
+                return;
+            }
             if (c.DataType.Domain == Domain.SignedInt)
             {
                 renderer.WriteFormat("{0}", c.ToInt32());

@@ -52,6 +52,8 @@ namespace Reko.Core.Intrinsics
         public static readonly IntrinsicProcedure Log10Generic = IntrinsicBuilder.GenericUnary("log10");
         public static readonly IntrinsicProcedure Log2Generic = IntrinsicBuilder.GenericUnary("log2");
         public static readonly IntrinsicProcedure LogGeneric = IntrinsicBuilder.GenericUnary("log");
+        public static readonly IntrinsicProcedure Pow = IntrinsicBuilder.Binary("pow", PrimitiveType.Real64);
+        public static readonly IntrinsicProcedure Powf = IntrinsicBuilder.Binary("powf", PrimitiveType.Real32);
         public static readonly IntrinsicProcedure SinGeneric = IntrinsicBuilder.GenericUnary("sin");
         public static readonly IntrinsicProcedure SqrtGeneric = IntrinsicBuilder.GenericUnary("sqrt");
         public static readonly IntrinsicProcedure TanGeneric = IntrinsicBuilder.GenericUnary("tan");

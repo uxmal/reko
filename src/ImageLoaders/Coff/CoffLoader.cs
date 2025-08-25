@@ -64,13 +64,14 @@ namespace Reko.ImageLoaders.Coff
         private IProcessorArchitecture arch;
         private Address addrPreferred;
         private FileHeader header;
+        private uint entry;
         private List<(string, CoffSectionHeader)> coffSections;
 
 
         public CoffLoader(IServiceProvider services, ImageLocation imageLocation, byte[] rawBytes)
             : base(services, imageLocation, rawBytes)
         {
-            (this.arch, this.header, coffSections) = LoadHeader();
+            (this.arch, this.header, coffSections, entry) = LoadHeader();
             addrPreferred = default!;
         }
 
@@ -107,15 +108,14 @@ namespace Reko.ImageLoaders.Coff
 
         private Program LoadExecutable()
         {
-            var segs = ComputeSegmentLayout(this.coffSections);
+            var segs = LoadImageSegments(this.coffSections);
             var program = new Program(
                 new ByteProgramMemory(new SegmentMap(segs.ToArray())),
                 arch,
                 new DefaultPlatform(Services, arch));
-            var textSegment = segs.Find(s => s.Name == ".text");
-            if (textSegment is not null)
+            if (this.entry != ~0u)
             {
-                var ep = ImageSymbol.Procedure(arch, textSegment.Address, "_entry");
+                var ep = ImageSymbol.Procedure(arch, Address.Ptr32(this.entry), "_entry");
                 program.EntryPoints.Add(ep.Address, ep);
             }
             return program;
@@ -143,6 +143,23 @@ namespace Reko.ImageLoaders.Coff
                 var seg = new ImageSegment(n, mem, AccessFromSegmentHeader(hdr));
                 imgSegments.Add(seg);
                 addr = addr + mem.Bytes.Length;
+            }
+            return imgSegments;
+        }
+
+        private List<ImageSegment> LoadImageSegments(List<(string, CoffSectionHeader)> coffSections)
+        {
+            var imgSegments = new List<ImageSegment>();
+            foreach (var (n, hdr) in coffSections)
+            {
+                var addr = Address.Ptr32(hdr.VirtualAddress);
+                var mem = new ByteMemoryArea(addr, new byte[Math.Max(hdr.VirtualSize, hdr.SizeOfRawData)]);
+                if (!hdr.Characteristics.HasFlag(CoffSectionCharacteristics.IMAGE_SCN_CNT_UNINITIALIZED_DATA))
+                {
+                    Array.Copy(RawImage, hdr.PointerToRawData, mem.Bytes, 0, Math.Min(hdr.SizeOfRawData, mem.Bytes.Length));
+                }
+                var seg = new ImageSegment(n, mem, AccessFromSegmentHeader(hdr));
+                imgSegments.Add(seg);
             }
             return imgSegments;
         }
@@ -176,6 +193,8 @@ namespace Reko.ImageLoaders.Coff
         private AccessMode AccessFromSegmentHeader(in CoffSectionHeader hdr)
         {
             AccessMode mode = 0;
+            if (hdr.Characteristics.HasFlag(CoffSectionCharacteristics.IMAGE_SCN_CNT_CODE))
+                return AccessMode.ReadExecute;
             if (hdr.Characteristics.HasFlag(CoffSectionCharacteristics.IMAGE_SCN_MEM_READ))
                 mode |= AccessMode.Read;
             if (hdr.Characteristics.HasFlag(CoffSectionCharacteristics.IMAGE_SCN_MEM_WRITE))
@@ -185,11 +204,12 @@ namespace Reko.ImageLoaders.Coff
             return mode;
         }
 
-        private (IProcessorArchitecture, FileHeader, List<(string, CoffSectionHeader)>) LoadHeader()
+        private (IProcessorArchitecture, FileHeader, List<(string, CoffSectionHeader)>, uint entry) LoadHeader()
         {
             var rdr = new LeImageReader(RawImage, 0);
             var magic = rdr.ReadLeUInt16();
             var cfgSvc = Services.RequireService<IConfigurationService>();
+            uint entry = ~0u;
             IProcessorArchitecture? arch = null;
             switch (magic)
             {
@@ -229,6 +249,7 @@ namespace Reko.ImageLoaders.Coff
                     ns32kopt.data_start = rdr.ReadUInt32();
                     ns32kopt.entry_mod = rdr.ReadInt16();
                     ns32kopt.flags = rdr.ReadUInt16();
+                    entry = ns32kopt.entry;
                 }
                 else
                 {
@@ -256,7 +277,7 @@ namespace Reko.ImageLoaders.Coff
                     LoadSectionRelocations(name, hdr);
                 }
             }
-            return (arch, fileHeader, coffSections);
+            return (arch, fileHeader, coffSections, entry);
         }
 
         private void LoadSectionRelocations(string name, in CoffSectionHeader hdr)

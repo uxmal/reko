@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Operators;
 using Reko.Core.Types;
@@ -95,7 +96,7 @@ namespace Reko.Arch.X86.Rewriter
                 FpuRegister(0),
                 m.FSub(
                     m.Fn(
-                        pow_intrinsic,
+                        FpOps.Pow,
                         Constant.Real64(2.0),
                         FpuRegister(0)),
                     Constant.Real64(1.0)));

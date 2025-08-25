@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using System.Xml;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
@@ -100,6 +101,8 @@ public class Ns32kDisassembler : DisassemblerBase<Ns32kInstruction, Mnemonic>
 
     public override Ns32kInstruction? DisassembleInstruction()
     {
+        this.dataSize = null;
+        this.signedDataSize = null;
         this.addr = this.rdr.Address;
         if (!rdr.TryReadByte(out byte opcode))
             return null;
@@ -132,7 +135,7 @@ public class Ns32kDisassembler : DisassemblerBase<Ns32kInstruction, Mnemonic>
     public override Ns32kInstruction NotYetImplemented(string message)
     {
         var testSvc = arch.Services.GetService<ITestGenerationService>();
-        testSvc?.ReportMissingDecoder("Ns32k", this.addr, this.rdr, message);
+        testSvc?.ReportMissingDecoder("Ns32kDis", this.addr, this.rdr, message);
         return MakeInstruction(InstrClass.Invalid, Mnemonic.Nyi);
     }
 
@@ -197,14 +200,18 @@ public class Ns32kDisassembler : DisassemblerBase<Ns32kInstruction, Mnemonic>
         case 0b10001: return MemoryRelative(d, Registers.SP);
         case 0b10010: return MemoryRelative(d, Registers.SB);
         case 0b10100: // Immediate
-            var imm = ReadSignedDisplacement(d.rdr);
-            if (imm is null)
+            // The processor manual states that the immediate value is
+            // stored MSB.
+            if (!d.rdr.TryReadBe(d.dataSize, out var imm))
                 return null;
-            return Constant.Create(d.dataSize, imm.Value);
+            return imm;
         case 0b10101: // Absolute
-            throw new NotImplementedException();
+            var uAddr = ReadSignedDisplacement(d.rdr);
+            if (uAddr is null)
+                return null;
+            return MemoryOperand.Absolute(d.dataSize, Address.Ptr32((uint) uAddr.Value));
         case 0b10110: // External
-            return External();
+            return External(d);
         case 0b10111: // Top of stack.
             return Registers.TOS;
         // Memory space
@@ -244,9 +251,10 @@ public class Ns32kDisassembler : DisassemblerBase<Ns32kInstruction, Mnemonic>
         return d.addr + displacement.Value;
     }
 
-    private static MachineOperand External()
+    private static MachineOperand? External(Ns32kDisassembler d)
     {
-        throw new NotImplementedException();
+        d.NotYetImplemented("External addressing mode");
+        return null;
     }
 
     private static MachineOperand? MemoryRelative(Ns32kDisassembler d, RegisterStorage reg)
@@ -308,7 +316,7 @@ public class Ns32kDisassembler : DisassemblerBase<Ns32kInstruction, Mnemonic>
         case 0b11:
             if (!rdr.TryReadByte(out b2))
                 return null;
-            if (!rdr.TryReadUInt16(out ushort w))
+            if (!rdr.TryReadBeUInt16(out ushort w))
                 return null;
             return (int) Bits.SignExtend((uint) (b << 24) | (uint) (b2 << 16) | w, 30);
         }
@@ -395,6 +403,8 @@ public class Ns32kDisassembler : DisassemblerBase<Ns32kInstruction, Mnemonic>
             return true;
         };
     }
+    private static readonly Mutator<Ns32kDisassembler> dtByte = DatatypeSetter(PrimitiveType.Byte, PrimitiveType.Int8);
+    private static readonly Mutator<Ns32kDisassembler> dtWord = DatatypeSetter(PrimitiveType.Word16, PrimitiveType.Int16);
     private static readonly Mutator<Ns32kDisassembler> dtDword = DatatypeSetter(PrimitiveType.Word32, PrimitiveType.Int32);
 
     private static bool cinvOptions(uint uInstr, Ns32kDisassembler dasm)
@@ -627,6 +637,23 @@ public class Ns32kDisassembler : DisassemblerBase<Ns32kInstruction, Mnemonic>
     }
 
     /// <summary>
+    /// Decodes a 16-bit instruction integer instruction with byte, word, and dword variants.
+    /// </summary>
+    private static Decoder<Ns32kDisassembler, Mnemonic, Ns32kInstruction> Instr16_I(
+        InstrClass iclass,
+        Mnemonic mnb,
+        Mnemonic mnw,
+        Mnemonic mnd,
+        params Mutator<Ns32kDisassembler>[] m)
+    {
+        return Mask(0, 2, mnb.ToString(),
+            Instr16(mnb, iclass, AddDatatypeMutator(m, PrimitiveType.Byte, PrimitiveType.Int8)),
+            Instr16(mnw, iclass, AddDatatypeMutator(m, PrimitiveType.Word16, PrimitiveType.Int16)),
+            Instr16(Mnemonic.Invalid, InstrClass.Invalid, Array.Empty<Mutator<Ns32kDisassembler>>()),
+            Instr16(mnd, iclass, AddDatatypeMutator(m, PrimitiveType.Word32, PrimitiveType.Int32)));
+    }
+
+    /// <summary>
     /// Decodes a 24-bit instruction integer instruction with byte, word, and dword variants.
     /// </summary>
     private static Decoder<Ns32kDisassembler, Mnemonic, Ns32kInstruction> Instr24_I(
@@ -640,6 +667,23 @@ public class Ns32kDisassembler : DisassemblerBase<Ns32kInstruction, Mnemonic>
             Instr(mnw, AddDatatypeMutator(m, PrimitiveType.Word16, PrimitiveType.Int16)),
             Instr(Mnemonic.Invalid, InstrClass.Invalid),
             Instr(mnd, AddDatatypeMutator(m, PrimitiveType.Word32, PrimitiveType.Int32)));
+    }
+
+
+    /// <summary>
+    /// Decodes a 24-bit instruction shift instruction with byte, word, and dword variants.
+    /// </summary>
+    private static Decoder<Ns32kDisassembler, Mnemonic, Ns32kInstruction> Shift24(
+        Mnemonic mnb,
+        Mnemonic mnw,
+        Mnemonic mnd,
+        params Mutator<Ns32kDisassembler>[] m)
+    {
+        return Mask(8, 2, mnb.ToString(),
+            Instr(mnb, dtByte, gen19_5, dtByte, gen14_5),
+            Instr(mnw, dtByte, gen19_5, dtWord, gen14_5),
+            Instr(Mnemonic.Invalid, InstrClass.Invalid),
+            Instr(mnd, dtByte, gen19_5, dtDword, gen14_5));
     }
 
     /// <summary>
@@ -675,8 +719,11 @@ public class Ns32kDisassembler : DisassemblerBase<Ns32kInstruction, Mnemonic>
     {
         var invalid = Instr(Mnemonic.Invalid, InstrClass.Invalid, Array.Empty<Mutator<Ns32kDisassembler>>());
 
+        var acbi =Instr16_I(Mnemonic.acbb, Mnemonic.acbw, Mnemonic.acbd, quick7_4, gen11_5, jdisp);
         var addi = Instr16_I(Mnemonic.addb, Mnemonic.addw, Mnemonic.addd, gen11_5, gen6_5);
         var addci = Instr16_I(Mnemonic.addcb, Mnemonic.addcw, Mnemonic.addcd, gen11_5, gen6_5);
+        var addqi = Instr16_I(Mnemonic.addqb, Mnemonic.addqw, Mnemonic.addqd, quick7_4, gen11_5);
+        var adjspi = Instr_I(Mnemonic.adjspb, Mnemonic.adjspw, Mnemonic.adjspd, gen11_5);
         var andi = Instr16_I(Mnemonic.andb, Mnemonic.andw, Mnemonic.andd, gen11_5, gen6_5);
         var addr = Read16(Instr(Mnemonic.addr, gen11_5, gen6_5));
         var bici = Instr16_I(Mnemonic.bicb, Mnemonic.bicw, Mnemonic.bicd, gen11_5, gen6_5);
@@ -687,7 +734,7 @@ public class Ns32kDisassembler : DisassemblerBase<Ns32kInstruction, Mnemonic>
         var movi = Instr16_I(Mnemonic.movb, Mnemonic.movw, Mnemonic.movd, gen11_5, gen6_5);
         var movqi = Instr16_I(Mnemonic.movqb, Mnemonic.movqw, Mnemonic.movqd, quick7_4, gen11_5);
         var ori = Instr16_I(Mnemonic.orb, Mnemonic.orw, Mnemonic.ord, gen11_5, gen6_5);
-        var spri = Instr16_I(Mnemonic.sprb, Mnemonic.sprw, Mnemonic.sprd, procreg, gen11_5);
+        var spri = Instr16_I(InstrClass.Linear|InstrClass.Privileged, Mnemonic.sprb, Mnemonic.sprw, Mnemonic.sprd, procreg, gen11_5);
         var subci = Instr16_I(Mnemonic.subcb, Mnemonic.subcw, Mnemonic.subcd, gen11_5, gen6_5);
         var subi = Instr16_I(Mnemonic.subb, Mnemonic.subw, Mnemonic.subd, gen11_5, gen6_5);
         var tbiti = Instr16_I(Mnemonic.tbitb, Mnemonic.tbitw, Mnemonic.tbitd, gen11_5, gen6_5);
@@ -745,11 +792,11 @@ public class Ns32kDisassembler : DisassemblerBase<Ns32kInstruction, Mnemonic>
             (0b1111, Instr24_I(Mnemonic.floorfb, Mnemonic.floorfw, Mnemonic.floorfd, fgen19_5, gen14_5))));
 
         var decode4E = Read24(Sparse(10, 4, "  01001110", Nyi("01001110"),
-            (0b0000, Instr24_I(Mnemonic.rotb, Mnemonic.rotw, Mnemonic.rotd, gen19_5, gen14_5)),
-            (0b0001, Instr24_I(Mnemonic.ashb, Mnemonic.ashw, Mnemonic.ashd, gen19_5, gen14_5)),
+            (0b0000, Shift24(Mnemonic.rotb, Mnemonic.rotw, Mnemonic.rotd, gen19_5, gen14_5)),
+            (0b0001, Shift24(Mnemonic.ashb, Mnemonic.ashw, Mnemonic.ashd, gen19_5, gen14_5)),
             (0b0010, Instr24_I(Mnemonic.cbitb, Mnemonic.cbitw, Mnemonic.cbitd, gen19_5, gen14_5)),
             (0b0011, Instr24_I(Mnemonic.cbitib, Mnemonic.cbitiw, Mnemonic.cbitid, gen19_5, gen14_5)),
-            (0b0101, Instr24_I(Mnemonic.lshb, Mnemonic.lshw, Mnemonic.lshd, gen19_5, gen14_5)),
+            (0b0101, Shift24(Mnemonic.lshb, Mnemonic.lshw, Mnemonic.lshd, gen19_5, gen14_5)),
             (0b0110, Instr24_I(Mnemonic.sbitb, Mnemonic.sbitw, Mnemonic.sbitd, gen19_5, gen14_5)),
             (0b0111, Instr24_I(Mnemonic.sbitib, Mnemonic.sbitiw, Mnemonic.sbitid, gen19_5, gen14_5)),
             (0b1000, Instr24_I(Mnemonic.negb, Mnemonic.negw, Mnemonic.negd, gen19_5, gen14_5)),
@@ -765,17 +812,19 @@ public class Ns32kDisassembler : DisassemblerBase<Ns32kInstruction, Mnemonic>
             Nyi("001"),
             Nyi("010"),
             Instr(Mnemonic.cvtp, reg11, gen19_5, gen14_5),
-            Instr24_I(Mnemonic.ffsb, Mnemonic.ffsw, Mnemonic.ffsd, gen19_5, gen14_5),
+            Instr24_I(Mnemonic.ffsb, Mnemonic.ffsw, Mnemonic.ffsd, gen19_5, dtByte, gen14_5),
             Nyi("101"),
             Nyi("110"),
             Nyi("111")));
 
         var decode7C = Read16(Sparse(8, 3, "  01111100", Nyi("01111100"),
-            (0b001, Instr(Mnemonic.bicpsrb, gen11_5)),
+            (0b001, Instr(Mnemonic.bicpsrb, dtByte,  gen11_5)),
+            (0b101, adjspi),
             (0b111, casei)));
 
         var decode7D = Read16(Sparse(8, 3, "  01111101", Nyi("01111101"),
-            (0b001, Instr(Mnemonic.bicpsrw, gen11_5)),
+            (0b001, Instr(Mnemonic.bicpsrw, dtWord, gen11_5)),
+            (0b101, adjspi),
             (0b111, casei)));
 
         var decode7E = Read16(Sparse(8, 3, "  01111110", Nyi("01111110"),
@@ -784,7 +833,7 @@ public class Ns32kDisassembler : DisassemblerBase<Ns32kInstruction, Mnemonic>
         var decode7F = Read16(Sparse(8, 3, "  01111111", Nyi("01111111"),
             (0b000, Instr(Mnemonic.cxpd, gen11_5)),
             (0b010, Instr(Mnemonic.jump, InstrClass.Transfer, gen11_5)),
-            (0b101, Instr_I(Mnemonic.adjspb, Mnemonic.adjspw, Mnemonic.adjspd, gen11_5)),
+            (0b101, adjspi),
             (0b110, Instr(Mnemonic.jsr, InstrClass.Transfer | InstrClass.Call, gen11_5)),
             (0b111, casei)));
 
@@ -816,23 +865,23 @@ public class Ns32kDisassembler : DisassemblerBase<Ns32kInstruction, Mnemonic>
             (0b0010, Instr24_I(Mnemonic.inssb, Mnemonic.inssw, Mnemonic.inssd, gen19_5, gen14_5, shortField)),
             (0b0011, Instr24_I(Mnemonic.extsb, Mnemonic.extsw, Mnemonic.extsd, gen19_5, gen14_5, shortField)),
             (0b0100, Mask(8, 2, "  0100",
-                Instr(Mnemonic.movxbw, gen19_5, gen14_5),
+                Instr(Mnemonic.movxbw, dtByte, gen19_5, dtWord, gen14_5),
                 Nyi("01"),
                 Nyi("10"),
                 Nyi("11"))),
             (0b0101, Mask(8, 2, "  0101",
-                Instr(Mnemonic.movzbw, gen19_5, gen14_5),
+                Instr(Mnemonic.movzbw, dtByte, gen19_5, dtWord, gen14_5),
                 Nyi("01"),
                 Nyi("10"),
                 Nyi("11"))),
             (0b0110, Mask(8, 2, "  0110",
-                Instr(Mnemonic.movzbd, gen19_5, gen14_5),
-                Instr(Mnemonic.movzwd, gen19_5, gen14_5),
+                Instr(Mnemonic.movzbd, dtByte, gen19_5, dtDword, gen14_5),
+                Instr(Mnemonic.movzwd, dtByte, gen19_5, dtDword, gen14_5),
                 Nyi("10"),
                 Nyi("11"))),
             (0b0111, Mask(8, 2, "  0111",
-                Instr(Mnemonic.movxbd, gen19_5, gen14_5),
-                Instr(Mnemonic.movxwd, gen19_5, gen14_5),
+                Instr(Mnemonic.movxbd, dtByte, gen19_5, dtDword, gen14_5),
+                Instr(Mnemonic.movxwd, dtWord, gen19_5, dtDword, gen14_5),
                 Nyi("10"),
                 Nyi("11"))),
             (0b1000, Instr24_I(Mnemonic.mulb, Mnemonic.mulw, Mnemonic.muld, gen19_5, gen14_5)),
@@ -912,10 +961,10 @@ public class Ns32kDisassembler : DisassemblerBase<Ns32kInstruction, Mnemonic>
             bcond,
             bici,
 
-            decode0011,
-            decode0011,
+            addqi,
+            addqi,
             decode0E,
-            decode0011,
+            addqi,
 
             // 10
             addci,
@@ -983,12 +1032,12 @@ public class Ns32kDisassembler : DisassemblerBase<Ns32kInstruction, Mnemonic>
             // 40
             addi,
             addi,
-            Instr(Mnemonic.rett, InstrClass.Transfer | InstrClass.Return, disp),
+            Instr(Mnemonic.rett, InstrClass.Transfer | InstrClass.Return | InstrClass.Privileged, disp),
             addi,
 
             cmpi,
-            Nyi("01000101"),
             cmpi,
+            Nyi("01000101"),
             cmpi,
 
             bici,
@@ -996,15 +1045,15 @@ public class Ns32kDisassembler : DisassemblerBase<Ns32kInstruction, Mnemonic>
             bcond,
             bici,
 
-            decode0011,
-            decode0011,
+            acbi,
+            acbi,
             decode4E,
-            decode0011,
+            acbi,
 
             // 50
             addci,
             addci,
-            Instr(Mnemonic.reti, InstrClass.Transfer | InstrClass.Return),
+            Instr(Mnemonic.reti, InstrClass.Transfer | InstrClass.Return | InstrClass.Privileged),
             addci,
 
             movi,
@@ -1080,10 +1129,10 @@ public class Ns32kDisassembler : DisassemblerBase<Ns32kInstruction, Mnemonic>
             bcond,
             bici,
 
-            decode0011,
-            decode0011,
-            decode0011,
-            decode0011,
+            addqi,
+            addqi,
+            Nyi("10001110"),
+            addqi,
 
             // 90
             addci,
@@ -1164,10 +1213,10 @@ public class Ns32kDisassembler : DisassemblerBase<Ns32kInstruction, Mnemonic>
             bcond,
             bici,
 
-            decode0011,
-            decode0011,
+            acbi,
+            acbi,
             decodeCE,
-            decode0011,
+            acbi,
 
             // D0
             addci,

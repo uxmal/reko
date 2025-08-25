@@ -70,6 +70,18 @@ public class MemoryOperand : AbstractMachineOperand
         return mem;
     }
 
+
+    internal static MachineOperand? Absolute(PrimitiveType dataSize, Address address)
+    {
+        var mem = new MemoryOperand(dataSize)
+        {
+            Base = address,
+            Displacement = null,
+            Scale = 0
+        };
+        return mem;
+    }
+
     private MemoryOperand(PrimitiveType dt)
         : base(dt)
     {
@@ -84,6 +96,11 @@ public class MemoryOperand : AbstractMachineOperand
         }
         if (Scale == 0)
         {
+            if (Base is Address addr)
+            {
+                renderer.WriteAddress($"@{addr}", addr);
+                return;
+            }
             if (Displacement is not null)
             {
                 if (Displacement is Constant c)
@@ -116,4 +133,5 @@ public class MemoryOperand : AbstractMachineOperand
             renderer.WriteChar(']');
         }
     }
+
 }

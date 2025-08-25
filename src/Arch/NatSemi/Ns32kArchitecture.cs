@@ -19,6 +19,7 @@
 #endregion
 
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
@@ -65,12 +66,13 @@ public class Ns32kArchitecture : ProcessorArchitecture
 
     public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
     {
-        throw new NotImplementedException();
+        return new Ns32kRewriter(this, rdr, state, binder, host);
     }
 
     public override FlagGroupStorage? GetFlagGroup(RegisterStorage flagRegister, uint grf)
     {
-        throw new NotImplementedException();
+        var fl = new FlagGroupStorage(flagRegister, grf, this.GrfToString(flagRegister, "", grf));
+        return fl;
     }
 
     public override FlagGroupStorage? GetFlagGroup(string name)
@@ -93,14 +95,42 @@ public class Ns32kArchitecture : ProcessorArchitecture
         throw new NotImplementedException();
     }
 
+    public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
+    {
+        uint grf = flags.FlagGroupBits;
+        if ((grf & Registers.C.FlagGroupBits) != 0) yield return Registers.C;
+        if ((grf & Registers.F.FlagGroupBits) != 0) yield return Registers.F;
+        if ((grf & Registers.I.FlagGroupBits) != 0) yield return Registers.I;
+        if ((grf & Registers.L.FlagGroupBits) != 0) yield return Registers.L;
+        if ((grf & Registers.N.FlagGroupBits) != 0) yield return Registers.N;
+        if ((grf & Registers.P.FlagGroupBits) != 0) yield return Registers.P;
+        if ((grf & Registers.S.FlagGroupBits) != 0) yield return Registers.S;
+        if ((grf & Registers.T.FlagGroupBits) != 0) yield return Registers.T;
+        if ((grf & Registers.U.FlagGroupBits) != 0) yield return Registers.U;
+        if ((grf & Registers.V.FlagGroupBits) != 0) yield return Registers.V;
+        if ((grf & Registers.Z.FlagGroupBits) != 0) yield return Registers.Z;
+    }
+
     public override string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)
     {
-        throw new NotImplementedException();
+        StringBuilder sb = new StringBuilder();
+        if ((grf & Registers.C.FlagGroupBits) != 0) sb.Append(Registers.S.Name);
+        if ((grf & Registers.F.FlagGroupBits) != 0) sb.Append(Registers.S.Name);
+        if ((grf & Registers.I.FlagGroupBits) != 0) sb.Append(Registers.S.Name);
+        if ((grf & Registers.L.FlagGroupBits) != 0) sb.Append(Registers.S.Name);
+        if ((grf & Registers.N.FlagGroupBits) != 0) sb.Append(Registers.S.Name);
+        if ((grf & Registers.P.FlagGroupBits) != 0) sb.Append(Registers.S.Name);
+        if ((grf & Registers.S.FlagGroupBits) != 0) sb.Append(Registers.S.Name);
+        if ((grf & Registers.T.FlagGroupBits) != 0) sb.Append(Registers.S.Name);
+        if ((grf & Registers.U.FlagGroupBits) != 0) sb.Append(Registers.S.Name);
+        if ((grf & Registers.V.FlagGroupBits) != 0) sb.Append(Registers.S.Name);
+        if ((grf & Registers.Z.FlagGroupBits) != 0) sb.Append(Registers.S.Name);
+        return sb.ToString();
     }
 
     public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
     {
-        throw new NotImplementedException();
+        return Address.Ptr32(c.ToUInt32());
     }
 
     public override Address? ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
@@ -110,6 +140,6 @@ public class Ns32kArchitecture : ProcessorArchitecture
 
     public override bool TryParseAddress(string? txtAddr, [MaybeNullWhen(false)] out Address addr)
     {
-        throw new NotImplementedException();
+        return Address.TryParse32(txtAddr, out addr);
     }
 }

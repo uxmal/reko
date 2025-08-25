@@ -320,7 +320,7 @@ namespace Reko.Core.Expressions
         /// <param name="src">The smaller value to deposit.</param>
         /// <param name="offset">The bit offset at which to deposit the value.</param>
         /// <returns>A deposit-bits expression.</returns>
-        public MkSequence Dpb(Expression dst, Expression src, int offset)
+        public Expression Dpb(Expression dst, Expression src, int offset)
         {
             Debug.Assert(dst is Identifier || dst is Constant);
             var exps = new List<Expression>();
@@ -342,6 +342,8 @@ namespace Reko.Core.Expressions
             {
                 exps.Add(Slice(dst, PrimitiveType.CreateWord(dst.DataType.BitSize - msb), msb));
             }
+            if (exps.Count == 1)
+                return exps[0];
             exps.Reverse();
             return new MkSequence(dst.DataType, exps.ToArray());
         }

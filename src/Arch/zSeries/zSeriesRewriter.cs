@@ -412,7 +412,7 @@ namespace Reko.Arch.zSeries
                 }
                 var seq = m.Dpb(dst, src, 0);
                 m.Assign(dst, seq);
-                return seq.Expressions[1];
+                return src;
             }
             else
             {

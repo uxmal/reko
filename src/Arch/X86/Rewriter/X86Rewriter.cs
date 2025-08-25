@@ -1217,10 +1217,6 @@ namespace Reko.Arch.X86.Rewriter
                 .GenericTypes("TSrc", "TDst")
                 .Param("TSrc")
                 .Returns("TDst");
-            pow_intrinsic = new IntrinsicBuilder("pow", false)  //$REVIEW: math.h
-                .Param(PrimitiveType.Real64)
-                .Param(PrimitiveType.Real64)
-                .Returns(PrimitiveType.Real64);
             prefetchnta_intrinsic = new IntrinsicBuilder("__prefetchnta", true)
                 .GenericTypes("T")
                 .Param("T")
@@ -1613,7 +1609,6 @@ namespace Reko.Arch.X86.Rewriter
         private static readonly IntrinsicProcedure pmull_intrinsic = GenericBinaryIntrinsic_DifferentTypes("__pmull");
         private static readonly IntrinsicProcedure pmulu_intrinsic = GenericBinaryIntrinsic_DifferentTypes("__pmulu");
         private static readonly IntrinsicProcedure popcnt_intrinsic;
-        private static readonly IntrinsicProcedure pow_intrinsic;
         private static readonly IntrinsicProcedure prefetchnta_intrinsic;
         private static readonly IntrinsicProcedure prefetcht0_intrinsic;
         private static readonly IntrinsicProcedure prefetcht1_intrinsic;

@@ -76,6 +76,10 @@ public static class Registers
         L = new FlagGroupStorage(PSR, (uint) FlagM.LF, "L");
         T = new FlagGroupStorage(PSR, (uint) FlagM.TF, "T");
         C = new FlagGroupStorage(PSR, (uint) FlagM.CF, "C");
+        CF = new FlagGroupStorage(PSR, (uint) (FlagM.CF | FlagM.FF), "CF");
+        LNZ = new FlagGroupStorage(PSR, (uint) (FlagM.LF | FlagM.NF | FlagM.ZF), "LNZ");
+        LZ = new FlagGroupStorage(PSR, (uint) (FlagM.LF | FlagM.ZF), "LZ");
+        NZ = new FlagGroupStorage(PSR, (uint) (FlagM.NF | FlagM.ZF), "NZ");
 
         RegistersByName = factory.NamesToRegisters;
         RegistersByDomain = factory.DomainsToRegisters;
@@ -125,6 +129,11 @@ public static class Registers
     public static FlagGroupStorage L { get; }
     public static FlagGroupStorage T { get; }
     public static FlagGroupStorage C { get; }
+
+    public static FlagGroupStorage CF { get; }
+    public static FlagGroupStorage LNZ { get; }
+    public static FlagGroupStorage LZ { get; }
+    public static FlagGroupStorage NZ { get; }
 
 
     public static Dictionary<string, RegisterStorage> RegistersByName { get; }

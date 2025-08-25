@@ -18,21 +18,14 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Core.Expressions;
-using Reko.Core.Machine;
-using Reko.Core.Rtl;
-using Reko.Core.Types;
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Diagnostics;
-using Reko.Core.Serialization;
-using Reko.Core.Configuration;
-using Reko.Core.Memory;
+using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Loading;
+using Reko.Core.Memory;
+using Reko.Core.Rtl;
+using Reko.Core.Types;
 
 namespace Reko.UnitTests.Arch
 {
