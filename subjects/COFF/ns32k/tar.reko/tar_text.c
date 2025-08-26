@@ -530,7 +530,11 @@ struct Eq_n g_t0204 = // 00000204
 	{
 		
 		{
-			
+			0
+		},
+		
+		{
+			0x0A
 		},
 	};
 // 00000776: void fn00000776(Register Eq_n r4, Register Eq_n r5, Register Eq_n r6, Register Eq_n r7, Register Eq_n fp, Register (ptr32 Eq_n) sp)

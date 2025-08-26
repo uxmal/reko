@@ -219,7 +219,10 @@ namespace Reko.Core.Output
             var structOffset = rdr!.Offset;
             for (int i = 0; i < str.Fields.Count; ++i)
             {
-                rdr.Offset = structOffset + str.Fields[i].Offset;
+                var fieldOffset = str.Fields[i].Offset;
+                if (fieldOffset < 0)
+                    continue;
+                rdr.Offset = structOffset + fieldOffset;
                 str.Fields[i].DataType.Accept(this);
             }
             rdr.Offset = structOffset + str.GetInferredSize();

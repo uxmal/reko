@@ -51,16 +51,16 @@ void fn000000EC(Eq_n a0)
 
 Eq_n g_t00FF = // 000000FF
 	{
-		;
+	};
 // 00000128: Register word32 fn00000128(Register Eq_n a3, Register Eq_n a6)
 // Called from:
 //      fn000000A8
 word32 fn00000128(Eq_n a3, Eq_n a6)
 {
-		*(union Eq_n *) 247284 = a6;
-		*(union Eq_n *) 0x0003C5F0 = a3;
-		*(union Eq_n *) 0x0003C5F0 = a3;
-		return ~0x0F;
+	*(union Eq_n *) 247284 = a6;
+	*(union Eq_n *) 0x0003C5F0 = a3;
+	*(union Eq_n *) 0x0003C5F0 = a3;
+	return ~0x0F;
 }
 
 // 0000016E: Register word32 fn0000016E(Register word32 d5, Register uint32 PCXI, Register uint32 FCX, Register uint32 LCX)
@@ -68,26 +68,26 @@ word32 fn00000128(Eq_n a3, Eq_n a6)
 //      fn000000A8
 word32 fn0000016E(word32 d5, uint32 PCXI, uint32 FCX, uint32 LCX)
 {
-		__mtcr(PCXI, 0x00);
-		__isync();
-		*(word32 *) 0xD0001380 = 0x00;
-		__mtcr(LCX, 0x000D004F);
-		ui32 * a4_n = (ui32 *) 0xD0001380;
-		ui32 * a3_n = (ui32 *) 0xD00013C0;
-		ui32 * a3_n;
-		word32 d5_n;
-		do
-		{
-			*a3_n = (int32) SLICE(a4_n, word16, 6) | 0x000D0000;
-			a4_n = a3_n;
-			a3_n = a3_n + 16;
-			d5 = d5_n - 0x01;
-			a3_n = a3_n;
-			d5_n = d5;
-		} while (d5_n != 0x00);
-		__mtcr(FCX, (int32) SLICE(a3_n, word16, 6) | 0x000D0000);
-		__isync();
-		return 0xFE;
+	__mtcr(PCXI, 0x00);
+	__isync();
+	*(word32 *) 0xD0001380 = 0x00;
+	__mtcr(LCX, 0x000D004F);
+	ui32 * a4_n = (ui32 *) 0xD0001380;
+	ui32 * a3_n = (ui32 *) 0xD00013C0;
+	ui32 * a3_n;
+	word32 d5_n;
+	do
+	{
+		*a3_n = (int32) SLICE(a4_n, word16, 6) | 0x000D0000;
+		a4_n = a3_n;
+		a3_n = a3_n + 16;
+		d5 = d5_n - 0x01;
+		a3_n = a3_n;
+		d5_n = d5;
+	} while (d5_n != 0x00);
+	__mtcr(FCX, (int32) SLICE(a3_n, word16, 6) | 0x000D0000);
+	__isync();
+	return 0xFE;
 }
 
 // 000001E2: void fn000001E2(Register word32 d2)
@@ -95,45 +95,45 @@ word32 fn0000016E(word32 d5, uint32 PCXI, uint32 FCX, uint32 LCX)
 //      fn000000A8
 void fn000001E2(word32 d2)
 {
-		word32 * a13_n = (word32 *) 0xC0001F80;
-		while (true)
+	word32 * a13_n = (word32 *) 0xC0001F80;
+	while (true)
+	{
+		ui32 * a13_n = a13_n + 1;
+		struct Eq_n * a15_n = *a13_n;
+		ui32 d3_n = *a13_n;
+		a13_n = a13_n + 1;
+		if (d3_n == ~0x00)
+			break;
+		if (d3_n << 61 != 0x00)
 		{
-			ui32 * a13_n = a13_n + 1;
-			struct Eq_n * a15_n = *a13_n;
-			ui32 d3_n = *a13_n;
-			a13_n = a13_n + 1;
-			if (d3_n == ~0x00)
-				break;
-			if (d3_n << 61 != 0x00)
+			word32 d2_n;
+			do
 			{
-				word32 d2_n;
-				do
-				{
-					a15_n->b0000 = 0x00;
-					++a15_n;
-					d2 = d2_n - 0x01;
-					d2_n = d2;
-				} while (d2_n != 0x00);
+				a15_n->b0000 = 0x00;
+				++a15_n;
+				d2 = d2_n - 0x01;
+				d2_n = d2;
+			} while (d2_n != 0x00);
+		}
+		if ((d3_n & 0x07) != 0x00)
+		{
+			if ((d3_n & 0x07) << 62 != 0x00)
+			{
+				a15_n->b0000 = (byte) 0x00;
+				a15_n = &a15_n->b0000 + 4;
 			}
-			if ((d3_n & 0x07) != 0x00)
+			if ((d3_n & 0x03) != 0x00)
 			{
-				if ((d3_n & 0x07) << 62 != 0x00)
+				if ((d3_n & 0x03) << 63 != 0x00)
 				{
 					a15_n->b0000 = (byte) 0x00;
-					a15_n = &a15_n->b0000 + 4;
+					a15_n = &a15_n->b0000 + 2;
 				}
-				if ((d3_n & 0x03) != 0x00)
-				{
-					if ((d3_n & 0x03) << 63 != 0x00)
-					{
-						a15_n->b0000 = (byte) 0x00;
-						a15_n = &a15_n->b0000 + 2;
-					}
-					if ((d3_n & 0x01) != 0x00)
-						a15_n->b0000 = 0x00;
-				}
+				if ((d3_n & 0x01) != 0x00)
+					a15_n->b0000 = 0x00;
 			}
 		}
+	}
 }
 
 // 00000236: void fn00000236(Register word32 d2)
@@ -141,49 +141,49 @@ void fn000001E2(word32 d2)
 //      fn000000A8
 void fn00000236(word32 d2)
 {
-		word32 * a13_n = (word32 *) 0xC0001FA8;
-		while (true)
+	word32 * a13_n = (word32 *) 0xC0001FA8;
+	while (true)
+	{
+		struct Eq_n * a13_n = (struct Eq_n *) (a13_n + 1);
+		struct Eq_n * a15_n = *a13_n;
+		struct Eq_n * a14_n = a13_n->ptr0000;
+		ui32 d3_n = a13_n->dw0004;
+		a13_n = (word32 *) (&a13_n->dw0004 + 1);
+		if (d3_n == ~0x00)
+			break;
+		if (d3_n << 61 != 0x00)
 		{
-			struct Eq_n * a13_n = (struct Eq_n *) (a13_n + 1);
-			struct Eq_n * a15_n = *a13_n;
-			struct Eq_n * a14_n = a13_n->ptr0000;
-			ui32 d3_n = a13_n->dw0004;
-			a13_n = (word32 *) (&a13_n->dw0004 + 1);
-			if (d3_n == ~0x00)
-				break;
-			if (d3_n << 61 != 0x00)
+			word32 d2_n;
+			do
 			{
-				word32 d2_n;
-				do
-				{
-					a14_n->b0000 = a15_n->b0000;
-					++a15_n;
-					++a14_n;
-					d2 = d2_n - 0x01;
-					d2_n = d2;
-				} while (d2_n != 0x00);
+				a14_n->b0000 = a15_n->b0000;
+				++a15_n;
+				++a14_n;
+				d2 = d2_n - 0x01;
+				d2_n = d2;
+			} while (d2_n != 0x00);
+		}
+		if ((d3_n & 0x07) != 0x00)
+		{
+			if ((d3_n & 0x07) << 62 != 0x00)
+			{
+				a14_n->b0000 = a15_n->b0000;
+				a15_n = &a15_n->b0000 + 4;
+				a14_n = &a14_n->b0000 + 4;
 			}
-			if ((d3_n & 0x07) != 0x00)
+			if ((d3_n & 0x03) != 0x00)
 			{
-				if ((d3_n & 0x07) << 62 != 0x00)
+				if ((d3_n & 0x03) << 63 != 0x00)
 				{
 					a14_n->b0000 = a15_n->b0000;
-					a15_n = &a15_n->b0000 + 4;
-					a14_n = &a14_n->b0000 + 4;
+					a15_n = &a15_n->b0000 + 2;
+					a14_n = &a14_n->b0000 + 2;
 				}
-				if ((d3_n & 0x03) != 0x00)
-				{
-					if ((d3_n & 0x03) << 63 != 0x00)
-					{
-						a14_n->b0000 = a15_n->b0000;
-						a15_n = &a15_n->b0000 + 2;
-						a14_n = &a14_n->b0000 + 2;
-					}
-					if ((d3_n & 0x01) != 0x00)
-						a14_n->b0000 = a15_n->b0000;
-				}
+				if ((d3_n & 0x01) != 0x00)
+					a14_n->b0000 = a15_n->b0000;
 			}
 		}
+	}
 }
 
 // 00000294: void fn00000294(Register word32 d15)
@@ -191,20 +191,20 @@ void fn00000236(word32 d2)
 //      fn000000A8
 void fn00000294(word32 d15)
 {
-		word32 ** a14_n = (word32 **) 3221226132;
-		if (false && *((word32 *) 3221226132) != 0x00)
+	word32 ** a14_n = (word32 **) 3221226132;
+	if (false && *((word32 *) 3221226132) != 0x00)
+	{
+		word32 d15_n;
+		do
 		{
-			word32 d15_n;
-			do
-			{
-				word32 * a14_n = (word32 *) ((char *) a14_n + 4);
-				**a14_n = *a14_n;
-				a14_n = a14_n + 1;
-				d15 = d15_n - 0x01;
-				d15_n = d15;
-			} while (d15_n != 0x00);
-			__isync();
-		}
+			word32 * a14_n = (word32 *) ((char *) a14_n + 4);
+			**a14_n = *a14_n;
+			a14_n = a14_n + 1;
+			d15 = d15_n - 0x01;
+			d15_n = d15;
+		} while (d15_n != 0x00);
+		__isync();
+	}
 }
 
 // 00000400: Register Eq_n fn00000400(Register Eq_n a4, Register Eq_n a15)
@@ -212,68 +212,68 @@ void fn00000294(word32 d15)
 //      fn00000B04
 Eq_n fn00000400(Eq_n a4, Eq_n a15)
 {
-		__store_upper_context();
-		fn00000AC0(a4, a15);
-		while (__bit<word32,word16>(*(union Eq_n *) 0x0003C5F0, 0x00))
-			;
-		((union Eq_n *) 0xF0004000)->u0 = 0x08;
-		while (__bit<word32,word16>(*(union Eq_n *) 0xF0004000, 0x01))
-			;
-		*(word32 *) 0xF000400C = 0x43FF;
-		__store_upper_context();
-		fn00000AC0(a4, 0xF0000000);
-		int32 d15_n;
-		do
-			d15_n = (int32) SLICE(*(union Eq_n *) 0xF00041C4, bool, 8);
-		while (d15_n != 0x00);
-		*(ui32 *) 0xF0004200 = 0x41;
-		*(int32 *) 0xF0004208 = d15_n;
-		*(word32 *) 0xF0004214 = 0x00600000;
-		*(int32 *) 0xF000420C = d15_n;
-		*(word32 *) 250392 = 0xF0000000;
-		*(word32 *) 250392 = 0xF0000000;
-		*(word32 *) 0xF0004210 = 5715;
-		*(int32 *) 0xF0004218 = d15_n;
-		*(word32 *) 0xF0004300 = 0x41;
-		*(word32 *) 0xF0004400 = 0x41;
-		*(word32 *) 0xF0004500 = 0x41;
-		((union Eq_n *) 0xF00041C4)->u0 = 0x01000002;
-		while (__bit<word32,word16>(*(union Eq_n *) 0xF00041C4, 0x08))
-			;
-		((union Eq_n *) 0xF00041C4)->u0 = 0x01010002;
-		int32 d15_n;
-		do
-			d15_n = (int32) SLICE(*(union Eq_n *) 0xF00041C4, bool, 8);
-		while (d15_n != 0x00);
-		*(word32 *) 0xF000501C = 0x00A00000;
-		*(word32 *) 0xF0005000 = 0x08000000;
-		*(int32 *) 0xF0005004 = d15_n;
-		*(word32 *) 0xF000500C = 0x1FFFFFFF;
-		*(word32 *) 0xF0005018 = 0xCC000000;
-		*(int32 *) 0xF0005008 = d15_n;
-		*(word32 *) 0xF000501C = 0x00200000;
-		*(word32 *) 0xF000503C = 0x0EA80000;
-		*(word32 *) 0xF0005020 = 0x08000000;
-		*(int32 *) 0xF0005024 = d15_n;
-		*(word32 *) 0xF000502C = 0x3FFFFFFF;
-		*(word32 *) 0xF0005038 = 0xD0000000;
-		*(int32 *) 0xF0005030 = d15_n;
-		*(int32 *) 0xF0005034 = d15_n;
-		*(word32 *) 0xF0005028 = 0x0100;
-		*(word32 *) 0xF000503C = 0x00200000;
-		struct Eq_n * d2_n = null;
-		word32 d15_n;
-		do
-		{
-			word32 d15_n = d2_n + 640;
-			d2_n->bD0000098 = (byte) g_a0004[d15_n + 0x07800000];
-			d15_n = (word32) g_a0004[d15_n + 0x07800000];
-			d2_n->bD0000018 = (byte) d15_n;
-			++d2_n;
-		} while (d15_n != 0x00);
-		*(ui32 *) 0xF0004200 &= ~0x41;
-		__load_upper_context();
-		return 0x001F8000;
+	__store_upper_context();
+	fn00000AC0(a4, a15);
+	while (__bit<word32,word16>(*(union Eq_n *) 0x0003C5F0, 0x00))
+		;
+	((union Eq_n *) 0xF0004000)->u0 = 0x08;
+	while (__bit<word32,word16>(*(union Eq_n *) 0xF0004000, 0x01))
+		;
+	*(word32 *) 0xF000400C = 0x43FF;
+	__store_upper_context();
+	fn00000AC0(a4, 0xF0000000);
+	int32 d15_n;
+	do
+		d15_n = (int32) SLICE(*(union Eq_n *) 0xF00041C4, bool, 8);
+	while (d15_n != 0x00);
+	*(ui32 *) 0xF0004200 = 0x41;
+	*(int32 *) 0xF0004208 = d15_n;
+	*(word32 *) 0xF0004214 = 0x00600000;
+	*(int32 *) 0xF000420C = d15_n;
+	*(word32 *) 250392 = 0xF0000000;
+	*(word32 *) 250392 = 0xF0000000;
+	*(word32 *) 0xF0004210 = 5715;
+	*(int32 *) 0xF0004218 = d15_n;
+	*(word32 *) 0xF0004300 = 0x41;
+	*(word32 *) 0xF0004400 = 0x41;
+	*(word32 *) 0xF0004500 = 0x41;
+	((union Eq_n *) 0xF00041C4)->u0 = 0x01000002;
+	while (__bit<word32,word16>(*(union Eq_n *) 0xF00041C4, 0x08))
+		;
+	((union Eq_n *) 0xF00041C4)->u0 = 0x01010002;
+	int32 d15_n;
+	do
+		d15_n = (int32) SLICE(*(union Eq_n *) 0xF00041C4, bool, 8);
+	while (d15_n != 0x00);
+	*(word32 *) 0xF000501C = 0x00A00000;
+	*(word32 *) 0xF0005000 = 0x08000000;
+	*(int32 *) 0xF0005004 = d15_n;
+	*(word32 *) 0xF000500C = 0x1FFFFFFF;
+	*(word32 *) 0xF0005018 = 0xCC000000;
+	*(int32 *) 0xF0005008 = d15_n;
+	*(word32 *) 0xF000501C = 0x00200000;
+	*(word32 *) 0xF000503C = 0x0EA80000;
+	*(word32 *) 0xF0005020 = 0x08000000;
+	*(int32 *) 0xF0005024 = d15_n;
+	*(word32 *) 0xF000502C = 0x3FFFFFFF;
+	*(word32 *) 0xF0005038 = 0xD0000000;
+	*(int32 *) 0xF0005030 = d15_n;
+	*(int32 *) 0xF0005034 = d15_n;
+	*(word32 *) 0xF0005028 = 0x0100;
+	*(word32 *) 0xF000503C = 0x00200000;
+	struct Eq_n * d2_n = null;
+	word32 d15_n;
+	do
+	{
+		word32 d15_n = d2_n + 640;
+		d2_n->bD0000098 = (byte) g_a0004[d15_n + 0x07800000];
+		d15_n = (word32) g_a0004[d15_n + 0x07800000];
+		d2_n->bD0000018 = (byte) d15_n;
+		++d2_n;
+	} while (d15_n != 0x00);
+	*(ui32 *) 0xF0004200 &= ~0x41;
+	__load_upper_context();
+	return 0x001F8000;
 }
 
 // 000005CE: void fn000005CE(Register ui32 d4, Register (ptr32 ui16) a4)
@@ -282,25 +282,25 @@ Eq_n fn00000400(Eq_n a4, Eq_n a15)
 //      fn000012F6
 void fn000005CE(ui32 d4, ui16 * a4)
 {
-		struct Eq_n * a15_n = (d4 << 5) + 0x00005000;
-		word4 v10_n = SLICE(a15_n->dwF0000000, word4, 24);
-		*a4 = (word16) v10_n;
-		int32 d15_n = 0x00;
-		Eq_n d2_n;
-		d2_n.u0 = (int32) v10_n;
-		while (true)
-		{
-			int32 d4_n = d15_n + 0x01;
-			if ((d15_n & 0xFF) >= d2_n)
-				break;
-			((char *) a4 + d15_n)[0x0C] = ((char *) &a15_n->dwF0000000 + d15_n)[16];
-			d15_n = d4_n;
-		}
-		Eq_n d15_n;
-		d15_n.u0 = a15_n->tF000001C.u0;
-		*a4 = (word16) v10_n << 0x04;
-		if (__bit<word32,byte>(d15_n, 11))
-			*a4 = (word16) v10_n << 0x04 | 0x08;
+	struct Eq_n * a15_n = (d4 << 5) + 0x00005000;
+	word4 v10_n = SLICE(a15_n->dwF0000000, word4, 24);
+	*a4 = (word16) v10_n;
+	int32 d15_n = 0x00;
+	Eq_n d2_n;
+	d2_n.u0 = (int32) v10_n;
+	while (true)
+	{
+		int32 d4_n = d15_n + 0x01;
+		if ((d15_n & 0xFF) >= d2_n)
+			break;
+		((char *) a4 + d15_n)[0x0C] = ((char *) &a15_n->dwF0000000 + d15_n)[16];
+		d15_n = d4_n;
+	}
+	Eq_n d15_n;
+	d15_n.u0 = a15_n->tF000001C.u0;
+	*a4 = (word16) v10_n << 0x04;
+	if (__bit<word32,byte>(d15_n, 11))
+		*a4 = (word16) v10_n << 0x04 | 0x08;
 }
 
 // 00000648: Register word32 fn00000648(Register ui32 d4, Register out ptr32 a15Out)
@@ -308,16 +308,16 @@ void fn000005CE(ui32 d4, ui16 * a4)
 //      fn00000CCE
 word32 fn00000648(ui32 d4, ptr32 & a15Out)
 {
-		struct Eq_n * a15_n = (d4 << 5) + 0x00005000;
-		word32 d2_n = 0x00;
-		if (!__bit<word32,byte>(a15_n->tF000001C.u0, 0x08))
-		{
-			a15_n->tF000001C.u0 = 0x20;
-			d2_n = 0x01;
-		}
-		__load_upper_context();
-		a15Out = (char *) a15_n - 0x10000000;
-		return d2_n;
+	struct Eq_n * a15_n = (d4 << 5) + 0x00005000;
+	word32 d2_n = 0x00;
+	if (!__bit<word32,byte>(a15_n->tF000001C.u0, 0x08))
+	{
+		a15_n->tF000001C.u0 = 0x20;
+		d2_n = 0x01;
+	}
+	__load_upper_context();
+	a15Out = (char *) a15_n - 0x10000000;
+	return d2_n;
 }
 
 // 00000664: Register int32 fn00000664(Register ui32 d4, Register out uint32 d15Out)
@@ -326,59 +326,59 @@ word32 fn00000648(ui32 d4, ptr32 & a15Out)
 //      fn000012F6
 int32 fn00000664(ui32 d4, uint32 & d15Out)
 {
-		int32 d2_n = (int32) SLICE(((Eq_n[]) 0xF000501C)[d4].dw0000, bool, 3);
-		__load_upper_context();
-		d15Out = d4 << 5;
-		return d2_n;
+	int32 d2_n = (int32) SLICE(((Eq_n[]) 0xF000501C)[d4].dw0000, bool, 3);
+	__load_upper_context();
+	d15Out = d4 << 5;
+	return d2_n;
 }
 
 // 00000690: void fn00000690(Register ui32 d4, Register (ptr32 Eq_n) a4)
 void fn00000690(ui32 d4, struct Eq_n * a4)
 {
-		struct Eq_n * a15_n = (d4 << 5) + 0x00005000;
-		a15_n->tF000001C.u0 = 0x20;
-		Eq_n d2_n;
-		d2_n.u0 = (uint32) a4->w0000;
-		ui32 d15_n = __insert(a15_n->dwF0000018, 0x00, 0x00, 0x1E);
-		ui32 d4_n = a4->dw0004;
-		ui32 d3_n = a4->dw0008;
-		a15_n->dwF0000018 = d15_n;
-		ui32 d15_n = a15_n->dwF0000018;
-		ui32 d15_n;
-		if (__bit<word32,word16>(d2_n, 0x02))
+	struct Eq_n * a15_n = (d4 << 5) + 0x00005000;
+	a15_n->tF000001C.u0 = 0x20;
+	Eq_n d2_n;
+	d2_n.u0 = (uint32) a4->w0000;
+	ui32 d15_n = __insert(a15_n->dwF0000018, 0x00, 0x00, 0x1E);
+	ui32 d4_n = a4->dw0004;
+	ui32 d3_n = a4->dw0008;
+	a15_n->dwF0000018 = d15_n;
+	ui32 d15_n = a15_n->dwF0000018;
+	ui32 d15_n;
+	if (__bit<word32,word16>(d2_n, 0x02))
+	{
+		a15_n->dwF0000018 = __insert(d4_n | d15_n, 0x0F, 0x1D, 0x01);
+		a15_n->dwF000000C = __insert(a15_n->dwF000000C, 0x00, 0x00, 0x1D);
+		d15_n = a15_n->dwF000000C;
+	}
+	else
+	{
+		a15_n->dwF0000018 = d4_n << 18 | d15_n;
+		a15_n->dwF000000C = __insert(a15_n->dwF000000C, 0x00, 0x00, 0x1D);
+		d3_n <<= 18;
+		d15_n = a15_n->dwF000000C;
+	}
+	a15_n->dwF000000C = d3_n | d15_n;
+	a15_n->dwF0000008 = __insert(a15_n->dwF0000008, 0x00, 0x10, 0x10);
+	a15_n->dwF0000008 = (uint32) a4->w0014 << 16 | a15_n->dwF0000008;
+	a15_n->dwF0000000 = __insert(a15_n->dwF0000000, 0x00, 0x18, 0x04) | (d2_n & 0xF0) << 20;
+	word32 d15_n;
+	if (__bit<word32,word16>(a15_n->tF000001C.u0, 11))
+	{
+		int32 d4_n = 0x00;
+		while (true)
 		{
-			a15_n->dwF0000018 = __insert(d4_n | d15_n, 0x0F, 0x1D, 0x01);
-			a15_n->dwF000000C = __insert(a15_n->dwF000000C, 0x00, 0x00, 0x1D);
-			d15_n = a15_n->dwF000000C;
+			++d4_n;
+			if (d4_n >= (int32) SLICE((int32) a4->w0000, word4, 4))
+				break;
+			((char *) &a15_n->dwF0000000 + d4_n)[16] = ((char *) &a4->w0000 + d4_n)[0x0C];
 		}
-		else
-		{
-			a15_n->dwF0000018 = d4_n << 18 | d15_n;
-			a15_n->dwF000000C = __insert(a15_n->dwF000000C, 0x00, 0x00, 0x1D);
-			d3_n <<= 18;
-			d15_n = a15_n->dwF000000C;
-		}
-		a15_n->dwF000000C = d3_n | d15_n;
-		a15_n->dwF0000008 = __insert(a15_n->dwF0000008, 0x00, 0x10, 0x10);
-		a15_n->dwF0000008 = (uint32) a4->w0014 << 16 | a15_n->dwF0000008;
-		a15_n->dwF0000000 = __insert(a15_n->dwF0000000, 0x00, 0x18, 0x04) | (d2_n & 0xF0) << 20;
-		word32 d15_n;
-		if (__bit<word32,word16>(a15_n->tF000001C.u0, 11))
-		{
-			int32 d4_n = 0x00;
-			while (true)
-			{
-				++d4_n;
-				if (d4_n >= (int32) SLICE((int32) a4->w0000, word4, 4))
-					break;
-				((char *) &a15_n->dwF0000000 + d4_n)[16] = ((char *) &a4->w0000 + d4_n)[0x0C];
-			}
-			d15_n = 0x06280000;
-		}
-		else
-			d15_n = 0x00200000;
-		a15_n->tF000001C.u0 = (uint32) (d15_n + 0x40);
-		__load_upper_context();
+		d15_n = 0x06280000;
+	}
+	else
+		d15_n = 0x00200000;
+	a15_n->tF000001C.u0 = (uint32) (d15_n + 0x40);
+	__load_upper_context();
 }
 
 // 0000074E: void fn0000074E(Register ui32 d4, Register (ptr32 byte) a4)
@@ -386,37 +386,37 @@ void fn00000690(ui32 d4, struct Eq_n * a4)
 //      fn00000CCE
 void fn0000074E(ui32 d4, byte * a4)
 {
-		struct Eq_n * a15_n = (d4 << 5) + 0x00005000;
-		a15_n->dwF000001C = 0x00080000;
-		byte * a2_n = a4;
-		while (true)
-		{
-			Eq_n a3_n = a2_n - a4;
-			if ((a3_n & 0xFF) >= (int32) SLICE(a15_n->dwF0000000, word4, 24))
-				break;
-			((char *) &a15_n->dwF0000000 + (a3_n & 0xFF))[16] = *a2_n;
-			++a2_n;
-		}
-		a15_n->dwF000001C = 0x00200040;
-		__load_upper_context();
+	struct Eq_n * a15_n = (d4 << 5) + 0x00005000;
+	a15_n->dwF000001C = 0x00080000;
+	byte * a2_n = a4;
+	while (true)
+	{
+		Eq_n a3_n = a2_n - a4;
+		if ((a3_n & 0xFF) >= (int32) SLICE(a15_n->dwF0000000, word4, 24))
+			break;
+		((char *) &a15_n->dwF0000000 + (a3_n & 0xFF))[16] = *a2_n;
+		++a2_n;
+	}
+	a15_n->dwF000001C = 0x00200040;
+	__load_upper_context();
 }
 
 // 00000792: void fn00000792(Register ui32 d4)
 void fn00000792(ui32 d4)
 {
-		struct Eq_n * a15_n = (d4 << 5) + 0x00005000;
-		if (__bit<word32,byte>(a15_n->tF000001C.u0, 0x04))
-			a15_n->tF000001C.u0 = 0x10;
-		__load_upper_context();
+	struct Eq_n * a15_n = (d4 << 5) + 0x00005000;
+	if (__bit<word32,byte>(a15_n->tF000001C.u0, 0x04))
+		a15_n->tF000001C.u0 = 0x10;
+	__load_upper_context();
 }
 
 // 000007AE: void fn000007AE(Register ui32 d4)
 void fn000007AE(ui32 d4)
 {
-		struct Eq_n * a15_n = (d4 << 5) + 0x00005000;
-		if ((a15_n->dwF000001C & 0x0108) == 0x00)
-			a15_n->dwF000001C = 0x20;
-		__load_upper_context();
+	struct Eq_n * a15_n = (d4 << 5) + 0x00005000;
+	if ((a15_n->dwF000001C & 0x0108) == 0x00)
+		a15_n->dwF000001C = 0x20;
+	__load_upper_context();
 }
 
 // 000007CE: void fn000007CE(Register ui32 d4)
@@ -425,92 +425,92 @@ void fn000007AE(ui32 d4)
 //      fn000012F6
 void fn000007CE(ui32 d4)
 {
-		((Eq_n[]) 0xF000501C)[d4].dw0000 = 0x08;
-		__load_upper_context();
+	((Eq_n[]) 0xF000501C)[d4].dw0000 = 0x08;
+	__load_upper_context();
 }
 
 // 000007E2: void fn000007E2(Register ui32 d4)
 void fn000007E2(ui32 d4)
 {
-		((Eq_n[]) 0xF000501C)[d4].dw0000 = 0x00200000;
-		__load_upper_context();
+	((Eq_n[]) 0xF000501C)[d4].dw0000 = 0x00200000;
+	__load_upper_context();
 }
 
 // 000007F8: void fn000007F8(Register (ptr32 Eq_n) d4)
 void fn000007F8(struct Eq_n * d4)
 {
-		struct Eq_n * a2_n = (d4 << 5) + 0x00005000;
-		if ((a2_n->dwF0000000 & 0x0F) == 0x02)
+	struct Eq_n * a2_n = (d4 << 5) + 0x00005000;
+	if ((a2_n->dwF0000000 & 0x0F) == 0x02)
+	{
+		Eq_n d15_n;
+		d15_n.u0 = (uint32) d4->bD0000098;
+		struct Eq_n * a15_n = (d15_n << 5) + 0x00005000;
+		Eq_n d3_n;
+		d3_n.u0 = a15_n->tF000001C.u0;
+		if (!__bit<word32,word16>(d3_n, 0x08))
 		{
-			Eq_n d15_n;
-			d15_n.u0 = (uint32) d4->bD0000098;
-			struct Eq_n * a15_n = (d15_n << 5) + 0x00005000;
-			Eq_n d3_n;
-			d3_n.u0 = a15_n->tF000001C.u0;
-			if (!__bit<word32,word16>(d3_n, 0x08))
-			{
-				ui32 d15_n;
-				if (d15_n == d3_n)
-					d15_n = a2_n->dwF0000004;
-				else
-					d15_n = a15_n->tF000001C.u0 << 40;
-				d4->bD0000098 = (byte) d15_n;
-				a15_n->tF000001C.u0 = 0x08;
-			}
+			ui32 d15_n;
+			if (d15_n == d3_n)
+				d15_n = a2_n->dwF0000004;
+			else
+				d15_n = a15_n->tF000001C.u0 << 40;
+			d4->bD0000098 = (byte) d15_n;
+			a15_n->tF000001C.u0 = 0x08;
 		}
-		__load_upper_context();
+	}
+	__load_upper_context();
 }
 
 // 000008BE: void fn000008BE(Register (ptr32 Eq_n) d4, Register (ptr32 ui16) a4)
 void fn000008BE(struct Eq_n * d4, ui16 * a4)
 {
-		struct Eq_n * a2_n = (d4 << 5) + 0x00005000;
-		if ((a2_n->dwF0000000 & 0x0F) == 0x01)
+	struct Eq_n * a2_n = (d4 << 5) + 0x00005000;
+	if ((a2_n->dwF0000000 & 0x0F) == 0x01)
+	{
+		Eq_n d15_n;
+		d15_n.u0 = (uint32) d4->bD0000018;
+		struct Eq_n * a15_n = (d15_n << 5) + 0x00005000;
+		Eq_n d3_n;
+		d3_n.u0 = a15_n->tF000001C.u0;
+		if (__bit<word32,word16>(d3_n, 0x03))
 		{
-			Eq_n d15_n;
-			d15_n.u0 = (uint32) d4->bD0000018;
-			struct Eq_n * a15_n = (d15_n << 5) + 0x00005000;
-			Eq_n d3_n;
-			d3_n.u0 = a15_n->tF000001C.u0;
-			if (__bit<word32,word16>(d3_n, 0x03))
+			a15_n->tF000001C.u0 = 0x08;
+			ui32 d15_n;
+			if (d15_n == d3_n)
+				d15_n = a2_n->dwF0000004;
+			else
+				d15_n = a15_n->tF000001C.u0 << 40;
+			d4->bD0000018 = (byte) d15_n;
+			if (!__bit<word32,byte>(a15_n->tF000001C.u0, 0x04))
 			{
-				a15_n->tF000001C.u0 = 0x08;
-				ui32 d15_n;
-				if (d15_n == d3_n)
-					d15_n = a2_n->dwF0000004;
-				else
-					d15_n = a15_n->tF000001C.u0 << 40;
-				d4->bD0000018 = (byte) d15_n;
-				if (!__bit<word32,byte>(a15_n->tF000001C.u0, 0x04))
+				word4 v16_n = SLICE(a15_n->dwF0000000, word4, 24);
+				*a4 = (word16) v16_n;
+				int32 d15_n = 0x00;
+				Eq_n d2_n;
+				d2_n.u0 = (int32) v16_n;
+				while (true)
 				{
-					word4 v16_n = SLICE(a15_n->dwF0000000, word4, 24);
-					*a4 = (word16) v16_n;
-					int32 d15_n = 0x00;
-					Eq_n d2_n;
-					d2_n.u0 = (int32) v16_n;
-					while (true)
-					{
-						int32 d4_n = d15_n + 0x01;
-						if ((d15_n & 0xFF) >= d2_n)
-							break;
-						((char *) a4 + d15_n)[0x0C] = ((char *) &a15_n->dwF0000000 + d15_n)[16];
-						d15_n = d4_n;
-					}
-					Eq_n d15_n;
-					d15_n.u0 = a15_n->tF000001C.u0;
-					*a4 = (word16) v16_n << 0x04;
-					if (__bit<word32,byte>(d15_n, 11))
-						*a4 = (word16) v16_n << 0x04 | 0x08;
+					int32 d4_n = d15_n + 0x01;
+					if ((d15_n & 0xFF) >= d2_n)
+						break;
+					((char *) a4 + d15_n)[0x0C] = ((char *) &a15_n->dwF0000000 + d15_n)[16];
+					d15_n = d4_n;
 				}
-				else
-				{
-					a15_n->tF000001C.u0 = 0x10;
-					__load_upper_context();
-					return;
-				}
+				Eq_n d15_n;
+				d15_n.u0 = a15_n->tF000001C.u0;
+				*a4 = (word16) v16_n << 0x04;
+				if (__bit<word32,byte>(d15_n, 11))
+					*a4 = (word16) v16_n << 0x04 | 0x08;
+			}
+			else
+			{
+				a15_n->tF000001C.u0 = 0x10;
+				__load_upper_context();
+				return;
 			}
 		}
-		__load_upper_context();
+	}
+	__load_upper_context();
 }
 
 // 0000098A: Register (ptr32 Eq_n) fn0000098A(Register uint32 d4, Register (ptr32 Eq_n) d5, Register ui32 d6, Register ui32 d7, Stack uint32 dwArg00)
@@ -518,15 +518,15 @@ void fn000008BE(struct Eq_n * d4, ui16 * a4)
 //      fn00000EB6
 struct Eq_n * fn0000098A(uint32 d4, struct Eq_n * d5, ui32 d6, ui32 d7, uint32 dwArg00)
 {
-		d5->dw5554 = ~0x0A;
-		d5->dw5554 = ~0x55;
-		d5->dwAAA8 = 0x55;
-		d5->dw553C = dwArg00;
-		d5->dwAAA8 = d6;
-		d5->dwAAA8 = d7;
-		d5->dw5558 = d4;
-		__load_upper_context();
-		return d5;
+	d5->dw5554 = ~0x0A;
+	d5->dw5554 = ~0x55;
+	d5->dwAAA8 = 0x55;
+	d5->dw553C = dwArg00;
+	d5->dwAAA8 = d6;
+	d5->dwAAA8 = d7;
+	d5->dw5558 = d4;
+	__load_upper_context();
+	return d5;
 }
 
 // 000009BA: void fn000009BA(Register (ptr32 Eq_n) d4, Register (ptr32 word32) d5, Register (ptr32 Eq_n) a4)
@@ -534,18 +534,18 @@ struct Eq_n * fn0000098A(uint32 d4, struct Eq_n * d5, ui32 d6, ui32 d7, uint32 d
 //      fn00000F40
 void fn000009BA(struct Eq_n * d4, word32 * d5, union Eq_n * a4)
 {
-		d4->dw5554 = ~0x0A;
-		d4->dw5554 = 0xAA;
-		d4->dwAAA8 = 0x55;
-		d4->dw5554 = 0x80;
-		d4->dw5554 = 0xAA;
-		d4->dwAAA8 = 0x55;
-		*d5 = 0x30;
-		while (!__bit<word32,byte>(a4->u0, 0x00) && (!__bit<word32,byte>(a4->u0, 0x02) && !__bit<word32,word16>(a4->u0, 0x03)))
-			;
-		while (__bit<word32,word16>(a4->u0, 0x00) || (__bit<word32,word16>(a4->u0, 0x02) || __bit<word32,word16>(a4->u0, 0x03)))
-			;
-		__load_upper_context();
+	d4->dw5554 = ~0x0A;
+	d4->dw5554 = 0xAA;
+	d4->dwAAA8 = 0x55;
+	d4->dw5554 = 0x80;
+	d4->dw5554 = 0xAA;
+	d4->dwAAA8 = 0x55;
+	*d5 = 0x30;
+	while (!__bit<word32,byte>(a4->u0, 0x00) && (!__bit<word32,byte>(a4->u0, 0x02) && !__bit<word32,word16>(a4->u0, 0x03)))
+		;
+	while (__bit<word32,word16>(a4->u0, 0x00) || (__bit<word32,word16>(a4->u0, 0x02) || __bit<word32,word16>(a4->u0, 0x03)))
+		;
+	__load_upper_context();
 }
 
 // 00000A0C: void fn00000A0C(Register (ptr32 Eq_n) d4)
@@ -553,8 +553,8 @@ void fn000009BA(struct Eq_n * d4, word32 * d5, union Eq_n * a4)
 //      fn0000101C
 void fn00000A0C(struct Eq_n * d4)
 {
-		d4->dw5554 = ~0x0A;
-		d4->dw5554 = 0x50;
+	d4->dw5554 = ~0x0A;
+	d4->dw5554 = 0x50;
 }
 
 // 00000AC0: Register ui32 fn00000AC0(Register Eq_n a4, Register Eq_n a15)
@@ -563,13 +563,13 @@ void fn00000A0C(struct Eq_n * d4)
 //      fn00000B04
 ui32 fn00000AC0(Eq_n a4, Eq_n a15)
 {
-		Eq_n d2_n = *(union Eq_n *) 0x0003C5F0;
-		ui32 d15_n = (int32) SLICE(*(union Eq_n *) 247284, bool, 3) != 0x00 ? d2_n | 0xF8 : d2_n & ~0x08 | ~0x0F;
-		ui32 d15_n = (int32) SLICE(*(union Eq_n *) 247284, bool, 2) != 0x00 ? d15_n | 0x04 : d15_n & ~0x04;
-		*(union Eq_n *) 0x0003C5F0 = a15;
-		*(union Eq_n *) 0x0003C5F0 = a4;
-		__load_upper_context();
-		return d15_n & ~0x02;
+	Eq_n d2_n = *(union Eq_n *) 0x0003C5F0;
+	ui32 d15_n = (int32) SLICE(*(union Eq_n *) 247284, bool, 3) != 0x00 ? d2_n | 0xF8 : d2_n & ~0x08 | ~0x0F;
+	ui32 d15_n = (int32) SLICE(*(union Eq_n *) 247284, bool, 2) != 0x00 ? d15_n | 0x04 : d15_n & ~0x04;
+	*(union Eq_n *) 0x0003C5F0 = a15;
+	*(union Eq_n *) 0x0003C5F0 = a4;
+	__load_upper_context();
+	return d15_n & ~0x02;
 }
 
 // 00000B04: Register Eq_n fn00000B04(Register Eq_n a4, Register Eq_n a15, Register uint32 ICR)
@@ -577,79 +577,79 @@ ui32 fn00000AC0(Eq_n a4, Eq_n a15)
 //      fn000012F6
 Eq_n fn00000B04(Eq_n a4, Eq_n a15, uint32 ICR)
 {
-		if ((*(union Eq_n *) 247064 & 0x01004E00) != 0x01004E00 || ((*((union Eq_n *) 0x0003C51C) & 0x00020001) != 0x00020001 || !__bit<word32,word16>(*((union Eq_n *) 0x0003C530), 0x00)))
+	if ((*(union Eq_n *) 247064 & 0x01004E00) != 0x01004E00 || ((*((union Eq_n *) 0x0003C51C) & 0x00020001) != 0x00020001 || !__bit<word32,word16>(*((union Eq_n *) 0x0003C530), 0x00)))
+	{
+		__store_upper_context();
+		fn00000AC0(a4, a15);
+		while (__bit<word32,word16>(*(union Eq_n *) 0x0003C5F0, 0x00))
+			;
+		*(union Eq_n *) 247064 = a15;
+		*(union Eq_n *) 247064 = a15;
+		__store_upper_context();
+		fn00000AC0(a4, a15);
+		if (!__bit<word32,word16>(*(union Eq_n *) 247060, 0x01))
 		{
 			__store_upper_context();
 			fn00000AC0(a4, a15);
 			while (__bit<word32,word16>(*(union Eq_n *) 0x0003C5F0, 0x00))
 				;
+			*(union Eq_n *) 0x0003C530 = a15;
 			*(union Eq_n *) 247064 = a15;
+			while (!__bit<word32,word16>(*(union Eq_n *) 247060, 0x00))
+				;
+			*(union Eq_n *) 247064 = a15;
+			*(union Eq_n *) 0x0003C51C = a15;
+			__store_upper_context();
+			fn00000AC0(a4, a15);
+			while (!__bit<word32,word16>(*(union Eq_n *) 247060, 0x02))
+				;
+			__store_upper_context();
+			fn00000AC0(a4, a15);
+			while (__bit<word32,word16>(*(union Eq_n *) 0x0003C5F0, 0x00))
+				;
 			*(union Eq_n *) 247064 = a15;
 			__store_upper_context();
 			fn00000AC0(a4, a15);
-			if (!__bit<word32,word16>(*(union Eq_n *) 247060, 0x01))
-			{
-				__store_upper_context();
-				fn00000AC0(a4, a15);
-				while (__bit<word32,word16>(*(union Eq_n *) 0x0003C5F0, 0x00))
-					;
-				*(union Eq_n *) 0x0003C530 = a15;
-				*(union Eq_n *) 247064 = a15;
-				while (!__bit<word32,word16>(*(union Eq_n *) 247060, 0x00))
-					;
-				*(union Eq_n *) 247064 = a15;
-				*(union Eq_n *) 0x0003C51C = a15;
-				__store_upper_context();
-				fn00000AC0(a4, a15);
-				while (!__bit<word32,word16>(*(union Eq_n *) 247060, 0x02))
-					;
-				__store_upper_context();
-				fn00000AC0(a4, a15);
-				while (__bit<word32,word16>(*(union Eq_n *) 0x0003C5F0, 0x00))
-					;
-				*(union Eq_n *) 247064 = a15;
-				__store_upper_context();
-				fn00000AC0(a4, a15);
-			}
 		}
-		__store_upper_context();
-		fn00000AC0(a4, a15);
-		while (__bit<word32,word16>(*(union Eq_n *) 0x0003C5F0, 0x00))
-			;
-		*(union Eq_n *) 247284 = a15;
-		__store_upper_context();
-		__mtcr(ICR, fn00000AC0(a4, a15));
-		__isync();
-		__store_upper_context();
-		fn00000AC0(a4, a15);
-		Eq_n d15_n;
-		do
-			d15_n = *(union Eq_n *) 0x0003C5F0;
-		while ((d15_n & 0x01) != 0x00);
-		*(ui32 *) 0xF0043F00 = d15_n & 0x01;
-		*(word32 *) 0xF0043F10 = 0x0200;
-		__store_upper_context();
-		ui32 d15_n = fn00000AC0(a4, 0xF0040000);
-		*(ui32 *) 0xF0043F20 = d15_n;
-		*(ui32 *) 0xF0043F24 = d15_n;
-		*(word32 *) 0xF0043FEC = 0x1000;
-		*(word32 *) 0xF0043FE8 = 0x1000;
-		*(word32 *) 0xF0043FE4 = 0x1000;
-		*(word32 *) 0xF0043FE0 = 0x1000;
-		*(word32 *) 0xF0043FDC = 0x1000;
-		__store_upper_context();
-		fn00000AC0(a4, 0xF0040000);
-		while (__bit<word32,word16>(*(union Eq_n *) 0x0003C5F0, 0x00))
-			;
-		*(word32 *) 0x0003FC00 = 0xD0000000;
-		*(word32 *) 0xD0000240 = *(word32 *) 0x0003FC00;
-		__store_upper_context();
-		fn00000AC0(a4, 0xD0000000);
-		__store_upper_context();
-		Eq_n a15_n = fn00000400(a4, 0xD0000000);
-		__disable();
-		__load_upper_context();
-		return a15_n;
+	}
+	__store_upper_context();
+	fn00000AC0(a4, a15);
+	while (__bit<word32,word16>(*(union Eq_n *) 0x0003C5F0, 0x00))
+		;
+	*(union Eq_n *) 247284 = a15;
+	__store_upper_context();
+	__mtcr(ICR, fn00000AC0(a4, a15));
+	__isync();
+	__store_upper_context();
+	fn00000AC0(a4, a15);
+	Eq_n d15_n;
+	do
+		d15_n = *(union Eq_n *) 0x0003C5F0;
+	while ((d15_n & 0x01) != 0x00);
+	*(ui32 *) 0xF0043F00 = d15_n & 0x01;
+	*(word32 *) 0xF0043F10 = 0x0200;
+	__store_upper_context();
+	ui32 d15_n = fn00000AC0(a4, 0xF0040000);
+	*(ui32 *) 0xF0043F20 = d15_n;
+	*(ui32 *) 0xF0043F24 = d15_n;
+	*(word32 *) 0xF0043FEC = 0x1000;
+	*(word32 *) 0xF0043FE8 = 0x1000;
+	*(word32 *) 0xF0043FE4 = 0x1000;
+	*(word32 *) 0xF0043FE0 = 0x1000;
+	*(word32 *) 0xF0043FDC = 0x1000;
+	__store_upper_context();
+	fn00000AC0(a4, 0xF0040000);
+	while (__bit<word32,word16>(*(union Eq_n *) 0x0003C5F0, 0x00))
+		;
+	*(word32 *) 0x0003FC00 = 0xD0000000;
+	*(word32 *) 0xD0000240 = *(word32 *) 0x0003FC00;
+	__store_upper_context();
+	fn00000AC0(a4, 0xD0000000);
+	__store_upper_context();
+	Eq_n a15_n = fn00000400(a4, 0xD0000000);
+	__disable();
+	__load_upper_context();
+	return a15_n;
 }
 
 // 00000CCE: void fn00000CCE()
@@ -662,137 +662,137 @@ Eq_n fn00000B04(Eq_n a4, Eq_n a15, uint32 ICR)
 //      fn000010F0
 void fn00000CCE()
 {
-		byte * a15_n;
-		do
-			__store_upper_context();
-		while (fn00000648(0x01, out a15_n) != 0x01);
+	byte * a15_n;
+	do
 		__store_upper_context();
-		fn0000074E(0x01, a15_n);
-		*(word32 *) 0xF000503C = 0x07000000;
-		__load_upper_context();
+	while (fn00000648(0x01, out a15_n) != 0x01);
+	__store_upper_context();
+	fn0000074E(0x01, a15_n);
+	*(word32 *) 0xF000503C = 0x07000000;
+	__load_upper_context();
 }
 
 // 00000CE8: void fn00000CE8(Register word32 d2)
 void fn00000CE8(word32 d2)
 {
-		byte * a15_n = (byte *) 0xD0000000;
-		word32 d2_n;
-		do
-		{
-			Eq_n fp;
-			a15_n[(word32) fp + 0x30008000] = *a15_n;
-			++a15_n;
-			d2 = d2_n - 0x01;
-			d2_n = d2;
-		} while (d2_n != 0x00);
-		__store_upper_context();
-		fn00000CCE();
+	byte * a15_n = (byte *) 0xD0000000;
+	word32 d2_n;
+	do
+	{
+		Eq_n fp;
+		a15_n[(word32) fp + 0x30008000] = *a15_n;
+		++a15_n;
+		d2 = d2_n - 0x01;
+		d2_n = d2;
+	} while (d2_n != 0x00);
+	__store_upper_context();
+	fn00000CCE();
 }
 
 // 00000EB6: void fn00000EB6(Register (ptr32 Eq_n) a4)
 void fn00000EB6(struct Eq_n * a4)
 {
-		uint32 d2_n = (uint32) *(byte *) 0xD0000232;
-		uint32 d4_n = (uint32) *(byte *) 0xD0000231;
-		ui32 d6_n = *(ui32 *) 0xD000022C;
-		ui32 d7_n = (uint32) a4->b000D << 24 | (uint32) a4->b000E << 16 | (uint32) a4->b0010 | (uint32) a4->b000F << 8;
-		struct Eq_n * d5_n = (uint32) *(byte *) 0xD0000230 != 0x00 ? 0x80800000 : 0x80000000;
-		__store_upper_context();
-		(uint32) fn0000098A(d4_n, d5_n, d6_n, d7_n, d2_n)->b0004 != 0x00;
-		fn00000CCE();
+	uint32 d2_n = (uint32) *(byte *) 0xD0000232;
+	uint32 d4_n = (uint32) *(byte *) 0xD0000231;
+	ui32 d6_n = *(ui32 *) 0xD000022C;
+	ui32 d7_n = (uint32) a4->b000D << 24 | (uint32) a4->b000E << 16 | (uint32) a4->b0010 | (uint32) a4->b000F << 8;
+	struct Eq_n * d5_n = (uint32) *(byte *) 0xD0000230 != 0x00 ? 0x80800000 : 0x80000000;
+	__store_upper_context();
+	(uint32) fn0000098A(d4_n, d5_n, d6_n, d7_n, d2_n)->b0004 != 0x00;
+	fn00000CCE();
 }
 
 // 00000F40: void fn00000F40(Register (ptr32 Eq_n) a4)
 void fn00000F40(struct Eq_n * a4)
 {
-		word32 * d5_n = (uint32) a4->b0010 | ((uint32) a4->b000D << 24 | (uint32) a4->b000E << 16) | (uint32) a4->b000F << 8;
-		struct Eq_n * d4_n = (struct Eq_n *) 0x80000000;
-		union Eq_n * a15_n = (union Eq_n *) 0xF8002010;
-		if (d5_n > (word32 *) ~0x7F800000)
-		{
-			d4_n = (struct Eq_n *) 0x80800000;
-			a15_n = (union Eq_n *) 0xF8004010;
-		}
-		__store_upper_context();
-		fn000009BA(d4_n, d5_n, a15_n);
-		fn00000CCE();
+	word32 * d5_n = (uint32) a4->b0010 | ((uint32) a4->b000D << 24 | (uint32) a4->b000E << 16) | (uint32) a4->b000F << 8;
+	struct Eq_n * d4_n = (struct Eq_n *) 0x80000000;
+	union Eq_n * a15_n = (union Eq_n *) 0xF8002010;
+	if (d5_n > (word32 *) ~0x7F800000)
+	{
+		d4_n = (struct Eq_n *) 0x80800000;
+		a15_n = (union Eq_n *) 0xF8004010;
+	}
+	__store_upper_context();
+	fn000009BA(d4_n, d5_n, a15_n);
+	fn00000CCE();
 }
 
 // 00000FBE: void fn00000FBE(Register (ptr32 Eq_n) a4)
 void fn00000FBE(struct Eq_n * a4)
 {
-		*(uint32 *) 0xD0000124 = (uint32) a4->b0010 | ((uint32) a4->b000E << 16 | (uint32) a4->b000D << 24) | (uint32) a4->b000F << 8;
-		*(struct Eq_n **) 0xD0000128 = null;
-		fn00000CCE();
+	*(uint32 *) 0xD0000124 = (uint32) a4->b0010 | ((uint32) a4->b000E << 16 | (uint32) a4->b000D << 24) | (uint32) a4->b000F << 8;
+	*(struct Eq_n **) 0xD0000128 = null;
+	fn00000CCE();
 }
 
 // 0000101C: void fn0000101C(Register ptr32 a4)
 void fn0000101C(ptr32 a4)
 {
-		struct Eq_n * d15_n = *(struct Eq_n **) 0xD0000128;
-		int32 a6_n = 0x01;
-		word32 a15_n = 0x06;
-		word32 a15_n;
-		do
-		{
-			d15_n->bD000012C = (a4 + a6_n)->b000C;
-			if ((word32) (d15_n != &g_t00FF) == 0x00)
-				break;
-			++d15_n;
-			++a6_n;
-			a15_n = a15_n - 0x01;
-			a15_n = a15_n;
-		} while (a15_n != 0x00);
-		*(struct Eq_n **) 0xD0000128 = d15_n;
-		if ((word32) (*(struct Eq_n **) 0xD0000128 == &g_t00FF) != 0x00)
-		{
-			struct Eq_n * d4_n = (struct Eq_n *) 0x80000000;
-			if (*(uint32 *) 0xD0000124 > ~0x7F800000)
-				d4_n = (struct Eq_n *) 0x80800000;
-			__store_upper_context();
-			fn00000A0C(d4_n);
-		}
-		else
-			__load_upper_context();
+	struct Eq_n * d15_n = *(struct Eq_n **) 0xD0000128;
+	int32 a6_n = 0x01;
+	word32 a15_n = 0x06;
+	word32 a15_n;
+	do
+	{
+		d15_n->bD000012C = (a4 + a6_n)->b000C;
+		if ((word32) (d15_n != &g_t00FF) == 0x00)
+			break;
+		++d15_n;
+		++a6_n;
+		a15_n = a15_n - 0x01;
+		a15_n = a15_n;
+	} while (a15_n != 0x00);
+	*(struct Eq_n **) 0xD0000128 = d15_n;
+	if ((word32) (*(struct Eq_n **) 0xD0000128 == &g_t00FF) != 0x00)
+	{
+		struct Eq_n * d4_n = (struct Eq_n *) 0x80000000;
+		if (*(uint32 *) 0xD0000124 > ~0x7F800000)
+			d4_n = (struct Eq_n *) 0x80800000;
+		__store_upper_context();
+		fn00000A0C(d4_n);
+	}
+	else
+		__load_upper_context();
 }
 
 // 000010B0: void fn000010B0()
 void fn000010B0()
 {
-		up32 d9_n = *(up32 *) 246288;
-		up32 d15_n;
-		do
+	up32 d9_n = *(up32 *) 246288;
+	up32 d15_n;
+	do
+	{
+		__store_upper_context();
+		if (fn00000664(0x00, out d15_n) != 0x00)
 		{
 			__store_upper_context();
-			if (fn00000664(0x00, out d15_n) != 0x00)
-			{
-				__store_upper_context();
-				ui16 * fp;
-				fn000005CE(0x00, fp);
-			}
-		} while (d15_n >= *((up32 *) 246288) - d9_n);
-		__load_upper_context();
+			ui16 * fp;
+			fn000005CE(0x00, fp);
+		}
+	} while (d15_n >= *((up32 *) 246288) - d9_n);
+	__load_upper_context();
 }
 
 // 000010F0: void fn000010F0(Register (ptr32 Eq_n) a4)
 void fn000010F0(struct Eq_n * a4)
 {
-		ui32 d2_n = (uint32) a4->b000E << 16 | (uint32) a4->b000D << 24;
-		uint32 d4_n = (uint32) a4->b0010;
-		*(ui32 *) 0xD0000120 = (uint32) a4->b0012 << 8 | (uint32) a4->b0011 << 16 | (uint32) a4->b0013;
-		ui32 d2_n = d4_n | d2_n | (uint32) a4->b000F << 8;
-		*(word32 *) 0xD000011C = 0x00;
-		*(ui32 *) 0xD0000118 = d2_n;
-		word32 d15_n = *(word32 *) 0xD000011C;
-		uint32 d4_n = min<uint32>(*(ui32 *) 0xD0000120 - d15_n, 0x1000);
-		*(word32 *) 0xD000011C = d15_n + d4_n;
-		if (d4_n == 0x00)
-			__load_upper_context();
-		else
-		{
-			__store_upper_context();
-			fn00001DB0();
-		}
+	ui32 d2_n = (uint32) a4->b000E << 16 | (uint32) a4->b000D << 24;
+	uint32 d4_n = (uint32) a4->b0010;
+	*(ui32 *) 0xD0000120 = (uint32) a4->b0012 << 8 | (uint32) a4->b0011 << 16 | (uint32) a4->b0013;
+	ui32 d2_n = d4_n | d2_n | (uint32) a4->b000F << 8;
+	*(word32 *) 0xD000011C = 0x00;
+	*(ui32 *) 0xD0000118 = d2_n;
+	word32 d15_n = *(word32 *) 0xD000011C;
+	uint32 d4_n = min<uint32>(*(ui32 *) 0xD0000120 - d15_n, 0x1000);
+	*(word32 *) 0xD000011C = d15_n + d4_n;
+	if (d4_n == 0x00)
+		__load_upper_context();
+	else
+	{
+		__store_upper_context();
+		fn00001DB0();
+	}
 }
 
 // 000011FA: void fn000011FA(Register word32 a4, Register word32 a8)
@@ -800,14 +800,14 @@ void fn000010F0(struct Eq_n * a4)
 //      fn000012F6
 void fn000011FA(word32 a4, word32 a8)
 {
-		uint32 d15_n = (uint32) *(byte *) 0xD0000234;
-		if (d15_n >= 0x04)
-			__load_upper_context();
-		else
-		{
-			<anonymous> * a2_n = (d15_n << 0x02) + 0xC000121C;
-			a2_n();
-		}
+	uint32 d15_n = (uint32) *(byte *) 0xD0000234;
+	if (d15_n >= 0x04)
+		__load_upper_context();
+	else
+	{
+		<anonymous> * a2_n = (d15_n << 0x02) + 0xC000121C;
+		a2_n();
+	}
 }
 
 // 000012F6: void fn000012F6(Register Eq_n a4, Register word32 a8, Register uint32 ICR)
@@ -815,24 +815,24 @@ void fn000011FA(word32 a4, word32 a8)
 //      fn000000A8
 void fn000012F6(Eq_n a4, word32 a8, uint32 ICR)
 {
+	__store_upper_context();
+	struct Eq_n * a15_n = fn00000B04(a4, 0xD0000234, ICR);
+	a15_n->dw0000 = 0x00;
+	a15_n->dw0004 = 0x00;
+	a15_n->dw0008 = 0x00;
+	word32 d15_n;
+	do
 		__store_upper_context();
-		struct Eq_n * a15_n = fn00000B04(a4, 0xD0000234, ICR);
-		a15_n->dw0000 = 0x00;
-		a15_n->dw0004 = 0x00;
-		a15_n->dw0008 = 0x00;
-		word32 d15_n;
-		do
-			__store_upper_context();
-		while (fn00000664(0x00, out d15_n) == 0x00);
-		__store_upper_context();
-		ui16 * fp;
-		fn000005CE(0x00, fp);
+	while (fn00000664(0x00, out d15_n) == 0x00);
+	__store_upper_context();
+	ui16 * fp;
+	fn000005CE(0x00, fp);
 }
 
 // 0000132C: void fn0000132C()
 void fn0000132C()
 {
-		__load_upper_context();
+	__load_upper_context();
 }
 
 // 00001B9A: void fn00001B9A(Register up32 d4)
@@ -840,7 +840,7 @@ void fn0000132C()
 //      fn00001DB0
 void fn00001B9A(up32 d4)
 {
-		__load_upper_context();
+	__load_upper_context();
 }
 
 // 00001CB4: Register Eq_n fn00001CB4(Register up32 d4, Register Eq_n a4)
@@ -848,26 +848,26 @@ void fn00001B9A(up32 d4)
 //      fn00001DB0
 Eq_n fn00001CB4(up32 d4, Eq_n a4)
 {
-		word32 d4_n = (word32) (d4 < 0x4020);
-		Eq_n d15_n = a4;
-		if (__write_bit<word32,int32>(d4_n, 0, __bit<word32,int32>(d4_n, 0) | a4 == 0x00) == 0x00)
+	word32 d4_n = (word32) (d4 < 0x4020);
+	Eq_n d15_n = a4;
+	if (__write_bit<word32,int32>(d4_n, 0, __bit<word32,int32>(d4_n, 0) | a4 == 0x00) == 0x00)
+	{
+		d15_n = a4 & 0x03;
+		if ((a4 & 0x03) == 0x00)
 		{
-			d15_n = a4 & 0x03;
-			if ((a4 & 0x03) == 0x00)
+			Eq_n a2_n = a4;
+			while (true)
 			{
-				Eq_n a2_n = a4;
-				while (true)
-				{
-					--d15_n;
-					if (d15_n == 0x00)
-						break;
-					*a2_n.u1 = 0x00;
-					a2_n.u1 = (word32) a2_n + 1;
-				}
+				--d15_n;
+				if (d15_n == 0x00)
+					break;
+				*a2_n.u1 = 0x00;
+				a2_n.u1 = (word32) a2_n + 1;
 			}
 		}
-		__load_upper_context();
-		return d15_n;
+	}
+	__load_upper_context();
+	return d15_n;
 }
 
 // 00001DB0: void fn00001DB0()
@@ -875,11 +875,11 @@ Eq_n fn00001CB4(up32 d4, Eq_n a4)
 //      fn000010F0
 void fn00001DB0()
 {
-		ptr32 fp;
-		__store_upper_context();
-		up32 d15_n = fn00001CB4(0x4020, fp - 0x00004020);
-		__store_upper_context();
-		fn00001B9A(d15_n);
+	ptr32 fp;
+	__store_upper_context();
+	up32 d15_n = fn00001CB4(0x4020, fp - 0x00004020);
+	__store_upper_context();
+	fn00001B9A(d15_n);
 }
 
 // 00001EE0: void fn00001EE0()
@@ -887,15 +887,15 @@ void fn00001DB0()
 //      fn00001F40
 void fn00001EE0()
 {
-		if (*(word32 *) 0xC0001F60 != 0x00 && false)
-		{
-			__store_upper_context();
-			null();
-		}
-		if (true || true)
-			__load_upper_context();
-		else
-			null();
+	if (*(word32 *) 0xC0001F60 != 0x00 && false)
+	{
+		__store_upper_context();
+		null();
+	}
+	if (true || true)
+		__load_upper_context();
+	else
+		null();
 }
 
 // 00001F20: void fn00001F20()
@@ -903,17 +903,17 @@ void fn00001EE0()
 //      fn00001F40
 void fn00001F20()
 {
-		int32 d15_n = 0x00;
-		ptr32 a12_n = (<unknown>*) 0xC0001F64;
-		while (true)
-		{
-			<anonymous> * a15_n = *((word32) a12_n + d15_n);
-			if (a15_n == (<anonymous> *) ~0x00)
-				break;
-			__store_upper_context();
-			a15_n();
-		}
-		__load_upper_context();
+	int32 d15_n = 0x00;
+	ptr32 a12_n = (<unknown>*) 0xC0001F64;
+	while (true)
+	{
+		<anonymous> * a15_n = *((word32) a12_n + d15_n);
+		if (a15_n == (<anonymous> *) ~0x00)
+			break;
+		__store_upper_context();
+		a15_n();
+	}
+	__load_upper_context();
 }
 
 // 00001F40: void fn00001F40()
@@ -921,10 +921,10 @@ void fn00001F20()
 //      fn000000A8
 void fn00001F40()
 {
-		__store_upper_context();
-		fn00001EE0();
-		__store_upper_context();
-		fn00001F20();
-		__load_upper_context();
+	__store_upper_context();
+	fn00001EE0();
+	__store_upper_context();
+	fn00001F20();
+	__load_upper_context();
 }
 

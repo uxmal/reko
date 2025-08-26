@@ -132,39 +132,9 @@ fn00000000: error: An error occurred while rewriting procedure to high-level lan
 00013974: warning: Expected sizes of arrays to have been determined by now
 00013984: warning: Expected sizes of arrays to have been determined by now
 
-*** Raw\TriCore\bootloader
+=== Raw\TriCore\bootloader
 00000004: warning: Expected sizes of arrays to have been determined by now
-000000FF: error: Failed to write global variable g_t00FF.
-    Index was outside the bounds of the array.
-       at Reko.Core.Memory.ByteMemoryArea.TryReadByte(Byte[] img, Int64 off, Byte& b) in c:\dev\uxmal\reko\master\src\Core\Memory\ByteMemoryArea.cs:line 1122
-   at Reko.Core.Memory.ByteMemoryArea.TryReadLe(Byte[] abImage, Int64 imageOffset, DataType type, Constant& c) in c:\dev\uxmal\reko\master\src\Core\Memory\ByteMemoryArea.cs:line 364
-   at Reko.Core.Memory.ByteMemoryArea.TryReadLe(Int64 imageOffset, DataType type, Constant& c) in c:\dev\uxmal\reko\master\src\Core\Memory\ByteMemoryArea.cs:line 314
-   at Reko.Core.Memory.ByteImageReader.TryReadLe(DataType dataType, Constant& c) in c:\dev\uxmal\reko\master\src\Core\Memory\ByteImageReader.cs:line 327
-   at Reko.Core.Memory.LeImageReader.TryRead(PrimitiveType dataType, Constant& c) in c:\dev\uxmal\reko\master\src\Core\Memory\EndianImageReader.cs:line 628
-   at Reko.Core.ProcessorArchitecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in c:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 797
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 305
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 68
-   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
-   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 85
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 272
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 67
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 168
 00000004: warning: Expected sizes of arrays to have been determined by now
-000000FF: error: Failed to write global variable g_t00FF.
-    Index was outside the bounds of the array.
-       at Reko.Core.Memory.ByteMemoryArea.TryReadByte(Byte[] img, Int64 off, Byte& b) in c:\dev\uxmal\reko\master\src\Core\Memory\ByteMemoryArea.cs:line 1122
-   at Reko.Core.Memory.ByteMemoryArea.TryReadLe(Byte[] abImage, Int64 imageOffset, DataType type, Constant& c) in c:\dev\uxmal\reko\master\src\Core\Memory\ByteMemoryArea.cs:line 364
-   at Reko.Core.Memory.ByteMemoryArea.TryReadLe(Int64 imageOffset, DataType type, Constant& c) in c:\dev\uxmal\reko\master\src\Core\Memory\ByteMemoryArea.cs:line 314
-   at Reko.Core.Memory.ByteImageReader.TryReadLe(DataType dataType, Constant& c) in c:\dev\uxmal\reko\master\src\Core\Memory\ByteImageReader.cs:line 327
-   at Reko.Core.Memory.LeImageReader.TryRead(PrimitiveType dataType, Constant& c) in c:\dev\uxmal\reko\master\src\Core\Memory\EndianImageReader.cs:line 628
-   at Reko.Core.ProcessorArchitecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in c:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 797
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 305
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 68
-   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
-   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 85
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 272
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 67
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in c:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 168
 
 === Hunk-m68k\BYTEOPS
 00002BC4: warning: Expected sizes of arrays to have been determined by now
@@ -1234,8 +1204,7 @@ fn0001B2CC: warning: Structure analysis stopped making progress, quitting. Pleas
 004008DC: warning: Call target address 00000000 is invalid.
 finish: error: An error occurred while renaming variables.
     The given key 'l004028A8' was not present in the dictionary.
-       at Reko.Analysis.SsaLivenessAnalysis.LiveOutAtBlock(Block block, SsaIdentifier sid) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 214
-   at Reko.Analysis.SsaLivenessAnalysis.BuildInterferenceGraph(SsaIdentifierCollection ssaIds) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 114
+       at Reko.Analysis.SsaLivenessAnalysis.BuildInterferenceGraph(SsaIdentifierCollection ssaIds) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 114
    at Reko.Analysis.WebBuilder.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 119
 l00401628: warning: Non-integral switch expression
 l00401614: warning: Non-integral switch expression
@@ -2283,4 +2252,4 @@ PE Debug type 14 not supported yet.
 === PE\x86\VCExeSample\VCExeSample
 Signature of 'Microsoft Visual C++ 8' detected.
 
-Decompiled 99 binaries in 87.10 seconds.
+Decompiled 99 binaries in 93.27 seconds.

@@ -26,7 +26,7 @@ using System.Threading.Tasks;
 
 namespace Reko.ImageLoaders.Coff;
 
-internal class OptionalHeader
+public class OptionalHeader
 {
     public short magic;        /* see magic.h				*/
     public short vstamp;       /* version stamp			*/
@@ -45,9 +45,9 @@ internal class OptionalHeader
 
 public class Ns32kOptionalHeader
 {
-    public short magic;        /* see magic.h				*/
-    public short vstamp;       /* version stamp			*/
-    public int tsize;     /* text size in bytes, padded to FW
+    public short magic;         /* see magic.h				*/
+    public short vstamp;        /* version stamp			*/
+    public int tsize;           /* text size in bytes, padded to FW
 				   bdry					*/
     public int dsize;     /* initialized data "  "		*/
     public int bsize;     /* uninitialized data "   "		*/

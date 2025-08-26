@@ -425,8 +425,11 @@ namespace Reko.Core.Output
             bool ok = true;
             for (int i = 0; ok && i < str.Fields.Count; ++i)
             {
+                int fieldOffset = str.Fields[i].Offset;
+                if (fieldOffset < 0)
+                    continue;
                 fmt.Indent();
-                rdr.Offset = structOffset + str.Fields[i].Offset;
+                rdr.Offset = structOffset + fieldOffset;
                 ok = str.Fields[i].DataType.Accept(this);
                 fmt.Terminate(",");
             }

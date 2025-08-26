@@ -57,7 +57,7 @@ namespace Reko.Core.Memory
         /// <summary>
         /// Current position in the byte array.
         /// </summary>
-        protected long off;
+        private long offset;
 
         /// <summary>
         /// Starting address of the image in the byte array.
@@ -78,7 +78,7 @@ namespace Reko.Core.Memory
                 throw new ArgumentOutOfRangeException(nameof(addr), $"Address {addr} is outside of image.");
             this.offStart = o;
             this.offEnd = mem.Length;
-            this.off = offStart;
+            this.Offset = offStart;
             this.bytes = mem.Bytes;
         }
 
@@ -97,7 +97,7 @@ namespace Reko.Core.Memory
                 throw new ArgumentOutOfRangeException(nameof(addr), $"Address {addr} is outside of image.");
             this.offStart = o;
             this.offEnd = Math.Min(o + cUnits, mem.Bytes.Length);
-            this.off = offStart;
+            this.Offset = offStart;
             this.bytes = mem.Bytes;
         }
 
@@ -114,7 +114,7 @@ namespace Reko.Core.Memory
             this.offStart = addrBegin - mem.BaseAddress;
             // Prevent walking off the end of the bytes.
             this.offEnd = Math.Min(addrEnd - mem.BaseAddress, mem.Bytes.Length);
-            this.off = this.offStart;
+            this.Offset = this.offStart;
             this.bytes = mem.Bytes;
         }
 
@@ -130,7 +130,7 @@ namespace Reko.Core.Memory
             this.addrStart = mem.BaseAddress + offset;
             this.offStart = offset;
             this.offEnd = mem.Bytes.Length;
-            this.off = offStart;
+            this.Offset = offStart;
         }
 
         /// <summary>
@@ -162,7 +162,7 @@ namespace Reko.Core.Memory
             this.bytes = bytes;
             this.offStart = offsetBegin;
             this.offEnd = offsetEnd;
-            this.off = offStart;
+            this.Offset = offStart;
         }
 
         /// <summary>
@@ -182,7 +182,7 @@ namespace Reko.Core.Memory
         public ByteImageReader(byte[] img, long off) : this(img, off, img.Length) { }
 
         /// <inheritdoc/>
-        public Address Address { get { return addrStart!.Value + (off - offStart); } }
+        public Address Address { get { return addrStart!.Value + (Offset - offStart); } }
 
         /// <summary>
         /// The byte array from which data is read.
@@ -193,7 +193,7 @@ namespace Reko.Core.Memory
         public int CellBitSize => 8;
 
         /// <inheritdoc/>
-        public long Offset { get { return off; } set { off = value; } }
+        public long Offset { get { return this.offset; } set { this.offset = value; } }
 
         /// <inheritdoc/>
         public bool IsValid { get { return IsValidOffset(Offset); } }
@@ -204,7 +204,7 @@ namespace Reko.Core.Memory
         /// <inheritdoc/>
         public ByteImageReader Clone()
         {
-            var that = new ByteImageReader(this.bytes, this.off, this.offEnd);
+            var that = new ByteImageReader(this.bytes, this.Offset, this.offEnd);
             that.mem = this.mem;
             that.offStart = this.offStart;
             that.offEnd = this.offEnd;
@@ -248,21 +248,21 @@ namespace Reko.Core.Memory
         /// <inheritdoc/>
         public byte ReadByte()
         {
-            byte b = bytes[off];
-            ++off;
+            byte b = bytes[Offset];
+            ++Offset;
             return b;
         }
 
         /// <inheritdoc/>
         public bool TryReadByte(out byte b)
         {
-            if (!IsValidOffset(off))
+            if (!IsValidOffset(Offset))
             {
                 b = 0;
                 return false;
             }
-            b = bytes[off];
-            ++off;
+            b = bytes[Offset];
+            ++Offset;
             return true;
         }
 
@@ -275,11 +275,11 @@ namespace Reko.Core.Memory
         /// <inheritdoc/>
         public byte PeekByte(int offset)
         {
-            return bytes[(long) off + offset];
+            return bytes[(long) Offset + offset];
         }
 
         /// <inheritdoc/>
-        public sbyte PeekSByte(int offset) { return (sbyte)bytes[(long)off + offset]; }
+        public sbyte PeekSByte(int offset) { return (sbyte)bytes[(long)Offset + offset]; }
 
         /// <inheritdoc/>
         public byte[] ReadBytes(int length) { return ReadBytes((uint) length); }
@@ -287,11 +287,11 @@ namespace Reko.Core.Memory
         /// <inheritdoc/>
         public byte[] ReadBytes(uint length)
         {
-            int avail = Math.Min((int) length, bytes.Length - (int) off);
+            int avail = Math.Min((int) length, bytes.Length - (int) Offset);
             if (avail <= 0)
                 return Array.Empty<byte>();
             byte[] dst = new byte[avail];
-            Array.Copy(bytes, (int) off, dst, 0, avail);
+            Array.Copy(bytes, (int) Offset, dst, 0, avail);
             Offset += length;
             return dst;
         }
@@ -299,7 +299,7 @@ namespace Reko.Core.Memory
         /// <inheritdoc/>
         public int ReadBytes(byte[] dst, int offset, uint length)
         {
-            Array.Copy(bytes, (int) off, dst, offset, length);
+            Array.Copy(bytes, (int) Offset, dst, offset, length);
             Offset += length;
             return (int) length;
         }
@@ -315,7 +315,7 @@ namespace Reko.Core.Memory
         public bool TryReadLe(DataType dataType, [MaybeNullWhen(false)] out Constant c)
         {
             var size = dataType.Size;
-            if (size + off > offEnd)
+            if (size + Offset > offEnd)
             {
                 c = default!;
                 return false;
@@ -324,9 +324,9 @@ namespace Reko.Core.Memory
             if (mem is null)
                 ret = ByteMemoryArea.TryReadLe(bytes, Offset, dataType, out c);
             else
-                ret = mem.TryReadLe(off, dataType, out c);
+                ret = mem.TryReadLe(Offset, dataType, out c);
             if (ret)
-                off += size;
+                Offset += size;
             return ret;
         }
 
@@ -341,14 +341,14 @@ namespace Reko.Core.Memory
         public bool TryReadBe(DataType dataType, [MaybeNullWhen(false)] out Constant c)
         {
             var size = dataType.Size;
-            if (size + off > offEnd)
+            if (size + Offset > offEnd)
             {
                 c = default!;
                 return false;
             }
-            bool ret = mem!.TryReadBe(off, dataType, out c);
+            bool ret = mem!.TryReadBe(Offset, dataType, out c);
             if (ret)
-                off += size;
+                Offset += size;
             return ret;
         }
 
@@ -379,43 +379,43 @@ namespace Reko.Core.Memory
         /// <inheritdoc/>
         public ushort ReadLeUInt16()
         {
-            ushort u = ByteMemoryArea.ReadLeUInt16(bytes, off);
-            off += 2;
+            ushort u = ByteMemoryArea.ReadLeUInt16(bytes, Offset);
+            Offset += 2;
             return u;
         }
 
         /// <inheritdoc/>
         public bool TryReadLeUInt16(out ushort us)
         {
-            if (!ByteMemoryArea.TryReadLeUInt16(bytes, (uint) off, offEnd, out us))
+            if (!ByteMemoryArea.TryReadLeUInt16(bytes, (uint) Offset, offEnd, out us))
                 return false;
-            off += 2;
+            Offset += 2;
             return true;
         }
 
         /// <inheritdoc/>
         public bool TryReadBeUInt16(out ushort us)
         {
-            if (!ByteMemoryArea.TryReadBeUInt16(bytes, (uint) off, offEnd, out us))
+            if (!ByteMemoryArea.TryReadBeUInt16(bytes, (uint) Offset, offEnd, out us))
                 return false;
-            off += 2;
+            Offset += 2;
             return true;
         }
 
         /// <inheritdoc/>
         public bool TryReadBeInt16(out short s)
         {
-            if (!ByteMemoryArea.TryReadBeInt16(bytes, (uint) off, offEnd, out s))
+            if (!ByteMemoryArea.TryReadBeInt16(bytes, (uint) Offset, offEnd, out s))
                 return false;
-            off += 2;
+            Offset += 2;
             return true;
         }
 
         /// <inheritdoc/>
         public ushort ReadBeUInt16()
         {
-            ushort u = ByteMemoryArea.ReadBeUInt16(bytes, (uint) off);
-            off += 2;
+            ushort u = ByteMemoryArea.ReadBeUInt16(bytes, (uint) Offset);
+            Offset += 2;
             return u;
         }
 
@@ -426,39 +426,39 @@ namespace Reko.Core.Memory
         public short ReadLeInt16() { return (short) ReadLeUInt16(); }
 
         /// <inheritdoc/>
-        public ushort PeekLeUInt16(int offset) { return ByteMemoryArea.ReadLeUInt16(bytes, offset + (uint) off); }
+        public ushort PeekLeUInt16(int offset) { return ByteMemoryArea.ReadLeUInt16(bytes, offset + (uint) Offset); }
 
         /// <inheritdoc/>
-        public ushort PeekBeUInt16(int offset) { return ByteMemoryArea.ReadBeUInt16(bytes, offset + (uint) off); }
+        public ushort PeekBeUInt16(int offset) { return ByteMemoryArea.ReadBeUInt16(bytes, offset + (uint) Offset); }
 
         /// <inheritdoc/>
-        public short PeekLeInt16(int offset) { return (short) ByteMemoryArea.ReadLeUInt16(bytes, offset + (uint) off); }
+        public short PeekLeInt16(int offset) { return (short) ByteMemoryArea.ReadLeUInt16(bytes, offset + (uint) Offset); }
 
         /// <inheritdoc/>
-        public short PeekBeInt16(int offset) { return (short) ByteMemoryArea.ReadBeUInt16(bytes, offset + (uint) off); }
-
-
-        /// <inheritdoc/>
-        public bool TryPeekByte(int offset, out byte value) { return ByteMemoryArea.TryReadByte(bytes, offset + off, out value); }
-
-        /// <inheritdoc/>
-        public bool TryPeekBeUInt16(int offset, out ushort value) { return ByteMemoryArea.TryReadBeUInt16(bytes, offset + off, out value); }
-
-        /// <inheritdoc/>
-        public bool TryPeekBeUInt32(int offset, out uint value) { return ByteMemoryArea.TryReadBeUInt32(bytes, offset + off, out value); }
-
-        /// <inheritdoc/>
-        public bool TryPeekBeUInt64(int offset, out ulong value) { return ByteMemoryArea.TryReadBeUInt64(bytes, offset + off, out value); }
+        public short PeekBeInt16(int offset) { return (short) ByteMemoryArea.ReadBeUInt16(bytes, offset + (uint) Offset); }
 
 
         /// <inheritdoc/>
-        public bool TryPeekLeUInt16(int offset, out ushort value) { return ByteMemoryArea.TryReadLeUInt16(bytes, offset + off, out value); }
+        public bool TryPeekByte(int offset, out byte value) { return ByteMemoryArea.TryReadByte(bytes, offset + Offset, out value); }
 
         /// <inheritdoc/>
-        public bool TryPeekLeUInt32(int offset, out uint value) { return ByteMemoryArea.TryReadLeUInt32(bytes, offset + off, out value); }
+        public bool TryPeekBeUInt16(int offset, out ushort value) { return ByteMemoryArea.TryReadBeUInt16(bytes, offset + Offset, out value); }
 
         /// <inheritdoc/>
-        public bool TryPeekLeUInt64(int offset, out ulong value) { return ByteMemoryArea.TryReadLeUInt64(bytes, offset + off, out value); }
+        public bool TryPeekBeUInt32(int offset, out uint value) { return ByteMemoryArea.TryReadBeUInt32(bytes, offset + Offset, out value); }
+
+        /// <inheritdoc/>
+        public bool TryPeekBeUInt64(int offset, out ulong value) { return ByteMemoryArea.TryReadBeUInt64(bytes, offset + Offset, out value); }
+
+
+        /// <inheritdoc/>
+        public bool TryPeekLeUInt16(int offset, out ushort value) { return ByteMemoryArea.TryReadLeUInt16(bytes, offset + Offset, out value); }
+
+        /// <inheritdoc/>
+        public bool TryPeekLeUInt32(int offset, out uint value) { return ByteMemoryArea.TryReadLeUInt32(bytes, offset + Offset, out value); }
+
+        /// <inheritdoc/>
+        public bool TryPeekLeUInt64(int offset, out ulong value) { return ByteMemoryArea.TryReadLeUInt64(bytes, offset + Offset, out value); }
 
         /// <summary>
         /// Reads a 32-bit unsigned little-endian integer from the image,
@@ -467,8 +467,8 @@ namespace Reko.Core.Memory
         /// <returns>The value read.</returns>
         public uint ReadLeUInt32()
         {
-            uint u = ByteMemoryArea.ReadLeUInt32(bytes, (uint) off);
-            off += 4;
+            uint u = ByteMemoryArea.ReadLeUInt32(bytes, (uint) Offset);
+            Offset += 4;
             return u;
         }
 
@@ -479,8 +479,8 @@ namespace Reko.Core.Memory
         /// <returns>The value read.</returns>
         public uint ReadBeUInt32()
         {
-            uint u = ByteMemoryArea.ReadBeUInt32(bytes, off);
-            off += 4;
+            uint u = ByteMemoryArea.ReadBeUInt32(bytes, Offset);
+            Offset += 4;
             return u;
         }
 
@@ -492,9 +492,9 @@ namespace Reko.Core.Memory
         /// <returns>True if the value was successfully read; otherwise false.</returns>
         public bool TryReadLeInt16(out short i16)
         {
-            if (!ByteMemoryArea.TryReadLeInt16(this.bytes, off, offEnd, out i16))
+            if (!ByteMemoryArea.TryReadLeInt16(this.bytes, Offset, offEnd, out i16))
                 return false;
-            off += 2;
+            Offset += 2;
             return true;
         }
 
@@ -506,9 +506,9 @@ namespace Reko.Core.Memory
         /// <returns>True if the value was successfully read; otherwise false.</returns>
         public bool TryReadLeInt32(out int i32)
         {
-            if (!ByteMemoryArea.TryReadLeInt32(this.bytes, off, offEnd, out i32))
+            if (!ByteMemoryArea.TryReadLeInt32(this.bytes, Offset, offEnd, out i32))
                 return false;
-            off += 4;
+            Offset += 4;
             return true;
         }
 
@@ -520,9 +520,9 @@ namespace Reko.Core.Memory
         /// <returns>True if the value was successfully read; otherwise false.</returns>
         public bool TryReadBeInt32(out int i32)
         {
-            if (!ByteMemoryArea.TryReadBeInt32(this.bytes, off, offEnd, out i32))
+            if (!ByteMemoryArea.TryReadBeInt32(this.bytes, Offset, offEnd, out i32))
                 return false;
-            off += 4;
+            Offset += 4;
             return true;
         }
 
@@ -534,9 +534,9 @@ namespace Reko.Core.Memory
         /// <returns>True if the value was successfully read; otherwise false.</returns>
         public bool TryReadLeUInt32(out uint ui32)
         {
-            if (!ByteMemoryArea.TryReadLeUInt32(this.bytes, off, offEnd, out ui32))
+            if (!ByteMemoryArea.TryReadLeUInt32(this.bytes, Offset, offEnd, out ui32))
                 return false;
-            off += 4;
+            Offset += 4;
             return true;
         }
 
@@ -548,9 +548,9 @@ namespace Reko.Core.Memory
         /// <returns>True if the value was successfully read; otherwise false.</returns>
         public bool TryReadBeUInt32(out uint ui32)
         {
-            if (!ByteMemoryArea.TryReadBeUInt32(this.bytes, off, offEnd, out ui32))
+            if (!ByteMemoryArea.TryReadBeUInt32(this.bytes, Offset, offEnd, out ui32))
                 return false;
-            off += 4;
+            Offset += 4;
             return true;
         }
 
@@ -562,9 +562,9 @@ namespace Reko.Core.Memory
         /// <returns>True if the value was successfully read; otherwise false.</returns>
         public bool TryReadLeInt64(out long value)
         {
-            if (!ByteMemoryArea.TryReadLeInt64(this.bytes, off, offEnd, out value))
+            if (!ByteMemoryArea.TryReadLeInt64(this.bytes, Offset, offEnd, out value))
                 return false;
-            off += 8;
+            Offset += 8;
             return true;
         }
 
@@ -576,9 +576,9 @@ namespace Reko.Core.Memory
         /// <returns>True if the value was successfully read; otherwise false.</returns>
         public bool TryReadLeUInt64(out ulong value)
         {
-            if (!ByteMemoryArea.TryReadLeUInt64(this.bytes, off, offEnd, out value))
+            if (!ByteMemoryArea.TryReadLeUInt64(this.bytes, Offset, offEnd, out value))
                 return false;
-            off += 8;
+            Offset += 8;
             return true;
         }
 
@@ -590,9 +590,9 @@ namespace Reko.Core.Memory
         /// <returns>True if the value was successfully read; otherwise false.</returns>
         public bool TryReadBeInt64(out long value)
         {
-            if (!ByteMemoryArea.TryReadBeInt64(this.bytes, off, offEnd, out value))
+            if (!ByteMemoryArea.TryReadBeInt64(this.bytes, Offset, offEnd, out value))
                 return false;
-            off += 8;
+            Offset += 8;
             return true;
         }
 
@@ -604,9 +604,9 @@ namespace Reko.Core.Memory
         /// <returns>True if the value was successfully read; otherwise false.</returns>
         public bool TryReadBeUInt64(out ulong value)
         {
-            if (!ByteMemoryArea.TryReadBeUInt64(this.bytes, off, out value))
+            if (!ByteMemoryArea.TryReadBeUInt64(this.bytes, Offset, out value))
                 return false;
-            off += 8;
+            Offset += 8;
             return true;
         }
 
@@ -629,28 +629,28 @@ namespace Reko.Core.Memory
         /// given offset in the image, but doesn't advance the offset.
         /// </summary>
         /// <returns>The value peeked.</returns>
-        public uint PeekLeUInt32(int offset) { return ByteMemoryArea.ReadLeUInt32(bytes, offset + off); }
+        public uint PeekLeUInt32(int offset) { return ByteMemoryArea.ReadLeUInt32(bytes, offset + Offset); }
 
         /// <summary>
         /// Reads a 32-bit unsigned big-endian integer from the 
         /// given offset in the image, but doesn't advance the offset.
         /// </summary>
         /// <returns>The value peeked.</returns>
-        public uint PeekBeUInt32(int offset) { return ByteMemoryArea.ReadBeUInt32(bytes, offset + off); }
+        public uint PeekBeUInt32(int offset) { return ByteMemoryArea.ReadBeUInt32(bytes, offset + Offset); }
 
         /// <summary>
         /// Reads a 32-bit signed little-endian integer from the 
         /// given offset in the image, but doesn't advance the offset.
         /// </summary>
         /// <returns>The value peeked.</returns>
-        public int PeekLeInt32(int offset) { return (int) ByteMemoryArea.ReadLeUInt32(bytes, offset + off); }
+        public int PeekLeInt32(int offset) { return (int) ByteMemoryArea.ReadLeUInt32(bytes, offset + Offset); }
 
         /// <summary>
         /// Reads a 32-bit signed big-endian integer from the 
         /// given offset in the image, but doesn't advance the offset.
         /// </summary>
         /// <returns>The value peeked.</returns>
-        public int PeekBeInt32(int offset) { return (int) ByteMemoryArea.ReadBeUInt32(bytes, offset + off); }
+        public int PeekBeInt32(int offset) { return (int) ByteMemoryArea.ReadBeUInt32(bytes, offset + Offset); }
 
         /// <summary>
         /// Reads a 64-bit signed little-endian integer from the image,
@@ -659,8 +659,8 @@ namespace Reko.Core.Memory
         /// <returns>The value read.</returns>
         public ulong ReadLeUInt64()
         {
-            ulong u = ByteMemoryArea.ReadLeUInt64(bytes, off);
-            off += 8;
+            ulong u = ByteMemoryArea.ReadLeUInt64(bytes, Offset);
+            Offset += 8;
             return u;
         }
 
@@ -671,8 +671,8 @@ namespace Reko.Core.Memory
         /// <returns>The value read.</returns>
         public ulong ReadBeUInt64()
         {
-            ulong u = ByteMemoryArea.ReadBeUInt64(bytes, off);
-            off += 8;
+            ulong u = ByteMemoryArea.ReadBeUInt64(bytes, Offset);
+            Offset += 8;
             return u;
         }
 
@@ -696,28 +696,28 @@ namespace Reko.Core.Memory
         /// given offset in the image, but doesn't advance the offset.
         /// </summary>
         /// <returns>The value peeked.</returns>
-        public ulong PeekLeUInt64(int offset) { return ByteMemoryArea.ReadLeUInt64(bytes, off + offset); }
+        public ulong PeekLeUInt64(int offset) { return ByteMemoryArea.ReadLeUInt64(bytes, Offset + offset); }
 
         /// <summary>
         /// Reads a 64-bit unsigned big-endian integer from the 
         /// given offset in the image, but doesn't advance the offset.
         /// </summary>
         /// <returns>The value peeked.</returns>
-        public ulong PeekBeUInt64(int offset) { return ByteMemoryArea.ReadBeUInt64(bytes, off + offset); }
+        public ulong PeekBeUInt64(int offset) { return ByteMemoryArea.ReadBeUInt64(bytes, Offset + offset); }
 
         /// <summary>
         /// Reads a 64-bit signed little-endian integer from the 
         /// given offset in the image, but doesn't advance the offset.
         /// </summary>
         /// <returns>The value peeked.</returns>
-        public long PeekLeInt64(int offset) { return (long) ByteMemoryArea.ReadLeUInt64(bytes, off + offset); }
+        public long PeekLeInt64(int offset) { return (long) ByteMemoryArea.ReadLeUInt64(bytes, Offset + offset); }
 
         /// <summary>
         /// Reads a 64-bit signed big-endian integer from the 
         /// given offset in the image, but doesn't advance the offset.
         /// </summary>
         /// <returns>The value peeked.</returns>
-        public long PeekBeInt64(int offset) { return (long) ByteMemoryArea.ReadBeUInt64(bytes, off + offset); }
+        public long PeekBeInt64(int offset) { return (long) ByteMemoryArea.ReadBeUInt64(bytes, Offset + offset); }
 
 
         /// <inheritdoc/>
@@ -726,26 +726,26 @@ namespace Reko.Core.Memory
             switch (origin)
             {
             case SeekOrigin.Begin:
-                off = offStart + offset;
+                Offset = offStart + offset;
                 break;
             case SeekOrigin.Current:
-                off += offset;
+                Offset += offset;
                 break;
             case SeekOrigin.End:
-                off = offEnd + offset;
+                Offset = offEnd + offset;
                 break;
             }
-            return off;
+            return Offset;
         }
 
         /// <inheritdoc/>
         public byte[] ReadToEnd()
         {
-            long avail = this.offEnd - off;
+            long avail = this.offEnd - Offset;
             if (avail <= 0)
                 return Array.Empty<byte>();
             byte[] dst = new byte[avail];
-            Array.Copy(bytes, (int) off, dst, 0, avail);
+            Array.Copy(bytes, (int) Offset, dst, 0, avail);
             Offset = offEnd;
             return dst;
         }
@@ -753,11 +753,11 @@ namespace Reko.Core.Memory
         /// <inheritdoc/>
         public byte[] Read(int count)
         {
-            long bytesRead = (int) Math.Min(count, offEnd - this.off);
+            long bytesRead = (int) Math.Min(count, offEnd - this.Offset);
             if (bytesRead <= 0)
                 return Array.Empty<byte>();
             byte[] dst = new byte[bytesRead];
-            Array.Copy(this.bytes, (int) off, dst, 0, bytesRead);
+            Array.Copy(this.bytes, (int) Offset, dst, 0, bytesRead);
             this.Offset += bytesRead;
             return dst;
         }
@@ -767,8 +767,8 @@ namespace Reko.Core.Memory
         {
             int bytesRead = (int) Math.Min(buffer.Length - offset, count);
             bytesRead = (int) Math.Min(bytesRead, offEnd - offset);
-            Array.Copy(bytes, this.off, buffer, offset, bytesRead);
-            off += bytesRead;
+            Array.Copy(bytes, this.Offset, buffer, offset, bytesRead);
+            Offset += bytesRead;
             return bytesRead;
         }
     }

@@ -284,11 +284,11 @@ namespace Reko.Core.Memory
             if (mem is not null)
             {
                 rdr = CreateNew(mem, addrStart!.Value);
-                rdr.Offset = off;
+                rdr.Offset = this.Offset;
             }
             else
             {
-                rdr = CreateNew(bytes, off);
+                rdr = CreateNew(bytes, this.Offset);
             }
             return rdr;
         }
