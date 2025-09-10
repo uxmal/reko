@@ -807,6 +807,19 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
+        /// Generates a memory access to the specified effective <paramref name="baseAddress"/> offset 
+        /// by <paramref name="offset"/>.
+        /// </summary>
+        /// <param name="dt">Data type of the memory access.</param>
+        /// <param name="baseAddress">Base address of the memory being accessed.</param>
+        /// <param name="offset">Offset to add to the <paramref name="baseAddress"/>.</param>
+        /// <returns>A <see cref="MemoryAccess"/> expression.</returns>
+        public MemoryAccess Mem(DataType dt, Expression baseAddress, long offset)
+        {
+            return Mem(MemoryStorage.GlobalMemory, dt, AddSubSignedInt(baseAddress, offset));
+        }
+
+        /// <summary>
         /// Generates a memory access of the data of type <paramref name="dt"/> at the specified effective address
         /// <paramref name="ea"/> in the address space identified by <paramref name="mid" />.
         /// </summary>
@@ -823,14 +836,26 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
-        /// Generates a memory access of the byte at the specified effective address
+        /// Generates a memory access of the 8-bit  byte at the specified effective address
         /// <paramref name="ea"/>.
         /// </summary>
         /// <param name="ea">The address of the memory being accessed.</param>
-        /// <returns>A memory access expression.</returns>
+        /// <returns>A <see cref="MemoryAccess"/> expression.</returns>
         public virtual MemoryAccess Mem8(Expression ea)
         {
             return new MemoryAccess(MemoryStorage.GlobalMemory, ea, PrimitiveType.Byte);
+        }
+
+        /// <summary>
+        /// Generates a memory access of the 8-bit byte at the specified effective address
+        /// <paramref name="baseAddress"/> plus the given <paramref name="offset"/>.
+        /// </summary>
+        /// <param name="baseAddress">The address of the memory being accessed.</param>
+        /// <param name="offset">The offset to add to the base address.</param>
+        /// <returns>A <see cref="MemoryAccess"/> expression.</returns>
+        public virtual MemoryAccess Mem8(Expression baseAddress, long offset)
+        {
+            return new MemoryAccess(MemoryStorage.GlobalMemory, AddSubSignedInt(baseAddress, offset), PrimitiveType.Byte);
         }
 
         /// <summary>
@@ -845,6 +870,18 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
+        /// Generates a memory access of the 16-bit word at the specified effective address
+        /// <paramref name="baseAddress"/> plus the given <paramref name="offset"/>.
+        /// </summary>
+        /// <param name="baseAddress">The address of the memory being accessed.</param>
+        /// <param name="offset">The offset to add to the base address.</param>
+        /// <returns>A <see cref="MemoryAccess"/> expression.</returns>
+        public virtual MemoryAccess Mem16(Expression baseAddress, long offset)
+        {
+            return new MemoryAccess(MemoryStorage.GlobalMemory, AddSubSignedInt(baseAddress, offset), PrimitiveType.Word16);
+        }
+
+        /// <summary>
         /// Generates a memory access of the 32-bit word at the specified effective address
         /// <paramref name="ea"/>.
         /// </summary>
@@ -853,6 +890,18 @@ namespace Reko.Core.Expressions
         public virtual MemoryAccess Mem32(Expression ea)
         {
             return new MemoryAccess(MemoryStorage.GlobalMemory, ea, PrimitiveType.Word32);
+        }
+
+        /// <summary>
+        /// Generates a memory access of the 32-bit word at the specified effective address
+        /// <paramref name="baseAddress"/> plus the given <paramref name="offset"/>.
+        /// </summary>
+        /// <param name="baseAddress">The address of the memory being accessed.</param>
+        /// <param name="offset">The offset to add to the base address.</param>
+        /// <returns>A <see cref="MemoryAccess"/> expression.</returns>
+        public virtual MemoryAccess Mem32(Expression baseAddress, long offset)
+        {
+            return new MemoryAccess(MemoryStorage.GlobalMemory, AddSubSignedInt(baseAddress, offset), PrimitiveType.Word32);
         }
 
         /// <summary>
@@ -865,6 +914,20 @@ namespace Reko.Core.Expressions
         {
             return new MemoryAccess(MemoryStorage.GlobalMemory, ea, PrimitiveType.Word64);
         }
+
+        /// <summary>
+        /// Generates a memory access of the 64-bit word at the specified effective address
+        /// <paramref name="baseAddress"/> plus the given <paramref name="offset"/>.
+        /// </summary>
+        /// <param name="baseAddress">The address of the memory being accessed.</param>
+        /// <param name="offset">The offset to add to the base address.</param>
+        /// <returns>A <see cref="MemoryAccess"/> expression.</returns>
+        public virtual MemoryAccess Mem64(Expression baseAddress, long offset)
+        {
+            return new MemoryAccess(MemoryStorage.GlobalMemory, AddSubSignedInt(baseAddress, offset), PrimitiveType.Word64);
+        }
+
+
 
         /// <summary>
         /// Generates a signed integer less-or-equal comparison

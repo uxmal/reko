@@ -594,13 +594,13 @@ l00001008: // l:8; ft:00001010
             {
                 { 3, m => m.Assign(r1, 4) },
                 { 3, m => m.Assign(m.Mem32(r2), r1) },
-                { 4, m => m.Branch(m.Ne0(m.Mem32(m.IAdd(r2, 4))), Address.Ptr32(0x1002)) },
+                { 4, m => m.Branch(m.Ne0(m.Mem32(r2, 4)), Address.Ptr32(0x1002)) },
                 { 4, m => m.Return(0, 0) }
             });
             Given_Trace(new RtlTrace(0x1002)
             {
                 { 4, m => m.Assign(m.Mem32(r2), m.ISub(r1, 1)) },
-                { 4, m => m.Branch(m.Ne0(m.Mem32(m.IAdd(r2, 4))), Address.Ptr32(0x1002)) },
+                { 4, m => m.Branch(m.Ne0(m.Mem32(r2, 4)), Address.Ptr32(0x1002)) },
                 { 4, m => m.Return(0, 0) }
             });
 
