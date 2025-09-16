@@ -80,11 +80,10 @@ namespace Reko.Arch.OpenRISC.Aeon
             case Mnemonic.bn_sb__:
             case Mnemonic.bg_sb__:
             case Mnemonic.bn_sh__:
-            case Mnemonic.bg_sh__:
+            case Mnemonic.bg_sh:
             case Mnemonic.bt_swst____:
             case Mnemonic.bn_sw:
             case Mnemonic.bg_sw:
-            case Mnemonic.bg_sw__:
                 var memSt = (MemoryOperand) instr.Operands[0];
                 if (memSt.Base != regHi)
                     return;

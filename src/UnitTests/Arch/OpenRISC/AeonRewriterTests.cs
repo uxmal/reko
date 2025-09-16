@@ -1245,7 +1245,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
         public void AeonRw_bg_sh__()
         {
             Given_HexString("EC67345B");
-            AssertCode(     // bg.sh? 0x345A(r7),r3
+            AssertCode(     // bg.sh 0x345A(r7),r3
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|v5 = SLICE(r3, word16, 0)",
                 "2|L--|Mem0[r7 + 13402<i32>:word16] = v5");

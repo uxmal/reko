@@ -191,7 +191,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bn_sb__:
                 case Mnemonic.bg_sb__: RewriteStore(PrimitiveType.Byte); break;
                 case Mnemonic.bn_sh__:
-                case Mnemonic.bg_sh__: RewriteStore(PrimitiveType.Word16); break;
+                case Mnemonic.bg_sh: RewriteStore(PrimitiveType.Word16); break;
                 case Mnemonic.bn_sll__: RewriteShift(m.Shl); break;
                 case Mnemonic.bn_slli__: RewriteShifti(m.Shl); break;
                 case Mnemonic.bn_srl__: RewriteShift(m.Shr); break;
@@ -202,8 +202,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bn_subb__: RewriteAddSub(Subb); break;
                 case Mnemonic.bt_swst____:
                 case Mnemonic.bn_sw:
-                case Mnemonic.bg_sw:
-                case Mnemonic.bg_sw__: RewriteStore(PrimitiveType.Word32); break;
+                case Mnemonic.bg_sw: RewriteStore(PrimitiveType.Word32); break;
                 case Mnemonic.bg_syncwritebuffer: RewriteSideEffect(syncwritebuffer_intrinsic); break;
                 case Mnemonic.bt_trap: RewriteSideEffect(trap_intrinsic); break;
                 case Mnemonic.bn_xor__:
@@ -525,10 +524,9 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bn_sb__:
                 case Mnemonic.bg_sb__:
                 case Mnemonic.bn_sh__:
-                case Mnemonic.bg_sh__:
+                case Mnemonic.bg_sh:
                 case Mnemonic.bn_sw:
                 case Mnemonic.bg_sw:
-                case Mnemonic.bg_sw__:
                     var memSt = (MemoryOperand) lowInstr.Operands[0];
                     if (memSt.Base != regHi)
                         return;
