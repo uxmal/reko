@@ -804,9 +804,9 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonDis_bg_sh__()
+        public void AeonDis_bg_sh()
         {
-            AssertCode("bg.sh?\t0x345A(r7),r3", "EC 67 34 5B");
+            AssertCode("bg.sh\t0x345A(r7),r3", "EC 67 34 5B");
         }
 
         [Test]

@@ -414,11 +414,13 @@ namespace Reko.Arch.OpenRISC.Aeon
                 Instr(Mnemonic.bg_lhs__, Ru21, Ms(16, 1, 15, 1, PrimitiveType.Int16)),   // guess
                 Instr(Mnemonic.bg_lhz__, Ru21, Ms(16, 1, 15, 1, PrimitiveType.Word16))); // guess
 
-            var decoder111011 = Mask(0, 2, "  opc=111011",
-                Instr(Mnemonic.bg_sw, Ms(16, 2, 14, 2, PrimitiveType.Word32), R21),         // chenxing, backtrace
-                Instr(Mnemonic.bg_sw__, Ms(16, 2, 14, 2, PrimitiveType.Word32), R21),       // guess
-                Instr(Mnemonic.bg_lwz, Ru21, Ms(16, 2, 14, 2, PrimitiveType.Word32)),       // guess, source
-                Instr(Mnemonic.bg_sh__, Ms(16, 1, 15, 1, PrimitiveType.Word16), R21));      // guess
+            var decoder111011_word = Mask(1, 1, "  opc=111011",
+                Instr(Mnemonic.bg_sw, Ms(16, 2, 14, 2, PrimitiveType.Word32), R21),
+                Instr(Mnemonic.bg_lwz, Ru21, Ms(16, 2, 14, 2, PrimitiveType.Word32)));
+
+            var decoder111011 = Mask(0, 1, "  opc=111011",
+                decoder111011_word,
+                Instr(Mnemonic.bg_sh, Ms(16, 1, 15, 1, PrimitiveType.Word16), R21));
 
             var decoder111101 = Select(Bf((21, 5)), u => u == 0,
                 Sparse(0, 4, "  opc=111101", nyi_4,
