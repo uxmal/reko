@@ -84,6 +84,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bt_add16()
+        {
+            AssertCode("bt.add16\tr1", "84 34");
+        }
+
+        [Test]
         public void AeonDis_bn_addc__()
         {
             // Always found right after an add.
@@ -898,5 +904,10 @@ namespace Reko.UnitTests.Arch.OpenRISC
             AssertCode("bg.xori?\tr4,r4,0x8", "D8 84 00 08");
         }
 
+        [Test]
+        public void AeonDis_bn_xori()
+        {
+            AssertCode("bn.xori\t", "58 84 08");
+        }
     }
 }

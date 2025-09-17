@@ -28,6 +28,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         bt_trap,
         bn_add,
         bt_add__,
+        bt_add16,
         bn_addc__,
         bg_addci__,
         bt_addi__,
@@ -36,6 +37,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         bn_and,
         bn_andi,
         bg_andi,
+        bn_andn,
 
         // These have not been reversed yet.
         bg_b111__,
@@ -77,6 +79,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         bn_exths__,
         bn_exthz__,
         bn_ff1__,
+        bn_flb,
         bg_flush_invalidate,
         bg_flush_line,
         bg_invalidate_line,
@@ -157,5 +160,6 @@ namespace Reko.Arch.OpenRISC.Aeon
         bg_syncwritebuffer,
         bn_xor__,
         bg_xori__,
+        bn_xori,
     }
 }

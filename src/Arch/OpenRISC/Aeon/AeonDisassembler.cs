@@ -519,7 +519,8 @@ namespace Reko.Arch.OpenRISC.Aeon
             var decoder100001 = Sparse(0, 5, "  opc=100001", nyi_5,
                 (0b00000, decoder100001_sub0),
                 (0b01000, Instr(Mnemonic.bt_jalr__, InstrClass.Transfer, Ru5)), // guess
-                (0b01001, Instr(Mnemonic.bt_jr, InstrClass.Transfer, Ru5)));    // source
+                (0b01001, Instr(Mnemonic.bt_jr, InstrClass.Transfer, Ru5)),     // source
+                (0b10100, Instr(Mnemonic.bt_add16, Ru5)));                      // objdump
 
             return Mask(10, 3, "  16-bit",
                 decoder100000,
@@ -585,6 +586,8 @@ namespace Reko.Arch.OpenRISC.Aeon
                 Instr(Mnemonic.bn_addc__, Ru13, R8, R3));
 
             var decode010001 = Sparse(0, 3, "  11", nyi_3,
+                (0b000, Instr(Mnemonic.bn_flb, Ru13, R8, R3)),              // objdump
+                (0b001, Instr(Mnemonic.bn_andn, Ru13, R8, R3)),             // objdump
                 (0b100, Instr(Mnemonic.bn_and, Ru13, R8, R3)),              // chenxing
                 (0b101, Instr(Mnemonic.bn_or, Ru13, R8, R3)),               // source, guess
                 (0b110, Instr(Mnemonic.bn_xor__, Ru13, R8, R3)),            // guess
@@ -679,7 +682,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 // opcode 010101
                 Instr(Mnemonic.bn_andi, Ru13, R8, uimm0_8),   // guess
                 // opcode 010110
-                nyi,
+                Instr(Mnemonic.bn_xori, Ru13, R8, uimm0_8),   // objdump
                 decode010111,
 
                 // opcode 011000

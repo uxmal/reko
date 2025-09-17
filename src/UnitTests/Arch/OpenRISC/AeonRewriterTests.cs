@@ -43,6 +43,15 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonRw_bt_add16()
+        {
+            Given_HexString("84 34");
+            AssertCode(     // bt.add16\tr1
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r1 = r1 + 0x10");
+        }
+
+        [Test]
         public void AeonRw_bn_addc__()
         {
             Given_HexString("40 84 47");
@@ -1388,6 +1397,15 @@ namespace Reko.UnitTests.Arch.OpenRISC
         {
             Given_HexString("DA9F9001");
             AssertCode(     // bg.xori? r20,r31,0x9001
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r20 = r31 ^ 0x9001<u16>");
+        }
+
+        [Test]
+        public void AeonRw_bn_xori()
+        {
+            Given_HexString("58 84 08");
+            AssertCode(     // bt.xori
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r20 = r31 ^ 0x9001<u16>");
         }
