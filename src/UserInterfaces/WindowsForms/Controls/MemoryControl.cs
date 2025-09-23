@@ -386,6 +386,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         protected virtual void OnSelectionChanged()
         {
             var ar = GetAddressRange();
+            if (addrAnchor is null || SelectedAddress is null)
+                return;
             SelectionChanged?.Invoke(this, new SelectionChangedEventArgs(addrAnchor.Value, SelectedAddress.Value));
         }
 

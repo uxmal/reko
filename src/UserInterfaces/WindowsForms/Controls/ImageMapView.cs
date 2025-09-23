@@ -35,6 +35,7 @@ using System.Windows.Forms;
 namespace Reko.UserInterfaces.WindowsForms.Controls
 {
 #pragma warning disable IDE1006
+#nullable enable
 
     public partial class ImageMapView : Control
     {
@@ -55,12 +56,11 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             xLastMouseUp = CxScroll;
         }
 
-        public class SegmentLayout
-        {
-            public ImageSegment Segment;
-            public long X;
-            public long CxWidth;
-
+        public record SegmentLayout(
+            ImageSegment Segment,
+            long X,
+            long CxWidth)
+        { 
             public long AddressToX(Address addrMin, long granularity)
             {
                 long offset = addrMin - Segment.Address;
@@ -69,11 +69,11 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         }
 
         public long Granularity { get { return granularity; } set { BoundGranularity(value); BoundOffset(cxOffset); OnGranularityChanged(); } }
-        public event EventHandler GranularityChanged;
+        public event EventHandler? GranularityChanged;
         private long granularity;
 
         [Browsable(false)]
-        public ImageMap ImageMap
+        public ImageMap? ImageMap
         {
             get { return imageMap; } 
             set {
@@ -81,11 +81,11 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 OnImageMapChanged(); 
             } 
         }
-        public event EventHandler ImageMapChanged;
-        public ImageMap imageMap;
+        public event EventHandler? ImageMapChanged;
+        public ImageMap? imageMap;
 
         [Browsable(false)]
-        public SegmentMap SegmentMap
+        public SegmentMap? SegmentMap
         {
             get { return segmentMap; }
             set
@@ -98,12 +98,12 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 OnSegmentMapChanged();
             }
         }
-        public event EventHandler SegmentMapChanged;
-        private SegmentMap segmentMap;
+        public event EventHandler? SegmentMapChanged;
+        private SegmentMap? segmentMap;
 
 
         [Browsable(false)]
-        public Address ?SelectedAddress
+        public Address? SelectedAddress
         {
             get { return selectedAddress; } 
             set {
@@ -115,7 +115,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 SelectedAddressChanged?.Invoke(this, EventArgs.Empty);
             }
         }
-        public event EventHandler SelectedAddressChanged;
+        public event EventHandler? SelectedAddressChanged;
         private Address? selectedAddress;
 
         [Browsable(false)]
@@ -134,12 +134,12 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         private AddressRange selectedRange = AddressRange.Empty;
 
         public long Offset { get { return cxOffset; } set { BoundOffset(value); OnOffsetChanged(); } }
-        public event EventHandler OffsetChanged;
+        public event EventHandler? OffsetChanged;
         private long cxOffset;
 
         private ScrollButton scrollButton;      // If we're scrolling the scrollbuttons.
         private int xLastMouseUp;
-        private Painter painter;
+        private Painter? painter;
 
         protected override void OnPaint(PaintEventArgs pe)
         {
@@ -196,6 +196,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             if (imageMap is null)
                 return;
             var addr = MapClientPositionToAddress(xLastMouseUp);
+            if (addr is null)
+                return;
             var oldGranularity = Granularity;
             var newGranularity = (long)Math.Ceiling(Granularity * factor);
             BoundGranularity(newGranularity);
@@ -370,7 +372,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             OffsetChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        void scrollTimer_Tick(object sender, EventArgs e)
+        void scrollTimer_Tick(object? sender, EventArgs e)
         {
             switch (scrollButton)
             { 
@@ -379,7 +381,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             }
         }
 
-        void imageMap_MapChanged(object sender, EventArgs e)
+        void imageMap_MapChanged(object? sender, EventArgs e)
         {
             if (InvokeRequired)
                 BeginInvoke(new Action(Invalidate));

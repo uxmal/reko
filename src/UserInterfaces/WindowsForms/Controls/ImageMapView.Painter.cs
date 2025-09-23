@@ -67,12 +67,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                     foreach (var segment in segmentMap.Segments.Values)
                     {
                         long cx = (segment.Size + granularity - 1) / granularity;
-                        segLayouts.Add(new SegmentLayout
-                        {
-                            Segment = segment,
-                            X = x,
-                            CxWidth = cx
-                        });
+                        segLayouts.Add(new SegmentLayout(segment, x, cx));
                         x += cx + CxSegmentBorder;
                     }
                 }
