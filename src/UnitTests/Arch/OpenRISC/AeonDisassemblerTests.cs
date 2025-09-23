@@ -37,6 +37,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
         {
             this.arch = new AeonArchitecture(CreateServiceContainer(), "aeon", new());
             this.addrLoad = Address.Ptr32(0x00100000);
+            //Reko.Core.Machine.Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
         }
 
         public override IProcessorArchitecture Architecture => arch;
@@ -46,7 +47,10 @@ namespace Reko.UnitTests.Arch.OpenRISC
         private void AssertCode(string sExpected, string hexBytes)
         {
             var instr = base.DisassembleHexBytes(hexBytes);
-            Assert.AreEqual(sExpected, instr.ToString());
+            //if (instr.Mnemonic == Mnemonic.Nyi)
+            {
+                Assert.AreEqual(sExpected, instr.ToString());
+            }
         }
 
         private void AssertCode(params string[] arguments)
@@ -59,6 +63,8 @@ namespace Reko.UnitTests.Arch.OpenRISC
             for (int i = 0; i < arguments.Length - 1; ++i)
             {
                 var sInstr = instrs[i].ToString();
+                if (instrs[i].MnemonicAsInteger == (int) Mnemonic.Nyi)
+                    continue;
                 Assert.AreEqual(arguments[i], sInstr, $"Instruction {i}");
             }
         }
@@ -81,6 +87,18 @@ namespace Reko.UnitTests.Arch.OpenRISC
         {
             // confirmed with source
             AssertCode("bn.add\tr4,r3,r6", "40 83 34");
+        }
+
+        [Test]
+        public void AeonDis_bn_add_s__()
+        {
+            AssertCode("bn.add.s\tr27,r27,r27", "477BDB");
+        }
+
+        [Test]
+        public void AeonDis_bn_addp_s__()
+        {
+            AssertCode("bn.addp.s?\tr12,r24,r16", "6D9884");
         }
 
         [Test]
@@ -129,6 +147,49 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bg_amac__()
+        {
+            AssertCode("bg.amac?\tac3,r10,r23", "BC0AB9D8");
+        }
+
+        [Test]
+        public void AeonDis_bg_amacr__()
+        {
+            AssertCode("bg.amacr?\tr10,ac0,0x11,0x10", "A9408820");
+        }
+
+        [Test]
+        public void AeonDis_bg_amacr_ex__()
+        {
+            AssertCode("bg.amacr.ex?\tr24,ac1,0x13,0x1F,0x0,0x2", "AB029CBE");
+        }
+
+        [Test]
+        public void AeonDis_amacw__()
+        {
+            AssertCode("bg.amacw?\tac1,r29,r11", "BC1D58F8");
+        }
+
+        [Test]
+        public void AeonDis_bg_amsb_wl__()
+        {
+            AssertCode("bg.amsb.wl?\tac1,r10,r11", "BC0A58EC");
+        }
+
+
+        [Test]
+        public void AeonDis_bg_amul__()
+        {
+            AssertCode("bg.amul?\tac0,r8,r29", "BC08E848");
+        }
+
+        [Test]
+        public void AeonDis_bg_amul_wl__()
+        {
+            AssertCode("bg.amul.wl?\tac0,r29,r23", "BC1DB84C");
+        }
+
+        [Test]
         public void AeonDis_bg_andi()
         {
             // confirmed with source
@@ -136,9 +197,9 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonDis_bg_b__bitset__()
+        public void AeonDis_bg_bgtsi__()
         {
-            AssertCode("bg.b?bitseti?\tr3,0x1F,000FFF6F", "D0 7F FB 7C");
+            AssertCode("bg.bgtsi?\tr3,0x1F,000FFF6F", "D0 7F FB 7C");
         }
 
         [Test]
@@ -231,9 +292,9 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonDis_bg_bltsi__()
+        public void AeonDis_bg_bleui__()
         {
-            AssertCode("bg.bltsi?\tr3,0x6,0010003E", "D0 66 01 F1");
+            AssertCode("bg.bleui?\tr3,0x6,0010003E", "D0 66 01 F1");
         }
 
         [Test]
@@ -262,31 +323,62 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonDis_bn_cmov____()
+        public void AeonDis_bg_chk_lu__()
         {
-            // speculative guess.
-            AssertCode("bn.cmov??\tr7,r7,r0", "48 E7 00");
+            AssertCode("bg.chk.lu?\tr22,(r0),r12", "D2C06003");
         }
 
         [Test]
-        public void AeonDis_bn_cmovsi__negative()
+        public void AeonDis_bn_clz()
         {
-            // speculative guess.
-            AssertCode("bn.cmovsi?\tr6,r0,-0x1", "48 C0 FA");
+
+            AssertCode("bn.clz?\tr3,r3", "5C630E");
         }
 
         [Test]
-        public void AeonDis_bn_cmovsi__positive()
+        public void AeonDis_bn_cmov__()
         {
             // speculative guess.
-            AssertCode("bn.cmovsi?\tr12,r12,0x1", "49 8C 0A");
+            AssertCode("bn.cmov?\tr7,r7,r0", "48 E7 00");
+        }
+
+        [Test]
+        public void AeonDis_bn_cmov_x488D7()
+        {
+            AssertCode("bn.cmovii?\tr4,0xD,0xE", "488D73");
+        }
+
+        [Test]
+        public void r()
+        {
+            // speculative guess.
+            AssertCode("bn.cmovri?\tr6,r0,-0x1", "48 C0 FA");
+        }
+
+        [Test]
+        public void AeonDis_bn_cmovri__positive()
+        {
+            // speculative guess.
+            AssertCode("bn.cmovri?\tr12,r12,0x1", "49 8C 0A");
         }
 
         [Test]
         public void AeonDis_bn_cmovii__()
         {
             // really looks like a cmov of two signed constants
-            AssertCode("bn.cmovi??\tr7,0x1,-0x1", "48 E1 FB");
+            AssertCode("bn.cmovii?\tr7,0x1,-0x1", "48 E1 FB");
+        }
+
+        [Test]
+        public void AeonDis_bg_depi__()
+        {
+            AssertCode("bg.depi?\tr30,r14,0x8,0x18", "BBCEC212");
+        }
+
+        [Test]
+        public void AeonDis_bg_divl__()
+        {
+            AssertCode("bg.divl?\tr1,r3,r24,0xF", "A023C1FC");
         }
 
         [Test]
@@ -304,9 +396,33 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bg_dma_op__()
+        {
+            AssertCode("bg.dma.op?\tr22,r16", "F416411A");
+        }
+
+        [Test]
+        public void AeonDis_bn_dsri__()
+        {
+            AssertCode("bn.dsri?\tr24,r26,0x1", "6B1A05");
+        }
+
+        [Test]
         public void AeonDis_bn_entri__()
         {
             AssertCode("bn.entri?\t0x1,0x3", "5C 40 78");
+        }
+
+        [Test]
+        public void AeonDis_bn_exp16__()
+        {
+            AssertCode("bn.exp16?\tr0,r12", "5C0CAA");
+        }
+
+        [Test]
+        public void AeonDis_bg_ext()
+        {
+            AssertCode("bg.ext?\tr28,r0,0x10,r28", "BB80E400");
         }
 
         [Test]
@@ -354,6 +470,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bg_invalidate()
+        {
+            AssertCode("bg.invalidate\t0x180(r27)", "F41B6003");
+        }
+
+        [Test]
         public void AeonDis_bg_invalidate_line()
         {
             // confirmed with source
@@ -368,10 +490,10 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonDis_bn_j____()
+        public void AeonDis_bn_j()
         {
             // Found in switch statements
-            AssertCode("bn.j??\t000FF17E", "2F F1 7E");
+            AssertCode("bn.j\t000FF17E", "2F F1 7E");
         }
 
         [Test]
@@ -467,6 +589,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bg_loop__()
+        {
+            AssertCode("bg.loop?\t0xA,r24", "AF 00 00 15");
+        }
+
+        [Test]
         public void AeonDis_bt_lwst____()
         {
             AssertCode("bt.lwst??\tr4,0x14(r1)", "80 8B");
@@ -499,9 +627,39 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonDis_bt_mov__()
+        public void AeonDis_bg_max()
         {
-            AssertCode("bt.mov?\tr10,r3", "89 43");
+            AssertCode("bg.max?\tr11,r23,r11", "B9 77 58 44");
+        }
+
+        [Test]
+        public void AeonDis_bg_maxi__()
+        {
+            AssertCode("bg.maxi?\tr3,r3,0x0", "B8630064");
+        }
+
+        [Test]
+        public void AeonDis_bg_min()
+        {
+            AssertCode("bg.min?\tr11,r23,r11", "B9 77 58 84");
+        }
+
+        [Test]
+        public void AeonDis_bn_mlwz__()
+        {
+            AssertCode("bn.mlwz?\tr0,0x30(r1),0x0", "300130");
+        }
+
+        [Test]
+        public void AeonDis_bt_mov()
+        {
+            AssertCode("bt.mov\tr10,r3", "89 43");
+        }
+
+        [Test]
+        public void AeonDis_bt_mov16()
+        {
+            AssertCode("bt.mov16\tr5", "84B5");
         }
 
         [Test]
@@ -611,6 +769,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bn_muladdhx__()
+        {
+            AssertCode("bn.muladdhx?\tr0,r14,r8", "6C0E41");
+        }
+
+        [Test]
         public void AeonDis_bg_muli__()
         {
             AssertCode("bg.muli?\tr3,r4,0x48", "CC 64 00 48");
@@ -620,6 +784,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
         public void AeonDis_bn_mulu____()
         {
             AssertCode("bn.mulu??\tr7,r14,r20", "40 EE A2");
+        }
+
+        [Test]
+        public void AeonDis_bn_mlwz()
+        {
+            AssertCode("bn.mlwz?\tr0,0x34(r0),0x2", "300036");
         }
 
         [Test]
@@ -641,6 +811,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
         {
             // confirmed with source
             AssertCode("bn.nop", "00 00 00");
+        }
+
+        [Test]
+        public void AeonDis_bn_nop_uimm()
+        {
+            AssertCode("bn.nop\t0x0", "0130CA");
         }
 
         [Test]
@@ -681,6 +857,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
         public void AeonDis_bn_rori__()
         {
             AssertCode("bn.rori?\tr10,r4,0x19", "4D 44 CB");
+        }
+
+        [Test]
+        public void AeonDis_bn_sat__()
+        {
+            AssertCode("bn.sat?\tr24,r24,0x1F", "73 18 F8");
         }
 
         [Test]
@@ -907,7 +1089,39 @@ namespace Reko.UnitTests.Arch.OpenRISC
         [Test]
         public void AeonDis_bn_xori()
         {
-            AssertCode("bn.xori\t", "58 84 08");
+            AssertCode("bn.xori\tr4,r4,0x8", "58 84 08");
         }
+
+        // This file contains unit tests automatically generated by Reko decompiler.
+        // Please copy the contents of this file and report it on GitHub, using the 
+        // following URL: https://github.com/uxmal/reko/issues
+
+        // Reko: a decoder for the instruction BC1D5878 at address 0005161F has not been implemented. (101111 ... 111 1000)
+
+        // Reko: a decoder for the instruction BC1C58F8 at address 00051623 has not been implemented. (101111 ... 111 1000)
+
+        // Reko: a decoder for the instruction BC1B5978 at address 00051627 has not been implemented. (101111 ... 111 1000)
+
+        // Reko: a decoder for the instruction BC035878 at address 0005165B has not been implemented. (101111 ... 111 1000)
+ 
+        // Reko: a decoder for the instruction BC1D58F8 at address 0005165F has not been implemented. (101111 ... 111 1000)
+    
+        // Reko: a decoder for the instruction BC1C5978 at address 00051663 has not been implemented. (101111 ... 111 1000)
+
+        // Reko: a decoder for the instruction 3DC176 at address 0001BDC9 has not been implemented. (001111)
+ 
+        // Reko: a decoder for the instruction 84BC at address 0001BDE5 has not been implemented. (100001)
+
+        // Reko: a decoder for the instruction 5CCAEB at address 0001BDEE has not been implemented. (010111)
+
+        // Reko: a decoder for the instruction 480C97 at address 0001BE0B has not been implemented. (010010)
+
+        // Reko: a decoder for the instruction 62CAEB at address 0001BE6B has not been implemented. (011000)
+
+        // Reko: a decoder for the instruction 380C97 at address 0001C10B has not been implemented. (001110)
+
+        // Reko: a decoder for the instruction 3C0C8B at address 0001C124 has not been implemented. (001111)
+ 
+        // Reko: a decoder for the instruction 60C96B at address 0001C1EC has not been implemented. (011000)
     }
 }

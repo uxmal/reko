@@ -78,7 +78,7 @@ namespace Reko.Arch.OpenRISC
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
-            throw new NotImplementedException();
+            return [];
         }
 
         public override ProcessorState CreateProcessorState()

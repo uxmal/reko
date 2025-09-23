@@ -32,7 +32,9 @@ namespace Reko.Arch.OpenRISC.Aeon
         {
             var factory = new StorageFactory();
             Registers.GpRegisters = factory.RangeOfReg(32, r => $"r{r}", PrimitiveType.Word32);
-
+            //$TODO: what size are these AC registers?
+            Registers.acs = factory.RangeOfReg(4, r => $"ac{r}", PrimitiveType.Word32);
+            Registers.VectorRegisters = factory.RangeOfReg(32, r => $"v{r}", PrimitiveType.Word128);
             var sprFactory = new StorageFactory(StorageDomain.SystemRegister);
             Registers.SpecialRegisters = new (int, string)[]
             {
@@ -95,6 +97,8 @@ namespace Reko.Arch.OpenRISC.Aeon
         public static Dictionary<string, RegisterStorage> ByName { get; }
         public static Dictionary<StorageDomain, RegisterStorage> ByDomain { get; }
         public static RegisterStorage[] GpRegisters { get; }
+        public static RegisterStorage[] acs { get; }
+        public static RegisterStorage[] VectorRegisters { get; }
         public static Dictionary<int, RegisterStorage> SpecialRegisters  { get; }
 
         public static RegisterStorage SR { get; }

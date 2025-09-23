@@ -19,12 +19,12 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Code;
 using Reko.Core.Collections;
 using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
+using Reko.Core.Operators;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -32,11 +32,6 @@ using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Data.Common;
-using System.Diagnostics;
-using System.Linq;
-using System.Security.AccessControl;
-using System.Text.RegularExpressions;
 
 namespace Reko.Arch.OpenRISC.Aeon
 {
@@ -82,16 +77,51 @@ namespace Reko.Arch.OpenRISC.Aeon
                     iclass = InstrClass.Invalid;
                     m.Invalid();
                     break;
+                case Mnemonic.bg_abs__: RewriteIntrinsic(CommonOps.Abs.MakeInstance(PrimitiveType.Int32)); break;
                 case Mnemonic.bt_add__:
                 case Mnemonic.bn_add: RewriteAddSub(m.IAdd); break;
+                case Mnemonic.bn_add_s: RewriteIntrinsic(add_s_intrinsic); break;
+                case Mnemonic.bt_add16: RewriteAdd16(); break;
                 case Mnemonic.bn_addc__: RewriteAddSub(Addc); break;
+                case Mnemonic.bn_addc_s_lwq__: RewriteIntrinsic(addc_s_lwq_intrinsic); break;
+                case Mnemonic.bn_addc_s_lwqq__: RewriteIntrinsic(addc_s_lwqq_intrinsic); break;
                 case Mnemonic.bg_addci__: RewriteAddi(Addc); break;
+                case Mnemonic.bn_addcn_s__: RewriteIntrinsic(addcn_s_intrinsic); break;
+                case Mnemonic.bn_addcqq_s__: RewriteIntrinsic(addcqq_s_intrinsic); break;
+                case Mnemonic.bn_addcnqq_s__: RewriteIntrinsic(addcnqq_s_intrinsic); break;
                 case Mnemonic.bt_addi__:
                 case Mnemonic.bn_addi:
                 case Mnemonic.bg_addi: RewriteAddi(m.AddSubSignedInt); break;
+                case Mnemonic.bn_addp_s__: RewriteIntrinsic(addp_s_intrinsic); break;
+                case Mnemonic.bn_addsf__: RewriteFpuOp(Operator.FAdd, PrimitiveType.Real32); break;
+                case Mnemonic.bg_amac__: RewriteIntrinsic(amac_intrinsic); break;
+                case Mnemonic.bg_amac_hh__: RewriteIntrinsic(amac_hh_intrinsic); break;
+                case Mnemonic.bg_amac_lh__: RewriteIntrinsic(amac_lh_intrinsic); break;
+                case Mnemonic.bg_amac_ll__: RewriteIntrinsic(amac_ll_intrinsic); break;
+                case Mnemonic.bg_amac_wh__: RewriteIntrinsic(amac_wh_intrinsic); break;
+                case Mnemonic.bg_amac_wl__: RewriteIntrinsic(amac_wl_intrinsic); break;
+                case Mnemonic.bg_amacq_hl__: RewriteIntrinsic(amacq_hl_intrinsic); break;
+                case Mnemonic.bg_amacr__: RewriteIntrinsic(amacr_intrinsic); break;
+                case Mnemonic.bg_amacr_ex__: RewriteIntrinsic(amacr_ex_intrinsic); break;
+                case Mnemonic.bg_amacrq__: RewriteIntrinsic(amacrq_intrinsic); break;
+                case Mnemonic.bg_amacw__: RewriteIntrinsic(amacw_intrinsic); break;
+                case Mnemonic.bg_amadd__: RewriteIntrinsic(amadd_intrinsic); break;
+                case Mnemonic.bg_amsb__: RewriteIntrinsic(amsb_intrinsic); break;
+                case Mnemonic.bg_amsb_lh__: RewriteIntrinsic(amsb_lh_intrinsic); break;
+                case Mnemonic.bg_amsb_wh__: RewriteIntrinsic(amsb_wh_intrinsic); break;
+                case Mnemonic.bg_amsb_wl__: RewriteIntrinsic(amsb_wl_intrinsic); break;
+                case Mnemonic.bg_amsub_hl__: RewriteIntrinsic(amsub_hl_intrinsic); break;
+                case Mnemonic.bg_amsub_wl__: RewriteIntrinsic(amsub_wl_intrinsic); break;
+                case Mnemonic.bg_amul__: RewriteIntrinsic(amul_intrinsic); break;
+                case Mnemonic.bg_amul_lh__: RewriteIntrinsic(amul_lh_intrinsic); break;
+                case Mnemonic.bg_amul_ll__: RewriteIntrinsic(amul_ll_intrinsic); break;
+                case Mnemonic.bg_amul_wh__: RewriteIntrinsic(amul_wh_intrinsic); break;
+                case Mnemonic.bg_amul_wl__: RewriteIntrinsic(amul_wl_intrinsic); break;
+                case Mnemonic.bg_amulqu__: RewriteIntrinsic(amulqu_intrinsic); break;
                 case Mnemonic.bn_and: RewriteArithmetic(m.And); break;
                 case Mnemonic.bn_andi:
                 case Mnemonic.bg_andi: RewriteLogicalImm(m.And); break;
+                case Mnemonic.bn_andn: RewriteAndn(); break;
                 case Mnemonic.bg_b__bitseti__: Rewrite_b_bitset(); break;
                 case Mnemonic.bg_beq__:
                 case Mnemonic.bn_beqi__:
@@ -103,8 +133,10 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bg_bgeu__:
                 case Mnemonic.bg_bgeu____: RewriteBxx(m.Uge); break;
                 case Mnemonic.bn_bgtui__: RewriteBxx(m.Ugt); break;
-                case Mnemonic.bg_bgts__: RewriteBxx(m.Gt); break;
+                case Mnemonic.bg_bgts__:
+                case Mnemonic.bg_bgtsi__: RewriteBxx(m.Gt); break;
                 case Mnemonic.bg_bgtui__: RewriteBxx(m.Ugt); break;
+                case Mnemonic.bg_bleui__:
                 case Mnemonic.bn_bleui__: RewriteBxx(m.Ule); break;
                 case Mnemonic.bg_blesi__:
                 case Mnemonic.bn_blesi____:
@@ -114,23 +146,63 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bg_bltui__: RewriteBxx(m.Ult); break;
                 case Mnemonic.bg_bne__: RewriteBxx(m.Ne); break;
                 case Mnemonic.bn_bnei__: RewriteBxx(m.Ne); break;
+                case Mnemonic.bg_bnf:
                 case Mnemonic.bn_bnf__: RewriteBf(false); break;
-                case Mnemonic.bn_cmov____: RewriteCmov(); break;
-                case Mnemonic.bn_cmovi____: RewriteCmov(); break;
-                case Mnemonic.bn_cmovsi__: RewriteCmov(); break;
+                case Mnemonic.bn_bsa__: RewriteIntrinsic(bsa_intrinsic); break;
+                case Mnemonic.bn_bsa_s__: RewriteIntrinsic(bsa_s_intrinsic); break;
+                case Mnemonic.bn_bsl__: RewriteIntrinsic(bsl_intrinsic); break;
+                case Mnemonic.bg_btb__: RewriteIntrinsic(btb_intrinsic); break;
+                case Mnemonic.bg_chk_ll__: RewriteIntrinsic(chk_ll_intrinsic); break;
+                case Mnemonic.bg_chk_lu__: RewriteIntrinsic(chk_lu_intrinsic); break;
+                case Mnemonic.bn_clz__: RewriteIntrinsic(CommonOps.CountLeadingZeros); break;
+                case Mnemonic.bn_cmov__: RewriteCmov(); break;
+                case Mnemonic.bn_cmovii__: RewriteCmov(); break;
+                case Mnemonic.bn_cmovir__: RewriteCmov(); break;
+                case Mnemonic.bn_cmovri__: RewriteCmov(); break;
+                case Mnemonic.bn_conjc__: RewriteIntrinsic(conjc_intrinsic); break;
+                case Mnemonic.bn_crc_le__: RewriteIntrinsic(crc_le_intrinsic); break;
+                case Mnemonic.bg_dep__:
+                case Mnemonic.bg_depi__:
+                case Mnemonic.bg_depr__: 
+                case Mnemonic.bg_depri__: RewriteIntrinsic(dep_intrinsic); break;
+                case Mnemonic.bn_df2sf__: RewriteIntrinsic(df2sf_intrinsic); break;
+                case Mnemonic.bt_di__: RewriteIntrinsic(di_intrinsic); break;
+                case Mnemonic.bg_divl__:
+                case Mnemonic.bg_divlr__: RewriteIntrinsic(divl_intrinsic); break;
+                case Mnemonic.bg_divlru__:
+                case Mnemonic.bg_divlu__: RewriteIntrinsic(divlu_intrinsic); break;
                 case Mnemonic.bn_divs__: RewriteArithmetic(m.SDiv); break;
+                case Mnemonic.bn_divsf__: RewriteFpuOp(Operator.FDiv, PrimitiveType.Real32); break;
                 case Mnemonic.bn_divu: RewriteArithmetic(m.UDiv); break;
+                case Mnemonic.bg_dma_op__: RewriteIntrinsic(dma_op_intrinsic); break;
+                case Mnemonic.bn_dsl__: RewriteIntrinsic(dsl_intrinsic); break;
+                case Mnemonic.bn_dsli__: RewriteIntrinsic(dsli_intrinsic); break;
+                case Mnemonic.bn_dsr__: RewriteIntrinsic(dsr_intrinsic); break;
+                case Mnemonic.bn_dsri__: RewriteIntrinsic(dsri_intrinsic); break;
+                case Mnemonic.bt_ei__: RewriteIntrinsic(ei_intrinsic); break;
+                case Mnemonic.bn_exp__: RewriteIntrinsic(exp_intrinsic); break;
+                case Mnemonic.bn_exp16__: RewriteIntrinsic(exp16_intrinsic); break;
                 case Mnemonic.bn_entri__: RewriteEntri(); break;
+                case Mnemonic.bg_ext__:
+                case Mnemonic.bg_exti__: RewriteIntrinsic(ext_intrinsic); break;
+                case Mnemonic.bg_extu__:
+                case Mnemonic.bg_extui__: RewriteIntrinsic(extu_intrinsic); break;
                 case Mnemonic.bn_extbs__: RewriteExt(PrimitiveType.Int8, PrimitiveType.Int32); break;
                 case Mnemonic.bn_extbz__: RewriteExt(PrimitiveType.Byte, PrimitiveType.UInt32); break;
                 case Mnemonic.bn_exths__: RewriteExt(PrimitiveType.Int16, PrimitiveType.Int32); break;
                 case Mnemonic.bn_exthz__: RewriteExt(PrimitiveType.UInt16, PrimitiveType.UInt32); break;
                 case Mnemonic.bn_ff1__: RewriteIntrinsic(CommonOps.FindFirstOne); break;
+                case Mnemonic.bg_fft__: RewriteIntrinsic(fft_intrinsic); break;
+                case Mnemonic.bn_fl1: RewriteIntrinsic(fl1_intrinsic); break;
+                case Mnemonic.bn_flb: RewriteIntrinsic(flb_intrinsic); break;
                 case Mnemonic.bg_flush_invalidate: RewriteCache(flush_invalidate_intrinsic, false); break;
                 case Mnemonic.bg_flush_line: RewriteCache(flush_line_intrinsic, true); break;
+                case Mnemonic.bg_i2df__: RewriteI2F(PrimitiveType.Real64); break;
+                case Mnemonic.bn_i2sf__: RewriteI2F(PrimitiveType.Real32); break;
+                case Mnemonic.bg_invalidate: RewriteCache(invalidate_intrinsic, false); break;
                 case Mnemonic.bg_invalidate_line: RewriteCache(invalidate_line_intrinsic, true); break;
                 case Mnemonic.bt_j:
-                case Mnemonic.bn_j____:
+                case Mnemonic.bn_j:
                 case Mnemonic.bg_j: RewriteJ(); break;
                 case Mnemonic.bg_jal:
                 case Mnemonic.bn_jal__: RewriteJal(); break;
@@ -140,35 +212,73 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bn_lbs__: RewriteLoadExt(PrimitiveType.SByte); break;
                 case Mnemonic.bn_lbz__:
                 case Mnemonic.bg_lbz__: RewriteLoadExt(PrimitiveType.Byte); break;
+                case Mnemonic.bg_ldww__: RewriteIntrinsic(ldww_intrinsic); break;
+                case Mnemonic.bg_ldww2__: RewriteIntrinsic(ldww2_intrinsic); break;
+                case Mnemonic.bg_ldww2x__: RewriteIntrinsic(ldww2x_intrinsic); break;
+                case Mnemonic.bg_ldwwx__: RewriteIntrinsic(ldwwx_intrinsic); break;
                 case Mnemonic.bg_lhs__: RewriteLoadExt(PrimitiveType.Int16); break;
                 case Mnemonic.bn_lhz:
                 case Mnemonic.bg_lhz__: RewriteLoadExt(PrimitiveType.UInt16); break;
+                case Mnemonic.bg_loop__:
+                case Mnemonic.bg_loopi__: RewriteIntrinsic(loop_intrinsic); break;
                 case Mnemonic.bt_lwst____:
                 case Mnemonic.bn_lwz:
                 case Mnemonic.bg_lwz: RewriteLoadExt(PrimitiveType.Word32); break;
+                case Mnemonic.bn_maddsf__: RewriteIntrinsic(maddsf_intrinsic); break;
+                case Mnemonic.bg_max__:
+                case Mnemonic.bg_maxi__: RewriteIntrinsic(CommonOps.Max, PrimitiveType.Int32); break;
+                case Mnemonic.bg_maxu__:
+                case Mnemonic.bg_maxui__: RewriteIntrinsic(CommonOps.Max, PrimitiveType.UInt32); break;
                 case Mnemonic.bg_mfspr1__: RewriteMfspr(true); break;
                 case Mnemonic.bg_mfspr: RewriteMfspr(false); break;
-                case Mnemonic.bt_mov__: RewriteMov(); break;
+                case Mnemonic.bg_min__:
+                case Mnemonic.bg_mini__: RewriteIntrinsic(CommonOps.Min, PrimitiveType.Int32); break;
+                case Mnemonic.bg_minu__:
+                case Mnemonic.bg_minui__: RewriteIntrinsic(CommonOps.Min, PrimitiveType.UInt32); break;
+                case Mnemonic.bn_mlwz__: RewriteIntrinsic(mlwz_intrinsic); break;
+                case Mnemonic.bt_mov: RewriteMov(); break;
+                case Mnemonic.bt_mov16: RewriteMov16(); break;
                 case Mnemonic.bt_movi__: RewriteMovi(); break;
                 case Mnemonic.bn_movhi__:
                 case Mnemonic.bg_movhi:
                 case Mnemonic.bt_movhi__: RewriteMovhi(); break;
+                case Mnemonic.bn_msw__: RewriteIntrinsic(msw_intrinsic); break;
                 case Mnemonic.bg_mtspr1__: RewriteMtspr(true); break;
                 case Mnemonic.bg_mtspr: RewriteMtspr(false); break;
+                case Mnemonic.bn_mulsf__: RewriteFpuOp(Operator.FMul, PrimitiveType.Real32); break;
+                case Mnemonic.bn_mul: RewriteMul32x32(m.SMul); break;
+                case Mnemonic.bn_muladdh__: RewriteMuladd(muladdh_instrinsic); break;
+                case Mnemonic.bn_muladdhx__: RewriteMuladd(muladdhx_instrinsic); break;
+                //$REVIEW: determine whether this is signed (it probably is)
+                case Mnemonic.bg_muli__: RewriteMul32x32(m.IMul); break;
+                case Mnemonic.bn_mulsubh__: RewriteMuladd(mulsubh_instrinsic); break;
+                case Mnemonic.bn_mulsubhx__: RewriteMuladd(mulsubx_instrinsic); break;
+                case Mnemonic.bn_mulu____: RewriteMul32x32(m.UMul); break;
                 case Mnemonic.bn_nand__: RewriteNand(); break;
                 case Mnemonic.bt_nop:
                 case Mnemonic.bn_nop: RewriteNop(); break;
-                case Mnemonic.bn_mul: RewriteMul32x32(m.SMul); break;
-                //$REVIEW: determine whether this is signed (it probably is)
-                case Mnemonic.bg_muli__: RewriteMul32x32(m.IMul); break;
-                case Mnemonic.bn_mulu____: RewriteMul32x32(m.UMul); break;
+                case Mnemonic.mv_opv__: RewriteIntrinsic(mv_opv_intrinsic); break;
                 case Mnemonic.bn_or: RewriteArithmetic(m.Or); break;
                 case Mnemonic.bn_ori:
                 case Mnemonic.bg_ori: RewriteOri(m.Or); break;
+                case Mnemonic.bn_pack_s__: RewriteIntrinsic(pack_s_instrinsic); break;
+                case Mnemonic.bg_pamac__: RewriteIntrinsic(pamac_instrinsic); break;
+                case Mnemonic.bg_pamacrq__: RewriteIntrinsic(pamacrq_instrinsic); break;
+                case Mnemonic.bt_push__: RewriteIntrinsic(push_instrinsic); break;
+                case Mnemonic.bn_remsf__: RewriteFpuOp(Operator.FMod, PrimitiveType.Real32); break;
+                case Mnemonic.bt_return__: RewriteReturn(); break;
                 case Mnemonic.bt_rfe: RewriteRfe(); break;
                 case Mnemonic.bn_ror__:
                 case Mnemonic.bn_rori__: RewriteIntrinsic(CommonOps.Ror); break;
                 case Mnemonic.bn_rtnei__: RewriteRtnei(); break;
+                case Mnemonic.bn_sat__: RewriteIntrinsic(sat_intrinsic); break;
+                case Mnemonic.bn_satsu__: RewriteIntrinsic(satsu_intrinsic); break;
+                case Mnemonic.bn_satu__: RewriteIntrinsic(satu_intrinsic); break;
+                case Mnemonic.bn_satus__: RewriteIntrinsic(satus_intrinsic); break;
+                case Mnemonic.bn_sf2df__: RewriteIntrinsic(sf2df_intrinsic); break;
+                case Mnemonic.bn_sf2i__: RewriteF2I(PrimitiveType.Real32); break;
+                case Mnemonic.bn_sfeqdf__: RewriteSfxx(m.FEq); break;
+                case Mnemonic.bn_sfeqsf__: RewriteSfxx(m.FEq); break;
                 case Mnemonic.bn_sfeq__: RewriteSfxx(m.Eq); break;
                 case Mnemonic.bn_sfeqi: RewriteSfxx(m.Eq); break;
                 case Mnemonic.bn_sfges____:
@@ -177,8 +287,14 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bn_sfgesi__: RewriteSfxx(m.Ge); break;
                 case Mnemonic.bn_sfgeu:
                 case Mnemonic.bg_sfgeui__: RewriteSfxx(m.Uge); break;
+                case Mnemonic.bn_sfgtdf__: RewriteSfxx(m.FGt); break;
+                case Mnemonic.bn_sfgtsf__: RewriteSfxx(m.FGt); break;
+                case Mnemonic.bt_sfgtsi_minus32769__: RewriteSff(sfgtsi_minus32769_intrinsic); break;
+                case Mnemonic.bt_sfgtui_minus32769__: RewriteSff(sfgtui_minus32769_intrinsic); break;
                 case Mnemonic.bg_sfgtui__:
                 case Mnemonic.bn_sfgtui: RewriteSfxx(m.Ugt); break;
+                case Mnemonic.bn_sfledf__: RewriteSfxx(m.FLe); break;
+                case Mnemonic.bn_sflesf__: RewriteSfxx(m.FLe); break;
                 case Mnemonic.bg_sfleui__:
                 case Mnemonic.bn_sfleui__: RewriteSfxx(m.Ule); break;
                 case Mnemonic.bg_sflesi__:
@@ -186,8 +302,10 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bn_sflts__: RewriteSfxx(m.Lt); break;
                 case Mnemonic.bn_sfgtu: RewriteSfxx(m.Ugt); break;
                 case Mnemonic.bn_sfne: RewriteSfxx(m.Ne); break;
+                case Mnemonic.bn_sfnedf__: RewriteSfxx(m.FNe); break;
                 case Mnemonic.bg_sfnei__:
                 case Mnemonic.bn_sfnei__: RewriteSfxx(m.Ne); break;
+                case Mnemonic.bn_sfnesf__: RewriteSfxx(m.FNe); break;
                 case Mnemonic.bn_sb__:
                 case Mnemonic.bg_sb__: RewriteStore(PrimitiveType.Byte); break;
                 case Mnemonic.bn_sh__:
@@ -197,16 +315,30 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bn_srl__: RewriteShift(m.Shr); break;
                 case Mnemonic.bn_sra__: RewriteShift(m.Sar); break;
                 case Mnemonic.bn_srai__: RewriteShifti(m.Sar); break;
+                case Mnemonic.bn_srari__: RewriteShifti(m.Sar); break;  //$REVIEW: what's the difference between srai and srari?
+                case Mnemonic.bn_srarzi__: RewriteIntrinsic(srarzi_intrinsic); break;
                 case Mnemonic.bn_srli__: RewriteShifti(m.Shr); break;
+                case Mnemonic.bn_srlri__: RewriteShifti(m.Shr); break;
                 case Mnemonic.bn_sub: RewriteAddSub(m.ISub); break;
+                case Mnemonic.bn_sub_s: RewriteIntrinsic(sub_s_intrinsic); break;
                 case Mnemonic.bn_subb__: RewriteAddSub(Subb); break;
+                case Mnemonic.bn_subc_s_lwq__: RewriteIntrinsic(sub_s_lwq_intrinsic); break;
+                case Mnemonic.bn_subcn_s__: RewriteIntrinsic(subcn_s_intrinsic); break;
+                case Mnemonic.bn_subcn_s_lwq__: RewriteIntrinsic(subcn_s_lwq_intrinsic); break;
+                case Mnemonic.bn_subcnqq_s__: RewriteIntrinsic(subcnqq_s_intrinsic); break;
+                case Mnemonic.bn_subcqq_s__: RewriteIntrinsic(subcqq_s_intrinsic); break;
+                case Mnemonic.bn_subp_s__: RewriteIntrinsic(subp_s_intrinsic); break;
+                case Mnemonic.bn_subsf__: RewriteFpuOp(Operator.FSub, PrimitiveType.Real32); break;
                 case Mnemonic.bt_swst____:
                 case Mnemonic.bn_sw:
                 case Mnemonic.bg_sw: RewriteStore(PrimitiveType.Word32); break;
+                case Mnemonic.bt_sys__: RewriteSideEffect(sys_intrinsic); break;
+                case Mnemonic.bt_syncp__: RewriteSideEffect(syncp_intrinsic); break;
                 case Mnemonic.bg_syncwritebuffer: RewriteSideEffect(syncwritebuffer_intrinsic); break;
                 case Mnemonic.bt_trap: RewriteSideEffect(trap_intrinsic); break;
                 case Mnemonic.bn_xor__:
-                case Mnemonic.bg_xori__: RewriteArithmetic(m.Xor); break;
+                case Mnemonic.bg_xori__:
+                case Mnemonic.bn_xori: RewriteArithmetic(m.Xor); break;
                     //$TODO: when all instructions are known this code can be removed.
                 case Mnemonic.Nyi:
                     instr.Operands = Array.Empty<MachineOperand>();
@@ -366,6 +498,20 @@ namespace Reko.Arch.OpenRISC.Aeon
             m.Assign(binder.EnsureFlagGroup(Registers.OV), m.Cond(dst));
         }
 
+        private void RewriteAdd16()
+        {
+            var dst = Op(0);
+            m.Assign(dst, m.IAdd(dst, 16));
+        }
+
+        private void RewriteAndn()
+        {
+            Expression left = OpOrZero(1);
+            Expression right = OpOrZero(2);
+            Expression dst = Op(0);
+            m.Assign(left, m.And(left, m.Comp(right)));
+        }
+
         private void RewriteArithmetic(Func<Expression, Expression, Expression> fn)
         {
             Expression left;
@@ -424,6 +570,21 @@ namespace Reko.Arch.OpenRISC.Aeon
             var tmp = binder.CreateTemporary(dtFrom);
             m.Assign(tmp, m.Slice(OpOrZero(1), dtFrom));
             m.Assign(Op(0), m.Convert(tmp, dtFrom, dtTo));
+        }
+
+        private void RewriteF2I(PrimitiveType dtFrom)
+        {
+            var src = OpOrZero(1);
+            var dst = Op(0);
+            m.Assign(dst, m.Convert(src, dtFrom, PrimitiveType.Int32));
+        }
+
+        private void RewriteFpuOp(BinaryOperator op, PrimitiveType dt)
+        {
+            var left = OpOrZero(1);
+            var right = OpOrZero(2);
+            var dst = Op(0);
+            m.Assign(dst, m.Bin(op, left, right));
         }
 
         private void RewriteLoadExt(PrimitiveType dt)
@@ -485,6 +646,13 @@ namespace Reko.Arch.OpenRISC.Aeon
             var dst = Op(0);
             m.Assign(dst, src);
         }
+
+        private void RewriteMov16()
+        {
+            var dst = Op(0);
+            m.Assign(dst, 16);
+        }
+
 
         private void RewriteMovi()
         {
@@ -582,6 +750,14 @@ namespace Reko.Arch.OpenRISC.Aeon
             m.Assign(hi_lo, product);
         }
 
+        private void RewriteMuladd(IntrinsicProcedure intrinsic)
+        {
+            var left = OpOrZero(1);
+            var right = OpOrZero(2);
+            var dst = Op(0);
+            m.Assign(dst, m.Fn(intrinsic, left, right));
+        }
+
         private void RewriteNand()
         {
             var left = OpOrZero(1);
@@ -649,6 +825,13 @@ namespace Reko.Arch.OpenRISC.Aeon
             m.SideEffect(m.Fn(intrinsic, args.ToArray()));
         }
 
+        private void RewriteI2F(PrimitiveType dtReal)
+        {
+            var src = OpOrZero(1);
+            var dst = Op(0);
+            m.Assign(dst, m.Convert(src, PrimitiveType.Int32, dtReal));
+        }
+
         private void RewriteJ()
         {
             var target = Op(0);
@@ -679,6 +862,12 @@ namespace Reko.Arch.OpenRISC.Aeon
             m.Call(target, 0);
         }
 
+        private void RewriteReturn()
+        {
+            m.SideEffect(m.Fn(return_intrinsic));
+            m.Return(0, 0);
+        }
+
         private void RewriteRfe()
         {
             var epcr = binder.EnsureRegister(Registers.EPCR);
@@ -693,6 +882,13 @@ namespace Reko.Arch.OpenRISC.Aeon
             var right = OpOrZero(1);
             var dst = binder.EnsureFlagGroup(Registers.F);
             m.Assign(dst, fn(left, right));
+        }
+
+        private void RewriteSff(IntrinsicProcedure intrinsic)
+        {
+            var exp = OpOrZero(0);
+            var f = binder.EnsureFlagGroup(Registers.F);
+            m.Assign(f, m.Fn(intrinsic, exp));
         }
 
         private void RewriteShift(Func<Expression, Expression, Expression> fn)
@@ -761,14 +957,29 @@ namespace Reko.Arch.OpenRISC.Aeon
             m.SideEffect(m.Fn(intrinsic, args.ToArray()));
         }
 
-        private void RewriteIntrinsic(IntrinsicProcedure intrinsic)
+        private void RewriteIntrinsic(IntrinsicProcedure intrinsic, params DataType[] dts)
         {
-            var args = new List<Expression> { };
-            for (int iop = 1; iop < instr.Operands.Length; ++iop)
+            if (dts.Length > 0)
             {
-                args.Add(OpOrZero(iop));
+                intrinsic = intrinsic.MakeInstance(dts);
             }
-            m.Assign(Op(0), m.Fn(intrinsic, args.ToArray()));
+            List<Expression> args = [];
+            if (intrinsic.ReturnType is null || intrinsic.ReturnType is VoidType)
+            {
+                for (int iop = 0; iop < instr.Operands.Length; ++iop)
+                {
+                    args.Add(OpOrZero(iop));
+                }
+                m.SideEffect(m.Fn(intrinsic, args.ToArray()));
+            }
+            else
+            {
+                for (int iop = 1; iop < instr.Operands.Length; ++iop)
+                {
+                    args.Add(OpOrZero(iop));
+                }
+                m.Assign(Op(0), m.Fn(intrinsic, args.ToArray()));
+            }
         }
 
         private void RewriteStore(PrimitiveType dt)
@@ -805,13 +1016,254 @@ namespace Reko.Arch.OpenRISC.Aeon
             m.SideEffect(m.Fn(intrinsic, args.ToArray()));
         }
 
+        private static readonly IntrinsicProcedure add_s_intrinsic = IntrinsicBuilder.SideEffect("__add.s?")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure addc_s_lwq_intrinsic = IntrinsicBuilder.SideEffect("__addc_s_lwq?")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure addc_s_lwqq_intrinsic = IntrinsicBuilder.SideEffect("__addc_s_lwqq?")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+
+        private static readonly IntrinsicProcedure addcn_s_intrinsic = IntrinsicBuilder.SideEffect("__addcn_s")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure addcnqq_s_intrinsic = IntrinsicBuilder.SideEffect("__addcnqq_s")
+            .Param(PrimitiveType.Word32)
+            .Void();
+        private static readonly IntrinsicProcedure addcqq_s_intrinsic = IntrinsicBuilder.SideEffect("__addcqq_s")
+            .Param(PrimitiveType.Word32)
+            .Void();
+        private static readonly IntrinsicProcedure addp_s_intrinsic = IntrinsicBuilder.SideEffect("__addp_s")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure amac_intrinsic = IntrinsicBuilder.SideEffect("__amac?")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure amac_hh_intrinsic = IntrinsicBuilder.SideEffect("__amac_hh?")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure amac_lh_intrinsic = IntrinsicBuilder.SideEffect("__amac_lh?")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure amac_ll_intrinsic = IntrinsicBuilder.SideEffect("__amac_ll?")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure amac_wh_intrinsic = IntrinsicBuilder.SideEffect("__amac_wh?")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure amac_wl_intrinsic = IntrinsicBuilder.SideEffect("__amac_wl?")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure amacq_hl_intrinsic = IntrinsicBuilder.SideEffect("__amacq_hl?")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure amacr_intrinsic = IntrinsicBuilder.SideEffect("__amacr?")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure amacr_ex_intrinsic = IntrinsicBuilder.SideEffect("__amacr_ex?")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure amacrq_intrinsic = IntrinsicBuilder.SideEffect("__amacrq?")
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure amacw_intrinsic = IntrinsicBuilder.SideEffect("__amacw?")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure amadd_intrinsic = IntrinsicBuilder.SideEffect("__amadd?")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure amsb_intrinsic = IntrinsicBuilder.SideEffect("__amsb?")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure amsb_lh_intrinsic = IntrinsicBuilder.SideEffect("__amsb_lh?")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure amsb_wh_intrinsic = IntrinsicBuilder.SideEffect("__amsb_wh?")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure amsb_wl_intrinsic = IntrinsicBuilder.SideEffect("__amsb_wl?")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure amsub_hl_intrinsic = IntrinsicBuilder.SideEffect("__amsub_hl?")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure amsub_wl_intrinsic = IntrinsicBuilder.SideEffect("__amsub_wl?")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure amul_intrinsic = IntrinsicBuilder.SideEffect("__amul?")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure amul_lh_intrinsic = IntrinsicBuilder.SideEffect("__amul_lh?")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure amul_ll_intrinsic = IntrinsicBuilder.SideEffect("__amul_lh?")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure amul_wh_intrinsic = IntrinsicBuilder.SideEffect("__amul_wh?")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure amul_wl_intrinsic = IntrinsicBuilder.SideEffect("__amul_wl?")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure amulqu_intrinsic = IntrinsicBuilder.SideEffect("__amulqu?")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure bsa_intrinsic = IntrinsicBuilder.SideEffect("__bsa?")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure bsa_s_intrinsic = IntrinsicBuilder.SideEffect("__bsa_s?")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure bsl_intrinsic = IntrinsicBuilder.SideEffect("__bsl?")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure btb_intrinsic = IntrinsicBuilder.SideEffect("__btb?")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Void();
+
+        private static readonly IntrinsicProcedure chk_ll_intrinsic = IntrinsicBuilder.SideEffect("__chk_ll?")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Void();
+        private static readonly IntrinsicProcedure chk_lu_intrinsic = IntrinsicBuilder.SideEffect("__chk_lu?")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Void();
+        private static readonly IntrinsicProcedure conjc_intrinsic = IntrinsicBuilder.SideEffect("__conjc?")
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure crc_le_intrinsic = IntrinsicBuilder.SideEffect("__crc_le?")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+
+        private static readonly IntrinsicProcedure dep_intrinsic = IntrinsicBuilder.SideEffect("__dep")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure df2sf_intrinsic = IntrinsicBuilder.SideEffect("__df2sf?")
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure di_intrinsic = new IntrinsicBuilder("__disable_interrupts", true)
+            .Void();
+        private static readonly IntrinsicProcedure divl_intrinsic = IntrinsicBuilder.SideEffect("__divl?")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure divlu_intrinsic = IntrinsicBuilder.SideEffect("__divlu?")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure dma_op_intrinsic = IntrinsicBuilder.SideEffect("__dma_op")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Void();
+        private static readonly IntrinsicProcedure dsl_intrinsic = IntrinsicBuilder.SideEffect("__dsl?")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure dsr_intrinsic = IntrinsicBuilder.SideEffect("__dsr?")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+
+        private static readonly IntrinsicProcedure dsli_intrinsic = IntrinsicBuilder.SideEffect("__dsli")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure dsri_intrinsic = IntrinsicBuilder.SideEffect("__dsri")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+
+        private static readonly IntrinsicProcedure ei_intrinsic = new IntrinsicBuilder("__enable_interrupts", true)
+            .Void();
+        private static readonly IntrinsicProcedure exp_intrinsic = new IntrinsicBuilder("__exp", true)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure exp16_intrinsic = new IntrinsicBuilder("__exp16", true)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure ext_intrinsic = new IntrinsicBuilder("__extract_bits", true)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure extu_intrinsic = new IntrinsicBuilder("__extract_unsigned_bits", true)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+
+        private static readonly IntrinsicProcedure fft_intrinsic = new IntrinsicBuilder("__fft", true)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure fl1_intrinsic = new IntrinsicBuilder("__fl1", true)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure flb_intrinsic = new IntrinsicBuilder("__flb", true)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
         private static readonly IntrinsicProcedure flush_invalidate_intrinsic = new IntrinsicBuilder("__flush_invalidate", true)
             .Param(PrimitiveType.Ptr32)
             .Void();
-
         private static readonly IntrinsicProcedure flush_line_intrinsic = new IntrinsicBuilder("__flush_line", true)
             .Param(PrimitiveType.Ptr32)
             .Param(PrimitiveType.UInt32)
+            .Void();
+
+        private static readonly IntrinsicProcedure invalidate_intrinsic = new IntrinsicBuilder("__invalidate_line", true)
+            .Param(PrimitiveType.Ptr32)
             .Void();
 
         private static readonly IntrinsicProcedure invalidate_line_intrinsic = new IntrinsicBuilder("__invalidate_line", true)
@@ -819,12 +1271,85 @@ namespace Reko.Arch.OpenRISC.Aeon
             .Param(PrimitiveType.UInt32)
             .Void();
 
-        private static readonly IntrinsicProcedure mfspr_intrinsic = new IntrinsicBuilder("__move_from_spr", true)
+        private static readonly IntrinsicProcedure ldww_intrinsic = new IntrinsicBuilder("__ldww?", true)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure ldww2_intrinsic = new IntrinsicBuilder("__ldww2?", true)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure ldww2x_intrinsic = new IntrinsicBuilder("__ldww2x?", true)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure ldwwx_intrinsic = new IntrinsicBuilder("__ldwwx?", true)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
             .Param(PrimitiveType.Word32)
             .Returns(PrimitiveType.Word32);
 
+        //$TODO: what does this actually do?
+        private static readonly IntrinsicProcedure loop_intrinsic = new IntrinsicBuilder("__loop?", true)
+            .Param(PrimitiveType.Ptr32)
+            .Param(PrimitiveType.UInt32)
+            .Void();
+
+        private static readonly IntrinsicProcedure maddsf_intrinsic = new IntrinsicBuilder("__maddsf?", true)
+            .Param(PrimitiveType.Real32)
+            .Param(PrimitiveType.Real32)
+            .Returns(PrimitiveType.Real32);
+        private static readonly IntrinsicProcedure mfspr_intrinsic = new IntrinsicBuilder("__move_from_spr", true)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
         private static readonly IntrinsicProcedure mtspr_intrinsic = new IntrinsicBuilder("__move_to_spr", true)
             .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Void();
+        private static readonly IntrinsicProcedure mlwz_intrinsic = new IntrinsicBuilder("__mlwz?", true)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Void();
+        private static readonly IntrinsicProcedure msw_intrinsic = new IntrinsicBuilder("__msw?", true)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Void();
+        private static readonly IntrinsicProcedure muladdh_instrinsic = new IntrinsicBuilder("__muladdh", false)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure muladdhx_instrinsic = new IntrinsicBuilder("__muladdhx", false)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure mulsubh_instrinsic = new IntrinsicBuilder("__mulsubh", false)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure mulsubx_instrinsic = new IntrinsicBuilder("__mulsubhx", false)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+
+        private static readonly IntrinsicProcedure pack_s_instrinsic = new IntrinsicBuilder("__pack_s?", false)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure pamac_instrinsic = new IntrinsicBuilder("__pamac?", false)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure pamacrq_instrinsic = new IntrinsicBuilder("__pamacrq?", false)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure push_instrinsic = new IntrinsicBuilder("__push?", true)
             .Param(PrimitiveType.Word32)
             .Void();
 
@@ -833,11 +1358,82 @@ namespace Reko.Arch.OpenRISC.Aeon
             .Param(PrimitiveType.Word32)
             .Param(PrimitiveType.Word32)
             .Void();
+        private static readonly IntrinsicProcedure return_intrinsic = IntrinsicBuilder.SideEffect("__return?")
+            .Void();
 
+        private static readonly IntrinsicProcedure sat_intrinsic = IntrinsicBuilder.SideEffect("__sat")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure satsu_intrinsic = IntrinsicBuilder.SideEffect("__satsu")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure satu_intrinsic = IntrinsicBuilder.SideEffect("__satu")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure satus_intrinsic = IntrinsicBuilder.SideEffect("__satus")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure sf2df_intrinsic = IntrinsicBuilder.SideEffect("__sf2df")
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure sfgtsi_minus32769_intrinsic = IntrinsicBuilder.SideEffect("__sfgtsi_minus32769")
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Bool);
+        private static readonly IntrinsicProcedure sfgtui_minus32769_intrinsic = IntrinsicBuilder.SideEffect("__sfgtui_minus32769")
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Bool);
+        private static readonly IntrinsicProcedure srarzi_intrinsic = IntrinsicBuilder.SideEffect("__srarzi?")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure sub_s_intrinsic = IntrinsicBuilder.SideEffect("__sub_s")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure sub_s_lwq_intrinsic = IntrinsicBuilder.SideEffect("__sub_s")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure subcn_s_intrinsic = IntrinsicBuilder.SideEffect("__subcn_s")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure subcn_s_lwq_intrinsic = IntrinsicBuilder.SideEffect("__subcn_s_lwq")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure subcnqq_s_intrinsic = IntrinsicBuilder.SideEffect("__subcnqq_s")
+            .Param(PrimitiveType.Word32)
+            .Void();
+        private static readonly IntrinsicProcedure subcqq_s_intrinsic = IntrinsicBuilder.SideEffect("__subcqq_s")
+            .Param(PrimitiveType.Word32)
+            .Void();
+        private static readonly IntrinsicProcedure subp_s_intrinsic = IntrinsicBuilder.SideEffect("__subp_s")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure sys_intrinsic = new IntrinsicBuilder("__sys", true)
+            .Void();
+        private static readonly IntrinsicProcedure syncp_intrinsic = new IntrinsicBuilder("__syncp", true)
+            .Void();
         private static readonly IntrinsicProcedure syncwritebuffer_intrinsic = new IntrinsicBuilder("__syncwritebuffer", true)
             .Void();
 
         private static readonly IntrinsicProcedure trap_intrinsic = new IntrinsicBuilder("__trap", true)
+            .Param(PrimitiveType.Word32)
+            .Void();
+
+        private static readonly IntrinsicProcedure mv_opv_intrinsic = IntrinsicBuilder.SideEffect("__mv_opv?")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
             .Param(PrimitiveType.Word32)
             .Void();
     }
