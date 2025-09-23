@@ -233,6 +233,15 @@ namespace Reko.Arch.RiscV
                 { Mnemonic.fcvt_q_l, "fcvt.q.l" },
                 { Mnemonic.fcvt_q_lu, "fcvt.q.lu" },
 
+                // Zicbo[mzp] extensions
+                { Mnemonic.cbo_inval, "cbo.inval" },
+                { Mnemonic.cbo_clean, "cbo.clean" },
+                { Mnemonic.cbo_flush, "cbo.flush" },
+                { Mnemonic.cbo_zero, "cbo.zero" },
+                { Mnemonic.prefetch_i, "prefetch.i" },
+                { Mnemonic.prefetch_r, "prefetch.r" },
+                { Mnemonic.prefetch_w, "prefetch.w" },
+
             };
         }
 

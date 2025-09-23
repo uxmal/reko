@@ -461,6 +461,42 @@ namespace Reko.Core.Machine
         /// <summary>
         /// Creates a conditional decoder which selects a sub-decoder depending on a predicate.
         /// </summary>
+        /// <param name="field">Specifies a field to read a value to pass to the predicate.</param>
+        /// <param name="predicate">Predicate accepting the instruction opcode.</param>
+        /// <param name="decoderTrue">Sub-decoder to invoke when the predicate evaluates to true.</param>
+        /// <param name="decoderFalse">Sub-decoder to invoke when the predicate evaluates to false.</param>
+        /// <returns>A conditional decoder.</returns>
+        public static ConditionalDecoder<TDasm, TMnemonic, TInstr> Select<TDasm>(
+             Bitfield field,
+             Predicate<uint> predicate,
+             Decoder<TDasm, TMnemonic, TInstr> decoderTrue,
+             Decoder<TDasm, TMnemonic, TInstr> decoderFalse)
+        {
+            return new ConditionalDecoder<TDasm, TMnemonic, TInstr>([field], predicate, "", decoderTrue, decoderFalse);
+        }
+
+        /// <summary>
+        /// Creates a conditional decoder which selects a sub-decoder depending on a predicate.
+        /// </summary>
+        /// <param name="field">Specifies a field to read a value to pass to the predicate.</param>
+        /// <param name="predicate">Predicate accepting the instruction opcode.</param>
+        /// <param name="tag">Tag used for debugging.</param>
+        /// <param name="decoderTrue">Sub-decoder to invoke when the predicate evaluates to true.</param>
+        /// <param name="decoderFalse">Sub-decoder to invoke when the predicate evaluates to false.</param>
+        /// <returns>A conditional decoder.</returns>
+        public static ConditionalDecoder<TDasm, TMnemonic, TInstr> Select<TDasm>(
+             Bitfield field,
+             Predicate<uint> predicate,
+             string tag,
+             Decoder<TDasm, TMnemonic, TInstr> decoderTrue,
+             Decoder<TDasm, TMnemonic, TInstr> decoderFalse)
+        {
+            return new ConditionalDecoder<TDasm, TMnemonic, TInstr>([field], predicate, tag, decoderTrue, decoderFalse);
+        }
+
+        /// <summary>
+        /// Creates a conditional decoder which selects a sub-decoder depending on a predicate.
+        /// </summary>
         /// <param name="fields">Specifies fields to read a value to pass to the predicate.</param>
         /// <param name="predicate">Predicate accepting the instruction opcode.</param>
         /// <param name="tag">Tag used for debugging.</param>

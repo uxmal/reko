@@ -39,6 +39,7 @@ namespace Reko.Arch.RiscV
 
     public partial class RiscVDisassembler : DisassemblerBase<RiscVInstruction, Mnemonic>
     {
+        private static readonly Bitfield bf_rd = new Bitfield(7, 5);
         private static readonly Bitfield bf_r1 = new Bitfield(15, 5);
         private static readonly Bitfield bf_r2 = new Bitfield(20, 5);
         private static readonly Bitfield bf20_12 = new Bitfield(20, 12);

@@ -120,18 +120,27 @@ namespace Reko.Core.Intrinsics
         {
             if (inputs.Length == 0)
                 throw new ArgumentException(nameof(inputs), "Must have at least one input parameter to EvalMax.");
+                var mask = Bits.Mask(0, dt.BitSize);
             if (dt.Domain == Domain.SignedInt)
             {
-                throw new NotImplementedException();
+                long max = (long) Bits.SignExtend((ulong) inputs[0].ToInt64(), dt.BitSize);
+                for (int i = 1; i < inputs.Length; ++i)
+                {
+                    var input = (long) Bits.SignExtend((ulong) inputs[i].ToInt64(), dt.BitSize);
+                    max = Math.Max(max, input);
+                }
+                return Constant.Create(dt, max);
             }
-            var mask = Bits.Mask(0, dt.BitSize);
-            ulong max = inputs[0].ToUInt64() & mask;
-            for (int i = 1; i < inputs.Length; ++i)
+            else
             {
-                var input = inputs[i].ToUInt64() & mask;
-                max = Math.Max(max, input);
+                ulong max = inputs[0].ToUInt64() & mask;
+                for (int i = 1; i < inputs.Length; ++i)
+                {
+                    var input = inputs[i].ToUInt64() & mask;
+                    max = Math.Max(max, input);
+                }
+                return Constant.Create(dt, max);
             }
-            return Constant.Create(dt, max);
         }
 
         // Rotations

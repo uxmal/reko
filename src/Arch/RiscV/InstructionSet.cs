@@ -265,6 +265,12 @@ namespace Reko.Arch.RiscV
                     invalid,
                 };
 
+                var cbo = Sparse(20, 12, "  cbo", invalid,
+                    (0, Instr(Mnemonic.cbo_inval, r1)),
+                    (1, Instr(Mnemonic.cbo_clean, r1)),
+                    (2, Instr(Mnemonic.cbo_flush, r1)),
+                    (4, Instr(Mnemonic.cbo_zero, r1)));
+
                 var miscMem = new Decoder[8]
                 {
                     Select((7,25), u => u == 0b0000_0001_0000_00000_000_00000, "  misc-mem 0",
@@ -273,7 +279,7 @@ namespace Reko.Arch.RiscV
                             Instr(Mnemonic.fence_tso),
                             Instr(Mnemonic.fence, ps_24, ps_20))),
                     Instr(Mnemonic.fence_i),
-                    Nyi("misc-mem 2"),
+                    cbo,
                     Nyi("misc-mem 3"),
 
                     Nyi("misc-mem 4"),
@@ -323,7 +329,12 @@ namespace Reko.Arch.RiscV
                             (0b11000, Zbb(Instr32(Mnemonic.rev8, rd,r1))))),
                         (0b0110101, Sparse(20, 5, "  rev8_64", Nyi(""),
                             (0b11000, Zbb(Instr64(Mnemonic.rev8, rd,r1)))))),
-                    Instr(Mnemonic.ori, rd,r1,i),
+                    Select(bf_rd, Eq0, "  ori",
+                        Sparse(20, 5, "  prefetch", invalid,
+                            (0, Instr(Mnemonic.prefetch_i, Ss)),
+                            (1, Instr(Mnemonic.prefetch_r, Ss)),
+                            (3, Instr(Mnemonic.prefetch_w, Ss))),
+                        Instr(Mnemonic.ori, rd,r1,i)),
                     Instr(Mnemonic.andi, rd,r1,i),
                 };
 
@@ -702,6 +713,7 @@ namespace Reko.Arch.RiscV
                         (0x01, Instr(Mnemonic.amoswap_w, aq_rl, rd, r2, Mem(PrimitiveType.Word32, 15))),
                         (0x00, Instr(Mnemonic.amoadd_w, aq_rl, rd, r2, Mem(PrimitiveType.Word32, 15))),
                         (0x04, Instr(Mnemonic.amoxor_w, aq_rl, rd, r2, Mem(PrimitiveType.Word32, 15))),
+                        (0x05, Instr(Mnemonic.amocas_w, aq_rl, rd, r1, r2)),
                         (0x0C, Instr(Mnemonic.amoand_w, aq_rl, rd, r2, Mem(PrimitiveType.Word32, 15))),
                         (0x08, Instr(Mnemonic.amoor_w, aq_rl, rd, r2, Mem(PrimitiveType.Word32, 15))),
                         (0x10, Instr(Mnemonic.amomin_w, aq_rl, rd, r2, Mem(PrimitiveType.Int32, 15))),
@@ -715,13 +727,16 @@ namespace Reko.Arch.RiscV
                         (0x01, Instr(Mnemonic.amoswap_d, aq_rl, rd, r2, Mem(PrimitiveType.Word64, 15))),
                         (0x00, Instr(Mnemonic.amoadd_d, aq_rl, rd, r2, Mem(PrimitiveType.Word64, 15))),
                         (0x04, Instr(Mnemonic.amoxor_d, aq_rl, rd, r2, Mem(PrimitiveType.Word64, 15))),
+                        (0x05, Instr(Mnemonic.amocas_d, aq_rl, rd, r1, r2)),
                         (0x0C, Instr(Mnemonic.amoand_d, aq_rl, rd, r2, Mem(PrimitiveType.Word64, 15))),
                         (0x08, Instr(Mnemonic.amoor_d, aq_rl, rd, r2, Mem(PrimitiveType.Word64, 15))),
                         (0x10, Instr(Mnemonic.amomin_d, aq_rl, rd, r2, Mem(PrimitiveType.Int64, 15))),
                         (0x14, Instr(Mnemonic.amomax_d, aq_rl, rd, r2, Mem(PrimitiveType.Int64, 15))),
                         (0x18, Instr(Mnemonic.amominu_d, aq_rl, rd, r2, Mem(PrimitiveType.UInt64, 15))),
                         (0x1C, Instr(Mnemonic.amomaxu_d, aq_rl, rd, r2, Mem(PrimitiveType.UInt64, 15)))),
-                    Nyi("amo - 100"),
+                    Sparse(27, 5, "  AMO q",
+                        Nyi("amo - 100"),
+                        (0x05, Instr(Mnemonic.amocas_d, aq_rl, rd, r1, r2))),
                     Nyi("amo - 101"),
                     Nyi("amo - 110"),
                     Nyi("amo - 111"));
@@ -742,8 +757,10 @@ namespace Reko.Arch.RiscV
                         (0x0C, Sparse(20, 5, "  system 0x0C", Nyi("system 0x0C"),
                             (0, Instr(Mnemonic.sfence_w_inval, InstrClass.Privileged | InstrClass.Linear)),
                             (1, Instr(Mnemonic.sfence_inval_ir, InstrClass.Privileged | InstrClass.Linear)))),
+                        (0x0D, Instr(Mnemonic.wrs_nto, rd, r1)),
                         (0x11, Instr(Mnemonic.hfence_vvma, InstrClass.Privileged | InstrClass.Linear, r1, r2)),
                         (0x13, Instr(Mnemonic.hinval_vvma, InstrClass.Privileged | InstrClass.Linear, r1, r2)),
+                        (0x1D, Instr(Mnemonic.wrs_sto, rd, r1)),
                         (0x31, Instr(Mnemonic.hfence_gvma, InstrClass.Privileged | InstrClass.Linear, r1, r2)),
                         (0x33, Instr(Mnemonic.hinval_gvma, InstrClass.Privileged | InstrClass.Linear, r1, r2)),
 
@@ -887,7 +904,7 @@ namespace Reko.Arch.RiscV
                         rv64: Instr(Mnemonic.c_addiw, R_nz(7), ImmS(bf_12_1_2_5)),
                         rv128: Instr(Mnemonic.c_addiw, R(7), ImmS(bf_12_1_2_5))),
                     Instr(Mnemonic.c_li, R(7), ImmS(bf_12_1_2_5)),
-                    Select((7, 5), u => u == 2,
+                    Select(bf_rd, u => u == 2,
                         Instr(Mnemonic.c_addi16sp, Rsp, ImmShS(4, (12,1), (3,2), (5,1), (2,1), (6, 1))),
                         Instr(Mnemonic.c_lui, R(7), ImmShS(12, bf_12_1_2_5))),
 
