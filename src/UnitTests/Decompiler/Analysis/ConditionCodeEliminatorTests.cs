@@ -29,6 +29,7 @@ using Reko.Core.Intrinsics;
 using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.Scanning;
 using Reko.Services;
 using Reko.UnitTests.Fragments;
 using Reko.UnitTests.Mocks;
@@ -36,6 +37,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace Reko.UnitTests.Decompiler.Analysis
 {
@@ -1499,6 +1501,51 @@ ProcedureBuilder_exit:
                 m.Assign(SCZO_126, m.Cond(SCZO_126.DataType, m.ISub(di_124, cx_93)));
                 m.Assign(C_127, m.And(SCZO_126, m.Word32(0x2)));
                 m.Assign(CZ_128, m.And(SCZO_126, m.Word32(0x6)));
+            });
+            
+        [Test]
+        public void CceLongShift()
+        {
+            var sExpected =
+            #region Expected
+                "@@@";
+            #endregion
+            RunStringTest(sExpected, m =>
+            {
+                RegisterStorage reg_ax = new RegisterStorage("ax", 0, 0, PrimitiveType.Word16);
+                RegisterStorage reg_dx = new RegisterStorage("dx", 2, 0, PrimitiveType.Word16);
+                RegisterStorage reg_bp = new RegisterStorage("bp", 5, 0, PrimitiveType.Word16);
+                RegisterStorage reg_ss = new RegisterStorage("ss", 34, 0, PrimitiveType.SegmentSelector);
+                RegisterStorage reg_eflags = new RegisterStorage("eflags", 40, 0, PrimitiveType.Word32);
+                FlagGroupStorage grf_SCZO = new FlagGroupStorage(reg_eflags, 0x17, "SCZO");
+                FlagGroupStorage grf_C = new FlagGroupStorage(reg_eflags, 0x2, "C");
+                Identifier bp_8 = m.Frame.EnsureRegister(reg_bp);
+                Identifier ss = m.Frame.EnsureRegister(reg_ss);
+                Identifier ax_25 = m.Frame.EnsureRegister(reg_ax);
+                Identifier dx_26 = m.Frame.EnsureRegister(reg_dx);
+                Identifier dx_27 = m.Frame.EnsureRegister(reg_dx);
+                Identifier SCZO_28 = m.Frame.EnsureFlagGroup(grf_SCZO);
+                Identifier C_29 = m.Frame.EnsureFlagGroup(grf_C);
+                Identifier v15_30 = m.Frame.CreateTemporary("v15", 15, PrimitiveType.Bool);
+                Identifier ax_31 = m.Frame.EnsureRegister(reg_ax);
+
+                m.Assign(ax_25, m.SegMem(PrimitiveType.Word16, ss, m.ISub(bp_8, Constant.Create(PrimitiveType.Int16, 0x2))));
+                m.Assign(dx_26, m.SegMem(PrimitiveType.Word16, ss, m.ISub(bp_8, Constant.Create(PrimitiveType.Int16, 0x4))));
+                m.Assign(dx_27, m.Shl(dx_26, m.Word16(0x1)));
+                m.Assign(SCZO_28, m.Cond(dx_27));
+                m.Assign(C_29, m.And(SCZO_28, m.Word32(0x2)));
+                m.Assign(v15_30, C_29);
+                m.Assign(ax_31, m.Fn(
+                    CommonOps.RolC
+                    .MakeInstance(
+                        PrimitiveType.Word16,
+                        PrimitiveType.Byte),
+                    ax_25, 
+                    m.Byte(0x1),
+                    v15_30));
+                m.MStore(m.SegPtr(ss, m.ISub(bp_8, Constant.Create(PrimitiveType.Int16, 0x2))), ax_31);
+                m.MStore(m.SegPtr(ss, m.ISub(bp_8, Constant.Create(PrimitiveType.Int16, 0x4))), dx_27);
+                m.Return();
             });
         }
     }

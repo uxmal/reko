@@ -161,7 +161,10 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
                     {
                         useStm = u;
                         trace.Inform("CCE:   used {0}", useStm.Instruction);
-                        useStm.Instruction.Accept(this);
+                        if (u.Block.Id.EndsWith("45F7"))
+                            _ = this; //$DEBUG
+
+                            useStm.Instruction.Accept(this);
                         trace.Inform("CCE:    now {0}", useStm.Instruction);
                     }
                     catch (Exception ex)

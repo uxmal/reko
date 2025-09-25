@@ -239,8 +239,9 @@ namespace Reko.Scanning
 
                     BuildWCC(node, cluster, wl);
                     BreakOnWatchedAddress(cluster.Blocks.Select(b => b.Address));
-                    listener.Progress.ShowProgress("Finding procedure candidates", totalCount - wl.Count, totalCount);
+                    listener.Progress.ShowProgress(totalCount - wl.Count, totalCount);
                 }
+                listener.Progress.Finish();
             }
             return clusters;
         }
@@ -313,6 +314,7 @@ namespace Reko.Scanning
                 }
                 listener.Progress.Advance(1);
             }
+            listener.Progress.Finish();
             return procs;
         }
 

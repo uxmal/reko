@@ -134,6 +134,9 @@ public class ValuePropagator : IAnalysis<SsaState>
                     if (eventListener.IsCanceled())
                         return this.changed;
                     this.stmCur = stm;
+                    if (stm.Block.Id.EndsWith("45F7") &&
+                        stm.ToString().Contains("__rcl"))
+                        _ = this; //$DEBUG
                     var c = Transform(stm);
                     changed |= c;
                     this.changed |= c;

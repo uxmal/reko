@@ -125,8 +125,8 @@ namespace Reko.Evaluation
         /// <inheritdoc/>
         public virtual (Expression, bool) VisitConditionOf(ConditionOf c)
         {
-            Expression e;
-            bool changed;
+            Expression e = c;
+            bool changed = false;
             // It's unsafe to simplify 'cond(x - y)'. This operation actually
             // requires flags of expression, not expression itself. So
             // ConditionCodeEliminator should do its work before. For instance
@@ -142,7 +142,21 @@ namespace Reko.Evaluation
                     bin.Operator, bin.DataType, left, right);
                 changed = changedLeft || changedRight;
             }
-            else
+/*
+            else if (c.Expression is Identifier id)
+            {
+                //$TODO: having "sea of nodes" representation
+                // and global value numbering, would make 
+                // this unnecessary.
+                var (ee, cc) = c.Expression.Accept(this);
+                if (ee is Identifier)
+                {
+                    e = ee;
+                    changed = cc;
+                }
+            }
+*/
+            else if (c.Expression is not Identifier id)
             {
                 (e, changed) = c.Expression.Accept(this);
             }
