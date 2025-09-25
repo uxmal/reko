@@ -171,6 +171,8 @@ namespace Reko.Analysis
             // type analysis as part of the Analysis stage.
             foreach (var procflow in ProgramDataFlow.ProcedureFlows.Values)
                 procflow.LiveInDataTypes.Clear();
+            
+            eventListener.Progress.Finish();
             return ssts;
         }
 
@@ -315,6 +317,7 @@ namespace Reko.Analysis
                 }
                 eventListener.Progress.Advance(1);
             }
+            eventListener.Progress.Finish();
         }
 
         /// <summary>

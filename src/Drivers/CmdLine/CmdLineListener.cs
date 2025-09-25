@@ -300,7 +300,8 @@ namespace Reko.CmdLine
 
             public void Finish()
             {
-                Console.Out.Write("{0} [Done]", currentCaption);
+                Console.Out.Write("\r{0,60}\r", "");
+                Console.Out.Write("\r{0} [Done]", currentCaption);
                 Console.Out.WriteLine();
                 outer.needsNewLine = false;
             }

@@ -74,9 +74,10 @@ namespace Reko.Typing
             CollectImageSymbols();
             int cProc = program.Procedures.Count;
             int i = 0;
+            eventListener.Progress.ShowProgress("Collecting data types.", 0, cProc);
             foreach (Procedure proc in program.Procedures.Values)
             {
-                eventListener.Progress.ShowProgress("Collecting data types.", i++, cProc);
+                eventListener.Progress.ShowProgress(i++, cProc);
                 CollectProcedureSignature(proc);
                 foreach (Statement stm in proc.Statements)
                 {
@@ -97,6 +98,7 @@ namespace Reko.Typing
                     }
                 }
             }
+            eventListener.Progress.Finish();
         }
 
         /// <summary>

@@ -82,11 +82,12 @@ namespace Reko.Typing
                 .Concat(program.SegmentMap.Selectors.Values));
             int cProc = program.Procedures.Count;
             int i = 0;
+            listener.Progress.ShowProgress("Gathering primitive datatypes from instructions.", 0, cProc);
             foreach (Procedure proc in program.Procedures.Values)
             {
                 if (listener.IsCanceled())
                     return;
-                listener.Progress.ShowProgress("Gathering primitive datatypes from instructions.", i++, cProc);
+                listener.Progress.ShowProgress(i++, cProc);
                 this.signature = proc.Signature;
                 EnsureSignatureTypeVariables(this.signature);
                 
@@ -96,6 +97,7 @@ namespace Reko.Typing
                     stm.Instruction.Accept(this);
                 }
             }
+            listener.Progress.Finish();
 		}
 
         /// <summary>

@@ -709,13 +709,14 @@ namespace Reko
             foreach (var program in project.Programs)
             {
                 int i = 0;
+                eventListener.Progress.ShowProgress("Rewriting procedures to high-level language.", 0, program.Procedures.Values.Count);
                 foreach (Procedure proc in program.Procedures.Values)
                 {
                     if (eventListener.IsCanceled())
                         return;
                     try
                     {
-                        eventListener.Progress.ShowProgress("Rewriting procedures to high-level language.", i, program.Procedures.Values.Count);
+                        eventListener.Progress.ShowProgress(i, program.Procedures.Values.Count);
                         ++i;
                         StructureAnalysis sa = new StructureAnalysis(eventListener, program, proc);
                         sa.Structure();
@@ -728,6 +729,7 @@ namespace Reko
                             "An error occurred while rewriting procedure to high-level language.");
                     }
                 }
+                eventListener.Progress.Finish();
             }
             project.FireScriptEvent(ScriptEvent.OnProgramDecompiled);
             WriteDecompilerProducts();

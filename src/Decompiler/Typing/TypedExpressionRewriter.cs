@@ -102,6 +102,7 @@ namespace Reko.Typing
                     }
                 }
             }
+            eventListener.Progress.Finish();
         }
 
         private void RewriteFormals(FunctionType sig)
