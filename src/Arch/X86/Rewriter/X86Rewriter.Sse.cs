@@ -26,16 +26,17 @@ using Reko.Core.Types;
 using System;
 using System.Dynamic;
 using System.Numerics;
+using System.Security.Cryptography;
 
 namespace Reko.Arch.X86.Rewriter
 {
     public partial class X86Rewriter
     {
-        public void RewriteAndnp_(IntrinsicProcedure intrinsic)
+        public void RewriteAndnp_(bool isVex, IntrinsicProcedure intrinsic)
         {
             var dst = this.SrcOp(0);
             var src = this.SrcOp(1);
-            m.Assign(dst, m.Fn(intrinsic.MakeInstance(src.DataType), dst, src));
+            VexAssign(isVex, dst, m.Fn(intrinsic.MakeInstance(src.DataType), dst, src));
         }
 
         private void RewriteCmpp(bool isVex, IntrinsicProcedure intrinsic, PrimitiveType element)
@@ -108,7 +109,7 @@ namespace Reko.Arch.X86.Rewriter
             m.Assign(SrcOp(0), m.Seq(tmp2, tmp1));
         }
 
-        private void RewriteCvts2si(PrimitiveType floatType)
+        private void RewriteCvts2si(bool isVex, PrimitiveType floatType)
         {
             var src = SrcOp(instrCur.Operands[instrCur.Operands.Length == 3 ? 2 : 1]);
             if (src.DataType.BitSize != floatType.BitSize)
@@ -116,7 +117,7 @@ namespace Reko.Arch.X86.Rewriter
                 src = m.Slice(src, floatType);
             }
             var dt = PrimitiveType.Create(Domain.SignedInt, instrCur.Operands[0].DataType.BitSize);
-            m.Assign(SrcOp(0), m.Convert(src, floatType, dt));
+            VexAssign(isVex, SrcOp(0), m.Convert(src, floatType, dt));
         }
 
         private void RewriteCvtts2si(PrimitiveType floatType)
@@ -198,6 +199,25 @@ namespace Reko.Arch.X86.Rewriter
             m.SideEffect(m.Fn(femms_intrinsic));
         }
 
+        private void RewriteFma123(bool isVex, IntrinsicProcedure intrinsic)
+        {
+            var src1 = SrcOp(1);
+            var src2 = SrcOp(2);
+            var dst = SrcOp(0);
+            VexAssign(true, dst, m.Fn(intrinsic.MakeInstance(src1.DataType), src1, src2));
+        }
+
+        private void RewriteInsertf128()
+        {
+            var src1 = SrcOp(1);
+            var src2 = SrcOp(2);
+            var src3 = SrcOp(3);
+            var dst = SrcOp(0);
+            VexAssign(true, dst, m.Fn(
+                insert128_intrinsic.MakeInstance(src1.DataType),
+                src1, src2, src3));
+        }
+
         private void RewriteLdmxcsr()
         {
             var src = SrcOp(0);
@@ -231,6 +251,11 @@ namespace Reko.Arch.X86.Rewriter
         }
 
         private void RewriteMovddup(bool isVex, IntrinsicProcedure intrinsic)
+        {
+            VexAssign(isVex, SrcOp(0), m.Fn(intrinsic, SrcOp(1)));
+        }
+
+        private void RewriteMovntpd(bool isVex, IntrinsicProcedure intrinsic)
         {
             VexAssign(isVex, SrcOp(0), m.Fn(intrinsic, SrcOp(1)));
         }
@@ -293,12 +318,13 @@ namespace Reko.Arch.X86.Rewriter
             EmitCopy(0, m.Fn(intrinsic, idWideData));
         }
 
-        private void RewritePavg(IntrinsicProcedure intrinsic, PrimitiveType elementType)
+        private void RewritePavg(bool isVex, IntrinsicProcedure intrinsic, PrimitiveType elementType)
         {
             var dst = SrcOp(0);
             ArrayType arrayType = CreatePackedArrayType(elementType, dst.DataType);
-            var src = SrcOp(1, arrayType);
-            m.Assign(dst, m.Fn(intrinsic.MakeInstance(arrayType), dst, src));
+            var src1 = SrcOp(instrCur.Operands.Length == 3 ? 1 : 0, arrayType);
+            var src2 = SrcOp(instrCur.Operands.Length == 3 ? 2 : 1, arrayType);
+            VexAssign(isVex, dst, m.Fn(intrinsic.MakeInstance(arrayType), src1, src2));
         }
 
         private void RewritePblend(bool isVex, PrimitiveType elementType)
@@ -320,20 +346,20 @@ namespace Reko.Arch.X86.Rewriter
             VexAssign(isVex, dst, m.Fn(intrinsic.MakeInstance(elementType, arrayType), src));
         }
 
-        private void RewritePcmp(IntrinsicProcedure intrinsic, PrimitiveType elementType)
+        private void RewritePcmp(bool isVex, IntrinsicProcedure intrinsic, PrimitiveType elementType)
         {
             var dst = SrcOp(0);
             ArrayType srcType = CreatePackedArrayType(elementType, dst.DataType);
             ArrayType dstType = new ArrayType(
                 PrimitiveType.CreateWord(srcType.ElementType.BitSize), 
                 srcType.Length);
-            var src1 = SrcOp(0, srcType);
-            var src2 = SrcOp(1, srcType);
+            var src1 = SrcOp(instrCur.Operands.Length == 3 ? 1 : 0, srcType);
+            var src2 = SrcOp(instrCur.Operands.Length == 3 ? 2 : 1, srcType);
             var tmp1 = binder.CreateTemporary(srcType);
             var tmp2 = binder.CreateTemporary(srcType);
             m.Assign(tmp1, src1);
             m.Assign(tmp2, src2);
-            m.Assign(dst, m.Fn(intrinsic.MakeInstance(srcType), tmp1, tmp2));
+            VexAssign(isVex, dst, m.Fn(intrinsic.MakeInstance(srcType), tmp1, tmp2));
         }
 
         private void RewritePextr(PrimitiveType dt)
@@ -509,13 +535,13 @@ namespace Reko.Arch.X86.Rewriter
             m.Assign(dst, m.Fn(intrinsic, dst, src));
         }
 
-        private void RewriteSqrtsd(IntrinsicProcedure intrinsic, PrimitiveType dt)
+        private void RewriteScalarUnaryOp(bool isVex, IntrinsicProcedure intrinsic, PrimitiveType dt)
         {
             var src = MaybeSlice(dt, SrcOp(1));
             var dst = (Identifier) SrcOp(0);
             var tmp = binder.CreateTemporary(dt);
             m.Assign(tmp, m.Fn(intrinsic, src));
-            m.Assign(dst, m.Dpb(dst, tmp, 0));
+            VexAssign(isVex, dst, tmp);
         }
 
         private void RewriteStmxcsr()
@@ -658,6 +684,18 @@ namespace Reko.Arch.X86.Rewriter
             return at;
         }
 
+        private void RewritePmovzx(PrimitiveType dtFrom, PrimitiveType dtTo)
+        {
+            var src1 = SrcOp(1);
+            var dst = SrcOp(0);
+            var aFrom = CreatePackedArrayType(dtFrom, src1.DataType);
+            var aTo = CreatePackedArrayType(dtTo, dst.DataType);
+            m.Assign(SrcOp(0),
+                MaybeConvert(dst.DataType, m.Fn(
+                    pmovzx_intrinsic.MakeInstance(aFrom, aTo),
+                    MaybeSlice(aFrom, src1))));
+        }
+
         private void RewritePsrldq(bool isVex)
         {
             bool has3Ops = instrCur.Operands.Length == 3;
@@ -680,10 +718,10 @@ namespace Reko.Arch.X86.Rewriter
             RewritePackedLogical(isVex, pxor_intrinsic);
         }
 
-        private void RewriteUnpckhps()
+        private void RewriteUnpckhps(bool isVex)
         {
             var bitsize = instrCur.Operands[0].DataType.BitSize;
-            RewritePackedBinop(false, unpckhp_intrinsic, PrimitiveType.Real32);
+            RewritePackedBinop(isVex, unpckhp_intrinsic, PrimitiveType.Real32);
         }
 
         private void RewriteAesenc(bool isVex, IntrinsicProcedure intrinsic)
@@ -701,6 +739,24 @@ namespace Reko.Arch.X86.Rewriter
             var round = SrcOp(iOp);
             var result = SrcOp(0);
             VexAssign(isVex, result, m.Fn(aeskeygen_intrinsic, src, round));
+        }
+
+        private void RewriteVperm(PrimitiveType dtElem)
+        {
+            var src = SrcOp(1);
+            var imm = SrcOp(2);
+            var dst = SrcOp(0);
+            var at = CreatePackedArrayType(dtElem, dst.DataType);
+            m.Assign(dst, m.Fn(vperm_intrinsic.MakeInstance(at), src, imm));
+        }
+
+        private void RewriteVtest(PrimitiveType dtElem)
+        {
+            var src = SrcOp(1);
+            var dst = SrcOp(0);
+            var grf = binder.EnsureFlagGroup(Registers.CZ);
+            var at = CreatePackedArrayType(dtElem, dst.DataType);
+            m.Assign(grf, m.Fn(vtest_intrinsic.MakeInstance(at), dst, src));
         }
 
         private void RewriteVZeroAll()

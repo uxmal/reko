@@ -186,6 +186,12 @@ namespace Reko.Arch.X86.Rewriter
             m.SideEffect(m.Fn(vmptrld_intrinsic, SrcOp(0)));
         }
 
+        private void RewriteVmptrst()
+        {
+            m.SideEffect(m.Fn(vmptrst_intrinsic, SrcOp(0)));
+        }
+
+
         private void RewriteVmxon()
         {
             m.SideEffect(m.Fn(vmxon_intrinsic, m.AddrOf(PrimitiveType.Ptr64, SrcOp(0))));
@@ -227,6 +233,11 @@ namespace Reko.Arch.X86.Rewriter
             var edx_eax = binder.EnsureSequence(PrimitiveType.Word64, Registers.edx, Registers.eax);
             var ecx = binder.EnsureRegister(Registers.ecx);
             m.SideEffect(m.Fn(wrmsr_intrinsic, ecx, edx_eax));
+        }
+
+        private void RewriteXrstor()
+        {
+            m.SideEffect(m.Fn(xrstor_intrinsic, m.AddrOf(arch.PointerType, SrcOp(0))));
         }
 
         private void RewriteXsaveopt()

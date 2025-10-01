@@ -434,7 +434,7 @@ namespace Reko.Arch.X86
                         dec: Instr(Mnemonic.kaddw, rK, vK, mK),
                         dec66: Instr(Mnemonic.kaddb, rK, vK, mK),
                         decWide: Instr(Mnemonic.kaddq, rK, vK, mK),
-                        dec66Wide: Instr(Mnemonic.kadd, rK, vK, mK)));
+                        dec66Wide: Instr(Mnemonic.kaddd, rK, vK, mK)));
                 d[0x4B] = VexInstr(
                     Instr(Mnemonic.cmovpo, InstrClass.Linear | InstrClass.Conditional, Gv, Ev),
                     new PrefixedDecoder(

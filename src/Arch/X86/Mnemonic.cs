@@ -333,7 +333,7 @@ namespace Reko.Arch.X86
         kaddw,
         kaddb,
         kaddq,
-        kadd,
+        kaddd,
         kandb,
         kandd,
         kandq,

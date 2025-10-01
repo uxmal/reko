@@ -491,10 +491,9 @@ namespace Reko.Arch.X86.Rewriter
 
         public Expression MaybeConvert(DataType? type, Expression e)
         {
-            if (type is not null)
-                return m.Convert(e, e.DataType, type);
-            else
+            if (type is null || e.DataType.BitSize >= type.BitSize)
                 return e;
+            return m.Convert(e, e.DataType, type);
         }
 
         public Expression MaybeSlice(DataType type, Expression e)

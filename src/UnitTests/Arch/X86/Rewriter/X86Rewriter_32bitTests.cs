@@ -733,7 +733,7 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
             Run32bitTest("660F540550595700");	// andpd	xmm0,[00575950]
             AssertCode(
                 "0|L--|10000000(8): 1 instructions",
-                "1|L--|xmm0 = __andp<word64[2]>(xmm0, Mem0[0x00575950<p32>:(arr word64 2)])");
+                "1|L--|xmm0 = __simd_and<word64[2]>(xmm0, Mem0[0x00575950<p32>:(arr word64 2)])");
         }
 
         [Test]
@@ -751,7 +751,7 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
             Run32bitTest("0F544242");    // andps\txmm0,[edx+42]
             AssertCode(
                "0|L--|10000000(4): 1 instructions",
-               "1|L--|xmm0 = __andp<word32[4]>(xmm0, Mem0[edx + 66<i32>:(arr word32 4)])");
+               "1|L--|xmm0 = __simd_and<word32[4]>(xmm0, Mem0[edx + 66<i32>:(arr word32 4)])");
         }
 
         [Test]
@@ -2099,7 +2099,7 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
                 "0|L--|10000000(10): 3 instructions",
                 "1|L--|v5 = xmm1",
                 "2|L--|v6 = xmm1",
-                "3|L--|xmm1 = __pshufb<byte[16]>(v5, v6, Mem0[0x80F2220<32> + ebx * 8<32>:word128])");
+                "3|L--|xmm1 = __pshuf<byte[16]>(v5, v6, Mem0[0x80F2220<32> + ebx * 8<32>:word128])");
         }
 
         [Test]
