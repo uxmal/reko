@@ -406,7 +406,7 @@ word16 fn0800-0541(Eq_n di, Eq_n ds, union Eq_n & dsOut)
 					struct Eq_n Eq_n::* bx_n = SLICE(es_bx_n, word16, 0) + (Mem331[ds:0x2A27:word16] << 0x02);
 					ptrLoc06_n = SEQ((es_n->*bx_n).w0002, (es_n->*bx_n).w0000 + 0x02);
 				}
-				if ((int16) *ptrLoc06_n.u3 == 0x00)
+				if (*ptrLoc06_n.u3 == 0)
 				{
 					word16 cx_n;
 					word16 dx_n;
@@ -3519,7 +3519,7 @@ word16 fn0800-2DE2(Eq_n cx, Eq_n dx, Eq_n si, Eq_n ds, Eq_n ptrArg02, union Eq_n
 			}
 			(es_n->*di_n).bFFFFFFFF = 0x00;
 		}
-		if (CONVERT(Mem183[ds:0x45B2:byte], int8, int16) == 0x00)
+		if (Mem183[ds:0x45B2:byte] == 0)
 		{
 			word16 ax_n = fn0800-2DE2(cx_n, dx_n, si, ds, wArg02_n, out cx_n, out dx_n, out si_n, out ds_n);
 			cxOut = cx_n;

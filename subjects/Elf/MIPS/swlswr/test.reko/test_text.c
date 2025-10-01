@@ -50,7 +50,7 @@ void register_tm_clones()
 // 000006F4: void __do_global_dtors_aux()
 void __do_global_dtors_aux()
 {
-	if ((word32) g_b10AF0 == 0x00)
+	if (g_b10AF0 == 0x00)
 	{
 		if (__cxa_finalize != 0x00)
 		{
@@ -60,7 +60,7 @@ void __do_global_dtors_aux()
 		Eq_n r2_n;
 		r2_n.u0 = dtor_idx.6258.u0;
 		Eq_n r16_n = (g_dw10AB0 - 68200 >> 0x02) + -1;
-		while ((word32) (r2_n < r16_n) != 0x00)
+		while (r2_n < r16_n)
 		{
 			Eq_n r2_n = (word32) r2_n + 1;
 			dtor_idx.6258.u0 = (int32) r2_n;

@@ -643,7 +643,7 @@ l0040178F:
 	bl_94 = 0<8> - (eax_85 != 1<32>)
 	branch UnhandledExceptionFilter(&tLoc0C) != 0<32> l00401889
 l0040187C:
-	Mem113[0x00403368<p32>:word32] = Mem101[0x00403368<p32>:word32] & 0<32> - (CONVERT(bl_94 + 1<8>, byte, word32) != 0<32>)
+	Mem113[0x00403368<p32>:word32] = Mem101[0x00403368<p32>:word32] & 0<32> - (bl_94 != 0xFF<8>)
 l00401889:
 	return
 fn00401774_exit:

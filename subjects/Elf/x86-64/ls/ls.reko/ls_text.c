@@ -6919,7 +6919,7 @@ l000000000040D986:
 	if (r15_n == ~0x00)
 	{
 l000000000040DB76:
-		if ((byte) (*(r8_n + rbp_n) != 0x00) == 0x00)
+		if (*(r8_n + rbp_n) == 0x00)
 			goto l000000000040DB86;
 		goto l000000000040D9A8;
 	}
@@ -7741,7 +7741,7 @@ l000000000040ED85:
 l000000000040ED94:
 					++rbx_n.u4;
 					word32 edi_n = (word32) rbx_n.u4->t0000.u0;
-					ci8 dil_n = (byte) edi_n;
+					char dil_n = (byte) edi_n;
 					bool v132_n = dil_n > 0x30;
 					word64 rdi_n = SEQ(SLICE((uint64) edi_n, word56, 8), dil_n);
 					while (dil_n != 0x30)
@@ -7769,10 +7769,10 @@ l000000000040ED94:
 l000000000040EDEE:
 							int32 ebp_n = ~0x00;
 							word64 rdi_n = rdi_n;
-							if ((int32) dil_n <= 0x39 && (int32) dil_n >= 0x30)
+							if (dil_n <= 0x39 && dil_n >= 0x30)
 							{
 								ebp_n = 0x00;
-								byte dil_n;
+								cu8 dil_n;
 								do
 								{
 									if (ebp_n > 0x0CCCCCCC)
@@ -7793,7 +7793,7 @@ l000000000040EDEE:
 									word32 edi_n = (word32) rbx_n.u4->t0000.u0;
 									dil_n = (byte) edi_n;
 									rdi_n = SEQ(SLICE((uint64) edi_n, word56, 8), dil_n);
-								} while ((int32) dil_n <= 0x39 && (int32) dil_n >= 0x30);
+								} while (dil_n <= 0x39 && dil_n >= 0x30);
 							}
 							byte dil_n = (byte) rdi_n;
 							Eq_n rcx_n;

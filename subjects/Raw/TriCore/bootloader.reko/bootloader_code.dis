@@ -717,8 +717,8 @@ word32 fn00000AC0(word32 a4, word32 a15)
 fn00000AC0_entry:
 l00000AC0:
 	d2_4 = Mem0[0x0003C5F0<p32>:word32]
-	d15_11 = CONVERT(SLICE(Mem0[0x0003C5F4<p32>:word32], bool, 3), bool, int32) != 0<32> ? d2_4 | 0xF8<32> : d2_4 & 0xFFFFFFF7<32> | 0xFFFFFFF0<32>
-	d15_17 = CONVERT(SLICE(Mem0[0x0003C5F4<p32>:word32], bool, 2), bool, int32) != 0<32> ? d15_11 | 4<32> : d15_11 & 0xFFFFFFFB<32>
+	d15_11 = SLICE(Mem0[0x0003C5F4<p32>:word32], bool, 3) ? d2_4 | 0xF8<32> : d2_4 & 0xFFFFFFF7<32> | 0xFFFFFFF0<32>
+	d15_17 = SLICE(Mem0[0x0003C5F4<p32>:word32], bool, 2) ? d15_11 | 4<32> : d15_11 & 0xFFFFFFFB<32>
 	Mem23[0x0003C5F0<p32>:word32] = a15
 	Mem25[0x0003C5F0<p32>:word32] = a4
 	__load_upper_context()
@@ -886,9 +886,9 @@ l00000EB6:
 	d4_26 = CONVERT(Mem0[0xD0000231<32>:byte], byte, uint32)
 	d6_32 = Mem29[0xD000022C<32>:word32]
 	d7_33 = CONVERT(Mem0[a4 + 13<i32>:byte], byte, uint32) << 24<i32> | CONVERT(Mem0[a4 + 14<i32>:byte], byte, uint32) << 16<i32> | CONVERT(Mem0[a4 + 16<i32>:byte], byte, uint32) | CONVERT(Mem0[a4 + 15<i32>:byte], byte, uint32) << 8<i32>
-	d5_34 = CONVERT(Mem0[0xD0000230<32>:byte], byte, uint32) != 0<32> ? 0x80800000<32> : 0x80000000<32>
+	d5_34 = Mem0[0xD0000230<32>:byte] != 0<8> ? 0x80800000<32> : 0x80000000<32>
 	__store_upper_context()
-	branch CONVERT(Mem29[fn0000098A(d4_26, d5_34, d6_32, d7_33, d2_22) + 4<i32>:byte], byte, uint32) != 0<32> l00000F0E
+	branch Mem29[fn0000098A(d4_26, d5_34, d6_32, d7_33, d2_22) + 4<i32>:byte] != 0<8> l00000F0E
 l00000F06:
 l00000F0E:
 l00000F3C_thunk_fn00000CCE:
@@ -950,10 +950,10 @@ l0000101C:
 	a15_11 = 6<32>
 l0000102E:
 	Mem22[d15_19 + 0xD000012C<32>:byte] = Mem15[a4 + a6_13 + 12<i32>:byte]
-	branch CONVERT(d15_19 != 0xFF<32>, bool, word32) != 0<32> l00001050
+	branch d15_19 != 0xFF<32> l00001050
 l00001042:
 	Mem34[0xD0000128<32>:word32] = d15_19
-	branch CONVERT(Mem34[0xD0000128<32>:word32] == 0xFF<32>, bool, word32) != 0<32> l0000105A
+	branch Mem34[0xD0000128<32>:word32] == 0xFF<32> l0000105A
 l0000104C:
 	__load_upper_context()
 	return

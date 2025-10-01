@@ -1201,7 +1201,7 @@ l004027FE:
 		uses: mac:mac_1463,Mem:Mem1294,pr:pr_1327,r0:r0_1443,r1:r1_1458,r10:r10_1322,r11:r11_1323,r12:r12_1324,r13:r13_1325,r14:r14_1326,r2:r2_1459,r3:r3_1460,r4:1<32>,r5:0<32>,r6:r6_1462,r7:r7_1461,r8:r8_1319,r9:r0_1320
 		defs: mac:mac_1463,r1:r1_1458,r2:r2_1459,r3:r3_1460,r6:r6_1462,r7:r7_1461
 l00402806:
-	branch CONVERT(Mem102[r8_1031 + 0x54<32>:byte], byte, int32) != 0x2E<32> l00402818
+	branch Mem102[r8_1031 + 0x54<32>:byte] != 0x2E<8> l00402818
 l0040280E:
 	r1_709 = Mem102[Mem102[0x0040288C<p32>:word32] + r12_1002:word32]
 l00402812:
@@ -1475,7 +1475,7 @@ l00402B00_ds_f:
 l00402B00_ds_t:
 	goto l00402B14
 l00402B02:
-	branch CONVERT(Mem142[r0_158 + 0x54<32>:byte], byte, int32) != 0x2E<32> l00402B14
+	branch Mem142[r0_158 + 0x54<32>:byte] != 0x2E<8> l00402B14
 l00402B0A:
 	branch Mem142[Mem142[Mem142[0x00402BE0<p32>:word32] + r12_109:word32]:word32] == 0<32> l00402A6E
 l00402B14:
@@ -3272,7 +3272,7 @@ l004041EA_ds_f:
 l004041EA_ds_t:
 	goto l004041D4
 l004041EC:
-	branch CONVERT(Mem16[r0_28 + 0xFFFFFFFF<32> + r15_26:byte], byte, int32) != 0<32> l004041F6_ds_t
+	branch Mem16[r0_28 + 0xFFFFFFFF<32> + r15_26:byte] != 0<8> l004041F6_ds_t
 l004041F6_ds_f:
 	goto l004041F8
 l004041F6_ds_t:

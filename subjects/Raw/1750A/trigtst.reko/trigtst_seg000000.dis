@@ -171,7 +171,7 @@ l02BF:
 	goto l000002C7
 l02C8:
 	gp2_18 = gp2_12 & 0xFFF8<16>
-	branch CONVERT(gp1 - gp2_18, uint16, uint32) > 7<32> l0323
+	branch gp1 - gp2_18 > 7<u16> l0323
 	goto l000002D6
 l0323:
 	gp3_gp4_gp5_46 = Mem31[0x811F<p16>:real48]

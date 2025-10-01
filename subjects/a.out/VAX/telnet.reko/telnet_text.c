@@ -3220,7 +3220,7 @@ Eq_n fn000036E0(Eq_n ap, struct Eq_n * fp, struct Eq_n & r11Out, union Eq_n & ap
 	if (ap.u3[4] != 0x00)
 	{
 		Eq_n r10_n = ap.u3[4] - 0x04;
-		if ((uint32) r10_n.u1->t0000.u0 == 0xFF)
+		if (r10_n.u1->t0000.u0 == ~0x00)
 		{
 			struct Eq_n * r11_n = (uint32) r10_n.u1->b0001;
 			r10_n.u1->t0000.u1 = (struct Eq_n *) *((char *) &g_aA2F0->u1 + r11_n * 4);

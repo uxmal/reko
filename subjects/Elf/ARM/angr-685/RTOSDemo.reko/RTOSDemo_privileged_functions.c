@@ -30,14 +30,14 @@ void prvUnlockQueue(Eq_n r0, word32 cpsr)
 				vTaskMissedYield();
 				int8 v16_n = (byte) r4_n - 0x01;
 				r4_n = (int32) v16_n;
-				if ((uint32) v16_n == 0x00)
+				if (v16_n == 0x00)
 					break;
 			}
 			else
 			{
 				int8 v23_n = (byte) r4_n - 0x01;
 				r4_n = (int32) v23_n;
-				if ((uint32) v23_n == 0x00)
+				if (v23_n == 0x00)
 					break;
 			}
 		} while (*((word32) r0 + 36) != 0x00);
@@ -55,14 +55,14 @@ void prvUnlockQueue(Eq_n r0, word32 cpsr)
 				vTaskMissedYield();
 				int8 v19_n = (byte) r4_n - 0x01;
 				r4_n = (int32) v19_n;
-				if ((uint32) v19_n == 0x00)
+				if (v19_n == 0x00)
 					break;
 			}
 			else
 			{
 				int8 v21_n = (byte) r4_n - 0x01;
 				r4_n = (int32) v21_n;
-				if ((uint32) v21_n == 0x00)
+				if (v21_n == 0x00)
 					break;
 			}
 		} while (*((word32) r0 + 16) != 0x00);
@@ -226,9 +226,9 @@ void xQueueGenericSend(Eq_n r0, Eq_n r1, word32 r2, word32 r3, word32 cpsr)
 		vPortExitCritical(cpsr);
 		vTaskSuspendAll();
 		vPortEnterCritical(cpsr);
-		if ((word32) *((word32) r0 + 0x0044) == 0xFF)
+		if (*((word32) r0 + 0x0044) == ~0x00)
 			((word32) r0 + 0x0044)->u0 = 0x00;
-		if ((word32) r0.u2->u1.b0045 == 0xFF)
+		if (r0.u2->u1.b0045 == ~0x00)
 			r0.u2->u1.b0045 = 0x00;
 		vPortExitCritical(cpsr);
 		if (xTaskCheckForTimeOut(&tLoc28, &tLoc2C, cpsr) != 0x00)
@@ -326,9 +326,9 @@ l000003A4:
 		vPortExitCritical(cpsr);
 		vTaskSuspendAll();
 		vPortEnterCritical(cpsr);
-		if ((word32) *((word32) r0 + 0x0044) == 0xFF)
+		if (*((word32) r0 + 0x0044) == ~0x00)
 			((word32) r0 + 0x0044)->u0 = 0x00;
-		if ((word32) r0.u2->u1.b0045 == 0xFF)
+		if (r0.u2->u1.b0045 == ~0x00)
 			r0.u2->u1.b0045 = 0x00;
 		vPortExitCritical(cpsr);
 		if (xTaskCheckForTimeOut(&tLoc28, &tLoc2C, cpsr) != 0x00)
@@ -649,7 +649,7 @@ void prvInitialiseNewTask(ui32 r0, word32 r1, ui32 r2, word32 r3, int32 dwArg00,
 		*r0_n = *r3_n;
 		++r3_n;
 		++r0_n;
-	} while ((word32) *r3_n != 0x00 && r3_n != r1 + 0x02);
+	} while (*r3_n != 0x00 && r3_n != r1 + 0x02);
 	if ((dwArg00 & 0x7FFFFFFF) >= 0x01)
 		r2_n = 0x01;
 	dwArg08.u2->u1.dw004C = r2_n;
@@ -1026,7 +1026,7 @@ void xTaskNotifyWait(word32 r0, word32 r1, ui32 * r2, up32 r3, word32 cpsr)
 {
 	struct Eq_n * r4_n = g_ptr0C58;
 	vPortEnterCritical(cpsr);
-	if ((word32) r4_n->ptr0004->b0064 != 0x02)
+	if (r4_n->ptr0004->b0064 != 0x02)
 	{
 		struct Eq_n * r1_n = r4_n->ptr0004;
 		r1_n->dw0060 &= ~r0;
@@ -1043,7 +1043,7 @@ void xTaskNotifyWait(word32 r0, word32 r1, ui32 * r2, up32 r3, word32 cpsr)
 	vPortEnterCritical(cpsr);
 	if (r2 != null)
 		*r2 = r4_n->ptr0004->dw0060;
-	if ((word32) r4_n->ptr0004->b0064 != 0x01)
+	if (r4_n->ptr0004->b0064 != 0x01)
 	{
 		struct Eq_n * r3_n = r4_n->ptr0004;
 		r3_n->dw0060 &= ~r1;

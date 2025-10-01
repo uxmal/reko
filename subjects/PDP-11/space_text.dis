@@ -10,7 +10,7 @@ fn0468_entry:
 l0468:
 	v5_5 = Mem0[r3:byte]
 	r3 = r3 + 1<16>
-	branch CONVERT(v5_5, byte, int16) == 0<16> l04F8
+	branch v5_5 == 0<8> l04F8
 l046C:
 	branch TTYOUT(v5_5) l046C
 l0470:
@@ -1099,7 +1099,7 @@ l13BC:
 l13C2:
 	r4_12 = r4_56 + 1<16>
 	r4_56 = r4_12
-	branch CONVERT(Mem14[r4_56:byte], byte, int16) == 0<16> l13BC
+	branch Mem14[r4_56:byte] == 0<8> l13BC
 l13C6:
 	branch Mem14[r3_6 + 0x66<16>:word16] != 2<16> l13D6
 l13CE:

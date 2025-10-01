@@ -646,7 +646,7 @@ l004014CC:
 l004014D0:
 	r11_38 = r11_86 + 2<32>
 	r11_86 = r11_38
-	branch CONVERT(Mem0[r11_86:word16], word16, word32) != 0<32> l004014D0
+	branch Mem0[r11_86:word16] != 0<16> l004014D0
 l004014E4:
 	return
 l004014F4:
@@ -659,7 +659,7 @@ l00401500:
 l0040150C:
 	Mem28[r3 + r3_27:byte] = SLICE(r11_16, int8, 0)
 	r4 = r4 + 2<32>
-	branch CONVERT(Mem28[r4:word16], word16, word32) == 0<32> l0040154C
+	branch Mem28[r4:word16] == 0<16> l0040154C
 l0040152C:
 	r3_27 = r3_27 + 1<32>
 	ctr_13 = ctr_13 - 1<32>
@@ -955,7 +955,7 @@ l00401BC4:
 l00401BD8:
 	branch r9_122 == 0<32> l00401BF4
 l00401BE0:
-	branch CONVERT(Mem39[Mem39[Mem39[r2 + 152<i32>:word32]:word32]:word16], word16, word32) == 0<32> l00401C74
+	branch Mem39[Mem39[Mem39[r2 + 152<i32>:word32]:word32]:word16] == 0<16> l00401C74
 l00401BF4:
 	fn004040A4(r2)
 	branch r31_125 != 0<32> l00401C24
@@ -1069,7 +1069,7 @@ l00401E24:
 	r28_41 = r30_30 - r10_31 + r9_29 + 8<32> & 0xFFFFFFF8<32>
 	r2 = dwLoc3C
 	r11_27 = r10_51 + (r3 << 4<8>)
-	branch CONVERT(Mem36[Mem36[Mem36[dwLoc3C + 152<i32>:word32]:word32]:word16], word16, word32) == 0<32> l00401E78
+	branch Mem36[Mem36[Mem36[dwLoc3C + 152<i32>:word32]:word32]:word16] == 0<16> l00401E78
 l00401E60:
 	r3Out = 0xFFFFFFFF<32>
 	return dwLoc3C
@@ -1957,7 +1957,7 @@ fn004032AC_entry:
 l004032AC:
 	branch r3 == 0<32> l004032F8
 l004032B4:
-	branch CONVERT(Mem0[r3:byte], int8, int32) == 0<32> l004032F8
+	branch Mem0[r3:byte] == 0<i8> l004032F8
 l004032C0:
 	r11_11 = r3 + 1<i32>
 	r10_10 = CONVERT(Mem0[r3:byte], byte, word32)
@@ -2158,10 +2158,10 @@ l00403654:
 l00403664:
 	r4_34 = Mem10[r8_7 + 4<32> + (r10_13 << 3<8>):word32]
 	r5_40 = 0<32>
-	branch CONVERT(Mem10[r4_34:byte], byte, word32) == 0<32> l00403694
+	branch Mem10[r4_34:byte] == 0<8> l00403694
 l00403684:
 	r5_40 = r5_40 + 1<32>
-	branch CONVERT(Mem38[r4_34 + r5_40:byte], byte, word32) != 0<32> l00403684
+	branch Mem38[r4_34 + r5_40:byte] != 0<8> l00403684
 l00403694:
 	r2 = fn00402248(r2, 2<32>, r4_34, r5_40, out r3_120)
 l004036A0:
@@ -2221,13 +2221,13 @@ word32 fn00403744(word32 r2, word32 r3, word32 & r3Out)
 // Preserved: lr r1 r29 r30 r31
 fn00403744_entry:
 l00403744:
-	branch CONVERT(Mem0[r3:byte], int8, int32) == 0<32> l00403880
+	branch Mem0[r3:byte] == 0<i8> l00403880
 l00403760:
 	r11_24 = 0<32>
-	branch CONVERT(Mem21[r3:byte], byte, word32) == 0<32> l00403780
+	branch Mem21[r3:byte] == 0<8> l00403780
 l00403770:
 	r11_24 = r11_24 + 1<32>
-	branch CONVERT(Mem21[r3 + r11_24:byte], byte, word32) != 0<32> l00403770
+	branch Mem21[r3 + r11_24:byte] != 0<8> l00403770
 l00403780:
 	branch r11_24 >= 0x100<32> l00403880
 l00403788:

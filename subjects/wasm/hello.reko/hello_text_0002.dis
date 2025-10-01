@@ -79,7 +79,7 @@ l000F093C:
 	loc6_62 = loc6_62 + 1<32>
 	goto l000F092A
 l000F095B:
-	branch CONVERT(Mem90[v184_2 + 0xB7<32>:int8], byte, int32) >= 0<32> l000F09A5
+	branch Mem90[v184_2 + 0xB7<32>:int8] >= 0<8> l000F09A5
 l000F097D:
 	loc101_104 = (Mem90[v184_2 + 0xB4<32>:word32] & 0x7FFFFFFF<32>) + 0xFFFFFFFF<32>
 	goto l000F09A9
@@ -96,7 +96,7 @@ l000F09CD:
 	goto l000F114F
 l000F09E2:
 	v184_153 = Mem133[v184_2 + 0xAC<32>:word32]
-	branch CONVERT(Mem133[v184_2 + 0xB7<32>:int8], byte, int32) >= 0<32> l000F0A05
+	branch Mem133[v184_2 + 0xB7<32>:int8] >= 0<8> l000F0A05
 l000F0A02:
 	v184_156 = v184_153
 	goto l000F0A08
@@ -211,7 +211,7 @@ l000F0BED:
 	v184_414 = Mem411[v184_2 + 0xA8<32>:word32]
 	v184_427 = CONVERT(v192_426, int8, word32)
 	v184_447 = Mem411[v184_2 + 0xB0<32>:word32]
-	branch CONVERT(v192_426, byte, int32) >= 0<32> l000F0C27
+	branch v192_426 >= 0<8> l000F0C27
 l000F0C23:
 	v184_454 = v184_447
 	goto l000F0C2A
@@ -229,7 +229,7 @@ l000F0C77:
 	loc185_1282 = 0x1E<32>
 	goto l000F0E98
 l000F0C7F:
-	branch CONVERT(Mem498[v184_2 + 0xB7<32>:int8], byte, int32) >= 0<32> l000F0CC0
+	branch Mem498[v184_2 + 0xB7<32>:int8] >= 0<8> l000F0CC0
 l000F0C9B:
 	loc155_519 = (Mem498[v184_2 + 0xB4<32>:word32] & 0x7FFFFFFF<32>) + 0xFFFFFFFF<32>
 	goto l000F0CC5
@@ -246,7 +246,7 @@ l000F0CEE:
 	goto l000F0E98
 l000F0CF6:
 	v184_574 = Mem554[v184_2 + 0xAC<32>:word32]
-	branch CONVERT(Mem554[v184_2 + 0xB7<32>:int8], byte, int32) >= 0<32> l000F0D1F
+	branch Mem554[v184_2 + 0xB7<32>:int8] >= 0<8> l000F0D1F
 l000F0D1B:
 	v184_577 = v184_574
 	goto l000F0D22
@@ -325,7 +325,7 @@ l000F0EDC:
 	v203_902 = Mem901[v184_2 + 0xC3<32>:int8]
 	v184_903 = CONVERT(v203_902, int8, word32)
 	v184_918 = Mem901[v184_2 + 0xBC<32>:word32]
-	branch CONVERT(v203_902, byte, int32) >= 0<32> l000F0F16
+	branch v203_902 >= 0<8> l000F0F16
 l000F0F13:
 	v184_925 = v184_918
 	goto l000F0F18
@@ -567,7 +567,7 @@ l000F1360:
 l000F1363:
 	v233_121 = Mem120[loc11_108 + 0xB<32>:int8]
 	v230_122 = CONVERT(v233_121, int8, word32)
-	branch CONVERT(v233_121, byte, int32) >= 0<32> l000F13A0
+	branch v233_121 >= 0<8> l000F13A0
 l000F1388:
 	loc156_138 = Mem120[loc11_108 + 4<32>:word32]
 	goto l000F13B0
@@ -723,7 +723,7 @@ l000F1719:
 	branch v230_593 != 1<32> l000F1852
 l000F171F:
 	v230_609 = loc19_547 + 0xB<32>
-	branch CONVERT(Mem585[v230_609:int8], byte, int32) >= 0<32> l000F174A
+	branch Mem585[v230_609:int8] >= 0<8> l000F174A
 l000F173E:
 	loc73_625 = Mem585[loc19_547:word32]
 	goto l000F174E
@@ -759,7 +759,7 @@ l000F17C2:
 l000F17DF:
 	v242_702 = Mem701[v230_609:int8]
 	v230_703 = CONVERT(v242_702, int8, word32)
-	branch CONVERT(v242_702, byte, int32) >= 0<32> l000F180A
+	branch v242_702 >= 0<8> l000F180A
 l000F17F7:
 	loc92_719 = Mem701[loc19_547 + 4<32>:word32]
 	goto l000F1816
@@ -836,11 +836,11 @@ l000F194F:
 	loc27_1037 = loc30_575
 	goto l000F1425
 l000F195E:
-	branch CONVERT(Mem937[loc25_1023:int8], byte, int32) != 2<32> l000F19DB
+	branch Mem937[loc25_1023:int8] != 2<8> l000F19DB
 l000F1976:
 	v245_958 = Mem937[loc7_1021 + 0xB<32>:int8]
 	v230_959 = CONVERT(v245_958, int8, word32)
-	branch CONVERT(v245_958, byte, int32) >= 0<32> l000F19A8
+	branch v245_958 >= 0<8> l000F19A8
 l000F1995:
 	loc127_975 = Mem937[loc7_1021 + 4<32>:word32]
 	goto l000F19B4
@@ -968,7 +968,7 @@ l000F1C08:
 	loc232_1153 = 0x54<32>
 	goto l000F1C50
 l000F1C11:
-	branch CONVERT(Mem2058[loc28_1354:int8], byte, int32) != 2<32> l000F1C34
+	branch Mem2058[loc28_1354:int8] != 2<8> l000F1C34
 l000F1C2D:
 	loc17_1650 = loc16_1346
 	goto l000F1C50
@@ -1468,7 +1468,7 @@ l000F26BB:
 	loc12_174 = loc12_174 + 1<32>
 	goto l000F26A9
 l000F26DA:
-	branch CONVERT(Mem202[v207_2 + 0xBF<32>:int8], byte, int32) >= 0<32> l000F2731
+	branch Mem202[v207_2 + 0xBF<32>:int8] >= 0<8> l000F2731
 l000F2702:
 	loc134_216 = (Mem202[v207_2 + 0xBC<32>:word32] & 0x7FFFFFFF<32>) + 0xFFFFFFFF<32>
 	goto l000F2736
@@ -1485,7 +1485,7 @@ l000F275F:
 	goto l000F2EFD
 l000F2770:
 	v207_265 = Mem245[v207_2 + 0xB4<32>:word32]
-	branch CONVERT(Mem245[v207_2 + 0xBF<32>:int8], byte, int32) >= 0<32> l000F279A
+	branch Mem245[v207_2 + 0xBF<32>:int8] >= 0<8> l000F279A
 l000F2796:
 	v207_268 = v207_265
 	goto l000F279D
@@ -1599,7 +1599,7 @@ l000F29BB:
 	v207_538 = Mem534[v207_2 + 0xB0<32>:word32]
 	v207_551 = CONVERT(v216_550, int8, word32)
 	v207_571 = Mem534[v207_2 + 0xB8<32>:word32]
-	branch CONVERT(v216_550, byte, int32) >= 0<32> l000F29F7
+	branch v216_550 >= 0<8> l000F29F7
 l000F29F3:
 	v207_578 = v207_571
 	goto l000F29FA
@@ -1617,7 +1617,7 @@ l000F2A47:
 	loc208 = 0x28<32>
 	goto l000F2C3D
 l000F2A4F:
-	branch CONVERT(Mem622[v207_2 + 0xBF<32>:int8], byte, int32) >= 0<32> l000F2A92
+	branch Mem622[v207_2 + 0xBF<32>:int8] >= 0<8> l000F2A92
 l000F2A6C:
 	loc190_643 = (Mem622[v207_2 + 0xBC<32>:word32] & 0x7FFFFFFF<32>) + 0xFFFFFFFF<32>
 	goto l000F2A97
@@ -1634,7 +1634,7 @@ l000F2AC0:
 	goto l000F2C3D
 l000F2AC8:
 	v207_698 = Mem678[v207_2 + 0xB4<32>:word32]
-	branch CONVERT(Mem678[v207_2 + 0xBF<32>:int8], byte, int32) >= 0<32> l000F2AF2
+	branch Mem678[v207_2 + 0xBF<32>:int8] >= 0<8> l000F2AF2
 l000F2AEE:
 	v207_701 = v207_698
 	goto l000F2AF5
@@ -1726,7 +1726,7 @@ l000F2CB1:
 	Mem1053[0x00140048<p32>:word32] = 0<32>
 	branch (v207_1050 & 1<32>) != 0<32> l000F2EE0
 l000F2CE0:
-	branch CONVERT(v224_1039, byte, int32) >= 0<32> l000F2CF4
+	branch v224_1039 >= 0<8> l000F2CF4
 l000F2CF1:
 	v207_1069 = v207_1043
 	goto l000F2CF7
@@ -1914,7 +1914,7 @@ l000F2FE5:
 	v67_101 = Mem99[arg6 + 0xB<32>:int8]
 	v63_102 = CONVERT(v67_101, int8, word32)
 	v63_117 = Mem99[arg6 + 4<32>:word32]
-	branch CONVERT(v67_101, byte, int32) >= 0<32> l000F301D
+	branch v67_101 >= 0<8> l000F301D
 l000F301A:
 	v63_124 = v63_117
 	goto l000F301F
@@ -1979,7 +1979,7 @@ l000F315C:
 l000F3177:
 	goto l000F321E
 l000F317E:
-	branch CONVERT(Mem259[v63_7 + 0xFFFFFFFF<32>:int8], byte, int32) == 0x30<32> != 0<32> l000F31A5
+	branch Mem259[v63_7 + 0xFFFFFFFF<32>:int8] == 0x30<8> != 0<32> l000F31A5
 l000F319E:
 	goto l000F321E
 l000F31A5:
@@ -2033,7 +2033,7 @@ l000F32DB:
 	loc6_72 = loc6_72 + 1<32>
 	goto l000F32C9
 l000F32F9:
-	branch CONVERT(Mem100[v195_2 + 0xB7<32>:int8], byte, int32) >= 0<32> l000F3341
+	branch Mem100[v195_2 + 0xB7<32>:int8] >= 0<8> l000F3341
 l000F331A:
 	loc112_114 = (Mem100[v195_2 + 0xB4<32>:word32] & 0x7FFFFFFF<32>) + 0xFFFFFFFF<32>
 	goto l000F3345
@@ -2050,7 +2050,7 @@ l000F3368:
 	goto l000F3B43
 l000F337D:
 	v195_163 = Mem143[v195_2 + 0xAC<32>:word32]
-	branch CONVERT(Mem143[v195_2 + 0xB7<32>:int8], byte, int32) >= 0<32> l000F339F
+	branch Mem143[v195_2 + 0xB7<32>:int8] >= 0<8> l000F339F
 l000F339C:
 	v195_166 = v195_163
 	goto l000F33A1
@@ -2166,7 +2166,7 @@ l000F35B8:
 	v195_445 = Mem441[v195_2 + 0xA8<32>:word32]
 	v195_458 = CONVERT(v206_457, int8, word32)
 	v195_478 = Mem441[v195_2 + 0xB0<32>:word32]
-	branch CONVERT(v206_457, byte, int32) >= 0<32> l000F35F2
+	branch v206_457 >= 0<8> l000F35F2
 l000F35EE:
 	v195_485 = v195_478
 	goto l000F35F5
@@ -2184,7 +2184,7 @@ l000F3641:
 	loc195_1359 = 0x1F<32>
 	goto l000F3855
 l000F3649:
-	branch CONVERT(Mem529[v195_2 + 0xB7<32>:int8], byte, int32) >= 0<32> l000F368A
+	branch Mem529[v195_2 + 0xB7<32>:int8] >= 0<8> l000F368A
 l000F3665:
 	loc167_550 = (Mem529[v195_2 + 0xB4<32>:word32] & 0x7FFFFFFF<32>) + 0xFFFFFFFF<32>
 	goto l000F368F
@@ -2201,7 +2201,7 @@ l000F36B7:
 	goto l000F3855
 l000F36BF:
 	v195_605 = Mem585[v195_2 + 0xAC<32>:word32]
-	branch CONVERT(Mem585[v195_2 + 0xB7<32>:int8], byte, int32) >= 0<32> l000F36E7
+	branch Mem585[v195_2 + 0xB7<32>:int8] >= 0<8> l000F36E7
 l000F36E3:
 	v195_608 = v195_605
 	goto l000F36E9
@@ -2280,14 +2280,14 @@ l000F3899:
 	v216_958 = Mem957[v195_2 + 0xC3<32>:int8]
 	v195_959 = CONVERT(v216_958, int8, word32)
 	v195_974 = Mem957[v195_2 + 0xBC<32>:word32]
-	branch CONVERT(v216_958, byte, int32) >= 0<32> l000F38D3
+	branch v216_958 >= 0<8> l000F38D3
 l000F38D0:
 	v195_981 = v195_974
 	goto l000F38D5
 l000F38D3:
 	v195_981 = v195_959 & 0xFF<32>
 l000F38D5:
-	branch (v195_981 == 0<32> | CONVERT(Mem957[v195_2 + 0x151<32>:int8], byte, int32) == 0<32>) != 0<32> l000F3941
+	branch (v195_981 == 0<32> | Mem957[v195_2 + 0x151<32>:int8] == 0<8>) != 0<32> l000F3941
 l000F3901:
 	v195_1013 = Mem957[v195_2 + 4<32>:word32]
 	branch v195_1013 - (v195_2 + 8<32>) >= 0xA0<32> l000F3940
@@ -2518,7 +2518,7 @@ l000F3D09:
 l000F3D16:
 	branch !v101_142 l000F3DF4
 l000F3D1C:
-	branch CONVERT(Mem0[arg1:int8], byte, int32) != 0<32> l000F3D39
+	branch Mem0[arg1:int8] != 0<8> l000F3D39
 l000F3D34:
 	goto l000F3DF2
 l000F3D39:
@@ -2529,7 +2529,7 @@ l000F3D39:
 	v105_534 = Mem528[arg7 + 0xB<32>:int8]
 	v99_535 = CONVERT(v105_534, int8, word32)
 	v99_550 = Mem528[arg7 + 4<32>:word32]
-	branch CONVERT(v105_534, byte, int32) >= 0<32> l000F3D94
+	branch v105_534 >= 0<8> l000F3D94
 l000F3D91:
 	v99_557 = v99_550
 	goto l000F3D96
@@ -2558,7 +2558,7 @@ l000F3DFF:
 	v106_159 = Mem0[arg7 + 0xB<32>:int8]
 	v99_160 = CONVERT(v106_159, int8, word32)
 	v99_175 = Mem0[arg7 + 4<32>:word32]
-	branch CONVERT(v106_159, byte, int32) >= 0<32> l000F3E37
+	branch v106_159 >= 0<8> l000F3E37
 l000F3E34:
 	v99_182 = v99_175
 	goto l000F3E39
@@ -2567,7 +2567,7 @@ l000F3E37:
 l000F3E39:
 	branch v99_182 == 0<32> != 0<32> l000F3EBB
 l000F3E48:
-	branch CONVERT(Mem0[arg1:int8], byte, int32) != 0<32> l000F3E67
+	branch Mem0[arg1:int8] != 0<8> l000F3E67
 l000F3E60:
 	goto l000F412B
 l000F3E67:
@@ -2671,7 +2671,7 @@ l000F41E8:
 	loc6_72 = loc6_72 + 1<32>
 	goto l000F41D6
 l000F4206:
-	branch CONVERT(Mem100[v195_2 + 0xB7<32>:int8], byte, int32) >= 0<32> l000F424E
+	branch Mem100[v195_2 + 0xB7<32>:int8] >= 0<8> l000F424E
 l000F4227:
 	loc112_114 = (Mem100[v195_2 + 0xB4<32>:word32] & 0x7FFFFFFF<32>) + 0xFFFFFFFF<32>
 	goto l000F4252
@@ -2688,7 +2688,7 @@ l000F4275:
 	goto l000F4A50
 l000F428A:
 	v195_163 = Mem143[v195_2 + 0xAC<32>:word32]
-	branch CONVERT(Mem143[v195_2 + 0xB7<32>:int8], byte, int32) >= 0<32> l000F42AC
+	branch Mem143[v195_2 + 0xB7<32>:int8] >= 0<8> l000F42AC
 l000F42A9:
 	v195_166 = v195_163
 	goto l000F42AE
@@ -2804,7 +2804,7 @@ l000F44C5:
 	v195_445 = Mem441[v195_2 + 0xA8<32>:word32]
 	v195_458 = CONVERT(v206_457, int8, word32)
 	v195_478 = Mem441[v195_2 + 0xB0<32>:word32]
-	branch CONVERT(v206_457, byte, int32) >= 0<32> l000F44FF
+	branch v206_457 >= 0<8> l000F44FF
 l000F44FB:
 	v195_485 = v195_478
 	goto l000F4502
@@ -2822,7 +2822,7 @@ l000F454E:
 	loc195_1359 = 0x1F<32>
 	goto l000F4762
 l000F4556:
-	branch CONVERT(Mem529[v195_2 + 0xB7<32>:int8], byte, int32) >= 0<32> l000F4597
+	branch Mem529[v195_2 + 0xB7<32>:int8] >= 0<8> l000F4597
 l000F4572:
 	loc167_550 = (Mem529[v195_2 + 0xB4<32>:word32] & 0x7FFFFFFF<32>) + 0xFFFFFFFF<32>
 	goto l000F459C
@@ -2839,7 +2839,7 @@ l000F45C4:
 	goto l000F4762
 l000F45CC:
 	v195_605 = Mem585[v195_2 + 0xAC<32>:word32]
-	branch CONVERT(Mem585[v195_2 + 0xB7<32>:int8], byte, int32) >= 0<32> l000F45F4
+	branch Mem585[v195_2 + 0xB7<32>:int8] >= 0<8> l000F45F4
 l000F45F0:
 	v195_608 = v195_605
 	goto l000F45F6
@@ -2918,14 +2918,14 @@ l000F47A6:
 	v216_958 = Mem957[v195_2 + 0xC3<32>:int8]
 	v195_959 = CONVERT(v216_958, int8, word32)
 	v195_974 = Mem957[v195_2 + 0xBC<32>:word32]
-	branch CONVERT(v216_958, byte, int32) >= 0<32> l000F47E0
+	branch v216_958 >= 0<8> l000F47E0
 l000F47DD:
 	v195_981 = v195_974
 	goto l000F47E2
 l000F47E0:
 	v195_981 = v195_959 & 0xFF<32>
 l000F47E2:
-	branch (v195_981 == 0<32> | CONVERT(Mem957[v195_2 + 0x151<32>:int8], byte, int32) == 0<32>) != 0<32> l000F484E
+	branch (v195_981 == 0<32> | Mem957[v195_2 + 0x151<32>:int8] == 0<8>) != 0<32> l000F484E
 l000F480E:
 	v195_1013 = Mem957[v195_2 + 4<32>:word32]
 	branch v195_1013 - (v195_2 + 8<32>) >= 0xA0<32> l000F484D
@@ -3577,7 +3577,7 @@ l000F543C:
 	loc6_62 = loc6_62 + 1<32>
 	goto l000F542A
 l000F545B:
-	branch CONVERT(Mem90[v189_2 + 0xB7<32>:int8], byte, int32) >= 0<32> l000F54A5
+	branch Mem90[v189_2 + 0xB7<32>:int8] >= 0<8> l000F54A5
 l000F547D:
 	loc105_104 = (Mem90[v189_2 + 0xB4<32>:word32] & 0x7FFFFFFF<32>) + 0xFFFFFFFF<32>
 	goto l000F54A9
@@ -3594,7 +3594,7 @@ l000F54CD:
 	goto l000F5C72
 l000F54E2:
 	v189_153 = Mem133[v189_2 + 0xAC<32>:word32]
-	branch CONVERT(Mem133[v189_2 + 0xB7<32>:int8], byte, int32) >= 0<32> l000F5505
+	branch Mem133[v189_2 + 0xB7<32>:int8] >= 0<8> l000F5505
 l000F5502:
 	v189_156 = v189_153
 	goto l000F5508
@@ -3708,7 +3708,7 @@ l000F5704:
 	v189_421 = Mem417[v189_2 + 0xA8<32>:word32]
 	v189_434 = CONVERT(v197_433, int8, word32)
 	v189_454 = Mem417[v189_2 + 0xB0<32>:word32]
-	branch CONVERT(v197_433, byte, int32) >= 0<32> l000F573E
+	branch v197_433 >= 0<8> l000F573E
 l000F573A:
 	v189_461 = v189_454
 	goto l000F5741
@@ -3726,7 +3726,7 @@ l000F578E:
 	loc189_1289 = 0x1F<32>
 	goto l000F599D
 l000F5796:
-	branch CONVERT(Mem505[v189_2 + 0xB7<32>:int8], byte, int32) >= 0<32> l000F57D7
+	branch Mem505[v189_2 + 0xB7<32>:int8] >= 0<8> l000F57D7
 l000F57B2:
 	loc160_526 = (Mem505[v189_2 + 0xB4<32>:word32] & 0x7FFFFFFF<32>) + 0xFFFFFFFF<32>
 	goto l000F57DC
@@ -3743,7 +3743,7 @@ l000F5805:
 	goto l000F599D
 l000F580D:
 	v189_581 = Mem561[v189_2 + 0xAC<32>:word32]
-	branch CONVERT(Mem561[v189_2 + 0xB7<32>:int8], byte, int32) >= 0<32> l000F5836
+	branch Mem561[v189_2 + 0xB7<32>:int8] >= 0<8> l000F5836
 l000F5832:
 	v189_584 = v189_581
 	goto l000F5839
@@ -3822,7 +3822,7 @@ l000F59E1:
 	v206_901 = Mem900[v189_2 + 0xC3<32>:int8]
 	v189_902 = CONVERT(v206_901, int8, word32)
 	v189_917 = Mem900[v189_2 + 0xBC<32>:word32]
-	branch CONVERT(v206_901, byte, int32) >= 0<32> l000F5A1B
+	branch v206_901 >= 0<8> l000F5A1B
 l000F5A18:
 	v189_924 = v189_917
 	goto l000F5A1D
@@ -4068,7 +4068,7 @@ l000F5E9E:
 	loc6_62 = loc6_62 + 1<32>
 	goto l000F5E8C
 l000F5EBD:
-	branch CONVERT(Mem90[v189_2 + 0xB7<32>:int8], byte, int32) >= 0<32> l000F5F07
+	branch Mem90[v189_2 + 0xB7<32>:int8] >= 0<8> l000F5F07
 l000F5EDF:
 	loc106_104 = (Mem90[v189_2 + 0xB4<32>:word32] & 0x7FFFFFFF<32>) + 0xFFFFFFFF<32>
 	goto l000F5F0B
@@ -4085,7 +4085,7 @@ l000F5F2F:
 	goto l000F66D3
 l000F5F44:
 	v189_153 = Mem133[v189_2 + 0xAC<32>:word32]
-	branch CONVERT(Mem133[v189_2 + 0xB7<32>:int8], byte, int32) >= 0<32> l000F5F67
+	branch Mem133[v189_2 + 0xB7<32>:int8] >= 0<8> l000F5F67
 l000F5F64:
 	v189_156 = v189_153
 	goto l000F5F6A
@@ -4199,7 +4199,7 @@ l000F6168:
 	v189_421 = Mem417[v189_2 + 0xA8<32>:word32]
 	v189_434 = CONVERT(v197_433, int8, word32)
 	v189_454 = Mem417[v189_2 + 0xB0<32>:word32]
-	branch CONVERT(v197_433, byte, int32) >= 0<32> l000F61A2
+	branch v197_433 >= 0<8> l000F61A2
 l000F619E:
 	v189_461 = v189_454
 	goto l000F61A5
@@ -4217,7 +4217,7 @@ l000F61F2:
 	loc190_1289 = 0x1F<32>
 	goto l000F6401
 l000F61FA:
-	branch CONVERT(Mem505[v189_2 + 0xB7<32>:int8], byte, int32) >= 0<32> l000F623B
+	branch Mem505[v189_2 + 0xB7<32>:int8] >= 0<8> l000F623B
 l000F6216:
 	loc161_526 = (Mem505[v189_2 + 0xB4<32>:word32] & 0x7FFFFFFF<32>) + 0xFFFFFFFF<32>
 	goto l000F6240
@@ -4234,7 +4234,7 @@ l000F6269:
 	goto l000F6401
 l000F6271:
 	v189_581 = Mem561[v189_2 + 0xAC<32>:word32]
-	branch CONVERT(Mem561[v189_2 + 0xB7<32>:int8], byte, int32) >= 0<32> l000F629A
+	branch Mem561[v189_2 + 0xB7<32>:int8] >= 0<8> l000F629A
 l000F6296:
 	v189_584 = v189_581
 	goto l000F629D
@@ -4313,7 +4313,7 @@ l000F6445:
 	v206_901 = Mem900[v189_2 + 0xC3<32>:int8]
 	v189_902 = CONVERT(v206_901, int8, word32)
 	v189_917 = Mem900[v189_2 + 0xBC<32>:word32]
-	branch CONVERT(v206_901, byte, int32) >= 0<32> l000F647F
+	branch v206_901 >= 0<8> l000F647F
 l000F647C:
 	v189_924 = v189_917
 	goto l000F6481
@@ -4473,7 +4473,7 @@ l000F678B:
 	loc6_62 = loc6_62 + 1<32>
 	goto l000F6779
 l000F67AA:
-	branch CONVERT(Mem90[v189_2 + 0xB7<32>:int8], byte, int32) >= 0<32> l000F67F4
+	branch Mem90[v189_2 + 0xB7<32>:int8] >= 0<8> l000F67F4
 l000F67CC:
 	loc106_104 = (Mem90[v189_2 + 0xB4<32>:word32] & 0x7FFFFFFF<32>) + 0xFFFFFFFF<32>
 	goto l000F67F8
@@ -4490,7 +4490,7 @@ l000F681C:
 	goto l000F6FC0
 l000F6831:
 	v189_153 = Mem133[v189_2 + 0xAC<32>:word32]
-	branch CONVERT(Mem133[v189_2 + 0xB7<32>:int8], byte, int32) >= 0<32> l000F6854
+	branch Mem133[v189_2 + 0xB7<32>:int8] >= 0<8> l000F6854
 l000F6851:
 	v189_156 = v189_153
 	goto l000F6857
@@ -4604,7 +4604,7 @@ l000F6A55:
 	v189_421 = Mem417[v189_2 + 0xA8<32>:word32]
 	v189_434 = CONVERT(v197_433, int8, word32)
 	v189_454 = Mem417[v189_2 + 0xB0<32>:word32]
-	branch CONVERT(v197_433, byte, int32) >= 0<32> l000F6A8F
+	branch v197_433 >= 0<8> l000F6A8F
 l000F6A8B:
 	v189_461 = v189_454
 	goto l000F6A92
@@ -4622,7 +4622,7 @@ l000F6ADF:
 	loc190_1289 = 0x1F<32>
 	goto l000F6CEE
 l000F6AE7:
-	branch CONVERT(Mem505[v189_2 + 0xB7<32>:int8], byte, int32) >= 0<32> l000F6B28
+	branch Mem505[v189_2 + 0xB7<32>:int8] >= 0<8> l000F6B28
 l000F6B03:
 	loc161_526 = (Mem505[v189_2 + 0xB4<32>:word32] & 0x7FFFFFFF<32>) + 0xFFFFFFFF<32>
 	goto l000F6B2D
@@ -4639,7 +4639,7 @@ l000F6B56:
 	goto l000F6CEE
 l000F6B5E:
 	v189_581 = Mem561[v189_2 + 0xAC<32>:word32]
-	branch CONVERT(Mem561[v189_2 + 0xB7<32>:int8], byte, int32) >= 0<32> l000F6B87
+	branch Mem561[v189_2 + 0xB7<32>:int8] >= 0<8> l000F6B87
 l000F6B83:
 	v189_584 = v189_581
 	goto l000F6B8A
@@ -4718,7 +4718,7 @@ l000F6D32:
 	v206_901 = Mem900[v189_2 + 0xC3<32>:int8]
 	v189_902 = CONVERT(v206_901, int8, word32)
 	v189_917 = Mem900[v189_2 + 0xBC<32>:word32]
-	branch CONVERT(v206_901, byte, int32) >= 0<32> l000F6D6C
+	branch v206_901 >= 0<8> l000F6D6C
 l000F6D69:
 	v189_924 = v189_917
 	goto l000F6D6E
@@ -4878,7 +4878,7 @@ l000F7078:
 	loc6_62 = loc6_62 + 1<32>
 	goto l000F7066
 l000F7097:
-	branch CONVERT(Mem90[v189_2 + 0xB7<32>:int8], byte, int32) >= 0<32> l000F70E1
+	branch Mem90[v189_2 + 0xB7<32>:int8] >= 0<8> l000F70E1
 l000F70B9:
 	loc106_104 = (Mem90[v189_2 + 0xB4<32>:word32] & 0x7FFFFFFF<32>) + 0xFFFFFFFF<32>
 	goto l000F70E5
@@ -4895,7 +4895,7 @@ l000F7109:
 	goto l000F78AD
 l000F711E:
 	v189_153 = Mem133[v189_2 + 0xAC<32>:word32]
-	branch CONVERT(Mem133[v189_2 + 0xB7<32>:int8], byte, int32) >= 0<32> l000F7141
+	branch Mem133[v189_2 + 0xB7<32>:int8] >= 0<8> l000F7141
 l000F713E:
 	v189_156 = v189_153
 	goto l000F7144
@@ -5009,7 +5009,7 @@ l000F7342:
 	v189_421 = Mem417[v189_2 + 0xA8<32>:word32]
 	v189_434 = CONVERT(v197_433, int8, word32)
 	v189_454 = Mem417[v189_2 + 0xB0<32>:word32]
-	branch CONVERT(v197_433, byte, int32) >= 0<32> l000F737C
+	branch v197_433 >= 0<8> l000F737C
 l000F7378:
 	v189_461 = v189_454
 	goto l000F737F
@@ -5027,7 +5027,7 @@ l000F73CC:
 	loc190_1290 = 0x1F<32>
 	goto l000F75DB
 l000F73D4:
-	branch CONVERT(Mem505[v189_2 + 0xB7<32>:int8], byte, int32) >= 0<32> l000F7415
+	branch Mem505[v189_2 + 0xB7<32>:int8] >= 0<8> l000F7415
 l000F73F0:
 	loc161_526 = (Mem505[v189_2 + 0xB4<32>:word32] & 0x7FFFFFFF<32>) + 0xFFFFFFFF<32>
 	goto l000F741A
@@ -5044,7 +5044,7 @@ l000F7443:
 	goto l000F75DB
 l000F744B:
 	v189_581 = Mem561[v189_2 + 0xAC<32>:word32]
-	branch CONVERT(Mem561[v189_2 + 0xB7<32>:int8], byte, int32) >= 0<32> l000F7474
+	branch Mem561[v189_2 + 0xB7<32>:int8] >= 0<8> l000F7474
 l000F7470:
 	v189_584 = v189_581
 	goto l000F7477
@@ -5123,7 +5123,7 @@ l000F761F:
 	v206_901 = Mem900[v189_2 + 0xC3<32>:int8]
 	v189_902 = CONVERT(v206_901, int8, word32)
 	v189_917 = Mem900[v189_2 + 0xBC<32>:word32]
-	branch CONVERT(v206_901, byte, int32) >= 0<32> l000F7659
+	branch v206_901 >= 0<8> l000F7659
 l000F7656:
 	v189_924 = v189_917
 	goto l000F765B
@@ -5283,7 +5283,7 @@ l000F7965:
 	loc6_62 = loc6_62 + 1<32>
 	goto l000F7953
 l000F7984:
-	branch CONVERT(Mem90[v189_2 + 0xB7<32>:int8], byte, int32) >= 0<32> l000F79CE
+	branch Mem90[v189_2 + 0xB7<32>:int8] >= 0<8> l000F79CE
 l000F79A6:
 	loc105_104 = (Mem90[v189_2 + 0xB4<32>:word32] & 0x7FFFFFFF<32>) + 0xFFFFFFFF<32>
 	goto l000F79D2
@@ -5300,7 +5300,7 @@ l000F79F6:
 	goto l000F819B
 l000F7A0B:
 	v189_153 = Mem133[v189_2 + 0xAC<32>:word32]
-	branch CONVERT(Mem133[v189_2 + 0xB7<32>:int8], byte, int32) >= 0<32> l000F7A2E
+	branch Mem133[v189_2 + 0xB7<32>:int8] >= 0<8> l000F7A2E
 l000F7A2B:
 	v189_156 = v189_153
 	goto l000F7A31
@@ -5414,7 +5414,7 @@ l000F7C2D:
 	v189_421 = Mem417[v189_2 + 0xA8<32>:word32]
 	v189_434 = CONVERT(v197_433, int8, word32)
 	v189_454 = Mem417[v189_2 + 0xB0<32>:word32]
-	branch CONVERT(v197_433, byte, int32) >= 0<32> l000F7C67
+	branch v197_433 >= 0<8> l000F7C67
 l000F7C63:
 	v189_461 = v189_454
 	goto l000F7C6A
@@ -5432,7 +5432,7 @@ l000F7CB7:
 	loc189_1289 = 0x1F<32>
 	goto l000F7EC6
 l000F7CBF:
-	branch CONVERT(Mem505[v189_2 + 0xB7<32>:int8], byte, int32) >= 0<32> l000F7D00
+	branch Mem505[v189_2 + 0xB7<32>:int8] >= 0<8> l000F7D00
 l000F7CDB:
 	loc160_526 = (Mem505[v189_2 + 0xB4<32>:word32] & 0x7FFFFFFF<32>) + 0xFFFFFFFF<32>
 	goto l000F7D05
@@ -5449,7 +5449,7 @@ l000F7D2E:
 	goto l000F7EC6
 l000F7D36:
 	v189_581 = Mem561[v189_2 + 0xAC<32>:word32]
-	branch CONVERT(Mem561[v189_2 + 0xB7<32>:int8], byte, int32) >= 0<32> l000F7D5F
+	branch Mem561[v189_2 + 0xB7<32>:int8] >= 0<8> l000F7D5F
 l000F7D5B:
 	v189_584 = v189_581
 	goto l000F7D62
@@ -5528,7 +5528,7 @@ l000F7F0A:
 	v206_901 = Mem900[v189_2 + 0xC3<32>:int8]
 	v189_902 = CONVERT(v206_901, int8, word32)
 	v189_917 = Mem900[v189_2 + 0xBC<32>:word32]
-	branch CONVERT(v206_901, byte, int32) >= 0<32> l000F7F44
+	branch v206_901 >= 0<8> l000F7F44
 l000F7F41:
 	v189_924 = v189_917
 	goto l000F7F46
@@ -5688,7 +5688,7 @@ l000F8253:
 	loc6_62 = loc6_62 + 1<32>
 	goto l000F8241
 l000F8272:
-	branch CONVERT(Mem90[v189_2 + 0xB7<32>:int8], byte, int32) >= 0<32> l000F82BC
+	branch Mem90[v189_2 + 0xB7<32>:int8] >= 0<8> l000F82BC
 l000F8294:
 	loc106_104 = (Mem90[v189_2 + 0xB4<32>:word32] & 0x7FFFFFFF<32>) + 0xFFFFFFFF<32>
 	goto l000F82C0
@@ -5705,7 +5705,7 @@ l000F82E4:
 	goto l000F8A88
 l000F82F9:
 	v189_153 = Mem133[v189_2 + 0xAC<32>:word32]
-	branch CONVERT(Mem133[v189_2 + 0xB7<32>:int8], byte, int32) >= 0<32> l000F831C
+	branch Mem133[v189_2 + 0xB7<32>:int8] >= 0<8> l000F831C
 l000F8319:
 	v189_156 = v189_153
 	goto l000F831F
@@ -5819,7 +5819,7 @@ l000F851D:
 	v189_421 = Mem417[v189_2 + 0xA8<32>:word32]
 	v189_434 = CONVERT(v197_433, int8, word32)
 	v189_454 = Mem417[v189_2 + 0xB0<32>:word32]
-	branch CONVERT(v197_433, byte, int32) >= 0<32> l000F8557
+	branch v197_433 >= 0<8> l000F8557
 l000F8553:
 	v189_461 = v189_454
 	goto l000F855A
@@ -5837,7 +5837,7 @@ l000F85A7:
 	loc190_1289 = 0x1F<32>
 	goto l000F87B6
 l000F85AF:
-	branch CONVERT(Mem505[v189_2 + 0xB7<32>:int8], byte, int32) >= 0<32> l000F85F0
+	branch Mem505[v189_2 + 0xB7<32>:int8] >= 0<8> l000F85F0
 l000F85CB:
 	loc161_526 = (Mem505[v189_2 + 0xB4<32>:word32] & 0x7FFFFFFF<32>) + 0xFFFFFFFF<32>
 	goto l000F85F5
@@ -5854,7 +5854,7 @@ l000F861E:
 	goto l000F87B6
 l000F8626:
 	v189_581 = Mem561[v189_2 + 0xAC<32>:word32]
-	branch CONVERT(Mem561[v189_2 + 0xB7<32>:int8], byte, int32) >= 0<32> l000F864F
+	branch Mem561[v189_2 + 0xB7<32>:int8] >= 0<8> l000F864F
 l000F864B:
 	v189_584 = v189_581
 	goto l000F8652
@@ -5933,7 +5933,7 @@ l000F87FA:
 	v206_901 = Mem900[v189_2 + 0xC3<32>:int8]
 	v189_902 = CONVERT(v206_901, int8, word32)
 	v189_917 = Mem900[v189_2 + 0xBC<32>:word32]
-	branch CONVERT(v206_901, byte, int32) >= 0<32> l000F8834
+	branch v206_901 >= 0<8> l000F8834
 l000F8831:
 	v189_924 = v189_917
 	goto l000F8836
@@ -6120,7 +6120,7 @@ l000F8B7D:
 l000F8B80:
 	v243_125 = Mem124[loc18_108 + 0xB<32>:int8]
 	v240_126 = CONVERT(v243_125, int8, word32)
-	branch CONVERT(v243_125, byte, int32) >= 0<32> l000F8BC6
+	branch v243_125 >= 0<8> l000F8BC6
 l000F8BAE:
 	loc165_142 = Mem124[loc18_108 + 4<32>:word32]
 	goto l000F8BD6
@@ -6282,7 +6282,7 @@ l000F8F4A:
 	branch v240_602 != 1<32> l000F9081
 l000F8F50:
 	v240_618 = loc14_556 + 8<32>
-	branch CONVERT(Mem594[v240_618 + 3<32>:int8], byte, int32) >= 0<32> l000F8F82
+	branch Mem594[v240_618 + 3<32>:int8] >= 0<8> l000F8F82
 l000F8F76:
 	loc79_638 = Mem594[loc14_556:word32]
 	goto l000F8F86
@@ -6318,7 +6318,7 @@ l000F8FF1:
 l000F900E:
 	v250_708 = Mem707[v240_618 + 3<32>:int8]
 	v240_709 = CONVERT(v250_708, int8, word32)
-	branch CONVERT(v250_708, byte, int32) >= 0<32> l000F9039
+	branch v250_708 >= 0<8> l000F9039
 l000F9026:
 	loc98_725 = Mem707[loc14_556 + 4<32>:word32]
 	goto l000F9045
@@ -6395,11 +6395,11 @@ l000F917E:
 	loc31_1047 = loc34_584
 	goto l000F8C4B
 l000F918D:
-	branch CONVERT(Mem943[loc29_1033:int8], byte, int32) != 2<32> l000F9221
+	branch Mem943[loc29_1033:int8] != 2<8> l000F9221
 l000F91A5:
 	v253_968 = Mem943[loc7_1031 + 0xB<32>:int8]
 	v240_969 = CONVERT(v253_968, int8, word32)
-	branch CONVERT(v253_968, byte, int32) >= 0<32> l000F91E7
+	branch v253_968 >= 0<8> l000F91E7
 l000F91CF:
 	loc134_985 = Mem943[loc7_1031 + 4<32>:word32]
 	goto l000F91F7
@@ -6538,7 +6538,7 @@ l000F9478:
 	loc242_1049 = 0x58<32>
 	goto l000F94C0
 l000F9481:
-	branch CONVERT(Mem2041[loc32_1373:int8], byte, int32) != 2<32> l000F94A4
+	branch Mem2041[loc32_1373:int8] != 2<8> l000F94A4
 l000F949D:
 	loc24_1666 = loc23_1366
 	goto l000F94C0
@@ -6668,7 +6668,7 @@ l000F96FC:
 l000F971B:
 	v80_113 = Mem63[v72_2 + 0xB<32>:int8]
 	v72_114 = CONVERT(v80_113, int8, word32)
-	branch CONVERT(v80_113, byte, int32) >= 0<32> l000F974F
+	branch v80_113 >= 0<8> l000F974F
 l000F973B:
 	loc8 = v72_114
 	loc13 = Mem63[v72_2:word32]
@@ -6684,7 +6684,7 @@ l000F9763:
 	loc12 = loc13
 	loc36 = loc8
 l000F9770:
-	v74_158 = CONVERT(SLICE(loc36, byte, 0), byte, int32) < 0<32>
+	v74_158 = SLICE(loc36, byte, 0) < 0<8>
 	v72_165 = Mem164[v72_2:word32]
 	v72_172 = Mem164[v72_2 + 4<32>:word32]
 	v72_176 = loc36 & 0xFF<32>
@@ -7529,7 +7529,7 @@ l000FAA49:
 	goto l000FAB07
 l000FAA5C:
 l000FAA5E:
-	branch !(arg1 - arg0 > 1<32> & CONVERT(v23_36, byte, int32) == 0x30<32>) l000FAAEF
+	branch !(arg1 - arg0 > 1<32> & v23_36 == 0x30<8>) l000FAAEF
 l000FAA8D:
 	v25_82 = Mem0[arg0 + 1<32>:int8]
 l000FAA9B:
@@ -7602,7 +7602,7 @@ l000FABBD:
 	loc7_100 = loc8_86
 l000FABC8:
 	v41_104 = Mem103[loc4_101:int8]
-	branch CONVERT(v41_104, byte, int32) != 0<32> l000FABE5
+	branch v41_104 != 0<8> l000FABE5
 l000FABE2:
 	goto l000FAC04
 l000FABE5:
@@ -7759,7 +7759,7 @@ l000FAFEB:
 l000FB008:
 	branch v216_158 <= 1<32> l000FB24A
 l000FB00F:
-	branch CONVERT(Mem170[loc13:int8], byte, int32) != 0x30<32> l000FB23F
+	branch Mem170[loc13:int8] != 0x30<8> l000FB23F
 l000FB02B:
 	v216_190 = loc13 + 1<32>
 	v223_193 = Mem170[v216_190:int8]
@@ -7894,7 +7894,7 @@ l000FB342:
 	v229_513 = Mem507[v212_2 + 0xB<32>:int8]
 	v216_514 = CONVERT(v229_513, int8, word32)
 	v216_529 = Mem507[v212_2 + 4<32>:word32]
-	branch CONVERT(v229_513, byte, int32) >= 0<32> l000FB388
+	branch v229_513 >= 0<8> l000FB388
 l000FB384:
 	v216_536 = v216_529
 	goto l000FB38B
@@ -7956,7 +7956,7 @@ l000FB4D7:
 	goto l000FB637
 l000FB4DA:
 	v216_692 = Mem678[v212_2:word32]
-	branch CONVERT(Mem678[v212_2 + 0xB<32>:int8], byte, int32) >= 0<32> l000FB4FE
+	branch Mem678[v212_2 + 0xB<32>:int8] >= 0<8> l000FB4FE
 l000FB4FB:
 	v216_695 = v216_692
 	goto l000FB501
@@ -7964,7 +7964,7 @@ l000FB4FE:
 	v216_695 = v212_2
 l000FB501:
 	v237_707 = Mem678[v216_695 + loc11_665:int8]
-	branch !(CONVERT(v237_707, byte, int32) > 0<32> & loc12_667 == CONVERT(v237_707, byte, int32)) l000FB5AF
+	branch !(v237_707 > 0<8> & loc12_667 == CONVERT(v237_707, byte, int32)) l000FB5AF
 l000FB53D:
 	v216_742 = Mem678[arg5:word32]
 	Mem750[arg5:word32] = v216_742 + 1<32>
@@ -7972,7 +7972,7 @@ l000FB53D:
 	v239_759 = Mem756[v212_2 + 0xB<32>:int8]
 	v216_760 = CONVERT(v239_759, int8, word32)
 	v216_773 = Mem756[v212_2 + 4<32>:word32]
-	branch CONVERT(v239_759, byte, int32) >= 0<32> l000FB585
+	branch v239_759 >= 0<8> l000FB585
 l000FB582:
 	v216_780 = v216_773
 	goto l000FB587
@@ -8042,7 +8042,7 @@ l000FB6EC:
 l000FB6F3:
 	v246_1101 = Mem1100[loc21_1090:int8]
 	v216_1102 = CONVERT(v246_1101, int8, word32)
-	branch CONVERT(v246_1101, byte, int32) != 0x2E<32> l000FB713
+	branch v246_1101 != 0x2E<8> l000FB713
 l000FB70B:
 	loc214_1163 = 0x2D<32>
 	goto l000FB77B
@@ -8155,7 +8155,7 @@ l000FB931:
 	loc5_146 = arg1
 l000FB934:
 	v28_62 = Mem61[loc5_146:int8]
-	branch CONVERT(v28_62, byte, int32) != 0<32> l000FB951
+	branch v28_62 != 0<8> l000FB951
 l000FB94E:
 	goto l000FB970
 l000FB951:
@@ -8210,7 +8210,7 @@ l000FBA53:
 	v153_49 = Mem7[v147_2 + 0xB<32>:int8]
 	v151_50 = CONVERT(v153_49, int8, word32)
 	v151_65 = Mem7[v147_2 + 4<32>:word32]
-	branch CONVERT(v153_49, byte, int32) >= 0<32> l000FBACF
+	branch v153_49 >= 0<8> l000FBACF
 l000FBACC:
 	v151_72 = v151_65
 	goto l000FBAD1
@@ -8272,7 +8272,7 @@ l000FBC0B:
 l000FBC21:
 	branch v151_196 <= 1<32> l000FBD58
 l000FBC27:
-	branch CONVERT(Mem206[loc15:int8], byte, int32) != 0x30<32> l000FBD52
+	branch Mem206[loc15:int8] != 0x30<8> l000FBD52
 l000FBC3F:
 	v151_225 = loc15 + 1<32>
 	v161_228 = Mem206[v151_225:int8]
@@ -8358,7 +8358,7 @@ l000FBE11:
 	goto l000FBF77
 l000FBE14:
 	v151_466 = Mem452[v147_2:word32]
-	branch CONVERT(Mem452[v147_2 + 0xB<32>:int8], byte, int32) >= 0<32> l000FBE3C
+	branch Mem452[v147_2 + 0xB<32>:int8] >= 0<8> l000FBE3C
 l000FBE38:
 	v151_469 = v151_466
 	goto l000FBE3E
@@ -8366,7 +8366,7 @@ l000FBE3C:
 	v151_469 = v147_2
 l000FBE3E:
 	v170_481 = Mem452[v151_469 + loc13_439:int8]
-	branch !(CONVERT(v170_481, byte, int32) != 0<32> & loc14_441 == CONVERT(v170_481, byte, int32)) l000FBEF1
+	branch !(v170_481 != 0<8> & loc14_441 == CONVERT(v170_481, byte, int32)) l000FBEF1
 l000FBE81:
 	v151_516 = Mem452[arg5:word32]
 	Mem524[arg5:word32] = v151_516 + 1<32>
@@ -8374,7 +8374,7 @@ l000FBE81:
 	v172_533 = Mem530[v147_2 + 0xB<32>:int8]
 	v151_534 = CONVERT(v172_533, int8, word32)
 	v151_547 = Mem530[v147_2 + 4<32>:word32]
-	branch CONVERT(v172_533, byte, int32) >= 0<32> l000FBEC7
+	branch v172_533 >= 0<8> l000FBEC7
 l000FBEC4:
 	v151_554 = v151_547
 	goto l000FBEC9
@@ -8546,7 +8546,7 @@ l000FC220:
 	v81_117 = Mem63[v73_2 + 0xB<32>:int8]
 	v73_118 = CONVERT(v81_117, int8, word32)
 	v73_129 = Mem63[v73_2:word32]
-	branch CONVERT(v81_117, byte, int32) >= 0<32> l000FC251
+	branch v81_117 >= 0<8> l000FC251
 l000FC24E:
 	v73_132 = v73_129
 	goto l000FC253
@@ -8557,7 +8557,7 @@ l000FC253:
 	loc39_145 = v73_118
 	loc43_148 = v73_129
 l000FC26B:
-	v75_156 = CONVERT(SLICE(loc39_145, byte, 0), byte, int32) < 0<32>
+	v75_156 = SLICE(loc39_145, byte, 0) < 0<8>
 	v73_161 = Mem160[v73_2 + 4<32>:word32]
 	v73_165 = loc39_145 & 0xFF<32>
 	branch !v75_156 l000FC290
@@ -9372,7 +9372,7 @@ l000FD548:
 	Mem131[v51_2 + 8<32>:word32] = 0<32>
 	fn0011C6AF(v51_2, v51_64, arg5)
 	v51_161 = Mem131[v51_2:word32]
-	branch CONVERT(Mem131[v51_2 + 0xB<32>:int8], byte, int32) >= 0<32> l000FD592
+	branch Mem131[v51_2 + 0xB<32>:int8] >= 0<8> l000FD592
 l000FD58F:
 	v51_164 = v51_161
 	goto l000FD594
@@ -9470,7 +9470,7 @@ l000FD7AD:
 l000FD7CA:
 	branch v216_157 <= 1<32> l000FDA0C
 l000FD7D1:
-	branch CONVERT(Mem169[loc13:int8], byte, int32) != 0x30<32> l000FDA01
+	branch Mem169[loc13:int8] != 0x30<8> l000FDA01
 l000FD7ED:
 	v216_189 = loc13 + 1<32>
 	v222_192 = Mem169[v216_189:int8]
@@ -9605,7 +9605,7 @@ l000FDB04:
 	v226_510 = Mem504[v212_2 + 0xB<32>:int8]
 	v216_511 = CONVERT(v226_510, int8, word32)
 	v216_526 = Mem504[v212_2 + 4<32>:word32]
-	branch CONVERT(v226_510, byte, int32) >= 0<32> l000FDB4A
+	branch v226_510 >= 0<8> l000FDB4A
 l000FDB46:
 	v216_533 = v216_526
 	goto l000FDB4D
@@ -9680,7 +9680,7 @@ l000FDCC8:
 	v216_692 = v212_2
 l000FDCCB:
 	v234_704 = Mem675[v216_692 + loc11_662:int8]
-	branch !(CONVERT(v234_704, byte, int32) > 0<32> & loc12_664 == CONVERT(v234_704, byte, int32)) l000FDD64
+	branch !(v234_704 > 0<8> & loc12_664 == CONVERT(v234_704, byte, int32)) l000FDD64
 l000FDD07:
 	v216_739 = Mem675[arg5:word32]
 	Mem747[arg5:word32] = v216_739 + 4<32>
@@ -9760,7 +9760,7 @@ l000FDEB1:
 l000FDEBD:
 	v236_1096 = Mem1095[loc21_1081:int8]
 	v216_1097 = CONVERT(v236_1096, int8, word32)
-	branch CONVERT(v236_1096, byte, int32) != 0x2E<32> l000FDEDD
+	branch v236_1096 != 0x2E<8> l000FDEDD
 l000FDED5:
 	loc214_1159 = 0x2D<32>
 	goto l000FDF4A
@@ -9857,7 +9857,7 @@ l000FE0B8:
 	v150_49 = Mem7[v144_2 + 0xB<32>:int8]
 	v148_50 = CONVERT(v150_49, int8, word32)
 	v148_65 = Mem7[v144_2 + 4<32>:word32]
-	branch CONVERT(v150_49, byte, int32) >= 0<32> l000FE134
+	branch v150_49 >= 0<8> l000FE134
 l000FE131:
 	v148_72 = v148_65
 	goto l000FE136
@@ -9919,7 +9919,7 @@ l000FE273:
 l000FE289:
 	branch v148_195 <= 1<32> l000FE3C0
 l000FE28F:
-	branch CONVERT(Mem205[loc15:int8], byte, int32) != 0x30<32> l000FE3BA
+	branch Mem205[loc15:int8] != 0x30<8> l000FE3BA
 l000FE2A7:
 	v148_224 = loc15 + 1<32>
 	v157_227 = Mem205[v148_224:int8]
@@ -10016,7 +10016,7 @@ l000FE4A2:
 	v148_466 = v144_2
 l000FE4A4:
 	v164_478 = Mem449[v148_466 + loc13_436:int8]
-	branch !(CONVERT(v164_478, byte, int32) != 0<32> & loc14_438 == CONVERT(v164_478, byte, int32)) l000FE545
+	branch !(v164_478 != 0<8> & loc14_438 == CONVERT(v164_478, byte, int32)) l000FE545
 l000FE4E7:
 	v148_513 = Mem449[arg5:word32]
 	Mem521[arg5:word32] = v148_513 + 4<32>
@@ -10602,7 +10602,7 @@ l000FF5F1:
 l000FF5F7:
 	branch fn0011EE46(0x43D8<32>) == 0<32> != 0<32> l000FF8F4
 l000FF60C:
-	branch CONVERT(Mem0[0x43E0<32>:int8], byte, int32) != 0<32> l000FF6B8
+	branch Mem0[0x43E0<32>:int8] != 0<8> l000FF6B8
 l000FF626:
 	branch fn0011EE46(0x43E0<32>) == 0<32> != 0<32> l000FF6B7
 l000FF63B:
@@ -10754,7 +10754,7 @@ l000FF920:
 l000FF926:
 	branch fn0011EE46(0x43C8<32>) == 0<32> != 0<32> l000FFDB5
 l000FF93B:
-	branch CONVERT(Mem0[0x43D0<32>:int8], byte, int32) != 0<32> l000FF9E7
+	branch Mem0[0x43D0<32>:int8] != 0<8> l000FF9E7
 l000FF955:
 	branch fn0011EE46(0x43D0<32>) == 0<32> != 0<32> l000FF9E6
 l000FF96A:
@@ -10987,7 +10987,7 @@ l000FFDE1:
 l000FFDE7:
 	branch fn0011EE46(0x43B8<32>) == 0<32> != 0<32> l000FFF10
 l000FFDFC:
-	branch CONVERT(Mem0[0x43C0<32>:int8], byte, int32) != 0<32> l000FFEA8
+	branch Mem0[0x43C0<32>:int8] != 0<8> l000FFEA8
 l000FFE16:
 	branch fn0011EE46(0x43C0<32>) == 0<32> != 0<32> l000FFEA7
 l000FFE2B:

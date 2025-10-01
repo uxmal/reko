@@ -537,7 +537,7 @@ void fn004014A4(struct Eq_n * r2, ptr32 r3, word16 * r4, int32 r5)
 				}
 				*((word32) r3 + r3_n) = (ptr32) (int8) r11_n;
 				++r4;
-				if ((word32) *r4 == 0x00)
+				if (*r4 == 0x00)
 					return;
 				++r3_n;
 				--ctr_n;
@@ -552,7 +552,7 @@ void fn004014A4(struct Eq_n * r2, ptr32 r3, word16 * r4, int32 r5)
 		{
 			r11_n = r11_n + 1;
 			r11_n = r11_n;
-		} while ((word32) *r11_n != 0x00);
+		} while (*r11_n != 0x00);
 	}
 }
 
@@ -794,7 +794,7 @@ struct Eq_n * fn00401ADC(struct Eq_n * r2, struct Eq_n * r3, word32 & r3Out)
 			r2 = dwLoc44;
 			r9_n = (Eq_n (**)[]) *r29_n;
 		}
-		if (r9_n == null || (word32) (*(r2->ptr0098)->ptr0000) != 0x00)
+		if (r9_n == null || *(r2->ptr0098)->ptr0000 != 0x00)
 		{
 			fn004040A4(r2);
 			if (r31_n == null)
@@ -898,7 +898,7 @@ struct Eq_n * fn00401DD8(struct Eq_n * r2, int32 r3, int32 r4, word32 & r3Out)
 		struct Eq_n * dwLoc3C;
 		r2 = dwLoc3C;
 		r11_n = (struct Eq_n *) &(r10_n + r3)->u0;
-		if ((word32) *dwLoc3C->ptr0098->ptr0000 != 0x00)
+		if (*dwLoc3C->ptr0098->ptr0000 != 0x00)
 		{
 			r3Out = ~0x00;
 			return dwLoc3C;
@@ -1673,7 +1673,7 @@ void fn0040326C(struct Eq_n * r2)
 //      fn00403744
 void fn004032AC(byte * r3)
 {
-	if (r3 != null && (int32) (*r3) != 0x00)
+	if (r3 != null && *r3 != 0)
 	{
 		byte * r11_n = r3 + 1;
 		word32 r10_n = (word32) *r3;
@@ -1826,11 +1826,11 @@ struct Eq_n * fn00403618(struct Eq_n * r2, Eq_n r3)
 	{
 		struct Eq_n * r4_n = (struct Eq_n *) *((word32) r8_n + (r10_n * 0x08 + 4));
 		int32 r5_n = 0x00;
-		if ((word32) r4_n->a0000[0] != 0x00)
+		if (r4_n->a0000[0] != 0x00)
 		{
 			do
 				++r5_n;
-			while ((word32) r4_n[r5_n] != 0x00);
+			while (r4_n[r5_n] != 0x00);
 		}
 		word32 r3_n;
 		r2 = fn00402248(r2, 0x02, r4_n, r5_n, out r3_n);
@@ -1871,14 +1871,14 @@ struct Eq_n * fn004036B0(struct Eq_n * r2, struct Eq_n * r3, struct Eq_n ** r4)
 //      fn00403170
 struct Eq_n * fn00403744(struct Eq_n * r2, struct Eq_n * r3, word32 & r3Out)
 {
-	if ((int32) r3->a0000[0] != 0x00)
+	if (r3->a0000[0] != 0)
 	{
 		int32 r11_n = 0x00;
-		if ((word32) r3->a0000[0] != 0x00)
+		if (r3->a0000[0] != 0x00)
 		{
 			do
 				++r11_n;
-			while ((word32) r3[r11_n] != 0x00);
+			while (r3[r11_n] != 0x00);
 		}
 		if (r11_n < 0x0100)
 		{

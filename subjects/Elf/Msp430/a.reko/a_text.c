@@ -2137,7 +2137,7 @@ void strncpy(word16 r13, byte * r14, byte * r15)
 			*r12_n = *r14;
 			++r14;
 			++r12_n;
-			if ((word16) *r12_n == 0x00)
+			if (*r12_n == 0x00)
 			{
 				word16 r13_n;
 				for (r13_n = r13 + ~0x00; r13_n != 0x00; r13_n += ~0x00)

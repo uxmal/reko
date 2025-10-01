@@ -329,7 +329,7 @@ l0319:
 	gp2_12 = gp1 + 7<16>
 l031A:
 	gp2_18 = gp2_12 & 0xFFF8<16>
-	branch CONVERT(gp1 - gp2_18, uint16, uint32) > 7<32> l0375
+	branch gp1 - gp2_18 > 7<u16> l0375
 l0328:
 	gp2_55 = Mem31[gp2_18 + 0x32C<16>:word16]
 	call gp2_55 (retsize: 2;)

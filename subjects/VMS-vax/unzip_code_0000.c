@@ -20,10 +20,10 @@ word32 g_dw79E3 = 0x0E000700; // 000079E3
 int32 g_dw79EB = 0x0E000700; // 000079EB
 word32 g_dw79F7 = 0x000D0501; // 000079F7
 word16 g_w7A10 = 3525; // 00007A10
-word16 g_w7A26 = 0x010E; // 00007A26
-word16 g_w7A2E = 0x010E; // 00007A2E
+ci16 g_w7A26 = 0x010E; // 00007A26
+cup16 g_w7A2E = 0x010E; // 00007A2E
 word32 g_dw7A4E = 0x0D0A010E; // 00007A4E
-word16 g_w7A58 = 0x0DAE; // 00007A58
+cup16 g_w7A58 = 0x0DAE; // 00007A58
 <unknown> g_t7A64 = // 00007A64;
 word32 g_dw7A95 = 0x26010E00; // 00007A95
 up32 g_dw7A9D = 0x70010E00; // 00007A9D
@@ -1352,7 +1352,7 @@ word32 fn00009C8A(struct Eq_n * fp, ptr32 & r3Out, word32 & fpOut)
 		else
 		{
 			word32 r3_n = 0x00;
-			if ((uint32) SLICE((*(struct Eq_n **) ~0x4648)->dw0014, ui1, 2) == 0x00)
+			if (!SLICE((*(struct Eq_n **) ~0x4648)->dw0014, ui1, 2))
 				r3_n = 0x01;
 			r4_n = r3_n;
 		}
@@ -1618,14 +1618,14 @@ word32 fn0000AA6A(struct Eq_n * ap, struct Eq_n * fp, struct Eq_n & apOut, struc
 	struct Eq_n * r8_n = (struct Eq_n *) ~0x00018827;
 	if (v11_n != 0x00)
 	{
-		if ((uint32) g_w7A26 > 0x00)
+		if (g_w7A26 > 0x00)
 		{
 			do
 			{
 				sp_n[4] = sp_n[2];
 				if (*sp_n[4].dw0000 != r11_n->w033F)
 				{
-					if ((uint32) *sp_n[4].dw0000 == 0x0C)
+					if (*sp_n[4].dw0000 == 0x0C)
 					{
 						sp_n[1] = (struct Eq_n) 0x02;
 						struct Eq_n * r3_n = (struct Eq_n *) sp_n[4];
@@ -4325,11 +4325,11 @@ l0000F191:
 			}
 		}
 		if (sp_n->dw003C == 0x00 && r7_n <= 0x01)
-			(uint32) sp_n->w0032 == 0x00;
+			sp_n->w0032 == 0x00;
 		else
 		{
 			uint32 r5_n = (uint32) sp_n->w001A;
-			if ((sp_n->dw003C != r5_n || r7_n > 0x01) && ((uint32) sp_n->w0032 == 0x00 || r7_n > 0x01))
+			if ((sp_n->dw003C != r5_n || r7_n > 0x01) && (sp_n->w0032 == 0x00 || r7_n > 0x01))
 				;
 		}
 	}
@@ -4490,7 +4490,7 @@ void fn000100C2(struct Eq_n * ap)
 						{
 							struct Eq_n * r1_n = ap->ptr0004;
 							Eq_n r3_n;
-							if ((uint32) r1_n[8] != 0x00)
+							if (r1_n[8] != 0x00)
 								r3_n.u1 = 0x4001;
 							else
 							{
@@ -4818,7 +4818,7 @@ byte * fn00010892(struct Eq_n * ap, struct Eq_n * fp, byte & r2Out, struct Eq_n 
 	byte * r2_n = ap->ptr0008;
 	while (r3_n->b0000 != 0x00)
 	{
-		if ((uint32) r3_n->b0000 < 0x20)
+		if (r3_n->b0000 < 0x20)
 		{
 			*r2_n = 0x5E;
 			int8 * r2_n = r2_n + 1;

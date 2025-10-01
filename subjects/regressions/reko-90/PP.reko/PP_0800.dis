@@ -432,7 +432,7 @@ l0800_0622:
 	bx_348 = SLICE(es_bx_346, word16, 0) + (Mem331[ds:0x2A27<16>:word16] << 2<16>)
 	ptrLoc06_1187 = SEQ(Mem331[es_349:bx_348 + 2<i16>:word16], Mem331[es_349:bx_348:word16] + 2<16>) (alias)
 l0800_063F:
-	branch CONVERT(Mem392[ptrLoc06_1187:byte], int8, int16) != 0<16> l0800_0659
+	branch Mem392[ptrLoc06_1187:byte] != 0<i8> l0800_0659
 l0800_064A:
 	fn0800_0D24(ds, 2<16>, SEQ(ds, 0x5DC<16>), out cx_1217, out dx_1218, out bx_1219, out si_276, out di, out ds)
 l0800_0659:
@@ -3486,7 +3486,7 @@ l0800_2E7B:
 l0800_2E82:
 	Mem178[es_140:di_1411 - 1<16>:byte] = 0<8>
 l0800_2E8B:
-	branch CONVERT(Mem183[ds:0x45B2<16>:byte], int8, int16) != 0<16> l0800_2EA5
+	branch Mem183[ds:0x45B2<16>:byte] != 0<i8> l0800_2EA5
 l0800_2E93:
 	ax_346 = fn0800_2DE2(cx_348, dx_347, si, ds, wArg02_1149, out cx_348, out dx_347, out si_1400, out ds_1401)
 	cxOut = cx_348

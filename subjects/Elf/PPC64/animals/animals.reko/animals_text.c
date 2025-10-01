@@ -119,7 +119,7 @@ void fn0000000000002A00(struct Eq_n * r2, word64 lr)
 // 0000000000002AD0: void fn0000000000002AD0(Register (ptr64 Eq_n) r2, Register word64 lr)
 void fn0000000000002AD0(struct Eq_n * r2, word64 lr)
 {
-	if ((word64) r2->bFFFF82B0 == 0x00)
+	if (r2->bFFFF82B0 == 0x00)
 	{
 		if (r2->qwFFFF8020 != 0x00)
 		{
@@ -168,7 +168,7 @@ void fn0000000000002BD0(struct Eq_n * r2, word64 lr, word64 xer)
 void fn0000000000002DA0(struct Eq_n * r2, word64 r3, word64 r4)
 {
 	word32 dwArg38_n = (word32) r4;
-	if ((word64) (word32) r3 == 0x01 && (word64) dwArg38_n == 0xFFFF)
+	if ((word32) r3 == 0x01 && dwArg38_n == 0xFFFF)
 	{
 		fn0000000000002820(r2);
 		struct Eq_n * qwLoc58;

@@ -103,7 +103,7 @@ l00011374:
 		do
 		{
 			g_ptr1303C = (<anonymous> **) ((char *) g_ptr1303C - 4);
-			if ((word32) (g_ptr1303C < g_ptr13040) != 0x00)
+			if (g_ptr1303C < g_ptr13040)
 			{
 				free(g_ptr13040);
 				g_ptr1303C = null;
@@ -148,12 +148,11 @@ int32 fn00011460()
 //      fn000114E4
 void fn0001147C(word32 * r4, word32 * r5)
 {
-	word32 * dwArg00_n = r4;
-	while ((word32) (dwArg00_n < r5) != 0x00)
+	word32 * dwArg00_n;
+	for (dwArg00_n = r4; dwArg00_n < r5; ++dwArg00_n)
 	{
 		if (*dwArg00_n != 0x00)
 			fn00000000();
-		++dwArg00_n;
 	}
 }
 
@@ -182,18 +181,18 @@ word32 fn0001152C()
 			msize();
 			sp_n = fp + ~0x33;
 		}
-		if ((word32) (sp_n->t0018.u0 < (sp_n->t0024).u0) != 0x00)
+		if (sp_n->t0018.u0 < (sp_n->t0024).u0)
 		{
 			if (sp_n->ptr001C == null)
 				sp_n->ptr0014 = malloc(16);
 			else
 			{
 				sp_n->t0020.u0 = (int32) (sp_n->t0018.u0 << 0x01);
-				if ((word32) (sp_n->t0018.u0 < 513) == 0x00)
+				if (sp_n->t0018.u0 >= 513)
 					sp_n->t0020.u0 = (int32) (sp_n->t0018.u0 + 0x0200);
-				if ((word32) (sp_n->t0018.u0 < (sp_n->t0020).u0) != 0x00)
+				if (sp_n->t0018.u0 < (sp_n->t0020).u0)
 					sp_n->ptr0014 = realloc(sp_n->ptr001C, sp_n->t0020.u0);
-				if (sp_n->ptr0014 == null && (word32) ((sp_n->t0018).u0 < (sp_n->t0024).u0) != 0x00)
+				if (sp_n->ptr0014 == null && (sp_n->t0018).u0 < (sp_n->t0024).u0)
 					sp_n->ptr0014 = realloc(sp_n->ptr001C, sp_n->t0024.u0);
 			}
 			if (sp_n->ptr0014 == null)

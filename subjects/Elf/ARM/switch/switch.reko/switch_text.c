@@ -39,7 +39,7 @@ int32 g_dw8398 = 20; // 00008398
 void __do_global_dtors_aux()
 {
 	byte * r5_n = g_ptr83F4;
-	if ((word32) *r5_n != 0x00)
+	if (*r5_n != 0x00)
 		return;
 	<anonymous> *** r4_n = g_ptr83F8;
 	<anonymous> * r2_n = (<anonymous> *) **r4_n;

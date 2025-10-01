@@ -7087,7 +7087,7 @@ l000000000040DB62:
 	al_1358 = CONVERT(rbp_1051 != r15_1321, bool, byte)
 	branch r15_1321 != 0xFFFFFFFFFFFFFFFF<64> l000000000040D9A0
 l000000000040DB76:
-	branch CONVERT(Mem1368[r8_1361 + rbp_1051:byte] != 0<8>, bool, byte) != 0<8> l000000000040D9A8
+	branch Mem1368[r8_1361 + rbp_1051:byte] != 0<8> l000000000040D9A8
 l000000000040DB86:
 	r11_1216 = r14_1288
 	r13_1243 = r8_1361
@@ -7923,7 +7923,7 @@ l000000000040EDE8:
 l000000000040EDEE:
 	ebp_150 = 0xFFFFFFFF<32> (alias)
 	rdi_7754 = rdi_7757 (alias)
-	branch CONVERT(dil_123, byte, int32) >u 0x39<32> || CONVERT(dil_123, byte, int32) <u 0x30<32> l000000000040EE40
+	branch dil_123 >u 0x39<8> || dil_123 <u 0x30<8> l000000000040EE40
 l000000000040EDFF:
 	ebp_150 = 0<32> (alias)
 	goto l000000000040EE28
@@ -7939,7 +7939,7 @@ l000000000040EE15:
 	edi_183 = CONVERT(Mem107[rbx_104:byte], byte, word32)
 	dil_185 = SLICE(edi_183, byte, 0) (alias)
 	rdi_7754 = SEQ(SLICE(CONVERT(edi_183, word32, uint64), word56, 8), dil_185) (alias)
-	branch CONVERT(dil_185, byte, int32) >u 0x39<32> || CONVERT(dil_185, byte, int32) <u 0x30<32> l000000000040EE40
+	branch dil_185 >u 0x39<8> || dil_185 <u 0x30<8> l000000000040EE40
 l000000000040EE28:
 	branch ebp_150 <= 0xCCCCCCC<32> l000000000040EE08
 l000000000040EE30:

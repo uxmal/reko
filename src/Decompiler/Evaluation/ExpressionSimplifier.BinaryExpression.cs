@@ -106,7 +106,7 @@ namespace Reko.Evaluation
             if (cLeft is not null && binExp.Operator.Type.Commutes())
             {
                 (cLeft, cRight) = (cRight, cLeft);
-                (left, right) =  (right, cRight);
+                (left, right) = (right, cRight);
             }
             Expression? e;
             //$TODO: operands to binary operations appear to be
@@ -322,7 +322,7 @@ namespace Reko.Evaluation
                 if (binLeft.Operator.Type == OperatorType.ISub)
                 {
                     return (m.Bin(
-                        (BinaryOperator)((ConditionalOperator) binExp.Operator).Mirror(),
+                        (BinaryOperator) ((ConditionalOperator) binExp.Operator).Mirror(),
                         binExp.DataType,
                         binLeft.Right,
                         cBinLeft), true);
@@ -378,15 +378,25 @@ namespace Reko.Evaluation
                 (e, _) = e.Accept(this);
                 return (e, true);
             }
-            // (rel (- a b) 0) => (rel a b)
-            if (binExp.Operator.Type.IsIntComparison() &&
-                binLeft is not null &&
-                binLeft.Operator.Type == OperatorType.ISub &&
-                right.IsZero)
+            if (binExp.Operator.Type.IsIntComparison())
             {
-                e = m.Bin(binExp.Operator, binExp.DataType,
-                    binLeft.Left, binLeft.Right);
-                return (e, true);
+                // (rel (- a b) 0) => (rel a b)
+                if (binLeft is not null &&
+                    binLeft.Operator.Type == OperatorType.ISub &&
+                    right.IsZero)
+                {
+                    e = m.Bin(binExp.Operator, binExp.DataType,
+                        binLeft.Left, binLeft.Right);
+                    return (e, true);
+                }
+                if (binExp.Left is Conversion conv && 
+                    cRight is not null)
+                {
+                    e = m.Bin(binExp.Operator,
+                        conv.Expression,
+                        cRight.Slice(conv.SourceDataType, 0));
+                    return (e, true);
+                }
             }
             e = addMici.Match(binExp);
             if (e is not null)
@@ -444,13 +454,19 @@ namespace Reko.Evaluation
 
         /// <summary>
         /// Real mode x86 has an idiom for comparing dx:ax with zero:
+        /// <code>
         ///     or dx,ax
+        /// </code>
         /// which sets the Z flag if both ax and dx are zero.
         /// This gets translated by the x86 rewriter, and stages of
         /// the data flow analysis to:
+        /// <code>
         ///     SLICE(dx_ax, 16) | SLICE(dx_ax, 0) == 0
+        /// </code>
         /// We "unfold" this to
+        /// <code>
         ///     dx_ax == 0
+        /// </code>
         /// </summary>
         private Expression? UnfoldDwordIdiom(BinaryExpression binExp)
         {

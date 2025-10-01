@@ -2095,7 +2095,7 @@ l00009846:
 			}
 			++r5_n;
 			r4_n += 0x06;
-			if ((word32) *r5_n == 0x00)
+			if (*r5_n == 0x00)
 				goto l00009846;
 			OSRAMWriteByte(0x00);
 			r3_n = (word32) *r5_n;

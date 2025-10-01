@@ -511,7 +511,7 @@ void display(struct Eq_n * r5, struct Eq_n * r9, word32 r11, word32 r13, word32 
 			word32 * r1_n;
 			if (r15_n->dw0060 != 0x00)
 			{
-				if ((int32) r8_n->b0054 != 0x2E)
+				if (r8_n->b0054 != 0x2E)
 					goto l00402818;
 				r1_n = *((char *) r12_n + g_dw40288C);
 				goto l00402812;
@@ -1014,7 +1014,7 @@ void traverse(word32 r5, word32 r6, word32 r8, word32 r9, word32 r11, word32 r13
 					switch (r2_n)
 					{
 					case 0x01:
-						if (r0_n->dw0044 == 0x00 || ((int32) r0_n->b0054 != 0x2E || (*((char *) (&r12_n[0]) + g_dw402BE0))[0] != 0x00))
+						if (r0_n->dw0044 == 0x00 || (r0_n->b0054 != 0x2E || (*((char *) (&r12_n[0]) + g_dw402BE0))[0] != 0x00))
 						{
 							if ((*((char *) &r12_n[0] + g_dw402BE4))[0] == 0x00)
 							{
@@ -2753,7 +2753,7 @@ void printwc(word32 r4, word32 r5, word32 r8, word32 r9, word32 r12, word32 pr)
 	{
 		if (r0_n == null)
 			return;
-		if ((int32) *((word32) (r0_n + ~0x00) + r15_n) == 0x00 && r0_n == (<unknown>*) 0x01)
+		if (*((word32) (r0_n + ~0x00) + r15_n) == 0x00 && r0_n == (<unknown>*) 0x01)
 			return;
 	}
 	else if (r0_n == null)

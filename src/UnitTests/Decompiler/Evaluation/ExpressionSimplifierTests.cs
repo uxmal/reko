@@ -1424,5 +1424,16 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             exp = RunExpressionSimplifier(exp);
             Assert.AreEqual("CONVERT(-foo_1, uint32, int64)", exp.ToString());
         }
+
+        [Test]
+        public void Exs_Convert_relational_constant()
+        {
+            Given_ExpressionSimplifier();
+            Expression exp = m.Lt(
+                m.Convert(foo, PrimitiveType.Word32, PrimitiveType.Int64),
+                m.Word64(5));
+            exp = RunExpressionSimplifier(exp);
+            Assert.AreEqual("foo_1 < 5<32>", exp.ToString());
+        }
     }
 }

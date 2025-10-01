@@ -9,7 +9,7 @@ void fn000C0154(byte r0h, struct Eq_n * sb)
 {
 	word16 r1_n;
 	*(union Eq_n *) 1020 = __set_bit<byte,byte>(*(union Eq_n *) 1020, 0x05);
-	((union Eq_n *) 0x043C)->u0 = (uint16) (byte) __write_bit<word16,byte>(SEQ(r0h, 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 996, 0x04)) == 0x01 ? 0x41 : 66;
+	((union Eq_n *) 0x043C)->u0 = (byte) __write_bit<word16,byte>(SEQ(r0h, 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 996, 0x04)) == 0x01 ? 0x41 : 66;
 	*(byte *) 0x043D = 0x00;
 	word16 wLoc04;
 	if (*(union Eq_n *) 0x043C != 0x41)
@@ -82,19 +82,19 @@ void fn000C0154(byte r0h, struct Eq_n * sb)
 			}
 			word16 r1_n;
 			fn000C1186(0x05, 0x00, out r1_n);
-			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 1016, 0x00)) == 0x01 ? 0x31 : 0x30));
-			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 1016, 0x01)) == 0x01 ? 0x31 : 0x30));
-			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 1016, 0x02)) == 0x01 ? 0x31 : 0x30));
-			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 1016, 0x03)) == 0x01 ? 0x31 : 0x30));
-			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 1016, 0x04)) == 0x01 ? 0x31 : 0x30));
-			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 1016, 0x05)) == 0x01 ? 0x31 : 0x30));
+			UART1_putc((uint16) ((byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 1016, 0x00)) == 0x01 ? 0x31 : 0x30));
+			UART1_putc((uint16) ((byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 1016, 0x01)) == 0x01 ? 0x31 : 0x30));
+			UART1_putc((uint16) ((byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 1016, 0x02)) == 0x01 ? 0x31 : 0x30));
+			UART1_putc((uint16) ((byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 1016, 0x03)) == 0x01 ? 0x31 : 0x30));
+			UART1_putc((uint16) ((byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 1016, 0x04)) == 0x01 ? 0x31 : 0x30));
+			UART1_putc((uint16) ((byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 1016, 0x05)) == 0x01 ? 0x31 : 0x30));
 			UART1_putc(0x20);
-			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 993, 0x05)) == 0x01 ? 0x31 : 0x30));
-			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 993, 0x06)) == 0x01 ? 0x31 : 0x30));
-			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 993, 0x07)) == 0x01 ? 0x31 : 0x30));
-			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 1017, 0x05)) == 0x01 ? 0x31 : 0x30));
-			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 1017, 0x06)) == 0x01 ? 0x31 : 0x30));
-			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 1017, 0x07)) == 0x01 ? 0x31 : 0x30));
+			UART1_putc((uint16) ((byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 993, 0x05)) == 0x01 ? 0x31 : 0x30));
+			UART1_putc((uint16) ((byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 993, 0x06)) == 0x01 ? 0x31 : 0x30));
+			UART1_putc((uint16) ((byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 993, 0x07)) == 0x01 ? 0x31 : 0x30));
+			UART1_putc((uint16) ((byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 1017, 0x05)) == 0x01 ? 0x31 : 0x30));
+			UART1_putc((uint16) ((byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 1017, 0x06)) == 0x01 ? 0x31 : 0x30));
+			UART1_putc((uint16) ((byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 1017, 0x07)) == 0x01 ? 0x31 : 0x30));
 			UART1_putc(0x20);
 			UART1_putc(0x20);
 			fn000C0F06(*(union Eq_n *) 0x03C0);
@@ -135,22 +135,22 @@ void fn000C0154(byte r0h, struct Eq_n * sb)
 			fn000C13CC();
 			UART1_putc(0x20);
 			UART1_putc(0x20);
-			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 0x03F0, 0x02)) == 0x01 ? 0x31 : 0x30));
+			UART1_putc((uint16) ((byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 0x03F0, 0x02)) == 0x01 ? 0x31 : 0x30));
 			UART1_putc(0x20);
 			UART1_putc(0x20);
 			UART1_putc(0x20);
 			UART1_putc(0x20);
-			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 1005, 0x05)) == 0x01 ? 0x31 : 0x30));
+			UART1_putc((uint16) ((byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 1005, 0x05)) == 0x01 ? 0x31 : 0x30));
 			UART1_putc(0x20);
 			UART1_putc(0x20);
 			UART1_putc(0x20);
 			UART1_putc(0x20);
-			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 0x03F0, 0x03)) == 0x01 ? 0x31 : 0x30));
+			UART1_putc((uint16) ((byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 0x03F0, 0x03)) == 0x01 ? 0x31 : 0x30));
 			UART1_putc(0x20);
 			UART1_putc(0x20);
 			UART1_putc(0x20);
 			UART1_putc(0x20);
-			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 0x03F0, 0x04)) == 0x01 ? 0x31 : 0x30));
+			UART1_putc((uint16) ((byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 0x03F0, 0x04)) == 0x01 ? 0x31 : 0x30));
 			UART1_putc(0x20);
 		}
 	}
@@ -199,30 +199,30 @@ void fn000C0154(byte r0h, struct Eq_n * sb)
 			word16 r1_n;
 			fn000C1186(0x05, 0x00, out r1_n);
 			UART1_putc(0x20);
-			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 993, 0x05)) == 0x01 ? 0x31 : 0x30));
+			UART1_putc((uint16) ((byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 993, 0x05)) == 0x01 ? 0x31 : 0x30));
 			UART1_putc(0x20);
 			UART1_putc(0x20);
 			UART1_putc(0x20);
-			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 993, 0x06)) == 0x01 ? 0x31 : 0x30));
+			UART1_putc((uint16) ((byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 993, 0x06)) == 0x01 ? 0x31 : 0x30));
 			UART1_putc(0x20);
 			UART1_putc(0x20);
 			UART1_putc(0x20);
-			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 993, 0x07)) == 0x01 ? 0x31 : 0x30));
-			UART1_putc(0x20);
-			UART1_putc(0x20);
-			UART1_putc(0x20);
-			UART1_putc(0x20);
-			UART1_putc(0x20);
-			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 0x03F0, 0x03)) == 0x01 ? 0x31 : 0x30));
+			UART1_putc((uint16) ((byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 993, 0x07)) == 0x01 ? 0x31 : 0x30));
 			UART1_putc(0x20);
 			UART1_putc(0x20);
 			UART1_putc(0x20);
 			UART1_putc(0x20);
 			UART1_putc(0x20);
+			UART1_putc((uint16) ((byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 0x03F0, 0x03)) == 0x01 ? 0x31 : 0x30));
 			UART1_putc(0x20);
 			UART1_putc(0x20);
 			UART1_putc(0x20);
-			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 0x03F0, 0x04)) == 0x01 ? 0x31 : 0x30));
+			UART1_putc(0x20);
+			UART1_putc(0x20);
+			UART1_putc(0x20);
+			UART1_putc(0x20);
+			UART1_putc(0x20);
+			UART1_putc((uint16) ((byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 0x03F0, 0x04)) == 0x01 ? 0x31 : 0x30));
 			UART1_putc(0x20);
 			UART1_putc(0x20);
 			UART1_putc(0x20);
@@ -271,12 +271,12 @@ void fn000C0154(byte r0h, struct Eq_n * sb)
 			fn000C13CC();
 			UART1_putc(0x20);
 			UART1_putc(0x20);
-			UART1_putc((uint16) ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 0x03F0, 0x02)) == 0x01 ? 0x31 : 0x30));
+			UART1_putc((uint16) ((byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 0x03F0, 0x02)) == 0x01 ? 0x31 : 0x30));
 			UART1_putc(0x20);
 			UART1_putc(0x20);
 			UART1_putc(0x20);
 			UART1_putc(0x20);
-			if ((uint16) (byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 1001, 0x06)) == 0x01)
+			if ((byte) __write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20), byte, 8), 0x00), 0x00, !!__bit<byte,byte>(*(union Eq_n *) 1001, 0x06)) == 0x01)
 				UART1_putc(0x31);
 			else
 				UART1_putc(0x30);

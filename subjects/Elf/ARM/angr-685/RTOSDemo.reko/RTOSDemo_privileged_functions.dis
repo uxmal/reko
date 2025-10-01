@@ -19,7 +19,7 @@ l0000006E:
 l00000074:
 	v23_45 = SLICE(r4_154, byte, 0) - 1<8>
 	r4_154 = CONVERT(v23_45, int8, int32)
-	branch CONVERT(v23_45, byte, uint32) == 0<32> l00000098
+	branch v23_45 == 0<8> l00000098
 l0000007C:
 	branch Mem12[r0 + 36<i32>:word32] == 0<32> l00000098
 l00000080:
@@ -28,7 +28,7 @@ l0000008A:
 	vTaskMissedYield()
 	v16_54 = SLICE(r4_154, byte, 0) - 1<8>
 	r4_154 = CONVERT(v16_54, int8, int32)
-	branch CONVERT(v16_54, byte, uint32) != 0<32> l0000007C
+	branch v16_54 != 0<8> l0000007C
 l00000098:
 	Mem68[r0 + 69<i32>:byte] = 0xFF<8>
 	vPortExitCritical(cpsr)
@@ -42,7 +42,7 @@ l000000B4:
 l000000BA:
 	v21_108 = SLICE(r4_105, byte, 0) - 1<8>
 	r4_105 = CONVERT(v21_108, int8, int32)
-	branch CONVERT(v21_108, byte, uint32) == 0<32> l000000DE
+	branch v21_108 == 0<8> l000000DE
 l000000C2:
 	branch Mem68[r0 + 16<i32>:word32] == 0<32> l000000DE
 l000000C6:
@@ -51,7 +51,7 @@ l000000D0:
 	vTaskMissedYield()
 	v19_117 = SLICE(r4_105, byte, 0) - 1<8>
 	r4_105 = CONVERT(v19_117, int8, int32)
-	branch CONVERT(v19_117, byte, uint32) != 0<32> l000000C2
+	branch v19_117 != 0<8> l000000C2
 l000000DE:
 	Mem131[r0 + 68<i32>:byte] = 0xFF<8>
 l000000E8_thunk_vPortExitCritical:
@@ -196,11 +196,11 @@ l000001A8:
 	vPortExitCritical(cpsr)
 	vTaskSuspendAll()
 	vPortEnterCritical(cpsr)
-	branch CONVERT(Mem42[r0 + 68<i32>:byte], byte, word32) != 0xFF<32> l000001C0
+	branch Mem42[r0 + 68<i32>:byte] != 0xFF<8> l000001C0
 l000001BC_1:
 	Mem166[r0 + 68<i32>:byte] = 0<8>
 l000001C0:
-	branch CONVERT(Mem168[r0 + 69<i32>:byte], byte, word32) != 0xFF<32> l000001CC
+	branch Mem168[r0 + 69<i32>:byte] != 0xFF<8> l000001CC
 l000001C8_1:
 	Mem174[r0 + 69<i32>:byte] = 0<8>
 l000001CC:
@@ -323,11 +323,11 @@ l0000031E:
 	vPortExitCritical(cpsr)
 	vTaskSuspendAll()
 	vPortEnterCritical(cpsr)
-	branch CONVERT(Mem42[r0 + 68<i32>:byte], byte, word32) != 0xFF<32> l00000336
+	branch Mem42[r0 + 68<i32>:byte] != 0xFF<8> l00000336
 l00000332_1:
 	Mem175[r0 + 68<i32>:byte] = 0<8>
 l00000336:
-	branch CONVERT(Mem177[r0 + 69<i32>:byte], byte, word32) != 0xFF<32> l00000342
+	branch Mem177[r0 + 69<i32>:byte] != 0xFF<8> l00000342
 l0000033E_1:
 	Mem183[r0 + 69<i32>:byte] = 0<8>
 l00000342:
@@ -781,7 +781,7 @@ l0000072E:
 	Mem49[r0_42:byte] = Mem45[r3_37 + 0<i32>:byte]
 	r3_37 = r3_37 + 1<i32>
 	r0_42 = r0_42 + 1<i32>
-	branch CONVERT(Mem49[r3_37:byte], byte, word32) == 0<32> l0000073E
+	branch Mem49[r3_37:byte] == 0<8> l0000073E
 l0000073A:
 	branch r3_37 != r1 + 2<32> l0000072E
 l0000073E:
@@ -1255,7 +1255,7 @@ xTaskNotifyWait_entry:
 l00000BD4:
 	r4_17 = Mem16[0x00000C58<p32>:word32]
 	vPortEnterCritical(cpsr)
-	branch CONVERT(Mem16[Mem16[r4_17 + 4<i32>:word32] + 100<i32>:byte], byte, word32) == 2<32> l00000C04
+	branch Mem16[Mem16[r4_17 + 4<i32>:word32] + 100<i32>:byte] == 2<8> l00000C04
 l00000BF0:
 	r1_39 = Mem16[r4_17 + 4<i32>:word32]
 	Mem42[r1_39 + 96<i32>:word32] = Mem16[r1_39 + 96<i32>:word32] & ~r0
@@ -1268,7 +1268,7 @@ l00000C04:
 l00000C0E:
 	Mem79[r2:word32] = Mem76[Mem76[r4_17 + 4<i32>:word32] + 96<i32>:word32]
 l00000C14:
-	branch CONVERT(Mem81[Mem81[r4_17 + 4<i32>:word32] + 100<i32>:byte], byte, word32) == 1<32> l00000C54
+	branch Mem81[Mem81[r4_17 + 4<i32>:word32] + 100<i32>:byte] == 1<8> l00000C54
 l00000C1E:
 	r3_88 = Mem81[r4_17 + 4<i32>:word32]
 	Mem93[r3_88 + 96<i32>:word32] = Mem81[r3_88 + 96<i32>:word32] & ~r1

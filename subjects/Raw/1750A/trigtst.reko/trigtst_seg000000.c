@@ -4,10 +4,6 @@
 
 #include "trigtst.h"
 
-struct Eq_n g_t0007 = // 0007
-	{
-		&g_t0316,
-	};
 // 0100: void fn0100()
 void fn0100()
 {
@@ -145,17 +141,17 @@ word32 fn01E6(word32 gp0_gp1, word16 gp2, word16 & gp2Out)
 	}
 }
 
-// 02BF: Register word16 fn02BF(Register (ptr16 Eq_n) gp1, Register word16 gp4, Register out word16 gp1Out, Register out word16 gp2Out, Register out ptr16 gp14Out)
+// 02BF: Register word16 fn02BF(Register ci16 gp1, Register word16 gp4, Register out word16 gp1Out, Register out word16 gp2Out, Register out ptr16 gp14Out)
 // Called from:
 //      fn032A
 //      fn034E
-word16 fn02BF(struct Eq_n * gp1, word16 gp4, word16 & gp1Out, word16 & gp2Out, ptr16 & gp14Out)
+word16 fn02BF(ci16 gp1, word16 gp4, word16 & gp1Out, word16 & gp2Out, ptr16 & gp14Out)
 {
-	struct Eq_n * gp2_n = gp1;
-	if (gp1 < null)
-		gp2_n = gp1 + &g_t0007;
+	ci16 gp2_n = gp1;
+	if (gp1 < 0x00)
+		gp2_n = gp1 + 0x07;
 	struct Eq_n * gp2_n = gp2_n & ~0x07;
-	if ((uint32) (gp1 - gp2_n) > 0x07)
+	if (gp1 - gp2_n > 0x07)
 	{
 		real48 gp3_gp4_gp5_n = g_rFFFF811F;
 		gp1Out = (word16) gp3_gp4_gp5_n;
@@ -166,7 +162,7 @@ word16 fn02BF(struct Eq_n * gp1, word16 gp4, word16 & gp1Out, word16 & gp2Out, p
 	}
 	else
 	{
-		<anonymous> * gp2_n = (<anonymous> *) gp2_n->ptr02DA;
+		<anonymous> * gp2_n = gp2_n->ptr02DA;
 		gp2_n();
 		word16 gp1_n;
 		gp1Out = gp1_n;
@@ -179,7 +175,6 @@ word16 fn02BF(struct Eq_n * gp1, word16 gp4, word16 & gp1Out, word16 & gp2Out, p
 	}
 }
 
-<anonymous> g_t0316 = <code>; // 0316
 // 032A: Sequence int32 fn032A(Sequence int32 gp0_gp1, Register word16 gp2, Register out word16 gp2Out)
 // Called from:
 //      fn0111
@@ -205,9 +200,9 @@ int32 fn032A(int32 gp0_gp1, word16 gp2, word16 & gp2Out)
 		gp4_n = (word16) (SEQ((word32) gp5_gp6_gp7_n, gp7_n) + *((char *) (&g_rFFFF8125) + 3));
 		gp0_gp1_n = gp0_gp1_n + g_dwFFFF812B;
 	}
-	struct Eq_n * gp1_n = (word16) gp0_gp1_n;
+	ci16 gp1_n = (word16) gp0_gp1_n;
 	if (gp0_gp1 < 0x00)
-		gp1_n = (struct Eq_n *) ((char *) &(*((char *) &g_dwFFFF812B + 2))->dwFFFF812B + ((word16) gp0_gp1_n + 0x00007ED5));
+		gp1_n = (char *) &(*((char *) &g_dwFFFF812B + 2))->dwFFFF812B + ((word16) gp0_gp1_n + 0x00007ED5);
 	word16 gp0_n = fn02BF(gp1_n, gp4_n, out gp1_n, out gp2_n, out gp14_n);
 	gp2Out = gp2_n;
 	return SEQ(gp0_n, gp1_n);

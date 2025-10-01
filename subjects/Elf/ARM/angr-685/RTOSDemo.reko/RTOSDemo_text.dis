@@ -3020,7 +3020,7 @@ l0000981A:
 l0000981C:
 	r5_114 = r5_114 + 1<i32>
 	r4_110 = r4_110 + 6<32>
-	branch CONVERT(Mem12[r5_114:byte], byte, word32) == 0<32> l00009846
+	branch Mem12[r5_114:byte] == 0<8> l00009846
 l00009824:
 	OSRAMWriteByte(0<32>)
 	r3_128 = CONVERT(Mem12[r5_114:byte], byte, word32)

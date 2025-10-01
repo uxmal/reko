@@ -2541,7 +2541,7 @@ l0000596C:
 	Mem16[r12_11:byte] = Mem13[r14:byte]
 	r14 = r14 + 1<16>
 	r12_11 = r12_11 + 1<16>
-	branch CONVERT(Mem16[r12_11:byte], byte, word16) == 0<8> l00005980
+	branch Mem16[r12_11:byte] == 0<8> l00005980
 l0000597A:
 	r13 = r13 + 0xFFFF<16>
 	branch r13 != 0<16> l0000596C

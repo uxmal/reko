@@ -59,7 +59,7 @@ void fn0468(byte * r3)
 	{
 		char v5_n = *r3;
 		++r3;
-		if ((int16) v5_n == 0x00)
+		if (v5_n == 0x00)
 			break;
 		while (TTYOUT(v5_n))
 			;
@@ -1020,7 +1020,7 @@ void fn0F9C()
 	{
 		r4_n = r4_n + 1;
 		r4_n = r4_n;
-		if ((int16) r4_n->b0000 != 0x00)
+		if (r4_n->b0000 != 0x00)
 		{
 			if (*((word16) r3_n + 0x0066) == 0x02)
 			{

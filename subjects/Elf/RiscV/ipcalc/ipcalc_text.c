@@ -43,9 +43,9 @@ void fn0000000000015180(word64 ra, struct Eq_n * gp, int64 a0, char ** a1, word6
 				__printf_chk(1, "ipcalc %s\n", "0.1.8");
 				goto l00000000000153DC;
 			}
-			if ((int64) qwLoc01A8.dw0004 != 0x00 && false)
+			if (qwLoc01A8.dw0004 != 0 && false)
 			{
-				if ((int64) gp->dwFFFFF814 != 0x00)
+				if (gp->dwFFFFF814 != 0)
 					goto l00000000000153D8;
 				fwrite(&g_v119D8, (size_t) 1, (size_t) 46, gp->ptrFFFFF880);
 				goto l00000000000153DC;
@@ -81,11 +81,11 @@ l0000000000015448:
 l00000000000153CC:
 				if (false)
 				{
-					if ((int64) gp->dwFFFFF814 == 0x00)
+					if (gp->dwFFFFF814 == 0)
 						fwrite(&g_v11A08, (size_t) 1, (size_t) 37, gp->ptrFFFFF880);
 					goto l00000000000153D8;
 				}
-				if ((int64) qwLoc01A8.dw0004 != 0x00)
+				if (qwLoc01A8.dw0004 != 0)
 				{
 					char * a0_n = fn00000000000169D8(gp, (char *) 0x0A, null);
 					s1_n = a0_n;
@@ -114,7 +114,7 @@ l00000000000153CC:
 					goto l0000000000015518;
 				}
 l0000000000015964:
-				if ((int64) gp->dwFFFFF814 != 0x00)
+				if (gp->dwFFFFF814 != 0)
 					goto l00000000000153D8;
 				__fprintf_chk(gp->ptrFFFFF880, 1, "ipcalc: could not resolve %s\n", null);
 				goto l00000000000153DC;
@@ -125,7 +125,7 @@ l0000000000015458:
 			{
 				if (s1_n != null)
 					goto l0000000000015510;
-				if ((int64) gp->dwFFFFF814 != 0x00)
+				if (gp->dwFFFFF814 != 0)
 					goto l00000000000153D8;
 				fwrite(&g_v11A30, (size_t) 1, (size_t) 28, gp->ptrFFFFF880);
 				fn0000000000015FCC(gp, 1);
@@ -137,10 +137,10 @@ l0000000000015458:
 			char * a4_n;
 			if (a0_n < null)
 			{
-				if ((int64) gp->dwFFFFF814 != 0x00)
+				if (gp->dwFFFFF814 != 0)
 					goto l00000000000153D8;
 				a0_n = gp->ptrFFFFF880;
-				if ((int64) qwLoc01A8.dw0004 == 0x00)
+				if (qwLoc01A8.dw0004 == 0)
 				{
 					a3_n = (char *) "IPv4";
 					a4_n = null;
@@ -155,10 +155,10 @@ l0000000000015458:
 			int64 s1_n = (int64) qwLoc01A8.dw0004;
 			char * ptrLoc01A0 = 0x00;
 			Eq_n tLoc0198;
-			if ((uint64) clock_gettime(2, &tLoc0198) < 0x00)
+			if (clock_gettime(2, &tLoc0198) < 0x00)
 			{
 l0000000000015CB0:
-				if ((int64) gp->dwFFFFF814 != 0x00)
+				if (gp->dwFFFFF814 != 0)
 					goto l00000000000153D8;
 				__fprintf_chk(gp->ptrFFFFF880, 1, "ipcalc: cannot generate network with prefix: %u\n", (uint32) a0_n);
 				goto l00000000000153DC;
@@ -196,7 +196,7 @@ l0000000000015CB0:
 				goto l0000000000015CB0;
 l00000000000154DC:
 			a5_n = a0_n;
-			if ((uint64) __asprintf_chk(&ptrLoc01A0, 1, "%s/%u", &bLocB8, (uint32) a0_n) == -1)
+			if (__asprintf_chk(&ptrLoc01A0, 1, "%s/%u", &bLocB8, (uint32) a0_n) == ~0x00)
 				goto l0000000000015CB0;
 			s1_n = ptrLoc01A0;
 			if (s1_n == null)
@@ -221,10 +221,10 @@ l0000000000015518:
 l00000000000155D8:
 			if (s4_n != null)
 			{
-				if ((int64) qwLoc01A8.dw0004 == 0x00)
+				if (qwLoc01A8.dw0004 == 0)
 					goto l00000000000155E4;
 l000000000001553C:
-				if ((int64) gp->dwFFFFF814 != 0x00)
+				if (gp->dwFFFFF814 != 0)
 					goto l00000000000153D8;
 				__fprintf_chk(gp->ptrFFFFF880, 1, "ipcalc: unexpected argument: %s\n", s4_n);
 				fn0000000000015FCC(gp, 1);
@@ -244,10 +244,10 @@ l00000000000155E4:
 				a5_n = a0_n;
 				if (a0_n >= null)
 					goto l00000000000155FC;
-				if ((int64) gp->dwFFFFF814 == 0x00)
+				if (gp->dwFFFFF814 == 0)
 				{
 					a0_n = gp->ptrFFFFF880;
-					if ((int64) qwLoc01A8.dw0004 == 0x00)
+					if (qwLoc01A8.dw0004 == 0)
 						a3_n = (char *) "IPv4";
 					else
 						a3_n = (char *) "IPv6";
@@ -260,7 +260,7 @@ l0000000000015B8C:
 l00000000000155FC:
 			int64 a0_n;
 			Eq_n a4_n;
-			if ((int64) qwLoc01A8.dw0004 != 0x00)
+			if (qwLoc01A8.dw0004 != 0)
 			{
 l0000000000015604:
 				a0_n = fn00000000000175BC(ra, gp, s1_n, s1_n, a5_n, &tLoc0188, s0_n, out a4_n);
@@ -274,7 +274,7 @@ l00000000000153D8:
 			}
 			if ((s0_n & 0xFFFABFFF) == 0x00)
 				s0_n |= 8;
-			if ((uint64) isatty(1) != 0x00)
+			if (isatty(1) != 0x00)
 			{
 				gp->dwFFFFF810 = 0x01;
 				a4_n.u0 = 1;
@@ -285,7 +285,7 @@ l00000000000153D8:
 					__printf_chk(1, "NETMASK=%s\n", tLoc0188.ptr0030);
 				if ((s0_n & 0x0200) != 0x00)
 					__printf_chk(1, "PREFIX=%u\n", tLoc0188.t00A0.u0);
-				if ((s0_n & 64) != 0x00 && (int64) qwLoc01A8.dw0004 == 0x00)
+				if ((s0_n & 64) != 0x00 && qwLoc01A8.dw0004 == 0)
 					__printf_chk(1, "BROADCAST=%s\n", tLoc0188.ptr0028);
 				if ((s0_n & 0x0100) != 0x00)
 					__printf_chk(1, "NETWORK=%s\n", tLoc0188.ptr0020);
@@ -359,7 +359,7 @@ l00000000000153D8:
 			Eq_n s2_n;
 			s2_n.u0 = (int64) tLoc0188.dw00A0;
 			Eq_n a5_n;
-			if ((int64) qwLoc01A8.dw0004 == 0x00)
+			if (qwLoc01A8.dw0004 == 0)
 			{
 				a5_n.u0 = 32;
 				if (s2_n != 32)
@@ -390,7 +390,7 @@ l0000000000015664:
 				goto l0000000000015668;
 			}
 			char * s3_n = tLoc0188.ptr0000;
-			if ((uint64) strcmp(tLoc0188.ptr0020, s3_n) == 0x00)
+			if (strcmp(tLoc0188.ptr0020, s3_n) == 0x00)
 				goto l0000000000015664;
 			a3_n = tLoc0188.ptr0008;
 			s4_n = 0;
@@ -576,7 +576,7 @@ void fn0000000000015F24()
 // 0000000000015F64: void fn0000000000015F64(Register (ptr64 Eq_n) gp)
 void fn0000000000015F64(struct Eq_n * gp)
 {
-	if ((word64) gp->bFFFFF894 == 0x00)
+	if (gp->bFFFFF894 == 0x00)
 	{
 		fn0000000000015EF0();
 		gp->bFFFFF894 = 0x01;
@@ -706,7 +706,7 @@ word64 * fn00000000000164D0(word64 * a0, Eq_n a1)
 	{
 		uint64 a0_n = (uint64) read((int32) a0_n, a0, (size_t) a1);
 		close((int32) a0_n);
-		a0_n = (int64) (0x00 - (word32) ((int64) ((word32) (a0_n - a1)) != 0x00));
+		a0_n = (int64) (0x00 - ((word32) (a0_n - a1) != 0x00));
 	}
 	else
 		a0_n = (word64 *) -1;
@@ -727,13 +727,13 @@ struct Eq_n * fn000000000001654C(struct Eq_n * gp, char * a3, Eq_n a4, Eq_n a5, 
 	{
 		char * s2_n;
 		fputs(s2_n, gp_n->ptrFFFFF888);
-		if ((int64) gp_n->dwFFFFF810 != 0x00)
+		if (gp_n->dwFFFFF810 != 0)
 		{
 			char * s3_n;
 			fputs(s3_n, gp_n->ptrFFFFF888);
 		}
 		fputs(null, gp_n->ptrFFFFF888);
-		if ((int64) gp_n->dwFFFFF810 != 0x00)
+		if (gp_n->dwFFFFF810 != 0)
 			fwrite(&g_v115E0, (size_t) 1, (size_t) 4, gp_n->ptrFFFFF888);
 		free(null);
 	}
@@ -763,7 +763,7 @@ char * fn0000000000016630(struct Eq_n * gp, char * a0, word64 * a1)
 	Eq_n a0_n;
 	a0_n.u1 = (uint64) strtol(a0);
 	char * a5_n;
-	if (false && (a0 != null && (word64) null == 0x00))
+	if (false && (a0 != null && null == 0x00))
 	{
 		a5_n = (int64) *a0_n;
 		if (a5_n == null)
@@ -800,7 +800,7 @@ int32 * fn00000000000166F4(struct Eq_n * gp, int32 * a0, char * a1, int64 a2)
 	word64 qwLoc40;
 	if (s0_n == 0x00 && strchr(a1, '.') != null)
 	{
-		if ((uint64) inet_pton(2, a1, &qwLoc40) != 0x00)
+		if (inet_pton(2, a1, &qwLoc40) != 0x00)
 		{
 			int64 a0_n = fn00000000000182B4((int64) qwLoc40, out a3_n, out a4_n);
 			while (a0_n != 0x00)
@@ -842,7 +842,7 @@ l0000000000016790:
 	int32 * a0_n;
 	if (a2 != 0x00 && a5_n > (int32 *) 32)
 	{
-		if ((int64) *a0 == 0x00)
+		if (*a0 == 0)
 			*a0 = 0x01;
 	}
 	else
@@ -850,7 +850,7 @@ l0000000000016790:
 		a0_n = a5_n;
 		if (a5_n < null)
 			goto l00000000000167C0;
-		if ((int64) *a0 == 0x00)
+		if (*a0 == 0)
 		{
 			if (a5_n > (int32 *) 32)
 			{
@@ -956,7 +956,7 @@ char * fn00000000000169D8(struct Eq_n * gp, char * a0, char * a1)
 	tLoc68.ai_canonname = null;
 	struct addrinfo * ptrLoc70;
 	char * a0_n;
-	if ((uint64) getaddrinfo(a1, null, &tLoc68, &ptrLoc70) == 0x00)
+	if (getaddrinfo(a1, null, &tLoc68, &ptrLoc70) == 0x00)
 	{
 		struct addrinfo * s0_n = (struct addrinfo *) ptrLoc70;
 		if (s0_n != null)
@@ -1121,7 +1121,7 @@ l0000000000016CB8:
 		a4_n = 0x00011618;
 		return a4_n;
 	}
-	if ((int64) ((word32) a5_n - 224) <= 0x0F)
+	if ((word32) a5_n <= 0xEF && (word32) a5_n >= 224)
 	{
 		a4_n = 0x00011748;
 		return a4_n;
@@ -1145,9 +1145,9 @@ char * fn0000000000016D74(word64 ra, struct Eq_n * gp, char * a0, char * a1, str
 	char * s5_n = a1;
 	word64 qwLoc01B8;
 	char * a0_n;
-	if ((uint64) inet_pton(2, a0, &qwLoc01B8) <= 0x00)
+	if (inet_pton(2, a0, &qwLoc01B8) <= 0x00)
 	{
-		if ((int64) gp->dwFFFFF814 != 0x00)
+		if (gp->dwFFFFF814 != 0)
 			goto l0000000000016E20;
 		__fprintf_chk(gp->ptrFFFFF880, 1, "ipcalc: bad IPv4 address: %s\n", a0);
 		a0_n = (char *) -1;
@@ -1176,7 +1176,7 @@ l0000000000016E24:
 			{
 				do
 				{
-					if ((uint64) __asprintf_chk(&ptrLoc0190, 1, "%s.0", s1_n) == -1)
+					if (__asprintf_chk(&ptrLoc0190, 1, "%s.0", s1_n) == ~0x00)
 					{
 						a0_n = gp->ptrFFFFF880;
 						a3_n = 613;
@@ -1193,7 +1193,7 @@ l0000000000016E24:
 		} while (s0_n != 0x00);
 		if (a1 > (char *) 32)
 		{
-			if ((int64) gp->dwFFFFF814 == 0x00)
+			if (gp->dwFFFFF814 == 0)
 			{
 				__fprintf_chk(gp->ptrFFFFF880, 1, "ipcalc: bad IPv4 prefix %d\n", (int32) a1);
 				a0_n = (char *) -1;
@@ -1213,7 +1213,7 @@ l0000000000016E24:
 			if (a0_n < 0x00)
 			{
 				s5_n = (char *) 24;
-				if ((int64) ((word32) a5_n - 0x0080) <= 63)
+				if ((word32) a5_n <= 191 && (word32) a5_n >= 0x0080)
 					s5_n = (char *) 16;
 			}
 		}
@@ -1264,11 +1264,11 @@ l0000000000016E24:
 		word64 a5_n;
 		if (a0_n < 0x00)
 		{
-			if ((int64) ((word32) a5_n - 0x0080) > 63)
+			if ((word32) a5_n > 191)
 			{
-				if ((int64) ((word32) a5_n - 0x00C0) > 31)
+				if ((word32) a5_n > 223)
 				{
-					if ((int64) ((word32) a5_n - 224) <= 0x0E)
+					if ((word32) a5_n <= 0xEE && (word32) a5_n >= 224)
 						a5_n = 0x00011770;
 					else
 						a5_n = 0x00011778;
@@ -1346,7 +1346,7 @@ l000000000001718C:
 			s6_n->qw0038 = a0_n;
 			if (a0_n != 0x00)
 				goto l000000000001718C;
-			if ((int64) gp->dwFFFFF814 == 0x00)
+			if (gp->dwFFFFF814 == 0)
 			{
 				char bLoc0158;
 				__sprintf_chk(&bLoc0158, 1, (size_t) 0x00FA, "ipcalc: cannot find hostname for %s", s1_n);
@@ -1360,7 +1360,7 @@ l0000000000016E20:
 		}
 	}
 l0000000000017074:
-	if ((int64) gp->dwFFFFF814 == 0x00)
+	if (gp->dwFFFFF814 == 0)
 		fwrite(&g_v117F8, (size_t) 1, (size_t) 43, gp->ptrFFFFF880);
 	goto l0000000000016E20;
 }
@@ -1420,19 +1420,19 @@ struct Eq_n * fn00000000000173D4(struct Eq_n * a0, char * a1)
 	}
 	else
 	{
-		if ((uint64) memcmp(a0, &g_v10880, (size_t) 16) == 0x00)
+		if (memcmp(a0, &g_v10880, (size_t) 16) == 0x00)
 			return &g_t11858;
-		if ((uint64) memcmp(a0, &g_v10898, (size_t) 16) == 0x00)
+		if (memcmp(a0, &g_v10898, (size_t) 16) == 0x00)
 		{
 			a0_n = &g_t11870;
 			return a0_n;
 		}
 	}
-	if ((uint64) memcmp(a0, &g_v108B0, (size_t) 0x0C) == 0x00)
+	if (memcmp(a0, &g_v108B0, (size_t) 0x0C) == 0x00)
 		return &g_t11888;
-	if ((uint64) memcmp(a0, &g_v108C0, (size_t) 0x0C) == 0x00)
+	if (memcmp(a0, &g_v108C0, (size_t) 0x0C) == 0x00)
 		return &g_t118A0;
-	if ((uint64) memcmp(a0, &g_v108D0, (size_t) 0x0C) == 0x00)
+	if (memcmp(a0, &g_v108D0, (size_t) 0x0C) == 0x00)
 		return &g_t118B8;
 l0000000000017408:
 	ui64 a5_n = s2_n << 0x08 | s3_n;
@@ -1478,9 +1478,9 @@ char * fn00000000000175BC(word64 ra, struct Eq_n * gp, char * s1, char * a0, cha
 	int64 s6_n = a3;
 	word64 qwLoc0198;
 	char * a0_n;
-	if ((uint64) inet_pton(0x0A, a0, &qwLoc0198) <= 0x00)
+	if (inet_pton(0x0A, a0, &qwLoc0198) <= 0x00)
 	{
-		if ((int64) gp->dwFFFFF814 != 0x00)
+		if (gp->dwFFFFF814 != 0)
 			goto l0000000000017770;
 		__fprintf_chk(gp->ptrFFFFF880, 1, "ipcalc: bad IPv6 address: %s\n", a0);
 		a0_n = (char *) -1;
@@ -1491,7 +1491,7 @@ char * fn00000000000175BC(word64 ra, struct Eq_n * gp, char * s1, char * a0, cha
 	if (inet_ntop(0x0A, &qwLoc0198, &bLoc0168, 0x00FA) == null)
 	{
 l0000000000017768:
-		if ((int64) gp->dwFFFFF814 != 0x00)
+		if (gp->dwFFFFF814 != 0)
 			goto l0000000000017770;
 		fwrite(&g_v117F8, (size_t) 1, (size_t) 43, gp->ptrFFFFF880);
 		a0_n = (char *) -1;
@@ -1547,7 +1547,7 @@ l0000000000017768:
 					if (inet_ntop(0x0A, &qwLoc0178, &bLoc0168, 0x00FA) != null)
 					{
 						a2->ptr00B0 = __strdup(&bLoc0168);
-						if ((int64) (0x80 - (word32) s2_n) == 0x0080)
+						if (0x80 - (word32) s2_n == 0x80)
 							goto l0000000000017740;
 l0000000000017740:
 						snprintf(&a2->qw0038 + 5, (size_t) 64, "%s", 0x00);
@@ -1563,7 +1563,7 @@ l0000000000017760:
 						s0_n->qw0038 = a0_n;
 						if (a0_n != 0x00)
 							goto l0000000000017760;
-						if ((int64) gp->dwFFFFF814 == 0x00)
+						if (gp->dwFFFFF814 == 0)
 						{
 							__sprintf_chk(s3_n, 1, (size_t) 0x00FA, "ipcalc: cannot find hostname for %s", s4_n);
 							herror(s3_n);
@@ -1575,14 +1575,14 @@ l0000000000017770:
 				}
 				goto l0000000000017768;
 			}
-			if ((int64) gp->dwFFFFF814 != 0x00)
+			if (gp->dwFFFFF814 != 0)
 				goto l0000000000017770;
 			__fprintf_chk(gp->ptrFFFFF880, 1, "ipcalc: error converting IPv6 prefix: %d\n", (int32) s2_n);
 			a0_n = (char *) -1;
 		}
 		else
 		{
-			if ((int64) gp->dwFFFFF814 != 0x00)
+			if (gp->dwFFFFF814 != 0)
 				goto l0000000000017770;
 			__fprintf_chk(gp->ptrFFFFF880, 1, "ipcalc: bad IPv6 prefix: %d\n", (int32) a1);
 			a0_n = (char *) -1;
@@ -1676,7 +1676,7 @@ l0000000000017970:
 			return s0_n;
 		}
 	}
-	if ((int64) gp->dwFFFFF814 == 0x00 && (word64) (gp->tFFFFFCE0).u0 != 0x00)
+	if (gp->dwFFFFF814 == 0 && (gp->tFFFFFCE0).u0 != 0x00)
 	{
 		a1 = gp->ptrFFFFF880;
 		fputs(&gp->tFFFFFCE0.u0, a1);
@@ -1754,7 +1754,7 @@ struct Eq_n * fn0000000000017B40(word64 ra, struct Eq_n * gp, int64 a0, ptr64 a1
 				char ** s1_n;
 				*s1_n = (char **) __strdup(a0_n);
 			}
-			if ((word64) (a0_n->r0034 == 0.0F) == 0x00)
+			if (a0_n->r0034 != 0.0F)
 			{
 				real64 fa4_n = (real64) a0_n->r0034;
 				real64 a3_n = (real64) a0_n->r0030;
@@ -1862,7 +1862,7 @@ struct Eq_n * fn0000000000017D10(word64 ra, struct Eq_n * gp, char * s1, word64 
 				char ** s2_n;
 				*s2_n = (char **) __strdup(a0_n);
 			}
-			if ((word64) (a0_n->r0034 == 0.0F) == 0x00)
+			if (a0_n->r0034 != 0.0F)
 			{
 				real64 fa4_n = (real64) a0_n->r0034;
 				real64 a3_n = (real64) a0_n->r0030;
