@@ -267,6 +267,8 @@ namespace Reko.Arch.M68k.Machine
         pdbwc,
 
         pea,
+        pflusha,
+        pflushan,
         pflushr,
         pload,
         pmove,

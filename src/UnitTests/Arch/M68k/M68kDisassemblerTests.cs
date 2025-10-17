@@ -64,6 +64,12 @@ namespace Reko.UnitTests.Arch.M68k
             Assert.AreEqual(expected, Disassemble().ToString());
         }
 
+        private void RunTest(string expected, string hexbytes)
+        {
+            var instr = base.DisassembleHexBytes(hexbytes);
+            Assert.AreEqual(expected, instr.ToString());
+        }
+
         private IEnumerator<M68kInstruction> CreateDasm(params ushort[] words)
         {
             byte[] bytes = words.SelectMany(w => new byte[] { (byte)(w >> 8), (byte)w }).ToArray();
@@ -735,6 +741,12 @@ namespace Reko.UnitTests.Arch.M68k
             // which is not valid with a 68k FPU; it should
             // decode to an illegal instruction
             RunTest("illegal", 0xF2BC, 0x00E0);
+        }
+
+        [Test]
+        public void M68kdis_chk_l()
+        {
+            RunTest("chk.l\t(a6),d2", "45 16 9D 8F");
         }
 
         [Test]

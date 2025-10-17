@@ -1689,7 +1689,12 @@ namespace Reko.Arch.M68k.Disassembler
 
             case 0x4:	// ea to control
                 {
-                    dasm.g_dasm_str = string.Format("fmovem.l   {0}, ", dasm.DecodeEa32(uInstr));
+                dasm.mnemonic = Mnemonic.fmovem;
+                dasm.dataWidth = PrimitiveType.Word32;
+                var op = dasm.DecodeEa32(uInstr);
+                if (op is null)
+                    return false;
+                dasm.g_dasm_str = string.Format("fmovem.l   {0}, ", dasm.DecodeEa32(uInstr));
                     if ((dasm.fpWord & 0x1000) != 0) dasm.g_dasm_str += "fpcr";
                     if ((dasm.fpWord & 0x0800) != 0) dasm.g_dasm_str += "/fpsr";
                     if ((dasm.fpWord & 0x0400) != 0) dasm.g_dasm_str += "/fpiar";
@@ -2042,15 +2047,16 @@ namespace Reko.Arch.M68k.Disassembler
         {
             dasm.LIMIT_CPU_TYPES(uInstr, M68040_PLUS);
 
-            if ((uInstr & 0x10) != 0)
+            var mnemonic = (uInstr & 8) != 0
+                    ? Mnemonic.pflusha
+                    : Mnemonic.pflushan;
+            if ((uInstr & 0x10) == 0)
             {
-                dasm.g_dasm_str = string.Format("pflusha{0}", (uInstr & 8) != 0 ? "" : "n");
+                dasm.ops.Add(MemoryOperand.Indirect(
+                    PrimitiveType.Word32,
+                    Registers.AddressRegister(uInstr & 7)));
             }
-            else
-            {
-                dasm.g_dasm_str = string.Format("pflush{0}(A%d)", (uInstr & 8) != 0 ? "" : "n", uInstr & 7);
-            }
-            return false;
+            return true;
         }
 
         private static bool d68020_rtm(uint uInstr, M68kDisassembler dasm)
