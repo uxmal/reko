@@ -52,8 +52,7 @@ namespace Reko.Core
         Expression? GetImport(Address addrThunk, Address addrInstr);
 
         /// <summary>
-        /// Given an address <paramref name="addrThunk"/>, returns the possible imported procedure
-        /// 
+        /// Given an address <paramref name="addrThunk"/>, returns the possible imported procedure.
         /// </summary>
         /// <param name="arch">Current <see cref="IProcessorArchitecture"/>.</param>
         /// <param name="addrThunk">Address of a thunk.</param>
@@ -72,7 +71,6 @@ namespace Reko.Core
         /// <param name="arch">Current <see cref="IProcessorArchitecture"/>.</param>
         /// <param name="addrImportThunk"></param>
         /// <returns></returns>
-
         ExternalProcedure? GetInterceptedCall(IProcessorArchitecture arch, Address addrImportThunk);
 
         /// <summary>

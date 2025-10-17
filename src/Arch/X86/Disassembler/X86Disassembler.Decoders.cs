@@ -179,6 +179,8 @@ namespace Reko.Arch.X86
 
             public override X86Instruction Decode(uint rex2Prefix, X86Disassembler disasm)
             {
+                if (disasm.decodingContext.RexPrefix)
+                    return disasm.CreateInvalidInstruction();
                 if (!disasm.TryReadByte(out var rex2))
                     return disasm.CreateInvalidInstruction();
                 if (!disasm.TryReadByte(out var op))
@@ -521,13 +523,15 @@ namespace Reko.Arch.X86
             private readonly Decoder[] decoders0F38;
             private readonly Decoder[] decoders0F3A;
             private readonly Decoder[] decodersLegacy;
+            private readonly bool isApx;
 
             private static readonly Bitfield p0Reserved = new Bitfield(2, 2);
             private static readonly Bitfield p1Reserved = new Bitfield(2, 1);
             private static readonly Bitfield p1Vvvv = new Bitfield(3, 4);
 
-            public EvexDecoder(Decoder[] legacy, Decoder[] decoders0F, Decoder[] decoders0F38, Decoder[] decoders0F3A)
+            public EvexDecoder(bool isApx, Decoder[] legacy, Decoder[] decoders0F, Decoder[] decoders0F38, Decoder[] decoders0F3A)
             {
+                this.isApx = isApx;
                 this.decoders0F = decoders0F;
                 this.decoders0F38 = decoders0F38;
                 this.decoders0F3A = decoders0F3A;
@@ -536,7 +540,7 @@ namespace Reko.Arch.X86
 
             public override X86Instruction Decode(uint op, X86Disassembler disasm)
             {
-                // 62 must be the first byte. The presence of previous
+                // 0x62 must be the first byte. The presence of previous
                 // prefixes is an error (according to Intel manual 2.6, vol 2A).
                 var ctx = disasm.decodingContext;
                 if (ctx.F2Prefix |
@@ -546,26 +550,24 @@ namespace Reko.Arch.X86
                     return disasm.CreateInvalidInstruction();
                 // The EVEX prefix consists of a leading 0x62 byte, and three
                 // packed payload bytes P0, P1, and P2.
-                //$TODO: this is incomplete: there are many missing flags.
                 if (!disasm.TryReadByte(out byte p0) ||
                     !disasm.TryReadByte(out byte p1) ||
                     !disasm.TryReadByte(out byte p2) ||
-                    p0Reserved.Read(p0) != 0 ||
-                    p1Reserved.Read(p1) != 1)
+                    (!isApx && p0Reserved.Read(p0) != 0) ||
+                    (!isApx && p1Reserved.Read(p1) != 1))
                 {
                     return disasm.CreateInvalidInstruction();
                 }
-                var mm = p0 & 3;
+                var mmm = p0 & 7;
                 var rxb = ~p0 >> 5;
                 var pp = p1 & 3;
                 var w = p1 >> 7;
-                var vvvv = p1Vvvv.Read(~(uint)p1);
-                if (!Bits.IsBitSet(p2, 3))
-                    vvvv |= 0x10;
+                var vvvvv = p1Vvvv.Read(~(uint)p1);
+                vvvvv |= (uint)(~p2 << 1) & 0x10;
                 ctx.RexPrefix = true;
                 ctx.IsVex = true;
                 ctx.IsEvex = true;
-                ctx.VexRegister = (byte) vvvv;
+                ctx.VexRegister = (byte) vvvvv;
                 ctx.VexLongCode = (byte)((p2 >> 5) & 3);
                 ctx.OpMask = (byte)(p2 & 7);
                 ctx.IsWide = w != 0;
@@ -581,16 +583,27 @@ namespace Reko.Arch.X86
                 ctx.SizeOverridePrefix = pp == 1;
 
                 Decoder[] decoders;
-                switch (mm)
+                switch (mmm)
                 {
                 case 2: decoders = decoders0F38; break;
                 case 3: decoders = decoders0F3A; break;
-                case 4: decoders = decodersLegacy; break;
+                case 4:
+                    decoders = decodersLegacy;
+                    ctx.EvexNF = Bits.IsBitSet(p2, 2);
+                    if (Bits.IsBitSet(p2, 4))
+                    {
+                        ctx.NewDataDestination = (int) vvvvv;
+                    }
+                    else if (vvvvv != 0)
+                    {
+                        return disasm.CreateInvalidInstruction();
+                    }
+                    break;
                 default: decoders = decoders0F; break;
                 }
                 if (!disasm.TryReadByte(out byte op2))
                     return disasm.CreateInvalidInstruction();
-                TraceEvex(ctx, mm, op2);
+                TraceEvex(ctx, mmm, op2);
                 return decoders[op2].Decode(op2, disasm);
             }
         }

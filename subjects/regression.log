@@ -1204,10 +1204,7 @@ fn0001B2CC: warning: Structure analysis stopped making progress, quitting. Pleas
 004008DC: warning: Call target address 00000000 is invalid.
 finish: error: An error occurred while renaming variables.
     The given key 'l004028A8' was not present in the dictionary.
-       at Reko.Analysis.SsaLivenessAnalysis.LiveOutAtBlock(Block block, SsaIdentifier sid) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 214
-   at Reko.Analysis.SsaLivenessAnalysis.BuildInterferenceGraph(SsaIdentifierCollection ssaIds) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 114
-   at Reko.Analysis.SsaLivenessAnalysis..ctor(SsaState ssa) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 76
-   at Reko.Analysis.LiveCopyInserter..ctor(SsaState ssa) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 50
+       at Reko.Analysis.SsaLivenessAnalysis.BuildInterferenceGraph(SsaIdentifierCollection ssaIds) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 114
    at Reko.Analysis.WebBuilder.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 119
 l00401628: warning: Non-integral switch expression
 l00401614: warning: Non-integral switch expression
@@ -2247,4 +2244,4 @@ PE Debug type 14 not supported yet.
 === PE\x86\VCExeSample\VCExeSample
 Signature of 'Microsoft Visual C++ 8' detected.
 
-Decompiled 99 binaries in 68.89 seconds.
+Decompiled 99 binaries in 65.77 seconds.

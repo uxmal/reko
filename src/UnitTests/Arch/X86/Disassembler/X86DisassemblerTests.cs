@@ -1933,8 +1933,6 @@ movzx	ax,byte ptr [bp+4h]
             AssertCode64("vmaxpd\tymm6{k7},ymm5,qword ptr [rax]{1to4}", "62 F1 D5 3F 5F 30");
         }
 
-
-
         [Test]
         public void X86Dis_vpminsq()
         {

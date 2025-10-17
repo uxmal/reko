@@ -97,6 +97,7 @@ namespace Reko.Arch.X86
                 this.EvexMergeMode = 0;
                 this.EvexBroadcast = false;
                 this.NewDataDestination = null;
+                this.NoFlags = false;
 
                 this.ops.Clear();
             }
@@ -196,9 +197,19 @@ namespace Reko.Arch.X86
             public bool EvexBroadcast{ get; set; }
 
             /// <summary>
-            /// APX : New data destination register encoding
+            /// APX: New data destination register encoding
             /// </summary>
             public int? NewDataDestination { get; set; }
+
+            /// <summary>
+            /// APX: 'NF' no flags bit present in the EVEX prefix.
+            /// </summary>
+            public bool EvexNF { get; set; }
+
+            /// <summary>
+            /// APX: True if setting the flags should be suppressed.
+            /// </summary>
+            public bool NoFlags { get; set; }
         }
 
         //$REVIEW: Instructions longer than this cause exceptions on modern x86 processors.
@@ -599,7 +610,7 @@ namespace Reko.Arch.X86
         private static readonly Mutator<X86Disassembler> By = B(OperandType.y);
 
         /// <summary>
-        /// Floating-point ST(x)
+        /// Floating-point ST(x), extracted from the modrm field.
         /// </summary>
         private static bool F(uint op, X86Disassembler d)
         {
@@ -1382,6 +1393,20 @@ namespace Reko.Arch.X86
                 var ireg = dc.NewDataDestination.Value;
                 var reg = dasm.GpRegFromBits(ireg, dasm.decodingContext.dataWidth);
                 dc.ops.Insert(0, reg);
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Sets the <see cref="X86Instruction.NoFlags"/> flag if the
+        /// instruction has an EVEX prefix with the 'no flags' bit set.
+        /// </summary>
+        private static bool Nf(uint op, X86Disassembler dasm)
+        {
+            var dc = dasm.decodingContext;
+            if (dc.EvexNF)
+            {
+                dc.NoFlags = true;
             }
             return true;
         }

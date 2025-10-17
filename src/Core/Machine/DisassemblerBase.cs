@@ -83,6 +83,7 @@ namespace Reko.Core.Machine
                 var instr = dasm.DisassembleInstruction();
                 if (instr is null || instr.Length < 0)
                     return false;
+                Debug.Assert(instr.Length > 0);
                 this.current = instr;
                 return true;
             }

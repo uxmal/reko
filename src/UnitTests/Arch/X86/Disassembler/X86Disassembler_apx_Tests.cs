@@ -71,6 +71,7 @@ public class X86Disassembler_apx_Tests : DisassemblerTestBase<X86Instruction>
         AssertCode("illegal", "D508 40 03C4");
         AssertCode("illegal", "D508 72 45");
         AssertCode("illegal", "D508 A0 42");
+        AssertCode("illegal", "40 D50803C4");   // REX prefix before REX2
     }
 }
 

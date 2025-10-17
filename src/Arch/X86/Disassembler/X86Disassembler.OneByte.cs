@@ -37,7 +37,7 @@ namespace Reko.Arch.X86
             {
 				// 00
 				d[0x00] = isEevex ? s_invalid : Instr(Mnemonic.add, InstrClass.Linear|InstrClass.Zero, Eb,Gb);
-				d[0x01] = Instr(Mnemonic.add, Ndd,Ev,Gv);
+				d[0x01] = Instr(Mnemonic.add, Nf, Ndd,Ev,Gv);
 				d[0x02] = Instr(Mnemonic.add, Gb,Eb);
 				d[0x03] = Instr(Mnemonic.add, Gv,Ev);
 				d[0x04] = Instr(Mnemonic.add, AL,Ib);
@@ -181,6 +181,7 @@ namespace Reko.Arch.X86
                 d[0x62] = isRex2 ? s_invalid : Amd64Instr(
                     Instr186(Mnemonic.bound, Gv,Mv),
                     new EvexDecoder(
+                        isEevex,
                         eevexLegacy0,
                         s_decoders0F,
                         s_decoders0F38,

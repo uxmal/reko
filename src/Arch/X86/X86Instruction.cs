@@ -51,20 +51,18 @@ namespace Reko.Arch.X86
         /// </summary>
         public int RepPrefix { get; set; }
 
-        [Obsolete("Use the `RepPrefix` property", true)]
-        public int repPrefix;                   // 0 = no prefix, 2 = repnz, 3 = repz
-        [Obsolete("Use the `DataWidth` property", true)]
-		public DataType dataWidth = default!;	            // Width of the data (if it's a word).
-        [Obsolete("Use the `AddressWidth` property", true)]
-		public PrimitiveType addrWidth = default!;	        // width of the address mode.	// TODO: belongs in MemoryOperand
-
         public byte OpMask { get; set; }        // EVEX Mask register to use.
         public byte MergingMode { get; set; }   // EVEX merging mode
         public bool Broadcast { get; set; }     // EVEX broadcast flag
         public EvexRoundMode RoundMode { get; set; }
         //$PERF: is it worth it to pack the rarely used bit- and byte-sized fields into a single word?
 
-		public X86Instruction(Mnemonic mnemonic, InstrClass iclass, DataType dataWidth, PrimitiveType addrWidth, params MachineOperand [] ops)
+        /// <summary>
+        /// True if instruction does not modify flags -- the Intel APX "NF" bit.
+        /// </summary>
+        public bool NoFlags { get; set; }
+
+        public X86Instruction(Mnemonic mnemonic, InstrClass iclass, DataType dataWidth, PrimitiveType addrWidth, params MachineOperand [] ops)
 		{
 			this.Mnemonic = mnemonic;
             this.InstructionClass = iclass;
