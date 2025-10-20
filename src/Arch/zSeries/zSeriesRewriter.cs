@@ -575,10 +575,17 @@ namespace Reko.Arch.zSeries
             var regLo = (RegisterStorage) instr.Operands[iopLo];
             return binder.EnsureSequence(dt, regHi, regLo);
         }
+
         private void SetCc(Expression e)
         {
             var cc = binder.EnsureFlagGroup(Registers.CC);
             m.Assign(cc, e);
+        }
+
+        private void SetCcCond(Expression e)
+        {
+            var cc = binder.EnsureFlagGroup(Registers.CC);
+            m.Assign(cc, m.Cond(cc.DataType, e));
         }
 
         private Expression SignedCondition(int iop, Expression left, Expression right)

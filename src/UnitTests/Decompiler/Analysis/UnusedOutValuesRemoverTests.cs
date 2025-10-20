@@ -552,7 +552,7 @@ main_exit:
                 var a = m.Reg("a", regA);
                 var C_1 = m.Flags("C_1", this.C);
                 m.Label("body");
-                m.Assign(C_1, m.Cond(m.ISub(a, 0x12)));
+                m.Assign(C_1, m.Cond(C_1.DataType, m.ISub(a, 0x12)));
                 m.Return();
                 m.AddUseToExitBlock(a);
                 m.AddUseToExitBlock(C_1);

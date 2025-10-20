@@ -64,7 +64,7 @@ namespace Reko.Arch.M68k.Rewriter
             }
             m.Assign(
                 binder.EnsureFlagGroup(Registers.CZN),
-                m.Cond(opDst));
+                m.Cond(Registers.CZN.DataType, opDst));
             m.Assign(binder.EnsureFlagGroup(Registers.V), Constant.False());
         }
 
@@ -90,7 +90,7 @@ namespace Reko.Arch.M68k.Rewriter
             }
             m.Assign(
                 binder.EnsureFlagGroup(Registers.CZNX),
-                m.Cond(opDst));
+                m.Cond(Registers.CZNX.DataType, opDst));
             m.Assign(binder.EnsureFlagGroup(Registers.V), Constant.False());
         }
 
@@ -98,7 +98,7 @@ namespace Reko.Arch.M68k.Rewriter
         {
             var opSrc = orw.RewriteSrc(instr.Operands[0], instr.Address);
             var opDst = binder.EnsureFlagGroup(Registers.ZN);
-            m.Assign(opDst, m.Cond(m.ISub(opSrc, 0)));
+            m.Assign(opDst, m.Cond(opDst.DataType, m.ISub(opSrc, 0)));
             m.Assign(binder.EnsureFlagGroup(Registers.C), Constant.False());
             m.Assign(binder.EnsureFlagGroup(Registers.V), Constant.False());
         }
@@ -130,9 +130,7 @@ namespace Reko.Arch.M68k.Rewriter
                 EmitInvalid();
                 return;
             }
-            m.Assign(
-                binder.EnsureFlagGroup(Registers.Z),
-                m.Cond(m.And(opDst, tmpMask)));
+            AssignCondOf(Registers.Z, m.And(opDst, tmpMask));
         }
 
         public void RewriteBclrBset(IntrinsicProcedure intrinsic)
@@ -202,7 +200,7 @@ namespace Reko.Arch.M68k.Rewriter
             }
             m.Assign(
                 binder.EnsureFlagGroup(Registers.ZN),
-                m.Cond(result));
+                m.Cond(Registers.ZN.DataType, result));
         }
 
         public void RewriteExtb()
@@ -213,7 +211,7 @@ namespace Reko.Arch.M68k.Rewriter
                 m.Convert(m.Slice(dReg, PrimitiveType.SByte), PrimitiveType.SByte, PrimitiveType.Int32));
             m.Assign(
                 binder.EnsureFlagGroup(Registers.ZN),
-                m.Cond(dReg));
+                m.Cond(Registers.ZN.DataType, dReg));
         }
 
         public void RewriteLogical(Func<Expression, Expression, Expression> binOpGen)
@@ -233,7 +231,7 @@ namespace Reko.Arch.M68k.Rewriter
                 EmitInvalid();
                 return;
             }
-            m.Assign(binder.EnsureFlagGroup(Registers.VZN), m.Cond(opDst));
+            m.Assign(binder.EnsureFlagGroup(Registers.VZN), m.Cond(Registers.VZN.DataType, opDst));
             m.Assign(binder.EnsureFlagGroup(Registers.C), Constant.False());
         }
 
@@ -261,7 +259,9 @@ namespace Reko.Arch.M68k.Rewriter
                     EmitInvalid();
                     return;
                 }
-                m.Assign(binder.EnsureFlagGroup(Registers.CVZNX), m.Cond(opDst));
+                m.Assign(
+                    binder.EnsureFlagGroup(Registers.CVZNX),
+                    m.Cond(Registers.CVZNX.DataType, opDst));
             }
         }
 
@@ -278,7 +278,7 @@ namespace Reko.Arch.M68k.Rewriter
                 EmitInvalid();
                 return;
             }
-            m.Assign(binder.EnsureFlagGroup(Registers.CVZNX), m.Cond(dst));
+            AssignCondOf(Registers.CVZNX, dst);
         }
 
         private void RewriteScc(ConditionCode cc, FlagGroupStorage flagsUsed)
@@ -296,7 +296,7 @@ namespace Reko.Arch.M68k.Rewriter
             var r = (RegisterStorage) instr.Operands[0];
             var reg = binder.EnsureRegister(r);
             m.Assign(reg, m.Fn(swap_intrinsic, reg));
-            m.Assign(binder.EnsureFlagGroup(Registers.ZN), m.Cond(reg));
+            m.Assign(binder.EnsureFlagGroup(Registers.ZN), m.Cond(Registers.ZN.DataType, reg));
             m.Assign(binder.EnsureFlagGroup(Registers.C), Constant.False());
             m.Assign(binder.EnsureFlagGroup(Registers.V), Constant.False());
         }
@@ -321,7 +321,7 @@ namespace Reko.Arch.M68k.Rewriter
                 EmitInvalid();
                 return;
             }
-            m.Assign(binder.EnsureFlagGroup(flags), m.Cond(opDst));
+            AssignCondOf(flags, opDst);
         }
 
         private void RewriteBtst()
@@ -363,9 +363,7 @@ namespace Reko.Arch.M68k.Rewriter
             var dst = orw.RewriteSrc(instr.Operands[1], instr.Address);
             var tmp = binder.CreateTemporary(dst.DataType);
             m.Assign(tmp, m.ISub(dst, src));
-            m.Assign(
-                binder.EnsureFlagGroup(Registers.CVZN),
-                m.Cond(tmp));
+            AssignCondOf(Registers.CVZN, tmp);
         }
 
         private void RewriteCmp2()
@@ -444,9 +442,7 @@ namespace Reko.Arch.M68k.Rewriter
                     m.Assign(quot, div(dt, quot, divisor));
                 }
             }
-            m.Assign(
-                binder.EnsureFlagGroup(Registers.VZN),
-                m.Cond(quot));
+            AssignCondOf(Registers.VZN, quot);
             m.Assign(
                 binder.EnsureFlagGroup(Registers.C), Constant.False());
         }
@@ -824,7 +820,7 @@ namespace Reko.Arch.M68k.Rewriter
                 EmitInvalid();
                 return;
             }
-            m.Assign(binder.EnsureFlagGroup(Registers.CVZNX), m.Cond(dst));
+            AssignCondOf(Registers.CVZNX, dst);
         }
 
         private void RewriteSbcd()
@@ -842,7 +838,7 @@ namespace Reko.Arch.M68k.Rewriter
                 EmitInvalid();
                 return;
             }
-            m.Assign(binder.EnsureFlagGroup(Registers.CVZNX), m.Cond(dst));
+            AssignCondOf(Registers.CVZNX, dst);
         }
 
         private void RewriteNbcd()
@@ -856,7 +852,7 @@ namespace Reko.Arch.M68k.Rewriter
                 EmitInvalid();
                 return;
             }
-            m.Assign(binder.EnsureFlagGroup(Registers.CVZNX), m.Cond(dst));
+            AssignCondOf(Registers.CVZNX, dst);
         }
 
         private void RewriteUnlk()
@@ -889,8 +885,7 @@ namespace Reko.Arch.M68k.Rewriter
                 EmitInvalid();
                 return;
             }
-            var f = binder.EnsureFlagGroup(Registers.CVZNX);
-            m.Assign(f, m.Cond(expr));
+            AssignCondOf(Registers.CVZNX, expr);
         }
 
         private void LogicalConditions(Expression? expr)
@@ -900,7 +895,7 @@ namespace Reko.Arch.M68k.Rewriter
                 EmitInvalid();
                 return;
             }
-            m.Assign(binder.EnsureFlagGroup(Registers.ZN), m.Cond(expr));
+            AssignCondOf(Registers.ZN, expr);
             m.Assign(binder.EnsureFlagGroup(Registers.C), Constant.False());
             m.Assign(binder.EnsureFlagGroup(Registers.V), Constant.False());
         }

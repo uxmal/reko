@@ -128,7 +128,7 @@ namespace Reko.Arch.C166
             return (Constant.Int16((short)b.Bit), Src(b.Operand));
         }
 
-        private void EmitCond(FlagGroupStorage grf, Expression e) => EmitCc(grf, m.Cond(e));
+        private void EmitCond(FlagGroupStorage grf, Expression e) => EmitCc(grf, m.Cond(grf.DataType, e));
 
         private void EmitUnitTest()
         {

@@ -389,7 +389,7 @@ ProcedureBuilder_exit:
                 m.SStore(es, bx, m.Byte(0));
                 m.Assign(bx, m.IAdd(bx, 1));
                 m.Assign(cx, m.ISub(cx, 1));
-                m.Assign(SZ, m.Cond(cx));
+                m.Assign(SZ, m.Cond(SZ.DataType, cx));
                 m.BranchIf(m.Test(ConditionCode.NE, Z), "mHead");
 
                 m.Label("mReturn");

@@ -204,13 +204,13 @@ namespace Reko.Arch.Tms7000
         private void CNZ(Expression e)
         {
             var cnz = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.st, (uint)FlagM.CNZ));
-            m.Assign(cnz, m.Cond(e));
+            m.Assign(cnz, m.Cond(cnz.DataType, e));
         }
 
         private void NZ0(Expression e)
         {
             var nz = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.st, (uint)FlagM.NZ));
-            m.Assign(nz, m.Cond(e));
+            m.Assign(nz, m.Cond(nz.DataType, e));
             var c = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.st, (uint)FlagM.CF));
             m.Assign(c, Constant.False());
         }
@@ -227,7 +227,7 @@ namespace Reko.Arch.Tms7000
                 opr(
                     opr(dst, src),
                     c));
-            m.Assign(c, m.Cond(dst));
+            m.Assign(c, m.Cond(c.DataType, dst));
         }
 
         private void RewriteArithmetic(Func<Expression, Expression, Expression> fn)
@@ -449,7 +449,7 @@ namespace Reko.Arch.Tms7000
             var op = Operand(instr.Operands[0]);
             var C = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.st, (uint) FlagM.CF));
             m.Assign(op, m.Fn(rot, op, m.Byte(1)));
-            m.Assign(C, m.Cond(op));
+            m.Assign(C, m.Cond(C.DataType, op));
         }
 
         private void RewriteRotateC(IntrinsicProcedure rot)
@@ -457,7 +457,7 @@ namespace Reko.Arch.Tms7000
             var op = Operand(instr.Operands[0]);
             var C = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.st, (uint)FlagM.CF));
             m.Assign(op, m.Fn(rot.MakeInstance(op.DataType, PrimitiveType.Byte), op, m.Byte(1), C));
-            m.Assign(C, m.Cond(op));
+            m.Assign(C, m.Cond(C.DataType, op));
         }
 
         private void RewriteSetc()

@@ -291,7 +291,10 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         {
             FlagM flags = PIC18CC.Defined(instrCurr.Mnemonic);
             if (flags != 0)
-                m.Assign(FlagGroup(flags), m.Cond(dst));
+            {
+                var grf = FlagGroup(flags);
+                m.Assign(grf, m.Cond(grf.DataType, dst));
+            }
         }
 
         protected override (FSRIndexedMode indMode, Expression memPtr) GetMemFileAccess(MachineOperand opernd)

@@ -15,7 +15,8 @@ namespace Reko.Arch.Pdp.Pdp10.Rewriter
             var src = RewriteEa(1);
             var dst = Ac();
             m.Assign(dst, fn(dst, src));
-            m.Assign(binder.EnsureFlagGroup(C0C1VT), m.Cond(dst));
+            var grf = binder.EnsureFlagGroup(C0C1VT);
+            m.Assign(grf, m.Cond(grf.DataType, dst));
         }
 
         private Expression Andca(Expression ac, Expression e) => m.And(m.Comp(ac), e);
@@ -53,7 +54,8 @@ namespace Reko.Arch.Pdp.Pdp10.Rewriter
         {
             var dst = Ac();
             m.Assign(dst, m.IAdd(dst, 1));
-            m.Assign(binder.EnsureFlagGroup(C0C1VT), m.Cond(dst));
+            var grf = binder.EnsureFlagGroup(C0C1VT);
+            m.Assign(grf, m.Cond(grf.DataType, dst));
             Branch(fn(dst), RewriteEa(1));
         }
 
@@ -61,14 +63,16 @@ namespace Reko.Arch.Pdp.Pdp10.Rewriter
         {
             var dst = Ac();
             m.Assign(dst, m.IAdd(dst, 1));
-            m.Assign(binder.EnsureFlagGroup(C0C1VT), m.Cond(dst));
+            var grf = binder.EnsureFlagGroup(C0C1VT);
+            m.Assign(grf, m.Cond(grf.DataType, dst));
         }
 
         private void RewriteAoja()
         {
             var dst = Ac();
             m.Assign(dst, m.IAdd(dst, 1));
-            m.Assign(binder.EnsureFlagGroup(C0C1VT), m.Cond(dst));
+            var grf = binder.EnsureFlagGroup(C0C1VT);
+            m.Assign(grf, m.Cond(grf.DataType, dst));
             m.Goto(RewriteEa(1));
         }
 
@@ -77,7 +81,8 @@ namespace Reko.Arch.Pdp.Pdp10.Rewriter
             var tmp = binder.CreateTemporary(word36);
             var cop = instr.Operands.Length;
             m.Assign(tmp, m.IAdd(AccessEa(cop - 1), 1));
-            m.Assign(binder.EnsureFlagGroup(C0C1VT), m.Cond(tmp));
+            var grf = binder.EnsureFlagGroup(C0C1VT);
+            m.Assign(grf, m.Cond(grf.DataType, tmp));
             if (cop == 2)
             {
                 m.Assign(Ac(), tmp);
@@ -95,7 +100,8 @@ namespace Reko.Arch.Pdp.Pdp10.Rewriter
             {
                 m.Assign(Ac(), tmp);
             }
-            m.Assign(binder.EnsureFlagGroup(C0C1VT), m.Cond(tmp));
+            var grf = binder.EnsureFlagGroup(C0C1VT);
+            m.Assign(grf, m.Cond(grf.DataType, tmp));
             SkipIf(fn(tmp));
         }
 
@@ -382,7 +388,7 @@ namespace Reko.Arch.Pdp.Pdp10.Rewriter
             var acp1 = Ac_plus_1();
             m.Assign(dst, m.SDiv(dst, src));
             m.Assign(acp1, m.SMod(dst, src));
-            m.Assign(binder.EnsureFlagGroup(VTND), m.Cond(dst));
+            m.Assign(binder.EnsureFlagGroup(VTND), m.Cond(VTND.DataType, dst));
         }
 
         private void RewriteIdivb()
@@ -395,7 +401,8 @@ namespace Reko.Arch.Pdp.Pdp10.Rewriter
             m.Assign(dst, tmp);
             Assign(RewriteEa(1), tmp);
             m.Assign(acp1, m.SMod(dst, src));
-            m.Assign(binder.EnsureFlagGroup(VTND), m.Cond(dst));
+            var grf = binder.EnsureFlagGroup(VTND);
+            m.Assign(grf, m.Cond(grf.DataType, dst));
         }
 
         private void RewriteIdivi()
@@ -405,7 +412,8 @@ namespace Reko.Arch.Pdp.Pdp10.Rewriter
             var acp1 = Ac_plus_1();
             m.Assign(dst, m.SDiv(dst, src));
             m.Assign(acp1, m.SMod(dst, src));
-            m.Assign(binder.EnsureFlagGroup(VTND), m.Cond(dst));
+            var grf = binder.EnsureFlagGroup(VTND);
+            m.Assign(grf, m.Cond(grf.DataType, dst));
         }
 
         private void RewriteImul()
@@ -413,7 +421,8 @@ namespace Reko.Arch.Pdp.Pdp10.Rewriter
             var src = AccessEa(1);
             var dst = Ac();
             m.Assign(dst, m.SMul(dst, src));
-            m.Assign(binder.EnsureFlagGroup(VT), m.Cond(dst));
+            var grf = binder.EnsureFlagGroup(VT);
+            m.Assign(grf, m.Cond(grf.DataType, dst));
         }
 
         private void RewriteImuli()
@@ -421,7 +430,8 @@ namespace Reko.Arch.Pdp.Pdp10.Rewriter
             var src = RewriteEa(1);
             var dst = Ac();
             m.Assign(dst, m.SMul(dst, src));
-            m.Assign(binder.EnsureFlagGroup(VT), m.Cond(dst));
+            var grf = binder.EnsureFlagGroup(VT);
+            m.Assign(grf, m.Cond(grf.DataType, dst));
         }
 
         private void RewriteLsh()
@@ -585,7 +595,7 @@ namespace Reko.Arch.Pdp.Pdp10.Rewriter
             var ac = Ac();
             m.Assign(ac, m.ISub(ac, 1));
             var cc = binder.EnsureFlagGroup(C0C1VT);
-            m.Assign(cc, m.Cond(ac));
+            m.Assign(cc, m.Cond(cc.DataType, ac));
             Branch(fn(ac), RewriteEa(1));
         }
 
@@ -608,7 +618,8 @@ namespace Reko.Arch.Pdp.Pdp10.Rewriter
             {
                 m.Assign(Ac(), tmp);
             }
-            m.Assign(binder.EnsureFlagGroup(C0C1VT), m.Cond(tmp));
+            var grf = binder.EnsureFlagGroup(C0C1VT);
+            m.Assign(grf, m.Cond(grf.DataType, tmp));
         }
 
         private void RewriteSos(Func<Expression,Expression> fn)
@@ -621,7 +632,8 @@ namespace Reko.Arch.Pdp.Pdp10.Rewriter
             {
                 m.Assign(Ac(), tmp);
             }
-            m.Assign(binder.EnsureFlagGroup(C0C1VT), m.Cond(tmp));
+            var grf = binder.EnsureFlagGroup(C0C1VT);
+            m.Assign(grf, m.Cond(grf.DataType, tmp));
             SkipIf(fn(tmp));
         }
 

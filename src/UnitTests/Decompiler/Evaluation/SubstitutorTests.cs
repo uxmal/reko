@@ -184,7 +184,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
         public void ConditionOf_Valid()
         {
             var id = m.Register("r3");
-            var e = m.Cond(id);
+            var e = m.Cond(PrimitiveType.Word32, id);
             ctx.Setup(c => c.GetValue(id)).Returns(id);
 
             var subst = new Substitutor(ctx.Object);
@@ -197,7 +197,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
         public void ConditionOf_Invalid()
         {
             var id = m.Register("r3");
-            var e = m.Cond(id);
+            var e = m.Cond(PrimitiveType.Word32, id);
             ctx.Setup(c => c.GetValue(id)).Returns(InvalidConstant.Create(id.DataType));
 
             var subst = new Substitutor(ctx.Object);

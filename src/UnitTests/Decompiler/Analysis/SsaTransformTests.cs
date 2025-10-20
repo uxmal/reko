@@ -568,7 +568,7 @@ proc1_exit:
                 m.Assign(sp, m.ISub(sp, 4));
                 m.MStore(sp, bp);
                 m.Assign(bp, sp);
-                m.Assign(cr, m.Cond(m.ISub(m.Mem16(m.IAdd(bp, 8)), 0x3)));
+                m.Assign(cr, m.Cond(cr.DataType, m.ISub(m.Mem16(m.IAdd(bp, 8)), 0x3)));
                 m.BranchIf(m.Test(ConditionCode.GE, cr), "ge3");
 
                 m.Assign(r1, 0);
@@ -1065,7 +1065,7 @@ proc1_exit:
                 var c = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("C"));
                 var al = m.Reg8("al", 0);
                 var esi = m.Reg32("esi", 6);
-                m.Assign(sz, m.Cond(m.And(esi, esi)));
+                m.Assign(sz, m.Cond(sz.DataType, m.And(esi, esi)));
                 m.Assign(c, Constant.False());
                 m.Assign(al, m.Test(ConditionCode.ULE, cz));
                 m.Return();
@@ -1936,7 +1936,7 @@ proc1_exit:
                 m.Assign(ebx, m.Mem32(m.IAdd(ebx, 4)));
 
                 m.Label("l3Head");
-                m.Assign(SCZ, m.Cond(m.ISub(ebx, 0)));
+                m.Assign(SCZ, m.Cond(SCZ.DataType, m.ISub(ebx, 0)));
                 m.BranchIf(m.Test(ConditionCode.NE, Z), "l2Body");
 
                 m.Label("l4Exit");
@@ -2278,7 +2278,7 @@ proc1_exit:
 
                 m.Label("m0");
                 m.Assign(bl, m.Mem8(si));
-                m.Assign(SCZO, m.Cond(m.ISub(bl, 2)));
+                m.Assign(SCZO, m.Cond(SCZO.DataType, m.ISub(bl, 2)));
                 m.BranchIf(m.Test(ConditionCode.UGT, SCZO), "m2");
 
                 m.Label("m1");
@@ -2339,7 +2339,7 @@ proc1_exit:
                 var r1 = m.Reg32("r1", 1);
 
                 m.Label("m0");
-                m.Assign(SZ, m.Cond(r1));
+                m.Assign(SZ, m.Cond(SZ.DataType, r1));
                 m.Assign(C, Constant.Bool(false));
                 m.Return();
             });
@@ -2547,7 +2547,7 @@ proc1_exit:
                 var Z = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("Z"));
                 var r3 = m.Register("r3");
 
-                m.Assign(Z, m.Cond(r3));
+                m.Assign(Z, m.Cond(Z.DataType, r3));
                 m.Assign(r3, m.Convert(m.Test(ConditionCode.EQ, Z), PrimitiveType.Bool, PrimitiveType.Int32));
                 m.Return();
             });
@@ -2585,7 +2585,7 @@ proc1_exit:
                 var CZ = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("CZ"));
                 var r3 = m.Register("r3");
 
-                m.Assign(CZ, m.Cond(r3));
+                m.Assign(CZ, m.Cond(CZ.DataType, r3));
                 m.Assign(r3, m.Convert(m.Test(ConditionCode.ULE, CZ), PrimitiveType.Bool, PrimitiveType.Int32));
                 m.Return();
             });
@@ -2628,7 +2628,7 @@ proc1_exit:
                 var SZ = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("SZ"));
                 var r3 = m.Register("r3");
 
-                m.Assign(SCZ, m.Cond(r3));
+                m.Assign(SCZ, m.Cond(SCZ.DataType, r3));
                 m.Assign(r3, m.Convert(m.Test(ConditionCode.LE, SZ), PrimitiveType.Bool, PrimitiveType.Int32));
                 m.Return();
             });
@@ -2687,7 +2687,7 @@ proc1_exit:
                 var SZ = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("SZ"));
                 var r1 = m.Register("r1");
 
-                m.Assign(SCZ, m.Cond(r1));
+                m.Assign(SCZ, m.Cond(SCZ.DataType, r1));
                 m.BranchIf(m.Test(ConditionCode.EQ, Z), "mZero");
                 m.BranchIf(m.Test(ConditionCode.LT, SZ), "mLessThan");
                 m.Return();
@@ -3169,11 +3169,11 @@ proc1_exit:
                 m.Assign(eax, 4);
                 m.MStore(m.Word32(0x00123400), eax);
                 m.Assign(al, m.Mem8(m.Word32(0x00123408)));
-                m.Assign(SZC, m.Cond(m.ISub(al, 0x30)));
+                m.Assign(SZC, m.Cond(SZC.DataType, m.ISub(al, 0x30)));
                 m.BranchIf(m.Test(ConditionCode.LT, SZC), "m4_not_number");
 
                 m.Label("m1_maybe_number");
-                m.Assign(SZC, m.Cond(m.ISub(al, 0x39)));
+                m.Assign(SZC, m.Cond(SZC.DataType, m.ISub(al, 0x39)));
                 m.BranchIf(m.Test(ConditionCode.GT, SZC), "m4_not_number");
 
                 m.Label("m2_number");

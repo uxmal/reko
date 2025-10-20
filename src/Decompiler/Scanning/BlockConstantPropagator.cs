@@ -159,7 +159,7 @@ namespace Reko.Scanning
                 Address addr => addr,
                 Slice sl => m.Slice(VisitExpression(sl.Expression), sl.DataType, sl.Offset),
                 Conversion conv => m.Convert(VisitExpression(conv.Expression), conv.SourceDataType, conv.DataType),
-                ConditionOf cof => m.Cond(VisitExpression(cof.Expression)),
+                ConditionOf cof => m.Cond(cof.DataType, VisitExpression(cof.Expression)),
                 TestCondition tc => m.Test(tc.ConditionCode, VisitExpression(tc.Expression)),
                 MkSequence seq => m.Seq(seq.DataType, VisitExpressions(seq.Expressions)),
                 UnaryExpression u => m.Unary(u.Operator, u.DataType, VisitExpression(u.Expression)),

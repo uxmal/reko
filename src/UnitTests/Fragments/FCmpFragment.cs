@@ -46,6 +46,7 @@ namespace Reko.UnitTests.Fragments
             m.Assign(
                 flags,
                 m.Cond(
+                    flags.DataType,
                     m.FSub(
                         m.Convert(fp0, fp0.DataType, real96),
                         m.Mem(real96, m.IAdd(a6, 0x08)))));

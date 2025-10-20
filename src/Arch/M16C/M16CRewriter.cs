@@ -222,7 +222,7 @@ internal class M16CRewriter : IEnumerable<RtlInstructionCluster>
 
     private void EmitCond(FlagGroupStorage grf, Expression value)
     {
-        m.Assign(binder.EnsureFlagGroup(grf), m.Cond(value));
+        m.Assign(binder.EnsureFlagGroup(grf), m.Cond(grf.DataType, value));
     }
 
 

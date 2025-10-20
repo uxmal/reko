@@ -58,7 +58,7 @@ namespace Reko.Arch.M68k.Rewriter
             else
             {
                 iclass = InstrClass.ConditionalTransfer;
-                var test = m.Test(cc, FpuFlagGroup());
+                var test = m.Test(cc, binder.EnsureFlagGroup(Registers.FPUFLAGS));
                 m.Branch(test, addr, iclass);
             }
         }
@@ -82,7 +82,7 @@ namespace Reko.Arch.M68k.Rewriter
                 EmitInvalid();
                 return;
             }
-            m.Assign(FpuFlagGroup(), m.Cond(opDst));
+            AssignCondOf(Registers.FPUFLAGS, opDst);
         }
 
         private void RewriteFBinOp(Func<Expression, Expression, Expression> binOpGen)
@@ -94,7 +94,7 @@ namespace Reko.Arch.M68k.Rewriter
                 EmitInvalid();
                 return;
             }
-            m.Assign(FpuFlagGroup(), m.Cond(opDst));
+            AssignCondOf(Registers.FPUFLAGS, opDst);
         }
 
         private void RewriteFSinCos()
@@ -106,7 +106,7 @@ namespace Reko.Arch.M68k.Rewriter
                 m.Fn(FpOps.SinGeneric.MakeInstance(s.DataType), s));
             if (dstSin is not null)
             {
-                m.Assign(FpuFlagGroup(), m.Cond(dstSin));
+                AssignCondOf(Registers.FPUFLAGS, dstSin);
             }
             EmitInvalid();
         }
@@ -138,19 +138,14 @@ namespace Reko.Arch.M68k.Rewriter
         private void RewriteFUnaryOp(Func<Expression, Expression> unaryOpGen)
         {
             var op = orw.RewriteUnary(instr.Operands[0], instr.Address, instr.DataWidth!, unaryOpGen);
-            m.Assign(FpuFlagGroup(), m.Cond(op));
-        }
-
-        private Identifier FpuFlagGroup()
-        {
-            return binder.EnsureFlagGroup(Registers.FPUFLAGS);
+            AssignCondOf(Registers.FPUFLAGS, op);
         }
 
         private void RewriteFcmp()
         {
             var opSrc = orw.RewriteSrc(instr.Operands[0], instr.Address);
             var opDst = orw.RewriteSrc(instr.Operands[1], instr.Address);
-            m.Assign(FpuFlagGroup(), m.Cond(m.ISub(opDst, opSrc)));
+            AssignCondOf(Registers.FPUFLAGS, m.FSub(opDst, opSrc));
         }
 
         private void RewriteFmove()
@@ -162,7 +157,7 @@ namespace Reko.Arch.M68k.Rewriter
                 EmitInvalid();
                 return;
             }
-            m.Assign(FpuFlagGroup(), m.Cond(opDst));
+            AssignCondOf(Registers.FPUFLAGS, opDst);
         }
 
         private void RewriteFmovecr()
@@ -181,7 +176,7 @@ namespace Reko.Arch.M68k.Rewriter
             }
             var dst = orw.RewriteSrc(instr.Operands[1], instr.Address);
             m.Assign(dst, src);
-            m.Assign(binder.EnsureRegister(Registers.fpsr), m.Cond(dst));
+            m.Assign(binder.EnsureRegister(Registers.fpsr), m.Cond(Registers.fpsr.DataType, dst));
         }
 
         private void RewriteFintrz()

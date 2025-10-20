@@ -329,8 +329,7 @@ l06B0:
 		r1_n = (word16) v53_n;
 		r0_n = SLICE(r0_r1_n, word16, 16);
 		r4_r5_n >>= 1;
-		Eq_n NZVC_n;
-		NZVC_n.u1 = cond(r1_n);
+		cui16 NZVC_n = cond(r1_n);
 		if (r1_n == 0x00)
 			break;
 		Eq_n r0_n = __rcl<word16,byte>(r0_n, 0x01, NZVC_n & 0x01);

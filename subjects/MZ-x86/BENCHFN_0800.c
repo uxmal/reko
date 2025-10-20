@@ -360,8 +360,7 @@ ui32 fn0800-03BF(struct Eq_n * ds_si, byte * es_di, word16 ax, uint16 cx, word16
 	if (cx != 0x00)
 	{
 		byte al_n = ds_si->b0000;
-		Eq_n SCZO_n;
-		SCZO_n.u1 = cond(al_n - 0x22);
+		ui32 SCZO_n = cond(al_n - 0x22);
 		++si;
 		--cx;
 		Z_n = SCZO_n & 0x04;

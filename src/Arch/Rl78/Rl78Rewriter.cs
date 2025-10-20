@@ -275,7 +275,7 @@ namespace Reko.Arch.Rl78
 
         private void EmitCond(Expression e, Identifier grf)
         {
-            m.Assign(grf, m.Cond(e));
+            m.Assign(grf, m.Cond(grf.DataType, e));
         }
 
         private void RewriteAdd()
@@ -374,14 +374,14 @@ namespace Reko.Arch.Rl78
         {
             var left = RewriteSrc(instr.Operands[0]);
             var right = RewriteSrc(instr.Operands[1]);
-            m.Assign(CZ(), m.Cond(m.ISub(left, right)));
+            m.Assign(CZ(), m.Cond(Registers.CZ.DataType, m.ISub(left, right)));
         }
 
         private void RewriteCmp0()
         {
             var left = RewriteSrc(instr.Operands[0]);
             var right = Constant.Zero(left.DataType);
-            m.Assign(CZ(), m.Cond(m.ISub(left, right)));
+            m.Assign(CZ(), m.Cond(Registers.CZ.DataType, m.ISub(left, right)));
         }
 
         private void RewriteHalt()

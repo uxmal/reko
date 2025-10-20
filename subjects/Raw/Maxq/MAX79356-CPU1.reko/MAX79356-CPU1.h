@@ -12,9 +12,6 @@ Eq_3: (union "Eq_3" (byte u0) ((ptr16 Eq_30) u1))
 Eq_11: (fn word16 (byte))
 	T_11 (in __read_modreg @ 0001 : ptr32)
 	T_12 (in signature of __read_modreg : void)
-Eq_17: (union "Eq_17" (byte u0) (word16 u1))
-	T_17 (in cond(__read_modreg(1<8>)) @ 0001 : byte)
-	T_18 (in csze_5 @ 0001 : Eq_17)
 Eq_19: (union "Eq_19" (cui16 u0) (byte u1))
 	T_19 (in 1<8> @ 0096 : byte)
 Eq_23: (fn void ())
@@ -39,29 +36,17 @@ Eq_34: (struct "Eq_34"
 Eq_46: (fn word16 (byte))
 	T_46 (in __read_modreg @ 0105 : ptr32)
 	T_47 (in signature of __read_modreg : void)
-Eq_51: (union "Eq_51" (byte u0) (word16 u1))
-	T_51 (in cond(__read_modreg(0<8>)) @ 0105 : byte)
-	T_52 (in csze_103 @ 0105 : Eq_51)
 Eq_56: (fn word16 (byte))
 	T_56 (in __read_modreg @ 0106 : ptr32)
 	T_57 (in signature of __read_modreg : void)
-Eq_61: (union "Eq_61" (byte u0) (word16 u1))
-	T_61 (in cond(__read_modreg(0<8>)) @ 0106 : byte)
-	T_62 (in csze_105 @ 0106 : Eq_61)
 Eq_71: (struct "Eq_71" (1 word16 w0001))
 	T_71 (in dp1_93 @ 0109 : (ptr16 Eq_71))
 Eq_87: (fn word16 (byte))
 	T_87 (in __read_modreg @ 00F6 : ptr32)
 	T_88 (in signature of __read_modreg : void)
-Eq_92: (union "Eq_92" (byte u0) (word16 u1))
-	T_92 (in cond(__read_modreg(0<8>)) @ 00F6 : byte)
-	T_93 (in csze_58 @ 00F6 : Eq_92)
 Eq_94: (fn word16 (byte))
 	T_94 (in __read_modreg @ 00F7 : ptr32)
 	T_95 (in signature of __read_modreg : void)
-Eq_101: (union "Eq_101" (byte u0) (word16 u1))
-	T_101 (in cond(__read_modreg(8<8>)) @ 00F7 : byte)
-	T_102 (in csze_60 @ 00F7 : Eq_101)
 // Type Variables ////////////
 globals_t: (in globals : (ptr16 (struct "Globals")))
   Class: Eq_1
@@ -127,14 +112,14 @@ T_16: (in __read_modreg(1<8>) @ 0001 : word16)
   Class: Eq_15
   DataType: word16
   OrigDataType: word16
-T_17: (in cond(__read_modreg(1<8>)) @ 0001 : byte)
+T_17: (in cond(__read_modreg(1<8>)) @ 0001 : word16)
   Class: Eq_17
-  DataType: Eq_17
-  OrigDataType: byte
-T_18: (in csze_5 @ 0001 : Eq_17)
+  DataType: word16
+  OrigDataType: word16
+T_18: (in csze_5 @ 0001 : word16)
   Class: Eq_17
-  DataType: Eq_17
-  OrigDataType: (union (byte u1) (word16 u0))
+  DataType: word16
+  OrigDataType: word16
 T_19: (in 1<8> @ 0096 : byte)
   Class: Eq_19
   DataType: cui16
@@ -271,14 +256,14 @@ T_50: (in __read_modreg(0<8>) @ 0105 : word16)
   Class: Eq_45
   DataType: word16
   OrigDataType: word16
-T_51: (in cond(__read_modreg(0<8>)) @ 0105 : byte)
+T_51: (in cond(__read_modreg(0<8>)) @ 0105 : word16)
   Class: Eq_51
-  DataType: Eq_51
-  OrigDataType: byte
-T_52: (in csze_103 @ 0105 : Eq_51)
+  DataType: word16
+  OrigDataType: word16
+T_52: (in csze_103 @ 0105 : word16)
   Class: Eq_51
-  DataType: Eq_51
-  OrigDataType: (union (byte u1) (word16 u0))
+  DataType: word16
+  OrigDataType: word16
 T_53: (in -6<i16> @ 0106 : int16)
   Class: Eq_53
   DataType: int16
@@ -311,14 +296,14 @@ T_60: (in __read_modreg(0<8>) @ 0106 : word16)
   Class: Eq_55
   DataType: word16
   OrigDataType: word16
-T_61: (in cond(__read_modreg(0<8>)) @ 0106 : byte)
+T_61: (in cond(__read_modreg(0<8>)) @ 0106 : word16)
   Class: Eq_61
-  DataType: Eq_61
-  OrigDataType: byte
-T_62: (in csze_105 @ 0106 : Eq_61)
+  DataType: word16
+  OrigDataType: word16
+T_62: (in csze_105 @ 0106 : word16)
   Class: Eq_61
-  DataType: Eq_61
-  OrigDataType: (union (byte u1) (word16 u0))
+  DataType: word16
+  OrigDataType: word16
 T_63: (in -8<i16> @ 0107 : int16)
   Class: Eq_63
   DataType: int16
@@ -435,14 +420,14 @@ T_91: (in __read_modreg(0<8>) @ 00F6 : word16)
   Class: Eq_7
   DataType: word16
   OrigDataType: word16
-T_92: (in cond(__read_modreg(0<8>)) @ 00F6 : byte)
+T_92: (in cond(__read_modreg(0<8>)) @ 00F6 : word16)
   Class: Eq_92
-  DataType: Eq_92
-  OrigDataType: byte
-T_93: (in csze_58 @ 00F6 : Eq_92)
+  DataType: word16
+  OrigDataType: word16
+T_93: (in csze_58 @ 00F6 : word16)
   Class: Eq_92
-  DataType: Eq_92
-  OrigDataType: (union (byte u1) (word16 u0))
+  DataType: word16
+  OrigDataType: word16
 T_94: (in __read_modreg @ 00F7 : ptr32)
   Class: Eq_94
   DataType: (ptr32 Eq_94)
@@ -471,14 +456,14 @@ T_100: (in __read_modreg(8<8>) @ 00F7 : word16)
   Class: Eq_8
   DataType: word16
   OrigDataType: word16
-T_101: (in cond(__read_modreg(8<8>)) @ 00F7 : byte)
+T_101: (in cond(__read_modreg(8<8>)) @ 00F7 : word16)
   Class: Eq_101
-  DataType: Eq_101
-  OrigDataType: byte
-T_102: (in csze_60 @ 00F7 : Eq_101)
+  DataType: word16
+  OrigDataType: word16
+T_102: (in csze_60 @ 00F7 : word16)
   Class: Eq_101
-  DataType: Eq_101
-  OrigDataType: (union (byte u1) (word16 u0))
+  DataType: word16
+  OrigDataType: word16
 */
 typedef struct Globals {
 	Eq_26 t0001;	// 1
@@ -490,11 +475,6 @@ typedef union Eq_3 {
 } Eq_3;
 
 typedef word16 (Eq_11)(byte);
-
-typedef union Eq_17 {
-	byte u0;
-	word16 u1;
-} Eq_17;
 
 typedef union Eq_19 {
 	cui16 u0;
@@ -526,17 +506,7 @@ typedef struct Eq_34 {
 
 typedef word16 (Eq_46)(byte);
 
-typedef union Eq_51 {
-	byte u0;
-	word16 u1;
-} Eq_51;
-
 typedef word16 (Eq_56)(byte);
-
-typedef union Eq_61 {
-	byte u0;
-	word16 u1;
-} Eq_61;
 
 typedef struct Eq_71 {
 	word16 w0001;	// 1
@@ -544,15 +514,5 @@ typedef struct Eq_71 {
 
 typedef word16 (Eq_87)(byte);
 
-typedef union Eq_92 {
-	byte u0;
-	word16 u1;
-} Eq_92;
-
 typedef word16 (Eq_94)(byte);
-
-typedef union Eq_101 {
-	byte u0;
-	word16 u1;
-} Eq_101;
 

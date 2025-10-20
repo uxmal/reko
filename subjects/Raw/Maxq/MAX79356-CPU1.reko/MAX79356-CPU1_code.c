@@ -11,8 +11,7 @@ void fn0000(cui16 acc, Eq_n offs, word16 * bp, <anonymous> * grxl, word16 wArg1A
 	ptr16 fp;
 	ptr16 sp_n = fp;
 	__read_modreg(0x01);
-	Eq_n csze_n;
-	csze_n.u0 = cond(__read_modreg(0x01));
+	word16 csze_n = cond(__read_modreg(0x01));
 	if ((acc & 0x01) != 0x00)
 	{
 		g_t0001.u1 = (word16) 0x01;
@@ -21,23 +20,19 @@ void fn0000(cui16 acc, Eq_n offs, word16 * bp, <anonymous> * grxl, word16 wArg1A
 			offs.u0 = 0x00;
 			*bp = wArg1A;
 			__read_modreg(0x00) = wArg1C;
-			Eq_n csze_n;
-			csze_n.u0 = cond(__read_modreg(0x00));
+			word16 csze_n = cond(__read_modreg(0x00));
 			__read_modreg(0x08) = wArg1E;
 			sp_n = fp + 30;
-			Eq_n csze_n;
-			csze_n.u0 = cond(__read_modreg(0x08));
+			word16 csze_n = cond(__read_modreg(0x08));
 		}
 		offs.u1->u1 = (word16) 0x00;
 		grxl();
 		int16 offs_n = sp_n->w0000;
 		ptr16 bp_n = sp_n->ptrFFFFFFFE;
 		__read_modreg(0x00) = sp_n->wFFFFFFFC;
-		Eq_n csze_n;
-		csze_n.u0 = cond(__read_modreg(0x00));
+		word16 csze_n = cond(__read_modreg(0x00));
 		__read_modreg(0x00) = sp_n->wFFFFFFFA;
-		Eq_n csze_n;
-		csze_n.u0 = cond(__read_modreg(0x00));
+		word16 csze_n = cond(__read_modreg(0x00));
 		*((word16) bp_n + offs_n) = sp_n->wFFFFFFF8;
 		struct Eq_n * dp1_n;
 		dp1_n->w0001 = sp_n->wFFFFFFF6;

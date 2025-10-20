@@ -269,7 +269,7 @@ namespace Reko.Arch.Blackfin
             var src1 = SrcOperand(0);
             var src2 = SrcOperand(1);
             var dst = DstOperand(0, fn(src1, src2));
-            EmitCc(Registers.NZVC, m.Cond(dst));
+            EmitCc(Registers.NZVC, m.Cond(Registers.NZVC.DataType, dst));
         }
 
         private void RewriteArithmetic3(Func<Expression, Expression, Expression> fn)
@@ -277,7 +277,7 @@ namespace Reko.Arch.Blackfin
             var src1 = SrcOperand(1);
             var src2 = SrcOperand(2);
             var dst = DstOperand(0, fn(src1, src2));
-            EmitCc(Registers.NZVC, m.Cond(dst));
+            EmitCc(Registers.NZVC, m.Cond(Registers.NZVC.DataType, dst));
         }
 
         private void RewriteBitclrset(IntrinsicProcedure intrinsic)
@@ -287,7 +287,7 @@ namespace Reko.Arch.Blackfin
             m.Assign(left, m.Fn(
                 intrinsic.MakeInstance(left.DataType, right.DataType),
                 left, right));
-            EmitCc(Registers.AN, m.Cond(left));
+            EmitCc(Registers.AN, m.Cond(Registers.AN.DataType, left));
             EmitCc(Registers.AZ, 0);
             EmitCc(Registers.V, 0);
             EmitCc(Registers.AC0, 0);
@@ -322,7 +322,7 @@ namespace Reko.Arch.Blackfin
             var src1 = SrcOperand(1);
             var src2 = SrcOperand(2);
             var dst = DstOperand(0, fn(src1, src2));
-            EmitCc(Registers.NZ, m.Cond(dst));
+            EmitCc(Registers.NZ, m.Cond(Registers.NZ.DataType, dst));
             EmitCc(Registers.V, 0);
             EmitCc(Registers.AC0, 0);
         }
@@ -372,7 +372,7 @@ namespace Reko.Arch.Blackfin
         {
             var src = SrcOperand(1);
             var dst = DstOperand(0, m.Neg(src));
-            EmitCc(Registers.NZV, m.Cond(dst));
+            EmitCc(Registers.NZV, m.Cond(Registers.NZV.DataType, dst));
             EmitCc(Registers.AC0, m.Eq0(dst));
         }
 
@@ -393,7 +393,7 @@ namespace Reko.Arch.Blackfin
             var src1 = SrcOperand(0);
             var src2 = SrcOperand(1);
             var dst = DstOperand(0, fn(src1, src2));
-            EmitCc(Registers.NZV, m.Cond(dst));
+            EmitCc(Registers.NZV, m.Cond(Registers.NZV.DataType, dst));
         }
 
         private void RewriteShift3(Func<Expression, Expression, Expression> fn)
@@ -401,7 +401,7 @@ namespace Reko.Arch.Blackfin
             var src1 = SrcOperand(1);
             var src2 = SrcOperand(2);
             var dst = DstOperand(0, fn(src1, src2));
-            EmitCc(Registers.NZV, m.Cond(dst));
+            EmitCc(Registers.NZV, m.Cond(Registers.NZV.DataType, dst));
         }
 
         private void RewriteUnlink()

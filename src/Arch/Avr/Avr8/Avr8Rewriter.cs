@@ -179,7 +179,7 @@ namespace Reko.Arch.Avr.Avr8
         private void EmitFlags(Expression e, FlagGroupStorage mod)
         {
             var grf = binder.EnsureFlagGroup(mod);
-            m.Assign(grf, m.Cond(e));
+            m.Assign(grf, m.Cond(grf.DataType, e));
         }
 
         private FlagGroupStorage CmpFlags => Registers.HSVNZC;

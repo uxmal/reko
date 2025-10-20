@@ -1184,6 +1184,7 @@ public class LongAddRewriter : IAnalysis<SsaState>
             new Assignment(
                 ExpressionMatcher.AnyId("grf"),
                 new ConditionOf(
+                    ExpressionMatcher.AnyDataType(null),
                     ExpressionMatcher.AnyExpression("exp"))));
 
         addPattern = new InstructionMatcher(

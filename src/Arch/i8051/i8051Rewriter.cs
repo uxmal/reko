@@ -129,6 +129,12 @@ namespace Reko.Arch.i8051
             }
         }
 
+        private void AssignCondOf(FlagGroupStorage grf, Expression expr)
+        {
+            var flagGroup = binder.EnsureFlagGroup(grf);
+            m.Assign(flagGroup, m.Cond(grf.DataType, expr));
+        }
+
         private void RewriteJump()
         {
             iclass = InstrClass.Transfer;
@@ -148,7 +154,7 @@ namespace Reko.Arch.i8051
             m.Assign(dst, fn(dst, src));
             if (grf is not null)
             {
-                m.Assign(binder.EnsureFlagGroup(grf), m.Cond(dst));
+                AssignCondOf(grf, dst);
             }
         }
 
@@ -166,8 +172,8 @@ namespace Reko.Arch.i8051
                         dst,
                         src),
                     c));
-            var grf = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.PSW, (uint)(FlagM.C | FlagM.AC | FlagM.OV | FlagM.P)));
-            m.Assign(grf, m.Cond(dst));
+            var grf = arch.GetFlagGroup(Registers.PSW, (uint)(FlagM.C | FlagM.AC | FlagM.OV | FlagM.P));
+            AssignCondOf(grf, dst);
         }
 
         private void RewriteCall()
@@ -185,7 +191,7 @@ namespace Reko.Arch.i8051
             var b = OpSrc(instr.Operands[1], arch.DataMemory);
             var C = binder.EnsureFlagGroup(Registers.CFlag);
             var addr = (Address) instr.Operands[2];
-            m.Assign(C, m.Cond(m.ISub(a, b)));
+            AssignCondOf(Registers.CFlag, m.ISub(a, b));
             m.Branch(m.Ne(a, b), addr, iclass);
         }
 
@@ -195,7 +201,7 @@ namespace Reko.Arch.i8051
             WriteDst(instr.Operands[0], Constant.Zero(dst.DataType));
             if (dst is Identifier id && id.Storage is RegisterStorage)
             {
-                m.Assign(binder.EnsureFlagGroup(Registers.PFlag), m.Cond(dst));
+                AssignCondOf(Registers.PFlag, dst);
             }
         }
 
@@ -263,7 +269,7 @@ namespace Reko.Arch.i8051
             if (dst is Identifier id && id.Storage is RegisterStorage)
             {
                 var flg = arch.GetFlagGroup(Registers.PSW, (uint)FlagM.P);
-                m.Assign(binder.EnsureFlagGroup(flg), m.Cond(dst));
+                AssignCondOf(flg, dst);
             }
         }
 
@@ -308,7 +314,7 @@ namespace Reko.Arch.i8051
             if (dst is Identifier id && id.Storage is RegisterStorage)
             {
                 var flg = arch.GetFlagGroup(Registers.PSW, (uint)FlagM.P);
-                m.Assign(binder.EnsureFlagGroup(flg), m.Cond(dst));
+                AssignCondOf(flg, dst);
             }
         }
 
@@ -349,7 +355,7 @@ namespace Reko.Arch.i8051
             var b = binder.EnsureRegister(Registers.B);
             var ab = binder.EnsureSequence(PrimitiveType.Word16, Registers.B, Registers.A);
             m.Assign(ab, m.UMul(PrimitiveType.Word16, a, b));
-            m.Assign(binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.PSW, (uint)FlagM.P)), m.Cond(ab));
+            AssignCondOf(arch.GetFlagGroup(Registers.PSW, (uint)FlagM.P), ab);
             m.Assign(binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.PSW, (uint)FlagM.OV)), m.Ugt(ab, m.Word16(0xFF)));
             m.Assign(binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.PSW, (uint)FlagM.C)), Constant.False());
         }

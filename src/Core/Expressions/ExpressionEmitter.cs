@@ -245,20 +245,21 @@ namespace Reko.Core.Expressions
         /// Generate a set of condition codes for the expression <paramref name="expr"/>.
         /// </summary>
         /// <remarks>
-        /// This is used to model condition condes on architectures where these
-        /// are used. For instance, a typical `add eax,4` instruction on a machine with
+        /// This is used to model condition codes on architectures where these
+        /// are used. For instance, a typical <c>add eax,4</c> instruction on a machine with
         /// condition codes would be coded:
         /// <code>
         /// m.Assign(eax, m.Add(eax, 4))
         /// m.Assign(SZCO, m.Cond(eax))
         /// </code>
         /// </remarks>
+        /// <param name="dt">Size of the condition code register.</param>
         /// <param name="expr">Expression whose value is the source of the condition 
         /// code</param>
         /// <returns></returns>
-        public ConditionOf Cond(Expression expr)
+        public ConditionOf Cond(DataType dt, Expression expr)
         {
-            return new ConditionOf(expr);
+            return new ConditionOf(dt, expr);
         }
 
         /// <summary>

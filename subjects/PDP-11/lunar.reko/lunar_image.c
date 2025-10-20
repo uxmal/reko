@@ -573,8 +573,7 @@ void fn0A0A()
 	{
 		Eq_n r4_n;
 		r4_n.u0 = g_t0064.u0;
-		Eq_n NZVC_n;
-		NZVC_n.u1 = cond(r4_n - 0x3F);
+		cui16 NZVC_n = cond(r4_n - 0x3F);
 		if (r4_n > 0x3F)
 			r4_n.u0 = 0x3F;
 		Eq_n r4_n = __rcl<word16,byte>(r4_n, 0x01, NZVC_n & 0x01);

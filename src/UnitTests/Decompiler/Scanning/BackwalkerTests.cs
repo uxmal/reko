@@ -208,17 +208,17 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var CVZN = m.Flags("CVZN");
             var CVZNX = m.Flags("CVZNX");
             m.Assign(d0, d3);
-            m.Assign(CVZN, m.Cond(d0));
+            m.Assign(CVZN, m.Cond(CVZN.DataType, d0));
             m.Assign(v38, m.And(m.Slice(d0, PrimitiveType.Word16), 0xF0));
             m.Assign(d0, m.Dpb(d0, v38, 0));
-            m.Assign(ZN, m.Cond(v38));
+            m.Assign(ZN, m.Cond(ZN.DataType, v38));
             m.Assign(C, false);
             m.Assign(V, false);
             m.Assign(v39, m.Shl(m.Slice(d0, PrimitiveType.Byte), 2));
             m.Assign(d0, m.Dpb(d0, v39, 0));
-            m.Assign(CVZNX, m.Cond(v39));
+            m.Assign(CVZNX, m.Cond(CVZNX.DataType, v39));
             m.Assign(v40, m.ISub(m.Slice(d0, PrimitiveType.Word16), 44));
-            m.Assign(CVZN, m.Cond(v40));
+            m.Assign(CVZN, m.Cond(CVZN.DataType, v40));
             m.BranchIf(m.Test(ConditionCode.GT, VZN), "lDefault");
             m.Assign(a5, m.Mem32(m.IAdd(Address.Ptr32(0x0000C046), d0)));
             var xfer = new RtlCall(a5, 4, InstrClass.Transfer);
@@ -255,7 +255,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var CZ = m.Flags("CZ");
 
             m.Assign(eax, m.Mem8(rax));
-            m.Assign(CZ, m.Cond(m.ISub(al, 0x78)));
+            m.Assign(CZ, m.Cond(CZ.DataType, m.ISub(al, 0x78)));
             m.BranchIf(m.Test(ConditionCode.UGT, CZ), "ldefault");
             m.Assign(ecx, m.Convert(al, al.DataType, PrimitiveType.Word32));
             var xfer = new RtlGoto(m.Mem32(m.IAdd(Constant.Word32(0x00411F40), m.IMul(ecx, 8))), InstrClass.Transfer);
@@ -277,7 +277,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var eax = m.Reg32("eax", 0);
 
             var CZ = m.Flags("CZ");
-            m.Assign(CZ, m.Cond(m.ISub(ebx, 0x30)));
+            m.Assign(CZ, m.Cond(CZ.DataType, m.ISub(ebx, 0x30)));
             m.BranchIf(m.Test(ConditionCode.ULE, CZ), "do_switch");
             m.Goto("default_case");
 

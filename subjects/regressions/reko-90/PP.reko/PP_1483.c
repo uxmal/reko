@@ -184,8 +184,7 @@ word16 Eq_n::* fn1483-0CED(word16 * es_di, struct Eq_n * ss_bp, word16 ax, ui16 
 	word16 v9_n = ds->*((ds->*bx).aF7E2 + si_n) + fp;
 	ds->*((ds->*bx).aF7E2 + si_n) = v9_n;
 	*es_di = ax;
-	Eq_n SCZO_n;
-	SCZO_n.u1 = cond(v9_n);
+	ui32 SCZO_n = cond(v9_n);
 	byte Eq_n::* bx_n = SEQ(bh_n, bl_n + 0x01);
 	if (bl_n != ~0x00)
 	{
@@ -333,7 +332,7 @@ segptr32 fn1483-0D3F(struct Eq_n * ds_di, struct Eq_n * ss_bp, Eq_n ax, Eq_n cx,
 	cu8 al_n = (byte) ax_n;
 	byte al_n = al_n + 0x2A + ch_n;
 	Eq_n bx_n = (word16) bx_n + ds->*(bx_n + v35_n);
-	Eq_n SCZDOP_n = SEQ(SLICE(cond(al_n) | SCZDOP_n & 0x28, word16, 16), (ss->*sp_n).ptrFFFFFFEE);
+	Eq_n SCZDOP_n = SEQ(SLICE(cond(al_n), word16, 16), (ss->*sp_n).ptrFFFFFFEE);
 	byte ah_n = SLICE(ax_n, byte, 8);
 	Eq_n si_n = v35_n;
 	byte bl_n = (byte) bx_n;

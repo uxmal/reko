@@ -254,7 +254,7 @@ namespace Reko.Scanning
         /// <inheritdoc/>
         public Expression VisitConditionOf(ConditionOf cof)
         {
-            return new ConditionOf(cof.Expression.Accept(this));
+            return new ConditionOf(cof.DataType, cof.Expression.Accept(this));
         }
 
         /// <inheritdoc/>

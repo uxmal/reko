@@ -162,7 +162,8 @@ namespace Reko.Environments.Gameboy
         private void Emit_000C(Expression e)
         {
             Debug.Assert(e is not null);
-            m.Assign(binder.EnsureFlagGroup(Registers.C), e);
+            var c = binder.EnsureFlagGroup(Registers.C);
+            m.Assign(c, m.Cond(c.DataType, e));
             Clear(Registers.Z);
             Clear(Registers.N);
             Clear(Registers.H);
@@ -186,7 +187,8 @@ namespace Reko.Environments.Gameboy
         private void Emit_Z000(Expression e)
         {
             Debug.Assert(e is not null);
-            m.Assign(binder.EnsureFlagGroup(Registers.Z), e);
+            var z = binder.EnsureFlagGroup(Registers.Z);
+            m.Assign(z, m.Cond(z.DataType, e));
             Clear(Registers.N);
             Clear(Registers.H);
             Clear(Registers.C);
@@ -195,7 +197,8 @@ namespace Reko.Environments.Gameboy
         private void Emit_Z00C(Expression e)
         {
             Debug.Assert(e is not null);
-            m.Assign(binder.EnsureFlagGroup(Registers.ZC), e);
+            var zc = binder.EnsureFlagGroup(Registers.ZC);
+            m.Assign(zc, m.Cond(zc.DataType, e));
             Clear(Registers.N);
             Clear(Registers.H);
         }
@@ -234,14 +237,16 @@ namespace Reko.Environments.Gameboy
         private void Emit_Z1H_(Expression e)
         {
             Debug.Assert(e is not null);
-            m.Assign(binder.EnsureFlagGroup(Registers.ZH), e);
+            var zh = binder.EnsureFlagGroup(Registers.ZH);
+            m.Assign(zh, m.Cond(zh.DataType, e));
             Set(Registers.N);
         }
 
         private void Emit_Z1HC(Expression e)
         {
             Debug.Assert(e is not null);
-            m.Assign(binder.EnsureFlagGroup(Registers.ZHC), e);
+            var zhc = binder.EnsureFlagGroup(Registers.ZHC);
+            m.Assign(zhc, m.Cond(zhc.DataType, e));
             Set(Registers.N);
         }
 
@@ -317,7 +322,7 @@ namespace Reko.Environments.Gameboy
             var b = Op(1);
             var c = binder.EnsureFlagGroup(Registers.C);
             m.Assign(a, m.IAddC(a, b, c));
-            Emit_Z0HC(m.Cond(a));
+            Emit_Z0HC(a);
         }
 
         private void Rewrite_add()
@@ -328,17 +333,17 @@ namespace Reko.Environments.Gameboy
                 b is Constant c)
             {
                 m.Assign(id, m.AddSubSignedInt(id, c.ToInt16()));
-                Emit_00HC(m.Cond(a));
+                Emit_00HC(a);
             }
             else if (a.DataType.BitSize == 16)
             {
                 m.Assign(a, m.IAdd(a, b));
-                Emit__0HC(m.Cond(a));
+                Emit__0HC(a);
             }
             else
             {
                 m.Assign(a, m.IAdd(a, b));
-                Emit_Z0HC(m.Cond(a));
+                Emit_Z0HC(a);
             }
         }
 
@@ -347,7 +352,7 @@ namespace Reko.Environments.Gameboy
             var a = binder.EnsureRegister(Registers.a);
             var b = Op(0);
             m.Assign(a, m.And(a, b));
-            Emit_Z010(m.Cond(a));
+            Emit_Z010(a);
         }
 
         private void Rewrite_bit()
@@ -382,7 +387,7 @@ namespace Reko.Environments.Gameboy
             var a = binder.EnsureRegister(Registers.a);
             var b = Op(0);
             var zhc = binder.EnsureFlagGroup(Registers.ZHC);
-            m.Assign(zhc, m.Cond(m.ISub(a, b)));
+            m.Assign(zhc, m.Cond(zhc.DataType, m.ISub(a, b)));
         }
 
         private void Rewrite_cpl()
@@ -405,7 +410,7 @@ namespace Reko.Environments.Gameboy
             m.Assign(src, m.ISub(src, 1));
             if (src.DataType.BitSize == 8)
             {
-                Emit_Z1H_(m.Cond(src));
+                Emit_Z1H_(src);
             }
         }
 
@@ -430,7 +435,7 @@ namespace Reko.Environments.Gameboy
             m.Assign(exp, m.IAdd(exp, 1));
             if (exp.DataType.BitSize == 8)
             {
-                Emit_Z0H_(m.Cond(exp));
+                Emit_Z0H_(exp);
             }
         }
 
@@ -488,7 +493,7 @@ namespace Reko.Environments.Gameboy
             var a = binder.EnsureRegister(Registers.a);
             var b = Op(0);
             m.Assign(a, m.Or(a, b));
-            Emit_Z000(m.Cond(a));
+            Emit_Z000(a);
         }
 
         private void Rewrite_pop()
@@ -550,7 +555,7 @@ namespace Reko.Environments.Gameboy
             m.Assign(exp, m.Fn(
                 CommonOps.RolC.MakeInstance(exp.DataType, PrimitiveType.Byte),
                 exp, m.Byte(1), cy));
-            Emit_Z00C(m.Cond(exp));
+            Emit_Z00C(exp);
         }
 
         private void Rewrite_rla()
@@ -560,7 +565,7 @@ namespace Reko.Environments.Gameboy
             m.Assign(exp, m.Fn(
                 CommonOps.RolC.MakeInstance(exp.DataType, PrimitiveType.Byte),
                 exp, m.Byte(1), cy));
-            Emit_000C(m.Cond(exp));
+            Emit_000C(exp);
         }
 
         private void Rewrite_rlc()
@@ -570,7 +575,7 @@ namespace Reko.Environments.Gameboy
             m.Assign(exp, m.Fn(
                 CommonOps.RolC.MakeInstance(exp.DataType, PrimitiveType.Byte),
                 exp, m.Byte(1), cy));
-            Emit_Z00C(m.Cond(exp));
+            Emit_Z00C(exp);
         }
 
         private void Rewrite_rlca()
@@ -579,7 +584,7 @@ namespace Reko.Environments.Gameboy
             m.Assign(exp, m.Fn(
                 CommonOps.Rol.MakeInstance(exp.DataType, PrimitiveType.Byte),
                 exp, m.Byte(1)));
-            Emit_000C(m.Cond(exp));
+            Emit_000C(exp);
         }
 
         private void Rewrite_rr()
@@ -589,7 +594,7 @@ namespace Reko.Environments.Gameboy
             m.Assign(exp, m.Fn(
                 CommonOps.RorC.MakeInstance(exp.DataType, PrimitiveType.Byte),
                 exp, m.Byte(1), cy));
-            Emit_Z00C(m.Cond(exp));
+            Emit_Z00C(exp);
         }
 
         private void Rewrite_rra()
@@ -599,7 +604,7 @@ namespace Reko.Environments.Gameboy
             m.Assign(exp, m.Fn(
                 CommonOps.RorC.MakeInstance(exp.DataType, PrimitiveType.Byte),
                 exp, m.Byte(1), cy));
-            Emit_000C(m.Cond(exp));
+            Emit_000C(exp);
         }
 
         private void Rewrite_rrc()
@@ -613,7 +618,7 @@ namespace Reko.Environments.Gameboy
         {
             var exp = binder.EnsureRegister(Registers.a);
             m.Assign(exp, m.Fn(CommonOps.Ror, exp, m.Byte(1)));
-            Emit_000C(m.Cond(exp));
+            Emit_000C(exp);
         }
 
         private void Rewrite_rst()
@@ -628,7 +633,7 @@ namespace Reko.Environments.Gameboy
             var b = Op(1);
             var c = binder.EnsureFlagGroup(Registers.C);
             m.Assign(a, m.ISubB(a, b, c));
-            Emit_Z1HC(m.Cond(a));
+            Emit_Z1HC(a);
         }
 
         private void Rewrite_scf()
@@ -647,21 +652,21 @@ namespace Reko.Environments.Gameboy
         {
             var exp = Op(0);
             m.Assign(exp, m.Shl(exp, m.Byte(1)));
-            Emit_Z00C(m.Cond(exp));
+            Emit_Z00C(exp);
         }
 
         private void Rewrite_sra()
         {
             var exp = Op(0);
             m.Assign(exp, m.Sar(exp, m.Byte(1)));
-            Emit_Z000(m.Cond(exp));
+            Emit_Z000(exp);
         }
 
         private void Rewrite_srl()
         {
             var exp = Op(0);
             m.Assign(exp, m.Shr(exp, m.Byte(1)));
-            Emit_Z00C(m.Cond(exp));
+            Emit_Z00C(exp);
         }
 
         private void Rewrite_stop()
@@ -674,14 +679,14 @@ namespace Reko.Environments.Gameboy
             var a = binder.EnsureRegister(Registers.a);
             var b = Op(0);
             m.Assign(a, m.ISub(a, b));
-            Emit_Z1HC(m.Cond(a));
+            Emit_Z1HC(a);
         }
 
         private void Rewrite_swap()
         {
             var exp = Op(0);
             m.Assign(exp, m.Fn(swap_nybbles_intrinsic, exp));
-            Emit_Z000(m.Cond(exp));
+            Emit_Z000(exp);
         }
 
         private void Rewrite_xor()
@@ -689,7 +694,7 @@ namespace Reko.Environments.Gameboy
             var a = binder.EnsureRegister(Registers.a);
             var b = Op(0);
             AssignDst(a, m.Xor(a, b));
-            Emit_Z000(m.Cond(a));
+            Emit_Z000(a);
         }
 
         private readonly static IntrinsicProcedure decimal_adjust_intrinsic = IntrinsicBuilder.Unary("__decimal_adjust", PrimitiveType.Byte);

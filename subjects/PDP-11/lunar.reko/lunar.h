@@ -599,9 +599,6 @@ Eq_724: (fn void ())
 Eq_779: (fn word16 ())
 	T_779 (in fn0E32 @ 0852 : ptr16)
 	T_780 (in signature of fn0E32 @ 0E32 : void)
-Eq_793: (union "Eq_793" (cui16 u0) (byte u1))
-	T_793 (in cond(r4_12 - 0x3F<16>) @ 0A1A : byte)
-	T_794 (in NZVC_10 @ 0A1A : Eq_793)
 Eq_796: (fn Eq_6 (Eq_6, byte, Eq_800))
 	T_796 (in __rcl<word16,byte> @ 0A24 : ptr32)
 	T_797 (in signature of __rcl : void)
@@ -804,56 +801,14 @@ Eq_1532: (struct "Eq_1532" (0 word16 w0000) (2 word16 w0002) (4 int16 w0004))
 	T_1534 (in 0x1F96<16> @ 1040 : word16)
 Eq_1533: (struct "Eq_1533" (0 int16 w0000) (2 word16 w0002) (4 word16 w0004))
 	T_1533 (in wArg00 @ 101C : (ptr16 Eq_1533))
-Eq_1603: (union "Eq_1603" (cui16 u0) (byte u1))
-	T_1603 (in cond(v11_6) @ 114C : byte)
 Eq_1857: (union "Eq_1857" (bool u0) (cui16 u1))
 	T_1857 (in C_342 @ 1238 : Eq_1857)
 	T_1858 (in 0<16> @ 1238 : word16)
 	T_1866 (in cond(SLICE(v91_429 + (uint32) r1, word16, 16)) & 1<16> @ 1236 : word16)
 	T_1874 (in (r2_338 & 0x8000<16>) != 0<16> @ 1230 : bool)
-Eq_1864: (union "Eq_1864" (cui16 u0) (byte u1))
-	T_1864 (in cond(SLICE(v91_429 + CONVERT(r1, uint16, uint32), word16, 16)) @ 1236 : byte)
 Eq_1996: (fn Eq_6 (Eq_6, Eq_6, word16, word16))
 	T_1996 (in fn123A @ 125E : ptr16)
 	T_1997 (in signature of fn123A @ 123A : void)
-Eq_2009: (union "Eq_2009" (cui16 u0) (byte u1))
-	T_2009 (in cond(r3_6 << 1<i16>) @ 126A : byte)
-Eq_2016: (union "Eq_2016" (cui16 u0) (byte u1))
-	T_2016 (in cond(r3_6 << 2<i16>) @ 126A : byte)
-Eq_2024: (union "Eq_2024" (cui16 u0) (byte u1))
-	T_2024 (in cond(r3 << 1<i16>) @ 1270 : byte)
-Eq_2040: (union "Eq_2040" (cui16 u0) (byte u1))
-	T_2040 (in cond(r3_14 << 1<i16>) @ 12F6 : byte)
-Eq_2057: (union "Eq_2057" (cui16 u0) (byte u1))
-	T_2057 (in cond(r3 << 2<i16>) @ 1278 : byte)
-Eq_2074: (union "Eq_2074" (cui16 u0) (byte u1))
-	T_2074 (in cond(r3_32 << 1<i16>) @ 1300 : byte)
-Eq_2103: (union "Eq_2103" (cui16 u0) (byte u1))
-	T_2103 (in cond(r3_55 << 1<i16>) @ 130A : byte)
-Eq_2132: (union "Eq_2132" (cui16 u0) (byte u1))
-	T_2132 (in cond(r3_78 << 1<i16>) @ 1314 : byte)
-Eq_2161: (union "Eq_2161" (cui16 u0) (byte u1))
-	T_2161 (in cond(r3_101 << 1<i16>) @ 131E : byte)
-Eq_2190: (union "Eq_2190" (cui16 u0) (byte u1))
-	T_2190 (in cond(r3_124 << 1<i16>) @ 1328 : byte)
-Eq_2219: (union "Eq_2219" (cui16 u0) (byte u1))
-	T_2219 (in cond(r3_147 << 1<i16>) @ 1332 : byte)
-Eq_2248: (union "Eq_2248" (cui16 u0) (byte u1))
-	T_2248 (in cond(r3_170 << 1<i16>) @ 133C : byte)
-Eq_2277: (union "Eq_2277" (cui16 u0) (byte u1))
-	T_2277 (in cond(r3_193 << 1<i16>) @ 1346 : byte)
-Eq_2306: (union "Eq_2306" (cui16 u0) (byte u1))
-	T_2306 (in cond(r3_216 << 1<i16>) @ 1350 : byte)
-Eq_2335: (union "Eq_2335" (cui16 u0) (byte u1))
-	T_2335 (in cond(r3_239 << 1<i16>) @ 135A : byte)
-Eq_2364: (union "Eq_2364" (cui16 u0) (byte u1))
-	T_2364 (in cond(r3_262 << 1<i16>) @ 1364 : byte)
-Eq_2393: (union "Eq_2393" (cui16 u0) (byte u1))
-	T_2393 (in cond(r3_285 << 1<i16>) @ 136E : byte)
-Eq_2422: (union "Eq_2422" (cui16 u0) (byte u1))
-	T_2422 (in cond(r3_308 << 1<i16>) @ 1378 : byte)
-Eq_2453: (union "Eq_2453" (cui16 u0) (byte u1))
-	T_2453 (in cond(r3_331 << 1<i16>) @ 1382 : byte)
 Eq_2548: (fn void ())
 	T_2548 (in fn0128 @ 0122 : ptr16)
 	T_2549 (in signature of fn0128 @ 0128 : void)
@@ -4079,14 +4034,14 @@ T_792: (in r4_12 - 0x3F<16> @ 0A1A : word16)
   Class: Eq_792
   DataType: word16
   OrigDataType: word16
-T_793: (in cond(r4_12 - 0x3F<16>) @ 0A1A : byte)
+T_793: (in cond(r4_12 - 0x3F<16>) @ 0A1A : word16)
   Class: Eq_793
-  DataType: Eq_793
-  OrigDataType: byte
-T_794: (in NZVC_10 @ 0A1A : Eq_793)
+  DataType: cui16
+  OrigDataType: word16
+T_794: (in NZVC_10 @ 0A1A : cui16)
   Class: Eq_793
-  DataType: Eq_793
-  OrigDataType: (union (byte u1) (cui16 u0))
+  DataType: cui16
+  OrigDataType: cui16
 T_795: (in r4_12 <= 0x3F<16> @ 0A1E : bool)
   Class: Eq_795
   DataType: bool
@@ -7319,10 +7274,10 @@ T_1602: (in v11_6 @ 114C : cup16)
   Class: Eq_1601
   DataType: cup16
   OrigDataType: cup16
-T_1603: (in cond(v11_6) @ 114C : byte)
+T_1603: (in cond(v11_6) @ 114C : word16)
   Class: Eq_1603
-  DataType: Eq_1603
-  OrigDataType: (union (cui16 u1) (byte u0))
+  DataType: cui16
+  OrigDataType: cui16
 T_1604: (in 1<16> @ 114C : word16)
   Class: Eq_1604
   DataType: cui16
@@ -8363,10 +8318,10 @@ T_1863: (in SLICE(v91_429 + CONVERT(r1, uint16, uint32), word16, 16) @ 1236 : wo
   Class: Eq_1863
   DataType: word16
   OrigDataType: word16
-T_1864: (in cond(SLICE(v91_429 + CONVERT(r1, uint16, uint32), word16, 16)) @ 1236 : byte)
+T_1864: (in cond(SLICE(v91_429 + CONVERT(r1, uint16, uint32), word16, 16)) @ 1236 : word16)
   Class: Eq_1864
-  DataType: Eq_1864
-  OrigDataType: (union (cui16 u1) (byte u0))
+  DataType: cui16
+  OrigDataType: cui16
 T_1865: (in 1<16> @ 1236 : word16)
   Class: Eq_1865
   DataType: cui16
@@ -8943,10 +8898,10 @@ T_2008: (in r3_6 << 1<i16> @ 126A : word16)
   Class: Eq_2008
   DataType: ui16
   OrigDataType: ui16
-T_2009: (in cond(r3_6 << 1<i16>) @ 126A : byte)
+T_2009: (in cond(r3_6 << 1<i16>) @ 126A : word16)
   Class: Eq_2009
-  DataType: Eq_2009
-  OrigDataType: (union (cui16 u1) (byte u0))
+  DataType: cui16
+  OrigDataType: cui16
 T_2010: (in 1<16> @ 126A : word16)
   Class: Eq_2010
   DataType: cui16
@@ -8971,10 +8926,10 @@ T_2015: (in r3_6 << 2<i16> @ 126A : word16)
   Class: Eq_2015
   DataType: ui16
   OrigDataType: ui16
-T_2016: (in cond(r3_6 << 2<i16>) @ 126A : byte)
+T_2016: (in cond(r3_6 << 2<i16>) @ 126A : word16)
   Class: Eq_2016
-  DataType: Eq_2016
-  OrigDataType: (union (cui16 u1) (byte u0))
+  DataType: cui16
+  OrigDataType: cui16
 T_2017: (in 1<16> @ 126A : word16)
   Class: Eq_2017
   DataType: cui16
@@ -9003,10 +8958,10 @@ T_2023: (in r3 << 1<i16> @ 1270 : word16)
   Class: Eq_2023
   DataType: ui16
   OrigDataType: ui16
-T_2024: (in cond(r3 << 1<i16>) @ 1270 : byte)
+T_2024: (in cond(r3 << 1<i16>) @ 1270 : word16)
   Class: Eq_2024
-  DataType: Eq_2024
-  OrigDataType: (union (cui16 u1) (byte u0))
+  DataType: cui16
+  OrigDataType: cui16
 T_2025: (in 1<16> @ 1270 : word16)
   Class: Eq_2025
   DataType: cui16
@@ -9067,10 +9022,10 @@ T_2039: (in r3_14 << 1<i16> @ 12F6 : word16)
   Class: Eq_2039
   DataType: ui16
   OrigDataType: ui16
-T_2040: (in cond(r3_14 << 1<i16>) @ 12F6 : byte)
+T_2040: (in cond(r3_14 << 1<i16>) @ 12F6 : word16)
   Class: Eq_2040
-  DataType: Eq_2040
-  OrigDataType: (union (cui16 u1) (byte u0))
+  DataType: cui16
+  OrigDataType: cui16
 T_2041: (in 1<16> @ 12F6 : word16)
   Class: Eq_2041
   DataType: cui16
@@ -9135,10 +9090,10 @@ T_2056: (in r3 << 2<i16> @ 1278 : word16)
   Class: Eq_2056
   DataType: ui16
   OrigDataType: ui16
-T_2057: (in cond(r3 << 2<i16>) @ 1278 : byte)
+T_2057: (in cond(r3 << 2<i16>) @ 1278 : word16)
   Class: Eq_2057
-  DataType: Eq_2057
-  OrigDataType: (union (cui16 u1) (byte u0))
+  DataType: cui16
+  OrigDataType: cui16
 T_2058: (in 1<16> @ 1278 : word16)
   Class: Eq_2058
   DataType: cui16
@@ -9203,10 +9158,10 @@ T_2073: (in r3_32 << 1<i16> @ 1300 : word16)
   Class: Eq_2073
   DataType: ui16
   OrigDataType: ui16
-T_2074: (in cond(r3_32 << 1<i16>) @ 1300 : byte)
+T_2074: (in cond(r3_32 << 1<i16>) @ 1300 : word16)
   Class: Eq_2074
-  DataType: Eq_2074
-  OrigDataType: (union (cui16 u1) (byte u0))
+  DataType: cui16
+  OrigDataType: cui16
 T_2075: (in 1<16> @ 1300 : word16)
   Class: Eq_2075
   DataType: cui16
@@ -9319,10 +9274,10 @@ T_2102: (in r3_55 << 1<i16> @ 130A : word16)
   Class: Eq_2102
   DataType: ui16
   OrigDataType: ui16
-T_2103: (in cond(r3_55 << 1<i16>) @ 130A : byte)
+T_2103: (in cond(r3_55 << 1<i16>) @ 130A : word16)
   Class: Eq_2103
-  DataType: Eq_2103
-  OrigDataType: (union (cui16 u1) (byte u0))
+  DataType: cui16
+  OrigDataType: cui16
 T_2104: (in 1<16> @ 130A : word16)
   Class: Eq_2104
   DataType: cui16
@@ -9435,10 +9390,10 @@ T_2131: (in r3_78 << 1<i16> @ 1314 : word16)
   Class: Eq_2131
   DataType: ui16
   OrigDataType: ui16
-T_2132: (in cond(r3_78 << 1<i16>) @ 1314 : byte)
+T_2132: (in cond(r3_78 << 1<i16>) @ 1314 : word16)
   Class: Eq_2132
-  DataType: Eq_2132
-  OrigDataType: (union (cui16 u1) (byte u0))
+  DataType: cui16
+  OrigDataType: cui16
 T_2133: (in 1<16> @ 1314 : word16)
   Class: Eq_2133
   DataType: cui16
@@ -9551,10 +9506,10 @@ T_2160: (in r3_101 << 1<i16> @ 131E : word16)
   Class: Eq_2160
   DataType: ui16
   OrigDataType: ui16
-T_2161: (in cond(r3_101 << 1<i16>) @ 131E : byte)
+T_2161: (in cond(r3_101 << 1<i16>) @ 131E : word16)
   Class: Eq_2161
-  DataType: Eq_2161
-  OrigDataType: (union (cui16 u1) (byte u0))
+  DataType: cui16
+  OrigDataType: cui16
 T_2162: (in 1<16> @ 131E : word16)
   Class: Eq_2162
   DataType: cui16
@@ -9667,10 +9622,10 @@ T_2189: (in r3_124 << 1<i16> @ 1328 : word16)
   Class: Eq_2189
   DataType: ui16
   OrigDataType: ui16
-T_2190: (in cond(r3_124 << 1<i16>) @ 1328 : byte)
+T_2190: (in cond(r3_124 << 1<i16>) @ 1328 : word16)
   Class: Eq_2190
-  DataType: Eq_2190
-  OrigDataType: (union (cui16 u1) (byte u0))
+  DataType: cui16
+  OrigDataType: cui16
 T_2191: (in 1<16> @ 1328 : word16)
   Class: Eq_2191
   DataType: cui16
@@ -9783,10 +9738,10 @@ T_2218: (in r3_147 << 1<i16> @ 1332 : word16)
   Class: Eq_2218
   DataType: ui16
   OrigDataType: ui16
-T_2219: (in cond(r3_147 << 1<i16>) @ 1332 : byte)
+T_2219: (in cond(r3_147 << 1<i16>) @ 1332 : word16)
   Class: Eq_2219
-  DataType: Eq_2219
-  OrigDataType: (union (cui16 u1) (byte u0))
+  DataType: cui16
+  OrigDataType: cui16
 T_2220: (in 1<16> @ 1332 : word16)
   Class: Eq_2220
   DataType: cui16
@@ -9899,10 +9854,10 @@ T_2247: (in r3_170 << 1<i16> @ 133C : word16)
   Class: Eq_2247
   DataType: ui16
   OrigDataType: ui16
-T_2248: (in cond(r3_170 << 1<i16>) @ 133C : byte)
+T_2248: (in cond(r3_170 << 1<i16>) @ 133C : word16)
   Class: Eq_2248
-  DataType: Eq_2248
-  OrigDataType: (union (cui16 u1) (byte u0))
+  DataType: cui16
+  OrigDataType: cui16
 T_2249: (in 1<16> @ 133C : word16)
   Class: Eq_2249
   DataType: cui16
@@ -10015,10 +9970,10 @@ T_2276: (in r3_193 << 1<i16> @ 1346 : word16)
   Class: Eq_2276
   DataType: ui16
   OrigDataType: ui16
-T_2277: (in cond(r3_193 << 1<i16>) @ 1346 : byte)
+T_2277: (in cond(r3_193 << 1<i16>) @ 1346 : word16)
   Class: Eq_2277
-  DataType: Eq_2277
-  OrigDataType: (union (cui16 u1) (byte u0))
+  DataType: cui16
+  OrigDataType: cui16
 T_2278: (in 1<16> @ 1346 : word16)
   Class: Eq_2278
   DataType: cui16
@@ -10131,10 +10086,10 @@ T_2305: (in r3_216 << 1<i16> @ 1350 : word16)
   Class: Eq_2305
   DataType: ui16
   OrigDataType: ui16
-T_2306: (in cond(r3_216 << 1<i16>) @ 1350 : byte)
+T_2306: (in cond(r3_216 << 1<i16>) @ 1350 : word16)
   Class: Eq_2306
-  DataType: Eq_2306
-  OrigDataType: (union (cui16 u1) (byte u0))
+  DataType: cui16
+  OrigDataType: cui16
 T_2307: (in 1<16> @ 1350 : word16)
   Class: Eq_2307
   DataType: cui16
@@ -10247,10 +10202,10 @@ T_2334: (in r3_239 << 1<i16> @ 135A : word16)
   Class: Eq_2334
   DataType: ui16
   OrigDataType: ui16
-T_2335: (in cond(r3_239 << 1<i16>) @ 135A : byte)
+T_2335: (in cond(r3_239 << 1<i16>) @ 135A : word16)
   Class: Eq_2335
-  DataType: Eq_2335
-  OrigDataType: (union (cui16 u1) (byte u0))
+  DataType: cui16
+  OrigDataType: cui16
 T_2336: (in 1<16> @ 135A : word16)
   Class: Eq_2336
   DataType: cui16
@@ -10363,10 +10318,10 @@ T_2363: (in r3_262 << 1<i16> @ 1364 : word16)
   Class: Eq_2363
   DataType: ui16
   OrigDataType: ui16
-T_2364: (in cond(r3_262 << 1<i16>) @ 1364 : byte)
+T_2364: (in cond(r3_262 << 1<i16>) @ 1364 : word16)
   Class: Eq_2364
-  DataType: Eq_2364
-  OrigDataType: (union (cui16 u1) (byte u0))
+  DataType: cui16
+  OrigDataType: cui16
 T_2365: (in 1<16> @ 1364 : word16)
   Class: Eq_2365
   DataType: cui16
@@ -10479,10 +10434,10 @@ T_2392: (in r3_285 << 1<i16> @ 136E : word16)
   Class: Eq_2392
   DataType: ui16
   OrigDataType: ui16
-T_2393: (in cond(r3_285 << 1<i16>) @ 136E : byte)
+T_2393: (in cond(r3_285 << 1<i16>) @ 136E : word16)
   Class: Eq_2393
-  DataType: Eq_2393
-  OrigDataType: (union (cui16 u1) (byte u0))
+  DataType: cui16
+  OrigDataType: cui16
 T_2394: (in 1<16> @ 136E : word16)
   Class: Eq_2394
   DataType: cui16
@@ -10595,10 +10550,10 @@ T_2421: (in r3_308 << 1<i16> @ 1378 : word16)
   Class: Eq_2421
   DataType: ui16
   OrigDataType: ui16
-T_2422: (in cond(r3_308 << 1<i16>) @ 1378 : byte)
+T_2422: (in cond(r3_308 << 1<i16>) @ 1378 : word16)
   Class: Eq_2422
-  DataType: Eq_2422
-  OrigDataType: (union (cui16 u1) (byte u0))
+  DataType: cui16
+  OrigDataType: cui16
 T_2423: (in 1<16> @ 1378 : word16)
   Class: Eq_2423
   DataType: cui16
@@ -10719,10 +10674,10 @@ T_2452: (in r3_331 << 1<i16> @ 1382 : word16)
   Class: Eq_2452
   DataType: ui16
   OrigDataType: ui16
-T_2453: (in cond(r3_331 << 1<i16>) @ 1382 : byte)
+T_2453: (in cond(r3_331 << 1<i16>) @ 1382 : word16)
   Class: Eq_2453
-  DataType: Eq_2453
-  OrigDataType: (union (cui16 u1) (byte u0))
+  DataType: cui16
+  OrigDataType: cui16
 T_2454: (in 1<16> @ 1382 : word16)
   Class: Eq_2454
   DataType: cui16
@@ -12427,11 +12382,6 @@ typedef void (Eq_724)();
 
 typedef word16 (Eq_779)();
 
-typedef union Eq_793 {
-	cui16 u0;
-	byte u1;
-} Eq_793;
-
 typedef Eq_6 (Eq_796)(Eq_6, byte, Eq_800);
 
 typedef union Eq_800 {
@@ -12558,117 +12508,12 @@ typedef struct Eq_1533 {
 	word16 w0004;	// 4
 } Eq_1533;
 
-typedef union Eq_1603 {
-	cui16 u0;
-	byte u1;
-} Eq_1603;
-
 typedef union Eq_1857 {
 	bool u0;
 	cui16 u1;
 } Eq_1857;
 
-typedef union Eq_1864 {
-	cui16 u0;
-	byte u1;
-} Eq_1864;
-
 typedef Eq_6 (Eq_1996)(Eq_6, Eq_6, word16, word16);
-
-typedef union Eq_2009 {
-	cui16 u0;
-	byte u1;
-} Eq_2009;
-
-typedef union Eq_2016 {
-	cui16 u0;
-	byte u1;
-} Eq_2016;
-
-typedef union Eq_2024 {
-	cui16 u0;
-	byte u1;
-} Eq_2024;
-
-typedef union Eq_2040 {
-	cui16 u0;
-	byte u1;
-} Eq_2040;
-
-typedef union Eq_2057 {
-	cui16 u0;
-	byte u1;
-} Eq_2057;
-
-typedef union Eq_2074 {
-	cui16 u0;
-	byte u1;
-} Eq_2074;
-
-typedef union Eq_2103 {
-	cui16 u0;
-	byte u1;
-} Eq_2103;
-
-typedef union Eq_2132 {
-	cui16 u0;
-	byte u1;
-} Eq_2132;
-
-typedef union Eq_2161 {
-	cui16 u0;
-	byte u1;
-} Eq_2161;
-
-typedef union Eq_2190 {
-	cui16 u0;
-	byte u1;
-} Eq_2190;
-
-typedef union Eq_2219 {
-	cui16 u0;
-	byte u1;
-} Eq_2219;
-
-typedef union Eq_2248 {
-	cui16 u0;
-	byte u1;
-} Eq_2248;
-
-typedef union Eq_2277 {
-	cui16 u0;
-	byte u1;
-} Eq_2277;
-
-typedef union Eq_2306 {
-	cui16 u0;
-	byte u1;
-} Eq_2306;
-
-typedef union Eq_2335 {
-	cui16 u0;
-	byte u1;
-} Eq_2335;
-
-typedef union Eq_2364 {
-	cui16 u0;
-	byte u1;
-} Eq_2364;
-
-typedef union Eq_2393 {
-	cui16 u0;
-	byte u1;
-} Eq_2393;
-
-typedef union Eq_2422 {
-	cui16 u0;
-	byte u1;
-} Eq_2422;
-
-typedef union Eq_2453 {
-	cui16 u0;
-	byte u1;
-} Eq_2453;
 
 typedef void (Eq_2548)();
 

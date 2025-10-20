@@ -291,7 +291,7 @@ namespace Reko.Arch.CompactRisc
             var right = MaybeSlice(0, dt);
             Assign(Operand(1), m.IAdd(left, right));
             var flags = binder.EnsureFlagGroup(Registers.CF);
-            m.Assign(flags, m.Cond(left));
+            m.Assign(flags, m.Cond(flags.DataType, left));
         }
 
         private void RewriteAddc(PrimitiveType dt)
@@ -301,7 +301,7 @@ namespace Reko.Arch.CompactRisc
             var c = binder.EnsureFlagGroup(Registers.C);
             Assign(Operand(1), m.IAddC(left, right, c));
             var flags = binder.EnsureFlagGroup(Registers.CF);
-            m.Assign(flags, m.Cond(left));
+            m.Assign(flags, m.Cond(flags.DataType, left));
         }
 
         private void RewriteAddu(PrimitiveType dt)
@@ -409,7 +409,7 @@ namespace Reko.Arch.CompactRisc
             var right = MaybeSlice(0, dt);
             var left = MaybeSlice(1, dt);
             var dst = binder.EnsureFlagGroup(Registers.LNZ);
-            m.Assign(dst, m.Cond(m.ISub(left, right)));
+            m.Assign(dst, m.Cond(dst.DataType, m.ISub(left, right)));
         }
 
         private void RewriteDi()
@@ -705,7 +705,7 @@ namespace Reko.Arch.CompactRisc
             var right = MaybeSlice(0, dt);
             Assign(Operand(1), m.ISub(left, right));
             var flags = binder.EnsureFlagGroup(Registers.CF);
-            m.Assign(flags, m.Cond(left));
+            m.Assign(flags, m.Cond(flags.DataType, left));
         }
 
         private void RewriteSubc(PrimitiveType dt)
@@ -715,7 +715,7 @@ namespace Reko.Arch.CompactRisc
             var c = binder.EnsureFlagGroup(Registers.C);
             Assign(Operand(1), m.ISubC(left, right, c));
             var flags = binder.EnsureFlagGroup(Registers.CF);
-            m.Assign(flags, m.Cond(left));
+            m.Assign(flags, m.Cond(flags.DataType, left));
         }
 
         private void RewriteTbit(PrimitiveType dt)

@@ -723,7 +723,7 @@ namespace Reko.Arch.Vax
                 return false;
             }
             var grf = FlagGroup(Registers.CVZN);
-            m.Assign(grf, m.Cond(dst));
+            m.Assign(grf, m.Cond(grf.DataType, dst));
             return true;
         }
 
@@ -735,7 +735,7 @@ namespace Reko.Arch.Vax
                 return false;
             }
             var grf = FlagGroup(Registers.ZN);
-            m.Assign(grf, m.Cond(dst));
+            m.Assign(grf, m.Cond(grf.DataType, dst));
             var c = FlagGroup(Registers.C);
             var v = FlagGroup(Registers.V);
             m.Assign(v, Constant.False());
@@ -750,7 +750,7 @@ namespace Reko.Arch.Vax
                 return false;
             }
             var grf = FlagGroup(Registers.ZN);
-            m.Assign(grf, m.Cond(dst));
+            m.Assign(grf, m.Cond(grf.DataType, dst));
             var c = FlagGroup(Registers.C);
             var v = FlagGroup(Registers.V);
             m.Assign(c, Constant.False());
@@ -766,7 +766,7 @@ namespace Reko.Arch.Vax
                 return false;
             }
             var grf = FlagGroup(Registers.VZN);
-            m.Assign(grf, m.Cond(dst));
+            m.Assign(grf, m.Cond(grf.DataType, dst));
             return true;
         }
 
@@ -778,7 +778,7 @@ namespace Reko.Arch.Vax
                 return false;
             }
             var grf = FlagGroup(Registers.VZN);
-            m.Assign(grf, m.Cond(dst));
+            m.Assign(grf, m.Cond(grf.DataType, dst));
             var c = FlagGroup(Registers.C);
             m.Assign(c, Constant.False());
             return true;

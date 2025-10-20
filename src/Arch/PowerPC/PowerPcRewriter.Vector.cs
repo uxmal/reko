@@ -43,7 +43,7 @@ namespace Reko.Arch.PowerPC
             if (!instr.setsCR0)
                 return;
             var cr6 = binder.EnsureRegister(arch.CrRegisters[6]);
-            m.Assign(cr6, m.Cond(e));
+            m.Assign(cr6, m.Cond(cr6.DataType, e));
         }
 
         private void RewriteBcds()

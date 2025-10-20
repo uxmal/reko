@@ -406,8 +406,7 @@ Eq_n xQueueCRReceive(struct Eq_n * r0, Eq_n r1, Eq_n r2, word32 cpsr, union Eq_n
 	ptr32 r6;
 	if (r5_n == 0x00)
 	{
-		Eq_n NZCV_n;
-		NZCV_n.u1 = cond(r2 - 0x00);
+		ui32 NZCV_n = cond(r2 - 0x00);
 		if (r2 != 0x00)
 		{
 			Eq_n Z_n = vCoRoutineAddToDelayedList(r2, (char *) &r0->t000C + 24);
@@ -662,8 +661,7 @@ bool vPortExitCritical(word32 cpsr)
 	*r2_n = r3_n - 0x01;
 	if (r3_n == 0x01)
 		__msr(cpsr, r3_n - 0x01);
-	Eq_n NZCV_n;
-	NZCV_n.u1 = cond(r0_n - 0x01);
+	ui32 NZCV_n = cond(r0_n - 0x01);
 	if (r0_n != 0x01)
 		__msr(cpsr, __mrs(cpsr) | 0x01);
 	return (NZCV_n & 0x04) != 0x00;
@@ -1432,8 +1430,7 @@ bool xCoRoutineRemoveFromEventList(struct Eq_n * r0, word32 & r0Out)
 	vListInsertEnd((char *) r5_n + 84, (char *) r4_n + 24);
 	up32 r0_n = r4_n->dw002C;
 	up32 r3_n = *((char *) *r5_n + 44);
-	Eq_n NZCV_n;
-	NZCV_n.u1 = cond(r0_n - r3_n);
+	ui32 NZCV_n = cond(r0_n - r3_n);
 	r0Out = 0x01;
 	return (NZCV_n & 0x04) != 0x00;
 }

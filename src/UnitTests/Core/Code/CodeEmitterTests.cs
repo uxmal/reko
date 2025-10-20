@@ -81,7 +81,9 @@ namespace Reko.UnitTests.Core.Code
         public void Cond()
         {
             var emitter = new CodeEmitterImpl();
-            var cond = emitter.Cond(new Identifier("id", PrimitiveType.Word32, null));
+            var cond = emitter.Cond(
+                PrimitiveType.Word16,
+                new Identifier("id", PrimitiveType.Word32, null));
             Assert.AreEqual("cond(id)", cond.ToString());
         }
 

@@ -122,7 +122,7 @@ namespace Reko.Arch.Arm.AArch32
             }
             if (instr.SetFlags)
             {
-                m.Assign(NZCV(), m.Cond(opDst));
+                m.Assign(NZCV(), m.Cond(Registers.NZCV.DataType, opDst));
             }
         }
 
@@ -142,7 +142,7 @@ namespace Reko.Arch.Arm.AArch32
             }
             if (instr.SetFlags)
             {
-                m.Assign(NZC(), m.Cond(dst));
+                m.Assign(NZC(), m.Cond(Registers.NZC.DataType, dst));
             }
         }
 
@@ -183,7 +183,7 @@ namespace Reko.Arch.Arm.AArch32
             }
             if (setflags)
             {
-                m.Assign(NZCV(), m.Cond(opDst));
+                m.Assign(NZCV(), m.Cond(Registers.NZCV.DataType, opDst));
             }
         }
 
@@ -205,7 +205,7 @@ namespace Reko.Arch.Arm.AArch32
             var dst = Operand(0, PrimitiveType.Word32, true);
             var src = Operand(1);
             var flags = binder.EnsureFlagGroup(Registers.NZCV);
-            m.Assign(flags, m.Cond(op(dst, src)));
+            m.Assign(flags, m.Cond(flags.DataType, op(dst, src)));
         }
 
         private void RewriteCrc(IntrinsicProcedure intrinsic, DataType dt)
@@ -267,7 +267,9 @@ namespace Reko.Arch.Arm.AArch32
             var opSrc = this.Operand(1);
             m.Assign(
                 NZC(),
-                m.Cond(m.Xor(opDst, opSrc)));
+                m.Cond(
+                    Registers.NZC.DataType,
+                    m.Xor(opDst, opSrc)));
         }
 
         private void RewriteTst()
@@ -276,7 +278,9 @@ namespace Reko.Arch.Arm.AArch32
             var opSrc = this.Operand(1);
             m.Assign(
                 NZC(),
-                m.Cond(m.And(opDst, opSrc)));
+                m.Cond(
+                    Registers.NZC.DataType,
+                    m.And(opDst, opSrc)));
         }
 
         private void RewriteLoadAcquire(IntrinsicProcedure intrinsic, DataType dt)
@@ -475,7 +479,7 @@ namespace Reko.Arch.Arm.AArch32
             m.Assign(opDst, op(opSrc3, m.IMul(opSrc1, opSrc2)));
             if (instr.SetFlags)
             {
-                m.Assign(NZCV(), m.Cond(opDst));
+                m.Assign(NZCV(), m.Cond(Registers.NZCV.DataType, opDst));
             }
         }
 
@@ -558,7 +562,7 @@ namespace Reko.Arch.Arm.AArch32
             m.Assign(dst, ctor(src1, src2));
             if (instr.SetFlags)
             {
-                m.Assign(this.NZC(), m.Cond(dst));
+                m.Assign(this.NZC(), m.Cond(Registers.NZC.DataType, dst));
             }
         }
 
@@ -589,7 +593,7 @@ namespace Reko.Arch.Arm.AArch32
             right = m.Convert(right, right.DataType, dt);
 
             m.Assign(dst, m.IAdd(op(left, right), Operand(3)));
-            m.Assign(Q(), m.Cond(dst));
+            m.Assign(Q(), m.Cond(Registers.Q.DataType, dst));
         }
 
         private void RewriteMov()
@@ -615,7 +619,7 @@ namespace Reko.Arch.Arm.AArch32
             m.Assign(opDst, opSrc);
             if (instr.SetFlags)
             {
-                m.Assign(NZC(), m.Cond(opDst));
+                m.Assign(NZC(), m.Cond(Registers.NZC.DataType, opDst));
             }
         }
 
@@ -663,7 +667,7 @@ namespace Reko.Arch.Arm.AArch32
             m.Assign(opDst, result);
             if (instr.SetFlags)
             {
-                m.Assign(NZCV(), m.Cond(opDst));
+                m.Assign(NZCV(), m.Cond(Registers.NZCV.DataType, opDst));
             }
         }
 
@@ -713,7 +717,7 @@ namespace Reko.Arch.Arm.AArch32
             m.Assign(dst, sat);
             m.Assign(
                 Q(),
-                m.Cond(dst));
+                m.Cond(Registers.Q.DataType, dst));
         }
 
         private void RewriteQDAddSub(IntrinsicProcedure  op)
@@ -726,7 +730,7 @@ namespace Reko.Arch.Arm.AArch32
             m.Assign(dst, sum);
             m.Assign(
                 Q(),
-                m.Cond(dst));
+                m.Cond(Registers.Q.DataType, dst));
         }
 
         private void RewriteSbfx()
@@ -913,7 +917,7 @@ namespace Reko.Arch.Arm.AArch32
             var src2 = this.Operand(2);
             var intrinsic = m.Fn(ssat_intrinsic, src1, src2);
             m.Assign(dst, intrinsic);
-            m.Assign(Q(), m.Cond(dst));
+            m.Assign(Q(), m.Cond(Registers.Q.DataType, dst));
         }
 
         private void RewriteStm(bool add, bool updateAfter)
@@ -1053,7 +1057,7 @@ namespace Reko.Arch.Arm.AArch32
             m.Assign(opDst, op(opSrc));
             if (instr.SetFlags)
             {
-                m.Assign(NZCV(), m.Cond(opDst));
+                m.Assign(NZCV(), m.Cond(Registers.NZCV.DataType, opDst));
             }
         }
 
@@ -1091,7 +1095,7 @@ namespace Reko.Arch.Arm.AArch32
             var dst = this.Operand(0);
             var intrinsic = m.Fn(usat_intrinsic, src1, src2);
             m.Assign(dst, intrinsic);
-            m.Assign(Q(), m.Cond(dst));
+            m.Assign(Q(), m.Cond(Registers.Q.DataType, dst));
         }
 
         private void RewriteSat16(IntrinsicProcedure intrinsic)
@@ -1100,7 +1104,7 @@ namespace Reko.Arch.Arm.AArch32
             var src2 = this.Operand(2);
             var dst = this.Operand(0);
             m.Assign(dst, m.Fn(intrinsic, src1, src2));
-            m.Assign(Q(), m.Cond(dst));
+            m.Assign(Q(), m.Cond(Registers.Q.DataType, dst));
         }
 
         private void RewriteSax(PrimitiveType elemType)

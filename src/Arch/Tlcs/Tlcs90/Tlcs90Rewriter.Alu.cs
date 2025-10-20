@@ -86,7 +86,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             m.Assign(tmp, num);
             m.Assign(quo, m.SDiv(tmp, den));
             m.Assign(rem, m.SMod(tmp, den));
-            m.Assign(v, m.Cond(quo));
+            m.Assign(v, m.Cond(v.DataType, quo));
         }
 
         private void RewriteEx()

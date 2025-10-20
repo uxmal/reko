@@ -49,13 +49,15 @@ namespace Reko.Core.Expressions
 	public class ConditionOf : AbstractExpression
 	{
         /// <summary>
-        /// Constructns an instance of <see cref="ConditionOf"/>.
+        /// Constructs an instance of <see cref="ConditionOf"/>.
         /// </summary>
+        /// <param name="dtFlagRegister">Data type of the flag register containing
+        /// the result.</param>
         /// <param name="exp">Expression setting condition codes.</param>
-		public ConditionOf(Expression exp) : base(PrimitiveType.Byte)
-		{
-			Expression = exp;
-		}
+        public ConditionOf(DataType dtFlagRegister, Expression exp) : base(dtFlagRegister)
+        {
+            Expression = exp;
+        }
 
         /// <summary>
         /// The expression that produces condition codes.
@@ -89,7 +91,7 @@ namespace Reko.Core.Expressions
         /// <inheritdoc/>
 		public override Expression CloneExpression()
 		{
-			return new ConditionOf(Expression.CloneExpression());
+			return new ConditionOf(DataType, Expression.CloneExpression());
 		}
 	}
 }

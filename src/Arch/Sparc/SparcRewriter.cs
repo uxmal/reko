@@ -292,14 +292,14 @@ namespace Reko.Arch.Sparc
         {
             if (arch.PointerType.BitSize == 64)
             {
-                m.Assign(binder.EnsureFlagGroup(grf64), m.Cond(src));
+                m.Assign(binder.EnsureFlagGroup(grf64), m.Cond(grf64.DataType, src));
                 var tmp = binder.CreateTemporary(PrimitiveType.Word32);
                 m.Assign(tmp, m.Slice(src, tmp.DataType));
-                m.Assign(binder.EnsureFlagGroup(grf32), m.Cond(tmp));
+                m.Assign(binder.EnsureFlagGroup(grf32), m.Cond(grf32.DataType, tmp));
             }
             else
             {
-                m.Assign(binder.EnsureFlagGroup(grf32), m.Cond(src));
+                m.Assign(binder.EnsureFlagGroup(grf32), m.Cond(grf32.DataType, src));
             }
         }
 

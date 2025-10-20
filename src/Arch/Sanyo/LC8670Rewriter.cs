@@ -165,7 +165,7 @@ namespace Reko.Arch.Sanyo
         {
             var acc = binder.EnsureRegister(Registers.ACC);
             m.Assign(acc, fn(acc, Op(0)));
-            m.Assign(binder.EnsureFlagGroup(CAV), m.Cond(acc));
+            m.Assign(binder.EnsureFlagGroup(CAV), m.Cond(CAV.DataType, acc));
         }
 
         private void RewriteAddcSubc(Func<Expression, Expression, Expression> fn)
@@ -173,7 +173,7 @@ namespace Reko.Arch.Sanyo
             var acc = binder.EnsureRegister(Registers.ACC);
             var c = binder.EnsureFlagGroup(C);
             m.Assign(acc, fn(fn(acc, Op(0)), c));
-            m.Assign(binder.EnsureFlagGroup(CAV), m.Cond(acc));
+            m.Assign(binder.EnsureFlagGroup(CAV), m.Cond(CAV.DataType, acc));
         }
 
         private void RewriteBe(Func<Expression, Expression, Expression> fn)
@@ -333,7 +333,7 @@ namespace Reko.Arch.Sanyo
             m.Assign(acc, m.Fn(
                 CommonOps.RolC.MakeInstance(acc.DataType, PrimitiveType.Byte),
                 acc, m.Byte(1), c));
-            m.Assign(c, m.Cond(acc));
+            m.Assign(c, m.Cond(c.DataType, acc));
         }
 
         private void RewriteRor()
@@ -351,7 +351,7 @@ namespace Reko.Arch.Sanyo
             m.Assign(acc, m.Fn(
                 CommonOps.RorC.MakeInstance(acc.DataType, PrimitiveType.Byte),
                 acc, m.Byte(1), c));
-            m.Assign(c, m.Cond(acc));
+            m.Assign(c, m.Cond(c.DataType, acc));
         }
 
         private void RewriteSt()

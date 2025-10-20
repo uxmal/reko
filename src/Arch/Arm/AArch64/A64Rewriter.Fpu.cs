@@ -112,7 +112,7 @@ namespace Reko.Arch.Arm.AArch64
         {
             var left = RewriteOp(instr.Operands[0]);
             var right = RewriteOp(instr.Operands[1]);
-            NZCV(m.Cond(m.FSub(left, right)));
+            NZCV(m.Cond(Registers.NZCV.DataType, m.FSub(left, right)));
         }
 
         private void RewriteFcsel()

@@ -264,7 +264,7 @@ public class NX8_200Rewriter : IEnumerable<RtlInstructionCluster>
         var c = binder.EnsureFlagGroup(Registers.C);
         var result = OpDst(0, m.IAddC(left, right, c));
         var cz = binder.EnsureFlagGroup(Registers.CZ);
-        m.Assign(cz, m.Cond(result));
+        m.Assign(cz, m.Cond(cz.DataType, result));
     }
 
     private void RewriteAddSub(BinaryOperator op, PrimitiveType dt)
@@ -273,7 +273,7 @@ public class NX8_200Rewriter : IEnumerable<RtlInstructionCluster>
         var right = OpSrc(1, dt);
         var result = OpDst(0, m.Bin(op, left, right), dt);
         var cz = binder.EnsureFlagGroup(Registers.CZ);
-        m.Assign(cz, m.Cond(result));
+        m.Assign(cz, m.Cond(cz.DataType, result));
     }
 
     private void RewriteBrk()
@@ -296,7 +296,7 @@ public class NX8_200Rewriter : IEnumerable<RtlInstructionCluster>
         var left = OpSrc(0, dt);
         var right = OpSrc(1, dt);
         var cz = binder.EnsureFlagGroup(Registers.CZ);
-        m.Assign(cz, m.Cond(m.ISub(left, right)));
+        m.Assign(cz, m.Cond(cz.DataType, m.ISub(left, right)));
     }
 
     private void RewriteCmpc(PrimitiveType dt)
@@ -305,7 +305,7 @@ public class NX8_200Rewriter : IEnumerable<RtlInstructionCluster>
         var left = OpSrc(0, dt);
         var right = OpSrc(1, dt);
         var cz = binder.EnsureFlagGroup(Registers.CZ);
-        m.Assign(cz, m.Cond(m.ISub(left, right)));
+        m.Assign(cz, m.Cond(cz.DataType, m.ISub(left, right)));
     }
 
     private void RewriteDaas(IntrinsicProcedure intrinsic)
@@ -317,7 +317,7 @@ public class NX8_200Rewriter : IEnumerable<RtlInstructionCluster>
         var c = binder.EnsureFlagGroup(Registers.C);
         m.Assign(tmp, call);
         m.Assign(a, m.Dpb(a, tmp, 0));
-        m.Assign(c, m.Cond(tmp));
+        m.Assign(c, m.Cond(c.DataType, tmp));
     }
 
     private void RewriteDiv()
@@ -331,7 +331,7 @@ public class NX8_200Rewriter : IEnumerable<RtlInstructionCluster>
         m.Assign(dividend, m.UDiv(PrimitiveType.UInt32, dividend, divisor));
         m.Assign(remainder, m.UMod(PrimitiveType.UInt16, dividend, divisor));
         var cz = binder.EnsureFlagGroup(Registers.CZ);
-        m.Assign(cz, m.Cond(dividend));
+        m.Assign(cz, m.Cond(cz.DataType, dividend));
     }
 
     private void RewriteDivb()
@@ -342,7 +342,7 @@ public class NX8_200Rewriter : IEnumerable<RtlInstructionCluster>
         m.Assign(dividend, m.UDiv(PrimitiveType.UInt16, dividend, divisor));
         m.Assign(remainder, m.UMod(PrimitiveType.UInt8, dividend, divisor));
         var cz = binder.EnsureFlagGroup(Registers.CZ);
-        m.Assign(cz, m.Cond(dividend));
+        m.Assign(cz, m.Cond(cz.DataType, dividend));
     }
 
     private void RewriteExtnd()
@@ -380,7 +380,7 @@ public class NX8_200Rewriter : IEnumerable<RtlInstructionCluster>
         var src = OpSrc(0, dt);
         var dst = OpDst(0, m.Bin(op, src, Constant.Create(dt, 1)), dt);
         var z = binder.EnsureFlagGroup(Registers.Z);
-        m.Assign(z, m.Cond(dst));
+        m.Assign(z, m.Cond(z.DataType, dst));
     }
 
     private void RewriteLogical(BinaryOperator op, PrimitiveType dt)
@@ -389,7 +389,7 @@ public class NX8_200Rewriter : IEnumerable<RtlInstructionCluster>
         var right = OpSrc(1, dt);
         var result = OpDst(0, m.Bin(op, dt, left, right), dt);
         var z = binder.EnsureFlagGroup(Registers.Z);
-        m.Assign(z, m.Cond(result));
+        m.Assign(z, m.Cond(z.DataType, result));
     }
 
     private void RewriteMb()
@@ -478,7 +478,7 @@ public class NX8_200Rewriter : IEnumerable<RtlInstructionCluster>
             Registers.Acc);
         var z = binder.EnsureFlagGroup(Registers.Z);
         m.Assign(product, m.UMul(PrimitiveType.UInt32, lhs, rhs));
-        m.Assign(z, m.Cond(product));
+        m.Assign(z, m.Cond(z.DataType, product));
     }
 
     private void RewriteMulb()
@@ -488,7 +488,7 @@ public class NX8_200Rewriter : IEnumerable<RtlInstructionCluster>
         var product = binder.EnsureRegister(Registers.Acc);
         var z = binder.EnsureFlagGroup(Registers.Z);
         m.Assign(product, m.UMul(PrimitiveType.UInt16, lhs, rhs));
-        m.Assign(z, m.Cond(product));
+        m.Assign(z, m.Cond(z.DataType, product));
     }
 
     private void RewritePops()
@@ -514,7 +514,7 @@ public class NX8_200Rewriter : IEnumerable<RtlInstructionCluster>
         var c = binder.EnsureFlagGroup(Registers.C);
         var result = OpDst(0, m.ISubC(left, right, c), dt);
         var cz = binder.EnsureFlagGroup(Registers.CZ);
-        m.Assign(cz, m.Cond(result));
+        m.Assign(cz, m.Cond(cz.DataType, result));
     }
 
     private void RewriteSetResetB(bool flag)
@@ -562,7 +562,7 @@ public class NX8_200Rewriter : IEnumerable<RtlInstructionCluster>
             c),
             dt);
         var cz = binder.EnsureFlagGroup(Registers.CZ);
-        m.Assign(c, m.Cond(dst));
+        m.Assign(c, m.Cond(c.DataType, dst));
     }
 
     private void RewriteRt()
@@ -582,7 +582,7 @@ public class NX8_200Rewriter : IEnumerable<RtlInstructionCluster>
         var one = m.Byte(1);
         var c = binder.EnsureFlagGroup(Registers.C);
         var dst = OpDst(0, m.Bin(shift, src, one), dt);
-        m.Assign(c, m.Cond(dst));
+        m.Assign(c, m.Cond(c.DataType, dst));
     }
 
     private void RewriteSt(PrimitiveType dt)

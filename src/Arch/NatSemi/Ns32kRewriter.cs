@@ -394,7 +394,7 @@ public class Ns32kRewriter : IEnumerable<RtlInstructionCluster>
 
     private void EmitCond(FlagGroupStorage grf, Expression e)
     {
-        m.Assign(binder.EnsureFlagGroup(grf), m.Cond(e));
+        m.Assign(binder.EnsureFlagGroup(grf), m.Cond(grf.DataType, e));
     }
 
     private void EmitUnitTest()
@@ -844,7 +844,7 @@ public class Ns32kRewriter : IEnumerable<RtlInstructionCluster>
         var left = SrcOperand(0, dt);
         var right = SrcOperand(1, dt);
         var result = binder.EnsureFlagGroup(Registers.LNZ);
-        m.Assign(result, m.Cond(m.ISub(left, right)));
+        m.Assign(result, m.Cond(result.DataType, m.ISub(left, right)));
     }
 
 
@@ -853,7 +853,7 @@ public class Ns32kRewriter : IEnumerable<RtlInstructionCluster>
         var left = SrcOperand(0, dt);
         var right = SrcOperand(1, dt);
         var result = binder.EnsureFlagGroup(Registers.NZ);
-        m.Assign(result, m.Cond(m.ISub(left, right)));
+        m.Assign(result, m.Cond(result.DataType, m.ISub(left, right)));
         m.Assign(binder.EnsureFlagGroup(Registers.L), 0);
     }
 

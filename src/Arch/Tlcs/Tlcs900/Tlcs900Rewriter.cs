@@ -270,9 +270,10 @@ namespace Reko.Arch.Tlcs.Tlcs900
             }
             if (grf != 0)
             {
+                var flags = binder.EnsureFlagGroup(arch.GetFlagGroup(Tlcs900Registers.f, grf));
                 m.Assign(
-                    binder.EnsureFlagGroup(arch.GetFlagGroup(Tlcs900Registers.f, grf)),
-                    m.Cond(exp));
+                    flags,
+                    m.Cond(flags.DataType, exp));
             }
         }
 

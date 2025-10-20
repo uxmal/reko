@@ -410,7 +410,7 @@ namespace Reko.Scanning
         Expression ExpressionVisitor<Expression, Procedure>.VisitConditionOf(ConditionOf cof, Procedure ctx)
         {
             var exp = cof.Expression.Accept(this, ctx);
-            return new ConditionOf(exp);
+            return new ConditionOf(cof.DataType, exp);
         }
 
         Expression ExpressionVisitor<Expression, Procedure>.VisitConstant(Constant c, Procedure ctx)

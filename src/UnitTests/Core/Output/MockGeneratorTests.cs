@@ -487,7 +487,7 @@ namespace Reko.UnitTests.Core.Output
             {
                 var status = new RegisterStorage("Status", 42, 0, PrimitiveType.Word32);
                 var grf = m.Frame.EnsureFlagGroup(new FlagGroupStorage(status, 0x3, "CZ"));
-                m.Assign(grf, m.Cond(m.Mem32(Address.Ptr32(0x123400))));
+                m.Assign(grf, m.Cond(grf.DataType, m.Mem32(Address.Ptr32(0x123400))));
             });
             VerifyTest(@"RunTest(m =>
 {

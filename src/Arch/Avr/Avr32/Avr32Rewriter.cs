@@ -237,7 +237,7 @@ namespace Reko.Arch.Avr.Avr32
 
         private void EmitCc(FlagGroupStorage grf, Expression exp)
         {
-            m.Assign(binder.EnsureFlagGroup(grf), m.Cond(exp));
+            m.Assign(binder.EnsureFlagGroup(grf), m.Cond(grf.DataType, exp));
         }
 
         private void MaybeSkip()
@@ -630,7 +630,7 @@ namespace Reko.Arch.Avr.Avr32
             var op1 = m.Slice(RewriteOp(0), PrimitiveType.Byte);
             var op2 = m.Slice(RewriteOp(1), PrimitiveType.Byte);
             var grf = binder.EnsureFlagGroup(VNZC);
-            m.Assign(grf, m.Cond(m.ISub(op1, op2)));
+            m.Assign(grf, m.Cond(grf.DataType, m.ISub(op1, op2)));
         }
 
         private void RewriteCp_w()
@@ -638,7 +638,7 @@ namespace Reko.Arch.Avr.Avr32
             var op1 = RewriteOp(0);
             var op2 = RewriteOp(1);
             var grf = binder.EnsureFlagGroup(VNZC);
-            m.Assign(grf, m.Cond(m.ISub(op1, op2)));
+            m.Assign(grf, m.Cond(grf.DataType, m.ISub(op1, op2)));
         }
 
         private void RewriteCpc()

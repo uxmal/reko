@@ -202,7 +202,7 @@ Procedure fn00001000 calls:
         {
             Given_Block(0x1000,
                 m => { m.Assign(r2, 0); },
-                m => { m.Assign(NZVC, m.Cond(m.ISub(r2, 0xD2))); },
+                m => { m.Assign(NZVC, m.Cond(NZVC.DataType, m.ISub(r2, 0xD2))); },
                 m => { m.Branch(m.Test(ConditionCode.ULT, C), Address.Ptr32(0x1010)); });
             Given_Edge(0x1000, 0x100C);
             Given_Edge(0x1000, 0x1010);

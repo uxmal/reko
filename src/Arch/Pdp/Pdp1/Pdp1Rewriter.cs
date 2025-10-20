@@ -208,7 +208,7 @@ public class Pdp1Rewriter : IEnumerable<RtlInstructionCluster>
         var tmp = binder.CreateTemporary(PdpTypes.Word18);
         m.Assign(tmp, m.Mem(tmp.DataType, ea));
         m.Assign(acc, m.Bin(op, acc, tmp));
-        m.Assign(v, m.Cond(acc));
+        m.Assign(v, m.Cond(v.DataType, acc));
     }
 
     private void RewriteBinOpIndirect(BinaryOperator op)
@@ -220,7 +220,7 @@ public class Pdp1Rewriter : IEnumerable<RtlInstructionCluster>
         m.Assign(tmp, m.Mem(tmp.DataType, y));
         m.Assign(tmp, m.Mem(tmp.DataType, tmp));    
         m.Assign(acc, m.Bin(op, acc, tmp));
-        m.Assign(v, m.Cond(acc));
+        m.Assign(v, m.Cond(v.DataType, acc));
     }
 
     private void RewriteCks()

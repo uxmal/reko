@@ -139,7 +139,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             Given_Block(m =>
             {
                 m.Assign(C, Constant.False());
-                m.Assign(CZ, m.Cond(r2));
+                m.Assign(CZ, m.Cond(CZ.DataType, r2));
                 m.Branch(m.Test(ConditionCode.ULT, C), Address.Ptr16(0x1234));
             });
 

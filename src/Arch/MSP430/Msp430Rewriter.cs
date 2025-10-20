@@ -327,7 +327,7 @@ namespace Reko.Arch.Msp430
         {
             if (grf is not null)
             {
-                Assign(grf, m.Cond(exp));
+                Assign(grf, m.Cond(grf.DataType, exp));
             }
         }
 
@@ -397,7 +397,7 @@ namespace Reko.Arch.Msp430
             var c = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.Registers.sr, (uint)FlagM.CF));
             var v = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.Registers.sr, (uint)FlagM.VF));
             m.Assign(tmp, m.And(left, right));
-            m.Assign(grf, m.Cond(tmp));
+            m.Assign(grf, m.Cond(grf.DataType, tmp));
             m.Assign(c, m.Test(ConditionCode.NE, tmp));
             m.Assign(v, Constant.Bool(false));
         }

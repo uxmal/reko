@@ -186,7 +186,10 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         {
             FlagM flags = PIC16CC.Defined(instrCurr.Mnemonic);
             if (flags != 0)
-                m.Assign(FlagGroup(flags), m.Cond(dst));
+            {
+                var grf = FlagGroup(flags);
+                m.Assign(grf, m.Cond(grf.DataType, dst));
+            }
         }
 
         protected void GetSrc(out Expression srcMem)

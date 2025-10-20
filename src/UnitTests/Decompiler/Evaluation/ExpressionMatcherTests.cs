@@ -118,8 +118,8 @@ namespace Reko.UnitTests.Decompiler.Evaluation
         [Test]
         public void Emt_MatchCondOf()
         {
-            var e = m.IAdd(Id("ebx"), m.Cond(Id("ecx")));
-            Create(m.IAdd(AnyId(""), m.Cond(AnyId("q"))));
+            var e = m.IAdd(Id("ebx"), m.Cond(PrimitiveType.Word32, Id("ecx")));
+            Create(m.IAdd(AnyId(""), m.Cond(AnyType(), AnyId("q"))));
             var match = matcher.Match(e);
             Assert.IsTrue(match.Success);
             Assert.AreEqual("ecx", match.CapturedExpression("q").ToString());
@@ -154,6 +154,11 @@ namespace Reko.UnitTests.Decompiler.Evaluation
         private BinaryOperator AnyBinOp(string label)
         {
             return ExpressionMatcher.AnyBinaryOperator(label);
+        }
+
+        private DataType AnyType()
+        {
+            return ExpressionMatcher.AnyDataType(null);
         }
     }
 }

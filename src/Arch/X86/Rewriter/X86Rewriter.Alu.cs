@@ -101,7 +101,7 @@ namespace Reko.Arch.X86.Rewriter
                         dst,
                         SrcOp(1, dst.DataType)),
                     cy));
-            m.Assign(cy, m.Cond(dst));
+            m.Assign(cy, m.Cond(cy.DataType, dst));
         }
 
         /// <summary>
@@ -423,7 +423,7 @@ namespace Reko.Arch.X86.Rewriter
         {
             if (defFlags is null)
                 return;
-            m.Assign(binder.EnsureFlagGroup(defFlags), new ConditionOf(expr.CloneExpression()));
+            m.Assign(binder.EnsureFlagGroup(defFlags), new ConditionOf(defFlags.DataType, expr.CloneExpression()));
         }
 
         private void EmitLogicalFlags(Expression result)
@@ -449,9 +449,8 @@ namespace Reko.Arch.X86.Rewriter
         {
             Expression op1 = SrcOp(0);
             Expression op2 = SrcOp(1, instrCur.Operands[0].DataType);
-            m.Assign(
-                binder.EnsureFlagGroup(X86Instruction.DefCc(Mnemonic.cmp)!),
-                new ConditionOf(m.ISub(op1, op2)));
+            var grf = binder.EnsureFlagGroup(X86Instruction.DefCc(Mnemonic.cmp)!);
+            m.Assign(grf, m.Cond(grf.DataType, m.ISub(op1, op2)));
         }
 
         private void RewriteCmpxchg()
@@ -1330,9 +1329,10 @@ namespace Reko.Arch.X86.Rewriter
                 return;
             case Mnemonic.cmps:
             case Mnemonic.cmpsb:
+                var grf = binder.EnsureFlagGroup(X86Instruction.DefCc(Mnemonic.cmp)!);
                 m.Assign(
-                    binder.EnsureFlagGroup(X86Instruction.DefCc(Mnemonic.cmp)!),
-                    m.Cond(m.ISub(MemIndex(0, ds, RegSi), MemIndex(1, es, RegDi))));
+                    grf,
+                    m.Cond(grf.DataType, m.ISub(MemIndex(0, ds, RegSi), MemIndex(1, es, RegDi))));
                 incSi = true;
                 incDi = true;
                 break;
@@ -1363,9 +1363,10 @@ namespace Reko.Arch.X86.Rewriter
                 break;
             case Mnemonic.scas:
             case Mnemonic.scasb:
+                grf = binder.EnsureFlagGroup(X86Instruction.DefCc(Mnemonic.cmp)!);
                 m.Assign(
-                    binder.EnsureFlagGroup(X86Instruction.DefCc(Mnemonic.cmp)!),
-                    m.Cond(m.ISub(RegAl, MemIndex(1, es, RegDi))));
+                    grf,
+                    m.Cond(grf.DataType, m.ISub(RegAl, MemIndex(1, es, RegDi))));
                 incDi = true;
                 break;
             case Mnemonic.stos:

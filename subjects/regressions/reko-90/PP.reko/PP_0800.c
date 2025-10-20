@@ -6907,8 +6907,7 @@ word16 fn0800-5E64(Eq_n ds, union Eq_n & dsOut)
 		}
 		uint16 cx_n = cx_n >> 0x01;
 		memcpy(*((word32) ds + 17009), *((word32) ds + 0x00002202), cx_n *32 0x02);
-		Eq_n SCZO_n;
-		SCZO_n.u1 = cond(cx_n);
+		ui32 SCZO_n = cond(cx_n);
 		<unknown>* di_n = cx_n * 0x02 + 17009;
 		memcpy(di_n, cx_n * 0x02 + 0x2202, SCZO_n & 0x02);
 		Eq_n di_n = (char *) di_n + ((word16) SCZO_n & 0x02);
@@ -7444,8 +7443,7 @@ word16 fn0800-669C(Eq_n ds, union Eq_n & dsOut)
 			}
 			uint16 cx_n = cx_n >> 0x01;
 			memcpy(*((word32) ds + 17009), *((word32) ds + 0x00002206), cx_n *32 0x02);
-			Eq_n SCZO_n;
-			SCZO_n.u1 = cond(cx_n);
+			ui32 SCZO_n = cond(cx_n);
 			<unknown>* di_n = cx_n * 0x02 + 17009;
 			memcpy(di_n, cx_n * 0x02 + 0x2206, SCZO_n & 0x02);
 			Eq_n di_n = (char *) di_n + ((word16) SCZO_n & 0x02);
@@ -10483,16 +10481,14 @@ ui32 fn0800-8F2F(Eq_n ax, struct Eq_n * cx, Eq_n dx, Eq_n bx, word16 & cxOut, wo
 	byte bl = (byte) bx;
 	word16 dx_n = (word16) (dx.u3 + (ax >> 0x04));
 	word16 cx_n = cx + (bx >> 0x04);
-	Eq_n SCZO_n;
-	SCZO_n.u1 = cond(dx_n - cx_n);
+	ui32 SCZO_n = cond(dx_n - cx_n);
 	cui16 ax_n = SEQ(bl, al);
 	cui16 bx_n = SEQ(SLICE(bx >> 0x04, byte, 8), bl);
 	ui32 Z_n = SCZO_n & 0x04;
 	ui32 C_n = SCZO_n & 0x02;
 	if (dx_n == cx_n)
 	{
-		Eq_n SCZO_n;
-		SCZO_n.u1 = cond((ax_n & 0x0F) - (bx_n & 0x0F));
+		ui32 SCZO_n = cond((ax_n & 0x0F) - (bx_n & 0x0F));
 		C_n = SCZO_n & 0x02;
 		Z_n = SCZO_n & 0x04;
 	}

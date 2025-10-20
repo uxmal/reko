@@ -772,11 +772,11 @@ Constants: cl:0x00
                 var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
 
                 m.Assign(sp, m.Frame.FramePointer);
-                m.Assign(grf1, m.Cond(m.ISub(r2, 3)));
+                m.Assign(grf1, m.Cond(grf1.DataType, m.ISub(r2, 3)));
                 m.BranchIf(m.Test(ConditionCode.EQ, grf1), "mEq");
 
                 m.Assign(r2, 4);
-                m.Assign(grf2, m.Cond(r2));
+                m.Assign(grf2, m.Cond(grf2.DataType, r2));
 
                 m.Label("mEq");
                 m.Return();

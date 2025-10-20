@@ -242,7 +242,7 @@ namespace Reko.Core.Code
 		public Expression VisitConditionOf(ConditionOf cof)
 		{
 			var e = cof.Expression.Accept(this);
-			return new ConditionOf(e);
+			return new ConditionOf(cof.DataType, e);
 		}
 
         /// <inheritdoc/>

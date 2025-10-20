@@ -112,7 +112,7 @@ namespace Reko.UnitTests.Core.Serialization.Json
                 var f3 = m.Reg64("f3", 3);
                 var SZ = m.Flags("SZ");
                 m.Label("l0010");
-                m.Assign(SZ, m.Cond(m.FSub(f1, f3)));
+                m.Assign(SZ, m.Cond(SZ.DataType, m.FSub(f1, f3)));
                 m.BranchIf(m.Test(ConditionCode.GE, SZ), "l_nonneg");
 
                 m.Label("l_neg");

@@ -169,12 +169,12 @@ ProcedureBuilder_exit:
                 var r2 = m.Reg32("r2", 2);
 
                 m.Label("m0");
-                m.Assign(C, m.Cond(r1));
+                m.Assign(C, m.Cond(C.DataType, r1));
                 m.BranchIf(m.Test(ConditionCode.ULT, C), "m2skip");
 
                 m.Label("m1do");
                 m.Assign(r1, r2);
-                m.Assign(CZ, m.Cond(r1));
+                m.Assign(CZ, m.Cond(CZ.DataType, r1));
 
                 m.Label("m2skip");
                 m.BranchIf(m.Test(ConditionCode.ULT, C), "m4skip");

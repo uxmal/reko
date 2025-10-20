@@ -2362,14 +2362,14 @@ bool fn00005B4E(uint32 r11_r10, uint16 r8, uint16 r12, uint16 r13, ui32 & r13_r1
 	uint16 r14_n = 0x00;
 	word16 r9_n = 33;
 	uint16 r8_n;
-	Eq_n VNZC_n;
+	cui16 VNZC_n;
 	while (true)
 	{
 		r12 *= 0x02;
 		r13 = r13 * 0x02 + (word16) (r12 < 0x00);
 		--r9_n;
 		r8_n = r8 * 0x02 + (word16) (r13 < 0x00);
-		VNZC_n.u1 = cond(r9_n);
+		VNZC_n = cond(r9_n);
 		if (r9_n == 0x00)
 			break;
 		r8 = __rcr<word16,byte>(r8_n, 0x01, VNZC_n & 0x01);

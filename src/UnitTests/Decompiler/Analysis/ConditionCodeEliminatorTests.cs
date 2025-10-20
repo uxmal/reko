@@ -397,7 +397,7 @@ done:
 			Identifier z = FlagGroup("z");  // is a condition code.
             Identifier y = FlagGroup("y");  // is a condition code.
 
-            m.Assign(z, new ConditionOf(r));
+            m.Assign(z, new ConditionOf(z.DataType, r));
             ssaIds[z].DefStatement = m.Block.Statements[^1];
             m.Assign(y, z);
             ssaIds[y].DefStatement = m.Block.Statements[^1];
@@ -435,7 +435,7 @@ ProcedureBuilder_exit:
                 Identifier Z = FlagGroup("Z");
                 Identifier f = Reg32("f");
 
-                m.Assign(Z, m.Cond(m.ISub(r, 0)));
+                m.Assign(Z, m.Cond(Z.DataType, m.ISub(r, 0)));
                 m.Assign(f, m.Test(ConditionCode.NE, Z));
                 m.MStore(m.Word32(0x123400), f);
             });
@@ -502,7 +502,7 @@ ProcedureBuilder_exit:
                 var C = m.Frame.EnsureFlagGroup(new FlagGroupStorage(flags, 0x4, "C"));
 
                 m.Assign(r1, m.IAdd(r1, r2));
-                m.Assign(SCZ, m.Cond(r1));
+                m.Assign(SCZ, m.Cond(SCZ.DataType, r1));
                 m.Assign(r3, m.IAdd(m.IAdd(r3, r4), C));
                 m.MStore(m.Word32(0x0444400), r1);
                 m.MStore(m.Word32(0x0444404), r3);
@@ -523,11 +523,11 @@ ProcedureBuilder_exit:
                 var r2 = MockReg(m, 2);
 
                 m.Assign(r1, m.Shr(r1, 1));
-                m.Assign(C, m.Cond(r1));
+                m.Assign(C, m.Cond(C.DataType, r1));
                 m.Assign(r2, m.Fn(
                     CommonOps.RorC.MakeInstance(r2.DataType, PrimitiveType.Byte),
                     r2, Constant.Byte(1), C));
-                m.Assign(C, m.Cond(r2));
+                m.Assign(C, m.Cond(C.DataType, r2));
                 m.MStore(m.Word32(0x3000), r2);
                 m.MStore(m.Word32(0x3004), r1);
                 m.Return();
@@ -547,11 +547,11 @@ ProcedureBuilder_exit:
                 var r2 = MockReg(m, 2);
 
                 m.Assign(r1, m.Shl(r1, 1));
-                m.Assign(C, m.Cond(r1));
+                m.Assign(C, m.Cond(C.DataType, r1));
                 m.Assign(r2, m.Fn(
                     CommonOps.RolC.MakeInstance(r2.DataType, PrimitiveType.Byte),
                     r2, Constant.Byte(1), C));
-                m.Assign(C, m.Cond(r2));
+                m.Assign(C, m.Cond(C.DataType, r2));
                 m.MStore(m.Word32(0x3000), r1);
                 m.MStore(m.Word32(0x3004), r2);
                 m.Return();
@@ -610,7 +610,7 @@ ProcedureBuilder_exit:
                 var CZ = m.Flags("CZ");
 
                 m.Assign(r1, m.ISub(r2, 2));
-                m.Assign(SCZ, m.Cond(m.ISub(r1, 5)));
+                m.Assign(SCZ, m.Cond(SCZ.DataType, m.ISub(r1, 5)));
                 m.BranchIf(m.Test(ConditionCode.UGT, CZ), "mElse");
 
                 m.Label("mDo");
@@ -630,7 +630,7 @@ ProcedureBuilder_exit:
             var CZ = m.Flags("CZ");
             var r1 = m.Reg32("r1", 1);
 
-            m.Assign(SZO, m.Cond(m.And(r1, r1)));
+            m.Assign(SZO, m.Cond(SZO.DataType, m.And(r1, r1)));
             m.Assign(C, false);
             var block = m.Block;
             m.BranchIf(m.Test(ConditionCode.ULE, CZ), "yay");
@@ -698,7 +698,7 @@ ProcedureBuilder_exit:
 
                 m.Assign(rdx, m.ISub(rax, 1));
                 m.Assign(rax, Constant.Word64(0x1FFFFFFFFFFFFFFE));
-                m.Assign(CZ, m.Cond(m.ISub(rdx, rax)));
+                m.Assign(CZ, m.Cond(CZ.DataType, m.ISub(rdx, rax)));
                 m.BranchIf(m.Test(ConditionCode.UGT, CZ), "mElse");
 
                 m.Label("mDo");
@@ -782,7 +782,7 @@ ProcedureBuilder_exit:
                 var f1 = m.Frame.EnsureFpuStackVariable(1, PrimitiveType.Real80);
                 var C = m.Flags("C");
 
-                m.Assign(C, m.Cond(m.FSub(f0, f1)));
+                m.Assign(C, m.Cond(C.DataType, m.FSub(f0, f1)));
                 m.BranchIf(m.Test(ConditionCode.NOT_NAN, C), "m3Done");
                 m.Label("m1isNan");
                 m.Assign(r0, 0);
@@ -845,12 +845,12 @@ ProcedureBuilder_exit:
 
                 m.Label("m0");
                 m.Assign(r0, m.IAdd(r0, r2));
-                m.Assign(CZ, m.Cond(r0));
+                m.Assign(CZ, m.Cond(CZ.DataType, r0));
                 m.Goto("m2");
 
                 m.Label("m1");
                 m.Assign(r0, m.ISub(r2, r0));
-                m.Assign(CZ, m.Cond(r0));
+                m.Assign(CZ, m.Cond(CZ.DataType, r0));
 
                 m.Label("m2");
                 //m.Assign(tmp, m.Convert(m.Test(ConditionCode.UGT, CZ), PrimitiveType.Bool, PrimitiveType.SByte));
@@ -894,7 +894,7 @@ ProcedureBuilder_exit:
                 var NZVC = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 0xF, "NZVC"));
                 var tmp = m.Frame.CreateTemporary("tmp", PrimitiveType.Word16);
                 m.Assign(r1, m.Shl(r1, m.Int16(1)));
-                m.Assign(NZVC, m.Cond(r1));
+                m.Assign(NZVC, m.Cond(NZVC.DataType, r1));
                 m.Assign(tmp, r0);
                 m.Assign(r0, m.Fn(
                     CommonOps.RolC.MakeInstance(r0.DataType, PrimitiveType.Int16), 
@@ -966,19 +966,19 @@ SsaProcedureBuilder_exit:
                 m.AddDefToEntryBlock(c);
 
                 m.Assign(h_1, m.Shr(h, 1));
-                m.Assign(SZC_1, m.Cond(h_1));
+                m.Assign(SZC_1, m.Cond(SZC_1.DataType, h_1));
                 m.Alias(C_1, m.And(SZC_1, 1));
 
                 m.Assign(l_1, RorC(l, m.Byte(1), C_1));
-                m.Assign(SZC_2, m.Cond(l_1));
+                m.Assign(SZC_2, m.Cond(SZC_2.DataType, l_1));
                 m.Alias(C_2, m.And(SZC_2, 1));
 
                 m.Assign(b_1, RorC(b, m.Byte(1), C_2));
-                m.Assign(SZC_3, m.Cond(b_1));
+                m.Assign(SZC_3, m.Cond(SZC_3.DataType, b_1));
                 m.Alias(C_3, m.And(SZC_3, 1));
 
                 m.Assign(c_1, RorC(c, m.Byte(1), C_3));
-                m.Assign(SZC_4, m.Cond(c_1));
+                m.Assign(SZC_4, m.Cond(SZC_4.DataType, c_1));
 
                 m.Return();
 
@@ -1044,15 +1044,15 @@ SsaProcedureBuilder_exit:
                 m.AddDefToEntryBlock(ax_1);
                 m.AddDefToEntryBlock(dx_2);
                 m.Assign(ax_3, m.IAdd(ax_1, m.Mem16(m.IAdd(fp, 2))));
-                m.Assign(SCZO_4, m.Cond(ax_3));
+                m.Assign(SCZO_4, m.Cond(SCZO_4.DataType, ax_3));
                 m.Alias(C_5, m.Slice(SCZO_4, PrimitiveType.Bool, 1));
                 m.Assign(dx_6, m.IAdd(dx_2, C_5));
 
                 m.Assign(ax_7, m.IAdd(ax_3, m.Mem16(m.IAdd(fp, 6))));
-                m.Assign(SCZO_8, m.Cond(ax_7));
+                m.Assign(SCZO_8, m.Cond(SCZO_8.DataType, ax_7));
                 m.Assign(C_9, m.Slice(SCZO_8, PrimitiveType.Bool, 1));
                 m.Assign(dx_10, m.IAdd(m.IAdd(dx_6, m.Mem16(m.IAdd(fp, 8))), C_9));
-                m.Assign(SCZO_11, m.Cond(dx_10));
+                m.Assign(SCZO_11, m.Cond(SCZO_11.DataType, dx_10));
                 m.Return();
             });
         }
@@ -1108,7 +1108,7 @@ ProcedureBuilder_exit:
 
                 m.Label("m0Loop");
                 m.Assign(ax, m.Shl(ax, 1));
-                m.Assign(SCZO, m.Cond(ax));
+                m.Assign(SCZO, m.Cond(SCZO.DataType, ax));
                 m.Assign(tmp, m.Ne0(m.And(dx, 0x8000)));
                 m.Assign(dx, m.Fn(
                     CommonOps.RolC.MakeInstance(dx.DataType, PrimitiveType.Byte),
@@ -1161,7 +1161,7 @@ ProcedureBuilder_exit:
                 var SCZO = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 0xF, "SCZO"));
 
                 m.Assign(dx, m.Sar(dx, 1));
-                m.Assign(SCZO, m.Cond(dx));
+                m.Assign(SCZO, m.Cond(SCZO.DataType, dx));
                 m.Assign(ax, RorC(ax, m.Word16(1), CF));
                 m.MStore(m.Word16(0x1234), ax);
                 m.MStore(m.Word16(0x1236), dx);
@@ -1228,7 +1228,7 @@ ProcedureBuilder_exit:
 
                 m.Label("m1");
                 m.Assign(r2, m.And(r2, 0x7F));
-                m.Assign(SCZO, m.Cond(r2));
+                m.Assign(SCZO, m.Cond(SCZO.DataType, r2));
 
                 m.Label("m2C");
                 m.Assign(r2, m.Shr(r2, 1));
@@ -1240,7 +1240,7 @@ ProcedureBuilder_exit:
                 m.Label("m4");
                 m.Assign(r2, m.Mem32(m.Word32(0x00123400)));
                 m.Assign(r2, m.And(r2, 0x7F));
-                m.Assign(SCZO, m.Cond(r2));
+                m.Assign(SCZO, m.Cond(SCZO.DataType, r2));
 
                 m.Label("m80");
                 m.Assign(ctr, m.ISubS(ctr, 1));
@@ -1279,7 +1279,7 @@ ProcedureBuilder_exit:
                 var C = m.Frame.EnsureFlagGroup(m.Architecture.CarryFlag);
 
                 m.Assign(r2, m.Shr(r2, 1));
-                m.Assign(C, m.Cond(r2));
+                m.Assign(C, m.Cond(C.DataType, r2));
                 m.Assign(r3, C);
                 m.Return(r3);
             });
@@ -1316,7 +1316,7 @@ ProcedureBuilder_exit:
                 var C = m.Frame.EnsureFlagGroup(m.Architecture.CarryFlag);
                 m.Label("foo");
                 m.Assign(eax, m.Or(eax, eax));
-                m.Assign(SZ, m.Cond(eax));
+                m.Assign(SZ, m.Cond(SZ.DataType, eax));
                 m.Assign(O, 0);
                 m.Assign(C, 0);
                 m.BranchIf(m.Test(ConditionCode.LE, SZO), "foo");
@@ -1424,7 +1424,7 @@ ProcedureBuilder_exit:
                 var r7 = m.Reg32("r7");
                 var r9 = m.Reg32("r9");
 
-                m.Assign(VNZC, m.Cond(m.ISub(r9, r7)));
+                m.Assign(VNZC, m.Cond(VNZC.DataType, m.ISub(r9, r7)));
                 m.Assign(
                     r9,
                     m.Convert(

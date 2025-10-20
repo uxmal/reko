@@ -105,8 +105,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 var Z = m.Frame.EnsureFlagGroup(new FlagGroupStorage(flags, 0x4, "Z"));
                 
                 var a = m.Frame.EnsureRegister(RegisterStorage.Reg32("a", 0));
-                m.Assign(N, m.Cond(a));
-                m.Assign(C, m.Cond(a));
+                m.Assign(N, m.Cond(N.DataType, a));
+                m.Assign(C, m.Cond(C.DataType, a));
                 m.BranchIf(m.Test(ConditionCode.LE, CN), "foo");
             });
             string expected = ToExpectedString(
@@ -129,9 +129,9 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 var Z = m.Frame.EnsureFlagGroup(new FlagGroupStorage(flags, 0x4, "Z"));
                 var a = m.Frame.EnsureRegister(RegisterStorage.Reg32("a", 0));
                 m.Assign(a, m.IAdd(a, 3));
-                m.Assign(N, m.Cond(a));
+                m.Assign(N, m.Cond(N.DataType, a));
                 m.Assign(a, m.IAdd(a, a));
-                m.Assign(N, m.Cond(a));
+                m.Assign(N, m.Cond(N.DataType, a));
                 m.BranchIf(m.Test(ConditionCode.LE, CN), "foo");
             });
             string expected = ToExpectedString(

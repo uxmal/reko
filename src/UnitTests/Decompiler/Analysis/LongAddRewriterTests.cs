@@ -196,7 +196,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             RunTest(m =>
             {
                 m.Assign(ax, m.IAdd(ax, cx));
-                m.Assign(SCZ, m.Cond(ax));
+                m.Assign(SCZ, m.Cond(SCZ.DataType, ax));
                 block = m.CurrentBlock;
                 m.Return();
             });
@@ -214,7 +214,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             RunTest(m =>
             {
                 m.Assign(ax, m.IAdd(ax, cx));
-                m.Assign(SCZ, m.Cond(ax));
+                m.Assign(SCZ, m.Cond(SCZ.DataType, ax));
                 block = m.CurrentBlock;
                 m.Assign(dx, m.IAdd(m.IAdd(dx, bx), CF));
                 m.Return();
@@ -241,7 +241,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             RunTest(sExp, m =>
             {
                 m.Assign(ax, m.IAdd(ax, 0x5678));
-                m.Assign(CF, m.Cond(ax));
+                m.Assign(CF, m.Cond(CF.DataType, ax));
                 m.Assign(dx, m.IAdd(m.IAdd(dx, 0x1234), CF));
                 block = m.Block;
                 m.Return();
@@ -263,7 +263,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             RunTest(sExp, m =>
             {
                 m.Assign(ax, m.IAdd(ax, 1));
-                m.Assign(CF, m.Cond(ax));
+                m.Assign(CF, m.Cond(CF.DataType, ax));
                 m.Assign(dx, m.IAdd(m.IAdd(dx, 0), CF));
                 block = m.Block;
                 m.Return();
@@ -315,9 +315,9 @@ namespace Reko.UnitTests.Decompiler.Analysis
             RunTest(sExp, m =>
             {
                 m.Assign(ax, m.IAdd(ax, m.Mem16(m.IAdd(bx, 0x300))));
-                m.Assign(CF, m.Cond(ax));
+                m.Assign(CF, m.Cond(CF.DataType, ax));
                 m.Assign(dx, m.IAdd(m.IAdd(dx, m.Mem16(m.IAdd(bx, 0x302))), CF));
-                m.Assign(CF, m.Cond(dx));
+                m.Assign(CF, m.Cond(CF.DataType, dx));
                 block = m.Block;
                 m.Return();
             });
@@ -329,13 +329,13 @@ namespace Reko.UnitTests.Decompiler.Analysis
         {
             RunTest(m =>
             {
-                m.Assign(SCZ, m.Cond(m.ISub(cx, 0x0030)));
+                m.Assign(SCZ, m.Cond(SCZ.DataType, m.ISub(cx, 0x0030)));
                 m.Assign(ax, m.IAdd(m.Word16(0x0000), CF));
-                m.Assign(SCZ, m.Cond(ax));
-                m.Assign(SCZ, m.Cond(m.ISub(cx, 0x003A)));
+                m.Assign(SCZ, m.Cond(SCZ.DataType, ax));
+                m.Assign(SCZ, m.Cond(SCZ.DataType, m.ISub(cx, 0x003A)));
                 m.Assign(CF, m.Not(CF));
                 m.Assign(ax, m.IAdd(m.IAdd(ax, ax), CF));
-                m.Assign(SCZ, m.Cond(ax));
+                m.Assign(SCZ, m.Cond(SCZ.DataType, ax));
                 block = m.Block;
                 m.Return();
             });
@@ -391,7 +391,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 m.Assign(es_cx, m.Mem32(m.Ptr16(0x214)));
                 m.Assign(bx, es);
                 m.Assign(ax, m.ISub(ax, cx));
-                m.Assign(this.SCZ, m.Cond(ax));
+                m.Assign(this.SCZ, m.Cond(SCZ.DataType, ax));
                 m.MStore(m.Ptr16(0x218), ax);
                 m.Assign(dx, m.ISub(m.ISub(dx, bx), this.CF));
                 m.MStore(m.Ptr16(0x21A), dx);
@@ -422,7 +422,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 block = m.Block;
                 m.Assign(dx, m.Mem16(m.Ptr16(0x212)));
                 m.Assign(ax, m.IAdd(ax, m.Mem16(m.Ptr16(0x0220))));
-                m.Assign(this.SCZ, m.Cond(ax));
+                m.Assign(this.SCZ, m.Cond(SCZ.DataType, ax));
                 m.Goto("m2");
 
                 m.Label("m2");
@@ -466,10 +466,10 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 m.Assign(edx_eax, m.SMul(PrimitiveType.Int64, edx, eax));
                 m.Assign(tmp1, m.ISub(m.Mem32(m.Word32(0x6FF0)), eax));
                 m.MStore(m.Word32(0x6FF0), tmp1);
-                m.Assign(this.SCZ, m.Cond(tmp1));
+                m.Assign(this.SCZ, m.Cond(SCZ.DataType, tmp1));
                 m.Assign(tmp2, m.ISub(m.ISub(m.Mem32(m.Word32(0x6FF4)), edx), this.CF));
                 m.MStore(m.Word32(0x6FF4), tmp2);
-                m.Assign(this.SCZ, m.Cond(tmp2));
+                m.Assign(this.SCZ, m.Cond(SCZ.DataType, tmp2));
                 block = m.Block;
                 m.Return();
             });
@@ -504,15 +504,15 @@ namespace Reko.UnitTests.Decompiler.Analysis
             RunTest(sExp, m =>
             {
                 m.Assign(ax, m.IAdd(ax, m.Mem16(m.IAdd(bx, 2))));
-                m.Assign(SCZ, m.Cond(ax));
+                m.Assign(SCZ, m.Cond(SCZ.DataType, ax));
                 //m.Alias(CF, m.Slice(PrimitiveType.Bool, SCZ, 1));
                 m.Assign(dx, m.IAdd(dx, CF));
 
                 m.Assign(ax, m.IAdd(ax, m.Mem16(m.IAdd(bx, 6))));
-                m.Assign(SCZ, m.Cond(ax));
+                m.Assign(SCZ, m.Cond(SCZ.DataType, ax));
                 //m.Alias(CF, m.Slice(PrimitiveType.Bool, SCZO, 1));
                 m.Assign(dx, m.IAdd(m.IAdd(dx, m.Mem16(m.IAdd(bx, 8))), CF));
-                m.Assign(SCZ, m.Cond(dx));
+                m.Assign(SCZ, m.Cond(SCZ.DataType, dx));
                 this.block = m.Block;
                 m.Return();
             });
@@ -540,9 +540,9 @@ namespace Reko.UnitTests.Decompiler.Analysis
             RunTest(sExp, m =>
             {
                 m.Assign(ax, m.IAdd(ax, cx));
-                m.Assign(SCZ, m.Cond(ax));
+                m.Assign(SCZ, m.Cond(SCZ.DataType, ax));
                 m.Assign(dx, m.IAdd(dx, CF));
-                m.Assign(SCZ, m.Cond(dx));
+                m.Assign(SCZ, m.Cond(SCZ.DataType, dx));
                 m.Assign(dx, m.IAdd(dx, bx));
                 this.block = m.Block;
             });
@@ -563,7 +563,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             RunTest(sExp, m =>
                 {
                     m.Assign(ax, m.IAdd(ax, ax));
-                    m.Assign(SCZ, m.Cond(ax));
+                    m.Assign(SCZ, m.Cond(SCZ.DataType, ax));
                     m.Assign(CF, m.Slice(SCZ, PrimitiveType.Bool, 1));
                     m.Assign(rdx, m.ISub(m.ISub(rdx, 3), CF));
                     this.block = m.Block;
@@ -607,7 +607,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 m.Assign(B, 6);
                 m.Assign(B_A, m.UMul(PrimitiveType.Word16, A, B));
                 m.Assign(A, m.IAdd(A, 0x14));
-                m.Assign(SCZ, m.Cond(A));
+                m.Assign(SCZ, m.Cond(SCZ.DataType, A));
                 m.Assign(DPL, A);
                 m.Assign(A, 0);
                 m.Assign(A, m.IAdd(m.IAdd(A, 0), CF));
@@ -639,9 +639,9 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 var dx = m.Reg16("dx", 2);
 
                 m.Assign(dx, m.Neg(dx));
-                m.Assign(CF, m.Cond(m.Ne0(dx)));
+                m.Assign(CF, m.Cond(CF.DataType, m.Ne0(dx)));
                 m.Assign(ax, m.Neg(ax));
-                m.Assign(CF, m.Cond(m.Ne0(ax)));
+                m.Assign(CF, m.Cond(CF.DataType, m.Ne0(ax)));
                 m.Assign(dx, m.ISubB(dx, m.Word16(0), CF));
 
                 this.block = m.Block;
@@ -871,10 +871,10 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 var d1 = m.Reg32("d1", 1);
 
                 m.Assign(d0, m.Neg(d0));
-                m.Assign(SCZ, m.Cond(d0));
+                m.Assign(SCZ, m.Cond(SCZ.DataType, d0));
                 m.Assign(CF, m.And(SCZ, 4));
                 m.Assign(d1, m.ISub(m.Neg(d1), CF));
-                m.Assign(SCZ, m.Cond(d1));
+                m.Assign(SCZ, m.Cond(SCZ.DataType, d1));
 
                 this.block = m.Block;
             });

@@ -474,7 +474,7 @@ namespace Reko.Arch.CSky
             Identifier c = binder.EnsureFlagGroup(Registers.C);
             var (dst, left, right) = Rewrite2or3operands();
             m.Assign(dst, m.IAddC(left, right, c));
-            m.Assign(c, m.Cond(dst));
+            m.Assign(c, m.Cond(c.DataType, dst));
         }
 
         private void RewriteAndn()
@@ -1260,7 +1260,7 @@ namespace Reko.Arch.CSky
             Identifier c = binder.EnsureFlagGroup(Registers.C);
             var (dst, left, right) = Rewrite2or3operands();
             m.Assign(dst, m.ISubC(left, right, c));
-            m.Assign(c, m.Cond(dst));
+            m.Assign(c, m.Cond(c.DataType, dst));
         }
 
         private void RewriteSync()

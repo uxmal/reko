@@ -587,7 +587,7 @@ namespace Reko.Arch.Arm.AArch32
         {
             if (instr.SetFlags)
             {
-                m.Assign(NZCV(), m.Cond(opDst));
+                m.Assign(NZCV(), m.Cond(Registers.NZCV.DataType, opDst));
             }
         }
 

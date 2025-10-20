@@ -106,7 +106,7 @@ namespace Reko.Core.Expressions
             if (cmp.Equals(cof, original))
                 return replacement;
             var expr = cof.Expression.Accept(this);
-            return new ConditionOf(expr);
+            return new ConditionOf(cof.DataType, expr);
         }
 
         /// <inheritdoc/>

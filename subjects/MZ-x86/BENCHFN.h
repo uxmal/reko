@@ -673,13 +673,6 @@ Eq_612: (fn void ())
 	T_612 (in _abort @ 0800:03E7 : segptr32)
 	T_613 (in signature of _abort @ 0800:01E2 : void)
 	T_743 (in _abort @ 0800:0454 : segptr32)
-Eq_623: (union "Eq_623" (ui32 u0) (byte u1))
-	T_623 (in cond(0<8>) @ 0800:03CC : byte)
-Eq_646: (union "Eq_646" (ui32 u0) (byte u1))
-	T_646 (in cond(al_43 - 0x22<8>) @ 0800:03D3 : byte)
-	T_647 (in SCZO_47 @ 0800:03D3 : Eq_646)
-Eq_662: (union "Eq_662" (ui32 u0) (byte u1))
-	T_662 (in cond(si) @ 0800:03E4 : byte)
 Eq_684: (fn Eq_688 ((ptr16 Eq_340), cu16))
 	T_684 (in _malloc @ 0800:0426 : segptr32)
 	T_685 (in signature of _malloc @ 0800:0570 : void)
@@ -2107,8 +2100,6 @@ Eq_4769: (struct "Eq_4769" (FFFFFFFE Eq_224 tFFFFFFFE) (0 Eq_224 t0000))
 Eq_4783: (union "Eq_4783" (int32 u0) (uint32 u1))
 	T_4783 (in wArg08 *32 di_330 @ 0800:1CDF : uint32)
 	T_4784 (in dx_ax_366 @ 0800:1CDF : Eq_4783)
-Eq_4806: (union "Eq_4806" (ui32 u0) (byte u1))
-	T_4806 (in cond(SLICE(ah_al_541, byte, 8)) @ 0800:1D3E : byte)
 Eq_4818: (struct "Eq_4818" (FFFFFFFE Eq_224 tFFFFFFFE) (0 Eq_224 t0000))
 	T_4818 (in sp_119 + -2<i16> @ 0800:1C8C : word16)
 Eq_4849: (struct "Eq_4849" 0010 (0 cui16 w0000))
@@ -4750,10 +4741,10 @@ T_622: (in 0<8> @ 0800:03CC : byte)
   Class: Eq_622
   DataType: byte
   OrigDataType: byte
-T_623: (in cond(0<8>) @ 0800:03CC : byte)
+T_623: (in cond(0<8>) @ 0800:03CC : word32)
   Class: Eq_623
-  DataType: Eq_623
-  OrigDataType: (union (ui32 u1) (byte u0))
+  DataType: ui32
+  OrigDataType: ui32
 T_624: (in 4<32> @ 0800:03CC : word32)
   Class: Eq_624
   DataType: ui32
@@ -4842,14 +4833,14 @@ T_645: (in al_43 - 0x22<8> @ 0800:03D3 : byte)
   Class: Eq_645
   DataType: byte
   OrigDataType: byte
-T_646: (in cond(al_43 - 0x22<8>) @ 0800:03D3 : byte)
+T_646: (in cond(al_43 - 0x22<8>) @ 0800:03D3 : word32)
   Class: Eq_646
-  DataType: Eq_646
-  OrigDataType: byte
-T_647: (in SCZO_47 @ 0800:03D3 : Eq_646)
+  DataType: ui32
+  OrigDataType: word32
+T_647: (in SCZO_47 @ 0800:03D3 : ui32)
   Class: Eq_646
-  DataType: Eq_646
-  OrigDataType: (union (byte u1) (ui32 u0))
+  DataType: ui32
+  OrigDataType: ui32
 T_648: (in 1<i16> @ 0800:03D1 : int16)
   Class: Eq_648
   DataType: int16
@@ -4906,10 +4897,10 @@ T_661: (in al_43 != 0x5C<8> @ 0800:03DB : bool)
   Class: Eq_661
   DataType: bool
   OrigDataType: bool
-T_662: (in cond(si) @ 0800:03E4 : byte)
+T_662: (in cond(si) @ 0800:03E4 : word32)
   Class: Eq_662
-  DataType: Eq_662
-  OrigDataType: (union (ui32 u1) (byte u0))
+  DataType: ui32
+  OrigDataType: ui32
 T_663: (in 4<32> @ 0800:03E4 : word32)
   Class: Eq_663
   DataType: ui32
@@ -21616,10 +21607,10 @@ T_4805: (in SLICE(ah_al_541, byte, 8) @ 0800:1D3E : byte)
   Class: Eq_4805
   DataType: byte
   OrigDataType: byte
-T_4806: (in cond(SLICE(ah_al_541, byte, 8)) @ 0800:1D3E : byte)
+T_4806: (in cond(SLICE(ah_al_541, byte, 8)) @ 0800:1D3E : word32)
   Class: Eq_4806
-  DataType: Eq_4806
-  OrigDataType: (union (ui32 u1) (byte u0))
+  DataType: ui32
+  OrigDataType: ui32
 T_4807: (in 2<32> @ 0800:1D3E : word32)
   Class: Eq_4807
   DataType: ui32
@@ -22675,21 +22666,6 @@ typedef union Eq_599 {
 } Eq_599;
 
 typedef void (Eq_612)();
-
-typedef union Eq_623 {
-	ui32 u0;
-	byte u1;
-} Eq_623;
-
-typedef union Eq_646 {
-	ui32 u0;
-	byte u1;
-} Eq_646;
-
-typedef union Eq_662 {
-	ui32 u0;
-	byte u1;
-} Eq_662;
 
 typedef Eq_688 (Eq_684)(Eq_340 *, cu16);
 
@@ -24574,11 +24550,6 @@ typedef union Eq_4783 {
 	int32 u0;
 	uint32 u1;
 } Eq_4783;
-
-typedef union Eq_4806 {
-	ui32 u0;
-	byte u1;
-} Eq_4806;
 
 typedef struct Eq_4818 {
 	Eq_224 tFFFFFFFE;	// FFFFFFFE

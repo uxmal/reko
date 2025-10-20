@@ -187,9 +187,8 @@ namespace Reko.Arch.Tlcs.Tlcs90
             }
             if (grf != 0)
             {
-                m.Assign(
-                    binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.f, grf)),
-                    m.Cond(exp));
+                var flags = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.f, grf));
+                m.Assign(flags, m.Cond(flags.DataType, exp));
             }
         }
 

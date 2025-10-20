@@ -158,6 +158,7 @@ namespace Reko.Arch.X86.Rewriter
             m.Assign(
                 binder.EnsureRegister(Registers.FPUF),
                 m.Cond(
+                    Registers.FPUF.DataType,
                     m.FSub(op1, op2)));
             ShrinkFpuStack(pops);
         }
@@ -191,6 +192,7 @@ namespace Reko.Arch.X86.Rewriter
             m.Assign(
                 orw.AluRegister(Registers.FPUF),
                 m.Cond(
+                    Registers.FPUF.DataType,
                     m.FSub(
                         orw.FpuRegister(0),
                         m.Convert(src, dtSrc, PrimitiveType.Real64))));
@@ -414,6 +416,7 @@ namespace Reko.Arch.X86.Rewriter
             m.Assign(
                 binder.EnsureFlagGroup(Registers.CZP),
                 m.Cond(
+                    Registers.CZP.DataType,
                     m.FSub(op1, op2)));
             m.Assign(binder.EnsureFlagGroup(Registers.O), Constant.False());
             m.Assign(binder.EnsureFlagGroup(Registers.S), Constant.False());
@@ -425,7 +428,9 @@ namespace Reko.Arch.X86.Rewriter
 
         private void RewriteFxam()
         {
-            m.Assign(orw.AluRegister(Registers.FPUF), m.Cond(FpuRegister(0)));
+            m.Assign(
+                orw.AluRegister(Registers.FPUF),
+                m.Cond(Registers.FPUF.DataType, FpuRegister(0)));
         }
 
         private void RewriteFxrstor()
@@ -458,7 +463,7 @@ namespace Reko.Arch.X86.Rewriter
                       m.Fn(lg2_intrinsic, op1)));
             m.Assign(
                 orw.AluRegister(Registers.FPUF),
-                m.Cond(op2));
+                m.Cond(Registers.FPUF.DataType, op2));
             ShrinkFpuStack(1);
         }
 
@@ -475,7 +480,7 @@ namespace Reko.Arch.X86.Rewriter
                         m.FAdd(op1, Constant.Real64(1.0)))));
             m.Assign(
                 orw.AluRegister(Registers.FPUF),
-                m.Cond(op2));
+                m.Cond(Registers.FPUF.DataType, op2));
             ShrinkFpuStack(1);
         }
 

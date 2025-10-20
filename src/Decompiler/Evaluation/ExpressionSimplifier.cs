@@ -151,7 +151,7 @@ namespace Reko.Evaluation
             //$REVIEW: if e == 0, then Z flags could be set to 1. But that's architecture specific, so
             // we leave that as an exercise to re reader
             if (changed)
-                c = new ConditionOf(e);
+                c = new ConditionOf(c.DataType, e);
             return (c, changed);
         }
 

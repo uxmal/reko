@@ -250,7 +250,7 @@ namespace Reko.Arch.Zilog.Z80
                 src = m.Fn(intrinsic, reg, one);
             }
             m.Assign(reg, src);
-            m.Assign(C, m.Cond(reg));
+            m.Assign(C, m.Cond(Registers.f.DataType, reg));
         }
 
         private void RewriteRrd()
@@ -301,7 +301,7 @@ namespace Reko.Arch.Zilog.Z80
 
         private void AssignCond(FlagGroupStorage flags, Expression dst)
         {
-            m.Assign(FlagGroup(flags), m.Cond(dst));
+            m.Assign(FlagGroup(flags), m.Cond(flags.DataType, dst));
         }
 
         public Identifier FlagGroup(FlagGroupStorage flags)
@@ -369,7 +369,7 @@ namespace Reko.Arch.Zilog.Z80
             var b = this.RewriteOp(dasm.Current.Operands[1]);
             m.Assign(
                 FlagGroup(Registers.SZPC),
-                m.Cond(m.ISub(a, b)));
+                m.Cond(Registers.f.DataType, m.ISub(a, b)));
         }
 
         private void RewriteCp(Func<Expression , Expression, Expression> incDec, bool repeat)
@@ -379,7 +379,7 @@ namespace Reko.Arch.Zilog.Z80
             var bc = binder.EnsureRegister(Registers.bc);
             var hl = binder.EnsureRegister(Registers.hl);
             var z = FlagGroup(Registers.Z);
-            m.Assign(z, m.Cond(m.ISub(a, m.Mem8(hl))));
+            m.Assign(z, m.Cond(Registers.f.DataType, m.ISub(a, m.Mem8(hl))));
             m.Assign(hl, incDec(hl, m.Int16(1)));
             m.Assign(bc, m.ISub(bc, 1));
             if (repeat)
@@ -581,7 +581,7 @@ namespace Reko.Arch.Zilog.Z80
                 m.Fn(in_intrinsic, c));
             m.Assign(hl, incDec(hl, m.Int16(1)));
             m.Assign(b, m.ISub(b, 1));
-            m.Assign(Z, m.Cond(b));
+            m.Assign(Z, m.Cond(Registers.f.DataType, b));
             if (repeat)
             {
                 m.Branch(m.Ne0(b), dasm.Current.Address, InstrClass.ConditionalTransfer);

@@ -640,7 +640,7 @@ l0000100A: // l:4; ft:0000100E
                 0x1030, 0x1038, 0x1030, 0x1038);
             Given_Trace(new RtlTrace(0x1000)
             {
-                m => m.Assign(C, m.Cond(m.ISub(r1, 3))),
+                m => m.Assign(C, m.Cond(C.DataType, m.ISub(r1, 3))),
                 m => m.Branch(m.Test(ConditionCode.UGT, C), Address.Ptr32(0x1040)),
                 m => m.Goto(m.Mem32(m.IAdd(m.IMul(r1, 4), 0x1020)))
             });

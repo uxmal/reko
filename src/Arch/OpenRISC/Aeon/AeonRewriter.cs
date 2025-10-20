@@ -474,8 +474,8 @@ namespace Reko.Arch.OpenRISC.Aeon
             }
             var dst = Op(0);
             m.Assign(dst, src);
-            m.Assign(binder.EnsureFlagGroup(Registers.CY), m.Cond(dst));
-            m.Assign(binder.EnsureFlagGroup(Registers.OV), m.Cond(dst));
+            m.Assign(binder.EnsureFlagGroup(Registers.CY), m.Cond(Registers.CY.DataType, dst));
+            m.Assign(binder.EnsureFlagGroup(Registers.OV), m.Cond(Registers.OV.DataType, dst));
         }
 
         private void RewriteAddSub(Func<Expression, Expression, Expression> fn)
@@ -494,8 +494,8 @@ namespace Reko.Arch.OpenRISC.Aeon
             }
             var dst = Op(0);
             m.Assign(dst, fn(left, right));
-            m.Assign(binder.EnsureFlagGroup(Registers.CY), m.Cond(dst));
-            m.Assign(binder.EnsureFlagGroup(Registers.OV), m.Cond(dst));
+            m.Assign(binder.EnsureFlagGroup(Registers.CY), m.Cond(Registers.CY.DataType, dst));
+            m.Assign(binder.EnsureFlagGroup(Registers.OV), m.Cond(Registers.OV.DataType, dst));
         }
 
         private void RewriteAdd16()

@@ -112,7 +112,7 @@ namespace Reko.Arch.Etrax
         private void EmitCc(FlagGroupStorage flags, Expression src)
         {
             var dst = binder.EnsureFlagGroup(flags);
-            m.Assign(dst, m.Cond(src));
+            m.Assign(dst, m.Cond(dst.DataType, src));
         }
 
         private void Clear(FlagGroupStorage flags)
@@ -245,7 +245,7 @@ namespace Reko.Arch.Etrax
             var right = SrcOp(0, instr.DataWidth!);
             var left = SrcOp(1, instr.DataWidth!);
             var flags = binder.EnsureFlagGroup(Registers.NZVC);
-            m.Assign(flags, m.Cond(m.ISub(left, right)));
+            m.Assign(flags, m.Cond(flags.DataType, m.ISub(left, right)));
         }
 
         private void RewriteJsr()

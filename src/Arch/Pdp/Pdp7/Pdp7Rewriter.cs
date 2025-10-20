@@ -127,7 +127,7 @@ namespace Reko.Arch.Pdp.Pdp7
             m.Assign(tmp3, m.IAdd(tmp1, tmp2));
             m.Assign(ac, m.Slice(tmp3, ac.DataType));
             m.Assign(ac, m.IAdd(ac, m.Slice(tmp3, PdpTypes.Word18, 18)));
-            m.Assign(binder.EnsureFlagGroup(Registers.link), m.Cond(ac));
+            m.Assign(binder.EnsureFlagGroup(Registers.link), m.Cond(Registers.link.DataType, ac));
         }
 
         private void RewriteAnd()
@@ -290,7 +290,7 @@ namespace Reko.Arch.Pdp.Pdp7
             var ac = binder.EnsureRegister(Registers.ac);
             var src = Op(0);
             m.Assign(ac, m.IAdd(ac, src));
-            m.Assign(binder.EnsureFlagGroup(Registers.link), m.Cond(ac));
+            m.Assign(binder.EnsureFlagGroup(Registers.link), m.Cond(Registers.link.DataType, ac));
         }
 
         private void RewriteXct()

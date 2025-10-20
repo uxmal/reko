@@ -123,7 +123,7 @@ namespace Reko.Evaluation
             var exp = cof.Expression.Accept(this);
             if (exp is InvalidConstant)
                 return exp;
-            return new ConditionOf(exp);
+            return new ConditionOf(cof.DataType, exp);
         }
 
         /// <inheritdoc />

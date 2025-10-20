@@ -249,7 +249,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             bw.UsedFlagIdentifier = m.Frame.EnsureFlagGroup(new FlagGroupStorage(Registers.eflags,(uint)FlagM.CF, "C"));
             Assert.IsFalse(
                 bw.BackwalkInstruction(
-                    m.Assign(SCZO, new ConditionOf(m.ISub(eax, 3)))),
+                    m.Assign(SCZO, new ConditionOf(SCZO.DataType, m.ISub(eax, 3)))),
                 "Encountering this comparison should terminate the backwalk");
             Assert.AreSame(Registers.eax, bw.Index);
             Assert.AreEqual("cmp 3", bw.Operations[0].ToString());
@@ -311,7 +311,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
 
             var block0 = m.CurrentBlock;
             m.Assign(eax, m.Mem32(m.IAdd(esp, 4)));
-            m.Assign(SCZO, new ConditionOf(m.ISub(eax, 3)));
+            m.Assign(SCZO, new ConditionOf(SCZO.DataType, m.ISub(eax, 3)));
             m.BranchIf(new TestCondition(ConditionCode.UGT, SCZO), "default");
 
 
@@ -322,7 +322,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var block1 = m.CurrentBlock;
 
             m.Assign(edx, m.Xor(edx, edx));
-            m.Assign(SCZO, new ConditionOf(edx));
+            m.Assign(SCZO, new ConditionOf(SCZO.DataType, edx));
             m.Assign(dl, m.Mem8(m.IAdd(eax, 0x10000)));
 
 
@@ -375,13 +375,13 @@ namespace Reko.UnitTests.Decompiler.Scanning
             m.Assign(ds, m.Mem16(sp));
             m.Assign(sp, m.IAdd(sp, 2));
             m.Assign(bl, m.Mem8(si));
-            m.Assign(SCZO, new ConditionOf(m.ISub(bl, 2)));
+            m.Assign(SCZO, new ConditionOf(SCZO.DataType, m.ISub(bl, 2)));
             m.BranchIf(new TestCondition(ConditionCode.UGT, SCZO), "grox");
 
             m.Assign(bh, m.Xor(bh, bh));
-            m.Assign(SCZO, new ConditionOf(bh));
+            m.Assign(SCZO, new ConditionOf(SCZO.DataType, bh));
             m.Assign(bx, m.IAdd(bx, bx));
-            m.Assign(SCZO, new ConditionOf(bx));
+            m.Assign(SCZO, new ConditionOf(SCZO.DataType, bx));
 
             RunTest(new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>()),
                 new RtlGoto(m.Mem16(m.IAdd(bx, 0x1234)), InstrClass.Transfer),
@@ -425,7 +425,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             
             // cmp [ebp-66],1D
 
-            m.Assign(SCZO, m.Cond(m.ISub(m.Mem32(m.ISub(ebp, 0xC4)), 0x1D)));
+            m.Assign(SCZO, m.Cond(SCZO.DataType, m.ISub(m.Mem32(m.ISub(ebp, 0xC4)), 0x1D)));
             var block0 = m.CurrentBlock;
             m.BranchIf(new TestCondition(ConditionCode.UGT, SCZO), "default");
 
@@ -477,7 +477,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
 
             var xfer = new RtlCall(eax, 4, InstrClass.Transfer);
             m.Assign(eax, m.Mem32(esi));
-            m.Assign(Z, m.Cond(m.And(eax, eax)));
+            m.Assign(Z, m.Cond(Z.DataType, m.And(eax, eax)));
             m.BranchIf(m.Test(ConditionCode.EQ, Z), "null_ptr");
             m.Label("do_call");
 

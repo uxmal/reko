@@ -354,7 +354,7 @@ l1483_0D69:
 	al_167 = SLICE(ax_160, byte, 0) (alias)
 	al_174 = al_167 + 0x2A<8> + ch_152
 	bx_173 = bx_138 + Mem166[ds:bx_138 + v35_161:word16]
-	SCZDOP_178 = SEQ(SLICE(cond(al_174) | SCZDOP_119 & 0x28<32>, word16, 16), Mem166[ss:sp_113 - 18<i16>:word16])
+	SCZDOP_178 = SEQ(SLICE(cond(al_174), word16, 16), Mem166[ss:sp_113 - 18<i16>:word16])
 	ah_375 = SLICE(ax_160, byte, 8) (alias)
 	si_163 = v35_161
 	bl_182 = SLICE(bx_173, byte, 0) (alias)

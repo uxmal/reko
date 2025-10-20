@@ -302,45 +302,45 @@ namespace Reko.Arch.M6800.M6809
 
         private void NZV(Expression e)
         {
-            m.Assign(binder.EnsureFlagGroup(Registers.NZV), m.Cond(e));
+            m.Assign(binder.EnsureFlagGroup(Registers.NZV), m.Cond(Registers.NZV.DataType, e));
         }
 
         private void NZVC(Expression e)
         {
-            m.Assign(binder.EnsureFlagGroup(Registers.NZVC), m.Cond(e));
+            m.Assign(binder.EnsureFlagGroup(Registers.NZVC), m.Cond(Registers.NZVC.DataType, e));
         }
         
         private void NZ_C(Expression e)
         {
-            m.Assign(binder.EnsureFlagGroup(Registers.NZC), m.Cond(e));
+            m.Assign(binder.EnsureFlagGroup(Registers.NZC), m.Cond(Registers.NZC.DataType, e));
         }
 
         private void NZ0_(Expression e)
         {
-            m.Assign(binder.EnsureFlagGroup(Registers.NZ), m.Cond(e));
+            m.Assign(binder.EnsureFlagGroup(Registers.NZ), m.Cond(Registers.NZ.DataType, e));
             m.Assign(binder.EnsureFlagGroup(Registers.V), Constant.False());
         }
 
         private void NZ01(Expression e)
         {
-            m.Assign(binder.EnsureFlagGroup(Registers.NZ), m.Cond(e));
+            m.Assign(binder.EnsureFlagGroup(Registers.NZ), m.Cond(Registers.NZ.DataType, e));
             m.Assign(binder.EnsureFlagGroup(Registers.V), Constant.False());
             m.Assign(binder.EnsureFlagGroup(Registers.C), Constant.True());
         }
 
         private void NZ__(Expression e)
         {
-            m.Assign(binder.EnsureFlagGroup(Registers.NZ), m.Cond(e));
+            m.Assign(binder.EnsureFlagGroup(Registers.NZ), m.Cond(Registers.NZ.DataType, e));
         }
 
         private void _Z__(Expression e)
         {
-            m.Assign(binder.EnsureFlagGroup(Registers.Z), m.Cond(e));
+            m.Assign(binder.EnsureFlagGroup(Registers.Z), m.Cond(Registers.Z.DataType, e));
         }
 
         private void _ZC_(Expression e)
         {
-            m.Assign(binder.EnsureFlagGroup(Registers.ZC), m.Cond(e));
+            m.Assign(binder.EnsureFlagGroup(Registers.ZC), m.Cond(Registers.ZC.DataType, e));
         }
 
         Expression EaKernel(Func<Expression, Expression, Expression> f, Expression d, Expression ea, MemoryOperand mem)

@@ -491,7 +491,7 @@ namespace Reko.Arch.Pdp.Pdp10.Rewriter
             m.Assign(dst, fn(src));
             if (grf is not null)
             {
-                m.Assign(binder.EnsureFlagGroup(grf), m.Cond(dst));
+                m.Assign(binder.EnsureFlagGroup(grf), m.Cond(grf.DataType, dst));
             }
         }
 
@@ -511,7 +511,7 @@ namespace Reko.Arch.Pdp.Pdp10.Rewriter
             }
             if (grf is not null)
             {
-                m.Assign(binder.EnsureFlagGroup(grf), m.Cond(dst));
+                m.Assign(binder.EnsureFlagGroup(grf), m.Cond(grf.DataType, dst));
             }
         }
 
@@ -523,7 +523,7 @@ namespace Reko.Arch.Pdp.Pdp10.Rewriter
             m.Assign(dst, fn(dst, src));
             if (grf is not null)
             {
-                m.Assign(binder.EnsureFlagGroup(grf), m.Cond(dst));
+                m.Assign(binder.EnsureFlagGroup(grf), m.Cond(grf.DataType, dst));
             }
         }
 
@@ -536,7 +536,7 @@ namespace Reko.Arch.Pdp.Pdp10.Rewriter
             m.Assign(dst, fn(src));
             if (grf is not null)
             {
-                m.Assign(binder.EnsureFlagGroup(grf), m.Cond(dst));
+                m.Assign(binder.EnsureFlagGroup(grf), m.Cond(grf.DataType, dst));
             }
         }
 
@@ -570,7 +570,7 @@ namespace Reko.Arch.Pdp.Pdp10.Rewriter
 
             if (grf is not null)
             {
-                m.Assign(binder.EnsureFlagGroup(grf), m.Cond(result));
+                m.Assign(binder.EnsureFlagGroup(grf), m.Cond(grf.DataType, result));
             }
         }
 
@@ -583,7 +583,7 @@ namespace Reko.Arch.Pdp.Pdp10.Rewriter
             m.Assign(AccessEa(1), left);
             if (grf is not null)
             {
-                m.Assign(binder.EnsureFlagGroup(grf), m.Cond(left));
+                m.Assign(binder.EnsureFlagGroup(grf), m.Cond(grf.DataType, left));
             }
         }
 

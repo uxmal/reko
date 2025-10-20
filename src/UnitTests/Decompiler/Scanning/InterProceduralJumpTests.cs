@@ -59,7 +59,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                     {
                         (m) => {
                             m.Assign(reg, m.Word32(0));
-                            m.Assign(SCZO, m.Cond(reg));
+                            m.Assign(SCZO, m.Cond(SCZO.DataType, reg));
                         },
                         (m) => {
                             m.Assign(m.Mem(PrimitiveType.Word32, m.Word32(0x1234)), reg);

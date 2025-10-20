@@ -230,7 +230,7 @@ namespace Reko.Arch.Vax
             var src = RewriteSrcOp(1, width);
             var tmp = binder.CreateTemporary(width);
             m.Assign(tmp, m.And(src, mask));
-            m.Assign(FlagGroup(Registers.ZN), m.Cond(tmp));
+            m.Assign(FlagGroup(Registers.ZN), m.Cond(Registers.ZN.DataType, tmp));
             m.Assign(FlagGroup(Registers.V), Constant.False());
         }
 
@@ -248,7 +248,7 @@ namespace Reko.Arch.Vax
             var op0 = RewriteSrcOp(0, width);
             var op1 = RewriteSrcOp(1, width);
             var grf = FlagGroup(Registers.CZN);
-            m.Assign(grf, m.Cond(m.ISub(op0, op1)));
+            m.Assign(grf, m.Cond(grf.DataType, m.ISub(op0, op1)));
             m.Assign(FlagGroup(Registers.V), Constant.False());
         }
 
@@ -405,7 +405,7 @@ namespace Reko.Arch.Vax
             m.Assign(
                 ret,
                 m.Fn(poly.MakeInstance(width), op0, op1, op2));
-            m.Assign(grf, m.Cond(ret));
+            m.Assign(grf, m.Cond(grf.DataType, ret));
             m.Assign(FlagGroup(Registers.V), Constant.False());
             m.Assign(FlagGroup(Registers.C), Constant.False());
         }

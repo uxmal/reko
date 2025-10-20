@@ -246,7 +246,6 @@ namespace Reko.Arch.MN103
             var grf = binder.EnsureFlagGroup(Registers.NZ);
             m.Assign(grf, exp);
             m.Assign(binder.EnsureFlagGroup(Registers.VC), 0);
-
         }
 
         private void Emit__CNZ(Expression exp)
@@ -310,7 +309,7 @@ namespace Reko.Arch.MN103
             var right = Op(0, PrimitiveType.Word32);
             var left = Op(1, PrimitiveType.Word32);
             m.Assign(left, m.IAdd(left, right));
-            Emit_VCNZ(m.Cond(left));
+            Emit_VCNZ(m.Cond(Registers.VCNZ.DataType, left));
         }
 
         private void RewriteAddc()
@@ -319,7 +318,7 @@ namespace Reko.Arch.MN103
             var cy = binder.EnsureFlagGroup(Registers.C);
             var left = Op(1, PrimitiveType.Word32);
             m.Assign(left, m.IAddC(left, right, cy));
-            Emit_VCNZ(m.Cond(left));
+            Emit_VCNZ(m.Cond(Registers.VCNZ.DataType, left));
         }
 
         private void RewriteAnd()
@@ -328,7 +327,7 @@ namespace Reko.Arch.MN103
             var right = Op(0, dt);
             var left = Op(1, dt);
             m.Assign(left, m.And(left, right));
-            Emit_00NZ(m.Cond(left));
+            Emit_00NZ(m.Cond(Registers.VCNZ.DataType, left));
         }
 
         private void RewriteAsl2()
@@ -357,6 +356,7 @@ namespace Reko.Arch.MN103
             var tmp = binder.CreateTemporary(PrimitiveType.Byte);
             m.Assign(tmp, e);
             Emit_000Z(m.Cond(
+                Registers.VCNZ.DataType, 
                 m.And(
                     m.Convert(tmp, tmp.DataType, PrimitiveType.Word32),
                     mask)));
@@ -370,6 +370,7 @@ namespace Reko.Arch.MN103
             var tmp = binder.CreateTemporary(PrimitiveType.Byte);
             m.Assign(tmp, e);
             Emit_000Z(m.Cond(
+                Registers.VCNZ.DataType,
                 m.And(
                     m.Convert(tmp, tmp.DataType, PrimitiveType.Word32),
                     mask)));
@@ -445,7 +446,7 @@ namespace Reko.Arch.MN103
         {
             var right = Op(0, PrimitiveType.Word32);
             var left = Op(1, PrimitiveType.Word32);
-            Emit_VCNZ(m.Cond(m.ISub(left, right)));
+            Emit_VCNZ(m.Cond(Registers.VCNZ.DataType, m.ISub(left, right)));
         }
 
         private void RewriteDiv(BinaryOperator div, BinaryOperator mod, PrimitiveType dtQuot)
@@ -455,7 +456,7 @@ namespace Reko.Arch.MN103
             var dividend = binder.EnsureSequence(PrimitiveType.Word64, Registers.mdr, left.Storage);
             m.Assign(left, m.Bin(div, dtQuot, dividend, right));
             m.Assign(right, m.Bin(mod, dtQuot, dividend, right));
-            Emit_VCNZ(m.Cond(left));
+            Emit_VCNZ(m.Cond(Registers.VCNZ.DataType, left));
         }
 
         private void RewriteExt()
@@ -478,7 +479,7 @@ namespace Reko.Arch.MN103
         {
             var id = Op(0, PrimitiveType.Word32);
             m.Assign(id, m.IAdd(id, 1));
-            Emit_VCNZ(m.Cond(id));
+            Emit_VCNZ(m.Cond(Registers.VCNZ.DataType, id));
         }
 
         private void RewriteInc4()
@@ -520,7 +521,7 @@ namespace Reko.Arch.MN103
             var right = Op(0, PrimitiveType.Word32);
             var left = Op(1, PrimitiveType.Word32);
             m.Assign(left, m.Bin(op, left, right));
-            Emit__CNZ(m.Cond(left));
+            Emit__CNZ(m.Cond(Registers.VCNZ.DataType, left));
         }
 
         private void RewriteMov()
@@ -580,7 +581,7 @@ namespace Reko.Arch.MN103
         {
             var id = Reg(0);
             m.Assign(id, m.Comp(id));
-            Emit_00NZ(m.Cond(id));
+            Emit_00NZ(m.Cond(Registers.NZ.DataType, id));
         }
 
         private void RewriteOr()
@@ -589,7 +590,7 @@ namespace Reko.Arch.MN103
             var right = Op(0, dt);
             var left = Op(1, dt);
             m.Assign(left, m.Or(left, right));
-            Emit_00NZ(m.Cond(left));
+            Emit_00NZ(m.Cond(Registers.NZ.DataType, left));
         }
 
         private void RewriteRet()
@@ -622,7 +623,7 @@ namespace Reko.Arch.MN103
             var c = binder.EnsureFlagGroup(Registers.C);
             m.Assign(reg, m.Fn(CommonOps.RolC.MakeInstance(reg.DataType, PrimitiveType.Byte),
                 reg, m.Byte(1), c));
-            m.Assign(binder.EnsureFlagGroup(Registers.CNZ), m.Cond(reg));
+            m.Assign(binder.EnsureFlagGroup(Registers.CNZ), m.Cond(Registers.CNZ.DataType, reg));
             m.Assign(binder.EnsureFlagGroup(Registers.V), 0);
         }
 
@@ -643,7 +644,7 @@ namespace Reko.Arch.MN103
             var right = Op(0, PrimitiveType.Word32);
             var left = Op(1, PrimitiveType.Word32);
             m.Assign(left, m.ISub(left, right));
-            Emit_VCNZ(m.Cond(left));
+            Emit_VCNZ(m.Cond(Registers.VCNZ.DataType, left));
         }
 
         private void RewriteSubc()
@@ -652,7 +653,7 @@ namespace Reko.Arch.MN103
             var cy = binder.EnsureFlagGroup(Registers.C);
             var left = Op(1, PrimitiveType.Word32);
             m.Assign(left, m.ISubC(left, right, cy));
-            Emit_VCNZ(m.Cond(left));
+            Emit_VCNZ(m.Cond(Registers.VCNZ.DataType, left));
         }
 
         private void RewriteSyscall()

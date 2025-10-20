@@ -153,7 +153,7 @@ namespace Reko.Arch.Mos6502
             m.Assign(dst, src);
             m.Assign(
                 binder.EnsureFlagGroup(Registers.NZ),
-                m.Cond(dst));
+                m.Cond(Registers.NZ.DataType, dst));
         }
 
         private void Branch(ConditionCode cc, FlagM flags)
@@ -178,7 +178,7 @@ namespace Reko.Arch.Mos6502
             var c = FlagGroupStorage(FlagM.NF | FlagM.ZF | FlagM.CF);
             m.Assign(tmp, m.Shl(mem, 1));
             m.Assign(mem, tmp);
-            m.Assign(c, m.Cond(tmp));
+            m.Assign(c, m.Cond(c.DataType, tmp));
         }
 
         private void Lsr()
@@ -188,7 +188,7 @@ namespace Reko.Arch.Mos6502
             var c = FlagGroupStorage(FlagM.NF | FlagM.ZF | FlagM.CF);
             m.Assign(tmp, m.Shr(mem, 1));
             m.Assign(mem, tmp);
-            m.Assign(c, m.Cond(tmp));
+            m.Assign(c, m.Cond(c.DataType, tmp));
         }
 
         private void Bit()
@@ -198,7 +198,7 @@ namespace Reko.Arch.Mos6502
             var tmp = binder.CreateTemporary(PrimitiveType.Byte);
             var flags = FlagGroupStorage(FlagM.NF | FlagM.VF | FlagM.CF);
             m.Assign(tmp, m.And(a, mem));
-            m.Assign(flags, m.Cond(tmp));
+            m.Assign(flags, m.Cond(flags.DataType, tmp));
         }
 
         private void Brk()
@@ -210,8 +210,8 @@ namespace Reko.Arch.Mos6502
         {
             var a = binder.EnsureRegister(r);
             var mem = RewriteOperand(instrCur.Operands[0]);
-            var c = FlagGroupStorage(FlagM.NF | FlagM.ZF | FlagM.CF);
-            m.Assign(c, m.Cond(m.ISub(a, mem)));
+            var grf = FlagGroupStorage(FlagM.NF | FlagM.ZF | FlagM.CF);
+            m.Assign(grf, m.Cond(grf.DataType, m.ISub(a, mem)));
         }
 
         private void Dec()
@@ -221,7 +221,7 @@ namespace Reko.Arch.Mos6502
             var c = FlagGroupStorage(FlagM.NF|FlagM.ZF);
             m.Assign(tmp, m.ISub(mem, 1));
             m.Assign(RewriteOperand(instrCur.Operands[0]), tmp);
-            m.Assign(c, m.Cond(tmp));
+            m.Assign(c, m.Cond(c.DataType,tmp));
         }
 
         private void Dec(RegisterStorage reg)
@@ -229,7 +229,7 @@ namespace Reko.Arch.Mos6502
             var id = binder.EnsureRegister(reg);
             var c = FlagGroupStorage(FlagM.NF | FlagM.ZF);
             m.Assign(id, m.ISub(id, 1));
-            m.Assign(c, m.Cond(id));
+            m.Assign(c, m.Cond(c.DataType, id));
         }
 
         private void Inc()
@@ -239,7 +239,7 @@ namespace Reko.Arch.Mos6502
             var c = FlagGroupStorage(FlagM.NF | FlagM.ZF);
             m.Assign(tmp, m.IAdd(mem, 1));
             m.Assign(RewriteOperand(instrCur.Operands[0]), tmp);
-            m.Assign(c, m.Cond(tmp));
+            m.Assign(c, m.Cond(c.DataType, tmp));
         }
 
         private void Inc(RegisterStorage reg)
@@ -247,7 +247,7 @@ namespace Reko.Arch.Mos6502
             var id = binder.EnsureRegister(reg);
             var c = FlagGroupStorage(FlagM.NF | FlagM.ZF);
             m.Assign(id, m.IAdd(id, 1));
-            m.Assign(c, m.Cond(id));
+            m.Assign(c, m.Cond(c.DataType, id));
         }
 
         private void Jmp()
@@ -268,7 +268,7 @@ namespace Reko.Arch.Mos6502
             var mem = RewriteOperand(instrCur.Operands[0]);
             var c = FlagGroupStorage(FlagM.NF | FlagM.ZF);
             m.Assign(r, mem);
-            m.Assign(c, m.Cond(r));
+            m.Assign(c, m.Cond(c.DataType, r));
         }
 
         private void And()
@@ -279,7 +279,7 @@ namespace Reko.Arch.Mos6502
             m.Assign(
                 a,
                 m.And(a, mem));
-            m.Assign(c, m.Cond(a));
+            m.Assign(c, m.Cond(c.DataType, a));
         }
 
         private void Eor()
@@ -290,7 +290,7 @@ namespace Reko.Arch.Mos6502
             m.Assign(
                 a,
                 m.Xor(a, mem));
-            m.Assign(c, m.Cond(a));
+            m.Assign(c, m.Cond(c.DataType, a));
         }
 
         private void Ora()
@@ -301,7 +301,7 @@ namespace Reko.Arch.Mos6502
             m.Assign(
                 a,
                 m.Or(a, mem));
-            m.Assign(c, m.Cond(a));
+            m.Assign(c, m.Cond(c.DataType, a));
         }
 
         private void Push(RegisterStorage reg)
@@ -323,7 +323,7 @@ namespace Reko.Arch.Mos6502
             var c = FlagGroupStorage(FlagM.NF|FlagM.ZF);
             m.Assign(id, m.Mem8(s));
             m.Assign(s, m.IAddS(s, 1));
-            m.Assign(c, m.Cond(id));
+            m.Assign(c, m.Cond(c.DataType, id));
         }
 
         private void Plp()
@@ -339,7 +339,7 @@ namespace Reko.Arch.Mos6502
             var c = FlagGroupStorage(FlagM.NF | FlagM.ZF | FlagM.CF);
             var arg = RewriteOperand(instrCur.Operands[0]);
             m.Assign(arg, m.Fn(rot, arg, Constant.Byte(1)));
-            m.Assign(c, m.Cond(arg));
+            m.Assign(c, m.Cond(c.DataType, arg));
         }
 
         private void Rti()
@@ -365,7 +365,7 @@ namespace Reko.Arch.Mos6502
                     c));
             m.Assign(
                 binder.EnsureFlagGroup(Registers.NVZC),
-                m.Cond(a));
+                m.Cond(Registers.NVZC.DataType, a));
         }
 
         private void Sbc()
@@ -380,7 +380,7 @@ namespace Reko.Arch.Mos6502
                     m.Not(c)));
             m.Assign(
                 binder.EnsureFlagGroup(Registers.NVZC),
-                m.Cond(a));
+                m.Cond(Registers.NVZC.DataType, a));
         }
 
         private void SetFlag(FlagM flag, bool value)

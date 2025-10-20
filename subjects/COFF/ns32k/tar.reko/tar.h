@@ -5851,8 +5851,6 @@ Eq_14628: (union "Eq_14628" (int32 u0) (ptr32 u1))
 	T_14658 (in -1<i32> @ 000055C0 : int32)
 	T_14665 (in Mem0[sp + 4<i32>:word32] @ 0000553E : word32)
 	T_14666 (in Mem9[0x000121FC<p32>:word32] @ 0000553E : word32)
-Eq_14644: (union "Eq_14644" (ui32 u0) (byte u1))
-	T_14644 (in cond(v8_11) @ 00005518 : byte)
 Eq_14647: (union "Eq_14647" (bool u0) (ui32 u1))
 	T_14647 (in !(cond(v8_11) & 0x20<32>) @ 00005518 : bool)
 Eq_14662: (union "Eq_14662" (bool u0) (word32 u1))
@@ -65197,10 +65195,10 @@ T_14643: (in __syscall() @ 00005517 : void)
   Class: Eq_7056
   DataType: void
   OrigDataType: void
-T_14644: (in cond(v8_11) @ 00005518 : byte)
+T_14644: (in cond(v8_11) @ 00005518 : word32)
   Class: Eq_14644
-  DataType: Eq_14644
-  OrigDataType: (union (ui32 u1) (byte u0))
+  DataType: ui32
+  OrigDataType: ui32
 T_14645: (in 0x20<32> @ 00005518 : word32)
   Class: Eq_14645
   DataType: ui32
@@ -69149,11 +69147,6 @@ typedef union Eq_14628 {
 	int32 u0;
 	ptr32 u1;
 } Eq_14628;
-
-typedef union Eq_14644 {
-	ui32 u0;
-	byte u1;
-} Eq_14644;
 
 typedef union Eq_14647 {
 	bool u0;

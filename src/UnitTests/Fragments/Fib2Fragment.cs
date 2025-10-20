@@ -41,7 +41,7 @@ namespace Reko.UnitTests.Fragments
                 m.MStore(esp, ebp);
                 m.Assign(ebp, esp);
                 m.Assign(esp, m.ISub(esp, 10));
-                m.Assign(Z, m.Cond(m.ISub(m.Mem32(m.IAdd(ebp, 0x0C)), 0)));
+                m.Assign(Z, m.Cond(Z.DataType, m.ISub(m.Mem32(m.IAdd(ebp, 0x0C)), 0)));
                 m.BranchIf(m.Test(ConditionCode.NE, Z), "l080483B8");
 
                 m.Label("l080483A8");

@@ -280,7 +280,7 @@ namespace Reko.Arch.H8
 
         private void EmitCond(FlagGroupStorage grf, Expression e)
         {
-            m.Assign(binder.EnsureFlagGroup(grf), m.Cond(e));
+            m.Assign(binder.EnsureFlagGroup(grf), m.Cond(grf.DataType, e));
         }
 
         private void EmitUnitTest(H8Instruction instr, string message = "")

@@ -121,33 +121,33 @@ public class MaxqRewriter : IEnumerable<RtlInstructionCluster>
     private void Emit_CSZ(Expression src)
     {
         var grf = binder.EnsureFlagGroup(Registers.CSZ);
-        m.Assign(grf, m.Cond(src));
+        m.Assign(grf, m.Cond(grf.DataType, src));
     }
 
 
     private void Emit_CSZE(Expression src)
     {
         var grf = binder.EnsureFlagGroup(Registers.CSZE);
-        m.Assign(grf, m.Cond(src));
+        m.Assign(grf, m.Cond(grf.DataType, src));
     }
 
 
     private void Emit_CSZV(Expression src)
     {
         var grf = binder.EnsureFlagGroup(Registers.CSZV);
-        m.Assign(grf, m.Cond(src));
+        m.Assign(grf, m.Cond(grf.DataType, src));
     }
 
     private void Emit_S(Expression src)
     {
         var grf = binder.EnsureFlagGroup(Registers.S);
-        m.Assign(grf, m.Cond(src));
+        m.Assign(grf, m.Cond(grf.DataType, src));
     }
 
     private void Emit_SZ(Expression src)
     {
         var grf = binder.EnsureFlagGroup(Registers.SZ);
-        m.Assign(grf, m.Cond(src));
+        m.Assign(grf, m.Cond(grf.DataType, src));
     }
 
     private Expression MakeTest(MachineOperand op)

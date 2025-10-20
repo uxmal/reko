@@ -41,7 +41,7 @@ namespace Reko.Arch.PaRisc
             if (setCarry)
             {
                 var cf = binder.EnsureFlagGroup(Registers.CF);
-                m.Assign(cf, m.Cond(dst));
+                m.Assign(cf, m.Cond(cf.DataType, dst));
             }
             MaybeSkipNextInstruction(InstrClass.ConditionalTransfer, false, dst, null);
         }

@@ -239,7 +239,7 @@ namespace Reko.Arch.WE32100
         {
             if (e is not null)
             {
-                m.Assign(binder.EnsureFlagGroup(Registers.NZV), m.Cond(e));
+                m.Assign(binder.EnsureFlagGroup(Registers.NZV), m.Cond(Registers.NZV.DataType, e));
                 m.Assign(binder.EnsureFlagGroup(Registers.C), Constant.False());
             }
         }
@@ -248,7 +248,7 @@ namespace Reko.Arch.WE32100
         {
             if (e is not null)
             {
-                m.Assign(binder.EnsureFlagGroup(Registers.NZVC), m.Cond(e));
+                m.Assign(binder.EnsureFlagGroup(Registers.NZVC), m.Cond(Registers.NZVC.DataType, e));
             }
         }
     }

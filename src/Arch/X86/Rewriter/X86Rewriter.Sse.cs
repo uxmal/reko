@@ -51,13 +51,16 @@ namespace Reko.Arch.X86.Rewriter
         private void RewriteComis(PrimitiveType size)
         {
             var grf = binder.EnsureFlagGroup(Registers.CZP);
-            m.Assign(grf, m.Cond(m.FSub(
-                MaybeSlice(size, SrcOp(0)),
-                MaybeSlice(size, SrcOp(1)))));
-            m.Assign(binder.EnsureFlagGroup(Registers.O), Constant.False());
-            m.Assign(binder.EnsureFlagGroup(Registers.S), Constant.False());
+            m.Assign(grf, m.Cond(
+                grf.DataType,
+                m.FSub(
+                    MaybeSlice(size, SrcOp(0)),
+                    MaybeSlice(size, SrcOp(1)))));
+            var o = binder.EnsureFlagGroup(Registers.O);
+            var s = binder.EnsureFlagGroup(Registers.S);
+            m.Assign(o, Constant.False());
+            m.Assign(s, Constant.False());
         }
-
 
         private void RewriteCmpsd(bool isVex, PrimitiveType size)
         {

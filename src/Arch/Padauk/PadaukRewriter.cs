@@ -164,7 +164,7 @@ namespace Reko.Arch.Padauk
         private void EmitCc(FlagGroupStorage grf, Expression e)
         {
             var flags = binder.EnsureFlagGroup(grf);
-            m.Assign(flags, m.Cond(e));
+            m.Assign(flags, m.Cond(grf.DataType, e));
         }
 
         private void EmitUnitTest(string comment)

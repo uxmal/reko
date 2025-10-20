@@ -34,7 +34,7 @@ namespace Reko.Arch.zSeries
             var src1 = Reg(0, dt);
             var src2 = m.Mem(dt, EffectiveAddress(1));
             var dst = Assign(Reg(0), m.FAdd(src1, src2));
-            SetCc(m.Cond(dst));
+            SetCcCond(dst);
         }
 
         private void RewriteFAddReg(PrimitiveType dt)
@@ -42,7 +42,7 @@ namespace Reko.Arch.zSeries
             var src1 = Reg(0, dt);
             var src2 = Reg(1, dt);
             var dst = Assign(Reg(0), m.FAdd(src1, src2));
-            SetCc(m.Cond(dst));
+            SetCcCond(dst);
         }
 
 
@@ -50,14 +50,14 @@ namespace Reko.Arch.zSeries
         {
             var src1 = Reg(0, dt);
             var src2 = Reg(1, dt);
-            SetCc(m.Cond(m.FSub(src1, src2)));
+            SetCcCond(m.FSub(src1, src2));
         }
 
         private void RewriteCmpFloatMem(PrimitiveType dt)
         {
             var src1 = Reg(0, dt);
             var src2 = m.Mem(dt, EffectiveAddress(1));
-            SetCc(m.Cond(m.FSub(src1, src2)));
+            SetCcCond(m.FSub(src1, src2));
         }
 
         private void RewriteFConvert(PrimitiveType dtFrom, PrimitiveType dtTo)
@@ -77,7 +77,7 @@ namespace Reko.Arch.zSeries
             var left = Reg(0, dt);
             var right = Reg(1, dt);
             var dst = Assign(Reg(0), m.FDiv(left, right));
-            SetCc(m.Cond(dst));
+            SetCcCond(dst);
         }
 
         private void RewriteFMul(PrimitiveType dtSrc, PrimitiveType dtDst)
@@ -107,7 +107,7 @@ namespace Reko.Arch.zSeries
         {
             var exp = Reg(1, dt);
             var dst = Assign(Reg(0), m.FNeg(exp));
-            SetCc(m.Cond(dst));
+            SetCcCond(dst);
         }
 
         private void RewriteFpuRegPair(Func<Expression,Expression,Expression> fn, PrimitiveType dt)
@@ -121,14 +121,14 @@ namespace Reko.Arch.zSeries
                 return;
             }
             var dst = Assign(src1, fn(src1, src2));
-            SetCc(m.Cond(dst));
+            SetCcCond(dst);
         }
 
         private void RewriteFSub(PrimitiveType dt)
         {
             var exp = Reg(0, dt);
             var dst = Assign(Reg(0), m.FSub(exp, m.Mem(dt, EffectiveAddress(1))));
-            SetCc(m.Cond(dst));
+            SetCcCond(dst);
         }
 
         private void RewriteHalveR(PrimitiveType dt, Constant c)
@@ -154,7 +154,7 @@ namespace Reko.Arch.zSeries
         {
             var src = Reg(1, dt);
             var dst = Assign(Reg(0), src);
-            SetCc(m.Cond(m.FSub(dst, zero)));
+            SetCcCond(m.FSub(dst, zero));
         }
 
         private void RewriteFMulReg(PrimitiveType dtFrom, PrimitiveType dtTo)
@@ -169,7 +169,7 @@ namespace Reko.Arch.zSeries
             var left = Reg(0, dt);
             var right = Reg(1, dt);
             var dst = Assign(Reg(0), m.FSub(left, right));
-            SetCc(m.Cond(dst));
+            SetCcCond(dst);
         }
 
         private void RewriteSur(PrimitiveType dt)
@@ -178,7 +178,7 @@ namespace Reko.Arch.zSeries
             var left = Reg(0, dt);
             var right = Reg(1, dt);
             var dst = Assign(Reg(0), m.FSub(left, right));
-            SetCc(m.Cond(dst));
+            SetCcCond(dst);
         }
 
         private void RewriteTs()

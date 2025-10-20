@@ -50,7 +50,7 @@ namespace Reko.Arch.Arm.AArch64
                 opr(
                     opr(opSrc1, opSrc2),
                     c));
-            setFlags?.Invoke(m.Cond(opDst));
+            setFlags?.Invoke(m.Cond(Registers.pstate.DataType, opDst));
         }
 
         private void RewriteAdrp()
@@ -117,7 +117,7 @@ namespace Reko.Arch.Arm.AArch64
             var toBitSize = left.DataType.BitSize;
             right = MaybeExtendExpression(right, toBitSize);
             m.Assign(dst, fn(left, right));
-            setFlags?.Invoke(m.Cond(dst));
+            setFlags?.Invoke(m.Cond(Registers.pstate.DataType, dst));
         }
 
         private void RewriteBinary(IntrinsicProcedure intrinsic, Action<Expression>? setFlags = null)
@@ -130,7 +130,7 @@ namespace Reko.Arch.Arm.AArch64
             right = MaybeExtendExpression(right, toBitSize);
             var src = m.Fn(intrinsic.MakeInstance(left.DataType), left, right);
             m.Assign(dst, src);
-            setFlags?.Invoke(m.Cond(dst));
+            setFlags?.Invoke(m.Cond(Registers.pstate.DataType, dst));
         }
 
         private void RewriteTernary(IntrinsicProcedure intrinsic, Domain domain)
@@ -215,7 +215,7 @@ namespace Reko.Arch.Arm.AArch64
             m.BranchInMiddleOfInstruction(tmp, instr.Address + instr.Length, InstrClass.ConditionalTransfer);
             var left = RewriteOp(instr.Operands[0]);
             var right = RewriteOp(instr.Operands[1]);
-            m.Assign(nzcv, m.Cond(m.IAdd(left, right)));
+            m.Assign(nzcv, m.Cond(nzcv.DataType, m.IAdd(left, right)));
         }
 
         private void RewriteCcmp()
@@ -229,7 +229,7 @@ namespace Reko.Arch.Arm.AArch64
             m.BranchInMiddleOfInstruction(tmp, instr.Address + instr.Length, InstrClass.ConditionalTransfer);
             var left = RewriteOp(instr.Operands[0]);
             var right = RewriteOp(instr.Operands[1]);
-            m.Assign(nzcv, m.Cond(m.ISub(left, right)));
+            m.Assign(nzcv, m.Cond(nzcv.DataType, m.ISub(left, right)));
         }
 
         private void RewriteClz()
@@ -245,7 +245,7 @@ namespace Reko.Arch.Arm.AArch64
             var right = RewriteOp(1);
             right = MaybeExtendExpression(right, left.DataType.BitSize);
             var nzcv = NZCV();
-            m.Assign(nzcv, m.Cond(m.ISub(left, right)));
+            m.Assign(nzcv, m.Cond(nzcv.DataType, m.ISub(left, right)));
         }
 
         private void RewriteCsel()
@@ -741,7 +741,7 @@ namespace Reko.Arch.Arm.AArch64
         {
             var op1 = RewriteOp(0, true);
             var op2 = RewriteOp(1, true);
-            NZ00(m.Cond(m.And(op1, op2)));
+            NZ00(m.Cond(Registers.pstate.DataType, m.And(op1, op2)));
         }
 
         private void RewriteUnary(Func<Expression, Expression> fn)

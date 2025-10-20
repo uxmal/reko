@@ -1844,8 +1844,7 @@ void seek_to_line(int32 o0)
 					while (true)
 					{
 						int8 * o2_n = o2_n + 1;
-						Eq_n NZVC_n;
-						NZVC_n.u1 = cond(o2_n - g_dw281D0);
+						ui32 NZVC_n = cond(o2_n - g_dw281D0);
 						g_ptr28220 = o2_n;
 						check_source(NZVC_n & 0x01, 0x00);
 						if (*g_ptr28220 == 0x0A)

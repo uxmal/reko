@@ -56,9 +56,8 @@ namespace Reko.Arch.Sparc
         {
             var f1 = RewriteOp(instrCur.Operands[0]);
             var f2 = RewriteOp(instrCur.Operands[1]);
-
             var grf = binder.EnsureFlagGroup(arch.GetFlagGroup("ELGU")!);
-            m.Assign(grf, m.Cond(m.FSub(f1, f2)));
+            m.Assign(grf, m.Cond(grf.DataType, m.FSub(f1, f2)));
         }
 
         private void RewriteFcmpes()
@@ -66,7 +65,7 @@ namespace Reko.Arch.Sparc
             var f1 = RewriteOp(instrCur.Operands[0]);
             var f2 = RewriteOp(instrCur.Operands[1]);
             var grf = binder.EnsureFlagGroup(arch.GetFlagGroup("ELGU")!);
-            m.Assign(grf, m.Cond(m.FSub(f1, f2)));
+            m.Assign(grf, m.Cond(grf.DataType, m.FSub(f1, f2)));
         }
 
         private void RewriteFcmpd()
@@ -74,7 +73,7 @@ namespace Reko.Arch.Sparc
             var r1 = RewriteOp(instrCur.Operands[0]);
             var r2 = RewriteOp(instrCur.Operands[1]);
             var grf = binder.EnsureFlagGroup(arch.GetFlagGroup("ELGU")!);
-            m.Assign(grf, m.Cond(m.FSub(r2, r1)));
+            m.Assign(grf, m.Cond(grf.DataType, m.FSub(r2, r1)));
         }
 
         private void RewriteFcmpq()
@@ -82,7 +81,7 @@ namespace Reko.Arch.Sparc
             var r1 = RewriteOp(instrCur.Operands[0]);
             var r2 = RewriteOp(instrCur.Operands[1]);
             var grf = binder.EnsureFlagGroup(arch.GetFlagGroup("ELGU")!);
-            m.Assign(grf, m.Cond(m.FSub(r2, r1)));
+            m.Assign(grf, m.Cond(grf.DataType, m.FSub(r2, r1)));
         }
 
         private void RewriteFcmps()
@@ -90,7 +89,7 @@ namespace Reko.Arch.Sparc
             var r1 = RewriteRegister(0);
             var r2 = RewriteRegister(1);
             var grf = binder.EnsureFlagGroup(arch.GetFlagGroup("ELGU")!);
-            m.Assign(grf, m.Cond(m.FSub(r2, r1)));
+            m.Assign(grf, m.Cond(grf.DataType, m.FSub(r2, r1)));
         }
 
         private void RewriteFdivd()

@@ -112,7 +112,7 @@ namespace Reko.Arch.Mos6502
                     c));
             m.Assign(
                 binder.EnsureFlagGroup(Registers.NVZC),
-                m.Cond(a));
+                m.Cond(c.DataType, a));
         }
 
     }

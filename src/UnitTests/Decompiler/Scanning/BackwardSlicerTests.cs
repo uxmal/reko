@@ -253,7 +253,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var cz = Cc("CZ");
 
             var b = Given_Block(0x100);
-            Given_Instrs(b, m => { m.Assign(cz, m.Cond(m.ISub(r2, 4))); });
+            Given_Instrs(b, m => { m.Assign(cz, m.Cond(cz.DataType, m.ISub(r2, 4))); });
             Given_Instrs(b, m => { m.Branch(m.Test(ConditionCode.ULE, cz), Address.Ptr32(0x200), InstrClass.ConditionalTransfer); });
 
             var b2 = Given_Block(0x200);
@@ -284,7 +284,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var cz = Cc("CZ");
 
             var b = Given_Block(0x100);
-            Given_Instrs(b, m => { m.Assign(r1, m.And(r1, 7)); m.Assign(cz, m.Cond(r1)); });
+            Given_Instrs(b, m => { m.Assign(r1, m.And(r1, 7)); m.Assign(cz, m.Cond(cz.DataType, r1)); });
             Given_Instrs(b, m => { m.Goto(m.Mem32(m.IAdd(m.Word32(0x00123400), m.IMul(r1, 4)))); });
 
             graph.Nodes.Add(b);
@@ -319,7 +319,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             });
             Given_Instrs(b, m =>
             {
-                m.Assign(SCZO, m.Cond(m.ISub(bl, 2)));
+                m.Assign(SCZO, m.Cond(SCZO.DataType, m.ISub(bl, 2)));
             });
             Given_Instrs(b, m =>
             {
@@ -330,12 +330,12 @@ namespace Reko.UnitTests.Decompiler.Scanning
             Given_Instrs(b2, m =>
             {
                 m.Assign(bh, m.Xor(bh, bh));
-                m.Assign(SCZO, new ConditionOf(bh));
+                m.Assign(SCZO, new ConditionOf(SCZO.DataType, bh));
             });
             Given_Instrs(b2, m =>
             {
                 m.Assign(bx, m.IAdd(bx, bx));
-                m.Assign(SCZO, new ConditionOf(bx));
+                m.Assign(SCZO, new ConditionOf(SCZO.DataType, bx));
             });
             Given_Instrs(b2, m =>
             {
@@ -382,9 +382,9 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var tmp = binder.CreateTemporary(ecx.DataType);
 
             var b = Given_Block(0x1000);
-            Given_Instrs(b, m => { m.Assign(ecx, m.Shr(ecx, 2)); m.Assign(SCZO, m.Cond(ecx)); });
-            Given_Instrs(b, m => { m.Assign(edx, m.And(edx, 3)); m.Assign(SZO, m.Cond(edx)); m.Assign(C, Constant.False()); });
-            Given_Instrs(b, m => { m.Assign(SCZO, m.Cond(m.ISub(ecx, 8))); });
+            Given_Instrs(b, m => { m.Assign(ecx, m.Shr(ecx, 2)); m.Assign(SCZO, m.Cond(SCZO.DataType, ecx)); });
+            Given_Instrs(b, m => { m.Assign(edx, m.And(edx, 3)); m.Assign(SZO, m.Cond(SZO.DataType, edx)); m.Assign(C, Constant.False()); });
+            Given_Instrs(b, m => { m.Assign(SCZO, m.Cond(SCZO.DataType, m.ISub(ecx, 8))); });
             Given_Instrs(b, m => { m.Branch(m.Test(ConditionCode.ULT, C), Address.Ptr32(0x2000), InstrClass.ConditionalTransfer); });
 
             var b2 = Given_Block(0x1008);
@@ -442,11 +442,11 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var SCZO = binder.EnsureFlagGroup(arch.GetFlagGroup("SCZO"));
 
             var b = Given_Block(0x0C00, 0x0100);
-            Given_Instrs(b, m => { m.Assign(SCZO, m.Cond(m.ISub(bx, 15))); });
+            Given_Instrs(b, m => { m.Assign(SCZO, m.Cond(SCZO.DataType, m.ISub(bx, 15))); });
             Given_Instrs(b, m => { m.Branch(m.Test(ConditionCode.UGT, C), Address.SegPtr(0xC00, 0x200), InstrClass.ConditionalTransfer); });
 
             var b2 = Given_Block(0x0C00, 0x0108);
-            Given_Instrs(b2, m => { m.Assign(bx, m.IAdd(bx, bx)); m.Assign(SCZO, m.Cond(bx)); });
+            Given_Instrs(b2, m => { m.Assign(bx, m.IAdd(bx, bx)); m.Assign(SCZO, m.Cond(SCZO.DataType, bx)); });
             Given_Instrs(b2, m => { m.Goto(m.SegMem(PrimitiveType.Ptr32, ds, m.IAdd(bx, 34))); });
 
             graph.Nodes.Add(b);
@@ -478,11 +478,11 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var SCZO = binder.EnsureFlagGroup(arch.GetFlagGroup("SCZO"));
 
             var b = Given_Block(0x001000000);
-            Given_Instrs(b, m => { m.Assign(SCZO, m.Cond(m.ISub(eax, 3))); });
+            Given_Instrs(b, m => { m.Assign(SCZO, m.Cond(SCZO.DataType, m.ISub(eax, 3))); });
             Given_Instrs(b, m => { m.Branch(m.Test(ConditionCode.UGT, C), Address.Ptr32(0x00100010), InstrClass.ConditionalTransfer); });
 
             var b2 = Given_Block(0x001000008);
-            Given_Instrs(b2, m => { m.Assign(edx, m.Xor(edx, edx)); m.Assign(SZO, m.Cond(edx)); m.Assign(C, Constant.False()); });
+            Given_Instrs(b2, m => { m.Assign(edx, m.Xor(edx, edx)); m.Assign(SZO, m.Cond(SZO.DataType, edx)); m.Assign(C, Constant.False()); });
             Given_Instrs(b2, m => { m.Assign(dl, m.Mem8(m.IAdd(eax, 0x00123500))); });
             Given_Instrs(b2, m => { m.Goto(m.Mem32(m.IAdd(m.IMul(edx, 4), 0x00123400))); });
 
@@ -575,7 +575,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             Given_Instrs(b, m =>
             {
                 m.Assign(v2, m.ISub(m.Slice(d0, PrimitiveType.Byte), 0x17));
-                m.Assign(CVZN, m.Cond(v2));
+                m.Assign(CVZN, m.Cond(CVZN.DataType, v2));
             });
             Given_Instrs(b, m =>
             {
@@ -586,25 +586,25 @@ namespace Reko.UnitTests.Decompiler.Scanning
             Given_Instrs(b2, m =>
             {
                 m.Assign(d1, m.Word32(0));
-                m.Assign(CVZN, m.Cond(d1));
+                m.Assign(CVZN, m.Cond(CVZN.DataType, d1));
             });
             Given_Instrs(b2, m =>
             {
                 m.Assign(v3, m.Slice(d0, v3.DataType));
                 m.Assign(d1, m.Dpb(d1, v3, 0));
-                m.Assign(CVZN, m.Cond(v3));
+                m.Assign(CVZN, m.Cond(CVZN.DataType, v3));
             });
             Given_Instrs(b2, m =>
             {
                 m.Assign(v4, m.IAdd(m.Slice(d1, v4.DataType), m.Slice(d1, v4.DataType)));
                 m.Assign(d1, m.Dpb(d1, v4, 0));
-                m.Assign(CVZNX, m.Cond(v4));
+                m.Assign(CVZNX, m.Cond(CVZNX.DataType, v4));
             });
             Given_Instrs(b2, m =>
             {
                 m.Assign(v5, m.Mem16(m.IAdd(m.Word32(0x0010EC32), m.Convert(m.Slice(d1, W16), W16, W32))));
                 m.Assign(d1, m.Dpb(d1, v5, 0));
-                m.Assign(CVZN, m.Cond(v5));
+                m.Assign(CVZN, m.Cond(CVZN.DataType, v5));
             });
             Given_Instrs(b2, m =>
             {
@@ -662,7 +662,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             Given_Instrs(b, m =>
             {
                 m.Assign(v2, m.ISub(m.Slice(d0, PrimitiveType.Byte), 0x17));
-                m.Assign(CVZN, m.Cond(v2));
+                m.Assign(CVZN, m.Cond(CVZN.DataType, v2));
             });
             Given_Instrs(b, m =>
             {
@@ -673,25 +673,25 @@ namespace Reko.UnitTests.Decompiler.Scanning
             Given_Instrs(b2, m =>
             {
                 m.Assign(d1, m.Word32(0));
-                m.Assign(CVZN, m.Cond(d1));
+                m.Assign(CVZN, m.Cond(CVZN.DataType, d1));
             });
             Given_Instrs(b2, m =>
             {
                 m.Assign(v3, m.Slice(d0, v3.DataType));
                 m.Assign(d1, m.Dpb(d1, v3, 0));
-                m.Assign(CVZN, m.Cond(v3));
+                m.Assign(CVZN, m.Cond(CVZN.DataType, v3));
             });
             Given_Instrs(b2, m =>
             {
                 m.Assign(v4, m.IAdd(m.Slice(d1, v4.DataType), m.Slice(d1, v4.DataType)));
                 m.Assign(d1, m.Dpb(d1, v4, 0));
-                m.Assign(CVZNX, m.Cond(v4));
+                m.Assign(CVZNX, m.Cond(CVZNX.DataType, v4));
             });
             Given_Instrs(b2, m =>
             {
                 m.Assign(v5, m.Mem16(m.IAdd(m.Word32(0x0010EC32), m.Convert(m.Slice(d1, W16), W16, W32))));
                 m.Assign(d1, m.Dpb(d1, v5, 0));
-                m.Assign(CVZN, m.Cond(v5));
+                m.Assign(CVZN, m.Cond(CVZN.DataType, v5));
             });
             Given_Instrs(b2, m =>
             {
@@ -747,7 +747,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             Given_Instrs(b1, m =>
             {
                 m.Assign(v80, m.ISub(r1, 0x28));
-                m.Assign(CVZN, m.Cond(v80));
+                m.Assign(CVZN, m.Cond(CVZN.DataType, v80));
                 m.Branch(m.Test(ConditionCode.GT, VZN), Address.Ptr16(0x1020), InstrClass.ConditionalTransfer);
             });
 
@@ -755,10 +755,10 @@ namespace Reko.UnitTests.Decompiler.Scanning
             Given_Instrs(b2, m =>
             {
                 m.Assign(r1, m.IAdd(r1, r1));
-                m.Assign(CVZNX, m.Cond(r1));
+                m.Assign(CVZNX, m.Cond(CVZNX.DataType, r1));
                 m.Assign(v82, m.Mem16(m.IAdd(m.Word32(0x001066A4), r1)));
                 m.Assign(r1, m.Dpb(r1, v82, 0));
-                m.Assign(CVZN, m.Cond(v82));
+                m.Assign(CVZN, m.Cond(CVZN.DataType, v82));
                 m.Goto(
                     m.IAdd(
                         m.Word32(0x001066A2),
@@ -799,7 +799,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             {
                 m.Assign(v3, m.ISub(m.Slice(d0, PrimitiveType.Word16), m.Word16(0x20)));
                 m.Assign(d0, m.Dpb(d0, v3, 0));
-                m.Assign(CVZN, m.Cond(v3));
+                m.Assign(CVZN, m.Cond(CVZN.DataType, v3));
                 m.Branch(m.Test(ConditionCode.UGE, C), Address.Ptr32(0xA900), InstrClass.ConditionalTransfer);
             });
 
@@ -814,9 +814,9 @@ namespace Reko.UnitTests.Decompiler.Scanning
             {
                 m.Assign(v16, m.IAdd(m.Slice(d0, PrimitiveType.Word16), m.Slice(d0, PrimitiveType.Word16)));
                 m.Assign(d0, m.Dpb(d0, v16, 0));
-                m.Assign(CVZN, m.Cond(v16));
+                m.Assign(CVZN, m.Cond(CVZN.DataType, v16));
                 m.Assign(v17, m.IAdd(m.Slice(d0, PrimitiveType.Word16), m.Slice(d0, PrimitiveType.Word16)));
-                m.Assign(CVZN, m.Cond(v17));
+                m.Assign(CVZN, m.Cond(CVZN.DataType, v17));
                 m.Assign(d0, m.Dpb(d0, v17, 0));
                 m.Goto(m.IAdd(m.Word32(0x0000A8B4), m.Convert(
                     m.Slice(d0, PrimitiveType.Int16),
@@ -854,7 +854,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 m.Assign(A, m.Mem(A.DataType, DPTR));
                 m.Assign(R7, A);
                 m.Assign(A, m.IAdd(A, 0xFC));   // A >= 4 will cause a carry.
-                m.Assign(C, m.Cond(A));
+                m.Assign(C, m.Cond(C.DataType, A));
                 m.Branch(m.Test(ConditionCode.ULT, C), Address.Ptr16(0x00C0));
             });
 
@@ -891,7 +891,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var r1 = binder.EnsureRegister(RegisterStorage.Reg32("r1", 1));
             Given_Instrs(b1000, m =>
             {
-                m.Assign(C, m.Cond(m.ISub(r1, 4)));
+                m.Assign(C, m.Cond(C.DataType, m.ISub(r1, 4)));
                 m.Branch(m.Test(ConditionCode.UGT, C), Address.Ptr32(0x1004));
                 m.Goto(m.Mem32(m.IAdd(m.Ptr32(0x1020), m.IMul(r1, 4))));
             });
@@ -935,7 +935,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             });
             Given_Instrs(b1000, m =>
             {
-                m.Assign(SCZ, m.Cond(m.ISub(ax, 9)));
+                m.Assign(SCZ, m.Cond(SCZ.DataType, m.ISub(ax, 9)));
                 m.Branch(m.Test(ConditionCode.ULE, CZ), b1020.Address);
             });
             Given_Instrs(b1010, m =>
@@ -945,7 +945,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             Given_Instrs(b1020, m =>
             {
                 m.Assign(ax, m.IAdd(ax, ax));
-                m.Assign(SCZ, m.Cond(ax));
+                m.Assign(SCZ, m.Cond(SCZ.DataType, ax));
                 m.Assign(tmp, bx);
                 m.Assign(bx, ax);
                 m.Assign(ax, tmp);
@@ -1222,19 +1222,19 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 m =>
                 {
                     m.Assign(d0, m.Shl(d0, 3));
-                    m.Assign(CVZNX, m.Cond(d0));
+                    m.Assign(CVZNX, m.Cond(CVZNX.DataType, d0));
                 },
                 m =>
                 {
                     m.Assign(d0, m.IAdd(d0, m.Mem32(m.IAdd(a6, m.Int32(-8)))));
-                    m.Assign(CVZNX, m.Cond(d0));
+                    m.Assign(CVZNX, m.Cond(CVZNX.DataType, d0));
                 },
                 m =>
                 {
                     m.Assign(v35, m.Mem8(m.IAdd(a3, d0)));
                     m.Assign(v36, m.Slice(d0, v36.DataType, 8));
                     m.Assign(d0, m.Seq(v36, v35));
-                    m.Assign(ZN, m.Cond(v35));
+                    m.Assign(ZN, m.Cond(ZN.DataType, v35));
                     m.Assign(C, Constant.False());
                     m.Assign(V, Constant.False());
                 },
@@ -1243,24 +1243,24 @@ namespace Reko.UnitTests.Decompiler.Scanning
                     m.Assign(v37, m.Shr(m.Slice(d0, v37.DataType, 0), 0x04));
                     m.Assign(v38, m.Slice(d0, v38.DataType, 8));
                     m.Assign(d0, m.Seq(v38, v37));
-                    m.Assign(CVZNX, m.Cond(v37));
+                    m.Assign(CVZNX, m.Cond(CVZNX.DataType, v37));
                 },
                 m =>
                 {
                     m.Assign(d0, m.Convert(m.Slice(d0, PrimitiveType.Int8, 0), PrimitiveType.Int8, PrimitiveType.Int32));
-                    m.Assign(ZN, m.Cond(d0));
+                    m.Assign(ZN, m.Cond(ZN.DataType, d0));
                 },
                 m =>
                 {
                     m.Assign(m.Mem32(m.IAdd(a6, m.Int32(-8))), d0);
-                    m.Assign(ZN, m.Cond(d0));
+                    m.Assign(ZN, m.Cond(ZN.DataType, d0));
                     m.Assign(C, Constant.False());
                     m.Assign(V, Constant.False());
                 },
                 m =>
                 {
                     m.Assign(d2, 7);
-                    m.Assign(ZN, m.Cond(d2));
+                    m.Assign(ZN, m.Cond(ZN.DataType, d2));
                     m.Assign(C, Constant.False()); ;
                     m.Assign(V, Constant.False()); ;
                 },
@@ -1268,7 +1268,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 {
 
                     m.Assign(v40, m.ISub(d2, d0));
-                    m.Assign(CVZN, m.Cond(v40));
+                    m.Assign(CVZN, m.Cond(CVZN.DataType, v40));
                 },
                 m =>
                 {
@@ -1282,7 +1282,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                     m.Assign(v41, m.Mem16(m.IAdd(Address.Ptr32(0x00001758), m.IMul(m.Convert(m.Slice(d0, PrimitiveType.Int16, 0), PrimitiveType.Int16, PrimitiveType.Int32), 2))));
                     m.Assign(v42, m.Slice(d0, v42.DataType, 16));
                     m.Assign(d0, m.Seq(v42, v41));
-                    m.Assign(ZN, m.Cond(v41));
+                    m.Assign(ZN, m.Cond(ZN.DataType, v41));
                     m.Assign(C, Constant.False());
                     m.Assign(V, Constant.False());
                 },
@@ -1404,7 +1404,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                     m.Assign(v71, m.ISub(m.Slice(d0, PrimitiveType.Byte, 0), 0x41));
                     m.Assign(v72, m.Slice(d0, word24, 8));
                     m.Assign(d0, m.Seq(v72, v71));
-                    m.Assign(CVZNX, m.Cond(v71));
+                    m.Assign(CVZNX, m.Cond(CVZNX.DataType, v71));
                 },
                 m => m.Branch(m.Test(ConditionCode.LT, N), b101582.Address)
                 );
@@ -1412,7 +1412,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 m =>
                 {
                     m.Assign(v73, m.ISub(m.Slice(d0, PrimitiveType.Byte, 0), 0x17));
-                    m.Assign(CVZN, m.Cond(v73));
+                    m.Assign(CVZN, m.Cond(CVZN.DataType, v73));
                 },
                 m => m.Branch(m.Test(ConditionCode.GT, VZN), b101582.Address));
 
@@ -1420,7 +1420,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                     m =>
                     {
                         m.Assign(d1, 0);
-                        m.Assign(ZN, m.Cond(d1));
+                        m.Assign(ZN, m.Cond( ZN.DataType, d1));
                         m.Assign(C, Constant.False());
                         m.Assign(V, Constant.False());
                     },
@@ -1429,7 +1429,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                         m.Assign(v75, m.Slice(d0, PrimitiveType.Byte, 0));
                         m.Assign(v76, m.Slice(d1, word24, 8));
                         m.Assign(d1, m.Seq(v76, v75));
-                        m.Assign(ZN, m.Cond(v75));
+                        m.Assign(ZN, m.Cond(ZN.DataType, v75));
                         m.Assign(C, Constant.False());
                         m.Assign(V, Constant.False());
                     },
@@ -1438,14 +1438,14 @@ namespace Reko.UnitTests.Decompiler.Scanning
                         m.Assign(v77, m.IAdd(m.Slice(d1, word16, 0), m.Slice(d1, word16, 0)));
                         m.Assign(v78, m.Slice(d1, word16, 16));
                         m.Assign(d1, m.Seq(v78, v77));
-                        m.Assign(CVZNX, m.Cond(v77));
+                        m.Assign(CVZNX, m.Cond(CVZNX.DataType, v77));
                     },
                     m =>
                     {
                         m.Assign(v79, m.Mem16(m.IAdd(Address.Ptr32(0x0010142A), m.Convert(m.Slice(d1, int16, 0), int16, int32))));
                         m.Assign(v80, m.Slice(d1, word16, 16));
                         m.Assign(d1, m.Seq(v80, v79));
-                        m.Assign(ZN, m.Cond(v79));
+                        m.Assign(ZN, m.Cond(ZN.DataType, v79));
                         m.Assign(C, Constant.False());
                         m.Assign(V, Constant.False());
                     },
@@ -1550,7 +1550,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 m =>
                 {
                     m.Assign(rax, m.ISub(rax, 2));
-                    m.Assign(SCZO, m.Cond(rax));
+                    m.Assign(SCZO, m.Cond(SCZO.DataType, rax));
                 },
                 m => m.Branch(m.Test(ConditionCode.UGT, CZ), b40122E.Address)
                 );
@@ -1560,7 +1560,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 m =>
                 {
                     m.Assign(rax, m.IAdd(rax, rcx));
-                    m.Assign(SCZO, m.Cond(rax));
+                    m.Assign(SCZO, m.Cond(SCZO.DataType, rax));
                 },
                 m => m.Goto(rax));
 
@@ -1716,10 +1716,10 @@ call a5 (retsize: 0;)
     // jmp.l (pc,d1.w)              : JTT = 0x0010000 + SEXT(d1, 16)
 
     //  m.Assign(d1, m.IAdd(d1, d1));
-    //  m.Assign(CVZNX, m.Cond(d1));
+    //  m.Assign(CVZNX, m.Cond(CVZNX.DataType, d1));
     //  m.Assign(v82,m.LoadW(m.IAdd(m.Word32(0x001066A4), d1)));
     //  m.Assign(d1, m.Dpb(d1, v82, 0));
-    //  m.Assign(CVZN, m.Cond(v82));
+    //  m.Assign(CVZN, m.Cond(CVZN.DataType, v82));
     //  var block = m.CurrentBlock;
     //  var xfer = new RtlGoto(
     //      m.IAdd(

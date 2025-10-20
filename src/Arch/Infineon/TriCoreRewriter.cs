@@ -200,6 +200,12 @@ namespace Reko.Arch.Infineon
             return m.And(a, m.Comp(b));
         }
 
+        private void AssignCcCond(FlagGroupStorage grf, Expression e)
+        {
+            var flags = binder.EnsureFlagGroup(grf);
+            m.Assign(flags, m.Cond(grf.DataType, e));
+        }
+
         private void AssignMaybeExtend(Expression dst, Expression src, DataType? dtConvert)
         {
             if (dtConvert is null)
@@ -268,7 +274,7 @@ namespace Reko.Arch.Infineon
             int imm = ((Constant) instr.Operands[2]).ToInt16();
             var dst = Operand(0);
             m.Assign(dst, m.IAdd(op, m.Word32(imm)));
-            m.Assign(binder.EnsureFlagGroup(Registers.V_SV_AV_SAV), m.Cond(dst));
+            AssignCcCond(Registers.V_SV_AV_SAV, dst);
         }
 
         private void RewriteAddih()
@@ -277,7 +283,7 @@ namespace Reko.Arch.Infineon
             uint imm = ((Constant)instr.Operands[2]).ToUInt16();
             var dst = Operand(0);
             m.Assign(dst, m.IAdd(op, m.Word32(imm << 16)));
-            m.Assign(binder.EnsureFlagGroup(Registers.V_SV_AV_SAV), m.Cond(dst));
+            AssignCcCond(Registers.V_SV_AV_SAV, dst);
         }
 
         private void RewriteAddih_a()
@@ -294,7 +300,7 @@ namespace Reko.Arch.Infineon
             var right = Operand(1, true);
             var dst = Operand(0);
             m.Assign(dst, m.Fn(adds, left, right));
-            m.Assign(binder.EnsureFlagGroup(Registers.V_SV_AV_SAV), m.Cond(dst));
+            AssignCcCond(Registers.V_SV_AV_SAV, dst);
         }
 
     private void RewriteAddsc_a()
@@ -329,7 +335,7 @@ namespace Reko.Arch.Infineon
                 dst = Operand(0);
                 m.Assign(dst, m.Bin(type, left, right));
             }
-            m.Assign(binder.EnsureFlagGroup(Registers.V_SV_AV_SAV), m.Cond(dst));
+            AssignCcCond(Registers.V_SV_AV_SAV, dst);
         }
 
         private void RewriteBool(Func<Expression, Expression, Expression> fn)
@@ -413,9 +419,7 @@ namespace Reko.Arch.Infineon
             m.Assign(quo, fnDiv(num, den));
             m.Assign(rem, fnRem(num, den));
             m.Assign(dst, m.Seq(rem, quo));
-            m.Assign(
-                binder.EnsureFlagGroup(Registers.V_SV),
-                m.Cond(quo));
+            AssignCcCond(Registers.V_SV, quo);
             m.Assign(binder.EnsureFlagGroup(Registers.AV), Constant.False());
         }
 
@@ -628,9 +632,7 @@ namespace Reko.Arch.Infineon
             }
             var dst = Operand(0);
             m.Assign(dst, m.Bin(add, op1, m.Bin(mul, op2, op3)));
-            m.Assign(
-                binder.EnsureFlagGroup(Registers.V_SV_AV_SAV),
-                m.Cond(dst));
+            AssignCcCond(Registers.V_SV_AV_SAV, dst);
         }
 
         private void RewriteMadds(Func<Expression, Expression, Expression> mul, IntrinsicProcedure add)
@@ -644,9 +646,7 @@ namespace Reko.Arch.Infineon
             }
             var dst = Operand(0);
             m.Assign(dst, m.Fn(add, op1, mul(op2, op3)));
-            m.Assign(
-                binder.EnsureFlagGroup(Registers.V_SV_AV_SAV),
-                m.Cond(dst));
+            AssignCcCond(Registers.V_SV_AV_SAV, dst);
         }
 
 
@@ -720,9 +720,7 @@ namespace Reko.Arch.Infineon
             }
             var dst = Operand(0);
             m.Assign(dst, m.SMul(src0, src1));
-            m.Assign(
-                binder.EnsureFlagGroup(Registers.V_SV_AV_SAV),
-                m.Cond(dst));
+            AssignCcCond(Registers.V_SV_AV_SAV, dst);
         }
 
         private void RewriteRet()
@@ -789,9 +787,7 @@ namespace Reko.Arch.Infineon
                 {
                     m.Assign(dst, src);
                 }
-                m.Assign(
-                    binder.EnsureFlagGroup(Registers.C_V_SV_AV_SAV),
-                    m.Cond(dst));
+                AssignCcCond(Registers.C_V_SV_AV_SAV, dst);
                 return;
             }
             Debug.Fail("Nyi");

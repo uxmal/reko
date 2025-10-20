@@ -60,7 +60,7 @@ namespace Reko.Arch.Arm.AArch32
             var src2 = Operand(1);
             var grf = new FlagGroupStorage(Registers.fpscr, 0xF0000000, "NZCV");
             var fpscr = binder.EnsureFlagGroup(grf);
-            m.Assign(fpscr, m.Cond(m.FSub(src1, src2)));
+            m.Assign(fpscr, m.Cond(fpscr.DataType, m.FSub(src1, src2)));
         }
 
         private void RewriteVcvt()

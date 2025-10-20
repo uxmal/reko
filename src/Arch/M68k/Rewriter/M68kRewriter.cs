@@ -334,6 +334,12 @@ VS Overflow Set 1001 V
             return GetEnumerator();
         }
 
+        private void AssignCondOf(FlagGroupStorage grf, Expression e)
+        {
+            var flags = binder.EnsureFlagGroup(grf);
+            m.Assign(flags, m.Cond(grf.DataType, e));
+        }
+
         private void EmitUnitTest()
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();

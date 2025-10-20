@@ -35,7 +35,7 @@ namespace Reko.Arch.PowerPC
             if (!instr.setsCR0)
                 return;
             var cr1 = binder.EnsureFlagGroup(arch.cr1);
-            m.Assign(cr1, m.Cond(e));
+            m.Assign(cr1, m.Cond(cr1.DataType, e));
         }
 
         private void RewriteQbin(PrimitiveType dt, BinaryOperator op)
@@ -81,7 +81,7 @@ namespace Reko.Arch.PowerPC
             var opL = RewriteOperand(1);
             var opR = RewriteOperand(2);
             var opD = RewriteOperand(0);
-            m.Assign(opD, m.Cond(m.FSub(opL, opR)));
+            m.Assign(opD, m.Cond(opD.DataType, m.FSub(opL, opR)));
         }
 
         public void RewriteFcmpu()
@@ -89,7 +89,7 @@ namespace Reko.Arch.PowerPC
             var opL = RewriteOperand(1);
             var opR = RewriteOperand(2);
             var opD = RewriteOperand(0);
-            m.Assign(opD, m.Cond(m.FSub(opL, opR)));
+            m.Assign(opD, m.Cond(opD.DataType, m.FSub(opL, opR)));
         }
 
         private void RewriteFctid()

@@ -49,18 +49,18 @@ namespace Reko.UnitTests.Fragments
             Label("m1Loop");
             Assign(a, h);
             Assign(a, Or(a, a));
-            Assign(SZC, Cond(a));
+            Assign(SZC, Cond(SZC.DataType, a));
             Assign(C, Constant.False());
             Assign(a, Shr(a, Constant.Byte(1)));
-            Assign(C, Cond(a));
+            Assign(C, Cond(C.DataType, a));
             Assign(h, a);
             Assign(a, l);
             Assign(a, Fn(CommonOps.RorC.MakeInstance(a.DataType, PrimitiveType.Byte),
                 a, Constant.Byte(1), C));
-            Assign(C, Cond(a));
+            Assign(C, Cond(C.DataType, a));
             Assign(l, a);
             Assign(c, ISub(c, 1));
-            Assign(SZP, Cond(c));
+            Assign(SZP, Cond(SZP.DataType, c));
             BranchIf(Test(ConditionCode.NE, Z), "m1Loop");
 
             Label("m2Done");

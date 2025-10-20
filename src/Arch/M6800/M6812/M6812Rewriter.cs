@@ -354,38 +354,38 @@ namespace Reko.Arch.M6800.M6812
 
         private void NZV_(Expression e)
         {
-            m.Assign(binder.EnsureFlagGroup(Registers.NZV), m.Cond(e));
+            m.Assign(binder.EnsureFlagGroup(Registers.NZV), m.Cond(Registers.NZV.DataType, e));
         }
 
         private void NZVC(Expression e)
         {
-            m.Assign(binder.EnsureFlagGroup(Registers.NZVC), m.Cond(e));
+            m.Assign(binder.EnsureFlagGroup(Registers.NZVC), m.Cond(Registers.NZVC.DataType, e));
         }
 
         private void NZ_C(Expression e)
         {
-            m.Assign(binder.EnsureFlagGroup(Registers.NZC), m.Cond(e));
+            m.Assign(binder.EnsureFlagGroup(Registers.NZC), m.Cond(Registers.NZC.DataType, e));
         }
 
         private void _ZVC(Expression e)
         {
-            m.Assign(binder.EnsureFlagGroup(Registers.ZVC), m.Cond(e));
+            m.Assign(binder.EnsureFlagGroup(Registers.ZVC), m.Cond(Registers.NZC.DataType, e));
         }
 
         private void _Z_C(Expression e)
         {
-            m.Assign(binder.EnsureFlagGroup(Registers.ZC), m.Cond(e));
+            m.Assign(binder.EnsureFlagGroup(Registers.ZC), m.Cond(Registers.ZC.DataType, e));
         }
 
         private void NZ0_(Expression e)
         {
-            m.Assign(binder.EnsureFlagGroup(Registers.NZ), m.Cond(e));
+            m.Assign(binder.EnsureFlagGroup(Registers.NZ), m.Cond(Registers.NZ.DataType, e));
             AssignFlag(Registers.V, false);
         }
 
         private void NZ00(Expression e)
         {
-            m.Assign(binder.EnsureFlagGroup(Registers.NZ), m.Cond(e));
+            m.Assign(binder.EnsureFlagGroup(Registers.NZ), m.Cond(Registers.NZ.DataType, e));
             AssignFlag(Registers.V, false);
             AssignFlag(Registers.C, false);
         }
@@ -715,7 +715,7 @@ namespace Reko.Arch.M6800.M6812
             var r = binder.EnsureRegister(reg);
             m.Assign(r, fn(r, m.Int8(1)));
             var Z = binder.EnsureFlagGroup(Registers.Z);
-            m.Assign(Z, m.Cond(r));
+            m.Assign(Z, m.Cond(Z.DataType, r));
         }
 
      
@@ -792,7 +792,7 @@ namespace Reko.Arch.M6800.M6812
             var d = binder.EnsureRegister(Registers.d);
             var C = binder.EnsureFlagGroup(Registers.C);
             m.Assign(d, m.UMul(a, b));
-            m.Assign(C, m.Cond(d));
+            m.Assign(C, m.Cond(C.DataType, d));
         }
 
         private void RewriteNeg(RegisterStorage reg)

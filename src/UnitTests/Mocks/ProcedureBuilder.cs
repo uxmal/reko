@@ -21,12 +21,11 @@
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
-using Reko.Core.Operators;
 using Reko.Core.Types;
-using System.Collections.Generic;
 using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Linq;
 
 namespace Reko.UnitTests.Mocks
 {
@@ -196,7 +195,8 @@ namespace Reko.UnitTests.Mocks
 
         public void Compare(string flags, Expression a, Expression b)
         {
-            Assign(Flags(flags), new ConditionOf(ISub(a, b)));
+            var grf = Flags(flags);
+            Assign(grf, new ConditionOf(grf.DataType, ISub(a, b)));
         }
 
         public Block CurrentBlock

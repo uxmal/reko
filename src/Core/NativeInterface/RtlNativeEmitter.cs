@@ -21,6 +21,7 @@
 using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
 using Reko.Core.Rtl;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -206,7 +207,7 @@ namespace Reko.Core.NativeInterface
         /// <inheritdoc/>
         public HExpr Cond(HExpr a)
         {
-            return MapToHandle(m.Cond(GetExpression(a)));
+            return MapToHandle(m.Cond(PrimitiveType.Byte, GetExpression(a)));
         }
 
         /// <inheritdoc/>

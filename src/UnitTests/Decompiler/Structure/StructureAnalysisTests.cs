@@ -1223,17 +1223,17 @@ easy:
 
             m.Assign(cx_10, 20000);
 m.Label("l0800_0544");
-                m.Assign(si_12, 0x8E8A);
-                m.Assign(ah_13, 0x00);
+            m.Assign(si_12, 0x8E8A);
+            m.Assign(ah_13, 0x00);
 m.Label("l0800_054A");
-                    m.Assign(si_12, m.IAdd(si_12, 0x01));
-                    m.BranchIf(m.Eq0(m.SegMem8(ds, si_12)), "l0800_0557");
+            m.Assign(si_12, m.IAdd(si_12, 0x01));
+            m.BranchIf(m.Eq0(m.SegMem8(ds, si_12)), "l0800_0557");
  m.Label("l0800_054F");
-                        m.Assign(ah_13, 0x01);
-                        m.Assign(Z_26, m.Cond(m.ISub(si_12, m.SegMem16(ds, m.Word16(0x8F0B)))));
-                        m.BranchIf(m.Ne(si_12, m.SegMem16(ds, m.Word16(0x8F0B))), "l0800_055F");
+            m.Assign(ah_13, 0x01);
+            m.Assign(Z_26, m.Cond(Z_26.DataType, m.ISub(si_12, m.SegMem16(ds, m.Word16(0x8F0B)))));
+            m.BranchIf(m.Ne(si_12, m.SegMem16(ds, m.Word16(0x8F0B))), "l0800_055F");
  m.Label("l0800_0557");
-            m.Assign(Z_26, m.Cond(m.ISub(si_12, 0x8F0A)));
+            m.Assign(Z_26, m.Cond(Z_26.DataType, m.ISub(si_12, 0x8F0A)));
             m.BranchIf(m.Eq(si_12, 0x8F0A), "l0800_055F");
 m.Label("l0800_055D");
             m.Goto("l0800_054A");

@@ -36,7 +36,7 @@ namespace Reko.Arch.zSeries
             Expression src = Reg(0, dt);
             src = m.AddSubSignedInt(src, n);
             var dst = Assign(Reg(0), src); 
-            SetCc(m.Cond(dst));
+            SetCcCond(dst);
         }
 
         private void RewriteAhi3(PrimitiveType dt)
@@ -46,7 +46,7 @@ namespace Reko.Arch.zSeries
             Expression src = Reg(2, dt);
             src = m.AddSubSignedInt(src, n);
             var dst = Assign(Reg(0), src);
-            SetCc(m.Cond(dst));
+            SetCcCond(dst);
         }
 
         private void RewriteAgr()
@@ -54,7 +54,7 @@ namespace Reko.Arch.zSeries
             var src = Reg(1);
             var dst = Reg(0);
             m.Assign(dst, m.IAdd(dst, src));
-            SetCc(m.Cond(dst));
+            SetCcCond(dst);
         }
 
         private void RewriteA(PrimitiveType dt)
@@ -62,7 +62,7 @@ namespace Reko.Arch.zSeries
             var src1 = Reg(0, dt);
             var src2 = m.Mem(dt, EffectiveAddress(1));
             var dst = Assign(Reg(0), m.IAdd(src1, src2));
-            SetCc(m.Cond(dst));
+            SetCcCond(dst);
         }
 
         private void RewriteAdcSbcReg(Func<Expression,Expression,Expression> fn, PrimitiveType dt)
@@ -71,7 +71,7 @@ namespace Reko.Arch.zSeries
             var src2 = Reg(1, dt);
             var cc = binder.EnsureFlagGroup(Registers.CC);
             var dst = Assign(Reg(0), fn(fn(src1, src2), cc));
-            SetCc(m.Cond(dst));
+            SetCcCond(dst);
         }
 
         private void RewriteAlugfr(Func<Expression, Expression, Expression> fn, PrimitiveType dtSrc, PrimitiveType dtDst)
@@ -79,7 +79,7 @@ namespace Reko.Arch.zSeries
             var src1 = Reg(0, dtDst);
             var src2 = Reg(1, dtSrc);
             var dst = Assign(Reg(0), fn(src1, m.Convert(src2, dtSrc, dtDst)));
-            SetCc(m.Cond(dst));
+            SetCcCond(dst);
         }
 
         private void RewriteAr(PrimitiveType dt)
@@ -87,7 +87,7 @@ namespace Reko.Arch.zSeries
             var src1 = Reg(0, dt);
             var src2 = Reg(1, dt);
             var dst = Assign(Reg(0), m.IAdd(src1, src2));
-            SetCc(m.Cond(dst));
+            SetCcCond(dst);
         }
 
         private void RewriteAsi(PrimitiveType dt)
@@ -99,14 +99,14 @@ namespace Reko.Arch.zSeries
             var sum = binder.CreateTemporary(dt);
             m.Assign(sum, m.IAdd(left, c));
             m.Assign(m.Mem(dt, ea), sum);
-            SetCc(m.Cond(sum));
+            SetCcCond(sum);
         }
 
         private void RewriteC(PrimitiveType dt)
         {
             var left = Reg(0, dt);
             var ea = EffectiveAddress(1);
-            SetCc(m.Cond(m.ISub(left, m.Mem(dt, ea))));
+            SetCcCond(m.ISub(left, m.Mem(dt, ea)));
         }
 
         private void RewriteCghi()
@@ -114,7 +114,7 @@ namespace Reko.Arch.zSeries
             var left = Reg(0);
             var imm = Const(1).ToInt64();
             var right = Constant.Create(left.DataType, imm);
-            SetCc(m.Cond(m.ISub(left, right)));
+            SetCcCond(m.ISub(left, right));
         }
 
         private void RewriteCr(Func<Expression,Expression,Expression> fn, PrimitiveType dt)
@@ -123,7 +123,7 @@ namespace Reko.Arch.zSeries
             var src2 = Reg(1, dt);
             var diff = fn(src1, src2);
             diff.DataType = dt;
-            SetCc(m.Cond(diff));
+            SetCcCond(diff);
         }
 
         private void RewriteChi()
@@ -132,7 +132,7 @@ namespace Reko.Arch.zSeries
             var imm = Const(1).ToInt16();
             var right = Constant.Create(left.DataType, imm);
             var cc = binder.EnsureFlagGroup(Registers.CC);
-            m.Assign(cc, m.Cond(m.ISub(left, right)));
+            m.Assign(cc, m.Cond(cc.DataType, m.ISub(left, right)));
         }
 
         private void RewriteClc()
@@ -141,7 +141,7 @@ namespace Reko.Arch.zSeries
             var dt = PrimitiveType.CreateWord(mem.Length);
             var left = m.Mem(dt, EffectiveAddress(0));
             var right = m.Mem(dt, EffectiveAddress(1));
-            SetCc(m.Cond(m.ISub(left, right)));
+            SetCcCond(m.ISub(left, right));
         }
 
         private void RewriteClcl(PrimitiveType dt)
@@ -152,7 +152,7 @@ namespace Reko.Arch.zSeries
             var rightLo = NextGpReg(rightHi);
             var left = binder.EnsureSequence(dt, leftHi, leftLo);
             var right = binder.EnsureSequence(dt, rightHi, rightLo);
-            SetCc(m.Cond(m.USub(left, right)));
+            SetCcCond(m.USub(left, right));
         }
 
         private void RewriteCl(PrimitiveType dt)
@@ -160,28 +160,28 @@ namespace Reko.Arch.zSeries
             var reg = Reg(0, dt);
             var ea = EffectiveAddress(1);
             var cc = binder.EnsureFlagGroup(Registers.CC);
-            m.Assign(cc, m.Cond(m.ISub(reg, m.Mem(dt, ea))));
+            m.Assign(cc, m.Cond(cc.DataType, m.ISub(reg, m.Mem(dt, ea))));
         }
 
         private void RewriteClrl(PrimitiveType dt)
         {
             var src1 = Reg(0, dt);
             var src2 = Rel(1, dt);
-            SetCc(m.Cond(m.USub(src1, src2)));
+            SetCcCond(m.USub(src1, src2));
         }
 
         private void RewriteClfi(PrimitiveType dt)
         {
             var left = Reg(0, dt);
             var right = Imm(1, dt);
-            SetCc(m.Cond(m.ISub(left, right)));
+            SetCcCond(m.ISub(left, right));
         }
 
         private void RewriteCli()
         {
             var ea = EffectiveAddress(0);
             var imm = Const(1);
-            SetCc(m.Cond(m.ISub(m.Mem8(ea), imm)));
+            SetCcCond(m.ISub(m.Mem8(ea), imm));
         }
 
         private void RewriteCmpH(PrimitiveType dtResult, PrimitiveType dtHalf)
@@ -190,7 +190,7 @@ namespace Reko.Arch.zSeries
             var src2 = m.Convert(m.Mem(dtHalf, EffectiveAddress(1)), dtHalf, dtResult);
             var diff = m.ISub(src1, src2);
             diff.DataType = dtResult;
-            SetCc(m.Cond(diff));
+            SetCcCond(diff);
         }
 
         private void RewriteCs(PrimitiveType dt)
@@ -307,7 +307,7 @@ namespace Reko.Arch.zSeries
             m.Assign(tmp, src1);
             Assign(src1, m.IAdd(src1, m.Mem(dt, ea)));
             Assign(Reg(0), tmp);
-            this.SetCc(m.Cond(src1));
+            this.SetCcCond(src1);
         }
 
         private void RewriteLay()
@@ -321,7 +321,7 @@ namespace Reko.Arch.zSeries
         {
             var src = Reg(1, dt);
             var dst = Assign(Reg(0), fn(src));
-            SetCc(m.Cond(dst));
+            SetCcCond(dst);
         }
 
         private void RewriteLdgr()
@@ -436,7 +436,7 @@ namespace Reko.Arch.zSeries
         {
             var src = Reg(1, dt);
             var dst = Assign(Reg(0), m.Neg(src));
-            SetCc(m.Cond(dst));
+            SetCcCond(dst);
         }
 
         private void RewriteLoc(PrimitiveType dt, ConditionCode ccode)
@@ -472,7 +472,7 @@ namespace Reko.Arch.zSeries
             }
             src = m.Fn(intrinsic, src);
             var dst = Assign(Reg(0), src);
-            SetCc(m.Cond(dst));
+            SetCcCond(dst);
         }
 
 
@@ -481,7 +481,7 @@ namespace Reko.Arch.zSeries
             var left = Reg(0, dt);
             var right = m.Mem(dt, EffectiveAddress(1));
             var dst = Assign(Reg(0), fn(left, right));
-            SetCc(m.Cond(dst));
+            SetCcCond(dst);
         }
 
         private void RewriteLogicR(PrimitiveType dt, Func<Expression, Expression, Expression> fn)
@@ -489,7 +489,7 @@ namespace Reko.Arch.zSeries
             var left = Reg(0, dt);
             var right = Reg(1, dt);
             var dst = Assign(Reg(0), fn(left, right));
-            SetCc(m.Cond(dst));
+            SetCcCond(dst);
         }
 
         private void RewriteLr(PrimitiveType dtSrc, PrimitiveType dtDst)
@@ -513,14 +513,14 @@ namespace Reko.Arch.zSeries
         {
             var ea = EffectiveAddress(1);
             var dst = Assign(Reg(0), m.Mem(dt, ea));
-            SetCc(m.Cond(m.ISub(dst, 0)));
+            SetCcCond(m.ISub(dst, 0));
         }
 
         private void RewriteLtr(PrimitiveType dt)
         {
             var src = Reg(1, dt);
             var dst = Assign(Reg(0), src);
-            SetCc(m.Cond(m.ISub(dst, 0)));
+            SetCcCond(m.ISub(dst, 0));
         }
 
         private void RewriteM(PrimitiveType dtSrc, PrimitiveType dtDst)
@@ -553,7 +553,7 @@ namespace Reko.Arch.zSeries
             var ea = EffectiveAddress(2);
             Identifier dst = Seq(PrimitiveType.Word128, 0, 1);
             var result = Assign(dst, m.Fn(intrinsics.mvcle.MakeInstance(ptrSize, dst.DataType), ea));
-            SetCc(m.Cond(result));
+            SetCcCond(result);
         }
 
         private void RewriteMvi(PrimitiveType dt)
@@ -587,7 +587,7 @@ namespace Reko.Arch.zSeries
             m.Assign(m.Mem(dt, eaDst), tmp);
             
             var cc = binder.EnsureFlagGroup(Registers.CC);
-            m.Assign(cc, m.Cond(tmp));
+            m.Assign(cc, m.Cond(cc.DataType, tmp));
         }
 
         private void RewriteNi()
@@ -598,7 +598,7 @@ namespace Reko.Arch.zSeries
             m.Assign(tmp, m.And(left, right));
             var dst = m.Mem8(EffectiveAddress(0));
             m.Assign(dst, tmp);
-            SetCc(m.Cond(tmp));
+            SetCcCond(tmp);
         }
 
         private void RewriteOi()
@@ -608,7 +608,7 @@ namespace Reko.Arch.zSeries
             var tmp = binder.CreateTemporary(left.DataType);
             m.Assign(tmp, m.Or(left, right));
             m.Assign(left, tmp);
-            SetCc(m.Cond(tmp));
+            SetCcCond(tmp);
         }
 
         private void RewriteRisbg(IntrinsicProcedure intrinsic)
@@ -616,7 +616,7 @@ namespace Reko.Arch.zSeries
             var dt = PrimitiveType.Word64;
             var e = m.Fn(intrinsic, Op(1, dt), Op(2, dt), Op(3, dt), Op(4, dt));
             var dst = Assign(Reg(0), e);
-            SetCc(m.Cond(dst));
+            SetCcCond(dst);
         }
 
         private void RewriteS(PrimitiveType dt)
@@ -625,7 +625,7 @@ namespace Reko.Arch.zSeries
             var diff = m.ISub(src1, Op(1, dt));
             diff.DataType = dt;
             var dst = Assign(Reg(0), diff);
-            SetCc(m.Cond(dst));
+            SetCcCond(dst);
         }
 
         private void RewriteSub2(PrimitiveType dt)
@@ -634,7 +634,7 @@ namespace Reko.Arch.zSeries
             var src2 = Op(1, dt);
             var diff = m.ISub(src1, src2);
             var dst = Assign(Reg(0), diff);
-            SetCc(m.Cond(dst));
+            SetCcCond(dst);
         }
 
         private void RewriteAlu3(Func<Expression, Expression, Expression> fn, PrimitiveType dtResult)
@@ -643,7 +643,7 @@ namespace Reko.Arch.zSeries
             var src2 = Op(2, dtResult);
             var bin = fn(src1, src2);
             var dst = Assign(Reg(0), bin);
-            SetCc(m.Cond(dst));
+            SetCcCond(dst);
         }
 
         private void RewriteAluH(Func<Expression,Expression,Expression> fn, PrimitiveType dtResult, PrimitiveType dtHalf)
@@ -653,7 +653,7 @@ namespace Reko.Arch.zSeries
             var diff = fn(src1, src2);
             diff.DataType = dtResult;
             var dst = Assign(Reg(0), diff);
-            SetCc(m.Cond(dst));
+            SetCcCond(dst);
         }
 
         private void RewriteShift2(PrimitiveType dt, Func<Expression,Expression,Expression> fn)
@@ -665,7 +665,7 @@ namespace Reko.Arch.zSeries
                 sh = (int)((MemoryOperand)instr.Operands[1]).Offset & 0x3F;
             var src = Reg(0, dt);
             var dst = Assign(Reg(0), fn(src, m.Int32(sh)));
-            SetCc(m.Cond(dst));
+            SetCcCond(dst);
         }
 
         private void RewriteShift3(PrimitiveType dt, Func<Expression, Expression, Expression> fn)
@@ -675,7 +675,7 @@ namespace Reko.Arch.zSeries
                 sh = Constant.Int32((int) addr.ToLinear());
             var src1 = Reg(1, dt);
             var dst = Assign(Reg(0), fn(src1, sh));
-            SetCc(m.Cond(dst));
+            SetCcCond(dst);
         }
 
         private void RewriteSt(PrimitiveType dt)
@@ -713,7 +713,7 @@ namespace Reko.Arch.zSeries
             var left = Reg(0, dt);
             var right = Op(1, dt);
             var dst = Assign(Reg(0), m.Xor(left, right));
-            SetCc(m.Cond(dst));
+            SetCcCond(dst);
         }
 
         private void RewriteXc()
@@ -735,7 +735,7 @@ namespace Reko.Arch.zSeries
                 m.Assign(m.Mem(dt, eaDst), tmp);
             }
             var cc = binder.EnsureFlagGroup(Registers.CC);
-            m.Assign(cc, m.Cond(tmp));
+            m.Assign(cc, m.Cond(cc.DataType, tmp));
         }
     }
 }

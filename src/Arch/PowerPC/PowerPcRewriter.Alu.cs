@@ -37,7 +37,7 @@ namespace Reko.Arch.PowerPC
             if (!instr.setsCR0)
                 return;
             var cr0 = binder.EnsureFlagGroup(arch.cr0);
-            m.Assign(cr0, m.Cond(e));
+            m.Assign(cr0, m.Cond(cr0.DataType, e));
         }
 
         private void RewriteAdd()
@@ -56,7 +56,7 @@ namespace Reko.Arch.PowerPC
             RewriteAdd(opD, opL, opR);
             MaybeEmitCr0(opD);
             var xer = binder.EnsureRegister(arch.xer);
-            m.Assign(xer, m.Cond(opD));
+            m.Assign(xer, m.Cond(xer.DataType, opD));
         }
 
         public void RewriteAdde()
@@ -70,7 +70,7 @@ namespace Reko.Arch.PowerPC
                     m.IAdd(opL, opR),
                     xer));
             MaybeEmitCr0(opD);
-            m.Assign(xer, m.Cond(opD));
+            m.Assign(xer, m.Cond(xer.DataType, opD));
         }
 
         public void RewriteAddme()
@@ -99,7 +99,7 @@ namespace Reko.Arch.PowerPC
             var opD = RewriteOperand(instr.Operands[0]);
             RewriteAdd(opD, opL, opR);
             var xer = binder.EnsureRegister(arch.xer);
-            m.Assign(xer, m.Cond(opD));
+            m.Assign(xer, m.Cond(xer.DataType, opD));
         }
 
         public void RewriteAddis()
@@ -125,7 +125,7 @@ namespace Reko.Arch.PowerPC
             var opR = binder.EnsureRegister(arch.xer);
             var opD = RewriteOperand(instr.Operands[0]);
             RewriteAdd(opD, opL, opR);
-            m.Assign(opR, m.Cond(opD));
+            m.Assign(opR, m.Cond(opR.DataType, opD));
         }
 
         private void RewriteAdd(Expression opD, Expression opL, Expression opR)
@@ -190,7 +190,7 @@ namespace Reko.Arch.PowerPC
             var r = RewriteOperand(1);
             var i = RewriteOperand(2);
             var cr = RewriteOperand(0);
-            m.Assign(cr, m.Cond(m.ISub(r, i)));
+            m.Assign(cr, m.Cond(cr.DataType, m.ISub(r, i)));
         }
 
         private void RewriteCmpb()
@@ -207,7 +207,7 @@ namespace Reko.Arch.PowerPC
             var r = RewriteOperand(instr.Operands[1]);
             var i = RewriteOperand(instr.Operands[2]);
             m.Assign(cr, m.Cond(
-                m.ISub(r, i)));
+                cr.DataType, m.ISub(r, i)));
         }
 
         private void RewriteCmpl()
@@ -215,8 +215,7 @@ namespace Reko.Arch.PowerPC
             var cr = RewriteOperand(instr.Operands[0]);
             var r = RewriteOperand(instr.Operands[1]);
             var i = RewriteOperand(instr.Operands[2]);
-            m.Assign(cr, m.Cond(
-                m.ISub(r, i)));
+            m.Assign(cr, m.Cond(cr.DataType, m.ISub(r, i)));
         }
 
         private void RewriteCmpli()
@@ -224,8 +223,7 @@ namespace Reko.Arch.PowerPC
             var cr = RewriteOperand(instr.Operands[0]);
             var r = RewriteOperand(instr.Operands[1]);
             var i = RewriteOperand(instr.Operands[2]);
-            m.Assign(cr, m.Cond(
-                m.ISub(r, i)));
+            m.Assign(cr, m.Cond(cr.DataType, m.ISub(r, i)));
         }
 
         private void RewriteCmplw()
@@ -233,8 +231,7 @@ namespace Reko.Arch.PowerPC
             var cr = RewriteOperand(instr.Operands[0]);
             var r = RewriteOperand(instr.Operands[1]);
             var i = RewriteOperand(instr.Operands[2]);
-            m.Assign(cr, m.Cond(
-                m.ISub(r, i)));
+            m.Assign(cr, m.Cond(cr.DataType, m.ISub(r, i)));
         }
 
         private void RewriteCmplwi()
@@ -243,6 +240,7 @@ namespace Reko.Arch.PowerPC
             var r = RewriteOperand(instr.Operands[1]);
             var i = RewriteOperand(instr.Operands[2]);
             m.Assign(cr, m.Cond(
+                cr.DataType,
                 m.ISub(r, i)));
         }
 
@@ -252,6 +250,7 @@ namespace Reko.Arch.PowerPC
             var i = RewriteOperand(2);
             var cr = RewriteOperand(0);
             m.Assign(cr, m.Cond(
+                cr.DataType,
                 m.ISub(r, i)));
         }
 
@@ -927,7 +926,7 @@ namespace Reko.Arch.PowerPC
             m.Assign(opD, m.ISub(opR, opL));
             MaybeEmitCr0(opD);
             var xer = binder.EnsureRegister(arch.xer);
-            m.Assign(xer, m.Cond(opD));
+            m.Assign(xer, m.Cond(xer.DataType, opD));
         }
 
         public void RewriteSubfe()

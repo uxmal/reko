@@ -163,7 +163,7 @@ namespace Reko.Arch.MicroBlaze
         private void C(Expression e)
         {
             var carry = binder.EnsureFlagGroup(Registers.C);
-            m.Assign(carry, m.Cond(e));
+            m.Assign(carry, m.Cond(carry.DataType, e));
         }
 
         private void EmitLoad(Identifier dst, MemoryAccess src)

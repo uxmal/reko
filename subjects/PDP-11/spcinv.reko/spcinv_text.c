@@ -385,8 +385,7 @@ bool fn05D4(Eq_n r0, Eq_n r3, byte * r4, union Eq_n & r0Out, union Eq_n & r3Out,
 	word16 r5_n;
 	byte * r4_n;
 	cup16 v9_n = r3 - g_ptr0F02;
-	Eq_n NZVC_n;
-	NZVC_n.u1 = cond(v9_n - 0x04);
+	cui16 NZVC_n = cond(v9_n - 0x04);
 	if (v9_n > 0x04)
 	{
 		r0Out = r0;

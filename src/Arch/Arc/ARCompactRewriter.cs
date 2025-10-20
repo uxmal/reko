@@ -581,8 +581,8 @@ namespace Reko.Arch.Arc
             var flagReg = binder.EnsureFlagGroup(Registers.ZNV);
             var satReg = binder.EnsureFlagGroup(Registers.S);
 
-            m.Assign(flagReg, m.Cond(dst));
-            m.Assign(satReg, m.Cond(dst));
+            m.Assign(flagReg, m.Cond(flagReg.DataType, dst));
+            m.Assign(satReg, m.Cond(satReg.DataType, dst));
         }
 
         private void RewriteAluOp(Func<Expression, Expression> fn, FlagGroupStorage? grf = null)
@@ -594,7 +594,7 @@ namespace Reko.Arch.Arc
             if (instr.SetFlags && grf is not null)
             {
                 var flagReg = binder.EnsureFlagGroup(grf);
-                m.Assign(flagReg, m.Cond(dst));
+                m.Assign(flagReg, m.Cond(flagReg.DataType, dst));
             }
         }
 
@@ -608,7 +608,7 @@ namespace Reko.Arch.Arc
             if (instr.SetFlags)
             {
                 var flagReg = binder.EnsureFlagGroup(grf);
-                m.Assign(flagReg, m.Cond(dst));
+                m.Assign(flagReg, m.Cond(flagReg.DataType, dst));
             }
         }
 
@@ -661,7 +661,7 @@ namespace Reko.Arch.Arc
             var src1 = Operand(0);
             var src2 = Operand(1);
             var dst = binder.EnsureFlagGroup(grf);
-            m.Assign(dst, m.Cond(fn(src1, src2)));
+            m.Assign(dst, m.Cond(grf.DataType, fn(src1, src2)));
         }
 
         private void RewriteDivaw()
@@ -825,7 +825,7 @@ namespace Reko.Arch.Arc
             if (instr.SetFlags)
             {
                 var flagReg = binder.EnsureFlagGroup(grf);
-                m.Assign(flagReg, m.Cond(dst));
+                m.Assign(flagReg, m.Cond(flagReg.DataType, dst));
             }
         }
 

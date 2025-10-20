@@ -260,7 +260,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 m.Label("l0000");
                 m.MStore(r, m.Word32(0));
                 m.Assign(r, m.ISub(r, 4));
-                m.Assign(zf, m.Cond(r));
+                m.Assign(zf, m.Cond(zf.DataType, r));
                 m.BranchIf(m.Test(ConditionCode.NE, zf), "l0000");
 
                 m.Label("l0001");

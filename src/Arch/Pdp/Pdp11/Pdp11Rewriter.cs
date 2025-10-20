@@ -187,7 +187,7 @@ namespace Reko.Arch.Pdp.Pdp11
             if (changed is not null)
             {
                 var grfChanged = binder.EnsureFlagGroup(changed);
-                m.Assign(grfChanged, m.Cond(e));
+                m.Assign(grfChanged, m.Cond(grfChanged.DataType, e));
             }
         }
 

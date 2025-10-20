@@ -232,7 +232,17 @@ namespace Reko.Arch.MilStd1750
             testgenSvc?.ReportMissingRewriter("MS1750Rw", instr, instr.Mnemonic.ToString(), rdr, message);
         }
 
-        private void AssignFlags(FlagGroupStorage flags, Expression e) => m.Assign(binder.EnsureFlagGroup(flags), e);
+        private void AssignFlags(FlagGroupStorage flags, Expression e)
+        {
+            m.Assign(binder.EnsureFlagGroup(flags), e);
+        }
+
+        private void AssignCondOf(FlagGroupStorage flags, Expression e)
+        {
+            m.Assign(binder.EnsureFlagGroup(flags), m.Cond(flags.DataType, e));
+        }
+
+
         private Address Addr(int iOp) => (Address) instr.Operands[iOp];
 
 
@@ -306,7 +316,7 @@ namespace Reko.Arch.MilStd1750
             var src = AltMem(PrimitiveType.Word16);
             var dst = binder.EnsureRegister(Registers.GpRegs[2]);
             m.Assign(dst, m.IAdd(dst, src));
-            AssignFlags(CPZN, m.Cond(dst));
+            AssignCondOf(CPZN, dst);
         }
 
         private void RewriteAndx()
@@ -315,7 +325,7 @@ namespace Reko.Arch.MilStd1750
             var idxReg = Reg(1);
             var dst = binder.EnsureRegister(Registers.GpRegs[2]);
             m.Assign(dst, m.And(dst, m.Mem16(m.IAdd(baseReg, idxReg))));
-            AssignFlags(PZN, m.Cond(dst));
+            AssignCondOf(PZN, dst);
         }
 
         private void RewriteArithmetic(Func<Expression, Expression, Expression> fn)
@@ -323,7 +333,7 @@ namespace Reko.Arch.MilStd1750
             var src = Op(1);
             var dst = Op(0);
             m.Assign(dst, fn(dst, src));
-            AssignFlags(CPZN, m.Cond(dst));
+            AssignCondOf(CPZN, dst);
         }
 
         private void RewriteBex()
@@ -370,7 +380,7 @@ namespace Reko.Arch.MilStd1750
         {
             var left = Op(0);
             var right = Op(1);
-            AssignFlags(PZN, m.Cond(m.ISub(left, right)));
+            AssignCondOf(PZN, m.ISub(left, right));
         }
 
         private void RewriteD()
@@ -384,7 +394,7 @@ namespace Reko.Arch.MilStd1750
             m.Assign(divisor, Op(1));
             m.Assign(quo, m.SDiv(dividend, divisor));
             m.Assign(rem, m.SMod(dividend, divisor));
-            AssignFlags(PZN, m.Cond(quo));
+            AssignCondOf(PZN, quo);
         }
 
         private void RewriteDa()
@@ -392,7 +402,7 @@ namespace Reko.Arch.MilStd1750
             var src = Op(1);
             var dst = DReg(0);
             m.Assign(dst, m.IAdd(dst, src));
-            AssignFlags(CPZN, m.Cond(dst));
+            AssignCondOf(CPZN, dst);
         }
 
         private void RewriteDabs()
@@ -400,7 +410,7 @@ namespace Reko.Arch.MilStd1750
             var src = DReg(1);
             var dst = DReg(0);
             m.Assign(dst, m.Fn(CommonOps.Abs.MakeInstance(PrimitiveType.Int32), src));
-            AssignFlags(PZN, m.Cond(dst));
+            AssignCondOf(PZN, dst);
         }
 
         private void RewriteDb()
@@ -414,7 +424,7 @@ namespace Reko.Arch.MilStd1750
             m.Assign(divisor, Op(1));
             m.Assign(quo, m.SDiv(dividend, divisor));
             m.Assign(rem, m.SMod(dividend, divisor));
-            AssignFlags(PZN, m.Cond(quo));
+            AssignCondOf(PZN, quo);
         }
 
         private void RewriteDv()
@@ -428,14 +438,14 @@ namespace Reko.Arch.MilStd1750
             var rem = binder.EnsureRegister(ra1);
             m.Assign(quo, m.SDiv(dividend, divisor));
             m.Assign(rem, m.SMod(dividend, divisor));
-            AssignFlags(PZN, m.Cond(quo));
+            AssignCondOf(PZN, quo);
         }
 
         private void RewriteDcr()
         {
             var left = DReg(0);
             var right = DReg(1);
-            AssignFlags(PZN, m.Cond(m.ISub(left, right)));
+            AssignCondOf(PZN, m.ISub(left, right));
         }
 
         private void RewriteDdr()
@@ -443,7 +453,7 @@ namespace Reko.Arch.MilStd1750
             var divisor = DReg(1);
             var dividend = DReg(0);
             m.Assign(dividend, m.SDiv(dividend, divisor));
-            AssignFlags(PZN, m.Cond(dividend));
+            AssignCondOf(PZN, dividend);
         }
 
         private void RewriteDlb()
@@ -452,7 +462,7 @@ namespace Reko.Arch.MilStd1750
             var disp = Imm(1);
             var dst = binder.EnsureSequence(PrimitiveType.Word32, Registers.GpRegs[0], Registers.GpRegs[2]);
             m.Assign(dst, m.Mem32(m.IAdd(baseReg, disp)));
-            AssignFlags(PZN, m.Cond(dst));
+            AssignCondOf(PZN, dst);
         }
 
         private void RewriteDlr()
@@ -460,7 +470,7 @@ namespace Reko.Arch.MilStd1750
             var src = DReg(1);
             var dst = DReg(0);
             m.Assign(dst, src);
-            AssignFlags(PZN, m.Cond(dst));
+            AssignCondOf(PZN, dst);
         }
 
         private void RewriteDm()
@@ -468,7 +478,7 @@ namespace Reko.Arch.MilStd1750
             var src = Op(1);
             var dst = DReg(0);
             m.Assign(dst, m.IMul(dst, src));
-            AssignFlags(PZN, m.Cond(dst));
+            AssignCondOf(PZN, dst);
         }
 
         private void RewriteDmr()
@@ -476,7 +486,7 @@ namespace Reko.Arch.MilStd1750
             var src = DReg(1);
             var dst = DReg(0);
             m.Assign(dst, m.IMul(dst, src));
-            AssignFlags(PZN, m.Cond(dst));
+            AssignCondOf(PZN, dst);
         }
 
         private void RewriteDneg()
@@ -484,7 +494,7 @@ namespace Reko.Arch.MilStd1750
             var src = DReg(1);
             var dst = DReg(0);
             m.Assign(dst, m.Neg(src));
-            AssignFlags(PZN, m.Cond(dst));
+            AssignCondOf(PZN, dst);
         }
 
         private void RewriteDsar()
@@ -496,7 +506,7 @@ namespace Reko.Arch.MilStd1750
                     dst.DataType,
                     src.DataType),
                 dst, src));
-            AssignFlags(PZN, m.Cond(dst));
+            AssignCondOf(PZN, dst);
         }
 
         private void RewriteDsra()
@@ -504,7 +514,7 @@ namespace Reko.Arch.MilStd1750
             var dst = DReg(0);
             var shift = Imm(1);
             m.Assign(dst, m.Sar(dst, shift));
-            AssignFlags(PZN, m.Cond(dst));
+            AssignCondOf(PZN, dst);
         }
 
         private void RewriteDsr()
@@ -512,7 +522,7 @@ namespace Reko.Arch.MilStd1750
             var src = DReg(1);
             var dst = DReg(0);
             m.Assign(dst, m.ISub(dst, src));
-            AssignFlags(CPZN, m.Cond(dst));
+            AssignCondOf(CPZN, dst);
         }
 
         private void RewriteDst()
@@ -526,7 +536,7 @@ namespace Reko.Arch.MilStd1750
         {
             var src = Op(1);
             var dst = Ef(0);
-            AssignFlags(PZN, m.Cond(m.FSub(dst, src)));
+            AssignCondOf(PZN, m.FSub(dst, src));
         }
 
         private void RewriteEfix()
@@ -534,7 +544,7 @@ namespace Reko.Arch.MilStd1750
             var src = Ef(1);
             var dst = DReg(0);
             m.Assign(dst, m.Convert(src, MilStd1750Architecture.Real48, PrimitiveType.Int32));
-            AssignFlags(PZN, m.Cond(dst));
+            AssignCondOf(PZN, dst);
         }
 
         private void RewriteEfl()
@@ -542,7 +552,7 @@ namespace Reko.Arch.MilStd1750
             var src = Op(1);
             var dst = Ef(0);
             m.Assign(dst, src);
-            AssignFlags(PZN, m.Cond(dst));
+            AssignCondOf(PZN, dst);
         }
 
         private void RewriteEflt()
@@ -550,7 +560,7 @@ namespace Reko.Arch.MilStd1750
             var src = DReg(1);
             var dst = Ef(0);
             m.Assign(dst, m.Convert(src, PrimitiveType.Int32, MilStd1750Architecture.Real48));
-            AssignFlags(PZN, m.Cond(dst));
+            AssignCondOf(PZN, dst);
         }
 
         private void RewriteEf(Func<Expression, Expression, Expression> fn)
@@ -558,7 +568,7 @@ namespace Reko.Arch.MilStd1750
             var src = Op(1);
             var dst = Ef(0);
             m.Assign(dst, fn(dst, src));
-            AssignFlags(PZN, m.Cond(dst));
+            AssignCondOf(PZN, dst);
         }
 
         private void RewriteEfr(Func<Expression, Expression, Expression> fn)
@@ -566,7 +576,7 @@ namespace Reko.Arch.MilStd1750
             var src = Ef(1);
             var dst = Ef(0);
             m.Assign(dst, fn(dst, src));
-            AssignFlags(PZN, m.Cond(dst));
+            AssignCondOf(PZN, dst);
         }
 
         private void RewriteEfst()
@@ -581,7 +591,7 @@ namespace Reko.Arch.MilStd1750
             var src = AltMem(PrimitiveType.Real32);
             var dst = binder.EnsureSequence(src.DataType, Registers.GpRegs[0], Registers.GpRegs[1]);
             m.Assign(dst, m.FAdd(dst, src));
-            AssignFlags(CPZN, m.Cond(dst));
+            AssignCondOf(CPZN, dst);
         }
 
         private void RewriteFabs()
@@ -589,7 +599,7 @@ namespace Reko.Arch.MilStd1750
             var src = DReg(1);
             var dst = DReg(0);
             m.Assign(dst, m.Fn(FpOps.FAbs32, src));
-            AssignFlags(PZN, m.Cond(dst));
+            AssignCondOf(PZN, dst);
         }
 
         private void RewriteFdb()
@@ -597,7 +607,7 @@ namespace Reko.Arch.MilStd1750
             var src = AltMem(PrimitiveType.Real32);
             var dst = binder.EnsureSequence(src.DataType, Registers.GpRegs[0], Registers.GpRegs[1]);
             m.Assign(dst, m.FDiv(dst, src));
-            AssignFlags(PZN, m.Cond(dst));
+            AssignCondOf(PZN, dst);
         }
 
         private void RewriteFmb()
@@ -605,7 +615,7 @@ namespace Reko.Arch.MilStd1750
             var src = AltMem(PrimitiveType.Real32);
             var dst = binder.EnsureSequence(src.DataType, Registers.GpRegs[0], Registers.GpRegs[1]);
             m.Assign(dst, m.FMul(dst, src));
-            AssignFlags(PZN, m.Cond(dst));
+            AssignCondOf(PZN, dst);
         }
 
         private void RewriteFmr()
@@ -613,7 +623,7 @@ namespace Reko.Arch.MilStd1750
             var src = DReg(0);
             var dst = DReg(1);
             m.Assign(dst, m.FMul(dst, src));
-            AssignFlags(PZN, m.Cond(dst));
+            AssignCondOf(PZN, dst);
         }
 
         private void RewriteFneg()
@@ -621,7 +631,7 @@ namespace Reko.Arch.MilStd1750
             var src = DReg(1);
             var dst = DReg(0);
             m.Assign(dst, m.FNeg(src));
-            AssignFlags(PZN, m.Cond(dst));
+            AssignCondOf(PZN, dst);
         }
 
         private void RewriteIncm()
@@ -631,7 +641,7 @@ namespace Reko.Arch.MilStd1750
             var tmp = binder.CreateTemporary(mem.DataType);
             m.Assign(tmp, m.IAdd(mem, src));
             m.Assign(mem, tmp);
-            AssignFlags(CPZN, m.Cond(tmp));
+            AssignCondOf(CPZN, tmp);
         }
 
         private void RewriteJc()
@@ -717,7 +727,7 @@ namespace Reko.Arch.MilStd1750
             var disp = Imm(1);
             var dst = binder.EnsureRegister(Registers.GpRegs[2]);
             m.Assign(dst, m.Mem16(m.IAdd(baseReg, disp)));
-            AssignFlags(PZN, m.Cond(dst));
+            AssignCondOf(PZN, dst);
         }
 
         private void RewriteLbx()
@@ -726,7 +736,7 @@ namespace Reko.Arch.MilStd1750
             var idxReg = Reg(1);
             var dst = binder.EnsureRegister(Registers.GpRegs[2]);
             m.Assign(dst, m.Mem16(m.IAdd(baseReg, idxReg)));
-            AssignFlags(PZN, m.Cond(dst));
+            AssignCondOf(PZN, dst);
         }
 
         private void RewriteLoad()
@@ -734,7 +744,7 @@ namespace Reko.Arch.MilStd1750
             var src = Op(1);
             var dst = Op(0);
             m.Assign(dst, src);
-            AssignFlags(PZN, m.Cond(dst));
+            AssignCondOf(PZN, dst);
         }
 
         private void RewriteLogical(Func<Expression,Expression,Expression> fn)
@@ -742,7 +752,7 @@ namespace Reko.Arch.MilStd1750
             var src = Op(1);
             var dst = Op(0);
             m.Assign(dst, fn(dst, src));
-            AssignFlags(PZN, m.Cond(dst));
+            AssignCondOf(PZN, dst);
         }
 
         private void RewriteLlb()
@@ -750,7 +760,7 @@ namespace Reko.Arch.MilStd1750
             var src = Op(1);
             var dst = Op(0);
             m.Assign(dst, m.Dpb(dst, m.Slice(src, PrimitiveType.Byte), 0));
-            AssignFlags(PZN, m.Cond(dst));
+            AssignCondOf(PZN, dst);
         }
 
         private void RewriteLm()
@@ -771,7 +781,7 @@ namespace Reko.Arch.MilStd1750
             var src = Op(1);
             var dst = Op(0);
             m.Assign(dst, m.Dpb(dst, m.Slice(src, PrimitiveType.Byte), 8));
-            AssignFlags(PZN, m.Cond(dst));
+            AssignCondOf(PZN, dst);
         }
 
         private void RewriteMov()
@@ -790,7 +800,7 @@ namespace Reko.Arch.MilStd1750
             var imm = Constant.Int16((short)-Imm(1).ToInt16());
             var ra = Reg(0);
             m.Assign(ra, m.IMul(ra, imm));
-            AssignFlags(PZN, m.Cond(ra));
+            AssignCondOf(PZN, ra);
         }
 
         private void RewriteNeg()
@@ -798,7 +808,7 @@ namespace Reko.Arch.MilStd1750
             var src = Reg(1);
             var dst = Reg(0);
             m.Assign(dst, m.Neg(src));
-            AssignFlags(PZN, m.Cond(dst));
+            AssignCondOf(PZN, dst);
         }
 
         private void RewriteOrb()
@@ -806,7 +816,7 @@ namespace Reko.Arch.MilStd1750
             var src = AltMem(PrimitiveType.Word16);
             var dst = binder.EnsureRegister(Registers.GpRegs[2]);
             m.Assign(dst, m.Or(dst, src));
-            AssignFlags(PZN, m.Cond(dst));
+            AssignCondOf(PZN, dst);
         }
 
         private void RewritePopm()
@@ -883,7 +893,7 @@ namespace Reko.Arch.MilStd1750
                 dst.DataType,
                 src.DataType),
                 dst, src));
-            AssignFlags(PZN, m.Cond(dst));
+            AssignCondOf(PZN, dst);
         }
 
         private void RewriteSb()
@@ -924,7 +934,7 @@ namespace Reko.Arch.MilStd1750
             var src = Op(1);
             var dst = Reg(0);
             m.Assign(dst, m.Shl(dst, src));
-            AssignFlags(PZN, m.Cond(dst));
+            AssignCondOf(PZN, dst);
         }
 
         private void RewriteSlr()
@@ -932,7 +942,7 @@ namespace Reko.Arch.MilStd1750
             var src = Reg(1);
             var dst = Reg(0);
             m.Assign(dst, m.Fn(shift_logical_intrinsic, dst, src));
-            AssignFlags(PZN, m.Cond(dst));
+            AssignCondOf(PZN, dst);
         }
 
         private void RewriteSoj()
@@ -942,7 +952,7 @@ namespace Reko.Arch.MilStd1750
             if (target is Address addr)
             {
                 m.Assign(reg, m.ISub(reg, 1));
-                AssignFlags(PZN, m.Cond(reg));
+                AssignCondOf(PZN, reg);
                 m.Branch(m.Ne0(reg), addr);
             }
             else
@@ -951,7 +961,7 @@ namespace Reko.Arch.MilStd1750
                 var idx = Reg(2);
                 m.Assign(tmp, m.IAdd(idx, target));
                 m.Assign(reg, m.ISub(reg, 1));
-                AssignFlags(PZN, m.Cond(reg));
+                AssignCondOf(PZN, reg);
                 m.Goto(tmp);
             }
         }
@@ -961,7 +971,7 @@ namespace Reko.Arch.MilStd1750
             var src = Op(1);
             var dst = Reg(0);
             m.Assign(dst, m.Sar(dst, src));
-            AssignFlags(PZN, m.Cond(dst));
+            AssignCondOf(PZN, dst);
         }
 
         private void RewriteSrl()
@@ -969,7 +979,7 @@ namespace Reko.Arch.MilStd1750
             var src = Op(1);
             var dst = Reg(0);
             m.Assign(dst, m.Shr(dst, src));
-            AssignFlags(PZN, m.Cond(dst));
+            AssignCondOf(PZN, dst);
         }
 
         private void RewriteStore()
@@ -1015,7 +1025,7 @@ namespace Reko.Arch.MilStd1750
         {
             var dst = Reg(0);
             m.Assign(dst, m.Fn(xbr_intrinsic, dst));
-            AssignFlags(PZN, m.Cond(dst));
+            AssignCondOf(PZN, dst);
         }
 
         private void RewriteXwr()
@@ -1026,7 +1036,7 @@ namespace Reko.Arch.MilStd1750
             m.Assign(tmp, rb);
             m.Assign(rb, ra);
             m.Assign(ra, tmp);
-            AssignFlags(PZN, m.Cond(ra));
+            AssignCondOf(PZN, ra);
         }
 
         static readonly IntrinsicProcedure bif_intrinsic = new IntrinsicBuilder("__bif", true)

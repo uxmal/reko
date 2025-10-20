@@ -226,13 +226,13 @@ namespace Reko.Arch.OpenRISC.Or
         private void CV(Identifier dst)
         {
             var cv = binder.EnsureFlagGroup(Registers.CV);
-            m.Assign(cv, m.Cond(dst));
+            m.Assign(cv, m.Cond(cv.DataType, dst));
         }
 
         private void V(Identifier dst)
         {
             var v = binder.EnsureFlagGroup(Registers.V);
-            m.Assign(v, m.Cond(dst));
+            m.Assign(v, m.Cond(v.DataType, dst));
         }
 
         private void RewriteAluCV(Func<Expression, Expression, Expression> fn)
