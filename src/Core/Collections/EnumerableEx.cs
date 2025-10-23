@@ -192,7 +192,7 @@ namespace Reko.Core.Collections
         /// returns a default value.
         /// </summary>
         /// <remarks>Patterned after Python's dict.get(key [,=defaultvalue]) function</remarks>
-        public static TValue Get<TKey, TValue>(this IDictionary<TKey,TValue> d, TKey key, TValue def = default!)
+        public static TValue Get<TKey, TValue>(this IDictionary<TKey, TValue> d, TKey key, TValue def = default!)
         {
             if (d.TryGetValue(key, out var value))
                 return value;
@@ -250,6 +250,31 @@ namespace Reko.Core.Collections
             {
                 queue.Enqueue(item);
             }
+        }
+
+        /// <summary>
+        /// Determines whether all elements in the sequence are the same, using
+        /// the default equality comparer.
+        /// </summary>
+        /// <param name="source">Sequence of elements.</param>
+        /// <returns>True if all the elements were the same; otherwise false.
+        /// </returns>
+        public static bool AllSame<T>(this IEnumerable<T> source)
+        {
+            using var e = source.GetEnumerator();
+            if (!e.MoveNext())
+            {
+                return false;
+            }
+            var firstValue = e.Current;
+            while (e.MoveNext())
+            {
+                if (!EqualityComparer<T>.Default.Equals(firstValue, e.Current))
+                {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }

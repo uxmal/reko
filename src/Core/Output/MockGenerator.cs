@@ -613,6 +613,8 @@ namespace Reko.Core.Output
         void IExpressionVisitor.VisitConditionOf(ConditionOf cof)
         {
             Method("Cond");
+            cof.DataType.Accept(this);
+            writer.Write(", ");
             cof.Expression.Accept(this);
             writer.Write(")");
         }
@@ -777,9 +779,9 @@ namespace Reko.Core.Output
         void IExpressionVisitor.VisitSlice(Slice slice)
         {
             Method("Slice");
-            slice.DataType.Accept(this);
-            writer.Write(", ");
             slice.Expression.Accept(this);
+            writer.Write(", ");
+            slice.DataType.Accept(this);
             writer.Write(", {0})", slice.Offset);
         }
 

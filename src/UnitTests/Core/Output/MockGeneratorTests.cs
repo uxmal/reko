@@ -364,7 +364,7 @@ namespace Reko.UnitTests.Core.Output
                 "    Identifier b = m.Frame.EnsureStackVariable(-8, PrimitiveType.Word32, \"b\");" + nl +
                 "    " + nl +
                 "    Label(\"l1\");" + nl +
-                "    Assign(a, Seq(Slice(PrimitiveType.Word16, a, 16), Slice(PrimitiveType.Word16, b, 16)));" + nl +
+                "    Assign(a, Seq(Slice(a, PrimitiveType.Word16, 16), Slice(b, PrimitiveType.Word16, 16)));" + nl +
                 "}" + nl +
                 "" + nl);
         }
@@ -496,7 +496,7 @@ namespace Reko.UnitTests.Core.Output
     Identifier CZ = m.Frame.EnsureFlagGroup(grf_CZ);
     
     m.Label(""l1"");
-    m.Assign(CZ, m.Cond(m.Mem(PrimitiveType.Word32, Address.Ptr32(0x123400))));
+    m.Assign(CZ, m.Cond(PrimitiveType.Word32, m.Mem(PrimitiveType.Word32, Address.Ptr32(0x123400))));
 });
 
 ");
