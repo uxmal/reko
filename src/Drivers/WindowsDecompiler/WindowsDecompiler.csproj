@@ -26,7 +26,7 @@
     <ProjectReference Include="$(SolutionDir)Environments\AmigaOS.Design\AmigaOS.Design.csproj" />
     <ProjectReference Include="$(SolutionDir)Environments\Msdos.Design\Msdos.Design.csproj" />
 
-    <Architectures Include="$(SolutionDir)Arch\M68k.Design\bin\$(Configuration)\Reko.Arch.M68k.Design.*" />
+    <Architectures Include="$(SolutionDir)Arch\Motorola.Design\bin\$(Configuration)\Reko.Arch.Motorola.Design.*" />
     <Architectures Include="$(SolutionDir)Arch\Microchip.Design\bin\$(Configuration)\Reko.Arch.MicrochipPIC.Design.*" />
     <Architectures Include="$(SolutionDir)Arch\PowerPC.Design\bin\$(StandardOutputDir)\Reko.Arch.PowerPC.Design.*" />
     <Architectures Include="$(SolutionDir)Arch\X86.Design\bin\$(Configuration)\Reko.Arch.X86.Design.*" />

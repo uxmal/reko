@@ -21,11 +21,8 @@
 using Reko.Core.Configuration;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Reko.Core;
-using Reko.Core.Assemblers;
-using Reko.Arch.M68k;
+using Reko.Arch.Motorola;
 using Reko.Environments.AmigaOS;
 using System.ComponentModel.Design;
 using Reko.Core.Serialization;

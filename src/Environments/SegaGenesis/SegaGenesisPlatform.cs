@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Reko.Arch.M68k;
+using Reko.Arch.Motorola.M68k;
 using Reko.Core;
 using Reko.Core.Hll.C;
 using Reko.Core.Memory;

@@ -19,17 +19,13 @@
 #endregion
 
 using NUnit.Framework;
-using Reko.Arch.M68k;
+using Reko.Arch.Motorola;
 using Reko.Core;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Environments.MacOS.Classic;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Environments.MacOS.Classic
 {

@@ -14,7 +14,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj" />
     <ProjectReference Include="..\..\Gui\Gui.csproj" />
-    <ProjectReference Include="..\M68k\M68k.csproj" />
+    <ProjectReference Include="..\Motorola\Motorola.csproj" />
     <ProjectReference Include="..\..\Libraries\Microchip\Utils\Microchip.Utils.csproj" />
     <ProjectReference Include="..\Microchip\MicrochipPIC.csproj" />
   </ItemGroup>

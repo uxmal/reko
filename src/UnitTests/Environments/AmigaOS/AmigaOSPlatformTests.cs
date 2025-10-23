@@ -20,8 +20,8 @@
 
 using Moq;
 using NUnit.Framework;
-using Reko.Arch.M68k;
-using Reko.Arch.M68k.Machine;
+using Reko.Arch.Motorola;
+using Reko.Arch.Motorola.M68k.Machine;
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Rtl;

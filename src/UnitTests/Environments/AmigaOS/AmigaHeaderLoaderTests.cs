@@ -19,14 +19,12 @@
 #endregion
 
 using NUnit.Framework;
-using Reko.Arch.M68k;
+using Reko.Arch.Motorola;
 using Reko.Core;
 using Reko.Core.Types;
 using Reko.Environments.AmigaOS;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Linq;
 using System.Text;
 
 namespace Reko.UnitTests.Environments.AmigaOS

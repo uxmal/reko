@@ -560,7 +560,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var W32 = PrimitiveType.Word32;
             var I16 = PrimitiveType.Int16;
             var I32 = PrimitiveType.Int32;
-            arch = new Reko.Arch.M68k.M68kArchitecture(sc, "m68k", new Dictionary<string, object>());
+            arch = new Reko.Arch.Motorola.M68kArchitecture(sc, "m68k", new Dictionary<string, object>());
             var d0 = Reg("d0");
             var d1 = Reg("d1");
             var v2 = binder.CreateTemporary("v2", W8);
@@ -647,7 +647,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var W32 = PrimitiveType.Word32;
             var I16 = PrimitiveType.Int16;
             var I32 = PrimitiveType.Int32;
-            arch = new Reko.Arch.M68k.M68kArchitecture(sc, "m68k", new Dictionary<string, object>());
+            arch = new Reko.Arch.Motorola.M68kArchitecture(sc, "m68k", new Dictionary<string, object>());
             var d0 = Reg("d0");
             var d1 = Reg("d1");
             var v2 = binder.CreateTemporary("v2", W8);
@@ -787,7 +787,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
         [Test]
         public void Bwslc_Issue_691()
         {
-            arch = new Reko.Arch.M68k.M68kArchitecture(sc, "m68k", new Dictionary<string, object>());
+            arch = new Reko.Arch.Motorola.M68kArchitecture(sc, "m68k", new Dictionary<string, object>());
             var d0 = Reg("d0");
             var CVZN = Cc("CVZN");
             var C = Cc("C");

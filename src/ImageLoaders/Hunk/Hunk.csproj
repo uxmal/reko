@@ -15,7 +15,7 @@
     <Compile Remove="Segment.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Arch\M68k\M68k.csproj" />
+    <ProjectReference Include="..\..\Arch\Motorola\Motorola.csproj" />
     <ProjectReference Include="..\..\Core\Core.csproj" />
     <ProjectReference Include="..\..\Environments\AmigaOS\AmigaOS.csproj" />
   </ItemGroup>

@@ -12,7 +12,7 @@
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Arch\M68k\M68k.csproj" />
+    <ProjectReference Include="..\..\Arch\Motorola\Motorola.csproj" />
     <ProjectReference Include="..\..\Core\Core.csproj" />
   </ItemGroup>
 </Project>

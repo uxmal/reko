@@ -19,7 +19,7 @@
 #endregion
 
 using NUnit.Framework;
-using Reko.Arch.M68k;
+using Reko.Arch.Motorola;
 using Reko.Environments.MacOS.Classic;
 using System.Collections.Generic;
 using System.ComponentModel.Design;

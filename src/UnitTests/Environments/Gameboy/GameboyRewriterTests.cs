@@ -557,7 +557,7 @@ namespace Reko.UnitTests.Environments.Gameboy
             AssertCode(     // daa
                 "0|L--|0100(1): 3 instructions",
                 "1|L--|a = __decimal_adjust(a)",
-                "2|L--|ZC = a",
+                "2|L--|ZC = cond(a)",
                 "3|L--|H = 0<8>");
         }
 

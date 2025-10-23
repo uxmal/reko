@@ -18,26 +18,23 @@
  */
 #endregion
 
-using Reko.Environments.AmigaOS;
-using Reko.Core.Serialization;
 using NUnit.Framework;
-using System;
+using Reko.Core.Serialization;
+using Reko.Environments.AmigaOS;
 using System.Collections.Generic;
-using System.Linq;
-using System.IO;
-using System.Text;
 using System.ComponentModel.Design;
+using System.IO;
 
 namespace Reko.UnitTests.Environments.AmigaOS
 {
     [TestFixture]
     public class FuncsFileParserTests
     {
-        private Reko.Arch.M68k.M68kArchitecture arch;
+        private Reko.Arch.Motorola.M68kArchitecture arch;
 
         public FuncsFileParserTests()
         {
-            this.arch = new Reko.Arch.M68k.M68kArchitecture(new ServiceContainer(), "m68k", new Dictionary<string, object>());
+            this.arch = new Reko.Arch.Motorola.M68kArchitecture(new ServiceContainer(), "m68k", new Dictionary<string, object>());
         }
 
         private FuncsFileParser CreateParser(string file)

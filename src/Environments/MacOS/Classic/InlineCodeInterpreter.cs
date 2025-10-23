@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Reko.Arch.M68k.Machine;
+using Reko.Arch.Motorola.M68k.Machine;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Hll.Pascal;

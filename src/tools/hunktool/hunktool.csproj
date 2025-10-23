@@ -23,7 +23,7 @@
     <Reference Include="DocoptNet">
       <HintPath>..\..\..\external\docopt.net-0.6.1.4\DocoptNet.dll</HintPath>
     </Reference>
-    <ProjectReference Include="..\..\Arch\M68k\M68k.csproj" />
+    <ProjectReference Include="..\..\Arch\Motorola\Motorola.csproj" />
     <ProjectReference Include="..\..\Core\Core.csproj" />
     <ProjectReference Include="..\..\Environments\AmigaOS\AmigaOS.csproj" />
     <ProjectReference Include="..\..\ImageLoaders\Hunk\Hunk.csproj" />

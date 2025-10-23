@@ -58,3 +58,6 @@ TestResults
 !/.vscode/launch.json
 !/.vscode/tasks.json
 /src/Benchmarks/BenchmarkDotNet.Artifacts/
+
+# CMake build directories
+/src/build/

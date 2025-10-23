@@ -19,7 +19,7 @@
 #endregion
 
 using NUnit.Framework;
-using Reko.Arch.M68k;
+using Reko.Arch.Motorola;
 using Reko.Core;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
