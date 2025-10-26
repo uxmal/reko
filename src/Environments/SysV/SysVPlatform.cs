@@ -191,6 +191,11 @@ namespace Reko.Environments.SysV
                     proc.Frame.EnsureRegister(Architecture.GetRegister("lr")!),
                     proc.Frame.Continuation);
                 break;
+            case "m88k":
+                m.Assign(
+                    proc.Frame.EnsureRegister(Architecture.GetRegister("r1")!),
+                    proc.Frame.Continuation);
+                break;
             case "mips-be-32":
             case "mips-le-32":
                 // MIPS ELF ABI: r25 is _always_ set to the address of a procedure on entry.

@@ -145,6 +145,8 @@ namespace Reko.Environments.SysV.ArchSpecific
                 return arch.GetCallingConvention("")!;
             case "m68k":
                 return new M68kCallingConvention(arch);
+            case "m88k":
+                return new M88kCallingConvention(arch);
             case "avr8":
                 return new Avr8CallingConvention(arch);
             case "avr32":

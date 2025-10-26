@@ -178,6 +178,7 @@ namespace Reko.ImageLoaders.Elf
             {
             case ElfMachine.EM_68K: return new M68kRelocator(this, imageSymbols);
             case ElfMachine.EM_386: return new x86Relocator(this, imageSymbols);
+            case ElfMachine.EM_88K: return new M88kRelocator(this, imageSymbols);
             case ElfMachine.EM_ARM: return new ArmRelocator(this, imageSymbols);
             case ElfMachine.EM_HEXAGON: return new HexagonRelocator(this, imageSymbols);
             case ElfMachine.EM_MIPS: return new MipsRelocator(this, arch, imageSymbols);

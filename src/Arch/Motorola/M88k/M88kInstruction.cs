@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using System;
@@ -42,6 +43,11 @@ public class M88kInstruction : MachineInstruction
     /// True if the instruction is accessing user-space variant (.usr suffix)
     /// </summary>
     public bool UserSpace { get; set; }
+
+    /// <summary>
+    /// The address of the next instruction immediately following this one.
+    /// </summary>
+    public Address NextAddress => this.Address + this.Length;
 
     protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
     {

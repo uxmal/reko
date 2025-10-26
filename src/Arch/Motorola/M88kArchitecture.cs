@@ -116,7 +116,7 @@ public class M88kArchitecture : ProcessorArchitecture
 
     public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
     {
-        throw new NotImplementedException();
+        return Address.Ptr32(c.ToUInt32());
     }
 
     public override Address? ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)

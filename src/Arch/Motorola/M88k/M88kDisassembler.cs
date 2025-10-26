@@ -193,7 +193,7 @@ public class M88kDisassembler : DisassemblerBase<M88kInstruction, Mnemonic>
     private static bool uimm16( uint uInstr, M88kDisassembler dasm)
     {
         var imm = bf0_16.Read(uInstr);
-        dasm.ops.Add(Constant.Word16((ushort)imm));
+        dasm.ops.Add(Constant.Word32((ushort)imm));
         return true;
     }
 
@@ -440,7 +440,7 @@ public class M88kDisassembler : DisassemblerBase<M88kInstruction, Mnemonic>
             (0b101010, Instr(Mnemonic.rot, D, S1, S2)),
 
             (0b110000, Instr(Mnemonic.jmp, InstrClass.Transfer, S2)),
-            (0b110001, Instr(Mnemonic.jmp_n, InstrClass.Transfer, S2)),
+            (0b110001, Instr(Mnemonic.jmp_n, InstrClass.Transfer | InstrClass.Delay, S2)),
             (0b110010, Instr(Mnemonic.jsr, InstrClass.Transfer | InstrClass.Call, S2)),
             (0b110011, Instr(Mnemonic.jsr_n, InstrClass.Transfer | InstrClass.Call | InstrClass.Delay, S2)),
 

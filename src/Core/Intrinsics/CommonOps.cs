@@ -62,6 +62,10 @@ namespace Reko.Core.Intrinsics
             .GenericTypes("T")
             .Param("T")
             .Returns("T");
+        public static readonly IntrinsicProcedure FindFirstZero = new IntrinsicBuilder("__find_first_zero", false)
+            .GenericTypes("T")
+            .Param("T")
+            .Returns("T");
         public static readonly IntrinsicProcedure FindLastOne = new IntrinsicBuilder("__find_last_one", false)
             .GenericTypes("T")
             .Param("T")

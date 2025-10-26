@@ -226,13 +226,12 @@ namespace Reko.ImageLoaders.Elf
             switch (elfMachine)
             {
             case ElfMachine.EM_SPARC:
-            case ElfMachine.EM_SPARC32PLUS:
-                arch = "sparc32"; break;
-            case ElfMachine.EM_SPARCV9:
-                arch = "sparc64"; break;
+            case ElfMachine.EM_SPARC32PLUS: arch = "sparc32"; break;
+            case ElfMachine.EM_SPARCV9: arch = "sparc64"; break;
             case ElfMachine.EM_386: arch = "x86-protected-32"; break;
             case ElfMachine.EM_X86_64: arch = "x86-protected-64"; break;
             case ElfMachine.EM_68K: arch = "m68k"; break;
+            case ElfMachine.EM_88K: arch = "m88k"; break;
             case ElfMachine.EM_PPC: arch = "ppc-be-32"; break;
             case ElfMachine.EM_ARM: arch = "arm"; break;
             case ElfMachine.EM_AARCH64: arch = "arm-64"; break;
