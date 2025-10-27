@@ -4,14 +4,14 @@
 
 #include "login.h"
 
-// 00002570: void fn00002570(Sequence word64 r22_r23, Register (ptr32 Eq_11) r5, Register int32 r21, Stack int32 dwArg00, Stack word32 dwArg04)
+// 00002570: void fn00002570(Sequence word64 r22_r23, Register (ptr32 Eq_n) r5, Register int32 r21, Stack int32 dwArg00, Stack word32 dwArg04)
 void fn00002570(word64 r22_r23, void (* r5)(void * r2), int32 r21, int32 dwArg00, word32 dwArg04)
 {
 	ptr32 fp;
 	char * (* r22)[] = SLICE(r22_r23, word32, 32);
 	void (* r23)(void * r2) = (word32) r22_r23;
-	ptr32 r4_8 = fp + 0x04 + dwArg00 * 0x04;
-	environ = r4_8 + 0x04;
+	ptr32 r4_n = fp + 0x04 + dwArg00 * 0x04;
+	environ = r4_n + 0x04;
 	r22 = fp + 0x04;
 	r21 = dwArg00;
 	if (dwArg04 != 0x00)
@@ -40,7 +40,7 @@ void fn000026F0()
 {
 }
 
-// 00002710: void fn00002710(Register (ptr32 Eq_11) r2)
+// 00002710: void fn00002710(Register (ptr32 Eq_n) r2)
 // Called from:
 //      fn00002570
 //      fn00002810
@@ -55,29 +55,29 @@ void fn00002710(void (* r2)(void * r2))
 void fn00002740()
 {
 	ptr32 fp;
-	ptr32 r30_17 = fp - 0x10;
-	ui32 r25_18;
+	ptr32 r30_n = fp - 0x10;
+	ui32 r25_n;
 	if (g_dw56BFC != 0x00)
 	{
-		r25_18 = 0x01;
+		r25_n = 0x01;
 		do
-			++r25_18;
-		while (g_a56BF8[r25_18] != 0x00);
+			++r25_n;
+		while (g_a56BF8[r25_n] != 0x00);
 	}
 	else
-		r25_18 = 0x01;
-	ui32 r25_29 = r25_18 - 0x01;
-	<anonymous> ** r24_30 = r25_29 * 0x04 + 355320;
-	ui32 r25_31 = r25_29 - 0x01;
-	if (r25_29 != 0x00)
+		r25_n = 0x01;
+	ui32 r25_n = r25_n - 0x01;
+	<anonymous> ** r24_n = r25_n * 0x04 + 355320;
+	ui32 r25_n = r25_n - 0x01;
+	if (r25_n != 0x00)
 	{
 		do
-			(*r24_30)();
-		while (r25_31 != ~0x00);
+			(*r24_n)();
+		while (r25_n != ~0x00);
 	}
-	struct Eq_148 * r31_53 = r30_17 - 0x10;
-	word64 r24_r25_58 = r31_53->qw0008;
-	r31_53->ptr0014();
+	struct Eq_n * r31_n = r30_n - 0x10;
+	word64 r24_r25_n = r31_n->qw0008;
+	r31_n->ptr0014();
 }
 
 // 00002810: void fn00002810()
@@ -100,72 +100,72 @@ void fn00002810()
 //      fn00002570
 int32 fn000028D0(int32 r2, char * (* r3)[])
 {
-	struct Eq_1273 * r30_1437;
-	union Eq_198 * r22_1432;
+	struct Eq_n * r30_n;
+	union Eq_n * r22_n;
 	char bLoc0548;
-	Eq_192 fp;
+	Eq_n fp;
 	openlog();
 	gethostname();
-	struct Eq_194 * r30_1755 = fp - (union Eq_198 *****) 0x0880;
-	void * r18_47 = null;
-	union Eq_198 * dwLoc086C_2321 = null;
-	word32 r15_1920 = 0x03;
+	struct Eq_n * r30_n = fp - (union Eq_n *****) 0x0880;
+	void * r18_n = null;
+	union Eq_n * dwLoc086C_n = null;
+	word32 r15_n = 0x03;
 	if (fp < 0x0548)
 	{
 		syslog();
-		word32 r1_73 = strlcpy();
-		Eq_212 tLoc08C0;
-		tLoc08C0.ptr0000 = fp - (union Eq_198 *****) 0x0880;
-		tLoc08C0.dw0004 = r1_73;
-		return fn00003FC8(0x00010000, (struct Eq_309 *) 0x00020000, (struct Eq_783 *) 0x00060000, (struct Eq_784 *) 0x00060000, 0x00060000, (struct Eq_786 *) 0x00060000, &tLoc08C0);
+		word32 r1_n = strlcpy();
+		Eq_n tLoc08C0;
+		tLoc08C0.ptr0000 = fp - (union Eq_n *****) 0x0880;
+		tLoc08C0.dw0004 = r1_n;
+		return fn00003FC8(0x00010000, (struct Eq_n *) 0x00020000, (struct Eq_n *) 0x00060000, (struct Eq_n *) 0x00060000, 0x00060000, (struct Eq_n *) 0x00060000, &tLoc08C0);
 	}
-	struct Eq_76 * r2_117 = strchr(&bLoc0548, 0x2E);
-	if (r2_117 != null)
+	struct Eq_n * r2_n = strchr(&bLoc0548, 0x2E);
+	if (r2_n != null)
 	{
-		if (r2_117->b0001 == 0)
-			r2_117 = (struct Eq_76 *) &r2_117->b0001;
+		if (r2_n->b0001 == 0)
+			r2_n = (struct Eq_n *) &r2_n->b0001;
 		else
-			r2_117 = strchr(&r2_117->b0001, 0x2E);
+			r2_n = strchr(&r2_n->b0001, 0x2E);
 	}
 	auth_open();
-	if (r2_117 == null)
+	if (r2_n == null)
 	{
-		g_ptr2601C = r2_117;
+		g_ptr2601C = r2_n;
 		syslog();
 l00003B90:
 		err();
 	}
-	g_ptr2601C = r2_117;
+	g_ptr2601C = r2_n;
 	auth_setoption();
-	word32 r2_151 = getuid();
+	word32 r2_n = getuid();
 	while (true)
 	{
-		word32 r2_164 = getopt(r2, r3, "fh:pu:L:R:");
-		if (r2_164 == ~0x00)
+		word32 r2_n = getopt(r2, r3, "fh:pu:L:R:");
+		if (r2_n == ~0x00)
 			break;
-		if (__bit<word32,byte>(cond(r2_164 - 0x4C - 0x29), 0x05))
+		if (__bit<word32,byte>(cond(r2_n - 0x4C - 0x29), 0x05))
 		{
 			fn00002A90();
-			if (r2_151 != 0x00)
+			if (r2_n != 0x00)
 			{
 				warnc();
-				fn00004780(0x01, 0x00010000, (struct Eq_309 *) 0x00020000);
+				fn00004780(0x01, 0x00010000, (struct Eq_n *) 0x00020000);
 			}
 			if (false)
 			{
 				warnx();
-				fn00004780(0x01, 0x00010000, (struct Eq_309 *) 0x00020000);
+				fn00004780(0x01, 0x00010000, (struct Eq_n *) 0x00020000);
 			}
-			union Eq_198 * r13_2135 = optarg;
-			Eq_319 tLoc0848;
+			union Eq_n * r13_n = optarg;
+			Eq_n tLoc0848;
 			tLoc0848.qw0000 = 0x00;
 			tLoc0848.qw0018 = 0x00;
 			tLoc0848.dw0000 = 0x02;
 			tLoc0848.qw0008 = 0x00;
 			tLoc0848.qw0010 = 0x00;
 			tLoc0848.dw0004 = 0x00;
-			struct Eq_357 * ptrLoc0850;
-			if (getaddrinfo(r13_2135, null, &tLoc0848, &ptrLoc0850) != 0x00)
+			struct Eq_n * ptrLoc0850;
+			if (getaddrinfo(r13_n, null, &tLoc0848, &ptrLoc0850) != 0x00)
 				strlcpy();
 			else
 			{
@@ -174,71 +174,71 @@ l00003B90:
 				auth_setoption();
 			}
 		}
-		if (r2_151 != 0x00)
+		if (r2_n != 0x00)
 		{
 			fwrite(&g_v15030, &g_t66CC0);
-			fn00004780(0x01, 0x00010000, (struct Eq_309 *) 0x00020000);
+			fn00004780(0x01, 0x00010000, (struct Eq_n *) 0x00020000);
 		}
 		syslog();
-		if (r2_151 != 0x00)
+		if (r2_n != 0x00)
 		{
 			warnc();
-			fn00004780(0x01, 0x00010000, (struct Eq_309 *) 0x00020000);
+			fn00004780(0x01, 0x00010000, (struct Eq_n *) 0x00020000);
 		}
 		g_ptr26028 = optarg;
 	}
-	ui32 r12_169 = optind;
-	ui32 r19_170 = 0x01;
-	union Eq_198 * r3_171 = (union Eq_198 *) r3[r12_169];
-	word32 r24_172;
-	if (r3_171 != null)
+	ui32 r12_n = optind;
+	ui32 r19_n = 0x01;
+	union Eq_n * r3_n = (union Eq_n *) r3[r12_n];
+	word32 r24_n;
+	if (r3_n != null)
 	{
-		r24_172 = r2 - r12_169;
-		g_ptr26024 = r3_171;
-		r19_170 = 0x00;
+		r24_n = r2 - r12_n;
+		g_ptr26024 = r3_n;
+		r19_n = 0x00;
 	}
 	else
-		r24_172 = r2 - r12_169;
-	union Eq_198 * r2_179 = geteuid();
-	if (r2_179 != null)
+		r24_n = r2 - r12_n;
+	union Eq_n * r2_n = geteuid();
+	if (r2_n != null)
 	{
 		auth_close();
 		closelog();
 		closefrom();
 		char * ptrLoc28 = 0x00014F10;
-		union Eq_198 ***** r11_200;
+		union Eq_n ***** r11_n;
 		if (true)
-			r11_200 = fp - (union Eq_198 *****) 0x1C;
+			r11_n = fp - (union Eq_n *****) 0x1C;
 		else
-			r11_200 = fp - (union Eq_198 *****) 0x20;
-		if (r19_170 == 0x00)
+			r11_n = fp - (union Eq_n *****) 0x20;
+		if (r19_n == 0x00)
 		{
-			*r11_200 = (union Eq_198 *****) g_ptr26024;
-			r11_200 += (union Eq_198 *****) 0x04;
+			*r11_n = (union Eq_n *****) g_ptr26024;
+			r11_n += (union Eq_n *****) 0x04;
 		}
-		*r11_200 = (union Eq_198 *****) null;
+		*r11_n = (union Eq_n *****) null;
 		execv("/usr/bin/su", &ptrLoc28);
 		warn();
 		_exit(0x01);
 	}
 	ttyname();
-	union Eq_198 * dwLoc0878_2338;
-	if (r2_179 != null)
+	union Eq_n * dwLoc0878_n;
+	if (r2_n != null)
 	{
-		dwLoc0878_2338 = r2_179;
-		if (r2_179->u1 != 0)
+		dwLoc0878_n = r2_n;
+		if (r2_n->u1 != 0)
 		{
 l00002D58:
-			union Eq_198 * r2_255 = strrchr(dwLoc0878_2338, 0x2F);
-			if (r2_255 != null)
+			union Eq_n * r2_n = strrchr(dwLoc0878_n, 0x2F);
+			if (r2_n != null)
 			{
-				g_ptr66ED8 = r2_255;
-				g_ptr66ED8 = (union Eq_198 *) ((char *) r2_255 + 1);
+				g_ptr66ED8 = r2_n;
+				g_ptr66ED8 = (union Eq_n *) ((char *) r2_n + 1);
 			}
 			else
 			{
-				g_ptr66ED8 = r2_255;
-				g_ptr66ED8 = dwLoc0878_2338;
+				g_ptr66ED8 = r2_n;
+				g_ptr66ED8 = dwLoc0878_n;
 			}
 			getrlimit();
 			if (false)
@@ -251,7 +251,7 @@ l00002D58:
 				else
 				{
 					signal(0x0E, &g_t4260);
-					if (__bit<word32,byte>(cond(r24_172 - 0x01), 0x01))
+					if (__bit<word32,byte>(cond(r24_n - 0x01), 0x01))
 						alarm();
 					else
 					{
@@ -264,41 +264,41 @@ l00002D58:
 						{
 							g_ptr26018 = null;
 							warnx();
-							fn00004780(0x01, r19_170, (struct Eq_309 *) 0x00020000);
+							fn00004780(0x01, r19_n, (struct Eq_n *) 0x00020000);
 						}
 						else
 						{
 							g_ptr26018 = null;
 							login_getcapnum();
-							union Eq_198 * r2_359 = g_ptr26018;
+							union Eq_n * r2_n = g_ptr26018;
 							g_dw26014 = 86260;
 							login_getcapstr();
-							if (r2_359 != null)
+							if (r2_n != null)
 							{
 								unsetenv();
 								unsetenv();
-								if (__bit<word32,byte>(cond((word32) r2_359->u1 - 0x2F), 0x00))
+								if (__bit<word32,byte>(cond((word32) r2_n->u1 - 0x2F), 0x00))
 								{
 									syslog();
 									warnx();
-									fn00004780(0x01, r19_170, (struct Eq_309 *) 0x00020000);
+									fn00004780(0x01, r19_n, (struct Eq_n *) 0x00020000);
 								}
-								strrchr(r2_359, 0x2F);
+								strrchr(r2_n, 0x2F);
 								auth_setstate();
 								auth_call();
-								struct Eq_76 * r2_418 = g_ptr2601C;
+								struct Eq_n * r2_n = g_ptr2601C;
 								auth_getstate();
-								if ((r2_418 & 0x07) == 0x00)
-									fn00004780(0x01, r19_170, (struct Eq_309 *) 0x00020000);
+								if ((r2_n & 0x07) == 0x00)
+									fn00004780(0x01, r19_n, (struct Eq_n *) 0x00020000);
 								auth_setenv();
-								union Eq_198 * r2_436 = getenv("AUTH_TYPE");
-								if (r2_436 != null && strncmp(r2_436, "auth-", 0x05) == 0x00)
-									dwLoc086C_2321 = r2_436;
-								union Eq_198 * r2_453 = getenv("REMOTE_NAME");
-								if (r2_453 != null)
-									g_ptr66E88 = r2_453;
+								union Eq_n * r2_n = getenv("AUTH_TYPE");
+								if (r2_n != null && strncmp(r2_n, "auth-", 0x05) == 0x00)
+									dwLoc086C_n = r2_n;
+								union Eq_n * r2_n = getenv("REMOTE_NAME");
+								if (r2_n != null)
+									g_ptr66E88 = r2_n;
 								auth_clroptions();
-								if (dwLoc086C_2321 != null)
+								if (dwLoc086C_n != null)
 									auth_setoption();
 								if (false)
 									auth_setoption();
@@ -310,190 +310,190 @@ l00002D58:
 									auth_setoption();
 							}
 							auth_setitem();
-							word32 r22_1907 = 0x00;
+							word32 r22_n = 0x00;
 							while (true)
 							{
-								r30_1755->dw0024 = 0x00;
+								r30_n->dw0024 = 0x00;
 								auth_clean();
 								auth_clroption();
 								auth_clroption();
-								if (r19_170 != 0x00)
+								if (r19_n != 0x00)
 									break;
 								if (true)
 									alarm();
-								struct Eq_76 * r2_550 = strchr(g_ptr26024, 0x3A);
-								if (r2_550 != null)
-									r2_550->t0000.u0 = 0x00;
-								if (r18_47 != null)
-									free(r18_47);
-								struct Eq_76 * r2_566 = g_ptr2601C;
+								struct Eq_n * r2_n = strchr(g_ptr26024, 0x3A);
+								if (r2_n != null)
+									r2_n->t0000.u0 = 0x00;
+								if (r18_n != null)
+									free(r18_n);
+								struct Eq_n * r2_n = g_ptr2601C;
 								auth_setitem();
-								if (r2_566 < null)
+								if (r2_n < null)
 								{
 l00003DD4:
 									syslog();
 									warn();
-									fn00004780(0x01, r19_170, (struct Eq_309 *) 0x00020000);
+									fn00004780(0x01, r19_n, (struct Eq_n *) 0x00020000);
 								}
-								void * r2_578 = strdup(g_ptr26024);
-								if (r2_578 == null)
+								void * r2_n = strdup(g_ptr26024);
+								if (r2_n == null)
 									goto l00003DD4;
-								r18_47 = r2_578;
-								ui32 r19_1767 = 0x00;
-								struct Eq_76 * r2_604 = strchr(g_ptr26024, 0x2F);
-								if (r2_604 != null)
+								r18_n = r2_n;
+								ui32 r19_n = 0x00;
+								struct Eq_n * r2_n = strchr(g_ptr26024, 0x2F);
+								if (r2_n != null)
 								{
-									if (strncmp(&r2_604->b0001, "root", 0x04) == 0x00)
-										r19_1767 = 0x01;
-									r2_604->t0000.u0 = 0x00;
+									if (strncmp(&r2_n->b0001, "root", 0x04) == 0x00)
+										r19_n = 0x01;
+									r2_n->t0000.u0 = 0x00;
 								}
 								if (!__bit<word32,byte>(cond(strlen(g_ptr26024) - 0x20), 0x00))
 									g_ptr26024->u2.b0020 = 0x00;
-								if (g_dw66E8C != 0x00 && strcmp(&r30_1755->dw002C + 265, g_ptr26024) != 0x00)
+								if (g_dw66E8C != 0x00 && strcmp(&r30_n->dw002C + 265, g_ptr26024) != 0x00)
 									;
 								strlcpy();
-								struct Eq_755 * r2_672 = getpwnam(g_ptr26024);
-								if (r2_672 == null)
-									g_ptr66ED0 = r2_672;
+								struct Eq_n * r2_n = getpwnam(g_ptr26024);
+								if (r2_n == null)
+									g_ptr66ED0 = r2_n;
 								else
 								{
-									g_ptr66ED0 = r2_672;
-									struct Eq_76 * r2_680 = g_ptr2601C;
+									g_ptr66ED0 = r2_n;
+									struct Eq_n * r2_n = g_ptr2601C;
 									auth_setpwd();
-									if (r2_680 < null)
+									if (r2_n < null)
 									{
 										syslog();
 										warn();
-										fn00004780(0x01, r19_1767, (struct Eq_309 *) 0x00020000);
+										fn00004780(0x01, r19_n, (struct Eq_n *) 0x00020000);
 									}
 								}
-								struct Eq_755 * r13_701 = g_ptr66ED0;
-								union Eq_198 * r2_702;
-								if (r13_701 != null)
-									r2_702 = r13_701->ptr0018;
+								struct Eq_n * r13_n = g_ptr66ED0;
+								union Eq_n * r2_n;
+								if (r13_n != null)
+									r2_n = r13_n->ptr0018;
 								else
-									r2_702 = null;
+									r2_n = null;
 								login_getclass();
-								if (r2_702 != null)
+								if (r2_n != null)
 								{
-									g_ptr26018 = r2_702;
+									g_ptr26018 = r2_n;
 									login_getstyle();
-									if (r2_702 == null)
+									if (r2_n == null)
 										goto l00003214;
 									login_getcapnum();
-									r30_1755->dw002C = 0x0001519C;
+									r30_n->dw002C = 0x0001519C;
 									login_getcapnum();
-									struct Eq_755 * r13_757 = g_ptr66ED0;
-									if (r13_757 != null)
+									struct Eq_n * r13_n = g_ptr66ED0;
+									if (r13_n != null)
 									{
-										if (r2_151 == 0x00)
+										if (r2_n == 0x00)
 											goto l000031E0;
-										if (__bit<word32,byte>(cond(r2_151 - r13_757->dw0008), 0x00))
+										if (__bit<word32,byte>(cond(r2_n - r13_n->dw0008), 0x00))
 											goto l000031D8;
 									}
 									else
 									{
 l000031D8:
-										r30_1755->dw001C = 0x00;
+										r30_n->dw001C = 0x00;
 									}
-									r13_757 = g_ptr66ED0;
+									r13_n = g_ptr66ED0;
 l000031E0:
-									r15_1920 = 0x000151A8;
-									if (r13_757 != null && r13_757->dw0008 == 0x00)
-										r19_1767 = 0x01;
-									if (r30_1755->dw001C == 0x00)
+									r15_n = 0x000151A8;
+									if (r13_n != null && r13_n->dw0008 == 0x00)
+										r19_n = 0x01;
+									if (r30_n->dw001C == 0x00)
 									{
-										union Eq_198 * r2_790 = g_ptr26018;
+										union Eq_n * r2_n = g_ptr26018;
 										login_getcaptime();
-										if ((r2_790 | 0x00014ED8) != 0x00)
+										if ((r2_n | 0x00014ED8) != 0x00)
 										{
-											r30_1755->dw0024 = 0x00;
-											r30_1755->dw0024 = 0x01;
+											r30_n->dw0024 = 0x00;
+											r30_n->dw0024 = 0x01;
 											auth_setoption();
 										}
-										r30_1755->dw0024 = 0x00;
+										r30_n->dw0024 = 0x00;
 										signal(0x01, &g_t47C0);
 										auth_verify();
-										struct Eq_76 * r2_838 = g_ptr2601C;
+										struct Eq_n * r2_n = g_ptr2601C;
 										auth_getstate();
-										if (__bit<word32,byte>(r2_838, 0x00))
+										if (__bit<word32,byte>(r2_n, 0x00))
 										{
-											r30_1755->ptr0028 = r2_838;
-											if (r30_1755->dw0024 == 0x00)
+											r30_n->ptr0028 = r2_n;
+											if (r30_n->dw0024 == 0x00)
 												goto l00003D24;
-											r30_1755->ptr0028 = (struct Eq_76 *) 0x01;
+											r30_n->ptr0028 = (struct Eq_n *) 0x01;
 										}
 										else
 										{
-											r30_1755->ptr0028 = r2_838;
+											r30_n->ptr0028 = r2_n;
 l00003D24:
-											if ((r30_1755->ptr0028 & 0x07) == 0x00)
+											if ((r30_n->ptr0028 & 0x07) == 0x00)
 											{
-												r30_1755->dw0024 = 0x00;
+												r30_n->dw0024 = 0x00;
 												goto l00003214;
 											}
-											r30_1755->dw0024 = 0x00;
+											r30_n->dw0024 = 0x00;
 										}
-										struct Eq_76 * r2_856 = g_ptr2601C;
+										struct Eq_n * r2_n = g_ptr2601C;
 										auth_setoption();
-										if (r2_856 < null)
+										if (r2_n < null)
 										{
 											syslog();
 											warn();
-											fn00004780(0x01, r19_1767, (struct Eq_309 *) 0x00020000);
+											fn00004780(0x01, r19_n, (struct Eq_n *) 0x00020000);
 										}
 									}
-									if (g_ptr66ED0 == null || r19_1767 != 0x00 && fn000040D0(g_ptr66ED8, out r30_1755) == 0x00)
+									if (g_ptr66ED0 == null || r19_n != 0x00 && fn000040D0(g_ptr66ED8, out r30_n) == 0x00)
 										goto l00003214;
 									alarm();
 									endpwent();
-									union Eq_198 * r2_912 = g_ptr26018;
+									union Eq_n * r2_n = g_ptr26018;
 									login_getcapstr();
-									if (r2_912->u1 != 0 && !__bit<word32,byte>(cond(strlen(r2_912) - 0x03FF), 0x0F))
+									if (r2_n->u1 != 0 && !__bit<word32,byte>(cond(strlen(r2_n) - 0x03FF), 0x0F))
 									{
 										syslog();
 										warnx();
-										fn00004780(0x01, r19_1767, (struct Eq_309 *) 0x00020000);
+										fn00004780(0x01, r19_n, (struct Eq_n *) 0x00020000);
 									}
-									if (r30_1755->dw0020 == 0x00)
+									if (r30_n->dw0020 == 0x00)
 									{
-										word32 * r2_1007 = calloc();
-										if (r2_1007 == null)
+										word32 * r2_n = calloc();
+										if (r2_n == null)
 										{
-											environ = r2_1007;
+											environ = r2_n;
 											goto l00003B90;
 										}
-										environ = r2_1007;
+										environ = r2_n;
 									}
 									else
 									{
-										word32 * r25_1000 = environ;
-										union Eq_198 * r2_953 = *r25_1000;
-										if (r2_953 != null)
+										word32 * r25_n = environ;
+										union Eq_n * r2_n = *r25_n;
+										if (r2_n != null)
 										{
-											word32 * r24_955 = r25_1000;
+											word32 * r24_n = r25_n;
 											while (true)
 											{
-												if (strncmp(r2_953, "LD_", 0x03) != 0x00 && (strncmp(*r24_955, "ENV=", 0x04) != 0x00 && (strncmp(*r24_955, "BASH_ENV=", 0x09) != 0x00 && strncmp(*r24_955, "IFS=", 0x04) != 0x00)))
+												if (strncmp(r2_n, "LD_", 0x03) != 0x00 && (strncmp(*r24_n, "ENV=", 0x04) != 0x00 && (strncmp(*r24_n, "BASH_ENV=", 0x09) != 0x00 && strncmp(*r24_n, "IFS=", 0x04) != 0x00)))
 												{
-													*r25_1000 = *r24_955;
-													++r25_1000;
+													*r25_n = *r24_n;
+													++r25_n;
 												}
-												++r24_955;
-												union Eq_198 * r13_997 = *r24_955;
-												if (r13_997 == null)
+												++r24_n;
+												union Eq_n * r13_n = *r24_n;
+												if (r13_n == null)
 													break;
-												r2_953 = r13_997;
+												r2_n = r13_n;
 											}
 										}
-										*r25_1000 = 0x00;
+										*r25_n = 0x00;
 									}
 									setenv();
 									if (false)
 									{
 l0000343C:
 										warn();
-										fn00004780(0x01, r19_1767, (struct Eq_309 *) 0x00020000);
+										fn00004780(0x01, r19_n, (struct Eq_n *) 0x00020000);
 									}
 									setenv();
 									if (false)
@@ -503,13 +503,13 @@ l0000343C:
 										fn000046E0(g_ptr66ED8);
 										strlcpy();
 									}
-									snprintf(&r30_1755->dw002C + 0x007F, "%s/%s");
+									snprintf(&r30_n->dw002C + 0x007F, "%s/%s");
 									setenv();
 									if (false)
 									{
 l000034C8:
 										warn();
-										fn00004780(0x01, r19_1767, (struct Eq_309 *) 0x00020000);
+										fn00004780(0x01, r19_n, (struct Eq_n *) 0x00020000);
 									}
 									setenv();
 									if (false)
@@ -526,7 +526,7 @@ l000034C8:
 										if (false)
 										{
 											warn();
-											fn00004780(0x01, r19_1767, (struct Eq_309 *) 0x00020000);
+											fn00004780(0x01, r19_n, (struct Eq_n *) 0x00020000);
 										}
 									}
 									if (g_ptr26028 != null)
@@ -535,117 +535,117 @@ l000034C8:
 										if (false)
 										{
 											warn();
-											fn00004780(0x01, r19_1767, (struct Eq_309 *) 0x00020000);
+											fn00004780(0x01, r19_n, (struct Eq_n *) 0x00020000);
 										}
 									}
-									union Eq_198 * r2_1189 = g_ptr26018;
+									union Eq_n * r2_n = g_ptr26018;
 									setusercontext();
-									if (r2_1189 != null)
+									if (r2_n != null)
 									{
 										warn();
-										fn00004780(0x01, r19_1767, (struct Eq_309 *) 0x00020000);
+										fn00004780(0x01, r19_n, (struct Eq_n *) 0x00020000);
 									}
 									auth_setenv();
-									if (r19_1767 == 0x00)
+									if (r19_n == 0x00)
 										auth_checknologin();
 									setegid();
 									seteuid();
-									word32 r2_1221 = g_ptr66ED0->dw0020;
+									word32 r2_n = g_ptr66ED0->dw0020;
 									chdir();
-									if (r2_1221 != 0x00)
+									if (r2_n != 0x00)
 									{
-										union Eq_198 * r2_1225 = g_ptr26018;
+										union Eq_n * r2_n = g_ptr26018;
 										login_getcapbool();
-										if (r2_1225 != null)
+										if (r2_n != null)
 										{
 											printf("No home directory %s!\n");
-											fn00004780(0x01, r19_1767, (struct Eq_309 *) 0x00020000);
+											fn00004780(0x01, r19_n, (struct Eq_n *) 0x00020000);
 										}
 										chdir();
 										if (true)
-											fn00004780(0x00, r19_1767, (struct Eq_309 *) 0x00020000);
+											fn00004780(0x00, r19_n, (struct Eq_n *) 0x00020000);
 									}
-									word32 r21_1254 = 0x00;
+									word32 r21_n = 0x00;
 									if (strcmp(g_ptr66ED0->ptr0024, &g_t14CB4) == 0x00)
 									{
 l00003570:
-										r21_1254 = 0x01;
+										r21_n = 0x01;
 										goto l00003574;
 									}
-									union Eq_198 * r2_1259 = g_ptr26018;
+									union Eq_n * r2_n = g_ptr26018;
 									login_getcapbool();
-									if (r2_1259 != null)
+									if (r2_n != null)
 										goto l00003570;
 									if (access(".hushlogin", 0x00) == 0x00)
-										r21_1254 = 0x01;
+										r21_n = 0x01;
 l00003574:
 									seteuid();
 									setegid();
-									struct Eq_76 * r2_1285 = g_ptr2601C;
+									struct Eq_n * r2_n = g_ptr2601C;
 									auth_getvalue();
-									if (r2_1285 != null)
+									if (r2_n != null)
 										printf("WARNING: %s\n\n");
-									struct Eq_76 * r2_1292 = g_ptr2601C;
+									struct Eq_n * r2_n = g_ptr2601C;
 									auth_check_expire();
-									if (r2_1292 < null)
+									if (r2_n < null)
 									{
 										puts(&g_t14D98);
-										fn00004780(0x01, r19_1767, (struct Eq_309 *) 0x00020000);
+										fn00004780(0x01, r19_n, (struct Eq_n *) 0x00020000);
 									}
-									if (r2_1292 > null || r2_1292 == null && true)
+									if (r2_n > null || r2_n == null && true)
 									{
-										if (r21_1254 != 0x00)
+										if (r21_n != 0x00)
 										{
 l000035D0:
 											goto l000035D4;
 										}
-										union Eq_198 * r2_1316 = g_ptr26018;
+										union Eq_n * r2_n = g_ptr26018;
 										login_getcaptime();
-										struct Eq_76 * r13_1326 = cond(r2_1316 - r2_1292);
-										if (__bit<word32,byte>(r13_1326, 0x00))
+										struct Eq_n * r13_n = cond(r2_n - r2_n);
+										if (__bit<word32,byte>(r13_n, 0x00))
 										{
 l000039D0:
 											ctime();
 											printf("Warning: your account expires on %s");
 										}
-										if (__bit<word32,byte>(r13_1326, 0x18))
+										if (__bit<word32,byte>(r13_n, 0x18))
 											goto l000035D0;
-										struct Eq_76 * r13_1329 = cond(0x00014CDC - 85188);
-										if (!__bit<word32,byte>(r13_1329, 0x18))
+										struct Eq_n * r13_n = cond(0x00014CDC - 85188);
+										if (!__bit<word32,byte>(r13_n, 0x18))
 											goto l000039D0;
 									}
 l000035D4:
 									signal(0x01, null);
-									union Eq_1245 * r24_1359 = (union Eq_1245 *) (&r30_1755->dw002C + 0x0033);
-									memset(r24_1359, 0x00);
-									time(&r30_1755->dw002C + 0x007D);
-									strncpy(&r30_1755->dw002C + 53, g_ptr26024, 0x20);
-									union Eq_198 * r3_1384 = g_ptr66E88;
-									if (r3_1384 != null)
-										strncpy(&r30_1755->dw002C + 61, r3_1384, 0x0100);
-									strncpy(r24_1359, g_ptr66ED8, 0x08);
+									union Eq_n * r24_n = (union Eq_n *) (&r30_n->dw002C + 0x0033);
+									memset(r24_n, 0x00);
+									time(&r30_n->dw002C + 0x007D);
+									strncpy(&r30_n->dw002C + 53, g_ptr26024, 0x20);
+									union Eq_n * r3_n = g_ptr66E88;
+									if (r3_n != null)
+										strncpy(&r30_n->dw002C + 61, r3_n, 0x0100);
+									strncpy(r24_n, g_ptr66ED8, 0x08);
 									login();
-									if (r21_1254 == 0x00)
+									if (r21_n == 0x00)
 										fn000049A0();
-									word32 r21_1431 = fn000042E0(r21_1254, out r22_1432, out r30_1437);
+									word32 r21_n = fn000042E0(r21_n, out r22_n, out r30_n);
 									login_fbtab();
 									getgrnam("tty") == 0x00;
 									chown();
-									if (r19_1767 != 0x00 && r30_1437->dw001C == 0x00)
+									if (r19_n != 0x00 && r30_n->dw001C == 0x00)
 									{
 										if (g_ptr66E88 == null)
 											syslog();
 										else
 										{
-											union Eq_198 * r6_1725 = g_ptr26028;
+											union Eq_n * r6_n = g_ptr26028;
 											syslog();
 										}
 									}
-									if (r21_1431 == 0x00)
+									if (r21_n == 0x00)
 									{
-										union Eq_198 * r2_1480 = g_ptr26018;
+										union Eq_n * r2_n = g_ptr26018;
 										login_getcapstr();
-										if (r2_1480 != null)
+										if (r2_n != null)
 											auth_cat();
 										fn00004110();
 									}
@@ -654,43 +654,43 @@ l000035D4:
 									signal(0x01, null);
 									signal(0x02, null);
 									signal(0x12, (void (*)(int32)) 0x01);
-									r30_1437->b0450 = 0x2D;
-									strrchr(r22_1432, 0x2F) == null;
+									r30_n->b0450 = 0x2D;
+									strrchr(r22_n, 0x2F) == null;
 									strlcpy();
-									if (r30_1437->dw006C != 0x00 || r30_1437->dw0074 != 0x00)
+									if (r30_n->dw006C != 0x00 || r30_n->dw0074 != 0x00)
 									{
 										setrlimit();
 										if (false)
 											syslog();
 									}
-									if (r30_1437->dw0024 != 0x00)
+									if (r30_n->dw0024 != 0x00)
 										puts(&g_t14D34);
-									union Eq_198 * r2_1593 = g_ptr26018;
+									union Eq_n * r2_n = g_ptr26018;
 									setusercontext();
-									if (r2_1593 < null)
+									if (r2_n < null)
 									{
 										warn();
-										fn00004780(0x01, r19_1767, (struct Eq_309 *) 0x00020000);
+										fn00004780(0x01, r19_n, (struct Eq_n *) 0x00020000);
 									}
-									if (r2_1221 != 0x00)
+									if (r2_n != 0x00)
 									{
 										printf("No home directory %s!\n");
 										puts(&g_t14DD0);
 										setenv();
 									}
-									struct Eq_76 * r2_1657 = g_ptr2601C;
+									struct Eq_n * r2_n = g_ptr2601C;
 									auth_approval();
-									if (r2_1657 == null)
+									if (r2_n == null)
 									{
-										struct Eq_76 * r2_1663 = g_ptr2601C;
+										struct Eq_n * r2_n = g_ptr2601C;
 										auth_getstate();
-										struct Eq_76 * r2_1667;
-										if (__bit<word32,byte>(r2_1663, 0x00))
-											r2_1667 = &g_t14D98;
+										struct Eq_n * r2_n;
+										if (__bit<word32,byte>(r2_n, 0x00))
+											r2_n = &g_t14D98;
 										else
-											r2_1667 = &g_t14DBC;
-										puts(r2_1667);
-										fn00004780(0x01, r19_1767, (struct Eq_309 *) 0x00020000);
+											r2_n = &g_t14DBC;
+										puts(r2_n);
+										fn00004780(0x01, r19_n, (struct Eq_n *) 0x00020000);
 									}
 									else
 									{
@@ -701,62 +701,62 @@ l000035D4:
 										err();
 									}
 								}
-								g_ptr26018 = r2_702;
+								g_ptr26018 = r2_n;
 l00003214:
-								if (__bit<word32,byte>(r30_1755->ptr0028, 0x02))
-									fn00004780(0x00, r19_1767, (struct Eq_309 *) 0x00020000);
-								if (r19_1767 != 0x00 && fn000040D0(g_ptr66ED8, out r30_1755) == 0x00)
+								if (__bit<word32,byte>(r30_n->ptr0028, 0x02))
+									fn00004780(0x00, r19_n, (struct Eq_n *) 0x00020000);
+								if (r19_n != 0x00 && fn000040D0(g_ptr66ED8, out r30_n) == 0x00)
 								{
 									warnx();
 									if (g_ptr66E88 == null)
 										syslog();
 									else
 									{
-										union Eq_198 * r5_1812 = g_ptr26028;
+										union Eq_n * r5_n = g_ptr26028;
 										syslog();
 									}
 								}
-								struct Eq_76 * r2_1843 = g_ptr2601C;
-								struct Eq_76 * r25_1849;
-								if (r2_1843 == null)
+								struct Eq_n * r2_n = g_ptr2601C;
+								struct Eq_n * r25_n;
+								if (r2_n == null)
 								{
 l00003234:
-									r25_1849 = &g_t151B8;
+									r25_n = &g_t151B8;
 									goto l00003238;
 								}
 								auth_getvalue();
-								if (r2_1843 == null)
+								if (r2_n == null)
 									goto l00003234;
-								r25_1849 = r2_1843;
+								r25_n = r2_n;
 l00003238:
-								puts(r25_1849);
-								word32 r13_1876 = g_dw66E8C;
+								puts(r25_n);
+								word32 r13_n = g_dw66E8C;
 								if (g_ptr66ED0 != null)
 								{
-									g_dw66E8C = r13_1876 + 0x01;
-									fn000047F0(g_ptr66E88, g_ptr26028, g_ptr66ED8, r30_1755);
+									g_dw66E8C = r13_n + 0x01;
+									fn000047F0(g_ptr66E88, g_ptr26028, g_ptr66ED8, r30_n);
 								}
-								g_dw66E8C = r13_1876 + 0x01;
-								++r22_1907;
-								if (!__bit<word32,byte>(cond(r22_1907 - r15_1920), 0x1B))
+								g_dw66E8C = r13_n + 0x01;
+								++r22_n;
+								if (!__bit<word32,byte>(cond(r22_n - r15_n), 0x1B))
 								{
-									if (!__bit<word32,byte>(cond(r22_1907 - r30_1755->dw002C), 0x00))
+									if (!__bit<word32,byte>(cond(r22_n - r30_n->dw002C), 0x00))
 									{
-										word64 r24_r25_2398;
-										word32 r1_2399;
-										word32 r3_2400;
-										word32 r4_2401;
-										word32 r5_2402;
-										word32 r21_2403;
-										word32 r30_2404;
-										fn00004520(out r24_r25_2398, out r1_2399, out r3_2400, out r4_2401, out r5_2402, out r21_2403, out r30_2404);
+										word64 r24_r25_n;
+										word32 r1_n;
+										word32 r3_n;
+										word32 r4_n;
+										word32 r5_n;
+										word32 r21_n;
+										word32 r30_n;
+										fn00004520(out r24_r25_n, out r1_n, out r3_n, out r4_n, out r5_n, out r21_n, out r30_n);
 										fn00004740(0x01);
 									}
 								}
-								r19_170 = 0x01;
+								r19_n = 0x01;
 							}
-							r30_1755->dw001C = 0x00;
-							fn00003F90(r30_1755);
+							r30_n->dw001C = 0x00;
+							fn00003F90(r30_n);
 						}
 					}
 				}
@@ -765,7 +765,7 @@ l00003238:
 	}
 	char bLoc0448;
 	snprintf(&bLoc0448, "%s??");
-	dwLoc0878_2338 = &bLoc0448;
+	dwLoc0878_n = &bLoc0448;
 	goto l00002D58;
 }
 
@@ -776,95 +776,95 @@ void fn00002A90()
 {
 }
 
-// 00003F90: void fn00003F90(Register (ptr32 Eq_194) r30)
+// 00003F90: void fn00003F90(Register (ptr32 Eq_n) r30)
 // Called from:
 //      fn000028D0
-void fn00003F90(struct Eq_194 * r30)
+void fn00003F90(struct Eq_n * r30)
 {
-	Eq_1717 tLoc10;
+	Eq_n tLoc10;
 	tLoc10.ptr0000 = r30;
 	ptr32 %continuation;
 	tLoc10.ptr0004 = %continuation;
-	fn00003FC8(0x00010000, (struct Eq_309 *) 0x00020000, (struct Eq_783 *) 0x00060000, (struct Eq_784 *) 0x00060000, 0x00060000, (struct Eq_786 *) 0x00060000, &tLoc10);
+	fn00003FC8(0x00010000, (struct Eq_n *) 0x00020000, (struct Eq_n *) 0x00060000, (struct Eq_n *) 0x00060000, 0x00060000, (struct Eq_n *) 0x00060000, &tLoc10);
 }
 
-// 00003FC8: Register word32 fn00003FC8(Register ui32 r19, Register (ptr32 Eq_309) r20, Register (ptr32 Eq_783) r21, Register (ptr32 Eq_784) r22, Register ui32 r23, Register (ptr32 Eq_786) r24, Register (ptr32 Eq_787) r30)
+// 00003FC8: Register word32 fn00003FC8(Register ui32 r19, Register (ptr32 Eq_n) r20, Register (ptr32 Eq_n) r21, Register (ptr32 Eq_n) r22, Register ui32 r23, Register (ptr32 Eq_n) r24, Register (ptr32 Eq_n) r30)
 // Called from:
 //      fn000028D0
 //      fn00003F90
-word32 fn00003FC8(ui32 r19, struct Eq_309 * r20, struct Eq_783 * r21, struct Eq_784 * r22, ui32 r23, struct Eq_786 * r24, struct Eq_787 * r30)
+word32 fn00003FC8(ui32 r19, struct Eq_n * r20, struct Eq_n * r21, struct Eq_n * r22, ui32 r23, struct Eq_n * r24, struct Eq_n * r30)
 {
 l00003FC8:
 	printf(r19 | 0x51F8);
 	r24->ptr6D80 = r21 | 0x6D3C;
 	while (r22->dw6D18 == 0x00)
 	{
-		int32 r13_27 = (r23 | 0x6C10)->dw0004;
-		ui32 r25_32;
-		if (r13_27 >= 0x01)
+		int32 r13_n = (r23 | 0x6C10)->dw0004;
+		ui32 r25_n;
+		if (r13_n >= 0x01)
 		{
-			(r23 | 0x6C10)->dw0004 = r13_27 - 0x01;
-			byte * r13_34 = g_ptr66C10;
-			r25_32 = (word32) *r13_34;
-			g_ptr66C10 = r13_34 + 1;
+			(r23 | 0x6C10)->dw0004 = r13_n - 0x01;
+			byte * r13_n = g_ptr66C10;
+			r25_n = (word32) *r13_n;
+			g_ptr66C10 = r13_n + 1;
 		}
 		else
 		{
-			(r23 | 0x6C10)->dw0004 = r13_27 - 0x01;
+			(r23 | 0x6C10)->dw0004 = r13_n - 0x01;
 			__srget();
-			r25_32 = r23 | 0x6C10;
+			r25_n = r23 | 0x6C10;
 		}
-		if (!__bit<word32,byte>(cond(r25_32 - 0x0A), 0x00))
+		if (!__bit<word32,byte>(cond(r25_n - 0x0A), 0x00))
 		{
-			byte * r12_44 = r24->ptr6D80;
-			if (__bit<word32,byte>(cond(r12_44 - (r21 | 0x6D3C)), 0x1E))
+			byte * r12_n = r24->ptr6D80;
+			if (__bit<word32,byte>(cond(r12_n - (r21 | 0x6D3C)), 0x1E))
 				goto l00003FC8;
 			if (!__bit<word32,byte>(cond((word32) r21->b6D3C - 0x2D), 0x00))
 			{
-				*r12_44 = 0x00;
+				*r12_n = 0x00;
 				r20->dw6024 = r21 | 0x6D3C;
 				r30->ptr0004();
-				word32 r2_69;
-				return r2_69;
+				word32 r2_n;
+				return r2_n;
 			}
 			else
 				fwrite(&g_v15200, &g_t66CC0);
 		}
-		word32 r12_94 = r25_32 + 0x01;
-		if (r12_94 == 0x00)
+		word32 r12_n = r25_n + 0x01;
+		if (r12_n == 0x00)
 		{
-			word64 r24_r25_146;
-			word32 r1_147;
-			word32 r3_148;
-			word32 r4_149;
-			word32 r5_150;
-			word32 r21_151;
-			word32 r30_152;
-			fn00004520(out r24_r25_146, out r1_147, out r3_148, out r4_149, out r5_150, out r21_151, out r30_152);
+			word64 r24_r25_n;
+			word32 r1_n;
+			word32 r3_n;
+			word32 r4_n;
+			word32 r5_n;
+			word32 r21_n;
+			word32 r30_n;
+			fn00004520(out r24_r25_n, out r1_n, out r3_n, out r4_n, out r5_n, out r21_n, out r30_n);
 			fn00004780(0x00, r19, r20);
 		}
-		byte * r12_119 = r24->ptr6D80;
-		if (!__bit<word32,byte>(cond(r12_119 - 0x00066D7D), 0x1F))
+		byte * r12_n = r24->ptr6D80;
+		if (!__bit<word32,byte>(cond(r12_n - 0x00066D7D), 0x1F))
 		{
-			*r12_119 = (byte) r25_32;
-			r24->ptr6D80 = r12_119 + 1;
+			*r12_n = (byte) r25_n;
+			r24->ptr6D80 = r12_n + 1;
 		}
 	}
 	getc(r23 | 0x6C10);
 }
 
-// 000040D0: Register (ptr32 Eq_198) fn000040D0(Register (ptr32 Eq_198) r2, Register out (ptr32 Eq_876) r30Out)
+// 000040D0: Register (ptr32 Eq_n) fn000040D0(Register (ptr32 Eq_n) r2, Register out (ptr32 Eq_n) r30Out)
 // Called from:
 //      fn000028D0
-union Eq_198 * fn000040D0(union Eq_198 * r2, struct Eq_876 & r30Out)
+union Eq_n * fn000040D0(union Eq_n * r2, struct Eq_n & r30Out)
 {
 	getttynam();
 	if (r2 != null)
 		!__bit<word32,byte>(r2->u2.pw_gid, 0x00);
-	struct Eq_876 * r30_26;
-	r30Out = r30_26;
-	union Eq_198 * r2_28;
-	return r2_28;
+	struct Eq_n * r30_n;
+	r30Out = r30_n;
+	union Eq_n * r2_n;
+	return r2_n;
 }
 
 // 00004110: void fn00004110()
@@ -872,22 +872,22 @@ union Eq_198 * fn000040D0(union Eq_198 * r2, struct Eq_876 & r30Out)
 //      fn000028D0
 void fn00004110()
 {
-	union Eq_198 * r2_21 = g_ptr26018;
+	union Eq_n * r2_n = g_ptr26018;
 	login_getcapstr();
-	Eq_1902 r2_36 = open(r2_21, 0x00);
-	if (r2_36 >= 0x00)
+	Eq_n r2_n = open(r2_n, 0x00);
+	if (r2_n >= 0x00)
 	{
 		word32 dwLoc2028 = (word32) 0x00;
 		dwLoc2028 = 0x4240;
 		word32 dwLoc2018;
 		sigaction(0x02, &dwLoc2028, &dwLoc2018);
-		int32 r2_64;
+		int32 r2_n;
 		word32 dwLoc2008;
 		do
-			r2_64 = read(r2_36, &dwLoc2008);
-		while (r2_64 > 0x00 && __bit<word32,byte>(cond(write(0x01, &dwLoc2008) - r2_64), 0x1F));
+			r2_n = read(r2_n, &dwLoc2008);
+		while (r2_n > 0x00 && __bit<word32,byte>(cond(write(0x01, &dwLoc2008) - r2_n), 0x1F));
 		sigaction(0x02, &dwLoc2018, null);
-		close(r2_36);
+		close(r2_n);
 	}
 }
 
@@ -897,17 +897,17 @@ void g_t4260(int32 r2) = ??/* Unexpected function type (fn void (int32)) */ ; //
 //      fn000028D0
 word32 fn000042E0(word32 r2, word32 & r22Out, word32 & r30Out)
 {
-	Eq_1902 r2_31 = open(&g_t15268, 0x02);
-	if (r2_31 >= 0x00)
+	Eq_n r2_n = open(&g_t15268, 0x02);
+	if (r2_n >= 0x00)
 	{
 		__muldi3();
-		lseek(r2_31, 0x00);
+		lseek(r2_n, 0x00);
 		word32 dwLoc0118;
 		char bLoc0108;
 		if (r2 == 0x00)
 		{
 			ui32 dwLoc0114;
-			if (!__bit<word32,byte>(cond(read(r2_31, &dwLoc0118) - 0x0110), 0x00) && (dwLoc0118 | dwLoc0114) != 0x00)
+			if (!__bit<word32,byte>(cond(read(r2_n, &dwLoc0118) - 0x0110), 0x00) && (dwLoc0118 | dwLoc0114) != 0x00)
 			{
 				ctime();
 				printf("Last login: %.*s ");
@@ -915,28 +915,28 @@ word32 fn000042E0(word32 r2, word32 & r22Out, word32 & r30Out)
 				if (bLoc0108 != 0)
 				{
 					printf(" from %.*s");
-					word32 r22_111;
-					r22Out = r22_111;
-					word32 r30_105;
-					r30Out = r30_105;
-					word32 r21_109;
-					return r21_109;
+					word32 r22_n;
+					r22Out = r22_n;
+					word32 r30_n;
+					r30Out = r30_n;
+					word32 r21_n;
+					return r21_n;
 				}
 				if (__isthreaded != 0x00)
 					putc(0x0A, &g_ptr66C68);
-				int32 r13_129 = g_dw66C70;
-				if (r13_129 < 0x01)
+				int32 r13_n = g_dw66C70;
+				if (r13_n < 0x01)
 				{
-					g_dw66C70 = r13_129 - 0x01;
+					g_dw66C70 = r13_n - 0x01;
 					__swbuf();
 				}
-				g_dw66C70 = r13_129 - 0x01;
-				byte * r13_137 = g_ptr66C68;
-				*r13_137 = 0x0A;
-				g_ptr66C68 = r13_137 + 1;
+				g_dw66C70 = r13_n - 0x01;
+				byte * r13_n = g_ptr66C68;
+				*r13_n = 0x0A;
+				g_ptr66C68 = r13_n + 1;
 			}
 			__muldi3();
-			lseek(r2_31, 0x00);
+			lseek(r2_n, 0x00);
 		}
 		else
 		{
@@ -944,13 +944,13 @@ word32 fn000042E0(word32 r2, word32 & r22Out, word32 & r30Out)
 			time(&dwLoc0118);
 			char bLoc0110;
 			strncpy(&bLoc0110, g_ptr66ED8, 0x08);
-			union Eq_198 * r3_181 = g_ptr66E88;
-			if (r3_181 != null)
-				strncpy(&bLoc0108, r3_181, 0x0100);
+			union Eq_n * r3_n = g_ptr66E88;
+			if (r3_n != null)
+				strncpy(&bLoc0108, r3_n, 0x0100);
 			else
 			{
-				write(r2_31, &dwLoc0118);
-				close(r2_31);
+				write(r2_n, &dwLoc0118);
+				close(r2_n);
 			}
 		}
 	}
@@ -965,54 +965,54 @@ word64 fn00004520(word64 & r24_r25Out, word32 & r1Out, word32 & r3Out, word32 & 
 	word32 dwLoc18;
 	word32 dwLoc18;
 	memcpy(&dwLoc18, &g_v15340);
-	word32 r5_31 = g_dw66E8C;
-	if (r5_31 == 0x00)
+	word32 r5_n = g_dw66E8C;
+	if (r5_n == 0x00)
 	{
 		r24_r25Out = <invalid>;
-		word32 r1_52;
-		r1Out = r1_52;
-		word32 r3_46;
-		r3Out = r3_46;
-		word32 r4_50;
-		r4Out = r4_50;
-		word32 r5_54;
-		r5Out = r5_54;
-		word32 r21_53;
-		r21Out = r21_53;
-		word32 r30_45;
-		r30Out = r30_45;
-		word32 r22_49;
-		word32 r23_55;
-		return SEQ(r22_49, r23_55);
+		word32 r1_n;
+		r1Out = r1_n;
+		word32 r3_n;
+		r3Out = r3_n;
+		word32 r4_n;
+		r4Out = r4_n;
+		word32 r5_n;
+		r5Out = r5_n;
+		word32 r21_n;
+		r21Out = r21_n;
+		word32 r30_n;
+		r30Out = r30_n;
+		word32 r22_n;
+		word32 r23_n;
+		return SEQ(r22_n, r23_n);
 	}
 	else
 	{
-		union Eq_198 * r13_64 = g_ptr66E88;
-		if (r13_64 == null)
+		union Eq_n * r13_n = g_ptr66E88;
+		if (r13_n == null)
 		{
-			struct Eq_76 * r13_65 = cond(r5_31 - 0x01);
+			struct Eq_n * r13_n = cond(r5_n - 0x01);
 			syslog_r();
-			word32 r5_82 = g_dw66E8C;
-			struct Eq_76 * r13_83 = cond(r5_82 - 0x01);
+			word32 r5_n = g_dw66E8C;
+			struct Eq_n * r13_n = cond(r5_n - 0x01);
 			syslog_r();
 		}
 		else
 		{
-			struct Eq_76 * r13_104 = cond(r5_31 - 0x01);
-			union Eq_198 * r7_112 = g_ptr26028;
+			struct Eq_n * r13_n = cond(r5_n - 0x01);
+			union Eq_n * r7_n = g_ptr26028;
 			syslog_r();
-			word32 r5_141 = g_dw66E8C;
-			struct Eq_76 * r13_142 = cond(r5_141 - 0x01);
-			union Eq_198 * r7_152 = g_ptr26028;
+			word32 r5_n = g_dw66E8C;
+			struct Eq_n * r13_n = cond(r5_n - 0x01);
+			union Eq_n * r7_n = g_ptr26028;
 			syslog_r();
 		}
 	}
 }
 
-// 000046E0: void fn000046E0(Register (ptr32 Eq_198) r2)
+// 000046E0: void fn000046E0(Register (ptr32 Eq_n) r2)
 // Called from:
 //      fn000028D0
-void fn000046E0(union Eq_198 * r2)
+void fn000046E0(union Eq_n * r2)
 {
 	if (r2 != null)
 	{
@@ -1033,39 +1033,39 @@ void fn00004740(int32 r2)
 	exit(r2);
 }
 
-// 00004780: void fn00004780(Register int32 r2, Register ui32 r19, Register (ptr32 Eq_309) r20)
+// 00004780: void fn00004780(Register int32 r2, Register ui32 r19, Register (ptr32 Eq_n) r20)
 // Called from:
 //      fn000028D0
 //      fn00004740
-void fn00004780(int32 r2, ui32 r19, struct Eq_309 * r20)
+void fn00004780(int32 r2, ui32 r19, struct Eq_n * r20)
 {
-	word32 r30_38;
-	word32 r21_32;
-	union Eq_198 * r5_41;
-	union Eq_198 * r4_40;
-	union Eq_198 * r3_37;
-	word32 r1_27;
-	word64 r24_r25_84;
+	word32 r30_n;
+	word32 r21_n;
+	union Eq_n * r5_n;
+	union Eq_n * r4_n;
+	union Eq_n * r3_n;
+	word32 r1_n;
+	word64 r24_r25_n;
 	if (g_ptr2601C != null)
 	{
 		auth_close();
 		if (g_ptr26024 != null)
 		{
-			word64 r22_r23_85 = fn00004520(out r24_r25_84, out r1_27, out r3_37, out r4_40, out r5_41, out r21_32, out r30_38);
-			struct Eq_5 * r31_39 = (struct Eq_5 *) <invalid>;
-			r31_39->dwFFFFFE94 = r19;
-			word32 r13_50 = __guard_local;
-			r31_39->qwFFFFFEA8 = r24_r25_84;
-			r31_39->qwFFFFFE98 = (word64) r21_32;
-			r31_39->dwFFFFFEB0 = r30_38;
-			r31_39->qwFFFFFEA0 = r22_r23_85;
-			r31_39->dwFFFFFEB4 = r1_27;
-			r31_39->dwFFFFFFF0 = r13_50;
-			Eq_1902 r2_72 = open(&g_t15350, 0x02);
-			if (r2_72 < 0x00)
+			word64 r22_r23_n = fn00004520(out r24_r25_n, out r1_n, out r3_n, out r4_n, out r5_n, out r21_n, out r30_n);
+			struct Eq_n * r31_n = (struct Eq_n *) <invalid>;
+			r31_n->dwFFFFFE94 = r19;
+			word32 r13_n = __guard_local;
+			r31_n->qwFFFFFEA8 = r24_r25_n;
+			r31_n->qwFFFFFE98 = (word64) r21_n;
+			r31_n->dwFFFFFEB0 = r30_n;
+			r31_n->qwFFFFFEA0 = r22_r23_n;
+			r31_n->dwFFFFFEB4 = r1_n;
+			r31_n->dwFFFFFFF0 = r13_n;
+			Eq_n r2_n = open(&g_t15350, 0x02);
+			if (r2_n < 0x00)
 				fn00004928();
 			else
-				fn00004848(r4_40, r5_41, r3_37, r2_72, r31_39 - 336);
+				fn00004848(r4_n, r5_n, r3_n, r2_n, r31_n - 336);
 		}
 		else
 			_exit(0x00);
@@ -1075,27 +1075,27 @@ void fn00004780(int32 r2, ui32 r19, struct Eq_309 * r20)
 }
 
 void g_t47C0(int32 r2) = ??/* Unexpected function type (fn void (int32)) */ ; // 000047C0
-// 000047F0: void fn000047F0(Register (ptr32 Eq_198) r3, Register (ptr32 Eq_198) r4, Register (ptr32 Eq_198) r5, Register (ptr32 Eq_194) r30)
+// 000047F0: void fn000047F0(Register (ptr32 Eq_n) r3, Register (ptr32 Eq_n) r4, Register (ptr32 Eq_n) r5, Register (ptr32 Eq_n) r30)
 // Called from:
 //      fn000028D0
-void fn000047F0(union Eq_198 * r3, union Eq_198 * r4, union Eq_198 * r5, struct Eq_194 * r30)
+void fn000047F0(union Eq_n * r3, union Eq_n * r4, union Eq_n * r5, struct Eq_n * r30)
 {
-	Eq_2271 tLoc0150;
+	Eq_n tLoc0150;
 	tLoc0150.ptr0000 = r30;
 	ptr32 %continuation;
 	tLoc0150.ptr0004 = %continuation;
-	Eq_1902 r2_41 = open(&g_t15350, 0x02);
-	if (r2_41 < 0x00)
+	Eq_n r2_n = open(&g_t15350, 0x02);
+	if (r2_n < 0x00)
 		fn00004928();
 	else
-		fn00004848(r4, r5, r3, r2_41, &tLoc0150);
+		fn00004848(r4, r5, r3, r2_n, &tLoc0150);
 }
 
-// 00004848: void fn00004848(Register (ptr32 Eq_198) r20, Register (ptr32 Eq_198) r21, Register (ptr32 Eq_198) r22, Register Eq_1902 r25, Register (ptr32 Eq_2267) r30)
+// 00004848: void fn00004848(Register (ptr32 Eq_n) r20, Register (ptr32 Eq_n) r21, Register (ptr32 Eq_n) r22, Register Eq_n r25, Register (ptr32 Eq_n) r30)
 // Called from:
 //      fn00004780
 //      fn000047F0
-void fn00004848(union Eq_198 * r20, union Eq_198 * r21, union Eq_198 * r22, Eq_1902 r25, struct Eq_2267 * r30)
+void fn00004848(union Eq_n * r20, union Eq_n * r21, union Eq_n * r22, Eq_n r25, struct Eq_n * r30)
 {
 	__muldi3();
 	lseek(r25, 0x00);
@@ -1133,16 +1133,16 @@ void fn000049A0()
 {
 	word32 dwLoc0148;
 	memset(&dwLoc0148, 0x00);
-	Eq_1902 r2_39 = open(&g_t15350, 0x02);
-	if (r2_39 >= 0x00)
+	Eq_n r2_n = open(&g_t15350, 0x02);
+	if (r2_n >= 0x00)
 	{
 		__muldi3();
-		lseek(r2_39, 0x00);
+		lseek(r2_n, 0x00);
 		word32 dwLoc18;
-		if (!__bit<word32,byte>(cond(read(r2_39, &dwLoc0148) - 0x0138), 0x00) && dwLoc18 != 0x00)
+		if (!__bit<word32,byte>(cond(read(r2_n, &dwLoc0148) - 0x0138), 0x00) && dwLoc18 != 0x00)
 		{
-			struct Eq_76 * r13_65 = cond(dwLoc18 - 0x01);
-			if (!__bit<word32,byte>(r13_65, 0x02))
+			struct Eq_n * r13_n = cond(dwLoc18 - 0x01);
+			if (!__bit<word32,byte>(r13_n, 0x02))
 				printf("There have been %lu unsuccessful login attempts to your account.\n");
 			else
 			{
@@ -1161,27 +1161,27 @@ void fn000049A0()
 					putc(0x0A, &g_ptr66C68);
 				else
 				{
-					int32 r13_155 = g_dw66C70;
-					if (r13_155 < 0x01)
+					int32 r13_n = g_dw66C70;
+					if (r13_n < 0x01)
 					{
-						g_dw66C70 = r13_155 - 0x01;
+						g_dw66C70 = r13_n - 0x01;
 						__swbuf();
 					}
 					else
 					{
-						g_dw66C70 = r13_155 - 0x01;
-						byte * r13_163 = g_ptr66C68;
-						*r13_163 = 0x0A;
-						g_ptr66C68 = r13_163 + 1;
+						g_dw66C70 = r13_n - 0x01;
+						byte * r13_n = g_ptr66C68;
+						*r13_n = 0x0A;
+						g_ptr66C68 = r13_n + 1;
 						__muldi3();
-						lseek(r2_39, 0x00);
-						write(r2_39, &dwLoc0148);
+						lseek(r2_n, 0x00);
+						write(r2_n, &dwLoc0148);
 					}
 				}
 			}
 		}
 		else
-			close(r2_39);
+			close(r2_n);
 	}
 }
 

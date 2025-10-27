@@ -69,10 +69,10 @@ void auth_clean()
 }
 
 <anonymous> g_t361D0 = <code>; // 000361D0
-// 000361DC: Register Eq_2497 geteuid()
+// 000361DC: Register Eq_n geteuid()
 // Called from:
 //      fn000028D0
-Eq_2497 geteuid()
+Eq_n geteuid()
 {
 	return geteuid();
 }
@@ -116,7 +116,7 @@ void setpriority()
 }
 
 <anonymous> g_t36260 = <code>; // 00036260
-// 0003626C: void getc(Register (ptr32 Eq_1868) r2)
+// 0003626C: void getc(Register (ptr32 Eq_n) r2)
 // Called from:
 //      fn00003FC8
 void getc(FILE * r2)
@@ -153,19 +153,19 @@ void auth_getstate()
 }
 
 <anonymous> g_t362C0 = <code>; // 000362C0
-// 000362CC: void puts(Register (ptr32 Eq_76) r2)
+// 000362CC: void puts(Register (ptr32 Eq_n) r2)
 // Called from:
 //      fn000028D0
-void puts(struct Eq_76 * r2)
+void puts(struct Eq_n * r2)
 {
 	puts(r2);
 }
 
 <anonymous> g_t362D8 = <code>; // 000362D8
-// 000362E4: Register Eq_2497 getuid()
+// 000362E4: Register Eq_n getuid()
 // Called from:
 //      fn000028D0
-Eq_2497 getuid()
+Eq_n getuid()
 {
 	return getuid();
 }
@@ -227,12 +227,12 @@ void auth_checknologin()
 }
 
 <anonymous> g_t36380 = <code>; // 00036380
-// 0003638C: void lseek(Register Eq_1902 r2, Register int32 r4)
+// 0003638C: void lseek(Register Eq_n r2, Register int32 r4)
 // Called from:
 //      fn000042E0
 //      fn00004780
 //      fn000049A0
-void lseek(Eq_1902 r2, int32 r4)
+void lseek(Eq_n r2, int32 r4)
 {
 	word32 r3;
 	lseek(r2, (off_t) r3, r4);
@@ -248,7 +248,7 @@ void chown()
 }
 
 <anonymous> g_t363B0 = <code>; // 000363B0
-// 000363BC: void freeaddrinfo(Register (ptr32 Eq_376) r2)
+// 000363BC: void freeaddrinfo(Register (ptr32 Eq_n) r2)
 // Called from:
 //      fn000028D0
 void freeaddrinfo(struct addrinfo * r2)
@@ -266,10 +266,10 @@ void alarm()
 }
 
 <anonymous> g_t363E0 = <code>; // 000363E0
-// 000363EC: Register (ptr32 Eq_198) strrchr(Register (ptr32 Eq_198) r2, Register word32 r3)
+// 000363EC: Register (ptr32 Eq_n) strrchr(Register (ptr32 Eq_n) r2, Register word32 r3)
 // Called from:
 //      fn000028D0
-union Eq_198 * strrchr(union Eq_198 * r2, word32 r3)
+union Eq_n * strrchr(union Eq_n * r2, word32 r3)
 {
 	return strrchr(r2, (char) r3);
 }
@@ -295,13 +295,13 @@ void setrlimit()
 }
 
 <anonymous> g_t36428 = <code>; // 00036428
-// 00036434: Register Eq_1902 write(Register Eq_1902 r2, Register (ptr32 word32) r3)
+// 00036434: Register Eq_n write(Register Eq_n r2, Register (ptr32 word32) r3)
 // Called from:
 //      fn00004110
 //      fn000042E0
 //      fn00004780
 //      fn000049A0
-Eq_1902 write(Eq_1902 r2, word32 * r3)
+Eq_n write(Eq_n r2, word32 * r3)
 {
 	word32 r4;
 	return (uint32) write(r2, r3, (size_t) r4);
@@ -346,22 +346,22 @@ void auth_setoption()
 }
 
 <anonymous> g_t364A0 = <code>; // 000364A0
-// 000364AC: void signal(Register int32 r2, Register Eq_448 r3)
+// 000364AC: void signal(Register int32 r2, Register Eq_n r3)
 // Called from:
 //      fn000028D0
-void signal(int32 r2, Eq_448 r3)
+void signal(int32 r2, Eq_n r3)
 {
 	signal(r2, r3);
 }
 
 <anonymous> g_t364B8 = <code>; // 000364B8
-// 000364C4: Register Eq_1902 read(Register Eq_1902 r2, Register (ptr32 word32) r3)
+// 000364C4: Register Eq_n read(Register Eq_n r2, Register (ptr32 word32) r3)
 // Called from:
 //      fn00004110
 //      fn000042E0
 //      fn00004780
 //      fn000049A0
-Eq_1902 read(Eq_1902 r2, word32 * r3)
+Eq_n read(Eq_n r2, word32 * r3)
 {
 	word32 r4;
 	return (uint32) read(r2, r3, (size_t) r4);
@@ -383,8 +383,8 @@ void openlog()
 word32 strlcpy()
 {
 	strlcpy();
-	word32 r1_10;
-	return r1_10;
+	word32 r1_n;
+	return r1_n;
 }
 
 <anonymous> g_t36500 = <code>; // 00036500
@@ -397,21 +397,21 @@ void closelog()
 }
 
 <anonymous> g_t36518 = <code>; // 00036518
-// 00036524: Register (ptr32 Eq_198) strncmp(Register (ptr32 Eq_198) r2, Register (ptr32 char) r3, Register int32 r4)
+// 00036524: Register (ptr32 Eq_n) strncmp(Register (ptr32 Eq_n) r2, Register (ptr32 char) r3, Register int32 r4)
 // Called from:
 //      fn000028D0
-union Eq_198 * strncmp(union Eq_198 * r2, char * r3, int32 r4)
+union Eq_n * strncmp(union Eq_n * r2, char * r3, int32 r4)
 {
 	return strncmp(r2, r3, r4);
 }
 
 <anonymous> g_t36530 = <code>; // 00036530
-// 0003653C: void strncpy(Register (ptr32 Eq_1245) r2, Register (ptr32 Eq_198) r3, Register int32 r4)
+// 0003653C: void strncpy(Register (ptr32 Eq_n) r2, Register (ptr32 Eq_n) r3, Register int32 r4)
 // Called from:
 //      fn000028D0
 //      fn000042E0
 //      fn00004780
-void strncpy(union Eq_1245 * r2, union Eq_198 * r3, int32 r4)
+void strncpy(union Eq_n * r2, union Eq_n * r3, int32 r4)
 {
 	strncpy(r2, r3, r4);
 }
@@ -435,7 +435,7 @@ void strcasecmp(char * r2, char * r3)
 }
 
 <anonymous> g_t36578 = <code>; // 00036578
-// 00036584: void __cxa_atexit(Register (ptr32 Eq_11) r2, Register (ptr32 void) r3, Register (ptr32 void) r4)
+// 00036584: void __cxa_atexit(Register (ptr32 Eq_n) r2, Register (ptr32 void) r3, Register (ptr32 void) r4)
 // Called from:
 //      fn00002710
 void __cxa_atexit(void (* r2)(void * r2), void * r3, void * r4)
@@ -462,7 +462,7 @@ void execlp()
 }
 
 <anonymous> g_t365C0 = <code>; // 000365C0
-// 000365CC: void sigaction(Register int32 r2, Register (ptr32 Eq_1920) r3, Register (ptr32 Eq_1921) r4)
+// 000365CC: void sigaction(Register int32 r2, Register (ptr32 Eq_n) r3, Register (ptr32 Eq_n) r4)
 // Called from:
 //      fn00004110
 void sigaction(int32 r2, struct sigaction * r3, struct sigaction * r4)
@@ -480,10 +480,10 @@ void login_getcaptime()
 }
 
 <anonymous> g_t365F0 = <code>; // 000365F0
-// 000365FC: Register (ptr32 Eq_198) strdup(Register (ptr32 Eq_198) r2)
+// 000365FC: Register (ptr32 Eq_n) strdup(Register (ptr32 Eq_n) r2)
 // Called from:
 //      fn000028D0
-union Eq_198 * strdup(union Eq_198 * r2)
+union Eq_n * strdup(union Eq_n * r2)
 {
 	return strdup(r2);
 }
@@ -507,13 +507,13 @@ int32 getopt(int32 r2, char * (* r3)[], char * r4)
 }
 
 <anonymous> g_t36638 = <code>; // 00036638
-// 00036644: void memset(Register (ptr32 Eq_1245) r2, Register int32 r3)
+// 00036644: void memset(Register (ptr32 Eq_n) r2, Register int32 r3)
 // Called from:
 //      fn000028D0
 //      fn000042E0
 //      fn00004780
 //      fn000049A0
-void memset(union Eq_1245 * r2, int32 r3)
+void memset(union Eq_n * r2, int32 r3)
 {
 	word32 r4;
 	memset(r2, r3, (size_t) r4);
@@ -566,7 +566,7 @@ void login_getcapbool()
 }
 
 <anonymous> g_t366C8 = <code>; // 000366C8
-// 000366D4: void time(Register (ptr32 Eq_1490) r2)
+// 000366D4: void time(Register (ptr32 Eq_n) r2)
 // Called from:
 //      fn000028D0
 //      fn000042E0
@@ -604,7 +604,7 @@ void seteuid()
 }
 
 <anonymous> g_t36728 = <code>; // 00036728
-// 00036734: void putc(Register int32 r2, Register (ptr32 Eq_2057) r3)
+// 00036734: void putc(Register int32 r2, Register (ptr32 Eq_n) r3)
 // Called from:
 //      fn000042E0
 //      fn000049A0
@@ -614,10 +614,10 @@ void putc(int32 r2, FILE * r3)
 }
 
 <anonymous> g_t36740 = <code>; // 00036740
-// 0003674C: Register (ptr32 char) strcmp(Register (ptr32 char) r2, Register (ptr32 Eq_198) r3)
+// 0003674C: Register (ptr32 char) strcmp(Register (ptr32 char) r2, Register (ptr32 Eq_n) r3)
 // Called from:
 //      fn000028D0
-char * strcmp(char * r2, union Eq_198 * r3)
+char * strcmp(char * r2, union Eq_n * r3)
 {
 	return strcmp(r2, r3);
 }
@@ -632,10 +632,10 @@ void ttyname()
 }
 
 <anonymous> g_t36770 = <code>; // 00036770
-// 0003677C: Register (ptr32 Eq_198) getpwnam(Register (ptr32 Eq_198) r2)
+// 0003677C: Register (ptr32 Eq_n) getpwnam(Register (ptr32 Eq_n) r2)
 // Called from:
 //      fn000028D0
-union Eq_198 * getpwnam(union Eq_198 * r2)
+union Eq_n * getpwnam(union Eq_n * r2)
 {
 	return getpwnam(r2);
 }
@@ -687,10 +687,10 @@ void auth_verify()
 }
 
 <anonymous> g_t36800 = <code>; // 00036800
-// 0003680C: Register (ptr32 Eq_198) getaddrinfo(Register (ptr32 Eq_198) r2, Register (ptr32 char) r3, Register (ptr32 Eq_353) r4, Register (ptr32 (ptr32 Eq_354)) r5)
+// 0003680C: Register (ptr32 Eq_n) getaddrinfo(Register (ptr32 Eq_n) r2, Register (ptr32 char) r3, Register (ptr32 Eq_n) r4, Register (ptr32 (ptr32 Eq_n)) r5)
 // Called from:
 //      fn000028D0
-union Eq_198 * getaddrinfo(union Eq_198 * r2, char * r3, struct addrinfo * r4, struct addrinfo ** r5)
+union Eq_n * getaddrinfo(union Eq_n * r2, char * r3, struct addrinfo * r4, struct addrinfo ** r5)
 {
 	return getaddrinfo(r2, r3, r4, r5);
 }
@@ -714,7 +714,7 @@ void auth_setstate()
 }
 
 <anonymous> g_t36848 = <code>; // 00036848
-// 00036854: void stat(Register (ptr32 char) r2, Register (ptr32 Eq_2787) r3)
+// 00036854: void stat(Register (ptr32 char) r2, Register (ptr32 Eq_n) r3)
 // Called from:
 //      fn000028D0
 void stat(char * r2, struct stat * r3)
@@ -723,7 +723,7 @@ void stat(char * r2, struct stat * r3)
 }
 
 <anonymous> g_t36860 = <code>; // 00036860
-// 0003686C: void fwrite(Register (ptr32 void) r2, Register (ptr32 Eq_1695) r5)
+// 0003686C: void fwrite(Register (ptr32 void) r2, Register (ptr32 Eq_n) r5)
 // Called from:
 //      fn000028D0
 void fwrite(void * r2, FILE * r5)
@@ -820,10 +820,10 @@ void setusercontext()
 }
 
 <anonymous> g_t36950 = <code>; // 00036950
-// 0003695C: Register (ptr32 Eq_198) strlen(Register (ptr32 Eq_198) r2)
+// 0003695C: Register (ptr32 Eq_n) strlen(Register (ptr32 Eq_n) r2)
 // Called from:
 //      fn000028D0
-union Eq_198 * strlen(union Eq_198 * r2)
+union Eq_n * strlen(union Eq_n * r2)
 {
 	return (uint32) strlen(r2);
 }
@@ -840,23 +840,23 @@ void auth_close()
 }
 
 <anonymous> g_t36980 = <code>; // 00036980
-// 0003698C: Register (ptr32 Eq_198) open(Register (ptr32 Eq_198) r2, Register int32 r3)
+// 0003698C: Register (ptr32 Eq_n) open(Register (ptr32 Eq_n) r2, Register int32 r3)
 // Called from:
 //      fn00004110
 //      fn000042E0
 //      fn00004780
 //      fn000047F0
 //      fn000049A0
-union Eq_198 * open(union Eq_198 * r2, int32 r3)
+union Eq_n * open(union Eq_n * r2, int32 r3)
 {
 	return open(r2, r3);
 }
 
 <anonymous> g_t36998 = <code>; // 00036998
-// 000369A4: Register (ptr32 Eq_198) strchr(Register (ptr32 Eq_198) r2, Register word32 r3)
+// 000369A4: Register (ptr32 Eq_n) strchr(Register (ptr32 Eq_n) r2, Register word32 r3)
 // Called from:
 //      fn000028D0
-union Eq_198 * strchr(union Eq_198 * r2, word32 r3)
+union Eq_n * strchr(union Eq_n * r2, word32 r3)
 {
 	return strchr(r2, (char) r3);
 }
@@ -889,13 +889,13 @@ void warnc()
 }
 
 <anonymous> g_t369F8 = <code>; // 000369F8
-// 00036A04: void close(Register Eq_1902 r2)
+// 00036A04: void close(Register Eq_n r2)
 // Called from:
 //      fn00004110
 //      fn000042E0
 //      fn00004780
 //      fn000049A0
-void close(Eq_1902 r2)
+void close(Eq_n r2)
 {
 	close(r2);
 }

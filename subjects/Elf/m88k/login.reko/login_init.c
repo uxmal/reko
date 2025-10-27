@@ -10,7 +10,7 @@
 void fn00002558()
 {
 	fn00002810();
-	struct Eq_5 * r31_16 = (struct Eq_5 *) <invalid>;
-	r31_16->ptr0000();
+	struct Eq_n * r31_n = (struct Eq_n *) <invalid>;
+	r31_n->ptr0000();
 }
 

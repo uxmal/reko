@@ -354,6 +354,35 @@ namespace Reko.Core
         /// <param name="emitter">A <see cref="CodeEmitter"/> that can be used to generate IR code.</param>
         void InjectProcedureEntryStatements(Procedure proc, Address addr, CodeEmitter emitter);
 
+
+        /// <summary>
+        /// Attempt to inline the instructions at <paramref name="addrCallee"/>. If the instructions
+        /// can be inlined, return them as a list of <see cref="RtlInstruction"/>s.
+        /// </summary>
+        /// <remarks>
+        /// This call is used to inline very short procedures. A specific application
+        /// is to handle idioms like:
+        /// <code>
+        /// call foo
+        /// ...
+        /// foo proc
+        ///    mov ebx,[esp+0]
+        ///    ret
+        /// </code>
+        /// whose purpose is to collect the return address into a register. This idiom is 
+        /// commonly used in position independent (PIC) code.
+        /// </remarks>
+        /// <param name="addrCallee">Address of a procedure that might need inlining.</param>
+        /// <param name="addrContinuation">The address at which control should resume after 
+        /// the call.</param>
+        /// <param name="rdr">Image reader primed to start at <paramref name="addrCallee"/>.
+        /// </param>
+        /// <param name="binder">A <see cref="IStorageBinder"/> instance used to materialize
+        /// actual arguments.</param>
+        /// <returns>null if no inlining was performed, otherwise a list of the inlined
+        /// instructions.</returns>
+        List<RtlInstruction>? InlineCall(Address addrCallee, Address addrContinuation, EndianImageReader rdr, IStorageBinder binder);
+
         /// <summary>
         /// Determines whether a register is never used
         /// as arguments to a procedure. 
@@ -906,6 +935,13 @@ namespace Reko.Core
         public virtual void InjectProcedureEntryStatements(Procedure proc, Address addr, CodeEmitter emitter)
         {
         }
+
+        /// <inheritdoc/>
+        public virtual List<RtlInstruction>? InlineCall(Address addrCallee, Address addrContinuation, EndianImageReader rdr, IStorageBinder binder)
+        {
+            return null;
+        }
+
 
         private PlatformDefinition? LoadPlatformDefinition(string envName)
         {

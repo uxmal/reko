@@ -54,6 +54,104 @@ Eq_1: (struct "Globals"
 		(26024 (ptr32 Eq_198) ptr26024)
 		(26028 (ptr32 Eq_198) ptr26028)
 		(260E8 word32 dw260E8)
+		(36140 code t36140)
+		(36158 code t36158)
+		(36170 code t36170)
+		(36188 code t36188)
+		(361A0 code t361A0)
+		(361B8 code t361B8)
+		(361D0 code t361D0)
+		(361E8 code t361E8)
+		(36200 code t36200)
+		(36218 code t36218)
+		(36230 code t36230)
+		(36248 code t36248)
+		(36260 code t36260)
+		(36278 code t36278)
+		(36290 code t36290)
+		(362A8 code t362A8)
+		(362C0 code t362C0)
+		(362D8 code t362D8)
+		(362F0 code t362F0)
+		(36308 code t36308)
+		(36320 code t36320)
+		(36338 code t36338)
+		(36350 code t36350)
+		(36368 code t36368)
+		(36380 code t36380)
+		(36398 code t36398)
+		(363B0 code t363B0)
+		(363C8 code t363C8)
+		(363E0 code t363E0)
+		(363F8 code t363F8)
+		(36410 code t36410)
+		(36428 code t36428)
+		(36440 code t36440)
+		(36458 code t36458)
+		(36470 code t36470)
+		(36488 code t36488)
+		(364A0 code t364A0)
+		(364B8 code t364B8)
+		(364D0 code t364D0)
+		(364E8 code t364E8)
+		(36500 code t36500)
+		(36518 code t36518)
+		(36530 code t36530)
+		(36548 code t36548)
+		(36560 code t36560)
+		(36578 code t36578)
+		(36590 code t36590)
+		(365A8 code t365A8)
+		(365C0 code t365C0)
+		(365D8 code t365D8)
+		(365F0 code t365F0)
+		(36608 code t36608)
+		(36620 code t36620)
+		(36638 code t36638)
+		(36650 code t36650)
+		(36668 code t36668)
+		(36680 code t36680)
+		(36698 code t36698)
+		(366B0 code t366B0)
+		(366C8 code t366C8)
+		(366E0 code t366E0)
+		(366F8 code t366F8)
+		(36710 code t36710)
+		(36728 code t36728)
+		(36740 code t36740)
+		(36758 code t36758)
+		(36770 code t36770)
+		(36788 code t36788)
+		(367A0 code t367A0)
+		(367B8 code t367B8)
+		(367D0 code t367D0)
+		(367E8 code t367E8)
+		(36800 code t36800)
+		(36818 code t36818)
+		(36830 code t36830)
+		(36848 code t36848)
+		(36860 code t36860)
+		(36878 code t36878)
+		(36890 code t36890)
+		(368A8 code t368A8)
+		(368C0 code t368C0)
+		(368D8 code t368D8)
+		(368F0 code t368F0)
+		(36908 code t36908)
+		(36920 code t36920)
+		(36938 code t36938)
+		(36950 code t36950)
+		(36968 code t36968)
+		(36980 code t36980)
+		(36998 code t36998)
+		(369B0 code t369B0)
+		(369C8 code t369C8)
+		(369E0 code t369E0)
+		(369F8 code t369F8)
+		(36A10 code t36A10)
+		(36A28 code t36A28)
+		(36A40 code t36A40)
+		(36A58 code t36A58)
 		(56A70 (ptr32 code) auth_clroption_GOT)
 		(56A74 (ptr32 code) unsetenv_GOT)
 		(56A78 (ptr32 code) warnx_GOT)
@@ -13232,6 +13330,104 @@ typedef Eq_1Eq_1struct Globals {
 	union Eq_198 * ptr26024;	// 26024
 	union Eq_198 * ptr26028;	// 26028
 	word32 dw260E8;	// 260E8
+	<anonymous> t36140;	// 36140
+	<anonymous> t36158;	// 36158
+	<anonymous> t36170;	// 36170
+	<anonymous> t36188;	// 36188
+	<anonymous> t361A0;	// 361A0
+	<anonymous> t361B8;	// 361B8
+	<anonymous> t361D0;	// 361D0
+	<anonymous> t361E8;	// 361E8
+	<anonymous> t36200;	// 36200
+	<anonymous> t36218;	// 36218
+	<anonymous> t36230;	// 36230
+	<anonymous> t36248;	// 36248
+	<anonymous> t36260;	// 36260
+	<anonymous> t36278;	// 36278
+	<anonymous> t36290;	// 36290
+	<anonymous> t362A8;	// 362A8
+	<anonymous> t362C0;	// 362C0
+	<anonymous> t362D8;	// 362D8
+	<anonymous> t362F0;	// 362F0
+	<anonymous> t36308;	// 36308
+	<anonymous> t36320;	// 36320
+	<anonymous> t36338;	// 36338
+	<anonymous> t36350;	// 36350
+	<anonymous> t36368;	// 36368
+	<anonymous> t36380;	// 36380
+	<anonymous> t36398;	// 36398
+	<anonymous> t363B0;	// 363B0
+	<anonymous> t363C8;	// 363C8
+	<anonymous> t363E0;	// 363E0
+	<anonymous> t363F8;	// 363F8
+	<anonymous> t36410;	// 36410
+	<anonymous> t36428;	// 36428
+	<anonymous> t36440;	// 36440
+	<anonymous> t36458;	// 36458
+	<anonymous> t36470;	// 36470
+	<anonymous> t36488;	// 36488
+	<anonymous> t364A0;	// 364A0
+	<anonymous> t364B8;	// 364B8
+	<anonymous> t364D0;	// 364D0
+	<anonymous> t364E8;	// 364E8
+	<anonymous> t36500;	// 36500
+	<anonymous> t36518;	// 36518
+	<anonymous> t36530;	// 36530
+	<anonymous> t36548;	// 36548
+	<anonymous> t36560;	// 36560
+	<anonymous> t36578;	// 36578
+	<anonymous> t36590;	// 36590
+	<anonymous> t365A8;	// 365A8
+	<anonymous> t365C0;	// 365C0
+	<anonymous> t365D8;	// 365D8
+	<anonymous> t365F0;	// 365F0
+	<anonymous> t36608;	// 36608
+	<anonymous> t36620;	// 36620
+	<anonymous> t36638;	// 36638
+	<anonymous> t36650;	// 36650
+	<anonymous> t36668;	// 36668
+	<anonymous> t36680;	// 36680
+	<anonymous> t36698;	// 36698
+	<anonymous> t366B0;	// 366B0
+	<anonymous> t366C8;	// 366C8
+	<anonymous> t366E0;	// 366E0
+	<anonymous> t366F8;	// 366F8
+	<anonymous> t36710;	// 36710
+	<anonymous> t36728;	// 36728
+	<anonymous> t36740;	// 36740
+	<anonymous> t36758;	// 36758
+	<anonymous> t36770;	// 36770
+	<anonymous> t36788;	// 36788
+	<anonymous> t367A0;	// 367A0
+	<anonymous> t367B8;	// 367B8
+	<anonymous> t367D0;	// 367D0
+	<anonymous> t367E8;	// 367E8
+	<anonymous> t36800;	// 36800
+	<anonymous> t36818;	// 36818
+	<anonymous> t36830;	// 36830
+	<anonymous> t36848;	// 36848
+	<anonymous> t36860;	// 36860
+	<anonymous> t36878;	// 36878
+	<anonymous> t36890;	// 36890
+	<anonymous> t368A8;	// 368A8
+	<anonymous> t368C0;	// 368C0
+	<anonymous> t368D8;	// 368D8
+	<anonymous> t368F0;	// 368F0
+	<anonymous> t36908;	// 36908
+	<anonymous> t36920;	// 36920
+	<anonymous> t36938;	// 36938
+	<anonymous> t36950;	// 36950
+	<anonymous> t36968;	// 36968
+	<anonymous> t36980;	// 36980
+	<anonymous> t36998;	// 36998
+	<anonymous> t369B0;	// 369B0
+	<anonymous> t369C8;	// 369C8
+	<anonymous> t369E0;	// 369E0
+	<anonymous> t369F8;	// 369F8
+	<anonymous> t36A10;	// 36A10
+	<anonymous> t36A28;	// 36A28
+	<anonymous> t36A40;	// 36A40
+	<anonymous> t36A58;	// 36A58
 	<anonymous> * auth_clroption_GOT;	// 56A70
 	<anonymous> * unsetenv_GOT;	// 56A74
 	<anonymous> * warnx_GOT;	// 56A78

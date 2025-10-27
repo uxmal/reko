@@ -63,6 +63,15 @@ namespace Reko.Environments.SysV
             return parser;
         }
 
+        private static SerializedSignature Func(SerializedType returnType, params SerializedType[] paramTypes)
+        {
+            return new SerializedSignature
+            {
+                ReturnValue = new Argument_v1 { Type = returnType },
+                Arguments = paramTypes.Select(t => new Argument_v1 { Type = t }).ToArray()
+            };
+        }
+
         public override ICallingConvention? DetermineCallingConvention(FunctionType signature, IProcessorArchitecture? arch)
         {
             return base.DetermineCallingConvention(signature, arch);
@@ -281,6 +290,18 @@ namespace Reko.Environments.SysV
         public override ProcedureBase_v1? SignatureFromName(string fnName)
         {
             StructField_v1? field;
+            if (fnName.StartsWith("__"))
+            {
+                var sprocIntrinsic = MatchGccIntrinsicName(fnName);
+                if (sprocIntrinsic is not null)
+                {
+                    return new Procedure_v1
+                    {
+                        Name = fnName,
+                        Signature = sprocIntrinsic,
+                    }; 
+                }
+            }
             try
             {
                 var gcc = new GccMangledNameParser(fnName, this.PointerType.Size);
@@ -302,17 +323,11 @@ namespace Reko.Environments.SysV
             return null;
         }
 
-        private static SerializedSignature Func(SerializedType retType, params SerializedType[] paramTypes)
+        private SerializedSignature? MatchGccIntrinsicName(string fnName)
         {
-            return new SerializedSignature
-            {
-                ReturnValue = new Argument_v1 { Type = retType },
-                Arguments = paramTypes
-                    .Select(p => new Argument_v1
-                    {
-                        Type = p,
-                    }).ToArray()
-            };
+            if (gccIntrinsicSignatures.TryGetValue(fnName, out var sig))
+                return sig;
+            return null;
         }
 
         static SysVPlatform()

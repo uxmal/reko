@@ -362,6 +362,36 @@ namespace Reko.Environments.SysV.ArchSpecific
             return null;
         }
 
+        public static Expression? M88k_Old(IProcessorArchitecture arch, Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
+        {
+            // or.u r11,xxx
+            // ld r11,r11,yyyy
+            // jmp r11
+            var stubInstrs = instrs.Take(3).ToArray();
+            if (stubInstrs.Length < 3)
+                return null;
+            if (stubInstrs[0] is not RtlAssignment a1 ||
+                a1.Dst is not Identifier id ||
+                a1.Src is not Constant cHigh)
+            {
+                return null;
+            }
+
+            if (stubInstrs[1] is not RtlAssignment a2 ||
+                a2.Src is not MemoryAccess mem ||
+                mem.EffectiveAddress is not BinaryExpression bin ||
+                bin.Left != id ||
+                bin.Right is not Constant cLow)
+            {
+                return null;
+            }
+            if (stubInstrs[2] is not RtlGoto g ||
+                g.Target != a2.Dst)
+            {
+                return null;
+            }
+            return Address.Ptr32(cHigh.ToUInt32() + cLow.ToUInt32());
+        }
 
         public static Expression? Mips32(IProcessorArchitecture arch, Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
         {

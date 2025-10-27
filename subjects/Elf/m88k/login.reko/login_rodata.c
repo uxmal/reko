@@ -5,13 +5,13 @@
 #include "login.h"
 
 char g_str14C5C[] = "%s/%s"; // 00014C5C
-Eq_198 g_t14CB4 = // 00014CB4
+Eq_n g_t14CB4 = // 00014CB4
 	{
 		'/'
 	};
 char g_str14CCC[] = "WARNING: %s\n\n"; // 00014CCC
 char g_str14CE8[] = "tty"; // 00014CE8
-Eq_76 g_t14D34 = // 00014D34
+Eq_n g_t14D34 = // 00014D34
 	{
 		
 		{
@@ -20,7 +20,7 @@ Eq_76 g_t14D34 = // 00014D34
 		65,
 	};
 char g_str14D80[] = "No home directory %s!\n"; // 00014D80
-Eq_76 g_t14D98 = // 00014D98
+Eq_n g_t14D98 = // 00014D98
 	{
 		
 		{
@@ -28,7 +28,7 @@ Eq_76 g_t14D98 = // 00014D98
 		},
 		111,
 	};
-Eq_76 g_t14DBC = // 00014DBC
+Eq_n g_t14DBC = // 00014DBC
 	{
 		
 		{
@@ -36,7 +36,7 @@ Eq_76 g_t14DBC = // 00014DBC
 		},
 		112,
 	};
-Eq_76 g_t14DD0 = // 00014DD0
+Eq_n g_t14DD0 = // 00014DD0
 	{
 		
 		{
@@ -58,7 +58,7 @@ char g_str15110[] = "AUTH_TYPE"; // 00015110
 char g_str1511C[] = "REMOTE_NAME"; // 0001511C
 char g_str15160[] = "auth-"; // 00015160
 char g_str15194[] = "root"; // 00015194
-Eq_76 g_t151B8 = // 000151B8
+Eq_n g_t151B8 = // 000151B8
 	{
 		
 		{
@@ -67,7 +67,7 @@ Eq_76 g_t151B8 = // 000151B8
 		111,
 	};
 void g_v15200 = ??void??; // 00015200
-Eq_198 g_t15268 = // 00015268
+Eq_n g_t15268 = // 00015268
 	{
 		'/'
 	};
@@ -75,7 +75,7 @@ char g_str15288[] = "Last login: %.*s "; // 00015288
 char g_str1529C[] = "on %.*s"; // 0001529C
 char g_str152A4[] = " from %.*s"; // 000152A4
 void g_v15340 = ??void??; // 00015340
-Eq_198 g_t15350 = // 00015350
+Eq_n g_t15350 = // 00015350
 	{
 		'/'
 	};

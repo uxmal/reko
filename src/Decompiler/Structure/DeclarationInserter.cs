@@ -25,7 +25,6 @@ using Reko.Core.Absyn;
 using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using Path = System.Collections.Immutable.ImmutableList<Core.Absyn.AbsynStatement>;

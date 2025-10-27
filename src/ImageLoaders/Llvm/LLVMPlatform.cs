@@ -265,5 +265,10 @@ namespace Reko.ImageLoaders.LLVM
         public void WriteMetadata(Program program, string path)
         {
         }
+
+        public List<RtlInstruction>? InlineCall(Address addrCallee, Address addrContinuation, EndianImageReader rdr, IStorageBinder binder)
+        {
+            return null;
+        }
     }
 }

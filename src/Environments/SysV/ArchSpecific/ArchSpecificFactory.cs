@@ -78,6 +78,8 @@ namespace Reko.Environments.SysV.ArchSpecific
                 return TrampolineFinder.Arm32_Old;
             case "arm-64":
                 return TrampolineFinder.AArch64_Old;
+            case "m88k":
+                return TrampolineFinder.M88k_Old;
             case "ppc-le-64":
             case "ppc-be-64":
                 return TrampolineFinder.PowerPC64_Old;
