@@ -41,12 +41,12 @@ namespace Reko.Arch.Mips
 
         private static readonly Decoder rootDecoder;
 
-        private readonly MipsProcessorArchitecture arch;
+        private readonly MipsArchitecture arch;
         private readonly EndianImageReader rdr;
         private readonly List<MachineOperand> ops;
         private Address addr;
 
-        public MicroMipsDisassembler(MipsProcessorArchitecture arch, EndianImageReader rdr)
+        public MicroMipsDisassembler(MipsArchitecture arch, EndianImageReader rdr)
         {
             this.arch = arch;
             this.rdr = rdr;

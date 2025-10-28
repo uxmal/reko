@@ -255,12 +255,13 @@ namespace Reko.ImageLoaders.Elf
         EM_SIMA_MLA = 265,      // SiMa MLA
         EM_BANG = 266,          // Cambricon BANG
         EM_LOONGGPU = 267,      // Loongson LoongGPU
-
+        EM_SW64 = 268,          // Wuxi Institute of Advanced Technology SW64
+        EM_AIECTRLCODE = 269,   // AMD/Xilinx AIEngine ctrlcode
 
         // Unofficial definitions; some manufacturers do not register thier EM_*
         // values officially.
 
-        EM_NANOMIPS = 249,       //$REVIEW: a guess?
+        EM_NANOMIPS = 249,       // MIPS tech nanoMIPS: conflicts with Imagination Technologies
         EM_MORPHOS_PPC = 8692,   //$REVIEW: a guess?
         EM_AVR32a = 0x18AD,      // Atmel AVR32, according to https://sites.uclouvain.be/SystInfo/usr/include/linux/elf-em.h.html
         EM_FRV = 0x5441,         // Fujitsu FR-V

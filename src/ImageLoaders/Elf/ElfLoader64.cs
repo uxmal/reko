@@ -93,6 +93,7 @@ namespace Reko.ImageLoaders.Elf
                 // such a binary.
                 archName = endianness == EndianServices.Little ? "mips-le-64" :  "mips-be-64";
                 options[ProcessorOption.WordSize] = 64;
+                options[ProcessorOption.FloatABI] = 64;
                 break;
             case ElfMachine.EM_PARISC:
                 archName = "paRisc";

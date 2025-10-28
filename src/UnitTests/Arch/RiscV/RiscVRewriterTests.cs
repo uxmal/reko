@@ -44,8 +44,8 @@ namespace Reko.UnitTests.Arch.RiscV
                 "riscV",
                 new Dictionary<string, object>
                 {
-                    { "WordSize" , "32" },
-                    { "FloatAbi", 32 },
+                    { ProcessorOption.WordSize , "32" },
+                    { ProcessorOption.FloatABI, 32 },
                 });
             baseAddr = Address.Ptr32(0x0010000);
         }
@@ -57,8 +57,8 @@ namespace Reko.UnitTests.Arch.RiscV
                 "riscV",
                 new Dictionary<string, object>
                 {
-                    { "WordSize", "64" },
-                    { "FloatAbi", 128 }
+                    { ProcessorOption.WordSize, "64" },
+                    { ProcessorOption.FloatABI, 128 }
                 });
         }
 
@@ -70,7 +70,7 @@ namespace Reko.UnitTests.Arch.RiscV
                 "riscV",
                 new Dictionary<string, object>
                 {
-                    { "WordSize" , "32" },
+                    { ProcessorOption.WordSize , "32" },
                 });
             baseAddr = Address.Ptr32(0x0010000);
         }
@@ -104,7 +104,7 @@ namespace Reko.UnitTests.Arch.RiscV
             arch.LoadUserOptions(new Dictionary<string, object>
             {
                 { ProcessorOption.WordSize , "64" },
-                { "FloatAbi", 64 },
+                { ProcessorOption.FloatABI, 64 },
             });
             baseAddr = Address.Ptr64(0x0010000);
         }

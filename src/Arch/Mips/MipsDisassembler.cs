@@ -39,7 +39,7 @@ namespace Reko.Arch.Mips
         private const InstrClass DCT = InstrClass.ConditionalTransfer | InstrClass.Delay;
         private const InstrClass PRIV = InstrClass.Linear | InstrClass.Privileged;
 
-        private readonly MipsProcessorArchitecture arch;
+        private readonly MipsArchitecture arch;
         private readonly Decoder rootDecoder;
         private readonly EndianImageReader rdr;
         private readonly PrimitiveType signedWord;
@@ -47,7 +47,7 @@ namespace Reko.Arch.Mips
         private MipsInstruction instrCur;
         private Address addr;
 
-        public MipsDisassembler(MipsProcessorArchitecture arch, Decoder decoder, EndianImageReader imageReader)
+        public MipsDisassembler(MipsArchitecture arch, Decoder decoder, EndianImageReader imageReader)
         {
             this.arch = arch;
             this.rootDecoder = decoder;

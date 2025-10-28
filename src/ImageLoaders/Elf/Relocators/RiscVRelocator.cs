@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Loading;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -143,7 +144,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
         public static void SetOptions(RiscVFlags riscVFlags, Dictionary<string, object> options)
         {
             options["Compact"] = (riscVFlags & RiscVFlags.EF_RISCV_RVC) != 0;
-            options["FloatAbi"] = (riscVFlags & RiscVFlags.EF_RISCV_FLOAT_ABI_MASK) switch
+            options[ProcessorOption.FloatABI] = (riscVFlags & RiscVFlags.EF_RISCV_FLOAT_ABI_MASK) switch
             {
                 RiscVFlags.EF_RISCV_FLOAT_ABI_QUAD => 128,
                 RiscVFlags.EF_RISCV_FLOAT_ABI_DOUBLE => 64,

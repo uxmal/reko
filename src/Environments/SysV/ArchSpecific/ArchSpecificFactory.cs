@@ -100,7 +100,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             case "mips-le-32":
             case "mips-be-64":
             case "mips-le-64":
-                return new MipsCallingConvention(arch); //$ ccName?
+                return arch.GetCallingConvention("");
             case "ppc-be-32":
             case "ppc-le-32":
                 return new PowerPcCallingConvention(arch);

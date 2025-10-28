@@ -39,7 +39,7 @@ Volume IV-a: The MIPS16e™ ApplicationSpecific Extension to the MIPS32®
 Architecture */
     public class Mips16eRewriter : IEnumerable<RtlInstructionCluster>
     {
-        private readonly MipsProcessorArchitecture arch;
+        private readonly MipsArchitecture arch;
         private readonly MipsIntrinsics intrinsics;
         private readonly EndianImageReader rdr;
         private readonly IEnumerator<MipsInstruction> dasm;
@@ -49,7 +49,7 @@ Architecture */
         private RtlEmitter m;
 
         public Mips16eRewriter(
-            MipsProcessorArchitecture arch,
+            MipsArchitecture arch,
             MipsIntrinsics intrinsics,
             EndianImageReader rdr,
             IEnumerable<MipsInstruction> instrs,

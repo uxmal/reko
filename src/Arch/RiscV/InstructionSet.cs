@@ -66,7 +66,7 @@ namespace Reko.Arch.RiscV
                     ? Instr
                     : (a, B) => invalid;
 
-                if (options.TryGetValue("FloatAbi", out var oFloatAbi) &&
+                if (options.TryGetValue(ProcessorOption.FloatABI, out var oFloatAbi) &&
                     int.TryParse(oFloatAbi.ToString(), out int floatAbi))
                 {
                     switch (floatAbi)

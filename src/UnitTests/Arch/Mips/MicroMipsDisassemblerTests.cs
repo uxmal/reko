@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Arch.Mips
     [TestFixture]
     public class MicroMipsDisassemblerTests : DisassemblerTestBase<MipsInstruction>
     {
-        private MipsProcessorArchitecture arch;
+        private MipsArchitecture arch;
 
         [SetUp]
         public void Setup()

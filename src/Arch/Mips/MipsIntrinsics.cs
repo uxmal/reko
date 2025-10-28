@@ -30,7 +30,7 @@ namespace Reko.Arch.Mips
 {
     public class MipsIntrinsics
     {
-        public MipsIntrinsics(MipsProcessorArchitecture arch)
+        public MipsIntrinsics(MipsArchitecture arch)
         {
             bit = new IntrinsicBuilder("__bit", false)
                 .GenericTypes("TValue", "TPos")

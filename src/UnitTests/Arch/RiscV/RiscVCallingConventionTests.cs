@@ -57,7 +57,7 @@ namespace Reko.UnitTests.Arch.RiscV
                 "riscV",
                 new Dictionary<string, object>
                 {
-                    { "FloatAbi", floatAbi }
+                    { ProcessorOption.FloatABI, floatAbi }
                 });
             this.cc = new RiscVCallingConvention(arch);
             this.ccr = new CallingConventionBuilder();

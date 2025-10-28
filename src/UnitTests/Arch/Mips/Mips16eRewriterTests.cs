@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Arch.Mips
     [TestFixture]
     public class Mips16eRewriterTests : RewriterTestBase
     {
-        private readonly MipsProcessorArchitecture arch;
+        private readonly MipsArchitecture arch;
         private readonly Address addr;
 
         public Mips16eRewriterTests()

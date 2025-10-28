@@ -42,7 +42,7 @@ namespace Reko.Arch.Mips
         private readonly MipsIntrinsics intrinsics;
         private readonly IEnumerator<MipsInstruction> dasm;
         private readonly IStorageBinder binder;
-        private readonly MipsProcessorArchitecture arch;
+        private readonly MipsArchitecture arch;
         private readonly IRewriterHost host;
         private readonly ExpressionValueComparer cmp;
         private readonly RtlEmitter m;
@@ -50,7 +50,7 @@ namespace Reko.Arch.Mips
         private InstrClass iclass;
 
         public MipsRewriter(
-            MipsProcessorArchitecture arch,
+            MipsArchitecture arch,
             MipsIntrinsics intrinsics,
             EndianImageReader rdr,
             IEnumerable<MipsInstruction> instrs,

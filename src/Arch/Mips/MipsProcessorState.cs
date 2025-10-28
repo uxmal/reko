@@ -31,11 +31,11 @@ namespace Reko.Arch.Mips
 {
     public class MipsProcessorState : ProcessorState
     {
-        private MipsProcessorArchitecture arch;
+        private MipsArchitecture arch;
         private Constant[] iregs;       // integer register values.
         private bool[] valid;       // whether the regs are valid or not.
 
-        public MipsProcessorState(MipsProcessorArchitecture arch)
+        public MipsProcessorState(MipsArchitecture arch)
         {
             this.arch = arch;
             this.iregs = new Constant[32];

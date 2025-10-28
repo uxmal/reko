@@ -47,7 +47,7 @@ namespace Reko.UnitTests.Arch.RiscV
                 new Dictionary<string, object>
                 {
                     { ProcessorOption.WordSize, "64" },
-                    { "FloatAbi", 64 }
+                    { ProcessorOption.FloatABI, 64 }
                 });
             this.addrLoad = Address.Ptr32(0x00100000);
         }
@@ -57,7 +57,7 @@ namespace Reko.UnitTests.Arch.RiscV
             arch.LoadUserOptions(new Dictionary<string, object>
             {
                 { ProcessorOption.WordSize, "32" },
-                { "FloatAbi", 32 }
+                { ProcessorOption.FloatABI, 32 }
             });
         }
 
@@ -66,7 +66,7 @@ namespace Reko.UnitTests.Arch.RiscV
             arch.LoadUserOptions(new Dictionary<string, object>
             {
                 { ProcessorOption.WordSize, "64" },
-                { "FloatAbi", 64 }
+                { ProcessorOption.FloatABI, 64 }
             });
         }
 
@@ -75,7 +75,7 @@ namespace Reko.UnitTests.Arch.RiscV
             arch.LoadUserOptions(new Dictionary<string, object>
             {
                 { ProcessorOption.WordSize, "128" },
-                { "FloatAbi", 128 }
+                { ProcessorOption.FloatABI, 128 }
             });
         }
 
@@ -83,7 +83,7 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             arch.LoadUserOptions(new Dictionary<string, object>
             {
-                { "FloatAbi", floatSize },
+                { ProcessorOption.FloatABI, floatSize },
                 { "Zfa", true }
             });
         }

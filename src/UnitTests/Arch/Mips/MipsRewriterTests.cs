@@ -34,7 +34,7 @@ namespace Reko.UnitTests.Arch.Mips
     [TestFixture]
     public class MipsRewriterTests : RewriterTestBase
     {
-        private MipsProcessorArchitecture arch = new MipsBe32Architecture(CreateServiceContainer(), "mips-be-32", new Dictionary<string, object>());
+        private MipsArchitecture arch = new MipsBe32Architecture(CreateServiceContainer(), "mips-be-32", new Dictionary<string, object>());
         private Func<EndianImageReader, IEnumerable<MachineInstruction>> mkDasm;
 
         public override IProcessorArchitecture Architecture { get { return arch; } }

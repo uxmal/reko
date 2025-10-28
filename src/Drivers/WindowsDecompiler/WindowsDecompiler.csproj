@@ -19,7 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="$(SolutionDir)Gui\Gui.csproj" />
     <ProjectReference Include="$(SolutionDir)UserInterfaces\WindowsForms\WindowsForms.csproj" />
-    <ProjectReference Include="$(SolutionDir)Arch\M68k.Design\M68k.Design.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\Motorola.Design\Motorola.Design.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\MicrochipPIC.Design\MicrochipPIC.Design.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\PowerPC.Design\PowerPC.Design.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\X86.Design\X86.Design.csproj" />

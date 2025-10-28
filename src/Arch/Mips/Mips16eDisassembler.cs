@@ -39,13 +39,13 @@ namespace Reko.Arch.Mips
 #pragma warning disable IDE1006
         private static readonly Decoder rootDecoder;
 
-        private readonly MipsProcessorArchitecture arch;
+        private readonly MipsArchitecture arch;
         private readonly EndianImageReader rdr;
         private readonly List<MachineOperand> ops;
         private Address addr;
         private uint? extend;
 
-        public Mips16eDisassembler(MipsProcessorArchitecture arch, EndianImageReader rdr)
+        public Mips16eDisassembler(MipsArchitecture arch, EndianImageReader rdr)
         {
             this.arch = arch;
             this.rdr = rdr;

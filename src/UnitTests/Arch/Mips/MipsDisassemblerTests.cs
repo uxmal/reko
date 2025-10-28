@@ -32,7 +32,7 @@ namespace Reko.UnitTests.Arch.Mips
     [TestFixture]
     public class MipsDisassemblerTests : DisassemblerTestBase<MipsInstruction>
     {
-        private MipsProcessorArchitecture arch;
+        private MipsArchitecture arch;
         private MipsDisassemblerTests Registers;
 
         [SetUp]

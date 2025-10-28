@@ -92,7 +92,7 @@ namespace Reko.Arch.RiscV
             this.fregs = new[] { "fa0", "fa1", "fa2", "fa3", "fa4", "fa5", "fa6", "fa7" }
                 .Select(r => arch.GetRegister(r)!)
                 .ToArray();
-            if (((ProcessorArchitecture)arch).Options.TryGetValue("FloatAbi", out var oFloatAbi) &&
+            if (((ProcessorArchitecture)arch).Options.TryGetValue(ProcessorOption.FloatABI, out var oFloatAbi) &&
                 oFloatAbi is int floatAbi)
             {
                 this.floatAbi = floatAbi;

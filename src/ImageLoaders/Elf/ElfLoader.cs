@@ -259,6 +259,23 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_NANOMIPS:
                 arch = endianness == EndianServices.Little ? "mips-le-32" : "mips-be-32";
                 options[ProcessorOption.InstructionSet] = "nano";
+                var mipsFlags = (MIPSflags) BinaryImage.Header.Flags;
+                switch (mipsFlags & MIPSflags.EF_MIPS_ABI)
+                {
+                case MIPSflags.EF_MIPS_ABI_O32:
+                    options[ProcessorOption.ABI] = "nanoo32";
+                    break;
+                }
+                // Making an iffy assumption that *UCODE implies
+                // no FP registers.
+                if (mipsFlags.HasFlag(MIPSflags.EF_MIPS_UCODE))
+                {
+                    options[ProcessorOption.FloatABI] = 0;
+                }
+                else
+                {
+                    options[ProcessorOption.FloatABI] = 32;
+                }
                 break;
             case ElfMachine.EM_BLACKFIN: arch = "blackfin"; break;
             case ElfMachine.EM_MORPHOS_PPC: arch = "ppc-be-32"; break;

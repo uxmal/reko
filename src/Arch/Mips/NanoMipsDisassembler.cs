@@ -40,13 +40,13 @@ namespace Reko.Arch.Mips
     {
         private static readonly Decoder rootDecoder;
 
-        private readonly MipsProcessorArchitecture arch;
+        private readonly MipsArchitecture arch;
         private readonly EndianImageReader rdr;
         private readonly RegisterStorage gp;
         private readonly List<MachineOperand> ops;
         private Address addr;
 
-        public NanoMipsDisassembler(MipsProcessorArchitecture arch, EndianImageReader rdr)
+        public NanoMipsDisassembler(MipsArchitecture arch, EndianImageReader rdr)
         {
             this.arch = arch;
             this.rdr = rdr;

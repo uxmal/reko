@@ -233,16 +233,15 @@ namespace Reko.Arch.RiscV
                     WordWidth))
                 .ToArray();
 
-            if (Options.TryGetValue("FloatAbi", out object? oFloatAbi) &&
+            if (Options.TryGetValue(ProcessorOption.FloatABI, out object? oFloatAbi) &&
                 ProcessorOption.TryParseNumericOption(oFloatAbi, out int floatAbi))
             {
                 this.FpRegs = CreateFpRegs(floatAbi);
             }
             else
             {
-                this.FpRegs = Array.Empty<RegisterStorage>();
+                this.FpRegs = [];
             }
-
 
             this.regsByDomain = 
                 GpRegs

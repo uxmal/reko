@@ -53,6 +53,16 @@ namespace Reko.Core.Machine
         public const string InstructionSet = "ISA";
 
         /// <summary>
+        /// Option: the name of the ABI (Application Binary Interface) to be used.
+        /// </summary>
+        public const string ABI = "ABI";
+
+        /// <summary>
+        /// Option: the size of the FPU registers used in the ABI.
+        /// </summary>
+        public const string FloatABI = "FloatAbi";
+
+        /// <summary>
         /// Parse a numeric option, JavaScript-style. That is, accept strings
         /// but convert them to ints.
         ///  //$TODO: support for hexadecimal string representations?

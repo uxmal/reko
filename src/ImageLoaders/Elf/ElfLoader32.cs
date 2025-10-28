@@ -108,6 +108,14 @@ namespace Reko.ImageLoaders.Elf
                     options[ProcessorOption.InstructionSet] = "v6";
                     break;
                 }
+
+                switch (mipsFlags & MIPSflags.EF_MIPS_ABI)
+                {
+                case MIPSflags.EF_MIPS_ABI_O32:
+                    options[ProcessorOption.ABI] = "o32";
+                    break;
+                }
+                options[ProcessorOption.FloatABI] = is64 ? 64 : 32;
                 if (endianness == EndianServices.Little)
                 {
                     arch = is64 

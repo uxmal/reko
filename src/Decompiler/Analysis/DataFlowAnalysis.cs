@@ -402,7 +402,7 @@ namespace Reko.Analysis
         [Conditional("DEBUG")]
         public void DumpWatchedProcedure(string phase, string caption, SsaState ssa)
         {
-            if (Program.User.DebugTraceProcedures.Contains(ssa.Procedure.Name))
+            if (IsProcedureWatched(ssa.Procedure))
             {
                 Debug.Print("// {0}: {1}: SSA graph ==================", ssa.Procedure.Name, caption);
                 var sw = new StringWriter();
@@ -410,7 +410,7 @@ namespace Reko.Analysis
                 Debug.WriteLine(sw);
             }
             DumpWatchedProcedure(phase, caption, ssa.Procedure);
-            if (Program.User.DebugTraceProcedures.Contains(ssa.Procedure.Name))
+            if (IsProcedureWatched(ssa.Procedure))
                 ssa.Validate(s =>
             {
                 Console.WriteLine("== SSA validation failure; {0} {1}", caption, ssa.Procedure.Name);
@@ -435,7 +435,7 @@ namespace Reko.Analysis
         [Conditional("DEBUG")]
         public void DumpWatchedProcedure(string phase, string caption, Procedure proc)
         {
-            if (Program.User.DebugTraceProcedures.Contains(proc.Name))
+            if (IsProcedureWatched(proc))
             {
                 Debug.Print("// {0}: {1} ==================", proc.Name, caption);
                 //MockGenerator.DumpMethod(proc);
@@ -453,6 +453,17 @@ namespace Reko.Analysis
                     testSvc.GenerateUnitTestFromProcedure($"analysis_{n:00}_{phase}.rekoir", banner, proc);
                 }
             }
+        }
+
+        /// <summary>
+        /// Returns true if the procedure has been marked as "watched"
+        /// by the user.
+        /// </summary>
+        /// <param name="proc">Procedure to test.</param>
+        /// <returns>True if procedure is "watched"; otherwise false.</returns>
+        public bool IsProcedureWatched(Procedure proc)
+        {
+            return Program.User.DebugTraceProcedures.Contains(proc.Name);
         }
     }
 }

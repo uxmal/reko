@@ -399,6 +399,46 @@ namespace Reko.ImageLoaders.Elf.Relocators
     [Flags]
     public enum MIPSflags
     {
+        EF_MIPS_NOREORDER = 0x00000001,
+        EF_MIPS_PIC = 0x00000002,
+        EF_MIPS_CPIC = 0x00000004, 
+        EF_MIPS_UCODE = 0x00000010,
+        EF_MIPS_ABI2 = 0x00000020,
+        EF_MIPS_32BITMODE = 0x00000100,
+        EF_MIPS_FP64 = 0x00000200,
+        EF_MIPS_NAN2008 = 0x00000400,
+        EF_MIPS_ABI_O32 = 0x00001000,
+        EF_MIPS_ABI_O64 = 0x00002000,
+        EF_MIPS_ABI_EABI32 = 0x00003000,
+        EF_MIPS_ABI_EABI64 = 0x00004000,
+
+        EF_MIPS_ABI = 0x0000f000,
+        EF_MIPS_MACH_NONE = 0x00000000,
+        EF_MIPS_MACH_3900 = 0x00810000,
+        EF_MIPS_MACH_4010 = 0x00820000,
+        EF_MIPS_MACH_4100 = 0x00830000,
+        EF_MIPS_MACH_4650 = 0x00850000,
+        EF_MIPS_MACH_4120 = 0x00870000,
+        EF_MIPS_MACH_4111 = 0x00880000,
+        EF_MIPS_MACH_SB1 = 0x008a0000,
+        EF_MIPS_MACH_OCTEON = 0x008b0000,
+        EF_MIPS_MACH_XLR = 0x008c0000,
+        EF_MIPS_MACH_OCTEON2 = 0x008d0000,
+        EF_MIPS_MACH_OCTEON3 = 0x008e0000,
+        EF_MIPS_MACH_5400 = 0x00910000,
+        EF_MIPS_MACH_5900 = 0x00920000, 
+        EF_MIPS_MACH_5500 = 0x00980000,
+        EF_MIPS_MACH_9000 = 0x00990000,
+        EF_MIPS_MACH_LS2E = 0x00a00000,
+        EF_MIPS_MACH_LS2F = 0x00a10000,
+        EF_MIPS_MACH_LS3A = 0x00a20000,
+        EF_MIPS_MACH = 0x00ff0000,
+
+        EF_MIPS_MICROMIPS = 0x02000000,
+        EF_MIPS_ARCH_ASE_M16 = 0x04000000,
+        EF_MIPS_ARCH_ASE_MDMX = 0x08000000,
+        EF_MIPS_ARCH_ASE = 0x0f000000,
+
         EF_MIPS_ARCH = unchecked((int)(0xF0000000)), /* MIPS architecture level mask  */
 
         EF_MIPS_ARCH_1 = 0x00000000, /* -mips1 code.  */
@@ -411,6 +451,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
         EF_MIPS_ARCH_64 = 0x60000000, /* MIPS64 code.  */
         EF_MIPS_ARCH_32R2 = 0x70000000, /* MIPS32r2 code.  */
         EF_MIPS_ARCH_64R2 = unchecked((int)0x80000000), /* MIPS64r2 code.  */
+        EF_MIPS_ARCH_32R6 = unchecked((int) 0x90000000),
+        EF_MIPS_ARCH_64R6 = unchecked((int) 0xa0000000),
     }
 
     public enum MIPSrt

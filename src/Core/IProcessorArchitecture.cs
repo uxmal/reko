@@ -1014,6 +1014,34 @@ namespace Reko.Core
 
         /// <inheritdoc/>
         public abstract bool TryParseAddress(string? txtAddr, [MaybeNullWhen(false)] out Address addr);
+
+        /// <summary>
+        /// Reads an integer option from the Options dictionary.
+        /// </summary>
+        /// <param name="name">Name of the option.</param>
+        /// <returns>The option's value, or null if none present.</returns>
+        protected int? IntegerOption(string name)
+        {
+            if (!Options.TryGetValue(name, out var objValue))
+                return null;
+            if (objValue is int intValue)
+                return intValue;
+            if (objValue is string sValue && int.TryParse(sValue, out intValue))
+                return intValue;
+            return null;
+        }
+
+        /// <summary>
+        /// Reads a string option from the Options dictionary.
+        /// </summary>
+        /// <param name="name">Name of the option.</param>
+        /// <returns>The option's value, or null if none present.</returns>
+        protected string? StringOption(string name)
+        {
+            if (!Options.TryGetValue(name, out var objValue))
+                return null;
+            return objValue as string;
+        }
     }
 
     /// <summary>

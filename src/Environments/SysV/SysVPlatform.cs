@@ -39,6 +39,8 @@ namespace Reko.Environments.SysV
     //$TODO: rename to Elf-Neutral? Or Posix?
     public class SysVPlatform : Platform
     {
+        private static readonly Dictionary<string, SerializedSignature> gccIntrinsicSignatures;
+
         private readonly ArchSpecificFactory archSpecificFactory;
         private readonly ICallingConvention? defaultCc;
 
@@ -293,6 +295,58 @@ namespace Reko.Environments.SysV
                 };
             }
             return null;
+        }
+
+        private static SerializedSignature Func(SerializedType retType, params SerializedType[] paramTypes)
+        {
+            return new SerializedSignature
+            {
+                ReturnValue = new Argument_v1 { Type = retType },
+                Arguments = paramTypes
+                    .Select(p => new Argument_v1
+                    {
+                        Type = p,
+                    }).ToArray()
+            };
+        }
+
+        static SysVPlatform()
+        {
+            var int32 = PrimitiveType_v1.Int32();
+            var int64 = PrimitiveType_v1.Int64();
+            var real32 = PrimitiveType_v1.Real32();
+            var real64 = PrimitiveType_v1.Real64();
+            gccIntrinsicSignatures = new() 
+            {
+                { "__muldi3", Func(int64, int64, int64) },
+                { "__mulsi3", Func(int32, int32, int32) },
+
+                { "__addsf3", Func(real32, real32, real32) },
+                { "__adddf3", Func(real64, real64, real64) },
+                { "__divsf3", Func(real32, real32, real32) },
+                { "__divdf3", Func(real64, real64, real64) },
+                { "__extendsfdf2 ", Func(real64, real32) },
+                { "__floatdisf2", Func(real32, int64) },
+                { "__floatdidf2", Func(real64, int64) },
+                { "__floatsisf2", Func(real32, int32) },
+                { "__floatsidf2", Func(real64, int32) },
+                { "__gesf2", Func(int32, real32, real32) },
+                { "__gedf2", Func(int32, real32, real32) },
+                { "__gtsf2", Func(int32, real32, real32) },
+                { "__gtdf2", Func(int32, real32, real32) },
+                { "__lesf2", Func(int32, real32, real32) },
+                { "__ledf2", Func(int32, real32, real32) },
+                { "__ltsf2", Func(int32, real32, real32) },
+                { "__ltdf2", Func(int32, real32, real32) },
+                { "__mulsf3", Func(real32, real32, real32) },
+                { "__muldf3", Func(real64, real64, real64) },
+                { "__negsf2", Func(real32, real32) },
+                { "__negsd2", Func(real64, real64) },
+                { "__nesf2", Func(int32, real32) },
+                { "__nedf2", Func(int32, real64) },
+                { "__subsf3", Func(real32, real32, real32) },
+                { "__subdf3", Func(real64, real64, real64) },
+            };
         }
     }
 }
