@@ -25,7 +25,6 @@ using Reko.Core.Absyn;
 using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Path = System.Collections.Immutable.ImmutableList<Core.Absyn.AbsynStatement>;
 
@@ -220,7 +219,7 @@ public class DeclarationInserter : IAbsynVisitor<int, Path>
     /// <inheritdoc/>
     public int VisitDeclaration(AbsynDeclaration decl, Path path)
     {
-        Debug.Fail("Impossiburu: we haven't created AbsynDeclarations yet!");
+        //vDebug.Fail("Impossiburu: we haven't created AbsynDeclarations yet!");
         return 0;
     }
 

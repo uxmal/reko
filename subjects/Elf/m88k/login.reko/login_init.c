@@ -4,13 +4,16 @@
 
 #include "login.h"
 
-// 00002558: void fn00002558()
+// 00002558: Sequence word64 fn00002558()
 // Called from:
 //      fn00002570
-void fn00002558()
+word64 fn00002558()
 {
 	fn00002810();
-	struct Eq_n * r31_n = (struct Eq_n *) <invalid>;
-	r31_n->ptr0000();
+	<anonymous> ** r31_n = (<anonymous> **) <invalid>;
+	(*r31_n)();
+	word32 r24_n;
+	word32 r25_n;
+	return SEQ(r24_n, r25_n);
 }
 

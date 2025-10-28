@@ -4,927 +4,101 @@
 
 #include "login.h"
 
-// 00036134: void auth_clroption()
-// Called from:
-//      fn000028D0
-void auth_clroption()
-{
-	auth_clroption();
-}
-
 <anonymous> g_t36140 = <code>; // 00036140
-// 0003614C: void unsetenv()
-// Called from:
-//      fn000028D0
-void unsetenv()
-{
-	unsetenv();
-}
-
 <anonymous> g_t36158 = <code>; // 00036158
-// 00036164: void warnx()
-// Called from:
-//      fn000028D0
-void warnx()
-{
-	warnx();
-}
-
 <anonymous> g_t36170 = <code>; // 00036170
-// 0003617C: void login_fbtab()
-// Called from:
-//      fn000028D0
-void login_fbtab()
-{
-	login_fbtab();
-}
-
 <anonymous> g_t36188 = <code>; // 00036188
-// 00036194: void getrlimit()
-// Called from:
-//      fn000028D0
-void getrlimit()
-{
-	getrlimit();
-}
-
 <anonymous> g_t361A0 = <code>; // 000361A0
-// 000361AC: void printf(Register (ptr32 char) r2)
-// Called from:
-//      fn000028D0
-//      fn000042E0
-//      fn000049A0
-void printf(char * r2)
-{
-	printf(r2, 0x00);
-}
-
 <anonymous> g_t361B8 = <code>; // 000361B8
-// 000361C4: void auth_clean()
-// Called from:
-//      fn000028D0
-void auth_clean()
-{
-	auth_clean();
-}
-
 <anonymous> g_t361D0 = <code>; // 000361D0
-// 000361DC: Register Eq_n geteuid()
-// Called from:
-//      fn000028D0
-Eq_n geteuid()
-{
-	return geteuid();
-}
-
 <anonymous> g_t361E8 = <code>; // 000361E8
-// 000361F4: void snprintf(Register (ptr32 char) r2, Register (ptr32 char) r4)
-// Called from:
-//      fn000028D0
-void snprintf(char * r2, char * r4)
-{
-	word32 r3;
-	snprintf(r2, (size_t) r3, r4, 0x00);
-}
-
 <anonymous> g_t36200 = <code>; // 00036200
-// 0003620C: Register (ptr32 char) getenv(Register (ptr32 char) r2)
-// Called from:
-//      fn000028D0
-char * getenv(char * r2)
-{
-	return getenv(r2);
-}
-
 <anonymous> g_t36218 = <code>; // 00036218
 <anonymous> g_t36230 = <code>; // 00036230
-// 0003623C: void __srget()
-// Called from:
-//      fn00003FC8
-void __srget()
-{
-	__srget();
-}
-
 <anonymous> g_t36248 = <code>; // 00036248
-// 00036254: void setpriority()
-// Called from:
-//      fn000028D0
-void setpriority()
-{
-	setpriority();
-}
-
 <anonymous> g_t36260 = <code>; // 00036260
-// 0003626C: void getc(Register (ptr32 Eq_n) r2)
-// Called from:
-//      fn00003FC8
-void getc(FILE * r2)
-{
-	getc(r2);
-}
-
 <anonymous> g_t36278 = <code>; // 00036278
-// 00036284: void memcpy(Register (ptr32 word32) r2, Register (ptr32 void) r3)
-// Called from:
-//      fn00004520
-void memcpy(word32 * r2, void * r3)
-{
-	word32 r4;
-	memcpy(r2, r3, (size_t) r4);
-}
-
 <anonymous> g_t36290 = <code>; // 00036290
-// 0003629C: void auth_open()
-// Called from:
-//      fn000028D0
-void auth_open()
-{
-	auth_open();
-}
-
 <anonymous> g_t362A8 = <code>; // 000362A8
-// 000362B4: void auth_getstate()
-// Called from:
-//      fn000028D0
-void auth_getstate()
-{
-	auth_getstate();
-}
-
 <anonymous> g_t362C0 = <code>; // 000362C0
-// 000362CC: void puts(Register (ptr32 Eq_n) r2)
-// Called from:
-//      fn000028D0
-void puts(struct Eq_n * r2)
-{
-	puts(r2);
-}
-
 <anonymous> g_t362D8 = <code>; // 000362D8
-// 000362E4: Register Eq_n getuid()
-// Called from:
-//      fn000028D0
-Eq_n getuid()
-{
-	return getuid();
-}
-
 <anonymous> g_t362F0 = <code>; // 000362F0
-// 000362FC: void auth_setenv()
-// Called from:
-//      fn000028D0
-void auth_setenv()
-{
-	auth_setenv();
-}
-
 <anonymous> g_t36308 = <code>; // 00036308
-// 00036314: void auth_clroptions()
-// Called from:
-//      fn000028D0
-void auth_clroptions()
-{
-	auth_clroptions();
-}
-
 <anonymous> g_t36320 = <code>; // 00036320
-// 0003632C: void endpwent()
-// Called from:
-//      fn000028D0
-void endpwent()
-{
-	endpwent();
-}
-
 <anonymous> g_t36338 = <code>; // 00036338
-// 00036344: void sleep(Register uint32 r2)
-// Called from:
-//      fn00004740
-void sleep(uint32 r2)
-{
-	sleep(r2);
-}
-
 <anonymous> g_t36350 = <code>; // 00036350
-// 0003635C: void login_getcapstr()
-// Called from:
-//      fn000028D0
-//      fn00004110
-//      fn000046E0
-void login_getcapstr()
-{
-	login_getcapstr();
-}
-
 <anonymous> g_t36368 = <code>; // 00036368
-// 00036374: void auth_checknologin()
-// Called from:
-//      fn000028D0
-void auth_checknologin()
-{
-	auth_checknologin();
-}
-
 <anonymous> g_t36380 = <code>; // 00036380
-// 0003638C: void lseek(Register Eq_n r2, Register int32 r4)
-// Called from:
-//      fn000042E0
-//      fn00004780
-//      fn000049A0
-void lseek(Eq_n r2, int32 r4)
-{
-	word32 r3;
-	lseek(r2, (off_t) r3, r4);
-}
-
 <anonymous> g_t36398 = <code>; // 00036398
-// 000363A4: void chown()
-// Called from:
-//      fn000028D0
-void chown()
-{
-	chown();
-}
-
 <anonymous> g_t363B0 = <code>; // 000363B0
-// 000363BC: void freeaddrinfo(Register (ptr32 Eq_n) r2)
-// Called from:
-//      fn000028D0
-void freeaddrinfo(struct addrinfo * r2)
-{
-	freeaddrinfo(r2);
-}
-
 <anonymous> g_t363C8 = <code>; // 000363C8
-// 000363D4: void alarm()
-// Called from:
-//      fn000028D0
-void alarm()
-{
-	alarm();
-}
-
 <anonymous> g_t363E0 = <code>; // 000363E0
-// 000363EC: Register (ptr32 Eq_n) strrchr(Register (ptr32 Eq_n) r2, Register word32 r3)
-// Called from:
-//      fn000028D0
-union Eq_n * strrchr(union Eq_n * r2, word32 r3)
-{
-	return strrchr(r2, (char) r3);
-}
-
 <anonymous> g_t363F8 = <code>; // 000363F8
-// 00036404: Register (ptr32 void) calloc()
-// Called from:
-//      fn000028D0
-void * calloc()
-{
-	void * r2;
-	word32 r3;
-	return calloc((size_t) r2, (size_t) r3);
-}
-
 <anonymous> g_t36410 = <code>; // 00036410
-// 0003641C: void setrlimit()
-// Called from:
-//      fn000028D0
-void setrlimit()
-{
-	setrlimit();
-}
-
 <anonymous> g_t36428 = <code>; // 00036428
-// 00036434: Register Eq_n write(Register Eq_n r2, Register (ptr32 word32) r3)
-// Called from:
-//      fn00004110
-//      fn000042E0
-//      fn00004780
-//      fn000049A0
-Eq_n write(Eq_n r2, word32 * r3)
-{
-	word32 r4;
-	return (uint32) write(r2, r3, (size_t) r4);
-}
-
 <anonymous> g_t36440 = <code>; // 00036440
-// 0003644C: void ctime()
-// Called from:
-//      fn000028D0
-//      fn000042E0
-//      fn000049A0
-void ctime()
-{
-	ctime();
-}
-
 <anonymous> g_t36458 = <code>; // 00036458
-// 00036464: void chdir()
-// Called from:
-//      fn000028D0
-void chdir()
-{
-	chdir();
-}
-
 <anonymous> g_t36470 = <code>; // 00036470
-// 0003647C: void login()
-// Called from:
-//      fn000028D0
-void login()
-{
-	login();
-}
-
 <anonymous> g_t36488 = <code>; // 00036488
-// 00036494: void auth_setoption()
-// Called from:
-//      fn000028D0
-void auth_setoption()
-{
-	auth_setoption();
-}
-
 <anonymous> g_t364A0 = <code>; // 000364A0
-// 000364AC: void signal(Register int32 r2, Register Eq_n r3)
-// Called from:
-//      fn000028D0
-void signal(int32 r2, Eq_n r3)
-{
-	signal(r2, r3);
-}
-
 <anonymous> g_t364B8 = <code>; // 000364B8
-// 000364C4: Register Eq_n read(Register Eq_n r2, Register (ptr32 word32) r3)
-// Called from:
-//      fn00004110
-//      fn000042E0
-//      fn00004780
-//      fn000049A0
-Eq_n read(Eq_n r2, word32 * r3)
-{
-	word32 r4;
-	return (uint32) read(r2, r3, (size_t) r4);
-}
-
 <anonymous> g_t364D0 = <code>; // 000364D0
-// 000364DC: void openlog()
-// Called from:
-//      fn000028D0
-void openlog()
-{
-	openlog();
-}
-
 <anonymous> g_t364E8 = <code>; // 000364E8
-// 000364F4: Register word32 strlcpy()
-// Called from:
-//      fn000028D0
-word32 strlcpy()
-{
-	strlcpy();
-	word32 r1_n;
-	return r1_n;
-}
-
 <anonymous> g_t36500 = <code>; // 00036500
-// 0003650C: void closelog()
-// Called from:
-//      fn000028D0
-void closelog()
-{
-	closelog();
-}
-
 <anonymous> g_t36518 = <code>; // 00036518
-// 00036524: Register (ptr32 Eq_n) strncmp(Register (ptr32 Eq_n) r2, Register (ptr32 char) r3, Register int32 r4)
-// Called from:
-//      fn000028D0
-union Eq_n * strncmp(union Eq_n * r2, char * r3, int32 r4)
-{
-	return strncmp(r2, r3, r4);
-}
-
 <anonymous> g_t36530 = <code>; // 00036530
-// 0003653C: void strncpy(Register (ptr32 Eq_n) r2, Register (ptr32 Eq_n) r3, Register int32 r4)
-// Called from:
-//      fn000028D0
-//      fn000042E0
-//      fn00004780
-void strncpy(union Eq_n * r2, union Eq_n * r3, int32 r4)
-{
-	strncpy(r2, r3, r4);
-}
-
 <anonymous> g_t36548 = <code>; // 00036548
-// 00036554: void setenv()
-// Called from:
-//      fn000028D0
-void setenv()
-{
-	setenv();
-}
-
 <anonymous> g_t36560 = <code>; // 00036560
-// 0003656C: void strcasecmp(Register (ptr32 char) r2, Register (ptr32 char) r3)
-// Called from:
-//      fn000028D0
-void strcasecmp(char * r2, char * r3)
-{
-	strcasecmp(r2, r3);
-}
-
 <anonymous> g_t36578 = <code>; // 00036578
-// 00036584: void __cxa_atexit(Register (ptr32 Eq_n) r2, Register (ptr32 void) r3, Register (ptr32 void) r4)
-// Called from:
-//      fn00002710
-void __cxa_atexit(void (* r2)(void * r2), void * r3, void * r4)
-{
-	__cxa_atexit(r2, r3, r4);
-}
-
 <anonymous> g_t36590 = <code>; // 00036590
-// 0003659C: void execv(Register (ptr32 char) r2, Register (ptr32 (ptr32 char)) r3)
-// Called from:
-//      fn000028D0
-void execv(char * r2, char ** r3)
-{
-	execv(r2, r3);
-}
-
 <anonymous> g_t365A8 = <code>; // 000365A8
-// 000365B4: void execlp()
-// Called from:
-//      fn000028D0
-void execlp()
-{
-	execlp();
-}
-
 <anonymous> g_t365C0 = <code>; // 000365C0
-// 000365CC: void sigaction(Register int32 r2, Register (ptr32 Eq_n) r3, Register (ptr32 Eq_n) r4)
-// Called from:
-//      fn00004110
-void sigaction(int32 r2, struct sigaction * r3, struct sigaction * r4)
-{
-	sigaction(r2, r3, r4);
-}
-
 <anonymous> g_t365D8 = <code>; // 000365D8
-// 000365E4: void login_getcaptime()
-// Called from:
-//      fn000028D0
-void login_getcaptime()
-{
-	login_getcaptime();
-}
-
 <anonymous> g_t365F0 = <code>; // 000365F0
-// 000365FC: Register (ptr32 Eq_n) strdup(Register (ptr32 Eq_n) r2)
-// Called from:
-//      fn000028D0
-union Eq_n * strdup(union Eq_n * r2)
-{
-	return strdup(r2);
-}
-
 <anonymous> g_t36608 = <code>; // 00036608
-// 00036614: void login_getcapnum()
-// Called from:
-//      fn000028D0
-void login_getcapnum()
-{
-	login_getcapnum();
-}
-
 <anonymous> g_t36620 = <code>; // 00036620
-// 0003662C: Register int32 getopt(Register int32 r2, Register (ptr32 (arr (ptr32 char))) r3, Register (ptr32 char) r4)
-// Called from:
-//      fn000028D0
-int32 getopt(int32 r2, char * (* r3)[], char * r4)
-{
-	return getopt(r2, r3, r4);
-}
-
 <anonymous> g_t36638 = <code>; // 00036638
-// 00036644: void memset(Register (ptr32 Eq_n) r2, Register int32 r3)
-// Called from:
-//      fn000028D0
-//      fn000042E0
-//      fn00004780
-//      fn000049A0
-void memset(union Eq_n * r2, int32 r3)
-{
-	word32 r4;
-	memset(r2, r3, (size_t) r4);
-}
-
 <anonymous> g_t36650 = <code>; // 00036650
-// 0003665C: void err()
-// Called from:
-//      fn000028D0
-void err()
-{
-	err();
-}
-
 <anonymous> g_t36668 = <code>; // 00036668
-// 00036674: void auth_setpwd()
-// Called from:
-//      fn000028D0
-void auth_setpwd()
-{
-	auth_setpwd();
-}
-
 <anonymous> g_t36680 = <code>; // 00036680
-// 0003668C: void __swbuf()
-// Called from:
-//      fn000042E0
-//      fn000049A0
-void __swbuf()
-{
-	__swbuf();
-}
-
 <anonymous> g_t36698 = <code>; // 00036698
-// 000366A4: void auth_setitem()
-// Called from:
-//      fn000028D0
-void auth_setitem()
-{
-	auth_setitem();
-}
-
 <anonymous> g_t366B0 = <code>; // 000366B0
-// 000366BC: void login_getcapbool()
-// Called from:
-//      fn000028D0
-void login_getcapbool()
-{
-	login_getcapbool();
-}
-
 <anonymous> g_t366C8 = <code>; // 000366C8
-// 000366D4: void time(Register (ptr32 Eq_n) r2)
-// Called from:
-//      fn000028D0
-//      fn000042E0
-//      fn00004780
-void time(time_t * r2)
-{
-	time(r2);
-}
-
 <anonymous> g_t366E0 = <code>; // 000366E0
-// 000366EC: void syslog()
-// Called from:
-//      fn000028D0
-void syslog()
-{
-	syslog();
-}
-
 <anonymous> g_t366F8 = <code>; // 000366F8
-// 00036704: void auth_check_expire()
-// Called from:
-//      fn000028D0
-void auth_check_expire()
-{
-	auth_check_expire();
-}
-
 <anonymous> g_t36710 = <code>; // 00036710
-// 0003671C: void seteuid()
-// Called from:
-//      fn000028D0
-void seteuid()
-{
-	seteuid();
-}
-
 <anonymous> g_t36728 = <code>; // 00036728
-// 00036734: void putc(Register int32 r2, Register (ptr32 Eq_n) r3)
-// Called from:
-//      fn000042E0
-//      fn000049A0
-void putc(int32 r2, FILE * r3)
-{
-	putc(r2, r3);
-}
-
 <anonymous> g_t36740 = <code>; // 00036740
-// 0003674C: Register (ptr32 char) strcmp(Register (ptr32 char) r2, Register (ptr32 Eq_n) r3)
-// Called from:
-//      fn000028D0
-char * strcmp(char * r2, union Eq_n * r3)
-{
-	return strcmp(r2, r3);
-}
-
 <anonymous> g_t36758 = <code>; // 00036758
-// 00036764: void ttyname()
-// Called from:
-//      fn000028D0
-void ttyname()
-{
-	ttyname();
-}
-
 <anonymous> g_t36770 = <code>; // 00036770
-// 0003677C: Register (ptr32 Eq_n) getpwnam(Register (ptr32 Eq_n) r2)
-// Called from:
-//      fn000028D0
-union Eq_n * getpwnam(union Eq_n * r2)
-{
-	return getpwnam(r2);
-}
-
 <anonymous> g_t36788 = <code>; // 00036788
-// 00036794: void gethostname()
-// Called from:
-//      fn000028D0
-void gethostname()
-{
-	gethostname();
-}
-
 <anonymous> g_t367A0 = <code>; // 000367A0
-// 000367AC: void auth_call()
-// Called from:
-//      fn000028D0
-void auth_call()
-{
-	auth_call();
-}
-
 <anonymous> g_t367B8 = <code>; // 000367B8
-// 000367C4: void auth_approval()
-// Called from:
-//      fn000028D0
-void auth_approval()
-{
-	auth_approval();
-}
-
 <anonymous> g_t367D0 = <code>; // 000367D0
-// 000367DC: void getttynam()
-// Called from:
-//      fn000040D0
-//      fn000046E0
-void getttynam()
-{
-	getttynam();
-}
-
 <anonymous> g_t367E8 = <code>; // 000367E8
-// 000367F4: void auth_verify()
-// Called from:
-//      fn000028D0
-void auth_verify()
-{
-	auth_verify();
-}
-
 <anonymous> g_t36800 = <code>; // 00036800
-// 0003680C: Register (ptr32 Eq_n) getaddrinfo(Register (ptr32 Eq_n) r2, Register (ptr32 char) r3, Register (ptr32 Eq_n) r4, Register (ptr32 (ptr32 Eq_n)) r5)
-// Called from:
-//      fn000028D0
-union Eq_n * getaddrinfo(union Eq_n * r2, char * r3, struct addrinfo * r4, struct addrinfo ** r5)
-{
-	return getaddrinfo(r2, r3, r4, r5);
-}
-
 <anonymous> g_t36818 = <code>; // 00036818
-// 00036824: void login_getstyle()
-// Called from:
-//      fn000028D0
-void login_getstyle()
-{
-	login_getstyle();
-}
-
 <anonymous> g_t36830 = <code>; // 00036830
-// 0003683C: void auth_setstate()
-// Called from:
-//      fn000028D0
-void auth_setstate()
-{
-	auth_setstate();
-}
-
 <anonymous> g_t36848 = <code>; // 00036848
-// 00036854: void stat(Register (ptr32 char) r2, Register (ptr32 Eq_n) r3)
-// Called from:
-//      fn000028D0
-void stat(char * r2, struct stat * r3)
-{
-	stat(r2, r3);
-}
-
 <anonymous> g_t36860 = <code>; // 00036860
-// 0003686C: void fwrite(Register (ptr32 void) r2, Register (ptr32 Eq_n) r5)
-// Called from:
-//      fn000028D0
-void fwrite(void * r2, FILE * r5)
-{
-	word32 r3;
-	word32 r4;
-	fwrite(r2, (size_t) r3, (size_t) r4, r5);
-}
-
 <anonymous> g_t36878 = <code>; // 00036878
-// 00036884: Register (ptr32 char) access(Register (ptr32 char) r2, Register int32 r3)
-// Called from:
-//      fn000028D0
-char * access(char * r2, int32 r3)
-{
-	return access(r2, r3);
-}
-
 <anonymous> g_t36890 = <code>; // 00036890
-// 0003689C: void syslog_r()
-// Called from:
-//      fn00004520
-void syslog_r()
-{
-	syslog_r();
-}
-
 <anonymous> g_t368A8 = <code>; // 000368A8
-// 000368B4: void exit(Register int32 r2)
-// Called from:
-//      fn00002570
-//      fn00004740
-//      fn00004780
-void exit(int32 r2)
-{
-	exit(r2);
-}
-
 <anonymous> g_t368C0 = <code>; // 000368C0
-// 000368CC: void login_getclass()
-// Called from:
-//      fn000028D0
-void login_getclass()
-{
-	login_getclass();
-}
-
 <anonymous> g_t368D8 = <code>; // 000368D8
-// 000368E4: Register (ptr32 char) getgrnam(Register (ptr32 char) r2)
-// Called from:
-//      fn000028D0
-char * getgrnam(char * r2)
-{
-	return getgrnam(r2);
-}
-
 <anonymous> g_t368F0 = <code>; // 000368F0
-// 000368FC: void _exit(Register int32 r2)
-// Called from:
-//      fn000028D0
-//      fn00004780
-void _exit(int32 r2)
-{
-	_exit(r2);
-}
-
 <anonymous> g_t36908 = <code>; // 00036908
-// 00036914: void auth_cat()
-// Called from:
-//      fn000028D0
-void auth_cat()
-{
-	auth_cat();
-}
-
 <anonymous> g_t36920 = <code>; // 00036920
-// 0003692C: void __muldi3()
-// Called from:
-//      fn000042E0
-//      fn00004780
-//      fn000049A0
-void __muldi3()
-{
-	__muldi3();
-}
-
 <anonymous> g_t36938 = <code>; // 00036938
-// 00036944: void setusercontext()
-// Called from:
-//      fn000028D0
-void setusercontext()
-{
-	setusercontext();
-}
-
 <anonymous> g_t36950 = <code>; // 00036950
-// 0003695C: Register (ptr32 Eq_n) strlen(Register (ptr32 Eq_n) r2)
-// Called from:
-//      fn000028D0
-union Eq_n * strlen(union Eq_n * r2)
-{
-	return (uint32) strlen(r2);
-}
-
 <anonymous> g_t36968 = <code>; // 00036968
-// 00036974: void auth_close()
-// Called from:
-//      fn000028D0
-//      fn00004740
-//      fn00004780
-void auth_close()
-{
-	auth_close();
-}
-
 <anonymous> g_t36980 = <code>; // 00036980
-// 0003698C: Register (ptr32 Eq_n) open(Register (ptr32 Eq_n) r2, Register int32 r3)
-// Called from:
-//      fn00004110
-//      fn000042E0
-//      fn00004780
-//      fn000047F0
-//      fn000049A0
-union Eq_n * open(union Eq_n * r2, int32 r3)
-{
-	return open(r2, r3);
-}
-
 <anonymous> g_t36998 = <code>; // 00036998
-// 000369A4: Register (ptr32 Eq_n) strchr(Register (ptr32 Eq_n) r2, Register word32 r3)
-// Called from:
-//      fn000028D0
-union Eq_n * strchr(union Eq_n * r2, word32 r3)
-{
-	return strchr(r2, (char) r3);
-}
-
 <anonymous> g_t369B0 = <code>; // 000369B0
-// 000369BC: void setegid()
-// Called from:
-//      fn000028D0
-void setegid()
-{
-	setegid();
-}
-
 <anonymous> g_t369C8 = <code>; // 000369C8
-// 000369D4: void warn()
-// Called from:
-//      fn000028D0
-void warn()
-{
-	warn();
-}
-
 <anonymous> g_t369E0 = <code>; // 000369E0
-// 000369EC: void warnc()
-// Called from:
-//      fn000028D0
-void warnc()
-{
-	warnc();
-}
-
 <anonymous> g_t369F8 = <code>; // 000369F8
-// 00036A04: void close(Register Eq_n r2)
-// Called from:
-//      fn00004110
-//      fn000042E0
-//      fn00004780
-//      fn000049A0
-void close(Eq_n r2)
-{
-	close(r2);
-}
-
 <anonymous> g_t36A10 = <code>; // 00036A10
-// 00036A1C: void closefrom()
-// Called from:
-//      fn000028D0
-void closefrom()
-{
-	closefrom();
-}
-
 <anonymous> g_t36A28 = <code>; // 00036A28
-// 00036A34: void auth_getvalue()
-// Called from:
-//      fn000028D0
-void auth_getvalue()
-{
-	auth_getvalue();
-}
-
 <anonymous> g_t36A40 = <code>; // 00036A40
-// 00036A4C: void free(Register (ptr32 void) r2)
-// Called from:
-//      fn000028D0
-void free(void * r2)
-{
-	free(r2);
-}
-
 <anonymous> g_t36A58 = <code>; // 00036A58

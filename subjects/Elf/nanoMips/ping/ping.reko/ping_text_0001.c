@@ -4,42 +4,52 @@
 
 #include "ping.h"
 
-// 00410110: Register Eq_n __fixunsdfsi(Register Eq_n r4, Register Eq_n r5)
+// 00410110: Register Eq_n __fixunsdfsi(Register Eq_n r4, Register Eq_n r5, Register out Eq_n r9Out)
 // Called from:
 //      printf_core
-Eq_n __fixunsdfsi(Eq_n r4, Eq_n r5)
+Eq_n __fixunsdfsi(Eq_n r4, Eq_n r5, union Eq_n & r9Out)
 {
 	Eq_n r6_n = __ext<word32,word32>(r5, 0x04, 11);
 	Eq_n r9_n = __ext<word32,word32>(r5, 0x00, 0x14);
-	if (r6_n <= 1022)
-		return 0x00;
-	if (r5 >> 0x1F != 0x00)
+	if (r6_n > 1022)
 	{
+		if (r5 >> 0x1F == 0x00)
+		{
+			if (r6_n <= 0x041E)
+			{
+				int32 r5_n = 0x0433 - r6_n;
+				if (r5_n >= 0x20)
+				{
+					r9Out.u0 = <invalid>;
+					return (r9_n | 0x01000000) >> 0x0413 - r6_n;
+				}
+				else
+				{
+					r9Out.u0 = <invalid>;
+					return (r9_n | 0x01000000) << (word32) r6_n - 0x0413 | r4 >> r5_n;
+				}
+			}
+l00410154:
+			r9Out.u0 = <invalid>;
+			return (r5 >> 0x1F) + ~0x00;
+		}
 		if (r6_n > 0x041D)
-			return (r5 >> 0x1F) + ~0x00;
-		return 0x00;
+			goto l00410154;
 	}
-	else
-	{
-		if (r6_n > 0x041E)
-			return (r5 >> 0x1F) + ~0x00;
-		int32 r5_n = 0x0433 - r6_n;
-		if (r5_n >= 0x20)
-			return (r9_n | 0x01000000) >> 0x0413 - r6_n;
-		return (r9_n | 0x01000000) << (word32) r6_n - 0x0413 | r4 >> r5_n;
-	}
+	r9Out.u0 = <invalid>;
+	return 0x00;
 }
 
-// 00410170: Register Eq_n __floatsidf(Register Eq_n r4, Register out Eq_n r5Out)
+// 00410170: Sequence ui64 __floatsidf(Register Eq_n r4, Register out Eq_n r8Out)
 // Called from:
 //      printf_core
 //      __floatscan
-Eq_n __floatsidf(Eq_n r4, union Eq_n & r5Out)
+ui64 __floatsidf(Eq_n r4, union Eq_n & r8Out)
 {
 	Eq_n r6_n;
 	Eq_n r8_n;
 	Eq_n r7_n;
-	Eq_n r4_n;
+	ui32 r4_n;
 	if (r4 != 0x00)
 	{
 		Eq_n r4_n = (r4 ^ r4 >> 0x1F) - (r4 >> 0x1F);
@@ -55,29 +65,30 @@ Eq_n __floatsidf(Eq_n r4, union Eq_n & r5Out)
 		else
 		{
 			r7_n = r4_n << 0x0413 - r6_n;
-			r4_n.u0 = 0x00;
+			r4_n = 0x00;
 		}
 	}
 	else
 	{
 		r7_n.u0 = 0x00;
-		r4_n.u0 = 0x00;
+		r4_n = 0x00;
 		r6_n.u0 = 0x00;
 		r8_n.u0 = 0x00;
 	}
-	r5Out = __ins<word32,word32>(__ins<word32,word32>(__ins<word32,word32>(0x00, r7_n, 0x00, 0x01), r6_n, 0x04, 0x01), r8_n, 0x0F, 0x01);
-	return r4_n;
+	Eq_n r5_n = __ins<word32,word32>(__ins<word32,word32>(__ins<word32,word32>(0x00, r7_n, 0x00, 0x01), r6_n, 0x04, 0x01), r8_n, 0x0F, 0x01);
+	r8Out = r8_n;
+	return SEQ(r4_n, r5_n);
 }
 
-// 004101D0: Register Eq_n __floatunsidf(Register Eq_n r4, Register out Eq_n r5Out)
+// 004101D0: Sequence ui64 __floatunsidf(Register Eq_n r4)
 // Called from:
 //      printf_core
 //      __floatscan
-Eq_n __floatunsidf(Eq_n r4, union Eq_n & r5Out)
+ui64 __floatunsidf(Eq_n r4)
 {
 	Eq_n r6_n;
 	Eq_n r7_n;
-	Eq_n r4_n;
+	ui32 r4_n;
 	if (r4 != 0x00)
 	{
 		Eq_n r8_n = __count_leading_zeros<word32>(r4);
@@ -91,17 +102,16 @@ Eq_n __floatunsidf(Eq_n r4, union Eq_n & r5Out)
 		else
 		{
 			r7_n = r4 << 0x0413 - r6_n;
-			r4_n.u0 = 0x00;
+			r4_n = 0x00;
 		}
 	}
 	else
 	{
 		r7_n.u0 = 0x00;
-		r4_n.u0 = 0x00;
+		r4_n = 0x00;
 		r6_n.u0 = 0x00;
 	}
-	r5Out = __ext<word32,word32>(__ins<word32,word32>(__ins<word32,word32>(0x00, r7_n, 0x00, 0x01), r6_n, 0x04, 0x01), 0x00, 0x1F);
-	return r4_n;
+	return SEQ(r4_n, __ext<word32,word32>(__ins<word32,word32>(__ins<word32,word32>(0x00, r7_n, 0x00, 0x01), r6_n, 0x04, 0x01), 0x00, 0x1F));
 }
 
 // 00410220: void __truncdfsf2(Register Eq_n r4, Register Eq_n r5)

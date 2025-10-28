@@ -1,9 +1,9 @@
-void fn00002558()
+word64 fn00002558()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // Called from:
 //      fn00002570
 // MayUse: 
-// LiveOut:
+// LiveOut: Sequence r24:r25:[0..63]-fn00002570
 // Trashed: r1 r11 r12 r13 r2 r24 r25 r3 r30 r4
 // Preserved: r31
 fn00002558_entry:
@@ -12,7 +12,8 @@ l00002558:
 	r31_16 = <invalid>
 	call Mem6[r31_16:word32] (retsize: 0;)
 		uses: Mem:Mem6
-	return
+		defs: r24:r24_26,r25:r25_27
+	return SEQ(r24_26, r25_27)
 fn00002558_exit:
 
 

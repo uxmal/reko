@@ -1102,6 +1102,328 @@ Signature of 'Microsoft Visual C++ 8' detected.
                                                             Rewriting expressions. [Done]
                                                             Rewriting procedures to high-level language. [Done]
 
+=== Elf\m88k\login
+00002864: warning: Call target address 00000000 is invalid.
+000364DC: warning: Unable to resolve imported reference openlog.
+00036794: warning: Unable to resolve imported reference gethostname.
+0003629C: warning: Unable to resolve imported reference auth_open.
+00036494: warning: Unable to resolve imported reference auth_setoption.
+000366EC: warning: Unable to resolve imported reference syslog.
+000364F4: warning: Unable to resolve imported reference strlcpy.
+00036164: warning: Unable to resolve imported reference warnx.
+00036974: warning: Unable to resolve imported reference auth_close.
+0003689C: warning: Unable to resolve imported reference syslog_r.
+0003689C: warning: Unable to resolve imported reference syslog_r.
+0003689C: warning: Unable to resolve imported reference syslog_r.
+0003689C: warning: Unable to resolve imported reference syslog_r.
+00036224: warning: Unable to resolve imported reference __stack_smash_handler.
+000364F4: warning: Unable to resolve imported reference strlcpy.
+00036494: warning: Unable to resolve imported reference auth_setoption.
+000369EC: warning: Unable to resolve imported reference warnc.
+00036164: warning: Unable to resolve imported reference warnx.
+00036764: warning: Unable to resolve imported reference ttyname.
+000364F4: warning: Unable to resolve imported reference strlcpy.
+00036194: warning: Unable to resolve imported reference getrlimit.
+0003641C: warning: Unable to resolve imported reference setrlimit.
+00036254: warning: Unable to resolve imported reference setpriority.
+000368CC: warning: Unable to resolve imported reference login_getclass.
+00036614: warning: Unable to resolve imported reference login_getcapnum.
+0003635C: warning: Unable to resolve imported reference login_getcapstr.
+0003614C: warning: Unable to resolve imported reference unsetenv.
+0003614C: warning: Unable to resolve imported reference unsetenv.
+000366EC: warning: Unable to resolve imported reference syslog.
+00036164: warning: Unable to resolve imported reference warnx.
+00036974: warning: Unable to resolve imported reference auth_close.
+0003650C: warning: Unable to resolve imported reference closelog.
+00036A1C: warning: Unable to resolve imported reference closefrom.
+0003683C: warning: Unable to resolve imported reference auth_setstate.
+000366A4: warning: Unable to resolve imported reference auth_setitem.
+000361C4: warning: Unable to resolve imported reference auth_clean.
+00036134: warning: Unable to resolve imported reference auth_clroption.
+00036134: warning: Unable to resolve imported reference auth_clroption.
+000369D4: warning: Unable to resolve imported reference warn.
+000367AC: warning: Unable to resolve imported reference auth_call.
+000362B4: warning: Unable to resolve imported reference auth_getstate.
+000362FC: warning: Unable to resolve imported reference auth_setenv.
+000366A4: warning: Unable to resolve imported reference auth_setitem.
+000363D4: warning: Unable to resolve imported reference alarm.
+00036314: warning: Unable to resolve imported reference auth_clroptions.
+00036494: warning: Unable to resolve imported reference auth_setoption.
+000366EC: warning: Unable to resolve imported reference syslog.
+000369D4: warning: Unable to resolve imported reference warn.
+00036494: warning: Unable to resolve imported reference auth_setoption.
+000364F4: warning: Unable to resolve imported reference strlcpy.
+00036494: warning: Unable to resolve imported reference auth_setoption.
+00036674: warning: Unable to resolve imported reference auth_setpwd.
+000366EC: warning: Unable to resolve imported reference syslog.
+000369D4: warning: Unable to resolve imported reference warn.
+000368CC: warning: Unable to resolve imported reference login_getclass.
+00036824: warning: Unable to resolve imported reference login_getstyle.
+00036614: warning: Unable to resolve imported reference login_getcapnum.
+00036614: warning: Unable to resolve imported reference login_getcapnum.
+00036494: warning: Unable to resolve imported reference auth_setoption.
+00036494: warning: Unable to resolve imported reference auth_setoption.
+000367DC: warning: Unable to resolve imported reference getttynam.
+00036164: warning: Unable to resolve imported reference warnx.
+000363D4: warning: Unable to resolve imported reference alarm.
+0003632C: warning: Unable to resolve imported reference endpwent.
+0003635C: warning: Unable to resolve imported reference login_getcapstr.
+00036554: warning: Unable to resolve imported reference setenv.
+00036554: warning: Unable to resolve imported reference setenv.
+000366EC: warning: Unable to resolve imported reference syslog.
+00036554: warning: Unable to resolve imported reference setenv.
+00036554: warning: Unable to resolve imported reference setenv.
+000369D4: warning: Unable to resolve imported reference warn.
+00036944: warning: Unable to resolve imported reference setusercontext.
+000362FC: warning: Unable to resolve imported reference auth_setenv.
+000369BC: warning: Unable to resolve imported reference setegid.
+0003671C: warning: Unable to resolve imported reference seteuid.
+00036464: warning: Unable to resolve imported reference chdir.
+0003671C: warning: Unable to resolve imported reference seteuid.
+000369BC: warning: Unable to resolve imported reference setegid.
+00036A34: warning: Unable to resolve imported reference auth_getvalue.
+000369D4: warning: Unable to resolve imported reference warn.
+0003665C: warning: Unable to resolve imported reference err.
+000366BC: warning: Unable to resolve imported reference login_getcapbool.
+00036464: warning: Unable to resolve imported reference chdir.
+00036704: warning: Unable to resolve imported reference auth_check_expire.
+0003647C: warning: Unable to resolve imported reference login.
+00036224: warning: Unable to resolve imported reference __stack_smash_handler.
+0003644C: warning: Unable to resolve imported reference ctime.
+0003668C: warning: Unable to resolve imported reference __swbuf.
+0003617C: warning: Unable to resolve imported reference login_fbtab.
+000363A4: warning: Unable to resolve imported reference chown.
+000366BC: warning: Unable to resolve imported reference login_getcapbool.
+000366EC: warning: Unable to resolve imported reference syslog.
+000366EC: warning: Unable to resolve imported reference syslog.
+000364F4: warning: Unable to resolve imported reference strlcpy.
+0003641C: warning: Unable to resolve imported reference setrlimit.
+00036224: warning: Unable to resolve imported reference __stack_smash_handler.
+0003644C: warning: Unable to resolve imported reference ctime.
+0003668C: warning: Unable to resolve imported reference __swbuf.
+00036944: warning: Unable to resolve imported reference setusercontext.
+000367C4: warning: Unable to resolve imported reference auth_approval.
+00036A1C: warning: Unable to resolve imported reference closefrom.
+0003683C: warning: Unable to resolve imported reference auth_setstate.
+00036974: warning: Unable to resolve imported reference auth_close.
+000365B4: warning: Unable to resolve imported reference execlp.
+0003665C: warning: Unable to resolve imported reference err.
+000366EC: warning: Unable to resolve imported reference syslog.
+000362B4: warning: Unable to resolve imported reference auth_getstate.
+00036554: warning: Unable to resolve imported reference setenv.
+000369D4: warning: Unable to resolve imported reference warn.
+0003635C: warning: Unable to resolve imported reference login_getcapstr.
+00036914: warning: Unable to resolve imported reference auth_cat.
+000365E4: warning: Unable to resolve imported reference login_getcaptime.
+0003644C: warning: Unable to resolve imported reference ctime.
+0003635C: warning: Unable to resolve imported reference login_getcapstr.
+00036224: warning: Unable to resolve imported reference __stack_smash_handler.
+00036374: warning: Unable to resolve imported reference auth_checknologin.
+000369D4: warning: Unable to resolve imported reference warn.
+00036554: warning: Unable to resolve imported reference setenv.
+000369D4: warning: Unable to resolve imported reference warn.
+00036554: warning: Unable to resolve imported reference setenv.
+000369D4: warning: Unable to resolve imported reference warn.
+00036554: warning: Unable to resolve imported reference setenv.
+00036554: warning: Unable to resolve imported reference setenv.
+000367DC: warning: Unable to resolve imported reference getttynam.
+0003635C: warning: Unable to resolve imported reference login_getcapstr.
+000364F4: warning: Unable to resolve imported reference strlcpy.
+000366EC: warning: Unable to resolve imported reference syslog.
+00036164: warning: Unable to resolve imported reference warnx.
+000366EC: warning: Unable to resolve imported reference syslog.
+000365E4: warning: Unable to resolve imported reference login_getcaptime.
+000367F4: warning: Unable to resolve imported reference auth_verify.
+000362B4: warning: Unable to resolve imported reference auth_getstate.
+00036494: warning: Unable to resolve imported reference auth_setoption.
+000366EC: warning: Unable to resolve imported reference syslog.
+000369D4: warning: Unable to resolve imported reference warn.
+00036974: warning: Unable to resolve imported reference auth_close.
+00036494: warning: Unable to resolve imported reference auth_setoption.
+00036A34: warning: Unable to resolve imported reference auth_getvalue.
+00036164: warning: Unable to resolve imported reference warnx.
+000363D4: warning: Unable to resolve imported reference alarm.
+000366EC: warning: Unable to resolve imported reference syslog.
+000366EC: warning: Unable to resolve imported reference syslog.
+000369EC: warning: Unable to resolve imported reference warnc.
+00036494: warning: Unable to resolve imported reference auth_setoption.
+0003623C: warning: Unable to resolve imported reference __srget.
+000369D4: warning: Unable to resolve imported reference warn.
+000369EC: warning: Unable to resolve imported reference warnc.
+000366EC: warning: Unable to resolve imported reference syslog.
+000366EC: warning: Unable to resolve imported reference syslog.
+000369EC: warning: Unable to resolve imported reference warnc.
+00002684: warning: Call target address 00000000 is invalid.
+                                                            Rewriting procedures. [Done]
+                                                            Building expressions. [Done]
+                                                            Gathering primitive datatypes from instructions. [Done]
+                                                            Collecting data types. [Done]
+                                                            Rewriting expressions. [Done]
+                                                            Rewriting procedures to high-level language. [Done]
+00056BF8: warning: Expected sizes of arrays to have been determined by now
+00056BF8: warning: Expected sizes of arrays to have been determined by now
+
+=== Elf\m88k\login
+00002864: warning: Call target address 00000000 is invalid.
+000364DC: warning: Unable to resolve imported reference openlog.
+00036794: warning: Unable to resolve imported reference gethostname.
+0003629C: warning: Unable to resolve imported reference auth_open.
+00036494: warning: Unable to resolve imported reference auth_setoption.
+000366EC: warning: Unable to resolve imported reference syslog.
+000364F4: warning: Unable to resolve imported reference strlcpy.
+00036164: warning: Unable to resolve imported reference warnx.
+00036974: warning: Unable to resolve imported reference auth_close.
+0003689C: warning: Unable to resolve imported reference syslog_r.
+0003689C: warning: Unable to resolve imported reference syslog_r.
+0003689C: warning: Unable to resolve imported reference syslog_r.
+0003689C: warning: Unable to resolve imported reference syslog_r.
+00036224: warning: Unable to resolve imported reference __stack_smash_handler.
+000364F4: warning: Unable to resolve imported reference strlcpy.
+00036494: warning: Unable to resolve imported reference auth_setoption.
+000369EC: warning: Unable to resolve imported reference warnc.
+00036164: warning: Unable to resolve imported reference warnx.
+00036764: warning: Unable to resolve imported reference ttyname.
+000364F4: warning: Unable to resolve imported reference strlcpy.
+00036194: warning: Unable to resolve imported reference getrlimit.
+0003641C: warning: Unable to resolve imported reference setrlimit.
+00036254: warning: Unable to resolve imported reference setpriority.
+000368CC: warning: Unable to resolve imported reference login_getclass.
+00036614: warning: Unable to resolve imported reference login_getcapnum.
+0003635C: warning: Unable to resolve imported reference login_getcapstr.
+0003614C: warning: Unable to resolve imported reference unsetenv.
+0003614C: warning: Unable to resolve imported reference unsetenv.
+000366EC: warning: Unable to resolve imported reference syslog.
+00036164: warning: Unable to resolve imported reference warnx.
+00036974: warning: Unable to resolve imported reference auth_close.
+0003650C: warning: Unable to resolve imported reference closelog.
+00036A1C: warning: Unable to resolve imported reference closefrom.
+0003683C: warning: Unable to resolve imported reference auth_setstate.
+000366A4: warning: Unable to resolve imported reference auth_setitem.
+000361C4: warning: Unable to resolve imported reference auth_clean.
+00036134: warning: Unable to resolve imported reference auth_clroption.
+00036134: warning: Unable to resolve imported reference auth_clroption.
+000369D4: warning: Unable to resolve imported reference warn.
+000367AC: warning: Unable to resolve imported reference auth_call.
+000362B4: warning: Unable to resolve imported reference auth_getstate.
+000362FC: warning: Unable to resolve imported reference auth_setenv.
+000366A4: warning: Unable to resolve imported reference auth_setitem.
+000363D4: warning: Unable to resolve imported reference alarm.
+00036314: warning: Unable to resolve imported reference auth_clroptions.
+00036494: warning: Unable to resolve imported reference auth_setoption.
+000366EC: warning: Unable to resolve imported reference syslog.
+000369D4: warning: Unable to resolve imported reference warn.
+00036494: warning: Unable to resolve imported reference auth_setoption.
+000364F4: warning: Unable to resolve imported reference strlcpy.
+00036494: warning: Unable to resolve imported reference auth_setoption.
+00036674: warning: Unable to resolve imported reference auth_setpwd.
+000366EC: warning: Unable to resolve imported reference syslog.
+000369D4: warning: Unable to resolve imported reference warn.
+000368CC: warning: Unable to resolve imported reference login_getclass.
+00036824: warning: Unable to resolve imported reference login_getstyle.
+00036614: warning: Unable to resolve imported reference login_getcapnum.
+00036614: warning: Unable to resolve imported reference login_getcapnum.
+00036494: warning: Unable to resolve imported reference auth_setoption.
+00036494: warning: Unable to resolve imported reference auth_setoption.
+000367DC: warning: Unable to resolve imported reference getttynam.
+00036164: warning: Unable to resolve imported reference warnx.
+000363D4: warning: Unable to resolve imported reference alarm.
+0003632C: warning: Unable to resolve imported reference endpwent.
+0003635C: warning: Unable to resolve imported reference login_getcapstr.
+00036554: warning: Unable to resolve imported reference setenv.
+00036554: warning: Unable to resolve imported reference setenv.
+000366EC: warning: Unable to resolve imported reference syslog.
+00036554: warning: Unable to resolve imported reference setenv.
+00036554: warning: Unable to resolve imported reference setenv.
+000369D4: warning: Unable to resolve imported reference warn.
+00036944: warning: Unable to resolve imported reference setusercontext.
+000362FC: warning: Unable to resolve imported reference auth_setenv.
+000369BC: warning: Unable to resolve imported reference setegid.
+0003671C: warning: Unable to resolve imported reference seteuid.
+00036464: warning: Unable to resolve imported reference chdir.
+0003671C: warning: Unable to resolve imported reference seteuid.
+000369BC: warning: Unable to resolve imported reference setegid.
+00036A34: warning: Unable to resolve imported reference auth_getvalue.
+000369D4: warning: Unable to resolve imported reference warn.
+0003665C: warning: Unable to resolve imported reference err.
+000366BC: warning: Unable to resolve imported reference login_getcapbool.
+00036464: warning: Unable to resolve imported reference chdir.
+00036704: warning: Unable to resolve imported reference auth_check_expire.
+0003647C: warning: Unable to resolve imported reference login.
+00036224: warning: Unable to resolve imported reference __stack_smash_handler.
+0003644C: warning: Unable to resolve imported reference ctime.
+0003668C: warning: Unable to resolve imported reference __swbuf.
+0003617C: warning: Unable to resolve imported reference login_fbtab.
+000363A4: warning: Unable to resolve imported reference chown.
+000366BC: warning: Unable to resolve imported reference login_getcapbool.
+000366EC: warning: Unable to resolve imported reference syslog.
+000366EC: warning: Unable to resolve imported reference syslog.
+000364F4: warning: Unable to resolve imported reference strlcpy.
+0003641C: warning: Unable to resolve imported reference setrlimit.
+00036224: warning: Unable to resolve imported reference __stack_smash_handler.
+0003644C: warning: Unable to resolve imported reference ctime.
+0003668C: warning: Unable to resolve imported reference __swbuf.
+00036944: warning: Unable to resolve imported reference setusercontext.
+000367C4: warning: Unable to resolve imported reference auth_approval.
+00036A1C: warning: Unable to resolve imported reference closefrom.
+0003683C: warning: Unable to resolve imported reference auth_setstate.
+00036974: warning: Unable to resolve imported reference auth_close.
+000365B4: warning: Unable to resolve imported reference execlp.
+0003665C: warning: Unable to resolve imported reference err.
+000366EC: warning: Unable to resolve imported reference syslog.
+000362B4: warning: Unable to resolve imported reference auth_getstate.
+00036554: warning: Unable to resolve imported reference setenv.
+000369D4: warning: Unable to resolve imported reference warn.
+0003635C: warning: Unable to resolve imported reference login_getcapstr.
+00036914: warning: Unable to resolve imported reference auth_cat.
+000365E4: warning: Unable to resolve imported reference login_getcaptime.
+0003644C: warning: Unable to resolve imported reference ctime.
+0003635C: warning: Unable to resolve imported reference login_getcapstr.
+00036224: warning: Unable to resolve imported reference __stack_smash_handler.
+00036374: warning: Unable to resolve imported reference auth_checknologin.
+000369D4: warning: Unable to resolve imported reference warn.
+00036554: warning: Unable to resolve imported reference setenv.
+000369D4: warning: Unable to resolve imported reference warn.
+00036554: warning: Unable to resolve imported reference setenv.
+000369D4: warning: Unable to resolve imported reference warn.
+00036554: warning: Unable to resolve imported reference setenv.
+00036554: warning: Unable to resolve imported reference setenv.
+000367DC: warning: Unable to resolve imported reference getttynam.
+0003635C: warning: Unable to resolve imported reference login_getcapstr.
+000364F4: warning: Unable to resolve imported reference strlcpy.
+000366EC: warning: Unable to resolve imported reference syslog.
+00036164: warning: Unable to resolve imported reference warnx.
+000366EC: warning: Unable to resolve imported reference syslog.
+000365E4: warning: Unable to resolve imported reference login_getcaptime.
+000367F4: warning: Unable to resolve imported reference auth_verify.
+000362B4: warning: Unable to resolve imported reference auth_getstate.
+00036494: warning: Unable to resolve imported reference auth_setoption.
+000366EC: warning: Unable to resolve imported reference syslog.
+000369D4: warning: Unable to resolve imported reference warn.
+00036974: warning: Unable to resolve imported reference auth_close.
+00036494: warning: Unable to resolve imported reference auth_setoption.
+00036A34: warning: Unable to resolve imported reference auth_getvalue.
+00036164: warning: Unable to resolve imported reference warnx.
+000363D4: warning: Unable to resolve imported reference alarm.
+000366EC: warning: Unable to resolve imported reference syslog.
+000366EC: warning: Unable to resolve imported reference syslog.
+000369EC: warning: Unable to resolve imported reference warnc.
+00036494: warning: Unable to resolve imported reference auth_setoption.
+0003623C: warning: Unable to resolve imported reference __srget.
+000369D4: warning: Unable to resolve imported reference warn.
+000369EC: warning: Unable to resolve imported reference warnc.
+000366EC: warning: Unable to resolve imported reference syslog.
+000366EC: warning: Unable to resolve imported reference syslog.
+000369EC: warning: Unable to resolve imported reference warnc.
+00002684: warning: Call target address 00000000 is invalid.
+                                                            Rewriting procedures. [Done]
+                                                            Building expressions. [Done]
+                                                            Gathering primitive datatypes from instructions. [Done]
+                                                            Collecting data types. [Done]
+                                                            Rewriting expressions. [Done]
+                                                            Rewriting procedures to high-level language. [Done]
+00056BF8: warning: Expected sizes of arrays to have been determined by now
+00056BF8: warning: Expected sizes of arrays to have been determined by now
+
 === Elf\x86-64\ls\ls
 000000000040216C: warning: Unable to resolve imported reference __gmon_start__.
 0000000000402178: warning: Unable to resolve imported reference __gmon_start__.
@@ -1429,9 +1751,7 @@ fn0001B1D0: warning: Structure analysis stopped making progress, quitting. Pleas
 fn0001B1F8: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 fn0001B2AC: error: An error occurred while rewriting procedure to high-level language.
     Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
-       at System.Collections.Generic.List`1.get_Item(Int32 index)
-   at Reko.Core.Block.get_ThenBlock() in c:\dev\uxmal\reko\master\src\Core\Block.cs:line 106
-   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in c:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 100
+       at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in c:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 159
    at Reko.Structure.CompoundConditionCoalescer.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 66
    at Reko.Structure.StructureAnalysis.Structure() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 89
    at Reko.Decompiler.StructureProgram() in c:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 722
@@ -1535,10 +1855,7 @@ fn0001B2CC: warning: Structure analysis stopped making progress, quitting. Pleas
                                                             Rewriting procedures. [Done]
 finish: error: An error occurred while renaming variables.
     The given key 'l004028A8' was not present in the dictionary.
-       at Reko.Analysis.SsaLivenessAnalysis.LiveOutAtBlock(Block block, SsaIdentifier sid) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 214
-   at Reko.Analysis.SsaLivenessAnalysis.BuildInterferenceGraph(SsaIdentifierCollection ssaIds) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 114
-   at Reko.Analysis.SsaLivenessAnalysis..ctor(SsaState ssa) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 76
-   at Reko.Analysis.LiveCopyInserter..ctor(SsaState ssa) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 50
+       at Reko.Analysis.SsaLivenessAnalysis.BuildInterferenceGraph(SsaIdentifierCollection ssaIds) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 114
    at Reko.Analysis.WebBuilder.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 119
                                                             Building expressions. [Done]
                                                             Gathering primitive datatypes from instructions. [Done]
@@ -2837,4 +3154,4 @@ Signature of 'Microsoft Visual C++ 8' detected.
                                                             Rewriting expressions. [Done]
                                                             Rewriting procedures to high-level language. [Done]
 
-Decompiled 99 binaries in 71.25 seconds.
+Decompiled 101 binaries in 74.24 seconds.

@@ -116,20 +116,30 @@ fn000026A0 proc
 	addu	r30,r31,0
 	ext	r3,r3,3,0
 	or	r7,r0,0
+
+l000026B8:
 	ld.b	r8,r0,r2
 	cmp	r9,r8,r3
 	bb0	0,r9,000026D4
+
+l000026C4:
 	bcnd.n	ne0,r8,000026B8
 	addu	r2,r2,1
+
+l000026CC:
 	br.n	000026DC
 	addu	r31,r30,0
+
+l000026D4:
 	br.n	000026C4
 	or	r7,r0,r2
+
+l000026DC:
 	or	r2,r0,r7
 	ld	r30,r0,r31
 	addu	r31,r31,0x10
 	jmp	r1
-	or	r0,r0,r0
+000026EC                                     F4 00 58 00             ..X.
 
 ;; fn000026F0: 000026F0
 ;;   Called from:
@@ -1497,12 +1507,16 @@ l00003744:
 	ld	r13,r30,0x68
 	bcnd.n	7,r13,00003774
 	addu	r3,r30,0x68
+
+l0000375C:
 	ld	r13,r30,0x6C
 	bcnd	ne0,r13,00003774
 
 l00003764:
 	ld	r13,r30,0x70
 	bcnd	7,r13,00003774
+
+l0000376C:
 	ld	r13,r30,0x74
 	bcnd	eq0,r13,00003784
 
@@ -2075,9 +2089,13 @@ l00003DA0:
 	cmp	r12,r12,r13
 	bb1.n	0,r12,00003DC8
 	addu	r2,r30,0x450
+
+l00003DBC:
 	or.u	r13,r0,6
 	br.n	00003114
 	st	r0,r13,0x6E8C
+
+l00003DC8:
 	bsr.n	fn00004520
 	subu	r1,r1,0x14
 
@@ -2196,7 +2214,7 @@ l00003EFC:
 	bsr.n	warn
 	or	r3,r0,r25
 	bsr.n	_exit
-	or	r2,r0,1
+00003F20 58 40 00 01                                     X@..            
 
 l00003F24:
 	ld	r12,r13,0x6024
@@ -2454,13 +2472,19 @@ l000041D8:
 l000041F0:
 	ld	r12,r21,0x6000
 	tb1	7,r0,0xFF
+
+l000041F8:
 	ld	r13,r30,0x2028
 	cmp	r13,r13,r12
 	bb0	0,r13,00004214
+
+l00004204:
 	ld	r3,r30,0x2028
 	or.u	r2,r0,1
 	bsr.n	__stack_smash_handler
 	or	r2,r2,0x523C
+
+l00004214:
 	subu	r31,r30,0x20
 	ld	r1,r31,0x24
 	ld	r30,r31,0x20
@@ -2469,49 +2493,17 @@ l000041F0:
 	ld.d	r22,r31,0x10
 	addu	r31,r31,0x2050
 	jmp	r1
-	or	r0,r0,r0
-	or	r0,r0,r0
-	or	r0,r0,r0
-	subu	r31,r31,0x10
-	st	r30,r0,r31
-	addu	r30,r31,0
-	st	r1,r31,0x4
-	addu	r31,r30,0
-	ld	r30,r0,r31
-	addu	r31,r31,0x10
-	jmp	r1
-	subu	r31,r31,0x420
-	st	r1,r31,0x14
-	or.u	r12,r0,2
-	st	r30,r31,0x10
-	st	r25,r31,0xC
-	or.u	r13,r0,2
-	addu	r30,r31,0x10
-	ld	r5,r13,0x6014
-	ld	r13,r12,0x6000
-	addu	r25,r30,8
-	or.u	r4,r0,1
-	or	r4,r4,0x5244
-	or	r3,r0,0x400
-	or	r2,r0,r25
-	st	r13,r30,0x408
-	bsr	snprintf
-	bsr.n	strlen
-	or	r2,r0,r25
-	or	r4,r0,r2
-	or	r3,r0,r25
-	bsr.n	write
-	or	r2,r0,2
-	or.u	r13,r0,2
-	ld	r2,r13,0x6024
-	bcnd	ne0,r2,000042CC
-	bsr.n	_exit
-	or	r2,r0,0
-	bsr.n	fn00004520
-	subu	r1,r1,0x10
-	or	r0,r0,r0
-	or	r0,r0,r0
-	or	r0,r0,r0
+00004234             F4 00 58 00 F4 00 58 00 F4 00 58 00     ..X...X...X.
+00004240 67 FF 00 10 F7 C0 24 1F 63 DF 00 00 24 3F 00 04 g.....$.c...$?..
+00004250 63 FE 00 00 F7 C0 14 1F 63 FF 00 10 F4 00 C0 01 c.......c.......
+00004260 67 FF 04 20 24 3F 00 14 5D 80 00 02 27 DF 00 10 g.. $?..]...'...
+00004270 27 3F 00 0C 5D A0 00 02 63 DF 00 10 14 AD 60 14 '?..]...c.....`.
+00004280 15 AC 60 00 63 3E 00 08 5C 80 00 01 58 84 52 44 ..`.c>..\...X.RD
+00004290 58 60 04 00 F4 40 58 19 25 BE 04 08 C8 00 C7 D6 X`...@X.%.......
+000042A0 CC 00 C9 AF F4 40 58 19 F4 80 58 02 F4 60 58 19 .....@X...X..`X.
+000042B0 CC 00 C8 61 58 40 00 02 5D A0 00 02 14 4D 60 24 ...aX@..]....M`$
+000042C0 E9 A2 00 03 CC 00 C9 8E 58 40 00 00 CC 00 00 95 ........X@......
+000042D0 64 21 00 10 F4 00 58 00 F4 00 58 00 F4 00 58 00 d!....X...X...X.
 
 ;; fn000042E0: 000042E0
 ;;   Called from:
@@ -2581,9 +2573,13 @@ l000043A0:
 l000043B8:
 	ld	r12,r23,0x6000
 	tb1	7,r0,0xFF
+
+l000043C0:
 	ld	r13,r30,0x118
 	cmp	r13,r13,r12
 	bb0	2,r13,000044F4
+
+l000043CC:
 	ld	r3,r30,0x118
 	or.u	r2,r0,1
 	bsr.n	__stack_smash_handler
@@ -2680,6 +2676,8 @@ l000044E0:
 	or	r3,r0,0x100
 	bsr.n	printf
 	subu	r1,r1,0x70
+
+l000044F4:
 	subu	r31,r30,0x20
 	ld	r1,r31,0x24
 	ld	r30,r31,0x20
@@ -2693,6 +2691,7 @@ l000044E0:
 ;; fn00004520: 00004520
 ;;   Called from:
 ;;     00003298 (in fn000028D0)
+;;     00003DC8 (in fn000028D0)
 ;;     00004040 (in fn00003FC8)
 ;;     000047E4 (in fn00004780)
 fn00004520 proc
@@ -2913,9 +2912,7 @@ fn00004740 proc
 	bsr.n	sleep
 	or	r2,r0,5
 	bsr.n	exit
-	or	r2,r0,r25
-	or	r0,r0,r0
-	or	r0,r0,r0
+00004774             F4 40 58 19 F4 00 58 00 F4 00 58 00     .@X...X...X.
 
 ;; fn00004780: 00004780
 ;;   Called from:
@@ -2946,7 +2943,6 @@ fn00004740 proc
 ;;     00003E20 (in fn000028D0)
 ;;     00003E40 (in fn000028D0)
 ;;     0000404C (in fn00003FC8)
-;;     0000477C (in fn00004740)
 fn00004780 proc
 	subu	r31,r31,0x20
 	st	r30,r31,0x10
@@ -2960,7 +2956,7 @@ fn00004780 proc
 
 l000047A4:
 	bsr.n	exit
-	or	r2,r0,r25
+000047A8                         F4 40 58 19                     .@X.    
 
 l000047AC:
 	or	r2,r0,r13
@@ -2978,7 +2974,7 @@ l000047AC:
 
 l000047DC:
 	bsr.n	_exit
-	or	r2,r0,0
+000047E0 58 40 00 00                                     X@..            
 
 l000047E4:
 	bsr.n	fn00004520
@@ -3095,9 +3091,13 @@ l00004910:
 fn00004928 proc
 	ld	r12,r19,0x6000
 	tb1	7,r0,0xFF
+
+l00004930:
 	ld	r13,r30,0x140
 	cmp	r13,r13,r12
 	bb0	0,r13,00004978
+
+l0000493C:
 	ld	r3,r30,0x140
 	or.u	r2,r0,1
 	bsr.n	__stack_smash_handler
@@ -3121,9 +3121,18 @@ l0000496C:
 	or	r2,r0,r23
 	br.n	00004894
 	or	r3,r0,0
-00004978                         67 FE 00 20 14 3F 00 24         g.. .?.$
-00004980 17 DF 00 20 16 7F 00 04 13 1F 00 18 12 DF 00 10 ... ............
-00004990 12 9F 00 08 63 FF 01 70 F4 00 C0 01 F4 00 58 00 ....c..p......X.
+
+l00004978:
+	subu	r31,r30,0x20
+	ld	r1,r31,0x24
+	ld	r30,r31,0x20
+	ld	r19,r31,0x4
+	ld.d	r24,r31,0x18
+	ld.d	r22,r31,0x10
+	ld.d	r20,r31,0x8
+	addu	r31,r31,0x170
+	jmp	r1
+0000499C                                     F4 00 58 00             ..X.
 
 ;; fn000049A0: 000049A0
 ;;   Called from:
@@ -3179,10 +3188,14 @@ l00004A40:
 l00004A48:
 	ld	r12,r22,0x6000
 	tb1	7,r0,0xFF
+
+l00004A50:
 	ld	r13,r30,0x140
 	cmp	r13,r13,r12
 	bb0.n	2,r13,00004BA4
 	or	r2,r0,r21
+
+l00004A60:
 	ld	r3,r30,0x140
 	or.u	r2,r0,1
 	bsr.n	__stack_smash_handler
@@ -3288,6 +3301,8 @@ l00004B94:
 	or	r2,r2,0x53C8
 	bsr.n	printf
 	subu	r1,r1,0x120
+
+l00004BA4:
 	subu	r31,r30,0x20
 	ld	r1,r31,0x24
 	ld	r30,r31,0x20

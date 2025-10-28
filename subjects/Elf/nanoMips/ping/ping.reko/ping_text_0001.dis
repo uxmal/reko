@@ -1,9 +1,9 @@
-word32 __fixunsdfsi(word32 r4, word32 r5)
+word32 __fixunsdfsi(word32 r4, word32 r5, word32 & r9Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // Called from:
 //      printf_core
 // MayUse:  r4:[0..31] r5:[0..31]
-// LiveOut: r4:[0..31]-printf_core
+// LiveOut: r4:[0..31]-printf_core r9:[0..31]-printf_core
 // Trashed: r25 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 __fixunsdfsi_entry:
@@ -19,25 +19,29 @@ l00410132:
 	r5_18 = 0x433<32> - r6_5
 	branch r5_18 >= 0x20<32> l0041015A
 l00410144:
+	r9Out = <invalid>
 	return (r9_9 | 0x1000000<32>) << r6_5 + 0xFFFFFBED<32> | r4 >>u r5_18
 l00410154:
+	r9Out = <invalid>
 	return (r5 >>u 0x1F<32>) + 0xFFFFFFFF<32>
 l0041015A:
+	r9Out = <invalid>
 	return (r9_9 | 0x1000000<32>) >>u 0x413<32> - r6_5
 l00410166:
 	branch r6_5 > 0x41D<32> l00410154
 l0041016E:
+	r9Out = <invalid>
 	return 0<32>
 __fixunsdfsi_exit:
 
 
-word32 __floatsidf(word32 r4, word32 & r5Out)
+word64 __floatsidf(word32 r4, word32 & r8Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // Called from:
 //      printf_core
 //      __floatscan
 // MayUse:  r4:[0..31]
-// LiveOut: r4:[0..31]-printf_core r5:[0..31]-printf_core
+// LiveOut: Sequence r4:r5:[0..63]-printf_core r8:[0..31]-__floatscan
 // Trashed: r25 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 __floatsidf_entry:
@@ -54,8 +58,9 @@ l00410194:
 	r7_20 = r4_13 >>u 0xB<32> - r9_15
 	r4_21 = r4_13 << r5_17
 l004101A2:
-	r5Out = __ins<word32,word32>(__ins<word32,word32>(__ins<word32,word32>(0<32>, r7_20, 0<32>, 1<32>), r6_16, 4<32>, 1<32>), r8_10, 0xF<32>, 1<32>)
-	return r4_21
+	r5_32 = __ins<word32,word32>(__ins<word32,word32>(__ins<word32,word32>(0<32>, r7_20, 0<32>, 1<32>), r6_16, 4<32>, 1<32>), r8_10, 0xF<32>, 1<32>)
+	r8Out = r8_10
+	return SEQ(r4_21, r5_32)
 l004101B6:
 	r7_20 = r4_13 << 0x413<32> - r6_16
 	r4_21 = 0<32>
@@ -69,13 +74,13 @@ l004101C4:
 __floatsidf_exit:
 
 
-word32 __floatunsidf(word32 r4, word32 & r5Out)
+word64 __floatunsidf(word32 r4)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // Called from:
 //      printf_core
 //      __floatscan
 // MayUse:  r4:[0..31]
-// LiveOut: r4:[0..31]-printf_core r5:[0..31]-printf_core
+// LiveOut: Sequence r4:r5:[0..63]-printf_core
 // Trashed: r25 r4 r5 r6 r7 r8
 // Preserved: sp
 __floatunsidf_entry:
@@ -90,8 +95,7 @@ l004101E8:
 	r7_15 = r4 >>u 0xB<32> - r8_8
 	r4_16 = r4 << r5_12
 l004101F6:
-	r5Out = __ext<word32,word32>(__ins<word32,word32>(__ins<word32,word32>(0<32>, r7_15, 0<32>, 1<32>), r6_10, 4<32>, 1<32>), 0<32>, 0x1F<32>)
-	return r4_16
+	return SEQ(r4_16, __ext<word32,word32>(__ins<word32,word32>(__ins<word32,word32>(0<32>, r7_15, 0<32>, 1<32>), r6_10, 4<32>, 1<32>), 0<32>, 0x1F<32>))
 l0041020A:
 	r7_15 = r4 << 0x413<32> - r6_10
 	r4_16 = 0<32>

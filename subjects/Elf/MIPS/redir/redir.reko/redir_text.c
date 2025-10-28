@@ -2664,8 +2664,8 @@ void _fpadd_parts(struct Eq_n * r4, struct Eq_n * r5, struct Eq_n * r6)
 		;
 }
 
-// 00407A38: void __addsf3(Register word32 r16, Register word32 ra, Register word32 f12, Register word32 f14)
-void __addsf3(word32 r16, word32 ra, word32 f12, word32 f14)
+// 00407A38: Register real32 __addsf3(Register real32 f12, Register real32 f14)
+real32 __addsf3(real32 f12, real32 f14)
 {
 	ptr32 fp;
 	__unpack_f(fp + -24, fp + -72);
@@ -2673,10 +2673,11 @@ void __addsf3(word32 r16, word32 ra, word32 f12, word32 f14)
 	g_t4077E0();
 	struct Eq_n * r2_n;
 	__pack_f(r2_n);
+	return <invalid>;
 }
 
-// 00407AE0: void __subsf3(Register word32 r16, Register word32 ra, Register word32 f12, Register word32 f14)
-void __subsf3(word32 r16, word32 ra, word32 f12, word32 f14)
+// 00407AE0: Register real32 __subsf3(Register real32 f12, Register real32 f14)
+real32 __subsf3(real32 f12, real32 f14)
 {
 	ptr32 fp;
 	__unpack_f(fp + -24, fp + -72);
@@ -2684,10 +2685,11 @@ void __subsf3(word32 r16, word32 ra, word32 f12, word32 f14)
 	g_t4077E0();
 	struct Eq_n * r2_n;
 	__pack_f(r2_n);
+	return <invalid>;
 }
 
-// 00407BA0: void __mulsf3(Register word32 r16, Register word32 ra, Register word32 f12, Register word32 f14)
-void __mulsf3(word32 r16, word32 ra, word32 f12, word32 f14)
+// 00407BA0: Register real32 __mulsf3(Register real32 f12, Register real32 f14)
+real32 __mulsf3(real32 f12, real32 f14)
 {
 	uint32 dwLoc2C;
 	uint32 dwLoc3C;
@@ -2764,7 +2766,7 @@ l00407C64:
 l00407DA4:
 				struct Eq_n * r4;
 				__pack_f(r4);
-				return;
+				return <invalid>;
 			}
 		}
 l00407C8C:
@@ -2772,8 +2774,8 @@ l00407C8C:
 	}
 }
 
-// 00407DD0: void __divsf3(Register word32 r16, Register word32 ra, Register word32 f12, Register word32 f14)
-void __divsf3(word32 r16, word32 ra, word32 f12, word32 f14)
+// 00407DD0: Register real32 __divsf3(Register real32 f12, Register real32 f14)
+real32 __divsf3(real32 f12, real32 f14)
 {
 	uint32 dwLoc1C;
 	uint32 dwLoc2C;
@@ -2821,6 +2823,7 @@ void __divsf3(word32 r16, word32 ra, word32 f12, word32 f14)
 	}
 	struct Eq_n * r4;
 	__pack_f(r4);
+	return <invalid>;
 }
 
 // 00407F70: void __floatsisf(Register uint32 r4, Register word32 ra)
@@ -3074,8 +3077,8 @@ l00408490:
 		r6->t0000.u0 = 3;
 }
 
-// 004084FC: void __adddf3(Register word32 r16, Register word32 ra, Register word32 f12, Register word32 f13, Register word32 f14, Register word32 f15)
-void __adddf3(word32 r16, word32 ra, word32 f12, word32 f13, word32 f14, word32 f15)
+// 004084FC: Register real64 __adddf3(Sequence real64 f12:f13, Sequence real64 f14:f15)
+real64 __adddf3(real64 f12:f13, real64 f14:f15)
 {
 	ptr32 fp;
 	__unpack_d(fp + -40, fp + -112);
@@ -3083,10 +3086,11 @@ void __adddf3(word32 r16, word32 ra, word32 f12, word32 f13, word32 f14, word32 
 	g_t408180();
 	struct Eq_n * r2_n;
 	__pack_d(r2_n);
+	return <invalid>;
 }
 
-// 004085CC: void __subdf3(Register word32 r16, Register word32 ra, Register word32 f12, Register word32 f13, Register word32 f14, Register word32 f15)
-void __subdf3(word32 r16, word32 ra, word32 f12, word32 f13, word32 f14, word32 f15)
+// 004085CC: Register real64 __subdf3(Sequence real64 f12:f13, Sequence real64 f14:f15)
+real64 __subdf3(real64 f12:f13, real64 f14:f15)
 {
 	ptr32 fp;
 	__unpack_d(fp + -40, fp + -112);
@@ -3094,10 +3098,11 @@ void __subdf3(word32 r16, word32 ra, word32 f12, word32 f13, word32 f14, word32 
 	g_t408180();
 	struct Eq_n * r2_n;
 	__pack_d(r2_n);
+	return <invalid>;
 }
 
-// 004086B0: void __muldf3(Register word32 r17, Register word32 r19, Register word32 r20, Register word32 r21, Register word32 r22, Register word32 ra, Register word32 f12, Register word32 f13, Register word32 f14, Register word32 f15)
-void __muldf3(word32 r17, word32 r19, word32 r20, word32 r21, word32 r22, word32 ra, word32 f12, word32 f13, word32 f14, word32 f15)
+// 004086B0: Register real64 __muldf3(Sequence real64 f12:f13, Sequence real64 f14:f15)
+real64 __muldf3(real64 f12:f13, real64 f14:f15)
 {
 	uint32 dwLoc78;
 	Eq_n dwLoc5C;
@@ -3245,12 +3250,13 @@ l00408B38:
 l00408B58:
 			struct Eq_n * r4;
 			__pack_d(r4);
+			return <invalid>;
 		}
 	}
 }
 
-// 00408BA0: void __divdf3(Register word32 r17, Register word32 ra, Register word32 f12, Register word32 f13, Register word32 f14, Register word32 f15)
-void __divdf3(word32 r17, word32 ra, word32 f12, word32 f13, word32 f14, word32 f15)
+// 00408BA0: Register real64 __divdf3(Sequence real64 f12:f13, Sequence real64 f14:f15)
+real64 __divdf3(real64 f12:f13, real64 f14:f15)
 {
 	uint32 dwLoc30;
 	uint32 dwLoc44;
@@ -3265,7 +3271,7 @@ void __divdf3(word32 r17, word32 ra, word32 f12, word32 f13, word32 f14, word32 
 l00408DDC:
 		struct Eq_n * r4;
 		__pack_d(r4);
-		return;
+		return <invalid>;
 	}
 	if ((dwLoc58 ^ 0x04) == 0x00 || (dwLoc58 ^ 0x02) == 0x00)
 		goto l00408DDC;
@@ -3361,49 +3367,73 @@ void __eqdf2(word32 r17, word32 ra, word32 f12, word32 f13, word32 f14, word32 f
 	}
 }
 
-// 00408EE0: void __nedf2(Register word32 r17, Register word32 ra, Register word32 f12, Register word32 f13, Register word32 f14, Register word32 f15)
-void __nedf2(word32 r17, word32 ra, word32 f12, word32 f13, word32 f14, word32 f15)
+// 00408EE0: Register int32 __nedf2(Sequence real64 f12:f13)
+int32 __nedf2(real64 f12:f13)
 {
 	ptr32 fp;
 	__unpack_d(fp + -40, fp + -88);
 	__unpack_d(fp + -32, fp + -64);
 	Eq_n dwLoc58;
-	Eq_n dwLoc40;
-	if (dwLoc58 >= 2 && dwLoc40 >= 2)
+	int32 r2_n;
+	if (dwLoc58 >= 2)
 	{
-		struct Eq_n * r4;
-		__fpcmp_parts_d(r4, fp + -64);
+		r2_n = 1;
+		Eq_n dwLoc40;
+		if (dwLoc40 >= 2)
+		{
+			struct Eq_n * r4;
+			r2_n = __fpcmp_parts_d(r4, fp + -64);
+		}
 	}
+	else
+		r2_n = 1;
+	return r2_n;
 }
 
-// 00408FB0: void __gedf2(Register word32 r17, Register word32 ra, Register word32 f12, Register word32 f13, Register word32 f14, Register word32 f15)
-void __gedf2(word32 r17, word32 ra, word32 f12, word32 f13, word32 f14, word32 f15)
+// 00408FB0: Register int32 __gedf2(Register real32 f12, Register real32 f14)
+int32 __gedf2(real32 f12, real32 f14)
 {
 	ptr32 fp;
 	__unpack_d(fp + -40, fp + -88);
 	__unpack_d(fp + -32, fp + -64);
 	Eq_n dwLoc58;
-	Eq_n dwLoc40;
-	if (dwLoc58 >= 2 && dwLoc40 >= 2)
+	int32 r2_n;
+	if (dwLoc58 >= 2)
 	{
-		struct Eq_n * r4;
-		__fpcmp_parts_d(r4, fp + -64);
+		r2_n = -1;
+		Eq_n dwLoc40;
+		if (dwLoc40 >= 2)
+		{
+			struct Eq_n * r4;
+			r2_n = __fpcmp_parts_d(r4, fp + -64);
+		}
 	}
+	else
+		r2_n = -1;
+	return r2_n;
 }
 
-// 00409080: void __ltdf2(Register word32 r17, Register word32 ra, Register word32 f12, Register word32 f13, Register word32 f14, Register word32 f15)
-void __ltdf2(word32 r17, word32 ra, word32 f12, word32 f13, word32 f14, word32 f15)
+// 00409080: Register int32 __ltdf2(Register real32 f12, Register real32 f14)
+int32 __ltdf2(real32 f12, real32 f14)
 {
 	ptr32 fp;
 	__unpack_d(fp + -40, fp + -88);
 	__unpack_d(fp + -32, fp + -64);
 	Eq_n dwLoc58;
-	Eq_n dwLoc40;
-	if (dwLoc58 >= 2 && dwLoc40 >= 2)
+	int32 r2_n;
+	if (dwLoc58 >= 2)
 	{
-		struct Eq_n * r4;
-		__fpcmp_parts_d(r4, fp + -64);
+		r2_n = 1;
+		Eq_n dwLoc40;
+		if (dwLoc40 >= 2)
+		{
+			struct Eq_n * r4;
+			r2_n = __fpcmp_parts_d(r4, fp + -64);
+		}
 	}
+	else
+		r2_n = 1;
+	return r2_n;
 }
 
 // 00409150: void __floatsidf(Register Eq_n r4, Register word32 ra)
@@ -3771,59 +3801,108 @@ void __unpack_d(struct Eq_n * r4, struct Eq_n * r5)
 	}
 }
 
-// 00409A90: void __fpcmp_parts_d(Register (ptr32 Eq_n) r4, Register (ptr32 Eq_n) r5)
+// 00409A90: Register int32 __fpcmp_parts_d(Register (ptr32 Eq_n) r4, Register (ptr32 Eq_n) r5)
 // Called from:
 //      __eqdf2
 //      __nedf2
 //      __gedf2
 //      __ltdf2
-void __fpcmp_parts_d(struct Eq_n * r4, struct Eq_n * r5)
+int32 __fpcmp_parts_d(struct Eq_n * r4, struct Eq_n * r5)
 {
 	Eq_n r6_n;
 	r6_n.u0 = r4->t0000.u0;
 	if (r6_n < 2)
-		return;
+		return 1;
 	Eq_n r3_n;
 	r3_n.u0 = r5->t0000.u0;
 	if (r3_n < 2)
-		return;
+		return 1;
 	if ((r6_n ^ 0x04) != 0x00)
 	{
 		if ((r3_n ^ 0x04) == 0x00)
-			return;
+			return -(word32) (r5->t0004.u0 < 1) | 0x01;
 		if ((r6_n ^ 0x02) != 0x00)
 		{
 			if ((r3_n ^ 0x02) == 0x00)
-				return;
-			if (r4->dw0004 != r5->dw0004)
-				return;
-			int32 r6_n = r4->dw0008;
-			int32 r3_n = r5->dw0008;
-			if (r3_n < r6_n)
-				return;
-			if (r6_n < r3_n)
-				return;
-			up32 r7_n = r4->dw0010;
-			up32 r6_n = r5->dw0010;
-			if (r6_n < r7_n)
-				return;
+				return -(word32) (r4->t0004.u0 > 0x00) | 0x01;
+			Eq_n r8_n;
+			r8_n.u0 = r4->t0004.u0;
 			word32 r2_n;
-			if (r7_n == r6_n)
+			if (r8_n != (r5->t0004).u0)
 			{
-				if (r5->dw0014 < r4->dw0014)
-					return;
-				r2_n = (word32) (r7_n < r6_n);
+				r2_n = (word32) (r8_n > 0x00);
+				return -r2_n | 0x01;
 			}
 			else
-				r2_n = (word32) (r7_n < r6_n);
-			if (r2_n != 0x00 || r6_n == r7_n && r4->dw0014 < r5->dw0014)
-				;
+			{
+				int32 r6_n = r4->dw0008;
+				int32 r3_n = r5->dw0008;
+				if (r3_n < r6_n)
+				{
+					r2_n = (word32) (r8_n > 0x00);
+					return -r2_n | 0x01;
+				}
+				else
+				{
+					word32 r2_n;
+					if (r6_n < r3_n)
+					{
+						r2_n = (word32) (r8_n < 1);
+						return -r2_n | 0x01;
+					}
+					else
+					{
+						up32 r7_n = r4->dw0010;
+						up32 r6_n = r5->dw0010;
+						if (r6_n < r7_n)
+						{
+							r2_n = (word32) (r8_n > 0x00);
+							return -r2_n | 0x01;
+						}
+						else
+						{
+							word32 r2_n;
+							if (r7_n == r6_n)
+							{
+								if (r5->dw0014 < r4->dw0014)
+								{
+									r2_n = (word32) (r8_n > 0x00);
+									return -r2_n | 0x01;
+								}
+								r2_n = (word32) (r7_n < r6_n);
+							}
+							else
+								r2_n = (word32) (r7_n < r6_n);
+							if (r2_n != 0x00)
+							{
+								r2_n = (word32) (r8_n < 1);
+								return -r2_n | 0x01;
+							}
+							else
+							{
+								if (r6_n != r7_n || r4->dw0014 >= r5->dw0014)
+									return 0x00;
+								r2_n = (word32) (r8_n < 1);
+								return -r2_n | 0x01;
+							}
+						}
+					}
+				}
+			}
 		}
-		else if ((r3_n ^ 0x02) == 0x00)
-			;
+		else
+		{
+			if ((r3_n ^ 0x02) == 0x00)
+				return 0x00;
+			return -(word32) (r5->t0004.u0 < 1) | 0x01;
+		}
 	}
-	else if ((r3_n ^ 0x04) != 0x00)
-		;
+	else
+	{
+		if ((r3_n ^ 0x04) != 0x00)
+			return -(word32) (r4->t0004.u0 > 0x00) | 0x01;
+		return r5->t0004.u0 - (r4->t0004).u0;
+	}
 }
 
 // 00409C10: void __do_global_ctors_aux()

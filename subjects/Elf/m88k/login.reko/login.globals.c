@@ -4,6 +4,5 @@
 
 #include "login.h"
 
-Eq_n g_t0001;
 Eq_n g_t20000;
 Eq_n g_t60000;

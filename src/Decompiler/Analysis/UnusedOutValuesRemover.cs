@@ -295,6 +295,14 @@ namespace Reko.Analysis
         {
             var deadStms = new HashSet<Statement>();
             var deadStgs = new HashSet<Storage>();
+            HashSet<Storage>? liveFromSignature = null;
+            if (ssa.Procedure.Signature.ParametersValid)
+            {
+                liveFromSignature = ssa.Procedure.Signature.Outputs
+                    .Where(o => o.Storage is not null)
+                    .Select(o => o.Storage)
+                    .ToHashSet();
+            }
 
             foreach (var stm in ssa.Procedure.ExitBlock.Statements)
             {
@@ -304,6 +312,12 @@ namespace Reko.Analysis
                 foreach (var id in ids)
                 {
                     var stg = id.Storage;
+                    if (liveFromSignature is not null && !liveFromSignature.Any(stgSigOut => stgSigOut.OverlapsWith(stg)))
+                    {
+                        deadStgs.Add(stg);
+                        deadStms.Add(stm);
+                        continue;
+                    }
                     if (!liveOutStorages.Keys.Any(stgLiveOut => stgLiveOut.OverlapsWith(stg)))
                     {
                         deadStgs.Add(stg);

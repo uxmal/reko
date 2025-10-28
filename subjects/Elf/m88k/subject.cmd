@@ -1,1 +1,1 @@
-reko decompile login
+reko.exe decompile login

@@ -4,10 +4,10 @@
 
 #include "login.h"
 
-word32 __progname = 0x00015224; // 00026004
+struct Eq_n * __progname = &g_t15224; // 00026004
 word32 g_dw2600C = 0x00; // 0002600C
 word32 g_dw26014 = 300; // 00026014
-union Eq_n * g_ptr26018 = null; // 00026018
-struct Eq_n * g_ptr2601C = null; // 0002601C
-union Eq_n * g_ptr26024 = null; // 00026024
-union Eq_n * g_ptr26028 = null; // 00026028
+word32 * g_ptr26018 = null; // 00026018
+word32 g_dw2601C = 0x00; // 0002601C
+struct Eq_n * g_ptr26024 = null; // 00026024
+char * g_ptr26028 = null; // 00026028

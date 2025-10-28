@@ -1,55 +1,72 @@
-void fn00002570(word64 r22_r23, word32 r5, word32 r21, word32 dwArg00, word32 dwArg04)
+void fn00002570(word64 r14_r15, word64 r16_r17, word64 r18_r19, word32 r5, word32 r20, word32 dwArg00, char bArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-// MayUse:  r21:[0..31] r5:[0..31] Sequence r22:r23:[0..63] Stack +0000:[0..31] Stack +0004:[0..31]
+// MayUse:  r20:[0..31] r5:[0..31] Sequence r14:r15:[0..63] Sequence r16:r17:[0..63] Sequence r18:r19:[0..63] Stack +0000:[0..31] Stack +0004:[0..7]
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
 fn00002570_entry:
-	r22 = SLICE(r22_r23, word32, 32)
-	r23 = SLICE(r22_r23, word32, 0)
 l00002570:
-	r4_8 = fp + 4<32> + dwArg00 * 4<32>
+	r4_8 = &bArg04 + dwArg00 * 4<32>
 l00002590:
 	Mem25[0x66D84<32>:word32] = r4_8 + 4<32>
-	r22 = fp + 4<32>
-	r21 = dwArg00
-	branch dwArg04 == 0<32> l000025C8_ds_t
+	r25_26 = Mem25[&bArg04:word32]
+	branch r25_26 == 0<32> l000025C8_ds_t
 l000025C8_ds_f:
 	goto l000025CC
 l000025C8_ds_t:
-	r23 = r5
 	goto l00002650
 l000025CC:
-	fn000026A0()
+	r2_37 = fn000026A0(r25_26, 0x2F<32>)
+	branch r2_37 != 0<32> l000025E0_ds_t
+l000025E0_ds_f:
+	Mem48[0x26004<32>:word32] = r2_37
+	goto l000025E4
+l000025E0_ds_t:
+	Mem45[0x26004<32>:word32] = r2_37
+	goto l0000268C
+l000025E4:
+	Mem49[0x26004<32>:word32] = r25_26
+l000025E8:
+	r9_54 = 0x66D88<32>
+	branch Mem51[Mem51[0x26004<32>:word32]:int8] == 0<i8> l00002600_ds_t
+l00002600_ds_f:
+	goto l00002604
+l00002600_ds_t:
+	goto l00002644
+l00002604:
+	branch !__bit<word32,byte>(cond(0x66D88<32> - 0x66E87<32>), 0<8>) l00002610_ds_t
+l00002610_ds_f:
+	goto l00002614
+l00002610_ds_t:
+	goto l00002644
 l00002614:
-	Mem56 = Mem65
-	r13_57 = Mem56[r8_50 + 0x6004<32>:word32]
-	r12_61 = CONVERT(Mem56[r13_57:byte], byte, word32)
-	Mem63[r8_50 + 0x6004<32>:word32] = r13_57 + 1<32>
-	Mem65[r9_67 + 0xFFFFFFFF<32>:byte] = SLICE(r12_61, byte, 0)
-	branch Mem65[r13_57 + 1<32>:int8] == 0<i8> l0000263C_ds_t
+	r13_64 = Mem63[0x26004<32>:word32]
+	r12_68 = CONVERT(Mem63[r13_64:byte], byte, word32)
+	Mem70[0x26004<32>:word32] = r13_64 + 1<32>
+	Mem72[r9_54:byte] = SLICE(r12_68, byte, 0)
+	r9_54 = r9_54 + 1<32>
+	branch Mem72[r13_64 + 1<32>:int8] == 0<i8> l0000263C_ds_t
 l0000263C_ds_f:
-	r13_69 = cond(r9_67 + 0xFFFFFFFF<32> - (r6_54 | 0x6E87<32>))
+	r13_76 = cond(r9_54 - 0x66E87<32>)
 	goto l00002640
 l0000263C_ds_t:
 	goto l00002644
 l00002640:
-	branch __bit<word32,byte>(r13_69, 0x1F<8>) l00002614
+	branch __bit<word32,byte>(r13_76, 0x1F<8>) l00002614
 l00002644:
-	Mem74[r9_67 + 0xFFFFFFFF<32>:byte] = 0<8>
-	Mem76[r8_50 + 0x6004<32>:word32] = r5_46 | 0x6D88<32>
+	Mem81[r9_54:byte] = 0<8>
+	Mem83[0x26004<32>:word32] = 0x66D88<32>
 l00002650:
-	branch r23 == 0<32> l00002654_ds_t
+	branch r5 == 0<32> l00002654_ds_t
 l00002654_ds_f:
 	goto l00002658
 l00002654_ds_t:
 	goto l00002678
 l00002658:
-	fn00002710(r23)
+	fn00002710(r5)
 l00002660:
-	fn00002558()
-	exit(fn000028D0(r21, r22))
+	exit(fn000028D0(r14_r15, r16_r17, r18_r19, SEQ(r20, dwArg00), SEQ(&bArg04, r5), fn00002558(), &bArg04))
 l00002678:
 	branch true l00002680_ds_t
 l00002680_ds_f:
@@ -58,20 +75,39 @@ l00002680_ds_t:
 	goto l00002660
 l00002684:
 	fn00000000()
+l0000268C:
+	Mem47[0x26004<32>:word32] = r2_37 + 1<32>
+	goto l000025E8
 fn00002570_exit:
 
 
-void fn000026A0()
+word32 fn000026A0(word32 r2, word32 r3)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // Called from:
 //      fn00002570
-// MayUse: 
-// LiveOut:
-// Trashed:
+// MayUse:  r2:[0..31] r3:[0..31]
+// LiveOut: r2:[0..31]-fn00002570
+// Trashed: r1 r2 r3 r30 r31 r7 r8 r9
 // Preserved:
-// Terminates process
 fn000026A0_entry:
 l000026A0:
+	r3_11 = __ext(r3, 3<8>, 0<8>)
+l000026B8:
+	r8_15 = CONVERT(Mem8[r2:int8], int8, word32)
+	branch !__bit<word32,byte>(cond(r8_15 - r3_11), 0<8>) l000026D4
+l000026C4:
+	branch r8_15 != 0<32> l000026C8_ds_t
+l000026C8_ds_f:
+	goto l000026CC
+l000026C8_ds_t:
+	r2 = r2 + 1<32>
+	goto l000026B8
+l000026CC:
+	goto l000026DC
+l000026D4:
+	goto l000026C4
+l000026DC:
+	return r2_40
 fn000026A0_exit:
 
 
@@ -96,7 +132,7 @@ void fn00002710(word32 r2)
 //      fn00002810
 // MayUse:  r2:[0..31]
 // LiveOut:
-// Trashed: r1 r11 r2 r3 r30 r31 r4
+// Trashed: r1 r2 r3 r30 r31 r4
 // Preserved:
 fn00002710_entry:
 l00002710:
@@ -180,680 +216,712 @@ l00002878:
 fn00002810_exit:
 
 
-word32 fn000028D0(word32 r2, word32 r3)
+word32 fn000028D0(word64 r14_r15, word64 r16_r17, word64 r18_r19, word64 r20_r21, word64 r22_r23, word64 r24_r25, word32 r3)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // Called from:
 //      fn00002570
-// MayUse:  r2:[0..31] r3:[0..31]
+// MayUse:  r3:[0..31] Sequence r14:r15:[0..63] Sequence r16:r17:[0..63] Sequence r18:r19:[0..63] Sequence r20:r21:[0..63] Sequence r22:r23:[0..63] Sequence r24:r25:[0..63]
 // LiveOut: r2:[0..31]-fn00002570
-// Trashed: r1 r11 r12 r13 r15 r17 r18 r19 r2 r20 r21 r22 r23 r24 r25 r3 r30 r31 r4 r5 r6 r7 r8 r9
-// Preserved: r14 r16
+// Trashed: r1 r10 r11 r12 r13 r14 r15 r16 r17 r18 r19 r2 r20 r21 r22 r23 r24 r25 r3 r30 r4 r5 r6 r7 r8 r9
+// Preserved: r31
 fn000028D0_entry:
 l000028D0:
-	openlog()
-	gethostname()
-	r30_1755 = fp - 0x880<32>
-	r18_47 = 0<32>
-	dwLoc086C_2321 = 0<32>
-	r15_1920 = 3<32>
-	branch fp < 0x548<32> l0000295C_ds_t
+	openlog(0x15384<32>, 4<32>, 0x20<32>, r14_r15, r16_r17, r18_r19, r20_r21, r22_r23, r24_r25, %continuation, Mem32[0x26000<32>:word32])
+	r2_83 = gethostname(r17_59, 0x100<32>)
+	Mem103[r30_78 + 0x14<32>:word32] = 0<32>
+	Mem104[r30_78 + 0x10<32>:word32] = 0<32>
+	Mem105[r30_78 + 0xC<32>:word32] = 0<32>
+	Mem106[r30_78 + 0x18<32>:word32] = 0<32>
+	Mem107[r30_78 + 0x28<32>:word32] = 0<32>
+	Mem108[r30_78 + 0x2C<32>:word32] = 0xA<32>
+	branch r2_83 < 0<32> l0000295C_ds_t
 l0000295C_ds_f:
 	goto l00002960
 l0000295C_ds_t:
 	goto l00003F64
 l00002960:
-	r2_117 = strchr(&bLoc0548, 0x2E<32>)
-	branch r2_117 == 0<32> l00002970_ds_t
+	r2_211 = strchr(r17_87, '.')
+	branch r2_211 == 0<32> l00002970_ds_t
 l00002970_ds_f:
 	goto l00002974
 l00002970_ds_t:
 	goto l00002984
 l00002974:
-	branch Mem60[r2_117 + 1<32>:int8] != 0<i8> l00002980_ds_t
+	branch Mem108[r2_211 + 1<32>:int8] != 0<i8> l00002980_ds_t
 l00002980_ds_f:
-	r2_117 = r2_117 + 1<32>
 	goto l00002984
 l00002980_ds_t:
 	goto l00003F50
 l00002984:
-	auth_open()
-	branch r2_117 == 0<32> l00002990_ds_t
+	r2_247 = auth_open()
+	branch r2_247 == 0<32> l00002990_ds_t
 l00002990_ds_f:
-	Mem141[0x2601C<32>:word32] = r2_117
+	Mem300[r20_255 + 0x601C<32>:word32] = r2_247
 	goto l00002994
 l00002990_ds_t:
-	Mem133[0x2601C<32>:word32] = r2_117
+	Mem267[r20_255 + 0x601C<32>:word32] = r2_247
 	goto l00003F34
 l00002994:
-	auth_setoption()
-	r2_151 = getuid()
+	auth_setoption(0x15384<32>, 0x14F98<32>)
+	r16_335 = getuid()
+	Mem336[r30_307 + 0x20<32>:word32] = 0<32>
+	Mem337[r30_307 + 0x1C<32>:word32] = 0<32>
+	r19_332 = 0x10000<32>
 l000029BC:
-	r2_164 = getopt(r2, r3, 0x14F9C<32>)
-	branch r2_164 == 0xFFFFFFFF<32> l000029D4_ds_t
+	r2_344 = getopt(r24_313, r22_315, r19_332 | 0x4F9C<32>)
+	branch r2_344 == 0xFFFFFFFF<32> l000029D4_ds_t
 l000029D4_ds_f:
 	goto l000029D8
 l000029D4_ds_t:
 	goto l00002CF4
 l000029D8:
-	branch !__bit<word32,byte>(cond(r2_164 - 0x4C<32> - 0x29<32>), 5<8>) l00002C7C
+	branch !__bit<word32,byte>(cond(r2_344 - 0x4C<32> - 0x29<32>), 5<8>) l00002C7C
 l000029E0:
 	fn00002A90()
 l00002AA0:
-	branch r2_151 != 0<32> l00002AA4_ds_t
+	branch r16_335 != 0<32> l00002AA4_ds_t
 l00002AA4_ds_f:
 	goto l00002AA8
 l00002AA4_ds_t:
 	goto l00002B50
 l00002AA8:
-	branch true l00002AB0_ds_t
+	branch Mem350[r30_307 + 0xC<32>:word32] == 0<32> l00002AB0_ds_t
 l00002AB0_ds_f:
 	goto l00002AB4
 l00002AB0_ds_t:
 	goto l00002AC4
 l00002AB4:
-	warnx()
-	fn00004780(1<32>, 0x10000<32>, 0x20000<32>)
+	warnx(0x14FB4<32>)
+	fn00004780(1<32>, out r20_6610, out r22_6611, out r23_6612, out r24_6613, out r30_6614)
 l00002AC4:
-	r13_2135 = Mem168[0x66C08<32>:word32]
-	Mem2145[&tLoc0848:word64] = 0<64>
-	Mem2147[&tLoc0848 + 24<i32>:word64] = 0<64>
-	Mem2148[&tLoc0848:word32] = 2<32>
-	Mem2150[&tLoc0848 + 8<i32>:word64] = 0<64>
-	Mem2152[&tLoc0848 + 16<i32>:word64] = 0<64>
-	Mem2153[&tLoc0848 + 4<i32>:word32] = 0<32>
-	branch getaddrinfo(r13_2135, 0<32>, &tLoc0848, &ptrLoc0850) != 0<32> l00002B0C_ds_t
+	r13_6360 = Mem350[0x66C08<32>:word32]
+	Mem6364[r30_307 + 0xC<32>:word32] = r13_6360
+	Mem6370[r30_307 + 0x38<32>:word64] = 0<64>
+	Mem6372[r30_307 + 0x50<32>:word64] = 0<64>
+	Mem6373[r30_307 + 0x38<32>:word32] = 2<32>
+	Mem6375[r30_307 + 0x40<32>:word64] = 0<64>
+	Mem6377[r30_307 + 0x48<32>:word64] = 0<64>
+	Mem6378[r30_307 + 0x3C<32>:word32] = 0<32>
+	branch getaddrinfo(r13_6360, 0<32>, r30_307 + 0x38<32>, r30_307 + 0x30<32>) != 0<32> l00002B0C_ds_t
 l00002B0C_ds_f:
 	goto l00002B10
 l00002B0C_ds_t:
 	goto l00002B40
 l00002B10:
-	strlcpy()
-	freeaddrinfo(Mem2153[&ptrLoc0850:word32])
+	strlcpy(Mem6378[Mem6378[r30_307 + 0x30<32>:word32] + 0x18<32>:word32], 0x100<32>)
+	freeaddrinfo(Mem6378[r30_6418 + 0x30<32>:word32])
 l00002B38:
 	auth_setoption()
 l00002B40:
-	strlcpy()
+	strlcpy(Mem6378[r30_307 + 0xC<32>:word32], 0x100<32>)
 l00002B50:
-	warnc()
-	fn00004780(1<32>, 0x10000<32>, 0x20000<32>)
+	warnc(1<32>, 0x14FA8<32>)
+	fn00004780(1<32>, out r20_6606, out r22_6607, out r23_6608, out r24_6609, out r30_6078)
+	branch r16_6054 != 0<32> l00002B6C_ds_t
+l00002B6C_ds_f:
+	goto l00002B70
+l00002B6C_ds_t:
+	goto l00002BAC
+l00002B70:
+	branch Mem350[r30_6078 + 0x10<32>:word32] == 0<32> l00002B8C
+l00002B78:
+	warnx(0x10000<32>, 0x14FE0<32>)
+	fn00004780(1<32>, out r20_6618, out r22_6619, out r23_6620, out r24_6621, out r30_6622)
+l00002B8C:
+	Mem6304[r30_6078 + 0x10<32>:word32] = Mem350[0x66C08<32>:word32]
+	goto l00002B38
+l00002BAC:
+	warnc(1<32>, 0x14FD4<32>)
+	fn00004780(1<32>, out r20_6122, out r22_6615, out r23_6616, out r24_6617, out r30_6129)
+	branch r16_6105 != 0<32> l00002BC8_ds_t
+l00002BC8_ds_f:
+	goto l00002BCC
+l00002BC8_ds_t:
+	goto l00002C58
+l00002BCC:
+	free(Mem350[r30_6129 + 0x18<32>:word32])
+	r2_6194 = strdup(Mem350[0x66C08<32>:word32])
+	branch r2_6194 == 0<32> l00002BE4_ds_t
+l00002BE4_ds_f:
+	Mem6245[r30_6129 + 0x18<32>:word32] = r2_6194
+	goto l00002BE8
+l00002BE4_ds_t:
+	Mem6196[r30_6129 + 0x18<32>:word32] = r2_6194
+	goto l00002C48
+l00002BE8:
+	auth_setoption(Mem6245[r20_6122 + 0x601C<32>:word32], 0x10000<32>, 0x1500C<32>, Mem6245[r30_6129 + 0x18<32>:word32])
+	branch r21_6264 == 0<32> l00002C28
+l00002C00:
+	r2_6279 = strchr(Mem6245[r23_6268 + 0x6C08<32>:word32], '.')
+	branch r2_6279 == 0<32> l00002C10_ds_t
+l00002C10_ds_f:
+	goto l00002C14
+l00002C10_ds_t:
+	goto l00002C28
+l00002C14:
+	branch strcasecmp(r2_6279 + 1<32>, r21_6264) != 0<32> l00002C28
+l00002C24:
+	Mem6287[r2_6279:byte] = 0<8>
+l00002C28:
+	Mem6297[0x66E88<32>:word32] = Mem6289[r23_6268 + 0x6C08<32>:word32]
+	goto l00002B38
+l00002C48:
+	warn()
+	fn00004780(1<32>, out r20_6717, out r22_6718, out r23_6719, out r24_6720, out r30_6721)
+l00002C58:
+	warnc(1<32>, 0x15000<32>)
+	r19_332 = fn00004780(1<32>, out r20_320, out r22_315, out r23_6716, out r24_313, out r30_307)
+	Mem6188[r30_307 + 0x20<32>:word32] = 1<32>
+	goto l000029BC
 l00002C7C:
-	branch r2_151 == 0<32> l00002C80_ds_t
+	branch r16_335 == 0<32> l00002C80_ds_t
 l00002C80_ds_f:
 	goto l00002C84
 l00002C80_ds_t:
 	goto l00002CAC
 l00002C84:
-	fwrite(0x15030<32>, 0x66CC0<32>)
-	fn00004780(1<32>, 0x10000<32>, 0x20000<32>)
+	fwrite(0x15030<32>, SLICE(1<32>, size_t, 0), SLICE(0x58<32>, size_t, 0), 0x66CC0<32>)
+	fn00004780(1<32>, out r20_6722, out r22_6723, out r23_6724, out r24_6725, out r30_6726)
 l00002CAC:
-	syslog()
-	branch r2_151 != 0<32> l00002CC4_ds_t
+	syslog(3<32>, 0x15020<32>, r2_344)
+	branch r16_335 != 0<32> l00002CC4_ds_t
 l00002CC4_ds_f:
 	goto l00002CC8
 l00002CC4_ds_t:
 	goto l00002CDC
 l00002CC8:
-	Mem2025[0x26028<32>:word32] = Mem168[0x66C08<32>:word32]
+	Mem6000[0x26028<32>:word32] = Mem350[0x66C08<32>:word32]
 	goto l000029BC
 l00002CDC:
-	warnc()
-	fn00004780(1<32>, 0x10000<32>, 0x20000<32>)
+	warnc(1<32>, 0x1508C<32>)
+	fn00004780(1<32>, out r20_6727, out r22_6728, out r23_6729, out r24_6730, out r30_6731)
 l00002CF4:
-	r12_169 = Mem168[0x66C0C<32>:word32]
-	r19_170 = 1<32>
-	r3_171 = Mem168[r3 + r12_169 * 4<32>:word32]
-	branch r3_171 == 0<32> l00002D08_ds_t
+	r3_353 = Mem350[r22_315 + Mem350[0x66C0C<32>:word32] * 4<32>:word32]
+	branch r3_353 == 0<32> l00002D08_ds_t
 l00002D08_ds_f:
-	r24_172 = r2 - r12_169
 	goto l00002D0C
 l00002D08_ds_t:
-	r24_172 = r2 - r12_169
 	goto l00002D18
 l00002D0C:
-	Mem175[0x26024<32>:word32] = r3_171
-	r19_170 = 0<32>
+	Mem357[0x26024<32>:word32] = r3_353
 l00002D18:
-	r2_179 = geteuid()
-	branch r2_179 != 0<32> l00003EAC
+	branch geteuid() != 0<32> l00003EAC
 l00002D20:
-	ttyname()
-	branch r2_179 == 0<32> l00002D28_ds_t
+	r2_562 = ttyname()
+	branch r2_562 == 0<32> l00002D28_ds_t
 l00002D28_ds_f:
-	dwLoc0878_2338 = r2_179
+	Mem583[r30_557 + 8<32>:word32] = r2_562
 	goto l00002D2C
 l00002D28_ds_t:
+	Mem582[r30_557 + 8<32>:word32] = r2_562
 	goto l00002D34
 l00002D2C:
-	branch Mem235[r2_179:int8] != 0<i8> l00002D58
+	branch Mem583[r2_562:int8] != 0<i8> l00002D58
 l00002D34:
-	snprintf(&bLoc0448, 0x15098<32>)
-	dwLoc0878_2338 = &bLoc0448
+	snprintf(r30_557 + 0x438<32>, SLICE(0x13<32>, size_t, 0), 0x15098<32>, 0<32>)
+	Mem596[r30_557 + 8<32>:word32] = r30_557 + 0x438<32>
 l00002D58:
-	r2_255 = strrchr(dwLoc0878_2338, 0x2F<32>)
-	branch r2_255 == 0<32> l00002D6C_ds_t
+	r2_601 = strrchr(Mem598[r30_557 + 8<32>:word32], '/')
+	branch r2_601 == 0<32> l00002D6C_ds_t
 l00002D6C_ds_f:
-	Mem261[0x66ED8<32>:word32] = r2_255
+	Mem609[0x66ED8<32>:word32] = r2_601
 	goto l00002D70
 l00002D6C_ds_t:
-	Mem257[0x66ED8<32>:word32] = r2_255
+	Mem605[0x66ED8<32>:word32] = r2_601
 	goto l00003E9C
 l00002D70:
-	Mem263[0x66ED8<32>:word32] = r2_255 + 1<32>
+	Mem611[0x66ED8<32>:word32] = r2_601 + 1<32>
 l00002D78:
-	getrlimit()
-	branch false l00002D88_ds_t
+	branch getrlimit(4<32>, r30_557 + 0x68<32>) < 0<32> l00002D88_ds_t
 l00002D88_ds_f:
 	goto l00002D8C
 l00002D88_ds_t:
 	goto l00003E7C
 l00002D8C:
-	setrlimit()
-	branch false l00002DAC_ds_t
+	Mem722[r30_654 + 0x58<32>:word64] = 0<64>
+	Mem724[r30_654 + 0x60<32>:word64] = 0<64>
+	branch setrlimit(4<32>, r30_654 + 0x58<32>) < 0<32> l00002DAC_ds_t
 l00002DAC_ds_f:
 	goto l00002DB0
 l00002DAC_ds_t:
 	goto l00003E5C
 l00002DB0:
 	signal(0xE<32>, 0x4260<32>)
-	branch __bit<word32,byte>(cond(r24_172 - 1<32>), 1<8>) l00002DC8_ds_t
+	branch __bit<word32,byte>(cond(r24_746 - 1<32>), 1<8>) l00002DC8_ds_t
 l00002DC8_ds_f:
 	goto l00002DCC
 l00002DC8_ds_t:
 	goto l00003E48
 l00002DCC:
-	signal(3<32>, 1<32>)
-	signal(2<32>, 1<32>)
-	signal(1<32>, 1<32>)
-	setpriority()
-	login_getclass()
-	branch true l00002E10_ds_t
+	setpriority(3<32>, signal(3<32>, 1<32>), 2<32>, signal(2<32>, 1<32>), 1<32>, signal(1<32>, 1<32>), 0<32>, 1<32>, 1<32>, 1<32>, 0<32>, 0<32>)
+	r2_906 = login_getclass(0<32>)
+	branch r2_906 == 0<32> l00002E10_ds_t
 l00002E10_ds_f:
-	Mem347[0x26018<32>:word32] = 0<32>
+	Mem978[0x26018<32>:word32] = r2_906
 	goto l00002E14
 l00002E10_ds_t:
-	Mem334[0x26018<32>:word32] = 0<32>
+	Mem927[0x26018<32>:word32] = r2_906
 	goto l00003E30
 l00002E14:
-	login_getcapnum()
-	r2_359 = Mem347[0x26018<32>:word32]
-	Mem365[0x26014<32>:word32] = 0x150F4<32>
-	login_getcapstr()
-	branch r2_359 == 0<32> l00002E60_ds_t
+	login_getcapnum(Mem978[0x26018<32>:word32], 0x10000<32>, 0x150F4<32>, 0<32>, 0x12C<32>, 0<32>, 0x12C<32>)
+	r2_1015 = Mem978[r17_997 + 0x6018<32>:word32]
+	Mem1021[0x26014<32>:word32] = r3_995
+	branch login_getcapstr(r2_1015, 0x10000<32>, 0x15104<32>, 0<32>, 0<32>) == 0<32> l00002E60_ds_t
 l00002E60_ds_f:
 	goto l00002E64
 l00002E60_ds_t:
 	goto l00002FF4
 l00002E64:
-	unsetenv()
-	unsetenv()
-	branch !__bit<word32,byte>(cond(CONVERT(Mem365[r2_359:int8], int8, word32) - 0x2F<32>), 0<8>) l00002E88_ds_t
+	unsetenv(0x15110<32>)
+	unsetenv(r21_1068 | 0x511C<32>)
+	branch !__bit<word32,byte>(cond(CONVERT(Mem1021[r24_1090:int8], int8, word32) - 0x2F<32>), 0<8>) l00002E88_ds_t
 l00002E88_ds_f:
 	goto l00002E8C
 l00002E88_ds_t:
 	goto l00002EB0
 l00002E8C:
-	syslog()
-	warnx()
-	fn00004780(1<32>, r19_170, 0x20000<32>)
+	syslog(3<32>, 0x15128<32>, r24_1090)
+	warnx(0x10000<32>, 0x15144<32>)
+	fn00004780(1<32>, out r20_6628, out r22_6629, out r23_6630, out r24_6631, out r30_6632)
 l00002EB0:
-	strrchr(r2_359, 0x2F<32>)
-	auth_setstate()
-	branch false l00002EDC_ds_t
+	strrchr(r24_1090, '/')
+	auth_setstate(r24_1090, Mem1021[r20_1097 + 0x601C<32>:word32], 0x2F<32>, 1<32>)
+	branch Mem1021[r30_1122 + 0x1C<32>:word32] != 0<32> l00002EDC_ds_t
 l00002EDC_ds_f:
 	goto l00002EE0
 l00002EDC_ds_t:
 	goto l00003E28
 l00002EE0:
 l00002EE8:
-	branch true l00002EF0_ds_t
+	branch Mem1021[r30_1122 + 0x1C<32>:word32] == 0<32> l00002EF0_ds_t
 l00002EF0_ds_f:
 	goto l00002EF4
 l00002EF0_ds_t:
 	goto l00002EFC
 l00002EF4:
 l00002EFC:
-	auth_call()
-	r2_418 = Mem365[0x2601C<32>:word32]
-	auth_getstate()
-	branch (r2_418 & 7<32>) == 0<32> l00002F1C_ds_t
+	auth_call(r24_1128, r22_1130, 0<32>)
+	branch (auth_getstate(Mem1021[r20_1209 + 0x601C<32>:word32]) & 7<32>) == 0<32> l00002F1C_ds_t
 l00002F1C_ds_f:
 	goto l00002F20
 l00002F1C_ds_t:
 	goto l00003E20
 l00002F20:
-	auth_setenv()
-	r2_436 = getenv(0x15110<32>)
-	branch r2_436 == 0<32> l00002F38_ds_t
+	auth_setenv(Mem1021[0x2601C<32>:word32])
+	r2_1302 = getenv(r23_1292 | 0x5110<32>)
+	branch r2_1302 == 0<32> l00002F38_ds_t
 l00002F38_ds_f:
 	goto l00002F3C
 l00002F38_ds_t:
 	goto l00002F54
 l00002F3C:
-	branch strncmp(r2_436, 0x15160<32>, 5<32>) != 0<32> l00002F54
+	branch strncmp(r2_1302, 0x15160<32>, 5<32>) != 0<32> l00002F54
 l00002F50:
-	dwLoc086C_2321 = r2_436
+	Mem1311[r30_1276 + 0x14<32>:word32] = r2_1302
 l00002F54:
-	r2_453 = getenv(0x1511C<32>)
-	branch r2_453 == 0<32> l00002F60_ds_t
+	r2_1314 = getenv(r21_1288 | 0x511C<32>)
+	branch r2_1314 == 0<32> l00002F60_ds_t
 l00002F60_ds_f:
 	goto l00002F64
 l00002F60_ds_t:
 	goto l00002F68
 l00002F64:
-	Mem456[0x66E88<32>:word32] = r2_453
+	Mem1319[0x66E88<32>:word32] = r2_1314
 l00002F68:
-	auth_clroptions()
-	branch dwLoc086C_2321 == 0<32> l00002F7C_ds_t
+	auth_clroptions(Mem1322[r20_1289 + 0x601C<32>:word32])
+	r11_1377 = Mem1322[r30_1352 + 0x14<32>:word32]
+	branch r11_1377 == 0<32> l00002F7C_ds_t
 l00002F7C_ds_f:
 	goto l00002F80
 l00002F7C_ds_t:
 	goto l00002F90
 l00002F80:
-	auth_setoption()
+	auth_setoption(Mem1322[r20_1037 + 0x601C<32>:word32], 0x15168<32>, r11_1377)
 l00002F90:
-	branch true l00002F98_ds_t
+	r12_1379 = Mem1322[r30_1352 + 0x18<32>:word32]
+	branch r12_1379 == 0<32> l00002F98_ds_t
 l00002F98_ds_f:
 	goto l00002F9C
 l00002F98_ds_t:
 	goto l00002FAC
 l00002F9C:
-	auth_setoption()
+	auth_setoption(Mem1322[r24_1358 + 0x601C<32>:word32], 0x1500C<32>, r12_1379)
 l00002FAC:
-	branch Mem459[0x66E88<32>:word32] != 0<32> l00002FB8_ds_t
+	branch Mem1322[0x66E88<32>:word32] != 0<32> l00002FB8_ds_t
 l00002FB8_ds_f:
 	goto l00002FBC
 l00002FB8_ds_t:
 	goto l00003E10
 l00002FBC:
-	branch true l00002FC4_ds_t
+	r11_1415 = Mem1322[r30_1352 + 0xC<32>:word32]
+	branch r11_1415 == 0<32> l00002FC4_ds_t
 l00002FC4_ds_f:
 	goto l00002FC8
 l00002FC4_ds_t:
 	goto l00002FD8
 l00002FC8:
-	auth_setoption()
+	auth_setoption(Mem1322[r24_1358 + 0x601C<32>:word32], 0x14FC8<32>, r11_1415)
 l00002FD8:
-	branch true l00002FE0_ds_t
+	r12_1417 = Mem1322[r30_1352 + 0x10<32>:word32]
+	branch r12_1417 == 0<32> l00002FE0_ds_t
 l00002FE0_ds_f:
 	goto l00002FE4
 l00002FE0_ds_t:
 	goto l00002FF4
 l00002FE4:
-	auth_setoption()
+	auth_setoption(Mem1322[r24_1358 + 0x601C<32>:word32], 0x14FF4<32>, r12_1417)
 l00002FF4:
-	auth_setitem()
-	r22_1907 = 0<32>
+	auth_setitem(Mem1420[r20_1037 + 0x601C<32>:word32], 6<32>, 0x10000<32>, 0x15174<32>)
 l00003014:
-	Mem499[r30_1755 + 0x24<32>:word32] = 0<32>
-	auth_clean()
-	auth_clroption()
-	auth_clroption()
-	branch r19_170 != 0<32> l00003E04
+	r2_1470 = Mem1469[r20_1453 + 0x601C<32>:word32]
+	Mem1472[r30_1440 + 0x24<32>:word32] = 0<32>
+	auth_clean(r2_1470)
+	auth_clroption(Mem1472[r20_1501 + 0x601C<32>:word32], 0x1517C<32>)
+	auth_clroption(Mem1472[r20_1531 + 0x601C<32>:word32], 0x15184<32>)
+	branch r19_1562 != 0<32> l00003E04
 l00003044:
-	branch true l00003048_ds_t
+	branch r14_1568 != 0<32> l00003048_ds_t
 l00003048_ds_f:
 	goto l0000304C
 l00003048_ds_t:
 	goto l00003DF4
 l0000304C:
-	r2_550 = strchr(Mem499[0x26024<32>:word32], 0x3A<32>)
-	branch r2_550 == 0<32> l00003064_ds_t
+	r2_1632 = strchr(Mem1472[0x26024<32>:word32], ':')
+	branch r2_1632 == 0<32> l00003064_ds_t
 l00003064_ds_f:
 	goto l00003068
 l00003064_ds_t:
 	goto l00003070
 l00003068:
-	Mem553[r2_550:byte] = 0<8>
+	Mem1636[r2_1632:byte] = 0<8>
 l00003070:
-	branch r18_47 == 0<32> l00003074_ds_t
+	branch r18_1558 == 0<32> l00003074_ds_t
 l00003074_ds_f:
 	goto l00003078
 l00003074_ds_t:
 	goto l00003084
 l00003078:
-	free(r18_47)
+	free(r18_1558)
 l00003084:
-	r2_566 = Mem565[0x2601C<32>:word32]
-	auth_setitem()
-	branch r2_566 < 0<32> l00003098_ds_t
+	branch auth_setitem(Mem1647[0x2601C<32>:word32], 3<32>, Mem1647[0x26024<32>:word32]) < 0<32> l00003098_ds_t
 l00003098_ds_f:
 	goto l0000309C
 l00003098_ds_t:
 	goto l00003DD4
 l0000309C:
-	r2_578 = strdup(Mem565[0x26024<32>:word32])
-	branch r2_578 == 0<32> l000030A8_ds_t
+	branch strdup(Mem1647[r25_1696 + 0x6024<32>:word32]) == 0<32> l000030A8_ds_t
 l000030A8_ds_f:
-	r18_47 = r2_578
 	goto l000030AC
 l000030A8_ds_t:
 	goto l00003DD0
 l000030AC:
-	r19_1767 = 0<32>
-	r2_604 = strchr(Mem565[0x26024<32>:word32], 0x2F<32>)
-	branch r2_604 == 0<32> l000030C4_ds_t
+	r2_1810 = strchr(Mem1647[0x26024<32>:word32], '/')
+	branch r2_1810 == 0<32> l000030C4_ds_t
 l000030C4_ds_f:
 	goto l000030C8
 l000030C4_ds_t:
 	goto l000030E8
 l000030C8:
-	branch strncmp(r2_604 + 1<32>, 0x15194<32>, 4<32>) != 0<32> l000030E4
+	branch strncmp(r2_1810 + 1<32>, 0x15194<32>, 4<32>) != 0<32> l000030E4
 l000030E0:
-	r19_1767 = 1<32>
 l000030E4:
-	Mem616[r2_604:byte] = 0<8>
+	Mem1822[r2_1810:byte] = 0<8>
 l000030E8:
-	branch __bit<word32,byte>(cond(strlen(Mem618[0x26024<32>:word32]) - 0x20<32>), 0<8>) l000030FC_ds_t
+	branch __bit<word32,byte>(cond(CONVERT(strlen(Mem1824[0x26024<32>:word32]), uint0, uint32) - 0x20<32>), 0<8>) l000030FC_ds_t
 l000030FC_ds_f:
 	goto l00003100
 l000030FC_ds_t:
 	goto l00003108
 l00003100:
-	Mem627[Mem618[0x26024<32>:word32] + 0x20<32>:byte] = 0<8>
+	Mem1834[Mem1824[0x26024<32>:word32] + 0x20<32>:byte] = 0<8>
 l00003108:
-	branch Mem634[0x66E8C<32>:word32] != 0<32> l00003110_ds_t
+	branch Mem1838[r21_1691 + 0x6E8C<32>:word32] != 0<32> l00003110_ds_t
 l00003110_ds_f:
 	goto l00003114
 l00003110_ds_t:
 	goto l00003D8C
 l00003114:
 l00003118:
-	strlcpy()
-	r2_672 = getpwnam(Mem634[0x26024<32>:word32])
-	branch r2_672 != 0<32> l0000313C_ds_t
+	strlcpy(r30_1679 + 0x450<32>, Mem1888[0x26024<32>:word32], 0x402<32>)
+	r2_1979 = getpwnam(Mem1888[0x26024<32>:word32])
+	branch r2_1979 != 0<32> l0000313C_ds_t
 l0000313C_ds_f:
-	Mem698[0x66ED0<32>:word32] = r2_672
+	Mem2091[r23_1968 + 0x6ED0<32>:word32] = r2_1979
 	goto l00003140
 l0000313C_ds_t:
-	Mem675[0x66ED0<32>:word32] = r2_672
+	Mem1982[r23_1968 + 0x6ED0<32>:word32] = r2_1979
 	goto l00003D5C
 l00003140:
-	r13_701 = Mem700[0x66ED0<32>:word32]
-	branch r13_701 == 0<32> l00003148_ds_t
+	branch Mem2093[r23_1968 + 0x6ED0<32>:word32] == 0<32> l00003148_ds_t
 l00003148_ds_f:
 	goto l0000314C
 l00003148_ds_t:
-	r2_702 = 0<32>
 	goto l00003150
 l0000314C:
-	r2_702 = Mem700[r13_701 + 0x18<32>:word32]
 l00003150:
-	login_getclass()
-	branch r2_702 == 0<32> l00003158_ds_t
+	r2_2136 = login_getclass()
+	branch r2_2136 == 0<32> l00003158_ds_t
 l00003158_ds_f:
-	Mem718[0x26018<32>:word32] = r2_702
+	Mem2157[r17_2140 + 0x6018<32>:word32] = r2_2136
 	goto l0000315C
 l00003158_ds_t:
-	Mem717[0x26018<32>:word32] = r2_702
+	Mem2156[r17_2140 + 0x6018<32>:word32] = r2_2136
 	goto l00003214
 l0000315C:
-	login_getstyle()
-	branch r2_702 == 0<32> l0000316C_ds_t
+	branch login_getstyle(r24_2137, Mem2157[r30_1440 + 0x14<32>:word32]) == 0<32> l0000316C_ds_t
 l0000316C_ds_f:
 	goto l00003170
 l0000316C_ds_t:
 	goto l00003214
 l00003170:
-	login_getcapnum()
-	Mem753[r30_1755 + 0x2C<32>:word32] = 0x1519C<32>
-	login_getcapnum()
-	r13_757 = Mem753[0x66ED0<32>:word32]
-	branch r13_757 == 0<32> l000031C4_ds_t
+	login_getcapnum(Mem2157[r17_2171 + 0x6018<32>:word32], 0x1519C<32>, 0<32>, 0xA<32>, 0<32>, 0xA<32>)
+	r2_2225 = Mem2157[r17_2207 + 0x6018<32>:word32]
+	Mem2232[r30_2198 + 0x2C<32>:word32] = r3_2205
+	login_getcapnum(r2_2225, 0x151A8<32>, 0<32>, 3<32>, 0<32>, 3<32>)
+	r13_2260 = Mem2232[r23_2147 + 0x6ED0<32>:word32]
+	branch r13_2260 == 0<32> l000031C4_ds_t
 l000031C4_ds_f:
 	goto l000031C8
 l000031C4_ds_t:
 	goto l000031D8
 l000031C8:
-	branch r2_151 == 0<32> l000031E0
+	branch r16_2250 == 0<32> l000031E0
 l000031CC:
-	branch !__bit<word32,byte>(cond(r2_151 - Mem753[r13_757 + 8<32>:word32]), 0<8>) l000031DC
+	branch !__bit<word32,byte>(cond(r16_2250 - Mem2232[r13_2260 + 8<32>:word32]), 0<8>) l000031DC
 l000031D8:
-	Mem772[r30_1755 + 0x1C<32>:word32] = 0<32>
+	Mem2266[r30_1440 + 0x1C<32>:word32] = 0<32>
 l000031DC:
-	r13_757 = Mem775[0x66ED0<32>:word32]
+	r13_2260 = Mem2269[r23_2147 + 0x6ED0<32>:word32]
 l000031E0:
-	r15_1920 = 0x151A8<32>
-	branch r13_757 == 0<32> l000031F0
+	r15_2142 = r3_2242
+	branch r13_2260 == 0<32> l000031F0
 l000031E4:
-	branch Mem778[r13_757 + 8<32>:word32] != 0<32> l000031F0
+	branch Mem2272[r13_2260 + 8<32>:word32] != 0<32> l000031F0
 l000031EC:
-	r19_1767 = 1<32>
+	r19_2145 = 1<32>
 l000031F0:
-	branch Mem778[r30_1755 + 0x1C<32>:word32] == 0<32> l00003C68
+	branch Mem2272[r30_1440 + 0x1C<32>:word32] == 0<32> l00003C68
 l000031F8:
-	branch Mem887[0x66ED0<32>:word32] == 0<32> l00003214
+	branch Mem2621[r23_2147 + 0x6ED0<32>:word32] == 0<32> l00003214
 l00003200:
-	branch r19_1767 == 0<32> l00003204_ds_t
+	branch r19_2145 == 0<32> l00003204_ds_t
 l00003204_ds_f:
 	goto l00003208
 l00003204_ds_t:
 	goto l00003394
 l00003208:
-	branch fn000040D0(Mem887[0x66ED8<32>:word32], out r30_1755) != 0<32> l00003394
+	branch fn000040D0(out r30_1440) != 0<32> l00003394
 l00003214:
-	branch __bit<word32,byte>(Mem1756[r30_1755 + 0x28<32>:word32], 2<8>) l0000321C_ds_t
+	branch __bit<word32,byte>(Mem5367[r30_1440 + 0x28<32>:word32], 2<8>) l0000321C_ds_t
 l0000321C_ds_f:
 	goto l00003220
 l0000321C_ds_t:
 	goto l0000338C
 l00003220:
-	branch r19_1767 != 0<32> l00003224_ds_t
+	branch r19_2145 != 0<32> l00003224_ds_t
 l00003224_ds_f:
 	goto l00003228
 l00003224_ds_t:
 	goto l000032EC
 l00003228:
-	r2_1843 = Mem1756[0x2601C<32>:word32]
-	branch r2_1843 != 0<32> l00003230_ds_t
+	branch Mem5367[r20_1453 + 0x601C<32>:word32] != 0<32> l00003230_ds_t
 l00003230_ds_f:
 	goto l00003234
 l00003230_ds_t:
 	goto l000032D0
 l00003234:
-	r25_1849 = 0x151B8<32>
+	r25_5613 = 0x151B8<32>
 l00003238:
-	puts(r25_1849)
-	r13_1876 = Mem1756[0x66E8C<32>:word32]
-	branch Mem1756[0x66ED0<32>:word32] != 0<32> l00003250_ds_t
+	puts(r25_5613)
+	r13_5629 = Mem5367[r21_2143 + 0x6E8C<32>:word32]
+	r12_5632 = Mem5367[r23_2147 + 0x6ED0<32>:word32]
+	branch r12_5632 != 0<32> l00003250_ds_t
 l00003250_ds_f:
-	Mem1895[0x66E8C<32>:word32] = r13_1876 + 1<32>
+	Mem5663[r21_2143 + 0x6E8C<32>:word32] = r13_5629 + 1<32>
 	goto l00003254
 l00003250_ds_t:
-	Mem1883[0x66E8C<32>:word32] = r13_1876 + 1<32>
+	Mem5634[r21_2143 + 0x6E8C<32>:word32] = r13_5629 + 1<32>
 	goto l000032AC
 l00003254:
-	r22_1907 = r22_1907 + 1<32>
-	branch __bit<word32,byte>(cond(r22_1907 - r15_1920), 0x1B<8>) l00003260_ds_t
+	r22_5666 = r22_2139 + 1<32>
+	branch __bit<word32,byte>(cond(r22_5666 - r15_2142), 0x1B<8>) l00003260_ds_t
 l00003260_ds_f:
 	goto l00003264
 l00003260_ds_t:
-	r19_170 = 1<32>
 	goto l00003014
 l00003264:
-	branch !__bit<word32,byte>(cond(r22_1907 - Mem1895[r30_1755 + 0x2C<32>:word32]), 0<8>) l00003270_ds_t
+	branch !__bit<word32,byte>(cond(r22_5666 - Mem5663[r30_1440 + 0x2C<32>:word32]), 0<8>) l00003270_ds_t
 l00003270_ds_f:
 	goto l00003274
 l00003270_ds_t:
 	goto l00003298
 l00003274:
+	r2_5699 = (r22_5666 - r15_2142) * Mem5663[r30_1440 + 0x2C<32>:word32]
+	sleep(__ext(r2_5699 + __extu(r2_5699, 0xD<8>, 0x1F<8>), 2<8>, 1<8>))
+	goto l00003014
 l00003298:
-	fn00004520(out r24_r25_2398, out r1_2399, out r3_2400, out r4_2401, out r5_2402, out r21_2403, out r30_2404)
-	fn00004740(1<32>)
+	fn00004520(out r3_6653, out r4_6654, out r5_6655)
+	fn00004740()
 l000032AC:
-	fn000047F0(Mem1883[0x66E88<32>:word32], Mem1883[0x26028<32>:word32], Mem1883[0x66ED8<32>:word32], r30_1755)
+	fn000047F0(Mem5634[r12_5632 + 8<32>:word32], Mem5634[0x66E88<32>:word32], Mem5634[0x26028<32>:word32], Mem5634[0x66ED8<32>:word32], r30_1440)
 l000032D0:
-	auth_getvalue()
-	branch r2_1843 != 0<32> l000032E0_ds_t
+	r2_5593 = auth_getvalue(0x10000<32>, 0x151C8<32>)
+	branch r2_5593 != 0<32> l000032E0_ds_t
 l000032E0_ds_f:
 	goto l000032E4
 l000032E0_ds_t:
-	r25_1849 = r2_1843
+	r25_5613 = r2_5593
 	goto l00003238
 l000032E4:
 	goto l00003234
 l000032EC:
-	branch fn000040D0(Mem1756[0x66ED8<32>:word32], out r30_1755) != 0<32> l000032F8_ds_t
+	branch fn000040D0(out r30_1440) != 0<32> l000032F8_ds_t
 l000032F8_ds_f:
 	goto l000032FC
 l000032F8_ds_t:
 	goto l00003228
 l000032FC:
-	warnx()
-	branch Mem1756[0x66E88<32>:word32] == 0<32> l00003314_ds_t
+	warnx(0x151D4<32>, r18_2141)
+	branch Mem5367[0x66E88<32>:word32] == 0<32> l00003314_ds_t
 l00003314_ds_f:
 	goto l00003318
 l00003314_ds_t:
 	goto l0000336C
 l00003318:
-	r5_1812 = Mem1756[0x26028<32>:word32]
-	branch r5_1812 != 0<32> l00003320_ds_t
+	r5_5487 = Mem5367[0x26028<32>:word32]
+	branch r5_5487 != 0<32> l00003320_ds_t
 l00003320_ds_f:
 	goto l00003324
 l00003320_ds_t:
 	goto l0000332C
 l00003324:
 l0000332C:
-	branch r5_1812 == 0<32> l00003330_ds_t
+	branch r5_5487 == 0<32> l00003330_ds_t
 l00003330_ds_f:
 	goto l00003334
 l00003330_ds_t:
 	goto l00003364
 l00003334:
 l0000333C:
-	syslog()
+	syslog(5<32>, 0x10000<32>, 0x14BEC<32>, r18_5434, Mem5367[0x66E88<32>:word32], Mem5367[0x66ED8<32>:word32])
 l00003364:
 	goto l0000333C
 l0000336C:
-	syslog()
+	syslog(5<32>, 0x10000<32>, 0x14C14<32>, r18_5434, Mem5367[0x66ED8<32>:word32])
 l0000338C:
-	fn00004780(0<32>, r19_1767, 0x20000<32>)
+	fn00004780(0<32>, out r20_6648, out r22_6649, out r23_6650, out r24_6651, out r30_6652)
 l00003394:
-	alarm()
-	endpwent()
-	r2_912 = Mem887[0x26018<32>:word32]
-	login_getcapstr()
-	branch Mem887[r2_912:int8] != 0<i8> l000033C4_ds_t
+	endpwent(alarm(0<32>))
+	r2_2733 = login_getcapstr(Mem2621[r17_2704 + 0x6018<32>:word32], 0x10000<32>, 0x14ED0<32>, Mem2621[Mem2621[r23_2711 + 0x6ED0<32>:word32] + 0x24<32>:word32])
+	branch Mem2621[r2_2733:int8] != 0<i8> l000033C4_ds_t
 l000033C4_ds_f:
 	goto l000033C8
 l000033C4_ds_t:
 	goto l00003C30
 l000033C8:
 l000033D0:
-	branch Mem887[r30_1755 + 0x20<32>:word32] != 0<32> l000033D8_ds_t
+	branch Mem2621[r30_2728 + 0x20<32>:word32] != 0<32> l000033D8_ds_t
 l000033D8_ds_f:
 	goto l000033DC
 l000033D8_ds_t:
 	goto l00003B98
 l000033DC:
-	r2_1007 = calloc()
-	branch r2_1007 == 0<32> l000033EC_ds_t
+	r2_2898 = calloc(SLICE(1<32>, size_t, 0), SLICE(4<32>, size_t, 0))
+	branch r2_2898 == 0<32> l000033EC_ds_t
 l000033EC_ds_f:
-	Mem1015[0x66D84<32>:word32] = r2_1007
+	Mem2961[0x66D84<32>:word32] = r2_2898
 	goto l000033F0
 l000033EC_ds_t:
-	Mem1009[0x66D84<32>:word32] = r2_1007
+	Mem2902[0x66D84<32>:word32] = r2_2898
 	goto l00003B88
 l000033F0:
-	setenv()
-	branch false l00003410_ds_t
+	branch setenv(0x14C38<32>, Mem2966[Mem2966[r23_2744 + 0x6ED0<32>:word32] + 0x20<32>:word32], 1<32>) == 0xFFFFFFFF<32> l00003410_ds_t
 l00003410_ds_f:
 	goto l00003414
 l00003410_ds_t:
 	goto l0000343C
 l00003414:
-	setenv()
-	branch true l00003434_ds_t
+	branch setenv(0x10000<32>, 0x14C54<32>, Mem2966[Mem2966[r23_3031 + 0x6ED0<32>:word32] + 0x24<32>:word32], 1<32>) != 0xFFFFFFFF<32> l00003434_ds_t
 l00003434_ds_f:
 	goto l00003438
 l00003434_ds_t:
 	goto l00003450
 l00003438:
 l0000343C:
-	warn()
-	fn00004780(1<32>, r19_1767, 0x20000<32>)
+	warn(0x10000<32>, 0x14C40<32>)
+	fn00004780(1<32>, out r20_6659, out r22_6660, out r23_3066, out r24_6661, out r30_3050)
 l00003450:
-	branch Mem1021[0x66E90<32>:int8] == 0<i8> l00003458_ds_t
+	branch Mem2966[0x66E90<32>:int8] == 0<i8> l00003458_ds_t
 l00003458_ds_f:
 	goto l0000345C
 l00003458_ds_t:
 	goto l00003B68
 l0000345C:
-	snprintf(r30_1755 + 0x228<32>, 0x14C5C<32>)
-	setenv()
-	branch false l000034A0_ds_t
+	r16_3204 = r30_3050 + 0x228<32>
+	branch setenv(r16_3204, snprintf(r16_3204, SLICE(0x10A<32>, size_t, 0), 0x14C5C<32>, 0<32>), 0x10000<32>, 0x14C70<32>, 0x10A<32>, 0x66E90<32>, 0x10000<32>, 0x14C5C<32>, 0<32>, 0x10000<32>, 0x14C64<32>, Mem2966[Mem2966[r23_3066 + 0x6ED0<32>:word32]:word32]) == 0xFFFFFFFF<32> l000034A0_ds_t
 l000034A0_ds_f:
 	goto l000034A4
 l000034A0_ds_t:
 	goto l000034C8
 l000034A4:
-	setenv()
-	branch true l000034C4_ds_t
+	branch setenv(0x10000<32>, 0x14C78<32>, Mem2966[Mem2966[r23_3236 + 0x6ED0<32>:word32]:word32], 1<32>) != 0xFFFFFFFF<32> l000034C4_ds_t
 l000034C4_ds_f:
 	goto l000034C8
 l000034C4_ds_t:
 	goto l00003B1C
 l000034C8:
-	warn()
-	fn00004780(1<32>, r19_1767, 0x20000<32>)
+	warn(0x10000<32>, 0x14C40<32>)
+	fn00004780(1<32>, out r20_6662, out r22_6663, out r23_3339, out r24_6664, out r30_6665)
 l000034DC:
-	branch Mem1021[0x66E88<32>:word32] != 0<32> l000034E4_ds_t
+	branch Mem2966[0x66E88<32>:word32] != 0<32> l000034E4_ds_t
 l000034E4_ds_f:
 	goto l000034E8
 l000034E4_ds_t:
 	goto l00003AEC
 l000034E8:
 l000034EC:
-	branch Mem1021[0x26028<32>:word32] != 0<32> l000034F4_ds_t
+	branch Mem2966[0x26028<32>:word32] != 0<32> l000034F4_ds_t
 l000034F4_ds_f:
 	goto l000034F8
 l000034F4_ds_t:
 	goto l00003AC0
 l000034F8:
-	r2_1189 = Mem1021[0x26018<32>:word32]
-	setusercontext()
-	branch r2_1189 != 0<32> l00003518_ds_t
+	branch setusercontext(Mem2966[r17_3332 + 0x6018<32>:word32], Mem2966[Mem2966[r23_3339 + 0x6ED0<32>:word32] + 8<32>:word32], 4<32>) != 0<32> l00003518_ds_t
 l00003518_ds_f:
 	goto l0000351C
 l00003518_ds_t:
 	goto l00003AAC
 l0000351C:
-	auth_setenv()
-	branch r19_1767 == 0<32> l00003AA0
+	auth_setenv(Mem2966[r20_3654 + 0x601C<32>:word32])
+	branch r19_3734 == 0<32> l00003AA0
 l00003528:
-	setegid()
-	seteuid()
-	r2_1221 = Mem1021[Mem1021[0x66ED0<32>:word32] + 0x20<32>:word32]
-	chdir()
-	branch r2_1221 != 0<32> l00003550_ds_t
+	setegid(Mem2966[Mem2966[r24_3726 + 0x6ED0<32>:word32] + 0xC<32>:word32])
+	seteuid(Mem2966[Mem2966[r24_3784 + 0x6ED0<32>:word32] + 8<32>:word32])
+	branch chdir(Mem2966[Mem2966[r24_3813 + 0x6ED0<32>:word32] + 0x20<32>:word32]) != 0<32> l00003550_ds_t
 l00003550_ds_f:
 	goto l00003554
 l00003550_ds_t:
 	goto l00003A4C
 l00003554:
-	r21_1254 = 0<32>
-	branch strcmp(Mem1021[Mem1021[0x66ED0<32>:word32] + 0x24<32>:word32], 0x14CB4<32>) != 0<32> l00003A18
+	branch strcmp(Mem2966[Mem2966[r23_3852 + 0x6ED0<32>:word32] + 0x24<32>:word32], 0x14CB4<32>) != 0<32> l00003A18
 l00003570:
-	r21_1254 = 1<32>
 l00003574:
-	seteuid()
-	setegid()
-	r2_1285 = Mem1021[0x2601C<32>:word32]
-	auth_getvalue()
-	branch r2_1285 == 0<32> l00003598_ds_t
+	seteuid(0<32>)
+	setegid(0<32>)
+	branch auth_getvalue(Mem2966[r20_4107 + 0x601C<32>:word32], 0x10000<32>, 0x14CC4<32>) == 0<32> l00003598_ds_t
 l00003598_ds_f:
 	goto l0000359C
 l00003598_ds_t:
 	goto l000035AC
 l0000359C:
-	printf(0x14CCC<32>)
+	printf("WARNING: %s\n\n", r3)
 l000035AC:
-	r2_1292 = Mem1021[0x2601C<32>:word32]
-	auth_check_expire()
-	branch r2_1292 < 0<32> l00003A00
+	r2_4159 = auth_check_expire(Mem2966[0x2601C<32>:word32])
+	branch r2_4159 < 0<32> l00003A00
 l000035C4:
-	branch r2_1292 <= 0<32> l000039F0
+	branch r2_4159 <= 0<32> l000039F0
 l000035C8:
-	branch r21_1254 == 0<32> l000035CC_ds_t
+	branch r21_4166 == 0<32> l000035CC_ds_t
 l000035CC_ds_f:
 	goto l000035D0
 l000035CC_ds_t:
@@ -861,59 +929,58 @@ l000035CC_ds_t:
 l000035D0:
 l000035D4:
 	signal(1<32>, 0<32>)
-	r24_1359 = r30_1755 + 0xF8<32>
-	memset(r24_1359, 0<32>)
-	time(r30_1755 + 0x220<32>)
-	strncpy(r30_1755 + 0x100<32>, Mem1021[0x26024<32>:word32], 0x20<32>)
-	r3_1384 = Mem1021[0x66E88<32>:word32]
-	branch r3_1384 != 0<32> l00003618_ds_t
+	r24_4319 = r30_4154 + 0xF8<32>
+	memset(r24_4319, 0<32>, SLICE(0x130<32>, size_t, 0))
+	time(r30_4154 + 0x220<32>)
+	strncpy(r30_4154 + 0x100<32>, Mem2966[0x26024<32>:word32], 0x20<32>)
+	r3_4342 = Mem2966[0x66E88<32>:word32]
+	branch r3_4342 != 0<32> l00003618_ds_t
 l00003618_ds_f:
 	goto l0000361C
 l00003618_ds_t:
 	goto l0000398C
 l0000361C:
-	strncpy(r24_1359, Mem1021[0x66ED8<32>:word32], 8<32>)
-	login()
-	branch r21_1254 == 0<32> l0000397C
+	login(r24_4319, strncpy(r24_4319, Mem2966[0x66ED8<32>:word32], 8<32>), r24_4319, 8<32>)
+	branch r21_4395 == 0<32> l0000397C
 l0000363C:
-	r21_1431 = fn000042E0(r21_1254, out r22_1432, out r30_1437)
-	login_fbtab()
+	r12_4444 = Mem2966[fn000042E0(r21_4395, r3_4390, r4_4387) + 0x6ED0<32>:word32]
+	login_fbtab(Mem2966[0x66ED8<32>:word32], Mem2966[r12_4444 + 8<32>:word32], Mem2966[r12_4444 + 0xC<32>:word32])
 	branch getgrnam(0x14CE8<32>) == 0<32> l0000396C
 l0000366C:
 l00003670:
-	chown()
-	branch r19_1767 == 0<32> l000036E4
+	chown(Mem2966[r30_4451 + 8<32>:word32], Mem2966[Mem2966[r23_4467 + 0x6ED0<32>:word32] + 8<32>:word32])
+	branch r19_4518 == 0<32> l000036E4
 l00003684:
-	branch Mem1021[r30_1437 + 0x1C<32>:word32] != 0<32> l0000368C_ds_t
+	branch Mem2966[r30_4504 + 0x1C<32>:word32] != 0<32> l0000368C_ds_t
 l0000368C_ds_f:
 	goto l00003690
 l0000368C_ds_t:
 	goto l000036E4
 l00003690:
-	branch Mem1021[0x66E88<32>:word32] == 0<32> l00003698_ds_t
+	branch Mem2966[0x66E88<32>:word32] == 0<32> l00003698_ds_t
 l00003698_ds_f:
 	goto l0000369C
 l00003698_ds_t:
 	goto l0000394C
 l0000369C:
-	r6_1725 = Mem1021[0x26028<32>:word32]
-	branch r6_1725 != 0<32> l000036B0_ds_t
+	r6_5284 = Mem2966[r15_4515 + 0x6028<32>:word32]
+	branch r6_5284 != 0<32> l000036B0_ds_t
 l000036B0_ds_f:
 	goto l000036B4
 l000036B0_ds_t:
 	goto l000036BC
 l000036B4:
 l000036BC:
-	branch r6_1725 == 0<32> l000036C0_ds_t
+	branch r6_5284 == 0<32> l000036C0_ds_t
 l000036C0_ds_f:
 	goto l000036C4
 l000036C0_ds_t:
 	goto l00003944
 l000036C4:
 l000036CC:
-	syslog()
+	syslog(5<32>, 0x10000<32>, 0x14CEC<32>, Mem2966[0x66E88<32>:word32])
 l000036E4:
-	branch r21_1431 == 0<32> l000036E8_ds_t
+	branch r21_4516 == 0<32> l000036E8_ds_t
 l000036E8_ds_f:
 	goto l000036EC
 l000036E8_ds_t:
@@ -924,142 +991,167 @@ l000036EC:
 	signal(1<32>, 0<32>)
 	signal(2<32>, 0<32>)
 	signal(0x12<32>, 1<32>)
-	Mem1548[r30_1437 + 0x450<32>:byte] = 0x2D<8>
-	branch strrchr(r22_1432, 0x2F<32>) == 0<32> l00003740_ds_t
+	Mem4693[r30_4504 + 0x450<32>:byte] = 0x2D<8>
+	branch strrchr(r22_4512, '/') == 0<32> l00003740_ds_t
 l00003740_ds_f:
 	goto l00003744
 l00003740_ds_t:
 	goto l000038AC
 l00003744:
-	strlcpy()
-	branch Mem1548[r30_1437 + 0x6C<32>:word32] != 0<32> l00003774
+	strlcpy(r30_4504 + 0x451<32>, 0x401<32>)
+	branch __bcnd(Mem4693[r30_4736 + 0x68<32>:word32]) l00003758_ds_t
+l00003758_ds_f:
+	goto l0000375C
+l00003758_ds_t:
+	goto l00003774
+l0000375C:
+	branch Mem4693[r30_4736 + 0x6C<32>:word32] != 0<32> l00003774
 l00003764:
-	branch Mem1548[r30_1437 + 0x74<32>:word32] == 0<32> l00003784
+	branch __bcnd(Mem4693[r30_4736 + 0x70<32>:word32]) l00003774
+l0000376C:
+	branch Mem4693[r30_4736 + 0x74<32>:word32] == 0<32> l00003784
 l00003774:
-	setrlimit()
-	branch false l00003780_ds_t
+	branch setrlimit(4<32>, r30_4736 + 0x68<32>) < 0<32> l00003780_ds_t
 l00003780_ds_f:
 	goto l00003784
 l00003780_ds_t:
 	goto l0000389C
 l00003784:
-	branch Mem1548[r30_1437 + 0x24<32>:word32] != 0<32> l0000378C_ds_t
+	branch Mem4693[r30_4736 + 0x24<32>:word32] != 0<32> l0000378C_ds_t
 l0000378C_ds_f:
 	goto l00003790
 l0000378C_ds_t:
 	goto l00003890
 l00003790:
-	r2_1593 = Mem1548[0x26018<32>:word32]
-	branch r19_1767 != 0<32> l0000379C_ds_t
+	branch r19_4750 != 0<32> l0000379C_ds_t
 l0000379C_ds_f:
 	goto l000037A0
 l0000379C_ds_t:
 	goto l000037A4
 l000037A0:
 l000037A4:
-	setusercontext()
-	branch r2_1593 < 0<32> l000037B0_ds_t
+	branch setusercontext(0xFB<32>) < 0<32> l000037B0_ds_t
 l000037B0_ds_f:
 	goto l000037B4
 l000037B0_ds_t:
 	goto l0000387C
 l000037B4:
-	branch r2_1221 != 0<32> l000037B8_ds_t
+	branch r18_4901 != 0<32> l000037B8_ds_t
 l000037B8_ds_f:
 	goto l000037BC
 l000037B8_ds_t:
 	goto l00003848
 l000037BC:
-	r2_1657 = Mem1548[0x2601C<32>:word32]
-	auth_approval()
-	branch r2_1657 == 0<32> l00003818
+	branch auth_approval(Mem4693[r20_4904 + 0x601C<32>:word32], Mem4693[r17_4900 + 0x6018<32>:word32], 0<32>, 0x15384<32>) == 0<32> l00003818
 l000037D8:
-	closefrom()
-	auth_setstate()
-	auth_close()
-	execlp()
-	err()
+	closefrom(3<32>)
+	auth_setstate(Mem4693[r20_5116 + 0x601C<32>:word32], 1<32>)
+	auth_close(Mem4693[r20_5145 + 0x601C<32>:word32])
+	execlp(r22_5168, r30_5160 + 0x450<32>, 0<32>)
+	err(1<32>, 0x10000<32>, 0x152F4<32>, r22_5198)
 l00003818:
-	r2_1663 = Mem1548[0x2601C<32>:word32]
-	auth_getstate()
-	branch !__bit<word32,byte>(r2_1663, 0<8>) l0000383C
+	branch !__bit<word32,byte>(auth_getstate(Mem4693[r20_5030 + 0x601C<32>:word32]), 0<8>) l0000383C
 l00003824:
-	r2_1667 = 0x14D98<32>
+	r2_5071 = 0x14D98<32>
 l0000382C:
-	puts(r2_1667)
-	fn00004780(1<32>, r19_1767, 0x20000<32>)
+	puts(r2_5071)
+	fn00004780(1<32>, out r20_6691, out r22_6692, out r23_6693, out r24_6694, out r30_6695)
 l0000383C:
-	r2_1667 = 0x14DBC<32>
+	r2_5071 = 0x14DBC<32>
 	goto l0000382C
 l00003848:
-	printf(0x14D80<32>)
-	puts(0x14DD0<32>)
-	setenv()
+	setenv(0x14D80<32>, printf("No home directory %s!\n", r3), 0x10000<32>, 0x14DD0<32>, puts(0x14DD0<32>), r14_4911 | 0x4C38<32>, Mem4693[Mem4693[r23_4907 + 0x6ED0<32>:word32] + 0x20<32>:word32], 0x10000<32>, 0x14DEC<32>, 1<32>)
 l0000387C:
-	warn()
-	fn00004780(1<32>, r19_1767, 0x20000<32>)
+	warn(0x14C98<32>)
+	fn00004780(1<32>, out r20_6686, out r22_6687, out r23_6688, out r24_6689, out r30_6690)
 l00003890:
 	puts(0x14D34<32>)
 l0000389C:
-	syslog()
+	syslog(3<32>, 0x14D10<32>)
 l000038AC:
 	goto l00003744
 l000038B4:
-	r2_1480 = Mem1021[0x26018<32>:word32]
-	login_getcapstr()
-	branch r2_1480 == 0<32> l000038D0
+	r22_r23_6600 = SEQ(r22_4561, r23_4569) (alias)
+	r24_r25_6603 = SEQ(r24_4559, r25_4570) (alias)
+	branch login_getcapstr(Mem2966[r17_4513 + 0x6018<32>:word32], 0x10000<32>, 0x14DF0<32>, 0<32>) == 0<32> l000038D0
 l000038CC:
 	auth_cat()
+	r22_r23_6600 = SEQ(r22_4588, r23_4596) (alias)
+	r24_r25_6603 = SEQ(r24_4586, r25_4597) (alias)
 l000038D0:
-	fn00004110()
+	r22_4512 = fn00004110(r22_r23_6600, r24_r25_6603, out r30_4504)
+	branch stat(r16_4568, r30_4504 + 0x78<32>) != 0<32> l000036EC
+l000038E4:
+	branch (Mem2966[r30_4504 + 0xC8<32>:word32] | Mem2966[r30_4504 + 0xCC<32>:word32]) == 0<32> l000036EC
+l000038F4:
+	r12_4637 = cond(Mem2966[r30_4504 + 0xA8<32>:word32] - Mem2966[r30_4504 + 0x98<32>:word32])
+	branch __bit<word32,byte>(r12_4637, 0<8>) l00003904_ds_t
+l00003904_ds_f:
+	goto l00003908
+l00003904_ds_t:
+	goto l00003928
+l00003908:
+	branch __bit<word32,byte>(r12_4637, 0<8>) l0000390C_ds_t
+l0000390C_ds_f:
+	goto l00003910
+l0000390C_ds_t:
+	goto l0000393C
+l00003910:
+	branch __bit<word32,byte>(cond(Mem2966[r30_4504 + 0xAC<32>:word32] - Mem2966[r30_4504 + 0x9C<32>:word32]), 0<8>) l00003920_ds_t
+l00003920_ds_f:
+	goto l00003924
+l00003920_ds_t:
+	goto l0000393C
+l00003924:
+l00003928:
+l0000392C:
+	printf("You have %smail.\n", r3)
+l0000393C:
+	goto l0000392C
 l00003944:
 	goto l000036CC
 l0000394C:
-	syslog()
+	syslog(5<32>, 0x10000<32>, 0x14E18<32>, Mem2966[0x26024<32>:word32], Mem2966[0x66ED8<32>:word32])
 l0000396C:
 	goto l00003670
 l0000397C:
-	fn000049A0()
+	fn000049A0(Mem2966[Mem2966[r23_4399 + 0x6ED0<32>:word32] + 8<32>:word32], r3_4390, r4_4387, r5_4401, r6_4404)
 l0000398C:
-	strncpy(r30_1755 + 0x120<32>, r3_1384, 0x100<32>)
+	strncpy(r30_4154 + 0x120<32>, r3_4342, 0x100<32>)
 l00003998:
-	r2_1316 = Mem1021[0x26018<32>:word32]
-	login_getcaptime()
-	r13_1326 = cond(r2_1316 - r2_1292)
-	branch __bit<word32,byte>(r13_1326, 0<8>) l000039D0
+	r13_4258 = cond(login_getcaptime(Mem2966[r17_4163 + 0x6018<32>:word32], 0x14CDC<32>, 0<32>, 0x120000<32>, 0x127500<32>, 0<32>, 0x127500<32>) - r24_4239)
+	branch __bit<word32,byte>(r13_4258, 0<8>) l000039D0
 l000039C0:
-	branch __bit<word32,byte>(r13_1326, 0x18<8>) l000039C4_ds_t
+	branch __bit<word32,byte>(r13_4258, 0x18<8>) l000039C4_ds_t
 l000039C4_ds_f:
-	r13_1329 = cond(0x14CDC<32> - 0x14CC4<32>)
+	r13_4260 = cond(r3_4240 - r25_4250)
 	goto l000039C8
 l000039C4_ds_t:
 	goto l000035D0
 l000039C8:
-	branch __bit<word32,byte>(r13_1329, 0x18<8>) l000039CC_ds_t
+	branch __bit<word32,byte>(r13_4260, 0x18<8>) l000039CC_ds_t
 l000039CC_ds_f:
 	goto l000039D0
 l000039CC_ds_t:
 	goto l000035D4
 l000039D0:
-	ctime()
-	printf(0x14E30<32>)
+	ctime(Mem2966[r23_4249 + 0x6ED0<32>:word32] + 0x28<32>)
+	printf("Warning: your account expires on %s", r3)
 l000039F0:
-	branch r2_1292 != 0<32> l000039F4_ds_t
+	branch r2_4159 != 0<32> l000039F4_ds_t
 l000039F4_ds_f:
 	goto l000039F8
 l000039F4_ds_t:
 	goto l000035D4
 l000039F8:
-	branch false l000035D4
+	branch r3_4161 == 0<32> l000035D4
 l000039FC:
 	goto l000035C8
 l00003A00:
 	puts(0x14D98<32>)
-	fn00004780(1<32>, r19_1767, 0x20000<32>)
+	fn00004780(1<32>, out r20_6681, out r22_6682, out r23_6683, out r24_6684, out r30_6685)
 l00003A18:
-	r2_1259 = Mem1021[0x26018<32>:word32]
-	login_getcapbool()
-	branch r2_1259 != 0<32> l00003A30_ds_t
+	branch login_getcapbool(Mem2966[r17_3845 + 0x6018<32>:word32], 0x10000<32>, 0x14E54<32>, 0<32>) != 0<32> l00003A30_ds_t
 l00003A30_ds_f:
 	goto l00003A34
 l00003A30_ds_t:
@@ -1067,59 +1159,51 @@ l00003A30_ds_t:
 l00003A34:
 	branch access(0x14E60<32>, 0<32>) != 0<32> l00003574
 l00003A44:
-	r21_1254 = 1<32>
 	goto l00003574
 l00003A4C:
-	r2_1225 = Mem1021[0x26018<32>:word32]
-	login_getcapbool()
-	branch r2_1225 != 0<32> l00003A80
+	branch login_getcapbool(Mem2966[r21_3848 + 0x6018<32>:word32], 0x10000<32>, 0x14E6C<32>, 0<32>) != 0<32> l00003A80
 l00003A64:
-	chdir()
-	branch false l00003A74_ds_t
+	branch chdir(0x10000<32>, 0x14DEC<32>) == 0<32> l00003A74_ds_t
 l00003A74_ds_f:
 	goto l00003A78
 l00003A74_ds_t:
 	goto l00003554
 l00003A78:
-	fn00004780(0<32>, r19_1767, 0x20000<32>)
+	fn00004780(0<32>, out r20_6676, out r22_6677, out r23_6678, out r24_6679, out r30_6680)
 l00003A80:
-	printf(0x14D80<32>)
-	fn00004780(1<32>, r19_1767, 0x20000<32>)
+	printf("No home directory %s!\n", r3)
+	fn00004780(1<32>, out r20_6671, out r22_6672, out r23_6673, out r24_6674, out r30_6675)
 l00003AA0:
-	auth_checknologin()
+	auth_checknologin(Mem2966[r21_3732 + 0x6018<32>:word32])
 l00003AAC:
-	warn()
-	fn00004780(1<32>, r19_1767, 0x20000<32>)
+	warn(0x14C98<32>)
+	fn00004780(1<32>, out r20_6666, out r22_6667, out r23_6668, out r24_6669, out r30_6670)
 l00003AC0:
-	setenv()
-	branch true l00003AD4_ds_t
+	branch setenv(0x14C8C<32>, 1<32>) != 0xFFFFFFFF<32> l00003AD4_ds_t
 l00003AD4_ds_f:
 	goto l00003AD8
 l00003AD4_ds_t:
 	goto l000034F8
 l00003AD8:
-	warn()
-	fn00004780(1<32>, r19_1767, 0x20000<32>)
+	warn(0x14C40<32>)
+	fn00004780(1<32>, out r20_6696, out r22_6697, out r23_6698, out r24_6699, out r30_6700)
 l00003AEC:
-	setenv()
-	branch true l00003B00_ds_t
+	branch setenv(0x14C80<32>, 1<32>) != 0xFFFFFFFF<32> l00003B00_ds_t
 l00003B00_ds_f:
 	goto l00003B04
 l00003B00_ds_t:
 	goto l000034EC
 l00003B04:
-	warn()
-	fn00004780(1<32>, r19_1767, 0x20000<32>)
+	warn(0x10000<32>, 0x14C40<32>)
+	fn00004780(1<32>, out r20_6701, out r22_6702, out r23_6703, out r24_6704, out r30_6705)
 l00003B1C:
-	setenv()
-	branch false l00003B3C_ds_t
+	branch setenv(0x10000<32>, 0x14E78<32>, Mem2966[Mem2966[r23_3271 + 0x6ED0<32>:word32]:word32], 1<32>) == 0xFFFFFFFF<32> l00003B3C_ds_t
 l00003B3C_ds_f:
 	goto l00003B40
 l00003B3C_ds_t:
 	goto l000034C8
 l00003B40:
-	setenv()
-	branch true l00003B5C_ds_t
+	branch setenv(0x10000<32>, 0x14E80<32>, r16_3304, 1<32>) != 0xFFFFFFFF<32> l00003B5C_ds_t
 l00003B5C_ds_f:
 	goto l00003B60
 l00003B5C_ds_t:
@@ -1127,208 +1211,214 @@ l00003B5C_ds_t:
 l00003B60:
 	goto l000034C8
 l00003B68:
-	fn000046E0(Mem1021[0x66ED8<32>:word32])
-	strlcpy()
+	strlcpy(0x66E90<32>, fn000046E0(Mem2966[0x66ED8<32>:word32]), 0x40<32>)
 l00003B88:
 l00003B90:
-	err()
+	err(1<32>)
 l00003B98:
-	r25_1000 = Mem887[0x66D84<32>:word32]
-	r2_953 = Mem887[r25_1000:word32]
-	branch r2_953 == 0<32> l00003BA8_ds_t
+	r25_2848 = Mem2621[0x66D84<32>:word32]
+	r2_2849 = Mem2621[r25_2848:word32]
+	branch r2_2849 == 0<32> l00003BA8_ds_t
 l00003BA8_ds_f:
-	r24_955 = r25_1000
+	r24_2851 = r25_2848
 	goto l00003BAC
 l00003BA8_ds_t:
 	goto l00003BDC
 l00003BAC:
 l00003BB0:
-	branch strncmp(r2_953, 0x14E90<32>, 3<32>) != 0<32> l00003BC8_ds_t
+	branch strncmp(r2_2849, 0x14E90<32>, 3<32>) != 0<32> l00003BC8_ds_t
 l00003BC8_ds_f:
 	goto l00003BCC
 l00003BC8_ds_t:
 	goto l00003BE4
 l00003BCC:
-	r24_955 = r24_955 + 4<32>
-	r13_997 = Mem996[r24_955:word32]
-	branch r13_997 != 0<32> l00003BD8_ds_t
+	r24_2851 = r24_2851 + 4<32>
+	r13_2890 = Mem2889[r24_2851:word32]
+	branch r13_2890 != 0<32> l00003BD8_ds_t
 l00003BD8_ds_f:
 	goto l00003BDC
 l00003BD8_ds_t:
-	r2_953 = r13_997
+	r2_2849 = r13_2890
 	goto l00003BB0
 l00003BDC:
-	Mem1002[r25_1000:word32] = 0<32>
+	Mem2895[r25_2848:word32] = 0<32>
 	goto l000033F0
 l00003BE4:
-	branch strncmp(Mem968[r24_955:word32], 0x14E94<32>, 4<32>) == 0<32> l00003BF8_ds_t
+	branch strncmp(Mem2864[r24_2851:word32], 0x14E94<32>, 4<32>) == 0<32> l00003BF8_ds_t
 l00003BF8_ds_f:
 	goto l00003BFC
 l00003BF8_ds_t:
 	goto l00003BCC
 l00003BFC:
-	branch strncmp(Mem968[r24_955:word32], 0x14E9C<32>, 9<32>) == 0<32> l00003C10_ds_t
+	branch strncmp(Mem2864[r24_2851:word32], 0x14E9C<32>, 9<32>) == 0<32> l00003C10_ds_t
 l00003C10_ds_f:
 	goto l00003C14
 l00003C10_ds_t:
 	goto l00003BCC
 l00003C14:
-	branch strncmp(Mem968[r24_955:word32], 0x14EA8<32>, 4<32>) == 0<32> l00003BCC
+	branch strncmp(Mem2864[r24_2851:word32], 0x14EA8<32>, 4<32>) == 0<32> l00003BCC
 l00003C20:
-	Mem991[r25_1000:word32] = Mem968[r24_955:word32]
-	r25_1000 = r25_1000 + 4<32>
+	Mem2884[r25_2848:word32] = Mem2864[r24_2851:word32]
+	r25_2848 = r25_2848 + 4<32>
 	goto l00003BCC
 l00003C30:
-	branch __bit<word32,byte>(cond(strlen(r2_912) - 0x3FF<32>), 0xF<8>) l00003C3C_ds_t
+	branch __bit<word32,byte>(cond(CONVERT(strlen(r2_2733), uint0, uint32) - 0x3FF<32>), 0xF<8>) l00003C3C_ds_t
 l00003C3C_ds_f:
 	goto l00003C40
 l00003C3C_ds_t:
 	goto l000033D0
 l00003C40:
-	syslog()
-	warnx()
-	fn00004780(1<32>, r19_1767, 0x20000<32>)
+	syslog(3<32>, 0x14EB0<32>, r2_2733)
+	warnx(0x10000<32>, 0x14EC8<32>)
+	fn00004780(1<32>, out r20_6706, out r22_6707, out r23_6708, out r24_6709, out r30_6710)
 l00003C68:
-	r2_790 = Mem778[0x26018<32>:word32]
-	login_getcaptime()
-	branch (r2_790 | 0x14ED8<32>) != 0<32> l00003C94_ds_t
+	branch (login_getcaptime(Mem2272[r17_2244 + 0x6018<32>:word32], 0x10000<32>, 0x14ED8<32>, 0<32>, 0<32>, 0<32>, 0<32>) | r3_2346) != 0<32> l00003C94_ds_t
 l00003C94_ds_f:
-	Mem818[r30_1755 + 0x24<32>:word32] = 0<32>
+	Mem2402[r30_2339 + 0x24<32>:word32] = 0<32>
 	goto l00003C98
 l00003C94_ds_t:
-	Mem801[r30_1755 + 0x24<32>:word32] = 0<32>
+	Mem2366[r30_2339 + 0x24<32>:word32] = 0<32>
 	goto l00003D38
 l00003C98:
-	signal(1<32>, 0x47C0<32>)
-	auth_verify()
-	r2_838 = Mem818[0x2601C<32>:word32]
-	auth_getstate()
-	branch !__bit<word32,byte>(r2_838, 0<8>) l00003CD4_ds_t
+	auth_verify(1<32>, signal(1<32>, 0x47C0<32>), Mem2402[r20_2352 + 0x601C<32>:word32], 0<32>, 0x47C0<32>, r24_2345, 0<32>, Mem2402[Mem2402[0x26018<32>:word32]:word32], 0<32>)
+	r2_2450 = auth_getstate(Mem2402[r20_2430 + 0x601C<32>:word32])
+	branch !__bit<word32,byte>(r2_2450, 0<8>) l00003CD4_ds_t
 l00003CD4_ds_f:
-	Mem842[r30_1755 + 0x28<32>:word32] = r2_838
+	Mem2471[r30_1440 + 0x28<32>:word32] = r2_2450
 	goto l00003CD8
 l00003CD4_ds_t:
-	Mem841[r30_1755 + 0x28<32>:word32] = r2_838
+	Mem2470[r30_1440 + 0x28<32>:word32] = r2_2450
 	goto l00003D24
 l00003CD8:
-	branch Mem842[r30_1755 + 0x24<32>:word32] == 0<32> l00003CE0_ds_t
+	branch Mem2471[r30_1440 + 0x24<32>:word32] == 0<32> l00003CE0_ds_t
 l00003CE0_ds_f:
 	goto l00003CE4
 l00003CE0_ds_t:
 	goto l00003D24
 l00003CE4:
-	Mem852[r30_1755 + 0x28<32>:word32] = 1<32>
+	Mem2481[r30_1440 + 0x28<32>:word32] = 1<32>
 l00003CE8:
-	r2_856 = Mem855[0x2601C<32>:word32]
-	auth_setoption()
-	branch r2_856 >= 0<32> l000031F8
+	branch auth_setoption(Mem2484[r20_1453 + 0x601C<32>:word32], 0x1517C<32>, r24_2451) >= 0<32> l000031F8
 l00003D00:
-	syslog()
-	warn()
-	fn00004780(1<32>, r19_1767, 0x20000<32>)
+	syslog(3<32>, 0x10000<32>, 0x15190<32>)
+	warn(0<32>)
+	fn00004780(1<32>, out r20_6711, out r22_6712, out r23_6713, out r24_6714, out r30_6715)
 l00003D24:
-	branch (Mem846[r30_1755 + 0x28<32>:word32] & 7<32>) != 0<32> l00003D30_ds_t
+	branch (Mem2475[r30_1440 + 0x28<32>:word32] & 7<32>) != 0<32> l00003D30_ds_t
 l00003D30_ds_f:
-	Mem850[r30_1755 + 0x24<32>:word32] = 0<32>
+	Mem2479[r30_1440 + 0x24<32>:word32] = 0<32>
 	goto l00003D34
 l00003D30_ds_t:
-	Mem849[r30_1755 + 0x24<32>:word32] = 0<32>
+	Mem2478[r30_1440 + 0x24<32>:word32] = 0<32>
 	goto l00003CE8
 l00003D34:
 	goto l00003214
 l00003D38:
-	Mem814[r30_1755 + 0x24<32>:word32] = 1<32>
-	auth_setoption()
+	r2_2367 = Mem2366[r20_2352 + 0x601C<32>:word32]
+	Mem2373[r30_2339 + 0x24<32>:word32] = 1<32>
+	auth_setoption(r2_2367, 0x15184<32>, 0x14F98<32>)
 l00003D5C:
-	r2_680 = Mem675[0x2601C<32>:word32]
-	auth_setpwd()
-	branch r2_680 >= 0<32> l00003D68_ds_t
+	branch auth_setpwd(Mem1982[r20_1965 + 0x601C<32>:word32]) >= 0<32> l00003D68_ds_t
 l00003D68_ds_f:
 	goto l00003D6C
 l00003D68_ds_t:
 	goto l00003140
 l00003D6C:
-	syslog()
-	warn()
-	fn00004780(1<32>, r19_1767, 0x20000<32>)
+	syslog(3<32>, 0x15190<32>)
+	warn(0<32>)
+	fn00004780(1<32>, out r20_6643, out r22_6644, out r23_6645, out r24_6646, out r30_6647)
 l00003D8C:
-	branch strcmp(r30_1755 + 0x450<32>, Mem634[0x26024<32>:word32]) == 0<32> l00003D9C_ds_t
+	branch strcmp(r30_1679 + 0x450<32>, Mem1838[0x26024<32>:word32]) == 0<32> l00003D9C_ds_t
 l00003D9C_ds_f:
 	goto l00003DA0
 l00003D9C_ds_t:
 	goto l00003118
 l00003DA0:
+	branch __bit<word32,byte>(cond(Mem1838[r21_1691 + 0x6E8C<32>:word32] - __extu(cond(Mem1838[r23_1695 + 0x6ED0<32>:word32] - 0<32>), 0xD<8>, 2<8>)), 0<8>) l00003DB8_ds_t
+l00003DB8_ds_f:
+	goto l00003DBC
+l00003DB8_ds_t:
+	goto l00003DC8
+l00003DBC:
+	Mem1884[0x66E8C<32>:word32] = 0<32>
+	goto l00003114
+l00003DC8:
+	fn00004520(out r3_6656, out r4_6657, out r5_6658)
 l00003DD0:
 l00003DD4:
-	syslog()
-	warn()
-	fn00004780(1<32>, r19_170, 0x20000<32>)
+	syslog(3<32>, 0x10000<32>, 0x15190<32>)
+	warn(0<32>)
+	fn00004780(1<32>, out r20_6638, out r22_6639, out r23_6640, out r24_6641, out r30_6642)
 l00003DF4:
-	alarm()
+	alarm(Mem1472[0x26014<32>:word32])
 l00003E04:
-	Mem513[r30_1755 + 0x1C<32>:word32] = 0<32>
-	fn00003F90(r30_1755)
+	Mem1573[r30_1548 + 0x1C<32>:word32] = 0<32>
+	fn00003F90()
 l00003E10:
-	auth_setoption()
+	auth_setoption(Mem1322[r24_1358 + 0x601C<32>:word32], 0x15014<32>)
 l00003E20:
-	fn00004780(1<32>, r19_170, 0x20000<32>)
+	fn00004780(1<32>, out r20_6633, out r22_6634, out r23_6635, out r24_6636, out r30_6637)
 l00003E28:
 	goto l00002EE8
 l00003E30:
-	warnx()
-	fn00004780(1<32>, r19_170, 0x20000<32>)
+	warnx(0x10000<32>, 0x14EE8<32>)
+	fn00004780(1<32>, out r20_6623, out r22_6624, out r23_6625, out r24_6626, out r30_6627)
 l00003E48:
-	alarm()
+	alarm(Mem812[0x26014<32>:word32])
 l00003E5C:
-	syslog()
+	syslog(3<32>, 0x150CC<32>)
+	Mem798[r30_770 + 0x68<32>:word64] = 0x8000000000000000<64>
+	Mem800[r30_770 + 0x70<32>:word64] = 0x8000000000000000<64>
+	goto l00002DB0
 l00003E7C:
-	syslog()
+	syslog(3<32>, 0x150AC<32>)
+	Mem712[r30_654 + 0x68<32>:word64] = 0x8000000000000000<64>
+	Mem714[r30_654 + 0x70<32>:word64] = 0x8000000000000000<64>
+	goto l00002D8C
 l00003E9C:
-	Mem260[0x66ED8<32>:word32] = dwLoc0878_2338
+	Mem608[0x66ED8<32>:word32] = Mem605[r30_557 + 8<32>:word32]
 	goto l00002D78
 l00003EAC:
-	auth_close()
-	closelog()
-	closefrom()
-	Mem199[&ptrLoc28:word32] = 0x14F10<32>
-	branch false l00003EE0_ds_t
+	closelog(auth_close(Mem364[r20_320 + 0x601C<32>:word32]))
+	closefrom(3<32>)
+	Mem472[r30_445 + 0x85C<32>:word32] = 0x14F0C<32>
+	r13_473 = Mem472[r30_445 + 0x20<32>:word32]
+	Mem476[r30_445 + 0x858<32>:word32] = 0x14F10<32>
+	branch r13_473 != 0<32> l00003EE0_ds_t
 l00003EE0_ds_f:
 	goto l00003EE4
 l00003EE0_ds_t:
-	r11_200 = fp - 0x20<32>
+	r11_477 = r30_445 + 0x860<32>
 	goto l00003EF4
 l00003EE4:
-	r11_200 = fp - 0x1C<32>
+	Mem481[r30_445 + 0x860<32>:word32] = 0x14F1C<32>
+	r11_477 = r30_445 + 0x864<32>
 l00003EF4:
-	branch r19_170 == 0<32> l00003EF8_ds_t
+	branch r19_459 == 0<32> l00003EF8_ds_t
 l00003EF8_ds_f:
 	goto l00003EFC
 l00003EF8_ds_t:
 	goto l00003F24
 l00003EFC:
-	Mem216[r11_200:word32] = 0<32>
-	execv(0x14F10<32>, &ptrLoc28)
-	warn()
+	Mem492[r11_477:word32] = 0<32>
+	warn(0x14F10<32>, execv(0x14F10<32>, r30_445 + 0x858<32>), 0x10000<32>, 0x14F20<32>, r30_445 + 0x858<32>, 0x14F10<32>)
 	_exit(1<32>)
 l00003F24:
-	Mem212[r11_200:word32] = Mem209[0x26024<32>:word32]
-	r11_200 = r11_200 + 4<32>
+	Mem488[r11_477:word32] = Mem485[0x26024<32>:word32]
+	r11_477 = r11_477 + 4<32>
 	goto l00003EFC
 l00003F34:
-	syslog()
+	syslog(3<32>, 0x10000<32>, 0x14F34<32>)
 	goto l00003B90
 l00003F50:
-	r2_117 = strchr(r2_117 + 1<32>, 0x2E<32>)
-	branch r2_117 != 0<32> l00002984
+	branch strchr(r2_211 + 1<32>, '.') != 0<32> l00002984
 l00003F5C:
 	goto l00002984
 l00003F64:
-	syslog()
-	r1_73 = strlcpy()
-	Mem80[&tLoc08C0:word32] = fp - 0x880<32>
-	Mem84[&tLoc08C0 + 4<i32>:word32] = r1_73
+	syslog(3<32>, 0x10000<32>, 0x14F6C<32>)
+	strlcpy(r17_125, 0x10000<32>, 0x14F8C<32>, 0x100<32>)
 l00003FC4_thunk_fn00003FC8:
-	return fn00003FC8(0x10000<32>, 0x20000<32>, 0x60000<32>, 0x60000<32>, 0x60000<32>, 0x60000<32>, &tLoc08C0)
+	return fn00003FC8(0x10000<32>, 0x20000<32>, 0x60000<32>, 0x60000<32>, 0x60000<32>, 0x60000<32>, fp + 0x20<32>)
 fn000028D0_exit:
 
 
@@ -1346,20 +1436,18 @@ l00002A90:
 fn00002A90_exit:
 
 
-void fn00003F90(word32 r30)
+void fn00003F90()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // Called from:
 //      fn000028D0
-// MayUse:  r30:[0..31]
+// MayUse: 
 // LiveOut:
 // Trashed: r1 r11 r12 r13 r19 r2 r20 r21 r22 r23 r24 r25 r3 r30 r31 r4 r5 r6 r7 r8 r9
 // Preserved:
 fn00003F90_entry:
 l00003F90:
-	Mem15[&tLoc10:word32] = r30
-	Mem22[&tLoc10 + 4<i32>:word32] = %continuation
 l00003FC4_thunk_fn00003FC8:
-	fn00003FC8(0x10000<32>, 0x20000<32>, 0x60000<32>, 0x60000<32>, 0x60000<32>, 0x60000<32>, &tLoc10)
+	fn00003FC8(0x10000<32>, 0x20000<32>, 0x60000<32>, 0x60000<32>, 0x60000<32>, 0x60000<32>, fp - 0x10<32>)
 	return
 fn00003F90_exit:
 
@@ -1375,201 +1463,235 @@ word32 fn00003FC8(word32 r19, word32 r20, word32 r21, word32 r22, word32 r23, wo
 // Preserved: r31
 fn00003FC8_entry:
 l00003FC8:
-	printf(r19 | 0x51F8<32>)
-	Mem13[r24 + 0x6D80<32>:word32] = r21 | 0x6D3C<32>
+	printf(r19 | 0x51F8<32>, 0<32>)
+	Mem14[r24 + 0x6D80<32>:word32] = r21 | 0x6D3C<32>
 l00003FD8:
-	branch Mem15[r22 + 0x6D18<32>:word32] != 0<32> l00003FE8_ds_t
+	r12_19 = r23 | 0x6C10<32>
+	branch Mem16[r22 + 0x6D18<32>:word32] != 0<32> l00003FE8_ds_t
 l00003FE8_ds_f:
 	goto l00003FEC
 l00003FE8_ds_t:
 	goto l0000409C
 l00003FEC:
-	r13_27 = Mem15[(r23 | 0x6C10<32>) + 4<32>:word32]
-	branch r13_27 < 1<32> l00003FF8_ds_t
+	r13_28 = Mem16[r12_19 + 4<32>:word32]
+	branch r13_28 < 1<32> l00003FF8_ds_t
 l00003FF8_ds_f:
-	Mem33[(r23 | 0x6C10<32>) + 4<32>:word32] = r13_27 - 1<32>
+	Mem49[r12_19 + 4<32>:word32] = r13_28 - 1<32>
 	goto l00003FFC
 l00003FF8_ds_t:
-	Mem29[(r23 | 0x6C10<32>) + 4<32>:word32] = r13_27 - 1<32>
+	Mem30[r12_19 + 4<32>:word32] = r13_28 - 1<32>
 	goto l00004090
 l00003FFC:
-	r13_34 = Mem33[0x66C10<32>:word32]
-	r25_32 = CONVERT(Mem33[r13_34:byte], byte, word32)
-	Mem37[0x66C10<32>:word32] = r13_34 + 1<32>
+	r13_50 = Mem49[0x66C10<32>:word32]
+	r25_48 = CONVERT(Mem49[r13_50:byte], byte, word32)
+	Mem53[0x66C10<32>:word32] = r13_50 + 1<32>
 l0000400C:
-	branch !__bit<word32,byte>(cond(r25_32 - 0xA<32>), 0<8>) l00004014_ds_t
+	branch !__bit<word32,byte>(cond(r25_48 - 0xA<32>), 0<8>) l00004014_ds_t
 l00004014_ds_f:
-	r12_94 = r25_32 + 1<32>
+	r12_110 = r25_48 + 1<32>
 	goto l00004018
 l00004014_ds_t:
 	goto l00004054
 l00004018:
-	branch r12_94 == 0<32> l00004040
+	branch r12_110 == 0<32> l00004040
 l0000401C:
-	r12_119 = Mem43[r24 + 0x6D80<32>:word32]
-	branch __bit<word32,byte>(cond(r12_119 - 0x66D7D<32>), 0x1F<8>) l00004030_ds_t
+	r12_151 = Mem59[r24 + 0x6D80<32>:word32]
+	branch __bit<word32,byte>(cond(r12_151 - 0x66D7D<32>), 0x1F<8>) l00004030_ds_t
 l00004030_ds_f:
 	goto l00004034
 l00004030_ds_t:
 	goto l00003FD8
 l00004034:
-	Mem125[r12_119:byte] = SLICE(r25_32, byte, 0)
-	Mem126[r24 + 0x6D80<32>:word32] = r12_119 + 1<32>
+	Mem157[r12_151:byte] = SLICE(r25_48, byte, 0)
+	Mem158[r24 + 0x6D80<32>:word32] = r12_151 + 1<32>
 	goto l00003FD8
 l00004040:
-	fn00004520(out r24_r25_146, out r1_147, out r3_148, out r4_149, out r5_150, out r21_151, out r30_152)
-	fn00004780(0<32>, r19, r20)
+	fn00004520(out r3_185, out r4_186, out r5_187)
+	fn00004780(0<32>, out r20_188, out r22_189, out r23_190, out r24_191, out r30_192)
 l00004054:
-	r12_44 = Mem43[r24 + 0x6D80<32>:word32]
-	branch __bit<word32,byte>(cond(r12_44 - (r21 | 0x6D3C<32>)), 0x1E<8>) l00003FC8
+	r12_60 = Mem59[r24 + 0x6D80<32>:word32]
+	r11_63 = r21 | 0x6D3C<32>
+	branch __bit<word32,byte>(cond(r12_60 - r11_63), 0x1E<8>) l00003FC8
 l00004064:
-	branch !__bit<word32,byte>(cond(CONVERT(Mem43[r21 + 0x6D3C<32>:int8], int8, word32) - 0x2D<32>), 0<8>) l00004070_ds_t
+	branch !__bit<word32,byte>(cond(CONVERT(Mem59[r21 + 0x6D3C<32>:int8], int8, word32) - 0x2D<32>), 0<8>) l00004070_ds_t
 l00004070_ds_f:
 	goto l00004074
 l00004070_ds_t:
 	goto l000040A4
 l00004074:
-	fwrite(0x15200<32>, 0x66CC0<32>)
+	fwrite(0x15200<32>, SLICE(1<32>, size_t, 0), SLICE(0x24<32>, size_t, 0), 0x66CC0<32>)
 l00004090:
-	__srget()
-	r25_32 = r23 | 0x6C10<32>
+	r25_48 = __srget()
 	goto l0000400C
 l0000409C:
-	getc(r23 | 0x6C10<32>)
+	getc(r12_19)
 l000040A4:
-	Mem52[r12_44:byte] = 0<8>
-	Mem58[r20 + 0x6024<32>:word32] = r21 | 0x6D3C<32>
-	call Mem58[r30 + 4<32>:word32] (retsize: 0;)
-		uses: Mem:Mem58,r19:Mem58[r30 - 0x1C<32>:word32],r20:r20_78,r21:r21_70,r22:r22_73,r23:r23_74,r24:r24_72,r30:Mem58[r30:word32]
-		defs: r2:r2_69,r20:r20_78,r21:r21_70,r22:r22_73,r23:r23_74,r24:r24_72
-	return r2_69
+	Mem68[r12_60:byte] = 0<8>
+	Mem74[r20 + 0x6024<32>:word32] = r11_63
+	r31_71 = r30 - 0x20<32>
+	call Mem74[r31_71 + 0x24<32>:word32] (retsize: 0;)
+		uses: Mem:Mem74,r19:Mem74[r31_71 + 4<32>:word32],r20:r20_94,r21:r21_86,r22:r22_89,r23:r23_90,r24:r24_88,r30:Mem74[r31_71 + 0x20<32>:word32]
+		defs: r2:r2_85,r20:r20_94,r21:r21_86,r22:r22_89,r23:r23_90,r24:r24_88
+	return r2_85
 fn00003FC8_exit:
 
 
-word32 fn000040D0(word32 r2, word32 & r30Out)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-// Called from:
-//      fn000028D0
-// MayUse:  r2:[0..31]
-// LiveOut: r2:[0..31]-fn000028D0 r30:[0..31]-fn000028D0
-// Trashed: r1 r11 r12 r13 r2 r30 r31
-// Preserved:
-fn000040D0_entry:
-l000040D0:
-	getttynam()
-	branch r2 == 0<32> l000040E8_ds_t
-l000040E8_ds_f:
-	goto l000040EC
-l000040E8_ds_t:
-	goto l000040F8
-l000040EC:
-	branch !__bit<word32,byte>(Mem8[r2 + 0xC<32>:word32], 0<8>) l000040F8
-l000040F4:
-l000040F8:
-	r30Out = r30_26
-	return r2_28
-fn000040D0_exit:
-
-
-void fn00004110()
+word32 fn000040D0(word32 & r30Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // Called from:
 //      fn000028D0
 // MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
+// LiveOut: r2:[0..31]-fn000028D0 r30:[0..31]-fn000028D0
+// Trashed: r1 r12 r13 r2 r30
+// Preserved: r31
+fn000040D0_entry:
+l000040D0:
+	r2_13 = getttynam(%continuation)
+	branch r2_13 == 0<32> l000040E8_ds_t
+l000040E8_ds_f:
+	r12_16 = 0<32>
+	goto l000040EC
+l000040E8_ds_t:
+	r12_16 = 0<32>
+	goto l000040F8
+l000040EC:
+	branch !__bit<word32,byte>(Mem8[r2_13 + 0xC<32>:word32], 0<8>) l000040F8
+l000040F4:
+	r12_16 = 1<32>
+l000040F8:
+	call Mem8[r30_11 + 4<32>:word32] (retsize: 0;)
+		uses: Mem:Mem8,r2:r12_22,r30:Mem8[r30_11:word32]
+		defs: r2:r2_31,r30:r30_29
+	r30Out = r30_29
+	return r2_31
+fn000040D0_exit:
+
+
+word32 fn00004110(word64 r22_r23, word64 r24_r25, word32 & r30Out)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// Called from:
+//      fn000028D0
+// MayUse:  Sequence r22:r23:[0..63] Sequence r24:r25:[0..63]
+// LiveOut: r22:[0..31]-fn000028D0 r30:[0..31]-fn000028D0
+// Trashed: r1 r11 r12 r13 r2 r21 r22 r23 r24 r25 r3 r30 r4 r5
+// Preserved: r31
 fn00004110_entry:
 l00004110:
-	r2_21 = Mem18[0x26018<32>:word32]
-	login_getcapstr()
-	r2_36 = open(r2_21, 0<32>)
-	branch r2_36 < 0<32> l00004168_ds_t
+	r2_47 = open(login_getcapstr(Mem18[0x26018<32>:word32], 0x10000<32>, 0x15234<32>, 0x10000<32>, 0x15228<32>, 0x15228<32>, r22_r23, r24_r25, %continuation, Mem18[0x26000<32>:word32]), 0<32>)
+	branch r2_47 < 0<32> l00004168_ds_t
 l00004168_ds_f:
 	goto l0000416C
 l00004168_ds_t:
 	goto l000041F0
 l0000416C:
-	Mem49[&dwLoc2028:word64] = 0<64>
-	Mem51[&dwLoc2028:word32] = 0x4240<32>
-	sigaction(2<32>, &dwLoc2028, &dwLoc2018)
+	Mem116[r30_32 + 8<32>:word64] = 0<64>
+	Mem117[r30_32 + 0x10<32>:word32] = 0<32>
+	Mem118[r30_32 + 8<32>:word32] = 0x4240<32>
+	Mem119[r30_32 + 0xC<32>:word32] = 0<32>
+	sigaction(2<32>, r30_32 + 8<32>, r30_32 + 0x18<32>)
 l000041A8:
-	r2_64 = read(r2_36, &dwLoc2008)
-	branch r2_64 <= 0<32> l000041C4_ds_t
+	r2_128 = CONVERT(read(r2_47, r30_32 + 0x28<32>, SLICE(0x2000<32>, size_t, 0)), uint0, uint32)
+	branch r2_128 <= 0<32> l000041C4_ds_t
 l000041C4_ds_f:
 	goto l000041C8
 l000041C4_ds_t:
 	goto l000041D8
 l000041C8:
-	branch __bit<word32,byte>(cond(write(1<32>, &dwLoc2008) - r2_64), 0x1F<8>) l000041D4_ds_t
+	branch __bit<word32,byte>(cond(CONVERT(write(1<32>, r30_32 + 0x28<32>, read(r2_47, r30_32 + 0x28<32>, SLICE(0x2000<32>, size_t, 0))), uint0, uint32) - r2_128), 0x1F<8>) l000041D4_ds_t
 l000041D4_ds_f:
 	goto l000041D8
 l000041D4_ds_t:
 	goto l000041A8
 l000041D8:
-	sigaction(2<32>, &dwLoc2018, 0<32>)
-	close(r2_36)
+	sigaction(2<32>, r30_32 + 0x18<32>, 0<32>)
+	close(r2_47)
 l000041F0:
+	r12_50 = Mem29[r21_33 + 0x6000<32>:word32]
+	branch !__bit<word32,byte>(0<32>, 7<8>) l000041F8
+l000041F4_1:
+	__trap(0xFF<16>)
+l000041F8:
+	branch !__bit<word32,byte>(cond(Mem29[r30_32 + 0x2028<32>:word32] - r12_50), 0<8>) l00004214
+l00004204:
+	__stack_smash_handler(0x10000<32>, 0x1523C<32>, Mem29[r30_32 + 0x2028<32>:word32])
+l00004214:
+	r24_r25_60 = Mem29[r30_32 - 8<32>:word64]
+	r22_r23_61 = Mem29[r30_32 - 0x10<32>:word64]
+	call Mem29[r30_32 + 4<32>:word32] (retsize: 0;)
+		uses: Mem:Mem29,r21:Mem29[r30_32 - 0x14<32>:word32],r22:SLICE(r22_r23_61, word32, 32),r23:SLICE(r22_r23_61, word32, 0),r24:SLICE(r24_r25_60, word32, 32),r25:SLICE(r24_r25_60, word32, 0),r30:Mem29[r30_32:word32]
+		defs: r22:r22_77,r30:r30_69
+	r30Out = r30_69
+	return r22_77
 fn00004110_exit:
 
 
-word32 fn000042E0(word32 r2, word32 & r22Out, word32 & r30Out)
+word32 fn000042E0(word32 r2, word32 r3, word32 r4)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // Called from:
 //      fn000028D0
-// MayUse:  r2:[0..31]
-// LiveOut: r21:[0..31]-fn000028D0 r22:[0..31]-fn000028D0 r30:[0..31]-fn000028D0
+// MayUse:  r2:[0..31] r3:[0..31] r4:[0..31]
+// LiveOut: r23:[0..31]-fn000028D0
 // Trashed: r1 r11 r12 r13 r2 r21 r22 r23 r24 r25 r3 r30 r31 r4 r5 r6
 // Preserved:
 fn000042E0_entry:
 l000042E0:
-	r2_31 = open(0x15268<32>, 2<32>)
-	branch r2_31 < 0<32> l00004324_ds_t
+	r13_11 = Mem9[0x26000<32>:word32]
+	r2_29 = open(0x15268<32>, 2<32>)
+	branch r2_29 < 0<32> l00004324_ds_t
 l00004324_ds_f:
+	r24_128 = r2_29
 	goto l00004328
 l00004324_ds_t:
 	goto l000043B8
 l00004328:
-	__muldi3()
-	lseek(r2_31, 0<32>)
+	r2_r3_96 = __muldi3(0<32>, Mem28[Mem28[0x66ED0<32>:word32] + 8<32>:word32])
+	lseek(r2_29, SLICE(r2_r3_96, off_t, 0), SLICE(r2_r3_96, word32, 32))
+	r22_129 = 0x60000<32>
 	branch r2 == 0<32> l0000435C_ds_t
 l0000435C_ds_f:
 	goto l00004360
 l0000435C_ds_t:
 	goto l000043E8
 l00004360:
-	memset(&dwLoc0118, 0<32>)
+	memset(&dwLoc0118, 0<32>, SLICE(0x110<32>, size_t, 0))
 	time(&dwLoc0118)
 	strncpy(&bLoc0110, Mem28[0x66ED8<32>:word32], 8<32>)
-	r3_181 = Mem28[0x66E88<32>:word32]
-	branch r3_181 != 0<32> l0000439C_ds_t
+	r3_231 = Mem28[0x66E88<32>:word32]
+	branch r3_231 != 0<32> l0000439C_ds_t
 l0000439C_ds_f:
 	goto l000043A0
 l0000439C_ds_t:
 	goto l000043DC
 l000043A0:
-	write(r2_31, &dwLoc0118)
-	close(r2_31)
+	write(r2_29, &dwLoc0118, SLICE(0x110<32>, size_t, 0))
+	close(r2_29)
 l000043B8:
+	r12_32 = Mem28[0x26000<32>:word32]
+	branch !__bit<word32,byte>(0<32>, 7<8>) l000043C0
+l000043BC_1:
+	__trap(0xFF<16>)
+l000043C0:
+	branch !__bit<word32,byte>(cond(r13_11 - r12_32), 2<8>) l000044F4
+l000043CC:
+	__stack_smash_handler(0x10000<32>, 0x1527C<32>, r13_11)
 l000043DC:
-	strncpy(&bLoc0108, r3_181, 0x100<32>)
+	strncpy(&bLoc0108, r3_231, 0x100<32>)
 l000043E8:
-	branch !__bit<word32,byte>(cond(read(r2_31, &dwLoc0118) - 0x110<32>), 0<8>) l00004400_ds_t
+	branch !__bit<word32,byte>(cond(CONVERT(read(r2_29, &dwLoc0118, SLICE(0x110<32>, size_t, 0)), uint0, uint32) - 0x110<32>), 0<8>) l00004400_ds_t
 l00004400_ds_f:
 	goto l00004404
 l00004400_ds_t:
 	goto l00004434
 l00004404:
-	__muldi3()
-	lseek(r2_31, 0<32>)
+	r2_r3_200 = __muldi3(0<32>, Mem196[Mem196[r22_129 + 0x6ED0<32>:word32] + 8<32>:word32])
+	lseek(r24_128, SLICE(r2_r3_200, off_t, 0), SLICE(r2_r3_200, word32, 32))
 l00004434:
 	branch (Mem28[&dwLoc0118:word32] | dwLoc0114) == 0<32> l00004404
 l00004444:
-	ctime()
-	printf(0x15288<32>)
-	printf(0x1529C<32>)
-	branch Mem28[&bLoc0108:int8] != 0<i8> l00004480_ds_t
+	ctime(&dwLoc0118)
+	printf("Last login: %.*s ", r3, r4)
+	printf("on %.*s", r3, r4)
+	branch Mem28[r30_123 + 0x18<32>:int8] != 0<i8> l00004480_ds_t
 l00004480_ds_f:
 	goto l00004484
 l00004480_ds_t:
@@ -1581,108 +1703,103 @@ l00004490_ds_f:
 l00004490_ds_t:
 	goto l000044CC
 l00004494:
-	r13_129 = Mem28[0x66C70<32>:word32]
-	branch r13_129 < 1<32> l000044A4_ds_t
+	r13_167 = Mem28[0x66C70<32>:word32]
+	branch r13_167 < 1<32> l000044A4_ds_t
 l000044A4_ds_f:
-	Mem136[0x66C70<32>:word32] = r13_129 - 1<32>
+	Mem188[0x66C70<32>:word32] = r13_167 - 1<32>
 	goto l000044A8
 l000044A4_ds_t:
-	Mem131[0x66C70<32>:word32] = r13_129 - 1<32>
+	Mem169[0x66C70<32>:word32] = r13_167 - 1<32>
 	goto l000044C0
 l000044A8:
-	r13_137 = Mem136[0x66C68<32>:word32]
-	Mem139[r13_137:byte] = 0xA<8>
-	Mem141[0x66C68<32>:word32] = r13_137 + 1<32>
+	r13_189 = Mem188[0x66C68<32>:word32]
+	Mem191[r13_189:byte] = 0xA<8>
+	Mem193[0x66C68<32>:word32] = r13_189 + 1<32>
 	goto l00004404
 l000044C0:
-	__swbuf()
+	__swbuf(0xA<32>)
 l000044CC:
 	putc(0xA<32>, 0x66C68<32>)
 l000044E0:
-	printf(0x152A4<32>)
-	r22Out = r22_111
-	r30Out = r30_105
-	return r21_109
+	printf(" from %.*s", r3, r4)
+l000044F4:
+	return r23_51
 fn000042E0_exit:
 
 
-word64 fn00004520(word64 & r24_r25Out, word32 & r1Out, word32 & r3Out, word32 & r4Out, word32 & r5Out, word32 & r21Out, word32 & r30Out)
+word32 fn00004520(word32 & r3Out, word32 & r4Out, word32 & r5Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // Called from:
 //      fn000028D0
 //      fn00004780
 // MayUse: 
-// LiveOut: r1:[0..31]-fn00004780 r21:[0..31]-fn00004780 Sequence r22:r23:[0..63]-fn00004780 Sequence r24:r25:[0..63]-fn00004780 r3:[0..31]-fn00004780 r30:[0..31]-fn00004780 r31:[0..31]-fn00004780 r4:[0..31]-fn00004780 r5:[0..31]-fn00004780
-// Trashed: r1 r11 r12 r13 r2 r21 r22 r23 r24 r25 r3 r30 r31 r4 r5 r6 r7 r8 r9
+// LiveOut: r2:[0..31]-fn00004780 r3:[0..31]-fn00004780 r4:[0..31]-fn00004780 r5:[0..31]-fn00004780
+// Trashed: r1 r12 r13 r2 r21 r22 r23 r24 r25 r3 r30 r31 r4 r5 r6 r7 r8 r9
 // Preserved:
 fn00004520_entry:
-	def dwLoc18
 l00004520:
-	memcpy(&dwLoc18, 0x15340<32>)
-	r5_31 = Mem27[0x66E8C<32>:word32]
-	branch r5_31 == 0<32> l00004564_ds_t
+	memcpy(&dwLoc18, 0x15340<32>, SLICE(0x10<32>, size_t, 0))
+	r5_30 = Mem27[0x66E8C<32>:word32]
+	branch r5_30 == 0<32> l00004564_ds_t
 l00004564_ds_f:
 	goto l00004568
 l00004564_ds_t:
 	goto l000046B4
 l00004568:
-	r13_64 = Mem27[0x66E88<32>:word32]
-	branch r13_64 == 0<32> l00004570_ds_t
+	branch Mem27[0x66E88<32>:word32] == 0<32> l00004570_ds_t
 l00004570_ds_f:
-	r13_104 = cond(r5_31 - 1<32>)
+	r13_141 = cond(r5_30 - 1<32>)
 	goto l00004574
 l00004570_ds_t:
-	r13_65 = cond(r5_31 - 1<32>)
+	r13_63 = cond(r5_30 - 1<32>)
 	goto l00004640
 l00004574:
-	branch !__bit<word32,byte>(r13_104, 1<8>) l00004578_ds_t
+	branch !__bit<word32,byte>(r13_141, 1<8>) l00004578_ds_t
 l00004578_ds_f:
 	goto l0000457C
 l00004578_ds_t:
 	goto l00004638
 l0000457C:
 l00004584:
-	r7_112 = Mem27[0x26028<32>:word32]
-	branch r7_112 != 0<32> l00004590_ds_t
+	r7_149 = Mem27[0x26028<32>:word32]
+	branch r7_149 != 0<32> l00004590_ds_t
 l00004590_ds_f:
 	goto l00004594
 l00004590_ds_t:
 	goto l0000459C
 l00004594:
 l0000459C:
-	branch r7_112 == 0<32> l000045A0_ds_t
+	branch r7_149 == 0<32> l000045A0_ds_t
 l000045A0_ds_f:
 	goto l000045A4
 l000045A0_ds_t:
 	goto l00004630
 l000045A4:
 l000045AC:
-	syslog_r()
-	r5_141 = Mem27[0x66E8C<32>:word32]
-	r13_142 = cond(r5_141 - 1<32>)
-	branch !__bit<word32,byte>(r13_142, 0<8>) l000045D0_ds_t
+	syslog_r(5<32>, &dwLoc18, 0x10000<32>, 0x152B4<32>, Mem27[0x66E88<32>:word32])
+	branch !__bit<word32,byte>(cond(Mem27[r25_194 + 0x6E8C<32>:word32] - 1<32>), 0<8>) l000045D0_ds_t
 l000045D0_ds_f:
 	goto l000045D4
 l000045D0_ds_t:
 	goto l00004628
 l000045D4:
 l000045DC:
-	r7_152 = Mem27[0x26028<32>:word32]
-	branch r7_152 != 0<32> l000045E4_ds_t
+	r7_214 = Mem27[r21_196 + 0x6028<32>:word32]
+	branch r7_214 != 0<32> l000045E4_ds_t
 l000045E4_ds_f:
 	goto l000045E8
 l000045E4_ds_t:
 	goto l000045F0
 l000045E8:
 l000045F0:
-	branch r7_152 == 0<32> l000045F4_ds_t
+	branch r7_214 == 0<32> l000045F4_ds_t
 l000045F4_ds_f:
 	goto l000045F8
 l000045F4_ds_t:
 	goto l00004620
 l000045F8:
 l00004600:
-	syslog_r()
+	syslog_r(0x55<32>, r24_190, 0x10000<32>, 0x152D4<32>, Mem27[r23_198 + 0x6E88<32>:word32], r22_192)
 l00004620:
 	goto l00004600
 l00004628:
@@ -1692,48 +1809,42 @@ l00004630:
 l00004638:
 	goto l00004584
 l00004640:
-	branch !__bit<word32,byte>(r13_65, 0<8>) l00004644_ds_t
+	branch !__bit<word32,byte>(r13_63, 0<8>) l00004644_ds_t
 l00004644_ds_f:
 	goto l00004648
 l00004644_ds_t:
 	goto l000046AC
 l00004648:
 l00004650:
-	syslog_r()
-	r5_82 = Mem27[0x66E8C<32>:word32]
-	r13_83 = cond(r5_82 - 1<32>)
-	branch !__bit<word32,byte>(r13_83, 0<8>) l00004678_ds_t
+	syslog_r(5<32>, &dwLoc18, 0x10000<32>, 0x152F8<32>, Mem27[0x66ED8<32>:word32])
+	branch !__bit<word32,byte>(cond(Mem27[r25_89 + 0x6E8C<32>:word32] - 1<32>), 0<8>) l00004678_ds_t
 l00004678_ds_f:
 	goto l0000467C
 l00004678_ds_t:
 	goto l000046A4
 l0000467C:
 l00004684:
-	syslog_r()
+	syslog_r(0x55<32>, r24_85, 0x10000<32>, 0x15314<32>, Mem27[r23_93 + 0x6ED8<32>:word32], r22_87)
 l000046A4:
 	goto l00004684
 l000046AC:
 	goto l00004650
 l000046B4:
-	r24_r25Out = <invalid>
-	r1Out = r1_52
-	r3Out = r3_46
-	r4Out = r4_50
-	r5Out = r5_54
-	r21Out = r21_53
-	r30Out = r30_45
-	return SEQ(r22_49, r23_55)
+	r3Out = r3_45
+	r4Out = r4_49
+	r5Out = r5_53
+	return r2_47
 fn00004520_exit:
 
 
-void fn000046E0(word32 r2)
+word32 fn000046E0(word32 r2)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // Called from:
 //      fn000028D0
 // MayUse:  r2:[0..31]
-// LiveOut:
-// Trashed: r1 r11 r13 r2 r3 r30 r31 r4 r5
-// Preserved:
+// LiveOut: r2:[0..31]-fn000028D0
+// Trashed: r1 r13 r2 r3 r30 r4 r5
+// Preserved: r31
 fn000046E0_entry:
 l000046E0:
 	branch r2 == 0<32> l000046F0_ds_t
@@ -1742,47 +1853,52 @@ l000046F0_ds_f:
 l000046F0_ds_t:
 	goto l00004708
 l000046F4:
-	getttynam()
-	branch r2 == 0<32> l00004708
+	r2_15 = getttynam()
+	branch r2_15 == 0<32> l00004708
 l000046FC:
+	r2_33 = Mem8[r2_15 + 8<32>:word32]
+	r31_38 = r30_13
 	goto l0000472C
 l00004708:
-	login_getcapstr()
+	r2_33 = login_getcapstr(Mem8[0x26018<32>:word32], 0x10000<32>, 0x15338<32>, 0x10000<32>, 0x15334<32>, 0x15334<32>)
+	r31_38 = r30_31
 l0000472C:
-	return
+	call Mem8[r31_38 + 4<32>:word32] (retsize: 0;)
+		uses: Mem:Mem8,r2:r2_46,r30:Mem8[r31_41:word32]
+		defs: r2:r2_50
+	return r2_50
 fn000046E0_exit:
 
 
-void fn00004740(word32 r2)
+void fn00004740()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // Called from:
 //      fn000028D0
-// MayUse:  r2:[0..31]
+// MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
 fn00004740_entry:
 l00004740:
-	auth_close()
+	auth_close(Mem0[0x2601C<32>:word32], %continuation)
 	sleep(5<32>)
-	exit(r2)
+	exit(r25_22)
 fn00004740_exit:
 
 
-void fn00004780(word32 r2, word32 r19, word32 r20)
+word32 fn00004780(word32 r2, word32 & r20Out, word32 & r22Out, word32 & r23Out, word32 & r24Out, word32 & r30Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // Called from:
 //      fn000028D0
-//      fn00004740
-// MayUse:  r19:[0..31] r2:[0..31] r20:[0..31]
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
+// MayUse:  r2:[0..31]
+// LiveOut: r19:[0..31]-fn000028D0 r20:[0..31]-fn000028D0 r22:[0..31]-fn000028D0 r23:[0..31]-fn000028D0 r24:[0..31]-fn000028D0 r30:[0..31]-fn000028D0
+// Trashed: r1 r12 r13 r19 r2 r20 r21 r22 r23 r24 r25 r3 r30 r4 r5 r6 r7 r8 r9
+// Preserved: r31
 fn00004780_entry:
 l00004780:
-	branch Mem10[0x2601C<32>:word32] != 0<32> l000047A0_ds_t
+	r13_12 = Mem10[0x2601C<32>:word32]
+	branch r13_12 != 0<32> l000047A0_ds_t
 l000047A0_ds_f:
 	goto l000047A4
 l000047A0_ds_t:
@@ -1790,8 +1906,11 @@ l000047A0_ds_t:
 l000047A4:
 	exit(r2)
 l000047AC:
-	auth_close()
-	branch Mem10[0x26024<32>:word32] != 0<32> l000047D8_ds_t
+	auth_close(r13_12)
+	r2_36 = Mem10[0x26024<32>:word32]
+	Mem38[r31_18 - 0x10<32>:word32] = r30_19
+	Mem39[r31_18 - 0xC<32>:word32] = r1_21
+	branch r2_36 != 0<32> l000047D8_ds_t
 l000047D8_ds_f:
 	goto l000047DC
 l000047D8_ds_t:
@@ -1799,81 +1918,80 @@ l000047D8_ds_t:
 l000047DC:
 	_exit(0<32>)
 l000047E4:
-	r22_r23_85 = fn00004520(out r24_r25_84, out r1_27, out r3_37, out r4_40, out r5_41, out r21_32, out r30_38)
-	r31_39 = <invalid>
-	Mem48[r31_39 - 0x16C<32>:word32] = r19
-	r13_50 = Mem48[0x26000<32>:word32]
-	Mem52[r31_39 - 0x158<32>:word64] = r24_r25_84
-	Mem57[r31_39 - 0x168<32>:word64] = SEQ(r20, r21_32)
-	Mem58[r31_39 - 0x150<32>:word32] = r30_38
-	Mem60[r31_39 - 0x160<32>:word64] = r22_r23_85
-	Mem67[r31_39 - 0x14C<32>:word32] = r1_27
-	Mem68[r31_39 - 0x10<32>:word32] = r13_50
-	r2_72 = open(0x15350<32>, 2<32>)
-	branch r2_72 < 0<32> l00004844_ds_t
+	r2_45 = fn00004520(out r3_51, out r4_54, out r5_55)
+	r2_82 = open(0x15350<32>, 2<32>)
+	branch r2_82 < 0<32> l00004844_ds_t
 l00004844_ds_f:
 	goto l00004844_thunk_fn00004848
 l00004844_ds_t:
 	goto l00004844_thunk_fn00004928
 l00004844_thunk_fn00004848:
-	fn00004848(r4_40, r5_41, r3_37, r2_72, r31_39 - 0x150<32>)
+	fn00004848(r4_54, r5_55, r3_51, r2_45, r2_82, fp + 0x24<32>)
 l00004844_thunk_fn00004928:
-	fn00004928()
+	r19_88 = fn00004928(0x20000<32>, fp + 0x24<32>, out r20_90, out r22_92, out r23_93, out r24_94, out r30_97)
+	r20Out = r20_90
+	r22Out = r22_92
+	r23Out = r23_93
+	r24Out = r24_94
+	r30Out = r30_97
+	return r19_88
 fn00004780_exit:
 
 
-void fn000047F0(word32 r3, word32 r4, word32 r5, word32 r30)
+void fn000047F0(word32 r2, word32 r3, word32 r4, word32 r5, word32 r30)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // Called from:
 //      fn000028D0
-// MayUse:  r3:[0..31] r30:[0..31] r4:[0..31] r5:[0..31]
+// MayUse:  r2:[0..31] r3:[0..31] r30:[0..31] r4:[0..31] r5:[0..31]
 // LiveOut:
-// Trashed:
+// Trashed: r1 r12 r13 r19 r2 r20 r21 r22 r23 r24 r25 r3 r30 r31 r4
 // Preserved:
-// Terminates process
 fn000047F0_entry:
 l000047F0:
+	r13_9 = Mem7[0x26000<32>:word32]
 	Mem22[&tLoc0150:word32] = r30
 	Mem35[&tLoc0150 + 4<i32>:word32] = %continuation
-	r2_41 = open(0x15350<32>, 2<32>)
-	branch r2_41 < 0<32> l00004844_ds_t
+	Mem36[&tLoc0150 + 320<i32>:word32] = r13_9
+	r2_39 = open(0x15350<32>, 2<32>)
+	branch r2_39 < 0<32> l00004844_ds_t
 l00004844_ds_f:
 	goto l00004844_thunk_fn00004848
 l00004844_ds_t:
 	goto l00004844_thunk_fn00004928
 l00004844_thunk_fn00004848:
-	fn00004848(r4, r5, r3, r2_41, &tLoc0150)
+	fn00004848(r4, r5, r3, r2, r2_39, &tLoc0150)
 l00004844_thunk_fn00004928:
-	fn00004928()
+	fn00004928(0x20000<32>, &tLoc0150, out r20_64, out r22_65, out r23_66, out r24_67, out r30_68)
+	return
 fn000047F0_exit:
 
 
-void fn00004848(word32 r20, word32 r21, word32 r22, word32 r25, word32 r30)
+void fn00004848(word32 r20, word32 r21, word32 r22, word32 r24, word32 r25, word32 r30)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // Called from:
 //      fn00004780
 //      fn000047F0
-// MayUse:  r20:[0..31] r21:[0..31] r22:[0..31] r25:[0..31] r30:[0..31]
+// MayUse:  r20:[0..31] r21:[0..31] r22:[0..31] r24:[0..31] r25:[0..31] r30:[0..31]
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
 fn00004848_entry:
 l00004848:
-	__muldi3()
-	lseek(r25, 0<32>)
-	branch !__bit<word32,byte>(cond(read(r25, r30 + 8<32>) - 0x138<32>), 1<8>) l0000488C_ds_t
+	r2_r3_8 = __muldi3(0<32>, r24)
+	lseek(r25, SLICE(r2_r3_8, off_t, 0), SLICE(r2_r3_8, word32, 32))
+	branch !__bit<word32,byte>(cond(CONVERT(read(r25, r30 + 8<32>, SLICE(0x138<32>, size_t, 0)), uint0, uint32) - 0x138<32>), 1<8>) l0000488C_ds_t
 l0000488C_ds_f:
 	goto l00004890
 l0000488C_ds_t:
 	goto l0000495C
 l00004890:
 l00004894:
-	memset(r30 + 8<32>, 0<32>)
+	memset(r30 + 8<32>, 0<32>, SLICE(0x138<32>, size_t, 0))
 l0000489C:
-	__muldi3()
-	lseek(r25, 0<32>)
-	Mem68[r30 + 0x138<32>:word32] = Mem0[r30 + 0x138<32>:word32] + 1<32>
+	r2_r3_46 = __muldi3(0<32>, r24)
+	lseek(r25, SLICE(r2_r3_46, off_t, 0), SLICE(r2_r3_46, word32, 32))
+	Mem66[r30 + 0x138<32>:word32] = Mem0[r30 + 0x138<32>:word32] + 1<32>
 	time(r30 + 0x130<32>)
 	strncpy(r30 + 8<32>, r21, 8<32>)
 	branch r22 == 0<32> l000048EC_ds_t
@@ -1888,13 +2006,13 @@ l000048FC:
 l00004900:
 	strncpy(r30 + 0x10<32>, r20, 0x20<32>)
 l00004910:
-	write(r25, r30 + 8<32>)
+	write(r25, r30 + 8<32>, SLICE(0x138<32>, size_t, 0))
 	close(r25)
 l0000494C:
-	Mem99[r30 + 0x10<32>:byte] = 0<8>
+	Mem94[r30 + 0x10<32>:byte] = 0<8>
 	goto l00004910
 l00004954:
-	Mem87[r30 + 0x30<32>:byte] = 0<8>
+	Mem83[r30 + 0x30<32>:byte] = 0<8>
 	goto l000048FC
 l0000495C:
 	branch (Mem0[r30 + 0x130<32>:word32] | Mem0[r30 + 0x134<32>:word32]) != 0<32> l0000489C
@@ -1903,75 +2021,105 @@ l0000496C:
 fn00004848_exit:
 
 
-void fn00004928()
+word32 fn00004928(word32 r19, word32 r30, word32 & r20Out, word32 & r22Out, word32 & r23Out, word32 & r24Out, word32 & r30Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // Called from:
 //      fn00004780
 //      fn000047F0
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
+// MayUse:  r19:[0..31] r30:[0..31]
+// LiveOut: r19:[0..31]-fn00004780 r20:[0..31]-fn00004780 r22:[0..31]-fn00004780 r23:[0..31]-fn00004780 r24:[0..31]-fn00004780 r30:[0..31]-fn00004780
+// Trashed: r1 r12 r13 r19 r2 r20 r21 r22 r23 r24 r25 r3 r30
+// Preserved: r31
 fn00004928_entry:
 l00004928:
+	r12_7 = Mem0[r19 + 0x6000<32>:word32]
+	branch !__bit<word32,byte>(0<32>, 7<8>) l00004930
+l0000492C_1:
+	__trap(0xFF<16>)
+l00004930:
+	branch !__bit<word32,byte>(cond(Mem0[r30 + 0x140<32>:word32] - r12_7), 0<8>) l00004978
+l0000493C:
+	__stack_smash_handler(0x10000<32>, 0x15368<32>, Mem0[r30 + 0x140<32>:word32])
+l00004978:
+	call Mem0[r30 + 4<32>:word32] (retsize: 0;)
+		uses: Mem:Mem0,r19:Mem0[r30 - 0x1C<32>:word32],r30:Mem0[r30:word32]
+		defs: r19:r19_24,r20:r20_34,r22:r22_32,r23:r23_33,r24:r24_30,r30:r30_26
+	r20Out = r20_34
+	r22Out = r22_32
+	r23Out = r23_33
+	r24Out = r24_30
+	r30Out = r30_26
+	return r19_24
 fn00004928_exit:
 
 
-void fn000049A0()
+void fn000049A0(word32 r2, word32 r3, word32 r4, word32 r5, word32 r6)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // Called from:
 //      fn000028D0
-// MayUse: 
+// MayUse:  r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..31] r6:[0..31]
 // LiveOut:
 // Trashed: r1 r11 r12 r13 r2 r21 r22 r23 r24 r25 r3 r30 r31 r4 r5 r6
 // Preserved:
 fn000049A0_entry:
 l000049A0:
-	memset(&dwLoc0148, 0<32>)
-	r2_39 = open(0x15350<32>, 2<32>)
-	branch r2_39 < 0<32> l000049FC_ds_t
+	r13_11 = Mem9[0x26000<32>:word32]
+	memset(&dwLoc0148, 0<32>, SLICE(0x138<32>, size_t, 0))
+	r2_36 = open(0x15350<32>, 2<32>)
+	branch r2_36 < 0<32> l000049FC_ds_t
 l000049FC_ds_f:
 	goto l00004A00
 l000049FC_ds_t:
 	goto l00004A48
 l00004A00:
-	__muldi3()
-	lseek(r2_39, 0<32>)
-	branch !__bit<word32,byte>(cond(read(r2_39, &dwLoc0148) - 0x138<32>), 0<8>) l00004A70
+	r2_r3_102 = __muldi3(0<32>, r2)
+	lseek(r2_36, SLICE(r2_r3_102, off_t, 0), SLICE(r2_r3_102, word32, 32))
+	branch !__bit<word32,byte>(cond(CONVERT(read(r2_36, &dwLoc0148, SLICE(0x138<32>, size_t, 0)), uint0, uint32) - 0x138<32>), 0<8>) l00004A70
 l00004A40:
-	close(r2_39)
+	close(r2_36)
 l00004A48:
+	r12_39 = Mem28[0x26000<32>:word32]
+	branch !__bit<word32,byte>(0<32>, 7<8>) l00004A50
+l00004A4C_1:
+	__trap(0xFF<16>)
+l00004A50:
+	branch !__bit<word32,byte>(cond(r13_11 - r12_39), 2<8>) l00004A5C_ds_t
+l00004A5C_ds_f:
+	goto l00004A60
+l00004A5C_ds_t:
+	goto l00004BA4
+l00004A60:
+	__stack_smash_handler(0x10000<32>, 0x15378<32>, r13_11)
 l00004A70:
 	branch dwLoc18 == 0<32> l00004A78_ds_t
 l00004A78_ds_f:
-	r13_65 = cond(dwLoc18 - 1<32>)
+	r13_120 = cond(dwLoc18 - 1<32>)
 	goto l00004A7C
 l00004A78_ds_t:
 	goto l00004A40
 l00004A7C:
-	branch !__bit<word32,byte>(r13_65, 2<8>) l00004A80_ds_t
+	branch !__bit<word32,byte>(r13_120, 2<8>) l00004A80_ds_t
 l00004A80_ds_f:
 	goto l00004A84
 l00004A80_ds_t:
 	goto l00004B94
 l00004A84:
-	ctime()
-	printf(0x1538C<32>)
-	printf(0x153AC<32>)
-	branch bLoc0120 == 0<i8> l00004ABC_ds_t
+	ctime(fp - 0x20<32>)
+	printf("Last unsuccessful login: %.*s", r3, r4)
+	printf(" on %.*s", r3, r4)
+	branch Mem28[r30_132 + 0x30<32>:int8] == 0<i8> l00004ABC_ds_t
 l00004ABC_ds_f:
 	goto l00004AC0
 l00004ABC_ds_t:
 	goto l00004AEC
 l00004AC0:
-	branch bLoc0140 == 0<i8> l00004AC8_ds_t
+	branch Mem28[r30_132 + 0x10<32>:int8] == 0<i8> l00004AC8_ds_t
 l00004AC8_ds_f:
 	goto l00004ACC
 l00004AC8_ds_t:
 	goto l00004B80
 l00004ACC:
-	printf(0x153B8<32>)
+	printf(" from %.*s@%.*s", r3, r4, r5, r6)
 l00004AEC:
 	branch Mem28[0x66D18<32>:word32] != 0<32> l00004AF4_ds_t
 l00004AF4_ds_f:
@@ -1979,29 +2127,31 @@ l00004AF4_ds_f:
 l00004AF4_ds_t:
 	goto l00004B6C
 l00004AF8:
-	r13_155 = Mem28[0x66C70<32>:word32]
-	branch r13_155 < 1<32> l00004B08_ds_t
+	r13_192 = Mem28[0x66C70<32>:word32]
+	branch r13_192 < 1<32> l00004B08_ds_t
 l00004B08_ds_f:
-	Mem162[0x66C70<32>:word32] = r13_155 - 1<32>
+	Mem219[0x66C70<32>:word32] = r13_192 - 1<32>
 	goto l00004B0C
 l00004B08_ds_t:
-	Mem157[0x66C70<32>:word32] = r13_155 - 1<32>
+	Mem194[0x66C70<32>:word32] = r13_192 - 1<32>
 	goto l00004B60
 l00004B0C:
-	r13_163 = Mem162[0x66C68<32>:word32]
-	Mem165[r13_163:byte] = 0xA<8>
-	Mem167[0x66C68<32>:word32] = r13_163 + 1<32>
-	__muldi3()
-	lseek(r2_39, 0<32>)
-	write(r2_39, &dwLoc0148)
+	r13_220 = Mem219[0x66C68<32>:word32]
+	Mem222[r13_220:byte] = 0xA<8>
+	Mem224[0x66C68<32>:word32] = r13_220 + 1<32>
+	Mem227[r30_132 + 0x138<32>:word32] = 0<32>
+	r2_r3_228 = __muldi3(0<32>, r23_137)
+	lseek(r25_140, SLICE(r2_r3_228, off_t, 0), SLICE(r2_r3_228, word32, 32))
+	write(r25_140, r24_133, SLICE(0x138<32>, size_t, 0))
 l00004B60:
-	__swbuf()
+	__swbuf(0xA<32>)
 l00004B6C:
 	putc(0xA<32>, 0x66C68<32>)
 l00004B80:
-	printf(0x152A4<32>)
+	printf(" from %.*s", r3, r4)
 l00004B94:
-	printf(0x153C8<32>)
+	printf("There have been %lu unsuccessful login attempts to your account.\n", r3)
+l00004BA4:
 	return
 fn000049A0_exit:
 

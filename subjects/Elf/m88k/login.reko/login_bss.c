@@ -4,7 +4,7 @@
 
 #include "login.h"
 
-union Eq_n * optarg = null; // 00066C08
+char * optarg = null; // 00066C08
 ui32 optind = 0x00; // 00066C0C
 byte * g_ptr66C10 = null; // 00066C10
 byte * g_ptr66C68 = null; // 00066C68
@@ -14,8 +14,13 @@ Eq_n g_t66CC0 = // 00066CC0
 	};
 word32 __isthreaded = 0x00; // 00066D18
 word32 * environ = null; // 00066D84
-union Eq_n * g_ptr66E88 = null; // 00066E88
+Eq_n g_t66D88 = // 00066D88
+	{
+		0,
+		0,
+	};
+char * g_ptr66E88 = null; // 00066E88
 word32 g_dw66E8C = 0x00; // 00066E8C
 int8 g_b66E90 = 0; // 00066E90
 struct Eq_n * g_ptr66ED0 = null; // 00066ED0
-union Eq_n * g_ptr66ED8 = null; // 00066ED8
+char * g_ptr66ED8 = null; // 00066ED8

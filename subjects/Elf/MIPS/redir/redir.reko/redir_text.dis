@@ -3892,48 +3892,48 @@ l00407A30:
 _fpadd_parts_exit:
 
 
-void __addsf3(word32 r16, word32 ra, word32 f12, word32 f14)
+real32 __addsf3(real32 f12, real32 f14)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  f12:[0..31] f14:[0..31] r16:[0..31] ra:[0..31]
-// LiveOut:
-// Trashed: r2 r25 r28 r4 r5 r6
-// Preserved: r16 r17 ra sp
+// LiveOut: f1:[0..31]-__addsf3
+// Trashed: f1
+// Preserved:
 __addsf3_entry:
 l00407A38:
 	__unpack_f(fp + -24<i32>, fp + -72<i32>)
 	__unpack_f(fp + -20<i32>, fp + -56<i32>)
 	call 0x004077E0<p32> (retsize: 0;)
-		uses: Mem:Mem22,r25:0x004077E0<p32>,r4:fp + -72<i32>,r5:fp + -56<i32>,r6:fp + -40<i32>
-		defs: r2:r2_48
-	__pack_f(r2_48)
-	return
+		uses: Mem:Mem24,r25:0x004077E0<p32>,r4:fp + -72<i32>,r5:fp + -56<i32>,r6:fp + -40<i32>
+		defs: r2:r2_50
+	__pack_f(r2_50)
+	return <invalid>
 __addsf3_exit:
 
 
-void __subsf3(word32 r16, word32 ra, word32 f12, word32 f14)
+real32 __subsf3(real32 f12, real32 f14)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  f12:[0..31] f14:[0..31] r16:[0..31] ra:[0..31]
-// LiveOut:
-// Trashed: r2 r25 r28 r4 r5 r6
-// Preserved: r16 r17 ra sp
+// LiveOut: f1:[0..31]-__subsf3
+// Trashed: f1
+// Preserved:
 __subsf3_entry:
 l00407AE0:
 	__unpack_f(fp + -24<i32>, fp + -72<i32>)
 	__unpack_f(fp + -20<i32>, fp + -56<i32>)
 	call 0x004077E0<p32> (retsize: 0;)
-		uses: Mem:Mem46,r2:dwLoc34 ^ 1<32>,r25:0x004077E0<p32>,r4:fp + -72<i32>,r5:fp + -56<i32>,r6:fp + -40<i32>,Stack +002C:dwLoc34 ^ 1<32>
-		defs: r2:r2_50
-	__pack_f(r2_50)
-	return
+		uses: Mem:Mem48,r2:dwLoc34 ^ 1<32>,r25:0x004077E0<p32>,r4:fp + -72<i32>,r5:fp + -56<i32>,r6:fp + -40<i32>,Stack +002C:dwLoc34 ^ 1<32>
+		defs: r2:r2_52
+	__pack_f(r2_52)
+	return <invalid>
 __subsf3_exit:
 
 
-void __mulsf3(word32 r16, word32 ra, word32 f12, word32 f14)
+real32 __mulsf3(real32 f12, real32 f14)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  f12:[0..31] f14:[0..31] r16:[0..31] ra:[0..31]
-// LiveOut:
-// Trashed: hi lo r2 r25 r28 r3 r4 r5 r6 r7
-// Preserved: r16 r17 ra sp
+// LiveOut: f1:[0..31]-__mulsf3
+// Trashed: f1
+// Preserved:
 __mulsf3_entry:
 l00407BA0:
 	__unpack_f(fp + -24<i32>, fp + -72<i32>)
@@ -3982,68 +3982,68 @@ l00407C80:
 l00407C8C:
 	goto l00407DA4
 l00407CA8:
-	hi_lo_57 = dwLoc3C *u64 dwLoc2C
-	hi_67 = SLICE(hi_lo_57, word32, 32) (alias)
-	lo_69 = SLICE(hi_lo_57, word32, 0) (alias)
-	r6_109 = hi_67 >> 0<8>
-	branch hi_67 >> 0<8> >= 0<32> l00407CF4_ds_t
+	hi_lo_59 = dwLoc3C *u64 dwLoc2C
+	hi_69 = SLICE(hi_lo_59, word32, 32) (alias)
+	lo_71 = SLICE(hi_lo_59, word32, 0) (alias)
+	r6_100 = hi_69 >> 0<8>
+	branch hi_69 >> 0<8> >= 0<32> l00407CF4_ds_t
 l00407CF4_ds_f:
-	r4_106 = lo_69
+	r4_108 = lo_71
 	goto l00407CF8
 l00407CF4_ds_t:
-	r4_106 = lo_69
+	r4_108 = lo_71
 	goto l00407D24
 l00407CF8:
-	r2_78 = hi_67 >> 0<8> & 1<32>
+	r2_80 = hi_69 >> 0<8> & 1<32>
 l00407D04:
-	branch r2_78 == 0<32> l00407D0C_ds_t
+	branch r2_80 == 0<32> l00407D0C_ds_t
 l00407D0C_ds_f:
-	r6_109 = r6_109 >>u 1<8>
+	r6_100 = r6_100 >>u 1<8>
 	goto l00407D10
 l00407D0C_ds_t:
-	r6_109 = r6_109 >>u 1<8>
+	r6_100 = r6_100 >>u 1<8>
 	goto l00407D18
 l00407D10:
-	r4_106 = r4_106 >>u 1<8> | 0x80000000<32>
+	r4_108 = r4_108 >>u 1<8> | 0x80000000<32>
 l00407D18:
-	branch r6_109 < 0<32> l00407D1C_ds_t
+	branch r6_100 < 0<32> l00407D1C_ds_t
 l00407D1C_ds_f:
 	goto l00407D20
 l00407D1C_ds_t:
-	r2_78 = r6_109 & 1<32>
+	r2_80 = r6_100 & 1<32>
 	goto l00407D04
 l00407D20:
 l00407D24:
-	branch r6_109 >u 0x3FFFFFFF<32> l00407D6C
+	branch r6_100 >u 0x3FFFFFFF<32> l00407D6C
 l00407D38:
 l00407D48:
-	r6_109 = r6_109 << 1<8>
-	branch (r4_106 & 0x80000000<32>) == 0<32> l00407D54_ds_t
+	r6_100 = r6_100 << 1<8>
+	branch (r4_108 & 0x80000000<32>) == 0<32> l00407D54_ds_t
 l00407D54_ds_f:
 	goto l00407D58
 l00407D54_ds_t:
 	goto l00407D5C
 l00407D58:
-	r6_109 = r6_109 | 1<32>
+	r6_100 = r6_100 | 1<32>
 l00407D5C:
-	branch r6_109 <=u 0x3FFFFFFF<32> l00407D64_ds_t
+	branch r6_100 <=u 0x3FFFFFFF<32> l00407D64_ds_t
 l00407D64_ds_f:
-	r4_106 = r4_106 << 1<8>
+	r4_108 = r4_108 << 1<8>
 	goto l00407D68
 l00407D64_ds_t:
-	r4_106 = r4_106 << 1<8>
+	r4_108 = r4_108 << 1<8>
 	goto l00407D48
 l00407D68:
 l00407D6C:
-	branch (r6_109 & 0x7F<32>) != 64<i32> l00407D78_ds_t
+	branch (r6_100 & 0x7F<32>) != 64<i32> l00407D78_ds_t
 l00407D78_ds_f:
 	goto l00407D7C
 l00407D78_ds_t:
 	goto l00407D98
 l00407D7C:
-	branch (r6_109 & 0x80<32>) != 0<32> l00407D90
+	branch (r6_100 & 0x80<32>) != 0<32> l00407D90
 l00407D88:
-	branch r4_106 == 0<32> l00407D8C_ds_t
+	branch r4_108 == 0<32> l00407D8C_ds_t
 l00407D8C_ds_f:
 	goto l00407D90
 l00407D8C_ds_t:
@@ -4052,16 +4052,16 @@ l00407D90:
 l00407D98:
 l00407DA4:
 	__pack_f(r4)
-	return
+	return <invalid>
 __mulsf3_exit:
 
 
-void __divsf3(word32 r16, word32 ra, word32 f12, word32 f14)
+real32 __divsf3(real32 f12, real32 f14)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  f12:[0..31] f14:[0..31] r16:[0..31] ra:[0..31]
-// LiveOut:
-// Trashed: r2 r25 r28 r3 r4 r5 r6 r7 r8
-// Preserved: r16 r17 ra sp
+// LiveOut: f1:[0..31]-__divsf3
+// Trashed: f1
+// Preserved:
 __divsf3_entry:
 l00407DD0:
 	__unpack_f(fp + -24<i32>, fp + -56<i32>)
@@ -4110,49 +4110,49 @@ l00407EA4_ds_t:
 l00407EA8:
 	goto l00407F3C
 l00407EB4:
-	r4_186 = dwLoc2C
-	r5_185 = CONVERT(dwLoc2C <u dwLoc1C, bool, word32)
-	branch r5_185 == 0<32> l00407ED0_ds_t
+	r4_188 = dwLoc2C
+	r5_187 = CONVERT(dwLoc2C <u dwLoc1C, bool, word32)
+	branch r5_187 == 0<32> l00407ED0_ds_t
 l00407ED0_ds_f:
 	goto l00407ED4
 l00407ED0_ds_t:
 	goto l00407EE4
 l00407ED4:
-	r4_186 = dwLoc2C << 1<8>
-	r5_185 = CONVERT(dwLoc2C << 1<8> <u dwLoc1C, bool, word32)
+	r4_188 = dwLoc2C << 1<8>
+	r5_187 = CONVERT(dwLoc2C << 1<8> <u dwLoc1C, bool, word32)
 l00407EE4:
-	r2_76 = 0x40000000<32>
-	r6_77 = 0<32>
+	r2_78 = 0x40000000<32>
+	r6_79 = 0<32>
 l00407EEC:
-	branch r5_185 != 0<32> l00407F00
+	branch r5_187 != 0<32> l00407F00
 l00407EF8:
-	r6_77 = r6_77 | r2_76
-	r4_186 = r4_186 - dwLoc1C
+	r6_79 = r6_79 | r2_78
+	r4_188 = r4_188 - dwLoc1C
 l00407F00:
-	r4_186 = r4_186 << 1<8>
-	r2_76 = r2_76 >>u 1<8>
-	branch r2_76 != 0<32> l00407F0C_ds_t
+	r4_188 = r4_188 << 1<8>
+	r2_78 = r2_78 >>u 1<8>
+	branch r2_78 != 0<32> l00407F0C_ds_t
 l00407F0C_ds_f:
 	goto l00407F10
 l00407F0C_ds_t:
-	r5_185 = CONVERT(r4_186 <u dwLoc1C, bool, word32)
+	r5_187 = CONVERT(r4_188 <u dwLoc1C, bool, word32)
 	goto l00407EEC
 l00407F10:
-	branch (r6_77 & 0x7F<32>) != 64<i32> l00407F1C_ds_t
+	branch (r6_79 & 0x7F<32>) != 64<i32> l00407F1C_ds_t
 l00407F1C_ds_f:
-	r2_96 = r6_77 & 0x80<32>
+	r2_98 = r6_79 & 0x80<32>
 	goto l00407F20
 l00407F1C_ds_t:
 	goto l00407F34
 l00407F20:
-	branch r2_96 != 0<32> l00407F30
+	branch r2_98 != 0<32> l00407F30
 l00407F28:
-	branch r4_186 == 0<32> l00407F34
+	branch r4_188 == 0<32> l00407F34
 l00407F30:
 l00407F34:
 l00407F3C:
 	__pack_f(r4)
-	return
+	return <invalid>
 __divsf3_exit:
 
 
@@ -4512,48 +4512,48 @@ l004084F4:
 _fpadd_parts_exit:
 
 
-void __adddf3(word32 r16, word32 ra, word32 f12, word32 f13, word32 f14, word32 f15)
+real64 __adddf3(real64 f12:f13, real64 f14:f15)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-// MayUse:  f12:[0..31] f13:[0..31] f14:[0..31] f15:[0..31] r16:[0..31] ra:[0..31]
-// LiveOut:
-// Trashed: r2 r25 r28 r3 r4 r5 r6 r7 r8
-// Preserved: r16 r17 r18 ra sp
+// MayUse:  r16:[0..31] ra:[0..31] Sequence f12:f13:[0..63] Sequence f14:f15:[0..63]
+// LiveOut: f1:[0..63]-__adddf3
+// Trashed: f1
+// Preserved:
 __adddf3_entry:
 l004084FC:
 	__unpack_d(fp + -40<i32>, fp + -112<i32>)
 	__unpack_d(fp + -32<i32>, fp + -88<i32>)
 	call 0x00408180<p32> (retsize: 0;)
-		uses: Mem:Mem34,r25:0x00408180<p32>,r4:fp + -112<i32>,r5:fp + -88<i32>,r6:fp + -64<i32>
-		defs: r2:r2_64
-	__pack_d(r2_64)
-	return
+		uses: Mem:Mem36,r25:0x00408180<p32>,r4:fp + -112<i32>,r5:fp + -88<i32>,r6:fp + -64<i32>
+		defs: r2:r2_66
+	__pack_d(r2_66)
+	return <invalid>
 __adddf3_exit:
 
 
-void __subdf3(word32 r16, word32 ra, word32 f12, word32 f13, word32 f14, word32 f15)
+real64 __subdf3(real64 f12:f13, real64 f14:f15)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-// MayUse:  f12:[0..31] f13:[0..31] f14:[0..31] f15:[0..31] r16:[0..31] ra:[0..31]
-// LiveOut:
-// Trashed: r2 r25 r28 r3 r4 r5 r6 r7 r8
-// Preserved: r16 r17 r18 ra sp
+// MayUse:  r16:[0..31] ra:[0..31] Sequence f12:f13:[0..63] Sequence f14:f15:[0..63]
+// LiveOut: f1:[0..63]-__subdf3
+// Trashed: f1
+// Preserved:
 __subdf3_entry:
 l004085CC:
 	__unpack_d(fp + -40<i32>, fp + -112<i32>)
 	__unpack_d(fp + -32<i32>, fp + -88<i32>)
 	call 0x00408180<p32> (retsize: 0;)
-		uses: Mem:Mem64,r2:dwLoc54 ^ 1<32>,r25:0x00408180<p32>,r4:fp + -112<i32>,r5:fp + -88<i32>,r6:fp + -64<i32>,Stack +0034:dwLoc54 ^ 1<32>
-		defs: r2:r2_67
-	__pack_d(r2_67)
-	return
+		uses: Mem:Mem66,r2:dwLoc54 ^ 1<32>,r25:0x00408180<p32>,r4:fp + -112<i32>,r5:fp + -88<i32>,r6:fp + -64<i32>,Stack +0034:dwLoc54 ^ 1<32>
+		defs: r2:r2_69
+	__pack_d(r2_69)
+	return <invalid>
 __subdf3_exit:
 
 
-void __muldf3(word32 r17, word32 r19, word32 r20, word32 r21, word32 r22, word32 ra, word32 f12, word32 f13, word32 f14, word32 f15)
+real64 __muldf3(real64 f12:f13, real64 f14:f15)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-// MayUse:  f12:[0..31] f13:[0..31] f14:[0..31] f15:[0..31] r17:[0..31] r19:[0..31] r20:[0..31] r21:[0..31] r22:[0..31] ra:[0..31]
-// LiveOut:
-// Trashed: hi lo r10 r11 r12 r13 r14 r15 r2 r24 r25 r28 r3 r4 r5 r6 r7 r8 r9
-// Preserved: r16 r17 r18 r19 r20 r21 r22 ra sp
+// MayUse:  r17:[0..31] r19:[0..31] r20:[0..31] r21:[0..31] r22:[0..31] ra:[0..31] Sequence f12:f13:[0..63] Sequence f14:f15:[0..63]
+// LiveOut: f1:[0..63]-__muldf3
+// Trashed: f1
+// Preserved:
 __muldf3_entry:
 l004086B0:
 	__unpack_d(fp + -64<i32>, fp + -136<i32>)
@@ -4602,132 +4602,132 @@ l004087C4:
 l004087D0:
 	goto l00408B58
 l004087EC:
-	hi_lo_116 = (dwLoc60 >>u 0<8>) *u64 dwLoc74
-	hi_lo_122 = dwLoc5C *u64 (dwLoc78 >>u 0<8>)
-	lo_119 = SLICE(hi_lo_116, word32, 0) (alias)
-	lo_125 = SLICE(hi_lo_122, word32, 0) (alias)
-	r21_136 = lo_119 + lo_125
-	r24_131 = SLICE(hi_lo_116, word32, 32) + (dwLoc60 >>u 0<8>) *s 0<i32> + dwLoc74 *s 0<32>
-	hi_lo_147 = dwLoc5C *u64 dwLoc74
-	hi_lo_153 = (dwLoc60 >>u 0<8>) *u64 (dwLoc78 >>u 0<8>)
-	lo_160 = (dwLoc78 >>u 0<8>) *s 0<32> (alias)
-	r20_140 = r24_131 + ((SLICE(hi_lo_122, word32, 32) + dwLoc5C *s 0<32>) + (dwLoc78 >>u 0<8>) *s 0<i32>) + CONVERT(r21_136 <u lo_125, bool, word32)
-	dwLoc30_660 = 0<32>
-	lo_150 = SLICE(hi_lo_147, word32, 0) (alias)
-	r16_152 = SLICE(hi_lo_147, word32, 32) + dwLoc5C *s 0<i32>
-	lo_156 = SLICE(hi_lo_153, word32, 0) (alias)
-	r18_162 = SLICE(hi_lo_153, word32, 32) + (dwLoc60 >>u 0<8>) *s 0<32> + lo_160
-	branch r20_140 <u r24_131 l00408910_ds_t
+	hi_lo_118 = (dwLoc60 >>u 0<8>) *u64 dwLoc74
+	hi_lo_124 = dwLoc5C *u64 (dwLoc78 >>u 0<8>)
+	lo_121 = SLICE(hi_lo_118, word32, 0) (alias)
+	lo_127 = SLICE(hi_lo_124, word32, 0) (alias)
+	r21_138 = lo_121 + lo_127
+	r24_133 = SLICE(hi_lo_118, word32, 32) + (dwLoc60 >>u 0<8>) *s 0<i32> + dwLoc74 *s 0<32>
+	hi_lo_149 = dwLoc5C *u64 dwLoc74
+	hi_lo_155 = (dwLoc60 >>u 0<8>) *u64 (dwLoc78 >>u 0<8>)
+	lo_162 = (dwLoc78 >>u 0<8>) *s 0<32> (alias)
+	r20_142 = r24_133 + ((SLICE(hi_lo_124, word32, 32) + dwLoc5C *s 0<32>) + (dwLoc78 >>u 0<8>) *s 0<i32>) + CONVERT(r21_138 <u lo_127, bool, word32)
+	dwLoc30_598 = 0<32>
+	lo_152 = SLICE(hi_lo_149, word32, 0) (alias)
+	r16_154 = SLICE(hi_lo_149, word32, 32) + dwLoc5C *s 0<i32>
+	lo_158 = SLICE(hi_lo_155, word32, 0) (alias)
+	r18_164 = SLICE(hi_lo_155, word32, 32) + (dwLoc60 >>u 0<8>) *s 0<32> + lo_162
+	branch r20_142 <u r24_133 l00408910_ds_t
 l00408910_ds_f:
-	r16_166 = r16_152 + dwLoc74 *s 0<i32>
+	r16_168 = r16_154 + dwLoc74 *s 0<i32>
 	goto l00408914
 l00408910_ds_t:
-	r16_166 = r16_152 + dwLoc74 *s 0<i32>
+	r16_168 = r16_154 + dwLoc74 *s 0<i32>
 	goto l00408924
 l00408914:
-	branch r24_131 != r20_140 l00408918_ds_t
+	branch r24_133 != r20_142 l00408918_ds_t
 l00408918_ds_f:
-	r2_169 = CONVERT(r21_136 <u lo_119, bool, word32)
+	r2_171 = CONVERT(r21_138 <u lo_121, bool, word32)
 	goto l0040891C
 l00408918_ds_t:
 	goto l00408934
 l0040891C:
-	branch r2_169 == 0<32> l00408934
+	branch r2_171 == 0<32> l00408934
 l00408924:
-	dwLoc30_660 = 1<i32>
+	dwLoc30_598 = 1<i32>
 l00408934:
-	r10_189 = r16_166 + lo_160 + CONVERT(lo_150 <u 0<32>, bool, word32)
-	dwLoc2C_667 = 0<32>
-	branch r10_189 <u r16_166 l00408978
+	r10_191 = r16_168 + lo_162 + CONVERT(lo_152 <u 0<32>, bool, word32)
+	dwLoc2C_605 = 0<32>
+	branch r10_191 <u r16_168 l00408978
 l00408968:
-	branch r16_166 != r10_189 l0040896C_ds_t
+	branch r16_168 != r10_191 l0040896C_ds_t
 l0040896C_ds_f:
-	r2_192 = CONVERT(lo_150 <u lo_150, bool, word32)
+	r2_194 = CONVERT(lo_152 <u lo_152, bool, word32)
 	goto l00408970
 l0040896C_ds_t:
 	goto l00408998
 l00408970:
-	branch r2_192 == 0<32> l00408998
+	branch r2_194 == 0<32> l00408998
 l00408978:
-	dwLoc2C_667 = 1<i32>
+	dwLoc2C_605 = 1<i32>
 l00408998:
-	r5_218 = (r20_140 >>u 0<8>) + lo_156
-	r13_237 = dwLoc2C_667 + r5_218
-	r12_243 = dwLoc30_660 + (r18_162 + CONVERT(r5_218 <u lo_156, bool, word32)) + CONVERT(r13_237 <u r5_218, bool, word32)
-	r6_253 = r10_189
-	branch r12_243 <=u 0x1FFFFFFF<32> l00408A14_ds_t
+	r5_220 = (r20_142 >>u 0<8>) + lo_158
+	r13_239 = dwLoc2C_605 + r5_220
+	r12_245 = dwLoc30_598 + (r18_164 + CONVERT(r5_220 <u lo_158, bool, word32)) + CONVERT(r13_239 <u r5_220, bool, word32)
+	r6_255 = r10_191
+	branch r12_245 <=u 0x1FFFFFFF<32> l00408A14_ds_t
 l00408A14_ds_f:
-	r7_256 = lo_150
+	r7_258 = lo_152
 	goto l00408A18
 l00408A14_ds_t:
-	r7_256 = lo_150
+	r7_258 = lo_152
 	goto l00408A7C
 l00408A18:
 l00408A38:
-	r12_243 = r12_243 >>u 1<8>
-	r13_237 = r13_237 >>u 1<8> | r12_243 << 0x1F<8>
-	r4_275 = CONVERT(r12_243 >u 0x1FFFFFFF<32>, bool, word32)
-	branch (r13_237 & 1<i32>) == 0<32> l00408A54_ds_t
+	r12_245 = r12_245 >>u 1<8>
+	r13_239 = r13_239 >>u 1<8> | r12_245 << 0x1F<8>
+	r4_277 = CONVERT(r12_245 >u 0x1FFFFFFF<32>, bool, word32)
+	branch (r13_239 & 1<i32>) == 0<32> l00408A54_ds_t
 l00408A54_ds_f:
 	goto l00408A58
 l00408A54_ds_t:
 	goto l00408A70
 l00408A58:
-	r6_253 = r6_253 >>u 1<8> | 0x80000000<32>
-	r7_256 = r7_256 >>u 1<8> | r6_253 << 0x1F<8>
+	r6_255 = r6_255 >>u 1<8> | 0x80000000<32>
+	r7_258 = r7_258 >>u 1<8> | r6_255 << 0x1F<8>
 l00408A70:
-	branch r4_275 != 0<32> l00408A74_ds_t
+	branch r4_277 != 0<32> l00408A74_ds_t
 l00408A74_ds_f:
 	goto l00408A78
 l00408A74_ds_t:
 	goto l00408A38
 l00408A78:
 l00408A7C:
-	branch r12_243 >u 0xFFFFFFF<32> l00408AF4
+	branch r12_245 >u 0xFFFFFFF<32> l00408AF4
 l00408A90:
 l00408AAC:
-	r12_322 = r12_243 << 1<8> | r13_237 >>u 0x1F<8>
-	r13_237 = r13_237 << 1<8>
-	branch (r6_253 & 0x80000000<32>) == 0<32> l00408ACC_ds_t
+	r12_324 = r12_245 << 1<8> | r13_239 >>u 0x1F<8>
+	r13_239 = r13_239 << 1<8>
+	branch (r6_255 & 0x80000000<32>) == 0<32> l00408ACC_ds_t
 l00408ACC_ds_f:
 	goto l00408AD0
 l00408ACC_ds_t:
 	goto l00408AD8
 l00408AD0:
-	r13_237 = r13_237 | 1<i32>
+	r13_239 = r13_239 | 1<i32>
 l00408AD8:
-	r12_243 = r12_322
-	r6_253 = r6_253 << 1<8> | r7_256 >>u 0x1F<8>
-	branch r12_322 <=u 0xFFFFFFF<32> l00408AEC_ds_t
+	r12_245 = r12_324
+	r6_255 = r6_255 << 1<8> | r7_258 >>u 0x1F<8>
+	branch r12_324 <=u 0xFFFFFFF<32> l00408AEC_ds_t
 l00408AEC_ds_f:
-	r7_256 = r7_256 << 1<8>
+	r7_258 = r7_258 << 1<8>
 	goto l00408AF0
 l00408AEC_ds_t:
-	r7_256 = r7_256 << 1<8>
+	r7_258 = r7_258 << 1<8>
 	goto l00408AAC
 l00408AF0:
 l00408AF4:
 	branch false l00408B04_ds_t
 l00408B04_ds_f:
-	r5_356 = r13_237 & 255<i32>
+	r5_358 = r13_239 & 255<i32>
 	goto l00408B08
 l00408B04_ds_t:
 	goto l00408B44
 l00408B08:
-	branch r5_356 != 128<i32> l00408B10_ds_t
+	branch r5_358 != 128<i32> l00408B10_ds_t
 l00408B10_ds_f:
 	goto l00408B14
 l00408B10_ds_t:
 	goto l00408B48
 l00408B14:
-	branch (r13_237 & 256<i32>) != 0<32> l00408B2C_ds_t
+	branch (r13_239 & 256<i32>) != 0<32> l00408B2C_ds_t
 l00408B2C_ds_f:
-	r2_372 = r7_256 | r6_253
+	r2_374 = r7_258 | r6_255
 	goto l00408B30
 l00408B2C_ds_t:
 	goto l00408B38
 l00408B30:
-	branch r2_372 == 0<32> l00408B34_ds_t
+	branch r2_374 == 0<32> l00408B34_ds_t
 l00408B34_ds_f:
 	goto l00408B38
 l00408B34_ds_t:
@@ -4737,16 +4737,16 @@ l00408B44:
 l00408B48:
 l00408B58:
 	__pack_d(r4)
-	return
+	return <invalid>
 __muldf3_exit:
 
 
-void __divdf3(word32 r17, word32 ra, word32 f12, word32 f13, word32 f14, word32 f15)
+real64 __divdf3(real64 f12:f13, real64 f14:f15)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-// MayUse:  f12:[0..31] f13:[0..31] f14:[0..31] f15:[0..31] r17:[0..31] ra:[0..31]
-// LiveOut:
-// Trashed: r10 r11 r12 r13 r14 r15 r2 r25 r28 r3 r4 r5 r6 r7 r8 r9
-// Preserved: r16 r17 r18 ra sp
+// MayUse:  r17:[0..31] ra:[0..31] Sequence f12:f13:[0..63] Sequence f14:f15:[0..63]
+// LiveOut: f1:[0..63]-__divdf3
+// Trashed: f1
+// Preserved:
 __divdf3_entry:
 l00408BA0:
 	__unpack_d(fp + -40<i32>, fp + -88<i32>)
@@ -4795,10 +4795,10 @@ l00408CA4_ds_t:
 l00408CA8:
 	goto l00408DDC
 l00408CB4:
-	r4_108 = dwLoc48
-	r5_109 = dwLoc44
-	r14_113 = CONVERT(dwLoc48 <u dwLoc30, bool, word32)
-	branch r14_113 != 0<32> l00408CD8_ds_t
+	r4_110 = dwLoc48
+	r5_111 = dwLoc44
+	r14_115 = CONVERT(dwLoc48 <u dwLoc30, bool, word32)
+	branch r14_115 != 0<32> l00408CD8_ds_t
 l00408CD8_ds_f:
 	goto l00408CDC
 l00408CD8_ds_t:
@@ -4806,76 +4806,76 @@ l00408CD8_ds_t:
 l00408CDC:
 	branch dwLoc30 != dwLoc48 l00408CE0_ds_t
 l00408CE0_ds_f:
-	r2_101 = CONVERT(dwLoc44 <u dwLoc2C, bool, word32)
+	r2_103 = CONVERT(dwLoc44 <u dwLoc2C, bool, word32)
 	goto l00408CE4
 l00408CE0_ds_t:
 	goto l00408D08
 l00408CE4:
-	branch r2_101 == 0<32> l00408D08
+	branch r2_103 == 0<32> l00408D08
 l00408CEC:
-	r4_108 = dwLoc48 << 1<8> | dwLoc44 >>u 0x1F<8>
-	r5_109 = dwLoc44 << 1<8>
-	r14_113 = CONVERT(r4_108 <u dwLoc30, bool, word32)
+	r4_110 = dwLoc48 << 1<8> | dwLoc44 >>u 0x1F<8>
+	r5_111 = dwLoc44 << 1<8>
+	r14_115 = CONVERT(r4_110 <u dwLoc30, bool, word32)
 l00408D08:
-	r10_114 = 0x10000000<32>
-	r11_115 = 0<i32>
-	r13_117 = 0<32>
+	r10_116 = 0x10000000<32>
+	r11_117 = 0<i32>
+	r13_119 = 0<32>
 l00408D18:
-	branch r14_113 != 0<32> l00408D4C
+	branch r14_115 != 0<32> l00408D4C
 l00408D24:
-	branch dwLoc30 != r4_108 l00408D28_ds_t
+	branch dwLoc30 != r4_110 l00408D28_ds_t
 l00408D28_ds_f:
 	goto l00408D2C
 l00408D28_ds_t:
-	r2_123 = CONVERT(r5_109 <u dwLoc2C, bool, word32)
+	r2_125 = CONVERT(r5_111 <u dwLoc2C, bool, word32)
 	goto l00408D38
 l00408D2C:
-	branch r5_109 <u dwLoc2C l00408D34_ds_t
+	branch r5_111 <u dwLoc2C l00408D34_ds_t
 l00408D34_ds_f:
-	r2_123 = CONVERT(r5_109 <u dwLoc2C, bool, word32)
+	r2_125 = CONVERT(r5_111 <u dwLoc2C, bool, word32)
 	goto l00408D38
 l00408D34_ds_t:
 	goto l00408D4C
 l00408D38:
-	r5_109 = r5_109 - dwLoc2C
-	r4_108 = r4_108 - dwLoc30 - r2_123
-	r13_117 = r13_117 | r11_115
+	r5_111 = r5_111 - dwLoc2C
+	r4_110 = r4_110 - dwLoc30 - r2_125
+	r13_119 = r13_119 | r11_117
 l00408D4C:
-	r6_156 = r4_108 << 1<8> | r5_109 >>u 0x1F<8>
-	r11_115 = r11_115 >>u 1<8> | r10_114 << 0x1F<8>
-	r10_114 = r10_114 >>u 1<8>
-	r7_158 = r5_109 << 1<8>
-	r4_108 = r6_156
-	r14_113 = CONVERT(r6_156 <u dwLoc30, bool, word32)
-	branch (r11_115 | r10_114) != 0<32> l00408D7C_ds_t
+	r6_158 = r4_110 << 1<8> | r5_111 >>u 0x1F<8>
+	r11_117 = r11_117 >>u 1<8> | r10_116 << 0x1F<8>
+	r10_116 = r10_116 >>u 1<8>
+	r7_160 = r5_111 << 1<8>
+	r4_110 = r6_158
+	r14_115 = CONVERT(r6_158 <u dwLoc30, bool, word32)
+	branch (r11_117 | r10_116) != 0<32> l00408D7C_ds_t
 l00408D7C_ds_f:
 	goto l00408D80
 l00408D7C_ds_t:
-	r5_109 = r7_158
+	r5_111 = r7_160
 	goto l00408D18
 l00408D80:
 	branch false l00408D90_ds_t
 l00408D90_ds_f:
-	r5_170 = r13_117 & 255<i32>
+	r5_172 = r13_119 & 255<i32>
 	goto l00408D94
 l00408D90_ds_t:
 	goto l00408DD0
 l00408D94:
-	branch r5_170 != 128<i32> l00408DD0
+	branch r5_172 != 128<i32> l00408DD0
 l00408DA0:
-	branch (r13_117 & 256<i32>) != 0<32> l00408DB8_ds_t
+	branch (r13_119 & 256<i32>) != 0<32> l00408DB8_ds_t
 l00408DB8_ds_f:
-	r2_178 = r7_158 | r6_156
+	r2_180 = r7_160 | r6_158
 	goto l00408DBC
 l00408DB8_ds_t:
 	goto l00408DC4
 l00408DBC:
-	branch r2_178 == 0<32> l00408DD0
+	branch r2_180 == 0<32> l00408DD0
 l00408DC4:
 l00408DD0:
 l00408DDC:
 	__pack_d(r4)
-	return
+	return <invalid>
 __divdf3_exit:
 
 
@@ -4907,20 +4907,22 @@ l00408EC8:
 __eqdf2_exit:
 
 
-void __nedf2(word32 r17, word32 ra, word32 f12, word32 f13, word32 f14, word32 f15)
+int32 __nedf2(real64 f12:f13)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-// MayUse:  f12:[0..31] f13:[0..31] f14:[0..31] f15:[0..31] r17:[0..31] ra:[0..31]
-// LiveOut:
-// Trashed: r2 r25 r28 r3 r4 r5 r6 r7 r8
-// Preserved: r16 r17 r18 ra sp
+// MayUse:  f14:[0..31] f15:[0..31] r17:[0..31] ra:[0..31] Sequence f12:f13:[0..63]
+// LiveOut: r2:[0..31]-__nedf2
+// Trashed: r2
+// Preserved:
 __nedf2_entry:
 l00408EE0:
 	__unpack_d(fp + -40<i32>, fp + -88<i32>)
 	__unpack_d(fp + -32<i32>, fp + -64<i32>)
 	branch dwLoc58 <u 2<i32> l00408F6C_ds_t
 l00408F6C_ds_f:
+	r2_101 = 1<i32>
 	goto l00408F70
 l00408F6C_ds_t:
+	r2_101 = 1<i32>
 	goto l00408F98
 l00408F70:
 	branch dwLoc40 <u 2<i32> l00408F80_ds_t
@@ -4929,26 +4931,28 @@ l00408F80_ds_f:
 l00408F80_ds_t:
 	goto l00408F98
 l00408F84:
-	__fpcmp_parts_d(r4, fp + -64<i32>)
+	r2_101 = __fpcmp_parts_d(r4, fp + -64<i32>)
 l00408F98:
-	return
+	return r2_101
 __nedf2_exit:
 
 
-void __gedf2(word32 r17, word32 ra, word32 f12, word32 f13, word32 f14, word32 f15)
+int32 __gedf2(real32 f12, real32 f14)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  f12:[0..31] f13:[0..31] f14:[0..31] f15:[0..31] r17:[0..31] ra:[0..31]
-// LiveOut:
-// Trashed: r2 r25 r28 r3 r4 r5 r6 r7 r8
-// Preserved: r16 r17 r18 ra sp
+// LiveOut: r2:[0..31]-__gedf2
+// Trashed: r2
+// Preserved:
 __gedf2_entry:
 l00408FB0:
 	__unpack_d(fp + -40<i32>, fp + -88<i32>)
 	__unpack_d(fp + -32<i32>, fp + -64<i32>)
 	branch dwLoc58 <u 2<i32> l0040903C_ds_t
 l0040903C_ds_f:
+	r2_102 = -1<i32>
 	goto l00409040
 l0040903C_ds_t:
+	r2_102 = -1<i32>
 	goto l00409068
 l00409040:
 	branch dwLoc40 <u 2<i32> l00409050_ds_t
@@ -4957,26 +4961,28 @@ l00409050_ds_f:
 l00409050_ds_t:
 	goto l00409068
 l00409054:
-	__fpcmp_parts_d(r4, fp + -64<i32>)
+	r2_102 = __fpcmp_parts_d(r4, fp + -64<i32>)
 l00409068:
-	return
+	return r2_102
 __gedf2_exit:
 
 
-void __ltdf2(word32 r17, word32 ra, word32 f12, word32 f13, word32 f14, word32 f15)
+int32 __ltdf2(real32 f12, real32 f14)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  f12:[0..31] f13:[0..31] f14:[0..31] f15:[0..31] r17:[0..31] ra:[0..31]
-// LiveOut:
-// Trashed: r2 r25 r28 r3 r4 r5 r6 r7 r8
-// Preserved: r16 r17 r18 ra sp
+// LiveOut: r2:[0..31]-__ltdf2
+// Trashed: r2
+// Preserved:
 __ltdf2_entry:
 l00409080:
 	__unpack_d(fp + -40<i32>, fp + -88<i32>)
 	__unpack_d(fp + -32<i32>, fp + -64<i32>)
 	branch dwLoc58 <u 2<i32> l0040910C_ds_t
 l0040910C_ds_f:
+	r2_102 = 1<i32>
 	goto l00409110
 l0040910C_ds_t:
+	r2_102 = 1<i32>
 	goto l00409138
 l00409110:
 	branch dwLoc40 <u 2<i32> l00409120_ds_t
@@ -4985,9 +4991,9 @@ l00409120_ds_f:
 l00409120_ds_t:
 	goto l00409138
 l00409124:
-	__fpcmp_parts_d(r4, fp + -64<i32>)
+	r2_102 = __fpcmp_parts_d(r4, fp + -64<i32>)
 l00409138:
-	return
+	return r2_102
 __ltdf2_exit:
 
 
@@ -5547,7 +5553,7 @@ l00409A4C:
 __unpack_d_exit:
 
 
-void __fpcmp_parts_d(word32 r4, word32 r5)
+word32 __fpcmp_parts_d(word32 r4, word32 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // Called from:
 //      __eqdf2
@@ -5555,7 +5561,7 @@ void __fpcmp_parts_d(word32 r4, word32 r5)
 //      __gedf2
 //      __ltdf2
 // MayUse:  r4:[0..31] r5:[0..31]
-// LiveOut:
+// LiveOut: r2:[0..31]-__nedf2
 // Trashed: r2 r25 r3 r6 r7 r8
 // Preserved: sp
 __fpcmp_parts_d_entry:
@@ -5566,7 +5572,7 @@ l00409AA4:
 	r3_9 = Mem0[r5:word32]
 	branch r3_9 >=u 2<i32> l00409AC0
 l00409AB8:
-	return
+	return 1<i32>
 l00409AC0:
 	branch (r6_6 ^ 4<32>) != 0<32> l00409AC8_ds_t
 l00409AC8_ds_f:
@@ -5576,7 +5582,7 @@ l00409AC8_ds_t:
 l00409ACC:
 	branch (r3_9 ^ 4<32>) != 0<32> l00409B2C
 l00409AD4:
-	return
+	return Mem0[r5 + 4<i32>:word32] - Mem0[r4 + 4<i32>:word32]
 l00409AE4:
 	branch (r3_9 ^ 4<32>) == 0<32> l00409B08
 l00409AF0:
@@ -5588,16 +5594,18 @@ l00409B04_ds_f:
 l00409B04_ds_t:
 	goto l00409C00
 l00409B08:
-	return
+	return -CONVERT(Mem0[r5 + 4<i32>:word32] <u 1<i32>, bool, word32) | 1<32>
 l00409B20:
 	branch (r3_9 ^ 2<32>) != 0<32> l00409B44
 l00409B2C:
-	return
+	return -CONVERT(Mem0[r4 + 4<i32>:word32] >u 0<32>, bool, word32) | 1<32>
 l00409B44:
-	branch Mem0[r4 + 4<i32>:word32] != Mem0[r5 + 4<i32>:word32] l00409B54_ds_t
+	r8_15 = Mem0[r4 + 4<i32>:word32]
+	branch r8_15 != Mem0[r5 + 4<i32>:word32] l00409B54_ds_t
 l00409B54_ds_f:
 	goto l00409B58
 l00409B54_ds_t:
+	r2_17 = CONVERT(r8_15 >u 0<32>, bool, word32)
 	goto l00409BB4
 l00409B58:
 	r6_19 = Mem0[r4 + 8<i32>:word32]
@@ -5606,12 +5614,14 @@ l00409B58:
 l00409B6C_ds_f:
 	goto l00409B70
 l00409B6C_ds_t:
+	r2_17 = CONVERT(r8_15 >u 0<32>, bool, word32)
 	goto l00409BB4
 l00409B70:
 	branch r6_19 < r3_20 l00409B78_ds_t
 l00409B78_ds_f:
 	goto l00409B7C
 l00409B78_ds_t:
+	r2_25 = CONVERT(r8_15 <u 1<i32>, bool, word32)
 	goto l00409BF0
 l00409B7C:
 	r7_27 = Mem0[r4 + 16<i32>:word32]
@@ -5620,6 +5630,7 @@ l00409B7C:
 l00409B90_ds_f:
 	goto l00409B94
 l00409B90_ds_t:
+	r2_17 = CONVERT(r8_15 >u 0<32>, bool, word32)
 	goto l00409BB4
 l00409B94:
 	branch r7_27 != r6_28 l00409B98_ds_t
@@ -5631,11 +5642,12 @@ l00409B98_ds_t:
 l00409B9C:
 	branch Mem0[r5 + 20<i32>:word32] >=u Mem0[r4 + 20<i32>:word32] l00409BB0_ds_t
 l00409BB0_ds_f:
+	r2_17 = CONVERT(r8_15 >u 0<32>, bool, word32)
 	goto l00409BB4
 l00409BB0_ds_t:
 	goto l00409BC0
 l00409BB4:
-	return
+	return -r2_17 | 1<32>
 l00409BC0:
 	r2_32 = CONVERT(r7_27 <u r6_28, bool, word32)
 l00409BC4:
@@ -5643,6 +5655,7 @@ l00409BC4:
 l00409BC8_ds_f:
 	goto l00409BCC
 l00409BC8_ds_t:
+	r2_25 = CONVERT(r8_15 <u 1<i32>, bool, word32)
 	goto l00409BF0
 l00409BCC:
 	branch r6_28 != r7_27 l00409BD0_ds_t
@@ -5653,11 +5666,12 @@ l00409BD0_ds_t:
 l00409BD4:
 	branch Mem0[r4 + 20<i32>:word32] >=u Mem0[r5 + 20<i32>:word32] l00409BFC
 l00409BEC:
+	r2_25 = CONVERT(r8_15 <u 1<i32>, bool, word32)
 l00409BF0:
-	return
+	return -r2_25 | 1<32>
 l00409BFC:
 l00409C00:
-	return
+	return 0<32>
 __fpcmp_parts_d_exit:
 
 

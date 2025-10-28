@@ -5,81 +5,29 @@
 #include "login.h"
 
 char g_str14C5C[] = "%s/%s"; // 00014C5C
-Eq_n g_t14CB4 = // 00014CB4
-	{
-		'/'
-	};
-char g_str14CCC[] = "WARNING: %s\n\n"; // 00014CCC
+char g_str14CB4[] = "/sbin/nologin"; // 00014CB4
 char g_str14CE8[] = "tty"; // 00014CE8
-Eq_n g_t14D34 = // 00014D34
-	{
-		
-		{
-			'W'
-		},
-		65,
-	};
-char g_str14D80[] = "No home directory %s!\n"; // 00014D80
-Eq_n g_t14D98 = // 00014D98
-	{
-		
-		{
-			'S'
-		},
-		111,
-	};
-Eq_n g_t14DBC = // 00014DBC
-	{
-		
-		{
-			'a'
-		},
-		112,
-	};
-Eq_n g_t14DD0 = // 00014DD0
-	{
-		
-		{
-			'L'
-		},
-		111,
-	};
-char g_str14E30[] = "Warning: your account expires on %s"; // 00014E30
+char g_str14D34[] = "WARNING: Your password has expired.  You must change your password, now!"; // 00014D34
+char g_str14D98[] = "Sorry -- your account has expired."; // 00014D98
+char g_str14DBC[] = "approval failure"; // 00014DBC
+char g_str14DD0[] = "Logging in with home = \"/\"."; // 00014DD0
 char g_str14E60[] = ".hushlogin"; // 00014E60
 char g_str14E90[] = "LD_"; // 00014E90
 char g_str14E94[] = "ENV="; // 00014E94
 char g_str14E9C[] = "BASH_ENV="; // 00014E9C
 char g_str14EA8[] = "IFS="; // 00014EA8
 char g_str14F10[] = "/usr/bin/su"; // 00014F10
-char g_str14F9C[] = "fh:pu:L:R:"; // 00014F9C
 void g_v15030 = ??void??; // 00015030
 char g_str15098[] = "%s??"; // 00015098
-char g_str15110[] = "AUTH_TYPE"; // 00015110
-char g_str1511C[] = "REMOTE_NAME"; // 0001511C
 char g_str15160[] = "auth-"; // 00015160
 char g_str15194[] = "root"; // 00015194
-Eq_n g_t151B8 = // 000151B8
-	{
-		
-		{
-			'L'
-		},
-		111,
-	};
+char g_str151B8[] = "Login incorrect"; // 000151B8
 void g_v15200 = ??void??; // 00015200
-Eq_n g_t15268 = // 00015268
+Eq_n g_t15224 = // 00015224
 	{
-		'/'
+		0,
+		0,
 	};
-char g_str15288[] = "Last login: %.*s "; // 00015288
-char g_str1529C[] = "on %.*s"; // 0001529C
-char g_str152A4[] = " from %.*s"; // 000152A4
+char g_str15268[] = "/var/log/lastlog"; // 00015268
 void g_v15340 = ??void??; // 00015340
-Eq_n g_t15350 = // 00015350
-	{
-		'/'
-	};
-char g_str1538C[] = "Last unsuccessful login: %.*s"; // 0001538C
-char g_str153AC[] = " on %.*s"; // 000153AC
-char g_str153B8[] = " from %.*s@%.*s"; // 000153B8
-char g_str153C8[] = "There have been %lu unsuccessful login attempts to your account.\n"; // 000153C8
+char g_str15350[] = "/var/log/failedlogin"; // 00015350
