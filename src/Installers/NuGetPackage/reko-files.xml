@@ -46,7 +46,7 @@
         <var id="var.MN103.TargetPath">$SolutionDir$/Arch/MN103/$TargetDir$/Reko.Arch.MN103.dll</var>
         <var id="var.Mos6502.TargetPath">$SolutionDir$/Arch/Mos6502/$TargetDir$/Reko.Arch.Mos6502.dll</var>
         <var id="var.Motorola.TargetPath">$SolutionDir$/Arch/Motorola/$TargetDir$/Reko.Arch.Motorola.dll</var>
-        <var id="var.Motorola.Design.TargetPath">$SolutionDir$/Arch/Motorola.Design/$TargetDir$/Reko.Arch.Motorola.Design.dll</var>
+        <var id="var.Motorola.Design.TargetPath">$SolutionDir$/Arch/Motorola.Design/$TargetFwkWindowsDir$/Reko.Arch.Motorola.Design.dll</var>
         <var id="var.Msp430.TargetPath">$SolutionDir$/Arch/MSP430/$TargetDir$/Reko.Arch.Msp430.dll</var>
         <var id="var.NatSemi.TargetPath">$SolutionDir$/Arch/NatSemi/$TargetDir$/Reko.Arch.NatSemi.dll</var>
         <var id="var.Nec.TargetPath">$SolutionDir$/Arch/Nec/$TargetDir$/Reko.Arch.Nec.dll</var>
