@@ -29,7 +29,7 @@ namespace Reko.Core.Collections
     /// An extension of <see cref="IEnumerator{T}" /> that wraps an <see cref="IEnumerator{T}"/> and 
     /// which lets the caller peek ahead in the underlying enumeration.
     /// </summary>
-    public class LookaheadEnumerator<T> : IEnumerator<T>
+    public sealed class LookaheadEnumerator<T> : IEnumerator<T>
     {
         private readonly IEnumerator<T> e;
         private readonly List<T> peeked;
@@ -44,13 +44,14 @@ namespace Reko.Core.Collections
         {
             this.e = innerEnumerator ?? throw new ArgumentNullException(nameof(innerEnumerator));
             this.peeked = [];
-            this.iCur = 0;
+            this.iCur = -1;
         }
 
         /// <summary>
-        /// Convenience 
+        /// Convenience constructor that creates a new <see cref="LookaheadEnumerator{T}"/> that wraps the specified
+        /// IEnumerable&lt;T&gt; <paramref name="collection"/>, first obtaining its enumerator.
         /// </summary>
-        /// <param name="collection"></param>
+        /// <param name="collection">Collection to look ahead in.</param>
         public LookaheadEnumerator(IEnumerable<T> collection) : this(collection.GetEnumerator())
         {
         }
@@ -62,6 +63,8 @@ namespace Reko.Core.Collections
         {
             get
             {
+                if (iCur < 0)
+                    throw new InvalidOperationException();
                 if (!this.TryPeek(0, out var result))
                     throw new InvalidOperationException();
                 return result!;
@@ -71,14 +74,10 @@ namespace Reko.Core.Collections
         /// <inheritdoc/>
         public void Dispose()
         {
-            GC.SuppressFinalize(this);
             e.Dispose();
         }
 
-        object System.Collections.IEnumerator.Current
-        {
-            get { return Current!; }
-        }
+        object System.Collections.IEnumerator.Current => this.Current!;
 
         /// <inheritdoc/>
         public bool MoveNext()
@@ -90,7 +89,10 @@ namespace Reko.Core.Collections
             }
             iCur = 0;
             peeked.Clear();
-            return e.MoveNext();
+            if (!e.MoveNext())
+                return false;
+            peeked.Add(e.Current);
+            return true;
         }
 
         /// <inheritdoc/>
@@ -114,34 +116,21 @@ namespace Reko.Core.Collections
         {
             if (ahead < 0)
                 throw new ArgumentOutOfRangeException("Parameter must be non-negative.", nameof(ahead));
-            int itemsRemaining = peeked.Count - iCur;
-            Debug.Assert(itemsRemaining >= 0);
-            if (itemsRemaining == 0 && ahead == 0)
-            {
-                result = e.Current;
-                return true;
-            }
-            int cItemsMissing = ahead + 1 - itemsRemaining;
-            if (cItemsMissing <= 0)
-            {
-                result = peeked[iCur + ahead];
-                return true;
-            }
-            if (itemsRemaining == 0)
-            {
-                peeked.Add(e.Current);
-                --cItemsMissing;
-            }
-            for (int i = 0; i < cItemsMissing; ++i)
+            int itemsToRead = ahead - peeked.Count + iCur + 1;
+            while (itemsToRead > 0)
             {
                 if (!e.MoveNext())
-                {
-                    result = default;
-                    return false;
-                }
+                    break;
                 peeked.Add(e.Current);
+                --itemsToRead;
             }
-            result = peeked[iCur + ahead];
+            int i = iCur + ahead;
+            if (i >= peeked.Count)
+            {
+                result = default;
+                return false;
+            }
+            result = peeked[i];
             return true;
         }
 

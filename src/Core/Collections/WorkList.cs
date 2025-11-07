@@ -211,9 +211,8 @@ namespace Reko.Core.Collections
         /// otherwise false.</returns>
 		public bool TryGetWorkItem([MaybeNullWhen(false)] out T item)
 		{
-			while (!IsEmpty)
+			while (s.TryPop(out var t))
 			{
-				T t = s.Pop();
 				if (inStack.Contains(t))
 				{
 					inStack.Remove(t);

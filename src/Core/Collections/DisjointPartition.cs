@@ -18,90 +18,87 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace Reko.Core.Collections
+namespace Reko.Core.Collections;
+
+/// <summary>
+/// Implements a Disjoint-set Data Structure.
+/// </summary>
+public class DisjointPartition<T> where T : class
 {
+    private readonly Dictionary<T, Set> items;
+
     /// <summary>
-    /// Implements a Disjoint-set Data Structure.
+    /// Creates an empty disjoint partition.
     /// </summary>
-    public class DisjointPartition<T> where T : class
+    public DisjointPartition()
     {
-        private readonly Dictionary<T, Set> items;
+        items = [];
+    }
 
-        /// <summary>
-        /// Creates an empty disjoint partition.
-        /// </summary>
-        public DisjointPartition()
-        {
-            items = new Dictionary<T, Set>();
-        }
+    /// <summary>
+    /// Adds an item to the partition.
+    /// </summary>
+    /// <param name="item"></param>
+    public void Add(T item)
+    {
+        items.Add(item, new Set(item));
+    }
 
-        /// <summary>
-        /// Adds an item to the partition.
-        /// </summary>
-        /// <param name="item"></param>
-        public void Add(T item)
+    /// <summary>
+    /// Unifies two sets.
+    /// </summary>
+    /// <param name="x">First set.</param>
+    /// <param name="y">Second set.</param>
+    public void Union(T x, T y)
+    {
+        Set xRoot = FindSet(items[x]);
+        Set yRoot = FindSet(items[y]);
+        if (xRoot.rank > yRoot.rank)
         {
-            items.Add(item, new Set(item));
+            yRoot.parent = xRoot;
         }
+        else if (xRoot.rank < yRoot.rank)
+        {
+            xRoot.parent = yRoot;
+        }
+        else if (xRoot != yRoot)
+        {
+            yRoot.parent = xRoot;
+            ++xRoot.rank;
+        }
+    }
 
-        /// <summary>
-        /// Unifies two sets.
-        /// </summary>
-        /// <param name="x">First set.</param>
-        /// <param name="y">Second set.</param>
-        public void Union(T x, T y)
-        {
-            Set xRoot = FindSet(items[x]);
-            Set yRoot = FindSet(items[y]);
-            if (xRoot.rank > yRoot.rank)
-            {
-                yRoot.parent = xRoot;
-            }
-            else if (xRoot.rank < yRoot.rank)
-            {
-                xRoot.parent = yRoot;
-            }
-            else if (xRoot != yRoot)
-            {
-                yRoot.parent = xRoot;
-                ++xRoot.rank;
-            }
-        }
+    /// <summary>
+    /// Find the representative of the set containing the item.
+    /// </summary>
+    /// <param name="item">Item whose representative is to be found.</param>
+    /// <returns>The representative.
+    /// </returns>
+    public T Find(T item)
+    {
+        Set x = items[item];
+        return FindSet(x).item;
+    }
 
-        /// <summary>
-        /// Find the representative of the set containing the item.
-        /// </summary>
-        /// <param name="item">Item whose representative is to be found.</param>
-        /// <returns>The representative.
-        /// </returns>
-        public T Find(T item)
+    private Set FindSet(Set x)
+    {
+        if (x.parent == x)
+            return x;
+        else
         {
-            Set x = items[item];
-            return FindSet(x).item;
+            x.parent = FindSet(x.parent);
+            return x.parent;
         }
+    }
 
-        private Set FindSet(Set x)
-        {
-            if (x.parent == x)
-                return x;
-            else
-            {
-                x.parent = FindSet(x.parent);
-                return x.parent;
-            }
-        }
-
-        private class Set
-        {
-            public Set(T item) { this.item = item;  parent = this; rank = 0; }
-            public T item;
-            public Set parent;
-            public int rank;
-        }
+    private class Set
+    {
+        public Set(T item) { this.item = item; parent = this; rank = 0; }
+        public T item;
+        public Set parent;
+        public int rank;
     }
 }
 

@@ -331,9 +331,8 @@ namespace Reko.Core.Collections
     /// </summary>
     public class ImageMapItem
     {
-
         /// <summary>
-        /// The size of the item in bytes.
+        /// The size of the item in storage units.
         /// </summary>
         public uint Size
         { 

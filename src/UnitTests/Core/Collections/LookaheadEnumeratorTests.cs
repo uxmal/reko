@@ -147,5 +147,12 @@ namespace Reko.UnitTests.Core.Collections
             Assert.That(PeekSucceeds(e, 2, 'r'));
             Assert.That(PeekSucceeds(e, 1, 'a'));
         }
+
+        [Test]
+        public void LAE_TryPeek_Empty()
+        {
+            var e = new LookaheadEnumerator<char>("".GetEnumerator());
+            Assert.That(e.TryPeek(1, out var _), Is.False);
+        }
     }
 }
