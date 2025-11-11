@@ -24,7 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Reko.Arch.Infineon
+namespace Reko.Arch.Infineon.TriCore
 {
     public static class Registers
     {

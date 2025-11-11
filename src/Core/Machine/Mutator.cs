@@ -41,6 +41,6 @@ namespace Reko.Core.Machine
     /// <param name="uInstr">Instruction opcode, 33-64 bits long.</param>
     /// <param name="dasm">Disassembler instance.</param>
     /// <returns>True if the mutator executed without errors, false if the
-    /// instruction is invalid in some way..</returns>
+    /// instruction is invalid in some way.</returns>
     public delegate bool WideMutator<TDasm>(ulong uInstr, TDasm dasm);
 }

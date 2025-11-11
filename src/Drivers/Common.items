@@ -35,6 +35,7 @@ by the PreBuild.targets file.
     <ProjectReference Include="$(SolutionDir)Arch\i8051\i8051.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\IA64\IA64.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\Infineon\Infineon.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\Kalimba\Kalimba.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\LatticeMico\LatticeMico.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\Loongson\Loongson.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\M16C\M16C.csproj" />

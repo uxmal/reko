@@ -96,7 +96,7 @@ namespace Reko.Core
         // Further classification used by scanners
 
         /// <summary>
-        /// Instruction _could_ be used as alignment padding between procedures.
+        /// Instruction <i>could</i> be used as alignment padding between procedures.
         /// </summary>
         Padding =     0x0400,
 

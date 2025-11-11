@@ -26,7 +26,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.Arch.Infineon
+namespace Reko.Arch.Infineon.TriCore
 {
     public class TriCoreInstruction : MachineInstruction
     {
@@ -47,7 +47,7 @@ namespace Reko.Arch.Infineon
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             renderer.WriteMnemonic(MnemonicAsString);
-            base.RenderOperands(renderer, options);
+            RenderOperands(renderer, options);
         }
 
         protected override void RenderOperand(MachineOperand operand, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)

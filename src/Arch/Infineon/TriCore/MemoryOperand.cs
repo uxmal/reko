@@ -23,15 +23,15 @@ using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
 
-namespace Reko.Arch.Infineon
+namespace Reko.Arch.Infineon.TriCore
 {
     public class MemoryOperand : AbstractMachineOperand
     {
         private MemoryOperand(DataType dt, RegisterStorage? baseReg, int offset)
             : base(dt)
         {
-            this.Base = baseReg;
-            this.Offset = offset;
+            Base = baseReg;
+            Offset = offset;
         }
 
         public RegisterStorage? Base { get; }

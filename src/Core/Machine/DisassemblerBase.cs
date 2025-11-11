@@ -162,7 +162,6 @@ namespace Reko.Core.Machine
             return new InstrDecoder<TDasm, TMnemonic, TInstr>(InstrClass.Linear, mnemonic, mutators);
         }
 
-
         /// <summary>
         /// Creates a <see cref="Decoder"/> which in turn generates a <see cref="MachineInstruction"/>
         /// with the given <paramref name="mnemonic"/>, with the given <see cref="InstrClass"/>
@@ -338,12 +337,12 @@ namespace Reko.Core.Machine
         }
 
         /// <summary>
-        /// Creates a if decoder which invokes a sub-decoder if the predicate is true.
+        /// Creates a <see cref="IfDecoder{TDasm, TMnemonic, TInstr}"/> which invokes a sub-decoder if the predicate is true.
         /// </summary>
         /// <typeparam name="TDasm"></typeparam>
         /// <param name="predicate">Predicate accepting the instruction opcode.</param>
         /// <param name="decoderTrue">Sub-decoder to invoke when the predicate evaluates to true.</param>
-        /// <returns>A if decoder.</returns>
+        /// <returns>An <see cref="IfDecoder{TDasm, TMnemonic, TInstr}"/>.</returns>
         public static IfDecoder<TDasm, TMnemonic, TInstr> If<TDasm>(
             Predicate<uint> predicate,
             Decoder<TDasm, TMnemonic, TInstr> decoderTrue)

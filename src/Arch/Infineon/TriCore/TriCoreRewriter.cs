@@ -33,7 +33,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace Reko.Arch.Infineon
+namespace Reko.Arch.Infineon.TriCore
 {
     public class TriCoreRewriter : IEnumerable<RtlInstructionCluster>
     {
@@ -50,14 +50,14 @@ namespace Reko.Arch.Infineon
 
         public TriCoreRewriter(TriCoreArchitecture triCoreArchitecture, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            this.arch = triCoreArchitecture;
+            arch = triCoreArchitecture;
             this.rdr = rdr;
             this.state = state;
             this.binder = binder;
             this.host = host;
-            this.dasm = new TriCoreDisassembler(arch, rdr).GetEnumerator();
-            this.rtls = new();
-            this.m = new RtlEmitter(rtls);
+            dasm = new TriCoreDisassembler(arch, rdr).GetEnumerator();
+            rtls = new();
+            m = new RtlEmitter(rtls);
             instr = default!;
         }
 
@@ -65,8 +65,8 @@ namespace Reko.Arch.Infineon
         {
             while (dasm.MoveNext())
             {
-                this.instr = dasm.Current;
-                this.iclass = instr.InstructionClass;
+                instr = dasm.Current;
+                iclass = instr.InstructionClass;
                 switch (instr.Mnemonic)
                 {
                 default:
@@ -539,7 +539,7 @@ namespace Reko.Arch.Infineon
             var target = (RegisterStorage) instr.Operands[0];
             if (target == Registers.a11)
             {
-                this.iclass = InstrClass.Transfer | InstrClass.Return;
+                iclass = InstrClass.Transfer | InstrClass.Return;
                 m.Return(0, 0);
             }
             else
@@ -725,7 +725,7 @@ namespace Reko.Arch.Infineon
 
         private void RewriteRet()
         {
-            m.SideEffect(m.Fn(TriCoreRewriter.lducx));
+            m.SideEffect(m.Fn(lducx));
             m.Return(0, 0);
         }
 

@@ -27,7 +27,7 @@ using Reko.Core.Services;
 using Reko.Core.Types;
 using System.Collections.Generic;
 
-namespace Reko.Arch.Infineon
+namespace Reko.Arch.Infineon.TriCore
 {
     public class TriCoreDisassembler : DisassemblerBase<TriCoreInstruction, Mnemonic>
     {
@@ -42,19 +42,19 @@ namespace Reko.Arch.Infineon
         {
             this.arch = arch;
             this.rdr = rdr;
-            this.addr = default!;
-            this.ops = new List<MachineOperand>();
+            addr = default!;
+            ops = new List<MachineOperand>();
         }
 
         public override TriCoreInstruction? DisassembleInstruction()
         {
-            this.addr = rdr.Address;
+            addr = rdr.Address;
             var offset = rdr.Offset;
             if (!rdr.TryReadLeUInt16(out ushort uInstr))
                 return null;
             ops.Clear();
             var instr = rootDecoder.Decode(uInstr, this);
-            instr.InstructionClass |= (uInstr == 0) ? InstrClass.Zero : 0;
+            instr.InstructionClass |= uInstr == 0 ? InstrClass.Zero : 0;
             instr.Length = (int)(rdr.Offset - offset);
             instr.Address = addr;
             return instr;
@@ -84,7 +84,7 @@ namespace Reko.Arch.Infineon
         public override TriCoreInstruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
-            testGenSvc?.ReportMissingDecoder("TriCoreDis", this.addr, this.rdr, message);
+            testGenSvc?.ReportMissingDecoder("TriCoreDis", addr, rdr, message);
             return new TriCoreInstruction
             {
                 InstructionClass = InstrClass.Invalid,
@@ -105,14 +105,14 @@ namespace Reko.Arch.Infineon
             {
                 if (!dasm.rdr.TryReadLeUInt16(out ushort hiWord))
                     return dasm.CreateInvalidInstruction();
-                uint uInstr = ((uint) hiWord << 16) | uInstr16;
+                uint uInstr = (uint) hiWord << 16 | uInstr16;
                 return decoder.Decode(uInstr, dasm);
             }
         }
 
         private static RegisterStorage AddrRegister(uint uInstr, int bitoffset)
         {
-            var iReg = (uInstr >> bitoffset) & 0xF;
+            var iReg = uInstr >> bitoffset & 0xF;
             return Registers.AddrRegisters[iReg];
         }
 
@@ -203,7 +203,7 @@ namespace Reko.Arch.Infineon
         /// </summary>
         private static bool CR(uint uInstr, TriCoreDisassembler dasm)
         {
-            var cr = (uInstr >> 12) & 0xFFFF;
+            var cr = uInstr >> 12 & 0xFFFF;
             if (Registers.CoreRegisters.TryGetValue(cr, out var reg))
                 dasm.ops.Add(reg);
             else
@@ -313,7 +313,7 @@ namespace Reko.Arch.Infineon
         {
             var reg = Registers.AddrRegisters[15];
             var dt = PrimitiveType.Word32;
-            var offset = (uint)(uInstr >> 10) & 0x3C;
+            var offset = uInstr >> 10 & 0x3C;
             var op = MemoryOperand.BaseOffset(dt, reg, (int)offset);
             dasm.ops.Add(op);
             return true;
@@ -323,7 +323,7 @@ namespace Reko.Arch.Infineon
         {
             var reg = Registers.AddrRegisters[15];
             var dt = PrimitiveType.Byte;
-            var offset = (uInstr >> 12) & 0xF;
+            var offset = uInstr >> 12 & 0xF;
             var op = MemoryOperand.BaseOffset(dt, reg, (int)offset);
             dasm.ops.Add(op);
             return true;
@@ -408,7 +408,7 @@ namespace Reko.Arch.Infineon
         /// <returns></returns>
         private static bool B(uint uInstr, TriCoreDisassembler dasm)
         {
-            var uDisp24 = ((uInstr & 0xFF00) << 8) | (uInstr >> 16);
+            var uDisp24 = (uInstr & 0xFF00) << 8 | uInstr >> 16;
             var disp24 = Bits.SignExtend(uDisp24, 24);
             var addr = dasm.addr + disp24 * 2;
             dasm.ops.Add(addr);
@@ -423,7 +423,7 @@ namespace Reko.Arch.Infineon
         /// <returns></returns>
         private static bool Babs(uint uInstr, TriCoreDisassembler dasm)
         {
-            var uDisp24 = ((uInstr & 0xFF00) << 8) | (uInstr >> 16);
+            var uDisp24 = (uInstr & 0xFF00) << 8 | uInstr >> 16;
             var addr = Address.Ptr32(uDisp24);
             dasm.ops.Add(addr);
             return true;
@@ -434,7 +434,7 @@ namespace Reko.Arch.Infineon
             var bf = new Bitfield(bitpos, length);
             return (u, d) =>
             {
-                var disp = (bf.ReadSigned(u)) << 1;
+                var disp = bf.ReadSigned(u) << 1;
                 d.ops.Add(d.addr + disp);
                 return true;
             };
@@ -448,7 +448,7 @@ namespace Reko.Arch.Infineon
             var bf = new Bitfield(bitpos, length);
             return (u, d) =>
             {
-                var disp = (bf.Read(u) + (uint)offset) << 1;
+                var disp = bf.Read(u) + offset << 1;
                 d.ops.Add(d.addr + disp);
                 return true;
             };
@@ -458,7 +458,7 @@ namespace Reko.Arch.Infineon
 
         private static bool ndisp8_4(uint uInstr, TriCoreDisassembler dasm)
         {
-            var disp = (int) (0xFFFF_FFE0u | ((uInstr >> 7) & 0x1E));
+            var disp = (int) (0xFFFF_FFE0u | uInstr >> 7 & 0x1E);
             dasm.ops.Add(dasm.addr + disp);
             return true;
         }

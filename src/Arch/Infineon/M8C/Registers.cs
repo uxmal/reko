@@ -19,25 +19,31 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Types;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Reko.Arch.IA64;
+namespace Reko.Arch.Infineon.M8C;
 
 public static class Registers
 {
     static Registers()
     {
         var factory = new StorageFactory();
-        GpRegisters = factory.RangeOfReg64(127, "r{0}");
-        PredicateRegisters = factory.RangeOfReg(64, n => $"p{n:00}", PrimitiveType.Bool);
-        RegistersByName = GpRegisters
-            .Concat(PredicateRegisters)
-            .ToDictionary(r => r.Name);
+        A = factory.Reg8("A");
+        X = factory.Reg8("X");
+        PC = factory.Reg16("PC");
+        SP = factory.Reg8("SP");
+        F = factory.Reg8("F");
     }
 
-    public static RegisterStorage[] GpRegisters { get; }
-    public static RegisterStorage[] PredicateRegisters { get; }
-    public static Dictionary<string, RegisterStorage> RegistersByName { get; }
+    public static Dictionary<string, RegisterStorage>? ByName { get; internal set; }
+    public static Dictionary<StorageDomain, RegisterStorage>? ByDomain { get; internal set; }
+    public static RegisterStorage A { get; }
+    public static RegisterStorage X { get; }
+    public static RegisterStorage PC { get; }
+    public static RegisterStorage SP { get; }
+    public static RegisterStorage F { get; }
 }

@@ -18,26 +18,36 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Core.Types;
+using Reko.Core.Machine;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Reko.Arch.IA64;
 
-public static class Registers
+public class IA64Bundle : MachineInstruction
 {
-    static Registers()
+    public IA64Bundle(IA64Instruction[] instructions)
     {
-        var factory = new StorageFactory();
-        GpRegisters = factory.RangeOfReg64(127, "r{0}");
-        PredicateRegisters = factory.RangeOfReg(64, n => $"p{n:00}", PrimitiveType.Bool);
-        RegistersByName = GpRegisters
-            .Concat(PredicateRegisters)
-            .ToDictionary(r => r.Name);
+        Instructions = instructions;
     }
 
-    public static RegisterStorage[] GpRegisters { get; }
-    public static RegisterStorage[] PredicateRegisters { get; }
-    public static Dictionary<string, RegisterStorage> RegistersByName { get; }
+    public override int MnemonicAsInteger => 0;
+    public override string MnemonicAsString => "";
+
+    public IA64Instruction[] Instructions { get; }
+
+    protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
+    {
+        string sep = "";
+        renderer.WriteString("{ ");
+        foreach (var instr in Instructions)
+        {
+            renderer.WriteString(sep);
+            sep = "; ";
+        }
+        renderer.WriteString(" }");
+    }
 }

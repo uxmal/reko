@@ -18,7 +18,7 @@
  */
 #endregion
 
-namespace Reko.Arch.Infineon
+namespace Reko.Arch.Infineon.TriCore
 {
     public enum Mnemonic
     {

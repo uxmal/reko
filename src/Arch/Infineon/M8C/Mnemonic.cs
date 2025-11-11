@@ -18,26 +18,53 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Core.Types;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Reko.Arch.IA64;
+namespace Reko.Arch.Infineon.M8C;
 
-public static class Registers
+public enum Mnemonic
 {
-    static Registers()
-    {
-        var factory = new StorageFactory();
-        GpRegisters = factory.RangeOfReg64(127, "r{0}");
-        PredicateRegisters = factory.RangeOfReg(64, n => $"p{n:00}", PrimitiveType.Bool);
-        RegistersByName = GpRegisters
-            .Concat(PredicateRegisters)
-            .ToDictionary(r => r.Name);
-    }
-
-    public static RegisterStorage[] GpRegisters { get; }
-    public static RegisterStorage[] PredicateRegisters { get; }
-    public static Dictionary<string, RegisterStorage> RegistersByName { get; }
+    Invalid,
+    jmp,
+    call,
+    jz,
+    jnz,
+    jc,
+    jnc,
+    jacc,
+    index,
+    ssc,
+    add,
+    push,
+    adc,
+    sub,
+    sbb,
+    pop,
+    and,
+    romx,
+    or,
+    halt,
+    xor,
+    tst,
+    cmp,
+    mvi,
+    mov,
+    swap,
+    nop,
+    asl,
+    asr,
+    rlc,
+    rrc,
+    cpl,
+    inc,
+    dec,
+    lcall,
+    ljmp,
+    reti,
+    ret,
+    invalid,
 }

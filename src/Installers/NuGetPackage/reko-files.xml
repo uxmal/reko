@@ -32,6 +32,7 @@
         <var id="var.H8.TargetPath">$SolutionDir$/Arch/H8/$TargetDir$/Reko.Arch.H8.dll</var>
         <var id="var.IA64.TargetPath">$SolutionDir$/Arch/IA64/$TargetDir$/Reko.Arch.IA64.dll</var>
         <var id="var.Infineon.TargetPath">$SolutionDir$/Arch/Infineon/$TargetDir$/Reko.Arch.Infineon.dll</var>
+        <var id="var.Kalimba.TargetPath">$SolutionDir$/Arch/Kalimba/$TargetDir$/Reko.Arch.Kalimba.dll</var>
         <var id="var.LatticeMico.TargetPath">$SolutionDir$/Arch/LatticeMico/$TargetDir$/Reko.Arch.LatticeMico.dll</var>
         <var id="var.Loongson.TargetPath">$SolutionDir$/Arch/Loongson/$TargetDir$/Reko.Arch.Loongson.dll</var>
         <var id="var.M16C.TargetPath">$SolutionDir$/Arch/M16C/$TargetDir$/Reko.Arch.M16C.dll</var>
@@ -307,7 +308,7 @@
         <File Source="$(var.H8.TargetPath)" nuget_target="f:" />
         <File Source="$(var.i8051.TargetPath)" nuget_target="f:" />
         <File Source="$(var.IA64.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.Infineon.TargetPath)" nuget_target="f:" />
+        <File Source="$(var.Kalimba.TargetPath)" nuget_target="f:" />
         <File Source="$(var.LatticeMico.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Loongson.TargetPath)" nuget_target="f:" />
         <File Source="$(var.M16C.TargetPath)" nuget_target="f:" />

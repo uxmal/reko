@@ -20,6 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Arch.Infineon;
+using Reko.Arch.Infineon.TriCore;
 using Reko.Core;
 
 namespace Reko.UnitTests.Arch.TriCore

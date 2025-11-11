@@ -50,7 +50,6 @@ namespace Reko.Core.Memory
     /// Implements a common special case of the <see cref="IWriteableMemory"/>,
     /// where individual memory units are 8-bit octets.
     /// </summary>
-
     public interface IByteWriteableMemory : IByteAdressableMemory, IWriteableMemory
     {
         /// <summary>
@@ -100,7 +99,6 @@ namespace Reko.Core.Memory
         /// <param name="address">Virtual address to write to.</param>
         /// <param name="value">Value to write.</param>
         void WriteLeUInt64(Address address, ulong value);
-
 
         /// <summary>
         /// Write an octet-sized value to memory.

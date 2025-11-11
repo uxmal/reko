@@ -92,6 +92,14 @@ namespace Reko.Core
         }
 
         /// <summary>
+        /// Create an 8-bit register.
+        /// </summary>
+        public RegisterStorage Reg8(string format)
+        {
+            return Reg(format, PrimitiveType.Byte);
+        }
+
+        /// <summary>
         /// Create a 16-bit register.
         /// </summary>
         public RegisterStorage Reg16(string format)

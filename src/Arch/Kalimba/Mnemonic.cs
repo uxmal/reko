@@ -1,0 +1,37 @@
+namespace Reko.Arch.Kalimba;
+
+public enum Mnemonic
+{
+    Invalid,
+    Load,
+    Store,
+
+    add,
+    and,
+    ash,
+    call,
+    fracmul,
+    jump,
+    loadOff,
+    lsh,
+    maca,
+    macs,
+    mul48,
+    or,
+    prefix,
+    pushPop,
+    signDet,
+    sleepLoopBreak,
+    smul,
+    smulv,
+    storeOff,
+    sub,
+    xor,
+    div,
+    rts,
+    rti,
+    sleep,
+    loop,
+    @break,
+    blkSignDet,
+}
