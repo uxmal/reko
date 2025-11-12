@@ -27,6 +27,7 @@ using Reko.Scanning;
 using Reko.Services;
 using Reko.UnitTests.Mocks;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
@@ -62,6 +63,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
         private void DumpCfg(ScanResultsV2 cfg, TextWriter w)
         {
             var g = new CfgGraph(cfg);
+            var visited = new Dictionary<Address, RtlBlock>(cfg.Blocks);
             foreach (var proc in cfg.Procedures.Values.OrderBy(p => p.Address))
             {
                 w.WriteLine();
@@ -74,6 +76,16 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 w.WriteLine("    provenance: {0}", proc.Provenance);
                 var it = new DfsIterator<RtlBlock>(g);
                 foreach (var block in it.PreOrder(cfg.Blocks[proc.Address]).OrderBy(b => b.Name))
+                {
+                    visited.Remove(block.Address);
+                    DumpBlock(block, g, w);
+                }
+            }
+            if (visited.Count > 0)
+            {
+                w.WriteLine();
+                w.WriteLine("// Unreachable blocks:");
+                foreach (var block in visited.Values.OrderBy(b => b.Address))
                 {
                     DumpBlock(block, g, w);
                 }

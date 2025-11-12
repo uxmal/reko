@@ -157,8 +157,12 @@ namespace Reko.Scanning
             }
             foreach (var addrProc in sr.KnownProcedures)
             {
-                sr2.Procedures.TryAdd(addrProc, new Proc(addrProc, ProvenanceType.Scanning,
-                    program.Architecture, program.NamingPolicy.ProcedureName(addrProc)));
+                sr2.Procedures.TryAdd(addrProc, new RtlProcedure(
+                    program.Architecture,
+                    addrProc,
+                    program.NamingPolicy.ProcedureName(addrProc),
+                    ProvenanceType.Scanning,
+                    new HashSet<RtlBlock>()));
             }
             foreach (var de in sr.DirectlyCalledAddresses)
             {

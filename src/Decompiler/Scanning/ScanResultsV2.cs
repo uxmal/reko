@@ -69,13 +69,13 @@ namespace Reko.Scanning
         public ConcurrentDictionary<Address, List<Address>> Predecessors { get; }
 
         /// <summary>
-        /// Maps the entry point address to <see cref="Proc"/>s.
+        /// Maps the entry point address to <see cref="RtlProcedure"/>s.
         /// </summary>
         /// <remarks>
         /// These procedures were found either from the binary or during
         /// recursive scanning, and are considered "reliable".
         /// </remarks>
-        public ConcurrentDictionary<Address, Proc> Procedures { get; }
+        public ConcurrentDictionary<Address, RtlProcedure> Procedures { get; }
 
         /// <summary>
         /// Keeps track of all basic blocks that have been found to 
@@ -185,23 +185,6 @@ namespace Reko.Scanning
 #endif
         }
     }
-
-    /// <summary>
-    /// A tentative procedure found during scanning.
-    /// </summary>
-    /// <param name="Address">Address at which the procedure starts.</param>
-    /// <param name="Provenance">The <see cref="ProvenanceType"/> provenance of the procedure.</param>
-    /// <param name="Architecture">The <see cref="IProcessorArchitecture"/> used to 
-    /// lift the procedure from machine code.</param>
-    /// <param name="Name">The name of the procedure.</param>
-
-    //$REVIEW: use RtlProcedure instead.
-
-    public record Proc(
-        Address Address,
-        ProvenanceType Provenance,
-        IProcessorArchitecture Architecture,
-        string Name);
 
     /// <summary>
     /// Classification of edges in the interprocedural control flow graph.

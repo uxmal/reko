@@ -66,6 +66,17 @@ public class FragmentFinderTests
         return b;
     }
 
+    private ImageMapItem D(uint uAddr, uint length)
+    {
+        Address addr = Address.Ptr32(uAddr);
+        var item = new ImageMapItem(addr)
+        {
+            Size = length,
+            DataType = new ArrayType(PrimitiveType.Byte, (int)length)
+        };
+        return item;
+    }
+
     /// <summary>
     /// Create an image segment at address <paramref name="uAddr"/> with 
     /// length <paramref name="length"/>.
@@ -97,7 +108,7 @@ public class FragmentFinderTests
         Address addr = Address.Ptr32(uAddr);
         var item = new ImageMapItem(addr) {
             Size = length,
-            DataType = new UnknownType((int)length)
+            DataType = new ArrayType(PrimitiveType.Byte, (int)length)
         };
         return item;
     }
@@ -187,6 +198,26 @@ public class FragmentFinderTests
     }
 
     [Test]
+    public void Frf_GenerateGapFragments_NoDataBlockOverlap()
+    {
+        TestGenerateGapFragments(
+            "[B(0x1080, 0x100), G(0x1180, 0xE80)]",
+            [S(0x1000, 0x1000)],
+            [B(0x1080, 0x100)],
+            [D(0x1000, 0x80)]);
+    }
+
+    [Test]
+    public void Frf_GenerateGapFragments_NoDataBlockOverlap2()
+    {
+        TestGenerateGapFragments(
+            "[G(0x1060, 0x20), B(0x1080, 0x100), G(0x1180, 0xE80)]",
+            [S(0x1000, 0x1000)],
+            [B(0x1080, 0x100)],
+            [D(0x1000, 0x60)]);
+    }
+
+    [Test]
     public void Frf_GenerateGapFragments_BlockAtEndOfSegment()
     {
         TestGenerateGapFragments("[G(0x1000, 0x100), B(0x1100, 0xF00)]",
@@ -196,13 +227,22 @@ public class FragmentFinderTests
     }
 
     [Test]
-    [Ignore("Not implemented yet.")]
     public void Frf_GenerateGapFragments_DataFragment()
     {
         TestGenerateGapFragments("[G(0x1080, 0x80), B(0x1100, 0xF00)]",
             [S(0x1000, 0x1000)],
             [B(0x1100, 0xF00)],
             [I(0x1000, 0x80)]);
+    }
+
+    [Test]
+    public void Frf_GenerateGapFragments_MultipleDataFragments()
+    {
+        TestGenerateGapFragments(
+            "[B(0x1000, 0x100), G(0x1110, 0x10), G(0x1130, 0x10), G(0x1150, 0xEB0)]",
+            [S(0x1000, 0x1000)],
+            [B(0x1000, 0x100), B(0x2100, 0x100)],
+            [I(0x10F0, 0x20), I(0x1120, 0x10), I(0x1140, 0x10)]);
     }
 
     public class FakeArchitecture : Reko.Core.ProcessorArchitecture

@@ -41,7 +41,7 @@ namespace Reko.Scanning
     public class ProcedureWorker : AbstractProcedureWorker
     {
         private readonly RecursiveScanner recScanner;
-        private readonly Proc proc;
+        private readonly RtlProcedure proc;
         private readonly WorkList<BlockWorker> workList;
         private readonly ConcurrentDictionary<Address, Address> suspendedCalls;
         private readonly ConcurrentQueue<WaitingCaller> callersWaitingForReturn;
@@ -51,13 +51,14 @@ namespace Reko.Scanning
         /// </summary>
         /// <param name="scanner">Recursive scanner orchestrating this procedure
         /// worker.</param>
-        /// <param name="proc"></param>
-        /// <param name="state"></param>
-        /// <param name="rejectMask"></param>
-        /// <param name="listener"></param>
+        /// <param name="proc">Procedure being scanned.</param>
+        /// <param name="state"><see cref="ProcessorState"/> being </param>
+        /// <param name="rejectMask">If an instruction has any of the bits
+        /// of this mask, it will be treated as invalid and rejected.</param>
+        /// <param name="listener"><see cref="IEventListener"/> instance.</param>
         public ProcedureWorker(
             RecursiveScanner scanner,
-            Proc proc,
+            RtlProcedure proc,
             ProcessorState state,
             InstrClass rejectMask,
             IEventListener listener)
@@ -74,10 +75,13 @@ namespace Reko.Scanning
         /// <summary>
         /// The procedure on which this <see cref="ProcedureWorker"/> is working.
         /// </summary>
-        public Proc Procedure => proc;
+        public RtlProcedure Procedure => proc;
 
         /// <summary>
-        /// Executes work items in the scope of the current procedure.
+        /// Executes work items in the scope of the current procedure. Each
+        /// work item will process an extended basic block. Processing will continue
+        /// until no more blocks are reachable, or all calls have been suspended
+        /// waiting for their corresponding callees to return.
         /// </summary>
         public void Run()
         {
@@ -117,7 +121,7 @@ namespace Reko.Scanning
                     sb.Append(string.Join(",", addresses.Take(4)));
                     if (addresses.Count > 4)
                         sb.Append("...");
-                    sb.Append("]");
+                    sb.Append(']');
                     return sb.ToString();
                 }
 

@@ -24,9 +24,12 @@ using Reko.Core;
 using Reko.Core.Collections;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Text;
 
 /// <summary>
 /// This class enumerates all known <see cref="RtlBlock"/>s and discovers
@@ -97,8 +100,63 @@ public class ChunkEnumerator
 
     private IEnumerable<Chunk> ExcludeDataBlocks(IEnumerable<Chunk> gapFragments, IEnumerable<ImageMapItem> dataBlocks)
     {
-        //$TODO: remove data blocks from list of fragments.
-        return gapFragments;
+        IEnumerator<Chunk> eChunks = gapFragments.GetEnumerator();
+        IEnumerator<ImageMapItem> eData = dataBlocks.GetEnumerator();
+        IProcessorArchitecture? archChunk = null;
+        MemoryArea? memChunk = null;
+        Address addrChunk = new();
+        long chunkLength = 0;
+        while (eChunks.MoveNext())
+        {
+            var chunk = eChunks.Current;
+            archChunk = chunk.Architecture;
+            if (archChunk is not null)
+            {
+                yield return chunk;
+                continue;
+            }
+            memChunk = chunk.MemoryArea;
+            addrChunk = chunk.Address;
+            chunkLength = chunk.Length;
+            while (chunkLength > 0 && eData.MoveNext())
+            {
+                var data = eData.Current;
+                if (data.DataType is UnknownType)
+                    continue;
+                if (data.Address <= addrChunk)
+                {
+                    // data block starts before the gap.
+                    long cbOverlap = data.Address - addrChunk + data.Size;
+                    if (cbOverlap > 0)
+                    {
+                        // Nibble off the bottom of the chunk.
+                        addrChunk += cbOverlap;
+                        chunkLength -= cbOverlap;
+                    }
+                    else
+                    {
+                        throw new NotImplementedException();
+                    }
+                }
+                else
+                {
+                    long cb = Math.Min(chunkLength, data.Address - addrChunk);
+                    if (cb > 0)
+                    {
+                        cb = data.Address - addrChunk;
+                        yield return new(archChunk, memChunk, addrChunk, cb);
+                        cb += data.Size;
+                        addrChunk += cb;
+                        chunkLength -= cb;
+                    }
+                }
+            }
+            if (chunkLength > 0)
+            {
+                Debug.Assert(memChunk is not null);
+                yield return new(archChunk, memChunk, addrChunk, chunkLength);
+            }
+        }
     }
 
     private static Address Align(Address address, IProcessorArchitecture? arch)

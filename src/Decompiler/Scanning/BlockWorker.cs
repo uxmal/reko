@@ -191,7 +191,7 @@ namespace Reko.Scanning
                         if (!scanner.TryRegisterBlockStart(cluster.Address, this.Address))
                             return (block, subinstrBranches, state);
                         this.Address = cluster.Address;
-                        instrs = new List<RtlInstructionCluster>();
+                        instrs = [];
                     }
                     return (MakeBlock(instrs, rtl), subinstrBranches, state);
                 }

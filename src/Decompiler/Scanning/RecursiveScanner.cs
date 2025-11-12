@@ -162,7 +162,7 @@ namespace Reko.Scanning
         {
             var (sym, provenance) = seed.Value;
             var name = sym.Name ?? program.NamingPolicy.ProcedureName(seed.Key);
-            var proc = new Proc(seed.Key, provenance, sym.Architecture, name);
+            var proc = new RtlProcedure(sym.Architecture, seed.Key, name, provenance, new HashSet<RtlBlock>());
             if (sr.Procedures.TryAdd(proc.Address, proc))
             {
                 var state = sym.ProcessorState ?? sym.Architecture.CreateProcessorState();
@@ -178,7 +178,7 @@ namespace Reko.Scanning
         private ProcedureWorker? MakeHeuristicWorker(IProcessorArchitecture arch, Address address)
         {
             var name = program.NamingPolicy.ProcedureName(address);
-            var proc = new Proc(address, ProvenanceType.Heuristic, arch, name);
+            var proc = new RtlProcedure(arch, address, name, ProvenanceType.Heuristic, new HashSet<RtlBlock>());
             if (sr.Procedures.TryAdd(address, proc))
             {
                 var state = arch.CreateProcessorState();
@@ -224,11 +224,11 @@ namespace Reko.Scanning
             ProcessorState state,
             [MaybeNullWhen(false)] out ProcedureWorker worker)
         {
-            Proc? proc;
+            RtlProcedure? proc;
             while (!sr.Procedures.TryGetValue(addrProc, out proc))
             {
                 var name = program.NamingPolicy.ProcedureName(addrProc);
-                proc = new Proc(addrProc, ProvenanceType.Scanning, state.Architecture, name);
+                proc = new RtlProcedure(state.Architecture, addrProc, name, ProvenanceType.Scanning, new HashSet<RtlBlock>());
                 if (sr.Procedures.TryAdd(proc.Address, proc))
                     break;
             }

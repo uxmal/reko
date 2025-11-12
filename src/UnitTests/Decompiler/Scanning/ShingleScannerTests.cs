@@ -85,11 +85,12 @@ namespace Reko.UnitTests.Decompiler.Scanning
 
         private void Given_RecursiveProc(uint uAddr)
         {
-            var proc = new Proc(
-                Address.Ptr32(uAddr),
-                ProvenanceType.Scanning,
+            var proc = new RtlProcedure(
                 this.program.Architecture,
-                $"fn{uAddr:X4}");
+                Address.Ptr32(uAddr),
+                $"fn{uAddr:X4}",
+                ProvenanceType.Scanning,
+                new HashSet<RtlBlock>());
             var added = cfg.Procedures.TryAdd(Address.Ptr32(uAddr), proc);
             Assert.IsTrue(added);
         }

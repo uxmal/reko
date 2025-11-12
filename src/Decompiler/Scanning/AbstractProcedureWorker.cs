@@ -90,7 +90,7 @@ namespace Reko.Scanning
         /// <param name="subinstrTargets">A possibly null list of addresses that are
         /// targeted by sub-instructions.</param>
         /// <param name="state">Current simulated processor state.</param>
-        /// <returns>The completed basic block.</returns>
+        /// <returns>The completed, sealed basic block.</returns>
         public RtlBlock HandleBlockEnd(
             RtlBlock block,
             IEnumerator<RtlInstructionCluster> trace,
@@ -101,57 +101,55 @@ namespace Reko.Scanning
             var lastCluster = block.Instructions[^1];
             var lastInstr = lastCluster.Instructions[^1];
             var lastAddr = lastCluster.Address;
-            if (scanner.TryRegisterBlockEnd(block.Address, lastAddr))
-            {
-                // This thread is the first one to see this block. Create the
-                // out edges from the block.
-                var edges = ComputeEdges(lastInstr, lastAddr, block, state);
-                foreach (var edge in edges)
-                {
-                    switch (edge.Type)
-                    {
-                    case EdgeType.Fallthrough:
-                        // Reuse the same trace. This is necessary to handle the 
-                        // ARM Thumb IT instruction, which puts state in the trace.
-                        RegisterEdge(edge);
-                        AddFallthroughJob(edge.To, trace, state);
-                        log.Verbose("    {0}: added edge from {1} to {2}", this.Address, edge.From, edge.To);
-                        break;
-                    case EdgeType.Jump:
-                        // Start a new trace somewhere else.
-                        RegisterEdge(edge);
-                        AddJob(edge.To, state);
-                        log.Verbose("    {0}: added edge from {1} to {2}", this.Address, edge.From, edge.To);
-                        break;
-                    case EdgeType.Call:
-                        // Processing calls may involve "parking" this worker while
-                        // waiting for the callee to return.
-                        ProcessCall(block, edge, state);
-                        break;
-                    case EdgeType.Return:
-                        ProcessReturn();
-                        break;
-                    default:
-                        throw new NotImplementedException($"{edge.Type} edge not handled yet.");
-                    }
-                }
-                if (subinstrTargets is not null)
-                {
-                    foreach (var addrTarget in subinstrTargets)
-                    {
-                        var edge = new Edge(block.Address, addrTarget, EdgeType.Jump);
-                        RegisterEdge(edge);
-                        AddJob(addrTarget, state);
-                        log.Verbose("    {0}: added sub-instruction edge from {1} to {2}", this.Address, edge.From, edge.To);
-                    }
-                }
-            }
-            else
+            if (!scanner.TryRegisterBlockEnd(block.Address, lastAddr))
             {
                 // Some other thread reached the end of this block first. We now 
                 // have potentially two blocks sharing the same end address.
                 log.Verbose("    {0}: Splitting block at [{1}-{2}]", this.Address, block.Address, lastAddr);
                 scanner.SplitBlockEndingAt(block, lastAddr);
+                return block;
+            }
+            // This thread is the first one to see this block. Create the
+            // out edges from the block.
+            var edges = ComputeEdges(lastInstr, lastAddr, block, state);
+            foreach (var edge in edges)
+            {
+                switch (edge.Type)
+                {
+                case EdgeType.Fallthrough:
+                    // Reuse the same trace. This is necessary to handle the 
+                    // ARM Thumb IT instruction, which puts state in the trace.
+                    RegisterEdge(edge);
+                    AddFallthroughJob(edge.To, trace, state);
+                    log.Verbose("    {0}: added edge from {1} to {2}", this.Address, edge.From, edge.To);
+                    break;
+                case EdgeType.Jump:
+                    // Start a new trace somewhere else.
+                    RegisterEdge(edge);
+                    AddJob(edge.To, state);
+                    log.Verbose("    {0}: added edge from {1} to {2}", this.Address, edge.From, edge.To);
+                    break;
+                case EdgeType.Call:
+                    // Processing calls may involve "parking" this worker while
+                    // waiting for the callee to return.
+                    ProcessCall(block, edge, state);
+                    break;
+                case EdgeType.Return:
+                    ProcessReturn();
+                    break;
+                default:
+                    throw new NotImplementedException($"{edge.Type} edge not handled yet.");
+                }
+            }
+            if (subinstrTargets is not null)
+            {
+                foreach (var addrTarget in subinstrTargets)
+                {
+                    var edge = new Edge(block.Address, addrTarget, EdgeType.Jump);
+                    RegisterEdge(edge);
+                    AddJob(addrTarget, state);
+                    log.Verbose("    {0}: added sub-instruction edge from {1} to {2}", this.Address, edge.From, edge.To);
+                }
             }
             return block;
         }
