@@ -76,8 +76,7 @@ namespace Reko.Tools.regressionTests
             ThreadPool.GetAvailableThreads(out _, out var numCompletionPorts);
             ThreadPool.SetMaxThreads(Environment.ProcessorCount, numCompletionPorts);
 
-            var watch = new Stopwatch();
-            watch.Start();
+            var watch = Stopwatch.StartNew();
             var jobs = CollectJobs(dirs);
             ExecuteJobs(jobs);
             watch.Stop();
@@ -247,7 +246,7 @@ namespace Reko.Tools.regressionTests
                 this.Name = name;
                 this.WorkingDirectory = workdir;
                 this.Arguments = args;
-                this.Key = this.Name + this.Arguments;
+                this.Key = string.Join('@', workdir, name, args);
             }
 
             public string Name { get; }
@@ -514,12 +513,13 @@ namespace Reko.Tools.regressionTests
                 .Where(f => !IsInSourceDirectory(f))
                 .Where(f => SOURCE_EXTENSIONS.Any(f.EndsWith));
 
-
+            var regexFn = new Regex(@"(fn\w+)_(\d+)");
+            var regexVar = new Regex(@"(\w+)_\d+");
             foreach (var f in sources)
             {
                 var text = File.ReadAllText(f, new UTF8Encoding(false));
-                text = Regex.Replace(text, @"(fn\w+)_(\d+)", "$1-$2");
-                text = Regex.Replace(text, @"(\w+)_\d+", "$1_n");
+                text = regexFn.Replace(text, "$1-$2");
+                text = regexVar.Replace(text, "$1_n");
                 File.WriteAllText(f, text, new UTF8Encoding(false));
             }
         }
