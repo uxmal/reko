@@ -18,7 +18,6 @@
  */
 #endregion
 
-using Microsoft.VisualStudio.TestPlatform.Utilities;
 using NUnit.Framework;
 using Reko.Arch.Infineon;
 using Reko.Arch.Infineon.M8C;
@@ -26,7 +25,6 @@ using Reko.Core;
 using Reko.Core.Memory;
 using System;
 using System.Text;
-using static Community.CsharpSqlite.Sqlite3;
 
 namespace Reko.UnitTests.Arch.Infineon.M8C;
 
@@ -49,33 +47,6 @@ public class M8CDisassemblerTests : DisassemblerTestBase<M8CInstruction>
     {
         var instr = base.DisassembleHexBytes(hexBytes);
         Assert.That(instr.ToString(), Is.EqualTo(sExpected));
-    }
-
-    [Test]
-    public void M8CDis_Gen()
-    {
-        var rnd = new Random(3811);
-        var bytes = new byte[0x300];
-        rnd.NextBytes(bytes);
-        var mem = new ByteMemoryArea(LoadAddress, bytes);
-        var rdr = mem.CreateBeReader(0);
-        var dasm = arch.CreateDisassembler(rdr);
-        foreach (M8CInstruction instr in dasm)
-        {
-            var rdr2 = rdr.CreateNew(mem, instr.Address);
-            var sb = new StringBuilder();
-            while (rdr2.Address < rdr.Address)
-            {
-                var b = rdr2.ReadByte();
-                sb.Append($"{b:X2}");
-            }
-            Console.WriteLine("[Test]");
-            Console.WriteLine($"public void M8CDis_{instr.Mnemonic}()");
-            Console.WriteLine("{");
-            Console.WriteLine($"    AssertCode(\"{instr.ToString()}\", \"{sb}\");");
-            Console.WriteLine("}");
-            Console.WriteLine();
-        }
     }
 
     [Test]

@@ -18,8 +18,6 @@
  */
 #endregion
 
-using System;
-using System.Xml;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
@@ -101,8 +99,8 @@ public class Ns32kDisassembler : DisassemblerBase<Ns32kInstruction, Mnemonic>
 
     public override Ns32kInstruction? DisassembleInstruction()
     {
-        this.dataSize = null;
-        this.signedDataSize = null;
+        this.dataSize = null!;
+        this.signedDataSize = null!;
         this.addr = this.rdr.Address;
         if (!rdr.TryReadByte(out byte opcode))
             return null;
