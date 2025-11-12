@@ -22,9 +22,6 @@ using NUnit.Framework;
 using Reko.Arch.Infineon;
 using Reko.Arch.Infineon.M8C;
 using Reko.Core;
-using Reko.Core.Memory;
-using System;
-using System.Text;
 
 namespace Reko.UnitTests.Arch.Infineon.M8C;
 
