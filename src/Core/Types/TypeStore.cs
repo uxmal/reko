@@ -21,6 +21,7 @@
 using Reko.Core.Expressions;
 using Reko.Core.Loading;
 using Reko.Core.Output;
+using Reko.Core.Services;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -51,7 +52,7 @@ namespace Reko.Core.Types
         /// <paramref name="tv2"/>.
         /// </summary>
         /// <param name="tv1">The first type variable.</param>
-        /// <param name="tv2">The other type varaible.</param>
+        /// <param name="tv2">The other type variable.</param>
         /// <returns>The resulting equivalence class.</returns>
         EquivalenceClass MergeClasses(TypeVariable tv1, TypeVariable tv2);
 
@@ -65,11 +66,14 @@ namespace Reko.Core.Types
         void Write(bool showExprAddresses, TextWriter writer);
 
         /// <summary>
-        /// Once the type store has been populated with type variables and their equiva
-        /// , this method
+        /// Once the type store has been populated with type variables,
+        /// this method builds equivalence classes.
         /// </summary>
-        /// <param name="factory"></param>
-        void BuildEquivalenceClassDataTypes(TypeFactory factory);
+        /// <param name="factory"><see cref="TypeFactory"/> to use when building 
+        /// data types.</param>
+        /// <param name="listener"><see cref="IEventListener"/> instance to report
+        /// events.</param>
+        void BuildEquivalenceClassDataTypes(TypeFactory factory, IEventListener listener);
 
         /// <summary>
         /// Creates a type variable.
@@ -213,11 +217,13 @@ namespace Reko.Core.Types
         }
 
         /// <inheritdoc/>
-        public void BuildEquivalenceClassDataTypes(TypeFactory factory)
+        public void BuildEquivalenceClassDataTypes(TypeFactory factory, IEventListener listener)
         {
             Unifier u = new DataTypeBuilderUnifier(factory, this);
             foreach (TypeVariable tv in TypeVariables)
             {
+                if (listener.IsCanceled())
+                    return;
                 DataType dt = tv.OriginalDataType;
                 EquivalenceClass c = tv.Class;
                 DataType dtOld = c.DataType;
