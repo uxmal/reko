@@ -116,6 +116,7 @@ public class ProjectionPropagator : IAnalysis<SsaState>
             private readonly SsaState ssa;
             private readonly SegmentedAccessClassifier sac;
             private readonly ExpressionValueComparer cmp;
+            private readonly ExpressionEmitter m;
 
             public ProjectionFilter(SsaState ssa, Statement stm, SegmentedAccessClassifier sac)
             {
@@ -123,8 +124,9 @@ public class ProjectionPropagator : IAnalysis<SsaState>
                 this.Statement = stm;
                 this.sac = sac;
                 this.arch = ssa.Procedure.Architecture;
-                this.NewStatements = new HashSet<Statement>();
+                this.NewStatements = [];
                 this.cmp = new ExpressionValueComparer();
+                this.m = new ExpressionEmitter();
             }
 
             public bool Changed { get; private set; }
@@ -187,7 +189,7 @@ public class ProjectionPropagator : IAnalysis<SsaState>
                         if (e is not null)
                         {
                             var r = Extend(binEa.Right, e.DataType);
-                            return new BinaryExpression(
+                            return m.Bin(
                                     binEa.Operator,
                                     e.DataType,
                                     e,
@@ -201,11 +203,7 @@ public class ProjectionPropagator : IAnalysis<SsaState>
                         if (e is not null)
                         {
                             var l = Extend(binEa.Left, e.DataType);
-                            return new BinaryExpression(
-                                    binEa.Operator,
-                                    e.DataType,
-                                    l,
-                                    e);
+                            return m.Bin(binEa.Operator, l, e);
                         }
                     }
                 }
@@ -217,11 +215,11 @@ public class ProjectionPropagator : IAnalysis<SsaState>
                 var dtExtended = PrimitiveType.Create(e.DataType.Domain, dataType.BitSize);
                 if (e is Constant c)
                 {
-                    return Constant.Create(dtExtended, c.ToInt64());
+                    return m.Const(dtExtended, c.ToInt64());
                 }
                 else
                 {
-                    return new Conversion(e, e.DataType, dtExtended);
+                    return m.Convert(e, e.DataType, dtExtended);
                 }
             }
 
@@ -423,7 +421,7 @@ public class ProjectionPropagator : IAnalysis<SsaState>
                         return expWide;
                     }
                 }
-                return new Slice(dtSequence, expWide, totalSliceOffset);
+                return m.Slice(expWide, dtSequence, totalSliceOffset);
             }
 
             private Slice? AsSlice(Assignment? ass)
@@ -433,7 +431,7 @@ public class ProjectionPropagator : IAnalysis<SsaState>
                 if (ass.Src is Slice slice)
                     return slice;
                 if (ass.Src is Cast cast)
-                    return new Slice(cast.DataType, cast.Expression, 0);
+                    return m.Slice(cast.Expression, cast.DataType, 0);
                 return null;
             }
 
@@ -467,7 +465,7 @@ public class ProjectionPropagator : IAnalysis<SsaState>
                     s.Uses.Remove(this.Statement);
                     s.DefStatement.Instruction = new Assignment(
                         s.Identifier,
-                        new Slice(s.Identifier.DataType, idWide, idWide.Storage.OffsetOf(s.Identifier.Storage)));
+                        m.Slice(idWide, s.Identifier.DataType, idWide.Storage.OffsetOf(s.Identifier.Storage)));
                     sidWide.Uses.Add(s.DefStatement);
                 }
                 return sidWide.Identifier;
@@ -520,7 +518,7 @@ public class ProjectionPropagator : IAnalysis<SsaState>
                     ssa.RemoveUses(sid.DefStatement);
                     sid.DefStatement.Instruction = new AliasAssignment(
                         sid.Identifier,
-                        new Slice(sid.Identifier.DataType, sidDst.Identifier, idWide.Storage.OffsetOf(sid.Identifier.Storage)));
+                        m.Slice(sidDst.Identifier, sid.Identifier.DataType, idWide.Storage.OffsetOf(sid.Identifier.Storage)));
                     sidDst.Uses.Add(sid.DefStatement);
                 }
                 return sidDst.Identifier;
@@ -561,7 +559,7 @@ public class ProjectionPropagator : IAnalysis<SsaState>
                 stmPred.Instruction =
                     new AliasAssignment(
                         sidPred.Identifier,
-                        new MkSequence(
+                        m.Seq(
                             sidPred.Identifier.DataType,
                             phiArgs));
                 this.NewStatements.Add(stmPred);
@@ -621,7 +619,7 @@ public class ProjectionPropagator : IAnalysis<SsaState>
                         callStm.Address,
                         new AliasAssignment(
                             s.Identifier,
-                            new Slice(s.Identifier.DataType, sidDst.Identifier, idWide.Storage.OffsetOf(s.Identifier.Storage))));
+                            m.Slice(sidDst.Identifier, s.Identifier.DataType, idWide.Storage.OffsetOf(s.Identifier.Storage))));
                     sidDst.Uses.Add(stmAss);
                     s.DefStatement = stmAss;
                     ++iStm;

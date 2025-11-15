@@ -122,7 +122,7 @@ namespace Reko.Arch.Alpha
             Expression src;
             if (mop.Base.Number == ZeroRegister)
             {
-                src = Constant.Create(PrimitiveType.Word64, mop.Offset << shift);
+                src = m.Const(PrimitiveType.Word64, mop.Offset << shift);
             }
             else
             {
@@ -237,7 +237,7 @@ namespace Reko.Arch.Alpha
             if (a.IsZero)
                 return m.Comp(b);
             if (b.IsZero || a == b)
-                return Constant.Create(PrimitiveType.Word64, -1);
+                return m.Const(PrimitiveType.Word64, -1);
             return m.Or(a, m.Comp(b));
         }
 

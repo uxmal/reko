@@ -34,8 +34,9 @@ namespace Reko.Evaluation
         /// </summary>
         /// <param name="slice"></param>
         /// <param name="ctx"></param>
+        /// <param name="m">Expression emitter to use.</param>
         /// <returns></returns>
-		public Expression? Match(Slice slice, EvaluationContext ctx)
+		public Expression? Match(Slice slice, EvaluationContext ctx, ExpressionEmitter m)
 		{
             if (slice.Expression is not MemoryAccess acc)
                 return null;
@@ -59,13 +60,13 @@ namespace Reko.Evaluation
 			if (0 <= bitBegin && bitEnd <= acc.DataType.BitSize)
 			{
                 //$REVIEW: endianness?
-                offset = op.ApplyConstants(offset.DataType, offset, Constant.Create(offset.DataType, slice.Offset / ctx.MemoryGranularity));
-                Expression newEa = new BinaryExpression(op, offset.DataType, ea, offset);
+                offset = op.ApplyConstants(offset.DataType, offset, m.Const(offset.DataType, slice.Offset / ctx.MemoryGranularity));
+                Expression newEa = m.Bin(op, offset.DataType, ea, offset);
                 if (segptr is not null)
                 {
                     newEa = SegmentedPointer.Create(segptr.BasePointer, newEa);
                 }
-                ea = new MemoryAccess(acc.MemoryId, newEa, slice.DataType);
+                ea = m.Mem(acc.MemoryId, slice.DataType, newEa);
                 return ea;
 			}
 			return null;

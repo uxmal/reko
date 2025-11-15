@@ -38,8 +38,9 @@ namespace Reko.Evaluation
         /// CONVERT(... a + b)</code>
         /// </summary>
         /// <param name="binExp"></param>
+        /// <param name="m">Expression emitter to use.</param>
         /// <returns></returns>
-        public Expression? Match(BinaryExpression binExp)
+        public Expression? Match(BinaryExpression binExp, ExpressionEmitter m)
         {
             if (binExp.Operator.Type.IsAddOrSub())
             {
@@ -53,8 +54,8 @@ namespace Reko.Evaluation
                         var eLeft = cLeft.Expression;
                         var eRight = cRight.Expression;
                         var op = binExp.Operator;
-                        return new Conversion(
-                            new BinaryExpression(op, dt, eLeft, eRight),
+                        return m.Convert(
+                            m.Bin(op, dt, eLeft, eRight),
                             dtSrc,
                             cLeft.DataType);
                     }

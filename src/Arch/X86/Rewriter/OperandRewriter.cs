@@ -35,7 +35,7 @@ namespace Reko.Arch.X86.Rewriter
     public abstract class OperandRewriter
     {
         protected readonly IntelArchitecture arch;
-        private readonly ExpressionEmitter m;
+        protected readonly ExpressionEmitter m;
         private readonly IStorageBinder binder;
         private readonly IRewriterHost host;
         private readonly X86State state;
@@ -80,9 +80,9 @@ namespace Reko.Arch.X86.Rewriter
         public Constant CreateConstant(Constant imm, PrimitiveType dataWidth)
         {
             if (dataWidth.BitSize > imm.DataType.BitSize)
-                return Constant.Create(dataWidth, imm.ToInt64());
+                return m.Const(dataWidth, imm.ToInt64());
             else
-                return Constant.Create(imm.DataType, imm.ToUInt64());
+                return m.Const(imm.DataType, imm.ToUInt64());
         }
 
         public Expression CreateMemoryAccess(X86Instruction instr, MemoryOperand mem, DataType dt)
@@ -121,7 +121,7 @@ namespace Reko.Arch.X86.Rewriter
                     }
                     else
                     {
-                        seg = Constant.Create(PrimitiveType.SegmentSelector, instr.Address.Selector!.Value);
+                        seg = m.Const(PrimitiveType.SegmentSelector, instr.Address.Selector!.Value);
                     }
                 }
                 else
@@ -145,7 +145,7 @@ namespace Reko.Arch.X86.Rewriter
 
         public virtual MemoryAccess StackAccess(Expression expr, DataType dt)
         {
-            return new MemoryAccess(MemoryStorage.GlobalMemory, expr, dt);
+            return m.Mem(MemoryStorage.GlobalMemory, dt, expr);
         }
 
         /// <summary>
@@ -195,7 +195,7 @@ namespace Reko.Arch.X86.Rewriter
                         }
 
                         DataType dt = expr.DataType;
-                        Constant cOffset = Constant.Create(dt, l);
+                        Constant cOffset = m.Const(dt, l);
                         expr = m.Bin(op, dt, expr, cOffset);
                     }
                 }
@@ -206,7 +206,7 @@ namespace Reko.Arch.X86.Rewriter
                     if (mem.Index != RegisterStorage.None && (int)mem.Index.BitSize != mem.Offset.DataType.BitSize)
                     {
                         var dt = PrimitiveType.Create(Domain.SignedInt, (int)mem.Index.BitSize);
-                        expr = Constant.Create(dt, mem.Offset.ToInt64());
+                        expr = m.Const(dt, mem.Offset.ToInt64());
                     }
                     else
                     {
@@ -221,7 +221,7 @@ namespace Reko.Arch.X86.Rewriter
                 eIndex = AluRegister(mem.Index);
                 if (mem.Scale != 0 && mem.Scale != 1)
                 {
-                    eIndex = m.IMul(eIndex, Constant.Create(mem.Index.DataType, mem.Scale));
+                    eIndex = m.IMul(eIndex, m.Const(mem.Index.DataType, mem.Scale));
                 }
                 expr = m.IAdd(expr!, eIndex);
             }
@@ -248,7 +248,7 @@ namespace Reko.Arch.X86.Rewriter
             {
                 idx = m.IAddS(idx, reg);
             }
-            return new MemoryAccess(Registers.ST, idx, PrimitiveType.Real64);
+            return m.Mem(Registers.ST, PrimitiveType.Real64, idx);
         }
 
         public UnaryExpression AddrOf(Expression expr)
@@ -273,11 +273,12 @@ namespace Reko.Arch.X86.Rewriter
 
         public override MemoryAccess StackAccess(Expression expr, DataType dt)
         {
-            return new MemoryAccess(MemoryStorage.GlobalMemory, 
-                new SegmentedPointer(
+            return m.Mem(
+                MemoryStorage.GlobalMemory,
+                dt,
+                m.SegPtr(
                     arch.ProcessorMode.PointerType,
-                    AluRegister(Registers.ss), expr),
-                dt);
+                    AluRegister(Registers.ss), expr));
         }
     }
 

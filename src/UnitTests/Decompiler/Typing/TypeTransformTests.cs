@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             eq.Build(program);
             var coll = new TypeCollector(factory, store, program, listener);
             coll.CollectTypes();
-            store.BuildEquivalenceClassDataTypes(factory);
+            store.BuildEquivalenceClassDataTypes(factory, listener);
 
             var tvr = new TypeVariableReplacer(store);
             tvr.ReplaceTypeVariables();
@@ -628,11 +628,11 @@ namespace Reko.UnitTests.Decompiler.Typing
                                 PrimitiveType.Word32),
                             PrimitiveType.Word32,
                             PrimitiveType.Word64),
-                        Constant.Create(PrimitiveType.Word64, 0x4)))),
+                        m.Const(PrimitiveType.Word64, 0x4)))),
                         PrimitiveType.Word32,
                         PrimitiveType.Byte));
-                m.Assign(rbx_18, m.ISub(rbx_18, Constant.Create(PrimitiveType.Word64, 0x1)));
-                m.BranchIf(m.Ne(rbx_18, Constant.Create(PrimitiveType.Word64, 0xFFFFFFFFFFFFFFFF)), "l000000000040EC50");
+                m.Assign(rbx_18, m.ISub(rbx_18, m.Const(PrimitiveType.Word64, 0x1)));
+                m.BranchIf(m.Ne(rbx_18, m.Const(PrimitiveType.Word64, 0xFFFFFFFFFFFFFFFF)), "l000000000040EC50");
 
                 m.Label("l000000000040EC69");
                 m.Return();

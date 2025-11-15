@@ -98,8 +98,9 @@ public class FpuStackReturnGuesser : IAnalysis<SsaState>
         public Worker(SsaState ssa, IEventListener listener)
         {
             this.ssa = ssa;
-            this.ssam = new SsaMutator(ssa);
-            this.ssaIdTransformer = new SsaIdentifierTransformer(ssa);
+            var m = new ExpressionEmitter();
+            this.ssam = new SsaMutator(ssa, m);
+            this.ssaIdTransformer = new SsaIdentifierTransformer(ssa, m);
             this.listener = listener;
         }
 

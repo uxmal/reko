@@ -42,6 +42,7 @@ namespace Reko.Analysis
         private readonly LinearInductionVariable liv;
         private readonly LinearInductionVariableContext ctx;
         private readonly List<IncrementedUse> incrUses;
+        private readonly ExpressionEmitter m;
 
         /// <summary>
         /// Constructs an instance of <see cref="StrengthReduction"/>.
@@ -54,7 +55,8 @@ namespace Reko.Analysis
             this.ssa = ssa;
             this.liv = liv;
             this.ctx = ctx;
-            incrUses = new List<IncrementedUse>();
+            incrUses = [];
+            this.m = new ExpressionEmitter();
         }
 
         /// <summary>
@@ -125,9 +127,8 @@ namespace Reko.Analysis
             else
             {
                 // Change expression d = x to d = x + c.
-                ass.Src = new BinaryExpression(
+                ass.Src = m.Bin(
                     Operator.IAdd,
-                    ass.Src.DataType,
                     ass.Src,
                     use.Increment!);
             }

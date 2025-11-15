@@ -56,6 +56,7 @@ namespace Reko.Analysis
         /// </summary>
         private readonly BindingDictionary uses;
         private readonly bool guessStackArgs;
+        private readonly ExpressionEmitter m;
 
         /// <summary>
         /// Creates a new <see cref="CallApplicationBuilder"/> instance.
@@ -72,7 +73,8 @@ namespace Reko.Analysis
         {
             this.ssaCaller = ssaCaller;
             this.stmCall = stmCall;
-            this.mutator = new SsaMutator(ssaCaller);
+            this.m = new ExpressionEmitter();
+            this.mutator = new SsaMutator(ssaCaller, m);
             this.arch = ssaCaller.Procedure.Architecture;
             this.defs = call.Definitions.ToDictionary(d => d.Storage);
             this.uses = call.Uses.ToDictionary(u => u.Storage);
@@ -89,7 +91,7 @@ namespace Reko.Analysis
         public override OutArgument BindOutArg(Storage stg)
         {
             var exp = stg.Accept(this, (defs, ApplicationBindingType.Out));
-            return new OutArgument(stg.DataType, exp!);
+            return m.Out(stg.DataType, exp!);
         }
 
         /// <inheritdoc/>
@@ -189,7 +191,7 @@ namespace Reko.Analysis
                 var exps = seq.Elements
                     .Select(stg => stg.Accept(this, ctx) ?? InvalidConstant.Create(stg.DataType))
                     .ToArray();
-                return new MkSequence(seq.DataType, exps);
+                return m.Seq(seq.DataType, exps);
             }
             else
             {
@@ -203,7 +205,7 @@ namespace Reko.Analysis
                     if (ctx.map.TryGetValue(stg, out var b))
                     {
                         var idAlias = (Identifier) b.Expression;
-                        var slice = new Slice(b.Expression.DataType, sidSeq.Identifier, bitOffset);
+                        var slice = m.Slice(sidSeq.Identifier, b.Expression.DataType, bitOffset);
                         var ass = new AliasAssignment(idAlias, slice);
                         var stmAlias = mutator.InsertStatementAfter(ass, stmCall);
                         var sidAlias = ssaCaller.Identifiers[idAlias];
@@ -253,10 +255,10 @@ namespace Reko.Analysis
                     int nOffset = stack.StackOffset - returnAdjustment;
                     if (nOffset != 0)
                     {
-                        var offset = Constant.Create(dt, nOffset);
-                        ea = new BinaryExpression(Operator.IAdd, sp_ssa.DataType, sp_ssa, offset);
+                        var offset = m.Const(dt, nOffset);
+                        ea = m.IAdd(sp_ssa, offset);
                     }
-                    return new MemoryAccess(memId!, ea, stack.DataType);
+                    return m.Mem(memId!, stack.DataType, ea);
                 }
             }
             return FallbackArgument($"stackArg{localOff}", stack.DataType);

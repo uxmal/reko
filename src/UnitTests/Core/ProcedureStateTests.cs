@@ -93,7 +93,7 @@ namespace Reko.UnitTests.Core
             text.WriteLeUInt32(0, 0x01234567);
 
             var sce = new TestProcessorState(arch);
-            var access = new MemoryAccess(Constant.Word32(0x00100000), PrimitiveType.Word32);
+            var access = m.Mem32(Constant.Word32(0x00100000));
             var c = sce.GetValue(access, mem);
 
             Assert.AreEqual("0x1234567<32>", c.ToString());

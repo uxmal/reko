@@ -72,7 +72,7 @@ namespace Reko.Core.Expressions
         /// <returns>The logical inverse of this expression.</returns>
         public virtual Expression Invert()
         {
-            throw new NotSupportedException(string.Format("Expression of type {0} doesn't support Invert.", GetType().Name));
+            throw new NotSupportedException($"Expression of type {GetType().Name} doesn't support Invert.");
         }
 
         /// <inheritdoc />

@@ -42,12 +42,5 @@ namespace Reko.UnitTests.Decompiler.Typing
 			Identifier pptr = new Identifier("pptr", PrimitiveType.Word32, null);
 			Identifier ptr = new Identifier("ptr", PrimitiveType.Word32, null);
 		}
-
-		private MemoryAccess MemLoad(Identifier id, int offset, PrimitiveType size)
-		{
-			return new MemoryAccess(MemoryStorage.GlobalMemory,
-				new BinaryExpression(Operator.IAdd, PrimitiveType.Int32, id, Constant.Word32(offset)),
-				size);
-		}
 	}
 }

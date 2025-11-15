@@ -670,7 +670,7 @@ namespace Reko.Arch.Infineon.TriCore
             }
             else if (instr.Operands[1] is Constant imm)
             {
-                src = Constant.Create(dst.DataType, imm.ToInt32());
+                src = m.Const(dst.DataType, imm.ToInt32());
             }
             else
             {
@@ -687,7 +687,7 @@ namespace Reko.Arch.Infineon.TriCore
             var dst = Operand(0);
             Expression src;
             var imm = (Constant) instr.Operands[1];
-            src = Constant.Create(dst.DataType, imm.ToUInt32());
+            src = m.Const(dst.DataType, imm.ToUInt32());
             m.Assign(dst, src);
         }
 

@@ -34,6 +34,7 @@ namespace Reko.Structure
     {
         private readonly Procedure proc;
         private readonly ExpressionValueComparer cmp;
+        private readonly ExpressionEmitter m;
 
         /// <summary>
         /// Constructs a new <see cref="ForLoopRewriter"/> instance.
@@ -43,6 +44,7 @@ namespace Reko.Structure
         {
             this.proc = proc;
             this.cmp = new ExpressionValueComparer();
+            this.m = new ExpressionEmitter();
         }
 
         /// <summary>
@@ -142,7 +144,7 @@ namespace Reko.Structure
                     if (cmp.Equals(ifCondBin.Left, doCondBin.Left))
                     {
                         // Flip the condition.
-                        var condNew = new BinaryExpression(Operator.Lt, PrimitiveType.Bool, doCondBin.Right, doCondBin.Left);
+                        var condNew = m.Lt(doCondBin.Right, doCondBin.Left);
                         return new AbsynWhile(condNew, doWhile.Body);
                     }
                 }

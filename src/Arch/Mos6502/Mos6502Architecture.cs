@@ -150,7 +150,9 @@ namespace Reko.Arch.Mos6502
         public override Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
         {
             //$TODO: the M6502 stack pointer is an 8-bit offset into the fixed memory area $0100-$01FF.
-            return new MemoryAccess(new BinaryExpression(
+            return new MemoryAccess(
+                MemoryStorage.GlobalMemory,
+                new BinaryExpression(
                 Operator.IAdd,
                 PrimitiveType.Ptr16,
                 binder.EnsureRegister(Registers.s),

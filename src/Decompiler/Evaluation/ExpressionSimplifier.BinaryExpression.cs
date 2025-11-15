@@ -348,7 +348,7 @@ namespace Reko.Evaluation
                     {
                         var c = Operator.IAdd.ApplyConstants(binExp.DataType, cLeftRight, cRight);
                         return (m.Cor(
-                            new BinaryExpression(binExp.Operator, PrimitiveType.Bool, binLeft.Left, c),
+                            m.Bin(binExp.Operator, PrimitiveType.Bool, binLeft.Left, c),
                             m.Ult(binLeft.Left, cLeftRight)),
                             true);
                     }
@@ -372,7 +372,7 @@ namespace Reko.Evaluation
                 return (dwordIdiom, true);
 
             // (rel C non-C) => (trans(rel) non-C C)
-            e = constOnLeft.Match(binExp);
+            e = constOnLeft.Match(binExp, m);
             if (e is not null)
             {
                 (e, _) = e.Accept(this);
@@ -398,24 +398,24 @@ namespace Reko.Evaluation
                     return (e, true);
                 }
             }
-            e = addMici.Match(binExp);
+            e = addMici.Match(binExp, m);
             if (e is not null)
             {
                 return (e, true);
             }
-            e = shAdd.Match(binExp, ctx);
-            if (e is not null)
-            {
-                return (e, true);
-            }
-
-            e = shMul.Match(binExp);
+            e = shAdd.Match(binExp, ctx, m);
             if (e is not null)
             {
                 return (e, true);
             }
 
-            e = shiftShift.Match(binExp);
+            e = shMul.Match(binExp, m);
+            if (e is not null)
+            {
+                return (e, true);
+            }
+
+            e = shiftShift.Match(binExp, m);
             if (e is not null)
             {
                 return (e, true);
@@ -438,13 +438,13 @@ namespace Reko.Evaluation
                 return (e, true);
 
             // (-exp == 0) => (exp == 0)
-            e = unaryNegEqZero.Match(binExp);
+            e = unaryNegEqZero.Match(binExp, m);
             if (e is not null)
             {
                 return (e, true);
             }
 
-            e = logicalNotFromBorrow.Match(binExp);
+            e = logicalNotFromBorrow.Match(binExp, m);
             if (e is not null)
             {
                 return (e, true);
@@ -559,7 +559,7 @@ namespace Reko.Evaluation
                 }
             }
             // (+ id1 id1) ==> (* id1 2)
-            var e = add2ids.Match(binExp);
+            var e = add2ids.Match(binExp, m);
             if (e is not null)
             {
                 (e, _) = e.Accept(this);
@@ -571,7 +571,7 @@ namespace Reko.Evaluation
                 (e, _) = e.Accept(this);
                 return (e, true);
             }
-            e = distributedConvert.Match(binExp);
+            e = distributedConvert.Match(binExp, m);
             if (e is not null)
             {
                 (e, _) = e.Accept(this);
@@ -583,7 +583,7 @@ namespace Reko.Evaluation
                 (e, _) = e.Accept(this);
                 return (e, true);
             }
-            e = distributedCast.Match(binExp);
+            e = distributedCast.Match(binExp, m);
             if (e is not null)
             {
                 (e, _) = e.Accept(this);
@@ -632,8 +632,8 @@ namespace Reko.Evaluation
                     if (sliceBits <= 0)
                         return Constant.Zero(dtConvert);
                     var dtSlice = PrimitiveType.CreateWord(sliceBits);
-                    var slice = new Slice(dtSlice, binInner.Left, 0);
-                    return new Conversion(slice, slice.DataType, dtConvert);
+                    var slice = m.Slice(binInner.Left, dtSlice);
+                    return m.Convert(slice, slice.DataType, dtConvert);
                 }
             }
             return null;
@@ -673,9 +673,9 @@ namespace Reko.Evaluation
             {
                 var mLeft = cLeft.ToInt32();
                 var mRight = cRight.ToInt32();
-                return new BinaryExpression(left.Operator, left.DataType,
+                return m.Bin(left.Operator, left.DataType,
                     left.Left,
-                    Constant.Create(
+                    m.Const(
                         left.DataType,
                         bin.Operator.Type == OperatorType.IAdd
                             ? mLeft + mRight

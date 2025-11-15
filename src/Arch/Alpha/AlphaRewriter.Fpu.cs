@@ -104,7 +104,7 @@ namespace Reko.Arch.Alpha
                 }
                 else
                 {
-                    src = Constant.Create(dtTo, 0);
+                    src = m.Const(dtTo, 0);
                 }
             }
             else

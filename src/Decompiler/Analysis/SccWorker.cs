@@ -77,7 +77,7 @@ namespace Reko.Analysis
             this.program = dfa.Program;
             this.flow = dfa.ProgramDataFlow;
             this.sccProcs = sccProcs.ToHashSet();
-            this.eventListener = services.RequireService<IDecompilerEventListener>();
+            this.eventListener = services.RequireService<IEventListener>();
             this.context = new AnalysisContext(program, this.sccProcs, dynamicLinker, services, eventListener);
         }
 
@@ -143,7 +143,7 @@ namespace Reko.Analysis
                 DeadCode.Eliminate(ssa);
                 uid.ComputeLiveIn(ssa, true);
                 var procFlow = flow[ssa.Procedure];
-                RemoveDeadArgumentsFromCalls(ssa.Procedure, procFlow, ssts);
+                RemoveDeadArgumentsFromCalls(ssa.Procedure, procFlow, sst.ExpressionEmitter, ssts);
                 dfa.DumpWatchedProcedure("dcar", "After dead call argument removal", ssa);
             }
             sw.Stop();
@@ -358,10 +358,12 @@ namespace Reko.Analysis
         /// </summary>
         /// <param name="proc">Procedure whose callers need adjustment.</param>
         /// <param name="flow">The <see cref="ProcedureFlow"/> of the procedure.</param>
+        /// <param name="m">Expression emitter.</param>
         /// <param name="ssts">The functions in the SCC currently being analyzed.</param>
         private void RemoveDeadArgumentsFromCalls(
             Procedure proc,
             ProcedureFlow flow,
+            ExpressionEmitter m,
             IEnumerable<SsaTransform> ssts)
         {
             var mpProcSsa = ssts.ToDictionary(d => d.SsaState.Procedure, d => d.SsaState);
@@ -374,7 +376,7 @@ namespace Reko.Analysis
                 // that only arguments present in the procedure flow are present.
                 if (stm.Instruction is not CallInstruction call)
                     continue;
-                var filteredUses = ProcedureFlow.IntersectCallBindingsWithUses(call.Uses, flow.BitsUsed)
+                var filteredUses = ProcedureFlow.IntersectCallBindingsWithUses(call.Uses, flow.BitsUsed, m)
                     .ToArray();
                 ssa.RemoveUses(stm);
                 call.Uses.Clear();

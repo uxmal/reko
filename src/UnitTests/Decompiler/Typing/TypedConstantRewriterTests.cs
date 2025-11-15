@@ -75,7 +75,7 @@ namespace Reko.UnitTests.Decompiler.Typing
 
         private void Given_TypedConstantRewriter()
         {
-            tcr = new TypedConstantRewriter(program, program.TypeStore, new FakeDecompilerEventListener());
+            tcr = new TypedConstantRewriter(program, program.TypeStore, new ExpressionEmitter(), new FakeDecompilerEventListener());
         }
 
         private void Given_Global(uint address, DataType dt)

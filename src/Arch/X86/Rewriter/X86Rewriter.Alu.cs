@@ -423,7 +423,7 @@ namespace Reko.Arch.X86.Rewriter
         {
             if (defFlags is null)
                 return;
-            m.Assign(binder.EnsureFlagGroup(defFlags), new ConditionOf(defFlags.DataType, expr.CloneExpression()));
+            m.Assign(binder.EnsureFlagGroup(defFlags), m.Cond(defFlags.DataType, expr.CloneExpression()));
         }
 
         private void EmitLogicalFlags(Expression result)
@@ -768,7 +768,7 @@ namespace Reko.Arch.X86.Rewriter
             MemoryOperand mem = (MemoryOperand)instrCur.Operands[1];
             if (mem.Offset is null)
             {
-                mem = new MemoryOperand(mem.DataType, mem.Base, mem.Index, mem.Scale, Constant.Create(instrCur.AddressWidth, 0));
+                mem = new MemoryOperand(mem.DataType, mem.Base, mem.Index, mem.Scale, m.Const(instrCur.AddressWidth, 0));
             }
 
             var ptr = PrimitiveType.Create(Domain.Pointer, seg.DataType.BitSize + reg.DataType.BitSize);
@@ -1126,7 +1126,7 @@ namespace Reko.Arch.X86.Rewriter
         {
             if (expr is Constant c && c.DataType != dataWidth)
             {
-                expr = Constant.Create(dataWidth, c.ToInt64());
+                expr = m.Const(dataWidth, c.ToInt64());
             }
 
             // Allocate a local variable for the push.
@@ -1180,15 +1180,15 @@ namespace Reko.Arch.X86.Rewriter
         {
             var ops = instrCur.Operands;
             Expression sh = m.ISub(
-                    Constant.Create(ops[1].DataType, ops[0].DataType.BitSize),
+                    m.Const(ops[1].DataType, ops[0].DataType.BitSize),
                     SrcOp(1));
-            return m.Shl(Constant.Create(ops[0].DataType, 1), sh);
+            return m.Shl(m.Const(ops[0].DataType, 1), sh);
         }
 
         private Expression RotateMaskRight()
         {
             Expression sh = SrcOp(1);
-            sh = m.Shl(Constant.Create(instrCur.Operands[0].DataType, 1), m.ISub(sh, 1));
+            sh = m.Shl(m.Const(instrCur.Operands[0].DataType, 1), m.ISub(sh, 1));
             return sh;
         }
 
@@ -1251,7 +1251,7 @@ namespace Reko.Arch.X86.Rewriter
                 var seg = mem.SegOverride != RegisterStorage.None
                     ? mem.SegOverride
                     : defaultSeg;
-                ea = new SegmentedPointer(arch.ProcessorMode.PointerType, binder.EnsureRegister(seg), ea);
+                ea = m.SegPtr(arch.ProcessorMode.PointerType, binder.EnsureRegister(seg), ea);
             }
             return ea;
         }
@@ -1259,7 +1259,7 @@ namespace Reko.Arch.X86.Rewriter
         public MemoryAccess MemIndex(int iOp, RegisterStorage defaultSeg, Identifier indexRegister)
         {
             var ea = MemIndexPtr(iOp, defaultSeg, indexRegister);
-            return new MemoryAccess(MemoryStorage.GlobalMemory, ea, instrCur.DataWidth);
+            return m.Mem(MemoryStorage.GlobalMemory, instrCur.DataWidth, ea);
         }
 
         public MemoryAccess Mem(Expression defaultSegment, Expression effectiveAddress)
@@ -1267,9 +1267,9 @@ namespace Reko.Arch.X86.Rewriter
             var ptrType = arch.ProcessorMode.PointerType;
             if (ptrType.Domain == Domain.SegPointer)
             {
-                effectiveAddress = new SegmentedPointer(ptrType, defaultSegment, effectiveAddress);
+                effectiveAddress = m.SegPtr(ptrType, defaultSegment, effectiveAddress);
             }
-            return new MemoryAccess(MemoryStorage.GlobalMemory, effectiveAddress, instrCur.DataWidth);
+            return m.Mem(MemoryStorage.GlobalMemory, instrCur.DataWidth, effectiveAddress);
         }
 
 		public Identifier RegAl
@@ -1400,7 +1400,7 @@ namespace Reko.Arch.X86.Rewriter
                     var cc = (instrCur.RepPrefix == 2)
                         ? ConditionCode.NE
                         : ConditionCode.EQ;
-                    m.Branch(new TestCondition(cc, binder.EnsureFlagGroup(Registers.Z)).Invert(), topOfLoop, InstrClass.ConditionalTransfer);
+                    m.Branch(m.Test(cc, binder.EnsureFlagGroup(Registers.Z)).Invert(), topOfLoop, InstrClass.ConditionalTransfer);
                     break;
                 }
             default:

@@ -62,9 +62,10 @@ namespace Reko.Analysis
             this.ssa = ssa;
             this.asc = new IndirectCallTypeAscender(program);
             this.expander = new IndirectCallExpander(ssa);
-            this.ssaIdTransformer = new SsaIdentifierTransformer(ssa);
+            var m = new ExpressionEmitter();
+            this.ssam = new SsaMutator(ssa, m);
+            this.ssaIdTransformer = new SsaIdentifierTransformer(ssa, m);
             this.eventListener = eventListener;
-            this.ssam = new SsaMutator(ssa);
         }
 
         /// <summary>
@@ -207,12 +208,14 @@ namespace Reko.Analysis
     {
         private readonly SsaState ssa;
         private readonly ArgumentTransformer argumentTransformer;
+        private readonly ExpressionEmitter m;
         private Statement stm;
         private CallInstruction? call;
 
-        public SsaIdentifierTransformer(SsaState ssa)
+        public SsaIdentifierTransformer(SsaState ssa, ExpressionEmitter m)
         {
             this.ssa = ssa;
+            this.m = m;
             this.argumentTransformer = new ArgumentTransformer(this);
             this.stm = default!;
         }
@@ -249,7 +252,7 @@ namespace Reko.Analysis
             var args = new Expression[appl.Arguments.Length];
             for (int i = 0; i < appl.Arguments.Length; ++i)
                 args[i] = TransformArgument(appl.Arguments[i]);
-            return new Application(proc, appl.DataType, args);
+            return m.Fn(proc, appl.DataType, args);
         }
 
         private Expression TransformDst(Expression dst)

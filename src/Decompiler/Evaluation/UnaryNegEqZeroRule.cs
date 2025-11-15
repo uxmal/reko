@@ -36,10 +36,11 @@ namespace Reko.Evaluation
         /// replaces it with (Foo == 0).
         /// </summary>
         /// <param name="binExp">Expression to test.</param>
+        /// <param name="m">Expression emitter.</param>
         /// <returns>The simplified instruction if simplification occurred;
         /// otherwise null.
         /// </returns>
-        public Expression? Match(BinaryExpression binExp)
+        public Expression? Match(BinaryExpression binExp, ExpressionEmitter m)
         {
             if (binExp.Operator.Type != OperatorType.Eq)
                 return null;
@@ -52,7 +53,7 @@ namespace Reko.Evaluation
 
             var expression = unary.Expression;
             var zero = binExp.Right;
-            return new BinaryExpression(Operator.Eq, expression.DataType, expression, zero);
+            return m.Bin(Operator.Eq, expression.DataType, expression, zero);
         }
     }
 }

@@ -36,8 +36,9 @@ namespace Reko.Evaluation
         /// Matches and transforms a binary expression.
         /// </summary>
         /// <param name="exp"></param>
+        /// <param name="m">ExpressionEmitter to use.</param>
         /// <returns></returns>
-		public Expression? Match(BinaryExpression exp)
+		public Expression? Match(BinaryExpression exp, ExpressionEmitter m)
 		{
             var dt = exp.DataType.ResolveAs<PrimitiveType>();
             if (dt is null)
@@ -46,11 +47,11 @@ namespace Reko.Evaluation
             Constant cOne;
             if (opType== OperatorType.IAdd)
             {
-                cOne = Constant.Create(dt, 1);
+                cOne = m.Const(dt, 1);
             }
             else if (opType == OperatorType.ISub)
             {
-                cOne = Constant.Create(dt, -1);
+                cOne = m.Const(dt, -1);
             }
             else
             {
@@ -86,7 +87,7 @@ namespace Reko.Evaluation
                 ? op.ApplyConstants(cOne.DataType, cOne, cInner)
                 : op.ApplyConstants(cInner.DataType, cInner, cOne);
 
-            return new BinaryExpression(bin.Operator, id.DataType, id, c);
+            return m.Bin(bin.Operator, id.DataType, id, c);
 		}
 	}
 }

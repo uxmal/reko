@@ -46,9 +46,10 @@ namespace Reko.Evaluation
         /// </summary>
         /// <param name="segptr"></param>
         /// <param name="ctx"></param>
+        /// <param name="m">Expression emitter to use.</param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public Expression? Match(SegmentedPointer segptr, EvaluationContext ctx)
+        public Expression? Match(SegmentedPointer segptr, EvaluationContext ctx, ExpressionEmitter m)
         {
             if (segptr.BasePointer is not Identifier seg)
                 return null;
@@ -85,7 +86,7 @@ namespace Reko.Evaluation
                 var bin = (BinaryExpression) segptr.Offset;
                 if (bin.Left == idOff)
                 {
-                    ea = new BinaryExpression(bin.Operator, basePtr!.DataType, basePtr!, bin.Right);
+                    ea = m.Bin(bin.Operator, basePtr!.DataType, basePtr!, bin.Right);
                 }
                 else
                     throw new NotImplementedException();

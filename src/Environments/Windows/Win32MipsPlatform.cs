@@ -115,20 +115,7 @@ namespace Reko.Environments.Windows
             throw new NotImplementedException("INT services are not supported by " + this.GetType().Name);
         }
 
-        private readonly RtlInstructionMatcher[] trampPattern = new RtlInstructionMatcher[] {
-            new RtlInstructionMatcher(
-                new RtlAssignment(ExpressionMatcher.AnyId("r0d"), ExpressionMatcher.AnyConstant("hi"))),
-            new RtlInstructionMatcher(
-                new RtlAssignment(ExpressionMatcher.AnyId("r1d"), new MemoryAccess(
-                    new BinaryExpression(
-                        Operator.IAdd,
-                        ExpressionMatcher.AnyDataType(null),
-                        ExpressionMatcher.AnyId("r1s"),
-                        ExpressionMatcher.AnyConstant("lo")),
-                    PrimitiveType.Word32))),
-            new RtlInstructionMatcher(
-                new RtlGoto(ExpressionMatcher.AnyId("r2s"), InstrClass.Delay|InstrClass.Transfer))
-        };
+        private static readonly RtlInstructionMatcher[] trampPattern;
 
         /// <summary>
         /// The sequence 
@@ -252,6 +239,25 @@ namespace Reko.Environments.Windows
             }
             else
                 return null;
+        }
+
+        static Win32MipsPlatform()
+        {
+            var m = new ExpressionMatcherEmitter();
+            trampPattern = new RtlInstructionMatcher[] {
+                new RtlInstructionMatcher(
+                    new RtlAssignment(ExpressionMatcher.AnyId("r0d"), ExpressionMatcher.AnyConstant("hi"))),
+                new RtlInstructionMatcher(
+                    new RtlAssignment(ExpressionMatcher.AnyId("r1d"), m.Mem(
+                        PrimitiveType.Word32,
+                        m.Bin(
+                            Operator.IAdd,
+                            m.AnyDataType(null),
+                            m.AnyId("r1s"),
+                            m.AnyConst("lo"))))),
+                new RtlInstructionMatcher(
+                    new RtlGoto(ExpressionMatcher.AnyId("r2s"), InstrClass.Delay|InstrClass.Transfer))
+            };
         }
     }
 }

@@ -290,7 +290,7 @@ namespace Reko.Arch.Sanyo
             var dst = binder.EnsureSequence(dt, Registers.ACC, Registers.C, Registers.B);
             m.Assign(dst, m.UMul(dt, left, right));
             m.Assign(binder.EnsureFlagGroup(C), Constant.False());
-            m.Assign(binder.EnsureFlagGroup(V), m.Uge(dst, Constant.Create(dt, 0x1_0000)));
+            m.Assign(binder.EnsureFlagGroup(V), m.Uge(dst, m.Const(dt, 0x1_0000)));
         }
 
         private void RewritePop()

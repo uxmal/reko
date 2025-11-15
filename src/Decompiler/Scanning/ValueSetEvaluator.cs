@@ -45,6 +45,7 @@ namespace Reko.Scanning
 
         private readonly IProcessorArchitecture arch;
         private readonly IMemory memory;
+        private readonly ExpressionEmitter m;
         private readonly Dictionary<Expression, ValueSet> context;
         private readonly ProcessorState? state;
         private readonly ExpressionValueComparer cmp;
@@ -55,17 +56,20 @@ namespace Reko.Scanning
         /// </summary>
         /// <param name="arch"><see cref="IProcessorArchitecture" /> to use.</param>
         /// <param name="memory"><see cref="IMemory"/> instance.</param>
+        /// <param name="m">Expression emitter.</param> 
         /// <param name="context">Previously evaluated value sets.</param>
         /// <param name="state">Processor state used for evaluation.</param>
         public ValueSetEvaluator(
             IProcessorArchitecture arch,
             IMemory memory,
+            ExpressionEmitter m,
             Dictionary<Expression, ValueSet> context,
             ProcessorState? state = null)
         {
             Debug.Assert(memory is not null);
             this.arch = arch;
             this.memory = memory;
+            this.m = m;
             this.context = context;
             this.state = state;
             this.cmp = new ExpressionValueComparer();
@@ -361,7 +365,7 @@ namespace Reko.Scanning
                 return arch.MakeSegmentedAddress(cSeg, (Constant) off); 
             }
             exps[^1] = (Constant) off;
-            return new MkSequence(dataType, exps);
+            return m.Seq(dataType, exps);
         }
 
         /// <inheritdoc/>

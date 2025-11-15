@@ -38,8 +38,9 @@ public class ShiftShift_c_c_Rule
     /// Perform the match and possible replacement.
     /// </summary>
     /// <param name="b">Binary expression to match.</param>
+    /// <param name="m">Expression emitter to use.</param>
     /// <returns></returns>
-	public Expression? Match(BinaryExpression b)
+	public Expression? Match(BinaryExpression b, ExpressionEmitter m)
 	{
 		var op = b.Operator;
 		if (!op.Type.IsShift())
@@ -53,7 +54,7 @@ public class ShiftShift_c_c_Rule
     if (b2.Right is not Constant c2)
         return null;
     var e = b2.Left;
-		return new BinaryExpression(
+		return m.Bin(
 			op,
 			e.DataType,
 			e,

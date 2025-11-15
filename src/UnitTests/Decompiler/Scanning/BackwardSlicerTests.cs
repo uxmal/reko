@@ -323,19 +323,19 @@ namespace Reko.UnitTests.Decompiler.Scanning
             });
             Given_Instrs(b, m =>
             {
-                m.Branch(new TestCondition(ConditionCode.UGT, SCZO), Address.Ptr16(0x120), InstrClass.ConditionalTransfer);
+                m.Branch(m.Test(ConditionCode.UGT, SCZO), Address.Ptr16(0x120), InstrClass.ConditionalTransfer);
             });
 
             var b2 = Given_Block(0x200);
             Given_Instrs(b2, m =>
             {
                 m.Assign(bh, m.Xor(bh, bh));
-                m.Assign(SCZO, new ConditionOf(SCZO.DataType, bh));
+                m.Assign(SCZO, m.Cond(SCZO.DataType, bh));
             });
             Given_Instrs(b2, m =>
             {
                 m.Assign(bx, m.IAdd(bx, bx));
-                m.Assign(SCZO, new ConditionOf(SCZO.DataType, bx));
+                m.Assign(SCZO, m.Cond(SCZO.DataType, bx));
             });
             Given_Instrs(b2, m =>
             {

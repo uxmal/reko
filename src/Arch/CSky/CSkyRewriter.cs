@@ -491,7 +491,7 @@ namespace Reko.Arch.CSky
             Identifier c = binder.EnsureFlagGroup(Registers.C);
             var (dst, left, right) = Rewrite2or3operands();
             var cRight = (Constant) right;
-            var bitmask = Constant.Create(PrimitiveType.Word32, 1u << (cRight.ToInt32() - 1));
+            var bitmask = m.Const(PrimitiveType.Word32, 1u << (cRight.ToInt32() - 1));
             m.Assign(c, m.Ne0(m.And(left, bitmask)));
             m.Assign(dst, m.Bin(op, left, right));
         }
@@ -502,7 +502,7 @@ namespace Reko.Arch.CSky
             Identifier c = binder.EnsureFlagGroup(Registers.C);
             var (dst, left, right) = Rewrite2or3operands();
             var cRight = (Constant) right;
-            var bitmask = Constant.Create(PrimitiveType.Word32, 1u << (cRight.ToInt32() - 1));
+            var bitmask = m.Const(PrimitiveType.Word32, 1u << (cRight.ToInt32() - 1));
             m.Assign(c, m.Ne0(m.And(left, bitmask)));
             m.Assign(dst, m.Bin(op, left, right));
         }

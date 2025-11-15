@@ -73,7 +73,7 @@ namespace Reko.UnitTests.Decompiler.Structure
 
         public Application Fn(string name, params Expression[] exps)
         {
-            var appl = new Application(
+            var appl = base.Fn(
                 new ProcedureConstant(PrimitiveType.Ptr32, new IntrinsicProcedure(name, true, VoidType.Instance, 0)),
                 PrimitiveType.Word32, exps);
             return appl;
@@ -133,23 +133,6 @@ namespace Reko.UnitTests.Decompiler.Structure
             var m = new AbsynCodeEmitter(bodyStmts);
             bodyGen(m);
             stmts.Add(new AbsynWhile(cond, bodyStmts));
-        }
-
-        /// <summary>
-        /// Generates a cast expression which coerces the <paramref name="expr"/> to
-        /// the data type <paramref name="dataType"/>.
-        /// </summary>
-        /// <param name="dataType">Type to coerce to.</param>
-        /// <param name="expr">Value to coerce.</param>
-        /// <returns>A cast expression.</returns>
-        /// <remarks>
-        /// This method is not on <see cref="ExpressionEmitter"/> because we want to 
-        /// discourage the use of <see cref="Cast"/> expressions in early stages of Reko.
-        /// Use <see cref="Slice"/> or <see cref="Convert"/> expressions instead.
-        /// </remarks>
-        public Cast Cast(DataType dataType, Expression expr)
-        {
-            return new Cast(dataType, expr);
         }
     }
 }

@@ -167,7 +167,7 @@ namespace Reko.Arch.LatticeMico
             {
             case RegisterStorage rop:
                 if (rop.Number == 0)
-                    return Constant.Create(rop.DataType, 0);
+                    return m.Const(rop.DataType, 0);
                 else
                     return binder.EnsureRegister(rop);
             case Constant imm:

@@ -167,12 +167,12 @@ public class StoreFuser : IAnalysis<SsaState>
                 if (minStore.Segment is null)
                 {
                     return ssa.Procedure.Architecture.MakeAddressFromConstant(
-                        Constant.Create(sid.Identifier.DataType, minStore.Displacement),
+                        m.Const(sid.Identifier.DataType, minStore.Displacement),
                         false);
                 }
                 else
                 {
-                    var offset = Constant.Word16((ushort) minStore.Displacement);
+                    var offset = m.Word16((ushort) minStore.Displacement);
                     return m.SegPtr(minStore.Segment, offset);
                 }
             }

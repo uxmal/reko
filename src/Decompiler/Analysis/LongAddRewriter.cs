@@ -114,6 +114,7 @@ public class LongAddRewriter : IAnalysis<SsaState>
         private readonly SsaMutator ssam;
         private readonly IProcessorArchitecture arch;
         private readonly IEventListener listener;
+        private readonly ExpressionEmitter m;
         private Expression? dst;
 
         /// <summary>
@@ -126,7 +127,8 @@ public class LongAddRewriter : IAnalysis<SsaState>
         public Worker(SsaState ssa, AnalysisContext context)
         {
             this.ssa = ssa;
-            this.ssam = new SsaMutator(ssa);
+            this.m = new ExpressionEmitter();
+            this.ssam = new SsaMutator(ssa, m);
             this.arch = ssa.Procedure.Architecture;
             this.listener = context.EventListener;
         }
@@ -167,7 +169,7 @@ public class LongAddRewriter : IAnalysis<SsaState>
                 right = ReplaceDstWithSsaIdentifier(right, stmMkRight);
             }
 
-            var expSum = new BinaryExpression(loCandidate.Op, left.DataType, left, right);
+            var expSum = m.Bin(loCandidate.Op, left.DataType, left, right);
             Instruction instr = Assign(dst, expSum);
             var stmLong = stmts.Insert(iStm++, addr, instr);
             this.dst = ReplaceDstWithSsaIdentifier(this.dst, stmLong);
@@ -184,14 +186,14 @@ public class LongAddRewriter : IAnalysis<SsaState>
             var sidDstLo = GetSsaIdentifierOf(loCandidate.Dst);
             if (sidDstLo is not null)
             {
-                var cast = new Slice(loCandidate.Dst.DataType, dst, 0);
+                var cast = m.Slice(dst, loCandidate.Dst.DataType, 0);
                 var stmCastLo = stmts.Insert(iStm++, addr, new AliasAssignment(
                     sidDstLo.Identifier, cast));
                 var stmDeadLo = sidDstLo.DefStatement;
                 sidDstLo.DefStatement = stmCastLo;
 
                 var sidDstHi = GetSsaIdentifierOf(hiCandidate.Dst);
-                var slice = new Slice(hiCandidate.Dst.DataType, dst, loCandidate.Dst.DataType.BitSize);
+                var slice = m.Slice(dst, hiCandidate.Dst.DataType, loCandidate.Dst.DataType.BitSize);
                 var stmSliceHi = stmts.Insert(iStm++, addr, new AliasAssignment(
                     sidDstHi!.Identifier, slice));
                 var stmDeadHi = sidDstHi.DefStatement;
@@ -257,21 +259,21 @@ public class LongAddRewriter : IAnalysis<SsaState>
 
             var wideDst = sidWideDst.Identifier;
             sidWideDst.DefStatement = stmHi.Block.Statements.Insert(iStm++, stmHi.Address,
-                Assign(wideDst, new UnaryExpression(Operator.Neg, wideSrc.DataType, wideSrc)));
+                Assign(wideDst, m.Neg(wideSrc)));
             GetSsaIdentifierOf(wideSrc)?.Uses.Add(sidWideDst.DefStatement);
 
             var sidLo = GetSsaIdentifierOf(loCandidate.Dst);
             if (sidLo is not null)
             {
                 ssa.RemoveUses(stmLo);
-                stmLo.Instruction = new Assignment(sidLo.Identifier, new Slice(sidLo.Identifier.DataType, wideDst, 0));
+                stmLo.Instruction = new Assignment(sidLo.Identifier, m.Slice(wideDst, sidLo.Identifier.DataType));
                 ssa.AddUses(stmLo);
             }
             var sidHi = GetSsaIdentifierOf(hiCandidate.Dst);
             if (sidHi is not null)
             {
                 ssa.RemoveUses(sidHi.DefStatement);
-                sidHi.DefStatement.Instruction = new Assignment(sidHi.Identifier, new Slice(sidHi.Identifier.DataType, wideDst, loCandidate.Dst.DataType.BitSize));
+                sidHi.DefStatement.Instruction = new Assignment(sidHi.Identifier, m.Slice(wideDst, sidHi.Identifier.DataType, loCandidate.Dst.DataType.BitSize));
                 ssa.AddUses(sidHi.DefStatement);
             }
         }
@@ -306,9 +308,9 @@ public class LongAddRewriter : IAnalysis<SsaState>
             return dst;
         }
 
-        private static Instruction CreateMkSeq(Expression dst, Expression hi, Expression lo)
+        private Instruction CreateMkSeq(Expression dst, Expression hi, Expression lo)
         {
-            return Assign(dst, new MkSequence(dst.DataType, hi, lo));
+            return Assign(dst, m.Seq(dst.DataType, hi, lo));
         }
 
         private static Instruction Assign(Expression dst, Expression src)
@@ -672,7 +674,7 @@ public class LongAddRewriter : IAnalysis<SsaState>
                     ass.Src.IsZero)
                 {
                     var dt = PrimitiveType.Create(Domain.UnsignedInt, totalSize.BitSize);
-                    return new Conversion(idLo, idLo.DataType, dt);
+                    return m.Convert(idLo, idLo.DataType, dt);
                 }
                 return ssa.Procedure.Frame.EnsureSequence(totalSize, idHi.Storage, idLo.Storage);
             }
@@ -685,12 +687,12 @@ public class LongAddRewriter : IAnalysis<SsaState>
             {
                 return Constant.Create(totalSize, (immHi.ToUInt64() << expLo.DataType.BitSize) | immLo.ToUInt32());
             }
-            return new MkSequence(totalSize, expHi, expLo);
+            return m.Seq(totalSize, expHi, expLo);
         }
 
-        private static Expression CreateMemoryAccess(MemoryAccess mem, DataType totalSize)
+        private Expression CreateMemoryAccess(MemoryAccess mem, DataType dt)
         {
-            return new MemoryAccess(mem.MemoryId, mem.EffectiveAddress, totalSize);
+            return m.Mem(mem.MemoryId, dt, mem.EffectiveAddress);
         }
 
         /// <summary>
@@ -1085,7 +1087,7 @@ public class LongAddRewriter : IAnalysis<SsaState>
                 left = ReplaceDstWithSsaIdentifier(left, stmMkLeft);
             }
 
-            var expSum = new BinaryExpression(loCandidate.Op, left.DataType, left, loCandidate.Right!);
+            var expSum = m.Bin(loCandidate.Op, left.DataType, left, loCandidate.Right!);
             Instruction instr = Assign(dst, expSum);
             var stmLong = stmts.Insert(iStm++, addr, instr);
             this.dst = ReplaceDstWithSsaIdentifier(this.dst, stmLong);
@@ -1098,14 +1100,14 @@ public class LongAddRewriter : IAnalysis<SsaState>
             var sidDstLo = GetSsaIdentifierOf(loCandidate.Dst);
             if (sidDstLo is not null)
             {
-                var cast = new Slice(loCandidate.Dst.DataType, dst, 0);
+                var cast = m.Slice(dst, loCandidate.Dst.DataType);
                 var stmCastLo = stmts.Insert(iStm++, addr, new AliasAssignment(
                     sidDstLo.Identifier, cast));
                 var stmDeadLo = sidDstLo.DefStatement;
                 sidDstLo.DefStatement = stmCastLo;
 
                 var sidDstHi = GetSsaIdentifierOf(hiCandidate.Dst);
-                var slice = new Slice(hiCandidate.Dst.DataType, dst, loCandidate.Dst.DataType.BitSize);
+                var slice = m.Slice(dst, hiCandidate.Dst.DataType, loCandidate.Dst.DataType.BitSize);
                 var stmSliceHi = stmts.Insert(iStm++, addr, new AliasAssignment(
                     sidDstHi!.Identifier, slice));
                 var stmDeadHi = sidDstHi.DefStatement;
@@ -1180,57 +1182,51 @@ public class LongAddRewriter : IAnalysis<SsaState>
 
     static LongAddRewriter()
     {
+        var m = new ExpressionMatcherEmitter();
         condm = new InstructionMatcher(
             new Assignment(
-                ExpressionMatcher.AnyId("grf"),
-                new ConditionOf(
-                    ExpressionMatcher.AnyDataType(null),
-                    ExpressionMatcher.AnyExpression("exp"))));
+                m.AnyId("grf"),
+                m.Cond(
+                    m.AnyDataType(null),
+                    m.AnyExpr("exp"))));
 
         addPattern = new InstructionMatcher(
             new Assignment(
-                ExpressionMatcher.AnyId("dst"),
-                new BinaryExpression(
-                    ExpressionMatcher.AnyBinaryOperator("op"),
-                    VoidType.Instance,
-                    ExpressionMatcher.AnyExpression("left"),
-                    ExpressionMatcher.AnyExpression("right"))));
+                m.AnyId("dst"),
+                m.AnyBinary(
+                    "op",
+                    m.AnyExpr("left"),
+                    m.AnyExpr("right"))));
 
         adcPattern = new InstructionMatcher(
             new Assignment(
-                ExpressionMatcher.AnyId("dst"),
-                new BinaryExpression(
-                    ExpressionMatcher.AnyBinaryOperator("op1"),
-                    VoidType.Instance,
-                    new BinaryExpression(
-                        ExpressionMatcher.AnyBinaryOperator("op2"),
-                        VoidType.Instance,
-                        ExpressionMatcher.AnyExpression("left"),
-                        ExpressionMatcher.AnyExpression("right")),
-                    ExpressionMatcher.AnyExpression("cf"))));
+                m.AnyId("dst"),
+                m.AnyBinary(
+                    "op1",
+                    m.AnyBinary(
+                        "op2",
+                        m.AnyExpr("left"),
+                        m.AnyExpr("right")),
+                    m.AnyExpr("cf"))));
 
         memOffset = ExpressionMatcher.Build(m =>
-            new MemoryAccess(
-                new BinaryExpression(
-                    ExpressionMatcher.AnyBinaryOperator("op"),
-                    VoidType.Instance,
-                    ExpressionMatcher.AnyExpression("base"),
-                    ExpressionMatcher.AnyConstant("Offset")),
-                ExpressionMatcher.AnyDataType("dt")));
+            m.Mem(
+                m.AnyDataType("dt"),
+                m.AnyBinary(
+                    "op",
+                    m.AnyExpr("base"),
+                    m.AnyConst("Offset"))));
 
         segMemOffset = new ExpressionMatcher(
-            new MemoryAccess(
+            m.Mem(
                 MemoryStorage.GlobalMemory,
-                new SegmentedPointer(
-                    ExpressionMatcher.AnyDataType(null),
-                    ExpressionMatcher.AnyId(),
-                    new BinaryExpression(
-                        ExpressionMatcher.AnyBinaryOperator("op"),
-                        VoidType.Instance,
-                        ExpressionMatcher.AnyExpression("base"),
-                        ExpressionMatcher.AnyConstant("Offset"))),
-                ExpressionMatcher.AnyDataType("dt")));
+                m.AnyDataType("dt"),
+                m.SegPtr(
+                    m.AnyDataType(null),
+                    m.AnyId(),
+                    m.AnyBinary(
+                        "op",
+                        m.AnyExpr("base"),
+                        m.AnyConst("Offset")))));
     }
-
-
 }

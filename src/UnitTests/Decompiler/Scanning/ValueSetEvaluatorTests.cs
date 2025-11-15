@@ -85,6 +85,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             this.vse = new ValueSetEvaluator(
                 program.Architecture,
                 program.Memory,
+                new ExpressionEmitter(),
                 valueSets);
         }
 

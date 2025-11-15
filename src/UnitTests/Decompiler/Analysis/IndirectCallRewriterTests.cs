@@ -437,7 +437,7 @@ trash = <invalid>
             {
                 var index = binder.EnsureRegister(top);
                 var array = binder.EnsureRegister(st);
-                return (ret, new ArrayAccess(ret.DataType, array, index));
+                return (ret, m.ARef(ret.DataType, array, index));
             });
             var uses = new Identifier[] { top_1, st_3 };
             var defines = new Identifier[] { top_2 };

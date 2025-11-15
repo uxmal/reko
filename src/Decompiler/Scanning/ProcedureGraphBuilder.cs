@@ -43,6 +43,7 @@ namespace Reko.Scanning
         private readonly ScanResultsV2 sr;
         private readonly Program program;
         private readonly Dictionary<Address, Block> blocksByAddress;
+        private readonly ExpressionEmitter m;
 
         /// <summary>
         /// Constructs an instance of <see cref="ProcedureGraphBuilder"/>.
@@ -54,7 +55,8 @@ namespace Reko.Scanning
         {
             this.sr = sr;
             this.program = program;
-            this.blocksByAddress = new Dictionary<Address, Block>();
+            this.blocksByAddress = [];
+            this.m = new ExpressionEmitter();
         }
 
         /// <summary>
@@ -375,7 +377,7 @@ namespace Reko.Scanning
             {
                 args[i] = appl.Arguments[i].Accept(this, ctx);
             }
-            return new Application(proc, appl.DataType, args);
+            return m.Fn(proc, appl.DataType, args);
         }
 
         Expression ExpressionVisitor<Expression, Procedure>.VisitArrayAccess(ArrayAccess acc, Procedure ctx)
@@ -387,7 +389,7 @@ namespace Reko.Scanning
         {
             var left = binExp.Left.Accept(this, ctx);
             var right = binExp.Right.Accept(this, ctx);
-            return new BinaryExpression(
+            return m.Bin(
                 binExp.Operator,
                 binExp.DataType,
                 left,
@@ -404,13 +406,13 @@ namespace Reko.Scanning
             var exp = c.Condition.Accept(this, context);
             var th = c.Condition.Accept(this, context);
             var el = c.Condition.Accept(this, context);
-            return new ConditionalExpression(c.DataType, exp, th, el);
+            return m.Conditional(c.DataType, exp, th, el);
         }
 
         Expression ExpressionVisitor<Expression, Procedure>.VisitConditionOf(ConditionOf cof, Procedure ctx)
         {
             var exp = cof.Expression.Accept(this, ctx);
-            return new ConditionOf(cof.DataType, exp);
+            return m.Cond(cof.DataType, exp);
         }
 
         Expression ExpressionVisitor<Expression, Procedure>.VisitConstant(Constant c, Procedure ctx)
@@ -421,7 +423,7 @@ namespace Reko.Scanning
         Expression ExpressionVisitor<Expression, Procedure>.VisitConversion(Conversion conversion, Procedure context)
         {
             var exp = conversion.Expression.Accept(this, context);
-            return new Conversion(exp, conversion.SourceDataType, conversion.DataType);
+            return m.Convert(exp, conversion.SourceDataType, conversion.DataType);
         }
 
         Expression ExpressionVisitor<Expression, Procedure>.VisitDereference(Dereference deref, Procedure ctx)
@@ -453,7 +455,7 @@ namespace Reko.Scanning
         Expression ExpressionVisitor<Expression, Procedure>.VisitMemoryAccess(MemoryAccess access, Procedure ctx)
         {
             var ea = access.EffectiveAddress.Accept(this, ctx);
-            return new MemoryAccess(access.MemoryId, ea, access.DataType);
+            return m.Mem(access.MemoryId, access.DataType, ea);
         }
 
         Expression ExpressionVisitor<Expression, Procedure>.VisitMkSequence(MkSequence seq, Procedure ctx)
@@ -490,13 +492,13 @@ namespace Reko.Scanning
         {
             var selector = addr.BasePointer.Accept(this, ctx);
             var ea = addr.Offset.Accept(this, ctx);
-            return new SegmentedPointer(addr.DataType, selector, ea);
+            return m.SegPtr(addr.DataType, selector, ea);
         }
 
         Expression ExpressionVisitor<Expression, Procedure>.VisitSlice(Slice slice, Procedure ctx)
         {
             var exp = slice.Expression.Accept(this, ctx);
-            return new Slice(slice.DataType, exp, slice.Offset);
+            return m.Slice(exp, slice.DataType, slice.Offset);
         }
 
         Expression ExpressionVisitor<Expression, Procedure>.VisitStringConstant(StringConstant s, Procedure ctx)
@@ -508,13 +510,13 @@ namespace Reko.Scanning
         Expression ExpressionVisitor<Expression, Procedure>.VisitTestCondition(TestCondition tc, Procedure ctx)
         {
             var exp = tc.Expression.Accept(this, ctx);
-            return new TestCondition(tc.ConditionCode, exp);
+            return m.Test(tc.ConditionCode, exp);
         }
 
         Expression ExpressionVisitor<Expression, Procedure>.VisitUnaryExpression(UnaryExpression unary, Procedure ctx)
         {
             var exp = unary.Expression.Accept(this, ctx);
-            return new UnaryExpression(unary.Operator, unary.DataType, exp);
+            return m.Unary(unary.Operator, unary.DataType, exp);
         }
 
         private class StatementInjector : CodeEmitter

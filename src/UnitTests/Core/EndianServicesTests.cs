@@ -60,6 +60,7 @@ namespace Reko.UnitTests.Core
         public void EndSvc_SliceMemoryAccess_Address()
         {
             var mem = new MemoryAccess(
+                MemoryStorage.GlobalMemory,
                 Address.SegPtr(0x1234, 0x0000),
                 PrimitiveType.Word32);
             var leSlice = EndianServices.Little.SliceMemoryAccess(
@@ -83,6 +84,7 @@ namespace Reko.UnitTests.Core
         {
             var sp = Identifier.Create(RegisterStorage.Reg32("sp", 1));
             var mem = new MemoryAccess(
+                MemoryStorage.GlobalMemory,
                 sp,
                 PrimitiveType.Word32);
             var leSlice = EndianServices.Little.SliceMemoryAccess(
@@ -106,6 +108,7 @@ namespace Reko.UnitTests.Core
         {
             var sp = Identifier.Create(RegisterStorage.Reg32("sp", 1));
             var mem = new MemoryAccess(
+                MemoryStorage.GlobalMemory,
                 new BinaryExpression(Operator.IAdd, sp.DataType, sp, Constant.Create(sp.DataType, 8)),
                 PrimitiveType.Word32);
             var leSlice = EndianServices.Little.SliceMemoryAccess(
@@ -129,6 +132,7 @@ namespace Reko.UnitTests.Core
         {
             var sp = Identifier.Create(RegisterStorage.Reg32("sp", 1));
             var mem = new MemoryAccess(
+                MemoryStorage.GlobalMemory,
                 new BinaryExpression(Operator.ISub, sp.DataType, sp, Constant.Create(sp.DataType, 8)),
                 PrimitiveType.Word32);
             var leSlice = EndianServices.Little.SliceMemoryAccess(

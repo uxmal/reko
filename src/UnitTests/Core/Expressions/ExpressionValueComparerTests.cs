@@ -32,11 +32,13 @@ namespace Reko.UnitTests.Core.Expressions
     public class ExpressionValueComparerTests
     {
         private IEqualityComparer<Expression> eq;
+        private ExpressionEmitter m;
 
         [SetUp]
         public void Setup()
         {
             eq = new ExpressionValueComparer();
+            m = new ExpressionEmitter();
         }
 
         [Test]
@@ -50,8 +52,8 @@ namespace Reko.UnitTests.Core.Expressions
         [Test]
         public void EvcTestCondition()
         {
-            TestCondition tc1 = new TestCondition(ConditionCode.EQ, new Identifier("a", PrimitiveType.Word32, new TemporaryStorage("a", 1, PrimitiveType.Word32)));
-            TestCondition tc2 = new TestCondition(ConditionCode.EQ, new Identifier("a", PrimitiveType.Word32, new TemporaryStorage("a", 1, PrimitiveType.Word32)));
+            TestCondition tc1 = m.Test(ConditionCode.EQ, new Identifier("a", PrimitiveType.Word32, new TemporaryStorage("a", 1, PrimitiveType.Word32)));
+            TestCondition tc2 = m.Test(ConditionCode.EQ, new Identifier("a", PrimitiveType.Word32, new TemporaryStorage("a", 1, PrimitiveType.Word32)));
             Assert.IsTrue(eq.Equals(tc1, tc2));
             Assert.AreEqual(eq.GetHashCode(tc1), eq.GetHashCode(tc2));
         }
@@ -60,8 +62,8 @@ namespace Reko.UnitTests.Core.Expressions
         public void EvcApplication()
         {
             Identifier pfn = new Identifier("pfn", PrimitiveType.Ptr32, new TemporaryStorage("pfn", 1, PrimitiveType.Ptr32));
-            Application a1 = new Application(pfn, PrimitiveType.Int32, pfn);
-            Application a2 = new Application(pfn, PrimitiveType.Int32, pfn);
+            Application a1 = m.Fn(pfn, PrimitiveType.Int32, pfn);
+            Application a2 = m.Fn(pfn, PrimitiveType.Int32, pfn);
             Assert.IsTrue(eq.Equals(a1, a2));
             Assert.AreEqual(eq.GetHashCode(a1), eq.GetHashCode(a2));
         }
@@ -70,8 +72,8 @@ namespace Reko.UnitTests.Core.Expressions
         public void EvcBinaryExpression()
         {
             Identifier a = new Identifier("a", PrimitiveType.Word32, new TemporaryStorage("a", 1, PrimitiveType.Word32));
-            BinaryExpression a1 = new BinaryExpression(Operator.IAdd, PrimitiveType.Word32, a, a);
-            BinaryExpression a2 = new BinaryExpression(Operator.IAdd, PrimitiveType.Word32, a, a);
+            BinaryExpression a1 = m.IAdd(a, a);
+            BinaryExpression a2 = m.IAdd(a, a);
             Assert.IsTrue(eq.Equals(a1, a2));
             Assert.AreEqual(eq.GetHashCode(a1), eq.GetHashCode(a2));
         }

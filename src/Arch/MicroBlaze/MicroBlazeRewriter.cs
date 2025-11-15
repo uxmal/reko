@@ -278,8 +278,8 @@ namespace Reko.Arch.MicroBlaze
                     src = m.Conditional(
                         regA.DataType,
                         m.Ne0(cy),
-                        Constant.Create(regA.DataType, 1),
-                        Constant.Create(regA.DataType, 0));
+                        m.Const(regA.DataType, 1),
+                        m.Const(regA.DataType, 0));
                 }
                 else
                 {

@@ -38,7 +38,6 @@ namespace Reko.Evaluation
         private static readonly IdConstant idConst;
         private static readonly ComparisonConstOnLeft constOnLeft;
         private static readonly AddTwoIdsRule add2ids;
-        private static readonly Add_e_c_cRule addEcc;
         private static readonly Add_mul_id_c_id_Rule addMici;
         private static readonly ConstConstBin_Rule constConstBin;
         private static readonly IdBinIdc_Rule idBinIdc;
@@ -51,7 +50,6 @@ namespace Reko.Evaluation
         private static readonly ShiftShift_c_c_Rule shiftShift;
         private static readonly NegSub_Rule negSub;
         private static readonly CompSub_Rule compSub;
-        private static readonly Mps_Constant_Rule mpsRule;
         private static readonly BinOpWithSelf_Rule binopWithSelf;
         private static readonly ConstDivisionImplementedByMultiplication constDiv;
         private static readonly ConvertConvertRule convertConvertRule;
@@ -120,7 +118,7 @@ namespace Reko.Evaluation
         {
             var (e, changed) = cast.Expression.Accept(this);
             if (changed)
-                cast = new Cast(cast.DataType, e);
+                cast = m.Cast(cast.DataType, e);
             return (cast, changed);
         }
 
@@ -140,7 +138,7 @@ namespace Reko.Evaluation
             {
                 var (left, changedLeft) = bin.Left.Accept(this);
                 var (right, changedRight) = bin.Right.Accept(this);
-                e = new BinaryExpression(
+                e = m.Bin(
                     bin.Operator, bin.DataType, left, right);
                 changed = changedLeft || changedRight;
             }
@@ -151,7 +149,7 @@ namespace Reko.Evaluation
             //$REVIEW: if e == 0, then Z flags could be set to 1. But that's architecture specific, so
             // we leave that as an exercise to re reader
             if (changed)
-                c = new ConditionOf(c.DataType, e);
+                c = m.Cond(c.DataType, e);
             return (c, changed);
         }
 
@@ -175,7 +173,7 @@ namespace Reko.Evaluation
         {
             var (e, changed) = acc.Structure.Accept(this);
             if (changed)
-                acc = new FieldAccess(acc.DataType, e, acc.Field);
+                acc = m.Field(acc.DataType, e, acc.Field);
             return (acc, changed);
         }
 
@@ -204,7 +202,7 @@ namespace Reko.Evaluation
                 var (exp, change) = outArg.Expression.Accept(this);
                 if (change)
                 {
-                    return (new OutArgument(outArg.DataType, exp), true);
+                    return (m.Out(outArg.DataType, exp), true);
                 }
             }
             return (outArg, false);
@@ -248,7 +246,7 @@ namespace Reko.Evaluation
                 changed = true;
             }
             if (changed)
-                tc = new TestCondition(tc.ConditionCode, e);
+                tc = m.Test(tc.ConditionCode, e);
             return (tc, changed);
         }
 
@@ -272,7 +270,7 @@ namespace Reko.Evaluation
         }
 
         /// <inheritdoc/>
-        public static Expression? SliceSequence(MkSequence seq, DataType dtSlice, int sliceOffset)
+        public Expression? SliceSequence(MkSequence seq, DataType dtSlice, int sliceOffset)
         {
             var bitsUsed = dtSlice.BitSize;
             int bitoffset = 0;
@@ -285,7 +283,7 @@ namespace Reko.Evaluation
                 {
                     var eNew = offset == 0 && bitsUsed == bitsElem
                         ? elem
-                        : new Slice(dtSlice, elem, offset);
+                        : m.Slice(elem, dtSlice, offset);
                     return eNew;
                 }
                 bitoffset += bitsElem;
@@ -298,7 +296,6 @@ namespace Reko.Evaluation
             idConst = new IdConstant();
             constOnLeft = new ComparisonConstOnLeft();
             add2ids = new AddTwoIdsRule();
-            addEcc = new Add_e_c_cRule();
             addMici = new Add_mul_id_c_id_Rule();
             idBinIdc = new IdBinIdc_Rule();
             sliceConst = new SliceConstant_Rule();
@@ -310,7 +307,6 @@ namespace Reko.Evaluation
             shAdd = new Shl_add_Rule();
             shMul = new Shl_mul_e_Rule();
             shiftShift = new ShiftShift_c_c_Rule();
-            mpsRule = new Mps_Constant_Rule();
             sliceShift = new SliceShift();
             binopWithSelf = new BinOpWithSelf_Rule();
             constDiv = new ConstDivisionImplementedByMultiplication();

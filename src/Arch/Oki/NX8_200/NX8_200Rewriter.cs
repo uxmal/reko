@@ -378,7 +378,7 @@ public class NX8_200Rewriter : IEnumerable<RtlInstructionCluster>
     private void RewriteIncDec(BinaryOperator op, PrimitiveType dt)
     {
         var src = OpSrc(0, dt);
-        var dst = OpDst(0, m.Bin(op, src, Constant.Create(dt, 1)), dt);
+        var dst = OpDst(0, m.Bin(op, src, m.Const(dt, 1)), dt);
         var z = binder.EnsureFlagGroup(Registers.Z);
         m.Assign(z, m.Cond(z.DataType, dst));
     }

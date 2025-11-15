@@ -105,7 +105,7 @@ namespace Reko.Arch.X86.Rewriter
             {
                 dt = PrimitiveType.UInt32;
             }
-            return m.UMul(dt, regCx, Constant.Create(regCx.DataType, instrCur.DataWidth.Size));
+            return m.UMul(dt, regCx, m.Const(regCx.DataType, instrCur.DataWidth.Size));
         }
 
         private bool RewriteCmpsToToFindFirstDifference()

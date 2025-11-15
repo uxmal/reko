@@ -81,6 +81,7 @@ public class ArgumentGuesser : IAnalysis<SsaState>
         private readonly Storage stackPointer;
         private readonly Storage framePointer;
         private readonly IEventListener eventListener;
+        private readonly ExpressionEmitter m;
 
         public Worker(IPlatform platform, SsaState ssa, IEventListener eventListener)
         {
@@ -89,6 +90,7 @@ public class ArgumentGuesser : IAnalysis<SsaState>
             this.eventListener = eventListener;
             this.stackPointer = ssa.Procedure.Architecture.StackRegister;
             this.framePointer = ssa.Procedure.Frame.FramePointer.Storage;
+            this.m = new ExpressionEmitter();
         }
 
         public bool Transform()
@@ -323,18 +325,18 @@ public class ArgumentGuesser : IAnalysis<SsaState>
                 var idRet = MatchingReturnIdentifier(call, gret);
                 if (idRet is { })
                 {
-                    var application = new Application(pc, idRet.DataType, args.ToArray());
+                    var application = m.Fn(pc, idRet.DataType, args.ToArray());
                     newInstr = new Assignment(idRet, application);
                 }
                 else
                 {
-                    var application = new Application(pc, VoidType.Instance, args.ToArray());
+                    var application = m.Fn(pc, VoidType.Instance, args.ToArray());
                     newInstr = new SideEffect(application);
                 }
             }
             else
             {
-                var application = new Application(pc, VoidType.Instance, args.ToArray());
+                var application = m.Fn(pc, VoidType.Instance, args.ToArray());
                 newInstr = new SideEffect(application);
             }
             ssa.RemoveUses(stmCall);

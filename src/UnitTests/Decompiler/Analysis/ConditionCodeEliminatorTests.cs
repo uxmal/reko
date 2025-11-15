@@ -397,7 +397,7 @@ done:
 			Identifier z = FlagGroup("z");  // is a condition code.
             Identifier y = FlagGroup("y");  // is a condition code.
 
-            m.Assign(z, new ConditionOf(z.DataType, r));
+            m.Assign(z, m.Cond(z.DataType, r));
             ssaIds[z].DefStatement = m.Block.Statements[^1];
             m.Assign(y, z);
             ssaIds[y].DefStatement = m.Block.Statements[^1];

@@ -382,18 +382,6 @@ namespace Reko.Core.Rtl
             return this;
         }
 
-        /// <summary>
-        /// Generates a constant of type <paramref name="dataType"/> from the bit pattern
-        /// <paramref name="p"/>.
-        /// </summary>
-        /// <param name="dataType">Data type of the constant.</param>
-        /// <param name="p">Bit vector.</param>
-        /// <returns>A Constant</returns>
-        public Expression Const(DataType dataType, long p)
-        {
-            return Constant.Create(dataType, p);
-        }
-
         /// <inheritdoc/>
         [Obsolete("RtlIf is going away soon: don't use it.", false)]
         public RtlEmitter If(Expression test, RtlInstruction rtl)

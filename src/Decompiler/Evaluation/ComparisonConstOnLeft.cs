@@ -44,9 +44,10 @@ public class ComparisonConstOnLeft
     /// </code>
     /// </summary>
     /// <param name="bin">Binary expression to test.</param>
+    /// <param name="m">Expression emitter.</param>
     /// <returns>A mirrored binary expression or null if this wasn't a comparison.
     /// </returns>
-    public Expression? Match(BinaryExpression bin)
+    public Expression? Match(BinaryExpression bin, ExpressionEmitter m)
     {
         if (bin.Operator is not ConditionalOperator cond)
             return null;
@@ -54,7 +55,7 @@ public class ComparisonConstOnLeft
             return null;
         if (bin.Right is Constant)
             return null;
-        return new BinaryExpression(
+        return m.Bin(
             cond.Mirror(),
             bin.DataType,
             bin.Right,

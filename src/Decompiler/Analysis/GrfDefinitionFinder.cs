@@ -36,6 +36,7 @@ namespace Reko.Analysis
 	public class GrfDefinitionFinder : InstructionVisitorBase
 	{
 		private readonly SsaIdentifierCollection ssaIds;
+        private readonly ExpressionEmitter m;
 		private SsaIdentifier? sid;
 		private bool negated;
 		private Statement? stm;
@@ -45,9 +46,11 @@ namespace Reko.Analysis
         /// Constructs an instance of <see cref="GrfDefinitionFinder"/>.
         /// </summary>
         /// <param name="ssaIds"></param>
-		public GrfDefinitionFinder(SsaIdentifierCollection ssaIds)
+        /// <param name="m">Expression emitter to use.</param>
+		public GrfDefinitionFinder(SsaIdentifierCollection ssaIds, ExpressionEmitter m)
 		{
 			this.ssaIds = ssaIds;
+            this.m = m;
 		}
 
 		/// <summary>
@@ -108,7 +111,7 @@ namespace Reko.Analysis
             {
                 if (di.Expression == sid!.Identifier)
                 {
-                    defExpr = new Application(ci.Callee, new UnknownType());
+                    defExpr = m.Fn(ci.Callee, new UnknownType());
                     return;
                 }
             }

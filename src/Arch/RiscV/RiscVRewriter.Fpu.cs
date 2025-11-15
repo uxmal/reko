@@ -38,7 +38,7 @@ namespace Reko.Arch.RiscV
             if (cbNanBox > 0)
             {
                 var dtNan = PrimitiveType.CreateWord(cbNanBox);
-                var nan = Constant.Create(dtNan, -1L);
+                var nan = m.Const(dtNan, -1L);
                 return m.Seq(nan, exp);
             }
             else

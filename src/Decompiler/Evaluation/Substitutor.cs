@@ -30,7 +30,8 @@ namespace Reko.Evaluation
     /// </summary>
     public class Substitutor : ExpressionVisitor<Expression>
     {
-        private EvaluationContext ctx;
+        private readonly EvaluationContext ctx;
+        private readonly ExpressionEmitter m;
 
         /// <summary>
         /// Constructs a new substitutor that will use the given evaluation context.
@@ -41,6 +42,7 @@ namespace Reko.Evaluation
         public Substitutor(EvaluationContext ctx)
         {
             this.ctx = ctx;
+            this.m = new ExpressionEmitter();
         }
 
         /// <inheritdoc />
@@ -63,7 +65,7 @@ namespace Reko.Evaluation
                     return InvalidConstant.Create(appl.DataType);
                 exprs[i] = exp;
             }
-            return new Application(fn, appl.DataType, exprs);
+            return m.Fn(fn, appl.DataType, exprs);
         }
 
         /// <inheritdoc />
@@ -73,7 +75,7 @@ namespace Reko.Evaluation
             var idx = acc.Index.Accept(this);
             if (arr is InvalidConstant || idx is InvalidConstant)
                 return InvalidConstant.Create(acc.DataType);
-            return new ArrayAccess(acc.DataType, arr, idx);
+            return m.ARef(acc.DataType, arr, idx);
         }
 
         /// <inheritdoc />
@@ -83,7 +85,7 @@ namespace Reko.Evaluation
             var right = binExp.Right.Accept(this);
             if (left is InvalidConstant || right is InvalidConstant)
                 return InvalidConstant.Create(binExp.DataType);
-            return new BinaryExpression(
+            return m.Bin(
                 binExp.Operator,
                 binExp.DataType,
                 left,
@@ -98,7 +100,7 @@ namespace Reko.Evaluation
                 return InvalidConstant.Create(cast.DataType);
             if (exp is Constant ||
                 exp is Identifier)
-                return new Cast(cast.DataType, exp);
+                return m.Cast(cast.DataType, exp);
             return InvalidConstant.Create(cast.DataType);
         }
 
@@ -114,7 +116,7 @@ namespace Reko.Evaluation
             var fals = c.FalseExp.Accept(this);
             if (fals is InvalidConstant)
                 return InvalidConstant.Create(c.DataType);
-            return new ConditionalExpression(c.DataType, cond, then, fals);
+            return m.Conditional(c.DataType, cond, then, fals);
         }
 
         /// <inheritdoc />
@@ -123,7 +125,7 @@ namespace Reko.Evaluation
             var exp = cof.Expression.Accept(this);
             if (exp is InvalidConstant)
                 return exp;
-            return new ConditionOf(cof.DataType, exp);
+            return m.Cond(cof.DataType, exp);
         }
 
         /// <inheritdoc />
@@ -140,7 +142,7 @@ namespace Reko.Evaluation
                 return InvalidConstant.Create(conversion.DataType);
             if (exp is Constant ||
                 exp is Identifier)
-                return new Conversion(exp, conversion.SourceDataType, conversion.DataType);
+                return m.Convert(exp, conversion.SourceDataType, conversion.DataType);
            return InvalidConstant.Create(conversion.DataType);
         }
 
@@ -175,7 +177,7 @@ namespace Reko.Evaluation
             var ea = access.EffectiveAddress.Accept(this);
             if (ea is InvalidConstant)
                 return InvalidConstant.Create(access.DataType);
-            return new MemoryAccess(access.MemoryId, ea, access.DataType);
+            return m.Mem(access.MemoryId, access.DataType, ea);
         }
 
         /// <inheritdoc />
@@ -185,7 +187,7 @@ namespace Reko.Evaluation
             if (newSeq.Any(e => e is InvalidConstant))
                 return InvalidConstant.Create(seq.DataType);
             else
-                return new MkSequence(seq.DataType, newSeq);
+                return m.Seq(seq.DataType, newSeq);
         }
 
         /// <inheritdoc />
@@ -235,7 +237,7 @@ namespace Reko.Evaluation
             var off = addr.Offset.Accept(this);
             if (off is InvalidConstant)
                 return off;
-            return new SegmentedPointer(addr.DataType, seg, off);
+            return m.SegPtr(addr.DataType, seg, off);
         }
 
         /// <inheritdoc />
@@ -244,7 +246,7 @@ namespace Reko.Evaluation
             var exp = slice.Expression.Accept(this);
             if (exp is InvalidConstant)
                 return exp;
-            return new Slice(slice.DataType, exp, slice.Offset);
+            return m.Slice(exp, slice.DataType, slice.Offset);
         }
 
         /// <inheritdoc />
@@ -259,7 +261,7 @@ namespace Reko.Evaluation
             var cond = tc.Expression.Accept(this);
             if (cond is InvalidConstant)
                 return tc;
-            return new TestCondition(tc.ConditionCode, cond);
+            return m.Test(tc.ConditionCode, cond);
         }
 
         /// <inheritdoc />
@@ -268,7 +270,7 @@ namespace Reko.Evaluation
             var e = unary.Expression.Accept(this);
             if (e is InvalidConstant)
                 return e;
-            return new UnaryExpression(
+            return m.Unary(
                 unary.Operator,
                 unary.DataType,
                 e);

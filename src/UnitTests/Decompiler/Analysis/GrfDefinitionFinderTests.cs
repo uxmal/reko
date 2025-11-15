@@ -43,7 +43,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 dynamicLinker.Object,
                 flow);
             var ssa = sst.Transform();
-            var grfd = new GrfDefinitionFinder(ssa.Identifiers);
+            var grfd = new GrfDefinitionFinder(ssa.Identifiers, sst.ExpressionEmitter);
             foreach (SsaIdentifier sid in ssa.Identifiers)
             {
                 var id = sid.OriginalIdentifier;

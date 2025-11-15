@@ -83,9 +83,10 @@ namespace Reko.UnitTests.Decompiler.Typing
 		{
 			factory = new TypeFactory();
 			store = new TypeStore();
-			eqb = new EquivalenceClassBuilder(factory, store, new FakeDecompilerEventListener());
+            var listener = new FakeDecompilerEventListener();
+            eqb = new EquivalenceClassBuilder(factory, store, listener);
             var platform = new DefaultPlatform(null, new FakeArchitecture(new ServiceContainer()));
-			dtb = new DataTypeBuilder(factory, store, platform);
+			dtb = new DataTypeBuilder(factory, store, platform, listener);
 		}
 
 		private void Verify(string outputFilename)

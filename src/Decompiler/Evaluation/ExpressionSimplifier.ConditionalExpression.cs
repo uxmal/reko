@@ -20,11 +20,6 @@
 
 using Reko.Core.Expressions;
 using Reko.Core.Types;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Evaluation
 {
@@ -46,7 +41,7 @@ namespace Reko.Evaluation
             }
             bool changed = (cChanged | tChanged | fChanged);
             if (changed)
-                c = new ConditionalExpression(c.DataType, cond, t, f);
+                c = m.Conditional(c.DataType, cond, t, f);
             return (c, changed);
         }
     }

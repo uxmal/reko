@@ -37,6 +37,7 @@ namespace Reko.Structure
         private List<AbsynStatement>? stms;
         private RegionType regType;
         private Expression? exp;
+        private readonly ExpressionEmitter m = new ExpressionEmitter();
 
         /// <summary>
         /// Creates a region from the given block.
@@ -81,7 +82,7 @@ namespace Reko.Structure
         public AbsynStatement VisitCallInstruction(CallInstruction ci)
         {
             return new AbsynSideEffect(
-                new Application(ci.Callee, VoidType.Instance));
+                m.Fn(ci.Callee, VoidType.Instance));
         }
 
         /// <inheritdoc/>
@@ -115,7 +116,7 @@ namespace Reko.Structure
                 .ToArray();
             var dst = phi.Dst;
             return new AbsynAssignment(dst,
-                new Application(
+                m.Fn(
                     new Identifier("\u03D5", new UnknownType(), null!),
                     args[0].DataType,
                     args));

@@ -65,7 +65,7 @@ namespace Reko.Typing
 			this.store = store;
             this.program = program;
             this.eventListener = eventListener;
-            this.classesVisited = new HashSet<EquivalenceClass>();
+            this.classesVisited = [];
         }
 
         /// <summary>

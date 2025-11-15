@@ -23,8 +23,6 @@ using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
 using Reko.Core.Types;
-using System;
-using System.Text.RegularExpressions;
 
 namespace Reko.Typing
 {
@@ -37,6 +35,7 @@ namespace Reko.Typing
 	public class ExpressionNormalizer : InstructionTransformer
 	{
         private readonly ArrayExpressionMatcher aem;
+        private readonly ExpressionEmitter m;
 
         /// <summary>
         /// Constructs an instance of the <see cref="ExpressionNormalizer"/> class.
@@ -45,6 +44,7 @@ namespace Reko.Typing
         public ExpressionNormalizer(PrimitiveType pointerType)
         {
 		    this.aem = new ArrayExpressionMatcher(pointerType);
+            this.m = new ExpressionEmitter();
         }
 
         /// <inheritdoc/>
@@ -58,7 +58,7 @@ namespace Reko.Typing
             {
                 if (aem.ArrayPointer is null)
                 {
-                    aem.ArrayPointer = Constant.Create(
+                    aem.ArrayPointer = m.Const(
                         PrimitiveType.Create(
                             Domain.Pointer,
                             ea.DataType.BitSize),
@@ -70,13 +70,13 @@ namespace Reko.Typing
             if (segptr is not null)
             {
                 newEa = ExtendEffectiveAddress(segptr.Offset);
-                newEa = new SegmentedPointer(segptr.DataType, segptr.BasePointer, newEa);
+                newEa = m.SegPtr(segptr.DataType, segptr.BasePointer, newEa);
             }
             else
             {
                 newEa = ExtendEffectiveAddress(ea);
             }
-            return new MemoryAccess(access.MemoryId, newEa, access.DataType);
+            return m.Mem(access.MemoryId, access.DataType, newEa);
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace Reko.Typing
                     if (bin.Right is Constant offset)
                     {
                         offset = offset.Negate();
-                        return new BinaryExpression(Operator.IAdd, ea.DataType, bin.Left, offset);
+                        return m.Bin(Operator.IAdd, ea.DataType, bin.Left, offset);
                     }
                     return ea;
                 }
@@ -112,7 +112,7 @@ namespace Reko.Typing
                 return ea;
             }
             var w = PrimitiveType.CreateWord(ea.DataType.BitSize);
-            var newEa = new BinaryExpression(Operator.IAdd, w, ea, Constant.Zero(w));
+            var newEa = m.Bin(Operator.IAdd, w, ea, Constant.Zero(w));
             return newEa;
         }
 
@@ -121,7 +121,7 @@ namespace Reko.Typing
         {
             var ea = address.Offset.Accept(this);
             var basePtr = address.BasePointer;
-            return new SegmentedPointer(address.DataType, basePtr, ea);
+            return m.SegPtr(address.DataType, basePtr, ea);
         }
 
         /// <summary>

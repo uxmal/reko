@@ -226,11 +226,13 @@ namespace Reko.Analysis
         /// <param name="uses">The liveness information used to perform
         /// the intersection/slicing.
         /// </param>
+        /// <param name="m">Expression emitter to use.</param>
         /// <returns>A list of potentially sliced instructions.
         /// </returns>
         public static IEnumerable<CallBinding> IntersectCallBindingsWithUses(
             IEnumerable<CallBinding> callBindings,
-            IDictionary<Storage, BitRange> uses)
+            IDictionary<Storage, BitRange> uses,
+            ExpressionEmitter m)
         {
             //$TODO: this is an O(n^2) implementation, which will be teh suck performancewise.
             // If it can be improved, do so.
@@ -240,7 +242,7 @@ namespace Reko.Analysis
                 switch (use.Key)
                 {
                 case RegisterStorage reg:
-                    callBinding = IntersectRegisterBinding(reg, callBindings);
+                    callBinding = IntersectRegisterBinding(reg, callBindings, m);
                     break;
                 case StackStorage stArg:
                     callBinding = IntersectStackRegisterBinding(stArg, callBindings);
@@ -264,7 +266,10 @@ namespace Reko.Analysis
             return null;
         }
 
-        private static CallBinding? IntersectRegisterBinding(RegisterStorage regCallee, IEnumerable<CallBinding> callBindings)
+        private static CallBinding? IntersectRegisterBinding(
+            RegisterStorage regCallee,
+            IEnumerable<CallBinding> callBindings,
+            ExpressionEmitter m)
         {
             var dom = regCallee.Domain;
             var regRange = regCallee.GetBitRange();
@@ -277,7 +282,7 @@ namespace Reko.Analysis
                     if (binding.BitRange.Extent > regRange.Extent)
                     {
                         var dt = PrimitiveType.CreateWord(regCallee.DataType.BitSize);
-                        var exp = new Slice(dt, binding.Expression, regRange.Lsb);
+                        var exp = m.Slice(binding.Expression, dt, regRange.Lsb);
                         return new CallBinding(regCallee, exp);
                     }
                 }

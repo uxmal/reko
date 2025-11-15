@@ -59,7 +59,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             program = new Program();
             program.Architecture = arch;
             program.Platform = new DefaultPlatform(null, arch);
-            dtb = new DataTypeBuilder(factory, store, program.Platform);
+            dtb = new DataTypeBuilder(factory, store, program.Platform, listener);
         }
 
         protected override void RunTest(Program program, string outputFile)
@@ -266,10 +266,11 @@ namespace Reko.UnitTests.Decompiler.Typing
         [Test]
         public void DtbInductionVariables()
         {
+            ExpressionEmitter m = new ExpressionEmitter();
             Identifier i = new Identifier("i", PrimitiveType.Word32, null);
-            MemoryAccess load = new MemoryAccess(MemoryStorage.GlobalMemory, i, PrimitiveType.Int32);
+            MemoryAccess load = m.Mem(MemoryStorage.GlobalMemory, PrimitiveType.Int32, i);
             Identifier i2 = new Identifier("i2", PrimitiveType.Word32, null);
-            MemoryAccess ld2 = new MemoryAccess(MemoryStorage.GlobalMemory, i2, PrimitiveType.Int32);
+            MemoryAccess ld2 = m.Mem(MemoryStorage.GlobalMemory, PrimitiveType.Int32, i2);
 
             LinearInductionVariable iv = new LinearInductionVariable(
                 Constant.Word32(0),

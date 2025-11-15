@@ -451,7 +451,7 @@ namespace Reko.Arch.Rl78
 
         private void RewriteOne(PrimitiveType dt)
         {
-            m.Assign(RewriteSrc(instr.Operands[0]), Constant.Create(dt, 1));
+            m.Assign(RewriteSrc(instr.Operands[0]), m.Const(dt, 1));
         }
 
         private void RewritePop()

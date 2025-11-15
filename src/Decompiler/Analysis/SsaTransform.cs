@@ -119,6 +119,11 @@ namespace Reko.Analysis
         public SsaState SsaState => ssa;
 
         /// <summary>
+        /// Gets the expression emitter used to generate expression trees for this instance.
+        /// </summary>
+        public ExpressionEmitter ExpressionEmitter => m;
+
+        /// <summary>
         /// Transforms a procedure into Static Single
         /// Assignment form.
         /// </summary>
@@ -561,8 +566,8 @@ namespace Reko.Analysis
 
         /// <summary>
         /// Handle a call to another procedure. If the procedure has a
-        /// signature, we can create an Application immediately. If the
-        /// procedure has a defined ProcedureFlow, we use the BitsUsed
+        /// signature, we can create an <see cref="Application"/> immediately. If the
+        /// procedure has a defined <see cref="ProcedureFlow"/>, we use the BitsUsed
         /// and Trashed sets to set the uses and defs sets of the call
         /// instruction. If the called procedure is part of a recursive
         /// nest, or is a "hell node" (a hell node is an indirect call or
@@ -571,7 +576,7 @@ namespace Reko.Analysis
         /// trash everything. The hope is that, for recursive procedures
         /// at least, we can eliminate some of the uses and defines.
         /// </summary>
-        /// <param name="ci"></param>
+        /// <param name="ci"><see cref="CallInstruction"/> being transformed.</param>
         /// <returns></returns>
         public override Instruction TransformCallInstruction(CallInstruction ci)
         {
@@ -824,8 +829,7 @@ namespace Reko.Analysis
                 // Hang onto the most recent modification of the pseudo-identifier
                 // representing memory; it will be used in CallApplicationBuilder
                 // to rebuild arguments to a call.
-                .Concat(new[] { frame.Memory });
-                ;
+                .Concat([ frame.Memory ]);
 
             ids = CollectFlagGroups(ids, frame, arch);
             Expression idNew;
@@ -1041,7 +1045,7 @@ namespace Reko.Analysis
                     var memId = acc.MemoryId;
                     if (!this.RenameFrameAccesses)
                         memId = UpdateMemoryIdentifierStore(memId);
-                    return new MemoryAccess(memId, ea, acc.DataType);
+                    return m.Mem(memId, acc.DataType, ea);
                 }
             }
             else if (exp is Identifier id)
@@ -1077,7 +1081,7 @@ namespace Reko.Analysis
                     outArg.Expression is Identifier id)
                 {
                     var idOut = NewDef(id, true);
-                    outArg = new OutArgument(outArg.DataType, idOut);
+                    outArg = m.Out(outArg.DataType, idOut);
                     args[i] = outArg;
                 }
                 else
@@ -1091,7 +1095,7 @@ namespace Reko.Analysis
             {
                 blockstates[block!].Terminates |= ProcedureTerminates(pc.Procedure);
             }
-            return new Application(proc, appl.DataType, args);
+            return m.Fn(proc, appl.DataType, args);
         }
 
         private bool ProcedureTerminates(ProcedureBase proc)
@@ -1145,7 +1149,7 @@ namespace Reko.Analysis
             {
                 exp = outArg.Expression.Accept(this);
             }
-            return new OutArgument(outArg.DataType, exp);
+            return m.Out(outArg.DataType, exp);
         }
 
         /// <inheritdoc/>
@@ -1236,7 +1240,7 @@ namespace Reko.Analysis
                 ea = c;
             }
             var memId = UpdateMemoryIdentifierRead(access.MemoryId);
-            return new MemoryAccess(memId, ea, access.DataType);
+            return m.Mem(memId, access.DataType, ea);
         }
 
         /// <inheritdoc/>
@@ -1244,7 +1248,7 @@ namespace Reko.Analysis
         {
             var basePtr = segptr.BasePointer.Accept(this);
             var ea = segptr.Offset.Accept(this);
-            return new SegmentedPointer(segptr.DataType, basePtr, ea);
+            return m.SegPtr(segptr.DataType, basePtr, ea);
         }
 
         private Identifier UpdateMemoryIdentifierStore(Identifier memId)

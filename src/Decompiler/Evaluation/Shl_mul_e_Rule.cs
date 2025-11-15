@@ -44,8 +44,9 @@ namespace Reko.Evaluation
         /// Perform a match and possible replace.
         /// </summary>
         /// <param name="b">Expression to test.</param>
+        /// <param name="m">Expression emitter to use.</param>
         /// <returns></returns>
-		public Expression? Match(BinaryExpression b)
+		public Expression? Match(BinaryExpression b, ExpressionEmitter m)
         {
 			if (b.Operator.Type != OperatorType.Shl)
 				return null;
@@ -63,7 +64,7 @@ namespace Reko.Evaluation
 
             var e = bLeft.Left;
             var dt = b.DataType;
-			return new BinaryExpression(op, dt, e, Operator.Shl.ApplyConstants(cMul.DataType, cMul, cShift));
+			return m.Bin(op, dt, e, Operator.Shl.ApplyConstants(cMul.DataType, cMul, cShift));
 		}
 	}
 }

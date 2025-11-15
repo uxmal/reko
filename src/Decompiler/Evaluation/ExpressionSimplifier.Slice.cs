@@ -64,13 +64,13 @@ public partial class ExpressionSimplifier
         Expression e2;
         (e2, changed) = e.Accept(this);
         e = e2;
-        slice = new Slice(slice.DataType, e, slice.Offset);
+        slice = m.Slice(e, slice.DataType, slice.Offset);
         e = sliceConst.Match(slice);
         if (e is not null)
         {
             return (e, true);
         }
-        e = sliceMem.Match(slice, ctx);
+        e = sliceMem.Match(slice, ctx, m);
         if (e is not null)
         {
             return (e, true);
@@ -91,7 +91,7 @@ public partial class ExpressionSimplifier
             }
         }
 
-        e = sliceConvert.Match(slice, ctx);
+        e = sliceConvert.Match(slice, ctx, m);
         if (e is not null)
         {
             return (e, true);
@@ -110,7 +110,7 @@ public partial class ExpressionSimplifier
             {
                 if (sizeDiff > 0)
                 {
-                    return (new Slice(slice.DataType, lsbElem, slice.Offset), true);
+                    return (m.Slice(lsbElem, slice.DataType, slice.Offset), true);
                 }
                 else
                 {

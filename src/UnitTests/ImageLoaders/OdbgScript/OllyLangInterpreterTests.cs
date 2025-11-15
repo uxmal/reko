@@ -66,7 +66,7 @@ namespace Reko.UnitTests.ImageLoaders.OdbgScript
 
         private void Given_Script(string script)
         {
-            using (var parser = OllyScriptParser.FromString(engine.Host, fsSvc.Object, script, "."))
+            using (var parser = OllyScriptParser.FromString(engine.Host, fsSvc.Object, new(), script, "."))
             {
                 engine.Script = parser.ParseScript();
             }

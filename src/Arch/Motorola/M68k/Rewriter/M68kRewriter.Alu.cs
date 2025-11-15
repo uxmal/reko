@@ -349,7 +349,7 @@ namespace Reko.Arch.Motorola.M68k.Rewriter
 
         private void RewriteClr()
         {
-            var src = Constant.Create(instr.DataWidth!, 0);
+            var src = m.Const(instr.DataWidth!, 0);
             orw.RewriteMoveDst(instr.Operands[0], instr.Address, instr.DataWidth!, src);
             m.Assign(binder.EnsureFlagGroup(Registers.Z), Constant.True());
             m.Assign(binder.EnsureFlagGroup(Registers.C), Constant.False());

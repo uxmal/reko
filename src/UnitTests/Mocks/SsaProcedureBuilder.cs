@@ -240,7 +240,7 @@ namespace Reko.UnitTests.Mocks
                     {
                         ea = SegmentedPointer.Create(segptr.BasePointer, segptr.Offset);
                     }
-                    store.Dst = new MemoryAccess(memId, ea, dt);
+                    store.Dst = Mem(memId, dt, ea);
                 }
                 break;
             case CallInstruction call:
@@ -313,60 +313,60 @@ namespace Reko.UnitTests.Mocks
         {
             var access = base.Mem(mid, dt, ea);
             var memId = AddMemIdToSsa(access.MemoryId);
-            return new MemoryAccess(
+            return base.Mem(
                 memId,
-                access.EffectiveAddress,
-                access.DataType);
+                access.DataType,
+                access.EffectiveAddress);
         }
 
         public override MemoryAccess Mem8(Expression ea)
         {
             var access = base.Mem8(ea);
             var memId = AddMemIdToSsa(access.MemoryId);
-            return new MemoryAccess(
+            return base.Mem(
                 memId,
-                access.EffectiveAddress,
-                access.DataType);
+                access.DataType,
+                access.EffectiveAddress);
         }
 
         public override MemoryAccess Mem16(Expression ea)
         {
             var access = base.Mem16(ea);
             var memId = AddMemIdToSsa(access.MemoryId);
-            return new MemoryAccess(
+            return base.Mem(
                 memId,
-                access.EffectiveAddress,
-                access.DataType);
+                access.DataType,
+                access.EffectiveAddress);
         }
 
         public override MemoryAccess Mem32(Expression ea)
         {
             var access = base.Mem32(ea);
             var memId = AddMemIdToSsa(access.MemoryId);
-            return new MemoryAccess(
+            return base.Mem(
                 memId,
-                access.EffectiveAddress,
-                access.DataType);
+                access.DataType,
+                access.EffectiveAddress);
         }
 
         public override MemoryAccess Mem64(Expression ea)
         {
             var access = base.Mem64(ea);
             var memId = AddMemIdToSsa(access.MemoryId);
-            return new MemoryAccess(
+            return base.Mem(
                 memId,
-                access.EffectiveAddress,
-                access.DataType);
+                access.DataType,
+                access.EffectiveAddress);
         }
 
         public override MemoryAccess SegMem(DataType dt, Expression basePtr, Expression ptr)
         {
             var access = base.SegMem(dt, basePtr, ptr);
             var memId = AddMemIdToSsa(access.MemoryId);
-            return new MemoryAccess(
+            return base.Mem(
                 memId,
-                access.EffectiveAddress,
-                access.DataType);
+                access.DataType,
+                access.EffectiveAddress);
         }
     }
 }

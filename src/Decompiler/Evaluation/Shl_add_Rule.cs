@@ -28,7 +28,7 @@ internal class Shl_add_Rule
 {
     // (x << c) + x ==> x * ((1<<c) + 1)
     // (x << c) - x ==> x * ((1<<c) - 1)
-    public Expression? Match(BinaryExpression b, EvaluationContext ctx)
+    public Expression? Match(BinaryExpression b, EvaluationContext ctx, ExpressionEmitter m)
     {
         var op = b.Operator;
         int factor;
@@ -50,7 +50,7 @@ internal class Shl_add_Rule
         if (bin.Right is not Constant c)
             return null;
         var dt = b.DataType;
-        var cc = Constant.Create(id.DataType, (1 << c.ToInt32()) + factor);
-        return new BinaryExpression(Operator.IMul, dt, id, cc);
+        var cc = m.Const(id.DataType, (1 << c.ToInt32()) + factor);
+        return m.Bin(Operator.IMul, dt, id, cc);
     }
 }

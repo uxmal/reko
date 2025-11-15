@@ -31,6 +31,7 @@ namespace Reko.Analysis
     public class IdentifierReplacer : InstructionTransformer
     {
         private readonly SsaIdentifierCollection ssaIds;
+        private readonly ExpressionEmitter m;
         private readonly Statement use;
         private readonly Identifier idOld;
         private readonly Expression exprNew;
@@ -40,6 +41,7 @@ namespace Reko.Analysis
         /// Constructs an instance of <see cref="IdentifierReplacer"/>
         /// </summary>
         /// <param name="ssaIds">Current SSA state</param>
+        /// <param name="m">Expression emitter to use when creating nodes.</param>
         /// <param name="use">The statement where the replacement is being made.</param>
         /// <param name="idOld">The <see cref="Identifier"/> to replace.</param>
         /// <param name="exprNew">The <see cref="Expression"/> that replaces all occurrences <paramref name="idOld"/>.</param>
@@ -47,9 +49,10 @@ namespace Reko.Analysis
         /// in expression contexts when the identifier is being defined; otherwise such 
         /// identifers will not be resplaced.
         /// </param>
-        public IdentifierReplacer(SsaIdentifierCollection ssaIds, Statement use, Identifier idOld, Expression exprNew, bool replaceDefinitions)
+        public IdentifierReplacer(SsaIdentifierCollection ssaIds, ExpressionEmitter m, Statement use, Identifier idOld, Expression exprNew, bool replaceDefinitions)
         {
             this.ssaIds = ssaIds;
+            this.m = m;
             this.use = use;
             this.idOld = idOld;
             this.exprNew = exprNew;
@@ -116,7 +119,7 @@ namespace Reko.Analysis
             if (!this.replaceDefinitions && outArg.Expression is Identifier)
                 return outArg;
             var eNew = outArg.Expression.Accept(this);
-            return new OutArgument(outArg.DataType, eNew); 
+            return m.Out(outArg.DataType, eNew); 
         }
     }
 }

@@ -35,7 +35,7 @@ namespace Reko.UnitTests.Mocks
 			Label("loop");
 			Assign(y, i);
 			Assign(i, IAdd(i, Int32(1)));
-			BranchIf(Ne(new MemoryAccess(i, PrimitiveType.Byte), Int8(0)), "loop");
+			BranchIf(Ne(Mem(PrimitiveType.Byte, i), Int8(0)), "loop");
 
 			Return(y);
 		}

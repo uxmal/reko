@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Linq;
@@ -43,6 +44,7 @@ namespace Reko.Typing
 		private readonly TypeFactory factory;
 		private readonly DataTypeBuilderUnifier unifier;
         private readonly IPlatform platform;
+        private readonly IEventListener listener;
 
         /// <summary>
         /// Constructs an instance of the <see cref="DataTypeBuilder"/> class.
@@ -50,12 +52,14 @@ namespace Reko.Typing
         /// <param name="factory">Type factory used to build data types.</param>
         /// <param name="store">Type store used to store data type.</param>
         /// <param name="platform"></param>
-		public DataTypeBuilder(TypeFactory factory, ITypeStore store, IPlatform platform)
+        /// <param name="listener"><see cref="IEventListener"/> instance.</param>
+		public DataTypeBuilder(TypeFactory factory, ITypeStore store, IPlatform platform, IEventListener listener)
 		{
 			this.store = store;
 			this.factory = factory;
 			this.unifier = new DataTypeBuilderUnifier(factory, store);
             this.platform = platform;
+            this.listener = listener;
 		}
 
         /// <summary>
@@ -66,7 +70,7 @@ namespace Reko.Typing
         /// </remarks>
 		public void BuildEquivalenceClassDataTypes()
 		{
-            store.BuildEquivalenceClassDataTypes(factory);
+            store.BuildEquivalenceClassDataTypes(factory, listener);
 		}
 
         /// <summary>

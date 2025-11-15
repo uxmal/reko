@@ -61,16 +61,16 @@ namespace Reko.Evaluation
                     {
                         if (ptSrc.Domain == Domain.SignedInt)
                         {
-                            return (Constant.Create(ptCvt, c.ToInt64()), true);
+                            return (m.Const(ptCvt, c.ToInt64()), true);
                         }
                         else if (ptSrc.Domain.HasFlag(Domain.SignedInt))
                         {
-                            return (Constant.Create(ptCvt, c.ToUInt64()), true);
+                            return (m.Const(ptCvt, c.ToUInt64()), true);
                         }
                     }
                     else if (ptSrc.Domain == Domain.Boolean)
                         {
-                            return (Constant.Create(ptCvt, c.ToUInt64()), true);
+                            return (m.Const(ptCvt, c.ToUInt64()), true);
                         }
                 }
                 if (exp is Identifier id &&
@@ -84,7 +84,7 @@ namespace Reko.Evaluation
                     {
                         if (sizeDiff > 0)
                         {
-                            return (new Conversion(lsbElem, lsbElem.DataType, conversion.DataType), true);
+                            return (m.Convert(lsbElem, lsbElem.DataType, conversion.DataType), true);
                         }
                         else
                         {
@@ -118,7 +118,7 @@ namespace Reko.Evaluation
                     }
                 }
             }
-            exp = convertConvertRule.Match(conversion);
+            exp = convertConvertRule.Match(conversion, m);
             if (exp is not null)
             {
                 return (exp, true);
@@ -147,9 +147,8 @@ namespace Reko.Evaluation
             }
             else
             {
-                return new Conversion(cImm, cImm.DataType, ptCast);
+                return m.Convert(cImm, cImm.DataType, ptCast);
             }
         }
-
     }
 }

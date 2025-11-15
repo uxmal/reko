@@ -46,6 +46,7 @@ namespace Reko.Typing
         private readonly TypedConstantRewriter tcr;
         private readonly Unifier unifier;
         private readonly IEventListener eventListener;
+        private readonly ExpressionEmitter m;
         private DataType? dereferencedType;
         private Expression? basePtr;
         private Statement stmCur;
@@ -65,7 +66,8 @@ namespace Reko.Typing
             this.store = store;
             this.eventListener = eventListener;
             this.compTypes = new DataTypeComparer();
-            this.tcr = new TypedConstantRewriter(program, store, eventListener);
+            this.m = new ExpressionEmitter();
+            this.tcr = new TypedConstantRewriter(program, store, m, eventListener);
             this.unifier = new Unifier();
             this.stmCur = default!;
         }
@@ -144,12 +146,12 @@ namespace Reko.Typing
                 {
                     //var ceb = new ComplexExpressionBuilder(dtSrc, dtSrc, dtDst, null, src, null, 0);
                     //src = ceb.BuildComplex(false);
-                    src = new Cast(dtDst, src);
+                    src = m.Cast(dtDst, src);
                 }
                 else
                 {
                     Debug.Print("{2} [{0}] = {3} [{1}] not supported.", dtDst, dtSrc, dst, src);
-                    src = new Cast(dtDst, src);
+                    src = m.Cast(dtDst, src);
                 }
             }
             if (dst is Identifier idDst)
@@ -165,14 +167,14 @@ namespace Reko.Typing
             alt ??= UnionAlternativeChooser.Choose(uDst, null, false, 0);
             if (alt is null)
                 return dst;
-            return new FieldAccess(alt.DataType, dst, alt);
+            return m.Field(alt.DataType, dst, alt);
         }
 
         /// <inheritdoc />
         public override Instruction TransformCallInstruction(CallInstruction ci)
         {
             var exp = Rewrite(ci.Callee, VoidType.Instance);
-            return new SideEffect(new Application(exp, VoidType.Instance));
+            return new SideEffect(m.Fn(exp, VoidType.Instance));
         }
 
         /// <inheritdoc />
@@ -274,7 +276,7 @@ namespace Reko.Typing
                             DataTypeOf(left),
                             DataTypeOf(right));
 #endif
-                        left = new BinaryExpression(binExp.Operator, binExp.DataType, left, right);
+                        left = m.Bin(binExp.Operator, binExp.DataType, left, right);
                         right = null;
                     }
                     return RewriteComplexExpression(left, right, 0, dereferencedType);
@@ -303,7 +305,7 @@ namespace Reko.Typing
                 _ => binOp,
             };
             var tvBinExp = store.GetTypeVariable(binExp);
-            var binExpNew = new BinaryExpression(binOp, binExp.DataType, left, right);
+            var binExpNew = m.Bin(binOp, binExp.DataType, left, right);
             store.SetTypeVariable(binExpNew, tvBinExp);
             store.SetTypeVariableExpression(tvBinExp, stmCur?.Address, binExpNew);
             if (dereferencedType is not null)
@@ -445,7 +447,7 @@ namespace Reko.Typing
                 {
                 }
             }
-            var newSeq2 = new MkSequence(seq.DataType, newSeq);
+            var newSeq2 = m.Seq(seq.DataType, newSeq);
             store.SetTypeVariable(newSeq2, store.GetTypeVariable(seq));
             return newSeq2;
         }
@@ -486,7 +488,7 @@ namespace Reko.Typing
             {
                 //$REVIEW: here we convert SLICE(xxx, yy, 0) to the cast (yy) xxx.
                 // Should SLICE(xxx, yy, nn) be cast to (yy) (xxx >> nn) as well?
-                var newCast = new Cast(newSlice.DataType, newSlice.Expression);
+                var newCast = m.Cast(newSlice.DataType, newSlice.Expression);
                 store.SetTypeVariable(newCast, store.GetTypeVariable(slice));
                 return newCast;
             }
@@ -497,7 +499,7 @@ namespace Reko.Typing
         public override Expression VisitConversion(Conversion conversion)
         {
             var exp = conversion.Expression.Accept(this);
-            return new Cast(conversion.DataType, exp);
+            return m.Cast(conversion.DataType, exp);
         }
 
         private bool TypesAreCompatible(DataType dtSrc, DataType dtDst)

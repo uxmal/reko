@@ -69,9 +69,9 @@ namespace Reko.UnitTests.Decompiler.Typing
                 SetupPreStages(program);
                 aen.Transform(program);
                 eqb.Build(program);
-                var coll = new TypeCollector(program.TypeFactory, program.TypeStore, program,eventListener);
+                var coll = new TypeCollector(program.TypeFactory, program.TypeStore, program, eventListener);
                 coll.CollectTypes();
-                program.TypeStore.BuildEquivalenceClassDataTypes(program.TypeFactory);
+                program.TypeStore.BuildEquivalenceClassDataTypes(program.TypeFactory, eventListener);
                 tvr.ReplaceTypeVariables();
                 trans.Transform();
                 ctn.RenameAllTypes(program.TypeStore);
@@ -115,7 +115,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             coll.CollectTypes();
             program.TypeStore.Dump();
 
-            program.TypeStore.BuildEquivalenceClassDataTypes(program.TypeFactory);
+            program.TypeStore.BuildEquivalenceClassDataTypes(program.TypeFactory, eventListener);
                 program.TypeStore.Dump();
             tvr.ReplaceTypeVariables();
             trans.Transform();
@@ -185,7 +185,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             }
             aen = new ExpressionNormalizer(program.Platform.PointerType);
             eqb = new EquivalenceClassBuilder(program.TypeFactory, program.TypeStore, listener);
-            dtb = new DataTypeBuilder(program.TypeFactory, program.TypeStore, program.Platform);
+            dtb = new DataTypeBuilder(program.TypeFactory, program.TypeStore, program.Platform, listener);
             tvr = new TypeVariableReplacer(program.TypeStore);
             trans = new TypeTransformer(program.TypeFactory, program.TypeStore, program);
             ctn = new ComplexTypeNamer();
@@ -1308,11 +1308,11 @@ test_exit:
                             PrimitiveType.Word32),
                         PrimitiveType.Word32,
                         PrimitiveType.UInt64),
-                    Constant.Create(PrimitiveType.Word64, 0x4)))),
+                    m.Const(PrimitiveType.Word64, 0x4)))),
                     PrimitiveType.Word32,
                     PrimitiveType.Byte));
-                m.Assign(rbx_18, m.ISub(rbx_18, Constant.Create(PrimitiveType.Word64, 0x1)));
-                m.BranchIf(m.Ne(rbx_18, Constant.Create(PrimitiveType.Word64, 0xFFFFFFFFFFFFFFFF)), "l000000000040EC50");
+                m.Assign(rbx_18, m.ISub(rbx_18, m.Const(PrimitiveType.Word64, 0x1)));
+                m.BranchIf(m.Ne(rbx_18, m.Const(PrimitiveType.Word64, 0xFFFFFFFFFFFFFFFF)), "l000000000040EC50");
 
                 m.Label("l000000000040EC69");
                 m.Return();

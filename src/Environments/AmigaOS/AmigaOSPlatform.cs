@@ -54,9 +54,10 @@ namespace Reko.Environments.AmigaOS
         public AmigaOSPlatform(IServiceProvider services, IProcessorArchitecture arch)
             : base(services, arch, "amigaOS")
         {
+            var m = new ExpressionMatcherEmitter();
             this.a6Pattern = new RtlInstructionMatcher(
                 new RtlCall(
-                    new BinaryExpression(
+                    m.Bin(
                         Operator.IAdd,
                         PrimitiveType.Word32,
                         ExpressionMatcher.AnyId("addrReg"),

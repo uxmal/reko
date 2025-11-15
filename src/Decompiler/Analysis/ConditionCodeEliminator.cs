@@ -127,11 +127,11 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
         public Worker(IReadOnlyProgram program, SsaState ssa, IEventListener listener)
         {
             this.ssa = ssa;
-            this.mutator = new SsaMutator(ssa);
+            this.m = new ExpressionEmitter();
+            this.mutator = new SsaMutator(ssa, m);
             this.ssaIds = ssa.Identifiers;
             this.program = program;
             this.listener = listener;
-            this.m = new ExpressionEmitter();
             this.aliases = new HashSet<Identifier>();
             this.generatedIds = new Dictionary<(Identifier, ConditionCode), SsaIdentifier>();
         }
@@ -310,7 +310,7 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
             FlagGroupStorage? testedFlags,
             bool forceIdentifier)
         {
-            var gf = new GrfDefinitionFinder(ssaIds);
+            var gf = new GrfDefinitionFinder(ssaIds, m);
             gf.FindDefiningExpression(sid);
 
             Expression? e = gf.DefiningExpression;
@@ -494,8 +494,8 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
                         a.Src = m.Conditional(
                             conv.DataType,
                             m.Ne0(m.And(bin.Left, 1)),
-                            Constant.Create(conv.DataType, 1),
-                            Constant.Create(conv.DataType, 0));
+                            m.Const(conv.DataType, 1),
+                            m.Const(conv.DataType, 0));
                         Use(a.Src, useStm);
                     }
                 }
@@ -532,11 +532,11 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
             u = UseGrfConditionally(sidGrf, ConditionCode.ULT, null, false);
             if (slice is not null)
             {
-                addSub.Right = new Conversion(u, u.DataType, slice.DataType);
+                addSub.Right = m.Convert(u, u.DataType, slice.DataType);
             }
             else if (addSub.Left.DataType.BitSize > u.DataType.BitSize)
             {
-                var conv = new Conversion(u, u.DataType, PrimitiveType.CreateWord(addSub.Left.DataType.BitSize));
+                var conv = m.Convert(u, u.DataType, PrimitiveType.CreateWord(addSub.Left.DataType.BitSize));
                 addSub.Right = conv;
             }
             else
@@ -695,7 +695,7 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
             var expRorSrc = rorc.Arguments[0];
 
             // inject a 'tmp = SEQ(hi, lo) >> 1' statement
-            var ssam = new SsaMutator(ssa);
+            var ssam = new SsaMutator(ssa, m);
             var dt = PrimitiveType.Create(domain, expShrSrc.DataType.BitSize + expRorSrc.DataType.BitSize);
             var tmp = ssa.Procedure.Frame.CreateTemporary(dt);
             var sidTmp = ssam.InsertAssignmentBefore(
@@ -823,7 +823,7 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
 		private Expression ComparisonFromOverflow(BinaryExpression bin, bool isNegated)
 		{
             var intrinsic = CommonOps.Overflow.MakeInstance(bin.DataType);
-            Expression e = new Application(
+            Expression e = m.Fn(
                 new ProcedureConstant(program.Platform.PointerType, intrinsic),
                 PrimitiveType.Bool,
                 bin);
@@ -839,7 +839,7 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
             var sig = new FunctionType(
                 [ new Identifier("", bin.DataType, null!) ],
                 [ new Identifier("", PrimitiveType.Bool, null!) ]);
-            Expression e = new Application(
+            Expression e = m.Fn(
                 new ProcedureConstant(
                     program.Platform.PointerType,
                     new IntrinsicProcedure("PARITY_EVEN", false, sig)),

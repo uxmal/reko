@@ -95,7 +95,7 @@ namespace Reko.Typing
             Time("Normalizing expressions", () => aen.Transform(program));
             Time("Building equivalence classes", () => eqb.Build(program));
             Time("Collecting data types", tyco.CollectTypes);
-            Time("Build eq. class data types", () => store.BuildEquivalenceClassDataTypes(factory));
+            Time("Build eq. class data types", () => store.BuildEquivalenceClassDataTypes(factory, eventListener));
             //dpa.FollowConstantPointers(program);
             Time("Replacing type variables", tvr.ReplaceTypeVariables);
 

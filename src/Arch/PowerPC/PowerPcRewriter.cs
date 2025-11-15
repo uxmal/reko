@@ -658,9 +658,8 @@ namespace Reko.Arch.PowerPC
         private Expression Shift16(MachineOperand machineOperand)
         {
             var imm = (Constant)machineOperand;
-            return Constant.Create(arch.WordWidth, imm.ToInt32() << 16);
+            return m.Const(arch.WordWidth, imm.ToInt32() << 16);
         }
-
 
         private Expression ImmOperand(int iop) => ImmOperand(instr.Operands[iop]);
 

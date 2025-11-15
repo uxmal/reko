@@ -53,12 +53,18 @@ namespace Reko.ImageLoaders.OdbgScript
         private readonly string currentDir;
         private readonly IOdbgScriptHost host;
         private readonly IFileSystemService fsSvc;
+        private readonly ExpressionEmitter m;
         private Lexer lexer;
         private Stack<Lexer> lexerStack;
         private Token tok;
         private OllyScript script;
 
-        public OllyScriptParser(TextReader rdr, string currentDir, IOdbgScriptHost host, IFileSystemService fsSvc)
+        public OllyScriptParser(
+            TextReader rdr,
+            string currentDir,
+            IOdbgScriptHost host,
+            IFileSystemService fsSvc,
+            ExpressionEmitter m)
         {
             this.host = host;
             this.fsSvc = fsSvc;
@@ -67,6 +73,7 @@ namespace Reko.ImageLoaders.OdbgScript
             this.lexerStack = new Stack<Lexer>();
             this.lexerStack.Push(new Lexer(rdr));
             this.lexer = default!;
+            this.m = m;
         }
 
         public void Dispose()
@@ -213,7 +220,7 @@ namespace Reko.ImageLoaders.OdbgScript
             if (sums.Count == 1)
                 return sums[0];
             else
-                return new MkSequence(unk, sums.ToArray());
+                return m.Seq(unk, sums.ToArray());
         }
 
         private Expression? OrExpr()
@@ -226,7 +233,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 var right = XorExpr();
                 if (right is null)
                     return null;
-                left = new BinaryExpression(Operator.Or, unk, left, right);
+                left = m.Bin(Operator.Or, unk, left, right);
             }
             return left;
         }
@@ -241,7 +248,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 var right = AndExpr();
                 if (right is null)
                     return null;
-                left = new BinaryExpression(Operator.Xor, unk, left, right);
+                left = m.Bin(Operator.Xor, unk, left, right);
             }
             return left;
         }
@@ -256,7 +263,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 var right = ShiftExpr();
                 if (right is null)
                     return null;
-                left = new BinaryExpression(Operator.And, unk, left, right);
+                left = m.Bin(Operator.And, unk, left, right);
             }
             return left;
         }
@@ -285,7 +292,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 var right = Sum();
                 if (right is null)
                     return null;
-                left = new BinaryExpression(op, unk, left, right);
+                left = m.Bin(op, unk, left, right);
             }
         }
 
@@ -316,7 +323,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 var right = Term();
                 if (right is null)
                     return null;
-                left = new BinaryExpression(op, unk, left, right);
+                left = m.Bin(op, unk, left, right);
             }
         }
 
@@ -344,7 +351,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 var right = Atom();
                 if (right is null)
                     return null;
-                left = new BinaryExpression(op, unk, left, right);
+                left = m.Bin(op, unk, left, right);
             }
         }
 
@@ -369,10 +376,10 @@ namespace Reko.ImageLoaders.OdbgScript
                 return MkString(token);
             case TokenType.InterpolatedString:
                 GetToken();
-                return new Application( interpolate, unk, MkString(token));
+                return m.Fn(interpolate, unk, MkString(token));
             case TokenType.HexString:
                 GetToken();
-                return new Application( hexString, unk,  MkString(token));
+                return m.Fn(hexString, unk, MkString(token));
             case TokenType.Id:
                 GetToken();
                 return new Identifier((string) token.Value!, new UnknownType(), MemoryStorage.Instance);
@@ -386,7 +393,7 @@ namespace Reko.ImageLoaders.OdbgScript
                     return null;    //$TODO: SyncTo(Comma, NewLine)
                 if (!PeekAndDiscard(TokenType.RBracket))
                     return null;
-                return new MemoryAccess(ea, new UnknownType());
+                return m.Mem(new UnknownType(), ea);
             case TokenType.LParen:
                 GetToken();
                 var exp = Expression();
@@ -434,7 +441,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return Constant.String((string) token.Value!, StringType.NullTerminated(PrimitiveType.Char));
         }
 
-        public static OllyScriptParser FromFile(IOdbgScriptHost host, IFileSystemService fsSvc, string file, string? dir = null)
+        public static OllyScriptParser FromFile(IOdbgScriptHost host, IFileSystemService fsSvc, ExpressionEmitter m, string file, string? dir = null)
         {
             string cdir = Environment.CurrentDirectory;
             string curdir = Helper.pathfixup(cdir, true);
@@ -449,14 +456,14 @@ namespace Reko.ImageLoaders.OdbgScript
                 sdir = Path.GetDirectoryName(path)!;
             else
                 sdir = dir;
-            return new OllyScriptParser(fsSvc.CreateStreamReader(path, Encoding.UTF8), sdir, host, fsSvc);
+            return new OllyScriptParser(fsSvc.CreateStreamReader(path, Encoding.UTF8), sdir, host, fsSvc, m);
         }
 
-        public static OllyScriptParser FromString(IOdbgScriptHost host, IFileSystemService fsSvc, string buff, string dir)
+        public static OllyScriptParser FromString(IOdbgScriptHost host, IFileSystemService fsSvc, ExpressionEmitter m, string buff, string dir)
         {
             string curdir = Helper.pathfixup(Environment.CurrentDirectory, true);
             var sdir = dir ?? curdir;
-            return new OllyScriptParser(new StringReader(buff), sdir, host, fsSvc);
+            return new OllyScriptParser(new StringReader(buff), sdir, host, fsSvc, m);
         }
 
         public class Lexer : IDisposable

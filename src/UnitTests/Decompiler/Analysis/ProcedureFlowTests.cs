@@ -36,6 +36,13 @@ namespace Reko.UnitTests.Decompiler.Analysis
     [TestFixture]
     public class ProcedureFlowTests
     {
+        private ExpressionEmitter m;
+
+        [SetUp]
+        public void Setup()
+        {
+            this.m = new ExpressionEmitter();
+        }
         [Test]
         public void Pflow_IntersectBinding()
         {
@@ -52,7 +59,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
                     new BitRange(0, 31)
                 }
             };
-            var bindings = ProcedureFlow.IntersectCallBindingsWithUses(cbs, uses)
+            var bindings = ProcedureFlow.IntersectCallBindingsWithUses(cbs, uses, m)
                 .ToArray();
             Assert.AreEqual(1, bindings.Length);
             Assert.AreEqual("r1:r1", bindings[0].ToString());
@@ -75,7 +82,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
                     new BitRange(0, 16)
                 }
             };
-            var bindings = ProcedureFlow.IntersectCallBindingsWithUses(cbs, uses)
+            var bindings = ProcedureFlow.IntersectCallBindingsWithUses(cbs, uses, m)
                 .ToArray();
             Assert.AreEqual(1, bindings.Length);
             Assert.AreEqual("bx:SLICE(ebx, word16, 0)", bindings[0].ToString());
@@ -95,7 +102,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             {
                 { stCallee, new BitRange(0, 32) }
             };
-            var bindings = ProcedureFlow.IntersectCallBindingsWithUses(cbs, uses)
+            var bindings = ProcedureFlow.IntersectCallBindingsWithUses(cbs, uses, m)
                 .ToArray();
             Assert.AreEqual(1, bindings.Length);
             Assert.AreEqual("Stack +0004:local", bindings[0].ToString());
@@ -120,7 +127,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 },
             };
 
-            var bindings = ProcedureFlow.IntersectCallBindingsWithUses(cbs, uses)
+            var bindings = ProcedureFlow.IntersectCallBindingsWithUses(cbs, uses, m)
                 .ToArray();
 
             Assert.AreEqual(0, bindings.Length);

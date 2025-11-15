@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Decompiler.Typing
         {
             var listener = new FakeDecompilerEventListener();
             EquivalenceClassBuilder eqb = new EquivalenceClassBuilder(factory, store, listener);
-            DataTypeBuilder dtb = new DataTypeBuilder(factory, store, program.Platform);
+            DataTypeBuilder dtb = new DataTypeBuilder(factory, store, program.Platform, listener);
             eqb.Build(program);
             TraitCollector trco = new TraitCollector(factory, store, dtb, program);
             trco.CollectProgramTraits(program);

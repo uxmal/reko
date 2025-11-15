@@ -82,6 +82,7 @@ namespace Reko.ImageLoaders.OdbgScript
         public bool return_to_usercode;
         private int script_pos, script_pos_next;
         private readonly UnknownType unk = new UnknownType();
+        private readonly ExpressionEmitter m;
 
         // Debugger state
         private bool resumeDebuggee;
@@ -127,6 +128,7 @@ namespace Reko.ImageLoaders.OdbgScript
             this.Host = null!;
             this.errorstr = "";
             this.callback_return = null!;
+            this.m = new ExpressionEmitter();
 
             #region Initialize command array
             commands["add"] = DoADD;
@@ -738,7 +740,7 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             var host = new OdbgScriptHost(services, null, program);
             var fsSvc = services.RequireService<IFileSystemService>();
-            using (var parser = OllyScriptParser.FromFile(host, fsSvc, scriptFilename, curDir))
+            using (var parser = OllyScriptParser.FromFile(host, fsSvc, m, scriptFilename, curDir))
             {
                 this.Script = parser.ParseScript();
             }
@@ -748,7 +750,7 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             var host = new OdbgScriptHost(services, null, program);
             var fsSvc = services.RequireService<IFileSystemService>();
-            using var parser = OllyScriptParser.FromString(host, fsSvc, scriptString, curDir);
+            using var parser = OllyScriptParser.FromString(host, fsSvc, m, scriptString, curDir);
             this.Script = parser.ParseScript();
         }
 

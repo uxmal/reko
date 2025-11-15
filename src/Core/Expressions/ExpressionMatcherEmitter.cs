@@ -17,6 +17,17 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
+        /// Matches any binary expression.
+        /// </summary>
+        /// <param name="label">Label for the matched binary operator.</param>
+        /// <param name="left">Left expression to match.</param>
+        /// <param name="right">Right expression to match.</param>
+        public BinaryExpression AnyBinary(string label, Expression left, Expression right)
+        {
+            return base.Bin( ExpressionMatcher.AnyBinaryOperator(label), left, right);
+        }
+
+        /// <summary>
         /// Matches any constant.
         /// </summary>
         /// <param name="label">Optional label for this match.</param>

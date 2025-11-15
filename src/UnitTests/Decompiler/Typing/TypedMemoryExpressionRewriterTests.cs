@@ -18,17 +18,15 @@
  */
 #endregion
 
-using Reko.Typing;
-using Reko.Core.Expressions;
-using Reko.Core.Operators;
-using Reko.Core.Types;
 using NUnit.Framework;
-using System;
 using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Loading;
+using Reko.Core.Memory;
+using Reko.Core.Types;
+using Reko.Typing;
 using Reko.UnitTests.Mocks;
 using System.ComponentModel.Design;
-using Reko.Core.Memory;
-using Reko.Core.Loading;
 
 namespace Reko.UnitTests.Decompiler.Typing
 {
@@ -99,9 +97,10 @@ namespace Reko.UnitTests.Decompiler.Typing
 			tv.OriginalDataType = new Pointer(point, 32);
 			tv.DataType = new Pointer(eqPtr, 32);
 
-			var c = CreateTv(Constant.Word32(4));
-			var bin = CreateTv(new BinaryExpression(BinaryOperator.IAdd, PrimitiveType.Word32, ptr, c));
-            var mem = CreateTv(new MemoryAccess(bin, PrimitiveType.Word32));
+            var m = new ExpressionEmitter();
+			var c = CreateTv(m.Word32(4));
+			var bin = CreateTv(m.IAdd(ptr, c));
+            var mem = CreateTv(m.Mem32(bin));
 			var tmer = new TypedExpressionRewriter(program, store, null);
 			Expression e = mem.Accept(tmer);
 			Assert.AreEqual("ptr->dw0004", e.ToString());

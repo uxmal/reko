@@ -31,7 +31,7 @@ public partial class ExpressionSimplifier
         var (e, changed) = unary.Expression.Accept(this);
         if (changed)
             unary = m.Unary(unary.Operator, unary.DataType, e);
-        e = negSub.Match(unary);
+        e = negSub.Match(unary, m);
         if (e is not null)
         {
             return (e, true);
@@ -42,14 +42,14 @@ public partial class ExpressionSimplifier
         {
             return (e, true);
         }
-        e = compSub.Match(unary);
+        e = compSub.Match(unary, m);
         if (e is not null)
         {
             return (e, true);
         }
 
         // (!-exp) >= (!exp)
-        e = logicalNotFollowedByNeg.Match(unary);
+        e = logicalNotFollowedByNeg.Match(unary, m);
         if (e is not null)
         {
             return (e, true);
@@ -63,13 +63,13 @@ public partial class ExpressionSimplifier
         return (unary, changed);
     }
 
-    private static Expression? LogicalNotComparison(UnaryExpression unary)
+    private Expression? LogicalNotComparison(UnaryExpression unary)
     {
         if (unary.Operator.Type == OperatorType.Not &&
             unary.Expression is BinaryExpression bin &&
             bin.Operator is ConditionalOperator cond)
         {
-            return new BinaryExpression((BinaryOperator)cond.Invert(), bin.DataType, bin.Left, bin.Right);
+            return m.Bin((BinaryOperator)cond.Invert(), bin.DataType, bin.Left, bin.Right);
         }
         return null;
     }

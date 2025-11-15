@@ -34,8 +34,9 @@ namespace Reko.Evaluation
         /// Match a binary expression that adds two identifiers together.
         /// </summary>
         /// <param name="binExp">Binary expression to match.</param>
+        /// <param name="m">Expression emitter used when building expressions.</param>
         /// <returns></returns>
-		public Expression? Match(BinaryExpression binExp)
+		public Expression? Match(BinaryExpression binExp, ExpressionEmitter m)
 		{
             if (binExp.Left is not Identifier idLeft)
                 return null;
@@ -43,7 +44,7 @@ namespace Reko.Evaluation
                 return null;
             if (idLeft != idRight || binExp.Operator.Type != OperatorType.IAdd)
                 return null;
-            return new BinaryExpression(Operator.IMul, idLeft.DataType, idLeft, Constant.Create(idLeft.DataType, 2));
+            return m.IMul(idLeft, m.Const(idLeft.DataType, 2));
         }
 	}
 }

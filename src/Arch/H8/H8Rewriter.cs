@@ -505,8 +505,8 @@ namespace Reko.Arch.H8
                 m.Conditional(
                     dst.DataType,
                     m.Fn(btst_intrinsic.MakeInstance(left.DataType, right.DataType), left, right),
-                    Constant.Create(dst.DataType, 1),
-                    Constant.Create(dst.DataType, 0)));
+                    m.Const(dst.DataType, 1),
+                    m.Const(dst.DataType, 0)));
         }
 
         private void RewriteLogical(H8Instruction instr, Func<Expression,Expression, Expression> fn)

@@ -28,16 +28,16 @@ public partial class ExpressionSimplifier
     public virtual (Expression, bool) VisitMemoryAccess(MemoryAccess access)
     {
         var (offset, changed) = access.EffectiveAddress.Accept(this);
-        var e = scaledIndexRule.Match(offset, ctx);
+        var e = scaledIndexRule.Match(offset, ctx, m);
         if (e is not null)
         {
             changed = true;
             (offset, _) = e.Accept(this);
         }
-        var value = new MemoryAccess(
+        var value = m.Mem(
             access.MemoryId,
-            offset,
-            access.DataType);
+            access.DataType,
+            offset);
         var newValue = ctx.GetValue(value, memory);
         if (newValue != value || newValue.DataType.BitSize != value.DataType.BitSize)
         {

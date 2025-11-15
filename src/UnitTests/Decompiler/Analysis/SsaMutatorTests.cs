@@ -47,7 +47,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
 
         public void RunSsaMutator(Action<SsaMutator> action)
         {
-            var ssam = new SsaMutator(m.Ssa);
+            var ssam = new SsaMutator(m.Ssa, new ExpressionEmitter());
             action(ssam);
             m.Ssa.Validate(s => Assert.Fail(s));
         }

@@ -460,7 +460,7 @@ namespace Reko.Arch.Altera.Nios2
             var reg = Reg(0);
             if (reg.Number == 0)
             {
-                src = Constant.Create(dt, 0);
+                src = m.Const(dt, 0);
             }
             else
             {

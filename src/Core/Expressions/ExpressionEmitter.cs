@@ -231,6 +231,23 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
+        /// Generates a cast expression which coerces the <paramref name="expr"/> to
+        /// the data type <paramref name="dataType"/>.
+        /// </summary>
+        /// <param name="dataType">Type to coerce to.</param>
+        /// <param name="expr">Value to coerce.</param>
+        /// <returns>A cast expression.</returns>
+        /// <remarks>
+        /// The use of <see cref="Cast"/> expressions in early stages of Reko
+        /// is discouraged.
+        /// Use <see cref="Expressions.Slice"/> or <see cref="Expressions.Conversion"/> expressions instead.
+        /// </remarks>
+        public Cast Cast(DataType dataType, Expression expr)
+        {
+            return new Cast(dataType, expr);
+        }
+
+        /// <summary>
         /// Generates the bitwise complement of <paramref name="expr"/> (the '~' 
         /// operator in the C language family).
         /// </summary>
@@ -285,6 +302,30 @@ namespace Reko.Core.Expressions
         public Expression Cor(Expression a, Expression b)
         {
             return new BinaryExpression(Operator.Cor, PrimitiveType.Bool, a, b);
+        }
+
+        /// <summary>
+        /// Creates a constant of the specified data type <paramref name="dataType"/>.
+        /// </summary>
+        /// <param name="dataType"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public Constant Const(DataType dataType, long value)
+        {
+            return Constant.Create(dataType, value);
+        }
+
+        /// <summary>
+        /// Creates a constant of the specified data type <paramref name="dataType"/>.
+        /// </summary>
+        /// <param name="dataType"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public Constant Const(DataType dataType, ulong value)
+        {
+            return Constant.Create(dataType, value);
         }
 
         /// <summary>
@@ -1950,6 +1991,17 @@ namespace Reko.Core.Expressions
         public BinaryExpression Xor(Expression a, ulong b)
         {
             return new BinaryExpression(Operator.Xor, a.DataType, a, Constant.Create(a.DataType, b));
+        }
+
+
+        /// <summary>
+        /// Creates a zero constant of the specified primitive type.
+        /// </summary>
+        /// <param name="w"></param>
+        /// <returns></returns>
+        public Constant Zero(DataType w)
+        {
+            return Constant.Zero(w);
         }
     }
 }

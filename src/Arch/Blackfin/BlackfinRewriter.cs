@@ -141,7 +141,7 @@ namespace Reko.Arch.Blackfin
         private void EmitCc(FlagGroupStorage grf, int n)
         {
             var cc = binder.EnsureFlagGroup(grf);
-            var value = Constant.Create(cc.DataType, n);
+            var value = m.Const(cc.DataType, n);
             m.Assign(cc, value);
         }
 

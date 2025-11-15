@@ -277,7 +277,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             EmitCc(src, flags);
             RewriteDst(
                 instr.Operands[1],
-                Constant.Create(instr.Operands[1].DataType, 1 << bit),
+                m.Const(instr.Operands[1].DataType, 1 << bit),
                 m.Or);
         }
 
@@ -288,14 +288,14 @@ namespace Reko.Arch.Tlcs.Tlcs90
             {
                 RewriteDst(
                     instr.Operands[1],
-                    Constant.Create(instr.Operands[1].DataType, 1 << bit),
+                    m.Const(instr.Operands[1].DataType, 1 << bit),
                     m.Or);
             } 
             else
             {
                 RewriteDst(
                     instr.Operands[1],
-                    Constant.Create(instr.Operands[1].DataType, ~(1 << bit)),
+                    m.Const(instr.Operands[1].DataType, ~(1 << bit)),
                     m.And);
             }
         }

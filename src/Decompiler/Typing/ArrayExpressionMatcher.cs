@@ -31,6 +31,7 @@ namespace Reko.Typing
 	public class ArrayExpressionMatcher
 	{
         private readonly PrimitiveType dtPointer;
+        private readonly ExpressionEmitter m;
 
         /// <summary>
         /// Constructs a new <see cref="ArrayExpressionMatcher"/>.
@@ -39,6 +40,7 @@ namespace Reko.Typing
 		public ArrayExpressionMatcher(PrimitiveType dtPointer)
 		{
             this.dtPointer = dtPointer;
+            this.m = new ExpressionEmitter();
 		}
 
         /// <summary>
@@ -84,7 +86,7 @@ namespace Reko.Typing
             case OperatorType.Shl:
                 if (b.Right is Constant cShl)
                 {
-                    ElementSize = b.Operator.ApplyConstants(b.Left.DataType, Constant.Create(b.Left.DataType, 1), cShl);
+                    ElementSize = b.Operator.ApplyConstants(b.Left.DataType, m.Const(b.Left.DataType, 1), cShl);
                     Index = b.Left;
                     return true;
                 }
@@ -150,7 +152,7 @@ namespace Reko.Typing
                             // (+ x (+ (* i c) y)) rearranges to become
                             // (+ (* i c) (+ x y))
 
-                            this.ArrayPointer = new BinaryExpression(
+                            this.ArrayPointer = m.Bin(
                                 Operator.IAdd,
                                 PrimitiveType.Create(Domain.Pointer, b.Left.DataType.BitSize),
                                 b.Left,
@@ -173,16 +175,12 @@ namespace Reko.Typing
 		{
             if (baseptr is not null)
             {
-                ArrayPointer = new SegmentedPointer(dtPointer, baseptr, ArrayPointer!);
+                ArrayPointer = m.SegPtr(dtPointer, baseptr, ArrayPointer!);
             }
-			return new ArrayAccess(
+			return m.ARef(
                 dtAccess, 
                 ArrayPointer!,
-                new BinaryExpression(
-                    Operator.IMul, 
-                    Index!.DataType,
-                    Index,
-                    ElementSize!));
+                m.IMul(Index!, ElementSize!));
 		}
 	}
 }

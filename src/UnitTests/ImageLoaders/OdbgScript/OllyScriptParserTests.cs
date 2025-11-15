@@ -49,7 +49,7 @@ namespace Reko.UnitTests.ImageLoaders.OdbgScript
 
         private void Given_Parser(string script)
         {
-            this.parser = new OllyScriptParser(new StringReader(script), "test", host.Object, fsSvc.Object);
+            this.parser = new OllyScriptParser(new StringReader(script), "test", host.Object, fsSvc.Object, new());
         }
 
         [Test]

@@ -196,7 +196,7 @@ namespace Reko.UnitTests.Mocks
         public void Compare(string flags, Expression a, Expression b)
         {
             var grf = Flags(flags);
-            Assign(grf, new ConditionOf(grf.DataType, ISub(a, b)));
+            Assign(grf, Cond(grf.DataType, ISub(a, b)));
         }
 
         public Block CurrentBlock
@@ -224,7 +224,7 @@ namespace Reko.UnitTests.Mocks
 
         public Application Fn(string name, params Expression[] exps)
         {
-            var appl = new Application(
+            var appl = base.Fn(
                 new ProcedureConstant(PrimitiveType.Ptr32, new IntrinsicProcedure(name, true, VoidType.Instance, 0)),
                 PrimitiveType.Word32, exps);
             unresolvedProcedures.Add(new ApplicationUpdater(name, appl));

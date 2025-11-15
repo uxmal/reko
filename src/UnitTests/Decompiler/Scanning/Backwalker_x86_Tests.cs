@@ -234,7 +234,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             Assert.IsTrue(
                 bw.BackwalkInstruction(
                     m.BranchIf(
-                    new TestCondition(ConditionCode.UGT, SCZO),
+                    m.Test(ConditionCode.UGT, SCZO),
                     "Nizze").Instruction));
             Assert.AreEqual("branch UGT", bw.Operations[0].ToString());
             Assert.AreEqual("SCZO", bw.UsedFlagIdentifier!.ToString());
@@ -249,7 +249,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             bw.UsedFlagIdentifier = m.Frame.EnsureFlagGroup(new FlagGroupStorage(Registers.eflags,(uint)FlagM.CF, "C"));
             Assert.IsFalse(
                 bw.BackwalkInstruction(
-                    m.Assign(SCZO, new ConditionOf(SCZO.DataType, m.ISub(eax, 3)))),
+                    m.Assign(SCZO, m.Cond(SCZO.DataType, m.ISub(eax, 3)))),
                 "Encountering this comparison should terminate the backwalk");
             Assert.AreSame(Registers.eax, bw.Index);
             Assert.AreEqual("cmp 3", bw.Operations[0].ToString());
@@ -311,8 +311,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
 
             var block0 = m.CurrentBlock;
             m.Assign(eax, m.Mem32(m.IAdd(esp, 4)));
-            m.Assign(SCZO, new ConditionOf(SCZO.DataType, m.ISub(eax, 3)));
-            m.BranchIf(new TestCondition(ConditionCode.UGT, SCZO), "default");
+            m.Assign(SCZO, m.Cond(SCZO.DataType, m.ISub(eax, 3)));
+            m.BranchIf(m.Test(ConditionCode.UGT, SCZO), "default");
 
 
             //m.Xor(m.edx, m.edx);
@@ -322,7 +322,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var block1 = m.CurrentBlock;
 
             m.Assign(edx, m.Xor(edx, edx));
-            m.Assign(SCZO, new ConditionOf(SCZO.DataType, edx));
+            m.Assign(SCZO, m.Cond(SCZO.DataType, edx));
             m.Assign(dl, m.Mem8(m.IAdd(eax, 0x10000)));
 
 
@@ -375,13 +375,13 @@ namespace Reko.UnitTests.Decompiler.Scanning
             m.Assign(ds, m.Mem16(sp));
             m.Assign(sp, m.IAdd(sp, 2));
             m.Assign(bl, m.Mem8(si));
-            m.Assign(SCZO, new ConditionOf(SCZO.DataType, m.ISub(bl, 2)));
-            m.BranchIf(new TestCondition(ConditionCode.UGT, SCZO), "grox");
+            m.Assign(SCZO, m.Cond(SCZO.DataType, m.ISub(bl, 2)));
+            m.BranchIf(m.Test(ConditionCode.UGT, SCZO), "grox");
 
             m.Assign(bh, m.Xor(bh, bh));
-            m.Assign(SCZO, new ConditionOf(SCZO.DataType, bh));
+            m.Assign(SCZO, m.Cond(SCZO.DataType, bh));
             m.Assign(bx, m.IAdd(bx, bx));
-            m.Assign(SCZO, new ConditionOf(SCZO.DataType, bx));
+            m.Assign(SCZO, m.Cond(SCZO.DataType, bx));
 
             RunTest(new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>()),
                 new RtlGoto(m.Mem16(m.IAdd(bx, 0x1234)), InstrClass.Transfer),
@@ -394,11 +394,11 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var map = new SegmentMap(Address.Ptr32(0x10000000));
             var state = arch.CreateProcessorState();
             var di = new Identifier("di", Registers.di.DataType, Registers.di);
-            var bw = new Backwalker<Block, Instruction>(host, new RtlGoto(new MemoryAccess(di, di.DataType), InstrClass.Transfer),
+            var bw = new Backwalker<Block, Instruction>(host, new RtlGoto(m.Mem(di.DataType, di), InstrClass.Transfer),
                 new ExpressionSimplifier(new ByteProgramMemory(map), state, new FakeDecompilerEventListener()));
             var instrs = new StatementList(new Block(null!, default, "foo"));
             bw.BackwalkInstructions(new Instruction[] {
-                new Assignment(di, new BinaryExpression(Operator.IAdd, di.DataType, di, Constant.Word16(1)))
+                new Assignment(di, m.IAdd(di, Constant.Word16(1)))
                 });
 			Assert.AreSame(Registers.di, bw.Index);
 			Assert.AreEqual("+ 1", bw.Operations[0].ToString());
@@ -427,7 +427,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
 
             m.Assign(SCZO, m.Cond(SCZO.DataType, m.ISub(m.Mem32(m.ISub(ebp, 0xC4)), 0x1D)));
             var block0 = m.CurrentBlock;
-            m.BranchIf(new TestCondition(ConditionCode.UGT, SCZO), "default");
+            m.BranchIf(m.Test(ConditionCode.UGT, SCZO), "default");
 
             // mov edx,[ebp-66]
             // movzx eax,byte ptr [edx + 0x10000]

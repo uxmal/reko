@@ -479,7 +479,7 @@ namespace Reko.Arch.zSeries
             case Constant imm:
                 return imm;
             case MemoryOperand mem:
-                return new MemoryAccess(EffectiveAddress(mem), dt);
+                return m.Mem(dt, EffectiveAddress(mem));
             case Address addr:
                 return addr;
             default:

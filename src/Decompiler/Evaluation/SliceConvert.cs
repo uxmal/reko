@@ -37,9 +37,10 @@ public class SliceConvert
     /// </summary>
     /// <param name="slice">The slice to be evaluated, which includes the expression and its offset.</param>
     /// <param name="ctx">The evaluation context used to resolve identifiers and evaluate expressions.</param>
+    /// <param name="m">The expression emitter used to create new expressions as needed.</param>
     /// <returns>An <see cref="Expression"/> that represents the matched pattern if successful; otherwise, <see
     /// langword="null"/>.</returns>
-    public Expression? Match(Slice slice, EvaluationContext ctx)
+    public Expression? Match(Slice slice, EvaluationContext ctx, ExpressionEmitter m)
     {
         if (slice.Offset != 0)
         {
@@ -64,12 +65,12 @@ public class SliceConvert
             {
                 result = slice.DataType.BitSize == conv.SourceDataType.BitSize
                     ? conv.Expression
-                    : new Slice(slice.DataType, conv.Expression, 0);
+                    : m.Slice(conv.Expression, slice.DataType);
                 return result;
             }
             if (CanSliceConversion(slice, conv))
             {
-                result = new Conversion(
+                result = m.Convert(
                     conv.Expression, conv.SourceDataType, slice.DataType);
                 return result;
             }

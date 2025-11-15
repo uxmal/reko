@@ -90,7 +90,7 @@ namespace Reko.UnitTests.Decompiler.Typing
                 tyco.CollectTypes();
                 if (buildEquivalenceClasses)
                 {
-                    store.BuildEquivalenceClassDataTypes(factory);
+                    store.BuildEquivalenceClassDataTypes(factory, eventListener);
                     new TypeVariableReplacer(store).ReplaceTypeVariables();
                 }
 
@@ -137,7 +137,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             coll.CollectTypes();
             program.TypeStore.Dump();
 
-            program.TypeStore.BuildEquivalenceClassDataTypes(program.TypeFactory);
+            program.TypeStore.BuildEquivalenceClassDataTypes(program.TypeFactory, eventListener);
             DumpProgAndStore(program, sw);
             var sActual = sw.ToString();
             if (expectedOutput != sActual)

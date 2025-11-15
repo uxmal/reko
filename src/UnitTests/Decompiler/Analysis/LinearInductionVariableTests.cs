@@ -18,24 +18,23 @@
  */
 #endregion
 
+using Moq;
+using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
+using Reko.Core.Analysis;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Graphs;
-using Reko.Core.Operators;
-using Reko.Core.Types;
-using Reko.UnitTests.Mocks;
-using Moq;
-using NUnit.Framework;
+using Reko.Core.Memory;
 using Reko.Core.Services;
+using Reko.Core.Types;
+using Reko.Services;
+using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.ComponentModel.Design;
-using Reko.Services;
-using Reko.Core.Analysis;
-using Reko.Core.Memory;
+using System.Linq;
 
 namespace Reko.UnitTests.Decompiler.Analysis
 {
@@ -235,7 +234,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             ssa.Identifiers.Add(liv.Context.PhiIdentifier, new SsaIdentifier(liv.Context.PhiIdentifier, liv.Context.PhiIdentifier, liv.Context.PhiStatement, false));
 			liv.Context.DeltaValue = Constant.Word32(1);
 			liv.Context.DeltaStatement = new Statement(Address.Ptr32(0), new Assignment(new Identifier("foo_1", PrimitiveType.Word32, null), 
-				new BinaryExpression(Operator.IAdd, PrimitiveType.Word32, liv.Context.PhiIdentifier, liv.Context.DeltaValue)), null);
+				pb.IAdd(liv.Context.PhiIdentifier, liv.Context.DeltaValue)), null);
 			ssa.Identifiers[liv.Context.PhiIdentifier].Uses.Add(liv.Context.DeltaStatement);
 
 			LinearInductionVariable iv = liv.CreateInductionVariable();

@@ -523,7 +523,7 @@ namespace Reko.Arch.CompactRisc
             Expression src;
             if (instr.Operands[0] is Constant imm)
             {
-                src = Constant.Create(dt, imm.ToUInt32());
+                src = m.Const(dt, imm.ToUInt32());
             }
             else
             {

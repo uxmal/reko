@@ -33,9 +33,8 @@ namespace Reko.Analysis;
 /// <summary>
 /// Backpropagate stack pointer from procedure return.
 /// Assumes that stack pointer at the end of procedure has the same
-/// value as at the start
-/// </summary>
-/// <example>
+/// value as at the start.
+/// <para>
 /// If we have
 /// <code>
 ///     call eax; We do not know calling convention of this indirect call
@@ -47,7 +46,8 @@ namespace Reko.Analysis;
 /// </code>
 /// then we could assume than stack pointer at "cleanup" label is
 /// "fp - 8"
-/// </example>
+/// </para>
+/// </summary>
 // $REVIEW: It is highly unlikely that there is a procedure that
 // leaves the stack pointer at different values depending on what
 // path you took through it. Should we encounter such procedures in
@@ -97,11 +97,11 @@ public class StackPointerBackpropagator : IAnalysis<SsaState>
 
         /// <summary>
         /// First find use of stack pointer at procedure exit block.
-        /// Check if its definition is like 'sp_at_exit = sp_previous + offset'
-        /// and 'sp_previous' is trashed (usually after indirect calls). We
-        /// assume that stack pointer at the end ('sp_at_exit') is 'fp'. So
-        /// 'sp_previous' is 'fp - offset'. So we replace definition of
-        /// 'sp_previous' with 'fp - offset'
+        /// Check if its definition is like <c>sp_at_exit = sp_previous + offset</c>
+        /// and <c>sp_previous</c> is trashed (usually after indirect calls). We
+        /// assume that stack pointer at the end (<c>sp_at_exit</c>) is <c>fp</c>. So
+        /// <c>sp_previous</c> is <c>fp - offset</c>. So we replace definition of
+        /// <c>sp_previous</c> with <c>fp - offset</c>.
         /// </summary>
         public void BackpropagateStackPointer()
         {

@@ -63,6 +63,7 @@ namespace Reko.Scanning
         private Identifier? stackReg;
         private VarargsFormatScanner? vaScanner;
         private readonly InstrClass rejectMask;
+        private readonly ExpressionEmitter m;
 
         /// <summary>
         /// Constructs a new instance of the <see cref="BlockWorkitem"/> class.
@@ -99,6 +100,7 @@ namespace Reko.Scanning
             this.rejectMask |= program.User.Heuristics.Contains(ScannerHeuristics.UserMode)
                 ? InstrClass.Privileged
                 : 0;
+            this.m = new ExpressionEmitter();
         }
 
         /// <summary>
@@ -446,6 +448,7 @@ namespace Reko.Scanning
         /// flow stops here.</returns>
         public bool VisitGoto(RtlGoto g)
         {
+            Debug.Assert(stackReg is not null);
             var blockFrom = blockCur;
             if ((g.Class & InstrClass.Delay) != 0)
             {
@@ -464,7 +467,7 @@ namespace Reko.Scanning
                     // Since we are tail jumping to another procedure, if there is a return
                     // address (continuation) pushed on the stack, we reuse that 
                     // continuation.
-                    site = state.OnBeforeCall(stackReg!, 0);
+                    site = state.OnBeforeCall(stackReg, 0);
                     var sig = impProc.Signature;
                     var chr = impProc.Characteristics;
                     if (ProcessAlloca(site, impProc, chr))
@@ -477,7 +480,7 @@ namespace Reko.Scanning
                 var platformProc = program.Platform.LookupProcedureByAddress(addrTarget);
                 if (platformProc is not null)
                 {
-                    site = state.OnBeforeCall(stackReg!, 0);
+                    site = state.OnBeforeCall(stackReg, 0);
                     EmitCall(CreateProcedureConstant(platformProc), platformProc.Signature, platformProc.Characteristics, site);
                     Emit(new ReturnInstruction());
                     blockCur!.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
@@ -486,7 +489,7 @@ namespace Reko.Scanning
 
                 if (!program.Memory.IsValidAddress(addrTarget))
                 {
-                    var jmpSite = state.OnBeforeCall(stackReg!, 0);
+                    var jmpSite = state.OnBeforeCall(stackReg, 0);
                     GenerateCallToOutsideProcedure(jmpSite, addrTarget);
                     Emit(new ReturnInstruction());
                     blockCur!.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
@@ -758,11 +761,9 @@ namespace Reko.Scanning
             {
                 //$BUG: stack grows negative here; some stacks might grow
                 // positive?
-                Expression newVal = new BinaryExpression(
-                        Operator.ISub,
-                        stackReg.DataType,
+                Expression newVal = m.ISub(
                         stackReg,
-                        Constant.Create(
+                        m.Const(
                             PrimitiveType.Create(Domain.SignedInt, stackReg.DataType.BitSize),
                             sizeOfRetAddrOnStack));
                 (newVal, _) = newVal.Accept(eval);
@@ -790,16 +791,13 @@ namespace Reko.Scanning
 
             if (sigCallee is not null && sigCallee.StackDelta != 0)
             {
+                Debug.Assert(stackReg is not null);
                 // Generate explicit stack adjustment expression
                 // SP = SP + stackDelta
                 // after the call.
-                Expression newVal = new BinaryExpression(
-                    Operator.IAdd,
-                    stackReg!.DataType,
+                Expression newVal = m.IAdd(
                     stackReg,
-                    Constant.Create(
-                        PrimitiveType.CreateWord(stackReg.DataType.BitSize),
-                        sigCallee.StackDelta));
+                    m.Word(stackReg.DataType.BitSize, sigCallee.StackDelta));
                 (newVal, _) = newVal.Accept(eval);
                 SetValue(stackReg, newVal);
             }
@@ -815,7 +813,7 @@ namespace Reko.Scanning
                     var d = Constant.Create(stackReg!.DataType, delta);
                     this.Emit(new Assignment(
                         stackReg,
-                        new BinaryExpression(Operator.IAdd, stackReg.DataType, stackReg, d)));
+                        m.IAdd(stackReg, d)));
                 }
                 if (sigCallee.FpuStackDelta != 0)
                 {
@@ -834,7 +832,7 @@ namespace Reko.Scanning
                     var d = Constant.Create(fpuStackReg.DataType, dd);
                     this.Emit(new Assignment(
                         fpuStackReg,
-                        new BinaryExpression(op, fpuStackReg.DataType, fpuStackReg, d)));
+                        m.Bin(op, fpuStackReg.DataType, fpuStackReg, d)));
                 }
             }
 
@@ -991,9 +989,10 @@ namespace Reko.Scanning
             }
             if (state.GetValue(id) is Constant c && c.IsValid)
             {
+                Debug.Assert(stackReg is not null);
                 // Replace constant call to alloca with a stack adjustment
                 //$TODO: should grow to higher addresses on PA-RISC.
-                Emit(new Assignment(stackReg!, new BinaryExpression(Operator.ISub, stackReg!.DataType, stackReg, c)));
+                Emit(new Assignment(stackReg, m.ISub(stackReg, c)));
             }
             else
             {

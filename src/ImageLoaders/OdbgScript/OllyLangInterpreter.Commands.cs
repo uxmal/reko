@@ -3028,7 +3028,7 @@ string filename;
         {
             if (args.Length == 3)
             {
-                return DoMOV(new MemoryAccess(args[0], unk), new MemoryAccess(args[1], unk), args[2]);
+                return DoMOV(m.Mem(unk, args[0]), m.Mem(unk, args[1]), args[2]);
             }
             return false;
         }

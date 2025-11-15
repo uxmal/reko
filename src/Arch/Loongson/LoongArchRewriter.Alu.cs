@@ -144,7 +144,7 @@ namespace Reko.Arch.Loongson
         {
             var imm = (Constant) instr.Operands[2];
             var dtPrefix = PrimitiveType.CreateWord(12);
-            var prefix = Constant.Create(dtPrefix, imm.ToUInt32());
+            var prefix = m.Const(dtPrefix, imm.ToUInt32());
             var reg = Op(1, false);
             m.Assign(Op(0, false), m.Seq(prefix, m.Slice(reg, 0, 52)));
         }
@@ -153,7 +153,7 @@ namespace Reko.Arch.Loongson
         {
             var src1 = Op(1, false);
             var src2 = Op(2, false);
-            var zero = Constant.Zero(src1.DataType);
+            var zero = m.Zero(src1.DataType);
             Assign(instr.Operands[0], m.Conditional(src1.DataType, fn(src2), zero, src1));
         }
 
@@ -301,8 +301,8 @@ namespace Reko.Arch.Loongson
             Assign(oDst, m.Conditional(
                 oDst.DataType,
                 fn(src1, src2),
-                Constant.Create(oDst.DataType, 1),
-                Constant.Create(oDst.DataType, 0)));
+                m.Const(oDst.DataType, 1),
+                m.Const(oDst.DataType, 0)));
         }
 
         private void RewriteShift(Func<Expression, Expression, Expression> fn, bool slice32bits)

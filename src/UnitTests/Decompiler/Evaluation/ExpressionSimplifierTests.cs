@@ -103,7 +103,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
                 Address.Ptr32(0), 
                 new Assignment(
                     foo16, 
-                    Constant.Create(foo16.DataType, 1)),
+                    m.Const(foo16.DataType, 1)),
                 null),
                 false).Identifier;
         }
@@ -152,8 +152,9 @@ namespace Reko.UnitTests.Decompiler.Evaluation
         public void Exs_Constants()
         {
             Given_ExpressionSimplifier();
-            Expression expr = new BinaryExpression(Operator.IAdd, PrimitiveType.Word32,
-                Constant.Word32(1), Constant.Word32(2));
+            Expression expr = m.IAdd(
+                Constant.Word32(1),
+                Constant.Word32(2));
             var (c, _) = expr.Accept(simplifier);
 
             Assert.AreEqual(3, ((Constant) c).ToInt32());
@@ -163,7 +164,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
         public void Exs_OrWithSelf()
         {
             Given_ExpressionSimplifier();
-            var expr = new BinaryExpression(Operator.Or, foo.DataType, foo, foo);
+            var expr = m.Or(foo, foo);
             var (result, _) = expr.Accept(simplifier);
             Assert.AreSame(foo, result);
         }
@@ -1311,9 +1312,9 @@ namespace Reko.UnitTests.Decompiler.Evaluation
         {
             Given_ExpressionSimplifier();
             Expression exp =
-                new ArrayAccess(
+                m.ARef(
                     PrimitiveType.Word16,
-                    Constant.Create(
+                    m.Const(
                         new ArrayType(PrimitiveType.Word16, 4),
                         0x0000111122223333),
                     m.Int32(1));
@@ -1390,7 +1391,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
                 m.IMul(
                     PrimitiveType.Word64,
                     foo16,
-                    Constant.Create(foo16.DataType, 3)),
+                    m.Const(foo16.DataType, 3)),
                 PrimitiveType.CreateWord(24));
             exp = RunExpressionSimplifier(exp);
 

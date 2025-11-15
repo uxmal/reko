@@ -727,7 +727,7 @@ internal class M88kRewriter : IEnumerable<RtlInstructionCluster>
             if (w == 0)
                 w = 0x20;
             var dt = PrimitiveType.CreateWord(w);
-            clr = m.Dpb(src, Constant.Create(dt, ~0u), cOffset.ToInt32());
+            clr = m.Dpb(src, m.Const(dt, ~0u), cOffset.ToInt32());
         }
         else
         {

@@ -35,6 +35,7 @@ namespace Reko.Structure;
 public class AbsynStatementEmitter : InstructionVisitor, IAbsynVisitor
 {
     private readonly List<AbsynStatement> stms;
+    private readonly ExpressionEmitter m;
 
     /// <summary>
     /// Constructs an instance of the <see cref="AbsynStatementEmitter"/> class.
@@ -44,6 +45,7 @@ public class AbsynStatementEmitter : InstructionVisitor, IAbsynVisitor
     public AbsynStatementEmitter(List<AbsynStatement> stms)
     {
         this.stms = stms;
+        this.m = new ExpressionEmitter();
     }
 
     /// <summary>
@@ -75,7 +77,7 @@ public class AbsynStatementEmitter : InstructionVisitor, IAbsynVisitor
 
     void InstructionVisitor.VisitCallInstruction(CallInstruction ci)
     {
-        stms.Add(new AbsynSideEffect(new Application(ci.Callee, VoidType.Instance)));
+        stms.Add(new AbsynSideEffect(m.Fn(ci.Callee, VoidType.Instance)));
     }
 
     void InstructionVisitor.VisitComment(CodeComment comment)

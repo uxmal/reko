@@ -38,18 +38,19 @@ public class CompSub_Rule
     /// </summary>
     /// <param name="unary">Unary expression to simplify.
     /// </param>
+    /// <param name="m">Expression emitter used when building expressions.</param>
     /// <returns></returns>
-    public Expression? Match(UnaryExpression unary)
+    public Expression? Match(UnaryExpression unary, ExpressionEmitter m)
     {
         if (unary.Operator == Operator.Comp &&
             unary.Expression is BinaryExpression bin &&
             bin.Operator == Operator.ISub)
         {
             var one = Constant.Int(bin.DataType, 1);
-            return new BinaryExpression(
+            return m.Bin(
                 Operator.ISub,
                 bin.DataType,
-                new BinaryExpression(
+                m.Bin(
                     Operator.ISub, bin.DataType, bin.Right, bin.Left),
                 one);
         }

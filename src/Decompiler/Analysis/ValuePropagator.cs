@@ -86,6 +86,7 @@ public class ValuePropagator : IAnalysis<SsaState>
         private readonly SsaMutator ssam;
         private readonly IEventListener eventListener;
         private readonly VarargsFormatScanner va;
+        private readonly ExpressionEmitter m;
         private Statement stmCur;      //$REFACTOR: try to make this a context paramter.
         private bool changed;
 
@@ -99,7 +100,8 @@ public class ValuePropagator : IAnalysis<SsaState>
             this.arch = ssa.Procedure.Architecture;
             this.dynamicLinker = context.DynamicLinker;
             this.eventListener = context.EventListener;
-            this.ssam = new SsaMutator(ssa);
+            this.m = new ExpressionEmitter();
+            this.ssam = new SsaMutator(ssa, m);
             this.evalCtx = new SsaEvaluationContext(arch, ssa.Identifiers, dynamicLinker);
             this.eval = new ExpressionSimplifier(program.Memory, evalCtx, eventListener);
             var ctx = new SsaEvaluationContext(arch, ssa.Identifiers, dynamicLinker);
@@ -323,7 +325,7 @@ public class ValuePropagator : IAnalysis<SsaState>
                 {
                     evalCtx.RemoveExpressionUse(mem.EffectiveAddress);
                     evalCtx.UseExpression(ea);
-                    store.Dst = new MemoryAccess(mem.MemoryId, ea, mem.DataType);
+                    store.Dst = m.Mem(mem.MemoryId, mem.DataType, ea);
                 }
             }
             return (store, srcChanged|dstChanged);

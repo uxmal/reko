@@ -18,13 +18,14 @@
  */
 #endregion
 
-using NUnit.Framework;
+using Moq;
 using Reko.Analysis;
 using Reko.Arch.X86;
 using Reko.Arch.X86.Assembler;
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
+using Reko.Core.Loading;
 using Reko.Core.Operators;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -32,16 +33,11 @@ using Reko.Environments.Msdos;
 using Reko.Environments.Windows;
 using Reko.Loading;
 using Reko.Scanning;
+using Reko.Services;
 using Reko.UnitTests.Mocks;
-using Moq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Diagnostics;
-using System.IO;
-using Reko.Core.Loading;
-using Reko.Core.Serialization;
-using Reko.Services;
 
 namespace Reko.UnitTests.Decompiler.Typing
 {
@@ -165,9 +161,10 @@ namespace Reko.UnitTests.Decompiler.Typing
 
 		protected MemoryAccess MemLoad(Identifier id, int offset, DataType size)
 		{
-			return new MemoryAccess(MemoryStorage.GlobalMemory, 
-				new BinaryExpression(Operator.IAdd, PrimitiveType.Word32, id, Constant.Word32(offset)),
-				size);
+            return new MemoryAccess(
+                MemoryStorage.GlobalMemory,
+                new BinaryExpression(Operator.IAdd, PrimitiveType.Word32, id, Constant.Word32(offset)),
+                size);
 		}
 	}
 }

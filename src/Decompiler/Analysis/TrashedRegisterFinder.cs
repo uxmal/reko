@@ -206,7 +206,8 @@ namespace Reko.Analysis
                 var callStms = ssa.Procedure.Statements
                     .Where(stm => stm.Instruction is CallInstruction)
                     .ToList();
-                var ssam = new SsaMutator(ssa);
+                var m = new ExpressionEmitter();
+                var ssam = new SsaMutator(ssa, m);
                 foreach (var stm in callStms)
                 {
                     var call = (CallInstruction)stm.Instruction;
@@ -661,6 +662,7 @@ namespace Reko.Analysis
             internal ProcedureFlow ProcFlow;
             private readonly SsaState ssa;
             private readonly ExpressionValueComparer cmp;
+            private readonly ExpressionEmitter m;
 
             /// <summary>
             /// Constructs an instance of <see cref="Context"/>.
@@ -680,6 +682,7 @@ namespace Reko.Analysis
                       idState,
                       procFlow, 
                       [],
+                      new ExpressionEmitter(),
                       new ExpressionValueComparer())
             {
             }
@@ -690,6 +693,7 @@ namespace Reko.Analysis
                 Dictionary<Identifier, (Expression, BitRange)> idState,
                 ProcedureFlow procFlow,
                 Dictionary<int, Expression> stack,
+                ExpressionEmitter m,
                 ExpressionValueComparer cmp)
             {
                 this.ssa = ssa;
@@ -697,6 +701,7 @@ namespace Reko.Analysis
                 this.IdState = idState;
                 this.ProcFlow = procFlow;
                 this.StackState = stack;
+                this.m = m;
                 var arch = ssa.Procedure.Architecture;
                 this.Endianness = arch.Endianness;
                 this.MemoryGranularity = arch.MemoryGranularity;
@@ -720,7 +725,14 @@ namespace Reko.Analysis
             /// <returns></returns>
             public Context Clone()
             {
-                return new Context(ssa, this.FramePointer, this.IdState, this.ProcFlow, new Dictionary<int, Expression>(StackState), cmp);
+                return new Context(
+                    ssa,
+                    this.FramePointer,
+                    this.IdState,
+                    this.ProcFlow,
+                    new Dictionary<int, Expression>(StackState),
+                    this.m,
+                    cmp);
             }
 
             /// <summary>
@@ -778,10 +790,10 @@ namespace Reko.Analysis
                     if (value.DataType is StructureType str)
                     {
                         var ptrStr = new Pointer(str, access.EffectiveAddress.DataType.BitSize);
-                        value = new MemoryAccess(
+                        value = m.Mem(
                             access.MemoryId,
-                            new UnaryExpression(Operator.AddrOf, ptrStr, value),
-                            access.DataType);
+                            access.DataType,
+                            m.AddrOf(ptrStr, value));
                     }
                     return value;
                 }
@@ -801,12 +813,12 @@ namespace Reko.Analysis
                     return null;
             }
 
-            private static Expression MaybeSlice(Expression exp, DataType dt)
+            private Expression MaybeSlice(Expression exp, DataType dt)
             {
                 var wantedBitsize = dt.BitSize;
                 if (exp.DataType.BitSize > wantedBitsize)
                 {
-                    exp = new Slice(dt, exp, 0);
+                    exp = m.Slice(exp, dt);
                 }
                 return exp;
             }

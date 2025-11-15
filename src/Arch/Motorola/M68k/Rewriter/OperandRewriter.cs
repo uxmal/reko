@@ -77,9 +77,9 @@ namespace Reko.Arch.Motorola.M68k.Rewriter
                 if (imm.DataType.IsReal)
                     return imm.CloneExpression();
                 if (DataWidth is not null && DataWidth.BitSize > imm.DataType.BitSize)
-                    return Constant.Create(DataWidth, imm.ToInt64());
+                    return m.Const(DataWidth, imm.ToInt64());
                 else
-                    return Constant.Create(imm.DataType, imm.ToUInt32());
+                    return m.Const(imm.DataType, imm.ToUInt32());
             case MemoryOperand mem:
                 return RewriteMemoryAccess(mem, DataWidth, addrInstr);
             case Address addr:

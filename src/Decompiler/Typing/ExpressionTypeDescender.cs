@@ -42,17 +42,9 @@ namespace Reko.Typing
     public class ExpressionTypeDescender : ExpressionVisitor<bool, TypeVariable>
     {
         // Matches the effective address of Mem[p + c] where c is a constant.
-        private static readonly ExpressionMatcher fieldAccessPattern = new(
-            new BinaryExpression(
-                Operator.IAdd,
-                ExpressionMatcher.AnyDataType(null),
-                ExpressionMatcher.AnyExpression("p"),
-                ExpressionMatcher.AnyConstant("c")));
-        private static readonly ExpressionMatcher segFieldAccessPattern = new(
-            new MkSequence(
-                ExpressionMatcher.AnyDataType(null),
-                ExpressionMatcher.AnyExpression("p"),
-                ExpressionMatcher.AnyConstant("c")));
+        private static readonly ExpressionMatcher fieldAccessPattern;
+
+        private static readonly ExpressionMatcher segFieldAccessPattern;
 
         /// <summary>
         /// <see cref="IPlatform"/> of the program being analyzed.
@@ -1084,6 +1076,22 @@ namespace Reko.Typing
         {
             unary.Expression.Accept(this, TypeVar(unary.Expression));
             return false;
+        }
+
+        static ExpressionTypeDescender()
+        {
+            var m = new ExpressionMatcherEmitter();
+            fieldAccessPattern = new(
+                m.Bin(
+                    Operator.IAdd,
+                    m.AnyDataType(null),
+                    m.AnyExpr("p"),
+                    m.AnyConst("c")));
+            segFieldAccessPattern = new(
+                m.Seq(
+                    m.AnyDataType(null),
+                    m.AnyExpr("p"),
+                    m.AnyConst("c")));
         }
     }
 }

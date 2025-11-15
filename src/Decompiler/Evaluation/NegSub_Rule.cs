@@ -25,18 +25,18 @@ namespace Reko.Evaluation;
 
 internal class NegSub_Rule
 {
-	public Expression? Match(UnaryExpression unary)
-	{
-    if (unary.Operator.Type == OperatorType.Neg &&
-        unary.Expression is BinaryExpression bin &&
-        bin.Operator.Type == OperatorType.ISub)
+    public Expression? Match(UnaryExpression unary, ExpressionEmitter m)
     {
-        return new BinaryExpression(
-            bin.Operator,
-            bin.DataType,
-            bin.Right,
-            bin.Left);
+        if (unary.Operator.Type == OperatorType.Neg &&
+            unary.Expression is BinaryExpression bin &&
+            bin.Operator.Type == OperatorType.ISub)
+        {
+            return m.Bin(
+                bin.Operator,
+                bin.DataType,
+                bin.Right,
+                bin.Left);
+        }
+        return null;
     }
-		return null;
-	}
 }

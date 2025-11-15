@@ -28,7 +28,7 @@ namespace Reko.Evaluation;
 /// </summary>
 class LogicalNotFollowedByNegRule
 {
-    public Expression? Match(UnaryExpression unary)
+    public Expression? Match(UnaryExpression unary, ExpressionEmitter m)
     {
         if (unary.Operator.Type != OperatorType.Not)
             return null;
@@ -36,7 +36,7 @@ class LogicalNotFollowedByNegRule
         if (unary.Expression is not UnaryExpression subExpression || subExpression.Operator.Type != OperatorType.Neg)
             return null;
 
-        return new UnaryExpression(
+        return m.Unary(
             Operator.Not,
             unary.DataType,
             subExpression.Expression);

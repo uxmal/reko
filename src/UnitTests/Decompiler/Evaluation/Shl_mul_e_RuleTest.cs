@@ -49,7 +49,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
 			ssaIds[id].Uses.Add(stm);
 
 			var rule = new Shl_mul_e_Rule();
-			var e = rule.Match(b);
+			var e = rule.Match(b, m);
 
             Assert.IsNotNull(e);
 			Assert.AreEqual("id *s 0xC<32>", e.ToString());

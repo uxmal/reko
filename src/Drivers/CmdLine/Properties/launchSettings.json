@@ -9,6 +9,11 @@
       "commandName": "Project",
       "commandLineArgs": "dasm --arch riscv --dasm-bytes a.out",
       "workingDirectory": "C:\\dev\\uxmal\\rvfun\\repo\\ep18\\rvfun"
+    },
+    "explorerplusplus": {
+      "commandName": "Project",
+      "commandLineArgs": "decompile --time-limit 180 subject.exe",
+      "workingDirectory": "c:\\dev\\uxmal\\rev\\decompiler-subjects\\from_explorerplusplus.com\\version_1.3.4\\ia32_pe_from_website"
     }
   },
   "iisSettings": {

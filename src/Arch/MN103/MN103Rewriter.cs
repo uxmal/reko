@@ -271,7 +271,7 @@ namespace Reko.Arch.MN103
                 return addr;
             case Constant imm:
                 var n = imm.ToInt32();    // sign extend.
-                return Constant.Create(dtMem, n);
+                return m.Const(dtMem, n);
             case MemoryOperand mem:
                 var ea = EffectiveAddress(mem);
                 return m.Mem(dtMem, ea);

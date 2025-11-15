@@ -30,7 +30,7 @@ public partial class ExpressionSimplifier
         var (basePtr, bChanged) = segptr.BasePointer.Accept(this);
         var (offset, oChanged) = segptr.Offset.Accept(this);
         bool changed = bChanged | oChanged;
-        var e = scaledIndexRule.Match(offset, ctx);
+        var e = scaledIndexRule.Match(offset, ctx, m);
         if (e is not null)
         {
             changed = true;
@@ -42,8 +42,8 @@ public partial class ExpressionSimplifier
             addr.DataType = segptr.DataType;
             return (addr, true);
         }
-        var value = new SegmentedPointer(segptr.DataType, basePtr, offset);
-        e = sliceSegPtr.Match(value, ctx);
+        var value = m.SegPtr(segptr.DataType, basePtr, offset);
+        e = sliceSegPtr.Match(value, ctx, m);
         if (e is not null)
         {
             return (e, true);

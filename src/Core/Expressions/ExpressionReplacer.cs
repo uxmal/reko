@@ -160,7 +160,7 @@ namespace Reko.Core.Expressions
             if (cmp.Equals(access, original))
                 return replacement;
             var ea = access.EffectiveAddress.Accept(this);
-            return new MemoryAccess(ea, access.DataType);
+            return new MemoryAccess(access.MemoryId, ea, access.DataType);
         }
 
         /// <inheritdoc/>

@@ -171,8 +171,8 @@ c:\dev\uxmal\reko\master\subjects\Elf\IA64\bash\elf-Linux-ia64-bash: error: An i
     An item with the same key has already been added. Key: 4611686018427490960
        at System.Collections.Generic.Dictionary`2.TryInsert(TKey key, TValue value, InsertionBehavior behavior)
    at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
-   at Reko.Scanning.ShingledScanner.AddInstruction(IProcessorArchitecture arch, RtlInstructionCluster i) in c:\dev\uxmal\reko\master\src\Decompiler\Scanning\ShingledScanner.cs:line 312
-   at Reko.Scanning.ShingledScanner.ScanRange(Chunk& chunk, UInt64 workToDo) in c:\dev\uxmal\reko\master\src\Decompiler\Scanning\ShingledScanner.cs:line 224
+   at Reko.Scanning.ShingledScanner.AddInstruction(IProcessorArchitecture arch, RtlInstructionCluster i) in c:\dev\uxmal\reko\master\src\Decompiler\Scanning\ShingledScanner.cs:line 311
+   at Reko.Scanning.ShingledScanner.ScanRange(Chunk& chunk, UInt64 workToDo) in c:\dev\uxmal\reko\master\src\Decompiler\Scanning\ShingledScanner.cs:line 223
    at Reko.Scanning.ScannerInLinq.ScanInstructions(ScanResults sr, StorageBinder binder) in c:\dev\uxmal\reko\master\src\Decompiler\Scanning\ScannerInLinq.cs:line 197
    at Reko.Scanning.ScannerInLinq.ScanImage(ScanResults sr) in c:\dev\uxmal\reko\master\src\Decompiler\Scanning\ScannerInLinq.cs:line 88
    at Reko.Scanning.Scanner.ShingleScanProcedures() in c:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 1197
@@ -2858,20 +2858,20 @@ fn000ECBDB: error: An internal error occurred while building the expressions of 
     Argument size mismatch between real64 and word32.
        at Reko.Core.Expressions.Conversion..ctor(Expression exp, DataType dtFrom, DataType dtTo) in c:\dev\uxmal\reko\master\src\Core\Expressions\Conversion.cs:line 51
    at Reko.Core.Code.InstructionTransformer.VisitConversion(Conversion conversion) in c:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 257
-   at Reko.Analysis.IdentifierReplacer.TransformAssignment(Assignment a) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\IdentifierReplacer.cs:line 62
-   at Reko.Analysis.Coalescer.Worker.CoalesceStatements(SsaIdentifier sid, Expression defExpr, Statement def, Statement use) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 167
-   at Reko.Analysis.Coalescer.Worker.Process(Block block) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 233
-   at Reko.Analysis.Coalescer.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 248
+   at Reko.Analysis.IdentifierReplacer.TransformAssignment(Assignment a) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\IdentifierReplacer.cs:line 65
+   at Reko.Analysis.Coalescer.Worker.CoalesceStatements(SsaIdentifier sid, Expression defExpr, Statement def, Statement use) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 169
+   at Reko.Analysis.Coalescer.Worker.Process(Block block) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 235
+   at Reko.Analysis.Coalescer.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 250
    at Reko.Analysis.Coalescer.Transform(SsaState ssa) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 71
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(IReadOnlyCollection`1 ssts) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 276
 fn000F4A65: error: An internal error occurred while building the expressions of fn000F4A65
     Argument size mismatch between real64 and word32.
        at Reko.Core.Expressions.Conversion..ctor(Expression exp, DataType dtFrom, DataType dtTo) in c:\dev\uxmal\reko\master\src\Core\Expressions\Conversion.cs:line 51
    at Reko.Core.Code.InstructionTransformer.VisitConversion(Conversion conversion) in c:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 257
-   at Reko.Analysis.IdentifierReplacer.TransformAssignment(Assignment a) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\IdentifierReplacer.cs:line 62
-   at Reko.Analysis.Coalescer.Worker.CoalesceStatements(SsaIdentifier sid, Expression defExpr, Statement def, Statement use) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 167
-   at Reko.Analysis.Coalescer.Worker.Process(Block block) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 233
-   at Reko.Analysis.Coalescer.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 248
+   at Reko.Analysis.IdentifierReplacer.TransformAssignment(Assignment a) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\IdentifierReplacer.cs:line 65
+   at Reko.Analysis.Coalescer.Worker.CoalesceStatements(SsaIdentifier sid, Expression defExpr, Statement def, Statement use) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 169
+   at Reko.Analysis.Coalescer.Worker.Process(Block block) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 235
+   at Reko.Analysis.Coalescer.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 250
    at Reko.Analysis.Coalescer.Transform(SsaState ssa) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 71
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(IReadOnlyCollection`1 ssts) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 276
                                                             Building expressions. [Done]
@@ -2999,4 +2999,4 @@ l0011DD0D: warning: Non-integral switch expression
                                                             Rewriting expressions. [Done]
                                                             Rewriting procedures to high-level language. [Done]
 
-Decompiled 100 binaries in 49.92 seconds.
+Decompiled 100 binaries in 49.04 seconds.

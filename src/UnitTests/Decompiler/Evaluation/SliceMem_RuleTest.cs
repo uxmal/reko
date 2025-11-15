@@ -32,22 +32,28 @@ namespace Reko.UnitTests.Decompiler.Evaluation
 	public class SliceMem_RuleTest
 	{
         private Mock<EvaluationContext> ctx;
+        private ExpressionEmitter m;
 
         [SetUp]
         public void Setup()
         {
             this.ctx = new Mock<EvaluationContext>();
             this.ctx.Setup(c => c.MemoryGranularity).Returns(8);
+            this.m = new ExpressionEmitter();
         }
 
 		[Test]
 		public void SliceMem()
 		{
-			var s = new Slice(PrimitiveType.Byte,
-				new MemoryAccess(MemoryStorage.GlobalMemory, 
-				new Identifier("ptr", PrimitiveType.Word32, null), PrimitiveType.Word32), 16);
+			var s = m.Slice(
+				m.Mem(
+                    MemoryStorage.GlobalMemory,
+                    PrimitiveType.Word32,
+                    new Identifier("ptr", PrimitiveType.Word32, null)),
+                PrimitiveType.Byte,
+                16);
 			var r = new SliceMem_Rule();
-			var e = r.Match(s, ctx.Object);
+			var e = r.Match(s, ctx.Object, m);
             Assert.IsNotNull(e);
 			Assert.AreEqual("Mem0[ptr + 2<32>:byte]", e.ToString());
 		}
@@ -55,11 +61,14 @@ namespace Reko.UnitTests.Decompiler.Evaluation
 		[Test]
 		public void SliceMem0()
 		{
-			var s = new Slice(PrimitiveType.Word16,
-				new MemoryAccess(MemoryStorage.GlobalMemory,
-				new Identifier("ptr", PrimitiveType.Word32, null), PrimitiveType.Word32), 0);
+			var s = m.Slice(
+				m.Mem(
+                    MemoryStorage.GlobalMemory,
+                    PrimitiveType.Word32,
+                    new Identifier("ptr", PrimitiveType.Word32, null)),
+                PrimitiveType.Word16);
 			var r = new SliceMem_Rule();
-			var e = r.Match(s, ctx.Object);
+			var e = r.Match(s, ctx.Object, m);
             Assert.IsNotNull(e);
 			Assert.AreEqual("Mem0[ptr + 0<32>:word16]", e.ToString());
 		}
@@ -67,15 +76,16 @@ namespace Reko.UnitTests.Decompiler.Evaluation
         [Test]
         public void SliceMem_SegmentedAccess()
         {
-            var s = new Slice(PrimitiveType.Byte,
-                new MemoryAccess(
+            var s = m.Slice(
+                m.Mem(
                     MemoryStorage.GlobalMemory,
+                    PrimitiveType.Word16,
                     SegmentedPointer.Create(
                         new Identifier("seg", PrimitiveType.Word16, null),
-                        new Identifier("ptr", PrimitiveType.Word16, null)),
-                    PrimitiveType.Word16), 0);
+                        new Identifier("ptr", PrimitiveType.Word16, null))),
+                PrimitiveType.Byte);
             var r = new SliceMem_Rule();
-            var e = r.Match(s, ctx.Object);
+            var e = r.Match(s, ctx.Object, m);
             Assert.IsNotNull(e);
             Assert.AreEqual("Mem0[seg:ptr + 0<16>:byte]", e.ToString());
         }

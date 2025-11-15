@@ -38,10 +38,11 @@ public class SsaMutator
     /// Creates an instance of <see cref="SsaMutator"/>.
     /// </summary>
     /// <param name="ssa"></param>
-    public SsaMutator(SsaState ssa)
+    /// <param name="m">Expression factory to use when creating new expressions.</param>
+    public SsaMutator(SsaState ssa, ExpressionEmitter m)
     {
         this.ssa = ssa;
-        this.m = new ExpressionEmitter();
+        this.m = m;
     }
 
     /// <summary>

@@ -49,6 +49,7 @@ namespace Reko.Typing
         private readonly IReadOnlyProgram program;
         private readonly ITypeStore store;
         private readonly ArrayExpressionMatcher aem;
+        private readonly ExpressionEmitter m;
         private Expression? expComplex;         // The expression we wish to convert to high-level code.
         private Expression? index;              // Optional index expression (like ptr + i). Should never be a constant (see "offset" member variable)
         private readonly Expression? basePtr;   // Non-null if x86-style base segment present.
@@ -84,6 +85,7 @@ namespace Reko.Typing
             this.index = index;
             this.offset = offset;
             this.aem = new(program.Platform.PointerType);
+            this.m = new ExpressionEmitter();
         }
 
         private bool Dereferenced => dtResult is not null;
@@ -115,7 +117,7 @@ namespace Reko.Typing
             if (!Dereferenced && dereferenceGenerated)
             {
                 var ptr = new Pointer(exp.DataType, dtComplex.BitSize);
-                exp = new UnaryExpression(Operator.AddrOf, ptr, exp);
+                exp = m.AddrOf(ptr, exp);
             }
             if (Dereferenced && !dereferenceGenerated)
             {
@@ -142,12 +144,12 @@ namespace Reko.Typing
             if (enclosingPtr is not null)
             {
                 dt = new Pointer(PrimitiveType.Char, enclosingPtr.BitSize);
-                e = new Cast(dt, e);
+                e = m.Cast(dt, e);
             }
             else if (e.DataType.Size != 0)
             {
                 dt = PrimitiveType.CreateWord(e.DataType.BitSize);
-                e = new Cast(dt, e);
+                e = m.Cast(dt, e);
             }
             var eOffset = CreateOffsetExpression(offset, index);
             var op = Operator.IAdd;
@@ -156,7 +158,7 @@ namespace Reko.Typing
                 op = Operator.ISub;
                 eOffset = cOffset.Negate();
             }
-            return new BinaryExpression(op, e.DataType, e, eOffset);
+            return m.Bin(op, e.DataType, e, eOffset);
         }
 
         private Expression CreateAddressOf(Expression e)
@@ -165,7 +167,7 @@ namespace Reko.Typing
                 return e;
 
             dereferenceGenerated = false;
-            return new UnaryExpression(Operator.AddrOf, dtComplex!, e);
+            return m.AddrOf(dtComplex!, e);
         }
 
         /// <inheritdoc/>
@@ -386,7 +388,7 @@ namespace Reko.Typing
             dtComplexOrig = alt.DataType;
             if (ut.PreferredType is not null)
             {
-                expComplex = new Cast(ut.PreferredType, expComplex!);
+                expComplex = m.Cast(ut.PreferredType, expComplex!);
             }
             else
             {
@@ -416,18 +418,18 @@ namespace Reko.Typing
             if (Dereferenced)
             {
                 dereferenceGenerated = true;
-                return new ArrayAccess(dtPointee, e, arrayIndex);
+                return m.ARef(dtPointee, e, arrayIndex);
             }
             else
             {
                 // Could generate &a[index] here, but 
                 // a + index is more idiomatic C/C++
                 dereferenceGenerated = false;
-                return new BinaryExpression(Operator.IAdd, dtPointer, e, arrayIndex);
+                return m.Bin(Operator.IAdd, dtPointer, e, arrayIndex);
             }
         }
 
-        private static Expression CreateOffsetExpression(int offset, Expression? index)
+        private Expression CreateOffsetExpression(int offset, Expression? index)
         {
             if (index is null)
                 return Constant.Int32(offset); //$REVIEW: forcing 32-bit ints;
@@ -436,7 +438,7 @@ namespace Reko.Typing
             var op = offset < 0 ? Operator.ISub : Operator.IAdd;
             offset = Math.Abs(offset);
             var cOffset = Constant.Int32(offset); //$REVIEW: forcing 32-bit ints
-            return new BinaryExpression(op, index.DataType, index, cOffset);
+            return m.Bin(op, index.DataType, index, cOffset);
         }
 
         private Expression CreateDereference(DataType dt, Expression e)
@@ -461,8 +463,7 @@ namespace Reko.Typing
                 {
                     return mps;
                 }
-                return new UnaryExpression(
-                    Operator.AddrOf,
+                return m.AddrOf(
                     new Pointer(dt, program.Platform.PointerType.BitSize),
                     mps);
             }
@@ -497,7 +498,7 @@ namespace Reko.Typing
                         dereferenceGenerated = false;
                     }
                 }
-                var fa = new FieldAccess(dtField, exp, field);
+                var fa = m.Field(dtField, exp, field);
                 return fa;
             }
         }
@@ -530,7 +531,7 @@ namespace Reko.Typing
                     index = aem.Index;
                     return true;
                 }
-                index = new BinaryExpression(
+                index = m.Bin(
                     Operator.IMul,
                     bin.DataType,
                     aem.Index!,

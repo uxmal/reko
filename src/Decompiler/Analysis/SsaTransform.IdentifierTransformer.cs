@@ -453,7 +453,7 @@ namespace Reko.Analysis
             {
                 foreach (var use in sidOld.Uses.ToList())
                 {
-                    use.Instruction.Accept(new IdentifierReplacer(this.ssaIds, use, sidOld.Identifier, sidNew.Identifier, false));
+                    use.Instruction.Accept(new IdentifierReplacer(this.ssaIds, outer.m, use, sidOld.Identifier, sidNew.Identifier, false));
                 }
                 foreach (var bs in outer.blockstates.Values)
                 {
@@ -1179,7 +1179,7 @@ namespace Reko.Analysis
                 {
                     // All subregisters came in from caller, so create an
                     // alias statement.
-                    var seq = new MkSequence(this.id.DataType, sids.Select(s => s.Identifier).ToArray());
+                    var seq = outer.m.Seq(this.id.DataType, sids.Select(s => s.Identifier).ToArray());
                     var ass = new AliasAssignment(id, seq);
                     var stm = sids[0].DefStatement.Block.Statements.Add(
                         sids[0].DefStatement.Address,
@@ -1213,7 +1213,7 @@ namespace Reko.Analysis
 
             private SsaIdentifier FuseIntoMkSequence(SsaIdentifier [] sids)
             {
-                var seq = new MkSequence(this.id.DataType, sids.Select(s => s.Identifier).ToArray());
+                var seq = outer.m.Seq(this.id.DataType, sids.Select(s => s.Identifier).ToArray());
                 var ass = new AliasAssignment(this.id, seq);
                 var iStm = this.stm.Block.Statements.IndexOf(this.stm);
                 var stm = this.stm.Block.Statements.Insert(iStm, this.stm.Address, ass);

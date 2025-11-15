@@ -38,7 +38,7 @@ namespace Reko.UnitTests.Fragments
             var di = Local16("di");
             Call(
                 Seq(
-                    Constant.Create(PrimitiveType.SegmentSelector, 0x2700),
+                    Const(PrimitiveType.SegmentSelector, 0x2700),
                     Array(
                         PrimitiveType.Word16,
                         Seq(ds, Word16(0x2040)),

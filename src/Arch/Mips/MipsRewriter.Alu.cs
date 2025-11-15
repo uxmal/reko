@@ -277,7 +277,7 @@ namespace Reko.Arch.Mips
         {
             var immOp = (Constant)instr.Operands[1];
             long v = immOp.ToInt16();
-            var opSrc = Constant.Create(arch.WordWidth, v << 16);
+            var opSrc = m.Const(arch.WordWidth, v << 16);
             var opDst = RewriteOperand0(instr.Operands[0]);
             m.Assign(opDst, opSrc);
         }

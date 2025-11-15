@@ -42,6 +42,7 @@ namespace Reko.Scanning
         private readonly CallGraph callGraph;
         private readonly Dictionary<Block, Block> mpBlocks;
         private readonly Dictionary<TemporaryStorage, Identifier> tmps;
+        private readonly ExpressionEmitter m;
         private DataType? dt;
 
         /// <summary>
@@ -55,8 +56,9 @@ namespace Reko.Scanning
             this.blockToClone = blockToClone;
             this.procCalling = procCalling;
             this.callGraph = callGraph;
-            this.mpBlocks = new Dictionary<Block, Block>();
-            this.tmps = new Dictionary<TemporaryStorage, Identifier>();
+            this.mpBlocks = [];
+            this.tmps = [];
+            this.m = new ExpressionEmitter();
         }
 
         /// <summary>
@@ -215,13 +217,15 @@ namespace Reko.Scanning
         {
             var proc = appl.Procedure.Accept(this);
             var args = appl.Arguments.Select(a => a.Accept(this)).ToArray();
-            return new Application(proc, appl.DataType, args);
+            return m.Fn(proc, appl.DataType, args);
         }
 
         /// <inheritdoc/>
         public Expression VisitArrayAccess(ArrayAccess acc)
         {
-            throw new NotImplementedException();
+            var a = acc.Array.Accept(this);
+            var i = acc.Index.Accept(this);
+            return m.ARef(acc.DataType, a, i);
         }
 
         /// <inheritdoc/>
@@ -229,7 +233,7 @@ namespace Reko.Scanning
         {
             var left = binExp.Left.Accept(this);
             var right = binExp.Right.Accept(this);
-            return new BinaryExpression(
+            return m.Bin(
                 binExp.Operator,
                 binExp.DataType,
                 left, right);
@@ -238,13 +242,13 @@ namespace Reko.Scanning
         /// <inheritdoc/>
         public Expression VisitCast(Cast cast)
         {
-            return new Cast(cast.DataType, cast.Expression.Accept(this));
+            return m.Cast(cast.DataType, cast.Expression.Accept(this));
         }
 
         /// <inheritdoc/>
         public Expression VisitConditionalExpression(ConditionalExpression c)
         {
-            return new ConditionalExpression(
+            return m.Conditional(
                 c.DataType,
                 c.Condition.Accept(this),
                 c.ThenExp.Accept(this),
@@ -254,7 +258,7 @@ namespace Reko.Scanning
         /// <inheritdoc/>
         public Expression VisitConditionOf(ConditionOf cof)
         {
-            return new ConditionOf(cof.DataType, cof.Expression.Accept(this));
+            return m.Cond(cof.DataType, cof.Expression.Accept(this));
         }
 
         /// <inheritdoc/>
@@ -266,7 +270,7 @@ namespace Reko.Scanning
         /// <inheritdoc/>
         public Expression VisitConversion(Conversion conversion)
         {
-            return new Conversion(
+            return m.Convert(
                 conversion.Expression.Accept(this),
                 conversion.SourceDataType,
                 conversion.DataType);
@@ -296,7 +300,7 @@ namespace Reko.Scanning
         public Expression VisitOutArgument(OutArgument outArg)
         {
             var exp = outArg.Expression.Accept(this);
-            return new OutArgument(outArg.DataType, exp);
+            return m.Out(outArg.DataType, exp);
         }
 
         /// <inheritdoc/>
@@ -310,14 +314,14 @@ namespace Reko.Scanning
         {
             var mem = (Identifier) access.MemoryId.Accept(this);
             var ea = access.EffectiveAddress.Accept(this);
-            return new MemoryAccess(mem, ea, access.DataType);
+            return m.Mem(mem, access.DataType, ea);
         }
 
         /// <inheritdoc/>
         public Expression VisitMkSequence(MkSequence seq)
         {
             var newSeq = seq.Expressions.Select(e => e.Accept(this)).ToArray();
-            return new MkSequence(seq.DataType, newSeq);
+            return m.Seq(seq.DataType, newSeq);
         }
 
         /// <inheritdoc/>
@@ -347,7 +351,7 @@ namespace Reko.Scanning
         /// <inheritdoc/>
         public Expression VisitSegmentedAddress(SegmentedPointer address)
         {
-            return new SegmentedPointer(
+            return m.SegPtr(
                 address.DataType,
                 address.BasePointer.Accept(this),
                 address.Offset.Accept(this));
@@ -356,9 +360,9 @@ namespace Reko.Scanning
         /// <inheritdoc/>
         public Expression VisitSlice(Slice slice)
         {
-            return new Slice(
-                slice.DataType,
+            return m.Slice(
                 slice.Expression.Accept(this),
+                slice.DataType,
                 slice.Offset);
         }
 
@@ -371,7 +375,7 @@ namespace Reko.Scanning
         /// <inheritdoc/>
         public Expression VisitTestCondition(TestCondition tc)
         {
-            return new TestCondition(
+            return m.Test(
                 tc.ConditionCode,
                 tc.Expression.Accept(this));
         }
@@ -379,7 +383,7 @@ namespace Reko.Scanning
         /// <inheritdoc/>
         public Expression VisitUnaryExpression(UnaryExpression unary)
         {
-            return new UnaryExpression(
+            return m.Unary(
                 unary.Operator,
                 unary.DataType,
                 unary.Expression.Accept(this));

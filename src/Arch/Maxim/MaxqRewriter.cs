@@ -155,12 +155,12 @@ public class MaxqRewriter : IEnumerable<RtlInstructionCluster>
         var ccop = ((ConditionOperand<CCode>) op).Condition;
         switch (ccop)
         {
-        case CCode.C: return new TestCondition(ConditionCode.ULT, binder.EnsureFlagGroup(Registers.C));
-        case CCode.E: return new TestCondition(ConditionCode.EQ, binder.EnsureFlagGroup(Registers.C));
-        case CCode.NC: return new TestCondition(ConditionCode.UGE, binder.EnsureFlagGroup(Registers.C));
-        case CCode.NZ: return new TestCondition(ConditionCode.NE, binder.EnsureFlagGroup(Registers.Z));
-        case CCode.S: return new TestCondition(ConditionCode.LT, binder.EnsureFlagGroup(Registers.Z));
-        case CCode.Z: return new TestCondition(ConditionCode.EQ, binder.EnsureFlagGroup(Registers.Z));
+        case CCode.C: return m.Test(ConditionCode.ULT, binder.EnsureFlagGroup(Registers.C));
+        case CCode.E: return m.Test(ConditionCode.EQ, binder.EnsureFlagGroup(Registers.C));
+        case CCode.NC: return m.Test(ConditionCode.UGE, binder.EnsureFlagGroup(Registers.C));
+        case CCode.NZ: return m.Test(ConditionCode.NE, binder.EnsureFlagGroup(Registers.Z));
+        case CCode.S: return m.Test(ConditionCode.LT, binder.EnsureFlagGroup(Registers.Z));
+        case CCode.Z: return m.Test(ConditionCode.EQ, binder.EnsureFlagGroup(Registers.Z));
         }
         EmitUnitTest();
         return Constant.False();
@@ -171,12 +171,12 @@ public class MaxqRewriter : IEnumerable<RtlInstructionCluster>
         var ccop = ((ConditionOperand<CCode>) op).Condition;
         switch (ccop)
         {
-        case CCode.C: return new TestCondition(ConditionCode.UGE, binder.EnsureFlagGroup(Registers.C));
-        case CCode.E: return new TestCondition(ConditionCode.NE, binder.EnsureFlagGroup(Registers.C));
-        case CCode.NC: return new TestCondition(ConditionCode.ULT, binder.EnsureFlagGroup(Registers.C));
-        case CCode.NZ: return new TestCondition(ConditionCode.EQ, binder.EnsureFlagGroup(Registers.Z));
-        case CCode.S: return new TestCondition(ConditionCode.GE, binder.EnsureFlagGroup(Registers.Z));
-        case CCode.Z: return new TestCondition(ConditionCode.NE, binder.EnsureFlagGroup(Registers.Z));
+        case CCode.C: return m.Test(ConditionCode.UGE, binder.EnsureFlagGroup(Registers.C));
+        case CCode.E: return m.Test(ConditionCode.NE, binder.EnsureFlagGroup(Registers.C));
+        case CCode.NC: return m.Test(ConditionCode.ULT, binder.EnsureFlagGroup(Registers.C));
+        case CCode.NZ: return m.Test(ConditionCode.EQ, binder.EnsureFlagGroup(Registers.Z));
+        case CCode.S: return m.Test(ConditionCode.GE, binder.EnsureFlagGroup(Registers.Z));
+        case CCode.Z: return m.Test(ConditionCode.NE, binder.EnsureFlagGroup(Registers.Z));
         }
         EmitUnitTest();
         return Constant.False();

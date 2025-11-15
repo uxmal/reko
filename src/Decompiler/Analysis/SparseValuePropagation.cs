@@ -157,7 +157,8 @@ namespace Reko.Analysis
 
         private void PerformReplacements()
         {
-            var ssam = new SsaMutator(ssa);
+            var m = new ExpressionEmitter();
+            var ssam = new SsaMutator(ssa, m);
             foreach (var sid in ssa.Identifiers)
             {
                 var value = ctx.GetValue(sid.Identifier);

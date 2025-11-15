@@ -23,10 +23,8 @@ using Reko.Core.Analysis;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
-using Reko.Core.Operators;
 using Reko.Core.Services;
 using Reko.Core.Types;
-using Reko.Services;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -487,7 +485,7 @@ namespace Reko.Analysis
                 ssaCaller.RemoveUses(stm);
                 var instr = ab.CreateInstruction(fn, sigCallee, procCallee.Characteristics);
                 stm.Instruction = instr;
-                var ssam = new SsaMutator(ssaCaller);
+                var ssam = new SsaMutator(ssaCaller, m);
                 ssam.AdjustSsa(stm, call);
                 return true;
             }

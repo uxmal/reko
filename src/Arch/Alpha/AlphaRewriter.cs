@@ -262,7 +262,7 @@ namespace Reko.Arch.Alpha
                 if (mop.Base.Number == ZeroRegister)
                 {
                     var dt = PrimitiveType.Create(Domain.Integer, arch.PointerType.BitSize);
-                    ea = Constant.Create(dt, offset); //$TODO should be platform size.
+                    ea = m.Const(dt, offset); //$TODO should be platform size.
                 }
                 else 
                 {

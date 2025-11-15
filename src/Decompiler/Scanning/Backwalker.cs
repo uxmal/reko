@@ -48,6 +48,7 @@ namespace Reko.Scanning
 
         private readonly IBackWalkHost<TBlock, TInstr> host;
         private readonly ExpressionSimplifier eval;
+        private readonly ExpressionEmitter m;
         private Identifier? UsedAsFlag;
         private TBlock? startBlock;
 
@@ -65,6 +66,7 @@ namespace Reko.Scanning
 		{
             this.host = host;
             this.eval = eval;
+            this.m = new ExpressionEmitter();
             var target = xfer.Target;
             if (xfer.Target is MkSequence seq && seq.Expressions.Length == 2)
             {
@@ -78,7 +80,7 @@ namespace Reko.Scanning
             {
                 Index = RegisterOf(target as Identifier);
             }
-            Operations = new List<BackwalkOperation>();
+            Operations = [];
             JumpSize = target.DataType.Size;
         }
 
@@ -379,15 +381,13 @@ namespace Reko.Scanning
             return true;
         }
 
-        private static BinaryExpression? NegateRight(BinaryExpression? bin)
+        private BinaryExpression? NegateRight(BinaryExpression? bin)
         {
             if (bin is not null &&
                 (bin.Operator.Type == OperatorType.IAdd) &&
                 bin.Right is Constant cRight)
             {
-                return new BinaryExpression(
-                    Operator.ISub,
-                    bin.Left.DataType,
+                return m.ISub(
                     bin.Left,
                     cRight.Negate());
             }

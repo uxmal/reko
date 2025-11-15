@@ -80,7 +80,7 @@ namespace Reko.Core.Code
         /// <returns>The created assignment.</returns>
         public virtual Assignment Assign(Identifier dst, int n)
         {
-            return Assign(dst, Constant.Create(dst.DataType, n));
+            return Assign(dst, Const(dst.DataType, n));
         }
 
         /// <summary>

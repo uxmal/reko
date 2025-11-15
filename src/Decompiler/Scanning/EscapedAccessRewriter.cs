@@ -34,6 +34,7 @@ namespace Reko.Scanning
 	public class EscapedAccessRewriter : InstructionTransformer
 	{
 		private readonly Procedure proc;
+        private readonly ExpressionEmitter m;
 
         /// <summary>
         /// Constructs a new instance of the <see cref="EscapedAccessRewriter"/> class.
@@ -42,12 +43,13 @@ namespace Reko.Scanning
 		public EscapedAccessRewriter(Procedure proc)
 		{
 			this.proc = proc;
+            this.m = new ExpressionEmitter();
 		}
 
 		private Instruction Def(Identifier id, Expression src)
 		{
 			if (IsLocal(id))
-				return new Store(new MemoryAccess(MemoryStorage.GlobalMemory, EffectiveAddress(id), id.DataType), src);
+				return new Store(m.Mem(MemoryStorage.GlobalMemory, id.DataType, EffectiveAddress(id)), src);
 			else 
 				return new Assignment(id, src);
 		}
@@ -68,8 +70,7 @@ namespace Reko.Scanning
 			{
 				op = Operator.IAdd;
 			}
-			Expression ea = new BinaryExpression(op, fp.DataType,
-				fp, Constant.Create(PrimitiveType.Create(Domain.SignedInt, fp.DataType.BitSize), offset));
+            Expression ea = m.AddSubSignedInt(fp, offset);
 			return ea;
 		}
 
@@ -93,7 +94,7 @@ namespace Reko.Scanning
                 proc.EntryAddress,
 				new Assignment(
 				proc.Frame.FramePointer,
-				new UnaryExpression(Operator.AddrOf, arch.FramePointerType, frame)));
+				m.AddrOf(arch.FramePointerType, frame)));
 		}
 
 		private bool IsLocal(Identifier id)
@@ -132,7 +133,7 @@ namespace Reko.Scanning
 		public override Expression VisitIdentifier(Identifier id)
 		{
 			if (IsLocal(id))
-				return new MemoryAccess(MemoryStorage.GlobalMemory, EffectiveAddress(id), id.DataType);
+				return m.Mem(MemoryStorage.GlobalMemory, id.DataType, EffectiveAddress(id));
 			else
 				return id;
 		}

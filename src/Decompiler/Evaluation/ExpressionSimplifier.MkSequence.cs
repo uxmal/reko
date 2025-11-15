@@ -225,9 +225,9 @@ public partial class ExpressionSimplifier
                 slPrev.Offset == slNext.Offset + slNext.DataType.BitSize)
             {
                 // Fuse the two consecutive slices. 
-                var newSlice = new Slice(
-                    PrimitiveType.CreateWord(slPrev.DataType.BitSize + slNext.DataType.BitSize),
+                var newSlice = m.Slice(
                     slNext.Expression,
+                    PrimitiveType.CreateWord(slPrev.DataType.BitSize + slNext.DataType.BitSize),
                     slNext.Offset);
                 (fused[^1], _) = newSlice.Accept(this);
                 changed = true;
@@ -242,7 +242,7 @@ public partial class ExpressionSimplifier
             if (fused.Count == 1)
                 return fused[0];
             else
-                return new MkSequence(dataType, fused.ToArray());
+                return m.Seq(dataType, fused.ToArray());
         }
         return null;
     }
@@ -327,7 +327,7 @@ public partial class ExpressionSimplifier
         }
         if (e is Cast c)
         {
-            return new Slice(c.DataType, c.Expression, 0);
+            return m.Slice(c.Expression, c.DataType, 0);
         }
         else
         {
@@ -360,7 +360,7 @@ public partial class ExpressionSimplifier
         {
             subs[i] = unaries[i].Expression;
         }
-        var (sub, _) = new MkSequence(dt, subs).Accept(this);
+        var (sub, _) = m.Seq(dt, subs).Accept(this);
         return m.Unary(opPrev!, dt, sub);
     }
 
@@ -392,8 +392,8 @@ public partial class ExpressionSimplifier
             lefts[i] = bins[i].Left;
             rights[i] = bins[i].Right;
         }
-        var (left, _) = new MkSequence(dt, lefts).Accept(this);
-        var (right, _) = new MkSequence(dt, rights).Accept(this);
+        var (left, _) = m.Seq(dt, lefts).Accept(this);
+        var (right, _) = m.Seq(dt, rights).Accept(this);
         return m.Bin(opPrev!, dt, left, right);
     }
 }

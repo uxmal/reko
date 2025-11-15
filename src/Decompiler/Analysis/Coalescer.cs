@@ -77,6 +77,7 @@ public class Coalescer : IAnalysis<SsaState>
 		private readonly SsaState ssa;
 		private readonly SideEffectFinder sef;
         private readonly Dictionary<Statement, List<SsaIdentifier>> defsByStatement;
+        private readonly ExpressionEmitter m;
         private bool changed;
         private bool coalesced;
 
@@ -84,7 +85,8 @@ public class Coalescer : IAnalysis<SsaState>
 		{
 			this.ssa = ssa;
 			this.sef = new SideEffectFinder();
-            this.defsByStatement = new Dictionary<Statement, List<SsaIdentifier>>();
+            this.defsByStatement = [];
+            this.m = new ExpressionEmitter();
             foreach (SsaIdentifier sid in ssa.Identifiers)
             {
                 if (sid.DefStatement is not null)
@@ -100,7 +102,7 @@ public class Coalescer : IAnalysis<SsaState>
             }
             if (!defsByStatement.TryGetValue(stm, out sids))
             {
-                sids = new List<SsaIdentifier>();
+                sids = [];
                 defsByStatement.Add(stm, sids);
             }
             sids.Add(sid);
@@ -164,7 +166,7 @@ public class Coalescer : IAnalysis<SsaState>
 		public bool CoalesceStatements(SsaIdentifier sid, Expression defExpr, Statement def, Statement use)
 		{
             PreCoalesceDump(sid, def, use);
-            use.Instruction.Accept(new IdentifierReplacer(ssa.Identifiers, use, sid.Identifier, defExpr, false));
+            use.Instruction.Accept(new IdentifierReplacer(ssa.Identifiers, m, use, sid.Identifier, defExpr, false));
 
 			if (defsByStatement.TryGetValue(def, out var sids))
 			{

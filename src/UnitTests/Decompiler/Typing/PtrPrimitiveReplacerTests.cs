@@ -43,7 +43,7 @@ namespace Reko.UnitTests.Decompiler.Typing
 			store = new TypeStore();
 			EquivalenceClassBuilder eqb = new EquivalenceClassBuilder(factory, store, listener);
 			eqb.Build(program);
-			DataTypeBuilder dtb = new DataTypeBuilder(factory, store, program.Platform);
+			DataTypeBuilder dtb = new DataTypeBuilder(factory, store, program.Platform, listener);
 			TraitCollector trco = new TraitCollector(factory, store, dtb, program);
 			trco.CollectProgramTraits(program);
 			dtb.BuildEquivalenceClassDataTypes();

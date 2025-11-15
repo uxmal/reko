@@ -20,11 +20,8 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
-using Reko.Core.Loading;
-using Reko.Core.Operators;
 using Reko.Core.Services;
 using Reko.Core.Types;
-using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -39,8 +36,9 @@ namespace Reko.Typing
 	{
         private readonly Program program;
         private readonly ITypeStore store;
+        private readonly ExpressionEmitter m;
         private readonly IPlatform platform;
-		private readonly Identifier globals;
+        private readonly Identifier globals;
         private readonly Dictionary<ushort, Identifier> mpSelectorToSegId;
         private readonly IEventListener eventListener;
         private Constant? c;
@@ -53,11 +51,13 @@ namespace Reko.Typing
         /// </summary>
         /// <param name="program"></param>
         /// <param name="store"></param>
+        /// <param name="m">Expression emitter to use when generating expressions.</param>
         /// <param name="eventListener"></param>
-        public TypedConstantRewriter(Program program, ITypeStore store, IEventListener eventListener)
+        public TypedConstantRewriter(Program program, ITypeStore store, ExpressionEmitter m, IEventListener eventListener)
 		{
             this.program = program;
             this.store = store;
+            this.m = m;
             this.eventListener = eventListener;
             this.platform = program.Platform;
             this.globals = program.Globals;
@@ -133,10 +133,10 @@ namespace Reko.Typing
                     //$TODO: what should the warning be?
                     //$BUG: create a fake field for now.
                     var field = new StructureField((int)addr.Offset, new UnknownType());
-                    Expression x = new FieldAccess(new UnknownType(), new Dereference(segId.DataType, segId), field);
+                    Expression x = m.Field(new UnknownType(), new Dereference(segId.DataType, segId), field);
                     if (!Dereferenced)
                     {
-                        x = new UnaryExpression(Operator.AddrOf, addr.DataType, x);
+                        x = m.AddrOf(addr.DataType, x);
                     }
                     return x;
                 }
@@ -148,14 +148,14 @@ namespace Reko.Typing
                 DataType pointee = dt?.Pointee ?? new UnknownType();
 
                 var f = EnsureFieldAtOffset(baseType, pointee, c.ToInt32());
-                Expression ex = new FieldAccess(f.DataType, new Dereference(ptrSeg, segId), f);
+                Expression ex = m.Field(f.DataType, new Dereference(ptrSeg, segId), f);
                 if (Dereferenced || pointee is ArrayType)
                 {
                     return ex;
                 }
                 else
                 {
-                    var un = new UnaryExpression(Operator.AddrOf, store.GetTypeVariable(addr).DataType, ex);
+                    var un = m.AddrOf(store.GetTypeVariable(addr).DataType, ex);
                     return un;
                 }
             }
@@ -235,7 +235,7 @@ namespace Reko.Typing
             var item = e.Members.FirstOrDefault(de => de.Value == c!.ToInt64());
             if (item.Key is not null)
                 return new Identifier(item.Key, e, RegisterStorage.None);
-            return new Cast(e, c!);
+            return m.Cast(e, c!);
         }
 
         /// <inheritdoc/>
@@ -264,7 +264,7 @@ namespace Reko.Typing
 
             var dt = memptr.Pointee.ResolveAs<DataType>()!;
             var f = EnsureFieldAtOffset(baseType, dt, (int)c!.ToUInt32());
-            Expression ex = new FieldAccess(memptr.Pointee, baseExpr, f);
+            Expression ex = m.Field(memptr.Pointee, baseExpr, f);
 			if (Dereferenced)
 			{
 				ex.DataType = memptr.Pointee;
@@ -277,7 +277,7 @@ namespace Reko.Typing
                 }
                 else
                 {
-                    ex = new UnaryExpression(Operator.AddrOf, memptr, ex);
+                    ex = m.AddrOf(memptr, ex);
                 }
             }
             return ex;
@@ -313,7 +313,7 @@ namespace Reko.Typing
                 if (addr is null || !program.Memory.IsValidAddress(addr.Value))
                 {
                     //$TODO: probably should emit a reinterpret_cast here.
-                    e = new Cast(ptr, c);
+                    e = m.Cast(ptr, c);
                     store.SetTypeVariable(e, store.GetTypeVariable(c));
                     if (Dereferenced)
                     {
@@ -462,7 +462,7 @@ namespace Reko.Typing
                 return e;
             }
             var ptr = new Pointer(e.DataType, platform.PointerType.BitSize);
-            return new UnaryExpression(Operator.AddrOf, ptr, e);
+            return m.AddrOf(ptr, e);
         }
 
         private StructureField EnsureFieldAtOffset(StructureType str, DataType dt, int offset)

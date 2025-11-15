@@ -242,7 +242,7 @@ public class LongComparisonFuser : IAnalysis<SsaState>
         {
             var longLeft = Join(candidate.left1, candidate.left2);
             var longRight = Join(candidate.right1, candidate.right2);
-            var newCmp = new BinaryExpression(
+            var newCmp = m.Bin(
                 candidate.op,
                 PrimitiveType.Bool,
                 longLeft, longRight);
@@ -278,7 +278,7 @@ public class LongComparisonFuser : IAnalysis<SsaState>
         private Expression Join(Expression left1, Expression left2)
         {
             var dtnew = PrimitiveType.CreateWord(left1.DataType.BitSize + left2.DataType.BitSize);
-            return new MkSequence(dtnew, left1, left2);
+            return m.Seq(dtnew, left1, left2);
         }
     }
 }

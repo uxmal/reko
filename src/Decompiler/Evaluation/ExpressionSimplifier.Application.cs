@@ -98,7 +98,7 @@ namespace Reko.Evaluation
             changed |= procChanged;
             if (changed)
             {
-                appl = new Application(
+                appl = m.Fn(
                     proc,
                     appl.DataType,
                     args);
@@ -126,7 +126,7 @@ namespace Reko.Evaluation
                     if (appInner.Arguments[1] is Constant cInner)
                     {
                         var cTot = Operator.IAdd.ApplyConstants(cOuter.DataType, cOuter, cInner);
-                        return new Application(
+                        return m.Fn(
                             appl.Procedure,
                             appl.DataType,
                             appInner.Arguments[0],

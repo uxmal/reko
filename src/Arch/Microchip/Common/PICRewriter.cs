@@ -112,13 +112,14 @@ namespace Reko.Arch.MicrochipPIC.Common
                     "",
                     (uint)flags)));
 
-        protected static MemoryAccess DataMem8(Expression ea)
-            => new MemoryAccess(PICRegisters.GlobalData, ea, PrimitiveType.Byte);
+        protected MemoryAccess DataMem8(Expression ea)
+            => m.Mem(PICRegisters.GlobalData, PrimitiveType.Byte, ea);
 
-        protected static MemoryAccess DataBankMem8(Expression bsr, Expression ea)
-            => new MemoryAccess(PICRegisters.GlobalData, 
-                SegmentedPointer.Create(bsr, ea),
-                PrimitiveType.Byte);
+        protected MemoryAccess DataBankMem8(Expression bsr, Expression ea)
+            => m.Mem(
+                PICRegisters.GlobalData,
+                PrimitiveType.Byte,
+                SegmentedPointer.Create(bsr, ea));
 
         protected ArrayAccess PushToHWStackAccess()
         {

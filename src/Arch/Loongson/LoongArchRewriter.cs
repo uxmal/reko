@@ -297,7 +297,7 @@ namespace Reko.Arch.Loongson
         private void Assign(MachineOperand reg, long value)
         {
             var dst = binder.EnsureRegister((RegisterStorage) reg);
-            var src = Constant.Create(dst.DataType, value);
+            var src = m.Const(dst.DataType, value);
             m.Assign(dst, src);
         }
 
@@ -380,7 +380,7 @@ namespace Reko.Arch.Loongson
             case Constant c:
                 if (sliceTo32bits)
                     return c;
-                c = Constant.Create(PrimitiveType.Word64, (long) c.ToInt32());
+                c = m.Const(PrimitiveType.Word64, (long) c.ToInt32());
                 return c;
             default:
                 throw new NotImplementedException($"Operand type {op.GetType().Name} not implemented yet.");

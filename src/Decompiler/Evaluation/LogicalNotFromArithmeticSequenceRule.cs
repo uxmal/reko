@@ -41,7 +41,7 @@ namespace Reko.Evaluation;
 /// </summary>
 internal class LogicalNotFromArithmeticSequenceRule
 {
-    public Expression? Match(BinaryExpression binExp)
+    public Expression? Match(BinaryExpression binExp, ExpressionEmitter m)
     {
         if (binExp.Operator.Type != OperatorType.IAdd)
             return null;
@@ -69,7 +69,7 @@ internal class LogicalNotFromArithmeticSequenceRule
             expression = un.Expression;
 
         var dataType = binExp.DataType;
-        return new UnaryExpression(Operator.Not, dataType, expression);
+        return m.Unary(Operator.Not, dataType, expression);
     }
 
     private static BinaryExpression? ExtractComparison(Expression e)

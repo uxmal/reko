@@ -27,7 +27,7 @@ namespace Reko.Evaluation;
 
 internal class ScaledIndexRule
 {
-    public Expression? Match(Expression ea, EvaluationContext ctx)
+    public Expression? Match(Expression ea, EvaluationContext ctx, ExpressionEmitter m)
     {
         BinaryExpression? binEaLeft = null;
         BinaryExpression? binEaRight = null;
@@ -44,7 +44,7 @@ internal class ScaledIndexRule
                     if (IsScaled(defIndex))
                     {
                         binEaLeft = bin;
-                        return Transform(binEaLeft, binEaRight, idEa, defIndex, ctx);
+                        return Transform(binEaLeft, binEaRight, idEa, defIndex, ctx, m);
                     }
                 }
                 if (bin.Right is Identifier idRight)
@@ -52,7 +52,7 @@ internal class ScaledIndexRule
                     defIndex = ctx.GetDefiningExpression(idRight);
                     if (IsScaled(defIndex))
                     {
-                        return Transform(binEaLeft, bin, idEa, defIndex, ctx);
+                        return Transform(binEaLeft, bin, idEa, defIndex, ctx, m);
                     }
                 }
             }
@@ -61,7 +61,7 @@ internal class ScaledIndexRule
             defIndex = ctx.GetDefiningExpression(id);
             if (IsScaled(defIndex))
             {
-                return Transform(binEaLeft, binEaRight, id, defIndex, ctx);
+                return Transform(binEaLeft, binEaRight, id, defIndex, ctx, m);
             }
         }
         return null;
@@ -79,17 +79,18 @@ internal class ScaledIndexRule
         BinaryExpression? binEaRight,
         Identifier? idEa,
         Expression? defIndex,
-        EvaluationContext ctx)
+        EvaluationContext ctx,
+        ExpressionEmitter m)
     {
         //$REFACTOR: this can be reduced into the Match method
         Expression eaNew;
         if (binEaLeft is not null)
         {
-            eaNew = new BinaryExpression(binEaLeft.Operator, binEaLeft.DataType, defIndex!, binEaLeft.Right);
+            eaNew = m.Bin(binEaLeft.Operator, binEaLeft.DataType, defIndex!, binEaLeft.Right);
         }
         else if (binEaRight is not null)
         {
-            eaNew = new BinaryExpression(binEaRight.Operator, binEaRight.DataType, binEaRight.Left, defIndex!);
+            eaNew = m.Bin(binEaRight.Operator, binEaRight.DataType, binEaRight.Left, defIndex!);
         }
         else 
         {

@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Loading;
 using Reko.Core.Services;
 using System;
@@ -127,7 +128,8 @@ namespace Reko.ImageLoaders.OdbgScript
                     scriptFilename = absPath;
                 }
             }
-            using (var parser = OllyScriptParser.FromFile(host, fsSvc, scriptFilename, null))
+            ExpressionEmitter m = new ExpressionEmitter();
+            using (var parser = OllyScriptParser.FromFile(host, fsSvc, m, scriptFilename, null))
             {
                 return parser.ParseScript();
             }

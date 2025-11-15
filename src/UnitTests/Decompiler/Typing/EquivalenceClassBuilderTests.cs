@@ -24,7 +24,6 @@ using Reko.Core.Expressions;
 using Reko.Core.Types;
 using Reko.Typing;
 using NUnit.Framework;
-using System;
 using Reko.UnitTests.Mocks;
 using Reko.Core.Memory;
 using Reko.Core.Loading;

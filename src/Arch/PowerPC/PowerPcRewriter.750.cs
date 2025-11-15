@@ -96,7 +96,7 @@ namespace Reko.Arch.PowerPC
                 else
                 {
                     var offset = ((Constant)instr.Operands[2]).ToInt64();
-                    ea = m.IAdd(ea, Constant.Create(arch.SignedWord, offset));
+                    ea = m.IAdd(ea, m.Const(arch.SignedWord, offset));
                 }
             }
             return (ea, baseReg);

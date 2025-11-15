@@ -33,7 +33,7 @@ namespace Reko.Evaluation
         /// <summary>
         /// Match a pair of nested conversions and simplifies it.
         /// </summary>
-        public Expression? Match(Conversion c)
+        public Expression? Match(Conversion c, ExpressionEmitter m)
         {
             if (c.Expression is not Conversion innerC)
                 return null;
@@ -57,7 +57,7 @@ namespace Reko.Evaluation
                 {
                     if (innerConv.SourceDataType.BitSize <  ptInner.BitSize)
                     {
-                        return new Conversion(origExp, innerConv.SourceDataType, ptOuter);
+                        return m.Convert(origExp, innerConv.SourceDataType, ptOuter);
                     }
                     return null;
                 }
@@ -65,7 +65,7 @@ namespace Reko.Evaluation
                 {
                     if (ptExp.BitSize == ptOuter.BitSize)
                         return origExp;
-                    return new Conversion(origExp, innerC.SourceDataType, ptOuter);
+                    return m.Convert(origExp, innerC.SourceDataType, ptOuter);
                 }
 
                 if (ptExp.BitSize == ptOuter.BitSize)
@@ -74,7 +74,7 @@ namespace Reko.Evaluation
                         return origExp;
                     return null;
                 }
-                return new Conversion(origExp, innerConv.SourceDataType, ptOuter);
+                return m.Convert(origExp, innerConv.SourceDataType, ptOuter);
             }
 
             // ptExp <= ptInner <= ptC
@@ -83,7 +83,7 @@ namespace Reko.Evaluation
                 if (ptExp.BitSize == ptOuter.BitSize)
                     return origExp;
                 else
-                    return new Conversion(origExp, innerConv.SourceDataType, ptOuter);
+                    return m.Convert(origExp, innerConv.SourceDataType, ptOuter);
             }
             return null;
         }

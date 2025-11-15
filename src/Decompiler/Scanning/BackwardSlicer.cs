@@ -65,6 +65,7 @@ namespace Reko.Scanning
         private readonly HashSet<RtlBlock> visited;
         private readonly ExpressionValueComparer cmp;
         private readonly ExpressionSimplifier simp;
+        private readonly ExpressionEmitter m;
         private SliceState? state;
 
         /// <summary>
@@ -85,6 +86,7 @@ namespace Reko.Scanning
             this.visited = new HashSet<RtlBlock>();
             this.cmp = new ExpressionValueComparer();
             this.simp = new ExpressionSimplifier(host.Program.Memory, new EvalCtx(state.Endianness, state.MemoryGranularity), NullDecompilerEventListener.Instance);
+            this.m = new ExpressionEmitter();
         }
 
         /// <summary>
@@ -192,7 +194,7 @@ namespace Reko.Scanning
                 }
                 ctx.Add(idx, new IntervalValueSet(this.JumpTableIndex!.DataType, interval));
             }
-            var vse = new ValueSetEvaluator(host.Architecture, host.Program.Memory, ctx, this.processorState);
+            var vse = new ValueSetEvaluator(host.Architecture, host.Program.Memory, m, ctx, this.processorState);
             var (values, accesses) = vse.Evaluate(jumpExpr!);
             var vector = values.Values
                 .Select(ForceToAddress)
@@ -261,7 +263,7 @@ namespace Reko.Scanning
         /// <returns>If backward slicing should continue.</returns>
         public bool Start(RtlBlock block, int iInstr, Expression indirectJump)
         {
-            this.state = new SliceState(this, block, iInstr);
+            this.state = new SliceState(this, this.m, block, iInstr);
             visited.Add(block);
             if (state!.Start(indirectJump))
             {
@@ -584,6 +586,8 @@ namespace Reko.Scanning
         ExpressionVisitor<SlicerResult?, BackwardSlicerContext>
     {
         private readonly BackwardSlicer slicer;
+        private readonly ExpressionEmitter m;
+
         /// <summary>
         /// Current block.
         /// </summary>
@@ -629,12 +633,14 @@ namespace Reko.Scanning
         /// Constructs a new instance of <see cref="SliceState"/>.
         /// </summary>
         /// <param name="slicer">Controlling <see cref="BackwardSlicer"/>.</param>
+        /// <param name="m">Expression emitter to use.</param>
         /// <param name="block">Block to backward slice.</param>
         /// <param name="iInstr">Index of instruction to start at.</param>
-        public SliceState(BackwardSlicer slicer, RtlBlock block, int iInstr)
+        public SliceState(BackwardSlicer slicer, ExpressionEmitter m, RtlBlock block, int iInstr)
         {
             this.slicer = slicer;
             this.block = block;
+            this.m = m;
 
             var constPropagator = slicer.CreateBlockConstantPropagator();
 
@@ -944,7 +950,7 @@ namespace Reko.Scanning
                     // register BX was done by issuing XOR BH,BH
                     var seXor = new SlicerResult
                     {
-                        SrcExpr = new Conversion(new Slice(PrimitiveType.Byte, this.assignLhs!, 0), PrimitiveType.Byte, regDst.DataType),
+                        SrcExpr = m.Convert(m.Slice(this.assignLhs!, PrimitiveType.Byte), PrimitiveType.Byte, regDst.DataType),
                         LiveExprs = new Dictionary<Expression, BackwardSlicerContext>
                         {
                             {
@@ -1183,7 +1189,7 @@ namespace Reko.Scanning
             var se = conversion.Expression.Accept(this, new BackwardSlicerContext(ctx.Type, range));
             if (se is not null && se.SrcExpr is not null)
             {
-                se.SrcExpr = new Conversion(se.SrcExpr, se.SrcExpr.DataType, conversion.DataType);
+                se.SrcExpr = m.Convert(se.SrcExpr, se.SrcExpr.DataType, conversion.DataType);
             }
             return se;
         }
@@ -1217,21 +1223,21 @@ namespace Reko.Scanning
             return new BitRange(0, (short)expr.DataType.BitSize);
         }
 
-        private static Expression MaybeSlice(Expression expr, DataType dt)
+        private Expression MaybeSlice(Expression expr, DataType dt)
         {
             if (expr.DataType.BitSize > dt.BitSize)
             {
-                return new Slice(dt, expr, 0);
+                return m.Slice(expr, dt);
             }
             return expr;
         }
 
-        private static Expression MaybeSlice(Expression expr, BitRange bitRange)
+        private Expression MaybeSlice(Expression expr, BitRange bitRange)
         {
             int bitSize = bitRange.Extent;
             if (expr.DataType.BitSize > bitSize || bitRange.Lsb > 0)
             {
-                return new Slice(PrimitiveType.CreateWord(bitSize), expr, bitRange.Msb);
+                return m.Slice(expr, PrimitiveType.CreateWord(bitSize), bitRange.Msb);
             }
             return expr;
         }
@@ -1274,7 +1280,7 @@ namespace Reko.Scanning
             return new SlicerResult
             {
                 LiveExprs = srEa.LiveExprs,
-                SrcExpr = srEa.SrcExpr is not null ? new MemoryAccess(srEa.SrcExpr, access.DataType) : null,
+                SrcExpr = srEa.SrcExpr is not null ? m.Mem(access.DataType, srEa.SrcExpr) : null,
                 Stop = srEa.Stop
             };
         }
@@ -1301,7 +1307,7 @@ namespace Reko.Scanning
                 return new SlicerResult
                 {
                     LiveExprs = liveExprs,
-                    SrcExpr = new MkSequence(seq.DataType, srExprs.Select(s => s!.SrcExpr).ToArray()!),
+                    SrcExpr = m.Seq(seq.DataType, srExprs.Select(s => s!.SrcExpr).ToArray()!),
                     Stop = srExprs.Any(s => s!.Stop)
                 };
             }
@@ -1480,7 +1486,7 @@ namespace Reko.Scanning
         /// <returns>A new <see cref="SliceState"/> instance.</returns>
         public SliceState CreateNew(RtlBlock block, Address addrSucc)
         {
-            var state = new SliceState(this.slicer, block, 0)
+            var state = new SliceState(this.slicer, m, block, 0)
             {
                 JumpTableFormat = this.JumpTableFormat,
                 JumpTableIndex = this.JumpTableIndex,
