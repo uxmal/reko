@@ -1060,7 +1060,7 @@ test_exit:
             RunStringTest(m =>
             {
                 var ds = m.Frame.CreateTemporary("ds", PrimitiveType.SegmentSelector);
-                m.Assign(ds, Constant.Create(ds.DataType, 0x1234));
+                m.Assign(ds, m.Const(ds.DataType, 0x1234));
                 m.SStore(ds, m.Word16(0x10), m.Word32(0x010004));
             }, sExp);
         }
@@ -1293,8 +1293,8 @@ test_exit:
                 Identifier rdi = m.Local(PrimitiveType.Word64, "rdi");
 
                 m.Label("l000000000040EC30");
-                m.Assign(rbx_18, m.ISub(rdx, Constant.Create(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), 0x1)));
-                m.BranchIf(m.Eq(rdx, Constant.Create(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), 0x0)), "l000000000040EC69");
+                m.Assign(rbx_18, m.ISub(rdx, m.Const(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), 0x1)));
+                m.BranchIf(m.Eq(rdx, m.Const(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), 0x0)), "l000000000040EC69");
 
                 m.Label("l000000000040EC40");
                 m.Assign(rax_22, m.Word64(0x10000040));

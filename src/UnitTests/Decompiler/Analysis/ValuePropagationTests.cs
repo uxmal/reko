@@ -426,7 +426,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             var m = new ExpressionEmitter();
 			BinaryExpression b = m.Bin(Operator.Shl, t, 
 				m.Bin(Operator.IAdd, t, 
-					m.Bin(Operator.SMul, t, id, Constant.Create(t, 4)),
+					m.Bin(Operator.SMul, t, id, m.Const(t, 4)),
 					id),
 				m.Const(t, 2));
 			var (e, _) = vp.VisitBinaryExpression(b);

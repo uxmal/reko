@@ -519,7 +519,7 @@ namespace Reko.Arch.Pdp.Pdp10.Rewriter
             if (src is Constant c)
             {
                 // special case for movsi N,imm
-                src = Constant.Create(word36, c.ToUInt64() << 18);
+                src = m.Const(word36, c.ToUInt64() << 18);
                 m.Assign(dst, src);
             }
             else

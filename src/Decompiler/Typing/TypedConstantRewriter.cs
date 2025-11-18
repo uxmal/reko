@@ -142,7 +142,7 @@ namespace Reko.Typing
                 }
                 var baseType = ptrSeg.Pointee.ResolveAs<StructureType>()!;
                 var dt = store.GetTypeVariable(addr).DataType.ResolveAs<Pointer>()!;
-                this.c = Constant.Create(
+                this.c = m.Const(
                     PrimitiveType.CreateWord(addr.DataType.BitSize - ptrSeg.BitSize),
                     addr.Offset);
                 DataType pointee = dt?.Pointee ?? new UnknownType();

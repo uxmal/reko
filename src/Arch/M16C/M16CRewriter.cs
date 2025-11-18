@@ -176,7 +176,7 @@ internal class M16CRewriter : IEnumerable<RtlInstructionCluster>
         {
             if (src is Constant cSrc)
             {
-                src = Constant.Create(dst.DataType, cSrc.ToUInt64());
+                src = m.Const(dst.DataType, cSrc.ToUInt64());
             }
             else
             {

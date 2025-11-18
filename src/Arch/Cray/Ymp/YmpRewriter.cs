@@ -168,7 +168,7 @@ namespace Reko.Arch.Cray.Ymp
             var bits = (Constant) instrCur.Operands[1];
             var mask = Bits.Mask(0, bits.ToInt32());
             var dst = Op(0);
-            m.Assign(dst, Constant.Create(dst.DataType, mask));
+            m.Assign(dst, m.Const(dst.DataType, mask));
         }
 
         private void RewriteLoad()

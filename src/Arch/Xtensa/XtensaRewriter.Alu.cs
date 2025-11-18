@@ -457,7 +457,7 @@ namespace Reko.Arch.Xtensa
         {
             var src = RewriteOp(instr.Operands[0]);
             var dst = binder.EnsureRegister(Registers.SAR);
-            m.Assign(dst, m.ISub(Constant.Create(src.DataType, 32), src));
+            m.Assign(dst, m.ISub(m.Const(src.DataType, 32), src));
         }
 
         private void RewriteSsa8b()

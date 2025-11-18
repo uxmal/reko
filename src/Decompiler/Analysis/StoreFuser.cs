@@ -94,11 +94,11 @@ public class StoreFuser : IAnalysis<SsaState>
         private bool changed;
 
         private record Candidate(
-            BitRange Slice, 
-            Statement Statement, 
+            BitRange Slice,
+            Statement Statement,
             Identifier MemoryId,
-            Expression? Segment, 
-            Expression? EffectiveAddress, 
+            Expression? Segment,
+            Expression? EffectiveAddress,
             long Displacement);
 
         public Worker(SsaState ssa, IEventListener listener)
@@ -198,7 +198,7 @@ public class StoreFuser : IAnalysis<SsaState>
             return true;
         }
 
-        private bool AllSlicesAdjacent(List<Candidate> store)
+        private static bool AllSlicesAdjacent(List<Candidate> store)
         {
             var cPrev = store[0];
             foreach (var c in store.Skip(1))
@@ -243,7 +243,7 @@ public class StoreFuser : IAnalysis<SsaState>
                             var (seg, ea, displacement) = mem.Unpack();
                             if (!result.TryGetValue((sidSliced, stm.Block, ea), out var stores))
                             {
-                                stores = new List<Candidate>();
+                                stores = [];
                                 result.Add((sidSliced, stm.Block, ea), stores);
                             }
                             stores.Add(new Candidate(bitrange, stm, mem.MemoryId, seg, ea, displacement));

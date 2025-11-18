@@ -621,7 +621,7 @@ namespace Reko.Arch.Qualcomm
             var dt = PrimitiveType.CreateWord(hi.DataType.BitSize + cbLo);
             if (hi is Constant cHi && lo is Constant cLo)
             {
-                var c = Constant.Create(dt, (cHi.ToUInt64() << cbLo) | cLo.ToUInt64());
+                var c = m.Const(dt, (cHi.ToUInt64() << cbLo) | cLo.ToUInt64());
                 return c;
             }
             if (hi is Identifier idHi && lo is Identifier idLo)

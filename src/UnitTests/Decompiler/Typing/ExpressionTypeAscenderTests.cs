@@ -184,7 +184,7 @@ namespace Reko.UnitTests.Decompiler.Typing
         {
             Given_GlobalVariable(
                 Address.Ptr32(0x10001200), PrimitiveType.Real32);
-            RunTest(Constant.Create(PrimitiveType.Ptr32, 0x10001200),
+            RunTest(m.Const(PrimitiveType.Ptr32, 0x10001200),
                 "Typing/ExaUsrGlobals_Ptr32.txt");
         }
 
@@ -193,7 +193,7 @@ namespace Reko.UnitTests.Decompiler.Typing
         {
             Given_GlobalVariable(
                 Address.Ptr32(0x10001200), PrimitiveType.Real32);
-            RunTest(Constant.Create(PrimitiveType.Real32, 0x10001200),
+            RunTest(m.Const(PrimitiveType.Real32, 0x10001200),
                 "Typing/ExaUsrGlobals_Real32.txt");
         }
 

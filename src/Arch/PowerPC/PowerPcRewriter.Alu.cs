@@ -468,7 +468,7 @@ namespace Reko.Arch.PowerPC
             if (opL.IsZero && opR.IsZero)
             {
                 var c = negate ? ~0ul : 0ul;
-                s = Constant.Create(opD.DataType, c);
+                s = m.Const(opD.DataType, c);
             }
             else 
             {

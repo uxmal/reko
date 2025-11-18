@@ -274,7 +274,7 @@ namespace Reko.Arch.Loongson
                 }
             }
             var rDst = instr.Operands[0];
-            var c = Constant.Create(rDst.DataType, imm.ToUInt64());
+            var c = m.Const(rDst.DataType, imm.ToUInt64());
             var src1 = Op(1, false);
             if (src1.IsZero)
             {

@@ -435,7 +435,7 @@ namespace Reko.Arch.H8
             if (instr.Operands.Length == 1)
             {
                 reg = (Identifier) OpSrc(instr.Operands[0]);
-                incr = Constant.Create(reg.DataType, 1);
+                incr = m.Const(reg.DataType, 1);
             }
             else
             {

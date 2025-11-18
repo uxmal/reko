@@ -236,7 +236,7 @@ namespace Reko.Arch.Vax
 
         private void RewriteClr(PrimitiveType width)
         {
-            RewriteDstOp(0, width, e => Constant.Create(width, 0));
+            RewriteDstOp(0, width, e => m.Const(width, 0));
             m.Assign(FlagGroup(Registers.Z), Constant.True());
             m.Assign(FlagGroup(Registers.N), Constant.False());
             m.Assign(FlagGroup(Registers.C), Constant.False());

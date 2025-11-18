@@ -42,7 +42,7 @@ namespace Reko.Core.Collections
         /// </summary>
         public AnnotationList()
         {
-            annotations = new Dictionary<Address, string>();
+            annotations = [];
         }
 
         /// <summary>

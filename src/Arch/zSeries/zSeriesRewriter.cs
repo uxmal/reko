@@ -496,7 +496,7 @@ namespace Reko.Arch.zSeries
         private Constant Imm(int iop, DataType dt)
         {
             var c = (Constant)instr.Operands[iop];
-            return Constant.Create(dt, c.ToUInt64());
+            return m.Const(dt, c.ToUInt64());
         }
 
         private RegisterStorage NextGpReg(RegisterStorage reg)

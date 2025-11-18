@@ -810,7 +810,7 @@ namespace Reko.Scanning
                 int delta = sigCallee.StackDelta - sigCallee.ReturnAddressOnStack;
                 if (delta != 0)
                 {
-                    var d = Constant.Create(stackReg!.DataType, delta);
+                    var d = m.Const(stackReg!.DataType, delta);
                     this.Emit(new Assignment(
                         stackReg,
                         m.IAdd(stackReg, d)));
@@ -829,7 +829,7 @@ namespace Reko.Scanning
                         dd = -sigCallee.FpuStackDelta;
                     }
                     var fpuStackReg = frame!.EnsureRegister(arch.FpuStackRegister!);
-                    var d = Constant.Create(fpuStackReg.DataType, dd);
+                    var d = m.Const(fpuStackReg.DataType, dd);
                     this.Emit(new Assignment(
                         fpuStackReg,
                         m.Bin(op, fpuStackReg.DataType, fpuStackReg, d)));

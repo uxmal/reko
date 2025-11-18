@@ -104,7 +104,7 @@ namespace Reko.Arch.X86.Rewriter
                         var r = orw.AluRegister(reg);
                         if (addr.Selector.HasValue)
                         {
-                            var offset = Constant.Create(PrimitiveType.Offset16, addr.Offset);
+                            var offset = m.Const(PrimitiveType.Offset16, addr.Offset);
                             m.Assign(r, offset);
                         }
                         else

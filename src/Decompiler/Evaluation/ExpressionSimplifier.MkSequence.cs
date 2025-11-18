@@ -67,7 +67,7 @@ public partial class ExpressionSimplifier
                 {
                     t = PrimitiveType.Create(tHead.Domain, tHead.BitSize + tTail.BitSize);
                     if (tHead.BitSize + tTail.BitSize <= 64)
-                        return (Constant.Create(t, (c1.ToUInt64() << tTail.BitSize) | c2.ToUInt64()), true);
+                        return (m.Const(t, (c1.ToUInt64() << tTail.BitSize) | c2.ToUInt64()), true);
                     else
                         return (Constant.Create(t, (c1.ToBigInteger() << tTail.BitSize) | c2.ToBigInteger()), true);
                 }
@@ -199,7 +199,7 @@ public partial class ExpressionSimplifier
             var dtEa = (access.EffectiveAddress is SegmentedPointer segptr)
                 ? segptr.Offset.DataType
                 : access.EffectiveAddress.DataType;
-            fusedEa = Constant.Create(dtEa, (ulong) offsetFused);
+            fusedEa = m.Const(dtEa, (ulong) offsetFused);
         }
         else
         {

@@ -47,7 +47,7 @@ namespace Reko.Evaluation
             var segptr = ea as SegmentedPointer;
             if (segptr is not null)
                 ea = segptr.Offset;
-			Constant offset = Constant.Create(ea.DataType, 0);
+			Constant offset = m.Const(ea.DataType, 0);
 			BinaryOperator op = Operator.IAdd;
             if (ea is BinaryExpression bin &&
                 bin.Right is Constant c)

@@ -95,7 +95,7 @@ namespace Reko.Arch.zSeries
             var ea = EffectiveAddress(0);
             var left = binder.CreateTemporary(dt);
             m.Assign(left, m.Mem(dt, ea));
-            var c = Constant.Create(dt, this.Const(1).ToInt64());
+            var c = m.Const(dt, this.Const(1).ToInt64());
             var sum = binder.CreateTemporary(dt);
             m.Assign(sum, m.IAdd(left, c));
             m.Assign(m.Mem(dt, ea), sum);
@@ -113,7 +113,7 @@ namespace Reko.Arch.zSeries
         {
             var left = Reg(0);
             var imm = Const(1).ToInt64();
-            var right = Constant.Create(left.DataType, imm);
+            var right = m.Const(left.DataType, imm);
             SetCcCond(m.ISub(left, right));
         }
 
@@ -130,7 +130,7 @@ namespace Reko.Arch.zSeries
         {
             var left = Reg(0);
             var imm = Const(1).ToInt16();
-            var right = Constant.Create(left.DataType, imm);
+            var right = m.Const(left.DataType, imm);
             var cc = binder.EnsureFlagGroup(Registers.CC);
             m.Assign(cc, m.Cond(cc.DataType, m.ISub(left, right)));
         }
@@ -231,9 +231,9 @@ namespace Reko.Arch.zSeries
             var eaLeft = (MemoryOperand) instr.Operands[0];
             var eaRight = (MemoryOperand) instr.Operands[1];
             var ptrLeft = binder.EnsureRegister(eaLeft.Base!);
-            var lenLeft = Constant.Create(PrimitiveType.Int32, eaLeft.Offset);
+            var lenLeft = m.Const(PrimitiveType.Int32, eaLeft.Offset);
             var ptrRight= binder.EnsureRegister(eaRight.Base!);
-            var lenRight = Constant.Create(PrimitiveType.Int32, eaRight.Offset);
+            var lenRight = m.Const(PrimitiveType.Int32, eaRight.Offset);
             SetCc(m.Fn(intrinsics.dp, ptrLeft, lenLeft, ptrRight, lenRight, ptrLeft));
         }
 
@@ -358,7 +358,7 @@ namespace Reko.Arch.zSeries
         {
             var imm = Const(1).ToInt16();
             var dst = Reg(0);
-            var src = Constant.Create(dst.DataType, imm);
+            var src = m.Const(dst.DataType, imm);
             m.Assign(dst, src);
         }
 
@@ -373,7 +373,7 @@ namespace Reko.Arch.zSeries
         {
             int imm = Const(1).ToInt16();
             var dst = Reg(0);
-            var src = Constant.Create(dst.DataType, imm);
+            var src = m.Const(dst.DataType, imm);
             m.Assign(dst, src);
         }
 
@@ -558,7 +558,7 @@ namespace Reko.Arch.zSeries
 
         private void RewriteMvi(PrimitiveType dt)
         {
-            var src = Constant.Create(dt, Const(1).ToInt64());
+            var src = m.Const(dt, Const(1).ToInt64());
             var ea = EffectiveAddress(0);
             m.Assign(m.Mem(dt, ea), src);
         }

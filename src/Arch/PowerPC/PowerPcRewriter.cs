@@ -719,7 +719,7 @@ namespace Reko.Arch.PowerPC
             case Constant iOp:
                 // Extend the immediate value to word size. If this is not wanted,
                 // convert the operand manually or use RewriteSignedOperand
-                return Constant.Create(arch.WordWidth, iOp.ToUInt64());
+                return m.Const(arch.WordWidth, iOp.ToUInt64());
             case Address addr:
                 return addr;
             default:

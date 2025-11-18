@@ -331,8 +331,8 @@ namespace Reko.UnitTests.Decompiler.Evaluation
         public void Exs_ConstIntPtr()
         {
             Given_ExpressionSimplifier();
-            var c1 = Constant.Create(PrimitiveType.Ptr64, 0x00123400);
-            var c2 = Constant.Create(PrimitiveType.Int64, 0x00000016);
+            var c1 = m.Const(PrimitiveType.Ptr64, 0x00123400);
+            var c2 = m.Const(PrimitiveType.Int64, 0x00000016);
             var expr = m.IAdd(c1, c2);
             var (result, _) = expr.Accept(simplifier);
             Assert.AreSame(PrimitiveType.Ptr64, result.DataType);
@@ -735,8 +735,8 @@ namespace Reko.UnitTests.Decompiler.Evaluation
         {
             Given_ExpressionSimplifier();
             var (expr, _) = m.ISub(
-                Constant.Create(PrimitiveType.Real32, 0xFFFFFFFF),
-                Constant.Int32(-1)).Accept(simplifier);
+                m.Const(PrimitiveType.Real32, 0xFFFFFFFF),
+                m.Int32(-1)).Accept(simplifier);
             Assert.AreEqual("NaN.0F - -1<i32>", expr.ToString());
         }
 
@@ -1301,7 +1301,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             Given_ExpressionSimplifier();
             Expression exp = m.Fn(
                 Simd.Abs.MakeInstance(new ArrayType(PrimitiveType.SByte, 8)),
-                Constant.Create(PrimitiveType.Word64, 0xFFF8C07F_0280FFFF));
+                m.Const(PrimitiveType.Word64, 0xFFF8C07F_0280FFFF));
             exp = RunExpressionSimplifier(exp);
 
             Assert.AreEqual("0x108407F02800101<64>", exp.ToString());

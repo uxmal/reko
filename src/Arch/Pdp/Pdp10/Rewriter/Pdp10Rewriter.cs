@@ -429,7 +429,7 @@ namespace Reko.Arch.Pdp.Pdp10.Rewriter
                 Expression value;
                 if (ea.Index is null)
                 {
-                    value = Constant.Create(word36, (ulong) ea.Offset << lsh);
+                    value = m.Const(word36, (ulong) ea.Offset << lsh);
                 }
                 else
                 {
@@ -589,12 +589,12 @@ namespace Reko.Arch.Pdp.Pdp10.Rewriter
 
         private Constant Word18OfOnes()
         {
-            return Constant.Create(word18, (1ul << 18) - 1);
+            return m.Const(word18, (1ul << 18) - 1);
         }
 
         private Constant Word36OfOnes()
         {
-            return Constant.Create(word36, (1ul << 36) - 1);
+            return m.Const(word36, (1ul << 36) - 1);
         }
 
         private static readonly FlagGroupStorage C0C1VT;

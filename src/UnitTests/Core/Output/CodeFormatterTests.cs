@@ -389,7 +389,7 @@ Second abstract syntax comment line");
         [Test]
         public void CfmtChar_Apostrophe()
         {
-            var apos = Constant.Create(PrimitiveType.Char, (int) '\'');
+            var apos = m.Const(PrimitiveType.Char, (int) '\'');
             Assert.AreEqual(@"'\''", apos.ToString());
         }
     }

@@ -143,12 +143,12 @@ namespace Reko.Arch.Pdp.Pdp10.Rewriter
 
         private void RewriteLuuo(int n)
         {
-            m.SideEffect(m.Fn(luuoIntrinsic, Constant.Create(word36, n), Ac(), AccessEa(1)));
+            m.SideEffect(m.Fn(luuoIntrinsic, m.Const(word36, n), Ac(), AccessEa(1)));
         }
 
         private void RewriteMuuo(int n)
         {
-            m.SideEffect(m.Fn(muuoIntrinsic, Constant.Create(word36, n), Ac(), AccessEa(1)));
+            m.SideEffect(m.Fn(muuoIntrinsic, m.Const(word36, n), Ac(), AccessEa(1)));
         }
 
         private void RewriteRename()

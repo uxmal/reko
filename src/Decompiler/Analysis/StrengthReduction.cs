@@ -96,7 +96,7 @@ namespace Reko.Analysis
                 return;
             if (ModifyInitialAssigment(use))
             {
-                use.Expression!.Right = Constant.Create(use.Increment.DataType, 0);
+                use.Expression!.Right = m.Const(use.Increment.DataType, 0);
                 ModifyTest(ctx, use);
                 liv.AddIncrement(use.Increment);
             }
