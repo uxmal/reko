@@ -258,12 +258,12 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 case '0':
                     m.Assign(
                         binder.EnsureFlagGroup(arch.GetFlagGroup(Tlcs900Registers.f,  mask)),
-                        Constant.False());
+                        m.False());
                     break;
                 case '1':
                     m.Assign(
                         binder.EnsureFlagGroup(arch.GetFlagGroup(Tlcs900Registers.f, mask)),
-                        Constant.True());
+                        m.True());
                     break;
                 }
                 mask >>= 1;
@@ -283,7 +283,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             string flags = "";
             switch (cOp.Condition)
             {
-            case CondCode.F: return invert ? Constant.True() : Constant.False();
+            case CondCode.F: return invert ? m.True() : m.False();
             case CondCode.LT: cc = invert ? ConditionCode.GE : ConditionCode.LT; flags = "SV"; break;
             case CondCode.LE: cc = invert ? ConditionCode.GT : ConditionCode.LE; flags = "SZV"; break;
             case CondCode.ULE: cc = invert ? ConditionCode.UGT : ConditionCode.ULE; flags = "ZC"; break;
@@ -291,7 +291,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             case CondCode.MI: cc = invert ? ConditionCode.NS : ConditionCode.SG; flags = "S"; break;
             case CondCode.Z: cc = invert ? ConditionCode.NE : ConditionCode.EQ; flags = "Z"; break;
             case CondCode.C: cc = invert ? ConditionCode.UGE : ConditionCode.ULT; flags = "Z"; break;
-            case CondCode.T: return invert ? Constant.False() : Constant.True();
+            case CondCode.T: return invert ? m.False() : m.True();
             case CondCode.GE: cc = invert ? ConditionCode.LT : ConditionCode.GE; flags = "SV"; break;
             case CondCode.GT: cc = invert ? ConditionCode.LE : ConditionCode.GT; flags = "SZV"; break;
             case CondCode.UGT: cc = invert ? ConditionCode.ULE : ConditionCode.UGT; flags = "ZC"; break;

@@ -50,13 +50,13 @@ namespace Reko.UnitTests.Fragments
             Assign(a, h);
             Assign(a, Or(a, a));
             Assign(SZC, Cond(SZC.DataType, a));
-            Assign(C, Constant.False());
-            Assign(a, Shr(a, Constant.Byte(1)));
+            Assign(C, False());
+            Assign(a, Shr(a, Byte(1)));
             Assign(C, Cond(C.DataType, a));
             Assign(h, a);
             Assign(a, l);
             Assign(a, Fn(CommonOps.RorC.MakeInstance(a.DataType, PrimitiveType.Byte),
-                a, Constant.Byte(1), C));
+                a, Byte(1), C));
             Assign(C, Cond(C.DataType, a));
             Assign(l, a);
             Assign(c, ISub(c, 1));

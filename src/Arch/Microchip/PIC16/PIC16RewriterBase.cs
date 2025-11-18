@@ -278,14 +278,14 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         private void Rewrite_CLRF()
         {
             GetSrc(out var srcMem);
-            m.Assign(srcMem, Constant.Byte(0));
-            m.Assign(binder.EnsureFlagGroup(PICRegisters.Z), Constant.Bool(true));
+            m.Assign(srcMem, m.Byte(0));
+            m.Assign(binder.EnsureFlagGroup(PICRegisters.Z), m.Bool(true));
         }
 
         private void Rewrite_CLRW()
         {
-            m.Assign(Wreg, Constant.Byte(0));
-            m.Assign(binder.EnsureFlagGroup(PICRegisters.Z), Constant.Bool(true));
+            m.Assign(Wreg, m.Byte(0));
+            m.Assign(binder.EnsureFlagGroup(PICRegisters.Z), m.Bool(true));
         }
 
         private void Rewrite_CLRWDT()
@@ -296,7 +296,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
             PICRegisterBitFieldStorage to = PICRegisters.TO;
             var status = binder.EnsureRegister(PICRegisters.STATUS);
             mask = (byte)((1 << pd.BitPos) | (1 << to.BitPos));
-            m.Assign(status, m.Or(status, Constant.Byte(mask)));
+            m.Assign(status, m.Or(status, m.Byte(mask)));
         }
 
         private void Rewrite_COMF()
@@ -309,7 +309,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         private void Rewrite_DECF()
         {
             GetSrcAndDst(out var srcMem, out var dstMem);
-            m.Assign(dstMem, m.ISub(srcMem, Constant.Byte(1)));
+            m.Assign(dstMem, m.ISub(srcMem, m.Byte(1)));
             SetStatusFlags(dstMem);
         }
 
@@ -317,7 +317,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         {
             iclass = InstrClass.ConditionalTransfer;
             GetSrcAndDst(out var srcMem, out var dstMem);
-            m.Assign(dstMem, m.ISub(srcMem, Constant.Byte(1)));
+            m.Assign(dstMem, m.ISub(srcMem, m.Byte(1)));
             m.Branch(m.Eq0(dstMem), SkipToAddr(), iclass);
         }
 
@@ -331,7 +331,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         private void Rewrite_INCF()
         {
             GetSrcAndDst(out var srcMem, out var dstMem);
-            m.Assign(dstMem, m.IAdd(srcMem, Constant.Byte(1)));
+            m.Assign(dstMem, m.IAdd(srcMem, m.Byte(1)));
             SetStatusFlags(dstMem);
         }
 
@@ -339,7 +339,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         {
             iclass = InstrClass.ConditionalTransfer;
             GetSrcAndDst(out var srcMem, out var dstMem);
-            m.Assign(dstMem, m.IAdd(srcMem, Constant.Byte(1)));
+            m.Assign(dstMem, m.IAdd(srcMem, m.Byte(1)));
             m.Branch(m.Eq0(dstMem), SkipToAddr(), iclass);
         }
 
@@ -383,7 +383,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
             PICRegisterBitFieldStorage gie = PIC16Registers.GIE;
             byte mask = (byte)(1 << gie.BitPos);
             var intcon = binder.EnsureRegister(PIC16Registers.INTCON);
-            m.Assign(intcon, m.Or(intcon, Constant.Byte(mask)));
+            m.Assign(intcon, m.Or(intcon, m.Byte(mask)));
             PopFromHWStackAccess();
             m.Return(0, 0);
         }

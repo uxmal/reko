@@ -18,15 +18,10 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
 using Reko.Core.Types;
-using Reko.Evaluation;
-using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Reko.UnitTests.Decompiler.Evaluation
 {
@@ -64,15 +59,15 @@ namespace Reko.UnitTests.Decompiler.Evaluation
         [Test]
         public void Emt_MatchConstant()
         {
-            var c = Constant.Word32(4);
-            Create(Constant.Word32(4));
+            var c = m.Word32(4);
+            Create(m.Word32(4));
             Assert.IsTrue(matcher.Match(c).Success);
         }
 
         [Test]
         public void Emt_MatchAnyConstant()
         {
-            var c = Constant.Word32(4);
+            var c = m.Word32(4);
             Create(ExpressionMatcher.AnyConstant("c"));
             var m = matcher.Match(c);
             Assert.IsTrue(m.Success);

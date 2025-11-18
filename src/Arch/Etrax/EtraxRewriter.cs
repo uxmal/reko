@@ -224,9 +224,9 @@ namespace Reko.Arch.Etrax
             var src = SrcOp(1, PrimitiveType.Word32);
             var n = binder.EnsureFlagGroup(Registers.N);
             var z = binder.EnsureFlagGroup(Registers.Z);
-            m.Assign(n, m.And(src, m.Shl(Constant.UInt32(1), bit)));
+            m.Assign(n, m.And(src, m.Shl(m.UInt32(1), bit)));
             m.Assign(z, m.And(src, m.ISub(
-                m.Shl(Constant.UInt32(1), m.IAdd(bit, 1)),
+                m.Shl(m.UInt32(1), m.IAdd(bit, 1)),
                 1)));
         }
 

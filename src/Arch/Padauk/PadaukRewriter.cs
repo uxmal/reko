@@ -90,8 +90,8 @@ namespace Reko.Arch.Padauk
                 case Mnemonic.pushaf: RewritePushaf(); break;
                 case Mnemonic.ret: RewriteRet(); break;
                 case Mnemonic.reti: RewriteReti(); break;
-                case Mnemonic.set0: RewriteSetBit(Constant.False(), CommonOps.ClearBit); break;
-                case Mnemonic.set1: RewriteSetBit(Constant.True(), CommonOps.SetBit); break;
+                case Mnemonic.set0: RewriteSetBit(m.False(), CommonOps.ClearBit); break;
+                case Mnemonic.set1: RewriteSetBit(m.True(), CommonOps.SetBit); break;
                 case Mnemonic.sl: RewriteShift(m.Shl); break;
                 case Mnemonic.slc: RewriteShiftThroughCarry(Rolc); break;
                 case Mnemonic.sr: RewriteShift(m.Shr); break;

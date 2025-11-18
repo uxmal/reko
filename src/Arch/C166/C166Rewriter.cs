@@ -125,7 +125,7 @@ namespace Reko.Arch.C166
         private (Expression bit, Expression exp) BitOp(int iop)
         {
             var b = (BitOfOperand) instr.Operands[iop];
-            return (Constant.Int16((short)b.Bit), Src(b.Operand));
+            return (m.Int16((short)b.Bit), Src(b.Operand));
         }
 
         private void EmitCond(FlagGroupStorage grf, Expression e) => EmitCc(grf, m.Cond(grf.DataType, e));
@@ -305,7 +305,7 @@ namespace Reko.Arch.C166
             EmitCc(Registers.C, m.And(left, right));
             EmitCc(Registers.V, m.Or(left, right));
             EmitCc(Registers.Z, m.Comp(m.Or(left, right)));
-            EmitCc(Registers.E, Constant.False());
+            EmitCc(Registers.E, m.False());
         }
 
         private void RewriteBclr()
@@ -314,9 +314,9 @@ namespace Reko.Arch.C166
             EmitCc(Registers.N, m.Fn(bit_intrinsic, reg, bit));
             EmitCc(Registers.Z, m.Comp(binder.EnsureFlagGroup(Registers.N)));
             m.Assign(reg, m.Fn(bit_clear_intrinsic, reg, bit));
-            EmitCc(Registers.E, Constant.False());
-            EmitCc(Registers.V, Constant.False());
-            EmitCc(Registers.C, Constant.False());
+            EmitCc(Registers.E, m.False());
+            EmitCc(Registers.V, m.False());
+            EmitCc(Registers.C, m.False());
         }
 
         private void RewriteBfldl()
@@ -327,9 +327,9 @@ namespace Reko.Arch.C166
                 m.And(tmp, m.Comp(Src(1))),
                 Src(2)));
             Dst(0, m.Dpb(Src(0), tmp, 0));
-            EmitCc(Registers.E, Constant.False());
-            EmitCc(Registers.V, Constant.False());
-            EmitCc(Registers.C, Constant.False());
+            EmitCc(Registers.E, m.False());
+            EmitCc(Registers.V, m.False());
+            EmitCc(Registers.C, m.False());
         }
 
         private void RewriteBset()
@@ -338,9 +338,9 @@ namespace Reko.Arch.C166
             EmitCc(Registers.N, m.Fn(bit_intrinsic, reg, bit));
             EmitCc(Registers.Z, m.Comp(binder.EnsureFlagGroup(Registers.N)));
             m.Assign(reg, m.Fn(bit_set_intrinsic, reg, bit));
-            EmitCc(Registers.E, Constant.False());
-            EmitCc(Registers.V, Constant.False());
-            EmitCc(Registers.C, Constant.False());
+            EmitCc(Registers.E, m.False());
+            EmitCc(Registers.V, m.False());
+            EmitCc(Registers.C, m.False());
         }
 
         private void RewriteCalla()
@@ -430,8 +430,8 @@ namespace Reko.Arch.C166
             var src = Src(1);
             var dst = Dst(0, src, fn);
             EmitCond(EZ__N, dst);
-            m.Assign(binder.EnsureFlagGroup(Registers.V), Constant.False());
-            m.Assign(binder.EnsureFlagGroup(Registers.C), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.V), m.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.C), m.False());
         }
 
         private void RewriteMov()

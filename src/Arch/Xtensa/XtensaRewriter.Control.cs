@@ -64,11 +64,11 @@ namespace Reko.Arch.Xtensa
             Expression mask;
             if (instr.Operands[1] is Constant immOp)
             {
-                mask = Constant.Word32(1 << immOp.ToInt32());
+                mask = m.Word32(1 << immOp.ToInt32());
             }
             else
             {
-                mask = m.Shl(Constant.UInt32(1), RewriteOp(instr.Operands[1]));
+                mask = m.Shl(m.UInt32(1), RewriteOp(instr.Operands[1]));
             }
             m.Branch(
                 cmp0(m.And(src, mask)),

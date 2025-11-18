@@ -582,7 +582,7 @@ namespace Reko.Arch.PowerPC
             }
             else if (mb == 0x00)
             {
-                m.Assign(rd, m.Fn(CommonOps.Rol, rs, Constant.Byte((byte) sh)));
+                m.Assign(rd, m.Fn(CommonOps.Rol, rs, m.Byte((byte) sh)));
             }
             else
             {
@@ -600,7 +600,7 @@ namespace Reko.Arch.PowerPC
                 {
                     m.Assign(rd,
                         m.And(
-                            m.Fn(CommonOps.Rol, rs, Constant.Byte((byte) sh)),
+                            m.Fn(CommonOps.Rol, rs, m.Byte((byte) sh)),
                             maskBegin));
                 }
             }
@@ -666,7 +666,7 @@ namespace Reko.Arch.PowerPC
             else if (me == 63)
             {
                 // rotldi: The mask is 0b111.....111, so we have a full rotation
-                m.Assign(rd, m.Fn(CommonOps.Rol, rs, Constant.Byte(sh)));
+                m.Assign(rd, m.Fn(CommonOps.Rol, rs, m.Byte(sh)));
             }
             else if (me != 0 && sh > 0)
             {
@@ -791,7 +791,7 @@ namespace Reko.Arch.PowerPC
             //Clear left and shift left immediate 	clrslwi RA, RS, b, n 	rlwinm RA, RS, b-n, 31-n 	            b-n >= 0 & 32 > n >= 0 & 32 > b>= 0
             if (sh == 0)
             {
-                m.Assign(rd, m.And(rs, Constant.UInt32(mask)));
+                m.Assign(rd, m.And(rs, m.UInt32(mask)));
             }
             else if (mb == 32 - sh && me == 31)
             {
@@ -804,9 +804,9 @@ namespace Reko.Arch.PowerPC
             else if (mb == 0 && me == 31)
             {
                 if (sh < 16)
-                    m.Assign(rd, m.Fn(CommonOps.Rol, rs, Constant.Byte(sh)));
+                    m.Assign(rd, m.Fn(CommonOps.Rol, rs, m.Byte(sh)));
                 else
-                    m.Assign(rd, m.Fn(CommonOps.Ror, rs, Constant.Byte((byte)(32 - sh))));
+                    m.Assign(rd, m.Fn(CommonOps.Ror, rs, m.Byte((byte)(32 - sh))));
             }
             else if (me == 31)
             {
@@ -814,7 +814,7 @@ namespace Reko.Arch.PowerPC
                 int b = sh - n;
                 mask = (1u << b) - 1;
                 m.Assign(rd, m.And(
-                    m.Shr(rs, Constant.Byte((byte)n)),
+                    m.Shr(rs, m.Byte((byte)n)),
                     Constant.Word32(mask)));
             }
             else if (mb <= me)
@@ -824,7 +824,7 @@ namespace Reko.Arch.PowerPC
                     // [                           llll]
                     // [                        mmm....]
                     m.Assign(rd, m.And(
-                        m.Shl(rs, Constant.Byte((byte)sh)),
+                        m.Shl(rs, m.Byte((byte)sh)),
                         Constant.Word32(mask)));
                     MaybeEmitCr0(rd);
                     return;
@@ -835,7 +835,7 @@ namespace Reko.Arch.PowerPC
                     // [                        m.]
 
                     m.Assign(rd, m.And(
-                        m.Shr(rs, Constant.Byte((byte)(32 - sh))),
+                        m.Shr(rs, m.Byte((byte)(32 - sh))),
                         Constant.Word32(mask)));
                     MaybeEmitCr0(rd);
                     return;
@@ -848,9 +848,9 @@ namespace Reko.Arch.PowerPC
                     m.Fn(
                         rlwinm.MakeInstance(PrimitiveType.Word32),
                         rs,
-                        Constant.Byte(sh),
-                        Constant.Byte(mb),
-                        Constant.Byte(me)));
+                        m.Byte(sh),
+                        m.Byte(mb),
+                        m.Byte(me)));
             }
 
             //Error,10034E20,rlwinm	r9,r31,1D,1B,1D not handled yet.
@@ -878,7 +878,7 @@ namespace Reko.Arch.PowerPC
                 return;
             }
             var mask = (1u << (32-mb)) - (1u << (31-me));
-            m.Assign(rd, m.And(rol, Constant.UInt32(mask)));
+            m.Assign(rd, m.And(rol, m.UInt32(mask)));
         }
 
         public void RewriteSl(PrimitiveType dt)

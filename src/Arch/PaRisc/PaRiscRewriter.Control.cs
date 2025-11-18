@@ -53,7 +53,7 @@ namespace Reko.Arch.PaRisc
             Expression bitNumber;
             if (instr.Operands[1] is Constant imm)
             {
-                bitNumber = Constant.Int32(imm.ToInt32());
+                bitNumber = m.Int32(imm.ToInt32());
             }
             else
             {
@@ -172,7 +172,7 @@ namespace Reko.Arch.PaRisc
                     }
                     return;
                 }
-                idx = Constant.Int32(dst.Offset * 8);
+                idx = m.Int32(dst.Offset * 8);
             }
             var gotoDst = binder.EnsureRegister(dst.Base);
             m.GotoD(m.IAdd(gotoDst, idx));

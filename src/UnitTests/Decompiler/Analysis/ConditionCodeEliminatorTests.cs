@@ -526,7 +526,7 @@ ProcedureBuilder_exit:
                 m.Assign(C, m.Cond(C.DataType, r1));
                 m.Assign(r2, m.Fn(
                     CommonOps.RorC.MakeInstance(r2.DataType, PrimitiveType.Byte),
-                    r2, Constant.Byte(1), C));
+                    r2, m.Byte(1), C));
                 m.Assign(C, m.Cond(C.DataType, r2));
                 m.MStore(m.Word32(0x3000), r2);
                 m.MStore(m.Word32(0x3004), r1);
@@ -550,7 +550,7 @@ ProcedureBuilder_exit:
                 m.Assign(C, m.Cond(C.DataType, r1));
                 m.Assign(r2, m.Fn(
                     CommonOps.RolC.MakeInstance(r2.DataType, PrimitiveType.Byte),
-                    r2, Constant.Byte(1), C));
+                    r2, m.Byte(1), C));
                 m.Assign(C, m.Cond(C.DataType, r2));
                 m.MStore(m.Word32(0x3000), r1);
                 m.MStore(m.Word32(0x3004), r2);
@@ -697,7 +697,7 @@ ProcedureBuilder_exit:
                 var CZ = m.Flags("CZ");
 
                 m.Assign(rdx, m.ISub(rax, 1));
-                m.Assign(rax, Constant.Word64(0x1FFFFFFFFFFFFFFE));
+                m.Assign(rax, m.Word64(0x1FFFFFFFFFFFFFFE));
                 m.Assign(CZ, m.Cond(CZ.DataType, m.ISub(rdx, rax)));
                 m.BranchIf(m.Test(ConditionCode.UGT, CZ), "mElse");
 
@@ -1112,7 +1112,7 @@ ProcedureBuilder_exit:
                 m.Assign(tmp, m.Ne0(m.And(dx, 0x8000)));
                 m.Assign(dx, m.Fn(
                     CommonOps.RolC.MakeInstance(dx.DataType, PrimitiveType.Byte),
-                    dx, Constant.Byte(1), CF));
+                    dx, m.Byte(1), CF));
                 m.Assign(CF, tmp);
                 m.Assign(cx, m.ISub(cx, 1));
                 m.BranchIf(m.Ne0(cx), "m0Loop");

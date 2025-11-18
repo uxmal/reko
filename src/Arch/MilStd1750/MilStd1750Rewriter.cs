@@ -1012,7 +1012,7 @@ namespace Reko.Arch.MilStd1750
             var bit = Imm(0);
             var src = Op(1);
             var tmp = binder.CreateTemporary(src.DataType);
-            m.Assign(tmp, m.And(src, m.Shl(Constant.UInt16(1), bit)));
+            m.Assign(tmp, m.And(src, m.Shl(m.UInt16(1), bit)));
             AssignFlags(Z, m.Eq0(tmp));
         }
 

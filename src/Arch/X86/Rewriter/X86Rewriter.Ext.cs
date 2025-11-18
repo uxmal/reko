@@ -83,7 +83,7 @@ namespace Reko.Arch.X86.Rewriter
                     m.AddrOf(arch.PointerType, SrcOp(1))));
             m.Assign(
                 binder.EnsureFlagGroup(Registers.Z),
-                Constant.True());
+                m.True());
         }
 
         private void RewriteLmsw()

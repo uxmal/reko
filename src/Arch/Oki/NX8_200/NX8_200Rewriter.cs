@@ -519,7 +519,7 @@ public class NX8_200Rewriter : IEnumerable<RtlInstructionCluster>
 
     private void RewriteSetResetB(bool flag)
     {
-        var src = Constant.Bool(flag);
+        var src = m.Bool(flag);
         var bit = (BitOperand) instr.Operands[0];
         var lvalue = OpSrc(bit.Operand, PrimitiveType.Byte);
         m.Assign(lvalue,
@@ -531,7 +531,7 @@ public class NX8_200Rewriter : IEnumerable<RtlInstructionCluster>
 
     private void RewriteSetResetBr(bool flag)
     {
-        var src = Constant.Bool(flag);
+        var src = m.Bool(flag);
         var a = binder.EnsureRegister(Registers.Acc);
         var al = binder.CreateTemporary(PrimitiveType.Byte);
         m.Assign(al, m.Slice(a, al.DataType));
@@ -545,7 +545,7 @@ public class NX8_200Rewriter : IEnumerable<RtlInstructionCluster>
 
     private void RewriteSetResetC(bool flag)
     {
-        var src = Constant.Bool(flag);
+        var src = m.Bool(flag);
         var c = binder.EnsureFlagGroup(Registers.C);
         m.Assign(c, src);
     }

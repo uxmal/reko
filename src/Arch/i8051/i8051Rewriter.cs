@@ -249,8 +249,8 @@ namespace Reko.Arch.i8051
             m.Assign(r, m.UMod(a, b));
             m.Assign(a, q);
             m.Assign(b, r);
-            m.Assign(binder.EnsureFlagGroup(Registers.CFlag), Constant.False());
-            m.Assign(binder.EnsureFlagGroup(Registers.OFlag), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.CFlag), m.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.OFlag), m.False());
         }
 
         private void RewriteDjnz()
@@ -357,7 +357,7 @@ namespace Reko.Arch.i8051
             m.Assign(ab, m.UMul(PrimitiveType.Word16, a, b));
             AssignCondOf(arch.GetFlagGroup(Registers.PSW, (uint)FlagM.P), ab);
             m.Assign(binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.PSW, (uint)FlagM.OV)), m.Ugt(ab, m.Word16(0xFF)));
-            m.Assign(binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.PSW, (uint)FlagM.C)), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.PSW, (uint)FlagM.C)), m.False());
         }
 
         private void RewritePop()
@@ -401,7 +401,7 @@ namespace Reko.Arch.i8051
 
         private void RewriteSetb()
         {
-            WriteDst(instr.Operands[0], Constant.True());
+            WriteDst(instr.Operands[0], m.True());
         }
 
         private void RewriteSwap()

@@ -339,7 +339,7 @@ ProcedureBuilder_exit:
                 var al = m.Reg8("al", 0);
                 var esi = m.Reg32("esi", 6);
                 m.Assign(sz, m.Cond(sz.DataType, m.And(esi, esi)));
-                m.Assign(c, Constant.False());
+                m.Assign(c, m.False());
                 m.Assign(al, m.Test(ConditionCode.ULE, cz));
                 m.Return();
             });

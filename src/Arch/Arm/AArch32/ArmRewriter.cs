@@ -784,23 +784,23 @@ namespace Reko.Arch.Arm.AArch32
                                 ea = m.IAdd(ea, ireg);
                                 break;
                             case Mnemonic.lsl:
-                                ea = m.IAdd(ea, m.IMul(ireg, Constant.Int32(1 << mop.Shift)));
+                                ea = m.IAdd(ea, m.IMul(ireg, m.Int32(1 << mop.Shift)));
                                 break;
                             case Mnemonic.lsr:
-                                ea = m.IAdd(ea, m.Shr(ireg, Constant.Int32(mop.Shift)));
+                                ea = m.IAdd(ea, m.Shr(ireg, m.Int32(mop.Shift)));
                                 break;
                             case Mnemonic.asr:
-                                ea = m.IAdd(ea, m.Sar(ireg, Constant.Int32(mop.Shift)));
+                                ea = m.IAdd(ea, m.Sar(ireg, m.Int32(mop.Shift)));
                                 break;
                             case Mnemonic.ror:
-                                var ix = m.Fn(CommonOps.Ror, ireg, Constant.Int32(mop.Shift));
+                                var ix = m.Fn(CommonOps.Ror, ireg, m.Int32(mop.Shift));
                                 ea = m.IAdd(ea, ix);
                                 break;
                             case Mnemonic.rrx:
                                 var rrx = m.Fn(
                                     CommonOps.RorC.MakeInstance(ireg.DataType, PrimitiveType.Int32),
                                     ireg,
-                                    Constant.Int32(mop.Shift),
+                                    m.Int32(mop.Shift),
                                     C());
                                 ea = m.IAdd(ea, rrx);
                                 break;
@@ -842,7 +842,7 @@ namespace Reko.Arch.Arm.AArch32
             case IndexedOperand ixop:
                 // Extract a single item from the vector register
                 var ixreg = Reg(ixop.Register);
-                return m.ARef(ixop.DataType, ixreg, Constant.Int32(ixop.Index));
+                return m.ARef(ixop.DataType, ixreg, m.Int32(ixop.Index));
             }
             throw new NotImplementedException(op.GetType().Name);
         }
@@ -957,7 +957,7 @@ namespace Reko.Arch.Arm.AArch32
                 idx = binder.EnsureRegister(mop.Index);
                 if (mop.ShiftType != Mnemonic.Invalid)
                 {
-                    var sh = Constant.Int32(mop.Shift);
+                    var sh = m.Int32(mop.Shift);
                     idx = MaybeShiftExpression(idx, sh, mop.ShiftType);
                 }
             }
@@ -1005,10 +1005,10 @@ namespace Reko.Arch.Arm.AArch32
             case ArmCondition.VS:
                 return m.Test(ConditionCode.OV, FlagGroup(Registers.V));
             case ArmCondition.AL:
-                return Constant.True();
+                return m.True();
             case ArmCondition.NV:
             case ArmCondition.Invalid:
-                return Constant.False();
+                return m.False();
             }
         }
 

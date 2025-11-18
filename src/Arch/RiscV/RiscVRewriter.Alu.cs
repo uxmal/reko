@@ -92,7 +92,7 @@ namespace Reko.Arch.RiscV
             var reg1 = (RegisterStorage) instr.Operands[iopLeft];
             if (reg1.Number == 0)
             {
-                src1 = Constant.Word32(0);
+                src1 = m.Word32(0);
             }
             else
             {
@@ -111,7 +111,7 @@ namespace Reko.Arch.RiscV
                     op = Operator.ISub;
                     c = -c;
                 }
-                src2 = Constant.Int32(c);
+                src2 = m.Int32(c);
             }
             else
             {

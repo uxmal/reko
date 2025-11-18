@@ -176,7 +176,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             RunTest(
                 m.Seq(
                     Id("ds", PrimitiveType.SegmentSelector),
-                    Constant.Word16(4)),
+                    m.Word16(4)),
                 PointerTo(store.CreateTypeVariable(factory)),
                 "Typing/ExdSeqWithSelector.txt");
         }
@@ -188,7 +188,7 @@ namespace Reko.UnitTests.Decompiler.Typing
                 m.SegMem(
                     PrimitiveType.Byte,
                     Id("ds", PrimitiveType.SegmentSelector),
-                    Constant.Word16(0x123)),
+                    m.Word16(0x123)),
                 PrimitiveType.Byte,
                 "Typing/ExdSegmem.txt");
         }

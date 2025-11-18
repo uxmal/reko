@@ -59,7 +59,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             var r1_2 = m.Reg32("r1_2");
             var r1_3 = m.Reg32("r1_3");
 
-            m.BranchIf(Constant.False(), "m2");
+            m.BranchIf(m.False(), "m2");
 
             m.Label("m1");
             m.Assign(r1_1, 1);
@@ -154,7 +154,7 @@ Urb_Remove_true_exit:
             var r2 = m.Reg32("r2");
 
             m.AddDefToEntryBlock(r2);
-            m.BranchIf(Constant.False(), "m2");
+            m.BranchIf(m.False(), "m2");
 
             m.Label("m1");
             m.Assign(r1_1, 1);

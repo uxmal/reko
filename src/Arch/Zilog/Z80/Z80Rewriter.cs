@@ -175,7 +175,7 @@ namespace Reko.Arch.Zilog.Z80
             var src = RewriteOp(dasm.Current.Operands[1]);
             m.Assign(dst, m.And(dst, src));
             AssignCond(Registers.SZ, dst);
-            m.Assign(FlagGroup(Registers.C), Constant.False());
+            m.Assign(FlagGroup(Registers.C), m.False());
         }
 
         private void RewriteBlockInstruction(Func<Expression, Expression, Expression> incdec, bool repeat)
@@ -185,8 +185,8 @@ namespace Reko.Arch.Zilog.Z80
             var hl = binder.EnsureRegister(Registers.hl);
             var V =  FlagGroup(Registers.P);
             m.Assign(m.Mem8(de), m.Mem8(hl));
-            m.Assign(hl, incdec(hl, Constant.Int16(1)));
-            m.Assign(de, incdec(de, Constant.Int16(1)));
+            m.Assign(hl, incdec(hl, m.Int16(1)));
+            m.Assign(de, incdec(de, m.Int16(1)));
             m.Assign(bc, m.ISub(bc, 1));
             if (repeat)
             {
@@ -208,7 +208,7 @@ namespace Reko.Arch.Zilog.Z80
             var src = RewriteOp(dasm.Current.Operands[1]);
             m.Assign(dst, m.Or(dst, src));
             AssignCond(Registers.SZ, dst);
-            m.Assign(FlagGroup(Registers.C), Constant.False());
+            m.Assign(FlagGroup(Registers.C), m.False());
         }
 
         private void RewriteRld()
@@ -279,7 +279,7 @@ namespace Reko.Arch.Zilog.Z80
 
         private void RewriteScf()
         {
-            AssignCond(Registers.C, Constant.True());
+            AssignCond(Registers.C, m.True());
         }
 
         private void RewriteSub()
@@ -296,7 +296,7 @@ namespace Reko.Arch.Zilog.Z80
             var src = RewriteOp(dasm.Current.Operands[1]);
             m.Assign(dst, m.Xor(dst, src));
             AssignCond(Registers.SZ, dst);
-            m.Assign(FlagGroup(Registers.C), Constant.False());
+            m.Assign(FlagGroup(Registers.C), m.False());
         }
 
         private void AssignCond(FlagGroupStorage flags, Expression dst)
@@ -360,7 +360,7 @@ namespace Reko.Arch.Zilog.Z80
 
         private void RewriteCcf()
         {
-            AssignCond(Registers.C, Constant.False());
+            AssignCond(Registers.C, m.False());
         }
 
         private void RewriteCp()

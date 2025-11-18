@@ -665,7 +665,7 @@ namespace Reko.Arch.Qualcomm
                 var width = binder.EnsureRegister(pair.HighRegister);
                 return m.And(
                     m.Shl(expression, offset),
-                    m.ISub(m.Shl(Constant.UInt64(1), width), 1));
+                    m.ISub(m.Shl(m.UInt64(1), width), 1));
             }
             else
             {
@@ -714,7 +714,7 @@ namespace Reko.Arch.Qualcomm
                 loop_intrinsic,
                 new Expression[]
                 {
-                    Constant.Int32(n)
+                    m.Int32(n)
                 }.Concat(args)
                 .ToArray()));
         }

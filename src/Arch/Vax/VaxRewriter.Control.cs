@@ -136,14 +136,14 @@ namespace Reko.Arch.Vax
             var bas = RewriteSrcOp(1, PrimitiveType.Word32);
             var dst = (Address)this.instr.Operands[2];
             var tst = binder.CreateTemporary(PrimitiveType.Word32);
-            m.Assign(tst, m.And(bas, m.Shl(Constant.Int32(1), pos)));
+            m.Assign(tst, m.And(bas, m.Shl(m.Int32(1), pos)));
             if (updateBit)
             {
-                m.Assign(bas, m.Or(bas, m.Shl(Constant.Int32(1), pos)));
+                m.Assign(bas, m.Or(bas, m.Shl(m.Int32(1), pos)));
             } 
             else
             {
-                m.Assign(bas, m.And(bas, m.Comp( m.Shl(Constant.Int32(1), pos))));
+                m.Assign(bas, m.And(bas, m.Comp( m.Shl(m.Int32(1), pos))));
             }
             var t = testBit
                 ? m.Ne0(tst)
@@ -158,14 +158,14 @@ namespace Reko.Arch.Vax
             var dst = (Address)this.instr.Operands[2];
             var tst = binder.CreateTemporary(PrimitiveType.Word32);
             m.SideEffect(m.Fn(set_interlock));
-            m.Assign(tst, m.And(bas, m.Shl(Constant.Int32(1), pos)));
+            m.Assign(tst, m.And(bas, m.Shl(m.Int32(1), pos)));
             if (testBit)
             {
-                m.Assign(bas, m.Or(bas, m.Shl(Constant.Int32(1), pos)));
+                m.Assign(bas, m.Or(bas, m.Shl(m.Int32(1), pos)));
             }
             else
             {
-                m.Assign(bas, m.And(bas, m.Comp(m.Shl(Constant.Int32(1), pos))));
+                m.Assign(bas, m.And(bas, m.Comp(m.Shl(m.Int32(1), pos))));
             }
             m.SideEffect(m.Fn(release_interlock));
             var t = testBit
@@ -316,7 +316,7 @@ namespace Reko.Arch.Vax
             if (!AllFlags(dst))
                 return;
             m.Branch(
-                cmp(dst, Constant.Word32(0)),
+                cmp(dst, m.Word32(0)),
                 (Address)this.instr.Operands[1],
                 InstrClass.ConditionalTransfer);
         }

@@ -337,7 +337,7 @@ namespace Reko.ImageLoaders.WebAssembly
             for (uint i = 0; i <brTable.Targets.Length; ++i)
             {
                 var cLevelsUp = (int) brTable.Targets[i];
-                var blockTarget = EmitBranchReference(this.block, cLevelsUp, Constant.UInt32(i));
+                var blockTarget = EmitBranchReference(this.block, cLevelsUp, m.UInt32(i));
                 swTargets[i] = blockTarget!;
             }
             var value = PopValue();
@@ -781,7 +781,7 @@ namespace Reko.ImageLoaders.WebAssembly
             var mem = (MemoryOperand) instr.Operands[0];
             if (mem.Offset != 0)
             {
-                ea = m.IAdd(ea, Constant.UInt32(mem.Offset));
+                ea = m.IAdd(ea, m.UInt32(mem.Offset));
             }
             return m.Mem(dt, ea);
         }

@@ -155,7 +155,7 @@ namespace Reko.Arch.Altera.Nios2
         {
             var reg = (RegisterStorage) instr.Operands[iop];
             if (reg.Number == 0)
-                return Constant.Word32(0);
+                return m.Word32(0);
             else
                 return binder.EnsureRegister(reg);
         }

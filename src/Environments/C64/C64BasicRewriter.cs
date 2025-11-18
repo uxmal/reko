@@ -375,7 +375,7 @@ namespace Reko.Environments.C64
                 if (IsDigit(line[i]))
                 {
                     if (GetInteger(out int n))
-                        return Constant.Int16((short)n);
+                        return m.Int16((short)n);
                 } 
                 else if (IsLetter(line[i]))
                 {
@@ -475,7 +475,7 @@ namespace Reko.Environments.C64
             }
             else
             {
-                step = Constant.Int32(1);
+                step = m.Int32(1);
             }
             iclass = InstrClass.Linear;
             m.SideEffect(m.Fn(for_intrinsic, 
@@ -622,8 +622,8 @@ namespace Reko.Environments.C64
             var logicalFileNo = ParseExpr();
             if (logicalFileNo is null)
                 SyntaxError();
-            Expression deviceNo = Constant.Int16(-1);
-            Expression secondaryNo = Constant.Int16(-1);
+            Expression deviceNo = m.Int16(-1);
+            Expression secondaryNo = m.Int16(-1);
             Expression fileName = new StringConstant(strType, "");
             if (EatSpaces() && PeekAndDiscard((byte)','))
             {
@@ -748,7 +748,7 @@ namespace Reko.Environments.C64
                     break;
                 m.SideEffect(
                     m.Fn(printStm_intrinsic,
-                        Constant.Int32(stm),
+                        m.Int32(stm),
                         expr));
             }
         }

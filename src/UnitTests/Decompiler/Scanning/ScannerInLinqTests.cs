@@ -199,7 +199,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var addr = Address.Ptr32((uint)uAddr);
             var m = new RtlEmitter([]);
             m.Branch(
-                Constant.True(),
+                m.True(),
                 Address.Ptr32((uint)a),
                 InstrClass.ConditionalTransfer);
             var cluster = new RtlInstructionCluster(addr, len, m.Instructions.ToArray())

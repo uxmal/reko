@@ -91,7 +91,7 @@ namespace Reko.Arch.Arm.AArch32
             var opDst = this.Operand(0, PrimitiveType.Word32, true);
             var lsb = ((Constant)instr.Operands[1]).ToInt32();
             var bitsize = ((Constant)instr.Operands[2]).ToInt32();
-            m.Assign(opDst, m.And(opDst, Constant.UInt32(~Bits.Mask32(lsb, bitsize))));
+            m.Assign(opDst, m.And(opDst, m.UInt32(~Bits.Mask32(lsb, bitsize))));
         }
 
         private void RewriteBfi()

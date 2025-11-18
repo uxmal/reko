@@ -81,16 +81,16 @@ namespace Reko.UnitTests.Core.Expressions
         [Test]
         public void EvcConHash()
         {
-            Constant c1 = Constant.Word32(3);
-            Constant c2 = Constant.Word32(3);
+            Constant c1 = m.Word32(3);
+            Constant c2 = m.Word32(3);
             Assert.AreEqual(eq.GetHashCode(c1), eq.GetHashCode(c2));
         }
 
         [Test]
         public void EvcNegative1()
         {
-            Constant c1 = Constant.Int32(-1);
-            Constant c2 = Constant.Int32(-1);
+            Constant c1 = m.Int32(-1);
+            Constant c2 = m.Int32(-1);
             Assert.IsTrue(eq.Equals(c1, c2));
         }
     }

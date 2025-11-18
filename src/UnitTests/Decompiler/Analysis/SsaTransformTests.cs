@@ -717,7 +717,7 @@ proc1_exit:
                 m.Goto("done");
 
                 m.Label("ge3");
-                m.MStore(m.IAdd(bp, 8), Constant.Int16(-3));
+                m.MStore(m.IAdd(bp, 8), m.Int16(-3));
                 m.Assign(r1, 1);
 
                 m.Label("done");
@@ -1066,7 +1066,7 @@ proc1_exit:
                 var al = m.Reg8("al", 0);
                 var esi = m.Reg32("esi", 6);
                 m.Assign(sz, m.Cond(sz.DataType, m.And(esi, esi)));
-                m.Assign(c, Constant.False());
+                m.Assign(c, m.False());
                 m.Assign(al, m.Test(ConditionCode.ULE, cz));
                 m.Return();
             });
@@ -2340,7 +2340,7 @@ proc1_exit:
 
                 m.Label("m0");
                 m.Assign(SZ, m.Cond(SZ.DataType, r1));
-                m.Assign(C, Constant.Bool(false));
+                m.Assign(C, m.False());
                 m.Return();
             });
         }
@@ -2453,7 +2453,7 @@ proc1_exit:
                 m.BranchIf(m.Mem(PrimitiveType.Bool, m.Word32(0x04011)), "m4");
 
                 m.Label("m3");
-                m.MStore(m.Word32(0x04020), Constant.True());
+                m.MStore(m.Word32(0x04020), m.True());
                 m.Goto("m1");
 
                 m.Label("m4");

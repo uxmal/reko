@@ -253,10 +253,10 @@ namespace Reko.Arch.PaRisc
             Expression e;
             switch (instr.Condition!.Type)
             {
-            case ConditionType.Tr: e = Constant.True(); break;
+            case ConditionType.Tr: e = m.True(); break;
             case ConditionType.Never:
             case ConditionType.Never64:
-                e = Constant.False(); break;
+                e = m.False(); break;
             case ConditionType.Eq:
             case ConditionType.Eq64:
                 e = m.Eq(left, right); break;

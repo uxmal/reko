@@ -790,7 +790,7 @@ namespace Reko.Arch.PowerPC
             var offset = mop.IntOffset();
             if (mop.BaseRegister.Number == 0)
             {
-                return Constant.Word32(offset + extraOffset);
+                return m.Word32(offset + extraOffset);
             }
             else
             {
@@ -809,7 +809,7 @@ namespace Reko.Arch.PowerPC
             var offset = mop.IntOffset();
             if (mop.BaseRegister.Number == 0)
             {
-                return Constant.Word32(offset);
+                return m.Word32(offset);
             }
             else
             {

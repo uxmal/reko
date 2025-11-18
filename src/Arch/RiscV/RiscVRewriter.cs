@@ -534,19 +534,19 @@ namespace Reko.Arch.RiscV
 
         private Expression SllI(Expression a, Expression b)
         {
-            b = Constant.Int32(((Constant) b).ToInt32());
+            b = m.Int32(((Constant) b).ToInt32());
             return m.Shl(a, b);
         }
 
         private Expression SraI(Expression a, Expression b)
         {
-            b = Constant.Int32(((Constant) b).ToInt32());
+            b = m.Int32(((Constant) b).ToInt32());
             return m.Sar(a, b);
         }
 
         private Expression SrlI(Expression a, Expression b)
         {
-            b = Constant.Int32(((Constant) b).ToInt32());
+            b = m.Int32(((Constant) b).ToInt32());
             return m.Shr(a, b);
         }
 

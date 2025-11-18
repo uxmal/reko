@@ -374,7 +374,7 @@ namespace Reko.Arch.Avr.Avr8
 
         private void RewriteClearBit(FlagGroupStorage grf)
         {
-            m.Assign(binder.EnsureFlagGroup(grf), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(grf), m.False());
         }
 
         private void RewriteCli()
@@ -599,7 +599,7 @@ namespace Reko.Arch.Avr.Avr8
 
         private void RewriteSetBit(FlagGroupStorage grf, bool value)
         {
-            m.Assign(binder.EnsureFlagGroup(grf), Constant.Bool(value));
+            m.Assign(binder.EnsureFlagGroup(grf), m.Bool(value));
         }
 
         private void RewriteSt()

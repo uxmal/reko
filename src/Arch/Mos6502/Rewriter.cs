@@ -338,7 +338,7 @@ namespace Reko.Arch.Mos6502
         {
             var c = FlagGroupStorage(FlagM.NF | FlagM.ZF | FlagM.CF);
             var arg = RewriteOperand(instrCur.Operands[0]);
-            m.Assign(arg, m.Fn(rot, arg, Constant.Byte(1)));
+            m.Assign(arg, m.Fn(rot, arg, m.Byte(1)));
             m.Assign(c, m.Cond(c.DataType, arg));
         }
 
@@ -386,7 +386,7 @@ namespace Reko.Arch.Mos6502
         private void SetFlag(FlagM flag, bool value)
         {
             var reg = FlagGroupStorage(flag);
-            var v = Constant.Bool(value);
+            var v = m.Bool(value);
             m.Assign(reg, v);
         }
 

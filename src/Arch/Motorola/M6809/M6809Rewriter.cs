@@ -208,10 +208,10 @@ namespace Reko.Arch.Motorola.M6809
 
         private void ClrCc(Expression e)
         {
-            m.Assign(binder.EnsureFlagGroup(Registers.N), Constant.False());
-            m.Assign(binder.EnsureFlagGroup(Registers.Z), Constant.True());
-            m.Assign(binder.EnsureFlagGroup(Registers.V), Constant.False());
-            m.Assign(binder.EnsureFlagGroup(Registers.C), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.N), m.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.Z), m.True());
+            m.Assign(binder.EnsureFlagGroup(Registers.V), m.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.C), m.False());
         }
 
         private void NoCc(Expression e)
@@ -265,12 +265,12 @@ namespace Reko.Arch.Motorola.M6809
 
         private Expression Rol1(Expression e)
         {
-            return m.Fn(CommonOps.Rol, e, Constant.Byte(1));
+            return m.Fn(CommonOps.Rol, e, m.Byte(1));
         }
 
         private Expression Ror1(Expression e)
         {
-            return m.Fn(CommonOps.Ror, e, Constant.Byte(1));
+            return m.Fn(CommonOps.Ror, e, m.Byte(1));
         }
 
         private Expression Sbc(Expression a, Expression b)
@@ -318,14 +318,14 @@ namespace Reko.Arch.Motorola.M6809
         private void NZ0_(Expression e)
         {
             m.Assign(binder.EnsureFlagGroup(Registers.NZ), m.Cond(Registers.NZ.DataType, e));
-            m.Assign(binder.EnsureFlagGroup(Registers.V), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.V), m.False());
         }
 
         private void NZ01(Expression e)
         {
             m.Assign(binder.EnsureFlagGroup(Registers.NZ), m.Cond(Registers.NZ.DataType, e));
-            m.Assign(binder.EnsureFlagGroup(Registers.V), Constant.False());
-            m.Assign(binder.EnsureFlagGroup(Registers.C), Constant.True());
+            m.Assign(binder.EnsureFlagGroup(Registers.V), m.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.C), m.True());
         }
 
         private void NZ__(Expression e)
@@ -459,7 +459,7 @@ namespace Reko.Arch.Motorola.M6809
                     tmp = memFn(bin, dst, ea, mem);
                     break;
                 case MemoryOperand.Mode.Direct:
-                    ea = m.IAdd(binder.EnsureRegister(Registers.DP), Constant.Word16((byte) mem.Offset));
+                    ea = m.IAdd(binder.EnsureRegister(Registers.DP), m.Word16((byte) mem.Offset));
                     tmp = memFn(bin, dst, ea, mem);
                     break;
                 case MemoryOperand.Mode.PostInc1:

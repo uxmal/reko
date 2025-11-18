@@ -58,8 +58,8 @@ namespace Reko.Arch.X86.Rewriter
                     MaybeSlice(size, SrcOp(1)))));
             var o = binder.EnsureFlagGroup(Registers.O);
             var s = binder.EnsureFlagGroup(Registers.S);
-            m.Assign(o, Constant.False());
-            m.Assign(s, Constant.False());
+            m.Assign(o, m.False());
+            m.Assign(s, m.False());
         }
 
         private void RewriteCmpsd(bool isVex, PrimitiveType size)
@@ -273,11 +273,11 @@ namespace Reko.Arch.X86.Rewriter
             var src = SrcOp(1);
             var dst = SrcOp(0);
             m.Assign(
-                m.Array(PrimitiveType.Real32, dst, Constant.Int32(2)),
-                m.Array(PrimitiveType.Real32, src, Constant.Int32(0)));
+                m.Array(PrimitiveType.Real32, dst, m.Int32(2)),
+                m.Array(PrimitiveType.Real32, src, m.Int32(0)));
             m.Assign(
-                m.Array(PrimitiveType.Real32, dst, Constant.Int32(3)),
-                m.Array(PrimitiveType.Real32, src, Constant.Int32(1)));
+                m.Array(PrimitiveType.Real32, dst, m.Int32(3)),
+                m.Array(PrimitiveType.Real32, src, m.Int32(1)));
         }
 
         private void RewriteMovmsk(bool isVex, IntrinsicProcedure intrinsic, PrimitiveType elemType)
@@ -705,7 +705,7 @@ namespace Reko.Arch.X86.Rewriter
             var src = SrcOp(has3Ops ? 1 : 0);
             var shift =(int) ((Constant)instrCur.Operands[has3Ops ? 2 : 1]).ToUInt32();
             var dtArray = this.CreatePackedArrayType(src.DataType, PrimitiveType.Word128);
-            var tmp = m.Fn(psrldq_intrinsic.MakeInstance(dtArray), src, Constant.Int32(shift * 8));
+            var tmp = m.Fn(psrldq_intrinsic.MakeInstance(dtArray), src, m.Int32(shift * 8));
             var dst = SrcOp(0);
             VexAssign(isVex, dst, tmp);
         }

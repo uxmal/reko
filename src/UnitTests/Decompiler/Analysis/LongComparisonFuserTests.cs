@@ -92,9 +92,9 @@ SsaProcedureBuilder_exit:
                 m.BranchIf(m.Le(ax_1, 0xa), "m5_fail");
 
                 m.Label("m4_succeed");
-                m.Return(Constant.True());
+                m.Return(m.True());
                 m.Label("m5_fail");
-                m.Return(Constant.False());
+                m.Return(m.False());
             });
         }
 
@@ -137,9 +137,9 @@ SsaProcedureBuilder_exit:
                 m.BranchIf(m.Uge(ax_1, 0x200), "m5_fail");
 
                 m.Label("m4_succeed");
-                m.Return(Constant.True());
+                m.Return(m.True());
                 m.Label("m5_fail");
-                m.Return(Constant.False());
+                m.Return(m.False());
             });
 
         }
@@ -183,9 +183,9 @@ SsaProcedureBuilder_exit:
                 m.BranchIf(m.Uge(ax_1, 0x200), "m5_fail");
 
                 m.Label("m4_succeed");
-                m.Return(Constant.True());
+                m.Return(m.True());
                 m.Label("m5_fail");
-                m.Return(Constant.False());
+                m.Return(m.False());
             });
         }
 
@@ -228,9 +228,9 @@ SsaProcedureBuilder_exit:
                 m.BranchIf(m.Ule(ax_1, 0x200), "m5_fail");
 
                 m.Label("m4_succeed");
-                m.Return(Constant.True());
+                m.Return(m.True());
                 m.Label("m5_fail");
-                m.Return(Constant.False());
+                m.Return(m.False());
             });
         }
     }

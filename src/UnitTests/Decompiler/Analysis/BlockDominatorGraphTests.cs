@@ -101,7 +101,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
 			Label("true");
 			Assign(r, 0);
 			Label("join");
-			Assign(f, Constant.True());
+			Assign(f, True());
 			Return(r);
 		}
 

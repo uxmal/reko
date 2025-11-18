@@ -1887,6 +1887,32 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
+        /// Generates an boolean constant from a bit pattern.
+        /// </summary>
+        /// <param name="flag">Boolean value.</param>
+        /// <returns>8-bit constant</returns>
+        public Constant Bool(bool flag)
+        {
+            return Constant.Bool(flag);
+        }
+
+        /// <summary>
+        /// Creates a constant representing the boolean value 'false'.
+        /// </summary>
+        public Constant False()
+        {
+            return new ConstantBool(PrimitiveType.Bool, false);
+        }
+
+        /// <summary>
+        /// Creates a constant representing the boolean value 'true'.
+        /// </summary>
+        public Constant True()
+        {
+            return new ConstantBool(PrimitiveType.Bool, true);
+        }
+
+        /// <summary>
         /// Generates an 8-bit constant from a bit pattern.
         /// </summary>
         /// <param name="b">8 bits</param>
@@ -1894,6 +1920,30 @@ namespace Reko.Core.Expressions
         public Constant Byte(byte b)
         {
             return Constant.Byte(b);
+        }
+
+        /// <summary>
+        /// Creates a constant representing a 16-bit unsigned integer.
+        /// </summary>
+        public Constant UInt16(ushort u)
+        {
+            return Constant.UInt16(u);
+        }
+
+        /// <summary>
+        /// Creates a constant representing a 32-bit unsigned integer.
+        /// </summary>
+        public Constant UInt32(uint u)
+        {
+            return Constant.UInt32(u);
+        }
+
+        /// <summary>
+        /// Creates a constant representing a 64-bit unsigned integer.
+        /// </summary>
+        public static Constant UInt64(ulong ul)
+        {
+            return Constant.UInt64(ul);
         }
 
         /// <summary>

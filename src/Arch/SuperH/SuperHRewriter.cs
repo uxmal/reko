@@ -99,8 +99,8 @@ namespace Reko.Arch.SuperH
                 case Mnemonic.bt: RewriteBranch(true, false); break;
                 case Mnemonic.bt_s: RewriteBranch(true, true); break;
                 case Mnemonic.clrmac: RewriteClr(Registers.mac); break;
-                case Mnemonic.clrs: RewriteClrtSet(Registers.S, Constant.False()); break;
-                case Mnemonic.clrt: RewriteClrtSet(Registers.T, Constant.False()); break;
+                case Mnemonic.clrs: RewriteClrtSet(Registers.S, m.False()); break;
+                case Mnemonic.clrt: RewriteClrtSet(Registers.T, m.False()); break;
                 case Mnemonic.cmp_eq: RewriteCmp(m.Eq); break;
                 case Mnemonic.cmp_ge: RewriteCmp(m.Ge); break;
                 case Mnemonic.cmp_gt: RewriteCmp(m.Gt); break;
@@ -173,8 +173,8 @@ namespace Reko.Arch.SuperH
                 case Mnemonic.rotl: RewriteRot(CommonOps.Rol); break;
                 case Mnemonic.rotr: RewriteRot(CommonOps.Ror); break;
                 case Mnemonic.rts: RewriteRts(); break;
-                case Mnemonic.sets: RewriteClrtSet(Registers.S, Constant.True()); break;
-                case Mnemonic.sett: RewriteClrtSet(Registers.T, Constant.True()); break;
+                case Mnemonic.sets: RewriteClrtSet(Registers.S, m.True()); break;
+                case Mnemonic.sett: RewriteClrtSet(Registers.T, m.True()); break;
                 case Mnemonic.shad: RewriteShd(m.Shl, m.Sar); break;
                 case Mnemonic.shal: RewriteShift1(m.Shl, arch.WordWidth.BitSize-1); break;
                 case Mnemonic.shar: RewriteShift1(m.Sar, 0); break;
@@ -232,7 +232,7 @@ namespace Reko.Arch.SuperH
                 var id = binder.EnsureRegister(regOp);
                 return id;
             case Constant immOp:
-                return Constant.Word32(immediateFn!(immOp.ToInt32()));
+                return m.Word32(immediateFn!(immOp.ToInt32()));
 
             case Address addrOp:
                 return addrOp;
@@ -532,7 +532,7 @@ namespace Reko.Arch.SuperH
         private void RewriteDt()
         {
             var t = binder.EnsureFlagGroup(Registers.T);
-            var r = DstOp(instr.Operands[0], Constant.Word32(1), m.ISub);
+            var r = DstOp(instr.Operands[0], m.Word32(1), m.ISub);
             m.Assign(t, m.Eq0(r));
         }
 
@@ -730,15 +730,15 @@ namespace Reko.Arch.SuperH
 
         private void RewriteShift(Func<Expression, Expression, Expression> fn, int c)
         {
-            var src = Constant.Int32(c);
+            var src = m.Int32(c);
             var dst = DstOp(instr.Operands[0], src, fn);
         }
 
         private void RewriteShift1(Func<Expression, Expression, Expression> fn, int bit)
         {
             var t = binder.EnsureFlagGroup(Registers.T);
-            m.Assign(t, m.Fn(CommonOps.Bit, SrcOp(0), Constant.Int32(bit)));
-            var dst = DstOp(instr.Operands[0], Constant.Int32(1), fn);
+            m.Assign(t, m.Fn(CommonOps.Bit, SrcOp(0), m.Int32(bit)));
+            var dst = DstOp(instr.Operands[0], m.Int32(1), fn);
         }
 
         private void RewriteSwapW()

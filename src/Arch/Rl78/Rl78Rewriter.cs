@@ -217,7 +217,7 @@ namespace Reko.Arch.Rl78
                 return m.Fn(
                     CommonOps.Bit.MakeInstance(bitSrc.DataType, PrimitiveType.Byte),
                     bitSrc,
-                    Constant.Byte((byte) bit.BitPosition));
+                    m.Byte((byte) bit.BitPosition));
             case FlagGroupStorage fop:
                 return binder.EnsureFlagGroup(fop);
             default:
@@ -265,7 +265,7 @@ namespace Reko.Arch.Rl78
                 m.SideEffect(m.Fn(
                     set_bit_intrinsic.MakeInstance(left.DataType),
                     left,
-                    Constant.Byte((byte) bit.BitPosition),
+                    m.Byte((byte) bit.BitPosition),
                     fn(left, src)));
                 return left;
             default:
@@ -350,7 +350,7 @@ namespace Reko.Arch.Rl78
         {
             var cond = RewriteSrc(instr.Operands[0]);
             m.BranchInMiddleOfInstruction(m.Not(cond), instr.Address + instr.Length, InstrClass.ConditionalTransfer);
-            RewriteDst(instr.Operands[0], Constant.False(), (a, b) => b);
+            RewriteDst(instr.Operands[0], m.False(), (a, b) => b);
             m.Goto((Address)instr.Operands[1]);
         }
 
@@ -367,7 +367,7 @@ namespace Reko.Arch.Rl78
 
         private void RewriteClr1()
         {
-            RewriteDst(instr.Operands[0], Constant.Bool(false), (a, b) => b);
+            RewriteDst(instr.Operands[0], m.Bool(false), (a, b) => b);
         }
 
         private void RewriteCmp()
@@ -510,12 +510,12 @@ namespace Reko.Arch.Rl78
         private void RewriteSel()
         {
             var bank = (RegisterBankOperand) instr.Operands[0];
-            m.SideEffect(m.Fn(sel_intrinsic, Constant.Byte((byte) bank.Bank)));
+            m.SideEffect(m.Fn(sel_intrinsic, m.Byte((byte) bank.Bank)));
         }
 
         private void RewriteSet1()
         {
-            RewriteDst(instr.Operands[0], Constant.Bool(true), (a, b) => b);
+            RewriteDst(instr.Operands[0], m.Bool(true), (a, b) => b);
         }
 
         private void RewriteShift(Func<Expression, Expression, Expression> fn)

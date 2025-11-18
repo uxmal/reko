@@ -234,7 +234,7 @@ namespace Reko.Arch.PaRisc
         private void RewriteShladd()
         {
             var addend= RewriteOp(0);
-            var sh = Constant.Int32(((Constant)instr.Operands[1]).ToInt32());
+            var sh = m.Int32(((Constant)instr.Operands[1]).ToInt32());
             Expression e = m.Shl(addend, sh);
             var src = RewriteOp(2);
             e = m.IAdd(src, e);

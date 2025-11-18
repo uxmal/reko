@@ -227,7 +227,7 @@ namespace Reko.Arch.Motorola.M68k.Rewriter
                     instr.Address + instr.Length,
                     InstrClass.ConditionalTransfer);
             }
-            var args = new List<Expression> { Constant.UInt16(7) };
+            var args = new List<Expression> { m.UInt16(7) };
             Expression call;
             if (instr.Operands.Length > 0)
             {

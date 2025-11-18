@@ -270,7 +270,7 @@ namespace Reko.Arch.PowerPC
         private void RewriteMtfsb(bool value)
         {
             var op = RewriteOperand(0);
-            m.SideEffect(m.Fn(mtfsb, op, Constant.Bool(value)));
+            m.SideEffect(m.Fn(mtfsb, op, m.Bool(value)));
         }
 
         private void RewriteMtfsf()

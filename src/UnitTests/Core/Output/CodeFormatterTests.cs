@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Core.Output
             Identifier id1 = new Identifier("v1", PrimitiveType.Word16, null);
             Identifier id2 = new Identifier("v2", PrimitiveType.Word16, null);
 
-            var e = m.IMul(m.IAdd(id1, id2), Constant.Word16(2));
+            var e = m.IMul(m.IAdd(id1, id2), m.Word16(2));
             e.Accept(cf);
 
             Assert.AreEqual("(v1 + v2) * 2<16>", sw.ToString());
@@ -70,7 +70,7 @@ namespace Reko.UnitTests.Core.Output
             Identifier id1 = new Identifier("v1", PrimitiveType.Word16, null);
             Identifier id2 = new Identifier("v2", PrimitiveType.Word16, null);
 
-            var e = m.IAdd(m.IMul(id1, id2), Constant.Word16(2));
+            var e = m.IAdd(m.IMul(id1, id2), m.Word16(2));
             e.Accept(cf);
 
             Assert.AreEqual("v1 * v2 + 2<16>", sw.ToString());
@@ -357,15 +357,15 @@ Second abstract syntax comment line");
         [Test]
         public void CfWord16()
         {
-            Assert.AreEqual("0x123<16>", Constant.Word16(0x123).ToString());
+            Assert.AreEqual("0x123<16>", m.Word16(0x123).ToString());
         }
 
         [Test]
         public void CfByte()
         {
-            Assert.AreEqual("0<8>", Constant.Byte(0).ToString());
-            Assert.AreEqual("0xA<8>", Constant.Byte(0x0A).ToString());
-            Assert.AreEqual("0xFF<8>", Constant.Byte(0xFF).ToString());
+            Assert.AreEqual("0<8>", m.Byte(0).ToString());
+            Assert.AreEqual("0xA<8>", m.Byte(0x0A).ToString());
+            Assert.AreEqual("0xFF<8>", m.Byte(0xFF).ToString());
         }
 
         [Test]

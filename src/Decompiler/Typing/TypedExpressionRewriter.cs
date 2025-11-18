@@ -463,7 +463,7 @@ namespace Reko.Typing
             {
                 uint uOffset = cEa.ToUInt32();
                 result = RewriteComplexExpression(
-                    basePtr, Constant.UInt32(uOffset), 0, address.DataType);
+                    basePtr, m.UInt32(uOffset), 0, address.DataType);
             }
             else
             {

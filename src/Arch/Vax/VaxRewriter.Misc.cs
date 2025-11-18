@@ -57,7 +57,7 @@ namespace Reko.Arch.Vax
             var queue = RewriteSrcOp(1, PrimitiveType.Word32);
             var grf = FlagGroup(Registers.CZN);
             m.Assign(grf, m.Fn(insque, queue, entry));
-            m.Assign(FlagGroup(Registers.V), Constant.False());
+            m.Assign(FlagGroup(Registers.V), m.False());
         }
 
         private void RewriteBpt()

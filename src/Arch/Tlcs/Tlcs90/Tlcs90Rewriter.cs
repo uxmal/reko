@@ -175,12 +175,12 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 case '0':
                     m.Assign(
                         binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.f, mask)),
-                        Constant.False());
+                        m.False());
                     break;
                 case '1':
                     m.Assign(
                         binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.f, mask)),
-                        Constant.True());
+                        m.True());
                     break;
                 }
                 mask >>= 1;
@@ -287,7 +287,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
         {
             switch (c.Condition)
             {
-            case CondCode.F: return Constant.False();
+            case CondCode.F: return m.False();
             case CondCode.LT: return m.Test(ConditionCode.LT, binder.EnsureFlagGroup(arch.GetFlagGroup("SV")));
             case CondCode.LE: return m.Test(ConditionCode.LE, binder.EnsureFlagGroup(arch.GetFlagGroup("SZV")));
             case CondCode.ULE: return m.Test(ConditionCode.ULE, binder.EnsureFlagGroup(arch.GetFlagGroup("ZC")));
@@ -295,7 +295,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             case CondCode.M: return m.Test(ConditionCode.LT, binder.EnsureFlagGroup(arch.GetFlagGroup("S")));
             case CondCode.Z: return m.Test(ConditionCode.EQ, binder.EnsureFlagGroup(arch.GetFlagGroup("Z")));
             case CondCode.C: return m.Test(ConditionCode.ULT, binder.EnsureFlagGroup(arch.GetFlagGroup("C")));
-            case CondCode.T: return Constant.True();
+            case CondCode.T: return m.True();
             case CondCode.GE: return m.Test(ConditionCode.GE, binder.EnsureFlagGroup(arch.GetFlagGroup("SV")));
             case CondCode.GT: return m.Test(ConditionCode.GT, binder.EnsureFlagGroup(arch.GetFlagGroup("SZV")));
             case CondCode.UGT: return m.Test(ConditionCode.UGT, binder.EnsureFlagGroup(arch.GetFlagGroup("ZC")));

@@ -256,7 +256,7 @@ namespace Reko.Arch.Arm.AArch64
                 vreg = binder.EnsureRegister(Registers.SimdRegs128[vop.VectorRegister.Number - 32]);
             }
             m.Assign(tmpSrc, vreg);
-            var src = m.ARef(arraySrc.ElementType, tmpSrc, Constant.Int32(vop.Index));
+            var src = m.ARef(arraySrc.ElementType, tmpSrc, m.Int32(vop.Index));
             var dst = RewriteOp(0);
             var dtDst = PrimitiveType.Create(domain, dst.DataType.BitSize);
             AssignSimd(0, m.Convert(src, src.DataType, dtDst));
@@ -374,7 +374,7 @@ namespace Reko.Arch.Arm.AArch64
             else
             {
                 var args = new List<Expression> { ea };
-                args.Add(Constant.Int32(vec.Index));
+                args.Add(m.Int32(vec.Index));
                 args.AddRange(vec.GetRegisters()
                     .Select(r => (Expression) m.Out(r.DataType, binder.EnsureRegister(r))));
                 m.SideEffect(m.Fn(intrinsic.MakeInstance(64, args[1].DataType), args.ToArray()));
@@ -452,7 +452,7 @@ namespace Reko.Arch.Arm.AArch64
                 foreach (var reg in vec.GetRegisters())
                 {
                     var vReg = binder.EnsureRegister(reg);
-                    var indexed = m.ARef(dtElem, vReg, Constant.Int32(vec.Index));
+                    var indexed = m.ARef(dtElem, vReg, m.Int32(vec.Index));
                     var eaOffset = offset == 0 ? ea : m.IAddS(ea, offset);
                     m.Assign(m.Mem(dtElem, eaOffset), indexed);
                     offset += dtElem.Size;
@@ -529,7 +529,7 @@ namespace Reko.Arch.Arm.AArch64
             var src = RewriteOp(2);
             m.Assign(tmpSrc, src);
             var args = new List<Expression>();
-            args.Add(Constant.Int32(n));
+            args.Add(m.Int32(n));
             foreach (var reg in idxs.GetRegisters())
             {
                 args.Add(binder.EnsureRegister(reg));
@@ -548,7 +548,7 @@ namespace Reko.Arch.Arm.AArch64
             var src = RewriteOp(2);
             m.Assign(tmpSrc, src);
             var args = new List<Expression>();
-            args.Add(Constant.Int32(n));
+            args.Add(m.Int32(n));
             foreach (var reg in idxs.GetRegisters())
             {
                 args.Add(binder.EnsureRegister(reg));

@@ -76,11 +76,11 @@ namespace Reko.Arch.Pdp.Pdp11
                 var n = csh.ToInt16();
                 if (n >= 0)
                 {
-                    m.Assign(dst, m.Shl(dst, Constant.Int16(n)));
+                    m.Assign(dst, m.Shl(dst, m.Int16(n)));
                 }
                 else
                 {
-                    m.Assign(dst, m.Sar(dst, Constant.Int16(n)));
+                    m.Assign(dst, m.Sar(dst, m.Int16(n)));
                 }
             }
             else
@@ -92,14 +92,14 @@ namespace Reko.Arch.Pdp.Pdp11
 
         private void RewriteAsl()
         {
-            var src = Constant.Int16(1);
+            var src = m.Int16(1);
             var dst = RewriteDst(instr.Operands[0], src, m.Shl);
             SetFlags(dst, Registers.NZVC);
         }
 
         private void RewriteAsr()
         {
-            var src = Constant.Int16(1);
+            var src = m.Int16(1);
             var dst = RewriteDst(instr.Operands[0], src, m.Sar);
             SetFlags(dst, Registers.NZVC);
         }
@@ -329,12 +329,12 @@ namespace Reko.Arch.Pdp.Pdp11
                 if (sh < 0)
                 {
                     fn = m.Sar;
-                    src = Constant.Int16((short)-sh);
+                    src = m.Int16((short)-sh);
                 }
                 else
                 {
                     fn = m.Shl;
-                    src = Constant.Int16((short)sh);
+                    src = m.Int16((short)sh);
                 }
             }
             else
@@ -367,7 +367,7 @@ namespace Reko.Arch.Pdp.Pdp11
         {
             var n  = binder.EnsureFlagGroup(this.arch.GetFlagGroup(Registers.psw, (uint)FlagM.NF));
 
-            var src = m.ISub(Constant.Int16(0), n);
+            var src = m.ISub(m.Int16(0), n);
             var dst = RewriteDst(instr.Operands[0], src, s => s);
             SetFlags(dst, Registers.Z);
         }

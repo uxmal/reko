@@ -87,7 +87,7 @@ namespace Reko.UnitTests.Decompiler.Structure
                     },
                     e =>
                     {
-                        e.Assign(id, Constant.True());
+                        e.Assign(id, m.True());
                     });
             });
         }

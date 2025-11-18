@@ -239,13 +239,13 @@ namespace Reko.Arch.Sanyo
             m.Assign(tmp, acc_c);
             m.Assign(acc_c, m.UDiv(tmp, b));
             m.Assign(b, m.UMod(tmp, b));
-            m.Assign(binder.EnsureFlagGroup(C), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(C), m.False());
             m.Assign(binder.EnsureFlagGroup(V), m.Eq0(b));
         }
         
         private void RewriteIncDec(Func<Expression,Expression,Expression> fn)
         {
-            var src = fn(Op(0), Constant.Byte(1));
+            var src = fn(Op(0), m.Byte(1));
             m.Assign(Op(0), src);
         }
 
@@ -289,7 +289,7 @@ namespace Reko.Arch.Sanyo
             var dt = PrimitiveType.Create(Domain.UnsignedInt, 24);
             var dst = binder.EnsureSequence(dt, Registers.ACC, Registers.C, Registers.B);
             m.Assign(dst, m.UMul(dt, left, right));
-            m.Assign(binder.EnsureFlagGroup(C), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(C), m.False());
             m.Assign(binder.EnsureFlagGroup(V), m.Uge(dst, m.Const(dt, 0x1_0000)));
         }
 

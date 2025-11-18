@@ -101,8 +101,8 @@ namespace Reko.Arch.Sparc
                 case Mnemonic.andcc: RewriteAluCc(m.And, false); break;
                 case Mnemonic.andn: RewriteAlu(m.And, true); break;
                 case Mnemonic.andncc: RewriteLogicalCc(m.And, true); break;
-                case Mnemonic.ba: RewriteBranch(Constant.True()); break;
-                case Mnemonic.bn: RewriteBranch(Constant.False()); break;
+                case Mnemonic.ba: RewriteBranch(m.True()); break;
+                case Mnemonic.bn: RewriteBranch(m.False()); break;
                 case Mnemonic.bne: RewriteBranch(m.Test(ConditionCode.NE, Grf(FlagM.ZF))); break;
                 case Mnemonic.be: RewriteBranch(m.Test(ConditionCode.EQ, Grf(FlagM.ZF))); break;
                 case Mnemonic.bg: RewriteBranch(m.Test(ConditionCode.GT, Grf(FlagM.ZF | FlagM.NF | FlagM.VF))); break;
@@ -135,8 +135,8 @@ namespace Reko.Arch.Sparc
                 case Mnemonic.fabss: RewriteFabss(); break;
                 case Mnemonic.fadds: RewriteFadds(); break;
                 case Mnemonic.fbne: RewriteBranch(m.Test(ConditionCode.NE, Grf(FlagM.LF | FlagM.GF))); break;
-                case Mnemonic.fba: RewriteBranch(Constant.True()); break;
-                case Mnemonic.fbn: RewriteBranch(Constant.False()); break;
+                case Mnemonic.fba: RewriteBranch(m.True()); break;
+                case Mnemonic.fbn: RewriteBranch(m.False()); break;
 
                 case Mnemonic.fbu   : RewriteBranch(m.Test(ConditionCode.NE, Grf(FlagM.UF))); break;
                 case Mnemonic.fbg   : RewriteBranch(m.Test(ConditionCode.GT, Grf(FlagM.GF))); break;
@@ -257,8 +257,8 @@ namespace Reko.Arch.Sparc
                 case Mnemonic.subxcc: RewriteAddxSubx(m.ISub, true); break;
                 case Mnemonic.swap: RewriteSwap(swap_intrinsic); break;
                 case Mnemonic.swapa: RewriteSwap(swapa_intrinsic); break;
-                case Mnemonic.ta: RewriteTrap(Constant.True()); break;
-                case Mnemonic.tn: RewriteTrap(Constant.False()); break;
+                case Mnemonic.ta: RewriteTrap(m.True()); break;
+                case Mnemonic.tn: RewriteTrap(m.False()); break;
                 case Mnemonic.tne: RewriteTrap(m.Test(ConditionCode.NE, Grf(FlagM.ZF))); break;
                 case Mnemonic.te: RewriteTrap(m.Test(ConditionCode.EQ, Grf(FlagM.ZF))); break;
                 case Mnemonic.taddcc: RewriteBinaryCc(taddcc_intrinsic); break;
@@ -364,7 +364,7 @@ namespace Reko.Arch.Sparc
             {
                 int nOffset = mem.IntOffset();
                 baseReg = mem.Base == arch.Registers.g0 ? null : binder.EnsureRegister(mem.Base);
-                offset = nOffset == 0 ? null : Constant.Int32(nOffset);
+                offset = nOffset == 0 ? null : m.Int32(nOffset);
             }
             else
             {

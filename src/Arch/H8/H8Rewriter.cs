@@ -101,7 +101,7 @@ namespace Reko.Arch.H8
                 case Mnemonic.bld: RewriteBtst(instr, C); break;
                 case Mnemonic.bnot: RewriteBnot(instr); break;
                 case Mnemonic.bor: RewriteLogicalB(instr, m.Or); break;
-                case Mnemonic.bset: RewriteBset(instr, Constant.True()); break;
+                case Mnemonic.bset: RewriteBset(instr, m.True()); break;
                 case Mnemonic.bst: RewriteBset(instr, binder.EnsureFlagGroup(C)); break;
                 case Mnemonic.bsr: RewriteBsr(instr); break;
                 case Mnemonic.btst: RewriteBtst(instr, Z); break;
@@ -424,8 +424,8 @@ namespace Reko.Arch.H8
                 srcRange)!);
             m.Assign(dst, m.Convert(src, src.DataType, dt));
             EmitCond(Z, dst);
-            m.Assign(binder.EnsureFlagGroup(N), Constant.False());
-            m.Assign(binder.EnsureFlagGroup(V), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(N), m.False());
+            m.Assign(binder.EnsureFlagGroup(V), m.False());
         }
 
         private void RewriteIncDec(H8Instruction instr, Func<Expression, Expression, Expression> fn)
@@ -514,7 +514,7 @@ namespace Reko.Arch.H8
             var src = OpSrc(instr.Operands[0]);
             var dst = OpDst(instr.Operands[1], src, fn);
             EmitCond(NZ, dst);
-            m.Assign(binder.EnsureFlagGroup(V), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(V), m.False());
         }
 
         private void RewriteLogicalB(H8Instruction instr, Func<Expression, Expression, Expression> fn)
@@ -540,7 +540,7 @@ namespace Reko.Arch.H8
             var src = OpSrc(instr.Operands[0]);
             var dst = OpDst(instr.Operands[1], src, (d, s) => s);
             EmitCond(NZ, dst);
-            m.Assign(binder.EnsureFlagGroup(V), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(V), m.False());
         }
 
         private void RewriteMovfpe(H8Instruction instr)
@@ -548,7 +548,7 @@ namespace Reko.Arch.H8
             var mem = (MemoryOperand) instr.Operands[0];
             m.Assign(
                 OpSrc(instr.Operands[1]),
-                m.Fn(movfpe_intrinsic, Constant.UInt16((ushort) mem.Offset)));
+                m.Fn(movfpe_intrinsic, m.UInt16((ushort) mem.Offset)));
         }
 
         private void RewriteMovtpe(H8Instruction instr)
@@ -556,7 +556,7 @@ namespace Reko.Arch.H8
             var mem = (MemoryOperand) instr.Operands[1];
             m.SideEffect(m.Fn(
                 movtpe_intrinsic,
-                Constant.UInt16((ushort) mem.Offset),
+                m.UInt16((ushort) mem.Offset),
                 OpSrc(instr.Operands[0])));
         }
 
@@ -598,7 +598,7 @@ namespace Reko.Arch.H8
                 intrinsic.MakeInstance(src.DataType, PrimitiveType.Byte), 
                 src, Constant.Byte(1)));
             EmitCond(NZC, src);
-            m.Assign(binder.EnsureFlagGroup(V), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(V), m.False());
         }
 
         private void RewriteRotationX(H8Instruction instr, IntrinsicProcedure intrinsic)
@@ -609,7 +609,7 @@ namespace Reko.Arch.H8
                 intrinsic.MakeInstance(src.DataType, PrimitiveType.Byte),
                 src, Constant.Byte(1), c));
             EmitCond(NZC, src);
-            m.Assign(binder.EnsureFlagGroup(V), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(V), m.False());
         }
 
         private void RewriteRte()
@@ -637,7 +637,7 @@ namespace Reko.Arch.H8
                 shift = 1;
                 src = OpSrc(instr.Operands[0]);
             }
-            m.Assign(src, fn(src, Constant.Int32(shift)));
+            m.Assign(src, fn(src, m.Int32(shift)));
             EmitCond(NZVC, src);
         }
 
@@ -700,7 +700,7 @@ namespace Reko.Arch.H8
             var src = OpSrc(instr.Operands[0]);
             m.Assign(src, fn(src));
             EmitCond(NZ, src);
-            m.Assign(binder.EnsureFlagGroup(V), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(V), m.False());
         }
 
         private static readonly IntrinsicProcedure bset_intrinsic = new IntrinsicBuilder("__bset", false)

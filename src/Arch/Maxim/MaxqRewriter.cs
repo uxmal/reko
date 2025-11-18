@@ -163,7 +163,7 @@ public class MaxqRewriter : IEnumerable<RtlInstructionCluster>
         case CCode.Z: return m.Test(ConditionCode.EQ, binder.EnsureFlagGroup(Registers.Z));
         }
         EmitUnitTest();
-        return Constant.False();
+        return m.False();
     }
 
     private Expression MakeInvertedTest(MachineOperand op)
@@ -179,7 +179,7 @@ public class MaxqRewriter : IEnumerable<RtlInstructionCluster>
         case CCode.Z: return m.Test(ConditionCode.NE, binder.EnsureFlagGroup(Registers.Z));
         }
         EmitUnitTest();
-        return Constant.False();
+        return m.False();
     }
 
 

@@ -578,7 +578,7 @@ namespace Reko.Arch.CompactRisc
             {
                 EmitUnitTest();
                 host.Warn(instr.Address, "NYI: {0}", instr);
-                return Constant.Int32(0);
+                return m.Int32(0);
             }
             if (e.DataType.BitSize > dt.BitSize)
             {

@@ -599,7 +599,7 @@ namespace Reko.Arch.zSeries
                 8 => m.Eq(left, right),
                 0xA => m.Ge(left, right),
                 0xC => m.Le(left, right),
-                _ => Constant.False()
+                _ => m.False()
             };
         }
 
@@ -614,7 +614,7 @@ namespace Reko.Arch.zSeries
                 8 => m.Eq(left, right),
                 0xA => m.Uge(left, right),
                 0xC => m.Ule(left, right),
-                _ => Constant.False()
+                _ => m.False()
             };
         }
     }

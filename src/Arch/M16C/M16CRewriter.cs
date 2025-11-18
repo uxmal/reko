@@ -245,7 +245,7 @@ internal class M16CRewriter : IEnumerable<RtlInstructionCluster>
             return binder.EnsureSequence(seq);
         default:
             EmitUnitTest();
-            return Constant.Word64(4711471147111);
+            return m.Word64(4711471147111);
         }
     }
 
@@ -319,8 +319,7 @@ internal class M16CRewriter : IEnumerable<RtlInstructionCluster>
     private void RewriteBclr()
     {
         var (dst, bit) = BitOperand(0);
-        SetBit(dst, bit, Constant.False());
-
+        SetBit(dst, bit, m.False());
     }
 
     private void RewriteBnot()
@@ -336,12 +335,12 @@ internal class M16CRewriter : IEnumerable<RtlInstructionCluster>
 
     private Expression ReadBit(Expression dst, int bit)
     {
-        return m.Fn(CommonOps.Bit, dst, Constant.Byte((byte) bit));
+        return m.Fn(CommonOps.Bit, dst, m.Byte((byte) bit));
     }
 
     private void SetBit(Expression dst, int bit, Expression expression)
     {
-        m.Assign(dst, m.Fn(CommonOps.SetBit, dst, Constant.Byte((byte) bit)));
+        m.Assign(dst, m.Fn(CommonOps.SetBit, dst, m.Byte((byte) bit)));
     }
 
     private void WriteBit(Expression dst, int bit, Expression expression)
@@ -361,7 +360,7 @@ internal class M16CRewriter : IEnumerable<RtlInstructionCluster>
     private void RewriteBset()
     {
         var (dst, bit) = BitOperand(0);
-        SetBit(dst, bit, Constant.True());
+        SetBit(dst, bit, m.True());
     }
 
     private void RewriteBtst()
@@ -592,7 +591,7 @@ internal class M16CRewriter : IEnumerable<RtlInstructionCluster>
         m.Assign(cy, m.Ne0(m.And(Operand(0), 1)));
         Expression p;
         var src0 = Operand(0);
-        var src1 = Constant.Int16(1);
+        var src1 = m.Int16(1);
         p = m.Fn(
             rotate.MakeInstance(src0.DataType, src1.DataType),
             src0, src1, t);

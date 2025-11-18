@@ -746,7 +746,7 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
-        /// Creates a constant representing an 16-bit unsigned integer.
+        /// Creates a constant representing a 16-bit unsigned integer.
         /// </summary>
         public static Constant UInt16(ushort u)
         {
@@ -754,7 +754,7 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
-        /// Creates a constant representing an 32-bit unsigned integer.
+        /// Creates a constant representing a 32-bit unsigned integer.
         /// </summary>
         public static Constant UInt32(uint w)
         {
@@ -762,7 +762,7 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
-        /// Creates a constant representing an 64-bit unsigned integer.
+        /// Creates a constant representing a 64-bit unsigned integer.
         /// </summary>
         public static Constant UInt64(ulong ul)
         {

@@ -214,7 +214,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
         private void RewriteRcf()
         {
             var c = binder.EnsureFlagGroup(Registers.C);
-            m.Assign(c, Constant.False());
+            m.Assign(c, m.False());
         }
 
         private void RewriteRotation(IntrinsicProcedure intrinsic, bool useCarry)
@@ -256,7 +256,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
         private void RewriteScf()
         {
             var c = binder.EnsureFlagGroup(Registers.C);
-            m.Assign(c, Constant.True());
+            m.Assign(c, m.True());
         }
 
         private void RewriteBit(string flags)

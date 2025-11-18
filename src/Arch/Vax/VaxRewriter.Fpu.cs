@@ -44,7 +44,7 @@ namespace Reko.Arch.Vax
                 m.Fn(intrinsic, mulr, mulrx, muld,
                     m.Out(PrimitiveType.Word32, integral),
                     m.Out(floatType, frac)));
-            m.Assign(FlagGroup(Registers.C), Constant.False());
+            m.Assign(FlagGroup(Registers.C), m.False());
         }
 
         private bool RewriteFpu2(PrimitiveType width, Func<Expression, Expression, Expression> fn, Func<Expression, bool> genFlags)

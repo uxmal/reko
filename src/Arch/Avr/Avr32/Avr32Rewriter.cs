@@ -549,7 +549,7 @@ namespace Reko.Arch.Avr.Avr32
             case Avr32Condition.vs: return MkCond(ConditionCode.OV, V);
             case Avr32Condition.vc: return MkCond(ConditionCode.NO, V);
             case Avr32Condition.qs: return binder.EnsureFlagGroup(Q);;
-            case Avr32Condition.al: return Constant.True();
+            case Avr32Condition.al: return m.True();
             default: throw new InvalidOperationException();
             }
         }
@@ -595,9 +595,9 @@ namespace Reko.Arch.Avr.Avr32
         private void RewriteCbr()
         {
             var bit = (Constant) instr.Operands[1];
-            var mask = Constant.UInt32(~(1U << bit.ToInt32()));
+            var mask = m.UInt32(~(1U << bit.ToInt32()));
             RewriteOpDst(0, m.And(RewriteOp(0), mask));
-            m.Assign(binder.EnsureFlagGroup(Z), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(Z), m.False());
         }
 
         private void RewriteCom()
@@ -961,7 +961,7 @@ namespace Reko.Arch.Avr.Avr32
 
         private void RewriteMustr()
         {
-            var src = m.And(binder.EnsureRegister(Registers.sr), Constant.UInt32(0xF));
+            var src = m.And(binder.EnsureRegister(Registers.sr), m.UInt32(0xF));
             RewriteOpDst(0, src);
         }
 
@@ -1072,26 +1072,26 @@ namespace Reko.Arch.Avr.Avr32
             {
             case 13:
                 m.Assign(r12, 0);
-                m.Assign(binder.EnsureFlagGroup(N), Constant.False());
-                m.Assign(binder.EnsureFlagGroup(Z), Constant.True());
+                m.Assign(binder.EnsureFlagGroup(N), m.False());
+                m.Assign(binder.EnsureFlagGroup(Z), m.True());
                 break;
             case 14:
                 m.Assign(r12, -1);
-                m.Assign(binder.EnsureFlagGroup(N), Constant.True());
-                m.Assign(binder.EnsureFlagGroup(Z), Constant.False());
+                m.Assign(binder.EnsureFlagGroup(N), m.True());
+                m.Assign(binder.EnsureFlagGroup(Z), m.False());
                 break;
             case 15:
                 m.Assign(r12, 1);
-                m.Assign(binder.EnsureFlagGroup(N), Constant.False());
-                m.Assign(binder.EnsureFlagGroup(Z), Constant.False());
+                m.Assign(binder.EnsureFlagGroup(N), m.False());
+                m.Assign(binder.EnsureFlagGroup(Z), m.False());
                 break;
             default:
                 m.Assign(r12, binder.EnsureRegister(regSrc));
                 EmitCc(NZ, r12);
                 break;
             }
-            m.Assign(v, Constant.False());
-            m.Assign(c, Constant.False());
+            m.Assign(v, m.False());
+            m.Assign(c, m.False());
             m.Return(0, 0);
         }
 
@@ -1176,9 +1176,9 @@ namespace Reko.Arch.Avr.Avr32
         private void RewriteSbr()
         {
             var bit = (Constant)instr.Operands[1];
-            var mask = Constant.UInt32(1U << bit.ToInt32());
+            var mask = m.UInt32(1U << bit.ToInt32());
             RewriteOpDst(0, m.Or(RewriteOp(0), mask));
-            m.Assign(binder.EnsureFlagGroup(Z), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(Z), m.False());
         }
 
         private void RewriteScr()

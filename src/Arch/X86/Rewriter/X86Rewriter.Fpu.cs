@@ -418,8 +418,8 @@ namespace Reko.Arch.X86.Rewriter
                 m.Cond(
                     Registers.CZP.DataType,
                     m.FSub(op1, op2)));
-            m.Assign(binder.EnsureFlagGroup(Registers.O), Constant.False());
-            m.Assign(binder.EnsureFlagGroup(Registers.S), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.O), m.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.S), m.False());
             if (pop)
             {
                 ShrinkFpuStack(1);

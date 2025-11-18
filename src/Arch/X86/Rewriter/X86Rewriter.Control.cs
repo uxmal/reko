@@ -183,7 +183,7 @@ namespace Reko.Arch.X86.Rewriter
                 m.Test(ConditionCode.NO, binder.EnsureFlagGroup(Registers.O)),
                 instrCur.Address + instrCur.Length,
                 InstrClass.ConditionalTransfer);
-            m.SideEffect(m.Fn(CommonOps.Syscall_1, Constant.Byte(4)));
+            m.SideEffect(m.Fn(CommonOps.Syscall_1, m.Byte(4)));
         }
 
         private void RewriteJcxz(RegisterStorage cx)

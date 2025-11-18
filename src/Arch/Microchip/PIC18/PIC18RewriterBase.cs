@@ -597,7 +597,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
                     m.Assign(memExpr, 0);
                     break;
             }
-            m.Assign(binder.EnsureFlagGroup(PIC18Registers.Z), Constant.Bool(true));
+            m.Assign(binder.EnsureFlagGroup(PIC18Registers.Z), m.Bool(true));
         }
 
         private void RewriteCLRWDT()
@@ -612,18 +612,18 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             if (ReferenceEquals(pdreg, toreg) && pdreg is not null)
             {
                 mask = (byte)((1 << pd.BitPos) | (1 << to.BitPos));
-                m.Assign(pdreg, m.Or(pdreg, Constant.Byte(mask)));
+                m.Assign(pdreg, m.Or(pdreg, m.Byte(mask)));
                 return;
             }
             if (pdreg is not null)
             {
                 mask = (byte)((1 << pd.BitPos));
-                m.Assign(pdreg, m.Or(pdreg, Constant.Byte(mask)));
+                m.Assign(pdreg, m.Or(pdreg, m.Byte(mask)));
             }
             if (toreg is not null)
             {
                 mask = (byte)((1 << to.BitPos));
-                m.Assign(pdreg!, m.Or(pdreg!, Constant.Byte(mask)));
+                m.Assign(pdreg!, m.Or(pdreg!, m.Byte(mask)));
             }
         }
 
@@ -953,7 +953,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             iclass = InstrClass.Terminates;
 
             var stkptr = binder.EnsureRegister(arch.StackRegister);
-            m.Assign(stkptr, Constant.Byte(0));
+            m.Assign(stkptr, m.Byte(0));
             m.SideEffect(m.Fn(reset_intrinsic));
         }
 
@@ -1030,7 +1030,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         private void RewriteSETF()
         {
             var (indMode, memPtr) = GetUnaryPtrs(instrCurr.Operands[0], out Expression memExpr);
-            ArithAssignIndirect(memExpr, Constant.Byte(255), indMode, memPtr);
+            ArithAssignIndirect(memExpr, m.Byte(255), indMode, memPtr);
         }
 
         private void RewriteSLEEP()
@@ -1045,18 +1045,18 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             if (ReferenceEquals(pdreg, toreg) && pdreg is not null)
             {
                 mask = (byte)(~(1 << pd.BitPos));
-                m.Assign(pdreg, m.And(pdreg, Constant.Byte(mask)));
+                m.Assign(pdreg, m.And(pdreg, m.Byte(mask)));
                 mask = (byte)(1 << to.BitPos);
-                m.Assign(pdreg, m.Or(pdreg, Constant.Byte(mask)));
+                m.Assign(pdreg, m.Or(pdreg, m.Byte(mask)));
                 return;
             }
             if (pd is not null)
             {
-                m.Assign(pdreg!, m.Dpb(pdreg!, Constant.False(), pd.BitPos));
+                m.Assign(pdreg!, m.Dpb(pdreg!, m.False(), pd.BitPos));
             }
             if (to is not null)
             {
-                m.Assign(toreg, m.Dpb(toreg, Constant.True(), to.BitPos));
+                m.Assign(toreg, m.Dpb(toreg, m.True(), to.BitPos));
             }
         }
 

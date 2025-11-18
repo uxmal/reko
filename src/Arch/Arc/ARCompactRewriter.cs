@@ -760,8 +760,8 @@ namespace Reko.Arch.Arc
             MaybeSkip(condition);
             var uAddrStart = instr.Address.ToUInt32() + (uint) instr.Length;
             var uAddrEnd = ((Address) instr.Operands[0]).ToUInt32();
-            this.state.SetValue(Registers.LpStart, Constant.UInt32(uAddrStart));
-            this.state.SetValue(Registers.LpEnd, Constant.UInt32(uAddrEnd));
+            this.state.SetValue(Registers.LpStart, m.UInt32(uAddrStart));
+            this.state.SetValue(Registers.LpEnd, m.UInt32(uAddrEnd));
             m.Assign(binder.EnsureRegister(Registers.LpStart), Address.Ptr32(uAddrStart));
             m.Assign(binder.EnsureRegister(Registers.LpEnd), Address.Ptr32(uAddrEnd));
         }
@@ -818,7 +818,7 @@ namespace Reko.Arch.Arc
             }
             else
             {
-                src2 = Constant.Int32(1);
+                src2 = m.Int32(1);
             }
             var dst = Operand(0);
             m.Assign(dst, fn(src1, src2));

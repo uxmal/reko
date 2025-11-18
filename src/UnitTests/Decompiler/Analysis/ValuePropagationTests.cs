@@ -312,8 +312,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
 			BinaryExpression expr = 
 				m.Bin(Operator.Eq, PrimitiveType.Bool, 
 				m.Bin(Operator.ISub, PrimitiveType.Word32, foo,
-				Constant.Word32(1)),
-				Constant.Word32(0));
+				m.Word32(1)),
+				m.Word32(0));
 			Assert.AreEqual("foo - 1<32> == 0<32>", expr.ToString());
 
 			var (simpler, _) = vp.VisitBinaryExpression(expr);
@@ -323,7 +323,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
         private ExpressionSimplifier CreatePropagatorWithDummyStatement()
         {
             var ctx = new SsaEvaluationContext(arch.Object, m.Ssa.Identifiers, dynamicLinker.Object);
-            ctx.Statement = new Statement(Address.Ptr32(0), new SideEffect(Constant.Word32(32)), null);
+            ctx.Statement = new Statement(Address.Ptr32(0), new SideEffect(m.Word32(32)), null);
             return new ExpressionSimplifier(program.Memory, ctx, listener);
         }
 
@@ -333,7 +333,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
 		{
 			Identifier r = m.Reg32("r");
 
-            var sub = m.Bin(Operator.ISub, PrimitiveType.Word32, new MemoryAccess(MemoryStorage.GlobalMemory, r, PrimitiveType.Word32), Constant.Word32(0));
+            var sub = m.Bin(Operator.ISub, PrimitiveType.Word32, new MemoryAccess(MemoryStorage.GlobalMemory, r, PrimitiveType.Word32), m.Word32(0));
             var vp = new ExpressionSimplifier(program.Memory, new SsaEvaluationContext(arch.Object, m.Ssa.Identifiers, dynamicLinker.Object), listener);
 			var exp = sub.Accept(vp).Item1;
 			Assert.AreEqual("Mem0[r:word32]", exp.ToString());
@@ -352,7 +352,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
 
             var x = m.Reg32("x");
 			var y = m.Reg32("y");
-            var stmX = m.Assign(x, m.Mem32(Constant.Word32(0x1000300)));
+            var stmX = m.Assign(x, m.Mem32(m.Word32(0x1000300)));
             var stmY = m.Assign(y, m.ISub(x, 2));
 			var stm = m.BranchIf(m.Eq(y, 0), "test");
 			Assert.AreEqual("x = Mem2[0x1000300<32>:word32]", stmX.ToString());
@@ -372,9 +372,9 @@ namespace Reko.UnitTests.Decompiler.Analysis
             var y = m.Reg32("y");
             var z = m.Reg32("z");
             var w = m.Reg32("w");
-            var stmX = m.Assign(x, m.Mem32(Constant.Word32(0x10004000)));
+            var stmX = m.Assign(x, m.Mem32(m.Word32(0x10004000)));
             var stmY = m.Assign(y, x);
-            var stmZ = m.Assign(z, m.IAdd(y, Constant.Word32(2)));
+            var stmZ = m.Assign(z, m.IAdd(y, m.Word32(2)));
             var stmW = m.Assign(w, y);
             Assert.AreEqual("x = Mem4[0x10004000<32>:word32]", stmX.ToString());
 			Assert.AreEqual("y = x", stmY.ToString());
@@ -396,7 +396,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
 		public void VpSliceConstant()
 		{
             var vp = new ExpressionSimplifier(program.Memory, new SsaEvaluationContext(arch.Object, null, dynamicLinker.Object), listener);
-            var (c, _) = m.Slice(Constant.Word32(0x10FF), PrimitiveType.Byte).Accept(vp);
+            var (c, _) = m.Slice(m.Word32(0x10FF), PrimitiveType.Byte).Accept(vp);
 			Assert.AreEqual("0xFF<8>", c.ToString());
 		}
 
@@ -449,7 +449,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
 		public void VpShiftSum()
 		{
 			ProcedureBuilder m = new ProcedureBuilder();
-			Expression e = m.Shl(1, m.ISub(Constant.Byte(32), 1));
+			Expression e = m.Shl(1, m.ISub(m.Byte(32), 1));
             var vp = new ExpressionSimplifier(program.Memory, new SsaEvaluationContext(arch.Object, null, dynamicLinker.Object), listener);
 			(e, _) = e.Accept(vp);
 			Assert.AreEqual("0x80000000<32>", e.ToString());
@@ -459,8 +459,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
         [Category(Categories.UnitTests)]
 		public void VpSequenceOfConstants()
 		{
-			Constant pre = Constant.Word16(0x0001);
-			Constant fix = Constant.Word16(0x0002);
+			Constant pre = m.Word16(0x0001);
+			Constant fix = m.Word16(0x0002);
 			Expression e = m.Seq(PrimitiveType.Word32, pre, fix);
             var vp = new ExpressionSimplifier(program.Memory, new SsaEvaluationContext(arch.Object, null, dynamicLinker.Object), listener);
 			(e, _) = e.Accept(vp);
@@ -471,7 +471,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
         [Category(Categories.UnitTests)]
         public void VpSliceShift()
         {
-            Constant eight = Constant.Word16(8);
+            Constant eight = m.Word16(8);
             Identifier C = m.Reg8("C");
             Expression e = m.Slice(m.Bin(Operator.Shl, PrimitiveType.Word16, C, eight), PrimitiveType.Byte, 8);
             var vp = new ExpressionSimplifier(program.Memory, new SsaEvaluationContext(arch.Object, m.Ssa.Identifiers, dynamicLinker.Object), listener);
@@ -502,8 +502,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
         [Category(Categories.UnitTests)]
         public void VpPhiWithConstants()
         {
-            var c1 = Constant.Word16(0x4711);
-            var c2 = Constant.Word16(0x4711);
+            var c1 = m.Word16(0x4711);
+            var c2 = m.Word16(0x4711);
             var r1 = m.Reg16("r1");
             var r2 = m.Reg16("r2");
             var r3 = m.Reg16("r3");
@@ -1491,7 +1491,7 @@ SsaProcedureBuilder_exit:
         [Category(Categories.UnitTests)]
         public void VpTypeReferenceToReal64()
         {
-            var c = Constant.Word64(0x4028000000000000); // 12.0
+            var c = m.Word64(0x4028000000000000); // 12.0
             var doubleRef = new TypeReference("DOUBLE", PrimitiveType.Real64);
             var v1 = m.Temp(doubleRef, "v1");
             var v2 = m.Temp(doubleRef, "v2");

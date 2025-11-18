@@ -106,7 +106,7 @@ namespace Reko.Arch.Motorola.M68k.Rewriter
                     ix = m.Convert(ix, PrimitiveType.Int16, PrimitiveType.Int32);
                 }
                 if (indidx.Scale > 1)
-                    ix = m.IMul(ix, Constant.Int32(indidx.Scale));
+                    ix = m.IMul(ix, m.Int32(indidx.Scale));
                 return m.Mem(DataWidth, m.IAdd(ea, ix));
             case IndexedOperand indop:
                 ea = Combine(indop.BaseDisplacement, indop.Base, addrInstr);
@@ -181,7 +181,7 @@ namespace Reko.Arch.Motorola.M68k.Rewriter
             if (e is null)
                 return o;
             if (o is Constant c && c.DataType.BitSize < 32)
-                o = Constant.Int32(c.ToInt32());    // Sign extend displacements shorter than a pointer.
+                o = m.Int32(c.ToInt32());    // Sign extend displacements shorter than a pointer.
             return m.IAdd(e, o);
         }
 
@@ -271,7 +271,7 @@ namespace Reko.Arch.Motorola.M68k.Rewriter
                         ea = m.IAddS(ea, indidx.Imm8);
                     Expression ix = binder.EnsureRegister(indidx.XRegister);
                     if (indidx.Scale > 1)
-                        ix = m.IMul(ix, Constant.Int32(indidx.Scale));
+                        ix = m.IMul(ix, m.Int32(indidx.Scale));
                     var access = m.Mem(dataWidth, m.IAdd(ea, ix));
                     return EmitStore(access, opGen(src, access));
                 }
@@ -375,7 +375,7 @@ namespace Reko.Arch.Motorola.M68k.Rewriter
                         ea = m.IAddS(ea, indidx.Imm8);
                     Expression ix = binder.EnsureRegister(indidx.XRegister);
                     if (indidx.Scale > 1)
-                        ix = m.IMul(ix, Constant.Int32(indidx.Scale));
+                        ix = m.IMul(ix, m.Int32(indidx.Scale));
                     var access = m.Mem(dataWidth, m.IAdd(ea, ix));
                     return EmitStore(access, opGen(access));
                 }

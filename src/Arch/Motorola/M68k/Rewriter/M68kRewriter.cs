@@ -291,8 +291,8 @@ VS Overflow Set 1001 V
                 case Mnemonic.spl: RewriteScc(ConditionCode.GT, Registers.N); break;
                 case Mnemonic.svc: RewriteScc(ConditionCode.NO, Registers.V); break;
                 case Mnemonic.svs: RewriteScc(ConditionCode.OV, Registers.V); break;
-                case Mnemonic.st: orw.RewriteMoveDst(instr.Operands[0], instr.Address, PrimitiveType.Bool, Constant.True()); break;
-                case Mnemonic.sf: orw.RewriteMoveDst(instr.Operands[0], instr.Address, PrimitiveType.Bool, Constant.False()); break;
+                case Mnemonic.st: orw.RewriteMoveDst(instr.Operands[0], instr.Address, PrimitiveType.Bool, m.True()); break;
+                case Mnemonic.sf: orw.RewriteMoveDst(instr.Operands[0], instr.Address, PrimitiveType.Bool, m.False()); break;
                 case Mnemonic.stop: RewriteStop(); break;
                 case Mnemonic.sub: RewriteArithmetic((s, d) => m.ISub(d, s)); break;
                 case Mnemonic.suba: RewriteBinOp((s, d) => m.ISub(d, s)); break;

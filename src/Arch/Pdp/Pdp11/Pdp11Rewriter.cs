@@ -250,7 +250,7 @@ namespace Reko.Arch.Pdp.Pdp11
                 {
                     return m.Mem(
                         this.dasm.Current.DataWidth!,
-                        m.IAdd(r!, Constant.Word16(memOp.EffectiveAddress)));
+                        m.IAdd(r!, m.Word16(memOp.EffectiveAddress)));
                 }
             case AddressMode.IndexedDef:
                 if (memOp.Register == Registers.pc)
@@ -266,7 +266,7 @@ namespace Reko.Arch.Pdp.Pdp11
                 {
                     return m.Mem(
                         PrimitiveType.Ptr16,
-                        m.IAdd(r!, Constant.Word16(memOp.EffectiveAddress)));
+                        m.IAdd(r!, m.Word16(memOp.EffectiveAddress)));
                 }
             }
             return tmp;
@@ -301,7 +301,7 @@ namespace Reko.Arch.Pdp.Pdp11
             case Constant immOp:
                 if (dasm.Current.DataWidth!.Size == 1)
                 {
-                    return Constant.Byte((byte) immOp.ToInt32());
+                    return m.Byte((byte) immOp.ToInt32());
                 }
                 else
                 {
@@ -353,7 +353,7 @@ namespace Reko.Arch.Pdp.Pdp11
                     {
                         return m.Mem(
                             this.dasm.Current.DataWidth!,
-                            m.IAdd(r!, Constant.Word16(memOp.EffectiveAddress)));
+                            m.IAdd(r!, m.Word16(memOp.EffectiveAddress)));
                     }
                 case AddressMode.IndexedDef:
                     if (memOp.Register == Registers.pc)
@@ -369,7 +369,7 @@ namespace Reko.Arch.Pdp.Pdp11
                         this.dasm.Current.DataWidth!,
                         m.Mem(
                             PrimitiveType.Ptr16,
-                            m.IAdd(r!, Constant.Word16(memOp.EffectiveAddress))));
+                            m.IAdd(r!, m.Word16(memOp.EffectiveAddress))));
                     }
                 }
                 return tmp;
@@ -447,7 +447,7 @@ namespace Reko.Arch.Pdp.Pdp11
                                 this.dasm.Current.DataWidth!,
                                 m.IAdd(
                                     r,
-                                    Constant.Word16(memOp.EffectiveAddress))),
+                                    m.Word16(memOp.EffectiveAddress))),
                             tmp);
                     }
                     break;
@@ -473,7 +473,7 @@ namespace Reko.Arch.Pdp.Pdp11
                                     this.dasm.Current.DataWidth!,
                                     m.IAdd(
                                         r,
-                                        Constant.Word16(memOp.EffectiveAddress)))),
+                                        m.Word16(memOp.EffectiveAddress)))),
                             tmp);
                     }
                     break;

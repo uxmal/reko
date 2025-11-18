@@ -135,7 +135,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             RunTest(
                 m.Seq(
                     Id("ds", PrimitiveType.SegmentSelector),
-                    Constant.Word16(4)),
+                    m.Word16(4)),
                 "Typing/ExaSeqWithSelector.txt");
         }
 
@@ -146,7 +146,7 @@ namespace Reko.UnitTests.Decompiler.Typing
                 m.SegMem(
                     PrimitiveType.Byte,
                     Id("ds", PrimitiveType.SegmentSelector),
-                    Constant.Word16(0x123)),
+                    m.Word16(0x123)),
                 "Typing/ExaSegmem.txt");
         }
 
@@ -175,7 +175,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             RunTest(
                 m.Seq(
                     m.Mem16(m.IAdd(lpsz, 4)),
-                    Constant.Word16(0x1200)),
+                    m.Word16(0x1200)),
                 "Typing/ExaMkSequence.txt");
         }
 

@@ -246,7 +246,7 @@ namespace Reko.Arch.Alpha
             case RegisterStorage rop:
             {
                 if (rop.Number == 31)
-                    return Constant.Word64(0);
+                    return m.Word64(0);
                 else if (rop.Number == 63)
                     return Constant.Real64(0.0);
                 else

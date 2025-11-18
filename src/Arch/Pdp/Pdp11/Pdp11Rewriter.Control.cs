@@ -128,7 +128,7 @@ namespace Reko.Arch.Pdp.Pdp11
             var tmp = binder.CreateTemporary(PrimitiveType.Word16);
             var r5 = binder.EnsureRegister(Registers.r5);
             m.Assign(sp, m.IAdd(pc,
-                Constant.Int16((short)(2 *
+                m.Int16((short)(2 *
                 ((Constant)instr.Operands[0]).ToInt16()))));
             m.Assign(tmp, r5);
             m.Assign(r5, m.Mem16(sp));

@@ -305,7 +305,7 @@ test()
             RunTest(sExp, m =>
             {
                 var a = Identifier.Create(new RegisterStorage("a", 0, 0, PrimitiveType.Word32));
-                m.While(Constant.True(), w =>
+                m.While(m.True(), w =>
                 {
                     w.If(m.Ne(a, 1), t =>
                     {

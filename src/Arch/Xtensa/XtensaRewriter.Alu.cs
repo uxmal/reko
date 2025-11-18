@@ -224,7 +224,7 @@ namespace Reko.Arch.Xtensa
         private void RewriteL32i()
         {
             var dst = RewriteOp(this.instr.Operands[0]);
-            var offset = Constant.UInt32(
+            var offset = m.UInt32(
                         ((Constant)instr.Operands[2]).ToUInt32());
             m.Assign(
                 dst,
@@ -252,7 +252,7 @@ namespace Reko.Arch.Xtensa
                     dt,
                     m.IAdd(
                         RewriteOp(instr.Operands[1]),
-                        Constant.UInt32(
+                        m.UInt32(
                         ((Constant)instr.Operands[2]).ToUInt32()))));
             m.Assign(dst, m.Convert(tmp, tmp.DataType, PrimitiveType.Int32));
         }
@@ -260,7 +260,7 @@ namespace Reko.Arch.Xtensa
         private void RewriteLsiu()
         {
             var a = RewriteOp(this.instr.Operands[1]);
-            var off = Constant.UInt32(
+            var off = m.UInt32(
                         ((Constant)instr.Operands[2]).ToUInt32());
             Expression? ea = null;
             var dst = RewriteOp(this.instr.Operands[0]);
@@ -290,7 +290,7 @@ namespace Reko.Arch.Xtensa
                     dt,
                     m.IAdd(
                         RewriteOp(instr.Operands[1]),
-                        Constant.UInt32(
+                        m.UInt32(
                         ((Constant)instr.Operands[2]).ToUInt32()))));
             m.Assign(dst, m.Convert(tmp, tmp.DataType, PrimitiveType.UInt32));
         }
@@ -318,7 +318,7 @@ namespace Reko.Arch.Xtensa
         private void RewriteMovi_n()
         {
             var dst = RewriteOp(this.instr.Operands[0]);
-            var src = Constant.Int32(
+            var src = m.Int32(
                 ((Constant)this.instr.Operands[1]).ToInt32());
             m.Assign(dst, src);
         }
@@ -393,7 +393,7 @@ namespace Reko.Arch.Xtensa
         {
             var src = RewriteOp(instr.Operands[0]);
             var ea = RewriteOp(instr.Operands[1]);
-            var off = Constant.UInt32(
+            var off = m.UInt32(
                         ((Constant)instr.Operands[2]).ToUInt32());
             if (!off.IsZero)
             {

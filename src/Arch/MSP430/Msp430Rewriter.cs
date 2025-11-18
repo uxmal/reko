@@ -399,7 +399,7 @@ namespace Reko.Arch.Msp430
             m.Assign(tmp, m.And(left, right));
             m.Assign(grf, m.Cond(grf.DataType, tmp));
             m.Assign(c, m.Test(ConditionCode.NE, tmp));
-            m.Assign(v, Constant.Bool(false));
+            m.Assign(v, m.False());
         }
 
         private void RewriteBr()
@@ -461,7 +461,7 @@ namespace Reko.Arch.Msp430
             }
             var dst = RewriteDst(instr.Operands[1], src, fn);
             EmitCc(dst, arch.Registers.NZC);
-            Assign(arch.Registers.V, Constant.False());
+            Assign(arch.Registers.V, m.False());
         }
 
         private void RewriteMov()
@@ -544,7 +544,7 @@ namespace Reko.Arch.Msp430
             var src = RewriteOp(instr.Operands[0]);
             var dst = RewriteDst(instr.Operands[0], src, (a, b) => m.Sar(a, m.Byte(1)));
             EmitCc(dst, arch.Registers.NZC);
-            Assign(arch.Registers.V, Constant.False());
+            Assign(arch.Registers.V, m.False());
         }
 
         private void RewriteRrax()
@@ -552,7 +552,7 @@ namespace Reko.Arch.Msp430
             var src = RewriteOp(instr.Operands[0]);
             var dst = RewriteDst(instr.Operands[0], src, (a, b) => m.Sar(a, Repeat()));
             EmitCc(dst, arch.Registers.NZC);
-            Assign(arch.Registers.V, Constant.False());
+            Assign(arch.Registers.V, m.False());
         }
 
         private void RewriteRrc()
@@ -567,7 +567,7 @@ namespace Reko.Arch.Msp430
                     m.Byte(1),
                     binder.EnsureFlagGroup(arch.Registers.C)));
             EmitCc(dst, arch.Registers.NZC);
-            Assign(arch.Registers.V, Constant.False());
+            Assign(arch.Registers.V, m.False());
         }
 
         private Expression Repeat()
@@ -587,7 +587,7 @@ namespace Reko.Arch.Msp430
             var src = RewriteOp(instr.Operands[0]);
             var dst = RewriteDst(instr.Operands[1], src, (a, b) => m.Shr(a, b));
             EmitCc(dst, arch.Registers.NZC);
-            Assign(arch.Registers.V, Constant.False());
+            Assign(arch.Registers.V, m.False());
         }
 
         private void RewriteSwpb()
@@ -607,7 +607,7 @@ namespace Reko.Arch.Msp430
                 instr.Operands[0],
                 m.Convert(tmp, tmp.DataType, instr.Operands[0].DataType));
             EmitCc(dst, arch.Registers.NZC);
-            Assign(arch.Registers.V, Constant.False());
+            Assign(arch.Registers.V, m.False());
         }
 
         private void Invalid()

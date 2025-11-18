@@ -392,7 +392,7 @@ namespace Reko.Arch.Motorola.M6812
 
         private void AssignFlag(FlagGroupStorage grf, bool value)
         {
-            m.Assign(binder.EnsureFlagGroup(grf), Constant.Bool(value));
+            m.Assign(binder.EnsureFlagGroup(grf), m.Bool(value));
         }
 
 

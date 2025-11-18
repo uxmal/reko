@@ -125,14 +125,14 @@ namespace Reko.Arch.MicrochipPIC.Common
         {
             var stkptr = binder.EnsureRegister(arch.StackRegister);
             var slot = m.ARef(PrimitiveType.Ptr32, PICRegisters.GlobalStack, stkptr);
-            m.Assign(stkptr, m.IAdd(stkptr, Constant.Byte(1)));
+            m.Assign(stkptr, m.IAdd(stkptr, m.Byte(1)));
             return slot;
         }
 
         protected ArrayAccess PopFromHWStackAccess()
         {
             var stkptr = binder.EnsureRegister(arch.StackRegister);
-            m.Assign(stkptr, m.ISub(stkptr, Constant.Byte(1)));
+            m.Assign(stkptr, m.ISub(stkptr, m.Byte(1)));
             var slot = m.ARef(PrimitiveType.Ptr32, PICRegisters.GlobalStack, stkptr);
             return slot;
         }
@@ -145,7 +145,7 @@ namespace Reko.Arch.MicrochipPIC.Common
                     int mask = (1 << bitno.BitNo);
                     if (revert)
                         mask = ~mask;
-                    return Constant.Byte((byte)mask);
+                    return m.Byte((byte)mask);
 
                 default:
                     throw new InvalidOperationException($"Invalid bit number operand: {op}.");

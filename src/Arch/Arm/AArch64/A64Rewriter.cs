@@ -541,7 +541,7 @@ namespace Reko.Arch.Arm.AArch64
                 // converted to big-endian to conform with the semantics of of Reko's ArrayAccess.
                 var eType = PrimitiveType.CreateWord(Bitsize(vectorOp.ElementType));
                 int index = vectorOp.Index;
-                return m.ARef(eType, vreg, Constant.Int32(index));
+                return m.ARef(eType, vreg, m.Int32(index));
             }
             else
             {
@@ -579,8 +579,8 @@ namespace Reko.Arch.Arm.AArch64
             var c = binder.EnsureFlagGroup(Registers.C);
             var v = binder.EnsureFlagGroup(Registers.V);
             m.Assign(nz, test);
-            m.Assign(c, Constant.False());
-            m.Assign(v, Constant.False());
+            m.Assign(c, m.False());
+            m.Assign(v, m.False());
         }
 
         Identifier FlagGroup(FlagGroupStorage grf)

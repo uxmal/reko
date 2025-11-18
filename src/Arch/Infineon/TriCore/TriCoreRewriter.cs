@@ -420,7 +420,7 @@ namespace Reko.Arch.Infineon.TriCore
             m.Assign(rem, fnRem(num, den));
             m.Assign(dst, m.Seq(rem, quo));
             AssignCcCond(Registers.V_SV, quo);
-            m.Assign(binder.EnsureFlagGroup(Registers.AV), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.AV), m.False());
         }
 
         private void RewriteExtr(PrimitiveType dtResult)
@@ -628,7 +628,7 @@ namespace Reko.Arch.Infineon.TriCore
             var op3 = Operand(3);
             if (op3 is Constant c)
             {
-                op3 = Constant.UInt32(c.ToUInt32());
+                op3 = m.UInt32(c.ToUInt32());
             }
             var dst = Operand(0);
             m.Assign(dst, m.Bin(add, op1, m.Bin(mul, op2, op3)));
@@ -642,7 +642,7 @@ namespace Reko.Arch.Infineon.TriCore
             var op3 = Operand(3);
             if (op3 is Constant c)
             {
-                op3 = Constant.UInt32(c.ToUInt32());
+                op3 = m.UInt32(c.ToUInt32());
             }
             var dst = Operand(0);
             m.Assign(dst, m.Fn(add, op1, mul(op2, op3)));

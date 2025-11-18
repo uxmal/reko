@@ -404,14 +404,14 @@ namespace Reko.Arch.Xtensa
         private Constant RewriteSimm(MachineOperand op)
         {
             var iOp = (Constant)op;
-            return Constant.Int32(iOp.ToInt32());
+            return m.Int32(iOp.ToInt32());
         }
 
         // Zero-extend an operand known to be unsigned immediate.
         private Constant RewriteUimm(MachineOperand op)
         {
             var iOp = (Constant)op;
-            return Constant.UInt32(iOp.ToUInt32());
+            return m.UInt32(iOp.ToUInt32());
         }
 
         private static readonly IntrinsicProcedure break_intrinsic = new IntrinsicBuilder("__break", true)

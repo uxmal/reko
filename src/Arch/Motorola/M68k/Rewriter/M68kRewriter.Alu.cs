@@ -54,7 +54,7 @@ namespace Reko.Arch.Motorola.M68k.Rewriter
             else
             {
                 opDst = orw.RewriteDst(instr.Operands[0], instr.Address,
-                    Constant.Byte(1), (s, d) =>
+                    m.Byte(1), (s, d) =>
                         m.Fn(rotation, d, s));
             }
             if (opDst is null)
@@ -65,7 +65,7 @@ namespace Reko.Arch.Motorola.M68k.Rewriter
             m.Assign(
                 binder.EnsureFlagGroup(Registers.CZN),
                 m.Cond(Registers.CZN.DataType, opDst));
-            m.Assign(binder.EnsureFlagGroup(Registers.V), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.V), m.False());
         }
 
         public void RewriteRotationX(IntrinsicProcedure rotation)
@@ -80,7 +80,7 @@ namespace Reko.Arch.Motorola.M68k.Rewriter
             else
             {
                 opDst = orw.RewriteDst(instr.Operands[0], instr.Address,
-                    Constant.Byte(1), (s, d) =>
+                    m.Byte(1), (s, d) =>
                         m.Fn(rotation.MakeInstance(d.DataType, s.DataType), d, s, binder.EnsureFlagGroup(Registers.X)));
             }
             if (opDst is null)
@@ -91,7 +91,7 @@ namespace Reko.Arch.Motorola.M68k.Rewriter
             m.Assign(
                 binder.EnsureFlagGroup(Registers.CZNX),
                 m.Cond(Registers.CZNX.DataType, opDst));
-            m.Assign(binder.EnsureFlagGroup(Registers.V), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.V), m.False());
         }
 
         public void RewriteTst()
@@ -99,8 +99,8 @@ namespace Reko.Arch.Motorola.M68k.Rewriter
             var opSrc = orw.RewriteSrc(instr.Operands[0], instr.Address);
             var opDst = binder.EnsureFlagGroup(Registers.ZN);
             m.Assign(opDst, m.Cond(opDst.DataType, m.ISub(opSrc, 0)));
-            m.Assign(binder.EnsureFlagGroup(Registers.C), Constant.False());
-            m.Assign(binder.EnsureFlagGroup(Registers.V), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.C), m.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.V), m.False());
         }
 
         public void RewriteShift(Func<Expression, Expression, Expression> binOpGen)
@@ -113,7 +113,7 @@ namespace Reko.Arch.Motorola.M68k.Rewriter
             }
             else
             {
-                var opSrc = Constant.Int32(1);
+                var opSrc = m.Int32(1);
                 opDst = orw.RewriteDst(instr.Operands[0], instr.Address, PrimitiveType.Word16, opSrc, binOpGen);
             }
             AllConditions(opDst);
@@ -232,7 +232,7 @@ namespace Reko.Arch.Motorola.M68k.Rewriter
                 return;
             }
             m.Assign(binder.EnsureFlagGroup(Registers.VZN), m.Cond(Registers.VZN.DataType, opDst));
-            m.Assign(binder.EnsureFlagGroup(Registers.C), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.C), m.False());
         }
 
         public void RewriteUnary(Func<Expression, Expression> unaryOpGen, Action<Expression> generateFlags)
@@ -247,7 +247,7 @@ namespace Reko.Arch.Motorola.M68k.Rewriter
             if (instr.Operands[1] is RegisterStorage regDst && 
                 Registers.IsAddressRegister(regDst))
             {
-                opSrc = Constant.Word32(opSrc.ToInt32());
+                opSrc = m.Word32(opSrc.ToInt32());
                 var opDst = binder.EnsureRegister(regDst);
                 m.Assign(opDst, opGen(opSrc, opDst));
             }
@@ -297,8 +297,8 @@ namespace Reko.Arch.Motorola.M68k.Rewriter
             var reg = binder.EnsureRegister(r);
             m.Assign(reg, m.Fn(swap_intrinsic, reg));
             m.Assign(binder.EnsureFlagGroup(Registers.ZN), m.Cond(Registers.ZN.DataType, reg));
-            m.Assign(binder.EnsureFlagGroup(Registers.C), Constant.False());
-            m.Assign(binder.EnsureFlagGroup(Registers.V), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.C), m.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.V), m.False());
         }
 
         private void RewriteBinOp(Func<Expression,Expression,Expression> opGen)
@@ -351,10 +351,10 @@ namespace Reko.Arch.Motorola.M68k.Rewriter
         {
             var src = m.Const(instr.DataWidth!, 0);
             orw.RewriteMoveDst(instr.Operands[0], instr.Address, instr.DataWidth!, src);
-            m.Assign(binder.EnsureFlagGroup(Registers.Z), Constant.True());
-            m.Assign(binder.EnsureFlagGroup(Registers.C), Constant.False());
-            m.Assign(binder.EnsureFlagGroup(Registers.N), Constant.False());
-            m.Assign(binder.EnsureFlagGroup(Registers.V), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.Z), m.True());
+            m.Assign(binder.EnsureFlagGroup(Registers.C), m.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.N), m.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.V), m.False());
         }
 
         private void RewriteCmp()
@@ -444,7 +444,7 @@ namespace Reko.Arch.Motorola.M68k.Rewriter
             }
             AssignCondOf(Registers.VZN, quot);
             m.Assign(
-                binder.EnsureFlagGroup(Registers.C), Constant.False());
+                binder.EnsureFlagGroup(Registers.C), m.False());
         }
 
         private Expression RewriteSrcOperand(MachineOperand mop)
@@ -519,7 +519,7 @@ namespace Reko.Arch.Motorola.M68k.Rewriter
                 {
                     return m.IAdd(
                         binder.EnsureRegister(mem.Base),
-                        Constant.Int32(mem.Offset.ToInt32()));
+                        m.Int32(mem.Offset.ToInt32()));
                 }
             }
             if (op is Address addrOp)
@@ -680,7 +680,7 @@ namespace Reko.Arch.Motorola.M68k.Rewriter
         {
             var opSrc = ((Constant)instr.Operands[0]).ToInt32();
             var opDst = binder.EnsureRegister((RegisterStorage)instr.Operands[1]);
-            m.Assign(opDst, Constant.Word32(opSrc));
+            m.Assign(opDst, m.Word32(opSrc));
             LogicalConditions(opDst);
         }
 
@@ -896,8 +896,8 @@ namespace Reko.Arch.Motorola.M68k.Rewriter
                 return;
             }
             AssignCondOf(Registers.ZN, expr);
-            m.Assign(binder.EnsureFlagGroup(Registers.C), Constant.False());
-            m.Assign(binder.EnsureFlagGroup(Registers.V), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.C), m.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.V), m.False());
         }
     }
 }

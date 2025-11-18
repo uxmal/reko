@@ -185,7 +185,7 @@ namespace Reko.Arch.Arm.AArch32
         private void RewriteSetend()
         {
             var endianness = (EndiannessOperand)instr.Operands[0];
-            var intrisic = m.Fn(setend_intrinsic, Constant.Bool(endianness.BigEndian));
+            var intrisic = m.Fn(setend_intrinsic, m.Bool(endianness.BigEndian));
             m.SideEffect(intrisic);
         }
 

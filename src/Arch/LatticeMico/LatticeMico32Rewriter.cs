@@ -254,7 +254,7 @@ namespace Reko.Arch.LatticeMico
             var src1 = Rewrite(instr.Operands[1]);
             var imm = (Constant)instr.Operands[2];
             var dst = Rewrite(instr.Operands[0]);
-            m.Assign(dst, fn(src1, Constant.Word32(imm.ToInt32() << 16)));
+            m.Assign(dst, fn(src1, m.Word32(imm.ToInt32() << 16)));
         }
 
         private void RewriteSext(PrimitiveType dt)

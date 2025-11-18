@@ -607,7 +607,7 @@ namespace Reko.Arch.Vax
                     ea = imem.EffectiveAddress;
                 Expression idx = binder.EnsureRegister(indexOperand.Index);
                 if (width.Size != 1)
-                    idx = m.IMul(idx, Constant.Int32(width.Size));
+                    idx = m.IMul(idx, m.Int32(width.Size));
                 ea = m.IAdd(ea, idx);
                 return m.Mem(width, ea);
             }
@@ -701,7 +701,7 @@ namespace Reko.Arch.Vax
             case IndexOperand indexOperand:
                 Expression idx = binder.EnsureRegister(indexOperand.Index);
                 if (width.Size != 1)
-                    idx = m.IMul(idx, Constant.Int32(width.Size));
+                    idx = m.IMul(idx, m.Int32(width.Size));
                 return RewriteDstOp(indexOperand.Base, PrimitiveType.Word32, fn, idx);
             case Constant _:
             case Address _:
@@ -738,7 +738,7 @@ namespace Reko.Arch.Vax
             m.Assign(grf, m.Cond(grf.DataType, dst));
             var c = FlagGroup(Registers.C);
             var v = FlagGroup(Registers.V);
-            m.Assign(v, Constant.False());
+            m.Assign(v, m.False());
             return true;
         }
 
@@ -753,8 +753,8 @@ namespace Reko.Arch.Vax
             m.Assign(grf, m.Cond(grf.DataType, dst));
             var c = FlagGroup(Registers.C);
             var v = FlagGroup(Registers.V);
-            m.Assign(c, Constant.False());
-            m.Assign(v, Constant.False());
+            m.Assign(c, m.False());
+            m.Assign(v, m.False());
             return true;
         }
 
@@ -780,7 +780,7 @@ namespace Reko.Arch.Vax
             var grf = FlagGroup(Registers.VZN);
             m.Assign(grf, m.Cond(grf.DataType, dst));
             var c = FlagGroup(Registers.C);
-            m.Assign(c, Constant.False());
+            m.Assign(c, m.False());
             return true;
         }
 

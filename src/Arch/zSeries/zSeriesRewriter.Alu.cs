@@ -672,7 +672,7 @@ namespace Reko.Arch.zSeries
         {
             var sh = EffectiveAddress(2);
             if (sh is Address addr)
-                sh = Constant.Int32((int) addr.ToLinear());
+                sh = m.Int32((int) addr.ToLinear());
             var src1 = Reg(1, dt);
             var dst = Assign(Reg(0), fn(src1, sh));
             SetCcCond(dst);
