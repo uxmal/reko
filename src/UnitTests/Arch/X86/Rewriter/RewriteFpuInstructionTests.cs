@@ -55,7 +55,7 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
         public override Address LoadAddress => loadAddress;
 
 
-        protected override IRewriterHost CreateHost()
+        protected override IRewriterHost CreateRewriterHost()
         {
             return new FakeRewriterHost(null);
         }

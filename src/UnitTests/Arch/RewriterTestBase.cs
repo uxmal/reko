@@ -92,11 +92,6 @@ namespace Reko.UnitTests.Arch
             Given_UInt32s(words);
         }
 
-        protected virtual IRewriterHost CreateHost()
-        {
-            return new RewriterHost(this.Architecture);
-        }
-
         protected void AssertCode(params string[] expected)
         {
             int i = 0;

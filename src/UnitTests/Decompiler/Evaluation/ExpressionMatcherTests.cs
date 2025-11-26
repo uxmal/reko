@@ -67,7 +67,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
         [Test]
         public void Emt_MatchAnyConstant()
         {
-            var c = m.Word32(4);
+            var c = this.m.Word32(4);
             Create(ExpressionMatcher.AnyConstant("c"));
             var m = matcher.Match(c);
             Assert.IsTrue(m.Success);

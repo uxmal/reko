@@ -86,7 +86,6 @@ namespace Reko.Core
         /// <returns>An identifier backed by the sequence storage.</returns>
         Identifier EnsureSequence(SequenceStorage sequence);
 
-
         /// <summary>
         /// Given an sequence of <see cref="Storage"/>s, ensures there is an
         /// identifier backed by that sequence.

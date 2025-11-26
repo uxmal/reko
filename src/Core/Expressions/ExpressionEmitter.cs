@@ -1941,7 +1941,7 @@ namespace Reko.Core.Expressions
         /// <summary>
         /// Creates a constant representing a 64-bit unsigned integer.
         /// </summary>
-        public static Constant UInt64(ulong ul)
+        public Constant UInt64(ulong ul)
         {
             return Constant.UInt64(ul);
         }

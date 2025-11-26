@@ -620,7 +620,6 @@ namespace Reko.UnitTests.Decompiler.Scanning
             while (bwslc.Step())
                 ;
             Assert.AreEqual(2, bwslc.Live.Count);
-            Console.WriteLine(bwslc.JumpTableFormat.ToString());
             Assert.AreEqual("CONVERT(Mem0[CONVERT(CONVERT(SLICE(d0, byte, 0), uint8, word16) * 2<16>, word16, word32) + 0x10EC32<32>:word16], int16, int32) + 0x10EC30<32>", bwslc.JumpTableFormat.ToString());
             Assert.AreEqual("d0", bwslc.JumpTableIndex.ToString());
             Assert.AreEqual("1[0,17]", bwslc.JumpTableIndexInterval.ToString());

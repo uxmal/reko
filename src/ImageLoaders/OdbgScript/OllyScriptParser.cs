@@ -385,7 +385,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 return new Identifier((string) token.Value!, new UnknownType(), MemoryStorage.Instance);
             case TokenType.Integer:
                 GetToken();
-                return Constant.UInt64(Convert.ToUInt64(token.Value));
+                return m.UInt64(Convert.ToUInt64(token.Value));
             case TokenType.LBracket:
                 GetToken();
                 var ea = Expression();

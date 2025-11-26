@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Reko.Loading;
 
+/// <summary>
+/// A simple implementation of <see cref="IBinaryImage"/>.
+/// </summary>
 public class DefaultBinaryImage : IBinaryImage
 {
     /// <inheritdoc/>
