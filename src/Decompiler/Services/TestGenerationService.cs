@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Analysis;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Output;
@@ -363,7 +364,17 @@ namespace Reko.Services
             var dir = GetOutputDirectory(fsSvc)!;
             var absFileName = Path.Combine(dir, fileName);
             using var w = fsSvc.CreateStreamWriter(absFileName, true, Encoding.UTF8);
-            GenerateUnitTestFromProcedure(testCaption, proc, w);
+            GenerateUnitTestFromProcedure(testCaption, proc, new MockIdentifierWriter(w), w);
+        }
+
+        /// <inheritdoc />
+        public void GenerateUnitTestFromSsaState(string fileName, string testCaption, SsaState ssa)
+        {
+            var fsSvc = services.RequireService<IFileSystemService>();
+            var dir = GetOutputDirectory(fsSvc)!;
+            var absFileName = Path.Combine(dir, fileName);
+            using var w = fsSvc.CreateStreamWriter(absFileName, true, Encoding.UTF8);
+            GenerateUnitTestFromProcedure(testCaption, ssa.Procedure, new SsaMockIdentifierWriter(w), w);
         }
 
         /// <summary>
@@ -371,11 +382,16 @@ namespace Reko.Services
         /// </summary>
         /// <param name="testCaption">Caption to use in generated test code.</param>
         /// <param name="proc">Procedure to render.</param>
+        /// <param name="mif"><see cref="IMockIdentifierWriter"/> instance to use.</param>
         /// <param name="writer">Output writer.</param>
-        public static void GenerateUnitTestFromProcedure(string testCaption, Procedure proc, TextWriter writer)
+        public static void GenerateUnitTestFromProcedure(
+            string testCaption,
+            Procedure proc,
+            IMockIdentifierWriter mif,
+            TextWriter writer)
         {
             writer.WriteLine(testCaption);
-            var mg = new MockGenerator(writer, "m.");
+            var mg = new MockGenerator(mif, writer, "m.");
             mg.WriteMethod(proc);
             writer.WriteLine();
         }

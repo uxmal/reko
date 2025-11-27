@@ -12,8 +12,8 @@ l00002558:
 	r31_16 = <invalid>
 	call Mem6[r31_16:word32] (retsize: 0;)
 		uses: Mem:Mem6
-		defs: r24:r24_26,r25:r25_27
-	return SEQ(r24_26, r25_27)
+		defs: Sequence r24:r25:r24_r25_33
+	return r24_r25_33
 fn00002558_exit:
 
 

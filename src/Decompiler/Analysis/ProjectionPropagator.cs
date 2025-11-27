@@ -471,18 +471,23 @@ public class ProjectionPropagator : IAnalysis<SsaState>
                 return sidWide.Identifier;
             }
 
+            /// <summary>
+            /// We have
+            /// <code>
+            ///     a_3 = PHI(a_1, a_2)
+            ///     b_3 = PHI(b_1, a_2)
+            ///     ...SEQ(a_3,b_3)
+            /// </code>
+            /// and we want 
+            /// <code>
+            ///    ab_3 = PHI(ab_1, ab_2)
+            ///    a_3 = SLICE(ab_3, ...)
+            ///    b_3 = SLICE(ab_3, ...)
+            ///    ...ab_3
+            /// </code>
+            /// </summary>
             private Expression RewriteSeqOfPhi(SsaIdentifier[] sids, PhiAssignment[] phis, Identifier idWide)
             {
-                // We have
-                //     a_3 = PHI(a_1, a_2)
-                //     b_3 = PHI(b_1, a_2)
-                //     ...SEQ(a_3,b_3)
-                // and we want 
-                //    ab_3 = PHI(ab_1, ab_2)
-                //    a_3 = SLICE(ab_3, ...)
-                //    b_3 = SLICE(ab_3, ...)
-                //    ...ab_3
-
                 foreach (var s in sids)
                 {
                     s.Uses.Remove(this.Statement);

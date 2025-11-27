@@ -15,7 +15,7 @@ ui32 fn000C1802(uint16 r0, uint16 r2, struct Eq_n * sb)
 // 000C181E: void fn000C181E(Register int16 r1, Register int16 r2)
 void fn000C181E(int16 r1, int16 r2)
 {
-	ui16 r2_n;
+	word16 r2_n;
 	word16 r0_n = fn000C1894(r1 *s32 r2, out r2_n);
 	if (r0_n != 0x00 || r2_n != 0x00)
 		fn000C1DB0(0x00, r0_n, r2_n, r1 *s32 r2);
@@ -71,7 +71,7 @@ word16 fn000C1894(Eq_n r1, word16 & r2Out)
 // 000C18E6: void fn000C18E6(Register Eq_n r2, Register (ptr16 Eq_n) sb, Stack cup16 wArg03, Stack ui16 wArg05)
 void fn000C18E6(Eq_n r2, struct Eq_n * sb, cup16 wArg03, ui16 wArg05)
 {
-	ui16 r2_n;
+	word16 r2_n;
 	word16 r0_n = fn000C1894(r2, out r2_n);
 	if ((r0_n != 0x00 || r2_n != 0x00) && (wArg03 != 0x00 || wArg05 != 0x00))
 	{
@@ -82,10 +82,10 @@ void fn000C18E6(Eq_n r2, struct Eq_n * sb, cup16 wArg03, ui16 wArg05)
 	}
 }
 
-// 000C195A: Sequence uipr32 fn000C195A(Register uint16 r1)
+// 000C195A: Sequence uint32 fn000C195A(Register uint16 r1)
 // Called from:
 //      fn000C1894
-uipr32 fn000C195A(uint16 r1)
+uint32 fn000C195A(uint16 r1)
 {
 	cui16 OSZC_n;
 	if (false && (false || r1 <= 0x00))
@@ -101,8 +101,7 @@ uipr32 fn000C195A(uint16 r1)
 	{
 		word16 wLoc0C_n = SLICE(dwLoc0E_n, word16, 16);
 		word16 wLoc10_n = SLICE(dwLoc12_n, word16, 16);
-		word16 wLoc12_n = (word16) dwLoc12_n;
-		if (wLoc12_n == 0x00 && wLoc10_n == 0x00)
+		if ((word16) dwLoc12_n == 0x00 && wLoc10_n == 0x00)
 			break;
 		ui32 a1_a0_n = dwLoc12_n + SEQ(OSZC_n & 0x01, 0x04);
 		uint16 a0_n = (word16) a1_a0_n;
@@ -125,12 +124,11 @@ uipr32 fn000C195A(uint16 r1)
 				word16 r0_n = (word16) r2r0_n;
 				*SEQ(a0_n, r0_n) = r0_n;
 				*SEQ(SLICE(SEQ(a0_n, a1_n) + 0x02, word16, 16), r0_n) = SLICE(r2r0_n, word16, 16);
-				ui32 v21_v20_n = dwLoc12_n + (r2r0_n << 0x02);
-				wLoc12_n = (word16) v21_v20_n;
-				wLoc10_n = SLICE(v21_v20_n, word16, 16);
+				uint32 v21_v20_n = dwLoc12_n + (r2r0_n << 0x02);
+				dwLoc12_n = v21_v20_n;
 			}
 			*(ui32 *) 0x040E -= r2r0_n;
-			return SEQ(wLoc10_n, wLoc12_n);
+			return dwLoc12_n;
 		}
 		dwLoc12_n = SEQ(*SEQ(SLICE(dwLoc12_n + 0x02, word16, 16), r0_n), *SEQ(wLoc10_n, r0_n));
 		dwLoc0E_n = dwLoc12_n;

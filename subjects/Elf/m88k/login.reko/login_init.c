@@ -12,8 +12,7 @@ word64 fn00002558()
 	fn00002810();
 	<anonymous> ** r31_n = (<anonymous> **) <invalid>;
 	(*r31_n)();
-	word32 r24_n;
-	word32 r25_n;
-	return SEQ(r24_n, r25_n);
+	word64 r24_r25_n;
+	return r24_r25_n;
 }
 

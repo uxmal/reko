@@ -1165,16 +1165,21 @@ namespace Reko.Analysis
 
             private SsaIdentifier Fuse(SsaIdentifier [] sids)
             {
-                if (sids.Length == 2 && 
-                    sids[0].DefStatement.Instruction is AliasAssignment aassHead &&
-                    sids[1].DefStatement.Instruction is AliasAssignment aassTail)
+                var slicedIds = sids.Select(s =>
                 {
-                    if (aassHead.Src is Slice eHead && aassTail.Src is Slice eTail &&
-                        eHead.Expression == eTail.Expression)
-                    {
-                        return ssaIds[(Identifier) eHead.Expression];
-                    }
+                    if (s.DefStatement.Instruction is not Assignment ass)
+                        return null;
+                    if (ass.Src is not Slice slice)
+                        return null;
+                    return slice.Expression as Identifier;
+                });
+                if (slicedIds.AllSame())
+                {
+                    var first = slicedIds.First();
+                    if (first is not null)
+                        return ssaIds[first];
                 }
+
                 if (sids.All(s => s.DefStatement.Instruction is DefInstruction))
                 {
                     // All subregisters came in from caller, so create an
@@ -1191,20 +1196,6 @@ namespace Reko.Analysis
                         sid.Uses.Add(stm);
                     }
                     return sidTo;
-                }
-
-                if (sids.Length == 2 && 
-                    sids[0]!.DefStatement.Instruction is Assignment assHead &&
-                    sids[1]!.DefStatement.Instruction is Assignment assTail)
-                {
-                    // If x_2 = Slice(y_3); z_4 = (Slice) y_3 return y_3
-                    if (assHead.Src is Slice slHead &&
-                        assTail.Src is Slice caTail &&
-                        slHead.Expression == caTail.Expression &&
-                        slHead.Expression is Identifier id)
-                    {
-                        return ssaIds[id];
-                    }
                 }
 
                 // Unrelated assignments; insert alias right before use.

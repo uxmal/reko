@@ -405,7 +405,7 @@ namespace Reko.Gui.TextViewing
         public void SetPositionAsFraction(int numer, int denom)
         {
             if (denom <= 0)
-                throw new ArgumentOutOfRangeException("denom", "Denominator must be larger than 0.");
+                throw new ArgumentOutOfRangeException(nameof(denom), "Denominator must be larger than 0.");
 #if SIMPLE
             // This is PTomin's simpler implementation of SetPositionAsFraction
             // Notice that just like the original implementation, it is O(n) where

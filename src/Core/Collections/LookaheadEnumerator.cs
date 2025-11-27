@@ -115,7 +115,7 @@ namespace Reko.Core.Collections
         public bool TryPeek(int ahead, [MaybeNullWhen(false)] out T result)
         {
             if (ahead < 0)
-                throw new ArgumentOutOfRangeException("Parameter must be non-negative.", nameof(ahead));
+                throw new ArgumentOutOfRangeException(nameof(ahead), "Parameter must be non-negative.");
             int itemsToRead = ahead - peeked.Count + iCur + 1;
             while (itemsToRead > 0)
             {
@@ -141,7 +141,7 @@ namespace Reko.Core.Collections
         public void Skip(int skip)
         {
             if (skip < 0)
-                throw new ArgumentOutOfRangeException("Parameter must be non-negative.", nameof(skip));
+                throw new ArgumentOutOfRangeException(nameof(skip), "Parameter must be non-negative.");
             int itemsInBuffer = peeked.Count - iCur;
             if (skip < itemsInBuffer)
             {

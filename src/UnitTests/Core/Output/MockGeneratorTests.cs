@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Core.Output
         {
             ProcedureBuilder m = new ProcedureBuilder();
             buildMock(m);
-            MockGenerator g = new MockGenerator(sb, "");
+            MockGenerator g = new MockGenerator(new MockIdentifierWriter(sb), sb, "");
             g.WriteClass(m.Procedure);
         }
 
@@ -54,7 +54,7 @@ namespace Reko.UnitTests.Core.Output
         {
             ProcedureBuilder m = new ProcedureBuilder();
             buildMock(m);
-            MockGenerator g = new MockGenerator(sb, "m.");
+            MockGenerator g = new MockGenerator(new MockIdentifierWriter(sb), sb, "m.");
             g.WriteMethod(m.Procedure);
         }
 

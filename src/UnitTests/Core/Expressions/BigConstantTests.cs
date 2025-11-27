@@ -44,9 +44,7 @@ namespace Reko.UnitTests.Core.Expressions
         public void Bc_Slice()
         {
             var n = new BigInteger(-1) & ~0xFF; // mask out low byte
-            Console.WriteLine(n);
             var c = BigConstant.CreateUnsigned(PrimitiveType.Word256, n);
-            Console.WriteLine(c);
             var slice = c.Slice(PrimitiveType.Int32, 32);
             Assert.AreEqual(-1, slice.GetValue());
         }

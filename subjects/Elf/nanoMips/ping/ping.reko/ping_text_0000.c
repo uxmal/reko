@@ -5112,6 +5112,9 @@ void fn00403C9E(Eq_n r4)
 //      fn00402A9A
 Eq_n __divdi3(Eq_n r5_r4, Eq_n r3, Eq_n r6, int32 r7, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r11Out)
 {
+	Eq_n r7_r6;
+	r6 = (word32) r7_r6;
+	r7 = SLICE(r7_r6, word32, 32);
 	int32 r5 = SLICE(r5_r4, word32, 32);
 	word32 r4 = (word32) r5_r4;
 	word32 r2_n = 0x00;
@@ -5125,7 +5128,7 @@ Eq_n __divdi3(Eq_n r5_r4, Eq_n r3, Eq_n r6, int32 r7, union Eq_n & r4Out, union 
 	Eq_n r5_n;
 	r5_n.u3 = SLICE(r5_r4_n, word32, 32);
 	Eq_n r4_n = (word32) r5_r4_n;
-	Eq_n r12_r8_n = SEQ(r7, r6);
+	Eq_n r12_r8_n = r7_r6;
 	if (r7 < 0x00)
 	{
 		up32 r8_n = -r6;
@@ -5315,6 +5318,9 @@ l00403D7C:
 //      finish
 void __moddi3(Eq_n r5_r4, int32 r6, int32 r7, int32 r14)
 {
+	Eq_n r7_r6;
+	r6 = (word32) r7_r6;
+	r7 = SLICE(r7_r6, word32, 32);
 	int32 r5 = SLICE(r5_r4, word32, 32);
 	word32 r4 = (word32) r5_r4;
 	word32 r11_n = 0x00;
@@ -5328,7 +5334,7 @@ void __moddi3(Eq_n r5_r4, int32 r6, int32 r7, int32 r14)
 	Eq_n r4_n = (word32) r5_r4_n;
 	Eq_n r5_n;
 	r5_n.u3 = SLICE(r5_r4_n, word32, 32);
-	Eq_n r10_r2_n = SEQ(r7, r6);
+	Eq_n r10_r2_n = r7_r6;
 	if (r7 < 0x00)
 	{
 		up32 r2_n = -r6;
@@ -13704,8 +13710,10 @@ Eq_n fmt_u(Eq_n r4, Eq_n r5, Eq_n r6, int32 r13, union Eq_n & r4Out, union Eq_n 
 	word32 r8_n;
 	word32 r4_n;
 	Eq_n r3_n;
+	Eq_n r5_r4;
+	r5.u3 = SLICE(r5_r4, word32, 32);
 	Eq_n r17_n = r6;
-	Eq_n r18_r16_n = SEQ(r5, r4);
+	Eq_n r18_r16_n = r5_r4;
 	uint32 r16_n;
 	Eq_n r2;
 	uint32 r7;
@@ -20730,12 +20738,13 @@ l0040C432:
 l0040C3B2:
 				Eq_n r17_n = r16_n - r18_n;
 				r17_n = (word32) r17_n + 32;
-				word32 r19_n;
+				real64 r8_r19_n;
 				if (r17_n < ~0x1F)
 				{
+					word32 r8_n;
 					Eq_n r8_n;
 					word32 r8_n;
-					r19_n = copysignl((word32) scalbn(SEQ(r7_n[600], r7_n[604]), (struct Eq_n *) 0x54, out r8_n), (word32) __floatsidf(r8_n, out r8_n), out r8_n);
+					r8_r19_n = SEQ(r8_n, copysignl((word32) scalbn(SEQ(r7_n[600], r7_n[604]), (struct Eq_n *) 0x54, out r8_n), (word32) __floatsidf(r8_n, out r8_n), out r8_n));
 					goto l0040C576;
 				}
 				else
@@ -20753,7 +20762,7 @@ l0040C3BC:
 						real64 r4_r5_n = scalbn(SEQ(r7_n[600], r7_n[604]), (struct Eq_n *) 4226678868, out r8_n);
 						word32 r5_n = copysignl((word32) r4_r5_n, (word32) __floatsidf(r8_n, out r8_n), out r8_n);
 						word32 r4_n = SLICE(r4_r5_n, word32, 32);
-						r19_n = r5_n;
+						r8_r19_n = SEQ(r8_n, r5_n);
 						if (true)
 						{
 							qwLoc60_n = SEQ(dwLoc60_n, dwLoc5C_n);
@@ -20762,17 +20771,18 @@ l0040C3BC:
 						else
 						{
 l0040C576:
+							r8_n.u3 = SLICE(r8_r19_n, word32, 32);
 							qwLoc60_n = SEQ(dwLoc60_n, dwLoc5C_n);
-							r18_r19_n = SEQ(r8_n, r19_n);
+							r18_r19_n = r8_r19_n;
 							if (__nedf2(qwLoc60_n) != 0x00)
 							{
 								qwLoc60_n = SEQ(dwLoc60_n, dwLoc5C_n);
-								r18_r19_n = SEQ(r8_n, r19_n);
+								r18_r19_n = r8_r19_n;
 								if (__bit<word32,word32>(r23_n, 0x00))
 								{
 									++r23_n.u11;
 									qwLoc60_n = 0.0;
-									r18_r19_n = SEQ(r8_n, r19_n);
+									r18_r19_n = r8_r19_n;
 								}
 							}
 						}

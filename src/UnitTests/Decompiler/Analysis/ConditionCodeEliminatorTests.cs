@@ -29,7 +29,6 @@ using Reko.Core.Intrinsics;
 using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
-using Reko.ImageLoaders.OdbgScript;
 using Reko.Services;
 using Reko.UnitTests.Fragments;
 using Reko.UnitTests.Mocks;
@@ -1432,6 +1431,74 @@ ProcedureBuilder_exit:
                         PrimitiveType.Bool,
                         PrimitiveType.Word32));
                 m.MStore(m.Word32(0x123400), r9);
+            });
+        }
+
+        [Test]
+        [Ignore("")]
+        public void CceX86ShlRcl()
+        {
+            var sExpected =
+            #region Expected
+     "@@@";
+            #endregion
+
+            RunSsaTest(sExpected, m =>
+            {
+                RegisterStorage reg_ax = new RegisterStorage("ax", 0, 0, PrimitiveType.Word16);
+                RegisterStorage reg_cx = new RegisterStorage("cx", 1, 0, PrimitiveType.Word16);
+                RegisterStorage reg_dx = new RegisterStorage("dx", 2, 0, PrimitiveType.Word16);
+                RegisterStorage reg_bp = new RegisterStorage("bp", 5, 0, PrimitiveType.Word16);
+                RegisterStorage reg_si = new RegisterStorage("si", 6, 0, PrimitiveType.Word16);
+                RegisterStorage reg_di = new RegisterStorage("di", 7, 0, PrimitiveType.Word16);
+                RegisterStorage reg_eflags = new RegisterStorage("eflags", 40, 0, PrimitiveType.Word32);
+                FlagGroupStorage grf_C = new FlagGroupStorage(reg_eflags, 0x2, "C");
+                FlagGroupStorage grf_CZ = new FlagGroupStorage(reg_eflags, 0x6, "CZ");
+                FlagGroupStorage grf_SCZO = new FlagGroupStorage(reg_eflags, 0x17, "SCZO");
+                Identifier ax_110 = m.Reg("ax_110", reg_ax);
+                Identifier ax_111 = m.Reg("ax_111", reg_ax);
+                Identifier cx_93 = m.Reg("cx_93", reg_cx);
+                Identifier dx_117 = m.Reg("dx_117", reg_dx);
+                Identifier dx_115 = m.Reg("dx_115", reg_dx);
+                Identifier bp = m.Reg("bp", reg_bp);
+                Identifier si_119 = m.Reg("si_119", reg_si);
+                Identifier si_121 = m.Reg("si_121", reg_si);
+                Identifier di_123 = m.Reg("di_123", reg_di);
+                Identifier di_124 = m.Reg("di_124", reg_di);
+                Identifier C_113 = m.Flags("C_113", grf_C);
+                Identifier C_116 = m.Flags("C_116", grf_C);
+                Identifier C_120 = m.Flags("C_120", grf_C);
+                Identifier C_127 = m.Flags("C_127", grf_C);
+                Identifier CZ_128 = m.Flags("CZ_128", grf_CZ);
+                Identifier SCZO_112 = m.Flags("SCZO_112", grf_SCZO);
+                Identifier SCZO_126 = m.Flags("SCZO_126", grf_SCZO);
+                Identifier fp = m.FramePointer();
+                Identifier v21_114 = m.Temp(PrimitiveType.Bool, "v21_114");
+                Identifier v22_118 = m.Temp(PrimitiveType.Bool, "v22_118");
+                Identifier v23_122 = m.Temp(PrimitiveType.Bool, "v23_122");
+                Identifier v33_220 = m.Temp(PrimitiveType.Int32, "v33");
+
+                m.AddDefToEntryBlock(fp);
+                m.AddDefToEntryBlock(bp);
+
+                m.Label("fn0800_8BD8_entry");
+                m.Assign(ax_110, m.Mem16(m.Word16(0x1234)));
+                m.Assign(dx_115, m.Mem16(m.Word16(0x1236)));
+                m.Assign(v33_220, m.Shl(m.Seq(dx_115, ax_110), m.Byte(0x1)));
+                m.Assign(ax_111, m.Slice(v33_220, PrimitiveType.Word16, 0));
+                m.Assign(SCZO_112, m.Cond(SCZO_112.DataType, ax_111));
+                m.Assign(C_113, m.And(SCZO_112, m.Word32(0x2)));
+                m.Assign(v21_114, m.And(SCZO_112, m.Word32(0x2)));
+                m.Assign(C_116, m.Ne(m.And(dx_115, m.Word16(0x8000)), m.Word16(0x0)));
+                m.Assign(dx_117, m.Slice(v33_220, PrimitiveType.Word16, 16));
+                m.Assign(v22_118, C_116);
+                m.Assign(C_120, m.Ne(m.And(si_119, m.Word16(0x8000)), m.Word16(0x0)));
+                m.Assign(si_121, m.Fn("__rcl", si_119, m.Byte(0x1), C_116));
+                m.Assign(v23_122, C_120);
+                m.Assign(di_124, m.Fn("__rcl", di_123, m.Byte(0x1), C_120));
+                m.Assign(SCZO_126, m.Cond(SCZO_126.DataType, m.ISub(di_124, cx_93)));
+                m.Assign(C_127, m.And(SCZO_126, m.Word32(0x2)));
+                m.Assign(CZ_128, m.And(SCZO_126, m.Word32(0x6)));
             });
         }
     }

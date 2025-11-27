@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Analysis;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using System;
@@ -98,7 +99,7 @@ namespace Reko.Core.Services
         void RemoveFiles(string filePrefix);
 
         /// <summary>
-        /// Report the state of a procedure to a file determine by the filename.
+        /// Report the state of a procedure to a file determined by the filename.
         /// </summary>
         /// <param name="fileName"></param>
         /// <param name="testCaption"></param>
@@ -112,5 +113,13 @@ namespace Reko.Core.Services
         /// <param name="testCaption">Caption to identify the test.</param>
         /// <param name="proc">Procedure from which to generate unit test code.</param>
         void GenerateUnitTestFromProcedure(string fileName, string testCaption, Procedure proc);
+
+        /// <summary>
+        /// Generate compileable C# unit test code for the given <see cref="SsaState" />.
+        /// </summary>
+        /// <param name="fileName">Filename to output to.</param>
+        /// <param name="testCaption">Caption to identify the test.</param>
+        /// <param name="ssa"><see cref="SsaState"/> from which to generate unit test code.</param>
+        void GenerateUnitTestFromSsaState(string fileName, string testCaption, SsaState ssa);
     }
 }

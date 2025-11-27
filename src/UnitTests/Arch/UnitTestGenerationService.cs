@@ -19,8 +19,10 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Analysis;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
+using Reko.Core.Output;
 using Reko.Core.Services;
 using Reko.Services;
 using System;
@@ -82,7 +84,14 @@ namespace Reko.UnitTests.Arch
         public void GenerateUnitTestFromProcedure(string fileName, string testCaption, Procedure proc)
         {
             Console.WriteLine("== {0} ===============", fileName);
-            TestGenerationService.GenerateUnitTestFromProcedure(testCaption, proc, Console.Out);
+            TestGenerationService.GenerateUnitTestFromProcedure(testCaption, proc, new MockIdentifierWriter(Console.Out), Console.Out);
         }
+
+        public void GenerateUnitTestFromSsaState(string fileName, string testCaption, SsaState ssa)
+        {
+            Console.WriteLine("== {0} ===============", fileName);
+            TestGenerationService.GenerateUnitTestFromProcedure(testCaption, ssa.Procedure, new SsaMockIdentifierWriter(Console.Out), Console.Out);
+        }
+
     }
 }

@@ -18,14 +18,11 @@
  */
 #endregion
 
-using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.Analysis;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 
@@ -36,7 +33,7 @@ namespace Reko.UnitTests.Mocks
     /// </summary>
     /// <remarks>
     /// Some unit tests require procedure to be in Static Single Assignment
-    /// form. This class gives possibility to build it without the overhead of
+    /// form. This class gives possibility to build it directly without the overhead of
     /// using the SSATransform class.
     /// </remarks>
     public class SsaProcedureBuilder : ProcedureBuilder
@@ -83,6 +80,13 @@ namespace Reko.UnitTests.Mocks
             return MakeSsaIdentifier(id, name);
         }
 
+        public Identifier SeqId(string name, SequenceStorage seq)
+        {
+            var id = new Identifier(name, seq.DataType, seq);
+            return MakeSsaIdentifier(id, name);
+        }
+
+
         public Identifier SeqId(string name, DataType dt, params Storage[] storages)
         {
             var id = new Identifier(name, dt, new SequenceStorage(dt, storages));
@@ -105,6 +109,12 @@ namespace Reko.UnitTests.Mocks
         {
             var local = base.Local32(name, offset);
             return MakeSsaIdentifier(local, name);
+        }
+
+        public Identifier Stack(string name, int stackOffset, DataType dt)
+        {
+            var stack = Frame.EnsureStackVariable(stackOffset, dt);
+            return MakeSsaIdentifier(stack, name);
         }
 
         public override Identifier Temp(DataType type, string name)
@@ -209,6 +219,12 @@ namespace Reko.UnitTests.Mocks
         {
             var sidFp = Ssa.Identifiers.Add(Frame.FramePointer, null, false);
             return sidFp.Identifier;
+        }
+
+        public Identifier Continuation()
+        {
+            var sid = Ssa.Identifiers.Add(Frame.Continuation, null, false);
+            return sid.Identifier;
         }
 
         private Identifier MakeSsaIdentifier(Identifier id, string name)

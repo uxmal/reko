@@ -146,8 +146,7 @@ l000C1975:
 l000C199D:
 	wLoc0C_329 = SLICE(dwLoc0E_566, word16, 16) (alias)
 	wLoc10_305 = SLICE(dwLoc12_563, word16, 16) (alias)
-	wLoc12_304 = SLICE(dwLoc12_563, word16, 0) (alias)
-	branch wLoc12_304 != 0<16> l000C19AA
+	branch SLICE(dwLoc12_563, word16, 0) != 0<16> l000C19AA
 l000C19A2:
 	branch wLoc10_305 != 0<16> l000C19AA
 l000C19A7:
@@ -174,8 +173,7 @@ l000C19D6:
 	Mem139[SEQ(a0_49, r0_131):word16] = r0_131
 	Mem147[SEQ(SLICE(SEQ(a0_49, a1_52) + 2<32>, word16, 16), r0_131):word16] = SLICE(r2r0_278, word16, 16)
 	v21_v20_282 = dwLoc12_563 + (r2r0_278 << 2<16>)
-	wLoc12_304 = SLICE(v21_v20_282, word16, 0)
-	wLoc10_305 = SLICE(v21_v20_282, word16, 16)
+	dwLoc12_563 = v21_v20_282 (alias)
 	goto l000C1A0A
 l000C19EE:
 	r0_110 = Mem62[SEQ(wLoc10_305, r0_54):word16]
@@ -184,7 +182,7 @@ l000C19EE:
 	Mem127[SEQ(SLICE(dwLoc0E_566 + 2<32>, word16, 16), r0_110):word16] = r2_116
 l000C1A0A:
 	Mem166[0x0000040E<p32>:ui32] = Mem162[0x040E<p16>:ui32] - r2r0_26
-	return SEQ(wLoc10_305, wLoc12_304)
+	return dwLoc12_563
 l000C1A1C:
 	dwLoc12_563 = SEQ(Mem89[SEQ(SLICE(dwLoc12_563 + 2<32>, word16, 16), r0_54):word16], Mem83[SEQ(wLoc10_305, r0_54):word16]) (alias)
 	dwLoc0E_566 = dwLoc12_563 (alias)

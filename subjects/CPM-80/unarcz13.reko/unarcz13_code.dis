@@ -44,7 +44,7 @@ l019E_thunk_fn01BF:
 	return
 l01A0:
 	fn0F13(0x17A7<16>, out de_375)
-	fn0563(SEQ(c, d), b, e)
+	fn0563(c_d, b, e)
 	sp_264 = sp_129
 	goto l0180
 l01AE:

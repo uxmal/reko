@@ -97,10 +97,9 @@ l018D:
 		}
 		word16 de_n;
 		fn0F13((struct Eq_n *) 0x17A7, out de_n);
-		byte c;
-		byte d;
+		ui16 c_d;
 		byte e;
-		fn0563(SEQ(c, d), b, e);
+		fn0563(c_d, b, e);
 		sp_n = sp_n;
 	}
 	while (true)

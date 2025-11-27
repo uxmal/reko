@@ -173,33 +173,23 @@ cui16 frex(cui16 gp1, struct Eq_n ** gp3)
 //      asin
 real48 sqrt(int32 gp0_gp1, word16 gp2, struct Eq_n & gp14Out)
 {
-	real48 rLoc02;
 	word16 gp0 = SLICE(gp0_gp1, word16, 16);
 	cui16 gp1 = (word16) gp0_gp1;
-	word16 gp0_n;
-	word16 gp1_n;
-	word16 gp2_n;
+	real48 gp0_gp1_gp2_n;
 	if (gp0_gp1 >= 0x00)
 	{
 		word16 gp1_n = frex(gp1, (struct Eq_n **) 0x01);
 		real48 gp2_gp3_gp4_n = g_rFFFF8012 - g_rFFFF800F / (SEQ(gp0, gp1_n, gp2) + g_uFFFF800C);
 		real48 gp2_gp3_gp4_n = (gp2_gp3_gp4_n + SEQ(gp0, gp1_n, gp2) / gp2_gp3_gp4_n) *48 *((char *) (&g_rFFFF8012) + 3);
 		real48 gp2_gp3_gp4_n = (gp2_gp3_gp4_n + SEQ(gp0, gp1_n, gp2) / gp2_gp3_gp4_n) *48 *((char *) (&g_rFFFF8012) + 3);
-		real48 gp0_gp1_gp2_n = SEQ((word32) gp2_gp3_gp4_n, (word16) gp2_gp3_gp4_n) * rLoc02;
-		gp0_n = SLICE(gp0_gp1_gp2_n, word16, 32);
-		gp1_n = SLICE(gp0_gp1_gp2_n, word16, 16);
-		gp2_n = (word16) gp0_gp1_gp2_n;
+		real48 rLoc02;
+		gp0_gp1_gp2_n = SEQ((word32) gp2_gp3_gp4_n, (word16) gp2_gp3_gp4_n) * rLoc02;
 	}
 	else
-	{
-		real48 gp0_gp1_gp2_n = g_rFFFF8018;
-		gp0_n = SLICE(gp0_gp1_gp2_n, word16, 32);
-		gp1_n = SLICE(gp0_gp1_gp2_n, word16, 16);
-		gp2_n = (word16) gp0_gp1_gp2_n;
-	}
+		gp0_gp1_gp2_n = g_rFFFF8018;
 	ptr16 fp;
 	gp14Out = fp - 0x03;
-	return SEQ(gp0_n, gp1_n, gp2_n);
+	return gp0_gp1_gp2_n;
 }
 
 // 0273: Sequence word32 auxasin(Sequence Eq_n gp0_gp1_gp2, Register out word16 gp2Out, Register out ptr16 gp14Out)

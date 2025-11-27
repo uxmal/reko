@@ -89,7 +89,7 @@ namespace Reko.Core.Collections
                 if (newCount > 0)
                     this[item] = newCount;
                 else
-                    this.Remove(item);
+                    base.Remove(item);
                 return true;
             }
             else

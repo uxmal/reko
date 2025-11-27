@@ -116,6 +116,7 @@ public class NX8_200Rewriter : IEnumerable<RtlInstructionCluster>
             case Mnemonic.movb: RewriteMov(w8); break;
             case Mnemonic.mul: RewriteMul(); break;
             case Mnemonic.mulb: RewriteMulb(); break;
+            case Mnemonic.nop: m.Nop(); break;
             case Mnemonic.or: RewriteLogical(Operator.Or, w16); break;
             case Mnemonic.orb: RewriteLogical(Operator.Or, w8); break;
             case Mnemonic.pops: RewritePops(); break;

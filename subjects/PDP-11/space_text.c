@@ -259,17 +259,23 @@ l065C:
 //      fn3B42
 void fn0670(Eq_n r5, <anonymous> * wArg00, cui16 wArg02, Eq_n wArg04, cui16 wArg06, Eq_n wArg08)
 {
+	ui32 dwArg02;
+	wArg02 = (word16) dwArg02;
+	wArg04 = SLICE(dwArg02, word16, 16);
+	ui32 dwArg06;
+	wArg06 = (word16) dwArg06;
+	wArg08 = SLICE(dwArg06, word16, 16);
 	Eq_n r4_n;
 	r4_n.u0 = g_t5424.u0;
 	*((word16) r4_n + 42) = wArg00;
 	cui16 r2_n = wArg06;
 	Eq_n r3_n = wArg08;
-	ui32 r0_r1_n = SEQ(wArg02, wArg04);
+	ui32 r0_r1_n = dwArg02;
 	if (wArg08 == 0x00)
 	{
 		r3_n = wArg04;
 		r2_n = wArg02;
-		r0_r1_n = SEQ(wArg06, wArg08);
+		r0_r1_n = dwArg06;
 	}
 	ui32 v49_n = r0_r1_n << 0x01;
 	Eq_n r1_n = (word16) v49_n;

@@ -264,6 +264,10 @@ namespace Reko.Analysis
                         urb.Transform(ssa);
                     }
 
+                    DumpWatchedProcedure("prpr2", "Before projection propagator 2", ssa);
+                    var prpr = new ProjectionPropagator(context);
+                    prpr.Transform(ssa);
+
                     DumpWatchedProcedure("precoa", "Before expression coalescing", ssa);
                     
                     // Procedures should be untangled from each other. Now process
@@ -408,9 +412,20 @@ namespace Reko.Analysis
                 var sw = new StringWriter();
                 ssa.Write(sw);
                 Debug.WriteLine(sw);
-            }
-            DumpWatchedProcedure(phase, caption, ssa.Procedure);
-            if (IsProcedureWatched(ssa.Procedure))
+
+                var testSvc = this.services.GetService<ITestGenerationService>();
+                if (testSvc is not null)
+                {
+                    if (!this.phaseNumbering.TryGetValue(phase, out int n))
+                    {
+                        n = phaseNumbering.Count + 1;
+                        phaseNumbering.Add(phase, n);
+                    }
+                    var banner = $"// {ssa.Procedure.Name} ===========";
+                    testSvc.ReportProcedure($"analysis_{n:00}_{phase}.txt", banner, ssa.Procedure);
+                    testSvc.GenerateUnitTestFromSsaState($"analysis_{n:00}_{phase}.rekoir", banner, ssa);
+                }
+
                 ssa.Validate(s =>
             {
                 Console.WriteLine("== SSA validation failure; {0} {1}", caption, ssa.Procedure.Name);
@@ -422,6 +437,7 @@ namespace Reko.Analysis
                 Debug.Print("    {0}", s);
                 ssa.Dump(true);
             });
+            }
         }
 
         /// <summary>

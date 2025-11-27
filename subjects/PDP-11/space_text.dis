@@ -246,17 +246,21 @@ void fn0670(word16 r5, word16 wArg00, word16 wArg02, word16 wArg04, word16 wArg0
 // Trashed: NZVC r0 r1 r2 r3 r4 sp
 // Preserved: r5
 fn0670_entry:
+	wArg02 = SLICE(dwArg02, word16, 0)
+	wArg04 = SLICE(dwArg02, word16, 16)
+	wArg06 = SLICE(dwArg06, word16, 0)
+	wArg08 = SLICE(dwArg06, word16, 16)
 l0670:
 	r4_4 = Mem0[0x5424<p16>:word16]
 	Mem9[r4_4 + 0x2A<16>:word16] = wArg00
 	r2_18 = wArg06
 	r3_19 = wArg08
-	r0_r1_299 = SEQ(wArg02, wArg04) (alias)
+	r0_r1_299 = dwArg02 (alias)
 	branch wArg08 != 0<16> l068E
 l0684:
 	r3_19 = wArg04
 	r2_18 = wArg02
-	r0_r1_299 = SEQ(wArg06, wArg08) (alias)
+	r0_r1_299 = dwArg06 (alias)
 l068E:
 	v49_257 = r0_r1_299 << 1<8>
 	r1_38 = SLICE(v49_257, word16, 0)

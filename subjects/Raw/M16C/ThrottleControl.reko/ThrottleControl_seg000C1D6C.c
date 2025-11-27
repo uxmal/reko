@@ -4,14 +4,17 @@
 
 #include "ThrottleControl.h"
 
-// 000C1D6C: Register word16 fn000C1D6C(Stack word16 wArg03, Stack ui16 wArg05, Stack cup16 wArg07, Stack ui16 wArg09, Stack Eq_n wArg0B)
+// 000C1D6C: Register word16 fn000C1D6C(Stack word16 wArg03, Stack word16 wArg05, Stack cup16 wArg07, Stack ui16 wArg09, Stack Eq_n wArg0B)
 // Called from:
 //      fn000C18E6
-word16 fn000C1D6C(word16 wArg03, ui16 wArg05, cup16 wArg07, ui16 wArg09, Eq_n wArg0B)
+word16 fn000C1D6C(word16 wArg03, word16 wArg05, cup16 wArg07, ui16 wArg09, Eq_n wArg0B)
 {
+	ui32 dwArg07;
+	ui32 dwArg03;
+	wArg03 = (word16) dwArg03;
 	Eq_n r0_n = wArg0B;
-	ui32 dwLoc0A_n = SEQ(wArg09, wArg07);
-	ui32 dwLoc06_n = SEQ(wArg05, wArg03);
+	ui32 dwLoc0A_n = dwArg07;
+	ui32 dwLoc06_n = dwArg03;
 	while (true)
 	{
 		word16 wLoc04_n = SLICE(dwLoc06_n, word16, 16);
@@ -28,13 +31,14 @@ word16 fn000C1D6C(word16 wArg03, ui16 wArg05, cup16 wArg07, ui16 wArg09, Eq_n wA
 	return wArg03;
 }
 
-// 000C1DB0: void fn000C1DB0(Register Eq_n r2, Stack word16 wArg03, Stack ui16 wArg05, Stack Eq_n wArg07)
+// 000C1DB0: void fn000C1DB0(Register Eq_n r2, Stack word16 wArg03, Stack word16 wArg05, Stack Eq_n wArg07)
 // Called from:
 //      fn000C181E
-void fn000C1DB0(Eq_n r2, word16 wArg03, ui16 wArg05, Eq_n wArg07)
+void fn000C1DB0(Eq_n r2, word16 wArg03, word16 wArg05, Eq_n wArg07)
 {
+	ui32 dwArg03;
 	Eq_n r0_n = wArg07;
-	ui32 dwLoc06_n = SEQ(wArg05, wArg03);
+	ui32 dwLoc06_n = dwArg03;
 	while (true)
 	{
 		word16 wLoc04_n = SLICE(dwLoc06_n, word16, 16);
@@ -84,8 +88,7 @@ uint32 fn000C1DE4(uint32 r2r0, struct Eq_n * sb)
 	}
 	else
 	{
-		Eq_n a0_n;
-		a0_n.u0 = 0x00;
+		uint16 a0_n = 0x00;
 		ci16 a1_n = 0x00;
 		uint32 r3_r1_n = r3_r1_n;
 		uint32 r2r0_n;
@@ -115,14 +118,11 @@ uint32 fn000C1DE4(uint32 r2r0, struct Eq_n * sb)
 		} while (a1_n >= 0x00);
 		r2r0_n = (uint32) a0_n;
 	}
-	word16 r2_n = SLICE(r2r0_n, word16, 16);
-	word16 r0_n = (word16) r2r0_n;
 	if (sb->w0000 != 0x00)
 	{
 		word32 r2r0_n = ~r2r0_n;
-		r0_n = (word16) r2r0_n + 0x01;
-		r2_n = SLICE(r2r0_n + 0x01, word16, 16);
+		r2r0_n = SEQ(SLICE(r2r0_n + 0x01, word16, 16), (word16) r2r0_n + 0x01);
 	}
-	return SEQ(r2_n, r0_n);
+	return r2r0_n;
 }
 

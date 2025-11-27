@@ -5121,6 +5121,8 @@ word32 __divdi3(ui64 r5_r4, word32 r3, word32 r6, word32 r7, word32 & r4Out, wor
 // Trashed: hi lo r10 r11 r12 r13 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 __divdi3_entry:
+	r6 = SLICE(r7_r6, word32, 0)
+	r7 = SLICE(r7_r6, word32, 32)
 	r5 = SLICE(r5_r4, word32, 32)
 	r4 = SLICE(r5_r4, word32, 0)
 l00403CB0:
@@ -5134,7 +5136,7 @@ l00403CBA:
 l00403CCE:
 	r5_34 = SLICE(r5_r4_354, word32, 32) (alias)
 	r4_31 = SLICE(r5_r4_354, word32, 0) (alias)
-	r12_r8_357 = SEQ(r7, r6) (alias)
+	r12_r8_357 = r7_r6 (alias)
 	branch r7 >= 0<32> l00403CE6
 l00403CD2:
 	r8_18 = -r6
@@ -5328,6 +5330,8 @@ void __moddi3(ui64 r5_r4, word32 r6, word32 r7, word32 r14)
 // Trashed: r10 r11 r2 r25 r4 r5 r7 r8 r9
 // Preserved: hi lo r12 r13 r3 r6 sp
 __moddi3_entry:
+	r6 = SLICE(r7_r6, word32, 0)
+	r7 = SLICE(r7_r6, word32, 32)
 	r5 = SLICE(r5_r4, word32, 32)
 	r4 = SLICE(r5_r4, word32, 0)
 l00403F30:
@@ -5341,7 +5345,7 @@ l00403F3A:
 l00403F4E:
 	r4_29 = SLICE(r5_r4_448, word32, 0) (alias)
 	r5_217 = SLICE(r5_r4_448, word32, 32) (alias)
-	r10_r2_445 = SEQ(r7, r6) (alias)
+	r10_r2_445 = r7_r6 (alias)
 	branch r7 >= 0<32> l00403F62
 l00403F52:
 	r2_18 = -r6
@@ -13010,9 +13014,10 @@ word32 fmt_u(word32 r4, word32 r5, word32 r6, word32 r13, word32 & r4Out, word32
 // Trashed: hi lo r10 r11 r12 r13 r2 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 ra sp
 fmt_u_entry:
+	r5 = SLICE(r5_r4, word32, 32)
 l004088E0:
 	r17_18 = r6
-	r18_r16_138 = SEQ(r5, r4) (alias)
+	r18_r16_138 = r5_r4 (alias)
 	goto l00408906
 l004088E8:
 	r2_36 = __umoddi3(r18_r16_138, 0xA<64>, r13, out r3_37, out r4_38, out r8_147, out r11_148, out r12_35)
@@ -19350,19 +19355,20 @@ l0040C51E:
 	r23_119 = SLICE(r4_r5_753, word32, 0)
 	goto l0040BEA4
 l0040C550:
-	r19_1040 = copysignl(SLICE(scalbn(SEQ(Mem901[r7_864 + 600<i32>:word32], Mem901[r7_864 + 604<i32>:word32]), 0x54<32>, out r8_911), word32, 0), SLICE(__floatsidf(r8_911, out r8_3858), word32, 0), out r8_900)
+	r8_r19_3878 = SEQ(r8_932, copysignl(SLICE(scalbn(SEQ(Mem901[r7_864 + 600<i32>:word32], Mem901[r7_864 + 604<i32>:word32]), 0x54<32>, out r8_911), word32, 0), SLICE(__floatsidf(r8_911, out r8_3858), word32, 0), out r8_932)) (alias)
 l0040C576:
+	r8_900 = SLICE(r8_r19_3878, word32, 32) (alias)
 	qwLoc60_3652 = SEQ(dwLoc60_2078, dwLoc5C_2082) (alias)
-	r18_r19_3659 = SEQ(r8_900, r19_1040) (alias)
+	r18_r19_3659 = r8_r19_3878 (alias)
 	branch __nedf2(qwLoc60_3648) == 0<32> l0040C3C4
 l0040C588:
 	qwLoc60_3652 = SEQ(dwLoc60_2078, dwLoc5C_2082) (alias)
-	r18_r19_3659 = SEQ(r8_900, r19_1040) (alias)
+	r18_r19_3659 = r8_r19_3878 (alias)
 	branch !__bit<word32,word32>(r23_1022, 0<32>) l0040C3C4
 l0040C58C:
 	r23_1022 = r23_1022 + 1<32>
 	qwLoc60_3652 = 0<64> (alias)
-	r18_r19_3659 = SEQ(r8_900, r19_1040) (alias)
+	r18_r19_3659 = r8_r19_3878 (alias)
 	goto l0040C3C4
 l0040C594:
 	branch r6_648 >=u r4_644 l0040C324
@@ -19464,7 +19470,7 @@ l0040C63C:
 	r4_r5_3859 = scalbn(SEQ(Mem943[r7_864 + 600<i32>:word32], Mem943[r7_864 + 604<i32>:word32]), 0xFBEE0054<32>, out r8_953)
 	r5_971 = copysignl(SLICE(r4_r5_3859, word32, 0), SLICE(__floatsidf(r8_953, out r8_3861), word32, 0), out r8_900)
 	r4_949 = SLICE(r4_r5_3859, word32, 32) (alias)
-	r19_1040 = r5_971
+	r8_r19_3878 = SEQ(r8_900, r5_971) (alias)
 	branch false l0040C576
 l0040C668:
 	qwLoc60_3652 = SEQ(dwLoc60_2078, dwLoc5C_2082) (alias)

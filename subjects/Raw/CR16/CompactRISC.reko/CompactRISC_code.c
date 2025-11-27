@@ -2957,9 +2957,8 @@ l00006160:
 		}
 	}
 	r1Out = r1;
-	word16 r9;
-	word16 r8;
-	return SEQ(r9, r8);
+	word32 r9_r8;
+	return r9_r8;
 }
 
 // 00006226: Register word16 fn00006226(Sequence (ptr32 Eq_n) r3_r2, Register word16 r4, Register word16 r5, Register wchar_t r6, Register word32 r13, Register int32 ra, Stack (ptr32 byte) dwArg00, Stack word16 wArg04, Register out word16 r1Out)
@@ -3169,8 +3168,7 @@ word32 fn000089C4(struct Eq_n * r3_r2, int32 ra, word16 & r1Out)
 	word16 r9_n = r3;
 	word16 r8_n = r2;
 	word16 r1;
-	word16 r9;
-	word16 r8;
+	word32 r9_r8;
 	if (r3_r2 != null)
 	{
 		word32 r1_r0_n = r3_r2->dw0040;
@@ -3218,13 +3216,13 @@ word32 fn000089C4(struct Eq_n * r3_r2, int32 ra, word16 & r1Out)
 						}
 					}
 					r1Out = r1;
-					return SEQ(r9, r8);
+					return r9_r8;
 				}
 			}
 		}
 	}
 	r1Out = r1;
-	return SEQ(r9, r8);
+	return r9_r8;
 }
 
 // 00009C04: void fn00009C04(Sequence Eq_n r3_r2, Sequence Eq_n r5_r4, Register Eq_n r6)
@@ -4244,8 +4242,7 @@ l0000A77A:
 		r3_r2.u1->dw0B2C = 0x00;
 		r3_r2.u1->dw0B4C = 0x00;
 		((char *) r2_r1_n->a0000->u0 + ra_n)[2] = (char) 0x00;
-		word16 wLoc0E_n = (word16) r2_r1_n;
-		word16 wLoc0C_n = SLICE(r2_r1_n, word16, 16);
+		word32 dwLoc0E_n = SEQ((word16) r2_r1_n, SLICE(r2_r1_n, word16, 16));
 		if (wArg06_n >= 0x023E)
 		{
 			int16 wLoc16_n;
@@ -4318,8 +4315,9 @@ l0000A77A:
 					r9_r8_n = SEQ(SLICE((char *) r9_r8_n + 2, word16, 16), r8_n + 0x02);
 				} while (r7_n != 0x023D);
 			}
-			wLoc0C_n = SLICE(r2_r1_n, word16, 16);
-			wLoc0E_n = (word16) r2_r1_n;
+			word16 wLoc0C_n = SLICE(r2_r1_n, word16, 16);
+			word16 wLoc0E_n = (word16) r2_r1_n;
+			dwLoc0E_n = SEQ(wLoc0E_n, wLoc0C_n);
 			if (wLoc16_n != 0x00)
 			{
 				int16 r3_n = wLoc16_n;
@@ -4429,6 +4427,7 @@ l0000ABDE:
 					r5_r4_n->w1628 += ~0x00;
 					r3_n += ~0x01;
 				} while (r3_n < 0x00);
+				dwLoc0E_n = SEQ(wLoc0E_n, wLoc0C_n);
 				if (r7_n == 0x00)
 					goto l0000ACD6;
 				word16 * dwLoc06_n = &r5_r4_n->w1628;
@@ -4444,6 +4443,7 @@ l0000ACB8:
 					dwLoc06_n += -1;
 					dwLoc04_n = SEQ(wLoc02_n, SLICE(dwLoc06_n, word16, 16));
 					dwLoc16_n = SEQ(SLICE(dwLoc16_n + -1, word16, 16), wLoc16_n + ~0x00);
+					dwLoc0E_n = SEQ(wLoc0E_n, wLoc0C_n);
 					if (wLoc16_n == 0x01)
 						goto l0000ACD6;
 					goto l0000AC36;
@@ -4511,7 +4511,7 @@ l0000ACD6:
 			} while (r5_r4_n != r7_r6_n + 1);
 		}
 		r13Out = dwLoc04_n;
-		return SEQ(wLoc0E_n, wLoc0C_n);
+		return dwLoc0E_n;
 	}
 	goto l0000A484;
 }

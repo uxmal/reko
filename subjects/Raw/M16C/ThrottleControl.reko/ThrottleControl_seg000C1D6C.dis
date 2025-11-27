@@ -7,10 +7,11 @@ word16 fn000C1D6C(word16 wArg03, word16 wArg05, word16 wArg07, word16 wArg09, wo
 // Trashed: OSZC r0 r1 r2
 // Preserved: a0 a1 fb usp
 fn000C1D6C_entry:
+	wArg03 = SLICE(dwArg03, word16, 0)
 l000C1D6C:
 	r0_18 = wArg0B
-	dwLoc0A_93 = SEQ(wArg09, wArg07) (alias)
-	dwLoc06_96 = SEQ(wArg05, wArg03) (alias)
+	dwLoc0A_93 = dwArg07 (alias)
+	dwLoc06_96 = dwArg03 (alias)
 l000C1D82:
 	wLoc04_73 = SLICE(dwLoc06_96, word16, 16) (alias)
 	wLoc06_72 = SLICE(dwLoc06_96, word16, 0) (alias)
@@ -39,7 +40,7 @@ void fn000C1DB0(word16 r2, word16 wArg03, word16 wArg05, word16 wArg07)
 fn000C1DB0_entry:
 l000C1DB0:
 	r0_14 = wArg07
-	dwLoc06_70 = SEQ(wArg05, wArg03) (alias)
+	dwLoc06_70 = dwArg03 (alias)
 l000C1DBE:
 	wLoc04_54 = SLICE(dwLoc06_70, word16, 16) (alias)
 	wLoc06_53 = SLICE(dwLoc06_70, word16, 0) (alias)
@@ -121,15 +122,12 @@ l000C1E48:
 l000C1E51:
 	r2r0_247 = CONVERT(a0_52, uint16, uint32) (alias)
 l000C1E55:
-	r2_151 = SLICE(r2r0_247, word16, 16) (alias)
-	r0_149 = SLICE(r2r0_247, word16, 0) (alias)
 	branch Mem48[sb:word16] == 0<16> l000C1E62
 l000C1E5A:
 	r2r0_189 = ~r2r0_247
-	r0_149 = SLICE(r2r0_189, word16, 0) + 1<16> (alias)
-	r2_151 = SLICE(r2r0_189 + 1<32>, word16, 16) (alias)
+	r2r0_247 = SEQ(SLICE(r2r0_189 + 1<32>, word16, 16), SLICE(r2r0_189, word16, 0) + 1<16>) (alias)
 l000C1E62:
-	return SEQ(r2_151, r0_149)
+	return r2r0_247
 fn000C1DE4_exit:
 
 

@@ -114,13 +114,14 @@ byte fn039D(byte a, byte h, word16 ix, word16 & ixOut)
 // Trashed: SZHVNC af b c f h ix l sp
 // Preserved:
 fn039D_entry:
+	h = SLICE(h_l_b_c, byte, 24)
 l039D:
 	Mem12[ix + -3<i16>:byte] = a ^ h
 l03B0_thunk_fn03B2:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	stackArg36 = <invalid>
-	h_29 = fn03B2(SEQ(h, l, b, c), a, de, ix, stackArg36, out ix_32)
+	h_29 = fn03B2(h_l_b_c, a, de, ix, stackArg36, out ix_32)
 	ixOut = ix_32
 	return h_29
 fn039D_exit:

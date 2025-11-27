@@ -29,7 +29,6 @@ using System.IO;
 using System.Text;
 using System.Diagnostics;
 using System.Linq;
-using Microsoft.Win32.SafeHandles;
 
 namespace Reko.Core.Output
 {
@@ -42,6 +41,7 @@ namespace Reko.Core.Output
     /// </remarks>
     public class MockGenerator : InstructionVisitor, IExpressionVisitor, IDataTypeVisitor<int>
     {
+        private readonly IMockIdentifierWriter mif;
         private readonly IndentingTextWriter writer;
         private readonly Dictionary<OperatorType, string> mpopstr;
         private readonly string prefix;
@@ -49,11 +49,13 @@ namespace Reko.Core.Output
         /// <summary>
         /// Constructs a mock generator.
         /// </summary>
+        /// <param name="mif">Factory class that generates code for output.</param>
         /// <param name="writer">Output sink.</param>
         /// <param name="prefix">Prefix to use before prefix names.
         /// </param>
-        public MockGenerator(TextWriter writer, string prefix)
+        public MockGenerator(IMockIdentifierWriter mif, TextWriter writer, string prefix)
         {
+            this.mif = mif;
             this.writer = new IndentingTextWriter(writer, false, 4);
             this.mpopstr = new Dictionary<OperatorType, string> {
                 { OperatorType.IAdd, "IAdd" },
@@ -117,7 +119,7 @@ namespace Reko.Core.Output
         {
             var sw = new StringWriter();
             sw.WriteLine("// {0} //////////", proc.Name);
-            var mg = new MockGenerator(sw, "m.");
+            var mg = new MockGenerator(new MockIdentifierWriter(sw), sw, "m.");
         }
 
         /// <summary>
@@ -127,7 +129,7 @@ namespace Reko.Core.Output
         public static void DumpClass(Procedure proc)
         {
             var sw = new StringWriter();
-            var mg = new MockGenerator(sw, "");
+            var mg = new MockGenerator(new MockIdentifierWriter(sw), sw, "");
             mg.WriteClass(proc);
             Debug.Print(sw.ToString());
         }
@@ -209,49 +211,15 @@ namespace Reko.Core.Output
                     writer.Write("Identifier {0} = ", id.Name);
                     if (id == proc.Frame.FramePointer)
                     {
-                        writer.Write("m.Frame.FramePointer");
+                        mif.WriteFramePointer();
                     }
                     else if (id.Storage == proc.Frame.Continuation.Storage)
                     {
-                        writer.Write("m.Frame.Continuation");
-                    }
-                    else if (id.Storage is RegisterStorage reg)
-                    {
-                        writer.Write($"m.Frame.EnsureRegister({stgVarNames[reg]})");
-                    }
-                    else if (id.Storage is SequenceStorage seq)
-                    {
-                        writer.Write($"m.Frame.EnsureSequence(");
-                        id.DataType.Accept(this);
-                        writer.Write($", {stgVarNames[seq]})");
-                    }
-                    else if (id.Storage is FlagGroupStorage grf)
-                    {
-                        writer.Write($"m.Frame.EnsureFlagGroup({stgVarNames[grf]})");
-                    }
-                    else if (id.Storage is FpuStackStorage fpu)
-                    {
-                        writer.Write($"m.Frame.EnsureFpuStackVariable({fpu.FpuStackOffset}");
-                        id.DataType.Accept(this);
-                        writer.Write(")");
-                    }
-                    else if (id.Storage is StackStorage stk)
-                    {
-                        writer.Write("m.Frame.EnsureStackVariable(");
-                        writer.Write($"{stk.StackOffset}, ");
-                        id.DataType.Accept(this);
-                        writer.Write($", \"{id.Name}\")");
-                    }
-                    else if (id.Storage is TemporaryStorage tmp)
-                    {
-                        writer.Write("m.Frame.CreateTemporary(");
-                        writer.Write($"\"{tmp.Name}\", {tmp.Number}, ");
-                        id.DataType.Accept(this);
-                        writer.Write(")");
+                        mif.WriteContinuation();
                     }
                     else
                     {
-                        writer.WriteLine($"****** Storage {id.Storage.GetType().Name} for {id.Name} not implemented yet.");
+                        mif.WriteIdentifier(id, stgVarNames.TryGetValue(id.Storage, out var name) ? name : "", this);
                     }
                     writer.WriteLine(";");
                 }

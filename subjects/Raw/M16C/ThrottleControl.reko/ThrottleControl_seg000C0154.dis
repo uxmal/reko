@@ -1626,8 +1626,7 @@ l000C17C6:
 	r2 = r2r0_81 %u r1_18
 	r3_19 = r2r0_81 /u r1_18
 l000C17D2:
-	r0_162 = SEQ(r2, r0) /u r1_18
-	r2_163 = r3_19
+	r2r0_182 = SEQ(r3_19, SEQ(r2, r0) /u r1_18) (alias)
 	goto l000C17FE
 l000C17D8:
 	r2r0_170 = r2r0 (alias)
@@ -1657,10 +1656,9 @@ l000C17F1:
 	r2r0_170 = r2r0_123 (alias)
 	branch a1_16 >= 0<16> l000C17E5
 l000C17FA:
-	r0_162 = a0_15
-	r2_163 = 0<16>
+	r2r0_182 = CONVERT(a0_15, uint16, uint32) (alias)
 l000C17FE:
-	return SEQ(r2_163, r0_162)
+	return r2r0_182
 fn000C17B4_exit:
 
 

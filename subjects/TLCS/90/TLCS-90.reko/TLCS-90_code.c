@@ -104,15 +104,14 @@ byte fn039D(byte a, byte h, struct Eq_n * ix, word16 & ixOut)
 {
 	word16 ix_n;
 	Eq_n de;
-	byte c;
-	byte b;
-	byte l;
+	uint32 h_l_b_c;
+	h = SLICE(h_l_b_c, byte, 24);
 	ix->bFFFFFFFD = a ^ h;
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	Eq_n stackArg36;
 	stackArg36.u0 = (byte *) <invalid>;
-	byte h_n = fn03B2(SEQ(h, l, b, c), a, de, ix, stackArg36, out ix_n);
+	byte h_n = fn03B2(h_l_b_c, a, de, ix, stackArg36, out ix_n);
 	ixOut = ix_n;
 	return h_n;
 }
