@@ -106,19 +106,6 @@ namespace Reko.Core.Loading
             Address? loadAddress);
 
         /// <summary>
-        /// Given a file image in <paramref name="bytes"/>, parses the
-        /// contents of the file using the provided <paramref name="loadDetails"/>.
-        /// </summary>
-        /// <param name="imageLocation">Location of the file.</param>
-        /// <param name="bytes">The contents of the file.</param>
-        /// <param name="loadDetails">Extra information to assist in parsing the file.</param>
-        /// <returns></returns>
-        ILoadedImage ParseBinaryImage(
-            ImageLocation imageLocation,
-            byte[] bytes,
-            LoadDetails loadDetails);
-
-        /// <summary>
         /// Given a sequence of raw bytes, uses the provided <paramref name="details"/> to
         /// make sense of it. Use this method if the binary has no known file format.
         /// </summary>

@@ -231,56 +231,6 @@ namespace Reko.Loading
             return loadedImage;
         }
 
-        /// <summary>
-        /// Parses the binary image bytes <paramref name="image"/> loaded from <paramref name="imageLocation"/> using the
-        /// with the additional information in <paramref name="loadDetails"/>.
-        /// </summary>
-        /// <param name="imageLocation"><see cref="ImageLocation"/> from which <paramref name="image"/> 
-        /// was loaded.</param>
-        /// <param name="image">The image bytes.</param>
-        /// <param name="loadDetails"></param>
-        /// <returns>A <see cref="ILoadedImage"/> instance.</returns>
-        public ILoadedImage ParseBinaryImage(
-            ImageLocation imageLocation,
-            byte[] image,
-            LoadDetails loadDetails)
-        {
-            // Try to find a loader that knows how to deal with this format.
-            ImageLoader? imgLoader;
-            if (!string.IsNullOrEmpty(loadDetails.LoaderName))
-            {
-                imgLoader = CreateCustomImageLoader(Services, loadDetails.LoaderName, imageLocation, image);
-            }
-            else
-            {
-                imgLoader = FindImageLoader<ImageLoader>(imageLocation, image);
-                imgLoader ??= CreateDefaultImageLoader(imageLocation, image);
-            }
-
-            if (imgLoader is null)
-            {
-                // Reko doesn't know this file format.
-                return new Blob(imageLocation, image);
-            }
-
-            Address ? addrLoad = null;
-            if (!string.IsNullOrEmpty(loadDetails.LoadAddress))
-            {
-            }
-            if (addrLoad is null && imgLoader is ProgramImageLoader ploader)
-            {
-                addrLoad = ploader.PreferredBaseAddress;     //$REVIEW: Should be a configuration property.
-            }
-
-            var loadedImage = imgLoader.Load(addrLoad);
-            if (loadedImage is Program program)
-            {
-                return PostProcessProgram(imageLocation, imgLoader, program);
-            }
-            return loadedImage;
-
-        }
-
         private static Program PostProcessProgram(ImageLocation imageLocation, ImageLoader imgLoader, Program program)
         {
             // Sanity check of the 'Needs' properties.
