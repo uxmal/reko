@@ -158,7 +158,7 @@ namespace Reko.Arch.Avr.Avr32
             {
                 var iReg = bitfield.Read(u) << 1;
                 var gp = Registers.GpRegisters;
-                d.ops.Add(new RegisterPairOperand(gp[iReg + 1], gp[iReg]));
+                d.ops.Add(new SequenceStorage(PrimitiveType.Word64, gp[iReg + 1], gp[iReg]));
                 return true;
             };
         }

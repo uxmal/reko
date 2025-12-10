@@ -23,22 +23,43 @@ using Reko.Core.Machine;
 using Reko.Core.Types;
 using System.Collections.Generic;
 
-namespace Reko.Arch.Avr.Avr32
+namespace Reko.Core.Machine
 {
+    /// <summary>
+    /// Models a contiguous range of machine registers.
+    /// </summary>
     public class RegisterRange : AbstractMachineOperand
     {
+        /// <summary>
+        /// Underlying array of registers.
+        /// </summary>
         public RegisterStorage[] Registers { get; }
-        public int RegisterIndex { get; }
-        public int Count { get; } 
 
+        /// <summary>
+        /// Starting index in the register range.
+        /// </summary>
+        public int RegisterIndex { get; }
+
+        /// <summary>
+        /// Number of elements contained in the range.
+        /// </summary>
+        public int Count { get; }
+
+        /// <summary>
+        /// Constructs a register range.
+        /// </summary>
+        /// <param name="gpRegisters">Underlying range of registers.</param>
+        /// <param name="iRegStart">Starting index of the register range.</param>
+        /// <param name="cRegs">Number of regsiters in the range.</param>
         public RegisterRange(RegisterStorage[] gpRegisters, int iRegStart, int cRegs)
-            : base(PrimitiveType.Word32)    // Don't care.
+            : base(gpRegisters[0].DataType)    // Don't care.
         {
             this.Registers = gpRegisters;
             this.RegisterIndex = iRegStart;
             this.Count = cRegs;
         }
 
+        /// <inheritdoc/>
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             renderer.WriteString(Registers[RegisterIndex].Name);
@@ -55,6 +76,10 @@ namespace Reko.Arch.Avr.Avr32
             renderer.WriteString(Registers[RegisterIndex + Count - 1].Name);
         }
 
+        /// <summary>
+        /// Enumerates the registers in the range.
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<RegisterStorage> Enumerate()
         {
             for (int i = 0; i < Count; ++i)

@@ -309,7 +309,7 @@ namespace Reko.Arch.Qualcomm
                     return false;
                 var regLo = Registers.GpRegs[regEnc];
                 var regHi = Registers.GpRegs[regEnc+1];
-                d.ops.Add(new RegisterPairOperand(regHi, regLo));
+                d.ops.Add(new SequenceStorage(PrimitiveType.Word64, regHi, regLo));
                 return true;
             };
         }
@@ -327,7 +327,7 @@ namespace Reko.Arch.Qualcomm
             {
                 var regEnc = regField.Read(u);
                 var (hi, lo) = subInstrRegPairs[regEnc];
-                d.ops.Add(new RegisterPairOperand(hi, lo));
+                d.ops.Add(new SequenceStorage(PrimitiveType.Word64, hi, lo));
                 return true;
             };
         }
@@ -386,7 +386,7 @@ namespace Reko.Arch.Qualcomm
                     return false;
                 var regLo = Registers.ControlRegisters[regEnc];
                 var regHi = Registers.ControlRegisters[regEnc + 1];
-                d.ops.Add(new RegisterPairOperand(regHi, regLo));
+                d.ops.Add(new SequenceStorage(PrimitiveType.Word64, regHi, regLo));
                 return true;
             };
         }
@@ -420,7 +420,7 @@ namespace Reko.Arch.Qualcomm
                     return false;
                 var regLo = Registers.GuestControlRegisters[regEnc];
                 var regHi = Registers.GuestControlRegisters[regEnc + 1];
-                d.ops.Add(new RegisterPairOperand(regHi, regLo));
+                d.ops.Add(new SequenceStorage(PrimitiveType.Word64, regHi, regLo));
                 return true;
             };
         }
@@ -459,7 +459,7 @@ namespace Reko.Arch.Qualcomm
                    !Registers.SystemRegisters.TryGetValue(regEnc, out var regLo) ||
                    !Registers.SystemRegisters.TryGetValue(regEnc + 1, out var regHi))
                     return false;
-                d.ops.Add(new RegisterPairOperand(regHi, regLo));
+                d.ops.Add(new SequenceStorage(PrimitiveType.Word64, regHi, regLo));
                 return true;
             };
         }

@@ -154,17 +154,17 @@ namespace Reko.Arch.Qualcomm
             case Address addr: return addr;
             case ApplicationOperand app: return RewriteApplication(app);
             case MemoryOperand mem: var src = RewriteMemoryOperand(mem); MaybeEmitIncrement(mem); return src;
-            case RegisterPairOperand pair: return UsePair(pair);
+            case SequenceStorage pair: return UsePair(pair);
             case DecoratorOperand dec: return RewriteDecorator(dec);
             }
             throw new NotImplementedException($"Hexagon rewriter for {op.GetType().Name} not implemented yet.");
         }
 
-        private Identifier UsePair(RegisterPairOperand pair)
+        private Identifier UsePair(SequenceStorage pair)
         {
-            this.registersRead.Add(pair.HighRegister);
-            this.registersRead.Add(pair.LowRegister);
-            var id = binder.EnsureSequence(PrimitiveType.Word64, pair.HighRegister, pair.LowRegister);
+            this.registersRead.Add((RegisterStorage)pair.Elements[0]);
+            this.registersRead.Add((RegisterStorage) pair.Elements[1]);
+            var id = binder.EnsureSequence(pair);
             return id;
         }
 
@@ -313,8 +313,8 @@ namespace Reko.Arch.Qualcomm
                 write(RewriteMemoryOperand(mem), src);
                 MaybeEmitIncrement(mem);
                 return;
-            case RegisterPairOperand pair:
-                write(binder.EnsureSequence(PrimitiveType.Word64, pair.HighRegister, pair.LowRegister), src);
+            case SequenceStorage pair:
+                write(binder.EnsureSequence(pair), src);
                 return;
             case DecoratorOperand dec:
                 if (dec.DataType.BitSize < dec.Operand.DataType.BitSize)
@@ -659,10 +659,10 @@ namespace Reko.Arch.Qualcomm
         private Expression RewriteExtract(Domain domain, Expression expression, MachineOperand[] operands)
         {
             var dt = PrimitiveType.Create(domain, operands[0].DataType.BitSize);
-            if (operands[1] is RegisterPairOperand pair)
+            if (operands[1] is SequenceStorage pair)
             {
-                var offset = binder.EnsureRegister(pair.LowRegister);
-                var width = binder.EnsureRegister(pair.HighRegister);
+                var offset = binder.EnsureIdentifier(pair.Elements[0]);
+                var width = binder.EnsureIdentifier(pair.Elements[1]);
                 return m.And(
                     m.Shl(expression, offset),
                     m.ISub(m.Shl(m.UInt64(1), width), 1));

@@ -321,8 +321,8 @@ namespace Reko.Arch.Avr.Avr32
                     default: throw new NotImplementedException($"{regimm.Mnemonic} not implemented yet.");
                     }
                 }
-            case RegisterPairOperand pair:
-                var idPair = binder.EnsureSequence(pair.DataType, pair.HiRegister, pair.LoRegister);
+            case SequenceStorage pair:
+                var idPair = binder.EnsureSequence(pair);
                 return idPair;
             }
             throw new NotImplementedException($"AVR32 operand type {instr.Operands[iOp].GetType()} not implemented yet.");
@@ -372,8 +372,8 @@ namespace Reko.Arch.Avr.Avr32
                     m.Assign(ea, m.IAddS(ea, mem.DataType.Size));
                 }
                 return src;
-            case RegisterPairOperand pair:
-                var idPair = binder.EnsureSequence(pair.DataType, pair.HiRegister, pair.LoRegister);
+            case SequenceStorage pair:
+                var idPair = binder.EnsureSequence(pair);
                 m.Assign(idPair, src);
                 return idPair;
             }

@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Machine;
 using System;
 using System.Text;
@@ -49,6 +50,17 @@ namespace Reko.Arch.Avr.Avr32
 
         protected override void RenderOperand(MachineOperand operand, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
+            if (operand is SequenceStorage seq)
+            {
+                string sep = "";
+                foreach (RegisterStorage reg in seq.Elements)
+                {
+                    renderer.WriteString(sep);
+                    sep = ":";
+                    renderer.WriteString(reg.Name);
+                }
+                return;
+            }
             base.RenderOperand(operand, renderer, options);
         }
     }

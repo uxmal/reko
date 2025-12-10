@@ -22,7 +22,6 @@ using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System.Collections.Generic;
-using System.Xml.Schema;
 
 namespace Reko.Arch.Avr.Avr32
 {

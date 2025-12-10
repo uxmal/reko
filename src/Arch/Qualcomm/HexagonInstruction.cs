@@ -163,6 +163,15 @@ namespace Reko.Arch.Qualcomm
             case ApplicationOperand apply:
                 RenderApplyOperand(apply, renderer, options);
                 return;
+            case SequenceStorage seq:
+                var sep = "";
+                foreach (RegisterStorage reg in seq.Elements)
+                {
+                    renderer.WriteString(sep);
+                    renderer.WriteString(reg.Name);
+                    sep = ",";
+                }
+                return;
             }
             base.RenderOperand(operand, renderer, options);
         }
