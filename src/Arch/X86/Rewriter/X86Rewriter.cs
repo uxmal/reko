@@ -669,6 +669,7 @@ namespace Reko.Arch.X86.Rewriter
                 case Mnemonic.popa: RewritePopa(); break;
                 case Mnemonic.popf: RewritePopf(instrCur.DataWidth); break;
                 case Mnemonic.popfw: RewritePopf(PrimitiveType.Word16); break;
+                case Mnemonic.popw: RewritePop(); break;
                 case Mnemonic.popcnt: RewritePopcnt(); break;
                 case Mnemonic.por:
                 case Mnemonic.vpor: RewritePor(); break;

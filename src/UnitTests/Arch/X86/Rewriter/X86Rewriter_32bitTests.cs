@@ -349,6 +349,17 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
         }
 
         [Test]
+        public void X86Rw_popw()
+        {
+            Run32bitTest("660FA9");
+            AssertCode(     // popw	gs
+                "0|L--|10000000(3): 2 instructions",
+                "1|L--|gs = Mem0[esp:selector]",
+                "2|L--|esp = esp + 2<i32>");
+        }
+
+
+        [Test]
         public void X86Rw_vpunpckhwd()
         {
             Run32bitTest("C5E4694A2A");
