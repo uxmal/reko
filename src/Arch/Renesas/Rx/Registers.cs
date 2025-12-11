@@ -51,7 +51,11 @@ namespace Reko.Arch.Renesas.Rx
         public static FlagGroupStorage O { get; }
         public static FlagGroupStorage I { get; }
         public static FlagGroupStorage U { get; }
-
+        public static FlagGroupStorage CZ { get; }
+        public static FlagGroupStorage COSZ { get; }
+        public static FlagGroupStorage OS { get; }
+        public static FlagGroupStorage OSZ { get; }
+        public static FlagGroupStorage SZ { get; }
 
         static Registers()
         {
@@ -74,12 +78,17 @@ namespace Reko.Arch.Renesas.Rx
             FPSW = factory.Reg32("FPSW");   // Floating-point status word
             EXTB = factory.Reg32("EXTB");   // Exception table register
 
-            C = new FlagGroupStorage(PSW, (uint) FlagM.CF, "c");
-            Z = new FlagGroupStorage(PSW, (uint) FlagM.ZF, "z");
-            S = new FlagGroupStorage(PSW, (uint) FlagM.SF, "s");
-            O = new FlagGroupStorage(PSW, (uint) FlagM.OF, "o");
-            I = new FlagGroupStorage(PSW, (uint) FlagM.IF, "i");
-            U = new FlagGroupStorage(PSW, (uint) FlagM.UF, "u");
+            C = new FlagGroupStorage(PSW, (uint) FlagM.CF, "C");
+            Z = new FlagGroupStorage(PSW, (uint) FlagM.ZF, "Z");
+            S = new FlagGroupStorage(PSW, (uint) FlagM.SF, "S");
+            O = new FlagGroupStorage(PSW, (uint) FlagM.OF, "O");
+            I = new FlagGroupStorage(PSW, (uint) FlagM.IF, "I");
+            U = new FlagGroupStorage(PSW, (uint) FlagM.UF, "U");
+            CZ = new FlagGroupStorage(PSW, (uint)(FlagM.CF | FlagM.ZF), "CZ");
+            COSZ = new FlagGroupStorage(PSW, (uint)(FlagM.CF | FlagM.OF | FlagM.SF | FlagM.ZF), "COSZ");
+            OS = new FlagGroupStorage(PSW, (uint)(FlagM.OF | FlagM.SF), "OS");
+            OSZ = new FlagGroupStorage(PSW, (uint)(FlagM.OF | FlagM.SF | FlagM.ZF), "OSZ");
+            SZ = new FlagGroupStorage(PSW, (uint)(FlagM.SF | FlagM.ZF), "SZ");
         }
     }
 

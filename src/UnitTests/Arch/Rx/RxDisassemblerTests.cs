@@ -32,8 +32,6 @@ namespace Reko.UnitTests.Arch.Rx
     {
         public RxDisassemblerTests()
         {
-            Reko.Core.Machine.Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
-
             var options = new Dictionary<string, object>()
             {
                 { ProcessorOption.Endianness, "big" }
@@ -280,7 +278,7 @@ namespace Reko.UnitTests.Arch.Rx
         [Test]
         public void RxDis_clrpsw()
         {
-            AssertCode("clrpsw\tu", "7FB9");
+            AssertCode("clrpsw\tU", "7FB9");
         }
 
         [Test]
@@ -813,7 +811,7 @@ namespace Reko.UnitTests.Arch.Rx
         [Test]
         public void RxDis_setpsw()
         {
-            AssertCode("setpsw\tc", "7FA0");
+            AssertCode("setpsw\tC", "7FA0");
         }
 
         [Test]

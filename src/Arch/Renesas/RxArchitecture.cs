@@ -38,11 +38,12 @@ namespace Reko.Arch.Renesas
         {
             InstructionBitSize = 8;
             FramePointerType = PrimitiveType.Ptr32;
+            MemoryGranularity = 8;
             PointerType = PrimitiveType.Ptr32;
             WordWidth = PrimitiveType.Word32;
             CarryFlag = Registers.C;
             StackRegister = Registers.sp;
-            Endianness = EndianServices.Little; // can be chnaged.
+            Endianness = EndianServices.Little; // can be changed.
             LoadUserOptions(options);
         }
 
@@ -63,12 +64,12 @@ namespace Reko.Arch.Renesas
 
         public override ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new DefaultProcessorState(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            return new RxRewriter(this, rdr, state, binder, host);
         }
 
         public override FlagGroupStorage? GetFlagGroup(RegisterStorage flagRegister, uint grf)
