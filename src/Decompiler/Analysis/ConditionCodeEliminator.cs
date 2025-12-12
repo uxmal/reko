@@ -775,8 +775,8 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
 			case ConditionCode.GE:  cmpOp = isReal ? Operator.Fge : Operator.Ge; break;
 			case ConditionCode.LE:  cmpOp = isReal ? Operator.Fle : Operator.Le; break;
 			case ConditionCode.LT:  cmpOp = isReal ? Operator.Flt : Operator.Lt; break;
-			case ConditionCode.NE:  cmpOp = Operator.Ne; break;
-			case ConditionCode.EQ:  cmpOp = Operator.Eq; break;
+			case ConditionCode.NE:  cmpOp = isReal ? Operator.Fne : Operator.Ne; break;
+			case ConditionCode.EQ:  cmpOp = isReal ? Operator.Feq : Operator.Eq; break;
 			case ConditionCode.SG:  cmpOp = Operator.Lt; break;
 			case ConditionCode.NS:  cmpOp = Operator.Ge; break;
 			case ConditionCode.OV:  
