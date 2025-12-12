@@ -209,6 +209,11 @@ namespace Reko.Environments.Msdos
             return svc;
         }
 
+        public override SerializedService PreprocessSerializedService(SerializedService service)
+        {
+            return ExtendRegisters(service);
+        }
+
         /// Translated from Japanese text at:
         /// https://raw.githubusercontent.com/nabe-abk/free386/main/doc-ja/api.txt
         /*

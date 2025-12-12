@@ -232,6 +232,8 @@ namespace Reko.ImageLoaders.LLVM
             return null;
         }
 
+        public SerializedService PreprocessSerializedService(SerializedService service) => service;
+
         public Expression ResolveImportByName(string? moduleName, string globalName)
         {
             throw new NotImplementedException();

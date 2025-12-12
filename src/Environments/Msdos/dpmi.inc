@@ -19,12 +19,6 @@
 	[[reko::arg(out,seq,"cx","dx")]]	unsigned int linear_base_address,
 	[[reko::arg(out,register,"ax")]]	unsigned int error_code);
 
-[[reko::service(vector=0x31,regs={ax:0x000B})]]
-[[reko::returns(flag,"C")]] bool DPMI_get_descriptor(
-	[[reko::arg(register,"bx")]]		unsigned short selector,
-	[[reko::arg(seq,"es","di")]]		unsigned char __far * descriptorBuffer, // 8 bytes
-	[[reko::arg(out,register,"ax")]]	unsigned int error_code);
-
 [[reko::service(vector=0x31,regs={ax:0x0007})]]
 [[reko::returns(flag,"C")]] bool DPMI_set_segment_base_address(
 	[[reko::arg(register,"bx")]]		unsigned short selector,
@@ -43,6 +37,20 @@
 	[[reko::arg(register,"cl")]]		unsigned char access_rights,
 	[[reko::arg(register,"ch")]]		unsigned char extended_access_rights,
 	[[reko::arg(out,register,"ax")]]	unsigned int error_code);
+
+
+[[reko::service(vector=0x31,regs={ax:0x000B})]]
+[[reko::returns(flag,"C")]] bool DPMI_get_descriptor(
+	[[reko::arg(register,"bx")]]		unsigned short selector,
+	[[reko::arg(seq,"es","di")]]		unsigned char __far * descriptorBuffer, // 8 bytes
+	[[reko::arg(out,register,"ax")]]	unsigned int error_code);
+
+[[reko::service(vector=0x31,regs={ax:0x000B})]]
+[[reko::returns(flag,"C")]] bool DPMI_set_descriptor(
+	[[reko::arg(register,"bx")]]		unsigned short selector,
+	[[reko::arg(seq,"es","di")]]		unsigned char __far * descriptorBuffer, // 8 bytes
+	[[reko::arg(out,register,"ax")]]	unsigned int error_code);
+
 
 [[reko::service(vector=0x31,regs={ax:0x0100})]]
 [[reko::returns(flag,"C")]] bool DPMI_allocate_DOS_memory_block(

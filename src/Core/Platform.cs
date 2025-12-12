@@ -508,6 +508,17 @@ namespace Reko.Core
         /// </returns>
         Storage? PossibleReturnValue(IEnumerable<Storage> storages);
 
+
+        /// <summary>
+        /// Gives an <see cref="IPlatform"/> implementation a chance to preprocess
+        /// <see cref="SerializedService"/> instance before loading them into a
+        /// type library. The default implementation is a no-op.
+        /// </summary>
+        /// <param name="service"><see cref="SerializedService"/> to preprocess.</param>
+        /// <returns>A possibly preprocessed serialized service.
+        /// </returns>
+        SerializedService PreprocessSerializedService(SerializedService service);
+        
         /// <summary>
         /// Given an indirect call, attempt to resolve it into an address.
         /// </summary>
@@ -1032,6 +1043,12 @@ namespace Reko.Core
         public virtual Storage? PossibleReturnValue(IEnumerable<Storage> storages)
         {
             return null;
+        }
+
+        /// <inheritdoc />
+        public virtual SerializedService PreprocessSerializedService(SerializedService service)
+        {
+            return service;
         }
 
         /// <inheritdoc/>
