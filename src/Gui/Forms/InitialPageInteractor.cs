@@ -233,7 +233,7 @@ namespace Reko.Gui.Forms
                 {
                     // The archive itself doesn't know the format of the blob,
                     // perhaps Reko does.
-                    image = loader.ParseBinaryImage(blob.Location, blob.Image, null, null, null);
+                    image = loader.ParseBinaryImage(blob.Location, blob.Image, null, null, null, null);
                 }
                 switch (image)
                 {

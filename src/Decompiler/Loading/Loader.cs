@@ -153,9 +153,9 @@ namespace Reko.Loading
             var fsLocation = ImageLocation.FromUri(imageLocation.FilesystemPath);
             if (imageLocation.Fragments.Length == 1)
             {
-                return ParseBinaryImage(fsLocation, image, loaderName, null, addrLoad);
+                return ParseBinaryImage(fsLocation, image, loaderName, environmentName, null, addrLoad);
             }
-            var binaryImage = ParseBinaryImage(fsLocation, image, null, null, addrLoad);
+            var binaryImage = ParseBinaryImage(fsLocation, image, null, environmentName, null, addrLoad);
             foreach (var fragment in imageLocation.Fragments)
             {
                 if (binaryImage is not IArchive archive)
@@ -167,7 +167,7 @@ namespace Reko.Loading
                 if (binaryImage is Blob blob)
                 {
                     // Archive doesn't know this format, perhaps Reko does.
-                    binaryImage = ParseBinaryImage(blob.Location, blob.Image, loaderName, null, addrLoad);
+                    binaryImage = ParseBinaryImage(blob.Location, blob.Image, loaderName, environmentName, null, addrLoad);
                 }
             }
             return binaryImage;
@@ -179,6 +179,8 @@ namespace Reko.Loading
         /// <param name="imageLocation">The location of the loaded image.</param>
         /// <param name="image">The raw bytes fetched from <paramref name="imageLocation"/>.</param>
         /// <param name="loader">.NET Class name of a custom loader (may be null)</param>
+        /// <param name="sPlatformOverride">Optional name of the platform to use, overriding any platform from
+        /// the image loader.</param>
         /// <param name="arch"><see cref="IProcessorArchitecture"/> instance to use.</param>
         /// <param name="addrLoad">Address into which to load the file.</param>
         /// <returns>A <see cref="ILoadedImage"/> if the file format is recognized, or 
@@ -187,6 +189,7 @@ namespace Reko.Loading
             ImageLocation imageLocation,
             byte[] image,
             string? loader,
+            string? sPlatformOverride,
             IProcessorArchitecture? arch,
             Address? addrLoad)
         {
@@ -207,12 +210,20 @@ namespace Reko.Loading
                 // Reko doesn't know this file format.
                 return new Blob(imageLocation, image);
             }
-            if (addrLoad is null && imgLoader is ProgramImageLoader ploader)
+            var ploader = imgLoader as ProgramImageLoader;
+            if (addrLoad is null && ploader is not null)
             {
                 addrLoad = ploader.PreferredBaseAddress;     //$REVIEW: Should be a configuration property.
             }
-
-            var loadedImage = imgLoader.Load(addrLoad);
+            ILoadedImage loadedImage;
+            if (ploader is not null)
+            {
+                loadedImage = ploader.LoadProgram(addrLoad, sPlatformOverride);
+            }
+            else
+            {
+                loadedImage = imgLoader.Load(addrLoad);
+            }
             if (loadedImage is Program program)
             {
                 return PostProcessProgram(imageLocation, imgLoader, program);
@@ -399,7 +410,7 @@ namespace Reko.Loading
             if (imageLocation.Fragments.Length == 0)
                 return image;
             var fsLocation = ImageLocation.FromUri(imageLocation.FilesystemPath);
-            var binaryImage = ParseBinaryImage(fsLocation, image, null, null, addrLoad);
+            var binaryImage = ParseBinaryImage(fsLocation, image, null, null, null, addrLoad);
             for (int i = 0; i < imageLocation.Fragments.Length; ++i)
             {
                 var fragment = imageLocation.Fragments[i];

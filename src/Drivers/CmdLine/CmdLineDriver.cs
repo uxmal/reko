@@ -255,6 +255,7 @@ namespace Reko.CmdLine
         private void Dump(Dictionary<string, object> pArgs)
         {
             pArgs.TryGetValue("--loader", out object? imgLoader);
+            pArgs.TryGetValue("--env", out object? environmentName);
             var addrLoad = ParseAddress(pArgs, "--base");
             try
             {
@@ -262,7 +263,13 @@ namespace Reko.CmdLine
                 var filePath = Path.GetFullPath(fileName);
                 var imageLocation = ImageLocation.FromUri(filePath);
                 var bytes = ldr.LoadImageBytes(imageLocation);
-                var loadedImage = ldr.ParseBinaryImage(imageLocation, bytes, (string?) imgLoader, null, addrLoad);
+                var loadedImage = ldr.ParseBinaryImage(
+                    imageLocation,
+                    bytes,
+                    (string?) imgLoader,
+                    (string?) environmentName,
+                    null,
+                    addrLoad);
                 Project project;
                 switch (loadedImage)
                 {

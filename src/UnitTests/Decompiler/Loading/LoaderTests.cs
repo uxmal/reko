@@ -72,7 +72,7 @@ namespace Reko.UnitTests.Decompiler.Loading
             var testImage = new byte[] { 42, 42, 42, 42, };
             var ldr = new Mock<Loader>(sc);
 
-            Blob blob = (Blob) ldr.Object.ParseBinaryImage(ImageLocation.FromUri(""), testImage, null, null, null);
+            Blob blob = (Blob) ldr.Object.ParseBinaryImage(ImageLocation.FromUri(""), testImage, null, null, null, null);
 
             Assert.IsNotNull(blob);
         }
@@ -87,7 +87,7 @@ namespace Reko.UnitTests.Decompiler.Loading
             var ldr = new Mock<Loader>(sc);
 
             ldr.Object.DefaultToFormat = "ms-dos-com";
-            Program program = (Program) ldr.Object.ParseBinaryImage(ImageLocation.FromUri(""), testImage, null, null, null);
+            Program program = (Program) ldr.Object.ParseBinaryImage(ImageLocation.FromUri(""), testImage, null, null, null, null);
 
             Assert.IsNull(eventListener.LastDiagnostic);
             Assert.AreEqual("0C00:0100", program.ImageMap.BaseAddress.ToString());

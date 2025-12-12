@@ -87,6 +87,8 @@ namespace Reko.Core.Loading
         /// <param name="bytes">The contents of the executable file.</param>
         /// <param name="loader">The (optional) name of a specific loader. Providing a
         /// non-zero loader will override the file format determination process.</param>
+        /// <param name="environmentName">Optional name of the operating environment
+        /// overriding any information from the binary itself.</param>
         /// <param name="arch">The (optional) <see cref="IProcessorArchitecture"/> to use
         /// when loading the file.</param>
         /// <param name="loadAddress">Address at which to load the binary. This may be null,
@@ -99,6 +101,7 @@ namespace Reko.Core.Loading
             ImageLocation imageLocation,
             byte[] bytes,
             string? loader,
+            string? environmentName,
             IProcessorArchitecture? arch,
             Address? loadAddress);
 

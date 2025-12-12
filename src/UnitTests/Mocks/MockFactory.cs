@@ -127,6 +127,7 @@ namespace Reko.UnitTests.Mocks
                     It.IsAny<ImageLocation>(),
                     It.IsAny<byte[]>(),
                     It.IsAny<string>(),
+                    It.IsAny<string>(),
                     It.IsAny<IProcessorArchitecture>(),
                     It.IsAny<Address?>())
             ).Returns(program);
