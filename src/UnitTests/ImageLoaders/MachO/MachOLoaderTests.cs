@@ -18,18 +18,14 @@
  */
 #endregion
 
+using Moq;
+using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Configuration;
-using Reko.ImageLoaders.MachO;
-using NUnit.Framework;
-using Moq;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
 using Reko.Core.Memory;
 using Reko.Core.Services;
+using Reko.ImageLoaders.MachO;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.ImageLoaders.MachO
 {
@@ -46,7 +42,6 @@ namespace Reko.UnitTests.ImageLoaders.MachO
         {
             sc = new ServiceContainer();
             cfgSvc = new Mock<IConfigurationService>();
-            sc.AddService<IConfigurationService>(cfgSvc.Object);
         }
 
         private void Given_Le64Header(uint cpu, uint loaders)
@@ -87,6 +82,14 @@ namespace Reko.UnitTests.ImageLoaders.MachO
             var arch = new Mock<IProcessorArchitecture>();
             arch.Setup(a => a.Name).Returns("x86-protected-64");
             cfgSvc.Setup(c => c.GetArchitecture("x86-protected-64")).Returns(arch.Object);
+            cfgSvc.Setup(c => c.GetEnvironment(It.IsAny<string>())).Returns(new PlatformDefinition
+            {
+                TypeName = typeof(DefaultPlatform).FullName!
+            });
+            var pluginSvc = new Mock<IPluginLoaderService>();
+            pluginSvc.Setup(p => p.GetType(It.IsAny<string>())).Returns(typeof(DefaultPlatform));
+            sc.AddService<IConfigurationService>(cfgSvc.Object);
+            sc.AddService<IPluginLoaderService>(pluginSvc.Object);
         }
     }
 }

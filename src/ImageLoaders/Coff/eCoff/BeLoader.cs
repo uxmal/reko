@@ -43,7 +43,7 @@ namespace Reko.ImageLoaders.Coff.eCoff
 
         public override Address PreferredBaseAddress { get; set; }
 
-        public override Program LoadProgram(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad, string? platformOverride)
         {
             var rdr = new BeImageReader(RawImage);
             var header = rdr.ReadStruct<Filehdr>();
@@ -65,7 +65,7 @@ namespace Reko.ImageLoaders.Coff.eCoff
             }
 
             var arch = LoadArchitecture(header.f_magic);
-            var platform = new DefaultPlatform(Services, arch);
+            var platform = Platform.Load(Services, "", platformOverride, arch);
             var segmap = new SegmentMap(imgSegments);
             var program = new Program(new ByteProgramMemory(segmap), arch, platform);
             if (this.opthdr.HasValue)

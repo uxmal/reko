@@ -20,8 +20,11 @@
 
 using Moq;
 using NUnit.Framework;
+using Reko.Arch.Pdp;
 using Reko.Core;
+using Reko.Core.Configuration;
 using Reko.Core.Memory;
+using Reko.Core.Services;
 using Reko.Environments.RT11;
 using System;
 using System.ComponentModel.Design;
@@ -37,6 +40,18 @@ namespace Reko.UnitTests.Environments.RT11
         private void Given_LdaFile(params byte [] bytes)
         {
             var services = new ServiceContainer();
+            var arch = new Pdp11Architecture(services, "pdp11", []);
+            var cfgSvc = new Mock<IConfigurationService>(MockBehavior.Strict);
+            var pluginSvc = new Mock<IPluginLoaderService>();
+            cfgSvc.Setup(svc => svc.GetEnvironment(It.IsAny<string>()))
+                .Returns(new PlatformDefinition
+                {
+                    TypeName = typeof(RT11Platform).FullName!
+                });
+            pluginSvc.Setup(svc => svc.GetType(typeof(RT11Platform).FullName!))
+                .Returns(typeof(RT11Platform));
+            services.AddService<IConfigurationService>(cfgSvc.Object);
+            services.AddService<IPluginLoaderService>(pluginSvc.Object);
             this.ldaLdr = new LdaFileLoader(services, ImageLocation.FromUri("file:foo.lda"), bytes);
         }
 
@@ -70,7 +85,7 @@ namespace Reko.UnitTests.Environments.RT11
                 0x00, 0x10,
                 0x00);
 
-            var program = ldaLdr.LoadProgram(Address.Ptr16(0));
+            var program = ldaLdr.LoadProgram(Address.Ptr16(0), null);
             var seg = program.SegmentMap.Segments.Values.First();
             var bmem = (ByteMemoryArea) seg.MemoryArea;
             Assert.AreEqual(0x1000ul, bmem.BaseAddress.ToLinear());

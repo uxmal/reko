@@ -68,7 +68,7 @@ namespace Reko.Environments.Snes
             return false;
         }
 
-        public override Program LoadProgram(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad, string? sPlatformOverride)
         {
             var romdata = RawImage;
             bool bsHeader;
@@ -213,8 +213,8 @@ namespace Reko.Environments.Snes
                 var arch = new Mos65816Architecture(Services, "m65816", new Dictionary<string, object>());
                 return new Program
                 {
-                    Platform = new SnesPlatform(Services, arch, "snes"),
-                    Architecture =  arch,
+                    Platform = Platform.Load(Services, "snes", sPlatformOverride, arch),
+                    Architecture = arch,
                     SegmentMap = new SegmentMap(Address.Ptr32(0x8000))
                 };
             }

@@ -59,7 +59,7 @@ namespace Reko.ImageLoaders.Elf
             set { addrPreferred = value; }
         }
 
-        public override Program LoadProgram(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad, string? sPlatformOverride)
         {
             var rdr = new BeImageReader(this.RawImage, 0);
             var elfHeader = LoadElfIdentification(rdr);
@@ -73,7 +73,7 @@ namespace Reko.ImageLoaders.Elf
             innerLoader.LoadFileHeader();
 
             var arch = innerLoader.CreateArchitecture(binaryImage.Header.Machine, innerLoader.Endianness);
-            var platform = innerLoader.LoadPlatform(elfHeader.osAbi, arch);
+            var platform = innerLoader.LoadPlatform(elfHeader.osAbi, sPlatformOverride, arch);
             var headers = innerLoader.LoadSegments();
             binaryImage.AddSections(innerLoader.LoadSectionHeaders());
             innerLoader.LoadSymbolsFromSections();

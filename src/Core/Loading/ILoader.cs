@@ -43,6 +43,7 @@ namespace Reko.Core.Loading
         /// </summary>
         /// <param name="imageLocation">The <see cref="ImageLocation"/> from which</param>
         /// <param name="loader">Optional name of a specific image loader to use.</param>
+        /// <param name="environmentName">Optional name of operating environment to use.</param>
         /// <param name="addrLoad">Optional address at which to load the image.</param>
         /// <returns>
         /// An <see cref="ILoadedImage"/> instance. In particular, if the
@@ -52,6 +53,7 @@ namespace Reko.Core.Loading
         ILoadedImage Load(
             ImageLocation imageLocation,
             string? loader = null,
+            string? environmentName = null,
             Address? addrLoad = null);
 
         /// <summary>

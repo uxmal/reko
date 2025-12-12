@@ -73,7 +73,7 @@ namespace Reko.Loading
         }
 
         /// <inheritdoc/>
-        public override Program LoadProgram(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad, string? platformOverride)
         {
             if (Architecture is null)
                 throw new InvalidOperationException("A processor architecture must be specified.");
@@ -87,7 +87,7 @@ namespace Reko.Loading
                 throw new InvalidOperationException("A processor architecture must be specified.");
             if (addrLoad is null)
                 addrLoad = PreferredBaseAddress;
-            var platform = Platform ?? new DefaultPlatform(Services, arch);
+            var platform = Reko.Core.Platform.Load(Services, Platform, "", arch);
             return LoadProgram(addrLoad.Value, arch, platform, new());
         }
 

@@ -230,7 +230,7 @@ namespace Reko.ImageLoaders.MzExe
             return true;
         }
 
-        public override Program LoadProgram(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad, string? sPlatformOverride)
         {
             var cfgSvc = Services.RequireService<IConfigurationService>();
             this.arch = cfgSvc.GetArchitecture("x86-protected-16")!;
@@ -238,23 +238,15 @@ namespace Reko.ImageLoaders.MzExe
             if (!LoadNeHeader(rdr))
                 throw new BadImageFormatException("Unable to read NE header.");
 
-            switch (bTargetOs)
+            string? envName = bTargetOs switch
             {
-                case NE_TARGETOS.Windows:
-                case NE_TARGETOS.Windows386:
-                    this.platform = cfgSvc.GetEnvironment("win16").Load(Services, arch);
-                    break;
-                case NE_TARGETOS.EuropeanDos:
-                    this.platform = cfgSvc.GetEnvironment("ms-dos").Load(Services, arch);
-                    break;
-                case NE_TARGETOS.Os2:
-                    this.platform = cfgSvc.GetEnvironment("os2-16").Load(Services, arch);
-                    break;
-                default:
-                    // Not implemented
-                    break;
-            }
-
+                NE_TARGETOS.Windows or
+                NE_TARGETOS.Windows386 => "win16",
+                NE_TARGETOS.EuropeanDos => "ms-dos",
+                NE_TARGETOS.Os2 => "os2-16",
+                _ => null
+            };
+            var platform = Platform.Load(Services, envName, sPlatformOverride, arch);
             var program = new Program(
                 new ByteProgramMemory(this.segmentMap),
                 arch,

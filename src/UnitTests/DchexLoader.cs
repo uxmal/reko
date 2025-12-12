@@ -40,11 +40,6 @@ namespace Reko.UnitTests
         public DchexLoader(IServiceProvider services, ImageLocation imageUri, byte[] imgRaw) :
             base(services, imageUri, imgRaw)
         {
-            var filename = imageUri.FilesystemPath;
-            using (TextReader rdr = new StreamReader(filename))
-            {
-                LoadFromFile(rdr);
-            }
         }
 
         public override Address PreferredBaseAddress
@@ -53,12 +48,17 @@ namespace Reko.UnitTests
             set { throw new NotImplementedException(); }
         }
 
-        public override Program LoadProgram(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad, string sPlatformOverride)
         {
+            var filename = base.ImageLocation.FilesystemPath;
+            using (TextReader rdr = new StreamReader(filename))
+            {
+                LoadFromFile(rdr, sPlatformOverride);
+            }
             return results;
         }
 
-        private void LoadFromFile(TextReader rdr)
+        private void LoadFromFile(TextReader rdr, string sPlatformOverride)
         {
             var arch = GetArchitecture(ReadLine(rdr).Trim());
             for (; ; )
@@ -77,7 +77,7 @@ namespace Reko.UnitTests
             results = new Program(
                 new ByteProgramMemory(segmentMap),
                 arch,
-                new DefaultPlatform(Services, arch));
+                Platform.Load(Services, (string)null, sPlatformOverride, arch));
         }
 
         private IProcessorArchitecture GetArchitecture(string archName)

@@ -35,7 +35,6 @@ namespace Reko.ImageLoaders.MzExe
     public class ExePackLoader : ProgramImageLoader
     {
         private readonly IProcessorArchitecture arch;
-        private readonly IPlatform platform;
         private SegmentMap segmentMap;
 
         private readonly uint exeHdrSize;
@@ -56,8 +55,6 @@ namespace Reko.ImageLoaders.MzExe
         {
             var cfgSvc = Services.RequireService<IConfigurationService>();
             arch = cfgSvc.GetArchitecture("x86-real-16")!;
-            platform =cfgSvc.GetEnvironment("ms-dos")
-                .Load(Services, arch);
 
             var exe = loader.ExeLoader;
             this.exeHdrSize = (uint)(exe.e_cparHeader * 0x10U);
@@ -98,7 +95,7 @@ namespace Reko.ImageLoaders.MzExe
             return (exe.e_cparHeader + exe.e_cs) * 0x10 + exe.e_ip;
         }
 
-        public override Program LoadProgram(Address? a)
+        public override Program LoadProgram(Address? a, string? sPlatformOverride)
         {
             var addr = a!.Value;
             byte[] abC = RawImage;
@@ -145,6 +142,7 @@ namespace Reko.ImageLoaders.MzExe
                     "code",
                     imgU,
                     AccessMode.ReadWriteExecute));
+            var platform = Platform.Load(Services, "ms-dos", sPlatformOverride, arch);
             var program = new Program(new ByteProgramMemory(segmentMap), arch, platform);
             Relocate(program, addr!);
             return program;
@@ -158,7 +156,7 @@ namespace Reko.ImageLoaders.MzExe
 
         public void Relocate(Program program, Address addrLoad)
         {
-            EndianImageReader rdr = new LeImageReader(RawImage, hdrOffset + relocationsOffset);
+            var rdr = new LeImageReader(RawImage, hdrOffset + relocationsOffset);
             ushort segCode = (ushort)(addrLoad.Selector!.Value + (ExeImageLoader.CbPsp >> 4));
             ushort dx = 0;
             for (; ; )
@@ -198,7 +196,7 @@ namespace Reko.ImageLoaders.MzExe
             program.ImageSymbols[ep.Address] = ep;
         }
 
-        private static byte[] signature = 
+        private static readonly byte[] signature = 
 		{
 						0x8C, 0xC0, 0x05, 0x10, 0x00, 0x0E, 0x1F, 0xA3, 0x04, 0x00, 0x03, 0x06, 0x0C, 0x00,
 			0x8E, 0xC0, 0x8B, 0x0E, 0x06, 0x00, 0x8B, 0xF9, 0x4F, 0x8B, 0xF7, 0xFD, 0xF3, 0xA4, 0x8B, 0x16,
@@ -211,7 +209,7 @@ namespace Reko.ImageLoaders.MzExe
 			0x07, 0x90
 		};
 
-        private static byte[] signature2 = 
+        private static readonly byte[] signature2 = 
         {
             0x8C, 0xC0, 0x05, 0x10, 0x00, 0x0E, 0x1F, 0xA3, 0x04, 0x00, 0x03, 0x06, 0x0C, 0x00, 0x8E, 0xC0,
             0x8B, 0x0E, 0x06, 0x00, 0x8B, 0xF9, 0x4F, 0x8B, 0xF7, 0xFD, 0xF3, 0xA4, 0x50, 0xB8, 0x32, 0x00,

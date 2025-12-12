@@ -55,7 +55,7 @@ namespace Reko.Environments.MorphOS
             }
         }
 
-        public override Program LoadProgram(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad, string? sPlatformOverride)
         {
             var sr = new StructureReader<MorphosHeader>(new BeImageReader(this.RawImage));
             var hdr = sr.Read();
@@ -63,7 +63,7 @@ namespace Reko.Environments.MorphOS
             //$PERF: this is a prime candidate for Span<T>
             Array.Copy(this.RawImage, hdr.ElfOffset, embeddedElfImage, 0, embeddedElfImage.Length);
             this.elfLdr = new ElfImageLoader(this.Services, this.ImageLocation, embeddedElfImage);
-            var program = elfLdr.LoadProgram(addrLoad);
+            var program = elfLdr.LoadProgram(addrLoad, sPlatformOverride);
             return program;
         }
 

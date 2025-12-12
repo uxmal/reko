@@ -55,7 +55,7 @@ namespace Reko.Environments.Switch
             }
         }
 
-        public override Program LoadProgram(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad, string? sPlatformOverride)
         {
             var @in = new LeImageReader(RawImage);
             NSOHeader nsoHeader = @in.ReadStruct<NSOHeader>();
@@ -85,7 +85,7 @@ namespace Reko.Environments.Switch
             var arch = cfg.GetArchitecture("arm");
             if (arch is null)
                 throw new InvalidOperationException("Unable to load arm-thumb architecture.");
-            var platform = cfg.GetEnvironment("switch").Load(Services, arch);
+            var platform = Platform.Load(Services, "switch", sPlatformOverride, arch);
             return new Program(new ByteProgramMemory(segmap), arch, platform);
         }
 

@@ -118,9 +118,9 @@ namespace Reko.ImageLoaders.MzExe
         /// sub-formats, so we need to discover what flavour it is before we
         /// can proceed.
         /// </summary>
-        public override Program LoadProgram(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad, string? sPlatformOverride)
 		{
-			return GetDeferredLoader().LoadProgram(addrLoad);
+			return GetDeferredLoader().LoadProgram(addrLoad, sPlatformOverride);
 		}
 
         private ProgramImageLoader CreateDeferredLoader()

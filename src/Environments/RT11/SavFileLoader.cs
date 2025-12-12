@@ -37,7 +37,7 @@ namespace Reko.Environments.RT11
 
         public override Address PreferredBaseAddress { get; set; }
 
-        public override Program LoadProgram(Address? a)
+        public override Program LoadProgram(Address? a, string? sPlatformOverride)
         {
             var addrLoad = a ?? PreferredBaseAddress;
             var arch = new Pdp11Architecture(Services, "pdp11", new Dictionary<string, object>());
@@ -48,7 +48,7 @@ namespace Reko.Environments.RT11
             var program = new Program(
                 new ByteProgramMemory(segmentMap),
                 arch,
-                new RT11Platform(Services, arch));
+                Platform.Load(Services, "RT-11", sPlatformOverride, arch));
             Relocate(program, addrLoad);
             return program;
         }

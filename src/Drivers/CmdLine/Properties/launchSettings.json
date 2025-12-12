@@ -14,6 +14,11 @@
       "commandName": "Project",
       "commandLineArgs": "decompile --time-limit 180 subject.exe",
       "workingDirectory": "c:\\dev\\uxmal\\rev\\decompiler-subjects\\from_explorerplusplus.com\\version_1.3.4\\ia32_pe_from_website"
+    },
+    "COFF": {
+      "commandName": "Project",
+      "commandLineArgs": "decompile --env ms-dos-386 enhancer.coff",
+      "workingDirectory": "c:\\dev\\uxmal\\reko\\users\\lighth7015\\enhancer_coff"
     }
   },
   "iisSettings": {

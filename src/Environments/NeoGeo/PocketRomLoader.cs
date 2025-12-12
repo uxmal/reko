@@ -44,7 +44,7 @@ namespace Reko.Environments.NeoGeo
             set;
         }
 
-        public override Program LoadProgram(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad, string? sPlatformOverride)
         {
             var romSegment = new ImageSegment(
                 ".text",
@@ -58,9 +58,7 @@ namespace Reko.Environments.NeoGeo
             var segmap = new SegmentMap(PreferredBaseAddress, romSegment);
             var cfgSvc = Services.RequireService<IConfigurationService>();
             var arch = cfgSvc.GetArchitecture("tlcs-900")!;
-            var env = cfgSvc.GetEnvironment("neo-geo-pocket");
-            var platform = env.Load(Services, arch);
-            
+            var platform = Platform.Load(Services, "neo-geo-pocket", sPlatformOverride, arch);
             var program = new Program(new ByteProgramMemory(segmap), arch, platform);
             program.EntryPoints[entryPoint] = ImageSymbol.Procedure(program.Architecture, entryPoint);
             return program;

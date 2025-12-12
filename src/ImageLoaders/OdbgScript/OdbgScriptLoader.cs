@@ -62,12 +62,12 @@ namespace Reko.ImageLoaders.OdbgScript
         public SegmentMap ImageMap { get; set; }
         public IProcessorArchitecture Architecture { get; set; }
 
-        public override Program LoadProgram(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad, string? sPlatformOverride)
         {
             // First load the file. This gives us a (writeable) image and 
             // the packed entry point.
             var origLdr = this.originalImageLoader;
-            var program = origLdr.LoadProgram(origLdr.PreferredBaseAddress);
+            var program = origLdr.LoadProgram(origLdr.PreferredBaseAddress, sPlatformOverride);
             this.ImageMap = program.SegmentMap;
             this.Architecture = program.Architecture;
             var ep = program.EntryPoints.Values.First();

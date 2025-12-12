@@ -243,7 +243,7 @@ namespace Reko.Environments.C64
             {
                 var prgUri = archive.Location.AppendFragment(this.Name);
                 var prgLoader = new PrgLoader(services, prgUri, imageBytes);
-                var program = prgLoader.LoadProgram(null);
+                var program = prgLoader.LoadProgram(null, null);
                 program.Name = this.Name;
                 program.Location = prgUri;
                 return program;

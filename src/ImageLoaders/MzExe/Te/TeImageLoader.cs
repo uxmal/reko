@@ -95,7 +95,7 @@ namespace Reko.ImageLoaders.MzExe.Te
             return new Pe64Loader(this);
         }
 
-        public override Program LoadProgram(Address? address)
+        public override Program LoadProgram(Address? address, string? sPlatformOverride)
         {
             var rdr = new LeImageReader(RawImage);
             if (!LoadTeHeader(rdr, out var hdr))
@@ -104,7 +104,7 @@ namespace Reko.ImageLoaders.MzExe.Te
                 throw new BadImageFormatException();
             var segments = LoadSectionData(sections);
             var arch = base.CreateArchitecture(hdr.machine);
-            var platform = base.CreatePlatform(hdr.machine, Services, arch);
+            var platform = Platform.Load(Services, GetPlatformName(hdr.machine), sPlatformOverride, arch);
             return new Program(new ByteProgramMemory(segments), arch, platform);
         }
 

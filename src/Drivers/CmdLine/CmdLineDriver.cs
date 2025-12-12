@@ -169,13 +169,14 @@ namespace Reko.CmdLine
         private void Decompile(Dictionary<string, object> pArgs)
         {
             pArgs.TryGetValue("--loader", out object? imgLoader);
+            pArgs.TryGetValue("--env", out object? environmentName);
             var addrLoad = ParseAddress(pArgs, "--base");
             try
             {
                 var fileName = (string) pArgs["filename"];
                 var filePath = Path.GetFullPath(fileName);
                 var imageLocation = ImageLocation.FromUri(filePath);
-                var loadedImage = ldr.Load(imageLocation, (string?) imgLoader, addrLoad);
+                var loadedImage = ldr.Load(imageLocation, (string?) imgLoader, (string?)environmentName,  addrLoad);
                 Project project;
                 switch (loadedImage)
                 {

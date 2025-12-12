@@ -112,7 +112,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             ILoader ldr = new Loader(svc);
             var fileUri = ImageLocation.FromUri(FileUnitTester.MapTestPath(hexFile));
             var imgLoader = new DchexLoader(svc, fileUri, null);
-            var program = imgLoader.LoadProgram(null);
+            var program = imgLoader.LoadProgram(null, null);
             var project = new Project { Programs = { program } };
             var ep = ImageSymbol.Procedure(program.Architecture, program.ImageMap.BaseAddress);
             var dynamicLinker = new DynamicLinker(project, program, eventListener);

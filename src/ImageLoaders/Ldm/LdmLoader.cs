@@ -33,7 +33,6 @@ using Reko.Core.Diagnostics;
 using Reko.Core.Expressions;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
-using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -424,7 +423,7 @@ namespace Reko.ImageLoaders.Ldm
         }
 
 
-        public override Program LoadProgram(Address? addrLoad) => throw new NotSupportedException();
+        public override Program LoadProgram(Address? addrLoad, string? sPlatformOverride) => throw new NotSupportedException();
 
         /* load file in TLD or XTC Load Module format */
         public override Program LoadProgram(

@@ -40,7 +40,7 @@ namespace Reko.ImageLoaders.Coff.eCoff
 
         public override Address PreferredBaseAddress { get; set; }
 
-        public override Program LoadProgram(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad, string? platformOverride)
         {
             throw new NotImplementedException();
         }

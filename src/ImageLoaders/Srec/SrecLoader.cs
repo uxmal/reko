@@ -50,7 +50,7 @@ namespace Reko.ImageLoaders.Srec
             }
         }
 
-        public override Program LoadProgram(Address? addrLoad) => throw new NotSupportedException();
+        public override Program LoadProgram(Address? addrLoad, string? sPlatformOverride) => throw new NotSupportedException();
 
         public override Program LoadProgram(
             Address addrLoad, 

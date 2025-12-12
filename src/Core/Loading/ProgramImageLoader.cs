@@ -54,7 +54,7 @@ namespace Reko.Core.Loading
         /// <returns>A <see cref="ILoadedImage"/>.</returns>
         public override ILoadedImage Load(Address? addrLoad)
         {
-            return LoadProgram(addrLoad);
+            return LoadProgram(addrLoad, null);
         }
 
         /// <summary>
@@ -62,8 +62,10 @@ namespace Reko.Core.Loading
         /// </summary>
         /// <param name="address">Optional base address of the program image. If not specified,
         /// use the image format's default loading address.</param>
+        /// <param name="platformOverride">Optional name of platform to use instead
+        /// of the one determined by the loader.</param>
         /// <returns>An object implementing the <see cref="ILoadedImage"/> interface.</returns>
-        public abstract Program LoadProgram(Address? address);
+        public abstract Program LoadProgram(Address? address, string? platformOverride);
         
         /// <summary>
         /// Loads the image into memory at the specified address, using the 

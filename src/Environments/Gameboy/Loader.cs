@@ -43,12 +43,11 @@ namespace Reko.Environments.Gameboy
             set { throw new NotSupportedException(); }
         }
 
-        public override Program LoadProgram(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad, string? sPlatformOverride)
         {
             var configSvc = Services.RequireService<IConfigurationService>();
             var arch = configSvc.GetArchitecture("lr35902")!;
-            var platformDef = configSvc.GetEnvironment("gameboy");
-            var platform = platformDef.Load(Services, arch);
+            var platform = Platform.Load(Services, "gameboy", sPlatformOverride, arch);
             var image = new byte[Math.Min(base.RawImage.Length, 0x1_0000)];
             Array.Copy(RawImage, 0, image, 0, image.Length);
             var mem = new ByteMemoryArea(PreferredBaseAddress, image);

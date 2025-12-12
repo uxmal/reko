@@ -43,7 +43,7 @@ namespace Reko.Environments.C64
 
         public override Address PreferredBaseAddress { get; set; }
 
-        public override Program LoadProgram(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad, string? sPlatformOverride)
         {
             var stm = new MemoryStream();
             ushort preferredAddress = ByteMemoryArea.ReadLeUInt16(RawImage, 0);
@@ -57,7 +57,7 @@ namespace Reko.Environments.C64
             var lines = rdr.ToSortedList(line => line.LineNumber, line => line);
             var cfgSvc = Services.RequireService<IConfigurationService>();
             var arch = new C64Basic(Services, lines);
-            var platform = cfgSvc.GetEnvironment("c64").Load(Services, arch);
+            var platform = Platform.Load(Services, "c64", sPlatformOverride, arch);
             var arch6502 = cfgSvc.GetArchitecture("m6502")!;
             SegmentMap segMap = CreateSegmentMap(platform, c64Ram, Address.Ptr16(alignedAddress), lines);
             var program = new Program(new ByteProgramMemory(segMap), arch, platform);

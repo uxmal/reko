@@ -170,7 +170,7 @@ namespace Reko.UnitTests.Decompiler.Loading
 
             public override Address PreferredBaseAddress {get; set; }
 
-            public override Program LoadProgram(Address? addrLoad)
+            public override Program LoadProgram(Address? addrLoad, string sPlatformOverride)
             {
                 return new Program();
             }
@@ -210,7 +210,7 @@ namespace Reko.UnitTests.Decompiler.Loading
                 set { throw new NotImplementedException(); }
             }
 
-            public override Program LoadProgram(Address? addrLoad)
+            public override Program LoadProgram(Address? addrLoad, string sPlatformOverride)
             {
                 throw new NotImplementedException();
             }

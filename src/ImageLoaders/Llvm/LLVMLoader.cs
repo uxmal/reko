@@ -48,13 +48,13 @@ namespace Reko.ImageLoaders.LLVM
             }
         }
 
-        public override Program LoadProgram(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad, string? sPlatformOverride)
         {
             var rdr = new StreamReader(new MemoryStream(RawImage), Encoding.UTF8);
             var parser = new LLVMParser(new LLVMLexer(rdr));
             var module = parser.ParseModule();
             var program = new Program();
-            var builder = new ProgramBuilder(Services, program);
+            var builder = new ProgramBuilder(Services, program, sPlatformOverride);
             program = builder.BuildProgram(module);
             program.NeedsScanning = false;
             program.NeedsSsaTransform = false;

@@ -60,13 +60,12 @@ namespace Reko.ImageLoaders.MzExe
             set { throw new NotImplementedException(); }
         }
 
-        public override Program LoadProgram(Address? a)
+        public override Program LoadProgram(Address? a, string? sPlatformOverride)
         {
             var addrLoad = a ?? PreferredBaseAddress;
             var cfgSvc = Services.RequireService<IConfigurationService>();
             this.arch = cfgSvc.GetArchitecture("x86-protected-32")!;
-            this.platform = cfgSvc.GetEnvironment("ms-dos-386")
-                .Load(Services, arch);
+            this.platform = Platform.Load(Services, "ms-dos-386", sPlatformOverride, arch);
             var rdr = new LeImageReader(RawImage, FileHeaderOffset);
             var fileHeader = rdr.ReadStruct<FileHeader>();
             var image = new ByteMemoryArea(Address.Ptr32(fileHeader.base_load_offset), new byte[fileHeader.memory_requirements]);

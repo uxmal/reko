@@ -67,9 +67,10 @@ namespace Reko.Core.Configuration
         /// <summary>
         /// Given an platform or environment name, gets its corresponding platform definition.
         /// </summary>
-        /// <param name="envName">Name of the environment.</param>
+        /// <param name="envName">Name of the environment. If null is passed, 
+        /// fall back to the <see cref="DefaultPlatform"/>.</param>
         /// <returns>A platform definition for that environment.</returns>
-        PlatformDefinition GetEnvironment(string envName);
+        PlatformDefinition GetEnvironment(string? envName);
 
         /// <summary>
         /// Given the name of an architecture, creates an instance of that architecture.
@@ -640,7 +641,7 @@ namespace Reko.Core.Configuration
         }
 
         /// <inheritdoc/>
-        public PlatformDefinition GetEnvironment(string envName)
+        public PlatformDefinition GetEnvironment(string? envName)
         {
             var env = GetEnvironments()
                 .Where(e => e.Name == envName).SingleOrDefault();

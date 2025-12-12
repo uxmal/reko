@@ -108,11 +108,11 @@ namespace Reko.ImageLoaders.Nro
             segments.Add(seg);
         }
 
-        public override Program LoadProgram(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad, string? sPlatformOverride)
         {
             var cfgSvc = Services.RequireService<IConfigurationService>();
             var arch = cfgSvc.GetArchitecture("arm-64")!;
-            var platform = cfgSvc.GetEnvironment("switch").Load(Services, arch);
+            var platform = Platform.Load(Services, "switch", sPlatformOverride, arch);
 
             NroStart start = rdr.ReadStruct<NroStart>();
             NroHeader header = rdr.ReadStruct<NroHeader>();

@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace Reko.ImageLoaders.Coff
@@ -35,11 +36,12 @@ namespace Reko.ImageLoaders.Coff
     // https://github.com/yasm/yasm/blob/master/modules/dbgfmts/codeview/cv8.txt
     // https://github.com/microsoft/microsoft-pdb/blob/805655a28bd8198004be2ac27e6e0290121a5e89/include/cvinfo.h#L3724
     // https://learn.microsoft.com/en-us/windows/win32/debug/pe-format
+    // https://www.delorie.com/djgpp/doc/coff/
     public class CoffLoader : ProgramImageLoader
     {
         private static readonly TraceSwitch trace = new TraceSwitch(nameof(CoffLoader), "Trace loading of COFF files")
         {
-            Level = TraceLevel.Verbose
+            Level = TraceLevel.Warning
         };
 
         private const ushort IMAGE_FILE_RELOCS_STRIPPED = 0x0001;
@@ -66,11 +68,12 @@ namespace Reko.ImageLoaders.Coff
         private FileHeader header;
         private uint entry;
         private List<(string, CoffSectionHeader)> coffSections;
-
+        private IEventListener eventListener;
 
         public CoffLoader(IServiceProvider services, ImageLocation imageLocation, byte[] rawBytes)
             : base(services, imageLocation, rawBytes)
         {
+            this.eventListener = services.GetService<IEventListener>() ?? new NullEventListener();
             (this.arch, this.header, coffSections, entry) = LoadHeader();
             addrPreferred = default!;
         }
@@ -81,38 +84,43 @@ namespace Reko.ImageLoaders.Coff
             set { throw new NotImplementedException(); }
         }
 
-        public override Program LoadProgram(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad, string? platformOverride)
         {
+            var platform = Platform.Load(Services, (string?)null, platformOverride, arch);
             Program program;
             if ((header.f_flags & IMAGE_FILE_EXECUTABLE_IMAGE) == 0)
             {
-                program  = LinkObjectFile();
+                program  = LinkObjectFile(platform);
             }
             else
             {
-                program = LoadExecutable();
+                program = LoadExecutable(platform);
             }
-            var syms = ReadSymbols();   //$TODO: do something with the symbols?
+            var syms = ReadSymbols();
+            foreach (var sym in syms)
+            {
+                program.ImageSymbols[sym.Address] = sym;
+            }
             return program;
         }
 
-        private Program LinkObjectFile()
+        private Program LinkObjectFile(IPlatform platform)
         {
             var segs = ComputeSegmentLayout(this.coffSections);
             var segmentMap = LinkSegments(segs, this.coffSections);
             return new Program(
                 new ByteProgramMemory(segmentMap),
                 arch,
-                new DefaultPlatform(Services, arch));
+                platform);
         }
 
-        private Program LoadExecutable()
+        private Program LoadExecutable(IPlatform platform)
         {
             var segs = LoadImageSegments(this.coffSections);
             var program = new Program(
                 new ByteProgramMemory(new SegmentMap(segs.ToArray())),
                 arch,
-                new DefaultPlatform(Services, arch));
+                platform);
             if (this.entry != ~0u)
             {
                 var ep = ImageSymbol.Procedure(arch, Address.Ptr32(this.entry), "_entry");
@@ -195,6 +203,9 @@ namespace Reko.ImageLoaders.Coff
             AccessMode mode = 0;
             if (hdr.Characteristics.HasFlag(CoffSectionCharacteristics.IMAGE_SCN_CNT_CODE))
                 return AccessMode.ReadExecute;
+            if (hdr.Characteristics.HasFlag(CoffSectionCharacteristics.IMAGE_SCN_CNT_INITIALIZED_DATA) ||
+                hdr.Characteristics.HasFlag(CoffSectionCharacteristics.IMAGE_SCN_CNT_UNINITIALIZED_DATA))
+                return AccessMode.ReadWrite;
             if (hdr.Characteristics.HasFlag(CoffSectionCharacteristics.IMAGE_SCN_MEM_READ))
                 mode |= AccessMode.Read;
             if (hdr.Characteristics.HasFlag(CoffSectionCharacteristics.IMAGE_SCN_MEM_WRITE))
@@ -291,11 +302,12 @@ namespace Reko.ImageLoaders.Coff
             }
         }
 
-        private List<CoffSymbol> ReadSymbols()
+        private List<ImageSymbol> ReadSymbols()
         {
-            var syms = new List<CoffSymbol>();
+            List<ImageSymbol> result = [];
+            List<CoffSymbol> syms = [];
             if (header.f_nsyms == 0)
-                return syms;
+                return result;
             var rdr = new ByteImageReader(RawImage, this.header.f_symptr);
             for (int i = 0; i < header.f_nsyms; ++i)
             {
@@ -329,20 +341,56 @@ namespace Reko.ImageLoaders.Coff
                     LoadAuxSymbolRecords(syms, i, sym);
                     i += sym.e_numaux;
                 }
+                AddSymbolToResult(sym, name, result);
             }
-            return syms;
+            return result;
         }
 
-        private void LoadAuxSymbolRecords(List<CoffSymbol> syms, int i, in CoffSymbol sym)
+        private void AddSymbolToResult(in CoffSymbol sym, string name, List<ImageSymbol> result)
         {
-            if (sym.e_sclass == SymbolStorageClass.IMAGE_SYM_CLASS_STATIC) unsafe
+            if (sym.e_sclass == SymbolStorageClass.IMAGE_SYM_CLASS_EXTERNAL &&
+                (sym.e_scnum > 0 && sym.e_scnum <= coffSections.Count))
             {
+                ImageSymbol imgSym;
+                var (sectName, sect) = coffSections[sym.e_scnum - 1];
+                if (sect.Characteristics.HasFlag(CoffSectionCharacteristics.IMAGE_SCN_CNT_CODE))
+                {
+                    imgSym = ImageSymbol.Procedure(
+                        arch,
+                        Address.Ptr32(sym.e_value),
+                        name);
+                }
+                else
+                {
+                    imgSym = ImageSymbol.Create(
+                        SymbolType.Unknown,
+                        arch,
+                        Address.Ptr32(sym.e_value),
+                        name: name);
+                }
+                result.Add(imgSym);
+            }
+        }
+
+        private bool LoadAuxSymbolRecords(List<CoffSymbol> syms, int i, in CoffSymbol sym)
+        {
+            switch (sym.e_sclass)
+            {
+            case SymbolStorageClass.IMAGE_SYM_CLASS_STATIC:
                 var a = syms[i + 1];
                 ref var auxSect = ref Unsafe.As<CoffSymbol, AuxSectionDefinition>(ref a);
                 trace.Verbose($"    {auxSect.Length:X8} {auxSect.NumberOfRelocations} {auxSect.NumberOfLinenumbers,-4} {auxSect.CheckSum:X8} {auxSect.Number,-4} {auxSect.Selection:X2}; ");
-                return;
+                return true;
+            case SymbolStorageClass.IMAGE_SYM_CLASS_FILE:
+                a = syms[i + 1];
+                var abFilename = MemoryMarshal.AsBytes(MemoryMarshal.CreateReadOnlySpan(ref Unsafe.AsRef(ref a), 1));
+                string filename = Encoding.ASCII.GetString(abFilename).TrimEnd('\0');
+                trace.Verbose($"    {filename}");
+                return true;
+            default:
+                this.eventListener.Warn($"Unknown symbol class {sym.e_sclass}.");
+                return false;
             }
-            throw new NotImplementedException();
         }
     }
 }

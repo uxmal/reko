@@ -82,7 +82,7 @@ namespace Reko.UnitTests.ImageLoaders.Hunk
                 0,
                 0);
             var ldr = new HunkLoader(sc, ImageLocation.FromUri("file:foo.bar"), bytes);
-            var ldImg = ldr.LoadProgram(Address.Ptr32(0x00010000));
+            var ldImg = ldr.LoadProgram(Address.Ptr32(0x00010000), null);
             Assert.AreEqual(1, ldImg.SegmentMap.Segments.Count);
             Assert.AreEqual(Address.Ptr32(0x00010000), ldImg.SegmentMap.Segments.Values[0].Address);
         }
@@ -104,7 +104,7 @@ namespace Reko.UnitTests.ImageLoaders.Hunk
                 (ushort) 0,
                 HunkType.HUNK_END);
             var ldr = new HunkLoader(sc, ImageLocation.FromUri("file:foo.bar"), bytes);
-            var program = ldr.LoadProgram(Address.Ptr32(0x00010000));
+            var program = ldr.LoadProgram(Address.Ptr32(0x00010000), null);
             Assert.AreEqual(1, program.EntryPoints.Count);
             Assert.AreEqual(0x00010000ul, program.EntryPoints.Values.First().Address.ToLinear());
         }

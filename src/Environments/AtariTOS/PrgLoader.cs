@@ -45,7 +45,7 @@ namespace Reko.Environments.AtariTOS
             set { throw new NotImplementedException(); }
         }
 
-        public override Program LoadProgram(Address? loadingAddr)
+        public override Program LoadProgram(Address? loadingAddr, string? sPlatformOverride)
         {
             var rdr = new BeImageReader(RawImage);
             if (!TryLoadHeader(rdr, out var hdr))
@@ -54,8 +54,7 @@ namespace Reko.Environments.AtariTOS
             var addrLoad = loadingAddr ?? PreferredBaseAddress;
             var cfgSvc = Services.RequireService<IConfigurationService>();
             var arch = cfgSvc.GetArchitecture("m68k")!;
-            var env = cfgSvc.GetEnvironment("atariTOS");
-            var platform = env.Load(Services, arch);
+            var platform = Platform.Load(Services, "atariTOS", sPlatformOverride, arch);
 
             var bytes = new byte[hdr.TextSize + hdr.DataSize + hdr.BssSize];
             var mem = arch.CreateCodeMemoryArea(addrLoad, bytes);

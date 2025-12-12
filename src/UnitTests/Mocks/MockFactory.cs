@@ -113,7 +113,11 @@ namespace Reko.UnitTests.Mocks
             program.ImageMap = program.SegmentMap.CreateImageMap();
 
             mockLoader.Setup(
-                l => l.Load(It.IsAny<ImageLocation>(), It.IsAny<string>(), It.IsAny<Address?>())
+                l => l.Load(
+                    It.IsAny<ImageLocation>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>(),
+                    It.IsAny<Address?>())
             ).Returns(program);
 
             //$REVIEW: the below is redundant; the method is never called outside of 

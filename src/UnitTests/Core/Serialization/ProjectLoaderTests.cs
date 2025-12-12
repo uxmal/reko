@@ -122,8 +122,9 @@ namespace Reko.UnitTests.Core.Serialization
             ldr.Setup(l => l.Load(
                 It.IsAny<ImageLocation>(),
                 null,
-                (Address?) null)).Returns(new Func<ImageLocation, string, Address?, ILoadedImage>(
-                    (i, l, a) => new Program { 
+                null,
+                (Address?) null)).Returns(new Func<ImageLocation, string, string, Address?, ILoadedImage>(
+                    (i, l, e, a) => new Program { 
                         Architecture = arch.Object,
                         Platform = platform,
                     }));
@@ -311,6 +312,7 @@ namespace Reko.UnitTests.Core.Serialization
             ldr.Setup(l => l.Load(
                 It.IsAny<ImageLocation>(),
                 It.IsAny<string>(),
+                It.IsAny<string>(),
                 It.IsAny<Address?>())).Returns(new Program());
             ldr.Setup(l => l.LoadFileBytes(
                 It.IsAny<string>())).Returns(new byte[1000]);
@@ -343,6 +345,7 @@ namespace Reko.UnitTests.Core.Serialization
             var ldr = new Mock<ILoader>();
             ldr.Setup(l => l.Load(
                 It.IsAny<ImageLocation>(),
+                It.IsAny<string>(),
                 It.IsAny<string>(),
                 It.IsAny<Address?>())).Returns(new Program());
             ldr.Setup(l => l.LoadFileBytes(

@@ -90,7 +90,7 @@ struct exec {
             A_PMT_C90 = 8,          // CRAY C90 
         }
 
-        public override Program LoadProgram(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad, string? platformOverride)
         {
             var rdr = new BeImageReader(RawImage);
             if (!rdr.TryReadBeUInt64(out ulong magic))
@@ -121,7 +121,7 @@ struct exec {
                 new ImageSegment("text", text, AccessMode.ReadExecute),
                 new ImageSegment("data", data, AccessMode.ReadWrite),
                 new ImageSegment("bss", bss, AccessMode.ReadWrite));
-            var platform = cfgSvc.GetEnvironment("unicos").Load(Services, arch);
+            var platform = Platform.Load(Services, "unicos", platformOverride, arch);
             var program = new Program(new ByteProgramMemory(segs), arch, platform);
             var entry = ImageSymbol.Procedure(program.Architecture, Address.Ptr32((uint) a_entry), "_start");
             program.EntryPoints[entry.Address] = entry;

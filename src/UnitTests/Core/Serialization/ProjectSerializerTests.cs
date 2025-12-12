@@ -113,8 +113,9 @@ namespace Reko.UnitTests.Core.Serialization
             loader.Setup(l => l.Load(
                 It.IsAny<ImageLocation>(),
                 null,
-                null)).Returns(new Func<ImageLocation, string, Address, ILoadedImage>(
-                    (i, l, a) => new Program { Architecture = arch.Object }));
+                null,
+                null)).Returns(new Func<ImageLocation, string, string, Address, ILoadedImage>(
+                    (i, l, e, a) => new Program { Architecture = arch.Object }));
             Given_Architecture();
             Given_TestOS_Platform();
             Given_Platform_Address("113800", 0x113800);
@@ -221,8 +222,9 @@ namespace Reko.UnitTests.Core.Serialization
             loader.Setup(l => l.Load(
                 It.IsAny<ImageLocation>(),
                 null,
-                null)).Returns(new Func<ImageLocation, string, Address, ILoadedImage>(
-                    (i, l, a) => new Program { Architecture = arch.Object }));
+                null,
+                null)).Returns(new Func<ImageLocation, string, string, Address, ILoadedImage>(
+                    (i, l, e, a) => new Program { Architecture = arch.Object }));
             Given_Architecture();
             Given_TestOS_Platform();
             Given_Platform_Address("113800", 0x113800);

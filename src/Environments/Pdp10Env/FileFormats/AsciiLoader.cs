@@ -50,11 +50,11 @@ namespace Reko.Environments.Pdp10Env.FileFormats
 
         public override Address PreferredBaseAddress { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-        public override Program LoadProgram(Address? address)
+        public override Program LoadProgram(Address? address, string? sPlatformOverride)
         {
             var arch = new Pdp10Architecture(Services, "pdp10", new Dictionary<string, object>());
-            var platform = new Pdp10Platform(Services, arch);
-            return LoadProgram(address ?? Pdp10Architecture.Ptr18(0), arch, platform, new());
+            var platform = Platform.Load(Services, "pdp10", sPlatformOverride, arch);
+            return LoadProgram(address ?? Pdp10Architecture.Ptr18(0), arch, platform, []);
         }
 
         public override Program LoadProgram(

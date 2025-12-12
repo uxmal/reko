@@ -461,7 +461,7 @@ namespace Reko.ImageLoaders.MzExe
 
         public override Address PreferredBaseAddress { get; set; }
 
-        public override Program LoadProgram(Address? a)
+        public override Program LoadProgram(Address? a, string? sPlatformOverride)
         {
             var addrLoad = a ?? PreferredBaseAddress;
             var cfgSvc = Services.RequireService<IConfigurationService>();
@@ -475,7 +475,7 @@ namespace Reko.ImageLoaders.MzExe
             var leSegs = LoadSegmentTable();
 
             var segments = MakeSegmentMap(addrLoad, leSegs);
-            var platform = MakePlatform();
+            var platform = MakePlatform(sPlatformOverride);
             var program  = new Program(new ByteProgramMemory(segments), arch, platform);
             var eip_module = leSegs[hdr.eip_object - 1].BaseAddress;
             var addrEntry = Address.Ptr32(eip_module + hdr.eip);
@@ -648,7 +648,7 @@ namespace Reko.ImageLoaders.MzExe
             return imgSegment;
         }
 
-        private IPlatform MakePlatform()
+        private IPlatform MakePlatform(string? sPlatformOverride)
         {
             string envName;
             if (this.hdr.signature == SIGNATURE16)
@@ -680,9 +680,7 @@ namespace Reko.ImageLoaders.MzExe
                     return new DefaultPlatform(this.Services, this.arch);
                 }
             }
-            var platform = Services.RequireService<IConfigurationService>()
-                .GetEnvironment(envName)
-                .Load(Services, arch);
+            var platform = Platform.Load(Services, envName, sPlatformOverride, arch);
             return platform;
         }
 

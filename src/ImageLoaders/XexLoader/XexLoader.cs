@@ -651,11 +651,11 @@ namespace Reko.ImageLoaders.Xex
             return (addr, ImageSymbol.Procedure(arch, addr));
         }
 
-        public override Program LoadProgram(Address? address)
+        public override Program LoadProgram(Address? address, string? sPlatformOverride)
         {
             var cfgSvc = Services.RequireService<IConfigurationService>();
             var arch = cfgSvc.GetArchitecture("ppc-be-64")!;
-            var platform = cfgSvc.GetEnvironment("xbox360").Load(Services, arch)!;
+            var platform = Platform.Load(Services, "xbox360", sPlatformOverride, arch)!;
             arch.LoadUserOptions(new Dictionary<string, object>
             {
                 { ProcessorOption.Model, "xenon" }

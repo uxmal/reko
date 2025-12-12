@@ -51,7 +51,7 @@ namespace Reko.ImageLoaders.HpSom
 
         public override Address PreferredBaseAddress { get; set; }
 
-        public override Program LoadProgram(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad, string? sPlatformOverride)
         {
             var somHeader = MakeReader(0).ReadStruct<SOM_Header>();
             DumpSomHeader(somHeader);
@@ -60,7 +60,7 @@ namespace Reko.ImageLoaders.HpSom
 
             var cfgSvc = Services.RequireService<IConfigurationService>();
             var arch = MakeArchitecture(somHeader, cfgSvc);
-            var platform = cfgSvc.GetEnvironment("hpux").Load(Services, arch);
+            var platform = Platform.Load(Services, "hpux", sPlatformOverride, arch);
 
             var (symbols, addrGlobal) = ReadSymbols(arch, somHeader.symbol_location, somHeader.symbol_total, somHeader.symbol_strings_location);
             var spaces = ReadSpaces(somHeader.space_location, somHeader.space_total, somHeader.space_strings_location);

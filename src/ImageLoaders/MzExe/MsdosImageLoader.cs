@@ -42,7 +42,6 @@ namespace Reko.ImageLoaders.MzExe
         private const ushort segMemTop = 0xA000;
 
         private readonly IProcessorArchitecture arch;
-        private readonly IPlatform platform;
 		private ByteMemoryArea imgLoaded;
         private SegmentMap segmentMap;
         private Address addrStackTop;
@@ -54,8 +53,6 @@ namespace Reko.ImageLoaders.MzExe
 			this.ExeLoader = exe;
             var cfgSvc = Services.RequireService<IConfigurationService>();
             this.arch = cfgSvc.GetArchitecture("x86-real-16")!;
-            this.platform = cfgSvc.GetEnvironment("ms-dos")
-                .Load(Services, arch);
             this.imgLoaded = null!;
             this.segmentMap = null!;
 		}
@@ -68,7 +65,7 @@ namespace Reko.ImageLoaders.MzExe
             set { throw new NotImplementedException(); }
         }
 
-        public override Program LoadProgram(Address? a)
+        public override Program LoadProgram(Address? a, string? sPlatformOverride)
         {
             var addrLoad = a ?? PreferredBaseAddress;
             this.segPsp = (ushort) (addrLoad.Selector!.Value - 0x10);
@@ -90,6 +87,8 @@ namespace Reko.ImageLoaders.MzExe
             this.segmentMap = new SegmentMap(
                 addrPsp,
                 psp);
+
+            var platform = Platform.Load(Services, "ms-dos", sPlatformOverride, arch);
             var program = new Program(new ByteProgramMemory(segmentMap), arch, platform);
 
             this.Relocate(program, addrLoad);

@@ -37,8 +37,7 @@ namespace Reko.ImageLoaders.MzExe
     /// </summary>
     public class LzExeUnpacker : ProgramImageLoader
 	{
-        private IProcessorArchitecture arch;
-        private IPlatform platform;
+        private readonly IProcessorArchitecture arch;
 
 		private int lzHdrOffset;
 		private bool isLz91;
@@ -54,8 +53,6 @@ namespace Reko.ImageLoaders.MzExe
         {
             IConfigurationService cfgSvc = Services.RequireService<IConfigurationService>();
             this.arch = cfgSvc.GetArchitecture("x86-real-16")!;
-            this.platform = cfgSvc.GetEnvironment("ms-dos")
-                .Load(Services, arch);
             Validate(loader.ExeLoader);
             this.imgLoaded = null!;
             this.segmentMap = null!;
@@ -190,10 +187,11 @@ namespace Reko.ImageLoaders.MzExe
 			return segmentMap;
 		}
 
-        public override Program LoadProgram(Address? a)
+        public override Program LoadProgram(Address? a, string? sPlatformOverride)
 		{
             var addrLoad = a!.Value;
 			Unpack(RawImage, a ?? PreferredBaseAddress );
+            var platform = Platform.Load(Services, "ms-dos", sPlatformOverride, arch);
             var program = new Program(new ByteProgramMemory(segmentMap), arch, platform);
             var sym = ImageSymbol.Procedure(
                 program.Architecture,

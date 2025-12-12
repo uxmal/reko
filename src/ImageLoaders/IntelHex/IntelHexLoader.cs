@@ -167,7 +167,7 @@ namespace Reko.ImageLoaders.IntelHex
         /// <returns>
         /// A <see cref="Program"/> instance.
         /// </returns>
-        public override Program LoadProgram(Address? addrLoad) => throw new NotImplementedException();
+        public override Program LoadProgram(Address? addrLoad, string? sPlatformOverride) => throw new NotImplementedException();
 
         /// <summary>
         /// Loads the image into memory at the specified address, using the provided

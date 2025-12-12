@@ -38,7 +38,7 @@ namespace Reko.Environments.SegaGenesis
 
         public override Address PreferredBaseAddress { get; set; }
 
-        public override Program LoadProgram(Address? a)
+        public override Program LoadProgram(Address? a, string? sPlatformOverride)
         {
             var addrLoad = a ?? PreferredBaseAddress;
             if (RawImage.Length <= 0x200)
@@ -46,8 +46,7 @@ namespace Reko.Environments.SegaGenesis
             var mem = new ByteMemoryArea(addrLoad, RawImage);
             var cfgService = Services.RequireService<IConfigurationService>();
             var arch = cfgService.GetArchitecture("m68k")!;
-            var env = cfgService.GetEnvironment("sega-genesis");
-            var platform = env.Load(Services, arch);
+            var platform = Platform.Load(Services, "sega-genesis", sPlatformOverride, arch);
 
             var segmentMap = CreateSegmentMap(mem, platform);
 

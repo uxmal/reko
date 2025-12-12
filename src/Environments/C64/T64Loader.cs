@@ -243,7 +243,7 @@ directory.
                 var cfgSvc = services.RequireService<IConfigurationService>();
                 var arch6502 = cfgSvc.GetArchitecture("m6502")!;
                 var arch = new C64Basic(services, lines);
-                var platform = cfgSvc.GetEnvironment("c64").Load(services, arch);
+                var platform = Platform.Load(services, "c64", null, arch);
                 var segMap = platform.CreateAbsoluteMemoryMap()!;
                 segMap.AddSegment(image, "code", AccessMode.ReadWriteExecute);
                 var program = new Program(new ByteProgramMemory(segMap), arch, platform);

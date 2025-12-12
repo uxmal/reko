@@ -180,7 +180,7 @@ namespace Reko.ImageLoaders.MachO
             LC_VERSION_MIN_WATCHOS = 0x00000030u,
         }
 
-        public Program ParseLoadCommands(mach_header_64 hdr, IProcessorArchitecture arch, Address addrLoad)
+        public Program ParseLoadCommands(mach_header_64 hdr, string? sPlatformOverride, IProcessorArchitecture arch, Address addrLoad)
         {
             var segmentMap = new SegmentMap(addrLoad);
             Debug.Print("Parsing {0} load commands.", hdr.ncmds);
@@ -231,15 +231,7 @@ namespace Reko.ImageLoaders.MachO
             ldr.program!.Architecture = arch;
             ldr.program.Memory = new ByteProgramMemory(segmentMap);
             ldr.program.SegmentMap = segmentMap;
-            if (!string.IsNullOrEmpty(platformName))
-            {
-                var env = cfgSvc.GetEnvironment(platformName!);
-                ldr.program.Platform = env.Load(ldr.Services, arch);
-            }
-            else
-            {
-                ldr.program.Platform = new DefaultPlatform(ldr.Services, arch);
-            }
+            ldr.program.Platform = Platform.Load(ldr.Services, platformName, sPlatformOverride, arch);
             return ldr.program;
         }
 

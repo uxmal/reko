@@ -51,7 +51,7 @@ namespace Reko.Environments.MacOS.Classic
             set { throw new NotImplementedException(); }
         }
 
-        public override Program LoadProgram(Address? loadAddress)
+        public override Program LoadProgram(Address? loadAddress, string? sPlatformOverride)
         {
             var addrLoad = loadAddress ?? PreferredBaseAddress;
             var cfgSvc = Services.RequireService<IConfigurationService>();
@@ -70,7 +70,7 @@ namespace Reko.Environments.MacOS.Classic
                 var bytes = new byte[resourceEntry.length];
                 Array.Copy(RawImage, resourceEntry.offset, bytes, 0, bytes.Length);
                 var arch = cfgSvc.GetArchitecture("m68k")!;
-                var platform = (MacOSClassic) cfgSvc.GetEnvironment("macOs").Load(Services, arch);
+                var platform = (MacOSClassic) Platform.Load(Services, "macOs", null, arch);
                 this.rsrcFork = new ResourceFork(platform, bytes);
                 this.mem = new ByteMemoryArea(addrLoad, bytes);
                 this.segmentMap = new SegmentMap(addrLoad);

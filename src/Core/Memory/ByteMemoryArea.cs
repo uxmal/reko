@@ -383,7 +383,10 @@ namespace Reko.Core.Memory
                 c = Constant.Create(type, l);
                 return true;
             default:
-               throw new NotImplementedException(string.Format("Primitive type {0} not supported.", type));
+                //$TODO:
+                // #1362: consider writing this to error output?
+                // throw new NotImplementedException(string.Format("Primitive type {0} not supported.", type));
+                break;
             }
             c = default!;
             return false;

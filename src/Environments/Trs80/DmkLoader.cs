@@ -53,7 +53,7 @@ namespace Reko.Environments.Trs80
             set { throw new NotImplementedException(); }
         }
 
-        public override Program LoadProgram(Address? loadAddress)
+        public override Program LoadProgram(Address? loadAddress, string? sPlatformOverride)
         {
             if (!ParseDMKHeader())
                 throw new BadImageFormatException("Unable to read DMK header.");
@@ -66,7 +66,7 @@ namespace Reko.Environments.Trs80
             var mem = new ByteMemoryArea(addrLoad, bytes);
             var cfgSvc = Services.RequireService<IConfigurationService>();
             var arch = cfgSvc.GetArchitecture("z80")!;
-            var platform = cfgSvc.GetEnvironment("trs80").Load(Services, arch);
+            var platform = Platform.Load(Services, "trs80", sPlatformOverride, arch);
             var segmentMap = CreateMemoryMap(platform, mem);
 
             //        return new RelocationResults(

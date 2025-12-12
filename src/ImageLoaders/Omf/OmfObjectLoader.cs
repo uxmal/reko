@@ -47,16 +47,13 @@ namespace Reko.ImageLoaders.Omf
             set => throw new NotSupportedException();
         }
 
-        public override Program LoadProgram(Address? address)
+        public override Program LoadProgram(Address? address, string? sPlatformOverride)
         {
             var configSvc = Services.RequireService<IConfigurationService>();
             var arch = configSvc.GetArchitecture("x86-real-16");
             if (arch is null)
                 throw new InvalidOperationException("Expected X86 real mode architecture to be available.");
-            var platform = configSvc.GetEnvironment("msdos").Load(Services, arch);
-            if (platform is null)
-                throw new InvalidOperationException("Expected MS-DOS environment to be available.");
-
+            var platform = Platform.Load(Services, "msdos", sPlatformOverride, arch);
             return LoadProgram(
                 GetRecordEnumerator(RawImage),
                 address ?? PreferredBaseAddress,

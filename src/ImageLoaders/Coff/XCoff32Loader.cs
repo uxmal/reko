@@ -51,7 +51,7 @@ namespace Reko.ImageLoaders.Coff
 
         public override Address PreferredBaseAddress { get; set; }
 
-        public override Program LoadProgram(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad, string? platformOverride)
         {
             BeImageReader rdr = new BeImageReader(this.RawImage, 0);
             FileHeader str = rdr.ReadStruct<FileHeader>();
@@ -71,7 +71,7 @@ namespace Reko.ImageLoaders.Coff
             var map = new SegmentMap(segments.Skip(1).ToArray());
             var cfgSvc = Services.RequireService<IConfigurationService>();
             var arch = cfgSvc.GetArchitecture("ppc-be-32")!;
-            var platform = new DefaultPlatform(Services, arch);
+            var platform = Platform.Load(Services, "", platformOverride, arch);
             return new Program(new ByteProgramMemory(map), arch, platform);
         }
 

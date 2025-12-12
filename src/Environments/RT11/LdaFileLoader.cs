@@ -37,9 +37,9 @@ namespace Reko.Environments.RT11
 
         public override Address PreferredBaseAddress { get; set; }
 
-        public override Program LoadProgram(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad, string? sPlatformOverride)
         {
-            var arch = new Pdp11Architecture(Services, "pdp11", new Dictionary<string, object>());
+            var arch = new Pdp11Architecture(Services, "pdp11", []);
 
             var rdr = new LeImageReader(RawImage);
 
@@ -47,7 +47,7 @@ namespace Reko.Environments.RT11
             if (segmentMap is null)
                 throw new BadImageFormatException("The file doesn't appear to be in LDA format.");
 
-            var platform = new RT11Platform(Services, arch);
+            var platform = Platform.Load(Services, "RT-11", sPlatformOverride, arch);
             var program = new Program
             {
                 Architecture = arch,

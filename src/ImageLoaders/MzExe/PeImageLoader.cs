@@ -52,7 +52,6 @@ namespace Reko.ImageLoaders.MzExe
         private const uint CoffSymbolSize = 18;
 
         private IProcessorArchitecture arch;
-        private IPlatform platform;
         private SizeSpecificLoader innerLoader;
         private Program program;
         private IEventListener listener;
@@ -307,7 +306,7 @@ namespace Reko.ImageLoaders.MzExe
 			}
         }
 
-        public override Program LoadProgram(Address? a)
+        public override Program LoadProgram(Address? a, string? sPlatformOverride)
         {
             var addrLoad = a ?? PreferredBaseAddress;
             SegmentMap = new SegmentMap(addrLoad);
@@ -324,6 +323,8 @@ namespace Reko.ImageLoaders.MzExe
                     ImageSymbols[sym.Address] = sym;
                 }
             }
+            var envName = GetPlatformName(this.machine);
+            var platform = Platform.Load(Services, envName, sPlatformOverride, arch);
             this.program = new Program(new ByteProgramMemory(SegmentMap), arch, platform, ImageSymbols, new())
             {
                 Name = this.ImageLocation.GetFilename()
@@ -461,7 +462,6 @@ namespace Reko.ImageLoaders.MzExe
 			this.machine = rdr.ReadLeUInt16();
             short expectedMagic = GetExpectedMagic(machine);
             arch = CreateArchitecture(machine);
-			platform = CreatePlatform(machine, Services, arch);
             innerLoader = CreateInnerLoader(machine);
 
 			sections = rdr.ReadLeInt16();
@@ -625,11 +625,11 @@ namespace Reko.ImageLoaders.MzExe
 			{
                 ApplyRelocations(relocSection.OffsetRawData, relocSection.SizeRawData, addrLoad, relocations);
 			} 
-            var addrEp = platform.AdjustProcedureAddress(addrLoad + RvaStartAddress);
+            var addrEp = program.Platform.AdjustProcedureAddress(addrLoad + RvaStartAddress);
             var entrySym = CreateMainEntryPoint(
                     (this.fileFlags & ImageFileDll) != 0,
                     addrEp,
-                    platform);
+                    program.Platform);
             ImageSymbols[entrySym.Address] = entrySym;
             program.EntryPoints[entrySym.Address] = entrySym;
             ReadExceptionRecords(addrLoad, rvaExceptionTable, sizeExceptionTable, ImageSymbols);

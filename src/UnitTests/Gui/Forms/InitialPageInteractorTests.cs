@@ -105,7 +105,7 @@ namespace Reko.UnitTests.Gui.Forms
         {
             Assert.IsFalse(i.CanAdvance);
 
-            loader.Setup(l => l.Load(ImageLocation.FromUri("file:floxe.exe"), null, null)).Returns(project);
+            loader.Setup(l => l.Load(ImageLocation.FromUri("file:floxe.exe"), null, null, null)).Returns(project);
             dec.Setup(d => d.Project).Returns(project);
             browserSvc.Setup(b => b.Load(project));
             memSvc.Setup(m => m.ViewImage(program));
@@ -123,7 +123,7 @@ namespace Reko.UnitTests.Gui.Forms
 
             Assert.IsFalse(i.CanAdvance, "Page should not be ready to advance");
 
-            loader.Setup(l => l.Load(ImageLocation.FromUri("file:floxe.exe"), null, null)).Returns(project);
+            loader.Setup(l => l.Load(ImageLocation.FromUri("file:floxe.exe"), null, null, null)).Returns(project);
             memSvc.Setup(m => m.ViewImage(program));
 
             await i.OpenBinary("floxe.exe");
@@ -134,7 +134,7 @@ namespace Reko.UnitTests.Gui.Forms
         [Test]
         public async Task Ipi_OpenBinary_ShouldShowMemoryWindow()
         {
-            loader.Setup(l => l.Load(ImageLocation.FromUri("file:floxe.exe"), null, null)).Returns(project);
+            loader.Setup(l => l.Load(ImageLocation.FromUri("file:floxe.exe"), null, null, null)).Returns(project);
             dec.Setup(d => d.Project).Returns(project);
             browserSvc.Setup(d => d.Load(project));
             memSvc.Setup(s => s.ViewImage(program)).Verifiable();
@@ -147,7 +147,7 @@ namespace Reko.UnitTests.Gui.Forms
         [Test]
         public async Task Ipi_OpenBinary_ShouldBrowseProject()
         {
-            loader.Setup(l => l.Load(ImageLocation.FromUri("file:foo.exe"), null, null)).Returns(project);
+            loader.Setup(l => l.Load(ImageLocation.FromUri("file:foo.exe"), null, null, null)).Returns(project);
             dec.Setup(d => d.Project).Returns(project);
             browserSvc.Setup(b => b.Load(project)).Verifiable();
             memSvc.Setup(m => m.ViewImage(program));
@@ -164,7 +164,7 @@ namespace Reko.UnitTests.Gui.Forms
             var archiveFile = new Mock<ArchivedFile>();
             program.Location = ImageLocation.FromUri("file:test.archive#dir/test.exe");
 
-            loader.Setup(l => l.Load(ImageLocation.FromUri("file:test.archive"), null, null))
+            loader.Setup(l => l.Load(ImageLocation.FromUri("file:test.archive"), null, null, null))
                 .Returns(archive.Object);
             archiveFile.Setup(l => l.LoadImage(sc, null))
                 .Returns(program)
@@ -182,7 +182,7 @@ namespace Reko.UnitTests.Gui.Forms
         [Test]
         public async Task Ipi_LeavePage()
         {
-            loader.Setup(l => l.Load(ImageLocation.FromUri("file:foo.exe"), null, null)).Returns(project);
+            loader.Setup(l => l.Load(ImageLocation.FromUri("file:foo.exe"), null, null, null)).Returns(project);
             dec.Setup(d => d.Project).Returns(project);
             browserSvc.Setup(b => b.Load(project));
             memSvc.Setup(m => m.ViewImage(program));
@@ -196,7 +196,7 @@ namespace Reko.UnitTests.Gui.Forms
         public async Task Ipi_NextPhaseButton_ScanningNotNeeded()
         {
             program.NeedsScanning = false;
-            loader.Setup(l => l.Load(ImageLocation.FromUri("file:foo.exe"), null, null)).Returns(project);
+            loader.Setup(l => l.Load(ImageLocation.FromUri("file:foo.exe"), null, null, null)).Returns(project);
             dec.Setup(d => d.Project).Returns(project);
             browserSvc.Setup(b => b.Load(project));
 
@@ -212,7 +212,7 @@ namespace Reko.UnitTests.Gui.Forms
         public async Task Ipi_FinishDecompilationButton()
         {
             program.NeedsScanning = false;
-            loader.Setup(l => l.Load(ImageLocation.FromUri("file:foo.exe"), null, null)).Returns(project);
+            loader.Setup(l => l.Load(ImageLocation.FromUri("file:foo.exe"), null, null, null)).Returns(project);
             dec.Setup(d => d.Project).Returns(project);
             browserSvc.Setup(b => b.Load(project));
             var status = new CommandStatus();

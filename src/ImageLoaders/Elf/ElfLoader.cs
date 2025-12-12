@@ -422,7 +422,7 @@ namespace Reko.ImageLoaders.Elf
             return addrEnd;
         }
 
-        public IPlatform LoadPlatform(byte osAbi, IProcessorArchitecture arch)
+        public IPlatform LoadPlatform(byte osAbi, string? sPlatformOverride, IProcessorArchitecture arch)
         {
             string envName = string.Empty;
             var cfgSvc = Services.RequireService<IConfigurationService>();
@@ -449,8 +449,7 @@ namespace Reko.ImageLoaders.Elf
                 eventListener?.Warn("Unsupported ELF ABI 0x{0:X2}.", osAbi);
                 break;
             }
-            var env = cfgSvc.GetEnvironment(envName);
-            this.platform = env.Load(Services, arch);
+            this.platform = Platform.Load(Services, envName, sPlatformOverride, arch);
             this.platform.LoadUserOptions(options);
             return platform;
         }

@@ -197,10 +197,7 @@ namespace Reko.ImageLoaders.MzExe
             }
         }
 
-        public IPlatform CreatePlatform(
-            ushort peMachineType, 
-            IServiceProvider sp,
-            IProcessorArchitecture arch)
+        public string GetPlatformName(ushort peMachineType)
         {
             string env;
             switch (peMachineType)
@@ -218,9 +215,7 @@ namespace Reko.ImageLoaders.MzExe
             case MACHINE_XBOX360: env = "xbox360"; break;
             default: throw new ArgumentException(string.Format("Unsupported machine type 0x:{0:X4} in PE hader.", peMachineType));
             }
-            return Services.RequireService<IConfigurationService>()
-                .GetEnvironment(env)
-                .Load(Services, arch);
+            return env;
         }
 
         protected Relocator CreateRelocator(ushort peMachineType, Program program)

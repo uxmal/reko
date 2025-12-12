@@ -314,7 +314,7 @@ namespace Reko.Core.Serialization
             }
             else
             {
-                if (loader.Load(binLocation, null, address) is not Program p)
+                if (loader.Load(binLocation, null, sUser.PlatformOptions?.Name, address) is not Program p)
                 {
                     // A previous save of the project was able to read the file, 
                     // but now we can't...

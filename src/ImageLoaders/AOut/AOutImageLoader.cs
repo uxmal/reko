@@ -43,7 +43,7 @@ namespace Reko.ImageLoaders.AOut
 
         public override Address PreferredBaseAddress { get; set; }
 
-        public override Program LoadProgram(Address? address)
+        public override Program LoadProgram(Address? address, string? platformOverride)
         {
             ushort magic = ByteMemoryArea.ReadLeUInt16(base.RawImage, 0);
             var cfgSvc = Services.RequireService<IConfigurationService>();
@@ -73,7 +73,7 @@ namespace Reko.ImageLoaders.AOut
                 var program = new Program(
                     new ByteProgramMemory(segmentMap),
                     arch,
-                    new VaxUnix(Services, arch));
+                    Platform.Load(Services, "vax-unix", platformOverride, arch));
                 program.EntryPoints.Add(entry.Address, entry);
 
                 return program;

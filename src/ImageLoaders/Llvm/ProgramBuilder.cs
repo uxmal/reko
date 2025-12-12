@@ -31,14 +31,19 @@ namespace Reko.ImageLoaders.LLVM
 {
     public class ProgramBuilder
     {
-        private IServiceProvider services;
+        private readonly IServiceProvider services;
         private Program program;
-        private IConfigurationService cfgSvc;
+        private readonly IConfigurationService cfgSvc;
+        private readonly string? sPlatformOverride;
 
-        public ProgramBuilder(IServiceProvider services, Program program)
+        public ProgramBuilder(
+            IServiceProvider services,
+            Program program, 
+            string? sPlatformOverride)
         {
             this.services = services;
             this.program = program;
+            this.sPlatformOverride = sPlatformOverride;
             this.Functions = new Dictionary<FunctionDefinition, ProcedureBuilder>();
             this.Globals = new Dictionary<string, Expression>();
             this.cfgSvc = services.RequireService<IConfigurationService>();
@@ -111,15 +116,12 @@ namespace Reko.ImageLoaders.LLVM
 
         private IPlatform LoadPlatform(IProcessorArchitecture arch, string llvmPlatformName)
         {
-            string? platformName = null;
-            switch (llvmPlatformName)
+            string? platformName = llvmPlatformName switch
             {
-            case "linux": platformName = "elf-neutral"; break;
-            default:
-                return new DefaultPlatform(services, arch);
-            }
-            var el = cfgSvc.GetEnvironment(platformName);
-            var platform = el.Load(services, arch);
+                "linux" => "elf-neutral",
+                _ => null
+            };
+            var platform = Platform.Load(services, platformName, sPlatformOverride, arch);
             return platform;
         }
         

@@ -77,7 +77,7 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
                 string.Join(Environment.NewLine, lines)));
             var fn = parser.ParseFunctionDefinition();
 
-            var pb = new ProgramBuilder(sc, program);
+            var pb = new ProgramBuilder(sc, program, null);
             foreach (var de in globals)
             {
                 pb.Globals.Add(de.Key, de.Value);

@@ -273,11 +273,11 @@ namespace Reko.ImageLoaders.Xbe
             return imports;
         }
 
-        public override Program LoadProgram(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad, string? sPlatformOverride)
         {
             var cfgSvc = Services.RequireService<IConfigurationService>();
             var arch = cfgSvc.GetArchitecture("x86-protected-32")!;
-            var platform = cfgSvc.GetEnvironment("xbox").Load(Services, arch);
+            var platform = Platform.Load(Services, "xbox", sPlatformOverride, arch);
 
             this.hdr = rdr.ReadStruct<XbeImageHeader>();
             if (hdr.Magic != XBE_MAGIC)

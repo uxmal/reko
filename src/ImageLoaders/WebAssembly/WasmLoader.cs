@@ -44,12 +44,12 @@ namespace Reko.ImageLoaders.WebAssembly
 
         public override Address PreferredBaseAddress { get; set; }
 
-        public override Program LoadProgram(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad, string? sPlatformOverride)
         {
             var rdr = LoadHeader();
             var sections = LoadSections(rdr);
             var wasmFile = new WasmFile(sections);
-            var arch = new WasmArchitecture(Services, "wasm", new());
+            var arch = new WasmArchitecture(Services, "wasm", []);
             var platform = new WasmPlatform(Services, arch, wasmFile);
             var preprocessor = new WasmPreprocessor(arch, platform, wasmFile);
             return preprocessor.Preprocess();

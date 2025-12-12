@@ -78,7 +78,7 @@ namespace Reko.UnitTests.Environments.SegaGenesis
 
             var rawBytes = new byte[0x300];
             var sgrom = new RomLoader(sc, ImageLocation.FromUri("file:foo.bin"), rawBytes);
-            var program = sgrom.LoadProgram(Address.Ptr32(0));
+            var program = sgrom.LoadProgram(Address.Ptr32(0), null);
 
             var romSegment = program.SegmentMap.Segments.Values.First();
             var bmem = (ByteMemoryArea) romSegment.MemoryArea;

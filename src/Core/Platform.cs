@@ -1080,6 +1080,59 @@ namespace Reko.Core
         public virtual void WriteMetadata(Program program, string path)
         {
         }
+
+        /// <summary>
+        /// Helper method used to obtain an <see cref="IPlatform"/> implementation,
+        /// given an optional override.
+        /// </summary>
+        /// <param name="services"><see cref="IServiceProvider"/> instance to use.</param>
+        /// <param name="platform"><see cref="IPlatform"/> instance to use if no <paramref name="sPlatformOverride" />
+        /// <param name="sPlatformOverride">Name of platform to use. If null, the method falls 
+        /// back to using the provided <paramref name="platform"/>.</param>
+        /// is provided.</param>
+        /// <param name="arch">Processor architecture to use when obtaining the <see cref="IPlatform"/>
+        /// instance</param>
+        /// <returns>An <see cref="IPlatform"/> instance.</returns>
+        public static IPlatform Load(
+            IServiceProvider services,
+            IPlatform? platform, 
+            string? sPlatformOverride,
+            IProcessorArchitecture arch)
+        {
+            if (string.IsNullOrWhiteSpace(sPlatformOverride) && platform is not null)
+                return platform;
+            var cfgSvc = services.RequireService<IConfigurationService>();
+            var platform2 = cfgSvc.GetEnvironment(sPlatformOverride)
+                .Load(services, arch);
+            return platform2;
+        }
+
+        /// <summary>
+        /// Helper method used to obtain an <see cref="IPlatform"/> implementation,
+        /// given an optional override.
+        /// </summary>
+        /// <param name="services"><see cref="IServiceProvider"/> instance to use.</param>
+        /// <param name="sPlatform">Name of the platform to use if no <paramref name="sPlatformOverride" /> was provided.
+        /// </param>
+        /// <param name="sPlatformOverride">Name of platform to use. If null, the method falls 
+        /// back to using the provided <paramref name="sPlatform"/>.</param>
+        /// <param name="arch">Processor architecture to use when obtaining the <see cref="IPlatform"/>
+        /// instance</param>
+        /// <returns>An <see cref="IPlatform"/> instance.</returns>
+        public static IPlatform Load(
+            IServiceProvider services,
+            string? sPlatform,
+            string? sPlatformOverride,
+            IProcessorArchitecture arch)
+        {
+            if (!string.IsNullOrWhiteSpace(sPlatformOverride))
+                sPlatform = sPlatformOverride;
+            var cfgSvc = services.RequireService<IConfigurationService>();
+            var platform = cfgSvc.GetEnvironment(sPlatform)
+                .Load(services, arch);
+            return platform;
+        }
+
     }
 
     /// <summary>

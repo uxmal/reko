@@ -383,7 +383,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         public void EIL_Load()
         {
             var el = new ElfImageLoader(sc, ImageLocation.FromUri("file:foo"), rawImg);
-            var lr = el.LoadProgram(Address.Ptr32(0));
+            var lr = el.LoadProgram(Address.Ptr32(0), null);
             Assert.AreSame(arch.Object, lr.Architecture);
         }
 
@@ -469,7 +469,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             var binaryImage = new ElfBinaryImage(eil.ImageLocation, eh, EndianServices.Little);
             var el = eil.CreateLoader(binaryImage);
             el.LoadFileHeader();
-            el.LoadPlatform(0x66, arch.Object);        // ELFOSABI_CELL_LV2;
+            el.LoadPlatform(0x66, null, arch.Object);        // ELFOSABI_CELL_LV2;
 
             opEl.VerifyAll();
         }

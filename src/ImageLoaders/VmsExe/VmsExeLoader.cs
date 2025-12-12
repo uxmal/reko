@@ -46,7 +46,7 @@ namespace Reko.ImageLoaders.VmsExe
 
         public override Address PreferredBaseAddress { get; set; }
 
-        public override Program LoadProgram(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad, string? sPlatformOverride)
         {
             var rdr = new LeImageReader(RawImage);
             var hdr = LoadHeader(rdr);
@@ -65,7 +65,8 @@ namespace Reko.ImageLoaders.VmsExe
             return new Program(
                 new ByteProgramMemory(segmentMap),
                 arch,
-                new DefaultPlatform(Services, arch, "VAX VMS"));   //$TODO: VaxVms platform
+                //$TODO: define a VaxVms platform
+                Platform.Load(Services, "VAX VMS", sPlatformOverride, arch));
         }
 
         private Header LoadHeader(LeImageReader rdr)

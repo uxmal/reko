@@ -125,6 +125,8 @@ namespace Reko.Loading
         /// <param name="imageLocation">The location of the image to load.</param>
         /// <param name="loaderName">Optional .NET class name of a custom
         /// image loader</param>
+        /// <param name="environmentName">Optional name of the environment
+        /// to use, overriding any environment loaded by the image loader.</param>
         /// <param name="addrLoad">Optional address at which to load the image.
         /// </param>
         /// <returns>
@@ -132,7 +134,11 @@ namespace Reko.Loading
         /// file format wasn't recognized an instance of <see cref="Blob"/> is
         /// returned.
         /// </returns>
-        public ILoadedImage Load(ImageLocation imageLocation, string? loaderName = null, Address? addrLoad = null)
+        public ILoadedImage Load(
+            ImageLocation imageLocation,
+            string? loaderName = null,
+            string? environmentName = null,
+            Address? addrLoad = null)
         {
             byte[] image = LoadFileBytes(imageLocation.FilesystemPath);
 
@@ -334,11 +340,7 @@ namespace Reko.Loading
             if (arch is null)
                 throw new ApplicationException($"Unknown processor architecture '{details.ArchitectureName}");
             arch.LoadUserOptions(details.ArchitectureOptions);
-            IPlatform platform;
-            if (details.PlatformName is null)
-                platform = new DefaultPlatform(Services, arch);
-            else 
-                platform = cfgSvc.GetEnvironment(details.PlatformName).Load(Services, arch);
+            IPlatform platform = Platform.Load(Services, details.PlatformName, null, arch);
             Address addrLoad;
             if (loadingAddress is null)
             {

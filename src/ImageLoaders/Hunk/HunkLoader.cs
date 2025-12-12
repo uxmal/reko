@@ -59,7 +59,7 @@ namespace Reko.ImageLoaders.Hunk
             set { throw new NotImplementedException(); }
         }
 
-        public override Program LoadProgram(Address? loadAddress)
+        public override Program LoadProgram(Address? loadAddress, string? sPlatformOverride)
         {
             var addrLoad = loadAddress ?? PreferredBaseAddress;
             var cfgSvc = Services.RequireService<IConfigurationService>();
@@ -69,7 +69,7 @@ namespace Reko.ImageLoaders.Hunk
             this.hunkFile = parse.Parse();
             BuildSegments();
             this.firstCodeHunk = parse.FindFirstCodeHunk();
-            var platform = cfgSvc.GetEnvironment("amigaOS").Load(Services, arch);
+            var platform = Platform.Load(Services, "amigaOS", sPlatformOverride, arch);
             var imageMap = platform.CreateAbsoluteMemoryMap();
             var mem = new ByteMemoryArea(addrLoad, RelocateBytes(addrLoad));
             var segmentMap = new SegmentMap(

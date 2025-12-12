@@ -50,7 +50,7 @@ namespace Reko.Environments.PalmOS.PRC
         }
 
 
-        public override Program LoadProgram(Address? loadAddress)
+        public override Program LoadProgram(Address? loadAddress, string? sPlatformOverride)
         {
             var addrLoad = loadAddress ?? PreferredBaseAddress;
             var rdr = new BeImageReader(base.RawImage);
@@ -67,7 +67,7 @@ namespace Reko.Environments.PalmOS.PRC
             if (segments is null)
                 throw new BadImageFormatException();
 
-            var platform = new PalmOSPlatform(Services, arch, "palmOS");
+            var platform = Platform.Load(Services, "palmOS", sPlatformOverride, arch);
             var program = new Program(new ByteProgramMemory(segments), arch, platform);
             if (ep is not null)
             {

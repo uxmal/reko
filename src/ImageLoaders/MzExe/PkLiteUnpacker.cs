@@ -35,7 +35,6 @@ namespace Reko.ImageLoaders.MzExe
     public class PkLiteUnpacker : ProgramImageLoader
 	{
         private readonly IProcessorArchitecture arch;
-        private readonly IPlatform platform;
 
 		private readonly byte [] abU;
 		private ByteMemoryArea imgU;
@@ -52,8 +51,6 @@ namespace Reko.ImageLoaders.MzExe
 		{
             var cfgSvc = Services.RequireService<IConfigurationService>();
             this.arch = cfgSvc.GetArchitecture("x86-real-16")!;
-            platform = cfgSvc.GetEnvironment("ms-dos")
-                .Load(Services, arch);
 
 			uint pkLiteHdrOffset = (uint) (loader.ExeLoader.e_cparHeader * 0x10);
 
@@ -78,7 +75,7 @@ namespace Reko.ImageLoaders.MzExe
 			return ByteMemoryArea.CompareArrays(rawImg, (int) signatureOffset, signature, signature.Length);
 		}
 
-        public override Program LoadProgram(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad, string? sPlatformOverride)
 		{
 			uint dst = PspSize;
 
@@ -211,6 +208,7 @@ l01C8:
 			imgU = new ByteMemoryArea(addrLoad!.Value, abU);
             segmentMap = new SegmentMap(imgU.BaseAddress,
                 new ImageSegment("image", imgU, AccessMode.ReadWriteExecute));
+            var platform = Platform.Load(Services, "ms-dos", sPlatformOverride, arch);
 			var program = new Program(new ByteProgramMemory(segmentMap), arch, platform);
             var state = Relocate(program, addrLoad!.Value);
 

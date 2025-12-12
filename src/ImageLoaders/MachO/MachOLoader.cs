@@ -66,13 +66,13 @@ namespace Reko.ImageLoaders.MachO
             set { throw new NotImplementedException(); }
         }
 
-        public override Program LoadProgram(Address? a)
+        public override Program LoadProgram(Address? a, string? sPlatformOverride)
         {
             var addrLoad = a ?? PreferredBaseAddress;
             this.program = new Program();
             parser = CreateParser();
             var (hdr, specific) = parser.ParseHeader(addrLoad);
-            this.program = parser.ParseLoadCommands(hdr, specific.Architecture, addrLoad);
+            this.program = parser.ParseLoadCommands(hdr, sPlatformOverride, specific.Architecture, addrLoad);
 
             CollectSymbolStubs(parser, machoSymbols, imageSymbols);
             foreach (var de in imageSymbols)

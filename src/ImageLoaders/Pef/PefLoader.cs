@@ -59,21 +59,21 @@ namespace Reko.ImageLoaders.Pef
             return PefContainer.Load(rdr);
         }
 
-        public override Program LoadProgram(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad, string? sPlatformOverride)
         {
             var rdr = new BeImageReader(RawImage, 0);
             this.container = this.LoadContainer(rdr);
-            Program program = MakeProgram(rdr);
+            Program program = MakeProgram(rdr, sPlatformOverride);
             return program;
         }
 
-        private Program MakeProgram(EndianByteImageReader rdr)
+        private Program MakeProgram(EndianByteImageReader rdr, string? sPlatformOverride)
         {
             if (container is null) throw new InvalidOperationException();
 
             var cfgSvc = Services.RequireService<IConfigurationService>();
             var arch = GetArchitecture(cfgSvc);
-            var platform = GetPlatform(cfgSvc, arch);
+            var platform = GetPlatform(cfgSvc, sPlatformOverride, arch);
 
             var pefSegments = container.GetImageSegments(rdr, PreferredBaseAddress!).ToArray();
 
@@ -113,7 +113,7 @@ namespace Reko.ImageLoaders.Pef
             return arch;
         }
 
-        private IPlatform GetPlatform(IConfigurationService cfgSvc, IProcessorArchitecture arch)
+        private IPlatform GetPlatform(IConfigurationService cfgSvc, string? sPlatformOverride, IProcessorArchitecture arch)
         {
             if (container is null) throw new InvalidOperationException();
 
@@ -124,7 +124,7 @@ namespace Reko.ImageLoaders.Pef
             case OSType.kMotorola68KCFragArch: sPlatform = "macOs"; break;
             default: throw new NotSupportedException($"Environment type {container.ContainerHeader.architecture:X8} is not supported.");
             }
-            var platform = cfgSvc.GetEnvironment(sPlatform).Load(Services, arch);
+            var platform = Platform.Load(Services, sPlatform, sPlatformOverride, arch);
             return platform;
 
         }

@@ -189,7 +189,7 @@ namespace Reko.ImageLoaders.TekHex
             return Address.Create(arch.PointerType, uAddr * 8u / (uint) arch.MemoryGranularity);
         }
 
-        public override Program LoadProgram(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad, string? sPlatformOverride)
             => throw new NotSupportedException();
 
         public override Program LoadProgram(
