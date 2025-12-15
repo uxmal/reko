@@ -15,9 +15,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-13]
+        os: [ubuntu-latest, windows-latest, macos-latest]
         include:
-          - os: macos-13
+          - os: macos-latest
             build_config: UnixRelease
           - os: ubuntu-latest
             build_config: UnixRelease
@@ -29,7 +29,6 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: |
-          6.0.x
           8.0.x
     - name: Install dependencies
       shell: bash
