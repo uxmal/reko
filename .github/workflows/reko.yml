@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-15-latest]
+        os: [ubuntu-latest, windows-latest, macos-15-intel]
         include:
           - os: macos-15-intel
             build_config: UnixRelease
