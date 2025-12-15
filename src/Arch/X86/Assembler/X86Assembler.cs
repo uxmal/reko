@@ -1354,6 +1354,12 @@ namespace Reko.Arch.X86.Assembler
             ProcessFst(true, parsedOperand);
         }
 
+        public void Fucompp()
+        {
+            emitter.EmitByte(0xDA);
+            emitter.EmitByte(0xE9);
+        }
+
         public void Ret()
         {
             EmitOpcode(0xC3, null);
@@ -2068,9 +2074,15 @@ namespace Reko.Arch.X86.Assembler
         {
             ProcessStringInstruction((byte)StringInstructionBaseOps.Compare, PrimitiveType.Word16);
         }
+
         public void Cmpsd()
         {
             ProcessStringInstruction((byte)StringInstructionBaseOps.Compare, PrimitiveType.Word32);
+        }
+
+        public void Setnz(ParsedOperand op)
+        {
+            ProcessSetCc(0x95, op);
         }
 
         public ParsedOperand St(int n)

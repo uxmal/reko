@@ -277,10 +277,10 @@ l00100000:
                    m.Jz("foo");
                    m.Ret();
                });
-                //"DF E0" +       // fstsw	ax
-                //"80 E4 45" +    // and	ah,45
-                //"80 FC 40" +    // cmp	ah,40
-                //"74 02");       // jz	$+4
+            //"DF E0" +       // fstsw	ax
+            //"80 E4 45" +    // and	ah,45
+            //"80 FC 40" +    // cmp	ah,40
+            //"74 02");       // jz	$+4
         }
 
         // If you XOR with 0x40 and you get a 0 result, AH
@@ -315,10 +315,10 @@ l00100000:
                 m.Jz("foo");
                 m.Ret();
             });
-                //"DF E0" +       // fstsw	ax
-                //"80 E4 45" +    // and	ah,45
-                //"80 F4 40" +    // xor ah, 40
-                //"74 02");       // jz	$+4
+            //"DF E0" +       // fstsw	ax
+            //"80 E4 45" +    // and	ah,45
+            //"80 F4 40" +    // xor ah, 40
+            //"74 02");       // jz	$+4
         }
 
         [Test]
@@ -343,9 +343,9 @@ l00100000:
                      m.Jz("foo");
                      m.Ret();
                  });
-                //"DF E0" +       // fstsw	ax
-                //"F6 C4 45" +    // test	ah,45
-                //"74 02");       // jz	0804849B
+            //"DF E0" +       // fstsw	ax
+            //"F6 C4 45" +    // test	ah,45
+            //"74 02");       // jz	0804849B
         }
 
         [Test]
@@ -376,11 +376,11 @@ l00100000:
                      m.Jpe(nameof(Fstsw_ah_44_pe));
                      m.Ret();
                  });
-                //"D8 5C 24 24" + // fcomp dword ptr [esp+24h]
-                //"DF E0" +       // fstsw ax
-                //"89 54 24 2C" + // mov [esp+2Ch],edx
-                //"F6 C4 44" +    // test ah,44h
-                //"7A 26");       // jpe 0D2316h
+            //"D8 5C 24 24" + // fcomp dword ptr [esp+24h]
+            //"DF E0" +       // fstsw ax
+            //"89 54 24 2C" + // mov [esp+2Ch],edx
+            //"F6 C4 44" +    // test ah,44h
+            //"7A 26");       // jpe 0D2316h
         }
 
         [Test]
@@ -405,9 +405,9 @@ l00100000:
                      m.Jz("foo");
                      m.Ret();
                  });
-                //"DF E0" +       // fstsw	ax
-                //"F6 C4 05" +    // test	ah,05 -- ge
-                //"74 02");       // jz	080484BE
+            //"DF E0" +       // fstsw	ax
+            //"F6 C4 05" +    // test	ah,05 -- ge
+            //"74 02");       // jz	080484BE
         }
 
         [Test]
@@ -561,6 +561,45 @@ l00100000:
                 m.Movzx(m.eax, m.ax);
                 m.Shr(m.eax, 0x0B);
                 m.And(m.eax, 7);
+                m.Ret();
+            });
+        }
+
+        [Test]
+        public void Fstsw_equality_comparison()
+        {
+            RunTest(
+@"
+l00100000:
+	FPUF_5 = cond(ST[Top:real64] - ST[Top + 1<i8>:real64])
+	Top_6 = Top + 2<i8>
+	ax_7 = __fstsw(FPUF_5)
+	ah_8 = SLICE(ax_7, byte, 8) (alias)
+	ah_9 = ah_8 & 0x44<8>
+	SZ_10 = cond(ah_9)
+	O_11 = 0<32>
+	C_12 = 0<32>
+	ah_13 = ah_9 ^ 0x40<8>
+	SZ_14 = cond(ah_13)
+	Z_17 = SZ_14 & 4<32> (alias)
+	O_15 = 0<32>
+	C_16 = 0<32>
+	al_18 = CONVERT(Test(NE,FPUF_5), bool, byte)
+	eax_20 = SEQ(eax_16_16, ah_13, al_18) (alias)
+	eax_21 = eax_20 & 0xFF<32>
+	SZ_22 = cond(eax_21)
+	O_23 = 0<32>
+	C_24 = 0<32>
+	return
+",
+            m =>
+            {
+                m.Fucompp();
+                m.Fstsw(m.ax);
+                m.And(m.ah, 0x44);
+                m.Xor(m.ah, 0x40);
+                m.Setnz(m.al);
+                m.And(m.eax, 0xFF);
                 m.Ret();
             });
         }

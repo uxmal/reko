@@ -174,8 +174,8 @@ namespace Reko.Arch.X86.Analysis
                                 if (mask == 0)
                                     break;
                                 mask = andMask.ToInt32() >> (8 - shift);
-                                var stmBranch = FindUsingBranch(ass.Dst, true); //$REVIEW could there be many?
-                                changed |= ReplaceBranch(sid, sidFpuf, mask, stmBranch, EvaluateFstswXorInstructions);
+                                var (stmBranch, test) = FindUsingStatement(ass.Dst, true); //$REVIEW could there be many?
+                                changed |= ReplaceTest(sid, sidFpuf, mask, stmBranch, test, EvaluateFstswXorInstructions);
                                 break;
                             }
                         }
@@ -210,8 +210,8 @@ namespace Reko.Arch.X86.Analysis
                             case OperatorType.And:
                                 // This is a rewritten TEST instruction acting directly on the AX/AH register
                                 mask = imm.ToInt32() >> (8 - shift);
-                                var stmBranch = FindUsingBranch(ass.Dst, false); //$REVIEW could there be many?
-                                changed |= ReplaceBranch(sid, sidFpuf, mask, stmBranch, EvaluateFstswTestInstructions);
+                                var (stmUse, test) = FindUsingStatement(ass.Dst, false); //$REVIEW could there be many?
+                                changed |= ReplaceTest(sid, sidFpuf, mask, stmUse, test, EvaluateFstswTestInstructions);
                                 break;
                             case OperatorType.ISub:
                                 // This is a rewritten CMP instruction, which acts on result of a 
@@ -219,8 +219,8 @@ namespace Reko.Arch.X86.Analysis
                                 if (mask == 0)
                                     break;
                                 mask = mask & (imm.ToInt32() >> (8 - shift));
-                                stmBranch = FindUsingBranch(ass.Dst, false); //$REVIEW: could there be many?
-                                changed |= ReplaceBranch(sid, sidFpuf, mask, stmBranch, EvaluateFstswCmpInstructions);
+                                (stmUse, test) = FindUsingStatement(ass.Dst, false); //$REVIEW: could there be many?
+                                changed |= ReplaceTest(sid, sidFpuf, mask, stmUse, test, EvaluateFstswCmpInstructions);
                                 break;
                             }
                         }
@@ -256,26 +256,41 @@ namespace Reko.Arch.X86.Analysis
             return changed;
         }
 
-        private bool ReplaceBranch(
+        private bool ReplaceTest(
             SsaIdentifier sid,
             SsaIdentifier sidFpuf,
             int mask, 
-            Statement? stmBranch,
+            Statement? stmUse,
+            TestCondition? test,
             Func<Statement, ConditionCode, int, ConditionCode> fn)
         {
-            if (stmBranch?.Instruction is not Branch branch ||
-                branch.Condition is not TestCondition test)
+            if (stmUse is null || test is null)
             {
                 listener.Warn(listener.CreateStatementNavigator(program, sid.DefStatement), "Couldn't find a branch instruction using `fstsw`.");
                 return false;
             }
-            var ccode = fn(stmBranch, test.ConditionCode, mask);
+            var ccode = fn(stmUse, test.ConditionCode, mask);
             if (ccode == ConditionCode.None)
                 return false;
 
-            ssa.RemoveUses(stmBranch);
-            stmBranch.Instruction = new Branch(new TestCondition(ccode, sidFpuf.Identifier), branch.Target);
-            ssa.AddUses(stmBranch);
+            ssa.RemoveUses(stmUse, test.Expression);
+            if (stmUse.Instruction is Branch branch)
+            {
+                var newCondition = ExpressionReplacer.Replace(
+                    test,
+                    new TestCondition(ccode, sidFpuf.Identifier),
+                    branch.Condition);
+                stmUse.Instruction = new Branch(newCondition, branch.Target);
+            }
+            else if (stmUse.Instruction is Assignment ass)
+            {
+                var newSrc = ExpressionReplacer.Replace(
+                    test,
+                    new TestCondition(ccode, sidFpuf.Identifier),
+                    ass.Src);
+                stmUse.Instruction = new Assignment(ass.Dst, newSrc);
+            }
+            ssa.AddUses(stmUse, sidFpuf.Identifier);
             return true;
         }
 
@@ -286,9 +301,16 @@ namespace Reko.Arch.X86.Analysis
             ssa.AddUses(use);
         }
 
-        private Statement? FindUsingBranch(Identifier dst, bool findCond)
+        /// <summary>
+        /// Bypass all conversions and bit masks of the FPUF flags to find a statement that actually uses
+        /// the value: a Test() or a Branch()
+        /// </summary>
+        /// <param name="id">Identifier whose uses we are tracing.</param>
+        /// <param name="findCond">If true, allow COND() expressions in the search.</param>
+        /// <returns></returns>
+        private (Statement?, TestCondition?) FindUsingStatement(Identifier id, bool findCond)
         {
-            var sid = ssa.Identifiers[dst];
+            var sid = ssa.Identifiers[id];
             var wl = new WorkList<SsaIdentifier>();
             wl.Add(sid);
             while (wl.TryGetWorkItem(out sid))
@@ -319,17 +341,24 @@ namespace Reko.Arch.X86.Analysis
                             wl.Add(ssa.Identifiers[ass.Dst]);
                             break;
                         }
-                        else
-                            throw new NotImplementedException($"fstsw: FindUsingBranch: {use}.");
-                    case Branch:
+                        else if (ass.Src is Conversion cvt &&
+                            cvt.Expression is TestCondition test &&
+                            test.Expression == sid.Identifier)
+                        {
+                            return (use, test);
+                        }
+                        break;
+                    case Branch b:
                         //$REVIEW what if there are more uses?
-                        return use;
+                        if (b.Condition is TestCondition testBr)
+                            return (use, testBr);
+                        break;
                     default:
                         break;
                     }
                 }
             }
-            return null;
+            return (null, null);
         }
 
         // 8087 status register bits:
