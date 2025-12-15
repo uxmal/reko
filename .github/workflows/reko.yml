@@ -15,17 +15,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, windows-latest, macos-15-latest]
         include:
-          - os: macos-latest
+          - os: macos-15-intel
             build_config: UnixRelease
-            platform: arm64
           - os: ubuntu-latest
             build_config: UnixRelease
-            platform: x64
           - os: windows-latest
             build_config: Release
-            platform: x64
     steps:
     - uses: actions/checkout@v4
     - name: Setup .NET Core
@@ -48,32 +45,26 @@ jobs:
       shell: bash
       env:
         BUILD_CONFIG: ${{ matrix.build_config }}
-      run: |
-        dotnet msbuild -p:Platform=${{ matrix.platform }} -p:Configuration=$BUILD_CONFIG -t:build_solution -m ./src/BuildTargets/BuildTargets.csproj
-        if [ "$RUNNER_OS" == "macOS"]; then
-          echo "**** bin directories ****"
-          ls -l ./src/Drivers/CmdLine/bin
-          ls -lr ./src/Native/build
-        fi
+      run: dotnet msbuild -p:Platform=x64 -p:Configuration=$BUILD_CONFIG -t:build_solution -m ./src/BuildTargets/BuildTargets.csproj
     - name: Unit Tests
       shell: bash
-      run: dotnet msbuild -p:Platform=${{ matrix.platform }} -p:Configuration=Release -t:run_unit_tests -m ./src/BuildTargets/BuildTargets.csproj
+      run: dotnet msbuild -p:Platform=x64 -p:Configuration=Release -t:run_unit_tests -m ./src/BuildTargets/BuildTargets.csproj
     - name: Regression Tests
       shell: bash
-      run: dotnet msbuild -p:Platform=${{ matrix.platform }} -p:Configuration=Release -t:run_regressions -m ./src/BuildTargets/BuildTargets.csproj
+      run: dotnet msbuild -p:Platform=x64 -p:Configuration=Release -t:run_regressions -m ./src/BuildTargets/BuildTargets.csproj
     - name: Create Runtime nupkg
       shell: bash
       env:
         BUILD_CONFIG: ${{ matrix.build_config }}
-      run: dotnet msbuild -p:Platform=${{ matrix.platform }} -p:Configuration=Release -t:create_runtime_nupkg -m ./src/BuildTargets/BuildTargets.csproj
+      run: dotnet msbuild -p:Platform=x64 -p:Configuration=Release -t:create_runtime_nupkg -m ./src/BuildTargets/BuildTargets.csproj
     - name: Create Installer .msi
       if: matrix.os == 'windows-latest'
-      run: dotnet msbuild -p:Platform=${{ matrix.platform }} -p:Configuration=Release -t:create_msi_wix -m ./src/BuildTargets/BuildTargets.csproj
+      run: dotnet msbuild -p:Platform=x64 -p:Configuration=Release -t:create_msi_wix -m ./src/BuildTargets/BuildTargets.csproj
     - name: Create Release
       shell: bash
       env:
         BUILD_CONFIG: ${{ matrix.build_config }}
-      run: dotnet msbuild -p:Platform=${{ matrix.platform }} -p:Configuration=Release -t:create_release -m ./src/BuildTargets/BuildTargets.csproj
+      run: dotnet msbuild -p:Platform=x64 -p:Configuration=Release -t:create_release -m ./src/BuildTargets/BuildTargets.csproj
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
       with:
