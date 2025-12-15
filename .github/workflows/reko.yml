@@ -48,7 +48,13 @@ jobs:
       shell: bash
       env:
         BUILD_CONFIG: ${{ matrix.build_config }}
-      run: dotnet msbuild -p:Platform=${{ matrix.platform }} -p:Configuration=$BUILD_CONFIG -t:build_solution -m ./src/BuildTargets/BuildTargets.csproj
+      run: |
+        dotnet msbuild -p:Platform=${{ matrix.platform }} -p:Configuration=$BUILD_CONFIG -t:build_solution -m ./src/BuildTargets/BuildTargets.csproj
+        if [ "$RUNNER_OS" == "macOS"]; then
+          echo "**** bin directories ****"
+          ls -l ./src/Drivers/CmdLine/bin
+          ls -lr ./src/Native/build
+        fi
     - name: Unit Tests
       shell: bash
       run: dotnet msbuild -p:Platform=${{ matrix.platform }} -p:Configuration=Release -t:run_unit_tests -m ./src/BuildTargets/BuildTargets.csproj
