@@ -409,7 +409,15 @@ namespace Reko.Arch.X86.Analysis
             case ConditionCode.EQ:
                 switch (mask)
                 {
+                case 0x01: return ConditionCode.GE;
                 case 0x40: return ConditionCode.EQ;
+                }
+                break;
+            case ConditionCode.NE:
+                switch (mask)
+                {
+                case 0x01: return ConditionCode.LT;
+                case 0x40: return ConditionCode.NE;
                 }
                 break;
             }
