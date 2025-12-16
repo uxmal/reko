@@ -76,8 +76,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public bool IsSeparator(int i)
         {
-            var item = (ToolStripItem) menuItems[i];
-            return item.Text == "-";
+            return menuItems[i] is ToolStripSeparator;
         }
 
         public void InsertAt(int i, object item)
