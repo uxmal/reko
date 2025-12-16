@@ -182,8 +182,7 @@ namespace Reko.Environments.Msdos
                 var args = new List<Argument_v1>();
                 foreach (var arg in svc.Signature.Arguments)
                 {
-                    if (arg.Type is PointerType_v1 ptr &&
-                        arg.Kind is SerializedSequence seq &&
+                    if (arg.Kind is SerializedSequence seq &&
                         seq.Registers is not null && 
                         seq.Registers.Length == 2 &&
                         seq.Registers[1].Name is not null)
@@ -195,7 +194,11 @@ namespace Reko.Environments.Msdos
                             Name = arg.Name,
                             Kind = new Register_v1 { Name = eoff },
                             OutParameter = arg.OutParameter,
-                            Type = arg.Type,
+                            Type = arg.Type is PointerType_v1 ptr
+                                ? ptr
+                                : arg.Type is PrimitiveType_v1 prim
+                                    ? new PrimitiveType_v1(prim.Domain, prim.ByteSize)
+                                    : arg.Type
                         };
                         args.Add(argNew);
                     }
