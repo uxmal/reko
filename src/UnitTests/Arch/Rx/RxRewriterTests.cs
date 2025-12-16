@@ -68,7 +68,9 @@ namespace Reko.UnitTests.Arch.Rx
         {
             Given_HexString("FD7424 FF");
             AssertCode(        // adc\t#0FFFFFFFFh,r4
-                "@@@");
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|r4 = r4 + 0xFFFFFFFF<32> + C",
+                "2|L--|COSZ = cond(r4)");
         }
 
         [Test]
@@ -96,7 +98,9 @@ namespace Reko.UnitTests.Arch.Rx
         {
             Given_HexString("06A10230 7F");
             AssertCode(        // adc.l\t508[r3],sp
-                "@@@");
+                "0|L--|00100000(5): 2 instructions",
+                "1|L--|sp = sp + Mem0[r3 + 508<i32>:word32] + C",
+                "2|L--|COSZ = cond(sp)");
             Given_HexString("06A20230 8764");
             AssertCode(        // adc.l\t-30876[r3],sp
                 "@@@");
@@ -107,7 +111,9 @@ namespace Reko.UnitTests.Arch.Rx
         {
             Given_HexString("62F3");
             AssertCode(        // add\t#0Fh,r3
-                "@@@");
+                "0|L--|00100000(2): 2 instructions",
+                "1|L--|r3 = r3 + 0xF<32>",
+                "2|L--|COSZ = cond(r3)");
         }
 
         [Test]

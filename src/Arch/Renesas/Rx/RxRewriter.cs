@@ -96,6 +96,17 @@ public class RxRewriter : IEnumerable<RtlInstructionCluster>
             case Mnemonic.div: RewriteDiv(instr); break;
             case Mnemonic.divu: RewriteDivu(instr); break;
             case Mnemonic.fadd: RewriteFadd(instr); break;
+            case Mnemonic.fcmp: RewriteFcmp(instr); break;
+            case Mnemonic.fdiv: RewriteFdiv(instr); break;
+            case Mnemonic.fmul: RewriteFmul(instr); break;
+            case Mnemonic.fsqrt: RewriteFsqrt(instr); break;
+            case Mnemonic.fsub: RewriteFsub(instr); break;
+            case Mnemonic.ftoi: RewriteFto(instr, PrimitiveType.Int32); break;
+            case Mnemonic.ftou: RewriteFto(instr, PrimitiveType.UInt32); break;
+            case Mnemonic.@int: RewriteInt(instr); break;
+            case Mnemonic.itof: RewriteItof(instr, PrimitiveType.Int32); break;
+            case Mnemonic.jmp: RewriteJmp(instr); break;
+            case Mnemonic.utof: RewriteItof(instr, PrimitiveType.UInt32); break;
             default:
                 throw new NotImplementedException($"Unhandled instruction {instr.MnemonicAsString}");
             }
@@ -277,6 +288,61 @@ public class RxRewriter : IEnumerable<RtlInstructionCluster>
         EmitCc(idDst, Registers.SZ);
     }
 
+    private void RewriteFcmp(RxInstruction instr)
+    {
+        var left = OpSrc(instr, 1);
+        var right = OpSrc(instr, 0);
+        var diff = m.FSub(left, right);
+        m.Assign(binder.EnsureFlagGroup(Registers.OSZ), m.Cond(PrimitiveType.Word32, diff));
+    }
+
+    private void RewriteFdiv(RxInstruction instr)
+    {
+        var idDst = RewriteBinary(instr, Operator.FDiv);
+        EmitCc(idDst, Registers.SZ);
+    }
+
+    private void RewriteFmul(RxInstruction instr)
+    {
+        var idDst = RewriteBinary(instr, Operator.FMul);
+        EmitCc(idDst, Registers.SZ);
+    }
+
+    private void RewriteFsqrt(RxInstruction instr)
+    {
+        var idDst = RewriteUnary(instr, FpOps.sqrtf);
+        EmitCc(idDst, Registers.SZ);
+    }
+
+    private void RewriteFsub(RxInstruction instr)
+    {
+        var idDst = RewriteBinary(instr, Operator.FSub);
+        EmitCc(idDst, Registers.SZ);
+    }
+
+    private void RewriteFto(RxInstruction instr, PrimitiveType dtInt)
+    {
+        var tmp = binder.CreateTemporary(PrimitiveType.Real32);
+        m.Assign(tmp, m.Fn(FpOps.truncf, OpSrc(instr, 0)));
+        var dst = OpDst(instr, 1, m.Convert(tmp, PrimitiveType.Real32, dtInt));
+        EmitCc(dst, Registers.SZ);
+    }
+
+    private void RewriteInt(RxInstruction instr)
+    {
+        m.SideEffect(m.Fn(CommonOps.Syscall_1,(Constant) instr.Operands[0]));
+    }
+
+    private void RewriteItof(RxInstruction instr, PrimitiveType dtIntegral)
+    {
+        var dst = OpDst(instr, 1, m.Convert(OpSrc(instr, 0), dtIntegral, PrimitiveType.Real32));
+        EmitCc(dst, Registers.SZ);
+    }
+
+    private void RewriteJmp(RxInstruction instr)
+    {
+
+    }
     private Expression RewriteMemoryOperand(MemoryOperand mem)
     {
             Debug.Assert(mem.Base is not null);
