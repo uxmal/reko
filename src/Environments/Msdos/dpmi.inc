@@ -38,6 +38,10 @@
 	[[reko::arg(register,"ch")]]		unsigned char extended_access_rights,
 	[[reko::arg(out,register,"ax")]]	unsigned int error_code);
 
+[[reko::service(vector=0x31,regs={ax:0x000A})]]
+[[reko::returns(flag,"C")]] bool DPMI_create_alias_descriptor(
+	[[reko::arg(register,"bx")]]		unsigned short selector,
+	[[reko::arg(out,register,"ax")]]	unsigned int error_code);
 
 [[reko::service(vector=0x31,regs={ax:0x000B})]]
 [[reko::returns(flag,"C")]] bool DPMI_get_descriptor(
@@ -68,6 +72,27 @@
 [[reko::returns(seq,"cx","dx")]] unsigned int DPMI_get_real_mode_interrupt_vector(
 	[[reko::arg(register,"bl")]] unsigned char interrupt_number); 
 
+[[reko::service(vector=0x31,regs={ax:0x0300})]]
+[[reko::returns(flag,"C")]] unsigned int DPMI_simulate_real_mode_interrupt(
+	[[reko::arg(register,"bl")]] unsigned char interrupt_number, 
+	[[reko::arg(register,"bh")]] unsigned char flags, 
+	[[reko::arg(register,"cx")]] unsigned char number_of_words_to_copy_to_real_stack, 
+	[[reko::arg(seq,"es","di")]] void * real_call_structureflags,
+	[[reko::arg(out,register,"ax")]]	unsigned int error_code);
+
+[[reko::service(vector=0x31,regs={ax:0x0301})]]
+[[reko::returns(flag,"C")]] unsigned int DPMI_call_real_mode_procedure_with_far_return_frame(
+	[[reko::arg(register,"bh")]] unsigned char flags, 
+	[[reko::arg(seq,"es","di")]] void * real_call_structureflags,
+	[[reko::arg(out,register,"ax")]]	unsigned int error_code);
+[[reko::service(vector=0x31,regs={ax:0x0303})]]
+[[reko::returns(flag,"C")]] unsigned int DPMI_allocate_real_mode_callback_address(
+	[[reko::arg(seq,"ds","si")]]     void * address_of_procedure, 
+	[[reko::arg(seq,"es","di")]]     void * real_call_structureflags,
+	[[reko::arg(out,seq,"cx","dx")]] void * real_mode_address,
+	[[reko::arg(out,register,"ax")]] unsigned int error_code);
+
+	
 [[reko::service(vector=0x31,regs={ax:0x0400})]]
 void DPMI_get_version(
 	[[reko::arg(out,register,"ah")]] unsigned char major,
@@ -88,4 +113,37 @@ void DPMI_get_version(
 [[reko::service(vector=0x31,regs={ax:0x0502})]]
 [[reko::returns(flag,"C")]] bool DPMI_free_memory_block(
 	[[reko::arg(seq,"si","di")]] unsigned int memory_block_handle,
+	[[reko::arg(out,register,"ax")]] unsigned short error_code);
+
+[[reko::service(vector=0x31,regs={ax:0x0504})]]
+[[reko::returns(flag,"C")]] bool DPMI_allocate_linear_memory_block(
+	[[reko::arg(register,"ebx")]] unsigned int page_aligned_linear_address,
+	[[reko::arg(register,"ecx")]] unsigned int size_in_bytes,
+	[[reko::arg(out,register,"ebx")]] void __far * memory_block_address,
+	[[reko::arg(out,register,"esi")]] unsigned int memory_block_handle,
+	[[reko::arg(out,register,"ax")]] unsigned short error_code);
+
+[[reko::service(vector=0x31,regs={ax:0x0507})]]
+[[reko::returns(flag,"C")]] bool DPMI_modify_page_attributes(
+	[[reko::arg(register,"esi")]] unsigned int memory_block_handle,
+	[[reko::arg(register,"ebx")]] unsigned int first_page_offset,
+	[[reko::arg(register,"ecx")]] unsigned int number_of_pages,
+	[[reko::arg(register,"edx")]] unsigned short __far * page_attributes,
+	[[reko::arg(out,register,"ax")]] unsigned short error_code,
+	[[reko::arg(out,register,"eflags")]] unsigned int old_page_attributes,
+	[[reko::arg(out,register,"ecx")]] unsigned int pages_set);
+
+[[reko::service(vector=0x31,regs={ax:0x0600})]]
+[[reko::returns(flag,"C")]] bool DPMI_lock_linear_region(
+	[[reko::arg(seq,"bx","cx")]]	 void __far * start_address, 
+	[[reko::arg(seq,"si","di")]]	 unsigned int size_in_bytes,
+	[[reko::arg(out,register,"ax")]] unsigned short error_code);
+
+[[reko::service(vector=0x31,regs={ax:0x0900})]]
+[[reko::returns(flag,"C")]] bool DPMI_get_and_disable_virtual_interrupt_state(
+	[[reko::arg(out,register,"al")]] unsigned char previous_state);
+
+[[reko::service(vector=0x31,regs={ax:0x0D00})]]
+[[reko::returns(flag,"C")]] bool DPMI_allocate_shared_memory(
+	[[reko::arg(seq,"es","di")]] void __far * shmem_alloc_structure,
 	[[reko::arg(out,register,"ax")]] unsigned short error_code);

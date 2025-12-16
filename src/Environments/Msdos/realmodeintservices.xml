@@ -1343,6 +1343,17 @@
 	  </arg>
 	</signature>
   </service>
+  <service name="yield_vm_time_slice">
+    <syscallinfo>
+      <vector>2F</vector>
+      <regvalue reg="ax">1680</regvalue>
+    </syscallinfo>  
+    <signature>
+      <return>
+        <reg>al</reg>
+      </return>
+    </signature>
+  </service>
   <service name="msdos_multiplex">
 	<syscallinfo>
 	  <vector>2F</vector>

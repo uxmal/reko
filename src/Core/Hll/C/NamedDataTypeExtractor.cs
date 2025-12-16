@@ -344,6 +344,8 @@ namespace Reko.Core.Hll.C
                             ++iTok;
                         }
                     }
+                    else
+                        throw new FormatException($"[[reko::arg(...)]] attribute has an unexpected token {attr.Tokens[iTok].Type}.");
                 }
             }
             return (kind, isOut);

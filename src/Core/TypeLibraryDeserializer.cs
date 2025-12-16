@@ -229,7 +229,7 @@ namespace Reko.Core
         public SystemService LoadService(SerializedService ssvc)
         {
             var ssvcPreprocessed = platform.PreprocessSerializedService(ssvc);
-            var svc = ssvcPreprocessed.Build(platform, this.library);
+            var svc = (ssvcPreprocessed ?? ssvc).Build(platform, this.library);
             LoadService(svc.SyscallInfo!.Vector, svc);
             return svc;
         }
