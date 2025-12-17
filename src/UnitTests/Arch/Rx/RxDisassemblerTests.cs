@@ -419,7 +419,7 @@ namespace Reko.UnitTests.Arch.Rx
         public void RxDis_itof()
         {
             AssertCode("itof.l\t66[r2],r3", "FC4523 42");
-            AssertCode("itof.w\t-128[r2],r3", "06621123 8000");
+            AssertCode("itof.w\t-32768[r2],r3", "06621123 8000");
         }
 
         [Test]
@@ -464,7 +464,7 @@ namespace Reko.UnitTests.Arch.Rx
         {
             AssertCode("min\t#1234h,r4",      "FD7854 1234");
             AssertCode("min.uw\t4660[r2],r3", "FC1623 1234");
-            AssertCode("min.w\t18[r2],r3",    "06620523 1234");
+            AssertCode("min.w\t4660[r2],r3",    "06620523 1234");
         }
 
         [Test]
@@ -504,7 +504,8 @@ namespace Reko.UnitTests.Arch.Rx
         [Test]
         public void RxDis_movu()
         {
-            AssertCode("movu.b\t3[r3],r7", "BFAB");
+            AssertCode("movu.b\t31[r2],r3", "B7AB");
+            AssertCode("movu.w\t31[r2],r3", "BFAB");
             AssertCode("movu.w\t4660[r3],r4", "5E34 1234");
             AssertCode("movu.w\t[r3,r4],r2", "FED342");
             AssertCode("movu.w\t[-r3],r4", "FD3D34");
@@ -614,7 +615,7 @@ namespace Reko.UnitTests.Arch.Rx
         [Test]
         public void RxDis_mvtipl()
         {
-            AssertCode("mvtipl\t#0h", "75700F");
+            AssertCode("mvtipl\t#0Fh", "75700F");
         }
 
         [Test]
@@ -902,7 +903,7 @@ namespace Reko.UnitTests.Arch.Rx
         {
             AssertCode("tst\t#1234h,r3", "FD78C3 1234");
             AssertCode("tst.ub\t18[r2],r3", "FC3123 12");
-            AssertCode("tst.w\t[r2],r3", "06610C23 12");
+            AssertCode("tst.w\t18[r2],r3", "06610C23 12");
         }
 
         [Test]
@@ -922,7 +923,7 @@ namespace Reko.UnitTests.Arch.Rx
         public void RxDis_xchg()
         {
             AssertCode("xchg.ub\t18[r2],r3", "FC4123 12");
-            AssertCode("xchg.w\t[r2],r3", "06611023 12");
+            AssertCode("xchg.w\t18[r2],r3", "06611023 12");
         }
 
         [Test]

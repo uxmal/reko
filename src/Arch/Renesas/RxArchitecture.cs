@@ -33,6 +33,11 @@ namespace Reko.Arch.Renesas
 {
     public class RxArchitecture : ProcessorArchitecture
     {
+        public static readonly PrimitiveType Word72 = PrimitiveType.CreateWord(72);
+        public static readonly PrimitiveType Word96 = PrimitiveType.CreateWord(96);
+        public static readonly PrimitiveType Int72 = PrimitiveType.Create(Domain.SignedInt, 72);
+        public static readonly PrimitiveType Int96 = PrimitiveType.Create(Domain.SignedInt, 96);
+
         public RxArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options) : 
             base(services, archId, options, null, null)
         {

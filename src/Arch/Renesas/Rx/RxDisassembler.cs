@@ -513,11 +513,8 @@ namespace Reko.Arch.Renesas.Rx
         {
             var ireg = bf4_3.Read(uInstr);
             var disp = (int) Bitfield.ReadFields(bf7_4_3_1, uInstr);
-            var dt = dtBWL_[bf12_2.Read(uInstr)];
-            if (dt is null)
-                return false;
-            dasm.dataWidth = dt;
-            var mem = new MemoryOperand(dt, Registers.GpRegisters[ireg], disp);
+            Debug.Assert(dasm.dataWidth != null);
+            var mem = new MemoryOperand(dasm.dataWidth, Registers.GpRegisters[ireg], disp);
             dasm.ops.Add(mem);
             return true;
         }
@@ -757,17 +754,17 @@ namespace Reko.Arch.Renesas.Rx
                 (0b1000, Fetch16(Sparse(8, 8, "  1000", Nyi("06 1000"),
                     (0x00, Instr(Mnemonic.sbb, L, Mr4_16, R0)),
                     (0x02, adc_Msrc_dst),
-                    (0x04, Instr(Mnemonic.max, bwluw22, Mr4_8, R0)),
-                    (0x05, Instr(Mnemonic.min, bwluw22, Mr4_8, R0)),
-                    (0x06, Instr(Mnemonic.emul, bwluw22, Mr4_8, R0)),
-                    (0x07, Instr(Mnemonic.emulu, bwluw22, Mr4_8, R0)),
-                    (0x08, Instr(Mnemonic.div, bwluw22, Mr4_8, R0)),
-                    (0x09, Instr(Mnemonic.divu, bwluw22, Mr4_8, R0)),
-                    (0x0C, Instr(Mnemonic.tst, bwluw22, Mr4_8, R0)),
-                    (0x0D, Instr(Mnemonic.xor, bwluw22, Mr4_8, R0)),
-                    (0x10, Instr(Mnemonic.xchg, bwluw22, Mr4_8, R0)),
-                    (0x11, Instr(Mnemonic.itof, bwluw22, Mr4_8, R0)),
-                    (0x15, Instr(Mnemonic.utof, bwluw22, Mr4_8, R0))
+                    (0x04, Instr(Mnemonic.max, bwluw22, Mr4_16, R0)),
+                    (0x05, Instr(Mnemonic.min, bwluw22, Mr4_16, R0)),
+                    (0x06, Instr(Mnemonic.emul, bwluw22, Mr4_16, R0)),
+                    (0x07, Instr(Mnemonic.emulu, bwluw22, Mr4_16, R0)),
+                    (0x08, Instr(Mnemonic.div, bwluw22, Mr4_16, R0)),
+                    (0x09, Instr(Mnemonic.divu, bwluw22, Mr4_16, R0)),
+                    (0x0C, Instr(Mnemonic.tst, bwluw22, Mr4_16, R0)),
+                    (0x0D, Instr(Mnemonic.xor, bwluw22, Mr4_16, R0)),
+                    (0x10, Instr(Mnemonic.xchg, bwluw22, Mr4_16, R0)),
+                    (0x11, Instr(Mnemonic.itof, bwluw22, Mr4_16, R0)),
+                    (0x15, Instr(Mnemonic.utof, bwluw22, Mr4_16, R0))
                     )))));
 
             var decode74 = Fetch8(Sparse(4, 4, "  74", Nyi("74"),
@@ -781,7 +778,7 @@ namespace Reko.Arch.Renesas.Rx
                 (0b0100, Instr(Mnemonic.mov, Uimm8, R0)),
                 (0b0101, Instr(Mnemonic.cmp, Uimm8, R0)),
                 (0b0110, If(0, 4, u => u == 0, Instr(Mnemonic.@int, Uimm8))),
-                (0b0111, Instr(Mnemonic.mvtipl, UI_0_4))));
+                (0b0111, Fetch8(Instr(Mnemonic.mvtipl, UI_0_4)))));
 
             var decode76 = Fetch8(Sparse(4, 4, "  76", Nyi("76"),
                 (0b0000, Instr(Mnemonic.cmp, Simm8, R0)),
@@ -957,11 +954,20 @@ namespace Reko.Arch.Renesas.Rx
                     nyi,
                     nyi,
                     nyi)),
-                (0b100, Mask(7, 2, 4, 1, "  100",
+                (0b100, Mask(6, 3, 4, 1, "  100",
                         Instr(Mnemonic.racw, C1, A0),
                         Instr(Mnemonic.racw, C2, A0),
                         Instr(Mnemonic.rdacw, C1, A0),
                         Instr(Mnemonic.rdacw, C2, A0),
+                        nyi,
+                        nyi,
+                        Instr(Mnemonic.rdacw, C1, A0),
+                        Instr(Mnemonic.rdacw, C2, A0),
+
+                        Instr(Mnemonic.racl, C1, A1),
+                        Instr(Mnemonic.racl, C2, A1),
+                        Instr(Mnemonic.rdacl, C1, A1),
+                        Instr(Mnemonic.rdacl, C2, A1),
                         Instr(Mnemonic.racl, C1, A1),
                         Instr(Mnemonic.racl, C2, A1),
                         Instr(Mnemonic.rdacl, C1, A1),
@@ -1175,16 +1181,22 @@ namespace Reko.Arch.Renesas.Rx
                 Instr(Mnemonic.cmp, UB, Mr4_d8, R0),
                 Instr(Mnemonic.cmp, UB, Mr4_d16, R0),
                 invalid));
-            var mov_reg3 = Fetch8(Mask(11, 1, "  mov reg3",
-                Instr(Mnemonic.mov, R0_3, Mdsp5_3),
-                Instr(Mnemonic.mov, Mdsp5_3, R0_3)));
+            var mov_B_reg3 = Fetch8(Mask(11, 1, "  mov.b reg3",
+                Instr(Mnemonic.mov, B, R0_3, Mdsp5_3),
+                Instr(Mnemonic.mov, B, Mdsp5_3, R0_3)));
+            var mov_W_reg3 = Fetch8(Mask(11, 1, "  mov.w reg3",
+                Instr(Mnemonic.mov, W, R0_3, Mdsp5_3),
+                Instr(Mnemonic.mov, W, Mdsp5_3, R0_3)));
+            var mov_L_reg3 = Fetch8(Mask(11, 1, "  mov.l reg3",
+                Instr(Mnemonic.mov, L, R0_3, Mdsp5_3),
+                Instr(Mnemonic.mov, L, Mdsp5_3, R0_3)));
             var movSimmMem = Fetch8(Mask(0, 2, "  F8",
                 Instr(Mnemonic.mov, B, Mr4_8, Simm2, SwapOperands),
                 Instr(Mnemonic.mov, W, Mr4_8, Simm2, SwapOperands),
                 Instr(Mnemonic.mov, L, Mr4_8, Simm2, SwapOperands),
                 invalid));
-            var movu_b = Instr(Mnemonic.movu, B, Mdsp5_3, R0_3);
-            var movu_w = Instr(Mnemonic.movu, W, Mdsp5_3, R0_3);
+            var movu_b = Fetch8(Instr(Mnemonic.movu, B, Mdsp5_3, R0_3));
+            var movu_w = Fetch8(Instr(Mnemonic.movu, W, Mdsp5_3, R0_3));
             var mul_ub = Fetch8(Instr(Mnemonic.mul, UB, Mr4_8, R0));
             var or_ub = Fetch8(Instr(Mnemonic.or, UB, Mr4_8, R0));
             var sub_ub = Fetch8(Mask(8, 2, "  sub.ub",
@@ -1320,58 +1332,58 @@ namespace Reko.Arch.Renesas.Rx
                 (0x7F, decode7F),
 
                 // 80
-                (0x80, mov_reg3),
-                (0x81, mov_reg3),
-                (0x82, mov_reg3),
-                (0x83, mov_reg3),
-                (0x84, mov_reg3),
-                (0x85, mov_reg3),
-                (0x86, mov_reg3),
-                (0x87, mov_reg3),
-                (0x88, mov_reg3),
-                (0x89, mov_reg3),
-                (0x8A, mov_reg3),
-                (0x8B, mov_reg3),
-                (0x8C, mov_reg3),
-                (0x8D, mov_reg3),
-                (0x8E, mov_reg3),
-                (0x8F, mov_reg3),
+                (0x80, mov_B_reg3),
+                (0x81, mov_B_reg3),
+                (0x82, mov_B_reg3),
+                (0x83, mov_B_reg3),
+                (0x84, mov_B_reg3),
+                (0x85, mov_B_reg3),
+                (0x86, mov_B_reg3),
+                (0x87, mov_B_reg3),
+                (0x88, mov_B_reg3),
+                (0x89, mov_B_reg3),
+                (0x8A, mov_B_reg3),
+                (0x8B, mov_B_reg3),
+                (0x8C, mov_B_reg3),
+                (0x8D, mov_B_reg3),
+                (0x8E, mov_B_reg3),
+                (0x8F, mov_B_reg3),
 
                 // 90
-                (0x90, mov_reg3),
-                (0x91, mov_reg3),
-                (0x92, mov_reg3),
-                (0x93, mov_reg3),
-                (0x94, mov_reg3),
-                (0x95, mov_reg3),
-                (0x96, mov_reg3),
-                (0x97, mov_reg3),
-                (0x98, mov_reg3),
-                (0x99, mov_reg3),
-                (0x9A, mov_reg3),
-                (0x9B, mov_reg3),
-                (0x9C, mov_reg3),
-                (0x9D, mov_reg3),
-                (0x9E, mov_reg3),
-                (0x9F, mov_reg3),
+                (0x90, mov_W_reg3),
+                (0x91, mov_W_reg3),
+                (0x92, mov_W_reg3),
+                (0x93, mov_W_reg3),
+                (0x94, mov_W_reg3),
+                (0x95, mov_W_reg3),
+                (0x96, mov_W_reg3),
+                (0x97, mov_W_reg3),
+                (0x98, mov_W_reg3),
+                (0x99, mov_W_reg3),
+                (0x9A, mov_W_reg3),
+                (0x9B, mov_W_reg3),
+                (0x9C, mov_W_reg3),
+                (0x9D, mov_W_reg3),
+                (0x9E, mov_W_reg3),
+                (0x9F, mov_W_reg3),
 
                 // A0
-                (0xA0, mov_reg3),
-                (0xA1, mov_reg3),
-                (0xA2, mov_reg3),
-                (0xA3, mov_reg3),
-                (0xA4, mov_reg3),
-                (0xA5, mov_reg3),
-                (0xA6, mov_reg3),
-                (0xA7, mov_reg3),
-                (0xA8, mov_reg3),
-                (0xA9, mov_reg3),
-                (0xAA, mov_reg3),
-                (0xAB, mov_reg3),
-                (0xAC, mov_reg3),
-                (0xAD, mov_reg3),
-                (0xAE, mov_reg3),
-                (0xAF, mov_reg3),
+                (0xA0, mov_L_reg3),
+                (0xA1, mov_L_reg3),
+                (0xA2, mov_L_reg3),
+                (0xA3, mov_L_reg3),
+                (0xA4, mov_L_reg3),
+                (0xA5, mov_L_reg3),
+                (0xA6, mov_L_reg3),
+                (0xA7, mov_L_reg3),
+                (0xA8, mov_L_reg3),
+                (0xA9, mov_L_reg3),
+                (0xAA, mov_L_reg3),
+                (0xAB, mov_L_reg3),
+                (0xAC, mov_L_reg3),
+                (0xAD, mov_L_reg3),
+                (0xAE, mov_L_reg3),
+                (0xAF, mov_L_reg3),
 
                 // B0
                 (0xB0, movu_b),

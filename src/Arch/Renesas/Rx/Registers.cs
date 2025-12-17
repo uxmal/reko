@@ -21,8 +21,6 @@
 using Reko.Core;
 using Reko.Core.Types;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Reko.Arch.Renesas.Rx
 {
@@ -63,8 +61,8 @@ namespace Reko.Arch.Renesas.Rx
             GpRegisters = factory.RangeOfReg(16, n => n == 0 ? "sp" : $"r{n}", PrimitiveType.Word32);
             sp = GpRegisters[0];
 
-            ACC0 = factory.Reg("a0", PrimitiveType.CreateWord(72));
-            ACC1 = factory.Reg("a1", PrimitiveType.CreateWord(72));
+            ACC0 = factory.Reg("a0", RxArchitecture.Word72);
+            ACC1 = factory.Reg("a1", RxArchitecture.Word72);
 
             factory = new StorageFactory(StorageDomain.SystemRegister);
             ISP = factory.Reg32("ISP");     // Interrupt stack pointer
