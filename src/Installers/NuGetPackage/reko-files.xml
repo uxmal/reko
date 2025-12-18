@@ -340,7 +340,6 @@
         <File Source="$(var.Qualcomm.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Renesas.TargetPath)" nuget_target="f:" />
         <File Source="$(var.RiscV.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.Rl78.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Sparc.TargetPath)" nuget_target="f:" />
         <File Source="$(var.SuperH.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Telink.TargetPath)" nuget_target="f:" />
