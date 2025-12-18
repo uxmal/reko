@@ -266,7 +266,7 @@
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
     <ProjectReference Include="..\Arch\Renesas\Renesas.csproj">
-      <Name>Rl78</Name>
+      <Name>Renesas</Name>
       <Project>{54029784-c8a6-43f5-9d00-62ec8da04fa1}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
