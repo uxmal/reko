@@ -35,8 +35,8 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
-[assembly: AssemblyVersion("0.12.2.0")]
-[assembly: AssemblyFileVersion("0.12.2.0")]
+[assembly: AssemblyVersion("0.12.3.0")]
+[assembly: AssemblyFileVersion("0.12.3.0")]
 [assembly: AssemblyDelaySign(false)]
 [assembly: AssemblyKeyFile("")]
 [assembly: AssemblyKeyName("")]
