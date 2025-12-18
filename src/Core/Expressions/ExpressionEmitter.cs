@@ -1034,6 +1034,26 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
+        /// Generates a slice operation to extract the least-significant bits
+        /// if the expression <paramref name="expr"/> is wider than the data type
+        /// <paramref name="dt"/>. Otherwise, returns the original expression.
+        /// </summary>
+        /// <param name="expr">Expression that maybe is sliced.</param>
+        /// <param name="dt">Maximum bit size of expression.</param>
+        /// <returns>
+        /// A slice of <paramref name="expr"/> if it is wider than <paramref name="dt"/>,
+        /// otherwise <paramref name="expr"/>.
+        /// </returns>
+        public Expression MaybeSlice(Expression expr, DataType dt)
+        {
+            if (expr.DataType.BitSize > dt.BitSize)
+            {
+                return Slice(expr, dt);
+            }
+            return expr;
+        }
+
+        /// <summary>
         /// Generates a member pointer dereference (similar to the C++ ptr->*membPtr) to an 8-bit field.
         /// Used only in unit tests.
         /// </summary>
