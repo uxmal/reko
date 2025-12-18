@@ -35,7 +35,7 @@ namespace Reko.UnitTests.Arch.Zilog.Z80
         [SetUp]
         public void Setup()
         {
-            arch = new Z80Architecture(new ServiceContainer(), "z80", new Dictionary<string, object>());
+            arch = new Z80Architecture(new ServiceContainer(), "z80", []);
         }
 
         [Test]

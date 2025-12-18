@@ -104,7 +104,7 @@ Eq_n g_t0402;
 word16 g_w0404; // 0404
 Eq_n g_t0406;
 word16 g_w0408; // 0408
-uint32 g_dw040A; // 040A
+Eq_n g_t040A;
 ui32 g_dw040E; // 040E
 Eq_n g_t0412;
 Eq_n g_t0414;

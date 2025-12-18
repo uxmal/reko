@@ -21,6 +21,7 @@
 using Reko.Arch.Infineon.TriCore;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
@@ -92,6 +93,11 @@ namespace Reko.Arch.Infineon
         public override int? GetMnemonicNumber(string name)
         {
             throw new NotImplementedException();
+        }
+
+        public override RegisterStorage? GetRegister(StorageDomain domain, BitRange range)
+        {
+            return Registers.GetRegister(domain, range);
         }
 
         public override RegisterStorage[] GetRegisters()

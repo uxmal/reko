@@ -209,7 +209,7 @@ public class M16CRewriterTests : RewriterTestBase
         Given_HexString("7DE00A00");
         AssertCode(     // divu.w	#0Ah
             "0|L--|00000100(4): 4 instructions",
-            "1|L--|v3 = r2r0",
+            "1|L--|v3 = r2_r0",
             "2|L--|r0 = v3 /u 0xA<16>",
             "3|L--|r2 = v3 %u 0xA<16>",
             "4|L--|O = cond(r0)");
@@ -281,7 +281,7 @@ public class M16CRewriterTests : RewriterTestBase
         Given_HexString("7D00");
         AssertCode(     // jmpi.a	r2r0
             "0|T--|00000100(2): 1 instructions",
-            "1|T--|goto r2r0");
+            "1|T--|goto r2_r0");
     }
 
     [Test]
@@ -328,7 +328,7 @@ public class M16CRewriterTests : RewriterTestBase
         Given_HexString("74A0");
         AssertCode(     // lde.b	[r1r0],r0l
             "0|L--|00000100(2): 2 instructions",
-            "1|L--|r0l = Mem0[a1a0:byte]",
+            "1|L--|r0l = Mem0[a1_a0:byte]",
             "2|L--|SZ = cond(r0l)");
     }
 
@@ -527,8 +527,8 @@ public class M16CRewriterTests : RewriterTestBase
         Given_HexString("EB82");
         AssertCode(     // shl.l	#2h,r2r0
             "0|L--|00000100(2): 2 instructions",
-            "1|L--|r2r0 = r2r0 << 2<16>",
-            "2|L--|SZC = cond(r2r0)");
+            "1|L--|r2_r0 = r2_r0 << 2<16>",
+            "2|L--|SZC = cond(r2_r0)");
     }
 
     [Test]
@@ -556,7 +556,7 @@ public class M16CRewriterTests : RewriterTestBase
         AssertCode(     // ste.w	-14h[fb],[a1a0]
             "0|L--|00000100(3): 2 instructions",
             "1|L--|v5 = Mem0[fb - 20<i16>:word16]",
-            "2|L--|Mem0[a1a0:word16] = v5");
+            "2|L--|Mem0[a1_a0:word16] = v5");
     }
 
     [Test]

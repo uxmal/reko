@@ -31,118 +31,174 @@ namespace Reko.Arch.i8051
 {
     public static class Registers
     {
-        public static RegisterStorage R0 = RegisterStorage.Reg8("R0", 0x00);
-        public static RegisterStorage R1 = RegisterStorage.Reg8("R1", 0x01);
-        public static RegisterStorage R2 = RegisterStorage.Reg8("R2", 0x02);
-        public static RegisterStorage R3 = RegisterStorage.Reg8("R3", 0x03);
-        public static RegisterStorage R4 = RegisterStorage.Reg8("R4", 0x04);
-        public static RegisterStorage R5 = RegisterStorage.Reg8("R5", 0x05);
-        public static RegisterStorage R6 = RegisterStorage.Reg8("R6", 0x06);
-        public static RegisterStorage R7 = RegisterStorage.Reg8("R7", 0x07);
-
-        public static RegisterStorage R8 = RegisterStorage.Reg8("R8", 0x08);
-        public static RegisterStorage R9 = RegisterStorage.Reg8("R9", 0x09);
-        public static RegisterStorage R10 = RegisterStorage.Reg8("R10", 0x0A);
-        public static RegisterStorage R11 = RegisterStorage.Reg8("R11", 0x0B);
-        public static RegisterStorage R12 = RegisterStorage.Reg8("R12", 0x0C);
-        public static RegisterStorage R13 = RegisterStorage.Reg8("R13", 0x0D);
-        public static RegisterStorage R14 = RegisterStorage.Reg8("R14", 0x0E);
-        public static RegisterStorage R15 = RegisterStorage.Reg8("R15", 0x0F);
-
-        public static RegisterStorage R16 = RegisterStorage.Reg8("R16", 0x10);
-        public static RegisterStorage R17 = RegisterStorage.Reg8("R17", 0x11);
-        public static RegisterStorage R18 = RegisterStorage.Reg8("R18", 0x12);
-        public static RegisterStorage R19 = RegisterStorage.Reg8("R19", 0x13);
-        public static RegisterStorage R20 = RegisterStorage.Reg8("R20", 0x14);
-        public static RegisterStorage R21 = RegisterStorage.Reg8("R21", 0x15);
-        public static RegisterStorage R22 = RegisterStorage.Reg8("R22", 0x16);
-        public static RegisterStorage R23 = RegisterStorage.Reg8("R23", 0x17);
-
-        public static RegisterStorage R24 = RegisterStorage.Reg8("R24", 0x18);
-        public static RegisterStorage R25 = RegisterStorage.Reg8("R25", 0x19);
-        public static RegisterStorage R26 = RegisterStorage.Reg8("R26", 0x1A);
-        public static RegisterStorage R27 = RegisterStorage.Reg8("R27", 0x1B);
-        public static RegisterStorage R28 = RegisterStorage.Reg8("R28", 0x1C);
-        public static RegisterStorage R29 = RegisterStorage.Reg8("R29", 0x1D);
-        public static RegisterStorage R30 = RegisterStorage.Reg8("R30", 0x1E);
-        public static RegisterStorage R31 = RegisterStorage.Reg8("R31", 0x1F);
+        public static RegisterStorage[] GpRegisters { get; }
 
         // Special function registers.
 
-        public static readonly RegisterStorage P0 = RegisterStorage.Reg8("P0", 0x80);
-        public static readonly RegisterStorage SP = RegisterStorage.Reg8("SP", 0x81);
-        public static readonly RegisterStorage DPL = RegisterStorage.Reg8("DPL", 0x82);
-        public static readonly RegisterStorage DPH = RegisterStorage.Reg8("DPH", 0x83);
-        public static readonly SequenceStorage DPTR = new SequenceStorage("DPTR", PrimitiveType.Word16, DPH, DPL);
-        public static readonly RegisterStorage PCON = RegisterStorage.Reg8("PCON", 0x87);
-        public static readonly RegisterStorage TCON = RegisterStorage.Reg8("TCON", 0x88);
-        public static readonly RegisterStorage TMOD = RegisterStorage.Reg8("TMOD", 0x89);
-        public static readonly RegisterStorage TL0 = RegisterStorage.Reg8("TL0", 0x8A);
-        public static readonly RegisterStorage TH0 = RegisterStorage.Reg8("TH0", 0x8C);
-        public static readonly SequenceStorage T0 = new SequenceStorage("T0", PrimitiveType.Word16, TH0, TL0);
-        public static readonly RegisterStorage TL1 = RegisterStorage.Reg8("TL1", 0x8B);
-        public static readonly RegisterStorage TH1 = RegisterStorage.Reg8("TH1", 0x8D);
-        public static readonly SequenceStorage T1 = new SequenceStorage("T1", PrimitiveType.Word16, TH1, TL1);
-        public static readonly RegisterStorage P1 = RegisterStorage.Reg8("P1", 0x90);
-        public static readonly RegisterStorage SCON = RegisterStorage.Reg8("SCON", 0x98);
-        public static readonly RegisterStorage SBUF = RegisterStorage.Reg8("SBUF", 0x99);
-        public static readonly RegisterStorage P2 = RegisterStorage.Reg8("P2", 0xA0);
-        public static readonly RegisterStorage IE = RegisterStorage.Reg8("IE", 0xA8);
-        public static readonly RegisterStorage P3 = RegisterStorage.Reg8("P3", 0xB0);
-        public static readonly RegisterStorage IP = RegisterStorage.Reg8("IP", 0xB8);
-        public static readonly RegisterStorage PSW = RegisterStorage.Reg8("PSW", 0xD0);
-        public static readonly RegisterStorage A = RegisterStorage.Reg8("A", 0xE0);
-        public static readonly RegisterStorage B = RegisterStorage.Reg8("B", 0xF0);
-        public static readonly SequenceStorage AB = new SequenceStorage("AB", PrimitiveType.Word16, A, B);
+        public static RegisterStorage P0 { get; }
+        public static RegisterStorage SP { get; }
+        public static RegisterStorage DPL { get; }
+        public static RegisterStorage DPH { get; }
+        public static RegisterStorage DPTR { get; }
+        public static RegisterStorage PCON { get; }
+        public static RegisterStorage TCON { get; }
+        public static RegisterStorage TMOD { get; }
+        public static RegisterStorage TL0 { get; }
+        public static RegisterStorage TH0 { get; }
+        public static RegisterStorage T0 { get; }
+        public static RegisterStorage TL1 { get; }
+        public static RegisterStorage TH1 { get; }
+        public static RegisterStorage T1 { get; }
+        public static RegisterStorage P1 { get; }
+        public static RegisterStorage SCON { get; }
+        public static RegisterStorage SBUF { get; }
+        public static RegisterStorage P2 { get; }
+        public static RegisterStorage IE { get; }
+        public static RegisterStorage P3 { get; }
+        public static RegisterStorage IP { get; }
+        public static RegisterStorage PSW { get; }
+        public static RegisterStorage A { get; }
+        public static RegisterStorage B { get; }
+        public static RegisterStorage AB { get; }
 
-        public static readonly RegisterStorage PC = new RegisterStorage("PC", 0x100, 0, PrimitiveType.Ptr16);
+        public static RegisterStorage PC { get; }
 
 
-        public static readonly FlagGroupStorage CFlag = new FlagGroupStorage(PSW, (uint) FlagM.C, "C");
-        public static readonly FlagGroupStorage AFlag = new FlagGroupStorage(PSW, (uint) FlagM.AC, "A");
-        public static readonly FlagGroupStorage OFlag = new FlagGroupStorage(PSW, (uint) FlagM.OV, "O");
-        public static readonly FlagGroupStorage PFlag = new FlagGroupStorage(PSW, (uint) FlagM.P, "P");
-        public static readonly FlagGroupStorage CAOP = new FlagGroupStorage(PSW, (uint) (FlagM.C | FlagM.AC | FlagM.OV | FlagM.P), nameof(CAOP));
+        public static FlagGroupStorage CFlag { get; }
+        public static FlagGroupStorage AFlag { get; }
+        public static FlagGroupStorage OFlag { get; }
+        public static FlagGroupStorage PFlag { get; }
+        public static FlagGroupStorage CAOP  { get; }
         
 
 
         private static Dictionary<int, RegisterStorage> regsByNumber;
-        private static Dictionary<StorageDomain, RegisterStorage> regsByDomain;
-        private static Dictionary<string, RegisterStorage> regsByName;
+        public static Dictionary<StorageDomain, RegisterStorage> ByDomain { get; }
+        public static Dictionary<string, RegisterStorage> ByName { get; }
+        public static Dictionary<StorageDomain, RegisterStorage[]> Subregisters { get; }
+
 
         static Registers()
         {
-            regsByNumber = new[] {
-                R0,  R1,  R2,  R3,  R4,  R5,  R6,  R7,
-                R8,  R9,  R10, R11, R12, R13, R14, R15,
-                R16, R17, R18, R19, R20, R21, R22, R23, 
-                R24, R25, R26, R27, R28, R29, R30, R31,
+            var factory = new StorageFactory();
+            GpRegisters = Enumerable.Range(0, 32)
+                .Select(i => RegisterStorage.Reg8($"R{i}", i))
+                .ToArray();
 
-                P0,
-                SP,
-                DPL,
-                DPH,
-                PCON,
-                TCON,
-                TMOD,
-                TL0,
-                TH0,
-                TL1,
-                TH1,
-                P1,
-                SCON,
-                SBUF,
-                P2,
-                IE,
-                P3,
-                IP,
-                PSW,
-                A,
-                B,
-            }.ToDictionary(k  => k.Number);
-            regsByDomain = regsByNumber.Values
+            var ctrFactory = new StorageFactory(StorageDomain.SystemRegister);
+            P0 = ctrFactory.Reg8("P0");
+            SP = ctrFactory.Reg8("SP");
+            DPTR = ctrFactory.Reg16("DPTR");
+            PCON = ctrFactory.Reg8("PCON");
+            TCON = ctrFactory.Reg8("TCON");
+            TMOD = ctrFactory.Reg8("TMOD");
+            TL0 = ctrFactory.Reg8("TL0");
+            TH0 = ctrFactory.Reg8("TH0");
+            T0 = ctrFactory.Reg16("T0");
+            T1 = ctrFactory.Reg16("T1");
+            P1 = ctrFactory.Reg8("P1");
+            SCON = ctrFactory.Reg8("SCON");
+            SBUF = ctrFactory.Reg8("SBUF");
+            P2 = ctrFactory.Reg8("P2");
+            IE = ctrFactory.Reg8("IE");
+            P3 = ctrFactory.Reg8("P3");
+            IP = ctrFactory.Reg8("IP");
+            PSW = ctrFactory.Reg8("PSW");
+            AB = ctrFactory.Reg16("AB");
+
+            DPL = RegisterStorage.Reg8("DPL", DPTR.Number, 0);
+            DPH = RegisterStorage.Reg8("DPH", DPTR.Number, 8);
+            TL0 = RegisterStorage.Reg8("TL0", T1.Number, 0);
+            TH0 = RegisterStorage.Reg8("TH0", T1.Number, 8);
+            TL1 = RegisterStorage.Reg8("TL1", T1.Number, 0);
+            TH1 = RegisterStorage.Reg8("TH1", T1.Number, 8);
+            A = RegisterStorage.Reg8("A", AB.Number, 8);
+            B = RegisterStorage.Reg8("B", AB.Number, 0);
+
+            Subregisters = new()
+            {
+                { DPTR.Domain, new[] { DPL, DPH }  },
+                { T0.Domain, new[] { TL0, TH0 } },
+                { T1.Domain, new[] { TL1, TH1 } },
+                { AB.Domain, new[] { A, B } },
+            };
+
+
+            PC = new RegisterStorage("PC", 0x100, 0, PrimitiveType.Ptr16);
+            var r = GpRegisters;
+            regsByNumber = new Dictionary<int, RegisterStorage> {
+                { 0x00, r[0] },
+                { 0x01, r[1] },
+                { 0x02, r[2] },
+                { 0x03, r[3] },
+                { 0x04, r[4] },
+                { 0x05, r[5] },
+                { 0x06, r[6] },
+                { 0x07, r[7] },
+
+                { 0x08, r[8] },
+                { 0x09, r[9] },
+                { 0x0A, r[10] },
+                { 0x0B, r[11] },
+                { 0x0C, r[12] },
+                { 0x0D, r[13] },
+                { 0x0E, r[14] },
+                { 0x0F, r[15] },
+
+                { 0x10, r[16] },
+                { 0x11, r[17] },
+                { 0x12, r[18] },
+                { 0x13, r[19] },
+                { 0x14, r[20] },
+                { 0x15, r[21] },
+                { 0x16, r[22] },
+                { 0x17, r[23] },
+
+                { 0x18, r[24] },
+                { 0x19, r[25] },
+                { 0x1A, r[26] },
+                { 0x1B, r[27] },
+                { 0x1C, r[28] },
+                { 0x1D, r[29] },
+                { 0x1E, r[30] },
+                { 0x1F, r[31] },
+
+                // Special function registers.
+
+                { 0x80, P0 },
+                { 0x81, SP },
+                { 0x82, DPL },
+                { 0x83, DPH },
+                { 0x87, PCON },
+                { 0x88, TCON },
+                { 0x89, TMOD },
+                { 0x8A, TL0 },
+                { 0x8C, TH0 },
+                { 0x8B, TL1 },
+                { 0x8D, TH1 },
+                { 0x90, P1 },
+                { 0x98, SCON },
+                { 0x99, SBUF },
+                { 0xA0, P2 },
+                { 0xA8, IE },
+                { 0xB0, P3 },
+                { 0xB8, IP },
+                { 0xD0, PSW },
+                { 0xE0, A },
+                { 0xF0, B },
+
+            };
+
+            CFlag = new FlagGroupStorage(PSW, (uint) FlagM.C, "C");
+            AFlag = new FlagGroupStorage(PSW, (uint) FlagM.AC, "A");
+            OFlag = new FlagGroupStorage(PSW, (uint) FlagM.OV, "O");
+            PFlag = new FlagGroupStorage(PSW, (uint) FlagM.P, "P");
+            CAOP = new FlagGroupStorage(PSW, (uint) (FlagM.C | FlagM.AC | FlagM.OV | FlagM.P), nameof(CAOP));
+
+            ByDomain = factory.DomainsToRegisters.Values
+                .Concat(ctrFactory.DomainsToRegisters.Values)
                 .ToDictionary(k => k.Domain);
-            regsByName = regsByNumber.Values
+            ByName = regsByNumber.Values
                 .ToDictionary(k => k.Name);
         }
 
@@ -162,7 +218,7 @@ namespace Reko.Arch.i8051
 
         public static bool TryGetRegister(string regName, [MaybeNullWhen(false)] out RegisterStorage reg)
         {
-            return regsByName.TryGetValue(regName, out reg);
+            return ByName.TryGetValue(regName, out reg);
         }
     }
 

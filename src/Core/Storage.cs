@@ -737,7 +737,7 @@ namespace Reko.Core
         /// <returns>True if this register covers the given bit range.</returns>
         public bool Covers(BitRange range)
         {
-            return this.BitAddress <= (ulong)range.Msb &&
+            return this.BitAddress <= (ulong)range.Lsb &&
                 this.BitAddress + BitSize >= (ulong)range.Msb;
         }
 

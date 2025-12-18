@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Lib;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -30,9 +31,10 @@ namespace Reko.Arch.Infineon.TriCore
     {
         public static readonly RegisterStorage[] AddrRegisters;
         public static readonly RegisterStorage[] DataRegisters;
-        public static readonly SequenceStorage[] ExtendedARegisters;
-        public static readonly SequenceStorage[] ExtendedDRegisters;
+        public static readonly RegisterStorage[] ExtendedARegisters;
+        public static readonly RegisterStorage[] ExtendedDRegisters;
         public static readonly FlagGroupStorage[] PswFlags;
+        public static readonly Dictionary<StorageDomain, RegisterStorage[]> Subregisters;
 
         public static readonly Dictionary<uint, RegisterStorage> CoreRegisters;
 
@@ -55,22 +57,19 @@ namespace Reko.Arch.Infineon.TriCore
         static Registers()
         {
             var factory = new StorageFactory();
-            DataRegisters = factory.RangeOfReg32(16, "d{0}");
-            AddrRegisters = factory.RangeOfReg32(16, "a{0}");
-            ExtendedARegisters = Enumerable.Range(0, 8)
-                .Select(n => new SequenceStorage(
-                    $"p{n * 2}",
-                    PrimitiveType.Word64,
-                    AddrRegisters[n * 2 + 1],
-                    AddrRegisters[n * 2]))
-                .ToArray();
-            ExtendedDRegisters = Enumerable.Range(0, 8)
-                .Select(n => new SequenceStorage(
-                    $"e{n*2}",
-                    PrimitiveType.Word64,
-                    DataRegisters[n*2+1],
-                    DataRegisters[n*2]))
-                .ToArray();
+            ExtendedDRegisters = factory.RangeOfReg(8, i => $"e{i * 2}", PrimitiveType.Word64);
+            ExtendedARegisters = factory.RangeOfReg(8, i => $"p{i * 2}", PrimitiveType.Word64);
+            DataRegisters = ExtendedDRegisters.SelectMany(er => new[]
+            {
+                RegisterStorage.Reg32($"d{er.Number*2}", er.Number, 0),
+                RegisterStorage.Reg32($"d{er.Number*2 + 1}", er.Number, 32)
+            }).ToArray();
+            AddrRegisters = ExtendedARegisters.SelectMany(er => new[]
+            {
+                RegisterStorage.Reg32($"a{(er.Number-8)*2}", er.Number, 0),
+                RegisterStorage.Reg32($"a{(er.Number-8)*2 + 1}", er.Number, 32)
+            }).ToArray();
+
             factory = new StorageFactory(StorageDomain.SystemRegister);
             CoreRegisters = new Dictionary<uint, RegisterStorage>
             {
@@ -373,19 +372,54 @@ namespace Reko.Arch.Infineon.TriCore
             psw = CoreRegisters[0xFE04];
             a11 = AddrRegisters[11];
 
-            C = new FlagGroupStorage(psw, (uint)FlagM.CF, nameof(C));
+            C = new FlagGroupStorage(psw, (uint) FlagM.CF, nameof(C));
             V = new FlagGroupStorage(psw, (uint) FlagM.CF, nameof(V));
             SV = new FlagGroupStorage(psw, (uint) FlagM.CF, nameof(SV));
             AV = new FlagGroupStorage(psw, (uint) FlagM.CF, nameof(AV));
             SAV = new FlagGroupStorage(psw, (uint) FlagM.CF, nameof(AV));
             PswFlags = new[] { C, V, SV, AV, SAV };
 
-            V_SV = new FlagGroupStorage(psw, (uint) (FlagM.VF|FlagM.SVF), nameof(V_SV));
-            V_SV_AV_SAV = new FlagGroupStorage(psw, (uint) (FlagM.VF|FlagM.SVF|FlagM.AVF|FlagM.SAVF), nameof(V_SV_AV_SAV));
-            C_V_SV_AV_SAV = new FlagGroupStorage(psw, (uint) (FlagM.CF|FlagM.VF|FlagM.SVF|FlagM.AVF|FlagM.SAVF), nameof(C_V_SV_AV_SAV));
+            V_SV = new FlagGroupStorage(psw, (uint) (FlagM.VF | FlagM.SVF), nameof(V_SV));
+            V_SV_AV_SAV = new FlagGroupStorage(psw, (uint) (FlagM.VF | FlagM.SVF | FlagM.AVF | FlagM.SAVF), nameof(V_SV_AV_SAV));
+            C_V_SV_AV_SAV = new FlagGroupStorage(psw, (uint) (FlagM.CF | FlagM.VF | FlagM.SVF | FlagM.AVF | FlagM.SAVF), nameof(C_V_SV_AV_SAV));
 
-            ByName = factory.NamesToRegisters;
-            ByDomain = factory.DomainsToRegisters;
+            ByName = ExtendedARegisters
+                .Concat(ExtendedDRegisters)
+                .Concat(AddrRegisters)
+                .Concat(DataRegisters)
+                .ToDictionary(r => r.Name);
+            ByDomain = ExtendedARegisters
+                .Concat(ExtendedDRegisters)
+                .ToDictionary(r => r.Domain);
+            Subregisters = new(from sub in DataRegisters.Concat(AddrRegisters)
+                               group sub by sub.Domain into g
+                               select KeyValuePair.Create(
+                                   g.Key,
+                                   g.OrderBy(s => s.BitAddress)
+                                    .ToArray()));
+        }
+
+        private static RegisterStorage[] MakeSubregs(RegisterStorage p)
+        {
+            return new[] {
+                    AddrRegisters[p.Number - ExtendedARegisters[0].Number*2],
+                    AddrRegisters[p.Number*2 + 1]
+                };
+        }
+
+        public static RegisterStorage? GetRegister(StorageDomain domain, BitRange range)
+        {
+            if (!ByDomain.TryGetValue(domain, out var reg))
+                return null;
+            if (!Subregisters.TryGetValue(domain, out var subregs))
+                return reg;
+            RegisterStorage best = reg;
+            foreach (RegisterStorage subreg in subregs)
+            {
+                if (subreg.Covers(range))
+                    best = subreg;
+            }
+            return best;
         }
     }
 

@@ -103,7 +103,17 @@ namespace Reko.Arch.i8051
 
         public override RegisterStorage? GetRegister(StorageDomain domain, BitRange range)
         {
-            return Registers.GetRegister(domain - StorageDomain.Register);
+            if (!Registers.ByDomain.TryGetValue(domain, out var reg))
+                return null;
+            if (Registers.Subregisters.TryGetValue(domain, out var subregs))
+            {
+                foreach (var subreg in subregs)
+                {
+                    if (subreg.Covers(range))
+                        reg = subreg;
+                }
+            }
+            return reg;
         }
 
         public override RegisterStorage[] GetRegisters()

@@ -169,7 +169,7 @@ namespace Reko.Arch.Qualcomm
                 {
                     renderer.WriteString(sep);
                     renderer.WriteString(reg.Name);
-                    sep = ",";
+                    sep = ":";
                 }
                 return;
             }

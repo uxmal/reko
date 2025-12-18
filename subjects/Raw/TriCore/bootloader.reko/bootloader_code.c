@@ -207,10 +207,10 @@ void fn00000294(word32 d15)
 	}
 }
 
-// 00000400: Register Eq_n fn00000400(Register Eq_n a4, Register Eq_n a15)
+// 00000400: void fn00000400(Register Eq_n a4, Register Eq_n a15)
 // Called from:
 //      fn00000B04
-Eq_n fn00000400(Eq_n a4, Eq_n a15)
+void fn00000400(Eq_n a4, Eq_n a15)
 {
 	__store_upper_context();
 	fn00000AC0(a4, a15);
@@ -273,7 +273,6 @@ Eq_n fn00000400(Eq_n a4, Eq_n a15)
 	} while (d15_n != 0x00);
 	*(ui32 *) 0xF0004200 &= ~0x41;
 	__load_upper_context();
-	return 0x001F8000;
 }
 
 // 000005CE: void fn000005CE(Register ui32 d4, Register (ptr32 ui16) a4)
@@ -513,10 +512,10 @@ void fn000008BE(struct Eq_n * d4, ui16 * a4)
 	__load_upper_context();
 }
 
-// 0000098A: Register (ptr32 Eq_n) fn0000098A(Register uint32 d4, Register (ptr32 Eq_n) d5, Register ui32 d6, Register ui32 d7, Stack uint32 dwArg00)
+// 0000098A: Register (ptr32 Eq_n) fn0000098A(Register (ptr32 Eq_n) d5, Register uint32 d4, Register ui32 d6, Register ui32 d7, Stack uint32 dwArg00)
 // Called from:
 //      fn00000EB6
-struct Eq_n * fn0000098A(uint32 d4, struct Eq_n * d5, ui32 d6, ui32 d7, uint32 dwArg00)
+struct Eq_n * fn0000098A(struct Eq_n * d5, uint32 d4, ui32 d6, ui32 d7, uint32 dwArg00)
 {
 	d5->dw5554 = ~0x0A;
 	d5->dw5554 = ~0x55;
@@ -646,9 +645,10 @@ Eq_n fn00000B04(Eq_n a4, Eq_n a15, uint32 ICR)
 	__store_upper_context();
 	fn00000AC0(a4, 0xD0000000);
 	__store_upper_context();
-	Eq_n a15_n = fn00000400(a4, 0xD0000000);
+	fn00000400(a4, 0xD0000000);
 	__disable();
 	__load_upper_context();
+	Eq_n a15_n;
 	return a15_n;
 }
 
@@ -698,7 +698,7 @@ void fn00000EB6(struct Eq_n * a4)
 	ui32 d7_n = (uint32) a4->b000D << 24 | (uint32) a4->b000E << 16 | (uint32) a4->b0010 | (uint32) a4->b000F << 8;
 	struct Eq_n * d5_n = *(byte *) 0xD0000230 != 0x00 ? 0x80800000 : 0x80000000;
 	__store_upper_context();
-	fn0000098A(d4_n, d5_n, d6_n, d7_n, d2_n)->b0004 != 0x00;
+	fn0000098A(d5_n, d4_n, d6_n, d7_n, d2_n)->b0004 != 0x00;
 	fn00000CCE();
 }
 

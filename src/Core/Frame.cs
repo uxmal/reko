@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Xml.Linq;
 
 namespace Reko.Core
 {
@@ -325,7 +326,8 @@ namespace Reko.Core
             var idSeq = FindSequence(sequence.Elements);
             if (idSeq is null)
             {
-                idSeq = new Identifier(sequence.Name, sequence.DataType, sequence);
+                string name = string.Join("_", sequence.Elements.Select(e => e.Name));
+                idSeq = new Identifier(name, sequence.DataType, sequence);
                 Identifiers.Add(idSeq);
             }
             return idSeq;

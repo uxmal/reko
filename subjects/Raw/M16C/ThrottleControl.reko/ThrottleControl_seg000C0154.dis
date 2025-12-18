@@ -28,9 +28,13 @@ l000C017A:
 	UART1_putc(0x55<16>)
 	UART1_putc(0x55<16>)
 	fn000C0E46()
-	fn000C1222(fn000C1222(fn000C1222(fn000C1186(1<16>, 5<16>, out r1_2019), 0xC012F<32>), 0xC00E3<32>), 0xC00C0<32>)
-	fn000C1222(fn000C1186(1<16>, 0x20<16>, out r1_2020), 0xC008A<32>)
-	fn000C1186(5<16>, 1<16>, out r1_2021)
+	fn000C1186(1<16>, 5<16>)
+	fn000C1222(0xC012F<32>)
+	fn000C1222(0xC00E3<32>)
+	fn000C1222(0xC00C0<32>)
+	fn000C1186(1<16>, 0x20<16>)
+	fn000C1222(0xC008A<32>)
+	fn000C1186(5<16>, 1<16>)
 l000C0206:
 	branch true l000C020D
 l000C020A:
@@ -52,32 +56,37 @@ l000C0230:
 	Mem199[0x03ED<p16>:byte] = __set_bit<byte,byte>(Mem198[0x03ED<p16>:byte], 6<8>)
 	wLoc04 = 1<16>
 l000C0243:
-	fn000C1186(5<16>, 0<16>, out r1_2027)
-	UART1_putc(0x20<16>)
-	UART1_putc(CONVERT(SLICE(__write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20<16>), byte, 8), 0<8>), 0<8>, !!__bit<byte,byte>(Mem234[0x03E1<p16>:byte], 5<8>)), byte, 0) == 1<u8> ? 0x31<8> : 0x30<8>, uint8, uint16))
+	fn000C1186(5<16>, 0<16>)
 	UART1_putc(0x20<16>)
 	UART1_putc(0x20<16>)
-	UART1_putc(0x20<16>)
-	UART1_putc(CONVERT(SLICE(__write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20<16>), byte, 8), 0<8>), 0<8>, !!__bit<byte,byte>(Mem234[0x03E1<p16>:byte], 6<8>)), byte, 0) == 1<u8> ? 0x31<8> : 0x30<8>, uint8, uint16))
-	UART1_putc(0x20<16>)
-	UART1_putc(0x20<16>)
-	UART1_putc(0x20<16>)
-	UART1_putc(CONVERT(SLICE(__write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20<16>), byte, 8), 0<8>), 0<8>, !!__bit<byte,byte>(Mem234[0x03E1<p16>:byte], 7<8>)), byte, 0) == 1<u8> ? 0x31<8> : 0x30<8>, uint8, uint16))
+	UART1_putc(CONVERT(SLICE(__write_bit<word16,byte>(0<16>, 0<8>, !!__bit<byte,byte>(Mem234[0x03E1<p16>:byte], 5<8>)), byte, 0) == 1<u8> ? 0x31<8> : 0x30<8>, uint8, uint16))
 	UART1_putc(0x20<16>)
 	UART1_putc(0x20<16>)
 	UART1_putc(0x20<16>)
 	UART1_putc(0x20<16>)
+	UART1_putc(CONVERT(SLICE(__write_bit<word16,byte>(0<16>, 0<8>, !!__bit<byte,byte>(Mem234[0x03E1<p16>:byte], 6<8>)), byte, 0) == 1<u8> ? 0x31<8> : 0x30<8>, uint8, uint16))
 	UART1_putc(0x20<16>)
-	UART1_putc(CONVERT(SLICE(__write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20<16>), byte, 8), 0<8>), 0<8>, !!__bit<byte,byte>(Mem234[0x03F0<p16>:byte], 3<8>)), byte, 0) == 1<u8> ? 0x31<8> : 0x30<8>, uint8, uint16))
+	UART1_putc(0x20<16>)
+	UART1_putc(0x20<16>)
+	UART1_putc(0x20<16>)
+	UART1_putc(CONVERT(SLICE(__write_bit<word16,byte>(0<16>, 0<8>, !!__bit<byte,byte>(Mem234[0x03E1<p16>:byte], 7<8>)), byte, 0) == 1<u8> ? 0x31<8> : 0x30<8>, uint8, uint16))
 	UART1_putc(0x20<16>)
 	UART1_putc(0x20<16>)
 	UART1_putc(0x20<16>)
 	UART1_putc(0x20<16>)
 	UART1_putc(0x20<16>)
 	UART1_putc(0x20<16>)
+	UART1_putc(CONVERT(SLICE(__write_bit<word16,byte>(0<16>, 0<8>, !!__bit<byte,byte>(Mem234[0x03F0<p16>:byte], 3<8>)), byte, 0) == 1<u8> ? 0x31<8> : 0x30<8>, uint8, uint16))
 	UART1_putc(0x20<16>)
 	UART1_putc(0x20<16>)
-	UART1_putc(CONVERT(SLICE(__write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20<16>), byte, 8), 0<8>), 0<8>, !!__bit<byte,byte>(Mem234[0x03F0<p16>:byte], 4<8>)), byte, 0) == 1<u8> ? 0x31<8> : 0x30<8>, uint8, uint16))
+	UART1_putc(0x20<16>)
+	UART1_putc(0x20<16>)
+	UART1_putc(0x20<16>)
+	UART1_putc(0x20<16>)
+	UART1_putc(0x20<16>)
+	UART1_putc(0x20<16>)
+	UART1_putc(0x20<16>)
+	UART1_putc(CONVERT(SLICE(__write_bit<word16,byte>(0<16>, 0<8>, !!__bit<byte,byte>(Mem234[0x03F0<p16>:byte], 4<8>)), byte, 0) == 1<u8> ? 0x31<8> : 0x30<8>, uint8, uint16))
 	UART1_putc(0x20<16>)
 	UART1_putc(0x20<16>)
 	UART1_putc(0x20<16>)
@@ -109,7 +118,7 @@ l000C0243:
 	fn000C1616()
 	UART1_putc(0x20<16>)
 	UART1_putc(0x20<16>)
-	fn000C1186(9<16>, 0<16>, out r1_722)
+	r1_722 = fn000C1186(9<16>, 0<16>)
 	r0l_728 = Mem234[0x03E4<p16>:byte]
 	0x72<8> = 0x8D<8>
 	Mem732[0x2177<p16>:byte] = r0l_728
@@ -127,12 +136,14 @@ l000C043C:
 	fn000C13CC()
 	UART1_putc(0x20<16>)
 	UART1_putc(0x20<16>)
-	UART1_putc(CONVERT(SLICE(__write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20<16>), byte, 8), 0<8>), 0<8>, !!__bit<byte,byte>(Mem756[0x03F0<p16>:byte], 2<8>)), byte, 0) == 1<u8> ? 0x31<8> : 0x30<8>, uint8, uint16))
+	UART1_putc(0x20<16>)
+	UART1_putc(CONVERT(SLICE(__write_bit<word16,byte>(0<16>, 0<8>, !!__bit<byte,byte>(Mem756[0x03F0<p16>:byte], 2<8>)), byte, 0) == 1<u8> ? 0x31<8> : 0x30<8>, uint8, uint16))
 	UART1_putc(0x20<16>)
 	UART1_putc(0x20<16>)
 	UART1_putc(0x20<16>)
 	UART1_putc(0x20<16>)
-	branch SLICE(__write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20<16>), byte, 8), 0<8>), 0<8>, !!__bit<byte,byte>(Mem756[0x03E9<p16>:byte], 6<8>)), byte, 0) != 1<u8> l000C04BC
+	UART1_putc(0x20<16>)
+	branch SLICE(__write_bit<word16,byte>(0<16>, 0<8>, !!__bit<byte,byte>(Mem756[0x03E9<p16>:byte], 6<8>)), byte, 0) != 1<u8> l000C04BC
 l000C04B2:
 	UART1_putc(0x31<16>)
 	goto l000C0206
@@ -157,7 +168,7 @@ l000C04C9:
 	UART1_putc(0x55<16>)
 	UART1_putc(0x55<16>)
 	fn000C0E46()
-	r0_951 = fn000C1186(1<16>, 5<16>, out r1_2022)
+	fn000C1186(1<16>, 5<16>)
 	Mem959[0x03D8<p16>:byte] = Mem22[0x03CA<p16>:word16]
 	Mem963[0x03E8<p16>:byte] = __write_bit<byte,byte>(Mem959[0x03E8<p16>:byte], 0<8>, !!__bit<byte,byte>(Mem959[0x03F8<p16>:byte], 0<8>))
 	Mem966[0x03E8<p16>:byte] = __write_bit<byte,byte>(Mem963[0x03E8<p16>:byte], 1<8>, !!__bit<byte,byte>(Mem963[0x03F8<p16>:byte], 1<8>))
@@ -171,9 +182,12 @@ l000C04C9:
 	Mem990[0x03E5<p16>:byte] = __write_bit<byte,byte>(Mem987[0x03E5<p16>:byte], 3<8>, !!__bit<byte,byte>(Mem987[0x03F9<p16>:byte], 5<8>))
 	Mem993[0x03E5<p16>:byte] = __write_bit<byte,byte>(Mem990[0x03E5<p16>:byte], 4<8>, !!__bit<byte,byte>(Mem990[0x03F9<p16>:byte], 6<8>))
 	Mem997[0x03E5<p16>:byte] = __write_bit<byte,byte>(Mem993[0x03E5<p16>:byte], 5<8>, !!__bit<byte,byte>(Mem993[0x03F9<p16>:byte], 7<8>))
-	fn000C1222(fn000C1222(fn000C1222(r0_951, 0xC0073<32>), 0xC002D<32>), 0xC0000<32>)
-	fn000C1222(fn000C1186(1<16>, 0x2C<16>, out r1_2023), 0xC008A<32>)
-	fn000C1186(5<16>, 1<16>, out r1_2024)
+	fn000C1222(0xC0073<32>)
+	fn000C1222(0xC002D<32>)
+	fn000C1222(0xC0000<32>)
+	fn000C1186(1<16>, 0x2C<16>)
+	fn000C1222(0xC008A<32>)
+	fn000C1186(5<16>, 1<16>)
 l000C05C9:
 	branch true l000C05D0
 l000C05CD:
@@ -208,20 +222,32 @@ l000C065A:
 	Mem1123[0x03E9<p16>:byte] = __set_bit<byte,byte>(Mem1122[0x03E9<p16>:byte], 3<8>)
 	wLoc04 = 1<16>
 l000C0671:
-	fn000C1186(5<16>, 0<16>, out r1_2025)
-	UART1_putc(CONVERT(SLICE(__write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20<16>), byte, 8), 0<8>), 0<8>, !!__bit<byte,byte>(Mem1152[0x03F8<p16>:byte], 0<8>)), byte, 0) == 1<u8> ? 0x31<8> : 0x30<8>, uint8, uint16))
-	UART1_putc(CONVERT(SLICE(__write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20<16>), byte, 8), 0<8>), 0<8>, !!__bit<byte,byte>(Mem1152[0x03F8<p16>:byte], 1<8>)), byte, 0) == 1<u8> ? 0x31<8> : 0x30<8>, uint8, uint16))
-	UART1_putc(CONVERT(SLICE(__write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20<16>), byte, 8), 0<8>), 0<8>, !!__bit<byte,byte>(Mem1152[0x03F8<p16>:byte], 2<8>)), byte, 0) == 1<u8> ? 0x31<8> : 0x30<8>, uint8, uint16))
-	UART1_putc(CONVERT(SLICE(__write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20<16>), byte, 8), 0<8>), 0<8>, !!__bit<byte,byte>(Mem1152[0x03F8<p16>:byte], 3<8>)), byte, 0) == 1<u8> ? 0x31<8> : 0x30<8>, uint8, uint16))
-	UART1_putc(CONVERT(SLICE(__write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20<16>), byte, 8), 0<8>), 0<8>, !!__bit<byte,byte>(Mem1152[0x03F8<p16>:byte], 4<8>)), byte, 0) == 1<u8> ? 0x31<8> : 0x30<8>, uint8, uint16))
-	UART1_putc(CONVERT(SLICE(__write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20<16>), byte, 8), 0<8>), 0<8>, !!__bit<byte,byte>(Mem1152[0x03F8<p16>:byte], 5<8>)), byte, 0) == 1<u8> ? 0x31<8> : 0x30<8>, uint8, uint16))
+	fn000C1186(5<16>, 0<16>)
 	UART1_putc(0x20<16>)
-	UART1_putc(CONVERT(SLICE(__write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20<16>), byte, 8), 0<8>), 0<8>, !!__bit<byte,byte>(Mem1152[0x03E1<p16>:byte], 5<8>)), byte, 0) == 1<u8> ? 0x31<8> : 0x30<8>, uint8, uint16))
-	UART1_putc(CONVERT(SLICE(__write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20<16>), byte, 8), 0<8>), 0<8>, !!__bit<byte,byte>(Mem1152[0x03E1<p16>:byte], 6<8>)), byte, 0) == 1<u8> ? 0x31<8> : 0x30<8>, uint8, uint16))
-	UART1_putc(CONVERT(SLICE(__write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20<16>), byte, 8), 0<8>), 0<8>, !!__bit<byte,byte>(Mem1152[0x03E1<p16>:byte], 7<8>)), byte, 0) == 1<u8> ? 0x31<8> : 0x30<8>, uint8, uint16))
-	UART1_putc(CONVERT(SLICE(__write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20<16>), byte, 8), 0<8>), 0<8>, !!__bit<byte,byte>(Mem1152[0x03F9<p16>:byte], 5<8>)), byte, 0) == 1<u8> ? 0x31<8> : 0x30<8>, uint8, uint16))
-	UART1_putc(CONVERT(SLICE(__write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20<16>), byte, 8), 0<8>), 0<8>, !!__bit<byte,byte>(Mem1152[0x03F9<p16>:byte], 6<8>)), byte, 0) == 1<u8> ? 0x31<8> : 0x30<8>, uint8, uint16))
-	UART1_putc(CONVERT(SLICE(__write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20<16>), byte, 8), 0<8>), 0<8>, !!__bit<byte,byte>(Mem1152[0x03F9<p16>:byte], 7<8>)), byte, 0) == 1<u8> ? 0x31<8> : 0x30<8>, uint8, uint16))
+	UART1_putc(CONVERT(SLICE(__write_bit<word16,byte>(0<16>, 0<8>, !!__bit<byte,byte>(Mem1152[0x03F8<p16>:byte], 0<8>)), byte, 0) == 1<u8> ? 0x31<8> : 0x30<8>, uint8, uint16))
+	UART1_putc(0x20<16>)
+	UART1_putc(CONVERT(SLICE(__write_bit<word16,byte>(0<16>, 0<8>, !!__bit<byte,byte>(Mem1152[0x03F8<p16>:byte], 1<8>)), byte, 0) == 1<u8> ? 0x31<8> : 0x30<8>, uint8, uint16))
+	UART1_putc(0x20<16>)
+	UART1_putc(CONVERT(SLICE(__write_bit<word16,byte>(0<16>, 0<8>, !!__bit<byte,byte>(Mem1152[0x03F8<p16>:byte], 2<8>)), byte, 0) == 1<u8> ? 0x31<8> : 0x30<8>, uint8, uint16))
+	UART1_putc(0x20<16>)
+	UART1_putc(CONVERT(SLICE(__write_bit<word16,byte>(0<16>, 0<8>, !!__bit<byte,byte>(Mem1152[0x03F8<p16>:byte], 3<8>)), byte, 0) == 1<u8> ? 0x31<8> : 0x30<8>, uint8, uint16))
+	UART1_putc(0x20<16>)
+	UART1_putc(CONVERT(SLICE(__write_bit<word16,byte>(0<16>, 0<8>, !!__bit<byte,byte>(Mem1152[0x03F8<p16>:byte], 4<8>)), byte, 0) == 1<u8> ? 0x31<8> : 0x30<8>, uint8, uint16))
+	UART1_putc(0x20<16>)
+	UART1_putc(CONVERT(SLICE(__write_bit<word16,byte>(0<16>, 0<8>, !!__bit<byte,byte>(Mem1152[0x03F8<p16>:byte], 5<8>)), byte, 0) == 1<u8> ? 0x31<8> : 0x30<8>, uint8, uint16))
+	UART1_putc(0x20<16>)
+	UART1_putc(0x20<16>)
+	UART1_putc(CONVERT(SLICE(__write_bit<word16,byte>(0<16>, 0<8>, !!__bit<byte,byte>(Mem1152[0x03E1<p16>:byte], 5<8>)), byte, 0) == 1<u8> ? 0x31<8> : 0x30<8>, uint8, uint16))
+	UART1_putc(0x20<16>)
+	UART1_putc(CONVERT(SLICE(__write_bit<word16,byte>(0<16>, 0<8>, !!__bit<byte,byte>(Mem1152[0x03E1<p16>:byte], 6<8>)), byte, 0) == 1<u8> ? 0x31<8> : 0x30<8>, uint8, uint16))
+	UART1_putc(0x20<16>)
+	UART1_putc(CONVERT(SLICE(__write_bit<word16,byte>(0<16>, 0<8>, !!__bit<byte,byte>(Mem1152[0x03E1<p16>:byte], 7<8>)), byte, 0) == 1<u8> ? 0x31<8> : 0x30<8>, uint8, uint16))
+	UART1_putc(0x20<16>)
+	UART1_putc(CONVERT(SLICE(__write_bit<word16,byte>(0<16>, 0<8>, !!__bit<byte,byte>(Mem1152[0x03F9<p16>:byte], 5<8>)), byte, 0) == 1<u8> ? 0x31<8> : 0x30<8>, uint8, uint16))
+	UART1_putc(0x20<16>)
+	UART1_putc(CONVERT(SLICE(__write_bit<word16,byte>(0<16>, 0<8>, !!__bit<byte,byte>(Mem1152[0x03F9<p16>:byte], 6<8>)), byte, 0) == 1<u8> ? 0x31<8> : 0x30<8>, uint8, uint16))
+	UART1_putc(0x20<16>)
+	UART1_putc(CONVERT(SLICE(__write_bit<word16,byte>(0<16>, 0<8>, !!__bit<byte,byte>(Mem1152[0x03F9<p16>:byte], 7<8>)), byte, 0) == 1<u8> ? 0x31<8> : 0x30<8>, uint8, uint16))
 	UART1_putc(0x20<16>)
 	UART1_putc(0x20<16>)
 	fn000C0F06(Mem1152[0x03C0<p16>:word16])
@@ -248,7 +274,7 @@ l000C0671:
 	fn000C0F06(Mem1152[0x03CE<p16>:word16])
 	fn000C1616()
 	UART1_putc(0x20<16>)
-	fn000C1186(9<16>, 0<16>, out r1_2026)
+	fn000C1186(9<16>, 0<16>)
 	r0l_1681 = Mem1152[0x03E4<p16>:byte]
 	0x72<8> = 0x8D<8>
 	Mem1685[0x2177<p16>:byte] = r0l_1681
@@ -261,22 +287,26 @@ l000C0671:
 	fn000C13CC()
 	UART1_putc(0x20<16>)
 	UART1_putc(0x20<16>)
-	UART1_putc(CONVERT(SLICE(__write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20<16>), byte, 8), 0<8>), 0<8>, !!__bit<byte,byte>(Mem1706[0x03F0<p16>:byte], 2<8>)), byte, 0) == 1<u8> ? 0x31<8> : 0x30<8>, uint8, uint16))
+	UART1_putc(0x20<16>)
+	UART1_putc(CONVERT(SLICE(__write_bit<word16,byte>(0<16>, 0<8>, !!__bit<byte,byte>(Mem1706[0x03F0<p16>:byte], 2<8>)), byte, 0) == 1<u8> ? 0x31<8> : 0x30<8>, uint8, uint16))
 	UART1_putc(0x20<16>)
 	UART1_putc(0x20<16>)
 	UART1_putc(0x20<16>)
 	UART1_putc(0x20<16>)
-	UART1_putc(CONVERT(SLICE(__write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20<16>), byte, 8), 0<8>), 0<8>, !!__bit<byte,byte>(Mem1706[0x03ED<p16>:byte], 5<8>)), byte, 0) == 1<u8> ? 0x31<8> : 0x30<8>, uint8, uint16))
+	UART1_putc(0x20<16>)
+	UART1_putc(CONVERT(SLICE(__write_bit<word16,byte>(0<16>, 0<8>, !!__bit<byte,byte>(Mem1706[0x03ED<p16>:byte], 5<8>)), byte, 0) == 1<u8> ? 0x31<8> : 0x30<8>, uint8, uint16))
 	UART1_putc(0x20<16>)
 	UART1_putc(0x20<16>)
 	UART1_putc(0x20<16>)
 	UART1_putc(0x20<16>)
-	UART1_putc(CONVERT(SLICE(__write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20<16>), byte, 8), 0<8>), 0<8>, !!__bit<byte,byte>(Mem1706[0x03F0<p16>:byte], 3<8>)), byte, 0) == 1<u8> ? 0x31<8> : 0x30<8>, uint8, uint16))
+	UART1_putc(0x20<16>)
+	UART1_putc(CONVERT(SLICE(__write_bit<word16,byte>(0<16>, 0<8>, !!__bit<byte,byte>(Mem1706[0x03F0<p16>:byte], 3<8>)), byte, 0) == 1<u8> ? 0x31<8> : 0x30<8>, uint8, uint16))
 	UART1_putc(0x20<16>)
 	UART1_putc(0x20<16>)
 	UART1_putc(0x20<16>)
 	UART1_putc(0x20<16>)
-	UART1_putc(CONVERT(SLICE(__write_bit<word16,byte>(SEQ(SLICE(UART1_putc(0x20<16>), byte, 8), 0<8>), 0<8>, !!__bit<byte,byte>(Mem1706[0x03F0<p16>:byte], 4<8>)), byte, 0) == 1<u8> ? 0x31<8> : 0x30<8>, uint8, uint16))
+	UART1_putc(0x20<16>)
+	UART1_putc(CONVERT(SLICE(__write_bit<word16,byte>(0<16>, 0<8>, !!__bit<byte,byte>(Mem1706[0x03F0<p16>:byte], 4<8>)), byte, 0) == 1<u8> ? 0x31<8> : 0x30<8>, uint8, uint16))
 	UART1_putc(0x20<16>)
 	goto l000C05C9
 l000C0975:
@@ -928,12 +958,12 @@ void fn000C0EB0(word16 r1)
 // Preserved: fb usp
 fn000C0EB0_entry:
 l000C0EB0:
-	r2r0_11 = CONVERT(r1, uint16, uint32) (alias)
-	v12_17 = r1 - (r2r0_11 /u 0x64<16>) *s32 0x64<16>
-	r2r0_21 = CONVERT(v12_17, uint16, uint32) (alias)
-	Mem32[0x0424<p16>:word16] = v12_17 - (r2r0_21 /u 0xA<16>) *s32 0xA<16> + 0x30<16>
-	Mem35[0x0426<p16>:word16] = r2r0_21 /u 0xA<16> + 0x30<16>
-	Mem39[0x0428<p16>:word16] = r2r0_11 /u 0x64<16> + 0x30<16>
+	r2_r0_11 = CONVERT(r1, uint16, uint32) (alias)
+	v12_17 = r1 - (r2_r0_11 /u 0x64<16>) *s32 0x64<16>
+	r2_r0_21 = CONVERT(v12_17, uint16, uint32) (alias)
+	Mem32[0x0424<p16>:word16] = v12_17 - (r2_r0_21 /u 0xA<16>) *s32 0xA<16> + 0x30<16>
+	Mem35[0x0426<p16>:word16] = r2_r0_21 /u 0xA<16> + 0x30<16>
+	Mem39[0x0428<p16>:word16] = r2_r0_11 /u 0x64<16> + 0x30<16>
 	return
 fn000C0EB0_exit:
 
@@ -948,18 +978,18 @@ void fn000C0F06(word16 r1)
 // Preserved: fb usp
 fn000C0F06_entry:
 l000C0F06:
-	r2r0_11 = CONVERT(r1, uint16, uint32) (alias)
-	v12_17 = r1 - (r2r0_11 /u 0x2710<16>) *s32 0x2710<16>
-	r2r0_21 = CONVERT(v12_17, uint16, uint32) (alias)
-	v15_27 = v12_17 - (r2r0_21 /u 0x3E8<16>) *s32 0x3E8<16>
-	r2r0_31 = CONVERT(v15_27, uint16, uint32) (alias)
-	v17_37 = v15_27 - (r2r0_31 /u 0x64<16>) *s32 0x64<16>
-	r2r0_41 = CONVERT(v17_37, uint16, uint32) (alias)
-	Mem52[0x0424<p16>:word16] = v17_37 - (r2r0_41 /u 0xA<16>) *s32 0xA<16> + 0x30<16>
-	Mem55[0x0426<p16>:word16] = r2r0_41 /u 0xA<16> + 0x30<16>
-	Mem58[0x0428<p16>:word16] = r2r0_31 /u 0x64<16> + 0x30<16>
-	Mem61[0x042A<p16>:word16] = r2r0_21 /u 0x3E8<16> + 0x30<16>
-	Mem65[0x042C<p16>:word16] = r2r0_11 /u 0x2710<16> + 0x30<16>
+	r2_r0_11 = CONVERT(r1, uint16, uint32) (alias)
+	v12_17 = r1 - (r2_r0_11 /u 0x2710<16>) *s32 0x2710<16>
+	r2_r0_21 = CONVERT(v12_17, uint16, uint32) (alias)
+	v15_27 = v12_17 - (r2_r0_21 /u 0x3E8<16>) *s32 0x3E8<16>
+	r2_r0_31 = CONVERT(v15_27, uint16, uint32) (alias)
+	v17_37 = v15_27 - (r2_r0_31 /u 0x64<16>) *s32 0x64<16>
+	r2_r0_41 = CONVERT(v17_37, uint16, uint32) (alias)
+	Mem52[0x0424<p16>:word16] = v17_37 - (r2_r0_41 /u 0xA<16>) *s32 0xA<16> + 0x30<16>
+	Mem55[0x0426<p16>:word16] = r2_r0_41 /u 0xA<16> + 0x30<16>
+	Mem58[0x0428<p16>:word16] = r2_r0_31 /u 0x64<16> + 0x30<16>
+	Mem61[0x042A<p16>:word16] = r2_r0_21 /u 0x3E8<16> + 0x30<16>
+	Mem65[0x042C<p16>:word16] = r2_r0_11 /u 0x2710<16> + 0x30<16>
 	return
 fn000C0F06_exit:
 
@@ -997,12 +1027,12 @@ l000C0F9E:
 fn000C0F9E_exit:
 
 
-word16 fn000C1186(word16 r1, word16 r2, word16 & r1Out)
+word16 fn000C1186(word16 r1, word16 r2)
 // stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
 // Called from:
 //      fn000C0154
 // MayUse:  r1:[0..15] r2:[0..15]
-// LiveOut: r0:[0..15]-fn000C0154 r1:[0..15]-fn000C0154
+// LiveOut: r1:[0..15]-fn000C0154
 // Trashed: OSZC a0 r0 r1 r2
 // Preserved: fb usp
 fn000C1186_entry:
@@ -1013,132 +1043,110 @@ l000C1186:
 l000C1196:
 	wLoc0A_115 = 0x18<16>
 l000C119B:
-	r2r0_20 = CONVERT(wLoc0A_115, uint16, uint32) (alias)
-	v15_29 = wLoc0A_115 - (r2r0_20 /u 0xA<16>) *s32 0xA<16>
+	r2_r0_20 = CONVERT(wLoc0A_115, uint16, uint32) (alias)
+	v15_29 = wLoc0A_115 - (r2_r0_20 /u 0xA<16>) *s32 0xA<16>
 	branch r2 <=u 0x4F<16> l000C11C1
 l000C11BC:
 	wLoc04_116 = 0x4F<16>
 l000C11C1:
 	UART1_putc(0x1B<16>)
 	UART1_putc(0x5B<16>)
-	UART1_putc(r2r0_20 /u 0xA<16> + 0x30<16>)
+	UART1_putc(r2_r0_20 /u 0xA<16> + 0x30<16>)
 	UART1_putc(v15_29 + 0x30<16>)
 	UART1_putc(0x3B<16>)
-	r2r0_39 = CONVERT(wLoc04_116, uint16, uint32) (alias)
-	UART1_putc(r2r0_39 /u 0xA<16> + 0x30<16>)
-	UART1_putc(wLoc04_116 - (r2r0_39 /u 0xA<16>) *s32 0xA<16> + 0x30<16>)
-	r0_107 = UART1_putc(0x48<16>)
-	r1Out = 0x48<16>
-	return r0_107
+	r2_r0_39 = CONVERT(wLoc04_116, uint16, uint32) (alias)
+	UART1_putc(r2_r0_39 /u 0xA<16> + 0x30<16>)
+	UART1_putc(wLoc04_116 - (r2_r0_39 /u 0xA<16>) *s32 0xA<16> + 0x30<16>)
+	UART1_putc(0x48<16>)
+	return 0x48<16>
 fn000C1186_exit:
 
 
-word16 fn000C1222(word16 r0, ui32 dwArg03)
+void fn000C1222(ui32 dwArg03)
 // stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
 // Called from:
 //      fn000C0154
-// MayUse:  r0:[0..15] Stack +0003:[0..31]
-// LiveOut: r0:[0..15]-fn000C0154
+// MayUse:  Stack +0003:[0..31]
+// LiveOut:
 // Trashed: OSZC a0 a1 r0 r1
 // Preserved: fb usp
 fn000C1222_entry:
 l000C1222:
-	wLoc04_316 = 1<16>
-	dwArg03_446 = dwArg03 (alias)
+	wLoc04_290 = 1<16>
+	dwArg03_439 = dwArg03 (alias)
 l000C1228:
-	wArg05_319 = SLICE(dwArg03_446, word16, 16) (alias)
-	wArg03_318 = SLICE(dwArg03_446, word16, 0) (alias)
-	r0h_29 = SLICE(r0, byte, 8) (alias)
-	branch wLoc04_316 <=u 0x64<16> l000C1232
+	wArg03_292 = SLICE(dwArg03_439, word16, 0) (alias)
+	branch wLoc04_290 <=u 0x64<16> l000C1232
 l000C122F:
 	goto l000C1370
 l000C1232:
-	r0l_18 = Mem11[SEQ(wArg05_319, r0):byte]
-	r0_30 = SEQ(r0h_29, r0l_18) (alias)
-	branch r0l_18 == 0x7E<8> l000C1241
+	branch Mem11[dwArg03_439:byte] == 0x7E<8> l000C1241
 l000C123E:
 	goto l000C1344
 l000C1241:
-	v15_25 = SLICE(dwArg03_446 + 1<32>, word16, 16) (alias)
-	r0l_32 = Mem26[SEQ(v15_25, r0_30):byte]
-	r0_45 = SEQ(r0h_29, r0l_32) (alias)
-	branch r0l_32 != 0x4E<8> l000C1261
+	branch Mem25[dwArg03_439 + 1<32>:byte] != 0x4E<8> l000C1261
 l000C1253:
 	UART1_putc(0xA<16>)
-	r0_45 = UART1_putc(0xD<16>)
+	UART1_putc(0xD<16>)
 l000C1261:
-	r0l_56 = Mem26[SEQ(v15_25, r0_45):byte]
-	r0_62 = SEQ(SLICE(r0_45, byte, 8), r0l_56) (alias)
-	branch r0l_56 != 0x7E<8> l000C1274
+	branch Mem25[dwArg03_439 + 1<32>:byte] != 0x7E<8> l000C1274
 l000C126D:
-	r0_62 = UART1_putc(0x7E<16>)
+	UART1_putc(0x7E<16>)
 l000C1274:
-	r0l_74 = Mem26[SEQ(v15_25, r0_62):byte]
-	r0_101 = SEQ(SLICE(r0_62, byte, 8), r0l_74) (alias)
-	branch r0l_74 != 0x42<8> l000C129C
+	branch Mem25[dwArg03_439 + 1<32>:byte] != 0x42<8> l000C129C
 l000C1280:
 	UART1_putc(0x1B<16>)
 	UART1_putc(0x5B<16>)
 	UART1_putc(0x31<16>)
-	r0_101 = UART1_putc(0x6D<16>)
+	UART1_putc(0x6D<16>)
 l000C129C:
-	r0l_113 = Mem26[SEQ(v15_25, r0_101):byte]
-	r0_140 = SEQ(SLICE(r0_101, byte, 8), r0l_113) (alias)
-	branch r0l_113 != 0x55<8> l000C12C4
+	branch Mem25[dwArg03_439 + 1<32>:byte] != 0x55<8> l000C12C4
 l000C12A8:
 	UART1_putc(0x1B<16>)
 	UART1_putc(0x5B<16>)
 	UART1_putc(0x34<16>)
-	r0_140 = UART1_putc(0x6D<16>)
+	UART1_putc(0x6D<16>)
 l000C12C4:
-	r0l_152 = Mem26[SEQ(v15_25, r0_140):byte]
-	r0_179 = SEQ(SLICE(r0_140, byte, 8), r0l_152) (alias)
-	branch r0l_152 != 0x52<8> l000C12EC
+	branch Mem25[dwArg03_439 + 1<32>:byte] != 0x52<8> l000C12EC
 l000C12D0:
 	UART1_putc(0x1B<16>)
 	UART1_putc(0x5B<16>)
 	UART1_putc(0x37<16>)
-	r0_179 = UART1_putc(0x6D<16>)
+	UART1_putc(0x6D<16>)
 l000C12EC:
-	r0l_191 = Mem26[SEQ(v15_25, r0_179):byte]
-	r0_218 = SEQ(SLICE(r0_179, byte, 8), r0l_191) (alias)
-	branch r0l_191 != 0x4F<8> l000C1314
+	branch Mem25[dwArg03_439 + 1<32>:byte] != 0x4F<8> l000C1314
 l000C12F8:
 	UART1_putc(0x1B<16>)
 	UART1_putc(0x5B<16>)
 	UART1_putc(0x30<16>)
-	r0_218 = UART1_putc(0x6D<16>)
+	UART1_putc(0x6D<16>)
 l000C1314:
-	r0l_230 = Mem26[SEQ(v15_25, r0_218):byte]
-	r0 = SEQ(SLICE(r0_218, byte, 8), r0l_230) (alias)
-	branch r0l_230 != 0x53<8> l000C133C
+	branch Mem25[dwArg03_439 + 1<32>:byte] != 0x53<8> l000C133C
 l000C1320:
 	UART1_putc(0x1B<16>)
 	UART1_putc(0x5B<16>)
 	UART1_putc(0x35<16>)
-	r0 = UART1_putc(0x6D<16>)
+	UART1_putc(0x6D<16>)
 l000C133C:
-	dwArg03_446 = SEQ(SLICE(dwArg03_446 + 2<32>, word16, 16), wArg03_318 + 2<16>) (alias)
+	dwArg03_439 = SEQ(SLICE(dwArg03_439 + 2<32>, word16, 16), wArg03_292 + 2<16>) (alias)
 	goto l000C136A
 l000C1344:
-	r0l_273 = Mem11[SEQ(wArg05_319, r0_30):byte]
-	r0 = SEQ(r0h_29, r0l_273) (alias)
-	branch r0l_273 != 0<8> l000C1355
+	branch Mem11[dwArg03_439:byte] != 0<8> l000C1355
 l000C134E:
-	wLoc04_316 = 0x64<16>
+	wLoc04_290 = 0x64<16>
 	goto l000C136A
 l000C1355:
-	r0 = UART1_putc(CONVERT(Mem11[SEQ(wArg05_319, r0):byte], uint8, uint16))
-	dwArg03_446 = SEQ(SLICE(dwArg03_446 + 1<32>, word16, 16), wArg03_318 + 1<16>) (alias)
+	UART1_putc(CONVERT(Mem11[dwArg03_439:byte], uint8, uint16))
+	dwArg03_439 = SEQ(SLICE(dwArg03_439 + 1<32>, word16, 16), wArg03_292 + 1<16>) (alias)
 l000C136A:
-	wLoc04_316 = wLoc04_316 + 1<16>
+	wLoc04_290 = wLoc04_290 + 1<16>
 	goto l000C1228
 l000C1370:
-	return r0
+	return
 fn000C1222_exit:
 
 
-word16 UART1_putc(word16 r1)
+byte UART1_putc(word16 r1)
 // stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
 // Called from:
 //      fn000C0154
@@ -1164,18 +1172,17 @@ word16 UART1_putc(word16 r1)
 //      fn000C177A
 //      fn000C1790
 // MayUse:  r1:[0..15]
-// LiveOut: r0:[0..15]-fn000C1186
+// LiveOut: r0:[8..15]-fn000C0154
 // Trashed: SZC a0 r0
 // Preserved: fb usp
 UART1_putc_entry:
 l000C1372:
 l000C1378:
-	r0_15 = CONVERT(Mem9[0x03AD<p16>:byte], uint8, uint16) (alias)
-	branch !!__bit<word16,byte>(r0_15, 1<8>) l000C1378
+	branch !!__bit<word16,byte>(CONVERT(Mem9[0x03AD<p16>:byte], uint8, uint16), 1<8>) l000C1378
 l000C1381:
 	Mem21[0x03AD<p16>:byte] = Mem9[0x03AD<p16>:byte] | 1<16>
 	Mem24[0x03AA<p16>:word16] = r1
-	return r0_15
+	return 0<8>
 UART1_putc_exit:
 
 
@@ -1602,7 +1609,7 @@ l000C1790:
 fn000C1790_exit:
 
 
-word32 fn000C17B4(word32 r2r0, word16 sb)
+word32 fn000C17B4(word32 r2_r0, word16 sb)
 // stackDelta: 3; fpuStackDelta: 0; fpuMaxParam: -1
 // Called from:
 //      fn000C0F9E
@@ -1611,8 +1618,8 @@ word32 fn000C17B4(word32 r2r0, word16 sb)
 // Trashed: OSZC a0 a1 r0 r1 r2 r3
 // Preserved: usp
 fn000C17B4_entry:
-	r2 = SLICE(r2r0, word16, 16)
-	r0 = SLICE(r2r0, word16, 0)
+	r2 = SLICE(r2_r0, word16, 16)
+	r0 = SLICE(r2_r0, word16, 0)
 l000C17B4:
 	a0_15 = 0<16>
 	a1_16 = 0<16>
@@ -1622,43 +1629,43 @@ l000C17B4:
 l000C17C2:
 	branch r2 == 0<16> l000C17D2
 l000C17C6:
-	r2r0_81 = CONVERT(r2, uint16, uint32) (alias)
-	r2 = r2r0_81 %u r1_18
-	r3_19 = r2r0_81 /u r1_18
+	r2_r0_81 = CONVERT(r2, uint16, uint32) (alias)
+	r2 = r2_r0_81 %u r1_18
+	r3_19 = r2_r0_81 /u r1_18
 l000C17D2:
-	r2r0_182 = SEQ(r3_19, SEQ(r2, r0) /u r1_18) (alias)
+	r2_r0_182 = SEQ(r3_19, SEQ(r2, r0) /u r1_18) (alias)
 	goto l000C17FE
 l000C17D8:
-	r2r0_170 = r2r0 (alias)
+	r2_r0_170 = r2_r0 (alias)
 	r3_r1_175 = SEQ(r3_19, r1_18) (alias)
 	r3_r1_175 = SEQ(r3_19, r1_18) (alias)
 	branch r3_19 < 0<16> l000C17E5
 l000C17DA:
-	r2r0_170 = r2r0 (alias)
+	r2_r0_170 = r2_r0 (alias)
 	branch r2 <=u SLICE(r3_r1_175, word16, 16) l000C17E5
 l000C17DE:
 	r3_r1_175 = r3_r1_175 << 1<8>
 	a1_16 = a1_16 + 1<i16>
-	r2r0_170 = r2r0 (alias)
+	r2_r0_170 = r2_r0 (alias)
 	branch SLICE(r3_r1_175, word16, 0) >= 0<16> l000C17DA
 l000C17E5:
-	r2r0_123 = r2r0_170 - r3_r1_175
-	r2_44 = SLICE(r2r0_123, word16, 16) (alias)
+	r2_r0_123 = r2_r0_170 - r3_r1_175
+	r2_44 = SLICE(r2_r0_123, word16, 16) (alias)
 	C_46 = cond(r2_44) & 1<16> (alias)
 	branch r2_44 >=u 0<16> l000C17F1
 l000C17EB:
-	r2r0_123 = r2r0_123 + r3_r1_175
+	r2_r0_123 = r2_r0_123 + r3_r1_175
 	C_46 = 0<16>
 l000C17F1:
 	a0_15 = __rcl<word16,int16>(a0_15, 1<i16>, C_46)
 	r3_r1_175 = r3_r1_175 >>u 8<8>
 	a1_16 = a1_16 - 1<i16>
-	r2r0_170 = r2r0_123 (alias)
+	r2_r0_170 = r2_r0_123 (alias)
 	branch a1_16 >= 0<16> l000C17E5
 l000C17FA:
-	r2r0_182 = CONVERT(a0_15, uint16, uint32) (alias)
+	r2_r0_182 = CONVERT(a0_15, uint16, uint32) (alias)
 l000C17FE:
-	return r2r0_182
+	return r2_r0_182
 fn000C17B4_exit:
 
 

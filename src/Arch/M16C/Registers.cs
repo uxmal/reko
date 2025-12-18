@@ -108,7 +108,7 @@ public static class Registers
         Z = new FlagGroupStorage(flg, (uint) FlagM.ZF, "Z");
         ZC = new FlagGroupStorage(flg, (uint) (FlagM.ZF | FlagM.CF), "ZC");
 
-        a1a0 = new SequenceStorage("a1a0", PrimitiveType.Word32, a1, r0);
+        a1a0 = new SequenceStorage("a1a0", PrimitiveType.Word32, a1, a0);
         r1r0 = new SequenceStorage("r1r0", PrimitiveType.Word32, r1, r0);
         r2r0 = new SequenceStorage("r2r0", PrimitiveType.Word32, r2, r0);
         r3r1 = new SequenceStorage("r3r1", PrimitiveType.Word32, r3, r1);
