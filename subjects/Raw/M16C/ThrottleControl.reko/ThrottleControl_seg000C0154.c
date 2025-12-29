@@ -1148,7 +1148,8 @@ Eq_n fn000C17B4(Eq_n r2_r0, struct Eq_n * sb)
 	word16 r0 = (word16) r2_r0;
 	uint16 a0_n = 0x00;
 	ci16 a1_n = 0x00;
-	uint16 r1_n = sb->w000B;
+	Eq_n r1_n;
+	r1_n.u0 = sb->t000B.u0;
 	Eq_n r3_n;
 	r3_n.u0 = sb->t000D.u0;
 	Eq_n r2_r0_n;
@@ -1166,18 +1167,18 @@ Eq_n fn000C17B4(Eq_n r2_r0, struct Eq_n * sb)
 	{
 		Eq_n r2_r0_n = r2_r0;
 		uint32 r3_r1_n = SEQ(r3_n, r1_n);
-		r3_r1_n = SEQ(r3_n, r1_n);
 		if (r3_n >= 0x00)
 		{
 			do
 			{
 				r2_r0_n = r2_r0;
-				if (r2 <= SLICE(r3_r1_n, word16, 16))
+				r3_r1_n = SEQ(r3_n, r1_n);
+				if (r2 <= r3_n)
 					break;
-				r3_r1_n <<= 0x01;
 				++a1_n;
 				r2_r0_n = r2_r0;
-			} while ((word16) r3_r1_n >= 0x00);
+				r3_r1_n = SEQ(r3_n, r1_n);
+			} while (r1_n >= 0x00);
 		}
 		do
 		{
@@ -1190,9 +1191,9 @@ Eq_n fn000C17B4(Eq_n r2_r0, struct Eq_n * sb)
 				C_n.u0 = 0x00;
 			}
 			a0_n = __rcl<word16,int16>(a0_n, 1, C_n);
-			r3_r1_n >>= 0x08;
 			--a1_n;
 			r2_r0_n = r2_r0_n;
+			r3_r1_n >>= 0x01;
 		} while (a1_n >= 0x00);
 		r2_r0_n.u1 = (uint32) a0_n;
 	}

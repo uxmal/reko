@@ -191,11 +191,11 @@ int32 fn032A(int32 gp0_gp1, word16 gp2, word16 & gp2Out)
 	}
 	real48 gp5_gp6_gp7_n = gp5_gp6_gp7_n * g_rFFFF8125;
 	int32 gp0_gp1_n = (int32) gp5_gp6_gp7_n;
-	real48 gp5_gp6_gp7_n = gp5_gp6_gp7_n - (real48) gp0_gp1_n;
+	Eq_n gp5_gp6_gp7_n = gp5_gp6_gp7_n - (real48) gp0_gp1_n;
 	word16 gp7_n = (word16) gp5_gp6_gp7_n;
 	word16 gp4_n = gp7_n;
 	int32 gp0_gp1_n = SEQ(SLICE(gp0_gp1_n, word16, 16), (word16) gp5_gp6_gp7_n);
-	if (gp5_gp6_gp7_n < 0.0)
+	if (gp5_gp6_gp7_n < 0x00)
 	{
 		gp4_n = (word16) (SEQ((word32) gp5_gp6_gp7_n, gp7_n) + *((char *) (&g_rFFFF8125) + 3));
 		gp0_gp1_n = gp0_gp1_n + g_dwFFFF812B;
@@ -224,11 +224,11 @@ int32 fn034E(int32 gp0_gp1, word16 gp2, word16 & gp2Out)
 	}
 	real48 gp5_gp6_gp7_n = gp5_gp6_gp7_n * g_rFFFF8132;
 	int32 gp0_gp1_n = (int32) gp5_gp6_gp7_n;
-	real48 gp5_gp6_gp7_n = gp5_gp6_gp7_n - (real48) gp0_gp1_n;
+	Eq_n gp5_gp6_gp7_n = gp5_gp6_gp7_n - (real48) gp0_gp1_n;
 	word16 gp7_n = (word16) gp5_gp6_gp7_n;
 	word16 gp4_n = gp7_n;
 	int32 gp0_gp1_n = SEQ(SLICE(gp0_gp1_n, word16, 16), (word16) gp5_gp6_gp7_n);
-	if (gp5_gp6_gp7_n < 0.0)
+	if (gp5_gp6_gp7_n < 0x00)
 	{
 		gp4_n = (word16) (SEQ((word32) gp5_gp6_gp7_n, gp7_n) + *((char *) (&g_rFFFF8132) + 3));
 		gp0_gp1_n = gp0_gp1_n + g_dwFFFF8138;

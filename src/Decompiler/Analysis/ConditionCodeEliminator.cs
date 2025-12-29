@@ -605,8 +605,10 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
 
             var dt = PrimitiveType.Create(Domain.Integer, expShlSrc.DataType.BitSize + expRorSrc.DataType.BitSize);
             var tmp = ssa.Procedure.Frame.CreateTemporary(dt);
-            var expMkLongword = m.Shl(m.Seq(sidTmpHi.Identifier, sidTmpLo.Identifier), 1);
+            var expMkLongword = m.Seq(sidTmpHi.Identifier, sidTmpLo.Identifier);
             var sidTmp = mutator.InsertAssignmentAfter(tmp, expMkLongword, sidTmpHi.DefStatement);
+            var tmp2 = ssa.Procedure.Frame.CreateTemporary(dt);
+            var sidTmp2 = mutator.InsertAssignmentAfter(tmp, m.Shl(expMkLongword, 1), sidTmp.DefStatement);
 
             ssa.RemoveUses(sidOrigLo.DefStatement);
             var expNewLo = m.Slice(
@@ -703,15 +705,19 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
             var tmp = ssa.Procedure.Frame.CreateTemporary(dt);
             var sidTmp = ssam.InsertAssignmentBefore(
                 tmp,
-                m.Shr(m.Seq(expShrSrc, expRorSrc), shift.Right),
+                m.Seq(expShrSrc, expRorSrc),
                 sidOrigHi.DefStatement);
-
+            var tmp2 = ssa.Procedure.Frame.CreateTemporary(dt);
+            var sidTmp2 = ssam.InsertAssignmentAfter(
+                tmp2,
+                m.Shr(sidTmp.Identifier, 1),
+                sidTmp.DefStatement);
             // Replace the 'hi = SHR(...)' with 'hi = SLICE(...)'
-            var expHi = m.Slice(sidTmp.Identifier, sidOrigHi.Identifier.DataType, expRorSrc.DataType.BitSize);
+            var expHi = m.Slice(sidTmp2.Identifier, sidOrigHi.Identifier.DataType, expRorSrc.DataType.BitSize);
             ssam.ReplaceAssigment(sidOrigHi, new Assignment(sidOrigHi.Identifier, expHi));
 
             // Replace the 'lo = SHR(...)' with 'lo = SLICE(...)'
-            var expLo = m.Slice(sidTmp.Identifier, sidOrigLo.Identifier.DataType, 0);
+            var expLo = m.Slice(sidTmp2.Identifier, sidOrigLo.Identifier.DataType, 0);
             ssam.ReplaceAssigment(sidOrigLo, new Assignment(sidOrigLo.Identifier, expLo));
             return sidOrigLo.DefStatement.Instruction;
         }

@@ -240,12 +240,20 @@ Eq_588: (struct "Eq_588" (32C (ptr16 code) ptr032C))
 Eq_590: (union "Eq_590" (ci16 u0) (uint16 u1))
 	T_590 (in gp1 - gp2_18 @ 0326 : word16)
 	T_591 (in 7<u16> @ 0326 : uint16)
+Eq_631: (union "Eq_631" (int32 u0) (real48 u1))
+	T_631 (in gp5_gp6_gp7_39 - (real48) gp0_gp1_43 @ 038D : real48)
+	T_632 (in gp5_gp6_gp7_50 @ 038D : Eq_631)
+	T_640 (in 0<32> @ 0390 : word32)
 Eq_648: (union "Eq_648" (int48 u0) (real48 u1))
 	T_648 (in SEQ(gp0_gp1, gp2) @ 0388 : real48)
 Eq_663: (fn word16 (ci16, word16, word16, word16, word16, word16, ptr16))
 	T_663 (in sincos @ 039B : ptr16)
 	T_664 (in signature of sincos @ 0311 : void)
 	T_713 (in sincos @ 03BA : ptr16)
+Eq_694: (union "Eq_694" (int32 u0) (real48 u1))
+	T_694 (in gp5_gp6_gp7_34 - (real48) gp0_gp1_38 @ 03AF : real48)
+	T_695 (in gp5_gp6_gp7_45 @ 03AF : Eq_694)
+	T_703 (in 0<32> @ 03B2 : word32)
 Eq_707: (union "Eq_707" (int48 u0) (real48 u1))
 	T_707 (in SEQ(gp0_gp1, gp2) @ 03A8 : real48)
 Eq_740: (struct "Eq_740" 0001 (0 word16 w0000) (1 word16 w0001) (2 word16 w0002) (3 word16 w0003))
@@ -2931,12 +2939,12 @@ T_630: (in CONVERT(gp0_gp1_43, int32, real48) @ 038D : real48)
   OrigDataType: real48
 T_631: (in gp5_gp6_gp7_39 - (real48) gp0_gp1_43 @ 038D : real48)
   Class: Eq_631
-  DataType: real48
+  DataType: Eq_631
   OrigDataType: real48
-T_632: (in gp5_gp6_gp7_50 @ 038D : real48)
+T_632: (in gp5_gp6_gp7_50 @ 038D : Eq_631)
   Class: Eq_631
-  DataType: real48
-  OrigDataType: real48
+  DataType: Eq_631
+  OrigDataType: (union (int32 u1) (real48 u0))
 T_633: (in SLICE(gp5_gp6_gp7_50, word16, 0) @ 038D : word16)
   Class: Eq_583
   DataType: word16
@@ -2965,11 +2973,11 @@ T_639: (in gp0_gp1_113 @ 0396 : int32)
   Class: Eq_638
   DataType: int32
   OrigDataType: int32
-T_640: (in 0.0 @ 0390 : real48)
+T_640: (in 0<32> @ 0390 : word32)
   Class: Eq_631
-  DataType: real48
-  OrigDataType: real48
-T_641: (in gp5_gp6_gp7_50 >= 0.0 @ 0390 : bool)
+  DataType: int32
+  OrigDataType: int32
+T_641: (in gp5_gp6_gp7_50 >= 0<32> @ 0390 : bool)
   Class: Eq_641
   DataType: bool
   OrigDataType: bool
@@ -3183,12 +3191,12 @@ T_693: (in CONVERT(gp0_gp1_38, int32, real48) @ 03AF : real48)
   OrigDataType: real48
 T_694: (in gp5_gp6_gp7_34 - (real48) gp0_gp1_38 @ 03AF : real48)
   Class: Eq_694
-  DataType: real48
+  DataType: Eq_694
   OrigDataType: real48
-T_695: (in gp5_gp6_gp7_45 @ 03AF : real48)
+T_695: (in gp5_gp6_gp7_45 @ 03AF : Eq_694)
   Class: Eq_694
-  DataType: real48
-  OrigDataType: real48
+  DataType: Eq_694
+  OrigDataType: (union (int32 u1) (real48 u0))
 T_696: (in SLICE(gp5_gp6_gp7_45, word16, 0) @ 03AF : word16)
   Class: Eq_583
   DataType: word16
@@ -3217,11 +3225,11 @@ T_702: (in gp0_gp1_57 @ 03B8 : int32)
   Class: Eq_701
   DataType: int32
   OrigDataType: int32
-T_703: (in 0.0 @ 03B2 : real48)
+T_703: (in 0<32> @ 03B2 : word32)
   Class: Eq_694
-  DataType: real48
-  OrigDataType: real48
-T_704: (in gp5_gp6_gp7_45 >= 0.0 @ 03B2 : bool)
+  DataType: int32
+  OrigDataType: int32
+T_704: (in gp5_gp6_gp7_45 >= 0<32> @ 03B2 : bool)
   Class: Eq_704
   DataType: bool
   OrigDataType: bool
@@ -5774,12 +5782,22 @@ typedef union Eq_590 {
 	uint16 u1;
 } Eq_590;
 
+typedef union Eq_631 {
+	int32 u0;
+	real48 u1;
+} Eq_631;
+
 typedef union Eq_648 {
 	int48 u0;
 	real48 u1;
 } Eq_648;
 
 typedef word16 (Eq_663)(ci16, word16, word16, word16, word16, word16, ptr16);
+
+typedef union Eq_694 {
+	int32 u0;
+	real48 u1;
+} Eq_694;
 
 typedef union Eq_707 {
 	int48 u0;

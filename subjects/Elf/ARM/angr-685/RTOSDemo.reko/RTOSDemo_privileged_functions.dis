@@ -82,7 +82,7 @@ l000000F6:
 	branch r6_107 == 0<32> l00000160
 l000000FC:
 	r5_119 = r5_16 + 1<32>
-	Z_199 = cond(r5_16 + 1<32>) & 4<32> (alias)
+	Z_199 = cond(r5_119) & 4<32> (alias)
 l000000FE:
 	Mem128[r4_126 + 56<i32>:word32] = r5_119
 	r0Out = r0_112
@@ -134,7 +134,7 @@ l00000160:
 	r0_112 = xTaskPriorityDisinherit(Mem12[r0 + 4<i32>:word32])
 	Mem121[r0 + 4<i32>:word32] = r6_107
 	r5_119 = r5_16 + 1<32>
-	Z_199 = cond(r5_16 + 1<32>) & 4<32> (alias)
+	Z_199 = cond(r5_119) & 4<32> (alias)
 	goto l000000FE
 prvCopyDataToQueue_exit:
 

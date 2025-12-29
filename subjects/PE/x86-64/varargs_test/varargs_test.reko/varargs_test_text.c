@@ -32,7 +32,7 @@ ptr64 fn00000001400010C0()
 void fn00000001400010D0(ptr64 rcx)
 {
 	ptr64 fp;
-	_stdio_common_vfscanf(rcx, 0x00, 0x00, 0x00, *fn00000001400010C0(), _acrt_iob_func(0x00, 0x00, 0x00), fp + 0x10);
+	_stdio_common_vfscanf(rcx, 0x00, 0x00, *fn00000001400010C0(), _acrt_iob_func(0x00, 0x00), fp + 0x10);
 }
 
 // 0000000140001130: Register ptr64 fn0000000140001130()
@@ -50,7 +50,7 @@ ptr64 fn0000000140001130()
 void fn0000000140001140(ptr64 rcx)
 {
 	ptr64 fp;
-	_stdio_common_vfprintf(rcx, 0x00, 0x00, 0x00, *fn0000000140001130(), _acrt_iob_func(0x01, 0x01), fp + 0x10);
+	_stdio_common_vfprintf(rcx, 0x00, 0x00, *fn0000000140001130(), _acrt_iob_func(0x01, 0x01), fp + 0x10);
 }
 
 // 00000001400011B0: Register word32 fn00000001400011B0(Register ui64 rcx, Stack word64 qwArg00)
@@ -273,7 +273,7 @@ void fn0000000140001550(Eq_n rcx, Eq_n tArg08)
 		if (rax_n == null)
 			return;
 		ptr64 fp;
-		KERNEL32.dll!RtlVirtualUnwind(0x00, 0x00, rsi_n, rax_n, fp + 0x10, fp + 0x18, 0x00, tArg08, rcx, fp + 0x18, fp + 0x10, 0x00);
+		KERNEL32.dll!RtlVirtualUnwind(0x00, rsi_n, rax_n, fp + 0x10, fp + 0x18, 0x00, tArg08, rcx, fp + 0x18, fp + 0x10);
 		rdi_n = (uint64) (edi_n + 0x01);
 	} while ((word32) rdi_n < 0x02);
 }
@@ -571,7 +571,7 @@ uint64 fn0000000140001974(word32 ecx, word64 qwArg00, Eq_n tArg10, struct _EXCEP
 		Eq_n rax_n = RtlLookupFunctionEntry(rbx_n, &tArg10, null);
 		ptr64 fp;
 		if (rax_n != null)
-			KERNEL32.dll!RtlVirtualUnwind(0x00, 0x00, rbx_n, rax_n, fp + 24, fp + 32, &tLoc04D8, 0x00, tArg10, &tLoc04D8, fp + 32, fp + 24, 0x00);
+			KERNEL32.dll!RtlVirtualUnwind(0x00, rbx_n, rax_n, fp + 24, fp + 32, &tLoc04D8, 0x00, tArg10, &tLoc04D8, fp + 32, fp + 24);
 		tLoc04D8.qw00F8 = qwArg00;
 		tLoc04D8.SegEs = (DWORD) (fp + 0x08);
 		word64 qwLoc0578;

@@ -208,7 +208,7 @@ l0483:
 	Mem21[0x1661<16>:byte] = b_20
 	Mem24[0x1660<16>:byte] = SLICE(wArg02, byte, 0)
 	hl_136 = <invalid>
-	c_35 = fn1326(7<8>, Mem26[0x1664<16>:word16] + 0x7F<16>, out l_137)
+	c_35 = fn1326(7<8>, Mem26[0x1664<16>:byte] + 0x7F<8>, out l_137)
 	Mem47[0x1667<16>:byte] = SLICE(hl_136, byte, 0)
 	bc_121 = SEQ(b_20, c_35) (alias)
 l04A6:
@@ -1048,7 +1048,7 @@ l0C1A:
 	Mem84[hl_73 - 4<16>:word16] = 0x1642<16>
 	f_147 = fn082F(f, 0<8>, 0x5C<8>, 0x10<8>, Mem84[hl_73 - 4<16>:word16], Mem84[hl_73 - 2<16>:word16]) (alias)
 	Mem101[hl_73 - 6<16>:word16] = 0x5C<16>
-	fn1326(7<8>, fn1346(0x108<16>, 0x103<16>), out l_244)
+	fn1326(7<8>, SLICE(fn1346(0x108<16>, 0x103<16>), byte, 0), out l_244)
 	hl_243 = <invalid>
 	hl_125 = Mem101[0x108<16>:word16]
 	fn040D(SLICE(hl_125, byte, 8), SLICE(hl_125, byte, 0), SLICE(hl_243, byte, 0), Mem101[hl_73 - 6<16>:word16])
@@ -1536,22 +1536,21 @@ l1315:
 fn1315_exit:
 
 
-byte fn1326(byte c, word16 hl, byte & lOut)
+byte fn1326(byte c, byte l, byte & lOut)
 // stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
 // Called from:
 //      fn0483
 //      fn0BE4
-// MayUse:  c:[0..7] hl:[0..15]
+// MayUse:  c:[0..7] hl:[0..7]
 // LiveOut: c:[0..7]-fn0483 hl:[0..7]-fn0483
 // Trashed: SZPC a c h l
 // Preserved: sp
 fn1326_entry:
-	hl_26 = hl (alias)
+	hl_27 = hl (alias)
 l1326:
-	v12_22 = hl_26 >>u 1<8>
-	a_12 = SLICE(v12_22, byte, 0)
+	a_12 = SLICE(hl_27 >>u 1<8>, byte, 0)
 	c = c - 1<8>
-	hl_26 = v12_22 (alias)
+	hl_27 = hl_27 >>u 1<8> (alias)
 	branch c != 0<8> l1326
 l1331:
 	lOut = a_12

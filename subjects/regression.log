@@ -76,6 +76,8 @@ Warning: Checksum error in line 1.
 006D: warning: Expected sizes of arrays to have been determined by now
 
 === CPM-80\CB80
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
 020A: warning: Call target address 172D is invalid.
 0224: warning: Call target address 177D is invalid.
 0105: warning: Call target address 1729 is invalid.
@@ -103,6 +105,8 @@ fn08FD: warning: Structure analysis stopped making progress, quitting. Please re
 1608: warning: Expected sizes of arrays to have been determined by now
 
 === Elf\ARM\angr-685\RTOSDemo
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
                                                             Rewriting procedures. [Done]
                                                             Building expressions. [Done]
                                                             Gathering primitive datatypes from instructions. [Done]
@@ -129,6 +133,8 @@ l000084F0_1: warning: Non-integral switch expression
                                                             Rewriting procedures to high-level language. [Done]
 
 === Elf\ARM64\arm64_elf\subject
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
 0000000000000E90: warning: Unable to resolve imported reference wcslen.
 0000000000000F10: warning: Unable to resolve imported reference warn.
 0000000000000F40: warning: Unable to resolve imported reference warnx.
@@ -144,6 +150,8 @@ l000084F0_1: warning: Non-integral switch expression
                                                             Rewriting procedures to high-level language. [Done]
 
 *** Elf\AVR32\ls
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
                                                             Rewriting procedures. [Done]
                                                             Building expressions. [Done]
                                                             Gathering primitive datatypes from instructions. [Done]
@@ -400,6 +408,8 @@ c:\dev\uxmal\reko\master\subjects\Elf\IA64\bash\elf-Linux-ia64-bash: error: An i
                                                             Rewriting procedures to high-level language. [Done]
 
 === Elf\Msp430\a
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
                                                             Rewriting procedures. [Done]
                                                             Building expressions. [Done]
                                                             Gathering primitive datatypes from instructions. [Done]
@@ -458,6 +468,8 @@ Relocations
 004008F8: warning: Call target address 00000000 is invalid.
 00400912: warning: Call target address 00000000 is invalid.
 004008DC: warning: Call target address 00000000 is invalid.
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
                                                             Rewriting procedures. [Done]
 finish: error: An error occurred while renaming variables.
     The given key 'l004028A8' was not present in the dictionary.
@@ -505,6 +517,8 @@ l0040D5B8: warning: Non-integral switch expression
 00452340: warning: Expected sizes of arrays to have been determined by now
 
 === Elf\PPC64\animals\animals
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
                                                             Rewriting procedures. [Done]
                                                             Building expressions. [Done]
                                                             Gathering primitive datatypes from instructions. [Done]
@@ -851,6 +865,8 @@ Warning: Type transformer has looped 51 times, quitting prematurely.
 *** Elf\Sparc\rtems\sparc-rtems-unprotoize
 00011610: warning: Unable to resolve imported reference __register_frame_info.
 000115A8: warning: Unable to resolve imported reference __deregister_frame_info.
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
                                                             Rewriting procedures. [Done]
                                                             Building expressions. [Done]
                                                             Gathering primitive datatypes from instructions. [Done]
@@ -884,6 +900,8 @@ safe_read: error: An error occurred while rewriting procedure to high-level lang
 === Elf\x86-64\ais3_crackme\ais3_crackme
 0000000000400440: warning: Unable to resolve imported reference __gmon_start__.
 000000000040050D: warning: Call target address 0000000000000000 is invalid.
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
                                                             Rewriting procedures. [Done]
                                                             Building expressions. [Done]
                                                             Gathering primitive datatypes from instructions. [Done]
@@ -899,6 +917,8 @@ safe_read: error: An error occurred while rewriting procedure to high-level lang
 000000000040216C: warning: Unable to resolve imported reference __gmon_start__.
 0000000000402178: warning: Unable to resolve imported reference __gmon_start__.
 00000000004025B0: warning: Unable to resolve imported reference __gmon_start__.
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
                                                             Rewriting procedures. [Done]
                                                             Building expressions. [Done]
                                                             Gathering primitive datatypes from instructions. [Done]
@@ -975,6 +995,8 @@ safe_read: error: An error occurred while rewriting procedure to high-level lang
 0000000000400CA0: warning: Unable to resolve imported reference png_create_info_struct.
 0000000000400CB0: warning: Unable to resolve imported reference png_get_PLTE.
 0000000000400CC0: warning: Unable to resolve imported reference __gmon_start__.
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
                                                             Rewriting procedures. [Done]
                                                             Building expressions. [Done]
                                                             Gathering primitive datatypes from instructions. [Done]
@@ -988,6 +1010,8 @@ l0000000000400E2D: warning: Non-integral switch expression
 === Elf\x86-64\retpoline\retpoline_stripped
 000000000040042C: warning: Unable to resolve imported reference __gmon_start__.
 000000000040042D: warning: Unable to resolve imported reference __gmon_start__.
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
 000000000040042C: warning: Unable to resolve imported reference __gmon_start__.
                                                             Rewriting procedures. [Done]
                                                             Building expressions. [Done]
@@ -998,6 +1022,8 @@ l0000000000400E2D: warning: Non-integral switch expression
 
 === Elf\x86-64\retpoline\retpoline
 000000000040042C: warning: Unable to resolve imported reference __gmon_start__.
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
                                                             Rewriting procedures. [Done]
                                                             Building expressions. [Done]
                                                             Gathering primitive datatypes from instructions. [Done]
@@ -1016,6 +1042,8 @@ l0000000000400E2D: warning: Non-integral switch expression
 0000000000000610: warning: Unable to resolve imported reference __cxa_finalize.
 0000000000000600: warning: Unable to resolve imported reference posix_memalign.
 0000000000000610: warning: Unable to resolve imported reference __cxa_finalize.
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
                                                             Rewriting procedures. [Done]
                                                             Building expressions. [Done]
                                                             Gathering primitive datatypes from instructions. [Done]
@@ -1034,6 +1062,8 @@ l0000000000400E2D: warning: Non-integral switch expression
                                                             Rewriting procedures to high-level language. [Done]
 
 === Hunk-m68k\BENCHFN
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
                                                             Rewriting procedures. [Done]
                                                             Building expressions. [Done]
                                                             Gathering primitive datatypes from instructions. [Done]
@@ -1046,6 +1076,8 @@ l0000000000400E2D: warning: Non-integral switch expression
 00003EAC: warning: Expected sizes of arrays to have been determined by now
 
 === Hunk-m68k\BENCHLNG
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
                                                             Rewriting procedures. [Done]
                                                             Building expressions. [Done]
                                                             Gathering primitive datatypes from instructions. [Done]
@@ -1058,6 +1090,8 @@ l0000000000400E2D: warning: Non-integral switch expression
 00003E5C: warning: Expected sizes of arrays to have been determined by now
 
 === Hunk-m68k\BENCHMUL
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
                                                             Rewriting procedures. [Done]
                                                             Building expressions. [Done]
                                                             Gathering primitive datatypes from instructions. [Done]
@@ -1070,6 +1104,8 @@ l0000000000400E2D: warning: Non-integral switch expression
 00004134: warning: Expected sizes of arrays to have been determined by now
 
 === Hunk-m68k\BYTEOPS
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
                                                             Rewriting procedures. [Done]
                                                             Building expressions. [Done]
                                                             Gathering primitive datatypes from instructions. [Done]
@@ -1080,6 +1116,8 @@ l0000000000400E2D: warning: Non-integral switch expression
 00002BC4: warning: Expected sizes of arrays to have been determined by now
 
 === Hunk-m68k\FIBO
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
                                                             Rewriting procedures. [Done]
                                                             Building expressions. [Done]
                                                             Gathering primitive datatypes from instructions. [Done]
@@ -1092,6 +1130,8 @@ l0000000000400E2D: warning: Non-integral switch expression
 00003ED0: warning: Expected sizes of arrays to have been determined by now
 
 === Hunk-m68k\MATRIXMU
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
                                                             Rewriting procedures. [Done]
                                                             Building expressions. [Done]
                                                             Gathering primitive datatypes from instructions. [Done]
@@ -1100,6 +1140,8 @@ l0000000000400E2D: warning: Non-integral switch expression
                                                             Rewriting procedures to high-level language. [Done]
 
 === Hunk-m68k\MAX
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
                                                             Rewriting procedures. [Done]
                                                             Building expressions. [Done]
                                                             Gathering primitive datatypes from instructions. [Done]
@@ -1112,6 +1154,8 @@ l0000000000400E2D: warning: Non-integral switch expression
 00003DCC: warning: Expected sizes of arrays to have been determined by now
 
 === Hunk-m68k\STRLEN
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
                                                             Rewriting procedures. [Done]
                                                             Building expressions. [Done]
                                                             Gathering primitive datatypes from instructions. [Done]
@@ -1120,6 +1164,8 @@ l0000000000400E2D: warning: Non-integral switch expression
                                                             Rewriting procedures to high-level language. [Done]
 
 === Hunk-m68k\TESTLONG
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
                                                             Rewriting procedures. [Done]
                                                             Building expressions. [Done]
                                                             Gathering primitive datatypes from instructions. [Done]
@@ -1281,6 +1327,8 @@ l0000000000400E2D: warning: Non-integral switch expression
 00000001000047F5: warning: Unable to resolve imported reference _DefaultRuneLocale.
 0000000100004D01: warning: Unable to resolve imported reference _DefaultRuneLocale.
 0000000100004D02: warning: Unable to resolve imported reference _DefaultRuneLocale.
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
 0000000100004F46: warning: Unable to resolve imported reference tputs.
 0000000100004F3A: warning: Unable to resolve imported reference tgoto.
 0000000100004F46: warning: Unable to resolve imported reference tputs.
@@ -1331,6 +1379,8 @@ fn0000000100003AA8: warning: Structure analysis stopped making progress, quittin
 
 *** Microchip\C18\PIC18\PIC18Legacy
 00013A: error: PIC Hardware stack underflow.
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
                                                             Rewriting procedures. [Done]
                                                             Building expressions. [Done]
                                                             Gathering primitive datatypes from instructions. [Done]
@@ -1340,6 +1390,8 @@ fn0000000100003AA8: warning: Structure analysis stopped making progress, quittin
 
 *** Microchip\C18\PIC18Extd\PIC18EggExtd
 00013A: error: PIC Hardware stack underflow.
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
                                                             Rewriting procedures. [Done]
                                                             Building expressions. [Done]
                                                             Gathering primitive datatypes from instructions. [Done]
@@ -1349,6 +1401,8 @@ fn0000000100003AA8: warning: Structure analysis stopped making progress, quittin
 
 === MZ-x86\BENCHFN
 Borland v2 detected
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
                                                             Rewriting procedures. [Done]
                                                             Building expressions. [Done]
                                                             Gathering primitive datatypes from instructions. [Done]
@@ -1366,6 +1420,8 @@ l0800_113C: warning: Non-integral switch expression
                                                             Rewriting procedures to high-level language. [Done]
 
 *** OpenRISC\sunxi\blob
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
 0000B278: warning: Unable to determine size of call or jump table; there may be more than 2 entries.
 0000AF44: warning: Unable to determine size of call or jump table; there may be more than 2 entries.
 0000B348: warning: Unable to determine size of call or jump table; there may be more than 2 entries.
@@ -1413,6 +1469,8 @@ fn00000000: error: An error occurred while rewriting procedure to high-level lan
 
 === PDP-11\lunar
 0896: warning: Unable to determine size of call or jump table; there may be more than 2 entries.
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
                                                             Rewriting procedures. [Done]
                                                             Building expressions. [Done]
                                                             Gathering primitive datatypes from instructions. [Done]
@@ -1439,6 +1497,8 @@ fn00000000: error: An error occurred while rewriting procedure to high-level lan
 35D2: warning: Expected sizes of arrays to have been determined by now
 
 === PDP-11\space
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
 46BE: warning: Unable to determine size of call or jump table; there may be more than 2 entries.
                                                             Rewriting procedures. [Done]
                                                             Building expressions. [Done]
@@ -1454,6 +1514,8 @@ fn00000000: error: An error occurred while rewriting procedure to high-level lan
 541C: warning: Expected sizes of arrays to have been determined by now
 
 === PDP-11\spcinv
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
                                                             Rewriting procedures. [Done]
                                                             Building expressions. [Done]
                                                             Gathering primitive datatypes from instructions. [Done]
@@ -1474,7 +1536,6 @@ fn00000000: error: An error occurred while rewriting procedure to high-level lan
 0EEC: warning: Expected sizes of arrays to have been determined by now
 0EF0: warning: Expected sizes of arrays to have been determined by now
 0EF3: warning: Expected sizes of arrays to have been determined by now
-0F2A: warning: Expected sizes of arrays to have been determined by now
 02CC: warning: Expected sizes of arrays to have been determined by now
 0DC4: warning: Expected sizes of arrays to have been determined by now
 0DE0: warning: Expected sizes of arrays to have been determined by now
@@ -1489,7 +1550,6 @@ fn00000000: error: An error occurred while rewriting procedure to high-level lan
 0EEC: warning: Expected sizes of arrays to have been determined by now
 0EF0: warning: Expected sizes of arrays to have been determined by now
 0EF3: warning: Expected sizes of arrays to have been determined by now
-0F2A: warning: Expected sizes of arrays to have been determined by now
 
 *** PE\m68k\hello_m68k
 hello_m68k.exe: warning: Win32 M68k main procedure finder not supported.
@@ -1519,6 +1579,8 @@ Error: Unable to load metadata file wsock32.xml.
    at Reko.Core.Serialization.ProcedureSerializer.Deserialize(SerializedSignature ss, Frame frame) in c:\dev\uxmal\reko\master\src\Core\Serialization\ProcedureSerializer.cs:line 247
    at Reko.Core.TypeLibraryDeserializer.LoadProcedure(Procedure_v1 sProc) in c:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 189
 hello_m68k.exe: warning: Win32 M68k main procedure finder not supported.
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
                                                             Rewriting procedures. [Done]
                                                             Building expressions. [Done]
                                                             Gathering primitive datatypes from instructions. [Done]
@@ -1547,6 +1609,8 @@ Error: Unable to load metadata file windows32.xml.
    at Reko.Core.TypeLibraryDeserializer.LoadProcedure(Procedure_v1 sProc) in c:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 189
 0001179C: warning: Unable to resolve imported reference COREDLL.dll!Ordinal_2696.
 000114B8: warning: Call target address 00000000 is invalid.
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
                                                             Rewriting procedures. [Done]
                                                             Building expressions. [Done]
                                                             Gathering primitive datatypes from instructions. [Done]
@@ -1556,6 +1620,8 @@ Error: Unable to load metadata file windows32.xml.
 
 === PE\PPC\hello_ppc
 hello_ppc.exe: warning: Win32 PowerPC main procedure finder not supported.
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
                                                             Rewriting procedures. [Done]
                                                             Building expressions. [Done]
                                                             Gathering primitive datatypes from instructions. [Done]
@@ -1618,6 +1684,8 @@ PE Debug type 14 not supported yet.
 0000000140001E64: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_register_onexit_function.
 0000000140001E6A: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_crt_atexit.
 0000000140001E70: warning: Unable to resolve imported reference api-ms-win-crt-runtime-l1-1-0.dll!terminate.
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
                                                             Rewriting procedures. [Done]
                                                             Building expressions. [Done]
                                                             Gathering primitive datatypes from instructions. [Done]
@@ -1663,6 +1731,8 @@ PE Debug type 14 not supported yet.
 00401C30: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_crt_atexit.
 00401C36: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_controlfp_s.
 00401C3C: warning: Unable to resolve imported reference api-ms-win-crt-runtime-l1-1-0.dll!terminate.
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
 00401C24: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_initialize_onexit_table.
 00401C24: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_initialize_onexit_table.
 00401C30: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_crt_atexit.
@@ -1760,6 +1830,8 @@ Signature of 'Microsoft Visual C++ 8' detected.
 10001904: warning: Unable to guess parameters of MSVCR80.dll!_unlock.
 10001910: warning: Unable to guess parameters of MSVCR80.dll!_lock.
 10001916: warning: Unable to guess parameters of MSVCR80.dll!_except_handler4_common.
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
 10001910: warning: Unable to guess parameters of MSVCR80.dll!_lock.
 10001636: warning: Unable to guess parameters of MSVCR80.dll!_encode_pointer.
 10001904: warning: Unable to guess parameters of MSVCR80.dll!_unlock.
@@ -1795,6 +1867,8 @@ Signature of 'Borland C++ for Win32 1999' detected.
 004012D8: warning: Unable to guess parameters of CC3260.DLL!__setargv.
 004012DE: warning: Unable to guess parameters of CC3260.DLL!__startup.
 004012E4: warning: Unable to guess parameters of CC3260.DLL!__wargv_default_expand.
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
 0040128A: warning: Unable to guess parameters of CC3260.DLL!___CRTL_TLS_GetValue.
 0040127E: warning: Unable to guess parameters of CC3260.DLL!___CRTL_TLS_ExitThread.
                                                             Rewriting procedures. [Done]
@@ -1856,6 +1930,8 @@ Warning: Checksum error in line 5.
 Warning: Checksum error in line 6.
 Warning: Checksum error in line 7.
 Warning: Checksum error in line 8.
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
                                                             Rewriting procedures. [Done]
                                                             Building expressions. [Done]
                                                             Gathering primitive datatypes from instructions. [Done]
@@ -1901,6 +1977,8 @@ Warning: Checksum error in line 1.
 
 === Raw\H8\Tar\tar
 00009E26: warning: Call target address 00000054 is invalid.
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
                                                             Rewriting procedures. [Done]
                                                             Building expressions. [Done]
                                                             Gathering primitive datatypes from instructions. [Done]
@@ -1910,6 +1988,8 @@ Warning: Checksum error in line 1.
 
 === Raw\M16C\ThrottleControl
 000C0D13: warning: Call target address 000764EB is invalid.
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
                                                             Rewriting procedures. [Done]
                                                             Building expressions. [Done]
                                                             Gathering primitive datatypes from instructions. [Done]
@@ -1918,6 +1998,8 @@ Warning: Checksum error in line 1.
                                                             Rewriting procedures to high-level language. [Done]
 
 === Raw\Maxq\MAX79356-CPU1
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
                                                             Rewriting procedures. [Done]
                                                             Building expressions. [Done]
                                                             Gathering primitive datatypes from instructions. [Done]
@@ -1926,6 +2008,8 @@ Warning: Checksum error in line 1.
                                                             Rewriting procedures to high-level language. [Done]
 
 *** Raw\MicroBlaze\MicroBlaze
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
 0000CDB8: warning: Unable to determine size of call or jump table; there may be more than 2 entries.
                                                             Rewriting procedures. [Done]
                                                             Building expressions. [Done]
@@ -1994,6 +2078,8 @@ fn0001B2CC: warning: Structure analysis stopped making progress, quitting. Pleas
 === Raw\Padauk\adctest_pfs173
 0051: warning: Call target address 0BED is invalid.
 0053: warning: Call target address 0BEE is invalid.
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
                                                             Rewriting procedures. [Done]
                                                             Building expressions. [Done]
                                                             Gathering primitive datatypes from instructions. [Done]
@@ -2016,6 +2102,8 @@ fn0001B2CC: warning: Structure analysis stopped making progress, quitting. Pleas
 00000000004003E4: warning: Unable to resolve imported reference __gmon_start__.
 00000000004003F0: warning: Unable to resolve imported reference __gmon_start__.
 0000000000400430: warning: Unable to resolve imported reference __gmon_start__.
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
                                                             Rewriting procedures. [Done]
                                                             Building expressions. [Done]
                                                             Gathering primitive datatypes from instructions. [Done]
@@ -2052,6 +2140,8 @@ Error: An error occurred while writing assembly language output.
 8000017A: warning: Call target address 00000000 is invalid.
 8000019A: warning: Call target address 00000000 is invalid.
 800000DC: warning: Call target address 00000000 is invalid.
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
                                                             Rewriting procedures. [Done]
                                                             Building expressions. [Done]
                                                             Gathering primitive datatypes from instructions. [Done]
@@ -2071,6 +2161,8 @@ Error: An error occurred while writing assembly language output.
 
 *** regressions\reko-90\PP
 Borland C v3 runtime detected
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
 1483:0D6F: warning: Call target address 1483:8A82 is invalid.
 1483:0DFC: warning: Call target address 1483:E62A is invalid.
 1483:0E06: warning: Procedure fn1483_0D3F previously had a return address of 4 bytes on the stack, but now seems to have a return address of 2 bytes on the stack.
@@ -2215,6 +2307,8 @@ Evaluating c:\dev\uxmal\reko\master\subjects\scripting\segmented.py
                                                             Rewriting procedures to high-level language. [Done]
 
 === TLCS\90\TLCS-90
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
                                                             Rewriting procedures. [Done]
                                                             Building expressions. [Done]
                                                             Gathering primitive datatypes from instructions. [Done]
@@ -2223,6 +2317,8 @@ Evaluating c:\dev\uxmal\reko\master\subjects\scripting\segmented.py
                                                             Rewriting procedures to high-level language. [Done]
 
 === TLCS\900\ngp_iq\NGP_IQ
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
                                                             Rewriting procedures. [Done]
                                                             Building expressions. [Done]
                                                             Gathering primitive datatypes from instructions. [Done]
@@ -2645,6 +2741,8 @@ Evaluating c:\dev\uxmal\reko\master\subjects\scripting\segmented.py
 00011A1F: error: Instruction acbf	@-081E(r0),+0000(r5),r1,00017BC3 too complex to rewrite.
 000145BC: error: Instruction acbf	#2.5,@(pc)+,+05EB(r5),000149BF too complex to rewrite.
 00015E51: error: Instruction acbf	#7.0,@D0060D57,+0088(r6),0001670B too complex to rewrite.
+                                                            Finding procedure candidates [Done]
+                                                            Building procedures [Done]
 00008FF2: warning: Call target address 00000066 is invalid.
 0000909E: warning: Call target address 00000066 is invalid.
 000090C0: warning: Call target address 00000066 is invalid.
@@ -2998,4 +3096,4 @@ l0011DD0D: warning: Non-integral switch expression
                                                             Rewriting expressions. [Done]
                                                             Rewriting procedures to high-level language. [Done]
 
-Decompiled 100 binaries in 96.86 seconds.
+Decompiled 100 binaries in 68.92 seconds.

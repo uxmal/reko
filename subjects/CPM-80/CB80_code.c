@@ -139,21 +139,21 @@ char fn0473(char c)
 	return 0x02;
 }
 
-// 0483: Register word16 fn0483(Register byte b, Register Eq_n c, Register byte d, Register Eq_n e, Stack word16 wArg02)
+// 0483: Register word16 fn0483(Register byte b, Register Eq_n c, Register byte d, Register byte e, Stack word16 wArg02)
 // Called from:
 //      fn0534
-word16 fn0483(byte b, Eq_n c, byte d, Eq_n e, word16 wArg02)
+word16 fn0483(byte b, Eq_n c, byte d, byte e, word16 wArg02)
 {
 	byte l_n;
 	g_b1665 = d;
-	g_t1664.u0 = (byte) e;
+	g_b1664 = e;
 	g_b1663 = b;
 	g_t1662.u0 = (byte) c;
 	byte b_n = SLICE(wArg02, byte, 8);
 	g_b1661 = b_n;
 	g_t1660.u0 = (byte) (byte) wArg02;
 	struct Eq_n * hl_n = (struct Eq_n *) <invalid>;
-	byte c_n = fn1326(0x07, g_t1664.u1 + 0x7F, out l_n);
+	byte c_n = fn1326(0x07, g_b1664 + 0x7F, out l_n);
 	g_b1667 = (byte) hl_n;
 	word16 bc_n = SEQ(b_n, c_n);
 	while (true)
@@ -874,7 +874,7 @@ void fn0BE4(uint8 f)
 	byte f_n = fn082F(f, 0x00, 0x5C, 0x10, hl_n->wFFFFFFFC, hl_n->wFFFFFFFE);
 	hl_n->wFFFFFFFA = 0x5C;
 	byte l_n;
-	fn1326(0x07, fn1346(&g_w0108, &g_w0103), out l_n);
+	fn1326(0x07, (byte) fn1346(&g_w0108, &g_w0103), out l_n);
 	struct Eq_n * hl_n = (struct Eq_n *) <invalid>;
 	word16 hl_n = g_w0108;
 	fn040D(SLICE(hl_n, byte, 8), (byte) hl_n, (byte) hl_n, hl_n->wFFFFFFFA);
@@ -1224,20 +1224,20 @@ void fn1315()
 {
 }
 
-// 1326: Register byte fn1326(Register byte c, Register uint16 hl, Register out byte lOut)
+// 1326: Register byte fn1326(Register byte c, Register byte l, Register out byte lOut)
 // Called from:
 //      fn0483
 //      fn0BE4
-byte fn1326(byte c, uint16 hl, byte & lOut)
+byte fn1326(byte c, byte l, byte & lOut)
 {
+	uint16 hl;
 	uint16 hl_n = hl;
 	byte a_n;
 	do
 	{
-		uint16 v12_n = hl_n >> 0x01;
-		a_n = (byte) v12_n;
+		a_n = (byte) (hl_n >> 0x01);
 		--c;
-		hl_n = v12_n;
+		hl_n >>= 0x01;
 	} while (c != 0x00);
 	lOut = a_n;
 	return c;
@@ -1402,10 +1402,7 @@ Eq_n g_t1662 = // 1662
 		0x1A
 	};
 byte g_b1663 = 0x1A; // 1663
-Eq_n g_t1664 = // 1664
-	{
-		0x1A
-	};
+byte g_b1664 = 0x1A; // 1664
 byte g_b1665 = 0x1A; // 1665
 cu8 g_b1667 = 0x1A; // 1667
 char * g_ptr1668 = &g_str1A1A; // 1668

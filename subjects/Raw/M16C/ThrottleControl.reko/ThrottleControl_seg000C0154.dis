@@ -1633,39 +1633,39 @@ l000C17C6:
 	r2 = r2_r0_81 %u r1_18
 	r3_19 = r2_r0_81 /u r1_18
 l000C17D2:
-	r2_r0_182 = SEQ(r3_19, SEQ(r2, r0) /u r1_18) (alias)
+	r2_r0_184 = SEQ(r3_19, SEQ(r2, r0) /u r1_18) (alias)
 	goto l000C17FE
 l000C17D8:
-	r2_r0_170 = r2_r0 (alias)
-	r3_r1_175 = SEQ(r3_19, r1_18) (alias)
-	r3_r1_175 = SEQ(r3_19, r1_18) (alias)
+	r2_r0_172 = r2_r0 (alias)
+	r3_r1_177 = SEQ(r3_19, r1_18) (alias)
 	branch r3_19 < 0<16> l000C17E5
 l000C17DA:
-	r2_r0_170 = r2_r0 (alias)
-	branch r2 <=u SLICE(r3_r1_175, word16, 16) l000C17E5
+	r2_r0_172 = r2_r0 (alias)
+	r3_r1_177 = SEQ(r3_19, r1_18) (alias)
+	branch r2 <=u r3_19 l000C17E5
 l000C17DE:
-	r3_r1_175 = r3_r1_175 << 1<8>
 	a1_16 = a1_16 + 1<i16>
-	r2_r0_170 = r2_r0 (alias)
-	branch SLICE(r3_r1_175, word16, 0) >= 0<16> l000C17DA
+	r2_r0_172 = r2_r0 (alias)
+	r3_r1_177 = SEQ(r3_19, r1_18) (alias)
+	branch r1_18 >= 0<16> l000C17DA
 l000C17E5:
-	r2_r0_123 = r2_r0_170 - r3_r1_175
+	r2_r0_123 = r2_r0_172 - r3_r1_177
 	r2_44 = SLICE(r2_r0_123, word16, 16) (alias)
 	C_46 = cond(r2_44) & 1<16> (alias)
 	branch r2_44 >=u 0<16> l000C17F1
 l000C17EB:
-	r2_r0_123 = r2_r0_123 + r3_r1_175
+	r2_r0_123 = r2_r0_123 + r3_r1_177
 	C_46 = 0<16>
 l000C17F1:
 	a0_15 = __rcl<word16,int16>(a0_15, 1<i16>, C_46)
-	r3_r1_175 = r3_r1_175 >>u 8<8>
 	a1_16 = a1_16 - 1<i16>
-	r2_r0_170 = r2_r0_123 (alias)
+	r2_r0_172 = r2_r0_123 (alias)
+	r3_r1_177 = r3_r1_177 >>u 1<8> (alias)
 	branch a1_16 >= 0<16> l000C17E5
 l000C17FA:
-	r2_r0_182 = CONVERT(a0_15, uint16, uint32) (alias)
+	r2_r0_184 = CONVERT(a0_15, uint16, uint32) (alias)
 l000C17FE:
-	return r2_r0_182
+	return r2_r0_184
 fn000C17B4_exit:
 
 

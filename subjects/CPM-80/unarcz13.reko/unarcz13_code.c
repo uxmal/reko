@@ -1106,7 +1106,6 @@ l068C:
 	word16 hl_n = fn0214(0x19);
 	uint8 l_n = (byte) hl_n;
 	byte h_n = SLICE(hl_n, byte, 8);
-	uint8 l_n;
 	do
 	{
 		byte * hl_n = SEQ(h_n, l_n);
@@ -1117,17 +1116,16 @@ l068C:
 		for (b_n = 0x08; b_n != 0x00; --b_n)
 		{
 			uint16 c_a_n = c_a_n >> 0x01;
-			if ((byte) c_a_n < 0x00)
-				c_a_n = c_a_n ^ 0xA001;
+			if ((byte) (c_a_n >> 0x01) < 0x00)
+				c_a_n = c_a_n >> 0x01 ^ 0xA001;
 			a_n = (byte) c_a_n;
 			c_n = SLICE(c_a_n, byte, 8);
 			c_a_n = c_a_n;
 		}
 		*hl_n = c_n;
 		*SEQ(h_n - 0x01, l_n) = a_n;
-		l_n = l_n + 0x01;
-		l_n = l_n;
-	} while (l_n != ~0x00);
+		++l_n;
+	} while (l_n != 0x00);
 }
 
 // 06A5: FlagGroup bool fn06A5()
@@ -1585,8 +1583,9 @@ byte g_b08F9 = 0x10; // 08F9
 bool fn0905(ui16 hl, union Eq_n & eOut, byte & hlOut)
 {
 	eOut.u0 = <invalid>;
-	hlOut = hl * 0x03 + 0x1A01;
-	return (cond(hl * 0x03 + 0x1A01) & 0x01) != 0x00;
+	byte * hl_n = hl * 0x03 + 0x1A01;
+	hlOut = hl_n;
+	return (cond(hl_n) & 0x01) != 0x00;
 }
 
 byte g_b0957 = 44; // 0957
@@ -1899,7 +1898,7 @@ void fn0AE4(struct Eq_n * de, struct Eq_n * hl)
 		if (a_n < 0x00)
 		{
 			a_n += 100;
-			C_n = cond(a_n + 100) & 0x01;
+			C_n = cond(a_n) & 0x01;
 		}
 		de->b0000 = a_n;
 		cu8 a_n = __rcl<byte,byte>(c_n, 0x01, cond(__rcr<byte,byte>(b_n, 0x01, C_n)));

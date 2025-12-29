@@ -40,7 +40,7 @@ void fn00000001400010D0(word64 rcx)
 // Preserved: rbx rdi rsi rsp
 fn00000001400010D0_entry:
 l00000001400010D0:
-	_stdio_common_vfscanf(rcx, 0<u64>, 0<32>, 0<32>, Mem43[fn00000001400010C0():word64], _acrt_iob_func(0<32>, 0<32>, 0<u64>), fp + 0x10<64>)
+	_stdio_common_vfscanf(rcx, 0<u64>, 0<32>, Mem43[fn00000001400010C0():word64], _acrt_iob_func(0<32>, 0<u64>), fp + 0x10<64>)
 	return
 fn00000001400010D0_exit:
 
@@ -70,7 +70,7 @@ void fn0000000140001140(word64 rcx)
 // Preserved: rbx rdi rsi rsp
 fn0000000140001140_entry:
 l0000000140001140:
-	_stdio_common_vfprintf(rcx, 0<u64>, 0<32>, 0<32>, Mem40[fn0000000140001130():word64], _acrt_iob_func(1<32>, 1<u64>), fp + 0x10<64>)
+	_stdio_common_vfprintf(rcx, 0<u64>, 0<32>, Mem40[fn0000000140001130():word64], _acrt_iob_func(1<32>, 1<u64>), fp + 0x10<64>)
 	return
 fn0000000140001140_exit:
 
@@ -343,7 +343,7 @@ l000000014000156A:
 	rax_28 = RtlLookupFunctionEntry(rsi_15, &tArg08, 0<u64>)
 	branch rax_28 == 0<64> l00000001400015B9
 l0000000140001580:
-	KERNEL32.dll!RtlVirtualUnwind(0<32>, 0<32>, rsi_15, rax_28, fp + 0x10<64>, fp + 0x18<64>, 0<u64>, Mem35[&tArg08:word64], rcx, fp + 0x18<64>, fp + 0x10<64>, 0<64>)
+	KERNEL32.dll!RtlVirtualUnwind(0<32>, rsi_15, rax_28, fp + 0x10<64>, fp + 0x18<64>, 0<u64>, Mem35[&tArg08:word64], rcx, fp + 0x18<64>, fp + 0x10<64>)
 	rdi_17 = CONVERT(edi_59 + 1<32>, word32, uint64)
 	branch SLICE(rdi_17, word32, 0) < 2<32> l000000014000156A
 l00000001400015B9:
@@ -774,7 +774,7 @@ l000000014000199D:
 	rax_35 = RtlLookupFunctionEntry(rbx_30, &tArg10, 0<u64>)
 	branch rax_35 == 0<64> l0000000140001A1A
 l00000001400019DE:
-	KERNEL32.dll!RtlVirtualUnwind(0<32>, 0<32>, rbx_30, rax_35, fp + 24<i64>, fp + 32<i64>, &tLoc04D8, 0<u64>, Mem41[&tArg10:word64], &tLoc04D8, fp + 32<i64>, fp + 24<i64>, 0<64>)
+	KERNEL32.dll!RtlVirtualUnwind(0<32>, rbx_30, rax_35, fp + 24<i64>, fp + 32<i64>, &tLoc04D8, 0<u64>, Mem41[&tArg10:word64], &tLoc04D8, fp + 32<i64>, fp + 24<i64>)
 l0000000140001A1A:
 	Mem69[&tLoc04D8 + 248<i64>:word64] = qwArg00
 	Mem76[&tLoc04D8 + 152<i64>:word64] = fp + 8<64>

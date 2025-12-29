@@ -1191,15 +1191,15 @@ void fn0602(byte b, byte bArg00)
 fn0602_entry:
 l0602:
 	fn04AB(out a_4)
-	b_a_302 = SEQ(b, a_4 - 1<8>) (alias)
+	b_a_303 = SEQ(b, a_4 - 1<8>) (alias)
 	branch a_4 != 1<8> l0613
 l060B:
 	Mem13[0x1753<16>:byte] = a_4 - 1<8>
 	Mem14[0x1752<16>:byte] = a_4 - 1<8>
-	b_a_302 = SEQ(a_4 - 1<8>, Mem14[0x117<16>:byte]) (alias)
+	b_a_303 = SEQ(a_4 - 1<8>, Mem14[0x117<16>:byte]) (alias)
 l0613:
-	b_28 = SLICE(b_a_302, byte, 8) (alias)
-	a_16 = SLICE(b_a_302, byte, 0) (alias)
+	b_28 = SLICE(b_a_303, byte, 8) (alias)
+	a_16 = SLICE(b_a_303, byte, 0) (alias)
 	a_20 = Mem18[0x1778<16>:byte]
 	branch a_20 != 0<8> l062A
 l061A:
@@ -1233,26 +1233,25 @@ l065C:
 	l_143 = SLICE(hl_137, byte, 0) (alias)
 	h_216 = SLICE(hl_137, byte, 8) (alias)
 l0666:
-	hl_180 = SEQ(h_216, l_310) (alias)
+	hl_180 = SEQ(h_216, l_143) (alias)
 	b_174 = 8<8> (alias)
-	c_a_305 = CONVERT(l_310, uint8, uint16) (alias)
+	c_a_306 = CONVERT(l_143, uint8, uint16) (alias)
 l066A:
-	c_a_308 = c_a_305 >>u 1<8>
-	branch SLICE(c_a_308, byte, 0) >=u 0<8> l0675
+	c_a_309 = c_a_306 >>u 1<8> (alias)
+	branch SLICE(c_a_306 >>u 1<8>, byte, 0) >=u 0<8> l0675
 l066F:
-	c_a_308 = c_a_308 ^ 0xA001<16> (alias)
+	c_a_309 = c_a_306 >>u 1<8> ^ 0xA001<16> (alias)
 l0675:
-	a_184 = SLICE(c_a_308, byte, 0) (alias)
-	c_176 = SLICE(c_a_308, byte, 8) (alias)
+	a_184 = SLICE(c_a_309, byte, 0) (alias)
+	c_176 = SLICE(c_a_309, byte, 8) (alias)
 	b_174 = b_174 - 1<8>
-	c_a_305 = c_a_308 (alias)
+	c_a_306 = c_a_309 (alias)
 	branch b_174 != 0<8> l066A
 l0677:
 	Mem181[hl_180:byte] = c_176
-	Mem187[SEQ(h_216 - 1<8>, l_310):byte] = a_184
-	l_143 = l_310 + 1<8>
-	l_310 = l_143
-	branch l_310 != 0xFF<8> l0666
+	Mem187[SEQ(h_216 - 1<8>, l_143):byte] = a_184
+	l_143 = l_143 + 1<8>
+	branch l_143 != 0<8> l0666
 l067E:
 	return
 l067F:
@@ -1717,8 +1716,9 @@ bool fn0905(word16 hl, byte & eOut, word16 & hlOut)
 fn0905_entry:
 l0905:
 	eOut = <invalid>
-	hlOut = hl * 3<16> + 0x1A01<16>
-	return (cond(hl * 3<16> + 0x1A01<16>) & 1<8>) != 0<8>
+	hl_12 = hl * 3<16> + 0x1A01<16>
+	hlOut = hl_12
+	return (cond(hl_12) & 1<8>) != 0<8>
 fn0905_exit:
 
 
@@ -2044,7 +2044,7 @@ l0AF3:
 	branch a_37 >=u 0<8> l0AF9
 l0AF7:
 	a_37 = a_37 + 0x64<8>
-	C_39 = cond(a_37 + 0x64<8>) & 1<8> (alias)
+	C_39 = cond(a_37) & 1<8> (alias)
 l0AF9:
 	Mem44[de:byte] = a_37
 	a_53 = __rcl<byte,byte>(c_7, 1<8>, cond(__rcr<byte,byte>(b_10, 1<8>, C_39)))

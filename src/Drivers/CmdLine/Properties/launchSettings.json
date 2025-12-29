@@ -19,6 +19,11 @@
       "commandName": "Project",
       "commandLineArgs": "decompile --env ms-dos-386 enhancer.coff",
       "workingDirectory": "c:\\dev\\uxmal\\reko\\users\\lighth7015\\enhancer_coff"
+    },
+    "pp.exe": {
+      "commandName": "Project",
+      "commandLineArgs": "decompile --debug-trace-proc fn0800_5C39 PP.EXE",
+      "workingDirectory": "c:\\dev\\uxmal\\reko\\master\\subjects\\regressions\\reko-90"
     }
   },
   "iisSettings": {

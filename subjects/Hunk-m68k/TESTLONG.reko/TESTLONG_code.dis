@@ -1577,7 +1577,7 @@ l000024EA:
 	d0 = d2
 	goto l00002602
 l0000250C:
-	bLoc26_389 = 0<8>
+	bLoc26_390 = 0<8>
 	d0_48 = 0<32>
 	d5_d6_372 = d0_d1 (alias)
 	d5_d6_372 = d0_d1 (alias)
@@ -1589,12 +1589,12 @@ l0000251E:
 	branch d7_13 > 0<32> l0000251E
 l00002528:
 	v41_68 = SLICE(d0_48, word16, 0)
-	d5_d6_576 = d5_d6_372 (alias)
+	d5_d6_577 = d5_d6_372 (alias)
 l0000252A:
-	d5_77 = SLICE(d5_d6_576, word32, 32) (alias)
+	d5_77 = SLICE(d5_d6_577, word32, 32) (alias)
 	d2_79 = __swap(d5_77)
 	d3_80 = __swap(d7_13)
-	d6_102 = SLICE(d5_d6_576, word32, 0) (alias)
+	d6_102 = SLICE(d5_d6_577, word32, 0) (alias)
 	branch SLICE(d2_79 - d3_80, word16, 0) != 0<16> l0000253C
 l00002536:
 	d1_112 = 0xFFFF<32>
@@ -1605,7 +1605,7 @@ l00002546:
 	d6_106 = __swap(SEQ(SLICE(d6_102, word16, 16), 0<16>))
 l0000254C:
 	d4_121 = __swap(d5_77 - __swap(d7_13) *u32 SLICE(d1_112, word16, 0))
-	wLoc22_469 = SLICE(dwLoc24, word16, 0) (alias)
+	wLoc22_470 = SLICE(dwLoc24, word16, 0) (alias)
 	d2_114 = d1_112 *u32 SLICE(d7_13, word16, 0)
 	d4_129 = SEQ(SLICE(d4_121, word16, 16), SLICE(d6_106, word16, 0))
 	branch SLICE(d4_121, word16, 0) != 0<16> l0000256C
@@ -1624,7 +1624,7 @@ l0000256C:
 	v57_v55_373 = CONVERT(SLICE(d6_154, word16, 0), uint16, uint32) + SEQ(SLICE(d3_152, word16, 0), SLICE(d5_149, word16, 0))
 	d2_151 = d6_141 *u32 SLICE(d4_150, word16, 0)
 	v61_v59_374 = CONVERT(SLICE(v57_v55_373, word16, 0), uint16, uint32) + SEQ(SLICE(v57_v55_373, word16, 16), SLICE(d2_151, word16, 0))
-	d5_d6_377 = d5_d6_576 - SEQ((__swap(SEQ(SLICE(d5_149, word16, 16), 0<16>)) + __swap(SEQ(SLICE(d2_151, word16, 16), 0<16>))) + SEQ(SLICE(d3_152, word16, 16), SLICE(v61_v59_374, word16, 16)), __swap(SEQ(SLICE(d6_154, word16, 16), SLICE(v61_v59_374, word16, 0))))
+	d5_d6_377 = d5_d6_577 - SEQ((__swap(SEQ(SLICE(d5_149, word16, 16), 0<16>)) + __swap(SEQ(SLICE(d2_151, word16, 16), 0<16>))) + SEQ(SLICE(d3_152, word16, 16), SLICE(v61_v59_374, word16, 16)), __swap(SEQ(SLICE(d6_154, word16, 16), SLICE(v61_v59_374, word16, 0))))
 	d6_186 = SLICE(d5_d6_377, word32, 0) (alias)
 	d5_189 = SLICE(d5_d6_377, word32, 32) (alias)
 	branch d5_189 >=u 0<32> l000025C4
@@ -1634,13 +1634,13 @@ l000025AE:
 	d6_186 = SLICE(d5_d6_379, word32, 0) (alias)
 	d5_189 = SLICE(d5_d6_379, word32, 32) + __swap(SEQ(SLICE(d7_13, word16, 16), 0<16>))
 l000025C4:
-	branch bLoc26_389 != 0<8> l000025E0
+	branch bLoc26_390 != 0<8> l000025E0
 l000025CA:
 	d5_278 = __swap(d5_189)
 	d6_279 = __swap(d6_186)
-	bLoc26_389 = true
-	dwLoc24 = SEQ(SLICE(d1_112, word16, 0), wLoc22_469) (alias)
-	d5_d6_576 = SEQ(SLICE(d5_278, word16, 16), SLICE(d6_279, word16, 0), SLICE(d6_279, word16, 16), 0<16>) (alias)
+	bLoc26_390 = true
+	dwLoc24 = SEQ(SLICE(d1_112, word16, 0), wLoc22_470) (alias)
+	d5_d6_577 = SEQ(SLICE(d5_278, word16, 16), SLICE(d6_279, word16, 0), SLICE(d6_279, word16, 16), 0<16>) (alias)
 	goto l0000252A
 l000025E0:
 	d6_228 = __swap(SEQ(SLICE(d6_186, word16, 16), SLICE(d5_189, word16, 0)))
@@ -1650,12 +1650,12 @@ l000025E0:
 	branch v41_68 == 0<16> l000025FA
 l000025F0:
 	d7_240 = SEQ(v81_232, v41_68 - 1<16>)
-	d5_d6_579 = SEQ(d5_229, d6_228) (alias)
+	d5_d6_580 = SEQ(d5_229, d6_228) (alias)
 l000025F2:
-	d5_d6_579 = d5_d6_579 >>u 1<32>
 	v85_251 = SLICE(d7_240, word16, 0)
-	d6_228 = SLICE(d5_d6_579, word32, 0)
+	d6_228 = SLICE(d5_d6_580 >>u 1<8>, word32, 0)
 	d7_240 = SEQ(SLICE(d7_240, word16, 16), v85_251 - 1<i16>)
+	d5_d6_580 = d5_d6_580 >>u 1<8> (alias)
 	branch v85_251 != 0<16> l000025F2
 l000025FA:
 	d1 = d6_228

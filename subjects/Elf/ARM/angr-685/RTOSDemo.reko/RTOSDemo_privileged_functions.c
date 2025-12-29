@@ -93,14 +93,14 @@ bool prvCopyDataToQueue(Eq_n r0, Eq_n r1, word32 r2, union Eq_n & r0Out, word32 
 		if (r6_n != 0x00)
 		{
 			r5_n.u1 = (word32) r5_n + 1;
-			Z_n = cond((word32) r5_n + 1) & 0x04;
+			Z_n = cond(r5_n) & 0x04;
 		}
 		else
 		{
 			r0_n = xTaskPriorityDisinherit(r0.u2->u0.dw0004);
 			r0.u2->u0.dw0004 = (word32) r6_n;
 			r5_n.u1 = (word32) r5_n + 1;
-			Z_n = cond((word32) r5_n + 1) & 0x04;
+			Z_n = cond(r5_n) & 0x04;
 		}
 	}
 	else
@@ -493,7 +493,7 @@ void xQueueReceiveFromISR(Eq_n r0, Eq_n r1, word32 * r2, word32 cpsr)
 	if (*((word32) r0 + 56) != 0x00)
 	{
 		struct Eq_n * r4_n = prvCopyDataFromQueue(r0, r1, out r5_n, out r6_n, out r7_n);
-		r7_n->dw0038 = r4_n - &g_t0001;
+		r7_n->dw0038 = r4_n - 0x01;
 		if (r4_n != &g_t0001)
 			r7_n->b0044 = (int8) r5_n + 1;
 		else if (r7_n->dw0010 != 0x00 && (xTaskRemoveFromEventList(&r7_n->dw0010) != 0x00 && r2 != null))

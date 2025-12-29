@@ -1534,10 +1534,10 @@ l00002516:
 					word16 v85_n;
 					do
 					{
-						d5_d6_n >>= 0x01;
 						v85_n = (word16) d7_n;
-						d6_n = (word32) d5_d6_n;
+						d6_n = (word32) (d5_d6_n >> 0x01);
 						d7_n = SEQ(SLICE(d7_n, word16, 16), v85_n - 1);
+						d5_d6_n >>= 0x01;
 					} while (v85_n != 0x00);
 				}
 				d1 = d6_n;

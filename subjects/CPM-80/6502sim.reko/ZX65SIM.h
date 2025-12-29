@@ -6,7 +6,7 @@
 // Equivalence classes ////////////
 Eq_1: (struct "Globals"
 		(2 byte b0002)
-		(5C Eq_1813 t005C)
+		(5C Eq_1808 t005C)
 		(5D byte b005D)
 		(6D (arr byte) a006D)
 		(80 void v0080)
@@ -17,7 +17,7 @@ Eq_1: (struct "Globals"
 		(AAA Eq_87 t0AAA)
 		(AAC byte b0AAC)
 		(AB0 word16 w0AB0)
-		(AB3 Eq_147 t0AB3)
+		(AB3 Eq_133 t0AB3)
 		(AB8 Eq_87 t0AB8)
 		(ABA Eq_87 t0ABA)
 		(ABC byte b0ABC)
@@ -33,7 +33,7 @@ Eq_1: (struct "Globals"
 		(E76 Eq_87 t0E76)
 		(E78 word16 w0E78)
 		(E7A ui16 w0E7A)
-		(F45A Eq_1199 tF45A))
+		(F45A Eq_1194 tF45A))
 	globals_t (in globals : (ptr16 (struct "Globals")))
 Eq_3: (fn void ())
 	T_3 (in fn0DA2 @ 0106 : ptr16)
@@ -41,614 +41,612 @@ Eq_3: (fn void ())
 Eq_31: (fn word16 (byte, byte, (ptr16 byte), uint8))
 	T_31 (in fn09C5 @ 011A : ptr16)
 	T_32 (in signature of fn09C5 @ 09C5 : void)
-	T_151 (in fn09C5 @ 018A : ptr16)
-	T_243 (in fn09C5 @ 0161 : ptr16)
-	T_1691 (in fn09C5 @ 09C4 : ptr16)
+	T_137 (in fn09C5 @ 018A : ptr16)
+	T_229 (in fn09C5 @ 0161 : ptr16)
+	T_1686 (in fn09C5 @ 09C4 : ptr16)
 Eq_42: (fn void ())
 	T_42 (in fn093B @ 011D : ptr16)
 	T_43 (in signature of fn093B @ 093B : void)
 	T_48 (in fn093B @ 0124 : ptr16)
 	T_68 (in fn093B @ 0299 : ptr16)
-	T_167 (in fn093B @ 01BE : ptr16)
-	T_263 (in fn093B @ 0124 : ptr16)
-	T_271 (in fn093B @ 02C1 : ptr16)
-	T_330 (in fn093B @ 02B9 : ptr16)
-	T_529 (in fn093B @ 089F : ptr16)
-	T_604 (in fn093B @ 01E1 : ptr16)
-	T_635 (in fn093B @ 08E3 : ptr16)
-	T_657 (in fn093B @ 0202 : ptr16)
+	T_153 (in fn093B @ 01BE : ptr16)
+	T_249 (in fn093B @ 0124 : ptr16)
+	T_257 (in fn093B @ 02C1 : ptr16)
+	T_316 (in fn093B @ 02B9 : ptr16)
+	T_519 (in fn093B @ 089F : ptr16)
+	T_594 (in fn093B @ 01E1 : ptr16)
+	T_625 (in fn093B @ 08E3 : ptr16)
+	T_647 (in fn093B @ 0202 : ptr16)
 Eq_50: (fn void ())
 	T_50 (in fn0945 @ 0127 : ptr16)
 	T_51 (in signature of fn0945 @ 0945 : void)
-	T_200 (in fn0945 @ 01CF : ptr16)
-	T_265 (in fn0945 @ 0127 : ptr16)
-	T_625 (in fn0945 @ 01ED : ptr16)
+	T_186 (in fn0945 @ 01CF : ptr16)
+	T_251 (in fn0945 @ 0127 : ptr16)
+	T_615 (in fn0945 @ 01ED : ptr16)
 Eq_53: (struct "Eq_53" (FFFFFFFE ui16 wFFFFFFFE) (0 Eq_87 t0000) (2 uint8 b0002))
 	T_53 (in <invalid> @ 011A : word16)
 	T_54 (in de_31 @ 011A : (ptr16 Eq_53))
 	T_65 (in sp_47 @ 012A : (ptr16 Eq_53))
-	T_213 (in de_487 @ 01AF : (ptr16 Eq_53))
-	T_214 (in af_485 @ 01AF : (ptr16 Eq_53))
-	T_359 (in de_379 @ 01A3 : (ptr16 Eq_53))
-	T_360 (in af_377 @ 01A3 : (ptr16 Eq_53))
-	T_407 (in de_544 @ 016F : (ptr16 Eq_53))
-	T_408 (in af_542 @ 016F : (ptr16 Eq_53))
-	T_420 (in af_555 @ 0172 : (ptr16 Eq_53))
-	T_435 (in af_352 @ 0194 : (ptr16 Eq_53))
-	T_477 (in out af_871 @ 08AB : word16)
-	T_478 (in afOut @ 08AB : (ptr16 Eq_53))
-	T_520 (in out af_872 @ 08BE : word16)
-	T_574 (in sp_298 @ 0919 : (ptr16 Eq_53))
-	T_644 (in out af_875 @ 08EC : word16)
-	T_702 (in de_110 @ 0259 : (ptr16 Eq_53))
-	T_741 (in de_123 @ 0260 : (ptr16 Eq_53))
-	T_842 (in out af_573 @ 02D1 : word16)
-	T_846 (in de_6 @ 02CB : (ptr16 Eq_53))
-	T_876 (in out af_574 @ 0564 : word16)
-	T_909 (in out af_576 @ 0363 : word16)
-	T_949 (in out de_565 @ 03A3 : word16)
-	T_950 (in deOut @ 03A3 : (ptr16 Eq_53))
-	T_952 (in out hl_159 @ 03A3 : word16)
-	T_953 (in hlOut @ 03A3 : (ptr16 Eq_53))
-	T_968 (in out af_577 @ 0428 : word16)
-	T_1133 (in out af_584 @ 0390 : word16)
-	T_1256 (in out af_585 @ 03CA : word16)
-	T_1264 (in out af_586 @ 03CF : word16)
-	T_1274 (in out de_566 @ 03D7 : word16)
-	T_1276 (in out hl_123 @ 03D7 : word16)
-	T_1315 (in out af_51 @ 03E9 : word16)
-	T_1323 (in out af_52 @ 03EE : word16)
-	T_1374 (in out af_28 @ 0444 : word16)
-	T_1382 (in out af_29 @ 0449 : word16)
-	T_1399 (in out af_27 @ 0444 : word16)
-	T_1407 (in out af_28 @ 0449 : word16)
-	T_1731 (in out af_121 @ 09DB : word16)
-	T_1760 (in out af_124 @ 09E8 : word16)
+	T_199 (in de_487 @ 01AF : (ptr16 Eq_53))
+	T_200 (in af_485 @ 01AF : (ptr16 Eq_53))
+	T_346 (in de_379 @ 01A3 : (ptr16 Eq_53))
+	T_347 (in af_377 @ 01A3 : (ptr16 Eq_53))
+	T_394 (in de_544 @ 016F : (ptr16 Eq_53))
+	T_395 (in af_542 @ 016F : (ptr16 Eq_53))
+	T_407 (in af_555 @ 0172 : (ptr16 Eq_53))
+	T_423 (in af_352 @ 0194 : (ptr16 Eq_53))
+	T_467 (in out af_876 @ 08AB : word16)
+	T_468 (in afOut @ 08AB : (ptr16 Eq_53))
+	T_510 (in out af_877 @ 08BE : word16)
+	T_564 (in sp_298 @ 0919 : (ptr16 Eq_53))
+	T_634 (in out af_880 @ 08EC : word16)
+	T_693 (in de_110 @ 0259 : (ptr16 Eq_53))
+	T_732 (in de_123 @ 0260 : (ptr16 Eq_53))
+	T_833 (in out af_573 @ 02D1 : word16)
+	T_837 (in de_6 @ 02CB : (ptr16 Eq_53))
+	T_867 (in out af_574 @ 0564 : word16)
+	T_900 (in out af_576 @ 0363 : word16)
+	T_940 (in out de_565 @ 03A3 : word16)
+	T_941 (in deOut @ 03A3 : (ptr16 Eq_53))
+	T_943 (in out hl_159 @ 03A3 : word16)
+	T_944 (in hlOut @ 03A3 : (ptr16 Eq_53))
+	T_959 (in out af_577 @ 0428 : word16)
+	T_1124 (in out af_584 @ 0390 : word16)
+	T_1251 (in out af_585 @ 03CA : word16)
+	T_1259 (in out af_586 @ 03CF : word16)
+	T_1269 (in out de_566 @ 03D7 : word16)
+	T_1271 (in out hl_123 @ 03D7 : word16)
+	T_1310 (in out af_51 @ 03E9 : word16)
+	T_1318 (in out af_52 @ 03EE : word16)
+	T_1369 (in out af_28 @ 0444 : word16)
+	T_1377 (in out af_29 @ 0449 : word16)
+	T_1394 (in out af_27 @ 0444 : word16)
+	T_1402 (in out af_28 @ 0449 : word16)
+	T_1726 (in out af_121 @ 09DB : word16)
+	T_1755 (in out af_124 @ 09E8 : word16)
 Eq_59: (fn cu8 (cu8))
 	T_59 (in fn0A08 @ 012A : ptr16)
 	T_60 (in signature of fn0A08 @ 0A08 : void)
-	T_267 (in fn0A08 @ 012A : ptr16)
-	T_568 (in fn0A08 @ 08F5 : ptr16)
-	T_593 (in fn0A08 @ 090B : ptr16)
-	T_1509 (in fn0A08 @ 094F : ptr16)
-	T_1542 (in fn0A08 @ 0961 : ptr16)
+	T_253 (in fn0A08 @ 012A : ptr16)
+	T_558 (in fn0A08 @ 08F5 : ptr16)
+	T_583 (in fn0A08 @ 090B : ptr16)
+	T_1504 (in fn0A08 @ 094F : ptr16)
+	T_1537 (in fn0A08 @ 0961 : ptr16)
 Eq_72: (union "Eq_72" (cui16 u0) (byte u1))
 	T_72 (in 0x28<16> @ 02A2 : cui16)
-	T_73 (in bc_839 @ 02A2 : Eq_72)
-	T_294 (in Mem624[sp_620 + -2<i16>:word16] @ 02AB : word16)
-	T_307 (in Mem624[sp_620 + -2<i16>:word16] @ 02B4 : word16)
-	T_308 (in bc_635 @ 02B4 : Eq_72)
-	T_311 (in Mem638[sp_620 + -2<i16>:word16] @ 02B5 : word16)
-	T_318 (in Mem638[sp_620 + -2<i16>:word16] @ 02BC : word16)
-	T_319 (in bc_647 @ 02BC : Eq_72)
-	T_329 (in SEQ(SLICE(bc_647 - 1<16>, byte, 8), SLICE(bc_647, byte, 0) - 1<8>) @ 02A2 : word16)
-	T_384 (in 0<8> @ 02A4 : byte)
+	T_73 (in bc_843 @ 02A2 : Eq_72)
+	T_280 (in Mem624[sp_620 + -2<i16>:word16] @ 02AB : word16)
+	T_293 (in Mem624[sp_620 + -2<i16>:word16] @ 02B4 : word16)
+	T_294 (in bc_635 @ 02B4 : Eq_72)
+	T_297 (in Mem638[sp_620 + -2<i16>:word16] @ 02B5 : word16)
+	T_304 (in Mem638[sp_620 + -2<i16>:word16] @ 02BC : word16)
+	T_305 (in bc_647 @ 02BC : Eq_72)
+	T_315 (in SEQ(SLICE(bc_647 - 1<16>, byte, 8), SLICE(bc_647, byte, 0) - 1<8>) @ 02A2 : word16)
+	T_371 (in 0<8> @ 02A4 : byte)
 Eq_76: (fn word16 (byte, (ptr16 byte)))
 	T_76 (in fn09BA @ 0876 : ptr16)
 	T_77 (in signature of fn09BA @ 09BA : void)
 	T_94 (in fn09BA @ 0883 : ptr16)
-	T_135 (in fn09BA @ 08DC : ptr16)
+	T_121 (in fn09BA @ 08DC : ptr16)
 Eq_83: (fn bool (cu8, ui16))
 	T_83 (in fn094F @ 0879 : ptr16)
 	T_84 (in signature of fn094F @ 094F : void)
 	T_99 (in fn094F @ 0886 : ptr16)
-	T_139 (in fn094F @ 08DF : ptr16)
-	T_157 (in fn094F @ 018D : ptr16)
-	T_207 (in fn094F @ 01D5 : ptr16)
-	T_253 (in fn094F @ 0168 : ptr16)
-	T_631 (in fn094F @ 01F3 : ptr16)
+	T_125 (in fn094F @ 08DF : ptr16)
+	T_143 (in fn094F @ 018D : ptr16)
+	T_193 (in fn094F @ 01D5 : ptr16)
+	T_239 (in fn094F @ 0168 : ptr16)
+	T_621 (in fn094F @ 01F3 : ptr16)
 Eq_87: (union "Eq_87" (byte u0) (word16 u1))
 	T_87 (in de_68 @ 0879 : Eq_87)
-	T_141 (in de_233 @ 08DF : Eq_87)
-	T_146 (in hl_241 @ 08E2 : Eq_87)
-	T_184 (in Mem401[0xABA<16>:word16] @ 01C8 : word16)
-	T_185 (in de_411 @ 01C8 : Eq_87)
-	T_204 (in de_426 @ 01D2 : Eq_87)
-	T_229 (in out hl_851 @ 01AF : word16)
-	T_230 (in hlOut @ 01AF : Eq_87)
-	T_355 (in out hl_856 @ 01A3 : word16)
-	T_404 (in out hl_862 @ 016F : word16)
-	T_432 (in out hl_355 @ 0194 : word16)
-	T_457 (in hl_136 @ 089C : Eq_87)
-	T_474 (in hl @ 08AB : Eq_87)
-	T_475 (in hl_157 @ 08AB : Eq_87)
-	T_480 (in out hl_159 @ 08AB : word16)
-	T_481 (in hlOut @ 08AB : Eq_87)
-	T_495 (in hl_159 + 1<16> @ 08B4 : word16)
-	T_513 (in hl_184 + 1<16> @ 08CE : word16)
-	T_521 (in out hl_184 @ 08BE : word16)
-	T_534 (in hl @ 08A2 : Eq_87)
-	T_544 (in Mem432[0xABA<16>:word16] @ 01D7 : word16)
-	T_560 (in hl_252 + 1<16> @ 0920 : word16)
-	T_581 (in hl @ 091D : Eq_87)
-	T_587 (in Mem307[sp_298 + 0<16>:word16] @ 091D : word16)
-	T_645 (in out hl_252 @ 08EC : word16)
-	T_668 (in Mem8[0xAB8<16>:word16] @ 020C : word16)
-	T_669 (in de_20 @ 020C : Eq_87)
-	T_758 (in Mem85[0xABA<16>:word16] @ 0270 : word16)
-	T_759 (in de_153 @ 0270 : Eq_87)
-	T_798 (in hl @ 0281 : Eq_87)
-	T_820 (in Mem26[0x0A4B<p16>:word16] @ 0296 : word16)
-	T_830 (in Mem0[0xABA<16>:word16] @ 02C8 : word16)
-	T_831 (in hl_4 @ 02C8 : Eq_87)
-	T_839 (in Mem10[0xAB8<16>:word16] @ 02CE : word16)
-	T_843 (in hl_12 @ 02D1 : Eq_87)
-	T_844 (in out hl_12 @ 02D1 : word16)
-	T_864 (in Mem24[0xAAA<16>:word16] @ 0332 : word16)
-	T_865 (in hl_25 @ 0332 : Eq_87)
-	T_866 (in 0<8> @ 0337 : byte)
-	T_878 (in out hl_575 @ 0564 : word16)
-	T_911 (in out hl_240 @ 0363 : word16)
-	T_922 (in hl_240 + 1<16> @ 0376 : word16)
-	T_941 (in de_565 @ 03A0 : Eq_87)
-	T_946 (in hl @ 03A3 : Eq_87)
-	T_948 (in hl_12 + 1<16> @ 03A3 : word16)
-	T_951 (in hl_159 @ 03A3 : Eq_87)
-	T_966 (in hl_353 + 1<16> @ 0428 : word16)
-	T_970 (in out hl_357 @ 0428 : word16)
-	T_1002 (in hl_36 @ 0341 : Eq_87)
-	T_1016 (in fn0E2C(SLICE(de_35, byte, 8), hl_36) - 1<16> @ 0351 : word16)
-	T_1019 (in fn0E2C((byte) de_35, fn0E2C(SLICE(de_35, byte, 8), hl_36) - 1<16>) - 1<16> @ 0351 : word16)
-	T_1039 (in Mem24[0xAAA<16>:word16] @ 0358 : word16)
-	T_1054 (in hl_312 @ 03AB : Eq_87)
-	T_1064 (in fn0E2C(SLICE(de_311, byte, 8), hl_312) - 1<16> @ 03B4 : word16)
-	T_1092 (in Mem383[0xABA<16>:word16] @ 0728 : word16)
-	T_1131 (in hl_240 + 1<16> @ 0390 : word16)
-	T_1135 (in out hl_272 @ 0390 : word16)
-	T_1164 (in hl_435 @ 0871 : Eq_87)
-	T_1173 (in hl_12 + 1<16> @ 0727 : word16)
-	T_1227 (in hl_272 + de_282 @ 0399 : word16)
-	T_1246 (in hl_12 + 1<16> @ 03C3 : word16)
-	T_1247 (in hl_117 @ 03C3 : Eq_87)
-	T_1254 (in hl_12 + 1<16> @ 03CA : word16)
-	T_1258 (in out hl_99 @ 03CA : word16)
-	T_1262 (in hl_99 + 1<16> @ 03CF : word16)
-	T_1266 (in out hl_587 @ 03CF : word16)
-	T_1270 (in SEQ(a_107, a_98) @ 03D3 : word16)
-	T_1273 (in de_566 @ 03D7 : Eq_87)
-	T_1280 (in de_152 @ 03D7 : Eq_87)
-	T_1289 (in hl_144 @ 03E0 : Eq_87)
-	T_1317 (in out hl_5 @ 03E9 : word16)
-	T_1321 (in hl_5 + 1<16> @ 03EE : word16)
-	T_1325 (in out hl_14 @ 03EE : word16)
-	T_1372 (in hl_5 + 1<16> @ 0444 : word16)
-	T_1376 (in out hl_9 @ 0444 : word16)
-	T_1380 (in hl_9 + 1<16> @ 0449 : word16)
-	T_1384 (in out hl_18 @ 0449 : word16)
-	T_1397 (in hl + 1<16> @ 0444 : word16)
-	T_1401 (in out hl_7 @ 0444 : word16)
-	T_1405 (in hl_7 + 1<16> @ 0449 : word16)
-	T_1409 (in out hl_16 @ 0449 : word16)
-	T_1723 (in Mem13[0xAB8<16>:word16] @ 09D2 : word16)
-	T_1724 (in hl_14 @ 09D2 : Eq_87)
-	T_1729 (in hl_14 + 2<16> @ 09DB : word16)
-	T_1733 (in out hl_122 @ 09DB : word16)
-	T_1758 (in hl_14 + 1<16> @ 09E8 : word16)
-	T_1762 (in out hl_125 @ 09E8 : word16)
-	T_1885 (in hl @ 0E24 : Eq_87)
-	T_1892 (in Mem0[0xE76<16>:word16] @ 0E28 : word16)
-	T_1893 (in hl_11 @ 0E28 : Eq_87)
-	T_1904 (in Mem10[0xE76<16>:word16] @ 0E33 : word16)
-	T_1907 (in Mem4[0xE76<16>:word16] @ 0E35 : word16)
+	T_127 (in de_233 @ 08DF : Eq_87)
+	T_132 (in hl_241 @ 08E2 : Eq_87)
+	T_170 (in Mem401[0xABA<16>:word16] @ 01C8 : word16)
+	T_171 (in de_411 @ 01C8 : Eq_87)
+	T_190 (in de_426 @ 01D2 : Eq_87)
+	T_215 (in out hl_856 @ 01AF : word16)
+	T_216 (in hlOut @ 01AF : Eq_87)
+	T_342 (in out hl_861 @ 01A3 : word16)
+	T_391 (in out hl_867 @ 016F : word16)
+	T_420 (in out hl_355 @ 0194 : word16)
+	T_447 (in hl_136 @ 089C : Eq_87)
+	T_464 (in hl @ 08AB : Eq_87)
+	T_465 (in hl_157 @ 08AB : Eq_87)
+	T_470 (in out hl_159 @ 08AB : word16)
+	T_471 (in hlOut @ 08AB : Eq_87)
+	T_485 (in hl_159 + 1<16> @ 08B4 : word16)
+	T_503 (in hl_184 + 1<16> @ 08CE : word16)
+	T_511 (in out hl_184 @ 08BE : word16)
+	T_524 (in hl @ 08A2 : Eq_87)
+	T_534 (in Mem432[0xABA<16>:word16] @ 01D7 : word16)
+	T_550 (in hl_252 + 1<16> @ 0920 : word16)
+	T_571 (in hl @ 091D : Eq_87)
+	T_577 (in Mem307[sp_298 + 0<16>:word16] @ 091D : word16)
+	T_635 (in out hl_252 @ 08EC : word16)
+	T_658 (in Mem8[0xAB8<16>:word16] @ 020C : word16)
+	T_659 (in de_20 @ 020C : Eq_87)
+	T_749 (in Mem85[0xABA<16>:word16] @ 0270 : word16)
+	T_750 (in de_153 @ 0270 : Eq_87)
+	T_789 (in hl @ 0281 : Eq_87)
+	T_811 (in Mem26[0x0A4B<p16>:word16] @ 0296 : word16)
+	T_821 (in Mem0[0xABA<16>:word16] @ 02C8 : word16)
+	T_822 (in hl_4 @ 02C8 : Eq_87)
+	T_830 (in Mem10[0xAB8<16>:word16] @ 02CE : word16)
+	T_834 (in hl_12 @ 02D1 : Eq_87)
+	T_835 (in out hl_12 @ 02D1 : word16)
+	T_855 (in Mem24[0xAAA<16>:word16] @ 0332 : word16)
+	T_856 (in hl_25 @ 0332 : Eq_87)
+	T_857 (in 0<8> @ 0337 : byte)
+	T_869 (in out hl_575 @ 0564 : word16)
+	T_902 (in out hl_240 @ 0363 : word16)
+	T_913 (in hl_240 + 1<16> @ 0376 : word16)
+	T_932 (in de_565 @ 03A0 : Eq_87)
+	T_937 (in hl @ 03A3 : Eq_87)
+	T_939 (in hl_12 + 1<16> @ 03A3 : word16)
+	T_942 (in hl_159 @ 03A3 : Eq_87)
+	T_957 (in hl_353 + 1<16> @ 0428 : word16)
+	T_961 (in out hl_357 @ 0428 : word16)
+	T_993 (in hl_36 @ 0341 : Eq_87)
+	T_1007 (in fn0E2C(SLICE(de_35, byte, 8), hl_36) - 1<16> @ 0351 : word16)
+	T_1010 (in fn0E2C((byte) de_35, fn0E2C(SLICE(de_35, byte, 8), hl_36) - 1<16>) - 1<16> @ 0351 : word16)
+	T_1030 (in Mem24[0xAAA<16>:word16] @ 0358 : word16)
+	T_1045 (in hl_312 @ 03AB : Eq_87)
+	T_1055 (in fn0E2C(SLICE(de_311, byte, 8), hl_312) - 1<16> @ 03B4 : word16)
+	T_1083 (in Mem383[0xABA<16>:word16] @ 0728 : word16)
+	T_1122 (in hl_240 + 1<16> @ 0390 : word16)
+	T_1126 (in out hl_272 @ 0390 : word16)
+	T_1155 (in hl_435 @ 0871 : Eq_87)
+	T_1164 (in hl_12 + 1<16> @ 0727 : word16)
+	T_1222 (in hl_272 + de_282 @ 0399 : word16)
+	T_1241 (in hl_12 + 1<16> @ 03C3 : word16)
+	T_1242 (in hl_117 @ 03C3 : Eq_87)
+	T_1249 (in hl_12 + 1<16> @ 03CA : word16)
+	T_1253 (in out hl_99 @ 03CA : word16)
+	T_1257 (in hl_99 + 1<16> @ 03CF : word16)
+	T_1261 (in out hl_587 @ 03CF : word16)
+	T_1265 (in SEQ(a_107, a_98) @ 03D3 : word16)
+	T_1268 (in de_566 @ 03D7 : Eq_87)
+	T_1275 (in de_152 @ 03D7 : Eq_87)
+	T_1284 (in hl_144 @ 03E0 : Eq_87)
+	T_1312 (in out hl_5 @ 03E9 : word16)
+	T_1316 (in hl_5 + 1<16> @ 03EE : word16)
+	T_1320 (in out hl_14 @ 03EE : word16)
+	T_1367 (in hl_5 + 1<16> @ 0444 : word16)
+	T_1371 (in out hl_9 @ 0444 : word16)
+	T_1375 (in hl_9 + 1<16> @ 0449 : word16)
+	T_1379 (in out hl_18 @ 0449 : word16)
+	T_1392 (in hl + 1<16> @ 0444 : word16)
+	T_1396 (in out hl_7 @ 0444 : word16)
+	T_1400 (in hl_7 + 1<16> @ 0449 : word16)
+	T_1404 (in out hl_16 @ 0449 : word16)
+	T_1718 (in Mem13[0xAB8<16>:word16] @ 09D2 : word16)
+	T_1719 (in hl_14 @ 09D2 : Eq_87)
+	T_1724 (in hl_14 + 2<16> @ 09DB : word16)
+	T_1728 (in out hl_122 @ 09DB : word16)
+	T_1753 (in hl_14 + 1<16> @ 09E8 : word16)
+	T_1757 (in out hl_125 @ 09E8 : word16)
+	T_1880 (in hl @ 0E24 : Eq_87)
+	T_1887 (in Mem0[0xE76<16>:word16] @ 0E28 : word16)
+	T_1888 (in hl_11 @ 0E28 : Eq_87)
+	T_1899 (in Mem10[0xE76<16>:word16] @ 0E33 : word16)
+	T_1902 (in Mem4[0xE76<16>:word16] @ 0E35 : word16)
 Eq_91: (fn void ())
 	T_91 (in fn0940 @ 087D : ptr16)
 	T_92 (in signature of fn0940 @ 0940 : void)
-Eq_106: (fn uint8 (uint8, byte, Eq_110))
-	T_106 (in __rcr<byte,byte> @ 0890 : ptr32)
-	T_107 (in signature of __rcr : void)
-	T_1177 (in __rcr<byte,byte> @ 053C : ptr32)
-	T_1183 (in __rcr<byte,byte> @ 053D : ptr32)
-	T_1188 (in __rcr<byte,byte> @ 053E : ptr32)
-	T_1193 (in __rcr<byte,byte> @ 0545 : ptr32)
-Eq_110: (union "Eq_110" (bool u0) (byte u1))
-	T_110 (in p3 @ 0890 : bool)
-	T_117 (in cond(b_101 >> 1<8>) & 1<8> @ 0890 : byte)
-	T_1180 (in SZPC_199 & 1<8> @ 053C : byte)
-	T_1185 (in cond(a_205) @ 053D : byte)
-	T_1190 (in cond(a_207) @ 053E : byte)
-	T_1195 (in cond(a_209) @ 0545 : byte)
-Eq_147: (struct "Eq_147" 0001 (0 byte b0000) (1 uint8 b0001) (2 uint8 b0002) (3 uint8 b0003) (4 uint8 b0004))
-	T_147 (in 0xAB3<16> @ 013C : word16)
-	T_148 (in ix_328 @ 013C : (ptr16 Eq_147))
-	T_218 (in ix @ 01AF : (ptr16 Eq_147))
-	T_231 (in out ix_328 @ 01AF : word16)
-	T_232 (in ixOut @ 01AF : (ptr16 Eq_147))
-	T_356 (in ix_383 @ 01A3 : (ptr16 Eq_147))
-	T_357 (in out ix_383 @ 01A3 : word16)
-	T_370 (in ix @ 01A6 : (ptr16 Eq_147))
-	T_405 (in out ix_328 @ 016F : word16)
-	T_433 (in out ix_328 @ 0194 : word16)
-	T_549 (in ix_328 + 1<16> @ 01F8 : word16)
-	T_745 (in ix + 1<16> @ 0269 : word16)
-	T_959 (in ix @ 0424 : (ptr16 Eq_147))
-	T_979 (in ix @ 042E : (ptr16 Eq_147))
-	T_993 (in ix @ 0437 : (ptr16 Eq_147))
-	T_1025 (in ix @ 0355 : (ptr16 Eq_147))
-	T_1083 (in ix @ 03A5 : (ptr16 Eq_147))
-	T_1165 (in ix_438 @ 0871 : (ptr16 Eq_147))
-	T_1309 (in ix @ 052B : (ptr16 Eq_147))
-Eq_169: (fn byte (byte, byte, (ptr16 byte), uint8, word16))
-	T_169 (in fn027A @ 01C5 : ptr16)
-	T_170 (in signature of fn027A @ 027A : void)
-	T_612 (in fn027A @ 01EA : ptr16)
-	T_659 (in fn027A @ 0209 : ptr16)
-	T_680 (in fn027A @ 0213 : ptr16)
-	T_730 (in fn027A @ 0266 : ptr16)
-	T_750 (in fn027A @ 026D : ptr16)
-Eq_186: (fn Eq_199 (word16, byte, word16, byte))
-	T_186 (in fn099E @ 01CC : ptr16)
-	T_187 (in signature of fn099E @ 099E : void)
-	T_295 (in fn099E @ 02AC : ptr16)
-	T_672 (in fn099E @ 0210 : ptr16)
-	T_760 (in fn099E @ 0274 : ptr16)
-	T_1476 (in fn099E @ 0924 : ptr16)
-Eq_199: (union "Eq_199" (bool u0) (byte u1))
-	T_199 (in fn099E(SEQ(SLICE(de_411, byte, 8), f_413), (byte) de_411, out af_416, out c_848) @ 01CC : bool)
-	T_301 (in fn099E(SEQ(d_616, f_351), e_614, out af_627, out c_853) @ 02AC : bool)
-	T_679 (in fn099E(SEQ(d_21, f_22), (byte) de_20, out af_25, out c_197) @ 0210 : bool)
-	T_768 (in fn099E(SEQ(SLICE(de_153, byte, 8), f_155), (byte) de_153, out af_158, out c_159) @ 0274 : bool)
-	T_769 (in Z_161 @ 0274 : Eq_199)
-	T_771 (in 0<8> @ 0279 : byte)
-	T_1484 (in fn099E(SEQ(SLICE(hl, byte, 8), f), (byte) hl, out af_12, out c_21) @ 0924 : bool)
-Eq_215: (fn Eq_233 (byte, (ptr16 Eq_147), uint8, uint16, uint8, Eq_87, (ptr16 Eq_147)))
-	T_215 (in fn02C5 @ 01AF : ptr16)
-	T_216 (in signature of fn02C5 @ 02C5 : void)
-	T_347 (in fn02C5 @ 01A3 : ptr16)
-	T_396 (in fn02C5 @ 016F : ptr16)
-	T_425 (in fn02C5 @ 0194 : ptr16)
-Eq_233: (union "Eq_233" (bool u0) (byte u1))
-	T_233 (in fn02C5(f_351, ix_328, out f_849, out bc_353, out d_850, out hl_851, out ix_328) @ 01AF : bool)
-	T_234 (in Z_493 @ 01AF : Eq_233)
-	T_358 (in fn02C5(f_351, ix_328, out f_854, out bc_378, out d_855, out hl_856, out ix_383) @ 01A3 : bool)
-	T_406 (in fn02C5(f_351, ix_328, out f_860, out bc_543, out d_861, out hl_862, out ix_328) @ 016F : bool)
-	T_434 (in fn02C5(f_351, ix_328, out f_866, out bc_353, out d_867, out hl_355, out ix_328) @ 0194 : bool)
-Eq_235: (fn void ())
-	T_235 (in fn0A24 @ 01B2 : ptr16)
-	T_236 (in signature of fn0A24 @ 0A24 : void)
-	T_340 (in fn0A24 @ 01A8 : ptr16)
-Eq_260: (fn void ())
-	T_260 (in fn0A2A @ 0158 : ptr16)
-	T_261 (in signature of fn0A2A @ 0A2A : void)
-	T_1496 (in fn0A2A @ 0936 : ptr16)
-	T_1498 (in fn0A2A @ 093D : ptr16)
-	T_1500 (in fn0A2A @ 0942 : ptr16)
-	T_1502 (in fn0A2A @ 0942 : ptr16)
-	T_1504 (in fn0A2A @ 0947 : ptr16)
-	T_1506 (in fn0A2A @ 094C : ptr16)
-	T_1552 (in fn0A2A @ 0987 : ptr16)
-	T_1771 (in fn0A2A @ 09F2 : ptr16)
-	T_1789 (in fn0A2A @ 0A1A : ptr16)
-Eq_285: (struct "Eq_285" (FFFFFFFE Eq_72 tFFFFFFFE) (0 (ptr16 byte) ptr0000))
-	T_285 (in sp_47 - 2<16> @ 02AA : word16)
-	T_286 (in sp_620 @ 02AA : (ptr16 Eq_285))
-Eq_302: (fn byte ())
-	T_302 (in fn0A19 @ 02B1 : ptr16)
-	T_303 (in signature of fn0A19 @ 0A19 : void)
-	T_509 (in fn0A19 @ 08CB : ptr16)
-	T_695 (in fn0A19 @ 0241 : ptr16)
-	T_1681 (in fn0A19 @ 09B8 : ptr16)
-	T_1783 (in fn0A19 @ 0A12 : ptr16)
-	T_1785 (in fn0A19 @ 0A17 : ptr16)
-Eq_365: (fn Eq_381 (byte, byte, byte, (ptr16 Eq_147), uint8, word16, uint8))
-	T_365 (in fn01FF @ 01A6 : ptr16)
-	T_366 (in signature of fn01FF @ 01FF : void)
-	T_409 (in fn01FF @ 0172 : ptr16)
-	T_463 (in fn01FF @ 01BA : ptr16)
-	T_1041 (in fn01FF @ 033D : ptr16)
-Eq_381: (union "Eq_381" (byte u0) (Eq_1921 u1))
-	T_381 (in fn01FF(f_389, (byte) bc_378, d_388, ix_383, out f_857, out bc_858, out d_859) @ 01A6 : bool)
-	T_419 (in fn01FF((byte) af_542, (byte) bc_543, SLICE(de_544, byte, 8), ix_328, out f_863, out bc_864, out d_865) @ 0172 : bool)
-	T_471 (in fn01FF(f_351, (byte) bc_353, d_367, ix_328, out f_868, out bc_869, out d_870) @ 01BA : bool)
-	T_1049 (in fn01FF(f, 0x29<8>, d_70, ix, out f_581, out bc_73, out d_582) @ 033D : bool)
-	T_1050 (in Z_77 @ 033D : Eq_381)
-	T_1051 (in 0<8> @ 033D : byte)
-Eq_382: (union "Eq_382" (byte u0) (word16 u1))
-	T_382 (in 0xAAE<16> @ 017B : word16)
-	T_383 (in bc_571 @ 017B : Eq_382)
-	T_387 (in bc_571 - 1<16> @ 017E : word16)
-	T_388 (in 0<8> @ 0181 : byte)
-Eq_447: (fn void ())
-	T_447 (in fn0A27 @ 01B7 : ptr16)
-	T_448 (in signature of fn0A27 @ 0A27 : void)
-	T_1774 (in fn0A27 @ 0A08 : ptr16)
-Eq_459: (union "Eq_459" (uint16 u0) (byte u1))
-	T_459 (in bc_127 - 1<16> @ 089D : word16)
-	T_460 (in bc_139 @ 089D : Eq_459)
-	T_525 (in 0<8> @ 08D5 : byte)
-	T_528 (in bc_139 - 1<16> @ 08D6 : word16)
-Eq_472: (fn Eq_482 (Eq_87, (ptr16 Eq_53), Eq_87))
-	T_472 (in fn0E24 @ 08AB : ptr16)
-	T_473 (in signature of fn0E24 @ 0E24 : void)
-	T_518 (in fn0E24 @ 08BE : ptr16)
-	T_642 (in fn0E24 @ 08EC : ptr16)
-	T_840 (in fn0E24 @ 02D1 : ptr16)
-	T_874 (in fn0E24 @ 0564 : ptr16)
-	T_907 (in fn0E24 @ 0363 : ptr16)
-	T_964 (in fn0E24 @ 0428 : ptr16)
-	T_1130 (in fn0E24 @ 0390 : ptr16)
-	T_1252 (in fn0E24 @ 03CA : ptr16)
-	T_1260 (in fn0E24 @ 03CF : ptr16)
-	T_1313 (in fn0E24 @ 03E9 : ptr16)
-	T_1319 (in fn0E24 @ 03EE : ptr16)
-	T_1370 (in fn0E24 @ 0444 : ptr16)
-	T_1378 (in fn0E24 @ 0449 : ptr16)
-	T_1395 (in fn0E24 @ 0444 : ptr16)
-	T_1403 (in fn0E24 @ 0449 : ptr16)
-	T_1727 (in fn0E24 @ 09DB : ptr16)
-	T_1756 (in fn0E24 @ 09E8 : ptr16)
-Eq_482: (union "Eq_482" (bool u0) (Eq_1922 u1))
-	T_482 (in fn0E24(hl_157, out af_871, out hl_159) @ 08AB : bool)
-	T_522 (in fn0E24(hl_136, out af_872, out hl_184) @ 08BE : bool)
-	T_646 (in fn0E24(hl_241, out af_875, out hl_252) @ 08EC : bool)
-	T_845 (in fn0E24(hl_4, out af_573, out hl_12) @ 02D1 : bool)
-	T_879 (in fn0E24(hl_12, out af_574, out hl_575) @ 0564 : bool)
-	T_912 (in fn0E24(hl_12, out af_576, out hl_240) @ 0363 : bool)
-	T_971 (in fn0E24(hl_353 + 1<16>, out af_577, out hl_357) @ 0428 : bool)
-	T_1136 (in fn0E24(hl_240 + 1<16>, out af_584, out hl_272) @ 0390 : bool)
-	T_1259 (in fn0E24((word16) hl_12.u1 + 1<i32>, out af_585, out hl_99) @ 03CA : bool)
-	T_1267 (in fn0E24(hl_99 + 1<16>, out af_586, out hl_587) @ 03CF : bool)
-	T_1318 (in fn0E24(hl, out af_51, out hl_5) @ 03E9 : bool)
-	T_1326 (in fn0E24(hl_5 + 1<16>, out af_52, out hl_14) @ 03EE : bool)
-	T_1377 (in fn0E24(hl_5 + 1<16>, out af_28, out hl_9) @ 0444 : bool)
-	T_1385 (in fn0E24(hl_9 + 1<16>, out af_29, out hl_18) @ 0449 : bool)
-	T_1386 (in Z_20 @ 0449 : Eq_482)
-	T_1392 (in 0<8> @ 044D : byte)
-	T_1402 (in fn0E24(hl + 1<16>, out af_27, out hl_7) @ 0444 : bool)
-	T_1410 (in fn0E24(hl_7 + 1<16>, out af_28, out hl_16) @ 0449 : bool)
-	T_1411 (in Z_18 @ 0449 : Eq_482)
-	T_1417 (in 0<8> @ 044D : byte)
-	T_1734 (in fn0E24((word16) hl_14.u1 + 2<i32>, out af_121, out hl_122) @ 09DB : bool)
-	T_1763 (in fn0E24((word16) hl_14.u1 + 1<i32>, out af_124, out hl_125) @ 09E8 : bool)
-Eq_485: (fn word16 (word16))
-	T_485 (in fn0929 @ 08AE : ptr16)
-	T_486 (in signature of fn0929 @ 0929 : void)
-	T_648 (in fn0929 @ 08EF : ptr16)
+Eq_133: (struct "Eq_133" 0001 (0 byte b0000) (1 uint8 b0001) (2 uint8 b0002) (3 uint8 b0003) (4 uint8 b0004))
+	T_133 (in 0xAB3<16> @ 013C : word16)
+	T_134 (in ix_328 @ 013C : (ptr16 Eq_133))
+	T_204 (in ix @ 01AF : (ptr16 Eq_133))
+	T_217 (in out ix_328 @ 01AF : word16)
+	T_218 (in ixOut @ 01AF : (ptr16 Eq_133))
+	T_343 (in ix_383 @ 01A3 : (ptr16 Eq_133))
+	T_344 (in out ix_383 @ 01A3 : word16)
+	T_357 (in ix @ 01A6 : (ptr16 Eq_133))
+	T_392 (in out ix_328 @ 016F : word16)
+	T_421 (in out ix_328 @ 0194 : word16)
+	T_539 (in ix_328 + 1<16> @ 01F8 : word16)
+	T_736 (in ix + 1<16> @ 0269 : word16)
+	T_950 (in ix @ 0424 : (ptr16 Eq_133))
+	T_970 (in ix @ 042E : (ptr16 Eq_133))
+	T_984 (in ix @ 0437 : (ptr16 Eq_133))
+	T_1016 (in ix @ 0355 : (ptr16 Eq_133))
+	T_1074 (in ix @ 03A5 : (ptr16 Eq_133))
+	T_1156 (in ix_438 @ 0871 : (ptr16 Eq_133))
+	T_1304 (in ix @ 052B : (ptr16 Eq_133))
+Eq_155: (fn byte (byte, byte, (ptr16 byte), uint8, word16))
+	T_155 (in fn027A @ 01C5 : ptr16)
+	T_156 (in signature of fn027A @ 027A : void)
+	T_602 (in fn027A @ 01EA : ptr16)
+	T_649 (in fn027A @ 0209 : ptr16)
+	T_670 (in fn027A @ 0213 : ptr16)
+	T_721 (in fn027A @ 0266 : ptr16)
+	T_741 (in fn027A @ 026D : ptr16)
+Eq_172: (fn Eq_185 (word16, byte, word16, byte))
+	T_172 (in fn099E @ 01CC : ptr16)
+	T_173 (in signature of fn099E @ 099E : void)
+	T_281 (in fn099E @ 02AC : ptr16)
+	T_662 (in fn099E @ 0210 : ptr16)
+	T_751 (in fn099E @ 0274 : ptr16)
+	T_1471 (in fn099E @ 0924 : ptr16)
+Eq_185: (union "Eq_185" (bool u0) (byte u1))
+	T_185 (in fn099E(SEQ(SLICE(de_411, byte, 8), f_413), (byte) de_411, out af_416, out c_853) @ 01CC : bool)
+	T_287 (in fn099E(SEQ(d_616, f_351), e_614, out af_627, out c_858) @ 02AC : bool)
+	T_669 (in fn099E(SEQ(d_21, f_22), (byte) de_20, out af_25, out c_198) @ 0210 : bool)
+	T_759 (in fn099E(SEQ(SLICE(de_153, byte, 8), f_155), (byte) de_153, out af_158, out c_159) @ 0274 : bool)
+	T_760 (in Z_161 @ 0274 : Eq_185)
+	T_762 (in 0<8> @ 0279 : byte)
+	T_1479 (in fn099E(SEQ(SLICE(hl, byte, 8), f), (byte) hl, out af_12, out c_21) @ 0924 : bool)
+Eq_201: (fn Eq_219 (byte, (ptr16 Eq_133), uint8, uint16, uint8, Eq_87, (ptr16 Eq_133)))
+	T_201 (in fn02C5 @ 01AF : ptr16)
+	T_202 (in signature of fn02C5 @ 02C5 : void)
+	T_334 (in fn02C5 @ 01A3 : ptr16)
+	T_383 (in fn02C5 @ 016F : ptr16)
+	T_413 (in fn02C5 @ 0194 : ptr16)
+Eq_219: (union "Eq_219" (bool u0) (byte u1))
+	T_219 (in fn02C5(f_351, ix_328, out f_854, out bc_353, out d_855, out hl_856, out ix_328) @ 01AF : bool)
+	T_220 (in Z_493 @ 01AF : Eq_219)
+	T_345 (in fn02C5(f_351, ix_328, out f_859, out bc_378, out d_860, out hl_861, out ix_383) @ 01A3 : bool)
+	T_393 (in fn02C5(f_351, ix_328, out f_865, out bc_543, out d_866, out hl_867, out ix_328) @ 016F : bool)
+	T_422 (in fn02C5(f_351, ix_328, out f_871, out bc_353, out d_872, out hl_355, out ix_328) @ 0194 : bool)
+Eq_221: (fn void ())
+	T_221 (in fn0A24 @ 01B2 : ptr16)
+	T_222 (in signature of fn0A24 @ 0A24 : void)
+	T_327 (in fn0A24 @ 01A8 : ptr16)
+Eq_246: (fn void ())
+	T_246 (in fn0A2A @ 0158 : ptr16)
+	T_247 (in signature of fn0A2A @ 0A2A : void)
+	T_1491 (in fn0A2A @ 0936 : ptr16)
+	T_1493 (in fn0A2A @ 093D : ptr16)
+	T_1495 (in fn0A2A @ 0942 : ptr16)
+	T_1497 (in fn0A2A @ 0942 : ptr16)
+	T_1499 (in fn0A2A @ 0947 : ptr16)
+	T_1501 (in fn0A2A @ 094C : ptr16)
+	T_1547 (in fn0A2A @ 0987 : ptr16)
+	T_1766 (in fn0A2A @ 09F2 : ptr16)
+	T_1784 (in fn0A2A @ 0A1A : ptr16)
+Eq_271: (struct "Eq_271" (FFFFFFFE Eq_72 tFFFFFFFE) (0 (ptr16 byte) ptr0000))
+	T_271 (in sp_47 - 2<16> @ 02AA : word16)
+	T_272 (in sp_620 @ 02AA : (ptr16 Eq_271))
+Eq_288: (fn byte ())
+	T_288 (in fn0A19 @ 02B1 : ptr16)
+	T_289 (in signature of fn0A19 @ 0A19 : void)
+	T_499 (in fn0A19 @ 08CB : ptr16)
+	T_685 (in fn0A19 @ 0241 : ptr16)
+	T_1676 (in fn0A19 @ 09B8 : ptr16)
+	T_1778 (in fn0A19 @ 0A12 : ptr16)
+	T_1780 (in fn0A19 @ 0A17 : ptr16)
+Eq_352: (fn Eq_368 (byte, byte, byte, (ptr16 Eq_133), uint8, word16, uint8))
+	T_352 (in fn01FF @ 01A6 : ptr16)
+	T_353 (in signature of fn01FF @ 01FF : void)
+	T_396 (in fn01FF @ 0172 : ptr16)
+	T_453 (in fn01FF @ 01BA : ptr16)
+	T_1032 (in fn01FF @ 033D : ptr16)
+Eq_368: (union "Eq_368" (byte u0) (Eq_1916 u1))
+	T_368 (in fn01FF(f_389, (byte) bc_378, d_388, ix_383, out f_862, out bc_863, out d_864) @ 01A6 : bool)
+	T_406 (in fn01FF((byte) af_542, (byte) bc_543, SLICE(de_544, byte, 8), ix_328, out f_868, out bc_869, out d_870) @ 0172 : bool)
+	T_461 (in fn01FF(f_351, (byte) bc_353, d_367, ix_328, out f_873, out bc_874, out d_875) @ 01BA : bool)
+	T_1040 (in fn01FF(f, 0x29<8>, d_70, ix, out f_581, out bc_73, out d_582) @ 033D : bool)
+	T_1041 (in Z_77 @ 033D : Eq_368)
+	T_1042 (in 0<8> @ 033D : byte)
+Eq_369: (union "Eq_369" (byte u0) (word16 u1))
+	T_369 (in 0xAAE<16> @ 017B : word16)
+	T_370 (in bc_571 @ 017B : Eq_369)
+	T_374 (in bc_571 - 1<16> @ 017E : word16)
+	T_375 (in 0<8> @ 0181 : byte)
+Eq_435: (fn void ())
+	T_435 (in fn0A27 @ 01B7 : ptr16)
+	T_436 (in signature of fn0A27 @ 0A27 : void)
+	T_1769 (in fn0A27 @ 0A08 : ptr16)
+Eq_449: (union "Eq_449" (byte u0) (word16 u1))
+	T_449 (in bc_127 - 1<16> @ 089D : word16)
+	T_450 (in bc_139 @ 089D : Eq_449)
+	T_515 (in 0<8> @ 08D5 : byte)
+	T_518 (in bc_139 - 1<16> @ 08D6 : word16)
+Eq_462: (fn Eq_472 (Eq_87, (ptr16 Eq_53), Eq_87))
+	T_462 (in fn0E24 @ 08AB : ptr16)
+	T_463 (in signature of fn0E24 @ 0E24 : void)
+	T_508 (in fn0E24 @ 08BE : ptr16)
+	T_632 (in fn0E24 @ 08EC : ptr16)
+	T_831 (in fn0E24 @ 02D1 : ptr16)
+	T_865 (in fn0E24 @ 0564 : ptr16)
+	T_898 (in fn0E24 @ 0363 : ptr16)
+	T_955 (in fn0E24 @ 0428 : ptr16)
+	T_1121 (in fn0E24 @ 0390 : ptr16)
+	T_1247 (in fn0E24 @ 03CA : ptr16)
+	T_1255 (in fn0E24 @ 03CF : ptr16)
+	T_1308 (in fn0E24 @ 03E9 : ptr16)
+	T_1314 (in fn0E24 @ 03EE : ptr16)
+	T_1365 (in fn0E24 @ 0444 : ptr16)
+	T_1373 (in fn0E24 @ 0449 : ptr16)
+	T_1390 (in fn0E24 @ 0444 : ptr16)
+	T_1398 (in fn0E24 @ 0449 : ptr16)
+	T_1722 (in fn0E24 @ 09DB : ptr16)
+	T_1751 (in fn0E24 @ 09E8 : ptr16)
+Eq_472: (union "Eq_472" (bool u0) (Eq_1917 u1))
+	T_472 (in fn0E24(hl_157, out af_876, out hl_159) @ 08AB : bool)
+	T_512 (in fn0E24(hl_136, out af_877, out hl_184) @ 08BE : bool)
+	T_636 (in fn0E24(hl_241, out af_880, out hl_252) @ 08EC : bool)
+	T_836 (in fn0E24(hl_4, out af_573, out hl_12) @ 02D1 : bool)
+	T_870 (in fn0E24(hl_12, out af_574, out hl_575) @ 0564 : bool)
+	T_903 (in fn0E24(hl_12, out af_576, out hl_240) @ 0363 : bool)
+	T_962 (in fn0E24(hl_353 + 1<16>, out af_577, out hl_357) @ 0428 : bool)
+	T_1127 (in fn0E24(hl_240 + 1<16>, out af_584, out hl_272) @ 0390 : bool)
+	T_1254 (in fn0E24((word16) hl_12.u1 + 1<i32>, out af_585, out hl_99) @ 03CA : bool)
+	T_1262 (in fn0E24(hl_99 + 1<16>, out af_586, out hl_587) @ 03CF : bool)
+	T_1313 (in fn0E24(hl, out af_51, out hl_5) @ 03E9 : bool)
+	T_1321 (in fn0E24(hl_5 + 1<16>, out af_52, out hl_14) @ 03EE : bool)
+	T_1372 (in fn0E24(hl_5 + 1<16>, out af_28, out hl_9) @ 0444 : bool)
+	T_1380 (in fn0E24(hl_9 + 1<16>, out af_29, out hl_18) @ 0449 : bool)
+	T_1381 (in Z_20 @ 0449 : Eq_472)
+	T_1387 (in 0<8> @ 044D : byte)
+	T_1397 (in fn0E24(hl + 1<16>, out af_27, out hl_7) @ 0444 : bool)
+	T_1405 (in fn0E24(hl_7 + 1<16>, out af_28, out hl_16) @ 0449 : bool)
+	T_1406 (in Z_18 @ 0449 : Eq_472)
+	T_1412 (in 0<8> @ 044D : byte)
+	T_1729 (in fn0E24((word16) hl_14.u1 + 2<i32>, out af_121, out hl_122) @ 09DB : bool)
+	T_1758 (in fn0E24((word16) hl_14.u1 + 1<i32>, out af_124, out hl_125) @ 09E8 : bool)
+Eq_475: (fn word16 (word16))
+	T_475 (in fn0929 @ 08AE : ptr16)
+	T_476 (in signature of fn0929 @ 0929 : void)
+	T_638 (in fn0929 @ 08EF : ptr16)
+Eq_481: (fn void ())
+	T_481 (in fn0933 @ 08B1 : ptr16)
+	T_482 (in signature of fn0933 @ 0933 : void)
+	T_1487 (in fn0933 @ 0930 : ptr16)
+	T_1489 (in fn0933 @ 0930 : ptr16)
 Eq_491: (fn void ())
-	T_491 (in fn0933 @ 08B1 : ptr16)
-	T_492 (in signature of fn0933 @ 0933 : void)
-	T_1492 (in fn0933 @ 0930 : ptr16)
-	T_1494 (in fn0933 @ 0930 : ptr16)
-Eq_501: (fn void ())
-	T_501 (in fn0930 @ 08B8 : ptr16)
-	T_502 (in signature of fn0930 @ 0930 : void)
-	T_536 (in fn0930 @ 08A5 : ptr16)
-	T_640 (in fn0930 @ 08E9 : ptr16)
-	T_652 (in fn0930 @ 08F2 : ptr16)
-Eq_531: (fn byte (byte, Eq_87))
-	T_531 (in fn0923 @ 08A2 : ptr16)
-	T_532 (in signature of fn0923 @ 0923 : void)
-	T_637 (in fn0923 @ 08E6 : ptr16)
-Eq_561: (fn bool (cu8, cu8))
-	T_561 (in fn0975 @ 0902 : ptr16)
-	T_562 (in signature of fn0975 @ 0975 : void)
-	T_589 (in fn0975 @ 0915 : ptr16)
-	T_1520 (in fn0975 @ 095C : ptr16)
-	T_1539 (in fn0975 @ 096B : ptr16)
-Eq_578: (fn word16 (uint8, Eq_87))
-	T_578 (in fn0E2C @ 091D : ptr16)
-	T_579 (in signature of fn0E2C @ 0E2C : void)
-	T_1006 (in fn0E2C @ 0351 : ptr16)
-	T_1010 (in fn0E2C @ 0351 : ptr16)
-	T_1012 (in fn0E2C @ 0351 : ptr16)
-	T_1058 (in fn0E2C @ 03B4 : ptr16)
-	T_1060 (in fn0E2C @ 03B4 : ptr16)
-Eq_597: (fn cu8 (cu8, ui16, word16))
-	T_597 (in fn0997 @ 0908 : ptr16)
-	T_598 (in signature of fn0997 @ 0997 : void)
-	T_1527 (in fn0997 @ 095E : ptr16)
-	T_1546 (in fn0997 @ 096D : ptr16)
-Eq_606: (fn Eq_624 (word16, word16, byte))
-	T_606 (in fn09A2 @ 01EA : ptr16)
-	T_607 (in signature of fn09A2 @ 09A2 : void)
-	T_726 (in fn09A2 @ 0266 : ptr16)
-	T_1486 (in fn09A2 @ 092B : ptr16)
-	T_1597 (in fn09A2 @ 099F : ptr16)
-	T_1736 (in fn09A2 @ 09DF : ptr16)
-	T_1765 (in fn09A2 @ 09EC : ptr16)
-Eq_624: (union "Eq_624" (bool u0) (Eq_1923 u1))
-	T_624 (in fn09A2(SEQ(ix_328->b0000, fn027A(f_438, d_437, iy_433, out d_873, out iy_433)), out af_451, out c_874) @ 01EA : bool)
-	T_740 (in fn09A2(SEQ(ix->b0000, fn027A(f_121, d_120, iy_116, out d_200, out iy_116)), out af_134, out c_201) @ 0266 : bool)
-	T_1491 (in fn09A2(af, out af_10, out c_20) @ 092B : bool)
-	T_1603 (in fn09A2(SEQ(e, f_14), out af_16, out c_17) @ 099F : bool)
-	T_1604 (in Z_19 @ 099F : Eq_624)
-	T_1605 (in 0<8> @ 099F : byte)
-	T_1742 (in fn09A2(SEQ(a_38, f), out af_117, out c_123) @ 09DF : bool)
-	T_1770 (in fn09A2(SEQ(a_21, f), out af_117, out c_126) @ 09EC : bool)
-Eq_705: (fn byte (byte, byte, (ptr16 byte), uint8))
-	T_705 (in fn027F @ 0259 : ptr16)
-	T_706 (in signature of fn027F @ 027F : void)
-Eq_773: (fn word16 (byte, byte, (ptr16 byte), uint8, (ptr16 byte)))
-	T_773 (in fn09C7 @ 027C : ptr16)
-	T_774 (in signature of fn09C7 @ 09C7 : void)
-	T_788 (in fn09C7 @ 0281 : ptr16)
-	T_1696 (in fn09C7 @ 09C5 : ptr16)
-Eq_826: (fn void ())
-	T_826 (in fn0E34 @ 02C5 : ptr16)
-	T_827 (in signature of fn0E34 @ 0E34 : void)
-Eq_832: (fn byte (Eq_87, uint8))
-	T_832 (in fn0284 @ 02CB : ptr16)
-	T_833 (in signature of fn0284 @ 0284 : void)
-Eq_852: (fn uint8 (uint8, byte))
-	T_852 (in __set @ 032E : ptr32)
-	T_853 (in signature of __set : void)
-Eq_868: (fn bool (uint8, byte))
-	T_868 (in __bit @ 02DB : ptr32)
-	T_869 (in signature of __bit : void)
-Eq_881: (fn uint8 (uint8, byte))
-	T_881 (in __res @ 0571 : ptr32)
-	T_882 (in signature of __res : void)
-Eq_903: (fn bool (uint8, byte))
-	T_903 (in __bit @ 02E5 : ptr32)
-	T_904 (in signature of __bit : void)
-Eq_919: (struct "Eq_919" (B96 uint8 b0B96) (B97 byte b0B97))
-	T_919 (in CONVERT(c_251, uint8, uint16) @ 0374 : uint16)
-	T_920 (in bc_252 @ 0374 : (ptr16 Eq_919))
-Eq_935: (fn bool (uint8, byte))
-	T_935 (in __bit @ 0382 : ptr32)
-	T_936 (in signature of __bit : void)
-Eq_944: (fn Eq_954 (Eq_87, (ptr16 Eq_53), (ptr16 Eq_53)))
-	T_944 (in fn03E9 @ 03A3 : ptr16)
-	T_945 (in signature of fn03E9 @ 03E9 : void)
-	T_1272 (in fn03E9 @ 03D7 : ptr16)
-Eq_954: (union "Eq_954" (bool u0) (Eq_1924 u1))
-	T_954 (in fn03E9((word16) hl_12.u1 + 1<i32>, out de_565, out hl_159) @ 03A3 : bool)
-	T_985 (in fn0443(hl_357, ix, out d_578, out hl_159) @ 042E : bool)
-	T_986 (in Z_125 @ 042E : Eq_954)
-	T_999 (in fn0440(ix, out d_579, out hl_159) @ 0437 : bool)
-	T_1037 (in cond(hl_56 - 1<16>) & 0x40<8> @ 0354 : byte)
-	T_1078 (in cond(hl_324 - 1<16>) & 0x40<8> @ 03B7 : byte)
-	T_1089 (in fn03FD(bc_339, e_302, ix, out d_583, out ix) @ 03A5 : bool)
-	T_1093 (in 0<8> @ 072B : byte)
-	T_1176 (in cond(hl_159) & 0x40<8> @ 0727 : byte)
-	T_1277 (in fn03E9(hl_117, out de_566, out hl_123) @ 03D7 : bool)
-	T_1285 (in fn03FD(bc_118, e_122, ix, out d_588, out ix) @ 03DD : bool)
-	T_1291 (in fn0440(ix, out d_589, out hl_144) @ 03E0 : bool)
-Eq_957: (fn word16 ((ptr16 Eq_147), word16))
-	T_957 (in fn0755 @ 0424 : ptr16)
-	T_958 (in signature of fn0755 @ 0755 : void)
-	T_1001 (in fn0755 @ 0341 : ptr16)
-	T_1053 (in fn0755 @ 03AB : ptr16)
-	T_1366 (in fn0755 @ 0440 : ptr16)
-Eq_976: (fn Eq_954 (word16, (ptr16 Eq_147), uint8, word16))
-	T_976 (in fn0443 @ 042E : ptr16)
-	T_977 (in signature of fn0443 @ 0443 : void)
-Eq_991: (fn Eq_954 ((ptr16 Eq_147), uint8, word16))
-	T_991 (in fn0440 @ 0437 : ptr16)
-	T_992 (in signature of fn0440 @ 0440 : void)
-	T_1286 (in fn0440 @ 03E0 : ptr16)
-Eq_1022: (fn byte (byte, (ptr16 Eq_147), word16))
-	T_1022 (in fn075C @ 0355 : ptr16)
-	T_1023 (in signature of fn075C @ 075C : void)
-	T_1067 (in fn075C @ 03B8 : ptr16)
-	T_1387 (in fn075C @ 044D : ptr16)
-	T_1412 (in fn075C @ 044D : ptr16)
-Eq_1079: (fn Eq_954 (uint16, bui8, (ptr16 Eq_147), uint8, (ptr16 Eq_1087)))
-	T_1079 (in fn03FD @ 03A5 : ptr16)
-	T_1080 (in signature of fn03FD @ 03FD : void)
-	T_1281 (in fn03FD @ 03DD : ptr16)
-Eq_1087: (struct "Eq_1087" (0 uint8 b0000) (1 uint8 b0001) (3 uint8 b0003))
-	T_1087 (in out ix @ 03A5 : word16)
-	T_1088 (in ixOut @ 03A5 : (ptr16 Eq_1087))
-	T_1284 (in out ix @ 03DD : word16)
-	T_1359 (in ix_29 @ 0417 : (ptr16 Eq_1087))
-Eq_1098: (fn bool (uint8, byte))
-	T_1098 (in __bit @ 0301 : ptr32)
-	T_1099 (in signature of __bit : void)
-Eq_1140: (fn bool (uint8, byte))
-	T_1140 (in __bit @ 0396 : ptr32)
-	T_1141 (in signature of __bit : void)
-Eq_1199: (struct "Eq_1199" (BA6 byte b0BA6) (BA7 byte b0BA7))
-	T_1199 (in CONVERT(__rcr<byte,byte>(a_209, 1<8>, cond(a_209)) + 0xE<8>, uint8, uint16) @ 0545 : uint16)
-	T_1200 (in bc_217 @ 0545 : (ptr16 Eq_1199))
-	T_1208 (in 0xF45A<16> @ 054D : word16)
-Eq_1210: (fn uint8 (uint8, byte))
-	T_1210 (in __res @ 053A : ptr32)
-	T_1211 (in signature of __res : void)
-Eq_1236: (fn bool (uint8, byte))
-	T_1236 (in __bit @ 0315 : ptr32)
-	T_1237 (in signature of __bit : void)
-Eq_1306: (fn void (uint8, (ptr16 Eq_147)))
-	T_1306 (in fn073E @ 052B : ptr16)
-	T_1307 (in signature of fn073E @ 073E : void)
-Eq_1355: (union "Eq_1355" (uint16 u0) (ptr16 u1))
-	T_1355 (in CONVERT(e * 3<8>, uint8, uint16) @ 040C : uint16)
-	T_1356 (in de_16 @ 040C : Eq_1355)
-Eq_1419: (fn uint8 (uint8, byte))
-	T_1419 (in __res @ 073E : ptr32)
-	T_1420 (in signature of __res : void)
-Eq_1430: (fn uint8 (uint8, byte))
-	T_1430 (in __res @ 0749 : ptr32)
-	T_1431 (in signature of __res : void)
-Eq_1439: (fn bool (uint8, byte))
-	T_1439 (in __bit @ 074F : ptr32)
-	T_1440 (in signature of __bit : void)
-Eq_1443: (fn uint8 (uint8, byte))
-	T_1443 (in __set @ 0745 : ptr32)
-	T_1444 (in signature of __set : void)
-Eq_1452: (fn uint8 (uint8, byte))
-	T_1452 (in __set @ 0750 : ptr32)
-	T_1453 (in signature of __set : void)
-Eq_1591: (fn byte (byte))
-	T_1591 (in fn09A3 @ 099F : ptr16)
-	T_1592 (in signature of fn09A3 @ 09A3 : void)
-Eq_1612: (fn Eq_1627 (byte, byte, byte))
-	T_1612 (in fn09B0 @ 09AC : ptr16)
-	T_1613 (in signature of fn09B0 @ 09B0 : void)
-	T_1628 (in fn09B0 @ 09AF : ptr16)
-	T_1642 (in fn09B0 @ 09AC : ptr16)
-	T_1655 (in fn09B0 @ 09AF : ptr16)
-Eq_1615: (fn byte (byte, byte))
-	T_1615 (in __ror<byte,byte> @ 09AC : ptr32)
-	T_1616 (in signature of __ror : void)
-	T_1643 (in __ror<byte,byte> @ 09AC : ptr32)
-Eq_1627: (union "Eq_1627" (bool u0) (Eq_1925 u1))
-	T_1627 (in fn09B0(__ror<byte,byte>(e, 4<8>), out a_35, out c_36) @ 09AC : bool)
-	T_1633 (in fn09B0(e, out a_23, out c_24) @ 09AF : bool)
-	T_1634 (in Z_26 @ 09AF : Eq_1627)
-	T_1636 (in 0<8> @ 09AF : byte)
-	T_1650 (in fn09B0(__ror<byte,byte>(a_6, 4<8>), out a_30, out c_31) @ 09AC : bool)
-	T_1660 (in fn09B0(a_20, out a_21, out c_32) @ 09AF : bool)
-Eq_1662: (fn cu8 (byte))
-	T_1662 (in __daa @ 09B4 : ptr32)
-	T_1663 (in signature of __daa : void)
-Eq_1669: (fn byte (byte))
-	T_1669 (in __daa @ 09B7 : ptr32)
-	T_1670 (in signature of __daa : void)
-Eq_1778: (fn void ())
-	T_1778 (in cpm_warm_boot @ 0A21 : ptr16)
-	T_1779 (in signature of cpm_warm_boot : void)
-Eq_1792: (fn void ())
-	T_1792 (in cpm_warm_boot @ 0A24 : ptr16)
-	T_1793 (in signature of cpm_warm_boot : void)
-Eq_1795: (fn void ())
-	T_1795 (in cpm_warm_boot @ 0A27 : ptr16)
-	T_1796 (in signature of cpm_warm_boot : void)
-Eq_1798: (fn void ())
-	T_1798 (in cpm_warm_boot @ 0A2A : ptr16)
-	T_1799 (in signature of cpm_warm_boot : void)
-Eq_1811: (fn uint8 ((ptr16 Eq_1813)))
-	T_1811 (in F_OPEN @ 0DD2 : ptr16)
-	T_1812 (in signature of F_OPEN : void)
-Eq_1813: Fcb
-	T_1813 (in pFcb @ 0DD2 : (ptr16 Fcb))
-	T_1814 (in 0x5C<16> @ 0DD2 : word16)
-Eq_1851: (fn void ((ptr16 void)))
-	T_1851 (in F_DMAOFF @ 0DF6 : ptr16)
-	T_1852 (in signature of F_DMAOFF : void)
-Eq_1857: (fn uint8 ((ptr16 Eq_1859)))
-	T_1857 (in F_READ @ 0E03 : ptr16)
-	T_1858 (in signature of F_READ : void)
-Eq_1859: Fcb
-	T_1859 (in pFcb @ 0E03 : (ptr16 Fcb))
-	T_1860 (in 0x5C<16> @ 0E03 : word16)
-Eq_1867: (fn void ((ptr16 void)))
-	T_1867 (in F_DMAOFF @ 0E0B : ptr16)
-	T_1868 (in signature of F_DMAOFF : void)
-Eq_1872: (fn uint8 ((ptr16 Eq_1874)))
-	T_1872 (in F_CLOSE @ 0E13 : ptr16)
-	T_1873 (in signature of F_CLOSE : void)
-Eq_1874: Fcb
-	T_1874 (in pFcb @ 0E13 : (ptr16 Fcb))
-	T_1875 (in 0x5C<16> @ 0E13 : word16)
-Eq_1883: (fn Eq_1889 (Eq_87, word16))
-	T_1883 (in fn0E35 @ 0E24 : ptr16)
-	T_1884 (in signature of fn0E35 @ 0E35 : void)
-	T_1896 (in fn0E35 @ 0E2C : ptr16)
-Eq_1889: (union "Eq_1889" (bool u0) (byte u1))
-	T_1889 (in fn0E35(hl, out hl_4) @ 0E24 : bool)
-	T_1890 (in Z_6 @ 0E24 : Eq_1889)
-	T_1894 (in 0<8> @ 0E2B : byte)
-	T_1899 (in fn0E35(hl, out hl_4) @ 0E2C : bool)
-Eq_1921: (union "Eq_1921" (bool u0) (byte u1))
-	T_1921
-Eq_1922: (union "Eq_1922" (bool u0) (byte u1))
-	T_1922
-Eq_1923: (union "Eq_1923" (bool u0) (byte u1))
-	T_1923
-Eq_1924: (union "Eq_1924" (bool u0) (byte u1))
-	T_1924
-Eq_1925: (union "Eq_1925" (bool u0) (byte u1))
-	T_1925
+	T_491 (in fn0930 @ 08B8 : ptr16)
+	T_492 (in signature of fn0930 @ 0930 : void)
+	T_526 (in fn0930 @ 08A5 : ptr16)
+	T_630 (in fn0930 @ 08E9 : ptr16)
+	T_642 (in fn0930 @ 08F2 : ptr16)
+Eq_521: (fn byte (byte, Eq_87))
+	T_521 (in fn0923 @ 08A2 : ptr16)
+	T_522 (in signature of fn0923 @ 0923 : void)
+	T_627 (in fn0923 @ 08E6 : ptr16)
+Eq_551: (fn bool (cu8, cu8))
+	T_551 (in fn0975 @ 0902 : ptr16)
+	T_552 (in signature of fn0975 @ 0975 : void)
+	T_579 (in fn0975 @ 0915 : ptr16)
+	T_1515 (in fn0975 @ 095C : ptr16)
+	T_1534 (in fn0975 @ 096B : ptr16)
+Eq_568: (fn word16 (uint8, Eq_87))
+	T_568 (in fn0E2C @ 091D : ptr16)
+	T_569 (in signature of fn0E2C @ 0E2C : void)
+	T_997 (in fn0E2C @ 0351 : ptr16)
+	T_1001 (in fn0E2C @ 0351 : ptr16)
+	T_1003 (in fn0E2C @ 0351 : ptr16)
+	T_1049 (in fn0E2C @ 03B4 : ptr16)
+	T_1051 (in fn0E2C @ 03B4 : ptr16)
+Eq_587: (fn cu8 (cu8, ui16, word16))
+	T_587 (in fn0997 @ 0908 : ptr16)
+	T_588 (in signature of fn0997 @ 0997 : void)
+	T_1522 (in fn0997 @ 095E : ptr16)
+	T_1541 (in fn0997 @ 096D : ptr16)
+Eq_596: (fn Eq_614 (word16, word16, byte))
+	T_596 (in fn09A2 @ 01EA : ptr16)
+	T_597 (in signature of fn09A2 @ 09A2 : void)
+	T_717 (in fn09A2 @ 0266 : ptr16)
+	T_1481 (in fn09A2 @ 092B : ptr16)
+	T_1592 (in fn09A2 @ 099F : ptr16)
+	T_1731 (in fn09A2 @ 09DF : ptr16)
+	T_1760 (in fn09A2 @ 09EC : ptr16)
+Eq_614: (union "Eq_614" (bool u0) (Eq_1918 u1))
+	T_614 (in fn09A2(SEQ(ix_328->b0000, fn027A(f_438, d_437, iy_433, out d_878, out iy_433)), out af_451, out c_879) @ 01EA : bool)
+	T_731 (in fn09A2(SEQ(ix->b0000, fn027A(f_121, d_120, iy_116, out d_201, out iy_116)), out af_134, out c_202) @ 0266 : bool)
+	T_1486 (in fn09A2(af, out af_10, out c_20) @ 092B : bool)
+	T_1598 (in fn09A2(SEQ(e, f_14), out af_16, out c_17) @ 099F : bool)
+	T_1599 (in Z_19 @ 099F : Eq_614)
+	T_1600 (in 0<8> @ 099F : byte)
+	T_1737 (in fn09A2(SEQ(a_38, f), out af_117, out c_123) @ 09DF : bool)
+	T_1765 (in fn09A2(SEQ(a_21, f), out af_117, out c_126) @ 09EC : bool)
+Eq_696: (fn byte (byte, byte, (ptr16 byte), uint8))
+	T_696 (in fn027F @ 0259 : ptr16)
+	T_697 (in signature of fn027F @ 027F : void)
+Eq_764: (fn word16 (byte, byte, (ptr16 byte), uint8, (ptr16 byte)))
+	T_764 (in fn09C7 @ 027C : ptr16)
+	T_765 (in signature of fn09C7 @ 09C7 : void)
+	T_779 (in fn09C7 @ 0281 : ptr16)
+	T_1691 (in fn09C7 @ 09C5 : ptr16)
+Eq_817: (fn void ())
+	T_817 (in fn0E34 @ 02C5 : ptr16)
+	T_818 (in signature of fn0E34 @ 0E34 : void)
+Eq_823: (fn byte (Eq_87, uint8))
+	T_823 (in fn0284 @ 02CB : ptr16)
+	T_824 (in signature of fn0284 @ 0284 : void)
+Eq_843: (fn uint8 (uint8, byte))
+	T_843 (in __set @ 032E : ptr32)
+	T_844 (in signature of __set : void)
+Eq_859: (fn bool (uint8, byte))
+	T_859 (in __bit @ 02DB : ptr32)
+	T_860 (in signature of __bit : void)
+Eq_872: (fn uint8 (uint8, byte))
+	T_872 (in __res @ 0571 : ptr32)
+	T_873 (in signature of __res : void)
+Eq_894: (fn bool (uint8, byte))
+	T_894 (in __bit @ 02E5 : ptr32)
+	T_895 (in signature of __bit : void)
+Eq_910: (struct "Eq_910" (B96 uint8 b0B96) (B97 byte b0B97))
+	T_910 (in CONVERT(c_251, uint8, uint16) @ 0374 : uint16)
+	T_911 (in bc_252 @ 0374 : (ptr16 Eq_910))
+Eq_926: (fn bool (uint8, byte))
+	T_926 (in __bit @ 0382 : ptr32)
+	T_927 (in signature of __bit : void)
+Eq_935: (fn Eq_945 (Eq_87, (ptr16 Eq_53), (ptr16 Eq_53)))
+	T_935 (in fn03E9 @ 03A3 : ptr16)
+	T_936 (in signature of fn03E9 @ 03E9 : void)
+	T_1267 (in fn03E9 @ 03D7 : ptr16)
+Eq_945: (union "Eq_945" (bool u0) (Eq_1919 u1))
+	T_945 (in fn03E9((word16) hl_12.u1 + 1<i32>, out de_565, out hl_159) @ 03A3 : bool)
+	T_976 (in fn0443(hl_357, ix, out d_578, out hl_159) @ 042E : bool)
+	T_977 (in Z_125 @ 042E : Eq_945)
+	T_990 (in fn0440(ix, out d_579, out hl_159) @ 0437 : bool)
+	T_1028 (in cond(hl_56 - 1<16>) & 0x40<8> @ 0354 : byte)
+	T_1069 (in cond(hl_324 - 1<16>) & 0x40<8> @ 03B7 : byte)
+	T_1080 (in fn03FD(bc_339, e_302, ix, out d_583, out ix) @ 03A5 : bool)
+	T_1084 (in 0<8> @ 072B : byte)
+	T_1167 (in cond(hl_159) & 0x40<8> @ 0727 : byte)
+	T_1272 (in fn03E9(hl_117, out de_566, out hl_123) @ 03D7 : bool)
+	T_1280 (in fn03FD(bc_118, e_122, ix, out d_588, out ix) @ 03DD : bool)
+	T_1286 (in fn0440(ix, out d_589, out hl_144) @ 03E0 : bool)
+Eq_948: (fn word16 ((ptr16 Eq_133), word16))
+	T_948 (in fn0755 @ 0424 : ptr16)
+	T_949 (in signature of fn0755 @ 0755 : void)
+	T_992 (in fn0755 @ 0341 : ptr16)
+	T_1044 (in fn0755 @ 03AB : ptr16)
+	T_1361 (in fn0755 @ 0440 : ptr16)
+Eq_967: (fn Eq_945 (word16, (ptr16 Eq_133), uint8, word16))
+	T_967 (in fn0443 @ 042E : ptr16)
+	T_968 (in signature of fn0443 @ 0443 : void)
+Eq_982: (fn Eq_945 ((ptr16 Eq_133), uint8, word16))
+	T_982 (in fn0440 @ 0437 : ptr16)
+	T_983 (in signature of fn0440 @ 0440 : void)
+	T_1281 (in fn0440 @ 03E0 : ptr16)
+Eq_1013: (fn byte (byte, (ptr16 Eq_133), word16))
+	T_1013 (in fn075C @ 0355 : ptr16)
+	T_1014 (in signature of fn075C @ 075C : void)
+	T_1058 (in fn075C @ 03B8 : ptr16)
+	T_1382 (in fn075C @ 044D : ptr16)
+	T_1407 (in fn075C @ 044D : ptr16)
+Eq_1070: (fn Eq_945 (uint16, bui8, (ptr16 Eq_133), uint8, (ptr16 Eq_1078)))
+	T_1070 (in fn03FD @ 03A5 : ptr16)
+	T_1071 (in signature of fn03FD @ 03FD : void)
+	T_1276 (in fn03FD @ 03DD : ptr16)
+Eq_1078: (struct "Eq_1078" (0 uint8 b0000) (1 uint8 b0001) (3 uint8 b0003))
+	T_1078 (in out ix @ 03A5 : word16)
+	T_1079 (in ixOut @ 03A5 : (ptr16 Eq_1078))
+	T_1279 (in out ix @ 03DD : word16)
+	T_1354 (in ix_29 @ 0417 : (ptr16 Eq_1078))
+Eq_1089: (fn bool (uint8, byte))
+	T_1089 (in __bit @ 0301 : ptr32)
+	T_1090 (in signature of __bit : void)
+Eq_1131: (fn bool (uint8, byte))
+	T_1131 (in __bit @ 0396 : ptr32)
+	T_1132 (in signature of __bit : void)
+Eq_1168: (fn uint8 (uint8, byte, Eq_1172))
+	T_1168 (in __rcr<byte,byte> @ 053C : ptr32)
+	T_1169 (in signature of __rcr : void)
+	T_1178 (in __rcr<byte,byte> @ 053D : ptr32)
+	T_1183 (in __rcr<byte,byte> @ 053E : ptr32)
+	T_1188 (in __rcr<byte,byte> @ 0545 : ptr32)
+Eq_1172: (union "Eq_1172" (bool u0) (byte u1))
+	T_1172 (in p3 @ 053C : bool)
+	T_1175 (in SZPC_199 & 1<8> @ 053C : byte)
+	T_1180 (in cond(a_205) @ 053D : byte)
+	T_1185 (in cond(a_207) @ 053E : byte)
+	T_1190 (in cond(a_209) @ 0545 : byte)
+Eq_1194: (struct "Eq_1194" (BA6 byte b0BA6) (BA7 byte b0BA7))
+	T_1194 (in CONVERT(__rcr<byte,byte>(a_209, 1<8>, cond(a_209)) + 0xE<8>, uint8, uint16) @ 0545 : uint16)
+	T_1195 (in bc_217 @ 0545 : (ptr16 Eq_1194))
+	T_1203 (in 0xF45A<16> @ 054D : word16)
+Eq_1205: (fn uint8 (uint8, byte))
+	T_1205 (in __res @ 053A : ptr32)
+	T_1206 (in signature of __res : void)
+Eq_1231: (fn bool (uint8, byte))
+	T_1231 (in __bit @ 0315 : ptr32)
+	T_1232 (in signature of __bit : void)
+Eq_1301: (fn void (uint8, (ptr16 Eq_133)))
+	T_1301 (in fn073E @ 052B : ptr16)
+	T_1302 (in signature of fn073E @ 073E : void)
+Eq_1350: (union "Eq_1350" (uint16 u0) (ptr16 u1))
+	T_1350 (in CONVERT(e * 3<8>, uint8, uint16) @ 040C : uint16)
+	T_1351 (in de_16 @ 040C : Eq_1350)
+Eq_1414: (fn uint8 (uint8, byte))
+	T_1414 (in __res @ 073E : ptr32)
+	T_1415 (in signature of __res : void)
+Eq_1425: (fn uint8 (uint8, byte))
+	T_1425 (in __res @ 0749 : ptr32)
+	T_1426 (in signature of __res : void)
+Eq_1434: (fn bool (uint8, byte))
+	T_1434 (in __bit @ 074F : ptr32)
+	T_1435 (in signature of __bit : void)
+Eq_1438: (fn uint8 (uint8, byte))
+	T_1438 (in __set @ 0745 : ptr32)
+	T_1439 (in signature of __set : void)
+Eq_1447: (fn uint8 (uint8, byte))
+	T_1447 (in __set @ 0750 : ptr32)
+	T_1448 (in signature of __set : void)
+Eq_1586: (fn byte (byte))
+	T_1586 (in fn09A3 @ 099F : ptr16)
+	T_1587 (in signature of fn09A3 @ 09A3 : void)
+Eq_1607: (fn Eq_1622 (byte, byte, byte))
+	T_1607 (in fn09B0 @ 09AC : ptr16)
+	T_1608 (in signature of fn09B0 @ 09B0 : void)
+	T_1623 (in fn09B0 @ 09AF : ptr16)
+	T_1637 (in fn09B0 @ 09AC : ptr16)
+	T_1650 (in fn09B0 @ 09AF : ptr16)
+Eq_1610: (fn byte (byte, byte))
+	T_1610 (in __ror<byte,byte> @ 09AC : ptr32)
+	T_1611 (in signature of __ror : void)
+	T_1638 (in __ror<byte,byte> @ 09AC : ptr32)
+Eq_1622: (union "Eq_1622" (bool u0) (Eq_1920 u1))
+	T_1622 (in fn09B0(__ror<byte,byte>(e, 4<8>), out a_35, out c_36) @ 09AC : bool)
+	T_1628 (in fn09B0(e, out a_23, out c_24) @ 09AF : bool)
+	T_1629 (in Z_26 @ 09AF : Eq_1622)
+	T_1631 (in 0<8> @ 09AF : byte)
+	T_1645 (in fn09B0(__ror<byte,byte>(a_6, 4<8>), out a_30, out c_31) @ 09AC : bool)
+	T_1655 (in fn09B0(a_20, out a_21, out c_32) @ 09AF : bool)
+Eq_1657: (fn cu8 (byte))
+	T_1657 (in __daa @ 09B4 : ptr32)
+	T_1658 (in signature of __daa : void)
+Eq_1664: (fn byte (byte))
+	T_1664 (in __daa @ 09B7 : ptr32)
+	T_1665 (in signature of __daa : void)
+Eq_1773: (fn void ())
+	T_1773 (in cpm_warm_boot @ 0A21 : ptr16)
+	T_1774 (in signature of cpm_warm_boot : void)
+Eq_1787: (fn void ())
+	T_1787 (in cpm_warm_boot @ 0A24 : ptr16)
+	T_1788 (in signature of cpm_warm_boot : void)
+Eq_1790: (fn void ())
+	T_1790 (in cpm_warm_boot @ 0A27 : ptr16)
+	T_1791 (in signature of cpm_warm_boot : void)
+Eq_1793: (fn void ())
+	T_1793 (in cpm_warm_boot @ 0A2A : ptr16)
+	T_1794 (in signature of cpm_warm_boot : void)
+Eq_1806: (fn uint8 ((ptr16 Eq_1808)))
+	T_1806 (in F_OPEN @ 0DD2 : ptr16)
+	T_1807 (in signature of F_OPEN : void)
+Eq_1808: Fcb
+	T_1808 (in pFcb @ 0DD2 : (ptr16 Fcb))
+	T_1809 (in 0x5C<16> @ 0DD2 : word16)
+Eq_1846: (fn void ((ptr16 void)))
+	T_1846 (in F_DMAOFF @ 0DF6 : ptr16)
+	T_1847 (in signature of F_DMAOFF : void)
+Eq_1852: (fn uint8 ((ptr16 Eq_1854)))
+	T_1852 (in F_READ @ 0E03 : ptr16)
+	T_1853 (in signature of F_READ : void)
+Eq_1854: Fcb
+	T_1854 (in pFcb @ 0E03 : (ptr16 Fcb))
+	T_1855 (in 0x5C<16> @ 0E03 : word16)
+Eq_1862: (fn void ((ptr16 void)))
+	T_1862 (in F_DMAOFF @ 0E0B : ptr16)
+	T_1863 (in signature of F_DMAOFF : void)
+Eq_1867: (fn uint8 ((ptr16 Eq_1869)))
+	T_1867 (in F_CLOSE @ 0E13 : ptr16)
+	T_1868 (in signature of F_CLOSE : void)
+Eq_1869: Fcb
+	T_1869 (in pFcb @ 0E13 : (ptr16 Fcb))
+	T_1870 (in 0x5C<16> @ 0E13 : word16)
+Eq_1878: (fn Eq_1884 (Eq_87, word16))
+	T_1878 (in fn0E35 @ 0E24 : ptr16)
+	T_1879 (in signature of fn0E35 @ 0E35 : void)
+	T_1891 (in fn0E35 @ 0E2C : ptr16)
+Eq_1884: (union "Eq_1884" (bool u0) (byte u1))
+	T_1884 (in fn0E35(hl, out hl_4) @ 0E24 : bool)
+	T_1885 (in Z_6 @ 0E24 : Eq_1884)
+	T_1889 (in 0<8> @ 0E2B : byte)
+	T_1894 (in fn0E35(hl, out hl_4) @ 0E2C : bool)
+Eq_1916: (union "Eq_1916" (bool u0) (byte u1))
+	T_1916
+Eq_1917: (union "Eq_1917" (bool u0) (byte u1))
+	T_1917
+Eq_1918: (union "Eq_1918" (bool u0) (byte u1))
+	T_1918
+Eq_1919: (union "Eq_1919" (bool u0) (byte u1))
+	T_1919
+Eq_1920: (union "Eq_1920" (bool u0) (byte u1))
+	T_1920
 // Type Variables ////////////
 globals_t: (in globals : (ptr16 (struct "Globals")))
   Class: Eq_1
@@ -794,11 +792,11 @@ T_36: (in 0xABC<16> @ 011A : word16)
   Class: Eq_35
   DataType: (ptr16 byte)
   OrigDataType: word16
-T_37: (in d_844 @ 011A : byte)
+T_37: (in d_849 @ 011A : byte)
   Class: Eq_37
   DataType: byte
   OrigDataType: byte
-T_38: (in out d_844 @ 011A : byte)
+T_38: (in out d_849 @ 011A : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
@@ -806,7 +804,7 @@ T_39: (in dOut @ 011A : uint8)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_40: (in fn09C5(f, d_27, &g_b0ABC, out d_844) @ 011A : word16)
+T_40: (in fn09C5(f, d_27, &g_b0ABC, out d_849) @ 011A : word16)
   Class: Eq_40
   DataType: word16
   OrigDataType: word16
@@ -933,12 +931,12 @@ T_70: (in 0xA4B<16> @ 029C : word16)
 T_71: (in hl_602 @ 029C : (ptr16 byte))
   Class: Eq_70
   DataType: (ptr16 byte)
-  OrigDataType: (ptr16 (struct (0 T_278 t0000)))
+  OrigDataType: (ptr16 (struct (0 T_264 t0000)))
 T_72: (in 0x28<16> @ 02A2 : cui16)
   Class: Eq_72
   DataType: cui16
   OrigDataType: cui16
-T_73: (in bc_839 @ 02A2 : Eq_72)
+T_73: (in bc_843 @ 02A2 : Eq_72)
   Class: Eq_72
   DataType: Eq_72
   OrigDataType: cui16
@@ -1050,10 +1048,10 @@ T_100: (in SLICE(af_80, byte, 8) @ 0886 : byte)
   Class: Eq_61
   DataType: cu8
   OrigDataType: byte
-T_101: (in de_89 @ 0886 : word16)
+T_101: (in de_89 @ 0886 : cu16)
   Class: Eq_101
-  DataType: word16
-  OrigDataType: word16
+  DataType: cu16
+  OrigDataType: cu16
 T_102: (in out de_89 @ 0886 : word16)
   Class: Eq_88
   DataType: ui16
@@ -1062,7298 +1060,7278 @@ T_103: (in fn094F(SLICE(af_80, byte, 8), out de_89) @ 0886 : bool)
   Class: Eq_90
   DataType: bool
   OrigDataType: bool
-T_104: (in SLICE(de_89, byte, 8) @ 088A : byte)
+T_104: (in SLICE(af_80, byte, 0) @ 0883 : byte)
   Class: Eq_104
-  DataType: bcu8
-  OrigDataType: byte
-T_105: (in b_101 @ 088A : bcu8)
-  Class: Eq_104
-  DataType: bcu8
-  OrigDataType: bcu8
-T_106: (in __rcr<byte,byte> @ 0890 : ptr32)
-  Class: Eq_106
-  DataType: (ptr32 Eq_106)
-  OrigDataType: (ptr32 (fn T_118 (T_111, T_112, T_117)))
-T_107: (in signature of __rcr : void)
-  Class: Eq_106
-  DataType: (ptr32 Eq_106)
-  OrigDataType: 
-T_108: (in p1 @ 0890 : byte)
-  Class: Eq_38
-  DataType: uint8
-  OrigDataType: 
-T_109: (in p2 @ 0890 : byte)
-  Class: Eq_109
   DataType: byte
-  OrigDataType: 
-T_110: (in p3 @ 0890 : bool)
+  OrigDataType: byte
+T_105: (in f_661 @ 0883 : byte)
+  Class: Eq_104
+  DataType: byte
+  OrigDataType: byte
+T_106: (in 4<8> @ 088B : byte)
+  Class: Eq_106
+  DataType: byte
+  OrigDataType: byte
+T_107: (in e_111 @ 088B : byte)
+  Class: Eq_106
+  DataType: byte
+  OrigDataType: byte
+T_108: (in 0<8> @ 088D : byte)
+  Class: Eq_108
+  DataType: byte
+  OrigDataType: byte
+T_109: (in a_100 @ 088D : byte)
+  Class: Eq_108
+  DataType: byte
+  OrigDataType: byte
+T_110: (in 1<8> @ 0895 : byte)
   Class: Eq_110
-  DataType: Eq_110
-  OrigDataType: 
-T_111: (in SLICE(de_89, byte, 0) @ 0890 : byte)
-  Class: Eq_38
-  DataType: uint8
-  OrigDataType: byte
-T_112: (in 1<8> @ 0890 : byte)
-  Class: Eq_109
   DataType: byte
   OrigDataType: byte
-T_113: (in 1<8> @ 0890 : byte)
-  Class: Eq_113
-  DataType: byte
-  OrigDataType: byte
-T_114: (in b_101 >> 1<8> @ 0890 : byte)
-  Class: Eq_114
-  DataType: uint8
-  OrigDataType: uint8
-T_115: (in cond(b_101 >>u 1<8>) @ 0890 : byte)
+T_111: (in de_89 >> 1<8> @ 0895 : uint16)
+  Class: Eq_111
+  DataType: uint16
+  OrigDataType: uint16
+T_112: (in bc_839 @ 0895 : uint16)
+  Class: Eq_111
+  DataType: uint16
+  OrigDataType: uint16
+T_113: (in de_89 >> 1<8> @ 0894 : uint16)
+  Class: Eq_111
+  DataType: uint16
+  OrigDataType: uint16
+T_114: (in bc_846 @ 0894 : uint16)
+  Class: Eq_111
+  DataType: uint16
+  OrigDataType: uint16
+T_115: (in de_89 >> 1<8> @ 0892 : uint16)
   Class: Eq_115
-  DataType: byte
-  OrigDataType: byte
-T_116: (in 1<8> @ 0890 : byte)
+  DataType: uint16
+  OrigDataType: uint16
+T_116: (in SLICE(de_89 >>u 1<8>, byte, 0) @ 0892 : byte)
   Class: Eq_116
-  DataType: byte
-  OrigDataType: byte
-T_117: (in cond(b_101 >> 1<8>) & 1<8> @ 0890 : byte)
-  Class: Eq_110
-  DataType: Eq_110
-  OrigDataType: (union (bool u1) (byte u0))
-T_118: (in __rcr<byte,byte>((byte) de_89, 1<8>, cond(b_101 >> 1<8>) & 1<8>) @ 0890 : byte)
-  Class: Eq_38
-  DataType: uint8
-  OrigDataType: byte
-T_119: (in c_106 @ 0890 : uint8)
-  Class: Eq_38
-  DataType: uint8
+  DataType: cu8
   OrigDataType: cu8
-T_120: (in SLICE(af_80, byte, 0) @ 0883 : byte)
-  Class: Eq_120
-  DataType: byte
-  OrigDataType: byte
-T_121: (in f_661 @ 0883 : byte)
-  Class: Eq_120
-  DataType: byte
-  OrigDataType: byte
-T_122: (in 4<8> @ 088B : byte)
-  Class: Eq_122
-  DataType: byte
-  OrigDataType: byte
-T_123: (in e_111 @ 088B : byte)
-  Class: Eq_122
-  DataType: byte
-  OrigDataType: byte
-T_124: (in 0<8> @ 088D : byte)
-  Class: Eq_124
-  DataType: byte
-  OrigDataType: byte
-T_125: (in a_100 @ 088D : byte)
-  Class: Eq_124
-  DataType: byte
-  OrigDataType: byte
-T_126: (in b_101 >> 1<8> @ 0895 : byte)
-  Class: Eq_126
-  DataType: uint8
-  OrigDataType: uint8
-T_127: (in SEQ(b_101 >>u 1<8>, c_106) @ 0895 : word16)
-  Class: Eq_127
-  DataType: uint16
-  OrigDataType: uint16
-T_128: (in bc_836 @ 0895 : uint16)
-  Class: Eq_127
-  DataType: uint16
-  OrigDataType: uint16
-T_129: (in b_101 >> 1<8> @ 0894 : byte)
-  Class: Eq_129
-  DataType: uint8
-  OrigDataType: uint8
-T_130: (in SEQ(b_101 >>u 1<8>, c_106) @ 0894 : word16)
-  Class: Eq_127
-  DataType: uint16
-  OrigDataType: uint16
-T_131: (in 0<8> @ 0892 : byte)
-  Class: Eq_38
-  DataType: uint8
+T_117: (in 0<8> @ 0892 : byte)
+  Class: Eq_116
+  DataType: cu8
   OrigDataType: cu8
-T_132: (in c_106 >= 0<8> @ 0892 : bool)
-  Class: Eq_132
+T_118: (in (byte) (de_89 >> 1<8>) >= 0<8> @ 0892 : bool)
+  Class: Eq_118
   DataType: bool
   OrigDataType: bool
-T_133: (in 0x4D<8> @ 0139 : byte)
+T_119: (in 0x4D<8> @ 0139 : byte)
   Class: Eq_61
   DataType: cu8
   OrigDataType: byte
-T_134: (in a_46 == 0x4D<8> @ 0139 : bool)
-  Class: Eq_134
+T_120: (in a_46 == 0x4D<8> @ 0139 : bool)
+  Class: Eq_120
   DataType: bool
   OrigDataType: bool
-T_135: (in fn09BA @ 08DC : ptr16)
+T_121: (in fn09BA @ 08DC : ptr16)
   Class: Eq_76
   DataType: (ptr16 Eq_76)
-  OrigDataType: (ptr16 (fn T_137 (T_56, T_136)))
-T_136: (in 0xB06<16> @ 08DC : word16)
+  OrigDataType: (ptr16 (fn T_123 (T_56, T_122)))
+T_122: (in 0xB06<16> @ 08DC : word16)
   Class: Eq_35
   DataType: (ptr16 byte)
   OrigDataType: word16
-T_137: (in fn09BA(f_351, &g_b0B06) @ 08DC : word16)
+T_123: (in fn09BA(f_351, &g_b0B06) @ 08DC : word16)
   Class: Eq_81
   DataType: word16
   OrigDataType: word16
-T_138: (in af_224 @ 08DC : word16)
+T_124: (in af_224 @ 08DC : word16)
   Class: Eq_81
   DataType: word16
   OrigDataType: word16
-T_139: (in fn094F @ 08DF : ptr16)
+T_125: (in fn094F @ 08DF : ptr16)
   Class: Eq_83
   DataType: (ptr16 Eq_83)
-  OrigDataType: (ptr16 (fn T_143 (T_140, T_142)))
-T_140: (in SLICE(af_224, byte, 8) @ 08DF : byte)
+  OrigDataType: (ptr16 (fn T_129 (T_126, T_128)))
+T_126: (in SLICE(af_224, byte, 8) @ 08DF : byte)
   Class: Eq_61
   DataType: cu8
   OrigDataType: byte
-T_141: (in de_233 @ 08DF : Eq_87)
+T_127: (in de_233 @ 08DF : Eq_87)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_142: (in out de_233 @ 08DF : word16)
+T_128: (in out de_233 @ 08DF : word16)
   Class: Eq_88
   DataType: ui16
   OrigDataType: word16
-T_143: (in fn094F(SLICE(af_224, byte, 8), out de_233) @ 08DF : bool)
+T_129: (in fn094F(SLICE(af_224, byte, 8), out de_233) @ 08DF : bool)
   Class: Eq_90
   DataType: bool
   OrigDataType: bool
-T_144: (in SLICE(af_224, byte, 0) @ 08DC : byte)
-  Class: Eq_120
+T_130: (in SLICE(af_224, byte, 0) @ 08DC : byte)
+  Class: Eq_104
   DataType: byte
   OrigDataType: byte
-T_145: (in f_244 @ 08DC : byte)
-  Class: Eq_120
+T_131: (in f_244 @ 08DC : byte)
+  Class: Eq_104
   DataType: byte
   OrigDataType: byte
-T_146: (in hl_241 @ 08E2 : Eq_87)
+T_132: (in hl_241 @ 08E2 : Eq_87)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_147: (in 0xAB3<16> @ 013C : word16)
-  Class: Eq_147
-  DataType: (ptr16 Eq_147)
+T_133: (in 0xAB3<16> @ 013C : word16)
+  Class: Eq_133
+  DataType: (ptr16 Eq_133)
   OrigDataType: word16
-T_148: (in ix_328 @ 013C : (ptr16 Eq_147))
-  Class: Eq_147
-  DataType: (ptr16 Eq_147)
+T_134: (in ix_328 @ 013C : (ptr16 Eq_133))
+  Class: Eq_133
+  DataType: (ptr16 Eq_133)
   OrigDataType: (ptr16 (struct 0001 (0 byte b0000)))
-T_149: (in 0x42<8> @ 0142 : byte)
+T_135: (in 0x42<8> @ 0142 : byte)
   Class: Eq_61
   DataType: cu8
   OrigDataType: byte
-T_150: (in a_46 == 0x42<8> @ 0142 : bool)
-  Class: Eq_150
+T_136: (in a_46 == 0x42<8> @ 0142 : bool)
+  Class: Eq_136
   DataType: bool
   OrigDataType: bool
-T_151: (in fn09C5 @ 018A : ptr16)
+T_137: (in fn09C5 @ 018A : ptr16)
   Class: Eq_31
   DataType: (ptr16 Eq_31)
-  OrigDataType: (ptr16 (fn T_155 (T_56, T_58, T_152, T_154)))
-T_152: (in 0xB41<16> @ 018A : word16)
+  OrigDataType: (ptr16 (fn T_141 (T_56, T_58, T_138, T_140)))
+T_138: (in 0xB41<16> @ 018A : word16)
   Class: Eq_35
   DataType: (ptr16 byte)
   OrigDataType: word16
-T_153: (in d_845 @ 018A : byte)
-  Class: Eq_153
+T_139: (in d_850 @ 018A : byte)
+  Class: Eq_139
   DataType: byte
   OrigDataType: byte
-T_154: (in out d_845 @ 018A : byte)
+T_140: (in out d_850 @ 018A : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_155: (in fn09C5(f_351, d_675, &g_b0B41, out d_845) @ 018A : word16)
+T_141: (in fn09C5(f_351, d_675, &g_b0B41, out d_850) @ 018A : word16)
   Class: Eq_40
   DataType: word16
   OrigDataType: word16
-T_156: (in af_333 @ 018A : word16)
+T_142: (in af_333 @ 018A : word16)
   Class: Eq_40
   DataType: word16
   OrigDataType: word16
-T_157: (in fn094F @ 018D : ptr16)
+T_143: (in fn094F @ 018D : ptr16)
   Class: Eq_83
   DataType: (ptr16 Eq_83)
-  OrigDataType: (ptr16 (fn T_161 (T_158, T_160)))
-T_158: (in SLICE(af_333, byte, 8) @ 018D : byte)
+  OrigDataType: (ptr16 (fn T_147 (T_144, T_146)))
+T_144: (in SLICE(af_333, byte, 8) @ 018D : byte)
   Class: Eq_61
   DataType: cu8
   OrigDataType: byte
-T_159: (in de_343 @ 018D : word16)
-  Class: Eq_159
+T_145: (in de_343 @ 018D : word16)
+  Class: Eq_145
   DataType: word16
   OrigDataType: word16
-T_160: (in out de_343 @ 018D : word16)
+T_146: (in out de_343 @ 018D : word16)
   Class: Eq_88
   DataType: ui16
   OrigDataType: word16
-T_161: (in fn094F(SLICE(af_333, byte, 8), out de_343) @ 018D : bool)
+T_147: (in fn094F(SLICE(af_333, byte, 8), out de_343) @ 018D : bool)
   Class: Eq_90
   DataType: bool
   OrigDataType: bool
-T_162: (in 0xAB0<16> @ 0190 : word16)
-  Class: Eq_162
+T_148: (in 0xAB0<16> @ 0190 : word16)
+  Class: Eq_148
   DataType: (ptr16 word16)
-  OrigDataType: (ptr16 (struct (0 T_163 t0000)))
-T_163: (in Mem349[0xAB0<16>:word16] @ 0190 : word16)
-  Class: Eq_159
+  OrigDataType: (ptr16 (struct (0 T_149 t0000)))
+T_149: (in Mem349[0xAB0<16>:word16] @ 0190 : word16)
+  Class: Eq_145
   DataType: word16
   OrigDataType: word16
-T_164: (in SLICE(af_333, byte, 0) @ 018A : byte)
+T_150: (in SLICE(af_333, byte, 0) @ 018A : byte)
   Class: Eq_2
   DataType: byte
   OrigDataType: byte
-T_165: (in 0x43<8> @ 0146 : byte)
+T_151: (in 0x43<8> @ 0146 : byte)
   Class: Eq_61
   DataType: cu8
   OrigDataType: byte
-T_166: (in a_46 == 0x43<8> @ 0146 : bool)
-  Class: Eq_166
+T_152: (in a_46 == 0x43<8> @ 0146 : bool)
+  Class: Eq_152
   DataType: bool
   OrigDataType: bool
-T_167: (in fn093B @ 01BE : ptr16)
+T_153: (in fn093B @ 01BE : ptr16)
   Class: Eq_42
   DataType: (ptr16 Eq_42)
-  OrigDataType: (ptr16 (fn T_168 ()))
-T_168: (in fn093B() @ 01BE : void)
+  OrigDataType: (ptr16 (fn T_154 ()))
+T_154: (in fn093B() @ 01BE : void)
   Class: Eq_44
   DataType: void
   OrigDataType: void
-T_169: (in fn027A @ 01C5 : ptr16)
-  Class: Eq_169
-  DataType: (ptr16 Eq_169)
-  OrigDataType: (ptr16 (fn T_181 (T_56, T_58, T_174, T_176, T_179)))
-T_170: (in signature of fn027A @ 027A : void)
-  Class: Eq_169
-  DataType: (ptr16 Eq_169)
+T_155: (in fn027A @ 01C5 : ptr16)
+  Class: Eq_155
+  DataType: (ptr16 Eq_155)
+  OrigDataType: (ptr16 (fn T_167 (T_56, T_58, T_160, T_162, T_165)))
+T_156: (in signature of fn027A @ 027A : void)
+  Class: Eq_155
+  DataType: (ptr16 Eq_155)
   OrigDataType: 
-T_171: (in f @ 01C5 : byte)
+T_157: (in f @ 01C5 : byte)
   Class: Eq_2
   DataType: byte
   OrigDataType: byte
-T_172: (in d @ 01C5 : byte)
+T_158: (in d @ 01C5 : byte)
   Class: Eq_25
   DataType: byte
   OrigDataType: byte
-T_173: (in iy @ 01C5 : (ptr16 byte))
+T_159: (in iy @ 01C5 : (ptr16 byte))
   Class: Eq_35
   DataType: (ptr16 byte)
   OrigDataType: word16
-T_174: (in 0xB00<16> @ 01C5 : word16)
+T_160: (in 0xB00<16> @ 01C5 : word16)
   Class: Eq_35
   DataType: (ptr16 byte)
   OrigDataType: word16
-T_175: (in d_846 @ 01C5 : byte)
+T_161: (in d_851 @ 01C5 : byte)
+  Class: Eq_161
+  DataType: byte
+  OrigDataType: byte
+T_162: (in out d_851 @ 01C5 : byte)
+  Class: Eq_38
+  DataType: uint8
+  OrigDataType: byte
+T_163: (in dOut @ 01C5 : uint8)
+  Class: Eq_38
+  DataType: uint8
+  OrigDataType: byte
+T_164: (in iy_852 @ 01C5 : word16)
+  Class: Eq_164
+  DataType: word16
+  OrigDataType: word16
+T_165: (in out iy_852 @ 01C5 : word16)
+  Class: Eq_165
+  DataType: word16
+  OrigDataType: word16
+T_166: (in iyOut @ 01C5 : word16)
+  Class: Eq_165
+  DataType: word16
+  OrigDataType: word16
+T_167: (in fn027A(f_351, d_675, &g_b0B00, out d_851, out iy_852) @ 01C5 : byte)
+  Class: Eq_2
+  DataType: byte
+  OrigDataType: byte
+T_168: (in f_413 @ 01C5 : byte)
+  Class: Eq_2
+  DataType: byte
+  OrigDataType: byte
+T_169: (in 0xABA<16> @ 01C8 : word16)
+  Class: Eq_169
+  DataType: (ptr16 Eq_87)
+  OrigDataType: (ptr16 (struct (0 T_170 t0000)))
+T_170: (in Mem401[0xABA<16>:word16] @ 01C8 : word16)
+  Class: Eq_87
+  DataType: Eq_87
+  OrigDataType: word16
+T_171: (in de_411 @ 01C8 : Eq_87)
+  Class: Eq_87
+  DataType: Eq_87
+  OrigDataType: word16
+T_172: (in fn099E @ 01CC : ptr16)
+  Class: Eq_172
+  DataType: (ptr16 Eq_172)
+  OrigDataType: (ptr16 (fn T_185 (T_177, T_178, T_180, T_183)))
+T_173: (in signature of fn099E @ 099E : void)
+  Class: Eq_172
+  DataType: (ptr16 Eq_172)
+  OrigDataType: 
+T_174: (in d_f @ 01CC : word16)
+  Class: Eq_174
+  DataType: word16
+  OrigDataType: word16
+T_175: (in e @ 01CC : byte)
   Class: Eq_175
   DataType: byte
   OrigDataType: byte
-T_176: (in out d_846 @ 01C5 : byte)
-  Class: Eq_38
-  DataType: uint8
+T_176: (in SLICE(de_411, byte, 8) @ 01CC : byte)
+  Class: Eq_176
+  DataType: byte
   OrigDataType: byte
-T_177: (in dOut @ 01C5 : uint8)
-  Class: Eq_38
-  DataType: uint8
-  OrigDataType: byte
-T_178: (in iy_847 @ 01C5 : word16)
-  Class: Eq_178
+T_177: (in SEQ(SLICE(de_411, byte, 8), f_413) @ 01CC : word16)
+  Class: Eq_174
   DataType: word16
   OrigDataType: word16
-T_179: (in out iy_847 @ 01C5 : word16)
+T_178: (in SLICE(de_411, byte, 0) @ 01CC : byte)
+  Class: Eq_175
+  DataType: byte
+  OrigDataType: byte
+T_179: (in af_416 @ 01CC : word16)
   Class: Eq_179
   DataType: word16
   OrigDataType: word16
-T_180: (in iyOut @ 01C5 : word16)
-  Class: Eq_179
+T_180: (in out af_416 @ 01CC : word16)
+  Class: Eq_180
   DataType: word16
   OrigDataType: word16
-T_181: (in fn027A(f_351, d_675, &g_b0B00, out d_846, out iy_847) @ 01C5 : byte)
-  Class: Eq_2
+T_181: (in afOut @ 01CC : word16)
+  Class: Eq_180
+  DataType: word16
+  OrigDataType: word16
+T_182: (in c_853 @ 01CC : byte)
+  Class: Eq_182
   DataType: byte
   OrigDataType: byte
-T_182: (in f_413 @ 01C5 : byte)
-  Class: Eq_2
-  DataType: byte
-  OrigDataType: byte
-T_183: (in 0xABA<16> @ 01C8 : word16)
+T_183: (in out c_853 @ 01CC : byte)
   Class: Eq_183
-  DataType: (ptr16 Eq_87)
-  OrigDataType: (ptr16 (struct (0 T_184 t0000)))
-T_184: (in Mem401[0xABA<16>:word16] @ 01C8 : word16)
-  Class: Eq_87
-  DataType: Eq_87
-  OrigDataType: word16
-T_185: (in de_411 @ 01C8 : Eq_87)
-  Class: Eq_87
-  DataType: Eq_87
-  OrigDataType: word16
-T_186: (in fn099E @ 01CC : ptr16)
-  Class: Eq_186
-  DataType: (ptr16 Eq_186)
-  OrigDataType: (ptr16 (fn T_199 (T_191, T_192, T_194, T_197)))
-T_187: (in signature of fn099E @ 099E : void)
-  Class: Eq_186
-  DataType: (ptr16 Eq_186)
-  OrigDataType: 
-T_188: (in d_f @ 01CC : word16)
-  Class: Eq_188
-  DataType: word16
-  OrigDataType: word16
-T_189: (in e @ 01CC : byte)
-  Class: Eq_189
   DataType: byte
   OrigDataType: byte
-T_190: (in SLICE(de_411, byte, 8) @ 01CC : byte)
-  Class: Eq_190
+T_184: (in cOut @ 01CC : byte)
+  Class: Eq_183
   DataType: byte
   OrigDataType: byte
-T_191: (in SEQ(SLICE(de_411, byte, 8), f_413) @ 01CC : word16)
-  Class: Eq_188
-  DataType: word16
-  OrigDataType: word16
-T_192: (in SLICE(de_411, byte, 0) @ 01CC : byte)
-  Class: Eq_189
-  DataType: byte
-  OrigDataType: byte
-T_193: (in af_416 @ 01CC : word16)
-  Class: Eq_193
-  DataType: word16
-  OrigDataType: word16
-T_194: (in out af_416 @ 01CC : word16)
-  Class: Eq_194
-  DataType: word16
-  OrigDataType: word16
-T_195: (in afOut @ 01CC : word16)
-  Class: Eq_194
-  DataType: word16
-  OrigDataType: word16
-T_196: (in c_848 @ 01CC : byte)
-  Class: Eq_196
-  DataType: byte
-  OrigDataType: byte
-T_197: (in out c_848 @ 01CC : byte)
-  Class: Eq_197
-  DataType: byte
-  OrigDataType: byte
-T_198: (in cOut @ 01CC : byte)
-  Class: Eq_197
-  DataType: byte
-  OrigDataType: byte
-T_199: (in fn099E(SEQ(SLICE(de_411, byte, 8), f_413), (byte) de_411, out af_416, out c_848) @ 01CC : bool)
-  Class: Eq_199
-  DataType: Eq_199
+T_185: (in fn099E(SEQ(SLICE(de_411, byte, 8), f_413), (byte) de_411, out af_416, out c_853) @ 01CC : bool)
+  Class: Eq_185
+  DataType: Eq_185
   OrigDataType: bool
-T_200: (in fn0945 @ 01CF : ptr16)
+T_186: (in fn0945 @ 01CF : ptr16)
   Class: Eq_50
   DataType: (ptr16 Eq_50)
-  OrigDataType: (ptr16 (fn T_201 ()))
-T_201: (in fn0945() @ 01CF : void)
+  OrigDataType: (ptr16 (fn T_187 ()))
+T_187: (in fn0945() @ 01CF : void)
   Class: Eq_52
   DataType: void
   OrigDataType: void
-T_202: (in SLICE(af_416, byte, 0) @ 01CC : byte)
+T_188: (in SLICE(af_416, byte, 0) @ 01CC : byte)
   Class: Eq_2
   DataType: byte
   OrigDataType: byte
-T_203: (in f_438 @ 01CC : byte)
+T_189: (in f_438 @ 01CC : byte)
   Class: Eq_2
   DataType: byte
   OrigDataType: byte
-T_204: (in de_426 @ 01D2 : Eq_87)
+T_190: (in de_426 @ 01D2 : Eq_87)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_205: (in SLICE(de_426, byte, 8) @ 01D2 : byte)
+T_191: (in SLICE(de_426, byte, 8) @ 01D2 : byte)
   Class: Eq_25
   DataType: byte
   OrigDataType: byte
-T_206: (in d_437 @ 01D2 : byte)
+T_192: (in d_437 @ 01D2 : byte)
   Class: Eq_25
   DataType: byte
   OrigDataType: byte
-T_207: (in fn094F @ 01D5 : ptr16)
+T_193: (in fn094F @ 01D5 : ptr16)
   Class: Eq_83
   DataType: (ptr16 Eq_83)
-  OrigDataType: (ptr16 (fn T_210 (T_208, T_209)))
-T_208: (in SLICE(af_416, byte, 8) @ 01D5 : byte)
+  OrigDataType: (ptr16 (fn T_196 (T_194, T_195)))
+T_194: (in SLICE(af_416, byte, 8) @ 01D5 : byte)
   Class: Eq_61
   DataType: cu8
   OrigDataType: byte
-T_209: (in out de_426 @ 01D5 : word16)
+T_195: (in out de_426 @ 01D5 : word16)
   Class: Eq_88
   DataType: ui16
   OrigDataType: word16
-T_210: (in fn094F(SLICE(af_416, byte, 8), out de_426) @ 01D5 : bool)
+T_196: (in fn094F(SLICE(af_416, byte, 8), out de_426) @ 01D5 : bool)
   Class: Eq_90
   DataType: bool
   OrigDataType: bool
-T_211: (in 0x47<8> @ 014B : byte)
+T_197: (in 0x47<8> @ 014B : byte)
   Class: Eq_61
   DataType: cu8
   OrigDataType: byte
-T_212: (in a_46 == 0x47<8> @ 014B : bool)
-  Class: Eq_212
+T_198: (in a_46 == 0x47<8> @ 014B : bool)
+  Class: Eq_198
   DataType: bool
   OrigDataType: bool
-T_213: (in de_487 @ 01AF : (ptr16 Eq_53))
+T_199: (in de_487 @ 01AF : (ptr16 Eq_53))
   Class: Eq_53
   DataType: (ptr16 Eq_53)
   OrigDataType: word16
-T_214: (in af_485 @ 01AF : (ptr16 Eq_53))
+T_200: (in af_485 @ 01AF : (ptr16 Eq_53))
   Class: Eq_53
   DataType: (ptr16 Eq_53)
   OrigDataType: word16
-T_215: (in fn02C5 @ 01AF : ptr16)
-  Class: Eq_215
-  DataType: (ptr16 Eq_215)
-  OrigDataType: (ptr16 (fn T_233 (T_56, T_148, T_220, T_223, T_226, T_229, T_231)))
-T_216: (in signature of fn02C5 @ 02C5 : void)
-  Class: Eq_215
-  DataType: (ptr16 Eq_215)
+T_201: (in fn02C5 @ 01AF : ptr16)
+  Class: Eq_201
+  DataType: (ptr16 Eq_201)
+  OrigDataType: (ptr16 (fn T_219 (T_56, T_134, T_206, T_209, T_212, T_215, T_217)))
+T_202: (in signature of fn02C5 @ 02C5 : void)
+  Class: Eq_201
+  DataType: (ptr16 Eq_201)
   OrigDataType: 
-T_217: (in f @ 01AF : byte)
+T_203: (in f @ 01AF : byte)
   Class: Eq_2
   DataType: byte
   OrigDataType: byte
-T_218: (in ix @ 01AF : (ptr16 Eq_147))
-  Class: Eq_147
-  DataType: (ptr16 Eq_147)
-  OrigDataType: (ptr16 (struct (0 T_1116 t0000) (1 T_38 t0001) (2 T_38 t0002) (3 T_1112 t0003) (4 T_38 t0004)))
-T_219: (in f_849 @ 01AF : byte)
+T_204: (in ix @ 01AF : (ptr16 Eq_133))
+  Class: Eq_133
+  DataType: (ptr16 Eq_133)
+  OrigDataType: (ptr16 (struct (0 T_1107 t0000) (1 T_38 t0001) (2 T_38 t0002) (3 T_1103 t0003) (4 T_38 t0004)))
+T_205: (in f_854 @ 01AF : byte)
+  Class: Eq_205
+  DataType: byte
+  OrigDataType: byte
+T_206: (in out f_854 @ 01AF : byte)
+  Class: Eq_38
+  DataType: uint8
+  OrigDataType: byte
+T_207: (in fOut @ 01AF : uint8)
+  Class: Eq_38
+  DataType: uint8
+  OrigDataType: byte
+T_208: (in bc_353 @ 01AF : word16)
+  Class: Eq_208
+  DataType: word16
+  OrigDataType: word16
+T_209: (in out bc_353 @ 01AF : word16)
+  Class: Eq_209
+  DataType: uint16
+  OrigDataType: word16
+T_210: (in bcOut @ 01AF : uint16)
+  Class: Eq_209
+  DataType: uint16
+  OrigDataType: word16
+T_211: (in d_855 @ 01AF : byte)
+  Class: Eq_211
+  DataType: byte
+  OrigDataType: byte
+T_212: (in out d_855 @ 01AF : byte)
+  Class: Eq_38
+  DataType: uint8
+  OrigDataType: byte
+T_213: (in dOut @ 01AF : uint8)
+  Class: Eq_38
+  DataType: uint8
+  OrigDataType: byte
+T_214: (in hl_856 @ 01AF : word16)
+  Class: Eq_214
+  DataType: word16
+  OrigDataType: word16
+T_215: (in out hl_856 @ 01AF : word16)
+  Class: Eq_87
+  DataType: Eq_87
+  OrigDataType: word16
+T_216: (in hlOut @ 01AF : Eq_87)
+  Class: Eq_87
+  DataType: Eq_87
+  OrigDataType: word16
+T_217: (in out ix_328 @ 01AF : word16)
+  Class: Eq_133
+  DataType: (ptr16 Eq_133)
+  OrigDataType: word16
+T_218: (in ixOut @ 01AF : (ptr16 Eq_133))
+  Class: Eq_133
+  DataType: (ptr16 Eq_133)
+  OrigDataType: word16
+T_219: (in fn02C5(f_351, ix_328, out f_854, out bc_353, out d_855, out hl_856, out ix_328) @ 01AF : bool)
   Class: Eq_219
-  DataType: byte
-  OrigDataType: byte
-T_220: (in out f_849 @ 01AF : byte)
-  Class: Eq_38
-  DataType: uint8
-  OrigDataType: byte
-T_221: (in fOut @ 01AF : uint8)
-  Class: Eq_38
-  DataType: uint8
-  OrigDataType: byte
-T_222: (in bc_353 @ 01AF : word16)
-  Class: Eq_222
-  DataType: word16
-  OrigDataType: word16
-T_223: (in out bc_353 @ 01AF : word16)
-  Class: Eq_223
-  DataType: uint16
-  OrigDataType: word16
-T_224: (in bcOut @ 01AF : uint16)
-  Class: Eq_223
-  DataType: uint16
-  OrigDataType: word16
-T_225: (in d_850 @ 01AF : byte)
-  Class: Eq_225
-  DataType: byte
-  OrigDataType: byte
-T_226: (in out d_850 @ 01AF : byte)
-  Class: Eq_38
-  DataType: uint8
-  OrigDataType: byte
-T_227: (in dOut @ 01AF : uint8)
-  Class: Eq_38
-  DataType: uint8
-  OrigDataType: byte
-T_228: (in hl_851 @ 01AF : word16)
-  Class: Eq_228
-  DataType: word16
-  OrigDataType: word16
-T_229: (in out hl_851 @ 01AF : word16)
-  Class: Eq_87
-  DataType: Eq_87
-  OrigDataType: word16
-T_230: (in hlOut @ 01AF : Eq_87)
-  Class: Eq_87
-  DataType: Eq_87
-  OrigDataType: word16
-T_231: (in out ix_328 @ 01AF : word16)
-  Class: Eq_147
-  DataType: (ptr16 Eq_147)
-  OrigDataType: word16
-T_232: (in ixOut @ 01AF : (ptr16 Eq_147))
-  Class: Eq_147
-  DataType: (ptr16 Eq_147)
-  OrigDataType: word16
-T_233: (in fn02C5(f_351, ix_328, out f_849, out bc_353, out d_850, out hl_851, out ix_328) @ 01AF : bool)
-  Class: Eq_233
-  DataType: Eq_233
+  DataType: Eq_219
   OrigDataType: bool
-T_234: (in Z_493 @ 01AF : Eq_233)
-  Class: Eq_233
-  DataType: Eq_233
+T_220: (in Z_493 @ 01AF : Eq_219)
+  Class: Eq_219
+  DataType: Eq_219
   OrigDataType: (union (bool u1) (byte u0))
-T_235: (in fn0A24 @ 01B2 : ptr16)
-  Class: Eq_235
-  DataType: (ptr16 Eq_235)
-  OrigDataType: (ptr16 (fn T_237 ()))
-T_236: (in signature of fn0A24 @ 0A24 : void)
-  Class: Eq_235
-  DataType: (ptr16 Eq_235)
+T_221: (in fn0A24 @ 01B2 : ptr16)
+  Class: Eq_221
+  DataType: (ptr16 Eq_221)
+  OrigDataType: (ptr16 (fn T_223 ()))
+T_222: (in signature of fn0A24 @ 0A24 : void)
+  Class: Eq_221
+  DataType: (ptr16 Eq_221)
   OrigDataType: 
-T_237: (in fn0A24() @ 01B2 : void)
-  Class: Eq_237
+T_223: (in fn0A24() @ 01B2 : void)
+  Class: Eq_223
   DataType: void
   OrigDataType: void
-T_238: (in SLICE(de_487, byte, 8) @ 01AF : byte)
+T_224: (in SLICE(de_487, byte, 8) @ 01AF : byte)
   Class: Eq_25
   DataType: byte
   OrigDataType: byte
-T_239: (in d_367 @ 01AF : byte)
+T_225: (in d_367 @ 01AF : byte)
   Class: Eq_25
   DataType: byte
   OrigDataType: byte
-T_240: (in SLICE(af_485, byte, 0) @ 01AF : byte)
+T_226: (in SLICE(af_485, byte, 0) @ 01AF : byte)
   Class: Eq_2
   DataType: byte
   OrigDataType: byte
-T_241: (in 0x54<8> @ 0150 : byte)
+T_227: (in 0x54<8> @ 0150 : byte)
   Class: Eq_61
   DataType: cu8
   OrigDataType: byte
-T_242: (in a_46 == 0x54<8> @ 0150 : bool)
-  Class: Eq_242
+T_228: (in a_46 == 0x54<8> @ 0150 : bool)
+  Class: Eq_228
   DataType: bool
   OrigDataType: bool
-T_243: (in fn09C5 @ 0161 : ptr16)
+T_229: (in fn09C5 @ 0161 : ptr16)
   Class: Eq_31
   DataType: (ptr16 Eq_31)
-  OrigDataType: (ptr16 (fn T_247 (T_56, T_58, T_244, T_246)))
-T_244: (in 0xB30<16> @ 0161 : word16)
+  OrigDataType: (ptr16 (fn T_233 (T_56, T_58, T_230, T_232)))
+T_230: (in 0xB30<16> @ 0161 : word16)
   Class: Eq_35
   DataType: (ptr16 byte)
   OrigDataType: word16
-T_245: (in d_852 @ 0161 : byte)
-  Class: Eq_245
+T_231: (in d_857 @ 0161 : byte)
+  Class: Eq_231
   DataType: byte
   OrigDataType: byte
-T_246: (in out d_852 @ 0161 : byte)
+T_232: (in out d_857 @ 0161 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_247: (in fn09C5(f_351, d_675, &g_b0B30, out d_852) @ 0161 : word16)
+T_233: (in fn09C5(f_351, d_675, &g_b0B30, out d_857) @ 0161 : word16)
   Class: Eq_40
   DataType: word16
   OrigDataType: word16
-T_248: (in af_517 @ 0161 : word16)
+T_234: (in af_517 @ 0161 : word16)
   Class: Eq_40
   DataType: word16
   OrigDataType: word16
-T_249: (in SLICE(af_517, byte, 0) @ 0161 : byte)
+T_235: (in SLICE(af_517, byte, 0) @ 0161 : byte)
   Class: Eq_2
   DataType: byte
   OrigDataType: byte
-T_250: (in de_527 @ 0167 : word16)
-  Class: Eq_250
+T_236: (in de_527 @ 0167 : word16)
+  Class: Eq_236
   DataType: word16
   OrigDataType: word16
-T_251: (in SLICE(de_527, byte, 0) @ 0167 : byte)
-  Class: Eq_251
+T_237: (in SLICE(de_527, byte, 0) @ 0167 : byte)
+  Class: Eq_237
   DataType: byte
   OrigDataType: byte
-T_252: (in a_534 @ 0167 : byte)
-  Class: Eq_251
+T_238: (in a_534 @ 0167 : byte)
+  Class: Eq_237
   DataType: byte
   OrigDataType: byte
-T_253: (in fn094F @ 0168 : ptr16)
+T_239: (in fn094F @ 0168 : ptr16)
   Class: Eq_83
   DataType: (ptr16 Eq_83)
-  OrigDataType: (ptr16 (fn T_256 (T_254, T_255)))
-T_254: (in SLICE(af_517, byte, 8) @ 0168 : byte)
+  OrigDataType: (ptr16 (fn T_242 (T_240, T_241)))
+T_240: (in SLICE(af_517, byte, 8) @ 0168 : byte)
   Class: Eq_61
   DataType: cu8
   OrigDataType: byte
-T_255: (in out de_527 @ 0168 : word16)
+T_241: (in out de_527 @ 0168 : word16)
   Class: Eq_88
   DataType: ui16
   OrigDataType: word16
-T_256: (in fn094F(SLICE(af_517, byte, 8), out de_527) @ 0168 : bool)
+T_242: (in fn094F(SLICE(af_517, byte, 8), out de_527) @ 0168 : bool)
   Class: Eq_90
   DataType: bool
   OrigDataType: bool
-T_257: (in 0x20<8> @ 0154 : byte)
+T_243: (in 0x20<8> @ 0154 : byte)
   Class: Eq_61
   DataType: cu8
   OrigDataType: byte
-T_258: (in a_46 == 0x20<8> @ 0154 : bool)
-  Class: Eq_258
+T_244: (in a_46 == 0x20<8> @ 0154 : bool)
+  Class: Eq_244
   DataType: bool
   OrigDataType: bool
-T_259: (in 1<8> @ 016A : byte)
-  Class: Eq_251
+T_245: (in 1<8> @ 016A : byte)
+  Class: Eq_237
   DataType: byte
   OrigDataType: byte
-T_260: (in fn0A2A @ 0158 : ptr16)
-  Class: Eq_260
-  DataType: (ptr16 Eq_260)
-  OrigDataType: (ptr16 (fn T_262 ()))
-T_261: (in signature of fn0A2A @ 0A2A : void)
-  Class: Eq_260
-  DataType: (ptr16 Eq_260)
+T_246: (in fn0A2A @ 0158 : ptr16)
+  Class: Eq_246
+  DataType: (ptr16 Eq_246)
+  OrigDataType: (ptr16 (fn T_248 ()))
+T_247: (in signature of fn0A2A @ 0A2A : void)
+  Class: Eq_246
+  DataType: (ptr16 Eq_246)
   OrigDataType: 
-T_262: (in fn0A2A() @ 0158 : void)
-  Class: Eq_262
+T_248: (in fn0A2A() @ 0158 : void)
+  Class: Eq_248
   DataType: void
   OrigDataType: void
-T_263: (in fn093B @ 0124 : ptr16)
+T_249: (in fn093B @ 0124 : ptr16)
   Class: Eq_42
   DataType: (ptr16 Eq_42)
-  OrigDataType: (ptr16 (fn T_264 ()))
-T_264: (in fn093B() @ 0124 : void)
+  OrigDataType: (ptr16 (fn T_250 ()))
+T_250: (in fn093B() @ 0124 : void)
   Class: Eq_44
   DataType: void
   OrigDataType: void
-T_265: (in fn0945 @ 0127 : ptr16)
+T_251: (in fn0945 @ 0127 : ptr16)
   Class: Eq_50
   DataType: (ptr16 Eq_50)
-  OrigDataType: (ptr16 (fn T_266 ()))
-T_266: (in fn0945() @ 0127 : void)
+  OrigDataType: (ptr16 (fn T_252 ()))
+T_252: (in fn0945() @ 0127 : void)
   Class: Eq_52
   DataType: void
   OrigDataType: void
-T_267: (in fn0A08 @ 012A : ptr16)
+T_253: (in fn0A08 @ 012A : ptr16)
   Class: Eq_59
   DataType: (ptr16 Eq_59)
-  OrigDataType: (ptr16 (fn T_268 (T_64)))
-T_268: (in fn0A08(a_46) @ 012A : byte)
+  OrigDataType: (ptr16 (fn T_254 (T_64)))
+T_254: (in fn0A08(a_46) @ 012A : byte)
   Class: Eq_61
   DataType: cu8
   OrigDataType: byte
-T_269: (in 0x48<8> @ 012F : byte)
+T_255: (in 0x48<8> @ 012F : byte)
   Class: Eq_61
   DataType: cu8
   OrigDataType: byte
-T_270: (in a_46 == 0x48<8> @ 012F : bool)
-  Class: Eq_270
+T_256: (in a_46 == 0x48<8> @ 012F : bool)
+  Class: Eq_256
   DataType: bool
   OrigDataType: bool
-T_271: (in fn093B @ 02C1 : ptr16)
+T_257: (in fn093B @ 02C1 : ptr16)
   Class: Eq_42
   DataType: (ptr16 Eq_42)
-  OrigDataType: (ptr16 (fn T_272 ()))
-T_272: (in fn093B() @ 02C1 : void)
+  OrigDataType: (ptr16 (fn T_258 ()))
+T_258: (in fn093B() @ 02C1 : void)
   Class: Eq_44
   DataType: void
   OrigDataType: void
-T_273: (in 1<16> @ 02A7 : word16)
-  Class: Eq_273
+T_259: (in 1<16> @ 02A7 : word16)
+  Class: Eq_259
   DataType: word16
   OrigDataType: word16
-T_274: (in hl_602 + 1<16> @ 02A7 : word16)
-  Class: Eq_274
+T_260: (in hl_602 + 1<16> @ 02A7 : word16)
+  Class: Eq_260
   DataType: (ptr16 byte)
   OrigDataType: word16
-T_275: (in hl_615 @ 02A7 : (ptr16 byte))
-  Class: Eq_274
+T_261: (in hl_615 @ 02A7 : (ptr16 byte))
+  Class: Eq_260
   DataType: (ptr16 byte)
-  OrigDataType: (ptr16 (struct (0 T_282 t0000)))
-T_276: (in 0<16> @ 02A6 : word16)
+  OrigDataType: (ptr16 (struct (0 T_268 t0000)))
+T_262: (in 0<16> @ 02A6 : word16)
+  Class: Eq_262
+  DataType: word16
+  OrigDataType: word16
+T_263: (in hl_602 + 0<16> @ 02A6 : word16)
+  Class: Eq_263
+  DataType: word16
+  OrigDataType: word16
+T_264: (in Mem613[hl_602 + 0<16>:byte] @ 02A6 : byte)
+  Class: Eq_175
+  DataType: byte
+  OrigDataType: byte
+T_265: (in e_614 @ 02A6 : byte)
+  Class: Eq_175
+  DataType: byte
+  OrigDataType: byte
+T_266: (in 0<16> @ 02A8 : word16)
+  Class: Eq_266
+  DataType: word16
+  OrigDataType: word16
+T_267: (in hl_615 + 0<16> @ 02A8 : word16)
+  Class: Eq_267
+  DataType: word16
+  OrigDataType: word16
+T_268: (in Mem613[hl_615 + 0<16>:byte] @ 02A8 : byte)
+  Class: Eq_268
+  DataType: byte
+  OrigDataType: byte
+T_269: (in d_616 @ 02A8 : byte)
+  Class: Eq_268
+  DataType: byte
+  OrigDataType: byte
+T_270: (in 2<16> @ 02AA : word16)
+  Class: Eq_270
+  DataType: word16
+  OrigDataType: word16
+T_271: (in sp_47 - 2<16> @ 02AA : word16)
+  Class: Eq_271
+  DataType: (ptr16 Eq_271)
+  OrigDataType: word16
+T_272: (in sp_620 @ 02AA : (ptr16 Eq_271))
+  Class: Eq_271
+  DataType: (ptr16 Eq_271)
+  OrigDataType: (ptr16 (struct (FFFFFFFE T_72 tFFFFFFFE) (0 T_70 t0000)))
+T_273: (in 1<16> @ 02AA : word16)
+  Class: Eq_273
+  DataType: int16
+  OrigDataType: int16
+T_274: (in hl_615 + 1<16> @ 02AA : word16)
+  Class: Eq_70
+  DataType: (ptr16 byte)
+  OrigDataType: ptr16
+T_275: (in 0<16> @ 02AA : word16)
+  Class: Eq_275
+  DataType: word16
+  OrigDataType: word16
+T_276: (in sp_620 + 0<16> @ 02AA : word16)
   Class: Eq_276
   DataType: word16
   OrigDataType: word16
-T_277: (in hl_602 + 0<16> @ 02A6 : word16)
-  Class: Eq_277
-  DataType: word16
-  OrigDataType: word16
-T_278: (in Mem613[hl_602 + 0<16>:byte] @ 02A6 : byte)
-  Class: Eq_189
-  DataType: byte
-  OrigDataType: byte
-T_279: (in e_614 @ 02A6 : byte)
-  Class: Eq_189
-  DataType: byte
-  OrigDataType: byte
-T_280: (in 0<16> @ 02A8 : word16)
-  Class: Eq_280
-  DataType: word16
-  OrigDataType: word16
-T_281: (in hl_615 + 0<16> @ 02A8 : word16)
-  Class: Eq_281
-  DataType: word16
-  OrigDataType: word16
-T_282: (in Mem613[hl_615 + 0<16>:byte] @ 02A8 : byte)
-  Class: Eq_282
-  DataType: byte
-  OrigDataType: byte
-T_283: (in d_616 @ 02A8 : byte)
-  Class: Eq_282
-  DataType: byte
-  OrigDataType: byte
-T_284: (in 2<16> @ 02AA : word16)
-  Class: Eq_284
-  DataType: word16
-  OrigDataType: word16
-T_285: (in sp_47 - 2<16> @ 02AA : word16)
-  Class: Eq_285
-  DataType: (ptr16 Eq_285)
-  OrigDataType: word16
-T_286: (in sp_620 @ 02AA : (ptr16 Eq_285))
-  Class: Eq_285
-  DataType: (ptr16 Eq_285)
-  OrigDataType: (ptr16 (struct (FFFFFFFE T_72 tFFFFFFFE) (0 T_70 t0000)))
-T_287: (in 1<16> @ 02AA : word16)
-  Class: Eq_287
-  DataType: int16
-  OrigDataType: int16
-T_288: (in hl_615 + 1<16> @ 02AA : word16)
-  Class: Eq_70
-  DataType: (ptr16 byte)
-  OrigDataType: ptr16
-T_289: (in 0<16> @ 02AA : word16)
-  Class: Eq_289
-  DataType: word16
-  OrigDataType: word16
-T_290: (in sp_620 + 0<16> @ 02AA : word16)
-  Class: Eq_290
-  DataType: word16
-  OrigDataType: word16
-T_291: (in Mem621[sp_620 + 0<16>:word16] @ 02AA : word16)
+T_277: (in Mem621[sp_620 + 0<16>:word16] @ 02AA : word16)
   Class: Eq_70
   DataType: (ptr16 byte)
   OrigDataType: word16
-T_292: (in -2<i16> @ 02AB : int16)
-  Class: Eq_292
+T_278: (in -2<i16> @ 02AB : int16)
+  Class: Eq_278
   DataType: int16
   OrigDataType: int16
-T_293: (in sp_620 + -2<i16> @ 02AB : word16)
-  Class: Eq_293
+T_279: (in sp_620 + -2<i16> @ 02AB : word16)
+  Class: Eq_279
   DataType: ptr16
   OrigDataType: ptr16
-T_294: (in Mem624[sp_620 + -2<i16>:word16] @ 02AB : word16)
+T_280: (in Mem624[sp_620 + -2<i16>:word16] @ 02AB : word16)
   Class: Eq_72
   DataType: Eq_72
   OrigDataType: word16
-T_295: (in fn099E @ 02AC : ptr16)
-  Class: Eq_186
-  DataType: (ptr16 Eq_186)
-  OrigDataType: (ptr16 (fn T_301 (T_296, T_279, T_298, T_300)))
-T_296: (in SEQ(d_616, f_351) @ 02AC : word16)
-  Class: Eq_188
+T_281: (in fn099E @ 02AC : ptr16)
+  Class: Eq_172
+  DataType: (ptr16 Eq_172)
+  OrigDataType: (ptr16 (fn T_287 (T_282, T_265, T_284, T_286)))
+T_282: (in SEQ(d_616, f_351) @ 02AC : word16)
+  Class: Eq_174
   DataType: word16
   OrigDataType: word16
-T_297: (in af_627 @ 02AC : word16)
-  Class: Eq_297
+T_283: (in af_627 @ 02AC : word16)
+  Class: Eq_283
   DataType: word16
   OrigDataType: word16
-T_298: (in out af_627 @ 02AC : word16)
-  Class: Eq_194
+T_284: (in out af_627 @ 02AC : word16)
+  Class: Eq_180
   DataType: word16
   OrigDataType: word16
-T_299: (in c_853 @ 02AC : byte)
+T_285: (in c_858 @ 02AC : byte)
+  Class: Eq_285
+  DataType: byte
+  OrigDataType: byte
+T_286: (in out c_858 @ 02AC : byte)
+  Class: Eq_183
+  DataType: byte
+  OrigDataType: byte
+T_287: (in fn099E(SEQ(d_616, f_351), e_614, out af_627, out c_858) @ 02AC : bool)
+  Class: Eq_185
+  DataType: Eq_185
+  OrigDataType: bool
+T_288: (in fn0A19 @ 02B1 : ptr16)
+  Class: Eq_288
+  DataType: (ptr16 Eq_288)
+  OrigDataType: (ptr16 (fn T_290 ()))
+T_289: (in signature of fn0A19 @ 0A19 : void)
+  Class: Eq_288
+  DataType: (ptr16 Eq_288)
+  OrigDataType: 
+T_290: (in fn0A19() @ 02B1 : byte)
+  Class: Eq_290
+  DataType: byte
+  OrigDataType: byte
+T_291: (in -2<i16> @ 02B4 : int16)
+  Class: Eq_291
+  DataType: int16
+  OrigDataType: int16
+T_292: (in sp_620 + -2<i16> @ 02B4 : word16)
+  Class: Eq_292
+  DataType: (ptr16 word16)
+  OrigDataType: (ptr16 word16)
+T_293: (in Mem624[sp_620 + -2<i16>:word16] @ 02B4 : word16)
+  Class: Eq_72
+  DataType: Eq_72
+  OrigDataType: word16
+T_294: (in bc_635 @ 02B4 : Eq_72)
+  Class: Eq_72
+  DataType: Eq_72
+  OrigDataType: word16
+T_295: (in -2<i16> @ 02B5 : int16)
+  Class: Eq_295
+  DataType: int16
+  OrigDataType: int16
+T_296: (in sp_620 + -2<i16> @ 02B5 : word16)
+  Class: Eq_296
+  DataType: (ptr16 cui16)
+  OrigDataType: (ptr16 cui16)
+T_297: (in Mem638[sp_620 + -2<i16>:word16] @ 02B5 : word16)
+  Class: Eq_72
+  DataType: Eq_72
+  OrigDataType: cui16
+T_298: (in SLICE(af_627, byte, 0) @ 02AC : byte)
+  Class: Eq_2
+  DataType: byte
+  OrigDataType: byte
+T_299: (in SLICE(bc_635, byte, 0) @ 02B9 : byte)
   Class: Eq_299
   DataType: byte
   OrigDataType: byte
-T_300: (in out c_853 @ 02AC : byte)
-  Class: Eq_197
+T_300: (in 0xF9<8> @ 02B9 : byte)
+  Class: Eq_299
   DataType: byte
   OrigDataType: byte
-T_301: (in fn099E(SEQ(d_616, f_351), e_614, out af_627, out c_853) @ 02AC : bool)
-  Class: Eq_199
-  DataType: Eq_199
-  OrigDataType: bool
-T_302: (in fn0A19 @ 02B1 : ptr16)
-  Class: Eq_302
-  DataType: (ptr16 Eq_302)
-  OrigDataType: (ptr16 (fn T_304 ()))
-T_303: (in signature of fn0A19 @ 0A19 : void)
-  Class: Eq_302
-  DataType: (ptr16 Eq_302)
-  OrigDataType: 
-T_304: (in fn0A19() @ 02B1 : byte)
-  Class: Eq_304
-  DataType: byte
-  OrigDataType: byte
-T_305: (in -2<i16> @ 02B4 : int16)
-  Class: Eq_305
-  DataType: int16
-  OrigDataType: int16
-T_306: (in sp_620 + -2<i16> @ 02B4 : word16)
-  Class: Eq_306
-  DataType: (ptr16 word16)
-  OrigDataType: (ptr16 word16)
-T_307: (in Mem624[sp_620 + -2<i16>:word16] @ 02B4 : word16)
-  Class: Eq_72
-  DataType: Eq_72
-  OrigDataType: word16
-T_308: (in bc_635 @ 02B4 : Eq_72)
-  Class: Eq_72
-  DataType: Eq_72
-  OrigDataType: word16
-T_309: (in -2<i16> @ 02B5 : int16)
-  Class: Eq_309
-  DataType: int16
-  OrigDataType: int16
-T_310: (in sp_620 + -2<i16> @ 02B5 : word16)
-  Class: Eq_310
-  DataType: (ptr16 cui16)
-  OrigDataType: (ptr16 cui16)
-T_311: (in Mem638[sp_620 + -2<i16>:word16] @ 02B5 : word16)
-  Class: Eq_72
-  DataType: Eq_72
-  OrigDataType: cui16
-T_312: (in SLICE(af_627, byte, 0) @ 02AC : byte)
-  Class: Eq_2
-  DataType: byte
-  OrigDataType: byte
-T_313: (in SLICE(bc_635, byte, 0) @ 02B9 : byte)
-  Class: Eq_313
-  DataType: byte
-  OrigDataType: byte
-T_314: (in 0xF9<8> @ 02B9 : byte)
-  Class: Eq_313
-  DataType: byte
-  OrigDataType: byte
-T_315: (in (byte) bc_635 != 0xF9<8> @ 02B9 : bool)
-  Class: Eq_315
+T_301: (in (byte) bc_635 != 0xF9<8> @ 02B9 : bool)
+  Class: Eq_301
   DataType: bool
   OrigDataType: bool
-T_316: (in -2<i16> @ 02BC : int16)
-  Class: Eq_316
+T_302: (in -2<i16> @ 02BC : int16)
+  Class: Eq_302
   DataType: int16
   OrigDataType: int16
-T_317: (in sp_620 + -2<i16> @ 02BC : word16)
-  Class: Eq_317
+T_303: (in sp_620 + -2<i16> @ 02BC : word16)
+  Class: Eq_303
   DataType: (ptr16 cui16)
   OrigDataType: (ptr16 cui16)
-T_318: (in Mem638[sp_620 + -2<i16>:word16] @ 02BC : word16)
+T_304: (in Mem638[sp_620 + -2<i16>:word16] @ 02BC : word16)
   Class: Eq_72
   DataType: Eq_72
   OrigDataType: cui16
-T_319: (in bc_647 @ 02BC : Eq_72)
+T_305: (in bc_647 @ 02BC : Eq_72)
   Class: Eq_72
   DataType: Eq_72
   OrigDataType: cui16
-T_320: (in 0<16> @ 02BD : word16)
-  Class: Eq_320
+T_306: (in 0<16> @ 02BD : word16)
+  Class: Eq_306
   DataType: word16
   OrigDataType: word16
-T_321: (in sp_620 + 0<16> @ 02BD : word16)
-  Class: Eq_321
+T_307: (in sp_620 + 0<16> @ 02BD : word16)
+  Class: Eq_307
   DataType: (ptr16 word16)
   OrigDataType: (ptr16 word16)
-T_322: (in Mem638[sp_620 + 0<16>:word16] @ 02BD : word16)
+T_308: (in Mem638[sp_620 + 0<16>:word16] @ 02BD : word16)
   Class: Eq_70
   DataType: (ptr16 byte)
   OrigDataType: word16
-T_323: (in 1<16> @ 02A2 : word16)
-  Class: Eq_323
+T_309: (in 1<16> @ 02A2 : word16)
+  Class: Eq_309
   DataType: cui16
   OrigDataType: cui16
-T_324: (in bc_647 - 1<16> @ 02A2 : word16)
-  Class: Eq_324
+T_310: (in bc_647 - 1<16> @ 02A2 : word16)
+  Class: Eq_310
   DataType: cui16
   OrigDataType: cui16
-T_325: (in SLICE(bc_647 - 1<16>, byte, 8) @ 02A2 : byte)
-  Class: Eq_325
+T_311: (in SLICE(bc_647 - 1<16>, byte, 8) @ 02A2 : byte)
+  Class: Eq_311
   DataType: byte
   OrigDataType: byte
-T_326: (in SLICE(bc_647, byte, 0) @ 02A2 : byte)
-  Class: Eq_326
+T_312: (in SLICE(bc_647, byte, 0) @ 02A2 : byte)
+  Class: Eq_312
   DataType: byte
   OrigDataType: byte
-T_327: (in 1<8> @ 02A2 : byte)
-  Class: Eq_327
+T_313: (in 1<8> @ 02A2 : byte)
+  Class: Eq_313
   DataType: byte
   OrigDataType: byte
-T_328: (in (byte) bc_647 - 1<8> @ 02A2 : byte)
-  Class: Eq_328
+T_314: (in (byte) bc_647 - 1<8> @ 02A2 : byte)
+  Class: Eq_314
   DataType: byte
   OrigDataType: byte
-T_329: (in SEQ(SLICE(bc_647 - 1<16>, byte, 8), SLICE(bc_647, byte, 0) - 1<8>) @ 02A2 : word16)
+T_315: (in SEQ(SLICE(bc_647 - 1<16>, byte, 8), SLICE(bc_647, byte, 0) - 1<8>) @ 02A2 : word16)
   Class: Eq_72
   DataType: Eq_72
   OrigDataType: word16
-T_330: (in fn093B @ 02B9 : ptr16)
+T_316: (in fn093B @ 02B9 : ptr16)
   Class: Eq_42
   DataType: (ptr16 Eq_42)
-  OrigDataType: (ptr16 (fn T_331 ()))
-T_331: (in fn093B() @ 02B9 : void)
+  OrigDataType: (ptr16 (fn T_317 ()))
+T_317: (in fn093B() @ 02B9 : void)
   Class: Eq_44
   DataType: void
   OrigDataType: void
-T_332: (in f_147 @ 0895 : byte)
-  Class: Eq_120
+T_318: (in f_147 @ 0895 : byte)
+  Class: Eq_104
   DataType: byte
   OrigDataType: byte
-T_333: (in 1<8> @ 0895 : byte)
-  Class: Eq_333
+T_319: (in 1<8> @ 0895 : byte)
+  Class: Eq_319
   DataType: byte
   OrigDataType: byte
-T_334: (in e_111 - 1<8> @ 0895 : byte)
-  Class: Eq_122
+T_320: (in e_111 - 1<8> @ 0895 : byte)
+  Class: Eq_106
   DataType: byte
   OrigDataType: byte
-T_335: (in bc_127 @ 0895 : uint16)
-  Class: Eq_127
+T_321: (in bc_881 @ 0895 : uint16)
+  Class: Eq_111
   DataType: uint16
   OrigDataType: uint16
-T_336: (in 0<8> @ 0896 : byte)
-  Class: Eq_122
+T_322: (in bc_127 @ 0895 : uint16)
+  Class: Eq_111
+  DataType: uint16
+  OrigDataType: uint16
+T_323: (in 0<8> @ 0896 : byte)
+  Class: Eq_106
   DataType: byte
   OrigDataType: byte
-T_337: (in e_111 != 0<8> @ 0896 : bool)
-  Class: Eq_337
+T_324: (in e_111 != 0<8> @ 0896 : bool)
+  Class: Eq_324
   DataType: bool
   OrigDataType: bool
-T_338: (in 1<8> @ 0894 : byte)
-  Class: Eq_338
+T_325: (in 1<8> @ 0894 : byte)
+  Class: Eq_325
   DataType: byte
   OrigDataType: byte
-T_339: (in a_100 + 1<8> @ 0894 : byte)
-  Class: Eq_124
+T_326: (in a_100 + 1<8> @ 0894 : byte)
+  Class: Eq_108
   DataType: byte
   OrigDataType: byte
-T_340: (in fn0A24 @ 01A8 : ptr16)
-  Class: Eq_235
-  DataType: (ptr16 Eq_235)
-  OrigDataType: (ptr16 (fn T_341 ()))
-T_341: (in fn0A24() @ 01A8 : void)
-  Class: Eq_237
+T_327: (in fn0A24 @ 01A8 : ptr16)
+  Class: Eq_221
+  DataType: (ptr16 Eq_221)
+  OrigDataType: (ptr16 (fn T_328 ()))
+T_328: (in fn0A24() @ 01A8 : void)
+  Class: Eq_223
   DataType: void
   OrigDataType: void
-T_342: (in v29_705 @ 01AB : bool)
-  Class: Eq_342
+T_329: (in v32_708 @ 01AB : bool)
+  Class: Eq_329
   DataType: bool
   OrigDataType: bool
-T_343: (in l_370 @ 01A0 : byte)
-  Class: Eq_343
+T_330: (in l_370 @ 01A0 : byte)
+  Class: Eq_330
   DataType: byte
   OrigDataType: byte
-T_344: (in e_372 @ 01A0 : byte)
-  Class: Eq_343
+T_331: (in e_372 @ 01A0 : byte)
+  Class: Eq_330
   DataType: byte
   OrigDataType: byte
-T_345: (in l_370 == e_372 @ 01A0 : bool)
-  Class: Eq_342
+T_332: (in l_370 == e_372 @ 01A0 : bool)
+  Class: Eq_329
   DataType: bool
   OrigDataType: bool
-T_346: (in l_370 != e_372 @ 01A1 : bool)
-  Class: Eq_346
+T_333: (in l_370 != e_372 @ 01A1 : bool)
+  Class: Eq_333
   DataType: bool
   OrigDataType: bool
-T_347: (in fn02C5 @ 01A3 : ptr16)
-  Class: Eq_215
-  DataType: (ptr16 Eq_215)
-  OrigDataType: (ptr16 (fn T_358 (T_56, T_148, T_349, T_351, T_353, T_355, T_357)))
-T_348: (in f_854 @ 01A3 : byte)
-  Class: Eq_348
+T_334: (in fn02C5 @ 01A3 : ptr16)
+  Class: Eq_201
+  DataType: (ptr16 Eq_201)
+  OrigDataType: (ptr16 (fn T_345 (T_56, T_134, T_336, T_338, T_340, T_342, T_344)))
+T_335: (in f_859 @ 01A3 : byte)
+  Class: Eq_335
   DataType: byte
   OrigDataType: byte
-T_349: (in out f_854 @ 01A3 : byte)
+T_336: (in out f_859 @ 01A3 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_350: (in bc_378 @ 01A3 : word16)
-  Class: Eq_350
+T_337: (in bc_378 @ 01A3 : word16)
+  Class: Eq_337
   DataType: word16
   OrigDataType: word16
-T_351: (in out bc_378 @ 01A3 : word16)
-  Class: Eq_223
+T_338: (in out bc_378 @ 01A3 : word16)
+  Class: Eq_209
   DataType: uint16
   OrigDataType: word16
-T_352: (in d_855 @ 01A3 : byte)
-  Class: Eq_352
+T_339: (in d_860 @ 01A3 : byte)
+  Class: Eq_339
   DataType: byte
   OrigDataType: byte
-T_353: (in out d_855 @ 01A3 : byte)
+T_340: (in out d_860 @ 01A3 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_354: (in hl_856 @ 01A3 : word16)
-  Class: Eq_354
+T_341: (in hl_861 @ 01A3 : word16)
+  Class: Eq_341
   DataType: word16
   OrigDataType: word16
-T_355: (in out hl_856 @ 01A3 : word16)
+T_342: (in out hl_861 @ 01A3 : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_356: (in ix_383 @ 01A3 : (ptr16 Eq_147))
-  Class: Eq_147
-  DataType: (ptr16 Eq_147)
+T_343: (in ix_383 @ 01A3 : (ptr16 Eq_133))
+  Class: Eq_133
+  DataType: (ptr16 Eq_133)
   OrigDataType: word16
-T_357: (in out ix_383 @ 01A3 : word16)
-  Class: Eq_147
-  DataType: (ptr16 Eq_147)
+T_344: (in out ix_383 @ 01A3 : word16)
+  Class: Eq_133
+  DataType: (ptr16 Eq_133)
   OrigDataType: word16
-T_358: (in fn02C5(f_351, ix_328, out f_854, out bc_378, out d_855, out hl_856, out ix_383) @ 01A3 : bool)
-  Class: Eq_233
-  DataType: Eq_233
+T_345: (in fn02C5(f_351, ix_328, out f_859, out bc_378, out d_860, out hl_861, out ix_383) @ 01A3 : bool)
+  Class: Eq_219
+  DataType: Eq_219
   OrigDataType: bool
-T_359: (in de_379 @ 01A3 : (ptr16 Eq_53))
+T_346: (in de_379 @ 01A3 : (ptr16 Eq_53))
   Class: Eq_53
   DataType: (ptr16 Eq_53)
   OrigDataType: word16
-T_360: (in af_377 @ 01A3 : (ptr16 Eq_53))
+T_347: (in af_377 @ 01A3 : (ptr16 Eq_53))
   Class: Eq_53
   DataType: (ptr16 Eq_53)
   OrigDataType: word16
-T_361: (in SLICE(de_379, byte, 8) @ 01A3 : byte)
+T_348: (in SLICE(de_379, byte, 8) @ 01A3 : byte)
   Class: Eq_25
   DataType: byte
   OrigDataType: byte
-T_362: (in d_388 @ 01A3 : byte)
+T_349: (in d_388 @ 01A3 : byte)
   Class: Eq_25
   DataType: byte
   OrigDataType: byte
-T_363: (in SLICE(af_377, byte, 0) @ 01A3 : byte)
+T_350: (in SLICE(af_377, byte, 0) @ 01A3 : byte)
   Class: Eq_2
   DataType: byte
   OrigDataType: byte
-T_364: (in f_389 @ 01A3 : byte)
+T_351: (in f_389 @ 01A3 : byte)
   Class: Eq_2
   DataType: byte
   OrigDataType: byte
-T_365: (in fn01FF @ 01A6 : ptr16)
-  Class: Eq_365
-  DataType: (ptr16 Eq_365)
-  OrigDataType: (ptr16 (fn T_381 (T_364, T_371, T_362, T_356, T_373, T_376, T_379)))
-T_366: (in signature of fn01FF @ 01FF : void)
-  Class: Eq_365
-  DataType: (ptr16 Eq_365)
+T_352: (in fn01FF @ 01A6 : ptr16)
+  Class: Eq_352
+  DataType: (ptr16 Eq_352)
+  OrigDataType: (ptr16 (fn T_368 (T_351, T_358, T_349, T_343, T_360, T_363, T_366)))
+T_353: (in signature of fn01FF @ 01FF : void)
+  Class: Eq_352
+  DataType: (ptr16 Eq_352)
   OrigDataType: 
-T_367: (in f @ 01A6 : byte)
+T_354: (in f @ 01A6 : byte)
   Class: Eq_2
   DataType: byte
   OrigDataType: byte
-T_368: (in b @ 01A6 : byte)
-  Class: Eq_368
+T_355: (in b @ 01A6 : byte)
+  Class: Eq_355
   DataType: byte
   OrigDataType: byte
-T_369: (in d @ 01A6 : byte)
+T_356: (in d @ 01A6 : byte)
   Class: Eq_25
   DataType: byte
   OrigDataType: byte
-T_370: (in ix @ 01A6 : (ptr16 Eq_147))
-  Class: Eq_147
-  DataType: (ptr16 Eq_147)
+T_357: (in ix @ 01A6 : (ptr16 Eq_133))
+  Class: Eq_133
+  DataType: (ptr16 Eq_133)
   OrigDataType: (ptr16 (struct 0001 (0 byte b0000)))
-T_371: (in SLICE(bc_378, byte, 0) @ 01A6 : byte)
+T_358: (in SLICE(bc_378, byte, 0) @ 01A6 : byte)
+  Class: Eq_355
+  DataType: byte
+  OrigDataType: byte
+T_359: (in f_862 @ 01A6 : byte)
+  Class: Eq_359
+  DataType: byte
+  OrigDataType: byte
+T_360: (in out f_862 @ 01A6 : byte)
+  Class: Eq_38
+  DataType: uint8
+  OrigDataType: byte
+T_361: (in fOut @ 01A6 : uint8)
+  Class: Eq_38
+  DataType: uint8
+  OrigDataType: byte
+T_362: (in bc_863 @ 01A6 : word16)
+  Class: Eq_362
+  DataType: word16
+  OrigDataType: word16
+T_363: (in out bc_863 @ 01A6 : word16)
+  Class: Eq_363
+  DataType: word16
+  OrigDataType: word16
+T_364: (in bcOut @ 01A6 : word16)
+  Class: Eq_363
+  DataType: word16
+  OrigDataType: word16
+T_365: (in d_864 @ 01A6 : byte)
+  Class: Eq_365
+  DataType: byte
+  OrigDataType: byte
+T_366: (in out d_864 @ 01A6 : byte)
+  Class: Eq_38
+  DataType: uint8
+  OrigDataType: byte
+T_367: (in dOut @ 01A6 : uint8)
+  Class: Eq_38
+  DataType: uint8
+  OrigDataType: byte
+T_368: (in fn01FF(f_389, (byte) bc_378, d_388, ix_383, out f_862, out bc_863, out d_864) @ 01A6 : bool)
   Class: Eq_368
-  DataType: byte
-  OrigDataType: byte
-T_372: (in f_857 @ 01A6 : byte)
-  Class: Eq_372
-  DataType: byte
-  OrigDataType: byte
-T_373: (in out f_857 @ 01A6 : byte)
-  Class: Eq_38
-  DataType: uint8
-  OrigDataType: byte
-T_374: (in fOut @ 01A6 : uint8)
-  Class: Eq_38
-  DataType: uint8
-  OrigDataType: byte
-T_375: (in bc_858 @ 01A6 : word16)
-  Class: Eq_375
-  DataType: word16
-  OrigDataType: word16
-T_376: (in out bc_858 @ 01A6 : word16)
-  Class: Eq_376
-  DataType: word16
-  OrigDataType: word16
-T_377: (in bcOut @ 01A6 : word16)
-  Class: Eq_376
-  DataType: word16
-  OrigDataType: word16
-T_378: (in d_859 @ 01A6 : byte)
-  Class: Eq_378
-  DataType: byte
-  OrigDataType: byte
-T_379: (in out d_859 @ 01A6 : byte)
-  Class: Eq_38
-  DataType: uint8
-  OrigDataType: byte
-T_380: (in dOut @ 01A6 : uint8)
-  Class: Eq_38
-  DataType: uint8
-  OrigDataType: byte
-T_381: (in fn01FF(f_389, (byte) bc_378, d_388, ix_383, out f_857, out bc_858, out d_859) @ 01A6 : bool)
-  Class: Eq_381
-  DataType: Eq_381
+  DataType: Eq_368
   OrigDataType: bool
-T_382: (in 0xAAE<16> @ 017B : word16)
-  Class: Eq_382
+T_369: (in 0xAAE<16> @ 017B : word16)
+  Class: Eq_369
   DataType: word16
   OrigDataType: word16
-T_383: (in bc_571 @ 017B : Eq_382)
-  Class: Eq_382
-  DataType: Eq_382
+T_370: (in bc_571 @ 017B : Eq_369)
+  Class: Eq_369
+  DataType: Eq_369
   OrigDataType: word16
-T_384: (in 0<8> @ 02A4 : byte)
+T_371: (in 0<8> @ 02A4 : byte)
   Class: Eq_72
   DataType: byte
   OrigDataType: byte
-T_385: (in bc_839 == 0<8> @ 02A4 : bool)
-  Class: Eq_385
+T_372: (in bc_843 == 0<8> @ 02A4 : bool)
+  Class: Eq_372
   DataType: bool
   OrigDataType: bool
-T_386: (in 1<16> @ 017E : word16)
+T_373: (in 1<16> @ 017E : word16)
+  Class: Eq_373
+  DataType: word16
+  OrigDataType: word16
+T_374: (in bc_571 - 1<16> @ 017E : word16)
+  Class: Eq_369
+  DataType: Eq_369
+  OrigDataType: word16
+T_375: (in 0<8> @ 0181 : byte)
+  Class: Eq_369
+  DataType: byte
+  OrigDataType: byte
+T_376: (in bc_571 != 0<8> @ 0181 : bool)
+  Class: Eq_376
+  DataType: bool
+  OrigDataType: bool
+T_377: (in a_563 @ 0183 : byte)
+  Class: Eq_237
+  DataType: byte
+  OrigDataType: byte
+T_378: (in 1<8> @ 0183 : byte)
+  Class: Eq_378
+  DataType: byte
+  OrigDataType: byte
+T_379: (in a_563 - 1<8> @ 0183 : byte)
+  Class: Eq_237
+  DataType: byte
+  OrigDataType: byte
+T_380: (in f_568 @ 0183 : byte)
+  Class: Eq_2
+  DataType: byte
+  OrigDataType: byte
+T_381: (in 0xAAC<16> @ 016C : word16)
+  Class: Eq_381
+  DataType: (ptr16 byte)
+  OrigDataType: (ptr16 (struct (0 T_382 t0000)))
+T_382: (in Mem539[0xAAC<16>:byte] @ 016C : byte)
+  Class: Eq_237
+  DataType: byte
+  OrigDataType: byte
+T_383: (in fn02C5 @ 016F : ptr16)
+  Class: Eq_201
+  DataType: (ptr16 Eq_201)
+  OrigDataType: (ptr16 (fn T_393 (T_56, T_134, T_385, T_387, T_389, T_391, T_392)))
+T_384: (in f_865 @ 016F : byte)
+  Class: Eq_384
+  DataType: byte
+  OrigDataType: byte
+T_385: (in out f_865 @ 016F : byte)
+  Class: Eq_38
+  DataType: uint8
+  OrigDataType: byte
+T_386: (in bc_543 @ 016F : word16)
   Class: Eq_386
   DataType: word16
   OrigDataType: word16
-T_387: (in bc_571 - 1<16> @ 017E : word16)
-  Class: Eq_382
-  DataType: Eq_382
-  OrigDataType: word16
-T_388: (in 0<8> @ 0181 : byte)
-  Class: Eq_382
-  DataType: byte
-  OrigDataType: byte
-T_389: (in bc_571 != 0<8> @ 0181 : bool)
-  Class: Eq_389
-  DataType: bool
-  OrigDataType: bool
-T_390: (in a_563 @ 0183 : byte)
-  Class: Eq_251
-  DataType: byte
-  OrigDataType: byte
-T_391: (in 1<8> @ 0183 : byte)
-  Class: Eq_251
-  DataType: byte
-  OrigDataType: byte
-T_392: (in a_563 - 1<8> @ 0183 : byte)
-  Class: Eq_251
-  DataType: byte
-  OrigDataType: byte
-T_393: (in f_568 @ 0183 : byte)
-  Class: Eq_2
-  DataType: byte
-  OrigDataType: byte
-T_394: (in 0xAAC<16> @ 016C : word16)
-  Class: Eq_394
-  DataType: (ptr16 byte)
-  OrigDataType: (ptr16 (struct (0 T_395 t0000)))
-T_395: (in Mem539[0xAAC<16>:byte] @ 016C : byte)
-  Class: Eq_251
-  DataType: byte
-  OrigDataType: byte
-T_396: (in fn02C5 @ 016F : ptr16)
-  Class: Eq_215
-  DataType: (ptr16 Eq_215)
-  OrigDataType: (ptr16 (fn T_406 (T_56, T_148, T_398, T_400, T_402, T_404, T_405)))
-T_397: (in f_860 @ 016F : byte)
-  Class: Eq_397
-  DataType: byte
-  OrigDataType: byte
-T_398: (in out f_860 @ 016F : byte)
-  Class: Eq_38
-  DataType: uint8
-  OrigDataType: byte
-T_399: (in bc_543 @ 016F : word16)
-  Class: Eq_399
-  DataType: word16
-  OrigDataType: word16
-T_400: (in out bc_543 @ 016F : word16)
-  Class: Eq_223
+T_387: (in out bc_543 @ 016F : word16)
+  Class: Eq_209
   DataType: uint16
   OrigDataType: word16
-T_401: (in d_861 @ 016F : byte)
-  Class: Eq_401
+T_388: (in d_866 @ 016F : byte)
+  Class: Eq_388
   DataType: byte
   OrigDataType: byte
-T_402: (in out d_861 @ 016F : byte)
+T_389: (in out d_866 @ 016F : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_403: (in hl_862 @ 016F : word16)
-  Class: Eq_403
+T_390: (in hl_867 @ 016F : word16)
+  Class: Eq_390
   DataType: word16
   OrigDataType: word16
-T_404: (in out hl_862 @ 016F : word16)
+T_391: (in out hl_867 @ 016F : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_405: (in out ix_328 @ 016F : word16)
-  Class: Eq_147
-  DataType: (ptr16 Eq_147)
+T_392: (in out ix_328 @ 016F : word16)
+  Class: Eq_133
+  DataType: (ptr16 Eq_133)
   OrigDataType: word16
-T_406: (in fn02C5(f_351, ix_328, out f_860, out bc_543, out d_861, out hl_862, out ix_328) @ 016F : bool)
-  Class: Eq_233
-  DataType: Eq_233
+T_393: (in fn02C5(f_351, ix_328, out f_865, out bc_543, out d_866, out hl_867, out ix_328) @ 016F : bool)
+  Class: Eq_219
+  DataType: Eq_219
   OrigDataType: bool
-T_407: (in de_544 @ 016F : (ptr16 Eq_53))
+T_394: (in de_544 @ 016F : (ptr16 Eq_53))
   Class: Eq_53
   DataType: (ptr16 Eq_53)
   OrigDataType: word16
-T_408: (in af_542 @ 016F : (ptr16 Eq_53))
+T_395: (in af_542 @ 016F : (ptr16 Eq_53))
   Class: Eq_53
   DataType: (ptr16 Eq_53)
   OrigDataType: word16
-T_409: (in fn01FF @ 0172 : ptr16)
-  Class: Eq_365
-  DataType: (ptr16 Eq_365)
-  OrigDataType: (ptr16 (fn T_419 (T_410, T_411, T_412, T_148, T_414, T_416, T_418)))
-T_410: (in SLICE(af_542, byte, 0) @ 0172 : byte)
+T_396: (in fn01FF @ 0172 : ptr16)
+  Class: Eq_352
+  DataType: (ptr16 Eq_352)
+  OrigDataType: (ptr16 (fn T_406 (T_397, T_398, T_399, T_134, T_401, T_403, T_405)))
+T_397: (in SLICE(af_542, byte, 0) @ 0172 : byte)
   Class: Eq_2
   DataType: byte
   OrigDataType: byte
-T_411: (in SLICE(bc_543, byte, 0) @ 0172 : byte)
-  Class: Eq_368
+T_398: (in SLICE(bc_543, byte, 0) @ 0172 : byte)
+  Class: Eq_355
   DataType: byte
   OrigDataType: byte
-T_412: (in SLICE(de_544, byte, 8) @ 0172 : byte)
+T_399: (in SLICE(de_544, byte, 8) @ 0172 : byte)
   Class: Eq_25
   DataType: byte
   OrigDataType: byte
-T_413: (in f_863 @ 0172 : byte)
-  Class: Eq_413
+T_400: (in f_868 @ 0172 : byte)
+  Class: Eq_400
   DataType: byte
   OrigDataType: byte
-T_414: (in out f_863 @ 0172 : byte)
+T_401: (in out f_868 @ 0172 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_415: (in bc_864 @ 0172 : word16)
-  Class: Eq_415
+T_402: (in bc_869 @ 0172 : word16)
+  Class: Eq_402
   DataType: word16
   OrigDataType: word16
-T_416: (in out bc_864 @ 0172 : word16)
-  Class: Eq_376
+T_403: (in out bc_869 @ 0172 : word16)
+  Class: Eq_363
   DataType: word16
   OrigDataType: word16
-T_417: (in d_865 @ 0172 : byte)
+T_404: (in d_870 @ 0172 : byte)
+  Class: Eq_404
+  DataType: byte
+  OrigDataType: byte
+T_405: (in out d_870 @ 0172 : byte)
+  Class: Eq_38
+  DataType: uint8
+  OrigDataType: byte
+T_406: (in fn01FF((byte) af_542, (byte) bc_543, SLICE(de_544, byte, 8), ix_328, out f_868, out bc_869, out d_870) @ 0172 : bool)
+  Class: Eq_368
+  DataType: Eq_368
+  OrigDataType: bool
+T_407: (in af_555 @ 0172 : (ptr16 Eq_53))
+  Class: Eq_53
+  DataType: (ptr16 Eq_53)
+  OrigDataType: word16
+T_408: (in SLICE(af_555, byte, 0) @ 0172 : byte)
+  Class: Eq_2
+  DataType: byte
+  OrigDataType: byte
+T_409: (in 0xAAC<16> @ 0175 : word16)
+  Class: Eq_409
+  DataType: (ptr16 byte)
+  OrigDataType: (ptr16 (struct (0 T_410 t0000)))
+T_410: (in Mem539[0xAAC<16>:byte] @ 0175 : byte)
+  Class: Eq_237
+  DataType: byte
+  OrigDataType: byte
+T_411: (in 1<8> @ 0179 : byte)
+  Class: Eq_237
+  DataType: byte
+  OrigDataType: byte
+T_412: (in a_563 != 1<8> @ 0179 : bool)
+  Class: Eq_412
+  DataType: bool
+  OrigDataType: bool
+T_413: (in fn02C5 @ 0194 : ptr16)
+  Class: Eq_201
+  DataType: (ptr16 Eq_201)
+  OrigDataType: (ptr16 (fn T_422 (T_56, T_134, T_415, T_416, T_418, T_420, T_421)))
+T_414: (in f_871 @ 0194 : byte)
+  Class: Eq_414
+  DataType: byte
+  OrigDataType: byte
+T_415: (in out f_871 @ 0194 : byte)
+  Class: Eq_38
+  DataType: uint8
+  OrigDataType: byte
+T_416: (in out bc_353 @ 0194 : word16)
+  Class: Eq_209
+  DataType: uint16
+  OrigDataType: word16
+T_417: (in d_872 @ 0194 : byte)
   Class: Eq_417
   DataType: byte
   OrigDataType: byte
-T_418: (in out d_865 @ 0172 : byte)
+T_418: (in out d_872 @ 0194 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_419: (in fn01FF((byte) af_542, (byte) bc_543, SLICE(de_544, byte, 8), ix_328, out f_863, out bc_864, out d_865) @ 0172 : bool)
-  Class: Eq_381
-  DataType: Eq_381
-  OrigDataType: bool
-T_420: (in af_555 @ 0172 : (ptr16 Eq_53))
-  Class: Eq_53
-  DataType: (ptr16 Eq_53)
-  OrigDataType: word16
-T_421: (in SLICE(af_555, byte, 0) @ 0172 : byte)
-  Class: Eq_2
-  DataType: byte
-  OrigDataType: byte
-T_422: (in 0xAAC<16> @ 0175 : word16)
-  Class: Eq_422
-  DataType: (ptr16 byte)
-  OrigDataType: (ptr16 (struct (0 T_423 t0000)))
-T_423: (in Mem539[0xAAC<16>:byte] @ 0175 : byte)
-  Class: Eq_251
-  DataType: byte
-  OrigDataType: byte
-T_424: (in a_563 != 1<8> @ 0179 : bool)
-  Class: Eq_424
-  DataType: bool
-  OrigDataType: bool
-T_425: (in fn02C5 @ 0194 : ptr16)
-  Class: Eq_215
-  DataType: (ptr16 Eq_215)
-  OrigDataType: (ptr16 (fn T_434 (T_56, T_148, T_427, T_428, T_430, T_432, T_433)))
-T_426: (in f_866 @ 0194 : byte)
-  Class: Eq_426
-  DataType: byte
-  OrigDataType: byte
-T_427: (in out f_866 @ 0194 : byte)
-  Class: Eq_38
-  DataType: uint8
-  OrigDataType: byte
-T_428: (in out bc_353 @ 0194 : word16)
-  Class: Eq_223
-  DataType: uint16
-  OrigDataType: word16
-T_429: (in d_867 @ 0194 : byte)
-  Class: Eq_429
-  DataType: byte
-  OrigDataType: byte
-T_430: (in out d_867 @ 0194 : byte)
-  Class: Eq_38
-  DataType: uint8
-  OrigDataType: byte
-T_431: (in hl_355 @ 0194 : word16)
-  Class: Eq_431
+T_419: (in hl_355 @ 0194 : word16)
+  Class: Eq_419
   DataType: word16
   OrigDataType: word16
-T_432: (in out hl_355 @ 0194 : word16)
+T_420: (in out hl_355 @ 0194 : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_433: (in out ix_328 @ 0194 : word16)
-  Class: Eq_147
-  DataType: (ptr16 Eq_147)
+T_421: (in out ix_328 @ 0194 : word16)
+  Class: Eq_133
+  DataType: (ptr16 Eq_133)
   OrigDataType: word16
-T_434: (in fn02C5(f_351, ix_328, out f_866, out bc_353, out d_867, out hl_355, out ix_328) @ 0194 : bool)
-  Class: Eq_233
-  DataType: Eq_233
+T_422: (in fn02C5(f_351, ix_328, out f_871, out bc_353, out d_872, out hl_355, out ix_328) @ 0194 : bool)
+  Class: Eq_219
+  DataType: Eq_219
   OrigDataType: bool
-T_435: (in af_352 @ 0194 : (ptr16 Eq_53))
+T_423: (in af_352 @ 0194 : (ptr16 Eq_53))
   Class: Eq_53
   DataType: (ptr16 Eq_53)
   OrigDataType: word16
-T_436: (in 0xAB0<16> @ 0197 : word16)
-  Class: Eq_436
+T_424: (in 0xAB0<16> @ 0197 : word16)
+  Class: Eq_424
   DataType: (ptr16 word16)
-  OrigDataType: (ptr16 (struct (0 T_437 t0000)))
-T_437: (in Mem349[0xAB0<16>:word16] @ 0197 : word16)
-  Class: Eq_159
+  OrigDataType: (ptr16 (struct (0 T_425 t0000)))
+T_425: (in Mem349[0xAB0<16>:word16] @ 0197 : word16)
+  Class: Eq_145
   DataType: word16
   OrigDataType: word16
-T_438: (in de_364 @ 0197 : word16)
-  Class: Eq_159
+T_426: (in de_364 @ 0197 : word16)
+  Class: Eq_145
   DataType: word16
   OrigDataType: word16
-T_439: (in SLICE(hl_355, byte, 8) @ 0194 : byte)
+T_427: (in SLICE(hl_355, byte, 8) @ 0194 : byte)
   Class: Eq_25
   DataType: byte
   OrigDataType: byte
-T_440: (in h_365 @ 0194 : byte)
+T_428: (in h_365 @ 0194 : byte)
   Class: Eq_25
   DataType: byte
   OrigDataType: byte
-T_441: (in SLICE(de_364, byte, 8) @ 0197 : byte)
+T_429: (in SLICE(de_364, byte, 8) @ 0197 : byte)
   Class: Eq_25
   DataType: byte
   OrigDataType: byte
-T_442: (in SLICE(hl_355, byte, 0) @ 0194 : byte)
-  Class: Eq_343
+T_430: (in SLICE(hl_355, byte, 0) @ 0194 : byte)
+  Class: Eq_330
   DataType: byte
   OrigDataType: byte
-T_443: (in SLICE(af_352, byte, 0) @ 0194 : byte)
+T_431: (in SLICE(af_352, byte, 0) @ 0194 : byte)
   Class: Eq_2
   DataType: byte
   OrigDataType: byte
-T_444: (in SLICE(de_364, byte, 0) @ 0197 : byte)
-  Class: Eq_343
+T_432: (in SLICE(de_364, byte, 0) @ 0197 : byte)
+  Class: Eq_330
   DataType: byte
   OrigDataType: byte
-T_445: (in h_365 == d_367 @ 019C : bool)
-  Class: Eq_342
+T_433: (in h_365 == d_367 @ 019C : bool)
+  Class: Eq_329
   DataType: bool
   OrigDataType: bool
-T_446: (in h_365 != d_367 @ 019D : bool)
+T_434: (in h_365 != d_367 @ 019D : bool)
+  Class: Eq_434
+  DataType: bool
+  OrigDataType: bool
+T_435: (in fn0A27 @ 01B7 : ptr16)
+  Class: Eq_435
+  DataType: (ptr16 Eq_435)
+  OrigDataType: (ptr16 (fn T_437 ()))
+T_436: (in signature of fn0A27 @ 0A27 : void)
+  Class: Eq_435
+  DataType: (ptr16 Eq_435)
+  OrigDataType: 
+T_437: (in fn0A27() @ 01B7 : void)
+  Class: Eq_437
+  DataType: void
+  OrigDataType: void
+T_438: (in 1<8> @ 0895 : byte)
+  Class: Eq_438
+  DataType: byte
+  OrigDataType: byte
+T_439: (in bc_881 >> 1<8> @ 0895 : uint16)
+  Class: Eq_111
+  DataType: uint16
+  OrigDataType: uint16
+T_440: (in bc_881 >> 1<8> @ 0894 : uint16)
+  Class: Eq_111
+  DataType: uint16
+  OrigDataType: uint16
+T_441: (in bc_881 >> 1<8> @ 0892 : uint16)
+  Class: Eq_441
+  DataType: uint16
+  OrigDataType: uint16
+T_442: (in SLICE(bc_881 >>u 1<8>, byte, 0) @ 0892 : byte)
+  Class: Eq_442
+  DataType: cu8
+  OrigDataType: cu8
+T_443: (in 0<8> @ 0892 : byte)
+  Class: Eq_442
+  DataType: cu8
+  OrigDataType: cu8
+T_444: (in (byte) (bc_881 >> 1<8>) >= 0<8> @ 0892 : bool)
+  Class: Eq_444
+  DataType: bool
+  OrigDataType: bool
+T_445: (in 0<8> @ 0899 : byte)
+  Class: Eq_108
+  DataType: byte
+  OrigDataType: byte
+T_446: (in a_100 == 0<8> @ 0899 : bool)
   Class: Eq_446
   DataType: bool
   OrigDataType: bool
-T_447: (in fn0A27 @ 01B7 : ptr16)
-  Class: Eq_447
-  DataType: (ptr16 Eq_447)
-  OrigDataType: (ptr16 (fn T_449 ()))
-T_448: (in signature of fn0A27 @ 0A27 : void)
-  Class: Eq_447
-  DataType: (ptr16 Eq_447)
-  OrigDataType: 
-T_449: (in fn0A27() @ 01B7 : void)
+T_447: (in hl_136 @ 089C : Eq_87)
+  Class: Eq_87
+  DataType: Eq_87
+  OrigDataType: word16
+T_448: (in 1<16> @ 089D : word16)
+  Class: Eq_448
+  DataType: word16
+  OrigDataType: word16
+T_449: (in bc_127 - 1<16> @ 089D : word16)
   Class: Eq_449
-  DataType: void
-  OrigDataType: void
-T_450: (in 1<8> @ 088E : byte)
-  Class: Eq_450
-  DataType: byte
-  OrigDataType: byte
-T_451: (in bc_836 >> 1<8> @ 088E : cui16)
-  Class: Eq_127
-  DataType: uint16
-  OrigDataType: uint16
-T_452: (in SLICE(bc_836, byte, 0) @ 0892 : byte)
-  Class: Eq_452
-  DataType: cu8
-  OrigDataType: cu8
-T_453: (in 0<8> @ 0892 : byte)
-  Class: Eq_452
-  DataType: cu8
-  OrigDataType: cu8
-T_454: (in (byte) bc_836 >= 0<8> @ 0892 : bool)
-  Class: Eq_454
-  DataType: bool
-  OrigDataType: bool
-T_455: (in 0<8> @ 0899 : byte)
-  Class: Eq_124
-  DataType: byte
-  OrigDataType: byte
-T_456: (in a_100 == 0<8> @ 0899 : bool)
-  Class: Eq_456
-  DataType: bool
-  OrigDataType: bool
-T_457: (in hl_136 @ 089C : Eq_87)
-  Class: Eq_87
-  DataType: Eq_87
+  DataType: Eq_449
   OrigDataType: word16
-T_458: (in 1<16> @ 089D : word16)
-  Class: Eq_458
-  DataType: uint16
-  OrigDataType: uint16
-T_459: (in bc_127 - 1<16> @ 089D : word16)
-  Class: Eq_459
-  DataType: Eq_459
-  OrigDataType: uint16
-T_460: (in bc_139 @ 089D : Eq_459)
-  Class: Eq_459
-  DataType: Eq_459
-  OrigDataType: uint16
-T_461: (in 1<16> @ 089B : word16)
-  Class: Eq_461
+T_450: (in bc_139 @ 089D : Eq_449)
+  Class: Eq_449
+  DataType: Eq_449
+  OrigDataType: word16
+T_451: (in 1<16> @ 089B : word16)
+  Class: Eq_451
   DataType: word16
   OrigDataType: word16
-T_462: (in bc_836 + 1<16> @ 089B : word16)
-  Class: Eq_127
+T_452: (in bc_881 + 1<16> @ 089B : word16)
+  Class: Eq_111
   DataType: uint16
   OrigDataType: uint16
-T_463: (in fn01FF @ 01BA : ptr16)
-  Class: Eq_365
-  DataType: (ptr16 Eq_365)
-  OrigDataType: (ptr16 (fn T_471 (T_56, T_464, T_239, T_148, T_466, T_468, T_470)))
-T_464: (in SLICE(bc_353, byte, 0) @ 01BA : byte)
+T_453: (in fn01FF @ 01BA : ptr16)
+  Class: Eq_352
+  DataType: (ptr16 Eq_352)
+  OrigDataType: (ptr16 (fn T_461 (T_56, T_454, T_225, T_134, T_456, T_458, T_460)))
+T_454: (in SLICE(bc_353, byte, 0) @ 01BA : byte)
+  Class: Eq_355
+  DataType: byte
+  OrigDataType: byte
+T_455: (in f_873 @ 01BA : byte)
+  Class: Eq_455
+  DataType: byte
+  OrigDataType: byte
+T_456: (in out f_873 @ 01BA : byte)
+  Class: Eq_38
+  DataType: uint8
+  OrigDataType: byte
+T_457: (in bc_874 @ 01BA : word16)
+  Class: Eq_457
+  DataType: word16
+  OrigDataType: word16
+T_458: (in out bc_874 @ 01BA : word16)
+  Class: Eq_363
+  DataType: word16
+  OrigDataType: word16
+T_459: (in d_875 @ 01BA : byte)
+  Class: Eq_459
+  DataType: byte
+  OrigDataType: byte
+T_460: (in out d_875 @ 01BA : byte)
+  Class: Eq_38
+  DataType: uint8
+  OrigDataType: byte
+T_461: (in fn01FF(f_351, (byte) bc_353, d_367, ix_328, out f_873, out bc_874, out d_875) @ 01BA : bool)
   Class: Eq_368
-  DataType: byte
-  OrigDataType: byte
-T_465: (in f_868 @ 01BA : byte)
-  Class: Eq_465
-  DataType: byte
-  OrigDataType: byte
-T_466: (in out f_868 @ 01BA : byte)
-  Class: Eq_38
-  DataType: uint8
-  OrigDataType: byte
-T_467: (in bc_869 @ 01BA : word16)
-  Class: Eq_467
-  DataType: word16
-  OrigDataType: word16
-T_468: (in out bc_869 @ 01BA : word16)
-  Class: Eq_376
-  DataType: word16
-  OrigDataType: word16
-T_469: (in d_870 @ 01BA : byte)
-  Class: Eq_469
-  DataType: byte
-  OrigDataType: byte
-T_470: (in out d_870 @ 01BA : byte)
-  Class: Eq_38
-  DataType: uint8
-  OrigDataType: byte
-T_471: (in fn01FF(f_351, (byte) bc_353, d_367, ix_328, out f_868, out bc_869, out d_870) @ 01BA : bool)
-  Class: Eq_381
-  DataType: Eq_381
+  DataType: Eq_368
   OrigDataType: bool
-T_472: (in fn0E24 @ 08AB : ptr16)
-  Class: Eq_472
-  DataType: (ptr16 Eq_472)
-  OrigDataType: (ptr16 (fn T_482 (T_475, T_477, T_480)))
-T_473: (in signature of fn0E24 @ 0E24 : void)
-  Class: Eq_472
-  DataType: (ptr16 Eq_472)
+T_462: (in fn0E24 @ 08AB : ptr16)
+  Class: Eq_462
+  DataType: (ptr16 Eq_462)
+  OrigDataType: (ptr16 (fn T_472 (T_465, T_467, T_470)))
+T_463: (in signature of fn0E24 @ 0E24 : void)
+  Class: Eq_462
+  DataType: (ptr16 Eq_462)
   OrigDataType: 
-T_474: (in hl @ 08AB : Eq_87)
+T_464: (in hl @ 08AB : Eq_87)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_475: (in hl_157 @ 08AB : Eq_87)
+T_465: (in hl_157 @ 08AB : Eq_87)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_476: (in af_871 @ 08AB : word16)
-  Class: Eq_476
+T_466: (in af_876 @ 08AB : word16)
+  Class: Eq_466
   DataType: word16
   OrigDataType: word16
-T_477: (in out af_871 @ 08AB : word16)
+T_467: (in out af_876 @ 08AB : word16)
   Class: Eq_53
   DataType: (ptr16 Eq_53)
   OrigDataType: word16
-T_478: (in afOut @ 08AB : (ptr16 Eq_53))
+T_468: (in afOut @ 08AB : (ptr16 Eq_53))
   Class: Eq_53
   DataType: (ptr16 Eq_53)
   OrigDataType: word16
-T_479: (in hl_159 @ 08AB : word16)
+T_469: (in hl_159 @ 08AB : word16)
+  Class: Eq_469
+  DataType: word16
+  OrigDataType: word16
+T_470: (in out hl_159 @ 08AB : word16)
+  Class: Eq_87
+  DataType: Eq_87
+  OrigDataType: word16
+T_471: (in hlOut @ 08AB : Eq_87)
+  Class: Eq_87
+  DataType: Eq_87
+  OrigDataType: word16
+T_472: (in fn0E24(hl_157, out af_876, out hl_159) @ 08AB : bool)
+  Class: Eq_472
+  DataType: Eq_472
+  OrigDataType: bool
+T_473: (in <invalid> @ 08AB : byte)
+  Class: Eq_38
+  DataType: uint8
+  OrigDataType: byte
+T_474: (in a_158 @ 08AB : uint8)
+  Class: Eq_38
+  DataType: uint8
+  OrigDataType: byte
+T_475: (in fn0929 @ 08AE : ptr16)
+  Class: Eq_475
+  DataType: (ptr16 Eq_475)
+  OrigDataType: (ptr16 (fn T_479 (T_478)))
+T_476: (in signature of fn0929 @ 0929 : void)
+  Class: Eq_475
+  DataType: (ptr16 Eq_475)
+  OrigDataType: 
+T_477: (in af @ 08AE : word16)
+  Class: Eq_477
+  DataType: word16
+  OrigDataType: word16
+T_478: (in SEQ(a_158, f_147) @ 08AE : word16)
+  Class: Eq_477
+  DataType: word16
+  OrigDataType: word16
+T_479: (in fn0929(SEQ(a_158, f_147)) @ 08AE : word16)
   Class: Eq_479
   DataType: word16
   OrigDataType: word16
-T_480: (in out hl_159 @ 08AB : word16)
-  Class: Eq_87
-  DataType: Eq_87
-  OrigDataType: word16
-T_481: (in hlOut @ 08AB : Eq_87)
-  Class: Eq_87
-  DataType: Eq_87
-  OrigDataType: word16
-T_482: (in fn0E24(hl_157, out af_871, out hl_159) @ 08AB : bool)
-  Class: Eq_482
-  DataType: Eq_482
-  OrigDataType: bool
-T_483: (in <invalid> @ 08AB : byte)
-  Class: Eq_38
-  DataType: uint8
-  OrigDataType: byte
-T_484: (in a_158 @ 08AB : uint8)
-  Class: Eq_38
-  DataType: uint8
-  OrigDataType: byte
-T_485: (in fn0929 @ 08AE : ptr16)
-  Class: Eq_485
-  DataType: (ptr16 Eq_485)
-  OrigDataType: (ptr16 (fn T_489 (T_488)))
-T_486: (in signature of fn0929 @ 0929 : void)
-  Class: Eq_485
-  DataType: (ptr16 Eq_485)
-  OrigDataType: 
-T_487: (in af @ 08AE : word16)
-  Class: Eq_487
-  DataType: word16
-  OrigDataType: word16
-T_488: (in SEQ(a_158, f_147) @ 08AE : word16)
-  Class: Eq_487
-  DataType: word16
-  OrigDataType: word16
-T_489: (in fn0929(SEQ(a_158, f_147)) @ 08AE : word16)
-  Class: Eq_489
-  DataType: word16
-  OrigDataType: word16
-T_490: (in SLICE(fn0929(SEQ(a_158, f_147)), byte, 0) @ 08AE : byte)
-  Class: Eq_120
+T_480: (in SLICE(fn0929(SEQ(a_158, f_147)), byte, 0) @ 08AE : byte)
+  Class: Eq_104
   DataType: byte
   OrigDataType: byte
-T_491: (in fn0933 @ 08B1 : ptr16)
+T_481: (in fn0933 @ 08B1 : ptr16)
+  Class: Eq_481
+  DataType: (ptr16 Eq_481)
+  OrigDataType: (ptr16 (fn T_483 ()))
+T_482: (in signature of fn0933 @ 0933 : void)
+  Class: Eq_481
+  DataType: (ptr16 Eq_481)
+  OrigDataType: 
+T_483: (in fn0933() @ 08B1 : void)
+  Class: Eq_483
+  DataType: void
+  OrigDataType: void
+T_484: (in 1<16> @ 08B4 : word16)
+  Class: Eq_484
+  DataType: word16
+  OrigDataType: word16
+T_485: (in hl_159 + 1<16> @ 08B4 : word16)
+  Class: Eq_87
+  DataType: Eq_87
+  OrigDataType: word16
+T_486: (in e_156 @ 08B5 : byte)
+  Class: Eq_486
+  DataType: byte
+  OrigDataType: byte
+T_487: (in 1<8> @ 08B5 : byte)
+  Class: Eq_487
+  DataType: byte
+  OrigDataType: byte
+T_488: (in e_156 - 1<8> @ 08B5 : byte)
+  Class: Eq_486
+  DataType: byte
+  OrigDataType: byte
+T_489: (in 0<8> @ 08B6 : byte)
+  Class: Eq_486
+  DataType: byte
+  OrigDataType: byte
+T_490: (in e_156 != 0<8> @ 08B6 : bool)
+  Class: Eq_490
+  DataType: bool
+  OrigDataType: bool
+T_491: (in fn0930 @ 08B8 : ptr16)
   Class: Eq_491
   DataType: (ptr16 Eq_491)
   OrigDataType: (ptr16 (fn T_493 ()))
-T_492: (in signature of fn0933 @ 0933 : void)
+T_492: (in signature of fn0930 @ 0930 : void)
   Class: Eq_491
   DataType: (ptr16 Eq_491)
   OrigDataType: 
-T_493: (in fn0933() @ 08B1 : void)
+T_493: (in fn0930() @ 08B8 : void)
   Class: Eq_493
   DataType: void
   OrigDataType: void
-T_494: (in 1<16> @ 08B4 : word16)
+T_494: (in 0x10<8> @ 08BC : byte)
   Class: Eq_494
-  DataType: word16
-  OrigDataType: word16
-T_495: (in hl_159 + 1<16> @ 08B4 : word16)
-  Class: Eq_87
-  DataType: Eq_87
-  OrigDataType: word16
-T_496: (in e_156 @ 08B5 : byte)
-  Class: Eq_496
   DataType: byte
   OrigDataType: byte
-T_497: (in 1<8> @ 08B5 : byte)
-  Class: Eq_497
+T_495: (in e_181 @ 08BC : byte)
+  Class: Eq_494
   DataType: byte
   OrigDataType: byte
-T_498: (in e_156 - 1<8> @ 08B5 : byte)
-  Class: Eq_496
-  DataType: byte
-  OrigDataType: byte
-T_499: (in 0<8> @ 08B6 : byte)
-  Class: Eq_496
-  DataType: byte
-  OrigDataType: byte
-T_500: (in e_156 != 0<8> @ 08B6 : bool)
-  Class: Eq_500
-  DataType: bool
-  OrigDataType: bool
-T_501: (in fn0930 @ 08B8 : ptr16)
-  Class: Eq_501
-  DataType: (ptr16 Eq_501)
-  OrigDataType: (ptr16 (fn T_503 ()))
-T_502: (in signature of fn0930 @ 0930 : void)
-  Class: Eq_501
-  DataType: (ptr16 Eq_501)
-  OrigDataType: 
-T_503: (in fn0930() @ 08B8 : void)
-  Class: Eq_503
-  DataType: void
-  OrigDataType: void
-T_504: (in 0x10<8> @ 08BC : byte)
-  Class: Eq_504
-  DataType: byte
-  OrigDataType: byte
-T_505: (in e_181 @ 08BC : byte)
-  Class: Eq_504
-  DataType: byte
-  OrigDataType: byte
-T_506: (in a_183 @ 08C7 : uint8)
+T_496: (in a_183 @ 08C7 : uint8)
   Class: Eq_38
   DataType: uint8
   OrigDataType: cu8
-T_507: (in 0x80<8> @ 08C7 : byte)
+T_497: (in 0x80<8> @ 08C7 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: cu8
-T_508: (in a_183 < 0x80<8> @ 08C7 : bool)
-  Class: Eq_508
+T_498: (in a_183 < 0x80<8> @ 08C7 : bool)
+  Class: Eq_498
   DataType: bool
   OrigDataType: bool
-T_509: (in fn0A19 @ 08CB : ptr16)
-  Class: Eq_302
-  DataType: (ptr16 Eq_302)
-  OrigDataType: (ptr16 (fn T_510 ()))
-T_510: (in fn0A19() @ 08CB : byte)
-  Class: Eq_304
+T_499: (in fn0A19 @ 08CB : ptr16)
+  Class: Eq_288
+  DataType: (ptr16 Eq_288)
+  OrigDataType: (ptr16 (fn T_500 ()))
+T_500: (in fn0A19() @ 08CB : byte)
+  Class: Eq_290
   DataType: byte
   OrigDataType: byte
-T_511: (in hl_184 @ 08CE : word16)
-  Class: Eq_511
+T_501: (in hl_184 @ 08CE : word16)
+  Class: Eq_501
   DataType: word16
   OrigDataType: word16
-T_512: (in 1<16> @ 08CE : word16)
-  Class: Eq_512
+T_502: (in 1<16> @ 08CE : word16)
+  Class: Eq_502
   DataType: word16
   OrigDataType: word16
-T_513: (in hl_184 + 1<16> @ 08CE : word16)
+T_503: (in hl_184 + 1<16> @ 08CE : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_514: (in 1<8> @ 08CF : byte)
-  Class: Eq_514
-  DataType: byte
-  OrigDataType: byte
-T_515: (in e_181 - 1<8> @ 08CF : byte)
+T_504: (in 1<8> @ 08CF : byte)
   Class: Eq_504
   DataType: byte
   OrigDataType: byte
-T_516: (in 0<8> @ 08D0 : byte)
-  Class: Eq_504
+T_505: (in e_181 - 1<8> @ 08CF : byte)
+  Class: Eq_494
   DataType: byte
   OrigDataType: byte
-T_517: (in e_181 != 0<8> @ 08D0 : bool)
-  Class: Eq_517
+T_506: (in 0<8> @ 08D0 : byte)
+  Class: Eq_494
+  DataType: byte
+  OrigDataType: byte
+T_507: (in e_181 != 0<8> @ 08D0 : bool)
+  Class: Eq_507
   DataType: bool
   OrigDataType: bool
-T_518: (in fn0E24 @ 08BE : ptr16)
-  Class: Eq_472
-  DataType: (ptr16 Eq_472)
-  OrigDataType: (ptr16 (fn T_522 (T_457, T_520, T_521)))
-T_519: (in af_872 @ 08BE : word16)
-  Class: Eq_519
+T_508: (in fn0E24 @ 08BE : ptr16)
+  Class: Eq_462
+  DataType: (ptr16 Eq_462)
+  OrigDataType: (ptr16 (fn T_512 (T_447, T_510, T_511)))
+T_509: (in af_877 @ 08BE : word16)
+  Class: Eq_509
   DataType: word16
   OrigDataType: word16
-T_520: (in out af_872 @ 08BE : word16)
+T_510: (in out af_877 @ 08BE : word16)
   Class: Eq_53
   DataType: (ptr16 Eq_53)
   OrigDataType: word16
-T_521: (in out hl_184 @ 08BE : word16)
+T_511: (in out hl_184 @ 08BE : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_522: (in fn0E24(hl_136, out af_872, out hl_184) @ 08BE : bool)
-  Class: Eq_482
-  DataType: Eq_482
+T_512: (in fn0E24(hl_136, out af_877, out hl_184) @ 08BE : bool)
+  Class: Eq_472
+  DataType: Eq_472
   OrigDataType: bool
-T_523: (in 0x20<8> @ 08C3 : byte)
+T_513: (in 0x20<8> @ 08C3 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: cu8
-T_524: (in a_183 < 0x20<8> @ 08C3 : bool)
-  Class: Eq_524
+T_514: (in a_183 < 0x20<8> @ 08C3 : bool)
+  Class: Eq_514
   DataType: bool
   OrigDataType: bool
-T_525: (in 0<8> @ 08D5 : byte)
-  Class: Eq_459
+T_515: (in 0<8> @ 08D5 : byte)
+  Class: Eq_449
   DataType: byte
   OrigDataType: byte
-T_526: (in bc_139 != 0<8> @ 08D5 : bool)
-  Class: Eq_526
+T_516: (in bc_139 != 0<8> @ 08D5 : bool)
+  Class: Eq_516
   DataType: bool
   OrigDataType: bool
-T_527: (in 1<16> @ 08D6 : word16)
-  Class: Eq_527
-  DataType: uint16
-  OrigDataType: uint16
-T_528: (in bc_139 - 1<16> @ 08D6 : word16)
-  Class: Eq_459
-  DataType: Eq_459
-  OrigDataType: uint16
-T_529: (in fn093B @ 089F : ptr16)
+T_517: (in 1<16> @ 08D6 : word16)
+  Class: Eq_517
+  DataType: word16
+  OrigDataType: word16
+T_518: (in bc_139 - 1<16> @ 08D6 : word16)
+  Class: Eq_449
+  DataType: Eq_449
+  OrigDataType: word16
+T_519: (in fn093B @ 089F : ptr16)
   Class: Eq_42
   DataType: (ptr16 Eq_42)
-  OrigDataType: (ptr16 (fn T_530 ()))
-T_530: (in fn093B() @ 089F : void)
+  OrigDataType: (ptr16 (fn T_520 ()))
+T_520: (in fn093B() @ 089F : void)
   Class: Eq_44
   DataType: void
   OrigDataType: void
-T_531: (in fn0923 @ 08A2 : ptr16)
-  Class: Eq_531
-  DataType: (ptr16 Eq_531)
-  OrigDataType: (ptr16 (fn T_535 (T_332, T_457)))
-T_532: (in signature of fn0923 @ 0923 : void)
-  Class: Eq_531
-  DataType: (ptr16 Eq_531)
+T_521: (in fn0923 @ 08A2 : ptr16)
+  Class: Eq_521
+  DataType: (ptr16 Eq_521)
+  OrigDataType: (ptr16 (fn T_525 (T_318, T_447)))
+T_522: (in signature of fn0923 @ 0923 : void)
+  Class: Eq_521
+  DataType: (ptr16 Eq_521)
   OrigDataType: 
-T_533: (in f @ 08A2 : byte)
-  Class: Eq_120
+T_523: (in f @ 08A2 : byte)
+  Class: Eq_104
   DataType: byte
   OrigDataType: byte
-T_534: (in hl @ 08A2 : Eq_87)
+T_524: (in hl @ 08A2 : Eq_87)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_535: (in fn0923(f_147, hl_136) @ 08A2 : byte)
-  Class: Eq_120
+T_525: (in fn0923(f_147, hl_136) @ 08A2 : byte)
+  Class: Eq_104
   DataType: byte
   OrigDataType: byte
-T_536: (in fn0930 @ 08A5 : ptr16)
-  Class: Eq_501
-  DataType: (ptr16 Eq_501)
-  OrigDataType: (ptr16 (fn T_537 ()))
-T_537: (in fn0930() @ 08A5 : void)
-  Class: Eq_503
+T_526: (in fn0930 @ 08A5 : ptr16)
+  Class: Eq_491
+  DataType: (ptr16 Eq_491)
+  OrigDataType: (ptr16 (fn T_527 ()))
+T_527: (in fn0930() @ 08A5 : void)
+  Class: Eq_493
   DataType: void
   OrigDataType: void
-T_538: (in 0x10<8> @ 08A9 : byte)
-  Class: Eq_496
+T_528: (in 0x10<8> @ 08A9 : byte)
+  Class: Eq_486
   DataType: byte
   OrigDataType: byte
-T_539: (in 0xAE2<16> @ 01DB : word16)
+T_529: (in 0xAE2<16> @ 01DB : word16)
   Class: Eq_35
   DataType: (ptr16 byte)
   OrigDataType: word16
-T_540: (in iy_433 @ 01DB : (ptr16 byte))
+T_530: (in iy_433 @ 01DB : (ptr16 byte))
   Class: Eq_35
   DataType: (ptr16 byte)
   OrigDataType: word16
-T_541: (in 5<8> @ 01DF : byte)
-  Class: Eq_541
+T_531: (in 5<8> @ 01DF : byte)
+  Class: Eq_531
   DataType: byte
   OrigDataType: byte
-T_542: (in b_434 @ 01DF : byte)
-  Class: Eq_541
+T_532: (in b_434 @ 01DF : byte)
+  Class: Eq_531
   DataType: byte
   OrigDataType: byte
-T_543: (in 0xABA<16> @ 01D7 : word16)
-  Class: Eq_543
+T_533: (in 0xABA<16> @ 01D7 : word16)
+  Class: Eq_533
   DataType: (ptr16 Eq_87)
-  OrigDataType: (ptr16 (struct (0 T_544 t0000)))
-T_544: (in Mem432[0xABA<16>:word16] @ 01D7 : word16)
+  OrigDataType: (ptr16 (struct (0 T_534 t0000)))
+T_534: (in Mem432[0xABA<16>:word16] @ 01D7 : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_545: (in a_267 @ 08FD : cu8)
+T_535: (in a_267 @ 08FD : cu8)
   Class: Eq_61
   DataType: cu8
   OrigDataType: byte
-T_546: (in 0x20<8> @ 08FD : byte)
+T_536: (in 0x20<8> @ 08FD : byte)
   Class: Eq_61
   DataType: cu8
   OrigDataType: byte
-T_547: (in a_267 == 0x20<8> @ 08FD : bool)
-  Class: Eq_547
+T_537: (in a_267 == 0x20<8> @ 08FD : bool)
+  Class: Eq_537
   DataType: bool
   OrigDataType: bool
-T_548: (in 1<16> @ 01F8 : word16)
+T_538: (in 1<16> @ 01F8 : word16)
+  Class: Eq_538
+  DataType: word16
+  OrigDataType: word16
+T_539: (in ix_328 + 1<16> @ 01F8 : word16)
+  Class: Eq_133
+  DataType: (ptr16 Eq_133)
+  OrigDataType: word16
+T_540: (in 1<8> @ 01FA : byte)
+  Class: Eq_540
+  DataType: byte
+  OrigDataType: byte
+T_541: (in b_434 - 1<8> @ 01FA : byte)
+  Class: Eq_531
+  DataType: byte
+  OrigDataType: byte
+T_542: (in 0<8> @ 01FA : byte)
+  Class: Eq_531
+  DataType: byte
+  OrigDataType: byte
+T_543: (in b_434 != 0<8> @ 01FA : bool)
+  Class: Eq_543
+  DataType: bool
+  OrigDataType: bool
+T_544: (in e_467 @ 01F5 : byte)
+  Class: Eq_544
+  DataType: byte
+  OrigDataType: byte
+T_545: (in 0<16> @ 01F5 : word16)
+  Class: Eq_545
+  DataType: word16
+  OrigDataType: word16
+T_546: (in ix_328 + 0<16> @ 01F5 : word16)
+  Class: Eq_546
+  DataType: word16
+  OrigDataType: word16
+T_547: (in Mem468[ix_328 + 0<16>:byte] @ 01F5 : byte)
+  Class: Eq_544
+  DataType: byte
+  OrigDataType: byte
+T_548: (in hl_252 @ 0920 : word16)
   Class: Eq_548
   DataType: word16
   OrigDataType: word16
-T_549: (in ix_328 + 1<16> @ 01F8 : word16)
-  Class: Eq_147
-  DataType: (ptr16 Eq_147)
-  OrigDataType: word16
-T_550: (in 1<8> @ 01FA : byte)
-  Class: Eq_550
-  DataType: byte
-  OrigDataType: byte
-T_551: (in b_434 - 1<8> @ 01FA : byte)
-  Class: Eq_541
-  DataType: byte
-  OrigDataType: byte
-T_552: (in 0<8> @ 01FA : byte)
-  Class: Eq_541
-  DataType: byte
-  OrigDataType: byte
-T_553: (in b_434 != 0<8> @ 01FA : bool)
-  Class: Eq_553
-  DataType: bool
-  OrigDataType: bool
-T_554: (in e_467 @ 01F5 : byte)
-  Class: Eq_554
-  DataType: byte
-  OrigDataType: byte
-T_555: (in 0<16> @ 01F5 : word16)
-  Class: Eq_555
+T_549: (in 1<16> @ 0920 : word16)
+  Class: Eq_549
   DataType: word16
   OrigDataType: word16
-T_556: (in ix_328 + 0<16> @ 01F5 : word16)
-  Class: Eq_556
-  DataType: word16
-  OrigDataType: word16
-T_557: (in Mem468[ix_328 + 0<16>:byte] @ 01F5 : byte)
-  Class: Eq_554
-  DataType: byte
-  OrigDataType: byte
-T_558: (in hl_252 @ 0920 : word16)
-  Class: Eq_558
-  DataType: word16
-  OrigDataType: word16
-T_559: (in 1<16> @ 0920 : word16)
-  Class: Eq_559
-  DataType: word16
-  OrigDataType: word16
-T_560: (in hl_252 + 1<16> @ 0920 : word16)
+T_550: (in hl_252 + 1<16> @ 0920 : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_561: (in fn0975 @ 0902 : ptr16)
-  Class: Eq_561
-  DataType: (ptr16 Eq_561)
-  OrigDataType: (ptr16 (fn T_567 (T_545, T_565)))
-T_562: (in signature of fn0975 @ 0975 : void)
-  Class: Eq_561
-  DataType: (ptr16 Eq_561)
+T_551: (in fn0975 @ 0902 : ptr16)
+  Class: Eq_551
+  DataType: (ptr16 Eq_551)
+  OrigDataType: (ptr16 (fn T_557 (T_535, T_555)))
+T_552: (in signature of fn0975 @ 0975 : void)
+  Class: Eq_551
+  DataType: (ptr16 Eq_551)
   OrigDataType: 
-T_563: (in a @ 0902 : cu8)
+T_553: (in a @ 0902 : cu8)
   Class: Eq_61
   DataType: cu8
   OrigDataType: cu8
-T_564: (in a_265 @ 0902 : cu8)
+T_554: (in a_265 @ 0902 : cu8)
   Class: Eq_61
   DataType: cu8
   OrigDataType: byte
-T_565: (in out a_265 @ 0902 : byte)
-  Class: Eq_565
+T_555: (in out a_265 @ 0902 : byte)
+  Class: Eq_555
   DataType: cu8
   OrigDataType: byte
-T_566: (in aOut @ 0902 : cu8)
-  Class: Eq_565
+T_556: (in aOut @ 0902 : cu8)
+  Class: Eq_555
   DataType: cu8
   OrigDataType: byte
-T_567: (in fn0975(a_267, out a_265) @ 0902 : bool)
-  Class: Eq_567
+T_557: (in fn0975(a_267, out a_265) @ 0902 : bool)
+  Class: Eq_557
   DataType: bool
   OrigDataType: bool
-T_568: (in fn0A08 @ 08F5 : ptr16)
+T_558: (in fn0A08 @ 08F5 : ptr16)
   Class: Eq_59
   DataType: (ptr16 Eq_59)
-  OrigDataType: (ptr16 (fn T_569 (T_564)))
-T_569: (in fn0A08(a_265) @ 08F5 : byte)
+  OrigDataType: (ptr16 (fn T_559 (T_554)))
+T_559: (in fn0A08(a_265) @ 08F5 : byte)
   Class: Eq_61
   DataType: cu8
   OrigDataType: byte
-T_570: (in 0x2E<8> @ 08FA : byte)
+T_560: (in 0x2E<8> @ 08FA : byte)
   Class: Eq_61
   DataType: cu8
   OrigDataType: byte
-T_571: (in a_267 != 0x2E<8> @ 08FA : bool)
-  Class: Eq_571
+T_561: (in a_267 != 0x2E<8> @ 08FA : bool)
+  Class: Eq_561
   DataType: bool
   OrigDataType: bool
-T_572: (in 0<16> @ 0905 : word16)
+T_562: (in 0<16> @ 0905 : word16)
   Class: Eq_88
   DataType: ui16
   OrigDataType: word16
-T_573: (in hl_286 @ 0905 : ui16)
+T_563: (in hl_286 @ 0905 : ui16)
   Class: Eq_88
   DataType: ui16
   OrigDataType: word16
-T_574: (in sp_298 @ 0919 : (ptr16 Eq_53))
+T_564: (in sp_298 @ 0919 : (ptr16 Eq_53))
   Class: Eq_53
   DataType: (ptr16 Eq_53)
-  OrigDataType: (ptr16 (struct (FFFFFFFE T_577 tFFFFFFFE) (0 T_587 t0000) (2 T_584 t0002)))
-T_575: (in -2<i16> @ 0919 : int16)
-  Class: Eq_575
+  OrigDataType: (ptr16 (struct (FFFFFFFE T_567 tFFFFFFFE) (0 T_577 t0000) (2 T_574 t0002)))
+T_565: (in -2<i16> @ 0919 : int16)
+  Class: Eq_565
   DataType: int16
   OrigDataType: int16
-T_576: (in sp_298 + -2<i16> @ 0919 : word16)
-  Class: Eq_576
+T_566: (in sp_298 + -2<i16> @ 0919 : word16)
+  Class: Eq_566
   DataType: word16
   OrigDataType: word16
-T_577: (in Mem307[sp_298 + -2<i16>:word16] @ 0919 : word16)
+T_567: (in Mem307[sp_298 + -2<i16>:word16] @ 0919 : word16)
   Class: Eq_88
   DataType: ui16
   OrigDataType: word16
-T_578: (in fn0E2C @ 091D : ptr16)
-  Class: Eq_578
-  DataType: (ptr16 Eq_578)
-  OrigDataType: (ptr16 (fn T_588 (T_584, T_587)))
-T_579: (in signature of fn0E2C @ 0E2C : void)
-  Class: Eq_578
-  DataType: (ptr16 Eq_578)
+T_568: (in fn0E2C @ 091D : ptr16)
+  Class: Eq_568
+  DataType: (ptr16 Eq_568)
+  OrigDataType: (ptr16 (fn T_578 (T_574, T_577)))
+T_569: (in signature of fn0E2C @ 0E2C : void)
+  Class: Eq_568
+  DataType: (ptr16 Eq_568)
   OrigDataType: 
-T_580: (in a @ 091D : uint8)
+T_570: (in a @ 091D : uint8)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_581: (in hl @ 091D : Eq_87)
+T_571: (in hl @ 091D : Eq_87)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_582: (in 2<16> @ 091D : word16)
-  Class: Eq_582
+T_572: (in 2<16> @ 091D : word16)
+  Class: Eq_572
   DataType: word16
   OrigDataType: word16
-T_583: (in sp_298 + 2<16> @ 091D : word16)
-  Class: Eq_583
+T_573: (in sp_298 + 2<16> @ 091D : word16)
+  Class: Eq_573
   DataType: ptr16
   OrigDataType: ptr16
-T_584: (in Mem307[sp_298 + 2<16>:byte] @ 091D : byte)
+T_574: (in Mem307[sp_298 + 2<16>:byte] @ 091D : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_585: (in 0<16> @ 091D : word16)
-  Class: Eq_585
+T_575: (in 0<16> @ 091D : word16)
+  Class: Eq_575
   DataType: word16
   OrigDataType: word16
-T_586: (in sp_298 + 0<16> @ 091D : word16)
-  Class: Eq_586
+T_576: (in sp_298 + 0<16> @ 091D : word16)
+  Class: Eq_576
   DataType: ptr16
   OrigDataType: ptr16
-T_587: (in Mem307[sp_298 + 0<16>:word16] @ 091D : word16)
+T_577: (in Mem307[sp_298 + 0<16>:word16] @ 091D : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_588: (in fn0E2C(sp_298->b0002, sp_298->t0000.u1) @ 091D : word16)
-  Class: Eq_558
+T_578: (in fn0E2C(sp_298->b0002, sp_298->t0000.u1) @ 091D : word16)
+  Class: Eq_548
   DataType: word16
   OrigDataType: word16
-T_589: (in fn0975 @ 0915 : ptr16)
-  Class: Eq_561
-  DataType: (ptr16 Eq_561)
-  OrigDataType: (ptr16 (fn T_592 (T_590, T_591)))
-T_590: (in a_297 @ 0915 : cu8)
+T_579: (in fn0975 @ 0915 : ptr16)
+  Class: Eq_551
+  DataType: (ptr16 Eq_551)
+  OrigDataType: (ptr16 (fn T_582 (T_580, T_581)))
+T_580: (in a_297 @ 0915 : cu8)
   Class: Eq_61
   DataType: cu8
   OrigDataType: byte
-T_591: (in out a_265 @ 0915 : byte)
-  Class: Eq_565
+T_581: (in out a_265 @ 0915 : byte)
+  Class: Eq_555
   DataType: cu8
   OrigDataType: byte
-T_592: (in fn0975(a_297, out a_265) @ 0915 : bool)
-  Class: Eq_567
+T_582: (in fn0975(a_297, out a_265) @ 0915 : bool)
+  Class: Eq_557
   DataType: bool
   OrigDataType: bool
-T_593: (in fn0A08 @ 090B : ptr16)
+T_583: (in fn0A08 @ 090B : ptr16)
   Class: Eq_59
   DataType: (ptr16 Eq_59)
-  OrigDataType: (ptr16 (fn T_594 (T_564)))
-T_594: (in fn0A08(a_265) @ 090B : byte)
+  OrigDataType: (ptr16 (fn T_584 (T_554)))
+T_584: (in fn0A08(a_265) @ 090B : byte)
   Class: Eq_61
   DataType: cu8
   OrigDataType: byte
-T_595: (in 0xD<8> @ 0910 : byte)
+T_585: (in 0xD<8> @ 0910 : byte)
   Class: Eq_61
   DataType: cu8
   OrigDataType: byte
-T_596: (in a_297 == 0xD<8> @ 0910 : bool)
-  Class: Eq_596
+T_586: (in a_297 == 0xD<8> @ 0910 : bool)
+  Class: Eq_586
   DataType: bool
   OrigDataType: bool
-T_597: (in fn0997 @ 0908 : ptr16)
-  Class: Eq_597
-  DataType: (ptr16 Eq_597)
-  OrigDataType: (ptr16 (fn T_603 (T_564, T_573, T_601)))
-T_598: (in signature of fn0997 @ 0997 : void)
-  Class: Eq_597
-  DataType: (ptr16 Eq_597)
+T_587: (in fn0997 @ 0908 : ptr16)
+  Class: Eq_587
+  DataType: (ptr16 Eq_587)
+  OrigDataType: (ptr16 (fn T_593 (T_554, T_563, T_591)))
+T_588: (in signature of fn0997 @ 0997 : void)
+  Class: Eq_587
+  DataType: (ptr16 Eq_587)
   OrigDataType: 
-T_599: (in a @ 0908 : cu8)
+T_589: (in a @ 0908 : cu8)
   Class: Eq_61
   DataType: cu8
   OrigDataType: byte
-T_600: (in hl @ 0908 : ui16)
+T_590: (in hl @ 0908 : ui16)
   Class: Eq_88
   DataType: ui16
   OrigDataType: ui16
-T_601: (in out hl_286 @ 0908 : word16)
-  Class: Eq_601
+T_591: (in out hl_286 @ 0908 : word16)
+  Class: Eq_591
   DataType: word16
   OrigDataType: word16
-T_602: (in hlOut @ 0908 : word16)
-  Class: Eq_601
+T_592: (in hlOut @ 0908 : word16)
+  Class: Eq_591
   DataType: word16
   OrigDataType: word16
-T_603: (in fn0997(a_265, hl_286, out hl_286) @ 0908 : byte)
+T_593: (in fn0997(a_265, hl_286, out hl_286) @ 0908 : byte)
   Class: Eq_61
   DataType: cu8
   OrigDataType: byte
-T_604: (in fn093B @ 01E1 : ptr16)
+T_594: (in fn093B @ 01E1 : ptr16)
   Class: Eq_42
   DataType: (ptr16 Eq_42)
-  OrigDataType: (ptr16 (fn T_605 ()))
-T_605: (in fn093B() @ 01E1 : void)
+  OrigDataType: (ptr16 (fn T_595 ()))
+T_595: (in fn093B() @ 01E1 : void)
   Class: Eq_44
   DataType: void
   OrigDataType: void
-T_606: (in fn09A2 @ 01EA : ptr16)
-  Class: Eq_606
-  DataType: (ptr16 Eq_606)
-  OrigDataType: (ptr16 (fn T_624 (T_617, T_619, T_622)))
-T_607: (in signature of fn09A2 @ 09A2 : void)
-  Class: Eq_606
-  DataType: (ptr16 Eq_606)
+T_596: (in fn09A2 @ 01EA : ptr16)
+  Class: Eq_596
+  DataType: (ptr16 Eq_596)
+  OrigDataType: (ptr16 (fn T_614 (T_607, T_609, T_612)))
+T_597: (in signature of fn09A2 @ 09A2 : void)
+  Class: Eq_596
+  DataType: (ptr16 Eq_596)
   OrigDataType: 
-T_608: (in e_f @ 01EA : word16)
-  Class: Eq_487
+T_598: (in e_f @ 01EA : word16)
+  Class: Eq_477
   DataType: word16
   OrigDataType: word16
-T_609: (in 0<16> @ 01EA : word16)
+T_599: (in 0<16> @ 01EA : word16)
+  Class: Eq_599
+  DataType: word16
+  OrigDataType: word16
+T_600: (in ix_328 + 0<16> @ 01EA : word16)
+  Class: Eq_600
+  DataType: (ptr16 byte)
+  OrigDataType: (ptr16 byte)
+T_601: (in Mem447[ix_328 + 0<16>:byte] @ 01EA : byte)
+  Class: Eq_601
+  DataType: byte
+  OrigDataType: byte
+T_602: (in fn027A @ 01EA : ptr16)
+  Class: Eq_155
+  DataType: (ptr16 Eq_155)
+  OrigDataType: (ptr16 (fn T_606 (T_189, T_192, T_530, T_604, T_605)))
+T_603: (in d_878 @ 01EA : byte)
+  Class: Eq_603
+  DataType: byte
+  OrigDataType: byte
+T_604: (in out d_878 @ 01EA : byte)
+  Class: Eq_38
+  DataType: uint8
+  OrigDataType: byte
+T_605: (in out iy_433 @ 01EA : word16)
+  Class: Eq_165
+  DataType: word16
+  OrigDataType: word16
+T_606: (in fn027A(f_438, d_437, iy_433, out d_878, out iy_433) @ 01EA : byte)
+  Class: Eq_2
+  DataType: byte
+  OrigDataType: byte
+T_607: (in SEQ(Mem447[ix_328 + 0<16>:byte], fn027A(f_438, d_437, iy_433, out d_878, out iy_433)) @ 01EA : word16)
+  Class: Eq_477
+  DataType: word16
+  OrigDataType: word16
+T_608: (in af_451 @ 01EA : word16)
+  Class: Eq_608
+  DataType: word16
+  OrigDataType: word16
+T_609: (in out af_451 @ 01EA : word16)
   Class: Eq_609
   DataType: word16
   OrigDataType: word16
-T_610: (in ix_328 + 0<16> @ 01EA : word16)
-  Class: Eq_610
-  DataType: (ptr16 byte)
-  OrigDataType: (ptr16 byte)
-T_611: (in Mem447[ix_328 + 0<16>:byte] @ 01EA : byte)
+T_610: (in afOut @ 01EA : word16)
+  Class: Eq_609
+  DataType: word16
+  OrigDataType: word16
+T_611: (in c_879 @ 01EA : byte)
   Class: Eq_611
   DataType: byte
   OrigDataType: byte
-T_612: (in fn027A @ 01EA : ptr16)
-  Class: Eq_169
-  DataType: (ptr16 Eq_169)
-  OrigDataType: (ptr16 (fn T_616 (T_203, T_206, T_540, T_614, T_615)))
-T_613: (in d_873 @ 01EA : byte)
-  Class: Eq_613
+T_612: (in out c_879 @ 01EA : byte)
+  Class: Eq_612
   DataType: byte
   OrigDataType: byte
-T_614: (in out d_873 @ 01EA : byte)
-  Class: Eq_38
-  DataType: uint8
-  OrigDataType: byte
-T_615: (in out iy_433 @ 01EA : word16)
-  Class: Eq_179
-  DataType: word16
-  OrigDataType: word16
-T_616: (in fn027A(f_438, d_437, iy_433, out d_873, out iy_433) @ 01EA : byte)
-  Class: Eq_2
+T_613: (in cOut @ 01EA : byte)
+  Class: Eq_612
   DataType: byte
   OrigDataType: byte
-T_617: (in SEQ(Mem447[ix_328 + 0<16>:byte], fn027A(f_438, d_437, iy_433, out d_873, out iy_433)) @ 01EA : word16)
-  Class: Eq_487
-  DataType: word16
-  OrigDataType: word16
-T_618: (in af_451 @ 01EA : word16)
-  Class: Eq_618
-  DataType: word16
-  OrigDataType: word16
-T_619: (in out af_451 @ 01EA : word16)
-  Class: Eq_619
-  DataType: word16
-  OrigDataType: word16
-T_620: (in afOut @ 01EA : word16)
-  Class: Eq_619
-  DataType: word16
-  OrigDataType: word16
-T_621: (in c_874 @ 01EA : byte)
-  Class: Eq_621
-  DataType: byte
-  OrigDataType: byte
-T_622: (in out c_874 @ 01EA : byte)
-  Class: Eq_622
-  DataType: byte
-  OrigDataType: byte
-T_623: (in cOut @ 01EA : byte)
-  Class: Eq_622
-  DataType: byte
-  OrigDataType: byte
-T_624: (in fn09A2(SEQ(ix_328->b0000, fn027A(f_438, d_437, iy_433, out d_873, out iy_433)), out af_451, out c_874) @ 01EA : bool)
-  Class: Eq_624
-  DataType: Eq_624
+T_614: (in fn09A2(SEQ(ix_328->b0000, fn027A(f_438, d_437, iy_433, out d_878, out iy_433)), out af_451, out c_879) @ 01EA : bool)
+  Class: Eq_614
+  DataType: Eq_614
   OrigDataType: bool
-T_625: (in fn0945 @ 01ED : ptr16)
+T_615: (in fn0945 @ 01ED : ptr16)
   Class: Eq_50
   DataType: (ptr16 Eq_50)
-  OrigDataType: (ptr16 (fn T_626 ()))
-T_626: (in fn0945() @ 01ED : void)
+  OrigDataType: (ptr16 (fn T_616 ()))
+T_616: (in fn0945() @ 01ED : void)
   Class: Eq_52
   DataType: void
   OrigDataType: void
-T_627: (in SLICE(af_451, byte, 0) @ 01EA : byte)
+T_617: (in SLICE(af_451, byte, 0) @ 01EA : byte)
   Class: Eq_2
   DataType: byte
   OrigDataType: byte
-T_628: (in de_461 @ 01F0 : word16)
-  Class: Eq_628
+T_618: (in de_461 @ 01F0 : word16)
+  Class: Eq_618
   DataType: word16
   OrigDataType: word16
-T_629: (in SLICE(de_461, byte, 0) @ 01F0 : byte)
-  Class: Eq_554
+T_619: (in SLICE(de_461, byte, 0) @ 01F0 : byte)
+  Class: Eq_544
   DataType: byte
   OrigDataType: byte
-T_630: (in SLICE(de_461, byte, 8) @ 01F0 : byte)
+T_620: (in SLICE(de_461, byte, 8) @ 01F0 : byte)
   Class: Eq_25
   DataType: byte
   OrigDataType: byte
-T_631: (in fn094F @ 01F3 : ptr16)
+T_621: (in fn094F @ 01F3 : ptr16)
   Class: Eq_83
   DataType: (ptr16 Eq_83)
-  OrigDataType: (ptr16 (fn T_634 (T_632, T_633)))
-T_632: (in SLICE(af_451, byte, 8) @ 01F3 : byte)
+  OrigDataType: (ptr16 (fn T_624 (T_622, T_623)))
+T_622: (in SLICE(af_451, byte, 8) @ 01F3 : byte)
   Class: Eq_61
   DataType: cu8
   OrigDataType: byte
-T_633: (in out de_461 @ 01F3 : word16)
+T_623: (in out de_461 @ 01F3 : word16)
   Class: Eq_88
   DataType: ui16
   OrigDataType: word16
-T_634: (in fn094F(SLICE(af_451, byte, 8), out de_461) @ 01F3 : bool)
+T_624: (in fn094F(SLICE(af_451, byte, 8), out de_461) @ 01F3 : bool)
   Class: Eq_90
   DataType: bool
   OrigDataType: bool
-T_635: (in fn093B @ 08E3 : ptr16)
+T_625: (in fn093B @ 08E3 : ptr16)
   Class: Eq_42
   DataType: (ptr16 Eq_42)
-  OrigDataType: (ptr16 (fn T_636 ()))
-T_636: (in fn093B() @ 08E3 : void)
+  OrigDataType: (ptr16 (fn T_626 ()))
+T_626: (in fn093B() @ 08E3 : void)
   Class: Eq_44
   DataType: void
   OrigDataType: void
-T_637: (in fn0923 @ 08E6 : ptr16)
-  Class: Eq_531
-  DataType: (ptr16 Eq_531)
-  OrigDataType: (ptr16 (fn T_638 (T_145, T_146)))
-T_638: (in fn0923(f_244, hl_241) @ 08E6 : byte)
-  Class: Eq_120
+T_627: (in fn0923 @ 08E6 : ptr16)
+  Class: Eq_521
+  DataType: (ptr16 Eq_521)
+  OrigDataType: (ptr16 (fn T_628 (T_131, T_132)))
+T_628: (in fn0923(f_244, hl_241) @ 08E6 : byte)
+  Class: Eq_104
   DataType: byte
   OrigDataType: byte
-T_639: (in f_257 @ 08E6 : byte)
-  Class: Eq_120
+T_629: (in f_257 @ 08E6 : byte)
+  Class: Eq_104
   DataType: byte
   OrigDataType: byte
-T_640: (in fn0930 @ 08E9 : ptr16)
-  Class: Eq_501
-  DataType: (ptr16 Eq_501)
-  OrigDataType: (ptr16 (fn T_641 ()))
-T_641: (in fn0930() @ 08E9 : void)
-  Class: Eq_503
+T_630: (in fn0930 @ 08E9 : ptr16)
+  Class: Eq_491
+  DataType: (ptr16 Eq_491)
+  OrigDataType: (ptr16 (fn T_631 ()))
+T_631: (in fn0930() @ 08E9 : void)
+  Class: Eq_493
   DataType: void
   OrigDataType: void
-T_642: (in fn0E24 @ 08EC : ptr16)
-  Class: Eq_472
-  DataType: (ptr16 Eq_472)
-  OrigDataType: (ptr16 (fn T_646 (T_146, T_644, T_645)))
-T_643: (in af_875 @ 08EC : word16)
-  Class: Eq_643
+T_632: (in fn0E24 @ 08EC : ptr16)
+  Class: Eq_462
+  DataType: (ptr16 Eq_462)
+  OrigDataType: (ptr16 (fn T_636 (T_132, T_634, T_635)))
+T_633: (in af_880 @ 08EC : word16)
+  Class: Eq_633
   DataType: word16
   OrigDataType: word16
-T_644: (in out af_875 @ 08EC : word16)
+T_634: (in out af_880 @ 08EC : word16)
   Class: Eq_53
   DataType: (ptr16 Eq_53)
   OrigDataType: word16
-T_645: (in out hl_252 @ 08EC : word16)
+T_635: (in out hl_252 @ 08EC : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_646: (in fn0E24(hl_241, out af_875, out hl_252) @ 08EC : bool)
-  Class: Eq_482
-  DataType: Eq_482
+T_636: (in fn0E24(hl_241, out af_880, out hl_252) @ 08EC : bool)
+  Class: Eq_472
+  DataType: Eq_472
   OrigDataType: bool
-T_647: (in a_251 @ 08EC : uint8)
+T_637: (in a_251 @ 08EC : uint8)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_648: (in fn0929 @ 08EF : ptr16)
-  Class: Eq_485
-  DataType: (ptr16 Eq_485)
-  OrigDataType: (ptr16 (fn T_650 (T_649)))
-T_649: (in SEQ(a_251, f_257) @ 08EF : word16)
-  Class: Eq_487
+T_638: (in fn0929 @ 08EF : ptr16)
+  Class: Eq_475
+  DataType: (ptr16 Eq_475)
+  OrigDataType: (ptr16 (fn T_640 (T_639)))
+T_639: (in SEQ(a_251, f_257) @ 08EF : word16)
+  Class: Eq_477
   DataType: word16
   OrigDataType: word16
-T_650: (in fn0929(SEQ(a_251, f_257)) @ 08EF : word16)
-  Class: Eq_489
+T_640: (in fn0929(SEQ(a_251, f_257)) @ 08EF : word16)
+  Class: Eq_479
   DataType: word16
   OrigDataType: word16
-T_651: (in af_259 @ 08EF : word16)
-  Class: Eq_489
+T_641: (in af_259 @ 08EF : word16)
+  Class: Eq_479
   DataType: word16
   OrigDataType: word16
-T_652: (in fn0930 @ 08F2 : ptr16)
-  Class: Eq_501
-  DataType: (ptr16 Eq_501)
-  OrigDataType: (ptr16 (fn T_653 ()))
-T_653: (in fn0930() @ 08F2 : void)
-  Class: Eq_503
+T_642: (in fn0930 @ 08F2 : ptr16)
+  Class: Eq_491
+  DataType: (ptr16 Eq_491)
+  OrigDataType: (ptr16 (fn T_643 ()))
+T_643: (in fn0930() @ 08F2 : void)
+  Class: Eq_493
   DataType: void
   OrigDataType: void
-T_654: (in SLICE(af_259, byte, 0) @ 08EF : byte)
-  Class: Eq_120
+T_644: (in SLICE(af_259, byte, 0) @ 08EF : byte)
+  Class: Eq_104
   DataType: byte
   OrigDataType: byte
-T_655: (in SLICE(af_259, byte, 8) @ 08EF : byte)
+T_645: (in SLICE(af_259, byte, 8) @ 08EF : byte)
   Class: Eq_61
   DataType: cu8
   OrigDataType: byte
-T_656: (in Z @ 08EF : bool)
-  Class: Eq_656
+T_646: (in Z @ 08EF : bool)
+  Class: Eq_646
   DataType: bool
   OrigDataType: bool
-T_657: (in fn093B @ 0202 : ptr16)
+T_647: (in fn093B @ 0202 : ptr16)
   Class: Eq_42
   DataType: (ptr16 Eq_42)
-  OrigDataType: (ptr16 (fn T_658 ()))
-T_658: (in fn093B() @ 0202 : void)
+  OrigDataType: (ptr16 (fn T_648 ()))
+T_648: (in fn093B() @ 0202 : void)
   Class: Eq_44
   DataType: void
   OrigDataType: void
-T_659: (in fn027A @ 0209 : ptr16)
-  Class: Eq_169
-  DataType: (ptr16 Eq_169)
-  OrigDataType: (ptr16 (fn T_665 (T_367, T_369, T_660, T_662, T_664)))
-T_660: (in 0xAD6<16> @ 0209 : word16)
+T_649: (in fn027A @ 0209 : ptr16)
+  Class: Eq_155
+  DataType: (ptr16 Eq_155)
+  OrigDataType: (ptr16 (fn T_655 (T_354, T_356, T_650, T_652, T_654)))
+T_650: (in 0xAD6<16> @ 0209 : word16)
   Class: Eq_35
   DataType: (ptr16 byte)
   OrigDataType: word16
-T_661: (in d_196 @ 0209 : byte)
-  Class: Eq_661
+T_651: (in d_197 @ 0209 : byte)
+  Class: Eq_651
   DataType: byte
   OrigDataType: byte
-T_662: (in out d_196 @ 0209 : byte)
+T_652: (in out d_197 @ 0209 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_663: (in iy_15 @ 0209 : (ptr16 byte))
+T_653: (in iy_15 @ 0209 : (ptr16 byte))
   Class: Eq_35
   DataType: (ptr16 byte)
   OrigDataType: word16
-T_664: (in out iy_15 @ 0209 : word16)
-  Class: Eq_179
+T_654: (in out iy_15 @ 0209 : word16)
+  Class: Eq_165
   DataType: word16
   OrigDataType: word16
-T_665: (in fn027A(f, d, &g_b0AD6, out d_196, out iy_15) @ 0209 : byte)
+T_655: (in fn027A(f, d, &g_b0AD6, out d_197, out iy_15) @ 0209 : byte)
   Class: Eq_2
   DataType: byte
   OrigDataType: byte
-T_666: (in f_22 @ 0209 : byte)
+T_656: (in f_22 @ 0209 : byte)
   Class: Eq_2
   DataType: byte
   OrigDataType: byte
-T_667: (in 0xAB8<16> @ 020C : word16)
-  Class: Eq_667
+T_657: (in 0xAB8<16> @ 020C : word16)
+  Class: Eq_657
   DataType: (ptr16 Eq_87)
-  OrigDataType: (ptr16 (struct (0 T_668 t0000)))
-T_668: (in Mem8[0xAB8<16>:word16] @ 020C : word16)
+  OrigDataType: (ptr16 (struct (0 T_658 t0000)))
+T_658: (in Mem8[0xAB8<16>:word16] @ 020C : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_669: (in de_20 @ 020C : Eq_87)
+T_659: (in de_20 @ 020C : Eq_87)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_670: (in SLICE(de_20, byte, 8) @ 020C : byte)
+T_660: (in SLICE(de_20, byte, 8) @ 020C : byte)
   Class: Eq_25
   DataType: byte
   OrigDataType: byte
-T_671: (in d_21 @ 020C : byte)
+T_661: (in d_21 @ 020C : byte)
   Class: Eq_25
   DataType: byte
   OrigDataType: byte
-T_672: (in fn099E @ 0210 : ptr16)
-  Class: Eq_186
-  DataType: (ptr16 Eq_186)
-  OrigDataType: (ptr16 (fn T_679 (T_673, T_674, T_676, T_678)))
-T_673: (in SEQ(d_21, f_22) @ 0210 : word16)
-  Class: Eq_188
+T_662: (in fn099E @ 0210 : ptr16)
+  Class: Eq_172
+  DataType: (ptr16 Eq_172)
+  OrigDataType: (ptr16 (fn T_669 (T_663, T_664, T_666, T_668)))
+T_663: (in SEQ(d_21, f_22) @ 0210 : word16)
+  Class: Eq_174
   DataType: word16
   OrigDataType: word16
-T_674: (in SLICE(de_20, byte, 0) @ 0210 : byte)
-  Class: Eq_189
+T_664: (in SLICE(de_20, byte, 0) @ 0210 : byte)
+  Class: Eq_175
   DataType: byte
   OrigDataType: byte
-T_675: (in af_25 @ 0210 : word16)
-  Class: Eq_675
+T_665: (in af_25 @ 0210 : word16)
+  Class: Eq_665
   DataType: word16
   OrigDataType: word16
-T_676: (in out af_25 @ 0210 : word16)
-  Class: Eq_194
+T_666: (in out af_25 @ 0210 : word16)
+  Class: Eq_180
   DataType: word16
   OrigDataType: word16
-T_677: (in c_197 @ 0210 : byte)
-  Class: Eq_677
+T_667: (in c_198 @ 0210 : byte)
+  Class: Eq_667
   DataType: byte
   OrigDataType: byte
-T_678: (in out c_197 @ 0210 : byte)
-  Class: Eq_197
+T_668: (in out c_198 @ 0210 : byte)
+  Class: Eq_183
   DataType: byte
   OrigDataType: byte
-T_679: (in fn099E(SEQ(d_21, f_22), (byte) de_20, out af_25, out c_197) @ 0210 : bool)
-  Class: Eq_199
-  DataType: Eq_199
+T_669: (in fn099E(SEQ(d_21, f_22), (byte) de_20, out af_25, out c_198) @ 0210 : bool)
+  Class: Eq_185
+  DataType: Eq_185
   OrigDataType: bool
-T_680: (in fn027A @ 0213 : ptr16)
-  Class: Eq_169
-  DataType: (ptr16 Eq_169)
-  OrigDataType: (ptr16 (fn T_686 (T_681, T_671, T_663, T_683, T_685)))
-T_681: (in SLICE(af_25, byte, 0) @ 0213 : byte)
+T_670: (in fn027A @ 0213 : ptr16)
+  Class: Eq_155
+  DataType: (ptr16 Eq_155)
+  OrigDataType: (ptr16 (fn T_676 (T_671, T_661, T_653, T_673, T_675)))
+T_671: (in SLICE(af_25, byte, 0) @ 0213 : byte)
   Class: Eq_2
   DataType: byte
   OrigDataType: byte
-T_682: (in d_198 @ 0213 : byte)
-  Class: Eq_682
+T_672: (in d_199 @ 0213 : byte)
+  Class: Eq_672
   DataType: byte
   OrigDataType: byte
-T_683: (in out d_198 @ 0213 : byte)
+T_673: (in out d_199 @ 0213 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_684: (in iy_34 @ 0213 : (ptr16 byte))
+T_674: (in iy_34 @ 0213 : (ptr16 byte))
   Class: Eq_35
   DataType: (ptr16 byte)
   OrigDataType: word16
-T_685: (in out iy_34 @ 0213 : word16)
-  Class: Eq_179
+T_675: (in out iy_34 @ 0213 : word16)
+  Class: Eq_165
   DataType: word16
   OrigDataType: word16
-T_686: (in fn027A((byte) af_25, d_21, iy_15, out d_198, out iy_34) @ 0213 : byte)
+T_676: (in fn027A((byte) af_25, d_21, iy_15, out d_199, out iy_34) @ 0213 : byte)
   Class: Eq_2
   DataType: byte
   OrigDataType: byte
-T_687: (in f_108 @ 0213 : byte)
+T_677: (in f_108 @ 0213 : byte)
   Class: Eq_2
   DataType: byte
   OrigDataType: byte
-T_688: (in 3<8> @ 0232 : byte)
+T_678: (in 3<8> @ 0232 : byte)
+  Class: Eq_678
+  DataType: byte
+  OrigDataType: byte
+T_679: (in c_61 @ 0232 : byte)
+  Class: Eq_678
+  DataType: byte
+  OrigDataType: byte
+T_680: (in b_65 @ 023C : byte)
+  Class: Eq_680
+  DataType: byte
+  OrigDataType: byte
+T_681: (in 1<8> @ 023C : byte)
+  Class: Eq_681
+  DataType: byte
+  OrigDataType: byte
+T_682: (in b_65 - 1<8> @ 023C : byte)
+  Class: Eq_680
+  DataType: byte
+  OrigDataType: byte
+T_683: (in 0<8> @ 023C : byte)
+  Class: Eq_680
+  DataType: byte
+  OrigDataType: byte
+T_684: (in b_65 != 0<8> @ 023C : bool)
+  Class: Eq_684
+  DataType: bool
+  OrigDataType: bool
+T_685: (in fn0A19 @ 0241 : ptr16)
+  Class: Eq_288
+  DataType: (ptr16 Eq_288)
+  OrigDataType: (ptr16 (fn T_686 ()))
+T_686: (in fn0A19() @ 0241 : byte)
+  Class: Eq_290
+  DataType: byte
+  OrigDataType: byte
+T_687: (in c_205 @ 0245 : byte)
+  Class: Eq_678
+  DataType: byte
+  OrigDataType: byte
+T_688: (in 1<8> @ 0245 : byte)
   Class: Eq_688
   DataType: byte
   OrigDataType: byte
-T_689: (in c_61 @ 0232 : byte)
-  Class: Eq_688
+T_689: (in c_205 - 1<8> @ 0245 : byte)
+  Class: Eq_678
   DataType: byte
   OrigDataType: byte
-T_690: (in b_65 @ 023C : byte)
-  Class: Eq_690
+T_690: (in 1<8> @ 0246 : byte)
+  Class: Eq_678
   DataType: byte
   OrigDataType: byte
-T_691: (in 1<8> @ 023C : byte)
+T_691: (in c_205 != 1<8> @ 0246 : bool)
   Class: Eq_691
-  DataType: byte
-  OrigDataType: byte
-T_692: (in b_65 - 1<8> @ 023C : byte)
-  Class: Eq_690
-  DataType: byte
-  OrigDataType: byte
-T_693: (in 0<8> @ 023C : byte)
-  Class: Eq_690
-  DataType: byte
-  OrigDataType: byte
-T_694: (in b_65 != 0<8> @ 023C : bool)
-  Class: Eq_694
   DataType: bool
   OrigDataType: bool
-T_695: (in fn0A19 @ 0241 : ptr16)
-  Class: Eq_302
-  DataType: (ptr16 Eq_302)
-  OrigDataType: (ptr16 (fn T_696 ()))
-T_696: (in fn0A19() @ 0241 : byte)
-  Class: Eq_304
+T_692: (in 5<8> @ 0235 : byte)
+  Class: Eq_680
   DataType: byte
   OrigDataType: byte
-T_697: (in c_204 @ 0245 : byte)
-  Class: Eq_688
-  DataType: byte
-  OrigDataType: byte
-T_698: (in 1<8> @ 0245 : byte)
-  Class: Eq_688
-  DataType: byte
-  OrigDataType: byte
-T_699: (in c_204 - 1<8> @ 0245 : byte)
-  Class: Eq_688
-  DataType: byte
-  OrigDataType: byte
-T_700: (in c_204 != 1<8> @ 0246 : bool)
-  Class: Eq_700
-  DataType: bool
-  OrigDataType: bool
-T_701: (in 5<8> @ 0235 : byte)
-  Class: Eq_690
-  DataType: byte
-  OrigDataType: byte
-T_702: (in de_110 @ 0259 : (ptr16 Eq_53))
+T_693: (in de_110 @ 0259 : (ptr16 Eq_53))
   Class: Eq_53
   DataType: (ptr16 Eq_53)
   OrigDataType: word16
-T_703: (in SLICE(de_110, byte, 8) @ 0259 : byte)
+T_694: (in SLICE(de_110, byte, 8) @ 0259 : byte)
   Class: Eq_25
   DataType: byte
   OrigDataType: byte
-T_704: (in d_120 @ 0259 : byte)
+T_695: (in d_120 @ 0259 : byte)
   Class: Eq_25
   DataType: byte
   OrigDataType: byte
-T_705: (in fn027F @ 0259 : ptr16)
-  Class: Eq_705
-  DataType: (ptr16 Eq_705)
-  OrigDataType: (ptr16 (fn T_721 (T_687, T_710, T_717, T_719)))
-T_706: (in signature of fn027F @ 027F : void)
-  Class: Eq_705
-  DataType: (ptr16 Eq_705)
+T_696: (in fn027F @ 0259 : ptr16)
+  Class: Eq_696
+  DataType: (ptr16 Eq_696)
+  OrigDataType: (ptr16 (fn T_712 (T_677, T_701, T_708, T_710)))
+T_697: (in signature of fn027F @ 027F : void)
+  Class: Eq_696
+  DataType: (ptr16 Eq_696)
   OrigDataType: 
-T_707: (in f @ 0259 : byte)
+T_698: (in f @ 0259 : byte)
   Class: Eq_2
   DataType: byte
   OrigDataType: byte
-T_708: (in d @ 0259 : byte)
-  Class: Eq_708
+T_699: (in d @ 0259 : byte)
+  Class: Eq_699
   DataType: byte
   OrigDataType: byte
-T_709: (in iy @ 0259 : (ptr16 byte))
+T_700: (in iy @ 0259 : (ptr16 byte))
   Class: Eq_35
   DataType: (ptr16 byte)
   OrigDataType: word16
-T_710: (in 0<8> @ 0259 : byte)
-  Class: Eq_708
+T_701: (in 0<8> @ 0259 : byte)
+  Class: Eq_699
   DataType: byte
   OrigDataType: byte
-T_711: (in bc @ 0259 : word16)
-  Class: Eq_711
+T_702: (in bc @ 0259 : word16)
+  Class: Eq_702
   DataType: word16
   OrigDataType: word16
-T_712: (in SLICE(bc, byte, 8) @ 0259 : byte)
-  Class: Eq_712
+T_703: (in SLICE(bc, byte, 8) @ 0259 : byte)
+  Class: Eq_703
   DataType: byte
   OrigDataType: byte
-T_713: (in 3<8> @ 0259 : byte)
-  Class: Eq_713
+T_704: (in 3<8> @ 0259 : byte)
+  Class: Eq_704
   DataType: byte
   OrigDataType: byte
-T_714: (in SLICE(bc, byte, 8) << 3<8> @ 0259 : byte)
-  Class: Eq_714
+T_705: (in SLICE(bc, byte, 8) << 3<8> @ 0259 : byte)
+  Class: Eq_705
   DataType: uint8
   OrigDataType: uint8
-T_715: (in CONVERT(SLICE(bc, byte, 8) << 3<8>, uint8, uint16) @ 0259 : uint16)
-  Class: Eq_715
+T_706: (in CONVERT(SLICE(bc, byte, 8) << 3<8>, uint8, uint16) @ 0259 : uint16)
+  Class: Eq_706
   DataType: uint16
   OrigDataType: uint16
-T_716: (in 0xC72<16> @ 0259 : word16)
-  Class: Eq_716
+T_707: (in 0xC72<16> @ 0259 : word16)
+  Class: Eq_707
   DataType: word16
   OrigDataType: word16
-T_717: (in (uint16) (SLICE(bc, byte, 8) << 3<8>) + 0xC72<16> @ 0259 : word16)
+T_708: (in (uint16) (SLICE(bc, byte, 8) << 3<8>) + 0xC72<16> @ 0259 : word16)
   Class: Eq_35
   DataType: (ptr16 byte)
   OrigDataType: uint16
-T_718: (in d_199 @ 0259 : byte)
-  Class: Eq_718
+T_709: (in d_200 @ 0259 : byte)
+  Class: Eq_709
   DataType: byte
   OrigDataType: byte
-T_719: (in out d_199 @ 0259 : byte)
+T_710: (in out d_200 @ 0259 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_720: (in dOut @ 0259 : uint8)
+T_711: (in dOut @ 0259 : uint8)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_721: (in fn027F(f_108, 0<8>, (uint16) (SLICE(bc, byte, 8) << 3<8>) + 0xC72<16>, out d_199) @ 0259 : byte)
+T_712: (in fn027F(f_108, 0<8>, (uint16) (SLICE(bc, byte, 8) << 3<8>) + 0xC72<16>, out d_200) @ 0259 : byte)
   Class: Eq_2
   DataType: byte
   OrigDataType: byte
-T_722: (in f_121 @ 0259 : byte)
+T_713: (in f_121 @ 0259 : byte)
   Class: Eq_2
   DataType: byte
   OrigDataType: byte
-T_723: (in iy_116 @ 025C : (ptr16 byte))
+T_714: (in iy_116 @ 025C : (ptr16 byte))
   Class: Eq_35
   DataType: (ptr16 byte)
   OrigDataType: word16
-T_724: (in 5<8> @ 025E : byte)
-  Class: Eq_724
+T_715: (in 5<8> @ 025E : byte)
+  Class: Eq_715
   DataType: byte
   OrigDataType: byte
-T_725: (in b_118 @ 025E : byte)
-  Class: Eq_724
+T_716: (in b_118 @ 025E : byte)
+  Class: Eq_715
   DataType: byte
   OrigDataType: byte
-T_726: (in fn09A2 @ 0266 : ptr16)
-  Class: Eq_606
-  DataType: (ptr16 Eq_606)
-  OrigDataType: (ptr16 (fn T_740 (T_735, T_737, T_739)))
-T_727: (in 0<16> @ 0266 : word16)
+T_717: (in fn09A2 @ 0266 : ptr16)
+  Class: Eq_596
+  DataType: (ptr16 Eq_596)
+  OrigDataType: (ptr16 (fn T_731 (T_726, T_728, T_730)))
+T_718: (in 0<16> @ 0266 : word16)
+  Class: Eq_718
+  DataType: word16
+  OrigDataType: word16
+T_719: (in ix + 0<16> @ 0266 : word16)
+  Class: Eq_719
+  DataType: word16
+  OrigDataType: word16
+T_720: (in Mem85[ix + 0<16>:byte] @ 0266 : byte)
+  Class: Eq_720
+  DataType: byte
+  OrigDataType: byte
+T_721: (in fn027A @ 0266 : ptr16)
+  Class: Eq_155
+  DataType: (ptr16 Eq_155)
+  OrigDataType: (ptr16 (fn T_725 (T_713, T_695, T_714, T_723, T_724)))
+T_722: (in d_201 @ 0266 : byte)
+  Class: Eq_722
+  DataType: byte
+  OrigDataType: byte
+T_723: (in out d_201 @ 0266 : byte)
+  Class: Eq_38
+  DataType: uint8
+  OrigDataType: byte
+T_724: (in out iy_116 @ 0266 : word16)
+  Class: Eq_165
+  DataType: word16
+  OrigDataType: word16
+T_725: (in fn027A(f_121, d_120, iy_116, out d_201, out iy_116) @ 0266 : byte)
+  Class: Eq_2
+  DataType: byte
+  OrigDataType: byte
+T_726: (in SEQ(Mem85[ix + 0<16>:byte], fn027A(f_121, d_120, iy_116, out d_201, out iy_116)) @ 0266 : word16)
+  Class: Eq_477
+  DataType: word16
+  OrigDataType: word16
+T_727: (in af_134 @ 0266 : word16)
   Class: Eq_727
   DataType: word16
   OrigDataType: word16
-T_728: (in ix + 0<16> @ 0266 : word16)
-  Class: Eq_728
+T_728: (in out af_134 @ 0266 : word16)
+  Class: Eq_609
   DataType: word16
   OrigDataType: word16
-T_729: (in Mem85[ix + 0<16>:byte] @ 0266 : byte)
+T_729: (in c_202 @ 0266 : byte)
   Class: Eq_729
   DataType: byte
   OrigDataType: byte
-T_730: (in fn027A @ 0266 : ptr16)
-  Class: Eq_169
-  DataType: (ptr16 Eq_169)
-  OrigDataType: (ptr16 (fn T_734 (T_722, T_704, T_723, T_732, T_733)))
-T_731: (in d_200 @ 0266 : byte)
-  Class: Eq_731
+T_730: (in out c_202 @ 0266 : byte)
+  Class: Eq_612
   DataType: byte
   OrigDataType: byte
-T_732: (in out d_200 @ 0266 : byte)
-  Class: Eq_38
-  DataType: uint8
-  OrigDataType: byte
-T_733: (in out iy_116 @ 0266 : word16)
-  Class: Eq_179
-  DataType: word16
-  OrigDataType: word16
-T_734: (in fn027A(f_121, d_120, iy_116, out d_200, out iy_116) @ 0266 : byte)
-  Class: Eq_2
-  DataType: byte
-  OrigDataType: byte
-T_735: (in SEQ(Mem85[ix + 0<16>:byte], fn027A(f_121, d_120, iy_116, out d_200, out iy_116)) @ 0266 : word16)
-  Class: Eq_487
-  DataType: word16
-  OrigDataType: word16
-T_736: (in af_134 @ 0266 : word16)
-  Class: Eq_736
-  DataType: word16
-  OrigDataType: word16
-T_737: (in out af_134 @ 0266 : word16)
-  Class: Eq_619
-  DataType: word16
-  OrigDataType: word16
-T_738: (in c_201 @ 0266 : byte)
-  Class: Eq_738
-  DataType: byte
-  OrigDataType: byte
-T_739: (in out c_201 @ 0266 : byte)
-  Class: Eq_622
-  DataType: byte
-  OrigDataType: byte
-T_740: (in fn09A2(SEQ(ix->b0000, fn027A(f_121, d_120, iy_116, out d_200, out iy_116)), out af_134, out c_201) @ 0266 : bool)
-  Class: Eq_624
-  DataType: Eq_624
+T_731: (in fn09A2(SEQ(ix->b0000, fn027A(f_121, d_120, iy_116, out d_201, out iy_116)), out af_134, out c_202) @ 0266 : bool)
+  Class: Eq_614
+  DataType: Eq_614
   OrigDataType: bool
-T_741: (in de_123 @ 0260 : (ptr16 Eq_53))
+T_732: (in de_123 @ 0260 : (ptr16 Eq_53))
   Class: Eq_53
   DataType: (ptr16 Eq_53)
   OrigDataType: word16
-T_742: (in SLICE(de_123, byte, 8) @ 0260 : byte)
+T_733: (in SLICE(de_123, byte, 8) @ 0260 : byte)
   Class: Eq_25
   DataType: byte
   OrigDataType: byte
-T_743: (in SLICE(af_134, byte, 0) @ 0266 : byte)
+T_734: (in SLICE(af_134, byte, 0) @ 0266 : byte)
   Class: Eq_2
   DataType: byte
   OrigDataType: byte
-T_744: (in 1<16> @ 0269 : word16)
-  Class: Eq_744
+T_735: (in 1<16> @ 0269 : word16)
+  Class: Eq_735
   DataType: int16
   OrigDataType: int16
-T_745: (in ix + 1<16> @ 0269 : word16)
-  Class: Eq_147
-  DataType: (ptr16 Eq_147)
+T_736: (in ix + 1<16> @ 0269 : word16)
+  Class: Eq_133
+  DataType: (ptr16 Eq_133)
   OrigDataType: ptr16
-T_746: (in 1<8> @ 026B : byte)
-  Class: Eq_746
+T_737: (in 1<8> @ 026B : byte)
+  Class: Eq_737
   DataType: byte
   OrigDataType: byte
-T_747: (in b_118 - 1<8> @ 026B : byte)
-  Class: Eq_724
+T_738: (in b_118 - 1<8> @ 026B : byte)
+  Class: Eq_715
   DataType: byte
   OrigDataType: byte
-T_748: (in 0<8> @ 026B : byte)
-  Class: Eq_724
+T_739: (in 0<8> @ 026B : byte)
+  Class: Eq_715
   DataType: byte
   OrigDataType: byte
-T_749: (in b_118 != 0<8> @ 026B : bool)
-  Class: Eq_749
+T_740: (in b_118 != 0<8> @ 026B : bool)
+  Class: Eq_740
   DataType: bool
   OrigDataType: bool
-T_750: (in fn027A @ 026D : ptr16)
-  Class: Eq_169
-  DataType: (ptr16 Eq_169)
-  OrigDataType: (ptr16 (fn T_755 (T_722, T_704, T_723, T_752, T_754)))
-T_751: (in d_202 @ 026D : byte)
-  Class: Eq_751
+T_741: (in fn027A @ 026D : ptr16)
+  Class: Eq_155
+  DataType: (ptr16 Eq_155)
+  OrigDataType: (ptr16 (fn T_746 (T_713, T_695, T_714, T_743, T_745)))
+T_742: (in d_203 @ 026D : byte)
+  Class: Eq_742
   DataType: byte
   OrigDataType: byte
-T_752: (in out d_202 @ 026D : byte)
+T_743: (in out d_203 @ 026D : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_753: (in iy_203 @ 026D : word16)
-  Class: Eq_753
+T_744: (in iy_204 @ 026D : word16)
+  Class: Eq_744
   DataType: word16
   OrigDataType: word16
-T_754: (in out iy_203 @ 026D : word16)
-  Class: Eq_179
+T_745: (in out iy_204 @ 026D : word16)
+  Class: Eq_165
   DataType: word16
   OrigDataType: word16
-T_755: (in fn027A(f_121, d_120, iy_116, out d_202, out iy_203) @ 026D : byte)
+T_746: (in fn027A(f_121, d_120, iy_116, out d_203, out iy_204) @ 026D : byte)
   Class: Eq_2
   DataType: byte
   OrigDataType: byte
-T_756: (in f_155 @ 026D : byte)
+T_747: (in f_155 @ 026D : byte)
   Class: Eq_2
   DataType: byte
   OrigDataType: byte
-T_757: (in 0xABA<16> @ 0270 : word16)
-  Class: Eq_757
+T_748: (in 0xABA<16> @ 0270 : word16)
+  Class: Eq_748
   DataType: (ptr16 Eq_87)
-  OrigDataType: (ptr16 (struct (0 T_758 t0000)))
-T_758: (in Mem85[0xABA<16>:word16] @ 0270 : word16)
+  OrigDataType: (ptr16 (struct (0 T_749 t0000)))
+T_749: (in Mem85[0xABA<16>:word16] @ 0270 : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_759: (in de_153 @ 0270 : Eq_87)
+T_750: (in de_153 @ 0270 : Eq_87)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_760: (in fn099E @ 0274 : ptr16)
-  Class: Eq_186
-  DataType: (ptr16 Eq_186)
-  OrigDataType: (ptr16 (fn T_768 (T_762, T_763, T_765, T_767)))
-T_761: (in SLICE(de_153, byte, 8) @ 0274 : byte)
-  Class: Eq_761
+T_751: (in fn099E @ 0274 : ptr16)
+  Class: Eq_172
+  DataType: (ptr16 Eq_172)
+  OrigDataType: (ptr16 (fn T_759 (T_753, T_754, T_756, T_758)))
+T_752: (in SLICE(de_153, byte, 8) @ 0274 : byte)
+  Class: Eq_752
   DataType: byte
   OrigDataType: byte
-T_762: (in SEQ(SLICE(de_153, byte, 8), f_155) @ 0274 : word16)
-  Class: Eq_188
+T_753: (in SEQ(SLICE(de_153, byte, 8), f_155) @ 0274 : word16)
+  Class: Eq_174
   DataType: word16
   OrigDataType: word16
-T_763: (in SLICE(de_153, byte, 0) @ 0274 : byte)
-  Class: Eq_189
+T_754: (in SLICE(de_153, byte, 0) @ 0274 : byte)
+  Class: Eq_175
   DataType: byte
   OrigDataType: byte
-T_764: (in af_158 @ 0274 : word16)
-  Class: Eq_764
+T_755: (in af_158 @ 0274 : word16)
+  Class: Eq_755
   DataType: word16
   OrigDataType: word16
-T_765: (in out af_158 @ 0274 : word16)
-  Class: Eq_194
+T_756: (in out af_158 @ 0274 : word16)
+  Class: Eq_180
   DataType: word16
   OrigDataType: word16
-T_766: (in c_159 @ 0274 : byte)
-  Class: Eq_766
+T_757: (in c_159 @ 0274 : byte)
+  Class: Eq_757
   DataType: byte
   OrigDataType: byte
-T_767: (in out c_159 @ 0274 : byte)
-  Class: Eq_197
+T_758: (in out c_159 @ 0274 : byte)
+  Class: Eq_183
   DataType: byte
   OrigDataType: byte
-T_768: (in fn099E(SEQ(SLICE(de_153, byte, 8), f_155), (byte) de_153, out af_158, out c_159) @ 0274 : bool)
-  Class: Eq_199
-  DataType: Eq_199
+T_759: (in fn099E(SEQ(SLICE(de_153, byte, 8), f_155), (byte) de_153, out af_158, out c_159) @ 0274 : bool)
+  Class: Eq_185
+  DataType: Eq_185
   OrigDataType: bool
-T_769: (in Z_161 @ 0274 : Eq_199)
-  Class: Eq_199
-  DataType: Eq_199
+T_760: (in Z_161 @ 0274 : Eq_185)
+  Class: Eq_185
+  DataType: Eq_185
   OrigDataType: (union ((union (bool u0) (byte u1)) u1) ((union (bool u0) (byte u1)) u0))
-T_770: (in SEQ(b_118, c_159) @ 0279 : word16)
-  Class: Eq_376
+T_761: (in SEQ(b_118, c_159) @ 0279 : word16)
+  Class: Eq_363
   DataType: word16
   OrigDataType: word16
-T_771: (in 0<8> @ 0279 : byte)
-  Class: Eq_199
+T_762: (in 0<8> @ 0279 : byte)
+  Class: Eq_185
   DataType: byte
   OrigDataType: byte
-T_772: (in Z_161 != 0<8> @ 0279 : bool)
-  Class: Eq_656
+T_763: (in Z_161 != 0<8> @ 0279 : bool)
+  Class: Eq_646
   DataType: bool
   OrigDataType: bool
-T_773: (in fn09C7 @ 027C : ptr16)
-  Class: Eq_773
-  DataType: (ptr16 Eq_773)
-  OrigDataType: (ptr16 (fn T_785 (T_171, T_778, T_173, T_780, T_783)))
-T_774: (in signature of fn09C7 @ 09C7 : void)
-  Class: Eq_773
-  DataType: (ptr16 Eq_773)
+T_764: (in fn09C7 @ 027C : ptr16)
+  Class: Eq_764
+  DataType: (ptr16 Eq_764)
+  OrigDataType: (ptr16 (fn T_776 (T_157, T_769, T_159, T_771, T_774)))
+T_765: (in signature of fn09C7 @ 09C7 : void)
+  Class: Eq_764
+  DataType: (ptr16 Eq_764)
   OrigDataType: 
-T_775: (in f @ 027C : byte)
+T_766: (in f @ 027C : byte)
   Class: Eq_2
   DataType: byte
   OrigDataType: byte
-T_776: (in e @ 027C : byte)
-  Class: Eq_776
+T_767: (in e @ 027C : byte)
+  Class: Eq_767
   DataType: byte
   OrigDataType: byte
-T_777: (in iy @ 027C : (ptr16 byte))
+T_768: (in iy @ 027C : (ptr16 byte))
   Class: Eq_35
   DataType: (ptr16 byte)
   OrigDataType: (ptr16 (struct 0001 (0 byte b0000)))
-T_778: (in 6<8> @ 027C : byte)
+T_769: (in 6<8> @ 027C : byte)
+  Class: Eq_767
+  DataType: byte
+  OrigDataType: byte
+T_770: (in d_17 @ 027C : byte)
+  Class: Eq_770
+  DataType: byte
+  OrigDataType: byte
+T_771: (in out d_17 @ 027C : byte)
+  Class: Eq_38
+  DataType: uint8
+  OrigDataType: byte
+T_772: (in dOut @ 027C : uint8)
+  Class: Eq_38
+  DataType: uint8
+  OrigDataType: byte
+T_773: (in iy_10 @ 027C : word16)
+  Class: Eq_165
+  DataType: word16
+  OrigDataType: word16
+T_774: (in out iy_10 @ 027C : word16)
+  Class: Eq_35
+  DataType: (ptr16 byte)
+  OrigDataType: word16
+T_775: (in iyOut @ 027C : (ptr16 byte))
+  Class: Eq_35
+  DataType: (ptr16 byte)
+  OrigDataType: word16
+T_776: (in fn09C7(f, 6<8>, iy, out d_17, out iy_10) @ 027C : word16)
   Class: Eq_776
-  DataType: byte
-  OrigDataType: byte
-T_779: (in d_17 @ 027C : byte)
-  Class: Eq_779
-  DataType: byte
-  OrigDataType: byte
-T_780: (in out d_17 @ 027C : byte)
-  Class: Eq_38
-  DataType: uint8
-  OrigDataType: byte
-T_781: (in dOut @ 027C : uint8)
-  Class: Eq_38
-  DataType: uint8
-  OrigDataType: byte
-T_782: (in iy_10 @ 027C : word16)
-  Class: Eq_179
   DataType: word16
   OrigDataType: word16
-T_783: (in out iy_10 @ 027C : word16)
-  Class: Eq_35
-  DataType: (ptr16 byte)
-  OrigDataType: word16
-T_784: (in iyOut @ 027C : (ptr16 byte))
-  Class: Eq_35
-  DataType: (ptr16 byte)
-  OrigDataType: word16
-T_785: (in fn09C7(f, 6<8>, iy, out d_17, out iy_10) @ 027C : word16)
-  Class: Eq_785
+T_777: (in af_8 @ 027C : word16)
+  Class: Eq_776
   DataType: word16
   OrigDataType: word16
-T_786: (in af_8 @ 027C : word16)
-  Class: Eq_785
-  DataType: word16
-  OrigDataType: word16
-T_787: (in SLICE(af_8, byte, 0) @ 027C : byte)
+T_778: (in SLICE(af_8, byte, 0) @ 027C : byte)
   Class: Eq_2
   DataType: byte
   OrigDataType: byte
-T_788: (in fn09C7 @ 0281 : ptr16)
-  Class: Eq_773
-  DataType: (ptr16 Eq_773)
-  OrigDataType: (ptr16 (fn T_794 (T_707, T_789, T_709, T_791, T_793)))
-T_789: (in 8<8> @ 0281 : byte)
-  Class: Eq_776
+T_779: (in fn09C7 @ 0281 : ptr16)
+  Class: Eq_764
+  DataType: (ptr16 Eq_764)
+  OrigDataType: (ptr16 (fn T_785 (T_698, T_780, T_700, T_782, T_784)))
+T_780: (in 8<8> @ 0281 : byte)
+  Class: Eq_767
   DataType: byte
   OrigDataType: byte
-T_790: (in d_16 @ 0281 : byte)
-  Class: Eq_790
+T_781: (in d_16 @ 0281 : byte)
+  Class: Eq_781
   DataType: byte
   OrigDataType: byte
-T_791: (in out d_16 @ 0281 : byte)
+T_782: (in out d_16 @ 0281 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_792: (in iy_17 @ 0281 : word16)
-  Class: Eq_792
+T_783: (in iy_17 @ 0281 : word16)
+  Class: Eq_783
   DataType: word16
   OrigDataType: word16
-T_793: (in out iy_17 @ 0281 : word16)
+T_784: (in out iy_17 @ 0281 : word16)
   Class: Eq_35
   DataType: (ptr16 byte)
   OrigDataType: word16
-T_794: (in fn09C7(f, 8<8>, iy, out d_16, out iy_17) @ 0281 : word16)
-  Class: Eq_785
+T_785: (in fn09C7(f, 8<8>, iy, out d_16, out iy_17) @ 0281 : word16)
+  Class: Eq_776
   DataType: word16
   OrigDataType: word16
-T_795: (in af_8 @ 0281 : word16)
-  Class: Eq_785
+T_786: (in af_8 @ 0281 : word16)
+  Class: Eq_776
   DataType: word16
   OrigDataType: word16
-T_796: (in SLICE(af_8, byte, 0) @ 0281 : byte)
+T_787: (in SLICE(af_8, byte, 0) @ 0281 : byte)
   Class: Eq_2
   DataType: byte
   OrigDataType: byte
-T_797: (in c @ 0281 : byte)
-  Class: Eq_797
+T_788: (in c @ 0281 : byte)
+  Class: Eq_788
   DataType: byte
   OrigDataType: byte
-T_798: (in hl @ 0281 : Eq_87)
+T_789: (in hl @ 0281 : Eq_87)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_799: (in 0xA98<16> @ 0285 : word16)
-  Class: Eq_799
+T_790: (in 0xA98<16> @ 0285 : word16)
+  Class: Eq_790
   DataType: (ptr16 byte)
   OrigDataType: word16
-T_800: (in hl_13 @ 0285 : (ptr16 byte))
-  Class: Eq_799
-  DataType: (ptr16 byte)
-  OrigDataType: (ptr16 (struct 0001 (0 byte b0000)))
-T_801: (in 0xA9A<16> @ 0288 : word16)
-  Class: Eq_801
-  DataType: (ptr16 byte)
-  OrigDataType: word16
-T_802: (in de_11 @ 0288 : (ptr16 byte))
-  Class: Eq_801
+T_791: (in hl_13 @ 0285 : (ptr16 byte))
+  Class: Eq_790
   DataType: (ptr16 byte)
   OrigDataType: (ptr16 (struct 0001 (0 byte b0000)))
-T_803: (in 0x4E<16> @ 028B : word16)
-  Class: Eq_803
+T_792: (in 0xA9A<16> @ 0288 : word16)
+  Class: Eq_792
+  DataType: (ptr16 byte)
+  OrigDataType: word16
+T_793: (in de_11 @ 0288 : (ptr16 byte))
+  Class: Eq_792
+  DataType: (ptr16 byte)
+  OrigDataType: (ptr16 (struct 0001 (0 byte b0000)))
+T_794: (in 0x4E<16> @ 028B : word16)
+  Class: Eq_794
   DataType: word16
   OrigDataType: word16
-T_804: (in bc_15 @ 028B : word16)
-  Class: Eq_803
+T_795: (in bc_15 @ 028B : word16)
+  Class: Eq_794
   DataType: word16
   OrigDataType: word16
-T_805: (in 0<16> @ 028E : word16)
-  Class: Eq_805
+T_796: (in 0<16> @ 028E : word16)
+  Class: Eq_796
   DataType: word16
   OrigDataType: word16
-T_806: (in hl_13 + 0<16> @ 028E : word16)
+T_797: (in hl_13 + 0<16> @ 028E : word16)
+  Class: Eq_797
+  DataType: word16
+  OrigDataType: word16
+T_798: (in Mem10[hl_13 + 0<16>:byte] @ 028E : byte)
+  Class: Eq_798
+  DataType: byte
+  OrigDataType: byte
+T_799: (in 0<16> @ 028E : word16)
+  Class: Eq_799
+  DataType: word16
+  OrigDataType: word16
+T_800: (in de_11 + 0<16> @ 028E : word16)
+  Class: Eq_800
+  DataType: word16
+  OrigDataType: word16
+T_801: (in Mem12[de_11 + 0<16>:byte] @ 028E : byte)
+  Class: Eq_798
+  DataType: byte
+  OrigDataType: byte
+T_802: (in 1<i16> @ 028E : int16)
+  Class: Eq_802
+  DataType: int16
+  OrigDataType: int16
+T_803: (in hl_13 - 1<i16> @ 028E : word16)
+  Class: Eq_790
+  DataType: (ptr16 byte)
+  OrigDataType: ptr16
+T_804: (in 1<i16> @ 028E : int16)
+  Class: Eq_804
+  DataType: int16
+  OrigDataType: int16
+T_805: (in de_11 - 1<i16> @ 028E : word16)
+  Class: Eq_792
+  DataType: (ptr16 byte)
+  OrigDataType: ptr16
+T_806: (in 1<16> @ 028E : word16)
   Class: Eq_806
   DataType: word16
   OrigDataType: word16
-T_807: (in Mem10[hl_13 + 0<16>:byte] @ 028E : byte)
-  Class: Eq_807
-  DataType: byte
-  OrigDataType: byte
+T_807: (in bc_15 - 1<16> @ 028E : word16)
+  Class: Eq_794
+  DataType: word16
+  OrigDataType: word16
 T_808: (in 0<16> @ 028E : word16)
-  Class: Eq_808
+  Class: Eq_794
   DataType: word16
   OrigDataType: word16
-T_809: (in de_11 + 0<16> @ 028E : word16)
+T_809: (in bc_15 != 0<16> @ 028E : bool)
   Class: Eq_809
-  DataType: word16
-  OrigDataType: word16
-T_810: (in Mem12[de_11 + 0<16>:byte] @ 028E : byte)
-  Class: Eq_807
-  DataType: byte
-  OrigDataType: byte
-T_811: (in 1<i16> @ 028E : int16)
-  Class: Eq_811
-  DataType: int16
-  OrigDataType: int16
-T_812: (in hl_13 - 1<i16> @ 028E : word16)
-  Class: Eq_799
-  DataType: (ptr16 byte)
-  OrigDataType: ptr16
-T_813: (in 1<i16> @ 028E : int16)
-  Class: Eq_813
-  DataType: int16
-  OrigDataType: int16
-T_814: (in de_11 - 1<i16> @ 028E : word16)
-  Class: Eq_801
-  DataType: (ptr16 byte)
-  OrigDataType: ptr16
-T_815: (in 1<16> @ 028E : word16)
-  Class: Eq_815
-  DataType: word16
-  OrigDataType: word16
-T_816: (in bc_15 - 1<16> @ 028E : word16)
-  Class: Eq_803
-  DataType: word16
-  OrigDataType: word16
-T_817: (in 0<16> @ 028E : word16)
-  Class: Eq_803
-  DataType: word16
-  OrigDataType: word16
-T_818: (in bc_15 != 0<16> @ 028E : bool)
-  Class: Eq_818
   DataType: bool
   OrigDataType: bool
-T_819: (in 0A4B @ 0296 : ptr16)
-  Class: Eq_819
+T_810: (in 0A4B @ 0296 : ptr16)
+  Class: Eq_810
   DataType: (ptr16 Eq_87)
-  OrigDataType: (ptr16 (struct (0 T_820 t0000)))
-T_820: (in Mem26[0x0A4B<p16>:word16] @ 0296 : word16)
+  OrigDataType: (ptr16 (struct (0 T_811 t0000)))
+T_811: (in Mem26[0x0A4B<p16>:word16] @ 0296 : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_821: (in dOut @ 0298 : uint8)
+T_812: (in dOut @ 0298 : uint8)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_822: (in SLICE(bc_15, byte, 0) @ 0298 : byte)
-  Class: Eq_797
+T_813: (in SLICE(bc_15, byte, 0) @ 0298 : byte)
+  Class: Eq_788
   DataType: byte
   OrigDataType: byte
-T_823: (in Z @ 0298 : bool)
-  Class: Eq_823
+T_814: (in Z @ 0298 : bool)
+  Class: Eq_814
   DataType: bool
   OrigDataType: bool
-T_824: (in fp @ 02C5 : ptr16)
-  Class: Eq_824
+T_815: (in fp @ 02C5 : ptr16)
+  Class: Eq_815
   DataType: ptr16
   OrigDataType: ptr16
-T_825: (in sp_2 @ 02C5 : ptr16)
-  Class: Eq_824
+T_816: (in sp_2 @ 02C5 : ptr16)
+  Class: Eq_815
   DataType: ptr16
   OrigDataType: ptr16
-T_826: (in fn0E34 @ 02C5 : ptr16)
-  Class: Eq_826
-  DataType: (ptr16 Eq_826)
-  OrigDataType: (ptr16 (fn T_828 ()))
-T_827: (in signature of fn0E34 @ 0E34 : void)
-  Class: Eq_826
-  DataType: (ptr16 Eq_826)
+T_817: (in fn0E34 @ 02C5 : ptr16)
+  Class: Eq_817
+  DataType: (ptr16 Eq_817)
+  OrigDataType: (ptr16 (fn T_819 ()))
+T_818: (in signature of fn0E34 @ 0E34 : void)
+  Class: Eq_817
+  DataType: (ptr16 Eq_817)
   OrigDataType: 
-T_828: (in fn0E34() @ 02C5 : void)
-  Class: Eq_828
+T_819: (in fn0E34() @ 02C5 : void)
+  Class: Eq_819
   DataType: void
   OrigDataType: void
-T_829: (in 0xABA<16> @ 02C8 : word16)
+T_820: (in 0xABA<16> @ 02C8 : word16)
+  Class: Eq_820
+  DataType: (ptr16 Eq_87)
+  OrigDataType: (ptr16 (struct (0 T_821 t0000)))
+T_821: (in Mem0[0xABA<16>:word16] @ 02C8 : word16)
+  Class: Eq_87
+  DataType: Eq_87
+  OrigDataType: word16
+T_822: (in hl_4 @ 02C8 : Eq_87)
+  Class: Eq_87
+  DataType: Eq_87
+  OrigDataType: word16
+T_823: (in fn0284 @ 02CB : ptr16)
+  Class: Eq_823
+  DataType: (ptr16 Eq_823)
+  OrigDataType: (ptr16 (fn T_827 (T_822, T_826)))
+T_824: (in signature of fn0284 @ 0284 : void)
+  Class: Eq_823
+  DataType: (ptr16 Eq_823)
+  OrigDataType: 
+T_825: (in d_572 @ 02CB : byte)
+  Class: Eq_825
+  DataType: byte
+  OrigDataType: byte
+T_826: (in out d_572 @ 02CB : byte)
+  Class: Eq_38
+  DataType: uint8
+  OrigDataType: byte
+T_827: (in fn0284(hl_4, out d_572) @ 02CB : byte)
+  Class: Eq_827
+  DataType: byte
+  OrigDataType: byte
+T_828: (in c_338 @ 02CB : byte)
+  Class: Eq_827
+  DataType: byte
+  OrigDataType: byte
+T_829: (in 0xAB8<16> @ 02CE : word16)
   Class: Eq_829
   DataType: (ptr16 Eq_87)
   OrigDataType: (ptr16 (struct (0 T_830 t0000)))
-T_830: (in Mem0[0xABA<16>:word16] @ 02C8 : word16)
+T_830: (in Mem10[0xAB8<16>:word16] @ 02CE : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_831: (in hl_4 @ 02C8 : Eq_87)
-  Class: Eq_87
-  DataType: Eq_87
-  OrigDataType: word16
-T_832: (in fn0284 @ 02CB : ptr16)
+T_831: (in fn0E24 @ 02D1 : ptr16)
+  Class: Eq_462
+  DataType: (ptr16 Eq_462)
+  OrigDataType: (ptr16 (fn T_836 (T_822, T_833, T_835)))
+T_832: (in af_573 @ 02D1 : word16)
   Class: Eq_832
-  DataType: (ptr16 Eq_832)
-  OrigDataType: (ptr16 (fn T_836 (T_831, T_835)))
-T_833: (in signature of fn0284 @ 0284 : void)
-  Class: Eq_832
-  DataType: (ptr16 Eq_832)
-  OrigDataType: 
-T_834: (in d_572 @ 02CB : byte)
-  Class: Eq_834
-  DataType: byte
-  OrigDataType: byte
-T_835: (in out d_572 @ 02CB : byte)
-  Class: Eq_38
-  DataType: uint8
-  OrigDataType: byte
-T_836: (in fn0284(hl_4, out d_572) @ 02CB : byte)
-  Class: Eq_836
-  DataType: byte
-  OrigDataType: byte
-T_837: (in c_338 @ 02CB : byte)
-  Class: Eq_836
-  DataType: byte
-  OrigDataType: byte
-T_838: (in 0xAB8<16> @ 02CE : word16)
-  Class: Eq_838
-  DataType: (ptr16 Eq_87)
-  OrigDataType: (ptr16 (struct (0 T_839 t0000)))
-T_839: (in Mem10[0xAB8<16>:word16] @ 02CE : word16)
-  Class: Eq_87
-  DataType: Eq_87
-  OrigDataType: word16
-T_840: (in fn0E24 @ 02D1 : ptr16)
-  Class: Eq_472
-  DataType: (ptr16 Eq_472)
-  OrigDataType: (ptr16 (fn T_845 (T_831, T_842, T_844)))
-T_841: (in af_573 @ 02D1 : word16)
-  Class: Eq_841
   DataType: word16
   OrigDataType: word16
-T_842: (in out af_573 @ 02D1 : word16)
+T_833: (in out af_573 @ 02D1 : word16)
   Class: Eq_53
   DataType: (ptr16 Eq_53)
   OrigDataType: word16
-T_843: (in hl_12 @ 02D1 : Eq_87)
+T_834: (in hl_12 @ 02D1 : Eq_87)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_844: (in out hl_12 @ 02D1 : word16)
+T_835: (in out hl_12 @ 02D1 : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_845: (in fn0E24(hl_4, out af_573, out hl_12) @ 02D1 : bool)
-  Class: Eq_482
-  DataType: Eq_482
+T_836: (in fn0E24(hl_4, out af_573, out hl_12) @ 02D1 : bool)
+  Class: Eq_472
+  DataType: Eq_472
   OrigDataType: bool
-T_846: (in de_6 @ 02CB : (ptr16 Eq_53))
+T_837: (in de_6 @ 02CB : (ptr16 Eq_53))
   Class: Eq_53
   DataType: (ptr16 Eq_53)
   OrigDataType: word16
-T_847: (in SLICE(de_6, byte, 8) @ 02CB : byte)
+T_838: (in SLICE(de_6, byte, 8) @ 02CB : byte)
   Class: Eq_25
   DataType: byte
   OrigDataType: byte
-T_848: (in d_70 @ 02CB : byte)
+T_839: (in d_70 @ 02CB : byte)
   Class: Eq_25
   DataType: byte
   OrigDataType: byte
-T_849: (in a_11 @ 02D1 : uint8)
+T_840: (in a_11 @ 02D1 : uint8)
   Class: Eq_38
   DataType: uint8
   OrigDataType: cu8
-T_850: (in 0<8> @ 02D6 : byte)
+T_841: (in 0<8> @ 02D6 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_851: (in a_11 == 0<8> @ 02D6 : bool)
-  Class: Eq_851
+T_842: (in a_11 == 0<8> @ 02D6 : bool)
+  Class: Eq_842
   DataType: bool
   OrigDataType: bool
-T_852: (in __set @ 032E : ptr32)
-  Class: Eq_852
-  DataType: (ptr32 Eq_852)
-  OrigDataType: (ptr32 (fn T_860 (T_858, T_859)))
-T_853: (in signature of __set : void)
-  Class: Eq_852
-  DataType: (ptr32 Eq_852)
+T_843: (in __set @ 032E : ptr32)
+  Class: Eq_843
+  DataType: (ptr32 Eq_843)
+  OrigDataType: (ptr32 (fn T_851 (T_849, T_850)))
+T_844: (in signature of __set : void)
+  Class: Eq_843
+  DataType: (ptr32 Eq_843)
   OrigDataType: 
-T_854: (in p1 @ 032E : byte)
+T_845: (in p1 @ 032E : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: 
-T_855: (in p2 @ 032E : byte)
-  Class: Eq_855
+T_846: (in p2 @ 032E : byte)
+  Class: Eq_846
   DataType: byte
   OrigDataType: 
-T_856: (in 1<i16> @ 032E : int16)
-  Class: Eq_856
+T_847: (in 1<i16> @ 032E : int16)
+  Class: Eq_847
   DataType: int16
   OrigDataType: int16
-T_857: (in ix + 1<i16> @ 032E : word16)
-  Class: Eq_857
+T_848: (in ix + 1<i16> @ 032E : word16)
+  Class: Eq_848
   DataType: word16
   OrigDataType: word16
-T_858: (in Mem10[ix + 1<i16>:byte] @ 032E : byte)
+T_849: (in Mem10[ix + 1<i16>:byte] @ 032E : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_859: (in 4<8> @ 032E : byte)
-  Class: Eq_855
+T_850: (in 4<8> @ 032E : byte)
+  Class: Eq_846
   DataType: byte
   OrigDataType: byte
-T_860: (in __set(ix[1<i32>], 4<8>) @ 032E : byte)
+T_851: (in __set(ix[1<i32>], 4<8>) @ 032E : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_861: (in ix + 1<i16> @ 032E : word16)
-  Class: Eq_861
+T_852: (in ix + 1<i16> @ 032E : word16)
+  Class: Eq_852
   DataType: (ptr16 byte)
   OrigDataType: (ptr16 byte)
-T_862: (in Mem24[ix + 1<i16>:byte] @ 032E : byte)
+T_853: (in Mem24[ix + 1<i16>:byte] @ 032E : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_863: (in 0xAAA<16> @ 0332 : word16)
-  Class: Eq_863
+T_854: (in 0xAAA<16> @ 0332 : word16)
+  Class: Eq_854
   DataType: (ptr16 Eq_87)
-  OrigDataType: (ptr16 (struct (0 T_864 t0000)))
-T_864: (in Mem24[0xAAA<16>:word16] @ 0332 : word16)
+  OrigDataType: (ptr16 (struct (0 T_855 t0000)))
+T_855: (in Mem24[0xAAA<16>:word16] @ 0332 : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_865: (in hl_25 @ 0332 : Eq_87)
+T_856: (in hl_25 @ 0332 : Eq_87)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_866: (in 0<8> @ 0337 : byte)
+T_857: (in 0<8> @ 0337 : byte)
   Class: Eq_87
   DataType: byte
   OrigDataType: byte
-T_867: (in hl_25 != 0<8> @ 0337 : bool)
-  Class: Eq_867
+T_858: (in hl_25 != 0<8> @ 0337 : bool)
+  Class: Eq_858
   DataType: bool
   OrigDataType: bool
-T_868: (in __bit @ 02DB : ptr32)
-  Class: Eq_868
-  DataType: (ptr32 Eq_868)
-  OrigDataType: (ptr32 (fn T_873 (T_849, T_872)))
-T_869: (in signature of __bit : void)
-  Class: Eq_868
-  DataType: (ptr32 Eq_868)
+T_859: (in __bit @ 02DB : ptr32)
+  Class: Eq_859
+  DataType: (ptr32 Eq_859)
+  OrigDataType: (ptr32 (fn T_864 (T_840, T_863)))
+T_860: (in signature of __bit : void)
+  Class: Eq_859
+  DataType: (ptr32 Eq_859)
   OrigDataType: 
-T_870: (in p1 @ 02DB : byte)
+T_861: (in p1 @ 02DB : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: 
-T_871: (in p2 @ 02DB : byte)
-  Class: Eq_871
+T_862: (in p2 @ 02DB : byte)
+  Class: Eq_862
   DataType: byte
   OrigDataType: 
-T_872: (in 0<8> @ 02DB : byte)
-  Class: Eq_871
+T_863: (in 0<8> @ 02DB : byte)
+  Class: Eq_862
   DataType: byte
   OrigDataType: byte
-T_873: (in __bit(a_11, 0<8>) @ 02DB : bool)
-  Class: Eq_873
+T_864: (in __bit(a_11, 0<8>) @ 02DB : bool)
+  Class: Eq_864
   DataType: bool
   OrigDataType: bool
-T_874: (in fn0E24 @ 0564 : ptr16)
-  Class: Eq_472
-  DataType: (ptr16 Eq_472)
-  OrigDataType: (ptr16 (fn T_879 (T_843, T_876, T_878)))
-T_875: (in af_574 @ 0564 : word16)
-  Class: Eq_875
+T_865: (in fn0E24 @ 0564 : ptr16)
+  Class: Eq_462
+  DataType: (ptr16 Eq_462)
+  OrigDataType: (ptr16 (fn T_870 (T_834, T_867, T_869)))
+T_866: (in af_574 @ 0564 : word16)
+  Class: Eq_866
   DataType: word16
   OrigDataType: word16
-T_876: (in out af_574 @ 0564 : word16)
+T_867: (in out af_574 @ 0564 : word16)
   Class: Eq_53
   DataType: (ptr16 Eq_53)
   OrigDataType: word16
-T_877: (in hl_575 @ 0564 : word16)
-  Class: Eq_877
+T_868: (in hl_575 @ 0564 : word16)
+  Class: Eq_868
   DataType: word16
   OrigDataType: word16
-T_878: (in out hl_575 @ 0564 : word16)
+T_869: (in out hl_575 @ 0564 : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_879: (in fn0E24(hl_12, out af_574, out hl_575) @ 0564 : bool)
-  Class: Eq_482
-  DataType: Eq_482
+T_870: (in fn0E24(hl_12, out af_574, out hl_575) @ 0564 : bool)
+  Class: Eq_472
+  DataType: Eq_472
   OrigDataType: bool
-T_880: (in a_389 @ 0564 : uint8)
+T_871: (in a_389 @ 0564 : uint8)
   Class: Eq_38
   DataType: uint8
   OrigDataType: bcu8
-T_881: (in __res @ 0571 : ptr32)
-  Class: Eq_881
-  DataType: (ptr32 Eq_881)
-  OrigDataType: (ptr32 (fn T_888 (T_886, T_887)))
-T_882: (in signature of __res : void)
-  Class: Eq_881
-  DataType: (ptr32 Eq_881)
+T_872: (in __res @ 0571 : ptr32)
+  Class: Eq_872
+  DataType: (ptr32 Eq_872)
+  OrigDataType: (ptr32 (fn T_879 (T_877, T_878)))
+T_873: (in signature of __res : void)
+  Class: Eq_872
+  DataType: (ptr32 Eq_872)
   OrigDataType: 
-T_883: (in p1 @ 0571 : byte)
+T_874: (in p1 @ 0571 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: 
-T_884: (in p2 @ 0571 : byte)
-  Class: Eq_884
+T_875: (in p2 @ 0571 : byte)
+  Class: Eq_875
   DataType: byte
   OrigDataType: 
-T_885: (in 4<8> @ 0571 : byte)
-  Class: Eq_885
+T_876: (in 4<8> @ 0571 : byte)
+  Class: Eq_876
   DataType: byte
   OrigDataType: byte
-T_886: (in a_389 >> 4<8> @ 0571 : byte)
+T_877: (in a_389 >> 4<8> @ 0571 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: uint8
-T_887: (in 0<8> @ 0571 : byte)
-  Class: Eq_884
+T_878: (in 0<8> @ 0571 : byte)
+  Class: Eq_875
   DataType: byte
   OrigDataType: byte
-T_888: (in __res(a_389 >> 4<8>, 0<8>) @ 0571 : byte)
-  Class: Eq_888
+T_879: (in __res(a_389 >> 4<8>, 0<8>) @ 0571 : byte)
+  Class: Eq_879
   DataType: uint8
   OrigDataType: byte
-T_889: (in c_181 @ 0571 : uint8)
-  Class: Eq_888
+T_880: (in c_181 @ 0571 : uint8)
+  Class: Eq_879
   DataType: uint8
   OrigDataType: uint8
-T_890: (in 2<16> @ 0573 : word16)
-  Class: Eq_890
+T_881: (in 2<16> @ 0573 : word16)
+  Class: Eq_881
   DataType: ui16
   OrigDataType: ui16
-T_891: (in fp - 2<16> @ 0573 : word16)
-  Class: Eq_824
+T_882: (in fp - 2<16> @ 0573 : word16)
+  Class: Eq_815
   DataType: ptr16
   OrigDataType: ptr16
-T_892: (in 0xBE2<16> @ 0574 : word16)
-  Class: Eq_892
+T_883: (in 0xBE2<16> @ 0574 : word16)
+  Class: Eq_883
   DataType: word16
   OrigDataType: word16
-T_893: (in iy_184 @ 0574 : word16)
-  Class: Eq_892
+T_884: (in iy_184 @ 0574 : word16)
+  Class: Eq_883
   DataType: word16
   OrigDataType: word16
-T_894: (in a_389 >> 4<8> @ 0578 : byte)
-  Class: Eq_894
+T_885: (in a_389 >> 4<8> @ 0578 : byte)
+  Class: Eq_885
   DataType: uint8
   OrigDataType: uint8
-T_895: (in 0<8> @ 0578 : byte)
-  Class: Eq_894
+T_886: (in 0<8> @ 0578 : byte)
+  Class: Eq_885
   DataType: uint8
   OrigDataType: cu8
-T_896: (in a_389 >> 4<8> >= 0<8> @ 0578 : bool)
-  Class: Eq_896
+T_887: (in a_389 >> 4<8> >= 0<8> @ 0578 : bool)
+  Class: Eq_887
   DataType: bool
   OrigDataType: bool
-T_897: (in 0xF1<8> @ 02E0 : byte)
+T_888: (in 0xF1<8> @ 02E0 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_898: (in a_11 != 0xF1<8> @ 02E0 : bool)
-  Class: Eq_898
+T_889: (in a_11 != 0xF1<8> @ 02E0 : bool)
+  Class: Eq_889
   DataType: bool
   OrigDataType: bool
-T_899: (in 0xF9<8> @ 02FC : byte)
+T_890: (in 0xF9<8> @ 02FC : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_900: (in a_11 != 0xF9<8> @ 02FC : bool)
-  Class: Eq_900
+T_891: (in a_11 != 0xF9<8> @ 02FC : bool)
+  Class: Eq_891
   DataType: bool
   OrigDataType: bool
-T_901: (in SEQ(a_11, c_338) @ 02E3 : word16)
-  Class: Eq_223
+T_892: (in SEQ(a_11, c_338) @ 02E3 : word16)
+  Class: Eq_209
   DataType: uint16
   OrigDataType: word16
-T_902: (in bc_339 @ 02E3 : uint16)
-  Class: Eq_223
+T_893: (in bc_339 @ 02E3 : uint16)
+  Class: Eq_209
   DataType: uint16
   OrigDataType: word16
-T_903: (in __bit @ 02E5 : ptr32)
-  Class: Eq_903
-  DataType: (ptr32 Eq_903)
-  OrigDataType: (ptr32 (fn T_906 (T_849, T_905)))
-T_904: (in signature of __bit : void)
-  Class: Eq_903
-  DataType: (ptr32 Eq_903)
+T_894: (in __bit @ 02E5 : ptr32)
+  Class: Eq_894
+  DataType: (ptr32 Eq_894)
+  OrigDataType: (ptr32 (fn T_897 (T_840, T_896)))
+T_895: (in signature of __bit : void)
+  Class: Eq_894
+  DataType: (ptr32 Eq_894)
   OrigDataType: 
-T_905: (in 4<8> @ 02E5 : byte)
-  Class: Eq_871
+T_896: (in 4<8> @ 02E5 : byte)
+  Class: Eq_862
   DataType: byte
   OrigDataType: byte
-T_906: (in __bit(a_11, 4<8>) @ 02E5 : bool)
-  Class: Eq_906
+T_897: (in __bit(a_11, 4<8>) @ 02E5 : bool)
+  Class: Eq_897
   DataType: bool
   OrigDataType: bool
-T_907: (in fn0E24 @ 0363 : ptr16)
-  Class: Eq_472
-  DataType: (ptr16 Eq_472)
-  OrigDataType: (ptr16 (fn T_912 (T_843, T_909, T_911)))
-T_908: (in af_576 @ 0363 : word16)
-  Class: Eq_908
+T_898: (in fn0E24 @ 0363 : ptr16)
+  Class: Eq_462
+  DataType: (ptr16 Eq_462)
+  OrigDataType: (ptr16 (fn T_903 (T_834, T_900, T_902)))
+T_899: (in af_576 @ 0363 : word16)
+  Class: Eq_899
   DataType: word16
   OrigDataType: word16
-T_909: (in out af_576 @ 0363 : word16)
+T_900: (in out af_576 @ 0363 : word16)
   Class: Eq_53
   DataType: (ptr16 Eq_53)
   OrigDataType: word16
-T_910: (in hl_240 @ 0363 : word16)
-  Class: Eq_910
+T_901: (in hl_240 @ 0363 : word16)
+  Class: Eq_901
   DataType: word16
   OrigDataType: word16
-T_911: (in out hl_240 @ 0363 : word16)
+T_902: (in out hl_240 @ 0363 : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_912: (in fn0E24(hl_12, out af_576, out hl_240) @ 0363 : bool)
-  Class: Eq_482
-  DataType: Eq_482
+T_903: (in fn0E24(hl_12, out af_576, out hl_240) @ 0363 : bool)
+  Class: Eq_472
+  DataType: Eq_472
   OrigDataType: bool
-T_913: (in a_239 @ 0363 : uint8)
+T_904: (in a_239 @ 0363 : uint8)
   Class: Eq_38
   DataType: uint8
   OrigDataType: bcu8
-T_914: (in 4<8> @ 0373 : byte)
-  Class: Eq_914
+T_905: (in 4<8> @ 0373 : byte)
+  Class: Eq_905
   DataType: byte
   OrigDataType: byte
-T_915: (in a_239 >> 4<8> @ 0373 : byte)
-  Class: Eq_915
+T_906: (in a_239 >> 4<8> @ 0373 : byte)
+  Class: Eq_906
   DataType: uint8
   OrigDataType: uint8
-T_916: (in 1<8> @ 0373 : byte)
-  Class: Eq_916
+T_907: (in 1<8> @ 0373 : byte)
+  Class: Eq_907
   DataType: uint8
   OrigDataType: uint8
-T_917: (in (a_239 >> 4<8>) - 1<8> @ 0373 : byte)
+T_908: (in (a_239 >> 4<8>) - 1<8> @ 0373 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: uint8
-T_918: (in c_251 @ 0373 : uint8)
+T_909: (in c_251 @ 0373 : uint8)
   Class: Eq_38
   DataType: uint8
   OrigDataType: uint8
-T_919: (in CONVERT(c_251, uint8, uint16) @ 0374 : uint16)
-  Class: Eq_919
-  DataType: (ptr16 Eq_919)
+T_910: (in CONVERT(c_251, uint8, uint16) @ 0374 : uint16)
+  Class: Eq_910
+  DataType: (ptr16 Eq_910)
   OrigDataType: uint16
-T_920: (in bc_252 @ 0374 : (ptr16 Eq_919))
-  Class: Eq_919
-  DataType: (ptr16 Eq_919)
-  OrigDataType: (ptr16 (struct (B96 T_929 t0B96) (B97 T_933 t0B97)))
-T_921: (in 1<16> @ 0376 : word16)
-  Class: Eq_921
+T_911: (in bc_252 @ 0374 : (ptr16 Eq_910))
+  Class: Eq_910
+  DataType: (ptr16 Eq_910)
+  OrigDataType: (ptr16 (struct (B96 T_920 t0B96) (B97 T_924 t0B97)))
+T_912: (in 1<16> @ 0376 : word16)
+  Class: Eq_912
   DataType: word16
   OrigDataType: word16
-T_922: (in hl_240 + 1<16> @ 0376 : word16)
+T_913: (in hl_240 + 1<16> @ 0376 : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_923: (in 1<i16> @ 0379 : int16)
-  Class: Eq_923
+T_914: (in 1<i16> @ 0379 : int16)
+  Class: Eq_914
   DataType: int16
   OrigDataType: int16
-T_924: (in ix + 1<i16> @ 0379 : word16)
-  Class: Eq_924
+T_915: (in ix + 1<i16> @ 0379 : word16)
+  Class: Eq_915
   DataType: ptr16
   OrigDataType: ptr16
-T_925: (in Mem10[ix + 1<i16>:byte] @ 0379 : byte)
+T_916: (in Mem10[ix + 1<i16>:byte] @ 0379 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_926: (in a_258 @ 0379 : uint8)
+T_917: (in a_258 @ 0379 : uint8)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_927: (in 0xB96<16> @ 037C : word16)
-  Class: Eq_927
+T_918: (in 0xB96<16> @ 037C : word16)
+  Class: Eq_918
   DataType: word16
   OrigDataType: word16
-T_928: (in bc_252 + 0xB96<16> @ 037C : word16)
-  Class: Eq_928
+T_919: (in bc_252 + 0xB96<16> @ 037C : word16)
+  Class: Eq_919
   DataType: uint16
   OrigDataType: uint16
-T_929: (in Mem10[bc_252 + 0xB96<16>:byte] @ 037C : byte)
-  Class: Eq_929
+T_920: (in Mem10[bc_252 + 0xB96<16>:byte] @ 037C : byte)
+  Class: Eq_920
   DataType: uint8
   OrigDataType: byte
-T_930: (in c_259 @ 037C : uint8)
-  Class: Eq_929
+T_921: (in c_259 @ 037C : uint8)
+  Class: Eq_920
   DataType: uint8
   OrigDataType: uint8
-T_931: (in 0xB97<16> @ 037F : word16)
-  Class: Eq_931
+T_922: (in 0xB97<16> @ 037F : word16)
+  Class: Eq_922
   DataType: word16
   OrigDataType: word16
-T_932: (in bc_252 + 0xB97<16> @ 037F : word16)
-  Class: Eq_932
+T_923: (in bc_252 + 0xB97<16> @ 037F : word16)
+  Class: Eq_923
   DataType: ptr16
   OrigDataType: ptr16
-T_933: (in Mem10[bc_252 + 0xB97<16>:byte] @ 037F : byte)
-  Class: Eq_933
+T_924: (in Mem10[bc_252 + 0xB97<16>:byte] @ 037F : byte)
+  Class: Eq_924
   DataType: byte
   OrigDataType: byte
-T_934: (in b_260 @ 037F : byte)
-  Class: Eq_933
+T_925: (in b_260 @ 037F : byte)
+  Class: Eq_924
   DataType: byte
   OrigDataType: byte
-T_935: (in __bit @ 0382 : ptr32)
-  Class: Eq_935
-  DataType: (ptr32 Eq_935)
-  OrigDataType: (ptr32 (fn T_938 (T_918, T_937)))
-T_936: (in signature of __bit : void)
-  Class: Eq_935
-  DataType: (ptr32 Eq_935)
+T_926: (in __bit @ 0382 : ptr32)
+  Class: Eq_926
+  DataType: (ptr32 Eq_926)
+  OrigDataType: (ptr32 (fn T_929 (T_909, T_928)))
+T_927: (in signature of __bit : void)
+  Class: Eq_926
+  DataType: (ptr32 Eq_926)
   OrigDataType: 
-T_937: (in 1<8> @ 0382 : byte)
-  Class: Eq_871
+T_928: (in 1<8> @ 0382 : byte)
+  Class: Eq_862
   DataType: byte
   OrigDataType: byte
-T_938: (in __bit(c_251, 1<8>) @ 0382 : bool)
-  Class: Eq_938
+T_929: (in __bit(c_251, 1<8>) @ 0382 : bool)
+  Class: Eq_929
   DataType: bool
   OrigDataType: bool
-T_939: (in 0x20<8> @ 02EA : byte)
+T_930: (in 0x20<8> @ 02EA : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_940: (in a_11 == 0x20<8> @ 02EA : bool)
-  Class: Eq_940
+T_931: (in a_11 == 0x20<8> @ 02EA : bool)
+  Class: Eq_931
   DataType: bool
   OrigDataType: bool
-T_941: (in de_565 @ 03A0 : Eq_87)
+T_932: (in de_565 @ 03A0 : Eq_87)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_942: (in SLICE(de_565, byte, 0) @ 03A0 : byte)
-  Class: Eq_942
+T_933: (in SLICE(de_565, byte, 0) @ 03A0 : byte)
+  Class: Eq_933
   DataType: bui8
   OrigDataType: byte
-T_943: (in e_302 @ 03A0 : bui8)
-  Class: Eq_942
+T_934: (in e_302 @ 03A0 : bui8)
+  Class: Eq_933
   DataType: bui8
   OrigDataType: byte
-T_944: (in fn03E9 @ 03A3 : ptr16)
-  Class: Eq_944
-  DataType: (ptr16 Eq_944)
-  OrigDataType: (ptr16 (fn T_954 (T_948, T_949, T_952)))
-T_945: (in signature of fn03E9 @ 03E9 : void)
-  Class: Eq_944
-  DataType: (ptr16 Eq_944)
+T_935: (in fn03E9 @ 03A3 : ptr16)
+  Class: Eq_935
+  DataType: (ptr16 Eq_935)
+  OrigDataType: (ptr16 (fn T_945 (T_939, T_940, T_943)))
+T_936: (in signature of fn03E9 @ 03E9 : void)
+  Class: Eq_935
+  DataType: (ptr16 Eq_935)
   OrigDataType: 
-T_946: (in hl @ 03A3 : Eq_87)
+T_937: (in hl @ 03A3 : Eq_87)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_947: (in 1<16> @ 03A3 : word16)
-  Class: Eq_947
+T_938: (in 1<16> @ 03A3 : word16)
+  Class: Eq_938
   DataType: word16
   OrigDataType: word16
-T_948: (in hl_12 + 1<16> @ 03A3 : word16)
+T_939: (in hl_12 + 1<16> @ 03A3 : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_949: (in out de_565 @ 03A3 : word16)
+T_940: (in out de_565 @ 03A3 : word16)
   Class: Eq_53
   DataType: (ptr16 Eq_53)
   OrigDataType: word16
-T_950: (in deOut @ 03A3 : (ptr16 Eq_53))
+T_941: (in deOut @ 03A3 : (ptr16 Eq_53))
   Class: Eq_53
   DataType: (ptr16 Eq_53)
   OrigDataType: word16
-T_951: (in hl_159 @ 03A3 : Eq_87)
+T_942: (in hl_159 @ 03A3 : Eq_87)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_952: (in out hl_159 @ 03A3 : word16)
+T_943: (in out hl_159 @ 03A3 : word16)
   Class: Eq_53
   DataType: (ptr16 Eq_53)
   OrigDataType: word16
-T_953: (in hlOut @ 03A3 : (ptr16 Eq_53))
+T_944: (in hlOut @ 03A3 : (ptr16 Eq_53))
   Class: Eq_53
   DataType: (ptr16 Eq_53)
   OrigDataType: word16
-T_954: (in fn03E9((word16) hl_12.u1 + 1<i32>, out de_565, out hl_159) @ 03A3 : bool)
-  Class: Eq_954
-  DataType: Eq_954
+T_945: (in fn03E9((word16) hl_12.u1 + 1<i32>, out de_565, out hl_159) @ 03A3 : bool)
+  Class: Eq_945
+  DataType: Eq_945
   OrigDataType: bool
-T_955: (in 0x40<8> @ 02EF : byte)
+T_946: (in 0x40<8> @ 02EF : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_956: (in a_11 == 0x40<8> @ 02EF : bool)
-  Class: Eq_956
+T_947: (in a_11 == 0x40<8> @ 02EF : bool)
+  Class: Eq_947
   DataType: bool
   OrigDataType: bool
-T_957: (in fn0755 @ 0424 : ptr16)
-  Class: Eq_957
-  DataType: (ptr16 Eq_957)
-  OrigDataType: (ptr16 (fn T_963 (T_218, T_961)))
-T_958: (in signature of fn0755 @ 0755 : void)
-  Class: Eq_957
-  DataType: (ptr16 Eq_957)
+T_948: (in fn0755 @ 0424 : ptr16)
+  Class: Eq_948
+  DataType: (ptr16 Eq_948)
+  OrigDataType: (ptr16 (fn T_954 (T_204, T_952)))
+T_949: (in signature of fn0755 @ 0755 : void)
+  Class: Eq_948
+  DataType: (ptr16 Eq_948)
   OrigDataType: 
-T_959: (in ix @ 0424 : (ptr16 Eq_147))
-  Class: Eq_147
-  DataType: (ptr16 Eq_147)
-  OrigDataType: (ptr16 (struct (4 T_1465 t0004)))
-T_960: (in hl_353 @ 0424 : word16)
+T_950: (in ix @ 0424 : (ptr16 Eq_133))
+  Class: Eq_133
+  DataType: (ptr16 Eq_133)
+  OrigDataType: (ptr16 (struct (4 T_1460 t0004)))
+T_951: (in hl_353 @ 0424 : word16)
+  Class: Eq_951
+  DataType: word16
+  OrigDataType: word16
+T_952: (in out hl_353 @ 0424 : word16)
+  Class: Eq_952
+  DataType: word16
+  OrigDataType: word16
+T_953: (in hlOut @ 0424 : word16)
+  Class: Eq_952
+  DataType: word16
+  OrigDataType: word16
+T_954: (in fn0755(ix, out hl_353) @ 0424 : word16)
+  Class: Eq_954
+  DataType: word16
+  OrigDataType: word16
+T_955: (in fn0E24 @ 0428 : ptr16)
+  Class: Eq_462
+  DataType: (ptr16 Eq_462)
+  OrigDataType: (ptr16 (fn T_962 (T_957, T_959, T_961)))
+T_956: (in 1<16> @ 0428 : word16)
+  Class: Eq_956
+  DataType: word16
+  OrigDataType: word16
+T_957: (in hl_353 + 1<16> @ 0428 : word16)
+  Class: Eq_87
+  DataType: Eq_87
+  OrigDataType: word16
+T_958: (in af_577 @ 0428 : word16)
+  Class: Eq_958
+  DataType: word16
+  OrigDataType: word16
+T_959: (in out af_577 @ 0428 : word16)
+  Class: Eq_53
+  DataType: (ptr16 Eq_53)
+  OrigDataType: word16
+T_960: (in hl_357 @ 0428 : word16)
   Class: Eq_960
   DataType: word16
   OrigDataType: word16
-T_961: (in out hl_353 @ 0424 : word16)
-  Class: Eq_961
-  DataType: word16
+T_961: (in out hl_357 @ 0428 : word16)
+  Class: Eq_87
+  DataType: Eq_87
   OrigDataType: word16
-T_962: (in hlOut @ 0424 : word16)
-  Class: Eq_961
-  DataType: word16
-  OrigDataType: word16
-T_963: (in fn0755(ix, out hl_353) @ 0424 : word16)
-  Class: Eq_963
-  DataType: word16
-  OrigDataType: word16
-T_964: (in fn0E24 @ 0428 : ptr16)
+T_962: (in fn0E24(hl_353 + 1<16>, out af_577, out hl_357) @ 0428 : bool)
   Class: Eq_472
-  DataType: (ptr16 Eq_472)
-  OrigDataType: (ptr16 (fn T_971 (T_966, T_968, T_970)))
-T_965: (in 1<16> @ 0428 : word16)
-  Class: Eq_965
-  DataType: word16
-  OrigDataType: word16
-T_966: (in hl_353 + 1<16> @ 0428 : word16)
-  Class: Eq_87
-  DataType: Eq_87
-  OrigDataType: word16
-T_967: (in af_577 @ 0428 : word16)
-  Class: Eq_967
-  DataType: word16
-  OrigDataType: word16
-T_968: (in out af_577 @ 0428 : word16)
-  Class: Eq_53
-  DataType: (ptr16 Eq_53)
-  OrigDataType: word16
-T_969: (in hl_357 @ 0428 : word16)
-  Class: Eq_969
-  DataType: word16
-  OrigDataType: word16
-T_970: (in out hl_357 @ 0428 : word16)
-  Class: Eq_87
-  DataType: Eq_87
-  OrigDataType: word16
-T_971: (in fn0E24(hl_353 + 1<16>, out af_577, out hl_357) @ 0428 : bool)
-  Class: Eq_482
-  DataType: Eq_482
+  DataType: Eq_472
   OrigDataType: bool
-T_972: (in a_356 @ 0428 : uint8)
+T_963: (in a_356 @ 0428 : uint8)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_973: (in 1<i16> @ 042B : int16)
-  Class: Eq_973
+T_964: (in 1<i16> @ 042B : int16)
+  Class: Eq_964
   DataType: int16
   OrigDataType: int16
-T_974: (in ix + 1<i16> @ 042B : word16)
-  Class: Eq_974
+T_965: (in ix + 1<i16> @ 042B : word16)
+  Class: Eq_965
   DataType: ptr16
   OrigDataType: ptr16
-T_975: (in Mem362[ix + 1<i16>:byte] @ 042B : byte)
+T_966: (in Mem362[ix + 1<i16>:byte] @ 042B : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_976: (in fn0443 @ 042E : ptr16)
-  Class: Eq_976
-  DataType: (ptr16 Eq_976)
-  OrigDataType: (ptr16 (fn T_985 (T_969, T_218, T_981, T_983)))
-T_977: (in signature of fn0443 @ 0443 : void)
-  Class: Eq_976
-  DataType: (ptr16 Eq_976)
+T_967: (in fn0443 @ 042E : ptr16)
+  Class: Eq_967
+  DataType: (ptr16 Eq_967)
+  OrigDataType: (ptr16 (fn T_976 (T_960, T_204, T_972, T_974)))
+T_968: (in signature of fn0443 @ 0443 : void)
+  Class: Eq_967
+  DataType: (ptr16 Eq_967)
   OrigDataType: 
-T_978: (in hl @ 042E : word16)
-  Class: Eq_969
+T_969: (in hl @ 042E : word16)
+  Class: Eq_960
   DataType: word16
   OrigDataType: word16
-T_979: (in ix @ 042E : (ptr16 Eq_147))
-  Class: Eq_147
-  DataType: (ptr16 Eq_147)
+T_970: (in ix @ 042E : (ptr16 Eq_133))
+  Class: Eq_133
+  DataType: (ptr16 Eq_133)
   OrigDataType: word16
-T_980: (in d_578 @ 042E : byte)
-  Class: Eq_980
+T_971: (in d_578 @ 042E : byte)
+  Class: Eq_971
   DataType: byte
   OrigDataType: byte
-T_981: (in out d_578 @ 042E : byte)
+T_972: (in out d_578 @ 042E : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_982: (in dOut @ 042E : uint8)
+T_973: (in dOut @ 042E : uint8)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_983: (in out hl_159 @ 042E : word16)
-  Class: Eq_983
+T_974: (in out hl_159 @ 042E : word16)
+  Class: Eq_974
   DataType: word16
   OrigDataType: word16
-T_984: (in hlOut @ 042E : word16)
-  Class: Eq_983
+T_975: (in hlOut @ 042E : word16)
+  Class: Eq_974
   DataType: word16
   OrigDataType: word16
-T_985: (in fn0443(hl_357, ix, out d_578, out hl_159) @ 042E : bool)
-  Class: Eq_954
-  DataType: Eq_954
+T_976: (in fn0443(hl_357, ix, out d_578, out hl_159) @ 042E : bool)
+  Class: Eq_945
+  DataType: Eq_945
   OrigDataType: bool
-T_986: (in Z_125 @ 042E : Eq_954)
-  Class: Eq_954
-  DataType: Eq_954
+T_977: (in Z_125 @ 042E : Eq_945)
+  Class: Eq_945
+  DataType: Eq_945
   OrigDataType: (union (bool u3) ((union (bool u0) (byte u1)) u3) ((union (bool u0) (byte u1)) u1))
-T_987: (in 0x4A5<16> @ 0431 : word16)
-  Class: Eq_223
+T_978: (in 0x4A5<16> @ 0431 : word16)
+  Class: Eq_209
   DataType: uint16
   OrigDataType: word16
-T_988: (in bc_171 @ 0431 : uint16)
-  Class: Eq_223
+T_979: (in bc_171 @ 0431 : uint16)
+  Class: Eq_209
   DataType: uint16
   OrigDataType: uint16
-T_989: (in 0x60<8> @ 02F4 : byte)
+T_980: (in 0x60<8> @ 02F4 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_990: (in a_11 == 0x60<8> @ 02F4 : bool)
-  Class: Eq_990
+T_981: (in a_11 == 0x60<8> @ 02F4 : bool)
+  Class: Eq_981
   DataType: bool
   OrigDataType: bool
-T_991: (in fn0440 @ 0437 : ptr16)
-  Class: Eq_991
-  DataType: (ptr16 Eq_991)
-  OrigDataType: (ptr16 (fn T_999 (T_218, T_995, T_997)))
-T_992: (in signature of fn0440 @ 0440 : void)
-  Class: Eq_991
-  DataType: (ptr16 Eq_991)
+T_982: (in fn0440 @ 0437 : ptr16)
+  Class: Eq_982
+  DataType: (ptr16 Eq_982)
+  OrigDataType: (ptr16 (fn T_990 (T_204, T_986, T_988)))
+T_983: (in signature of fn0440 @ 0440 : void)
+  Class: Eq_982
+  DataType: (ptr16 Eq_982)
   OrigDataType: 
-T_993: (in ix @ 0437 : (ptr16 Eq_147))
-  Class: Eq_147
-  DataType: (ptr16 Eq_147)
+T_984: (in ix @ 0437 : (ptr16 Eq_133))
+  Class: Eq_133
+  DataType: (ptr16 Eq_133)
   OrigDataType: word16
-T_994: (in d_579 @ 0437 : byte)
-  Class: Eq_994
+T_985: (in d_579 @ 0437 : byte)
+  Class: Eq_985
   DataType: byte
   OrigDataType: byte
-T_995: (in out d_579 @ 0437 : byte)
+T_986: (in out d_579 @ 0437 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_996: (in dOut @ 0437 : uint8)
+T_987: (in dOut @ 0437 : uint8)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_997: (in out hl_159 @ 0437 : word16)
-  Class: Eq_997
+T_988: (in out hl_159 @ 0437 : word16)
+  Class: Eq_988
   DataType: word16
   OrigDataType: word16
-T_998: (in hlOut @ 0437 : word16)
-  Class: Eq_997
+T_989: (in hlOut @ 0437 : word16)
+  Class: Eq_988
   DataType: word16
   OrigDataType: word16
-T_999: (in fn0440(ix, out d_579, out hl_159) @ 0437 : bool)
-  Class: Eq_954
-  DataType: Eq_954
+T_990: (in fn0440(ix, out d_579, out hl_159) @ 0437 : bool)
+  Class: Eq_945
+  DataType: Eq_945
   OrigDataType: bool
-T_1000: (in 0x4A9<16> @ 043A : word16)
-  Class: Eq_223
+T_991: (in 0x4A9<16> @ 043A : word16)
+  Class: Eq_209
   DataType: uint16
   OrigDataType: word16
-T_1001: (in fn0755 @ 0341 : ptr16)
-  Class: Eq_957
-  DataType: (ptr16 Eq_957)
-  OrigDataType: (ptr16 (fn T_1004 (T_218, T_1003)))
-T_1002: (in hl_36 @ 0341 : Eq_87)
+T_992: (in fn0755 @ 0341 : ptr16)
+  Class: Eq_948
+  DataType: (ptr16 Eq_948)
+  OrigDataType: (ptr16 (fn T_995 (T_204, T_994)))
+T_993: (in hl_36 @ 0341 : Eq_87)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_1003: (in out hl_36 @ 0341 : word16)
-  Class: Eq_961
+T_994: (in out hl_36 @ 0341 : word16)
+  Class: Eq_952
   DataType: word16
   OrigDataType: word16
-T_1004: (in fn0755(ix, out hl_36) @ 0341 : word16)
-  Class: Eq_963
+T_995: (in fn0755(ix, out hl_36) @ 0341 : word16)
+  Class: Eq_954
   DataType: word16
   OrigDataType: word16
-T_1005: (in de_35 @ 0341 : word16)
-  Class: Eq_963
+T_996: (in de_35 @ 0341 : word16)
+  Class: Eq_954
   DataType: word16
   OrigDataType: word16
-T_1006: (in fn0E2C @ 0351 : ptr16)
-  Class: Eq_578
-  DataType: (ptr16 Eq_578)
-  OrigDataType: (ptr16 (fn T_1020 (T_1009, T_1019)))
-T_1007: (in 1<i16> @ 0351 : int16)
-  Class: Eq_1007
+T_997: (in fn0E2C @ 0351 : ptr16)
+  Class: Eq_568
+  DataType: (ptr16 Eq_568)
+  OrigDataType: (ptr16 (fn T_1011 (T_1000, T_1010)))
+T_998: (in 1<i16> @ 0351 : int16)
+  Class: Eq_998
   DataType: int16
   OrigDataType: int16
-T_1008: (in ix + 1<i16> @ 0351 : word16)
-  Class: Eq_1008
+T_999: (in ix + 1<i16> @ 0351 : word16)
+  Class: Eq_999
   DataType: (ptr16 byte)
   OrigDataType: (ptr16 byte)
-T_1009: (in Mem24[ix + 1<i16>:byte] @ 0351 : byte)
+T_1000: (in Mem24[ix + 1<i16>:byte] @ 0351 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1010: (in fn0E2C @ 0351 : ptr16)
-  Class: Eq_578
-  DataType: (ptr16 Eq_578)
-  OrigDataType: (ptr16 (fn T_1017 (T_1011, T_1016)))
-T_1011: (in SLICE(de_35, byte, 0) @ 0351 : byte)
+T_1001: (in fn0E2C @ 0351 : ptr16)
+  Class: Eq_568
+  DataType: (ptr16 Eq_568)
+  OrigDataType: (ptr16 (fn T_1008 (T_1002, T_1007)))
+T_1002: (in SLICE(de_35, byte, 0) @ 0351 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1012: (in fn0E2C @ 0351 : ptr16)
-  Class: Eq_578
-  DataType: (ptr16 Eq_578)
-  OrigDataType: (ptr16 (fn T_1014 (T_1013, T_1002)))
-T_1013: (in SLICE(de_35, byte, 8) @ 0351 : byte)
+T_1003: (in fn0E2C @ 0351 : ptr16)
+  Class: Eq_568
+  DataType: (ptr16 Eq_568)
+  OrigDataType: (ptr16 (fn T_1005 (T_1004, T_993)))
+T_1004: (in SLICE(de_35, byte, 8) @ 0351 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1014: (in fn0E2C(SLICE(de_35, byte, 8), hl_36) @ 0351 : word16)
-  Class: Eq_558
+T_1005: (in fn0E2C(SLICE(de_35, byte, 8), hl_36) @ 0351 : word16)
+  Class: Eq_548
   DataType: word16
   OrigDataType: word16
-T_1015: (in 1<16> @ 0351 : word16)
-  Class: Eq_1015
+T_1006: (in 1<16> @ 0351 : word16)
+  Class: Eq_1006
   DataType: word16
   OrigDataType: word16
-T_1016: (in fn0E2C(SLICE(de_35, byte, 8), hl_36) - 1<16> @ 0351 : word16)
+T_1007: (in fn0E2C(SLICE(de_35, byte, 8), hl_36) - 1<16> @ 0351 : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_1017: (in fn0E2C((byte) de_35, fn0E2C(SLICE(de_35, byte, 8), hl_36) - 1<16>) @ 0351 : word16)
-  Class: Eq_558
+T_1008: (in fn0E2C((byte) de_35, fn0E2C(SLICE(de_35, byte, 8), hl_36) - 1<16>) @ 0351 : word16)
+  Class: Eq_548
   DataType: word16
   OrigDataType: word16
-T_1018: (in 1<16> @ 0351 : word16)
-  Class: Eq_1018
+T_1009: (in 1<16> @ 0351 : word16)
+  Class: Eq_1009
   DataType: word16
   OrigDataType: word16
-T_1019: (in fn0E2C((byte) de_35, fn0E2C(SLICE(de_35, byte, 8), hl_36) - 1<16>) - 1<16> @ 0351 : word16)
+T_1010: (in fn0E2C((byte) de_35, fn0E2C(SLICE(de_35, byte, 8), hl_36) - 1<16>) - 1<16> @ 0351 : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_1020: (in fn0E2C(ix[1<i32>], fn0E2C((byte) de_35, fn0E2C(SLICE(de_35, byte, 8), hl_36) - 1<16>) - 1<16>) @ 0351 : word16)
-  Class: Eq_558
+T_1011: (in fn0E2C(ix[1<i32>], fn0E2C((byte) de_35, fn0E2C(SLICE(de_35, byte, 8), hl_36) - 1<16>) - 1<16>) @ 0351 : word16)
+  Class: Eq_548
   DataType: word16
   OrigDataType: word16
-T_1021: (in hl_56 @ 0351 : word16)
-  Class: Eq_558
+T_1012: (in hl_56 @ 0351 : word16)
+  Class: Eq_548
   DataType: word16
   OrigDataType: word16
-T_1022: (in fn075C @ 0355 : ptr16)
-  Class: Eq_1022
-  DataType: (ptr16 Eq_1022)
-  OrigDataType: (ptr16 (fn T_1032 (T_1028, T_218, T_1030)))
-T_1023: (in signature of fn075C @ 075C : void)
-  Class: Eq_1022
-  DataType: (ptr16 Eq_1022)
+T_1013: (in fn075C @ 0355 : ptr16)
+  Class: Eq_1013
+  DataType: (ptr16 Eq_1013)
+  OrigDataType: (ptr16 (fn T_1023 (T_1019, T_204, T_1021)))
+T_1014: (in signature of fn075C @ 075C : void)
+  Class: Eq_1013
+  DataType: (ptr16 Eq_1013)
   OrigDataType: 
-T_1024: (in l @ 0355 : byte)
-  Class: Eq_1024
+T_1015: (in l @ 0355 : byte)
+  Class: Eq_1015
   DataType: byte
   OrigDataType: byte
-T_1025: (in ix @ 0355 : (ptr16 Eq_147))
-  Class: Eq_147
-  DataType: (ptr16 Eq_147)
-  OrigDataType: (ptr16 (struct (4 T_1473 t0004)))
-T_1026: (in SLICE(hl_56, byte, 0) @ 0355 : byte)
+T_1016: (in ix @ 0355 : (ptr16 Eq_133))
+  Class: Eq_133
+  DataType: (ptr16 Eq_133)
+  OrigDataType: (ptr16 (struct (4 T_1468 t0004)))
+T_1017: (in SLICE(hl_56, byte, 0) @ 0355 : byte)
+  Class: Eq_1017
+  DataType: byte
+  OrigDataType: byte
+T_1018: (in 1<8> @ 0355 : byte)
+  Class: Eq_1018
+  DataType: byte
+  OrigDataType: byte
+T_1019: (in (byte) hl_56 - 1<8> @ 0355 : byte)
+  Class: Eq_1015
+  DataType: byte
+  OrigDataType: byte
+T_1020: (in hl_580 @ 0355 : word16)
+  Class: Eq_1020
+  DataType: word16
+  OrigDataType: word16
+T_1021: (in out hl_580 @ 0355 : word16)
+  Class: Eq_1021
+  DataType: word16
+  OrigDataType: word16
+T_1022: (in hlOut @ 0355 : word16)
+  Class: Eq_1021
+  DataType: word16
+  OrigDataType: word16
+T_1023: (in fn075C((byte) hl_56 - 1<8>, ix, out hl_580) @ 0355 : byte)
+  Class: Eq_1023
+  DataType: byte
+  OrigDataType: byte
+T_1024: (in 1<16> @ 0354 : word16)
+  Class: Eq_1024
+  DataType: word16
+  OrigDataType: word16
+T_1025: (in hl_56 - 1<16> @ 0354 : word16)
+  Class: Eq_1025
+  DataType: word16
+  OrigDataType: word16
+T_1026: (in cond(hl_56 - 1<16>) @ 0354 : byte)
   Class: Eq_1026
   DataType: byte
   OrigDataType: byte
-T_1027: (in 1<8> @ 0355 : byte)
+T_1027: (in 0x40<8> @ 0354 : byte)
   Class: Eq_1027
   DataType: byte
   OrigDataType: byte
-T_1028: (in (byte) hl_56 - 1<8> @ 0355 : byte)
-  Class: Eq_1024
-  DataType: byte
+T_1028: (in cond(hl_56 - 1<16>) & 0x40<8> @ 0354 : byte)
+  Class: Eq_945
+  DataType: Eq_945
   OrigDataType: byte
-T_1029: (in hl_580 @ 0355 : word16)
+T_1029: (in 0xAAA<16> @ 0358 : word16)
   Class: Eq_1029
-  DataType: word16
-  OrigDataType: word16
-T_1030: (in out hl_580 @ 0355 : word16)
-  Class: Eq_1030
-  DataType: word16
-  OrigDataType: word16
-T_1031: (in hlOut @ 0355 : word16)
-  Class: Eq_1030
-  DataType: word16
-  OrigDataType: word16
-T_1032: (in fn075C((byte) hl_56 - 1<8>, ix, out hl_580) @ 0355 : byte)
-  Class: Eq_1032
-  DataType: byte
-  OrigDataType: byte
-T_1033: (in 1<16> @ 0354 : word16)
-  Class: Eq_1033
-  DataType: word16
-  OrigDataType: word16
-T_1034: (in hl_56 - 1<16> @ 0354 : word16)
-  Class: Eq_1034
-  DataType: word16
-  OrigDataType: word16
-T_1035: (in cond(hl_56 - 1<16>) @ 0354 : byte)
-  Class: Eq_1035
-  DataType: byte
-  OrigDataType: byte
-T_1036: (in 0x40<8> @ 0354 : byte)
-  Class: Eq_1036
-  DataType: byte
-  OrigDataType: byte
-T_1037: (in cond(hl_56 - 1<16>) & 0x40<8> @ 0354 : byte)
-  Class: Eq_954
-  DataType: Eq_954
-  OrigDataType: byte
-T_1038: (in 0xAAA<16> @ 0358 : word16)
-  Class: Eq_1038
   DataType: (ptr16 Eq_87)
-  OrigDataType: (ptr16 (struct (0 T_1039 t0000)))
-T_1039: (in Mem24[0xAAA<16>:word16] @ 0358 : word16)
+  OrigDataType: (ptr16 (struct (0 T_1030 t0000)))
+T_1030: (in Mem24[0xAAA<16>:word16] @ 0358 : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_1040: (in 0x429<16> @ 035B : word16)
-  Class: Eq_223
+T_1031: (in 0x429<16> @ 035B : word16)
+  Class: Eq_209
   DataType: uint16
   OrigDataType: word16
-T_1041: (in fn01FF @ 033D : ptr16)
-  Class: Eq_365
-  DataType: (ptr16 Eq_365)
-  OrigDataType: (ptr16 (fn T_1049 (T_217, T_1042, T_848, T_218, T_1044, T_1046, T_1048)))
-T_1042: (in 0x29<8> @ 033D : byte)
+T_1032: (in fn01FF @ 033D : ptr16)
+  Class: Eq_352
+  DataType: (ptr16 Eq_352)
+  OrigDataType: (ptr16 (fn T_1040 (T_203, T_1033, T_839, T_204, T_1035, T_1037, T_1039)))
+T_1033: (in 0x29<8> @ 033D : byte)
+  Class: Eq_355
+  DataType: byte
+  OrigDataType: byte
+T_1034: (in f_581 @ 033D : byte)
+  Class: Eq_1034
+  DataType: byte
+  OrigDataType: byte
+T_1035: (in out f_581 @ 033D : byte)
+  Class: Eq_38
+  DataType: uint8
+  OrigDataType: byte
+T_1036: (in bc_73 @ 033D : uint16)
+  Class: Eq_209
+  DataType: uint16
+  OrigDataType: word16
+T_1037: (in out bc_73 @ 033D : word16)
+  Class: Eq_363
+  DataType: word16
+  OrigDataType: word16
+T_1038: (in d_582 @ 033D : byte)
+  Class: Eq_1038
+  DataType: byte
+  OrigDataType: byte
+T_1039: (in out d_582 @ 033D : byte)
+  Class: Eq_38
+  DataType: uint8
+  OrigDataType: byte
+T_1040: (in fn01FF(f, 0x29<8>, d_70, ix, out f_581, out bc_73, out d_582) @ 033D : bool)
+  Class: Eq_368
+  DataType: Eq_368
+  OrigDataType: bool
+T_1041: (in Z_77 @ 033D : Eq_368)
+  Class: Eq_368
+  DataType: Eq_368
+  OrigDataType: (union ((union (bool u0) (byte u1)) u1) (byte u0))
+T_1042: (in 0<8> @ 033D : byte)
   Class: Eq_368
   DataType: byte
   OrigDataType: byte
-T_1043: (in f_581 @ 033D : byte)
-  Class: Eq_1043
-  DataType: byte
-  OrigDataType: byte
-T_1044: (in out f_581 @ 033D : byte)
-  Class: Eq_38
-  DataType: uint8
-  OrigDataType: byte
-T_1045: (in bc_73 @ 033D : uint16)
-  Class: Eq_223
-  DataType: uint16
-  OrigDataType: word16
-T_1046: (in out bc_73 @ 033D : word16)
-  Class: Eq_376
-  DataType: word16
-  OrigDataType: word16
-T_1047: (in d_582 @ 033D : byte)
-  Class: Eq_1047
-  DataType: byte
-  OrigDataType: byte
-T_1048: (in out d_582 @ 033D : byte)
-  Class: Eq_38
-  DataType: uint8
-  OrigDataType: byte
-T_1049: (in fn01FF(f, 0x29<8>, d_70, ix, out f_581, out bc_73, out d_582) @ 033D : bool)
-  Class: Eq_381
-  DataType: Eq_381
-  OrigDataType: bool
-T_1050: (in Z_77 @ 033D : Eq_381)
-  Class: Eq_381
-  DataType: Eq_381
-  OrigDataType: (union ((union (bool u0) (byte u1)) u1) (byte u0))
-T_1051: (in 0<8> @ 033D : byte)
-  Class: Eq_381
-  DataType: byte
-  OrigDataType: byte
-T_1052: (in Z_77 != 0<8> @ 033D : bool)
-  Class: Eq_823
+T_1043: (in Z_77 != 0<8> @ 033D : bool)
+  Class: Eq_814
   DataType: bool
   OrigDataType: bool
-T_1053: (in fn0755 @ 03AB : ptr16)
-  Class: Eq_957
-  DataType: (ptr16 Eq_957)
-  OrigDataType: (ptr16 (fn T_1056 (T_218, T_1055)))
-T_1054: (in hl_312 @ 03AB : Eq_87)
+T_1044: (in fn0755 @ 03AB : ptr16)
+  Class: Eq_948
+  DataType: (ptr16 Eq_948)
+  OrigDataType: (ptr16 (fn T_1047 (T_204, T_1046)))
+T_1045: (in hl_312 @ 03AB : Eq_87)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_1055: (in out hl_312 @ 03AB : word16)
-  Class: Eq_961
+T_1046: (in out hl_312 @ 03AB : word16)
+  Class: Eq_952
   DataType: word16
   OrigDataType: word16
-T_1056: (in fn0755(ix, out hl_312) @ 03AB : word16)
-  Class: Eq_963
+T_1047: (in fn0755(ix, out hl_312) @ 03AB : word16)
+  Class: Eq_954
   DataType: word16
   OrigDataType: word16
-T_1057: (in de_311 @ 03AB : word16)
-  Class: Eq_963
+T_1048: (in de_311 @ 03AB : word16)
+  Class: Eq_954
   DataType: word16
   OrigDataType: word16
-T_1058: (in fn0E2C @ 03B4 : ptr16)
-  Class: Eq_578
-  DataType: (ptr16 Eq_578)
-  OrigDataType: (ptr16 (fn T_1065 (T_1059, T_1064)))
-T_1059: (in SLICE(de_311, byte, 0) @ 03B4 : byte)
+T_1049: (in fn0E2C @ 03B4 : ptr16)
+  Class: Eq_568
+  DataType: (ptr16 Eq_568)
+  OrigDataType: (ptr16 (fn T_1056 (T_1050, T_1055)))
+T_1050: (in SLICE(de_311, byte, 0) @ 03B4 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1060: (in fn0E2C @ 03B4 : ptr16)
-  Class: Eq_578
-  DataType: (ptr16 Eq_578)
-  OrigDataType: (ptr16 (fn T_1062 (T_1061, T_1054)))
-T_1061: (in SLICE(de_311, byte, 8) @ 03B4 : byte)
+T_1051: (in fn0E2C @ 03B4 : ptr16)
+  Class: Eq_568
+  DataType: (ptr16 Eq_568)
+  OrigDataType: (ptr16 (fn T_1053 (T_1052, T_1045)))
+T_1052: (in SLICE(de_311, byte, 8) @ 03B4 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1062: (in fn0E2C(SLICE(de_311, byte, 8), hl_312) @ 03B4 : word16)
-  Class: Eq_558
+T_1053: (in fn0E2C(SLICE(de_311, byte, 8), hl_312) @ 03B4 : word16)
+  Class: Eq_548
   DataType: word16
   OrigDataType: word16
-T_1063: (in 1<16> @ 03B4 : word16)
-  Class: Eq_1063
+T_1054: (in 1<16> @ 03B4 : word16)
+  Class: Eq_1054
   DataType: word16
   OrigDataType: word16
-T_1064: (in fn0E2C(SLICE(de_311, byte, 8), hl_312) - 1<16> @ 03B4 : word16)
+T_1055: (in fn0E2C(SLICE(de_311, byte, 8), hl_312) - 1<16> @ 03B4 : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_1065: (in fn0E2C((byte) de_311, fn0E2C(SLICE(de_311, byte, 8), hl_312) - 1<16>) @ 03B4 : word16)
-  Class: Eq_558
+T_1056: (in fn0E2C((byte) de_311, fn0E2C(SLICE(de_311, byte, 8), hl_312) - 1<16>) @ 03B4 : word16)
+  Class: Eq_548
   DataType: word16
   OrigDataType: word16
-T_1066: (in hl_324 @ 03B4 : word16)
-  Class: Eq_558
+T_1057: (in hl_324 @ 03B4 : word16)
+  Class: Eq_548
   DataType: word16
   OrigDataType: word16
-T_1067: (in fn075C @ 03B8 : ptr16)
-  Class: Eq_1022
-  DataType: (ptr16 Eq_1022)
-  OrigDataType: (ptr16 (fn T_1073 (T_1070, T_218, T_1072)))
-T_1068: (in SLICE(hl_324, byte, 0) @ 03B8 : byte)
+T_1058: (in fn075C @ 03B8 : ptr16)
+  Class: Eq_1013
+  DataType: (ptr16 Eq_1013)
+  OrigDataType: (ptr16 (fn T_1064 (T_1061, T_204, T_1063)))
+T_1059: (in SLICE(hl_324, byte, 0) @ 03B8 : byte)
+  Class: Eq_1059
+  DataType: byte
+  OrigDataType: byte
+T_1060: (in 1<8> @ 03B8 : byte)
+  Class: Eq_1060
+  DataType: byte
+  OrigDataType: byte
+T_1061: (in (byte) hl_324 - 1<8> @ 03B8 : byte)
+  Class: Eq_1015
+  DataType: byte
+  OrigDataType: byte
+T_1062: (in hl_332 @ 03B8 : word16)
+  Class: Eq_1062
+  DataType: word16
+  OrigDataType: word16
+T_1063: (in out hl_332 @ 03B8 : word16)
+  Class: Eq_1021
+  DataType: word16
+  OrigDataType: word16
+T_1064: (in fn075C((byte) hl_324 - 1<8>, ix, out hl_332) @ 03B8 : byte)
+  Class: Eq_1023
+  DataType: byte
+  OrigDataType: byte
+T_1065: (in 1<16> @ 03B7 : word16)
+  Class: Eq_1065
+  DataType: word16
+  OrigDataType: word16
+T_1066: (in hl_324 - 1<16> @ 03B7 : word16)
+  Class: Eq_1066
+  DataType: word16
+  OrigDataType: word16
+T_1067: (in cond(hl_324 - 1<16>) @ 03B7 : byte)
+  Class: Eq_1067
+  DataType: byte
+  OrigDataType: byte
+T_1068: (in 0x40<8> @ 03B7 : byte)
   Class: Eq_1068
   DataType: byte
   OrigDataType: byte
-T_1069: (in 1<8> @ 03B8 : byte)
-  Class: Eq_1069
-  DataType: byte
+T_1069: (in cond(hl_324 - 1<16>) & 0x40<8> @ 03B7 : byte)
+  Class: Eq_945
+  DataType: Eq_945
   OrigDataType: byte
-T_1070: (in (byte) hl_324 - 1<8> @ 03B8 : byte)
-  Class: Eq_1024
-  DataType: byte
-  OrigDataType: byte
-T_1071: (in hl_332 @ 03B8 : word16)
-  Class: Eq_1071
-  DataType: word16
-  OrigDataType: word16
-T_1072: (in out hl_332 @ 03B8 : word16)
-  Class: Eq_1030
-  DataType: word16
-  OrigDataType: word16
-T_1073: (in fn075C((byte) hl_324 - 1<8>, ix, out hl_332) @ 03B8 : byte)
-  Class: Eq_1032
-  DataType: byte
-  OrigDataType: byte
-T_1074: (in 1<16> @ 03B7 : word16)
-  Class: Eq_1074
-  DataType: word16
-  OrigDataType: word16
-T_1075: (in hl_324 - 1<16> @ 03B7 : word16)
-  Class: Eq_1075
-  DataType: word16
-  OrigDataType: word16
-T_1076: (in cond(hl_324 - 1<16>) @ 03B7 : byte)
-  Class: Eq_1076
-  DataType: byte
-  OrigDataType: byte
-T_1077: (in 0x40<8> @ 03B7 : byte)
-  Class: Eq_1077
-  DataType: byte
-  OrigDataType: byte
-T_1078: (in cond(hl_324 - 1<16>) & 0x40<8> @ 03B7 : byte)
-  Class: Eq_954
-  DataType: Eq_954
-  OrigDataType: byte
-T_1079: (in fn03FD @ 03A5 : ptr16)
-  Class: Eq_1079
-  DataType: (ptr16 Eq_1079)
-  OrigDataType: (ptr16 (fn T_1089 (T_902, T_943, T_218, T_1085, T_1087)))
-T_1080: (in signature of fn03FD @ 03FD : void)
-  Class: Eq_1079
-  DataType: (ptr16 Eq_1079)
+T_1070: (in fn03FD @ 03A5 : ptr16)
+  Class: Eq_1070
+  DataType: (ptr16 Eq_1070)
+  OrigDataType: (ptr16 (fn T_1080 (T_893, T_934, T_204, T_1076, T_1078)))
+T_1071: (in signature of fn03FD @ 03FD : void)
+  Class: Eq_1070
+  DataType: (ptr16 Eq_1070)
   OrigDataType: 
-T_1081: (in bc @ 03A5 : uint16)
-  Class: Eq_223
+T_1072: (in bc @ 03A5 : uint16)
+  Class: Eq_209
   DataType: uint16
   OrigDataType: word16
-T_1082: (in e @ 03A5 : bui8)
-  Class: Eq_942
+T_1073: (in e @ 03A5 : bui8)
+  Class: Eq_933
   DataType: bui8
   OrigDataType: bui8
-T_1083: (in ix @ 03A5 : (ptr16 Eq_147))
-  Class: Eq_147
-  DataType: (ptr16 Eq_147)
+T_1074: (in ix @ 03A5 : (ptr16 Eq_133))
+  Class: Eq_133
+  DataType: (ptr16 Eq_133)
   OrigDataType: word16
-T_1084: (in d_583 @ 03A5 : byte)
-  Class: Eq_1084
+T_1075: (in d_583 @ 03A5 : byte)
+  Class: Eq_1075
   DataType: byte
   OrigDataType: byte
-T_1085: (in out d_583 @ 03A5 : byte)
+T_1076: (in out d_583 @ 03A5 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1086: (in dOut @ 03A5 : uint8)
+T_1077: (in dOut @ 03A5 : uint8)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1087: (in out ix @ 03A5 : word16)
-  Class: Eq_1087
-  DataType: (ptr16 Eq_1087)
+T_1078: (in out ix @ 03A5 : word16)
+  Class: Eq_1078
+  DataType: (ptr16 Eq_1078)
   OrigDataType: (ptr16 (struct (1 T_38 t0001)))
-T_1088: (in ixOut @ 03A5 : (ptr16 Eq_1087))
-  Class: Eq_1087
-  DataType: (ptr16 Eq_1087)
+T_1079: (in ixOut @ 03A5 : (ptr16 Eq_1078))
+  Class: Eq_1078
+  DataType: (ptr16 Eq_1078)
   OrigDataType: word16
-T_1089: (in fn03FD(bc_339, e_302, ix, out d_583, out ix) @ 03A5 : bool)
-  Class: Eq_954
-  DataType: Eq_954
+T_1080: (in fn03FD(bc_339, e_302, ix, out d_583, out ix) @ 03A5 : bool)
+  Class: Eq_945
+  DataType: Eq_945
   OrigDataType: bool
-T_1090: (in 0x273<16> @ 03BD : word16)
-  Class: Eq_223
+T_1081: (in 0x273<16> @ 03BD : word16)
+  Class: Eq_209
   DataType: uint16
   OrigDataType: word16
-T_1091: (in 0xABA<16> @ 0728 : word16)
-  Class: Eq_1091
+T_1082: (in 0xABA<16> @ 0728 : word16)
+  Class: Eq_1082
   DataType: (ptr16 Eq_87)
-  OrigDataType: (ptr16 (struct (0 T_1092 t0000)))
-T_1092: (in Mem383[0xABA<16>:word16] @ 0728 : word16)
+  OrigDataType: (ptr16 (struct (0 T_1083 t0000)))
+T_1083: (in Mem383[0xABA<16>:word16] @ 0728 : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_1093: (in 0<8> @ 072B : byte)
-  Class: Eq_954
+T_1084: (in 0<8> @ 072B : byte)
+  Class: Eq_945
   DataType: bool
   OrigDataType: byte
-T_1094: (in Z_125 != 0<8> @ 072B : bool)
-  Class: Eq_823
+T_1085: (in Z_125 != 0<8> @ 072B : bool)
+  Class: Eq_814
   DataType: bool
   OrigDataType: bool
-T_1095: (in 0xFB<8> @ 030E : byte)
+T_1086: (in 0xFB<8> @ 030E : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1096: (in a_11 != 0xFB<8> @ 030E : bool)
-  Class: Eq_1096
+T_1087: (in a_11 != 0xFB<8> @ 030E : bool)
+  Class: Eq_1087
   DataType: bool
   OrigDataType: bool
-T_1097: (in a_161 @ 02FE : uint8)
+T_1088: (in a_161 @ 02FE : uint8)
   Class: Eq_38
   DataType: uint8
   OrigDataType: bcu8
-T_1098: (in __bit @ 0301 : ptr32)
-  Class: Eq_1098
-  DataType: (ptr32 Eq_1098)
-  OrigDataType: (ptr32 (fn T_1101 (T_849, T_1100)))
-T_1099: (in signature of __bit : void)
-  Class: Eq_1098
-  DataType: (ptr32 Eq_1098)
+T_1089: (in __bit @ 0301 : ptr32)
+  Class: Eq_1089
+  DataType: (ptr32 Eq_1089)
+  OrigDataType: (ptr32 (fn T_1092 (T_840, T_1091)))
+T_1090: (in signature of __bit : void)
+  Class: Eq_1089
+  DataType: (ptr32 Eq_1089)
   OrigDataType: 
-T_1100: (in 4<8> @ 0301 : byte)
-  Class: Eq_871
+T_1091: (in 4<8> @ 0301 : byte)
+  Class: Eq_862
   DataType: byte
   OrigDataType: byte
-T_1101: (in __bit(a_11, 4<8>) @ 0301 : bool)
-  Class: Eq_1101
+T_1092: (in __bit(a_11, 4<8>) @ 0301 : bool)
+  Class: Eq_1092
   DataType: bool
   OrigDataType: bool
-T_1102: (in !__bit(a_11, 4<8>) @ 0301 : bool)
-  Class: Eq_1102
+T_1093: (in !__bit(a_11, 4<8>) @ 0301 : bool)
+  Class: Eq_1093
   DataType: bool
   OrigDataType: bool
-T_1103: (in 4<8> @ 0472 : byte)
-  Class: Eq_1103
+T_1094: (in 4<8> @ 0472 : byte)
+  Class: Eq_1094
   DataType: byte
   OrigDataType: byte
-T_1104: (in a_161 >> 4<8> @ 0472 : byte)
-  Class: Eq_888
+T_1095: (in a_161 >> 4<8> @ 0472 : byte)
+  Class: Eq_879
   DataType: uint8
   OrigDataType: uint8
-T_1105: (in 0xBB6<16> @ 0478 : word16)
-  Class: Eq_892
+T_1096: (in 0xBB6<16> @ 0478 : word16)
+  Class: Eq_883
   DataType: word16
   OrigDataType: word16
-T_1106: (in 0xF9<8> @ 047C : byte)
+T_1097: (in 0xF9<8> @ 047C : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1107: (in a_161 == 0xF9<8> @ 047C : bool)
-  Class: Eq_1107
+T_1098: (in a_161 == 0xF9<8> @ 047C : bool)
+  Class: Eq_1098
   DataType: bool
   OrigDataType: bool
-T_1108: (in 0x98<8> @ 0306 : byte)
+T_1099: (in 0x98<8> @ 0306 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1109: (in a_11 == 0x98<8> @ 0306 : bool)
-  Class: Eq_1109
+T_1100: (in a_11 == 0x98<8> @ 0306 : bool)
+  Class: Eq_1100
   DataType: bool
   OrigDataType: bool
-T_1110: (in 3<i16> @ 0523 : int16)
-  Class: Eq_1110
+T_1101: (in 3<i16> @ 0523 : int16)
+  Class: Eq_1101
   DataType: int16
   OrigDataType: int16
-T_1111: (in ix + 3<i16> @ 0523 : word16)
-  Class: Eq_1111
+T_1102: (in ix + 3<i16> @ 0523 : word16)
+  Class: Eq_1102
   DataType: ptr16
   OrigDataType: ptr16
-T_1112: (in Mem10[ix + 3<i16>:byte] @ 0523 : byte)
+T_1103: (in Mem10[ix + 3<i16>:byte] @ 0523 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1113: (in a_166 @ 0523 : uint8)
+T_1104: (in a_166 @ 0523 : uint8)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1114: (in 0<16> @ 0526 : word16)
-  Class: Eq_1114
+T_1105: (in 0<16> @ 0526 : word16)
+  Class: Eq_1105
   DataType: word16
   OrigDataType: word16
-T_1115: (in ix + 0<16> @ 0526 : word16)
-  Class: Eq_1115
+T_1106: (in ix + 0<16> @ 0526 : word16)
+  Class: Eq_1106
   DataType: ptr16
   OrigDataType: ptr16
-T_1116: (in Mem190[ix + 0<16>:byte] @ 0526 : byte)
+T_1107: (in Mem190[ix + 0<16>:byte] @ 0526 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1117: (in 0xDD<8> @ 0529 : byte)
-  Class: Eq_1117
+T_1108: (in 0xDD<8> @ 0529 : byte)
+  Class: Eq_1108
   DataType: byte
   OrigDataType: byte
-T_1118: (in c_168 @ 0529 : byte)
-  Class: Eq_1117
+T_1109: (in c_168 @ 0529 : byte)
+  Class: Eq_1108
   DataType: byte
   OrigDataType: byte
-T_1119: (in 0xB8<8> @ 0536 : byte)
+T_1110: (in 0xB8<8> @ 0536 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1120: (in a_11 - 0xB8<8> @ 0536 : byte)
+T_1111: (in a_11 - 0xB8<8> @ 0536 : byte)
+  Class: Eq_1111
+  DataType: byte
+  OrigDataType: byte
+T_1112: (in cond(a_11 - 0xB8<8>) @ 0536 : byte)
+  Class: Eq_1112
+  DataType: byte
+  OrigDataType: byte
+T_1113: (in SZPC_199 @ 0536 : byte)
+  Class: Eq_1112
+  DataType: byte
+  OrigDataType: byte
+T_1114: (in a_11 != 0xB8<8> @ 0538 : bool)
+  Class: Eq_1114
+  DataType: bool
+  OrigDataType: bool
+T_1115: (in a_258 & b_260 @ 038A : byte)
+  Class: Eq_1115
+  DataType: byte
+  OrigDataType: byte
+T_1116: (in 0<8> @ 038A : byte)
+  Class: Eq_1115
+  DataType: byte
+  OrigDataType: byte
+T_1117: (in (a_258 & b_260) != 0<8> @ 038A : bool)
+  Class: Eq_1117
+  DataType: bool
+  OrigDataType: bool
+T_1118: (in a_258 & b_260 @ 0385 : byte)
+  Class: Eq_1118
+  DataType: byte
+  OrigDataType: byte
+T_1119: (in 0<8> @ 0385 : byte)
+  Class: Eq_1118
+  DataType: byte
+  OrigDataType: byte
+T_1120: (in (a_258 & b_260) == 0<8> @ 0385 : bool)
   Class: Eq_1120
-  DataType: byte
-  OrigDataType: byte
-T_1121: (in cond(a_11 - 0xB8<8>) @ 0536 : byte)
-  Class: Eq_1121
-  DataType: byte
-  OrigDataType: byte
-T_1122: (in SZPC_199 @ 0536 : byte)
-  Class: Eq_1121
-  DataType: byte
-  OrigDataType: byte
-T_1123: (in a_11 != 0xB8<8> @ 0538 : bool)
-  Class: Eq_1123
   DataType: bool
   OrigDataType: bool
-T_1124: (in a_258 & b_260 @ 038A : byte)
-  Class: Eq_1124
-  DataType: byte
-  OrigDataType: byte
-T_1125: (in 0<8> @ 038A : byte)
-  Class: Eq_1124
-  DataType: byte
-  OrigDataType: byte
-T_1126: (in (a_258 & b_260) != 0<8> @ 038A : bool)
-  Class: Eq_1126
-  DataType: bool
-  OrigDataType: bool
-T_1127: (in a_258 & b_260 @ 0385 : byte)
-  Class: Eq_1127
-  DataType: byte
-  OrigDataType: byte
-T_1128: (in 0<8> @ 0385 : byte)
-  Class: Eq_1127
-  DataType: byte
-  OrigDataType: byte
-T_1129: (in (a_258 & b_260) == 0<8> @ 0385 : bool)
-  Class: Eq_1129
-  DataType: bool
-  OrigDataType: bool
-T_1130: (in fn0E24 @ 0390 : ptr16)
-  Class: Eq_472
-  DataType: (ptr16 Eq_472)
-  OrigDataType: (ptr16 (fn T_1136 (T_1131, T_1133, T_1135)))
-T_1131: (in hl_240 + 1<16> @ 0390 : word16)
+T_1121: (in fn0E24 @ 0390 : ptr16)
+  Class: Eq_462
+  DataType: (ptr16 Eq_462)
+  OrigDataType: (ptr16 (fn T_1127 (T_1122, T_1124, T_1126)))
+T_1122: (in hl_240 + 1<16> @ 0390 : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_1132: (in af_584 @ 0390 : word16)
-  Class: Eq_1132
+T_1123: (in af_584 @ 0390 : word16)
+  Class: Eq_1123
   DataType: word16
   OrigDataType: word16
-T_1133: (in out af_584 @ 0390 : word16)
+T_1124: (in out af_584 @ 0390 : word16)
   Class: Eq_53
   DataType: (ptr16 Eq_53)
   OrigDataType: word16
-T_1134: (in hl_272 @ 0390 : word16)
-  Class: Eq_1134
+T_1125: (in hl_272 @ 0390 : word16)
+  Class: Eq_1125
   DataType: word16
   OrigDataType: word16
-T_1135: (in out hl_272 @ 0390 : word16)
+T_1126: (in out hl_272 @ 0390 : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_1136: (in fn0E24(hl_240 + 1<16>, out af_584, out hl_272) @ 0390 : bool)
-  Class: Eq_482
-  DataType: Eq_482
+T_1127: (in fn0E24(hl_240 + 1<16>, out af_584, out hl_272) @ 0390 : bool)
+  Class: Eq_472
+  DataType: Eq_472
   OrigDataType: bool
-T_1137: (in a_271 @ 0390 : uint8)
+T_1128: (in a_271 @ 0390 : uint8)
   Class: Eq_38
   DataType: uint8
   OrigDataType: uint8
-T_1138: (in CONVERT(a_271, uint8, uint16) @ 0394 : uint16)
-  Class: Eq_1138
+T_1129: (in CONVERT(a_271, uint8, uint16) @ 0394 : uint16)
+  Class: Eq_1129
   DataType: uint16
   OrigDataType: uint16
-T_1139: (in de_282 @ 0394 : uint16)
-  Class: Eq_1138
+T_1130: (in de_282 @ 0394 : uint16)
+  Class: Eq_1129
   DataType: uint16
   OrigDataType: uint16
-T_1140: (in __bit @ 0396 : ptr32)
-  Class: Eq_1140
-  DataType: (ptr32 Eq_1140)
-  OrigDataType: (ptr32 (fn T_1143 (T_1137, T_1142)))
-T_1141: (in signature of __bit : void)
-  Class: Eq_1140
-  DataType: (ptr32 Eq_1140)
+T_1131: (in __bit @ 0396 : ptr32)
+  Class: Eq_1131
+  DataType: (ptr32 Eq_1131)
+  OrigDataType: (ptr32 (fn T_1134 (T_1128, T_1133)))
+T_1132: (in signature of __bit : void)
+  Class: Eq_1131
+  DataType: (ptr32 Eq_1131)
   OrigDataType: 
-T_1142: (in 7<8> @ 0396 : byte)
-  Class: Eq_871
+T_1133: (in 7<8> @ 0396 : byte)
+  Class: Eq_862
   DataType: byte
   OrigDataType: byte
-T_1143: (in __bit(a_271, 7<8>) @ 0396 : bool)
-  Class: Eq_1143
+T_1134: (in __bit(a_271, 7<8>) @ 0396 : bool)
+  Class: Eq_1134
   DataType: bool
   OrigDataType: bool
-T_1144: (in !__bit(a_271, 7<8>) @ 0396 : bool)
-  Class: Eq_1144
+T_1135: (in !__bit(a_271, 7<8>) @ 0396 : bool)
+  Class: Eq_1135
   DataType: bool
   OrigDataType: bool
-T_1145: (in CONVERT(c_259, uint8, uint16) @ 039A : uint16)
-  Class: Eq_223
+T_1136: (in CONVERT(c_259, uint8, uint16) @ 039A : uint16)
+  Class: Eq_209
   DataType: uint16
   OrigDataType: uint16
-T_1146: (in CONVERT(c_181, uint8, uint16) @ 0866 : uint16)
-  Class: Eq_1146
+T_1137: (in CONVERT(c_181, uint8, uint16) @ 0866 : uint16)
+  Class: Eq_1137
   DataType: uint16
   OrigDataType: uint16
-T_1147: (in iy_184 + (uint16) c_181 @ 0866 : word16)
-  Class: Eq_1147
+T_1138: (in iy_184 + (uint16) c_181 @ 0866 : word16)
+  Class: Eq_1138
   DataType: (ptr16 (ptr16 code))
   OrigDataType: word16
-T_1148: (in iy_415 @ 0866 : (ptr16 (ptr16 code)))
-  Class: Eq_1147
+T_1139: (in iy_415 @ 0866 : (ptr16 (ptr16 code)))
+  Class: Eq_1138
   DataType: (ptr16 (ptr16 code))
-  OrigDataType: (ptr16 (struct (0 T_1154 t0000)))
-T_1149: (in 2<16> @ 086E : word16)
-  Class: Eq_1149
+  OrigDataType: (ptr16 (struct (0 T_1145 t0000)))
+T_1140: (in 2<16> @ 086E : word16)
+  Class: Eq_1140
   DataType: ui16
   OrigDataType: ui16
-T_1150: (in sp_2 - 2<16> @ 086E : word16)
-  Class: Eq_1150
+T_1141: (in sp_2 - 2<16> @ 086E : word16)
+  Class: Eq_1141
   DataType: (ptr16 (ptr16 code))
   OrigDataType: ptr16
-T_1151: (in sp_423 @ 086E : (ptr16 (ptr16 code)))
-  Class: Eq_1150
+T_1142: (in sp_423 @ 086E : (ptr16 (ptr16 code)))
+  Class: Eq_1141
   DataType: (ptr16 (ptr16 code))
-  OrigDataType: (ptr16 (struct (0 T_1154 t0000)))
-T_1152: (in 0<16> @ 086E : word16)
-  Class: Eq_1152
+  OrigDataType: (ptr16 (struct (0 T_1145 t0000)))
+T_1143: (in 0<16> @ 086E : word16)
+  Class: Eq_1143
   DataType: word16
   OrigDataType: word16
-T_1153: (in iy_415 + 0<16> @ 086E : word16)
-  Class: Eq_1153
+T_1144: (in iy_415 + 0<16> @ 086E : word16)
+  Class: Eq_1144
   DataType: word16
   OrigDataType: word16
-T_1154: (in Mem417[iy_415 + 0<16>:word16] @ 086E : word16)
-  Class: Eq_1154
+T_1145: (in Mem417[iy_415 + 0<16>:word16] @ 086E : word16)
+  Class: Eq_1145
   DataType: (ptr16 code)
   OrigDataType: word16
-T_1155: (in bc_424 @ 086E : (ptr16 code))
-  Class: Eq_1154
+T_1146: (in bc_424 @ 086E : (ptr16 code))
+  Class: Eq_1145
   DataType: (ptr16 code)
   OrigDataType: word16
-T_1156: (in 0<16> @ 086E : word16)
-  Class: Eq_1156
+T_1147: (in 0<16> @ 086E : word16)
+  Class: Eq_1147
   DataType: word16
   OrigDataType: word16
-T_1157: (in sp_423 + 0<16> @ 086E : word16)
-  Class: Eq_1157
+T_1148: (in sp_423 + 0<16> @ 086E : word16)
+  Class: Eq_1148
   DataType: ptr16
   OrigDataType: ptr16
-T_1158: (in Mem425[sp_423 + 0<16>:word16] @ 086E : word16)
-  Class: Eq_1154
+T_1149: (in Mem425[sp_423 + 0<16>:word16] @ 086E : word16)
+  Class: Eq_1145
   DataType: (ptr16 code)
   OrigDataType: word16
-T_1159: (in 0<16> @ 086F : word16)
-  Class: Eq_1159
+T_1150: (in 0<16> @ 086F : word16)
+  Class: Eq_1150
   DataType: word16
   OrigDataType: word16
-T_1160: (in sp_423 + 0<16> @ 086F : word16)
-  Class: Eq_1160
+T_1151: (in sp_423 + 0<16> @ 086F : word16)
+  Class: Eq_1151
   DataType: (ptr16 word16)
   OrigDataType: (ptr16 word16)
-T_1161: (in Mem425[sp_423 + 0<16>:word16] @ 086F : word16)
-  Class: Eq_1154
+T_1152: (in Mem425[sp_423 + 0<16>:word16] @ 086F : word16)
+  Class: Eq_1145
   DataType: (ptr16 code)
   OrigDataType: word16
-T_1162: (in iy_426 @ 086F : (ptr16 code))
-  Class: Eq_1154
+T_1153: (in iy_426 @ 086F : (ptr16 code))
+  Class: Eq_1145
   DataType: (ptr16 code)
   OrigDataType: (ptr16 code)
-T_1163: (in bc_436 @ 0871 : uint16)
-  Class: Eq_223
+T_1154: (in bc_436 @ 0871 : uint16)
+  Class: Eq_209
   DataType: uint16
   OrigDataType: word16
-T_1164: (in hl_435 @ 0871 : Eq_87)
+T_1155: (in hl_435 @ 0871 : Eq_87)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_1165: (in ix_438 @ 0871 : (ptr16 Eq_147))
-  Class: Eq_147
-  DataType: (ptr16 Eq_147)
+T_1156: (in ix_438 @ 0871 : (ptr16 Eq_133))
+  Class: Eq_133
+  DataType: (ptr16 Eq_133)
   OrigDataType: word16
-T_1166: (in SZPC_441 @ 0871 : byte)
+T_1157: (in SZPC_441 @ 0871 : byte)
+  Class: Eq_1157
+  DataType: byte
+  OrigDataType: byte
+T_1158: (in 0x40<8> @ 0871 : byte)
+  Class: Eq_1158
+  DataType: byte
+  OrigDataType: byte
+T_1159: (in SZPC_441 & 0x40<8> @ 0871 : byte)
+  Class: Eq_1159
+  DataType: byte
+  OrigDataType: byte
+T_1160: (in 0<8> @ 0871 : byte)
+  Class: Eq_1159
+  DataType: byte
+  OrigDataType: byte
+T_1161: (in (SZPC_441 & 0x40<8>) != 0<8> @ 0871 : bool)
+  Class: Eq_814
+  DataType: bool
+  OrigDataType: bool
+T_1162: (in 0xBBE<16> @ 047F : word16)
+  Class: Eq_883
+  DataType: word16
+  OrigDataType: word16
+T_1163: (in 1<16> @ 0727 : word16)
+  Class: Eq_1163
+  DataType: word16
+  OrigDataType: word16
+T_1164: (in hl_12 + 1<16> @ 0727 : word16)
+  Class: Eq_87
+  DataType: Eq_87
+  OrigDataType: word16
+T_1165: (in cond(hl_159) @ 0727 : byte)
+  Class: Eq_1165
+  DataType: byte
+  OrigDataType: byte
+T_1166: (in 0x40<8> @ 0727 : byte)
   Class: Eq_1166
   DataType: byte
   OrigDataType: byte
-T_1167: (in 0x40<8> @ 0871 : byte)
-  Class: Eq_1167
-  DataType: byte
+T_1167: (in cond(hl_159) & 0x40<8> @ 0727 : byte)
+  Class: Eq_945
+  DataType: Eq_945
   OrigDataType: byte
-T_1168: (in SZPC_441 & 0x40<8> @ 0871 : byte)
+T_1168: (in __rcr<byte,byte> @ 053C : ptr32)
   Class: Eq_1168
-  DataType: byte
-  OrigDataType: byte
-T_1169: (in 0<8> @ 0871 : byte)
+  DataType: (ptr32 Eq_1168)
+  OrigDataType: (ptr32 (fn T_1176 (T_1088, T_1173, T_1175)))
+T_1169: (in signature of __rcr : void)
   Class: Eq_1168
+  DataType: (ptr32 Eq_1168)
+  OrigDataType: 
+T_1170: (in p1 @ 053C : byte)
+  Class: Eq_38
+  DataType: uint8
+  OrigDataType: 
+T_1171: (in p2 @ 053C : byte)
+  Class: Eq_1171
   DataType: byte
-  OrigDataType: byte
-T_1170: (in (SZPC_441 & 0x40<8>) != 0<8> @ 0871 : bool)
-  Class: Eq_823
-  DataType: bool
-  OrigDataType: bool
-T_1171: (in 0xBBE<16> @ 047F : word16)
-  Class: Eq_892
-  DataType: word16
-  OrigDataType: word16
-T_1172: (in 1<16> @ 0727 : word16)
+  OrigDataType: 
+T_1172: (in p3 @ 053C : bool)
   Class: Eq_1172
-  DataType: word16
-  OrigDataType: word16
-T_1173: (in hl_12 + 1<16> @ 0727 : word16)
-  Class: Eq_87
-  DataType: Eq_87
-  OrigDataType: word16
-T_1174: (in cond(hl_159) @ 0727 : byte)
+  DataType: Eq_1172
+  OrigDataType: 
+T_1173: (in 1<8> @ 053C : byte)
+  Class: Eq_1171
+  DataType: byte
+  OrigDataType: byte
+T_1174: (in 1<8> @ 053C : byte)
   Class: Eq_1174
   DataType: byte
   OrigDataType: byte
-T_1175: (in 0x40<8> @ 0727 : byte)
-  Class: Eq_1175
-  DataType: byte
-  OrigDataType: byte
-T_1176: (in cond(hl_159) & 0x40<8> @ 0727 : byte)
-  Class: Eq_954
-  DataType: Eq_954
-  OrigDataType: byte
-T_1177: (in __rcr<byte,byte> @ 053C : ptr32)
-  Class: Eq_106
-  DataType: (ptr32 Eq_106)
-  OrigDataType: (ptr32 (fn T_1181 (T_1097, T_1178, T_1180)))
-T_1178: (in 1<8> @ 053C : byte)
-  Class: Eq_109
-  DataType: byte
-  OrigDataType: byte
-T_1179: (in 1<8> @ 053C : byte)
-  Class: Eq_1179
-  DataType: byte
-  OrigDataType: byte
-T_1180: (in SZPC_199 & 1<8> @ 053C : byte)
-  Class: Eq_110
-  DataType: Eq_110
+T_1175: (in SZPC_199 & 1<8> @ 053C : byte)
+  Class: Eq_1172
+  DataType: Eq_1172
   OrigDataType: (union (bool u1) (byte u0))
-T_1181: (in __rcr<byte,byte>(a_161, 1<8>, SZPC_199 & 1<8>) @ 053C : byte)
+T_1176: (in __rcr<byte,byte>(a_161, 1<8>, SZPC_199 & 1<8>) @ 053C : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1182: (in a_205 @ 053C : uint8)
+T_1177: (in a_205 @ 053C : uint8)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1183: (in __rcr<byte,byte> @ 053D : ptr32)
-  Class: Eq_106
-  DataType: (ptr32 Eq_106)
+T_1178: (in __rcr<byte,byte> @ 053D : ptr32)
+  Class: Eq_1168
+  DataType: (ptr32 Eq_1168)
+  OrigDataType: (ptr32 (fn T_1181 (T_1177, T_1179, T_1180)))
+T_1179: (in 1<8> @ 053D : byte)
+  Class: Eq_1171
+  DataType: byte
+  OrigDataType: byte
+T_1180: (in cond(a_205) @ 053D : byte)
+  Class: Eq_1172
+  DataType: Eq_1172
+  OrigDataType: (union (bool u1) (byte u0))
+T_1181: (in __rcr<byte,byte>(a_205, 1<8>, cond(a_205)) @ 053D : byte)
+  Class: Eq_38
+  DataType: uint8
+  OrigDataType: byte
+T_1182: (in a_207 @ 053D : uint8)
+  Class: Eq_38
+  DataType: uint8
+  OrigDataType: byte
+T_1183: (in __rcr<byte,byte> @ 053E : ptr32)
+  Class: Eq_1168
+  DataType: (ptr32 Eq_1168)
   OrigDataType: (ptr32 (fn T_1186 (T_1182, T_1184, T_1185)))
-T_1184: (in 1<8> @ 053D : byte)
-  Class: Eq_109
+T_1184: (in 1<8> @ 053E : byte)
+  Class: Eq_1171
   DataType: byte
   OrigDataType: byte
-T_1185: (in cond(a_205) @ 053D : byte)
-  Class: Eq_110
-  DataType: Eq_110
+T_1185: (in cond(a_207) @ 053E : byte)
+  Class: Eq_1172
+  DataType: Eq_1172
   OrigDataType: (union (bool u1) (byte u0))
-T_1186: (in __rcr<byte,byte>(a_205, 1<8>, cond(a_205)) @ 053D : byte)
+T_1186: (in __rcr<byte,byte>(a_207, 1<8>, cond(a_207)) @ 053E : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1187: (in a_207 @ 053D : uint8)
+T_1187: (in a_209 @ 053E : uint8)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1188: (in __rcr<byte,byte> @ 053E : ptr32)
-  Class: Eq_106
-  DataType: (ptr32 Eq_106)
+T_1188: (in __rcr<byte,byte> @ 0545 : ptr32)
+  Class: Eq_1168
+  DataType: (ptr32 Eq_1168)
   OrigDataType: (ptr32 (fn T_1191 (T_1187, T_1189, T_1190)))
-T_1189: (in 1<8> @ 053E : byte)
-  Class: Eq_109
+T_1189: (in 1<8> @ 0545 : byte)
+  Class: Eq_1171
   DataType: byte
   OrigDataType: byte
-T_1190: (in cond(a_207) @ 053E : byte)
-  Class: Eq_110
-  DataType: Eq_110
+T_1190: (in cond(a_209) @ 0545 : byte)
+  Class: Eq_1172
+  DataType: Eq_1172
   OrigDataType: (union (bool u1) (byte u0))
-T_1191: (in __rcr<byte,byte>(a_207, 1<8>, cond(a_207)) @ 053E : byte)
+T_1191: (in __rcr<byte,byte>(a_209, 1<8>, cond(a_209)) @ 0545 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1192: (in a_209 @ 053E : uint8)
-  Class: Eq_38
-  DataType: uint8
-  OrigDataType: byte
-T_1193: (in __rcr<byte,byte> @ 0545 : ptr32)
-  Class: Eq_106
-  DataType: (ptr32 Eq_106)
-  OrigDataType: (ptr32 (fn T_1196 (T_1192, T_1194, T_1195)))
-T_1194: (in 1<8> @ 0545 : byte)
-  Class: Eq_109
+T_1192: (in 0xE<8> @ 0545 : byte)
+  Class: Eq_1192
   DataType: byte
   OrigDataType: byte
-T_1195: (in cond(a_209) @ 0545 : byte)
-  Class: Eq_110
-  DataType: Eq_110
-  OrigDataType: (union (bool u1) (byte u0))
-T_1196: (in __rcr<byte,byte>(a_209, 1<8>, cond(a_209)) @ 0545 : byte)
-  Class: Eq_38
-  DataType: uint8
-  OrigDataType: byte
-T_1197: (in 0xE<8> @ 0545 : byte)
-  Class: Eq_1197
-  DataType: byte
-  OrigDataType: byte
-T_1198: (in __rcr<byte,byte>(a_209, 1<8>, cond(a_209)) + 0xE<8> @ 0545 : byte)
-  Class: Eq_1198
+T_1193: (in __rcr<byte,byte>(a_209, 1<8>, cond(a_209)) + 0xE<8> @ 0545 : byte)
+  Class: Eq_1193
   DataType: uint8
   OrigDataType: uint8
-T_1199: (in CONVERT(__rcr<byte,byte>(a_209, 1<8>, cond(a_209)) + 0xE<8>, uint8, uint16) @ 0545 : uint16)
-  Class: Eq_1199
-  DataType: (ptr16 Eq_1199)
+T_1194: (in CONVERT(__rcr<byte,byte>(a_209, 1<8>, cond(a_209)) + 0xE<8>, uint8, uint16) @ 0545 : uint16)
+  Class: Eq_1194
+  DataType: (ptr16 Eq_1194)
   OrigDataType: uint16
-T_1200: (in bc_217 @ 0545 : (ptr16 Eq_1199))
-  Class: Eq_1199
-  DataType: (ptr16 Eq_1199)
-  OrigDataType: (ptr16 (struct (BA6 T_1203 t0BA6) (BA7 T_1206 t0BA7)))
-T_1201: (in 0xBA6<16> @ 0547 : word16)
-  Class: Eq_1201
+T_1195: (in bc_217 @ 0545 : (ptr16 Eq_1194))
+  Class: Eq_1194
+  DataType: (ptr16 Eq_1194)
+  OrigDataType: (ptr16 (struct (BA6 T_1198 t0BA6) (BA7 T_1201 t0BA7)))
+T_1196: (in 0xBA6<16> @ 0547 : word16)
+  Class: Eq_1196
   DataType: word16
   OrigDataType: word16
-T_1202: (in bc_217 + 0xBA6<16> @ 0547 : word16)
-  Class: Eq_1202
+T_1197: (in bc_217 + 0xBA6<16> @ 0547 : word16)
+  Class: Eq_1197
   DataType: uint16
   OrigDataType: uint16
-T_1203: (in Mem10[bc_217 + 0xBA6<16>:byte] @ 0547 : byte)
-  Class: Eq_1117
+T_1198: (in Mem10[bc_217 + 0xBA6<16>:byte] @ 0547 : byte)
+  Class: Eq_1108
   DataType: byte
   OrigDataType: byte
-T_1204: (in 0xBA7<16> @ 054A : word16)
-  Class: Eq_1204
+T_1199: (in 0xBA7<16> @ 054A : word16)
+  Class: Eq_1199
   DataType: word16
   OrigDataType: word16
-T_1205: (in bc_217 + 0xBA7<16> @ 054A : word16)
-  Class: Eq_1205
+T_1200: (in bc_217 + 0xBA7<16> @ 054A : word16)
+  Class: Eq_1200
   DataType: ptr16
   OrigDataType: ptr16
-T_1206: (in Mem10[bc_217 + 0xBA7<16>:byte] @ 054A : byte)
-  Class: Eq_1206
+T_1201: (in Mem10[bc_217 + 0xBA7<16>:byte] @ 054A : byte)
+  Class: Eq_1201
   DataType: byte
   OrigDataType: byte
-T_1207: (in a_222 @ 054A : byte)
-  Class: Eq_1206
+T_1202: (in a_222 @ 054A : byte)
+  Class: Eq_1201
   DataType: byte
   OrigDataType: byte
-T_1208: (in 0xF45A<16> @ 054D : word16)
-  Class: Eq_1199
-  DataType: (ptr16 Eq_1199)
+T_1203: (in 0xF45A<16> @ 054D : word16)
+  Class: Eq_1194
+  DataType: (ptr16 Eq_1194)
   OrigDataType: word16
-T_1209: (in bc_217 != (struct Eq_1199 *) 0xF45A<16> @ 054D : bool)
-  Class: Eq_1209
+T_1204: (in bc_217 != (struct Eq_1194 *) 0xF45A<16> @ 054D : bool)
+  Class: Eq_1204
   DataType: bool
   OrigDataType: bool
-T_1210: (in __res @ 053A : ptr32)
-  Class: Eq_1210
-  DataType: (ptr32 Eq_1210)
-  OrigDataType: (ptr32 (fn T_1213 (T_849, T_1212)))
-T_1211: (in signature of __res : void)
-  Class: Eq_1210
-  DataType: (ptr32 Eq_1210)
+T_1205: (in __res @ 053A : ptr32)
+  Class: Eq_1205
+  DataType: (ptr32 Eq_1205)
+  OrigDataType: (ptr32 (fn T_1208 (T_840, T_1207)))
+T_1206: (in signature of __res : void)
+  Class: Eq_1205
+  DataType: (ptr32 Eq_1205)
   OrigDataType: 
-T_1212: (in 5<8> @ 053A : byte)
-  Class: Eq_884
+T_1207: (in 5<8> @ 053A : byte)
+  Class: Eq_875
   DataType: byte
   OrigDataType: byte
-T_1213: (in __res(a_11, 5<8>) @ 053A : byte)
+T_1208: (in __res(a_11, 5<8>) @ 053A : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1214: (in 1<i16> @ 0555 : int16)
+T_1209: (in 1<i16> @ 0555 : int16)
+  Class: Eq_1209
+  DataType: int16
+  OrigDataType: int16
+T_1210: (in ix + 1<i16> @ 0555 : word16)
+  Class: Eq_1210
+  DataType: (ptr16 byte)
+  OrigDataType: (ptr16 byte)
+T_1211: (in Mem10[ix + 1<i16>:byte] @ 0555 : byte)
+  Class: Eq_38
+  DataType: uint8
+  OrigDataType: byte
+T_1212: (in a_222 | ix[1<i32>] @ 0555 : byte)
+  Class: Eq_38
+  DataType: uint8
+  OrigDataType: byte
+T_1213: (in a_225 @ 0555 : uint8)
+  Class: Eq_38
+  DataType: uint8
+  OrigDataType: byte
+T_1214: (in ~a_222 @ 0550 : byte)
   Class: Eq_1214
-  DataType: int16
-  OrigDataType: int16
-T_1215: (in ix + 1<i16> @ 0555 : word16)
-  Class: Eq_1215
-  DataType: (ptr16 byte)
-  OrigDataType: (ptr16 byte)
-T_1216: (in Mem10[ix + 1<i16>:byte] @ 0555 : byte)
-  Class: Eq_38
-  DataType: uint8
-  OrigDataType: byte
-T_1217: (in a_222 | ix[1<i32>] @ 0555 : byte)
-  Class: Eq_38
-  DataType: uint8
-  OrigDataType: byte
-T_1218: (in a_225 @ 0555 : uint8)
-  Class: Eq_38
-  DataType: uint8
-  OrigDataType: byte
-T_1219: (in ~a_222 @ 0550 : byte)
-  Class: Eq_1219
   DataType: byte
   OrigDataType: byte
-T_1220: (in 1<i16> @ 0550 : int16)
+T_1215: (in 1<i16> @ 0550 : int16)
+  Class: Eq_1215
+  DataType: int16
+  OrigDataType: int16
+T_1216: (in ix + 1<i16> @ 0550 : word16)
+  Class: Eq_1216
+  DataType: (ptr16 byte)
+  OrigDataType: (ptr16 byte)
+T_1217: (in Mem10[ix + 1<i16>:byte] @ 0550 : byte)
+  Class: Eq_38
+  DataType: uint8
+  OrigDataType: byte
+T_1218: (in ~a_222 & ix[1<i32>] @ 0550 : byte)
+  Class: Eq_38
+  DataType: uint8
+  OrigDataType: byte
+T_1219: (in 1<i16> @ 0558 : int16)
+  Class: Eq_1219
+  DataType: int16
+  OrigDataType: int16
+T_1220: (in ix + 1<i16> @ 0558 : word16)
   Class: Eq_1220
-  DataType: int16
-  OrigDataType: int16
-T_1221: (in ix + 1<i16> @ 0550 : word16)
-  Class: Eq_1221
   DataType: (ptr16 byte)
   OrigDataType: (ptr16 byte)
-T_1222: (in Mem10[ix + 1<i16>:byte] @ 0550 : byte)
+T_1221: (in Mem234[ix + 1<i16>:byte] @ 0558 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1223: (in ~a_222 & ix[1<i32>] @ 0550 : byte)
-  Class: Eq_38
-  DataType: uint8
-  OrigDataType: byte
-T_1224: (in 1<i16> @ 0558 : int16)
-  Class: Eq_1224
-  DataType: int16
-  OrigDataType: int16
-T_1225: (in ix + 1<i16> @ 0558 : word16)
-  Class: Eq_1225
-  DataType: (ptr16 byte)
-  OrigDataType: (ptr16 byte)
-T_1226: (in Mem234[ix + 1<i16>:byte] @ 0558 : byte)
-  Class: Eq_38
-  DataType: uint8
-  OrigDataType: byte
-T_1227: (in hl_272 + de_282 @ 0399 : word16)
+T_1222: (in hl_272 + de_282 @ 0399 : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_1228: (in 0xFF<8> @ 0398 : byte)
+T_1223: (in 0xFF<8> @ 0398 : byte)
+  Class: Eq_1223
+  DataType: byte
+  OrigDataType: byte
+T_1224: (in SEQ(0xFF<8>, a_271) @ 0398 : word16)
+  Class: Eq_1129
+  DataType: uint16
+  OrigDataType: word16
+T_1225: (in 4<8> @ 055B : byte)
+  Class: Eq_1225
+  DataType: byte
+  OrigDataType: byte
+T_1226: (in SEQ(4<8>, c_168) @ 055B : word16)
+  Class: Eq_209
+  DataType: uint16
+  OrigDataType: word16
+T_1227: (in 0x4C<8> @ 0323 : byte)
+  Class: Eq_38
+  DataType: uint8
+  OrigDataType: byte
+T_1228: (in a_11 == 0x4C<8> @ 0323 : bool)
   Class: Eq_1228
-  DataType: byte
-  OrigDataType: byte
-T_1229: (in SEQ(0xFF<8>, a_271) @ 0398 : word16)
-  Class: Eq_1138
-  DataType: uint16
-  OrigDataType: word16
-T_1230: (in 4<8> @ 055B : byte)
-  Class: Eq_1230
-  DataType: byte
-  OrigDataType: byte
-T_1231: (in SEQ(4<8>, c_168) @ 055B : word16)
-  Class: Eq_223
-  DataType: uint16
-  OrigDataType: word16
-T_1232: (in 0x4C<8> @ 0323 : byte)
-  Class: Eq_38
-  DataType: uint8
-  OrigDataType: byte
-T_1233: (in a_11 == 0x4C<8> @ 0323 : bool)
-  Class: Eq_1233
   DataType: bool
   OrigDataType: bool
-T_1234: (in 0xF0<8> @ 0311 : byte)
-  Class: Eq_1234
+T_1229: (in 0xF0<8> @ 0311 : byte)
+  Class: Eq_1229
   DataType: byte
   OrigDataType: byte
-T_1235: (in a_11 + 0xF0<8> @ 0311 : byte)
+T_1230: (in a_11 + 0xF0<8> @ 0311 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1236: (in __bit @ 0315 : ptr32)
-  Class: Eq_1236
-  DataType: (ptr32 Eq_1236)
-  OrigDataType: (ptr32 (fn T_1240 (T_1238, T_1239)))
-T_1237: (in signature of __bit : void)
-  Class: Eq_1236
-  DataType: (ptr32 Eq_1236)
+T_1231: (in __bit @ 0315 : ptr32)
+  Class: Eq_1231
+  DataType: (ptr32 Eq_1231)
+  OrigDataType: (ptr32 (fn T_1235 (T_1233, T_1234)))
+T_1232: (in signature of __bit : void)
+  Class: Eq_1231
+  DataType: (ptr32 Eq_1231)
   OrigDataType: 
-T_1238: (in a_11 + 0xF0<8> @ 0315 : byte)
+T_1233: (in a_11 + 0xF0<8> @ 0315 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1239: (in 4<8> @ 0315 : byte)
-  Class: Eq_871
+T_1234: (in 4<8> @ 0315 : byte)
+  Class: Eq_862
   DataType: byte
   OrigDataType: byte
-T_1240: (in __bit(a_11 + 0xF0<8>, 4<8>) @ 0315 : bool)
-  Class: Eq_1240
+T_1235: (in __bit(a_11 + 0xF0<8>, 4<8>) @ 0315 : bool)
+  Class: Eq_1235
   DataType: bool
   OrigDataType: bool
-T_1241: (in 0xA0<8> @ 0452 : byte)
+T_1236: (in 0xA0<8> @ 0452 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1242: (in a_11 != 0xA0<8> @ 0452 : bool)
-  Class: Eq_1242
+T_1237: (in a_11 != 0xA0<8> @ 0452 : bool)
+  Class: Eq_1237
   DataType: bool
   OrigDataType: bool
-T_1243: (in 0x80<8> @ 031A : byte)
+T_1238: (in 0x80<8> @ 031A : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: cu8
-T_1244: (in a_11 < 0x80<8> @ 031A : bool)
-  Class: Eq_1244
+T_1239: (in a_11 < 0x80<8> @ 031A : bool)
+  Class: Eq_1239
   DataType: bool
   OrigDataType: bool
-T_1245: (in 1<16> @ 03C3 : word16)
-  Class: Eq_1245
+T_1240: (in 1<16> @ 03C3 : word16)
+  Class: Eq_1240
   DataType: word16
   OrigDataType: word16
-T_1246: (in hl_12 + 1<16> @ 03C3 : word16)
+T_1241: (in hl_12 + 1<16> @ 03C3 : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_1247: (in hl_117 @ 03C3 : Eq_87)
+T_1242: (in hl_117 @ 03C3 : Eq_87)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_1248: (in 0x26F<16> @ 03C4 : word16)
-  Class: Eq_223
+T_1243: (in 0x26F<16> @ 03C4 : word16)
+  Class: Eq_209
   DataType: uint16
   OrigDataType: word16
-T_1249: (in bc_118 @ 03C4 : uint16)
-  Class: Eq_223
+T_1244: (in bc_118 @ 03C4 : uint16)
+  Class: Eq_209
   DataType: uint16
   OrigDataType: word16
-T_1250: (in 0x6C<8> @ 0328 : byte)
+T_1245: (in 0x6C<8> @ 0328 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1251: (in a_11 == 0x6C<8> @ 0328 : bool)
-  Class: Eq_1251
+T_1246: (in a_11 == 0x6C<8> @ 0328 : bool)
+  Class: Eq_1246
   DataType: bool
   OrigDataType: bool
-T_1252: (in fn0E24 @ 03CA : ptr16)
-  Class: Eq_472
-  DataType: (ptr16 Eq_472)
-  OrigDataType: (ptr16 (fn T_1259 (T_1254, T_1256, T_1258)))
-T_1253: (in 1<16> @ 03CA : word16)
-  Class: Eq_1253
+T_1247: (in fn0E24 @ 03CA : ptr16)
+  Class: Eq_462
+  DataType: (ptr16 Eq_462)
+  OrigDataType: (ptr16 (fn T_1254 (T_1249, T_1251, T_1253)))
+T_1248: (in 1<16> @ 03CA : word16)
+  Class: Eq_1248
   DataType: word16
   OrigDataType: word16
-T_1254: (in hl_12 + 1<16> @ 03CA : word16)
+T_1249: (in hl_12 + 1<16> @ 03CA : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_1255: (in af_585 @ 03CA : word16)
-  Class: Eq_1255
+T_1250: (in af_585 @ 03CA : word16)
+  Class: Eq_1250
   DataType: word16
   OrigDataType: word16
-T_1256: (in out af_585 @ 03CA : word16)
+T_1251: (in out af_585 @ 03CA : word16)
   Class: Eq_53
   DataType: (ptr16 Eq_53)
   OrigDataType: word16
-T_1257: (in hl_99 @ 03CA : word16)
-  Class: Eq_1257
+T_1252: (in hl_99 @ 03CA : word16)
+  Class: Eq_1252
   DataType: word16
   OrigDataType: word16
-T_1258: (in out hl_99 @ 03CA : word16)
+T_1253: (in out hl_99 @ 03CA : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_1259: (in fn0E24((word16) hl_12.u1 + 1<i32>, out af_585, out hl_99) @ 03CA : bool)
-  Class: Eq_482
-  DataType: Eq_482
-  OrigDataType: bool
-T_1260: (in fn0E24 @ 03CF : ptr16)
+T_1254: (in fn0E24((word16) hl_12.u1 + 1<i32>, out af_585, out hl_99) @ 03CA : bool)
   Class: Eq_472
-  DataType: (ptr16 Eq_472)
-  OrigDataType: (ptr16 (fn T_1267 (T_1262, T_1264, T_1266)))
-T_1261: (in 1<16> @ 03CF : word16)
-  Class: Eq_1261
+  DataType: Eq_472
+  OrigDataType: bool
+T_1255: (in fn0E24 @ 03CF : ptr16)
+  Class: Eq_462
+  DataType: (ptr16 Eq_462)
+  OrigDataType: (ptr16 (fn T_1262 (T_1257, T_1259, T_1261)))
+T_1256: (in 1<16> @ 03CF : word16)
+  Class: Eq_1256
   DataType: word16
   OrigDataType: word16
-T_1262: (in hl_99 + 1<16> @ 03CF : word16)
+T_1257: (in hl_99 + 1<16> @ 03CF : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_1263: (in af_586 @ 03CF : word16)
-  Class: Eq_1263
+T_1258: (in af_586 @ 03CF : word16)
+  Class: Eq_1258
   DataType: word16
   OrigDataType: word16
-T_1264: (in out af_586 @ 03CF : word16)
+T_1259: (in out af_586 @ 03CF : word16)
   Class: Eq_53
   DataType: (ptr16 Eq_53)
   OrigDataType: word16
-T_1265: (in hl_587 @ 03CF : word16)
-  Class: Eq_1265
+T_1260: (in hl_587 @ 03CF : word16)
+  Class: Eq_1260
   DataType: word16
   OrigDataType: word16
-T_1266: (in out hl_587 @ 03CF : word16)
+T_1261: (in out hl_587 @ 03CF : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_1267: (in fn0E24(hl_99 + 1<16>, out af_586, out hl_587) @ 03CF : bool)
-  Class: Eq_482
-  DataType: Eq_482
+T_1262: (in fn0E24(hl_99 + 1<16>, out af_586, out hl_587) @ 03CF : bool)
+  Class: Eq_472
+  DataType: Eq_472
   OrigDataType: bool
-T_1268: (in a_98 @ 03CA : uint8)
+T_1263: (in a_98 @ 03CA : uint8)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1269: (in a_107 @ 03CF : uint8)
+T_1264: (in a_107 @ 03CF : uint8)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1270: (in SEQ(a_107, a_98) @ 03D3 : word16)
+T_1265: (in SEQ(a_107, a_98) @ 03D3 : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_1271: (in 0xC6F<16> @ 03D4 : word16)
-  Class: Eq_223
+T_1266: (in 0xC6F<16> @ 03D4 : word16)
+  Class: Eq_209
   DataType: uint16
   OrigDataType: word16
-T_1272: (in fn03E9 @ 03D7 : ptr16)
-  Class: Eq_944
-  DataType: (ptr16 Eq_944)
-  OrigDataType: (ptr16 (fn T_1277 (T_1247, T_1274, T_1276)))
-T_1273: (in de_566 @ 03D7 : Eq_87)
+T_1267: (in fn03E9 @ 03D7 : ptr16)
+  Class: Eq_935
+  DataType: (ptr16 Eq_935)
+  OrigDataType: (ptr16 (fn T_1272 (T_1242, T_1269, T_1271)))
+T_1268: (in de_566 @ 03D7 : Eq_87)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_1274: (in out de_566 @ 03D7 : word16)
+T_1269: (in out de_566 @ 03D7 : word16)
   Class: Eq_53
   DataType: (ptr16 Eq_53)
   OrigDataType: word16
-T_1275: (in hl_123 @ 03D7 : word16)
-  Class: Eq_1275
+T_1270: (in hl_123 @ 03D7 : word16)
+  Class: Eq_1270
   DataType: word16
   OrigDataType: word16
-T_1276: (in out hl_123 @ 03D7 : word16)
+T_1271: (in out hl_123 @ 03D7 : word16)
   Class: Eq_53
   DataType: (ptr16 Eq_53)
   OrigDataType: word16
-T_1277: (in fn03E9(hl_117, out de_566, out hl_123) @ 03D7 : bool)
-  Class: Eq_954
-  DataType: Eq_954
+T_1272: (in fn03E9(hl_117, out de_566, out hl_123) @ 03D7 : bool)
+  Class: Eq_945
+  DataType: Eq_945
   OrigDataType: bool
-T_1278: (in SLICE(de_566, byte, 0) @ 03D7 : byte)
-  Class: Eq_942
+T_1273: (in SLICE(de_566, byte, 0) @ 03D7 : byte)
+  Class: Eq_933
   DataType: bui8
   OrigDataType: byte
-T_1279: (in e_122 @ 03D7 : bui8)
-  Class: Eq_942
+T_1274: (in e_122 @ 03D7 : bui8)
+  Class: Eq_933
   DataType: bui8
   OrigDataType: byte
-T_1280: (in de_152 @ 03D7 : Eq_87)
+T_1275: (in de_152 @ 03D7 : Eq_87)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_1281: (in fn03FD @ 03DD : ptr16)
-  Class: Eq_1079
-  DataType: (ptr16 Eq_1079)
-  OrigDataType: (ptr16 (fn T_1285 (T_1249, T_1279, T_218, T_1283, T_1284)))
-T_1282: (in d_588 @ 03DD : byte)
+T_1276: (in fn03FD @ 03DD : ptr16)
+  Class: Eq_1070
+  DataType: (ptr16 Eq_1070)
+  OrigDataType: (ptr16 (fn T_1280 (T_1244, T_1274, T_204, T_1278, T_1279)))
+T_1277: (in d_588 @ 03DD : byte)
+  Class: Eq_1277
+  DataType: byte
+  OrigDataType: byte
+T_1278: (in out d_588 @ 03DD : byte)
+  Class: Eq_38
+  DataType: uint8
+  OrigDataType: byte
+T_1279: (in out ix @ 03DD : word16)
+  Class: Eq_1078
+  DataType: (ptr16 Eq_1078)
+  OrigDataType: (ptr16 (struct (0 T_1107 t0000) (1 T_38 t0001) (3 T_1103 t0003)))
+T_1280: (in fn03FD(bc_118, e_122, ix, out d_588, out ix) @ 03DD : bool)
+  Class: Eq_945
+  DataType: Eq_945
+  OrigDataType: bool
+T_1281: (in fn0440 @ 03E0 : ptr16)
+  Class: Eq_982
+  DataType: (ptr16 Eq_982)
+  OrigDataType: (ptr16 (fn T_1286 (T_204, T_1283, T_1285)))
+T_1282: (in d_589 @ 03E0 : byte)
   Class: Eq_1282
   DataType: byte
   OrigDataType: byte
-T_1283: (in out d_588 @ 03DD : byte)
+T_1283: (in out d_589 @ 03E0 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1284: (in out ix @ 03DD : word16)
-  Class: Eq_1087
-  DataType: (ptr16 Eq_1087)
-  OrigDataType: (ptr16 (struct (0 T_1116 t0000) (1 T_38 t0001) (3 T_1112 t0003)))
-T_1285: (in fn03FD(bc_118, e_122, ix, out d_588, out ix) @ 03DD : bool)
-  Class: Eq_954
-  DataType: Eq_954
-  OrigDataType: bool
-T_1286: (in fn0440 @ 03E0 : ptr16)
-  Class: Eq_991
-  DataType: (ptr16 Eq_991)
-  OrigDataType: (ptr16 (fn T_1291 (T_218, T_1288, T_1290)))
-T_1287: (in d_589 @ 03E0 : byte)
-  Class: Eq_1287
-  DataType: byte
-  OrigDataType: byte
-T_1288: (in out d_589 @ 03E0 : byte)
-  Class: Eq_38
-  DataType: uint8
-  OrigDataType: byte
-T_1289: (in hl_144 @ 03E0 : Eq_87)
+T_1284: (in hl_144 @ 03E0 : Eq_87)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_1290: (in out hl_144 @ 03E0 : word16)
-  Class: Eq_997
+T_1285: (in out hl_144 @ 03E0 : word16)
+  Class: Eq_988
   DataType: word16
   OrigDataType: word16
-T_1291: (in fn0440(ix, out d_589, out hl_144) @ 03E0 : bool)
-  Class: Eq_954
-  DataType: Eq_954
+T_1286: (in fn0440(ix, out d_589, out hl_144) @ 03E0 : bool)
+  Class: Eq_945
+  DataType: Eq_945
   OrigDataType: bool
-T_1292: (in 4<i16> @ 0460 : int16)
-  Class: Eq_1292
+T_1287: (in 4<i16> @ 0460 : int16)
+  Class: Eq_1287
   DataType: int16
   OrigDataType: int16
-T_1293: (in ix + 4<i16> @ 0460 : word16)
-  Class: Eq_1293
+T_1288: (in ix + 4<i16> @ 0460 : word16)
+  Class: Eq_1288
   DataType: ptr16
   OrigDataType: ptr16
-T_1294: (in Mem10[ix + 4<i16>:byte] @ 0460 : byte)
+T_1289: (in Mem10[ix + 4<i16>:byte] @ 0460 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1295: (in 2<i16> @ 0463 : int16)
-  Class: Eq_1295
+T_1290: (in 2<i16> @ 0463 : int16)
+  Class: Eq_1290
   DataType: int16
   OrigDataType: int16
-T_1296: (in ix + 2<i16> @ 0463 : word16)
-  Class: Eq_1296
+T_1291: (in ix + 2<i16> @ 0463 : word16)
+  Class: Eq_1291
   DataType: ptr16
   OrigDataType: ptr16
-T_1297: (in Mem167[ix + 2<i16>:byte] @ 0463 : byte)
+T_1292: (in Mem167[ix + 2<i16>:byte] @ 0463 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1298: (in 0xD1<8> @ 0466 : byte)
-  Class: Eq_1117
+T_1293: (in 0xD1<8> @ 0466 : byte)
+  Class: Eq_1108
   DataType: byte
   OrigDataType: byte
-T_1299: (in 2<i16> @ 0457 : int16)
-  Class: Eq_1299
+T_1294: (in 2<i16> @ 0457 : int16)
+  Class: Eq_1294
   DataType: int16
   OrigDataType: int16
-T_1300: (in ix + 2<i16> @ 0457 : word16)
-  Class: Eq_1300
+T_1295: (in ix + 2<i16> @ 0457 : word16)
+  Class: Eq_1295
   DataType: (ptr16 byte)
   OrigDataType: (ptr16 byte)
-T_1301: (in Mem10[ix + 2<i16>:byte] @ 0457 : byte)
+T_1296: (in Mem10[ix + 2<i16>:byte] @ 0457 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1302: (in 4<i16> @ 0457 : int16)
-  Class: Eq_1302
+T_1297: (in 4<i16> @ 0457 : int16)
+  Class: Eq_1297
   DataType: int16
   OrigDataType: int16
-T_1303: (in ix + 4<i16> @ 0457 : word16)
-  Class: Eq_1303
+T_1298: (in ix + 4<i16> @ 0457 : word16)
+  Class: Eq_1298
   DataType: (ptr16 byte)
   OrigDataType: (ptr16 byte)
-T_1304: (in Mem170[ix + 4<i16>:byte] @ 0457 : byte)
+T_1299: (in Mem170[ix + 4<i16>:byte] @ 0457 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1305: (in 0x4D9<16> @ 045A : word16)
-  Class: Eq_223
+T_1300: (in 0x4D9<16> @ 045A : word16)
+  Class: Eq_209
   DataType: uint16
   OrigDataType: word16
-T_1306: (in fn073E @ 052B : ptr16)
-  Class: Eq_1306
-  DataType: (ptr16 Eq_1306)
-  OrigDataType: (ptr16 (fn T_1310 (T_1113, T_218)))
-T_1307: (in signature of fn073E @ 073E : void)
-  Class: Eq_1306
-  DataType: (ptr16 Eq_1306)
+T_1301: (in fn073E @ 052B : ptr16)
+  Class: Eq_1301
+  DataType: (ptr16 Eq_1301)
+  OrigDataType: (ptr16 (fn T_1305 (T_1104, T_204)))
+T_1302: (in signature of fn073E @ 073E : void)
+  Class: Eq_1301
+  DataType: (ptr16 Eq_1301)
   OrigDataType: 
-T_1308: (in a @ 052B : uint8)
+T_1303: (in a @ 052B : uint8)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1309: (in ix @ 052B : (ptr16 Eq_147))
-  Class: Eq_147
-  DataType: (ptr16 Eq_147)
+T_1304: (in ix @ 052B : (ptr16 Eq_133))
+  Class: Eq_133
+  DataType: (ptr16 Eq_133)
   OrigDataType: (ptr16 (struct (1 T_38 t0001)))
-T_1310: (in fn073E(a_166, ix) @ 052B : void)
-  Class: Eq_1310
+T_1305: (in fn073E(a_166, ix) @ 052B : void)
+  Class: Eq_1305
   DataType: void
   OrigDataType: void
-T_1311: (in 0xBF2<16> @ 057B : word16)
-  Class: Eq_892
+T_1306: (in 0xBF2<16> @ 057B : word16)
+  Class: Eq_883
   DataType: word16
   OrigDataType: word16
-T_1312: (in Z @ 057B : bool)
-  Class: Eq_1312
+T_1307: (in Z @ 057B : bool)
+  Class: Eq_1307
   DataType: bool
   OrigDataType: bool
-T_1313: (in fn0E24 @ 03E9 : ptr16)
-  Class: Eq_472
-  DataType: (ptr16 Eq_472)
-  OrigDataType: (ptr16 (fn T_1318 (T_946, T_1315, T_1317)))
-T_1314: (in af_51 @ 03E9 : word16)
-  Class: Eq_1314
+T_1308: (in fn0E24 @ 03E9 : ptr16)
+  Class: Eq_462
+  DataType: (ptr16 Eq_462)
+  OrigDataType: (ptr16 (fn T_1313 (T_937, T_1310, T_1312)))
+T_1309: (in af_51 @ 03E9 : word16)
+  Class: Eq_1309
   DataType: word16
   OrigDataType: word16
-T_1315: (in out af_51 @ 03E9 : word16)
+T_1310: (in out af_51 @ 03E9 : word16)
   Class: Eq_53
   DataType: (ptr16 Eq_53)
   OrigDataType: word16
-T_1316: (in hl_5 @ 03E9 : word16)
-  Class: Eq_1316
+T_1311: (in hl_5 @ 03E9 : word16)
+  Class: Eq_1311
   DataType: word16
   OrigDataType: word16
-T_1317: (in out hl_5 @ 03E9 : word16)
+T_1312: (in out hl_5 @ 03E9 : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_1318: (in fn0E24(hl, out af_51, out hl_5) @ 03E9 : bool)
-  Class: Eq_482
-  DataType: Eq_482
-  OrigDataType: bool
-T_1319: (in fn0E24 @ 03EE : ptr16)
+T_1313: (in fn0E24(hl, out af_51, out hl_5) @ 03E9 : bool)
   Class: Eq_472
-  DataType: (ptr16 Eq_472)
-  OrigDataType: (ptr16 (fn T_1326 (T_1321, T_1323, T_1325)))
-T_1320: (in 1<16> @ 03EE : word16)
-  Class: Eq_1320
+  DataType: Eq_472
+  OrigDataType: bool
+T_1314: (in fn0E24 @ 03EE : ptr16)
+  Class: Eq_462
+  DataType: (ptr16 Eq_462)
+  OrigDataType: (ptr16 (fn T_1321 (T_1316, T_1318, T_1320)))
+T_1315: (in 1<16> @ 03EE : word16)
+  Class: Eq_1315
   DataType: word16
   OrigDataType: word16
-T_1321: (in hl_5 + 1<16> @ 03EE : word16)
+T_1316: (in hl_5 + 1<16> @ 03EE : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_1322: (in af_52 @ 03EE : word16)
-  Class: Eq_1322
+T_1317: (in af_52 @ 03EE : word16)
+  Class: Eq_1317
   DataType: word16
   OrigDataType: word16
-T_1323: (in out af_52 @ 03EE : word16)
+T_1318: (in out af_52 @ 03EE : word16)
   Class: Eq_53
   DataType: (ptr16 Eq_53)
   OrigDataType: word16
-T_1324: (in hl_14 @ 03EE : word16)
-  Class: Eq_1324
+T_1319: (in hl_14 @ 03EE : word16)
+  Class: Eq_1319
   DataType: word16
   OrigDataType: word16
-T_1325: (in out hl_14 @ 03EE : word16)
+T_1320: (in out hl_14 @ 03EE : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_1326: (in fn0E24(hl_5 + 1<16>, out af_52, out hl_14) @ 03EE : bool)
-  Class: Eq_482
-  DataType: Eq_482
+T_1321: (in fn0E24(hl_5 + 1<16>, out af_52, out hl_14) @ 03EE : bool)
+  Class: Eq_472
+  DataType: Eq_472
   OrigDataType: bool
-T_1327: (in a_13 @ 03EE : uint8)
+T_1322: (in a_13 @ 03EE : uint8)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1328: (in a_4 @ 03E9 : uint8)
+T_1323: (in a_4 @ 03E9 : uint8)
   Class: Eq_38
   DataType: uint8
   OrigDataType: cu8
-T_1329: (in cond(a_13) @ 03F5 : byte)
-  Class: Eq_1329
+T_1324: (in cond(a_13) @ 03F5 : byte)
+  Class: Eq_1324
   DataType: byte
   OrigDataType: byte
-T_1330: (in SZ_24 @ 03F5 : byte)
-  Class: Eq_1329
+T_1325: (in SZ_24 @ 03F5 : byte)
+  Class: Eq_1324
   DataType: byte
   OrigDataType: byte
-T_1331: (in 0<8> @ 03F6 : byte)
+T_1326: (in 0<8> @ 03F6 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1332: (in a_13 == 0<8> @ 03F6 : bool)
+T_1327: (in a_13 == 0<8> @ 03F6 : bool)
+  Class: Eq_1327
+  DataType: bool
+  OrigDataType: bool
+T_1328: (in 4<8> @ 03F9 : byte)
+  Class: Eq_38
+  DataType: uint8
+  OrigDataType: cu8
+T_1329: (in 4<8> - a_4 @ 03F9 : byte)
+  Class: Eq_1329
+  DataType: byte
+  OrigDataType: byte
+T_1330: (in cond(4<8> - a_4) @ 03F9 : byte)
+  Class: Eq_1330
+  DataType: byte
+  OrigDataType: byte
+T_1331: (in SZPC_28 @ 03F9 : byte)
+  Class: Eq_1330
+  DataType: byte
+  OrigDataType: byte
+T_1332: (in a_4 <= 4<8> @ 03FA : bool)
   Class: Eq_1332
   DataType: bool
   OrigDataType: bool
-T_1333: (in 4<8> @ 03F9 : byte)
-  Class: Eq_38
-  DataType: uint8
-  OrigDataType: cu8
-T_1334: (in 4<8> - a_4 @ 03F9 : byte)
+T_1333: (in 0x40<8> @ 03F6 : byte)
+  Class: Eq_1333
+  DataType: byte
+  OrigDataType: byte
+T_1334: (in SZ_24 & 0x40<8> @ 03F6 : byte)
   Class: Eq_1334
   DataType: byte
   OrigDataType: byte
-T_1335: (in cond(4<8> - a_4) @ 03F9 : byte)
-  Class: Eq_1335
+T_1335: (in 0<8> @ 03F6 : byte)
+  Class: Eq_1334
   DataType: byte
   OrigDataType: byte
-T_1336: (in SZPC_28 @ 03F9 : byte)
-  Class: Eq_1335
-  DataType: byte
-  OrigDataType: byte
-T_1337: (in a_4 <= 4<8> @ 03FA : bool)
-  Class: Eq_1337
+T_1336: (in (SZ_24 & 0x40<8>) != 0<8> @ 03F6 : bool)
+  Class: Eq_1307
   DataType: bool
   OrigDataType: bool
-T_1338: (in 0x40<8> @ 03F6 : byte)
+T_1337: (in 0<8> @ 03FC : byte)
+  Class: Eq_1337
+  DataType: byte
+  OrigDataType: byte
+T_1338: (in cond(0<8>) @ 03FC : byte)
   Class: Eq_1338
   DataType: byte
   OrigDataType: byte
-T_1339: (in SZ_24 & 0x40<8> @ 03F6 : byte)
+T_1339: (in 0x40<8> @ 03FC : byte)
   Class: Eq_1339
   DataType: byte
   OrigDataType: byte
-T_1340: (in 0<8> @ 03F6 : byte)
-  Class: Eq_1339
+T_1340: (in cond(0<8>) & 0x40<8> @ 03FC : byte)
+  Class: Eq_1340
   DataType: byte
   OrigDataType: byte
-T_1341: (in (SZ_24 & 0x40<8>) != 0<8> @ 03F6 : bool)
-  Class: Eq_1312
+T_1341: (in 0<8> @ 03FC : byte)
+  Class: Eq_1340
+  DataType: byte
+  OrigDataType: byte
+T_1342: (in (cond(0<8>) & 0x40<8>) != 0<8> @ 03FC : bool)
+  Class: Eq_1307
   DataType: bool
   OrigDataType: bool
-T_1342: (in 0<8> @ 03FC : byte)
-  Class: Eq_1342
-  DataType: byte
-  OrigDataType: byte
-T_1343: (in cond(0<8>) @ 03FC : byte)
+T_1343: (in 0x40<8> @ 03FA : byte)
   Class: Eq_1343
   DataType: byte
   OrigDataType: byte
-T_1344: (in 0x40<8> @ 03FC : byte)
+T_1344: (in SZPC_28 & 0x40<8> @ 03FA : byte)
   Class: Eq_1344
   DataType: byte
   OrigDataType: byte
-T_1345: (in cond(0<8>) & 0x40<8> @ 03FC : byte)
-  Class: Eq_1345
+T_1345: (in 0<8> @ 03FA : byte)
+  Class: Eq_1344
   DataType: byte
   OrigDataType: byte
-T_1346: (in 0<8> @ 03FC : byte)
-  Class: Eq_1345
-  DataType: byte
-  OrigDataType: byte
-T_1347: (in (cond(0<8>) & 0x40<8>) != 0<8> @ 03FC : bool)
-  Class: Eq_1312
+T_1346: (in (SZPC_28 & 0x40<8>) != 0<8> @ 03FA : bool)
+  Class: Eq_1307
   DataType: bool
   OrigDataType: bool
-T_1348: (in 0x40<8> @ 03FA : byte)
+T_1347: (in Z @ 03FA : bool)
+  Class: Eq_1347
+  DataType: bool
+  OrigDataType: bool
+T_1348: (in 3<8> @ 040C : byte)
   Class: Eq_1348
-  DataType: byte
-  OrigDataType: byte
-T_1349: (in SZPC_28 & 0x40<8> @ 03FA : byte)
-  Class: Eq_1349
-  DataType: byte
-  OrigDataType: byte
-T_1350: (in 0<8> @ 03FA : byte)
-  Class: Eq_1349
-  DataType: byte
-  OrigDataType: byte
-T_1351: (in (SZPC_28 & 0x40<8>) != 0<8> @ 03FA : bool)
-  Class: Eq_1312
-  DataType: bool
-  OrigDataType: bool
-T_1352: (in Z @ 03FA : bool)
-  Class: Eq_1352
-  DataType: bool
-  OrigDataType: bool
-T_1353: (in 3<8> @ 040C : byte)
-  Class: Eq_1353
   DataType: bui8
   OrigDataType: bui8
-T_1354: (in e * 3<8> @ 040C : byte)
-  Class: Eq_1354
+T_1349: (in e * 3<8> @ 040C : byte)
+  Class: Eq_1349
   DataType: uint8
   OrigDataType: uint8
-T_1355: (in CONVERT(e * 3<8>, uint8, uint16) @ 040C : uint16)
-  Class: Eq_1355
-  DataType: Eq_1355
+T_1350: (in CONVERT(e * 3<8>, uint8, uint16) @ 040C : uint16)
+  Class: Eq_1350
+  DataType: Eq_1350
   OrigDataType: uint16
-T_1356: (in de_16 @ 040C : Eq_1355)
-  Class: Eq_1355
-  DataType: Eq_1355
+T_1351: (in de_16 @ 040C : Eq_1350)
+  Class: Eq_1350
+  DataType: Eq_1350
   OrigDataType: (union (uint16 u0) (ptr16 u1))
-T_1357: (in 0xA9B<16> @ 0417 : word16)
-  Class: Eq_1357
+T_1352: (in 0xA9B<16> @ 0417 : word16)
+  Class: Eq_1352
   DataType: int16
   OrigDataType: int16
-T_1358: (in de_16 + 0xA9B<16> @ 0417 : word16)
-  Class: Eq_1358
+T_1353: (in de_16 + 0xA9B<16> @ 0417 : word16)
+  Class: Eq_1353
   DataType: (ptr16 code)
   OrigDataType: (ptr16 code)
-T_1359: (in ix_29 @ 0417 : (ptr16 Eq_1087))
-  Class: Eq_1087
-  DataType: (ptr16 Eq_1087)
+T_1354: (in ix_29 @ 0417 : (ptr16 Eq_1078))
+  Class: Eq_1078
+  DataType: (ptr16 Eq_1078)
   OrigDataType: word16
-T_1360: (in SZPC_30 @ 0417 : byte)
+T_1355: (in SZPC_30 @ 0417 : byte)
+  Class: Eq_1355
+  DataType: byte
+  OrigDataType: byte
+T_1356: (in 0x40<8> @ 0417 : byte)
+  Class: Eq_1356
+  DataType: byte
+  OrigDataType: byte
+T_1357: (in SZPC_30 & 0x40<8> @ 0417 : byte)
+  Class: Eq_1357
+  DataType: byte
+  OrigDataType: byte
+T_1358: (in 0<8> @ 0417 : byte)
+  Class: Eq_1357
+  DataType: byte
+  OrigDataType: byte
+T_1359: (in (SZPC_30 & 0x40<8>) != 0<8> @ 0417 : bool)
+  Class: Eq_1347
+  DataType: bool
+  OrigDataType: bool
+T_1360: (in Z @ 0417 : bool)
   Class: Eq_1360
-  DataType: byte
-  OrigDataType: byte
-T_1361: (in 0x40<8> @ 0417 : byte)
-  Class: Eq_1361
-  DataType: byte
-  OrigDataType: byte
-T_1362: (in SZPC_30 & 0x40<8> @ 0417 : byte)
-  Class: Eq_1362
-  DataType: byte
-  OrigDataType: byte
-T_1363: (in 0<8> @ 0417 : byte)
-  Class: Eq_1362
-  DataType: byte
-  OrigDataType: byte
-T_1364: (in (SZPC_30 & 0x40<8>) != 0<8> @ 0417 : bool)
-  Class: Eq_1352
   DataType: bool
   OrigDataType: bool
-T_1365: (in Z @ 0417 : bool)
-  Class: Eq_1365
-  DataType: bool
-  OrigDataType: bool
-T_1366: (in fn0755 @ 0440 : ptr16)
-  Class: Eq_957
-  DataType: (ptr16 Eq_957)
-  OrigDataType: (ptr16 (fn T_1369 (T_993, T_1368)))
-T_1367: (in hl_5 @ 0440 : word16)
-  Class: Eq_1367
+T_1361: (in fn0755 @ 0440 : ptr16)
+  Class: Eq_948
+  DataType: (ptr16 Eq_948)
+  OrigDataType: (ptr16 (fn T_1364 (T_984, T_1363)))
+T_1362: (in hl_5 @ 0440 : word16)
+  Class: Eq_1362
   DataType: word16
   OrigDataType: word16
-T_1368: (in out hl_5 @ 0440 : word16)
-  Class: Eq_961
+T_1363: (in out hl_5 @ 0440 : word16)
+  Class: Eq_952
   DataType: word16
   OrigDataType: word16
-T_1369: (in fn0755(ix, out hl_5) @ 0440 : word16)
-  Class: Eq_963
+T_1364: (in fn0755(ix, out hl_5) @ 0440 : word16)
+  Class: Eq_954
   DataType: word16
   OrigDataType: word16
-T_1370: (in fn0E24 @ 0444 : ptr16)
-  Class: Eq_472
-  DataType: (ptr16 Eq_472)
-  OrigDataType: (ptr16 (fn T_1377 (T_1372, T_1374, T_1376)))
-T_1371: (in 1<16> @ 0444 : word16)
-  Class: Eq_1371
+T_1365: (in fn0E24 @ 0444 : ptr16)
+  Class: Eq_462
+  DataType: (ptr16 Eq_462)
+  OrigDataType: (ptr16 (fn T_1372 (T_1367, T_1369, T_1371)))
+T_1366: (in 1<16> @ 0444 : word16)
+  Class: Eq_1366
   DataType: word16
   OrigDataType: word16
-T_1372: (in hl_5 + 1<16> @ 0444 : word16)
+T_1367: (in hl_5 + 1<16> @ 0444 : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_1373: (in af_28 @ 0444 : word16)
-  Class: Eq_1373
+T_1368: (in af_28 @ 0444 : word16)
+  Class: Eq_1368
   DataType: word16
   OrigDataType: word16
-T_1374: (in out af_28 @ 0444 : word16)
+T_1369: (in out af_28 @ 0444 : word16)
   Class: Eq_53
   DataType: (ptr16 Eq_53)
   OrigDataType: word16
-T_1375: (in hl_9 @ 0444 : word16)
-  Class: Eq_1375
+T_1370: (in hl_9 @ 0444 : word16)
+  Class: Eq_1370
   DataType: word16
   OrigDataType: word16
-T_1376: (in out hl_9 @ 0444 : word16)
+T_1371: (in out hl_9 @ 0444 : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_1377: (in fn0E24(hl_5 + 1<16>, out af_28, out hl_9) @ 0444 : bool)
-  Class: Eq_482
-  DataType: Eq_482
-  OrigDataType: bool
-T_1378: (in fn0E24 @ 0449 : ptr16)
+T_1372: (in fn0E24(hl_5 + 1<16>, out af_28, out hl_9) @ 0444 : bool)
   Class: Eq_472
-  DataType: (ptr16 Eq_472)
-  OrigDataType: (ptr16 (fn T_1385 (T_1380, T_1382, T_1384)))
-T_1379: (in 1<16> @ 0449 : word16)
-  Class: Eq_1379
+  DataType: Eq_472
+  OrigDataType: bool
+T_1373: (in fn0E24 @ 0449 : ptr16)
+  Class: Eq_462
+  DataType: (ptr16 Eq_462)
+  OrigDataType: (ptr16 (fn T_1380 (T_1375, T_1377, T_1379)))
+T_1374: (in 1<16> @ 0449 : word16)
+  Class: Eq_1374
   DataType: word16
   OrigDataType: word16
-T_1380: (in hl_9 + 1<16> @ 0449 : word16)
+T_1375: (in hl_9 + 1<16> @ 0449 : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_1381: (in af_29 @ 0449 : word16)
-  Class: Eq_1381
+T_1376: (in af_29 @ 0449 : word16)
+  Class: Eq_1376
   DataType: word16
   OrigDataType: word16
-T_1382: (in out af_29 @ 0449 : word16)
+T_1377: (in out af_29 @ 0449 : word16)
   Class: Eq_53
   DataType: (ptr16 Eq_53)
   OrigDataType: word16
-T_1383: (in hl_18 @ 0449 : word16)
-  Class: Eq_1383
+T_1378: (in hl_18 @ 0449 : word16)
+  Class: Eq_1378
   DataType: word16
   OrigDataType: word16
-T_1384: (in out hl_18 @ 0449 : word16)
+T_1379: (in out hl_18 @ 0449 : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_1385: (in fn0E24(hl_9 + 1<16>, out af_29, out hl_18) @ 0449 : bool)
-  Class: Eq_482
-  DataType: Eq_482
+T_1380: (in fn0E24(hl_9 + 1<16>, out af_29, out hl_18) @ 0449 : bool)
+  Class: Eq_472
+  DataType: Eq_472
   OrigDataType: bool
-T_1386: (in Z_20 @ 0449 : Eq_482)
-  Class: Eq_482
-  DataType: Eq_482
+T_1381: (in Z_20 @ 0449 : Eq_472)
+  Class: Eq_472
+  DataType: Eq_472
   OrigDataType: (union (bool u2) ((union (bool u1) (byte u0)) u0))
-T_1387: (in fn075C @ 044D : ptr16)
-  Class: Eq_1022
-  DataType: (ptr16 Eq_1022)
-  OrigDataType: (ptr16 (fn T_1391 (T_1388, T_993, T_1390)))
-T_1388: (in SLICE(hl_18, byte, 0) @ 044D : byte)
-  Class: Eq_1024
+T_1382: (in fn075C @ 044D : ptr16)
+  Class: Eq_1013
+  DataType: (ptr16 Eq_1013)
+  OrigDataType: (ptr16 (fn T_1386 (T_1383, T_984, T_1385)))
+T_1383: (in SLICE(hl_18, byte, 0) @ 044D : byte)
+  Class: Eq_1015
   DataType: byte
   OrigDataType: byte
-T_1389: (in hl_25 @ 044D : word16)
-  Class: Eq_997
+T_1384: (in hl_25 @ 044D : word16)
+  Class: Eq_988
   DataType: word16
   OrigDataType: word16
-T_1390: (in out hl_25 @ 044D : word16)
-  Class: Eq_1030
+T_1385: (in out hl_25 @ 044D : word16)
+  Class: Eq_1021
   DataType: word16
   OrigDataType: word16
-T_1391: (in fn075C((byte) hl_18, ix, out hl_25) @ 044D : byte)
-  Class: Eq_1032
+T_1386: (in fn075C((byte) hl_18, ix, out hl_25) @ 044D : byte)
+  Class: Eq_1023
   DataType: byte
   OrigDataType: byte
-T_1392: (in 0<8> @ 044D : byte)
-  Class: Eq_482
-  DataType: bool
-  OrigDataType: byte
-T_1393: (in Z_20 != 0<8> @ 044D : bool)
-  Class: Eq_1365
-  DataType: bool
-  OrigDataType: bool
-T_1394: (in Z @ 044D : bool)
-  Class: Eq_1394
-  DataType: bool
-  OrigDataType: bool
-T_1395: (in fn0E24 @ 0444 : ptr16)
+T_1387: (in 0<8> @ 044D : byte)
   Class: Eq_472
-  DataType: (ptr16 Eq_472)
-  OrigDataType: (ptr16 (fn T_1402 (T_1397, T_1399, T_1401)))
-T_1396: (in 1<16> @ 0444 : word16)
-  Class: Eq_1396
+  DataType: bool
+  OrigDataType: byte
+T_1388: (in Z_20 != 0<8> @ 044D : bool)
+  Class: Eq_1360
+  DataType: bool
+  OrigDataType: bool
+T_1389: (in Z @ 044D : bool)
+  Class: Eq_1389
+  DataType: bool
+  OrigDataType: bool
+T_1390: (in fn0E24 @ 0444 : ptr16)
+  Class: Eq_462
+  DataType: (ptr16 Eq_462)
+  OrigDataType: (ptr16 (fn T_1397 (T_1392, T_1394, T_1396)))
+T_1391: (in 1<16> @ 0444 : word16)
+  Class: Eq_1391
   DataType: word16
   OrigDataType: word16
-T_1397: (in hl + 1<16> @ 0444 : word16)
+T_1392: (in hl + 1<16> @ 0444 : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_1398: (in af_27 @ 0444 : word16)
-  Class: Eq_1398
+T_1393: (in af_27 @ 0444 : word16)
+  Class: Eq_1393
   DataType: word16
   OrigDataType: word16
-T_1399: (in out af_27 @ 0444 : word16)
+T_1394: (in out af_27 @ 0444 : word16)
   Class: Eq_53
   DataType: (ptr16 Eq_53)
   OrigDataType: word16
-T_1400: (in hl_7 @ 0444 : word16)
-  Class: Eq_1400
+T_1395: (in hl_7 @ 0444 : word16)
+  Class: Eq_1395
   DataType: word16
   OrigDataType: word16
-T_1401: (in out hl_7 @ 0444 : word16)
+T_1396: (in out hl_7 @ 0444 : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_1402: (in fn0E24(hl + 1<16>, out af_27, out hl_7) @ 0444 : bool)
-  Class: Eq_482
-  DataType: Eq_482
-  OrigDataType: bool
-T_1403: (in fn0E24 @ 0449 : ptr16)
+T_1397: (in fn0E24(hl + 1<16>, out af_27, out hl_7) @ 0444 : bool)
   Class: Eq_472
-  DataType: (ptr16 Eq_472)
-  OrigDataType: (ptr16 (fn T_1410 (T_1405, T_1407, T_1409)))
-T_1404: (in 1<16> @ 0449 : word16)
-  Class: Eq_1404
+  DataType: Eq_472
+  OrigDataType: bool
+T_1398: (in fn0E24 @ 0449 : ptr16)
+  Class: Eq_462
+  DataType: (ptr16 Eq_462)
+  OrigDataType: (ptr16 (fn T_1405 (T_1400, T_1402, T_1404)))
+T_1399: (in 1<16> @ 0449 : word16)
+  Class: Eq_1399
   DataType: word16
   OrigDataType: word16
-T_1405: (in hl_7 + 1<16> @ 0449 : word16)
+T_1400: (in hl_7 + 1<16> @ 0449 : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_1406: (in af_28 @ 0449 : word16)
-  Class: Eq_1406
+T_1401: (in af_28 @ 0449 : word16)
+  Class: Eq_1401
   DataType: word16
   OrigDataType: word16
-T_1407: (in out af_28 @ 0449 : word16)
+T_1402: (in out af_28 @ 0449 : word16)
   Class: Eq_53
   DataType: (ptr16 Eq_53)
   OrigDataType: word16
-T_1408: (in hl_16 @ 0449 : word16)
-  Class: Eq_1408
+T_1403: (in hl_16 @ 0449 : word16)
+  Class: Eq_1403
   DataType: word16
   OrigDataType: word16
-T_1409: (in out hl_16 @ 0449 : word16)
+T_1404: (in out hl_16 @ 0449 : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_1410: (in fn0E24(hl_7 + 1<16>, out af_28, out hl_16) @ 0449 : bool)
-  Class: Eq_482
-  DataType: Eq_482
+T_1405: (in fn0E24(hl_7 + 1<16>, out af_28, out hl_16) @ 0449 : bool)
+  Class: Eq_472
+  DataType: Eq_472
   OrigDataType: bool
-T_1411: (in Z_18 @ 0449 : Eq_482)
-  Class: Eq_482
-  DataType: Eq_482
+T_1406: (in Z_18 @ 0449 : Eq_472)
+  Class: Eq_472
+  DataType: Eq_472
   OrigDataType: (union (bool u1) (byte u0))
-T_1412: (in fn075C @ 044D : ptr16)
-  Class: Eq_1022
-  DataType: (ptr16 Eq_1022)
-  OrigDataType: (ptr16 (fn T_1416 (T_1413, T_979, T_1415)))
-T_1413: (in SLICE(hl_16, byte, 0) @ 044D : byte)
-  Class: Eq_1024
+T_1407: (in fn075C @ 044D : ptr16)
+  Class: Eq_1013
+  DataType: (ptr16 Eq_1013)
+  OrigDataType: (ptr16 (fn T_1411 (T_1408, T_970, T_1410)))
+T_1408: (in SLICE(hl_16, byte, 0) @ 044D : byte)
+  Class: Eq_1015
   DataType: byte
   OrigDataType: byte
-T_1414: (in hl_24 @ 044D : word16)
-  Class: Eq_983
+T_1409: (in hl_24 @ 044D : word16)
+  Class: Eq_974
   DataType: word16
   OrigDataType: word16
-T_1415: (in out hl_24 @ 044D : word16)
-  Class: Eq_1030
+T_1410: (in out hl_24 @ 044D : word16)
+  Class: Eq_1021
   DataType: word16
   OrigDataType: word16
-T_1416: (in fn075C((byte) hl_16, ix, out hl_24) @ 044D : byte)
-  Class: Eq_1032
+T_1411: (in fn075C((byte) hl_16, ix, out hl_24) @ 044D : byte)
+  Class: Eq_1023
   DataType: byte
   OrigDataType: byte
-T_1417: (in 0<8> @ 044D : byte)
-  Class: Eq_482
+T_1412: (in 0<8> @ 044D : byte)
+  Class: Eq_472
   DataType: bool
   OrigDataType: byte
-T_1418: (in Z_18 != 0<8> @ 044D : bool)
-  Class: Eq_1394
+T_1413: (in Z_18 != 0<8> @ 044D : bool)
+  Class: Eq_1389
   DataType: bool
   OrigDataType: bool
-T_1419: (in __res @ 073E : ptr32)
-  Class: Eq_1419
-  DataType: (ptr32 Eq_1419)
-  OrigDataType: (ptr32 (fn T_1425 (T_1423, T_1424)))
-T_1420: (in signature of __res : void)
-  Class: Eq_1419
-  DataType: (ptr32 Eq_1419)
+T_1414: (in __res @ 073E : ptr32)
+  Class: Eq_1414
+  DataType: (ptr32 Eq_1414)
+  OrigDataType: (ptr32 (fn T_1420 (T_1418, T_1419)))
+T_1415: (in signature of __res : void)
+  Class: Eq_1414
+  DataType: (ptr32 Eq_1414)
   OrigDataType: 
-T_1421: (in 1<i16> @ 073E : int16)
+T_1416: (in 1<i16> @ 073E : int16)
+  Class: Eq_1416
+  DataType: int16
+  OrigDataType: int16
+T_1417: (in ix + 1<i16> @ 073E : word16)
+  Class: Eq_1417
+  DataType: word16
+  OrigDataType: word16
+T_1418: (in Mem0[ix + 1<i16>:byte] @ 073E : byte)
+  Class: Eq_38
+  DataType: uint8
+  OrigDataType: byte
+T_1419: (in 1<8> @ 073E : byte)
+  Class: Eq_875
+  DataType: byte
+  OrigDataType: byte
+T_1420: (in __res(ix[1<i32>], 1<8>) @ 073E : byte)
+  Class: Eq_38
+  DataType: uint8
+  OrigDataType: byte
+T_1421: (in ix + 1<i16> @ 073E : word16)
   Class: Eq_1421
-  DataType: int16
-  OrigDataType: int16
-T_1422: (in ix + 1<i16> @ 073E : word16)
-  Class: Eq_1422
-  DataType: word16
-  OrigDataType: word16
-T_1423: (in Mem0[ix + 1<i16>:byte] @ 073E : byte)
-  Class: Eq_38
-  DataType: uint8
-  OrigDataType: byte
-T_1424: (in 1<8> @ 073E : byte)
-  Class: Eq_884
-  DataType: byte
-  OrigDataType: byte
-T_1425: (in __res(ix[1<i32>], 1<8>) @ 073E : byte)
-  Class: Eq_38
-  DataType: uint8
-  OrigDataType: byte
-T_1426: (in ix + 1<i16> @ 073E : word16)
-  Class: Eq_1426
   DataType: (ptr16 byte)
   OrigDataType: (ptr16 byte)
-T_1427: (in Mem6[ix + 1<i16>:byte] @ 073E : byte)
+T_1422: (in Mem6[ix + 1<i16>:byte] @ 073E : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1428: (in 0<8> @ 0743 : byte)
+T_1423: (in 0<8> @ 0743 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1429: (in a != 0<8> @ 0743 : bool)
-  Class: Eq_1429
+T_1424: (in a != 0<8> @ 0743 : bool)
+  Class: Eq_1424
   DataType: bool
   OrigDataType: bool
-T_1430: (in __res @ 0749 : ptr32)
-  Class: Eq_1430
-  DataType: (ptr32 Eq_1430)
-  OrigDataType: (ptr32 (fn T_1436 (T_1434, T_1435)))
-T_1431: (in signature of __res : void)
-  Class: Eq_1430
-  DataType: (ptr32 Eq_1430)
+T_1425: (in __res @ 0749 : ptr32)
+  Class: Eq_1425
+  DataType: (ptr32 Eq_1425)
+  OrigDataType: (ptr32 (fn T_1431 (T_1429, T_1430)))
+T_1426: (in signature of __res : void)
+  Class: Eq_1425
+  DataType: (ptr32 Eq_1425)
   OrigDataType: 
-T_1432: (in 1<i16> @ 0749 : int16)
+T_1427: (in 1<i16> @ 0749 : int16)
+  Class: Eq_1427
+  DataType: int16
+  OrigDataType: int16
+T_1428: (in ix + 1<i16> @ 0749 : word16)
+  Class: Eq_1428
+  DataType: (ptr16 byte)
+  OrigDataType: (ptr16 byte)
+T_1429: (in Mem15[ix + 1<i16>:byte] @ 0749 : byte)
+  Class: Eq_38
+  DataType: uint8
+  OrigDataType: byte
+T_1430: (in 7<8> @ 0749 : byte)
+  Class: Eq_875
+  DataType: byte
+  OrigDataType: byte
+T_1431: (in __res(ix[1<i32>], 7<8>) @ 0749 : byte)
+  Class: Eq_38
+  DataType: uint8
+  OrigDataType: byte
+T_1432: (in ix + 1<i16> @ 0749 : word16)
   Class: Eq_1432
-  DataType: int16
-  OrigDataType: int16
-T_1433: (in ix + 1<i16> @ 0749 : word16)
-  Class: Eq_1433
   DataType: (ptr16 byte)
   OrigDataType: (ptr16 byte)
-T_1434: (in Mem15[ix + 1<i16>:byte] @ 0749 : byte)
+T_1433: (in Mem17[ix + 1<i16>:byte] @ 0749 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1435: (in 7<8> @ 0749 : byte)
-  Class: Eq_884
-  DataType: byte
-  OrigDataType: byte
-T_1436: (in __res(ix[1<i32>], 7<8>) @ 0749 : byte)
-  Class: Eq_38
-  DataType: uint8
-  OrigDataType: byte
-T_1437: (in ix + 1<i16> @ 0749 : word16)
-  Class: Eq_1437
-  DataType: (ptr16 byte)
-  OrigDataType: (ptr16 byte)
-T_1438: (in Mem17[ix + 1<i16>:byte] @ 0749 : byte)
-  Class: Eq_38
-  DataType: uint8
-  OrigDataType: byte
-T_1439: (in __bit @ 074F : ptr32)
-  Class: Eq_1439
-  DataType: (ptr32 Eq_1439)
-  OrigDataType: (ptr32 (fn T_1442 (T_1308, T_1441)))
-T_1440: (in signature of __bit : void)
-  Class: Eq_1439
-  DataType: (ptr32 Eq_1439)
+T_1434: (in __bit @ 074F : ptr32)
+  Class: Eq_1434
+  DataType: (ptr32 Eq_1434)
+  OrigDataType: (ptr32 (fn T_1437 (T_1303, T_1436)))
+T_1435: (in signature of __bit : void)
+  Class: Eq_1434
+  DataType: (ptr32 Eq_1434)
   OrigDataType: 
-T_1441: (in 7<8> @ 074F : byte)
-  Class: Eq_871
+T_1436: (in 7<8> @ 074F : byte)
+  Class: Eq_862
   DataType: byte
   OrigDataType: byte
-T_1442: (in __bit(a, 7<8>) @ 074F : bool)
-  Class: Eq_1442
+T_1437: (in __bit(a, 7<8>) @ 074F : bool)
+  Class: Eq_1437
   DataType: bool
   OrigDataType: bool
-T_1443: (in __set @ 0745 : ptr32)
-  Class: Eq_1443
-  DataType: (ptr32 Eq_1443)
-  OrigDataType: (ptr32 (fn T_1449 (T_1447, T_1448)))
-T_1444: (in signature of __set : void)
-  Class: Eq_1443
-  DataType: (ptr32 Eq_1443)
+T_1438: (in __set @ 0745 : ptr32)
+  Class: Eq_1438
+  DataType: (ptr32 Eq_1438)
+  OrigDataType: (ptr32 (fn T_1444 (T_1442, T_1443)))
+T_1439: (in signature of __set : void)
+  Class: Eq_1438
+  DataType: (ptr32 Eq_1438)
   OrigDataType: 
-T_1445: (in 1<i16> @ 0745 : int16)
-  Class: Eq_1445
+T_1440: (in 1<i16> @ 0745 : int16)
+  Class: Eq_1440
   DataType: int16
   OrigDataType: int16
-T_1446: (in ix + 1<i16> @ 0745 : word16)
-  Class: Eq_1446
+T_1441: (in ix + 1<i16> @ 0745 : word16)
+  Class: Eq_1441
   DataType: (ptr16 byte)
   OrigDataType: (ptr16 byte)
-T_1447: (in Mem6[ix + 1<i16>:byte] @ 0745 : byte)
+T_1442: (in Mem6[ix + 1<i16>:byte] @ 0745 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1448: (in 1<8> @ 0745 : byte)
-  Class: Eq_855
+T_1443: (in 1<8> @ 0745 : byte)
+  Class: Eq_846
   DataType: byte
   OrigDataType: byte
-T_1449: (in __set(ix[1<i32>], 1<8>) @ 0745 : byte)
+T_1444: (in __set(ix[1<i32>], 1<8>) @ 0745 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1450: (in ix + 1<i16> @ 0745 : word16)
+T_1445: (in ix + 1<i16> @ 0745 : word16)
+  Class: Eq_1445
+  DataType: (ptr16 byte)
+  OrigDataType: (ptr16 byte)
+T_1446: (in Mem13[ix + 1<i16>:byte] @ 0745 : byte)
+  Class: Eq_38
+  DataType: uint8
+  OrigDataType: byte
+T_1447: (in __set @ 0750 : ptr32)
+  Class: Eq_1447
+  DataType: (ptr32 Eq_1447)
+  OrigDataType: (ptr32 (fn T_1453 (T_1451, T_1452)))
+T_1448: (in signature of __set : void)
+  Class: Eq_1447
+  DataType: (ptr32 Eq_1447)
+  OrigDataType: 
+T_1449: (in 1<i16> @ 0750 : int16)
+  Class: Eq_1449
+  DataType: int16
+  OrigDataType: int16
+T_1450: (in ix + 1<i16> @ 0750 : word16)
   Class: Eq_1450
   DataType: (ptr16 byte)
   OrigDataType: (ptr16 byte)
-T_1451: (in Mem13[ix + 1<i16>:byte] @ 0745 : byte)
+T_1451: (in Mem17[ix + 1<i16>:byte] @ 0750 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1452: (in __set @ 0750 : ptr32)
-  Class: Eq_1452
-  DataType: (ptr32 Eq_1452)
-  OrigDataType: (ptr32 (fn T_1458 (T_1456, T_1457)))
-T_1453: (in signature of __set : void)
-  Class: Eq_1452
-  DataType: (ptr32 Eq_1452)
-  OrigDataType: 
-T_1454: (in 1<i16> @ 0750 : int16)
-  Class: Eq_1454
-  DataType: int16
-  OrigDataType: int16
-T_1455: (in ix + 1<i16> @ 0750 : word16)
-  Class: Eq_1455
-  DataType: (ptr16 byte)
-  OrigDataType: (ptr16 byte)
-T_1456: (in Mem17[ix + 1<i16>:byte] @ 0750 : byte)
-  Class: Eq_38
-  DataType: uint8
-  OrigDataType: byte
-T_1457: (in 7<8> @ 0750 : byte)
-  Class: Eq_855
+T_1452: (in 7<8> @ 0750 : byte)
+  Class: Eq_846
   DataType: byte
   OrigDataType: byte
-T_1458: (in __set(ix[1<i32>], 7<8>) @ 0750 : byte)
+T_1453: (in __set(ix[1<i32>], 7<8>) @ 0750 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1459: (in ix + 1<i16> @ 0750 : word16)
-  Class: Eq_1459
+T_1454: (in ix + 1<i16> @ 0750 : word16)
+  Class: Eq_1454
   DataType: (ptr16 byte)
   OrigDataType: (ptr16 byte)
-T_1460: (in Mem21[ix + 1<i16>:byte] @ 0750 : byte)
+T_1455: (in Mem21[ix + 1<i16>:byte] @ 0750 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1461: (in de @ 074F : word16)
-  Class: Eq_1461
+T_1456: (in de @ 074F : word16)
+  Class: Eq_1456
   DataType: word16
   OrigDataType: word16
-T_1462: (in 1<8> @ 075B : byte)
-  Class: Eq_1462
+T_1457: (in 1<8> @ 075B : byte)
+  Class: Eq_1457
   DataType: byte
   OrigDataType: byte
-T_1463: (in 4<i16> @ 075B : int16)
-  Class: Eq_1463
+T_1458: (in 4<i16> @ 075B : int16)
+  Class: Eq_1458
   DataType: int16
   OrigDataType: int16
-T_1464: (in ix + 4<i16> @ 075B : word16)
+T_1459: (in ix + 4<i16> @ 075B : word16)
+  Class: Eq_1459
+  DataType: word16
+  OrigDataType: word16
+T_1460: (in Mem0[ix + 4<i16>:byte] @ 075B : byte)
+  Class: Eq_38
+  DataType: uint8
+  OrigDataType: byte
+T_1461: (in SEQ(1<8>, Mem0[ix + 4<i16>:byte]) @ 075B : word16)
+  Class: Eq_952
+  DataType: word16
+  OrigDataType: word16
+T_1462: (in hl @ 075B : word16)
+  Class: Eq_1456
+  DataType: word16
+  OrigDataType: word16
+T_1463: (in d @ 075B : byte)
+  Class: Eq_1463
+  DataType: byte
+  OrigDataType: byte
+T_1464: (in hl @ 075D : word16)
   Class: Eq_1464
   DataType: word16
   OrigDataType: word16
-T_1465: (in Mem0[ix + 4<i16>:byte] @ 075B : byte)
+T_1465: (in SLICE(hl, byte, 0) @ 075D : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1466: (in SEQ(1<8>, Mem0[ix + 4<i16>:byte]) @ 075B : word16)
-  Class: Eq_961
-  DataType: word16
-  OrigDataType: word16
-T_1467: (in hl @ 075B : word16)
-  Class: Eq_1461
-  DataType: word16
-  OrigDataType: word16
-T_1468: (in d @ 075B : byte)
-  Class: Eq_1468
-  DataType: byte
-  OrigDataType: byte
-T_1469: (in hl @ 075D : word16)
-  Class: Eq_1469
-  DataType: word16
-  OrigDataType: word16
-T_1470: (in SLICE(hl, byte, 0) @ 075D : byte)
-  Class: Eq_38
-  DataType: uint8
-  OrigDataType: byte
-T_1471: (in 4<i16> @ 075D : int16)
-  Class: Eq_1471
+T_1466: (in 4<i16> @ 075D : int16)
+  Class: Eq_1466
   DataType: int16
   OrigDataType: int16
-T_1472: (in ix + 4<i16> @ 075D : word16)
-  Class: Eq_1472
+T_1467: (in ix + 4<i16> @ 075D : word16)
+  Class: Eq_1467
   DataType: word16
   OrigDataType: word16
-T_1473: (in Mem10[ix + 4<i16>:byte] @ 075D : byte)
+T_1468: (in Mem10[ix + 4<i16>:byte] @ 075D : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1474: (in de @ 0760 : word16)
-  Class: Eq_1030
+T_1469: (in de @ 0760 : word16)
+  Class: Eq_1021
   DataType: word16
   OrigDataType: word16
-T_1475: (in SLICE(hl, byte, 8) @ 0760 : byte)
-  Class: Eq_1468
+T_1470: (in SLICE(hl, byte, 8) @ 0760 : byte)
+  Class: Eq_1463
   DataType: byte
   OrigDataType: byte
-T_1476: (in fn099E @ 0924 : ptr16)
-  Class: Eq_186
-  DataType: (ptr16 Eq_186)
-  OrigDataType: (ptr16 (fn T_1484 (T_1478, T_1479, T_1481, T_1483)))
-T_1477: (in SLICE(hl, byte, 8) @ 0924 : byte)
+T_1471: (in fn099E @ 0924 : ptr16)
+  Class: Eq_172
+  DataType: (ptr16 Eq_172)
+  OrigDataType: (ptr16 (fn T_1479 (T_1473, T_1474, T_1476, T_1478)))
+T_1472: (in SLICE(hl, byte, 8) @ 0924 : byte)
+  Class: Eq_1472
+  DataType: byte
+  OrigDataType: byte
+T_1473: (in SEQ(SLICE(hl, byte, 8), f) @ 0924 : word16)
+  Class: Eq_174
+  DataType: word16
+  OrigDataType: word16
+T_1474: (in SLICE(hl, byte, 0) @ 0924 : byte)
+  Class: Eq_175
+  DataType: byte
+  OrigDataType: byte
+T_1475: (in af_12 @ 0924 : word16)
+  Class: Eq_1475
+  DataType: word16
+  OrigDataType: word16
+T_1476: (in out af_12 @ 0924 : word16)
+  Class: Eq_180
+  DataType: word16
+  OrigDataType: word16
+T_1477: (in c_21 @ 0924 : byte)
   Class: Eq_1477
   DataType: byte
   OrigDataType: byte
-T_1478: (in SEQ(SLICE(hl, byte, 8), f) @ 0924 : word16)
-  Class: Eq_188
-  DataType: word16
-  OrigDataType: word16
-T_1479: (in SLICE(hl, byte, 0) @ 0924 : byte)
-  Class: Eq_189
+T_1478: (in out c_21 @ 0924 : byte)
+  Class: Eq_183
   DataType: byte
   OrigDataType: byte
-T_1480: (in af_12 @ 0924 : word16)
-  Class: Eq_1480
-  DataType: word16
-  OrigDataType: word16
-T_1481: (in out af_12 @ 0924 : word16)
-  Class: Eq_194
-  DataType: word16
-  OrigDataType: word16
-T_1482: (in c_21 @ 0924 : byte)
-  Class: Eq_1482
-  DataType: byte
-  OrigDataType: byte
-T_1483: (in out c_21 @ 0924 : byte)
-  Class: Eq_197
-  DataType: byte
-  OrigDataType: byte
-T_1484: (in fn099E(SEQ(SLICE(hl, byte, 8), f), (byte) hl, out af_12, out c_21) @ 0924 : bool)
-  Class: Eq_199
-  DataType: Eq_199
+T_1479: (in fn099E(SEQ(SLICE(hl, byte, 8), f), (byte) hl, out af_12, out c_21) @ 0924 : bool)
+  Class: Eq_185
+  DataType: Eq_185
   OrigDataType: bool
-T_1485: (in SLICE(af_12, byte, 0) @ 0928 : byte)
-  Class: Eq_120
+T_1480: (in SLICE(af_12, byte, 0) @ 0928 : byte)
+  Class: Eq_104
   DataType: byte
   OrigDataType: byte
-T_1486: (in fn09A2 @ 092B : ptr16)
-  Class: Eq_606
-  DataType: (ptr16 Eq_606)
-  OrigDataType: (ptr16 (fn T_1491 (T_487, T_1488, T_1490)))
-T_1487: (in af_10 @ 092B : word16)
-  Class: Eq_487
+T_1481: (in fn09A2 @ 092B : ptr16)
+  Class: Eq_596
+  DataType: (ptr16 Eq_596)
+  OrigDataType: (ptr16 (fn T_1486 (T_477, T_1483, T_1485)))
+T_1482: (in af_10 @ 092B : word16)
+  Class: Eq_477
   DataType: word16
   OrigDataType: word16
-T_1488: (in out af_10 @ 092B : word16)
-  Class: Eq_619
+T_1483: (in out af_10 @ 092B : word16)
+  Class: Eq_609
   DataType: word16
   OrigDataType: word16
-T_1489: (in c_20 @ 092B : byte)
-  Class: Eq_1489
+T_1484: (in c_20 @ 092B : byte)
+  Class: Eq_1484
   DataType: byte
   OrigDataType: byte
-T_1490: (in out c_20 @ 092B : byte)
-  Class: Eq_622
+T_1485: (in out c_20 @ 092B : byte)
+  Class: Eq_612
   DataType: byte
   OrigDataType: byte
-T_1491: (in fn09A2(af, out af_10, out c_20) @ 092B : bool)
-  Class: Eq_624
-  DataType: Eq_624
+T_1486: (in fn09A2(af, out af_10, out c_20) @ 092B : bool)
+  Class: Eq_614
+  DataType: Eq_614
   OrigDataType: bool
-T_1492: (in fn0933 @ 0930 : ptr16)
-  Class: Eq_491
-  DataType: (ptr16 Eq_491)
-  OrigDataType: (ptr16 (fn T_1493 ()))
-T_1493: (in fn0933() @ 0930 : void)
-  Class: Eq_493
+T_1487: (in fn0933 @ 0930 : ptr16)
+  Class: Eq_481
+  DataType: (ptr16 Eq_481)
+  OrigDataType: (ptr16 (fn T_1488 ()))
+T_1488: (in fn0933() @ 0930 : void)
+  Class: Eq_483
   DataType: void
   OrigDataType: void
-T_1494: (in fn0933 @ 0930 : ptr16)
-  Class: Eq_491
-  DataType: (ptr16 Eq_491)
-  OrigDataType: (ptr16 (fn T_1495 ()))
-T_1495: (in fn0933() @ 0930 : void)
-  Class: Eq_493
+T_1489: (in fn0933 @ 0930 : ptr16)
+  Class: Eq_481
+  DataType: (ptr16 Eq_481)
+  OrigDataType: (ptr16 (fn T_1490 ()))
+T_1490: (in fn0933() @ 0930 : void)
+  Class: Eq_483
   DataType: void
   OrigDataType: void
-T_1496: (in fn0A2A @ 0936 : ptr16)
-  Class: Eq_260
-  DataType: (ptr16 Eq_260)
-  OrigDataType: (ptr16 (fn T_1497 ()))
-T_1497: (in fn0A2A() @ 0936 : void)
-  Class: Eq_262
+T_1491: (in fn0A2A @ 0936 : ptr16)
+  Class: Eq_246
+  DataType: (ptr16 Eq_246)
+  OrigDataType: (ptr16 (fn T_1492 ()))
+T_1492: (in fn0A2A() @ 0936 : void)
+  Class: Eq_248
   DataType: void
   OrigDataType: void
-T_1498: (in fn0A2A @ 093D : ptr16)
-  Class: Eq_260
-  DataType: (ptr16 Eq_260)
-  OrigDataType: (ptr16 (fn T_1499 ()))
-T_1499: (in fn0A2A() @ 093D : void)
-  Class: Eq_262
+T_1493: (in fn0A2A @ 093D : ptr16)
+  Class: Eq_246
+  DataType: (ptr16 Eq_246)
+  OrigDataType: (ptr16 (fn T_1494 ()))
+T_1494: (in fn0A2A() @ 093D : void)
+  Class: Eq_248
   DataType: void
   OrigDataType: void
-T_1500: (in fn0A2A @ 0942 : ptr16)
-  Class: Eq_260
-  DataType: (ptr16 Eq_260)
-  OrigDataType: (ptr16 (fn T_1501 ()))
-T_1501: (in fn0A2A() @ 0942 : void)
-  Class: Eq_262
+T_1495: (in fn0A2A @ 0942 : ptr16)
+  Class: Eq_246
+  DataType: (ptr16 Eq_246)
+  OrigDataType: (ptr16 (fn T_1496 ()))
+T_1496: (in fn0A2A() @ 0942 : void)
+  Class: Eq_248
   DataType: void
   OrigDataType: void
-T_1502: (in fn0A2A @ 0942 : ptr16)
-  Class: Eq_260
-  DataType: (ptr16 Eq_260)
-  OrigDataType: (ptr16 (fn T_1503 ()))
-T_1503: (in fn0A2A() @ 0942 : void)
-  Class: Eq_262
+T_1497: (in fn0A2A @ 0942 : ptr16)
+  Class: Eq_246
+  DataType: (ptr16 Eq_246)
+  OrigDataType: (ptr16 (fn T_1498 ()))
+T_1498: (in fn0A2A() @ 0942 : void)
+  Class: Eq_248
   DataType: void
   OrigDataType: void
-T_1504: (in fn0A2A @ 0947 : ptr16)
-  Class: Eq_260
-  DataType: (ptr16 Eq_260)
-  OrigDataType: (ptr16 (fn T_1505 ()))
-T_1505: (in fn0A2A() @ 0947 : void)
-  Class: Eq_262
+T_1499: (in fn0A2A @ 0947 : ptr16)
+  Class: Eq_246
+  DataType: (ptr16 Eq_246)
+  OrigDataType: (ptr16 (fn T_1500 ()))
+T_1500: (in fn0A2A() @ 0947 : void)
+  Class: Eq_248
   DataType: void
   OrigDataType: void
-T_1506: (in fn0A2A @ 094C : ptr16)
-  Class: Eq_260
-  DataType: (ptr16 Eq_260)
-  OrigDataType: (ptr16 (fn T_1507 ()))
-T_1507: (in fn0A2A() @ 094C : void)
-  Class: Eq_262
+T_1501: (in fn0A2A @ 094C : ptr16)
+  Class: Eq_246
+  DataType: (ptr16 Eq_246)
+  OrigDataType: (ptr16 (fn T_1502 ()))
+T_1502: (in fn0A2A() @ 094C : void)
+  Class: Eq_248
   DataType: void
   OrigDataType: void
-T_1508: (in Z @ 094C : bool)
-  Class: Eq_1508
+T_1503: (in Z @ 094C : bool)
+  Class: Eq_1503
   DataType: bool
   OrigDataType: bool
-T_1509: (in fn0A08 @ 094F : ptr16)
+T_1504: (in fn0A08 @ 094F : ptr16)
   Class: Eq_59
   DataType: (ptr16 Eq_59)
-  OrigDataType: (ptr16 (fn T_1510 (T_85)))
-T_1510: (in fn0A08(a) @ 094F : byte)
+  OrigDataType: (ptr16 (fn T_1505 (T_85)))
+T_1505: (in fn0A08(a) @ 094F : byte)
   Class: Eq_61
   DataType: cu8
   OrigDataType: byte
-T_1511: (in a_5 @ 094F : cu8)
+T_1506: (in a_5 @ 094F : cu8)
   Class: Eq_61
   DataType: cu8
   OrigDataType: byte
-T_1512: (in 0x20<8> @ 0952 : byte)
+T_1507: (in 0x20<8> @ 0952 : byte)
   Class: Eq_61
   DataType: cu8
   OrigDataType: byte
-T_1513: (in a_5 - 0x20<8> @ 0952 : byte)
-  Class: Eq_1513
-  DataType: byte
-  OrigDataType: byte
-T_1514: (in cond(a_5 - 0x20<8>) @ 0952 : byte)
-  Class: Eq_1514
-  DataType: byte
-  OrigDataType: byte
-T_1515: (in SZPC_11 @ 0952 : byte)
-  Class: Eq_1514
-  DataType: byte
-  OrigDataType: byte
-T_1516: (in a_5 != 0x20<8> @ 0954 : bool)
-  Class: Eq_1516
-  DataType: bool
-  OrigDataType: bool
-T_1517: (in hl @ 0955 : ui16)
-  Class: Eq_88
-  DataType: ui16
-  OrigDataType: word16
-T_1518: (in de @ 0955 : ui16)
-  Class: Eq_88
-  DataType: ui16
-  OrigDataType: word16
-T_1519: (in 0<16> @ 0956 : word16)
-  Class: Eq_88
-  DataType: ui16
-  OrigDataType: word16
-T_1520: (in fn0975 @ 095C : ptr16)
-  Class: Eq_561
-  DataType: (ptr16 Eq_561)
-  OrigDataType: (ptr16 (fn T_1522 (T_1511, T_1521)))
-T_1521: (in out a @ 095C : byte)
-  Class: Eq_565
-  DataType: cu8
-  OrigDataType: byte
-T_1522: (in fn0975(a_5, out a) @ 095C : bool)
-  Class: Eq_567
-  DataType: bool
-  OrigDataType: bool
-T_1523: (in 0x40<8> @ 0954 : byte)
-  Class: Eq_1523
-  DataType: byte
-  OrigDataType: byte
-T_1524: (in SZPC_11 & 0x40<8> @ 0954 : byte)
-  Class: Eq_1524
-  DataType: byte
-  OrigDataType: byte
-T_1525: (in 0<8> @ 0954 : byte)
-  Class: Eq_1524
-  DataType: byte
-  OrigDataType: byte
-T_1526: (in (SZPC_11 & 0x40<8>) != 0<8> @ 0954 : bool)
+T_1508: (in a_5 - 0x20<8> @ 0952 : byte)
   Class: Eq_1508
+  DataType: byte
+  OrigDataType: byte
+T_1509: (in cond(a_5 - 0x20<8>) @ 0952 : byte)
+  Class: Eq_1509
+  DataType: byte
+  OrigDataType: byte
+T_1510: (in SZPC_11 @ 0952 : byte)
+  Class: Eq_1509
+  DataType: byte
+  OrigDataType: byte
+T_1511: (in a_5 != 0x20<8> @ 0954 : bool)
+  Class: Eq_1511
   DataType: bool
   OrigDataType: bool
-T_1527: (in fn0997 @ 095E : ptr16)
-  Class: Eq_597
-  DataType: (ptr16 Eq_597)
-  OrigDataType: (ptr16 (fn T_1531 (T_85, T_1528, T_1530)))
-T_1528: (in 0<16> @ 095E : word16)
+T_1512: (in hl @ 0955 : ui16)
   Class: Eq_88
   DataType: ui16
   OrigDataType: word16
-T_1529: (in hl_25 @ 095E : ui16)
+T_1513: (in de @ 0955 : ui16)
   Class: Eq_88
   DataType: ui16
   OrigDataType: word16
-T_1530: (in out hl_25 @ 095E : word16)
-  Class: Eq_601
+T_1514: (in 0<16> @ 0956 : word16)
+  Class: Eq_88
+  DataType: ui16
+  OrigDataType: word16
+T_1515: (in fn0975 @ 095C : ptr16)
+  Class: Eq_551
+  DataType: (ptr16 Eq_551)
+  OrigDataType: (ptr16 (fn T_1517 (T_1506, T_1516)))
+T_1516: (in out a @ 095C : byte)
+  Class: Eq_555
+  DataType: cu8
+  OrigDataType: byte
+T_1517: (in fn0975(a_5, out a) @ 095C : bool)
+  Class: Eq_557
+  DataType: bool
+  OrigDataType: bool
+T_1518: (in 0x40<8> @ 0954 : byte)
+  Class: Eq_1518
+  DataType: byte
+  OrigDataType: byte
+T_1519: (in SZPC_11 & 0x40<8> @ 0954 : byte)
+  Class: Eq_1519
+  DataType: byte
+  OrigDataType: byte
+T_1520: (in 0<8> @ 0954 : byte)
+  Class: Eq_1519
+  DataType: byte
+  OrigDataType: byte
+T_1521: (in (SZPC_11 & 0x40<8>) != 0<8> @ 0954 : bool)
+  Class: Eq_1503
+  DataType: bool
+  OrigDataType: bool
+T_1522: (in fn0997 @ 095E : ptr16)
+  Class: Eq_587
+  DataType: (ptr16 Eq_587)
+  OrigDataType: (ptr16 (fn T_1526 (T_85, T_1523, T_1525)))
+T_1523: (in 0<16> @ 095E : word16)
+  Class: Eq_88
+  DataType: ui16
+  OrigDataType: word16
+T_1524: (in hl_25 @ 095E : ui16)
+  Class: Eq_88
+  DataType: ui16
+  OrigDataType: word16
+T_1525: (in out hl_25 @ 095E : word16)
+  Class: Eq_591
   DataType: word16
   OrigDataType: word16
-T_1531: (in fn0997(a, 0<16>, out hl_25) @ 095E : byte)
+T_1526: (in fn0997(a, 0<16>, out hl_25) @ 095E : byte)
   Class: Eq_61
   DataType: cu8
   OrigDataType: byte
-T_1532: (in a_24 @ 095E : cu8)
+T_1527: (in a_24 @ 095E : cu8)
   Class: Eq_61
   DataType: cu8
   OrigDataType: byte
-T_1533: (in a_32 @ 0974 : cu8)
+T_1528: (in a_32 @ 0974 : cu8)
   Class: Eq_61
   DataType: cu8
   OrigDataType: byte
-T_1534: (in cond(a_32) @ 0974 : byte)
-  Class: Eq_1534
+T_1529: (in cond(a_32) @ 0974 : byte)
+  Class: Eq_1529
   DataType: byte
   OrigDataType: byte
-T_1535: (in 0x40<8> @ 0974 : byte)
-  Class: Eq_1535
+T_1530: (in 0x40<8> @ 0974 : byte)
+  Class: Eq_1530
   DataType: byte
   OrigDataType: byte
-T_1536: (in cond(a_32) & 0x40<8> @ 0974 : byte)
-  Class: Eq_1536
+T_1531: (in cond(a_32) & 0x40<8> @ 0974 : byte)
+  Class: Eq_1531
   DataType: byte
   OrigDataType: byte
-T_1537: (in 0<8> @ 0974 : byte)
-  Class: Eq_1536
+T_1532: (in 0<8> @ 0974 : byte)
+  Class: Eq_1531
   DataType: byte
   OrigDataType: byte
-T_1538: (in (cond(a_32) & 0x40<8>) != 0<8> @ 0974 : bool)
-  Class: Eq_1508
+T_1533: (in (cond(a_32) & 0x40<8>) != 0<8> @ 0974 : bool)
+  Class: Eq_1503
   DataType: bool
   OrigDataType: bool
-T_1539: (in fn0975 @ 096B : ptr16)
-  Class: Eq_561
-  DataType: (ptr16 Eq_561)
-  OrigDataType: (ptr16 (fn T_1541 (T_1533, T_1540)))
-T_1540: (in out a_24 @ 096B : byte)
-  Class: Eq_565
+T_1534: (in fn0975 @ 096B : ptr16)
+  Class: Eq_551
+  DataType: (ptr16 Eq_551)
+  OrigDataType: (ptr16 (fn T_1536 (T_1528, T_1535)))
+T_1535: (in out a_24 @ 096B : byte)
+  Class: Eq_555
   DataType: cu8
   OrigDataType: byte
-T_1541: (in fn0975(a_32, out a_24) @ 096B : bool)
-  Class: Eq_567
+T_1536: (in fn0975(a_32, out a_24) @ 096B : bool)
+  Class: Eq_557
   DataType: bool
   OrigDataType: bool
-T_1542: (in fn0A08 @ 0961 : ptr16)
+T_1537: (in fn0A08 @ 0961 : ptr16)
   Class: Eq_59
   DataType: (ptr16 Eq_59)
-  OrigDataType: (ptr16 (fn T_1543 (T_1532)))
-T_1543: (in fn0A08(a_24) @ 0961 : byte)
+  OrigDataType: (ptr16 (fn T_1538 (T_1527)))
+T_1538: (in fn0A08(a_24) @ 0961 : byte)
   Class: Eq_61
   DataType: cu8
   OrigDataType: byte
-T_1544: (in 0xD<8> @ 0966 : byte)
+T_1539: (in 0xD<8> @ 0966 : byte)
   Class: Eq_61
   DataType: cu8
   OrigDataType: byte
-T_1545: (in a_32 == 0xD<8> @ 0966 : bool)
-  Class: Eq_1545
+T_1540: (in a_32 == 0xD<8> @ 0966 : bool)
+  Class: Eq_1540
   DataType: bool
   OrigDataType: bool
-T_1546: (in fn0997 @ 096D : ptr16)
-  Class: Eq_597
-  DataType: (ptr16 Eq_597)
-  OrigDataType: (ptr16 (fn T_1548 (T_1532, T_1529, T_1547)))
-T_1547: (in out hl_25 @ 096D : word16)
-  Class: Eq_601
+T_1541: (in fn0997 @ 096D : ptr16)
+  Class: Eq_587
+  DataType: (ptr16 Eq_587)
+  OrigDataType: (ptr16 (fn T_1543 (T_1527, T_1524, T_1542)))
+T_1542: (in out hl_25 @ 096D : word16)
+  Class: Eq_591
   DataType: word16
   OrigDataType: word16
-T_1548: (in fn0997(a_24, hl_25, out hl_25) @ 096D : byte)
+T_1543: (in fn0997(a_24, hl_25, out hl_25) @ 096D : byte)
   Class: Eq_61
   DataType: cu8
   OrigDataType: byte
-T_1549: (in Z @ 096D : bool)
-  Class: Eq_1549
+T_1544: (in Z @ 096D : bool)
+  Class: Eq_1544
   DataType: bool
   OrigDataType: bool
-T_1550: (in 0x30<8> @ 0977 : byte)
+T_1545: (in 0x30<8> @ 0977 : byte)
   Class: Eq_61
   DataType: cu8
   OrigDataType: cu8
-T_1551: (in a < 0x30<8> @ 0977 : bool)
+T_1546: (in a < 0x30<8> @ 0977 : bool)
+  Class: Eq_1546
+  DataType: bool
+  OrigDataType: bool
+T_1547: (in fn0A2A @ 0987 : ptr16)
+  Class: Eq_246
+  DataType: (ptr16 Eq_246)
+  OrigDataType: (ptr16 (fn T_1548 ()))
+T_1548: (in fn0A2A() @ 0987 : void)
+  Class: Eq_248
+  DataType: void
+  OrigDataType: void
+T_1549: (in 0<8> @ 098B : byte)
+  Class: Eq_555
+  DataType: cu8
+  OrigDataType: byte
+T_1550: (in 0<8> @ 098B : byte)
+  Class: Eq_1550
+  DataType: byte
+  OrigDataType: byte
+T_1551: (in cond(0<8>) @ 098B : byte)
   Class: Eq_1551
-  DataType: bool
-  OrigDataType: bool
-T_1552: (in fn0A2A @ 0987 : ptr16)
-  Class: Eq_260
-  DataType: (ptr16 Eq_260)
-  OrigDataType: (ptr16 (fn T_1553 ()))
-T_1553: (in fn0A2A() @ 0987 : void)
-  Class: Eq_262
-  DataType: void
-  OrigDataType: void
+  DataType: byte
+  OrigDataType: byte
+T_1552: (in 0x40<8> @ 098B : byte)
+  Class: Eq_1552
+  DataType: byte
+  OrigDataType: byte
+T_1553: (in cond(0<8>) & 0x40<8> @ 098B : byte)
+  Class: Eq_1553
+  DataType: byte
+  OrigDataType: byte
 T_1554: (in 0<8> @ 098B : byte)
-  Class: Eq_565
-  DataType: cu8
-  OrigDataType: byte
-T_1555: (in 0<8> @ 098B : byte)
-  Class: Eq_1555
+  Class: Eq_1553
   DataType: byte
   OrigDataType: byte
-T_1556: (in cond(0<8>) @ 098B : byte)
-  Class: Eq_1556
-  DataType: byte
-  OrigDataType: byte
-T_1557: (in 0x40<8> @ 098B : byte)
-  Class: Eq_1557
-  DataType: byte
-  OrigDataType: byte
-T_1558: (in cond(0<8>) & 0x40<8> @ 098B : byte)
-  Class: Eq_1558
-  DataType: byte
-  OrigDataType: byte
-T_1559: (in 0<8> @ 098B : byte)
-  Class: Eq_1558
-  DataType: byte
-  OrigDataType: byte
-T_1560: (in (cond(0<8>) & 0x40<8>) != 0<8> @ 098B : bool)
-  Class: Eq_1549
+T_1555: (in (cond(0<8>) & 0x40<8>) != 0<8> @ 098B : bool)
+  Class: Eq_1544
   DataType: bool
   OrigDataType: bool
-T_1561: (in 0x3A<8> @ 097B : byte)
+T_1556: (in 0x3A<8> @ 097B : byte)
   Class: Eq_61
   DataType: cu8
   OrigDataType: cu8
-T_1562: (in a < 0x3A<8> @ 097B : bool)
+T_1557: (in a < 0x3A<8> @ 097B : bool)
+  Class: Eq_1557
+  DataType: bool
+  OrigDataType: bool
+T_1558: (in 0x30<8> @ 098C : byte)
+  Class: Eq_1558
+  DataType: cu8
+  OrigDataType: cu8
+T_1559: (in a - 0x30<8> @ 098C : byte)
+  Class: Eq_555
+  DataType: cu8
+  OrigDataType: cu8
+T_1560: (in a_13 @ 098C : cu8)
+  Class: Eq_555
+  DataType: cu8
+  OrigDataType: cu8
+T_1561: (in 0x3A<8> @ 0990 : byte)
+  Class: Eq_61
+  DataType: cu8
+  OrigDataType: cu8
+T_1562: (in a < 0x3A<8> @ 0990 : bool)
   Class: Eq_1562
   DataType: bool
   OrigDataType: bool
-T_1563: (in 0x30<8> @ 098C : byte)
-  Class: Eq_1563
-  DataType: cu8
-  OrigDataType: cu8
-T_1564: (in a - 0x30<8> @ 098C : byte)
-  Class: Eq_565
-  DataType: cu8
-  OrigDataType: cu8
-T_1565: (in a_13 @ 098C : cu8)
-  Class: Eq_565
-  DataType: cu8
-  OrigDataType: cu8
-T_1566: (in 0x3A<8> @ 0990 : byte)
+T_1563: (in 0x41<8> @ 097F : byte)
   Class: Eq_61
   DataType: cu8
   OrigDataType: cu8
-T_1567: (in a < 0x3A<8> @ 0990 : bool)
+T_1564: (in a < 0x41<8> @ 097F : bool)
+  Class: Eq_1564
+  DataType: bool
+  OrigDataType: bool
+T_1565: (in 0x47<8> @ 0983 : byte)
+  Class: Eq_61
+  DataType: cu8
+  OrigDataType: cu8
+T_1566: (in a < 0x47<8> @ 0983 : bool)
+  Class: Eq_1566
+  DataType: bool
+  OrigDataType: bool
+T_1567: (in 0xFF<8> @ 0996 : byte)
   Class: Eq_1567
-  DataType: bool
-  OrigDataType: bool
-T_1568: (in 0x41<8> @ 097F : byte)
-  Class: Eq_61
   DataType: cu8
   OrigDataType: cu8
-T_1569: (in a < 0x41<8> @ 097F : bool)
+T_1568: (in a_13 - 0xFF<8> @ 0996 : byte)
+  Class: Eq_1568
+  DataType: cu8
+  OrigDataType: cu8
+T_1569: (in cond(a_13 - 0xFF<8>) @ 0996 : byte)
   Class: Eq_1569
-  DataType: bool
-  OrigDataType: bool
-T_1570: (in 0x47<8> @ 0983 : byte)
-  Class: Eq_61
-  DataType: cu8
-  OrigDataType: cu8
-T_1571: (in a < 0x47<8> @ 0983 : bool)
+  DataType: byte
+  OrigDataType: byte
+T_1570: (in 0x40<8> @ 0996 : byte)
+  Class: Eq_1570
+  DataType: byte
+  OrigDataType: byte
+T_1571: (in cond(a_13 - 0xFF<8>) & 0x40<8> @ 0996 : byte)
   Class: Eq_1571
+  DataType: byte
+  OrigDataType: byte
+T_1572: (in 0<8> @ 0996 : byte)
+  Class: Eq_1571
+  DataType: byte
+  OrigDataType: byte
+T_1573: (in (cond(a_13 - 0xFF<8>) & 0x40<8>) != 0<8> @ 0996 : bool)
+  Class: Eq_1544
   DataType: bool
   OrigDataType: bool
-T_1572: (in 0xFF<8> @ 0996 : byte)
-  Class: Eq_1572
-  DataType: cu8
-  OrigDataType: cu8
-T_1573: (in a_13 - 0xFF<8> @ 0996 : byte)
-  Class: Eq_1573
-  DataType: cu8
-  OrigDataType: cu8
-T_1574: (in cond(a_13 - 0xFF<8>) @ 0996 : byte)
+T_1574: (in 0x37<8> @ 0992 : byte)
   Class: Eq_1574
-  DataType: byte
-  OrigDataType: byte
-T_1575: (in 0x40<8> @ 0996 : byte)
-  Class: Eq_1575
-  DataType: byte
-  OrigDataType: byte
-T_1576: (in cond(a_13 - 0xFF<8>) & 0x40<8> @ 0996 : byte)
-  Class: Eq_1576
-  DataType: byte
-  OrigDataType: byte
-T_1577: (in 0<8> @ 0996 : byte)
-  Class: Eq_1576
-  DataType: byte
-  OrigDataType: byte
-T_1578: (in (cond(a_13 - 0xFF<8>) & 0x40<8>) != 0<8> @ 0996 : bool)
-  Class: Eq_1549
-  DataType: bool
-  OrigDataType: bool
-T_1579: (in 0x37<8> @ 0992 : byte)
-  Class: Eq_1579
   DataType: cu8
   OrigDataType: cu8
-T_1580: (in a - 0x37<8> @ 0992 : byte)
-  Class: Eq_565
+T_1575: (in a - 0x37<8> @ 0992 : byte)
+  Class: Eq_555
   DataType: cu8
   OrigDataType: cu8
-T_1581: (in SLICE(hl, byte, 0) @ 099B : byte)
-  Class: Eq_1581
+T_1576: (in SLICE(hl, byte, 0) @ 099B : byte)
+  Class: Eq_1576
   DataType: bui8
   OrigDataType: bui8
-T_1582: (in 0x10<8> @ 099B : byte)
-  Class: Eq_1582
+T_1577: (in 0x10<8> @ 099B : byte)
+  Class: Eq_1577
   DataType: bui8
   OrigDataType: bui8
-T_1583: (in (byte) hl * 0x10<8> @ 099B : byte)
-  Class: Eq_1583
+T_1578: (in (byte) hl * 0x10<8> @ 099B : byte)
+  Class: Eq_1578
   DataType: ui8
   OrigDataType: ui8
-T_1584: (in a | (byte) hl * 0x10<8> @ 099B : byte)
+T_1579: (in a | (byte) hl * 0x10<8> @ 099B : byte)
   Class: Eq_61
   DataType: cu8
   OrigDataType: byte
-T_1585: (in a_11 @ 099B : cu8)
+T_1580: (in a_11 @ 099B : cu8)
   Class: Eq_61
   DataType: cu8
   OrigDataType: byte
-T_1586: (in 0x10<16> @ 099D : word16)
+T_1581: (in 0x10<16> @ 099D : word16)
+  Class: Eq_1581
+  DataType: ui16
+  OrigDataType: ui16
+T_1582: (in hl * 0x10<16> @ 099D : word16)
+  Class: Eq_1582
+  DataType: ui16
+  OrigDataType: ui16
+T_1583: (in SLICE(hl * 0x10<16>, byte, 8) @ 099D : byte)
+  Class: Eq_1583
+  DataType: byte
+  OrigDataType: byte
+T_1584: (in SEQ(SLICE(hl * 0x10<16>, byte, 8), a_11) @ 099D : word16)
+  Class: Eq_591
+  DataType: word16
+  OrigDataType: word16
+T_1585: (in Z @ 099D : bool)
+  Class: Eq_1585
+  DataType: bool
+  OrigDataType: bool
+T_1586: (in fn09A3 @ 099F : ptr16)
   Class: Eq_1586
-  DataType: ui16
-  OrigDataType: ui16
-T_1587: (in hl * 0x10<16> @ 099D : word16)
-  Class: Eq_1587
-  DataType: ui16
-  OrigDataType: ui16
-T_1588: (in SLICE(hl * 0x10<16>, byte, 8) @ 099D : byte)
+  DataType: (ptr16 Eq_1586)
+  OrigDataType: (ptr16 (fn T_1590 (T_1589)))
+T_1587: (in signature of fn09A3 @ 09A3 : void)
+  Class: Eq_1586
+  DataType: (ptr16 Eq_1586)
+  OrigDataType: 
+T_1588: (in a @ 099F : byte)
   Class: Eq_1588
   DataType: byte
   OrigDataType: byte
-T_1589: (in SEQ(SLICE(hl * 0x10<16>, byte, 8), a_11) @ 099D : word16)
-  Class: Eq_601
-  DataType: word16
-  OrigDataType: word16
-T_1590: (in Z @ 099D : bool)
+T_1589: (in SLICE(d_f, byte, 0) @ 099F : byte)
+  Class: Eq_1588
+  DataType: byte
+  OrigDataType: byte
+T_1590: (in fn09A3((byte) d_f) @ 099F : byte)
   Class: Eq_1590
-  DataType: bool
+  DataType: byte
+  OrigDataType: byte
+T_1591: (in f_14 @ 099F : byte)
+  Class: Eq_1590
+  DataType: byte
+  OrigDataType: byte
+T_1592: (in fn09A2 @ 099F : ptr16)
+  Class: Eq_596
+  DataType: (ptr16 Eq_596)
+  OrigDataType: (ptr16 (fn T_1598 (T_1593, T_1595, T_1597)))
+T_1593: (in SEQ(e, f_14) @ 099F : word16)
+  Class: Eq_477
+  DataType: word16
+  OrigDataType: word16
+T_1594: (in af_16 @ 099F : word16)
+  Class: Eq_180
+  DataType: word16
+  OrigDataType: word16
+T_1595: (in out af_16 @ 099F : word16)
+  Class: Eq_609
+  DataType: word16
+  OrigDataType: word16
+T_1596: (in c_17 @ 099F : byte)
+  Class: Eq_183
+  DataType: byte
+  OrigDataType: byte
+T_1597: (in out c_17 @ 099F : byte)
+  Class: Eq_612
+  DataType: byte
+  OrigDataType: byte
+T_1598: (in fn09A2(SEQ(e, f_14), out af_16, out c_17) @ 099F : bool)
+  Class: Eq_614
+  DataType: Eq_614
   OrigDataType: bool
-T_1591: (in fn09A3 @ 099F : ptr16)
-  Class: Eq_1591
-  DataType: (ptr16 Eq_1591)
-  OrigDataType: (ptr16 (fn T_1595 (T_1594)))
-T_1592: (in signature of fn09A3 @ 09A3 : void)
-  Class: Eq_1591
-  DataType: (ptr16 Eq_1591)
-  OrigDataType: 
-T_1593: (in a @ 099F : byte)
-  Class: Eq_1593
-  DataType: byte
-  OrigDataType: byte
-T_1594: (in SLICE(d_f, byte, 0) @ 099F : byte)
-  Class: Eq_1593
-  DataType: byte
-  OrigDataType: byte
-T_1595: (in fn09A3((byte) d_f) @ 099F : byte)
-  Class: Eq_1595
-  DataType: byte
-  OrigDataType: byte
-T_1596: (in f_14 @ 099F : byte)
-  Class: Eq_1595
-  DataType: byte
-  OrigDataType: byte
-T_1597: (in fn09A2 @ 099F : ptr16)
-  Class: Eq_606
-  DataType: (ptr16 Eq_606)
-  OrigDataType: (ptr16 (fn T_1603 (T_1598, T_1600, T_1602)))
-T_1598: (in SEQ(e, f_14) @ 099F : word16)
-  Class: Eq_487
-  DataType: word16
-  OrigDataType: word16
-T_1599: (in af_16 @ 099F : word16)
-  Class: Eq_194
-  DataType: word16
-  OrigDataType: word16
-T_1600: (in out af_16 @ 099F : word16)
-  Class: Eq_619
-  DataType: word16
-  OrigDataType: word16
-T_1601: (in c_17 @ 099F : byte)
-  Class: Eq_197
-  DataType: byte
-  OrigDataType: byte
-T_1602: (in out c_17 @ 099F : byte)
-  Class: Eq_622
-  DataType: byte
-  OrigDataType: byte
-T_1603: (in fn09A2(SEQ(e, f_14), out af_16, out c_17) @ 099F : bool)
-  Class: Eq_624
-  DataType: Eq_624
-  OrigDataType: bool
-T_1604: (in Z_19 @ 099F : Eq_624)
-  Class: Eq_624
-  DataType: Eq_624
+T_1599: (in Z_19 @ 099F : Eq_614)
+  Class: Eq_614
+  DataType: Eq_614
   OrigDataType: (union (bool u2) ((union (bool u0) (byte u1)) u0))
-T_1605: (in 0<8> @ 099F : byte)
-  Class: Eq_624
+T_1600: (in 0<8> @ 099F : byte)
+  Class: Eq_614
   DataType: bool
   OrigDataType: byte
-T_1606: (in Z_19 != 0<8> @ 099F : bool)
-  Class: Eq_1590
+T_1601: (in Z_19 != 0<8> @ 099F : bool)
+  Class: Eq_1585
   DataType: bool
   OrigDataType: bool
-T_1607: (in Z @ 099F : bool)
+T_1602: (in Z @ 099F : bool)
+  Class: Eq_1602
+  DataType: bool
+  OrigDataType: bool
+T_1603: (in SLICE(e_f, byte, 8) @ 09A2 : byte)
+  Class: Eq_1603
+  DataType: byte
+  OrigDataType: byte
+T_1604: (in e @ 09A2 : byte)
+  Class: Eq_1603
+  DataType: byte
+  OrigDataType: byte
+T_1605: (in SLICE(e_f, byte, 0) @ 09A2 : byte)
+  Class: Eq_1605
+  DataType: byte
+  OrigDataType: byte
+T_1606: (in f @ 09A2 : byte)
+  Class: Eq_1605
+  DataType: byte
+  OrigDataType: byte
+T_1607: (in fn09B0 @ 09AC : ptr16)
   Class: Eq_1607
-  DataType: bool
+  DataType: (ptr16 Eq_1607)
+  OrigDataType: (ptr16 (fn T_1622 (T_1615, T_1617, T_1620)))
+T_1608: (in signature of fn09B0 @ 09B0 : void)
+  Class: Eq_1607
+  DataType: (ptr16 Eq_1607)
+  OrigDataType: 
+T_1609: (in a @ 09AC : byte)
+  Class: Eq_1603
+  DataType: byte
+  OrigDataType: byte
+T_1610: (in __ror<byte,byte> @ 09AC : ptr32)
+  Class: Eq_1610
+  DataType: (ptr32 Eq_1610)
+  OrigDataType: (ptr32 (fn T_1615 (T_1604, T_1614)))
+T_1611: (in signature of __ror : void)
+  Class: Eq_1610
+  DataType: (ptr32 Eq_1610)
+  OrigDataType: 
+T_1612: (in p1 @ 09AC : byte)
+  Class: Eq_1603
+  DataType: byte
+  OrigDataType: 
+T_1613: (in p2 @ 09AC : byte)
+  Class: Eq_1613
+  DataType: byte
+  OrigDataType: 
+T_1614: (in 4<8> @ 09AC : byte)
+  Class: Eq_1613
+  DataType: byte
+  OrigDataType: byte
+T_1615: (in __ror<byte,byte>(e, 4<8>) @ 09AC : byte)
+  Class: Eq_1603
+  DataType: byte
+  OrigDataType: byte
+T_1616: (in a_35 @ 09AC : byte)
+  Class: Eq_1616
+  DataType: byte
+  OrigDataType: byte
+T_1617: (in out a_35 @ 09AC : byte)
+  Class: Eq_1617
+  DataType: byte
+  OrigDataType: byte
+T_1618: (in aOut @ 09AC : byte)
+  Class: Eq_1617
+  DataType: byte
+  OrigDataType: byte
+T_1619: (in c_36 @ 09AC : byte)
+  Class: Eq_1619
+  DataType: byte
+  OrigDataType: byte
+T_1620: (in out c_36 @ 09AC : byte)
+  Class: Eq_290
+  DataType: byte
+  OrigDataType: byte
+T_1621: (in cOut @ 09AC : byte)
+  Class: Eq_290
+  DataType: byte
+  OrigDataType: byte
+T_1622: (in fn09B0(__ror<byte,byte>(e, 4<8>), out a_35, out c_36) @ 09AC : bool)
+  Class: Eq_1622
+  DataType: Eq_1622
   OrigDataType: bool
-T_1608: (in SLICE(e_f, byte, 8) @ 09A2 : byte)
-  Class: Eq_1608
-  DataType: byte
-  OrigDataType: byte
-T_1609: (in e @ 09A2 : byte)
-  Class: Eq_1608
-  DataType: byte
-  OrigDataType: byte
-T_1610: (in SLICE(e_f, byte, 0) @ 09A2 : byte)
-  Class: Eq_1610
-  DataType: byte
-  OrigDataType: byte
-T_1611: (in f @ 09A2 : byte)
-  Class: Eq_1610
-  DataType: byte
-  OrigDataType: byte
-T_1612: (in fn09B0 @ 09AC : ptr16)
-  Class: Eq_1612
-  DataType: (ptr16 Eq_1612)
-  OrigDataType: (ptr16 (fn T_1627 (T_1620, T_1622, T_1625)))
-T_1613: (in signature of fn09B0 @ 09B0 : void)
-  Class: Eq_1612
-  DataType: (ptr16 Eq_1612)
-  OrigDataType: 
-T_1614: (in a @ 09AC : byte)
-  Class: Eq_1608
-  DataType: byte
-  OrigDataType: byte
-T_1615: (in __ror<byte,byte> @ 09AC : ptr32)
-  Class: Eq_1615
-  DataType: (ptr32 Eq_1615)
-  OrigDataType: (ptr32 (fn T_1620 (T_1609, T_1619)))
-T_1616: (in signature of __ror : void)
-  Class: Eq_1615
-  DataType: (ptr32 Eq_1615)
-  OrigDataType: 
-T_1617: (in p1 @ 09AC : byte)
-  Class: Eq_1608
-  DataType: byte
-  OrigDataType: 
-T_1618: (in p2 @ 09AC : byte)
-  Class: Eq_1618
-  DataType: byte
-  OrigDataType: 
-T_1619: (in 4<8> @ 09AC : byte)
-  Class: Eq_1618
-  DataType: byte
-  OrigDataType: byte
-T_1620: (in __ror<byte,byte>(e, 4<8>) @ 09AC : byte)
-  Class: Eq_1608
-  DataType: byte
-  OrigDataType: byte
-T_1621: (in a_35 @ 09AC : byte)
-  Class: Eq_1621
-  DataType: byte
-  OrigDataType: byte
-T_1622: (in out a_35 @ 09AC : byte)
-  Class: Eq_1622
-  DataType: byte
-  OrigDataType: byte
-T_1623: (in aOut @ 09AC : byte)
-  Class: Eq_1622
-  DataType: byte
-  OrigDataType: byte
-T_1624: (in c_36 @ 09AC : byte)
+T_1623: (in fn09B0 @ 09AF : ptr16)
+  Class: Eq_1607
+  DataType: (ptr16 Eq_1607)
+  OrigDataType: (ptr16 (fn T_1628 (T_1604, T_1625, T_1627)))
+T_1624: (in a_23 @ 09AF : byte)
   Class: Eq_1624
   DataType: byte
   OrigDataType: byte
-T_1625: (in out c_36 @ 09AC : byte)
-  Class: Eq_304
+T_1625: (in out a_23 @ 09AF : byte)
+  Class: Eq_1617
   DataType: byte
   OrigDataType: byte
-T_1626: (in cOut @ 09AC : byte)
-  Class: Eq_304
+T_1626: (in c_24 @ 09AF : byte)
+  Class: Eq_612
   DataType: byte
   OrigDataType: byte
-T_1627: (in fn09B0(__ror<byte,byte>(e, 4<8>), out a_35, out c_36) @ 09AC : bool)
-  Class: Eq_1627
-  DataType: Eq_1627
-  OrigDataType: bool
-T_1628: (in fn09B0 @ 09AF : ptr16)
-  Class: Eq_1612
-  DataType: (ptr16 Eq_1612)
-  OrigDataType: (ptr16 (fn T_1633 (T_1609, T_1630, T_1632)))
-T_1629: (in a_23 @ 09AF : byte)
-  Class: Eq_1629
+T_1627: (in out c_24 @ 09AF : byte)
+  Class: Eq_290
   DataType: byte
   OrigDataType: byte
-T_1630: (in out a_23 @ 09AF : byte)
+T_1628: (in fn09B0(e, out a_23, out c_24) @ 09AF : bool)
   Class: Eq_1622
-  DataType: byte
-  OrigDataType: byte
-T_1631: (in c_24 @ 09AF : byte)
-  Class: Eq_622
-  DataType: byte
-  OrigDataType: byte
-T_1632: (in out c_24 @ 09AF : byte)
-  Class: Eq_304
-  DataType: byte
-  OrigDataType: byte
-T_1633: (in fn09B0(e, out a_23, out c_24) @ 09AF : bool)
-  Class: Eq_1627
-  DataType: Eq_1627
+  DataType: Eq_1622
   OrigDataType: bool
-T_1634: (in Z_26 @ 09AF : Eq_1627)
-  Class: Eq_1627
-  DataType: Eq_1627
+T_1629: (in Z_26 @ 09AF : Eq_1622)
+  Class: Eq_1622
+  DataType: Eq_1622
   OrigDataType: (union (bool u2) ((union (bool u0) (byte u1)) u0))
-T_1635: (in SEQ(a_23, f) @ 09AF : word16)
-  Class: Eq_619
+T_1630: (in SEQ(a_23, f) @ 09AF : word16)
+  Class: Eq_609
   DataType: word16
   OrigDataType: word16
-T_1636: (in 0<8> @ 09AF : byte)
-  Class: Eq_1627
+T_1631: (in 0<8> @ 09AF : byte)
+  Class: Eq_1622
   DataType: bool
   OrigDataType: byte
-T_1637: (in Z_26 != 0<8> @ 09AF : bool)
+T_1632: (in Z_26 != 0<8> @ 09AF : bool)
+  Class: Eq_1602
+  DataType: bool
+  OrigDataType: bool
+T_1633: (in f @ 09AF : byte)
+  Class: Eq_1633
+  DataType: byte
+  OrigDataType: byte
+T_1634: (in af @ 09A3 : word16)
+  Class: Eq_1634
+  DataType: word16
+  OrigDataType: word16
+T_1635: (in SLICE(af, byte, 8) @ 09A3 : byte)
+  Class: Eq_1603
+  DataType: byte
+  OrigDataType: byte
+T_1636: (in a_6 @ 09A3 : byte)
+  Class: Eq_1603
+  DataType: byte
+  OrigDataType: byte
+T_1637: (in fn09B0 @ 09AC : ptr16)
   Class: Eq_1607
-  DataType: bool
-  OrigDataType: bool
-T_1638: (in f @ 09AF : byte)
-  Class: Eq_1638
+  DataType: (ptr16 Eq_1607)
+  OrigDataType: (ptr16 (fn T_1645 (T_1640, T_1642, T_1644)))
+T_1638: (in __ror<byte,byte> @ 09AC : ptr32)
+  Class: Eq_1610
+  DataType: (ptr32 Eq_1610)
+  OrigDataType: (ptr32 (fn T_1640 (T_1636, T_1639)))
+T_1639: (in 4<8> @ 09AC : byte)
+  Class: Eq_1613
   DataType: byte
   OrigDataType: byte
-T_1639: (in af @ 09A3 : word16)
-  Class: Eq_1639
-  DataType: word16
-  OrigDataType: word16
-T_1640: (in SLICE(af, byte, 8) @ 09A3 : byte)
-  Class: Eq_1608
+T_1640: (in __ror<byte,byte>(a_6, 4<8>) @ 09AC : byte)
+  Class: Eq_1603
   DataType: byte
   OrigDataType: byte
-T_1641: (in a_6 @ 09A3 : byte)
-  Class: Eq_1608
+T_1641: (in a_30 @ 09AC : byte)
+  Class: Eq_1641
   DataType: byte
   OrigDataType: byte
-T_1642: (in fn09B0 @ 09AC : ptr16)
-  Class: Eq_1612
-  DataType: (ptr16 Eq_1612)
-  OrigDataType: (ptr16 (fn T_1650 (T_1645, T_1647, T_1649)))
-T_1643: (in __ror<byte,byte> @ 09AC : ptr32)
-  Class: Eq_1615
-  DataType: (ptr32 Eq_1615)
-  OrigDataType: (ptr32 (fn T_1645 (T_1641, T_1644)))
-T_1644: (in 4<8> @ 09AC : byte)
-  Class: Eq_1618
+T_1642: (in out a_30 @ 09AC : byte)
+  Class: Eq_1617
   DataType: byte
   OrigDataType: byte
-T_1645: (in __ror<byte,byte>(a_6, 4<8>) @ 09AC : byte)
-  Class: Eq_1608
+T_1643: (in c_31 @ 09AC : byte)
+  Class: Eq_1643
   DataType: byte
   OrigDataType: byte
-T_1646: (in a_30 @ 09AC : byte)
-  Class: Eq_1646
+T_1644: (in out c_31 @ 09AC : byte)
+  Class: Eq_290
   DataType: byte
   OrigDataType: byte
-T_1647: (in out a_30 @ 09AC : byte)
+T_1645: (in fn09B0(__ror<byte,byte>(a_6, 4<8>), out a_30, out c_31) @ 09AC : bool)
   Class: Eq_1622
-  DataType: byte
-  OrigDataType: byte
-T_1648: (in c_31 @ 09AC : byte)
-  Class: Eq_1648
-  DataType: byte
-  OrigDataType: byte
-T_1649: (in out c_31 @ 09AC : byte)
-  Class: Eq_304
-  DataType: byte
-  OrigDataType: byte
-T_1650: (in fn09B0(__ror<byte,byte>(a_6, 4<8>), out a_30, out c_31) @ 09AC : bool)
-  Class: Eq_1627
-  DataType: Eq_1627
+  DataType: Eq_1622
   OrigDataType: bool
-T_1651: (in SLICE(af, byte, 8) @ 09AF : byte)
-  Class: Eq_1608
+T_1646: (in SLICE(af, byte, 8) @ 09AF : byte)
+  Class: Eq_1603
   DataType: byte
   OrigDataType: byte
-T_1652: (in a_20 @ 09AF : byte)
-  Class: Eq_1608
+T_1647: (in a_20 @ 09AF : byte)
+  Class: Eq_1603
   DataType: byte
   OrigDataType: byte
-T_1653: (in SLICE(af, byte, 0) @ 09AF : byte)
-  Class: Eq_1638
+T_1648: (in SLICE(af, byte, 0) @ 09AF : byte)
+  Class: Eq_1633
   DataType: byte
   OrigDataType: byte
-T_1654: (in f_28 @ 09AF : byte)
-  Class: Eq_1638
+T_1649: (in f_28 @ 09AF : byte)
+  Class: Eq_1633
   DataType: byte
   OrigDataType: byte
-T_1655: (in fn09B0 @ 09AF : ptr16)
-  Class: Eq_1612
-  DataType: (ptr16 Eq_1612)
-  OrigDataType: (ptr16 (fn T_1660 (T_1652, T_1657, T_1659)))
-T_1656: (in a_21 @ 09AF : byte)
+T_1650: (in fn09B0 @ 09AF : ptr16)
+  Class: Eq_1607
+  DataType: (ptr16 Eq_1607)
+  OrigDataType: (ptr16 (fn T_1655 (T_1647, T_1652, T_1654)))
+T_1651: (in a_21 @ 09AF : byte)
+  Class: Eq_1651
+  DataType: byte
+  OrigDataType: byte
+T_1652: (in out a_21 @ 09AF : byte)
+  Class: Eq_1617
+  DataType: byte
+  OrigDataType: byte
+T_1653: (in c_32 @ 09AF : byte)
+  Class: Eq_1653
+  DataType: byte
+  OrigDataType: byte
+T_1654: (in out c_32 @ 09AF : byte)
+  Class: Eq_290
+  DataType: byte
+  OrigDataType: byte
+T_1655: (in fn09B0(a_20, out a_21, out c_32) @ 09AF : bool)
+  Class: Eq_1622
+  DataType: Eq_1622
+  OrigDataType: bool
+T_1656: (in Z @ 09AF : bool)
   Class: Eq_1656
-  DataType: byte
-  OrigDataType: byte
-T_1657: (in out a_21 @ 09AF : byte)
-  Class: Eq_1622
-  DataType: byte
-  OrigDataType: byte
-T_1658: (in c_32 @ 09AF : byte)
-  Class: Eq_1658
-  DataType: byte
-  OrigDataType: byte
-T_1659: (in out c_32 @ 09AF : byte)
-  Class: Eq_304
-  DataType: byte
-  OrigDataType: byte
-T_1660: (in fn09B0(a_20, out a_21, out c_32) @ 09AF : bool)
-  Class: Eq_1627
-  DataType: Eq_1627
-  OrigDataType: bool
-T_1661: (in Z @ 09AF : bool)
-  Class: Eq_1661
   DataType: bool
   OrigDataType: bool
-T_1662: (in __daa @ 09B4 : ptr32)
-  Class: Eq_1662
-  DataType: (ptr32 Eq_1662)
-  OrigDataType: (ptr32 (fn T_1667 (T_1666)))
-T_1663: (in signature of __daa : void)
-  Class: Eq_1662
-  DataType: (ptr32 Eq_1662)
+T_1657: (in __daa @ 09B4 : ptr32)
+  Class: Eq_1657
+  DataType: (ptr32 Eq_1657)
+  OrigDataType: (ptr32 (fn T_1662 (T_1661)))
+T_1658: (in signature of __daa : void)
+  Class: Eq_1657
+  DataType: (ptr32 Eq_1657)
   OrigDataType: 
-T_1664: (in p1 @ 09B4 : byte)
-  Class: Eq_1664
+T_1659: (in p1 @ 09B4 : byte)
+  Class: Eq_1659
   DataType: byte
   OrigDataType: 
-T_1665: (in 0x9F<8> @ 09B4 : byte)
-  Class: Eq_1665
+T_1660: (in 0x9F<8> @ 09B4 : byte)
+  Class: Eq_1660
   DataType: byte
   OrigDataType: byte
-T_1666: (in a + 0x9F<8> @ 09B4 : byte)
-  Class: Eq_1664
+T_1661: (in a + 0x9F<8> @ 09B4 : byte)
+  Class: Eq_1659
   DataType: byte
   OrigDataType: byte
-T_1667: (in __daa(a + 0x9F<8>) @ 09B4 : byte)
-  Class: Eq_1667
+T_1662: (in __daa(a + 0x9F<8>) @ 09B4 : byte)
+  Class: Eq_1662
   DataType: cu8
   OrigDataType: byte
-T_1668: (in a_6 @ 09B4 : cu8)
-  Class: Eq_1667
+T_1663: (in a_6 @ 09B4 : cu8)
+  Class: Eq_1662
   DataType: cu8
   OrigDataType: cu8
-T_1669: (in __daa @ 09B7 : ptr32)
-  Class: Eq_1669
-  DataType: (ptr32 Eq_1669)
-  OrigDataType: (ptr32 (fn T_1677 (T_1676)))
-T_1670: (in signature of __daa : void)
-  Class: Eq_1669
-  DataType: (ptr32 Eq_1669)
+T_1664: (in __daa @ 09B7 : ptr32)
+  Class: Eq_1664
+  DataType: (ptr32 Eq_1664)
+  OrigDataType: (ptr32 (fn T_1672 (T_1671)))
+T_1665: (in signature of __daa : void)
+  Class: Eq_1664
+  DataType: (ptr32 Eq_1664)
   OrigDataType: 
-T_1671: (in 0x40<8> @ 09B7 : byte)
-  Class: Eq_1671
+T_1666: (in 0x40<8> @ 09B7 : byte)
+  Class: Eq_1666
   DataType: byte
   OrigDataType: byte
-T_1672: (in a_6 + 0x40<8> @ 09B7 : byte)
-  Class: Eq_1672
-  DataType: byte
-  OrigDataType: byte
-T_1673: (in 0<8> @ 09B7 : byte)
+T_1667: (in a_6 + 0x40<8> @ 09B7 : byte)
   Class: Eq_1667
+  DataType: byte
+  OrigDataType: byte
+T_1668: (in 0<8> @ 09B7 : byte)
+  Class: Eq_1662
   DataType: cu8
   OrigDataType: cu8
-T_1674: (in a_6 < 0<8> @ 09B7 : bool)
+T_1669: (in a_6 < 0<8> @ 09B7 : bool)
+  Class: Eq_1669
+  DataType: bool
+  OrigDataType: bool
+T_1670: (in CONVERT(a_6 <u 0<8>, bool, byte) @ 09B7 : byte)
+  Class: Eq_1670
+  DataType: byte
+  OrigDataType: byte
+T_1671: (in a_6 + 0x40<8> + (byte) (a_6 < 0<8>) @ 09B7 : byte)
+  Class: Eq_1659
+  DataType: byte
+  OrigDataType: byte
+T_1672: (in __daa(a_6 + 0x40<8> + (byte) (a_6 < 0<8>)) @ 09B7 : byte)
+  Class: Eq_1617
+  DataType: byte
+  OrigDataType: byte
+T_1673: (in a_10 @ 09B7 : byte)
+  Class: Eq_1617
+  DataType: byte
+  OrigDataType: byte
+T_1674: (in cond(a_10) @ 09B7 : byte)
   Class: Eq_1674
-  DataType: bool
-  OrigDataType: bool
-T_1675: (in CONVERT(a_6 <u 0<8>, bool, byte) @ 09B7 : byte)
-  Class: Eq_1675
   DataType: byte
   OrigDataType: byte
-T_1676: (in a_6 + 0x40<8> + (byte) (a_6 < 0<8>) @ 09B7 : byte)
-  Class: Eq_1664
+T_1675: (in SZPC_11 @ 09B7 : byte)
+  Class: Eq_1674
   DataType: byte
   OrigDataType: byte
-T_1677: (in __daa(a_6 + 0x40<8> + (byte) (a_6 < 0<8>)) @ 09B7 : byte)
-  Class: Eq_1622
+T_1676: (in fn0A19 @ 09B8 : ptr16)
+  Class: Eq_288
+  DataType: (ptr16 Eq_288)
+  OrigDataType: (ptr16 (fn T_1677 ()))
+T_1677: (in fn0A19() @ 09B8 : byte)
+  Class: Eq_290
   DataType: byte
   OrigDataType: byte
-T_1678: (in a_10 @ 09B7 : byte)
-  Class: Eq_1622
+T_1678: (in c_12 @ 09B8 : byte)
+  Class: Eq_290
   DataType: byte
   OrigDataType: byte
-T_1679: (in cond(a_10) @ 09B7 : byte)
+T_1679: (in 0x40<8> @ 09B8 : byte)
   Class: Eq_1679
   DataType: byte
   OrigDataType: byte
-T_1680: (in SZPC_11 @ 09B7 : byte)
-  Class: Eq_1679
+T_1680: (in SZPC_11 & 0x40<8> @ 09B8 : byte)
+  Class: Eq_1680
   DataType: byte
   OrigDataType: byte
-T_1681: (in fn0A19 @ 09B8 : ptr16)
-  Class: Eq_302
-  DataType: (ptr16 Eq_302)
-  OrigDataType: (ptr16 (fn T_1682 ()))
-T_1682: (in fn0A19() @ 09B8 : byte)
-  Class: Eq_304
+T_1681: (in 0<8> @ 09B8 : byte)
+  Class: Eq_1680
   DataType: byte
   OrigDataType: byte
-T_1683: (in c_12 @ 09B8 : byte)
-  Class: Eq_304
-  DataType: byte
-  OrigDataType: byte
-T_1684: (in 0x40<8> @ 09B8 : byte)
-  Class: Eq_1684
-  DataType: byte
-  OrigDataType: byte
-T_1685: (in SZPC_11 & 0x40<8> @ 09B8 : byte)
-  Class: Eq_1685
-  DataType: byte
-  OrigDataType: byte
-T_1686: (in 0<8> @ 09B8 : byte)
-  Class: Eq_1685
-  DataType: byte
-  OrigDataType: byte
-T_1687: (in (SZPC_11 & 0x40<8>) != 0<8> @ 09B8 : bool)
-  Class: Eq_1661
+T_1682: (in (SZPC_11 & 0x40<8>) != 0<8> @ 09B8 : bool)
+  Class: Eq_1656
   DataType: bool
   OrigDataType: bool
-T_1688: (in af @ 09B8 : word16)
+T_1683: (in af @ 09B8 : word16)
   Class: Eq_40
   DataType: word16
   OrigDataType: word16
-T_1689: (in SLICE(de, byte, 8) @ 09BA : byte)
+T_1684: (in SLICE(de, byte, 8) @ 09BA : byte)
   Class: Eq_25
   DataType: byte
   OrigDataType: byte
-T_1690: (in d_11 @ 09BA : byte)
+T_1685: (in d_11 @ 09BA : byte)
   Class: Eq_25
   DataType: byte
   OrigDataType: byte
-T_1691: (in fn09C5 @ 09C4 : ptr16)
+T_1686: (in fn09C5 @ 09C4 : ptr16)
   Class: Eq_31
   DataType: (ptr16 Eq_31)
-  OrigDataType: (ptr16 (fn T_1694 (T_78, T_1690, T_79, T_1693)))
-T_1692: (in d_24 @ 09C4 : byte)
-  Class: Eq_1692
+  OrigDataType: (ptr16 (fn T_1689 (T_78, T_1685, T_79, T_1688)))
+T_1687: (in d_24 @ 09C4 : byte)
+  Class: Eq_1687
   DataType: byte
   OrigDataType: byte
-T_1693: (in out d_24 @ 09C4 : byte)
+T_1688: (in out d_24 @ 09C4 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1694: (in fn09C5(f, d_11, de, out d_24) @ 09C4 : word16)
+T_1689: (in fn09C5(f, d_11, de, out d_24) @ 09C4 : word16)
   Class: Eq_40
   DataType: word16
   OrigDataType: word16
-T_1695: (in af @ 09C4 : word16)
-  Class: Eq_785
+T_1690: (in af @ 09C4 : word16)
+  Class: Eq_776
   DataType: word16
   OrigDataType: word16
-T_1696: (in fn09C7 @ 09C5 : ptr16)
-  Class: Eq_773
-  DataType: (ptr16 Eq_773)
-  OrigDataType: (ptr16 (fn T_1702 (T_33, T_1697, T_35, T_1699, T_1701)))
-T_1697: (in 0<8> @ 09C5 : byte)
-  Class: Eq_776
+T_1691: (in fn09C7 @ 09C5 : ptr16)
+  Class: Eq_764
+  DataType: (ptr16 Eq_764)
+  OrigDataType: (ptr16 (fn T_1697 (T_33, T_1692, T_35, T_1694, T_1696)))
+T_1692: (in 0<8> @ 09C5 : byte)
+  Class: Eq_767
   DataType: byte
   OrigDataType: byte
-T_1698: (in d_16 @ 09C5 : byte)
-  Class: Eq_1698
+T_1693: (in d_16 @ 09C5 : byte)
+  Class: Eq_1693
   DataType: byte
   OrigDataType: byte
-T_1699: (in out d_16 @ 09C5 : byte)
+T_1694: (in out d_16 @ 09C5 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1700: (in iy_17 @ 09C5 : word16)
+T_1695: (in iy_17 @ 09C5 : word16)
+  Class: Eq_1695
+  DataType: word16
+  OrigDataType: word16
+T_1696: (in out iy_17 @ 09C5 : word16)
+  Class: Eq_35
+  DataType: (ptr16 byte)
+  OrigDataType: word16
+T_1697: (in fn09C7(f, 0<8>, iy, out d_16, out iy_17) @ 09C5 : word16)
+  Class: Eq_776
+  DataType: word16
+  OrigDataType: word16
+T_1698: (in af_8 @ 09C5 : word16)
+  Class: Eq_776
+  DataType: word16
+  OrigDataType: word16
+T_1699: (in af @ 09C5 : word16)
+  Class: Eq_1699
+  DataType: word16
+  OrigDataType: word16
+T_1700: (in 0<16> @ 09C7 : word16)
   Class: Eq_1700
   DataType: word16
   OrigDataType: word16
-T_1701: (in out iy_17 @ 09C5 : word16)
-  Class: Eq_35
-  DataType: (ptr16 byte)
-  OrigDataType: word16
-T_1702: (in fn09C7(f, 0<8>, iy, out d_16, out iy_17) @ 09C5 : word16)
-  Class: Eq_785
+T_1701: (in iy + 0<16> @ 09C7 : word16)
+  Class: Eq_1701
   DataType: word16
   OrigDataType: word16
-T_1703: (in af_8 @ 09C5 : word16)
-  Class: Eq_785
-  DataType: word16
-  OrigDataType: word16
-T_1704: (in af @ 09C5 : word16)
+T_1702: (in Mem4[iy + 0<16>:byte] @ 09C7 : byte)
+  Class: Eq_1702
+  DataType: byte
+  OrigDataType: byte
+T_1703: (in a_5 @ 09C7 : byte)
+  Class: Eq_1702
+  DataType: byte
+  OrigDataType: byte
+T_1704: (in de @ 09C7 : word16)
   Class: Eq_1704
   DataType: word16
   OrigDataType: word16
-T_1705: (in 0<16> @ 09C7 : word16)
+T_1705: (in SLICE(de, byte, 0) @ 09C7 : byte)
   Class: Eq_1705
-  DataType: word16
-  OrigDataType: word16
-T_1706: (in iy + 0<16> @ 09C7 : word16)
-  Class: Eq_1706
-  DataType: word16
-  OrigDataType: word16
-T_1707: (in Mem4[iy + 0<16>:byte] @ 09C7 : byte)
+  DataType: byte
+  OrigDataType: byte
+T_1706: (in e_59 @ 09C7 : byte)
+  Class: Eq_1705
+  DataType: byte
+  OrigDataType: byte
+T_1707: (in SLICE(de, byte, 8) @ 09C7 : byte)
   Class: Eq_1707
   DataType: byte
   OrigDataType: byte
-T_1708: (in a_5 @ 09C7 : byte)
+T_1708: (in d_69 @ 09C7 : byte)
   Class: Eq_1707
   DataType: byte
   OrigDataType: byte
-T_1709: (in de @ 09C7 : word16)
-  Class: Eq_1709
+T_1709: (in SEQ(a_5, f) @ 09CA : word16)
+  Class: Eq_1699
   DataType: word16
   OrigDataType: word16
-T_1710: (in SLICE(de, byte, 0) @ 09C7 : byte)
-  Class: Eq_1710
+T_1710: (in af_82 @ 09CA : word16)
+  Class: Eq_1699
+  DataType: word16
+  OrigDataType: word16
+T_1711: (in 0x5E<8> @ 09CC : byte)
+  Class: Eq_1702
   DataType: byte
   OrigDataType: byte
-T_1711: (in e_59 @ 09C7 : byte)
-  Class: Eq_1710
-  DataType: byte
-  OrigDataType: byte
-T_1712: (in SLICE(de, byte, 8) @ 09C7 : byte)
+T_1712: (in a_5 != 0x5E<8> @ 09CC : bool)
   Class: Eq_1712
-  DataType: byte
-  OrigDataType: byte
-T_1713: (in d_69 @ 09C7 : byte)
-  Class: Eq_1712
-  DataType: byte
-  OrigDataType: byte
-T_1714: (in SEQ(a_5, f) @ 09CA : word16)
-  Class: Eq_1704
-  DataType: word16
-  OrigDataType: word16
-T_1715: (in af_82 @ 09CA : word16)
-  Class: Eq_1704
-  DataType: word16
-  OrigDataType: word16
-T_1716: (in 0x5E<8> @ 09CC : byte)
-  Class: Eq_1707
-  DataType: byte
-  OrigDataType: byte
-T_1717: (in a_5 != 0x5E<8> @ 09CC : bool)
-  Class: Eq_1717
   DataType: bool
   OrigDataType: bool
-T_1718: (in SEQ(a_5, f) @ 09F6 : word16)
-  Class: Eq_1704
+T_1713: (in SEQ(a_5, f) @ 09F6 : word16)
+  Class: Eq_1699
   DataType: word16
   OrigDataType: word16
-T_1719: (in af_114 @ 09F6 : word16)
-  Class: Eq_1704
+T_1714: (in af_114 @ 09F6 : word16)
+  Class: Eq_1699
   DataType: word16
   OrigDataType: word16
-T_1720: (in 0x21<8> @ 09CF : byte)
-  Class: Eq_1707
+T_1715: (in 0x21<8> @ 09CF : byte)
+  Class: Eq_1702
   DataType: byte
   OrigDataType: byte
-T_1721: (in a_5 == 0x21<8> @ 09CF : bool)
+T_1716: (in a_5 == 0x21<8> @ 09CF : bool)
+  Class: Eq_1716
+  DataType: bool
+  OrigDataType: bool
+T_1717: (in 0xAB8<16> @ 09D2 : word16)
+  Class: Eq_1717
+  DataType: (ptr16 Eq_87)
+  OrigDataType: (ptr16 (struct (0 T_1718 t0000)))
+T_1718: (in Mem13[0xAB8<16>:word16] @ 09D2 : word16)
+  Class: Eq_87
+  DataType: Eq_87
+  OrigDataType: word16
+T_1719: (in hl_14 @ 09D2 : Eq_87)
+  Class: Eq_87
+  DataType: Eq_87
+  OrigDataType: word16
+T_1720: (in 0x32<8> @ 09D8 : byte)
+  Class: Eq_1702
+  DataType: byte
+  OrigDataType: byte
+T_1721: (in a_5 != 0x32<8> @ 09D8 : bool)
   Class: Eq_1721
   DataType: bool
   OrigDataType: bool
-T_1722: (in 0xAB8<16> @ 09D2 : word16)
-  Class: Eq_1722
-  DataType: (ptr16 Eq_87)
-  OrigDataType: (ptr16 (struct (0 T_1723 t0000)))
-T_1723: (in Mem13[0xAB8<16>:word16] @ 09D2 : word16)
-  Class: Eq_87
-  DataType: Eq_87
-  OrigDataType: word16
-T_1724: (in hl_14 @ 09D2 : Eq_87)
-  Class: Eq_87
-  DataType: Eq_87
-  OrigDataType: word16
-T_1725: (in 0x32<8> @ 09D8 : byte)
-  Class: Eq_1707
-  DataType: byte
-  OrigDataType: byte
-T_1726: (in a_5 != 0x32<8> @ 09D8 : bool)
-  Class: Eq_1726
-  DataType: bool
-  OrigDataType: bool
-T_1727: (in fn0E24 @ 09DB : ptr16)
-  Class: Eq_472
-  DataType: (ptr16 Eq_472)
-  OrigDataType: (ptr16 (fn T_1734 (T_1729, T_1731, T_1733)))
-T_1728: (in 2<16> @ 09DB : word16)
-  Class: Eq_1728
+T_1722: (in fn0E24 @ 09DB : ptr16)
+  Class: Eq_462
+  DataType: (ptr16 Eq_462)
+  OrigDataType: (ptr16 (fn T_1729 (T_1724, T_1726, T_1728)))
+T_1723: (in 2<16> @ 09DB : word16)
+  Class: Eq_1723
   DataType: word16
   OrigDataType: word16
-T_1729: (in hl_14 + 2<16> @ 09DB : word16)
+T_1724: (in hl_14 + 2<16> @ 09DB : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_1730: (in af_121 @ 09DB : word16)
-  Class: Eq_1730
+T_1725: (in af_121 @ 09DB : word16)
+  Class: Eq_1725
   DataType: word16
   OrigDataType: word16
-T_1731: (in out af_121 @ 09DB : word16)
+T_1726: (in out af_121 @ 09DB : word16)
   Class: Eq_53
   DataType: (ptr16 Eq_53)
   OrigDataType: word16
-T_1732: (in hl_122 @ 09DB : word16)
-  Class: Eq_1732
+T_1727: (in hl_122 @ 09DB : word16)
+  Class: Eq_1727
   DataType: word16
   OrigDataType: word16
-T_1733: (in out hl_122 @ 09DB : word16)
+T_1728: (in out hl_122 @ 09DB : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_1734: (in fn0E24((word16) hl_14.u1 + 2<i32>, out af_121, out hl_122) @ 09DB : bool)
-  Class: Eq_482
-  DataType: Eq_482
+T_1729: (in fn0E24((word16) hl_14.u1 + 2<i32>, out af_121, out hl_122) @ 09DB : bool)
+  Class: Eq_472
+  DataType: Eq_472
   OrigDataType: bool
-T_1735: (in a_38 @ 09DB : uint8)
+T_1730: (in a_38 @ 09DB : uint8)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1736: (in fn09A2 @ 09DF : ptr16)
-  Class: Eq_606
-  DataType: (ptr16 Eq_606)
-  OrigDataType: (ptr16 (fn T_1742 (T_1737, T_1739, T_1741)))
-T_1737: (in SEQ(a_38, f) @ 09DF : word16)
-  Class: Eq_487
+T_1731: (in fn09A2 @ 09DF : ptr16)
+  Class: Eq_596
+  DataType: (ptr16 Eq_596)
+  OrigDataType: (ptr16 (fn T_1737 (T_1732, T_1734, T_1736)))
+T_1732: (in SEQ(a_38, f) @ 09DF : word16)
+  Class: Eq_477
   DataType: word16
   OrigDataType: word16
-T_1738: (in af_117 @ 09DF : word16)
-  Class: Eq_1704
+T_1733: (in af_117 @ 09DF : word16)
+  Class: Eq_1699
   DataType: word16
   OrigDataType: word16
-T_1739: (in out af_117 @ 09DF : word16)
-  Class: Eq_619
+T_1734: (in out af_117 @ 09DF : word16)
+  Class: Eq_609
   DataType: word16
   OrigDataType: word16
-T_1740: (in c_123 @ 09DF : byte)
+T_1735: (in c_123 @ 09DF : byte)
+  Class: Eq_1735
+  DataType: byte
+  OrigDataType: byte
+T_1736: (in out c_123 @ 09DF : byte)
+  Class: Eq_612
+  DataType: byte
+  OrigDataType: byte
+T_1737: (in fn09A2(SEQ(a_38, f), out af_117, out c_123) @ 09DF : bool)
+  Class: Eq_614
+  DataType: Eq_614
+  OrigDataType: bool
+T_1738: (in SLICE(de, byte, 0) @ 09F5 : byte)
+  Class: Eq_1705
+  DataType: byte
+  OrigDataType: byte
+T_1739: (in SLICE(de, byte, 8) @ 09F5 : byte)
+  Class: Eq_1707
+  DataType: byte
+  OrigDataType: byte
+T_1740: (in 1<8> @ 09F8 : byte)
   Class: Eq_1740
   DataType: byte
   OrigDataType: byte
-T_1741: (in out c_123 @ 09DF : byte)
-  Class: Eq_622
+T_1741: (in e_59 - 1<8> @ 09F8 : byte)
+  Class: Eq_1741
   DataType: byte
   OrigDataType: byte
-T_1742: (in fn09A2(SEQ(a_38, f), out af_117, out c_123) @ 09DF : bool)
-  Class: Eq_624
-  DataType: Eq_624
-  OrigDataType: bool
-T_1743: (in SLICE(de, byte, 0) @ 09F5 : byte)
-  Class: Eq_1710
+T_1742: (in e_62 @ 09F8 : byte)
+  Class: Eq_1741
   DataType: byte
   OrigDataType: byte
-T_1744: (in SLICE(de, byte, 8) @ 09F5 : byte)
-  Class: Eq_1712
-  DataType: byte
-  OrigDataType: byte
-T_1745: (in 1<8> @ 09F8 : byte)
-  Class: Eq_1745
-  DataType: byte
-  OrigDataType: byte
-T_1746: (in e_59 - 1<8> @ 09F8 : byte)
-  Class: Eq_1746
-  DataType: byte
-  OrigDataType: byte
-T_1747: (in e_62 @ 09F8 : byte)
-  Class: Eq_1746
-  DataType: byte
-  OrigDataType: byte
-T_1748: (in SLICE(af_114, byte, 0) @ 09F6 : byte)
+T_1743: (in SLICE(af_114, byte, 0) @ 09F6 : byte)
   Class: Eq_2
   DataType: byte
   OrigDataType: byte
-T_1749: (in 1<16> @ 09F6 : word16)
-  Class: Eq_1749
+T_1744: (in 1<16> @ 09F6 : word16)
+  Class: Eq_1744
   DataType: int16
   OrigDataType: int16
-T_1750: (in iy + 1<16> @ 09F6 : word16)
+T_1745: (in iy + 1<16> @ 09F6 : word16)
   Class: Eq_35
   DataType: (ptr16 byte)
   OrigDataType: ptr16
-T_1751: (in SEQ(d_69, e_62) @ 09F8 : word16)
-  Class: Eq_1709
-  DataType: word16
-  OrigDataType: word16
-T_1752: (in 0<8> @ 09F9 : byte)
-  Class: Eq_1746
-  DataType: byte
-  OrigDataType: byte
-T_1753: (in e_62 != 0<8> @ 09F9 : bool)
-  Class: Eq_1753
-  DataType: bool
-  OrigDataType: bool
-T_1754: (in 0x31<8> @ 09E6 : byte)
-  Class: Eq_1707
-  DataType: byte
-  OrigDataType: byte
-T_1755: (in a_5 != 0x31<8> @ 09E6 : bool)
-  Class: Eq_1755
-  DataType: bool
-  OrigDataType: bool
-T_1756: (in fn0E24 @ 09E8 : ptr16)
-  Class: Eq_472
-  DataType: (ptr16 Eq_472)
-  OrigDataType: (ptr16 (fn T_1763 (T_1758, T_1760, T_1762)))
-T_1757: (in 1<16> @ 09E8 : word16)
-  Class: Eq_1757
-  DataType: word16
-  OrigDataType: word16
-T_1758: (in hl_14 + 1<16> @ 09E8 : word16)
-  Class: Eq_87
-  DataType: Eq_87
-  OrigDataType: word16
-T_1759: (in af_124 @ 09E8 : word16)
-  Class: Eq_1759
-  DataType: word16
-  OrigDataType: word16
-T_1760: (in out af_124 @ 09E8 : word16)
-  Class: Eq_53
-  DataType: (ptr16 Eq_53)
-  OrigDataType: word16
-T_1761: (in hl_125 @ 09E8 : word16)
-  Class: Eq_1761
-  DataType: word16
-  OrigDataType: word16
-T_1762: (in out hl_125 @ 09E8 : word16)
-  Class: Eq_87
-  DataType: Eq_87
-  OrigDataType: word16
-T_1763: (in fn0E24((word16) hl_14.u1 + 1<i32>, out af_124, out hl_125) @ 09E8 : bool)
-  Class: Eq_482
-  DataType: Eq_482
-  OrigDataType: bool
-T_1764: (in a_21 @ 09E8 : uint8)
-  Class: Eq_38
-  DataType: uint8
-  OrigDataType: byte
-T_1765: (in fn09A2 @ 09EC : ptr16)
-  Class: Eq_606
-  DataType: (ptr16 Eq_606)
-  OrigDataType: (ptr16 (fn T_1770 (T_1766, T_1767, T_1769)))
-T_1766: (in SEQ(a_21, f) @ 09EC : word16)
-  Class: Eq_487
-  DataType: word16
-  OrigDataType: word16
-T_1767: (in out af_117 @ 09EC : word16)
-  Class: Eq_619
-  DataType: word16
-  OrigDataType: word16
-T_1768: (in c_126 @ 09EC : byte)
-  Class: Eq_1768
-  DataType: byte
-  OrigDataType: byte
-T_1769: (in out c_126 @ 09EC : byte)
-  Class: Eq_622
-  DataType: byte
-  OrigDataType: byte
-T_1770: (in fn09A2(SEQ(a_21, f), out af_117, out c_126) @ 09EC : bool)
-  Class: Eq_624
-  DataType: Eq_624
-  OrigDataType: bool
-T_1771: (in fn0A2A @ 09F2 : ptr16)
-  Class: Eq_260
-  DataType: (ptr16 Eq_260)
-  OrigDataType: (ptr16 (fn T_1772 ()))
-T_1772: (in fn0A2A() @ 09F2 : void)
-  Class: Eq_262
-  DataType: void
-  OrigDataType: void
-T_1773: (in SEQ(a_5, f) @ 09F5 : word16)
+T_1746: (in SEQ(d_69, e_62) @ 09F8 : word16)
   Class: Eq_1704
   DataType: word16
   OrigDataType: word16
-T_1774: (in fn0A27 @ 0A08 : ptr16)
-  Class: Eq_447
-  DataType: (ptr16 Eq_447)
-  OrigDataType: (ptr16 (fn T_1775 ()))
-T_1775: (in fn0A27() @ 0A08 : void)
-  Class: Eq_449
-  DataType: void
-  OrigDataType: void
-T_1776: (in 3<8> @ 0A0D : byte)
-  Class: Eq_61
-  DataType: cu8
+T_1747: (in 0<8> @ 09F9 : byte)
+  Class: Eq_1741
+  DataType: byte
   OrigDataType: byte
-T_1777: (in a == 3<8> @ 0A0D : bool)
-  Class: Eq_1777
+T_1748: (in e_62 != 0<8> @ 09F9 : bool)
+  Class: Eq_1748
   DataType: bool
   OrigDataType: bool
-T_1778: (in cpm_warm_boot @ 0A21 : ptr16)
-  Class: Eq_1778
-  DataType: (ptr16 Eq_1778)
-  OrigDataType: (ptr16 (fn T_1780 ()))
-T_1779: (in signature of cpm_warm_boot : void)
-  Class: Eq_1778
-  DataType: (ptr16 Eq_1778)
-  OrigDataType: 
-T_1780: (in cpm_warm_boot() @ 0A21 : void)
-  Class: Eq_1780
-  DataType: void
-  OrigDataType: void
-T_1781: (in 0x18<8> @ 0A12 : byte)
-  Class: Eq_61
-  DataType: cu8
+T_1749: (in 0x31<8> @ 09E6 : byte)
+  Class: Eq_1702
+  DataType: byte
   OrigDataType: byte
-T_1782: (in a != 0x18<8> @ 0A12 : bool)
-  Class: Eq_1782
+T_1750: (in a_5 != 0x31<8> @ 09E6 : bool)
+  Class: Eq_1750
   DataType: bool
   OrigDataType: bool
-T_1783: (in fn0A19 @ 0A12 : ptr16)
-  Class: Eq_302
-  DataType: (ptr16 Eq_302)
-  OrigDataType: (ptr16 (fn T_1784 ()))
-T_1784: (in fn0A19() @ 0A12 : byte)
-  Class: Eq_304
-  DataType: byte
-  OrigDataType: byte
-T_1785: (in fn0A19 @ 0A17 : ptr16)
-  Class: Eq_302
-  DataType: (ptr16 Eq_302)
-  OrigDataType: (ptr16 (fn T_1786 ()))
-T_1786: (in fn0A19() @ 0A17 : byte)
-  Class: Eq_304
-  DataType: byte
-  OrigDataType: byte
-T_1787: (in 0x23<8> @ 0A17 : byte)
-  Class: Eq_61
-  DataType: cu8
-  OrigDataType: byte
-T_1788: (in c @ 0A17 : byte)
-  Class: Eq_1788
-  DataType: byte
-  OrigDataType: byte
-T_1789: (in fn0A2A @ 0A1A : ptr16)
-  Class: Eq_260
-  DataType: (ptr16 Eq_260)
-  OrigDataType: (ptr16 (fn T_1790 ()))
-T_1790: (in fn0A2A() @ 0A1A : void)
-  Class: Eq_262
-  DataType: void
-  OrigDataType: void
-T_1791: (in a @ 0A1D : byte)
-  Class: Eq_1788
-  DataType: byte
-  OrigDataType: byte
-T_1792: (in cpm_warm_boot @ 0A24 : ptr16)
-  Class: Eq_1792
-  DataType: (ptr16 Eq_1792)
-  OrigDataType: (ptr16 (fn T_1794 ()))
-T_1793: (in signature of cpm_warm_boot : void)
-  Class: Eq_1792
-  DataType: (ptr16 Eq_1792)
-  OrigDataType: 
-T_1794: (in cpm_warm_boot() @ 0A24 : void)
-  Class: Eq_1794
-  DataType: void
-  OrigDataType: void
-T_1795: (in cpm_warm_boot @ 0A27 : ptr16)
-  Class: Eq_1795
-  DataType: (ptr16 Eq_1795)
-  OrigDataType: (ptr16 (fn T_1797 ()))
-T_1796: (in signature of cpm_warm_boot : void)
-  Class: Eq_1795
-  DataType: (ptr16 Eq_1795)
-  OrigDataType: 
-T_1797: (in cpm_warm_boot() @ 0A27 : void)
-  Class: Eq_1797
-  DataType: void
-  OrigDataType: void
-T_1798: (in cpm_warm_boot @ 0A2A : ptr16)
-  Class: Eq_1798
-  DataType: (ptr16 Eq_1798)
-  OrigDataType: (ptr16 (fn T_1800 ()))
-T_1799: (in signature of cpm_warm_boot : void)
-  Class: Eq_1798
-  DataType: (ptr16 Eq_1798)
-  OrigDataType: 
-T_1800: (in cpm_warm_boot() @ 0A2A : void)
-  Class: Eq_1800
-  DataType: void
-  OrigDataType: void
-T_1801: (in 0x5D<16> @ 0DA7 : word16)
-  Class: Eq_1801
-  DataType: (ptr16 byte)
-  OrigDataType: (ptr16 (struct (0 T_1802 t0000)))
-T_1802: (in Mem0[0x5D<16>:byte] @ 0DA7 : byte)
-  Class: Eq_1802
-  DataType: byte
-  OrigDataType: byte
-T_1803: (in 0x20<8> @ 0DA7 : byte)
-  Class: Eq_1802
-  DataType: byte
-  OrigDataType: byte
-T_1804: (in g_b005D != 0x20<8> @ 0DA7 : bool)
-  Class: Eq_1804
-  DataType: bool
-  OrigDataType: bool
-T_1805: (in 0x6D<16> @ 0DA8 : word16)
-  Class: Eq_1805
-  DataType: (ptr16 byte)
-  OrigDataType: word16
-T_1806: (in de_12 @ 0DA8 : (ptr16 byte))
-  Class: Eq_1805
-  DataType: (ptr16 byte)
-  OrigDataType: (ptr16 (struct 0001 (0 byte b0000)))
-T_1807: (in 0x6D<16> @ 0DAE : word16)
-  Class: Eq_1807
-  DataType: (ptr16 byte)
-  OrigDataType: (ptr16 (struct (0 T_1808 t0000)))
-T_1808: (in Mem0[0x6D<16>:byte] @ 0DAE : byte)
-  Class: Eq_1808
-  DataType: byte
-  OrigDataType: byte
-T_1809: (in 0x20<8> @ 0DAE : byte)
-  Class: Eq_1808
-  DataType: byte
-  OrigDataType: byte
-T_1810: (in g_a006D[0<i32>] == 0x20<8> @ 0DAE : bool)
-  Class: Eq_1810
-  DataType: bool
-  OrigDataType: bool
-T_1811: (in F_OPEN @ 0DD2 : ptr16)
-  Class: Eq_1811
-  DataType: (ptr16 Eq_1811)
-  OrigDataType: (ptr16 (fn T_1815 (T_1814)))
-T_1812: (in signature of F_OPEN : void)
-  Class: Eq_1811
-  DataType: (ptr16 Eq_1811)
-  OrigDataType: 
-T_1813: (in pFcb @ 0DD2 : (ptr16 Fcb))
-  Class: Eq_1813
-  DataType: (ptr16 Eq_1813)
-  OrigDataType: 
-T_1814: (in 0x5C<16> @ 0DD2 : word16)
-  Class: Eq_1813
-  DataType: (ptr16 Eq_1813)
-  OrigDataType: (ptr16 Fcb)
-T_1815: (in F_OPEN(&g_t005C) @ 0DD2 : uint8)
-  Class: Eq_1815
-  DataType: uint8
-  OrigDataType: uint8
-T_1816: (in 0xFF<8> @ 0DD2 : byte)
-  Class: Eq_1815
-  DataType: uint8
-  OrigDataType: byte
-T_1817: (in F_OPEN(&g_t005C) != 0xFF<8> @ 0DD2 : bool)
-  Class: Eq_1817
-  DataType: bool
-  OrigDataType: bool
-T_1818: (in 0<16> @ 0DB1 : word16)
-  Class: Eq_1818
-  DataType: ui16
-  OrigDataType: word16
-T_1819: (in hl_11 @ 0DB1 : ui16)
-  Class: Eq_1818
-  DataType: ui16
-  OrigDataType: ui16
-T_1820: (in 0xE7A<16> @ 0DC6 : word16)
-  Class: Eq_1820
-  DataType: (ptr16 ui16)
-  OrigDataType: (ptr16 (struct (0 T_1821 t0000)))
-T_1821: (in Mem19[0xE7A<16>:word16] @ 0DC6 : word16)
-  Class: Eq_1818
-  DataType: ui16
-  OrigDataType: word16
-T_1822: (in 2<16> @ 0DBD : word16)
-  Class: Eq_1822
-  DataType: ui16
-  OrigDataType: ui16
-T_1823: (in hl_11 * 2<16> @ 0DBD : word16)
-  Class: Eq_1823
-  DataType: ui16
-  OrigDataType: ui16
-T_1824: (in hl_82 @ 0DBD : ui16)
-  Class: Eq_1823
-  DataType: ui16
-  OrigDataType: ui16
-T_1825: (in 8<16> @ 0DC2 : word16)
-  Class: Eq_1825
-  DataType: ui16
-  OrigDataType: ui16
-T_1826: (in hl_82 * 8<16> @ 0DC2 : word16)
-  Class: Eq_1826
-  DataType: ui16
-  OrigDataType: ui16
-T_1827: (in SLICE(hl_82 * 8<16>, byte, 8) @ 0DC2 : byte)
-  Class: Eq_1827
-  DataType: byte
-  OrigDataType: byte
-T_1828: (in a_14 @ 0DC2 : byte)
-  Class: Eq_1828
-  DataType: byte
-  OrigDataType: byte
-T_1829: (in 0xF<8> @ 0DC2 : byte)
-  Class: Eq_1829
-  DataType: byte
-  OrigDataType: byte
-T_1830: (in a_14 + 0xF<8> @ 0DC2 : byte)
-  Class: Eq_1830
-  DataType: byte
-  OrigDataType: byte
-T_1831: (in SLICE(hl_82, byte, 0) @ 0DC2 : byte)
-  Class: Eq_1831
-  DataType: bui8
-  OrigDataType: bui8
-T_1832: (in 8<8> @ 0DC2 : byte)
-  Class: Eq_1832
-  DataType: bui8
-  OrigDataType: bui8
-T_1833: (in (byte) hl_82 * 8<8> @ 0DC2 : byte)
-  Class: Eq_1833
-  DataType: ui8
-  OrigDataType: ui8
-T_1834: (in a_14 + 0xF<8> | (byte) hl_82 * 8<8> @ 0DC2 : byte)
-  Class: Eq_1834
-  DataType: byte
-  OrigDataType: byte
-T_1835: (in SEQ(SLICE(hl_82 * 8<16>, byte, 8), a_14 + 0xF<8> | SLICE(hl_82, byte, 0) * 8<8>) @ 0DC2 : word16)
-  Class: Eq_1818
-  DataType: ui16
-  OrigDataType: word16
-T_1836: (in 0<16> @ 0DB4 : word16)
-  Class: Eq_1836
+T_1751: (in fn0E24 @ 09E8 : ptr16)
+  Class: Eq_462
+  DataType: (ptr16 Eq_462)
+  OrigDataType: (ptr16 (fn T_1758 (T_1753, T_1755, T_1757)))
+T_1752: (in 1<16> @ 09E8 : word16)
+  Class: Eq_1752
   DataType: word16
   OrigDataType: word16
-T_1837: (in de_12 + 0<16> @ 0DB4 : word16)
-  Class: Eq_1837
-  DataType: word16
-  OrigDataType: word16
-T_1838: (in Mem0[de_12 + 0<16>:byte] @ 0DB4 : byte)
-  Class: Eq_1828
-  DataType: byte
-  OrigDataType: byte
-T_1839: (in 1<16> @ 0DB5 : word16)
-  Class: Eq_1839
-  DataType: int16
-  OrigDataType: int16
-T_1840: (in de_12 + 1<16> @ 0DB5 : word16)
-  Class: Eq_1805
-  DataType: (ptr16 byte)
-  OrigDataType: ptr16
-T_1841: (in 0x20<8> @ 0DB8 : byte)
-  Class: Eq_1828
-  DataType: byte
-  OrigDataType: byte
-T_1842: (in a_14 == 0x20<8> @ 0DB8 : bool)
-  Class: Eq_1842
-  DataType: bool
-  OrigDataType: bool
-T_1843: (in 0xE78<16> @ 0DE6 : word16)
-  Class: Eq_1843
-  DataType: (ptr16 word16)
-  OrigDataType: (ptr16 (struct (0 T_1844 t0000)))
-T_1844: (in Mem26[0xE78<16>:word16] @ 0DE6 : word16)
-  Class: Eq_1844
-  DataType: word16
-  OrigDataType: word16
-T_1845: (in 0xE7A<16> @ 0DE6 : word16)
-  Class: Eq_1845
-  DataType: (ptr16 ui16)
-  OrigDataType: (ptr16 (struct (0 T_1846 t0000)))
-T_1846: (in Mem26[0xE7A<16>:word16] @ 0DE6 : word16)
-  Class: Eq_1818
-  DataType: ui16
-  OrigDataType: word16
-T_1847: (in g_w0E78 + g_w0E7A @ 0DE6 : word16)
-  Class: Eq_1847
-  DataType: (ptr16 void)
-  OrigDataType: word16
-T_1848: (in de_34 @ 0DE6 : (ptr16 void))
-  Class: Eq_1847
-  DataType: (ptr16 void)
-  OrigDataType: (ptr16 void)
-T_1849: (in BDOS @ 0DDA : ptr16)
-  Class: Eq_1849
-  DataType: (ptr16 code)
-  OrigDataType: (ptr16 code)
-T_1850: (in signature of BDOS : void)
-  Class: Eq_1850
-  DataType: Eq_1850
-  OrigDataType: 
-T_1851: (in F_DMAOFF @ 0DF6 : ptr16)
-  Class: Eq_1851
-  DataType: (ptr16 Eq_1851)
-  OrigDataType: (ptr16 (fn T_1854 (T_1848)))
-T_1852: (in signature of F_DMAOFF : void)
-  Class: Eq_1851
-  DataType: (ptr16 Eq_1851)
-  OrigDataType: 
-T_1853: (in pDma @ 0DF6 : (ptr16 void))
-  Class: Eq_1847
-  DataType: (ptr16 void)
-  OrigDataType: 
-T_1854: (in F_DMAOFF(de_34) @ 0DF6 : void)
-  Class: Eq_1854
-  DataType: void
-  OrigDataType: void
-T_1855: (in 0x80<16> @ 0E01 : word16)
-  Class: Eq_1855
-  DataType: int16
-  OrigDataType: int16
-T_1856: (in de_34 + 0x80<16> @ 0E01 : word16)
-  Class: Eq_1847
-  DataType: (ptr16 void)
-  OrigDataType: ptr16
-T_1857: (in F_READ @ 0E03 : ptr16)
-  Class: Eq_1857
-  DataType: (ptr16 Eq_1857)
-  OrigDataType: (ptr16 (fn T_1861 (T_1860)))
-T_1858: (in signature of F_READ : void)
-  Class: Eq_1857
-  DataType: (ptr16 Eq_1857)
-  OrigDataType: 
-T_1859: (in pFcb @ 0E03 : (ptr16 Fcb))
-  Class: Eq_1859
-  DataType: (ptr16 Eq_1859)
-  OrigDataType: 
-T_1860: (in 0x5C<16> @ 0E03 : word16)
-  Class: Eq_1859
-  DataType: (ptr16 Eq_1859)
-  OrigDataType: (ptr16 Fcb)
-T_1861: (in F_READ(&g_t005C) @ 0E03 : uint8)
-  Class: Eq_1861
-  DataType: uint8
-  OrigDataType: uint8
-T_1862: (in 0<8> @ 0E03 : byte)
-  Class: Eq_1861
-  DataType: uint8
-  OrigDataType: byte
-T_1863: (in F_READ(&g_t005C) == 0<8> @ 0E03 : bool)
-  Class: Eq_1863
-  DataType: bool
-  OrigDataType: bool
-T_1864: (in 1<8> @ 0DEC : byte)
-  Class: Eq_1864
-  DataType: byte
-  OrigDataType: byte
-T_1865: (in 0xE75<16> @ 0DEC : word16)
-  Class: Eq_1865
-  DataType: (ptr16 byte)
-  OrigDataType: (ptr16 (struct (0 T_1866 t0000)))
-T_1866: (in Mem53[0xE75<16>:byte] @ 0DEC : byte)
-  Class: Eq_1864
-  DataType: byte
-  OrigDataType: byte
-T_1867: (in F_DMAOFF @ 0E0B : ptr16)
-  Class: Eq_1867
-  DataType: (ptr16 Eq_1867)
-  OrigDataType: (ptr16 (fn T_1871 (T_1870)))
-T_1868: (in signature of F_DMAOFF : void)
-  Class: Eq_1867
-  DataType: (ptr16 Eq_1867)
-  OrigDataType: 
-T_1869: (in pDma @ 0E0B : (ptr16 void))
-  Class: Eq_1869
-  DataType: (ptr16 void)
-  OrigDataType: 
-T_1870: (in 0x80<16> @ 0E0B : word16)
-  Class: Eq_1869
-  DataType: (ptr16 void)
-  OrigDataType: (ptr16 void)
-T_1871: (in F_DMAOFF(&g_v0080) @ 0E0B : void)
-  Class: Eq_1871
-  DataType: void
-  OrigDataType: void
-T_1872: (in F_CLOSE @ 0E13 : ptr16)
-  Class: Eq_1872
-  DataType: (ptr16 Eq_1872)
-  OrigDataType: (ptr16 (fn T_1876 (T_1875)))
-T_1873: (in signature of F_CLOSE : void)
-  Class: Eq_1872
-  DataType: (ptr16 Eq_1872)
-  OrigDataType: 
-T_1874: (in pFcb @ 0E13 : (ptr16 Fcb))
-  Class: Eq_1874
-  DataType: (ptr16 Eq_1874)
-  OrigDataType: 
-T_1875: (in 0x5C<16> @ 0E13 : word16)
-  Class: Eq_1874
-  DataType: (ptr16 Eq_1874)
-  OrigDataType: (ptr16 Fcb)
-T_1876: (in F_CLOSE(&g_t005C) @ 0E13 : uint8)
-  Class: Eq_1876
-  DataType: uint8
-  OrigDataType: uint8
-T_1877: (in 0xE75<16> @ 0E1A : word16)
-  Class: Eq_1877
-  DataType: (ptr16 byte)
-  OrigDataType: (ptr16 (struct (0 T_1878 t0000)))
-T_1878: (in Mem42[0xE75<16>:byte] @ 0E1A : byte)
-  Class: Eq_1864
-  DataType: byte
-  OrigDataType: byte
-T_1879: (in 0<8> @ 0E1A : byte)
-  Class: Eq_1864
-  DataType: byte
-  OrigDataType: byte
-T_1880: (in g_b0E75 == 0<8> @ 0E1A : bool)
-  Class: Eq_1880
-  DataType: bool
-  OrigDataType: bool
-T_1881: (in BDOS @ 0E20 : ptr16)
-  Class: Eq_1881
-  DataType: (ptr16 code)
-  OrigDataType: (ptr16 code)
-T_1882: (in Z @ 0E1A : bool)
-  Class: Eq_1882
-  DataType: bool
-  OrigDataType: bool
-T_1883: (in fn0E35 @ 0E24 : ptr16)
-  Class: Eq_1883
-  DataType: (ptr16 Eq_1883)
-  OrigDataType: (ptr16 (fn T_1889 (T_474, T_1887)))
-T_1884: (in signature of fn0E35 @ 0E35 : void)
-  Class: Eq_1883
-  DataType: (ptr16 Eq_1883)
-  OrigDataType: 
-T_1885: (in hl @ 0E24 : Eq_87)
+T_1753: (in hl_14 + 1<16> @ 09E8 : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_1886: (in hl_4 @ 0E24 : word16)
-  Class: Eq_1886
+T_1754: (in af_124 @ 09E8 : word16)
+  Class: Eq_1754
   DataType: word16
   OrigDataType: word16
-T_1887: (in out hl_4 @ 0E24 : word16)
-  Class: Eq_1887
+T_1755: (in out af_124 @ 09E8 : word16)
+  Class: Eq_53
+  DataType: (ptr16 Eq_53)
+  OrigDataType: word16
+T_1756: (in hl_125 @ 09E8 : word16)
+  Class: Eq_1756
   DataType: word16
   OrigDataType: word16
-T_1888: (in hlOut @ 0E24 : word16)
-  Class: Eq_1887
-  DataType: word16
-  OrigDataType: word16
-T_1889: (in fn0E35(hl, out hl_4) @ 0E24 : bool)
-  Class: Eq_1889
-  DataType: Eq_1889
-  OrigDataType: bool
-T_1890: (in Z_6 @ 0E24 : Eq_1889)
-  Class: Eq_1889
-  DataType: Eq_1889
-  OrigDataType: (union ((union (bool u0) (byte u1)) u1) ((union (bool u0) (byte u1)) u0))
-T_1891: (in 0xE76<16> @ 0E28 : word16)
-  Class: Eq_1891
-  DataType: (ptr16 Eq_87)
-  OrigDataType: (ptr16 (struct (0 T_1892 t0000)))
-T_1892: (in Mem0[0xE76<16>:word16] @ 0E28 : word16)
+T_1757: (in out hl_125 @ 09E8 : word16)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_1893: (in hl_11 @ 0E28 : Eq_87)
-  Class: Eq_87
-  DataType: Eq_87
-  OrigDataType: word16
-T_1894: (in 0<8> @ 0E2B : byte)
-  Class: Eq_1889
-  DataType: byte
-  OrigDataType: byte
-T_1895: (in Z_6 != 0<8> @ 0E2B : bool)
-  Class: Eq_1882
-  DataType: bool
+T_1758: (in fn0E24((word16) hl_14.u1 + 1<i32>, out af_124, out hl_125) @ 09E8 : bool)
+  Class: Eq_472
+  DataType: Eq_472
   OrigDataType: bool
-T_1896: (in fn0E35 @ 0E2C : ptr16)
-  Class: Eq_1883
-  DataType: (ptr16 Eq_1883)
-  OrigDataType: (ptr16 (fn T_1899 (T_581, T_1898)))
-T_1897: (in hl_4 @ 0E2C : (ptr16 uint8))
-  Class: Eq_1897
-  DataType: (ptr16 uint8)
-  OrigDataType: (ptr16 (struct (0 T_1902 t0000)))
-T_1898: (in out hl_4 @ 0E2C : word16)
-  Class: Eq_1887
-  DataType: word16
-  OrigDataType: word16
-T_1899: (in fn0E35(hl, out hl_4) @ 0E2C : bool)
-  Class: Eq_1889
-  DataType: Eq_1889
-  OrigDataType: bool
-T_1900: (in 0<16> @ 0E2F : word16)
-  Class: Eq_1900
-  DataType: word16
-  OrigDataType: word16
-T_1901: (in hl_4 + 0<16> @ 0E2F : word16)
-  Class: Eq_1901
-  DataType: word16
-  OrigDataType: word16
-T_1902: (in Mem10[hl_4 + 0<16>:byte] @ 0E2F : byte)
+T_1759: (in a_21 @ 09E8 : uint8)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_1903: (in 0xE76<16> @ 0E33 : word16)
-  Class: Eq_1903
-  DataType: (ptr16 Eq_87)
-  OrigDataType: (ptr16 (struct (0 T_1904 t0000)))
-T_1904: (in Mem10[0xE76<16>:word16] @ 0E33 : word16)
-  Class: Eq_87
-  DataType: Eq_87
+T_1760: (in fn09A2 @ 09EC : ptr16)
+  Class: Eq_596
+  DataType: (ptr16 Eq_596)
+  OrigDataType: (ptr16 (fn T_1765 (T_1761, T_1762, T_1764)))
+T_1761: (in SEQ(a_21, f) @ 09EC : word16)
+  Class: Eq_477
+  DataType: word16
   OrigDataType: word16
-T_1905: (in Z @ 0E34 : bool)
-  Class: Eq_1905
+T_1762: (in out af_117 @ 09EC : word16)
+  Class: Eq_609
+  DataType: word16
+  OrigDataType: word16
+T_1763: (in c_126 @ 09EC : byte)
+  Class: Eq_1763
+  DataType: byte
+  OrigDataType: byte
+T_1764: (in out c_126 @ 09EC : byte)
+  Class: Eq_612
+  DataType: byte
+  OrigDataType: byte
+T_1765: (in fn09A2(SEQ(a_21, f), out af_117, out c_126) @ 09EC : bool)
+  Class: Eq_614
+  DataType: Eq_614
+  OrigDataType: bool
+T_1766: (in fn0A2A @ 09F2 : ptr16)
+  Class: Eq_246
+  DataType: (ptr16 Eq_246)
+  OrigDataType: (ptr16 (fn T_1767 ()))
+T_1767: (in fn0A2A() @ 09F2 : void)
+  Class: Eq_248
+  DataType: void
+  OrigDataType: void
+T_1768: (in SEQ(a_5, f) @ 09F5 : word16)
+  Class: Eq_1699
+  DataType: word16
+  OrigDataType: word16
+T_1769: (in fn0A27 @ 0A08 : ptr16)
+  Class: Eq_435
+  DataType: (ptr16 Eq_435)
+  OrigDataType: (ptr16 (fn T_1770 ()))
+T_1770: (in fn0A27() @ 0A08 : void)
+  Class: Eq_437
+  DataType: void
+  OrigDataType: void
+T_1771: (in 3<8> @ 0A0D : byte)
+  Class: Eq_61
+  DataType: cu8
+  OrigDataType: byte
+T_1772: (in a == 3<8> @ 0A0D : bool)
+  Class: Eq_1772
   DataType: bool
   OrigDataType: bool
-T_1906: (in 0xE76<16> @ 0E35 : word16)
-  Class: Eq_1906
-  DataType: (ptr16 Eq_87)
-  OrigDataType: (ptr16 (struct (0 T_1907 t0000)))
-T_1907: (in Mem4[0xE76<16>:word16] @ 0E35 : word16)
+T_1773: (in cpm_warm_boot @ 0A21 : ptr16)
+  Class: Eq_1773
+  DataType: (ptr16 Eq_1773)
+  OrigDataType: (ptr16 (fn T_1775 ()))
+T_1774: (in signature of cpm_warm_boot : void)
+  Class: Eq_1773
+  DataType: (ptr16 Eq_1773)
+  OrigDataType: 
+T_1775: (in cpm_warm_boot() @ 0A21 : void)
+  Class: Eq_1775
+  DataType: void
+  OrigDataType: void
+T_1776: (in 0x18<8> @ 0A12 : byte)
+  Class: Eq_61
+  DataType: cu8
+  OrigDataType: byte
+T_1777: (in a != 0x18<8> @ 0A12 : bool)
+  Class: Eq_1777
+  DataType: bool
+  OrigDataType: bool
+T_1778: (in fn0A19 @ 0A12 : ptr16)
+  Class: Eq_288
+  DataType: (ptr16 Eq_288)
+  OrigDataType: (ptr16 (fn T_1779 ()))
+T_1779: (in fn0A19() @ 0A12 : byte)
+  Class: Eq_290
+  DataType: byte
+  OrigDataType: byte
+T_1780: (in fn0A19 @ 0A17 : ptr16)
+  Class: Eq_288
+  DataType: (ptr16 Eq_288)
+  OrigDataType: (ptr16 (fn T_1781 ()))
+T_1781: (in fn0A19() @ 0A17 : byte)
+  Class: Eq_290
+  DataType: byte
+  OrigDataType: byte
+T_1782: (in 0x23<8> @ 0A17 : byte)
+  Class: Eq_61
+  DataType: cu8
+  OrigDataType: byte
+T_1783: (in c @ 0A17 : byte)
+  Class: Eq_1783
+  DataType: byte
+  OrigDataType: byte
+T_1784: (in fn0A2A @ 0A1A : ptr16)
+  Class: Eq_246
+  DataType: (ptr16 Eq_246)
+  OrigDataType: (ptr16 (fn T_1785 ()))
+T_1785: (in fn0A2A() @ 0A1A : void)
+  Class: Eq_248
+  DataType: void
+  OrigDataType: void
+T_1786: (in a @ 0A1D : byte)
+  Class: Eq_1783
+  DataType: byte
+  OrigDataType: byte
+T_1787: (in cpm_warm_boot @ 0A24 : ptr16)
+  Class: Eq_1787
+  DataType: (ptr16 Eq_1787)
+  OrigDataType: (ptr16 (fn T_1789 ()))
+T_1788: (in signature of cpm_warm_boot : void)
+  Class: Eq_1787
+  DataType: (ptr16 Eq_1787)
+  OrigDataType: 
+T_1789: (in cpm_warm_boot() @ 0A24 : void)
+  Class: Eq_1789
+  DataType: void
+  OrigDataType: void
+T_1790: (in cpm_warm_boot @ 0A27 : ptr16)
+  Class: Eq_1790
+  DataType: (ptr16 Eq_1790)
+  OrigDataType: (ptr16 (fn T_1792 ()))
+T_1791: (in signature of cpm_warm_boot : void)
+  Class: Eq_1790
+  DataType: (ptr16 Eq_1790)
+  OrigDataType: 
+T_1792: (in cpm_warm_boot() @ 0A27 : void)
+  Class: Eq_1792
+  DataType: void
+  OrigDataType: void
+T_1793: (in cpm_warm_boot @ 0A2A : ptr16)
+  Class: Eq_1793
+  DataType: (ptr16 Eq_1793)
+  OrigDataType: (ptr16 (fn T_1795 ()))
+T_1794: (in signature of cpm_warm_boot : void)
+  Class: Eq_1793
+  DataType: (ptr16 Eq_1793)
+  OrigDataType: 
+T_1795: (in cpm_warm_boot() @ 0A2A : void)
+  Class: Eq_1795
+  DataType: void
+  OrigDataType: void
+T_1796: (in 0x5D<16> @ 0DA7 : word16)
+  Class: Eq_1796
+  DataType: (ptr16 byte)
+  OrigDataType: (ptr16 (struct (0 T_1797 t0000)))
+T_1797: (in Mem0[0x5D<16>:byte] @ 0DA7 : byte)
+  Class: Eq_1797
+  DataType: byte
+  OrigDataType: byte
+T_1798: (in 0x20<8> @ 0DA7 : byte)
+  Class: Eq_1797
+  DataType: byte
+  OrigDataType: byte
+T_1799: (in g_b005D != 0x20<8> @ 0DA7 : bool)
+  Class: Eq_1799
+  DataType: bool
+  OrigDataType: bool
+T_1800: (in 0x6D<16> @ 0DA8 : word16)
+  Class: Eq_1800
+  DataType: (ptr16 byte)
+  OrigDataType: word16
+T_1801: (in de_12 @ 0DA8 : (ptr16 byte))
+  Class: Eq_1800
+  DataType: (ptr16 byte)
+  OrigDataType: (ptr16 (struct 0001 (0 byte b0000)))
+T_1802: (in 0x6D<16> @ 0DAE : word16)
+  Class: Eq_1802
+  DataType: (ptr16 byte)
+  OrigDataType: (ptr16 (struct (0 T_1803 t0000)))
+T_1803: (in Mem0[0x6D<16>:byte] @ 0DAE : byte)
+  Class: Eq_1803
+  DataType: byte
+  OrigDataType: byte
+T_1804: (in 0x20<8> @ 0DAE : byte)
+  Class: Eq_1803
+  DataType: byte
+  OrigDataType: byte
+T_1805: (in g_a006D[0<i32>] == 0x20<8> @ 0DAE : bool)
+  Class: Eq_1805
+  DataType: bool
+  OrigDataType: bool
+T_1806: (in F_OPEN @ 0DD2 : ptr16)
+  Class: Eq_1806
+  DataType: (ptr16 Eq_1806)
+  OrigDataType: (ptr16 (fn T_1810 (T_1809)))
+T_1807: (in signature of F_OPEN : void)
+  Class: Eq_1806
+  DataType: (ptr16 Eq_1806)
+  OrigDataType: 
+T_1808: (in pFcb @ 0DD2 : (ptr16 Fcb))
+  Class: Eq_1808
+  DataType: (ptr16 Eq_1808)
+  OrigDataType: 
+T_1809: (in 0x5C<16> @ 0DD2 : word16)
+  Class: Eq_1808
+  DataType: (ptr16 Eq_1808)
+  OrigDataType: (ptr16 Fcb)
+T_1810: (in F_OPEN(&g_t005C) @ 0DD2 : uint8)
+  Class: Eq_1810
+  DataType: uint8
+  OrigDataType: uint8
+T_1811: (in 0xFF<8> @ 0DD2 : byte)
+  Class: Eq_1810
+  DataType: uint8
+  OrigDataType: byte
+T_1812: (in F_OPEN(&g_t005C) != 0xFF<8> @ 0DD2 : bool)
+  Class: Eq_1812
+  DataType: bool
+  OrigDataType: bool
+T_1813: (in 0<16> @ 0DB1 : word16)
+  Class: Eq_1813
+  DataType: ui16
+  OrigDataType: word16
+T_1814: (in hl_11 @ 0DB1 : ui16)
+  Class: Eq_1813
+  DataType: ui16
+  OrigDataType: ui16
+T_1815: (in 0xE7A<16> @ 0DC6 : word16)
+  Class: Eq_1815
+  DataType: (ptr16 ui16)
+  OrigDataType: (ptr16 (struct (0 T_1816 t0000)))
+T_1816: (in Mem19[0xE7A<16>:word16] @ 0DC6 : word16)
+  Class: Eq_1813
+  DataType: ui16
+  OrigDataType: word16
+T_1817: (in 2<16> @ 0DBD : word16)
+  Class: Eq_1817
+  DataType: ui16
+  OrigDataType: ui16
+T_1818: (in hl_11 * 2<16> @ 0DBD : word16)
+  Class: Eq_1818
+  DataType: ui16
+  OrigDataType: ui16
+T_1819: (in hl_82 @ 0DBD : ui16)
+  Class: Eq_1818
+  DataType: ui16
+  OrigDataType: ui16
+T_1820: (in 8<16> @ 0DC2 : word16)
+  Class: Eq_1820
+  DataType: ui16
+  OrigDataType: ui16
+T_1821: (in hl_82 * 8<16> @ 0DC2 : word16)
+  Class: Eq_1821
+  DataType: ui16
+  OrigDataType: ui16
+T_1822: (in SLICE(hl_82 * 8<16>, byte, 8) @ 0DC2 : byte)
+  Class: Eq_1822
+  DataType: byte
+  OrigDataType: byte
+T_1823: (in a_14 @ 0DC2 : byte)
+  Class: Eq_1823
+  DataType: byte
+  OrigDataType: byte
+T_1824: (in 0xF<8> @ 0DC2 : byte)
+  Class: Eq_1824
+  DataType: byte
+  OrigDataType: byte
+T_1825: (in a_14 + 0xF<8> @ 0DC2 : byte)
+  Class: Eq_1825
+  DataType: byte
+  OrigDataType: byte
+T_1826: (in SLICE(hl_82, byte, 0) @ 0DC2 : byte)
+  Class: Eq_1826
+  DataType: bui8
+  OrigDataType: bui8
+T_1827: (in 8<8> @ 0DC2 : byte)
+  Class: Eq_1827
+  DataType: bui8
+  OrigDataType: bui8
+T_1828: (in (byte) hl_82 * 8<8> @ 0DC2 : byte)
+  Class: Eq_1828
+  DataType: ui8
+  OrigDataType: ui8
+T_1829: (in a_14 + 0xF<8> | (byte) hl_82 * 8<8> @ 0DC2 : byte)
+  Class: Eq_1829
+  DataType: byte
+  OrigDataType: byte
+T_1830: (in SEQ(SLICE(hl_82 * 8<16>, byte, 8), a_14 + 0xF<8> | SLICE(hl_82, byte, 0) * 8<8>) @ 0DC2 : word16)
+  Class: Eq_1813
+  DataType: ui16
+  OrigDataType: word16
+T_1831: (in 0<16> @ 0DB4 : word16)
+  Class: Eq_1831
+  DataType: word16
+  OrigDataType: word16
+T_1832: (in de_12 + 0<16> @ 0DB4 : word16)
+  Class: Eq_1832
+  DataType: word16
+  OrigDataType: word16
+T_1833: (in Mem0[de_12 + 0<16>:byte] @ 0DB4 : byte)
+  Class: Eq_1823
+  DataType: byte
+  OrigDataType: byte
+T_1834: (in 1<16> @ 0DB5 : word16)
+  Class: Eq_1834
+  DataType: int16
+  OrigDataType: int16
+T_1835: (in de_12 + 1<16> @ 0DB5 : word16)
+  Class: Eq_1800
+  DataType: (ptr16 byte)
+  OrigDataType: ptr16
+T_1836: (in 0x20<8> @ 0DB8 : byte)
+  Class: Eq_1823
+  DataType: byte
+  OrigDataType: byte
+T_1837: (in a_14 == 0x20<8> @ 0DB8 : bool)
+  Class: Eq_1837
+  DataType: bool
+  OrigDataType: bool
+T_1838: (in 0xE78<16> @ 0DE6 : word16)
+  Class: Eq_1838
+  DataType: (ptr16 word16)
+  OrigDataType: (ptr16 (struct (0 T_1839 t0000)))
+T_1839: (in Mem26[0xE78<16>:word16] @ 0DE6 : word16)
+  Class: Eq_1839
+  DataType: word16
+  OrigDataType: word16
+T_1840: (in 0xE7A<16> @ 0DE6 : word16)
+  Class: Eq_1840
+  DataType: (ptr16 ui16)
+  OrigDataType: (ptr16 (struct (0 T_1841 t0000)))
+T_1841: (in Mem26[0xE7A<16>:word16] @ 0DE6 : word16)
+  Class: Eq_1813
+  DataType: ui16
+  OrigDataType: word16
+T_1842: (in g_w0E78 + g_w0E7A @ 0DE6 : word16)
+  Class: Eq_1842
+  DataType: (ptr16 void)
+  OrigDataType: word16
+T_1843: (in de_34 @ 0DE6 : (ptr16 void))
+  Class: Eq_1842
+  DataType: (ptr16 void)
+  OrigDataType: (ptr16 void)
+T_1844: (in BDOS @ 0DDA : ptr16)
+  Class: Eq_1844
+  DataType: (ptr16 code)
+  OrigDataType: (ptr16 code)
+T_1845: (in signature of BDOS : void)
+  Class: Eq_1845
+  DataType: Eq_1845
+  OrigDataType: 
+T_1846: (in F_DMAOFF @ 0DF6 : ptr16)
+  Class: Eq_1846
+  DataType: (ptr16 Eq_1846)
+  OrigDataType: (ptr16 (fn T_1849 (T_1843)))
+T_1847: (in signature of F_DMAOFF : void)
+  Class: Eq_1846
+  DataType: (ptr16 Eq_1846)
+  OrigDataType: 
+T_1848: (in pDma @ 0DF6 : (ptr16 void))
+  Class: Eq_1842
+  DataType: (ptr16 void)
+  OrigDataType: 
+T_1849: (in F_DMAOFF(de_34) @ 0DF6 : void)
+  Class: Eq_1849
+  DataType: void
+  OrigDataType: void
+T_1850: (in 0x80<16> @ 0E01 : word16)
+  Class: Eq_1850
+  DataType: int16
+  OrigDataType: int16
+T_1851: (in de_34 + 0x80<16> @ 0E01 : word16)
+  Class: Eq_1842
+  DataType: (ptr16 void)
+  OrigDataType: ptr16
+T_1852: (in F_READ @ 0E03 : ptr16)
+  Class: Eq_1852
+  DataType: (ptr16 Eq_1852)
+  OrigDataType: (ptr16 (fn T_1856 (T_1855)))
+T_1853: (in signature of F_READ : void)
+  Class: Eq_1852
+  DataType: (ptr16 Eq_1852)
+  OrigDataType: 
+T_1854: (in pFcb @ 0E03 : (ptr16 Fcb))
+  Class: Eq_1854
+  DataType: (ptr16 Eq_1854)
+  OrigDataType: 
+T_1855: (in 0x5C<16> @ 0E03 : word16)
+  Class: Eq_1854
+  DataType: (ptr16 Eq_1854)
+  OrigDataType: (ptr16 Fcb)
+T_1856: (in F_READ(&g_t005C) @ 0E03 : uint8)
+  Class: Eq_1856
+  DataType: uint8
+  OrigDataType: uint8
+T_1857: (in 0<8> @ 0E03 : byte)
+  Class: Eq_1856
+  DataType: uint8
+  OrigDataType: byte
+T_1858: (in F_READ(&g_t005C) == 0<8> @ 0E03 : bool)
+  Class: Eq_1858
+  DataType: bool
+  OrigDataType: bool
+T_1859: (in 1<8> @ 0DEC : byte)
+  Class: Eq_1859
+  DataType: byte
+  OrigDataType: byte
+T_1860: (in 0xE75<16> @ 0DEC : word16)
+  Class: Eq_1860
+  DataType: (ptr16 byte)
+  OrigDataType: (ptr16 (struct (0 T_1861 t0000)))
+T_1861: (in Mem53[0xE75<16>:byte] @ 0DEC : byte)
+  Class: Eq_1859
+  DataType: byte
+  OrigDataType: byte
+T_1862: (in F_DMAOFF @ 0E0B : ptr16)
+  Class: Eq_1862
+  DataType: (ptr16 Eq_1862)
+  OrigDataType: (ptr16 (fn T_1866 (T_1865)))
+T_1863: (in signature of F_DMAOFF : void)
+  Class: Eq_1862
+  DataType: (ptr16 Eq_1862)
+  OrigDataType: 
+T_1864: (in pDma @ 0E0B : (ptr16 void))
+  Class: Eq_1864
+  DataType: (ptr16 void)
+  OrigDataType: 
+T_1865: (in 0x80<16> @ 0E0B : word16)
+  Class: Eq_1864
+  DataType: (ptr16 void)
+  OrigDataType: (ptr16 void)
+T_1866: (in F_DMAOFF(&g_v0080) @ 0E0B : void)
+  Class: Eq_1866
+  DataType: void
+  OrigDataType: void
+T_1867: (in F_CLOSE @ 0E13 : ptr16)
+  Class: Eq_1867
+  DataType: (ptr16 Eq_1867)
+  OrigDataType: (ptr16 (fn T_1871 (T_1870)))
+T_1868: (in signature of F_CLOSE : void)
+  Class: Eq_1867
+  DataType: (ptr16 Eq_1867)
+  OrigDataType: 
+T_1869: (in pFcb @ 0E13 : (ptr16 Fcb))
+  Class: Eq_1869
+  DataType: (ptr16 Eq_1869)
+  OrigDataType: 
+T_1870: (in 0x5C<16> @ 0E13 : word16)
+  Class: Eq_1869
+  DataType: (ptr16 Eq_1869)
+  OrigDataType: (ptr16 Fcb)
+T_1871: (in F_CLOSE(&g_t005C) @ 0E13 : uint8)
+  Class: Eq_1871
+  DataType: uint8
+  OrigDataType: uint8
+T_1872: (in 0xE75<16> @ 0E1A : word16)
+  Class: Eq_1872
+  DataType: (ptr16 byte)
+  OrigDataType: (ptr16 (struct (0 T_1873 t0000)))
+T_1873: (in Mem42[0xE75<16>:byte] @ 0E1A : byte)
+  Class: Eq_1859
+  DataType: byte
+  OrigDataType: byte
+T_1874: (in 0<8> @ 0E1A : byte)
+  Class: Eq_1859
+  DataType: byte
+  OrigDataType: byte
+T_1875: (in g_b0E75 == 0<8> @ 0E1A : bool)
+  Class: Eq_1875
+  DataType: bool
+  OrigDataType: bool
+T_1876: (in BDOS @ 0E20 : ptr16)
+  Class: Eq_1876
+  DataType: (ptr16 code)
+  OrigDataType: (ptr16 code)
+T_1877: (in Z @ 0E1A : bool)
+  Class: Eq_1877
+  DataType: bool
+  OrigDataType: bool
+T_1878: (in fn0E35 @ 0E24 : ptr16)
+  Class: Eq_1878
+  DataType: (ptr16 Eq_1878)
+  OrigDataType: (ptr16 (fn T_1884 (T_464, T_1882)))
+T_1879: (in signature of fn0E35 @ 0E35 : void)
+  Class: Eq_1878
+  DataType: (ptr16 Eq_1878)
+  OrigDataType: 
+T_1880: (in hl @ 0E24 : Eq_87)
   Class: Eq_87
   DataType: Eq_87
   OrigDataType: word16
-T_1908: (in 0xE78<16> @ 0E3D : word16)
-  Class: Eq_1908
+T_1881: (in hl_4 @ 0E24 : word16)
+  Class: Eq_1881
+  DataType: word16
+  OrigDataType: word16
+T_1882: (in out hl_4 @ 0E24 : word16)
+  Class: Eq_1882
+  DataType: word16
+  OrigDataType: word16
+T_1883: (in hlOut @ 0E24 : word16)
+  Class: Eq_1882
+  DataType: word16
+  OrigDataType: word16
+T_1884: (in fn0E35(hl, out hl_4) @ 0E24 : bool)
+  Class: Eq_1884
+  DataType: Eq_1884
+  OrigDataType: bool
+T_1885: (in Z_6 @ 0E24 : Eq_1884)
+  Class: Eq_1884
+  DataType: Eq_1884
+  OrigDataType: (union ((union (bool u0) (byte u1)) u1) ((union (bool u0) (byte u1)) u0))
+T_1886: (in 0xE76<16> @ 0E28 : word16)
+  Class: Eq_1886
+  DataType: (ptr16 Eq_87)
+  OrigDataType: (ptr16 (struct (0 T_1887 t0000)))
+T_1887: (in Mem0[0xE76<16>:word16] @ 0E28 : word16)
+  Class: Eq_87
+  DataType: Eq_87
+  OrigDataType: word16
+T_1888: (in hl_11 @ 0E28 : Eq_87)
+  Class: Eq_87
+  DataType: Eq_87
+  OrigDataType: word16
+T_1889: (in 0<8> @ 0E2B : byte)
+  Class: Eq_1884
+  DataType: byte
+  OrigDataType: byte
+T_1890: (in Z_6 != 0<8> @ 0E2B : bool)
+  Class: Eq_1877
+  DataType: bool
+  OrigDataType: bool
+T_1891: (in fn0E35 @ 0E2C : ptr16)
+  Class: Eq_1878
+  DataType: (ptr16 Eq_1878)
+  OrigDataType: (ptr16 (fn T_1894 (T_571, T_1893)))
+T_1892: (in hl_4 @ 0E2C : (ptr16 uint8))
+  Class: Eq_1892
+  DataType: (ptr16 uint8)
+  OrigDataType: (ptr16 (struct (0 T_1897 t0000)))
+T_1893: (in out hl_4 @ 0E2C : word16)
+  Class: Eq_1882
+  DataType: word16
+  OrigDataType: word16
+T_1894: (in fn0E35(hl, out hl_4) @ 0E2C : bool)
+  Class: Eq_1884
+  DataType: Eq_1884
+  OrigDataType: bool
+T_1895: (in 0<16> @ 0E2F : word16)
+  Class: Eq_1895
+  DataType: word16
+  OrigDataType: word16
+T_1896: (in hl_4 + 0<16> @ 0E2F : word16)
+  Class: Eq_1896
+  DataType: word16
+  OrigDataType: word16
+T_1897: (in Mem10[hl_4 + 0<16>:byte] @ 0E2F : byte)
+  Class: Eq_38
+  DataType: uint8
+  OrigDataType: byte
+T_1898: (in 0xE76<16> @ 0E33 : word16)
+  Class: Eq_1898
+  DataType: (ptr16 Eq_87)
+  OrigDataType: (ptr16 (struct (0 T_1899 t0000)))
+T_1899: (in Mem10[0xE76<16>:word16] @ 0E33 : word16)
+  Class: Eq_87
+  DataType: Eq_87
+  OrigDataType: word16
+T_1900: (in Z @ 0E34 : bool)
+  Class: Eq_1900
+  DataType: bool
+  OrigDataType: bool
+T_1901: (in 0xE76<16> @ 0E35 : word16)
+  Class: Eq_1901
+  DataType: (ptr16 Eq_87)
+  OrigDataType: (ptr16 (struct (0 T_1902 t0000)))
+T_1902: (in Mem4[0xE76<16>:word16] @ 0E35 : word16)
+  Class: Eq_87
+  DataType: Eq_87
+  OrigDataType: word16
+T_1903: (in 0xE78<16> @ 0E3D : word16)
+  Class: Eq_1903
   DataType: (ptr16 word16)
-  OrigDataType: (ptr16 (struct (0 T_1909 t0000)))
-T_1909: (in Mem7[0xE78<16>:word16] @ 0E3D : word16)
-  Class: Eq_1844
+  OrigDataType: (ptr16 (struct (0 T_1904 t0000)))
+T_1904: (in Mem7[0xE78<16>:word16] @ 0E3D : word16)
+  Class: Eq_1839
   DataType: word16
   OrigDataType: word16
-T_1910: (in Mem7[0xE78<16>:word16] + hl @ 0E3D : word16)
-  Class: Eq_1887
+T_1905: (in Mem7[0xE78<16>:word16] + hl @ 0E3D : word16)
+  Class: Eq_1882
   DataType: word16
   OrigDataType: word16
-T_1911: (in hl_11 @ 0E3D : word16)
-  Class: Eq_1887
+T_1906: (in hl_11 @ 0E3D : word16)
+  Class: Eq_1882
   DataType: word16
   OrigDataType: word16
-T_1912: (in cond(hl_11) @ 0E3F : byte)
+T_1907: (in cond(hl_11) @ 0E3F : byte)
+  Class: Eq_1907
+  DataType: byte
+  OrigDataType: byte
+T_1908: (in 0x40<8> @ 0E3F : byte)
+  Class: Eq_1908
+  DataType: byte
+  OrigDataType: byte
+T_1909: (in cond(hl_11) & 0x40<8> @ 0E3F : byte)
+  Class: Eq_1909
+  DataType: byte
+  OrigDataType: byte
+T_1910: (in 0<8> @ 0E3F : byte)
+  Class: Eq_1909
+  DataType: byte
+  OrigDataType: byte
+T_1911: (in (cond(hl_11) & 0x40<8>) != 0<8> @ 0E3F : bool)
+  Class: Eq_1900
+  DataType: bool
+  OrigDataType: bool
+T_1912:
   Class: Eq_1912
   DataType: byte
-  OrigDataType: byte
-T_1913: (in 0x40<8> @ 0E3F : byte)
-  Class: Eq_1913
-  DataType: byte
-  OrigDataType: byte
-T_1914: (in cond(hl_11) & 0x40<8> @ 0E3F : byte)
-  Class: Eq_1914
-  DataType: byte
-  OrigDataType: byte
-T_1915: (in 0<8> @ 0E3F : byte)
-  Class: Eq_1914
-  DataType: byte
-  OrigDataType: byte
-T_1916: (in (cond(hl_11) & 0x40<8>) != 0<8> @ 0E3F : bool)
-  Class: Eq_1905
-  DataType: bool
-  OrigDataType: bool
-T_1917:
-  Class: Eq_1917
-  DataType: byte
   OrigDataType: (struct 0001 (0 T_20 t0000))
-T_1918:
-  Class: Eq_1918
+T_1913:
+  Class: Eq_1913
   DataType: (arr byte)
-  OrigDataType: (arr T_1917)
-T_1919:
-  Class: Eq_1808
+  OrigDataType: (arr T_1912)
+T_1914:
+  Class: Eq_1803
   DataType: byte
   OrigDataType: (struct 0001 (0 byte b0000))
+T_1915:
+  Class: Eq_1915
+  DataType: (arr byte)
+  OrigDataType: (arr T_1914)
+T_1916:
+  Class: Eq_1916
+  DataType: Eq_1916
+  OrigDataType: 
+T_1917:
+  Class: Eq_1917
+  DataType: Eq_1917
+  OrigDataType: 
+T_1918:
+  Class: Eq_1918
+  DataType: Eq_1918
+  OrigDataType: 
+T_1919:
+  Class: Eq_1919
+  DataType: Eq_1919
+  OrigDataType: 
 T_1920:
   Class: Eq_1920
-  DataType: (arr byte)
-  OrigDataType: (arr T_1919)
-T_1921:
-  Class: Eq_1921
-  DataType: Eq_1921
-  OrigDataType: 
-T_1922:
-  Class: Eq_1922
-  DataType: Eq_1922
-  OrigDataType: 
-T_1923:
-  Class: Eq_1923
-  DataType: Eq_1923
-  OrigDataType: 
-T_1924:
-  Class: Eq_1924
-  DataType: Eq_1924
-  OrigDataType: 
-T_1925:
-  Class: Eq_1925
-  DataType: Eq_1925
+  DataType: Eq_1920
   OrigDataType: 
 */
 typedef struct Globals {
 	byte b0002;	// 2
-	Eq_1813 t005C;	// 5C
+	Eq_1808 t005C;	// 5C
 	byte b005D;	// 5D
 	byte a006D[];	// 6D
 	void v0080;	// 80
@@ -8364,7 +8342,7 @@ typedef struct Globals {
 	Eq_87 t0AAA;	// AAA
 	byte b0AAC;	// AAC
 	word16 w0AB0;	// AB0
-	Eq_147 t0AB3;	// AB3
+	Eq_133 t0AB3;	// AB3
 	Eq_87 t0AB8;	// AB8
 	Eq_87 t0ABA;	// ABA
 	byte b0ABC;	// ABC
@@ -8380,7 +8358,7 @@ typedef struct Globals {
 	Eq_87 t0E76;	// E76
 	word16 w0E78;	// E78
 	ui16 w0E7A;	// E7A
-	Eq_1199 tF45A;	// F45A
+	Eq_1194 tF45A;	// F45A
 } Eq_1;
 
 typedef void (Eq_3)();
@@ -8415,239 +8393,239 @@ typedef union Eq_87 {
 
 typedef void (Eq_91)();
 
-typedef uint8 (Eq_106)(uint8, byte, Eq_110);
-
-typedef union Eq_110 {
-	bool u0;
-	byte u1;
-} Eq_110;
-
-typedef struct Eq_147 {	// size: 1 1
+typedef struct Eq_133 {	// size: 1 1
 	byte b0000;	// 0
 	uint8 b0001;	// 1
 	uint8 b0002;	// 2
 	uint8 b0003;	// 3
 	uint8 b0004;	// 4
-} Eq_147;
+} Eq_133;
 
-typedef byte (Eq_169)(byte, byte, byte *, uint8, word16);
+typedef byte (Eq_155)(byte, byte, byte *, uint8, word16);
 
-typedef Eq_199 (Eq_186)(word16, byte, word16, byte);
+typedef Eq_185 (Eq_172)(word16, byte, word16, byte);
 
-typedef union Eq_199 {
+typedef union Eq_185 {
 	bool u0;
 	byte u1;
-} Eq_199;
+} Eq_185;
 
-typedef Eq_233 (Eq_215)(byte, Eq_147 *, uint8, uint16, uint8, Eq_87, Eq_147 *);
+typedef Eq_219 (Eq_201)(byte, Eq_133 *, uint8, uint16, uint8, Eq_87, Eq_133 *);
 
-typedef union Eq_233 {
+typedef union Eq_219 {
 	bool u0;
 	byte u1;
-} Eq_233;
+} Eq_219;
 
-typedef void (Eq_235)();
+typedef void (Eq_221)();
 
-typedef void (Eq_260)();
+typedef void (Eq_246)();
 
-typedef struct Eq_285 {
+typedef struct Eq_271 {
 	Eq_72 tFFFFFFFE;	// FFFFFFFE
 	byte * ptr0000;	// 0
-} Eq_285;
+} Eq_271;
 
-typedef byte (Eq_302)();
+typedef byte (Eq_288)();
 
-typedef Eq_381 (Eq_365)(byte, byte, byte, Eq_147 *, uint8, word16, uint8);
+typedef Eq_368 (Eq_352)(byte, byte, byte, Eq_133 *, uint8, word16, uint8);
 
-typedef union Eq_381 {
+typedef union Eq_368 {
 	byte u0;
-	Eq_1921 u1;
-} Eq_381;
+	Eq_1916 u1;
+} Eq_368;
 
-typedef union Eq_382 {
+typedef union Eq_369 {
 	byte u0;
 	word16 u1;
-} Eq_382;
+} Eq_369;
 
-typedef void (Eq_447)();
+typedef void (Eq_435)();
 
-typedef union Eq_459 {
-	uint16 u0;
-	byte u1;
-} Eq_459;
+typedef union Eq_449 {
+	byte u0;
+	word16 u1;
+} Eq_449;
 
-typedef Eq_482 (Eq_472)(Eq_87, Eq_53 *, Eq_87);
+typedef Eq_472 (Eq_462)(Eq_87, Eq_53 *, Eq_87);
 
-typedef union Eq_482 {
+typedef union Eq_472 {
 	bool u0;
-	Eq_1922 u1;
-} Eq_482;
+	Eq_1917 u1;
+} Eq_472;
 
-typedef word16 (Eq_485)(word16);
+typedef word16 (Eq_475)(word16);
+
+typedef void (Eq_481)();
 
 typedef void (Eq_491)();
 
-typedef void (Eq_501)();
+typedef byte (Eq_521)(byte, Eq_87);
 
-typedef byte (Eq_531)(byte, Eq_87);
+typedef bool (Eq_551)(cu8, cu8);
 
-typedef bool (Eq_561)(cu8, cu8);
+typedef word16 (Eq_568)(uint8, Eq_87);
 
-typedef word16 (Eq_578)(uint8, Eq_87);
+typedef cu8 (Eq_587)(cu8, ui16, word16);
 
-typedef cu8 (Eq_597)(cu8, ui16, word16);
+typedef Eq_614 (Eq_596)(word16, word16, byte);
 
-typedef Eq_624 (Eq_606)(word16, word16, byte);
-
-typedef union Eq_624 {
+typedef union Eq_614 {
 	bool u0;
-	Eq_1923 u1;
-} Eq_624;
+	Eq_1918 u1;
+} Eq_614;
 
-typedef byte (Eq_705)(byte, byte, byte *, uint8);
+typedef byte (Eq_696)(byte, byte, byte *, uint8);
 
-typedef word16 (Eq_773)(byte, byte, byte *, uint8, byte *);
+typedef word16 (Eq_764)(byte, byte, byte *, uint8, byte *);
 
-typedef void (Eq_826)();
+typedef void (Eq_817)();
 
-typedef byte (Eq_832)(Eq_87, uint8);
+typedef byte (Eq_823)(Eq_87, uint8);
 
-typedef uint8 (Eq_852)(uint8, byte);
+typedef uint8 (Eq_843)(uint8, byte);
 
-typedef bool (Eq_868)(uint8, byte);
+typedef bool (Eq_859)(uint8, byte);
 
-typedef uint8 (Eq_881)(uint8, byte);
+typedef uint8 (Eq_872)(uint8, byte);
 
-typedef bool (Eq_903)(uint8, byte);
+typedef bool (Eq_894)(uint8, byte);
 
-typedef struct Eq_919 {
+typedef struct Eq_910 {
 	uint8 b0B96;	// B96
 	byte b0B97;	// B97
-} Eq_919;
+} Eq_910;
 
-typedef bool (Eq_935)(uint8, byte);
+typedef bool (Eq_926)(uint8, byte);
 
-typedef Eq_954 (Eq_944)(Eq_87, Eq_53 *, Eq_53 *);
+typedef Eq_945 (Eq_935)(Eq_87, Eq_53 *, Eq_53 *);
 
-typedef union Eq_954 {
+typedef union Eq_945 {
 	bool u0;
-	Eq_1924 u1;
-} Eq_954;
+	Eq_1919 u1;
+} Eq_945;
 
-typedef word16 (Eq_957)(Eq_147 *, word16);
+typedef word16 (Eq_948)(Eq_133 *, word16);
 
-typedef Eq_954 (Eq_976)(word16, Eq_147 *, uint8, word16);
+typedef Eq_945 (Eq_967)(word16, Eq_133 *, uint8, word16);
 
-typedef Eq_954 (Eq_991)(Eq_147 *, uint8, word16);
+typedef Eq_945 (Eq_982)(Eq_133 *, uint8, word16);
 
-typedef byte (Eq_1022)(byte, Eq_147 *, word16);
+typedef byte (Eq_1013)(byte, Eq_133 *, word16);
 
-typedef Eq_954 (Eq_1079)(uint16, bui8, Eq_147 *, uint8, Eq_1087 *);
+typedef Eq_945 (Eq_1070)(uint16, bui8, Eq_133 *, uint8, Eq_1078 *);
 
-typedef struct Eq_1087 {
+typedef struct Eq_1078 {
 	uint8 b0000;	// 0
 	uint8 b0001;	// 1
 	uint8 b0003;	// 3
-} Eq_1087;
+} Eq_1078;
 
-typedef bool (Eq_1098)(uint8, byte);
+typedef bool (Eq_1089)(uint8, byte);
 
-typedef bool (Eq_1140)(uint8, byte);
+typedef bool (Eq_1131)(uint8, byte);
 
-typedef struct Eq_1199 {
+typedef uint8 (Eq_1168)(uint8, byte, Eq_1172);
+
+typedef union Eq_1172 {
+	bool u0;
+	byte u1;
+} Eq_1172;
+
+typedef struct Eq_1194 {
 	byte b0BA6;	// BA6
 	byte b0BA7;	// BA7
-} Eq_1199;
+} Eq_1194;
 
-typedef uint8 (Eq_1210)(uint8, byte);
+typedef uint8 (Eq_1205)(uint8, byte);
 
-typedef bool (Eq_1236)(uint8, byte);
+typedef bool (Eq_1231)(uint8, byte);
 
-typedef void (Eq_1306)(uint8, Eq_147 *);
+typedef void (Eq_1301)(uint8, Eq_133 *);
 
-typedef union Eq_1355 {
+typedef union Eq_1350 {
 	uint16 u0;
 	ptr16 u1;
-} Eq_1355;
+} Eq_1350;
 
-typedef uint8 (Eq_1419)(uint8, byte);
+typedef uint8 (Eq_1414)(uint8, byte);
 
-typedef uint8 (Eq_1430)(uint8, byte);
+typedef uint8 (Eq_1425)(uint8, byte);
 
-typedef bool (Eq_1439)(uint8, byte);
+typedef bool (Eq_1434)(uint8, byte);
 
-typedef uint8 (Eq_1443)(uint8, byte);
+typedef uint8 (Eq_1438)(uint8, byte);
 
-typedef uint8 (Eq_1452)(uint8, byte);
+typedef uint8 (Eq_1447)(uint8, byte);
 
-typedef byte (Eq_1591)(byte);
+typedef byte (Eq_1586)(byte);
 
-typedef Eq_1627 (Eq_1612)(byte, byte, byte);
+typedef Eq_1622 (Eq_1607)(byte, byte, byte);
 
-typedef byte (Eq_1615)(byte, byte);
+typedef byte (Eq_1610)(byte, byte);
 
-typedef union Eq_1627 {
+typedef union Eq_1622 {
 	bool u0;
-	Eq_1925 u1;
-} Eq_1627;
+	Eq_1920 u1;
+} Eq_1622;
 
-typedef cu8 (Eq_1662)(byte);
+typedef cu8 (Eq_1657)(byte);
 
-typedef byte (Eq_1669)(byte);
+typedef byte (Eq_1664)(byte);
 
-typedef void (Eq_1778)();
+typedef void (Eq_1773)();
 
-typedef void (Eq_1792)();
+typedef void (Eq_1787)();
 
-typedef void (Eq_1795)();
+typedef void (Eq_1790)();
 
-typedef void (Eq_1798)();
+typedef void (Eq_1793)();
 
-typedef uint8 (Eq_1811)(Fcb *);
+typedef uint8 (Eq_1806)(Fcb *);
 
-typedef Fcb Eq_1813;
+typedef Fcb Eq_1808;
 
-typedef void (Eq_1851)(void);
+typedef void (Eq_1846)(void);
 
-typedef uint8 (Eq_1857)(Fcb *);
+typedef uint8 (Eq_1852)(Fcb *);
 
-typedef Fcb Eq_1859;
+typedef Fcb Eq_1854;
 
-typedef void (Eq_1867)(void);
+typedef void (Eq_1862)(void);
 
-typedef uint8 (Eq_1872)(Fcb *);
+typedef uint8 (Eq_1867)(Fcb *);
 
-typedef Fcb Eq_1874;
+typedef Fcb Eq_1869;
 
-typedef Eq_1889 (Eq_1883)(Eq_87, word16);
+typedef Eq_1884 (Eq_1878)(Eq_87, word16);
 
-typedef union Eq_1889 {
-	bool u0;
-	byte u1;
-} Eq_1889;
-
-typedef union Eq_1921 {
+typedef union Eq_1884 {
 	bool u0;
 	byte u1;
-} Eq_1921;
+} Eq_1884;
 
-typedef union Eq_1922 {
+typedef union Eq_1916 {
 	bool u0;
 	byte u1;
-} Eq_1922;
+} Eq_1916;
 
-typedef union Eq_1923 {
+typedef union Eq_1917 {
 	bool u0;
 	byte u1;
-} Eq_1923;
+} Eq_1917;
 
-typedef union Eq_1924 {
+typedef union Eq_1918 {
 	bool u0;
 	byte u1;
-} Eq_1924;
+} Eq_1918;
 
-typedef union Eq_1925 {
+typedef union Eq_1919 {
 	bool u0;
 	byte u1;
-} Eq_1925;
+} Eq_1919;
+
+typedef union Eq_1920 {
+	bool u0;
+	byte u1;
+} Eq_1920;
 

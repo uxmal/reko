@@ -29,7 +29,6 @@ using Reko.Core.Intrinsics;
 using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
-using Reko.Scanning;
 using Reko.Services;
 using Reko.UnitTests.Fragments;
 using Reko.UnitTests.Mocks;
@@ -37,7 +36,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.IO;
-using System.Text.RegularExpressions;
 
 namespace Reko.UnitTests.Decompiler.Analysis
 {
@@ -1502,7 +1500,8 @@ ProcedureBuilder_exit:
                 m.Assign(C_127, m.And(SCZO_126, m.Word32(0x2)));
                 m.Assign(CZ_128, m.And(SCZO_126, m.Word32(0x6)));
             });
-            
+        }
+        
         [Test]
         public void CceLongShift()
         {
@@ -1532,7 +1531,7 @@ ProcedureBuilder_exit:
                 m.Assign(ax_25, m.SegMem(PrimitiveType.Word16, ss, m.ISub(bp_8, Constant.Create(PrimitiveType.Int16, 0x2))));
                 m.Assign(dx_26, m.SegMem(PrimitiveType.Word16, ss, m.ISub(bp_8, Constant.Create(PrimitiveType.Int16, 0x4))));
                 m.Assign(dx_27, m.Shl(dx_26, m.Word16(0x1)));
-                m.Assign(SCZO_28, m.Cond(dx_27));
+                m.Assign(SCZO_28, m.Cond(SCZO_28.DataType, dx_27));
                 m.Assign(C_29, m.And(SCZO_28, m.Word32(0x2)));
                 m.Assign(v15_30, C_29);
                 m.Assign(ax_31, m.Fn(

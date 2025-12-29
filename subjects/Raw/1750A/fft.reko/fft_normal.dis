@@ -368,7 +368,7 @@ l0389:
 	gp7_51 = SLICE(gp5_gp6_gp7_50, word16, 0) (alias)
 	gp4_52 = gp7_51
 	gp0_gp1_113 = SEQ(SLICE(gp0_gp1_43, word16, 16), CONVERT(gp5_gp6_gp7_39, real48, word16)) (alias)
-	branch gp5_gp6_gp7_50 >= 0.0 l0396
+	branch gp5_gp6_gp7_50 >= 0<32> l0396
 l0392:
 	gp4_52 = SLICE(SEQ(SLICE(gp5_gp6_gp7_50, word32, 0), gp7_51) + Mem0[0x805A<p16>:real48], word16, 0) (alias)
 	gp0_gp1_113 = gp0_gp1_43 + Mem0[0x805D<p16>:word32]
@@ -408,7 +408,7 @@ l03AB:
 	gp7_46 = SLICE(gp5_gp6_gp7_45, word16, 0) (alias)
 	gp4_47 = gp7_46
 	gp0_gp1_57 = SEQ(SLICE(gp0_gp1_38, word16, 16), CONVERT(gp5_gp6_gp7_34, real48, word16)) (alias)
-	branch gp5_gp6_gp7_45 >= 0.0 l03B8
+	branch gp5_gp6_gp7_45 >= 0<32> l03B8
 l03B4:
 	gp4_47 = SLICE(SEQ(SLICE(gp5_gp6_gp7_45, word32, 0), gp7_46) + Mem0[0x8067<p16>:real48], word16, 0) (alias)
 	gp0_gp1_57 = gp0_gp1_38 + Mem0[0x806A<p16>:word32]

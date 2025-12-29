@@ -403,7 +403,7 @@ namespace Reko.Analysis
         /// <param name="phase">Short identifier used for the debug output describing the analysis phase.</param>
         /// <param name="caption">Description of the output.</param>
         /// <param name="ssa"><see cref="SsaState"/> to output.</param>
-        [Conditional("DEBUG")]
+     //   [Conditional("DEBUG")]
         public void DumpWatchedProcedure(string phase, string caption, SsaState ssa)
         {
             if (IsProcedureWatched(ssa.Procedure))
@@ -448,7 +448,7 @@ namespace Reko.Analysis
         /// <param name="phase">Short identifier used for the debug output describing the analysis phase.</param>
         /// <param name="caption">Description of the output.</param>
         /// <param name="proc"><see cref="Procedure"/> to output.</param>
-        [Conditional("DEBUG")]
+  //      [Conditional("DEBUG")]
         public void DumpWatchedProcedure(string phase, string caption, Procedure proc)
         {
             if (IsProcedureWatched(proc))

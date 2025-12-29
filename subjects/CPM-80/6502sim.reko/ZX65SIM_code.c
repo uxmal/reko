@@ -46,18 +46,17 @@ void CpmCom_Start(byte f)
 			fn094F(SLICE(af_n, byte, 8), out de_n);
 			fn0940();
 			word16 af_n = fn09BA((byte) af_n, &g_b0B1D);
-			word16 de_n;
+			cu16 de_n;
 			fn094F(SLICE(af_n, byte, 8), out de_n);
-			bcu8 b_n = SLICE(de_n, byte, 8);
-			uint8 c_n = __rcr<byte,byte>((byte) de_n, 0x01, cond(b_n >> 0x01) & 0x01);
 			byte f_n = (byte) af_n;
 			byte e_n = 0x04;
 			byte a_n = 0x00;
-			uint16 bc_n = SEQ(b_n >> 0x01, c_n);
-			bc_n = SEQ(b_n >> 0x01, c_n);
-			if (c_n >= 0x00)
+			uint16 bc_n = de_n >> 0x01;
+			uint16 bc_n = de_n >> 0x01;
+			if ((byte) (de_n >> 0x01) >= 0x00)
 			{
 l0895:
+				uint16 bc_n;
 				do
 				{
 					byte f_n = f_n;
@@ -105,10 +104,13 @@ l0895:
 						}
 						return;
 					}
-					bc_n >>= 0x01;
-				} while ((byte) bc_n >= 0x00);
+					bc_n = bc_n >> 0x01;
+					bc_n = bc_n >> 0x01;
+					bc_n = bc_n;
+				} while ((byte) (bc_n >> 0x01) >= 0x00);
 			}
 			++a_n;
+			bc_n = bc_n;
 			goto l0895;
 		}
 		if (a_n == 77)
@@ -171,7 +173,7 @@ l0920:
 			fn094F(SLICE(af_n, byte, 8), out de_n);
 			g_w0AB0 = de_n;
 			f_n = (byte) af_n;
-			bool v29_n;
+			bool v32_n;
 			do
 			{
 				byte f_n;
@@ -185,10 +187,10 @@ l0920:
 				byte l_n = (byte) hl_n;
 				f_n = (byte) af_n;
 				byte e_n = (byte) de_n;
-				v29_n = h_n == d_n;
+				v32_n = h_n == d_n;
 				if (h_n == d_n)
 				{
-					v29_n = l_n == e_n;
+					v32_n = l_n == e_n;
 					if (l_n == e_n)
 					{
 						byte f_n;
@@ -209,7 +211,7 @@ l0920:
 					}
 				}
 				fn0A24();
-			} while (v29_n);
+			} while (v32_n);
 			goto l01B7;
 		}
 		if (a_n == 0x43)
