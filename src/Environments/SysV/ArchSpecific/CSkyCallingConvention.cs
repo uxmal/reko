@@ -146,14 +146,22 @@ or passes it to in-line code which uses r0 as a base register.
             }
         }
 
+        /// <inheritdoc/>
         public override bool IsArgument(Storage stg)
         {
-            throw new System.NotImplementedException();
+            if (stg is RegisterStorage regStg)
+            {
+                return (uint) regStg.Number <= 3;
+            }
+            return stg is StackStorage stk &&
+                stk.StackOffset >= 0;
         }
 
+        /// <inheritdoc/>
         public override bool IsOutArgument(Storage stg)
         {
-            throw new System.NotImplementedException();
+            return stg is RegisterStorage reg &&
+                (uint) reg.Number <= 1;
         }
     }
 }
