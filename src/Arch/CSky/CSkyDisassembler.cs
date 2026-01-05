@@ -26,7 +26,6 @@ using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 
 namespace Reko.Arch.CSky
 {
@@ -553,7 +552,7 @@ namespace Reko.Arch.CSky
                         Instr(Mnemonic.ipush),
                         Instr(Mnemonic.ipop)),
 
-                    Instr(Mnemonic.pop, PushPopArgs),
+                    Instr(Mnemonic.pop, InstrClass.Transfer|InstrClass.Return, PushPopArgs),
                     Mask(0, 2, "  0..2",
                         Instr(Mnemonic.bpop_h, r2_3),
                         nyi,

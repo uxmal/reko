@@ -1107,16 +1107,13 @@ namespace Reko.Arch.CSky
         {
             var regs = (RegisterListOperand) instr.Operands[0];
             var sp = binder.EnsureRegister(arch.StackRegister);
-            var r15popped = false;
             foreach (var reg in regs.RegisterList)
             {
                 var id = binder.EnsureRegister(reg);
                 m.Assign(id, m.Mem(reg.DataType, sp));
                 m.Assign(sp, m.IAddS(sp, id.DataType.Size));
-                r15popped |= reg.Number == 15;
             }
-            if (r15popped)
-                m.Return(0, 0);
+            m.Return(0, 0);
         }
 
         private void RewritePsrclr()

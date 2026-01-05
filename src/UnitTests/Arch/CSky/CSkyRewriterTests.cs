@@ -1548,7 +1548,7 @@ namespace Reko.UnitTests.Arch.CSky
         {
             Given_HexString("9314");
             AssertCode(     // pop\tr4-r6,r15", 
-                "0|L--|00100000(2): 9 instructions",
+                "0|R--|00100000(2): 9 instructions",
                 "1|L--|r4 = Mem0[r14:word32]",
                 "2|L--|r14 = r14 + 4<i32>",
                 "3|L--|r5 = Mem0[r14:word32]",
