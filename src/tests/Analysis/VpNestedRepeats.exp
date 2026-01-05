@@ -133,9 +133,10 @@ Top_3: orig: Top
     def:  Top_3 = 0<i8>
 dx_4: orig: dx
     def:  dx_4 = 0<16>
-    uses: dx_15 = PHI((dx_4, l0C00_0000), (dx_16, l0C00_0008), (dx_16, l0C00_000D))
+    uses: SZ_5 = cond(dx_4)
+          dx_15 = PHI((dx_4, l0C00_0000), (dx_16, l0C00_0008), (dx_16, l0C00_000D))
 SZ_5: orig: SZ
-    def:  SZ_5 = cond(0<16>)
+    def:  SZ_5 = cond(dx_4)
 O_6: orig: O
     def:  O_6 = 0<32>
 C_7: orig: C
@@ -217,7 +218,7 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	dx_4 = 0<16>
-	SZ_5 = cond(0<16>)
+	SZ_5 = cond(dx_4)
 	O_6 = 0<32>
 	C_7 = 0<32>
 	cx_8 = 4<16>

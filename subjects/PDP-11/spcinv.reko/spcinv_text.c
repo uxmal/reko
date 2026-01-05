@@ -401,9 +401,10 @@ bool fn05D4(Eq_n r0, Eq_n r3, byte * r4, union Eq_n & r0Out, union Eq_n & r3Out,
 		word16 r5_n;
 		byte * r4_n;
 		fn0A7C(fn0AB6(r0, r4, out r4_n, out r5_n), r4_n, out r4_n);
-		fn0A94();
+		uint16 r0_n = fn0A94();
+		ui16 r3_n = SLICE(SEQ(SLICE((uint32) r0_n << 0x01, word16, 16), r0_n) << 0x01, word16, 16);
 		Eq_n r0_n;
-		r0_n.u1 = g_t0F2A.u1;
+		r0_n.u1 = g_a0F2A[r3_n];
 		Eq_n v28_n = g_t0F0E.u0 >> 1;
 		g_t0F0E.u0 = (int16) v28_n;
 		if (v28_n >= 0x00)
@@ -412,7 +413,7 @@ bool fn05D4(Eq_n r0, Eq_n r3, byte * r4, union Eq_n & r0Out, union Eq_n & r3Out,
 		Eq_n r0_n = fn0AB6(r0_n, r4_n, out r4_n, out r5_n);
 		Eq_n Z_n = fn0AE8(r0_n, r4_n, &g_ptr0624, out r0_n, out r4_n, out r5_n);
 		r0Out = r0_n;
-		r3Out.u0 = 0x00;
+		r3Out = r3_n << 1;
 		r4Out = r4_n;
 		r5Out = r5_n;
 		return Z_n != 0x00;
@@ -713,17 +714,23 @@ l08B2:
 				{
 					Eq_n r0_n;
 					struct Eq_n * r1_n;
+					ui16 r1_n;
 					do
 					{
 						r0_n = fn0A94() & g_t0F0E.u0;
 						if (r0_n != 0x00)
 							goto l093A;
-						cui16 r0_n = fn0A94();
+						uint16 r0_n = fn0A94();
 						r1_n = g_ptr0F08;
-						if (r1_n >= null && (r1_n->w0DC4 > 0x00 && r0_n << 1 < 0x00))
-							break;
-						r1_n = null;
-					} while (g_a0DC4[0] <= 0x00);
+						if (r1_n >= null && r1_n->w0DC4 > 0x00)
+						{
+							r0_n <<= 1;
+							if (r0_n << 1 < 0x00)
+								break;
+						}
+						r1_n = SLICE(SEQ(SLICE((uint32) r0_n << 0x02, word16, 16), r0_n << 0x01) << 0x01, word16, 16);
+						r1_n = r1_n << 1;
+					} while (g_a0DC4[r1_n] <= 0x00);
 					r0_n.u0 = 0x0DB8;
 					ci16 * r3_n;
 					do
@@ -819,7 +826,7 @@ Eq_n fn0998(Eq_n r0, byte * r4, byte & r4Out)
 		g_w0F20 = 100;
 		g_w0F12 = 0x01;
 		g_w0A6A = 4404;
-		cui16 r0_n = fn0A94();
+		uint16 r0_n = fn0A94();
 		r2_n = (union Eq_n *) ((char *) &t0000.w0000 + 1);
 		word16 r1_n = 0x00;
 		r0 = r0_n << 1;
@@ -1295,7 +1302,7 @@ Eq_n g_a0DB8[6] = // 0DB8
 			},
 		},
 	};
-ci16 g_a0DC4[] = // 0DC4
+word16 g_a0DC4[] = // 0DC4
 	{
 	};
 word16 g_a0DD4[6] = // 0DD4
@@ -1387,9 +1394,8 @@ ci16 g_w0F22 = 0x00; // 0F22
 byte g_b0F24 = 0x00; // 0F24
 ci16 g_w0F26 = 0x0407; // 0F26
 word16 g_w0F28 = 0x04; // 0F28
-Eq_n g_t0F2A = // 0F2A
+Eq_n g_a0F2A[] = // 0F2A
 	{
-		0x32
 	};
 char g_b0F9A = '\r'; // 0F9A
 char g_b0FDA = '\r'; // 0FDA

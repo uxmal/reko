@@ -4214,7 +4214,7 @@ T_923: (in 0<8> @ 00401A24 : byte)
   Class: Eq_923
   DataType: byte
   OrigDataType: byte
-T_924: (in bLoc14_269 @ 00401A24 : byte)
+T_924: (in bLoc14_270 @ 00401A24 : byte)
   Class: Eq_923
   DataType: byte
   OrigDataType: byte
@@ -4490,7 +4490,7 @@ T_992: (in 0x20<8> @ 00401B7D : byte)
   Class: Eq_992
   DataType: byte
   OrigDataType: byte
-T_993: (in bLoc14_269 & 0x20<8> @ 00401B7D : byte)
+T_993: (in bLoc14_270 & 0x20<8> @ 00401B7D : byte)
   Class: Eq_993
   DataType: byte
   OrigDataType: byte
@@ -4498,7 +4498,7 @@ T_994: (in 0<8> @ 00401B7D : byte)
   Class: Eq_993
   DataType: byte
   OrigDataType: byte
-T_995: (in (bLoc14_269 & 0x20<8>) == 0<8> @ 00401B7D : bool)
+T_995: (in (bLoc14_270 & 0x20<8>) == 0<8> @ 00401B7D : bool)
   Class: Eq_995
   DataType: bool
   OrigDataType: bool

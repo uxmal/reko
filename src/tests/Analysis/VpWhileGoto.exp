@@ -187,7 +187,6 @@ ax_9: orig: ax
           Mem14[ds:di:word16] = ax_9
           branch ax_9 != 0x20<16> l0C00_0005
           ax_15 = ax_9
-          SZ_16 = cond(ax_9)
           branch ax_9 != 0<16> l0C00_0011
           SCZO_20 = cond(ax_9 - 0xD<16>)
           branch ax_9 != 0xD<16> l0C00_001A
@@ -208,8 +207,9 @@ Mem14: orig: Mem0
           Mem8 = PHI((Mem0, l0C00_0000), (Mem14, l0C00_0011), (Mem23, l0C00_0016))
 ax_15: orig: ax
     def:  ax_15 = ax_9
+    uses: SZ_16 = cond(ax_15)
 SZ_16: orig: SZ
-    def:  SZ_16 = cond(ax_9)
+    def:  SZ_16 = cond(ax_15)
     uses: Z_19 = SZ_16 & 4<32> (alias)
 O_17: orig: O
     def:  O_17 = 0<32>
@@ -279,7 +279,7 @@ l0C00_0000:
 l0C00_0005:
 	Mem14[ds:di:word16] = ax_9
 	ax_15 = ax_9
-	SZ_16 = cond(ax_9)
+	SZ_16 = cond(ax_15)
 	Z_19 = SZ_16 & 4<32> (alias)
 	O_17 = 0<32>
 	C_18 = 0<32>

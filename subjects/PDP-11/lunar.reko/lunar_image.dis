@@ -1121,86 +1121,114 @@ l119E:
 	r2_r3Out = <invalid>
 	return C_20 != 0<16>
 l11A0:
-	r2_r3_509 = SEQ(r2_24, r1) (alias)
-	r2_r3_356 = SEQ(r2_24, r1) (alias)
+	r3_29 = r1 << 1<16>
+	r2_33 = SLICE(SEQ(r2_24, r1) << 1<8>, word16, 16)
+	r2_r3_509 = SEQ(r2_33, r3_29) (alias)
+	r2_r3_356 = SEQ(r2_33, r3_29) (alias)
 	branch (r2_24 & 0x8000<16>) == 0<16> l11AC
 l11A8:
 	r2_r3_356 = r2_r3_509 + CONVERT(r1, uint16, uint32)
 l11AC:
-	r2_r3_512 = r2_r3_356 (alias)
-	r2_r3_358 = r2_r3_356 (alias)
+	r3_49 = SLICE(r2_r3_356, word16, 0) (alias)
+	r2_55 = SLICE(r2_r3_356 << 1<8>, word16, 16)
+	r2_r3_512 = SEQ(r2_55, r3_49 << 1<16>) (alias)
+	r2_r3_358 = SEQ(r2_55, r3_49 << 1<16>) (alias)
 	branch (SLICE(r2_r3_356, word16, 16) & 0x8000<16>) == 0<16> l11B6
 l11B2:
 	r2_r3_358 = r2_r3_512 + CONVERT(r1, uint16, uint32)
 l11B6:
-	r2_r3_515 = r2_r3_358 (alias)
-	r2_r3_360 = r2_r3_358 (alias)
+	r3_71 = SLICE(r2_r3_358, word16, 0) (alias)
+	r2_77 = SLICE(r2_r3_358 << 1<8>, word16, 16)
+	r2_r3_515 = SEQ(r2_77, r3_71 << 1<16>) (alias)
+	r2_r3_360 = SEQ(r2_77, r3_71 << 1<16>) (alias)
 	branch (SLICE(r2_r3_358, word16, 16) & 0x8000<16>) == 0<16> l11C0
 l11BC:
 	r2_r3_360 = r2_r3_515 + CONVERT(r1, uint16, uint32)
 l11C0:
-	r2_r3_518 = r2_r3_360 (alias)
-	r2_r3_362 = r2_r3_360 (alias)
+	r3_93 = SLICE(r2_r3_360, word16, 0) (alias)
+	r2_99 = SLICE(r2_r3_360 << 1<8>, word16, 16)
+	r2_r3_518 = SEQ(r2_99, r3_93 << 1<16>) (alias)
+	r2_r3_362 = SEQ(r2_99, r3_93 << 1<16>) (alias)
 	branch (SLICE(r2_r3_360, word16, 16) & 0x8000<16>) == 0<16> l11CA
 l11C6:
 	r2_r3_362 = r2_r3_518 + CONVERT(r1, uint16, uint32)
 l11CA:
-	r2_r3_521 = r2_r3_362 (alias)
-	r2_r3_364 = r2_r3_362 (alias)
+	r3_115 = SLICE(r2_r3_362, word16, 0) (alias)
+	r2_121 = SLICE(r2_r3_362 << 1<8>, word16, 16)
+	r2_r3_521 = SEQ(r2_121, r3_115 << 1<16>) (alias)
+	r2_r3_364 = SEQ(r2_121, r3_115 << 1<16>) (alias)
 	branch (SLICE(r2_r3_362, word16, 16) & 0x8000<16>) == 0<16> l11D4
 l11D0:
 	r2_r3_364 = r2_r3_521 + CONVERT(r1, uint16, uint32)
 l11D4:
-	r2_r3_524 = r2_r3_364 (alias)
-	r2_r3_366 = r2_r3_364 (alias)
+	r3_137 = SLICE(r2_r3_364, word16, 0) (alias)
+	r2_143 = SLICE(r2_r3_364 << 1<8>, word16, 16)
+	r2_r3_524 = SEQ(r2_143, r3_137 << 1<16>) (alias)
+	r2_r3_366 = SEQ(r2_143, r3_137 << 1<16>) (alias)
 	branch (SLICE(r2_r3_364, word16, 16) & 0x8000<16>) == 0<16> l11DE
 l11DA:
 	r2_r3_366 = r2_r3_524 + CONVERT(r1, uint16, uint32)
 l11DE:
-	r2_r3_527 = r2_r3_366 (alias)
-	r2_r3_368 = r2_r3_366 (alias)
+	r3_159 = SLICE(r2_r3_366, word16, 0) (alias)
+	r2_165 = SLICE(r2_r3_366 << 1<8>, word16, 16)
+	r2_r3_527 = SEQ(r2_165, r3_159 << 1<16>) (alias)
+	r2_r3_368 = SEQ(r2_165, r3_159 << 1<16>) (alias)
 	branch (SLICE(r2_r3_366, word16, 16) & 0x8000<16>) == 0<16> l11E8
 l11E4:
 	r2_r3_368 = r2_r3_527 + CONVERT(r1, uint16, uint32)
 l11E8:
-	r2_r3_530 = r2_r3_368 (alias)
-	r2_r3_370 = r2_r3_368 (alias)
+	r3_181 = SLICE(r2_r3_368, word16, 0) (alias)
+	r2_187 = SLICE(r2_r3_368 << 1<8>, word16, 16)
+	r2_r3_530 = SEQ(r2_187, r3_181 << 1<16>) (alias)
+	r2_r3_370 = SEQ(r2_187, r3_181 << 1<16>) (alias)
 	branch (SLICE(r2_r3_368, word16, 16) & 0x8000<16>) == 0<16> l11F2
 l11EE:
 	r2_r3_370 = r2_r3_530 + CONVERT(r1, uint16, uint32)
 l11F2:
-	r2_r3_533 = r2_r3_370 (alias)
-	r2_r3_372 = r2_r3_370 (alias)
+	r3_203 = SLICE(r2_r3_370, word16, 0) (alias)
+	r2_209 = SLICE(r2_r3_370 << 1<8>, word16, 16)
+	r2_r3_533 = SEQ(r2_209, r3_203 << 1<16>) (alias)
+	r2_r3_372 = SEQ(r2_209, r3_203 << 1<16>) (alias)
 	branch (SLICE(r2_r3_370, word16, 16) & 0x8000<16>) == 0<16> l11FC
 l11F8:
 	r2_r3_372 = r2_r3_533 + CONVERT(r1, uint16, uint32)
 l11FC:
-	r2_r3_536 = r2_r3_372 (alias)
-	r2_r3_374 = r2_r3_372 (alias)
+	r3_225 = SLICE(r2_r3_372, word16, 0) (alias)
+	r2_231 = SLICE(r2_r3_372 << 1<8>, word16, 16)
+	r2_r3_536 = SEQ(r2_231, r3_225 << 1<16>) (alias)
+	r2_r3_374 = SEQ(r2_231, r3_225 << 1<16>) (alias)
 	branch (SLICE(r2_r3_372, word16, 16) & 0x8000<16>) == 0<16> l1206
 l1202:
 	r2_r3_374 = r2_r3_536 + CONVERT(r1, uint16, uint32)
 l1206:
-	r2_r3_539 = r2_r3_374 (alias)
-	r2_r3_376 = r2_r3_374 (alias)
+	r3_247 = SLICE(r2_r3_374, word16, 0) (alias)
+	r2_253 = SLICE(r2_r3_374 << 1<8>, word16, 16)
+	r2_r3_539 = SEQ(r2_253, r3_247 << 1<16>) (alias)
+	r2_r3_376 = SEQ(r2_253, r3_247 << 1<16>) (alias)
 	branch (SLICE(r2_r3_374, word16, 16) & 0x8000<16>) == 0<16> l1210
 l120C:
 	r2_r3_376 = r2_r3_539 + CONVERT(r1, uint16, uint32)
 l1210:
-	r2_r3_542 = r2_r3_376 (alias)
-	r2_r3_378 = r2_r3_376 (alias)
+	r3_269 = SLICE(r2_r3_376, word16, 0) (alias)
+	r2_275 = SLICE(r2_r3_376 << 1<8>, word16, 16)
+	r2_r3_542 = SEQ(r2_275, r3_269 << 1<16>) (alias)
+	r2_r3_378 = SEQ(r2_275, r3_269 << 1<16>) (alias)
 	branch (SLICE(r2_r3_376, word16, 16) & 0x8000<16>) == 0<16> l121A
 l1216:
 	r2_r3_378 = r2_r3_542 + CONVERT(r1, uint16, uint32)
 l121A:
-	r2_r3_545 = r2_r3_378 (alias)
-	r2_r3_380 = r2_r3_378 (alias)
+	r3_291 = SLICE(r2_r3_378, word16, 0) (alias)
+	r2_297 = SLICE(r2_r3_378 << 1<8>, word16, 16)
+	r2_r3_545 = SEQ(r2_297, r3_291 << 1<16>) (alias)
+	r2_r3_380 = SEQ(r2_297, r3_291 << 1<16>) (alias)
 	branch (SLICE(r2_r3_378, word16, 16) & 0x8000<16>) == 0<16> l1224
 l1220:
 	r2_r3_380 = r2_r3_545 + CONVERT(r1, uint16, uint32)
 l1224:
-	r2_r3_548 = r2_r3_380 (alias)
-	r2_r3_382 = r2_r3_380 (alias)
+	r3_313 = SLICE(r2_r3_380, word16, 0) (alias)
+	r2_319 = SLICE(r2_r3_380 << 1<8>, word16, 16)
+	r2_r3_548 = SEQ(r2_319, r3_313 << 1<16>) (alias)
+	r2_r3_382 = SEQ(r2_319, r3_313 << 1<16>) (alias)
 	branch (SLICE(r2_r3_380, word16, 16) & 0x8000<16>) == 0<16> l122E
 l122A:
 	r2_r3_382 = r2_r3_548 + CONVERT(r1, uint16, uint32)
@@ -1209,7 +1237,7 @@ l122E:
 	C_342 = (r2_338 & 0x8000<16>) != 0<16>
 	branch (r2_338 & 0x8000<16>) == 0<16> l1238
 l1234:
-	C_342 = cond(SLICE(r2_r3_382 + CONVERT(r1, uint16, uint32), word16, 16)) & 1<16> (alias)
+	C_342 = cond(SLICE((r2_r3_382 << 1<8>) + CONVERT(r1, uint16, uint32), word16, 16)) & 1<16> (alias)
 l1238:
 	r2_r3Out = <invalid>
 	return C_342 != 0<16>
@@ -1260,7 +1288,8 @@ word16 fn125E(word16 r0, word16 r1, word16 & r2Out)
 // Preserved: sp
 fn125E_entry:
 l125E:
-	r2Out = SLICE(fn123A(r0, r1, out r0_8), word16, 16)
+	r2_r3_36 = fn123A(r0, r1, out r0_8)
+	r2Out = SLICE(SEQ(SLICE(r2_r3_36 << 1<8>, word16, 16), SLICE(r2_r3_36, word16, 0)) << 1<8>, word16, 16)
 	return r0_8
 fn125E_exit:
 
@@ -1281,187 +1310,187 @@ word16 fn126C(word32 r2_r3, word16 r0, word16 & r3Out)
 // Preserved: sp
 fn126C_entry:
 	r3 = SLICE(r2_r3, word16, 0)
-	r2 = SLICE(r2_r3, word16, 16)
 l126C:
-	r2_11 = r2 - r0
+	r2_11 = SLICE(r2_r3 << 1<8>, word16, 16) - r0
 	branch r2_11 > 0<16> l12F0
 l1274:
-	r2_20 = r2_11 + r0
-	r3_15 = r3
-	r2_r3_534 = SEQ(r2_20, r3) (alias)
+	r2_20 = SLICE(SEQ(r2_11, r3) << 1<8>, word16, 16) + r0
+	r3_15 = r3 << 1<16>
+	r2_r3_534 = SEQ(r2_20, r3 << 1<16>) (alias)
 	branch r2_20 > 0<16> l12FA
 l127C:
 	r3_43 = SLICE(r2_r3_534, word16, 0) (alias)
-	r2_40 = SLICE(r2_r3_534, word16, 16) + r0
-	r3_33 = r3_43
-	r2_r3_537 = SEQ(r2_40, r3_43) (alias)
+	r2_40 = SLICE(r2_r3_534 << 1<8>, word16, 16) + r0
+	r3_33 = r3_43 << 1<16>
+	r2_r3_537 = SEQ(r2_40, r3_43 << 1<16>) (alias)
 	branch r2_40 > 0<16> l1304
 l1284:
 	r3_66 = SLICE(r2_r3_537, word16, 0) (alias)
-	r2_63 = SLICE(r2_r3_537, word16, 16) + r0
-	r3_56 = r3_66
-	r2_r3_540 = SEQ(r2_63, r3_66) (alias)
+	r2_63 = SLICE(r2_r3_537 << 1<8>, word16, 16) + r0
+	r3_56 = r3_66 << 1<16>
+	r2_r3_540 = SEQ(r2_63, r3_66 << 1<16>) (alias)
 	branch r2_63 > 0<16> l130E
 l128C:
 	r3_89 = SLICE(r2_r3_540, word16, 0) (alias)
-	r2_104 = SLICE(r2_r3_540, word16, 16) + r0
-	r3_100 = r3_89
-	r2_r3_543 = SEQ(r2_104, r3_89) (alias)
+	r2_104 = SLICE(r2_r3_540 << 1<8>, word16, 16) + r0
+	r3_100 = r3_89 << 1<16>
+	r2_r3_543 = SEQ(r2_104, r3_89 << 1<16>) (alias)
 	branch r2_104 > 0<16> l1318
 l1294:
 	r3_112 = SLICE(r2_r3_543, word16, 0) (alias)
-	r2_109 = SLICE(r2_r3_543, word16, 16) + r0
-	r3_102 = r3_112
-	r2_r3_546 = SEQ(r2_109, r3_112) (alias)
+	r2_109 = SLICE(r2_r3_543 << 1<8>, word16, 16) + r0
+	r3_102 = r3_112 << 1<16>
+	r2_r3_546 = SEQ(r2_109, r3_112 << 1<16>) (alias)
 	branch r2_109 > 0<16> l1322
 l129C:
 	r3_135 = SLICE(r2_r3_546, word16, 0) (alias)
-	r2_132 = SLICE(r2_r3_546, word16, 16) + r0
-	r3_125 = r3_135
-	r2_r3_549 = SEQ(r2_132, r3_135) (alias)
+	r2_132 = SLICE(r2_r3_546 << 1<8>, word16, 16) + r0
+	r3_125 = r3_135 << 1<16>
+	r2_r3_549 = SEQ(r2_132, r3_135 << 1<16>) (alias)
 	branch r2_132 > 0<16> l132C
 l12A4:
 	r3_158 = SLICE(r2_r3_549, word16, 0) (alias)
-	r2_155 = SLICE(r2_r3_549, word16, 16) + r0
-	r3_148 = r3_158
-	r2_r3_552 = SEQ(r2_155, r3_158) (alias)
+	r2_155 = SLICE(r2_r3_549 << 1<8>, word16, 16) + r0
+	r3_148 = r3_158 << 1<16>
+	r2_r3_552 = SEQ(r2_155, r3_158 << 1<16>) (alias)
 	branch r2_155 > 0<16> l1336
 l12AC:
 	r3_181 = SLICE(r2_r3_552, word16, 0) (alias)
-	r2_178 = SLICE(r2_r3_552, word16, 16) + r0
-	r3_171 = r3_181
-	r2_r3_555 = SEQ(r2_178, r3_181) (alias)
+	r2_178 = SLICE(r2_r3_552 << 1<8>, word16, 16) + r0
+	r3_171 = r3_181 << 1<16>
+	r2_r3_555 = SEQ(r2_178, r3_181 << 1<16>) (alias)
 	branch r2_178 > 0<16> l1340
 l12B4:
 	r3_204 = SLICE(r2_r3_555, word16, 0) (alias)
-	r2_201 = SLICE(r2_r3_555, word16, 16) + r0
-	r3_194 = r3_204
-	r2_r3_558 = SEQ(r2_201, r3_204) (alias)
+	r2_201 = SLICE(r2_r3_555 << 1<8>, word16, 16) + r0
+	r3_194 = r3_204 << 1<16>
+	r2_r3_558 = SEQ(r2_201, r3_204 << 1<16>) (alias)
 	branch r2_201 > 0<16> l134A
 l12BC:
 	r3_227 = SLICE(r2_r3_558, word16, 0) (alias)
-	r2_224 = SLICE(r2_r3_558, word16, 16) + r0
-	r3_217 = r3_227
-	r2_r3_561 = SEQ(r2_224, r3_227) (alias)
+	r2_224 = SLICE(r2_r3_558 << 1<8>, word16, 16) + r0
+	r3_217 = r3_227 << 1<16>
+	r2_r3_561 = SEQ(r2_224, r3_227 << 1<16>) (alias)
 	branch r2_224 > 0<16> l1354
 l12C4:
 	r3_250 = SLICE(r2_r3_561, word16, 0) (alias)
-	r2_247 = SLICE(r2_r3_561, word16, 16) + r0
-	r3_240 = r3_250
-	r2_r3_564 = SEQ(r2_247, r3_250) (alias)
+	r2_247 = SLICE(r2_r3_561 << 1<8>, word16, 16) + r0
+	r3_240 = r3_250 << 1<16>
+	r2_r3_564 = SEQ(r2_247, r3_250 << 1<16>) (alias)
 	branch r2_247 > 0<16> l135E
 l12CC:
 	r3_273 = SLICE(r2_r3_564, word16, 0) (alias)
-	r2_270 = SLICE(r2_r3_564, word16, 16) + r0
-	r3_263 = r3_273
-	r2_r3_567 = SEQ(r2_270, r3_273) (alias)
+	r2_270 = SLICE(r2_r3_564 << 1<8>, word16, 16) + r0
+	r3_263 = r3_273 << 1<16>
+	r2_r3_567 = SEQ(r2_270, r3_273 << 1<16>) (alias)
 	branch r2_270 > 0<16> l1368
 l12D4:
 	r3_296 = SLICE(r2_r3_567, word16, 0) (alias)
-	r2_293 = SLICE(r2_r3_567, word16, 16) + r0
-	r3_286 = r3_296
-	r2_r3_570 = SEQ(r2_293, r3_296) (alias)
+	r2_293 = SLICE(r2_r3_567 << 1<8>, word16, 16) + r0
+	r3_286 = r3_296 << 1<16>
+	r2_r3_570 = SEQ(r2_293, r3_296 << 1<16>) (alias)
 	branch r2_293 > 0<16> l1372
 l12DC:
 	r3_319 = SLICE(r2_r3_570, word16, 0) (alias)
-	r2_316 = SLICE(r2_r3_570, word16, 16) + r0
-	r3_309 = r3_319
-	r2_r3_573 = SEQ(r2_316, r3_319) (alias)
+	r2_316 = SLICE(r2_r3_570 << 1<8>, word16, 16) + r0
+	r3_309 = r3_319 << 1<16>
+	r2_r3_573 = SEQ(r2_316, r3_319 << 1<16>) (alias)
 	branch r2_316 > 0<16> l137C
 l12E4:
-	r3_332 = SLICE(r2_r3_573, word16, 0)
-	r2_339 = SLICE(r2_r3_573, word16, 16) + r0
+	r3_332 = SLICE(r2_r3_573, word16, 0) << 1<16>
+	r2_339 = SLICE(r2_r3_573 << 1<8>, word16, 16) + r0
 	branch r2_339 > 0<16> l1386
 l12EC:
 	r3Out = r3_332
 	return r2_339 + r0
 l12F0:
 	r3_14 = (r3 << 1<i16>) + 1<16>
-	r2_20 = r2_11 - r0
-	r3_15 = r3_14
-	r2_r3_534 = SEQ(r2_20, r3_14) (alias)
+	r2_20 = SLICE(SEQ(r2_11, r3_14) << 1<8>, word16, 16) - r0
+	r3_15 = r3_14 << 1<16>
+	r2_r3_534 = SEQ(r2_20, r3_14 << 1<16>) (alias)
 	branch r2_20 < 0<16> l127C
 l12FA:
 	r3_32 = r3_15 + 1<16>
-	r2_40 = r2_20 - r0
-	r3_33 = r3_32
-	r2_r3_537 = SEQ(r2_40, r3_32) (alias)
+	r2_40 = SLICE(SEQ(r2_20, r3_32) << 1<8>, word16, 16) - r0
+	r3_33 = r3_32 << 1<16>
+	r2_r3_537 = SEQ(r2_40, r3_32 << 1<16>) (alias)
 	branch r2_40 < 0<16> l1284
 l1304:
 	r3_55 = r3_33 + 1<16>
-	r2_63 = r2_40 - r0
-	r3_56 = r3_55
-	r2_r3_540 = SEQ(r2_63, r3_55) (alias)
+	r2_63 = SLICE(SEQ(r2_40, r3_55) << 1<8>, word16, 16) - r0
+	r3_56 = r3_55 << 1<16>
+	r2_r3_540 = SEQ(r2_63, r3_55 << 1<16>) (alias)
 	branch r2_63 < 0<16> l128C
 l130E:
 	r3_78 = r3_56 + 1<16>
-	r2_104 = r2_63 - r0
-	r3_100 = r3_78
-	r2_r3_543 = SEQ(r2_104, r3_78) (alias)
+	r2_104 = SLICE(SEQ(r2_63, r3_78) << 1<8>, word16, 16) - r0
+	r3_100 = r3_78 << 1<16>
+	r2_r3_543 = SEQ(r2_104, r3_78 << 1<16>) (alias)
 	branch r2_104 < 0<16> l1294
 l1318:
 	r3_101 = r3_100 + 1<16>
-	r2_109 = r2_104 - r0
-	r3_102 = r3_101
-	r2_r3_546 = SEQ(r2_109, r3_101) (alias)
+	r2_109 = SLICE(SEQ(r2_104, r3_101) << 1<8>, word16, 16) - r0
+	r3_102 = r3_101 << 1<16>
+	r2_r3_546 = SEQ(r2_109, r3_101 << 1<16>) (alias)
 	branch r2_109 < 0<16> l129C
 l1322:
 	r3_124 = r3_102 + 1<16>
-	r2_132 = r2_109 - r0
-	r3_125 = r3_124
-	r2_r3_549 = SEQ(r2_132, r3_124) (alias)
+	r2_132 = SLICE(SEQ(r2_109, r3_124) << 1<8>, word16, 16) - r0
+	r3_125 = r3_124 << 1<16>
+	r2_r3_549 = SEQ(r2_132, r3_124 << 1<16>) (alias)
 	branch r2_132 < 0<16> l12A4
 l132C:
 	r3_147 = r3_125 + 1<16>
-	r2_155 = r2_132 - r0
-	r3_148 = r3_147
-	r2_r3_552 = SEQ(r2_155, r3_147) (alias)
+	r2_155 = SLICE(SEQ(r2_132, r3_147) << 1<8>, word16, 16) - r0
+	r3_148 = r3_147 << 1<16>
+	r2_r3_552 = SEQ(r2_155, r3_147 << 1<16>) (alias)
 	branch r2_155 < 0<16> l12AC
 l1336:
 	r3_170 = r3_148 + 1<16>
-	r2_178 = r2_155 - r0
-	r3_171 = r3_170
-	r2_r3_555 = SEQ(r2_178, r3_170) (alias)
+	r2_178 = SLICE(SEQ(r2_155, r3_170) << 1<8>, word16, 16) - r0
+	r3_171 = r3_170 << 1<16>
+	r2_r3_555 = SEQ(r2_178, r3_170 << 1<16>) (alias)
 	branch r2_178 < 0<16> l12B4
 l1340:
 	r3_193 = r3_171 + 1<16>
-	r2_201 = r2_178 - r0
-	r3_194 = r3_193
-	r2_r3_558 = SEQ(r2_201, r3_193) (alias)
+	r2_201 = SLICE(SEQ(r2_178, r3_193) << 1<8>, word16, 16) - r0
+	r3_194 = r3_193 << 1<16>
+	r2_r3_558 = SEQ(r2_201, r3_193 << 1<16>) (alias)
 	branch r2_201 < 0<16> l12BC
 l134A:
 	r3_216 = r3_194 + 1<16>
-	r2_224 = r2_201 - r0
-	r3_217 = r3_216
-	r2_r3_561 = SEQ(r2_224, r3_216) (alias)
+	r2_224 = SLICE(SEQ(r2_201, r3_216) << 1<8>, word16, 16) - r0
+	r3_217 = r3_216 << 1<16>
+	r2_r3_561 = SEQ(r2_224, r3_216 << 1<16>) (alias)
 	branch r2_224 < 0<16> l12C4
 l1354:
 	r3_239 = r3_217 + 1<16>
-	r2_247 = r2_224 - r0
-	r3_240 = r3_239
-	r2_r3_564 = SEQ(r2_247, r3_239) (alias)
+	r2_247 = SLICE(SEQ(r2_224, r3_239) << 1<8>, word16, 16) - r0
+	r3_240 = r3_239 << 1<16>
+	r2_r3_564 = SEQ(r2_247, r3_239 << 1<16>) (alias)
 	branch r2_247 < 0<16> l12CC
 l135E:
 	r3_262 = r3_240 + 1<16>
-	r2_270 = r2_247 - r0
-	r3_263 = r3_262
-	r2_r3_567 = SEQ(r2_270, r3_262) (alias)
+	r2_270 = SLICE(SEQ(r2_247, r3_262) << 1<8>, word16, 16) - r0
+	r3_263 = r3_262 << 1<16>
+	r2_r3_567 = SEQ(r2_270, r3_262 << 1<16>) (alias)
 	branch r2_270 < 0<16> l12D4
 l1368:
 	r3_285 = r3_263 + 1<16>
-	r2_293 = r2_270 - r0
-	r3_286 = r3_285
-	r2_r3_570 = SEQ(r2_293, r3_285) (alias)
+	r2_293 = SLICE(SEQ(r2_270, r3_285) << 1<8>, word16, 16) - r0
+	r3_286 = r3_285 << 1<16>
+	r2_r3_570 = SEQ(r2_293, r3_285 << 1<16>) (alias)
 	branch r2_293 < 0<16> l12DC
 l1372:
 	r3_308 = r3_286 + 1<16>
-	r2_316 = r2_293 - r0
-	r3_309 = r3_308
-	r2_r3_573 = SEQ(r2_316, r3_308) (alias)
+	r2_316 = SLICE(SEQ(r2_293, r3_308) << 1<8>, word16, 16) - r0
+	r3_309 = r3_308 << 1<16>
+	r2_r3_573 = SEQ(r2_316, r3_308 << 1<16>) (alias)
 	branch r2_316 < 0<16> l12E4
 l137C:
-	r3_332 = r3_309 + 1<16>
-	r2_339 = r2_316 - r0
+	r3_331 = r3_309 + 1<16>
+	r3_332 = r3_331 << 1<16>
+	r2_339 = SLICE(SEQ(r2_316, r3_331) << 1<8>, word16, 16) - r0
 	branch r2_339 < 0<16> l12EC
 l1386:
 	r3_354 = r3_332 + 1<16>

@@ -340,8 +340,9 @@ l05D4:
 	branch v9_6 >u 4<16> l0648
 l05E0:
 	fn0A7C(fn0AB6(r0, r4, out r4_23, out r5_122), r4_23, out r4_29)
-	fn0A94()
-	r0_51 = Mem18[0xF2A<16>:word16]
+	r0_34 = fn0A94()
+	r3_49 = SLICE(SEQ(SLICE(CONVERT(r0_34, uint16, uint32) << 1<8>, word16, 16), r0_34) << 1<8>, word16, 16)
+	r0_51 = Mem18[(r3_49 << 1<i16>) + 0xF2A<16>:word16]
 	v28_52 = Mem18[0x0F0E<p16>:word16] >> 1<i16>
 	Mem53[0x0F0E<p16>:word16] = v28_52
 	branch v28_52 <u 0<16> l060E
@@ -353,7 +354,7 @@ l060E:
 l0620_thunk_fn0AE8:
 	Z_85 = fn0AE8(r0_71, r4_72, 0x0624<p16>, out r0_80, out r4_81, out r5_82)
 	r0Out = r0_80
-	r3Out = 0<16>
+	r3Out = r3_49 << 1<i16>
 	r4Out = r4_81
 	r5Out = r5_82
 	return Z_85 != 0<16>
@@ -693,10 +694,12 @@ l08DA:
 l08E4:
 	branch Mem316[r1_346 + 0xDC4<16>:word16] <= 0<16> l08EE
 l08EA:
+	r0_341 = r0_341 << 1<i16>
 	branch r0_341 << 1<i16> <u 0<16> l0904
 l08EE:
-	r1_346 = 0<16>
-	branch Mem316[0xDC4<16>:word16] <= 0<16> l08D0
+	r1_375 = SLICE(SEQ(SLICE(CONVERT(r0_341, uint16, uint32) << 2<8>, word16, 16), r0_341 << 1<16>) << 1<8>, word16, 16)
+	r1_346 = r1_375 << 1<i16>
+	branch Mem316[(r1_375 << 1<i16>) + 0xDC4<16>:word16] <= 0<16> l08D0
 l0904:
 	r0_337 = 0xDB8<16>
 l0908:
@@ -913,7 +916,7 @@ word16 fn0A94()
 //      fn07A6
 //      fn0998
 // MayUse: 
-// LiveOut: r0:[0..15]-fn07A6
+// LiveOut: r0:[0..15]-fn05D4
 // Trashed: NZVC r0
 // Preserved: sp
 fn0A94_entry:

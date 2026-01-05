@@ -1073,71 +1073,71 @@ void fn000C1222(ui32 dwArg03)
 fn000C1222_entry:
 l000C1222:
 	wLoc04_290 = 1<16>
-	dwArg03_439 = dwArg03 (alias)
+	dwArg03_442 = dwArg03 (alias)
 l000C1228:
-	wArg03_292 = SLICE(dwArg03_439, word16, 0) (alias)
+	wArg03_292 = SLICE(dwArg03_442, word16, 0) (alias)
 	branch wLoc04_290 <=u 0x64<16> l000C1232
 l000C122F:
 	goto l000C1370
 l000C1232:
-	branch Mem11[dwArg03_439:byte] == 0x7E<8> l000C1241
+	branch Mem11[dwArg03_442:byte] == 0x7E<8> l000C1241
 l000C123E:
 	goto l000C1344
 l000C1241:
-	branch Mem25[dwArg03_439 + 1<32>:byte] != 0x4E<8> l000C1261
+	branch Mem25[dwArg03_442 + 1<32>:byte] != 0x4E<8> l000C1261
 l000C1253:
 	UART1_putc(0xA<16>)
 	UART1_putc(0xD<16>)
 l000C1261:
-	branch Mem25[dwArg03_439 + 1<32>:byte] != 0x7E<8> l000C1274
+	branch Mem25[dwArg03_442 + 1<32>:byte] != 0x7E<8> l000C1274
 l000C126D:
 	UART1_putc(0x7E<16>)
 l000C1274:
-	branch Mem25[dwArg03_439 + 1<32>:byte] != 0x42<8> l000C129C
+	branch Mem25[dwArg03_442 + 1<32>:byte] != 0x42<8> l000C129C
 l000C1280:
 	UART1_putc(0x1B<16>)
 	UART1_putc(0x5B<16>)
 	UART1_putc(0x31<16>)
 	UART1_putc(0x6D<16>)
 l000C129C:
-	branch Mem25[dwArg03_439 + 1<32>:byte] != 0x55<8> l000C12C4
+	branch Mem25[dwArg03_442 + 1<32>:byte] != 0x55<8> l000C12C4
 l000C12A8:
 	UART1_putc(0x1B<16>)
 	UART1_putc(0x5B<16>)
 	UART1_putc(0x34<16>)
 	UART1_putc(0x6D<16>)
 l000C12C4:
-	branch Mem25[dwArg03_439 + 1<32>:byte] != 0x52<8> l000C12EC
+	branch Mem25[dwArg03_442 + 1<32>:byte] != 0x52<8> l000C12EC
 l000C12D0:
 	UART1_putc(0x1B<16>)
 	UART1_putc(0x5B<16>)
 	UART1_putc(0x37<16>)
 	UART1_putc(0x6D<16>)
 l000C12EC:
-	branch Mem25[dwArg03_439 + 1<32>:byte] != 0x4F<8> l000C1314
+	branch Mem25[dwArg03_442 + 1<32>:byte] != 0x4F<8> l000C1314
 l000C12F8:
 	UART1_putc(0x1B<16>)
 	UART1_putc(0x5B<16>)
 	UART1_putc(0x30<16>)
 	UART1_putc(0x6D<16>)
 l000C1314:
-	branch Mem25[dwArg03_439 + 1<32>:byte] != 0x53<8> l000C133C
+	branch Mem25[dwArg03_442 + 1<32>:byte] != 0x53<8> l000C133C
 l000C1320:
 	UART1_putc(0x1B<16>)
 	UART1_putc(0x5B<16>)
 	UART1_putc(0x35<16>)
 	UART1_putc(0x6D<16>)
 l000C133C:
-	dwArg03_439 = SEQ(SLICE(dwArg03_439 + 2<32>, word16, 16), wArg03_292 + 2<16>) (alias)
+	dwArg03_442 = SEQ(SLICE(dwArg03_442 + 2<32>, word16, 16), wArg03_292 + 2<16>) (alias)
 	goto l000C136A
 l000C1344:
-	branch Mem11[dwArg03_439:byte] != 0<8> l000C1355
+	branch Mem11[dwArg03_442:byte] != 0<8> l000C1355
 l000C134E:
 	wLoc04_290 = 0x64<16>
 	goto l000C136A
 l000C1355:
-	UART1_putc(CONVERT(Mem11[dwArg03_439:byte], uint8, uint16))
-	dwArg03_439 = SEQ(SLICE(dwArg03_439 + 1<32>, word16, 16), wArg03_292 + 1<16>) (alias)
+	UART1_putc(CONVERT(Mem11[dwArg03_442:byte], uint8, uint16))
+	dwArg03_442 = SEQ(SLICE(dwArg03_442 + 1<32>, word16, 16), wArg03_292 + 1<16>) (alias)
 l000C136A:
 	wLoc04_290 = wLoc04_290 + 1<16>
 	goto l000C1228
@@ -1633,21 +1633,25 @@ l000C17C6:
 	r2 = r2_r0_81 %u r1_18
 	r3_19 = r2_r0_81 /u r1_18
 l000C17D2:
-	r2_r0_184 = SEQ(r3_19, SEQ(r2, r0) /u r1_18) (alias)
+	r2_r0_187 = SEQ(r3_19, SEQ(r2, r0) /u r1_18) (alias)
 	goto l000C17FE
 l000C17D8:
 	r2_r0_172 = r2_r0 (alias)
 	r3_r1_177 = SEQ(r3_19, r1_18) (alias)
+	r3_r1_182 = SEQ(r3_19, r1_18) (alias)
 	branch r3_19 < 0<16> l000C17E5
 l000C17DA:
+	r1_29 = SLICE(r3_r1_182, word16, 0) (alias)
 	r2_r0_172 = r2_r0 (alias)
-	r3_r1_177 = SEQ(r3_19, r1_18) (alias)
-	branch r2 <=u r3_19 l000C17E5
+	r3_r1_177 = r3_r1_182 (alias)
+	branch r2 <=u SLICE(r3_r1_182, word16, 16) l000C17E5
 l000C17DE:
+	r3_35 = SLICE(r3_r1_182 << 1<8>, word16, 16)
 	a1_16 = a1_16 + 1<i16>
 	r2_r0_172 = r2_r0 (alias)
-	r3_r1_177 = SEQ(r3_19, r1_18) (alias)
-	branch r1_18 >= 0<16> l000C17DA
+	r3_r1_177 = SEQ(r3_35, r1_29 << 1<16>) (alias)
+	r3_r1_182 = SEQ(r3_35, r1_29 << 1<16>) (alias)
+	branch r1_29 << 1<16> >= 0<16> l000C17DA
 l000C17E5:
 	r2_r0_123 = r2_r0_172 - r3_r1_177
 	r2_44 = SLICE(r2_r0_123, word16, 16) (alias)
@@ -1663,9 +1667,9 @@ l000C17F1:
 	r3_r1_177 = r3_r1_177 >>u 1<8> (alias)
 	branch a1_16 >= 0<16> l000C17E5
 l000C17FA:
-	r2_r0_184 = CONVERT(a0_15, uint16, uint32) (alias)
+	r2_r0_187 = CONVERT(a0_15, uint16, uint32) (alias)
 l000C17FE:
-	return r2_r0_184
+	return r2_r0_187
 fn000C17B4_exit:
 
 

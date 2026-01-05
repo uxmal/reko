@@ -1098,7 +1098,7 @@ word16 fn00008F4E(word16 er0_16_n, uipr32 er4, int16 r6, uint32 & er4Out)
 	}
 	fn00009BB6((<anonymous> *) 0x1A4E, 0x2002, 0x03, r6_n, 0x07);
 	word16 r3_n = wLoc02_n + r6_n;
-	uint16 r2_n = (uint16) (__bset<byte,byte>((byte) r3_n << 1, cond((byte) r3_n) & 0x01, 0x00) & 0x01) + r3_n;
+	uint16 r2_n = (uint16) (__bset<byte,byte>((byte) r3_n << 1, cond((byte) r3_n << 0x01) & 0x01, 0x00) & 0x01) + r3_n;
 	int16 r2_n = SEQ(SLICE(r2_n, byte, 8) >> 1, (byte) (r2_n >> 0x01));
 	g_wFFFF9E3A = r2_n;
 	fn00009BB6((<anonymous> *) 0x1FF2, 0x3001, r2_n, r6_n, 0x3002);
@@ -1131,7 +1131,7 @@ word16 fn00008F4E(word16 er0_16_n, uipr32 er4, int16 r6, uint32 & er4Out)
 	}
 	fn00009BB6((<anonymous> *) 0x1A4E, 0x2000, 0x03, r6_n, 0x07);
 	word16 r3_n = wLoc02_n + r6_n;
-	uint16 r2_n = (uint16) (__bset<byte,byte>((byte) r3_n << 1, cond((byte) r3_n) & 0x01, 0x00) & 0x01) + r3_n;
+	uint16 r2_n = (uint16) (__bset<byte,byte>((byte) r3_n << 1, cond((byte) r3_n << 0x01) & 0x01, 0x00) & 0x01) + r3_n;
 	int16 r2_n = SEQ(SLICE(r2_n, byte, 8) >> 1, (byte) (r2_n >> 0x01));
 	g_wFFFF9E38 = r2_n;
 	fn00009BB6((<anonymous> *) 0x1FF2, 0x3001, r2_n, r6_n, 0x3002);

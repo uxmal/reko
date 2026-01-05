@@ -1100,7 +1100,7 @@ l00009010:
 l0000901A:
 	fn00009BB6(0x1A4E<16>, 0x2002<16>, 3<16>, r6_1027, 7<16>)
 	r3_208 = wLoc02_1065 + r6_1027
-	r2_220 = CONVERT(__bset<byte,byte>(SLICE(r3_208, byte, 0) << 1<i32>, cond(SLICE(r3_208, byte, 0)) & 1<8>, 0<8>) & 1<8>, uint8, uint16) + r3_208
+	r2_220 = CONVERT(__bset<byte,byte>(SLICE(r3_208, byte, 0) << 1<i32>, cond(SLICE(r3_208, byte, 0) << 1<8>) & 1<8>, 0<8>) & 1<8>, uint8, uint16) + r3_208
 	r2_227 = SEQ(SLICE(r2_220, byte, 8) >> 1<i32>, SLICE(r2_220 >>u 1<8>, byte, 0)) (alias)
 	Mem228[0x9E3A<p16>:word16] = r2_227
 	fn00009BB6(0x1FF2<16>, 0x3001<16>, r2_227, r6_1027, 0x3002<16>)
@@ -1132,7 +1132,7 @@ l000090C8:
 l000090D4:
 	fn00009BB6(0x1A4E<16>, 0x2000<16>, 3<16>, r6_1029, 7<16>)
 	r3_390 = wLoc02_1073 + r6_1029
-	r2_402 = CONVERT(__bset<byte,byte>(SLICE(r3_390, byte, 0) << 1<i32>, cond(SLICE(r3_390, byte, 0)) & 1<8>, 0<8>) & 1<8>, uint8, uint16) + r3_390
+	r2_402 = CONVERT(__bset<byte,byte>(SLICE(r3_390, byte, 0) << 1<i32>, cond(SLICE(r3_390, byte, 0) << 1<8>) & 1<8>, 0<8>) & 1<8>, uint8, uint16) + r3_390
 	r2_409 = SEQ(SLICE(r2_402, byte, 8) >> 1<i32>, SLICE(r2_402 >>u 1<8>, byte, 0)) (alias)
 	Mem410[0x9E38<p16>:word16] = r2_409
 	fn00009BB6(0x1FF2<16>, 0x3001<16>, r2_409, r6_1029, 0x3002<16>)

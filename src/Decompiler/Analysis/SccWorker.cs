@@ -130,7 +130,7 @@ namespace Reko.Analysis
                 // Stores of sliced long variables can be fused.
                 var stfu = new StoreFuser(context);
                 stfu.Transform(ssa);
-                dfa.DumpWatchedProcedure("stfu", "After store fusion", ssa);
+                dfa.DumpWatchedProcedure("stfu2", "After second store fusion", ssa);
             }
 
             var uid = new UsedRegisterFinder(program, flow, procs, this.eventListener);
@@ -215,6 +215,10 @@ namespace Reko.Analysis
                 var lcf = new LongComparisonFuser(context);
                 lcf.Transform(ssa);
                 dfa.DumpWatchedProcedure("lcf", "After long comparison fuser", ssa);
+
+                // Stores of sliced long variables can be fused.
+                var stfu = new StoreFuser(context);
+                stfu.Transform(ssa);
 
                 var csvt = new ComplexStackVariableTransformer(context, flow);
                 csvt.Transform(ssa);

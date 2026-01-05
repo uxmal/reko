@@ -475,8 +475,6 @@ finish: error: An error occurred while renaming variables.
     The given key 'l004028A8' was not present in the dictionary.
        at Reko.Analysis.SsaLivenessAnalysis.LiveOutAtBlock(Block block, SsaIdentifier sid) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 214
    at Reko.Analysis.SsaLivenessAnalysis.BuildInterferenceGraph(SsaIdentifierCollection ssaIds) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 114
-   at Reko.Analysis.SsaLivenessAnalysis..ctor(SsaState ssa) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 76
-   at Reko.Analysis.LiveCopyInserter..ctor(SsaState ssa) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 50
    at Reko.Analysis.WebBuilder.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 119
                                                             Building expressions. [Done]
                                                             Gathering primitive datatypes from instructions. [Done]
@@ -1536,6 +1534,7 @@ fn00000000: error: An error occurred while rewriting procedure to high-level lan
 0EEC: warning: Expected sizes of arrays to have been determined by now
 0EF0: warning: Expected sizes of arrays to have been determined by now
 0EF3: warning: Expected sizes of arrays to have been determined by now
+0F2A: warning: Expected sizes of arrays to have been determined by now
 02CC: warning: Expected sizes of arrays to have been determined by now
 0DC4: warning: Expected sizes of arrays to have been determined by now
 0DE0: warning: Expected sizes of arrays to have been determined by now
@@ -1550,6 +1549,7 @@ fn00000000: error: An error occurred while rewriting procedure to high-level lan
 0EEC: warning: Expected sizes of arrays to have been determined by now
 0EF0: warning: Expected sizes of arrays to have been determined by now
 0EF3: warning: Expected sizes of arrays to have been determined by now
+0F2A: warning: Expected sizes of arrays to have been determined by now
 
 *** PE\m68k\hello_m68k
 hello_m68k.exe: warning: Win32 M68k main procedure finder not supported.
@@ -3096,4 +3096,4 @@ l0011DD0D: warning: Non-integral switch expression
                                                             Rewriting expressions. [Done]
                                                             Rewriting procedures to high-level language. [Done]
 
-Decompiled 100 binaries in 68.92 seconds.
+Decompiled 100 binaries in 65.33 seconds.

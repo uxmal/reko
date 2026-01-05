@@ -998,19 +998,19 @@ bool fn114A(Eq_n r0, Eq_n r1, ui32 & r2_r3Out)
 	Eq_n r2_n = __rcl<word16,byte>(r2_n, 0x01, C_n);
 	Eq_n C_n = (r2_n & 0x8000) != 0x00;
 	ui32 r2_r3_n;
-	uint32 r2_r3_n;
-	uint32 r2_r3_n;
-	uint32 r2_r3_n;
-	uint32 r2_r3_n;
-	uint32 r2_r3_n;
-	uint32 r2_r3_n;
-	uint32 r2_r3_n;
-	uint32 r2_r3_n;
-	uint32 r2_r3_n;
-	uint32 r2_r3_n;
-	uint32 r2_r3_n;
-	uint32 r2_r3_n;
-	uint32 r2_r3_n;
+	ui32 r2_r3_n;
+	ui32 r2_r3_n;
+	ui32 r2_r3_n;
+	ui32 r2_r3_n;
+	ui32 r2_r3_n;
+	ui32 r2_r3_n;
+	ui32 r2_r3_n;
+	ui32 r2_r3_n;
+	ui32 r2_r3_n;
+	ui32 r2_r3_n;
+	ui32 r2_r3_n;
+	ui32 r2_r3_n;
+	ui32 r2_r3_n;
 	uint32 r2_r3_n;
 	if ((r2_n & 0x8000) == 0x00)
 	{
@@ -1116,82 +1116,110 @@ l119E:
 	}
 	else
 	{
-		r2_r3_n = SEQ(r2_n, r1);
-		r2_r3_n = SEQ(r2_n, r1);
+		ui16 r3_n = r1 << 0x01;
+		ui16 r2_n = SLICE(SEQ(r2_n, r1) << 0x01, word16, 16);
+		r2_r3_n = SEQ(r2_n, r3_n);
+		r2_r3_n = SEQ(r2_n, r3_n);
 		if ((r2_n & 0x8000) == 0x00)
 			goto l11AC;
 	}
 	r2_r3_n = r2_r3_n + (uint32) r1;
 l11AC:
-	r2_r3_n = r2_r3_n;
-	uint32 r2_r3_n = r2_r3_n;
+	cui16 r3_n = (word16) r2_r3_n;
+	ui16 r2_n = SLICE(r2_r3_n << 0x01, word16, 16);
+	r2_r3_n = SEQ(r2_n, r3_n << 0x01);
+	uint32 r2_r3_n = SEQ(r2_n, r3_n << 0x01);
 	if ((SLICE(r2_r3_n, word16, 16) & 0x8000) == 0x00)
 	{
 l11B6:
-		r2_r3_n = r2_r3_n;
-		uint32 r2_r3_n = r2_r3_n;
+		cui16 r3_n = (word16) r2_r3_n;
+		ui16 r2_n = SLICE(r2_r3_n << 0x01, word16, 16);
+		r2_r3_n = SEQ(r2_n, r3_n << 0x01);
+		uint32 r2_r3_n = SEQ(r2_n, r3_n << 0x01);
 		if ((SLICE(r2_r3_n, word16, 16) & 0x8000) == 0x00)
 		{
 l11C0:
-			r2_r3_n = r2_r3_n;
-			uint32 r2_r3_n = r2_r3_n;
+			cui16 r3_n = (word16) r2_r3_n;
+			ui16 r2_n = SLICE(r2_r3_n << 0x01, word16, 16);
+			r2_r3_n = SEQ(r2_n, r3_n << 0x01);
+			uint32 r2_r3_n = SEQ(r2_n, r3_n << 0x01);
 			if ((SLICE(r2_r3_n, word16, 16) & 0x8000) == 0x00)
 			{
 l11CA:
-				r2_r3_n = r2_r3_n;
-				uint32 r2_r3_n = r2_r3_n;
+				cui16 r3_n = (word16) r2_r3_n;
+				ui16 r2_n = SLICE(r2_r3_n << 0x01, word16, 16);
+				r2_r3_n = SEQ(r2_n, r3_n << 0x01);
+				uint32 r2_r3_n = SEQ(r2_n, r3_n << 0x01);
 				if ((SLICE(r2_r3_n, word16, 16) & 0x8000) == 0x00)
 				{
 l11D4:
-					r2_r3_n = r2_r3_n;
-					uint32 r2_r3_n = r2_r3_n;
+					cui16 r3_n = (word16) r2_r3_n;
+					ui16 r2_n = SLICE(r2_r3_n << 0x01, word16, 16);
+					r2_r3_n = SEQ(r2_n, r3_n << 0x01);
+					uint32 r2_r3_n = SEQ(r2_n, r3_n << 0x01);
 					if ((SLICE(r2_r3_n, word16, 16) & 0x8000) == 0x00)
 					{
 l11DE:
-						r2_r3_n = r2_r3_n;
-						uint32 r2_r3_n = r2_r3_n;
+						cui16 r3_n = (word16) r2_r3_n;
+						ui16 r2_n = SLICE(r2_r3_n << 0x01, word16, 16);
+						r2_r3_n = SEQ(r2_n, r3_n << 0x01);
+						uint32 r2_r3_n = SEQ(r2_n, r3_n << 0x01);
 						if ((SLICE(r2_r3_n, word16, 16) & 0x8000) == 0x00)
 						{
 l11E8:
-							r2_r3_n = r2_r3_n;
-							uint32 r2_r3_n = r2_r3_n;
+							cui16 r3_n = (word16) r2_r3_n;
+							ui16 r2_n = SLICE(r2_r3_n << 0x01, word16, 16);
+							r2_r3_n = SEQ(r2_n, r3_n << 0x01);
+							uint32 r2_r3_n = SEQ(r2_n, r3_n << 0x01);
 							if ((SLICE(r2_r3_n, word16, 16) & 0x8000) == 0x00)
 							{
 l11F2:
-								r2_r3_n = r2_r3_n;
-								uint32 r2_r3_n = r2_r3_n;
+								cui16 r3_n = (word16) r2_r3_n;
+								ui16 r2_n = SLICE(r2_r3_n << 0x01, word16, 16);
+								r2_r3_n = SEQ(r2_n, r3_n << 0x01);
+								uint32 r2_r3_n = SEQ(r2_n, r3_n << 0x01);
 								if ((SLICE(r2_r3_n, word16, 16) & 0x8000) == 0x00)
 								{
 l11FC:
-									r2_r3_n = r2_r3_n;
-									uint32 r2_r3_n = r2_r3_n;
+									cui16 r3_n = (word16) r2_r3_n;
+									ui16 r2_n = SLICE(r2_r3_n << 0x01, word16, 16);
+									r2_r3_n = SEQ(r2_n, r3_n << 0x01);
+									uint32 r2_r3_n = SEQ(r2_n, r3_n << 0x01);
 									if ((SLICE(r2_r3_n, word16, 16) & 0x8000) == 0x00)
 									{
 l1206:
-										r2_r3_n = r2_r3_n;
-										uint32 r2_r3_n = r2_r3_n;
+										cui16 r3_n = (word16) r2_r3_n;
+										ui16 r2_n = SLICE(r2_r3_n << 0x01, word16, 16);
+										r2_r3_n = SEQ(r2_n, r3_n << 0x01);
+										uint32 r2_r3_n = SEQ(r2_n, r3_n << 0x01);
 										if ((SLICE(r2_r3_n, word16, 16) & 0x8000) == 0x00)
 										{
 l1210:
-											r2_r3_n = r2_r3_n;
-											uint32 r2_r3_n = r2_r3_n;
+											cui16 r3_n = (word16) r2_r3_n;
+											ui16 r2_n = SLICE(r2_r3_n << 0x01, word16, 16);
+											r2_r3_n = SEQ(r2_n, r3_n << 0x01);
+											uint32 r2_r3_n = SEQ(r2_n, r3_n << 0x01);
 											if ((SLICE(r2_r3_n, word16, 16) & 0x8000) == 0x00)
 											{
 l121A:
-												r2_r3_n = r2_r3_n;
-												uint32 r2_r3_n = r2_r3_n;
+												cui16 r3_n = (word16) r2_r3_n;
+												ui16 r2_n = SLICE(r2_r3_n << 0x01, word16, 16);
+												r2_r3_n = SEQ(r2_n, r3_n << 0x01);
+												uint32 r2_r3_n = SEQ(r2_n, r3_n << 0x01);
 												if ((SLICE(r2_r3_n, word16, 16) & 0x8000) == 0x00)
 												{
 l1224:
-													r2_r3_n = r2_r3_n;
-													uint32 r2_r3_n = r2_r3_n;
+													cui16 r3_n = (word16) r2_r3_n;
+													ui16 r2_n = SLICE(r2_r3_n << 0x01, word16, 16);
+													r2_r3_n = SEQ(r2_n, r3_n << 0x01);
+													uint32 r2_r3_n = SEQ(r2_n, r3_n << 0x01);
 													if ((SLICE(r2_r3_n, word16, 16) & 0x8000) == 0x00)
 													{
 l122E:
 														cui16 r2_n = SLICE(r2_r3_n, word16, 16);
 														Eq_n C_n = (r2_n & 0x8000) != 0x00;
 														if ((r2_n & 0x8000) != 0x00)
-															C_n = cond(SLICE(r2_r3_n + (uint32) r1, word16, 16)) & 0x01;
+															C_n = cond(SLICE((r2_r3_n << 0x01) + (uint32) r1, word16, 16)) & 0x01;
 														r2_r3Out = <invalid>;
 														return C_n != 0x00;
 													}
@@ -1287,7 +1315,8 @@ l1246:
 Eq_n fn125E(Eq_n r0, Eq_n r1, word16 & r2Out)
 {
 	Eq_n r0_n;
-	r2Out = SLICE(fn123A(r0, r1, out r0_n), word16, 16);
+	ui32 r2_r3_n = fn123A(r0, r1, out r0_n);
+	r2Out = SLICE(SEQ(SLICE(r2_r3_n << 0x01, word16, 16), (word16) r2_r3_n) << 0x01, word16, 16);
 	return r0_n;
 }
 
@@ -1302,154 +1331,153 @@ Eq_n fn125E(Eq_n r0, Eq_n r1, word16 & r2Out)
 //      fn15F2
 ci16 fn126C(uint32 r2_r3, Eq_n r0, int16 & r3Out)
 {
-	ui16 r3 = (word16) r2_r3;
-	ci16 r2 = SLICE(r2_r3, word16, 16);
-	ci16 r2_n = r2 - r0;
-	ci16 r2_n;
+	cui16 r3 = (word16) r2_r3;
+	int16 r2_n = SLICE(r2_r3 << 0x01, word16, 16) - r0;
+	int16 r2_n;
 	ui16 r3_n;
-	word32 r2_r3_n;
-	ci16 r2_n;
+	ui32 r2_r3_n;
+	int16 r2_n;
 	ui16 r3_n;
-	word32 r2_r3_n;
+	ui32 r2_r3_n;
 	if (r2_n <= 0x00)
 	{
-		r2_n = (word16) r0 + r2_n;
-		r3_n = r3;
-		r2_r3_n = SEQ(r2_n, r3);
+		r2_n = (word16) r0 + SLICE(SEQ(r2_n, r3) << 0x01, word16, 16);
+		r3_n = r3 << 0x01;
+		r2_r3_n = SEQ(r2_n, r3 << 0x01);
 		if (r2_n <= 0x00)
 		{
 l127C:
-			ui16 r3_n = (word16) r2_r3_n;
-			r2_n = (word16) r0 + SLICE(r2_r3_n, word16, 16);
-			r3_n = r3_n;
-			r2_r3_n = SEQ(r2_n, r3_n);
-			ci16 r2_n;
+			cui16 r3_n = (word16) r2_r3_n;
+			r2_n = (word16) r0 + SLICE(r2_r3_n << 0x01, word16, 16);
+			r3_n = r3_n << 0x01;
+			r2_r3_n = SEQ(r2_n, r3_n << 0x01);
+			int16 r2_n;
 			ui16 r3_n;
-			word32 r2_r3_n;
+			ui32 r2_r3_n;
 			if (r2_n <= 0x00)
 			{
 l1284:
-				ui16 r3_n = (word16) r2_r3_n;
-				r2_n = (word16) r0 + SLICE(r2_r3_n, word16, 16);
-				r3_n = r3_n;
-				r2_r3_n = SEQ(r2_n, r3_n);
-				ci16 r2_n;
+				cui16 r3_n = (word16) r2_r3_n;
+				r2_n = (word16) r0 + SLICE(r2_r3_n << 0x01, word16, 16);
+				r3_n = r3_n << 0x01;
+				r2_r3_n = SEQ(r2_n, r3_n << 0x01);
+				int16 r2_n;
 				ui16 r3_n;
-				word32 r2_r3_n;
+				ui32 r2_r3_n;
 				if (r2_n <= 0x00)
 				{
 l128C:
-					ui16 r3_n = (word16) r2_r3_n;
-					r2_n = (word16) r0 + SLICE(r2_r3_n, word16, 16);
-					r3_n = r3_n;
-					r2_r3_n = SEQ(r2_n, r3_n);
-					ci16 r2_n;
+					cui16 r3_n = (word16) r2_r3_n;
+					r2_n = (word16) r0 + SLICE(r2_r3_n << 0x01, word16, 16);
+					r3_n = r3_n << 0x01;
+					r2_r3_n = SEQ(r2_n, r3_n << 0x01);
+					int16 r2_n;
 					ui16 r3_n;
-					word32 r2_r3_n;
+					ui32 r2_r3_n;
 					if (r2_n <= 0x00)
 					{
 l1294:
-						ui16 r3_n = (word16) r2_r3_n;
-						r2_n = (word16) r0 + SLICE(r2_r3_n, word16, 16);
-						r3_n = r3_n;
-						r2_r3_n = SEQ(r2_n, r3_n);
-						ci16 r2_n;
+						cui16 r3_n = (word16) r2_r3_n;
+						r2_n = (word16) r0 + SLICE(r2_r3_n << 0x01, word16, 16);
+						r3_n = r3_n << 0x01;
+						r2_r3_n = SEQ(r2_n, r3_n << 0x01);
+						int16 r2_n;
 						ui16 r3_n;
-						word32 r2_r3_n;
+						ui32 r2_r3_n;
 						if (r2_n <= 0x00)
 						{
 l129C:
-							ui16 r3_n = (word16) r2_r3_n;
-							r2_n = (word16) r0 + SLICE(r2_r3_n, word16, 16);
-							r3_n = r3_n;
-							r2_r3_n = SEQ(r2_n, r3_n);
-							ci16 r2_n;
+							cui16 r3_n = (word16) r2_r3_n;
+							r2_n = (word16) r0 + SLICE(r2_r3_n << 0x01, word16, 16);
+							r3_n = r3_n << 0x01;
+							r2_r3_n = SEQ(r2_n, r3_n << 0x01);
+							int16 r2_n;
 							ui16 r3_n;
-							word32 r2_r3_n;
+							ui32 r2_r3_n;
 							if (r2_n <= 0x00)
 							{
 l12A4:
-								ui16 r3_n = (word16) r2_r3_n;
-								r2_n = (word16) r0 + SLICE(r2_r3_n, word16, 16);
-								r3_n = r3_n;
-								r2_r3_n = SEQ(r2_n, r3_n);
-								ci16 r2_n;
+								cui16 r3_n = (word16) r2_r3_n;
+								r2_n = (word16) r0 + SLICE(r2_r3_n << 0x01, word16, 16);
+								r3_n = r3_n << 0x01;
+								r2_r3_n = SEQ(r2_n, r3_n << 0x01);
+								int16 r2_n;
 								ui16 r3_n;
-								word32 r2_r3_n;
+								ui32 r2_r3_n;
 								if (r2_n <= 0x00)
 								{
 l12AC:
-									ui16 r3_n = (word16) r2_r3_n;
-									r2_n = (word16) r0 + SLICE(r2_r3_n, word16, 16);
-									r3_n = r3_n;
-									r2_r3_n = SEQ(r2_n, r3_n);
-									ci16 r2_n;
+									cui16 r3_n = (word16) r2_r3_n;
+									r2_n = (word16) r0 + SLICE(r2_r3_n << 0x01, word16, 16);
+									r3_n = r3_n << 0x01;
+									r2_r3_n = SEQ(r2_n, r3_n << 0x01);
+									int16 r2_n;
 									ui16 r3_n;
-									word32 r2_r3_n;
+									ui32 r2_r3_n;
 									if (r2_n <= 0x00)
 									{
 l12B4:
-										ui16 r3_n = (word16) r2_r3_n;
-										r2_n = (word16) r0 + SLICE(r2_r3_n, word16, 16);
-										r3_n = r3_n;
-										r2_r3_n = SEQ(r2_n, r3_n);
-										ci16 r2_n;
+										cui16 r3_n = (word16) r2_r3_n;
+										r2_n = (word16) r0 + SLICE(r2_r3_n << 0x01, word16, 16);
+										r3_n = r3_n << 0x01;
+										r2_r3_n = SEQ(r2_n, r3_n << 0x01);
+										int16 r2_n;
 										ui16 r3_n;
-										word32 r2_r3_n;
+										ui32 r2_r3_n;
 										if (r2_n <= 0x00)
 										{
 l12BC:
-											ui16 r3_n = (word16) r2_r3_n;
-											r2_n = (word16) r0 + SLICE(r2_r3_n, word16, 16);
-											r3_n = r3_n;
-											r2_r3_n = SEQ(r2_n, r3_n);
-											ci16 r2_n;
+											cui16 r3_n = (word16) r2_r3_n;
+											r2_n = (word16) r0 + SLICE(r2_r3_n << 0x01, word16, 16);
+											r3_n = r3_n << 0x01;
+											r2_r3_n = SEQ(r2_n, r3_n << 0x01);
+											int16 r2_n;
 											ui16 r3_n;
-											word32 r2_r3_n;
+											ui32 r2_r3_n;
 											if (r2_n <= 0x00)
 											{
 l12C4:
-												ui16 r3_n = (word16) r2_r3_n;
-												r2_n = (word16) r0 + SLICE(r2_r3_n, word16, 16);
-												r3_n = r3_n;
-												r2_r3_n = SEQ(r2_n, r3_n);
-												ci16 r2_n;
+												cui16 r3_n = (word16) r2_r3_n;
+												r2_n = (word16) r0 + SLICE(r2_r3_n << 0x01, word16, 16);
+												r3_n = r3_n << 0x01;
+												r2_r3_n = SEQ(r2_n, r3_n << 0x01);
+												int16 r2_n;
 												ui16 r3_n;
-												word32 r2_r3_n;
+												ui32 r2_r3_n;
 												if (r2_n <= 0x00)
 												{
 l12CC:
-													ui16 r3_n = (word16) r2_r3_n;
-													r2_n = (word16) r0 + SLICE(r2_r3_n, word16, 16);
-													r3_n = r3_n;
-													r2_r3_n = SEQ(r2_n, r3_n);
-													ci16 r2_n;
+													cui16 r3_n = (word16) r2_r3_n;
+													r2_n = (word16) r0 + SLICE(r2_r3_n << 0x01, word16, 16);
+													r3_n = r3_n << 0x01;
+													r2_r3_n = SEQ(r2_n, r3_n << 0x01);
+													int16 r2_n;
 													ui16 r3_n;
-													word32 r2_r3_n;
+													ui32 r2_r3_n;
 													if (r2_n <= 0x00)
 													{
 l12D4:
-														ui16 r3_n = (word16) r2_r3_n;
-														r2_n = (word16) r0 + SLICE(r2_r3_n, word16, 16);
-														r3_n = r3_n;
-														r2_r3_n = SEQ(r2_n, r3_n);
-														ci16 r2_n;
+														cui16 r3_n = (word16) r2_r3_n;
+														r2_n = (word16) r0 + SLICE(r2_r3_n << 0x01, word16, 16);
+														r3_n = r3_n << 0x01;
+														r2_r3_n = SEQ(r2_n, r3_n << 0x01);
+														int16 r2_n;
 														ui16 r3_n;
-														word32 r2_r3_n;
+														ui32 r2_r3_n;
 														if (r2_n <= 0x00)
 														{
 l12DC:
-															ui16 r3_n = (word16) r2_r3_n;
-															r2_n = (word16) r0 + SLICE(r2_r3_n, word16, 16);
-															r3_n = r3_n;
-															r2_r3_n = SEQ(r2_n, r3_n);
+															cui16 r3_n = (word16) r2_r3_n;
+															r2_n = (word16) r0 + SLICE(r2_r3_n << 0x01, word16, 16);
+															r3_n = r3_n << 0x01;
+															r2_r3_n = SEQ(r2_n, r3_n << 0x01);
 															int16 r3_n;
 															ci16 r2_n;
 															if (r2_n <= 0x00)
 															{
 l12E4:
-																r3_n = (word16) r2_r3_n;
-																r2_n = (word16) r0 + SLICE(r2_r3_n, word16, 16);
+																r3_n = (word16) r2_r3_n << 0x01;
+																r2_n = (word16) r0 + SLICE(r2_r3_n << 0x01, word16, 16);
 																if (r2_n <= 0x00)
 																{
 l12EC:
@@ -1462,116 +1490,117 @@ l1386:
 																return r2_n;
 															}
 l137C:
-															r3_n = r3_n + 0x01;
-															r2_n = r2_n - r0;
+															ui16 r3_n = r3_n + 0x01;
+															r3_n = r3_n << 0x01;
+															r2_n = SLICE(SEQ(r2_n, r3_n) << 0x01, word16, 16) - r0;
 															if (r2_n < 0x00)
 																goto l12EC;
 															goto l1386;
 														}
 l1372:
 														ui16 r3_n = r3_n + 0x01;
-														r2_n = r2_n - r0;
-														r3_n = r3_n;
-														r2_r3_n = SEQ(r2_n, r3_n);
+														r2_n = SLICE(SEQ(r2_n, r3_n) << 0x01, word16, 16) - r0;
+														r3_n = r3_n << 0x01;
+														r2_r3_n = SEQ(r2_n, r3_n << 0x01);
 														if (r2_n < 0x00)
 															goto l12E4;
 														goto l137C;
 													}
 l1368:
 													ui16 r3_n = r3_n + 0x01;
-													r2_n = r2_n - r0;
-													r3_n = r3_n;
-													r2_r3_n = SEQ(r2_n, r3_n);
+													r2_n = SLICE(SEQ(r2_n, r3_n) << 0x01, word16, 16) - r0;
+													r3_n = r3_n << 0x01;
+													r2_r3_n = SEQ(r2_n, r3_n << 0x01);
 													if (r2_n < 0x00)
 														goto l12DC;
 													goto l1372;
 												}
 l135E:
 												ui16 r3_n = r3_n + 0x01;
-												r2_n = r2_n - r0;
-												r3_n = r3_n;
-												r2_r3_n = SEQ(r2_n, r3_n);
+												r2_n = SLICE(SEQ(r2_n, r3_n) << 0x01, word16, 16) - r0;
+												r3_n = r3_n << 0x01;
+												r2_r3_n = SEQ(r2_n, r3_n << 0x01);
 												if (r2_n < 0x00)
 													goto l12D4;
 												goto l1368;
 											}
 l1354:
 											ui16 r3_n = r3_n + 0x01;
-											r2_n = r2_n - r0;
-											r3_n = r3_n;
-											r2_r3_n = SEQ(r2_n, r3_n);
+											r2_n = SLICE(SEQ(r2_n, r3_n) << 0x01, word16, 16) - r0;
+											r3_n = r3_n << 0x01;
+											r2_r3_n = SEQ(r2_n, r3_n << 0x01);
 											if (r2_n < 0x00)
 												goto l12CC;
 											goto l135E;
 										}
 l134A:
 										ui16 r3_n = r3_n + 0x01;
-										r2_n = r2_n - r0;
-										r3_n = r3_n;
-										r2_r3_n = SEQ(r2_n, r3_n);
+										r2_n = SLICE(SEQ(r2_n, r3_n) << 0x01, word16, 16) - r0;
+										r3_n = r3_n << 0x01;
+										r2_r3_n = SEQ(r2_n, r3_n << 0x01);
 										if (r2_n < 0x00)
 											goto l12C4;
 										goto l1354;
 									}
 l1340:
 									ui16 r3_n = r3_n + 0x01;
-									r2_n = r2_n - r0;
-									r3_n = r3_n;
-									r2_r3_n = SEQ(r2_n, r3_n);
+									r2_n = SLICE(SEQ(r2_n, r3_n) << 0x01, word16, 16) - r0;
+									r3_n = r3_n << 0x01;
+									r2_r3_n = SEQ(r2_n, r3_n << 0x01);
 									if (r2_n < 0x00)
 										goto l12BC;
 									goto l134A;
 								}
 l1336:
 								ui16 r3_n = r3_n + 0x01;
-								r2_n = r2_n - r0;
-								r3_n = r3_n;
-								r2_r3_n = SEQ(r2_n, r3_n);
+								r2_n = SLICE(SEQ(r2_n, r3_n) << 0x01, word16, 16) - r0;
+								r3_n = r3_n << 0x01;
+								r2_r3_n = SEQ(r2_n, r3_n << 0x01);
 								if (r2_n < 0x00)
 									goto l12B4;
 								goto l1340;
 							}
 l132C:
 							ui16 r3_n = r3_n + 0x01;
-							r2_n = r2_n - r0;
-							r3_n = r3_n;
-							r2_r3_n = SEQ(r2_n, r3_n);
+							r2_n = SLICE(SEQ(r2_n, r3_n) << 0x01, word16, 16) - r0;
+							r3_n = r3_n << 0x01;
+							r2_r3_n = SEQ(r2_n, r3_n << 0x01);
 							if (r2_n < 0x00)
 								goto l12AC;
 							goto l1336;
 						}
 l1322:
 						ui16 r3_n = r3_n + 0x01;
-						r2_n = r2_n - r0;
-						r3_n = r3_n;
-						r2_r3_n = SEQ(r2_n, r3_n);
+						r2_n = SLICE(SEQ(r2_n, r3_n) << 0x01, word16, 16) - r0;
+						r3_n = r3_n << 0x01;
+						r2_r3_n = SEQ(r2_n, r3_n << 0x01);
 						if (r2_n < 0x00)
 							goto l12A4;
 						goto l132C;
 					}
 l1318:
 					ui16 r3_n = r3_n + 0x01;
-					r2_n = r2_n - r0;
-					r3_n = r3_n;
-					r2_r3_n = SEQ(r2_n, r3_n);
+					r2_n = SLICE(SEQ(r2_n, r3_n) << 0x01, word16, 16) - r0;
+					r3_n = r3_n << 0x01;
+					r2_r3_n = SEQ(r2_n, r3_n << 0x01);
 					if (r2_n < 0x00)
 						goto l129C;
 					goto l1322;
 				}
 l130E:
 				ui16 r3_n = r3_n + 0x01;
-				r2_n = r2_n - r0;
-				r3_n = r3_n;
-				r2_r3_n = SEQ(r2_n, r3_n);
+				r2_n = SLICE(SEQ(r2_n, r3_n) << 0x01, word16, 16) - r0;
+				r3_n = r3_n << 0x01;
+				r2_r3_n = SEQ(r2_n, r3_n << 0x01);
 				if (r2_n < 0x00)
 					goto l1294;
 				goto l1318;
 			}
 l1304:
 			ui16 r3_n = r3_n + 0x01;
-			r2_n = r2_n - r0;
-			r3_n = r3_n;
-			r2_r3_n = SEQ(r2_n, r3_n);
+			r2_n = SLICE(SEQ(r2_n, r3_n) << 0x01, word16, 16) - r0;
+			r3_n = r3_n << 0x01;
+			r2_r3_n = SEQ(r2_n, r3_n << 0x01);
 			if (r2_n < 0x00)
 				goto l128C;
 			goto l130E;
@@ -1580,16 +1609,16 @@ l1304:
 	else
 	{
 		ui16 r3_n = (r3 << 1) + 0x01;
-		r2_n = r2_n - r0;
-		r3_n = r3_n;
-		r2_r3_n = SEQ(r2_n, r3_n);
+		r2_n = SLICE(SEQ(r2_n, r3_n) << 0x01, word16, 16) - r0;
+		r3_n = r3_n << 0x01;
+		r2_r3_n = SEQ(r2_n, r3_n << 0x01);
 		if (r2_n < 0x00)
 			goto l127C;
 	}
 	ui16 r3_n = r3_n + 0x01;
-	r2_n = r2_n - r0;
-	r3_n = r3_n;
-	r2_r3_n = SEQ(r2_n, r3_n);
+	r2_n = SLICE(SEQ(r2_n, r3_n) << 0x01, word16, 16) - r0;
+	r3_n = r3_n << 0x01;
+	r2_r3_n = SEQ(r2_n, r3_n << 0x01);
 	if (r2_n < 0x00)
 		goto l1284;
 	goto l1304;

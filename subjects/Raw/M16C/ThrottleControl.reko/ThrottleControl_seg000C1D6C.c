@@ -67,8 +67,9 @@ uint32 fn000C1DE4(uint32 r2_r0, struct Eq_n * sb)
 		uint32 r3_r1_n = ~SEQ(r3_n, r1_n);
 		r3_r1_n = SEQ(SLICE(r3_r1_n + 0x01, word16, 16), (word16) r3_r1_n + 0x01);
 	}
-	Eq_n r1_n = (word16) r3_r1_n;
-	Eq_n r3_n = SLICE(r3_r1_n, word16, 16);
+	uint16 r1_n = (word16) r3_r1_n;
+	Eq_n r3_n;
+	r3_n.u1 = SLICE(r3_r1_n, word16, 16);
 	uint32 r2_r0_n;
 	if (r3_n == 0x00)
 	{
@@ -84,18 +85,23 @@ uint32 fn000C1DE4(uint32 r2_r0, struct Eq_n * sb)
 	{
 		uint16 a0_n = 0x00;
 		ci16 a1_n = 0x00;
+		uint32 r3_r1_n = r3_r1_n;
+		cui16 r1_n;
 		uint32 r2_r0_n;
 		uint32 r3_r1_n;
 		do
 		{
+			r1_n = (word16) r3_r1_n;
 			r2_r0_n = r2_r0;
 			r3_r1_n = r3_r1_n;
-			if (r2_n <= r3_n)
+			if (r2_n <= SLICE(r3_r1_n, word16, 16))
 				break;
+			ui16 r3_n = SLICE(r3_r1_n << 0x01, word16, 16);
 			++a1_n;
 			r2_r0_n = r2_r0;
-			r3_r1_n = r3_r1_n;
-		} while (r1_n >= 0x00);
+			r3_r1_n = SEQ(r3_n, r1_n << 0x01);
+			r3_r1_n = SEQ(r3_n, r1_n << 0x01);
+		} while (r1_n << 0x01 >= 0x00);
 		do
 		{
 			uint32 r2_r0_n = r2_r0_n - r3_r1_n;

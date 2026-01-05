@@ -5018,7 +5018,7 @@ T_1095: (in 0<8> @ 00401A24 : byte)
   Class: Eq_1095
   DataType: byte
   OrigDataType: byte
-T_1096: (in bLoc14_269 @ 00401A24 : byte)
+T_1096: (in bLoc14_270 @ 00401A24 : byte)
   Class: Eq_1095
   DataType: byte
   OrigDataType: byte
@@ -5294,7 +5294,7 @@ T_1164: (in 0x20<8> @ 00401B7D : byte)
   Class: Eq_1164
   DataType: byte
   OrigDataType: byte
-T_1165: (in bLoc14_269 & 0x20<8> @ 00401B7D : byte)
+T_1165: (in bLoc14_270 & 0x20<8> @ 00401B7D : byte)
   Class: Eq_1165
   DataType: byte
   OrigDataType: byte
@@ -5302,7 +5302,7 @@ T_1166: (in 0<8> @ 00401B7D : byte)
   Class: Eq_1165
   DataType: byte
   OrigDataType: byte
-T_1167: (in (bLoc14_269 & 0x20<8>) == 0<8> @ 00401B7D : bool)
+T_1167: (in (bLoc14_270 & 0x20<8>) == 0<8> @ 00401B7D : bool)
   Class: Eq_1167
   DataType: bool
   OrigDataType: bool

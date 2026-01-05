@@ -728,10 +728,10 @@ m1Loop:
 	c_16 = PHI((c, l1), (c_17, m1Loop))
 	l_11 = PHI((l, l1), (l_15, m1Loop))
 	h_3 = PHI((h, l1), (h_10, m1Loop))
-	v12_25 = SEQ(h_3, l_11) >>u 1<8>
-	a_8 = SLICE(v12_25, byte, 8)
+	v12_25 = SEQ(h_3, l_11)
+	a_8 = SLICE(v12_25 >>u 1<8>, byte, 8)
 	h_10 = a_8
-	a_13 = SLICE(v12_25, byte, 0)
+	a_13 = SLICE(v12_25 >>u 1<8>, byte, 0)
 	l_15 = a_13
 	c_17 = c_16 - 1<8>
 	branch c_17 != 0<8> m1Loop
@@ -873,11 +873,10 @@ ProcedureBuilder_entry:
 	def r0
 	// succ:  l1
 l1:
-	v10_13 = SEQ(r0, r1) << 1<8>
-	r1_2 = SLICE(v10_13, word16, 0)
-	r0_7 = SLICE(v10_13, word16, 16)
+	v10_13 = SEQ(r0, r1)
+	r0_7 = SLICE(v10_13 << 1<8>, word16, 16)
 	Mem9[0x1234<16>:word16] = r0_7
-	Mem10[0x1236<16>:word16] = r1_2
+	Mem10[0x1236<16>:word16] = r1 << 1<16>
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
@@ -918,19 +917,22 @@ ProcedureBuilder_exit:
 	def c
 	// succ:  l1
 l1:
-	v12_18 = SEQ(SEQ(SEQ(h, l), b), c) >>u 1<8>
-	v11_17 = SLICE(v12_18, uint24, 8)
-	v10_16 = SLICE(v11_17, uint16, 8)
-	h_1 = SLICE(v10_16, byte, 8)
+	v10_16 = SEQ(h, l)
+	v12_18 = SEQ(v10_16, b)
+	v14_20 = SEQ(v12_18, c)
+	v15_21 = v14_20 >>u 1<8>
+	v13_19 = SLICE(v15_21, uint24, 8)
+	v11_17 = SLICE(v13_19, uint16, 8)
+	h_1 = SLICE(v11_17, byte, 8)
 	SZC_1 = cond(h_1)
 	C_1 = SZC_1 & 1<32> (alias)
-	l_1 = SLICE(v10_16, byte, 0)
+	l_1 = SLICE(v11_17, byte, 0)
 	SZC_2 = cond(l_1)
 	C_2 = SZC_2 & 1<32> (alias)
-	b = SLICE(v11_17, byte, 0)
+	b = SLICE(v13_19, byte, 0)
 	SZC_3 = cond(b)
 	C_3 = SZC_3 & 1<32> (alias)
-	c_1 = SLICE(v12_18, byte, 0)
+	c_1 = SLICE(v15_21, byte, 0)
 	SZC_4 = cond(c_1)
 	return
 	// succ:  SsaProcedureBuilder_exit
@@ -1076,9 +1078,9 @@ m0Loop:
 	cx_10 = PHI((cx, l1), (cx_11, m0Loop))
 	dx_5 = PHI((dx, l1), (dx_8, m0Loop))
 	ax_2 = PHI((ax, l1), (ax_3, m0Loop))
-	v11_20 = SEQ(dx_5, ax_2) << 1<8>
-	ax_3 = SLICE(v11_20, word16, 0)
-	dx_8 = SLICE(v11_20, word16, 16)
+	v11_20 = SEQ(dx_5, ax_2)
+	ax_3 = ax_2 << 1<16>
+	dx_8 = SLICE(v11_20 << 1<8>, word16, 16)
 	cx_11 = cx_10 - 1<16>
 	branch cx_11 != 0<16> m0Loop
 	// succ:  m1Done m0Loop
@@ -1138,9 +1140,9 @@ ProcedureBuilder_entry:
 	def ax
 	// succ:  l1
 l1:
-	v8_9 = SEQ(dx, ax) >>u 1<16>
-	dx_2 = SLICE(v8_9, word16, 16)
-	ax_6 = SLICE(v8_9, word16, 0)
+	v8_9 = SEQ(dx, ax)
+	dx_2 = SLICE(v8_9 >>u 1<8>, word16, 16)
+	ax_6 = SLICE(v8_9 >>u 1<8>, word16, 0)
 	Mem7[0x1234<16>:word16] = ax_6
 	Mem8[0x1236<16>:word16] = dx_2
 	return
@@ -1507,7 +1509,26 @@ ProcedureBuilder_exit:
         {
             var sExpected =
             #region Expected
-                "@@@";
+@"// ProcedureBuilder
+// Return size: 0
+define ProcedureBuilder
+ProcedureBuilder_entry:
+	def ss
+	def bp
+	def Mem0
+	// succ:  l1
+l1:
+	ax_4 = Mem0[ss:bp - 2<i16>:word16]
+	dx_5 = Mem0[ss:bp - 4<i16>:word16]
+	v12_15 = SEQ(ax_4, dx_5)
+	ax_10 = SLICE(v12_15 << 1<8>, word16, 16)
+	Mem11[ss:bp - 2<i16>:word16] = ax_10
+	Mem12[ss:bp - 4<i16>:word16] = dx_5 << 1<16>
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+
+";
             #endregion
             RunStringTest(sExpected, m =>
             {

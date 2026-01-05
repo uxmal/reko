@@ -271,7 +271,7 @@ Eq_172: (fn Eq_185 (word16, byte, word16, byte))
 Eq_185: (union "Eq_185" (bool u0) (byte u1))
 	T_185 (in fn099E(SEQ(SLICE(de_411, byte, 8), f_413), (byte) de_411, out af_416, out c_853) @ 01CC : bool)
 	T_287 (in fn099E(SEQ(d_616, f_351), e_614, out af_627, out c_858) @ 02AC : bool)
-	T_669 (in fn099E(SEQ(d_21, f_22), (byte) de_20, out af_25, out c_198) @ 0210 : bool)
+	T_669 (in fn099E(SEQ(d_21, f_22), (byte) de_20, out af_25, out c_204) @ 0210 : bool)
 	T_759 (in fn099E(SEQ(SLICE(de_153, byte, 8), f_155), (byte) de_153, out af_158, out c_159) @ 0274 : bool)
 	T_760 (in Z_161 @ 0274 : Eq_185)
 	T_762 (in 0<8> @ 0279 : byte)
@@ -433,7 +433,7 @@ Eq_596: (fn Eq_614 (word16, word16, byte))
 	T_1760 (in fn09A2 @ 09EC : ptr16)
 Eq_614: (union "Eq_614" (bool u0) (Eq_1918 u1))
 	T_614 (in fn09A2(SEQ(ix_328->b0000, fn027A(f_438, d_437, iy_433, out d_878, out iy_433)), out af_451, out c_879) @ 01EA : bool)
-	T_731 (in fn09A2(SEQ(ix->b0000, fn027A(f_121, d_120, iy_116, out d_201, out iy_116)), out af_134, out c_202) @ 0266 : bool)
+	T_731 (in fn09A2(SEQ(ix->b0000, fn027A(f_121, d_120, iy_116, out d_207, out iy_116)), out af_134, out c_208) @ 0266 : bool)
 	T_1486 (in fn09A2(af, out af_10, out c_20) @ 092B : bool)
 	T_1598 (in fn09A2(SEQ(e, f_14), out af_16, out c_17) @ 099F : bool)
 	T_1599 (in Z_19 @ 099F : Eq_614)
@@ -3248,11 +3248,11 @@ T_650: (in 0xAD6<16> @ 0209 : word16)
   Class: Eq_35
   DataType: (ptr16 byte)
   OrigDataType: word16
-T_651: (in d_197 @ 0209 : byte)
+T_651: (in d_203 @ 0209 : byte)
   Class: Eq_651
   DataType: byte
   OrigDataType: byte
-T_652: (in out d_197 @ 0209 : byte)
+T_652: (in out d_203 @ 0209 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
@@ -3264,7 +3264,7 @@ T_654: (in out iy_15 @ 0209 : word16)
   Class: Eq_165
   DataType: word16
   OrigDataType: word16
-T_655: (in fn027A(f, d, &g_b0AD6, out d_197, out iy_15) @ 0209 : byte)
+T_655: (in fn027A(f, d, &g_b0AD6, out d_203, out iy_15) @ 0209 : byte)
   Class: Eq_2
   DataType: byte
   OrigDataType: byte
@@ -3312,15 +3312,15 @@ T_666: (in out af_25 @ 0210 : word16)
   Class: Eq_180
   DataType: word16
   OrigDataType: word16
-T_667: (in c_198 @ 0210 : byte)
+T_667: (in c_204 @ 0210 : byte)
   Class: Eq_667
   DataType: byte
   OrigDataType: byte
-T_668: (in out c_198 @ 0210 : byte)
+T_668: (in out c_204 @ 0210 : byte)
   Class: Eq_183
   DataType: byte
   OrigDataType: byte
-T_669: (in fn099E(SEQ(d_21, f_22), (byte) de_20, out af_25, out c_198) @ 0210 : bool)
+T_669: (in fn099E(SEQ(d_21, f_22), (byte) de_20, out af_25, out c_204) @ 0210 : bool)
   Class: Eq_185
   DataType: Eq_185
   OrigDataType: bool
@@ -3332,11 +3332,11 @@ T_671: (in SLICE(af_25, byte, 0) @ 0213 : byte)
   Class: Eq_2
   DataType: byte
   OrigDataType: byte
-T_672: (in d_199 @ 0213 : byte)
+T_672: (in d_205 @ 0213 : byte)
   Class: Eq_672
   DataType: byte
   OrigDataType: byte
-T_673: (in out d_199 @ 0213 : byte)
+T_673: (in out d_205 @ 0213 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
@@ -3348,7 +3348,7 @@ T_675: (in out iy_34 @ 0213 : word16)
   Class: Eq_165
   DataType: word16
   OrigDataType: word16
-T_676: (in fn027A((byte) af_25, d_21, iy_15, out d_199, out iy_34) @ 0213 : byte)
+T_676: (in fn027A((byte) af_25, d_21, iy_15, out d_205, out iy_34) @ 0213 : byte)
   Class: Eq_2
   DataType: byte
   OrigDataType: byte
@@ -3392,7 +3392,7 @@ T_686: (in fn0A19() @ 0241 : byte)
   Class: Eq_290
   DataType: byte
   OrigDataType: byte
-T_687: (in c_205 @ 0245 : byte)
+T_687: (in c_211 @ 0245 : byte)
   Class: Eq_678
   DataType: byte
   OrigDataType: byte
@@ -3400,7 +3400,7 @@ T_688: (in 1<8> @ 0245 : byte)
   Class: Eq_688
   DataType: byte
   OrigDataType: byte
-T_689: (in c_205 - 1<8> @ 0245 : byte)
+T_689: (in c_211 - 1<8> @ 0245 : byte)
   Class: Eq_678
   DataType: byte
   OrigDataType: byte
@@ -3408,7 +3408,7 @@ T_690: (in 1<8> @ 0246 : byte)
   Class: Eq_678
   DataType: byte
   OrigDataType: byte
-T_691: (in c_205 != 1<8> @ 0246 : bool)
+T_691: (in c_211 != 1<8> @ 0246 : bool)
   Class: Eq_691
   DataType: bool
   OrigDataType: bool
@@ -3480,11 +3480,11 @@ T_708: (in (uint16) (SLICE(bc, byte, 8) << 3<8>) + 0xC72<16> @ 0259 : word16)
   Class: Eq_35
   DataType: (ptr16 byte)
   OrigDataType: uint16
-T_709: (in d_200 @ 0259 : byte)
+T_709: (in d_206 @ 0259 : byte)
   Class: Eq_709
   DataType: byte
   OrigDataType: byte
-T_710: (in out d_200 @ 0259 : byte)
+T_710: (in out d_206 @ 0259 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
@@ -3492,7 +3492,7 @@ T_711: (in dOut @ 0259 : uint8)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_712: (in fn027F(f_108, 0<8>, (uint16) (SLICE(bc, byte, 8) << 3<8>) + 0xC72<16>, out d_200) @ 0259 : byte)
+T_712: (in fn027F(f_108, 0<8>, (uint16) (SLICE(bc, byte, 8) << 3<8>) + 0xC72<16>, out d_206) @ 0259 : byte)
   Class: Eq_2
   DataType: byte
   OrigDataType: byte
@@ -3532,11 +3532,11 @@ T_721: (in fn027A @ 0266 : ptr16)
   Class: Eq_155
   DataType: (ptr16 Eq_155)
   OrigDataType: (ptr16 (fn T_725 (T_713, T_695, T_714, T_723, T_724)))
-T_722: (in d_201 @ 0266 : byte)
+T_722: (in d_207 @ 0266 : byte)
   Class: Eq_722
   DataType: byte
   OrigDataType: byte
-T_723: (in out d_201 @ 0266 : byte)
+T_723: (in out d_207 @ 0266 : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
@@ -3544,11 +3544,11 @@ T_724: (in out iy_116 @ 0266 : word16)
   Class: Eq_165
   DataType: word16
   OrigDataType: word16
-T_725: (in fn027A(f_121, d_120, iy_116, out d_201, out iy_116) @ 0266 : byte)
+T_725: (in fn027A(f_121, d_120, iy_116, out d_207, out iy_116) @ 0266 : byte)
   Class: Eq_2
   DataType: byte
   OrigDataType: byte
-T_726: (in SEQ(Mem85[ix + 0<16>:byte], fn027A(f_121, d_120, iy_116, out d_201, out iy_116)) @ 0266 : word16)
+T_726: (in SEQ(Mem85[ix + 0<16>:byte], fn027A(f_121, d_120, iy_116, out d_207, out iy_116)) @ 0266 : word16)
   Class: Eq_477
   DataType: word16
   OrigDataType: word16
@@ -3560,15 +3560,15 @@ T_728: (in out af_134 @ 0266 : word16)
   Class: Eq_609
   DataType: word16
   OrigDataType: word16
-T_729: (in c_202 @ 0266 : byte)
+T_729: (in c_208 @ 0266 : byte)
   Class: Eq_729
   DataType: byte
   OrigDataType: byte
-T_730: (in out c_202 @ 0266 : byte)
+T_730: (in out c_208 @ 0266 : byte)
   Class: Eq_612
   DataType: byte
   OrigDataType: byte
-T_731: (in fn09A2(SEQ(ix->b0000, fn027A(f_121, d_120, iy_116, out d_201, out iy_116)), out af_134, out c_202) @ 0266 : bool)
+T_731: (in fn09A2(SEQ(ix->b0000, fn027A(f_121, d_120, iy_116, out d_207, out iy_116)), out af_134, out c_208) @ 0266 : bool)
   Class: Eq_614
   DataType: Eq_614
   OrigDataType: bool
@@ -3612,23 +3612,23 @@ T_741: (in fn027A @ 026D : ptr16)
   Class: Eq_155
   DataType: (ptr16 Eq_155)
   OrigDataType: (ptr16 (fn T_746 (T_713, T_695, T_714, T_743, T_745)))
-T_742: (in d_203 @ 026D : byte)
+T_742: (in d_209 @ 026D : byte)
   Class: Eq_742
   DataType: byte
   OrigDataType: byte
-T_743: (in out d_203 @ 026D : byte)
+T_743: (in out d_209 @ 026D : byte)
   Class: Eq_38
   DataType: uint8
   OrigDataType: byte
-T_744: (in iy_204 @ 026D : word16)
+T_744: (in iy_210 @ 026D : word16)
   Class: Eq_744
   DataType: word16
   OrigDataType: word16
-T_745: (in out iy_204 @ 026D : word16)
+T_745: (in out iy_210 @ 026D : word16)
   Class: Eq_165
   DataType: word16
   OrigDataType: word16
-T_746: (in fn027A(f_121, d_120, iy_116, out d_203, out iy_204) @ 026D : byte)
+T_746: (in fn027A(f_121, d_120, iy_116, out d_209, out iy_210) @ 026D : byte)
   Class: Eq_2
   DataType: byte
   OrigDataType: byte

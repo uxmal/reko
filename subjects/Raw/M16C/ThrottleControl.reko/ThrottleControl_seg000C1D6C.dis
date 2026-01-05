@@ -9,17 +9,17 @@ void fn000C1D6C(word16 wArg03, word16 wArg05, word16 wArg07, word16 wArg09, word
 fn000C1D6C_entry:
 l000C1D6C:
 	r0_18 = wArg0B
-	dwLoc0A_93 = dwArg07 (alias)
-	dwLoc06_96 = dwArg03 (alias)
+	dwLoc0A_95 = dwArg07 (alias)
+	dwLoc06_100 = dwArg03 (alias)
 l000C1D82:
-	wLoc06_72 = SLICE(dwLoc06_96, word16, 0) (alias)
-	wLoc0A_67 = SLICE(dwLoc0A_93, word16, 0) (alias)
+	wLoc06_71 = SLICE(dwLoc06_100, word16, 0) (alias)
+	wLoc0A_67 = SLICE(dwLoc0A_95, word16, 0) (alias)
 	r0_18 = r0_18 + 0xFFFF<16>
 	branch r0_18 == 0<16> l000C1DA8
 l000C1D8A:
-	Mem44[dwLoc06_96:byte] = Mem38[dwLoc0A_93:byte]
-	dwLoc0A_93 = SEQ(SLICE(dwLoc0A_93 + 1<32>, word16, 16), wLoc0A_67 + 1<16>) (alias)
-	dwLoc06_96 = SEQ(SLICE(dwLoc06_96 + 1<32>, word16, 16), wLoc06_72 + 1<16>) (alias)
+	Mem44[dwLoc06_100:byte] = Mem38[dwLoc0A_95:byte]
+	dwLoc0A_95 = SEQ(SLICE(dwLoc0A_95 + 1<32>, word16, 16), wLoc0A_67 + 1<16>) (alias)
+	dwLoc06_100 = SEQ(SLICE(dwLoc06_100 + 1<32>, word16, 16), wLoc06_71 + 1<16>) (alias)
 	goto l000C1D82
 l000C1DA8:
 	return
@@ -37,14 +37,14 @@ void fn000C1DB0(word16 r2, word16 wArg03, word16 wArg05, word16 wArg07)
 fn000C1DB0_entry:
 l000C1DB0:
 	r0_14 = wArg07
-	dwLoc06_70 = dwArg03 (alias)
+	dwLoc06_71 = dwArg03 (alias)
 l000C1DBE:
-	wLoc06_53 = SLICE(dwLoc06_70, word16, 0) (alias)
+	wLoc06_53 = SLICE(dwLoc06_71, word16, 0) (alias)
 	r0_14 = r0_14 + 0xFFFF<16>
 	branch r0_14 == 0<16> l000C1DDC
 l000C1DC6:
-	Mem34[dwLoc06_70:byte] = r2
-	dwLoc06_70 = SEQ(SLICE(dwLoc06_70 + 1<32>, word16, 16), wLoc06_53 + 1<16>) (alias)
+	Mem34[dwLoc06_71:byte] = r2
+	dwLoc06_71 = SEQ(SLICE(dwLoc06_71 + 1<32>, word16, 16), wLoc06_53 + 1<16>) (alias)
 	goto l000C1DBE
 l000C1DDC:
 	return
@@ -71,14 +71,14 @@ l000C1DF4:
 l000C1E00:
 	r0_111 = SLICE(r2_r0, word16, 0) (alias)
 	r2_107 = SLICE(r2_r0, word16, 16) (alias)
-	r3_r1_249 = SEQ(r3_17, r1_16) (alias)
+	r3_r1_258 = SEQ(r3_17, r1_16) (alias)
 	branch r3_17 <u 0x8000<16> l000C1E12
 l000C1E06:
 	r3_r1_181 = ~SEQ(r3_17, r1_16)
-	r3_r1_249 = SEQ(SLICE(r3_r1_181 + 1<32>, word16, 16), SLICE(r3_r1_181, word16, 0) + 1<16>) (alias)
+	r3_r1_258 = SEQ(SLICE(r3_r1_181 + 1<32>, word16, 16), SLICE(r3_r1_181, word16, 0) + 1<16>) (alias)
 l000C1E12:
-	r1_117 = SLICE(r3_r1_249, word16, 0) (alias)
-	r3_121 = SLICE(r3_r1_249, word16, 16) (alias)
+	r1_117 = SLICE(r3_r1_258, word16, 0) (alias)
+	r3_121 = SLICE(r3_r1_258, word16, 16) (alias)
 	branch r3_121 != 0<16> l000C1E2D
 l000C1E17:
 	branch r2_107 == 0<16> l000C1E27
@@ -92,15 +92,19 @@ l000C1E27:
 l000C1E2D:
 	a0_52 = 0<16>
 	a1_100 = 0<16>
+	r3_r1_249 = r3_r1_258 (alias)
 l000C1E31:
+	r1_61 = SLICE(r3_r1_249, word16, 0) (alias)
 	r2_r0_241 = r2_r0 (alias)
 	r3_r1_245 = r3_r1_249 (alias)
-	branch r2_107 <=u r3_121 l000C1E3C
+	branch r2_107 <=u SLICE(r3_r1_249, word16, 16) l000C1E3C
 l000C1E35:
+	r3_67 = SLICE(r3_r1_249 << 1<8>, word16, 16)
 	a1_100 = a1_100 + 1<i16>
 	r2_r0_241 = r2_r0 (alias)
-	r3_r1_245 = r3_r1_249 (alias)
-	branch r1_117 >= 0<16> l000C1E31
+	r3_r1_245 = SEQ(r3_67, r1_61 << 1<16>) (alias)
+	r3_r1_249 = SEQ(r3_67, r1_61 << 1<16>) (alias)
+	branch r1_61 << 1<16> >= 0<16> l000C1E31
 l000C1E3C:
 	r2_r0_185 = r2_r0_241 - r3_r1_245
 	r2_76 = SLICE(r2_r0_185, word16, 16) (alias)

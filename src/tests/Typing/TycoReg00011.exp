@@ -148,9 +148,9 @@ T_29: (in Mem23[0x4DE1<16>:bx_39 + 0<16>:byte] : byte)
   DataType: byte
   OrigDataType: byte
 T_30: (in 1<16> : word16)
-  Class: Eq_6
-  DataType: int16
-  OrigDataType: int16
+  Class: Eq_30
+  DataType: ui16
+  OrigDataType: ui16
 T_31: (in bx_39 - 1<16> : word16)
   Class: Eq_31
   DataType: (memptr T_25 (struct (0 T_29 t0000)))
@@ -171,7 +171,11 @@ T_35: (in SEQ(SLICE(bx_39 - 1<16>, byte, 8), bl_10 - 1<8>) : word16)
   Class: Eq_6
   DataType: word16
   OrigDataType: word16
-T_36: (in bx_39 >= 1<16> : bool)
-  Class: Eq_36
+T_36: (in 1<16> : word16)
+  Class: Eq_6
+  DataType: ci16
+  OrigDataType: ci16
+T_37: (in bx_39 >= 1<16> : bool)
+  Class: Eq_37
   DataType: bool
   OrigDataType: bool

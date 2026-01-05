@@ -296,13 +296,13 @@ Mem29: orig: Mem0
 cx_30: orig: cx
     def:  cx_30 = Mem29[ds:0x304<16>:word16]
     uses: cx_31 = cx_30 - 0x3E8<16>
-          SCZO_32 = cond(cx_30 - 0x3E8<16>)
           C_33 = cx_30 != 0x3E8<16>
           cx_34 = 0x3E8<16> - cx_30
 cx_31: orig: cx
     def:  cx_31 = cx_30 - 0x3E8<16>
+    uses: SCZO_32 = cond(cx_31)
 SCZO_32: orig: SCZO
-    def:  SCZO_32 = cond(cx_30 - 0x3E8<16>)
+    def:  SCZO_32 = cond(cx_31)
 C_33: orig: C
     def:  C_33 = cx_30 != 0x3E8<16>
 cx_34: orig: cx
@@ -330,14 +330,14 @@ eax_41: orig: eax
     def:  eax_41 = 0<32> - CONVERT(eax_37 != 0<32>, bool, word32)
     uses: SCZO_42 = cond(eax_41)
           eax_43 = eax_41 + 1<32>
-          SZO_44 = cond(eax_41 + 1<32>)
           Mem45[ds:0x30C<16>:word32] = eax_41 + 1<32>
 SCZO_42: orig: SCZO
     def:  SCZO_42 = cond(eax_41)
 eax_43: orig: eax
     def:  eax_43 = eax_41 + 1<32>
+    uses: SZO_44 = cond(eax_43)
 SZO_44: orig: SZO
-    def:  SZO_44 = cond(eax_41 + 1<32>)
+    def:  SZO_44 = cond(eax_43)
 Mem45: orig: Mem0
     def:  Mem45[ds:0x30C<16>:word32] = eax_41 + 1<32>
 // fn0C00_0000
@@ -377,7 +377,7 @@ l0C00_0000:
 	Mem29[ds:0x204<16>:word16] = v15_28
 	cx_30 = Mem29[ds:0x304<16>:word16]
 	cx_31 = cx_30 - 0x3E8<16>
-	SCZO_32 = cond(cx_30 - 0x3E8<16>)
+	SCZO_32 = cond(cx_31)
 	C_33 = cx_30 != 0x3E8<16>
 	cx_34 = 0x3E8<16> - cx_30
 	SZO_35 = cond(cx_34)
@@ -389,7 +389,7 @@ l0C00_0000:
 	eax_41 = 0<32> - CONVERT(eax_37 != 0<32>, bool, word32)
 	SCZO_42 = cond(eax_41)
 	eax_43 = eax_41 + 1<32>
-	SZO_44 = cond(eax_41 + 1<32>)
+	SZO_44 = cond(eax_43)
 	Mem45[ds:0x30C<16>:word32] = eax_41 + 1<32>
 	return
 	// succ:  fn0C00_0000_exit

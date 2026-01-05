@@ -764,7 +764,7 @@ l0800_06B7:
 l0800_06BD:
 	branch Mem14[ds:wArg02:word16] <= 0<16> l0800_06CD
 l0800_06C2:
-	dwArg04 = dwArg04 - CONVERT(fn0800_065B(ds, wArg02), uint16, uint32) (alias)
+	dwArg04 = dwArg04 - CONVERT(fn0800_065B(ds, wArg02), uint16, uint32)
 l0800_06CD:
 	Mem60[ds:wArg02 + 2<i16>:word16] = Mem58[ds:wArg02 + 2<i16>:word16] & 0xFE5F<16>
 	Mem64[ds:wArg02:word16] = 0<16>
@@ -1317,7 +1317,7 @@ _eof_entry:
 l0800_0D5F:
 	branch (Mem7[ds:(wArg02 << 1<16>) + 0x482<16>:word16] & 0x200<16>) == 0<16> l0800_0D78
 l0800_0D72:
-	ax_112 = 1<16>
+	ax_113 = 1<16>
 	goto l0800_0DC9
 l0800_0D78:
 	ax_17 = 0x4400<16>
@@ -1330,28 +1330,29 @@ l0800_0D87:
 	branch msdos_set_file_position(wArg02, 0x00000000<p32>, 1<8>, out dx_ax_33) l0800_0DC3
 l0800_0D92:
 	ax_17 = SLICE(dx_ax_48, word16, 0) (alias)
-	dx_52 = SLICE(dx_ax_48, word16, 16) (alias)
+	wLoc04_107 = SLICE(dx_ax_48, word16, 16) (alias)
+	wLoc06_108 = SLICE(dx_ax_48, word16, 0) (alias)
 	branch msdos_set_file_position(wArg02, 0x00000000<p32>, 2<8>, out dx_ax_48) l0800_0DC3
 l0800_0DA7:
 	ax_17 = SLICE(dx_ax_61, word16, 0) (alias)
 	dx_76 = SLICE(dx_ax_61, word16, 16) (alias)
 	branch msdos_set_file_position(wArg02, dx_ax_33, 0<8>, out dx_ax_61) l0800_0DC3
 l0800_0DAE:
-	branch dx_76 <u dx_52 l0800_0DBF
+	branch dx_76 <u wLoc04_107 l0800_0DBF
 l0800_0DB3:
-	branch dx_76 >u dx_52 l0800_0DBA
+	branch dx_76 >u wLoc04_107 l0800_0DBA
 l0800_0DB5:
-	branch ax_17 <u ax_17 l0800_0DBF
+	branch ax_17 <u wLoc06_108 l0800_0DBF
 l0800_0DBA:
-	ax_112 = 1<16>
+	ax_113 = 1<16>
 	goto l0800_0DC9
 l0800_0DBF:
-	ax_112 = 0<16>
+	ax_113 = 0<16>
 	goto l0800_0DC9
 l0800_0DC3:
-	ax_112 = __IOERROR(ds, ax_17)
+	ax_113 = __IOERROR(ds, ax_17)
 l0800_0DC9:
-	return ax_112
+	return ax_113
 _eof_exit:
 
 

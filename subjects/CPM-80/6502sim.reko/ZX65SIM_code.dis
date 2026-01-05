@@ -313,11 +313,11 @@ bool fn01FF(byte f, byte b, byte d, word16 ix, byte & fOut, word16 & bcOut, byte
 fn01FF_entry:
 l01FF:
 	fn093B()
-	f_22 = fn027A(f, d, 0xAD6<16>, out d_197, out iy_15) (alias)
+	f_22 = fn027A(f, d, 0xAD6<16>, out d_203, out iy_15) (alias)
 	de_20 = Mem8[0xAB8<16>:word16]
 	d_21 = SLICE(de_20, byte, 8) (alias)
-	fn099E(SEQ(d_21, f_22), SLICE(de_20, byte, 0), out af_25, out c_198)
-	f_108 = fn027A(SLICE(af_25, byte, 0), d_21, iy_15, out d_199, out iy_34) (alias)
+	fn099E(SEQ(d_21, f_22), SLICE(de_20, byte, 0), out af_25, out c_204)
+	f_108 = fn027A(SLICE(af_25, byte, 0), d_21, iy_15, out d_205, out iy_34) (alias)
 	c_61 = 3<8>
 l0234:
 	b_65 = 5<8>
@@ -326,17 +326,17 @@ l0237:
 	branch b_65 != 0<8> l0237
 l023E:
 	fn0A19()
-	c_61 = c_205 - 1<8>
-	c_205 = c_61
-	branch c_205 != 1<8> l0234
+	c_61 = c_211 - 1<8>
+	c_211 = c_61
+	branch c_211 != 1<8> l0234
 l0248:
 	de_110 = <invalid>
 	d_120 = SLICE(de_110, byte, 8) (alias)
-	f_121 = fn027F(f_108, 0<8>, CONVERT(SLICE(bc, byte, 8) << 3<8>, uint8, uint16) + 0xC72<16>, out d_200) (alias)
+	f_121 = fn027F(f_108, 0<8>, CONVERT(SLICE(bc, byte, 8) << 3<8>, uint8, uint16) + 0xC72<16>, out d_206) (alias)
 	iy_116 = iy_34
 	b_118 = 5<8>
 l0260:
-	fn09A2(SEQ(Mem85[ix:byte], fn027A(f_121, d_120, iy_116, out d_201, out iy_116)), out af_134, out c_202)
+	fn09A2(SEQ(Mem85[ix:byte], fn027A(f_121, d_120, iy_116, out d_207, out iy_116)), out af_134, out c_208)
 	de_123 = <invalid>
 	d_120 = SLICE(de_123, byte, 8) (alias)
 	f_121 = SLICE(af_134, byte, 0) (alias)
@@ -344,7 +344,7 @@ l0260:
 	b_118 = b_118 - 1<8>
 	branch b_118 != 0<8> l0260
 l026D:
-	f_155 = fn027A(f_121, d_120, iy_116, out d_203, out iy_204) (alias)
+	f_155 = fn027A(f_121, d_120, iy_116, out d_209, out iy_210) (alias)
 	de_153 = Mem85[0xABA<16>:word16]
 	Z_161 = fn099E(SEQ(SLICE(de_153, byte, 8), f_155), SLICE(de_153, byte, 0), out af_158, out c_159)
 	fOut = <invalid>

@@ -18,8 +18,8 @@ ax_9: orig: ax
     def:  ax_9 = Mem8[ds:si_7:word16]
     uses: Mem14[ds:di:word16] = ax_9
           branch ax_9 != 0x20<16> l0C00_0005
-          branch ax_9 != 0<16> l0C00_0011
           branch ax_9 != 0xD<16> l0C00_001A
+          branch ax_9 != 0<16> l0C00_0011
 si_10: orig: si
     def:  si_10 = si_7 + 2<i16>
     uses: si_7 = PHI((si, l0C00_0000), (si_10, l0C00_0011), (si_10, l0C00_0016))

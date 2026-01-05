@@ -81,8 +81,8 @@ T_12: (in ax : word16)
   OrigDataType: word16
 T_13: (in 1<16> : word16)
   Class: Eq_6
-  DataType: int16
-  OrigDataType: int16
+  DataType: word16
+  OrigDataType: word16
 T_14: (in wArg02 == 1<16> : bool)
   Class: Eq_14
   DataType: bool
@@ -97,17 +97,21 @@ T_16: (in ax_13 : word16)
   OrigDataType: int16
 T_17: (in fn0C00_000F : segptr32)
   Class: Eq_4
-  DataType: (ptr32 (fn T_19 (T_18)))
-  OrigDataType: (ptr32 (fn T_19 (T_18)))
-T_18: (in wArg02 - 1<16> : word16)
+  DataType: (ptr32 (fn T_20 (T_19)))
+  OrigDataType: (ptr32 (fn T_20 (T_19)))
+T_18: (in 1<16> : word16)
+  Class: Eq_18
+  DataType: int16
+  OrigDataType: int16
+T_19: (in wArg02 - 1<16> : word16)
   Class: Eq_6
   DataType: word16
   OrigDataType: word16
-T_19: (in fn0C00_000F(wArg02 - 1<16>) : word16)
-  Class: Eq_19
+T_20: (in fn0C00_000F(wArg02 - 1<16>) : word16)
+  Class: Eq_20
   DataType: int16
   OrigDataType: int16
-T_20: (in wArg02 *s fn0C00_000F(wArg02 - 1<16>) : word16)
+T_21: (in wArg02 *s fn0C00_000F(wArg02 - 1<16>) : word16)
   Class: Eq_12
   DataType: int16
   OrigDataType: int16

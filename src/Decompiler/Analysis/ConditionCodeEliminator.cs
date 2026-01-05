@@ -41,15 +41,21 @@ namespace Reko.Analysis;
 /// </summary>
 /// <remarks>
 /// Removal of condition codes becomes exciting in situations like the following (x86 code):
-///		add ax,bx
-///		mov [si],ax
-///		jnz foo
+///	<code>
+///     add ax,bx
+///     mov [si],ax
+///     jnz foo
+///	</code>
 ///	or
+///	<code>
 ///	    cmp ax,0
 ///	    jl less
 ///	    jg greater
+///	</code>
 ///	<para>
-///	For best performance, preprocess the intermediate code with the ValuePropagator transformer.
+///	For best performance, preprocess the intermediate code with the ValuePropagator transformer
+///	before using this transformation. Be sure to follow up with a <see cref="StoreFuser"/> pass
+///	so that generated <see cref="MkSequence"/> expressions are propagated.
 ///	</para>
 /// </remarks>
 public class ConditionCodeEliminator : IAnalysis<SsaState>
@@ -161,10 +167,7 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
                     {
                         useStm = u;
                         trace.Inform("CCE:   used {0}", useStm.Instruction);
-                        if (u.Block.Id.EndsWith("45F7"))
-                            _ = this; //$DEBUG
-
-                            useStm.Instruction.Accept(this);
+                        useStm.Instruction.Accept(this);
                         trace.Inform("CCE:    now {0}", useStm.Instruction);
                     }
                     catch (Exception ex)
@@ -550,7 +553,7 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
         }
 
         /// <summary>
-        /// Transform a (Shl a,1; Rolc b,1) pair to shl SEQ(b,a),1
+        /// Transform a <c>(Shl a,1; Rolc b,1)</c> pair to <c>shl SEQ(b,a),1</c>
         /// </summary>
         private Instruction TransformRolC(Application rolc, Assignment assRolc)
         {
@@ -608,22 +611,22 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
             var expMkLongword = m.Seq(sidTmpHi.Identifier, sidTmpLo.Identifier);
             var sidTmp = mutator.InsertAssignmentAfter(tmp, expMkLongword, sidTmpHi.DefStatement);
             var tmp2 = ssa.Procedure.Frame.CreateTemporary(dt);
-            var sidTmp2 = mutator.InsertAssignmentAfter(tmp, m.Shl(expMkLongword, 1), sidTmp.DefStatement);
+            var sidTmp2 = mutator.InsertAssignmentAfter(tmp2, m.Shl(sidTmp.Identifier, 1), sidTmp.DefStatement);
 
             ssa.RemoveUses(sidOrigLo.DefStatement);
             var expNewLo = m.Slice(
-                sidTmp.Identifier,
+                sidTmp2.Identifier,
                 PrimitiveType.CreateWord(tmpHi.DataType.BitSize));
             sidOrigLo.DefStatement!.Instruction = new Assignment(sidOrigLo.Identifier, expNewLo);
-            sidTmp.Uses.Add(sidOrigLo.DefStatement!);
+            sidTmp2.Uses.Add(sidOrigLo.DefStatement!);
 
             ssa.RemoveUses(sidOrigHi.DefStatement);
             var expNewHi = m.Slice(
-                sidTmp.Identifier,
+                sidTmp2.Identifier,
                 PrimitiveType.CreateWord(tmpLo.DataType.BitSize),
                 tmpHi.DataType.BitSize);
             sidOrigHi.DefStatement.Instruction = new Assignment(sidOrigHi.Identifier, expNewHi);
-            sidTmp.Uses.Add(sidOrigHi.DefStatement);
+            sidTmp2.Uses.Add(sidOrigHi.DefStatement);
             return sidOrigHi.DefStatement.Instruction;
         }
 

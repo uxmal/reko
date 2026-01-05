@@ -40,15 +40,19 @@ namespace Reko.Analysis;
 /// <remarks>
 /// This optimistic analysis locates identifiers that are being sliced 
 /// and then stored:
+/// <code>
 ///     id_1 = ....
 ///     Store(addr, SLICE(id_1)
 ///     Store(addr+2, SLICE(id_1)
+/// </code>
 /// or 
+/// <code>
 ///     id_1 = ....
 ///     id_2 = SLICE(id_1)
 ///     id_3 = SLICE(id_1)
 ///     Store(addr, id_2)
 ///     Store(addr+2, id_3)
+/// </code>
 /// <para>
 /// This transform is a little dangerous because there could be statements between the Stores
 /// that mutate memory. To reduce the risk of this happening, we assume that both stores are in 

@@ -14377,7 +14377,7 @@ ui32 g_dwF2C8 = 3626161923; // 0000F2C8
 //      fn000101CC
 ui64 __avr32_f64_mul(ui64 r9_r8, Eq_n r10, struct Eq_n * r11)
 {
-	uint32 r9 = SLICE(r9_r8, word32, 32);
+	ui32 r9 = SLICE(r9_r8, word32, 32);
 	Eq_n r8 = (word32) r9_r8;
 	if ((r10 | r11 << 0x01) == 0x00)
 	{
@@ -14423,12 +14423,12 @@ ui64 __avr32_f64_mul(ui64 r9_r8, Eq_n r10, struct Eq_n * r11)
 			}
 		}
 		word32 r6_n = (word32) SLICE(r9, word11, 20);
-		Eq_n r8_n;
+		uint32 r8_n;
 		uint32 r9_n;
 		if (r6_n != 0x00)
 		{
-			r8_n = r8;
-			r9_n = r9;
+			r8_n = r8 << 0x01;
+			r9_n = SLICE(r9_r8 << 0x01, word32, 32);
 		}
 		else
 		{
@@ -14451,7 +14451,7 @@ ui64 __avr32_f64_mul(ui64 r9_r8, Eq_n r10, struct Eq_n * r11)
 			{
 				if (r9_n == 0x00)
 					return SEQ(lr_n & 0x80000000, 0x00);
-				r8_n.u0 = 0x00;
+				r8_n = 0x00;
 				r6_n += r5_n - 0x02;
 			}
 		}
@@ -14488,8 +14488,8 @@ ui64 __avr32_f64_mul(ui64 r9_r8, Eq_n r10, struct Eq_n * r11)
 			uint64 r11_r10_n = SEQ(r11_n, r10_n);
 			if (!((word32) r11_n + (word32) (r10_n < 0x00)))
 			{
-				word32 r10_n = SLICE(r10_r7_n, word32, 32);
-				r7_n = (word32) r10_r7_n;
+				word32 r10_n = SLICE(r10_r7_n << 0x01, word32, 32);
+				r7_n = (word32) r10_r7_n << 0x01;
 				r12_n = r12_n - 0x03FF;
 				r11_r10_n = SEQ(__rcl<word32,byte>(r11_n, 0x01, cond(r10_n) & 0x01), r10_n);
 			}
@@ -15043,7 +15043,7 @@ bool __avr32_f64_cmp_eq(struct Eq_n * r11, Eq_n r10, struct Eq_n * r9, Eq_n r8, 
 bool __avr32_f64_cmp_ge(struct Eq_n * r11, Eq_n r10, ui32 r9, word32 r8, up32 & r12Out, word32 & lrOut)
 {
 	bool v18_n = r11 << 1 == 0x00;
-	up32 r12_n = (word32) (r11 << 1 < 0x00);
+	ui32 r12_n = (word32) (r11 << 1 < 0x00);
 	if (r11 << 1 == 0x00)
 		v18_n = r10 == 0x00;
 	word32 lr;
@@ -15069,6 +15069,7 @@ bool __avr32_f64_cmp_ge(struct Eq_n * r11, Eq_n r10, ui32 r9, word32 r8, up32 & 
 	else
 	{
 		ui32 VNZC_n = cond(r10 - 0x00);
+		up32 r12_n = SLICE(SEQ(r12_n, r9) << 0x01, word32, 32);
 		word32 lr_n = 0xFFE00000;
 		ui32 Z_n = cond((r11 << 1) - 0xFFE00000 - (VNZC_n & 0x01)) & 0x02;
 		if ((r11 << 1) - 0xFFE00000 <= (VNZC_n & 0x01))
@@ -15141,7 +15142,7 @@ bool __avr32_f64_cmp_ge(struct Eq_n * r11, Eq_n r10, ui32 r9, word32 r8, up32 & 
 bool __avr32_f64_cmp_lt(struct Eq_n * r11, Eq_n r10, struct Eq_n * r9, Eq_n r8, up32 & r12Out, word32 & lrOut)
 {
 	bool v18_n = r11 << 1 == 0x00;
-	up32 r12_n = (word32) (r11 << 1 < 0x00);
+	ui32 r12_n = (word32) (r11 << 1 < 0x00);
 	if (r11 << 1 == 0x00)
 		v18_n = r10 == 0x00;
 	word32 lr;
@@ -15167,6 +15168,7 @@ bool __avr32_f64_cmp_lt(struct Eq_n * r11, Eq_n r10, struct Eq_n * r9, Eq_n r8, 
 	else
 	{
 		ui32 VNZC_n = cond(r10 - 0x00);
+		up32 r12_n = SLICE(SEQ(r12_n, r9) << 0x01, word32, 32);
 		word32 lr_n = 0xFFE00000;
 		ui32 Z_n = cond((r11 << 1) - 0xFFE00000 - (VNZC_n & 0x01)) & 0x02;
 		if ((r11 << 1) - 0xFFE00000 <= (VNZC_n & 0x01))
@@ -15465,6 +15467,7 @@ uint64 __avr32_f64_div(Eq_n r2, Eq_n r8, struct Eq_n * r9, Eq_n r10, struct Eq_n
 			{
 				r7_n = r7_n + 1022;
 				r11_r10_n = SEQ(r11_n >> 3, r10_n >> 3 | r11_n << 0x1D);
+				r3_r2_n = SEQ(SLICE(r3_r2_n << 0x01, word32, 32), (word32) r3_r2_n << 0x01);
 			}
 			else
 				r11_r10_n = SEQ(r11_n >> 4, r10_n >> 4 | r11_n << 0x1C);

@@ -16179,8 +16179,8 @@ l0000F2F2:
 	r6_148 = CONVERT(SLICE(r9, word11, 20), word11, word32)
 	branch r6_148 == 0<32> l0000F3AE
 l0000F2F8:
-	r8_144 = r8
-	r9_114 = r9
+	r8_144 = r8 << 1<32>
+	r9_114 = SLICE(r9_r8 << 1<8>, word32, 32)
 l0000F300:
 	branch r7_171 == 0x7FF<32> l0000F3F2
 l0000F306:
@@ -16199,8 +16199,8 @@ l0000F30C:
 	r11_r10_521 = SEQ(r11_241, r10_237) (alias)
 	branch r11_239 + CONVERT(r10_237 <u 0<32>, bool, word32) l0000F33A
 l0000F332:
-	r10_249 = SLICE(r10_r7_368, word32, 32)
-	r7_232 = SLICE(r10_r7_368, word32, 0)
+	r10_249 = SLICE(r10_r7_368 << 1<8>, word32, 32)
+	r7_232 = SLICE(r10_r7_368, word32, 0) << 1<32>
 	r12_223 = r12_222 - 0x3FF<32>
 	r11_r10_521 = SEQ(__rcl<word32,byte>(r11_241, 1<8>, cond(r10_249) & 1<32>), r10_249) (alias)
 l0000F33A:
@@ -16907,6 +16907,7 @@ l0000F924:
 	branch v18_116 l0000F96A
 l0000F926:
 	VNZC_50 = cond(r10 - 0<32>)
+	r12_41 = SLICE(SEQ(r12_7, r9) << 1<8>, word32, 32)
 	lr_135 = 0xFFE00000<32>
 	Z_167 = cond((r11 << 1<i32>) - 0xFFE00000<32> - (VNZC_50 & 1<32>)) & 2<32> (alias)
 	branch (r11 << 1<i32>) - 0xFFE00000<32> >u (VNZC_50 & 1<32>) l0000F968
@@ -16916,17 +16917,17 @@ l0000F93C:
 	branch (r9 << 1<i32>) - 0xFFE00000<32> >u (VNZC_55 & 1<32>) l0000F968
 l0000F946:
 	lr_135 = lr
-	branch r12_7 == 3<32> l0000F95E
+	branch r12_41 == 3<32> l0000F95E
 l0000F94C:
-	branch r12_7 <u 1<32> l0000F954
+	branch r12_41 <u 1<32> l0000F954
 l0000F950:
-	branch r12_7 != 1<32> l0000F952
+	branch r12_41 != 1<32> l0000F952
 l0000F950_1:
 	r12Out = 1<32>
 	lrOut = lr
 	return false
 l0000F952:
-	branch r12_7 == 1<32> l0000F954
+	branch r12_41 == 1<32> l0000F954
 l0000F952_1:
 	r12Out = 0<32>
 	lrOut = lr
@@ -16959,7 +16960,7 @@ l0000F966_1:
 	lrOut = lr
 	return true
 l0000F968:
-	r12Out = r12_7
+	r12Out = r12_41
 	lrOut = lr_135
 	return Z_167 != 0<32>
 l0000F96A:
@@ -17004,6 +17005,7 @@ l0000F97E:
 	branch v18_116 l0000F9C4
 l0000F980:
 	VNZC_50 = cond(r10 - 0<32>)
+	r12_41 = SLICE(SEQ(r12_7, r9) << 1<8>, word32, 32)
 	lr_135 = 0xFFE00000<32>
 	Z_167 = cond((r11 << 1<i32>) - 0xFFE00000<32> - (VNZC_50 & 1<32>)) & 2<32> (alias)
 	branch (r11 << 1<i32>) - 0xFFE00000<32> >u (VNZC_50 & 1<32>) l0000F9C2
@@ -17013,17 +17015,17 @@ l0000F996:
 	branch (r9 << 1<i32>) - 0xFFE00000<32> >u (VNZC_55 & 1<32>) l0000F9C2
 l0000F9A0:
 	lr_135 = lr
-	branch r12_7 == 3<32> l0000F9B8
+	branch r12_41 == 3<32> l0000F9B8
 l0000F9A6:
-	branch r12_7 <u 1<32> l0000F9AE
+	branch r12_41 <u 1<32> l0000F9AE
 l0000F9AA:
-	branch r12_7 != 1<32> l0000F9AC
+	branch r12_41 != 1<32> l0000F9AC
 l0000F9AA_1:
 	r12Out = 0<32>
 	lrOut = lr
 	return true
 l0000F9AC:
-	branch r12_7 == 1<32> l0000F9AE
+	branch r12_41 == 1<32> l0000F9AE
 l0000F9AC_1:
 	r12Out = 1<32>
 	lrOut = lr
@@ -17056,7 +17058,7 @@ l0000F9C0_1:
 	lrOut = lr
 	return false
 l0000F9C2:
-	r12Out = r12_7
+	r12Out = r12_41
 	lrOut = lr_135
 	return Z_167 != 0<32>
 l0000F9C4:
@@ -17260,6 +17262,7 @@ l0000FA9C:
 l0000FB70:
 	r7_242 = r7_241 + 0x3FE<32>
 	r11_r10_814 = SEQ(r11_32 >>u 3<i32>, r10_29 >>u 3<i32> | r11_32 << 0x1D<8>) (alias)
+	r3_r2_579 = SEQ(SLICE(r3_r2_579 << 1<8>, word32, 32), SLICE(r3_r2_579, word32, 0) << 1<32>) (alias)
 	goto l0000FB88
 l0000FB80:
 	r11_r10_814 = SEQ(r11_32 >>u 4<i32>, r10_29 >>u 4<i32> | r11_32 << 0x1C<8>) (alias)

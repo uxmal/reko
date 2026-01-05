@@ -1057,7 +1057,8 @@ l0800_nDBF:
 		{
 			int32 * dx_ax_n;
 			ax_n = (word16) dx_ax_n;
-			cup16 dx_n = SLICE(dx_ax_n, word16, 16);
+			cup16 wLoc04_n = SLICE(dx_ax_n, word16, 16);
+			Eq_n wLoc06_n = (word16) dx_ax_n;
 			if (!msdos_set_file_position(wArg02, 0x00000000<p32>, 0x02, out dx_ax_n))
 			{
 				int32 * dx_ax_n;
@@ -1065,7 +1066,7 @@ l0800_nDBF:
 				cup16 dx_n = SLICE(dx_ax_n, word16, 16);
 				if (!msdos_set_file_position(wArg02, dx_ax_n, 0x00, out dx_ax_n))
 				{
-					if (dx_n >= dx_n && (dx_n > dx_n || ax_n >= ax_n))
+					if (dx_n >= wLoc04_n && (dx_n > wLoc04_n || ax_n >= wLoc06_n))
 					{
 						ax_n.u0 = 0x01;
 						return ax_n;
