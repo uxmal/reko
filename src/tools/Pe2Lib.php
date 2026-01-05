@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2018-2021 Stefano Moioli <smxdev4@gmail.com>
+ * Copyright (C) 2018-2026 Stefano Moioli <smxdev4@gmail.com>
  * Pe2Lib - Converts PE (EXE and DLL files) to .lib files
  * The tool also generates a proper .def in the process.
  * Microsoft Symbol Servers can be used with -s

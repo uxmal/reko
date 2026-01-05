@@ -1,7 +1,7 @@
 #region License
 /* 
  *
- * Copyrighted (c) 2017-2025 Christian Hostelet.
+ * Copyrighted (c) 2017-2026 Christian Hostelet.
  *
  * The contents of this file are subject to the terms of the Common Development
  * and Distribution License (the License), or the GPL v2, or (at your option)
