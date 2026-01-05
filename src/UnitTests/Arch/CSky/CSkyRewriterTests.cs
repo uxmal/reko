@@ -1561,6 +1561,15 @@ namespace Reko.UnitTests.Arch.CSky
         }
 
         [Test]
+        public void CSkyRw_psrclr()
+        {
+            Given_HexString("80C02070");
+            AssertCode(     // psrclr\t0x4
+                "0|S--|00100000(4): 1 instructions",
+                "1|L--|__psrclr(4<32>)");
+        }
+
+        [Test]
         public void CSkyRw_push_16()
         {
             Given_HexString("D314");
@@ -2680,7 +2689,6 @@ AssertCode("@@@");
         public void CSkyRw_fstmm()
         {
             Given_HexString("15F5 0936"); // fstmm\tvr9,(r15,1020)
-AssertCode("@@@");
 
             AssertCode("fstmm\tvr9,(r15,1020)", "35F5 0936");
             AssertCode("fstmm\tvr9,(r15,1020)", "F5F5 0936");
@@ -2691,7 +2699,6 @@ AssertCode("@@@");
         public void CSkyRw_fstms()
         {
             Given_HexString("15F5 0934"); // fstmm\tvr9,(r15,1020)
-AssertCode("@@@");
 
             AssertCode("fstmm\tvr9,(r15,1020)", "35F5 0934");
             AssertCode("fstmm\tvr9,(r15,1020)", "F5F5 0934");

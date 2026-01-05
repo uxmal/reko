@@ -21,7 +21,6 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
-using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Operators;
 using Reko.Core.Rtl;
@@ -31,7 +30,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 
 namespace Reko.Arch.CSky
 {
@@ -77,6 +75,10 @@ namespace Reko.Arch.CSky
                 case Mnemonic.invalid:
                     m.Invalid();
                     iclass = InstrClass.Invalid;
+                    break;
+                case Mnemonic.nyi:
+                    m.SideEffect(m.Fn(nyi_intrinsic));
+                    iclass = InstrClass.Linear;
                     break;
                 case Mnemonic.abs: RewriteAbs(); break;
                 case Mnemonic.addc: RewriteAddc(); break;
@@ -271,6 +273,7 @@ namespace Reko.Arch.CSky
                 case Mnemonic.pldr: RewritePrefetch(pldr_intrinsic); break;
                 case Mnemonic.pldrw: RewritePrefetch(pldrw_intrinsic); break;
                 case Mnemonic.pop: RewritePop(); break;
+                case Mnemonic.psrclr: RewritePsrclr(); break;
                 case Mnemonic.push: RewritePush(); break;
                 case Mnemonic.revb: RewriteReverse(CommonOps.ReverseBytes); break;
                 case Mnemonic.revh: RewriteReverse(CommonOps.ReverseHalfwords); break;
@@ -1116,6 +1119,10 @@ namespace Reko.Arch.CSky
                 m.Return(0, 0);
         }
 
+        private void RewritePsrclr()
+        {
+            m.SideEffect(m.Fn(psrclr_intrinsic, Operand(0)));
+        }
         private void RewritePush()
         {
             var regs = (RegisterListOperand) instr.Operands[0];
@@ -1441,6 +1448,10 @@ namespace Reko.Arch.CSky
         private static readonly IntrinsicProcedure pldrw_intrinsic = new IntrinsicBuilder("__pldrw", true)
             .Param(PrimitiveType.Ptr32)
             .Void();
+        private static readonly IntrinsicProcedure psrclr_intrinsic = IntrinsicBuilder.SideEffect("__psrclr")
+            .Param(PrimitiveType.Word32)
+            .Void();
+        
         private static readonly IntrinsicProcedure rfi_intrinsic = new IntrinsicBuilder("__rfi", true).Void();
         private static readonly IntrinsicProcedure rte_intrinsic = new IntrinsicBuilder("__rte", true).Void();
         private static readonly IntrinsicProcedure se_intrinsic = new IntrinsicBuilder("__se", true).Void();
@@ -1464,7 +1475,12 @@ namespace Reko.Arch.CSky
             .Returns(PrimitiveType.Word32);
         private static readonly PrimitiveType word48 = PrimitiveType.CreateWord(48);
 
+        private static readonly IntrinsicProcedure nyi_intrinsic = IntrinsicBuilder.SideEffect("__nyi")
+            .Void();
+
+
         private static readonly ArrayType aReal32_2 = new ArrayType(PrimitiveType.Real32, 2);
+
 
     }
 }

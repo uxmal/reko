@@ -1034,6 +1034,12 @@ namespace Reko.UnitTests.Arch.CSky
         }
 
         [Test]
+        public void CSkyDis_psrclr()
+        {
+            AssertCode("psrclr\t0x4", "80C02070");
+        }
+
+        [Test]
         public void CSkyDis_push_16()
         {
             AssertCode("push\tr4-r6,r15", "D314");
