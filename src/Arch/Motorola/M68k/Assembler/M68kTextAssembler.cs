@@ -28,7 +28,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
-using System.ComponentModel.Design;
 using Reko.Core.Memory;
 using Reko.Core.Loading;
 using Reko.Arch.Motorola.M68k.Machine;
@@ -37,22 +36,25 @@ namespace Reko.Arch.Motorola.M68k.Assembler
 {
     public class M68kTextAssembler : IAssembler
     {
-        private M68kArchitecture arch;
+        private readonly M68kArchitecture arch;
         private Address addrBase;
         private IEmitter emitter;
         private readonly List<ImageSymbol> entryPoints;
         private Lexer lexer;
-        private M68kAssembler asm ;
-        private PrimitiveType dataWidth;
+        private M68kAssembler asm;
+        private PrimitiveType? dataWidth;
 
-#nullable disable
-        public M68kTextAssembler()
+        public M68kTextAssembler(M68kArchitecture arch)
         {
-            this.entryPoints = new List<ImageSymbol>();
-            this.ImageSymbols = new List<ImageSymbol>();
+            this.arch = arch;
+            this.entryPoints = [];
+            this.ImageSymbols = [];
             this.LineNumber = 1;
+            this.asm = new M68kAssembler(arch, addrBase, entryPoints);
+            this.asm = default!;
+            this.emitter = default!;
+            this.lexer = default!;
         }
-#nullable enable
 
         public int LineNumber { get; private set; }
 
@@ -62,8 +64,7 @@ namespace Reko.Arch.Motorola.M68k.Assembler
         {
             this.addrBase = baseAddress;
             this.lexer = new Lexer(rdr);
-            this.arch = new M68kArchitecture(new ServiceContainer(), "m68k", new Dictionary<string, object>());
-            asm = new M68kAssembler(arch, addrBase, entryPoints);
+            this.asm = new M68kAssembler(arch, addrBase, entryPoints);
             this.emitter = asm.Emitter;
 
             // Assemblers are strongly line-oriented.
@@ -417,6 +418,7 @@ namespace Reko.Arch.Motorola.M68k.Assembler
                 return ParseAddressExpression(0);
             case TokenType.HASH:
                 int n = ExpectInteger();
+                Debug.Assert(this.dataWidth is not null);
                 return Constant.Create(this.dataWidth, n);
             }
             Error("Unexpected token '{0}' ('{1}').", tok.Text, tok.Type);

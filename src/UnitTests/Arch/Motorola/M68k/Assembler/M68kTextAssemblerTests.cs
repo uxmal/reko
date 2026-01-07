@@ -19,12 +19,14 @@
 #endregion
 
 using NUnit.Framework;
+using Reko.Arch.Motorola;
 using Reko.Arch.Motorola.M68k.Assembler;
 using Reko.Core;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Core.Output;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
 
@@ -38,7 +40,8 @@ namespace Reko.UnitTests.Arch.Motorola.M68k.Assembler
         [SetUp]
         public void Setup()
         {
-            asm = new M68kTextAssembler();
+            var arch = new M68kArchitecture(new ServiceContainer(), "m68k", []);
+            asm = new M68kTextAssembler(arch);
         }
 
         protected void RunFragment(string fragment, string outputFile, Address addrBase)

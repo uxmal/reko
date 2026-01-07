@@ -25,7 +25,7 @@ using System.Text;
 
 namespace Reko.Arch.Motorola.M68k.Assembler
 {
-    public struct Token
+    public readonly struct Token
     {
         public readonly string Text;
         public readonly TokenType Type;

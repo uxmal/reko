@@ -19,10 +19,12 @@
 #endregion
 
 using Reko.Arch.Motorola.M68k;
+using Reko.Arch.Motorola.M68k.Assembler;
 using Reko.Arch.Motorola.M68k.Disassembler;
 using Reko.Arch.Motorola.M68k.Machine;
 using Reko.Arch.Motorola.M68k.Rewriter;
 using Reko.Core;
+using Reko.Core.Assemblers;
 using Reko.Core.Collections;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
@@ -52,6 +54,11 @@ namespace Reko.Arch.Motorola
             WordWidth = PrimitiveType.Word32;
             CarryFlag = Registers.X;     // The X flag is used for long adds on the m68k.
             StackRegister = Registers.a7;
+        }
+
+        public override IAssembler CreateAssembler(string? asmDialect)
+        {
+            return new M68kTextAssembler(this);
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
