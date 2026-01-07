@@ -20,45 +20,39 @@
 
 using Reko.Core;
 using Reko.Core.Types;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Reko.Arch.Nec
+namespace Reko.Arch.Nec;
+
+public static class Registers
 {
-    public static class Registers
+    public static RegisterStorage[] Scalars { get; }
+    public static RegisterStorage[] Vectors { get; }
+
+    public static RegisterStorage[] VectorMasks { get; }
+
+    /// <summary>
+    /// Comminucation registers.
+    /// </summary>
+    public static RegisterStorage[] CR { get; }
+
+    /// <summary>
+    /// Vector index register.
+    /// </summary>
+    public static RegisterStorage Vixr { get; }
+
+    /// <summary>
+    /// Vector length register.
+    /// </summary>
+    public static RegisterStorage Vl { get; }
+
+    static Registers()
     {
-        public static RegisterStorage[] Scalars { get; }
-        public static RegisterStorage[] Vectors { get; }
-
-        public static RegisterStorage[] VectorMasks { get; }
-
-        /// <summary>
-        /// Comminucation registers.
-        /// </summary>
-        public static RegisterStorage[] CR { get; }
-
-        /// <summary>
-        /// Vector index register.
-        /// </summary>
-        public static RegisterStorage Vixr { get; }
-
-        /// <summary>
-        /// Vector length register.
-        /// </summary>
-        public static RegisterStorage Vl { get; }
-
-        static Registers()
-        {
-            var factory = new StorageFactory();
-            Scalars = factory.RangeOfReg(64, n => $"s{n}", PrimitiveType.Word64);
-            Vectors = factory.RangeOfReg(64, n => $"v{n}", PrimitiveType.Word64);
-            VectorMasks = factory.RangeOfReg(16, n => $"vm{n}", PrimitiveType.Word256);
-            Vixr = factory.Reg("vixr", PrimitiveType.Word64); // Actually, 6 bits.
-            Vl = factory.Reg("vl", PrimitiveType.Word64); // Actually, 9 bits.
-            CR = factory.RangeOfReg(1024, n => $"cr{n}", PrimitiveType.Word64);
-        }
+        var factory = new StorageFactory();
+        Scalars = factory.RangeOfReg(64, n => $"s{n}", PrimitiveType.Word64);
+        Vectors = factory.RangeOfReg(64, n => $"v{n}", PrimitiveType.Word64);
+        VectorMasks = factory.RangeOfReg(16, n => $"vm{n}", PrimitiveType.Word256);
+        Vixr = factory.Reg("vixr", PrimitiveType.Word64); // Actually, 6 bits.
+        Vl = factory.Reg("vl", PrimitiveType.Word64); // Actually, 9 bits.
+        CR = factory.RangeOfReg(1024, n => $"cr{n}", PrimitiveType.Word64);
     }
 }

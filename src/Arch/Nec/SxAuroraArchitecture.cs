@@ -27,92 +27,89 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Reko.Arch.Nec
+namespace Reko.Arch.Nec;
+
+public class SxAuroraArchitecture : ProcessorArchitecture
 {
-    public class SxAuroraArchitecture : ProcessorArchitecture
+    public SxAuroraArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options, Dictionary<string, RegisterStorage>? regsByName, Dictionary<StorageDomain, RegisterStorage>? regsByDomain) : base(services, archId, options, regsByName, regsByDomain)
     {
-        public SxAuroraArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options, Dictionary<string, RegisterStorage>? regsByName, Dictionary<StorageDomain, RegisterStorage>? regsByDomain) : base(services, archId, options, regsByName, regsByDomain)
-        {
-            this.Endianness = EndianServices.Little;
-            this.FramePointerType = PrimitiveType.Ptr64;
-            this.CodeMemoryGranularity = 8;
-            this.MemoryGranularity = 8;
-            this.PointerType = PrimitiveType.Ptr64;
-            this.WordWidth = PrimitiveType.Word32;
-        }
+        this.Endianness = EndianServices.Little;
+        this.FramePointerType = PrimitiveType.Ptr64;
+        this.CodeMemoryGranularity = 8;
+        this.InstructionBitSize = 64;
+        this.MemoryGranularity = 8;
+        this.PointerType = PrimitiveType.Ptr64;
+        this.WordWidth = PrimitiveType.Word64;
+    }
 
-        public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
-        {
-            throw new NotImplementedException();
-        }
+    public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
+    {
+        return new SxAuroraDisassembler(this, rdr);
+    }
 
-        public override IEqualityComparer<MachineInstruction>? CreateInstructionComparer(Normalize norm)
-        {
-            throw new NotImplementedException();
-        }
+    public override IEqualityComparer<MachineInstruction>? CreateInstructionComparer(Normalize norm)
+    {
+        throw new NotImplementedException();
+    }
 
-        public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
-        {
-            throw new NotImplementedException();
-        }
+    public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
+    {
+        throw new NotImplementedException();
+    }
 
-        public override ProcessorState CreateProcessorState()
-        {
-            throw new NotImplementedException();
-        }
+    public override ProcessorState CreateProcessorState()
+    {
+        return new DefaultProcessorState(this);
+    }
 
-        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
-        {
-            throw new NotImplementedException();
-        }
+    public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
+    {
+        return new SxAuroraRewriter(this, rdr, state, binder, host);
+    }
 
-        public override FlagGroupStorage? GetFlagGroup(RegisterStorage flagRegister, uint grf)
-        {
-            throw new NotImplementedException();
-        }
+    public override FlagGroupStorage? GetFlagGroup(RegisterStorage flagRegister, uint grf)
+    {
+        throw new NotImplementedException();
+    }
 
-        public override FlagGroupStorage? GetFlagGroup(string name)
-        {
-            throw new NotImplementedException();
-        }
+    public override FlagGroupStorage? GetFlagGroup(string name)
+    {
+        throw new NotImplementedException();
+    }
 
-        public override SortedList<string, int> GetMnemonicNames()
-        {
-            throw new NotImplementedException();
-        }
+    public override SortedList<string, int> GetMnemonicNames()
+    {
+        throw new NotImplementedException();
+    }
 
-        public override int? GetMnemonicNumber(string name)
-        {
-            throw new NotImplementedException();
-        }
+    public override int? GetMnemonicNumber(string name)
+    {
+        throw new NotImplementedException();
+    }
 
-        public override RegisterStorage[] GetRegisters()
-        {
-            throw new NotImplementedException();
-        }
+    public override RegisterStorage[] GetRegisters()
+    {
+        throw new NotImplementedException();
+    }
 
-        public override string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)
-        {
-            throw new NotImplementedException();
-        }
+    public override string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)
+    {
+        throw new NotImplementedException();
+    }
 
-        public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
-        {
-            throw new NotImplementedException();
-        }
+    public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
+    {
+        throw new NotImplementedException();
+    }
 
-        public override Address? ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
-        {
-            throw new NotImplementedException();
-        }
+    public override Address? ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
+    {
+        throw new NotImplementedException();
+    }
 
-        public override bool TryParseAddress(string? txtAddr, [MaybeNullWhen(false)] out Address addr)
-        {
-            throw new NotImplementedException();
-        }
+    public override bool TryParseAddress(string? txtAddr, [MaybeNullWhen(false)] out Address addr)
+    {
+        return Address.TryParse64(txtAddr, out addr);
     }
 }
