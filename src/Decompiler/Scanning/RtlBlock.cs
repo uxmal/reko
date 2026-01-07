@@ -20,7 +20,6 @@
 
 using Reko.Core;
 using Reko.Core.Rtl;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -65,7 +64,8 @@ namespace Reko.Scanning
         /// <param name="instructions">The ordered sequence of <see cref="RtlInstructionCluster"/>s making up
         /// this basic block.
         /// </param>
-        /// <returns></returns>
+        /// <returns>An <see cref="RtlBlock"/> containing the given instructions.
+        /// </returns>
         public static RtlBlock Create(
             IProcessorArchitecture arch,
             Address addr,
@@ -80,7 +80,7 @@ namespace Reko.Scanning
 
 
         /// <summary>
-        /// Creates an empty <see cref="RtlBlock"/> instance.
+        /// Creates an <see cref="RtlBlock"/> instance with no instructions.
         /// </summary>
         /// <param name="arch"><see cref="IProcessorArchitecture"/> of the basic block.</param>
         /// <param name="addr">The address of the basic block.</param>
@@ -118,7 +118,7 @@ namespace Reko.Scanning
                 addr,
                 id,
                 0,
-                default!,
+                default,
                 ProvenanceType.None,
                 clusters);
         }
