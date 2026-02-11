@@ -37,7 +37,7 @@ public class IRHashFeature : IFeature
     }
 
     /// <inheritdoc/>
-    public string Type => "irhash";
+    public string Type => FeatureNames.IRHash;
 
     /// <inheritdoc/>
     public object Value => hash;

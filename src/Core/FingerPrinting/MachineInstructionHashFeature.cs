@@ -38,7 +38,7 @@ public class MachineInstructionHashFeature : IFeature
     }
 
     /// <inheritdoc/>
-    public string Type => "mihash";
+    public string Type => FeatureNames.MachineInstructionHash;
 
     /// <inheritdoc/>
     public object Value => hash;

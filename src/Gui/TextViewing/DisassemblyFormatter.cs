@@ -71,13 +71,11 @@ namespace Reko.Gui.TextViewing
 
         public void BeginOperand()
         {
-
         }
+
         public void EndOperand()
         {
-
         }
-
         public void WriteMnemonic(string sMnemonic)
         {
             TerminateSpan();

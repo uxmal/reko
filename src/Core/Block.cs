@@ -52,7 +52,7 @@ namespace Reko.Core
 		}
 
         /// <summary>
-        /// The starting address of the block. Blocks are _not_ guaranteed 
+        /// The starting address of the block. Blocks are <i>not</i> guaranteed 
         /// to have a starting address. 
         /// </summary>
         public Address Address { get; set; }

@@ -42,9 +42,11 @@ public class MachineInstructionHashComputer : IFeatureComputer
     {
         var cmp = proc.Architecture.CreateInstructionComparer(Normalize.Constants)!;
         int hash = 0;
-        foreach (var block in proc.ControlGraph.Blocks)
+        // The hash of all the blocks cannot be computed sequentially because
+        // 
+        foreach (var block in proc.ControlGraph.Blocks.OrderBy(b => b.Address))
         {
-            hash = hash * 17 + ComputeBlockHash(proc.Architecture, block, program, cmp);
+            hash ^= ComputeBlockHash(proc.Architecture, block, program, cmp);
         }
         return new MachineInstructionHashFeature(hash);
     }
@@ -59,6 +61,8 @@ public class MachineInstructionHashComputer : IFeatureComputer
             .Aggregate(addrMin, (a, b) => Address.Max(a, b));
         var dasm = program.CreateDisassembler(arch, block.Address);
         int hash = 0;
+        // Block hashes are computed sequentially because their instructions are always in 
+        // order.
         foreach (var instr in dasm)
         {
             if (instr.Address > addrMax)
