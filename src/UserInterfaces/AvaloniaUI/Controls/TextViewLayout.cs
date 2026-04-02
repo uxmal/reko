@@ -29,22 +29,14 @@ using System.Linq;
 namespace Reko.UserInterfaces.AvaloniaUI.Controls
 {
     /// <summary>
-    /// Maintains the layout of the client area of a TextView.
+    /// Maintains the layout of the client area of a <see cref="TextView"/>.
     /// </summary>
     public class TextViewLayout
     {
-        private ITextViewModel model;
-        private SortedList<double, LayoutLine> visibleLines;
-        private Typeface defaultFont;
-        private double defaultFontSize;
-
-        public TextViewLayout(ITextViewModel model, Typeface defaultFont, double defaultFontSize)
-        {
-            this.model = model;
-            this.visibleLines = new SortedList<double, LayoutLine>();
-            this.defaultFont = defaultFont;
-            this.defaultFontSize = defaultFontSize;
-        }
+        private readonly ITextViewModel model;
+        private readonly SortedList<double, LayoutLine> visibleLines;
+        private readonly Typeface defaultFont;
+        private readonly double defaultFontSize;
 
         private TextViewLayout(ITextViewModel model, Typeface defaultFont, double defaultFontSize,  SortedList<double, LayoutLine> visibleLines)
         {
@@ -59,10 +51,10 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
         /// <summary>
         /// Generates a TextViewLayout from all the lines in the model.
         /// </summary>
-        /// <param name="model"></param>
-        /// <param name="g"></param>
-        /// <param name="defaultFont"></param>
-        /// <param name="styleStack"></param>
+        /// <param name="model"><see cref="ITextViewModel"/> instance representing the text model.</param>
+        /// <param name="g"><see cref="DrawingContext"/> instance used for measuring and rendering.</param>
+        /// <param name="defaultFont">Default font to use.</param>
+        /// <param name="styleStack">Style stack used for applying text styles.</param>
         /// <returns></returns>
         public static TextViewLayout AllLines(ITextViewModel model, DrawingContext g, Typeface defaultFont, double defaultFontSize, StyleStack styleStack)
         {
@@ -80,7 +72,15 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
             return layout;
         }
 
-
+        /// <summary>
+        /// Creates a TextViewLayout containing only the lines that are visible in the client area.
+        /// </summary>
+        /// <param name="model"><see cref="ITextViewModel"/> instance representing the text model.</param>
+        /// <param name="size">Size of the client area.</param>
+        /// <param name="defaultFontSize">Default font size to use.</param>
+        /// <param name="defaultFont">Default font to use.</param>
+        /// <param name="styleStack"></param>
+        /// <returns></returns>
         public static TextViewLayout VisibleLines(ITextViewModel model, Size size, double defaultFontSize, Typeface defaultFont, StyleStack styleStack)
         {
             var szClient = new Size(size.Width, size.Height);
@@ -366,14 +366,14 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
     /// </summary>
     public class LayoutLine
     {
-        public LayoutLine(object Position, object tag, string style) {
+        public LayoutLine(object Position, object? tag, string style) {
             this.Position = Position;
             this.Tag = tag;
             this.Style = style;
         }
 
         public object Position;
-        public object Tag;                  // extra object for this line.
+        public object? Tag;                  // extra object for this line.
         public string Style;
         public Rect Extent;
         public LayoutSpan[] Spans;
@@ -388,19 +388,11 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
         public Rect PaddedExtent;
         public string Text;
         public string Style;
-        public object? Tag {
-            get { return tag; }
-            set
-            {
-                if (value is Reko.Core.Address)
-                    value.ToString();
-                if (value is Reko.Core.Block)
-                    value.ToString();
-                tag = value;
-            }
-        }
-        private object? tag;
+        public object? Tag { get; set; }
 
-        public int ContextMenuID;
+        /// <summary>
+        /// Id of the context menu to show when the user right-clicks on this span. If zero, no context menu is shown.
+        /// </summary>
+        public int ContextMenuID {get ;set;}
     }
 }

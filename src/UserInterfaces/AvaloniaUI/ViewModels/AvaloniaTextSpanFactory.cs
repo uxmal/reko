@@ -143,6 +143,9 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
             }
         }
 
+        /// <summary>
+        /// A <see cref="TextSpan"/> representing a procedure. 
+        /// </summary>
         public class ProcedureTextSpan : TextSpan
         {
             private ProcedureBase proc;

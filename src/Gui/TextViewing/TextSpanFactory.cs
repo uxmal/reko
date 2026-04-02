@@ -26,6 +26,14 @@ namespace Reko.Gui.TextViewing
 {
     public abstract class TextSpanFactory
     {
+        /// <summary>
+        /// Creates a <see cref="ITextSpan"/> representing an address. The text of the span is given by <paramref name="sAddress"/>.
+        /// </summary>
+        /// <param name="sAddress">User-visible text representing the address. It may have been
+        /// changed to a symbolic name if one exists.</param>
+        /// <param name="address">The actual address represented by the span.</param>
+        /// <param name="style">The style to apply to the span.</param>
+        /// <returns>The created <see cref="ITextSpan"/> instance.</returns>
         public abstract ITextSpan CreateAddressSpan(string sAddress, Address address, string style);
         public abstract ITextSpan CreateAddressTextSpan(Address addr, string formattedAddress);
         public abstract ITextSpan CreateEmptyTextSpan();

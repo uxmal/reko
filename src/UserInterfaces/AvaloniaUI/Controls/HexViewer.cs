@@ -941,8 +941,8 @@ public class HexViewControl : Control, ILogicalScrollable
             };
             codeTheme = new BrushTheme { Background = ctrl.CodeBackground!, Foreground = ctrl._foreground, StartMarker = Brushes.Red };
             dataTheme = new BrushTheme { Background = ctrl.DataBackground!, Foreground = ctrl._foreground, StartMarker = Brushes.Blue };
-            defaultTheme = new BrushTheme { Background = wind.Background ?? ctrl.Background, Foreground = wind.Foreground ?? ctrl._foreground };
-            selectTheme = new BrushTheme { Background = ctrl.SelectionBrush, Foreground = ctrl.SelectionForegroundBrush };
+            defaultTheme = new BrushTheme { Background = wind.Background ?? ctrl.Background!, Foreground = wind.Foreground ?? ctrl._foreground };
+            selectTheme = new BrushTheme { Background = ctrl.SelectionBrush!, Foreground = ctrl.SelectionForegroundBrush! };
             secondarySelectTheme = new BrushTheme { Background = secondarySelBrush, Foreground = ctrl._foreground };
         }
 
@@ -1166,7 +1166,7 @@ public class HexViewControl : Control, ILogicalScrollable
             }
         }
 
-        private BrushTheme GetBrushTheme(ImageMapItem? item, bool selected)
+        private BrushTheme? GetBrushTheme(ImageMapItem? item, bool selected)
         {
             if (item is null)
                 return defaultTheme;
@@ -1188,7 +1188,7 @@ public class HexViewControl : Control, ILogicalScrollable
             return defaultTheme;
         }
 
-        private BrushTheme GetTextSideBrushTheme(bool isSelected)
+        private BrushTheme? GetTextSideBrushTheme(bool isSelected)
         {
             if (isSelected)
             {
