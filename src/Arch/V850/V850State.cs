@@ -52,7 +52,7 @@ namespace Reko.Arch.V850
 
         public override CallSite OnBeforeCall(Identifier stackReg, int returnAddressSize)
         {
-            return new CallSite(4, 0);
+            return new CallSite(returnAddressSize);
         }
 
         public override void OnProcedureEntered(Address addr)

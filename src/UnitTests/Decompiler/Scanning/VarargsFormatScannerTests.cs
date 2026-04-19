@@ -225,7 +225,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             Given_VaScanner(win32);
             var emptyChr = new ProcedureCharacteristics();
             var emptySig = new FunctionType();
-            var ab = CreateApplicationBuilder(new CallSite(4, 0));
+            var ab = CreateApplicationBuilder(new CallSite(4));
             Assert.IsFalse(vafs.TryScan(addrInstr, dummyPc, null, null, ab, out _));
             Assert.IsFalse(vafs.TryScan(addrInstr, dummyPc, emptySig, null, ab, out _));
             Assert.IsFalse(vafs.TryScan(addrInstr, dummyPc, null, emptyChr, ab, out _));
@@ -242,7 +242,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             Given_VaScanner(win32);
             Given_StackString(4, "%d %f");
             var c = Constant.Word32(666);
-            var ab = win32.Architecture.CreateFrameApplicationBuilder(frame, new CallSite(4, 0));
+            var ab = win32.Architecture.CreateFrameApplicationBuilder(frame, new CallSite(4));
             Assert.IsTrue(vafs.TryScan(addrInstr, dummyPc, x86PrintfSig, printfChr, ab, out var result));
             var instr = vafs.BuildInstruction(c, x86PrintfSig, result.Signature, printfChr, ab);
             Assert.AreEqual(
@@ -258,7 +258,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             Given_StackString(8, "%c");
             var ep = new ExternalProcedure("sprintf", x86SprintfSig);
             var pc = new ProcedureConstant(new CodeType(), ep);
-            var ab = win32.Architecture.CreateFrameApplicationBuilder(frame, new CallSite(4, 0));
+            var ab = win32.Architecture.CreateFrameApplicationBuilder(frame, new CallSite(4));
             Assert.IsTrue(vafs.TryScan(addrInstr, dummyPc, x86SprintfSig, printfChr, ab, out var result));
             var instr = vafs.BuildInstruction(pc, x86SprintfSig, result.Signature, printfChr, ab);
             Assert.AreEqual(
@@ -281,7 +281,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             Given_VaScanner(win_x86_64);
             Given_RegString64("rcx", "%d %f %s %u %x");
             var c = Constant.Word32(666);
-            var ab = win_x86_64.Architecture.CreateFrameApplicationBuilder(frame, new CallSite(8, 0));
+            var ab = win_x86_64.Architecture.CreateFrameApplicationBuilder(frame, new CallSite(8));
 
             Assert.IsTrue(vafs.TryScan(addrInstr, dummyPc, win_x86_64PrintfSig, printfChr, ab, out var result));
             var instr = vafs.BuildInstruction(c, win_x86_64PrintfSig, result.Signature, printfChr, ab);
@@ -296,7 +296,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             Given_VaScanner(sysV_ppc);
             Given_RegString32("r3", "%d%d");
             var c = Constant.Word32(0x123);
-            var ab = sysV_ppc.Architecture.CreateFrameApplicationBuilder(frame, new CallSite(0, 0));
+            var ab = sysV_ppc.Architecture.CreateFrameApplicationBuilder(frame, new CallSite(0));
 
             Assert.IsTrue(vafs.TryScan(addrInstr, dummyPc, ppcPrintfSig, printfChr, ab, out var result));
             var instr = vafs.BuildInstruction(c, ppcPrintfSig, result.Signature, printfChr, ab);

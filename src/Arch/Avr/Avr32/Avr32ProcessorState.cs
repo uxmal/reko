@@ -57,7 +57,7 @@ namespace Reko.Arch.Avr.Avr32
 
         public override CallSite OnBeforeCall(Identifier stackReg, int returnAddressSize)
         {
-            return new CallSite(0, 0);
+            return new CallSite(0);
         }
 
         public override void OnProcedureEntered(Address addr)

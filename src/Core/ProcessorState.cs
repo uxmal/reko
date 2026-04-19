@@ -400,7 +400,7 @@ namespace Reko.Core
         /// <inheritdoc/>
         public override CallSite OnBeforeCall(Identifier stackReg, int returnAddressSize)
         {
-            return new CallSite(returnAddressSize, 0);
+            return new CallSite(returnAddressSize);
         }
 
         /// <inheritdoc/>

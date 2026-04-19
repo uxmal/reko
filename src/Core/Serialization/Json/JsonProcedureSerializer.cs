@@ -238,8 +238,6 @@ namespace Reko.Core.Serialization.Json
             w.Write(',');
             js.Write(ci.CallSite.SizeOfReturnAddressOnStack);
             w.Write(',');
-            js.Write(ci.CallSite.FpuStackDepthBefore);
-            w.Write(',');
             js.WriteList(ci.Uses.Select(u => u.Expression), e => e.Accept(this));
             js.WriteList(ci.Definitions.Select(d => d.Expression.ToString()), id => js.Write(id!.ToString()));
         }

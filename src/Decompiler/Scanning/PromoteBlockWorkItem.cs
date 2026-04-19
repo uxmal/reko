@@ -140,7 +140,7 @@ namespace Reko.Scanning
                         inb.Address,
                         new CallInstruction(
                             new ProcedureConstant(Program.Platform.PointerType, ProcNew),
-                            new CallSite(0, 0)));
+                            new CallSite(0)));
                     Program.CallGraph.AddEdge(stmLast, ProcNew);
                     inb.Statements.Add(inb.Address, new ReturnInstruction());
                     inb.Procedure.ControlGraph.AddEdge(inb, inb.Procedure.ExitBlock);

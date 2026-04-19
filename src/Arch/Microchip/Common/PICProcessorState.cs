@@ -171,7 +171,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// </returns>
         public override CallSite OnBeforeCall(Identifier sp, int returnAddressSize)
         {
-            return new CallSite(returnAddressSize, HWStackItems);
+            return new CallSite(returnAddressSize);
         }
 
         /// <summary>

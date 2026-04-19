@@ -520,7 +520,7 @@ namespace Reko.UnitTests.Mocks
 
         public override CallSite OnBeforeCall(Identifier sp, int returnAddressSize)
         {
-            return new CallSite(returnAddressSize, 0);
+            return new CallSite(returnAddressSize);
         }
 
         public override void OnAfterCall(FunctionType sigCallee)

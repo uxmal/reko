@@ -252,7 +252,7 @@ namespace Reko.Scanning
                     procCallee);
                 target = pc;
             }
-            var site = new CallSite(call.ReturnAddressSize, 0);
+            var site = new CallSite(call.ReturnAddressSize);
             return new CallInstruction(target, site);
         }
 
@@ -301,7 +301,7 @@ namespace Reko.Scanning
                 addrFrom,
                 new CallInstruction(
                     new ProcedureConstant(program.Platform.PointerType, procNew),
-                    new CallSite(0, 0)));
+                    new CallSite(0)));
             //$TODO: look at what is being done in Scanner.CreateCallRetThunk.
             program.CallGraph.AddEdge(stmLast, procNew);
 

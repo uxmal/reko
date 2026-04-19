@@ -108,7 +108,7 @@ namespace Reko.UnitTests.Core
 			Assert.IsTrue(CriticalInstruction.IsCritical(
                 new CallInstruction(
                     new ProcedureConstant(PrimitiveType.Ptr32, someFn), 
-                    new CallSite(0, 0))));
+                    new CallSite(0))));
 		}
 
 		[Test]

@@ -62,7 +62,7 @@ namespace Reko.UnitTests.Arch.X86.Analysis
         [Category(Categories.UnitTests)]
         public void X86fab_FpuArg()
         {
-            var site = new CallSite(0, 1);
+            var site = new CallSite(0);
             CreateApplicationBuilder(site);
             var sigCallee = FunctionType.Action(
                 new Identifier(
@@ -77,7 +77,7 @@ namespace Reko.UnitTests.Arch.X86.Analysis
         [Category(Categories.UnitTests)]
         public void X86fab_FpuArgs()
         {
-            var site = new CallSite(0, 4);
+            var site = new CallSite(0);
             CreateApplicationBuilder(site);
             var sigCallee = FunctionType.Action(
                 new Identifier(
@@ -96,7 +96,7 @@ namespace Reko.UnitTests.Arch.X86.Analysis
         [Category(Categories.UnitTests)]
         public void X86fab_FpuRet()
         {
-            var site = new CallSite(0, 0);
+            var site = new CallSite(0);
             CreateApplicationBuilder(site);
             var sigCallee = FunctionType.Create(
                 new Identifier(

@@ -95,7 +95,7 @@ namespace Reko.Arch.Motorola.M68k
 
         public override CallSite OnBeforeCall(Identifier stackReg, int returnAddressSize)
         {
-            return new CallSite(returnAddressSize, 0);
+            return new CallSite(returnAddressSize);
         }
 
         public override void OnAfterCall(FunctionType? sigCallee)

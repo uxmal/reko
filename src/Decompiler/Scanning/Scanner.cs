@@ -512,7 +512,7 @@ namespace Reko.Scanning
             if (Program.User.BlockLabels.TryGetValue(blockName, out var userLabel))
                 callRetThunkBlock.UserLabel = userLabel;
 
-            var call = CreateCall(procOld, addrFrom, procNew, state, new CallSite(0, 0));
+            var call = CreateCall(procOld, addrFrom, procNew, state, new CallSite(0));
             var stmLast = callRetThunkBlock.Statements.Add(addrFrom, call);
             Program.CallGraph.AddEdge(stmLast, procNew);
 

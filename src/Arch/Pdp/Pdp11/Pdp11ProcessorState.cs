@@ -105,7 +105,7 @@ namespace Reko.Arch.Pdp.Pdp11
 
         public override CallSite OnBeforeCall(Identifier stackReg, int returnSize)
         {
-            return new CallSite(returnSize, 0);
+            return new CallSite(returnSize);
         }
 
         public override void OnAfterCall(FunctionType? sigCallee)

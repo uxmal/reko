@@ -145,7 +145,7 @@ namespace Reko.Scanning
             {
                 callGraph.AddEdge(StatementNew!, pc.Procedure);
             }
-            var ciNew = new CallInstruction(ci.Callee, new CallSite(ci.CallSite.SizeOfReturnAddressOnStack, ci.CallSite.FpuStackDepthBefore));
+            var ciNew = new CallInstruction(ci.Callee, new CallSite(ci.CallSite.SizeOfReturnAddressOnStack));
             return ciNew;  
         }
 

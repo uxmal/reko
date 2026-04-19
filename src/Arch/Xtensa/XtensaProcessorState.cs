@@ -59,7 +59,7 @@ namespace Reko.Arch.Xtensa
 
         public override CallSite OnBeforeCall(Identifier stackReg, int returnAddressSize)
         {
-            return new CallSite(returnAddressSize, 0);
+            return new CallSite(returnAddressSize);
         }
 
         public override void OnProcedureEntered(Address addr)

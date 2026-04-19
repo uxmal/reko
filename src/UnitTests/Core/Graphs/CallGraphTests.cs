@@ -86,7 +86,7 @@ namespace Reko.UnitTests.Core.Graphs
 
         private CallInstruction CreateCall(ProcedureConstant pc)
         {
-            return new CallInstruction(pc, new CallSite(4, 0));
+            return new CallInstruction(pc, new CallSite(4));
         }
 
         [Test]

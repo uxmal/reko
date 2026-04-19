@@ -90,7 +90,7 @@ namespace Reko.Arch.Zilog.Z80
 
         public override CallSite OnBeforeCall(Identifier stackReg, int returnAddressSize)
         {
-            return new CallSite(returnAddressSize, 0);
+            return new CallSite(returnAddressSize);
         }
 
         public override void OnAfterCall(FunctionType? sigCallee)

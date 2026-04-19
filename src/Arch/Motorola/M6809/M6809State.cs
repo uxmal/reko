@@ -52,7 +52,7 @@ namespace Reko.Arch.Motorola.M6809
 
         public override CallSite OnBeforeCall(Identifier stackReg, int returnAddressSize)
         {
-            return new CallSite(returnAddressSize, 0);
+            return new CallSite(returnAddressSize);
         }
 
         public override void OnProcedureEntered(Address addr)

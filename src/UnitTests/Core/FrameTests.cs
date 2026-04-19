@@ -171,7 +171,7 @@ namespace Reko.UnitTests.Core.Code
 					new Identifier("arg0", PrimitiveType.Word16, new StackStorage(4, PrimitiveType.Word16)),
 					new Identifier("arg1", PrimitiveType.Word16, new StackStorage(6, PrimitiveType.Word16)));
 
-			var cs = new CallSite(f.ReturnAddressSize.Value + 2 * 4, 0);
+			var cs = new CallSite(f.ReturnAddressSize.Value + 2 * 4);
 			var fn = new ProcedureConstant(PrimitiveType.Ptr32, new IntrinsicProcedure("foo", true, sig));
 			var ab = arch.CreateFrameApplicationBuilder(f, cs);
             Instruction instr = ab.CreateInstruction(fn, sig, null);
@@ -195,7 +195,7 @@ namespace Reko.UnitTests.Core.Code
                 ax,
                 cx,
                 new Identifier("arg0", PrimitiveType.Word16, new StackStorage(0, PrimitiveType.Word16)));
-			var cs = new CallSite(stack, 0);
+			var cs = new CallSite(stack);
 			var fn = new ProcedureConstant(PrimitiveType.Ptr32, new IntrinsicProcedure("bar", true, sig));
 			var ab = new FrameApplicationBuilder(arch, f, cs);
             Instruction instr = ab.CreateInstruction(fn, sig, null);

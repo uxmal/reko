@@ -365,7 +365,7 @@ namespace Reko.UnitTests.Decompiler.Typing
 			ProcedureBuilder m = new ProcedureBuilder();
 			Identifier pfn = m.Local32("pfn");
 			Expression l = m.Mem(PrimitiveType.Word32, pfn);
-			CallInstruction icall = new CallInstruction(l, new CallSite(0, 0));
+			CallInstruction icall = new CallInstruction(l, new CallSite(0));
 
             coll = CreateCollector();
 			icall.Accept(eqb);

@@ -137,7 +137,7 @@ namespace Reko.UnitTests.Core.Serialization.Json
                      "'succ':['l0010']}," +
                     "{'name':'main_exit','exit':true}," +
                     "{'name':'l0010','addr':'00001000','stms':[" +
-                        "[0,'call','sub',0,0,['r1','r2']['f1']],[1,'ret','f1']]," +
+                        "[0,'call','sub',0,['r1','r2']['f1']],[1,'ret','f1']]," +
                      "'succ':['main_exit']}]}";
 
             var sExpSub =

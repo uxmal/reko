@@ -399,7 +399,7 @@ fn00010010 proc
             var stm = b1.Statements.Add(
                 p1.EntryAddress,
                 new CallInstruction(
-                    new ProcedureConstant(PrimitiveType.Ptr32, p2), new CallSite(0, 0)));
+                    new ProcedureConstant(PrimitiveType.Ptr32, p2), new CallSite(0)));
             program.CallGraph.AddEdge(stm, p2);
 
             var dmp = new Dumper(program);

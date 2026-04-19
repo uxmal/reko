@@ -217,7 +217,7 @@ namespace Reko.Environments.C64
 
             public override CallSite OnBeforeCall(Identifier stackReg, int returnAddressSize)
             {
-                return new CallSite(2, 0);
+                return new CallSite(2);
             }
 
             public override void OnAfterCall(FunctionType? sigCallee)

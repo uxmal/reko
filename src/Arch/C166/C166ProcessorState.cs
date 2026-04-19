@@ -60,7 +60,7 @@ namespace Reko.Arch.C166
 
         public override CallSite OnBeforeCall(Identifier stackReg, int returnAddressSize)
         {
-            return new CallSite(2, 0);
+            return new CallSite(2);
         }
 
         public override void OnProcedureEntered(Address addr)
