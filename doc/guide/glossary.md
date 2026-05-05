@@ -22,7 +22,7 @@ program_start:      push            ebp
   discover.
 
 ### Intermediate representation
-  Intermediate representation (IR) is a machine-indenpendent representation of executable code.
+  Intermediate representation (IR) is a machine-independent representation of executable code.
   Reko converts machine code from different architectures into this representation so that it can
   use common algorithms during the decompilation process.
 
