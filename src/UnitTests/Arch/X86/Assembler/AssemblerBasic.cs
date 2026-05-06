@@ -362,6 +362,7 @@ foo		endp
             var decoders = ProcessorMode.Real.CreateRootDecoders(new Dictionary<string, object>());
             var dasm = new X86Disassembler(
                 sc,
+                new RegisterBank(),
                 decoders,
                 ProcessorMode.Real,
                 mem.CreateLeReader(addr),

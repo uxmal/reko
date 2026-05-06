@@ -63,18 +63,18 @@ namespace Reko.UnitTests.Arch.X86
             switch (cConvention)
             {
             case "__cdecl":
-                cc = new X86CallingConvention(4, 4, true, false);
+                cc = new X86CallingConvention(arch, 4, 4, true, false);
                 break;
             case "stdapi":
             case "stdcall":
             case "__stdcall":
-                cc = new X86CallingConvention(4, 4, false, false);
+                cc = new X86CallingConvention(arch,4, 4, false, false);
                 break;
             case "pascal":
-                cc = new X86CallingConvention(4, 4, false, true);
+                cc = new X86CallingConvention(arch,4, 4, false, true);
                 break;
             case "__thiscall":
-                cc = new X86CallingConvention(4, 4, false, false);
+                cc = new X86CallingConvention(arch,4, 4, false, false);
                 break;
             default: throw new NotImplementedException(cConvention + " not supported.");
             }
@@ -89,15 +89,15 @@ namespace Reko.UnitTests.Arch.X86
             switch (cConvention)
             {
             case "__cdecl":
-                cc = new X86CallingConvention(2, 4, true, false);
+                cc = new X86CallingConvention(arch, 2, 4, true, false);
                 break;
             case "stdapi":
             case "stdcall":
             case "__stdcall":
-                cc = new X86CallingConvention(2, 4, false, false);
+                cc = new X86CallingConvention(arch, 2, 4, false, false);
                 break;
             case "pascal":
-                cc = new X86CallingConvention(2, 4, false, true);
+                cc = new X86CallingConvention(arch, 2, 4, false, true);
                 break;
             default: throw new NotImplementedException(cConvention + " not supported.");
             }

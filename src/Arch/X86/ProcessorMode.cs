@@ -67,18 +67,18 @@ namespace Reko.Arch.X86
 
         public bool IsProtected { get; }
 
-        public PrimitiveType FramePointerType { get; private set ; }
+        public PrimitiveType FramePointerType { get; }
 
-        public PrimitiveType PointerType { get; private set; }
+        public PrimitiveType PointerType { get; }
 
-        public PrimitiveType WordWidth { get; private set; }
+        public PrimitiveType WordWidth { get; }
 
-        public virtual RegisterStorage StackRegister
+        public virtual RegisterStorage StackRegister(IntelArchitecture arch)
         {
-            get { return Registers.sp; }
+            return arch.Registers.sp;
         }
 
-        public abstract X86Disassembler CreateDisassembler(IServiceProvider services, Decoder[] rootDecoders, EndianImageReader rdr, Dictionary<string, object> options);
+        public abstract X86Disassembler CreateDisassembler(RegisterBank registers, IServiceProvider services, Decoder[] rootDecoders, EndianImageReader rdr, Dictionary<string, object> options);
 
         public abstract IProcessorEmulator CreateEmulator(IntelArchitecture arch, ByteProgramMemory memory, IPlatformEmulator envEmulator);
 
@@ -90,10 +90,10 @@ namespace Reko.Arch.X86
 
         public abstract Address? CreateSegmentedAddress(ushort seg, uint offset);
 
-        public virtual Expression CreateStackAccess(IStorageBinder binder, int offset, DataType dataType)
+        public virtual Expression CreateStackAccess(IntelArchitecture arch, IStorageBinder binder, int offset, DataType dataType)
         {
-            var sp = binder.EnsureRegister(Registers.sp);
-            var ss = binder.EnsureRegister(Registers.ss);
+            var sp = binder.EnsureRegister(arch.Registers.sp);
+            var ss = binder.EnsureRegister(arch.Registers.ss);
             var spOffset = MemoryAccess.CreateEffectiveAddress(sp, offset);
             var ea = new SegmentedPointer(this.PointerType, ss, spOffset);
             return new MemoryAccess(MemoryStorage.GlobalMemory, ea, dataType);
@@ -130,7 +130,8 @@ namespace Reko.Arch.X86
             {
                 if (state is not null && rdr.TryReadLeUInt16(out ushort uOffset))
                 {
-                    addr = CreateSegmentedAddress(state.GetRegister(Registers.cs).ToUInt16(), uOffset)!.Value;
+                    var arch = (IntelArchitecture) state.Architecture;
+                    addr = CreateSegmentedAddress(state.GetRegister(arch.Registers.cs).ToUInt16(), uOffset)!.Value;
                     return true;
                 }
             }
@@ -202,9 +203,9 @@ namespace Reko.Arch.X86
             return new X86RealModePointerScanner(rdr, knownLinAddresses, flags).Select(li => map.MapLinearAddressToAddress(li));
         }
 
-        public override X86Disassembler CreateDisassembler(IServiceProvider services, Decoder[] rootDecoders, EndianImageReader rdr, Dictionary<string, object> options)
+        public override X86Disassembler CreateDisassembler(RegisterBank registers, IServiceProvider services, Decoder[] rootDecoders, EndianImageReader rdr, Dictionary<string, object> options)
         {
-            var dasm = new X86Disassembler(services, rootDecoders, this, rdr, PrimitiveType.Word16, PrimitiveType.Word16);
+            var dasm = new X86Disassembler(services, registers, rootDecoders, this, rdr, PrimitiveType.Word16, PrimitiveType.Word16);
             if (!options.ContainsKey("Emulate8087") || (string) options["Emulate8087"] == "true")
             {
                 dasm.Emulate8087 = true;
@@ -253,9 +254,9 @@ namespace Reko.Arch.X86
         {
         }
 
-        public override X86Disassembler CreateDisassembler(IServiceProvider services, Decoder[] rootDecoders, EndianImageReader rdr, Dictionary<string,object> options)
+        public override X86Disassembler CreateDisassembler(RegisterBank registers, IServiceProvider services, Decoder[] rootDecoders, EndianImageReader rdr, Dictionary<string,object> options)
         {
-            return new X86Disassembler(services, rootDecoders, this, rdr, PrimitiveType.Word16, PrimitiveType.Word16);
+            return new X86Disassembler(services, registers, rootDecoders, this, rdr, PrimitiveType.Word16, PrimitiveType.Word16);
         }
 
         public override IProcessorEmulator CreateEmulator(IntelArchitecture arch, ByteProgramMemory memory, IPlatformEmulator envEmulator)
@@ -308,9 +309,9 @@ namespace Reko.Arch.X86
         {
         }
 
-        public override RegisterStorage StackRegister
+        public override RegisterStorage StackRegister(IntelArchitecture arch)
         {
-            get { return Registers.esp; }
+            return Registers.esp;
         }
 
         public override List<RtlInstruction>? InlineCall(
@@ -334,7 +335,7 @@ namespace Reko.Arch.X86
             {
                 if (instrs[0].Operands[1] is not MemoryOperand mop)
                     return null;
-                if (mop.Base != StackRegister)
+                if (mop.Base.Domain != Registers.rsp.Domain)
                     return null;
                 if (mop.Offset is not null && mop.Offset.IsValid && !mop.Offset.IsIntegerZero)
                     return null;
@@ -372,9 +373,9 @@ namespace Reko.Arch.X86
             return new X86PointerScanner32(rdr, knownLinaddresses, flags).Select(li => map.MapLinearAddressToAddress(li));
         }
 
-        public override X86Disassembler CreateDisassembler(IServiceProvider services, Decoder[] rootDecoders, EndianImageReader rdr, Dictionary<string, object> options)
+        public override X86Disassembler CreateDisassembler(RegisterBank registers, IServiceProvider services, Decoder[] rootDecoders, EndianImageReader rdr, Dictionary<string, object> options)
         {
-            return new X86Disassembler(services, rootDecoders, this, rdr, PrimitiveType.Word32, PrimitiveType.Word32);
+            return new X86Disassembler(services, registers, rootDecoders, this, rdr, PrimitiveType.Word32, PrimitiveType.Word32);
         }
 
         public override IProcessorEmulator CreateEmulator(IntelArchitecture arch, ByteProgramMemory memory, IPlatformEmulator envEmulator)
@@ -398,7 +399,7 @@ namespace Reko.Arch.X86
             return Address.ProtectedSegPtr(seg, offset);
         }
 
-        public override Expression CreateStackAccess(IStorageBinder binder, int offset, DataType dataType)
+        public override Expression CreateStackAccess(IntelArchitecture arch, IStorageBinder binder, int offset, DataType dataType)
         {
             var esp = binder.EnsureRegister(Registers.esp);
             return MemoryAccess.Create(esp, offset, dataType);
@@ -433,13 +434,13 @@ namespace Reko.Arch.X86
                 .Select(n => new RegisterStorage($"cr{n}", Registers.ControlRegisterMin, 0, PrimitiveType.Word64))
                 .ToArray();
             this.debugRegs = Enumerable.Range(0, 8)
-               .Select(n => new RegisterStorage($"dr{n}", Registers.DebugRegisterMin, 0, PrimitiveType.Word64))
-               .ToArray();
+                .Select(n => new RegisterStorage($"dr{n}", Registers.DebugRegisterMin, 0, PrimitiveType.Word64))
+                .ToArray();
         }
 
-        public override RegisterStorage StackRegister
+        public override RegisterStorage StackRegister(IntelArchitecture arch)
         {
-            get { return Registers.rsp; }
+            return Registers.rsp;
         }
 
         public override Address MakeAddressFromConstant(Constant c)
@@ -452,9 +453,9 @@ namespace Reko.Arch.X86
             return Address.Ptr64(offset);
         }
 
-        public override X86Disassembler CreateDisassembler(IServiceProvider services, Decoder[] rootDecoders, EndianImageReader rdr, Dictionary<string, object> options)
+        public override X86Disassembler CreateDisassembler(RegisterBank registers, IServiceProvider services, Decoder[] rootDecoders, EndianImageReader rdr, Dictionary<string, object> options)
         {
-            return new X86Disassembler(services, rootDecoders, this, rdr, PrimitiveType.Word32, PrimitiveType.Word64);
+            return new X86Disassembler(services, registers, rootDecoders, this, rdr, PrimitiveType.Word32, PrimitiveType.Word64);
         }
 
         public override IProcessorEmulator CreateEmulator(IntelArchitecture arch, ByteProgramMemory memory, IPlatformEmulator envEmulator)
@@ -484,7 +485,7 @@ namespace Reko.Arch.X86
             throw new NotSupportedException("Segmented addresses are not supported in 64-bit protected mode.");
         }
 
-        public override Expression CreateStackAccess(IStorageBinder binder, int offset, DataType dataType)
+        public override Expression CreateStackAccess(IntelArchitecture arch, IStorageBinder binder, int offset, DataType dataType)
         {
             var rsp = binder.EnsureRegister(Registers.rsp);
             return MemoryAccess.Create(rsp, offset, dataType);

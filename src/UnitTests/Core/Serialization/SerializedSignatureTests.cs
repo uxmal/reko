@@ -135,10 +135,10 @@ namespace Reko.UnitTests.Core.Serialization
 
 		public static FunctionType MkSigAxBxCl()
 		{
-			Identifier ret = new Identifier(Registers.ax.Name, Registers.ax.DataType, Registers.ax);
+			Identifier ret = Identifier.Create(Registers.ax);
 			Identifier [] args = [
-			    new Identifier(Registers.bx.Name, Registers.bx.DataType, Registers.bx),
-			    new Identifier(Registers.cl.Name, Registers.cl.DataType, Registers.cl)
+			    Identifier.Create(Registers.bx),
+			    Identifier.Create(Registers.cl),
 			];
             return new FunctionType(args, [ret]);
 		}

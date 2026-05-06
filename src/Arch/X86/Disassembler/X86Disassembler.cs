@@ -29,8 +29,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using System.Runtime.Intrinsics.Arm;
-using System.Security.Cryptography;
 
 namespace Reko.Arch.X86
 {
@@ -217,6 +215,7 @@ namespace Reko.Arch.X86
         private const int MaxInstructionLength = 15;
 
         private readonly IServiceProvider services;
+        private readonly RegisterBank registers;
         private readonly Decoder[] rootDecoders;
         private readonly ProcessorMode mode;
 		private readonly PrimitiveType defaultDataWidth;
@@ -237,6 +236,7 @@ namespace Reko.Arch.X86
         /// 16-bit operation, PrimitiveType.Word32 for 32-bit operation.</param>
 		public X86Disassembler(
             IServiceProvider services,
+            RegisterBank registers,
             Decoder[] rootDecoders,
             ProcessorMode mode,
             EndianImageReader rdr,
@@ -244,6 +244,7 @@ namespace Reko.Arch.X86
             PrimitiveType defaultAddressSize)
 		{
             this.services = services;
+            this.registers = registers;
             this.rootDecoders = rootDecoders;
             Debug.Assert(rootDecoders is not null);
             this.mode = mode;
@@ -343,20 +344,7 @@ namespace Reko.Arch.X86
 
         private RegisterStorage MmxRegFromBits(int bits, PrimitiveType dataWidth)
         {
-            switch (bits & 7)
-            {
-            case 0: return Registers.mm0;
-            case 1: return Registers.mm1;
-            case 2: return Registers.mm2;
-            case 3: return Registers.mm3;
-            case 4: return Registers.mm4;
-            case 5: return Registers.mm5;
-            case 6: return Registers.mm6;
-            case 7: return Registers.mm7;
-            }
-            throw new ArgumentOutOfRangeException(string.Format(
-                "Unsupported register {0} or data width {1}.",
-                bits, dataWidth));
+            return Registers.MmRegisters[bits & 7];
         }
 
         private RegisterStorage RegFromBitsRexX(int bits, PrimitiveType dataWidth, Func<int, PrimitiveType, RegisterStorage> fnReg)
@@ -387,7 +375,7 @@ namespace Reko.Arch.X86
                     : Registers.Gp8BitRegisters;
                 break;
             case 16:
-                bank = Registers.Gp16BitRegisters;
+                bank = registers.Gp16BitRegisters;
                 break;
             case 32:
             case 48:        // 48-bit far pointer
@@ -436,18 +424,18 @@ namespace Reko.Arch.X86
             0    // Invalid size
         };
 
-        public static RegisterStorage SegFromBits(int bits)
+        public RegisterStorage SegFromBits(int bits)
 		{
 			switch (bits&0x7)
 			{
-			case 0: return Registers.es;
-			case 1: return Registers.cs;
-			case 2: return Registers.ss;
-			case 3: return Registers.ds;
+			case 0: return registers.es;
+			case 1: return registers.cs;
+			case 2: return registers.ss;
+			case 3: return registers.ds;
 			case 4: return Registers.fs;
 			case 5: return Registers.gs;
-			case 6: return Registers.ss;
-			case 7: return Registers.ds;
+			case 6: return registers.ss;
+			case 7: return registers.ds;
 			}
 			throw new ArgumentOutOfRangeException(nameof(bits), string.Format("{0} doesn't correspond to a segment register.", bits));
 		}
@@ -899,13 +887,13 @@ namespace Reko.Arch.X86
         /// </summary>
         private static Mutator<X86Disassembler> XY(
             OperandType opType,
-            RegisterStorage index)
+            int index)
         {
             return (u, d) =>
             {
                 var width = d.OperandWidth(opType);
                 d.decodingContext.iWidth = width;
-                var rsi = d.GpRegFromBits(index.Number, d.decodingContext.addressWidth);
+                var rsi = d.GpRegFromBits(index, d.decodingContext.addressWidth);
                 var mem = new MemoryOperand(d.OperandWidth(opType), rsi, null);
                 var segOverride = d.decodingContext.SegmentOverride;
                 if (segOverride is not null)
@@ -916,10 +904,10 @@ namespace Reko.Arch.X86
                 return true;
             };
         }
-        private static readonly Mutator<X86Disassembler> Xb = XY(OperandType.b, Registers.si);
-        private static readonly Mutator<X86Disassembler> Xv = XY(OperandType.v, Registers.si);
-        private static readonly Mutator<X86Disassembler> Yb = XY(OperandType.b, Registers.di);
-        private static readonly Mutator<X86Disassembler> Yv = XY(OperandType.v, Registers.di);
+        private static readonly Mutator<X86Disassembler> Xb = XY(OperandType.b, Registers.esi.Number);
+        private static readonly Mutator<X86Disassembler> Xv = XY(OperandType.v, Registers.esi.Number);
+        private static readonly Mutator<X86Disassembler> Yb = XY(OperandType.b, Registers.edi.Number);
+        private static readonly Mutator<X86Disassembler> Yv = XY(OperandType.v, Registers.edi.Number);
 
         /// <summary>
         /// MMX register operand specified by the reg field of the modRM byte.
@@ -1164,18 +1152,18 @@ namespace Reko.Arch.X86
         /// <summary>
         /// Segment register encoded by reg field of modRM byte.
         /// </summary>
-        public static bool Sw(uint op, X86Disassembler d)
+        public static bool Sw(uint _, X86Disassembler d)
         {
             if (!d.TryEnsureModRM(out byte modRm))
                 return false;
-            d.decodingContext.ops.Add(SegFromBits(modRm >> 3));
+            d.decodingContext.ops.Add(d.registers.SegmentRegisters[(modRm >> 3)&7]);
             return true;
         }
 
         /// <summary>
         /// Implicit use of accumulator.
         /// </summary>
-        private static bool AL(uint uInstr, X86Disassembler dasm)
+        private static bool AL(uint _, X86Disassembler dasm)
         {
             dasm.decodingContext.ops.Add(Registers.al);
             return true;
@@ -1183,7 +1171,7 @@ namespace Reko.Arch.X86
 
         private static bool AX(uint uInstr, X86Disassembler dasm)
         {
-            dasm.decodingContext.ops.Add(Registers.ax);
+            dasm.decodingContext.ops.Add(dasm.registers.ax);
             return true;
         }
 
@@ -1191,7 +1179,7 @@ namespace Reko.Arch.X86
         {
             RegisterStorage reg;
             if (dasm.decodingContext.dataWidth.BitSize == 16)
-                reg = Registers.ax;
+                reg = dasm.registers.Gp16BitRegisters[0];
             else
                 reg = Registers.eax;
             dasm.decodingContext.ops.Add(reg);
@@ -1207,7 +1195,7 @@ namespace Reko.Arch.X86
             RegisterStorage reg;
             var bitsize = dasm.decodingContext.dataWidth.BitSize;
             if (bitsize == 16)
-                reg = Registers.ax;
+                reg = dasm.registers.Gp16BitRegisters[0];
             else if (bitsize == 32)
                 reg = Registers.eax;
             else
@@ -1249,7 +1237,7 @@ namespace Reko.Arch.X86
         /// </summary>
         private static bool DX(uint u, X86Disassembler dasm)
         {
-            dasm.decodingContext.ops.Add(Registers.dx);
+            dasm.decodingContext.ops.Add(dasm.registers.Gp16BitRegisters[2]);
             return true;
         }
 
@@ -1259,7 +1247,7 @@ namespace Reko.Arch.X86
             var bitsize = dasm.decodingContext.dataWidth.BitSize;
             if (bitsize == 16)
             {
-                reg = Registers.dx;
+                reg = dasm.registers.Gp16BitRegisters[2];
             }
             else
             {
@@ -1324,10 +1312,19 @@ namespace Reko.Arch.X86
                 return true;
             };
         }
-        private static readonly Mutator<X86Disassembler> s0 = Reg(Registers.es);
-        private static readonly Mutator<X86Disassembler> s1 = Reg(Registers.cs);
-        private static readonly Mutator<X86Disassembler> s2 = Reg(Registers.ss);
-        private static readonly Mutator<X86Disassembler> s3 = Reg(Registers.ds);
+
+        private static Mutator<X86Disassembler> SegRegByNumber(int number)
+        {
+            return (u, d) =>
+            {
+                d.decodingContext.ops.Add(d.registers.SegmentRegisters[number]);
+                return true;
+            };
+        }
+        private static readonly Mutator<X86Disassembler> s0 = SegRegByNumber(0);
+        private static readonly Mutator<X86Disassembler> s1 = SegRegByNumber(1);
+        private static readonly Mutator<X86Disassembler> s2 = SegRegByNumber(2);
+        private static readonly Mutator<X86Disassembler> s3 = SegRegByNumber(3);
         private static readonly Mutator<X86Disassembler> s4 = Reg(Registers.fs);
         private static readonly Mutator<X86Disassembler> s5 = Reg(Registers.gs);
 
@@ -1566,28 +1563,28 @@ namespace Reko.Arch.X86
             }
         }
 
-		private static readonly RegisterStorage [] s_ma16Base = 
+		private static readonly int [] s_ma16Base = 
 		{
-			Registers.bx,
-			Registers.bx,
-			Registers.bp,
-			Registers.bp,
-			Registers.si,
-			Registers.di,
-			Registers.bp,
-			Registers.bx,
+			3, // Registers.bx,
+			3, // Registers.bx,
+			5, // Registers.bp,
+			5, // Registers.bp,
+			6, // Registers.si,
+			7, // Registers.di,
+			5, // Registers.bp,
+			3, // Registers.bx,
 		};
 
-		private static readonly RegisterStorage [] s_ma16Index =
+		private static readonly int [] s_ma16Index =
 		{
-			Registers.si,
-			Registers.di,
-			Registers.si,
-			Registers.di,
-			RegisterStorage.None,
-			RegisterStorage.None,
-			RegisterStorage.None,
-			RegisterStorage.None,
+			6, // Registers.si,
+			7, // Registers.di,
+			6, // Registers.si,
+			7, // Registers.di,
+			-1, // RegisterStorage.None,
+			-1, // RegisterStorage.None,
+			-1, // RegisterStorage.None,
+			-1, // RegisterStorage.None,
 		};
 
 		public Constant? CreateImmediateOperand(DataType immWidth)
@@ -1614,11 +1611,15 @@ namespace Reko.Arch.X86
 
 			if (decodingContext.addressWidth == PrimitiveType.Word16)
 			{
-				// 16-bit addressing modes are weird.
+                // 16-bit addressing modes are weird.
 
-				b = s_ma16Base[rm];
-				idx = s_ma16Index[rm];
-				scale = 1;
+                int iBase = s_ma16Base[rm];
+                b = registers.Gp16BitRegisters[iBase];
+                int iIndex = s_ma16Index[rm];
+                idx = iIndex >= 0
+                    ? registers.Gp16BitRegisters[iIndex]
+                    : RegisterStorage.None;
+                scale = 1;
 
 				switch (mod)
 				{

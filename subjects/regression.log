@@ -407,7 +407,8 @@ Building procedures [Done]
 Rewriting procedures. [Done]
 finish: error: An error occurred while renaming variables.
     The given key 'l004028A8' was not present in the dictionary.
-       at Reko.Analysis.SsaLivenessAnalysis.LiveOutAtBlock(Block block, SsaIdentifier sid) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 214
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.SsaLivenessAnalysis.LiveOutAtBlock(Block block, SsaIdentifier sid) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 214
    at Reko.Analysis.SsaLivenessAnalysis.BuildInterferenceGraph(SsaIdentifierCollection ssaIds) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 114
    at Reko.Analysis.SsaLivenessAnalysis..ctor(SsaState ssa) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 76
    at Reko.Analysis.LiveCopyInserter..ctor(SsaState ssa) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 50
@@ -2971,4 +2972,4 @@ Collecting data types. [Done]
 Rewriting expressions. [Done]
 Rewriting procedures to high-level language. [Done]
 
-Decompiled 100 binaries in 65.40 seconds.
+Decompiled 100 binaries in 60.37 seconds.

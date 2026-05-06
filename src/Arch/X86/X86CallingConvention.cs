@@ -31,6 +31,7 @@ namespace Reko.Arch.X86
     /// </summary>
     public class X86CallingConvention : AbstractCallingConvention
     {
+        private readonly IntelArchitecture arch;
         private readonly int stackAlignment;
         private readonly int pointerSize;
         private readonly Storage fpuReturnStorage;
@@ -38,12 +39,14 @@ namespace Reko.Arch.X86
         private readonly bool reverseArguments;
 
         public X86CallingConvention(
+            IntelArchitecture arch,
             int stackAlignment, 
             int pointerSize, 
             bool callerCleanup,
             bool reverseArguments)
              : base("__cdecl")
         {
+            this.arch = arch;
             this.stackAlignment = stackAlignment;
             this.pointerSize = pointerSize;
             //$TODO: not strictly correct, should be real80, but 
@@ -62,7 +65,7 @@ namespace Reko.Arch.X86
             List<DataType> dtParams)
         {
             ccr.LowLevelDetails(stackAlignment, retAddressOnStack);
-            SetReturnStorage(ccr, dtRet, stackAlignment);
+            SetReturnStorage(arch, ccr, dtRet, stackAlignment);
 
             if (dtThis is not null)
             {
@@ -93,7 +96,7 @@ namespace Reko.Arch.X86
             }
         }
 
-        public static void SetReturnStorage(ICallingConventionBuilder ccr, DataType? dtRet, int stackAlignment)
+        public static void SetReturnStorage(IntelArchitecture arch, ICallingConventionBuilder ccr, DataType? dtRet, int stackAlignment)
         {
             if (dtRet is null)
                 return;
@@ -122,12 +125,12 @@ namespace Reko.Arch.X86
                     if (stackAlignment == 4)
                         ccr.RegReturn(Registers.eax);
                     else
-                        ccr.SequenceReturn(Registers.dx, Registers.ax);
+                        ccr.SequenceReturn(arch.Registers.dx, arch.Registers.ax);
                     return;
                 }
                 if (retSize > 1)
                 {
-                    ccr.RegReturn(Registers.ax);
+                    ccr.RegReturn(arch.Registers.ax);
                     return;
                 }
                 ccr.RegReturn(Registers.al);

@@ -94,7 +94,7 @@ namespace Reko.Arch.X86.Emulator
             this.ipReg = ipReg;
             this.cxReg = cxReg;
             Registers = new ulong[56];
-            iFlags = X86.Registers.eflags.Number;
+            iFlags = arch.Registers.eflags.Number;
             this.envEmulator = envEmulator;
             dasm = default!;
             ip = default!;
@@ -132,7 +132,7 @@ namespace Reko.Arch.X86.Emulator
             WriteRegister(ipReg, (TWord) value.Offset);
             if (value.Selector.HasValue)
             {
-                WriteRegister(X86.Registers.cs, value.Selector.Value);
+                WriteRegister(arch.Registers.cs, value.Selector.Value);
             }
         }
 
@@ -554,7 +554,7 @@ namespace Reko.Arch.X86.Emulator
 
         protected void Jcxz(MachineOperand op)
         {
-            TWord cx = (TWord) ReadRegister(X86.Registers.cx);
+            TWord cx = (TWord) ReadRegister(arch.Registers.cx);
             if (cx == 0)
             {
                 InstructionPointer = XferTarget(op);

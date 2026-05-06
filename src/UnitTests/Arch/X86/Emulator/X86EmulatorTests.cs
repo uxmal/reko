@@ -97,11 +97,11 @@ namespace Reko.UnitTests.Arch.X86.Emulator
 
             emu = (X86Emulator) arch.CreateEmulator(program.Memory, msdos);
             emu.InstructionPointer = Address.SegPtr(0x800, 0);
-            emu.WriteRegister(Registers.cs, 0x0800);
-            emu.WriteRegister(Registers.ds, 0x0800);
-            emu.WriteRegister(Registers.es, 0x0800);
-            emu.WriteRegister(Registers.ss, 0x0800);
-            emu.WriteRegister(Registers.sp, 0x0FFE);
+            emu.WriteRegister(arch.Registers.cs, 0x0800);
+            emu.WriteRegister(arch.Registers.ds, 0x0800);
+            emu.WriteRegister(arch.Registers.es, 0x0800);
+            emu.WriteRegister(arch.Registers.ss, 0x0800);
+            emu.WriteRegister(arch.Registers.sp, 0x0FFE);
             emu.ExceptionRaised += delegate { throw new Exception(); };
         }
 

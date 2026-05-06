@@ -180,7 +180,7 @@ namespace Reko.Arch.X86.Rewriter
         private void RewriteInto()
         {
             m.BranchInMiddleOfInstruction(
-                m.Test(ConditionCode.NO, binder.EnsureFlagGroup(Registers.O)),
+                m.Test(ConditionCode.NO, binder.EnsureFlagGroup(arch.Registers.O)),
                 instrCur.Address + instrCur.Length,
                 InstrClass.ConditionalTransfer);
             m.SideEffect(m.Fn(CommonOps.Syscall_1, m.Byte(4)));
@@ -271,16 +271,16 @@ namespace Reko.Arch.X86.Rewriter
                 return;
             }
             m.Return(
-                this.arch.WordWidth.Size + (instrCur.Mnemonic == Mnemonic.retf ? Registers.cs.DataType.Size : 0),
+                this.arch.WordWidth.Size + (instrCur.Mnemonic == Mnemonic.retf ? arch.Registers.cs.DataType.Size : 0),
                 extraBytesPopped);
         }
 
         public void RewriteIret()
         {
             RewritePop(
-                binder.EnsureFlagGroup(Registers.SCZO), instrCur.DataWidth);
+                binder.EnsureFlagGroup(arch.Registers.SCZO), instrCur.DataWidth);
             m.Return(
-                Registers.cs.DataType.Size +
+                arch.Registers.cs.DataType.Size +
                 arch.WordWidth.Size, 
                 0);
         }
@@ -321,7 +321,7 @@ namespace Reko.Arch.X86.Rewriter
 
         private void RewriteVerrw(IntrinsicProcedure intrinsic)
         {
-            var z = binder.EnsureFlagGroup(Registers.Z);
+            var z = binder.EnsureFlagGroup(arch.Registers.Z);
             m.Assign(z, m.Fn(intrinsic, SrcOp(0)));
         }
 

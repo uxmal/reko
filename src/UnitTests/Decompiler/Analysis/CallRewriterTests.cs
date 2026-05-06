@@ -377,8 +377,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
         [Category(Categories.UnitTests)]
         public void CrwRegisterOutArgument()
         {
-            Given_ExitBlockStatement(new Identifier("eax", PrimitiveType.Word32, Registers.eax));
-            Given_ExitBlockStatement(new Identifier("ebx", PrimitiveType.Word32, Registers.ebx));
+            Given_ExitBlockStatement(Identifier.Create(Registers.eax));
+            Given_ExitBlockStatement(Identifier.Create(Registers.ebx));
             flow.BitsLiveOut.Add(Registers.eax, new(new BitRange(0, 32), proc));        // becomes the return value.
             flow.BitsLiveOut.Add(Registers.ebx, new(new BitRange(0, 32), proc));
             crw.EnsureSignature(ssa, flow);

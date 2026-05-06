@@ -134,6 +134,7 @@ namespace Reko.Environments.Msdos
         public override ICallingConvention GetCallingConvention(string? ccName)
         {
             return new X86CallingConvention(
+                (IntelArchitecture)Architecture,
                 4,
                 4,
                 true,

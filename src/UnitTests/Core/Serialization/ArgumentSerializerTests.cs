@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Core.Serialization
         [Test]
         public void ArgSer_SerializeRegister()
         {
-            var arg = new Identifier(Registers.ax.Name, Registers.ax.DataType, Registers.ax);
+            var arg = Identifier.Create(Registers.ax);
             Argument_v1 sarg = ArgumentSerializer.Serialize(arg, false);
             Assert.AreEqual("ax", sarg.Name);
             Register_v1 sreg = (Register_v1)sarg.Kind;

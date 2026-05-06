@@ -106,15 +106,16 @@ namespace Reko.Arch.X86.Rewriter
                     return new ProcedureConstant(arch.PointerType, exp);
                 }
             }
+            var defaultSegment = mem.DefaultSegment(arch);
             if (IsSegmentedAccessRequired ||
-                (mem.DefaultSegment != Registers.cs &&
-                 mem.DefaultSegment != Registers.ds && 
-                 mem.DefaultSegment != Registers.ss))
+                (defaultSegment != arch.Registers.cs &&
+                 defaultSegment != arch.Registers.ds && 
+                 defaultSegment != arch.Registers.ss))
             {
                 Expression seg;
-                if (mem.DefaultSegment == Registers.cs)
+                if (defaultSegment == arch.Registers.cs)
                 {
-                    var cs = state.GetRegister(Registers.cs);
+                    var cs = state.GetRegister(arch.Registers.cs);
                     if (cs is not InvalidConstant)
                     {
                         seg = cs;
@@ -126,7 +127,7 @@ namespace Reko.Arch.X86.Rewriter
                 }
                 else
                 {
-                    seg = AluRegister(mem.DefaultSegment);
+                    seg = AluRegister(defaultSegment);
                 }
                 return m.SegMem(dt, seg, expr);
             }
@@ -264,7 +265,7 @@ namespace Reko.Arch.X86.Rewriter
     {
         public OperandRewriter16(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder binder, IRewriterHost host, X86State state) : base(arch, m, binder, host, state) { }
 
-        public override bool IsSegmentedAccessRequired { get { return true; } }
+        public override bool IsSegmentedAccessRequired => true;
 
         public override Address ImmediateAsAddress(Address address, Constant imm)
         {
@@ -278,7 +279,7 @@ namespace Reko.Arch.X86.Rewriter
                 dt,
                 m.SegPtr(
                     arch.ProcessorMode.PointerType,
-                    AluRegister(Registers.ss), expr));
+                    AluRegister(arch.Registers.ss), expr));
         }
     }
 

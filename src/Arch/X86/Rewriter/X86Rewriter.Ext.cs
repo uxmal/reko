@@ -82,7 +82,7 @@ namespace Reko.Arch.X86.Rewriter
                     lar_intrinsic.MakeInstance(arch.PointerType.BitSize, instrCur.Operands[0].DataType),
                     m.AddrOf(arch.PointerType, SrcOp(1))));
             m.Assign(
-                binder.EnsureFlagGroup(Registers.Z),
+                binder.EnsureFlagGroup(arch.Registers.Z),
                 m.True());
         }
 
@@ -162,12 +162,12 @@ namespace Reko.Arch.X86.Rewriter
         private void RewriteRdrand()
         {
             var arg = SrcOp(0);
-            var ret = binder.EnsureFlagGroup(Registers.C);
+            var ret = binder.EnsureFlagGroup(arch.Registers.C);
             m.Assign(ret, m.Fn(rdrand_intrinsic, m.Out(arg.DataType, arg)));
-            m.Assign(binder.EnsureFlagGroup(Registers.S), 0);
-            m.Assign(binder.EnsureFlagGroup(Registers.Z), 0);
-            m.Assign(binder.EnsureFlagGroup(Registers.O), 0);
-            m.Assign(binder.EnsureFlagGroup(Registers.P), 0);
+            m.Assign(binder.EnsureFlagGroup(arch.Registers.S), 0);
+            m.Assign(binder.EnsureFlagGroup(arch.Registers.Z), 0);
+            m.Assign(binder.EnsureFlagGroup(arch.Registers.O), 0);
+            m.Assign(binder.EnsureFlagGroup(arch.Registers.P), 0);
         }
 
         private void RewriteSmsw()

@@ -435,7 +435,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
                         "GlobalHandle",
                         new FunctionType(
                             [ new Identifier("pv",  tLpvoid, new StackStorage(4, PrimitiveType.Word32)) ],
-                            [ new Identifier("eax", tHglobal, Reko.Arch.X86.Registers.eax)])
+                            [ new Identifier("eax", tHglobal, Registers.eax)])
                         {
                             StackDelta = 4,
                         }));
@@ -461,7 +461,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
                      new[] {
                         new Identifier("hMem", tHglobal, new StackStorage(4, PrimitiveType.Word32))
                      },
-                     [ new Identifier("eax",  tBool, Reko.Arch.X86.Registers.eax),])
+                     [ new Identifier("eax",  tBool, Registers.eax),])
                      {
                          StackDelta = 4,
                      }));

@@ -52,7 +52,12 @@ namespace Reko.Environments.Windows
             Registers.xmm3,
         };
 
-        public X86_64CallingConvention() : base("") { }
+        private readonly IntelArchitecture arch;
+
+        public X86_64CallingConvention(IntelArchitecture arch) : base("")
+        {
+            this.arch = arch;
+        }
 
         public override void Generate(
             ICallingConventionBuilder ccr,
@@ -77,7 +82,7 @@ namespace Reko.Environments.Windows
                 }
                 else if (dtRet.Size <= 2)
                 {
-                    ccr.RegReturn(Registers.ax);
+                    ccr.RegReturn(arch.Registers.ax);
                 }
                 else if (dtRet.Size <= 4)
                 {
@@ -126,7 +131,7 @@ namespace Reko.Environments.Windows
             {
                 return
                     reg.Domain == Registers.eax.Domain ||
-                    reg.Domain == Registers.eax.Domain;
+                    reg.Domain == Registers.edx.Domain;
             }
             return false;
         }

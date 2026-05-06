@@ -101,18 +101,19 @@ SP	top of stack
             if (ccName is null)
                 ccName = "";
 
+            var arch = (IntelArchitecture) Architecture;
             switch (ccName)
             {
             case "":
             case "__cdecl":
             case "cdecl":
-                return new X86CallingConvention(2, 4, true, false);
+                return new X86CallingConvention(arch, 2, 4, true, false);
             case "__pascal":
             case "pascal":
-                return new X86CallingConvention(2, 4, false, true);
+                return new X86CallingConvention(arch, 2, 4, false, true);
             case "__stdcall":
             case "stdcall":
-                return new X86CallingConvention(4, 4, false, false);
+                return new X86CallingConvention(arch, 4, 4, false, false);
             }
             throw new NotSupportedException(string.Format("Calling convention '{0}' is not supported.", ccName));
         }

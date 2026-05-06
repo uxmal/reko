@@ -71,6 +71,7 @@ namespace Reko.Arch.X86
         public IntelArchitecture(IServiceProvider services, string archId, ProcessorMode mode, Dictionary<string, object> options)
             : base(services, archId, options, null, null)
         {
+            this.Registers = new RegisterBank();
             this.mode = mode;
             this.Endianness = EndianServices.Little;
             this.InstructionBitSize = 8;
@@ -78,11 +79,13 @@ namespace Reko.Arch.X86
             this.PointerType = mode.PointerType;
             this.WordWidth = mode.WordWidth;
             this.FramePointerType = mode.FramePointerType;
-            this.StackRegister = mode.StackRegister;
-            this.FpuStackRegister = Registers.Top;
+            this.StackRegister = mode.StackRegister(this);
+            this.FpuStackRegister = X86.Registers.Top;
             this.Options = options;
             this.LoadUserOptions(options);
         }
+
+        public RegisterBank Registers { get; }
 
         public override IAssembler CreateAssembler(string? asmDialect)
         {
@@ -91,7 +94,7 @@ namespace Reko.Arch.X86
 
         public X86Disassembler CreateDisassemblerImpl(EndianImageReader imageReader)
         {
-            return mode.CreateDisassembler(this.Services, EnsureRootDecoders(), imageReader, Options);
+            return mode.CreateDisassembler(this.Registers, this.Services, EnsureRootDecoders(), imageReader, Options);
         }
 
         public override IProcessorEmulator CreateEmulator(IMemory memory, IPlatformEmulator envEmulator)
@@ -154,13 +157,13 @@ namespace Reko.Arch.X86
 
         public override Expression CreateStackAccess(IStorageBinder binder, int offset, DataType dataType)
         {
-            return mode.CreateStackAccess(binder, offset, dataType);
+            return mode.CreateStackAccess(this, binder, offset, dataType);
         }
 
         //$REFACTOR: this probably should live in X86FrameApplicationBuilder
         public override Expression CreateFpuStackAccess(IStorageBinder binder, int offset, DataType dataType)
         {
-            Expression e = binder.EnsureRegister(Registers.Top);
+            Expression e = binder.EnsureRegister(X86.Registers.Top);
             if (offset != 0)
             {
                 BinaryOperator op;
@@ -175,7 +178,7 @@ namespace Reko.Arch.X86
                 }
                 e = new BinaryExpression(op, e.DataType, e, Constant.Create(e.DataType, offset));
             }
-            return new MemoryAccess(Registers.ST, e, dataType);
+            return new MemoryAccess(X86.Registers.ST, e, dataType);
         }
 
         private Decoder[] EnsureRootDecoders()
@@ -236,7 +239,7 @@ namespace Reko.Arch.X86
 
         public override RegisterStorage? GetRegister(string name)
 		{
-			var r = Registers.GetRegister(name);
+			var r = this.Registers.GetRegister(name);
             if (r == RegisterStorage.None)
                 return null;
 			return r;
@@ -258,12 +261,12 @@ namespace Reko.Arch.X86
             if ((grf & Registers.P.FlagGroupBits) != 0) yield return Registers.P;
         }
 
-        internal static RegisterStorage? GetSubregister(StorageDomain domain, BitRange range)
+        internal RegisterStorage? GetSubregister(StorageDomain domain, BitRange range)
         {
             if (range.IsEmpty)
                 return null;
             RegisterStorage? reg = null;
-            if (Registers.SubRegisters.TryGetValue(domain, out RegisterStorage[]? subregs))
+            if (this.Registers.SubRegisters.TryGetValue(domain, out RegisterStorage[]? subregs))
             {
                 for (int i = 0; i < subregs.Length; ++i)
                 {
@@ -281,6 +284,7 @@ namespace Reko.Arch.X86
             return Registers.All.Where(a => a is not null).ToArray();
         }
 
+        /// <inheritdoc/>
         public override FlagGroupStorage[] GetFlags()
         {
             return Registers.EflagsBits;
@@ -288,7 +292,7 @@ namespace Reko.Arch.X86
 
         public override List<RtlInstruction>? InlineCall(Address addrCallee, Address addrContinuation, EndianImageReader rdr, IStorageBinder binder)
         {
-            var dasm = mode.CreateDisassembler(Services, EnsureRootDecoders(), rdr, this.Options);
+            var dasm = mode.CreateDisassembler(this.Registers, Services, EnsureRootDecoders(), rdr, this.Options);
             return this.mode.InlineCall(this.Services, dasm, addrCallee, addrContinuation, binder);
         }
 

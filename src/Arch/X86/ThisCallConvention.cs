@@ -30,12 +30,14 @@ namespace Reko.Arch.X86
     /// </summary>
     public class ThisCallConvention : AbstractCallingConvention
     {
+        private readonly IntelArchitecture arch;
         private readonly RegisterStorage ecxThis;
         private readonly int stackAlignment;
 
-        public ThisCallConvention(RegisterStorage ecxThis, int stackAlignment)
+        public ThisCallConvention(IntelArchitecture arch, RegisterStorage ecxThis, int stackAlignment)
             : base("__thiscall")
         {
+            this.arch = arch;
             this.ecxThis = ecxThis;
             this.stackAlignment = stackAlignment;
         }
@@ -53,7 +55,7 @@ namespace Reko.Arch.X86
             List<DataType> dtParams)
         {
             ccr.LowLevelDetails(stackAlignment, retAddressOnStack);
-            X86CallingConvention.SetReturnStorage(ccr, dtRet, stackAlignment);
+            X86CallingConvention.SetReturnStorage(arch, ccr, dtRet, stackAlignment);
 
             int i = 0;
             if (dtThis is not null)

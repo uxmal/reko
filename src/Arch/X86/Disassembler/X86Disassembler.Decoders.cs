@@ -217,12 +217,12 @@ namespace Reko.Arch.X86
                 this.seg = seg;
             }
 
-            public override X86Instruction Decode(uint op, X86Disassembler disasm)
+            public override X86Instruction Decode(uint op, X86Disassembler dasm)
             {
-                disasm.decodingContext.SegmentOverride = SegFromBits(seg);
-                if (!disasm.TryReadByte(out var op2))
-                    return disasm.CreateInvalidInstruction();
-                return disasm.rootDecoders[op2].Decode(op2, disasm);
+                dasm.decodingContext.SegmentOverride = dasm.registers.SegmentRegisters[seg&7];
+                if (!dasm.TryReadByte(out var op2))
+                    return dasm.CreateInvalidInstruction();
+                return dasm.rootDecoders[op2].Decode(op2, dasm);
             }
         }
 

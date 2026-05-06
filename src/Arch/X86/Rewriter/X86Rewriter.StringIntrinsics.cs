@@ -72,7 +72,7 @@ namespace Reko.Arch.X86.Rewriter
                 return false;
             var size = binder.CreateTemporary("size", PrimitiveType.Create(Domain.UnsignedInt, RegCx.DataType.BitSize));
             var di = RegDi;
-            m.Assign(size, m.IAddS(m.Fn(Strlen(), MemIndexPtr(1, Registers.es, di)), 1));
+            m.Assign(size, m.IAddS(m.Fn(Strlen(), MemIndexPtr(1, arch.Registers.es, di)), 1));
             var cx = RegCx;
             m.Assign(cx, m.ISub(cx, MaybeSlice(cx.DataType, size)));
             m.Assign(di, m.IAdd(di, MaybeSlice(cx.DataType, size)));
@@ -91,7 +91,10 @@ namespace Reko.Arch.X86.Rewriter
             m.Assign(size, sizeExpr);
             var si = RegSi;
             var di = RegDi;
-            m.SideEffect(m.Fn(Memcpy(), MemIndexPtr(0, Registers.es, di), MemIndexPtr(1, Registers.ds, si), size));
+            m.SideEffect(m.Fn(
+                Memcpy(),
+                MemIndexPtr(0, arch.Registers.es, di),
+                MemIndexPtr(1, arch.Registers.ds, si), size));
             m.Assign(regCx, m.Const(regCx.DataType, 0));
             m.Assign(si, m.IAdd(si, MaybeSlice(regCx.DataType, size)));
             m.Assign(di, m.IAdd(di, MaybeSlice(regCx.DataType, size)));
@@ -119,8 +122,14 @@ namespace Reko.Arch.X86.Rewriter
             var si = RegSi;
             var di = RegDi;
             var cx = RegCx;
-            m.Assign(result, m.Fn(Memcmp(), MemIndexPtr(0, Registers.ds, si), MemIndexPtr(1, Registers.es, di), size));
-            m.Assign(firstDifference, m.Fn(FindFirstDifference(), MemIndexPtr(0, Registers.ds, si), MemIndexPtr(1, Registers.es, di)));
+            m.Assign(result, m.Fn(
+                Memcmp(),
+                MemIndexPtr(0, arch.Registers.ds, si),
+                MemIndexPtr(1, arch.Registers.es, di), size));
+            m.Assign(firstDifference, m.Fn(
+                FindFirstDifference(),
+                MemIndexPtr(0, arch.Registers.ds, si),
+                MemIndexPtr(1, arch.Registers.es, di)));
             m.Assign(cx, m.ISub(cx, firstDifference));
             m.Assign(si, m.IAdd(si, firstDifference));
             m.Assign(di, m.IAdd(di, firstDifference));

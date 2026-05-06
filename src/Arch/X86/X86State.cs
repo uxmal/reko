@@ -48,9 +48,9 @@ namespace Reko.Arch.X86
 		public X86State(IntelArchitecture arch)
 		{
             this.arch = arch;
-			this.regs = new ulong[(int)Registers.Max];
+			this.regs = new ulong[(int)arch.Registers.Max];
             this.xmmregs = new BigInteger[16];
-            this.valid = new ulong[(int)Registers.Max];
+            this.valid = new ulong[(int)arch.Registers.Max];
 		}
 
 		public X86State(X86State st) : base(st)
@@ -147,7 +147,7 @@ namespace Reko.Arch.X86
             {
                 base.InstructionPointer = value;
                 if (value.Selector.HasValue)
-                    SetRegister(Registers.cs, Constant.Word16(value.Selector.Value));
+                    SetRegister(arch.Registers.cs, Constant.Word16(value.Selector.Value));
             }
         }
 
@@ -159,11 +159,11 @@ namespace Reko.Arch.X86
             // compilers and code libraries. If you know the DF flag is set on
             // procedure entry, you can manually set that flag using a user-
             // defined register value.
-            SetFlagGroup(arch.GetFlagGroup(Registers.eflags, (ulong) FlagM.DF), Constant.False());
+            SetFlagGroup(arch.GetFlagGroup(arch.Registers.eflags, (ulong) FlagM.DF), Constant.False());
             if (addr.Selector.HasValue)
             {
                 var cs = Constant.Create(PrimitiveType.SegmentSelector, addr.Selector.Value);
-                SetRegister(Registers.cs, cs);
+                SetRegister(arch.Registers.cs, cs);
             }
         }
 

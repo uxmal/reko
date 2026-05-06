@@ -305,7 +305,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var SCZO = m.Frame.EnsureFlagGroup(Registers.SCZO);
 
             //m.Proc("foo");
-            //m.Mov(m.eax, m.MemDw(Registers.esp, 4));
+            //m.Mov(m.eax, m.MemDw(Registersx.esp, 4));
             //m.Cmp(m.eax, 3);
             //m.Ja("default");
 
@@ -316,8 +316,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
 
 
             //m.Xor(m.edx, m.edx);
-            //m.Mov(m.dl, m.MemB(Registers.eax, "bytes"));
-            //m.Jmp(m.MemDw(Registers.edx, 4, "jumps"));
+            //m.Mov(m.dl, m.MemB(Registersx.eax, "bytes"));
+            //m.Jmp(m.MemDw(Registersx.edx, 4, "jumps"));
 
             var block1 = m.CurrentBlock;
 

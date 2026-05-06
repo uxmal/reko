@@ -124,7 +124,7 @@ namespace Reko.Environments.Windows
 
         public override ICallingConvention GetCallingConvention(string? ccName)
         {
-            return new X86_64CallingConvention();
+            return new X86_64CallingConvention((IntelArchitecture)this.Architecture);
         }
 
         public override ImageSymbol? FindMainProcedure(Program program, Address addrStart)

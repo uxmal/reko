@@ -51,11 +51,12 @@ namespace Reko.Environments.Msdos
         public MsdosPlatform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "ms-dos")
 		{
             this.realModeServices = null!;
+            var archx = (IntelArchitecture) Architecture;
             implicitRegs = new HashSet<RegisterStorage>
             {
-                Registers.cs,
-                Registers.ss,
-                Registers.sp,
+                archx.Registers.cs,
+                archx.Registers.ss,
+                archx.Registers.sp,
                 Registers.esp,
                 Registers.Top,
             };
@@ -85,13 +86,14 @@ namespace Reko.Environments.Msdos
         {
             // On MS-DOS, C and Pascal compilers
             // typically saved bp, si, and di.
+            var arch = (IntelArchitecture) Architecture;
             return new HashSet<RegisterStorage>
             {
-                Registers.ax,
-                Registers.cx,
-                Registers.dx,
-                Registers.bx,
-                Registers.sp,
+                arch.Registers.ax,
+                arch.Registers.cx,
+                arch.Registers.dx,
+                arch.Registers.bx,
+                arch.Registers.sp,
                 Registers.Top,
             };
         }
@@ -99,24 +101,27 @@ namespace Reko.Environments.Msdos
         public override ICallingConvention GetCallingConvention(string? ccName)
         {
             ccName = ccName?.TrimStart('_') ?? string.Empty; // Default to cdecl (same as empty string)
-
+            var arch = (IntelArchitecture) Architecture;
             switch (ccName)
             {
             case "":
             case "cdecl":
                 return new X86CallingConvention(
+                    arch,
                     2,
                     4,      //$REVIEW: this is a far ptr.
                     true,
                     false);
             case "stdcall":
                 return new X86CallingConvention(
+                    arch,
                     2,
                     4,      //$REVIEW: this is a far ptr.
                     false,
                     false);
             case "pascal":
                 return new X86CallingConvention(
+                    arch,
                     2,
                     4,      //$REVIEW: this is a far ptr.
                     false,
@@ -127,16 +132,18 @@ namespace Reko.Environments.Msdos
 
         public override ICallingConvention? DetermineCallingConvention(FunctionType signature, IProcessorArchitecture? arch)
         {
+            //$TODO: expose an Architecture.Registers property for all 
+            var x86arch = (IntelArchitecture) Architecture;
             if (!signature.HasVoidReturn)
             {
                 if (signature.Outputs[0].Storage is RegisterStorage reg)
                 {
-                    if (reg != Registers.al && reg != Registers.ax)
+                    if (reg != Registers.al && reg != x86arch.Registers.ax)
                         return null;
                 }
                 if (signature.Outputs[0].Storage is SequenceStorage seq && seq.Elements.Length == 2)
                 {
-                    if (seq.Elements[0] != Registers.dx || seq.Elements[1] != Registers.ax)
+                    if (seq.Elements[0] != x86arch.Registers.dx || seq.Elements[1] != x86arch.Registers.ax)
                         return null;
                 }
             }

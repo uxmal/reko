@@ -201,7 +201,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 Platform = platform
             };
             platform.Test_GetCallingConvention = (ccName) => {
-                return new X86CallingConvention(4, 4, true, false);
+                return new X86CallingConvention(arch, 4, 4, true, false);
             };
         }
 

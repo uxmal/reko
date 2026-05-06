@@ -153,11 +153,13 @@ namespace Reko.Environments.Windows
         {
             ccName = ccName?.TrimStart('_') ?? string.Empty; // Default to cdecl (same as empty string)
 
+            var arch = (IntelArchitecture) Architecture;
             switch (ccName)
             {
             case "":
             case "cdecl":
                 return new X86CallingConvention(
+                    arch,
                     Architecture.WordWidth.Size,
                     Architecture.PointerType.Size,
                     true,
@@ -165,18 +167,21 @@ namespace Reko.Environments.Windows
             case "stdcall":
             case "stdapi":
                 return new X86CallingConvention(
+                    arch,
                     Architecture.WordWidth.Size,
                     Architecture.PointerType.Size,
                     false,
                     false);
             case "pascal":
                 return new X86CallingConvention(
+                    arch,
                     Architecture.WordWidth.Size,
                     Architecture.PointerType.Size,
                     false,
                     true);
             case "thiscall":
                 return new ThisCallConvention(
+                    arch,
                     Registers.ecx,
                     Architecture.WordWidth.Size);
             case "fastcall":

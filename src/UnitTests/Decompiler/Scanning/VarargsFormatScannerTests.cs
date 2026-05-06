@@ -309,7 +309,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
         public void Vafs_ReplaceArgs()
         {
             var platform = new Mock<IPlatform>();
-            var cc = new X86CallingConvention(4, 4, false, false);
+            var cc = new X86CallingConvention((IntelArchitecture) win32.Architecture, 4, 4, false, false);
             platform.Setup(p => p.GetCallingConvention("")).Returns(cc);
 
             var newSig = VarargsFormatScanner.ReplaceVarargs(

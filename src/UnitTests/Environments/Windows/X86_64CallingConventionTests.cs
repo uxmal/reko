@@ -24,6 +24,7 @@ using Reko.Core.Types;
 using Reko.Environments.Windows;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -45,7 +46,8 @@ namespace Reko.UnitTests.Environments.Windows
         [SetUp]
         public void Setup()
         {
-            this.cc = new X86_64CallingConvention();
+            var arch = new Reko.Arch.X86.X86ArchitectureFlat64(new ServiceContainer(), "x86-protected-64", []);
+            this.cc = new X86_64CallingConvention(arch);
             this.ccr = new CallingConventionBuilder();
         }
 

@@ -347,6 +347,7 @@ namespace Reko.Arch.X86
         internal static readonly RegisterStorage[] Gp16BitRegisters;
         internal static readonly RegisterStorage[] Gp8BitRegisters;
         internal static readonly RegisterStorage[] Gp8BitRegisters_Rex;
+        internal static readonly RegisterStorage[] MmRegisters;
         internal static readonly RegisterStorage[] XmmRegisters;
         internal static readonly RegisterStorage[] YmmRegisters;
         internal static readonly RegisterStorage[] ZmmRegisters;
@@ -1055,6 +1056,11 @@ namespace Reko.Arch.X86
                 r8b,  r9b,  r10b, r11b, r12b, r13b, r14b, r15b,
                 r16b, r17b, r18b, r19b, r20b, r21b, r22b, r23b,
                 r24b, r25b, r26b, r27b, r28b, r29b, r30b, r31b
+            };
+
+            MmRegisters = new[]
+            {
+                mm0, mm1, mm2, mm3, mm4, mm5, mm6, mm7
             };
 
             XmmRegisters = new[]

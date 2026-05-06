@@ -182,19 +182,16 @@ namespace Reko.Arch.X86
 			renderer.WriteString("]");
 		}
 
-		/// <summary>
+        /// <summary>
         /// Returns the segment to use when referring to data unless an overriding segment was specfied.
-		/// </summary>
-		public RegisterStorage DefaultSegment
-		{					 
-			get 
-			{
-				if (SegOverride != RegisterStorage.None)
-					return SegOverride!;
-				if (Base == Registers.bp || Base == Registers.ebp || Base == Registers.sp || Base == Registers.esp)
-					return Registers.ss;
-				return Registers.ds;
-			}
-		}
+        /// </summary>
+        public RegisterStorage DefaultSegment(IntelArchitecture arch)
+        {
+            if (SegOverride != RegisterStorage.None)
+                return SegOverride!;
+            if (Base.Domain == Registers.rbp.Domain || Base.Domain == Registers.rsp.Domain)
+                return arch.Registers.ss;
+            return arch.Registers.ds;
+        }
 	}
 }
