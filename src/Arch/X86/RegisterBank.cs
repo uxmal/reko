@@ -25,6 +25,123 @@ namespace Reko.Arch.X86;
 
 public class RegisterBank
 {
+    public static RegisterBank IntelInstance = new RegisterBank
+    {
+     ax = Registers.ax,
+     cx = Registers.cx,
+     dx = Registers.dx,
+     bx = Registers.bx,
+     sp = Registers.sp,
+     bp = Registers.bp,
+     si = Registers.si,
+     di = Registers.di,
+     ip = Registers.ip,
+        
+     cs = Registers.cs,
+     ds = Registers.ds,
+     es = Registers.es,
+     ss = Registers.ss,
+
+
+    Gp16BitRegisters = Registers.Gp16BitRegisters,
+    SegmentRegisters =
+    [
+        Registers.es,
+        Registers.cs,
+        Registers.ss,
+        Registers.ds,
+        Registers.fs,
+        Registers.gs,
+        Registers.ss,
+        Registers.ds,
+    ],
+
+
+    SubRegisters = Registers.SubRegisters,
+    All = Registers.All,
+    /*
+    public FlagGroupStorage[] EflagsBits { get; internal set; } = Registers.EflagsBits;
+    public RegisterStorage eflags { get; internal set; } = Registers.eflags;
+    public IEnumerable<FlagGroupStorage> FpuFlagsBits { get; internal set; } = Registers.FpuFlagsBits;
+    public FlagGroupStorage C { get; internal set; } = Registers.C;
+    public FlagGroupStorage CZ { get; internal set; } = Registers.CZ;
+    public FlagGroupStorage CZP { get; internal set; } = Registers.CZP;
+    public FlagGroupStorage SCZ { get; internal set; } = Registers.SCZ;
+    public RegisterStorage FPUF { get; internal set; } = Registers.FPUF;
+    public FlagGroupStorage S { get; internal set; } = Registers.S;
+    public FlagGroupStorage Z { get; internal set; } = Registers.Z;
+    public FlagGroupStorage D { get; internal set; } = Registers.D;
+    public FlagGroupStorage O { get; internal set; } = Registers.O;
+    public FlagGroupStorage P { get; internal set; } = Registers.P;
+    public FlagGroupStorage CO { get; internal set; } = Registers.CO;
+    public FlagGroupStorage SCZO { get; internal set; } = Registers.SCZO;
+    public FlagGroupStorage SCZOP { get; internal set; } = Registers.SCZOP;
+    public FlagGroupStorage SZ { get; internal set; } = Registers.SZ;
+    public FlagGroupStorage SZO { get; internal set; } = Registers.SZO;
+    public FlagGroupStorage SZP { get; internal set; } = Registers.SZP;
+    public FlagGroupStorage SO { get; internal set; } = Registers.SO;
+    */
+        Max = Registers.Max,
+        C2 = Registers.C2
+    };
+
+    public static RegisterBank V20Instance = new RegisterBank
+    {
+        ax = V20Registers.aw,
+        cx = V20Registers.cw,
+        dx = V20Registers.dw,
+        bx = V20Registers.bw,
+        sp = Registers.sp,
+        bp = Registers.bp,
+        si = V20Registers.ix,
+        di = V20Registers.iy,
+        ip = Registers.ip,
+
+        cs = V20Registers.ps,
+        ds = V20Registers.ds0,
+        es = V20Registers.ds1,
+        ss = Registers.ss,
+
+
+        Gp16BitRegisters = V20Registers.Gp16BitRegisters,
+        SegmentRegisters =
+        [
+            V20Registers.ds1,
+            V20Registers.ps,
+            Registers.ss,
+            V20Registers.ds0,
+            Registers.fs,
+            Registers.gs,
+            Registers.ss,
+            V20Registers.ds0,
+        ],
+
+        SubRegisters = V20Registers.SubRegisters,
+        All = Registers.All,
+        EflagsBits = V20Registers.EflagsBits,
+        Eflags = V20Registers.psw,
+        FpuFlagsBits = Registers.FpuFlagsBits,
+
+        C = V20Registers.C,
+        CZ = V20Registers.CZ,
+        CZP = V20Registers.CZP,
+        SCZ = V20Registers.SCZ,
+        FPUF  = Registers.FPUF,
+        S = V20Registers.S,
+        Z = V20Registers.Z,
+        D = V20Registers.D,
+        O = V20Registers.O,
+        P = V20Registers.P,
+        CO =V20Registers.CO,
+        SCZO = V20Registers.SCZO,
+        SCZOP = V20Registers.SCZOP,
+        SZ = V20Registers.SZ,
+        SZO = V20Registers.SZO,
+        SZP = V20Registers.SZP,
+        SO  = V20Registers.SO,
+        Max = V20Registers.All.Length,
+        C2 = Registers.C2,
+    };
 
     public RegisterStorage ax { get; internal set; } = Registers.ax;
     public RegisterStorage cx { get; internal set; } = Registers.cx;
@@ -59,7 +176,7 @@ public class RegisterBank
     public Dictionary<StorageDomain, RegisterStorage[]> SubRegisters { get; internal set; } = Registers.SubRegisters;
     public IEnumerable<RegisterStorage> All { get; internal set; } = Registers.All;
     public FlagGroupStorage[] EflagsBits { get; internal set; } = Registers.EflagsBits;
-    public RegisterStorage eflags { get; internal set; } = Registers.eflags;
+    public RegisterStorage Eflags { get; internal set; } = Registers.eflags;
     public IEnumerable<FlagGroupStorage> FpuFlagsBits { get; internal set; } = Registers.FpuFlagsBits;
     public FlagGroupStorage C { get; internal set; } = Registers.C;
     public FlagGroupStorage CZ { get; internal set; } = Registers.CZ;
@@ -73,7 +190,6 @@ public class RegisterBank
     public FlagGroupStorage P { get; internal set; } = Registers.P;
     public FlagGroupStorage CO { get; internal set; } = Registers.CO;
     public FlagGroupStorage SCZO { get; internal set; } = Registers.SCZO;
-    public FlagGroupStorage SCZDOP { get; internal set; } = Registers.SCZDOP;
     public FlagGroupStorage SCZOP { get; internal set; } = Registers.SCZOP;
     public FlagGroupStorage SZ { get; internal set; } = Registers.SZ;
     public FlagGroupStorage SZO { get; internal set; } = Registers.SZO;
@@ -86,4 +202,5 @@ public class RegisterBank
     {
         return Registers.GetRegister(s);
     }
+
 }

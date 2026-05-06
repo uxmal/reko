@@ -62,27 +62,28 @@ namespace Reko.Arch.X86
         public static readonly RegisterStorage fs;
         public static readonly RegisterStorage gs;
 
-        public static readonly FlagGroupStorage S;
-        public static readonly FlagGroupStorage C;
-        public static readonly FlagGroupStorage Z;
-        public static readonly FlagGroupStorage D;
-        public static readonly FlagGroupStorage O;
-        public static readonly FlagGroupStorage P;
-        public static readonly FlagGroupStorage CO;
-        public static readonly FlagGroupStorage CZ;
-        public static readonly FlagGroupStorage CZP;
-        public static readonly FlagGroupStorage SCZ;
-        public static readonly FlagGroupStorage SCZO;
-        public static readonly FlagGroupStorage SCZOP;
-        public static readonly FlagGroupStorage SCZDOP;
-        public static readonly FlagGroupStorage SO;
-        public static readonly FlagGroupStorage SZ;
-        public static readonly FlagGroupStorage SZO;
-        public static readonly FlagGroupStorage SZP;
+        public static FlagGroupStorage S { get; }
+        public static FlagGroupStorage C { get; }
+        public static FlagGroupStorage Z { get; }
+        public static FlagGroupStorage D { get; }
+        public static FlagGroupStorage O { get; }
+        public static FlagGroupStorage P { get; }
+        public static FlagGroupStorage CO { get; }
+        public static FlagGroupStorage CZ { get; }
+        public static FlagGroupStorage CZP { get; }
+        public static FlagGroupStorage SCZ { get; }
+        public static FlagGroupStorage SCZO { get; }
+        public static FlagGroupStorage SCZOP { get; }
+        public static FlagGroupStorage SCZDOP { get; }
+        public static FlagGroupStorage SO { get; }
+        public static FlagGroupStorage SZ { get; }
+        public static FlagGroupStorage SZO { get; }
+        public static FlagGroupStorage SZP { get; }
 
         public static readonly RegisterStorage eflags;
 
-        public static readonly RegisterStorage FPUF;
+        public static RegisterStorage FPUF { get; }
+
         public static readonly RegisterStorage FPST;    // virtual register; the x87 FPU stack pointer.
         public static readonly FlagGroupStorage C0;
         public static readonly FlagGroupStorage C1;

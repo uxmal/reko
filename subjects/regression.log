@@ -407,12 +407,8 @@ Building procedures [Done]
 Rewriting procedures. [Done]
 finish: error: An error occurred while renaming variables.
     The given key 'l004028A8' was not present in the dictionary.
-       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Analysis.SsaLivenessAnalysis.LiveOutAtBlock(Block block, SsaIdentifier sid) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 214
-   at Reko.Analysis.SsaLivenessAnalysis.BuildInterferenceGraph(SsaIdentifierCollection ssaIds) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 114
-   at Reko.Analysis.SsaLivenessAnalysis..ctor(SsaState ssa) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 76
-   at Reko.Analysis.LiveCopyInserter..ctor(SsaState ssa) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 50
-   at Reko.Analysis.WebBuilder.Worker.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 119
+       at Reko.Analysis.SsaLivenessAnalysis.BuildInterferenceGraph(SsaIdentifierCollection ssaIds) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 114
+   at Reko.Analysis.WebBuilder.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 119
 Building expressions. [Done]
 Gathering primitive datatypes from instructions. [Done]
 Collecting data types. [Done]
@@ -809,10 +805,10 @@ safe_read: error: An error occurred while rewriting procedure to high-level lang
     Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
        at System.Collections.Generic.List`1.get_Item(Int32 index)
    at Reko.Core.Block.get_ThenBlock() in C:\dev\uxmal\reko\master\src\Core\Block.cs:line 106
-   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 100
-   at Reko.Structure.CompoundConditionCoalescer.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 66
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 89
-   at Reko.Decompiler.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 723
+   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in c:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 100
+   at Reko.Structure.CompoundConditionCoalescer.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 66
+   at Reko.Structure.StructureAnalysis.Structure() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 89
+   at Reko.Decompiler.StructureProgram() in c:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 723
 Rewriting procedures to high-level language. [Done]
 00017540: warning: Expected sizes of arrays to have been determined by now
 0002B411: warning: Expected sizes of arrays to have been determined by now
@@ -1310,10 +1306,10 @@ fn00000000: error: An error occurred while rewriting procedure to high-level lan
     Value cannot be null. (Parameter 'condition')
        at Reko.Core.Absyn.AbsynLoop..ctor(Expression condition, List`1 body) in C:\dev\uxmal\reko\master\src\Core\Absyn\AbsynLoop.cs:line 40
    at Reko.Core.Absyn.AbsynWhile..ctor(Expression condition, List`1 body) in C:\dev\uxmal\reko\master\src\Core\Absyn\AbsynWhile.cs:line 36
-   at Reko.Structure.StructureAnalysis.ReduceCyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1079
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 174
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 91
-   at Reko.Decompiler.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 723
+   at Reko.Structure.StructureAnalysis.ReduceCyclic(Region n) in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1079
+   at Reko.Structure.StructureAnalysis.Execute() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 174
+   at Reko.Structure.StructureAnalysis.Structure() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 91
+   at Reko.Decompiler.StructureProgram() in c:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 723
 Rewriting procedures to high-level language. [Done]
 00003CA8: warning: Expected sizes of arrays to have been determined by now
 000100B8: warning: Expected sizes of arrays to have been determined by now
@@ -1898,10 +1894,10 @@ fn0001B2AC: error: An error occurred while rewriting procedure to high-level lan
     Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
        at System.Collections.Generic.List`1.get_Item(Int32 index)
    at Reko.Core.Block.get_ThenBlock() in C:\dev\uxmal\reko\master\src\Core\Block.cs:line 106
-   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 100
-   at Reko.Structure.CompoundConditionCoalescer.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 66
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 89
-   at Reko.Decompiler.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 723
+   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in c:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 100
+   at Reko.Structure.CompoundConditionCoalescer.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 66
+   at Reko.Structure.StructureAnalysis.Structure() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 89
+   at Reko.Decompiler.StructureProgram() in c:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 723
 fn0001B2CC: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 Rewriting procedures to high-level language. [Done]
 00000083: warning: Expected sizes of arrays to have been determined by now
@@ -2002,7 +1998,7 @@ Error: An error occurred while writing assembly language output.
    at Reko.Core.Output.Dumper.DumpData(SegmentMap map, IProcessorArchitecture arch, Address address, Int64 cUnits, Formatter formatter) in C:\dev\uxmal\reko\master\src\Core\Output\Dumper.cs:line 238
    at Reko.Core.Output.Dumper.DumpItem(ImageSegment segment, ImageMapItem i, Formatter formatter) in C:\dev\uxmal\reko\master\src\Core\Output\Dumper.cs:line 157
    at Reko.Core.Output.Dumper.Dump(Dictionary`2 segmentItems, Formatter formatter) in C:\dev\uxmal\reko\master\src\Core\Output\Dumper.cs:line 101
-   at Reko.Decompiler.DumpAssembler(Program program, Dictionary`2 segmentItems, Formatter wr) in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 222
+   at Reko.Decompiler.DumpAssembler(Program program, Dictionary`2 segmentItems, Formatter wr) in c:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 222
 Rewriting procedures. [Done]
 Building expressions. [Done]
 Gathering primitive datatypes from instructions. [Done]
@@ -2055,39 +2051,31 @@ fn0800_8F97: error: An internal error occurred while building the expressions of
    at Reko.Core.Graphs.DominatorGraph`1.Build(DirectedGraph`1 graph, T entryNode) in C:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 181
    at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in C:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 46
    at Reko.Core.Graphs.BlockDominatorGraph..ctor(DirectedGraph`1 graph, Block entry) in C:\dev\uxmal\reko\master\src\Core\Graphs\BlockDominatorGraph.cs:line 37
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(IReadOnlyCollection`1 ssts) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 289
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(IReadOnlyCollection`1 ssts) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 289
 fn0800_1CF6: error: An error occurred while renaming variables.
     The given key 'l0800_1D54' was not present in the dictionary.
-       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 157
-   at Reko.Analysis.LiveCopyInserter.IsLiveAtCopyPoint(Identifier id, Block b) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 134
-   at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 175
-   at Reko.Analysis.LiveCopyInserter.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 160
-   at Reko.Analysis.WebBuilder.Worker.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 119
+       at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 157
+   at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 175
+   at Reko.Analysis.LiveCopyInserter.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 160
+   at Reko.Analysis.WebBuilder.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 119
 fn0800_67BF: error: An error occurred while renaming variables.
     The given key 'l0800_6A7C' was not present in the dictionary.
-       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 157
-   at Reko.Analysis.LiveCopyInserter.IsLiveAtCopyPoint(Identifier id, Block b) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 134
-   at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 175
-   at Reko.Analysis.LiveCopyInserter.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 160
-   at Reko.Analysis.WebBuilder.Worker.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 119
+       at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 157
+   at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 175
+   at Reko.Analysis.LiveCopyInserter.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 160
+   at Reko.Analysis.WebBuilder.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 119
 fn0800_4F2C: error: An error occurred while renaming variables.
     The given key 'l0800_4F67' was not present in the dictionary.
-       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 157
-   at Reko.Analysis.LiveCopyInserter.IsLiveAtCopyPoint(Identifier id, Block b) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 134
-   at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 175
-   at Reko.Analysis.LiveCopyInserter.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 160
-   at Reko.Analysis.WebBuilder.Worker.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 119
+       at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 157
+   at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 175
+   at Reko.Analysis.LiveCopyInserter.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 160
+   at Reko.Analysis.WebBuilder.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 119
 fn0800_C177: error: An error occurred while renaming variables.
     The given key 'l0800_C22D' was not present in the dictionary.
-       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 157
-   at Reko.Analysis.LiveCopyInserter.IsLiveAtCopyPoint(Identifier id, Block b) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 134
-   at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 175
-   at Reko.Analysis.LiveCopyInserter.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 160
-   at Reko.Analysis.WebBuilder.Worker.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 119
+       at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 157
+   at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 175
+   at Reko.Analysis.LiveCopyInserter.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 160
+   at Reko.Analysis.WebBuilder.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 119
 Building expressions. [Done]
 Gathering primitive datatypes from instructions. [Done]
 l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
@@ -2831,22 +2819,22 @@ fn000ECBDB: error: An internal error occurred while building the expressions of 
     Argument size mismatch between real64 and word32.
        at Reko.Core.Expressions.Conversion..ctor(Expression exp, DataType dtFrom, DataType dtTo) in C:\dev\uxmal\reko\master\src\Core\Expressions\Conversion.cs:line 51
    at Reko.Core.Code.InstructionTransformer.VisitConversion(Conversion conversion) in C:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 257
-   at Reko.Analysis.IdentifierReplacer.TransformAssignment(Assignment a) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\IdentifierReplacer.cs:line 65
-   at Reko.Analysis.Coalescer.Worker.CoalesceStatements(SsaIdentifier sid, Expression defExpr, Statement def, Statement use) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 169
-   at Reko.Analysis.Coalescer.Worker.Process(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 235
-   at Reko.Analysis.Coalescer.Worker.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 250
-   at Reko.Analysis.Coalescer.Transform(SsaState ssa) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 71
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(IReadOnlyCollection`1 ssts) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 280
+   at Reko.Analysis.IdentifierReplacer.TransformAssignment(Assignment a) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\IdentifierReplacer.cs:line 65
+   at Reko.Analysis.Coalescer.Worker.CoalesceStatements(SsaIdentifier sid, Expression defExpr, Statement def, Statement use) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 169
+   at Reko.Analysis.Coalescer.Worker.Process(Block block) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 235
+   at Reko.Analysis.Coalescer.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 250
+   at Reko.Analysis.Coalescer.Transform(SsaState ssa) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 71
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(IReadOnlyCollection`1 ssts) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 280
 fn000F4A65: error: An internal error occurred while building the expressions of fn000F4A65
     Argument size mismatch between real64 and word32.
        at Reko.Core.Expressions.Conversion..ctor(Expression exp, DataType dtFrom, DataType dtTo) in C:\dev\uxmal\reko\master\src\Core\Expressions\Conversion.cs:line 51
    at Reko.Core.Code.InstructionTransformer.VisitConversion(Conversion conversion) in C:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 257
-   at Reko.Analysis.IdentifierReplacer.TransformAssignment(Assignment a) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\IdentifierReplacer.cs:line 65
-   at Reko.Analysis.Coalescer.Worker.CoalesceStatements(SsaIdentifier sid, Expression defExpr, Statement def, Statement use) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 169
-   at Reko.Analysis.Coalescer.Worker.Process(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 235
-   at Reko.Analysis.Coalescer.Worker.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 250
-   at Reko.Analysis.Coalescer.Transform(SsaState ssa) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 71
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(IReadOnlyCollection`1 ssts) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 280
+   at Reko.Analysis.IdentifierReplacer.TransformAssignment(Assignment a) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\IdentifierReplacer.cs:line 65
+   at Reko.Analysis.Coalescer.Worker.CoalesceStatements(SsaIdentifier sid, Expression defExpr, Statement def, Statement use) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 169
+   at Reko.Analysis.Coalescer.Worker.Process(Block block) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 235
+   at Reko.Analysis.Coalescer.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 250
+   at Reko.Analysis.Coalescer.Transform(SsaState ssa) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\Coalescer.cs:line 71
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(IReadOnlyCollection`1 ssts) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 280
 Building expressions. [Done]
 Gathering primitive datatypes from instructions. [Done]
 l000ECC80: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
@@ -2972,4 +2960,4 @@ Collecting data types. [Done]
 Rewriting expressions. [Done]
 Rewriting procedures to high-level language. [Done]
 
-Decompiled 100 binaries in 60.37 seconds.
+Decompiled 100 binaries in 59.54 seconds.

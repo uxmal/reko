@@ -94,7 +94,7 @@ namespace Reko.Arch.X86.Emulator
             this.ipReg = ipReg;
             this.cxReg = cxReg;
             Registers = new ulong[56];
-            iFlags = arch.Registers.eflags.Number;
+            iFlags = arch.Registers.Eflags.Number;
             this.envEmulator = envEmulator;
             dasm = default!;
             ip = default!;

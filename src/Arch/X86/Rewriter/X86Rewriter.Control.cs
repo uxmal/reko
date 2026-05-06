@@ -36,7 +36,8 @@ namespace Reko.Arch.X86.Rewriter
     {
         private Expression CreateTestCondition(ConditionCode cc, Mnemonic mnemonic)
         {
-            var grf = orw.FlagGroup(X86Instruction.UseCc(mnemonic) ?? throw new ArgumentException("Mnemonic not setting conditions"));
+            var grf = orw.FlagGroup(X86Instruction.UseCc(mnemonic, arch.Registers)
+                ?? throw new ArgumentException("Mnemonic not setting conditions"));
             var tc = m.Test(cc, grf);
             return tc;
         }

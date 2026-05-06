@@ -733,7 +733,7 @@ namespace Reko.Arch.X86.Rewriter
                 case Mnemonic.vroundss: RewriteRoundsx(true, PrimitiveType.Real32); break;
                 case Mnemonic.rsm: RewriteRsm(); break;
                 case Mnemonic.rsqrtps: RewritePackedUnaryop(rsqrtp_intrinsic, PrimitiveType.Real32); break;
-                case Mnemonic.sahf: m.Assign(binder.EnsureFlagGroup(X86Instruction.DefCc(instrCur.Mnemonic)!), orw.AluRegister(Registers.ah)); break;
+                case Mnemonic.sahf: m.Assign(binder.EnsureFlagGroup(X86Instruction.DefCc(instrCur.Mnemonic, arch.Registers)!), orw.AluRegister(Registers.ah)); break;
                 case Mnemonic.sar: RewriteSar(); break;
                 case Mnemonic.sarx: RewriteBinOp(Operator.Sar); break;
                 case Mnemonic.sbb: RewriteAdcSbb(Operator.ISub); break;
@@ -843,6 +843,18 @@ namespace Reko.Arch.X86.Rewriter
                 case Mnemonic.vzeroupper: RewriteVZeroUpper(); break;
                 case Mnemonic.BOR_exp: RewriteFUnary(exp_intrinsic); break;
                 case Mnemonic.BOR_ln: RewriteFUnary(log_intrinsic); break;
+
+                // V20/V30 instructions
+                case Mnemonic.add4s: RewriteStringBcd(add4s_intrinsic); break;
+                case Mnemonic.brkem: RewriteBrkem(); break;
+                case Mnemonic.clr1: RewriteBitManip1(clr1_intrinsic); break;
+                case Mnemonic.cmp4s: RewriteStringBcd(cmp4s_intrinsic); break;
+                case Mnemonic.not1: RewriteBitManip1(not1_intrinsic); break;
+                case Mnemonic.rol4: RewriteRol4(); break;
+                case Mnemonic.ror4: RewriteRor4(); break;
+                case Mnemonic.set1: RewriteBitManip1(set1_intrinsic); break;
+                case Mnemonic.sub4s: RewriteStringBcd(sub4s_intrinsic); break;
+                case Mnemonic.test1: RewriteTest1(); break;
                 }
                 var len = (int)(dasm.Current.Address - addr) + dasm.Current.Length;
                 yield return m.MakeCluster(addr, len, iclass);
@@ -894,7 +906,7 @@ namespace Reko.Arch.X86.Rewriter
             }
             if ((flags & CopyFlags.EmitCc) != 0)
             {
-                EmitCcInstr(dst, X86Instruction.DefCc(instrCur.Mnemonic));
+                EmitCcInstr(dst, X86Instruction.DefCc(instrCur.Mnemonic, arch.Registers));
             }
             return dst;
         }
@@ -1080,6 +1092,59 @@ namespace Reko.Arch.X86.Rewriter
                 .Param("T")
                 .Param("T")
                 .Returns("T");
+
+            // V20/V30 intrinsics
+            add4s_intrinsic = new IntrinsicBuilder("__add4s", true)
+                .Param(PrimitiveType.Word16)    // CX (length)
+                .Param(PrimitiveType.Ptr16)     // SI
+                .Param(PrimitiveType.Ptr16)     // DI
+                .Void();
+            brkem_intrinsic = new IntrinsicBuilder("__brkem", true)
+                .Param(PrimitiveType.Byte)
+                .Void();
+            clr1_intrinsic = new IntrinsicBuilder("__clr1", false)
+                .GenericTypes("T")
+                .Param("T")
+                .Param(PrimitiveType.Byte)
+                .OutParam("T")
+                .Returns(PrimitiveType.Bool);
+            cmp4s_intrinsic = new IntrinsicBuilder("__cmp4s", true)
+                .Param(PrimitiveType.Word16)
+                .Param(PrimitiveType.Ptr16)
+                .Param(PrimitiveType.Ptr16)
+                .Void();
+            not1_intrinsic = new IntrinsicBuilder("__not1", false)
+                .GenericTypes("T")
+                .Param("T")
+                .Param(PrimitiveType.Byte)
+                .OutParam("T")
+                .Returns(PrimitiveType.Bool);
+            rol4_intrinsic = new IntrinsicBuilder("__rol4", false)
+                .Param(PrimitiveType.Byte)      // AL
+                .Param(PrimitiveType.Byte)      // r/m8
+                .OutParam(PrimitiveType.Byte)   // updated r/m8
+                .Returns(PrimitiveType.Byte);   // new AL
+            ror4_intrinsic = new IntrinsicBuilder("__ror4", false)
+                .Param(PrimitiveType.Byte)
+                .Param(PrimitiveType.Byte)
+                .OutParam(PrimitiveType.Byte)
+                .Returns(PrimitiveType.Byte);
+            set1_intrinsic = new IntrinsicBuilder("__set1", false)
+                .GenericTypes("T")
+                .Param("T")
+                .Param(PrimitiveType.Byte)
+                .OutParam("T")
+                .Returns(PrimitiveType.Bool);
+            sub4s_intrinsic = new IntrinsicBuilder("__sub4s", true)
+                .Param(PrimitiveType.Word16)
+                .Param(PrimitiveType.Ptr16)
+                .Param(PrimitiveType.Ptr16)
+                .Void();
+            test1_intrinsic = new IntrinsicBuilder("__test1", false)
+                .GenericTypes("T")
+                .Param("T")
+                .Param(PrimitiveType.Byte)
+                .Returns(PrimitiveType.Bool);
 
             cli_intrinsic = new IntrinsicBuilder("__cli", true)
                 .Void();

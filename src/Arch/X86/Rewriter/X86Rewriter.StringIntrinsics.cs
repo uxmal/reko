@@ -76,7 +76,7 @@ namespace Reko.Arch.X86.Rewriter
             var cx = RegCx;
             m.Assign(cx, m.ISub(cx, MaybeSlice(cx.DataType, size)));
             m.Assign(di, m.IAdd(di, MaybeSlice(cx.DataType, size)));
-            var grf = binder.EnsureFlagGroup(X86Instruction.DefCc(Mnemonic.cmp)!);
+            var grf = binder.EnsureFlagGroup(X86Instruction.DefCc(Mnemonic.cmp, arch.Registers)!);
             m.Assign(
                 grf,
                 m.Cond(grf.DataType, m.Const(instrCur.DataWidth, 0)));
@@ -133,7 +133,7 @@ namespace Reko.Arch.X86.Rewriter
             m.Assign(cx, m.ISub(cx, firstDifference));
             m.Assign(si, m.IAdd(si, firstDifference));
             m.Assign(di, m.IAdd(di, firstDifference));
-            var grf = binder.EnsureFlagGroup(X86Instruction.DefCc(Mnemonic.cmp)!);
+            var grf = binder.EnsureFlagGroup(X86Instruction.DefCc(Mnemonic.cmp, arch.Registers)!);
             m.Assign(
                 grf,
                 m.Cond(grf.DataType, result));

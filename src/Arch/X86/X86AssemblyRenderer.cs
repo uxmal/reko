@@ -57,7 +57,7 @@ namespace Reko.Arch.X86
                 return FormatUnsignedValue(c.ToUInt64());
         }
 
-        public void Render(X86Instruction instr, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
+        public virtual void Render(X86Instruction instr, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             RenderPrefix(instr, renderer);
 

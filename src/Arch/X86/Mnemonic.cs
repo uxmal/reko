@@ -1245,5 +1245,17 @@ namespace Reko.Arch.X86
         // pseudo-instructions.
         BOR_exp,
         BOR_ln,
+
+        // NEC V20/V30 instructions.
+        add4s,
+        brkem,
+        clr1,
+        cmp4s,
+        not1,
+        rol4,
+        ror4,
+        set1,
+        sub4s,
+        test1,
     }
 }

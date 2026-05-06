@@ -205,7 +205,18 @@ namespace Reko.Arch.X86
 
         public override X86Disassembler CreateDisassembler(RegisterBank registers, IServiceProvider services, Decoder[] rootDecoders, EndianImageReader rdr, Dictionary<string, object> options)
         {
-            var dasm = new X86Disassembler(services, registers, rootDecoders, this, rdr, PrimitiveType.Word16, PrimitiveType.Word16);
+            var preferredSyntax = IntelArchitecture.IsV20Mode(options)
+                ? 'v'
+                : char.MinValue;
+            var dasm = new X86Disassembler(
+                services,
+                registers,
+                rootDecoders,
+                this,
+                rdr,
+                PrimitiveType.Word16,
+                PrimitiveType.Word16,
+                preferredSyntax);
             if (!options.ContainsKey("Emulate8087") || (string) options["Emulate8087"] == "true")
             {
                 dasm.Emulate8087 = true;

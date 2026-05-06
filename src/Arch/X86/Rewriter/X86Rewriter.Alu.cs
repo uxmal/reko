@@ -449,7 +449,7 @@ namespace Reko.Arch.X86.Rewriter
         {
             Expression op1 = SrcOp(0);
             Expression op2 = SrcOp(1, instrCur.Operands[0].DataType);
-            var grf = binder.EnsureFlagGroup(X86Instruction.DefCc(Mnemonic.cmp)!);
+            var grf = binder.EnsureFlagGroup(X86Instruction.DefCc(Mnemonic.cmp, arch.Registers)!);
             m.Assign(grf, m.Cond(grf.DataType, m.ISub(op1, op2)));
         }
 
@@ -539,7 +539,7 @@ namespace Reko.Arch.X86.Rewriter
             var q = m.Bin(div, p, tmp, divisor);
             m.Assign(regRemainder, r);
             m.Assign(regQuotient, q);
-            EmitCcInstr(regQuotient, X86Instruction.DefCc(instrCur.Mnemonic));
+            EmitCcInstr(regQuotient, X86Instruction.DefCc(instrCur.Mnemonic, arch.Registers));
         }
 
         private void RewriteEnter(DataType dtFramePointer)
@@ -668,7 +668,7 @@ namespace Reko.Arch.X86.Rewriter
                 var bin = m.Bin(op, SrcOp(0), multiplicator);
                 bin.DataType = PrimitiveType.Create(resultDomain, product.DataType.BitSize);
                 m.Assign(product, bin);
-                EmitCcInstr(product, X86Instruction.DefCc(instrCur.Mnemonic));
+                EmitCcInstr(product, X86Instruction.DefCc(instrCur.Mnemonic,arch.Registers));
                 return;
             case 2:
                 EmitBinOp(
@@ -951,7 +951,7 @@ namespace Reko.Arch.X86.Rewriter
 
         private void RewritePushf(DataType dt)
         {
-            var flags = binder.EnsureFlagGroup(arch.Registers.SCZDOP);
+            var flags = binder.EnsureFlagGroup(Registers.SCZDOP);
             RewritePush(
                 dt,
                 MaybeSlice(dt, flags));
@@ -1095,7 +1095,7 @@ namespace Reko.Arch.X86.Rewriter
         {
             var sp = StackPointer();
             var src = orw.StackAccess(sp, width);
-            var grf = binder.EnsureFlagGroup(arch.Registers.SCZDOP);
+            var grf = binder.EnsureFlagGroup(Registers.SCZDOP);
             if (grf.DataType.BitSize > src.DataType.BitSize)
             {
                 m.Assign(grf, m.Dpb(grf, src, 0));
@@ -1329,7 +1329,7 @@ namespace Reko.Arch.X86.Rewriter
                 return;
             case Mnemonic.cmps:
             case Mnemonic.cmpsb:
-                var grf = binder.EnsureFlagGroup(X86Instruction.DefCc(Mnemonic.cmp)!);
+                var grf = binder.EnsureFlagGroup(X86Instruction.DefCc(Mnemonic.cmp, arch.Registers)!);
                 m.Assign(
                     grf,
                     m.Cond(grf.DataType, m.ISub(MemIndex(0, ds, RegSi), MemIndex(1, es, RegDi))));
@@ -1363,7 +1363,7 @@ namespace Reko.Arch.X86.Rewriter
                 break;
             case Mnemonic.scas:
             case Mnemonic.scasb:
-                grf = binder.EnsureFlagGroup(X86Instruction.DefCc(Mnemonic.cmp)!);
+                grf = binder.EnsureFlagGroup(X86Instruction.DefCc(Mnemonic.cmp, arch.Registers)!);
                 m.Assign(
                     grf,
                     m.Cond(grf.DataType, m.ISub(RegAl, MemIndex(1, es, RegDi))));
@@ -1448,7 +1448,7 @@ namespace Reko.Arch.X86.Rewriter
             m.Assign(
                 dst,
                 m.Fn(xadd_intrinsic.MakeInstance(src.DataType), dst, src));
-            EmitCcInstr(dst, X86Instruction.DefCc(instrCur.Mnemonic));
+            EmitCcInstr(dst, X86Instruction.DefCc(instrCur.Mnemonic, arch.Registers));
         }
 
         private void RewriteXgetbv()

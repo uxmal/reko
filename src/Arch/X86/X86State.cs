@@ -159,7 +159,7 @@ namespace Reko.Arch.X86
             // compilers and code libraries. If you know the DF flag is set on
             // procedure entry, you can manually set that flag using a user-
             // defined register value.
-            SetFlagGroup(arch.GetFlagGroup(arch.Registers.eflags, (ulong) FlagM.DF), Constant.False());
+            SetFlagGroup(arch.GetFlagGroup(arch.Registers.Eflags, (ulong) FlagM.DF), Constant.False());
             if (addr.Selector.HasValue)
             {
                 var cs = Constant.Create(PrimitiveType.SegmentSelector, addr.Selector.Value);

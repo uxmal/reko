@@ -222,6 +222,7 @@ namespace Reko.Arch.X86
 		private readonly PrimitiveType defaultAddressWidth;
 		private readonly EndianImageReader rdr;
         private readonly InstrClass privilegedMask;
+        private readonly char preferredSyntax;
 
         private readonly X86InstructionDecodeInfo decodingContext;
 
@@ -241,7 +242,8 @@ namespace Reko.Arch.X86
             ProcessorMode mode,
             EndianImageReader rdr,
             PrimitiveType defaultWordSize,
-            PrimitiveType defaultAddressSize)
+            PrimitiveType defaultAddressSize,
+            char preferredSyntax = char.MinValue)
 		{
             this.services = services;
             this.registers = registers;
@@ -253,6 +255,7 @@ namespace Reko.Arch.X86
             this.addr = rdr.Address;
 			this.defaultDataWidth = defaultWordSize;
 			this.defaultAddressWidth = defaultAddressSize;
+            this.preferredSyntax = preferredSyntax;
             this.decodingContext = new X86InstructionDecodeInfo();
         }
 
@@ -280,6 +283,7 @@ namespace Reko.Arch.X86
             this.decodingContext.iWidth = defaultDataWidth;
 
             X86Instruction instr = rootDecoders[op].Decode(op, this);
+            instr.PreferredSyntax = this.preferredSyntax;
             instr.Address = addr;
             instr.Length = (int)(rdr.Offset - rdrOffset);
             return instr;
@@ -1237,7 +1241,7 @@ namespace Reko.Arch.X86
         /// </summary>
         private static bool DX(uint u, X86Disassembler dasm)
         {
-            dasm.decodingContext.ops.Add(dasm.registers.Gp16BitRegisters[2]);
+            dasm.decodingContext.ops.Add(dasm.registers.dx);
             return true;
         }
 
@@ -1247,7 +1251,7 @@ namespace Reko.Arch.X86
             var bitsize = dasm.decodingContext.dataWidth.BitSize;
             if (bitsize == 16)
             {
-                reg = dasm.registers.Gp16BitRegisters[2];
+                reg = dasm.registers.dx;
             }
             else
             {

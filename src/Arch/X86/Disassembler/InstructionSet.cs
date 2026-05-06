@@ -75,6 +75,7 @@ namespace Reko.Arch.X86
             private Func<Mnemonic, InstrClass, Mutator<X86Disassembler>[], Decoder> instr486;
             private Func<Decoder> x87instr;
             private Func<Decoder, Decoder, Decoder> amd64instr;
+            private bool isV20Mode;
 
             public static InstructionSet Create(
                 bool x86_64,
@@ -116,6 +117,10 @@ namespace Reko.Arch.X86
                         isa.instr486 = MakeInvalid; goto case "80486";
                     case "80486":
                         //$TODO: Pentium support.
+                        break;
+                    case "v20":
+                    case "v30":
+                        isa.isV20Mode = true;
                         break;
                     }
                 }
@@ -182,7 +187,10 @@ namespace Reko.Arch.X86
                 CreateOnebyteDecoders(rootDecoders, false, false, s_decoders0F);
                 CreateOnebyteDecoders(rex2Legacy0, true, false, []);
                 CreateOnebyteDecoders(eevexLegacy0, true, true, []);
-                CreateTwobyteDecoders(s_decoders0F, false, false);
+                if (isV20Mode)
+                    CreateV20TwobyteDecoders(s_decoders0F);
+                else
+                    CreateTwobyteDecoders(s_decoders0F, false, false);
                 CreateTwobyteDecoders(rex2Legacy1, true, false);
                 CreateTwobyteDecoders(eevexLegacy1, true, true);
 

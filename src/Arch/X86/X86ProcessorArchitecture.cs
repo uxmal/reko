@@ -66,12 +66,14 @@ namespace Reko.Arch.X86
 	public class IntelArchitecture : ProcessorArchitecture
 	{
         private readonly ProcessorMode mode;
+        private readonly bool isV20Mode;
         private Decoder[]? rootDecoders;
 
         public IntelArchitecture(IServiceProvider services, string archId, ProcessorMode mode, Dictionary<string, object> options)
             : base(services, archId, options, null, null)
         {
-            this.Registers = new RegisterBank();
+            this.isV20Mode = IsV20Mode(options);
+            this.Registers = SelectRegisterBank(isV20Mode);
             this.mode = mode;
             this.Endianness = EndianServices.Little;
             this.InstructionBitSize = 8;
@@ -86,6 +88,17 @@ namespace Reko.Arch.X86
         }
 
         public RegisterBank Registers { get; }
+
+        internal static bool IsV20Mode(Dictionary<string, object>? options)
+        {
+            if (options is null)
+                return false;
+            if (!options.TryGetValue(ProcessorOption.InstructionSet, out var isa))
+                return false;
+            var s = isa?.ToString();
+            return string.Equals(s, "v20", StringComparison.OrdinalIgnoreCase) ||
+                   string.Equals(s, "v30", StringComparison.OrdinalIgnoreCase);
+        }
 
         public override IAssembler CreateAssembler(string? asmDialect)
         {
@@ -117,6 +130,13 @@ namespace Reko.Arch.X86
         public override FrameApplicationBuilder CreateFrameApplicationBuilder(IStorageBinder binder, CallSite site)
         {
             return new X86FrameApplicationBuilder(this, binder, site);
+        }
+
+        private RegisterBank SelectRegisterBank(bool isV20)
+        {
+            return isV20
+                ? RegisterBank.V20Instance
+                : RegisterBank.IntelInstance;
         }
 
         public override SortedList<string, int> GetMnemonicNames()
@@ -214,7 +234,7 @@ namespace Reko.Arch.X86
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, ulong grf)
 		{
-            var f = new FlagGroupStorage(Registers.eflags, grf, GrfToString(flagRegister, "", grf));
+            var f = new FlagGroupStorage(Registers.Eflags, grf, GrfToString(flagRegister, "", grf));
 			return f;
 		}
 
@@ -234,7 +254,7 @@ namespace Reko.Arch.X86
                 default: throw new ArgumentException($"Unknown x86 flag bit '{name[i]}'.");
 				}
 			}
-			return GetFlagGroup(Registers.eflags, (uint) grf);
+			return GetFlagGroup(Registers.Eflags, (uint) grf);
 		}
 
         public override RegisterStorage? GetRegister(string name)
@@ -322,7 +342,7 @@ namespace Reko.Arch.X86
 		public override string GrfToString(RegisterStorage flagregister, string prefix, ulong grf)
 		{
 			StringBuilder s = new StringBuilder();
-            if (flagregister == Registers.eflags)
+            if (flagregister == Registers.Eflags)
             {
                 foreach (var fr in Registers.EflagsBits)
                 {
