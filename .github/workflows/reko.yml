@@ -19,13 +19,15 @@ jobs:
         include:
           - os: macos-15-intel
             build_config: UnixRelease
+          - os: macos-15-arm64
+            build_config: UnixRelease
           - os: ubuntu-latest
             build_config: UnixRelease
           - os: windows-latest
             build_config: Release
     steps:
     - uses: actions/checkout@v4
-    - name: Setup .NET Core
+    - name: Setup .NET 8
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: |
