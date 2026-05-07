@@ -19,8 +19,9 @@ jobs:
         include:
           - os: macos-15-intel
             build_config: UnixRelease
-          - os: macos-15-arm64
-            build_config: UnixRelease
+# Github actions trigger, but the macOS-16-arm64 doesn't start a runner.
+#         - os: macos-15-arm64
+#           build_config: UnixRelease
           - os: ubuntu-latest
             build_config: UnixRelease
           - os: windows-latest
