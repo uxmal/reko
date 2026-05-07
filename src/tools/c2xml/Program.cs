@@ -62,7 +62,7 @@ Options:
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine("c2xml: {0}", ex.Message);
+                Console.Error.WriteLine($"c2xml: {ex.Message}");
                 Console.Error.WriteLine(ex.StackTrace);
                 return 1;
             }
@@ -104,15 +104,27 @@ Options:
                    options["-e"]);
                 return -1;
             }
-            var platform = envElem.Load(sc, arch);
-            
+
+            IPlatform platform;
+            try
+            {
+                platform = envElem.Load(sc, arch);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(
+                    $"c2xml: an error occurred when loading platform {envElem.Name} ({envElem.TypeName}). {ex.Message}");
+                Console.WriteLine(ex.StackTrace);
+                return 1;
+            }
+
             try
             {
                 input = new StreamReader(options["<inputfile>"].ToString());
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine("c2xml: unable to open file {0} for reading. {1}", options["<inputfile>"], ex.Message);
+                Console.Error.WriteLine($"c2xml: unable to open file {options["<inputfile>"]} for reading. {ex.Message}");
                 return 1;
             }
 

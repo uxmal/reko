@@ -19,7 +19,7 @@
 #ifndef __TYPES_H
 #define __TYPES_H
 
-#ifdef _WIN32 || _WIN64
+#if defined(_WIN32) || defined(_WIN64)
 
 #include <objbase.h>
 #define DLLEXPORT __declspec(dllexport)
