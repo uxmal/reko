@@ -113,8 +113,13 @@ Options:
             catch (Exception ex)
             {
                 Console.WriteLine(
-                    $"c2xml: an error occurred when loading platform {envElem.Name} ({envElem.TypeName}). {ex.Message}");
+                    $"c2xml: an error occurred when loading platform {envElem.Name} ({envElem.TypeName}).");
+                for (Exception e = ex; e is not null; e = e.InnerException)
+                {
+                    Console.WriteLine($" {e.Message}");
+                }
                 Console.WriteLine(ex.StackTrace);
+                Console.WriteLine("Constructor(s):");
                 return 1;
             }
 

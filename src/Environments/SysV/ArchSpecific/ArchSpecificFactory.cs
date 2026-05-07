@@ -130,6 +130,7 @@ namespace Reko.Environments.SysV.ArchSpecific
                     var t = svc.GetType("Reko.Arch.X86.X86CallingConvention,Reko.Arch.X86");
                     this.ccX86 = (ICallingConvention)Activator.CreateInstance(
                         t,
+                        arch,
                         4,      // stackAlignment,
                         4,      // pointerSize,
                         true,   // callerCleanup,

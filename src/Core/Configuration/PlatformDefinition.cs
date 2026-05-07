@@ -115,7 +115,7 @@ namespace Reko.Core.Configuration
             var type = svc.GetType(TypeName);
             if (type is null)
                 throw new TypeLoadException(
-                    string.Format("Unable to load {0} environment.", Description));
+                    $"Unable to load {Description} environment.");
             var platform = (Platform)Activator.CreateInstance(type, services, arch)!;
             LoadSettingsFromConfiguration(services, platform);
             return platform;

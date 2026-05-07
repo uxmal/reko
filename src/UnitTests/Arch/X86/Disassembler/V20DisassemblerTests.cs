@@ -111,7 +111,7 @@ namespace Reko.UnitTests.Arch.X86.Disassembler
         public void V20Dis_rep_kept_for_non_compare_string_instructions()
         {
             var repMovs = Disassemble(v20Arch, LoadAddress, "F3 A4");
-            Assert.AreEqual("rep movsb", repMovs.ToString());
+            Assert.AreEqual("rep movbk", repMovs.ToString());
         }
 
         // V20 bit-manipulation instructions (0F prefix)

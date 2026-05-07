@@ -21,9 +21,9 @@ class ThumbArchitecture : public ComBase, public INativeArchitecture
 public:
 	ThumbArchitecture();
 
-	virtual STDMETHODIMP QueryInterface(REFIID riid, void ** ppvObject);
-	virtual STDMETHODIMP_(ULONG) AddRef(void) override { return ComBase::AddRef(); }
-	virtual STDMETHODIMP_(ULONG) Release(void) override { return ComBase::Release(); }
+	STDMETHODIMP QueryInterface(REFIID riid, void ** ppvObject) override;
+	STDMETHODIMP_(ULONG) AddRef(void) override { return ComBase::AddRef(); }
+	STDMETHODIMP_(ULONG) Release(void) override { return ComBase::Release(); }
 
 	STDMETHODIMP GetAllRegisters(int category, int * pcRegs, void * * ppRegs) override;
 	STDMETHODIMP_(INativeDisassembler *) CreateDisassembler(void * bytes, int length, int offset, uint64_t uAddr) override;

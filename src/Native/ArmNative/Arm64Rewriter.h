@@ -45,8 +45,8 @@ public:
 	STDMETHOD_(ULONG, AddRef)() override { return ComBase::AddRef(); }
 	STDMETHOD_(ULONG, Release)() override { return ComBase::Release(); }
 
-	STDMETHOD_(int32_t, Next)();
-	STDMETHOD_(int32_t, GetCount)();
+	STDMETHOD_(int32_t, Next)() override;
+	STDMETHOD_(int32_t, GetCount)() override;
 
 private:
 	void AddConditional(void(*mkInstr)());
