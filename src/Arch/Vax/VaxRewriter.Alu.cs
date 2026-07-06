@@ -129,9 +129,12 @@ namespace Reko.Arch.Vax
         {
             var op1 = RewriteSrcOp(0, PrimitiveType.Word32);
             var dst = RewriteDstOp(1, PrimitiveType.Word32,
-                e => m.IAdd(
-                        m.IAdd(e, op1),
-                        FlagGroup(Registers.C)));
+                e => {
+                    var c = FlagGroup(Registers.C);
+                    return m.Fn(
+                            CommonOps.IAddC.MakeInstance(e.DataType, c.DataType),
+                            e, op1, c);
+                });
             AllFlags(dst);
         }
 
@@ -479,9 +482,14 @@ namespace Reko.Arch.Vax
         {
             var op1 = RewriteSrcOp(0, PrimitiveType.Word32);
             var dst = RewriteDstOp(1, PrimitiveType.Word32,
-                e => m.ISub(
-                        m.ISub(e, op1),
-                        FlagGroup(Registers.C)));
+                e => {
+                    var c = FlagGroup(Registers.C);
+                    return m.Fn(
+                        CommonOps.ISubC.MakeInstance(e.DataType, c.DataType),
+                        e,
+                        op1,
+                        c);
+                });
             AllFlags(dst);
         }
 

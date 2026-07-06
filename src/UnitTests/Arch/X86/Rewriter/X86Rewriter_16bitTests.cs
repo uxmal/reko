@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
             });
             AssertCode(
                 "0|L--|0C00:0000(4): 3 instructions",
-                "1|L--|v6 = Mem0[ds:0x100<16>:word16] + ax + C",
+                "1|L--|v6 = __addc<word16,word32>(Mem0[ds:0x100<16>:word16], ax, C)",
                 "2|L--|Mem0[ds:0x100<16>:word16] = v6",
                 "3|L--|SCZO = cond(v6)");
         }

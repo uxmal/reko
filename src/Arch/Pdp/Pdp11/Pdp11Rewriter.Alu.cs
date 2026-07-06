@@ -33,10 +33,15 @@ namespace Reko.Arch.Pdp.Pdp11
 {
     public partial class Pdp11Rewriter
     {
-        private void RewriteAdcSbc(Func<Expression, Expression, Expression> fn)
+        private void RewriteAdcSbc(IntrinsicProcedure fn)
         {
-            var src = binder.EnsureFlagGroup(Registers.C);
-            var dst = RewriteDst(instr.Operands[0], src, fn);
+            var op0 = instr.Operands[0];
+            var dst = RewriteDst(op0, m.Zero(op0.DataType), (a, b) => {
+                var c = binder.EnsureFlagGroup(Registers.C);
+                return m.Fn(
+                    fn.MakeInstance(a.DataType, c.DataType),
+                    a, b, c);
+                 });
             if (dst is null)
             {
                 iclass = InstrClass.Invalid;

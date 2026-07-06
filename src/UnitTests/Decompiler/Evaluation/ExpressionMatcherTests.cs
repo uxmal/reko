@@ -18,8 +18,10 @@
  */
 #endregion
 
+using Mono.Unix.Native;
 using NUnit.Framework;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Operators;
 using Reko.Core.Types;
 
@@ -29,12 +31,14 @@ namespace Reko.UnitTests.Decompiler.Evaluation
     public class ExpressionMatcherTests
     {
         private ExpressionEmitter m;
+        private ExpressionMatcherEmitter mm;
         private ExpressionMatcher matcher;
 
         [SetUp]
         public void Setup()
         {
             m = new ExpressionEmitter();
+            mm = new ExpressionMatcherEmitter();
         }
 
         private void Create(Expression pattern)
@@ -134,6 +138,19 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             var e = m.Slice(Id("eax"), PrimitiveType.Int16, 16);
             Create(m.Word32(5));
             Assert.IsFalse(matcher.Match(e).Success);
+        }
+
+        [Test]
+        public void Emt_MatchAddc()
+        {
+            var e = m.IAddC(Id("dx"), Id("bx"), Id("cf"));
+            Create(mm.Fn(CommonOps.IAddC, mm.AnyId("left"), mm.AnyId("right"), mm.AnyId("carry")));
+            var match = matcher.Match(e);
+
+            Assert.IsTrue(match.Success);
+            Assert.That(match.CapturedExpression("left").ToString(), Is.EqualTo("dx"));
+            Assert.That(match.CapturedExpression("right").ToString(), Is.EqualTo("bx"));
+            Assert.That(match.CapturedExpression("carry").ToString(), Is.EqualTo("cf"));
         }
 
         private Expression AnyC(string p)

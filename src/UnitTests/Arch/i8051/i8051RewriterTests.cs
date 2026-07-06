@@ -328,7 +328,7 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0x34, 0x00); // addc\tA,00
             AssertCode(
                 "0|L--|0000(2): 2 instructions",
-                "1|L--|A = A + 0<8> + C",
+                "1|L--|A = __addc<byte,byte>(A, 0<8>, C)",
                 "2|L--|CAOP = cond(A)");
         }
 
@@ -357,7 +357,7 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0x95, 0x42); // subb\tA,[0042]
             AssertCode(
                 "0|L--|0000(2): 2 instructions",
-                "1|L--|A = A - Mem0[__data:0x0042<p16>:byte] - C",
+                "1|L--|A = __subc<byte,byte>(A, Mem0[__data:0x0042<p16>:byte], C)",
                 "2|L--|CAOP = cond(A)");
         }
 

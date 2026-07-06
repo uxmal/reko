@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Intrinsics;
 using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
@@ -53,9 +54,10 @@ namespace Reko.Core.Expressions
         /// <param name="right">Addend</param>
         /// <param name="carry">Carry flag</param>
         /// <returns>A binary expression for the add-with-carry.</returns>
-        public BinaryExpression IAddC(Expression left, Expression right, Expression carry)
+        public Application IAddC(Expression left, Expression right, Expression carry)
         {
-            return IAdd(IAdd(left, right), carry);
+            var addc = CommonOps.IAddC.MakeInstance(left.DataType, carry.DataType);
+            return Fn(addc, left, right, carry);
         }
 
         /// <summary>
@@ -67,6 +69,8 @@ namespace Reko.Core.Expressions
         /// <returns>A binary expression for the sum.</returns>
         public BinaryExpression IAdd(Expression left, Expression right)
         {
+            //if (left is BinaryExpression b && b.Operator == Operator.IAdd)
+            //    throw new NotImplementedException();
             var bitSize = left.DataType.BitSize;
             var dtResult = bitSize > 0 ? PrimitiveType.CreateWord(bitSize) : (DataType) new UnknownType();
             return new BinaryExpression(Operator.IAdd, dtResult, left, right);
@@ -669,7 +673,7 @@ namespace Reko.Core.Expressions
         /// <param name="intrinsic">The instrinsic function to apply.</param>
         /// <param name="args">The arguments of the function.</param>
         /// <returns>A function application</returns>
-        public Application Fn(IntrinsicProcedure intrinsic,  params Expression[] args)
+        public virtual Application Fn(IntrinsicProcedure intrinsic, params Expression[] args)
         {
             if (intrinsic.IsGeneric && !intrinsic.IsConcreteGeneric)
             {
@@ -1645,9 +1649,10 @@ namespace Reko.Core.Expressions
         /// <param name="right">Addend</param>
         /// <param name="borrow">Carry flag</param>
         /// <returns>A binary expression for the subtraction-with-borrow.</returns>
-        public BinaryExpression ISubB(Expression left, Expression right, Expression borrow)
+        public Application ISubB(Expression left, Expression right, Expression borrow)
         {
-            return ISub(ISub(left, right), borrow);
+            var subc = CommonOps.ISubC.MakeInstance(left.DataType, borrow.DataType);
+            return Fn(subc, left, right, borrow);
         }
 
         /// <summary>
@@ -1659,6 +1664,8 @@ namespace Reko.Core.Expressions
         /// <returns>An integer subtraction expression.</returns>
         public BinaryExpression ISub(Expression left, Expression right)
         {
+            //if (left is BinaryExpression b && b.Operator == Operator.ISub)
+            //    throw new NotImplementedException();
             return new BinaryExpression(Operator.ISub, left.DataType, left, right);
         }
 
@@ -1681,9 +1688,10 @@ namespace Reko.Core.Expressions
         /// <param name="right">Addend</param>
         /// <param name="carry">Carry flag</param>
         /// <returns>A binary expression for the subtract-with-carry.</returns>
-        public BinaryExpression ISubC(Expression left, Expression right, Expression carry)
+        public Application ISubC(Expression left, Expression right, Expression carry)
         {
-            return ISub(ISub(left, right), carry);
+            var subc = CommonOps.ISubC.MakeInstance(left.DataType, carry.DataType);
+            return Fn(subc, left, right, carry);
         }
 
         /// <summary>

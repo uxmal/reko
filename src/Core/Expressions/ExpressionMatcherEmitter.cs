@@ -53,5 +53,18 @@ namespace Reko.Core.Expressions
         {
             return ExpressionMatcher.AnyExpression(label);
         }
+
+        /// <summary>
+        /// Matches an application of an intrinsic function.
+        /// </summary>
+        /// <param name="intrinsic">The intrinsic function to match.</param>
+        /// <param name="args">The arguments of the intrinsic function.</param>
+        /// <returns>An application of the intrinsic function.</returns>
+        public override Application Fn(IntrinsicProcedure intrinsic, params Expression[] args)
+        {
+            return new Application(
+                new ProcedureConstant(PrimitiveType.Ptr32, intrinsic), intrinsic.ReturnType,
+                args);
+        }
     }
 }

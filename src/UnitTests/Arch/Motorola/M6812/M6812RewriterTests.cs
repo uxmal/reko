@@ -176,7 +176,7 @@ namespace Reko.UnitTests.Arch.M6800
             Given_HexString("8942");
             AssertCode(     // adca\t#$42
                 "0|L--|0000(2): 2 instructions",
-                "1|L--|a = a + 0x42<8> + C",
+                "1|L--|a = __addc<byte,byte>(a, 0x42<8>, C)",
                 "2|L--|NZVC = cond(a)");
         }
 
@@ -186,7 +186,7 @@ namespace Reko.UnitTests.Arch.M6800
             Given_HexString("9942");
             AssertCode(     // adca\t$42
                 "0|L--|0000(2): 2 instructions",
-                "1|L--|a = a + Mem0[0x0042<p16>:byte] + C",
+                "1|L--|a = __addc<byte,byte>(a, Mem0[0x0042<p16>:byte], C)",
                 "2|L--|NZVC = cond(a)");
         }
 

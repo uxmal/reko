@@ -80,7 +80,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("6300029A");
             AssertCode(     // adc	x3,x3,x2
                 "0|L--|0000000000100000(4): 1 instructions",
-                "1|L--|x3 = x3 + x2 + C");
+                "1|L--|x3 = __addc<word64,word32>(x3, x2, C)");
         }
 
         [Test]
@@ -89,7 +89,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("630002BA");
             AssertCode(     // adcs	x3,x3,x2
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|x3 = x3 + x2 + C",
+                "1|L--|x3 = __addc<word64,word32>(x3, x2, C)",
                 "2|L--|NZCV = cond(x3)");
         }
 
@@ -2777,7 +2777,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("630002DA");
             AssertCode(     // sbc	x3,x3,x2
                 "0|L--|0000000000100000(4): 1 instructions",
-                "1|L--|x3 = x3 - x2 - C");
+                "1|L--|x3 = __subc<word64,word32>(x3, x2, C)");
         }
 
         [Test]

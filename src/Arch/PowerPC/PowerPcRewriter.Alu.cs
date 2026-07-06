@@ -66,9 +66,9 @@ namespace Reko.Arch.PowerPC
             var opD = RewriteOperand(instr.Operands[0]);
             var xer = binder.EnsureRegister(arch.xer);
             m.Assign(opD,
-                m.IAdd(
-                    m.IAdd(opL, opR),
-                    xer));
+                m.Fn(
+                    CommonOps.IAddC.MakeInstance(opL.DataType, xer.DataType),
+                    opL, opR, xer));
             MaybeEmitCr0(opD);
             m.Assign(xer, m.Cond(xer.DataType, opD));
         }

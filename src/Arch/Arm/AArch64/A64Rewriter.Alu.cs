@@ -36,7 +36,7 @@ namespace Reko.Arch.Arm.AArch64
 {
     public partial class A64Rewriter
     {
-        private void RewriteAdcSbc(Func<Expression,Expression,Expression> opr, Action<Expression>? setFlags = null)
+        private void RewriteAdcSbc(IntrinsicProcedure opr, Action<Expression>? setFlags = null)
         {
             var opSrc1 = RewriteOp(1);
             var opSrc2 = RewriteOp(2);
@@ -47,9 +47,9 @@ namespace Reko.Arch.Arm.AArch64
             var c = binder.EnsureFlagGroup(Registers.C);
             m.Assign(
                 opDst,
-                opr(
-                    opr(opSrc1, opSrc2),
-                    c));
+                m.Fn(
+                    opr.MakeInstance(opSrc1.DataType, c.DataType),
+                    opSrc1, opSrc2, c));
             setFlags?.Invoke(m.Cond(Registers.pstate.DataType, opDst));
         }
 

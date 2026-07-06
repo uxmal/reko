@@ -28,25 +28,25 @@ l0C00_0000:
 	dx = Mem0[ds:0x302<16>:word16]
 	ax = ax + Mem0[ds:0x304<16>:word16]
 	SCZO = cond(ax)
-	dx = dx + Mem0[ds:0x306<16>:word16] + C
+	dx = __addc<word16,word32>(dx, Mem0[ds:0x306<16>:word16], C)
 	SCZO = cond(dx)
 	ax = Mem0[ds:si + 0x308<16>:word16]
 	ax = ax + cx
 	SCZO = cond(ax)
 	dx = Mem0[ds:si + 0x30A<16>:word16]
-	dx = dx + bx + C
+	dx = __addc<word16,word32>(dx, bx, C)
 	SCZO = cond(dx)
 	v13 = Mem0[ds:0x200<16>:word32] + eax
 	Mem0[ds:0x200<16>:word32] = v13
 	SCZO = cond(v13)
-	v15 = Mem0[ds:0x204<16>:word32] + edx + C
+	v15 = __addc<word32,word32>(Mem0[ds:0x204<16>:word32], edx, C)
 	Mem0[ds:0x204<16>:word32] = v15
 	SCZO = cond(v15)
 	cx = Mem0[ds:si + 0x30C<16>:word16]
 	ax = ax - cx
 	SCZO = cond(ax)
 	bx = Mem0[ds:si + 0x30E<16>:word16]
-	dx = dx - bx - C
+	dx = __subc<word16,word32>(dx, bx, C)
 	SCZO = cond(dx)
 	return
 	// succ:  fn0C00_0000_exit

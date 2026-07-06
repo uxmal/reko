@@ -95,8 +95,8 @@ namespace Reko.Arch.Sparc
                 case Mnemonic.illegal: iclass = InstrClass.Invalid; m.Invalid(); break;
                 case Mnemonic.add: RewriteAlu(m.IAdd, false); break;
                 case Mnemonic.addcc: RewriteAluCc(m.IAdd, false); break;
-                case Mnemonic.addx: RewriteAddxSubx(m.IAdd, false); break;
-                case Mnemonic.addxcc: RewriteAddxSubx(m.IAdd, true); break;
+                case Mnemonic.addx: RewriteAddxSubx(CommonOps.IAddC, false); break;
+                case Mnemonic.addxcc: RewriteAddxSubx(CommonOps.IAddC, true); break;
                 case Mnemonic.and: RewriteAlu(m.And, false); break;
                 case Mnemonic.andcc: RewriteAluCc(m.And, false); break;
                 case Mnemonic.andn: RewriteAlu(m.And, true); break;
@@ -253,8 +253,8 @@ namespace Reko.Arch.Sparc
                 case Mnemonic.stfsr: RewriteStore(PrimitiveType.Word32); break;
                 case Mnemonic.sub: RewriteAlu(m.ISub, false); break;
                 case Mnemonic.subcc: RewriteAluCc(m.ISub, false); break;
-                case Mnemonic.subx: RewriteAddxSubx(m.ISub, false); break;
-                case Mnemonic.subxcc: RewriteAddxSubx(m.ISub, true); break;
+                case Mnemonic.subx: RewriteAddxSubx(CommonOps.ISubC, false); break;
+                case Mnemonic.subxcc: RewriteAddxSubx(CommonOps.ISubC, true); break;
                 case Mnemonic.swap: RewriteSwap(swap_intrinsic); break;
                 case Mnemonic.swapa: RewriteSwap(swapa_intrinsic); break;
                 case Mnemonic.ta: RewriteTrap(m.True()); break;

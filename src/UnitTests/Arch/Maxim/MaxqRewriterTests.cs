@@ -56,7 +56,7 @@ public class MaxqRewriterTests : RewriterTestBase
         Given_HexString("0AEA");
         AssertCode(     // addc	acc,acc
             "0|L--|0100(1): 2 instructions",
-            "1|L--|acc = acc + acc + c",
+            "1|L--|acc = __addc<word16,word16>(acc, acc, c)",
             "2|L--|cszv = cond(acc)");
     }
 
@@ -378,7 +378,7 @@ public class MaxqRewriterTests : RewriterTestBase
         Given_HexString("00FA");
         AssertCode(     // subb	acc,m0[0]
             "0|L--|0100(1): 2 instructions",
-            "1|L--|acc = acc - __read_modreg(0<8>) - c",
+            "1|L--|acc = __subc<word16,word16>(acc, __read_modreg(0<8>), c)",
             "2|L--|cszv = cond(acc)");
     }
 

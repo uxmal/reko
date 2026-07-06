@@ -107,8 +107,8 @@ namespace Reko.Arch.zSeries
                 case Mnemonic.agr: RewriteAr(PrimitiveType.Int64); break;
                 case Mnemonic.agsi: RewriteAsi(PrimitiveType.Int64); break;
                 case Mnemonic.al: RewriteA(PrimitiveType.Word32); break;
-                case Mnemonic.alcr: RewriteAdcSbcReg(m.IAdd, PrimitiveType.Word32); break;
-                case Mnemonic.alcgr: RewriteAdcSbcReg(m.IAdd, PrimitiveType.Word64); break;
+                case Mnemonic.alcr: RewriteAdcSbcReg(CommonOps.IAddC, PrimitiveType.Word32); break;
+                case Mnemonic.alcgr: RewriteAdcSbcReg(CommonOps.IAddC, PrimitiveType.Word64); break;
                 case Mnemonic.algfr: RewriteAlugfr(m.IAdd, PrimitiveType.Word32, PrimitiveType.Word64); break;
                 case Mnemonic.algr: RewriteAr(PrimitiveType.Word64); break;
                 case Mnemonic.alr: RewriteAr(PrimitiveType.Word32); break;

@@ -79,7 +79,7 @@ namespace Reko.UnitTests.Arch.Avr
             Given_Instruction("E20B0041");	// adc	r1,r1,r11
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|r1 = r1 + r11 + C",
+                "1|L--|r1 = __addc<word32,word32>(r1, r11, C)",
                 "2|L--|VNZC = cond(r1)");
         }
 
@@ -820,7 +820,7 @@ namespace Reko.UnitTests.Arch.Avr
             Given_Instruction("F20B014B");	// sbc	r11,r9,r11
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|r11 = r9 - r11 - C",
+                "1|L--|r11 = __subc<word32,word32>(r9, r11, C)",
                 "2|L--|VNZC = cond(r11)");
         }
 

@@ -31,11 +31,16 @@ namespace Reko.Arch.Tlcs.Tlcs900
 {
     public partial class Tlcs900Rewriter
     {
-        private void RewriteAdcSbc(Func<Expression, Expression, Expression> fn, string flags)
+        private void RewriteAdcSbc(IntrinsicProcedure fn, string flags)
         {
-            var c = binder.EnsureFlagGroup(Registers.C);
             var src = RewriteSrc(this.instr.Operands[1]);
-            var dst = RewriteDst(this.instr.Operands[0], src, (d, s) => fn(fn(d, s), c));
+            var dst = RewriteDst(this.instr.Operands[0], src, (d, s) =>
+            {
+                var c = binder.EnsureFlagGroup(Registers.C);
+                return m.Fn(
+                    fn.MakeInstance(d.DataType, c.DataType),
+                    d, s, c);
+            });
             EmitCc(dst, flags);
         }
 

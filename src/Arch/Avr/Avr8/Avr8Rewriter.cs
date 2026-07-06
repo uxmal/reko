@@ -83,7 +83,7 @@ namespace Reko.Arch.Avr.Avr8
             this.m = new RtlEmitter(rtlInstructions);
             switch (instr.Mnemonic)
             {
-            case Mnemonic.adc: RewriteAdcSbc(m.IAdd); break;
+            case Mnemonic.adc: RewriteAdcSbc(CommonOps.IAddC); break;
             case Mnemonic.add: RewriteBinOp(m.IAdd, CmpFlags); break;
             case Mnemonic.adiw: RewriteAddSubIW(m.IAdd); break;
             case Mnemonic.and: RewriteBinOp(m.And, Registers.SNZ, Registers.V); break;
@@ -142,8 +142,8 @@ namespace Reko.Arch.Avr.Avr8
             case Mnemonic.ret: RewriteRet(); break;
             case Mnemonic.reti: RewriteRet(); break;  //$TODO: more to indicate interrupt return?
             case Mnemonic.rjmp: RewriteJmp(); break;
-            case Mnemonic.sbc: RewriteAdcSbc(m.ISub); break;
-            case Mnemonic.sbci: RewriteAdcSbc(m.ISub); break;
+            case Mnemonic.sbc: RewriteAdcSbc(CommonOps.ISubC); break;
+            case Mnemonic.sbci: RewriteAdcSbc(CommonOps.ISubC); break;
             case Mnemonic.sbis: RewriteSbis(); return; // We've already added ourself to clusters.
             case Mnemonic.sbiw: RewriteAddSubIW(m.ISub); break;
             case Mnemonic.sbrc: SkipIf(Sbrc); break;
@@ -306,7 +306,7 @@ namespace Reko.Arch.Avr.Avr8
             }
         }
 
-        public void RewriteAdcSbc(Func<Expression, Expression, Expression> opr)
+        public void RewriteAdcSbc(IntrinsicProcedure opr)
         {
             // We do not take the trouble of widening the CF to the word size
             // to simplify code analysis in later stages. 
@@ -315,9 +315,9 @@ namespace Reko.Arch.Avr.Avr8
             var src = RewriteOp(1);
             m.Assign(
                 dst,
-                opr(
-                    opr(dst, src),
-                    c));
+                m.Fn(
+                    opr.MakeInstance(dst.DataType, c.DataType),
+                    dst, src, c));
             EmitFlags(dst, CmpFlags);
         }
 
@@ -396,7 +396,9 @@ namespace Reko.Arch.Avr.Avr8
             var right = RewriteOp(1);
             var c = binder.EnsureFlagGroup(Registers.C);
             var flags = binder.EnsureFlagGroup(CmpFlags);
-            m.Assign(flags, m.ISub(m.ISub(left, right), c));
+            m.Assign(flags, m.Fn(
+                CommonOps.ISubC.MakeInstance(left.DataType, c.DataType),
+                left, right, c));
         }
 
         private void SkipIf(Func<Expression, Expression,Expression> cond)

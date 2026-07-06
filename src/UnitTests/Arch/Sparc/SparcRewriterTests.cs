@@ -524,10 +524,19 @@ namespace Reko.UnitTests.Arch.Sparc
         [Test]
         public void SparcRw_subx()
         {
-            Given_UInt32s(0x986060FF);  //  subx %g0,0xFFFFFFFF<32>,%o4
+            Given_UInt32s(0x986060FF);  //  subx %g1,0xFFFFFFFF<32>,%o4
             AssertCode(
                  "0|L--|00100000(4): 1 instructions",
-                 "1|L--|o4 = g1 - 0xFF<32> - C");
+                 "1|L--|o4 = __subc<word32,word32>(g1, 0xFF<32>, C)");
+        }
+
+        [Test]
+        public void SparcRw_subx_idiom()
+        {
+            Given_UInt32s(0x98603FFF);  //  subx %g0,0xFFFFFFFF<32>,%o4
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|o4 = CONVERT(C != 0<32>, bool, word32)");
         }
 
         [Test]
@@ -536,7 +545,7 @@ namespace Reko.UnitTests.Arch.Sparc
             Given_UInt32s(0x90402000);  // addx %g0,0<32>,%o0
             AssertCode(
                  "0|L--|00100000(4): 1 instructions",
-                 "1|L--|o0 = 0<32> + 0<32> + C");
+                 "1|L--|o0 = __addc<word32,word32>(0<32>, 0<32>, C)");
         }
 
         [Test]

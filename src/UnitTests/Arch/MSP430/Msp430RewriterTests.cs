@@ -171,9 +171,9 @@ namespace Reko.UnitTests.Arch.Msp430
             Given_Bytes(0x6A, 0x64);	// addc.b	@r4,r10
             AssertCode(
                 "0|L--|0100(2): 5 instructions",
-                "1|L--|v5 = Mem0[r4:byte]",
-                "2|L--|v7 = SLICE(r10, byte, 0)",
-                "3|L--|v8 = v7 + v5 + C",
+                "1|L--|v4 = Mem0[r4:byte]",
+                "2|L--|v6 = SLICE(r10, byte, 0)",
+                "3|L--|v8 = __addc<byte,word16>(v6, v4, C)",
                 "4|L--|r10 = CONVERT(v8, byte, word16)",
                 "5|L--|VNZC = cond(v8)");
         }
@@ -226,12 +226,12 @@ namespace Reko.UnitTests.Arch.Msp430
             Given_Bytes(0xB1, 0x79, 0x0E, 0x20);	// subc.w	@r9+,200E(sp)
             AssertCode(
                 "0|L--|0100(4): 6 instructions",
-                "1|L--|v5 = Mem0[r9:word16]",
+                "1|L--|v4 = Mem0[r9:word16]",
                 "2|L--|r9 = r9 + 2<i16>",
-                "3|L--|v7 = Mem0[sp + 8206<i16>:word16]",
-                "4|L--|v7 = v7 - v5 - C",
-                "5|L--|Mem0[sp + 8206<i16>:word16] = v7",
-                "6|L--|VNZC = cond(v7)");
+                "3|L--|v6 = Mem0[sp + 8206<i16>:word16]",
+                "4|L--|v6 = __subc<word16,word16>(v6, v4, C)",
+                "5|L--|Mem0[sp + 8206<i16>:word16] = v6",
+                "6|L--|VNZC = cond(v6)");
         }
 
         [Test]

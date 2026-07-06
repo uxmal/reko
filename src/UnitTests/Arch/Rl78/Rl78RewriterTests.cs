@@ -388,7 +388,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("1F D7 C1");	// addc	a,[0C1D7h]
             AssertCode(
                 "0|L--|00001000(3): 2 instructions",
-                "1|L--|a = a + Mem0[0x0000C1D7<p32>:byte] + C",  //$LIT should be p16
+                "1|L--|a = __addc<byte,byte>(a, Mem0[0x0000C1D7<p32>:byte], C)",  //$LIT should be p16
                 "2|L--|CZ = cond(a)");
         }
 
@@ -478,7 +478,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("3D");	// subc	a,[hl]
             AssertCode(
                 "0|L--|00001000(1): 2 instructions",
-                "1|L--|a = a - Mem0[hl:byte] - C",
+                "1|L--|a = __subc<byte,byte>(a, Mem0[hl:byte], C)",
                 "2|L--|CZ = cond(a)");
         }
 

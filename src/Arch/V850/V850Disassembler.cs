@@ -333,8 +333,6 @@ namespace Reko.Arch.V850
             return new NyiDecoder<V850Disassembler, Mnemonic, V850Instruction>(message);
         }
 
-        private static bool Ne0(uint u) => u != 0;
-
         static V850Disassembler()
         {
             var invalid = Instr(Mnemonic.invalid, InstrClass.Invalid);

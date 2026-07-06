@@ -11627,7 +11627,6 @@ ui32 fn00017F88(Eq_n r5, Eq_n r6)
 	}
 	else
 	{
-		int32 r30_n = 0x00;
 		word32 r29_n = 0x1F;
 		if (r6 == r5)
 		{
@@ -11653,6 +11652,8 @@ ui32 fn00017F88(Eq_n r5, Eq_n r6)
 				r3_n = 0x01;
 			else
 			{
+				Eq_n r30_r5_n;
+				r30_r5_n.u1 = (uint64) r5;
 				if (r5 >= 0x00)
 				{
 					while (true)
@@ -11663,11 +11664,13 @@ ui32 fn00017F88(Eq_n r5, Eq_n r6)
 						r29_n += ~0x00;
 					}
 					r29_n += 0x00;
+					r30_r5_n.u1 = (uint64) r5;
 				}
 				while (true)
 				{
-					r5 *= 0x02;
-					r30_n = r30_n * 0x02 + (word32) (r5 < 0x00);
+					ui64 r30_r5_n = r30_r5_n * 0x02;
+					int32 r30_n = SLICE(r30_r5_n, word32, 32);
+					word32 r5_n = (word32) r30_r5_n;
 					int32 r31_n = r30_n - r6;
 					if (r31_n >= 0x00)
 					{
@@ -11678,6 +11681,7 @@ ui32 fn00017F88(Eq_n r5, Eq_n r6)
 					if (r29_n == 0x00)
 						break;
 					r3_n *= 0x02;
+					r30_r5_n = SEQ(r30_n, r5_n);
 				}
 			}
 			return r3_n;
@@ -11719,7 +11723,8 @@ Eq_n fn00018030(Eq_n r5, Eq_n r6)
 			r3_n = (r5 & 0x7FFFFFFF) - (r6 & 0x7FFFFFFF);
 		else
 		{
-			r3_n.u0 = 0x00;
+			Eq_n r3_r5_n;
+			r3_r5_n.u1 = (uint64) r5;
 			if (r5 >= 0x00)
 			{
 				while (true)
@@ -11730,16 +11735,21 @@ Eq_n fn00018030(Eq_n r5, Eq_n r6)
 					r29_n += ~0x00;
 				}
 				r29_n += 0x00;
+				r3_r5_n.u1 = (uint64) r5;
 			}
-			do
+			while (true)
 			{
-				r5 *= 0x02;
-				r3_n = r3_n * 0x02 + (word32) (r5 < 0x00);
+				ui64 r3_r5_n = r3_r5_n * 0x02;
+				r3_n = SLICE(r3_r5_n, word32, 32);
+				word32 r5_n = (word32) r3_r5_n;
 				Eq_n r31_n = r3_n - r6;
 				if (r31_n >= 0x00)
 					r3_n = r31_n;
 				r29_n += ~0x00;
-			} while (r29_n != 0x00);
+				if (r29_n == 0x00)
+					break;
+				r3_r5_n = SEQ(r3_n, r5_n);
+			}
 		}
 		return r3_n;
 	}
@@ -18752,9 +18762,10 @@ ui32 fn0002E7D0(Eq_n r5, Eq_n r6)
 			r28_n = r5 ^ r6;
 		if (r6 < 0x00)
 			r6 = -r6;
-		int32 r30_n = 0x00;
 		r3_n = 0x00;
 		word32 r29_n = 0x1F;
+		Eq_n r30_r5_n;
+		r30_r5_n.u1 = (uint64) r5;
 		if (r5 >= 0x00)
 		{
 			while (true)
@@ -18765,11 +18776,13 @@ ui32 fn0002E7D0(Eq_n r5, Eq_n r6)
 				r29_n += ~0x00;
 			}
 			r29_n += 0x00;
+			r30_r5_n.u1 = (uint64) r5;
 		}
 		while (true)
 		{
-			r5 *= 0x02;
-			r30_n = r30_n * 0x02 + (word32) (r5 < 0x00);
+			ui64 r30_r5_n = r30_r5_n * 0x02;
+			int32 r30_n = SLICE(r30_r5_n, word32, 32);
+			word32 r5_n = (word32) r30_r5_n;
 			int32 r31_n = r30_n - r6;
 			if (r31_n >= 0x00)
 			{
@@ -18780,6 +18793,7 @@ ui32 fn0002E7D0(Eq_n r5, Eq_n r6)
 			if (r29_n == 0x00)
 				break;
 			r3_n *= 0x02;
+			r30_r5_n = SEQ(r30_n, r5_n);
 		}
 		if (r28_n < 0x00)
 			r3_n = -r3_n;
@@ -18804,8 +18818,8 @@ int32 fn0002E86C(Eq_n r5, int32 r6)
 			r5_n = r5;
 		if (r6 < 0x00)
 			r6 = -r6;
-		r3_n = 0x00;
 		word32 r29_n;
+		Eq_n r3_r5_n;
 		if (r5_n >= 0x00)
 		{
 			word32 r29_n = 0x1F;
@@ -18817,18 +18831,26 @@ int32 fn0002E86C(Eq_n r5, int32 r6)
 				r29_n += ~0x00;
 			}
 			r29_n = r29_n + 0x00;
+			r3_r5_n.u1 = (uint64) r5_n;
 		}
 		else
-			r29_n = 0x20;
-		do
 		{
-			r5_n *= 0x02;
-			r3_n = r3_n * 0x02 + (word32) (r5_n < 0x00);
+			r29_n = 0x20;
+			r3_r5_n.u1 = (uint64) r5_n;
+		}
+		while (true)
+		{
+			ui64 r3_r5_n = r3_r5_n * 0x02;
+			r3_n = SLICE(r3_r5_n, word32, 32);
+			word32 r5_n = (word32) r3_r5_n;
 			int32 r31_n = r3_n - r6;
 			if (r31_n >= 0x00)
 				r3_n = r31_n;
 			r29_n += ~0x00;
-		} while (r29_n != 0x00);
+			if (r29_n == 0x00)
+				break;
+			r3_r5_n = SEQ(r3_n, r5_n);
+		}
 		if (r5 < 0x00)
 			r3_n = -r3_n;
 	}
@@ -18912,7 +18934,6 @@ ui32 fn0002E960(Eq_n r5, Eq_n r6)
 	}
 	else
 	{
-		int32 r30_n = 0x00;
 		word32 r29_n = 0x1F;
 		if (r6 == r5)
 		{
@@ -18938,6 +18959,8 @@ ui32 fn0002E960(Eq_n r5, Eq_n r6)
 				r3_n = 0x01;
 			else
 			{
+				Eq_n r30_r5_n;
+				r30_r5_n.u1 = (uint64) r5;
 				if (r5 >= 0x00)
 				{
 					while (true)
@@ -18948,11 +18971,13 @@ ui32 fn0002E960(Eq_n r5, Eq_n r6)
 						r29_n += ~0x00;
 					}
 					r29_n += 0x00;
+					r30_r5_n.u1 = (uint64) r5;
 				}
 				while (true)
 				{
-					r5 *= 0x02;
-					r30_n = r30_n * 0x02 + (word32) (r5 < 0x00);
+					ui64 r30_r5_n = r30_r5_n * 0x02;
+					int32 r30_n = SLICE(r30_r5_n, word32, 32);
+					word32 r5_n = (word32) r30_r5_n;
 					int32 r31_n = r30_n - r6;
 					if (r31_n >= 0x00)
 					{
@@ -18963,6 +18988,7 @@ ui32 fn0002E960(Eq_n r5, Eq_n r6)
 					if (r29_n == 0x00)
 						break;
 					r3_n *= 0x02;
+					r30_r5_n = SEQ(r30_n, r5_n);
 				}
 			}
 			return r3_n;
@@ -19004,7 +19030,8 @@ Eq_n fn0002EA08(Eq_n r5, Eq_n r6)
 			r3_n = (r5 & 0x7FFFFFFF) - (r6 & 0x7FFFFFFF);
 		else
 		{
-			r3_n.u0 = 0x00;
+			Eq_n r3_r5_n;
+			r3_r5_n.u1 = (uint64) r5;
 			if (r5 >= 0x00)
 			{
 				while (true)
@@ -19015,16 +19042,21 @@ Eq_n fn0002EA08(Eq_n r5, Eq_n r6)
 					r29_n += ~0x00;
 				}
 				r29_n += 0x00;
+				r3_r5_n.u1 = (uint64) r5;
 			}
-			do
+			while (true)
 			{
-				r5 *= 0x02;
-				r3_n = r3_n * 0x02 + (word32) (r5 < 0x00);
+				ui64 r3_r5_n = r3_r5_n * 0x02;
+				r3_n = SLICE(r3_r5_n, word32, 32);
+				word32 r5_n = (word32) r3_r5_n;
 				Eq_n r31_n = r3_n - r6;
 				if (r31_n >= 0x00)
 					r3_n = r31_n;
 				r29_n += ~0x00;
-			} while (r29_n != 0x00);
+				if (r29_n == 0x00)
+					break;
+				r3_r5_n = SEQ(r3_n, r5_n);
+			}
 		}
 		return r3_n;
 	}

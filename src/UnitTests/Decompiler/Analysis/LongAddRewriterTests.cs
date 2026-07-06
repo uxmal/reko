@@ -216,14 +216,14 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 m.Assign(ax, m.IAdd(ax, cx));
                 m.Assign(SCZ, m.Cond(SCZ.DataType, ax));
                 block = m.CurrentBlock;
-                m.Assign(dx, m.IAdd(m.IAdd(dx, bx), CF));
+                m.Assign(dx, m.IAddC(dx, bx, CF));
                 m.Return();
             });
             var worker = rw.CreateWorker(ssa);
             var cm = worker.FindConditionOf(block.Statements, 0, GetId("ax_3"));
             //Assert.AreEqual("ax_3,0,SCZ_4,SCZ_4 = cond(ax_3),SCZ_4", string.Format("{0},{1},{2},{3}", cm.src, cm.StatementIndex, cm.Statement, cm.FlagGroup));
             var asc = worker.FindUsingAddSub(block, cm.FlagGroup, new LongAddRewriter.Candidate(Operator.IAdd, ax, cx));
-            Assert.AreEqual("dx_8 = dx + bx + C_7", asc.Statement.ToString());
+            Assert.AreEqual("dx_8 = __addc<word16,word32>(dx, bx, C_7)", asc.Statement.ToString());
         }
 
         [Test]
@@ -242,7 +242,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             {
                 m.Assign(ax, m.IAdd(ax, 0x5678));
                 m.Assign(CF, m.Cond(CF.DataType, ax));
-                m.Assign(dx, m.IAdd(m.IAdd(dx, 0x1234), CF));
+                m.Assign(dx, m.IAddC(dx, m.Word16(0x1234), CF));
                 block = m.Block;
                 m.Return();
             });
@@ -264,7 +264,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             {
                 m.Assign(ax, m.IAdd(ax, 1));
                 m.Assign(CF, m.Cond(CF.DataType, ax));
-                m.Assign(dx, m.IAdd(m.IAdd(dx, 0), CF));
+                m.Assign(dx, m.IAddC(dx, m.Word16(0), CF));
                 block = m.Block;
                 m.Return();
             });
@@ -275,7 +275,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
         {
             RunTest(m =>
             {
-                m.Assign(ax, m.IAdd(m.IAdd(ax, cx), CF));
+                m.Assign(ax, m.IAddC(ax, cx, CF));
                 block = m.Block;
                 m.Return();
             });
@@ -316,7 +316,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             {
                 m.Assign(ax, m.IAdd(ax, m.Mem16(m.IAdd(bx, 0x300))));
                 m.Assign(CF, m.Cond(CF.DataType, ax));
-                m.Assign(dx, m.IAdd(m.IAdd(dx, m.Mem16(m.IAdd(bx, 0x302))), CF));
+                m.Assign(dx, m.IAddC(dx, m.Mem16(m.IAdd(bx, 0x302)), CF));
                 m.Assign(CF, m.Cond(CF.DataType, dx));
                 block = m.Block;
                 m.Return();
@@ -393,7 +393,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 m.Assign(ax, m.ISub(ax, cx));
                 m.Assign(this.SCZ, m.Cond(SCZ.DataType, ax));
                 m.MStore(m.Ptr16(0x218), ax);
-                m.Assign(dx, m.ISub(m.ISub(dx, bx), this.CF));
+                m.Assign(dx, m.ISubC(dx, bx, this.CF));
                 m.MStore(m.Ptr16(0x21A), dx);
                 block = m.Block;
             });
@@ -467,7 +467,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 m.Assign(tmp1, m.ISub(m.Mem32(m.Word32(0x6FF0)), eax));
                 m.MStore(m.Word32(0x6FF0), tmp1);
                 m.Assign(this.SCZ, m.Cond(SCZ.DataType, tmp1));
-                m.Assign(tmp2, m.ISub(m.ISub(m.Mem32(m.Word32(0x6FF4)), edx), this.CF));
+                m.Assign(tmp2, m.ISubC(m.Mem32(m.Word32(0x6FF4)), edx, this.CF));
                 m.MStore(m.Word32(0x6FF4), tmp2);
                 m.Assign(this.SCZ, m.Cond(SCZ.DataType, tmp2));
                 block = m.Block;
@@ -505,13 +505,11 @@ namespace Reko.UnitTests.Decompiler.Analysis
             {
                 m.Assign(ax, m.IAdd(ax, m.Mem16(m.IAdd(bx, 2))));
                 m.Assign(SCZ, m.Cond(SCZ.DataType, ax));
-                //m.Alias(CF, m.Slice(PrimitiveType.Bool, SCZ, 1));
-                m.Assign(dx, m.IAdd(dx, CF));
+                m.Assign(dx, m.IAddC(dx, m.Word16(0), CF));
 
                 m.Assign(ax, m.IAdd(ax, m.Mem16(m.IAdd(bx, 6))));
                 m.Assign(SCZ, m.Cond(SCZ.DataType, ax));
-                //m.Alias(CF, m.Slice(PrimitiveType.Bool, SCZO, 1));
-                m.Assign(dx, m.IAdd(m.IAdd(dx, m.Mem16(m.IAdd(bx, 8))), CF));
+                m.Assign(dx, m.IAddC(dx, m.Mem16(m.IAdd(bx, 8)), CF));
                 m.Assign(SCZ, m.Cond(SCZ.DataType, dx));
                 this.block = m.Block;
                 m.Return();
@@ -533,7 +531,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
 	dx_10 = SLICE(dx_ax_13, word16, 16) (alias)
 	SCZ_4 = cond(ax_3)
 	C_6 = SCZ_4 & 4<32> (alias)
-	dx_7 = dx + C_6
+	dx_7 = __addc<word16,word32>(dx, 0<16>, C_6)
 	SCZ_8 = cond(dx_7)
 ";
             #endregion
@@ -541,7 +539,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             {
                 m.Assign(ax, m.IAdd(ax, cx));
                 m.Assign(SCZ, m.Cond(SCZ.DataType, ax));
-                m.Assign(dx, m.IAdd(dx, CF));
+                m.Assign(dx, m.IAddC(dx, m.Word16(0), CF));
                 m.Assign(SCZ, m.Cond(SCZ.DataType, dx));
                 m.Assign(dx, m.IAdd(dx, bx));
                 this.block = m.Block;
@@ -610,7 +608,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 m.Assign(SCZ, m.Cond(SCZ.DataType, A));
                 m.Assign(DPL, A);
                 m.Assign(A, 0);
-                m.Assign(A, m.IAdd(m.IAdd(A, 0), CF));
+                m.Assign(A, m.IAddC(A, m.Word16(0), CF));
                 m.Assign(DPH, A);
 
                 this.block = m.Block;
@@ -873,7 +871,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 m.Assign(d0, m.Neg(d0));
                 m.Assign(SCZ, m.Cond(SCZ.DataType, d0));
                 m.Assign(CF, m.And(SCZ, 4));
-                m.Assign(d1, m.ISub(m.Neg(d1), CF));
+                m.Assign(d1, m.ISubC(m.Zero(d1.DataType), d1, CF));
                 m.Assign(SCZ, m.Cond(SCZ.DataType, d1));
 
                 this.block = m.Block;

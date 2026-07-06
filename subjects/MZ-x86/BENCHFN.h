@@ -1921,17 +1921,9 @@ Eq_3809: (fn word16 ((ptr32 Eq_3750)))
 	T_4239 (in fn0800_1AEB @ 0800:1AE8 : segptr32)
 	T_4384 (in fn0800_1AEB @ 0800:1B2A : segptr32)
 	T_4496 (in fn0800_1AEB @ 0800:1B89 : segptr32)
-Eq_3899: (fn Eq_3595 (Eq_217, (memptr (ptr16 Eq_3) code), (memptr (ptr16 Eq_3) code), Eq_224, uint16, ci16, (memptr Eq_217 word16), (memptr Eq_217 ui16), Eq_3914, ui16, Eq_224, Eq_224))
+Eq_3899: (fn Eq_3595 (Eq_217, (memptr (ptr16 Eq_3) code), (memptr (ptr16 Eq_3) code), Eq_224, uint16, ci16, (memptr Eq_217 word16), (memptr Eq_217 ui16), word16, ui16, Eq_224, Eq_224))
 	T_3899 (in __scantol @ 0800:1869 : segptr32)
 	T_3900 (in signature of __scantol @ 0800:1BCC : void)
-Eq_3914: (union "Eq_3914" (ui32 u0) (word16 u1))
-	T_3914 (in out dx @ 0800:1869 : word16)
-	T_3915 (in dxOut @ 0800:1869 : Eq_3914)
-	T_4623 (in 0<16> @ 0800:1C74 : word16)
-	T_4624 (in dx_392 @ 0800:1C74 : Eq_3914)
-	T_4749 (in SLICE(di_si_783, word16, 16) @ 0800:1D0F : word16)
-	T_4777 (in SLICE(dx_ax_536, word16, 16) @ 0800:1D1C : word16)
-	T_4820 (in (cond(SLICE(ah_al_541, byte, 8)) & 2<32>) + 0x7FFF<16> @ 0800:1D3E : word16)
 Eq_3961: (union "Eq_3961" (int16 u0) (uint16 u1) ((memptr (ptr16 Eq_220) byte) u2) ((memptr Eq_217 Eq_4958) u3))
 	T_3961 (in di + 0<16> @ 0800:19EF : word16)
 Eq_3964: (union "Eq_3964" (int16 u0) (uint16 u1) ((memptr (ptr16 Eq_220) byte) u2) ((memptr Eq_217 Eq_4959) u3))
@@ -18049,11 +18041,11 @@ T_3913: (in fp - 38<i16> @ 0800:1869 : word16)
   OrigDataType: mp16
 T_3914: (in out dx @ 0800:1869 : word16)
   Class: Eq_3914
-  DataType: Eq_3914
+  DataType: word16
   OrigDataType: word16
-T_3915: (in dxOut @ 0800:1869 : Eq_3914)
+T_3915: (in dxOut @ 0800:1869 : word16)
   Class: Eq_3914
-  DataType: Eq_3914
+  DataType: word16
   OrigDataType: word16
 T_3916: (in out bx @ 0800:1869 : word16)
   Class: Eq_3916
@@ -20887,10 +20879,10 @@ T_4623: (in 0<16> @ 0800:1C74 : word16)
   Class: Eq_3914
   DataType: word16
   OrigDataType: word16
-T_4624: (in dx_392 @ 0800:1C74 : Eq_3914)
+T_4624: (in dx_392 @ 0800:1C74 : word16)
   Class: Eq_3914
-  DataType: Eq_3914
-  OrigDataType: (union (ui32 u1) (word16 u0))
+  DataType: word16
+  OrigDataType: word16
 T_4625: (in 0<16> @ 0800:1C19 : word16)
   Class: Eq_4625
   DataType: word16
@@ -21389,7 +21381,7 @@ T_4748: (in 1<16> @ 0800:1D0F : word16)
   OrigDataType: word16
 T_4749: (in SLICE(di_si_783, word16, 16) @ 0800:1D0F : word16)
   Class: Eq_3914
-  DataType: Eq_3914
+  DataType: word16
   OrigDataType: word16
 T_4750: (in SLICE(di_si_783, word16, 0) @ 0800:1D11 : word16)
   Class: Eq_4536
@@ -21501,7 +21493,7 @@ T_4776: (in SLICE(dx_ax_536, word16, 0) @ 0800:1D1A : word16)
   OrigDataType: word16
 T_4777: (in SLICE(dx_ax_536, word16, 16) @ 0800:1D1C : word16)
   Class: Eq_3914
-  DataType: Eq_3914
+  DataType: word16
   OrigDataType: word16
 T_4778: (in -2<i16> @ 0800:1CF2 : int16)
   Class: Eq_4778
@@ -21653,28 +21645,28 @@ T_4814: (in ah_al_541 @ 0800:1D3B : uint16)
   OrigDataType: uint16
 T_4815: (in SLICE(ah_al_541, byte, 8) @ 0800:1D3E : byte)
   Class: Eq_4815
-  DataType: byte
-  OrigDataType: byte
-T_4816: (in cond(SLICE(ah_al_541, byte, 8)) @ 0800:1D3E : word32)
-  Class: Eq_4816
-  DataType: ui32
-  OrigDataType: ui32
-T_4817: (in 2<32> @ 0800:1D3E : word32)
+  DataType: cu8
+  OrigDataType: cu8
+T_4816: (in 0<8> @ 0800:1D3E : byte)
+  Class: Eq_4815
+  DataType: cu8
+  OrigDataType: cu8
+T_4817: (in SLICE(ah_al_541, byte, 8) < 0<8> @ 0800:1D3E : bool)
   Class: Eq_4817
-  DataType: ui32
-  OrigDataType: ui32
-T_4818: (in cond(SLICE(ah_al_541, byte, 8)) & 2<32> @ 0800:1D3E : word32)
+  DataType: bool
+  OrigDataType: bool
+T_4818: (in CONVERT(SLICE(ah_al_541, byte, 8) <u 0<8>, bool, word16) @ 0800:1D3E : word16)
   Class: Eq_4818
-  DataType: ui32
-  OrigDataType: ui32
+  DataType: word16
+  OrigDataType: word16
 T_4819: (in 0x7FFF<16> @ 0800:1D3E : word16)
   Class: Eq_4819
   DataType: word16
   OrigDataType: word16
-T_4820: (in (cond(SLICE(ah_al_541, byte, 8)) & 2<32>) + 0x7FFF<16> @ 0800:1D3E : word16)
+T_4820: (in (word16) (SLICE(ah_al_541, byte, 8) < 0<8>) + 0x7FFF<16> @ 0800:1D3E : word16)
   Class: Eq_3914
-  DataType: Eq_3914
-  OrigDataType: ui32
+  DataType: word16
+  OrigDataType: word16
 T_4821: (in 2<16> @ 0800:1D41 : word16)
   Class: Eq_3916
   DataType: ui16
@@ -24312,12 +24304,7 @@ typedef struct Eq_3805 {
 
 typedef word16 (Eq_3809)(Eq_3750 *);
 
-typedef Eq_3595 (Eq_3899)(Eq_217, code Eq_3::*, code Eq_3::*, Eq_224, uint16, ci16, word16 Eq_217::*, ui16 Eq_217::*, Eq_3914, ui16, Eq_224, Eq_224);
-
-typedef union Eq_3914 {
-	ui32 u0;
-	word16 u1;
-} Eq_3914;
+typedef Eq_3595 (Eq_3899)(Eq_217, code Eq_3::*, code Eq_3::*, Eq_224, uint16, ci16, word16 Eq_217::*, ui16 Eq_217::*, word16, ui16, Eq_224, Eq_224);
 
 typedef union Eq_3961 {
 	int16 u0;

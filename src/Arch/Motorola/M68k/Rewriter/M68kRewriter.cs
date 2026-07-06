@@ -93,7 +93,7 @@ namespace Reko.Arch.Motorola.M68k.Rewriter
                 case Mnemonic.adda: RewriteBinOp((s, d) => m.IAdd(d, s)); break;
                 case Mnemonic.addi: RewriteArithmetic((s, d) => m.IAdd(d, s)); break;
                 case Mnemonic.addq: RewriteAddSubq((s, d) => m.IAdd(d, s)); break;
-                case Mnemonic.addx: RewriteAddSubx(m.IAdd); break;
+                case Mnemonic.addx: RewriteAddSubx(CommonOps.IAddC); break;
                 
                 case Mnemonic.and: RewriteLogical((s, d) => m.And(d, s)); break;
                 case Mnemonic.andi: RewriteLogical((s, d) => m.And(d, s)); break;
@@ -298,7 +298,7 @@ VS Overflow Set 1001 V
                 case Mnemonic.suba: RewriteBinOp((s, d) => m.ISub(d, s)); break;
                 case Mnemonic.subi: RewriteArithmetic((s, d) => m.ISub(d, s)); break;
                 case Mnemonic.subq: RewriteAddSubq((s, d) => m.ISub(d, s)); break;
-                case Mnemonic.subx: RewriteArithmetic((s, d) => m.ISub(m.ISub(d, s), binder.EnsureFlagGroup(Registers.X))); break;
+                case Mnemonic.subx: RewriteAddSubx(CommonOps.ISubC); break;
                 case Mnemonic.swap: RewriteSwap(); break;
                 case Mnemonic.tas: RewriteTas(); break;
                 case Mnemonic.trap: RewriteTrap(); break;

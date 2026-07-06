@@ -24,6 +24,7 @@ using Reko.Core.Code;
 using Reko.Core.Collections;
 using Reko.Core.Diagnostics;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Operators;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -60,6 +61,7 @@ public class LongAddRewriter : IAnalysis<SsaState>
     private static readonly TraceSwitch trace = new(nameof(LongAddRewriter), "Trace LongAddRewriter operations") { Level = TraceLevel.Warning };
     private static readonly InstructionMatcher adcPattern;
     private static readonly InstructionMatcher addPattern;
+    private static readonly InstructionMatcher sbbPattern;
     private static readonly ExpressionMatcher memOffset;
     private static readonly ExpressionMatcher segMemOffset;
     private static readonly InstructionMatcher condm;
@@ -549,30 +551,45 @@ public class LongAddRewriter : IAnalysis<SsaState>
                     continue;
                 }
 
-                if (ass.Src is BinaryExpression bin && 
-                    bin.Operator == Operator.ISub &&
-                    bin.Left is UnaryExpression subu &&
-                    subu.Operator == Operator.Neg && 
-                    subu.Expression is Identifier idSubu &&
-                    IsCarryFlag(bin.Right))
+                if (ass.Src is Application app &&
+                    app.Procedure is ProcedureConstant pc &&
+                    pc.Procedure.Name == CommonOps.ISubC.Name &&
+                    app.Arguments[0] is Identifier idNeg)
                 {
-                    return new Candidate(bin.Operator, subu.Expression, idSubu)
+                    var sid = ssa.Identifiers[idNeg];
+                    var def = sid.GetDefiningExpression();
+                    if (def is UnaryExpression u &&
+                        u.Operator.Type == OperatorType.Neg &&
+                        u.Expression is Identifier idSubu &&
+                        IsCarryFlag(app.Arguments[2]))
                     {
-                        Dst = ass.Dst
-                    };
+                        return new Candidate(Operator.ISub, u.Expression, idSubu)
+                        {
+                            Dst = ass.Dst
+                        };
+                    }
                 }
                 var asc = MatchAdcSbc(use);
                 if (asc is null)
                     continue;
-                if (asc.Op == Operator.ISub &&
-                    asc.Right!.IsZero &&
-                    asc.Left is Identifier idNegatedHi)
+                if (asc.Op == Operator.ISub)
                 {
-                    var sidNegatedHi = ssa.Identifiers[idNegatedHi];
-                    var def = sidNegatedHi.GetDefiningExpression();
-                    if (def is UnaryExpression u && u.Operator == Operator.Neg)
+                    if (asc.Right!.IsZero &&
+                        asc.Left is Identifier idNegatedHi)
                     {
-                        return new Candidate(asc.Op, u.Expression, asc.Dst)
+                        var sidNegatedHi = ssa.Identifiers[idNegatedHi];
+                        var def = sidNegatedHi.GetDefiningExpression();
+                        if (def is UnaryExpression u && u.Operator == Operator.Neg)
+                        {
+                            return new Candidate(asc.Op, u.Expression, asc.Dst)
+                            {
+                                Dst = asc.Dst,
+                            };
+                        }
+                    }
+                    if (asc.Left!.IsZero)
+                    {
+                        return new Candidate(asc.Op, asc.Right, asc.Right)
                         {
                             Dst = asc.Dst,
                         };
@@ -760,24 +777,57 @@ public class LongAddRewriter : IAnalysis<SsaState>
         /// with the left and right side of the <c>adc</c> / <c>sbc</c> instruction.</returns>
         public Candidate? MatchAdcSbc(Statement stm)
         {
-            var m = adcPattern.Match(stm.Instruction);
-            if (m.Success)
+            if (stm.Instruction is not Assignment ass ||
+                ass.Src is not Application app ||
+                app.Procedure is not ProcedureConstant { Procedure: IntrinsicProcedure fn })
             {
-                if (!IsCarryFlag(m.CapturedExpression("cf")))
-                    return null;
-                var op = m.CapturedOperator("op2");
-                if (op is not BinaryOperator binop || !binop.Type.IsAddOrSub())
-                    return null;
+                return null;
+            }
+
+            BinaryOperator? binop = null;
+            if (fn.Name == CommonOps.IAddC.Name)
+                binop = Operator.IAdd;
+            else if (fn.Name == CommonOps.ISubC.Name)
+                binop = Operator.ISub;
+            else
+                return null;
+
+            if (binop is not null)
+            {
+                var arg0 = app.Arguments[0];
+                var arg1 = app.Arguments[1];  
+                if (arg1.IsZero)
+                {
+                    // PDP-11 has one-operand addc/subc instructions.
+                    var sid = ssa.Identifiers[ass.Dst];
+                    foreach (var u in sid.Uses)
+                    {
+                        if (u.Instruction is Assignment ass2 &&
+                            ass2.Src is BinaryExpression bin2 &&
+                            bin2.Operator == binop)
+                        {
+                            return new Candidate(
+                                binop,
+                                arg0,
+                                bin2.Right)
+                            {
+                                Dst = ass2.Dst,
+                                Statement = u,
+                            };
+                        }
+                    }
+                }
                 return new Candidate(
                     binop,
-                    m.CapturedExpression("left")!,
-                    m.CapturedExpression("right")!)
+                    arg0,
+                    arg1)
                 {
-                    Dst = m.CapturedExpression("dst")!,
-                    Statement = stm
+                    Dst = ass.Dst,
+                    Statement = stm,
                 };
             }
-            m = addPattern.Match(stm.Instruction);
+
+            var m = addPattern.Match(stm.Instruction);
             if (m.Success)
             {
                 if (!IsCarryFlag(m.CapturedExpression("right")))
@@ -1186,12 +1236,17 @@ public class LongAddRewriter : IAnalysis<SsaState>
         adcPattern = new InstructionMatcher(
             new Assignment(
                 m.AnyId("dst"),
-                m.AnyBinary(
-                    "op1",
-                    m.AnyBinary(
-                        "op2",
-                        m.AnyExpr("left"),
-                        m.AnyExpr("right")),
+                m.IAddC(
+                    m.AnyExpr("left"),
+                    m.AnyExpr("right"),
+                    m.AnyExpr("cf"))));
+
+        sbbPattern = new InstructionMatcher(
+            new Assignment(
+                m.AnyId("dst"),
+                m.ISubC(
+                    m.AnyExpr("left"),
+                    m.AnyExpr("right"),
                     m.AnyExpr("cf"))));
 
         memOffset = ExpressionMatcher.Build(m =>

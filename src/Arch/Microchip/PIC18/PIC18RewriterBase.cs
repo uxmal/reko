@@ -1072,7 +1072,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         {
             var (indMode, memPtr) = GetBinaryPtrs(out Expression memExpr, out Expression dst);
             var borrow = m.Not(FlagGroup(FlagM.C));
-            ArithAssignIndirect(dst, m.ISub(m.ISub(Wreg, memExpr), borrow), indMode, memPtr);
+            ArithAssignIndirect(dst, m.Fn(
+                CommonOps.ISubC.MakeInstance(Wreg.DataType, borrow.DataType),
+                Wreg, memExpr, borrow),
+                indMode,
+                memPtr);
         }
 
         private void RewriteSUBLW()
@@ -1102,7 +1106,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         {
             var (indMode, memPtr) = GetBinaryPtrs(out Expression memExpr, out Expression dst);
             var borrow = m.Not(FlagGroup(FlagM.C));
-            ArithAssignIndirect(dst, m.ISub(m.ISub(memExpr, Wreg), borrow), indMode, memPtr);
+            ArithAssignIndirect(dst, m.ISubC(memExpr, Wreg, borrow), indMode, memPtr);
         }
 
         private void RewriteSWAPF()

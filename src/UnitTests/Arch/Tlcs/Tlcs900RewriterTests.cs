@@ -612,8 +612,8 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("82B2");	// sbc	b,(xde)
             AssertCode(
                 "0|L--|00010000(2): 4 instructions",
-                "1|L--|v5 = Mem0[xde:byte]",
-                "2|L--|b = b - v5 - C",
+                "1|L--|v4 = Mem0[xde:byte]",
+                "2|L--|b = __subc<byte,word16>(b, v4, C)",
                 "3|L--|N = true",
                 "4|L--|SZHVC = cond(b)");
         }
@@ -624,8 +624,8 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("C004B1");	// sbc	a,(00000004)
             AssertCode(
                 "0|L--|00010000(3): 4 instructions",
-                "1|L--|v4 = Mem0[0x00000004<p32>:byte]",
-                "2|L--|a = a - v4 - C",
+                "1|L--|v3 = Mem0[0x00000004<p32>:byte]",
+                "2|L--|a = __subc<byte,word16>(a, v3, C)",
                 "3|L--|N = true",
                 "4|L--|SZHVC = cond(a)");
         }

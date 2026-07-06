@@ -47,7 +47,7 @@ public class NX8_200RewriterTests : RewriterTestBase
             "0|L--|1000(3): 1 instructions",
             "1|L--|a = 0x1234<16>",
             "2|L--|1003(1): 2 instructions",
-            "3|L--|a = a + er2 + C",
+            "3|L--|a = __addc<word16,word16>(a, er2, C)",
             "4|L--|CZ = cond(a)");
     }
 
@@ -57,7 +57,7 @@ public class NX8_200RewriterTests : RewriterTestBase
         Given_HexString("1E");
         AssertCode(     // adcb	a,r6
             "0|L--|1000(1): 2 instructions",
-            "1|L--|a = SEQ(SLICE(a, byte, 8), SLICE(a, byte, 0) + r6 + C)",
+            "1|L--|a = SEQ(SLICE(a, byte, 8), __addc<byte,word16>(SLICE(a, byte, 0), r6, C))",
             "2|L--|CZ = cond(a)");
     }
 
@@ -533,7 +533,7 @@ public class NX8_200RewriterTests : RewriterTestBase
             "0|L--|1000(3): 1 instructions",
             "1|L--|a = 0x1234<16>",
             "2|L--|1003(1): 2 instructions",
-            "3|L--|a = a - er0 - C",
+            "3|L--|a = __subc<word16,word16>(a, er0, C)",
             "4|L--|CZ = cond(a)");
     }
 
@@ -543,7 +543,7 @@ public class NX8_200RewriterTests : RewriterTestBase
         Given_HexString("3C");
         AssertCode(     // sbcb	a,r4
             "0|L--|1000(1): 2 instructions",
-            "1|L--|a = SEQ(SLICE(a, byte, 8), SLICE(a, byte, 0) - r4 - C)",
+            "1|L--|a = SEQ(SLICE(a, byte, 8), __subc<byte,word16>(SLICE(a, byte, 0), r4, C))",
             "2|L--|CZ = cond(a)");
     }
 

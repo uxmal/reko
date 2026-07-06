@@ -65,7 +65,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("E0432801");	// l.addc	r2,r3,r5
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|r2 = r3 + r5 + C",
+                "1|L--|r2 = __addc<word32,word32>(r3, r5, C)",
                 "2|L--|CV = cond(r2)");
         }
 
@@ -85,7 +85,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("A021FFF8");	// l.addic	r1,r1,-00000008
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|r1 = r1 + -8<i32> + C",
+                "1|L--|r1 = __addc<word32,word32>(r1, -8<i32>, C)",
                 "2|L--|CV = cond(r1)");
         }
 

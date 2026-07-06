@@ -1523,9 +1523,8 @@ l00002496:
 	d2_111 = __swap(d0_89 *u32 SLICE(d3_76, word16, 0))
 	d3_106 = d3_76 *u32 SLICE(d5_105, word16, 0)
 	d5_109 = d5_105 *u32 SLICE(d6_107, word16, 0)
-	v38_v35_257 = CONVERT(SLICE(d2_111, word16, 0), uint16, uint32) + SEQ(SLICE(d5_109, word16, 0), SLICE(d3_106, word16, 0))
 	d4_108 = d0_89 *u32 SLICE(d6_107, word16, 0)
-	v42_v40_258 = CONVERT(SLICE(v38_v35_257, word16, 0), uint16, uint32) + SEQ(SLICE(v38_v35_257, word16, 16), SLICE(d4_108, word16, 0))
+	v42_v40_258 = SEQ(SLICE(d5_109, word16, 0), SLICE(d2_111, word16, 0)) + CONVERT(SLICE(d3_106, word16, 0), uint16, uint32) + CONVERT(SLICE(d4_108, word16, 0), uint16, uint32)
 	d6_86 = dwArg08 << d5_67
 	d2_128 = __swap(SEQ(SLICE(d2_111, word16, 16), SLICE(v42_v40_258, word16, 0)))
 	a0_20 = d6_86
@@ -1627,15 +1626,14 @@ l000025AC:
 	d6_154 = __swap(d6_141 *u32 SLICE(d7_13, word16, 0))
 	d5_149 = d7_13 *u32 SLICE(d3_148, word16, 0)
 	d3_152 = d3_148 *u32 SLICE(d4_150, word16, 0)
-	v57_v55_373 = CONVERT(SLICE(d6_154, word16, 0), uint16, uint32) + SEQ(SLICE(d3_152, word16, 0), SLICE(d5_149, word16, 0))
 	d2_151 = d6_141 *u32 SLICE(d4_150, word16, 0)
-	v61_v59_374 = CONVERT(SLICE(v57_v55_373, word16, 0), uint16, uint32) + SEQ(SLICE(v57_v55_373, word16, 16), SLICE(d2_151, word16, 0))
+	v61_v59_374 = SEQ(SLICE(d3_152, word16, 0), SLICE(d6_154, word16, 0)) + CONVERT(SLICE(d5_149, word16, 0), uint16, uint32) + CONVERT(SLICE(d2_151, word16, 0), uint16, uint32)
 	d5_d6_377 = d5_d6_577 - SEQ((__swap(SEQ(SLICE(d5_149, word16, 16), 0<16>)) + __swap(SEQ(SLICE(d2_151, word16, 16), 0<16>))) + SEQ(SLICE(d3_152, word16, 16), SLICE(v61_v59_374, word16, 16)), __swap(SEQ(SLICE(d6_154, word16, 16), SLICE(v61_v59_374, word16, 0))))
 	d6_186 = SLICE(d5_d6_377, word32, 0) (alias)
 	d5_189 = SLICE(d5_d6_377, word32, 32) (alias)
 	branch d5_189 >=u 0<32> l00002604
 l000025EE:
-	d5_d6_379 = CONVERT(d6_186, word32, uint64) + SEQ(d5_189, SLICE(__swap(d7_13), word16, 16), 0<16>)
+	d5_d6_379 = d5_d6_377 + CONVERT(SEQ(SLICE(__swap(d7_13), word16, 16), 0<16>), word32, uint64)
 	d1_112 = d1_112 - 1<32>
 	d6_186 = SLICE(d5_d6_379, word32, 0) (alias)
 	d5_189 = SLICE(d5_d6_379, word32, 32) + __swap(SEQ(SLICE(d7_13, word16, 16), 0<16>))
@@ -1739,9 +1737,8 @@ l000026E0:
 	d2_114 = __swap(d0_92 *u32 SLICE(d3_79, word16, 0))
 	d3_109 = d3_79 *u32 SLICE(d7_108, word16, 0)
 	d7_112 = d7_108 *u32 SLICE(d6_110, word16, 0)
-	v39_v37_283 = CONVERT(SLICE(d2_114, word16, 0), uint16, uint32) + SEQ(SLICE(d7_112, word16, 0), SLICE(d3_109, word16, 0))
 	d4_111 = d0_92 *u32 SLICE(d6_110, word16, 0)
-	v43_v41_284 = CONVERT(SLICE(v39_v37_283, word16, 0), uint16, uint32) + SEQ(SLICE(v39_v37_283, word16, 16), SLICE(d4_111, word16, 0))
+	v43_v41_284 = SEQ(SLICE(d7_112, word16, 0), SLICE(d2_114, word16, 0)) + CONVERT(SLICE(d3_109, word16, 0), uint16, uint32) + CONVERT(SLICE(d4_111, word16, 0), uint16, uint32)
 	d2_131 = __swap(SEQ(SLICE(d2_114, word16, 16), SLICE(v43_v41_284, word16, 0)))
 	d6_89 = dwArg08 << d5_70
 	d3_139 = __swap(SEQ(SLICE(d3_109, word16, 16), 0<16>)) + __swap(SEQ(SLICE(d4_111, word16, 16), 0<16>)) + SEQ(SLICE(d7_112, word16, 16), SLICE(v43_v41_284, word16, 16))

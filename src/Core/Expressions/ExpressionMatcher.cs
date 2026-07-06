@@ -117,7 +117,7 @@ namespace Reko.Core.Expressions
                 return false;
             if (appP.Arguments.Length != appl.Arguments.Length)
                 return false;
-            for (int i =0; i < appP.Arguments.Length; ++i)
+            for (int i = 0; i < appP.Arguments.Length; ++i)
             {
                 if (!Match(appP.Arguments[i], appl.Arguments[i], m))
                     return false;
@@ -258,6 +258,12 @@ namespace Reko.Core.Expressions
         {
             if (m.Pattern is not ProcedureConstant pcOther)
                 return false;
+            if (pcOther.Procedure.IsGeneric && pc.Procedure.IsConcreteGeneric)
+            {
+                // When matching concrete generic intrinsics, 
+                // just match based on name.
+                return pcOther.Procedure.Name == pc.Procedure.Name;
+            }
             return pcOther.Procedure == pc.Procedure;
         }
 

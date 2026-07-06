@@ -56,6 +56,11 @@ namespace Reko.Arch.Motorola.M68k
             ccr.CallerCleanup(4);
         }
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        /// <param name="stg"></param>
+        /// <returns></returns>
         public override bool IsArgument(Storage stg)
         {
             // Arguments are passed on stack.

@@ -18,17 +18,10 @@
  */
 #endregion
 
-using Reko.Arch.Mos6502;
-using Reko.Core.Machine;
-using Reko.Core.Rtl;
-using Reko.Core;
 using NUnit.Framework;
-using System;
+using Reko.Arch.Mos6502;
+using Reko.Core;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.ComponentModel.Design;
-using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Arch.Mos6502
 {
@@ -57,7 +50,7 @@ namespace Reko.UnitTests.Arch.Mos6502
             Given_Bytes(0xF1, 0xE0);
             AssertCode(
                 "0|L--|0200(2): 2 instructions",
-                "1|L--|a = a - Mem0[Mem0[0x00E0<p16>:ptr16] + CONVERT(y, byte, uint16):byte] - !C",   //$LIT
+                "1|L--|a = __subc<byte,byte>(a, Mem0[Mem0[0x00E0<p16>:ptr16] + CONVERT(y, byte, uint16):byte], !C)",   //$LIT
                 "2|L--|NVZC = cond(a)");
         }
 

@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Environments.Gameboy
             Given_HexString("CEED");
             AssertCode(     // adc	a,0EDh
                 "0|L--|0100(2): 3 instructions",
-                "1|L--|a = a + 0xED<8> + C",
+                "1|L--|a = __addc<byte,byte>(a, 0xED<8>, C)",
                 "2|L--|ZHC = cond(a)",
                 "3|L--|N = 0<8>");
         }
@@ -315,7 +315,7 @@ namespace Reko.UnitTests.Environments.Gameboy
             Given_HexString("9E");
             AssertCode(     // sbc	a,(hl)
                 "0|L--|0100(1): 3 instructions",
-                "1|L--|a = a - Mem0[hl:byte] - C",
+                "1|L--|a = __subc<byte,byte>(a, Mem0[hl:byte], C)",
                 "2|L--|ZHC = cond(a)",
                 "3|L--|N = 0x40<8>");
         }

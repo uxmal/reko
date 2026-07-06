@@ -67,7 +67,7 @@ namespace Reko.UnitTests.Arch.H8
             Given_HexString("9E42");
             AssertCode(     // addx.b	#0x42,r6l
                 "0|L--|8000(2): 2 instructions",
-                "1|L--|r6l = r6l + 0x42<8> + C",
+                "1|L--|r6l = __addc<byte,byte>(r6l, 0x42<8>, C)",
                 "2|L--|NZVC = cond(r6l)");
         }
 

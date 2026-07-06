@@ -24,8 +24,6 @@ using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Core.Intrinsics
 {
@@ -97,7 +95,6 @@ namespace Reko.Core.Intrinsics
             return this;
         }
 
-
         /// <summary>
         /// Define some types as generic.
         /// </summary>
@@ -105,7 +102,7 @@ namespace Reko.Core.Intrinsics
         /// <returns></returns>
         public IntrinsicBuilder GenericTypes(params string[] typenames)
         {
-            genericTypeDictionary = new Dictionary<string, DataType>();
+            genericTypeDictionary = [];
             var types = new List<DataType>();
             foreach (var typename in typenames)
             {
@@ -273,7 +270,7 @@ namespace Reko.Core.Intrinsics
             }
             else
             {
-                proc = new IntrinsicProcedure(intrinsicName, hasSideEffect, signature);
+                proc = new IntrinsicProcedure(intrinsicName, hasSideEffect, signature, applyConstants);
             }
             proc.Characteristics = characteristics;
             return proc;

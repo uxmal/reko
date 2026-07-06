@@ -74,7 +74,7 @@ namespace Reko.UnitTests.Arch.Padauk.PDK15
             Given_HexString("6000");
             AssertCode(     // addc	a
                 "0|L--|0100(1): 2 instructions",
-                "1|L--|a = a + C",
+                "1|L--|a = __addc<byte,byte>(a, 0<8>, C)",
                 "2|L--|ZCAV = cond(a)");
         }
 
@@ -312,7 +312,7 @@ namespace Reko.UnitTests.Arch.Padauk.PDK15
             Given_HexString("6100");
             AssertCode(     // subc	a
                 "0|L--|0100(1): 2 instructions",
-                "1|L--|a = a - C",
+                "1|L--|a = __subc<byte,byte>(a, 0<8>, C)",
                 "2|L--|ZCAV = cond(a)");
         }
 

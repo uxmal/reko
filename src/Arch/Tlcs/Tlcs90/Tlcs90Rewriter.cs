@@ -77,7 +77,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
 
                     break;
                 case Mnemonic.invalid: m.Invalid(); break;
-                case Mnemonic.adc: RewriteAdcSbc(m.IAdd, "**-**V0*"); break;
+                case Mnemonic.adc: RewriteAdcSbc(CommonOps.IAddC, "**-**V0*"); break;
                 case Mnemonic.add: RewriteBinOp(m.IAdd, "**-***0*"); break;
                 case Mnemonic.and: RewriteBinOp(m.And,  "**-10*00"); break;
                 case Mnemonic.bit: RewriteBit("*--I**0-"); break;
@@ -119,7 +119,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 case Mnemonic.rlc: RewriteRotation(CommonOps.Ror, false); break;
                 case Mnemonic.rr: RewriteRotation(CommonOps.RorC, true); break;
                 case Mnemonic.rrc: RewriteRotation(CommonOps.Ror, false); break;
-                case Mnemonic.sbc: RewriteAdcSbc(m.ISub, "**-**V1*"); break;
+                case Mnemonic.sbc: RewriteAdcSbc(CommonOps.ISubC, "**-**V1*"); break;
                 case Mnemonic.scf: RewriteScf(); break;
                 case Mnemonic.set: RewriteSetRes(true); break;
                 case Mnemonic.tset: RewriteTset("*--I**0-"); break;

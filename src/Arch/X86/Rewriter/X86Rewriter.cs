@@ -98,7 +98,7 @@ namespace Reko.Arch.X86.Rewriter
                 case Mnemonic.aad: RewriteAad(); break;
                 case Mnemonic.aam: RewriteAam(); break;
                 case Mnemonic.aas: RewriteAas(); break;
-                case Mnemonic.adc: RewriteAdcSbb(Operator.IAdd); break;
+                case Mnemonic.adc: RewriteAdcSbb(CommonOps.IAddC); break;
                 case Mnemonic.adcx: RewriteAdcx(arch.Registers.C); break;
                 case Mnemonic.add: RewriteAddSub(Operator.IAdd); break;
                 case Mnemonic.addss: RewriteScalarBinop(Operator.FAdd, PrimitiveType.Real32, false); break;
@@ -736,7 +736,7 @@ namespace Reko.Arch.X86.Rewriter
                 case Mnemonic.sahf: m.Assign(binder.EnsureFlagGroup(X86Instruction.DefCc(instrCur.Mnemonic, arch.Registers)!), orw.AluRegister(Registers.ah)); break;
                 case Mnemonic.sar: RewriteSar(); break;
                 case Mnemonic.sarx: RewriteBinOp(Operator.Sar); break;
-                case Mnemonic.sbb: RewriteAdcSbb(Operator.ISub); break;
+                case Mnemonic.sbb: RewriteAdcSbb(CommonOps.ISubC); break;
                 case Mnemonic.scas: RewriteStringInstruction(); break;
                 case Mnemonic.scasb: RewriteStringInstruction(); break;
                 case Mnemonic.seta: RewriteSet(ConditionCode.UGT); break;

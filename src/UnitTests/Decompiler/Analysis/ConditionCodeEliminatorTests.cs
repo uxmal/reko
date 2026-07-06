@@ -502,7 +502,7 @@ ProcedureBuilder_exit:
 
                 m.Assign(r1, m.IAdd(r1, r2));
                 m.Assign(SCZ, m.Cond(SCZ.DataType, r1));
-                m.Assign(r3, m.IAdd(m.IAdd(r3, r4), C));
+                m.Assign(r3, m.IAddC(r3, r4, C));
                 m.MStore(m.Word32(0x0444400), r1);
                 m.MStore(m.Word32(0x0444404), r3);
                 m.Return();
@@ -1568,5 +1568,42 @@ ProcedureBuilder_exit:
                 m.Return();
             });
         }
+
+        [Test]
+        public void CceSubc()
+        {
+            var sExpected =
+            #region Expected    
+                @"SsaProcedureBuilder_entry:
+	// succ:  l1
+l1:
+	SCZO_1 = cond(ax - 4<16>)
+	C_2 = SCZO_1 & 2<32>
+	bx_3 = bx - bx - CONVERT(ax <u 4<16>, bool, word16)
+	return
+	// succ:  SsaProcedureBuilder_exit
+SsaProcedureBuilder_exit:
+";
+            #endregion
+
+            RunSsaTest(sExpected, m =>
+            {
+                var eflags = RegisterStorage.Reg32("eflags", 42);
+                var Cflag = new FlagGroupStorage(eflags, 0x2, "C");
+                var SCZOflags = new FlagGroupStorage(eflags, 0x17, "SCZO");
+
+                var ax = m.Reg("ax", RegisterStorage.Reg16("ax", 0));
+                var bx = m.Reg("bx", RegisterStorage.Reg16("bx", 3));
+                var SCZO_1 = m.Flags("SCZO_1", SCZOflags);
+                var C_2 = m.Flags("C_2", Cflag);
+                var bx_3 = m.Reg("bx_3", RegisterStorage.Reg16("bx", 3));
+
+                m.Assign(SCZO_1, m.Cond(SCZO_1.DataType, m.ISub(ax, 4)));
+                m.Assign(C_2, m.And(SCZO_1, m.Word32(0x2)));
+                m.Assign(bx_3, m.ISubC(bx, bx, C_2));
+                m.Return();
+            });
+        }
+
     }
 }

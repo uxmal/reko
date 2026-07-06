@@ -61,7 +61,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_UInt32s(0xE0A22002); // adc r2,r2,r2
             AssertCode(
                "0|L--|00100000(4): 1 instructions",
-               "1|L--|r2 = r2 + r2 + C");
+               "1|L--|r2 = __addc<word32,word32>(r2, r2, C)");
         }
 
         [Test]
@@ -816,15 +816,13 @@ means
                 "1|L--|r5 = Mem0[0x0010025C<p32>:word32]");
         }
 
-
-
         [Test]
         public void ArmRw_sbc()
         {
             Given_UInt32s(0xE0C22002); // sbc r2,r2,r2
             AssertCode(
                "0|L--|00100000(4): 1 instructions",
-               "1|L--|r2 = r2 - r2 - C");
+               "1|L--|r2 = __subc<word32,word32>(r2, r2, C)");
         }
 
         [Test]
@@ -1022,7 +1020,7 @@ means
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
                 "1|T--|if (Test(NE,Z)) branch 00100004",
-                "2|L--|r5 = (ip >> 1<i32>) - r0 - C");
+                "2|L--|r5 = __subc<word32,word32>(ip >> 1<i32>, r0, C)");
         }
 
         [Test]

@@ -138,8 +138,8 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
             this.ssaIds = ssa.Identifiers;
             this.program = program;
             this.listener = listener;
-            this.aliases = new HashSet<Identifier>();
-            this.generatedIds = new Dictionary<(Identifier, ConditionCode), SsaIdentifier>();
+            this.aliases = [];
+            this.generatedIds = [];
         }
 
         internal bool Changed { get; set; }
@@ -165,6 +165,8 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
                 {
                     try
                     {
+                        if (u.Block.Address.Offset == 0xF572)
+                            _ = this;//$DEBUG
                         useStm = u;
                         trace.Inform("CCE:   used {0}", useStm.Instruction);
                         useStm.Instruction.Accept(this);
@@ -280,11 +282,17 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
 
         /// <summary>
         /// Returns true if the instruction in the statement is an assignment of the form
+        /// <code>
         ///     grf = src
+        /// </code>
         /// or
+        /// <code>
         ///     grf = (foo) src 
+        /// </code>
         /// or 
+        /// <code>
         ///     grf = SLICE(src, x, y)
+        /// </code>
         /// </summary>
         /// <param name="grf"></param>
         /// <param name="stm"></param>
@@ -482,6 +490,15 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
                     {
                         return TransformRolC(app, a);
                     }
+                    else if (pseudo.Name == CommonOps.IAddC.Name)
+                    {
+                        return TransformAddcSubc(app, a, Operator.IAdd);
+                    }
+                    else if (pseudo.Name == CommonOps.ISubC.Name)
+                    {
+                        return TransformAddcSubc(app, a, Operator.ISub);
+                    }
+
                 }
                 return a;
             case Conversion conv when conv.Expression == this.sidGrf.Identifier:
@@ -508,6 +525,21 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
                 return a;
             }
             return a;
+        }
+
+        private Instruction TransformAddcSubc(Application addc, Assignment a, BinaryOperator op)
+        {
+            var oldCarryExp = addc.Arguments[2];
+            var u = UseGrfConditionally(sidGrf, ConditionCode.ULT, null, false);
+            if (addc.Arguments[0].DataType.BitSize > u.DataType.BitSize)
+            {
+                u = m.Convert(u, u.DataType, PrimitiveType.CreateWord(addc.Arguments[0].DataType.BitSize));
+            }
+            var sum = m.Bin(op, m.Bin(op, addc.Arguments[0], addc.Arguments[1]), u);
+            ssa.RemoveUses(useStm, oldCarryExp);
+            useStm.Instruction = new Assignment(a.Dst, sum);
+            Use(u, useStm);
+            return useStm.Instruction;
         }
 
         private Instruction TransformAddOrSub(Assignment a, BinaryExpression addSub)

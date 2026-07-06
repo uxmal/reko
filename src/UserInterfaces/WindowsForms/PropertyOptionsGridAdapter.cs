@@ -196,7 +196,7 @@ namespace Reko.UserInterfaces.WindowsForms
             public override bool GetStandardValuesSupported(ITypeDescriptorContext? context)
             {
                 var pd = GetPd(context);
-                return pd.Option.Choices is not null &&
+                return pd?.Option.Choices is not null &&
                     pd.Option.Choices.Length > 0;    // show combobox if there are choices
             }
 

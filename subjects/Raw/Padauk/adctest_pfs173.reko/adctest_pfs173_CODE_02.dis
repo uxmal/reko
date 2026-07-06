@@ -542,7 +542,7 @@ l021A:
 	a_120 = fn056C() + Mem114[0x004E<p16>:byte]
 	Mem122[sp_72:byte] = a_120
 	Mem125[sp_72 + 1<i16>:byte] = f
-	Mem129[0x0000<p16>:byte] = Mem125[0x0000<p16>:byte] + CONVERT(a_120 <u 0<8>, bool, byte)
+	Mem129[0x0000<p16>:byte] = CONVERT(Mem125[0x0000<p16>:byte], byte, word16) + CONVERT(a_120 <u 0<8>, bool, byte)
 	a_133 = Mem129[sp_72:byte]
 	f = Mem129[sp_72 + 1<i16>:byte]
 	Mem136[0x0048<p16>:byte] = a_133 - 0x30<8>
@@ -561,7 +561,7 @@ l0232:
 	a_159 = fn056C() + Mem153[0x004E<p16>:byte]
 	Mem162[sp_72:byte] = a_159
 	Mem165[sp_72 + 1<i16>:byte] = f
-	Mem169[0x0000<p16>:byte] = Mem165[0x0000<p16>:byte] + CONVERT(a_159 <u 0<8>, bool, byte)
+	Mem169[0x0000<p16>:byte] = CONVERT(Mem165[0x0000<p16>:byte], byte, word16) + CONVERT(a_159 <u 0<8>, bool, byte)
 	a_173 = Mem169[sp_72:byte]
 	f = Mem169[sp_72 + 1<i16>:byte]
 	Mem176[0x004A<p16>:byte] = a_173 - 0x30<8>

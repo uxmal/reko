@@ -93,7 +93,7 @@ public class Ns32kRewriterTests : RewriterTestBase
         AssertCode(    // addcb\tH'20,r0
             "0|L--|00100000(3): 4 instructions",
             "1|L--|v4 = SLICE(r0, byte, 0)",
-            "2|L--|v6 = v4 + 0x20<8> + C",
+            "2|L--|v6 = __addc<byte,word32>(v4, 0x20<8>, C)",
             "3|L--|r0 = SEQ(SLICE(r0, word24, 8), v6)",
             "4|L--|CF = cond(v6)");
     }
@@ -1188,7 +1188,7 @@ public class Ns32kRewriterTests : RewriterTestBase
             "0|L--|00100000(3): 5 instructions",
             "1|L--|v5 = Mem0[sp:word16]",
             "2|L--|sp = sp + 2<i32>",
-            "3|L--|v7 = Mem0[fp - 8<i32>:word16] - v5 - C",
+            "3|L--|v7 = __subc<word16,word32>(Mem0[fp - 8<i32>:word16], v5, C)",
             "4|L--|Mem0[fp - 8<i32>:word16] = v7",
             "5|L--|CF = cond(v7)");
     }

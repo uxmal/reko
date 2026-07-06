@@ -181,7 +181,7 @@ namespace Reko.UnitTests.Arch.zSeries
             Given_HexString("B9880022");
             AssertCode(     // alcgr	r2,r2
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|r2 = r2 + r2 + CC",
+                "1|L--|r2 = __addc<word64,byte>(r2, r2, CC)",
                 "2|L--|CC = cond(r2)");
         }
 
@@ -193,7 +193,7 @@ namespace Reko.UnitTests.Arch.zSeries
                 "0|L--|00100000(4): 5 instructions",
                 "1|L--|v4 = SLICE(r2, word32, 0)",
                 "2|L--|v5 = SLICE(r2, word32, 0)",
-                "3|L--|v7 = v4 + v5 + CC",
+                "3|L--|v7 = __addc<word32,byte>(v4, v5, CC)",
                 "4|L--|r2 = SEQ(SLICE(r2, word32, 32), v7)",
                 "5|L--|CC = cond(v7)");
         }

@@ -329,7 +329,7 @@ namespace Reko.UnitTests.Arch.Tms7000
             Given_Bytes(0x1B, 0x03);
             AssertCode(
                  "0|L--|0100(2): 2 instructions",
-                 "1|L--|r3 = r3 - a - C",
+                 "1|L--|r3 = __subc<byte,byte>(r3, a, C)",
                  "2|L--|C = cond(r3)");
         }
 

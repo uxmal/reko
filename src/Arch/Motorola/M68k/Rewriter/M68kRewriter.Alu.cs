@@ -265,14 +265,18 @@ namespace Reko.Arch.Motorola.M68k.Rewriter
             }
         }
 
-        public void RewriteAddSubx(Func<Expression,Expression,Expression> opr)
+        public void RewriteAddSubx(IntrinsicProcedure opr)
         {
             // We do not take the trouble of widening the CF to the word size
             // to simplify code analysis in later stages. 
-            var x = binder.EnsureFlagGroup(Registers.X);
             var src = orw.RewriteSrc(instr.Operands[0], instr.Address);
-            var dst = orw.RewriteDst(instr.Operands[1], instr.Address, src, (d, s) => 
-                    opr(opr(d, s), x));
+            var dst = orw.RewriteDst(instr.Operands[1], instr.Address, src, (s, d) =>
+            {
+                var x = binder.EnsureFlagGroup(Registers.X);
+                return m.Fn(
+                    opr.MakeInstance(d.DataType, x.DataType),
+                    d, s, x);
+            });
             if (dst is null)
             {
                 EmitInvalid();
@@ -452,7 +456,7 @@ namespace Reko.Arch.Motorola.M68k.Rewriter
             return RewriteDstOperand(mop, null!, (s, d) => { })!;
         }
 
-        private static bool NeedsSpilling(Expression op)
+        private static bool NeedsSpilling(Expression? op)
         {
             //$REVIEW: May not need to spill here if opSrc is immediate / register other than reg
             if (op is null)
@@ -783,8 +787,8 @@ namespace Reko.Arch.Motorola.M68k.Rewriter
 
         private Expression RewriteNegx(Expression expr)
         {
-            expr = m.Neg(expr);
-            return m.ISub(expr, binder.EnsureFlagGroup(Registers.X));
+            var x = binder.EnsureFlagGroup(Registers.X);
+            return m.ISubC(Constant.Zero(expr.DataType), expr, x);
         }
 
         private void RewriteLink()
@@ -843,10 +847,14 @@ namespace Reko.Arch.Motorola.M68k.Rewriter
 
         private void RewriteNbcd()
         {
-            var x = binder.EnsureFlagGroup(Registers.X);
             orw.DataWidth = PrimitiveType.Byte;
             var dst = orw.RewriteDst(instr.Operands[0], instr.Address, null!, (s, d) =>
-                    m.ISub(m.ISub(Constant.Zero(d.DataType), d), x));
+            {
+                var x = binder.EnsureFlagGroup(Registers.X);
+                return m.Fn(
+                    CommonOps.ISubC.MakeInstance(d.DataType, x.DataType),
+                    Constant.Zero(d.DataType), d, x);
+            });
             if (dst is null)
             {
                 EmitInvalid();

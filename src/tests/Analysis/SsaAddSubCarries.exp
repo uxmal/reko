@@ -34,13 +34,13 @@ ax_6: orig: ax
     uses: ax_10 = ax_6 + cx_8
 dx_7: orig: dx
     def:  dx_7 = Mem0[ds:0x202<16>:word16]
-    uses: dx_13 = dx_7 + bx_9 + C_12
+    uses: dx_13 = __addc<word16,word32>(dx_7, bx_9, C_12)
 cx_8: orig: cx
     def:  cx_8 = Mem0[ds:0x204<16>:word16]
     uses: ax_10 = ax_6 + cx_8
 bx_9: orig: bx
     def:  bx_9 = Mem0[ds:0x206<16>:word16]
-    uses: dx_13 = dx_7 + bx_9 + C_12
+    uses: dx_13 = __addc<word16,word32>(dx_7, bx_9, C_12)
 ax_10: orig: ax
     def:  ax_10 = ax_6 + cx_8
     uses: SCZO_11 = cond(ax_10)
@@ -50,9 +50,9 @@ SCZO_11: orig: SCZO
     uses: C_12 = SCZO_11 & 2<32> (alias)
 C_12: orig: C
     def:  C_12 = SCZO_11 & 2<32> (alias)
-    uses: dx_13 = dx_7 + bx_9 + C_12
+    uses: dx_13 = __addc<word16,word32>(dx_7, bx_9, C_12)
 dx_13: orig: dx
-    def:  dx_13 = dx_7 + bx_9 + C_12
+    def:  dx_13 = __addc<word16,word32>(dx_7, bx_9, C_12)
     uses: SCZO_14 = cond(dx_13)
           Mem16[ds:0x20A<16>:word16] = dx_13
 SCZO_14: orig: SCZO
@@ -69,7 +69,7 @@ ax_17: orig: ax
     uses: ax_23 = ax_17 - cx_22
 dx_18: orig: dx
     def:  dx_18 = Mem16[ds:0x212<16>:word16]
-    uses: dx_27 = dx_18 - bx_21 - C_26
+    uses: dx_27 = __subc<word16,word32>(dx_18, bx_21, C_26)
 es_cx_19: orig: es_cx
     def:  es_cx_19 = Mem16[ds:0x214<16>:segptr32]
     uses: es_20 = SLICE(es_cx_19, selector, 16) (alias)
@@ -81,7 +81,7 @@ es_20: orig: es
           use es_20
 bx_21: orig: bx
     def:  bx_21 = es_20
-    uses: dx_27 = dx_18 - bx_21 - C_26
+    uses: dx_27 = __subc<word16,word32>(dx_18, bx_21, C_26)
           use bx_21
 cx_22: orig: cx
     def:  cx_22 = SLICE(es_cx_19, word16, 0) (alias)
@@ -97,9 +97,9 @@ Mem25: orig: Mem0
     def:  Mem25[ds:0x218<16>:word16] = ax_23
 C_26: orig: C
     def:  C_26 = SCZO_24 & 2<32> (alias)
-    uses: dx_27 = dx_18 - bx_21 - C_26
+    uses: dx_27 = __subc<word16,word32>(dx_18, bx_21, C_26)
 dx_27: orig: dx
-    def:  dx_27 = dx_18 - bx_21 - C_26
+    def:  dx_27 = __subc<word16,word32>(dx_18, bx_21, C_26)
     uses: SCZO_28 = cond(dx_27)
           Mem29[ds:0x21A<16>:word16] = dx_27
           use dx_27
@@ -112,8 +112,8 @@ Mem29: orig: Mem0
 ax_30: orig: ax
     def:  ax_30 = 0<16>
     uses: SZ_31 = cond(ax_30)
-          ax_37 = ax_30 + ax_30 + C_36
-          ax_37 = ax_30 + ax_30 + C_36
+          ax_37 = __addc<word16,word32>(ax_30, ax_30, C_36)
+          ax_37 = __addc<word16,word32>(ax_30, ax_30, C_36)
 SZ_31: orig: SZ
     def:  SZ_31 = cond(ax_30)
 O_32: orig: O
@@ -128,12 +128,12 @@ SCZO_35: orig: SCZO
     uses: C_36 = SCZO_35 & 2<32> (alias)
 C_36: orig: C
     def:  C_36 = SCZO_35 & 2<32> (alias)
-    uses: ax_37 = ax_30 + ax_30 + C_36
+    uses: ax_37 = __addc<word16,word32>(ax_30, ax_30, C_36)
 ax_37: orig: ax
-    def:  ax_37 = ax_30 + ax_30 + C_36
+    def:  ax_37 = __addc<word16,word32>(ax_30, ax_30, C_36)
     uses: SCZO_38 = cond(ax_37)
-          ax_43 = ax_37 + ax_37 + C_42
-          ax_43 = ax_37 + ax_37 + C_42
+          ax_43 = __addc<word16,word32>(ax_37, ax_37, C_42)
+          ax_43 = __addc<word16,word32>(ax_37, ax_37, C_42)
 SCZO_38: orig: SCZO
     def:  SCZO_38 = cond(ax_37)
 cl_39: orig: cl
@@ -148,9 +148,9 @@ C_41: orig: C
     uses: C_42 = !C_41
 C_42: orig: C
     def:  C_42 = !C_41
-    uses: ax_43 = ax_37 + ax_37 + C_42
+    uses: ax_43 = __addc<word16,word32>(ax_37, ax_37, C_42)
 ax_43: orig: ax
-    def:  ax_43 = ax_37 + ax_37 + C_42
+    def:  ax_43 = __addc<word16,word32>(ax_37, ax_37, C_42)
     uses: SCZO_44 = cond(ax_43)
           Mem45[ds:0x222<16>:word16] = ax_43
           use ax_43
@@ -198,7 +198,7 @@ l0C00_0000:
 	ax_10 = ax_6 + cx_8
 	SCZO_11 = cond(ax_10)
 	C_12 = SCZO_11 & 2<32> (alias)
-	dx_13 = dx_7 + bx_9 + C_12
+	dx_13 = __addc<word16,word32>(dx_7, bx_9, C_12)
 	SCZO_14 = cond(dx_13)
 	Mem15[ds:0x208<16>:word16] = ax_10
 	Mem16[ds:0x20A<16>:word16] = dx_13
@@ -213,7 +213,7 @@ l0C00_0000:
 	SCZO_24 = cond(ax_23)
 	C_26 = SCZO_24 & 2<32> (alias)
 	Mem25[ds:0x218<16>:word16] = ax_23
-	dx_27 = dx_18 - bx_21 - C_26
+	dx_27 = __subc<word16,word32>(dx_18, bx_21, C_26)
 	SCZO_28 = cond(dx_27)
 	Mem29[ds:0x21A<16>:word16] = dx_27
 	ax_30 = 0<16>
@@ -223,13 +223,13 @@ l0C00_0000:
 	cl_34 = Mem29[ds:0x220<16>:byte]
 	SCZO_35 = cond(cl_34 - 0x30<8>)
 	C_36 = SCZO_35 & 2<32> (alias)
-	ax_37 = ax_30 + ax_30 + C_36
+	ax_37 = __addc<word16,word32>(ax_30, ax_30, C_36)
 	SCZO_38 = cond(ax_37)
 	cl_39 = Mem29[ds:0x221<16>:byte]
 	SCZO_40 = cond(cl_39 - 0x3A<8>)
 	C_41 = SCZO_40 & 2<32> (alias)
 	C_42 = !C_41
-	ax_43 = ax_37 + ax_37 + C_42
+	ax_43 = __addc<word16,word32>(ax_37, ax_37, C_42)
 	SCZO_44 = cond(ax_43)
 	C_46 = SCZO_44 & 2<32> (alias)
 	O_49 = SCZO_44 & 0x10<32> (alias)

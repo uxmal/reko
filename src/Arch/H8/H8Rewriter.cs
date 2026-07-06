@@ -88,7 +88,7 @@ namespace Reko.Arch.H8
                     break;
                 case Mnemonic.add: RewriteAdd(instr); break;
                 case Mnemonic.adds: RewriteAdds(instr); break;
-                case Mnemonic.addx: RewriteAddxSubx(instr, m.IAdd); break;
+                case Mnemonic.addx: RewriteAddxSubx(instr, CommonOps.IAddC); break;
                 case Mnemonic.and: RewriteLogical(instr, m.And); break;
                 case Mnemonic.andc: RewriteLogicalC(instr, m.And); break;
                 case Mnemonic.band: RewriteLogicalB(instr, m.And); break;
@@ -165,7 +165,7 @@ namespace Reko.Arch.H8
                 case Mnemonic.stmac: RewriteStmac(instr); break;
                 case Mnemonic.sub: RewriteSub(instr); break;
                 case Mnemonic.subs: RewriteSubs(instr); break;
-                case Mnemonic.subx: RewriteAddxSubx(instr, m.ISub); break;
+                case Mnemonic.subx: RewriteAddxSubx(instr, CommonOps.ISubC); break;
                 case Mnemonic.trapa: RewriteTrapa(instr); break;
                 case Mnemonic.xor: RewriteLogical(instr, m.Xor); break;
                 case Mnemonic.xorc: RewriteLogicalC(instr, m.Xor); break;
@@ -174,8 +174,6 @@ namespace Reko.Arch.H8
                 this.instrs.Clear();
             }
         }
-
-
 
         IEnumerator IEnumerable.GetEnumerator()
         {
@@ -322,10 +320,16 @@ namespace Reko.Arch.H8
             var dst = OpDst(instr.Operands[1], src, m.IAdd);
         }
 
-        private void RewriteAddxSubx(H8Instruction instr, Func<Expression, Expression, Expression> fn)
+        private void RewriteAddxSubx(H8Instruction instr, IntrinsicProcedure fn)
         {
             var src = OpSrc(instr.Operands[0]);
-            var dst = OpDst(instr.Operands[1], src, (d, s) => fn(fn(d, s), binder.EnsureFlagGroup(C)));
+            var dst = OpDst(instr.Operands[1], src, (d, s) =>
+            {
+                var c = binder.EnsureFlagGroup(C);
+                return m.Fn(
+                    fn.MakeInstance(d.DataType, c.DataType),
+                    d, s, c);
+            });
             EmitCond(NZVC, dst);
         }
 

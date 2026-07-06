@@ -1399,7 +1399,8 @@ word16 fn00009478(word16 er0_16_n, word16 er1_16_n, word16 er2_16_n, word16 er3_
 	fn00009B90((<anonymous> *) 10184, r6);
 	word32 er0_n = fn00009BFC(0x00, 0x00);
 	word16 r0_n = (word16) er0_n;
-	fn00009B54(0x00 - (uint16) (__btst<byte,byte>(SLICE(r0_n, byte, 8), 0x07) ? 0x01 : 0x00), r0_n);
+	cu8 r0l_n = 0x00 - (__btst<byte,byte>(SLICE(r0_n, byte, 8), 0x07) ? 0x01 : 0x00);
+	fn00009B54(SEQ(0x00 - (byte) (r0l_n < 0x00), r0l_n), r0_n);
 	fn00009C34(0x00, SLICE(er0_n, word16, 16), 0x03, 0x00);
 	fn00009C34(0x01, 0x00, 0x01, 0x20);
 	fn00009B9A((<anonymous> *) 6596, 0x1001, r6);
@@ -1762,10 +1763,10 @@ void fn00009AF8(word16 er0_16_n, word16 er1_16_n, word16 er2_16_n, word16 er3_16
 	((uint32) r2_n)();
 }
 
-// 00009B54: void fn00009B54(Register ui16 r0, Register word16 r1)
+// 00009B54: void fn00009B54(Register word16 r0, Register word16 r1)
 // Called from:
 //      fn00009478
-void fn00009B54(ui16 r0, word16 r1)
+void fn00009B54(word16 r0, word16 r1)
 {
 	*(ui16 *) 0x9E90 = r0 ^ 0x1668;
 	*(union Eq_n *) 0x9E92 = r1 ^ ~0x2484;

@@ -82,7 +82,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("4E32"); // addc\tr4,r2
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r2 = r2 + r4 + T");
+                "1|L--|r2 = __addc<word32,word32>(r2, r4, T)");
         }
 
         [Test]
@@ -862,7 +862,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("1A 32");  // "subc\tr1,r2"
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r2 = r2 - r1 - T");
+                "1|L--|r2 = __subc<word32,word32>(r2, r1, T)");
         }
 
         [Test]

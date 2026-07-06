@@ -20,6 +20,7 @@
 
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
+using Reko.Core.Operators;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
@@ -146,6 +147,37 @@ namespace Reko.Core.Intrinsics
                 return Constant.Create(dt, max);
             }
         }
+
+        // Integer Add/sub with carry/borrow
+        public static readonly IntrinsicProcedure IAddC = new IntrinsicBuilder("__addc", false)
+            .GenericTypes("TData", "TCarry")
+            .Param("TData").Param("TData").Param("TCarry")
+            .ApplyConstants(EvalAddc)
+            .Returns("TData");
+        public static readonly IntrinsicProcedure ISubC = new IntrinsicBuilder("__subc", false)
+            .GenericTypes("TData", "TCarry")
+            .Param("TData").Param("TData").Param("TCarry")
+            .ApplyConstants(EvalSubc)
+            .Returns("TData");
+
+        private static Constant? EvalAddc(DataType dt, params Constant[] inputs)
+        {
+            var result =
+                inputs[0].ToBigInteger() +
+                inputs[1].ToBigInteger() +
+                (inputs[2].IsZero ? 0 : 1);
+            return Constant.Create(dt, result);
+        }
+
+        private static Constant? EvalSubc(DataType dt, params Constant[] inputs)
+        {
+            var result =
+                inputs[0].ToBigInteger() -
+                inputs[1].ToBigInteger() -
+                (inputs[2].IsZero ? 0 : 1);
+            return Constant.Create(dt, result);
+        }
+
 
         // Rotations
         public static readonly IntrinsicProcedure Rol = new IntrinsicBuilder("__rol", false)

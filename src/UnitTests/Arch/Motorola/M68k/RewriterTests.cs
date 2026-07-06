@@ -25,7 +25,6 @@ using Reko.Core;
 using Reko.Core.Loading;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace Reko.UnitTests.Arch.Motorola.M68k
@@ -320,7 +319,7 @@ namespace Reko.UnitTests.Arch.Motorola.M68k
             AssertCode(
                 "0|L--|00010000(2): 4 instructions",
                 "1|L--|a1 = a1 - 1<i32>",
-                "2|L--|v5 = -Mem0[a1:byte] - X",
+                "2|L--|v5 = __subc<byte,byte>(0<8>, Mem0[a1:byte], X)",
                 "3|L--|Mem0[a1:byte] = v5",
                 "4|L--|CVZNX = cond(v5)");
         }
@@ -608,7 +607,7 @@ namespace Reko.UnitTests.Arch.Motorola.M68k
                 "1|L--|a1 = a1 - 2<i32>",
                 "2|L--|v5 = Mem0[a1:word16]",
                 "3|L--|a0 = a0 - 2<i32>",
-                "4|L--|v7 = Mem0[a0:word16] - v5 - X",
+                "4|L--|v7 = __subc<word16,byte>(Mem0[a0:word16], v5, X)",
                 "5|L--|Mem0[a0:word16] = v7",
                 "6|L--|CVZNX = cond(v7)");
         }
@@ -969,9 +968,9 @@ namespace Reko.UnitTests.Arch.Motorola.M68k
             AssertCode(
                 "0|L--|00010000(2): 6 instructions",
                 "1|L--|a5 = a5 - 4<i32>",
-                "2|L--|v6 = Mem0[a5:word32]",
+                "2|L--|v5 = Mem0[a5:word32]",
                 "3|L--|a1 = a1 - 4<i32>",
-                "4|L--|v7 = v6 + Mem0[a1:word32] + X",
+                "4|L--|v7 = __addc<word32,byte>(Mem0[a1:word32], v5, X)",
                 "5|L--|Mem0[a1:word32] = v7",
                 "6|L--|CVZNX = cond(v7)");
         }
@@ -1708,7 +1707,7 @@ namespace Reko.UnitTests.Arch.Motorola.M68k
             Given_UInt16s(0x4036, 0x600A); // negx.b (0A, a6, d6)
             AssertCode(
                 "0|L--|00010000(4): 3 instructions",
-                "1|L--|v6 = -Mem0[a6 + 10<i32> + d6:byte] - X",
+                "1|L--|v6 = __subc<byte,byte>(0<8>, Mem0[a6 + 10<i32> + d6:byte], X)",
                 "2|L--|Mem0[a6 + 10<i32> + d6:byte] = v6",
                 "3|L--|CVZNX = cond(v6)");
         }
@@ -1753,7 +1752,7 @@ namespace Reko.UnitTests.Arch.Motorola.M68k
             Given_UInt16s(0x8F02);    // sbcd d2,d7
             AssertCode(
                 "0|L--|00010000(2): 4 instructions",
-                "1|L--|v6 = SLICE(d2, byte, 0) - SLICE(d7, byte, 0) - X",
+                "1|L--|v6 = __subc<byte,byte>(SLICE(d2, byte, 0), SLICE(d7, byte, 0), X)",
                 "2|L--|v7 = SLICE(d7, word24, 8)",
                 "3|L--|d7 = SEQ(v7, v6)",
                 "4|L--|CVZNX = cond(v6)");
@@ -1802,7 +1801,7 @@ namespace Reko.UnitTests.Arch.Motorola.M68k
             AssertCode(
                 "0|L--|00010000(2): 4 instructions",
                 "1|L--|a2 = a2 - 1<i32>",
-                "2|L--|v5 = 0<8> - Mem0[a2:byte] - X",
+                "2|L--|v5 = __subc<byte,byte>(0<8>, Mem0[a2:byte], X)",
                 "3|L--|Mem0[a2:byte] = v5",
                 "4|L--|CVZNX = cond(v5)");
         }
@@ -1844,7 +1843,7 @@ namespace Reko.UnitTests.Arch.Motorola.M68k
             Given_UInt16s(0xC700);        // abcd d0, d3
             AssertCode(
                 "0|L--|00010000(2): 4 instructions",
-                "1|L--|v6 = SLICE(d3, byte, 0) + SLICE(d0, byte, 0) + X",
+                "1|L--|v6 = __addc<byte,byte>(SLICE(d3, byte, 0), SLICE(d0, byte, 0), X)",
                 "2|L--|v7 = SLICE(d3, word24, 8)",
                 "3|L--|d3 = SEQ(v7, v6)",
                 "4|L--|CVZNX = cond(v6)");
@@ -1899,7 +1898,7 @@ namespace Reko.UnitTests.Arch.Motorola.M68k
             Given_UInt16s(0x4033, 0xB316, 0x008B); // negx.b([a3], a3.w * 2, +008B)
             AssertCode(
                 "0|L--|00010000(6): 3 instructions",
-                "1|L--|v5 = -Mem0[Mem0[a3:word32] + CONVERT(SLICE(a3, int16, 0), int16, int32) * 2<i32> + 139<i32>:byte] - X",
+                "1|L--|v5 = __subc<byte,byte>(0<8>, Mem0[Mem0[a3:word32] + CONVERT(SLICE(a3, int16, 0), int16, int32) * 2<i32> + 139<i32>:byte], X)",
                 "2|L--|Mem0[Mem0[a3:word32] + CONVERT(SLICE(a3, int16, 0), int16, int32) * 2<i32> + 139<i32>:byte] = v5",
                 "3|L--|CVZNX = cond(v5)");
         }

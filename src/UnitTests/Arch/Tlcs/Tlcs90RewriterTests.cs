@@ -418,7 +418,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("6B00");  // sbc
             AssertCode(
                 "0|L--|0100(2): 3 instructions",
-                "1|L--|a = a - 0<8> - C",
+                "1|L--|a = __subc<byte,byte>(a, 0<8>, C)",
                 "2|L--|N = true",
                 "3|L--|SZHXVC = cond(a)");
         }
@@ -513,7 +513,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("EF2E6979");	// adc	(FF2E),79
             AssertCode(
                 "0|L--|0100(4): 4 instructions",
-                "1|L--|v4 = Mem0[0xFF2E<p16>:byte] + 0x79<8> + C",
+                "1|L--|v4 = __addc<byte,byte>(Mem0[0xFF2E<p16>:byte], 0x79<8>, C)",
                 "2|L--|Mem0[0xFF2E<p16>:byte] = v4", 
                 "3|L--|N = false",
                 "4|L--|SZHXVC = cond(v4)");
@@ -525,7 +525,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("79F4EF");	// adc	hl,EFF4
             AssertCode(
                 "0|L--|0100(3): 3 instructions",
-                "1|L--|hl = hl + 0xEFF4<16> + C",
+                "1|L--|hl = __addc<word16,byte>(hl, 0xEFF4<16>, C)",
                 "2|L--|N = false",
                 "3|L--|SZHXVC = cond(hl)");
         }

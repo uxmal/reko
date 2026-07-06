@@ -29,9 +29,6 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Arch.Motorola.M6812
 {
@@ -57,7 +54,7 @@ namespace Reko.Arch.Motorola.M6812
             this.binder = binder;
             this.host = host;
             this.dasm = new M6812Disassembler(arch, rdr).GetEnumerator();
-            this.rtlInstrs = new List<RtlInstruction>();
+            this.rtlInstrs = [];
             this.m = new RtlEmitter(rtlInstrs);
             this.instr = default!;
         }
@@ -85,8 +82,8 @@ namespace Reko.Arch.Motorola.M6812
                     m.Invalid();
                     break;
                 case Mnemonic.aba: RewriteAba(); break;
-                case Mnemonic.adca: RewriteAdcSbc(Registers.a, m.IAdd); break;
-                case Mnemonic.adcb: RewriteAdcSbc(Registers.b, m.IAdd); break;
+                case Mnemonic.adca: RewriteAdcSbc(Registers.a, CommonOps.IAddC); break;
+                case Mnemonic.adcb: RewriteAdcSbc(Registers.b, CommonOps.IAddC); break;
                 case Mnemonic.adda: RewriteArithmetic(Registers.a, m.IAdd); break;
                 case Mnemonic.addb: RewriteArithmetic(Registers.b, m.IAdd); break;
                 case Mnemonic.addd: RewriteArithmetic(Registers.d, m.IAdd); break;
@@ -235,8 +232,8 @@ namespace Reko.Arch.Motorola.M6812
                 case Mnemonic.rti: RewriteRti(); break;
                 case Mnemonic.rts: RewriteRts(); break;
                 case Mnemonic.sba: RewriteSba(); break;
-                case Mnemonic.sbca: RewriteAdcSbc(Registers.a, m.ISub); break;
-                case Mnemonic.sbcb: RewriteAdcSbc(Registers.b, m.ISub); break;
+                case Mnemonic.sbca: RewriteAdcSbc(Registers.a, CommonOps.ISubC); break;
+                case Mnemonic.sbcb: RewriteAdcSbc(Registers.b, CommonOps.ISubC); break;
                 case Mnemonic.sex: RewriteSex(); break;
                 case Mnemonic.staa: RewriteSt(Registers.a); break;
                 case Mnemonic.stab: RewriteSt(Registers.b); break;
@@ -404,12 +401,16 @@ namespace Reko.Arch.Motorola.M6812
             NZVC(left);
         }
 
-        private void RewriteAdcSbc(RegisterStorage reg, Func<Expression,Expression,Expression> fn)
+        private void RewriteAdcSbc(RegisterStorage reg, IntrinsicProcedure fn)
         {
             var left = binder.EnsureRegister(reg);
             var right = RewriteOp(instr.Operands[0]);
             var C = binder.EnsureFlagGroup(Registers.C);
-            m.Assign(left, fn(fn(left, right), C));
+            m.Assign(
+                left, 
+                m.Fn(
+                    fn.MakeInstance(left.DataType, C.DataType),
+                    left, right, C));
             NZVC(left);
         }
 

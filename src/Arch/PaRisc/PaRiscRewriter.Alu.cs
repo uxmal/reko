@@ -25,6 +25,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 
@@ -56,9 +57,9 @@ namespace Reko.Arch.PaRisc
             var c = binder.EnsureFlagGroup(Registers.CF);
             m.Assign(
                 dst,
-                m.IAdd(
-                    m.IAdd(src1, src2),
-                                c));
+                m.Fn(
+                    CommonOps.IAddC.MakeInstance(src1.DataType, c.DataType),
+                    src1, src2, c));
         }
 
 
@@ -289,9 +290,9 @@ namespace Reko.Arch.PaRisc
             var c = binder.EnsureFlagGroup(Registers.CF);
             m.Assign(
                 dst,
-                m.ISub(
-                    m.ISub(src1, src2),
-                                c));
+                m.Fn(
+                    CommonOps.ISubC.MakeInstance(src1.DataType, c.DataType),
+                    src1, src2, c));
         }
 
         private void RewriteSubi()

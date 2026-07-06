@@ -52,9 +52,9 @@ namespace Reko.UnitTests.Arch.CSky
         public void CSkyRw_addc_16()
         {
             Given_HexString("E161");
-            AssertCode(     // abs\tr30,r31
+            AssertCode(     // addc\tr7,r8
                 "0|L--|00100000(2): 2 instructions",
-                "1|L--|r7 = r7 + r8 + C",
+                "1|L--|r7 = __addc<word32,word32>(r7, r8, C)",
                 "2|L--|C = cond(r7)");
         }
 
@@ -62,9 +62,9 @@ namespace Reko.UnitTests.Arch.CSky
         public void CSkyRw_addc_32()
         {
             Given_HexString("1EC7 5F00");
-            AssertCode(     // abs\tr30,r31
+            AssertCode(     // addc\tr30,r24
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|r31 = r30 + r24 + C",
+                "1|L--|r31 = __addc<word32,word32>(r30, r24, C)",
                 "2|L--|C = cond(r31)");
         }
 
@@ -1943,7 +1943,7 @@ namespace Reko.UnitTests.Arch.CSky
             Given_HexString("2762");
             AssertCode(     // subc\tr8,r9
                 "0|L--|00100000(2): 2 instructions",
-                "1|L--|r8 = r8 - r9 - C",
+                "1|L--|r8 = __subc<word32,word32>(r8, r9, C)",
                 "2|L--|C = cond(r8)");
         }
 
@@ -1953,7 +1953,7 @@ namespace Reko.UnitTests.Arch.CSky
             Given_HexString("33C6 1701");
             AssertCode(     // subc\tr23,r19,r17
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|r23 = r19 - r17 - C",
+                "1|L--|r23 = __subc<word32,word32>(r19, r17, C)",
                 "2|L--|C = cond(r23)");
         }
 

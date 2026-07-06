@@ -59,7 +59,7 @@ namespace Reko.UnitTests.Arch.Sanyo
             Given_HexString("95");
             AssertCode(     // addc     @R1
                 "0|L--|0100(1): 2 instructions",
-                "1|L--|ACC = ACC + Mem0[R1:byte] + C",
+                "1|L--|ACC = __addc<byte,byte>(ACC, Mem0[R1:byte], C)",
                 "2|L--|CAV = cond(ACC)");
         }
 
@@ -417,7 +417,7 @@ namespace Reko.UnitTests.Arch.Sanyo
             Given_HexString("B212");
             AssertCode(     // subc     $0012
                 "0|L--|0100(2): 2 instructions",
-                "1|L--|ACC = ACC - Mem0[0x0012<p16>:byte] - C",
+                "1|L--|ACC = __subc<byte,byte>(ACC, Mem0[0x0012<p16>:byte], C)",
                 "2|L--|CAV = cond(ACC)");
         }
 

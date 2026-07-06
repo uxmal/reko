@@ -73,7 +73,7 @@ namespace Reko.UnitTests.Arch.MicroBlaze
             Given_HexString("08631800"); // addc\tr3,r3,r3
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|r3 = r3 + r3 + C",
+                "1|L--|r3 = __addc<word32,word32>(r3, r3, C)",
                 "2|L--|C = cond(r3)");
         }
 

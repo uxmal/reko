@@ -85,7 +85,7 @@ namespace Reko.Arch.SuperH
                     Invalid();
                     break;
                 case Mnemonic.add: RewriteBinOp(m.IAdd, n => (sbyte) n); break;
-                case Mnemonic.addc: RewriteAddcSubc(m.IAdd); break;
+                case Mnemonic.addc: RewriteAddcSubc(CommonOps.IAddC); break;
                 case Mnemonic.addv: RewriteAddv(m.IAdd); break;
                 case Mnemonic.and: RewriteBinOp(m.And, n => (byte) n); break;
                 case Mnemonic.and_b: RewriteBinOp(m.And, n => (byte) n); break;
@@ -192,7 +192,7 @@ namespace Reko.Arch.SuperH
                 case Mnemonic.sts: RewriteMov(); break;
                 case Mnemonic.sts_l: RewriteMov(); break;
                 case Mnemonic.sub: RewriteBinOp(m.ISub, null); break;
-                case Mnemonic.subc: RewriteAddcSubc(m.ISub); break;
+                case Mnemonic.subc: RewriteAddcSubc(CommonOps.ISubC); break;
                 case Mnemonic.swap_w: RewriteSwapW(); break;
                 case Mnemonic.tas_b: RewriteTas(PrimitiveType.Byte); break;
                 case Mnemonic.tst: RewriteTst(); break;
@@ -373,12 +373,16 @@ namespace Reko.Arch.SuperH
         }
 
 
-        private void RewriteAddcSubc(Func<Expression, Expression, Expression> fn)
+        private void RewriteAddcSubc(IntrinsicProcedure fn)
         {
-            var t = binder.EnsureFlagGroup(Registers.T);
             var src = SrcOp(instr.Operands[0], null);
             var dst = DstOp(instr.Operands[1], src, (a, b) =>
-                fn(fn(a, b), t));
+            {
+                var t = binder.EnsureFlagGroup(Registers.T);
+                return m.Fn(
+                    fn.MakeInstance(a.DataType, t.DataType),
+                    a, b, t);
+            });
         }
 
         private void RewriteNegc()

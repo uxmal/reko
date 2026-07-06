@@ -151,7 +151,7 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.Invalid:
                     Invalid();
                     break;
-                case Mnemonic.adc: RewriteAdcSbc(m.IAdd, false); break;
+                case Mnemonic.adc: RewriteAdcSbc(CommonOps.IAddC, false); break;
                 case Mnemonic.add: RewriteBinOp(m.IAdd); break;
                 case Mnemonic.addw: RewriteAddw(); break;
                 case Mnemonic.adr: RewriteAdr(); break;
@@ -270,11 +270,11 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.rev16: RewriteRev(PrimitiveType.Word16); break;
                 case Mnemonic.revsh: RewriteRevsh(); break;
                 case Mnemonic.rsb: RewriteRevBinOp(m.ISub, instr.SetFlags); break;
-                case Mnemonic.rsc: RewriteAdcSbc(m.ISub, true); break;
+                case Mnemonic.rsc: RewriteAdcSbc(CommonOps.ISubC, true); break;
                 case Mnemonic.sadd16: RewriteVectorBinOp(sadd_intrinsic, ArmVectorData.S16); break;
                 case Mnemonic.sadd8: RewriteVectorBinOp(sadd_intrinsic, ArmVectorData.S8); break;
                 case Mnemonic.sasx: RewriteVectorBinOp(sasx_intrinsic, PrimitiveType.Int16); break;
-                case Mnemonic.sbc: RewriteAdcSbc(m.ISub, false); break;
+                case Mnemonic.sbc: RewriteAdcSbc(CommonOps.ISubC, false); break;
                 case Mnemonic.sbfx: RewriteSbfx(); break;
                 case Mnemonic.sdiv: RewriteDiv(m.SDiv); break;
                 case Mnemonic.sel: RewriteIntrinsic(sel_intrinsic); break;

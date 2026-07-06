@@ -27,9 +27,6 @@ using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Arch.Sparc
 {
@@ -86,7 +83,7 @@ namespace Reko.Arch.Sparc
             {
                 InstructionClass = InstrClass.Invalid,
                 Mnemonic = Mnemonic.illegal,
-                Operands = Array.Empty<MachineOperand>(),
+                Operands = []
             };
         }
 

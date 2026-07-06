@@ -962,7 +962,7 @@ l01D1:
 						a_n.u1 = (char *) &g_t004E.u1->t0000.u0 + fn056C();
 						sp_n->t0000.u1 = (struct Eq_n *) a_n;
 						sp_n->b0001 = f;
-						null = (union Eq_n *) ((char *) &null->u0 + (byte) (a_n < 0x00));
+						null = (union Eq_n *) ((word16) null + (byte) (a_n < 0x00));
 						Eq_n a_n;
 						a_n.u1 = sp_n->t0000.u1;
 						f = sp_n->b0001;
@@ -979,7 +979,7 @@ l01D1:
 						a_n.u1 = (char *) &g_t004E.u1->t0000.u0 + fn056C();
 						sp_n->t0000.u1 = (struct Eq_n *) a_n;
 						sp_n->b0001 = f;
-						null = (union Eq_n *) ((char *) &null->u0 + (byte) (a_n < 0x00));
+						null = (union Eq_n *) ((word16) null + (byte) (a_n < 0x00));
 						Eq_n a_n;
 						a_n.u1 = sp_n->t0000.u1;
 						f = sp_n->b0001;

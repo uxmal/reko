@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Operators;
 using Reko.Core.Types;
@@ -70,36 +71,32 @@ namespace Reko.Arch.X86.Rewriter
                             orw.AddrOf(orw.AluRegister(Registers.ah))));
         }
 
-        public void RewriteAdcSbb(BinaryOperator opr)
+        public void RewriteAdcSbb(IntrinsicProcedure opr)
         {
-            //$REVIEW adc
-
             // We do not take the trouble of widening the CF to the word size
             // to simplify code analysis in later stages. 
             var c = binder.EnsureFlagGroup(arch.Registers.C);
+            var src0 = SrcOp(0);
             EmitCopy(
                 0,
-                m.Bin(
-                    opr,
-                    m.Bin(
-                        opr,
-                        SrcOp(0),
-                        SrcOp(1, instrCur.Operands[0].DataType)),
+                m.Fn(
+                    opr.MakeInstance(src0.DataType, c.DataType),
+                    src0,
+                    SrcOp(1, instrCur.Operands[0].DataType),
                     c),
                 CopyFlags.EmitCc);
         }
 
         private void RewriteAdcx(FlagGroupStorage carry)
         {
-            //$REVIEW: adc
             var cy = binder.EnsureFlagGroup(carry);
             var dst = SrcOp(0);
             m.Assign(
                 dst,
-                m.IAdd(
-                    m.IAdd(
-                        dst,
-                        SrcOp(1, dst.DataType)),
+                m.Fn(
+                    CommonOps.IAddC.MakeInstance(dst.DataType, cy.DataType),
+                    dst,
+                    SrcOp(1, dst.DataType),
                     cy));
             m.Assign(cy, m.Cond(cy.DataType, dst));
         }

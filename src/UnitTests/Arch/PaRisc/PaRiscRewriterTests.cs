@@ -69,7 +69,7 @@ namespace Reko.UnitTests.Arch.PaRisc
             Given_HexString("0AF80729");	// add,c	r24,r23,r9
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r9 = r24 + r23 + C");
+                "1|L--|r9 = __addc<word64,word64>(r24, r23, C)");
         }
 
         [Test]
@@ -621,7 +621,7 @@ namespace Reko.UnitTests.Arch.PaRisc
             Given_HexString("0BB9051D");
             AssertCode(     // sub,b	r25,r29,r29
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r29 = r25 - r29 - C");
+                "1|L--|r29 = __subc<word64,word64>(r25, r29, C)");
         }
 
         [Test]

@@ -65,12 +65,16 @@ namespace Reko.Arch.zSeries
             SetCcCond(dst);
         }
 
-        private void RewriteAdcSbcReg(Func<Expression,Expression,Expression> fn, PrimitiveType dt)
+        private void RewriteAdcSbcReg(IntrinsicProcedure fn, PrimitiveType dt)
         {
             var src1 = Reg(0, dt);
             var src2 = Reg(1, dt);
             var cc = binder.EnsureFlagGroup(Registers.CC);
-            var dst = Assign(Reg(0), fn(fn(src1, src2), cc));
+            var dst = Assign(
+                Reg(0),
+                m.Fn(
+                    fn.MakeInstance(src1.DataType, cc.DataType),
+                    src1, src2, cc));
             SetCcCond(dst);
         }
 

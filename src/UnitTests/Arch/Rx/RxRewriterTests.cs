@@ -69,7 +69,7 @@ namespace Reko.UnitTests.Arch.Rx
             Given_HexString("FD7424 FF");
             AssertCode(        // adc\t#0FFFFFFFFh,r4
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|r4 = r4 + 0xFFFFFFFF<32> + C",
+                "1|L--|r4 = __addc<word32,word32>(r4, 0xFFFFFFFF<32>, C)",
                 "2|L--|COSZ = cond(r4)");
         }
 
@@ -79,7 +79,7 @@ namespace Reko.UnitTests.Arch.Rx
             Given_HexString("FD7C24 A6789A");
             AssertCode(        // adc\t#0FFA6789Ah,r4
                 "0|L--|00100000(6): 2 instructions",
-                "1|L--|r4 = r4 + 0xFFA6789A<32> + C",
+                "1|L--|r4 = __addc<word32,word32>(r4, 0xFFA6789A<32>, C)",
                 "2|L--|COSZ = cond(r4)");
         }
 
@@ -89,7 +89,7 @@ namespace Reko.UnitTests.Arch.Rx
             Given_HexString("FC0B30");
             AssertCode(        // adc\tr3,sp
                 "0|L--|00100000(3): 2 instructions",
-                "1|L--|sp = sp + r3 + C",
+                "1|L--|sp = __addc<word32,word32>(sp, r3, C)",
                 "2|L--|COSZ = cond(sp)");
         }
 
@@ -99,12 +99,12 @@ namespace Reko.UnitTests.Arch.Rx
             Given_HexString("06A10230 7F");
             AssertCode(        // adc.l\t508[r3],sp
                 "0|L--|00100000(5): 2 instructions",
-                "1|L--|sp = sp + Mem0[r3 + 508<i32>:word32] + C",
+                "1|L--|sp = __addc<word32,word32>(sp, Mem0[r3 + 508<i32>:word32], C)",
                 "2|L--|COSZ = cond(sp)");
             Given_HexString("06A20230 8764");
             AssertCode(        // adc.l\t-30876[r3],sp
                 "0|L--|00100000(6): 2 instructions",
-                "1|L--|sp = sp + Mem0[r3 + -30876<i32>:word32] + C",
+                "1|L--|sp = __addc<word32,word32>(sp, Mem0[r3 + -30876<i32>:word32], C)",
                 "2|L--|COSZ = cond(sp)");
         }
 
@@ -1266,12 +1266,12 @@ namespace Reko.UnitTests.Arch.Rx
             Given_HexString("FC0323");
             AssertCode(        // sbb\tr2,r3
                 "0|L--|00100000(3): 2 instructions",
-                "1|L--|r3 = r3 - r2 - C",
+                "1|L--|r3 = __subc<word32,word32>(r3, r2, C)",
                 "2|L--|COSZ = cond(r3)");
             Given_HexString("06A20023 1234");
             AssertCode(        // sbb.l\t4660[r2],r3
                 "0|L--|00100000(6): 2 instructions",
-                "1|L--|r3 = r3 - Mem0[r2 + 4660<i32>:word32] - C",
+                "1|L--|r3 = __subc<word32,word32>(r3, Mem0[r2 + 4660<i32>:word32], C)",
                 "2|L--|COSZ = cond(r3)");
         }
 

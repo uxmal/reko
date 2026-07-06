@@ -76,7 +76,7 @@ namespace Reko.Arch.Msp430
                     EmitUnitTest();
                     Invalid();
                     break;
-                case Mnemonics.addc: RewriteAdcSbc(m.IAdd); break;
+                case Mnemonics.addc: RewriteAdcSbc(CommonOps.IAddC); break;
                 case Mnemonics.add: RewriteBinop(m.IAdd, arch.Registers.VNZC); break;
                 case Mnemonics.and: RewriteLogop(m.And); break;
                 case Mnemonics.bic: RewriteBinop(Bic,  null); break;
@@ -110,7 +110,7 @@ namespace Reko.Arch.Msp430
                 case Mnemonics.rrc: RewriteRrc(); break;
                 case Mnemonics.rrum: RewriteRrum(); break;
                 case Mnemonics.sub: RewriteBinop(m.ISub, arch.Registers.VNZC); break;
-                case Mnemonics.subc: RewriteAdcSbc(m.ISub); break;
+                case Mnemonics.subc: RewriteAdcSbc(CommonOps.ISubC); break;
                 case Mnemonics.swpb: RewriteSwpb(); break;
                 case Mnemonics.sxt: RewriteSxt(); break;
                 case Mnemonics.xor: RewriteBinop(m.Xor, arch.Registers.VNZC); break;
@@ -359,11 +359,15 @@ namespace Reko.Arch.Msp430
             return m.Int32(((width.Size + 1) / 2) * 2);
         }
 
-        private void RewriteAdcSbc(Func<Expression, Expression, Expression> fn)
+        private void RewriteAdcSbc(IntrinsicProcedure fn)
         {
-            var c = binder.EnsureFlagGroup(this.arch.GetFlagGroup(arch.Registers.sr, (ulong) FlagM.CF));
             var src = RewriteOp(instr.Operands[0]);
-            var dst = RewriteDst(instr.Operands[1], src, (a, b) => fn(fn(a, b), c));
+            var dst = RewriteDst(instr.Operands[1], src, (a, b) => {
+            var c = binder.EnsureFlagGroup(this.arch.GetFlagGroup(arch.Registers.sr, (ulong) FlagM.CF));
+            return m.Fn(
+                fn.MakeInstance(a.DataType, c.DataType),
+                a, b, c);
+            });
             EmitCc(dst, arch.Registers.VNZC);
         }
 

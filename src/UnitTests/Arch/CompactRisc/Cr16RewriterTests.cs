@@ -87,7 +87,7 @@ namespace Reko.UnitTests.Arch.CompactRisc
                 "0|L--|00003000(2): 5 instructions",
                 "1|L--|v4 = SLICE(ra, byte, 0)",
                 "2|L--|v5 = SLICE(8<16>, byte, 0)",
-                "3|L--|v7 = v4 + v5 + C",
+                "3|L--|v7 = __addc<byte,word16>(v4, v5, C)",
                 "4|L--|ra = SEQ(SLICE(ra, word24, 8), v7)",
                 "5|L--|CF = cond(v4)");
         }
@@ -98,7 +98,7 @@ namespace Reko.UnitTests.Arch.CompactRisc
             Given_HexString("3936");
             AssertCode(     // addcw	$3,r9
                 "0|L--|00003000(2): 2 instructions",
-                "1|L--|r9 = r9 + 3<16> + C",
+                "1|L--|r9 = __addc<word16,word16>(r9, 3<16>, C)",
                 "2|L--|CF = cond(r9)");
         }
 
@@ -855,7 +855,7 @@ namespace Reko.UnitTests.Arch.CompactRisc
                 "0|L--|00003000(2): 5 instructions",
                 "1|L--|v4 = SLICE(r4, byte, 0)",
                 "2|L--|v6 = SLICE(r13, byte, 0)",
-                "3|L--|v8 = v4 - v6 - C",
+                "3|L--|v8 = __subc<byte,word16>(v4, v6, C)",
                 "4|L--|r4 = SEQ(SLICE(r4, byte, 8), v8)",
                 "5|L--|CF = cond(v4)");
         }
@@ -866,7 +866,7 @@ namespace Reko.UnitTests.Arch.CompactRisc
             Given_HexString("B63F");
             AssertCode(     // subcw	r11,r6
                 "0|L--|00003000(2): 2 instructions",
-                "1|L--|r6 = r6 - r11 - C",
+                "1|L--|r6 = __subc<word16,word16>(r6, r11, C)",
                 "2|L--|CF = cond(r6)");
         }
 

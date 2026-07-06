@@ -81,7 +81,7 @@ namespace Reko.Arch.i8051
                     break;
                 case Mnemonic.acall: RewriteCall(); break;
                 case Mnemonic.add: RewriteBinop(m.IAdd, Registers.CAOP); break;
-                case Mnemonic.addc: RewriteAddcSubb(m.IAdd); break;
+                case Mnemonic.addc: RewriteAddcSubb(CommonOps.IAddC); break;
                 case Mnemonic.ajmp: RewriteJump(); break;
                 case Mnemonic.anl: RewriteLogical(m.And); break;
                 case Mnemonic.cjne: RewriteCjne(); break;
@@ -118,7 +118,7 @@ namespace Reko.Arch.i8051
                 case Mnemonic.rrc: RewriteRotateC(CommonOps.RorC, 1); break;
                 case Mnemonic.setb: RewriteSetb(); break;
                 case Mnemonic.sjmp: RewriteJump(); break;
-                case Mnemonic.subb: RewriteAddcSubb(m.ISub); break;
+                case Mnemonic.subb: RewriteAddcSubb(CommonOps.ISubC); break;
                 case Mnemonic.swap: RewriteSwap(); break;
                 case Mnemonic.xrl: RewriteLogical(m.Xor); break;
                 case Mnemonic.xch: RewriteXch(); break;
@@ -158,7 +158,7 @@ namespace Reko.Arch.i8051
             }
         }
 
-        public void RewriteAddcSubb(Func<Expression, Expression, Expression> opr)
+        public void RewriteAddcSubb(IntrinsicProcedure opr)
         {
             // We do not take the trouble of widening the CF to the word size
             // to simplify code analysis in later stages. 
@@ -167,10 +167,10 @@ namespace Reko.Arch.i8051
             var src = OpSrc(instr.Operands[1], arch.DataMemory);
             m.Assign(
                 dst,
-                opr(
-                    opr(
-                        dst,
-                        src),
+                m.Fn(
+                    opr.MakeInstance(dst.DataType, c.DataType),
+                    dst,
+                    src,
                     c));
             var grf = arch.GetFlagGroup(Registers.PSW, (uint)(FlagM.C | FlagM.AC | FlagM.OV | FlagM.P));
             AssignCondOf(grf, dst);

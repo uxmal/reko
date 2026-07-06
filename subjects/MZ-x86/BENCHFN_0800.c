@@ -2582,10 +2582,10 @@ l0800_nBC7:
 	return C_n != 0x00;
 }
 
-// 0800:1BCC: Register uint16 __scantol(Register Eq_n ds, Stack (memptr (ptr16 Eq_n) code) wArg02, Stack (memptr (ptr16 Eq_n) code) wArg04, Stack Eq_n wArg06, Stack uint16 wArg08, Stack ci16 wArg0A, Stack (memptr Eq_n word16) wArg0C, Stack (memptr Eq_n ui16) wArg0E, Register out Eq_n dxOut, Register out ui16 bxOut, Register out Eq_n diOut, Register out Eq_n esOut)
+// 0800:1BCC: Register uint16 __scantol(Register Eq_n ds, Stack (memptr (ptr16 Eq_n) code) wArg02, Stack (memptr (ptr16 Eq_n) code) wArg04, Stack Eq_n wArg06, Stack uint16 wArg08, Stack ci16 wArg0A, Stack (memptr Eq_n word16) wArg0C, Stack (memptr Eq_n ui16) wArg0E, Register out word16 dxOut, Register out ui16 bxOut, Register out Eq_n diOut, Register out Eq_n esOut)
 // Called from:
 //      __scanner
-uint16 __scantol(Eq_n ds, <anonymous> seg0800_t::* wArg02, <anonymous> seg0800_t::* wArg04, Eq_n wArg06, uint16 wArg08, ci16 wArg0A, word16 Eq_n::* wArg0C, ui16 Eq_n::* wArg0E, union Eq_n & dxOut, ui16 & bxOut, union Eq_n & diOut, union Eq_n & esOut)
+uint16 __scantol(Eq_n ds, <anonymous> seg0800_t::* wArg02, <anonymous> seg0800_t::* wArg04, Eq_n wArg06, uint16 wArg08, ci16 wArg0A, word16 Eq_n::* wArg0C, ui16 Eq_n::* wArg0E, word16 & dxOut, ui16 & bxOut, union Eq_n & diOut, union Eq_n & esOut)
 {
 	uint16 ax_n;
 	uint16 ax_n;
@@ -2618,7 +2618,7 @@ uint16 __scantol(Eq_n ds, <anonymous> seg0800_t::* wArg02, <anonymous> seg0800_t
 	ci16 wArg0A_n = wArg0A - 0x01;
 	ui16 wLoc04_n;
 	uint16 ax_n;
-	Eq_n dx_n;
+	word16 dx_n;
 	if (wArg0A < 0x01)
 	{
 l0800_nC61:
@@ -2632,7 +2632,7 @@ l0800_nC66:
 		sp_n = sp_n + 4;
 		--wLoc06_n;
 		ax_n = 0x00;
-		dx_n.u1 = 0x00;
+		dx_n = 0x00;
 		goto l0800_nD1F;
 	}
 	Eq_n ax_n;
@@ -2705,13 +2705,13 @@ l0800_nD03:
 							di_si_n = di_si_n;
 l0800_nD0F:
 							wLoc04_n = 0x01;
-							dx_n.u1 = SLICE(di_si_n, word16, 16);
+							dx_n = SLICE(di_si_n, word16, 16);
 							ax_n = (word16) di_si_n;
 							if (bLoc07_n != 0x00)
 							{
 								Eq_n dx_ax_n = -di_si_n;
 								ax_n = (word16) dx_ax_n;
-								dx_n.u1 = SLICE(dx_ax_n, word16, 16);
+								dx_n = SLICE(dx_ax_n, word16, 16);
 							}
 							goto l0800_nD1F;
 						}
@@ -2744,7 +2744,7 @@ l0800_nD0F:
 								di_si_n = ax_si_n;
 							} while (SLICE(dx_ax_n, byte, 16) + SLICE(dx_ax_n, byte, 24) + (byte) (SLICE(ax_si_n, word16, 16) < 0x00) == 0x00);
 							uint16 ah_al_n = (uint16) bLoc07_n + ~0x00;
-							dx_n = (cond(SLICE(ah_al_n, byte, 8)) & 0x02) + 0x7FFF;
+							dx_n = (word16) (SLICE(ah_al_n, byte, 8) < 0x00) + 0x7FFF;
 							wLoc04_n = 0x02;
 							ax_n = ah_al_n;
 l0800_nD1F:

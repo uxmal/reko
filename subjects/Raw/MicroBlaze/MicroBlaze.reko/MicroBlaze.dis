@@ -13840,7 +13840,6 @@ l00017F88:
 l00017F9C:
 	branch r5 == 0<32> l00017FA0_ds_t
 l00017FA0_ds_f:
-	r30_14 = 0<32>
 	goto l00017FA4
 l00017FA0_ds_t:
 	goto l00018018
@@ -13850,15 +13849,15 @@ l00017FA4:
 l00017FB0_ds_f:
 	goto l00017FB4
 l00017FB0_ds_t:
-	r3_109 = 1<32>
+	r3_112 = 1<32>
 	goto l0001801C
 l00017FB4:
 	branch (r5 ^ r6) >= 0<32> l00017FBC_ds_t
 l00017FBC_ds_f:
-	r3_109 = 0<32>
+	r3_112 = 0<32>
 	goto l00017FC0
 l00017FBC_ds_t:
-	r3_109 = 0<32>
+	r3_112 = 0<32>
 	goto l00017FC8
 l00017FC0:
 	branch r6 < 0<32> l0001801C
@@ -13867,42 +13866,46 @@ l00017FC4:
 l00017FC8:
 	branch r5 < r6 l0001801C
 l00017FD0:
-	r3_109 = 0<32>
+	r3_112 = 0<32>
 	branch r6 > 0<32> l00017FDC
 l00017FD4:
-	r3_109 = 1<32>
+	r3_112 = 1<32>
 	goto l0001801C
 l00017FDC:
+	r30_r5_115 = CONVERT(r5, uint32, uint64) (alias)
 	branch r5 < 0<32> l00017FEC
 l00017FE0:
 	r5 = r5 * 2<32>
 	branch r5 > 0<32> l00017FE8_ds_t
 l00017FE8_ds_f:
 	r29_15 = r29_15 + 0<32>
+	r30_r5_115 = CONVERT(r5, uint32, uint64) (alias)
 	goto l00017FEC
 l00017FE8_ds_t:
 	r29_15 = r29_15 + 0xFFFFFFFF<32>
 	goto l00017FE0
 l00017FEC:
-	r5 = r5 * 2<32>
-	r30_14 = r30_14 * 2<32> + CONVERT(r5 <u 0<32>, bool, word32)
-	r31_39 = r30_14 - r6
+	r30_r5_78 = r30_r5_115 * 2<64>
+	r30_37 = SLICE(r30_r5_78, word32, 32) (alias)
+	r5_34 = SLICE(r30_r5_78, word32, 0) (alias)
+	r31_39 = r30_37 - r6
 	branch r31_39 < 0<32> l00018004
 l00017FFC:
-	r30_14 = r31_39
-	r3_109 = r3_109 + 1<32>
+	r30_37 = r31_39
+	r3_112 = r3_112 + 1<32>
 l00018004:
 	r29_15 = r29_15 + 0xFFFFFFFF<32>
 	branch r29_15 == 0<32> l00018014
 l0001800C:
-	r3_109 = r3_109 * 2<32>
+	r3_112 = r3_112 * 2<32>
+	r30_r5_115 = SEQ(r30_37, r5_34) (alias)
 	goto l00017FEC
 l00018014:
 	goto l0001801C
 l00018018:
-	r3_109 = 0<32>
+	r3_112 = 0<32>
 l0001801C:
-	return r3_109
+	return r3_112
 fn00017F88_exit:
 
 
@@ -13921,7 +13924,7 @@ l00018030:
 l00018044:
 	branch r5 == 0<32> l00018048_ds_t
 l00018048_ds_f:
-	r3_112 = 0<32>
+	r3_115 = 0<32>
 	goto l0001804C
 l00018048_ds_t:
 	goto l000180D4
@@ -13931,10 +13934,10 @@ l0001804C:
 l0001805C:
 	branch (r5 ^ r6) >= 0<32> l00018064_ds_t
 l00018064_ds_f:
-	r3_112 = r5
+	r3_115 = r5
 	goto l00018068
 l00018064_ds_t:
-	r3_112 = r5
+	r3_115 = r5
 	goto l00018070
 l00018068:
 	branch r6 < 0<32> l000180D8
@@ -13947,40 +13950,43 @@ l00018078:
 l0001807C_ds_f:
 	goto l00018080
 l0001807C_ds_t:
-	r3_112 = 0<32>
 	goto l00018098
 l00018080:
-	r3_112 = (r5 & 0x7FFFFFFF<32>) - (r6 & 0x7FFFFFFF<32>)
+	r3_115 = (r5 & 0x7FFFFFFF<32>) - (r6 & 0x7FFFFFFF<32>)
 	goto l000180D8
 l00018098:
+	r3_r5_120 = CONVERT(r5, uint32, uint64) (alias)
 	branch r5 < 0<32> l000180A8
 l0001809C:
 	r5 = r5 * 2<32>
 	branch r5 >= 0<32> l000180A4_ds_t
 l000180A4_ds_f:
 	r29_16 = r29_16 + 0<32>
+	r3_r5_120 = CONVERT(r5, uint32, uint64) (alias)
 	goto l000180A8
 l000180A4_ds_t:
 	r29_16 = r29_16 + 0xFFFFFFFF<32>
 	goto l0001809C
 l000180A8:
-	r5 = r5 * 2<32>
-	r3_112 = r3_112 * 2<32> + CONVERT(r5 <u 0<32>, bool, word32)
-	r31_39 = r3_112 - r6
+	r3_r5_82 = r3_r5_120 * 2<64>
+	r3_115 = SLICE(r3_r5_82, word32, 32) (alias)
+	r5_34 = SLICE(r3_r5_82, word32, 0) (alias)
+	r31_39 = r3_115 - r6
 	branch r31_39 < 0<32> l000180C0
 l000180B8:
-	r3_112 = r31_39
+	r3_115 = r31_39
 l000180C0:
 	r29_16 = r29_16 + 0xFFFFFFFF<32>
 	branch r29_16 == 0<32> l000180D0
 l000180C8:
+	r3_r5_120 = SEQ(r3_115, r5_34) (alias)
 	goto l000180A8
 l000180D0:
 	goto l000180D8
 l000180D4:
-	r3_112 = 0<32>
+	r3_115 = 0<32>
 l000180D8:
-	return r3_112
+	return r3_115
 fn00018030_exit:
 
 
@@ -23235,42 +23241,45 @@ l0002E7F8:
 l0002E7FC:
 	r6 = -r6
 l0002E800:
-	r30_20 = 0<32>
-	r3_116 = 0<32>
+	r3_119 = 0<32>
 	r29_22 = 0x1F<32>
+	r30_r5_124 = CONVERT(r5, uint32, uint64) (alias)
 	branch r5 < 0<32> l0002E81C
 l0002E810:
 	r5 = r5 * 2<32>
 	branch r5 > 0<32> l0002E818_ds_t
 l0002E818_ds_f:
 	r29_22 = r29_22 + 0<32>
+	r30_r5_124 = CONVERT(r5, uint32, uint64) (alias)
 	goto l0002E81C
 l0002E818_ds_t:
 	r29_22 = r29_22 + 0xFFFFFFFF<32>
 	goto l0002E810
 l0002E81C:
-	r5 = r5 * 2<32>
-	r30_20 = r30_20 * 2<32> + CONVERT(r5 <u 0<32>, bool, word32)
-	r31_37 = r30_20 - r6
+	r30_r5_82 = r30_r5_124 * 2<64>
+	r30_35 = SLICE(r30_r5_82, word32, 32) (alias)
+	r5_32 = SLICE(r30_r5_82, word32, 0) (alias)
+	r31_37 = r30_35 - r6
 	branch r31_37 < 0<32> l0002E834
 l0002E82C:
-	r30_20 = r31_37
-	r3_116 = r3_116 + 1<32>
+	r30_35 = r31_37
+	r3_119 = r3_119 + 1<32>
 l0002E834:
 	r29_22 = r29_22 + 0xFFFFFFFF<32>
 	branch r29_22 == 0<32> l0002E844
 l0002E83C:
-	r3_116 = r3_116 * 2<32>
+	r3_119 = r3_119 * 2<32>
+	r30_r5_124 = SEQ(r30_35, r5_32) (alias)
 	goto l0002E81C
 l0002E844:
 	branch r28_15 >= 0<32> l0002E854
 l0002E848:
-	r3_116 = -r3_116
+	r3_119 = -r3_119
 	goto l0002E854
 l0002E850:
-	r3_116 = 0<32>
+	r3_119 = 0<32>
 l0002E854:
-	return r3_116
+	return r3_119
 fn0002E7D0_exit:
 
 
@@ -23301,44 +23310,47 @@ l0002E894:
 l0002E898:
 	r6 = -r6
 l0002E89C:
-	r3_117 = 0<32>
 	branch r5_17 < 0<32> l0002E8A8_ds_t
 l0002E8A8_ds_f:
 	r29_25 = 0x1F<32>
 	goto l0002E8AC
 l0002E8A8_ds_t:
 	r29_24 = 0x20<32>
+	r3_r5_125 = CONVERT(r5_17, uint32, uint64) (alias)
 	goto l0002E8B8
 l0002E8AC:
 	r5_17 = r5_17 * 2<32>
 	branch r5_17 >= 0<32> l0002E8B4_ds_t
 l0002E8B4_ds_f:
 	r29_24 = r29_25 + 0<32>
+	r3_r5_125 = CONVERT(r5_17, uint32, uint64) (alias)
 	goto l0002E8B8
 l0002E8B4_ds_t:
 	r29_25 = r29_25 + 0xFFFFFFFF<32>
 	goto l0002E8AC
 l0002E8B8:
-	r5_17 = r5_17 * 2<32>
-	r3_117 = r3_117 * 2<32> + CONVERT(r5_17 <u 0<32>, bool, word32)
-	r31_38 = r3_117 - r6
+	r3_r5_83 = r3_r5_125 * 2<64>
+	r3_120 = SLICE(r3_r5_83, word32, 32) (alias)
+	r5_33 = SLICE(r3_r5_83, word32, 0) (alias)
+	r31_38 = r3_120 - r6
 	branch r31_38 < 0<32> l0002E8D0
 l0002E8C8:
-	r3_117 = r31_38
+	r3_120 = r31_38
 l0002E8D0:
 	r29_24 = r29_24 + 0xFFFFFFFF<32>
 	branch r29_24 == 0<32> l0002E8E0
 l0002E8D8:
+	r3_r5_125 = SEQ(r3_120, r5_33) (alias)
 	goto l0002E8B8
 l0002E8E0:
 	branch r5 >= 0<32> l0002E8F0
 l0002E8E4:
-	r3_117 = -r3_117
+	r3_120 = -r3_120
 	goto l0002E8F0
 l0002E8EC:
-	r3_117 = 0<32>
+	r3_120 = 0<32>
 l0002E8F0:
-	return r3_117
+	return r3_120
 fn0002E86C_exit:
 
 
@@ -23425,7 +23437,6 @@ l0002E960:
 l0002E974:
 	branch r5 == 0<32> l0002E978_ds_t
 l0002E978_ds_f:
-	r30_14 = 0<32>
 	goto l0002E97C
 l0002E978_ds_t:
 	goto l0002E9F0
@@ -23435,15 +23446,15 @@ l0002E97C:
 l0002E988_ds_f:
 	goto l0002E98C
 l0002E988_ds_t:
-	r3_109 = 1<32>
+	r3_112 = 1<32>
 	goto l0002E9F4
 l0002E98C:
 	branch (r5 ^ r6) >= 0<32> l0002E994_ds_t
 l0002E994_ds_f:
-	r3_109 = 0<32>
+	r3_112 = 0<32>
 	goto l0002E998
 l0002E994_ds_t:
-	r3_109 = 0<32>
+	r3_112 = 0<32>
 	goto l0002E9A0
 l0002E998:
 	branch r6 < 0<32> l0002E9F4
@@ -23452,42 +23463,46 @@ l0002E99C:
 l0002E9A0:
 	branch r5 < r6 l0002E9F4
 l0002E9A8:
-	r3_109 = 0<32>
+	r3_112 = 0<32>
 	branch r6 > 0<32> l0002E9B4
 l0002E9AC:
-	r3_109 = 1<32>
+	r3_112 = 1<32>
 	goto l0002E9F4
 l0002E9B4:
+	r30_r5_115 = CONVERT(r5, uint32, uint64) (alias)
 	branch r5 < 0<32> l0002E9C4
 l0002E9B8:
 	r5 = r5 * 2<32>
 	branch r5 > 0<32> l0002E9C0_ds_t
 l0002E9C0_ds_f:
 	r29_15 = r29_15 + 0<32>
+	r30_r5_115 = CONVERT(r5, uint32, uint64) (alias)
 	goto l0002E9C4
 l0002E9C0_ds_t:
 	r29_15 = r29_15 + 0xFFFFFFFF<32>
 	goto l0002E9B8
 l0002E9C4:
-	r5 = r5 * 2<32>
-	r30_14 = r30_14 * 2<32> + CONVERT(r5 <u 0<32>, bool, word32)
-	r31_39 = r30_14 - r6
+	r30_r5_78 = r30_r5_115 * 2<64>
+	r30_37 = SLICE(r30_r5_78, word32, 32) (alias)
+	r5_34 = SLICE(r30_r5_78, word32, 0) (alias)
+	r31_39 = r30_37 - r6
 	branch r31_39 < 0<32> l0002E9DC
 l0002E9D4:
-	r30_14 = r31_39
-	r3_109 = r3_109 + 1<32>
+	r30_37 = r31_39
+	r3_112 = r3_112 + 1<32>
 l0002E9DC:
 	r29_15 = r29_15 + 0xFFFFFFFF<32>
 	branch r29_15 == 0<32> l0002E9EC
 l0002E9E4:
-	r3_109 = r3_109 * 2<32>
+	r3_112 = r3_112 * 2<32>
+	r30_r5_115 = SEQ(r30_37, r5_34) (alias)
 	goto l0002E9C4
 l0002E9EC:
 	goto l0002E9F4
 l0002E9F0:
-	r3_109 = 0<32>
+	r3_112 = 0<32>
 l0002E9F4:
-	return r3_109
+	return r3_112
 fn0002E960_exit:
 
 
@@ -23506,7 +23521,7 @@ l0002EA08:
 l0002EA1C:
 	branch r5 == 0<32> l0002EA20_ds_t
 l0002EA20_ds_f:
-	r3_112 = 0<32>
+	r3_115 = 0<32>
 	goto l0002EA24
 l0002EA20_ds_t:
 	goto l0002EAAC
@@ -23516,10 +23531,10 @@ l0002EA24:
 l0002EA34:
 	branch (r5 ^ r6) >= 0<32> l0002EA3C_ds_t
 l0002EA3C_ds_f:
-	r3_112 = r5
+	r3_115 = r5
 	goto l0002EA40
 l0002EA3C_ds_t:
-	r3_112 = r5
+	r3_115 = r5
 	goto l0002EA48
 l0002EA40:
 	branch r6 < 0<32> l0002EAB0
@@ -23532,40 +23547,43 @@ l0002EA50:
 l0002EA54_ds_f:
 	goto l0002EA58
 l0002EA54_ds_t:
-	r3_112 = 0<32>
 	goto l0002EA70
 l0002EA58:
-	r3_112 = (r5 & 0x7FFFFFFF<32>) - (r6 & 0x7FFFFFFF<32>)
+	r3_115 = (r5 & 0x7FFFFFFF<32>) - (r6 & 0x7FFFFFFF<32>)
 	goto l0002EAB0
 l0002EA70:
+	r3_r5_120 = CONVERT(r5, uint32, uint64) (alias)
 	branch r5 < 0<32> l0002EA80
 l0002EA74:
 	r5 = r5 * 2<32>
 	branch r5 >= 0<32> l0002EA7C_ds_t
 l0002EA7C_ds_f:
 	r29_16 = r29_16 + 0<32>
+	r3_r5_120 = CONVERT(r5, uint32, uint64) (alias)
 	goto l0002EA80
 l0002EA7C_ds_t:
 	r29_16 = r29_16 + 0xFFFFFFFF<32>
 	goto l0002EA74
 l0002EA80:
-	r5 = r5 * 2<32>
-	r3_112 = r3_112 * 2<32> + CONVERT(r5 <u 0<32>, bool, word32)
-	r31_39 = r3_112 - r6
+	r3_r5_82 = r3_r5_120 * 2<64>
+	r3_115 = SLICE(r3_r5_82, word32, 32) (alias)
+	r5_34 = SLICE(r3_r5_82, word32, 0) (alias)
+	r31_39 = r3_115 - r6
 	branch r31_39 < 0<32> l0002EA98
 l0002EA90:
-	r3_112 = r31_39
+	r3_115 = r31_39
 l0002EA98:
 	r29_16 = r29_16 + 0xFFFFFFFF<32>
 	branch r29_16 == 0<32> l0002EAA8
 l0002EAA0:
+	r3_r5_120 = SEQ(r3_115, r5_34) (alias)
 	goto l0002EA80
 l0002EAA8:
 	goto l0002EAB0
 l0002EAAC:
-	r3_112 = 0<32>
+	r3_115 = 0<32>
 l0002EAB0:
-	return r3_112
+	return r3_115
 fn0002EA08_exit:
 
 

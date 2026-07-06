@@ -138,52 +138,52 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0x2000),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|WREG = WREG + Data[FSR2 + 0<8>:byte] + C",
+                    "1|L--|WREG = __addc<byte,byte>(WREG, Data[FSR2 + 0<8>:byte], C)",
                     "2|L--|CDCZOVN = cond(WREG)"
                 );
             ExecTest(Words(0x2001),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|WREG = WREG + Data[FSR2 + 1<8>:byte] + C",
+                    "1|L--|WREG = __addc<byte,byte>(WREG, Data[FSR2 + 1<8>:byte], C)",
                     "2|L--|CDCZOVN = cond(WREG)"
                 );
             ExecTest(Words(0x20C3),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|WREG = WREG + ADRESL + C",
+                    "1|L--|WREG = __addc<byte,byte>(WREG, ADRESL, C)",
                     "2|L--|CDCZOVN = cond(WREG)"
                 );
             ExecTest(Words(0x2100),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|WREG = WREG + Data[BSR:0<8>:byte] + C",
+                    "1|L--|WREG = __addc<byte,byte>(WREG, Data[BSR:0<8>:byte], C)",
                     "2|L--|CDCZOVN = cond(WREG)"
                 );
             ExecTest(Words(0x2101),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|WREG = WREG + Data[BSR:1<8>:byte] + C",
+                    "1|L--|WREG = __addc<byte,byte>(WREG, Data[BSR:1<8>:byte], C)",
                     "2|L--|CDCZOVN = cond(WREG)"
                 );
             ExecTest(Words(0x21C3),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|WREG = WREG + Data[BSR:0xC3<8>:byte] + C",
+                    "1|L--|WREG = __addc<byte,byte>(WREG, Data[BSR:0xC3<8>:byte], C)",
                     "2|L--|CDCZOVN = cond(WREG)"
                 );
             ExecTest(Words(0x2212),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|Data[FSR2 + 0x12<8>:byte] = WREG + Data[FSR2 + 0x12<8>:byte] + C",
+                    "1|L--|Data[FSR2 + 0x12<8>:byte] = __addc<byte,byte>(WREG, Data[FSR2 + 0x12<8>:byte], C)",
                     "2|L--|CDCZOVN = cond(Data[FSR2 + 0x12<8>:byte])"
                 );
             ExecTest(Words(0x22C3),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|ADRESL = WREG + ADRESL + C",
+                    "1|L--|ADRESL = __addc<byte,byte>(WREG, ADRESL, C)",
                     "2|L--|CDCZOVN = cond(ADRESL)"
                 );
             ExecTest(Words(0x233F),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|Data[BSR:0x3F<8>:byte] = WREG + Data[BSR:0x3F<8>:byte] + C",
+                    "1|L--|Data[BSR:0x3F<8>:byte] = __addc<byte,byte>(WREG, Data[BSR:0x3F<8>:byte], C)",
                     "2|L--|CDCZOVN = cond(Data[BSR:0x3F<8>:byte])"
                 );
             ExecTest(Words(0x23C3),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|Data[BSR:0xC3<8>:byte] = WREG + Data[BSR:0xC3<8>:byte] + C",
+                    "1|L--|Data[BSR:0xC3<8>:byte] = __addc<byte,byte>(WREG, Data[BSR:0xC3<8>:byte], C)",
                     "2|L--|CDCZOVN = cond(Data[BSR:0xC3<8>:byte])"
                 );
         }
@@ -1809,52 +1809,52 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0x5400),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|WREG = WREG - Data[FSR2 + 0<8>:byte] - !C",
+                    "1|L--|WREG = __subc<byte,bool>(WREG, Data[FSR2 + 0<8>:byte], !C)",
                     "2|L--|CDCZOVN = cond(WREG)"
                 );
             ExecTest(Words(0x5401),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|WREG = WREG - Data[FSR2 + 1<8>:byte] - !C",
+                    "1|L--|WREG = __subc<byte,bool>(WREG, Data[FSR2 + 1<8>:byte], !C)",
                     "2|L--|CDCZOVN = cond(WREG)"
                 );
             ExecTest(Words(0x54C3),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|WREG = WREG - ADRESL - !C",
+                    "1|L--|WREG = __subc<byte,bool>(WREG, ADRESL, !C)",
                     "2|L--|CDCZOVN = cond(WREG)"
                 );
             ExecTest(Words(0x5500),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|WREG = WREG - Data[BSR:0<8>:byte] - !C",
+                    "1|L--|WREG = __subc<byte,bool>(WREG, Data[BSR:0<8>:byte], !C)",
                     "2|L--|CDCZOVN = cond(WREG)"
                 );
             ExecTest(Words(0x5501),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|WREG = WREG - Data[BSR:1<8>:byte] - !C",
+                    "1|L--|WREG = __subc<byte,bool>(WREG, Data[BSR:1<8>:byte], !C)",
                     "2|L--|CDCZOVN = cond(WREG)"
                 );
             ExecTest(Words(0x55C3),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|WREG = WREG - Data[BSR:0xC3<8>:byte] - !C",
+                    "1|L--|WREG = __subc<byte,bool>(WREG, Data[BSR:0xC3<8>:byte], !C)",
                     "2|L--|CDCZOVN = cond(WREG)"
                 );
             ExecTest(Words(0x5601),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|Data[FSR2 + 1<8>:byte] = WREG - Data[FSR2 + 1<8>:byte] - !C",
+                    "1|L--|Data[FSR2 + 1<8>:byte] = __subc<byte,bool>(WREG, Data[FSR2 + 1<8>:byte], !C)",
                     "2|L--|CDCZOVN = cond(Data[FSR2 + 1<8>:byte])"
                 );
             ExecTest(Words(0x56C3),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|ADRESL = WREG - ADRESL - !C",
+                    "1|L--|ADRESL = __subc<byte,bool>(WREG, ADRESL, !C)",
                     "2|L--|CDCZOVN = cond(ADRESL)"
                 );
             ExecTest(Words(0x5701),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|Data[BSR:1<8>:byte] = WREG - Data[BSR:1<8>:byte] - !C",
+                    "1|L--|Data[BSR:1<8>:byte] = __subc<byte,bool>(WREG, Data[BSR:1<8>:byte], !C)",
                     "2|L--|CDCZOVN = cond(Data[BSR:1<8>:byte])"
                 );
             ExecTest(Words(0x57C3),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|Data[BSR:0xC3<8>:byte] = WREG - Data[BSR:0xC3<8>:byte] - !C",
+                    "1|L--|Data[BSR:0xC3<8>:byte] = __subc<byte,bool>(WREG, Data[BSR:0xC3<8>:byte], !C)",
                     "2|L--|CDCZOVN = cond(Data[BSR:0xC3<8>:byte])"
                 );
         }
@@ -1947,52 +1947,52 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0x5800),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|WREG = Data[FSR2 + 0<8>:byte] - WREG - !C",
+                    "1|L--|WREG = __subc<byte,bool>(Data[FSR2 + 0<8>:byte], WREG, !C)",
                     "2|L--|CDCZOVN = cond(WREG)"
                 );
             ExecTest(Words(0x5801),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|WREG = Data[FSR2 + 1<8>:byte] - WREG - !C",
+                    "1|L--|WREG = __subc<byte,bool>(Data[FSR2 + 1<8>:byte], WREG, !C)",
                     "2|L--|CDCZOVN = cond(WREG)"
                 );
             ExecTest(Words(0x58C3),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|WREG = ADRESL - WREG - !C",
+                    "1|L--|WREG = __subc<byte,bool>(ADRESL, WREG, !C)",
                     "2|L--|CDCZOVN = cond(WREG)"
                 );
             ExecTest(Words(0x5900),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|WREG = Data[BSR:0<8>:byte] - WREG - !C",
+                    "1|L--|WREG = __subc<byte,bool>(Data[BSR:0<8>:byte], WREG, !C)",
                     "2|L--|CDCZOVN = cond(WREG)"
                 );
             ExecTest(Words(0x5901),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|WREG = Data[BSR:1<8>:byte] - WREG - !C",
+                    "1|L--|WREG = __subc<byte,bool>(Data[BSR:1<8>:byte], WREG, !C)",
                     "2|L--|CDCZOVN = cond(WREG)"
                 );
             ExecTest(Words(0x59C3),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|WREG = Data[BSR:0xC3<8>:byte] - WREG - !C",
+                    "1|L--|WREG = __subc<byte,bool>(Data[BSR:0xC3<8>:byte], WREG, !C)",
                     "2|L--|CDCZOVN = cond(WREG)"
                 );
             ExecTest(Words(0x5A01),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|Data[FSR2 + 1<8>:byte] = Data[FSR2 + 1<8>:byte] - WREG - !C",
+                    "1|L--|Data[FSR2 + 1<8>:byte] = __subc<byte,bool>(Data[FSR2 + 1<8>:byte], WREG, !C)",
                     "2|L--|CDCZOVN = cond(Data[FSR2 + 1<8>:byte])"
                 );
             ExecTest(Words(0x5AC3),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|ADRESL = ADRESL - WREG - !C",
+                    "1|L--|ADRESL = __subc<byte,bool>(ADRESL, WREG, !C)",
                     "2|L--|CDCZOVN = cond(ADRESL)"
                 );
             ExecTest(Words(0x5B01),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|Data[BSR:1<8>:byte] = Data[BSR:1<8>:byte] - WREG - !C",
+                    "1|L--|Data[BSR:1<8>:byte] = __subc<byte,bool>(Data[BSR:1<8>:byte], WREG, !C)",
                     "2|L--|CDCZOVN = cond(Data[BSR:1<8>:byte])"
                 );
             ExecTest(Words(0x5BC3),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|Data[BSR:0xC3<8>:byte] = Data[BSR:0xC3<8>:byte] - WREG - !C",
+                    "1|L--|Data[BSR:0xC3<8>:byte] = __subc<byte,bool>(Data[BSR:0xC3<8>:byte], WREG, !C)",
                     "2|L--|CDCZOVN = cond(Data[BSR:0xC3<8>:byte])"
                 );
         }
@@ -2218,7 +2218,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
             // ADDWFC INDF0,W,ACCESS
             ExecTest(Words(0x20EF),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|WREG = WREG + Data[FSR0:byte] + C",
+                    "1|L--|WREG = __addc<byte,byte>(WREG, Data[FSR0:byte], C)",
                     "2|L--|CDCZOVN = cond(WREG)"
                 );
             // ANDWF POSTINC1,F,ACCESS
@@ -2239,7 +2239,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
             ExecTest(Words(0x5ADC),
                 "0|L--|000200(2): 3 instructions",
                     "1|L--|FSR2 = FSR2 + 1<16>",
-                    "2|L--|Data[FSR2:byte] = Data[FSR2:byte] - WREG - !C",
+                    "2|L--|Data[FSR2:byte] = __subc<byte,bool>(Data[FSR2:byte], WREG, !C)",
                     "3|L--|CDCZOVN = cond(Data[FSR2:byte])"
                 );
             // IORWF PLUSW1,F,ACCESS

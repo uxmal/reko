@@ -1517,7 +1517,7 @@ SsaProcedureBuilder_exit:
             m.Alias(v1b, m.Slice(v1, PrimitiveType.Byte));
             m.Alias(v1h, m.Slice(v1, v1h.DataType, 8));
             m.Assign(C, 1);
-            m.Assign(v2b, m.IAdd(m.IAdd(v1b, m.Byte(0x19)), m.Slice(C, v1b.DataType)));
+            m.Assign(v2b, m.IAddC(v1b, m.Byte(0x19), m.Slice(C, v1b.DataType)));
 
             RunValuePropagator();
 

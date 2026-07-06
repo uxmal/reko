@@ -417,7 +417,7 @@ namespace Reko.UnitTests.Arch.Avr
             Given_UInt16s(0x0524); // "cpc\tr18,r4"
             AssertCode(
                 "0|L--|0100(2): 1 instructions",
-                "1|L--|HSVNZC = r18 - r4 - C");
+                "1|L--|HSVNZC = __subc<byte,byte>(r18, r4, C)");
         }
 
         [Test]
@@ -440,15 +440,13 @@ namespace Reko.UnitTests.Arch.Avr
                 "3|L--|Z = r1_r0 == 0<16>");
         }
 
-
-
         [Test]
         public void Avr8_rw_adc()
         {
             Given_UInt16s(0x1DA1); // "adc\tr26,r1"
             AssertCode(
                 "0|L--|0100(2): 2 instructions",
-                "1|L--|r26 = r26 + r1 + C",
+                "1|L--|r26 = __addc<byte,byte>(r26, r1, C)",
                 "2|L--|HSVNZC = cond(r26)");
         }
 

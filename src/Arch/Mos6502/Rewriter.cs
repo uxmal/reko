@@ -29,8 +29,6 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Arch.Mos6502
 {
@@ -360,9 +358,9 @@ namespace Reko.Arch.Mos6502
             var c = binder.EnsureFlagGroup(Registers.C);
             m.Assign(
                 a,
-                m.IAdd(
-                    m.IAdd(a, mem),
-                    c));
+                m.Fn(
+                    CommonOps.IAddC.MakeInstance(a.DataType, c.DataType),
+                    a, mem, c));
             m.Assign(
                 binder.EnsureFlagGroup(Registers.NVZC),
                 m.Cond(Registers.NVZC.DataType, a));
@@ -375,9 +373,9 @@ namespace Reko.Arch.Mos6502
             var c = binder.EnsureFlagGroup(Registers.C);
             m.Assign(
                 a,
-                m.ISub(
-                    m.ISub(a, mem),
-                    m.Not(c)));
+                m.Fn(
+                    CommonOps.ISubC.MakeInstance(a.DataType, c.DataType),
+                    a, mem, m.Not(c)));
             m.Assign(
                 binder.EnsureFlagGroup(Registers.NVZC),
                 m.Cond(Registers.NVZC.DataType, a));

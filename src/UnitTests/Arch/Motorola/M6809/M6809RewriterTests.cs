@@ -57,7 +57,7 @@ namespace Reko.UnitTests.Arch.M6800
             Given_HexString("A928"); // adca	$08,y
             AssertCode(
                 "0|L--|0100(2): 2 instructions",
-                "1|L--|a = a + Mem0[y + 8<i16>:byte] + C",
+                "1|L--|a = __addc<byte,byte>(a, Mem0[y + 8<i16>:byte], C)",
                 "2|L--|NZVC = cond(a)");
         }
 
@@ -67,7 +67,7 @@ namespace Reko.UnitTests.Arch.M6800
             Given_HexString("C91F"); // adcb	#$1F
             AssertCode(
                 "0|L--|0100(2): 2 instructions",
-                "1|L--|b = b + 0x1F<8> + C",
+                "1|L--|b = __addc<byte,byte>(b, 0x1F<8>, C)",
                 "2|L--|NZVC = cond(b)");
         }
 
@@ -571,7 +571,7 @@ namespace Reko.UnitTests.Arch.M6800
             AssertCode(
                 "0|L--|0100(2): 3 instructions",
                 "1|L--|x = x - 1<i16>",
-                "2|L--|a = a - Mem0[x:byte] - C",
+                "2|L--|a = __subc<byte,byte>(a, Mem0[x:byte], C)",
                 "3|L--|NZVC = cond(a)");
         }
 
@@ -581,7 +581,7 @@ namespace Reko.UnitTests.Arch.M6800
             Given_HexString("E227"); // sbcb	$07,y
             AssertCode(
                 "0|L--|0100(2): 2 instructions",
-                "1|L--|b = b - Mem0[y + 7<i16>:byte] - C",
+                "1|L--|b = __subc<byte,byte>(b, Mem0[y + 7<i16>:byte], C)",
                 "2|L--|NZVC = cond(b)");
         }
 

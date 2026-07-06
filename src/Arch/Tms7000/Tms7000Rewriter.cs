@@ -68,7 +68,7 @@ namespace Reko.Arch.Tms7000
                     host.Error(instr.Address, "Rewriting TMS7000 instruction '{0}' is not supported yet.", instr);
                     iclass = InstrClass.Invalid;
                     break;
-                case Mnemonic.adc: RewriteAdcSbb(m.IAdd); break;
+                case Mnemonic.adc: RewriteAdcSbb(CommonOps.IAddC); break;
                 case Mnemonic.add: RewriteArithmetic(m.IAdd); break;
                 case Mnemonic.and: RewriteLogical(m.And); break;
                 case Mnemonic.andp: RewriteLogical(m.And); break;
@@ -114,7 +114,7 @@ namespace Reko.Arch.Tms7000
                 case Mnemonic.rlc: RewriteRotateC(CommonOps.RolC); break;
                 case Mnemonic.rr: RewriteRotate(CommonOps.Ror); break;
                 case Mnemonic.rrc: RewriteRotateC(CommonOps.RorC); break;
-                case Mnemonic.sbb: RewriteAdcSbb(m.ISub); break;
+                case Mnemonic.sbb: RewriteAdcSbb(CommonOps.ISubC); break;
                 case Mnemonic.setc: RewriteSetc(); break;
                 case Mnemonic.sta: RewriteSta(); break;
                 case Mnemonic.stsp: RewriteStsp(); break;
@@ -215,7 +215,7 @@ namespace Reko.Arch.Tms7000
             m.Assign(c, m.False());
         }
 
-        public void RewriteAdcSbb(Func<Expression, Expression, Expression> opr)
+        public void RewriteAdcSbb(IntrinsicProcedure opr)
         {
             var dst = Operand(instr.Operands[0]);
             var src = Operand(instr.Operands[1]);
@@ -224,9 +224,9 @@ namespace Reko.Arch.Tms7000
             var c = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.st, (ulong) FlagM.CF));
             m.Assign(
                 dst,
-                opr(
-                    opr(dst, src),
-                    c));
+                m.Fn(
+                    opr.MakeInstance(dst.DataType, c.DataType),
+                    dst, src, c));
             m.Assign(c, m.Cond(c.DataType, dst));
         }
 

@@ -71,7 +71,7 @@ namespace Reko.Arch.Padauk
                     m.Invalid();
                     break;
                 case Mnemonic.add: RewriteAddSub(m.IAdd); break;
-                case Mnemonic.addc: RewriteAddcSubc(m.IAddC, m.IAdd); break;
+                case Mnemonic.addc: RewriteAddcSubc(m.IAddC); break;
                 case Mnemonic.and: RewriteAnd(); break;
                 case Mnemonic.dec: RewriteIncDec(m.ISub); break;
                 case Mnemonic.call: RewriteCall(); break;
@@ -98,7 +98,7 @@ namespace Reko.Arch.Padauk
                 case Mnemonic.src: RewriteShiftThroughCarry(Rorc); break;
                 case Mnemonic.stopexe: RewriteStopexe(); break;
                 case Mnemonic.sub: RewriteAddSub(m.ISub); break;
-                case Mnemonic.subc: RewriteAddcSubc(m.ISubC, m.ISub); break;
+                case Mnemonic.subc: RewriteAddcSubc(m.ISubC); break;
                 case Mnemonic.swap: RewriteSwap(); break;
                 case Mnemonic.t0sn: RewriteTsn(true); break;
                 case Mnemonic.t1sn: RewriteTsn(false); break;
@@ -219,8 +219,7 @@ namespace Reko.Arch.Padauk
         }
 
         private void RewriteAddcSubc(
-            Func<Expression, Expression, Expression, Expression> fn3,
-            Func<Expression, Expression, Expression> fn2)
+            Func<Expression, Expression, Expression, Expression> fn3)
         {
             var C = binder.EnsureFlagGroup(Registers.C);
             Expression dst;
@@ -230,7 +229,7 @@ namespace Reko.Arch.Padauk
             }
             else
             {
-                dst = EmitAssignment(0, C, fn2);
+                dst = EmitAssignment(0, m.Zero(instr.Operands[0].DataType), (a, b) => fn3(a, b, C));
             }
             EmitCc(Registers.ZCAV, dst);
         }

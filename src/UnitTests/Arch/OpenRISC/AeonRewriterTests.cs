@@ -75,7 +75,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("40 84 47");
             AssertCode(     // bn.addc?\tr4,r4,r8
                 "0|L--|00100000(3): 3 instructions",
-                "1|L--|r4 = r4 + r8 + cy",
+                "1|L--|r4 = __addc<word32,word32>(r4, r8, cy)",
                 "2|L--|cy = cond(r4)",
                 "3|L--|ov = cond(r4)");
         }

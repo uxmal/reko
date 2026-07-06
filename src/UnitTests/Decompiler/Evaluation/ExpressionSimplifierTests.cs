@@ -27,9 +27,9 @@ using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
 using Reko.Core.Memory;
-using Reko.Core.Operators;
 using Reko.Core.Types;
 using Reko.Evaluation;
+using Reko.Loading;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Numerics;
@@ -93,6 +93,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             foo = MakeSsaId(RegisterStorage.Reg32("foo", 1), coll);
             foo64 = MakeSsaId(RegisterStorage.Reg64("foo64", 2), coll);
             foo16 = MakeSsaId(RegisterStorage.Reg16("foo16", 4), coll);
+            var eflags = RegisterStorage.Reg32("eflags", 18);
             return coll;
         }
 
@@ -100,9 +101,9 @@ namespace Reko.UnitTests.Decompiler.Evaluation
         {
             var foo16 = Identifier.Create(mrFoo16);
             return coll.Add(foo16, new Statement(
-                Address.Ptr32(0), 
+                Address.Ptr32(0),
                 new Assignment(
-                    foo16, 
+                    foo16,
                     m.Const(foo16.DataType, 1)),
                 null),
                 false).Identifier;
@@ -1435,6 +1436,30 @@ namespace Reko.UnitTests.Decompiler.Evaluation
                 m.Word64(5));
             exp = RunExpressionSimplifier(exp);
             Assert.AreEqual("foo_1 < 5<32>", exp.ToString());
+        }
+
+        [Test]
+        public void Exs_Addc_false()
+        {
+            Given_ExpressionSimplifier();
+            Expression exp = m.IAddC(
+                foo,
+                foo,
+                m.False());
+            exp = RunExpressionSimplifier(exp);
+            Assert.That(exp.ToString(), Is.EqualTo("foo_1 * 2<32>"));
+        }
+
+        [Test]
+        public void Exs_Addc_true()
+        {
+            Given_ExpressionSimplifier();
+            Expression exp = m.IAddC(
+                foo,
+                foo,
+                m.True());
+            exp = RunExpressionSimplifier(exp);
+            Assert.That(exp.ToString(), Is.EqualTo("foo_1 * 2<32> + 1<32>"));
         }
     }
 }

@@ -23,6 +23,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
 using Reko.Core.Operators;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Reko.Evaluation
 {
@@ -58,6 +59,52 @@ namespace Reko.Evaluation
                     var cResult = intrinsic.ApplyConstants(appl.DataType, constArgs);
                     if (cResult is not null)
                         return (cResult, true);
+                }
+
+                if (intrinsic.Name == CommonOps.IAddC.Name)
+                {
+                    if (args[2] is Constant c)
+                    {
+                        var v = c.ToUInt64();
+                        if (v == 0)
+                        {
+                            return (m.Bin(Operator.IAdd, appl.DataType, args[0], args[1]), true);
+                        }
+                        else if (v == 1)
+                        {
+                            return (
+                                m.Bin(Operator.IAdd, appl.DataType,
+                                    m.IAdd(args[0], args[1]),
+                                    Constant.Create(appl.DataType, 1)),
+                                    true);
+                        }
+                    }
+                }
+                else if (intrinsic.Name == CommonOps.ISubC.Name)
+                {
+                    var carry = args[2];
+                    if (carry is Constant c)
+                    {
+                        var v = c.ToInt64();
+                        if (v == 0)
+                        {
+                            return (m.Bin(Operator.ISub, appl.DataType, args[0], args[1]), true);
+                        }
+                        else if (v == 1)
+                        {
+                            return (
+                                m.Bin(Operator.ISub, appl.DataType,
+                                    m.ISub(args[0], args[1]),
+                                    Constant.Create(appl.DataType, 1)),
+                                    true);
+
+                        }
+                    }
+                    if (args[0].IsZero && args[1] is Constant m1 &&
+                        m1.IsMaxUnsigned)
+                    {
+                        return (m.Convert(carry, carry.DataType, appl.DataType), true);
+                    }
                 }
 
                 // Rotations-with-carries that rotate in a false carry 

@@ -807,13 +807,6 @@ namespace Reko.Arch.SuperH
             return new NyiDecoder<SuperHDisassembler, Mnemonic, SuperHInstruction>(message);
         }
 
-        // Predicates
-
-        private static bool Ne0(uint n)
-        {
-            return n != 0;
-        }
-
         // Decoders
 
         private static readonly Decoder invalid = Instr(Mnemonic.invalid);

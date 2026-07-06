@@ -25,6 +25,7 @@ using Reko.Core.Collections;
 using Reko.Core.Diagnostics;
 using Reko.Core.Expressions;
 using Reko.Core.Graphs;
+using Reko.Core.Intrinsics;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Operators;
@@ -1074,6 +1075,15 @@ namespace Reko.Analysis
         /// <inheritdoc/>
         public override Expression VisitApplication(Application appl)
         {
+            if (appl.Procedure is ProcedureConstant { Procedure: IntrinsicProcedure ip } &&
+                ip.Name == CommonOps.ISubC.Name &&
+                appl.Arguments[0] is Identifier idSame &&
+                appl.Arguments[1] == idSame)
+            {
+                var cy = appl.Arguments[2].Accept(this);
+                return m.ISub(m.Zero(idSame.DataType), cy);
+            }
+
             var args = new Expression[appl.Arguments.Length];
             for (int i = 0; i < appl.Arguments.Length; ++i)
             {

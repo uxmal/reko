@@ -243,7 +243,7 @@ namespace Reko.UnitTests.Arch.Vax
             Given_Bytes(0xD8, 0x63, 0x54);	// adwc	
             AssertCode(
                 "0|L--|00010000(3): 2 instructions",
-                "1|L--|r4 = r4 + Mem0[r3:word32] + C",
+                "1|L--|r4 = __addc<word32,word32>(r4, Mem0[r3:word32], C)",
                 "2|L--|CVZN = cond(r4)");
         }
 
@@ -1778,7 +1778,7 @@ namespace Reko.UnitTests.Arch.Vax
             AssertCode(
                 "0|L--|00010000(3): 4 instructions",
                 "1|L--|r4 = r4 - 4<32>",
-                "2|L--|v5 = Mem0[r4:word32] - r3 - C",
+                "2|L--|v5 = __subc<word32,word32>(Mem0[r4:word32], r3, C)",
                 "3|L--|Mem0[r4:word32] = v5",
                 "4|L--|CVZN = cond(v5)");
         }

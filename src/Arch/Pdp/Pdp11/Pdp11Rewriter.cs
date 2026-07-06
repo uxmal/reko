@@ -78,7 +78,8 @@ namespace Reko.Arch.Pdp.Pdp11
                     m.Invalid();
                     break;
                 case Mnemonic.illegal: iclass = InstrClass.Invalid; m.Invalid(); break;
-                case Mnemonic.adc: RewriteAdcSbc(m.IAdd); break;
+                case Mnemonic.adc: RewriteAdcSbc(CommonOps.IAddC); break;
+                case Mnemonic.adcb: RewriteAdcSbc(CommonOps.IAddC); break;
                 case Mnemonic.add: RewriteAdd(); break;
                 case Mnemonic.addb: RewriteAdd(); break;
                 case Mnemonic.ash: RewriteShift(); break;
@@ -144,8 +145,8 @@ namespace Reko.Arch.Pdp.Pdp11
                 case Mnemonic.rti: RewriteRti(); break;
                 case Mnemonic.rts: RewriteRts(); break;
                 case Mnemonic.rtt: RewriteRtt(); break;
-                case Mnemonic.sbc: RewriteAdcSbc(m.ISub); break;
-                case Mnemonic.sbcb: RewriteAdcSbc(m.ISub); break;
+                case Mnemonic.sbc: RewriteAdcSbc(CommonOps.ISubC); break;
+                case Mnemonic.sbcb: RewriteAdcSbc(CommonOps.ISubC); break;
                 case Mnemonic.setflags: RewriteClrSetFlags(true); break;
                 case Mnemonic.stcdi: RewriteStcdi(); break;
                 case Mnemonic.sob: RewriteSob(); break;

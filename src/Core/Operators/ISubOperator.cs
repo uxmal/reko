@@ -82,7 +82,7 @@ namespace Reko.Core.Operators
             if (!ValidArgs(c1, c2))
                 return InvalidConstant.Create(c1.DataType);
 
-            return BuildConstant(c1.DataType, c2.DataType, (int) (c1.ToUInt64() - c2.ToUInt64()));
+            return BuildConstant(c1.DataType, c2.DataType, (long) (c1.ToUInt64() - c2.ToUInt64()));
         }
 
         /// <inheritdoc/>

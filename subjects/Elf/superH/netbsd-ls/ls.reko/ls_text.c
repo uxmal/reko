@@ -2387,7 +2387,7 @@ void printcol(struct Eq_n * r4, word32 r8, word32 r9, word32 r14, word32 pr)
 	if ((*((char *) &r12_n[0] + g_ptr403F2C))[0] != 0x00)
 	{
 		word32 r5_n = r4->dw0018;
-		r5_n = r5_n + r4->dw0028 + True<32>;
+		r5_n = r5_n + r4->dw0028 + 0x01;
 	}
 	else
 		r5_n = r4->dw0018;
@@ -2398,7 +2398,7 @@ void printcol(struct Eq_n * r4, word32 r8, word32 r9, word32 r14, word32 pr)
 			r1_n = r4->dw0030;
 		else
 			r1_n = r4->dw001C;
-		r5_n = r5_n + r1_n + True<32>;
+		r5_n = r5_n + r1_n + 0x01;
 	}
 	if (**(g_ptr403F38 + r12_n) != 0x00 || *(*(g_ptr403F3C + r12_n)) != 0x00)
 		++r5_n;
@@ -2553,7 +2553,7 @@ void printacol(struct Eq_n * r4, word32 r9, word32 r10, word32 r11, word32 r13, 
 	if (**((word32) g_ptr404084 + r12_n) != 0x00)
 	{
 		word32 r5_n = r4->dw0018;
-		r5_n = r5_n + r4->dw0028 + True<32>;
+		r5_n = r5_n + r4->dw0028 + 0x01;
 	}
 	else
 		r5_n = r4->dw0018;
@@ -2564,7 +2564,7 @@ void printacol(struct Eq_n * r4, word32 r9, word32 r10, word32 r11, word32 r13, 
 			r1_n = r4->dw0030;
 		else
 			r1_n = r4->dw001C;
-		r5_n = r5_n + r1_n + True<32>;
+		r5_n = r5_n + r1_n + 0x01;
 	}
 	if ((*((char *) &g_ptr404090[0] + r12_n))[0] != 0x00 || (*((char *) (&g_ptr404094[0]) + r12_n))[0] != 0x00)
 		++r5_n;
@@ -2670,7 +2670,7 @@ void printstream(struct Eq_n * r4, word32 pr)
 			r1_n = r4->dw0030;
 		else
 			r1_n = r4->dw001C;
-		r8_n = r8_n + r1_n + True<32>;
+		r8_n = r8_n + r1_n + 0x01;
 	}
 	if ((*((char *) &g_ptr404194[0] + r12_n))[0] != 0x00)
 		++r8_n;

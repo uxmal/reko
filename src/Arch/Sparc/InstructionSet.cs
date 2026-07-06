@@ -20,8 +20,6 @@
 
 using Reko.Core;
 using Reko.Core.Machine;
-using System;
-using System.Collections.Generic;
 using static Reko.Arch.Sparc.SparcDisassembler;
 
 namespace Reko.Arch.Sparc

@@ -82,7 +82,7 @@ namespace Reko.Arch.Sanyo
                     break;
                 case Mnemonic.invalid: m.Invalid(); break;
                 case Mnemonic.add: RewriteAddSub(m.IAdd); break;
-                case Mnemonic.addc: RewriteAddcSubc(m.IAdd); break;
+                case Mnemonic.addc: RewriteAddcSubc(CommonOps.IAddC); break;
                 case Mnemonic.and: RewriteLogical(m.And); break;
                 case Mnemonic.be: RewriteBe(m.Eq); break;
                 case Mnemonic.bn: RewriteBp(true); break;
@@ -120,7 +120,7 @@ namespace Reko.Arch.Sanyo
                 case Mnemonic.st: RewriteSt(); break;
                 case Mnemonic.set1: RewriteBit1(set1_sig); break;
                 case Mnemonic.sub: RewriteAddSub(m.ISub); break;
-                case Mnemonic.subc: RewriteAddcSubc(m.ISub); break;
+                case Mnemonic.subc: RewriteAddcSubc(CommonOps.ISubC); break;
                 case Mnemonic.xch: RewriteXch(); break;
                 case Mnemonic.xor: RewriteLogical(m.Xor); break;
                 }
@@ -168,11 +168,13 @@ namespace Reko.Arch.Sanyo
             m.Assign(binder.EnsureFlagGroup(CAV), m.Cond(CAV.DataType, acc));
         }
 
-        private void RewriteAddcSubc(Func<Expression, Expression, Expression> fn)
+        private void RewriteAddcSubc(IntrinsicProcedure fn)
         {
             var acc = binder.EnsureRegister(Registers.ACC);
             var c = binder.EnsureFlagGroup(C);
-            m.Assign(acc, fn(fn(acc, Op(0)), c));
+            m.Assign(acc, m.Fn(
+                fn.MakeInstance(acc.DataType, c.DataType),
+                acc, Op(0), c));
             m.Assign(binder.EnsureFlagGroup(CAV), m.Cond(CAV.DataType, acc));
         }
 

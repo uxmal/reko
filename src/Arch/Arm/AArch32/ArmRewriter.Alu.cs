@@ -30,7 +30,7 @@ namespace Reko.Arch.Arm.AArch32
 {
     public partial class ArmRewriter
     {
-        private void RewriteAdcSbc(Func<Expression, Expression, Expression> opr, bool reverse)
+        private void RewriteAdcSbc(IntrinsicProcedure opr, bool reverse)
         {
             Expression opDst = this.Operand(0, PrimitiveType.Word32, true);
             Expression opSrc1;
@@ -56,9 +56,9 @@ namespace Reko.Arch.Arm.AArch32
             var c = binder.EnsureFlagGroup(Registers.C);
             m.Assign(
                 opDst,
-                opr(
-                    opr(opSrc1, opSrc2),
-                    c));
+                m.Fn(
+                    opr.MakeInstance(opSrc1.DataType, c.DataType),
+                    opSrc1, opSrc2, c));
             MaybeUpdateFlags(opDst);
         }
 

@@ -3274,7 +3274,7 @@ l0800_1D1F:
 	goto l0800_1D48
 l0800_1D32:
 	ah_al_541 = CONVERT(bLoc07_545, uint8, uint16) + 0xFFFF<16>
-	dx_392 = (cond(SLICE(ah_al_541, byte, 8)) & 2<32>) + 0x7FFF<16>
+	dx_392 = CONVERT(SLICE(ah_al_541, byte, 8) <u 0<8>, bool, word16) + 0x7FFF<16>
 	wLoc04_569 = 2<16>
 	ax_479 = ah_al_541 (alias)
 	goto l0800_1D1F

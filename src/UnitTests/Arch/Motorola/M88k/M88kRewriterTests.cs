@@ -67,7 +67,7 @@ public class M88kRewriterTests : RewriterTestBase
         Given_HexString("F7897214");
         AssertCode( // add.ci\tr28,r9,r20
             "0|L--|00100000(4): 1 instructions",
-            "1|L--|r28 = r9 + r20 + C");
+            "1|L--|r28 = __addc<word32,word32>(r9, r20, C)");
     }
 
     [Test]
@@ -76,7 +76,7 @@ public class M88kRewriterTests : RewriterTestBase
         Given_HexString("F7897314");
         AssertCode( //add.cio\tr28,r9,r20
             "0|L--|00100000(4): 2 instructions",
-            "1|L--|r28 = r9 + r20 + C",
+            "1|L--|r28 = __addc<word32,word32>(r9, r20, C)",
             "2|L--|C = cond(r28)");
     }
 
@@ -114,7 +114,7 @@ public class M88kRewriterTests : RewriterTestBase
         Given_HexString("F5C7621F");
         AssertCode( // addu.ci\tr14,r7,r31
             "0|L--|00100000(4): 1 instructions",
-            "1|L--|r14 = r7 + r31 + C");
+            "1|L--|r14 = __addc<word32,word32>(r7, r31, C)");
     }
 
     [Test]
@@ -123,7 +123,7 @@ public class M88kRewriterTests : RewriterTestBase
         Given_HexString("F5C7631F");
         AssertCode( // addu.cio\tr14,r7,r31
             "0|L--|00100000(4): 2 instructions",
-            "1|L--|r14 = r7 + r31 + C",
+            "1|L--|r14 = __addc<word32,word32>(r7, r31, C)",
             "2|L--|C = cond(r14)");
     }
 
@@ -1486,7 +1486,7 @@ public class M88kRewriterTests : RewriterTestBase
         Given_HexString("F7897614");
         AssertCode( // sub.ci\tr28,r9,r20
             "0|L--|00100000(4): 1 instructions",
-            "1|L--|r28 = r9 - r20 - C");
+            "1|L--|r28 = __subc<word32,word32>(r9, r20, C)");
     }
 
     [Test]
@@ -1495,7 +1495,7 @@ public class M88kRewriterTests : RewriterTestBase
         Given_HexString("F7897714");
         AssertCode( // sub.cio\tr28,r9,r20
             "0|L--|00100000(4): 2 instructions",
-            "1|L--|r28 = r9 - r20 - C",
+            "1|L--|r28 = __subc<word32,word32>(r9, r20, C)",
             "2|L--|C = cond(r28)");
     }
 
@@ -1533,7 +1533,7 @@ public class M88kRewriterTests : RewriterTestBase
         Given_HexString("F5C7661F");
         AssertCode( // subu.ci\tr14,r7,r31
             "0|L--|00100000(4): 1 instructions",
-            "1|L--|r14 = r7 - r31 - C");
+            "1|L--|r14 = __subc<word32,word32>(r7, r31, C)");
     }
 
     [Test]
@@ -1542,7 +1542,7 @@ public class M88kRewriterTests : RewriterTestBase
         Given_HexString("F5C7671F");
         AssertCode( // subu.cio\tr14,r7,r31 
             "0|L--|00100000(4): 2 instructions",
-            "1|L--|r14 = r7 - r31 - C",
+            "1|L--|r14 = __subc<word32,word32>(r7, r31, C)",
             "2|L--|C = cond(r14)");
     }
 

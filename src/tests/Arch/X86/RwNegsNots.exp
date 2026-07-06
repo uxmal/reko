@@ -28,7 +28,7 @@ l0C00_0000:
 	C = eax != 0<32>
 	eax = -eax
 	SZO = cond(eax)
-	eax = eax - eax - C
+	eax = __subc<word32,word32>(eax, eax, C)
 	SCZO = cond(eax)
 	Mem0[ds:0x300<16>:word32] = eax
 	v9 = Mem0[ds:0x202<16>:word16]
@@ -41,7 +41,7 @@ l0C00_0000:
 	v12 = -v11
 	Mem0[ds:0x200<16>:word16] = v12
 	SZO = cond(v12)
-	ecx = ecx - ecx - C
+	ecx = __subc<word32,word32>(ecx, ecx, C)
 	SCZO = cond(ecx)
 	Mem0[ds:0x308<16>:word32] = ecx
 	bx = ~bx
@@ -59,7 +59,7 @@ l0C00_0000:
 	C = eax != 0<32>
 	eax = -eax
 	SZO = cond(eax)
-	eax = eax - eax - C
+	eax = __subc<word32,word32>(eax, eax, C)
 	SCZO = cond(eax)
 	eax = eax + 1<32>
 	SZO = cond(eax)

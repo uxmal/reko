@@ -53,7 +53,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("2001E180"); // adc	r0,r48,r6
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|r0 = r48 + r6 + C",
+                "1|L--|r0 = __addc<word32,word32>(r48, r6, C)",
                 "2|L--|ZNCV = cond(r0)");
         }
 
@@ -1177,7 +1177,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("20032204"); // sbc	r4,r16,r8
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r4 = r16 - r8 - C");
+                "1|L--|r4 = __subc<word32,word32>(r16, r8, C)");
         }
 
         [Test]

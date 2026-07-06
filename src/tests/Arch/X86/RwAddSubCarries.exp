@@ -30,7 +30,7 @@ l0C00_0000:
 	bx = Mem0[ds:0x206<16>:word16]
 	ax = ax + cx
 	SCZO = cond(ax)
-	dx = dx + bx + C
+	dx = __addc<word16,word32>(dx, bx, C)
 	SCZO = cond(dx)
 	Mem0[ds:0x208<16>:word16] = ax
 	Mem0[ds:0x20A<16>:word16] = dx
@@ -41,7 +41,7 @@ l0C00_0000:
 	ax = ax - cx
 	SCZO = cond(ax)
 	Mem0[ds:0x218<16>:word16] = ax
-	dx = dx - bx - C
+	dx = __subc<word16,word32>(dx, bx, C)
 	SCZO = cond(dx)
 	Mem0[ds:0x21A<16>:word16] = dx
 	ax = ax ^ ax
@@ -50,12 +50,12 @@ l0C00_0000:
 	C = 0<32>
 	cl = Mem0[ds:0x220<16>:byte]
 	SCZO = cond(cl - 0x30<8>)
-	ax = ax + ax + C
+	ax = __addc<word16,word32>(ax, ax, C)
 	SCZO = cond(ax)
 	cl = Mem0[ds:0x221<16>:byte]
 	SCZO = cond(cl - 0x3A<8>)
 	C = !C
-	ax = ax + ax + C
+	ax = __addc<word16,word32>(ax, ax, C)
 	SCZO = cond(ax)
 	Mem0[ds:0x222<16>:word16] = ax
 	return

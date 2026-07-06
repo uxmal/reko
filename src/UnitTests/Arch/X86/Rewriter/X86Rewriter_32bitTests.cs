@@ -2506,7 +2506,7 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
             Run32bitTest("83 56 FE FF");
             AssertCode(
                 "0|L--|10000000(4): 3 instructions",
-                "1|L--|v5 = Mem0[esi - 2<i32>:word32] + 0xFFFFFFFF<32> + C",
+                "1|L--|v5 = __addc<word32,word32>(Mem0[esi - 2<i32>:word32], 0xFFFFFFFF<32>, C)",
                 "2|L--|Mem0[esi - 2<i32>:word32] = v5",
                 "3|L--|SCZO = cond(v5)");
         }
@@ -2554,7 +2554,7 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
             Run32bitTest("660F38F6C3");
             AssertCode(     // adcx eax,ebx
                 "0|L--|10000000(5): 2 instructions",
-                "1|L--|eax = eax + ebx + C",
+                "1|L--|eax = __addc<word32,word32>(eax, ebx, C)",
                 "2|L--|C = cond(eax)");
         }
 
@@ -2564,7 +2564,7 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
             Run32bitTest("F30F38F6C4");
             AssertCode(     // adox eax,esp
                 "0|L--|10000000(5): 2 instructions",
-                "1|L--|eax = eax + esp + O",
+                "1|L--|eax = __addc<word32,word32>(eax, esp, O)",
                 "2|L--|O = cond(eax)");
         }
 

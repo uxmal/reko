@@ -29,15 +29,26 @@ namespace Reko.Arch.Sparc
 {
     public partial class SparcRewriter
     {
-        private void RewriteAddxSubx(Func<Expression,Expression,Expression> op, bool emitCc)
+        private void RewriteAddxSubx(IntrinsicProcedure op, bool emitCc)
         {
             var dst = RewriteRegister(2);
             var src1 = RewriteOp(0);
             var src2 = RewriteOp(1);
             var C = binder.EnsureFlagGroup(arch.Registers.C);
-            m.Assign(
-                dst,
-                op(op(src1, src2), C));
+            if (op == CommonOps.ISubC &&
+                src1.IsZero &&
+                src2 is Constant m1 && m1.IsMaxUnsigned)
+            {
+                m.Assign(dst, m.Convert(m.Ne0(C), PrimitiveType.Bool, dst.DataType));
+            }
+            else
+            {
+                m.Assign(
+                    dst,
+                    m.Fn(
+                        op.MakeInstance(src1.DataType, C.DataType),
+                        src1, src2, C));
+            }
             if (emitCc)
             {
                 EmitCc(arch.Registers.NZVC, arch.Registers.xNZVC, dst);
@@ -61,7 +72,6 @@ namespace Reko.Arch.Sparc
             RewriteAlu(op, negateOp2);
             var dst = RewriteRegister(2);
             EmitCc(arch.Registers.NZVC, arch.Registers.xNZVC, dst);
-
         }
 
         private void RewriteBinaryCc(IntrinsicProcedure intrinsic)

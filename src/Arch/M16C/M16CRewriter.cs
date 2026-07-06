@@ -290,7 +290,7 @@ internal class M16CRewriter : IEnumerable<RtlInstructionCluster>
         var c = binder.EnsureFlagGroup(Registers.C);
         var src = Operand(0);
         var dst = Operand(0);
-        var value = Assign(dst, m.IAdd(src, c));
+        var value = Assign(dst, m.IAddC(dst, m.Zero(dst.DataType), c));
         EmitCond(Registers.OSZC, value);
     }
 

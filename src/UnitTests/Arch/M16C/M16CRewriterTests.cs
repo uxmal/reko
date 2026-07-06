@@ -48,7 +48,7 @@ public class M16CRewriterTests : RewriterTestBase
         Given_HexString("B005");
         AssertCode(     // adc.b	r0l,a1
             "0|L--|00000100(2): 2 instructions",
-            "1|L--|a1 = a1 + r0l + C",
+            "1|L--|a1 = __addc<word16,word16>(a1, r0l, C)",
             "2|L--|OSZC = cond(a1)");
     }
 
@@ -59,7 +59,7 @@ public class M16CRewriterTests : RewriterTestBase
         Given_HexString("77EBFA");
         AssertCode(     // adcf.w	-6h[fb]
             "0|L--|00000100(3): 3 instructions",
-            "1|L--|v5 = Mem0[fb - 6<i16>:word16] + C",
+            "1|L--|v5 = __addc<word16,word16>(Mem0[fb - 6<i16>:word16], 0<16>, C)",
             "2|L--|Mem0[fb - 6<i16>:word16] = v5",
             "3|L--|OSZC = cond(v5)");
     }
@@ -496,7 +496,7 @@ public class M16CRewriterTests : RewriterTestBase
         Given_HexString("B92B07");
         AssertCode(     // sbb.w	r2,7h[fb]
             "0|L--|00000100(3): 3 instructions",
-            "1|L--|v6 = Mem0[fb + 7<i16>:word16] - r2 - C",
+            "1|L--|v6 = __subc<word16,word16>(Mem0[fb + 7<i16>:word16], r2, C)",
             "2|L--|Mem0[fb + 7<i16>:word16] = v6",
             "3|L--|OSZC = cond(v6)");
     }

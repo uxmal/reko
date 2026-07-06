@@ -171,7 +171,7 @@ namespace Reko.UnitTests.Arch.PowerPC
             Given_HexString("7C8BBD15");
             AssertCode(     // addeo.	r4,r11,r23
                 "0|L--|00100000(4): 3 instructions",
-                "1|L--|r4 = r11 + r23 + xer",
+                "1|L--|r4 = __addc<word32,word32>(r11, r23, xer)",
                 "2|L--|cr0 = cond(r4)",
                 "3|L--|xer = cond(r4)");
         }
@@ -1134,7 +1134,7 @@ namespace Reko.UnitTests.Arch.PowerPC
 
             AssertCode(0x7ca35914, // adde r5,r3,r11
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|r5 = r3 + r11 + xer",
+                "1|L--|r5 = __addc<word32,word32>(r3, r11, xer)",
                 "2|L--|xer = cond(r5)");
 
             AssertCode(0x7e601c2c, // lwbrx r19,0,r3

@@ -80,7 +80,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 case Mnemonic.invalid:
                     Invalid();
                     break;
-                case Mnemonic.adc: RewriteAdcSbc(m.IAdd, "****0*"); break;
+                case Mnemonic.adc: RewriteAdcSbc(CommonOps.IAddC, "****0*"); break;
                 case Mnemonic.add: RewriteBinOp(m.IAdd, "***V0*"); break;
                 case Mnemonic.and: RewriteBinOp(m.And, "**1*00"); break;
                 case Mnemonic.bit: RewriteBit(); break;
@@ -119,7 +119,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 case Mnemonic.ret: RewriteRet(); break;
                 case Mnemonic.retd: RewriteRetd(); break;
                 case Mnemonic.reti: RewriteReti(); break;
-                case Mnemonic.sbc: RewriteAdcSbc(m.ISub, "****1*"); break;
+                case Mnemonic.sbc: RewriteAdcSbc(CommonOps.ISubC, "****1*"); break;
                 case Mnemonic.scc: RewriteScc(); break;
                 case Mnemonic.scf: RewriteScf(); break;
                 case Mnemonic.set: RewriteSet(); break;

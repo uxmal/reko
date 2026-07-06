@@ -73,7 +73,7 @@ namespace Reko.UnitTests.Arch.MN103
             Given_HexString("F144");
             AssertCode(     // addc	d1,d0
                 "0|L--|00100000(2): 2 instructions",
-                "1|L--|d0 = d0 + d1 + C",
+                "1|L--|d0 = __addc<word32,word16>(d0, d1, C)",
                 "2|L--|VCNZ = cond(d0)");
         }
 
@@ -505,7 +505,7 @@ namespace Reko.UnitTests.Arch.MN103
             Given_HexString("F18D");
             AssertCode(     // subc	d3,d1
                 "0|L--|00100000(2): 2 instructions",
-                "1|L--|d1 = d1 - d3 - C",
+                "1|L--|d1 = __subc<word32,word16>(d1, d3, C)",
                 "2|L--|VCNZ = cond(d1)");
         }
 
