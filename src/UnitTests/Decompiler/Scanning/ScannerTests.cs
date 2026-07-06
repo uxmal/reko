@@ -1009,9 +1009,9 @@ fn00001200_exit:
             });
             var str = new StructureType();
             var fields = new StructureField[] {
-                new StructureField(0, new Pointer(ft1, 32), "A"),
+                new StructureField(0, new PointerType(ft1, 32), "A"),
                 new StructureField(4, PrimitiveType.Int32, "B"),
-                new StructureField(8, new Pointer(ft2, 32), "C"),
+                new StructureField(8, new PointerType(ft2, 32), "C"),
             };
             str.Fields.AddRange(fields);
             var elementType = new TypeReference("test", str);
@@ -1071,8 +1071,8 @@ fn00001200_exit:
             });
             var str = new StructureType();
             var fields = new StructureField[] {
-                new StructureField(0, new Pointer(ft,  32), "func"),
-                new StructureField(4, new Pointer(str, 32), "next"),
+                new StructureField(0, new PointerType(ft,  32), "func"),
+                new StructureField(4, new PointerType(str, 32), "next"),
             };
             str.Fields.AddRange(fields);
 
@@ -1110,7 +1110,7 @@ fn00001200_exit:
             {
                 new StructureField(0, PrimitiveType.Word16, "typeField"),
                 // two-byte gap here.
-                new StructureField(4, new Pointer(ft, 32), "pfn")
+                new StructureField(4, new PointerType(ft, 32), "pfn")
             });
 
             var scanner = new Scanner(
@@ -1169,7 +1169,7 @@ fn00001200_exit:
                 Fields =
                 {
                     { 0,  PrimitiveType.Int32, "data" },
-                    { 4,  new Pointer(FunctionType.Action(
+                    { 4,  new PointerType(FunctionType.Action(
                             new Identifier("arg", PrimitiveType.Int32, null)),
                             32)
                     }

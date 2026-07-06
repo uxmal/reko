@@ -760,7 +760,7 @@ namespace Reko.Arch.Pdp.Pdp10.Rewriter
                 .Void();
             xctIntrinsic = new IntrinsicBuilder("pdp10_xct", true)
                 .Param(word36)
-                .Param(new Pointer(word36, 36))
+                .Param(new PointerType(word36, 36))
                 .Void();
         }
     }

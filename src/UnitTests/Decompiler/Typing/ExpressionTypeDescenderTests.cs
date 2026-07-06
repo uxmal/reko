@@ -61,9 +61,9 @@ namespace Reko.UnitTests.Decompiler.Typing
             program.GlobalFields.Fields.Add((int)addr.ToUInt32(), dt);
         }
 
-        private Pointer PointerTo(DataType dt)
+        private PointerType PointerTo(DataType dt)
         {
-            return new Pointer(dt, arch.PointerType.BitSize);
+            return new PointerType(dt, arch.PointerType.BitSize);
         }
 
         private static Identifier Id(string name, DataType dt)
@@ -286,7 +286,7 @@ namespace Reko.UnitTests.Decompiler.Typing
                     m.IAdd(p, m.Word32(4))),
                 PrimitiveType.Word32,
                 "Typing/ExdReferenceToUnknown.txt");
-            var ptr = tv.OriginalDataType as Pointer;
+            var ptr = tv.OriginalDataType as PointerType;
             Assert.IsNotNull(ptr, "Should be pointer");
             var tRef = ptr.Pointee as TypeReference;
             Assert.IsNotNull(tRef, "Should be type reference");

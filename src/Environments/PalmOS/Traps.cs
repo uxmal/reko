@@ -104,7 +104,7 @@ namespace Reko.Environments.PalmOS
             }
         };
         private static readonly TypeReference LocalID = new TypeReference("LocalID", PrimitiveType.Int16);
-        private static readonly Pointer PLocalID = new Pointer(LocalID, 32);
+        private static readonly PointerType PLocalID = new PointerType(LocalID, 32);
 
 
         private static readonly TrapInfo[] traps = new TrapInfo[]
@@ -1452,7 +1452,7 @@ namespace Reko.Environments.PalmOS
                     dt = PrimitiveType.UInt32;
                     break;
                 case 'S':
-                    dt = new Pointer(PrimitiveType.Char, 32);
+                    dt = new PointerType(PrimitiveType.Char, 32);
                     break;
                 default:
                     throw new ArgumentException();
@@ -1464,7 +1464,7 @@ namespace Reko.Environments.PalmOS
                 if (dtOut is null)
                     dt = PrimitiveType.Ptr32;
                 else
-                    dt = new Pointer(dtOut, 32);
+                    dt = new PointerType(dtOut, 32);
             }
             return dt;
         }
@@ -1516,7 +1516,7 @@ namespace Reko.Environments.PalmOS
                 break;
             default:
                 dt = GetPointerParameter(rType.AsSpan());
-                dt = new Pointer(dt, 32);
+                dt = new PointerType(dt, 32);
                 stg = Registers.a0;
                 break;
             }

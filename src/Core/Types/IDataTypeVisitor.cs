@@ -88,7 +88,7 @@ namespace Reko.Core.Types
         /// </summary>
         /// <param name="ptr">Pointer.</param>
         /// <returns>The result of the visit to the pointer.</returns>
-        T VisitPointer(Pointer ptr);
+        T VisitPointer(PointerType ptr);
 
         /// <summary>
         /// Called when visiting a reference.
@@ -213,7 +213,7 @@ namespace Reko.Core.Types
         /// </summary>
         /// <param name="ptr">Pointer.</param>
         /// <returns>The result of the visit to the pointer.</returns>
-        void VisitPointer(Pointer ptr);
+        void VisitPointer(PointerType ptr);
 
         /// <summary>
         /// Called when visiting a reference.

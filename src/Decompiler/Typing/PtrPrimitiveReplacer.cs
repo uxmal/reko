@@ -124,7 +124,7 @@ namespace Reko.Typing
 					continue;
 				}
 
-                if (eq.DataType is Pointer ptr)
+                if (eq.DataType is PointerType ptr)
                 {
                     eq.DataType = ptr.Pointee;
                     changed = true;
@@ -191,7 +191,7 @@ namespace Reko.Typing
                 changed = true;
                 return dt;
             }
-            if (dt is Pointer ptr)
+            if (dt is PointerType ptr)
             {
                 changed = true;
                 DataType pointee = eq;

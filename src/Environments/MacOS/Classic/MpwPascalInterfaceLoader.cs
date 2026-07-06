@@ -104,7 +104,7 @@ namespace Reko.Environments.MacOS.Classic
                 if (at is not null && (at.IsUnbounded || at.Length <= 1))
                 {
                     // Size 1 arrays are commonly used as boundless arrays in signatures.
-                    var dtNew = new Core.Types.Pointer(at.ElementType, platform.PointerType.BitSize);
+                    var dtNew = new Core.Types.PointerType(at.ElementType, platform.PointerType.BitSize);
                     Storage stgNew = CreateStorage(dtNew, p.Storage);
                     p = new Identifier(p.Name, dtNew, stgNew);
                     parameters[i] = p;

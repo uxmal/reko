@@ -50,7 +50,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
 
         private DataType Ptr32(DataType dt)
         {
-            return new Pointer(dt, 32);
+            return new PointerType(dt, 32);
         }
 
         public void RunComplexStackVariableTransformer()

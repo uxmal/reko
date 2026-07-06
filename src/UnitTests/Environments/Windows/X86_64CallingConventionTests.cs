@@ -84,7 +84,7 @@ namespace Reko.UnitTests.Environments.Windows
                 null,
                 new List<DataType> {
                     PrimitiveType.Char,
-                    new Pointer(PrimitiveType.Int32, 64),
+                    new PointerType(PrimitiveType.Int32, 64),
                     PrimitiveType.UInt64,
                     PrimitiveType.Int32
                 });
@@ -102,7 +102,7 @@ namespace Reko.UnitTests.Environments.Windows
                 null,
                 new List<DataType> {
                     PrimitiveType.Char,
-                    new Pointer(PrimitiveType.Int32, 64),
+                    new PointerType(PrimitiveType.Int32, 64),
                     PrimitiveType.UInt64,
                     PrimitiveType.Int32,
                     PrimitiveType.Int16,
@@ -124,9 +124,9 @@ namespace Reko.UnitTests.Environments.Windows
             AssertEqual(sExp, ccr);
         }
 
-        private Pointer Ptr(DataType dt)
+        private PointerType Ptr(DataType dt)
         {
-            return new Pointer(dt, 64);
+            return new PointerType(dt, 64);
         }
 
         [Test]

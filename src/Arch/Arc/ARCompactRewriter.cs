@@ -539,12 +539,13 @@ namespace Reko.Arch.Arc
             int offset = mem.Offset;
             if (scaleOffset)
             {
+                var suSize = mem.DataType.BitSize / arch.MemoryGranularity;
                 // Byte size is undefined.
-                if (mem.DataType.Size == 1)
+                if (suSize == 1)
                 {
                     return (null, null);
                 }
-                offset = offset * mem.DataType.Size;
+                offset = offset * suSize;
             }
             if (mem.Base is not null)
             {
@@ -874,7 +875,7 @@ namespace Reko.Arch.Arc
             m.SideEffect(m.Fn(CommonOps.Syscall_0), instr.InstructionClass);
         }
 
-        private static ArrayType ai16_2 = new ArrayType(PrimitiveType.Int16, 2);
+        private static readonly ArrayType ai16_2 = new ArrayType(PrimitiveType.Int16, 2);
 
         static ARCompactRewriter()
         {

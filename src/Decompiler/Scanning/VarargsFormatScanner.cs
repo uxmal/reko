@@ -262,7 +262,7 @@ namespace Reko.Scanning
             var c = rdr.ReadCString(charType, program.TextEncoding);
             // Because the string is going to be used as a parameter to a function,
             // we "decay" it to a pointer to a character.
-            c.DataType = new Pointer(charType, addr.DataType.BitSize);
+            c.DataType = new PointerType(charType, addr.DataType.BitSize);
             return c;
         }
 

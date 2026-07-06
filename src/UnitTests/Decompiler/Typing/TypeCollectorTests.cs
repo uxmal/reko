@@ -64,7 +64,7 @@ namespace Reko.UnitTests.Decompiler.Typing
         private void Then_GlobalFieldsAre(Program program, params string[] sExpected)
         {
             var tvGlobals = program.TypeStore.GetTypeVariable(program.Globals);
-            var fields = ((StructureType) ((Pointer) tvGlobals.OriginalDataType).Pointee).Fields.ToArray();
+            var fields = ((StructureType) ((PointerType) tvGlobals.OriginalDataType).Pointee).Fields.ToArray();
             var c = Math.Min(fields.Length, sExpected.Length);
             for (int i = 0; i < fields.Length; ++i)
             {
@@ -206,11 +206,11 @@ namespace Reko.UnitTests.Decompiler.Typing
                 var str = new StructureType("str", 8, true)
                 {
                     Fields = {
-                        { 0, new Pointer(strInner, 32), "strAttr00" },
+                        { 0, new PointerType(strInner, 32), "strAttr00" },
                         { 4, PrimitiveType.Int32, "strAttr04" },
                     }
                 };
-                var v = m.Frame.EnsureStackArgument(4, new Pointer(str, 32));
+                var v = m.Frame.EnsureStackArgument(4, new PointerType(str, 32));
                 m.Assign(eax, m.Mem(PrimitiveType.Word32, v));
                 m.Assign(ecx, m.Mem(PrimitiveType.Word32, eax));
             }, "Typing/TycoNestedStructsPtr.txt");
@@ -298,7 +298,7 @@ namespace Reko.UnitTests.Decompiler.Typing
         {
             var m = new ProcedureBuilder();
             var sig = FunctionType.Create(
-                new Identifier("", new Pointer(VoidType.Instance, 32), null),
+                new Identifier("", new PointerType(VoidType.Instance, 32), null),
                 m.Frame.EnsureStackArgument(0, PrimitiveType.Word32));
             var ex = new ExternalProcedure("malloc", sig, new ProcedureCharacteristics
             {

@@ -80,7 +80,7 @@ namespace Reko.Typing
         public ConstantPointerTraversal(Program program) 
         {
             this.arch = program.Architecture;
-            var ptr = (Pointer) program.TypeStore.GetTypeVariable(program.Globals).DataType;
+            var ptr = (PointerType) program.TypeStore.GetTypeVariable(program.Globals).DataType;
             this.globalStr = (StructureType)((EquivalenceClass) ptr.Pointee).DataType;
             this.segmentMap = program.SegmentMap;
             this.Discoveries = new List<StructureField>();
@@ -174,7 +174,7 @@ namespace Reko.Typing
         }
 
         /// <inheritdoc/>
-        public IEnumerable<WorkItem>? VisitPointer(Pointer ptr)
+        public IEnumerable<WorkItem>? VisitPointer(PointerType ptr)
         {
             Debug.Print("Iterating pointer at {0:X}", gOffset);
             if (!segmentMap.TryFindSegment(segmentMap.MapLinearAddressToAddress((ulong) gOffset), out ImageSegment? segment))

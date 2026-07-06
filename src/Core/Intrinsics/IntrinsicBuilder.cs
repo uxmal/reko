@@ -165,7 +165,7 @@ namespace Reko.Core.Intrinsics
             // The '0' size below indicates that we don't know the size of the pointer.
             // When IntrinsicProcedure.MakeInstance is called, the pointer
             // size of the architecture is resolved.
-            return Param(new Pointer(dt, 0));
+            return Param(new PointerType(dt, 0));
         }
 
         /// <summary>
@@ -176,7 +176,7 @@ namespace Reko.Core.Intrinsics
             // The '0' size below indicates that we don't know the size of the pointer.
             // When IntrinsicProcedure.MakeInstance is called, the pointer
             // size of the architecture is resolved.
-            return Param(new Pointer(GetGenericArgument(genericType), 0));
+            return Param(new PointerType(GetGenericArgument(genericType), 0));
         }
 
         /// <summary>
@@ -244,7 +244,7 @@ namespace Reko.Core.Intrinsics
             // The '0' size below indicates that we don't know the size of the pointer.
             // When IntrinsicProcedure.MakeInstance is called, the pointer
             // size of the architecture is resolved.
-            return Returns(new Pointer(dt, 0));
+            return Returns(new PointerType(dt, 0));
         }
 
         /// <summary>

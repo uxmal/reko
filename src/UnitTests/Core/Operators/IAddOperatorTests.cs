@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Core.Operators
         [Test]
         public void IAdd_int_ptr()
         {
-            var c1 = Constant.Create(new Pointer(PrimitiveType.Int32, 32), 0x00120000);
+            var c1 = Constant.Create(new PointerType(PrimitiveType.Int32, 32), 0x00120000);
             var c2 = Constant.Create(PrimitiveType.Int32, 0x3400);
             var sum = Operator.IAdd.ApplyConstants(c1.DataType, c1, c2);
 

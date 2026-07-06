@@ -127,7 +127,7 @@ namespace Reko.Scanning
         }
 
         /// <inheritdoc/>
-        public void VisitPointer(Pointer ptr)
+        public void VisitPointer(PointerType ptr)
         {
             if (!rdr.TryRead(PrimitiveType.Create(Domain.Pointer, ptr.BitSize), out var c))
                 return;

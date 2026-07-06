@@ -76,7 +76,7 @@ namespace Reko.UnitTests.Core.Output
             var gotr = new GlobalObjectTracer(program, wl, new FakeDecompilerEventListener());
             Given_Data(0x0010_1000, "34 12 10 00");
 
-            gotr.TraceObject(new Pointer(PrimitiveType.Int32, 32), Address.Ptr32(0x0010_1000));
+            gotr.TraceObject(new PointerType(PrimitiveType.Int32, 32), Address.Ptr32(0x0010_1000));
 
             Assert.AreEqual(1, wl.Count);
         }

@@ -246,7 +246,7 @@ namespace Reko.ImageLoaders.LLVM
                 {
                     idx = Convert.ToInt64(con.ToInt64());
                 }
-                if (type is Pointer ptr)
+                if (type is PointerType ptr)
                 {
                     if (idx.HasValue && idx.Value == 0)
                     {
@@ -384,7 +384,7 @@ namespace Reko.ImageLoaders.LLVM
                 if (l.Type == TokenType.HexInteger)
                 {
                     var val = Convert.ToInt64(l.Value, 16);
-                    if (dt is Pointer ptr)
+                    if (dt is PointerType ptr)
                     {
                         return Address.Create(ptr, (ulong)val);
                     }

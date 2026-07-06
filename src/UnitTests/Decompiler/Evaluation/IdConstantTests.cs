@@ -93,7 +93,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
         [Test]
         public void Idc_ConstantReferencePointerToInt()
         {
-            var intptr = new TypeReference("INTPTR", new Pointer(PrimitiveType.Int32, 32));
+            var intptr = new TypeReference("INTPTR", new PointerType(PrimitiveType.Int32, 32));
             Identifier edx = new Identifier("edx", intptr, Registers.edx);
 
             var ctx = new Mock<EvaluationContext>();
@@ -109,7 +109,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
         [Test]
         public void Idc_ConstantAddress()
         {
-            var intptr = new TypeReference("INTPTR", new Pointer(PrimitiveType.Int32, 32));
+            var intptr = new TypeReference("INTPTR", new PointerType(PrimitiveType.Int32, 32));
             Identifier edx = new Identifier("edx", intptr, Registers.edx);
 
             var ctx = new Mock<EvaluationContext>();

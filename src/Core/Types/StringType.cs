@@ -41,7 +41,7 @@ namespace Reko.Core.Types
     /// by walking it.</para>
     ///$TODO: what about strings where the last ASCII character has its MSBit set?
     /// </remarks>
-    public class StringType : ArrayType
+    public sealed class StringType : ArrayType
     {
         /// <summary>
         /// Creats a null-terminated string type.

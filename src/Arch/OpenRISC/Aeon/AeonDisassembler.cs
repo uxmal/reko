@@ -352,8 +352,6 @@ namespace Reko.Arch.OpenRISC.Aeon
         private static readonly Mutator disp2_24 = DisplacementFromPc(2, 24);
         private static readonly Mutator disp3_13 = DisplacementFromPc(3, 13);
 
-        private static bool Eq0(uint u) => u == 0;
-
         private static Decoder Nyi(string message)
         {
             return new NyiDecoder<AeonDisassembler, Mnemonic, AeonInstruction>(message);

@@ -789,7 +789,7 @@ namespace Reko.Analysis
                 {
                     if (value.DataType is StructureType str)
                     {
-                        var ptrStr = new Pointer(str, access.EffectiveAddress.DataType.BitSize);
+                        var ptrStr = new PointerType(str, access.EffectiveAddress.DataType.BitSize);
                         value = m.Mem(
                             access.MemoryId,
                             access.DataType,

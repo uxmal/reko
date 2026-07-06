@@ -46,9 +46,9 @@ namespace Reko.UnitTests.Environments.Windows
             this.arch = new MipsLe32Architecture(new ServiceContainer(), "mips-le-32", new Dictionary<string, object>());
         }
 
-        private Pointer Ptr(DataType dt)
+        private PointerType Ptr(DataType dt)
         {
-            return new Pointer(dt, 32);
+            return new PointerType(dt, 32);
         }
 
         private StructureType LargeInt()

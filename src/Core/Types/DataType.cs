@@ -171,7 +171,7 @@ namespace Reko.Core.Types
                 switch (dt)
                 {
                 case PrimitiveType _:
-                case Pointer _:
+                case PointerType _:
                 case MemberPointer _:
                 case VoidType _:
                 case UnknownType _:
@@ -249,7 +249,7 @@ namespace Reko.Core.Types
                 switch (dt)
                 {
                 case PrimitiveType _:
-                case Pointer _:
+                case PointerType _:
                 case MemberPointer _:
                 case VoidType _:
                 case UnknownType _:

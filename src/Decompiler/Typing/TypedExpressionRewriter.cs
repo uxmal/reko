@@ -387,7 +387,7 @@ namespace Reko.Typing
             [MaybeNullWhen(false)] out StringConstant value)
         {
             value = null;
-            if (DataTypeOf(access) is not Pointer ptr)
+            if (DataTypeOf(access) is not PointerType ptr)
             {
                 return false;
             }
@@ -426,7 +426,7 @@ namespace Reko.Typing
                 var head = newSeq[0];
                 var tail = newSeq[1];
                 var dtHead = DataTypeOf(head);
-                if (dtHead is Pointer || (dtHead.Domain == Domain.Selector))
+                if (dtHead is PointerType || (dtHead.Domain == Domain.Selector))
                 {
                     if (seq.Expressions[1] is Constant c)
                     {

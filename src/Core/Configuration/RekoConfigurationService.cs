@@ -592,7 +592,7 @@ namespace Reko.Core.Configuration
         /// <inheritdoc/>
         public IProcessorArchitecture? GetArchitecture(string archLabel)
         {
-            return GetArchitecture(archLabel, new Dictionary<string, object>());
+            return GetArchitecture(archLabel, []);
         }
 
 
@@ -663,12 +663,17 @@ namespace Reko.Core.Configuration
                     return null;
                 elem.Type = t;
             }
-            options ??= new Dictionary<string, object>();
+            options ??= [];
             var arch = (IProcessorArchitecture) Activator.CreateInstance(
                 t,
                 this.services,
                 elem.Name,
                 options)!;
+            if (arch.CodeMemoryGranularity <= 0)
+                throw new InvalidOperationException($"Invalid CodeMemoryGranularity for architecture {archLabel}.");
+            if (arch.MemoryGranularity <= 0)
+                throw new InvalidOperationException($"Invalid MemoryGranularity for architecture {archLabel}.");
+
             arch.Description = elem.Description;
             if (arch is ProcessorArchitecture a)
             {

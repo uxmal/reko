@@ -34,11 +34,11 @@ namespace Reko.UnitTests.Decompiler.Typing
         private Program program;
 		private TypeStore store;
 		private TypeFactory factory;
-		private Pointer ptrPoint;
-		private Pointer ptrUnion;
-        private Pointer ptrInt;
-        private Pointer ptrWord;
-        private Pointer ptrDouble;
+		private PointerType ptrPoint;
+		private PointerType ptrUnion;
+        private PointerType ptrInt;
+        private PointerType ptrWord;
+        private PointerType ptrDouble;
         private Identifier globals;
         private ExpressionEmitter m;
 
@@ -64,7 +64,7 @@ namespace Reko.UnitTests.Decompiler.Typing
                 DataType = point
             };
 			tvPoint.DataType = eq;
-			ptrPoint = new Pointer(eq, 32);
+			ptrPoint = new PointerType(eq, 32);
 
             UnionType u = new UnionType("RealInt", null)
             {
@@ -79,28 +79,28 @@ namespace Reko.UnitTests.Decompiler.Typing
                 DataType = u
             };
 			tvUnion.DataType = eq;
-			ptrUnion = new Pointer(eq, 32);
+			ptrUnion = new PointerType(eq, 32);
 
-            ptrInt = new Pointer(PrimitiveType.Int32, 32);
-            ptrWord = new Pointer(PrimitiveType.Word32, 32);
-            ptrDouble = new Pointer(PrimitiveType.Real64, 32);
+            ptrInt = new PointerType(PrimitiveType.Int32, 32);
+            ptrWord = new PointerType(PrimitiveType.Word32, 32);
+            ptrDouble = new PointerType(PrimitiveType.Real64, 32);
             m = new ExpressionEmitter();
 		}
 
-        private Pointer Ptr32(DataType dataType)
+        private PointerType Ptr32(DataType dataType)
         {
-            return new Pointer(dataType, 32);
+            return new PointerType(dataType, 32);
         }
 
-        private Pointer Ptr16(DataType dataType)
+        private PointerType Ptr16(DataType dataType)
         {
-            return new Pointer(dataType, 16);
+            return new PointerType(dataType, 16);
         }
 
         private MemberPointer MemPtr(DataType baseType, DataType fieldType)
         {
             return new MemberPointer(
-                new Pointer(baseType, 16),
+                new PointerType(baseType, 16),
                 fieldType, 2);
         }
 

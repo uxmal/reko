@@ -861,7 +861,7 @@ public class LongAddRewriter : IAnalysis<SsaState>
             if (!op.Type.IsAddOrSub())
                 return null;
             return new Candidate(
-                (BinaryOperator) op,
+                op,
                 m.CapturedExpression("left")!,
                 m.CapturedExpression("right")!)
             {

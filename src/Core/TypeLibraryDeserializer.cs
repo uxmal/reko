@@ -385,7 +385,7 @@ namespace Reko.Core
             {
                 bitSize = pointer.PointerSize * platform.Architecture.MemoryGranularity;
             }
-            return new Pointer(dt, bitSize) { Qualifier = pointer.Qualifier };
+            return new PointerType(dt, bitSize) { Qualifier = pointer.Qualifier };
         }
 
         /// <inheritdoc/>

@@ -86,7 +86,7 @@ namespace Reko.UnitTests.Core
         {
             var args = new DataType[] { t };
             var sig = FunctionType.Create(
-                new Identifier("", new Pointer(t, 0), null!),   // generic ptr
+                new Identifier("", new PointerType(t, 0), null!),   // generic ptr
                 new Identifier("arg1", t, null!));
             var generic = new IntrinsicProcedure("PtrOf", args, false, false, null, sig);
             var instance = generic.MakeInstance(64, PrimitiveType.Int64);

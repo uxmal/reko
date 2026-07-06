@@ -35,7 +35,7 @@ namespace Reko.Core.Types
     /// considered primitives, as they are type constructors. Primitives are
     /// implemented as immutable flyweights since there are so many of them.
 	/// </remarks>
-	public class PrimitiveType : DataType
+	public sealed class PrimitiveType : DataType
 	{
         private static readonly ConcurrentDictionary<(Domain,int), PrimitiveType> cache;
         private static readonly ConcurrentDictionary<string, PrimitiveType> lookupByName;

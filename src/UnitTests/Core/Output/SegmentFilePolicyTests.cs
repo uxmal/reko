@@ -48,8 +48,8 @@ namespace Reko.UnitTests.Core.Output
                 Name = "myprogram.exe"
             };
             var treeNode = new StructureType();
-            treeNode.Fields.Add(0, new Pointer(treeNode, 32), "left");
-            treeNode.Fields.Add(4, new Pointer(treeNode, 32), "right");
+            treeNode.Fields.Add(0, new PointerType(treeNode, 32), "left");
+            treeNode.Fields.Add(4, new PointerType(treeNode, 32), "right");
             treeNode.Fields.Add(8, PrimitiveType.Int32, "data");
         }
 

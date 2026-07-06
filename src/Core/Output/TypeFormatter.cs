@@ -454,7 +454,7 @@ namespace Reko.Core.Output
 		public Formatter VisitMemberPointer(MemberPointer memptr)
 		{
             DataType baseType;
-            if (memptr.BasePointer is Pointer p)
+            if (memptr.BasePointer is PointerType p)
             {
                 baseType = p.Pointee;
             }
@@ -481,7 +481,7 @@ namespace Reko.Core.Output
 		}
 
         /// <inheritdoc/>
-		public Formatter VisitPointer(Pointer pt)
+		public Formatter VisitPointer(PointerType pt)
 		{
 			if (mode == Mode.Writing)
 			{

@@ -131,9 +131,9 @@ namespace Reko.Core.Types
         /// <param name="pointee">The type pointed to.</param>
         /// <param name="bitSize">The bit size of the pointer.</param>
         /// <returns>The created pointer.</returns>
-		public Pointer CreatePointer(DataType pointee, int bitSize)
+		public PointerType CreatePointer(DataType pointee, int bitSize)
 		{
-			return new Pointer(pointee, bitSize);
+			return new PointerType(pointee, bitSize);
 		}
 
         /// <summary>

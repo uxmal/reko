@@ -147,7 +147,7 @@ namespace Reko.Analysis
 
         private DataType? DeterminePointee(DataType dt)
         {
-            var ptr = dt.ResolveAs<Pointer>();
+            var ptr = dt.ResolveAs<PointerType>();
             DataType dtPointee;
             if (ptr is not null)
             {

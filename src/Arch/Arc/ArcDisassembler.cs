@@ -337,7 +337,7 @@ namespace Reko.Arch.Arc
             return (u, d) =>
             {
                 var iBaseReg = baseRegField.Read(u);
-                var offset = offsetField.Read(u) * dt.Size;
+                var offset = offsetField.Read(u) * dt.BitSize / d.arch.MemoryGranularity;
                 var baseReg = bRegs[iBaseReg];
                 var mem = new MemoryOperand(dt)
                 {

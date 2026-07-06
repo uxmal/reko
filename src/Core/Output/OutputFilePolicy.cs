@@ -104,7 +104,7 @@ namespace Reko.Core.Output
                 tvGlobals.DataType is not null
                 ? tvGlobals.DataType
                 : program.Globals.DataType;
-            if (globals is Pointer pt)
+            if (globals is PointerType pt)
             {
                 var strGlobals = pt.Pointee.ResolveAs<StructureType>();
                 if (strGlobals is not null)

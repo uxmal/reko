@@ -106,7 +106,7 @@ namespace Reko.Core.Types
 		}
 
         /// <inheritdoc/>
-        public virtual DataType VisitPointer(Pointer ptr)
+        public virtual DataType VisitPointer(PointerType ptr)
 		{
 			ptr.Pointee = ptr.Pointee.Accept(this);
 			return ptr;

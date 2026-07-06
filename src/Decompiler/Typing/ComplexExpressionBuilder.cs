@@ -116,7 +116,7 @@ namespace Reko.Typing
             var exp = this.dtComplex.Accept(this);
             if (!Dereferenced && dereferenceGenerated)
             {
-                var ptr = new Pointer(exp.DataType, dtComplex.BitSize);
+                var ptr = new PointerType(exp.DataType, dtComplex.BitSize);
                 exp = m.AddrOf(ptr, exp);
             }
             if (Dereferenced && !dereferenceGenerated)
@@ -143,7 +143,7 @@ namespace Reko.Typing
             DataType dt;
             if (enclosingPtr is not null)
             {
-                dt = new Pointer(PrimitiveType.Char, enclosingPtr.BitSize);
+                dt = new PointerType(PrimitiveType.Char, enclosingPtr.BitSize);
                 e = m.Cast(dt, e);
             }
             else if (e.DataType.Size != 0)
@@ -237,14 +237,14 @@ namespace Reko.Typing
         }
 
         /// <inheritdoc/>
-        public Expression VisitPointer(Pointer ptr)
+        public Expression VisitPointer(PointerType ptr)
         {
             if (enclosingPtr is not null)
             {
                 return FallbackExpression();
             }
             var pointee = ptr.Pointee;
-            var origPtr = dtComplexOrig!.ResolveAs<Pointer>();
+            var origPtr = dtComplexOrig!.ResolveAs<PointerType>();
             if (origPtr is not null)
             {
                 pointee = origPtr.Pointee;
@@ -464,7 +464,7 @@ namespace Reko.Typing
                     return mps;
                 }
                 return m.AddrOf(
-                    new Pointer(dt, program.Platform.PointerType.BitSize),
+                    new PointerType(dt, program.Platform.PointerType.BitSize),
                     mps);
             }
             else if (e is not null)

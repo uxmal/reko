@@ -99,7 +99,7 @@ namespace Reko.Arch.Alpha
             var op1 = Rewrite(instr.Operands[0]);
             var op2 = Rewrite(instr.Operands[1]);
             op2.DataType = dt;
-            var ptr = new Pointer(dt, arch.PointerType.BitSize);
+            var ptr = new PointerType(dt, arch.PointerType.BitSize);
             m.SideEffect(m.Fn(intrinsic.MakeInstance(dt, ptr), op2, op1));
         }
 

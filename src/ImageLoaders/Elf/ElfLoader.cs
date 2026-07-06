@@ -699,7 +699,7 @@ namespace Reko.ImageLoaders.Elf
             //$TODO: look up function signature.
             int size = arch.PointerType.Size;
             int bitSize = arch.PointerType.BitSize;
-            return ImageSymbol.DataObject(arch, addrGot, name + "_GOT", new Pointer(new CodeType(), bitSize));
+            return ImageSymbol.DataObject(arch, addrGot, name + "_GOT", new PointerType(new CodeType(), bitSize));
         }
 
         public IEnumerable<ElfSymbol> GetAllSymbols()

@@ -53,7 +53,7 @@ namespace Reko.Arch.zSeries
 
         private void RewriteStctl(PrimitiveType dt) {
             var op1 = Reg(0);
-            var op2 = m.AddrOf(new Pointer(dt, arch.PointerType.BitSize), m.Mem(dt, EffectiveAddress(1)));
+            var op2 = m.AddrOf(new PointerType(dt, arch.PointerType.BitSize), m.Mem(dt, EffectiveAddress(1)));
             m.SideEffect(m.Fn(
                 intrinsics.stctl,
                 op1,

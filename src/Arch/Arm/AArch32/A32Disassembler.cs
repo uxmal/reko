@@ -4288,9 +4288,6 @@ namespace Reko.Arch.Arm.AArch32
 
 
             static bool Eq0F(uint wInstr) => wInstr == 0xF;
-            static bool Eq0(uint uInstr) => uInstr == 0;
-            static bool Ne0(uint uInstr) => uInstr != 0;
-
 
             var SystemRegisterAccessAdvancedSimd = Mask(24, 2, "System register access, Advanced SIMD, floating-point, and Supervisor call",
                 Mask(9, 3, "  op0=0b00",

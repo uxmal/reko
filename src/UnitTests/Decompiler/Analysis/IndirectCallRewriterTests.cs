@@ -124,7 +124,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 [
                     new Identifier(
                         "a",
-                        new Pointer(argType, 32),
+                        new PointerType(argType, 32),
                         new StackStorage(4, PrimitiveType.Word32))
                 ]);
         }
@@ -136,7 +136,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
 
         private DataType Ptr32(DataType pointee)
         {
-            return new Pointer(pointee, 32);
+            return new PointerType(pointee, 32);
         }
 
         private DataType Int32()
@@ -169,7 +169,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
 
         private void SetFPUStackDelta(DataType fnPtr, int fpuStackDelta)
         {
-            if (fnPtr is Pointer ptr && ptr.Pointee is FunctionType ft)
+            if (fnPtr is PointerType ptr && ptr.Pointee is FunctionType ft)
             {
                 ft.FpuStackDelta = fpuStackDelta;
             }

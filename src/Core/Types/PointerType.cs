@@ -26,7 +26,7 @@ namespace Reko.Core.Types
 	/// <summary>
 	/// Represents a pointer type. Pointers point to another type, and have a size.
 	/// </summary>
-	public class Pointer : DataType
+	public sealed class PointerType : DataType
 	{
 		private readonly int bitSize;
 
@@ -40,7 +40,7 @@ namespace Reko.Core.Types
         /// only, and should not occur during type reference.
         /// </param>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-		public Pointer(DataType pointee, int bitSize)
+		public PointerType(DataType pointee, int bitSize)
             : base(Domain.Pointer)
 		{
             if (bitSize < 0)
@@ -86,7 +86,7 @@ namespace Reko.Core.Types
         /// <inheritdoc/>
         public override DataType Clone(IDictionary<DataType, DataType>? clonedTypes)
 		{
-            return new Pointer(Pointee.Clone(clonedTypes), bitSize)
+            return new PointerType(Pointee.Clone(clonedTypes), bitSize)
             {
                 Qualifier = this.Qualifier,
             };

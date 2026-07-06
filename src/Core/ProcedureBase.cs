@@ -222,11 +222,11 @@ namespace Reko.Core
         /// </summary>
         protected static DataType ResolvePointer(DataType dtGeneric, DataType dtConcrete, int ptrSize)
         {
-            if (dtGeneric is Pointer ptr && ptr.BitSize == 0)
+            if (dtGeneric is PointerType ptr && ptr.BitSize == 0)
             {
                 if (ptrSize == 0)
                     throw new InvalidOperationException("Non-zero pointer size has not been specified.");
-                return new Pointer(dtConcrete, ptrSize);
+                return new PointerType(dtConcrete, ptrSize);
             }
             else
             {
@@ -239,7 +239,7 @@ namespace Reko.Core
             for (int i = 0; i < genericArguments.Length; ++i)
             {
                 if (dt == genericArguments[i] ||
-                    (dt is Pointer ptr && ptr.Pointee == genericArguments[i]))
+                    (dt is PointerType ptr && ptr.Pointee == genericArguments[i]))
                 {
                     index = i;
                     return true;

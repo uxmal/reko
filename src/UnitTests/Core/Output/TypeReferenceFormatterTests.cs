@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2026 John Källén.
  *
@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Core.Output
             var sw = new StringWriter();
             var trf = new TypeReferenceFormatter(new TextFormatter(sw));
             trf.WriteDeclaration(
-                new Pointer(
+                new PointerType(
                         FunctionType.Action(new [] { Arg("arg0", 0) }), 
                         32),
                 "pfn");
@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Core.Output
             var sw = new StringWriter();
             var trf = new TypeReferenceFormatter(new TextFormatter(sw));
             trf.WriteDeclaration(
-                new Pointer(
+                new PointerType(
                     new EquivalenceClass(
                         new TypeVariable(3),
                         FunctionType.Action(new[] { Arg("arg0", 0) })),
@@ -73,7 +73,7 @@ namespace Reko.UnitTests.Core.Output
             var sw = new StringWriter();
             var trf = new TypeReferenceFormatter(new TextFormatter(sw));
             trf.WriteDeclaration(
-                new Pointer(
+                new PointerType(
                     new TypeReference("LONG", PrimitiveType.Int32), 32),
                 "l0");
             Assert.AreEqual("LONG * l0", sw.ToString());

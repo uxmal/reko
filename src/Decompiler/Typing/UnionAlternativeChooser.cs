@@ -109,7 +109,7 @@ namespace Reko.Typing
         }
 
         /// <inheritdoc/>
-        public bool VisitPointer(Pointer ptr)
+        public bool VisitPointer(PointerType ptr)
         {
             if (this.isEnclosingPtr)
                 return IsValidState(ptr);

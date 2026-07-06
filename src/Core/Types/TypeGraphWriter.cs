@@ -179,7 +179,7 @@ namespace Reko.Core.Types
         }
 
         /// <inheritdoc/>
-        public Formatter VisitPointer(Pointer ptr)
+        public Formatter VisitPointer(PointerType ptr)
         {
 			writer.Write($"(ptr{ptr.BitSize} ");
             WriteQualifier(ptr.Qualifier);

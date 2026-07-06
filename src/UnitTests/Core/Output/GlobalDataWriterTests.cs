@@ -85,7 +85,7 @@ namespace Reko.UnitTests.Core.Output
             {
                 DataType = globalStruct
             };
-            var ptr = new Pointer(globalStruct, 32);
+            var ptr = new PointerType(globalStruct, 32);
             tvGlobals.DataType = ptr;
         }
 
@@ -176,7 +176,7 @@ char g_b1004 = 'H'; // 00001004
                 .WriteLeUInt32(0)
                 .WriteLeUInt32(1234);
             Given_Globals(
-                Given_Field(0x1000, new Pointer(PrimitiveType.Int32, 32)),
+                Given_Field(0x1000, new PointerType(PrimitiveType.Int32, 32)),
                 Given_Field(0x1008, PrimitiveType.Int32));
 
             RunTest(
@@ -227,14 +227,14 @@ int32 g_dw1008 = 0x04D2; // 00001008
                 Name = "Eq_2",
                 Fields = {
                     { 0, PrimitiveType.Int32 },
-                    { 4, new Pointer(eqLink, 32) }
+                    { 4, new PointerType(eqLink, 32) }
                 }
             };
             eqLink.DataType = link;
             Given_Globals(
                 Given_Field(0x1000, eqLink),
                 Given_Field(0x1008, eqLink),
-                Given_Field(0x1010, new Pointer(eqLink, 32)));
+                Given_Field(0x1010, new PointerType(eqLink, 32)));
             RunTest(
 @"Eq_2 g_t1000 = // 00001000
 {
@@ -299,7 +299,7 @@ struct Eq_2 * g_ptr1010 = &g_t1000; // 00001010
                 .WriteLeInt32(1)
                 .WriteLeInt32(2);
             Given_Globals(
-                Given_Field(0x1000, new Pointer(new StructureType("test", 0)
+                Given_Field(0x1000, new PointerType(new StructureType("test", 0)
                 {
                     Fields =
                     {
@@ -332,7 +332,7 @@ struct test g_t1004 = // 00001004
                     {
                         { 0, PrimitiveType.Int32 },
                         { 4, PrimitiveType.Int32 },
-                        { 8, new Pointer(FunctionType.Action(Array.Empty<Identifier>()), 32) }
+                        { 8, new PointerType(FunctionType.Action(Array.Empty<Identifier>()), 32) }
                     }
                 })));
             Given_ProcedureAtAddress(0x2000, "funcTest");

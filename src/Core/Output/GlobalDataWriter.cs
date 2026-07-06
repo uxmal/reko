@@ -196,7 +196,7 @@ namespace Reko.Core.Output
             return dt switch
             {
                 PrimitiveType pt => !IsLargeBlob(pt),
-                Pointer _ => true,
+                PointerType _ => true,
                 MemberPointer _ => true,
                 StringType _ => true,
                 VoidType _ => true,
@@ -348,7 +348,7 @@ namespace Reko.Core.Output
         }
 
         /// <inheritdoc/>
-        public bool VisitPointer(Pointer ptr)
+        public bool VisitPointer(PointerType ptr)
         {
             if (!rdr.TryRead(PrimitiveType.Create(Domain.Pointer, ptr.BitSize), out var c))
                 return false;

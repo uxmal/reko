@@ -143,8 +143,8 @@ namespace Reko.Core.Types
 				return eqA.Number == eqB.Number;
 			}
 
-			Pointer? ptrA = a as Pointer;
-			Pointer? ptrB = b as Pointer;
+			PointerType? ptrA = a as PointerType;
+			PointerType? ptrB = b as PointerType;
 			if (ptrA is not null)
 				return IsCompatibleWithPointer(ptrA, b, ++depth);
 			if (ptrB is not null)
@@ -222,9 +222,9 @@ namespace Reko.Core.Types
 			return true;
 		}
 
-		private bool IsCompatibleWithPointer(Pointer ptrA, DataType b, int depth)
+		private bool IsCompatibleWithPointer(PointerType ptrA, DataType b, int depth)
 		{
-            if (b is Pointer ptrB)
+            if (b is PointerType ptrB)
             {
                 if (AreCompatible(ptrA.Pointee, ptrB.Pointee, ++depth))
                     return true;
@@ -411,12 +411,12 @@ namespace Reko.Core.Types
 					return MakeUnion(eqA, eqB);
 			}
 
-			Pointer? ptrA = a as Pointer;
-			Pointer? ptrB = b as Pointer;
+			PointerType? ptrA = a as PointerType;
+			PointerType? ptrB = b as PointerType;
 			if (ptrA is not null && ptrB is not null)
 			{
 				DataType dt = UnifyInternal(ptrA.Pointee, ptrB.Pointee)!;
-				return new Pointer(dt, Math.Max(ptrA.BitSize, ptrB.BitSize));
+				return new PointerType(dt, Math.Max(ptrA.BitSize, ptrB.BitSize));
 			}
             if (ptrA is not null)
             {
@@ -852,7 +852,7 @@ namespace Reko.Core.Types
             public StructureField? NextFieldB { get; private set; }
         }
 
-        private DataType? UnifyPointer(Pointer ptrA, DataType b)
+        private DataType? UnifyPointer(PointerType ptrA, DataType b)
 		{
             if (b is PrimitiveType pb)
             {

@@ -19,11 +19,7 @@
 #endregion
 
 using Reko.Core;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Drawing;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Reko.Gui

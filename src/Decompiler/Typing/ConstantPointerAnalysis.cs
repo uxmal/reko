@@ -57,7 +57,7 @@ namespace Reko.Typing
             this.program = program;
 		}
 
-		private Pointer CreatePointerToField(int offset, DataType tvField)
+		private PointerType CreatePointerToField(int offset, DataType tvField)
 		{
 			return factory.CreatePointer(
 				factory.CreateStructureType(null, 0, new StructureField(offset, tvField)),
@@ -127,7 +127,7 @@ namespace Reko.Typing
                 return;
             switch (dt)
             {
-            case Pointer ptr:
+            case PointerType ptr:
 				// C is a constant pointer.
 				if (offset.Value == 0)
 					return;				// null pointer is null (//$REVIEW: except for some platforms + archs)
@@ -151,7 +151,7 @@ namespace Reko.Typing
 				return;
             case MemberPointer mptr:
                 // C is a constant offset into a segment.
-                var seg = ((Pointer) mptr.BasePointer).Pointee.ResolveAs<StructureType>();
+                var seg = ((PointerType) mptr.BasePointer).Pointee.ResolveAs<StructureType>();
                 if (seg is not null && //$DEBUG
                     seg.Fields.AtOffset(offset.Value) is null)
                 {
@@ -216,7 +216,7 @@ namespace Reko.Typing
 				return;
 
 			TypeVariable tvBase = (TypeVariable) mptr.BasePointer;
-			Pointer ptr = CreatePointerToField(offset, tvField);
+			PointerType ptr = CreatePointerToField(offset, tvField);
 			tvBase.OriginalDataType =
 				unifier.Unify(tvBase.OriginalDataType, ptr)!;
 

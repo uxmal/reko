@@ -101,7 +101,7 @@ namespace Reko.Arch.Xtensa
             var ea = m.IAdd(
                 RewriteOp(instr.Operands[1]),
                 RewriteOp(instr.Operands[2]));
-            ea.DataType = new Pointer(PrimitiveType.Word32, 32);
+            ea.DataType = new PointerType(PrimitiveType.Word32, 32);
             var scomp = binder.EnsureRegister(Registers.SCOMPARE1);
             var dst = RewriteOp(instr.Operands[0]);
             m.Assign(dst, m.Fn(

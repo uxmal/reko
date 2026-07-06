@@ -96,7 +96,7 @@ namespace Reko.ImageLoaders.LLVM
         public DataType VisitPointer(LLVMPointer p)
         {
             var pointee = p.Pointee.Accept(this);
-            return new Pointer(pointee, ptrBitSize);
+            return new PointerType(pointee, ptrBitSize);
         }
 
         public DataType VisitStructure(StructureType s)

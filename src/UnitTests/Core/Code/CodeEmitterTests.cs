@@ -55,7 +55,7 @@ namespace Reko.UnitTests.Core.Code
         [Test]
         public void SubPointer()
         {
-            var ptr = new Pointer(new StructureType("tmp", 16), 32);
+            var ptr = new PointerType(new StructureType("tmp", 16), 32);
             var id = new Identifier("id", ptr, null);
             var emitter = new CodeEmitterImpl();
             var sub = emitter.ISub(id, 3);
@@ -67,7 +67,7 @@ namespace Reko.UnitTests.Core.Code
         [Test]
         public void AddPointer()
         {
-            var ptr = new Pointer(new StructureType("tmp", 16), 32);
+            var ptr = new PointerType(new StructureType("tmp", 16), 32);
             var id = new Identifier("id", ptr, null);
             var emitter = new CodeEmitterImpl();
             var add = emitter.IAdd(id, 3);

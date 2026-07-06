@@ -91,7 +91,7 @@ namespace Reko.UnitTests.Core.Output
             };
             Given_TypedDataDumper(bytes);
 
-            var ptr64 = new Pointer(VoidType.Instance, 64);
+            var ptr64 = new PointerType(VoidType.Instance, 64);
             ptr64.Accept(tdd);
 
             Assert.AreEqual("dq\t0x0807060504030201" + cr, sw.ToString());

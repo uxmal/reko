@@ -44,8 +44,8 @@ namespace Reko.UnitTests.Decompiler.Typing
 			t2.Class = c2;
 
 			UnionType u = new UnionType(null, null);
-			u.Alternatives.Add(new Pointer(c1, 32));
-			u.Alternatives.Add(new Pointer(c2, 32));
+			u.Alternatives.Add(new PointerType(c1, 32));
+			u.Alternatives.Add(new PointerType(c2, 32));
 
 			UnionPointersStructuresMatcher upsm = new UnionPointersStructuresMatcher();
 			Assert.IsTrue(upsm.Match(u));
@@ -66,8 +66,8 @@ namespace Reko.UnitTests.Decompiler.Typing
 			t2.Class = c2;
 
 			UnionType u = new UnionType(null, null);
-			u.Alternatives.Add(new Pointer(c1, 32));
-			u.Alternatives.Add(new Pointer(PrimitiveType.Word16, 32));
+			u.Alternatives.Add(new PointerType(c1, 32));
+			u.Alternatives.Add(new PointerType(PrimitiveType.Word16, 32));
 
 			UnionPointersStructuresMatcher upsm = new UnionPointersStructuresMatcher();
 			Assert.IsFalse(upsm.Match(u));

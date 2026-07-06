@@ -166,7 +166,7 @@ namespace Reko.Arch.Arm.AArch64
                     result[i] = (Domain.Pointer, arch.PointerType.Size);
                 else if (dt is PrimitiveType pt)
                     result[i] = (pt.Domain, pt.Size);
-                else if (dt is Pointer ptr)
+                else if (dt is PointerType ptr)
                     result[i] = (Domain.Pointer, ptr.Size);
                 else 
                     result[i] = (Domain.Integer, AlignUp(dt.Size, 8));

@@ -80,7 +80,7 @@ namespace Reko.UnitTests.Decompiler.Typing
 		public void Tmer_PointerToSingleItem()
 		{
             var ptr = new Identifier("ptr", PrimitiveType.Word32, null);
-            CreateTv(ptr, new Pointer(point, 32), new Pointer(point, 32));
+            CreateTv(ptr, new PointerType(point, 32), new PointerType(point, 32));
             var tmer = new TypedExpressionRewriter(program, program.TypeStore, null);
             var access = CreateTv(m.Mem32(m.IAdd(ptr, 0)));
             Expression e = access.Accept(tmer);
@@ -94,8 +94,8 @@ namespace Reko.UnitTests.Decompiler.Typing
 			var tv = store.EnsureExpressionTypeVariable(factory, null, ptr);
 			EquivalenceClass eqPtr = new EquivalenceClass(tv);
 			eqPtr.DataType = point;
-			tv.OriginalDataType = new Pointer(point, 32);
-			tv.DataType = new Pointer(eqPtr, 32);
+			tv.OriginalDataType = new PointerType(point, 32);
+			tv.DataType = new PointerType(eqPtr, 32);
 
             var m = new ExpressionEmitter();
 			var c = CreateTv(m.Word32(4));

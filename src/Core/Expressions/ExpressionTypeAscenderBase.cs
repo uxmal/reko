@@ -217,7 +217,7 @@ namespace Reko.Core.Expressions
         /// <param name="dtRight">Type of possible offset</param>
         /// <param name="right">Possible constant offset from start of structure</param>
         /// <returns>A (ptr field-type) if it was a ptr-to-struct, else null.</returns>
-        private Pointer? GetPossibleFieldType(DataType dtLeft, DataType dtRight, Expression right)
+        private PointerType? GetPossibleFieldType(DataType dtLeft, DataType dtRight, Expression right)
         {
             if (right is BigConstant)
                 return null;
@@ -239,9 +239,9 @@ namespace Reko.Core.Expressions
         /// <param name="dtLeft">Possible pointer to a structure</param>
         /// <param name="offset"></param>
         /// <returns>A (ptr field-type) if it was a ptr-to-struct, else null.</returns>
-        private Pointer? GetPossibleFieldType(DataType dtLeft, int offset)
+        private PointerType? GetPossibleFieldType(DataType dtLeft, int offset)
         {
-            var ptrLeft = dtLeft.ResolveAs<Pointer>();
+            var ptrLeft = dtLeft.ResolveAs<PointerType>();
             if (ptrLeft is null)
                 return null;
 
@@ -291,7 +291,7 @@ namespace Reko.Core.Expressions
                     return ptRight;
                 }
             }
-            if (dtLeft.ResolveAs<Pointer>() is not null)
+            if (dtLeft.ResolveAs<PointerType>() is not null)
             {
                 if (dtLeft is TypeReference)
                     return dtLeft;
@@ -313,14 +313,14 @@ namespace Reko.Core.Expressions
                     else if ((ptRight.Domain & Domain.Pointer) != 0)
                         return PrimitiveType.Create(sign, dtLeft.BitSize);
                 }
-                if (dtRight is Pointer)
+                if (dtRight is PointerType)
                     return PrimitiveType.Create(sign, dtLeft.BitSize);
                 // We are unable to reconcile the differences here. 
                 return PrimitiveType.CreateWord(dtLeft.BitSize);
                 //$TODO: should be a warning? throw new TypeInferenceException(string.Format("Pulling difference {0} and {1}", dtLeft, dtRight));
             }
             if (ptRight is not null && ptRight.Domain == Domain.Pointer || 
-                dtRight is Pointer)
+                dtRight is PointerType)
             {
                 if (ptRight is not null && (ptRight.Domain & Domain.Integer) != 0)
                     return dtLeft;
@@ -417,7 +417,7 @@ namespace Reko.Core.Expressions
             var ptEa = GetPossibleFieldType(dtEa, 0);
             if (ptEa is null)
             {
-                ptEa = dtEa.ResolveAs<Pointer>();
+                ptEa = dtEa.ResolveAs<PointerType>();
             }
             DataType dt;
             if (ptEa is not null)

@@ -136,7 +136,7 @@ namespace Reko.Environments.SysV.ArchSpecific
                 }
                 throw new NotImplementedException();
             }
-            else if (dtArg is Pointer)
+            else if (dtArg is PointerType)
             {
                 ccr.RegReturn(iret);
                 return;

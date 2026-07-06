@@ -325,8 +325,6 @@ public class C33Disassembler : DisassemblerBase<C33Instruction, Mnemonic>
             Instr(mnemonic1, iclass1, mutators));
     }
 
-    private static bool Eq0(uint u) => u == 0;
-
     static C33Disassembler()
     {
         var invalid = Instr(Mnemonic.Invalid, InstrClass.Invalid, []);

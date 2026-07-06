@@ -143,7 +143,7 @@ namespace Reko.ImageLoaders.LLVM
                 var proc = RegisterFunction(fn, addr);
                 program.Procedures.Add(addr, proc);
                 this.Globals[fn.FunctionName!] = new Core.Expressions.ProcedureConstant(
-                    new Pointer(proc.Signature, program.Platform.PointerType.BitSize),
+                    new PointerType(proc.Signature, program.Platform.PointerType.BitSize),
                     proc);
                 return addr + 1;
             case TypeDefinition tydec:

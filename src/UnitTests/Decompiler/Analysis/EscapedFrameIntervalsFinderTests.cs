@@ -61,7 +61,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
 
         private static DataType Ptr32(DataType dt)
         {
-            return new Pointer(dt, 32);
+            return new PointerType(dt, 32);
         }
 
         private void RunEscapedFrameIntervalsFinder()
@@ -115,7 +115,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             var proc = new Procedure(m.Architecture, "fn4242", Address.Ptr32(0x4242), m.Architecture.CreateFrame());
             var procFlow = new ProcedureFlow(proc);
             procFlow.BitsUsed.Add(ecx.Storage, ecx.Storage.GetBitRange());
-            procFlow.LiveInDataTypes.Add(ecx.Storage, new Pointer(str, 32));
+            procFlow.LiveInDataTypes.Add(ecx.Storage, new PointerType(str, 32));
             pb.Add(proc);
             flow.ProcedureFlows.Add(proc, procFlow);
             
@@ -149,7 +149,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             var proc = new Procedure(m.Architecture, "fn4242", Address.Ptr32(0x4242), m.Architecture.CreateFrame());
             var procFlow = new ProcedureFlow(proc);
             procFlow.BitsUsed.Add(ecx.Storage, ecx.Storage.GetBitRange());
-            procFlow.LiveInDataTypes.Add(ecx.Storage, new Pointer(str, 32));
+            procFlow.LiveInDataTypes.Add(ecx.Storage, new PointerType(str, 32));
             pb.Add(proc);
             flow.ProcedureFlows.Add(proc, procFlow);
 
@@ -184,7 +184,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             var procCallee = new Procedure(m.Architecture, "callee", Address.Ptr32(0x00123400), m.Architecture.CreateFrame());
             var procFlow = new ProcedureFlow(procCallee);
             procFlow.BitsUsed.Add(ecx.Storage, ecx.Storage.GetBitRange());
-            procFlow.LiveInDataTypes.Add(ecx.Storage, new Pointer(str, 32));
+            procFlow.LiveInDataTypes.Add(ecx.Storage, new PointerType(str, 32));
             pb.Add(procCallee);
             flow.ProcedureFlows.Add(procCallee, procFlow);
 

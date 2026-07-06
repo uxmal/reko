@@ -85,7 +85,7 @@ namespace Reko.ImageLoaders.Pef
 
         public IEnumerable<ImageSymbol> GetSymbols(IProcessorArchitecture arch)
         {
-            var ptrCodeT = new Pointer(new CodeType(), arch.WordWidth.BitSize);
+            var ptrCodeT = new PointerType(new CodeType(), arch.WordWidth.BitSize);
 
             return LoaderInfo.ExportedSymbols
                 // $TODO: resolve import addresses in relocations

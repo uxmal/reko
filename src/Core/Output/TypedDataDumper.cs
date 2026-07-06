@@ -96,7 +96,7 @@ namespace Reko.Core.Output
         }
 
         /// <inheritdoc/>
-        public void VisitPointer(Pointer ptr)
+        public void VisitPointer(PointerType ptr)
         {
             switch (ptr.Size)
             {

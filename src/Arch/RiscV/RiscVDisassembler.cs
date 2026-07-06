@@ -959,10 +959,6 @@ namespace Reko.Arch.RiscV
             Bf((12, 1), (8, 1), (9, 2), (6, 1), (7, 1), (2,1), (11,1), (3,3));
             //Bf((11, 1), (4, 1), (8, 2), (10, 1), (6, 1), (7, 1), (1, 3), (5, 1));
 
-        private static bool Eq0(uint u) => u == 0;
-
-        private static bool Ne0(uint u) => u != 0;
-
         private static bool R1EqR2(uint u)
         {
             var ireg1 = bf_r1.Read(u);

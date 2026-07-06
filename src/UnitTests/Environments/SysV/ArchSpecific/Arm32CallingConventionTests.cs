@@ -50,9 +50,9 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
             arch = new Arm32Architecture(new ServiceContainer(), "arm32", new Dictionary<string, object>());
         }
 
-        private Pointer Ptr(DataType dt)
+        private PointerType Ptr(DataType dt)
         {
-            return new Pointer(dt, 32);
+            return new PointerType(dt, 32);
         }
 
         private void Given_CallingConvention()

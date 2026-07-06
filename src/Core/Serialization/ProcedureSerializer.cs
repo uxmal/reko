@@ -195,7 +195,7 @@ namespace Reko.Core.Serialization
                     ? ss.ReturnValue.Type.Accept(TypeLoader)
                     : null;
                 var dtThis = ss.EnclosingType is not null
-                    ? new Pointer(ss.EnclosingType.Accept(TypeLoader), Architecture.PointerType.BitSize)
+                    ? new PointerType(ss.EnclosingType.Accept(TypeLoader), Architecture.PointerType.BitSize)
                     : null;
                 var dtParameters = ss.Arguments is not null
                     ? ss.Arguments
@@ -271,7 +271,7 @@ namespace Reko.Core.Serialization
                 // A declaration of a parameter as “function returning type”
                 // shall be adjusted to “pointer to function returning type”,
                 // as in 6.3.2.1.
-                return new Pointer(tref.Referent, platform.PointerType.BitSize);
+                return new PointerType(tref.Referent, platform.PointerType.BitSize);
             }
             return dtParam;
         }

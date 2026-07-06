@@ -52,7 +52,7 @@ namespace Reko.Typing
             int structureSize = 0;
 			foreach (UnionAlternative a in ut.Alternatives.Values)
 			{
-                if (a.DataType is not Pointer p)
+                if (a.DataType is not PointerType p)
                     return false;
 
                 if (pointerBitSize == 0)

@@ -887,7 +887,7 @@ namespace Reko.Core.Output
         }
 
         /// <inheritdoc />
-        public int VisitPointer(Pointer ptr)
+        public int VisitPointer(PointerType ptr)
         {
             writer.Write("new Pointer(");
             ptr.Pointee.Accept(this);

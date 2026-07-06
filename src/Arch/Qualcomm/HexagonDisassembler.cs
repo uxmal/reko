@@ -1389,8 +1389,6 @@ namespace Reko.Arch.Qualcomm
             }
         }
 
-        private static bool Eq0(uint u) => u == 0;
-
         private static Decoder Instr(Mnemonic mnemonic, params Mutator<HexagonDisassembler>[] mutators)
         {
             return new InstrDecoder(InstrClass.Linear, mnemonic, mutators);

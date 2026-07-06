@@ -31,7 +31,7 @@ namespace Reko.Core.Types
 	/// Union alternatives are required to be inserted in-order according to
     /// the total ordering introduced by DataTypeComparer.
 	/// </remarks>
-	public class UnionType : DataType
+	public sealed class UnionType : DataType
 	{
         /// <summary>
         /// Constructs a union type with a specific name and an optional preferred

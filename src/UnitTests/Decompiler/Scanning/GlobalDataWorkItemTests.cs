@@ -110,9 +110,9 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 new Identifier("", PrimitiveType.Char, null));
             var str = new StructureType();
             var fields = new StructureField[] {
-                new StructureField(0, new Pointer(ft1, 32), "A"),
+                new StructureField(0, new PointerType(ft1, 32), "A"),
                 new StructureField(4, PrimitiveType.Int32, "B"),
-                new StructureField(8, new Pointer(ft2, 32), "C"),
+                new StructureField(8, new PointerType(ft2, 32), "C"),
             };
             str.Fields.AddRange(fields);
             var elementType = new TypeReference("test", str);
@@ -164,8 +164,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 Array.Empty<Identifier>());
             var str = new StructureType("str", 0);
             var fields = new StructureField[] {
-                new StructureField(0, new Pointer(ft,  32), "func"),
-                new StructureField(4, new Pointer(str, 32), "next"),
+                new StructureField(0, new PointerType(ft,  32), "func"),
+                new StructureField(4, new PointerType(str, 32), "next"),
             };
             str.Fields.AddRange(fields);
             Expect_ScannerGlobalData(0x43210017, ft);
@@ -199,7 +199,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             {
                 new StructureField(0, PrimitiveType.Word16, "typeField"),
                 // two-byte gap here.
-                new StructureField(4, new Pointer(ft, 32), "pfn")
+                new StructureField(4, new PointerType(ft, 32), "pfn")
             });
             Expect_ScannerGlobalData(0x43210008, ft);
 

@@ -127,7 +127,7 @@ namespace Reko.Core.Serialization
         }
 
         /// <inheritdoc/>
-        public SerializedType VisitPointer(Pointer ptr)
+        public SerializedType VisitPointer(PointerType ptr)
         {
             return new PointerType_v1
             {

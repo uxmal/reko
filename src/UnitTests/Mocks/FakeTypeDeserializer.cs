@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Mocks
 
         public DataType VisitPointer(PointerType_v1 pointer)
         {
-            return new Pointer(pointer.DataType.Accept(this), ptrBitSize)
+            return new PointerType(pointer.DataType.Accept(this), ptrBitSize)
             {
                 Qualifier = pointer.Qualifier
             };

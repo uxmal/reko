@@ -461,7 +461,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             pb.Add("proc1", m =>
             {
                 Identifier p = m.Local32("p");
-                Expression fetch = m.Mem(new Pointer(new StructureType("foo", 8), 32), m.IAdd(p, 4));
+                Expression fetch = m.Mem(new PointerType(new StructureType("foo", 8), 32), m.IAdd(p, 4));
                 m.Assign(m.LocalBool("f"), m.Lt(fetch, m.Word32(0x00001028)));
             });
             RunTest(pb.BuildProgram(), "Typing/TerComparison.txt");
@@ -1007,7 +1007,7 @@ test_exit:
             #endregion
 
             var sBlob = new StructureType("blob_t", 16);
-            var func = Given_Procedure("func", new Pointer(sBlob, 32));
+            var func = Given_Procedure("func", new PointerType(sBlob, 32));
             Given_GlobalVariable(
                 0x0001000,
                 "arrayBlobs",
@@ -1083,11 +1083,11 @@ test_exit:
                 var str = new StructureType("str", 8, true)
                 {
                     Fields = {
-                        { 0, new Pointer(strInner, 32), "strAttr00" },
+                        { 0, new PointerType(strInner, 32), "strAttr00" },
                         { 4, PrimitiveType.Int32, "strAttr04" },
                     }
                 };
-                var v = m.Frame.EnsureStackArgument(4, new Pointer(str, 32));
+                var v = m.Frame.EnsureStackArgument(4, new PointerType(str, 32));
                 m.Assign(eax, m.Mem(PrimitiveType.Word32, v));
                 m.Assign(ecx, m.Mem(PrimitiveType.Word32, eax));
             });
@@ -1564,7 +1564,7 @@ main_exit:
             imageSegments.Add(mem.BaseAddress, new ImageSegment(".rodata", mem, AccessMode.Read));
             pb.Add("main", m =>
             {
-                var ptr = new Pointer(PrimitiveType.Char, 32);
+                var ptr = new PointerType(PrimitiveType.Char, 32);
                 m.Return(m.Mem(ptr, m.Word32(0x2000)));
             });
             RunStringTest(pb.BuildProgram(), sExp);
@@ -1651,7 +1651,7 @@ main_exit:
                         {0, new ArrayType(PrimitiveType.Int32, 8), "array"}
                     }
                 };
-                var a = m.Temp(new Pointer(str, 32), "a");
+                var a = m.Temp(new PointerType(str, 32), "a");
                 m.Assign(
                     r0,
                     m.Mem32(m.IAdd(m.IAdd(a, m.IMul(r1, 32)), m.IMul(r2, 4)))

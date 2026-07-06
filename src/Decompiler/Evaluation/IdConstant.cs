@@ -56,7 +56,7 @@ namespace Reko.Evaluation
             Debug.Assert(src is not null);
             var dt = unifier.Unify(src.DataType, idDst.DataType);
             var pt = dt?.ResolveAs<PrimitiveType>();
-            var ptr = dt?.ResolveAs<Pointer>();
+            var ptr = dt?.ResolveAs<PointerType>();
             if (ptr is null)
             {
                 var cNew = src!.CloneExpression();

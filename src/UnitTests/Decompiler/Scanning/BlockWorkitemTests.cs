@@ -834,7 +834,7 @@ testProc_exit:
                 Name = "testFn",
                 Signature = FunctionType.Create(
                     new Identifier("", PrimitiveType.Int32, r0.Storage),
-                        new Identifier("str", new Pointer(PrimitiveType.Char, 32), r0.Storage),
+                        new Identifier("str", new PointerType(PrimitiveType.Char, 32), r0.Storage),
                     new Identifier("f", PrimitiveType.Real32, r1.Storage))
             };
             Given_SimpleTrace(trace);

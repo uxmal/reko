@@ -124,7 +124,7 @@ namespace Reko.Typing
         public void ArrayTrait(TypeVariable tArray, int elementSize, int length)
 		{
 			DataType elem = factory.CreateStructureType(null, elementSize);
-			Pointer ptr = factory.CreatePointer(factory.CreateArrayType(elem, length), 0);
+			PointerType ptr = factory.CreatePointer(factory.CreateArrayType(elem, length), 0);
 			MergeIntoDataType(ptr, tArray);
 		}
 
@@ -135,7 +135,7 @@ namespace Reko.Typing
 			{
 				StructureType seg = factory.CreateStructureType(null, 0);
 				seg.IsSegment = true;
-				Pointer ptr = factory.CreatePointer(seg, dt.BitSize);
+				PointerType ptr = factory.CreatePointer(seg, dt.BitSize);
 				dt = ptr;
 			}
 			MergeIntoDataType(dt, type);

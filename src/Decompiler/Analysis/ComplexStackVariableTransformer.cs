@@ -184,7 +184,7 @@ public class ComplexStackVariableTransformer : IAnalysis<SsaState>
             var fp = ssa.Procedure.Frame.FramePointer;
             ssa.Identifiers[fp].Uses.Remove(stmCur);
             ssa.Identifiers[id].Uses.Add(stmCur);
-            var ptr = new Pointer(id.DataType, ptrBitSize);
+            var ptr = new PointerType(id.DataType, ptrBitSize);
             e = m.AddSubSignedInt(m.AddrOf(ptr, id), offset - i.Start);
             return true;
         }

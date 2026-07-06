@@ -171,7 +171,7 @@ namespace Reko.Typing
             {
                 var offset = (int) address.ToLinear();
                 var f = new StructureField(offset, dtField, name);
-                var ptrGlobals = (Pointer) store.GetTypeVariable(program.Globals).OriginalDataType;
+                var ptrGlobals = (PointerType) store.GetTypeVariable(program.Globals).OriginalDataType;
                 ((StructureType)ptrGlobals.Pointee).Fields.Add(f);
             }
         }
@@ -222,7 +222,7 @@ namespace Reko.Typing
             call.Callee.Accept(asc);
             desc.MeetDataType(
                           call.Callee,
-                          new Pointer(
+                          new PointerType(
                               new CodeType(),
                               program.Platform.PointerType.BitSize));
             call.Callee.Accept(desc, store.GetTypeVariable(call.Callee));

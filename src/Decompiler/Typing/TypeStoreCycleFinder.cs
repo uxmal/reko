@@ -132,7 +132,7 @@ namespace Reko.Typing
         }
 
         /// <inheritdoc/>
-        public bool VisitPointer(Pointer ptr)
+        public bool VisitPointer(PointerType ptr)
         {
             return Find(ptr.Pointee);
         }

@@ -551,16 +551,20 @@ namespace Reko.Loading
             {
                 if (e.TypeName is null && e.Type is null)
                     continue;
-                if (!string.IsNullOrEmpty(e.MagicNumber) &&
-                    ImageHasMagicNumber(rawBytes, e.MagicNumber!, e.Offset)
-                    ||
-                    (!string.IsNullOrEmpty(e.Extension) &&
-                        imageLocation.EndsWith(e.Extension, StringComparison.InvariantCultureIgnoreCase)))
+                if (ImageHasMagicNumber(rawBytes, e.MagicNumber, e.Offset) ||
+                    FilenameHasExtension(e.Extension, imageLocation))
                 {
                     return CreateImageLoader<T>(Services, e.Type, e.TypeName, imageLocation, rawBytes);
                 }
             }
             return default;
+        }
+
+        private bool FilenameHasExtension(string? extension, ImageLocation imageLocation)
+        {
+            if (string.IsNullOrWhiteSpace(extension))
+                return false;
+            return imageLocation.EndsWith(extension, StringComparison.InvariantCultureIgnoreCase);
         }
 
         /// <summary>
@@ -573,8 +577,10 @@ namespace Reko.Loading
         /// <returns>True if the magic number was found at <paramref name="offset"/>; otherwilse
         /// false.
         /// </returns>
-        public static bool ImageHasMagicNumber(byte[] image, string magicNumber, long offset)
+        public static bool ImageHasMagicNumber(byte[] image, string? magicNumber, long offset)
         {
+            if (string.IsNullOrWhiteSpace(magicNumber))
+                return false;
             byte[] magic = BytePattern.FromHexBytes(magicNumber);
             if (image.Length < offset + magic.Length)
                 return false;

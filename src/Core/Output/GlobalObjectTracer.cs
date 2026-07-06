@@ -64,7 +64,7 @@ namespace Reko.Core.Output
         private StructureFieldCollection GlobalFields(Program program)
         {
             if (program.TypeStore.TryGetTypeVariable(program.Globals, out var tvGlobals) &&
-                tvGlobals.DataType is Pointer ptr)
+                tvGlobals.DataType is PointerType ptr)
             {
                 var str = ptr.Pointee.ResolveAs<StructureType>();
                 if (str is not null)
@@ -147,7 +147,7 @@ namespace Reko.Core.Output
         }
 
         /// <inheritdoc/>
-        public int VisitPointer(Pointer ptr)
+        public int VisitPointer(PointerType ptr)
         {
             var addr = rdr.Address;
             try

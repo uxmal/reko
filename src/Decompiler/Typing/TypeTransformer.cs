@@ -384,7 +384,7 @@ namespace Reko.Typing
         }
 
         /// <inheritdoc/>
-        public DataType VisitPointer(Pointer ptr)
+        public DataType VisitPointer(PointerType ptr)
         {
             ptr.Pointee = ptr.Pointee.Accept(this);
             return ptr;
@@ -483,7 +483,7 @@ namespace Reko.Typing
 				StructureMerger sm = new StructureMerger(upsm.Structures, upsm.EquivalenceClasses);
 				sm.Merge();
 				Changed = true;
-                var ptr = new Pointer(sm.MergedClass, upsm.PointerBitSize);
+                var ptr = new PointerType(sm.MergedClass, upsm.PointerBitSize);
                 visitedTypes[ut] = ptr;
                 return ptr;
 			}

@@ -226,7 +226,7 @@ public class ProjectionPropagator : IAnalysis<SsaState>
             private static DataType? MakeSegPtr(DataType dtEa)
             {
                 if (dtEa is MemberPointer mptr)
-                    return new Pointer(mptr.Pointee, 32);
+                    return new PointerType(mptr.Pointee, 32);
                 else
                     return PrimitiveType.SegPtr32;
             }

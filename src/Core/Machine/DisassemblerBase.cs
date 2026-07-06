@@ -564,6 +564,20 @@ namespace Reko.Core.Machine
         {
             return Sparse(bitPosition, bits, "", defaultDecoder, sparseDecoders);
         }
+
+        /// <summary>
+        /// Predicate used for testing fields containing 0 bits.
+        /// </summary>
+        /// <param name="u">Value to test.</param>
+        /// <returns>True if value is all 0 bits; otherwise false.</returns>
+        protected static bool Eq0(uint u) => u == 0;
+
+        /// <summary>
+        /// Predicate used for testing fields at least one 1 bit.
+        /// </summary>
+        /// <param name="u">Value to test.</param>
+        /// <returns>False if value is all 0 bits; otherwise true.</returns>
+        protected static bool Ne0(uint u) => u != 0;
     }
 
     /// <summary>

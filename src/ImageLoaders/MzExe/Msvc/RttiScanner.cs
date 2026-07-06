@@ -132,7 +132,7 @@ namespace Reko.ImageLoaders.MzExe.Msvc
             results.VFTables.Add(addrVFTable, vftableEntries);
             var vftableName = $"??_7{td.Name.Substring(4)}6B@";
             var vftableType = new ArrayType(
-                    new Pointer(new CodeType(), program.Architecture.PointerType.BitSize),
+                    new PointerType(new CodeType(), program.Architecture.PointerType.BitSize),
                     vftableEntries.Count);
             var vftableSymbol = ImageSymbol.DataObject(
                 arch,

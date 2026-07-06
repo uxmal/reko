@@ -193,7 +193,7 @@ public partial class IA64Rewriter
         var mem = ReadOp(instr, 1, dt);
         var value = binder.CreateTemporary(dt);
         m.Assign(value, m.MaybeSlice(ReadOp(instr, 2), dt));
-        var ptrDt = new Pointer(dt, 64);
+        var ptrDt = new PointerType(dt, 64);
         WriteOp(instr, 0, MaybeExtendZ(
             m.Fn(
                 intrinsic.MakeInstance(64, dt),

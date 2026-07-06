@@ -748,7 +748,7 @@ namespace Reko.ImageLoaders.MachO
                 {
                     Debug.Print("      {0}: {1:X8} {2}", addr, uImport, msym.Name);
                     var addrImport = Address.Ptr32(uImport);
-                    var ptr = new Pointer(new CodeType(), arch.PointerType.BitSize);
+                    var ptr = new PointerType(new CodeType(), arch.PointerType.BitSize);
                     var impSymbol = ImageSymbol.DataObject(
                         arch,
                         addr,
@@ -860,7 +860,7 @@ namespace Reko.ImageLoaders.MachO
                 {
                     Debug.Print("      {0}: {1:X8} {2}", addr, uImport, msym.Name);
                     var addrImport = Address.Ptr64(uImport);
-                    var ptr = new Pointer(new CodeType(), arch.PointerType.BitSize);
+                    var ptr = new PointerType(new CodeType(), arch.PointerType.BitSize);
                     var impSymbol = ImageSymbol.DataObject(
                         arch,
                         addr,

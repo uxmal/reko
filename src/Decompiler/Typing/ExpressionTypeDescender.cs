@@ -136,7 +136,7 @@ namespace Reko.Typing
 
         private static FunctionType? MatchFunctionPointer(DataType dt)
         {
-            if (dt is Pointer ptr)
+            if (dt is PointerType ptr)
                 return ptr.Pointee as FunctionType;
             else
                 return null;
@@ -339,7 +339,7 @@ namespace Reko.Typing
             var tv = TypeVar(eStructPtr);
             if (tv.DataType is null)
                 return false;
-            var ptr = tv.DataType.ResolveAs<Pointer>();
+            var ptr = tv.DataType.ResolveAs<PointerType>();
             if (ptr is null)
                 return false;
             var str = ptr.Pointee.ResolveAs<StructureType>();
@@ -545,7 +545,7 @@ namespace Reko.Typing
         {
             var eLeft = binExp.Left;
             var tvBin = TypeVar(binExp);
-            if (tvBin.DataType is not Pointer binPtr)
+            if (tvBin.DataType is not PointerType binPtr)
                 return;
             if (!aem.Match(binExp))
                 return;
@@ -956,13 +956,13 @@ namespace Reko.Typing
         {
             if (seq.Expressions.Length == 2 && tv.DataType.IsPointer)
             {
-                if (IsSelector(seq.Expressions[0]) || DataTypeOf(seq.Expressions[0]) is Pointer)
+                if (IsSelector(seq.Expressions[0]) || DataTypeOf(seq.Expressions[0]) is PointerType)
                 {
                     var seg = seq.Expressions[0];
                     var off = seq.Expressions[1];
-                    MeetDataType(seg, new Pointer(new StructureType { IsSegment = true }, DataTypeOf(seg).BitSize));
+                    MeetDataType(seg, new PointerType(new StructureType { IsSegment = true }, DataTypeOf(seg).BitSize));
                     var dtSeq = DataTypeOf(seq);
-                    if (dtSeq is Pointer ptr)
+                    if (dtSeq is PointerType ptr)
                     {
                         MeetDataType(off, MemberPointerTo(TypeVar(seg), ptr.Pointee, DataTypeOf(off).BitSize));
                     } else if (dtSeq.IsPointer)
@@ -1036,7 +1036,7 @@ namespace Reko.Typing
             MeetDataType(address.BasePointer, factory.CreatePointer(seg, basePtr.DataType.BitSize));
             basePtr.Accept(this, TypeVar(address.BasePointer));
             var dtSegPtr = DataTypeOf(address);
-            if (dtSegPtr is Pointer ptr)
+            if (dtSegPtr is PointerType ptr)
             {
                 MeetDataType(off, MemberPointerTo(TypeVar(basePtr), ptr.Pointee, DataTypeOf(off).BitSize));
             }

@@ -38,6 +38,8 @@ namespace Reko.Arch.Arc
         {
             base.Endianness = EndianServices.Little;
             base.FramePointerType = PrimitiveType.Ptr32;
+            base.CodeMemoryGranularity = 8;
+            base.MemoryGranularity = 8;
             base.InstructionBitSize = 16;
             base.PointerType = PrimitiveType.Ptr32;
             base.StackRegister = Registers.Sp;

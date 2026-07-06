@@ -199,12 +199,12 @@ namespace Reko.UnitTests.Decompiler.Scanning
                                 new Identifier("arg",
                                     new TypeReference(
                                         "HWND",
-                                        new Pointer(VoidType.Instance, 32)),
+                                        new PointerType(VoidType.Instance, 32)),
                                     new StackStorage(4, new TypeReference(
                                         "HWND",
-                                        new Pointer(VoidType.Instance, 32))))
+                                        new PointerType(VoidType.Instance, 32))))
                             ],
-                            [ new Identifier("", new Pointer(VoidType.Instance, 32), RegisterStorage.Reg32("eax", 0)) ]
+                            [ new Identifier("", new PointerType(VoidType.Instance, 32), RegisterStorage.Reg32("eax", 0)) ]
                             )
                         {
                             StackDelta = 4,

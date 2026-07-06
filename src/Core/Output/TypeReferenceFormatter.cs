@@ -115,7 +115,7 @@ namespace Reko.Core.Output
 
         void SpaceForPointerOperator(DataType t)
         {
-            if (t is Pointer p)
+            if (t is PointerType p)
             {
                 if (t is not ArrayType && t is not FunctionType)
                     Formatter.Write(' ');
@@ -162,9 +162,9 @@ namespace Reko.Core.Output
               * type-qualifier-list(opt)
               * type-qualifier-list(opt) pointer  */
 
-        void Pointer(Pointer t)
+        void Pointer(PointerType t)
         {
-            if (t.Pointee is Pointer ptPointee)
+            if (t.Pointee is PointerType ptPointee)
                 Pointer(ptPointee);
             WriteSpace();
             Formatter.Write('*');
@@ -174,7 +174,7 @@ namespace Reko.Core.Output
 
         void MemberPointer(MemberPointer m)
         {
-            if (m.Pointee is Pointer ptPointee)
+            if (m.Pointee is PointerType ptPointee)
                 Pointer(ptPointee);
             if (m.Pointee is MemberPointer mpPointee)
                 MemberPointer(mpPointee);
@@ -310,9 +310,9 @@ namespace Reko.Core.Output
             if (this.depth > 50) //$BUG: used to avoid infinite recursion
                 return;
             ++this.depth;
-            if (!(t is Pointer))
+            if (!(t is PointerType))
                 TypeQualifierList(t);
-            var pt = t as Pointer;
+            var pt = t as PointerType;
             var mp = t as MemberPointer;
             var rf = t as ReferenceTo;
             if (pt is not null || mp is not null || rf is not null)
@@ -359,7 +359,7 @@ namespace Reko.Core.Output
 
         private DataType StripPointerOperator(DataType dt)
         {
-            var pt = dt as Pointer;
+            var pt = dt as PointerType;
             var mp = dt as MemberPointer;
             while (pt is not null || mp is not null)
             {
@@ -367,7 +367,7 @@ namespace Reko.Core.Output
                     dt = pt.Pointee;
                 else
                     dt = mp!.Pointee;
-                pt = dt as Pointer;
+                pt = dt as PointerType;
                 mp = dt as MemberPointer;
             }
             if (dt is EquivalenceClass eq && eq.DataType is not null)
@@ -424,7 +424,7 @@ namespace Reko.Core.Output
             if (this.depth > 50)
                 return;         //$BUG: discover cause of the deep recursion?
             ++this.depth;
-            if (dt is Pointer pt)
+            if (dt is PointerType pt)
             {
                 var pointee = pt.Pointee;
                 if (pointee is EquivalenceClass eq && eq.DataType is not null)
@@ -446,7 +446,7 @@ namespace Reko.Core.Output
 
         void DirectAbstractDeclarator(DataType t)
         {
-            if (t is Pointer)
+            if (t is PointerType)
             {
                 AbstractDeclarator(t);
             }

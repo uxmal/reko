@@ -815,7 +815,7 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
             else
             {
                 var dt = bin.Left.DataType;
-                var ptr = dt.ResolveAs<Pointer>();
+                var ptr = dt.ResolveAs<PointerType>();
                 Expression zero;
                 if (ptr is not null)
                 {

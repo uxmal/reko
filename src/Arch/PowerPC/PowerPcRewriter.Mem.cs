@@ -234,7 +234,7 @@ namespace Reko.Arch.PowerPC
             {
                 ea = m.IAdd(a, ea);
             }
-            var ptr = new Pointer(PrimitiveType.Word32, arch.PointerType.BitSize);
+            var ptr = new PointerType(PrimitiveType.Word32, arch.PointerType.BitSize);
             m.SideEffect(m.Fn(
                 lwsx.MakeInstance(ptr, arch.xer.DataType),
                 ea,
@@ -264,7 +264,7 @@ namespace Reko.Arch.PowerPC
             {
                 rb = m.IAdd(ra, rb);
             }
-            var ptr = new Pointer(dt, arch.PointerType.BitSize);
+            var ptr = new PointerType(dt, arch.PointerType.BitSize);
             m.SideEffect(
                 m.Fn(
                     stve.MakeInstance(ptr, dt),
@@ -535,7 +535,7 @@ namespace Reko.Arch.PowerPC
                 ? b
                 : m.IAdd(a, b);
             var cr0 = binder.EnsureFlagGroup(arch.cr0);
-            var ptr = new Pointer(dataType, arch.PointerType.BitSize);
+            var ptr = new PointerType(dataType, arch.PointerType.BitSize);
             m.Assign(
                 cr0,
                 m.Fn(

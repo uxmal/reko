@@ -1229,7 +1229,6 @@ namespace Reko.Arch.PaRisc
         private static readonly Mutator<PaRiscDisassembler> cvu_s = fpFmt(BeField(19, 2), cvu);
         private static readonly Mutator<PaRiscDisassembler> cvu_d = fpFmtD(BeField(17, 2), cvu);
 
-        private static bool Eq0(uint u) => u == 0;
         private static bool IsFpuProcessor(uint u) => (u & ~1) == 0;
 
         private static uint assemble_3(uint u, Bitfield field)

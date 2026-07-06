@@ -232,8 +232,8 @@ namespace Reko.UnitTests.Decompiler.Typing
         public void TtranSimplify()
         {
             UnionType u = new UnionType(null, null);
-            u.Alternatives.Add(new Pointer(PrimitiveType.Real32, 32));
-            u.Alternatives.Add(new Pointer(PrimitiveType.Real32, 32));
+            u.Alternatives.Add(new PointerType(PrimitiveType.Real32, 32));
+            u.Alternatives.Add(new PointerType(PrimitiveType.Real32, 32));
             TypeTransformer trans = new TypeTransformer(factory, store, null);
             DataType dt = u.Accept(trans);
             Assert.AreEqual("(ptr32 real32)", dt.ToString());
@@ -244,7 +244,7 @@ namespace Reko.UnitTests.Decompiler.Typing
         {
             UnionType u = new UnionType(null, null);
             u.Alternatives.Add(PrimitiveType.Word32);
-            u.Alternatives.Add(new Pointer(PrimitiveType.Real32, 32));
+            u.Alternatives.Add(new PointerType(PrimitiveType.Real32, 32));
             TypeTransformer trans = new TypeTransformer(factory, store, null);
             DataType dt = u.Accept(trans);
             Assert.AreEqual("(ptr32 real32)", dt.ToString());
@@ -292,10 +292,10 @@ namespace Reko.UnitTests.Decompiler.Typing
             };
             var eq1 = new EquivalenceClass(factory.CreateTypeVariable(), str1);
             var eq2 = new EquivalenceClass(factory.CreateTypeVariable(), str2);
-            ut.AddAlternative(new Pointer(eq1, 32));
-            ut.AddAlternative(new Pointer(eq2, 32));
+            ut.AddAlternative(new PointerType(eq1, 32));
+            ut.AddAlternative(new PointerType(eq2, 32));
             var trans = new TypeTransformer(factory, null, null);
-            var ptr = (Pointer)ut.Accept(trans);
+            var ptr = (PointerType)ut.Accept(trans);
             var eq = (EquivalenceClass)ptr.Pointee;
             Assert.AreEqual(
                 "(struct (0 real32 r0000) (4 int32 dw0004))",
@@ -324,8 +324,8 @@ namespace Reko.UnitTests.Decompiler.Typing
             };
             var eq1 = new EquivalenceClass(factory.CreateTypeVariable(), str1);
             var eq2 = new EquivalenceClass(factory.CreateTypeVariable(), str2);
-            ut.AddAlternative(new Pointer(eq1, 32));
-            ut.AddAlternative(new Pointer(eq2, 32));
+            ut.AddAlternative(new PointerType(eq1, 32));
+            ut.AddAlternative(new PointerType(eq2, 32));
             var trans = new TypeTransformer(factory, null, null);
             var dt = ut.Accept(trans);
             Assert.AreEqual(
@@ -577,7 +577,7 @@ namespace Reko.UnitTests.Decompiler.Typing
         {
             var r1 = RegisterStorage.Reg32("r1", 1);
             var malloc = new ExternalProcedure("malloc", FunctionType.Create(
-                new Identifier("", new Pointer(new UnknownType(), 32), r1),
+                new Identifier("", new PointerType(new UnknownType(), 32), r1),
                 new Identifier("size", PrimitiveType.UInt32, RegisterStorage.Reg32("r2", 2))),
                 new ProcedureCharacteristics
                 {

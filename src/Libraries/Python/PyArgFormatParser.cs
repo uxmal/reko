@@ -104,7 +104,7 @@ namespace Reko.Libraries.Python
 
         private DataType Ptr(DataType pointee)
         {
-            return new Pointer(pointee, pointerSize);
+            return new PointerType(pointee, pointerSize);
         }
 
         private DataType Ref(string name)

@@ -485,7 +485,7 @@ namespace Reko.Arch.OpenRISC.Or
         }
 
         static readonly IntrinsicProcedure atomic_load_w32_intrinsic = new IntrinsicBuilder("__atomic_load_w32", true)
-            .Param(new Pointer(PrimitiveType.Word32, 32))
+            .Param(new PointerType(PrimitiveType.Word32, 32))
             .Returns(PrimitiveType.Word32);
         static readonly IntrinsicProcedure csync_intrinsic = new IntrinsicBuilder("__csync", true)
             .Void();

@@ -127,7 +127,7 @@ namespace Reko.Typing
                         addr.Selector.Value);
                     return addr;
                 }
-                var ptrSeg = store.GetTypeVariable(segId).DataType.ResolveAs<Pointer>();
+                var ptrSeg = store.GetTypeVariable(segId).DataType.ResolveAs<PointerType>();
                 if (ptrSeg is null)
                 {
                     //$TODO: what should the warning be?
@@ -141,7 +141,7 @@ namespace Reko.Typing
                     return x;
                 }
                 var baseType = ptrSeg.Pointee.ResolveAs<StructureType>()!;
-                var dt = store.GetTypeVariable(addr).DataType.ResolveAs<Pointer>()!;
+                var dt = store.GetTypeVariable(addr).DataType.ResolveAs<PointerType>()!;
                 this.c = m.Const(
                     PrimitiveType.CreateWord(addr.DataType.BitSize - ptrSeg.BitSize),
                     addr.Offset);
@@ -187,11 +187,11 @@ namespace Reko.Typing
             {
                 if (globals is not null && store.TryGetTypeVariable(globals, out var tvGlobals))
                 {
-                    if (tvGlobals.DataType is Pointer pGlob)
+                    if (tvGlobals.DataType is PointerType pGlob)
                     {
                         return pGlob.Pointee.ResolveAs<StructureType>();
                     }
-                    if (globals.DataType is Pointer pGlob2)
+                    if (globals.DataType is PointerType pGlob2)
                     {
                         return pGlob2.Pointee as StructureType;
                     }
@@ -201,7 +201,7 @@ namespace Reko.Typing
 		}
 
         //$REVIEW: special cased code; we need to handle segments appropriately and remove this function.
-        private static bool IsSegmentPointer(Pointer ptr)
+        private static bool IsSegmentPointer(PointerType ptr)
         {
             if (ptr.Pointee is not EquivalenceClass eq)
                 return false;
@@ -255,7 +255,7 @@ namespace Reko.Typing
 		{
 			// The constant is a member pointer.
 
-			Pointer p = (Pointer) memptr.BasePointer;
+			PointerType p = (PointerType) memptr.BasePointer;
 			EquivalenceClass eq = (EquivalenceClass) p.Pointee;
 			StructureType baseType = (StructureType) eq.DataType;
 			Expression baseExpr = this.basePtr is not null
@@ -284,7 +284,7 @@ namespace Reko.Typing
 		}
 
         /// <inheritdoc/>
-		public Expression VisitPointer(Pointer ptr)
+		public Expression VisitPointer(PointerType ptr)
 		{
 			Expression e = c!;
             if (IsSegmentPointer(ptr))
@@ -461,7 +461,7 @@ namespace Reko.Typing
                     platform.PointerType.BitSize);
                 return e;
             }
-            var ptr = new Pointer(e.DataType, platform.PointerType.BitSize);
+            var ptr = new PointerType(e.DataType, platform.PointerType.BitSize);
             return m.AddrOf(ptr, e);
         }
 
@@ -512,7 +512,7 @@ namespace Reko.Typing
 			}
 			else if (pt.Domain == Domain.Pointer)
             {
-                var ptr = new Pointer(new UnknownType(), pt.BitSize);
+                var ptr = new PointerType(new UnknownType(), pt.BitSize);
                 return VisitPointer(ptr);
             }
             else

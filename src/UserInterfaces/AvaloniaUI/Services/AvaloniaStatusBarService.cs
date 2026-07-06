@@ -20,13 +20,7 @@
 
 using ReactiveUI;
 using Reko.Gui.Services;
-using Reko.UserInterfaces.AvaloniaUI.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UserInterfaces.AvaloniaUI.Services
 {
@@ -56,31 +50,27 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public int ProgressPercentage
         {
-            get => progressPercentage;
-            set => this.RaiseAndSetIfChanged(ref progressPercentage, value);
+            get => field;
+            set => this.RaiseAndSetIfChanged(ref field, value);
         }
-        private int progressPercentage;
 
         public string? Text
         {
-            get { return text; }
-            set { this.RaiseAndSetIfChanged(ref text, value, nameof(Text)); }
+            get { return field; }
+            set { this.RaiseAndSetIfChanged(ref field, value, nameof(Text)); }
         }
-        private string? text;
 
         public string? Subtext
         {
-            get { return subtext; }
-            set { this.RaiseAndSetIfChanged(ref subtext, value); }
+            get { return field; }
+            set { this.RaiseAndSetIfChanged(ref field, value); }
         }
-        private string? subtext;
 
         public string? SelectedAddressRange
         {
-            get { return selectedAddressRange; }
-            set { this.RaiseAndSetIfChanged(ref selectedAddressRange, value); }
+            get { return field; }
+            set { this.RaiseAndSetIfChanged(ref field, value); }
         }
-        private string? selectedAddressRange;
 
         public void SetText(string text)
         {

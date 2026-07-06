@@ -246,9 +246,9 @@ namespace Reko.Arch.Arm.AArch32
             }
             var idxReg = binder.EnsureRegister(mem.Index!);
             Expression ea;
-            if (elemSize.Size != 1)
+            if (elemSize.BitSize != 8)
             {
-                ea = m.IAdd(tableBase, m.IMul(idxReg, elemSize.Size));
+                ea = m.IAdd(tableBase, m.IMul(idxReg, elemSize.BitSize / 8));
             }
             else
             {
@@ -303,7 +303,7 @@ namespace Reko.Arch.Arm.AArch32
         {
             var mem = (MemoryOperand) instr.Operands[2];
             var ea = binder.EnsureRegister(mem.BaseRegister!);
-            ea.DataType = new Pointer(PrimitiveType.Word64, 32);
+            ea.DataType = new PointerType(PrimitiveType.Word64, 32);
             var regHi = (RegisterStorage) instr.Operands[0];
             var regLo = (RegisterStorage) instr.Operands[1];
             var dst = binder.EnsureSequence(PrimitiveType.Word64, regHi, regLo);
@@ -390,7 +390,7 @@ namespace Reko.Arch.Arm.AArch32
                 dt);
             var mem = (MemoryOperand) instr.Operands[1];
             var ea = binder.EnsureRegister(mem.BaseRegister!);
-            ea.DataType = new Pointer(dt, 32);
+            ea.DataType = new PointerType(dt, 32);
             var store = m.Fn(intrinsic.MakeInstance(32, dt), ea, src);
             m.SideEffect(store);
         }
@@ -402,7 +402,7 @@ namespace Reko.Arch.Arm.AArch32
                 dt);
             var mem = (MemoryOperand) instr.Operands[2];
             var ea = binder.EnsureRegister(mem.BaseRegister!);
-            ea.DataType = new Pointer(dt, 32);
+            ea.DataType = new PointerType(dt, 32);
             var store = m.Fn(intrinsic.MakeInstance(32, dt), ea, src);
             var dst = Operand(0);
             m.Assign(dst, store);
@@ -412,7 +412,7 @@ namespace Reko.Arch.Arm.AArch32
         {
             var mem = (MemoryOperand) instr.Operands[3];
             var ea = binder.EnsureRegister(mem.BaseRegister!);
-            ea.DataType = new Pointer(PrimitiveType.Word64, 32);
+            ea.DataType = new PointerType(PrimitiveType.Word64, 32);
             var regHi = (RegisterStorage) instr.Operands[1];
             var regLo = (RegisterStorage) instr.Operands[2];
             var src = binder.EnsureSequence(PrimitiveType.Word64, regHi, regLo);
@@ -458,7 +458,7 @@ namespace Reko.Arch.Arm.AArch32
             }
             Expression result = m.Fn(
                 AtomicOps.atomic_exchange.MakeInstance(32, type),
-                m.AddrOf(new Pointer(type, 32), Operand(2)),
+                m.AddrOf(new PointerType(type, 32), Operand(2)),
                 src1);
             var dst = Operand(0, PrimitiveType.Word32, true);
             if (dst.DataType.BitSize > type.BitSize)

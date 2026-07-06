@@ -63,7 +63,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         [Test]
         public void Ppc64cc_LongArgumentList()
         {
-            AssertSignature("Stk: 0 r3 (r3, r4, r5, r6, r7, r8, r9, r10, Stack +0048)", i32, i64, i64, i64, i64, i64, i64, i64, i64, new Pointer(i32, 64));
+            AssertSignature("Stk: 0 r3 (r3, r4, r5, r6, r7, r8, r9, r10, Stack +0048)", i32, i64, i64, i64, i64, i64, i64, i64, i64, new PointerType(i32, 64));
         }
     }
 }

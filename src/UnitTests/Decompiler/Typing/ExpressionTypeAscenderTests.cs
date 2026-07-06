@@ -57,9 +57,9 @@ namespace Reko.UnitTests.Decompiler.Typing
             program.GlobalFields.Fields.Add((int)addr.ToUInt32(), dt);
         }
 
-        private Pointer PointerTo(DataType dt)
+        private PointerType PointerTo(DataType dt)
         {
-            return new Pointer(dt, 32);
+            return new PointerType(dt, 32);
         }
 
         private static Identifier Id(string name, DataType dt)
@@ -124,7 +124,7 @@ namespace Reko.UnitTests.Decompiler.Typing
         {
             RunTest(
                 m.IAdd(
-                    Id("p", new Pointer(PrimitiveType.Word32, 32)),
+                    Id("p", new PointerType(PrimitiveType.Word32, 32)),
                     Constant.Int32(4)),
                 "Typing/ExaAddPtrInt.txt");
         }
@@ -163,7 +163,7 @@ namespace Reko.UnitTests.Decompiler.Typing
         [Test(Description = "Resilve LPSTRs and the like to their underlying rep")]
         public void ExaTypeReferenceToPointer()
         {
-            var psz = Id("psz", new TypeReference("LPSTR", new Pointer(PrimitiveType.Char, 32)));
+            var psz = Id("psz", new TypeReference("LPSTR", new PointerType(PrimitiveType.Char, 32)));
             RunTest(
                 m.Mem8(m.IAdd(psz, Constant.Word32(0))),
                 "Typing/ExaTypeReferenceToPointer.txt");

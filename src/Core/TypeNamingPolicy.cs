@@ -79,7 +79,7 @@ namespace Reko.Core
                 return "ptr";
             }
 
-            public string VisitPointer(Pointer ptr)
+            public string VisitPointer(PointerType ptr)
             {
                 return "ptr";
             }

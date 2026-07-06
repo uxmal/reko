@@ -655,7 +655,7 @@ namespace Reko.Arch.Motorola.M6812
             var mem = RewriteMemoryOperand((MemoryOperand)instr.Operands[0]);
             m.Assign(d, m.Fn(
                 tbl_intrinsic.MakeInstance(
-                    new Pointer(PrimitiveType.Word16, 2),
+                    new PointerType(PrimitiveType.Word16, 2),
                     PrimitiveType.Word16),
                 mem.EffectiveAddress,
                 b));

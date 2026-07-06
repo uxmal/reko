@@ -55,7 +55,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             StructureType str = new StructureType
             {
                 Fields = {
-                    { 0, new Pointer(eqLink, 32)},
+                    { 0, new PointerType(eqLink, 32)},
                     { 4, PrimitiveType.Int32 }
                 }
             };
@@ -109,7 +109,7 @@ namespace Reko.UnitTests.Decompiler.Typing
                 .WriteLeUInt32('b')
                 .WriteLeUInt32('c')
                 .WriteLeUInt32('d');
-            Root(0x01000, new ArrayType(new Pointer(PrimitiveType.Char, 32), 4));
+            Root(0x01000, new ArrayType(new PointerType(PrimitiveType.Char, 32), 4));
             var cpt = new ConstantPointerTraversal(arch.Object, globalStruct, imageMap);
             cpt.Traverse();
 
@@ -142,8 +142,8 @@ namespace Reko.UnitTests.Decompiler.Typing
             {
                 Fields = {
                     { 0, PrimitiveType.UInt32 },
-                    { 4, new Pointer(eqTreeNode, 32) },  // Left
-                    { 8, new Pointer(eqTreeNode, 32) },  // Right
+                    { 4, new PointerType(eqTreeNode, 32) },  // Left
+                    { 8, new PointerType(eqTreeNode, 32) },  // Right
                 }
             };
             eqTreeNode.DataType = str;

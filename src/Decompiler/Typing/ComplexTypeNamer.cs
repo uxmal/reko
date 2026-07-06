@@ -124,7 +124,7 @@ namespace Reko.Typing
         }
 
         /// <inheritdoc/>
-        public DataType VisitPointer(Pointer ptr)
+        public DataType VisitPointer(PointerType ptr)
         {
             ptr.Pointee = ptr.Pointee.Accept(this);
             return ptr;

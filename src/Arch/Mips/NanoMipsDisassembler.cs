@@ -604,11 +604,6 @@ namespace Reko.Arch.Mips
 
         #region Predicates
 
-        private static bool Eq0(uint u)
-        {
-            return u == 0;
-        }
-
         private static readonly Bitfield rs3Field = new Bitfield(4, 3);
         private static readonly Bitfield rt3Field = new Bitfield(7, 3);
 

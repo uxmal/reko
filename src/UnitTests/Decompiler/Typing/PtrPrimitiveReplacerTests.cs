@@ -153,8 +153,8 @@ namespace Reko.UnitTests.Decompiler.Typing
         {
             StructureType s1 = new StructureType(null, 0, true);
             StructureType s2 = new StructureType(null, 0, true);
-            s1.Fields.Add(0, new Pointer(s2, 32));
-            s2.Fields.Add(0, new Pointer(s1, 32));
+            s1.Fields.Add(0, new PointerType(s2, 32));
+            s2.Fields.Add(0, new PointerType(s1, 32));
 
             var program = new Program();
             var factory = new TypeFactory();

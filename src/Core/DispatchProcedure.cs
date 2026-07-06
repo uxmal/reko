@@ -35,8 +35,8 @@ namespace Reko.Core
     /// </remarks>
     public class DispatchProcedure : ProcedureBase
     {
-        private List<(SyscallInfo, ExternalProcedure)> services;
-        private FunctionType dummySig;
+        private readonly List<(SyscallInfo, ExternalProcedure)> services;
+        private readonly FunctionType dummySig;
 
         /// <summary>
         /// Constructs a <see cref="DispatchProcedure"/> instance.

@@ -303,7 +303,7 @@ namespace Reko.Arch.Arm.AArch64
         private void RewriteLoadAcquire(IntrinsicProcedure intrinsic, DataType dtDst)
         {
             var mem = (MemoryOperand) instr.Operands[1];
-            var ptr = new Pointer(dtDst, (int)mem.Base!.BitSize);
+            var ptr = new PointerType(dtDst, (int)mem.Base!.BitSize);
             var ea = m.AddrOf(ptr, m.Mem(dtDst, binder.EnsureRegister(mem.Base)));
             var value = m.Fn(intrinsic.MakeInstance(64, dtDst), ea);
             var dst = RewriteOp(0);
@@ -348,7 +348,7 @@ namespace Reko.Arch.Arm.AArch64
                 m.Assign(m.Mem(dtDst, ea), reg1);
             }
 
-            ea = m.IAddS(ea, dtDst.Size);
+            ea = m.IAddS(ea, dtDst.BitSize / 8);
             if (load)
             {
                 Expression e = m.Mem(dtDst, ea);
@@ -690,7 +690,7 @@ namespace Reko.Arch.Arm.AArch64
         private void RewriteStlr(DataType dataType)
         {
             var src1 = RewriteOp(0, false);
-            var ea = binder.CreateTemporary(new Pointer(dataType, arch.PointerType.BitSize));
+            var ea = binder.CreateTemporary(new PointerType(dataType, arch.PointerType.BitSize));
             m.Assign(ea, m.AddrOf(ea.DataType, m.Mem(dataType, binder.EnsureRegister(((MemoryOperand) instr.Operands[1]).Base!))));
             m.SideEffect(m.Fn(intrinsic.stlr.MakeInstance(64, src1.DataType), ea, src1));
         }

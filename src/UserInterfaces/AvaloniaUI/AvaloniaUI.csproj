@@ -6,6 +6,7 @@
 	  <AssemblyName>Reko.UserInterfaces.AvaloniaUI</AssemblyName>
 	  <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	  <Nullable>enable</Nullable>
+	  <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

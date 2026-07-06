@@ -101,7 +101,7 @@ namespace Reko.Analysis
         private bool TryRewriteCall(Statement stm, CallInstruction call)
         {
             var e = expander.Expand(call.Callee);
-            var pt = e.Accept(asc).ResolveAs<Pointer>();
+            var pt = e.Accept(asc).ResolveAs<PointerType>();
             if (pt is null)
                 return false;
             if (pt.Pointee is not FunctionType ft)

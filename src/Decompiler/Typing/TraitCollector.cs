@@ -209,7 +209,7 @@ namespace Reko.Typing
 		{
             handler.DataTypeTrait(
                 call.Callee, 
-                new Pointer(
+                new PointerType(
                     new CodeType(), 
                     program!.Platform.PointerType.BitSize));
             return call.Callee.Accept(this);

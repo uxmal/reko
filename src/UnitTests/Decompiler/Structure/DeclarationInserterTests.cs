@@ -128,7 +128,7 @@ test()
 }
 ";
         RunTest(sExp, m => {
-            var pint = new Pointer(PrimitiveType.Int32, 32);
+            var pint = new PointerType(PrimitiveType.Int32, 32);
             var arg = Identifier.Create(RegisterStorage.Reg32("arg", 0));
             arg.DataType = pint;
             AddParameter(arg);
@@ -191,7 +191,7 @@ test()
 ";
         RunTest(sExp, m =>
         {
-            var pch = new Pointer(PrimitiveType.Char, 32);
+            var pch = new PointerType(PrimitiveType.Char, 32);
             var arg = Identifier.Create(RegisterStorage.Reg32("arg", 0));
             AddParameter(arg);
 

@@ -74,7 +74,7 @@ namespace Reko.UnitTests.Decompiler.Typing
 
         private Expression Ptr32ToInt32(ProcedureBuilder m, uint ptr)
         {
-            var dt = new Pointer(PrimitiveType.Int32, 32);
+            var dt = new PointerType(PrimitiveType.Int32, 32);
             return EnsureTypeVariable(m.Word32(ptr), dt);
         }
 

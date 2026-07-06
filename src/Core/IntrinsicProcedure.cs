@@ -248,7 +248,7 @@ namespace Reko.Core
             for (int i = 0; i < sig.Parameters.Length; ++i)
             {
                 var param = sig.Parameters[i];
-                if (param.DataType is Pointer ptr)
+                if (param.DataType is PointerType ptr)
                 {
                     param = new Identifier(
                         param.Name,
@@ -265,7 +265,7 @@ namespace Reko.Core
             else
             {
                 var ret = sig.ReturnValue;
-                if (ret?.DataType is Pointer ptr)
+                if (ret?.DataType is PointerType ptr)
                 {
                     ret = new Identifier(
                         ret.Name,

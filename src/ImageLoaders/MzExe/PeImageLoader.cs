@@ -895,7 +895,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
                     arch,
                     addrIat,
                     "__imp__" + impRef.EntryName,
-                    new Pointer(new CodeType(), bitSize));
+                    new PointerType(new CodeType(), bitSize));
 
                 ImageSymbols[addrIlt] = ImageSymbol.DataObject(
                     arch,

@@ -165,8 +165,8 @@ namespace Reko.Core.Types
 				return ex.Number - ey.Number;
 			}
 
-			Pointer? ptrX = x as Pointer;
-			Pointer? ptrY = y as Pointer;
+			PointerType? ptrX = x as PointerType;
+			PointerType? ptrY = y as PointerType;
 			if (ptrX is not null && ptrY is not null)
 			{
 				return Compare(ptrX.Pointee, ptrY.Pointee, ++count);
@@ -331,7 +331,7 @@ namespace Reko.Core.Types
                 return pt.GetHashCode();
             case UnknownType _:
                 return dt.GetType().GetHashCode();
-            case Pointer ptr:                ;
+            case PointerType ptr:                ;
                 return GetHashCode(ptr.Pointee) * 11 ^ ptr.GetType().GetHashCode();
             case ReferenceTo rt:
                 return GetHashCode(rt.Referent) * 11 ^ rt.GetType().GetHashCode();
@@ -420,7 +420,7 @@ namespace Reko.Core.Types
 		}
 
         /// <inheritdoc/>
-		public int VisitPointer(Pointer ptr)
+		public int VisitPointer(PointerType ptr)
 		{
 			return Ptr;
 		}

@@ -24,7 +24,6 @@ using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Services;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace Reko.Arch.Loongson
@@ -227,8 +226,6 @@ namespace Reko.Arch.Loongson
         private static readonly Mutator<LoongArchDisassembler> j21 = Jump(Bf((0, 5), (10, 16)));
 
         #endregion
-
-        private static bool Eq0(uint u) => u == 0;
 
         private static Decoder Instr(Mnemonic mnemonic, params Mutator<LoongArchDisassembler>[] mutators)
         {

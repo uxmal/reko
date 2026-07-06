@@ -20,10 +20,9 @@
 
 using Reko.Core;
 using Reko.Core.Services;
-using Reko.Gui.Services;
 using System;
 
-namespace Reko.Gui
+namespace Reko.Gui.Services
 {
     public class BaseAddressFinderService : ViewService, IBaseAddressFinderService
     {

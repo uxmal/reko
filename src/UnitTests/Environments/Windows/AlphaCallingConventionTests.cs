@@ -85,7 +85,7 @@ namespace Reko.UnitTests.Environments.Windows
                 null,
                 new List<DataType> {
                     PrimitiveType.Char,
-                    new Pointer(PrimitiveType.Int32, 64),
+                    new PointerType(PrimitiveType.Int32, 64),
                     PrimitiveType.UInt32,
                     PrimitiveType.Int32,
                     PrimitiveType.Int16,
@@ -105,12 +105,12 @@ namespace Reko.UnitTests.Environments.Windows
                 null,
                 new List<DataType> {
                     PrimitiveType.Char,
-                    new Pointer(PrimitiveType.Int32, 64),
+                    new PointerType(PrimitiveType.Int32, 64),
                     PrimitiveType.UInt32,
                     PrimitiveType.Int32,
                     PrimitiveType.Int16,
                     PrimitiveType.WChar,
-                    new Pointer(PrimitiveType.Int32, 64),
+                    new PointerType(PrimitiveType.Int32, 64),
                 });
             var sExp = "Stk: 0 void (r16, r17, r18, r19, r20, r21, Stack +0000)";
             AssertEqual(sExp, ccr);
@@ -130,9 +130,9 @@ namespace Reko.UnitTests.Environments.Windows
             AssertEqual(sExp, ccr);
         }
 
-        private Pointer Ptr(DataType dt)
+        private PointerType Ptr(DataType dt)
         {
-            return new Pointer(dt, 64);
+            return new PointerType(dt, 64);
         }
 
         [Test]

@@ -70,7 +70,7 @@ namespace Reko.UnitTests.Core.Output
         [Test]
         public void TyfoPtrReal()
         {
-            DataType dt = new Pointer(PrimitiveType.Real32, 32);
+            DataType dt = new PointerType(PrimitiveType.Real32, 32);
             tyreffo.WriteDeclaration(dt, "test");
             Assert.AreEqual("real32 * test", sw.ToString());
         }
@@ -78,7 +78,7 @@ namespace Reko.UnitTests.Core.Output
         [Test]
         public void TyfoBarePtrReal()
         {
-            DataType dt = new Pointer(PrimitiveType.Real32, 32);
+            DataType dt = new PointerType(PrimitiveType.Real32, 32);
             tyreffo.WriteTypeReference(dt);
             Assert.AreEqual("real32 *", sw.ToString());
         }
@@ -88,7 +88,7 @@ namespace Reko.UnitTests.Core.Output
         {
             StructureType m = new StructureType("foo", 0);
             m.Fields.Add(4, PrimitiveType.UInt16);
-            m.Fields.Add(8, new Pointer(PrimitiveType.UInt32, 32));
+            m.Fields.Add(8, new PointerType(PrimitiveType.UInt32, 32));
             tyfo.Write(m, "bar");
             Assert.AreEqual(
 @"struct foo {
@@ -118,7 +118,7 @@ namespace Reko.UnitTests.Core.Output
         {
             StructureType s = new StructureType("link", 0);
             s.Fields.Add(0, PrimitiveType.Int32, "data");
-            s.Fields.Add(4, new Pointer(s, 32), "next");
+            s.Fields.Add(4, new PointerType(s, 32), "next");
             tyfo.Write(s, "list");
             Assert.AreEqual(
 @"struct link {
@@ -133,8 +133,8 @@ namespace Reko.UnitTests.Core.Output
         {
             StructureType a = new StructureType("a", 0);
             StructureType b = new StructureType("b", 0);
-            a.Fields.Add(0, new Pointer(b, 32), "pb");
-            b.Fields.Add(0, new Pointer(a, 32), "pa");
+            a.Fields.Add(0, new PointerType(b, 32), "pb");
+            b.Fields.Add(0, new PointerType(a, 32), "pa");
             tyfo.Write(a, null);
             Assert.AreEqual(
 @"struct b;
@@ -160,7 +160,7 @@ struct a {
         {
             FunctionType fn = FunctionType.Action(
                 new Identifier[] { new Identifier("", PrimitiveType.Word32, null) });
-            Pointer pfn = new Pointer(fn, 32);
+            PointerType pfn = new PointerType(fn, 32);
             tyreffo.WriteDeclaration(pfn, "pfn");
             Assert.AreEqual("void (* pfn)(word32)",
                 sw.ToString());
@@ -170,7 +170,7 @@ struct a {
         public void TyfoMembptr()
         {
             var s = new StructureType("s", 0);
-            MemberPointer mp = new MemberPointer(new Pointer(s, 32), PrimitiveType.Int32, 2);
+            MemberPointer mp = new MemberPointer(new PointerType(s, 32), PrimitiveType.Int32, 2);
             tyreffo.WriteDeclaration(mp, "mp");
             Assert.AreEqual("int32 s::* mp", sw.ToString());
         }
@@ -192,7 +192,7 @@ struct a {
             EquivalenceClass b = new EquivalenceClass(new TypeVariable(1));
             b.DataType = new StructureType("b", 0) { Fields = { { 4, PrimitiveType.Word32 } } };
 
-            tyfo.Write(new Pointer(b, 16), "pb");
+            tyfo.Write(new PointerType(b, 16), "pb");
             Assert.AreEqual("b * pb", sw.ToString());
         }
 
@@ -263,8 +263,8 @@ struct a {
         [Test]
         public void TyfoPtrPtr()
         {
-            var ptr = new Pointer(PrimitiveType.Int32, 32);
-            var ptr2 = new Pointer(ptr, 32);
+            var ptr = new PointerType(PrimitiveType.Int32, 32);
+            var ptr2 = new PointerType(ptr, 32);
             tyreffo.WriteDeclaration(ptr2, "ppi");
 
             string sExp = "int32 ** ppi";
@@ -292,7 +292,7 @@ struct a {
         public void TyfoPtrToTypeReference()
         {
             var typeReference = new TypeReference("testDataType", PrimitiveType.Int32);
-            var ptr = new Pointer(typeReference, 32);
+            var ptr = new PointerType(typeReference, 32);
             tyfo.Write(ptr, "var");
 
             string sExp = "testDataType * var";
@@ -309,7 +309,7 @@ struct a {
                 Offset = 4,
                 Name = "m_n0004",
             });
-            ct.Fields.Add(new ClassField(new Pointer(ct, 32))
+            ct.Fields.Add(new ClassField(new PointerType(ct, 32))
             {
                 Protection = AccessSpecifier.Private,
                 Offset = 8,
