@@ -172,6 +172,16 @@ namespace Reko.UnitTests.Arch.Tlcs
         }
 
         [Test]
+        public void Tlcsr_rw_ret_z()
+        {
+            Given_HexString("FED6");    // ret z
+            AssertCode(
+                "0|R--|0100(2): 2 instructions",
+                "1|T--|if (Test(NE,Z)) branch 0102",
+                "2|R--|return (2,0)");
+        }
+
+        [Test]
         public void Tlcs90_rw_reti()
         {
             Given_HexString("1F");  // reti

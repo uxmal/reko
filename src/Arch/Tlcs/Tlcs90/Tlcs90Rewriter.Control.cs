@@ -106,11 +106,13 @@ namespace Reko.Arch.Tlcs.Tlcs90
 
         private void RewriteRet()
         {
-            if (instr.Operands.Length >= 2)
+            if (instr.Operands.Length >= 1)
             {
-                EmitUnitTest();
-                Invalid();
-                return;
+                var cc = RewriteCondition((ConditionOperand<CondCode>) instr.Operands[0]);
+                m.BranchInMiddleOfInstruction(
+                    cc.Invert(),
+                    instr.Address + instr.Length,
+                    InstrClass.CondJump);
             }
             m.Return(2, 0);
         }
