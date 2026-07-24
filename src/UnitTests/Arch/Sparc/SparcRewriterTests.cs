@@ -536,7 +536,7 @@ namespace Reko.UnitTests.Arch.Sparc
             Given_UInt32s(0x98603FFF);  //  subx %g0,0xFFFFFFFF<32>,%o4
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|o4 = CONVERT(C != 0<32>, bool, word32)");
+                "1|L--|o4 = CONVERT(Test(NE,C), bool, word32)");
         }
 
         [Test]

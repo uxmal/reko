@@ -39,7 +39,7 @@ namespace Reko.Arch.Sparc
                 src1.IsZero &&
                 src2 is Constant m1 && m1.IsMaxUnsigned)
             {
-                m.Assign(dst, m.Convert(m.Ne0(C), PrimitiveType.Bool, dst.DataType));
+                m.Assign(dst, m.Convert(m.Test(ConditionCode.NE, C), PrimitiveType.Bool, dst.DataType));
             }
             else
             {
