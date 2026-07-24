@@ -6,9 +6,9 @@
 // Equivalence classes ////////////
 Eq_1: (struct "Globals")
 	globals_t (in globals : (ptr64 (struct "Globals")))
-Eq_13: (fn void ())
-	T_13 (in bar @ 0000000000000FA6 : ptr64)
-	T_14 (in signature of bar @ 0000000000000FB4 : void)
+Eq_14: (fn void ())
+	T_14 (in bar @ 0000000000000FA6 : ptr64)
+	T_15 (in signature of bar @ 0000000000000FB4 : void)
 // Type Variables ////////////
 globals_t: (in globals : (ptr64 (struct "Globals")))
   Class: Eq_1
@@ -42,37 +42,41 @@ T_8: (in *rdi >> 0xA<32> @ 0000000000000FA6 : word32)
   Class: Eq_8
   DataType: uint32
   OrigDataType: uint32
-T_9: (in SLICE(Mem0[rdi + 0<64>:word32] >>u 0xA<32>, byte, 0) @ 0000000000000FA6 : byte)
+T_9: (in CONVERT(Mem0[rdi + 0<64>:word32] >>u 0xA<32>, word32, uint64) @ 0000000000000FA6 : uint64)
   Class: Eq_9
+  DataType: uint64
+  OrigDataType: uint64
+T_10: (in SLICE(CONVERT(Mem0[rdi + 0<64>:word32] >>u 0xA<32>, word32, uint64), byte, 0) @ 0000000000000FA6 : byte)
+  Class: Eq_10
   DataType: byte
   OrigDataType: byte
-T_10: (in (byte) (*rdi >> 0xA<32>) ^ sil @ 0000000000000FA6 : byte)
-  Class: Eq_10
+T_11: (in (byte) (uint64) (*rdi >> 0xA<32>) ^ sil @ 0000000000000FA6 : byte)
+  Class: Eq_11
   DataType: ui8
   OrigDataType: ui8
-T_11: (in 0<8> @ 0000000000000FA6 : byte)
-  Class: Eq_10
+T_12: (in 0<8> @ 0000000000000FA6 : byte)
+  Class: Eq_11
   DataType: ui8
   OrigDataType: byte
-T_12: (in ((byte) (*rdi >> 0xA<32>) ^ sil) == 0<8> @ 0000000000000FA6 : bool)
-  Class: Eq_12
+T_13: (in ((byte) (uint64) (*rdi >> 0xA<32>) ^ sil) == 0<8> @ 0000000000000FA6 : bool)
+  Class: Eq_13
   DataType: bool
   OrigDataType: bool
-T_13: (in bar @ 0000000000000FA6 : ptr64)
-  Class: Eq_13
-  DataType: (ptr64 Eq_13)
-  OrigDataType: (ptr64 (fn T_15 ()))
-T_14: (in signature of bar @ 0000000000000FB4 : void)
-  Class: Eq_13
-  DataType: (ptr64 Eq_13)
+T_14: (in bar @ 0000000000000FA6 : ptr64)
+  Class: Eq_14
+  DataType: (ptr64 Eq_14)
+  OrigDataType: (ptr64 (fn T_16 ()))
+T_15: (in signature of bar @ 0000000000000FB4 : void)
+  Class: Eq_14
+  DataType: (ptr64 Eq_14)
   OrigDataType: 
-T_15: (in bar() @ 0000000000000FA6 : void)
-  Class: Eq_15
+T_16: (in bar() @ 0000000000000FA6 : void)
+  Class: Eq_16
   DataType: void
   OrigDataType: void
 */
 typedef struct Globals {
 } Eq_1;
 
-typedef void (Eq_13)();
+typedef void (Eq_14)();
 

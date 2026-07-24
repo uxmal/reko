@@ -170,7 +170,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode("86EE",        // lb\tr7,000E(r7)
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r7 = CONVERT(Mem0[r7 + 14<i32>:int8], int8, word32)");
+                "1|L--|r7 = CONVERT(Mem0[r7 + 14<i32>:byte], byte, int32)");
         }
 
         [Test]
@@ -186,7 +186,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode("8888",        // lh\tr4,0010(r4)
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r4 = CONVERT(Mem0[r4 + 16<i32>:int16], int16, word32)");
+                "1|L--|r4 = CONVERT(Mem0[r4 + 16<i32>:word16], word16, int32)");
         }
 
         [Test]
@@ -194,7 +194,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode("AE47",        // lhu\tr2,000E(r2)
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r2 = CONVERT(Mem0[r2 + 14<i32>:uint16], uint16, word32)");
+                "1|L--|r2 = CONVERT(Mem0[r2 + 14<i32>:word16], word16, word32)");
         }
 
         [Test]

@@ -112,14 +112,36 @@ namespace Reko.Arch.Sparc
             m.Assign(dst, m.Seq(tmpHi, bTmp));
         }
 
-        private void RewriteLoad(PrimitiveType size)
+        private void RewriteLoadF(PrimitiveType size)
         {
             var dst = RewriteOp(instrCur.Operands[1]);
             var src = RewriteMemOp(instrCur.Operands[0], size);
-            if (size.Size < dst.DataType.Size)
+            if (size.BitSize < dst.DataType.BitSize)
             {
                 size = PrimitiveType.Create(size.Domain, dst.DataType.BitSize);
                 src = m.Convert(src, src.DataType, size);
+            }
+            m.Assign(dst, src);
+        }
+
+        private void RewriteLoadS(PrimitiveType size)
+        {
+            var dst = RewriteOp(instrCur.Operands[1]);
+            var src = RewriteMemOp(instrCur.Operands[0], size);
+            if (size.BitSize < dst.DataType.BitSize)
+            {
+                src = m.ExtendS(src, dst.DataType);
+            }
+            m.Assign(dst, src);
+        }
+
+        private void RewriteLoadZ(PrimitiveType size)
+        {
+            var dst = RewriteOp(instrCur.Operands[1]);
+            var src = RewriteMemOp(instrCur.Operands[0], size);
+            if (size.BitSize < dst.DataType.BitSize)
+            {
+                src = m.ExtendZ(src, dst.DataType);
             }
             m.Assign(dst, src);
         }
@@ -131,7 +153,7 @@ namespace Reko.Arch.Sparc
             src = m.Fn(
                 loada_intrinsic.MakeInstance(arch.PointerType.BitSize, size), 
                 m.AddrOf(arch.PointerType, src));
-            if (size.Size < dst.DataType.Size)
+            if (size.BitSize < dst.DataType.BitSize)
             {
                 size = PrimitiveType.Create(size.Domain, dst.DataType.BitSize);
                 var tmp = binder.CreateTemporary(src.DataType);

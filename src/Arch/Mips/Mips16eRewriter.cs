@@ -92,13 +92,13 @@ Architecture */
                 case Mnemonic.cmpi: RewriteCmp(instr); break;
                 case Mnemonic.jal: RewriteJal(instr); break;
                 case Mnemonic.jalx: RewriteJalx(instr); break;
-                case Mnemonic.lb: RewriteLoad(instr, PrimitiveType.SByte); break;
-                case Mnemonic.lbu: RewriteLoad(instr, PrimitiveType.Byte); break;
-                case Mnemonic.lh: RewriteLoad(instr, PrimitiveType.Int16); break;
-                case Mnemonic.lhu: RewriteLoad(instr, PrimitiveType.UInt16); break;
+                case Mnemonic.lb: RewriteLoadS(instr, PrimitiveType.Byte); break;
+                case Mnemonic.lbu: RewriteLoadZ(instr, PrimitiveType.Byte); break;
+                case Mnemonic.lh: RewriteLoadS(instr, PrimitiveType.Word16); break;
+                case Mnemonic.lhu: RewriteLoadZ(instr, PrimitiveType.Word16); break;
                 case Mnemonic.la: RewriteMove(instr); break;
                 case Mnemonic.li: RewriteMove(instr); break;
-                case Mnemonic.lw: RewriteLoad(instr, PrimitiveType.Word32); break;
+                case Mnemonic.lw: RewriteLoadZ(instr, PrimitiveType.Word32); break;
                 case Mnemonic.mfhi: RewriteMf(instr, arch.hi); break;
                 case Mnemonic.mflo: RewriteMf(instr, arch.lo); break;
                 case Mnemonic.move: RewriteMove(instr); break;
@@ -235,7 +235,7 @@ Architecture */
             m.CallXD(dst, 0, arch);
         }
 
-        private void RewriteLoad(MipsInstruction instr, PrimitiveType dt)
+        private void RewriteLoadQ(MipsInstruction instr, PrimitiveType dt)
         {
             var src = Rewrite(instr.Operands[1]);
             var dst = Rewrite(instr.Operands[0]);
@@ -245,6 +245,34 @@ Architecture */
                 // If the source is smaller than the destination register,
                 // perform a sign/zero extension/conversion.
                 src = m.Convert(src, src.DataType, arch.WordWidth);
+            }
+            m.Assign(dst, src);
+        }
+
+        private void RewriteLoadS(MipsInstruction instr, PrimitiveType dt)
+        {
+            var src = Rewrite(instr.Operands[1]);
+            var dst = Rewrite(instr.Operands[0]);
+            src.DataType = dt;
+            if (dst.DataType.Size != src.DataType.Size)
+            {
+                // If the source is smaller than the destination register,
+                // perform a sign/zero extension/conversion.
+                src = m.ExtendS(src, arch.WordWidth);
+            }
+            m.Assign(dst, src);
+        }
+
+        private void RewriteLoadZ(MipsInstruction instr, PrimitiveType dt)
+        {
+            var src = Rewrite(instr.Operands[1]);
+            var dst = Rewrite(instr.Operands[0]);
+            src.DataType = dt;
+            if (dst.DataType.BitSize != src.DataType.BitSize)
+            {
+                // If the source is smaller than the destination register,
+                // perform a sign/zero extension/conversion.
+                src = m.ExtendZ(src, arch.WordWidth);
             }
             m.Assign(dst, src);
         }

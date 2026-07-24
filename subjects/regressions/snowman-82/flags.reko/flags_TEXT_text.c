@@ -7,7 +7,7 @@
 // 0000000000000F9E: void foo(Register byte sil, Register (ptr64 uint32) rdi)
 void foo(byte sil, uint32 * rdi)
 {
-	if (((byte) (*rdi >> 0x0A) ^ sil) != 0x00)
+	if (((byte) (uint64) (*rdi >> 0x0A) ^ sil) != 0x00)
 		return;
 	bar();
 }

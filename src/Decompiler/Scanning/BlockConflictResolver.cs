@@ -206,9 +206,6 @@ namespace Reko.Scanning
 
         private void RemoveBlockFromGraph(RtlBlock n)
         {
-            if (n.Address.Offset == 0x56)
-                _ = n; //$DEBUG
-
             trace.Verbose("Removing block: {0}", n);
             foreach (var i in n.Instructions)
             {

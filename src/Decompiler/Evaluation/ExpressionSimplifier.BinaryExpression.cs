@@ -202,6 +202,14 @@ namespace Reko.Evaluation
                         else
                             return (left, true);
                     }
+
+                    // (x ^ y) == 0 ==> x == y
+                    if (cRight.IsIntegerZero && 
+                        GetDefiningExpression(left) is BinaryExpression bLeft &&
+                        bLeft.Operator.Type == OperatorType.Xor)
+                    {
+                        return m.Eq(bLeft.Left, bLeft.Right).Accept(this);
+                    }
                     break;
                 case OperatorType.Ne:
                     // x != false ==> x
@@ -213,6 +221,14 @@ namespace Reko.Evaluation
                         else
                             return (left, true);
                     }
+                    // (x ^ y) != 0 ==> x != y
+                    if (cRight.IsIntegerZero &&
+                        GetDefiningExpression(left) is BinaryExpression bbLeft &&
+                        bbLeft.Operator.Type == OperatorType.Xor)
+                    {
+                        return m.Ne(bbLeft.Left, bbLeft.Right).Accept(this);
+                    }
+
                     break;
                 }
             }

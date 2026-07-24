@@ -1461,5 +1461,14 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             exp = RunExpressionSimplifier(exp);
             Assert.That(exp.ToString(), Is.EqualTo("foo_1 * 2<32> + 1<32>"));
         }
+
+        [Test]
+        public void Exs_xor_with_constant_eq0()
+        {
+            Given_ExpressionSimplifier();
+            Expression exp = m.Eq0(m.Xor(foo, 0x2F));
+            exp = RunExpressionSimplifier(exp);
+            Assert.That(exp.ToString(), Is.EqualTo("foo_1 == 0x2F<32>"));
+        }
     }
 }

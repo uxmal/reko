@@ -312,9 +312,6 @@ namespace Reko.Scanning
         public static ScanResultsV2 RemoveInvalidBlocks(ScanResultsV2 sr)
         {
             // Find transitive closure of bad blocks 
-            sr.Successors.TryGetValue(Address.Ptr32(0xA578), out var succes);
-            _ = sr; //$DEBUG
-            sr.Blocks.TryGetValue(Address.Ptr32(0xA578), out var xxx);    //$DEBUG
             var bad_blocks = new HashSet<Address>(
                 (from b in sr.Blocks.Values
                  where !b.IsValid || b.Instructions[^1].Class == InstrClass.Invalid
@@ -361,15 +358,10 @@ namespace Reko.Scanning
             // Remove edges to bad blocks and bad blocks.
             foreach (var bad in bad_blocks)
             {
-                if (bad.Offset == 0xA578)
-                    _ = bad; //$DEBUG
-
                 if (sr.Predecessors.TryGetValue(bad, out var preds))
                 {
                     foreach (var pred in preds)
                     {
-                        if (bad.Offset == 0xA578)
-                            _ = bad; //$DEBUG
                         if (sr.Successors.TryGetValue(pred, out var pss))
                         {
                             pss.Remove(bad);

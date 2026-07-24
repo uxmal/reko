@@ -125,9 +125,9 @@ void __truncdfsf2(Eq_n r4, Eq_n r5)
 	ui32 r9_n = r4 >> 0x1D | r9_n << 0x03;
 	Eq_n r8_n;
 	Eq_n r7_n;
-	if ((r10_n.u11 + 1 & 0x07FF) >= 0x02)
+	if ((r10_n.u6 + 1 & 0x07FF) >= 0x02)
 	{
-		r8_n.u3 = (word32) r10_n - 896;
+		r8_n.u2 = (word32) r10_n - 896;
 		if (r10_n > 1150)
 		{
 			r7_n.u0 = 0x00;
@@ -170,11 +170,11 @@ l004102C8:
 			if ((r7_n & 0x07) == 0x00 || (r7_n & 0x0F) == 0x04)
 				goto l004102FC;
 l00410336:
-			r7_n.u3 = &r7_n.u15->t0004.u0;
+			r7_n.u6 += 4;
 l004102FC:
 			if (!__bit<word32,word32>(r7_n, 0x1A))
 			{
-				++r8_n.u11;
+				++r8_n.u6;
 				r7_n = __ins<word32,word32>(r7_n, 0x00, 0x0A, 0x01);
 				if (r8_n == 0xFF)
 					r7_n.u0 = 0x00;
@@ -185,7 +185,7 @@ l004102FC:
 			__ins<word32,word32>(__ins<word32,word32>(__ins<word32,word32>(0x00, r7_n, 0x00, 0x01), r8_n, 0x07, 0x01), r5 >> 0x1F, 0x0F, 0x01);
 			return;
 		}
-		r7_n.u3 = (word32) (r7_n > 0x00);
+		r7_n.u2 = (word32) (r7_n > 0x00);
 	}
 	r8_n.u0 = 0x00;
 	goto l004102C8;

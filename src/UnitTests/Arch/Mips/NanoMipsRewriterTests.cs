@@ -153,7 +153,7 @@ namespace Reko.UnitTests.Arch.Mips
             //Given_HexString("8492 8488");
             AssertCode(     // lh r4,0488(r18)
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r4 = CONVERT(Mem0[r18 + 1160<i32>:int16], int16, word32)");
+                "1|L--|r4 = CONVERT(Mem0[r18 + 1160<i32>:word16], word16, int32)");
         }
 
         [Test]
@@ -162,7 +162,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_HexString("9284 8864");
             AssertCode(     // lhu r4,0488(r18)
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r4 = CONVERT(Mem0[r18 + 1160<i32>:uint16], uint16, word32)");
+                "1|L--|r4 = CONVERT(Mem0[r18 + 1160<i32>:word16], word16, word32)");
         }
 
         [Test]

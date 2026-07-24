@@ -200,7 +200,7 @@ namespace Reko.Arch.Mips
                     m.Int32(opSrc.IntOffset())));
         }
 
-        private void RewriteLoad(MipsInstruction instr, PrimitiveType dtSmall, PrimitiveType? dtSmall64 = null)
+        private void RewriteLoadE(MipsInstruction instr, PrimitiveType dtSmall, PrimitiveType? dtSmall64 = null)
         {
             var opSrc = RewriteOperand(instr.Operands[1]);
             var opDst = RewriteOperand(instr.Operands[0]);
@@ -216,18 +216,34 @@ namespace Reko.Arch.Mips
             m.Assign(opDst, opSrc);
         }
 
-        private void RewriteLoadE(MipsInstruction instr, PrimitiveType dtSmall, PrimitiveType? dtSmall64 = null)
+        private void RewriteLoadS(MipsInstruction instr, PrimitiveType dtSmall, PrimitiveType? dtSmall64 = null)
         {
             var opSrc = RewriteOperand(instr.Operands[1]);
             var opDst = RewriteOperand(instr.Operands[0]);
             opSrc.DataType = (arch.WordWidth.BitSize == 64)
                 ? dtSmall64 ?? dtSmall
                 : dtSmall;
-            if (opDst.DataType.Size != opSrc.DataType.Size)
+            if (opDst.DataType.Size > opSrc.DataType.Size)
             {
                 // If the source is smaller than the destination register,
                 // perform a sign/zero extension/conversion.
-                opSrc = m.Convert(opSrc, opSrc.DataType, arch.WordWidth);
+                opSrc = m.ExtendS(opSrc, arch.WordWidth);
+            }
+            m.Assign(opDst, opSrc);
+        }
+
+        private void RewriteLoadZ(MipsInstruction instr, PrimitiveType dtSmall, PrimitiveType? dtSmall64 = null)
+        {
+            var opSrc = RewriteOperand(instr.Operands[1]);
+            var opDst = RewriteOperand(instr.Operands[0]);
+            opSrc.DataType = (arch.WordWidth.BitSize == 64)
+                ? dtSmall64 ?? dtSmall
+                : dtSmall;
+            if (opDst.DataType.BitSize > opSrc.DataType.BitSize)
+            {
+                // If the source is smaller than the destination register,
+                // perform a sign/zero extension/conversion.
+                opSrc = m.ExtendZ(opSrc, arch.WordWidth);
             }
             m.Assign(opDst, opSrc);
         }

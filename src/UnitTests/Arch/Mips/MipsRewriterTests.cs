@@ -77,7 +77,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_BitStrings("100001 01001 00011 1111111111001000");
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r3 = CONVERT(Mem0[r9 - 56<i32>:int16], int16, word32)");
+                "1|L--|r3 = CONVERT(Mem0[r9 - 56<i32>:word16], word16, int32)");
         }
 
         [Test]
@@ -86,7 +86,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_BitStrings("100101 01011 01101 1111111111111000");
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r13 = CONVERT(Mem0[r11 - 8<i32>:uint16], uint16, word32)");
+                "1|L--|r13 = CONVERT(Mem0[r11 - 8<i32>:word16], word16, word32)");
         }
 
         [Test]
@@ -263,7 +263,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_Mips64_Architecture();
             AssertCode(0x8fb3FFF0,   // lw s3,16(sp)
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r19 = CONVERT(Mem0[sp - 16<i64>:int32], int32, word64)");
+                "1|L--|r19 = CONVERT(Mem0[sp - 16<i64>:word32], word32, int64)");
         }
 
         [Test]
@@ -281,7 +281,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_Mips64_Architecture();
             AssertCode(0x9fb30010,   // ld s3,16(sp)
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r19 = CONVERT(Mem0[sp + 16<i64>:uint32], uint32, word64)");
+                "1|L--|r19 = CONVERT(Mem0[sp + 16<i64>:word32], word32, word64)");
         }
 
         [Test]
@@ -673,7 +673,7 @@ namespace Reko.UnitTests.Arch.Mips
             AssertCode(     // div.s	f2,f2,f7
                 0x83100746,
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r16 = CONVERT(Mem0[r24 + 1862<i32>:int8], int8, word32)");
+                "1|L--|r16 = CONVERT(Mem0[r24 + 1862<i32>:byte], byte, int32)");
         }
 
 

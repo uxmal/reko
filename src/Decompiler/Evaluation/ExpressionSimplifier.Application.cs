@@ -68,7 +68,9 @@ namespace Reko.Evaluation
                         var v = c.ToUInt64();
                         if (v == 0)
                         {
-                            return (m.Bin(Operator.IAdd, appl.DataType, args[0], args[1]), true);
+                            var (e, _) = m.Bin(Operator.IAdd, appl.DataType, args[0], args[1])
+                                .Accept(this);
+                            return (e, true);
                         }
                         else if (v == 1)
                         {
@@ -88,7 +90,9 @@ namespace Reko.Evaluation
                         var v = c.ToInt64();
                         if (v == 0)
                         {
-                            return (m.Bin(Operator.ISub, appl.DataType, args[0], args[1]), true);
+                            var (e, _) = m.Bin(Operator.ISub, appl.DataType, args[0], args[1])
+                                .Accept(this);
+                            return (e, true);
                         }
                         else if (v == 1)
                         {

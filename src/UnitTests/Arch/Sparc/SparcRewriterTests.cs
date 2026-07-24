@@ -443,7 +443,7 @@ namespace Reko.UnitTests.Arch.Sparc
             Given_UInt32s(0xC248A044); //ldsb\t[%g2+68],%g1");
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|g1 = CONVERT(Mem0[g2 + 68<i32>:int8], int8, int32)");
+                "1|L--|g1 = CONVERT(Mem0[g2 + 68<i32>:byte], byte, int32)");
         }
 
         [Test]

@@ -49,8 +49,6 @@ namespace Reko.Scanning
         /// <inheritdoc/>
         public void AddEdge(Address nodeFrom, Address nodeTo)
         {
-            if (nodeTo.Offset == 0xA578)
-                _ = this; //$DEBUG
             List<Address>? succs;
             while (!cfg.Successors.TryGetValue(nodeFrom, out succs))
             {

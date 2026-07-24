@@ -264,6 +264,15 @@ namespace Reko.Evaluation
             return (tc, changed);
         }
 
+        private Expression GetDefiningExpression(Expression e)
+        {
+            if (e is Identifier id)
+            {
+                return ctx.GetDefiningExpression(id) ?? e;
+            }
+            return e;
+        }
+
         /// <inheritdoc/>
         public static bool IsSequence(
             EvaluationContext ctx, 
