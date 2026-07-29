@@ -108,9 +108,8 @@ namespace Reko.Core.Collections
 		{
 			while (q.TryDequeue(out var t))
 			{
-				if (inQ.Contains(t))
+				if (inQ.Remove(t))
 				{
-					inQ.Remove(t);
                     item = t;
 					return true;
 				}
@@ -213,9 +212,8 @@ namespace Reko.Core.Collections
 		{
 			while (s.TryPop(out var t))
 			{
-				if (inStack.Contains(t))
+				if (inStack.Remove(t))
 				{
-					inStack.Remove(t);
                     item = t;
 					return true;
 				}

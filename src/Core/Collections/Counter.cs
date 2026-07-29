@@ -60,7 +60,7 @@ namespace Reko.Core.Collections
         /// Increments the count of an item by 1.
         /// </summary>
         /// <param name="item"></param>
-        /// <returns></returns>
+        /// <returns>The new count.</returns>
         public int Add(T item)
         {
             if (TryGetValue(item, out int count))

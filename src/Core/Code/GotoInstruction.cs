@@ -19,7 +19,6 @@
 #endregion
 
 using Reko.Core.Expressions;
-using System;
 
 namespace Reko.Core.Code
 {

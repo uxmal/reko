@@ -78,7 +78,8 @@ namespace Reko.Core.Code
 	}
 
 	/// <summary>
-	/// A Store copies data from Src to the memory referred to by the expression in Dst.
+	/// A Store copies data from <see cref="Src" /> to the memory referred to
+    /// by the expression in <see cref="Dst" />.
 	/// </summary>
 	public class Store : Instruction
 	{

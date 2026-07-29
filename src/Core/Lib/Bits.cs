@@ -18,7 +18,6 @@
  */
 #endregion
 
-using System;
 using System.Numerics;
 
 namespace Reko.Core.Lib
