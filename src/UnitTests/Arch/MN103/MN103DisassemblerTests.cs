@@ -47,6 +47,52 @@ namespace Reko.UnitTests.Arch.MN103
 
         public override Address LoadAddress => addr;
 
+        private void AssertCode(string sExpected, string hexBytes)
+        {
+            var instr = DisassembleHexBytes(hexBytes);
+            Assert.AreEqual(sExpected, instr.ToString());
+        }
+
+        [Test]
+        public void MN103Dis_calls_d32()
+        {
+            // FC FF: calls (d32,PC); the target is relative to the address
+            // of the calls instruction itself.
+            AssertCode("calls\t00101234", "FCFF34120000");
+        }
+
+        [Test]
+        public void MN103Dis_calls_d32_negative_displacement()
+        {
+            AssertCode("calls\t000FFF00", "FCFF00FFFFFF");
+        }
+
+        [Test]
+        public void MN103Dis_mov_d32_sp_load()
+        {
+            // FC Bx: (d32,SP) accesses are 6-byte instructions carrying
+            // a full 32-bit displacement.
+            AssertCode("mov\t(12345678,sp),d1", "FCB578563412");
+        }
+
+        [Test]
+        public void MN103Dis_mov_d32_sp_store()
+        {
+            AssertCode("mov\td1,(12345678,sp)", "FC9578563412");
+        }
+
+        [Test]
+        public void MN103Dis_movbu_d32_sp_store()
+        {
+            AssertCode("movbu\td1,(12345678,sp)", "FC9678563412");
+        }
+
+        [Test]
+        public void MN103Dis_movhu_d32_sp_load()
+        {
+            AssertCode("movhu\t(12345678,sp),d1", "FCBD78563412");
+        }
+
         [Test]
         public void MN103Dis_Generate()
         {

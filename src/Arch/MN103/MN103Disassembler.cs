@@ -243,7 +243,7 @@ namespace Reko.Arch.MN103
                 return true;
             };
         }
-        private static readonly Mutator<MN103Disassembler> d32_sp = reg_relative_u16(Registers.sp);
+        private static readonly Mutator<MN103Disassembler> d32_sp = reg_relative_u32(Registers.sp);
 
 
         private static bool d8_pc(uint uInstr, MN103Disassembler dasm)
@@ -905,7 +905,7 @@ namespace Reko.Arch.MN103
                     invalid,
                     invalid,
                     Instr(Mnemonic.add, imm32, sp),
-                    Instr(Mnemonic.calls, d32_sp)));
+                    Instr(Mnemonic.calls, d32_pc)));
             var fddecoders = Mask(2, 6, "  FD",
                 Instr(Mnemonic.udf00, imm32, dn),
                 Instr(Mnemonic.udfu00, imm32, dn),
