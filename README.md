@@ -1,25 +1,22 @@
 
 # reko - a general purpose decompiler.
 
-[![Cirrus CI Build Status](https://api.cirrus-ci.com/github/uxmal/reko.svg?branch=master)](https://cirrus-ci.com/github/uxmal/reko)
 [![GitHub workflow status](https://github.com/uxmal/reko/workflows/Reko/badge.svg)](https://github.com/uxmal/reko/actions/workflows/reko.yml)
 [![Join us on Discord](https://img.shields.io/static/v1?link=https://discord.gg/9PMWVxEjqr&message=Join%20Discord&logo=discord&style=flat&color=107090&labelColor=5E5E5E&label=&logoColor=white)](https://discord.gg/9PMWVxEjqr)
-[![Join the chat at https://gitter.im/uxmal/reko](https://badges.gitter.im/uxmal/reko.svg)](https://gitter.im/uxmal/reko?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
- 
 <img align="right" src="web/images/reko.png" /> 
 
 **Reko** (Swedish: "decent, obliging") is a decompiler for machine code binaries.
 This project is freely available under the GNU General Public License.
 
 The project consists of front ends, core decompiler engine, and back
-ends to help it achieve its goals.  A command-line, a Windows GUI,
-and a ASP.NET front end exist at the time of writing.  The decompiler
-engine receives inputs from the front ends in the form of either
-individual executable files or decompiler project files. Reko
-project files contain additional information about a binary file,
-helpful to the decompilation process or for formatting the output.
-The decompiler engine then proceeds to analyze the input binary.
+ends to help it achieve its goals.  A command-line and a Windows GUI
+front end exist at the time of writing, with a cross-platform Avalonia GUI
+under development.  The decompiler engine receives inputs from the front
+ends in the form of either individual executable files or decompiler 
+project files. Reko project files contain optional additional information
+about a binary file, helpful to the decompilation process or for formatting
+the output.  The decompiler engine then proceeds to analyze the input binary.
 
 <table>
     <tr>
@@ -50,14 +47,14 @@ decompiler only if you have legal rights to decompile the binary
 Official releases are published every few months on [Github](https://github.com/uxmal/reko/releases)
 and [SourceForge](https://sourceforge.net/projects/decompiler/files/). 
 Users who can't or won't build Reko themselves can download the output
-of the [Cirrus CI integration builder](https://cirrus-ci.com/github/uxmal/reko) or the [Github Actions integration builder](https://github.com/uxmal/reko/actions/workflows/reko.yml).
+of the [Github Actions integration builder](https://github.com/uxmal/reko/actions/workflows/reko.yml).
 Naturally you can build the project from the sources: see "Hacking" 
 below.
 
 ## Installing Reko
 
 The following prerequisite software must be installed on your machine first:
-* .NET 8.0 (https://www.microsoft.com/net/download/dotnet-framework-runtime)
+* .NET 9.0 (https://www.microsoft.com/net/download/dotnet-framework-runtime)
 
 Download an appropriate installer and run it on the target machine.
 
@@ -75,7 +72,7 @@ of the project, see the wiki.
 
 You can report any issues you encounter or ask any Reko-related question
 on the [issue tracker](https://github.com/uxmal/reko/issues).
-You can also try the Reko [Gitter.im](https://gitter.im/uxmal/reko)
+You can also try the Reko [Gitter.im](https://discord.gg/9PMWVxEjqr)
 chatroom. Reko is built by volunteers' efforts on their
 spare time, so adjust your response-time expectations accordingly.
 
@@ -83,14 +80,14 @@ spare time, so adjust your response-time expectations accordingly.
 
 To build reko, start by cloning https://github.com/uxmal/reko. You
 can use an IDE or the command line to build the solution file
-`Reko-decompiler.slnx`. Reko requires the [.NET 8.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
-to compile. If you are an IDE user, use a recent version of Visual Studio 2022.
+`Reko-decompiler.slnx`. Reko requires the [.NET 9.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/9.0)
+to compile. If you are an IDE user, use a recent version of Visual Studio 2026.
 If you wish to build using the command line, use the command
 
 ```cmd
 dotnet msbuild -p:Platform={platform} -p:Configuration={config} -v:m -t:build_solution -m ./src/BuildTargets/BuildTargets.csproj
 ```
-Replace `{config}` with either `Debug` or `Release`, and `{platform}` with `x64` or `x86`.
+Replace `{config}` with either `Debug` or `Release`, and `{platform}` with `x64`, `x86`, or `ARM64`.
 
 **Note**: please let us know if you still are not able to compile,
 so we can help you fix the issue.
