@@ -383,7 +383,7 @@ namespace Reko.Arch.MN103
 
             var invalid = Instr(Mnemonic.Invalid, InstrClass.Invalid);
 
-            var calls_indan = Instr(Mnemonic.calls, indan);
+            var calls_indan = Instr(Mnemonic.calls, InstrClass.CallInd, indan);
             var jmp_indan = Instr(Mnemonic.jmp, indan);
 
             var f0decoders = Mask(4, 4, "  F0",
@@ -758,7 +758,7 @@ namespace Reko.Arch.MN103
                         Instr(Mnemonic.and, imm16, psw),
                         Instr(Mnemonic.or, imm16, psw),
                         Instr(Mnemonic.add, imm16, sp),
-                        Instr(Mnemonic.calls, d16_pc))));
+                        Instr(Mnemonic.calls, InstrClass.Call, d16_pc))));
             var fbdecoders = Mask(2, 6, "  FB",
                 Instr(Mnemonic.udf00, imm16, dn),
                 Instr(Mnemonic.udfu00, imm16, dn),
@@ -905,7 +905,7 @@ namespace Reko.Arch.MN103
                     invalid,
                     invalid,
                     Instr(Mnemonic.add, imm32, sp),
-                    Instr(Mnemonic.calls, d32_pc)));
+                    Instr(Mnemonic.calls, InstrClass.Call, d32_pc)));
             var fddecoders = Mask(2, 6, "  FD",
                 Instr(Mnemonic.udf00, imm32, dn),
                 Instr(Mnemonic.udfu00, imm32, dn),

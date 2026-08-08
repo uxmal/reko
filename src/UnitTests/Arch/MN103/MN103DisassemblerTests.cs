@@ -47,10 +47,23 @@ namespace Reko.UnitTests.Arch.MN103
 
         public override Address LoadAddress => addr;
 
-        private void AssertCode(string sExpected, string hexBytes)
+        private void AssertCode(string sExpected, string hexBytes, InstrClass expectedClass = InstrClass.Linear)
         {
             var instr = DisassembleHexBytes(hexBytes);
             Assert.AreEqual(sExpected, instr.ToString());
+            Assert.AreEqual(expectedClass, instr.InstructionClass);
+        }
+
+        [Test]
+        public void MN103Dis_calls_indirect()
+        {
+            AssertCode("calls\t(a2)", "F0F2", InstrClass.CallInd);
+        }
+
+        [Test]
+        public void MN103Dis_calls_d16()
+        {
+            AssertCode("calls\t00101234", "FAFF3412", InstrClass.Call);
         }
 
         [Test]
@@ -58,13 +71,13 @@ namespace Reko.UnitTests.Arch.MN103
         {
             // FC FF: calls (d32,PC); the target is relative to the address
             // of the calls instruction itself.
-            AssertCode("calls\t00101234", "FCFF34120000");
+            AssertCode("calls\t00101234", "FCFF34120000", InstrClass.Call);
         }
 
         [Test]
         public void MN103Dis_calls_d32_negative_displacement()
         {
-            AssertCode("calls\t000FFF00", "FCFF00FFFFFF");
+            AssertCode("calls\t000FFF00", "FCFF00FFFFFF", InstrClass.Call);
         }
 
         [Test]

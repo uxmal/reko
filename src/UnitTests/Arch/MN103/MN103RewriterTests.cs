@@ -191,9 +191,19 @@ namespace Reko.UnitTests.Arch.MN103
         {
             Given_HexString("F0F2");
             AssertCode(     // calls	(a2)
-                "0|L--|00100000(2): 2 instructions",
+                "0|T--|00100000(2): 2 instructions",
                 "1|L--|mdr = 00100002",
                 "2|T--|call Mem0[a2:word32] (4)");
+        }
+
+        [Test]
+        public void Mn103Rw_calls_d16()
+        {
+            Given_HexString("FAFF3412");
+            AssertCode(     // calls	00101234
+                "0|T--|00100000(4): 2 instructions",
+                "1|L--|mdr = 00100004",
+                "2|T--|call 00101234 (4)");
         }
 
         [Test]
@@ -201,7 +211,7 @@ namespace Reko.UnitTests.Arch.MN103
         {
             Given_HexString("FCFF34120000");
             AssertCode(     // calls	00101234
-                "0|L--|00100000(6): 2 instructions",
+                "0|T--|00100000(6): 2 instructions",
                 "1|L--|mdr = 00100006",
                 "2|T--|call 00101234 (4)");
         }
