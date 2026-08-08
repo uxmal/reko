@@ -47,6 +47,65 @@ namespace Reko.UnitTests.Arch.MN103
 
         public override Address LoadAddress => addr;
 
+        private void AssertCode(string sExpected, string hexBytes, InstrClass expectedClass = InstrClass.Linear)
+        {
+            var instr = DisassembleHexBytes(hexBytes);
+            Assert.AreEqual(sExpected, instr.ToString());
+            Assert.AreEqual(expectedClass, instr.InstructionClass);
+        }
+
+        [Test]
+        public void MN103Dis_calls_indirect()
+        {
+            AssertCode("calls\t(a2)", "F0F2", InstrClass.CallInd);
+        }
+
+        [Test]
+        public void MN103Dis_calls_d16()
+        {
+            AssertCode("calls\t00101234", "FAFF3412", InstrClass.Call);
+        }
+
+        [Test]
+        public void MN103Dis_calls_d32()
+        {
+            // FC FF: calls (d32,PC); the target is relative to the address
+            // of the calls instruction itself.
+            AssertCode("calls\t00101234", "FCFF34120000", InstrClass.Call);
+        }
+
+        [Test]
+        public void MN103Dis_calls_d32_negative_displacement()
+        {
+            AssertCode("calls\t000FFF00", "FCFF00FFFFFF", InstrClass.Call);
+        }
+
+        [Test]
+        public void MN103Dis_mov_d32_sp_load()
+        {
+            // FC Bx: (d32,SP) accesses are 6-byte instructions carrying
+            // a full 32-bit displacement.
+            AssertCode("mov\t(12345678,sp),d1", "FCB578563412");
+        }
+
+        [Test]
+        public void MN103Dis_mov_d32_sp_store()
+        {
+            AssertCode("mov\td1,(12345678,sp)", "FC9578563412");
+        }
+
+        [Test]
+        public void MN103Dis_movbu_d32_sp_store()
+        {
+            AssertCode("movbu\td1,(12345678,sp)", "FC9678563412");
+        }
+
+        [Test]
+        public void MN103Dis_movhu_d32_sp_load()
+        {
+            AssertCode("movhu\t(12345678,sp),d1", "FCBD78563412");
+        }
+
         [Test]
         public void MN103Dis_Generate()
         {
