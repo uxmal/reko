@@ -710,13 +710,23 @@ namespace Reko.Scanning
         /// and if the procedure has been given a valid signature already,
         /// copy the input arguments into their local counterparts.
         /// </summary>
-        /// <param name="addr"></param>
-        /// <param name="proc"></param>
+        /// <param name="addr">Address to associate with the injected instructions.</param>
+        /// <param name="proc">Procedure into which the instructions are inserted.</param>
         public void InjectProcedureEntryInstructions(Address addr, Procedure proc)
         {
             var bb = new StatementInjector(proc, proc.EntryBlock, addr);
             var sp = proc.Frame.EnsureRegister(proc.Architecture.StackRegister);
-            bb.Assign(sp, proc.Frame.FramePointer);
+            Expression fp = proc.Frame.FramePointer;
+            if (fp.DataType.BitSize < sp.DataType.BitSize)
+            {
+                // Some architectures have wider registers than their address
+                // spaces (e.g. PS2 EE, which has 128-bit registers but a
+                // 32-bit address space.
+                fp = bb.Dpb(sp, fp, 0);
+            }
+            bb.Assign(sp, fp);
+
+            // Allow platform-specific statement injection.
             Program.Platform.InjectProcedureEntryStatements(proc, addr, bb);
         }
 
