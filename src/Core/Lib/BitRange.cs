@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using System.Diagnostics;
 
 namespace Reko.Core.Lib
 {
@@ -40,6 +41,7 @@ namespace Reko.Core.Lib
         /// <param name="msb">Exclusive upper endpoint of the range.</param>
         public BitRange(int lsb, int msb)
         {
+            Debug.Assert(lsb >= 0 && msb >= 0);
             Lsb = (short) lsb;
             Msb = (short) msb;
         }

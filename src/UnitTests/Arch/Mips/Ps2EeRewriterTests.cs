@@ -43,7 +43,6 @@ public class Ps2EeRewriterTests : RewriterTestBase
         };
         this.arch = new MipsLe32Architecture(CreateServiceContainer(), "mips-32-le", options);
         this.addrBase = Address.Ptr32(0x0010_0000);
-        Reko.Core.Machine.Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
     }
 
     public override IProcessorArchitecture Architecture => this.arch;
@@ -101,7 +100,7 @@ public class Ps2EeRewriterTests : RewriterTestBase
         Given_HexString("10300070");
         AssertCode(     // mfhi1	r6
             "0|L--|00100000(4): 1 instructions",
-            "1|L--|r6 = hi1");
+            "1|L--|r6 = SEQ(SLICE(r6, word64, 64), hi1)");
     }
 
     [Test]
@@ -110,7 +109,7 @@ public class Ps2EeRewriterTests : RewriterTestBase
         Given_HexString("12380070");
         AssertCode(     // mflo1	r7
             "0|L--|00100000(4): 1 instructions",
-            "1|L--|r7 = lo1");
+            "1|L--|r7 = SEQ(SLICE(r7, word64, 64), lo1)");
     }
 
     [Test]
@@ -119,7 +118,7 @@ public class Ps2EeRewriterTests : RewriterTestBase
         Given_HexString("13004070");
         AssertCode(     // mtlo1	r0
             "0|L--|00100000(4): 1 instructions",
-            "1|L--|lo1 = 0<128>");
+            "1|L--|lo1 = SLICE(0<128>, word64, 0)");
     }
 
     [Test]
@@ -199,8 +198,8 @@ public class Ps2EeRewriterTests : RewriterTestBase
     {
         Given_HexString("0000407C");
         AssertCode(     // sq	r0,0000(r2)
-            "0|L--|00100000(4): 1 instructions",
-            "1|L--|Mem0[r2:word128] = 0<128>");
+            "0|L--|00100000(4): 2 instructions",
+            "1|L--|v4 = SLICE(r2, ptr32, 0)",
+            "2|L--|Mem0[v4:word128] = 0<128>");
     }
-
 }

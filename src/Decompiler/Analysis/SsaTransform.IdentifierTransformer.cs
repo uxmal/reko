@@ -580,6 +580,7 @@ namespace Reko.Analysis
                             --i;
                         }
                     }
+                    Debug.Assert(this.Offset >= 0);
                     aliasState.Definitions.Add((sid, defRange, this.Offset));
                 }
                 trace.Verbose("     writing: {0}", sid.Identifier);

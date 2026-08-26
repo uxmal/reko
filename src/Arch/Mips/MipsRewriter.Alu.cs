@@ -225,33 +225,23 @@ namespace Reko.Arch.Mips
 
         private void RewriteLoadS(MipsInstruction instr, PrimitiveType dtSmall, PrimitiveType? dtSmall64 = null)
         {
-            var opSrc = RewriteOperand(instr.Operands[1]);
-            var opDst = RewriteOperand(instr.Operands[0]);
+            var opSrc = RewriteOperand(instr, 1);
+            var opDst = RewriteOperand(instr, 0);
             opSrc.DataType = (arch.WordWidth.BitSize == 64)
                 ? dtSmall64 ?? dtSmall
                 : dtSmall;
-            if (opDst.DataType.Size > opSrc.DataType.Size)
-            {
-                // If the source is smaller than the destination register,
-                // perform a sign/zero extension/conversion.
-                opSrc = m.ExtendS(opSrc, arch.WordWidth);
-            }
+            opSrc = m.MaybeExtendS(opSrc, opDst.DataType);
             m.Assign(opDst, opSrc);
         }
 
         private void RewriteLoadZ(MipsInstruction instr, PrimitiveType dtSmall, PrimitiveType? dtSmall64 = null)
         {
-            var opSrc = RewriteOperand(instr.Operands[1]);
-            var opDst = RewriteOperand(instr.Operands[0]);
+            var opSrc = RewriteOperand(instr, 1);
+            var opDst = RewriteOperand(instr, 0);
             opSrc.DataType = (arch.WordWidth.BitSize == 64)
                 ? dtSmall64 ?? dtSmall
                 : dtSmall;
-            if (opDst.DataType.BitSize > opSrc.DataType.BitSize)
-            {
-                // If the source is smaller than the destination register,
-                // perform a sign/zero extension/conversion.
-                opSrc = m.ExtendZ(opSrc, arch.WordWidth);
-            }
+            opSrc = m.MaybeExtendZ(opSrc, opDst.DataType);
             m.Assign(opDst, opSrc);
         }
 
@@ -445,7 +435,12 @@ namespace Reko.Arch.Mips
                 return;
             }
             var opDst = RewriteOperand0(instr, 0);
-            m.Assign(opDst, binder.EnsureRegister(reg));
+            Expression sc = binder.EnsureRegister(reg);
+            if (sc.DataType.BitSize < opDst.DataType.BitSize)
+            {
+                sc = m.Dpb(opDst, sc, 0);
+            }
+            m.Assign(opDst, sc);
         }
 
         private void RewriteMt(MipsInstruction instr, RegisterStorage? reg)
@@ -456,7 +451,7 @@ namespace Reko.Arch.Mips
                 return;
             }
             var opSrc = RewriteOperand0(instr, 0);
-            m.Assign(binder.EnsureRegister(reg), opSrc);
+            m.Assign(binder.EnsureRegister(reg), m.MaybeSlice(opSrc, reg.DataType));
         }
 
         private void RewriteMod(MipsInstruction instr, BinaryOperator ctor)
@@ -496,7 +491,8 @@ namespace Reko.Arch.Mips
             m.Assign(dstLo, srcLo);
         }
 
-        private void RewriteMul(MipsInstruction instr, BinaryOperator mul, PrimitiveType dt, 
+        private void RewriteMul(MipsInstruction instr, BinaryOperator mul,
+            PrimitiveType dt, 
             RegisterStorage? hi,
             RegisterStorage? lo)
         {
@@ -512,10 +508,18 @@ namespace Reko.Arch.Mips
                 var op3 = RewriteOperand(instr.Operands[2]);
                 m.Assign(op1, m.Bin(mul, dt, op2, op3));
             }
-            else
+            else if (hi.DataType.BitSize + lo.DataType.BitSize ==  dt.BitSize)
             {
                 var hilo = binder.EnsureSequence(dt, hi, lo);
                 m.Assign(hilo, m.Bin(mul, dt, op1, op2));
+            }
+            else
+            {
+                var tmp = binder.CreateTemporary(dt);
+                int half = (int)dt.BitSize / 2;
+                m.Assign(tmp, m.Bin(mul, dt, op1, op2));
+                m.Assign(binder.EnsureRegister(lo), m.ExtendS(m.Slice(tmp, 0, half), lo.DataType));
+                m.Assign(binder.EnsureRegister(hi), m.ExtendS(m.Slice(tmp, half, half), hi.DataType));
             }
         }
 

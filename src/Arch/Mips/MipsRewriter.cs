@@ -401,6 +401,23 @@ namespace Reko.Arch.Mips
             testGenSvc?.ReportMissingRewriter("MipsRw", instr, instr.Mnemonic.ToString(), rdr, "");
         }
 
+        /// <summary>
+        /// Some MIPS models have registers wider than their address spaces. To model this
+        /// correctly, we need to truncate the register values to the address space width.
+        /// </summary>
+        /// <param name="reg">Register that possibly will be truncated.</param>
+        /// <returns>Either the originsal register, or the temporary identifier
+        /// containing a truncated value.</returns>
+        private Identifier MaybeSlicePointer(RegisterStorage reg)
+        {
+            var id = binder.EnsureRegister(reg);
+            if (id.DataType.BitSize <= arch.PointerType.BitSize)
+                return id;
+            var tmp = binder.CreateTemporary(arch.PointerType);
+            m.Assign(tmp, m.Slice(id, arch.PointerType));
+            return tmp;
+        }
+
         private Expression RewriteOperand(MachineOperand op)
         {
             switch (op)
@@ -422,7 +439,7 @@ namespace Reko.Arch.Mips
             Expression ea;
             if (memOp.Offset is not null)
             {
-                Identifier baseReg = binder.EnsureRegister(memOp.Base);
+                Identifier baseReg = MaybeSlicePointer(memOp.Base);
                 int offset = memOp.IntOffset();
                 ea = m.AddSubSignedInt(baseReg, offset);
                 return m.Mem(memOp.DataType, ea);
@@ -438,7 +455,7 @@ namespace Reko.Arch.Mips
                 }
                 else
                 {
-                    ea = binder.EnsureRegister(memOp.Index);
+                    ea = MaybeSlicePointer(memOp.Index);
                     if (scale != 1)
                     {
                         ea = m.IMul(ea, scale);
@@ -447,10 +464,10 @@ namespace Reko.Arch.Mips
             }
             else
             {
-                ea = binder.EnsureRegister(memOp.Base);
+                ea = MaybeSlicePointer(memOp.Base);
                 if (memOp.Index.Number != 0)
                 {
-                    Expression idx = binder.EnsureRegister(memOp.Index);
+                    Expression idx = MaybeSlicePointer(memOp.Index);
                     if (scale != 1)
                     {
                         idx = m.IMul(idx, scale);
@@ -480,9 +497,8 @@ namespace Reko.Arch.Mips
                 Expression ea;
                 if (memOp.Index is null)
                 {
-                    Identifier baseReg = binder.EnsureRegister(memOp.Base);
+                    Expression baseReg = MaybeSlicePointer(memOp.Base);
                     ea = m.AddSubSignedInt(baseReg, memOp.IntOffset());
-                    return m.Mem(memOp.DataType, ea);
                 }
                 else
                 {
@@ -496,15 +512,15 @@ namespace Reko.Arch.Mips
                         }
                         else
                         {
-                            ea = binder.EnsureRegister(memOp.Index);
+                            ea = MaybeSlicePointer(memOp.Index);
                         }
                     }
                     else
                     {
-                        ea = binder.EnsureRegister(memOp.Base);
+                        ea = MaybeSlicePointer(memOp.Base);
                         if (memOp.Index.Number != 0)
                         {
-                            ea = m.IAdd(ea, binder.EnsureRegister(memOp.Index));
+                            ea = m.IAdd(ea, MaybeSlicePointer(memOp.Index));
                         }
                     }
                 }

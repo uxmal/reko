@@ -18,23 +18,15 @@
  */
 #endregion
 
-using Moq;
 using NUnit.Framework;
 using Reko.Arch.Mips;
 using Reko.Core;
-using Reko.Core.Configuration;
-using Reko.Core.Expressions;
-using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
-using Reko.Core.Services;
 using Reko.Environments.PlayStation;
-using Reko.ImageLoaders.Elf;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.IO;
 using System.Linq;
 
 namespace Reko.UnitTests.Environments.Ps2

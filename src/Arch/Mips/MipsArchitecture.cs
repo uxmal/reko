@@ -50,8 +50,8 @@ namespace Reko.Arch.Mips
         public RegisterStorage[] ccRegs;
         public RegisterStorage[] fpuCcRegs;
         public RegisterStorage LinkRegister;
-        public RegisterStorage hi;
-        public RegisterStorage lo;
+        public RegisterStorage hi = null!;
+        public RegisterStorage lo = null!;
         public RegisterStorage? hi1;
         public RegisterStorage? lo1;
         public RegisterStorage pc;
@@ -71,9 +71,7 @@ namespace Reko.Arch.Mips
             this.StackRegister = GeneralRegs[29];
             this.LinkRegister = GeneralRegs[31];
 
-            this.hi = new RegisterStorage("hi", 32, 0, WordWidth);
-            this.lo = new RegisterStorage("lo", 33, 0, WordWidth);
-            this.pc = new RegisterStorage("pc", 34, 0, WordWidth);
+            this.pc = new RegisterStorage("pc", 34, 0, this.PointerType);
             this.fpuRegs = CreateFpuRegisters();
             this.FCSR = RegisterStorage.Reg32("FCSR", 0x201F);
             this.ccRegs = CreateCcRegs();
@@ -320,14 +318,19 @@ namespace Reko.Arch.Mips
                 isa == "ps2ee")
             {
                 WordWidth = PrimitiveType.Word128;
-                hi1 = new RegisterStorage("hi1", 48, 0, WordWidth);
-                lo1 = new RegisterStorage("lo1", 49, 0, WordWidth);
+                hi = new RegisterStorage("hi", 32, 0, PrimitiveType.Word64);
+                lo = new RegisterStorage("lo", 33, 0, PrimitiveType.Word64);
+                hi1 = new RegisterStorage("hi1", 48, 0, PrimitiveType.Word64);
+                lo1 = new RegisterStorage("lo1", 49, 0, PrimitiveType.Word64);
             }
             else
             {
+                hi = new RegisterStorage("hi", 32, 0, WordWidth);
+                lo = new RegisterStorage("lo", 33, 0, WordWidth);
                 hi1 = null;
                 lo1 = null;
             }
+
             var dt = WordWidth;
 
             return from i in Enumerable.Range(0, 32)

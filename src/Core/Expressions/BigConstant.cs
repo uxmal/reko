@@ -157,7 +157,7 @@ namespace Reko.Core.Expressions
         public override ushort ToUInt16() => (ushort) Value;
 
         /// <inheritdoc/>
-        public override uint ToUInt32() => (uint) Value;
+        public override uint ToUInt32() => (uint) (int) Value;
 
         /// <inheritdoc/>
         public override ulong ToUInt64() => (ulong) Value;
