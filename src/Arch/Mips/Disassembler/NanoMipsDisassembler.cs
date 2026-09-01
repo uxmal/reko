@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Arch.Mips.Machine;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
@@ -28,7 +29,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 
-namespace Reko.Arch.Mips
+namespace Reko.Arch.Mips.Disassembler
 {
     using Decoder = Decoder<NanoMipsDisassembler, Mnemonic, MipsInstruction>;
     using WideDecoder = WideDecoder<NanoMipsDisassembler, Mnemonic, MipsInstruction>;
@@ -50,7 +51,7 @@ namespace Reko.Arch.Mips
         {
             this.arch = arch;
             this.rdr = rdr;
-            this.ops = new List<MachineOperand>();
+            this.ops = [];
             this.gp = arch.GetRegister(28)!;
         }
 

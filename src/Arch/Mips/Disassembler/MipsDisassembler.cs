@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Arch.Mips.Machine;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
@@ -27,7 +28,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 
-namespace Reko.Arch.Mips
+namespace Reko.Arch.Mips.Disassembler
 {
     using Decoder = Decoder<MipsDisassembler, Mnemonic, MipsInstruction>;
 
@@ -46,6 +47,7 @@ namespace Reko.Arch.Mips
         private readonly List<MachineOperand> ops;
         private MipsInstruction instrCur;
         private Address addr;
+        private int laneMask;   //$REVIEW: only used in Ps2EeDecoderFactory.
 
         public MipsDisassembler(MipsArchitecture arch, Decoder decoder, EndianImageReader imageReader)
         {
@@ -65,6 +67,7 @@ namespace Reko.Arch.Mips
                 return null;
             }
             this.ops.Clear();
+            this.laneMask = 0;
             instrCur = rootDecoder.Decode(wInstr, this);
             instrCur.Address = this.addr;
             instrCur.Length = 4;
@@ -79,7 +82,8 @@ namespace Reko.Arch.Mips
                 InstructionClass = iclass,
                 Address = this.addr,
                 Length = 4,
-                Operands = this.ops.ToArray()
+                Operands = this.ops.ToArray(),
+                LaneMask = this.laneMask
             };
         }
 

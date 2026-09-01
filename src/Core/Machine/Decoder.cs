@@ -86,7 +86,7 @@ namespace Reko.Core.Machine
             foreach (var (code, decoder) in sparseDecoders)
             {
                 Debug.Assert(0 <= code && code < decoders.Length);
-                Debug.Assert(decoders[code] is null, $"Decoder {code:X} has already a value!");
+                Debug.Assert(decoders[code] is null, $"Decoder 0x{code:X} has already a value!");
                 decoders[code] = decoder;
             }
             for (int i = 0; i < decoders.Length; ++i)

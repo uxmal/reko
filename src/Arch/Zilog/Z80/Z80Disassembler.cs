@@ -26,8 +26,6 @@ using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Arch.Zilog.Z80
 {
@@ -52,7 +50,7 @@ namespace Reko.Arch.Zilog.Z80
             this.arch = arch;
             this.rdr = rdr;
             this.addr = rdr.Address;
-            this.ops = new List<MachineOperand>();
+            this.ops = [];
         }
 
         public override Z80Instruction? DisassembleInstruction()
@@ -89,8 +87,9 @@ namespace Reko.Arch.Zilog.Z80
                 InstructionClass = InstrClass.Invalid,
                 Mnemonic = Mnemonic.illegal,
                 Address = this.addr,
-                Operands = Array.Empty<MachineOperand>()
+                Operands = []
             };
+
         }
 
         public override Z80Instruction NotYetImplemented(string message)

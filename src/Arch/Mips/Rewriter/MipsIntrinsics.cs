@@ -19,18 +19,21 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 
-namespace Reko.Arch.Mips
+namespace Reko.Arch.Mips.Rewriter
 {
     public class MipsIntrinsics
     {
         public MipsIntrinsics(MipsArchitecture arch)
         {
             var a2_of_w64 = new ArrayType(PrimitiveType.Word64, 2);
+            var a4_of_w32 = new ArrayType(PrimitiveType.Word32, 4);
             var a8_of_w16 = new ArrayType(PrimitiveType.Word16, 8);
+            var a4_of_r32 = new ArrayType(PrimitiveType.Real32, 4);
 
             bit = new IntrinsicBuilder("__bit", false)
                 .GenericTypes("TValue", "TPos")
@@ -180,6 +183,82 @@ namespace Reko.Arch.Mips
                 .Void();
 
             wsbh = IntrinsicBuilder.GenericUnary("__word_swap_bytes_in_halfwords");
+
+            vabs = IntrinsicBuilder.Unary("__vabs", a4_of_r32);
+            vadd = IntrinsicBuilder.Binary("__vadd", a4_of_r32);
+            vdiv = IntrinsicBuilder.Binary("__vdiv", a4_of_r32);
+            vcallms = IntrinsicBuilder.SideEffect("__vcallms")
+                .Param(PrimitiveType.Word32)
+                .Void();
+            vcallmsr = IntrinsicBuilder.SideEffect("__vcallmsr")
+                .Void();
+
+            vcallmsr = IntrinsicBuilder.SideEffect("__vcallmsr")
+                .Void();
+            vclipw = IntrinsicBuilder.Pure("__vclipw")
+                .Param(a4_of_r32)
+                .Param(a4_of_r32)
+                .Returns(PrimitiveType.Bool);
+            vilwr = IntrinsicBuilder.Pure("__vilwr")
+                .Param(PrimitiveType.Ptr32)
+                .Returns(a4_of_r32);
+            viswr = IntrinsicBuilder.Pure("__viswr")
+                .Param(PrimitiveType.Ptr32)
+                .Param(a4_of_r32)
+                .Void();
+            vlqd = IntrinsicBuilder.Pure("__vlqd")
+                .Param(PrimitiveType.Word32)
+                .Returns(a4_of_w32);
+            vlqi = IntrinsicBuilder.Pure("__vlqi")
+                .Param(PrimitiveType.Word32)
+                .Returns(a4_of_w32);
+            vmr32 = IntrinsicBuilder.Pure("__vmr32")
+                .Param(a4_of_w32)
+                .Returns(a4_of_w32);
+            vmaddax = IntrinsicBuilder.Pure("__vmaddax")
+                .Param(PrimitiveType.Real32)
+                .Param(a4_of_r32)
+                .Param(a4_of_r32)
+                .Returns(PrimitiveType.Real32);
+            vmadday = IntrinsicBuilder.Pure("__vmadday")
+                .Param(PrimitiveType.Real32)
+                .Param(a4_of_r32)
+                .Param(a4_of_r32)
+                .Returns(PrimitiveType.Real32);
+            vmaddaz = IntrinsicBuilder.Pure("__vmaddaz")
+                .Param(PrimitiveType.Real32)
+                .Param(a4_of_r32)
+                .Param(a4_of_r32)
+                .Returns(PrimitiveType.Real32);
+            vmulax = IntrinsicBuilder.Binary("__vmulax", a4_of_r32);
+            vrget = IntrinsicBuilder.SideEffect("__vrget")
+                .Returns(PrimitiveType.Word32);
+            vrinit = IntrinsicBuilder.SideEffect("__vrinit")
+                .Param(PrimitiveType.Word32)
+                .Void();
+            vrnext = IntrinsicBuilder.SideEffect("__vrnext")
+                .Returns(PrimitiveType.Word32);
+            vrsqrt = IntrinsicBuilder.Pure("__vsqrt")
+                .Param(a4_of_r32)
+                .Param(a4_of_r32)
+                .Returns(PrimitiveType.Real32);
+            vrxor = IntrinsicBuilder.SideEffect("__vrxor")
+                .Param(PrimitiveType.Word32)
+                .Void();
+            vsqd = IntrinsicBuilder.SideEffect("__vsqd")
+                .Param(PrimitiveType.Word32)
+                .Param(PrimitiveType.Word32)
+                .Void();
+            vsqi = IntrinsicBuilder.SideEffect("__vsqd")
+                .Param(PrimitiveType.Word32)
+                .Param(PrimitiveType.Word32)
+                .Void();
+            vsqrt = IntrinsicBuilder.Pure("__vsqrt")
+                .Param(a4_of_r32)
+                .Returns(PrimitiveType.Real32);
+
+            waitq = IntrinsicBuilder.SideEffect("__waitq")
+                .Void();
         }
 
         public readonly IntrinsicProcedure bit;
@@ -242,5 +321,32 @@ namespace Reko.Arch.Mips
             .Param(PrimitiveType.Word32)
             .Void();
         public readonly IntrinsicProcedure trunc_intrinsic = IntrinsicBuilder.GenericUnary("trunc");
+
+
+        public readonly IntrinsicProcedure vabs;
+        public readonly IntrinsicProcedure vadd;
+        public readonly IntrinsicProcedure vcallms;
+        public readonly IntrinsicProcedure vcallmsr;
+        public readonly IntrinsicProcedure vclipw;
+        public readonly IntrinsicProcedure vdiv;
+        public readonly IntrinsicProcedure viswr;
+        public readonly IntrinsicProcedure vilwr;
+        public readonly IntrinsicProcedure vlqd;
+        public readonly IntrinsicProcedure vlqi;
+        public readonly IntrinsicProcedure vmr32;
+        public readonly IntrinsicProcedure vmaddax;
+        public readonly IntrinsicProcedure vmadday;
+        public readonly IntrinsicProcedure vmaddaz;
+        public readonly IntrinsicProcedure vmulax;
+        public readonly IntrinsicProcedure vrget;
+        public readonly IntrinsicProcedure vrinit;
+        public readonly IntrinsicProcedure vrnext;
+        public readonly IntrinsicProcedure vrxor;
+        public readonly IntrinsicProcedure vrsqrt;
+        public readonly IntrinsicProcedure vsqd;
+        public readonly IntrinsicProcedure vsqi;
+        public readonly IntrinsicProcedure vsqrt;
+
+        public readonly IntrinsicProcedure  waitq;
     }
 }

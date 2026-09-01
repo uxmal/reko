@@ -3342,26 +3342,26 @@ l0040697C:
 	r5_30 = <invalid>
 	r4_29 = <invalid>
 	strftime(fp + -72<i32>, SLICE(28<i32>, size_t, 0), 0x0040A74C<p32>, gmtime(&dwLoc28, r4_29, &dwLoc28, 0<32>, r5_30, r6_31, r7_33, 0x10008860<32>))
-	hi_69 = SLICE(dwLoc24 *s64 0x10624DD3<32>, word32, 32) (alias)
-	fprintf(r4, "%s:%s.%03d:%s\n", Mem75[Mem19[0x100008FC<32>:word32] + (r5 << 2<8>):word32], fp + -72<i32>, (hi_69 >> 6<8>) - (dwLoc24 >> 0x1F<8>), r7)
+	hi_71 = CONVERT(SLICE(dwLoc24 *s64 0x10624DD3<32>, ui32, 32), ui32, int32)
+	fprintf(r4, "%s:%s.%03d:%s\n", Mem77[Mem19[0x100008FC<32>:word32] + (r5 << 2<8>):word32], fp + -72<i32>, (hi_71 >> 6<8>) - (dwLoc24 >> 0x1F<8>), r7)
 	fflush(r4)
-	Mem106[Mem75[0x10000878<32>:word32] + 2084<i32>:word32] = Mem75[Mem75[0x10000878<32>:word32] + 2084<i32>:word32] + 1<i32>
-	branch Mem106[Mem106[0x10000A28<32>:word32]:word32] == 0<32> l00406BCC
+	Mem108[Mem77[0x10000878<32>:word32] + 2084<i32>:word32] = Mem77[Mem77[0x10000878<32>:word32] + 2084<i32>:word32] + 1<i32>
+	branch Mem108[Mem108[0x10000A28<32>:word32]:word32] == 0<32> l00406BCC
 l00406AEC:
-	r2_110 = Mem106[Mem106[0x10000A28<32>:word32]:word32]
-	dwLoc20_179 = r2_110
-	branch r2_110 >= 0<32> l00406B20
+	r2_112 = Mem108[Mem108[0x10000A28<32>:word32]:word32]
+	dwLoc20_181 = r2_112
+	branch r2_112 >= 0<32> l00406B20
 l00406B10:
-	dwLoc20_179 = r2_110 + 1023<i32>
+	dwLoc20_181 = r2_112 + 1023<i32>
 l00406B20:
-	branch dwLoc20_179 >> 0xA<8> >= Mem117[Mem117[0x10000878<32>:word32] + 2084<i32>:word32] l00406BCC
+	branch dwLoc20_181 >> 0xA<8> >= Mem119[Mem119[0x10000878<32>:word32] + 2084<i32>:word32] l00406BCC
 l00406B4C:
-	branch ftell(r4) < Mem117[Mem117[0x10000A28<32>:word32]:word32] l00406BA4
+	branch ftell(r4) < Mem119[Mem119[0x10000A28<32>:word32]:word32] l00406BA4
 l00406B84:
 	log_rotate(ra)
 	goto l00406BCC
 l00406BA4:
-	Mem150[Mem117[0x10000878<32>:word32] + 2084<i32>:word32] = Mem117[Mem117[0x10000878<32>:word32] + 2084<i32>:word32] + -10<i32>
+	Mem152[Mem119[0x10000878<32>:word32] + 2084<i32>:word32] = Mem119[Mem119[0x10000878<32>:word32] + 2084<i32>:word32] + -10<i32>
 l00406BCC:
 	return
 log_string_exit:
@@ -3977,68 +3977,68 @@ l00407C80:
 l00407C8C:
 	goto l00407DA4
 l00407CA8:
-	hi_lo_59 = dwLoc3C *u64 dwLoc2C
-	hi_69 = SLICE(hi_lo_59, word32, 32) (alias)
-	lo_71 = SLICE(hi_lo_59, word32, 0) (alias)
-	r6_100 = hi_69 >> 0<8>
-	branch hi_69 >> 0<8> >= 0<32> l00407CF4_ds_t
+	v18_60 = dwLoc3C *u64 dwLoc2C
+	hi_62 = CONVERT(SLICE(v18_60, ui32, 32), ui32, int32)
+	lo_61 = CONVERT(SLICE(v18_60, ui32, 0), ui32, int32)
+	r6_101 = hi_62 >> 0<8>
+	branch hi_62 >> 0<8> >= 0<32> l00407CF4_ds_t
 l00407CF4_ds_f:
-	r4_108 = lo_71
+	r4_109 = lo_61
 	goto l00407CF8
 l00407CF4_ds_t:
-	r4_108 = lo_71
+	r4_109 = lo_61
 	goto l00407D24
 l00407CF8:
-	r2_80 = hi_69 >> 0<8> & 1<32>
+	r2_81 = hi_62 >> 0<8> & 1<32>
 l00407D04:
-	branch r2_80 == 0<32> l00407D0C_ds_t
+	branch r2_81 == 0<32> l00407D0C_ds_t
 l00407D0C_ds_f:
-	r6_100 = r6_100 >>u 1<8>
+	r6_101 = r6_101 >>u 1<8>
 	goto l00407D10
 l00407D0C_ds_t:
-	r6_100 = r6_100 >>u 1<8>
+	r6_101 = r6_101 >>u 1<8>
 	goto l00407D18
 l00407D10:
-	r4_108 = r4_108 >>u 1<8> | 0x80000000<32>
+	r4_109 = r4_109 >>u 1<8> | 0x80000000<32>
 l00407D18:
-	branch r6_100 < 0<32> l00407D1C_ds_t
+	branch r6_101 < 0<32> l00407D1C_ds_t
 l00407D1C_ds_f:
 	goto l00407D20
 l00407D1C_ds_t:
-	r2_80 = r6_100 & 1<32>
+	r2_81 = r6_101 & 1<32>
 	goto l00407D04
 l00407D20:
 l00407D24:
-	branch r6_100 >u 0x3FFFFFFF<32> l00407D6C
+	branch r6_101 >u 0x3FFFFFFF<32> l00407D6C
 l00407D38:
 l00407D48:
-	r6_100 = r6_100 << 1<8>
-	branch (r4_108 & 0x80000000<32>) == 0<32> l00407D54_ds_t
+	r6_101 = r6_101 << 1<8>
+	branch (r4_109 & 0x80000000<32>) == 0<32> l00407D54_ds_t
 l00407D54_ds_f:
 	goto l00407D58
 l00407D54_ds_t:
 	goto l00407D5C
 l00407D58:
-	r6_100 = r6_100 | 1<32>
+	r6_101 = r6_101 | 1<32>
 l00407D5C:
-	branch r6_100 <=u 0x3FFFFFFF<32> l00407D64_ds_t
+	branch r6_101 <=u 0x3FFFFFFF<32> l00407D64_ds_t
 l00407D64_ds_f:
-	r4_108 = r4_108 << 1<8>
+	r4_109 = r4_109 << 1<8>
 	goto l00407D68
 l00407D64_ds_t:
-	r4_108 = r4_108 << 1<8>
+	r4_109 = r4_109 << 1<8>
 	goto l00407D48
 l00407D68:
 l00407D6C:
-	branch (r6_100 & 0x7F<32>) != 64<i32> l00407D78_ds_t
+	branch (r6_101 & 0x7F<32>) != 64<i32> l00407D78_ds_t
 l00407D78_ds_f:
 	goto l00407D7C
 l00407D78_ds_t:
 	goto l00407D98
 l00407D7C:
-	branch (r6_100 & 0x80<32>) != 0<32> l00407D90
+	branch (r6_101 & 0x80<32>) != 0<32> l00407D90
 l00407D88:
-	branch r4_108 == 0<32> l00407D8C_ds_t
+	branch r4_109 == 0<32> l00407D8C_ds_t
 l00407D8C_ds_f:
 	goto l00407D90
 l00407D8C_ds_t:
@@ -4599,132 +4599,133 @@ l004087C4:
 l004087D0:
 	goto l00408B58
 l004087EC:
-	hi_lo_118 = (dwLoc60 >>u 0<8>) *u64 dwLoc74
-	hi_lo_124 = dwLoc5C *u64 (dwLoc78 >>u 0<8>)
-	lo_121 = SLICE(hi_lo_118, word32, 0) (alias)
-	lo_127 = SLICE(hi_lo_124, word32, 0) (alias)
-	r21_138 = lo_121 + lo_127
-	r24_133 = SLICE(hi_lo_118, word32, 32) + (dwLoc60 >>u 0<8>) *s 0<i32> + dwLoc74 *s 0<32>
-	hi_lo_149 = dwLoc5C *u64 dwLoc74
-	hi_lo_155 = (dwLoc60 >>u 0<8>) *u64 (dwLoc78 >>u 0<8>)
-	lo_162 = (dwLoc78 >>u 0<8>) *s 0<32> (alias)
-	r20_142 = r24_133 + ((SLICE(hi_lo_124, word32, 32) + dwLoc5C *s 0<32>) + (dwLoc78 >>u 0<8>) *s 0<i32>) + CONVERT(r21_138 <u lo_127, bool, word32)
-	dwLoc30_598 = 0<32>
-	lo_152 = SLICE(hi_lo_149, word32, 0) (alias)
-	r16_154 = SLICE(hi_lo_149, word32, 32) + dwLoc5C *s 0<i32>
-	lo_158 = SLICE(hi_lo_155, word32, 0) (alias)
-	r18_164 = SLICE(hi_lo_155, word32, 32) + (dwLoc60 >>u 0<8>) *s 0<32> + lo_162
-	branch r20_142 <u r24_133 l00408910_ds_t
+	v35_121 = (dwLoc60 >>u 0<8>) *u64 dwLoc74
+	v37_128 = dwLoc5C *u64 (dwLoc78 >>u 0<8>)
+	lo_122 = CONVERT(SLICE(v35_121, ui32, 0), ui32, int32)
+	lo_129 = CONVERT(SLICE(v37_128, ui32, 0), ui32, int32)
+	r21_144 = lo_122 + lo_129
+	r24_138 = CONVERT(SLICE(v35_121, ui32, 32) + (dwLoc60 >>u 0<8>) *s 0<i32> + dwLoc74 *s 0<32>, ui32, int32)
+	v44_158 = dwLoc5C *u64 dwLoc74
+	v45_165 = (dwLoc60 >>u 0<8>) *u64 (dwLoc78 >>u 0<8>)
+	lo_173 = CONVERT((dwLoc78 >>u 0<8>) *s 0<32>, ui32, int32)
+	r20_150 = r24_138 + CONVERT((SLICE(v37_128, ui32, 32) + dwLoc5C *s 0<32>) + (dwLoc78 >>u 0<8>) *s 0<i32>, ui32, int32) + CONVERT(r21_144 <u lo_129, bool, word32)
+	dwLoc30_611 = 0<32>
+	lo_159 = CONVERT(SLICE(v44_158, ui32, 0), ui32, int32)
+	r16_163 = CONVERT(SLICE(v44_158, ui32, 32) + dwLoc5C *s 0<i32>, ui32, int32)
+	lo_166 = CONVERT(SLICE(v45_165, ui32, 0), ui32, int32)
+	r18_175 = CONVERT(SLICE(v45_165, ui32, 32) + (dwLoc60 >>u 0<8>) *s 0<32>, ui32, int32) + lo_173
+	lo_178 = CONVERT(dwLoc74 *s 0<i32>, ui32, int32)
+	branch r20_150 <u r24_138 l00408910_ds_t
 l00408910_ds_f:
-	r16_168 = r16_154 + dwLoc74 *s 0<i32>
+	r16_181 = r16_163 + lo_178
 	goto l00408914
 l00408910_ds_t:
-	r16_168 = r16_154 + dwLoc74 *s 0<i32>
+	r16_181 = r16_163 + lo_178
 	goto l00408924
 l00408914:
-	branch r24_133 != r20_142 l00408918_ds_t
+	branch r24_138 != r20_150 l00408918_ds_t
 l00408918_ds_f:
-	r2_171 = CONVERT(r21_138 <u lo_121, bool, word32)
+	r2_184 = CONVERT(r21_144 <u lo_122, bool, word32)
 	goto l0040891C
 l00408918_ds_t:
 	goto l00408934
 l0040891C:
-	branch r2_171 == 0<32> l00408934
+	branch r2_184 == 0<32> l00408934
 l00408924:
-	dwLoc30_598 = 1<i32>
+	dwLoc30_611 = 1<i32>
 l00408934:
-	r10_191 = r16_168 + lo_162 + CONVERT(lo_152 <u 0<32>, bool, word32)
-	dwLoc2C_605 = 0<32>
-	branch r10_191 <u r16_168 l00408978
+	r10_204 = r16_181 + lo_173 + CONVERT(lo_159 <u 0<32>, bool, word32)
+	dwLoc2C_618 = 0<32>
+	branch r10_204 <u r16_181 l00408978
 l00408968:
-	branch r16_168 != r10_191 l0040896C_ds_t
+	branch r16_181 != r10_204 l0040896C_ds_t
 l0040896C_ds_f:
-	r2_194 = CONVERT(lo_152 <u lo_152, bool, word32)
+	r2_207 = CONVERT(lo_159 <u lo_159, bool, word32)
 	goto l00408970
 l0040896C_ds_t:
 	goto l00408998
 l00408970:
-	branch r2_194 == 0<32> l00408998
+	branch r2_207 == 0<32> l00408998
 l00408978:
-	dwLoc2C_605 = 1<i32>
+	dwLoc2C_618 = 1<i32>
 l00408998:
-	r5_220 = (r20_142 >>u 0<8>) + lo_158
-	r13_239 = dwLoc2C_605 + r5_220
-	r12_245 = dwLoc30_598 + (r18_164 + CONVERT(r5_220 <u lo_158, bool, word32)) + CONVERT(r13_239 <u r5_220, bool, word32)
-	r6_255 = r10_191
-	branch r12_245 <=u 0x1FFFFFFF<32> l00408A14_ds_t
+	r5_233 = (r20_150 >>u 0<8>) + lo_166
+	r13_252 = dwLoc2C_618 + r5_233
+	r12_258 = dwLoc30_611 + (r18_175 + CONVERT(r5_233 <u lo_166, bool, word32)) + CONVERT(r13_252 <u r5_233, bool, word32)
+	r6_268 = r10_204
+	branch r12_258 <=u 0x1FFFFFFF<32> l00408A14_ds_t
 l00408A14_ds_f:
-	r7_258 = lo_152
+	r7_271 = lo_159
 	goto l00408A18
 l00408A14_ds_t:
-	r7_258 = lo_152
+	r7_271 = lo_159
 	goto l00408A7C
 l00408A18:
 l00408A38:
-	r12_245 = r12_245 >>u 1<8>
-	r13_239 = r13_239 >>u 1<8> | r12_245 << 0x1F<8>
-	r4_277 = CONVERT(r12_245 >u 0x1FFFFFFF<32>, bool, word32)
-	branch (r13_239 & 1<i32>) == 0<32> l00408A54_ds_t
+	r12_258 = r12_258 >>u 1<8>
+	r13_252 = r13_252 >>u 1<8> | r12_258 << 0x1F<8>
+	r4_290 = CONVERT(r12_258 >u 0x1FFFFFFF<32>, bool, word32)
+	branch (r13_252 & 1<i32>) == 0<32> l00408A54_ds_t
 l00408A54_ds_f:
 	goto l00408A58
 l00408A54_ds_t:
 	goto l00408A70
 l00408A58:
-	r6_255 = r6_255 >>u 1<8> | 0x80000000<32>
-	r7_258 = r7_258 >>u 1<8> | r6_255 << 0x1F<8>
+	r6_268 = r6_268 >>u 1<8> | 0x80000000<32>
+	r7_271 = r7_271 >>u 1<8> | r6_268 << 0x1F<8>
 l00408A70:
-	branch r4_277 != 0<32> l00408A74_ds_t
+	branch r4_290 != 0<32> l00408A74_ds_t
 l00408A74_ds_f:
 	goto l00408A78
 l00408A74_ds_t:
 	goto l00408A38
 l00408A78:
 l00408A7C:
-	branch r12_245 >u 0xFFFFFFF<32> l00408AF4
+	branch r12_258 >u 0xFFFFFFF<32> l00408AF4
 l00408A90:
 l00408AAC:
-	r12_324 = r12_245 << 1<8> | r13_239 >>u 0x1F<8>
-	r13_239 = r13_239 << 1<8>
-	branch (r6_255 & 0x80000000<32>) == 0<32> l00408ACC_ds_t
+	r12_337 = r12_258 << 1<8> | r13_252 >>u 0x1F<8>
+	r13_252 = r13_252 << 1<8>
+	branch (r6_268 & 0x80000000<32>) == 0<32> l00408ACC_ds_t
 l00408ACC_ds_f:
 	goto l00408AD0
 l00408ACC_ds_t:
 	goto l00408AD8
 l00408AD0:
-	r13_239 = r13_239 | 1<i32>
+	r13_252 = r13_252 | 1<i32>
 l00408AD8:
-	r12_245 = r12_324
-	r6_255 = r6_255 << 1<8> | r7_258 >>u 0x1F<8>
-	branch r12_324 <=u 0xFFFFFFF<32> l00408AEC_ds_t
+	r12_258 = r12_337
+	r6_268 = r6_268 << 1<8> | r7_271 >>u 0x1F<8>
+	branch r12_337 <=u 0xFFFFFFF<32> l00408AEC_ds_t
 l00408AEC_ds_f:
-	r7_258 = r7_258 << 1<8>
+	r7_271 = r7_271 << 1<8>
 	goto l00408AF0
 l00408AEC_ds_t:
-	r7_258 = r7_258 << 1<8>
+	r7_271 = r7_271 << 1<8>
 	goto l00408AAC
 l00408AF0:
 l00408AF4:
 	branch false l00408B04_ds_t
 l00408B04_ds_f:
-	r5_358 = r13_239 & 255<i32>
+	r5_371 = r13_252 & 255<i32>
 	goto l00408B08
 l00408B04_ds_t:
 	goto l00408B44
 l00408B08:
-	branch r5_358 != 128<i32> l00408B10_ds_t
+	branch r5_371 != 128<i32> l00408B10_ds_t
 l00408B10_ds_f:
 	goto l00408B14
 l00408B10_ds_t:
 	goto l00408B48
 l00408B14:
-	branch (r13_239 & 256<i32>) != 0<32> l00408B2C_ds_t
+	branch (r13_252 & 256<i32>) != 0<32> l00408B2C_ds_t
 l00408B2C_ds_f:
-	r2_374 = r7_258 | r6_255
+	r2_387 = r7_271 | r6_268
 	goto l00408B30
 l00408B2C_ds_t:
 	goto l00408B38
 l00408B30:
-	branch r2_374 == 0<32> l00408B34_ds_t
+	branch r2_387 == 0<32> l00408B34_ds_t
 l00408B34_ds_f:
 	goto l00408B38
 l00408B34_ds_t:

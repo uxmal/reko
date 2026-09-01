@@ -119,7 +119,7 @@ namespace Reko.Core
         public IntrinsicProcedure(
             string name, 
             DataType[] genericTypes, 
-            IntrinsicProcedure genericOriginal,
+            IntrinsicProcedure? genericOriginal,
             bool hasSideEffect,
             Func<DataType, Constant[], Constant?>? evaluator,
             FunctionType sig)

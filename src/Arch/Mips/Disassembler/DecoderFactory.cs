@@ -18,13 +18,14 @@
  */
 #endregion
 
+using Reko.Arch.Mips.Machine;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 
-namespace Reko.Arch.Mips
+namespace Reko.Arch.Mips.Disassembler
 {
     using Decoder = Decoder<MipsDisassembler, Mnemonic, MipsInstruction>;
 
@@ -113,13 +114,28 @@ namespace Reko.Arch.Mips
             internal static readonly Mutator<MipsDisassembler> f2 = Fcreg(16);
             internal static readonly Mutator<MipsDisassembler> f3 = Fcreg(11);
 
-            internal static bool I(uint wInstr, MipsDisassembler dasm)
+            /// <summary>
+            /// Signed 16-bit immedate from the low 16 bits of the instruction word.
+            /// </summary>
+            internal static bool SImm(uint wInstr, MipsDisassembler dasm)
             {
                 var op = Constant.Create(dasm.signedWord, (short) wInstr);
                 dasm.ops.Add(op);
                 return true;
             }
 
+            private static Bitfield bf6_5 = new Bitfield(6, 5);
+            internal static bool SImm6_5(uint uInstr, MipsDisassembler dasm)
+            {
+                var imm = bf6_5.ReadSigned(uInstr);
+                var op = Constant.Create(dasm.signedWord, imm);
+                dasm.ops.Add(op);
+                return true;
+            }
+
+            /// <summary>
+            /// Unsigned 16-bit immedate from the low 16 bits of the instruction word.
+            /// </summary>
             internal static bool U(uint wInstr, MipsDisassembler dasm)
             {
                 var op = Constant.Create(dasm.arch.WordWidth, (ushort)wInstr);
@@ -127,6 +143,9 @@ namespace Reko.Arch.Mips
                 return true;
             }
 
+            /// <summary>
+            /// Signed 16-bit immediate.
+            /// </summary>
             internal static bool i(uint wInstr, MipsDisassembler dasm)
             {
                 var op = Constant.Int16((short) wInstr);
@@ -145,6 +164,9 @@ namespace Reko.Arch.Mips
                 };
             }
 
+            /// <summary>
+            /// 16-bit PC relative jump.
+            /// </summary>
             internal static bool j(uint wInstr, MipsDisassembler dasm)
             {
                 var op = dasm.RelativeBranch(wInstr);
@@ -302,7 +324,7 @@ namespace Reko.Arch.Mips
                 return new InstrDecoder<MipsDisassembler, Mnemonic, MipsInstruction>(InstrClass.Linear, mnemonic, mutators);
             }
 
-            private static Decoder Instr(InstrClass iclass, Mnemonic mnemonic, params Mutator<MipsDisassembler>[] mutators)
+            protected static Decoder Instr(InstrClass iclass, Mnemonic mnemonic, params Mutator<MipsDisassembler>[] mutators)
             {
                 return new InstrDecoder<MipsDisassembler, Mnemonic, MipsInstruction>(iclass, mnemonic, mutators);
             }
@@ -395,6 +417,7 @@ namespace Reko.Arch.Mips
                     Instr(Mnemonic.suxc1, F4, Mxw),
                     invalid,
                     Instr(Mnemonic.prefx, Imm(PrimitiveType.Byte, 11, 5), Mxw),
+
                     // 10
                     invalid,
                     invalid,
@@ -662,6 +685,13 @@ namespace Reko.Arch.Mips
             protected virtual Decoder<MipsDisassembler, Mnemonic, MipsInstruction> Decode3E()
             {
                 return Instr(Mnemonic.sdc2, R2, El);
+            }
+
+            protected virtual Decoder<MipsDisassembler, Mnemonic, MipsInstruction> DecodeCop1_8()
+            {
+                return Mask(16, 1,
+                       Instr(InstrClass.CondJump | InstrClass.Delay, Mnemonic.bc1f, c18, j),
+                       Instr(InstrClass.CondJump | InstrClass.Delay, Mnemonic.bc1t, c18, j));
             }
 
             protected virtual Decoder<MipsDisassembler, Mnemonic, MipsInstruction> DecodeCop1_S()
@@ -1030,9 +1060,7 @@ namespace Reko.Arch.Mips
                     Instr(Mnemonic.ctc1, R2, f3),
                     invalid,
 
-                    Mask(16, 1,
-                        Instr(InstrClass.CondJump | InstrClass.Delay, Mnemonic.bc1f, c18, j),
-                        Instr(InstrClass.CondJump | InstrClass.Delay, Mnemonic.bc1t, c18, j)),
+                    DecodeCop1_8(),
                     invalid,
                     invalid,
                     invalid,
@@ -1070,14 +1098,14 @@ namespace Reko.Arch.Mips
                     invalid,
                     invalid,
 
-                    Instr(CTD, Mnemonic.tgei, R1, I),
-                    Instr(CTD, Mnemonic.tgeiu, R1, I),
-                    Instr(CTD, Mnemonic.tlti, R1, I),
-                    Instr(CTD, Mnemonic.tltiu, R1, I),
+                    Instr(CTD, Mnemonic.tgei, R1, SImm),
+                    Instr(CTD, Mnemonic.tgeiu, R1, SImm),
+                    Instr(CTD, Mnemonic.tlti, R1, SImm),
+                    Instr(CTD, Mnemonic.tltiu, R1, SImm),
 
-                    Instr(CTD, Mnemonic.teqi, R1, I),
+                    Instr(CTD, Mnemonic.teqi, R1, SImm),
                     invalid,
-                    Instr(CTD, Mnemonic.tnei, R1, I),
+                    Instr(CTD, Mnemonic.tnei, R1, SImm),
                     invalid,
 
                     Instr(CTD, Mnemonic.bltzal, R1, j),
@@ -1194,10 +1222,10 @@ namespace Reko.Arch.Mips
                         Instr(DCT, Mnemonic.blez, R1, j),
                         Instr(DCT, Mnemonic.bgtz, R1, j),
 
-                        Instr(Mnemonic.addi, R2, R1, I),
-                        Instr(Mnemonic.addiu, R2, R1, I),
-                        Instr(Mnemonic.slti, R2, R1, I),
-                        Instr(Mnemonic.sltiu, R2, R1, I),
+                        Instr(Mnemonic.addi, R2, R1, SImm),
+                        Instr(Mnemonic.addiu, R2, R1, SImm),
+                        Instr(Mnemonic.slti, R2, R1, SImm),
+                        Instr(Mnemonic.sltiu, R2, R1, SImm),
 
                         Instr(Mnemonic.andi, R2, R1, U),
                         Instr(Mnemonic.ori, R2, R1, U),
@@ -1214,8 +1242,8 @@ namespace Reko.Arch.Mips
                         Instr(DCT, Mnemonic.blezl, R1, j),
                         Instr(DCT, Mnemonic.bgtzl, R1, j),
 
-                        Instr64(Mnemonic.daddi, R2, R1, I),
-                        Instr64(Mnemonic.daddiu, R2, R1, I),
+                        Instr64(Mnemonic.daddi, R2, R1, SImm),
+                        Instr64(Mnemonic.daddiu, R2, R1, SImm),
                         Instr64(Mnemonic.ldl, R2, El),
                         Instr64(Mnemonic.ldr, R2, El),
 
@@ -1249,7 +1277,7 @@ namespace Reko.Arch.Mips
                         Decode30(),
                         Instr(Mnemonic.lwc1, F2, Ew),
                         Decode32(),
-                        Instr(Mnemonic.pref, R2, Ew),
+                        Instr(Mnemonic.pref, Imm(PrimitiveType.Byte, 6, 5), Ew),
 
                         Decode34(),
                         Instr(Mnemonic.ldc1, F2, El),

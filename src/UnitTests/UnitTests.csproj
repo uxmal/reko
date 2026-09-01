@@ -37,6 +37,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Arch\Ee\" />
     <Folder Include="Gui\Windows\" />
     <Folder Include="ImageLoaders\MzExe\Pe\" />
   </ItemGroup>

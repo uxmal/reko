@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Arch.Mips.Machine;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
@@ -30,9 +31,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace Reko.Arch.Mips
+namespace Reko.Arch.Mips.Disassembler
 {
-    using Decoder = Reko.Core.Machine.Decoder<Mips16eDisassembler, Mnemonic, MipsInstruction>;
+    using Decoder = Decoder<Mips16eDisassembler, Mnemonic, MipsInstruction>;
 
     public class Mips16eDisassembler : DisassemblerBase<MipsInstruction, Mnemonic>
     {

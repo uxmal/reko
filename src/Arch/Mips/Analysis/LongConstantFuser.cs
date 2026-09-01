@@ -18,16 +18,14 @@
  */
 #endregion
 
-using Reko.Core;
+using Reko.Arch.Mips.Machine;
 using Reko.Core.Collections;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 
-namespace Reko.Arch.Mips
+namespace Reko.Arch.Mips.Analysis
 {
     public class LongConstantFuser : IEnumerable<MachineInstruction>
     {

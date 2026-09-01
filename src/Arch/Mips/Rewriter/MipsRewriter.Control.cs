@@ -18,19 +18,15 @@
  */
 #endregion
 
+using Reko.Arch.Mips.Machine;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Operators;
-using Reko.Core.Rtl;
-using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace Reko.Arch.Mips
+namespace Reko.Arch.Mips.Rewriter
 {
     public partial class MipsRewriter
     {
@@ -175,10 +171,12 @@ namespace Reko.Arch.Mips
 
         private void RewriteBranchConditional1(MipsInstruction instr, bool opTrue)
         {
-            var cond = RewriteOperand0(instr.Operands[0]);
+            Expression cond = instr.Operands.Length > 1
+                ? RewriteOperand0(instr.Operands[0])
+                : binder.EnsureRegister(Registers.cc1);
+            var addr = (Address) instr.Operands[^1];
             if (!opTrue)
                 cond = m.Not(cond);
-            var addr = (Address)RewriteOperand0(instr.Operands[1]);
             iclass = InstrClass.CondJump | InstrClass.Delay;
             m.Branch(cond, addr, iclass);
         }
@@ -211,7 +209,7 @@ namespace Reko.Arch.Mips
             //$TODO: if we want explicit representation of the continuation of call
             // use the line below
             //emitter.Assign( frame.EnsureRegister(Registers.ra), instr.Address + 8);
-            var dst = RewriteOperand0(instr.Operands[1]);
+            var dst = RewriteOperand0(instr.Operands[1], arch.PointerType);
             var lr = (RegisterStorage)instr.Operands[0];
             if (lr == arch.LinkRegister)
             {

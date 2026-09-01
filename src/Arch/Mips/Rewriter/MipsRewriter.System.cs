@@ -18,13 +18,14 @@
  */
 #endregion
 
+using Reko.Arch.Mips.Machine;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
 using Reko.Core.Types;
 using System;
 
-namespace Reko.Arch.Mips
+namespace Reko.Arch.Mips.Rewriter
 {
     public partial class MipsRewriter
     {

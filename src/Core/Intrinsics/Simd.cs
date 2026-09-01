@@ -45,6 +45,10 @@ namespace Reko.Core.Intrinsics
             .GenericTypes("TValue", "TShift")
             .Params("TValue", "TShift")
             .Returns("TValue");
+        public static readonly IntrinsicProcedure Shr = new IntrinsicBuilder("__simd_shr", Operator.Shr)
+            .GenericTypes("TValue", "TShift")
+            .Params("TValue", "TShift")
+            .Returns("TValue");
         public static readonly IntrinsicProcedure Sqrt = IntrinsicBuilder.GenericUnary("__simd_sqrt");
         public static readonly IntrinsicProcedure Sub = IntrinsicBuilder.GenericBinary("__simd_sub");
     }

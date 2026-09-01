@@ -24,7 +24,7 @@ namespace Reko.Core.Configuration
 {
     /// <summary>
     /// Definition of a raw file. Since raw files have no headers, we need one
-    /// or more hints from the user, but some details may be available, or 
+    /// or more metadata hints from the user, but some details may be available, or 
     /// some reasonable defaults may be provided.
     /// </summary>
     /// <remarks>

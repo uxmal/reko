@@ -24,7 +24,7 @@ using Reko.Core.Machine;
 using Reko.Core.Types;
 using System.Collections.Generic;
 
-namespace Reko.Arch.Mips
+namespace Reko.Arch.Mips.Machine
 {
     public class MultiRegisterOperand : AbstractMachineOperand
     {

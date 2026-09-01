@@ -18,14 +18,10 @@
  */
 #endregion
 
+using Reko.Arch.Mips.Machine;
 using Reko.Core.Machine;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Reko.Arch.Mips;
+namespace Reko.Arch.Mips.Disassembler;
 
 public partial class MipsDisassembler
 {

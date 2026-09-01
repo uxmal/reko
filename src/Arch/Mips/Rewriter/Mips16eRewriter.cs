@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Arch.Mips.Machine;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
@@ -31,7 +32,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Reko.Arch.Mips
+namespace Reko.Arch.Mips.Rewriter
 {
     /* MIPS32® Architecture for Programmers
 Volume IV-a: The MIPS16e™ ApplicationSpecific Extension to the MIPS32®

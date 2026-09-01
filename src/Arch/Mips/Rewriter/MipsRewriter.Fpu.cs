@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Arch.Mips.Machine;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
@@ -26,14 +27,15 @@ using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
 
-namespace Reko.Arch.Mips
+namespace Reko.Arch.Mips.Rewriter
 {
     public partial class MipsRewriter
     {
         private Identifier GetFpuRegPair(MachineOperand op)
         {
             var freg0 = (RegisterStorage)op;
-            var freg1 = arch.fpuRegs[1 + (freg0.Number & 0x1F)];
+            var ifreg = freg0.Number - arch.fpuRegs[0].Number;
+            var freg1 = arch.fpuRegs[(ifreg + 1) & 0x1F];
             var seq = binder.EnsureSequence(
                 PrimitiveType.Real64,
                 freg0,
@@ -69,6 +71,25 @@ namespace Reko.Arch.Mips
             sum.DataType = dt;
             m.Assign(dst, sum);
         }
+
+        private void RewriteMaca_real(MipsInstruction instr, PrimitiveType dt, RegisterStorage? accReg, BinaryOperator accumFn)
+        {
+            if (accReg is null)
+            {
+                m.Invalid();
+                return;
+            }
+            var acc = binder.EnsureRegister(accReg);
+            var dst = binder.EnsureRegister(accReg);
+            var src1 = RewriteOperand(instr.Operands[0]);
+            var src2 = RewriteOperand(instr.Operands[1]);
+            var product = m.FMul(src1, src2);
+            product.DataType = dt;
+            var sum = m.Bin(accumFn, acc, product);
+            sum.DataType = dt;
+            m.Assign(dst, sum);
+        }
+
 
         private void RewriteMac_vec(MipsInstruction instr, PrimitiveType dt, BinaryOperator accFn)
         {
@@ -143,16 +164,31 @@ namespace Reko.Arch.Mips
         private void RewriteCfc1(MipsInstruction instr)
         {
             m.Assign(
-                    RewriteOperand(instr.Operands[0]),
-                    RewriteOperand0(instr.Operands[1]));
+                    RewriteOperand(instr, 0),
+                    RewriteOperand0(instr, 1));
         }
 
         private void RewriteCtc1(MipsInstruction instr)
         {
             m.Assign(
-                    RewriteOperand(instr.Operands[1]),
-                    RewriteOperand0(instr.Operands[0]));
+                    RewriteOperand(instr, 1),
+                    RewriteOperand0(instr, 0));
         }
+
+        private void RewriteCfc2(MipsInstruction instr)
+        {
+            m.Assign(
+                    RewriteOperand(instr, 0),
+                    RewriteOperand0(instr, 1));
+        }
+
+        private void RewriteCtc2(MipsInstruction instr)
+        {
+            m.Assign(
+                    RewriteOperand(instr, 1),
+                    RewriteOperand0(instr, 0));
+        }
+
 
         private void RewriteCvtFromD(MipsInstruction instr, DataType dt)
         {
@@ -196,6 +232,13 @@ namespace Reko.Arch.Mips
         private void RewriteMtc1(MipsInstruction instr)
         {
             m.Assign(RewriteOperand0(instr.Operands[1]), RewriteOperand0(instr.Operands[0]));
+        }
+
+        private void RewriteSdc1(MipsInstruction instr)
+        {
+            var src = GetFpuRegPair(instr.Operands[0]);
+            var opDstMem = RewriteOperand(instr, 1);
+            m.Assign(opDstMem, src);
         }
 
         private void RewriteTrunc(MipsInstruction instr, IntrinsicProcedure intrinsic, PrimitiveType dtSrc, PrimitiveType dtDst)

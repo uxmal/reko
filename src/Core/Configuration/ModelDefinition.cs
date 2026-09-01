@@ -35,6 +35,6 @@ namespace Reko.Core.Configuration
         /// <summary>
         /// CPU options for that CPU model.
         /// </summary>
-        public List<ListOption_v1> Options { get; set; } = new List<ListOption_v1>();
+        public List<ListOption_v1> Options { get; set; } = [];
     }
 }

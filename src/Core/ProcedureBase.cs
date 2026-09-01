@@ -71,7 +71,7 @@ namespace Reko.Core
         /// visible in architectural registers; otherwise false.</param>
         public ProcedureBase(
             string name, 
-            IntrinsicProcedure genericOriginal,
+            IntrinsicProcedure? genericOriginal,
             DataType[] genericArguments,
             bool isConcrete,
             bool hasSideEffect)

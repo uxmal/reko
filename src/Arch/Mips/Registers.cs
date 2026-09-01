@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2026 John Källén.
  *
@@ -19,11 +19,7 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Expressions;
-using Reko.Core.Lib;
-using Reko.Core.Machine;
 using Reko.Core.Types;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 

@@ -22,7 +22,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using System.Collections.Generic;
 
-namespace Reko.Arch.Mips;
+namespace Reko.Arch.Mips.Machine;
 
 /// <summary>
 /// Used to represent sliced immediate values in 

@@ -1,6 +1,6 @@
 #region License
 /*
- * Copyright (C) 1999-2026 John Källén.
+ * Copyright (C) 1999-2026 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 
-namespace Reko.Environments.PlayStation;
+namespace Reko.Environments.PlayStation.Ps2;
 
 /// <summary>
 /// Implements the custom calling convention used by the Sony PlayStation 2 

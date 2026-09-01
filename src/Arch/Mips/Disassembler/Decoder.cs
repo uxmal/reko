@@ -18,17 +18,11 @@
  */
 #endregion
 
+using Reko.Arch.Mips.Machine;
 using Reko.Core;
 using Reko.Core.Machine;
-using Reko.Core.Types;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using static Reko.Arch.Mips.MipsDisassembler;
 
-namespace Reko.Arch.Mips
+namespace Reko.Arch.Mips.Disassembler
 {
     using Decoder = Decoder<MipsDisassembler, Mnemonic, MipsInstruction>;
 

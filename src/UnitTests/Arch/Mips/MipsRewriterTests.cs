@@ -20,6 +20,9 @@
 
 using NUnit.Framework;
 using Reko.Arch.Mips;
+using Reko.Arch.Mips.Disassembler;
+using Reko.Arch.Mips.Machine;
+using Reko.Arch.Mips.Rewriter;
 using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
@@ -52,6 +55,14 @@ namespace Reko.UnitTests.Arch.Mips
         {
             Given_UInt32s(instr);
             AssertCode(sExp);
+        }
+
+        /// <summary>
+        /// Builds an instruction word out of its fields.
+        /// </summary>
+        private static uint W(int opc, int rs = 0, int rt = 0, int rd = 0, int sa = 0, int funct = 0, int rest = 0)
+        {
+            return (uint) ((opc << 26) | (rs << 21) | (rt << 16) | (rd << 11) | (sa << 6) | funct | rest);
         }
 
         private void Given_Mips64_Architecture()
@@ -397,8 +408,11 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsRw_mult()
         {
             AssertCode(0x02F00018, // mult s7,s0
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|hi_lo = r23 *s64 r16");
+                "0|L--|00100000(4): 4 instructions",
+                "1|L--|hi_lo = r23 *s64 r16",
+                "2|L--|v6 = r23 *s64 r16",
+                "3|L--|lo = CONVERT(SLICE(v6, ui32, 0), ui32, int32)",
+                "4|L--|hi = CONVERT(SLICE(v6, ui32, 32), ui32, int32)");
         }
 
         [Test]
@@ -546,16 +560,15 @@ namespace Reko.UnitTests.Arch.Mips
             Given_Mips64_Architecture();
             AssertCode(0x001FE03E, // dsrl32 gp,ra,0x0
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r28 = ra >>u 0<8> + 0x20<8>");
+                "1|L--|r28 = ra >>u 0x20<8>");
 
             AssertCode(0x001ce03c, // dsll32 gp,gp,0x0
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r28 = r28 << 0<8> + 0x20<8>");
+                "1|L--|r28 = r28 << 0x20<8>");
 
             AssertCode(0x0062182f, // dsubu v1, v1, v0
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r3 = r3 - r2");
-
+                "1|L--|r3 = r3 -u r2");
 
             AssertCode(0x208fa, // dsrl at,v0,0x3
                 "0|L--|00100000(4): 1 instructions",
@@ -634,6 +647,15 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
+        public void MipsRw_subu()
+        {
+            AssertCode(
+                W(0, rs: 4, rt: 5, rd: 2, funct: 0x23),
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r2 = r4 -u r5");
+        }
+
+        [Test]
         public void MipsRw_trunc_l_d()
         {
             AssertCode(0x46200049, // trunc.l.d $f1,$f0
@@ -648,7 +670,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_Mips64_Architecture();
             AssertCode(0xf7a10018, // sdc1 $f1,24(sp)
             "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[sp + 24<i64>:word64] = f1");
+                "1|L--|Mem0[sp + 24<i64>:word64] = f1_f2");
         }
 
         [Test]
@@ -724,7 +746,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode(0x46002032, // c.eq.s $f4,$f0
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|cc0 = f4_f5 == f0_f1");
+                "1|L--|cc0 = f4 == f0");
         }
 
         [Test]
@@ -732,7 +754,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode(0x4600083c, // c.lt.s $f1,$f0 
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|cc0 = f1_f2 < f0_f1");
+                "1|L--|cc0 = f1 < f0");
         }
 
         [Test]
@@ -1397,7 +1419,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_HexString("4E414D49");
             AssertCode(     // sdxc1    f9,r1(r18)
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[r18 + r1:word64] = f9");
+                "1|L--|Mem0[r18 + r1:word64] = f9_f10");
         }
 
         [Test]

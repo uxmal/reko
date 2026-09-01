@@ -488,7 +488,7 @@ namespace Reko.Core.Intrinsics
         /// </summary>
         /// <param name="intrinsicName">Name of the intrinsic procedure.</param>
         /// <param name="dt">Data type of input parameter and return value.</param>
-        public static IntrinsicProcedure Unary(string intrinsicName, PrimitiveType dt)
+        public static IntrinsicProcedure Unary(string intrinsicName, DataType dt)
         {
             return new IntrinsicBuilder(intrinsicName, false).Param(dt).Returns(dt);
         }

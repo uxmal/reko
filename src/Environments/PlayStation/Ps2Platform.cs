@@ -28,6 +28,7 @@ using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
+using Reko.Environments.PlayStation.Ps2;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;

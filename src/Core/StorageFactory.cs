@@ -46,12 +46,12 @@ namespace Reko.Core
         /// <summary>
         /// A dictionary of register names to register storages, created so far.
         /// </summary>
-        public Dictionary<string, RegisterStorage> NamesToRegisters { get; } = new Dictionary<string, RegisterStorage>();
+        public Dictionary<string, RegisterStorage> NamesToRegisters { get; } = [];
 
         /// <summary>
         /// A dictionary of register storages to register names, created so far.
         /// </summary>
-        public Dictionary<StorageDomain, RegisterStorage> DomainsToRegisters { get; } = new Dictionary<StorageDomain, RegisterStorage>();
+        public Dictionary<StorageDomain, RegisterStorage> DomainsToRegisters { get; } = [];
 
         /// <summary>
         /// Create a single register.

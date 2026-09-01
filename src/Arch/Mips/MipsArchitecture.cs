@@ -18,10 +18,13 @@
  */
 #endregion
 
+using Reko.Arch.Mips.Analysis;
+using Reko.Arch.Mips.Disassembler;
+using Reko.Arch.Mips.Machine;
+using Reko.Arch.Mips.Rewriter;
 using Reko.Core;
 using Reko.Core.Collections;
 using Reko.Core.Expressions;
-using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
@@ -52,8 +55,16 @@ namespace Reko.Arch.Mips
         public RegisterStorage LinkRegister;
         public RegisterStorage hi = null!;
         public RegisterStorage lo = null!;
-        public RegisterStorage? hi1;
-        public RegisterStorage? lo1;
+        public RegisterStorage? hi1;                //$REVIEW: PS2 EE specific, move to subclass?
+        public RegisterStorage? lo1;                //$REVIEW: PS2 EE specific, move to subclass?
+        public RegisterStorage[]? viRegisters;      //$REVIEW: PS2 EE specific, move to subclass?
+        public RegisterStorage[]? vfRegisters;      //$REVIEW: PS2 EE specific, move to subclass?
+        public RegisterStorage[]? cop0Registers;    //$REVIEW: PS2 EE specific, move to subclass?
+        public RegisterStorage? acc;                //$REVIEW: PS2 EE specific, move to subclass?
+        public RegisterStorage? sa;                 //$REVIEW: PS2 EE specific, move to subclass?
+        public RegisterStorage? i;                  //$REVIEW: PS2 EE specific, move to subclass?
+        public RegisterStorage? q;                  //$REVIEW: PS2 EE specific, move to subclass?
+        public RegisterStorage? r;                  //$REVIEW: PS2 EE specific, move to subclass?
         public RegisterStorage pc;
         protected ulong uCodeAddressMask;
         private string? instructionSetEncoding;
@@ -67,20 +78,20 @@ namespace Reko.Arch.Mips
             this.PointerType = ptrSize;
             this.FramePointerType = ptrSize;
             this.InstructionBitSize = 32;
-            this.GeneralRegs = CreateGeneralRegisters(options).ToArray();
+            var factory = new StorageFactory();
+            this.GeneralRegs = CreateGeneralRegisters(factory, options).ToArray();
             this.StackRegister = GeneralRegs[29];
             this.LinkRegister = GeneralRegs[31];
 
-            this.pc = new RegisterStorage("pc", 34, 0, this.PointerType);
-            this.fpuRegs = CreateFpuRegisters();
-            this.FCSR = RegisterStorage.Reg32("FCSR", 0x201F);
-            this.ccRegs = CreateCcRegs();
-            this.fpuCcRegs = CreateFpuCcRegs();
+            this.pc = factory.Reg32("pc");
+            this.fpuRegs = CreateFpuRegisters(factory);
+            this.FCSR = factory.Reg32("FCSR");
+            this.ccRegs = CreateCcRegs(factory);
+            this.fpuCcRegs = CreateFpuCcRegs(factory);
             this.fpuCtrlRegs = new Dictionary<uint, RegisterStorage>
             {
                 { 0x1F, FCSR }
             };
-
             var regs = GeneralRegs
                 .Concat(fpuRegs)
                 .Concat(fpuCtrlRegs.Values)
@@ -311,74 +322,73 @@ namespace Reko.Arch.Mips
             return Address.TryParse32(txtAddress, out addr);
         }
 
-        private IEnumerable<RegisterStorage> CreateGeneralRegisters(Dictionary<string, object> options)
+        private IEnumerable<RegisterStorage> CreateGeneralRegisters(
+            StorageFactory factory,
+            Dictionary<string, object> options)
         {
+            static string GpRegisterName(int i)
+            {
+                if (i == 29) return "sp";
+                if (i == 31) return "ra";
+                return $"r{i}";
+            }
+
+            PrimitiveType dt;
+            RegisterStorage[] gpRegs;
             if (options.TryGetValue(ProcessorOption.InstructionSet, out var oIsa) &&
                 oIsa is string isa &&
                 isa == "ps2ee")
             {
-                WordWidth = PrimitiveType.Word128;
-                hi = new RegisterStorage("hi", 32, 0, PrimitiveType.Word64);
-                lo = new RegisterStorage("lo", 33, 0, PrimitiveType.Word64);
-                hi1 = new RegisterStorage("hi1", 48, 0, PrimitiveType.Word64);
-                lo1 = new RegisterStorage("lo1", 49, 0, PrimitiveType.Word64);
+                dt = PrimitiveType.Word128;
+                gpRegs = factory.RangeOfReg(32, GpRegisterName, dt);
+                hi = factory.Reg64("hi");
+                lo = factory.Reg64("lo");
+                hi1 = factory.Reg64("hi1");
+                lo1 = factory.Reg64("lo1");
+                acc = factory.Reg32("acc");
+                sa = factory.Reg64("sa");
+                i = factory.Reg32("i");
+                q = factory.Reg32("q");
+                r = factory.Reg32("r");     //$REVIEW: is actually 23 bits, do we care?
+                this.viRegisters = factory.RangeOfReg(16, i => $"vi{i}", PrimitiveType.Word16);
+                this.vfRegisters = factory.RangeOfReg(32, i => $"vf{i}", PrimitiveType.Word128);
+                string[] cop0Names =
+                {
+                    "index", "random", "entrylo0", "entrylo1", "context", "pagemask",
+                    "wired", "c0_7", "badvaddr", "count", "entryhi", "compare",
+                    "status", "cause", "epc", "prid", "config", "c0_17", "c0_18",
+                    "c0_19", "c0_20", "c0_21", "c0_22", "badpaddr", "debug", "perf",
+                    "c0_26", "c0_27", "taglo", "taghi", "errorepc",
+                };
+                this.cop0Registers = cop0Names
+                    .Select(n => factory.Reg32(n))
+                    .ToArray();
             }
             else
             {
-                hi = new RegisterStorage("hi", 32, 0, WordWidth);
-                lo = new RegisterStorage("lo", 33, 0, WordWidth);
+                dt = WordWidth;
+                gpRegs = factory.RangeOfReg(32, GpRegisterName, dt);
+                hi = factory.Reg("hi", dt);
+                lo = factory.Reg("lo", dt);
                 hi1 = null;
                 lo1 = null;
             }
-
-            var dt = WordWidth;
-
-            return from i in Enumerable.Range(0, 32)
-                join name in new[] {
-                    new { id = 29, n = "sp" },
-                    new { id = 31, n = "ra" }
-                } on i equals name.id into names
-                from name in names.DefaultIfEmpty()
-                select new RegisterStorage(
-                    name is not null 
-                        ? name.n 
-                        : $"r{i}",
-                    i,
-                    0,
-                    dt);
+            return gpRegs;
         }
 
-        private RegisterStorage[] CreateFpuRegisters()
+        private RegisterStorage[] CreateFpuRegisters(StorageFactory factory)
         {
-            return Enumerable.Range(0, 32)
-                .Select(i => new RegisterStorage(
-                    $"f{i}",
-                    i + 64,
-                    0,
-                    PrimitiveType.Word32))
-                .ToArray();
+            return factory.RangeOfReg(32, i => $"f{i}", PrimitiveType.Word32);
         }
 
-        private RegisterStorage[] CreateCcRegs()
+        private RegisterStorage[] CreateCcRegs(StorageFactory factory)
         {
-            return Enumerable.Range(0, 8)
-                .Select(i => new RegisterStorage(
-                    string.Format("cc{0}", i),
-                    0x3000,
-                    0,
-                    PrimitiveType.Bool))
-                .ToArray();
+            return factory.RangeOfReg(8, i => $"cc{i}", PrimitiveType.Bool);
         }
 
-        private RegisterStorage[] CreateFpuCcRegs()
+        private RegisterStorage[] CreateFpuCcRegs(StorageFactory factory)
         {
-            return Enumerable.Range(0, 8)
-                .Select(i => new RegisterStorage(
-                    string.Format("fcc{0}", i),
-                    0x3000,
-                    0,
-                    PrimitiveType.Bool))
-                .ToArray();
+            return factory.RangeOfReg(8, i => $"fcc{i}", PrimitiveType.Bool);
         }
     }
 

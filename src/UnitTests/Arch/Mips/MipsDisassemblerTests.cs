@@ -26,6 +26,7 @@ using Reko.Core.Types;
 using Reko.Core.Expressions;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using Reko.Arch.Mips.Machine;
 
 namespace Reko.UnitTests.Arch.Mips
 {

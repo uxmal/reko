@@ -20,6 +20,8 @@
 
 using NUnit.Framework;
 using Reko.Arch.Mips;
+using Reko.Arch.Mips.Disassembler;
+using Reko.Arch.Mips.Machine;
 using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
