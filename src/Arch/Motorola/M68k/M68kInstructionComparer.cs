@@ -163,33 +163,33 @@ namespace Reko.Arch.Motorola.M68k
                 }
 
         private int GetIndexedHash(IndexedOperand indexOp)
-                {
+        {
             int h = IndexedCode;
-                if (!NormalizeRegisters)
+            if (!NormalizeRegisters)
+            {
+                if (indexOp.Base is not null)
                 {
-                    if (indexOp.Base is not null)
-                    {
-                        h = h * 7 ^ GetRegisterHash(indexOp.Base);
-                    }
-                    if (indexOp.Index is not null)
-                    {
-                        h = h * 11 ^ GetRegisterHash(indexOp.Index);
-                    h = h * 13 ^ indexOp.index_reg_width?.BitSize ?? 0;
-                    }
+                    h = h * 7 ^ GetRegisterHash(indexOp.Base);
                 }
-                if (!NormalizeConstants)
+                if (indexOp.Index is not null)
                 {
-                    if (indexOp.BaseDisplacement is not null)
-                    {
-                    h = h * 17 ^ GetConstantHash(indexOp.BaseDisplacement);
-                    }
-                    if (indexOp.IndexScale != 0)
-                    {
-                        h = h * 19 ^ indexOp.IndexScale;
-                    }
+                    h = h * 11 ^ GetRegisterHash(indexOp.Index);
+                    h = h * 13 ^ (int) (indexOp.index_reg_width?.BitSize ?? 0);
                 }
-                return h;
             }
+            if (!NormalizeConstants)
+            {
+                if (indexOp.BaseDisplacement is not null)
+                {
+                    h = h * 17 ^ GetConstantHash(indexOp.BaseDisplacement);
+                }
+                if (indexOp.IndexScale != 0)
+                {
+                    h = h * 19 ^ indexOp.IndexScale;
+                }
+            }
+            return h;
+        }
 
         private int GetRegisterSetHash(RegisterSetOperand regset)
                 {
