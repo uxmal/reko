@@ -26,6 +26,7 @@ using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
 using System.Diagnostics;
+using System.Reflection.PortableExecutable;
 
 namespace Reko.Arch.Mips.Rewriter
 {
@@ -704,7 +705,16 @@ namespace Reko.Arch.Mips.Rewriter
             var opDst = RewriteOperand0(instr, 0);
             var opSrc = RewriteOperand0(instr, 1);
             var opShift = RewriteOperand0(instr, 2);
-            AssignS(opDst, m.Shl(opSrc, opShift));
+            Expression src;
+            if (opShift.IsZero)
+            {
+                src = opSrc;
+            }
+            else
+            {
+                src = m.Shl(opSrc, opShift);
+            }
+            AssignS(opDst, src);
         }
 
         private void RewriteSra(MipsInstruction instr, DataType dt)
@@ -712,7 +722,16 @@ namespace Reko.Arch.Mips.Rewriter
             var opDst = RewriteOperand0(instr, 0);
             var opSrc = RewriteOperand0(instr, 1, dt);
             var opShift = RewriteOperand0(instr, 2, dt);
-            AssignS(opDst, m.Sar(opSrc, opShift));
+            Expression src;
+            if (opShift.IsZero)
+            {
+                src = opSrc;
+            }
+            else
+            {
+                src = m.Sar(opSrc, opShift);
+            }
+            AssignS(opDst, src);
         }
 
         private void RewriteSrl(MipsInstruction instr, PrimitiveType dt)
@@ -720,7 +739,16 @@ namespace Reko.Arch.Mips.Rewriter
             var opDst = RewriteOperand0(instr, 0);
             var opSrc = RewriteOperand0(instr, 1, dt);
             var opShift = RewriteOperand0(instr, 2);
-            AssignS(opDst, m.Shr(opSrc, opShift));
+            Expression src;
+            if (opShift.IsZero)
+            {
+                src = opSrc;
+            }
+            else
+            {
+                src = m.Shr(opSrc, opShift);
+            }
+            AssignS(opDst, src);
         }
 
         private void RewriteStore(MipsInstruction instr)

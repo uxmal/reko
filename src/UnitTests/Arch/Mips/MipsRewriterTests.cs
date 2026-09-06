@@ -568,7 +568,7 @@ namespace Reko.UnitTests.Arch.Mips
 
             AssertCode(0x0062182f, // dsubu v1, v1, v0
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r3 = r3 -u r2");
+                "1|L--|r3 = r3 - r2");
 
             AssertCode(0x208fa, // dsrl at,v0,0x3
                 "0|L--|00100000(4): 1 instructions",
@@ -652,7 +652,7 @@ namespace Reko.UnitTests.Arch.Mips
             AssertCode(
                 W(0, rs: 4, rt: 5, rd: 2, funct: 0x23),
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r2 = r4 -u r5");
+                "1|L--|r2 = r4 - r5");
         }
 
         [Test]

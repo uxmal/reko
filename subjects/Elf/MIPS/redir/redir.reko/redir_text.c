@@ -2717,15 +2717,16 @@ l00407C64:
 			if (dwLoc38 != 0x02)
 			{
 				uint64 v18_n = dwLoc3C *64 dwLoc2C;
-				int32 hi_n = (int32) SLICE(v18_n, ui32, 32);
+				Eq_n hi_n;
+				hi_n.u0 = (int32) SLICE(v18_n, ui32, 32);
 				Eq_n lo_n;
 				lo_n.u0 = (int32) (ui32) v18_n;
-				Eq_n r6_n = hi_n >> 0x00;
+				Eq_n r6_n = hi_n;
 				Eq_n r4_n;
-				if (hi_n >> 0x00 < 0x00)
+				if (hi_n < 0x00)
 				{
 					r4_n = lo_n;
-					ui32 r2_n = hi_n >> 0x00 & 0x01;
+					ui32 r2_n = hi_n & 0x01;
 					while (true)
 					{
 						if (r2_n != 0x00)
@@ -3100,10 +3101,10 @@ real64 __subdf3(real64 f12:f13, real64 f14:f15)
 // 004086B0: Register real64 __muldf3(Sequence real64 f12:f13, Sequence real64 f14:f15)
 real64 __muldf3(real64 f12:f13, real64 f14:f15)
 {
-	uint32 dwLoc78;
+	Eq_n dwLoc78;
 	Eq_n dwLoc5C;
 	Eq_n dwLoc74;
-	uint32 dwLoc60;
+	Eq_n dwLoc60;
 	ptr32 fp;
 	__unpack_d(fp + -64, fp + -0x0088);
 	__unpack_d(fp + -56, fp + -112);
@@ -3135,26 +3136,26 @@ l004087D0:
 		goto l004087A8;
 	if (dwLoc70 == 0x02)
 		goto l004087D0;
-	uint64 v35_n = (dwLoc60 >> 0x00) *64 dwLoc74;
-	uint64 v37_n = dwLoc5C *64 (dwLoc78 >> 0x00);
+	uint64 v35_n = dwLoc60 *64 dwLoc74;
+	uint64 v37_n = dwLoc5C *64 dwLoc78;
 	Eq_n lo_n;
 	lo_n.u0 = (int32) (ui32) v35_n;
 	Eq_n lo_n;
 	lo_n.u0 = (int32) (ui32) v37_n;
 	Eq_n r21_n = lo_n + lo_n;
 	Eq_n r24_n;
-	r24_n.u0 = (int32) (SLICE(v35_n, ui32, 32) + (dwLoc60 >> 0x00) *s 0 + dwLoc74 *s 0x00);
+	r24_n.u0 = (int32) (SLICE(v35_n, ui32, 32) + dwLoc60 *s 0 + dwLoc74 *s 0x00);
 	uint64 v44_n = dwLoc5C *64 dwLoc74;
-	uint64 v45_n = (dwLoc60 >> 0x00) *64 (dwLoc78 >> 0x00);
-	int32 lo_n = (int32) ((dwLoc78 >> 0x00) *s 0x00);
-	Eq_n r20_n = (word32) r24_n + (int32) ((SLICE(v37_n, ui32, 32) + dwLoc5C *s 0x00) + (dwLoc78 >> 0x00) *s 0) + (word32) (r21_n < lo_n);
+	uint64 v45_n = dwLoc60 *64 dwLoc78;
+	int32 lo_n = (int32) (dwLoc78 *s 0x00);
+	Eq_n r20_n = (word32) r24_n + (int32) ((SLICE(v37_n, ui32, 32) + dwLoc5C *s 0x00) + dwLoc78 *s 0) + (word32) (r21_n < lo_n);
 	int32 dwLoc30_n = 0x00;
 	Eq_n lo_n;
 	lo_n.u0 = (int32) (ui32) v44_n;
 	int32 r16_n = (int32) (SLICE(v44_n, ui32, 32) + dwLoc5C *s 0);
 	Eq_n lo_n;
 	lo_n.u0 = (int32) (ui32) v45_n;
-	int32 r18_n = (int32) (SLICE(v45_n, ui32, 32) + (dwLoc60 >> 0x00) *s 0x00) + lo_n;
+	int32 r18_n = (int32) (SLICE(v45_n, ui32, 32) + dwLoc60 *s 0x00) + lo_n;
 	int32 lo_n = (int32) (dwLoc74 *s 0);
 	Eq_n r16_n;
 	if (r20_n < r24_n)
@@ -3193,8 +3194,8 @@ l00408978:
 					goto l00408978;
 			}
 l00408998:
-			Eq_n r5_n = (word32) lo_n + (r20_n >> 0x00);
-			Eq_n r13_n = (word32) r5_n.u1 + dwLoc2C_n;
+			Eq_n r5_n = r20_n + lo_n;
+			Eq_n r13_n = (word32) r5_n + dwLoc2C_n;
 			Eq_n r12_n = dwLoc30_n + (r18_n + (word32) (r5_n < lo_n)) + (word32) (r13_n < r5_n);
 			Eq_n r6_n = r10_n;
 			Eq_n r7_n;
