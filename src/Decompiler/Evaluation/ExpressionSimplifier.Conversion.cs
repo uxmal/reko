@@ -104,6 +104,19 @@ namespace Reko.Evaluation
                     {
                         return (exp, true);
                     }
+                    if (!conversion.SourceDataType.Domain.HasFlag(Domain.Real) &&
+                        !conversion.DataType.Domain.HasFlag(Domain.Real))
+                    {
+                        if (conversion.SourceDataType.IsWord)
+                            return (exp, true);
+                        var intersection = conversion.SourceDataType.Domain & conversion.DataType.Domain;
+                        if (intersection != 0)
+                        {
+                            var dtNew = PrimitiveType.Create(intersection, exp.DataType.BitSize);
+                            exp.DataType = dtNew;
+                            return (exp, true);
+                        }
+                    }
                     conversion = m.Convert(exp, exp.DataType, conversion.DataType);
                 }
                 else

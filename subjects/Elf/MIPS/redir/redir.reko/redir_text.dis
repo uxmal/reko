@@ -3342,7 +3342,7 @@ l0040697C:
 	r5_30 = <invalid>
 	r4_29 = <invalid>
 	strftime(fp + -72<i32>, SLICE(28<i32>, size_t, 0), 0x0040A74C<p32>, gmtime(&dwLoc28, r4_29, &dwLoc28, 0<32>, r5_30, r6_31, r7_33, 0x10008860<32>))
-	hi_71 = CONVERT(SLICE(dwLoc24 *s64 0x10624DD3<32>, ui32, 32), ui32, int32)
+	hi_71 = SLICE(dwLoc24 *s64 0x10624DD3<32>, int32, 32)
 	fprintf(r4, "%s:%s.%03d:%s\n", Mem77[Mem19[0x100008FC<32>:word32] + (r5 << 2<8>):word32], fp + -72<i32>, (hi_71 >> 6<8>) - (dwLoc24 >> 0x1F<8>), r7)
 	fflush(r4)
 	Mem108[Mem77[0x10000878<32>:word32] + 2084<i32>:word32] = Mem77[Mem77[0x10000878<32>:word32] + 2084<i32>:word32] + 1<i32>
@@ -3978,8 +3978,8 @@ l00407C8C:
 	goto l00407DA4
 l00407CA8:
 	v18_60 = dwLoc3C *u64 dwLoc2C
-	hi_62 = CONVERT(SLICE(v18_60, ui32, 32), ui32, int32)
-	lo_61 = CONVERT(SLICE(v18_60, ui32, 0), ui32, int32)
+	hi_62 = SLICE(v18_60, int32, 32)
+	lo_61 = SLICE(v18_60, int32, 0)
 	r6_101 = hi_62
 	branch hi_62 >= 0<32> l00407CF4_ds_t
 l00407CF4_ds_f:
@@ -4601,26 +4601,24 @@ l004087D0:
 l004087EC:
 	v35_121 = dwLoc60 *u64 dwLoc74
 	v37_128 = dwLoc5C *u64 dwLoc78
-	lo_122 = CONVERT(SLICE(v35_121, ui32, 0), ui32, int32)
-	lo_129 = CONVERT(SLICE(v37_128, ui32, 0), ui32, int32)
+	lo_122 = SLICE(v35_121, int32, 0)
+	lo_129 = SLICE(v37_128, int32, 0)
 	r21_144 = lo_122 + lo_129
-	r24_138 = CONVERT(SLICE(v35_121, ui32, 32) + dwLoc60 *s 0<i32> + dwLoc74 *s 0<32>, ui32, int32)
+	r24_138 = SLICE(v35_121, int32, 32) + dwLoc60 *s 0<i32> + dwLoc74 *s 0<32>
 	v44_158 = dwLoc5C *u64 dwLoc74
 	v45_165 = dwLoc60 *u64 dwLoc78
-	lo_173 = CONVERT(dwLoc78 *s 0<32>, ui32, int32)
-	r20_150 = r24_138 + CONVERT((SLICE(v37_128, ui32, 32) + dwLoc5C *s 0<32>) + dwLoc78 *s 0<i32>, ui32, int32) + CONVERT(r21_144 <u lo_129, bool, word32)
+	r20_150 = r24_138 + ((SLICE(v37_128, int32, 32) + dwLoc5C *s 0<32>) + dwLoc78 *s 0<i32>) + CONVERT(r21_144 <u lo_129, bool, word32)
 	dwLoc30_611 = 0<32>
-	lo_159 = CONVERT(SLICE(v44_158, ui32, 0), ui32, int32)
-	r16_163 = CONVERT(SLICE(v44_158, ui32, 32) + dwLoc5C *s 0<i32>, ui32, int32)
-	lo_166 = CONVERT(SLICE(v45_165, ui32, 0), ui32, int32)
-	r18_175 = CONVERT(SLICE(v45_165, ui32, 32) + dwLoc60 *s 0<32>, ui32, int32) + lo_173
-	lo_178 = CONVERT(dwLoc74 *s 0<i32>, ui32, int32)
+	lo_159 = SLICE(v44_158, int32, 0)
+	r16_163 = SLICE(v44_158, int32, 32) + dwLoc5C *s 0<i32>
+	lo_166 = SLICE(v45_165, int32, 0)
+	r18_175 = SLICE(v45_165, int32, 32) + dwLoc60 *s 0<32> + dwLoc78 *s 0<32>
 	branch r20_150 <u r24_138 l00408910_ds_t
 l00408910_ds_f:
-	r16_181 = r16_163 + lo_178
+	r16_181 = r16_163 + dwLoc74 *s 0<i32>
 	goto l00408914
 l00408910_ds_t:
-	r16_181 = r16_163 + lo_178
+	r16_181 = r16_163 + dwLoc74 *s 0<i32>
 	goto l00408924
 l00408914:
 	branch r24_138 != r20_150 l00408918_ds_t
@@ -4634,7 +4632,7 @@ l0040891C:
 l00408924:
 	dwLoc30_611 = 1<i32>
 l00408934:
-	r10_204 = r16_181 + lo_173 + CONVERT(lo_159 <u 0<32>, bool, word32)
+	r10_204 = r16_181 + dwLoc78 *s 0<32> + CONVERT(lo_159 <u 0<32>, bool, word32)
 	dwLoc2C_618 = 0<32>
 	branch r10_204 <u r16_181 l00408978
 l00408968:

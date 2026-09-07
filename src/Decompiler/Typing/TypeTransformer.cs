@@ -76,7 +76,7 @@ namespace Reko.Typing
             this.program = program;
 			this.eventListener = eventListener;
 			this.unifier = new Unifier(factory, trace);
-            this.visitedTypes = new Dictionary<DataType, DataType>();
+            this.visitedTypes = [];
         }
 
 

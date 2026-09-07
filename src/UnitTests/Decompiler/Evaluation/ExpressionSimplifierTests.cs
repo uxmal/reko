@@ -1479,5 +1479,15 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             exp = RunExpressionSimplifier(exp);
             Assert.That(exp.ToString(), Is.EqualTo("foo_1 == 0x42<32>"));
         }
+
+        [Test]
+        public void Exs_Useless_Convert()
+        {
+            Given_ExpressionSimplifier();
+            var ui32 = PrimitiveType.Create(Domain.SignedInt | Domain.UnsignedInt, 32);
+            Expression exp = m.Convert(m.Slice(foo64, ui32), ui32, PrimitiveType.Int32);
+            exp = RunExpressionSimplifier(exp);
+            Assert.That(exp.ToString(), Is.EqualTo("SLICE(foo64_2, int32, 0)"));
+        }
     }
 }

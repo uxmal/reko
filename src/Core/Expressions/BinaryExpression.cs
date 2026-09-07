@@ -67,25 +67,8 @@ namespace Reko.Core.Expressions
         /// <summary>
         /// The right operand of the binary expression.
         /// </summary>
-        public Expression Right
-        {
-            get => r;
-            set
-            {
-                if (Operator == Core.Operators.Operator.Shl ||
-                    Operator == Core.Operators.Operator.Shr ||
-                    Operator == Core.Operators.Operator.Sar)
-                {
-                    if (value.IsZero)
-                    {
-                        _ = this; //$DEBUG
-                    }
-                }
-                r = value;
+        public Expression Right { get; set; }
 
-            }
-        }
-        private Expression r = null!;
         /// <inheritdoc/>
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
         {

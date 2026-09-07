@@ -2263,7 +2263,7 @@ void log_string(FILE * r4, ui32 r5, char * r7, word32 ra)
 	struct Eq_n * r4_n = (struct Eq_n *) <invalid>;
 	ptr32 fp;
 	strftime(fp + -72, (size_t) 28, "%Y-%m-%d %H:%M:%S", gmtime(&dwLoc28, r4_n, &dwLoc28, 0x00, r5_n, r6_n, r7_n, 0x10008860));
-	int32 hi_n = (int32) SLICE(dwLoc24 *s64 274877907, ui32, 32);
+	int32 hi_n = SLICE(dwLoc24 *s64 274877907, int32, 32);
 	fprintf(r4, "%s:%s.%03d:%s\n", g_ptr100008FC[r5], fp + -72, (hi_n >> 0x06) - (dwLoc24 >> 0x1F), r7);
 	fflush(r4);
 	++g_ptr10000878->dw0824;
@@ -2718,9 +2718,8 @@ l00407C64:
 			{
 				uint64 v18_n = dwLoc3C *64 dwLoc2C;
 				Eq_n hi_n;
-				hi_n.u0 = (int32) SLICE(v18_n, ui32, 32);
-				Eq_n lo_n;
-				lo_n.u0 = (int32) (ui32) v18_n;
+				hi_n.u0 = SLICE(v18_n, int32, 32);
+				Eq_n lo_n = (int32) v18_n;
 				Eq_n r6_n = hi_n;
 				Eq_n r4_n;
 				if (hi_n < 0x00)
@@ -3138,34 +3137,27 @@ l004087D0:
 		goto l004087D0;
 	uint64 v35_n = dwLoc60 *64 dwLoc74;
 	uint64 v37_n = dwLoc5C *64 dwLoc78;
-	Eq_n lo_n;
-	lo_n.u0 = (int32) (ui32) v35_n;
-	Eq_n lo_n;
-	lo_n.u0 = (int32) (ui32) v37_n;
+	Eq_n lo_n = (int32) v35_n;
+	Eq_n lo_n = (int32) v37_n;
 	Eq_n r21_n = lo_n + lo_n;
-	Eq_n r24_n;
-	r24_n.u0 = (int32) (SLICE(v35_n, ui32, 32) + dwLoc60 *s 0 + dwLoc74 *s 0x00);
+	Eq_n r24_n = SLICE(v35_n, int32, 32) + dwLoc60 *s 0 + dwLoc74 *s 0x00;
 	uint64 v44_n = dwLoc5C *64 dwLoc74;
 	uint64 v45_n = dwLoc60 *64 dwLoc78;
-	int32 lo_n = (int32) (dwLoc78 *s 0x00);
-	Eq_n r20_n = (word32) r24_n + (int32) ((SLICE(v37_n, ui32, 32) + dwLoc5C *s 0x00) + dwLoc78 *s 0) + (word32) (r21_n < lo_n);
+	Eq_n r20_n = (word32) r24_n + ((SLICE(v37_n, int32, 32) + dwLoc5C *s 0x00) + dwLoc78 *s 0) + (word32) (r21_n < lo_n);
 	int32 dwLoc30_n = 0x00;
-	Eq_n lo_n;
-	lo_n.u0 = (int32) (ui32) v44_n;
-	int32 r16_n = (int32) (SLICE(v44_n, ui32, 32) + dwLoc5C *s 0);
-	Eq_n lo_n;
-	lo_n.u0 = (int32) (ui32) v45_n;
-	int32 r18_n = (int32) (SLICE(v45_n, ui32, 32) + dwLoc60 *s 0x00) + lo_n;
-	int32 lo_n = (int32) (dwLoc74 *s 0);
+	Eq_n lo_n = (int32) v44_n;
+	int32 r16_n = SLICE(v44_n, int32, 32) + dwLoc5C *s 0;
+	Eq_n lo_n = (int32) v45_n;
+	int32 r18_n = SLICE(v45_n, int32, 32) + dwLoc60 *s 0x00 + dwLoc78 *s 0x00;
 	Eq_n r16_n;
 	if (r20_n < r24_n)
 	{
-		r16_n = r16_n + lo_n;
+		r16_n = r16_n + dwLoc74 *s 0;
 		goto l00408924;
 	}
 	else
 	{
-		r16_n = r16_n + lo_n;
+		r16_n = r16_n + dwLoc74 *s 0;
 		if (r24_n == r20_n)
 		{
 			word32 r2_n = (word32) (r21_n < lo_n);
@@ -3177,7 +3169,7 @@ l00408924:
 			}
 		}
 l00408934:
-		Eq_n r10_n = (word32) r16_n + lo_n + (word32) (lo_n < 0x00);
+		Eq_n r10_n = (word32) r16_n + dwLoc78 *s 0x00 + (word32) (lo_n < 0x00);
 		int32 dwLoc2C_n = 0x00;
 		if (r10_n < r16_n)
 		{

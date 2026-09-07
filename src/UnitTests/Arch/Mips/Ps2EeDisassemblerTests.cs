@@ -45,7 +45,6 @@ public class Ps2EeDis_assemblerTests : DisassemblerTestBase<MipsInstruction>
 
         this.arch = new MipsLe32Architecture(CreateServiceContainer(), "mips-32-le", options);
         this.addrBase = Address.Ptr32(0x0010_0000);
-        Reko.Core.Machine.Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
     }
 
     public override IProcessorArchitecture Architecture => this.arch;
