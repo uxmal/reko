@@ -14,7 +14,7 @@ Eq_1: (struct "Globals"
 		(16F00 (str char) str16F00)
 		(16F04 word32 aux_info_suffix)
 		(16F10 word32 save_suffix)
-		(16F14 (ptr32 char) ptr16F14)
+		(16F14 (ptr32 char) g_ptr16F14_struct__iobuf)
 		(16F30 (str char) str16F30)
 		(16F40 word32 hash_mask)
 		(17040 (str char) str17040)
@@ -44,7 +44,7 @@ Eq_1: (struct "Globals"
 		(174A0 (str char) str174A0)
 		(174D0 (str char) str174D0)
 		(17500 (str char) str17500)
-		(1753C (ptr32 char) ptr1753C)
+		(1753C (ptr32 char) g_ptr1753C_if)
 		(17540 (arr (ptr32 char)) a17540)
 		(17598 (str char) str17598)
 		(175A0 (str char) str175A0)
@@ -124,7 +124,7 @@ Eq_1: (struct "Globals"
 		(27E9C (ptr32 code) getpid_GOT)
 		(27EA8 (ptr32 code) __urem64_GOT)
 		(27EB4 (ptr32 code) __udiv64_GOT)
-		(27ED0 (ptr32 char) ptr27ED0)
+		(27ED0 (ptr32 char) g_ptr27ED0_opt_rtems_lib_gcc_lib)
 		(27F20 word32 errors)
 		(27F24 word32 compiler_file_name)
 		(27F28 word32 version_flag)
@@ -4865,7 +4865,7 @@ T_453: (in 0<32> @ 000119E8 : word32)
   Class: Eq_452
   DataType: (ptr32 char)
   OrigDataType: word32
-T_454: (in g_ptr27ED0 == 0x00000000<p32> @ 000119E8 : bool)
+T_454: (in g_ptr27ED0_opt_rtems_lib_gcc_lib == 0x00000000<p32> @ 000119E8 : bool)
   Class: Eq_454
   DataType: bool
   OrigDataType: bool
@@ -33013,7 +33013,7 @@ struct Globals {
 	char str16F00[];	// 16F00
 	word32 aux_info_suffix;	// 16F04
 	word32 save_suffix;	// 16F10
-	char * ptr16F14;	// 16F14
+	char * g_ptr16F14_struct__iobuf;	// 16F14
 	char str16F30[];	// 16F30
 	word32 hash_mask;	// 16F40
 	char str17040[];	// 17040
@@ -33043,7 +33043,7 @@ struct Globals {
 	char str174A0[];	// 174A0
 	char str174D0[];	// 174D0
 	char str17500[];	// 17500
-	char * ptr1753C;	// 1753C
+	char * g_ptr1753C_if;	// 1753C
 	char * a17540[];	// 17540
 	char str17598[];	// 17598
 	char str175A0[];	// 175A0
@@ -33123,7 +33123,7 @@ struct Globals {
 	<anonymous> * getpid_GOT;	// 27E9C
 	<anonymous> * __urem64_GOT;	// 27EA8
 	<anonymous> * __udiv64_GOT;	// 27EB4
-	char * ptr27ED0;	// 27ED0
+	char * g_ptr27ED0_opt_rtems_lib_gcc_lib;	// 27ED0
 	word32 errors;	// 27F20
 	word32 compiler_file_name;	// 27F24
 	word32 version_flag;	// 27F28

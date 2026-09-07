@@ -8,7 +8,7 @@ word32 _lib_version = 0x01; // 00016EF8
 char g_str16F00[] = ".X"; // 00016F00
 word32 aux_info_suffix = 0x00016F00; // 00016F04
 word32 save_suffix = 93960; // 00016F10
-char * g_ptr16F14 = &g_str16F30; // 00016F14
+char * g_ptr16F14_struct__iobuf = &g_str16F30; // 00016F14
 char g_str16F30[] = "struct _iobuf"; // 00016F30
 word32 hash_mask = 0x01FF; // 00016F40
 char g_str17040[] = "/opt/rtems/lib/gcc-lib/sparc-rtems/2.95.2/../../../../include/g++-3"; // 00017040
@@ -38,7 +38,7 @@ char g_str17470[] = "%s: declaration of function `%s' not converted\n"; // 00017
 char g_str174A0[] = "%s: %d: warning: found `%s' but expected `%s'\n"; // 000174A0
 char g_str174D0[] = "%s: definition of function `%s' not converted\n"; // 000174D0
 char g_str17500[] = "%s: %d: warning: definition of %s not converted\n"; // 00017500
-char * g_ptr1753C = &g_str17598; // 0001753C
+char * g_ptr1753C_if = &g_str17598; // 0001753C
 char * g_a17540[] = // 00017540
 	{
 	};

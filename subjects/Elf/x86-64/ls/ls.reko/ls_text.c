@@ -112,7 +112,7 @@ l0000000000402B30:
 				{
 				case ~0x82:
 					word32 eax_n = g_dw61A56C;
-					char * rcx_n = g_ptr61A570;
+					char * rcx_n = g_ptr61A570_8_n;
 					char * rsi_n;
 					if (eax_n != 0x01)
 					{
@@ -892,7 +892,7 @@ l0000000000404857:
 									}
 									g_b61B129 = 0x00;
 l000000000040478E:
-									if (g_qw61A450 == 0x06 && strncmp(g_ptr61A458, "target", 6) == 0x00)
+									if (g_qw61A450 == 0x06 && strncmp(g_ptr61A458_01_n, "target", 6) == 0x00)
 										g_b61B198 = 0x01;
 									goto l0000000000403AE2;
 								}

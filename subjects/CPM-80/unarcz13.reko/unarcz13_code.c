@@ -2965,7 +2965,7 @@ byte g_b15EF = 0x43; // 15EF
 byte g_b15F7 = 0x53; // 15F7
 byte g_b15FF = 0x55; // 15FF
 char g_b1607 = 'N'; // 1607
-char g_a1608[] = // 1608
+char g_a1608_ame___________Length_[] = // 1608
 	{
 	};
 byte g_b16AD = 0x00; // 16AD

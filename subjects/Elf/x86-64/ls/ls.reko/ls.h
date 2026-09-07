@@ -417,14 +417,14 @@ Eq_1: (struct "Globals"
 		(61A410 (struct "Eq_2321" (0 Eq_14 t0000) (8 (ptr64 void) ptr0008)) t61A410)
 		(61A420 (struct "Eq_2321") t61A420)
 		(61A450 word64 qw61A450)
-		(61A458 (ptr64 char) ptr61A458)
+		(61A458 (ptr64 char) g_ptr61A458_01_36)
 		(61A550 (struct "Eq_2321") t61A550)
 		(61A560 Eq_305 t61A560)
 		(61A568 byte b61A568)
 		(61A569 byte b61A569)
 		(61A56A char b61A56A)
 		(61A56C word32 dw61A56C)
-		(61A570 (ptr64 char) ptr61A570)
+		(61A570 (ptr64 char) g_ptr61A570_8_21)
 		(61A578 (ptr64 code) ptr61A578)
 		(61A580 int32 dw61A580)
 		(61A5A0 Eq_13635 t61A5A0)
@@ -12609,7 +12609,7 @@ T_1361: (in 6<i32> @ 00000000004047B4 : int32)
   Class: Eq_1357
   DataType: int32
   OrigDataType: int32
-T_1362: (in strncmp(g_ptr61A458, "target", 6<i32>) @ 00000000004047B4 : int32)
+T_1362: (in strncmp(g_ptr61A458_01_36, "target", 6<i32>) @ 00000000004047B4 : int32)
   Class: Eq_1362
   DataType: int32
   OrigDataType: int32
@@ -12617,7 +12617,7 @@ T_1363: (in 0<32> @ 00000000004047B4 : word32)
   Class: Eq_1362
   DataType: int32
   OrigDataType: word32
-T_1364: (in strncmp(g_ptr61A458, "target", 6<i32>) != 0<32> @ 00000000004047B4 : bool)
+T_1364: (in strncmp(g_ptr61A458_01_36, "target", 6<i32>) != 0<32> @ 00000000004047B4 : bool)
   Class: Eq_1364
   DataType: bool
   OrigDataType: bool
@@ -78987,14 +78987,14 @@ struct Globals {
 	struct Eq_2321 t61A410;	// 61A410
 	struct Eq_2321 t61A420;	// 61A420
 	word64 qw61A450;	// 61A450
-	char * ptr61A458;	// 61A458
+	char * g_ptr61A458_01_36;	// 61A458
 	struct Eq_2321 t61A550;	// 61A550
 	Eq_305 t61A560;	// 61A560
 	byte b61A568;	// 61A568
 	byte b61A569;	// 61A569
 	char b61A56A;	// 61A56A
 	word32 dw61A56C;	// 61A56C
-	char * ptr61A570;	// 61A570
+	char * g_ptr61A570_8_21;	// 61A570
 	<anonymous> * ptr61A578;	// 61A578
 	int32 dw61A580;	// 61A580
 	Eq_13635 t61A5A0;	// 61A5A0

@@ -18,11 +18,9 @@
  */
 #endregion
 
-using Reko.Core.Expressions;
+using NUnit.Framework;
 using Reko.Core.Types;
 using Reko.Typing;
-using NUnit.Framework;
-using System;
 
 namespace Reko.UnitTests.Decompiler.Typing
 {
@@ -30,7 +28,7 @@ namespace Reko.UnitTests.Decompiler.Typing
 	public class ComplexTypeNamerTests
 	{
 		[Test]
-		public void NameStructure()
+		public void Ctn_NameStructure()
 		{
 			var store = new TypeStore();
 			var factory = new TypeFactory();
@@ -42,5 +40,6 @@ namespace Reko.UnitTests.Decompiler.Typing
 			ctn.RenameAllTypes(store);
 			Assert.AreEqual("Eq_1", tv1.Class.DataType.Name);
 		}
+
 	}
 }

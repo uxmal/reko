@@ -4,7 +4,7 @@
 
 #include "sparc-rtems-unprotoize.h"
 
-char * g_ptr27ED0 = &g_str17040; // 00027ED0
+char * g_ptr27ED0_opt_rtems_lib_gcc_lib = &g_str17040; // 00027ED0
 word32 errors = 0x00; // 00027F20
 word32 compiler_file_name = 0x00017098; // 00027F24
 word32 version_flag = 0x00; // 00027F28

@@ -87,7 +87,7 @@ Eq_1: (struct "Globals"
 		(15F7 byte b15F7)
 		(15FF byte b15FF)
 		(1607 char b1607)
-		(1608 (arr char) a1608)
+		(1608 (arr char) g_a1608_ame___________Length_)
 		(16AD byte b16AD)
 		(1742 Eq_76 t1742)
 		(1744 byte b1744)
@@ -17460,7 +17460,7 @@ typedef struct Globals {
 	byte b15F7;	// 15F7
 	byte b15FF;	// 15FF
 	char b1607;	// 1607
-	char a1608[];	// 1608
+	char g_a1608_ame___________Length_[];	// 1608
 	byte b16AD;	// 16AD
 	Eq_76 t1742;	// 1742
 	byte b1744;	// 1744

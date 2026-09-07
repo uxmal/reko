@@ -47,13 +47,13 @@ Eq_1: (struct "Globals"
 		(100020A8 Eq_268 t100020A8)
 		(100020CC word32 dw100020CC)
 		(100020E0 (str char) str100020E0)
-		(100020F4 (str char) str100020F4)
+		(100020F4 (str char) g_str100020F4_fdiv)
 		(100020FC (str char) str100020FC)
-		(10002110 (str char) str10002110)
+		(10002110 (str char) g_str10002110_div)
 		(10002114 (str char) str10002114)
-		(10002128 (str char) str10002128)
+		(10002128 (str char) g_str10002128_dif)
 		(1000212C (str char) str1000212C)
-		(10002140 (str char) str10002140)
+		(10002140 (str char) g_str10002140_sum)
 		(10002144 (str char) str10002144)
 		(1000214C (str char) str1000214C)
 		(10002150 (str char) str10002150)
@@ -5258,13 +5258,13 @@ typedef struct Globals {
 	Eq_268 t100020A8;	// 100020A8
 	word32 dw100020CC;	// 100020CC
 	char str100020E0[];	// 100020E0
-	char str100020F4[];	// 100020F4
+	char g_str100020F4_fdiv[];	// 100020F4
 	char str100020FC[];	// 100020FC
-	char str10002110[];	// 10002110
+	char g_str10002110_div[];	// 10002110
 	char str10002114[];	// 10002114
-	char str10002128[];	// 10002128
+	char g_str10002128_dif[];	// 10002128
 	char str1000212C[];	// 1000212C
-	char str10002140[];	// 10002140
+	char g_str10002140_sum[];	// 10002140
 	char str10002144[];	// 10002144
 	char str1000214C[];	// 1000214C
 	char str10002150[];	// 10002150

@@ -25,6 +25,7 @@ using Reko.Core.NativeInterface.Interfaces;
 using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
 namespace Reko.Core.NativeInterface
@@ -165,5 +166,17 @@ namespace Reko.Core.NativeInterface
 		{
 			throw new NotImplementedException();
 		}
+
+        /// <inheritdoc/>
+        public override bool TryReadDataAddress(IMemory memory, Address addr, [MaybeNullWhen(false)] out Address addrData)
+        {
+            if (!Endianness.TryRead(memory, addr, this.PointerType, out var c))
+            {
+                addrData = default;
+                return false;
+            }
+            addrData = MakeAddressFromConstant(c, false);
+            return true;
+        }
     }
 }

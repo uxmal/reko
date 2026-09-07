@@ -18,8 +18,14 @@
  */
 #endregion
 
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Output;
 using Reko.Core.Types;
 using System;
+using System.Runtime.Intrinsics.Arm;
+using System.Text;
 
 namespace Reko.Typing
 {

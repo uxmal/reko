@@ -52,6 +52,7 @@ namespace Reko.Typing
         private TypeVariableReplacer? tvr;
 		private TypeTransformer? trans;
 		private ComplexTypeNamer? ctn;
+		private GlobalFieldNamer? gfn;
 		private TypedExpressionRewriter? ter;
 
         /// <summary>
@@ -89,6 +90,7 @@ namespace Reko.Typing
             tvr = new TypeVariableReplacer(store);
             trans = new TypeTransformer(factory, store,program, eventListener);
             ctn = new ComplexTypeNamer();
+            gfn = new GlobalFieldNamer(store, program, 20);
             ter = new TypedExpressionRewriter(program, store, eventListener);
             
             RestrictProcedures(program, 0, 0, false);
@@ -108,6 +110,7 @@ namespace Reko.Typing
 
 			Time("Transforming data types", trans.Transform);
 			Time("Renaming data types", () => ctn.RenameAllTypes(store));
+            Time("Name global fields", () => gfn.NameGlobalFields());
             Time("Rewriting Program with type information", () => ter.RewriteProgram(program));
 		}
 

@@ -398,10 +398,10 @@ Eq_n in_system_include_dir(Eq_n o0)
 	if (*o0.u4 == 0x2F)
 	{
 		Eq_n i0_n;
-		if (g_ptr27ED0 != null)
+		if (g_ptr27ED0_opt_rtems_lib_gcc_lib != null)
 		{
-			struct Eq_n * l1_n = (struct Eq_n *) &g_ptr27ED0;
-			char * l0_n = g_ptr27ED0;
+			struct Eq_n * l1_n = (struct Eq_n *) &g_ptr27ED0_opt_rtems_lib_gcc_lib;
+			char * l0_n = g_ptr27ED0_opt_rtems_lib_gcc_lib;
 			while (true)
 			{
 				if (strncmp(o0, l0_n, strlen(l0_n)) == 0x00)
@@ -675,7 +675,7 @@ void unexpand_if_needed(struct Eq_n * o0)
 l00011DA0:
 	if (o0_n != null)
 	{
-		struct Eq_n * l4_n = (struct Eq_n *) &g_ptr16F14;
+		struct Eq_n * l4_n = (struct Eq_n *) &g_ptr16F14_struct__iobuf;
 		char * l0_n = (char *) "struct _iobuf";
 		while (true)
 		{
@@ -2314,7 +2314,7 @@ l00014850:
 		sp_n->a0060[l0_n] = 0x00;
 		if (o0_n != null)
 		{
-			word32 * l0_n = &g_ptr1753C;
+			word32 * l0_n = &g_ptr1753C_if;
 			char * o1_n = (char *) "if";
 			while (strcmp(sp_n->a0060, o1_n) != 0x00)
 			{

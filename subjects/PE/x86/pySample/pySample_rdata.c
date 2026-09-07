@@ -45,13 +45,13 @@ Eq_n g_t100020A0 = null; // 100020A0
 Eq_n g_t100020A8 = null; // 100020A8
 word32 g_dw100020CC = 0x00; // 100020CC
 char g_str100020E0[] = "fdiv(a, b) = a / b"; // 100020E0
-char g_str100020F4[] = "fdiv"; // 100020F4
+char g_str100020F4_fdiv[] = "fdiv"; // 100020F4
 char g_str100020FC[] = "div(a, b) = a / b"; // 100020FC
-char g_str10002110[] = "div"; // 10002110
+char g_str10002110_div[] = "div"; // 10002110
 char g_str10002114[] = "dif(a, b) = a - b"; // 10002114
-char g_str10002128[] = "dif"; // 10002128
+char g_str10002128_dif[] = "dif"; // 10002128
 char g_str1000212C[] = "sum(a, b) = a + b"; // 1000212C
-char g_str10002140[] = "sum"; // 10002140
+char g_str10002140_sum[] = "sum"; // 10002140
 char g_str10002144[] = "ii:sum"; // 10002144
 char g_str1000214C[] = "i"; // 1000214C
 char g_str10002150[] = "ii:dif"; // 10002150

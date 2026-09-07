@@ -574,6 +574,16 @@ namespace Reko.Core
         bool TryParseAddress(string? txtAddr, [MaybeNullWhen(false)] out Address addr);
 
         /// <summary>
+        /// Given a location in memory, attempts to read a pointer value from <paramref name="memory"/>
+        /// from that location.
+        /// </summary>
+        /// <param name="memory"><see cref="IMemory"/> from which to read a pointer value.</param>
+        /// <param name="addr">The address in memory from which to read the pointer value.</param>
+        /// <param name="addrStringData">The resulting address if the read was successful.</param>
+        /// <returns>True if the read was successful, false otherwise.</returns>
+        bool TryReadDataAddress(IMemory memory, Address addr, [MaybeNullWhen(false)] out Address addrStringData);
+
+        /// <summary>
         /// Given a <see cref="Constant"/>, returns an <see cref="Address"/> of the correct size for this architecture.
         /// </summary>
         /// <param name="c">Constant to be converted to address.</param>
@@ -790,6 +800,18 @@ namespace Reko.Core
 
         /// <inheritdoc/>
         public virtual bool TryRead(EndianImageReader rdr, PrimitiveType dt, [MaybeNullWhen(false)] out Constant value) => rdr.TryRead(dt, out value);
+
+        /// <inheritdoc/>
+        public virtual bool TryReadDataAddress(IMemory memory, Address addr, [MaybeNullWhen(false)] out Address addrData)
+        {
+            if (!Endianness.TryRead(memory, addr, this.PointerType, out var c))
+            {
+                addrData = default;
+                return false;
+            }
+            addrData = MakeAddressFromConstant(c, false);
+            return true;
+        }
 
         /// <inheritdoc/>
         public abstract IEqualityComparer<MachineInstruction>? CreateInstructionComparer(Normalize norm);
