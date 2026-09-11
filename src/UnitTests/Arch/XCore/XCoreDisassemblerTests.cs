@@ -25,8 +25,6 @@ using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Arch.XCore
 {
@@ -38,7 +36,7 @@ namespace Reko.UnitTests.Arch.XCore
 
         public XCore200DisassemblerTests()
         {
-            this.arch = new XCore200Architecture(CreateServiceContainer(), "xcore", new Dictionary<string, object>());
+            this.arch = new XCore200Architecture(CreateServiceContainer(), "xcore", []);
             this.addr = Address.Ptr32(0x00100000);
         }
 

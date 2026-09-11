@@ -61,7 +61,7 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
             sc = new ServiceContainer();
             sc.AddService<ITestGenerationService>(new UnitTestGenerationService(sc));
             sc.AddService<IFileSystemService>(new FileSystemService());
-            var arch = new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>());
+            var arch = new X86ArchitectureReal(sc, "x86-real-16", []);
             program = new Program() { Architecture = arch };
             asm = new X86TextAssembler(arch);
             configFile = null;

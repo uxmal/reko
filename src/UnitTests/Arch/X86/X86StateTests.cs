@@ -42,7 +42,7 @@ namespace Reko.UnitTests.Arch.X86
         [Test]
         public void X86St_OnBeforeCall_DecrementStackRegister()
         {
-            var arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32", new Dictionary<string, object>());
+            var arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32", []);
             var state = new X86State(arch);
             var esp = CreateId(Registers.esp);
             state.SetRegister(Registers.esp, Constant.Word32(-4));
@@ -55,7 +55,7 @@ namespace Reko.UnitTests.Arch.X86
         [Test]
         public void X86St_Simple()
         {
-            var arch = new X86ArchitectureReal(new ServiceContainer(), "x86-real-16", new Dictionary<string, object>());
+            var arch = new X86ArchitectureReal(new ServiceContainer(), "x86-real-16", []);
 
             X86State st = new X86State(arch);
             st.SetRegister(Registers.cs, Constant.Word16(0xC00));

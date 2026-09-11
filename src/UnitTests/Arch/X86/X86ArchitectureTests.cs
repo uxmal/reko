@@ -18,22 +18,16 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Expressions;
-using Reko.Core.Machine;
-using Reko.Core.Types;
-using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Xml.Serialization;
-using System.Xml;
-using System.Text;
-using System.ComponentModel.Design;
-using Reko.Core.Memory;
 using Reko.Core.Lib;
+using Reko.Core.Memory;
+using Reko.Core.Types;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
+using System.Linq;
 
 namespace Reko.UnitTests.Arch.X86
 {
@@ -44,7 +38,7 @@ namespace Reko.UnitTests.Arch.X86
 
 		public X86ArchitectureTests()
 		{
-			arch = new X86ArchitectureReal(new ServiceContainer(), "x86-real-16", new Dictionary<string, object>());
+            arch = new X86ArchitectureReal(new ServiceContainer(), "x86-real-16", []);
 		}
 
 		[Test]

@@ -42,7 +42,7 @@ namespace Reko.UnitTests.Arch.X86
 
         public IntelRegisterTests()
 		{
-			arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32", new Dictionary<string, object>());
+            arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32", []);
             lowByte = new BitRange(0, 8);
             highByte = new BitRange(8, 16);
             word = new BitRange(0, 16);

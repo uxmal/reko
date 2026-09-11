@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Arch.X86.Disassembler
 
         public X86Disassembler_32bit_Tests()
         {
-            arch = new X86ArchitectureFlat32(CreateServiceContainer(), "x86-protected-32", new Dictionary<string, object>());
+            arch = new X86ArchitectureFlat32(CreateServiceContainer(), "x86-protected-32", []);
             addr = Address.Ptr32(0x10000);
         }
 

@@ -18,18 +18,16 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Arch.X86;
+using Reko.Arch.X86.Rewriter;
 using Reko.Core;
 using Reko.Core.Expressions;
-using Reko.Core.Types;
-using NUnit.Framework;
-using System;
-using Reko.Core.Machine;
-using System.ComponentModel.Design;
-using Reko.Core.Memory;
-using System.Collections.Generic;
 using Reko.Core.Loading;
-using Reko.Arch.X86.Rewriter;
+using Reko.Core.Memory;
+using Reko.Core.Types;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Arch.X86.Rewriter
 {
@@ -49,7 +47,7 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
         public void Setup()
         {
             var sc = new ServiceContainer();
-            arch = new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>());
+            arch = new X86ArchitectureReal(sc, "x86-real-16", []);
             var mem = new ByteMemoryArea(Address.Ptr32(0x10000), new byte[4]);
             var segmentMap = new SegmentMap(
                 mem.BaseAddress,

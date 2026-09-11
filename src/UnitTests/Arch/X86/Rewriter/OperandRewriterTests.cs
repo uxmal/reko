@@ -18,20 +18,18 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Arch.X86;
+using Reko.Arch.X86.Rewriter;
 using Reko.Core;
 using Reko.Core.Expressions;
-using Reko.Core.Machine;
+using Reko.Core.Loading;
+using Reko.Core.Memory;
 using Reko.Core.Types;
-using NUnit.Framework;
+using Reko.Gui;
 using System;
 using System.Collections.Generic;
-using Reko.Core.Serialization;
 using System.ComponentModel.Design;
-using Reko.Core.Memory;
-using Reko.Core.Loading;
-using Reko.Arch.X86.Rewriter;
-using Reko.Gui;
 
 namespace Reko.UnitTests.Arch.X86.Rewriter
 {
@@ -52,7 +50,7 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
         [OneTimeSetUp]
         public void GlobalSetup()
         {
-            arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32", new Dictionary<string, object>());
+            arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32", []);
         }
 
         [SetUp]

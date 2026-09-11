@@ -29,7 +29,6 @@ using Reko.Environments.Windows;
 using Reko.Scanning;
 using Reko.Services;
 using Reko.UnitTests.Mocks;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.IO;
@@ -40,7 +39,6 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
     [TestFixture]
     public class Rewrite32
     {
-        private Win32Platform win32;
         private IntelArchitecture arch;
         private ServiceContainer services;
         private FakeDecompilerEventListener eventListener;
@@ -71,7 +69,6 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
             services.AddService(typeof(IFileSystemService), new FileSystemService());
             services.AddService<IPluginLoaderService>(new PluginLoaderService());
             arch = new X86ArchitectureFlat32(services, "x86-protected-32", new Dictionary<string, object>());
-            win32 = new Win32Platform(services, arch);
         }
 
         [Test]

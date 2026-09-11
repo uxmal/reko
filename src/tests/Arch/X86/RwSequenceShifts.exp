@@ -7,9 +7,10 @@
 // eax:eax
 // ds:ds
 // edx:edx
+// v7:v7
 // SCZO:SCZO
 // C:C
-// v9:v9
+// v10:v10
 // Top:Top
 // return address size: 2
 define fn0C00_0000
@@ -20,7 +21,9 @@ fn0C00_0000_entry:
 l0C00_0000:
 	eax = Mem0[ds:0x100<16>:word32]
 	edx = Mem0[ds:0x104<16>:word32]
-	eax = __shld<word32>(eax, edx, 4<8>)
+	v7 = SEQ(edx, eax)
+	v7 = v7 >>u 4<8>
+	eax = SLICE(v7, word32, 0)
 	edx = edx >>u 4<32>
 	SCZO = cond(edx)
 	Mem0[ds:0x108<16>:word32] = eax
@@ -29,9 +32,9 @@ l0C00_0000:
 	edx = Mem0[ds:0x104<16>:word32]
 	eax = eax << 1<32>
 	SCZO = cond(eax)
-	v9 = C
+	v10 = C
 	C = (edx & 1<32> << 0x20<8> - 1<8>) != 0<32>
-	edx = __rcl<word32,byte>(edx, 1<8>, v9)
+	edx = __rcl<word32,byte>(edx, 1<8>, v10)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

@@ -28,6 +28,7 @@ namespace Reko.Arch.Blackfin
 {
     public static class Registers
     {
+        /**/
         public static RegisterBank All { get; }
 
         public static readonly RegisterStorage[] Data;
@@ -161,6 +162,8 @@ namespace Reko.Arch.Blackfin
 
             AllReg = MakeAllReg(true);
             MostReg = MakeAllReg(false);
+
+            All = new RegisterBank(AllReg);
 
             AZ = new FlagGroupStorage(ASTAT, 1 << 0, nameof(AZ));
             AN = new FlagGroupStorage(ASTAT, 1 << 1, nameof(AN));
