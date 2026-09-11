@@ -785,8 +785,10 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
                 m.Shld(m.edx, m.eax, m.cl);
             });
             AssertCode(
-                "0|L--|0C00:0000(4): 1 instructions",
-                "1|L--|edx = __shld<word32>(edx, eax, cl)");
+                "0|L--|0C00:0000(5): 3 instructions",
+                "1|L--|v5 = SEQ(edx, eax)",
+                "2|L--|v5 = v5 >>u 4<8>",
+                "3|L--|eax = SLICE(v5, word32, 0)");
         }
 
         [Test]

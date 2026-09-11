@@ -1048,7 +1048,7 @@ namespace Reko.Arch.X86.Assembler
 				ProcessShiftRotation(0x05);
 				break;
 			case Token.SHRD:
-				ProcessDoubleShift(0x04);
+				ProcessDoubleShift(0x08);
 				break;
 			case Token.SUB:
 				ProcessBinop(0x05);

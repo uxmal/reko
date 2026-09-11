@@ -1824,7 +1824,7 @@ namespace Reko.Arch.X86.Assembler
             if (dataWidth is null)
                 return;
 
-            if (!(op1.Operand is RegisterStorage regSrc))
+            if (op1.Operand is not RegisterStorage regSrc)
             {
                 Error("Second operand of SHLD/SHRD must be a register");
                 return;

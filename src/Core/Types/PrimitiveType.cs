@@ -151,7 +151,7 @@ namespace Reko.Core.Types
             if ((ulong)bitSize > int.MaxValue)
                 throw new ArgumentOutOfRangeException(nameof(bitSize));
             int bsize = (int)bitSize;
-            if (mpBitsizeToWord.TryGetValue((int)bsize, out var ptWord))
+            if (mpBitsizeToWord.TryGetValue(bsize, out var ptWord))
                 return ptWord;
 			string name;
             if (bsize == 1)

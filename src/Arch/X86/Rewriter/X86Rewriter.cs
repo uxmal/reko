@@ -764,10 +764,10 @@ namespace Reko.Arch.X86.Rewriter
                 case Mnemonic.sha256msg2: RewriteSha256(sha256msg2_intrinsic); break;
                 case Mnemonic.shl: RewriteBinOp(Operator.Shl); break;
                 case Mnemonic.shlx: RewriteBinOp(Operator.Shl); break;
-                case Mnemonic.shld: RewriteShxd(shld_intrinsic); break;
+                case Mnemonic.shld: RewriteShld(); break;
                 case Mnemonic.shr: RewriteBinOp(Operator.Shr); break;
                 case Mnemonic.shrx: RewriteBinOp(Operator.Shr); break;
-                case Mnemonic.shrd: RewriteShxd(shrd_intrinsic); break;
+                case Mnemonic.shrd: RewriteShrd(); break;
                 case Mnemonic.sidt: RewriteSxdt(sidt_intrinsic); break;
                 case Mnemonic.shufps: RewritePackedTernaryop(false, shufp_intrinsic, PrimitiveType.Real32); break;
                 case Mnemonic.vshufps: RewritePackedTernaryop(true, shufp_intrinsic, PrimitiveType.Real32); break;
@@ -1457,18 +1457,6 @@ namespace Reko.Arch.X86.Rewriter
             sgdt_intrinsic = new IntrinsicBuilder("__sgdt", true)
                 .GenericTypes("T")
                 .Returns("T");
-            shld_intrinsic = new IntrinsicBuilder("__shld", false)
-                .GenericTypes("T")
-                .Param("T")
-                .Param("T")
-                .Param(PrimitiveType.Byte)
-                .Returns("T");
-            shrd_intrinsic = new IntrinsicBuilder("__shrd", false)
-                .GenericTypes("T")
-                .Param("T")
-                .Param("T")
-                .Param(PrimitiveType.Byte)
-                .Returns("T");
             sidt_intrinsic = new IntrinsicBuilder("__sidt", true)
                 .GenericTypes("T")
                 .Returns("T");
@@ -1868,8 +1856,6 @@ namespace Reko.Arch.X86.Rewriter
         private static readonly IntrinsicProcedure sha256mds2_intrinsic = BinaryIntrinsic("__sha256mds2", PrimitiveType.Word128);
         private static readonly IntrinsicProcedure sha256msg1_intrinsic = BinaryIntrinsic("__sha256msg1", PrimitiveType.Word128);
         private static readonly IntrinsicProcedure sha256msg2_intrinsic = BinaryIntrinsic("__sha256msg2", PrimitiveType.Word128);
-        private static readonly IntrinsicProcedure shld_intrinsic;
-        private static readonly IntrinsicProcedure shrd_intrinsic;
         private static readonly IntrinsicProcedure shufp_intrinsic = GenericTernaryIntrinsic("__shufp");
         private static readonly IntrinsicProcedure significand_intrinsic;
         private static readonly IntrinsicProcedure sidt_intrinsic;

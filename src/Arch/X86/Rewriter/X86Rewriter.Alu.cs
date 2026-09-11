@@ -1194,7 +1194,7 @@ namespace Reko.Arch.X86.Rewriter
             var src1 = SrcOp(1);
             var src2 = SrcOp(2);
             var dst = SrcOp(0);
-            var rotation = Core.Intrinsics.CommonOps.Ror.MakeInstance(src1.DataType, src2.DataType);
+            var rotation = CommonOps.Ror.MakeInstance(src1.DataType, src2.DataType);
             m.Assign(dst, m.Fn(rotation, src1, src2));
         }
 
@@ -1231,12 +1231,28 @@ namespace Reko.Arch.X86.Rewriter
             m.Assign(id, value);
         }
 
-        private void RewriteShxd(IntrinsicProcedure intrinsic)
+        private void RewriteShld()
         {
             var arg1 = SrcOp(0);
             var arg2 = SrcOp(1);
             var arg3 = SrcOp(2);
-            m.Assign(arg1, m.Fn(intrinsic.MakeInstance(arg1.DataType), arg1, arg2, arg3));
+            var dtWide = PrimitiveType.CreateWord(arg1.DataType.BitSize + arg2.DataType.BitSize);
+            var tmp = binder.CreateTemporary(dtWide);
+            m.Assign(tmp, m.Seq(arg1, arg2));
+            m.Assign(tmp, m.Shl(tmp, arg3));
+            m.Assign(arg1, m.Slice(tmp, arg1.DataType, arg1.DataType.BitSize));
+        }
+
+        private void RewriteShrd()
+        {
+            var arg1 = SrcOp(0);
+            var arg2 = SrcOp(1);
+            var arg3 = SrcOp(2);
+            var dtWide = PrimitiveType.CreateWord(arg1.DataType.BitSize + arg2.DataType.BitSize);
+            var tmp = binder.CreateTemporary(dtWide);
+            m.Assign(tmp, m.Seq(arg2, arg1));
+            m.Assign(tmp, m.Shr(tmp, arg3));
+            m.Assign(arg1, m.Slice(tmp, arg1.DataType));
         }
 
         public Expression MemIndexPtr(int iOp, RegisterStorage defaultSeg, Identifier indexRegister)
