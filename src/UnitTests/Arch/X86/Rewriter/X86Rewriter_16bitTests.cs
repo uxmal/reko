@@ -785,10 +785,10 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
                 m.Shld(m.edx, m.eax, m.cl);
             });
             AssertCode(
-                "0|L--|0C00:0000(5): 3 instructions",
-                "1|L--|v5 = SEQ(edx, eax)",
-                "2|L--|v5 = v5 >>u 4<8>",
-                "3|L--|eax = SLICE(v5, word32, 0)");
+                "0|L--|0C00:0000(4): 3 instructions",
+                "1|L--|v6 = SEQ(edx, eax)",
+                "2|L--|v6 = v6 << cl",
+                "3|L--|edx = SLICE(v6, word32, 32)");
         }
 
         [Test]
@@ -799,8 +799,10 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
                 m.Shrd(m.eax, m.edx, 4);
             });
             AssertCode(
-                "0|L--|0C00:0000(5): 1 instructions",
-                "1|L--|eax = __shrd<word32>(eax, edx, 4<8>)");
+                "0|L--|0C00:0000(5): 3 instructions",
+                "1|L--|v5 = SEQ(edx, eax)",
+                "2|L--|v5 = v5 >>u 4<8>",
+                "3|L--|eax = SLICE(v5, word32, 0)");
         }
 
         [Test]
